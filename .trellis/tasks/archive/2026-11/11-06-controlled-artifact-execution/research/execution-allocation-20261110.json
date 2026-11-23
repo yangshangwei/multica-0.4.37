@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-10T07:35:22.544772+08:00",
+  "baseline": "d496b0b7fbdd27e100101f4478c964b4a01b88df",
+  "worktree": "/Volumes/artisan/code/2026/mc-controlled-artifact-20261110",
+  "branch": "codex/controlled-artifact-20261110",
+  "state_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa",
+  "container": "multica-artifact-20261110-01057f",
+  "image": "pgvector/pgvector:pg17",
+  "port": 52205,
+  "ownership": "created_by_this_task",
+  "private_environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/environment.json",
+  "databases": {
+    "baseline": {
+      "name": "multica_artifact_20261110_baseline",
+      "environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/baseline-env.json",
+      "migrated": true,
+      "migration_max": "765_task_api_capability"
+    },
+    "migrations": {
+      "name": "multica_artifact_20261110_migrations",
+      "environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/migrations-env.json",
+      "migrated": false
+    },
+    "handler": {
+      "name": "multica_artifact_20261110_handler",
+      "environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/handler-env.json",
+      "migrated": true,
+      "migration_ledger": "770_agent_artifact_execution_ready|758"
+    },
+    "router": {
+      "name": "multica_artifact_20261110_router",
+      "environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/router-env.json",
+      "migrated": true,
+      "migration_ledger": "770_agent_artifact_execution_ready|758"
+    },
+    "service": {
+      "name": "multica_artifact_20261110_service",
+      "environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/service-env.json",
+      "migrated": true,
+      "migration_ledger": "770_agent_artifact_execution_ready|758"
+    },
+    "handler_final": {
+      "name": "multica_artifact_20261110_handler_final",
+      "environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/handler_final-env.json",
+      "migrated": true,
+      "migration_ledger": "770_agent_artifact_execution_ready|758"
+    },
+    "handler_race_final": {
+      "name": "multica_artifact_20261110_handler_race_final",
+      "environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/handler_race_final-env.json",
+      "migrated": true,
+      "migration_ledger": "770_agent_artifact_execution_ready|758"
+    },
+    "router_final": {
+      "name": "multica_artifact_20261110_router_final",
+      "environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/router_final-env.json",
+      "migrated": true,
+      "migration_ledger": "770_agent_artifact_execution_ready|758"
+    },
+    "router_race_final": {
+      "name": "multica_artifact_20261110_router_race_final",
+      "environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/router_race_final-env.json",
+      "migrated": true,
+      "migration_ledger": "770_agent_artifact_execution_ready|758"
+    }
+  },
+  "real_provider_calls": 0
+}

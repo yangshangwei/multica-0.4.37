@@ -1,0 +1,73 @@
+{
+  "accepted_recorder": false,
+  "at": "2026-11-16T01:55:37.608922+00:00",
+  "blocking_finding": "Post-fork getpgid/save_new exceptions escape TracedPopen.__init__ before standard run enters its Popen context, so a spawned owned Go command may be unreaped and still running.",
+  "cases": [
+    {
+      "actual_os_or_Go_SQL_processes_spawned": 0,
+      "case": "success",
+      "events": [
+        "fake_spawn",
+        "getpgid",
+        "save_started",
+        "context_enter",
+        "communicate",
+        "poll",
+        "context_exit",
+        "wait",
+        "save_finished"
+      ],
+      "exception": null,
+      "kill_called": false,
+      "record_count": 2,
+      "returncode": 0,
+      "simulated_child_reaped": true,
+      "simulated_child_still_running": false,
+      "standard_context_entered": true,
+      "wait_called": true
+    },
+    {
+      "actual_os_or_Go_SQL_processes_spawned": 0,
+      "case": "started_record_write_error",
+      "events": [
+        "fake_spawn",
+        "getpgid",
+        "save_started"
+      ],
+      "exception": "OSError",
+      "kill_called": false,
+      "record_count": 0,
+      "returncode": null,
+      "simulated_child_reaped": false,
+      "simulated_child_still_running": true,
+      "standard_context_entered": false,
+      "wait_called": false
+    },
+    {
+      "actual_os_or_Go_SQL_processes_spawned": 0,
+      "case": "getpgid_process_lookup_error",
+      "events": [
+        "fake_spawn",
+        "getpgid"
+      ],
+      "exception": "ProcessLookupError",
+      "kill_called": false,
+      "record_count": 0,
+      "returncode": null,
+      "simulated_child_reaped": false,
+      "simulated_child_still_running": true,
+      "standard_context_entered": false,
+      "wait_called": false
+    }
+  ],
+  "kind": "independent_pure_TAG3_TracedPopen_constructor_counterexamples",
+  "probe_method": "Exact TracedPopen class AST with a fake base Popen; exact standard-library subprocess.run code/defaults with only Popen replaced. No real subprocess, Go, SQL, source write or original test/parser rerun.",
+  "recommendation": "Author should make post-fork metadata failure clean up the owned child in __init__ (kill/wait and correct pipe handling), or move metadata recording inside a cleanup-protected standard run context while preserving subprocess.run options/deadlines/exit semantics. Treat an already exited PID lookup without inventing a PGID. Preserve the current1df artifact; provide a new numbered runner/template/index and pure regression cases.",
+  "reviewer": "/root/continuation_gate_audit",
+  "runner": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-tagged-runner-v3.py",
+    "sha256": "1df758d09dbbd32a65b8d37621839a8a6c4ad5d4a4546134f645b0fb46c7eab2"
+  },
+  "source_or_runtime_mutations": 0,
+  "task": ".trellis/tasks/11-14-project-knowledge-automation"
+}

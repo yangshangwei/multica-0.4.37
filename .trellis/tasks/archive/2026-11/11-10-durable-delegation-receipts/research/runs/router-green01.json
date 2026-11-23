@@ -1,0 +1,51 @@
+{
+  "name": "router-green01",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./cmd/server",
+    "-run",
+    "^TestDurableDelegation",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T04:05:47.904695+00:00",
+  "finished_at": "2026-11-10T04:06:14.354706+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_router_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/router-green01.log",
+  "log_sha256": "bbdb8695cbac0d9aa52fb1d320c71bb335aaa62ae300202db1920cc036784a42",
+  "counts": {
+    "pass": 12,
+    "fail": 4,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDurableDelegationRouterJWTAndPATRecoverOriginalReceipt",
+      "TestDurableDelegationRouterConcurrentRetryDispatchesOnce",
+      "TestDurableDelegationRouterTaskRestartKeepsActorAndOriginator",
+      "TestDurableDelegationRouterSquadReplacementDoesNotRewriteTarget",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/unbound",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/private",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable",
+      "TestDurableDelegationRouterUnknownNeverReplaysAndLegacyWritesWork",
+      "TestDurableDelegationRouterRejectsMalformedKeyWithoutEffects",
+      "TestDurableDelegationRouterCanceledRequestDoesNotCreateReceipt",
+      "TestDurableDelegationRouterRejectsAttachmentsBeforeCreatingComment",
+      "TestDurableDelegationRouterRevocationAfterAuthentication/membership"
+    ],
+    "fail": [
+      "TestDurableDelegationRouterQueuedMergeAndDeferredHaveRealTask",
+      "TestDurableDelegationRouterReadsRequireCurrentMembershipAndScope",
+      "TestDurableDelegationRouterRevocationAfterAuthentication/pat",
+      "TestDurableDelegationRouterRevocationAfterAuthentication"
+    ],
+    "skip": []
+  }
+}

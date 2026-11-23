@@ -1,0 +1,208 @@
+{
+  "state": "passed",
+  "recorded_at": "2026-11-02T19:21:01.510934+00:00",
+  "scope": "offline syntax/hash/path/source checks only",
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "repair_git_status": "clean",
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "candidate4_product_trees_equal": true,
+  "entry_files": [
+    {
+      "file": "Makefile",
+      "candidate4_sha256": "02db245b6fc53efd75119b897fd5aad832141f6fed770156e165d9e5c0bd9260",
+      "repair_sha256": "02db245b6fc53efd75119b897fd5aad832141f6fed770156e165d9e5c0bd9260",
+      "equal": true
+    },
+    {
+      "file": "package.json",
+      "candidate4_sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+      "repair_sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+      "equal": true
+    },
+    {
+      "file": "pnpm-workspace.yaml",
+      "candidate4_sha256": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+      "repair_sha256": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+      "equal": true
+    },
+    {
+      "file": "turbo.json",
+      "candidate4_sha256": "34eebc15eb95ab5fe4addefef3ac0e97f746a6524373c8da41e47c2ed54ef6ef",
+      "repair_sha256": "34eebc15eb95ab5fe4addefef3ac0e97f746a6524373c8da41e47c2ed54ef6ef",
+      "equal": true
+    },
+    {
+      "file": "playwright.config.ts",
+      "candidate4_sha256": "de9a385def3e04d929d514b3d5eca092a78c6b1ea2895429e863e06f1ad285fd",
+      "repair_sha256": "de9a385def3e04d929d514b3d5eca092a78c6b1ea2895429e863e06f1ad285fd",
+      "equal": true
+    },
+    {
+      "file": "scripts/check.sh",
+      "candidate4_sha256": "c6d544402060c0e76fafc73e98fece92e063a971bc3cc4e85b36f8d5b8058ae6",
+      "repair_sha256": "c6d544402060c0e76fafc73e98fece92e063a971bc3cc4e85b36f8d5b8058ae6",
+      "equal": true
+    },
+    {
+      "file": "scripts/test-go.sh",
+      "candidate4_sha256": "9e28d20c285eed894c1029ffa962a4052eb1844729b114e1dc8a22c9d8a63861",
+      "repair_sha256": "9e28d20c285eed894c1029ffa962a4052eb1844729b114e1dc8a22c9d8a63861",
+      "equal": true
+    },
+    {
+      "file": "scripts/dev-env.sh",
+      "candidate4_sha256": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+      "repair_sha256": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+      "equal": true
+    },
+    {
+      "file": "scripts/go-test-with-agent-cli-guard.sh",
+      "candidate4_sha256": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+      "repair_sha256": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+      "equal": true
+    }
+  ],
+  "syntax_checks": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v9.py",
+      "sha256": "68dfc4c48a42e7ea276eee815b7f0985e96cf950ec3e2e623187e8ab583bf475",
+      "syntax_valid": true,
+      "executed": false
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/run-make-check-v10.py",
+      "sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+      "syntax_valid": true,
+      "executed": false
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-launcher-v10-preflight.py",
+      "sha256": "8face46aaf0c79aff33771778bb54aa2e617e2d1c585aa7a19c91b0ae1e8ab93",
+      "syntax_valid": true,
+      "executed": false
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go",
+      "sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "syntax_valid": true,
+      "executed": false
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm",
+      "sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "syntax_valid": true,
+      "executed": false
+    }
+  ],
+  "inherited_parser_functions_unchanged": [
+    "require",
+    "sha256",
+    "parse_generated_environment",
+    "renderer_url"
+  ],
+  "source_config_changes_only": [
+    "MULTICA_MCP_TEMPLATE_DIR",
+    "E2E_MCP_TEMPLATE_DIR",
+    "MULTICA_SKILL_TEMPLATE_DIR",
+    "MULTICA_RESOURCE_PUBLISH_DIR",
+    "COLLABORATION_SOURCE_CLI",
+    "MULTICA_DSH_PATH"
+  ],
+  "source_other_values_unchanged": true,
+  "catalogs": [
+    {
+      "config_key": "MULTICA_MCP_TEMPLATE_DIR",
+      "directory": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/mcp",
+      "mode": "0700",
+      "owner_uid": 501,
+      "non_symlink": true,
+      "empty": true
+    },
+    {
+      "config_key": "E2E_MCP_TEMPLATE_DIR",
+      "directory": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/mcp",
+      "mode": "0700",
+      "owner_uid": 501,
+      "non_symlink": true,
+      "empty": true
+    },
+    {
+      "config_key": "MULTICA_SKILL_TEMPLATE_DIR",
+      "directory": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/skills",
+      "mode": "0700",
+      "owner_uid": 501,
+      "non_symlink": true,
+      "empty": true
+    },
+    {
+      "config_key": "MULTICA_RESOURCE_PUBLISH_DIR",
+      "directory": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/catalog/published",
+      "mode": "0700",
+      "owner_uid": 501,
+      "non_symlink": true,
+      "empty": true
+    }
+  ],
+  "build_temp": {
+    "directory": "/private/tmp/multica-final-check-v10-8t_05bq4",
+    "mode": "0700",
+    "owner_uid": 501,
+    "non_symlink": true,
+    "git_root_absent": true,
+    "git_probe_exit_code": 128
+  },
+  "actual_cache_paths": {
+    "GOCACHE": {
+      "path": "/Volumes/artisan/dev-cache/go-build",
+      "directory_present": true
+    },
+    "GOMODCACHE": {
+      "path": "/Users/artisan/go/pkg/mod",
+      "directory_present": true
+    },
+    "GOPATH": {
+      "path": "/Users/artisan/go",
+      "directory_present": true
+    }
+  },
+  "hash_check_lines": [
+    82,
+    83,
+    84,
+    85
+  ],
+  "first_execution_mutation_line": 146,
+  "hash_binding_precedes_execution_mutations": true,
+  "exclusive_creation": {
+    "safe_source": "os.O_EXCL",
+    "record": "os.O_EXCL",
+    "log": "Path.open(mode=x)"
+  },
+  "absent_actual_execution_paths": [
+    "independent-review-clearance-v10.json",
+    "make-check-v10.json",
+    "make-check-v10.log",
+    "check-source-v10.safe.env",
+    "full-check-home-v10",
+    "go-packages-v10",
+    "dev-registry-v10",
+    "profiles-v10",
+    "workspaces-v10"
+  ],
+  "adapter_unchanged": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "provider_or_network_actions": 0,
+  "database_actions": 0,
+  "actual_repository_make_check_runs": 0,
+  "followups": [
+    "Independent v10 source/config/adapter/launcher review and clearance by root",
+    "Root installs staged same-source renderer/preload in REPAIR checkout and proves renderer readiness",
+    "Root owns shared service window, API/database identity/readiness and one complete make check"
+  ]
+}

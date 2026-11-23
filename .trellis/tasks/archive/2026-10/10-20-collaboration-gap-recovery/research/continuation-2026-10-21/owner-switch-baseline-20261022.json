@@ -1,0 +1,23 @@
+{
+  "started_at": "2026-10-21T16:59:15.211459+00:00",
+  "head": "1cb3f507300123612612ee0d5d166aa6f033f6eb",
+  "protected_source_sha256": {
+    "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+    "server/internal/service/collaboration_targets.go": "0ea88bd886d6dc2f84dbf20c10522aa65989b05e7fe37640bb1d3275728bd57a",
+    "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+    "server/internal/service/collaboration_switch.go": "350b220e24a039e00318f42f4b6ed0deb7b00cd5ee4e1130fa4e436cbc089166",
+    "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+    "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+    "server/internal/service/collaboration_squad.go": "60106e452d43888567140481556fe84a5b232c69f377cf959e6dcae37b63a224",
+    "server/internal/service/collaboration_groups.go": "384a12992e99fb9569728e15ae400d4de26d40a39e120a4953e6f91d23524ec7",
+    "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+    "server/internal/service/collaboration_switch_test.go": "0de4f53edc0beacd2c36f34be87dd5f665dcea94c11fceae798f1974408f8b53",
+    "server/internal/service/collaboration_squad_test.go": "9846be39515723e29e6d2a3f5f97ad3f2bfb12d3fdd9ef7d7ca2f6e57f573326",
+    "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7"
+  },
+  "ownership": [
+    "server/internal/service/collaboration_owner_departure_targets_test.go",
+    "server/internal/service/collaboration_public_switch_resume_test.go"
+  ],
+  "database_allocation": "Root exclusively allocated service_s5 schema737; no production/provider scope."
+}

@@ -1,0 +1,203 @@
+{
+  "date": "2026-10-18",
+  "status": "passed_fifo_configuration_history_slice",
+  "baseline_head": "6356cd9cfc6fc8d7cdf687c06a8f3755f48cf164",
+  "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-fifo-20261018-21zqy8p8",
+  "requirements": 58,
+  "acceptance_criteria": 97,
+  "full_product_acceptance_passed": 0,
+  "creation_enabled": false,
+  "client_execution_enabled": false,
+  "execution_projection_version": 4,
+  "runtime_control_protocol_version": 2,
+  "go_toolchain": "1.26.6",
+  "go_race": {
+    "top_level_passed": 1191,
+    "subtests_passed": 1211,
+    "failed": [],
+    "skipped": [
+      "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+      "TestCollaborationPartialResumeRoutesLinux",
+      "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+      "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+    ],
+    "packages": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "elapsed": 283.947
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "elapsed": 49.806
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "elapsed": 12.965
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/migrations",
+        "elapsed": 6.87
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/migrate",
+        "elapsed": 11.677
+      }
+    ],
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-p",
+      "1",
+      "./internal/service",
+      "./internal/handler",
+      "./cmd/server",
+      "./internal/migrations",
+      "./cmd/migrate",
+      "-run",
+      "^Test(Collaboration|.*(Agent|Runtime|Squad|Skill|Managed|Profile)|MainUsesRouterOwnedBackgroundServices|Migration|EveryConcurrent|ConcurrentIndex|RunMigrations)",
+      "-count=1",
+      "-timeout=12m",
+      "-json"
+    ],
+    "database": "collaboration_final_clean",
+    "source_drift": [],
+    "log": "go-final-race.jsonl",
+    "elapsed_seconds": 385.666
+  },
+  "linux": {
+    "kernel": "Linux 6.12.68-linuxkit aarch64",
+    "platform": "linux/arm64",
+    "image": "postgres:18-alpine",
+    "host_mounts": [],
+    "namespace_test_privileges": true,
+    "runs": [
+      {
+        "log": "linux/controller.log",
+        "passed": [
+          "TestLinuxNamespaceKillsDetachedDoubleForkAndEarlyStdio",
+          "TestLinuxNamespaceHidesSupervisorFilesAndDropsPrivileges",
+          "TestLinuxRunnerHTTPOutcomeStopAndRevokedBusinessProof",
+          "TestLinuxSupervisorCrashClosesNamespaceButKeepsUnknown"
+        ],
+        "subtests_passed": 10,
+        "failed": [],
+        "skipped": []
+      },
+      {
+        "log": "linux/routes.log",
+        "passed": [
+          "TestCollaborationPartialResumeRoutesLinux",
+          "TestCollaborationRuntimeRoutesKeepManagedAndNarrowPurposesSeparate",
+          "TestCollaborationRuntimeOutcomeClientMatchesService",
+          "TestCollaborationSingleAgentRuntimeRoutesLinux",
+          "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+          "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+        ],
+        "subtests_passed": 2,
+        "failed": [],
+        "skipped": []
+      }
+    ],
+    "top_level_passed": 10,
+    "binary_sha256": "0feba69fd9145d02ef7fc04fb28ab915d9e14abdb1983e2f0ec0408ec9faadc5",
+    "source_drift": []
+  },
+  "outstanding_skipped_tests": [
+    "TestFetchFromSkillsSh_AnthropicPptxIntegration"
+  ],
+  "skip_reason": "Existing live GitHub/skills.sh integration is opt-in and unrelated to this slice; Linux skips were executed natively.",
+  "core": {
+    "files": 265,
+    "tests": 3532,
+    "failed": 0,
+    "log": "projection/core-full.json"
+  },
+  "workspace": {
+    "typecheck": "passed_9_tasks",
+    "lint": "passed_6_tasks",
+    "go_vet": "passed_5_affected_packages",
+    "existing_lint_warnings": 31
+  },
+  "migration": {
+    "version": 708,
+    "invalid_indexes": 0,
+    "orphan_sessions": 0,
+    "orphan_grants": 0,
+    "upgrade_replay_and_protected_history": "passed",
+    "downgrade": "identity migrations refuse incompatible old-model downgrade"
+  },
+  "sqlc": {
+    "files": 104,
+    "drift": [],
+    "passed": true
+  },
+  "source_manifest": "verification-source-manifest-fifo-2026-10-18.json",
+  "source_files": 85,
+  "independent_review": "research/verification-fifo-review-2026-10-18.md",
+  "independent_blockers": 0,
+  "deferred": [
+    "Full frozen multi-target grants and consent-ready atomic Switch",
+    "M08 comment delegation and M11 unread/consumed continuations with real capacity-one execution",
+    "Shared skill-content invalidation and remaining provider/Git/attachment/enrollment/OS capability coverage",
+    "Full Web/Desktop P1-P8 journeys and all 97 acceptance criteria"
+  ],
+  "log_hashes": {
+    "go-final-race.jsonl": "f7904a7c0f54575dfcefd94918c665bf65c51f35b6a40429e2067b1ded1f9989",
+    "go-final-vet.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workspace-typecheck.log": "6957c2caf0cd985d26e9ba60f128d96804be51e307a12e4dab99c408a2d07ea8",
+    "workspace-lint.log": "d4f418ce7512d4fb69f4de372529fc12522bfa41f534dd57ee396f12edc46c49",
+    "projection/core-full.json": "7ff3e173c720a2d5178abd1d94c78b9d5906d238f7d19e6dc0da17f7bd4ffcf9",
+    "linux/controller.log": "33442069b037a5b9bf8ff50ee94be906e4cf308360c07a89941e69dcaeae9fcf",
+    "linux/routes.log": "ca0ec83987046054e024b2dd76a55cff8cd964fc38abe4710ef24f7ad8aa5e10",
+    "final-clean-migration.log": "b197b58ef9f82d64482f332b312992eb75df018f9778f8075cb42dd55ae68441",
+    "sqlc-consistency.log": "82e81be19e70b27058e6e53a14e5038605de577ff0e32541d1c48a83fb815f43",
+    "builtin-skill-check-final.jsonl": "4bfeafc93f6906fba70cf59978ca2016cc49ea6b329f35fc0e84db80570f5802"
+  },
+  "environment_cleanup": {
+    "status": "complete",
+    "removed_containers": [
+      {
+        "name": "multica-cwc-fifo-9e635d04ab-linux-proofs",
+        "id": "6d64f894ad547b468c30c208a921dbc89bd906dd43b1a4d45666a2dc5ed932cf"
+      },
+      {
+        "name": "multica-cwc-fifo-9e635d04ab-linux",
+        "id": "34dcdb02356b3e4d90d01dba610ad06a03de0bc1c65cfa69e2a590abed4725b8"
+      },
+      {
+        "name": "multica-cwc-fifo-9e635d04ab-redis",
+        "id": "05f586f90d6b5a673b27554186e69b567c026959ef29a1e47634c710786f1661"
+      },
+      {
+        "name": "multica-cwc-fifo-9e635d04ab",
+        "id": "df6cd5cc48a6bffeec52f86285c8755e7dc75ac7846e5d42d58aaee4d845bb4a"
+      }
+    ],
+    "removed_network": "multica-cwc-fifo-9e635d04ab-net",
+    "evidence_retained": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-fifo-20261018-21zqy8p8",
+    "application_environment_touched": false
+  },
+  "documents": {
+    "relative_links_checked": 315,
+    "missing_links": [],
+    "requirements": 58,
+    "acceptance_criteria": 97,
+    "gofmt_files": 47,
+    "source_manifest_drift": []
+  },
+  "commits": [
+    {
+      "scope": "implementation_and_specs",
+      "commit": "33f584ae14f8eae77a96381e5c273ed3fecac497",
+      "files": 85
+    }
+  ],
+  "source_manifest_matches_commit": true
+}

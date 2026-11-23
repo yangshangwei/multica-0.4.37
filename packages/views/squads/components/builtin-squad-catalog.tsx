@@ -2,7 +2,7 @@
 
 import { SquadAvatar } from "../../common/squad-avatar";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { useWorkspacePaths } from "@multica/core/paths";
 import type { Squad, SquadTemplate } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
@@ -12,9 +12,9 @@ import { useT } from "../../i18n";
 import { AppLink } from "../../navigation";
 import { UseSquadForProjectDialog } from "../../projects/components/use-squad-for-project-dialog";
 
-export function BuiltinSquadCatalog({ squads }: { squads: readonly Squad[] }) {
+export function BuiltinSquadCatalog({ squads, active = true }: { squads: readonly Squad[]; active?: boolean }) {
   const { t } = useT("squads");
-  const catalog = useSquadTemplates();
+  const catalog = useSquadTemplates({ enabled: active });
   const paths = useWorkspacePaths();
   const headingId = useId();
   const [selected, setSelected] = useState<SquadTemplate | null>(null);
@@ -26,16 +26,21 @@ export function BuiltinSquadCatalog({ squads }: { squads: readonly Squad[] }) {
     ["discovery", t(($) => $.catalog.summaries.discovery)],
     ["docs", t(($) => $.catalog.summaries.docs)],
     ["maintenance", t(($) => $.catalog.summaries.maintenance)],
+    ["security-remediation", t(($) => $.catalog.summaries.security_remediation)],
     ["release", t(($) => $.catalog.summaries.release)],
     ["incident", t(($) => $.catalog.summaries.incident)],
   ]);
+
+  useEffect(() => {
+    if (!active) setSelected(null);
+  }, [active]);
 
   return (
     <>
       <section
         aria-labelledby={headingId}
         aria-busy={catalog.isPending}
-        className="w-full max-w-6xl px-6 py-5 @container"
+        className="min-w-0 w-full @container"
       >
         <h2 id={headingId} className="text-title-sm font-semibold">{t(($) => $.catalog.title)}</h2>
         <p className="mt-1 max-w-[70ch] text-caption text-muted-foreground">{t(($) => $.catalog.description)}</p>
@@ -74,7 +79,7 @@ export function BuiltinSquadCatalog({ squads }: { squads: readonly Squad[] }) {
                     <p className="break-words">{roster.map((role) => role.title || role.name).join(" · ")}</p>
                   </div>
                   <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-2">
-                    <Button type="button" size="sm" variant="outline" onClick={() => setSelected(template)}>{t(($) => $.catalog.use_for_project)}</Button>
+                    <Button type="button" size="sm" variant="outline" disabled={!active} onClick={() => setSelected(template)}>{t(($) => $.catalog.use_for_project)}</Button>
                     {instances.length > 0 && (
                       <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-caption">
                         <span className="text-muted-foreground">{t(($) => $.catalog.existing_squads)}</span>
@@ -97,7 +102,7 @@ export function BuiltinSquadCatalog({ squads }: { squads: readonly Squad[] }) {
           </ul>
         )}
       </section>
-      {selected && <UseSquadForProjectDialog template={selected} onClose={() => setSelected(null)} />}
+      {selected && active && <UseSquadForProjectDialog template={selected} onClose={() => setSelected(null)} />}
     </>
   );
 }

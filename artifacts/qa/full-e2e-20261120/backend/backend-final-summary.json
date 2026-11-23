@@ -1,0 +1,1391 @@
+{
+  "scope": "Casewise coverage across explicitly identified candidate snapshots and focused replays; not a single complete current-HEAD package run.",
+  "original_candidate_head": "c56e2194ee45236b8c634843579b7f3e492b0db4",
+  "resume_candidate_head": "d1b25077b89af8ef72e58c0b040b9ea495261b1b",
+  "resume_source_drift": [],
+  "original_package_commands": {
+    "total": 84,
+    "exit_zero": 83,
+    "pass_with_named_tests": 74,
+    "no_test_files": 9,
+    "failed": [
+      "github.com/multica-ai/multica/server/internal/service"
+    ]
+  },
+  "original_named_counts": {
+    "pass": 21102,
+    "skip": 23,
+    "fail": 4
+  },
+  "original_default_top_level_expected": 11218,
+  "current_default_top_level_expected": 11242,
+  "current_default_casewise_top_counts": {
+    "pass": 11233,
+    "skip": 9
+  },
+  "current_default_casewise_named_counts": {
+    "pass": 23688,
+    "skip": 9
+  },
+  "current_default_casewise_leaf_counts": {
+    "pass": 21487,
+    "skip": 9
+  },
+  "missing_default_top_level": [],
+  "unresolved_default_failed_names": [],
+  "service_original_plus_fixture_regression_expected": 1709,
+  "service_original_plus_fixture_regression_casewise_counts": {
+    "pass": 1709
+  },
+  "service_new_template_top_level_counts": {
+    "pass": 11
+  },
+  "service_current_expected": 1720,
+  "whole_service_package_pass": false,
+  "whole_service_reason": "The original single-process40m run timed out. Case groups/replays establish individual coverage separately; the original failure remains failed.",
+  "remaining_named_skips": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "name": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+      "status": "skip",
+      "run": "04-test.jsonl",
+      "phase": "original_default_candidate",
+      "reason": "=== RUN   TestCommentContentBigramRequirementMatchesRealPGBigm\n    migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test\n--- SKIP: TestCommentContentBigramRequirementMatchesRealPGBigm (0.05s)\n"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "name": "TestCollaborationStageExecutionHarness",
+      "status": "skip",
+      "run": "06-test.jsonl",
+      "phase": "original_default_candidate",
+      "reason": "=== RUN   TestCollaborationStageExecutionHarness\n    collaboration_stage_execution_control_test.go:375: dedicated coordinator-owned stage harness only\n--- SKIP: TestCollaborationStageExecutionHarness (0.00s)\n"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "name": "TestDeliveryCompletionM1BrowserFixture",
+      "status": "skip",
+      "run": "06-test.jsonl",
+      "phase": "original_default_candidate",
+      "reason": "=== RUN   TestDeliveryCompletionM1BrowserFixture\n    delivery_completion_preview_integration_test.go:103: opt-in M1 browser fixture\n--- SKIP: TestDeliveryCompletionM1BrowserFixture (0.00s)\n"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "name": "TestCLIConfig_UnknownFieldsArePreserved",
+      "status": "skip",
+      "run": "18-test.jsonl",
+      "phase": "original_default_candidate",
+      "reason": "=== RUN   TestCLIConfig_UnknownFieldsArePreserved\n    config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder\n--- SKIP: TestCLIConfig_UnknownFieldsArePreserved (0.00s)\n"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "name": "TestIsDriveRoot",
+      "status": "skip",
+      "run": "21-test.jsonl",
+      "phase": "original_default_candidate",
+      "reason": "=== RUN   TestIsDriveRoot\n    local_directory_test.go:383: windows-only behaviour\n--- SKIP: TestIsDriveRoot (0.01s)\n"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestMcpMarketPublicHTTPRecipeLifecycle",
+      "status": "skip",
+      "run": "n34-test.jsonl",
+      "phase": "original_default_candidate",
+      "reason": "=== RUN   TestMcpMarketPublicHTTPRecipeLifecycle\n    workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes\n--- SKIP: TestMcpMarketPublicHTTPRecipeLifecycle (0.00s)\n"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestTriageWireFixtures",
+      "status": "skip",
+      "run": "n34-test.jsonl",
+      "phase": "original_default_candidate",
+      "reason": "=== RUN   TestTriageWireFixtures\n    triage_test.go:566: wire fixture export requested only by cross-package verification\n--- SKIP: TestTriageWireFixtures (0.00s)\n"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+      "status": "skip",
+      "run": "n34-test.jsonl",
+      "phase": "original_default_candidate",
+      "reason": "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500\n    autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant\n--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)\n"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "name": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+      "status": "skip",
+      "run": "n71-test.jsonl",
+      "phase": "original_default_candidate",
+      "reason": "=== RUN   TestACPManagedTerminalPreservesWindowsUnicodeShellOutput\n    acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows\n--- SKIP: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput (0.00s)\n"
+    }
+  ],
+  "excluded_default_platform_or_tag_top_counts": {
+    "pass": 86,
+    "not_run": 115,
+    "partial": 1
+  },
+  "tagged_synthetic_admission": "tagged-control-admission.json",
+  "tagged_synthetic_counts": {
+    "top_level_terminal_pass": 46,
+    "fully_selected_top_level_pass": 45,
+    "partially_selected_top_level": 1,
+    "named_terminal_pass": 327,
+    "excluded_named_child": "TestRK1KnowledgeCodexRegistrationIntegrity/missing_real_version_binding"
+  },
+  "new_default_test_identities": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "name": "TestSecurityRemediationNotification_RestrictedReviewerCommentReachesSubscribedMember",
+      "status": "pass",
+      "run": "resume-template-router.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestSecurityRemediationFlow_CodeRouteWithVerifierAndVariant",
+      "status": "pass",
+      "run": "resume-template-handler.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestSecurityRemediationFlow_DependencyRouteWalksBothGates",
+      "status": "pass",
+      "run": "resume-template-handler.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestSecurityRemediationFlow_OtherRouteInvalidReleaseThenShelve",
+      "status": "pass",
+      "run": "resume-template-handler.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestSecurityRemediationFlow_ProductionEscalationDispatchesNobody",
+      "status": "pass",
+      "run": "resume-template-handler.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestSecurityRemediationRouting_ChangedReleaseCommentKeepsItsAuthor",
+      "status": "pass",
+      "run": "resume-template-handler.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestSecurityRemediationRouting_FailedReviewerLeavesANoticeAndWakesNobody",
+      "status": "pass",
+      "run": "resume-template-handler.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestSecurityRemediationRouting_LeaderGateCommentQueuesEachRestrictedReviewer",
+      "status": "pass",
+      "run": "resume-template-handler.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestSecurityRemediationRouting_OwnerReplyMentioningSquadQueuesOneLeaderTask",
+      "status": "pass",
+      "run": "resume-template-handler.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "name": "TestSecurityRemediationRouting_RestrictedReviewerResultDoesNotWakeLeader",
+      "status": "pass",
+      "run": "resume-template-handler.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestAgentRoleTemplates_SecurityRemediationLeadWithoutSquadContext",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationCodeRouteReproducesBeforeFixing",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationEndsWithFinalEvidence",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationLeavesReceiptsToTheProtocol",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationPreambleDetectsTruncation",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationReleaseWordingProtectsCommentUntilValidated",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationSharedSections",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationSquadBodySurvivesTheInstructionsEditor",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationStatesStatusConditionOnce",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationTriageBlockExtendsV1",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestSquadTemplates_SecurityRemediationV2InstructionContracts",
+      "status": "pass",
+      "run": "resume-template-service.jsonl",
+      "phase": "resume_supplement"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestStageCodeRevisionRegressionPreservesFailedHistory",
+      "status": "pass",
+      "run": "service-memory-11.jsonl",
+      "phase": "service_case_recovery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestStageExecutionFixturePropagatesObservationClockFailure",
+      "status": "pass",
+      "run": "service-memory-11.jsonl",
+      "phase": "service_case_recovery"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "name": "TestStageExecutionFixtureUsesObservationClock",
+      "status": "pass",
+      "run": "service-memory-11.jsonl",
+      "phase": "service_case_recovery"
+    }
+  ],
+  "invalid_event_runs": [],
+  "resume_supplement_failures": [],
+  "supplement_runs": [
+    {
+      "path": "linux/runtime-git-configured.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "sha256": "61029e3aaf6d284dfe97420f914a0cdd9e0adb045ecbd70b7ff78fe5e952e9fa",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 43
+      },
+      "top_level_counts": {
+        "pass": 15
+      },
+      "leaf_counts": {
+        "pass": 35
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "phase": "linux_supplement"
+    },
+    {
+      "path": "linux/router-native.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "76192c09e77df66b41f340c63d5f11ff94753281259de0db7bc6c6dfd0b8d37d",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 6
+      },
+      "top_level_counts": {
+        "pass": 6
+      },
+      "leaf_counts": {
+        "pass": 6
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "phase": "linux_supplement"
+    },
+    {
+      "path": "linux/daemon-native.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "sha256": "bf4ea82557d8c61cbced62353a9bb68a99a1847d16808c93a3146a2968bfdb31",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 1
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 1
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "phase": "linux_supplement"
+    },
+    {
+      "path": "memory2-service-redis.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "sha256": "6396eea4132989df210bf94cf90b65b1073a13fbf7f7f7622551110b03aabf2f",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 22
+      },
+      "top_level_counts": {
+        "pass": 22
+      },
+      "leaf_counts": {
+        "pass": 22
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^Test(EmptyClaimCache_|ReclaimCheckCache_|ClaimTasksForRuntimes_(AnyDueRuntimeChecksTheCompleteSet|EmptyReclaimDefersHintForRetry)|NotifyTask)",
+        "./internal/service"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 25.4
+    },
+    {
+      "path": "memory2-i1-p95.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "sha256": "3126afcda392a3846ddc8d0d5dd9fc412879bbbe4ddc1877d160ce20f8992711",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 2
+      },
+      "top_level_counts": {
+        "pass": 2
+      },
+      "leaf_counts": {
+        "pass": 2
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^TestIterationI1(P95|DisableP95)$",
+        "./internal/handler"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 176.38
+    },
+    {
+      "path": "memory2-triage-scale.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "sha256": "74b3e432646bc79379357341aefa734048225c39419b9abdd7271b5a76062a6f",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 1
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 1
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^TestTriageQueueScaleBaseline$",
+        "./internal/handler"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 11.8
+    },
+    {
+      "path": "memory2-skills-live.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "sha256": "4b3ae0c40bf1b9dfd897f0af89e8a3f56073d6761c28d90021e00ce7df430b9b",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 1
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 1
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^TestFetchFromSkillsSh_AnthropicPptxIntegration$",
+        "./internal/handler"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 9.63
+    },
+    {
+      "path": "memory2-auth-race.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "sha256": "4add4564bc5e63263005e5a4a88f4ce3221fc9a1b6db97be8fb9c481ad72c9dc",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 117
+      },
+      "top_level_counts": {
+        "pass": 53
+      },
+      "leaf_counts": {
+        "pass": 108
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-race",
+        "-run",
+        ".",
+        "./internal/auth"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 9.94
+    },
+    {
+      "path": "memory2-handler-race.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "sha256": "0e8af5dd1dbea7aa3667ec59a3c0fe93ebb6a08a81f2b4750fc8bb16111f07e2",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 240
+      },
+      "top_level_counts": {
+        "pass": 136
+      },
+      "leaf_counts": {
+        "pass": 216
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-race",
+        "-run",
+        "^Test.*(Concurrent|Race|Rollback|ClaimTaskByRuntime|QuickCreate|ChatQuickActions|RegenerateChatQuickActions|CompleteTask_CallbackIdempotency)",
+        "./internal/handler"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 58.76
+    },
+    {
+      "path": "memory2-service-race.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "sha256": "87b0c7ff1456d30a7da0619b56bd4300c64a4501b08f5f6a17613eb59a713456",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 247
+      },
+      "top_level_counts": {
+        "pass": 98
+      },
+      "leaf_counts": {
+        "pass": 221
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=40m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-race",
+        "-run",
+        "^Test.*(Concurrent|Race|Rollback|Deadlock|TwoClaimers|ChannelMedia|NotificationReplay|TaskClaim|TaskComplete)",
+        "./internal/service"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 160.89
+    },
+    {
+      "path": "resume-template-service.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "sha256": "11cc79e040900759e3f2a4a74fd8a04fbf7412be48c1a93d6df1d511ad6f5a58",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 112
+      },
+      "top_level_counts": {
+        "pass": 34
+      },
+      "leaf_counts": {
+        "pass": 99
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^Test.*(AgentRoleTemplates|AgentTemplate|SquadTemplate|BuiltinSkill|TaskBuiltinSkill)",
+        "./internal/service"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 8.07
+    },
+    {
+      "path": "resume-template-handler.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "sha256": "adad5ad1a281bdab32b3dac8e5380a10d1f3d5f60ea4d71eb3980ff96c751e84",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 153
+      },
+      "top_level_counts": {
+        "pass": 79
+      },
+      "leaf_counts": {
+        "pass": 135
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^Test.*(SecurityRemediation|SquadTemplate|AgentFromTemplate|SquadFromTemplate|SquadLeader|SquadMention|SquadPlainReply|DualRoleAgent|InheritsIsLeaderTask|SubscriberAPI|CommentMentionsAnyone)",
+        "./internal/handler"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 9.49
+    },
+    {
+      "path": "resume-template-router.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "d750aedb4e5f769cfc561772e2dc95149f5172fbcad356a658203d9f2ba9f180",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 1
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 1
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^Test.*(SecurityRemediation|AgentTemplate|SquadTemplate|BuiltinSkill)",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 7.34
+    },
+    {
+      "path": "resume-knowledge-composite.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "sha256": "dd456ae4b170b5a98ce1504fb52857b5d0b70a2da1a7dc13549e0bb9f90b71e7",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 27
+      },
+      "top_level_counts": {
+        "pass": 14
+      },
+      "leaf_counts": {
+        "pass": 23
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestKnowledgeServerDaemonComposite",
+        "./internal/daemon"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 19.37
+    },
+    {
+      "path": "resume-knowledge-router.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "077c3ae27680fb6d86c27bbf29fd96fcc10e7e03577823a1dbf30d583982b35b",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 28
+      },
+      "top_level_counts": {
+        "pass": 10
+      },
+      "leaf_counts": {
+        "pass": 24
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^Test(CollaborationKnowledgeHostComposite|RecordingReceiptRecoveryRequiresOnlyTransientErrors)",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 50.97
+    },
+    {
+      "path": "tagged-context-controls.jsonl",
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "sha256": "1eeb40e74a50090453914ca7f0964d03a6e1d135b39d341d21baeb4fc4380d09",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 41
+      },
+      "top_level_counts": {
+        "pass": 15
+      },
+      "leaf_counts": {
+        "pass": 36
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestHostProviderAccountSmokeAuthorizesSharedContextBase|TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries|TestContextExperimentPersistsActualFakePromptAndCompleteHTTP|TestContextExperimentKeepsProviderRecordPartial|TestContextExperimentNeverPassesMissingOrFailedOutcome|TestContextExperimentRequiresSemanticReviewAndRejectsPublicEvidence|TestContextExperimentCannotPassAnUnexposedInjection|TestContextExperimentMemberScoreUsesPreregisteredScope|TestContextExperimentSourceCommitCoversModuleFromPackageDirectory|TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence|TestContextExperimentResumedSeriesStopsOnIncompleteTrial|TestContextExperimentE5CanaryStopsBeforeNextTrial|TestContextExperimentE5SafeOutputRetainsThreeTrials|TestContextExperimentE5IncompleteRemainsRuntimeError|TestContextExperimentNonE5BehaviorFailureKeepsRegisteredTrials)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./internal/daemon/collaborationrun"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 14.08
+    },
+    {
+      "path": "tagged-router-controls.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "42d38b4e1987d9351fe38427aac1136e4a8fc7c486136d683f650d8f105f1acc",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 212
+      },
+      "top_level_counts": {
+        "pass": 22
+      },
+      "leaf_counts": {
+        "pass": 195
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestRK1ProviderWithoutMarkerCannotEnterTestMain|TestRK1EvidencePublicationFailureRetainsExecutionAndStops|TestRK1EvidencePublicationKeepsProviderFailureSeparate|TestRK1EvidenceUnfinalizedResultCannotPass|TestRK1EvidenceCachedFinalRecordCannotHideFailedWrapperExit|TestRK1HandoffAnswersRequireTheirExactLineCounts|TestRK1TraceSnapshotWaitsForCompletedHandler|TestRK1KnowledgeCodexContinuationControls|TestRK1KnowledgeCodexRPCControls|TestRK1KnowledgeCodexLedgerStopsAfterIncomplete|TestRK1KnowledgeCodexRealPlanDoesNotCarryFakeAnswers|TestRK1KnowledgeCodexPhysicalBudget|TestRK1KnowledgeCodexRegistrationIntegrity|TestRK1KnowledgeCodexSampleAcknowledgment|TestRK1KnowledgeCodexMigrationControls|TestRK1KnowledgeCodexRegistrationGuard|TestRK1KnowledgeCodexE0bRetryControls|TestRK1KnowledgeEntryGuard|TestRK1KnowledgeWrapperGuard|TestRK1KnowledgePromptData|TestRK1KnowledgeTraceCredentialLabels|TestRK1KnowledgeNativeMetadataUsesRawOutput)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 25.19
+    },
+    {
+      "path": "tagged-router-fixture-01.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "ace06b15cf5e27c5a2871dc77e56d9eb1b5f9433170a14e23486b9eda3dd0e4e",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 1
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 1
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestAC43FixtureContract)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 6.64
+    },
+    {
+      "path": "tagged-router-fixture-02.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "292877baff9826a1b1155347208abd13d38afc28861f7069e0d5216529b5f7a2",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 44
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 23
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestRK1FakeProof)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 58.86
+    },
+    {
+      "path": "tagged-router-fixture-03.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "4f7ba9ee23b71c5deebde5ffd4c142657fddb1e50ab48554240694e132434099",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 7
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 3
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestRK1EvidenceFaultProof)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 13.55
+    },
+    {
+      "path": "tagged-router-fixture-04.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "44d486273ea832afdd52411c32b3b04420c1fb52b106b71e30aa687c404d311b",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 1
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 1
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestRK1FixtureRecoversRecordingWithoutLaunchingAgain)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 9.43
+    },
+    {
+      "path": "tagged-router-fixture-05.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "7baf2574623819aeafcd8672997edf2b9e4c398b15940566b8a9808e2ae0fde2",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 1
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 1
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestRK1FixtureRecoversLostSealResponseWithoutLaunchingAgain)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 8.14
+    },
+    {
+      "path": "tagged-router-fixture-06.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "18a5622b247188a63d5ef7bcdd02be54bb7208eb8bea58b4dc849f27bb2044c6",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 5
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 4
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestRK1KnowledgeFakeProof)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 26.09
+    },
+    {
+      "path": "tagged-router-fixture-07.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "2f7f9cefeee8d22c37c305a9a536bb28f7d4bd5012f78a19b91c43a48316396c",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 5
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 4
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestRK1KnowledgeCodexFakeProof)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 27.61
+    },
+    {
+      "path": "tagged-router-fixture-08.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "a8fdde58011ea72145310c3f44b43008d533300d8566c5fab481df6a8e544bb9",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 2
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 1
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestRK1KnowledgeCodexE0bRetryFakeProof)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 5.3
+    },
+    {
+      "path": "tagged-router-fixture-09.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "sha256": "970996887d243d569b1e003e71385b4b6bc7a7283e4cf398dc20196644b19166",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 8
+      },
+      "top_level_counts": {
+        "pass": 1
+      },
+      "leaf_counts": {
+        "pass": 7
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "-count=1",
+        "-timeout=20m",
+        "-p",
+        "2",
+        "-parallel",
+        "2",
+        "-json",
+        "-run",
+        "^(TestRK1KnowledgeEvidenceFaults)$",
+        "-skip",
+        "^TestRK1KnowledgeCodexRegistrationIntegrity$/^missing_real_version_binding$",
+        "./cmd/server"
+      ],
+      "phase": "resume_supplement",
+      "seconds": 16.32
+    },
+    {
+      "path": "linux/agent-resume2.jsonl",
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "sha256": "d1971113593f48d3f22ad8bb7cdb9cbba60d88ff4fefea938f55306dd659b351",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 6
+      },
+      "top_level_counts": {
+        "pass": 3
+      },
+      "leaf_counts": {
+        "pass": 5
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "phase": "resume_linux_supplement"
+    },
+    {
+      "path": "linux/cli-descriptors.jsonl",
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "sha256": "19c5b8a0d5ce82f3a3e39b300e19184e58776c166dcd8cecdff2ce2caa85680c",
+      "package_terminal": "pass",
+      "named_counts": {
+        "pass": 2
+      },
+      "top_level_counts": {
+        "pass": 2
+      },
+      "leaf_counts": {
+        "pass": 2
+      },
+      "unfinished": [],
+      "invalid_events": [],
+      "build_events": 0,
+      "build_failures": 0,
+      "command_exit": 0,
+      "phase": "resume_linux_supplement"
+    }
+  ],
+  "cleanup": "backend-final-cleanup.json"
+}

@@ -10,3 +10,82 @@ sql:
         sql_package: "pgx/v5"
         emit_json_tags: true
         emit_empty_slices: true
+        # Reserved server-only columns also pass through CTE result tables;
+        # table-qualified overrides alone miss those derived task rows.
+        overrides:
+          # Budget amounts are 64-bit ticks and must leave the server as decimal
+          # strings, never as JSON numbers; ledger rows also carry stored forms
+          # and provider identifiers. Endpoints build explicit projections.
+          - column: "issue_budget_root.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_member.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_attempt.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_entry.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_operation.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_observation.*"
+            go_struct_tag: 'json:"-"'
+          # Automation records contain model input closures and retained private
+          # outputs. Public endpoints must build current-authority projections.
+          - column: "collaboration_knowledge_job.*"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_knowledge_batch.*"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_knowledge_attempt.*"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_knowledge_evaluation.*"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_knowledge_validity.*"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_intent.invocation"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_intent.dependencies"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_intent.request_digest"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_intent.consumer_subject"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_intent.physical_target_key"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_observation.observation"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_execution_observation.observation_digest"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_rollback_observation.metric"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_rollback_observation.stream_key"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_rollback_observation.native_version"
+            go_struct_tag: 'json:"-"'
+          - column: "collaboration_stage_decision.signer_credential"
+            go_struct_tag: 'json:"-"'
+          - column: "*.knowledge_delivery"
+            go_struct_tag: 'json:"-"'
+          - column: "*.knowledge_context_version"
+            go_struct_tag: 'json:"-"'
+          - column: "*.api_capability"
+            go_struct_tag: 'json:"-"'
+
+          - column: "delivery_completion_authorization.issuer_pat_hash"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_pat_id"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_password_version"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_password_kind"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_binding_id"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_binding_epoch"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_binding_workspace_id"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.issuer_binding_daemon_id"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.request_json"
+            go_struct_tag: 'json:"-"'
+          - column: "delivery_completion_authorization.observation"
+            go_struct_tag: 'json:"-"'

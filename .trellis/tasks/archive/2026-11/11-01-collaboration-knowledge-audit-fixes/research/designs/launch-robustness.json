@@ -1,0 +1,185 @@
+{
+ "findings": [
+  "Worktree HEAD is 4e3b61500, not 6aed33aad. `git diff --stat 6aed33aad HEAD` shows only .trellis task files changed (5 files, 94 insertions), so the code is identical to the audited code.",
+  "M2 confirmed. task_knowledge_prepare.go:215 (member fence) and :270 (installation fence), plus collaboration_knowledge_runtime.go:180, :195 and :246, return 503 knowledge_busy on the first try-lock miss. Claim and finalize take the same installationNamespace key with a blocking pg_advisory_xact_lock in LockManagedRuntime (managed_runtime.go:131), called from task.go:3450, :3631 and :3794.",
+  "M2 retry paths. The ordinary prepare and authorize paths have no server-side retry. The collaboration path's collaborationRuntimeMutation (collaboration_runtime.go:446-475) retries only *pgconn.PgError 55P03/40001/40P01, so the CollaborationError returned by a failed try-lock is not retried. The daemon's postKnowledge (knowledge_context.go:137-217) waits 0/25/50ms. taskfailure/failure.go:276 and spec line 110 make every knowledge_* reason terminal, and TestKnowledgeFailureNeverCreatesAutomaticRetry pins this.",
+  "M2 lock order. Prepare takes users -> credential (daemon_token FOR SHARE NOWAIT) -> workspaces/member fence -> chat -> issues FOR SHARE NOWAIT -> autopilot -> sources -> namespace -> runtime -> installation -> agent -> task FOR UPDATE NOWAIT. FinalizeTaskClaim takes namespace (blocking) -> task FOR UPDATE -> finalizeTaskKnowledgeClaim -> lock_issue_execution -> CreateTaskToken -> DeleteExpiredDaemonTokens. claimTask takes namespace -> agent FOR UPDATE. The comment at task_knowledge_prepare.go:108-110 already forbids taking the namespace before the source graph.",
+  "M2 second busy source. PrepareTaskKnowledge also returns knowledge_busy when its pre-transaction read missed a preparation that the locked read sees (`exact == nil`, ~388). Re-running the whole function, including that pre-read, turns the case into the normal replay path.",
+  "L6 confirmed for the daemon. Task.KnowledgeContext (daemon/types.go:102) has no custom decoder, but its nested TaskKnowledgeSessionBinding.UnmarshalJSON (protocol/task_knowledge.go:233) runs decodeCollaborationHostObject: DisallowUnknownFields, a declared-name check and a required-field check. One bad descriptor makes json.Decode fail for the whole `{task}` or `{tasks}` envelope. This affects ClaimTask (client.go:233), ClaimTasks (client.go:301), the WS batch (wsrpc.go:346) and claimManagedTasks (managed_transport.go:243).",
+  "L6 inconsistency. Unknown top-level descriptor fields are silently tolerated today, because TaskKnowledgeClaimDescriptor has no UnmarshalJSON. Only nested session fields are strict.",
+  "L6 shared type. TaskKnowledgeSessionBinding.UnmarshalJSON is shared by inbound daemon requests and the server's stored ledger. A nested custom UnmarshalJSON bypasses the outer decoder's DisallowUnknownFields, so loosening this type would also loosen decodeTaskKnowledge (service/task_knowledge.go:64-80).",
+  "L6 ledger re-encode. The stored ledger is decoded, mutated and fully re-encoded (encodeTaskKnowledge, then SetTaskKnowledgeDelivery) by prepare, authorize and observe. A tolerant reader would silently erase fields written by a newer server on its next write.",
+  "L7 not reproduced. In launch_lifecycle.go:431-462, when callbacks.Started fails with cmd.ProcessState == nil, start() kills the process and calls waitOwnedProcessTree (launch.go:132). The command is still registered there, so beginWait moves the phase from started to waiting, and waitObservedProcessTree calls state.waited(), then s.finish(), then callbacks.Terminated exactly once with LaunchManagedEnded and WaitObserved=true. The ProcessState != nil branch calls s.waited() directly.",
+  "L7 existing test. TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback (pkg/agent/launch_lifecycle_test.go:358-387) already asserts that Terminated arrives with LaunchManagedEnded, WaitObserved=true and a reaped process, and that no second permit is issued.",
+  "L7 cancellation. On the daemon side, Started assigns process and finishProcess before posting the observation. Terminated therefore calls finishProcess(true), so a user cancel gets process-exit confirmation. If the started observation never committed, the server refuses the terminated observation (validTaskKnowledgeObservations requires started first). That leaves the attempt as authorized-only, which matches what the server actually confirmed, and the lifecycle is already sealed.",
+  "Existing tests that expect a quick knowledge_busy under a 1s context will still pass, about 1s slower, if the retry wrapper returns the last knowledge_busy when the context ends instead of knowledge_unavailable: TestKnowledgePreparationHoldsConsumerProjectIdentity, TestKnowledgePreparationWorkspaceDeleteLockOrder, TestKnowledgePreparationFinalizerContentionUsesNowait and the boundary test at task_knowledge_preparation_boundary_test.go:143. Each attempt rolls back before it sleeps, so their follow-up NOWAIT probes still succeed. The daemon test TestKnowledgePrepareBusyExhaustionRetainsOriginalReceipt uses a fake server and is unaffected.",
+  "Checks run: none. This was a read-only design pass. No go build, go vet or tests were run."
+ ],
+ "root_cause": "M2: The server treats one missed try-lock on a key that claim and finalize hold with a blocking lock as a final answer. The daemon's 75ms of retries rarely outlasts a sibling claim, finalize or prepare transaction, and the spec makes knowledge_busy terminal. L6: The strict nested knowledge decoder runs inside the decode of the whole claim envelope, so one undecodable descriptor discards every task in a response the server has already committed. The stored-ledger strictness is correct, but nothing documents it as a versioning rule. L7: The code does not have this defect. A Started failure already reaches finish()/Terminated exactly once through waitOwnedProcessTree.",
+ "alternatives": [
+  {
+   "name": "M2-a: blocking lock with a short lock_timeout",
+   "summary": "Replace TryTaskKnowledgeInstallationFence and TryLockKnowledgeMemberFence with SET LOCAL lock_timeout (for example 250ms), a blocking pg_advisory_xact_lock, then a reset.",
+   "pros": "Waiters are served in FIFO order, so it cannot starve. It is a one-query change.",
+   "cons": "Prepare would wait for the namespace while holding issue FOR SHARE, daemon_token FOR SHARE, member and chat locks. FinalizeTaskClaim holds the namespace and then wants task FOR UPDATE, lock_issue_execution and DELETE on expired daemon_token rows, which adds the reverse edge the comment at task_knowledge_prepare.go:108 forbids. When a cycle forms, Postgres breaks it after deadlock_timeout (default 1s) by aborting whichever backend runs detection first. That can be the sibling claim or finalize, so knowledge contention would become a failed ordinary claim, and whether it does depends on how lock_timeout and deadlock_timeout are configured. Sibling claims would also queue behind long prepare transactions. Rejected."
+  },
+  {
+   "name": "M2-b: server-side bounded retry of the whole transaction",
+   "summary": "Roll back and re-run the full prepare/authorize (pre-reads plus transaction) with jittered exponential backoff for at most about 1.5s, then return 503 knowledge_busy.",
+   "pros": "No lock is held while waiting, so it adds no lock edges and leaves the source-first order unchanged. Sibling claims never wait on prepare. It covers every busy source in one place: both try-locks, the status fence, NOWAIT 55P03, 40P01/40001 and the exact==nil race. It helps every installed daemon immediately, and prepare/authorize are already idempotent by request_id/request_hash. It matches the existing collaborationQueueMutation and collaborationRuntimeMutation pattern.",
+   "cons": "A try-lock loses to queued blocking waiters (Postgres checks waitMask), so sustained saturation can still exhaust the budget, which ends in the spec-sanctioned bounded knowledge_busy. Each retry repeats about 5-20 read queries. Prepare latency under contention grows by up to 1.5s."
+  },
+  {
+   "name": "M2-c: longer bounded daemon retry",
+   "summary": "Raise postKnowledge from 3 attempts at 0/25/50ms to, for example, 8 attempts with backoff up to about 4s.",
+   "pros": "No server change. Retries stay bounded.",
+   "cons": "Installed Desktop and CLI daemons keep the old schedule until they upgrade. Each retry costs a full HTTP round trip plus the server's pre-lock reads. It runs against the 5s per-request knowledgeRequestTimeout and prepare-lease budgets, and it changes a contract pinned by TestKnowledgePrepareBusyExhaustionRetainsOriginalReceipt (exactly 3 identical calls). It could complement M2-b but is not needed."
+  },
+  {
+   "name": "M2-d: make knowledge_busy retryable or requeued",
+   "summary": "Add knowledge_busy to retryableReasons or requeue the task.",
+   "pros": "The task eventually runs, and the change is small.",
+   "cons": "It violates spec line 110 (all knowledge reasons excluded from fresh fallback, requeue and input replay), spec line 155 (terminal for the logical input), the comment in taskfailure/failure.go:276 and TestKnowledgeFailureNeverCreatesAutomaticRetry. knowledge_busy can also arise at authorize or observe after disclosure or a process start, so a retry child would replay an input that may already have had side effects or exposure. Rejected."
+  },
+  {
+   "name": "L6(i)-1: isolate the descriptor decode per task and keep it strict",
+   "summary": "Give daemon Task a custom UnmarshalJSON that decodes knowledge_context separately. On failure, mark the task as rejected and recover only its fence. The task is refused with knowledge_context_changed and zero processes. Other tasks proceed.",
+   "pros": "It fixes batch stranding for every failure class: unknown field, case alias, malformed UUID. Security stays as strict as today. The shared protocol type, the server's inbound checks and the stored-ledger decoder are untouched. Only the daemon changes.",
+   "cons": "An older daemon facing a newer server that adds a session field (without the version bump the spec should require) refuses every knowledge task, though base tasks still run. Already-installed daemons still lose the batch until they upgrade."
+  },
+  {
+   "name": "L6(i)-2: tolerate unknown fields but reject case aliases and duplicates",
+   "summary": "Change checkCollaborationHostJSONFields so that, for server-to-daemon types, keys that fold-match a declared field are rejected and truly unknown keys are skipped.",
+   "pros": "Forward compatible without a version bump.",
+   "cons": "TaskKnowledgeSessionBinding is shared with inbound requests and the stored ledger, so the change would loosen the ledger reader (nested UnmarshalJSON bypasses the outer DisallowUnknownFields). It needs a new fold matcher that tracks encoding/json's case-folding rules exactly. A malformed known field would still abort the whole batch. An old daemon would silently ignore a new semantic field, such as a session-persistence or scope rule, that the server cannot detect it ignored. Rejected for this unit."
+  },
+  {
+   "name": "L6(i)-3: strictness behind a version gate only",
+   "summary": "Keep decoding as is and require the server to emit new fields only to daemons that negotiated a higher TaskKnowledgeVersion.",
+   "pros": "No code change. It is the correct forward-compatibility mechanism.",
+   "cons": "Alone it does not fix stranding from any other malformed descriptor. Adopted as a spec rule alongside L6(i)-1."
+  },
+  {
+   "name": "L6(ii)-1: stored ledger stays strict and version-gated",
+   "summary": "Keep DisallowUnknownFields and the knowledge_context_version == 1 check in decodeTaskKnowledge. Require ledger shape changes to bump the version and ship readers before writers.",
+   "pros": "It fails closed and never misreads exposure. It avoids the tolerate-and-re-encode loss in prepare, authorize and observe. It matches spec section 7 (keep guarded readers on rollback). No code change.",
+   "cons": "Rolling back below a ledger version refuses the affected tasks (409 knowledge_context_changed) until roll-forward."
+  },
+  {
+   "name": "L6(ii)-2: tolerant stored-ledger decoding",
+   "summary": "Accept unknown fields in knowledge_delivery.",
+   "pros": "Rollback keeps the affected tasks running.",
+   "cons": "An older binary would drop newer exposure facts and then re-encode the row with encodeTaskKnowledge, permanently erasing them. That violates 'never relabel or lose recorded knowledge exposure'. Rejected."
+  },
+  {
+   "name": "L7-1: no code change",
+   "summary": "Keep the existing behavior, already pinned by TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback.",
+   "pros": "No risk of a double finish.",
+   "cons": "None found."
+  },
+  {
+   "name": "L7-2: explicit finish(LaunchUnknown) after a Started failure",
+   "summary": "Call s.finish directly in the Started-failure branch.",
+   "pros": "None. The termination is already reported.",
+   "cons": "It would call Terminated twice (once from waitOwnedProcessTree to waited to finish, once explicitly) and would replace a truthful LaunchManagedEnded/WaitObserved record with a weaker one. Rejected."
+  }
+ ],
+ "chosen": "M2-b, a server-side bounded retry of the whole transaction, applied to ordinary PrepareTaskKnowledge/AuthorizeTaskKnowledgeLaunch and collaboration PrepareRuntimeKnowledge/AuthorizeRuntimeKnowledge. L6(i)-1, per-task isolation with strict decoding kept, plus the L6(i)-3 version rule in the spec. L6(ii)-1, the stored ledger stays strict and version-gated, documented in the spec. L7: no code change, because the defect does not reproduce.",
+ "rationale": "M2: Only a retry that holds no lock while waiting keeps the documented lock order (source graph first, namespace late) and keeps claim, finalize and prepare from ever waiting on each other. A blocking wait (a) adds the namespace-after-issue/token edge that FinalizeTaskClaim reverses, and leaves cycle resolution to Postgres's choice of victim. (c) does nothing for installed daemons. (d) breaks the spec's terminal-refusal rule and could replay inputs after disclosure. Retrying on the server is safe because prepare replays by request_id/request_hash (the c.Prepared branch) and authorize replays by request_id (the c.Attempts loop). The collaboration preparation ID is deterministic (uuid.NewSHA1(runID, ...)). A 1.5s budget stays well inside the daemon's 5s knowledgeRequestTimeout, and the daemon's 3 attempts extend total tolerance to about 4.5s. After that, knowledge_busy stays terminal as spec line 155 requires. L6: The harm is the blast radius (one descriptor strands a committed batch), not the strictness itself. Isolating the decode removes the blast radius for every failure class while keeping fail-closed behavior: a rejected task gets KnowledgeContext=nil and an explicit refusal before any prompt or launch, never base execution. It also keeps alias and unknown-field rejection on a type shared with inbound requests and the ledger. Forward compatibility belongs to TaskKnowledgeVersion negotiation, which the daemon already sends. The ledger must stay strict because every writer re-encodes the full row, so a tolerant reader becomes a silent eraser of exposure evidence. L7: The existing control flow and test already show exactly one Terminated(LaunchManagedEnded, WaitObserved=true), and the daemon's finishProcess(true) runs before the terminated observation is posted.",
+ "changes": [
+  {
+   "file": "server/internal/service/task_knowledge_prepare.go",
+   "change": "Add a retryKnowledgeBusy(ctx, attempt func() error) error helper. It re-runs attempt while knowledgeErrorCode(err, \"knowledge_busy\") is true, with jittered exponential backoff (start 10ms, double, cap 200ms, jitter +/-50%) and a total budget of 1500ms (package const taskKnowledgeBusyBudget). It rolls back before each sleep (each attempt owns its tx, as taskKnowledgeTransaction already does). If ctx ends, or an attempt fails only because ctx expired after an earlier busy result, it returns the last knowledge_busy instead of ctx.Err() or knowledge_unavailable. Wrap the whole body of PrepareTaskKnowledge after request validation: the `exact` pre-read, taskKnowledgeTransaction, and a reset of `out` per attempt. Wrap AuthorizeTaskKnowledgeLaunch from GetAgentTask through taskKnowledgeTransaction, reset `out` per attempt. Leave both try-lock calls, their position after the source graph, and the 503 knowledge_busy mapping in taskKnowledgeError unchanged. Update the comment at lines 108-110 to say a busy result is retried by re-running the whole transaction and must never become a blocking wait."
+  },
+  {
+   "file": "server/internal/service/collaboration_knowledge_runtime.go",
+   "change": "In PrepareRuntimeKnowledge (~358) and AuthorizeRuntimeKnowledge (~446), wrap the collaborationRuntimeMutation call, plus the knowledgePublicError mapping it already goes through, in the same retryKnowledgeBusy helper. This retries both the try-lock CollaborationError (~180, ~195, ~246), which collaborationRuntimeMutation does not retry, and raw NOWAIT exhaustion. collaborationRuntimeCommitError is not knowledge_busy, so an uncertain commit is never retried. Keep lockCollaborationKnowledge unchanged."
+  },
+  {
+   "file": "server/internal/daemon/types.go",
+   "change": "Add unexported fields on Task: knowledgeRejected bool and recoveredKnowledgeFence *protocol.TaskKnowledgeFence. Add func (t *Task) UnmarshalJSON(raw []byte) error that decodes into an alias type whose shadowing field is `KnowledgeContext json.RawMessage json:\"knowledge_context,omitempty\"`. If the raw value is non-empty and not null, decode it with json.Unmarshal into protocol.TaskKnowledgeClaimDescriptor, which keeps the nested strict session decoder. On success, set KnowledgeContext. On failure, leave KnowledgeContext nil, set knowledgeRejected=true, and recover the fence only from exact keys: decode raw into map[string]json.RawMessage, take string values of `claim_generation` and `dispatched_at`, and accept them only if protocol.ValidateTaskKnowledgeRequest(1, <task id>, gen, at) passes. A missing or invalid value leaves the fence nil. The server re-checks the fence anyway. Errors in other Task fields still fail decoding as today."
+  },
+  {
+   "file": "server/internal/daemon/knowledge_context.go",
+   "change": "taskKnowledgeFence(task) returns task.recoveredKnowledgeFence when task.knowledgeRejected is true, so StartTask, CompleteTask and FailTask carry the original fence. At the top of prepareKnowledgePrompt, before the `task.KnowledgeContext == nil` base-prompt branch, return knowledgeRefusal(agent.KnowledgeContextChanged) when task.knowledgeRejected is true. A rejected task therefore never builds a base prompt or launches a process, and runTask reports a terminal knowledge_context_changed through the existing knowledgeErrorReason/taskRunFailureReason path."
+  },
+  {
+   "file": "server/pkg/agent/launch_lifecycle.go",
+   "change": "No change (L7 does not reproduce)."
+  }
+ ],
+ "tests": [
+  {
+   "file": "server/internal/service/task_knowledge_concurrency_test.go",
+   "name": "TestKnowledgePreparationWaitsOutSiblingNamespaceHolder",
+   "setup_and_assertion": "f := newTaskKnowledgeFixture(t); d := f.finalize(t, \"\"). Load runtime := f.tasks.Queries.GetAgentRuntime(f.ctx, f.task.RuntimeID). A holder goroutine begins tx on f.pool, calls LockManagedRuntime(f.ctx, f.tasks.runtimeLookup(f.tasks.Queries.WithTx(tx)), runtime), which is the exact holder used by claimTask, ClaimTaskForRuntime and FinalizeTaskClaim, signals `held`, sleeps 300ms, records released := time.Now(), and rolls back. After `held`, call PrepareTaskKnowledge with a 5s context. Assert err == nil, len(out.Contributions) == 1, the call returned after `released` and within 3s, and the stored claim phase is \"disclosed\". Add a subtest that holds the member-fence key through the subscriber.sql delegated-rule lock query (same two-key hashtext as TryLockKnowledgeMemberFence) and asserts the same.",
+   "why_it_fails_now": "TryTaskKnowledgeInstallationFence (task_knowledge_prepare.go:270) returns false while the holder runs. Prepare returns 503 knowledge_busy within milliseconds, before `released`, and no retry exists."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_concurrency_test.go",
+   "name": "TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder",
+   "setup_and_assertion": "Run the same fixture and a successful PrepareTaskKnowledge first. Hold LockManagedRuntime in a separate tx for 300ms, then call AuthorizeTaskKnowledgeLaunch(f.authorizeRequest(p, d)). Assert success, that it returned after release, and that knowledge_delivery claims[0].attempts has length 1.",
+   "why_it_fails_now": "Authorize goes through the same taskKnowledgeTransaction try-lock and returns knowledge_busy immediately."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_concurrency_test.go",
+   "name": "TestKnowledgePreparationNamespaceBusyBudgetIsBounded",
+   "setup_and_assertion": "Wrap f.pool in a counting TxStarter (same shape as knowledgeCommitBarrier, counting Begin calls). Hold LockManagedRuntime for 4s in a separate tx and call PrepareTaskKnowledge with a 5s context. Assert collaborationErrorCode(err, \"knowledge_busy\"), Begin count >= 2, elapsed between 1.2s and 2.5s, no contributions returned, and the stored claim phase is still \"claimed\" with Prepared == nil.",
+   "why_it_fails_now": "Today Begin is called exactly once and the refusal arrives in under 100ms. The Begin count and elapsed-time assertions fail."
+  },
+  {
+   "file": "server/internal/service/collaboration_knowledge_runtime_test.go",
+   "name": "TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder",
+   "setup_and_assertion": "f := newRuntimeKnowledgeFixture(t, true, true). Hold LockManagedRuntime(f.ctx, lookup over a tx, f.runtime) for 300ms in a goroutine, then call f.svc.PrepareRuntimeKnowledge(f.daemonCtx, f.run, f.hash, f.prepare) the same way the existing happy-path test does. Assert success with the approved bundle, returned after release.",
+   "why_it_fails_now": "lockCollaborationKnowledge's try-lock (~246) returns knowledge_failure(503, knowledge_busy), a CollaborationError, which collaborationRuntimeMutation does not retry because it only retries *pgconn.PgError."
+  },
+  {
+   "file": "server/internal/daemon/knowledge_context_claim_test.go",
+   "name": "TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask",
+   "setup_and_assertion": "f := newKnowledgeDaemonFixture(t). Build a plain Task JSON (new ID, KnowledgeContext nil). Marshal f.task to a generic map and mutate knowledge_context in three table cases: (1) add session.\"future_field\":\"x\"; (2) add a case alias session.\"Native_Session_ID\":\"x\"; (3) set session.generation to \"not-a-uuid\". json.Unmarshal `{\"tasks\":[plain, mutated]}` into struct{Tasks []*Task}. Assert err == nil, two tasks, tasks[0] equal to the plain task, tasks[1].KnowledgeContext == nil. Then f.task = *tasks[1]; result := f.run(t). Assert result.FailureReason == \"knowledge_context_changed\", f.callsFor(\"prepare\") and f.callsFor(\"authorize\") are empty, no provider process started (fixture capture empty), and result.KnowledgeFence equals the original {claim_generation, dispatched_at}.",
+   "why_it_fails_now": "TaskKnowledgeSessionBinding.UnmarshalJSON rejects the unknown, aliased or malformed session (decodeCollaborationHostObject), so json.Unmarshal of the whole envelope returns an error and both tasks are lost."
+  },
+  {
+   "file": "server/internal/daemon/knowledge_context_claim_test.go",
+   "name": "TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor",
+   "setup_and_assertion": "Add a test-only raw claim body override to knowledgeDaemonFixture, used by its HTTP claim handler (~175-177) and by attachKnowledgeClaimWS. Serve the plain plus mutated body (case 1 above) through the HTTP batch ClaimTasks, the WS tasks.claim path (claimTasksUsingTransport) and the managed transport (installKnowledgeManagedFixture, then ClaimTasks). Assert each returns 2 tasks with no error, and only the knowledge task is marked rejected (taskKnowledgeFence returns the recovered fence).",
+   "why_it_fails_now": "Each transport decodes into []*Task in one json call. The nested strict decoder fails and ClaimTasks returns a decode error with zero tasks, after the server has already finalized dispatch."
+  }
+ ],
+ "spec_and_doc_updates": [
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Lines 64-66 (lock-order paragraph): append that the late installation-namespace fence and the member and status fences are try-locks. A miss, NOWAIT conflict or serialization failure rolls back the whole preparation or authorization, and the server re-runs it, including its pre-transaction reads, with jittered backoff for at most 1.5s before returning 503 knowledge_busy. Never turn these into blocking waits, because claim and finalize take the namespace before task, issue and token locks."
+  },
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Line 155 matrix row: change the condition to 'Lock contention exhausts the server's bounded whole-transaction retry (<=1.5s) and the daemon's three attempts'. Keep the result 'knowledge_busy; terminal for the logical input'."
+  },
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "After line 46 (claim builder paragraph): add that a claim descriptor the daemon cannot strictly decode refuses only that task (knowledge_context_changed, zero processes, original fence when it can be recovered), and other tasks in the same single, batch, WS or managed response proceed. Descriptor and session fields stay strictly decoded. Adding or changing one requires a TaskKnowledgeVersion bump, and the server emits it only to a daemon whose TaskKnowledgeInvocation negotiated that version."
+  },
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Section 7 (around lines 188-193): add that knowledge_delivery stays strictly decoded (unknown fields and versions are refused, fail closed), because every writer re-encodes the full row and a tolerant reader would erase newer exposure facts. Any ledger shape change bumps knowledge_context_version. Ship a reader that accepts the new version before any writer emits it, and roll back only to a release whose reader accepts every version the newer release may have written."
+  },
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Section 6 tests: name the service namespace-holder retry tests and the daemon per-task descriptor-isolation tests as the canonical layers for these rules."
+  },
+  {
+   "file": "docs/collaboration-knowledge-runtime.md",
+   "change": "If the operator guide covers rollback, add the ledger-version rollback rule from the spec. Not read in this pass."
+  }
+ ],
+ "migrations": [],
+ "compatibility_and_risks": "M2: Under contention, prepare and authorize latency rises by up to about 1.5s, and a contended call repeats its pre-lock reads, roughly 5-20 queries per attempt and at most about 10 attempts. Holders never wait on prepare, so there are no new lock edges and no deadlock risk. Under sustained saturation a try-lock can keep losing to queued blocking waiters, and the call then ends in the bounded, spec-sanctioned knowledge_busy. The existing 1s-context busy tests take about 1s longer and still pass only if the wrapper returns the last knowledge_busy when the context ends. The daemon retry contract (3 identical calls) is unchanged. L6: Daemon-only change with no wire change. Well-formed claims behave exactly as today. Installed older daemons keep the batch-wide failure until they upgrade, so the version rule must stop the server from sending new fields to v1 daemons. The rejected flag and recovered fence are unexported, so they do not survive re-marshaling. No json.Marshal(task) exists in internal/daemon today, and the refusal sits at the single knowledge entry point (prepareKnowledgePrompt), so a future re-decode cannot fail open into a base prompt. Unknown top-level descriptor fields remain tolerated as today (not changed in this unit). Stored-ledger strictness is unchanged. L7: no change, no risk.",
+ "open_questions": [
+  "Is a 1.5s server busy budget acceptable to the owner? It must stay below the daemon's 5s knowledgeRequestTimeout.",
+  "Should ObserveTaskKnowledgeLaunch use the same retry wrapper? Its credential NOWAIT lock and 40P01/55P03 errors also map to knowledge_busy. It does not take the namespace, so it is outside M2.",
+  "lock_issue_execution's lock mode was not read. It only strengthens the case against option (a) and does not affect the chosen option.",
+  "Should the descriptor itself get a strict top-level UnmarshalJSON so unknown top-level fields are refused consistently with session fields? That would tighten behavior and also affect the stored-ledger decode. It is left out of the smallest fix.",
+  "The collaboration host daemon's own retry schedule (internal/daemon/collaborationrun/host_knowledge.go) was not inspected. The server-side fix covers it regardless.",
+  "L7: ask the auditor whether a different path was meant. Both Started-failure branches (ProcessState nil and non-nil) reach finish() exactly once."
+ ]
+}

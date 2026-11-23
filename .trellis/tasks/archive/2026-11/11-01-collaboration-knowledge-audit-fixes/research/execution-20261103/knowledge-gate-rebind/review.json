@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "reviewer": "native trellis-check /root/knowledge_framework_audit",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "verdict": "conditional; retained audit fixes verified, current CCG1/CCG2 and full candidate gate still required",
+  "task7_closable_now": false,
+  "blocking_product_findings": [],
+  "source_evidence": "source-evidence.json",
+  "source_script": "reconcile.py",
+  "dispositions": {
+    "total": 21,
+    "repaired": 19,
+    "terminology_repair": 1,
+    "not_reproduced_test_covered": 1,
+    "all_original_evidence_hashes_match": true,
+    "independent_lane_reviews": 7,
+    "independent_lane_blockers": 0,
+    "L7_PRD_clarification_applied": true
+  },
+  "AC1_AC9": [
+    {
+      "id": "AC1",
+      "state": "verified_retained_dispositions",
+      "evidence": "21 dispositions, original red/control hashes and seven independent reviews match. L7 explicitly not reproduced and covered by three actual retained pass terminals. Current PRD already applies the clarification.",
+      "remaining": "Current whole-candidate named results are checked under AC8; never manufacture an L7 red baseline."
+    },
+    {
+      "id": "AC2",
+      "state": "verified_retained_core_contract",
+      "evidence": "Gate-off safe/unsafe invocation product, protocol, daemon and exact regression sources are unchanged from final64; legacy -race pass terminal exists.",
+      "remaining": "No new standalone defect rerun; final full gate remains mandatory."
+    },
+    {
+      "id": "AC3",
+      "state": "verified_retained_core_contract",
+      "evidence": "Complete history queries, three history indexes and long-history/deep-exposure tests retain exact bytes and pass evidence.",
+      "remaining": "O(N) negotiated-history cost and lack of production-scale default-planner benchmark remain explicit."
+    },
+    {
+      "id": "AC4",
+      "state": "verified_retained_core_contract",
+      "evidence": "Transient claim requeue and 1.5-second namespace retry implementation/tests unchanged; actual prior race passes.",
+      "remaining": "Accepted retry exhaustion can remain terminal busy. New Host admission lock interaction is addressed by CCG1 current normal/race."
+    },
+    {
+      "id": "AC5",
+      "state": "verified_retained_core_contract",
+      "evidence": "Unreachable-workdir rebinding and stale-fence refusal sources/tests unchanged; H2 retained pass and independent mutant review.",
+      "remaining": "No standalone repeat required merely because candidate SHA differs."
+    },
+    {
+      "id": "AC6",
+      "state": "conditional_current_shared_UI_gate",
+      "evidence": "Original seven UI defect regressions remain; new panel effect only opens enclosing details on recovery attention, with expanded GET-only remount regression/spec. Core erasure/query/action source unchanged.",
+      "remaining": "Current full core/views lint/typecheck/Vitest and required knowledge Web/macOS cases; do not equate old entire knowledge-panel test file with current bytes."
+    },
+    {
+      "id": "AC7",
+      "state": "verified_current_sqlc_and_retained_indexes",
+      "evidence": "761-763 up/down files unchanged; concurrent indexes/no FK remain. Real SQLC 2026-11-03 09:37:12 UTC exit0 generated130 files with no drift; server tree of that b6c74033f run equals candidate.",
+      "remaining": "Retain earlier GOPROXY=off generation failure and old migration failure records; final whole DB package results remain AC8."
+    },
+    {
+      "id": "AC8",
+      "state": "conditional_final_gate",
+      "evidence": "Reparsed final639 raw race prefix:20852pass/0fail/22skip;82packages,9compile-only,uniqueDBs. Ordinary27 and Host17 normal/race retained with verified hashes.",
+      "remaining": "One current full make check exit0 plus final identity audit and complete named inventory. Post-full CCG1 normal/race and CCG2OFF/ON below. No compile/skip/partial result grants closure."
+    },
+    {
+      "id": "AC9",
+      "state": "verified_contract_sync_pending_full_check",
+      "evidence": "Server knowledge specs unchanged. Knowledge recovery details effect has current view spec and test update. Built-in managed-knowledge section retained; new preceding delivery/policy text documents current behavior.",
+      "remaining": "Full final check must cover current built-in template tests; original notes stay historical."
+    }
+  ],
+  "binding_decisions": [
+    {
+      "id": "B1",
+      "state": "retain_direct_core_and_L7_race",
+      "reason": "Product repair and L7 source/test bytes in source-evidence.json match final64. There is no reason to restart their standalone lane suites."
+    },
+    {
+      "id": "B2",
+      "state": "do_not_rebind_CCG1_whole_chain",
+      "reason": "Runtime currentGroupAdmission, batch/queue/resume/mention and target input authorization changed; target authorization adds LockIssueCollaboration. Migration764 adds assisted/manual state and generated readers select it. This changes an exercised source/transaction graph despite identical test/runner bytes."
+    },
+    {
+      "id": "B3",
+      "state": "do_not_rebind_CCG2_whole_chain",
+      "reason": "Four main harness source hashes still match; actual E6 API/Web/configuration/binaries and graph are old. Current AI policy, schema and detail controls require two current deployed observations."
+    },
+    {
+      "id": "B4",
+      "state": "retain_ordinary_and_other_host_historical_scopes",
+      "reason": "27/17 count sets are historical evidence, not new counts or a declaration of whole-candidate identity. CCG1 is already contained in Host17; never count it again as an independent historical case."
+    }
+  ],
+  "minimum_post_full_gates": [
+    {
+      "id": "CCG1-current-normal",
+      "after": "Sole-owner complete check finished and resources released",
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "<pinned Go 1.26.6>",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch$",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m"
+      ],
+      "database": "Fresh migrated DB with literal prefix multica_knowledge_host_composite_20261101_, unique to this invocation; actual identity and migration764 verified",
+      "acceptance": "One named pass,0fail/skip;two actual physical starts;exact v2 only;third authorization409 and zero third process;original preparation/receipts retained"
+    },
+    {
+      "id": "CCG1-current-race",
+      "after": "CCG1-current-normal completes",
+      "command_delta": "Same exact test and flags, append -race, use another fresh migrated owned DB",
+      "acceptance": "One named pass,0fail/skip/no race;actual input/withdrawal facts same as normal"
+    },
+    {
+      "id": "CCG2-current-OFF",
+      "after": "CCG1 current runs complete; owned deployed resource window assigned",
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "<pinned pnpm>",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-knowledge-deployed.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output=<new private OFF artifacts>"
+      ],
+      "environment": "A separately owned current-candidate password deployment started with MULTICA_KNOWLEDGE_CONTEXT_ENABLED=false; expectation COLLABORATION_KNOWLEDGE_EXPECTED=false; current compiled COLLABORATION_HOST_DAEMON/PROVIDER/CLI and correct API/Web/database identity",
+      "acceptance": "1pass0fail0skip0retry;one fake child;no knowledge section/contributions/events/no-session-persistence;settled reaped sealed proof;0realProvider"
+    },
+    {
+      "id": "CCG2-current-ON",
+      "after": "OFF finishes; use a separate owned ON configuration/database or a separately recorded safe restart",
+      "command_delta": "Same exact browser test, explicit expectation true, application startup flag true only in the isolated acceptance deployment, distinct private result directory",
+      "acceptance": "1pass0fail0skip0retry;one fake child;exact approved contribution;claim/preparation/authorization each1;--no-session-persistence;settled reaped sealed proof;0realProvider"
+    }
+  ],
+  "runner_references": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/run-gate.py",
+      "use": "Template only; hardcoded old checkout and639 SHA. Arguments family ordinary|host, mode normal|race. Preserve original and create a source-bound current copy; use fresh permits, do not run old one."
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/host-normal-permission.json",
+      "use": "Old permit structure only; never reuse its DB. host-race-permission.json supplies the same old structure."
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-deployed-probe-20261102/.omx/private/run-deployed-probe.py",
+      "use": "Template only; args lane off|on,label. Hardcodes E6 artifacts/deployments and sources old env as shell. Current copy must bind new candidate/resources and parse known env values as data under current verification rules."
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-password-20261102/.omx/private/password-final/source.env",
+      "use": "Historical OFF environment reference only; do not start or overwrite it."
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-knowledge-on-20261102/.omx/private/knowledge-on-final/source.env",
+      "use": "Historical ON environment reference only; do not start or overwrite it."
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/check-source-v13.env",
+      "use": "Current sole-owner complete-check environment; do not mutate/restart while its gate owns it."
+    }
+  ],
+  "gate_limits": [
+    "No standalone rerun of every H/M/L regression or82-package suite is requested beyond the already required sole-owner complete check.",
+    "Two CCG1 invocations are the minimum changed Host transaction/input boundary proof. Running the existing17-event Host family can replace, rather than duplicate, those two if the coordinator needs a current whole-family binding.",
+    "Old ordinary27/Host17 results do not prove AI-policy behavior or current deployed identity; actual AI policy current suite belongs to the integrated final gate.",
+    "#7 closure is independent of #6 knowledge real model budget/framework/release/platform-account gates. Knowledge budget stays0/0 and production default remains off."
+  ],
+  "operations": {
+    "source_edits": false,
+    "tests": false,
+    "services": false,
+    "DB": false,
+    "provider_calls": 0,
+    "old_evidence_edits": false,
+    "task_metadata_edits": false
+  }
+}

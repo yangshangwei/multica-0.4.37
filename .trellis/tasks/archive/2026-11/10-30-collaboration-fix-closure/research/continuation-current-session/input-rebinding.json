@@ -1,0 +1,62 @@
+{
+  "recorded_at": "2026-11-03T07:49:26.470237+00:00",
+  "candidate_sha": "b6c74033f1913e46418ec1b119da33236dcba805",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "owner_session": "01a19ff3-faaf-71c1-b068-8571f0e940f1",
+  "allowed_code_replacements": [
+    "root path",
+    "candidate SHA",
+    "v11/V11 run labels to v12/V12",
+    "Redis16422 to fresh53841",
+    "renderer19846 to fresh19857"
+  ],
+  "files": [
+    {
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+      "target": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/run-make-check-v12-provenance.py",
+      "source_sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+      "target_sha256": "4681128130f5161777c9039bd5ae8bb801a112958eaf5d4e22f9f2d686ac56c0"
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11-provenance.py",
+      "target": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/fake-preflight-v12-provenance.py",
+      "source_sha256": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+      "target_sha256": "83c6e4724afc70b99d8384e620345760c08ccfe28c8a3729de22fcb7f2805e1c"
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/adapter-env-preflight-v11.py",
+      "target": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/adapter-env-preflight-v12.py",
+      "source_sha256": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+      "target_sha256": "d83016349ea0ada8133b80019745c760cedea8ff320a8db086d997a6ee2be5ef"
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/go",
+      "target": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/check-bin/go",
+      "source_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "target_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "byte_identical": true
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/pnpm",
+      "target": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/check-bin/pnpm",
+      "source_sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "target_sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "byte_identical": true
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/final_state_audit.py",
+      "target": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/final-state-audit-v12/final_state_audit.py",
+      "source_sha256": "6602e914f7f841920f6acedf1eecd58711e34b8dd447b0990d1b8d79e6b9dd76",
+      "target_sha256": "162e8fdd9ac3561f0f67880b308266958d99354b8167695a91312888f86d2f7a"
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/final_state_audit_test.py",
+      "target": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/final-state-audit-v12/final_state_audit_test.py",
+      "source_sha256": "e6f212ebb8c5b4c7d6de10180a3a6805ce19d0ed44b47323cb9c3d2e29823895",
+      "target_sha256": "e840befe9e5a95d1caccadbcbdc1890b639ac53546a2d79166b50106a2feb3a0"
+    }
+  ],
+  "source_env_sha256": "10514ee04d8b9837987f99c7f96148dd2ae325ee444668aa0d8c262ea9432bb5",
+  "private_configuration": "new isolated seed identity/JWT/deploymentID and same deployment flags; source env values not published",
+  "provider_calls": 0
+}

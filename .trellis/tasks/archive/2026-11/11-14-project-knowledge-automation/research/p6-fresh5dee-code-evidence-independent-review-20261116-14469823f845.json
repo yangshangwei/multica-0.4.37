@@ -1,0 +1,1776 @@
+{
+  "schema_version": 1,
+  "kind": "independent_readonly_fresh5dee_frontend_and_Go_static_code_evidence_review",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check",
+  "at": "2026-11-15T17:57:57.249895+00:00",
+  "verdict": "FRESH5DEE_FRONTEND_AND_GO_STATIC_EVIDENCE_ACCEPTED",
+  "blocking_count": 0,
+  "blocking_findings": [],
+  "checks": {
+    "front_exact_result_SHA": true,
+    "go_exact_result_SHA": true,
+    "eight_plan_commands_and_records_complete_zero_exit": true,
+    "all4_canonical_Vitest_sets_counts_statuses_match": true,
+    "exact19_distinct_files220_distinct_file_name_status_tuples": true,
+    "all_tuple_statuses_pass_no_fail_skip_todo": true,
+    "two_existing_typechecks_no_flags_overridden": true,
+    "34_distinct_lint_files_zero_diagnostics": true,
+    "both_code_before_after10408_32_5dee_source_equal": true,
+    "Go_full_build_then_vet_canonical_zero_exit": true,
+    "Go_executable_hash_before_after_same_current": true,
+    "all_hash_bound_raw_files_match": true,
+    "recorded_tests_or_SQL_not_claimed_for_Go_build_vet": true,
+    "both_selected_HEAD2f_and_false_production_ready": true
+  },
+  "front_result": {
+    "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/result.json",
+    "sha256": "fc894e854f1e8d9d8e3b24fb557eecf27c46e13e3b737de6cb36c6b138257d17"
+  },
+  "go_result": {
+    "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-go-static-current-source-6b710855cc/result.json",
+    "sha256": "558206c19b93595e6211d6c89afdda5aa1e939c64b8df345f57e05cc3bbe41d1"
+  },
+  "exact_test_file_and_tuple_inventory": {
+    "command_counts": [
+      {
+        "command": "core-knowledge-tests",
+        "files": 13,
+        "tests": 107
+      },
+      {
+        "command": "views-knowledge-tests",
+        "files": 2,
+        "tests": 46
+      },
+      {
+        "command": "core-comment-threads-tests",
+        "files": 1,
+        "tests": 13
+      },
+      {
+        "command": "views-knowledge-container-tests",
+        "files": 3,
+        "tests": 54
+      }
+    ],
+    "distinct_files": 19,
+    "distinct_test_tuples": 220,
+    "tuples": [
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "does not confirm contradictory HTTP status and sealed receipt outcomes",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "does not misclassify structured access loss or malformed claimed support as an older route",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "fails malformed write intent before transport and preserves HTTP conflicts for explicit reread",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "redacts project knowledge request/error logs at HTTP 404 without losing workspace headers",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "redacts project knowledge request/error logs at HTTP 500 without losing workspace headers",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "redacts workspace knowledge request/error logs at HTTP 404 without losing workspace headers",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "redacts workspace knowledge request/error logs at HTTP 500 without losing workspace headers",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "rejects in-progress recovery, malformed JSON and an approval of a different observed version",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "rejects mismatched identities, cyclic pages, over-limit pages and foreign operation results",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "routes every human read with the source-independent scope and exact pagination",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "serializes all writes with the preselected candidate/request and exact revision unchanged",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/collaboration-knowledge.test.ts",
+        "test_name": "uses each original write/recovery version without retrying a v2 write as v1",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/knowledge-automation.test.ts",
+        "test_name": "keeps policy request and provider errors out of generic logs",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/knowledge-automation.test.ts",
+        "test_name": "retains sealed refusals but rejects mismatched identity, revision and HTTP outcome",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/knowledge-automation.test.ts",
+        "test_name": "returns the confirmed knowledge_automation_disabled retry outcome without another request",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/knowledge-automation.test.ts",
+        "test_name": "returns the confirmed knowledge_job_revision_conflict retry outcome without another request",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/knowledge-automation.test.ts",
+        "test_name": "returns the confirmed knowledge_source_changed retry outcome without another request",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/knowledge-automation.test.ts",
+        "test_name": "uses v2 and explicit project workspace scope while original recovery remains account-scoped",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads breaks equal creation times by id",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads does not count a deleted root without replies as pending",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads does not count a thread whose members are all deleted as pending",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads groups replies of an unloaded parent under that missing id with a null root",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads keeps a deleted comment that still carries a resolution as the resolved marker",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads keeps a deleted root with a surviving reply pending and resolves at the first resolvable member",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads keeps separate groups for different unloaded parents",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads marks the whole thread resolved when any member carries the resolution",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads orders a thread depth-first with siblings ascending and threads by their first comment",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads prefers a resolvable root over an earlier-listed resolvable reply",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads returns no threads for an empty page",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads terminates on cyclic parents and keeps every comment exactly once",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/comment-threads.test.ts",
+        "test_name": "deriveCollaborationCommentThreads treats a single unresolved comment as one pending thread resolved at its root",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "allocates a new request UUID per intent and preselects the recoverable candidate before create",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "can reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "can reject an unavailable pending candidate expiring at null using only its exact state revision",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "dismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "distinguishes failed preservation before POST from failed cleanup after a known receipt",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "does not discard an overlapping attempt when the first call receives an unsealed rejection",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "does not dispatch an intent whose serialized version differs from its recovery identity",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "does not infer rejection rights from unavailable or restricted rows and keeps expired approval denied",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "keeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "pins exact reviewed content/state revisions and refuses inferred or unavailable approval authority",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "preserves selected recovery versions while leaving legacy identity bytes unchanged",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "recovers a content-free original receipt with candidate/request only after losing source access and target role",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "recovers the same original actor/key after a fresh login while fencing the old live request scope",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "requires the original operation version when matching a recovered receipt",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "retains an earlier ambiguous request through later unsealed rejection, missing recovery and storage changes",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "retains an explicitly selected v2 across uncertain retries without changing the default v1",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "retains the same immutable request after uncertain transport and never optimistically approves",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "retires only a first definitively unused proposal identity so a new explicit intent can be created",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+        "test_name": "saves only recovery identity before a lost create response and refuses transport if preservation fails",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-actions.test.ts",
+        "test_name": "does not erase an uncertain request or declare it unused after a later storage failure",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-actions.test.ts",
+        "test_name": "requires current retry permission and keeps the original job revision on retry",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-actions.test.ts",
+        "test_name": "retries the frozen policy request and recovers only routing identity after reload",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-queries.test.ts",
+        "test_name": "does not restore late job metadata after source access is revoked",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-queries.test.ts",
+        "test_name": "routes policy and job metadata through the same leased knowledge erasure",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol allows a human v2 proposal to cite an exact delivery without granting system identity",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol keeps approved history separate from a reopen pause",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol keeps unavailable v2 audit metadata while rejecting source material and private reasons",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol keeps v2 restricted rows content-free without inventing a visible source or actor",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol preserves exact accepted-delivery identity in source and target summaries",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol preserves the original automatic approval after a later human withdrawal",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol reads a system proposal and decision without inventing a human actor",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol reads human v2 without treating a null pending decision as an automatic decision",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with a fabricated approval actor",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with a fabricated proposal actor",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with a human decision without its actor",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with a missing rule identity",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with a numeric accepted sequence",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with a pending candidate marked active",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with a source from another issue",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with an absent accepted event",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with an undeclared material field",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects malformed v2 with an unknown usage state",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol rejects new identities or delivery sources falsely labelled as v1",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "test_name": "knowledge automation v2 protocol retains each operation receipt's declared version without upgrading v1",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "test_name": "knowledge policy and job protocol accepts only content-free known original-operation outcomes",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "test_name": "knowledge policy and job protocol keeps actual zero usage distinct from unknown and partial counts",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "test_name": "knowledge policy and job protocol preserves system defaults and explicit human disablement without fabricated actors",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "test_name": "knowledge policy and job protocol rejects private details, foreign jobs, duplicate identities and malformed paging",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "test_name": "knowledge policy and job protocol requires v2 for new surfaces and never treats malformed claimed support as absent",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "test_name": "knowledge policy and job protocol retains every server-admitted stage attempt and rejects excess history",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "test_name": "knowledge policy and job protocol selects only the exact acceptance and current project, retaining reopen status",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.test.ts",
+        "test_name": "cannot restore a private pre-refresh snapshot when the caller cancels with Query's default rollback",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.test.ts",
+        "test_name": "clears prior body at a failed refresh and never restores it on cancellation rollback",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.test.ts",
+        "test_name": "doesNotRestoreUnavailableKnowledgeFromLateResponse",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.test.ts",
+        "test_name": "erases all source/target/detail pages before refetch while preserving content-free recovery and other viewers",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.test.ts",
+        "test_name": "expires at the earlier candidate expiry even while no hint or successful refresh arrives",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.test.ts",
+        "test_name": "keeps paged reads on the first authorization deadline and refuses page requests without their boundary",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.test.ts",
+        "test_name": "rejects requests older than 30 seconds and fences viewer replacement",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.test.ts",
+        "test_name": "uses one focus/offline responder and disposes it only after the last consumer",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-lease.test.ts",
+        "test_name": "finite knowledge authorization projections charges response latency to the 30-second monotonic request-start ceiling",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-lease.test.ts",
+        "test_name": "finite knowledge authorization projections does not renew older pages or replayed first-page authorization",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-lease.test.ts",
+        "test_name": "finite knowledge authorization projections only accepts the latest root read and a current server check",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-lease.test.ts",
+        "test_name": "finite knowledge authorization projections rejects already expired, invalid and backwards-clock responses",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-lease.test.ts",
+        "test_name": "finite knowledge authorization projections rejects an inconsistent page boundary, late generation and fabricated parent",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-lease.test.ts",
+        "test_name": "finite knowledge authorization projections uses a shorter server interval or expiry regardless of the client's wall clock",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries accepts a content-free rejection grant for unavailable pending material without granting approval or text",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries allows only content-free restricted control rows and source-unavailable audit rows",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries bounds detail history at 50 while source pages retain multiple versions of the same lineage",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries distinguishes an older unsupported response from malformed claimed support without logging private material",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries enforces UTF-8 byte budgets, required evidence anchors and strict proposal fields",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries exports the UTF-8 byte limits its schemas enforce",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries keeps missing capabilities unknown and rejects truthy non-booleans",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries permits only three content-free target hint fields and content-free operation receipts",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries rejects cross-source, cross-target, duplicate or body-bearing list projections",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries requires exact reviewed fields for approval and state revision plus explanation for narrowing decisions",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries requires explicit detail history completeness and preserves true/false without inferred defaults",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+        "test_name": "knowledge protocol boundaries retains exact bigint revisions and human projections for all endpoints",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-sources.test.ts",
+        "test_name": "bounds stalled source discovery with the existing deadline and does not impose a page-count cutoff",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-sources.test.ts",
+        "test_name": "finds the exact run-record identity across pages without depending on memory",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-sources.test.ts",
+        "test_name": "hashes the selected historical memory version exactly when latest has advanced",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-sources.test.ts",
+        "test_name": "refuses purged versions, foreign issue references and late reads after access loss",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-sources.test.ts",
+        "test_name": "restores an exact delivery reference from a fresh authorized server projection without guessing its canonical hash",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-sources.test.ts",
+        "test_name": "uses retained comment revision text, while a tombstone blocks every old revision",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/realtime/knowledge-provider.test.tsx",
+        "test_name": "clears a mounted target-only projection on a real WSClient close without waiting for polling or a source subscription",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/realtime/knowledge.test.ts",
+        "test_name": "clears target-only knowledge with one responder and no source-room subscription",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/realtime/knowledge.test.ts",
+        "test_name": "does not let an obsolete socket callback affect a new server/viewer scope",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/realtime/knowledge.test.ts",
+        "test_name": "ignores private-field target frames and retains the old empty-only workbench contract",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/realtime/knowledge.test.ts",
+        "test_name": "immediately clears on disconnect and every authorization hint before GET recovery",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/realtime/knowledge.test.ts",
+        "test_name": "keeps replacement connection projections when the old same-scope transport closes",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "C01 mounts only the account recovery surface after issue access is denied",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "counts unresolved threads beside the heading and focuses the first one in en",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "counts unresolved threads beside the heading and focuses the first one in zh-Hans",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "distinguishes missing child support from an explicitly empty projected list",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "focuses the selected run and copies its account anchor from the shared detail",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "hands each explicit comment navigation to the list so a folded thread can open before focus",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "keeps one comment list and composer across loading, polling and first-comment updates",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "keeps the main journey visible and task metadata in its resource drawer in en",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "keeps the main journey visible and task metadata in its resource drawer in zh-Hans",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "opens ordinary children in their returned source workspace and downgrades to references after source access changes",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "opens reference files directly from requirements without exposing the other auxiliaries",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "removes an open resource drawer when its protected issue is no longer available",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "reopens and focuses shared context on each explicit anchor navigation",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "restores an anchored detail on scope resume and refocuses repeated explicit opens",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/collaboration-detail.test.tsx",
+        "test_name": "shows the loaded range only beside Load more and keeps an older server's unknown total explicit",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "confirms an older oversized refusal before unlocking its preserved input",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "distinguishes a named Agent from a same-named person in en without fetching Agent details",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "distinguishes a named Agent from a same-named person in zh-Hans without fetching Agent details",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "does not restore a different revision into a placeholder editor",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "folds an already resolved thread into one bar and reopens it after expanding in en",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "folds an already resolved thread into one bar and reopens it after expanding in zh-Hans",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "hides a folded thread without discarding an unsent edit inside it",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "keeps a recovered conflict editor visible when its comment is outside the loaded page",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "keeps a resolved thread open while one of its requests is unconfirmed",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "keeps a thread open when it becomes resolved while the page is open",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "keeps a tombstone on one line and threads its surviving reply beneath it",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "keeps one action row and prepares a result only from the explicit menu item",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "keeps the author's edit after a conflict and requires an explicit new baseline",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "keeps visible replies open when an older page loads their resolved root",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "links a reply to its parent only while that parent is outside the loaded comments",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "loads a placeholder through the human detail route before exposing editing",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "marks only an edited comment and opens its history from that marker",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "moves focus into the delete confirmation and back to the More actions trigger when it is dismissed",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "moves the author's permission context into the menu in en",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "moves the author's permission context into the menu in zh-Hans",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "opens a folded thread for each explicit navigation to one of its comments",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "opens the thread of a navigation target that loads after the intent",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "resolves a thread and removes only the viewer's reaction through dedicated account routes",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows a recent comment's relative time in en and keeps the full time on hover",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows a recent comment's relative time in zh-Hans and keeps the full time on hover",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows byte-limit feedback without losing pasted text or submitting an oversized edit",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows one Resolve control per unresolved thread and keeps the others in their menus",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows one generic Agent label in 'en' when the Agent name is '   '",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows one generic Agent label in 'en' when the Agent name is ''",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows one generic Agent label in 'en' when the Agent name is undefined",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows one generic Agent label in 'zh-Hans' when the Agent name is '   '",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows one generic Agent label in 'zh-Hans' when the Agent name is ''",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "shows one generic Agent label in 'zh-Hans' when the Agent name is undefined",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "uses the en app locale for comment and history timestamps while preserving ISO values",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/comment-list.test.tsx",
+        "test_name": "uses the zh-Hans app locale for comment and history timestamps while preserving ISO values",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/detail-auxiliary.test.tsx",
+        "test_name": "does not reopen on scope resume and fences editor lifetime by issue identity",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/detail-auxiliary.test.tsx",
+        "test_name": "keeps one editor mounted through category switches and close, with inactive content hidden",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/detail-auxiliary.test.tsx",
+        "test_name": "reports attention without opening a modal and only displays confirmed counts",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/detail-auxiliary.test.tsx",
+        "test_name": "returns focus to an external opener and waits for the modal to close before main navigation",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-automation.test.tsx",
+        "test_name": "does not request automatic status or show processing for no-project or manual tasks",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-automation.test.tsx",
+        "test_name": "sends an authorized retry with the displayed job revision and waits for its receipt",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-automation.test.tsx",
+        "test_name": "shows paused automatic knowledge and actual zero usage without claiming verified evidence",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-automation.test.tsx",
+        "test_name": "shows the default policy and confirms a lost update through its original GET without another PUT",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "Propose correction creates a new immutable proposal without copying old body into the form",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "Propose workspace version creates a new immutable proposal without copying old body into the form",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "allows only content-free target withdrawal and shows a known refusal as a refusal",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "announces workspace loading and permits local retry to an empty catalog while preserving the proposal",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "checking the panel's own lost proposal closes its locked form without another POST",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "does not repeat approval actor/time as an identical latest decision",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "does not submit a removed destination after resolving sources or silently retarget it to the workspace",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "explains an over-byte decision reason instead of the generic invalid message",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "fails closed with a proposal-unavailable notice when the refreshed list withdraws the grant",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "keeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "keeps a selected source project pinned and requires a new selection if the relationship changes",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "keeps unsupported knowledge separate from the surrounding collaboration and reports truncated history",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "lets a human remove a stored identity only after a check finds no result, without any request",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "lets an external handler propose from comments to the lawful current project without a private catalog",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "locally retries a failed selected project, retaining proposal fields and requiring an available target before submit",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "offers recovery for erased idle queries and restores the list and exact review",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "pages all candidate versions with the original page authorization boundary",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "picks an actual recorded run as a source without memory or a raw JSON form",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "recovering a request from the same source opens it even when it is outside the loaded list page",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "recovering a request whose candidate belongs to another source does not open it here",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "recovering an older stored proposal keeps a new draft open while it opens the recovered candidate",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "recovers a lost result through the enclosing auxiliary disclosure after remount with the original key and no second POST",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "recovers after rapid candidate switches overlap authorization refreshes",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "reloads the list and opens a newly submitted candidate for confirmation",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "renders supplied proposer, approval and latest decision facts without a directory lookup",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "reports a selected source that disappears as source-changed and preserves the draft",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "reports list failures and unresolved writes without inventing candidate totals",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "reports local validation failure as invalid input, not as an unavailable source",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "reports lost authority at intent preparation as proposal-unavailable and preserves the draft",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "requires keyboard confirmation of the displayed version and awaits the exact approval receipt",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "resets review confirmation for a changed identity and removes body on source unavailability",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "resets typed decision input when a held refresh returns a different version",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "restarts at the first page when a later page loses its authorization boundary",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "shows known success when receipt cleanup fails instead of calling the write uncertain",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "shows system adoption and paused usage and reuses the exact delivery source in a human correction",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "stops interval polling an unavailable knowledge interface until an explicit refresh",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "submit waits for a refreshing source list instead of reporting a changed source",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "unlocks a definitively rejected first proposal for editing and a new explicit request",
+        "status": "passed"
+      },
+      {
+        "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+        "test_name": "unlocks the human draft after storage fails before POST",
+        "status": "passed"
+      }
+    ],
+    "distinct_lint_files": 34,
+    "lint_paths": [
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/api/knowledge-automation.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-actions.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-actions.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-actions.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-queries.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-queries.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-schema.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-cache.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-lease.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-lease.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-queries.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-recovery.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-schema.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-sources.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-sources.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/collaboration/knowledge-test-fixtures.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/realtime/knowledge-provider.test.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/realtime/knowledge.test.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/core/realtime/knowledge.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-automation-recovery.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-automation-status.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-automation.test.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-controls.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.test.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-panel.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-proposal.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-review.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/collaboration/knowledge-source-picker.tsx",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/packages/views/projects/components/project-knowledge-policy.tsx"
+    ]
+  },
+  "frontend_command_reviews": [
+    {
+      "name": "core-knowledge-tests",
+      "kind": "vitest",
+      "exit": 0,
+      "argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/core",
+        "test",
+        "api/collaboration-knowledge.test.ts",
+        "api/knowledge-automation.test.ts",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-automation-actions.test.ts",
+        "collaboration/knowledge-automation-queries.test.ts",
+        "collaboration/knowledge-automation-schema.test.ts",
+        "collaboration/knowledge-automation-status-schema.test.ts",
+        "collaboration/knowledge-cache.test.ts",
+        "collaboration/knowledge-lease.test.ts",
+        "collaboration/knowledge-schema.test.ts",
+        "collaboration/knowledge-sources.test.ts",
+        "realtime/knowledge-provider.test.tsx",
+        "realtime/knowledge.test.ts",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-tests.vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "plan_matches": true,
+      "result_record_matches": true,
+      "logs_match": true,
+      "complete": true,
+      "raw_report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-tests.vitest.json",
+        "sha256": "8bfa4675e346e25b357b5a085940f2cf4510e63983186d856a2ffab9a72d9a55"
+      },
+      "actual_file_count": 13,
+      "expected_file_count": 13,
+      "actual_test_count": 107,
+      "expected_test_count": 107,
+      "report_file_set_matches_argv": true,
+      "all_named_tuple_status_passed": true,
+      "actual_claimed_tuples_equal": true,
+      "flags_match_exactly": true,
+      "raw_counters": {
+        "numTotalTests": 107,
+        "numPassedTests": 107,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "numFailedTestSuites": 0,
+        "success": true
+      },
+      "failure_messages_empty": true,
+      "test_verified": true
+    },
+    {
+      "name": "views-knowledge-tests",
+      "kind": "vitest",
+      "exit": 0,
+      "argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/views",
+        "test",
+        "collaboration/knowledge-automation.test.tsx",
+        "collaboration/knowledge-panel.test.tsx",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-tests.vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "plan_matches": true,
+      "result_record_matches": true,
+      "logs_match": true,
+      "complete": true,
+      "raw_report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-tests.vitest.json",
+        "sha256": "4c7c690a846333b19c7edfbf4642bd3c64b68a94e6ffb9290aee08cffd7f56e4"
+      },
+      "actual_file_count": 2,
+      "expected_file_count": 2,
+      "actual_test_count": 46,
+      "expected_test_count": 46,
+      "report_file_set_matches_argv": true,
+      "all_named_tuple_status_passed": true,
+      "actual_claimed_tuples_equal": true,
+      "flags_match_exactly": true,
+      "raw_counters": {
+        "numTotalTests": 46,
+        "numPassedTests": 46,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "numFailedTestSuites": 0,
+        "success": true
+      },
+      "failure_messages_empty": true,
+      "test_verified": true
+    },
+    {
+      "name": "core-typecheck",
+      "kind": "typecheck",
+      "exit": 0,
+      "argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "plan_matches": true,
+      "result_record_matches": true,
+      "logs_match": true,
+      "complete": true,
+      "canonical_typecheck_verified": true
+    },
+    {
+      "name": "views-typecheck",
+      "kind": "typecheck",
+      "exit": 0,
+      "argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "plan_matches": true,
+      "result_record_matches": true,
+      "logs_match": true,
+      "complete": true,
+      "canonical_typecheck_verified": true
+    },
+    {
+      "name": "core-knowledge-lint",
+      "kind": "eslint",
+      "exit": 0,
+      "argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "eslint",
+        "api/knowledge-automation.test.ts",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-actions.ts",
+        "collaboration/knowledge-automation-actions.test.ts",
+        "collaboration/knowledge-automation-actions.ts",
+        "collaboration/knowledge-automation-queries.test.ts",
+        "collaboration/knowledge-automation-queries.ts",
+        "collaboration/knowledge-automation-schema.test.ts",
+        "collaboration/knowledge-automation-schema.ts",
+        "collaboration/knowledge-automation-status-schema.test.ts",
+        "collaboration/knowledge-cache.test.ts",
+        "collaboration/knowledge-cache.ts",
+        "collaboration/knowledge-lease.test.ts",
+        "collaboration/knowledge-lease.ts",
+        "collaboration/knowledge-queries.ts",
+        "collaboration/knowledge-recovery.ts",
+        "collaboration/knowledge-schema.test.ts",
+        "collaboration/knowledge-schema.ts",
+        "collaboration/knowledge-sources.test.ts",
+        "collaboration/knowledge-sources.ts",
+        "collaboration/knowledge-test-fixtures.ts",
+        "realtime/knowledge-provider.test.tsx",
+        "realtime/knowledge.test.ts",
+        "realtime/knowledge.ts",
+        "--format=json",
+        "--output-file=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-lint.eslint.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "plan_matches": true,
+      "result_record_matches": true,
+      "logs_match": true,
+      "complete": true,
+      "files": 24,
+      "errors": 0,
+      "fatal": 0,
+      "warnings": 0,
+      "actual_file_set_matches": true,
+      "report_and_record_counts_match": true,
+      "flags_match": true,
+      "lint_verified": true
+    },
+    {
+      "name": "views-knowledge-lint",
+      "kind": "eslint",
+      "exit": 0,
+      "argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "eslint",
+        "collaboration/knowledge-automation-recovery.tsx",
+        "collaboration/knowledge-automation-status.tsx",
+        "collaboration/knowledge-automation.test.tsx",
+        "collaboration/knowledge-controls.tsx",
+        "collaboration/knowledge-panel.test.tsx",
+        "collaboration/knowledge-panel.tsx",
+        "collaboration/knowledge-proposal.tsx",
+        "collaboration/knowledge-review.tsx",
+        "collaboration/knowledge-source-picker.tsx",
+        "projects/components/project-knowledge-policy.tsx",
+        "--format=json",
+        "--output-file=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-lint.eslint.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "plan_matches": true,
+      "result_record_matches": true,
+      "logs_match": true,
+      "complete": true,
+      "files": 10,
+      "errors": 0,
+      "fatal": 0,
+      "warnings": 0,
+      "actual_file_set_matches": true,
+      "report_and_record_counts_match": true,
+      "flags_match": true,
+      "lint_verified": true
+    },
+    {
+      "name": "core-comment-threads-tests",
+      "kind": "vitest",
+      "exit": 0,
+      "argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/core",
+        "test",
+        "collaboration/comment-threads.test.ts",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-comment-threads-tests.vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "plan_matches": true,
+      "result_record_matches": true,
+      "logs_match": true,
+      "complete": true,
+      "raw_report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-comment-threads-tests.vitest.json",
+        "sha256": "f542e4d10d1c593aa2e8a2a0c6c9870ff2f1c09aa1a1f7468057d51be9f174d8"
+      },
+      "actual_file_count": 1,
+      "expected_file_count": 1,
+      "actual_test_count": 13,
+      "expected_test_count": 13,
+      "report_file_set_matches_argv": true,
+      "all_named_tuple_status_passed": true,
+      "actual_claimed_tuples_equal": true,
+      "flags_match_exactly": true,
+      "raw_counters": {
+        "numTotalTests": 13,
+        "numPassedTests": 13,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "numFailedTestSuites": 0,
+        "success": true
+      },
+      "failure_messages_empty": true,
+      "test_verified": true
+    },
+    {
+      "name": "views-knowledge-container-tests",
+      "kind": "vitest",
+      "exit": 0,
+      "argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/views",
+        "test",
+        "collaboration/collaboration-detail.test.tsx",
+        "collaboration/comment-list.test.tsx",
+        "collaboration/detail-auxiliary.test.tsx",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-container-tests.vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "plan_matches": true,
+      "result_record_matches": true,
+      "logs_match": true,
+      "complete": true,
+      "raw_report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-container-tests.vitest.json",
+        "sha256": "3854226aae66760a155f1897b0914ee4f253cfbf1d392aa70bbb34414e0fd4bf"
+      },
+      "actual_file_count": 3,
+      "expected_file_count": 3,
+      "actual_test_count": 54,
+      "expected_test_count": 54,
+      "report_file_set_matches_argv": true,
+      "all_named_tuple_status_passed": true,
+      "actual_claimed_tuples_equal": true,
+      "flags_match_exactly": true,
+      "raw_counters": {
+        "numTotalTests": 54,
+        "numPassedTests": 54,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "numFailedTestSuites": 0,
+        "success": true
+      },
+      "failure_messages_empty": true,
+      "test_verified": true
+    }
+  ],
+  "Go_static_commands": [
+    {
+      "kind": "build",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server",
+        "build",
+        "-buildvcs=false",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "exit": 0,
+      "canonical_full_scope_command": true,
+      "standalone_record_matches": true,
+      "empty_stdout_stderr": true
+    },
+    {
+      "kind": "vet",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server",
+        "vet",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "exit": 0,
+      "canonical_full_scope_command": true,
+      "standalone_record_matches": true,
+      "empty_stdout_stderr": true
+    }
+  ],
+  "Go_tool": {
+    "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+    "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+    "after_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+    "version": "go version go1.27.0 darwin/arm64"
+  },
+  "source_binding_checks": [
+    {
+      "scope": "frontend",
+      "before": {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/source-before.json",
+        "sha256": "92a071b04e77dec7ac3fb6ce7217e7f4b7a5b4ce04d2a65f07e2c37cf1d02c72"
+      },
+      "after": {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/source-after.json",
+        "sha256": "92a071b04e77dec7ac3fb6ce7217e7f4b7a5b4ce04d2a65f07e2c37cf1d02c72"
+      },
+      "full_snapshots_equal": true,
+      "snapshot_matches_selected_full_source": true,
+      "files": 10408,
+      "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+      "workspace_graph_matches": true,
+      "workspace_edges": 32
+    },
+    {
+      "scope": "go_static",
+      "before": {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-go-static-current-source-6b710855cc/source-before.json",
+        "sha256": "92a071b04e77dec7ac3fb6ce7217e7f4b7a5b4ce04d2a65f07e2c37cf1d02c72"
+      },
+      "after": {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-go-static-current-source-6b710855cc/source-after.json",
+        "sha256": "92a071b04e77dec7ac3fb6ce7217e7f4b7a5b4ce04d2a65f07e2c37cf1d02c72"
+      },
+      "full_snapshots_equal": true,
+      "snapshot_matches_selected_full_source": true,
+      "files": 10408,
+      "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+      "workspace_graph_matches": true,
+      "workspace_edges": 32
+    }
+  ],
+  "raw_hash_checks": [
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-tests.stdout.log",
+      "expected_sha256": "bf61aa753eef29131a670b9bd47eccc8b5f10593c04e3e63a65e9bd6f0210345",
+      "actual_sha256": "bf61aa753eef29131a670b9bd47eccc8b5f10593c04e3e63a65e9bd6f0210345",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-tests.stderr.log",
+      "expected_sha256": "9321f0c5ba43a8ad9b52300521eb0d85084c1d70fbaeaae908c1d5bdb02d4455",
+      "actual_sha256": "9321f0c5ba43a8ad9b52300521eb0d85084c1d70fbaeaae908c1d5bdb02d4455",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-tests.vitest.json",
+      "expected_sha256": "8bfa4675e346e25b357b5a085940f2cf4510e63983186d856a2ffab9a72d9a55",
+      "actual_sha256": "8bfa4675e346e25b357b5a085940f2cf4510e63983186d856a2ffab9a72d9a55",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-tests.stdout.log",
+      "expected_sha256": "6d765d5cbecbe74db740c21e31cc8e07de2218ffe2117f02bab456614bb805c8",
+      "actual_sha256": "6d765d5cbecbe74db740c21e31cc8e07de2218ffe2117f02bab456614bb805c8",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-tests.stderr.log",
+      "expected_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "actual_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-tests.vitest.json",
+      "expected_sha256": "4c7c690a846333b19c7edfbf4642bd3c64b68a94e6ffb9290aee08cffd7f56e4",
+      "actual_sha256": "4c7c690a846333b19c7edfbf4642bd3c64b68a94e6ffb9290aee08cffd7f56e4",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-typecheck.stdout.log",
+      "expected_sha256": "ee9702d374e67f9af55667fad756bf6baac90f51815ec042bb332ceaebc19244",
+      "actual_sha256": "ee9702d374e67f9af55667fad756bf6baac90f51815ec042bb332ceaebc19244",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-typecheck.stderr.log",
+      "expected_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "actual_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-typecheck.stdout.log",
+      "expected_sha256": "f4a7126423b9245df42b1ab90b5239e3801fddb76d58a42321787dfaea2cb205",
+      "actual_sha256": "f4a7126423b9245df42b1ab90b5239e3801fddb76d58a42321787dfaea2cb205",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-typecheck.stderr.log",
+      "expected_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "actual_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-lint.stdout.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-lint.stderr.log",
+      "expected_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "actual_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-lint.eslint.json",
+      "expected_sha256": "339b4163b90fc7312badfb05f02c5bfde363fc2c96c5e4f71e7bc419d54ae891",
+      "actual_sha256": "339b4163b90fc7312badfb05f02c5bfde363fc2c96c5e4f71e7bc419d54ae891",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-lint.stdout.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-lint.stderr.log",
+      "expected_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "actual_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-lint.eslint.json",
+      "expected_sha256": "b763ebad805430afa7c8d9d7ee70ed91f030be75274727003e97e9d7ac9c007a",
+      "actual_sha256": "b763ebad805430afa7c8d9d7ee70ed91f030be75274727003e97e9d7ac9c007a",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-comment-threads-tests.stdout.log",
+      "expected_sha256": "d54288154c5608706b6d77663208bc8871731f0b9a9f493e222913ab376923cb",
+      "actual_sha256": "d54288154c5608706b6d77663208bc8871731f0b9a9f493e222913ab376923cb",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-comment-threads-tests.stderr.log",
+      "expected_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "actual_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-comment-threads-tests.vitest.json",
+      "expected_sha256": "f542e4d10d1c593aa2e8a2a0c6c9870ff2f1c09aa1a1f7468057d51be9f174d8",
+      "actual_sha256": "f542e4d10d1c593aa2e8a2a0c6c9870ff2f1c09aa1a1f7468057d51be9f174d8",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-container-tests.stdout.log",
+      "expected_sha256": "5ea9f7bdf4fcbfd61b1a9b80cf7b835c86931e062c8fcb0d73f3e21dd6643aa4",
+      "actual_sha256": "5ea9f7bdf4fcbfd61b1a9b80cf7b835c86931e062c8fcb0d73f3e21dd6643aa4",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-container-tests.stderr.log",
+      "expected_sha256": "3e7c3bbd96345d976122adb1a6c5079822d588f2764b466d840ddc6561aa983e",
+      "actual_sha256": "3e7c3bbd96345d976122adb1a6c5079822d588f2764b466d840ddc6561aa983e",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/views-knowledge-container-tests.vitest.json",
+      "expected_sha256": "3854226aae66760a155f1897b0914ee4f253cfbf1d392aa70bbb34414e0fd4bf",
+      "actual_sha256": "3854226aae66760a155f1897b0914ee4f253cfbf1d392aa70bbb34414e0fd4bf",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-go-static-current-source-6b710855cc/build.stdout.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-go-static-current-source-6b710855cc/build.stderr.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-go-static-current-source-6b710855cc/vet.stdout.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-go-static-current-source-6b710855cc/vet.stderr.log",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "file": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+      "expected_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+      "actual_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+      "match": true
+    }
+  ],
+  "count_semantics": "Vitest numTotalTestSuites is not used as a file denominator; exact raw testResults.name sets define the19files, and assertionResults fullname/status tuples define220 tests. Suites across before/after/source and normal/race are not added.",
+  "environment_scope": "Recorded Go build/vet used controlled roots per producer; execution commands are build/vet only and cannot execute repository TestMain. This reviewer did not re-run them or inspect any live credentials.",
+  "ownership": {
+    "new_JSON_only": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-fresh5dee-code-evidence-independent-review-20261116-14469823f845.json",
+    "source_or_MD_or_raw_result_log_report_rewrites": 0,
+    "new_Vitest_typecheck_lint_Go_test_build_SQL_runtime_or_account_execution": 0,
+    "all_checks_readonly_offline_evidence": true,
+    "descendants": 0
+  },
+  "acceptance_limits": {
+    "fresh_code_evidence_accepted": true,
+    "actual_Go_suite_or_production_build_ready_permission_granted": false,
+    "source_ready": false,
+    "ROOT_final": false,
+    "P2_product_final": false,
+    "final_knowledge": false
+  }
+}

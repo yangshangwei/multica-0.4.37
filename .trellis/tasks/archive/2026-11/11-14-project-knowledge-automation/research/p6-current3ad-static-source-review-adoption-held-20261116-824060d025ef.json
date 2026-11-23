@@ -1,0 +1,1003 @@
+{
+  "kind": "independent_physical19eb_and_five_overlay3ad_static_source_caller_adoption_preparation_review",
+  "at": "2026-11-16T01:36:30.860336+00:00",
+  "reviewer": "/root/root_knowledge_service_check",
+  "status": "STATIC_3AD_SOURCE_INPUTS_VERIFIED_ACTUAL_ADOPTION_HELD",
+  "source_identities": {
+    "original_Go6_source": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+    "original_full19eb_COPY": "19ebcb08d38e545e3448c7cfbfe754f46fc44ad8fc4ffa9e0d87a1dce9bcf615",
+    "five_overlay_old_candidate": "3ad93f616ba4a645345cc4a1654cb1c8ab8950334c8dd88e521960a4664b96e9",
+    "candidate_HEAD": "1a5e537b0531aa51bd7e3eded83bbb801f1c5133",
+    "new_TAG3_revision_in_this_candidate": false
+  },
+  "index": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/final-source-adoption-review-inputs-index.json",
+    "sha256": "824060d025effcc0312a9c0750c54d46fd5726f03403968bbe845ad80dc1e2e1",
+    "bytes": 31270,
+    "mode": 384
+  },
+  "verified_index_references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/ROOT-postcopy-five-after.json",
+      "sha256": "d89451adf31fa3129c125f2dca85c5bf1f8c6fcf77abcf6d7740e512505b4972",
+      "bytes": 3740856,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/ROOT-postcopy-five-before.json",
+      "sha256": "d89451adf31fa3129c125f2dca85c5bf1f8c6fcf77abcf6d7740e512505b4972",
+      "bytes": 3740856,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/.trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "c63287709e126159533a7042acf552a9f0341dda9ed3aac63b708e8850ba4aec",
+      "bytes": 21518,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/.trellis/spec/views/frontend/collaboration-detail.md",
+      "sha256": "a1b195a1c77da7f83161584fd0266298e49cd15adce4cd25aeb2e5b33643c5c5",
+      "bytes": 18262,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/.trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "sha256": "e27a3f46a47f05fd3cae02416d27a426a4d4790068ee3b26a67f5b8d21801cf9",
+      "bytes": 29413,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-16.md",
+      "sha256": "9dd9d2358b6988ad666c3d36f008dfef43910c1eb2d303d597445203d7b23f83",
+      "bytes": 9736,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/e2e/collaboration-editing-web.spec.ts",
+      "sha256": "fb45a67d82c01bd5f0fbdb124e2fdf3bf0b33bf1501823eb4374fe3cb0e1036b",
+      "bytes": 11014,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/e2e/fixtures/collaboration-comment-menu.ts",
+      "sha256": "55c12ad6d2ca73fda134d2f1e0879769560dd0b55e8516724847376b3898e7ca",
+      "bytes": 1784,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/e2e/fixtures/collaboration-editing.ts",
+      "sha256": "4eeb33972dca05af48af009b7d89aa02108bf884fe5c08cfb407358681036d0e",
+      "bytes": 17172,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+      "sha256": "71a07c0cae348f111faa09f1b0664ebbb49a516281528a5c07f67bf65df83a5c",
+      "bytes": 12892,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "3ea2e6a51cd782f55d2268427739e6749f93c8bf23069f817147f2cff603fc92",
+      "bytes": 59429,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/e2e/fixtures/collaboration-multi-account-closure.ts",
+      "sha256": "d40059ca4bc003dd343d19ccfb86c23bf9f57f9d65348fc727d6ea583eee73f5",
+      "bytes": 9520,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/e2e/fixtures/collaboration-retained-attachments.ts",
+      "sha256": "35ba55faf9f962c9e81de9d48ef54e9b12d04ce2705f6c60ef1336a7c3bc2fc9",
+      "bytes": 34281,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/e2e/fixtures/collaboration-runtime-handoff.ts",
+      "sha256": "eff04197c3bc53ad33b29c35416ffb79b5570a250f3ec85f79f12cc24a89b0d2",
+      "bytes": 15152,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/packages/core/collaboration/stage-code-presentation.test.ts",
+      "sha256": "8e78d5a00e3da2240bf3c2ef7a0244db05d63fec5096e0d20e0f2b72eb1d5c01",
+      "bytes": 13796,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/packages/core/collaboration/stage-schema.test.ts",
+      "sha256": "2950c8de3f5ad8bf346221a0a32dea80b722a2ce18c8485e7bf0c5945e4d4909",
+      "bytes": 44822,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/packages/core/collaboration/stage-schema.ts",
+      "sha256": "0dd55d6324aa207e3cfc9b2ebb8d109ca61cf3ae4082350bf4dfa481ad39e7ed",
+      "bytes": 64721,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/packages/views/collaboration/comment-list.test.tsx",
+      "sha256": "e5ce4106c7839ed0ee6185e1323faadee4b4f68020feeebf49c6335442d5d0bf",
+      "bytes": 38955,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/packages/views/collaboration/comment-list.tsx",
+      "sha256": "8308657c1c3e050e163d6b2716d4b2698cbec244870564b2ac365acfb89d953b",
+      "bytes": 27954,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/packages/views/collaboration/stage-labels.test.ts",
+      "sha256": "cdcf7f1f1a0ab4f9c0838e740cf157a81a2474bc1310820039a9985406ab722f",
+      "bytes": 1960,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/packages/views/collaboration/stage-labels.ts",
+      "sha256": "e18ad5fe726a9b151dd818b3d18f55e683b55b264b0c8c9e3afd27bb82a70c19",
+      "bytes": 21609,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/packages/views/locales/en/collaboration.json",
+      "sha256": "c46d3900d03077e7181e9243ca8c6a07a3428942c65ae4ef4b847a06ba2b9fe2",
+      "bytes": 86952,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-after-images/packages/views/locales/zh-Hans/collaboration.json",
+      "sha256": "7ee33fd511492724d1f42c6ceb42ec33b0c509e4b00c69ca44189568d23273dc",
+      "bytes": 81749,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/.trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "be229701226d051a86adfac59fdaadec7be286aea0f057dea0de1361171c80bc",
+      "bytes": 17526,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/.trellis/spec/views/frontend/collaboration-detail.md",
+      "sha256": "e914509a427d028d83b81ca24abadbdf5a18d579749cf6a4b1ff53508b39efd8",
+      "bytes": 13493,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/.trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "sha256": "3212728d5541f99f02e305b9519faa04968b7732564a8f9a89b6a12a8eda420b",
+      "bytes": 25637,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/e2e/collaboration-editing-web.spec.ts",
+      "sha256": "6993c5e2121c0ec8f3332f17ff92b0adb5f8793013d7cc913c74bda9db81f8e5",
+      "bytes": 10908,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/e2e/fixtures/collaboration-comment-menu.ts",
+      "sha256": "fea7f5940ebcbc9e611c3f6041012bd0bb88ca072560957fb98e9657a3d30d38",
+      "bytes": 1781,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/e2e/fixtures/collaboration-editing.ts",
+      "sha256": "0fe01f93240a390c4693f1489421eed3d4952176c0fa72b0b808438122152120",
+      "bytes": 17052,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+      "sha256": "6dd3cf1793efb493601f9cf1ec719046ad3353bc18d89dea4baf7984c73b71a4",
+      "bytes": 4549,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519",
+      "bytes": 57874,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/e2e/fixtures/collaboration-multi-account-closure.ts",
+      "sha256": "91b8b4c5cbaab035b6c70c1e2a8034d6ea1cbefacdfe61f13c1747d8bc9cc166",
+      "bytes": 9301,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/e2e/fixtures/collaboration-retained-attachments.ts",
+      "sha256": "974f85ab2ca3daa0856ec8e6d0908bfa416cdcedaa8e0c06bb56f99d9f730ce1",
+      "bytes": 34161,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/e2e/fixtures/collaboration-runtime-handoff.ts",
+      "sha256": "632ee24acb2c3aff541c13537a4192660306cc7add16fc7a681dafb1ee58bd3d",
+      "bytes": 14826,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/core/collaboration/stage-code-presentation.test.ts",
+      "sha256": "b92a18c69aeba35b5664ab2c97e949cbd19ab85d4f1989887381206bc7e7fca1",
+      "bytes": 9895,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/core/collaboration/stage-schema.test.ts",
+      "sha256": "22ecf3a91694f9ac8bfe18004db2243b1da22118dd5a710c3cb319ecd5984766",
+      "bytes": 43200,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/core/collaboration/stage-schema.ts",
+      "sha256": "d3d3d97731ab71590b470184b00d574d4dbc81eb40e49d6725b6fa8240c85be4",
+      "bytes": 64297,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/collaboration/comment-list.test.tsx",
+      "sha256": "ba5818e9fe217cc0005bc9ad4cef0cfbaeb6e423c316f8129244c43230e2bb2c",
+      "bytes": 35895,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/collaboration/comment-list.tsx",
+      "sha256": "fba624a90ba866fce379f69a5a727d69d2da629e2ae1f3c1eecf37caeb7ce30e",
+      "bytes": 27444,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/collaboration/stage-labels.ts",
+      "sha256": "453be7906ae0f5ae090343033c0e1b4f94f49b8539d1b9093b99384beee42bc4",
+      "bytes": 20951,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/locales/en/collaboration.json",
+      "sha256": "0d19d46dafefd4a1067c524ee27695f03d94e159cdd46a106f1644c0c972f1c5",
+      "bytes": 86414,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/locales/zh-Hans/collaboration.json",
+      "sha256": "8d805fe807c6aec6af765105183b51008e1f4da103e2f3c6bfaefef3448c3c64",
+      "bytes": 81270,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/zz-check-harness/auth-stub.ts",
+      "sha256": "c17be388dc8a65896efe9380dc3ffb9e637e838ed9444502c8f274970f9abb8d",
+      "bytes": 108,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/zz-check-harness/index.html",
+      "sha256": "fafcc38ccfbba70485b7444dae0c87c5ab94c8a301d71460c956eaeed8435b24",
+      "bytes": 346,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/zz-check-harness/main.tsx",
+      "sha256": "d3712f7718fa867e66cd85e2280b73e3ee6e5fe5e8cd36edb0be37ccbe6d5911",
+      "bytes": 1672,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/all_BOM-inputs.nul",
+      "sha256": "094fde2594dd7f4d2b49334232235e7cb9abdcbe3b8c09e327ac2cb98a529182",
+      "bytes": 370,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/all_go_and_modules-inputs.nul",
+      "sha256": "58e72dd88261232e71745de23ac525f77b34d52c9f1236d4bb80ecd4a50a8550",
+      "bytes": 144991,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/complete-input-projections-and-paths.json",
+      "sha256": "f650292ba7a4deaa69c6ae7bfb516a89ea68741592509af15d1438eda8559382",
+      "bytes": 1557285,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/complete-source-impact-to-proposed3ad.json",
+      "sha256": "9d5748f9813cb2a47878fff1a10afe34113bd30a137c9477bb3309bd4977e03d",
+      "bytes": 44913,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/direct-tooling-entry-probes.json",
+      "sha256": "710e85e33032cfc52c3a907c1f14a568c86f86d05bca4c6ea7244e0f2dba66e2",
+      "bytes": 2162,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/result.json",
+      "sha256": "baf565d344e39e78b8d29dcbc93f9a85d8d587f57ca8bb0a9cdeaa82ba2c7ec7",
+      "bytes": 188562,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/failed.json",
+      "sha256": "9f2559514f8a53aa58e33cf3c773a4f3e4a0d518e785c97d15053c33e9eba170",
+      "bytes": 201,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-plan-direct-v2.json",
+      "sha256": "a4d91ab43ec9c91ab0869907342b946ee4a8f366d5516860cf6aebfa459027ce",
+      "bytes": 91664,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-plan.json",
+      "sha256": "5169a5c2497e108296591a833f7f0339ed0bcfebbac94a38f6d0fe2a8ba57310",
+      "bytes": 77447,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/oldmutable-HEAD-before-adoption.raw",
+      "sha256": "66a57f6a3f84ddb0e00759a01577f94b332360c4a7cf019799b3af48a6a1ea1a",
+      "bytes": 41,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/oldmutable-index-before-adoption.bin",
+      "sha256": "3e175cfcea426f6abc98a04c334a7427f6b71c515bc4a45557c02d4b9bf9c5d2",
+      "bytes": 1239688,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-after-images/.trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "c63287709e126159533a7042acf552a9f0341dda9ed3aac63b708e8850ba4aec",
+      "bytes": 21518,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-after-images/.trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "sha256": "e27a3f46a47f05fd3cae02416d27a426a4d4790068ee3b26a67f5b8d21801cf9",
+      "bytes": 29413,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-after-images/.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-16.md",
+      "sha256": "9dd9d2358b6988ad666c3d36f008dfef43910c1eb2d303d597445203d7b23f83",
+      "bytes": 9736,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-after-images/e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+      "sha256": "71a07c0cae348f111faa09f1b0664ebbb49a516281528a5c07f67bf65df83a5c",
+      "bytes": 12892,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-after-images/e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "3ea2e6a51cd782f55d2268427739e6749f93c8bf23069f817147f2cff603fc92",
+      "bytes": 59429,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-before-images/.trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "be229701226d051a86adfac59fdaadec7be286aea0f057dea0de1361171c80bc",
+      "bytes": 17526,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-before-images/.trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "sha256": "55a9f6c87cbf912ebeb0014e8f61ee876e7cb8b7947d69c7e22a2374486350e6",
+      "bytes": 28137,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-before-images/.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-16.md",
+      "sha256": "6e1052674d2f3a59e5b2255f0959edb26617f30af5bdc302cc3605aeb4e79485",
+      "bytes": 5349,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-before-images/e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+      "sha256": "6dd3cf1793efb493601f9cf1ec719046ad3353bc18d89dea4baf7984c73b71a4",
+      "bytes": 4549,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-before-images/e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519",
+      "bytes": 57874,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-five-candidate-preparation.json",
+      "sha256": "8692f8240f8e0224d36de15e6339a3ab970122eec067cb17542a787b5642eacb",
+      "bytes": 9253,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-five-fixture-noemit/command.json",
+      "sha256": "07713304e887ffd50436381b9c2905926d328f53d8521c38c9012b7999a0e9cf",
+      "bytes": 2502,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-five-fixture-noemit/result.json",
+      "sha256": "b99c48b2137735add12bb635ff25d7818afe06820c9bd89d9cac59858ce71619",
+      "bytes": 3211,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-five-fixture-noemit/runtime-fixture-tsconfig.json",
+      "sha256": "5648b52c2760cf5fd7ca536de36c30ff78d891b7ad2d2e2516542bdf283db518",
+      "bytes": 1023,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-five-static-import-closures.json",
+      "sha256": "78f3ac2344012291dfb5cfc8c37d1bf7bb6ad9b20a283ce848bba2194f060369",
+      "bytes": 4964283,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-package-manager-binding-preparation.json",
+      "sha256": "13d95dd712f38a170c08b487f4d84f77ab4356d652e25bc6042494ec1df8e445",
+      "bytes": 6016,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/bin/pnpm",
+      "sha256": "0d9ec8145a1dfc44699a4e00132d51c4d3f26745038c81c90276973fcb3bbeef",
+      "bytes": 765,
+      "mode": 448
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/cached-pnpm10-distribution.json",
+      "sha256": "24d99caae2b3a948c0554884654453e80273a0d99c39d79917fa41322bea96c8",
+      "bytes": 179609,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/pins.json",
+      "sha256": "36673a09a100a8870e9574ffb96c33db19664490cc16776a803c4449c0750396",
+      "bytes": 1415,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/proposed-target-source-paths.nul",
+      "sha256": "6680326729ebd7d03b99cb4d43c266e6621cdedb9bf1dacba095eeed83c9f5fd",
+      "bytes": 557955,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/ready-review-inputs-index.json",
+      "sha256": "e8d74ec5bf1a65fe2c96c4f39a735499ef366bc74a98a73c817bf60a517164c7",
+      "bytes": 11897,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/root-host-control-r13-integration.original.json",
+      "sha256": "ad69ac37ef3e5b2a9db37f77d005a80ed70ef0d52bf792c62112e545911feac6",
+      "bytes": 2633,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/run-authorized-frontend-refresh-direct-v2.py",
+      "sha256": "540a58720ca49ece8f15e8f77211db361c6520fc8bf316baceaf5ae898f470d3",
+      "bytes": 12792,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/same-mutable-PATH-adoption-proposal-3ad93.json",
+      "sha256": "c226bd2d6a5af47fb3b4b02db384ae3e220a9ead8b47ea174947f22eba268b7f",
+      "bytes": 43283,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/same-path-adoption-exact-byte-delta.patch",
+      "sha256": "01afe515f578f84e2277d8c30fd1e2b0dbf98feaee3f326d84e8c09640e65dec",
+      "bytes": 86853,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/static-closure-plan-postcopy-five.json",
+      "sha256": "c79b3969717adfb845215e12666e9374aecde618f8c67e1ca26600b0a09c0736",
+      "bytes": 7359,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/whole_server-inputs.nul",
+      "sha256": "26b74f68aa9e5a2f5075b623c5a44441faeca5cf9a47c253f4b4030778eca4f5",
+      "bytes": 271040,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/postcopy-five-candidate-full-manifest.json",
+      "sha256": "383244549b2f2729fa8688d49f772dc4f7c532ef31592c0adc0261f6d135e7db",
+      "bytes": 3110139,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/postcopy-five-source-pathspec.nul",
+      "sha256": "6680326729ebd7d03b99cb4d43c266e6621cdedb9bf1dacba095eeed83c9f5fd",
+      "bytes": 557955,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-current19eb-frontend-independent-review-20261116-9e21c79350c6.json",
+      "sha256": "50226ad7b1031a48b50872fda77b2bf906ef80b3bf2fd8c791527db3050defbe",
+      "bytes": 123912,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-pnpm10-binding-independent-review-20261116-0d9ec8145a1d.json",
+      "sha256": "9a0d9fb25c46c75917a1ba33861097949fceafa84cdc1bcf7723468c27bbbea8",
+      "bytes": 9439,
+      "mode": 384
+    }
+  ],
+  "source_impact": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/complete-source-impact-to-proposed3ad.json",
+    "sha256": "9d5748f9813cb2a47878fff1a10afe34113bd30a137c9477bb3309bd4977e03d",
+    "bytes": 44913,
+    "mode": 384
+  },
+  "old_adoption_proposal": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/same-mutable-PATH-adoption-proposal-3ad93.json",
+    "sha256": "c226bd2d6a5af47fb3b4b02db384ae3e220a9ead8b47ea174947f22eba268b7f",
+    "bytes": 43283,
+    "mode": 384
+  },
+  "physical_source_check": "independent actual path discovery, full raw hashes/modes/links, selected HEAD and private index matched 19eb10407/32 and candidate3ad10407/32; original COPY is preserved",
+  "candidate_private_index": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/postcopy-five-candidate-source/.git/index",
+    "sha256": "86205c02d31b4e73a805db6ca2136181f2bf8ea0811317d2f88e4b1a06aebe48",
+    "bytes": 1239616,
+    "mode": 384
+  },
+  "exact24_delta": {
+    "changed": [
+      ".trellis/spec/server/collaboration-stage-approvals.md",
+      ".trellis/spec/views/frontend/collaboration-detail.md",
+      ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "e2e/collaboration-editing-web.spec.ts",
+      "e2e/fixtures/collaboration-comment-menu.ts",
+      "e2e/fixtures/collaboration-editing.ts",
+      "e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+      "e2e/fixtures/collaboration-host-runtime.ts",
+      "e2e/fixtures/collaboration-multi-account-closure.ts",
+      "e2e/fixtures/collaboration-retained-attachments.ts",
+      "e2e/fixtures/collaboration-runtime-handoff.ts",
+      "packages/core/collaboration/stage-code-presentation.test.ts",
+      "packages/core/collaboration/stage-schema.test.ts",
+      "packages/core/collaboration/stage-schema.ts",
+      "packages/views/collaboration/comment-list.test.tsx",
+      "packages/views/collaboration/comment-list.tsx",
+      "packages/views/collaboration/stage-labels.ts",
+      "packages/views/locales/en/collaboration.json",
+      "packages/views/locales/zh-Hans/collaboration.json"
+    ],
+    "added": [
+      ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-16.md",
+      "packages/views/collaboration/stage-labels.test.ts"
+    ],
+    "removed": [
+      "packages/views/zz-check-harness/auth-stub.ts",
+      "packages/views/zz-check-harness/index.html",
+      "packages/views/zz-check-harness/main.tsx"
+    ]
+  },
+  "all24_before_after_images_and10407_NUL_paths_verified": true,
+  "after_copy_overlay": "exact metadata3 + r13E2E2, no extra additions/removals; base19eb and final3ad have distinct source identities",
+  "complete_projection_review": {
+    "reference": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/complete-input-projections-and-paths.json",
+      "sha256": "f650292ba7a4deaa69c6ae7bfb516a89ea68741592509af15d1438eda8559382",
+      "bytes": 1557285,
+      "mode": 384
+    },
+    "selectors": 16,
+    "actual_path_lists_and_raw_row_fingerprints_compared_to5dee_and_e0": true,
+    "whole_server": 5039,
+    "all_Go_and_modules": 2934,
+    "all_SQL": 1845,
+    "BOM": 17,
+    "testdata": 16,
+    "generated_help": 157,
+    "scripts": 77,
+    "production_entries": 801,
+    "UI": 84,
+    "equal_Go_and_server_claim_applies_only_to_old3ad_before_new_TAG3_fixture": true,
+    "future_default_noTags_input_equivalence_accepted": false
+  },
+  "independent_AST_rescan": {
+    "source_id": "3ad93f616ba4a645345cc4a1654cb1c8ab8950334c8dd88e521960a4664b96e9",
+    "tool": "Node22 with pinned TypeScript5.9.3, createSourceFile/resolveModuleName only",
+    "unique_actual_source_nodes": 707,
+    "groups": [
+      {
+        "name": "knowledge_product_journey",
+        "nodes": 271,
+        "selected_distinct_edges": 963,
+        "recorded_all_edges": 1166,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [],
+        "added_selected_edges": [],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      },
+      {
+        "name": "pay_stage_journeys",
+        "nodes": 274,
+        "selected_distinct_edges": 985,
+        "recorded_all_edges": 1188,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [
+          "e2e/fixtures/collaboration-host-runtime.ts"
+        ],
+        "added_selected_edges": [
+          [
+            "e2e/fixtures/collaboration-host-runtime.ts",
+            "../../packages/core/collaboration/schema",
+            "packages/core/collaboration/schema.ts"
+          ]
+        ],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      },
+      {
+        "name": "old5dee_core-knowledge-tests",
+        "nodes": 264,
+        "selected_distinct_edges": 834,
+        "recorded_all_edges": 1025,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [],
+        "added_selected_edges": [],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      },
+      {
+        "name": "old5dee_views-knowledge-tests",
+        "nodes": 561,
+        "selected_distinct_edges": 1726,
+        "recorded_all_edges": 2141,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [],
+        "added_selected_edges": [],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      },
+      {
+        "name": "old5dee_core-comment-threads-tests",
+        "nodes": 141,
+        "selected_distinct_edges": 394,
+        "recorded_all_edges": 475,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [],
+        "added_selected_edges": [],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      },
+      {
+        "name": "old5dee_views-knowledge-container-tests",
+        "nodes": 617,
+        "selected_distinct_edges": 2084,
+        "recorded_all_edges": 2588,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [],
+        "added_selected_edges": [],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      },
+      {
+        "name": "e0_views-knowledge-tests",
+        "nodes": 561,
+        "selected_distinct_edges": 1726,
+        "recorded_all_edges": 2141,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [],
+        "added_selected_edges": [],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      },
+      {
+        "name": "e0_views-knowledge-container-tests",
+        "nodes": 617,
+        "selected_distinct_edges": 2084,
+        "recorded_all_edges": 2588,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [],
+        "added_selected_edges": [],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      },
+      {
+        "name": "r11_core-full-tests",
+        "nodes": 206,
+        "selected_distinct_edges": 679,
+        "recorded_all_edges": 821,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [],
+        "added_selected_edges": [],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      },
+      {
+        "name": "r11_views-full-tests",
+        "nodes": 624,
+        "selected_distinct_edges": 2123,
+        "recorded_all_edges": 2653,
+        "unchanged_node_set": true,
+        "changed_source_hashes": [],
+        "added_selected_edges": [],
+        "removed_selected_edges": [],
+        "unresolved_local_or_computed_imports": 0
+      }
+    ],
+    "literal_assets": [
+      {
+        "path": "packages/ui/markdown/markdown.css",
+        "sha256": "6679ee8728c31115dddfd38c7c3e4741aac3d1bb831398b2fafd560594031ac9",
+        "normalized_sha256": "6679ee8728c31115dddfd38c7c3e4741aac3d1bb831398b2fafd560594031ac9",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/editor/styles/attachment.css",
+        "sha256": "1d9bd0c1cb35c31752323346f693f5f0572bde5e95a858b7f2f0b850480002bd",
+        "normalized_sha256": "1d9bd0c1cb35c31752323346f693f5f0572bde5e95a858b7f2f0b850480002bd",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/editor/styles/code.css",
+        "sha256": "d13373aa4be95a99267f764701e4d30c6a90a377a36f3f0add236278aa4ff2ff",
+        "normalized_sha256": "d13373aa4be95a99267f764701e4d30c6a90a377a36f3f0add236278aa4ff2ff",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/editor/styles/index.css",
+        "sha256": "f4e9104c0913c45fc38d2f45691ea109dcaf801b8a1effcb4a97d2ce696e8d73",
+        "normalized_sha256": "f4e9104c0913c45fc38d2f45691ea109dcaf801b8a1effcb4a97d2ce696e8d73",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/editor/styles/zoom-canvas.css",
+        "sha256": "9cd45fa129dd61fe96f2a7a889839f862f39f35cfd9e91a3bd114fa1a80f7b61",
+        "normalized_sha256": "9cd45fa129dd61fe96f2a7a889839f862f39f35cfd9e91a3bd114fa1a80f7b61",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/rich-content/rich-content.css",
+        "sha256": "ff4d24ec4c18341f9a1021f573bff78f6901f66982e3c8d8e9a88db2992fb890",
+        "normalized_sha256": "ff4d24ec4c18341f9a1021f573bff78f6901f66982e3c8d8e9a88db2992fb890",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/runtimes/components/antigravity-logo.png",
+        "sha256": "730a8afa751aa140bcd92e2c59e88fc55ddc2e21a84ddabd809d40dc732aed7a",
+        "normalized_sha256": "730a8afa751aa140bcd92e2c59e88fc55ddc2e21a84ddabd809d40dc732aed7a",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/runtimes/components/codearts-logo.svg",
+        "sha256": "c2169c96f5ebd4a2a840611c33b7e690cdf43e64ed582aec62993baf5577446c",
+        "normalized_sha256": "c2169c96f5ebd4a2a840611c33b7e690cdf43e64ed582aec62993baf5577446c",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/runtimes/components/dim-logo.png",
+        "sha256": "4e17110bbb69c2992585685b11944adfc21382da3186f04ae76c8bef6fbee563",
+        "normalized_sha256": "4e17110bbb69c2992585685b11944adfc21382da3186f04ae76c8bef6fbee563",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/runtimes/components/qwen-logo.svg",
+        "sha256": "ab8eaf1ceaf7a9765a0da7030ea985f8cf2aca702e9ac26d8456639bae8724c6",
+        "normalized_sha256": "ab8eaf1ceaf7a9765a0da7030ea985f8cf2aca702e9ac26d8456639bae8724c6",
+        "mode": 493,
+        "link": null
+      },
+      {
+        "path": "packages/views/runtimes/components/reasonix-logo.svg",
+        "sha256": "454c7f6e5676d04b37fd39953fb0eb904ec0be39c267bce5097f936eb3fbdaed",
+        "normalized_sha256": "454c7f6e5676d04b37fd39953fb0eb904ec0be39c267bce5097f936eb3fbdaed",
+        "mode": 493,
+        "link": null
+      }
+    ],
+    "all_actual_local_multica_alias_and_computed_imports_resolved_or_absent": true,
+    "unresolved_externals": "only Node built-ins and katex/dist/katex.min.css outside selected-source closure",
+    "K271_same963_distinct_edges_and_all_source_hashes_between19eb_and3ad": true,
+    "r13_host_fixture_in_K271": false
+  },
+  "focused_r13_handoff_noEmit": {
+    "result": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-five-fixture-noemit/result.json",
+      "sha256": "b99c48b2137735add12bb635ff25d7818afe06820c9bd89d9cac59858ce71619",
+      "bytes": 3211,
+      "mode": 384
+    },
+    "config": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/postcopy-five-fixture-noemit/runtime-fixture-tsconfig.json",
+      "sha256": "5648b52c2760cf5fd7ca536de36c30ff78d891b7ad2d2e2516542bdf283db518",
+      "bytes": 1023,
+      "mode": 384
+    },
+    "input_entries": [
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/postcopy-five-candidate-source/e2e/fixtures/collaboration-host-runtime.ts",
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/postcopy-five-candidate-source/e2e/fixtures/collaboration-runtime-handoff.ts"
+    ],
+    "exit": 0,
+    "initial_final_source_Git_equal": true,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "frontend222_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-current19eb-frontend-independent-review-20261116-9e21c79350c6.json",
+    "sha256": "50226ad7b1031a48b50872fda77b2bf906ef80b3bf2fd8c791527db3050defbe",
+    "bytes": 123912,
+    "mode": 384
+  },
+  "PNPM10_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-pnpm10-binding-independent-review-20261116-0d9ec8145a1d.json",
+    "sha256": "9a0d9fb25c46c75917a1ba33861097949fceafa84cdc1bcf7723468c27bbbea8",
+    "bytes": 9439,
+    "mode": 384
+  },
+  "private_harness_quarantine": {
+    "exact_three": [
+      {
+        "path": "packages/views/zz-check-harness/auth-stub.ts",
+        "before": {
+          "sha256": "c17be388dc8a65896efe9380dc3ffb9e637e838ed9444502c8f274970f9abb8d",
+          "normalized_sha256": "c17be388dc8a65896efe9380dc3ffb9e637e838ed9444502c8f274970f9abb8d",
+          "mode": 420,
+          "link": null
+        },
+        "after": null,
+        "operation": "quarantine",
+        "before_image": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/zz-check-harness/auth-stub.ts",
+          "sha256": "c17be388dc8a65896efe9380dc3ffb9e637e838ed9444502c8f274970f9abb8d",
+          "bytes": 108,
+          "mode": 384
+        }
+      },
+      {
+        "path": "packages/views/zz-check-harness/index.html",
+        "before": {
+          "sha256": "fafcc38ccfbba70485b7444dae0c87c5ab94c8a301d71460c956eaeed8435b24",
+          "normalized_sha256": "fafcc38ccfbba70485b7444dae0c87c5ab94c8a301d71460c956eaeed8435b24",
+          "mode": 420,
+          "link": null
+        },
+        "after": null,
+        "operation": "quarantine",
+        "before_image": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/zz-check-harness/index.html",
+          "sha256": "fafcc38ccfbba70485b7444dae0c87c5ab94c8a301d71460c956eaeed8435b24",
+          "bytes": 346,
+          "mode": 384
+        }
+      },
+      {
+        "path": "packages/views/zz-check-harness/main.tsx",
+        "before": {
+          "sha256": "d3712f7718fa867e66cd85e2280b73e3ee6e5fe5e8cd36edb0be37ccbe6d5911",
+          "normalized_sha256": "d3712f7718fa867e66cd85e2280b73e3ee6e5fe5e8cd36edb0be37ccbe6d5911",
+          "mode": 420,
+          "link": null
+        },
+        "after": null,
+        "operation": "quarantine",
+        "before_image": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/adoption-before-images/packages/views/zz-check-harness/main.tsx",
+          "sha256": "d3712f7718fa867e66cd85e2280b73e3ee6e5fe5e8cd36edb0be37ccbe6d5911",
+          "bytes": 1672,
+          "mode": 384
+        }
+      }
+    ],
+    "Root_probes_written_or_deleted": false,
+    "original_later_absence_cause": "unknown; not inferred"
+  },
+  "Git_review": {
+    "actual_old_HEAD": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+    "actual_old_index": "3e175cfcea426f6abc98a04c334a7427f6b71c515bc4a45557c02d4b9bf9c5d2",
+    "raw_backups": {
+      "HEAD": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/oldmutable-HEAD-before-adoption.raw",
+        "sha256": "66a57f6a3f84ddb0e00759a01577f94b332360c4a7cf019799b3af48a6a1ea1a",
+        "bytes": 41,
+        "mode": 384
+      },
+      "index": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/oldmutable-index-before-adoption.bin",
+        "sha256": "3e175cfcea426f6abc98a04c334a7427f6b71c515bc4a45557c02d4b9bf9c5d2",
+        "bytes": 1239688,
+        "mode": 384
+      }
+    },
+    "target_HEAD": "1a5e537b0531aa51bd7e3eded83bbb801f1c5133",
+    "fresh_index_uses_exact_NUL_paths": true,
+    "complete_actual_discovery_required_after_publication": true,
+    "partial_publication_window_must_have_no_source_readers": true
+  },
+  "protected_PG_allocation_ENV": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.env",
+      "sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+      "bytes": 98,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-allocation.json",
+      "sha256": "c005866cf315f588f251353a489c3f0b839362eba18ceac8c17b96f8408bc3dd",
+      "bytes": 1541,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-browser-25c0cd1e/allocation.json",
+      "sha256": "c005866cf315f588f251353a489c3f0b839362eba18ceac8c17b96f8408bc3dd",
+      "bytes": 1541,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-browser-25c0cd1e/environment.json",
+      "sha256": "2e85e5ff7183b5db84b9a165119b59c750f8aef26534b2634ce94ae953c4ced9",
+      "bytes": 8583,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-full-manifest.json",
+      "sha256": "7a34a4f4821b323a1e3376fad2115be2b8cadb01139326f2cc921013fab4b1bf",
+      "bytes": 3110342,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-full-manifest.json",
+      "sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+      "bytes": 3110343,
+      "mode": 384
+    }
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "file": "server/cmd/server/collaboration_knowledge_host_composite_test.go",
+      "issue": "old3ad still contains original v1 positive fixture; actual TAGb21 normal failed and race did not execute",
+      "why_not_fixed": "new private single-file revision is owned by preparer and is under separate review; do not mutate this old candidate",
+      "next_gate": "accept exact private FIX/default input proof, main ROOT narrow integration/recompose, actual TAG3 and its independent gate before any adoption"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/same-mutable-PATH-adoption-proposal-3ad93.json",
+      "issue": "source/.git device16777244 differs from persistent STATE/backups16777234; quarantine/rollback and private-index publication need explicit same-device/copy ordering",
+      "why_not_fixed": "old proposal is immutable and actual adoption is already held; author must carry this concrete execution detail into the fresh proposal",
+      "recommendation": "copy/fsync/hash/mode-verify STATE quarantine before removing only the guarded source path; stage temporary index and HEAD inside destination .git for atomic rename; retain guarded rollback"
+    }
+  ],
+  "actual_adoption_accepted": false,
+  "source_ready": false,
+  "future_target_requires_TAG3_file_and_new_full_manifest": true,
+  "old_Go6_results_relabelled_as3ad": false,
+  "reviewer_actions": {
+    "new_review_JSON": 1,
+    "Source_Root_ENV_allocation_or_rollback_writes": 0,
+    "Go_suite_SQL_or_runtime_actions": 0,
+    "lint_typecheck_test_reruns": 0,
+    "Node_pure_AST_analysis": 1
+  },
+  "final_ROOT_acceptance": false
+}

@@ -1,0 +1,93 @@
+{
+  "state": "actual_K3_diagnostic_confirms_foreign_member_continuation_barrier",
+  "recorded_at": "2026-11-04T10:13:11.251577+00:00",
+  "command_exit_status": 1,
+  "accepted": false,
+  "diagnostic_metadata": {
+    "binding_id": "19fb8190-88c0-47f6-9cb9-eb5d5f73bb0b",
+    "issue_id": "01a1a606-b9ac-76d6-a246-96732534f68a",
+    "last_list_run_ids": [
+      "f66e3562-94dd-4186-b35a-6aed93503b1c"
+    ],
+    "listed_runs": [
+      {
+        "binding_id": "19fb8190-88c0-47f6-9cb9-eb5d5f73bb0b",
+        "issue_id": "01a1a606-af6f-7455-ba41-b38af865e233",
+        "progress_state": "prepared",
+        "reserved": false,
+        "run_id": "f66e3562-94dd-4186-b35a-6aed93503b1c",
+        "runtime_id": "cac7b9a8-11d9-4848-91e8-653daf046fcc",
+        "same_issue": false,
+        "session_id": "275adebe-bd4b-4d04-8454-073903214217",
+        "step_kind": "continuation",
+        "unsettled": true
+      }
+    ],
+    "pending_derived_run": true,
+    "runtime_id": "cac7b9a8-11d9-4848-91e8-653daf046fcc",
+    "session_id": "e03f5850-9fb3-4690-bc6e-34dd9edbb2f9",
+    "task_service_knowledge_enabled": false
+  },
+  "foreign_run_matches_saved_member_session": true,
+  "saved_member": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-k3diag-v16-01/proof/K3/samples/K3-member.json",
+    "sha256": "42b5ee7aa15c0bbabf3dae4e5bc37d2d129f03e732d588e83a971a104ffadba6",
+    "identity": {
+      "kind": "run",
+      "run_id": "7805c20e-e6a3-4c8c-8b80-03c37f68fb23",
+      "host_identity": {
+        "deployment_id": "00000000-0000-4000-8000-000000000009",
+        "installation_id": "a17b892b-7b3a-4eaa-aa7d-c91dc420b7cb",
+        "issue_id": "01a1a606-af6f-7455-ba41-b38af865e233",
+        "session_id": "275adebe-bd4b-4d04-8454-073903214217",
+        "target_id": "eff15866-6cfc-4868-b612-28ed3e9225ed",
+        "channel_id": "593ef951-41b2-4679-a37b-8ed81abf7595",
+        "batch_id": "6fe2a16b-c6c2-4041-bbba-d136a83d3516",
+        "group_id": "bf380b50-a820-4d13-b85c-ad3e4a84dc89",
+        "run_id": "7805c20e-e6a3-4c8c-8b80-03c37f68fb23",
+        "fence": "1",
+        "claim_generation": "1",
+        "launch_nonce": "411e5885-b704-43c1-b354-6d0869159164"
+      }
+    },
+    "host_exit_proof": true
+  },
+  "named_terminals": {
+    "TestRK1KnowledgeFakeProof": {
+      "run": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "TestRK1KnowledgeFakeProof/K3": {
+      "run": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    }
+  },
+  "files": {
+    "started.json": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-k3diag-v16-01/started.json",
+      "sha256": "5a986c96ab1d3ac87e413fb29fb5350d00890b9667da86d8fd3428778674a600"
+    },
+    "result.json": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-k3diag-v16-01/result.json",
+      "sha256": "78e6dd6740bc8244a30fe1eb862727373b1fd1e0df248af7e81d5e5b7867ceb5"
+    },
+    "raw-go.jsonl": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-k3diag-v16-01/raw-go.jsonl",
+      "sha256": "f7ce3b68ca1df6ab68e216e46ce407a88e8e94b4a9b8c4b05587295794ea6f9d"
+    }
+  },
+  "frozen_diagnostic_source_sha256": "3d873520f490def55aaccc42bd4f577f969e19bfc4c5a5e3ebf81baf2344c140",
+  "source_unchanged_during_probe": true,
+  "root_cause": "The member-only K3 fixture leaves its real leader continuation eligible in the shared runtime/binding. List drains the wake and offers that foreign run; R23 pending-derived guard defers promotion of the new consumer root. The helper correctly filters it away, then reaches its unchanged timeout.",
+  "knowledge_flag_alternative": "false was observed but List handler does not read TaskService knowledge flag; exact unreserved eligible foreign continuation and pending-derived predicate establish the scheduling barrier",
+  "conditional_minimum_recommendation": "Clone consumer base and create/register a genuine consumer runtime under original managed daemon/binding; bind copied claim request/client/roster consent to it. Preserve shared approved source, old pending continuation, exact HTTP List filtering and original eight-role/15+3 schedule; no extra seeds or settlements.",
+  "new_correction_edits_permitted_by_Root_after_this_handoff": true,
+  "original_normal01_and_normal8_preserved": true,
+  "race_executed": false,
+  "real_Provider_calls": 0,
+  "knowledge_allocated": 0
+}

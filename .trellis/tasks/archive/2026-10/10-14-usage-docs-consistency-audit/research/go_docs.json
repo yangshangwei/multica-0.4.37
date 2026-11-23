@@ -1,0 +1,18 @@
+{
+  "command": [
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-p",
+    "2",
+    "./internal/docs/...",
+    "-count=1",
+    "-v"
+  ],
+  "workdir": "server",
+  "at": "2026-10-14T12:23:31.880226+00:00",
+  "exit_code": 0,
+  "duration_seconds": 1.594,
+  "log": "research/go_docs.log"
+}

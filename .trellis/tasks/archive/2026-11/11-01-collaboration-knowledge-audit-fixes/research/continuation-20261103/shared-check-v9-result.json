@@ -1,0 +1,2279 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-02T19:36:13.310896+00:00",
+  "reviewer": "/root/shared_verification_reconcile",
+  "evidence_scope": "read-only independent reconciliation; no new repository test, database, service or Provider execution",
+  "state": "failed_not_accepted",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102",
+  "source_run": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+  "source_run_sha256": "75f2bfdfbb4180c2d5b9f065242b8e58a6cc3e17664505c1e75ec7f938e85c0f",
+  "started_at": "2026-11-02T15:36:09.037397+00:00",
+  "finished_at": "2026-11-02T16:59:09.951147+00:00",
+  "whole_command_exit_code": 2,
+  "full_check_pass": false,
+  "source_log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.log",
+  "source_log_sha256": "6e45211aacc9bf32e41a633913ab82cb1ee10106e789fadff9f0907ffa894f6b",
+  "static": {
+    "successful_tasks": 15,
+    "total_tasks": 15,
+    "existing_warnings_do_not_mean_zero_warnings": true
+  },
+  "typescript": {
+    "named_passes": 13082,
+    "packages": [
+      {
+        "package": "@multica/core",
+        "pass": 4340
+      },
+      {
+        "package": "@multica/docs",
+        "pass": 62
+      },
+      {
+        "package": "@multica/views",
+        "pass": 7118
+      },
+      {
+        "package": "@multica/desktop",
+        "pass": 1272
+      },
+      {
+        "package": "@multica/web",
+        "pass": 290
+      }
+    ]
+  },
+  "go": {
+    "packages_completed": 82,
+    "package_exit_codes_all_zero": true,
+    "named_event_counts": {
+      "run": 20874,
+      "pass": 20852,
+      "fail": 0,
+      "skip": 22
+    },
+    "subtests_counted_as_named_events": true,
+    "no_test_packages": [
+      "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "github.com/multica-ai/multica/server/internal/admission",
+      "github.com/multica-ai/multica/server/internal/agentconfig",
+      "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "github.com/multica-ai/multica/server/internal/chattitle",
+      "github.com/multica-ai/multica/server/internal/dispatch",
+      "github.com/multica-ai/multica/server/internal/issueposition",
+      "github.com/multica-ai/multica/server/internal/profiling",
+      "github.com/multica-ai/multica/server/internal/runtimeapps"
+    ],
+    "all_82_record_counts_and_log_hashes_match": true,
+    "race_flag_present_all_packages": true,
+    "package_evidence": [
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154737416255_bb940f8eb38e.json",
+        "record_sha256": "72721113c6edc03bb59ce97f54c5386a097c6e4b1701a7473652fe898bc86741",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154737416255_bb940f8eb38e.jsonl",
+        "log_sha256": "5436543ac8550845976650364c923a72de2d4e49b5359129a90bc14b88c1dac8",
+        "counts": {
+          "run": 11,
+          "pass": 11,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154745590120_07eb79fa72b8.json",
+        "record_sha256": "69b1fe3cb86654d1fd96f68ff55aec529d2a533b34f9a98a6fa611562be86a7a",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154745590120_07eb79fa72b8.jsonl",
+        "log_sha256": "f51b7110875faa11d49243829e2cfbde3d06b8c05598ef44159170451c6c0042",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154747572919_f47ea76e9369.json",
+        "record_sha256": "48d0d3d7d6a2e8057e8b271792490fef7199c968499fb1f2736905516bdd29b0",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154747572919_f47ea76e9369.jsonl",
+        "log_sha256": "4f959ba3942d75b9d5520f27131f70e12088fad9d920932a2735ad37424430e1",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/migrate",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154748772659_f9a6f66e94fe.json",
+        "record_sha256": "a544c518966d017703a7fbfed78417a77c029a9e0311f02aa73ca1695d8ebb0a",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154748772659_f9a6f66e94fe.jsonl",
+        "log_sha256": "27f5fc7c1c557c58880d746a556d983348e72d4d060bfb57251ea784ba777717",
+        "counts": {
+          "run": 71,
+          "pass": 70,
+          "skip": 1,
+          "fail": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/multica",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154809631946_b0ca13f2a1d5.json",
+        "record_sha256": "b8e51b16930262ca6d2af5ecd8631b7f5907af03d07a71c62025aa3050700e4f",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154809631946_b0ca13f2a1d5.jsonl",
+        "log_sha256": "390e29b90f78babf1ac66cb1f0852fbf2fd1e6415d50b882af45300b08639bba",
+        "counts": {
+          "run": 1074,
+          "pass": 1074,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154817209339_6f87875654d8.json",
+        "record_sha256": "baa406d640b6a6aa46422a8c0cdcedb9a1d56df1ee60bc9b230f2b702ca58a8d",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154817209339_6f87875654d8.jsonl",
+        "log_sha256": "d2165ac0b904ef4f3bc2e59107f8de92158178f398ebfb00d357eb23ad82f7e1",
+        "counts": {
+          "run": 741,
+          "pass": 735,
+          "skip": 6,
+          "fail": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/admission",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154948973396_7427887f8751.json",
+        "record_sha256": "6500999389a8bb5194a2ff6c5c24cebf890808995c80e40c030c51fc4ffa3940",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154948973396_7427887f8751.jsonl",
+        "log_sha256": "a6ca7e0875575ceae939b2904060d236f3916d03acb5721e2bcfc3ec92b8e6ab",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154949919049_e243b33d7b90.json",
+        "record_sha256": "817a7b50d4f1a80dfbdee08c6fc56559d8a05e32c62ff9a420426a75abaa238a",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154949919049_e243b33d7b90.jsonl",
+        "log_sha256": "5a8ce630e626f13f5db77b8dfbc546b9cb633ad781a0d3e6403e232282d846b9",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/analytics",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154950421440_a33d11aa74fd.json",
+        "record_sha256": "0f9711b9df616f8ad821aa58e395b518349fa9ae889629c311d1ebbfe4d69e88",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154950421440_a33d11aa74fd.jsonl",
+        "log_sha256": "e7c558f43d921d18ae311bb84807d3c01dfa81bdfe824abc304766f530bfaf1f",
+        "counts": {
+          "run": 8,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/attribution",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155008447510_8ec97853df30.json",
+        "record_sha256": "54e88b00022c3299fda9915dd561933f4a7be61c26dce829ee0d8ff73ee01261",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155008447510_8ec97853df30.jsonl",
+        "log_sha256": "a7356c6ba94dc379993df45a040c749a69dd2530c047a6cd140ec53f64d22975",
+        "counts": {
+          "run": 31,
+          "pass": 31,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155010715821_d642fc7111ff.json",
+        "record_sha256": "25a5db1ac6407512984d0b66f4a395fa7bb08e508372f5e5b1671c4260e64fc9",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155010715821_d642fc7111ff.jsonl",
+        "log_sha256": "bdc30b16f9f87d5b7cd0d2b9bd6c5d8b12a07c6262024dc8445df7a52d2c388c",
+        "counts": {
+          "run": 4,
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155013541310_d4b8dc307441.json",
+        "record_sha256": "95a903f1f1d4d99d4f036443b887f255be565350f53753419615e8c167176ebe",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155013541310_d4b8dc307441.jsonl",
+        "log_sha256": "be7b28f1c10c519367e9a0fd538b432a4fbf854afcf61df80908b5ed5f321ab3",
+        "counts": {
+          "run": 113,
+          "pass": 112,
+          "skip": 1,
+          "fail": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/changelog",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155020701564_cc1252fad4dc.json",
+        "record_sha256": "fc73173e82cc8cc1f22fe16750e6f4bded24e22229fcd1f7ef93cf37749e70f6",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155020701564_cc1252fad4dc.jsonl",
+        "log_sha256": "8ee7098b97ca795d18334f69d52212b0ddc6c4429de4b5a65eb0719c872257ec",
+        "counts": {
+          "run": 56,
+          "pass": 56,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155022990334_4b76585c3aa4.json",
+        "record_sha256": "0d0ad52f51fb432d4b3f7b3d9105a3d48beb141e7c37ed49d841f5aa25a2e7fb",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155022990334_4b76585c3aa4.jsonl",
+        "log_sha256": "bac05262af1c0292e759466399ee159a70dd478f6e1efffd1a9dace1f3c1e672",
+        "counts": {
+          "run": 3,
+          "pass": 3,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155024967197_b8d431c478e1.json",
+        "record_sha256": "a293d2806f18614b644c03e25d6fe8a07704042866e0a8e12bed0342138fa3bc",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155024967197_b8d431c478e1.jsonl",
+        "log_sha256": "3e4eac5d98e43b06cd5bfc3e4a5dd9706f0e2c7c78750148f07c0f6fb1a4d192",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/chattitle",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155025548291_f26ab7ece539.json",
+        "record_sha256": "07f7d9c0daa54459decb4144b0b49f09ac14d5acf1c5e3eb08845b2c7e8da9d2",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155025548291_f26ab7ece539.jsonl",
+        "log_sha256": "d0af66896a264351489a4b933a47e6980cb50f2ebdc390c2fee8d1569665518c",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/cli",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155026033060_248934fbfb73.json",
+        "record_sha256": "88ff175be13ebc279e43705910c999b2863d675656da4443108e6376c1904a94",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155026033060_248934fbfb73.jsonl",
+        "log_sha256": "c9f6c7b8224ffbff90a9c02eaa03266a1941166f22c224740e847320cbbe1be2",
+        "counts": {
+          "run": 326,
+          "pass": 325,
+          "skip": 1,
+          "fail": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155031588714_cffe407cfbfc.json",
+        "record_sha256": "0b68d4d6e949a989b2c410639bc280f4c5b7c0fa4a830976fbbbd6005bddebf0",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155031588714_cffe407cfbfc.jsonl",
+        "log_sha256": "e7ea338ac087d10a065341a10d04906af4280d260adbe5c5ae677e7db58d10f3",
+        "counts": {
+          "run": 3,
+          "pass": 3,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/collaboration",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155033798301_472bb8236d85.json",
+        "record_sha256": "92092e06c4a7814c6aef2f9aa15ede2c036effb568ef60fe75ebb49cbe0ce2cc",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155033798301_472bb8236d85.jsonl",
+        "log_sha256": "61e9181767f310ab03b694ea44eb7e63051722368a0a4ee39dcf8d4ab81116c0",
+        "counts": {
+          "run": 11,
+          "pass": 11,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155037078269_7a21f045e560.json",
+        "record_sha256": "8c06359cfcc7111a685ef022741e682a2f67681fb7c059ea0b49636347f124f7",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155037078269_7a21f045e560.jsonl",
+        "log_sha256": "9ba47c3411a1046f72fb47f39539b64c391ac8681cbbcc69beeeb15429c70229",
+        "counts": {
+          "run": 1716,
+          "pass": 1714,
+          "skip": 2,
+          "fail": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155143533821_e304ab6e77ff.json",
+        "record_sha256": "0583c652115128bc74121703eadc79dba69f823377c1802d9e8a1fa9c54c3acf",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155143533821_e304ab6e77ff.jsonl",
+        "log_sha256": "1110d6ec754cad923486b9908fb150157f249c469b5fc4ca2806957209c9045b",
+        "counts": {
+          "run": 348,
+          "pass": 348,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155321388180_443be4706fd4.json",
+        "record_sha256": "16526909d515d7e40539b616f6c335e0d9a36377e996a1319e88fecabf7e8329",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155321388180_443be4706fd4.jsonl",
+        "log_sha256": "195add3217269fd462687c1dfb6e1628d4d27b28a96ecf89c70701332bf21dc6",
+        "counts": {
+          "run": 1345,
+          "pass": 1345,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155427883953_abe022601f40.json",
+        "record_sha256": "3b4f2d2838f71edd1d67294dbdfa20650ac492d4d185caf6f1c4e5be74ca1097",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155427883953_abe022601f40.jsonl",
+        "log_sha256": "d2f6707a735ba8e2a8040860f23471c57ea21b613084ea197302336d3768acd4",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155430993222_9ae551c14945.json",
+        "record_sha256": "dc630c9ba3199c937c4f9c278050007439914fdaa699783181157704bf4d73f2",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155430993222_9ae551c14945.jsonl",
+        "log_sha256": "47f6956ff49292d09a05530c7c5cc5379bfa47aecf2b90c0e048829dbe0e48e8",
+        "counts": {
+          "run": 61,
+          "pass": 61,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemonws",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155438770617_a2993220b42d.json",
+        "record_sha256": "176babbbc0f435ab4b20ae338ccbfcec8e342a81d0ad611249b5603e38a66da2",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155438770617_a2993220b42d.jsonl",
+        "log_sha256": "fb2e4aacb0c8595278890055d1aad7528e4fe3743be6cc490d8e2780ad79bb70",
+        "counts": {
+          "run": 30,
+          "pass": 30,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155443582251_2ec21eaa1b3e.json",
+        "record_sha256": "02d7b20a6dd43dfaffb915ec6a891851b5ca4ac6bf9d71aeb2e071da05a0cbef",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155443582251_2ec21eaa1b3e.jsonl",
+        "log_sha256": "bfd2284d0d266c3fc8ca214b04b257484d9dcafe734a97b47264b6ea47750346",
+        "counts": {
+          "run": 33,
+          "pass": 33,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/dispatch",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155446975805_2c99ee2c73c6.json",
+        "record_sha256": "46e0ffce58459c3d294733c3a737c30c1d72b22af3f983a2a3f200fed7f7d1db",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155446975805_2c99ee2c73c6.jsonl",
+        "log_sha256": "a580293790d6c6561be74a7f69f43b6010ef37a169b167a915e7e05af8a90767",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/docs",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155447219095_0fb816f659c3.json",
+        "record_sha256": "1fee976c207e43b437e207dc7846f7f5b008e30ec212beb12e92e06a5136ab96",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155447219095_0fb816f659c3.jsonl",
+        "log_sha256": "83208306f8306a97f93407260f2ffb3ba8dfce79bc4fcb1b4d42340dae8d596b",
+        "counts": {
+          "run": 16,
+          "pass": 16,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/entitlement",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155449949744_103bcb57d099.json",
+        "record_sha256": "c38a779a3b7e9bfeb53ad526051b1d2ced0e7d9f20f011421b3e7ebdfe8743a6",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155449949744_103bcb57d099.jsonl",
+        "log_sha256": "eefd075a77e338bea4150f8d0b32cc1142823e6e13deceff1b00ff1d1341e55a",
+        "counts": {
+          "run": 33,
+          "pass": 33,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155452196305_2f5af1a52539.json",
+        "record_sha256": "ecb09e91e03de49475594789e9619f984f9a75ec007965bcc34ee766c30f5df0",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155452196305_2f5af1a52539.jsonl",
+        "log_sha256": "c7fb631c512390a7661f16c4e4e75ba31a028608aed9b3ffb2ca250d87b6f582",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/events",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155454172219_c824a98f5f50.json",
+        "record_sha256": "05246e56d3d88731726ff451d8b54f3d68ca1479bb86dc3ee9b2ca0ff714a4c2",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155454172219_c824a98f5f50.jsonl",
+        "log_sha256": "c79e1401c510edc1aa057808b703dea94bf33b8ef6601d930ded10d8a29d89de",
+        "counts": {
+          "run": 8,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/featureflags",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155456077630_5baa8458c611.json",
+        "record_sha256": "c3c1a9653fdd0ab3b3fe60e6db12f51ae4765d592772a9ee79f385c41e5ddaeb",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155456077630_5baa8458c611.jsonl",
+        "log_sha256": "a4bd43023fdc873e7ee92b89b83f43380db7d849fb2cf3f91b7b14f65a1fed3e",
+        "counts": {
+          "run": 7,
+          "pass": 7,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155458008015_199d57419d78.json",
+        "record_sha256": "fdb57da8450ae7ba7d6564e09ec3b0f55255f28deb9c4b7735cf29e4033f5c78",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155458008015_199d57419d78.jsonl",
+        "log_sha256": "97e7cbbe03c5b20365e88ef2fc0f0456debf05d84c775e34cc61a7254da2bfcf",
+        "counts": {
+          "run": 5332,
+          "pass": 5325,
+          "skip": 7,
+          "fail": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/installation",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160001278642_f98f1babe5ae.json",
+        "record_sha256": "37e4b7bad6e338a426b4b27915b5dbb3c3780bb26a0550c501b1a5befdbe13f6",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160001278642_f98f1babe5ae.jsonl",
+        "log_sha256": "5998b345a8b7b802d1085a3ec894c254d922376e16a038276b13dd455ccde63f",
+        "counts": {
+          "run": 8,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160004069125_bbd7303d32a6.json",
+        "record_sha256": "f27cc080bfc4a652a252fd97cae6d7a2462446f8d72add3bf0e48e32afb15438",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160004069125_bbd7303d32a6.jsonl",
+        "log_sha256": "628e9d5de3d07f1b7159c8368a8cbc148f03959f5e615673fef375046b801743",
+        "counts": {
+          "run": 22,
+          "pass": 22,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160006086876_d01cb786d08e.json",
+        "record_sha256": "0f9cfdc69eb2677b3b5c5260439a29b342dffc504b35d7e32ca367c6a60938a3",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160006086876_d01cb786d08e.jsonl",
+        "log_sha256": "2a140163a1711714eff144e3b3b1059eb2510ba7d1556b18de1336393c844bf9",
+        "counts": {
+          "run": 211,
+          "pass": 211,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160016704365_e133f82ee548.json",
+        "record_sha256": "e50178f301ade39226f185323551853b5fc703a1feca4ab11778afe5e5da1b25",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160016704365_e133f82ee548.jsonl",
+        "log_sha256": "c1ca1df15c280c0b3f14973f46f033fc996a49f8a10a5738af000721427b7c35",
+        "counts": {
+          "run": 42,
+          "pass": 42,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160019007321_33991a652421.json",
+        "record_sha256": "894d4a925d7d48ee230a209f8dee855478fdece26cf94f8371e678b493836156",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160019007321_33991a652421.jsonl",
+        "log_sha256": "b9d728b1f639c8d7d35485e345f67eb1fb15dd3f81bc0db10d9c7c1c46e6a820",
+        "counts": {
+          "run": 212,
+          "pass": 212,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160027474652_a384d9e70280.json",
+        "record_sha256": "3a46f34f3b8c54c188e2533fbea78e4262d8b6b02b284efce82983eea0b77a5e",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160027474652_a384d9e70280.jsonl",
+        "log_sha256": "98e766c00b7a3df1719ae47fd27ed73c1a11398194277ac01e953102ebe0d020",
+        "counts": {
+          "run": 36,
+          "pass": 36,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160031443490_36f5a604ea4d.json",
+        "record_sha256": "18f3e852662ab490568b3fab5fb671408d6703d000956760a54026375400f5d1",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160031443490_36f5a604ea4d.jsonl",
+        "log_sha256": "79c72432f1e65e2d402793c676fe5bf9d52ea32bc9d5357a350e3316d97d6fff",
+        "counts": {
+          "run": 426,
+          "pass": 426,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160039394028_a57e8d23d980.json",
+        "record_sha256": "431ff36a05448d23f686ddb76c5a01d0eb6b36dbdcfbb534e007cbbeae4ff7cb",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160039394028_a57e8d23d980.jsonl",
+        "log_sha256": "c7e267de4d130613cfa557364b66877ffea0440b26c9ef4a67f14a3d0722ab17",
+        "counts": {
+          "run": 188,
+          "pass": 188,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160044357687_72398aa1f6d0.json",
+        "record_sha256": "46cae491d0780361076f0ac2a1947b29dadde50e65536efae19cbfdd4bddccae",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160044357687_72398aa1f6d0.jsonl",
+        "log_sha256": "4185f5f6c2b4d658f5507b08673eb3bf97592bbb02461b2b97db629b9e3ccca4",
+        "counts": {
+          "run": 114,
+          "pass": 114,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160055065256_b565f47a53d0.json",
+        "record_sha256": "ad23b362e7c074ffba108d9dc696cacec3845613cbe1fe675ede20c88e873a90",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160055065256_b565f47a53d0.jsonl",
+        "log_sha256": "4622a63fb0b73b48a8db7a105598d11c542e29dc61dd48d0c6c6bdaebe29ef75",
+        "counts": {
+          "run": 15,
+          "pass": 15,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160057529091_549757f027eb.json",
+        "record_sha256": "845a38acca5c0dee1b9e355991dac0403e737383c4ea67df6b49e034ef23d037",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160057529091_549757f027eb.jsonl",
+        "log_sha256": "1ee2f550710ac502a8d474fb9f50129435d0beaed67157edae8128f92bd2ec03",
+        "counts": {
+          "run": 616,
+          "pass": 616,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160200189148_6bdd179505c2.json",
+        "record_sha256": "60ed2a94ffe6a20a53957a97764756af9fe68c36511838650f6066d5fb97bf6f",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160200189148_6bdd179505c2.jsonl",
+        "log_sha256": "31e6380a2103cd4cf888c46d1ae85cdff109bd2c65864a947717ada8db2a33f6",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issueguard",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160203582815_3202a0f12174.json",
+        "record_sha256": "1f9b219a9a91eee703e3e7588eb70e6a50e4ac0df90a497b11c8eb4410e5c913",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160203582815_3202a0f12174.jsonl",
+        "log_sha256": "7d81705774dffdaa01c16e0c2c47a525333dda9f5ee4f644fa3561aeda40100c",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issueposition",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160205693944_7a51ef9d7409.json",
+        "record_sha256": "78022936ff03b2448fd1d218de318afa895ded9f44222d8dc3f29628ae23a6d7",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160205693944_7a51ef9d7409.jsonl",
+        "log_sha256": "4cd4ea48905e40474f9414aad5429265f623c79e22701918b2455065ab6b902f",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160206000479_3df108fbf701.json",
+        "record_sha256": "0e4e8be89b108dbb14d441ad985701bef66dd2926afc4bc80b76f546d7179306",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160206000479_3df108fbf701.jsonl",
+        "log_sha256": "4eb95b73412b03c36466bb1149072c85abee39db3f22dbff28ad6894d43aeaa6",
+        "counts": {
+          "run": 26,
+          "pass": 26,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/iteration",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160208005736_fb52e0df1f83.json",
+        "record_sha256": "5966185e02155fd33998359f5264f788523cee20357cd87567d6f80d5cdde0b1",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160208005736_fb52e0df1f83.jsonl",
+        "log_sha256": "b83dda81f7f5e58fd682bfbb2e7c854401515f26b875dfe7704b55c15ad5e80f",
+        "counts": {
+          "run": 122,
+          "pass": 122,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/logger",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160210690439_b3616ef0c58b.json",
+        "record_sha256": "f853fedab3dfec7ae03e159710843a5251a97105502d57709b0380575bb6ce18",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160210690439_b3616ef0c58b.jsonl",
+        "log_sha256": "4f65d79d208f2504e44b32b635f781af873fadd744aa442bf7016f7c7d5ba2d4",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/metrics",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160213381749_734f4abb7b12.json",
+        "record_sha256": "b541fdf859e9c76641b408dac8ba447d79a85eea8f5013982d497a5cce1522b6",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160213381749_734f4abb7b12.jsonl",
+        "log_sha256": "6f61924288ed04b20d4692d3b94b84d65bab04b00474aae4e47b5392306fcc8c",
+        "counts": {
+          "run": 87,
+          "pass": 87,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160219241184_919b30f55bea.json",
+        "record_sha256": "030cc83baf462419e0b90776f577e2aae600db8f6b5a7058fab96f90b1e04933",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160219241184_919b30f55bea.jsonl",
+        "log_sha256": "f0c14eb80ed9b70c763e18319f04978f01ee1da8597a894846ad27f12618fd0a",
+        "counts": {
+          "run": 119,
+          "pass": 119,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/migrations",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160223337155_33c023a139ab.json",
+        "record_sha256": "14e7b76e6bb406777a86f17e2bd354d9625125484b112fece0466241b05ef7ba",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160223337155_33c023a139ab.jsonl",
+        "log_sha256": "fbb5e13878f0bcaece928e594a83dab0f1c33507fda3f7e06b4c52f0a2a57ac9",
+        "counts": {
+          "run": 536,
+          "pass": 536,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/profiling",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160258001617_9f2c7589a33e.json",
+        "record_sha256": "a9646b6ff62e5abbe77e934ea5875ae1709bf1300b15cac29a6e555e5dfe557c",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160258001617_9f2c7589a33e.jsonl",
+        "log_sha256": "de8fd75822a145057f83d60545918f0d91cef0fc5c57cdee16135bb57e028767",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160258548543_402988e4441d.json",
+        "record_sha256": "a88f60881e520b03e89f6acc34c449e0333ffefd14aea285a3fcd62901a01a03",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160258548543_402988e4441d.jsonl",
+        "log_sha256": "d8d061222f81f7a550f1edecf22b73093161aee95e8eec24afdc8067e81e4702",
+        "counts": {
+          "run": 18,
+          "pass": 18,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/realtime",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160301341169_08997a7fa7fe.json",
+        "record_sha256": "395f21c618a9784bd4ad2882390537a4ed929ff256f09a34aeaef90e5fc36005",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160301341169_08997a7fa7fe.jsonl",
+        "log_sha256": "3c6c7cac7f9582553d817ceaa5eb7feb9e1ba0594963b6b3b5b2d2390b3e2fa1",
+        "counts": {
+          "run": 87,
+          "pass": 87,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160306340308_6d7856d79665.json",
+        "record_sha256": "f7ab02f1ef809b71b59e2e0d4c85b6bb23b6c70d8a4b88c4b525629b965d1498",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160306340308_6d7856d79665.jsonl",
+        "log_sha256": "94db7dad0c6bb30233255a8e7157bc72e69e9dd2ef75fee7ee85f4bf8b3e4e3a",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/scheduler",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160306592441_b41f457af4f5.json",
+        "record_sha256": "20a121a03cfea7da781eb127c493cd95a6628882e897397c4ec74e8278ad6529",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160306592441_b41f457af4f5.jsonl",
+        "log_sha256": "b3223a88112984315aa2a991432b3bac005c0906c3f17efb186ae81a75ccb4d9",
+        "counts": {
+          "run": 31,
+          "pass": 31,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160312096967_2f225990571e.json",
+        "record_sha256": "eb4a61c8c607a33b2881594bc28b2e3c1510c04b987918573f34052c00427215",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160312096967_2f225990571e.jsonl",
+        "log_sha256": "140decf7fbbec58c5e4f0deb4ee433a43c7ee886d61ece0027219dcb37ba3e82",
+        "counts": {
+          "run": 23,
+          "pass": 23,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/selfexec",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160314433499_0ee13f0d2884.json",
+        "record_sha256": "0ac4d6a5b75eec8fca4585e4f171fb8d33f24c6c61f7ce7cd2da4114040ce032",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160314433499_0ee13f0d2884.jsonl",
+        "log_sha256": "3928dc2c11e3042487f0b08a814b630aa2438eaf9c070865856f77f781c4a113",
+        "counts": {
+          "run": 10,
+          "pass": 10,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160316363952_986dfe9cbf73.json",
+        "record_sha256": "ac0a9bde3fbdaa7b49de07beda389fd3c5b4780c3acf05ac37fb8e540786e143",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102160316363952_986dfe9cbf73.jsonl",
+        "log_sha256": "2e87c850fdd47a63e0803878a9283420f69588a19e151b06504fd2b539a30536",
+        "counts": {
+          "run": 3340,
+          "pass": 3340,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/skill",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162047495131_c0b56fe05d44.json",
+        "record_sha256": "4cc5eac16ac9bfb925daf62eb9ee1c8215d6bbbd13a92a48116a46f77514e87e",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162047495131_c0b56fe05d44.jsonl",
+        "log_sha256": "ad12762e24822e02c139b70f1072b461a108a10ce2a37c7aca819b790bf5ddcd",
+        "counts": {
+          "run": 66,
+          "pass": 66,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/storage",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162050330346_85091a8daf2c.json",
+        "record_sha256": "11002372ec7ffde19f8ca1204a84644dcfb5ac4f19b4db15a35c8726304a81b3",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162050330346_85091a8daf2c.jsonl",
+        "log_sha256": "fe70ca05917f6f5453af21cc6aa84375b2954f8f94317b7364f7c93851c47da4",
+        "counts": {
+          "run": 99,
+          "pass": 99,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162053782013_0548817c3f9d.json",
+        "record_sha256": "e628dfaa898bacbaf705303d620adfa5397dd0bebefb8ffa009bd789a6377435",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162053782013_0548817c3f9d.jsonl",
+        "log_sha256": "4a4a2332a8497cfe7c1352b9f8009ea5561cfe7d6fcdaf32cca6250d58b0f73e",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/testutil",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162057978424_8c57f41cf87d.json",
+        "record_sha256": "bd2694096d1caad1a346fed9cebb1b5257dd0c1fd056dd5f4e888d41ea79de09",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162057978424_8c57f41cf87d.jsonl",
+        "log_sha256": "e6583b8c0976ca9d28fab1aded6a5f3ea4030d3de643a9c6bf1cc0766ee985be",
+        "counts": {
+          "run": 18,
+          "pass": 18,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162100353396_c02d86db4237.json",
+        "record_sha256": "200a3346f2e56e11c27cc3b1bdb8dd055ebccb75152714f44ee3b136bef87e58",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162100353396_c02d86db4237.jsonl",
+        "log_sha256": "d549b4ce8c2590caa5496da0773e6542749a9b9f2686b214ac006832f764565e",
+        "counts": {
+          "run": 15,
+          "pass": 15,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/util",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162102229079_d763dfcd7176.json",
+        "record_sha256": "e4486eabcaf6d7195e19d88ddb11a14a9359f64b91b23b14ea8d2d7a2d1191bf",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162102229079_d763dfcd7176.jsonl",
+        "log_sha256": "d762f70330976f795d4583bdd4e5c610e7f8ef1e82a5c5f00fe99aac45163199",
+        "counts": {
+          "run": 115,
+          "pass": 115,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162104369090_f8cc8b7af4e6.json",
+        "record_sha256": "2858ba303a31811ca55b4fe5a2cec07e099776988c64cb452180f8360fd0d326",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162104369090_f8cc8b7af4e6.jsonl",
+        "log_sha256": "c014f95ee359b722f96281f72552dc74c1e721ac57f2ace0cbf2743e768aa967",
+        "counts": {
+          "run": 10,
+          "pass": 10,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/composio",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162106209671_3b4cd4ae0d09.json",
+        "record_sha256": "2b5c051155d1850baf572ed62f28f1073113ca47f9671c9659151699cc1614b3",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162106209671_3b4cd4ae0d09.jsonl",
+        "log_sha256": "64ba52ec5c5a90b2321c898dbe8176cd42b672be70147cbea5b3d4069870c059",
+        "counts": {
+          "run": 39,
+          "pass": 39,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162108395476_fb47920ce532.json",
+        "record_sha256": "3fa3068de766e0e471ee40da7ac858f9dde1d0290fa7ac32d3714a9bb8d7baba",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162108395476_fb47920ce532.jsonl",
+        "log_sha256": "f4edb48b18d30d7756a0ed1bb81c9ec92869421a5096c25695fb008337802ef3",
+        "counts": {
+          "run": 6,
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/dbid",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162113018526_bd354a329a15.json",
+        "record_sha256": "30f5898e9a2f1bf0e13091ea4bb2524f327cd150193530ca2af1a1b401cdd86c",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162113018526_bd354a329a15.jsonl",
+        "log_sha256": "1d9bd68b5dff1bab94c35c554305f337c20bbfb07ef7e6315b5e8a459f5eaf1f",
+        "counts": {
+          "run": 23,
+          "pass": 23,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162117293436_d7ecdfa3f812.json",
+        "record_sha256": "2763ddab5d1ecf04204521c5a64ced8b5136eb3239db5e6a58f53b4dfc7739ab",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162117293436_d7ecdfa3f812.jsonl",
+        "log_sha256": "7923a03559d8be653ba5d5068f632cadfaf8f4b0aca6899cc1ae114823482d42",
+        "counts": {
+          "run": 51,
+          "pass": 51,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/llm",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162119290701_e859efa47f08.json",
+        "record_sha256": "d7cd6158979e45bcb2c2c8f726f1d6717cac6f3875100901960cb84671c801b8",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162119290701_e859efa47f08.jsonl",
+        "log_sha256": "58c4216ab21201a185832ef175abe6e18ff9dff056012a11396c2e111664be91",
+        "counts": {
+          "run": 34,
+          "pass": 34,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162129169935_2801bc792e83.json",
+        "record_sha256": "bb7b7eb8b1dc3278343de1bebebdeb3b30950046b51a7013c65e86e32cc1099a",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162129169935_2801bc792e83.jsonl",
+        "log_sha256": "03ca4bb8d09bdca525052b5a59c981a36a9fb86c301be1fc6eab330654c5c91c",
+        "counts": {
+          "run": 99,
+          "pass": 99,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/protocol",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162133743253_b2f76499e952.json",
+        "record_sha256": "e83c3d384257ff7d9341b794524c7728a9e386939d2b6427f92ab206dd1790b4",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162133743253_b2f76499e952.jsonl",
+        "log_sha256": "a8d20cad122e11096adb4e0c460c580b4c71708faa91f1e1e5dd8a323b8fdbf4",
+        "counts": {
+          "run": 390,
+          "pass": 390,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162137317178_4fc98d5f8acf.json",
+        "record_sha256": "9677032e24e2c8c8339fa3afca5bdd838b9d2e784992ab5e2ed8f8973078104f",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162137317178_4fc98d5f8acf.jsonl",
+        "log_sha256": "0d0cee8934b5fd9e4651b1dbb14bd3cdeb269ce3f278d6cafb7524fa6c6270d3",
+        "counts": {
+          "run": 5,
+          "pass": 5,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/redact",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162139742439_4f0dde5e8035.json",
+        "record_sha256": "ce29fb21016674915e4cfbb358b6dd612d313a774f30d50d0bf727a4c72f8ae3",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162139742439_4f0dde5e8035.jsonl",
+        "log_sha256": "c32cb5f6d1c4819386ded3969868e5672685620f7009dc6915c4f26825ff9e6f",
+        "counts": {
+          "run": 35,
+          "pass": 35,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162141889309_b541162c7d6d.json",
+        "record_sha256": "124b7c62694d89d5d3e029affd585077f65ec08afcdb7efcc5ea9e7fb44c1bff",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162141889309_b541162c7d6d.jsonl",
+        "log_sha256": "295c535bb1081a23f0fbc89ec68014abfa43d3c01d82b9435c491f387b7c1fc0",
+        "counts": {
+          "run": 8,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162143949458_e6acddbc5503.json",
+        "record_sha256": "5035481153fab750961110ba9511fa7922521f52dd3a8728a12582268284b036",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162143949458_e6acddbc5503.jsonl",
+        "log_sha256": "f7e4396a700c163a576c7d53dd75be3a7fde346d80f072d4516d3f14c7a9e7b6",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162146003671_2405237448a4.json",
+        "record_sha256": "879185a3bf869834db07c1b28ca599657ff12e9e0191e1dc69a52aed28352849",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162146003671_2405237448a4.jsonl",
+        "log_sha256": "07810d850064168e3968fdf8787d8d2030c910c245f471fa9cd1fa6fa1e12c8b",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162147866008_d8de8e43c096.json",
+        "record_sha256": "13c57d2c95a516f4cc6cc34d6f81237f52017e33f07635440d3fd81d05e647fd",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162147866008_d8de8e43c096.jsonl",
+        "log_sha256": "144851f5e9737be48a4901681802f6406fc455be1b8939e767f1cfab362311ec",
+        "counts": {
+          "run": 222,
+          "pass": 222,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162150086550_56802910400e.json",
+        "record_sha256": "588434db31fdaef5260a94c6efaa3b07f49b8840c6d1b3855202f059670c40d3",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162150086550_56802910400e.jsonl",
+        "log_sha256": "2740bb2bc7176536feb08a58300d897ff7ddf5339cd5eb88c4244f8c9c68796a",
+        "counts": {
+          "run": 1955,
+          "pass": 1951,
+          "skip": 4,
+          "fail": 0
+        },
+        "exit_code": 0,
+        "compiled_without_tests": false
+      }
+    ],
+    "explicit_skips": [
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/migrate",
+        "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+        "reason": "migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154748772659_f9a6f66e94fe.jsonl",
+        "line": 301
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+        "reason": "collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154817209339_6f87875654d8.jsonl",
+        "line": 401
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationPartialResumeRoutesLinux",
+        "reason": "collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154817209339_6f87875654d8.jsonl",
+        "line": 511
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+        "reason": "collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154817209339_6f87875654d8.jsonl",
+        "line": 991
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+        "reason": "collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154817209339_6f87875654d8.jsonl",
+        "line": 996
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+        "reason": "collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154817209339_6f87875654d8.jsonl",
+        "line": 1001
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+        "reason": "collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102154817209339_6f87875654d8.jsonl",
+        "line": 1006
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "test": "TestPasswordLimiterSharedAtomicAdmission",
+        "reason": "password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155013541310_d4b8dc307441.jsonl",
+        "line": 347
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/cli",
+        "test": "TestCLIConfig_UnknownFieldsArePreserved",
+        "reason": "config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155026033060_248934fbfb73.jsonl",
+        "line": 458
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+        "reason": "collaboration_test.go:189: requires real Linux kernel containment",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155037078269_7a21f045e560.jsonl",
+        "line": 935
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "test": "TestIsDriveRoot",
+        "reason": "local_directory_test.go:383: windows-only behaviour",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155037078269_7a21f045e560.jsonl",
+        "line": 2952
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+        "reason": "autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155458008015_199d57419d78.jsonl",
+        "line": 3097
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestIterationI1P95",
+        "reason": "iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155458008015_199d57419d78.jsonl",
+        "line": 13657
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestIterationI1DisableP95",
+        "reason": "iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155458008015_199d57419d78.jsonl",
+        "line": 13662
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+        "reason": "skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155458008015_199d57419d78.jsonl",
+        "line": 18395
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestTriageQueueScaleBaseline",
+        "reason": "triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155458008015_199d57419d78.jsonl",
+        "line": 19745
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestTriageWireFixtures",
+        "reason": "triage_test.go:566: wire fixture export requested only by cross-package verification",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155458008015_199d57419d78.jsonl",
+        "line": 19826
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+        "reason": "workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155458008015_199d57419d78.jsonl",
+        "line": 20639
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+        "reason": "acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162150086550_56802910400e.jsonl",
+        "line": 130
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+        "reason": "codex_test.go:3198: Linux signal/reap semantics regression",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162150086550_56802910400e.jsonl",
+        "line": 1421
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestPiExecuteAttachesStdinPipe",
+        "reason": "pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162150086550_56802910400e.jsonl",
+        "line": 6728
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+        "reason": "claude_test.go:756: root-only preflight assertion",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162150086550_56802910400e.jsonl",
+        "line": 14293
+      }
+    ],
+    "L7_named_results": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "test": "TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit",
+        "action": "pass",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102155037078269_7a21f045e560.jsonl",
+        "line": 2551
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+        "action": "pass",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162150086550_56802910400e.jsonl",
+        "line": 3857
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback",
+        "action": "pass",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/go-packages-v9/ccheck_20261102162150086550_56802910400e.jsonl",
+        "line": 3905
+      }
+    ]
+  },
+  "browser": {
+    "raw_report": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/makecheck-playwright-results-v9.json",
+    "raw_report_sha256": "8dea30021a5f386e6a217600223c3c6ec299e1a8bd156849a317b48b98de14d3",
+    "stats": {
+      "startTime": "2026-11-02T16:28:06.201Z",
+      "duration": 1860038.142,
+      "expected": 334,
+      "skipped": 89,
+      "unexpected": 16,
+      "flaky": 0
+    },
+    "scheduled_identities": 439,
+    "workers": 1,
+    "retries": 0,
+    "attempts_per_identity": 1,
+    "original_failures": [
+      {
+        "file": "e2e/capability-market.spec.ts",
+        "line": 5,
+        "column": 1,
+        "title": "capability market restores type and draft through history while resource management stays separate",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "timedOut",
+        "attempt_count": 1,
+        "error_message_sha256": "66bd61498f1f6a4387f6a4da712d6f1dc248cec3cc7507fd19ce6dc6d3d7d752",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/capability-market.spec.ts",
+        "line": 107,
+        "column": 1,
+        "title": "capability market isolates workspace resources, preferences and transient drafts",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "49e6e5ade08bea27dda67d7d4e438ece597573780f1b5a17e1c5ffde0773ba46",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/capability-market.spec.ts",
+        "line": 219,
+        "column": 1,
+        "title": "capability market separates catalog failures and polls only the active type",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "360a70853a9e4d1c71639255643c9529e4e65ec9000e8ca932643108c91fe89b",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/collaboration-memory-web.spec.ts",
+        "line": 7,
+        "column": 1,
+        "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "0e07a3653a8ae2c0dbde1d269e31b8ad1ea07697c62b336a80958eed25c9eaf5",
+        "classification": "history control was not opened before original Purge v2 click; two-line harness addition preserves original assertions",
+        "cause_status": "original selector timeout observed; exact reason for prior collapsed state not established",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/noncatalog-repair-review.json",
+        "targeted_replay_group": "memory",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/localized-template-defaults.spec.ts",
+        "line": 203,
+        "column": 1,
+        "title": "specialist skills localize, search and open their official copies without rewriting stored content",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "0212543ed7219ba3afb118fbbc3fa9f53d65b06acd9ddca51e04d2befcc3c3bc",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 71,
+        "column": 1,
+        "title": "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "01417c523e5fa118087198a64ba97ac8d0c03ddb3c7b109cd26a5deb1d0f0505",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 144,
+        "column": 1,
+        "title": "uses the collection canvas and adapts template columns to the available width",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "748dc25cc2008bca4ee55aa185862f0c3b76099128ee593a0f6bdd741c8d6864",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 188,
+        "column": 1,
+        "title": "creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "timedOut",
+        "attempt_count": 1,
+        "error_message_sha256": "80f0f955a3cb43198818c59e14e567aace08e258e97e13766980c282da3ad946",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 400,
+        "column": 1,
+        "title": "retries a failed assignment without recreating the saved MCP or repeating successful grants",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "timedOut",
+        "attempt_count": 1,
+        "error_message_sha256": "101da0e39cafd99e7cf497471f851e98c3bb4bcffae676faf70d5a2493252652",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/mcp-market.spec.ts",
+        "line": 433,
+        "column": 1,
+        "title": "a member can discover templates and reuse a workspace instance for their agent without creating one",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "timedOut",
+        "attempt_count": 1,
+        "error_message_sha256": "66bd61498f1f6a4387f6a4da712d6f1dc248cec3cc7507fd19ce6dc6d3d7d752",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/missing-user-session.spec.ts",
+        "line": 5,
+        "column": 1,
+        "title": "an obsolete session returns to sign-in and can open the MCP market after a fresh login",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "e1cfcef66cb88e4d62919e64bf041617bd03edc962ddd66bb3a52c51efd77ddf",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/settings-preferences.spec.ts",
+        "line": 107,
+        "column": 1,
+        "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "timedOut",
+        "attempt_count": 1,
+        "error_message_sha256": "7f94d7aea81ae89c43e50358a508ac82b5eaa6ed5c0cf26c9f00a57f21b2bd5a",
+        "classification": "original priority menu item became unstable/detached; natural dialog/title readiness and menu visibility added",
+        "cause_status": "readiness race supported; precise original focus-race mechanism not proven solely by the green replay",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/noncatalog-repair-review.json",
+        "targeted_replay_group": "preferences",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/skill-market.spec.ts",
+        "line": 88,
+        "column": 1,
+        "title": "discovers deployment templates and creates a workspace copy while keeping market context",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "a62e6bb9f79b8b70811cd142220aafb821c819868a0dfab4727792d803c3ce6a",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/skill-template-creation.spec.ts",
+        "line": 112,
+        "column": 1,
+        "title": "creates an edited independent skill after previewing and cancelling without writes",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "e76f9838e2df9a7b67a5814bbdbb97edc5039c039e9ffc3a7e76f6b28c36a4d0",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/workspace-access-branches.spec.ts",
+        "line": 87,
+        "column": 1,
+        "title": "accepting an invitation joins exactly once and revisiting shows its accepted state",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "f1f68135e6e1005c35339692a1a77a79de6d9ab95c975485dde4dedc5aac22d2",
+        "classification": "original Accept & Join did not reach expected workspace issues URL within 5 seconds; unchanged scenario passed a directed replay",
+        "cause_status": "original redirect cause remains unknown",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/noncatalog-repair-review.json",
+        "targeted_replay_group": "invite",
+        "targeted_replay_status": "passed"
+      },
+      {
+        "file": "e2e/workspace-defaults.spec.ts",
+        "line": 113,
+        "column": 3,
+        "title": "keeps built-in resources available on request and retains a project without a runtime",
+        "test_id": null,
+        "original_outcome": "unexpected",
+        "original_attempt_status": "failed",
+        "attempt_count": 1,
+        "error_message_sha256": "71c972712cbecf573e034858af73ac0e5653a2da103619b36e51867155f65202",
+        "classification": "catalog task preparation; 13 original cases passed after fresh task catalog setup, without catalog test edits",
+        "cause_status": "supported by retained path/API snapshot and original failed cases; no product repair inferred",
+        "classification_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+        "targeted_replay_group": "catalog13",
+        "targeted_replay_status": "passed"
+      }
+    ],
+    "skips_by_file": {
+      "e2e/admin-collaboration-switches.spec.ts": 1,
+      "e2e/admin-resource-publishing.spec.ts": 3,
+      "e2e/auth-device.spec.ts": 1,
+      "e2e/changelog.spec.ts": 1,
+      "e2e/cli-forbidden-reason.spec.ts": 3,
+      "e2e/collaboration-administration-desktop.spec.ts": 1,
+      "e2e/collaboration-administration-web.spec.ts": 1,
+      "e2e/collaboration-control-journey-desktop.spec.ts": 2,
+      "e2e/collaboration-control-journey-web.spec.ts": 2,
+      "e2e/collaboration-cross-client-execution.spec.ts": 1,
+      "e2e/collaboration-handoff-chain-desktop.spec.ts": 1,
+      "e2e/collaboration-handoff-chain-web.spec.ts": 1,
+      "e2e/collaboration-host-installed.spec.ts": 1,
+      "e2e/collaboration-host-runtime.spec.ts": 1,
+      "e2e/collaboration-host-squad.spec.ts": 1,
+      "e2e/collaboration-host-switch.spec.ts": 1,
+      "e2e/collaboration-installed-clients.spec.ts": 1,
+      "e2e/collaboration-installed-main.spec.ts": 1,
+      "e2e/collaboration-knowledge-deployed.spec.ts": 1,
+      "e2e/collaboration-lane-close-controls.spec.ts": 6,
+      "e2e/collaboration-leave-web.spec.ts": 1,
+      "e2e/collaboration-lifecycle-controls.spec.ts": 2,
+      "e2e/collaboration-live-revoke-web.spec.ts": 1,
+      "e2e/collaboration-memory-runtime.spec.ts": 1,
+      "e2e/collaboration-offline-handoff.spec.ts": 2,
+      "e2e/collaboration-offline-result-notifications.spec.ts": 2,
+      "e2e/collaboration-retained-attachment.spec.ts": 3,
+      "e2e/collaboration-runtime-handoff-desktop.spec.ts": 1,
+      "e2e/collaboration-runtime-handoff-web.spec.ts": 2,
+      "e2e/collaboration-selection-boundary.spec.ts": 1,
+      "e2e/collaboration-source-surface.spec.ts": 1,
+      "e2e/collaboration-terminal-reopen-web.spec.ts": 1,
+      "e2e/issue-assist-flow.spec.ts": 8,
+      "e2e/mcp-desktop.spec.ts": 1,
+      "e2e/password-binding-desktop.spec.ts": 1,
+      "e2e/password-branches.spec.ts": 12,
+      "e2e/password-migration.spec.ts": 2,
+      "e2e/password-registration.spec.ts": 2,
+      "e2e/password-server-switch.spec.ts": 1,
+      "e2e/platform-admin-accounts.spec.ts": 1,
+      "e2e/platform-admin-controls.spec.ts": 1,
+      "e2e/platform-admin-executions.spec.ts": 1,
+      "e2e/platform-admin-initialization.spec.ts": 1,
+      "e2e/platform-admin-installations-read.spec.ts": 1,
+      "e2e/platform-admin-observability.spec.ts": 1,
+      "e2e/platform-admin.spec.ts": 1,
+      "e2e/quick-create-actor-picker-phase2.spec.ts": 3,
+      "e2e/upstream-backports-cli.spec.ts": 3
+    },
+    "knowledge_named_results": [
+      {
+        "file": "e2e/collaboration-knowledge-deployed.spec.ts",
+        "line": 15,
+        "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+        "outcome": "skipped",
+        "attempt_status": "skipped",
+        "skip_gate": "COLLABORATION_KNOWLEDGE_EXPECTED explicit true/false; isolated owned deployment"
+      },
+      {
+        "file": "e2e/collaboration-knowledge.spec.ts",
+        "line": 88,
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "outcome": "expected",
+        "attempt_status": "passed",
+        "skip_gate": null
+      },
+      {
+        "file": "e2e/collaboration-knowledge.spec.ts",
+        "line": 105,
+        "title": "Web required memory purge clears open source and managed target material",
+        "outcome": "expected",
+        "attempt_status": "passed",
+        "skip_gate": null
+      },
+      {
+        "file": "e2e/collaboration-knowledge.spec.ts",
+        "line": 137,
+        "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+        "outcome": "expected",
+        "attempt_status": "passed",
+        "skip_gate": null
+      },
+      {
+        "file": "e2e/collaboration-knowledge.spec.ts",
+        "line": 179,
+        "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+        "outcome": "expected",
+        "attempt_status": "passed",
+        "skip_gate": null
+      },
+      {
+        "file": "e2e/collaboration-knowledge.spec.ts",
+        "line": 205,
+        "title": "Web recorded-run source is selected through the authorized reader",
+        "outcome": "expected",
+        "attempt_status": "passed",
+        "skip_gate": null
+      },
+      {
+        "file": "e2e/collaboration-knowledge.spec.ts",
+        "line": 223,
+        "title": "Web target-only administrator loses source material but can withdraw",
+        "outcome": "expected",
+        "attempt_status": "passed",
+        "skip_gate": null
+      },
+      {
+        "file": "e2e/collaboration-knowledge.spec.ts",
+        "line": 256,
+        "title": "Web expiry clears active target material when refresh fails",
+        "outcome": "expected",
+        "attempt_status": "passed",
+        "skip_gate": null
+      },
+      {
+        "file": "e2e/collaboration-knowledge.spec.ts",
+        "line": 284,
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "outcome": "expected",
+        "attempt_status": "passed",
+        "skip_gate": null
+      }
+    ],
+    "deployed_knowledge_probe_skipped": true,
+    "deployed_OFF_ON_not_proven_by_this_run": true
+  },
+  "stages": [
+    {
+      "line": 3,
+      "text": "==> [1/6] Static checks"
+    },
+    {
+      "line": 179,
+      "text": " Tasks:    15 successful, 15 total"
+    },
+    {
+      "line": 190,
+      "text": "==> [2/6] TypeScript tests (one package, two workers)"
+    },
+    {
+      "line": 8347,
+      "text": " Tasks:    5 successful, 5 total"
+    },
+    {
+      "line": 8352,
+      "text": "==> [3/6] Script regressions and isolated Go tests"
+    },
+    {
+      "line": 114136,
+      "text": "==> [4/6] Isolated API"
+    },
+    {
+      "line": 114140,
+      "text": "==> [5/6] Production Web build and start"
+    },
+    {
+      "line": 114145,
+      "text": "==> [6/6] Playwright (one worker, zero retries)"
+    }
+  ],
+  "targeted_replays": [
+    {
+      "group": "catalog13",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/catalog13-run.json",
+      "record_sha256": "426e6b6967a73a2810cec31b77e9c7bdeab0bfd8df3dcd4c17fdbe1fac468cc6",
+      "results": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/catalog13-results.json",
+      "results_sha256": "01ab56c0269bc1c1edf7c59a6d5f4b684b16ed592bb2376073ba60351e69d79f",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "workers": 1,
+      "retries": 0,
+      "actual_log_hash_matched": true,
+      "identities": [
+        {
+          "file": "e2e/capability-market.spec.ts",
+          "line": 5,
+          "title": "capability market restores type and draft through history while resource management stays separate",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/capability-market.spec.ts",
+          "line": 107,
+          "title": "capability market isolates workspace resources, preferences and transient drafts",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/capability-market.spec.ts",
+          "line": 219,
+          "title": "capability market separates catalog failures and polls only the active type",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/localized-template-defaults.spec.ts",
+          "line": 203,
+          "title": "specialist skills localize, search and open their official copies without rewriting stored content",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/mcp-market.spec.ts",
+          "line": 71,
+          "title": "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/mcp-market.spec.ts",
+          "line": 144,
+          "title": "uses the collection canvas and adapts template columns to the available width",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/mcp-market.spec.ts",
+          "line": 188,
+          "title": "creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/mcp-market.spec.ts",
+          "line": 400,
+          "title": "retries a failed assignment without recreating the saved MCP or repeating successful grants",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/mcp-market.spec.ts",
+          "line": 433,
+          "title": "a member can discover templates and reuse a workspace instance for their agent without creating one",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/missing-user-session.spec.ts",
+          "line": 5,
+          "title": "an obsolete session returns to sign-in and can open the MCP market after a fresh login",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/skill-market.spec.ts",
+          "line": 88,
+          "title": "discovers deployment templates and creates a workspace copy while keeping market context",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/skill-template-creation.spec.ts",
+          "line": 112,
+          "title": "creates an edited independent skill after previewing and cancelling without writes",
+          "status": "passed"
+        },
+        {
+          "file": "e2e/workspace-defaults.spec.ts",
+          "line": 113,
+          "title": "keeps built-in resources available on request and retains a project without a runtime",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "group": "memory",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/memory-visible-history/run.json",
+      "record_sha256": "363102988ed34c4bd054220862bd7cb22f417dbae45959483d8e68dc9c10b498",
+      "results": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/memory-visible-history/results.json",
+      "results_sha256": "9e7c25c1a306f310d0f47ab528963fcc5c5a953919f300f0dd355b83fae086ca",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "workers": 1,
+      "retries": 0,
+      "actual_log_hash_matched": true,
+      "identities": [
+        {
+          "file": "e2e/collaboration-memory-web.spec.ts",
+          "line": 7,
+          "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "group": "invite",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/invite-original-trace/run.json",
+      "record_sha256": "24dcd96d69cbc5e1a0c1cf18deefd33e2a2577dfec7c2187b1ea0ea1e8f9a8fc",
+      "results": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/invite-original-trace/results.json",
+      "results_sha256": "6c2ab548e2c35c5a91b2763789e45374faab1433d84e57b2f855432ec5d4139a",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "workers": 1,
+      "retries": 0,
+      "actual_log_hash_matched": true,
+      "identities": [
+        {
+          "file": "e2e/workspace-access-branches.spec.ts",
+          "line": 87,
+          "title": "accepting an invitation joins exactly once and revisiting shows its accepted state",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "group": "preferences",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/preferences-natural-focus/run.json",
+      "record_sha256": "dfa1213b21e6449394c98de39be847a730f9c1506895ef1fbd257bafc11b0553",
+      "results": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/preferences-natural-focus/results.json",
+      "results_sha256": "bff153da9450a68a52f96bfe9c0f337eaa8615e0441db86183c4507950997f90",
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "workers": 1,
+      "retries": 0,
+      "actual_log_hash_matched": true,
+      "identities": [
+        {
+          "file": "e2e/settings-preferences.spec.ts",
+          "line": 107,
+          "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "targeted_replay_coverage_all_16_original_identities": true,
+  "targeted_success_does_not_replace_failed_full_check": true,
+  "catalog_diagnosis": {
+    "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/browser-catalog-diagnosis.json",
+    "sha256": "695dee25e6bda312739a5cfd166d6ab7af8faea7842441179ef416cae3e7a6d0",
+    "original_snapshot": [
+      {
+        "key": "MULTICA_MCP_TEMPLATE_DIR",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/mcp",
+        "exists_at_read": false,
+        "is_symlink": false,
+        "is_directory": false
+      },
+      {
+        "key": "E2E_MCP_TEMPLATE_DIR",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/mcp",
+        "exists_at_read": false,
+        "is_symlink": false,
+        "is_directory": false
+      },
+      {
+        "key": "MULTICA_SKILL_TEMPLATE_DIR",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/skills",
+        "exists_at_read": false,
+        "is_symlink": false,
+        "is_directory": false
+      },
+      {
+        "key": "MULTICA_RESOURCE_PUBLISH_DIR",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/catalog/published",
+        "exists_at_read": false,
+        "is_symlink": false,
+        "is_directory": false
+      }
+    ],
+    "recorded_original_catalog_statuses": [
+      {
+        "route": "/api/workspaces/:workspace/mcp-servers/templates",
+        "method": "OPTIONS",
+        "status": 200,
+        "count": 7
+      },
+      {
+        "route": "/api/workspaces/:workspace/mcp-servers/templates",
+        "method": "GET",
+        "status": 503,
+        "count": 48
+      },
+      {
+        "route": "/api/skills/templates",
+        "method": "OPTIONS",
+        "status": 200,
+        "count": 3
+      },
+      {
+        "route": "/api/skills/templates",
+        "method": "GET",
+        "status": 503,
+        "count": 19
+      }
+    ],
+    "scope_note": "retained diagnostic observations, not new filesystem/API observations from this reviewer"
+  },
+  "two_test_repair_review": {
+    "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/noncatalog-repair-review.json",
+    "sha256": "95b91f778f6783cf3ddb6b75d6491981416adf042e7d7f041758c8cafd34a00f",
+    "verdict": "pass-with-notes",
+    "blocking_findings_open": 0,
+    "exact_source_checks": [
+      {
+        "file": "e2e/collaboration-memory-web.spec.ts",
+        "before_sha256": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+        "after_sha256": "2d3ab36d74220324ad4f38b3f70eace05a8a01f1f576d173f100799d54dc1e41",
+        "only_additions": true,
+        "original_source_preserved": true,
+        "added_lines": 2
+      },
+      {
+        "file": "e2e/settings-preferences.spec.ts",
+        "before_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+        "after_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+        "only_additions": true,
+        "original_source_preserved": true,
+        "added_lines": 3
+      }
+    ],
+    "local_commit": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9"
+  },
+  "v10_preparation_observation": {
+    "observed_at": "2026-11-02T19:36:13.310896+00:00",
+    "state": "prepared-not-run",
+    "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+    "candidate_clean": true,
+    "product_trees": {
+      "server": {
+        "v9": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+        "v10": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+        "equal": true
+      },
+      "apps": {
+        "v9": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+        "v10": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+        "equal": true
+      },
+      "packages": {
+        "v9": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292",
+        "v10": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292",
+        "equal": true
+      }
+    },
+    "product_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+    "product_source_id_basis": "retained source identity; actual equal committed server/apps/packages trees independently checked",
+    "preparation": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/preparation.json",
+    "preparation_sha256": "61ef2efdb3192c8ede7db1e5ff028ec307bdcc04b03229f218040d72f73457e6",
+    "actual_hash_bindings": {
+      "launcher": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/run-make-check-v10.py",
+        "sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+        "matches_preparation": true
+      },
+      "source_env": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-source-v10.env",
+        "sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+        "matches_preparation": true
+      },
+      "go": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go",
+        "sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+        "matches_preparation": true
+      },
+      "pnpm": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm",
+        "sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+        "matches_preparation": true
+      }
+    },
+    "run_and_clearance_paths": {
+      "independent-review-clearance-v10.json": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/independent-review-clearance-v10.json",
+        "exists": false
+      },
+      "make-check-v10.json": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+        "exists": false
+      },
+      "make-check-v10.log": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+        "exists": false
+      }
+    },
+    "pending_root_work": [
+      "Independent v10 review and hash-bound clearance",
+      "Install staged same-source renderer/preload into REPAIR apps/desktop/out and verify the owned renderer",
+      "Verify catalog/API/database readiness and shared service window",
+      "Run exactly one complete repository make check on this frozen candidate"
+    ],
+    "prepared_fake_preflight": {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/fake-preflight.json",
+      "record_sha256": "e8cc80d85b4169a9c606e3866b8b36f7b9693b44bb9982b008164bdb4914cdce",
+      "reported_pass": 32,
+      "rerun_by_this_reviewer": false
+    },
+    "syntax_checks": [
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/run-make-check-v10.py",
+        "sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+        "syntax_valid": true,
+        "executed": false
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-launcher-v10-preflight.py",
+        "sha256": "8face46aaf0c79aff33771778bb54aa2e617e2d1c585aa7a19c91b0ae1e8ab93",
+        "syntax_valid": true,
+        "executed": false
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go",
+        "sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+        "syntax_valid": true,
+        "executed": false
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm",
+        "sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+        "syntax_valid": true,
+        "executed": false
+      }
+    ],
+    "playwright_report_basename_note": "Inherited -v9 basenames are inside the unique final-check-v10 directory; no old report is reused."
+  },
+  "historical_v6_failure_retained": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/shared-check-v6-result.json",
+  "task_closure": {
+    "audit7_complete": false,
+    "knowledge6_complete": false,
+    "reason": "shared whole-run exit0 not available; separate knowledge deployment/model/release gates remain open"
+  },
+  "actual_actions": {
+    "repository_test_executions": 0,
+    "Go_TestMain_executions": 0,
+    "database_reads_or_writes": 0,
+    "services_started_or_stopped": 0,
+    "Provider_or_account_calls": 0,
+    "source_changes": 0,
+    "commits_or_staging": 0
+  }
+}

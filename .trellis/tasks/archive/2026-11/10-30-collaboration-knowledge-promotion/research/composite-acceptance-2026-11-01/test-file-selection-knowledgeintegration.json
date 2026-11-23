@@ -1,0 +1,13 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "list",
+    "-json",
+    "-tags=knowledgeintegration",
+    "./internal/daemon"
+  ],
+  "composite_file_selected": true,
+  "test_file_count": 94
+}

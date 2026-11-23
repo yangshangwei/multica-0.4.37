@@ -1,0 +1,58 @@
+- banner:
+  - status
+- region "Notifications alt+T"
+- dialog "新建属性":
+  - heading "新建属性" [level=2]
+  - paragraph: 仅工作空间 owner 和 admin 可以管理属性定义。
+  - text: 图标
+  - button "选择图标"
+  - text: 名称
+  - textbox "名称":
+    - /placeholder: 例如 Severity
+    - text: 审计草稿，不保存
+  - text: 类型
+  - combobox "类型": 单选
+  - text: 描述
+  - textbox "描述":
+    - /placeholder: 这个属性的含义以及何时设置
+  - text: 选项
+  - button "#3b82f6"
+  - textbox "选项名称": 审计选项 01
+  - button "移除选项"
+  - button "#ef4444"
+  - textbox "选项名称": 审计选项 02
+  - button "移除选项"
+  - button "#f97316"
+  - textbox "选项名称": 审计选项 03
+  - button "移除选项"
+  - button "#eab308"
+  - textbox "选项名称": 审计选项 04
+  - button "移除选项"
+  - button "#22c55e"
+  - textbox "选项名称": 审计选项 05
+  - button "移除选项"
+  - button "#14b8a6"
+  - textbox "选项名称": 审计选项 06
+  - button "移除选项"
+  - button "#3b82f6"
+  - textbox "选项名称": 审计选项 07
+  - button "移除选项"
+  - button "#6366f1"
+  - textbox "选项名称": 审计选项 08
+  - button "移除选项"
+  - button "#a855f7"
+  - textbox "选项名称": 审计选项 09
+  - button "移除选项"
+  - button "#ec4899"
+  - textbox "选项名称": 审计选项 10
+  - button "移除选项"
+  - button "#6b7280"
+  - textbox "选项名称": 审计选项 11
+  - button "移除选项"
+  - button "#ef4444"
+  - textbox "选项名称": 审计选项 12
+  - button "移除选项"
+  - button "添加选项"
+  - button "取消"
+  - button "保存属性"
+  - button "Close"

@@ -23,7 +23,7 @@ func (q *Queries) LifecycleMetadataSize(ctx context.Context, metadata []byte) (i
 }
 
 const lockLifecycleAgent = `-- name: LockLifecycleAgent :one
-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category FROM agent WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
+SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
 `
 
 type LockLifecycleAgentParams struct {
@@ -68,6 +68,8 @@ func (q *Queries) LockLifecycleAgent(ctx context.Context, arg LockLifecycleAgent
 		&i.TemplateVersion,
 		&i.AutonomyLevel,
 		&i.Category,
+		&i.CollaborationConfigEpoch,
+		&i.CollaborationBoundaryEpoch,
 	)
 	return i, err
 }
@@ -124,7 +126,7 @@ func (q *Queries) LockLifecycleIssue(ctx context.Context, arg LockLifecycleIssue
 }
 
 const lockLifecycleOriginTask = `-- name: LockLifecycleOriginTask :one
-SELECT t.id, t.agent_id, t.issue_id, t.status, t.priority, t.dispatched_at, t.started_at, t.completed_at, t.result, t.error, t.created_at, t.context, t.runtime_id, t.session_id, t.work_dir, t.trigger_comment_id, t.chat_session_id, t.autopilot_run_id, t.attempt, t.max_attempts, t.parent_task_id, t.failure_reason, t.trigger_summary, t.force_fresh_session, t.is_leader_task, t.wait_reason, t.initiator_user_id, t.handoff_note, t.prepare_lease_expires_at, t.squad_id, t.runtime_mcp_overlay, t.escalation_for_task_id, t.fire_at, t.originator_user_id, t.runtime_connected_apps, t.coalesced_comment_ids, t.delivered_comment_ids, t.chat_input_task_id, t.chat_finalize_deferred_at, t.originator_source, t.delegated_from_task_id, t.retry_of_task_id, t.rerun_of_task_id, t.rule_version_id, t.trigger_evidence_kind, t.trigger_evidence_ref_id, t.accountable_user_id, t.session_rollout_missing, t.retired_session_id, t.quick_actions_disabled, t.regenerate_quick_actions_for, t.branch_name, t.durable_work_dir, t.channel_context_revision, t.submitted_installation_id, t.execution_installation_id, t.execution_binding_id, t.execution_binding_epoch, t.state_version, t.execution_admission_version, t.claim_generation, t.queued_at, t.queued_at_source FROM agent_task_queue t JOIN agent a ON a.id = t.agent_id
+SELECT t.id, t.agent_id, t.issue_id, t.status, t.priority, t.dispatched_at, t.started_at, t.completed_at, t.result, t.error, t.created_at, t.context, t.runtime_id, t.session_id, t.work_dir, t.trigger_comment_id, t.chat_session_id, t.autopilot_run_id, t.attempt, t.max_attempts, t.parent_task_id, t.failure_reason, t.trigger_summary, t.force_fresh_session, t.is_leader_task, t.wait_reason, t.initiator_user_id, t.handoff_note, t.prepare_lease_expires_at, t.squad_id, t.runtime_mcp_overlay, t.escalation_for_task_id, t.fire_at, t.originator_user_id, t.runtime_connected_apps, t.coalesced_comment_ids, t.delivered_comment_ids, t.chat_input_task_id, t.chat_finalize_deferred_at, t.originator_source, t.delegated_from_task_id, t.retry_of_task_id, t.rerun_of_task_id, t.rule_version_id, t.trigger_evidence_kind, t.trigger_evidence_ref_id, t.accountable_user_id, t.session_rollout_missing, t.retired_session_id, t.quick_actions_disabled, t.regenerate_quick_actions_for, t.branch_name, t.durable_work_dir, t.channel_context_revision, t.submitted_installation_id, t.execution_installation_id, t.execution_binding_id, t.execution_binding_epoch, t.state_version, t.execution_admission_version, t.claim_generation, t.queued_at, t.queued_at_source, t.knowledge_context_version, t.knowledge_delivery FROM agent_task_queue t JOIN agent a ON a.id = t.agent_id
 WHERE t.id = $1 AND a.workspace_id = $2 FOR SHARE OF t NOWAIT
 `
 
@@ -200,12 +202,14 @@ func (q *Queries) LockLifecycleOriginTask(ctx context.Context, arg LockLifecycle
 		&i.ClaimGeneration,
 		&i.QueuedAt,
 		&i.QueuedAtSource,
+		&i.KnowledgeContextVersion,
+		&i.KnowledgeDelivery,
 	)
 	return i, err
 }
 
 const lockLifecycleRuntime = `-- name: LockLifecycleRuntime :one
-SELECT id, workspace_id, daemon_id, name, runtime_mode, provider, status, device_info, metadata, last_seen_at, created_at, updated_at, owner_id, legacy_daemon_id, visibility, profile_id, custom_name FROM agent_runtime WHERE id = $1 AND workspace_id = $2 FOR KEY SHARE NOWAIT
+SELECT id, workspace_id, daemon_id, name, runtime_mode, provider, status, device_info, metadata, last_seen_at, created_at, updated_at, owner_id, legacy_daemon_id, visibility, profile_id, custom_name, collaboration_config_epoch, collaboration_capabilities FROM agent_runtime WHERE id = $1 AND workspace_id = $2 FOR KEY SHARE NOWAIT
 `
 
 type LockLifecycleRuntimeParams struct {
@@ -234,12 +238,14 @@ func (q *Queries) LockLifecycleRuntime(ctx context.Context, arg LockLifecycleRun
 		&i.Visibility,
 		&i.ProfileID,
 		&i.CustomName,
+		&i.CollaborationConfigEpoch,
+		&i.CollaborationCapabilities,
 	)
 	return i, err
 }
 
 const lockLifecycleSquad = `-- name: LockLifecycleSquad :one
-SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch FROM squad WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
 `
 
 type LockLifecycleSquadParams struct {
@@ -265,6 +271,7 @@ func (q *Queries) LockLifecycleSquad(ctx context.Context, arg LockLifecycleSquad
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
@@ -282,7 +289,7 @@ func (q *Queries) LockLifecycleWorkspace(ctx context.Context, id pgtype.UUID) (p
 }
 
 const lockPendingLifecycleTask = `-- name: LockPendingLifecycleTask :one
-SELECT id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source FROM agent_task_queue WHERE issue_id = $1 AND agent_id = $2
+SELECT id, agent_id, issue_id, status, priority, dispatched_at, started_at, completed_at, result, error, created_at, context, runtime_id, session_id, work_dir, trigger_comment_id, chat_session_id, autopilot_run_id, attempt, max_attempts, parent_task_id, failure_reason, trigger_summary, force_fresh_session, is_leader_task, wait_reason, initiator_user_id, handoff_note, prepare_lease_expires_at, squad_id, runtime_mcp_overlay, escalation_for_task_id, fire_at, originator_user_id, runtime_connected_apps, coalesced_comment_ids, delivered_comment_ids, chat_input_task_id, chat_finalize_deferred_at, originator_source, delegated_from_task_id, retry_of_task_id, rerun_of_task_id, rule_version_id, trigger_evidence_kind, trigger_evidence_ref_id, accountable_user_id, session_rollout_missing, retired_session_id, quick_actions_disabled, regenerate_quick_actions_for, branch_name, durable_work_dir, channel_context_revision, submitted_installation_id, execution_installation_id, execution_binding_id, execution_binding_epoch, state_version, execution_admission_version, claim_generation, queued_at, queued_at_source, knowledge_context_version, knowledge_delivery FROM agent_task_queue WHERE issue_id = $1 AND agent_id = $2
   AND (status IN ('queued', 'dispatched')
     OR (status = 'deferred' AND context->>'channel_issue_media_pending' = 'true'))
 FOR UPDATE NOWAIT
@@ -360,6 +367,8 @@ func (q *Queries) LockPendingLifecycleTask(ctx context.Context, arg LockPendingL
 		&i.ClaimGeneration,
 		&i.QueuedAt,
 		&i.QueuedAtSource,
+		&i.KnowledgeContextVersion,
+		&i.KnowledgeDelivery,
 	)
 	return i, err
 }

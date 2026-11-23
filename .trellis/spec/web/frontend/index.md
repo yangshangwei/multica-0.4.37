@@ -18,9 +18,16 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | To fill |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
+| [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Full-path session history, account mementos and committed navigation intent | Active |
+| [Collaboration notifications](../../core/frontend/collaboration-notifications.md) | Account page, matching query/fragment commits and real browser return proof | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
+| [Image budget check](./image-budget-check.md) | Streamed Git paths, 300 KiB growth policy, explicit PR exceptions and CI regressions | Active |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
-| [E2E Run Environment](./e2e-run-environment.md) | The Playwright suite must target `next build` + `next start`, never `next dev` | Active |
+| [Agent critical-path CI](./agent-critical-path-ci.md) | Four production-Web paths, exact inventory and isolated launch contract | Active |
+| [E2E Run Environment](./e2e-run-environment.md) | Production Web, password actor/onboarding, managed profile owner and source/runtime binding | Active |
+| [Collaboration closure QA](./collaboration-closure-qa.md) | Same-issue multi-owner execution, attribution, cleanup and honest synthetic evidence | Active |
+| [Collaboration performance QA](./collaboration-performance-qa.md) | Complete 100-user sampling, runtime heartbeat, socket invariants and retained rehearsal evidence | Tool rehearsal verified; final candidate acceptance separate |
+| [Collaboration recovery QA](./collaboration-recovery-qa.md) | Current-client field contention, offline pagination, human recovery, ordinary subscriptions and controlled runs | Field, batch, human, ordinary-subscription and controlled-runtime increments accepted; full S3 separate |
 
 ---
 

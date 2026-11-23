@@ -1,0 +1,94 @@
+{
+  "scenario": "s2-support-ticket",
+  "result": "failed",
+  "topology": {
+    "support": {
+      "account_id": "dfe3f31b-ed5e-4921-88fa-b32cd07125f3",
+      "workspace_id": "d0cfb2b0-766e-49cc-aa85-ae89a4789450"
+    },
+    "developer": {
+      "account_id": "ec780be2-aaad-462d-856c-ba845d3c146c",
+      "workspace_id": "d7489bf9-c2c3-4a9e-bb41-4279230ff51d",
+      "runtime_id": "3ca98aa4-09ff-4e0b-bbb3-d78a9a0a1610",
+      "installation_id": "b42cf19f-2803-4b29-a334-02b1cb62f6f5",
+      "agent_id": "a40ae498-6680-43a6-b695-d929d536ec34"
+    },
+    "unrelated_account_id": "887ec27f-2d0d-498c-b020-0b295cce0755"
+  },
+  "failure": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m403\u001b[39m\nReceived: \u001b[31m400\u001b[39m",
+  "page_errors": [],
+  "provider_observations": [
+    {
+      "owner_id": "ec780be2-aaad-462d-856c-ba845d3c146c",
+      "runtime_id": "3ca98aa4-09ff-4e0b-bbb3-d78a9a0a1610",
+      "visits": []
+    }
+  ],
+  "cleanup": [
+    {
+      "owner_id": "ec780be2-aaad-462d-856c-ba845d3c146c",
+      "runtime_id": "3ca98aa4-09ff-4e0b-bbb3-d78a9a0a1610",
+      "exit_code": 0,
+      "errors": [],
+      "ledger": []
+    }
+  ],
+  "cleanup_failures": [],
+  "gate_restored": true,
+  "steps": [
+    {
+      "step": "support creates a manual ticket for development with the customer log",
+      "at": "2026-11-09T15:49:19.238Z",
+      "facts": {
+        "issue_id": "01a1c0ff-e42a-7cb5-be9b-2f44666e4877",
+        "ai_policy": "manual"
+      }
+    },
+    {
+      "step": "information requested and returned; sample shared as a comment file",
+      "at": "2026-11-09T15:49:21.886Z",
+      "facts": {
+        "requested": "information_requested",
+        "returned": "information_returned",
+        "files": [
+          {
+            "id": "cd0b7983-9c3d-4ab9-870d-08865ef5c591",
+            "draft_id": "f6a95f51-4dc4-47e3-9775-d52015577734",
+            "issue_id": "01a1c0ff-e42a-7cb5-be9b-2f44666e4877",
+            "intended_issue_id": null,
+            "source_workspace_id": "d0cfb2b0-766e-49cc-aa85-ae89a4789450",
+            "uploader_user_id": "dfe3f31b-ed5e-4921-88fa-b32cd07125f3",
+            "name": "customer-log.txt",
+            "content_type": "text/plain; charset=utf-8",
+            "size_bytes": 84,
+            "version": "1",
+            "created_at": "2026-11-09T23:49:17.828256+08:00",
+            "delivered_at": "2026-11-09T23:49:18.00946+08:00"
+          },
+          {
+            "id": "cc30eedf-32d4-4954-af96-06dafd2a9d76",
+            "draft_id": "feb40b6a-7696-49d1-a882-3bbe54c6c977",
+            "issue_id": "01a1c0ff-e42a-7cb5-be9b-2f44666e4877",
+            "intended_issue_id": "01a1c0ff-e42a-7cb5-be9b-2f44666e4877",
+            "source_workspace_id": "d0cfb2b0-766e-49cc-aa85-ae89a4789450",
+            "uploader_user_id": "dfe3f31b-ed5e-4921-88fa-b32cd07125f3",
+            "name": "sample-export.csv",
+            "content_type": "text/plain; charset=utf-8",
+            "size_bytes": 41,
+            "version": "1",
+            "created_at": "2026-11-09T23:49:21.603811+08:00",
+            "delivered_at": "2026-11-09T23:49:21.841266+08:00"
+          }
+        ]
+      }
+    },
+    {
+      "step": "manual policy refuses resource offer",
+      "at": "2026-11-09T15:49:21.923Z",
+      "facts": {
+        "status": 409,
+        "code": "task_manual"
+      }
+    }
+  ]
+}

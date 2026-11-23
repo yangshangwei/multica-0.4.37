@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-31T18:12:02.703017+00:00",
+  "source_manifest": "final-candidate/source-round3.json",
+  "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "source_tree_sha256": "5b0262606d143ca44fc2ab19247eece7025087cda2541372f67afc218b76245b",
+  "file_count": 7973,
+  "initial_source_differences": [],
+  "command": [
+    "go",
+    "run",
+    "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-final-alias-recheck-92szfqwl/probe.go"
+  ],
+  "probe_source": "package main\nimport(\"encoding/json\";\"fmt\";\"strings\"; p \"github.com/multica-ai/multica/server/pkg/protocol\")\nfunc main(){\nv:=p.CollaborationHandoffEnvelope{ProtocolVersion:1,IssueID:\"11111111-1111-4111-8111-111111111111\",RunID:\"22222222-2222-4222-8222-222222222222\",SnapshotID:\"33333333-3333-4333-8333-333333333333\",Mode:\"snapshot\",EventSequence:\"0\",Authority:p.CollaborationHandoffAuthority{Status:\"todo\"},Assignment:p.CollaborationHandoffAssignment{Role:\"member\",StepKey:\"dispatch-1\",ParentRunID:\"55555555-5555-4555-8555-555555555555\",DelegationID:\"66666666-6666-4666-8666-666666666666\",SourceID:\"44444444-4444-4444-8444-444444444444\"},Memory:p.CollaborationHandoffMemory{Version:\"0\",Availability:\"absent\"},Inputs:p.CollaborationHandoffInputs{Items:[]p.CollaborationHandoffInput{}},Results:p.CollaborationHandoffResults{Items:[]p.CollaborationHandoffResult{}},WakeupCauses:p.CollaborationHandoffCauses{Items:[]p.CollaborationHandoffCause{},Completeness:\"unknown\"},Sources:[]p.CollaborationHandoffSource{{Kind:\"delegation\",ID:\"44444444-4444-4444-8444-444444444444\",RunID:\"55555555-5555-4555-8555-555555555555\",Version:\"1\",SHA256:p.CollaborationHandoffHash(\"original complete assignment\"),Content:\"only a prefix\",Truncated:true,Availability:\"available\",Trust:\"admitted_assignment\"}},Missing:[]string{}}\nb,_:=json.Marshal(v)\nfor _,tt:=range []struct{name,raw string}{{\"valid_truncated\",string(b)},{\"source_truncated_omitted\",strings.Replace(string(b),`,\"truncated\":true,\"availability\"`,`,\"availability\"`,1)},{\"source_truncated_null\",strings.Replace(string(b),`,\"truncated\":true,\"availability\"`,`,\"truncated\":null,\"availability\"`,1)},{\"source_truncated_case_override\",strings.Replace(string(b),`,\"truncated\":true,\"availability\"`,`,\"truncated\":true,\"TRUNCATED\":false,\"availability\"`,1)},{\"page_total_returned_truncated_omitted\",strings.Replace(string(b),`\"total\":0,\"returned\":0,\"truncated\":false,`,\"\",1)},{\"invalid_recording\",strings.TrimSuffix(string(b),\"}\")+`,\"recording\":{\"version\":999,\"stream_id\":\"not-a-uuid\",\"retained_through\":-1,\"observed_through\":-5,\"sealed\":true,\"reason\":\"anything\"}}`}}{\nvar out p.CollaborationHandoffEnvelope\nerr:=json.Unmarshal([]byte(tt.raw),&out)\nfmt.Printf(\"%s accepted=%t source_truncated=%t error=%v\\n\",tt.name,err==nil,len(out.Sources)>0&&out.Sources[0].Truncated,err)\n}\n}",
+  "exit_code": 0,
+  "stdout": "valid_truncated accepted=true source_truncated=true error=<nil>\nsource_truncated_omitted accepted=false source_truncated=false error=invalid collaboration host object\nsource_truncated_null accepted=false source_truncated=false error=invalid collaboration host object\nsource_truncated_case_override accepted=false source_truncated=false error=invalid collaboration host object\npage_total_returned_truncated_omitted accepted=false source_truncated=false error=invalid collaboration host object\ninvalid_recording accepted=false source_truncated=false error=invalid collaboration host object\n",
+  "stderr": "",
+  "scope": "Standalone public protocol decoder probe; no DB, server, Provider or source changes.",
+  "source_after": {
+    "at": "2026-10-31T18:12:45.793434+00:00",
+    "source_tree_sha256": "5b0262606d143ca44fc2ab19247eece7025087cda2541372f67afc218b76245b",
+    "file_count": 7973,
+    "differences": []
+  }
+}

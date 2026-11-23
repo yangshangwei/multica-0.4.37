@@ -1,0 +1,36 @@
+{
+  "state": "complete",
+  "started_at": "2026-11-02T17:38:21.061731+00:00",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/settings-preferences.spec.ts",
+    "--grep",
+    "hidden manual issue fields persist",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--trace=on",
+    "--output=/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/preferences-natural-focus/artifacts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+  "product_source_changed": false,
+  "fixture_change": "natural initial title focus before More popup",
+  "real_Provider_calls": 0,
+  "result_code": 0,
+  "ended": "2026-11-02T17:38:28.841610+00:00",
+  "log_sha256": "d647c8b95eac01aa525b5c8df40fd52a2c4f66f9b6dbb89da4a739bedfed1f0b",
+  "stats": {
+    "startTime": "2026-11-02T17:38:21.932Z",
+    "duration": 6890.223,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

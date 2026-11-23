@@ -1,0 +1,31 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py",
+    "PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+    "PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+    "PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+  "environment": {
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin",
+    "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "CHECK_ISOLATION_WRAPPER": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+    "CHECK_BINDING_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/scanner-red-v5.json"
+  },
+  "exit_code": 1,
+  "seconds": 0.263,
+  "tests_run": 3,
+  "failure_count": 121,
+  "error_count": 0,
+  "wrapper_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+  "test_source_sha256": "ffafa89ada008bd1829ec74e3dbe58dd1058fc0fbdef95d99be61156af753d1a",
+  "network_policy": "deny network*",
+  "actual_go_tests": 0,
+  "actual_sql_connections": 0
+}

@@ -20,6 +20,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
+	"github.com/multica-ai/multica/server/internal/artifact"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/changelog"
 	"github.com/multica-ai/multica/server/internal/cloudruntime"
@@ -67,6 +68,10 @@ type dbExecutor interface {
 }
 
 type Config struct {
+	ArtifactConfig artifact.Config
+	// KnowledgeContextEnabled opts in to guarded private knowledge execution.
+	// Human candidate management remains separate; the zero value is closed.
+	KnowledgeContextEnabled bool
 	// PlatformAdminEnabled controls the password-mode administration surface.
 	PlatformAdminEnabled        bool
 	ResourcePublishDir          string
@@ -204,6 +209,16 @@ type Config struct {
 	// contents are validated on each request; failures preserve the last valid
 	// snapshot and explicitly mark the response stale.
 	ChangelogFile string
+	// CollaborationMemoryMaxBytes is the parsed
+	// MULTICA_COLLABORATION_MEMORY_MAX_BYTES shared-context limit. cmd/server
+	// fails the boot on an out-of-range value; zero means the default.
+	CollaborationMemoryMaxBytes int
+	// CollaborationDirectoryEnabled lets the recipient picker list every
+	// available account on this server. False lists only accounts that share a
+	// workspace or a collaboration issue with the caller; exact lookup still
+	// finds anyone. cmd/server reads MULTICA_COLLABORATION_DIRECTORY_ENABLED
+	// (default true); the zero value is the narrower listing.
+	CollaborationDirectoryEnabled bool
 }
 
 type cloudRuntimeProxy interface {
@@ -230,6 +245,8 @@ type DaemonPendingWorkNotifier interface {
 }
 
 type Handler struct {
+	StageExecutionSources  service.StageExecutionSources
+	ArtifactPackager       artifactExecutor
 	AdminHealthSnapshot    func(context.Context) AdminHealthSnapshot
 	AdminReadConfig        AdminReadConfig
 	PasswordLimiter        *auth.PasswordLimiter
@@ -247,6 +264,12 @@ type Handler struct {
 	PluginService          *service.PluginService
 	IssueService           *service.IssueService
 	AutopilotService       *service.AutopilotService
+
+	// Collaboration reconcilers drain retained account and resource invalidations even when
+	// collaboration creation and execution are disabled.
+	CollaborationAccountReconciler *service.CollaborationAccountReconciler
+	CollaborationConfigReconciler  *service.CollaborationConfigReconciler
+
 	// Entitlements supplies workspace-scoped commercial gates. A nil provider
 	// preserves self-hosted behavior without extra reads.
 	Entitlements entitlement.Provider
@@ -535,6 +558,7 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 	)
 
 	taskSvc := service.NewTaskService(queries, txStarter, hub, bus, daemonHub)
+	taskSvc.KnowledgeContextEnabled = cfg.KnowledgeContextEnabled
 	taskSvc.Analytics = analyticsClient
 	taskSvc.SourceContextStorage = store
 	// Chat follow-up suggestions run through the same internal LLM layer that
@@ -570,7 +594,12 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 	}
 	taskSvc.ResourcePublisher = resourcePublisher
 	mcpCatalog.Publisher = resourcePublisher
+	var packager artifactExecutor
+	if configured, err := artifact.New(cfg.ArtifactConfig); err == nil {
+		packager = configured
+	}
 	h := &Handler{
+		ArtifactPackager:             packager,
 		Queries:                      queries,
 		DB:                           executor,
 		TxStarter:                    txStarter,
@@ -608,6 +637,8 @@ func New(queries *db.Queries, txStarter txStarter, hub *realtime.Hub, bus *event
 		cfg:             cfg,
 		changelogReader: changelog.New(cfg.ChangelogFile, cfg.ServerVersion),
 	}
+	h.CollaborationAccountReconciler = service.NewCollaborationAccountReconciler(queries, txStarter)
+	h.CollaborationConfigReconciler = service.NewCollaborationConfigReconciler(queries, txStarter)
 	h.WebhookDeliveryWorker = NewWebhookDeliveryWorker(h)
 
 	// GitHub API snapshot pipeline for PR cards (MUL-5265). Built
@@ -1100,6 +1131,12 @@ func (h *Handler) isWorkspaceEntity(ctx context.Context, userType, userID, works
 }
 
 func (h *Handler) loadIssueForUser(w http.ResponseWriter, r *http.Request, issueID string) (db.Issue, bool) {
+	return h.loadIssueForUserWithCollaborationUpdate(w, r, issueID, false)
+}
+
+// Only UpdateIssue opts out of the generic write refusal, because it checks
+// the full request body and permits exactly the R58 position operation.
+func (h *Handler) loadIssueForUserWithCollaborationUpdate(w http.ResponseWriter, r *http.Request, issueID string, checkedUpdate bool) (db.Issue, bool) {
 	if _, ok := requireUserID(w, r); !ok {
 		return db.Issue{}, false
 	}
@@ -1114,6 +1151,12 @@ func (h *Handler) loadIssueForUser(w http.ResponseWriter, r *http.Request, issue
 	// silently returns false for non-identifier strings, falling through to
 	// the UUID path below.
 	if issue, ok := h.resolveIssueByIdentifier(r.Context(), issueID, workspaceID); ok {
+		if !checkedUpdate && h.rejectLegacyCollaborationAccess(w, r, issue) {
+			return db.Issue{}, false
+		}
+		if !requireTaskCapabilityIssue(w, r, issue) {
+			return db.Issue{}, false
+		}
 		return issue, true
 	}
 
@@ -1135,6 +1178,12 @@ func (h *Handler) loadIssueForUser(w http.ResponseWriter, r *http.Request, issue
 	})
 	if err != nil {
 		writeError(w, http.StatusNotFound, "issue not found")
+		return db.Issue{}, false
+	}
+	if !checkedUpdate && h.rejectLegacyCollaborationAccess(w, r, issue) {
+		return db.Issue{}, false
+	}
+	if !requireTaskCapabilityIssue(w, r, issue) {
 		return db.Issue{}, false
 	}
 	return issue, true

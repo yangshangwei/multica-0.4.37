@@ -3,11 +3,13 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, QueryObserver, useQuery, isCancelledError } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 
-import { setApiInstance } from "../api";
+import { ApiError, setApiInstance } from "../api";
 import type { ApiClient } from "../api/client";
+import { createQueryClient } from "../query-client";
+import { useCanonicalIssue } from "./canonical-id";
 import {
   useBatchUpdateIssues,
   useCreateComment,
@@ -19,6 +21,7 @@ import {
 } from "./mutations";
 import {
   issueKeys,
+  issueDetailOptions,
   type IssueSortParam,
 } from "./queries";
 import { onIssueUpdated, onIssueAuxiliaryRevision } from "./ws-updaters";
@@ -96,6 +99,293 @@ function createWrapper(qc: QueryClient) {
     return <QueryClientProvider client={qc}>{children}</QueryClientProvider>;
   };
 }
+
+describe("useUpdateIssue — canonical detail reads during an optimistic status change", () => {
+  const issueId = "cb240efb-154c-42a8-ae92-42b02676feca";
+  const identifier = "MUL-134";
+  const detailKey = issueKeys.detail(WS_ID, issueId);
+  let qc: QueryClient;
+
+  function deferred<T>() {
+    let resolve!: (value: T) => void;
+    let reject!: (error: Error) => void;
+    const promise = new Promise<T>((done, fail) => {
+      resolve = done;
+      reject = fail;
+    });
+    return { promise, resolve, reject };
+  }
+
+  beforeEach(() => {
+    qc = createQueryClient();
+    qc.setDefaultOptions({
+      ...qc.getDefaultOptions(),
+      queries: { ...qc.getDefaultOptions().queries, retry: false },
+    });
+  });
+
+  afterEach(() => {
+    qc.clear();
+    vi.restoreAllMocks();
+  });
+
+  it.each([
+    { entry: "UUID", routeId: issueId, overlap: true },
+    { entry: "identifier", routeId: identifier, overlap: true },
+    { entry: "UUID without a background read", routeId: issueId, overlap: false },
+    { entry: "identifier without a background read", routeId: identifier, overlap: false },
+  ])("preserves the pending status, rollback and explicit retry from $entry", async ({ routeId, overlap }) => {
+    const todo = makeIssue(134, { id: issueId, identifier, revision: 1, status_category: "todo" });
+    let serverIssue = todo;
+    let holdDetailRead = false;
+    const oldRead = deferred<Issue>();
+    const firstWrite = deferred<Issue>();
+    const failure = new ApiError("Status update unavailable", 503, "Service Unavailable");
+    const getIssue = vi.fn((id: string) => {
+      if (id !== issueId && id !== identifier) throw new Error(`Unexpected issue read: ${id}`);
+      return holdDetailRead && id === issueId ? oldRead.promise : Promise.resolve(serverIssue);
+    });
+    const updateIssue = vi.fn()
+      .mockImplementationOnce(() => firstWrite.promise)
+      .mockImplementationOnce(() => {
+        serverIssue = { ...todo, status: "in_progress", status_category: "in_progress", revision: 2 };
+        return Promise.resolve(serverIssue);
+      });
+    setApiInstance({ getIssue, updateIssue } as unknown as ApiClient);
+    const { result } = renderHook(() => {
+      const canonical = useCanonicalIssue(WS_ID, routeId);
+      const reader = useQuery({
+        ...issueDetailOptions(WS_ID, canonical.canonicalId ?? ""),
+        enabled: canonical.canonicalId !== null,
+      });
+      return { canonical, reader, mutation: useUpdateIssue() };
+    }, { wrapper: createWrapper(qc) });
+    const events: unknown[] = [];
+    function record(stage: string) {
+      events.push({
+        stage,
+        canonicalId: result.current.canonical.canonicalId,
+        readerKey: issueKeys.detail(WS_ID, result.current.canonical.canonicalId ?? ""),
+        writerKey: detailKey,
+        cacheStatus: qc.getQueryData<Issue>(detailKey)?.status,
+        canonicalStatus: result.current.canonical.issue?.status,
+        readerStatus: result.current.reader.data?.status,
+        mutationStatus: result.current.mutation.status,
+      });
+    }
+    let backgroundRead: Promise<void> | undefined;
+    try {
+      await waitFor(() => expect(result.current.reader.data?.status).toBe("todo"));
+      expect(result.current.canonical.canonicalId).toBe(issueId);
+      expect(getIssue).toHaveBeenCalledTimes(1);
+      record("initial Todo loaded");
+
+      if (overlap) {
+        holdDetailRead = true;
+        act(() => {
+          backgroundRead = qc.refetchQueries({ queryKey: detailKey, exact: true });
+        });
+        await waitFor(() => expect(getIssue).toHaveBeenCalledTimes(2));
+        expect(qc.getQueryState(detailKey)?.fetchStatus).toBe("fetching");
+        record("background UUID read held");
+      }
+
+      act(() => { result.current.mutation.mutate({ id: issueId, status: "in_progress" }); });
+      expect(qc.getQueryData<Issue>(detailKey)?.status).toBe("in_progress");
+      await waitFor(() => expect(updateIssue).toHaveBeenCalledTimes(1));
+      expect(updateIssue).toHaveBeenCalledWith(issueId, { status: "in_progress" });
+      await waitFor(() => expect(result.current.reader.data?.status).toBe("in_progress"));
+      expect(serverIssue.status).toBe("todo");
+      record("first PUT held with optimistic status");
+
+      if (overlap) {
+        holdDetailRead = false;
+        await act(async () => {
+          oldRead.resolve(todo);
+          await backgroundRead;
+        });
+        await waitFor(() => expect(result.current.reader.fetchStatus).toBe("idle"));
+        record("old Todo read completed while PUT pending");
+        expect(qc.getQueryData<Issue>(detailKey)?.status, JSON.stringify(events)).toBe("in_progress");
+        expect(result.current.canonical.issue?.status).toBe("in_progress");
+        expect(result.current.reader.data?.status).toBe("in_progress");
+        expect(result.current.mutation.isPending).toBe(true);
+        expect(serverIssue.status).toBe("todo");
+      }
+
+      await act(async () => { firstWrite.reject(failure); });
+      await waitFor(() => expect(result.current.mutation.error).toBe(failure));
+      await waitFor(() => expect(result.current.reader.data?.status).toBe("todo"));
+      expect(result.current.canonical.issue?.status).toBe("todo");
+      expect(qc.getQueryData<Issue>(detailKey)?.status).toBe("todo");
+      expect(serverIssue.status).toBe("todo");
+      record("503 rolled back to Todo");
+
+      act(() => { result.current.mutation.mutate({ id: issueId, status: "in_progress" }); });
+      await waitFor(() => expect(result.current.mutation.isSuccess).toBe(true));
+      expect(updateIssue).toHaveBeenCalledTimes(2);
+      expect(serverIssue.status).toBe("in_progress");
+      expect(result.current.reader.data?.status).toBe("in_progress");
+      await act(async () => { await qc.refetchQueries({ queryKey: detailKey, exact: true }); });
+      expect(result.current.canonical.issue?.status).toBe("in_progress");
+      expect(result.current.reader.data?.status).toBe("in_progress");
+    } finally {
+      holdDetailRead = false;
+      await act(async () => {
+        oldRead.resolve(todo);
+        firstWrite.reject(failure);
+        await backgroundRead;
+      });
+    }
+  });
+
+  it("preserves a visible identifier seed when the UUID fetch began without data", async () => {
+    const todo = makeIssue(134, { id: issueId, identifier, revision: 1, status_category: "todo" });
+    let serverIssue = todo;
+    let holdUuidRead = true;
+    const oldRead = deferred<Issue>();
+    const firstWrite = deferred<Issue>();
+    const failure = new ApiError("Status update unavailable", 503, "Service Unavailable");
+    const getIssue = vi.fn((id: string) => {
+      if (id === issueId && holdUuidRead) return oldRead.promise;
+      if (id === identifier || id === issueId) return Promise.resolve(serverIssue);
+      throw new Error(`Unexpected issue read: ${id}`);
+    });
+    const updateIssue = vi.fn()
+      .mockImplementationOnce(() => firstWrite.promise)
+      .mockImplementationOnce(() => {
+        serverIssue = { ...todo, status: "in_progress", status_category: "in_progress", revision: 2 };
+        return Promise.resolve(serverIssue);
+      });
+    setApiInstance({ getIssue, updateIssue } as unknown as ApiClient);
+    const events: unknown[] = [];
+    const unsubscribe = qc.getQueryCache().subscribe((event) => {
+      if (event.type !== "updated" || event.query.queryHash !== JSON.stringify(detailKey)) return;
+      events.push({
+        action: event.action.type,
+        cacheStatus: qc.getQueryData<Issue>(detailKey)?.status ?? null,
+        fetchStatus: event.query.state.fetchStatus,
+      });
+    });
+    // A UUID observer can start before identifier resolution supplies its
+    // initialData. The visible Todo then differs from Query's fetch rollback
+    // state, which still predates that seed.
+    const pendingRead = qc.fetchQuery(issueDetailOptions(WS_ID, issueId)).catch((error) => {
+      if (!isCancelledError(error)) throw error;
+    });
+    expect(qc.getQueryData(detailKey)).toBeUndefined();
+    expect(qc.getQueryState(detailKey)?.fetchStatus).toBe("fetching");
+    const { result } = renderHook(() => {
+      const canonical = useCanonicalIssue(WS_ID, identifier);
+      const reader = useQuery({
+        ...issueDetailOptions(WS_ID, canonical.canonicalId ?? ""),
+        enabled: canonical.canonicalId !== null,
+      });
+      return { canonical, reader, mutation: useUpdateIssue() };
+    }, { wrapper: createWrapper(qc) });
+    try {
+      await waitFor(() => expect(result.current.reader.data?.status).toBe("todo"));
+      expect(result.current.canonical.canonicalId).toBe(issueId);
+      expect(result.current.canonical.issue?.status).toBe("todo");
+      expect(qc.getQueryData<Issue>(detailKey)?.status).toBe("todo");
+      expect(qc.getQueryState(detailKey)?.fetchStatus).toBe("fetching");
+
+      act(() => { result.current.mutation.mutate({ id: issueId, status: "in_progress" }); });
+      await waitFor(() => expect(updateIssue).toHaveBeenCalledTimes(1));
+      expect(qc.getQueryData<Issue>(detailKey)?.status, JSON.stringify(events)).toBe("in_progress");
+      expect(result.current.canonical.issue?.status).toBe("in_progress");
+      expect(result.current.reader.data?.status).toBe("in_progress");
+      expect(result.current.mutation.isPending).toBe(true);
+      expect(serverIssue.status).toBe("todo");
+
+      holdUuidRead = false;
+      await act(async () => { oldRead.resolve(todo); await pendingRead; });
+      expect(result.current.reader.data?.status).toBe("in_progress");
+      await act(async () => { firstWrite.reject(failure); });
+      await waitFor(() => expect(result.current.mutation.error).toBe(failure));
+      await waitFor(() => expect(result.current.reader.data?.status).toBe("todo"));
+      expect(serverIssue.status).toBe("todo");
+
+      act(() => { result.current.mutation.mutate({ id: issueId, status: "in_progress" }); });
+      await waitFor(() => expect(result.current.mutation.isSuccess).toBe(true));
+      expect(updateIssue).toHaveBeenCalledTimes(2);
+      expect(serverIssue.status).toBe("in_progress");
+      await act(async () => { await qc.refetchQueries({ queryKey: detailKey, exact: true }); });
+      expect(result.current.canonical.issue?.status).toBe("in_progress");
+      expect(result.current.reader.data?.status).toBe("in_progress");
+    } finally {
+      holdUuidRead = false;
+      await act(async () => {
+        oldRead.resolve(todo);
+        firstWrite.reject(failure);
+        await pendingRead.catch(() => undefined);
+      });
+      unsubscribe();
+    }
+  });
+
+  it("allows other issue and workspace detail reads to finish during the write", async () => {
+    const todo = makeIssue(134, { id: issueId, identifier, revision: 1 });
+    const other = makeIssue(135, { id: "536b1a70-54bf-4b47-9546-0565683a6993", revision: 1 });
+    const otherWorkspaceKey = issueKeys.detail("ws-2", issueId);
+    const otherIssueKey = issueKeys.detail(WS_ID, other.id);
+    const otherWorkspaceRead = deferred<Issue>();
+    const otherIssueRead = deferred<Issue>();
+    const write = deferred<Issue>();
+    qc.setQueryData(detailKey, todo);
+    qc.setQueryData(otherWorkspaceKey, { ...todo, workspace_id: "ws-2" });
+    qc.setQueryData(otherIssueKey, other);
+    const updateIssue = vi.fn(() => write.promise);
+    const getIssue = vi.fn((id: string) => id === other.id ? otherIssueRead.promise : otherWorkspaceRead.promise);
+    setApiInstance({ getIssue, updateIssue } as unknown as ApiClient);
+    const workspaceRead = qc.fetchQuery({ ...issueDetailOptions("ws-2", issueId), staleTime: 0 });
+    const issueRead = qc.fetchQuery({ ...issueDetailOptions(WS_ID, other.id), staleTime: 0 });
+    const { result } = renderHook(() => useUpdateIssue(), { wrapper: createWrapper(qc) });
+    try {
+      act(() => { result.current.mutate({ id: issueId, status: "in_progress" }); });
+      await waitFor(() => expect(updateIssue).toHaveBeenCalledTimes(1));
+      await act(async () => {
+        otherWorkspaceRead.resolve({ ...todo, workspace_id: "ws-2", title: "Other workspace", revision: 2 });
+        otherIssueRead.resolve({ ...other, title: "Other issue", revision: 2 });
+        await Promise.all([workspaceRead, issueRead]);
+      });
+      expect(qc.getQueryData<Issue>(otherWorkspaceKey)?.title).toBe("Other workspace");
+      expect(qc.getQueryData<Issue>(otherIssueKey)?.title).toBe("Other issue");
+      expect(qc.getQueryData<Issue>(detailKey)?.status).toBe("in_progress");
+      expect(result.current.isPending).toBe(true);
+    } finally {
+      await act(async () => { write.resolve({ ...todo, status: "in_progress", revision: 2 }); });
+    }
+  });
+
+  it("waits for bound completion and preserves Todo after authorization refusal", async () => {
+    const todo = makeIssue(134, { id: issueId, identifier, revision: 1 });
+    const submission = deferred<{ issue: Issue }>();
+    const completion = {
+      authorization_id: "179a6b7d-ce71-46ca-9788-d58c039d7767",
+      operation_id: "281a6b7d-ce71-46ca-9788-d58c039d7767",
+      expected_issue_revision: 1,
+    };
+    const failure = new ApiError("Completion authorization refused", 403, "Forbidden");
+    const submitDeliveryCompletion = vi.fn(() => submission.promise);
+    const updateIssue = vi.fn();
+    const getIssue = vi.fn(async () => todo);
+    setApiInstance({ submitDeliveryCompletion, updateIssue, getIssue } as unknown as ApiClient);
+    qc.setQueryData(detailKey, todo);
+    const { result } = renderHook(() => useUpdateIssue(), { wrapper: createWrapper(qc) });
+    act(() => { result.current.mutate({ id: issueId, status: "done", completion }); });
+    await waitFor(() => expect(submitDeliveryCompletion).toHaveBeenCalledWith(
+      issueId, { status: "done", completion }, { workspaceId: WS_ID },
+    ));
+    expect(qc.getQueryData<Issue>(detailKey)?.status).toBe("todo");
+    expect(result.current.isPending).toBe(true);
+    expect(updateIssue).not.toHaveBeenCalled();
+    await act(async () => { submission.reject(failure); });
+    await waitFor(() => expect(result.current.error).toBe(failure));
+    expect(qc.getQueryData<Issue>(detailKey)?.status).toBe("todo");
+    expect(updateIssue).not.toHaveBeenCalled();
+  });
+});
 
 describe("useCreateCommentSubIssue", () => {
   it("applies the normal issue-create cache coordination", async () => {
@@ -243,6 +533,36 @@ describe("useUpdateIssue — optimistic move keeps every bucketed board in sync"
     expect(updateIssue).toHaveBeenCalledWith("issue-1", {
       title: "Renamed",
     });
+  });
+
+  it("forwards an observed field token unchanged and rolls back a refused optimistic field", async () => {
+    const detailKey = issueKeys.detail(WS_ID, "issue-1");
+    qc.setQueryData<Issue>(detailKey, makeIssue(1, { revision: 6 }));
+    let reject!: (error: ApiError) => void;
+    updateIssue.mockReturnValue(new Promise<Issue>((_resolve, fail) => { reject = fail; }));
+    const { result } = renderHook(() => useUpdateIssue(), { wrapper: createWrapper(qc) });
+
+    act(() => result.current.mutate({ id: "issue-1", priority: "high", expected_revision: 5 }));
+    await waitFor(() => expect(updateIssue).toHaveBeenCalledWith("issue-1", {
+      priority: "high",
+      expected_revision: 5,
+    }));
+    expect(qc.getQueryData<Issue>(detailKey)).toMatchObject({ priority: "high", revision: 6 });
+    expect(qc.getQueryData(detailKey)).not.toHaveProperty("expected_revision");
+
+    await act(async () => { reject(new ApiError("Revision conflict", 409, "Conflict")); });
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(qc.getQueryData<Issue>(detailKey)).toMatchObject({ priority: "none", revision: 6 });
+    expect(qc.getQueryState(detailKey)?.isInvalidated).toBe(true);
+    expect(updateIssue).toHaveBeenCalledOnce();
+
+    updateIssue.mockResolvedValue(makeIssue(1, { priority: "high", revision: 7 }));
+    await act(async () => {
+      await result.current.mutateAsync({ id: "issue-1", priority: "high", expected_revision: 6 });
+    });
+    expect(updateIssue).toHaveBeenLastCalledWith("issue-1", { priority: "high", expected_revision: 6 });
+    expect(qc.getQueryData<Issue>(detailKey)).toMatchObject({ priority: "high", revision: 7 });
+    expect(qc.getQueryData(detailKey)).not.toHaveProperty("expected_revision");
   });
 
   it("does not let an older successful response overwrite a newer WS revision", async () => {
@@ -744,6 +1064,67 @@ describe("useBatchUpdateIssues — optimistic patch covers filtered boards too",
       expect(bucketIds(key, "todo")).toEqual(["issue-1"]);
       expect(bucketIds(key, "in_progress")).toEqual([]);
     }
+  });
+
+  it("forwards per-item completion controls without adding them to optimistic issue data", async () => {
+    let resolve!: (value: { updated: number }) => void;
+    batchUpdateIssues.mockReturnValue(new Promise((done) => { resolve = done; }));
+    const detailKey = issueKeys.detail(WS_ID, "issue-1");
+    qc.setQueryData<Issue>(detailKey, makeIssue(1, { revision: 6 }));
+    const { result } = renderHook(() => useBatchUpdateIssues(), { wrapper: createWrapper(qc) });
+    const binding = { issue_id: "issue-1", authorization_id: "authorization", operation_id: "operation", expected_issue_revision: 6 };
+    const updates = { status: "in_progress" as const, project_change_reason: "Scope correction", expected_revision: 6 };
+    let pending!: Promise<unknown>;
+    act(() => { pending = result.current.mutateAsync({ ids: ["issue-1"], updates, completion_bindings: [binding] }); });
+    await waitFor(() => expect(batchUpdateIssues).toHaveBeenCalledWith(["issue-1"], updates, { completion_bindings: [binding] }));
+    const cached = qc.getQueryData<Issue>(detailKey);
+    expect(cached?.status).toBe("in_progress");
+    for (const control of ["completion", "completion_bindings", "project_change_reason", "expected_revision"]) expect(cached).not.toHaveProperty(control);
+    await act(async () => { resolve({ updated: 1 }); await pending; });
+  });
+
+  it("refreshes actual committed state after a partial failure instead of retaining a full rollback", async () => {
+    for (const key of [wsKey, myKey]) {
+      qc.setQueryData(key, { byStatus: { todo: { issues: [makeIssue(1), makeIssue(2)], total: 2 }, in_progress: { issues: [], total: 0 } } });
+    }
+    for (const index of [1, 2]) qc.setQueryData(issueKeys.detail(WS_ID, `issue-${index}`), makeIssue(index));
+    const actual = { byStatus: { todo: { issues: [makeIssue(2)], total: 1 }, in_progress: { issues: [makeIssue(1, { status: "in_progress", revision: 2 })], total: 1 } } };
+    const readWorkspace = vi.fn().mockResolvedValue(actual);
+    const readMyList = vi.fn().mockResolvedValue(actual);
+    const subscriptions = [
+      new QueryObserver(qc, { queryKey: wsKey, queryFn: readWorkspace, staleTime: Infinity }).subscribe(() => {}),
+      new QueryObserver(qc, { queryKey: myKey, queryFn: readMyList, staleTime: Infinity }).subscribe(() => {}),
+    ];
+    batchUpdateIssues.mockRejectedValue(new Error("One item committed; another was rejected"));
+    const { result } = renderHook(() => useBatchUpdateIssues(), { wrapper: createWrapper(qc) });
+    try {
+      await act(async () => {
+        await result.current.mutateAsync({ ids: ["issue-1", "issue-2"], updates: { status: "in_progress" } }).catch(() => {});
+      });
+      await waitFor(() => {
+        expect(readWorkspace).toHaveBeenCalledOnce();
+        expect(readMyList).toHaveBeenCalledOnce();
+        expect(bucketIds(wsKey, "in_progress")).toEqual(["issue-1"]);
+        expect(bucketIds(myKey, "in_progress")).toEqual(["issue-1"]);
+      });
+      expect(batchUpdateIssues).toHaveBeenCalledOnce();
+    } finally { subscriptions.forEach((unsubscribe) => unsubscribe()); }
+  });
+
+  it("does not overwrite a newer server snapshot when a batch fails", async () => {
+    let reject!: (error: Error) => void;
+    batchUpdateIssues.mockReturnValue(new Promise((_resolve, rejectPromise) => { reject = rejectPromise; }));
+    const detailKey = issueKeys.detail(WS_ID, "issue-1");
+    qc.setQueryData<Issue>(detailKey, makeIssue(1, { revision: 1 }));
+    const { result } = renderHook(() => useBatchUpdateIssues(), { wrapper: createWrapper(qc) });
+    let pending!: Promise<unknown>;
+    act(() => { pending = result.current.mutateAsync({ ids: ["issue-1"], updates: { status: "in_progress" } }).catch(() => {}); });
+    await waitFor(() => expect(batchUpdateIssues).toHaveBeenCalledOnce());
+    const newer = makeIssue(1, { status: "done", revision: 8, title: "Another current edit" });
+    qc.setQueryData<Issue>(detailKey, newer);
+    await act(async () => { reject(new Error("Unknown commit")); await pending; });
+    expect(qc.getQueryData<Issue>(detailKey)).toEqual(newer);
+    expect(qc.getQueryState(detailKey)?.isInvalidated).toBe(true);
   });
 
   it("does not invalidate the board list on settle (no refetch flicker)", async () => {

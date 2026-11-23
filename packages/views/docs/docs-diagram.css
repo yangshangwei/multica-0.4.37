@@ -1,0 +1,65 @@
+/* Reader controls stay discoverable without hovering or covering diagram labels. */
+.docs-diagram .mermaid-diagram {
+  margin: 0;
+  padding: 1rem;
+  background: var(--background);
+}
+
+.docs-diagram .mermaid-diagram-scroll {
+  justify-content: flex-start;
+  margin-top: 2.5rem;
+}
+
+.docs-diagram .mermaid-diagram-frame {
+  margin-inline: auto;
+}
+
+.docs-diagram .mermaid-diagram-toolbar {
+  opacity: 1;
+  background: var(--background);
+  backdrop-filter: none;
+  top: 0.5rem;
+  right: 0.5rem;
+  gap: 0.25rem;
+}
+
+.docs-diagram .mermaid-diagram-toolbar button {
+  width: 2rem;
+  height: 2rem;
+  color: var(--muted-foreground);
+}
+
+.docs-diagram .mermaid-diagram-toolbar button:hover {
+  color: var(--foreground);
+  background: var(--accent);
+}
+
+.docs-diagram button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.docs-diagram .mermaid-diagram::before,
+.docs-diagram .mermaid-diagram::after {
+  top: 3rem;
+}
+
+.docs-diagram .mermaid-diagram::before {
+  background: linear-gradient(to right, var(--background), transparent);
+}
+
+.docs-diagram .mermaid-diagram::after {
+  background: linear-gradient(to left, var(--background), transparent);
+}
+
+@media (pointer: coarse) {
+  .docs-diagram .mermaid-diagram-toolbar button,
+  .docs-diagram .mermaid-diagram-error-head button {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .docs-diagram .mermaid-diagram-scroll {
+    margin-top: 3.25rem;
+  }
+}

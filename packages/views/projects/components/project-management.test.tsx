@@ -1,11 +1,12 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { setApiInstance, ApiError } from "@multica/core/api";
 import type { ApiClient } from "@multica/core/api/client";
-import { useProjectProgressDraftStore, useProjectDescriptionDraftStore } from "@multica/core/projects";
+import { useProjectProgressDraftStore, useProjectDescriptionDraftStore, useProjectAccessStore } from "@multica/core/projects";
+import { projectDetailOptions, projectKeys } from "@multica/core/projects/queries";
 import type { Project, ProjectUpdateDraft } from "@multica/core/types";
 import { renderWithI18n } from "../../test/i18n";
 import { ProjectDescription } from "./project-description";
@@ -27,7 +28,7 @@ vi.mock("../../editor", () => ({ ContentEditor: forwardRef(function Editor({ val
 let qc: QueryClient;
 const project: Project = { ...p1Project, status: "in_progress", priority: "medium", lead_type: "member" };
 function render(ui: React.ReactElement) { return renderWithI18n(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>); }
-beforeEach(() => { qc = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } }); useProjectProgressDraftStore.getState().clearDraft(); useProjectDescriptionDraftStore.getState().clearDraft(); });
+beforeEach(() => { useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} }); qc = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } }); useProjectProgressDraftStore.getState().clearDraft(); useProjectDescriptionDraftStore.getState().clearDraft(); });
 afterEach(() => { qc.clear(); vi.restoreAllMocks(); });
 
 describe("project goal editor", () => {
@@ -114,6 +115,101 @@ describe("manual project progress", () => {
     await user.click(screen.getByRole("button", { name: "Preview publication" }));
     await waitFor(() => expect(previewProjectUpdate).toHaveBeenCalledTimes(2));
     expect(previewProjectUpdate.mock.calls[1]?.[2]).toMatchObject({ expected_description_revision: 3, body: "Verified the release" });
+  });
+
+  it("retains acceptance conflict recovery through repeated realtime description refreshes", async () => {
+    const changed = { ...project, description: "Changed goal after a replaced read", description_revision: 3 };
+    let resolveReplacement!: (value: Project) => void;
+    const replacement = new Promise<Project>((resolve) => { resolveReplacement = resolve; });
+    const getProject = vi.fn().mockImplementationOnce((_id, { signal }: { signal: AbortSignal }) => new Promise<Project>((_resolve, reject) => {
+      signal.addEventListener("abort", () => reject(new DOMException("Cancelled", "AbortError")), { once: true });
+    })).mockImplementationOnce((_id, { signal }: { signal: AbortSignal }) => new Promise<Project>((_resolve, reject) => {
+      signal.addEventListener("abort", () => reject(new DOMException("Cancelled", "AbortError")), { once: true });
+    })).mockImplementationOnce(() => replacement);
+    const previewProjectUpdate = vi.fn().mockRejectedValueOnce(new ApiError("Description changed", 409, "Conflict", { code: "project_description_conflict" }))
+      .mockImplementationOnce(async (_ws, _id, draft: ProjectUpdateDraft) => ({ ...p1Preview, draft, description_revision: 3 }));
+    setApiInstance({ getBaseUrl: () => "https://test.example", getProject,
+      listProjectUpdates: vi.fn().mockResolvedValue({ items: [], next_cursor: null }), previewProjectUpdate } as unknown as ApiClient);
+    qc.setQueryData(projectKeys.detail(project.workspace_id, project.id), project);
+    function LiveProject() {
+      const query = useQuery({ ...projectDetailOptions(project.workspace_id, project.id), staleTime: Infinity });
+      return <ProjectProgress project={query.data!} onProtectedError={vi.fn()} />;
+    }
+    render(<LiveProject />);
+    const user = userEvent.setup(); await user.click(screen.getByRole("button", { name: "Record acceptance" }));
+    fireEvent.change(screen.getByLabelText("Rich text"), { target: { value: "Preserved acceptance explanation" } });
+    await user.click(screen.getByRole("button", { name: "Preview publication" }));
+    await waitFor(() => expect(getProject).toHaveBeenCalledTimes(1));
+    await act(async () => { void qc.invalidateQueries({ queryKey: projectKeys.all(project.workspace_id) }); });
+    await waitFor(() => expect(getProject).toHaveBeenCalledTimes(2));
+    await act(async () => { void qc.invalidateQueries({ queryKey: projectKeys.all(project.workspace_id) }); });
+    await waitFor(() => expect(getProject).toHaveBeenCalledTimes(3));
+    await act(async () => { resolveReplacement(changed); });
+    await screen.findByText(changed.description);
+    expect(screen.getByLabelText("Rich text")).toHaveValue("Preserved acceptance explanation");
+    await user.click(screen.getByRole("button", { name: "Review acceptance against this description" }));
+    await user.click(screen.getByRole("button", { name: "Preview publication" }));
+    await waitFor(() => expect(previewProjectUpdate).toHaveBeenCalledTimes(2));
+    expect(previewProjectUpdate.mock.calls[1]?.[2]).toMatchObject({ expected_description_revision: 3, body: "Preserved acceptance explanation" });
+  });
+
+  it("shows a failed acceptance description read and retries it without resubmitting the preview", async () => {
+    const changed = { ...project, description: "Goal recovered after a failed read", description_revision: 3 };
+    const getProject = vi.fn().mockRejectedValueOnce(new Error("Description temporarily unavailable")).mockResolvedValueOnce(changed);
+    const previewProjectUpdate = vi.fn().mockRejectedValueOnce(new ApiError("Description changed", 409, "Conflict", { code: "project_description_conflict" }));
+    setApiInstance({ getBaseUrl: () => "https://test.example", getProject,
+      listProjectUpdates: vi.fn().mockResolvedValue({ items: [], next_cursor: null }), previewProjectUpdate } as unknown as ApiClient);
+    render(<ProjectProgress project={project} onProtectedError={vi.fn()} />);
+    const user = userEvent.setup(); await user.click(screen.getByRole("button", { name: "Record acceptance" }));
+    fireEvent.change(screen.getByLabelText("Rich text"), { target: { value: "My acceptance draft stays local" } });
+    await user.click(screen.getByRole("button", { name: "Preview publication" }));
+    await screen.findByText("Description temporarily unavailable");
+    expect(screen.queryByRole("button", { name: "Review acceptance against this description" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    await screen.findByText(changed.description);
+    expect(screen.queryByText("Description temporarily unavailable")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Rich text")).toHaveValue("My acceptance draft stays local");
+    expect(getProject).toHaveBeenCalledTimes(2);
+    expect(previewProjectUpdate).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("button", { name: "Review acceptance against this description" })).toBeEnabled();
+  });
+
+  it("waits for the conflict read before adopting a cached description", async () => {
+    const cached = { ...project, description: "Already cached newer goal", description_revision: 3 };
+    const latest = { ...cached, description: "Latest goal after conflict", description_revision: 4 };
+    let resolveRead!: (value: Project) => void;
+    const getProject = vi.fn(() => new Promise<Project>((resolve) => { resolveRead = resolve; }));
+    const previewProjectUpdate = vi.fn().mockRejectedValueOnce(new ApiError("Description changed", 409, "Conflict", { code: "project_description_conflict" }))
+      .mockImplementationOnce(async (_ws, _id, draft: ProjectUpdateDraft) => ({ ...p1Preview, draft, description_revision: 4 }));
+    setApiInstance({ getBaseUrl: () => "https://test.example", getProject,
+      listProjectUpdates: vi.fn().mockResolvedValue({ items: [], next_cursor: null }), previewProjectUpdate } as unknown as ApiClient);
+    qc.setQueryData(projectKeys.detail(project.workspace_id, project.id), cached);
+    render(<ProjectProgress project={project} onProtectedError={vi.fn()} />);
+    const user = userEvent.setup(); await user.click(screen.getByRole("button", { name: "Record acceptance" }));
+    await user.click(screen.getByRole("button", { name: "Preview publication" }));
+    await waitFor(() => expect(getProject).toHaveBeenCalledOnce());
+    expect(screen.getByRole("button", { name: "Review acceptance against this description" })).toBeDisabled();
+    await act(async () => { resolveRead(latest); });
+    await screen.findByText(latest.description);
+    await user.click(screen.getByRole("button", { name: "Review acceptance against this description" }));
+    await user.click(screen.getByRole("button", { name: "Preview publication" }));
+    await waitFor(() => expect(previewProjectUpdate).toHaveBeenCalledTimes(2));
+    expect(previewProjectUpdate.mock.calls[1]?.[2]).toMatchObject({ expected_description_revision: 4 });
+  });
+
+  it("clears protected draft and hides recovery when the conflict read revokes access", async () => {
+    const hide = vi.fn();
+    const getProject = vi.fn().mockRejectedValue(new ApiError("Access denied", 403, "Forbidden"));
+    const previewProjectUpdate = vi.fn().mockRejectedValue(new ApiError("Description changed", 409, "Conflict", { code: "project_description_conflict" }));
+    setApiInstance({ getBaseUrl: () => "https://test.example", getProject,
+      listProjectUpdates: vi.fn().mockResolvedValue({ items: [], next_cursor: null }), previewProjectUpdate } as unknown as ApiClient);
+    render(<ProjectProgress project={project} onProtectedError={hide} />);
+    const user = userEvent.setup(); await user.click(screen.getByRole("button", { name: "Record acceptance" }));
+    fireEvent.change(screen.getByLabelText("Rich text"), { target: { value: "Protected acceptance text" } });
+    await user.click(screen.getByRole("button", { name: "Preview publication" }));
+    await waitFor(() => expect(hide).toHaveBeenCalled());
+    expect(useProjectProgressDraftStore.getState().draft.entries).toEqual({});
+    expect(screen.queryByRole("button", { name: "Review acceptance against this description" })).not.toBeInTheDocument();
   });
 
   it("cancelling the editor does not preview or publish", async () => {

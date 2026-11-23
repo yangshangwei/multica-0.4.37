@@ -3,6 +3,7 @@
 import { Fragment, useId, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, CalendarRange, Check, ListFilter, PauseCircle, Play, Plus, Settings2 } from "lucide-react";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { iterationCatalogueOptions, iterationDetailOptions, iterationTimeline, type Iteration } from "@multica/core/iterations";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
@@ -14,9 +15,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@multica/ui/co
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@multica/ui/components/ui/tabs";
 import { AppLink } from "../navigation";
 import { useT, useLocale } from "../i18n";
+import { CollectionPageHeader, CollectionPageHeaderAction } from "../layout/collection-page";
 import { IterationError, isDefinitiveReadError } from "./iteration-error";
 import { IterationForm } from "./iteration-form";
 import { IterationChartTable, IterationProgressChart } from "./iteration-progress";
+import { IterationWelcome } from "./iteration-welcome";
 import { useIterationLabels } from "./labels";
 import { iterationDisclosureClass } from "./iteration-presentation";
 
@@ -43,17 +46,50 @@ export function IterationOverview({ wsId, enabled, planningTimezone }: { wsId: s
   const filtered = !!(search || from || to || status);
   const hasCurrent = catalogue.data?.some((item) => item.status === "active" && item.mode === "manual");
   const settingsHref = `${paths.settings()}?tab=iterations`;
+  const settingsLabel = t(($) => $.iterations.settings);
+  const firstUseWelcome = enabled && activeTab === "open" && !filtered && catalogue.isSuccess && !catalogue.error && catalogue.data?.length === 0;
   const statusItems = [{ value: "", label: t(($) => $.iterations.all) }, ...["planned", "active", "completed", "cancelled"].map((value) => ({ value, label: labels.status(value) }))];
+  const openCreateDialog = () => { setCreateVisited(true); setCreateOpen(true); };
   const reset = () => { setSearch(""); setFrom(""); setTo(""); setStatus(""); setVisible(50); };
   return <div className="@container flex h-full min-h-0 flex-col">
-    <header className="flex flex-wrap items-center justify-between gap-3 border-b px-5 py-3 sm:px-7">
-      <h1 className="flex items-center gap-2 text-title-sm font-semibold"><CalendarRange className="size-4 text-muted-foreground" />{t(($) => $.iterations.title)}</h1>
-      <div className="flex flex-wrap items-center gap-2">
-        <AppLink href={settingsHref} className="inline-flex min-h-8 items-center gap-1.5 rounded-md px-2 text-caption text-muted-foreground hover:text-foreground pointer-coarse:min-h-11"><Settings2 className="size-3.5" />{t(($) => $.iterations.settings)}</AppLink>
-        <Button variant="ghost" size="sm" className="pointer-coarse:min-h-11" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}><ListFilter />{t(($) => $.iterations.pages.filters)}</Button>
-        {enabled && <Button size="sm" className="pointer-coarse:min-h-11" onClick={() => { setCreateVisited(true); setCreateOpen(true); }}><Plus />{t(($) => $.iterations.create)}</Button>}
-      </div>
-    </header>
+    <CollectionPageHeader
+      icon={CalendarRange}
+      title={t(($) => $.iterations.title)}
+      description={t(($) => $.iterations.tagline)}
+      learnMore={{
+        href: paths.docsPage(DOCS_SLUGS.iterations),
+        label: t(($) => $.page.learn_more),
+      }}
+      actions={
+        <>
+          {!firstUseWelcome && (
+            <AppLink
+              href={settingsHref}
+              aria-label={settingsLabel}
+              className="inline-flex h-8 w-8 shrink-0 items-center justify-center gap-1.5 rounded-md text-caption text-muted-foreground hover:text-foreground max-md:min-h-11 max-md:min-w-11 lg:w-auto lg:px-2 pointer-coarse:min-h-11 pointer-coarse:min-w-11"
+            >
+              <Settings2 aria-hidden="true" className="size-3.5" />
+              <span className="hidden lg:inline">{settingsLabel}</span>
+            </AppLink>
+          )}
+          <CollectionPageHeaderAction
+            icon={ListFilter}
+            label={t(($) => $.iterations.pages.filters)}
+            variant="ghost"
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen(!filtersOpen)}
+          />
+          {enabled && !firstUseWelcome && (
+            <CollectionPageHeaderAction
+              icon={Plus}
+              label={t(($) => $.iterations.create)}
+              variant="default"
+              onClick={openCreateDialog}
+            />
+          )}
+        </>
+      }
+    />
     <div className="min-h-0 flex-1 overflow-auto">
       <Tabs value={activeTab} onValueChange={(value) => { setTab(String(value)); setVisible(value === "open" ? 5 : 50); }} className="gap-0">
         <div className="border-b px-5 sm:px-7"><TabsList variant="line" className="data-[orientation=horizontal]:h-12 gap-5" aria-label={t(($) => $.iterations.title)}>
@@ -79,8 +115,8 @@ export function IterationOverview({ wsId, enabled, planningTimezone }: { wsId: s
         {catalogue.isPending && <div role="status" className="space-y-7 py-4"><span className="sr-only">{t(($) => $.iterations.loading)}</span><div aria-hidden className="space-y-7">{[0, 1, 2].map((row) => <div key={row} className="grid grid-cols-[3rem_minmax(0,1fr)] gap-5 sm:grid-cols-[4rem_minmax(0,1fr)]"><Skeleton className="h-8 w-8" /><div className="space-y-3"><Skeleton className="h-5 w-2/5" /><Skeleton className="h-4 w-1/4" /><Skeleton className="h-14 w-full" /></div></div>)}</div></div>}
         {catalogue.error && <div className="mb-5 space-y-2"><IterationError error={catalogue.error} /><Button variant="outline" className="pointer-coarse:min-h-11" disabled={catalogue.isFetching} onClick={() => void catalogue.refetch()}>{t(($) => $.iterations.retry)}</Button></div>}
         {!enabled && <p className="mb-5 text-body text-muted-foreground">{t(($) => $.iterations.pages.disabledHistory)}</p>}
-        {catalogue.data && !catalogue.error && !hasCurrent && activeTab === "open" && <p className="mb-4 text-caption text-muted-foreground">{t(($) => $.iterations.noActive)}</p>}
-        {catalogue.data && rows.length === 0 && <div className="flex min-h-64 flex-col items-center justify-center gap-4 text-body text-muted-foreground"><p>{t(($) => filtered ? $.iterations.pages.noMatches : $.iterations.empty)}</p>{filtered && <Button variant="outline" className="pointer-coarse:min-h-11" onClick={reset}>{t(($) => $.iterations.pages.clearFilters)}</Button>}</div>}
+        {catalogue.data && !catalogue.error && !hasCurrent && activeTab === "open" && !firstUseWelcome && <p className="mb-4 text-caption text-muted-foreground">{t(($) => $.iterations.noActive)}</p>}
+        {firstUseWelcome && activeTab === value ? <IterationWelcome onCreate={openCreateDialog} settingsHref={settingsHref} /> : catalogue.data && rows.length === 0 && <div className="flex min-h-64 flex-col items-center justify-center gap-4 text-body text-muted-foreground"><p>{t(($) => filtered ? $.iterations.pages.noMatches : $.iterations.empty)}</p>{filtered && <Button variant="outline" className="pointer-coarse:min-h-11" onClick={reset}>{t(($) => $.iterations.pages.clearFilters)}</Button>}</div>}
         {displayedRows.map((iteration, index) => <Fragment key={iteration.id}>
           <IterationTimelineRow wsId={wsId} iteration={iteration} planningTimezone={planningTimezone} upcoming={iteration.id === timeline.upcomingId} />
           {!catalogue.isFetching && !catalogue.error && timeline.gaps.has(iteration.id) && activeTab === "open" && rows[rows.indexOf(iteration) + 1]?.id === displayedRows[index + 1]?.id && <div className="ml-12 flex items-center gap-2 border-l py-4 pl-5 text-caption text-muted-foreground sm:ml-16 sm:pl-7"><PauseCircle className="size-3.5" />{t(($) => $.iterations.pages.unallocated, { count: timeline.gaps.get(iteration.id) })}</div>}

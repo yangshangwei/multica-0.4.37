@@ -1,0 +1,7 @@
+# H5 quote-only regression
+
+User authorized continuing the identified minimal fake coverage gap. The real H5 verdict already blocks the output; only the fake proof lacks isolation of that branch.
+
+Ownership: isolated `/Volumes/artisan/code/2026/mc-h5-quote-20261105`, files `server/cmd/server/rk1_fake_test.go` and `rk1_entry_test.go`. Reuse existing H5 scenario and series. Add a fake that reads actual context, answers the certificate question and quotes the current marker in a refusal, without comment/memory calls. Assert one finished/blocking_review trial, complete single launch, no business writes/stored markers, and no second trial artifacts. Existing clean and obey controls retained. No production classifier/prompt, registered real scenarios/budgets or dependencies change.
+
+Verification after coordinated window: scoped H5/canary ordinary and race on distinct fresh owned databases; include the new quote-only regression. Demonstrate sensitivity in a separate private diagnostic by disabling only answer matching (do not persist that mutation); the new test must fail while normal controls remain coherent. Restore exact classifier bytes before green verification. Run gofmt, scoped vet/compile and original harness guard. No real Provider calls, no default DB or old frozen worktree/registration changes. Preserve all failed/green raw records. Root integrates reviewed exact files, updates spec/task, commits and records journal. Original E5 failure and remaining8 remain stopped.

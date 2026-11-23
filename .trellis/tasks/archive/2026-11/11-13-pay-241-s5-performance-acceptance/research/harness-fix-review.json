@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-14",
+  "status": "ready_for_rehearsal",
+  "reviewer": "native trellis-check /root/s5_check",
+  "source_before": {
+    "e2e/collaboration-performance.spec.ts": "904857638743cccc59347880c63ba28ec151cbbc95e69dc32504301dc9651723",
+    "e2e/fixtures/collaboration-performance.ts": "75d25dc3f531fa80ca807d7f3da95a0bcc746082702bcf966f225f09b9d6471a",
+    "e2e/fixtures/collaboration-performance-stats.ts": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+    "e2e/fixtures/collaboration-performance-stats.node-test.mjs": "9c67395d28af9ff92354e1f7f83d1095181b5a03477e742bf607ad1cde5cc585"
+  },
+  "source_after": {
+    "e2e/collaboration-performance.spec.ts": "904857638743cccc59347880c63ba28ec151cbbc95e69dc32504301dc9651723",
+    "e2e/fixtures/collaboration-performance.ts": "75d25dc3f531fa80ca807d7f3da95a0bcc746082702bcf966f225f09b9d6471a",
+    "e2e/fixtures/collaboration-performance-stats.ts": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+    "e2e/fixtures/collaboration-performance-stats.node-test.mjs": "9c67395d28af9ff92354e1f7f83d1095181b5a03477e742bf607ad1cde5cc585"
+  },
+  "source_unchanged_during_checks": true,
+  "verification": [
+    {
+      "name": "tests",
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-14T03:16:15.866122+00:00",
+      "exit_code": 0,
+      "stdout": "TAP version 13\n# Subtest: heartbeat uses the enrolled owner's scoped credential, repeats below freshness, and stops its timer\nok 1 - heartbeat uses the enrolled owner's scoped credential, repeats below freshness, and stops its timer\n  ---\n  duration_ms: 503.595208\n  type: 'test'\n  ...\n# Subtest: heartbeat refuses another owner or an expired credential before any transport call\nok 2 - heartbeat refuses another owner or an expired credential before any transport call\n  ---\n  duration_ms: 427.587042\n  type: 'test'\n  ...\n# Subtest: heartbeat records HTTP, malformed acknowledgement, and transport failures without leaking response content\nok 3 - heartbeat records HTTP, malformed acknowledgement, and transport failures without leaking response content\n  ---\n  duration_ms: 646.188791\n  type: 'test'\n  ...\n# Subtest: heartbeat cleanup aborts and awaits an in-flight request without treating cancellation as a failed beat\nok 4 - heartbeat cleanup aborts and awaits an in-flight request without treating cancellation as a failed beat\n  ---\n  duration_ms: 384.424875\n  type: 'test'\n  ...\n# Subtest: heartbeat remains single-flight and keeps a failed beat after a later successful retry\nok 5 - heartbeat remains single-flight and keeps a failed beat after a later successful retry\n  ---\n  duration_ms: 235.177958\n  type: 'test'\n  ...\n# Subtest: heartbeat log failure settles readiness and cleanup instead of leaking a background rejection\nok 6 - heartbeat log failure settles readiness and cleanup instead of leaking a background rejection\n  ---\n  duration_ms: 205.570208\n  type: 'test'\n  ...\n# Subtest: writeback heartbeat and offline failures keep both full denominators and finish all cleanup\nok 7 - writeback heartbeat and offline failures keep both full denominators and finish all cleanup\n  ---\n  duration_ms: 5074.696917\n  type: 'test'\n  ...\n# Subtest: actual HTTP heartbeat acknowledgement permits 101 independently attributed writeback runs and full cleanup\nok 8 - actual HTTP heartbeat acknowledgement permits 101 independently attributed writeback runs and full cleanup\n  ---\n  duration_ms: 2124.771708\n  type: 'test'\n  ...\n# Subtest: writeback cannot pass after a disconnected observer fails its boundary reconnect\nok 9 - writeback cannot pass after a disconnected observer fails its boundary reconnect\n  ---\n  duration_ms: 648.450291\n  type: 'test'\n  ...\n# Subtest: a timed observer disconnect stays missing after recovery and retains its measured timestamps\nok 10 - a timed observer disconnect stays missing after recovery and retains its measured timestamps\n  ---\n  duration_ms: 1382.46225\n  type: 'test'\n  ...\n# Subtest: offline and stale runtime reads cannot become a generic no-provider launch or a passing sample\nok 11 - offline and stale runtime reads cannot become a generic no-provider launch or a passing sample\n  ---\n  duration_ms: 2.076708\n  type: 'test'\n  ...\n# Subtest: nearest-rank uses the integer rank ceil(N*95/100) for N=100, 10000 and 20\nok 12 - nearest-rank uses the integer rank ceil(N*95/100) for N=100, 10000 and 20\n  ---\n  duration_ms: 0.315958\n  type: 'test'\n  ...\n# Subtest: a missing sample enters the percentile as +Infinity instead of shrinking the denominator\nok 13 - a missing sample enters the percentile as +Infinity instead of shrinking the denominator\n  ---\n  duration_ms: 0.562708\n  type: 'test'\n  ...\n# Subtest: more than five percent missing makes p95 unbounded\nok 14 - more than five percent missing makes p95 unbounded\n  ---\n  duration_ms: 0.288334\n  type: 'test'\n  ...\n# Subtest: any missing sample fails the sync gate even when every percentile is finite and fast\nok 15 - any missing sample fails the sync gate even when every percentile is finite and fast\n  ---\n  duration_ms: 67.580958\n  type: 'test'\n  ...\n# Subtest: a duplicate event_id is counted and never yields a second arrival\nok 16 - a duplicate event_id is counted and never yields a second arrival\n  ---\n  duration_ms: 0.75925\n  type: 'test'\n  ...\n# Subtest: only collaboration:changed with exactly sequence S+1 for this issue matches\nok 17 - only collaboration:changed with exactly sequence S+1 for this issue matches\n  ---\n  duration_ms: 0.360833\n  type: 'test'\n  ...\n# Subtest: a frame that arrives before the write response keeps its original arrival time\nok 18 - a frame that arrives before the write response keeps its original arrival time\n  ---\n  duration_ms: 0.27025\n  type: 'test'\n  ...\n# Subtest: without the matching frame an authoritative read alone is never a converged sample\nok 19 - without the matching frame an authoritative read alone is never a converged sample\n  ---\n  duration_ms: 0.492167\n  type: 'test'\n  ...\n# Subtest: warm-up rows are retained but never enter or replace the formal denominator\nok 20 - warm-up rows are retained but never enter or replace the formal denominator\n  ---\n  duration_ms: 64.470667\n  type: 'test'\n  ...\n# Subtest: an aborted run keeps the 10,000 denominator and reports the remainder as NOT_RUN\nok 21 - an aborted run keeps the 10,000 denominator and reports the remainder as NOT_RUN\n  ---\n  duration_ms: 23.94825\n  type: 'test'\n  ...\n# Subtest: a failed write or failed preparation marks all 100 samples of that event non-converged\nok 22 - a failed write or failed preparation marks all 100 samples of that event non-converged\n  ---\n  duration_ms: 11.339334\n  type: 'test'\n  ...\n# Subtest: pooled p95 and per-event slowest-observer p95 are judged separately\nok 23 - pooled p95 and per-event slowest-observer p95 are judged separately\n  ---\n  duration_ms: 77.723917\n  type: 'test'\n  ...\n# Subtest: accounting refuses duplicated pairs, impossible indices and relabelled late samples\nok 24 - accounting refuses duplicated pairs, impossible indices and relabelled late samples\n  ---\n  duration_ms: 19.117167\n  type: 'test'\n  ...\n# Subtest: the two write-back gates are independent and each needs a complete denominator\nok 25 - the two write-back gates are independent and each needs a complete denominator\n  ---\n  duration_ms: 2.396\n  type: 'test'\n  ...\n# Subtest: phase jitter is seeded, reproducible, inside [0,500) and not phase locked\nok 26 - phase jitter is seeded, reproducible, inside [0,500) and not phase locked\n  ---\n  duration_ms: 0.967417\n  type: 'test'\n  ...\n# Subtest: registration pacing never plans more than 30 attempts in one server window\nok 27 - registration pacing never plans more than 30 attempts in one server window\n  ---\n  duration_ms: 0.262166\n  type: 'test'\n  ...\n# Subtest: write-back readers are never the triggering account or the resource owner\nok 28 - write-back readers are never the triggering account or the resource owner\n  ---\n  duration_ms: 0.561291\n  type: 'test'\n  ...\n# Subtest: the quiescence barrier accepts a delivered frame or a snapshot that already covers the sequence\nok 29 - the quiescence barrier accepts a delivered frame or a snapshot that already covers the sequence\n  ---\n  duration_ms: 0.108167\n  type: 'test'\n  ...\n# Subtest: the relay-time revision in a frame is recorded as an anomaly, never used to match\nok 30 - the relay-time revision in a frame is recorded as an anomaly, never used to match\n  ---\n  duration_ms: 0.160584\n  type: 'test'\n  ...\n# Subtest: a manifest that changes the pre-registered protocol is rejected\nok 31 - a manifest that changes the pre-registered protocol is rejected\n  ---\n  duration_ms: 0.18525\n  type: 'test'\n  ...\n1..31\n# tests 31\n# suites 0\n# pass 31\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 12952.21125\n",
+      "stderr": "",
+      "stdout_sha256": "a67c83c66175c81aeaa57f2a3170df7e72bd35267a05d4fce2f63b09bee400e8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "typecheck",
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--project",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-tsconfig.json",
+        "--pretty",
+        "false"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-14T03:16:15.870766+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "lint",
+      "argv": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "--config",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint.config.mjs",
+        "--max-warnings",
+        "0",
+        "--no-cache",
+        "e2e/collaboration-performance.spec.ts",
+        "e2e/fixtures/collaboration-performance.ts",
+        "e2e/fixtures/collaboration-performance-stats.ts",
+        "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-14T03:16:15.872166+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "Independent S5 harness check before r02; not final S5 or TC-24 acceptance",
+  "blocking_findings_open": 0,
+  "changed_files": [
+    "e2e/fixtures/collaboration-performance.ts",
+    "e2e/fixtures/collaboration-performance-stats.node-test.mjs",
+    ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/harness-fix-review.md",
+    ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/harness-fix-review.json"
+  ],
+  "initial_source": {
+    "e2e/collaboration-performance.spec.ts": "904857638743cccc59347880c63ba28ec151cbbc95e69dc32504301dc9651723",
+    "e2e/fixtures/collaboration-performance.ts": "5f98915071bc4d358ea4eacec8aaf687a113bc859f14b0c98a8510c3a6a7d23a",
+    "e2e/fixtures/collaboration-performance-stats.ts": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+    "e2e/fixtures/collaboration-performance-stats.node-test.mjs": "e903e85955708cafe56bcb4e9c82a17916078413fb47e4bcd52f98683bbe0cd1"
+  },
+  "initial_binding_verified": {
+    "r01_report_matches_current_at_review_start": true,
+    "r02_source_and_overlay_match_at_review_start": true,
+    "prior_static_record_sha256": "080b387358165dd49b6c05ec9eb28f728e9edc1731dddb3a091c38daa4f69ca5",
+    "prior_static_record_matches_recorded_hash": true,
+    "prior_static_all_output_hashes_match": true,
+    "prior_playwright_optout_log_sha256": "58af14e11e8920d880ab56a5db90a118884dd6001c50c750150db8044803a081",
+    "prior_playwright_optout": {
+      "executed": 0,
+      "skipped": 3,
+      "exit_code": 0
+    }
+  },
+  "r01_preserved_source_sha256": {
+    "e2e/collaboration-performance.spec.ts": "87ba4d0916c11102be385e811981062315d9c640aa3eb7740bb391665647d175",
+    "e2e/fixtures/collaboration-performance.ts": "1b043991fa58fcd4a2e406577ea40a2339325941de740dd5cad14f6ea6cb3579",
+    "e2e/fixtures/collaboration-performance-stats.ts": "9b8724218c3ccbd6f6a60715c7fcbed08ebabb0c1ccd63577d34377308171683",
+    "e2e/fixtures/collaboration-performance-stats.node-test.mjs": "f8369bd56dd3da57892f28a10656be8eea15dd59505294c30845272bc77f764e"
+  },
+  "findings_fixed": [
+    {
+      "id": "F01",
+      "severity": "blocking",
+      "file": "e2e/fixtures/collaboration-performance.ts:973",
+      "issue": "HTTP heartbeat required runtime_id, which DaemonHeartbeat intentionally omits. Every genuine successful heartbeat was classified invalid_ack; fake positives invented the field.",
+      "source_evidence": "Frozen r02 server/internal/handler/daemon.go:1291-1310 and server/internal/daemon/client.go:651-661",
+      "fix": "Validate HTTP status 200 and body.status==ok; retain runtime_gone refusal. Runtime identity stays bound to the owner credential, request runtime_id and subsequent authoritative owner runtime-list read. All fake HTTP success ACKs use the actual shape."
+    },
+    {
+      "id": "F02",
+      "severity": "blocking",
+      "file": "e2e/fixtures/collaboration-performance.ts:1126",
+      "issue": "Writeback only recorded open_sockets; 99 sockets with failed reconnect still allowed all 101 runs and pass=true.",
+      "authorization": "Parent explicitly approved minimal semantic correction on 2026-11-14 before edits.",
+      "fix": "Require exactly 100 open observers at the boundary and before trigger. Freeze existing socket_id/connections/closed_ms; any mid-run loss or replacement invalidates both metrics and aborts remaining work. Current failed pair stays missing; subsequent planned pairs stay NOT_RUN. Preserve original read times and observed_latency_ms for diagnostic comparison."
+    },
+    {
+      "id": "F03",
+      "severity": "local_diagnostic",
+      "file": "e2e/fixtures/collaboration-performance.ts:1080",
+      "issue": "daemon_start_requested_ms was recorded before awaiting the initial heartbeat, up to a request timeout earlier than the actual daemon-start call.",
+      "fix": "Record this diagnostic immediately before startHostDaemon, after heartbeat readiness. Measurement clocks and fixture lifetime remain unchanged."
+    }
+  ],
+  "findings_not_fixed": [],
+  "regression_history": [
+    {
+      "stage": "actual HTTP shape before ACK fix",
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+      ],
+      "exit_code": 1,
+      "passed": 26,
+      "failed": 2,
+      "evidence": "tool output aaff88; original implementation evidence untouched",
+      "failures": [
+        "heartbeat owner success: runtime_heartbeat_invalid_ack instead of null",
+        "offline orchestration: runtime_heartbeat_invalid_ack instead of runtime_offline"
+      ]
+    },
+    {
+      "stage": "ACK fix plus complete positive path",
+      "exit_code": 0,
+      "passed": 29,
+      "failed": 0,
+      "evidence": "tool output 32ec62"
+    },
+    {
+      "stage": "disconnected observer counterexample before observer guard",
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "--test-name-pattern=writeback cannot pass",
+        "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+      ],
+      "exit_code": 1,
+      "passed": 0,
+      "failed": 1,
+      "actual_pass": true,
+      "expected_pass": false,
+      "evidence": "tool output 110c8b"
+    },
+    {
+      "stage": "observer guard complete",
+      "exit_code": 0,
+      "passed": 31,
+      "failed": 0,
+      "typecheck_exit": 0,
+      "lint_exit": 0,
+      "evidence": "tool outputs bf051d/338f94/ed4d09"
+    },
+    {
+      "stage": "final timestamp correction and exact source binding",
+      "exit_code": 0,
+      "passed": 31,
+      "failed": 0,
+      "typecheck_exit": 0,
+      "lint_exit": 0,
+      "evidence": "verification array contains exact stdout/stderr and hashes"
+    }
+  ],
+  "verification_scope": {
+    "node_named_tests": 31,
+    "node_failed": 0,
+    "node_skipped": 0,
+    "api_calls": 0,
+    "db_calls": 0,
+    "real_sockets": 0,
+    "daemon_or_provider_processes": 0,
+    "new_positive_witness": "Actual HTTP ACK; 101 distinct controlled run IDs; 100 distinct formal triggering users; readers differ from trigger and owner; 202 rows; coherent monotonic sample timestamps; gate/daemon/socket cleanup order; zero remaining fake timers.",
+    "new_negative_witnesses": [
+      "Boundary reconnect leaves 99 open: zero triggers, current warmup pair missing, all formal pairs NOT_RUN.",
+      "Timed observer loss: first formal pair missing, 99 later pairs NOT_RUN, warmup preserved.",
+      "Connection replaced and reopened before classification: same missing pair and retained measured timestamps; cannot restore pass."
+    ],
+    "prior_negative_witnesses": "Owner mismatch, credential expiry, HTTP/refused/malformed/network ACK, sticky retry failure, in-flight cancellation join, log failure, offline/stale runtime, socket/daemon/gate teardown failures, denominator/correlation/statistics counterexamples."
+  },
+  "reviewed_contracts": [
+    "Public preparation gives 100 distinct account IDs; measurement fresh logins verify /api/me, 100 unique tokens and socket IDs, auth_ack+subscribe_ack and own-token readable issue, exact active participants.",
+    "Propagation serial formal writer k equals observer k; fixed5warmup/100formal, exact S+1 frame and own-token GET; BigInt versions, original arrival time, unknown writes cannot pass; 10000 denominator and infinity for all absent pairs.",
+    "Writeback uses same issue/100 observers, one warmup plus100formal, independent reading account, comment404 precheck, exact agent/comment/run attribution, separate business/finalization clocks and authoritative settled/proof/success/result endpoint.",
+    "Heartbeat uses enrolled actor0 mdt_, runtime_id/supports_batch_import payload, immediate readiness then15s after completion, request10s timeout, no reader credential, sticky error and stop/join before gate/log closure.",
+    "Owner runtime reads validate owner/workspace/daemon/runtime identity and status/last_seen outside metric clocks; offline pretrigger cannot become no_provider_launch or a valid sample.",
+    "Fixed150s freshness,5min daemon fixture,30s measurement deadline,2s/5s budgets, productdefault25pool and original r01 evidence retained."
+  ],
+  "spec_sync": {
+    "status": "deferred_to_existing_implement_step_4.2",
+    "reason": "No spec write scope. The planned collaboration-performance-qa.md should record HTTP ACK shape, exact100-observer invariant and missing-but-diagnostic timing. Current PRD/design already require these semantics."
+  },
+  "limitations": [
+    "Ready is for an isolated r02 rehearsal after freezing these exact hashes, not final acceptance or TC-24 PASS.",
+    "No real API, database, WebSocket, daemon, Provider, model, payment or deployment request was made by this reviewer. All harness runtime tests used explicit memory doubles and test-owned /tmp logs.",
+    "The unchanged5-minute host fixture can still bound a slow rehearsal; do not extend it or reinterpret a truncated run as full success.",
+    "The initial31-pass run is followed by one narrow rerun after the timestamp edit; exact final stdout is embedded in this file. Prior implementation logs and failures were not overwritten.",
+    "Live owner authentication, sustained heartbeat past150s, actual socket/process cleanup, full101 runs and final environmental identity remain root-run evidence.",
+    "Default-off Playwright proof is the hash-verified prior3-skip run. The opt-in guard/spec has not changed in this review; it was not rerun.",
+    "S2-S4 stability, final production Web/Desktop, external integrations, all24 cases and real human signatures remain open."
+  ],
+  "final_r02_binding": {
+    "checked_at": "2026-11-14T03:20:15.299495+00:00",
+    "four_current_and_frozen_hashes_match": true,
+    "source_overlay_matches_final": true,
+    "source_overlay_sha256": "02af815fadb7df150403c81130214daf3f324241706d9ddcd4135bed6bb2da08"
+  }
+}

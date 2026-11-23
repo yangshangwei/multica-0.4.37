@@ -1,0 +1,1638 @@
+{
+  "tables": [
+    {
+      "table": "issue",
+      "options": null,
+      "heap_bytes": 524288,
+      "total_bytes": 2711552,
+      "rows_estimate": -1
+    },
+    {
+      "table": "agent_task_queue",
+      "options": null,
+      "heap_bytes": 0,
+      "total_bytes": 294912,
+      "rows_estimate": -1
+    },
+    {
+      "table": "iteration_participation",
+      "options": null,
+      "heap_bytes": 1024000,
+      "total_bytes": 1368064,
+      "rows_estimate": -1
+    },
+    {
+      "table": "iteration_event",
+      "options": null,
+      "heap_bytes": 1916928,
+      "total_bytes": 2138112,
+      "rows_estimate": -1
+    }
+  ],
+  "columns": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "issue",
+      "number": 1
+    },
+    {
+      "name": "workspace_id",
+      "type": "uuid",
+      "table": "issue",
+      "number": 2
+    },
+    {
+      "name": "title",
+      "type": "text",
+      "table": "issue",
+      "number": 3
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "table": "issue",
+      "number": 4
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "table": "issue",
+      "number": 5
+    },
+    {
+      "name": "priority",
+      "type": "text",
+      "table": "issue",
+      "number": 6
+    },
+    {
+      "name": "assignee_type",
+      "type": "text",
+      "table": "issue",
+      "number": 7
+    },
+    {
+      "name": "assignee_id",
+      "type": "uuid",
+      "table": "issue",
+      "number": 8
+    },
+    {
+      "name": "creator_type",
+      "type": "text",
+      "table": "issue",
+      "number": 9
+    },
+    {
+      "name": "creator_id",
+      "type": "uuid",
+      "table": "issue",
+      "number": 10
+    },
+    {
+      "name": "parent_issue_id",
+      "type": "uuid",
+      "table": "issue",
+      "number": 11
+    },
+    {
+      "name": "acceptance_criteria",
+      "type": "jsonb",
+      "table": "issue",
+      "number": 12
+    },
+    {
+      "name": "context_refs",
+      "type": "jsonb",
+      "table": "issue",
+      "number": 13
+    },
+    {
+      "name": "position",
+      "type": "double precision",
+      "table": "issue",
+      "number": 14
+    },
+    {
+      "name": "due_date",
+      "type": "date",
+      "table": "issue",
+      "number": 15
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "table": "issue",
+      "number": 16
+    },
+    {
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "table": "issue",
+      "number": 17
+    },
+    {
+      "name": "number",
+      "type": "integer",
+      "table": "issue",
+      "number": 18
+    },
+    {
+      "name": "project_id",
+      "type": "uuid",
+      "table": "issue",
+      "number": 19
+    },
+    {
+      "name": "origin_type",
+      "type": "text",
+      "table": "issue",
+      "number": 20
+    },
+    {
+      "name": "origin_id",
+      "type": "uuid",
+      "table": "issue",
+      "number": 21
+    },
+    {
+      "name": "first_executed_at",
+      "type": "timestamp with time zone",
+      "table": "issue",
+      "number": 22
+    },
+    {
+      "name": "start_date",
+      "type": "date",
+      "table": "issue",
+      "number": 23
+    },
+    {
+      "name": "metadata",
+      "type": "jsonb",
+      "table": "issue",
+      "number": 24
+    },
+    {
+      "name": "stage",
+      "type": "integer",
+      "table": "issue",
+      "number": 25
+    },
+    {
+      "name": "properties",
+      "type": "jsonb",
+      "table": "issue",
+      "number": 26
+    },
+    {
+      "name": "revision",
+      "type": "bigint",
+      "table": "issue",
+      "number": 27
+    },
+    {
+      "name": "last_activity_at",
+      "type": "timestamp with time zone",
+      "table": "issue",
+      "number": 28
+    },
+    {
+      "name": "admission_status",
+      "type": "text",
+      "table": "issue",
+      "number": 29
+    },
+    {
+      "name": "current_iteration_id",
+      "type": "uuid",
+      "table": "issue",
+      "number": 30
+    },
+    {
+      "name": "iteration_rollover_count",
+      "type": "integer",
+      "table": "issue",
+      "number": 31
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 1
+    },
+    {
+      "name": "agent_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 2
+    },
+    {
+      "name": "issue_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 3
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 4
+    },
+    {
+      "name": "priority",
+      "type": "integer",
+      "table": "agent_task_queue",
+      "number": 5
+    },
+    {
+      "name": "dispatched_at",
+      "type": "timestamp with time zone",
+      "table": "agent_task_queue",
+      "number": 6
+    },
+    {
+      "name": "started_at",
+      "type": "timestamp with time zone",
+      "table": "agent_task_queue",
+      "number": 7
+    },
+    {
+      "name": "completed_at",
+      "type": "timestamp with time zone",
+      "table": "agent_task_queue",
+      "number": 8
+    },
+    {
+      "name": "result",
+      "type": "jsonb",
+      "table": "agent_task_queue",
+      "number": 9
+    },
+    {
+      "name": "error",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 10
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "table": "agent_task_queue",
+      "number": 11
+    },
+    {
+      "name": "context",
+      "type": "jsonb",
+      "table": "agent_task_queue",
+      "number": 12
+    },
+    {
+      "name": "runtime_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 13
+    },
+    {
+      "name": "session_id",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 14
+    },
+    {
+      "name": "work_dir",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 15
+    },
+    {
+      "name": "trigger_comment_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 16
+    },
+    {
+      "name": "chat_session_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 17
+    },
+    {
+      "name": "autopilot_run_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 18
+    },
+    {
+      "name": "attempt",
+      "type": "integer",
+      "table": "agent_task_queue",
+      "number": 19
+    },
+    {
+      "name": "max_attempts",
+      "type": "integer",
+      "table": "agent_task_queue",
+      "number": 20
+    },
+    {
+      "name": "parent_task_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 21
+    },
+    {
+      "name": "failure_reason",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 22
+    },
+    {
+      "name": "trigger_summary",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 24
+    },
+    {
+      "name": "force_fresh_session",
+      "type": "boolean",
+      "table": "agent_task_queue",
+      "number": 25
+    },
+    {
+      "name": "is_leader_task",
+      "type": "boolean",
+      "table": "agent_task_queue",
+      "number": 26
+    },
+    {
+      "name": "wait_reason",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 27
+    },
+    {
+      "name": "initiator_user_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 28
+    },
+    {
+      "name": "handoff_note",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 29
+    },
+    {
+      "name": "prepare_lease_expires_at",
+      "type": "timestamp with time zone",
+      "table": "agent_task_queue",
+      "number": 30
+    },
+    {
+      "name": "squad_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 31
+    },
+    {
+      "name": "runtime_mcp_overlay",
+      "type": "jsonb",
+      "table": "agent_task_queue",
+      "number": 32
+    },
+    {
+      "name": "escalation_for_task_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 33
+    },
+    {
+      "name": "fire_at",
+      "type": "timestamp with time zone",
+      "table": "agent_task_queue",
+      "number": 34
+    },
+    {
+      "name": "originator_user_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 35
+    },
+    {
+      "name": "runtime_connected_apps",
+      "type": "jsonb",
+      "table": "agent_task_queue",
+      "number": 36
+    },
+    {
+      "name": "coalesced_comment_ids",
+      "type": "uuid[]",
+      "table": "agent_task_queue",
+      "number": 37
+    },
+    {
+      "name": "delivered_comment_ids",
+      "type": "uuid[]",
+      "table": "agent_task_queue",
+      "number": 38
+    },
+    {
+      "name": "chat_input_task_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 39
+    },
+    {
+      "name": "chat_finalize_deferred_at",
+      "type": "timestamp with time zone",
+      "table": "agent_task_queue",
+      "number": 40
+    },
+    {
+      "name": "originator_source",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 41
+    },
+    {
+      "name": "delegated_from_task_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 42
+    },
+    {
+      "name": "retry_of_task_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 43
+    },
+    {
+      "name": "rerun_of_task_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 44
+    },
+    {
+      "name": "rule_version_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 45
+    },
+    {
+      "name": "trigger_evidence_kind",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 46
+    },
+    {
+      "name": "trigger_evidence_ref_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 47
+    },
+    {
+      "name": "accountable_user_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 48
+    },
+    {
+      "name": "session_rollout_missing",
+      "type": "boolean",
+      "table": "agent_task_queue",
+      "number": 49
+    },
+    {
+      "name": "retired_session_id",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 50
+    },
+    {
+      "name": "quick_actions_disabled",
+      "type": "boolean",
+      "table": "agent_task_queue",
+      "number": 51
+    },
+    {
+      "name": "regenerate_quick_actions_for",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 52
+    },
+    {
+      "name": "branch_name",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 54
+    },
+    {
+      "name": "durable_work_dir",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 55
+    },
+    {
+      "name": "channel_context_revision",
+      "type": "bigint",
+      "table": "agent_task_queue",
+      "number": 56
+    },
+    {
+      "name": "submitted_installation_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 57
+    },
+    {
+      "name": "execution_installation_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 58
+    },
+    {
+      "name": "execution_binding_id",
+      "type": "uuid",
+      "table": "agent_task_queue",
+      "number": 59
+    },
+    {
+      "name": "execution_binding_epoch",
+      "type": "bigint",
+      "table": "agent_task_queue",
+      "number": 60
+    },
+    {
+      "name": "state_version",
+      "type": "bigint",
+      "table": "agent_task_queue",
+      "number": 61
+    },
+    {
+      "name": "execution_admission_version",
+      "type": "bigint",
+      "table": "agent_task_queue",
+      "number": 62
+    },
+    {
+      "name": "claim_generation",
+      "type": "bigint",
+      "table": "agent_task_queue",
+      "number": 63
+    },
+    {
+      "name": "queued_at",
+      "type": "timestamp with time zone",
+      "table": "agent_task_queue",
+      "number": 64
+    },
+    {
+      "name": "queued_at_source",
+      "type": "text",
+      "table": "agent_task_queue",
+      "number": 65
+    },
+    {
+      "name": "knowledge_context_version",
+      "type": "integer",
+      "table": "agent_task_queue",
+      "number": 66
+    },
+    {
+      "name": "knowledge_delivery",
+      "type": "jsonb",
+      "table": "agent_task_queue",
+      "number": 67
+    },
+    {
+      "name": "workspace_id",
+      "type": "uuid",
+      "table": "iteration_participation",
+      "number": 1
+    },
+    {
+      "name": "iteration_id",
+      "type": "uuid",
+      "table": "iteration_participation",
+      "number": 2
+    },
+    {
+      "name": "issue_id",
+      "type": "uuid",
+      "table": "iteration_participation",
+      "number": 3
+    },
+    {
+      "name": "first_joined_at",
+      "type": "timestamp with time zone",
+      "table": "iteration_participation",
+      "number": 4
+    },
+    {
+      "name": "current_joined_at",
+      "type": "timestamp with time zone",
+      "table": "iteration_participation",
+      "number": 5
+    },
+    {
+      "name": "has_started_current_participation",
+      "type": "boolean",
+      "table": "iteration_participation",
+      "number": 6
+    },
+    {
+      "name": "last_left_at",
+      "type": "timestamp with time zone",
+      "table": "iteration_participation",
+      "number": 7
+    },
+    {
+      "name": "in_original",
+      "type": "boolean",
+      "table": "iteration_participation",
+      "number": 8
+    },
+    {
+      "name": "original_facts",
+      "type": "jsonb",
+      "table": "iteration_participation",
+      "number": 9
+    },
+    {
+      "name": "id",
+      "type": "uuid",
+      "table": "iteration_event",
+      "number": 1
+    },
+    {
+      "name": "workspace_id",
+      "type": "uuid",
+      "table": "iteration_event",
+      "number": 2
+    },
+    {
+      "name": "iteration_id",
+      "type": "uuid",
+      "table": "iteration_event",
+      "number": 3
+    },
+    {
+      "name": "sequence",
+      "type": "bigint",
+      "table": "iteration_event",
+      "number": 4
+    },
+    {
+      "name": "operation_id",
+      "type": "uuid",
+      "table": "iteration_event",
+      "number": 5
+    },
+    {
+      "name": "issue_id",
+      "type": "uuid",
+      "table": "iteration_event",
+      "number": 6
+    },
+    {
+      "name": "kind",
+      "type": "text",
+      "table": "iteration_event",
+      "number": 7
+    },
+    {
+      "name": "actor",
+      "type": "jsonb",
+      "table": "iteration_event",
+      "number": 8
+    },
+    {
+      "name": "occurred_at",
+      "type": "timestamp with time zone",
+      "table": "iteration_event",
+      "number": 9
+    },
+    {
+      "name": "sampled_at",
+      "type": "timestamp with time zone",
+      "table": "iteration_event",
+      "number": 10
+    },
+    {
+      "name": "before_facts",
+      "type": "jsonb",
+      "table": "iteration_event",
+      "number": 11
+    },
+    {
+      "name": "after_facts",
+      "type": "jsonb",
+      "table": "iteration_event",
+      "number": 12
+    },
+    {
+      "name": "reason",
+      "type": "text",
+      "table": "iteration_event",
+      "number": 13
+    }
+  ],
+  "indexes": [
+    {
+      "live": true,
+      "bytes": 90112,
+      "index": "issue_pkey",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": true,
+      "predicate": null,
+      "definition": "CREATE UNIQUE INDEX issue_pkey ON public.issue USING btree (id)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "1"
+    },
+    {
+      "live": true,
+      "bytes": 32768,
+      "index": "idx_issue_workspace",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_workspace ON public.issue USING btree (workspace_id)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "2"
+    },
+    {
+      "live": true,
+      "bytes": 32768,
+      "index": "idx_issue_assignee",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_assignee ON public.issue USING btree (assignee_type, assignee_id)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "7 8"
+    },
+    {
+      "live": true,
+      "bytes": 32768,
+      "index": "idx_issue_status",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_status ON public.issue USING btree (workspace_id, status)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "2 5"
+    },
+    {
+      "live": true,
+      "bytes": 32768,
+      "index": "idx_issue_parent",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_parent ON public.issue USING btree (parent_issue_id)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "11"
+    },
+    {
+      "live": true,
+      "bytes": 106496,
+      "index": "uq_issue_workspace_number",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": true,
+      "predicate": null,
+      "definition": "CREATE UNIQUE INDEX uq_issue_workspace_number ON public.issue USING btree (workspace_id, number)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "2 18"
+    },
+    {
+      "live": true,
+      "bytes": 40960,
+      "index": "idx_issue_project",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_project ON public.issue USING btree (project_id)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "19"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_issue_origin",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(origin_type IS NOT NULL)",
+      "definition": "CREATE INDEX idx_issue_origin ON public.issue USING btree (origin_type, origin_id) WHERE (origin_type IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "20 21"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_issue_first_executed_at",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(first_executed_at IS NOT NULL)",
+      "definition": "CREATE INDEX idx_issue_first_executed_at ON public.issue USING btree (workspace_id, first_executed_at) WHERE (first_executed_at IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "2 22"
+    },
+    {
+      "live": true,
+      "bytes": 73728,
+      "index": "idx_issue_metadata_gin",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_metadata_gin ON public.issue USING gin (metadata jsonb_path_ops)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "24"
+    },
+    {
+      "live": true,
+      "bytes": 835584,
+      "index": "idx_issue_title_trgm",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_title_trgm ON public.issue USING gin (lower(title) gin_trgm_ops)",
+      "expression": "lower(title)",
+      "key_attributes": 1,
+      "attribute_numbers": "0"
+    },
+    {
+      "live": true,
+      "bytes": 73728,
+      "index": "idx_issue_description_trgm",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_description_trgm ON public.issue USING gin (lower(COALESCE(description, ''::text)) gin_trgm_ops)",
+      "expression": "lower(COALESCE(description, ''::text))",
+      "key_attributes": 1,
+      "attribute_numbers": "0"
+    },
+    {
+      "live": true,
+      "bytes": 73728,
+      "index": "idx_issue_properties_gin",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_properties_gin ON public.issue USING gin (properties jsonb_path_ops)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "26"
+    },
+    {
+      "live": true,
+      "bytes": 32768,
+      "index": "idx_issue_workspace_parent",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_workspace_parent ON public.issue USING btree (workspace_id, parent_issue_id)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "2 11"
+    },
+    {
+      "live": true,
+      "bytes": 32768,
+      "index": "idx_issue_workspace_assignee",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_workspace_assignee ON public.issue USING btree (workspace_id, assignee_type, assignee_id)",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "2 7 8"
+    },
+    {
+      "live": true,
+      "bytes": 253952,
+      "index": "idx_issue_workspace_position",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_workspace_position ON public.issue USING btree (workspace_id, \"position\", created_at DESC, id DESC)",
+      "expression": null,
+      "key_attributes": 4,
+      "attribute_numbers": "2 14 16 1"
+    },
+    {
+      "live": true,
+      "bytes": 90112,
+      "index": "idx_issue_workspace_id_keyset",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_workspace_id_keyset ON public.issue USING btree (workspace_id, id)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "2 1"
+    },
+    {
+      "live": true,
+      "bytes": 98304,
+      "index": "admin_issue_page_idx",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX admin_issue_page_idx ON public.issue USING btree (created_at DESC, id DESC)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "16 1"
+    },
+    {
+      "live": true,
+      "bytes": 114688,
+      "index": "idx_issue_workspace_status_position",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_workspace_status_position ON public.issue USING btree (workspace_id, status, \"position\")",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "2 5 14"
+    },
+    {
+      "live": true,
+      "bytes": 40960,
+      "index": "idx_issue_project_status",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_issue_project_status ON public.issue USING btree (project_id, workspace_id, status)",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "19 2 5"
+    },
+    {
+      "live": true,
+      "bytes": 32768,
+      "index": "issue_admission_workspace",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX issue_admission_workspace ON public.issue USING btree (workspace_id, admission_status)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "2 29"
+    },
+    {
+      "live": true,
+      "bytes": 16384,
+      "index": "iteration_issue_current",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(current_iteration_id IS NOT NULL)",
+      "definition": "CREATE INDEX iteration_issue_current ON public.issue USING btree (workspace_id, current_iteration_id) WHERE (current_iteration_id IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "2 30"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "agent_task_queue_pkey",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": true,
+      "predicate": null,
+      "definition": "CREATE UNIQUE INDEX agent_task_queue_pkey ON public.agent_task_queue USING btree (id)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_agent",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_agent_task_queue_agent ON public.agent_task_queue USING btree (agent_id, status)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "2 4"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_pending",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(status = ANY (ARRAY['queued'::text, 'dispatched'::text]))",
+      "definition": "CREATE INDEX idx_agent_task_queue_pending ON public.agent_task_queue USING btree (agent_id, priority DESC, created_at) WHERE (status = ANY (ARRAY['queued'::text, 'dispatched'::text]))",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "2 5 11"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_runtime_pending",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(status = ANY (ARRAY['queued'::text, 'dispatched'::text]))",
+      "definition": "CREATE INDEX idx_agent_task_queue_runtime_pending ON public.agent_task_queue USING btree (runtime_id, priority DESC, created_at) WHERE (status = ANY (ARRAY['queued'::text, 'dispatched'::text]))",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "13 5 11"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_issue_id",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_agent_task_queue_issue_id ON public.agent_task_queue USING btree (issue_id)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "3"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_parent",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_agent_task_queue_parent ON public.agent_task_queue USING btree (parent_task_id)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "21"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_claim_candidates",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(status = 'queued'::text)",
+      "definition": "CREATE INDEX idx_agent_task_queue_claim_candidates ON public.agent_task_queue USING btree (runtime_id, priority DESC, created_at) WHERE (status = 'queued'::text)",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "13 5 11"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_queued_created_at",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(status = 'queued'::text)",
+      "definition": "CREATE INDEX idx_agent_task_queue_queued_created_at ON public.agent_task_queue USING btree (created_at) WHERE (status = 'queued'::text)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "11"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_running_started_at",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(status = 'running'::text)",
+      "definition": "CREATE INDEX idx_agent_task_queue_running_started_at ON public.agent_task_queue USING btree (started_at) WHERE (status = 'running'::text)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "7"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "agent_task_queue_squad_id_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(squad_id IS NOT NULL)",
+      "definition": "CREATE INDEX agent_task_queue_squad_id_idx ON public.agent_task_queue USING btree (squad_id) WHERE (squad_id IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "31"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_deferred_fire",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(status = 'deferred'::text)",
+      "definition": "CREATE INDEX idx_agent_task_queue_deferred_fire ON public.agent_task_queue USING btree (runtime_id, fire_at) WHERE (status = 'deferred'::text)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "13 34"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_escalation_for",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(escalation_for_task_id IS NOT NULL)",
+      "definition": "CREATE INDEX idx_agent_task_queue_escalation_for ON public.agent_task_queue USING btree (escalation_for_task_id) WHERE (escalation_for_task_id IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "33"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "agent_task_queue_originator_user_id_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(originator_user_id IS NOT NULL)",
+      "definition": "CREATE INDEX agent_task_queue_originator_user_id_idx ON public.agent_task_queue USING btree (originator_user_id) WHERE (originator_user_id IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "35"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_task_chat_finalize_deferred",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(chat_finalize_deferred_at IS NOT NULL)",
+      "definition": "CREATE INDEX idx_task_chat_finalize_deferred ON public.agent_task_queue USING btree (chat_finalize_deferred_at) WHERE (chat_finalize_deferred_at IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "40"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_agent_terminal_latest",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(status = ANY (ARRAY['completed'::text, 'failed'::text]))",
+      "definition": "CREATE INDEX idx_agent_task_queue_agent_terminal_latest ON public.agent_task_queue USING btree (agent_id, completed_at DESC NULLS LAST, created_at DESC, id DESC) WHERE (status = ANY (ARRAY['completed'::text, 'failed'::text]))",
+      "expression": null,
+      "key_attributes": 4,
+      "attribute_numbers": "2 8 11 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_trigger_comment_id",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(trigger_comment_id IS NOT NULL)",
+      "definition": "CREATE INDEX idx_agent_task_queue_trigger_comment_id ON public.agent_task_queue USING btree (trigger_comment_id) WHERE (trigger_comment_id IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "16"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_chat_pending_v3",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['queued'::text, 'dispatched'::text, 'running'::text, 'waiting_local_directory'::text, 'deferred'::text])))",
+      "definition": "CREATE INDEX idx_agent_task_queue_chat_pending_v3 ON public.agent_task_queue USING btree (chat_session_id, created_at DESC) WHERE ((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['queued'::text, 'dispatched'::text, 'running'::text, 'waiting_local_directory'::text, 'deferred'::text])))",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "17 11"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_one_pending_task_per_issue_agent_v2",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": true,
+      "predicate": "((status = ANY (ARRAY['queued'::text, 'dispatched'::text])) OR ((status = 'deferred'::text) AND ((context -\u003e\u003e 'channel_issue_media_pending'::text) = 'true'::text)))",
+      "definition": "CREATE UNIQUE INDEX idx_one_pending_task_per_issue_agent_v2 ON public.agent_task_queue USING btree (issue_id, agent_id) WHERE ((status = ANY (ARRAY['queued'::text, 'dispatched'::text])) OR ((status = 'deferred'::text) AND ((context -\u003e\u003e 'channel_issue_media_pending'::text) = 'true'::text)))",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "3 2"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_terminal_completed_at_v2",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text]))",
+      "definition": "CREATE INDEX idx_agent_task_queue_terminal_completed_at_v2 ON public.agent_task_queue USING btree (completed_at) WHERE (status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text]))",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "8"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_runtime_id",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_agent_task_queue_runtime_id ON public.agent_task_queue USING btree (runtime_id, id)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "13 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_issue_id_keyset",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_agent_task_queue_issue_id_keyset ON public.agent_task_queue USING btree (issue_id, id)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "3 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_agent_id_keyset",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX idx_agent_task_queue_agent_id_keyset ON public.agent_task_queue USING btree (agent_id, id)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "2 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_dispatched_reclaim_v2",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "((status = 'dispatched'::text) AND (started_at IS NULL))",
+      "definition": "CREATE INDEX idx_agent_task_queue_dispatched_reclaim_v2 ON public.agent_task_queue USING btree (runtime_id, dispatched_at, priority DESC) WHERE ((status = 'dispatched'::text) AND (started_at IS NULL))",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "13 6 5"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "admin_task_page_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX admin_task_page_idx ON public.agent_task_queue USING btree (created_at DESC, id DESC)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "11 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "admin_task_runtime_page_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX admin_task_runtime_page_idx ON public.agent_task_queue USING btree (runtime_id, created_at DESC, id DESC)",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "13 11 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_chat_terminal_resume",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text])))",
+      "definition": "CREATE INDEX idx_agent_task_queue_chat_terminal_resume ON public.agent_task_queue USING btree (chat_session_id, session_id, completed_at DESC) WHERE ((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text])))",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "17 14 8"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "idx_agent_task_queue_chat_retired_session",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "((chat_session_id IS NOT NULL) AND (retired_session_id IS NOT NULL))",
+      "definition": "CREATE INDEX idx_agent_task_queue_chat_retired_session ON public.agent_task_queue USING btree (chat_session_id, retired_session_id) WHERE ((chat_session_id IS NOT NULL) AND (retired_session_id IS NOT NULL))",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "17 50"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "admin_alert_queue_scan_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(status = 'queued'::text)",
+      "definition": "CREATE INDEX admin_alert_queue_scan_idx ON public.agent_task_queue USING btree (queued_at, id) WHERE (status = 'queued'::text)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "64 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "admin_alert_failure_scan_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "((status = 'failed'::text) AND (completed_at IS NOT NULL))",
+      "definition": "CREATE INDEX admin_alert_failure_scan_idx ON public.agent_task_queue USING btree (completed_at, id) WHERE ((status = 'failed'::text) AND (completed_at IS NOT NULL))",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "8 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "admin_alert_inflight_installation_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "((status = ANY (ARRAY['dispatched'::text, 'running'::text, 'waiting_local_directory'::text])) AND (execution_installation_id IS NOT NULL))",
+      "definition": "CREATE INDEX admin_alert_inflight_installation_idx ON public.agent_task_queue USING btree (execution_installation_id, id) WHERE ((status = ANY (ARRAY['dispatched'::text, 'running'::text, 'waiting_local_directory'::text])) AND (execution_installation_id IS NOT NULL))",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "58 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "admin_execution_finished_page_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(completed_at IS NOT NULL)",
+      "definition": "CREATE INDEX admin_execution_finished_page_idx ON public.agent_task_queue USING btree (completed_at DESC, id DESC) WHERE (completed_at IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "8 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "collaboration_knowledge_agent_history_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(knowledge_context_version IS NOT NULL)",
+      "definition": "CREATE INDEX collaboration_knowledge_agent_history_idx ON public.agent_task_queue USING btree (agent_id, created_at DESC, id DESC) WHERE (knowledge_context_version IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "2 11 1"
+    },
+    {
+      "live": true,
+      "bytes": 8192,
+      "index": "collaboration_knowledge_runtime_history_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(knowledge_context_version IS NOT NULL)",
+      "definition": "CREATE INDEX collaboration_knowledge_runtime_history_idx ON public.agent_task_queue USING btree (runtime_id, created_at DESC, id DESC) WHERE (knowledge_context_version IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "13 11 1"
+    },
+    {
+      "live": true,
+      "bytes": 16384,
+      "index": "collaboration_knowledge_delivery_history_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "unique": false,
+      "predicate": "(knowledge_context_version IS NOT NULL)",
+      "definition": "CREATE INDEX collaboration_knowledge_delivery_history_idx ON public.agent_task_queue USING gin (knowledge_delivery jsonb_path_ops) WHERE (knowledge_context_version IS NOT NULL)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "67"
+    },
+    {
+      "live": true,
+      "bytes": 155648,
+      "index": "iteration_participation_identity",
+      "ready": true,
+      "table": "iteration_participation",
+      "valid": true,
+      "unique": true,
+      "predicate": null,
+      "definition": "CREATE UNIQUE INDEX iteration_participation_identity ON public.iteration_participation USING btree (workspace_id, iteration_id, issue_id)",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "1 2 3"
+    },
+    {
+      "live": true,
+      "bytes": 155648,
+      "index": "iteration_participation_issue",
+      "ready": true,
+      "table": "iteration_participation",
+      "valid": true,
+      "unique": false,
+      "predicate": null,
+      "definition": "CREATE INDEX iteration_participation_issue ON public.iteration_participation USING btree (workspace_id, issue_id, iteration_id)",
+      "expression": null,
+      "key_attributes": 3,
+      "attribute_numbers": "1 3 2"
+    },
+    {
+      "live": true,
+      "bytes": 90112,
+      "index": "iteration_event_id",
+      "ready": true,
+      "table": "iteration_event",
+      "valid": true,
+      "unique": true,
+      "predicate": null,
+      "definition": "CREATE UNIQUE INDEX iteration_event_id ON public.iteration_event USING btree (id)",
+      "expression": null,
+      "key_attributes": 1,
+      "attribute_numbers": "1"
+    },
+    {
+      "live": true,
+      "bytes": 98304,
+      "index": "iteration_event_sequence",
+      "ready": true,
+      "table": "iteration_event",
+      "valid": true,
+      "unique": true,
+      "predicate": null,
+      "definition": "CREATE UNIQUE INDEX iteration_event_sequence ON public.iteration_event USING btree (iteration_id, sequence)",
+      "expression": null,
+      "key_attributes": 2,
+      "attribute_numbers": "3 4"
+    }
+  ],
+  "settings": {
+    "jit": "on",
+    "enable_seqscan": "on",
+    "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+    "shared_buffers": "128MB",
+    "plan_cache_mode": "auto",
+    "track_io_timing": "off",
+    "enable_indexscan": "on",
+    "transaction_isolation": "read committed"
+  },
+  "triggers": [
+    {
+      "name": "trg_issue_project_dirty_hourly",
+      "table": "issue",
+      "enabled": "O",
+      "function": "CREATE OR REPLACE FUNCTION public.enqueue_task_usage_hourly_dirty_for_issue_project()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\nBEGIN\n    IF OLD.project_id IS DISTINCT FROM NEW.project_id THEN\n        -- OLD project buckets.\n        INSERT INTO task_usage_hourly_dirty (\n            bucket_hour, workspace_id, runtime_id, agent_id,\n            project_id, provider, model\n        )\n        SELECT DISTINCT\n            task_usage_hour_bucket(tu.created_at),\n            NEW.workspace_id,\n            atq.runtime_id,\n            atq.agent_id,\n            OLD.project_id,\n            tu.provider,\n            tu.model\n          FROM agent_task_queue atq\n          JOIN task_usage tu ON tu.task_id = atq.id\n         WHERE atq.issue_id = NEW.id\n           AND atq.runtime_id IS NOT NULL\n        ON CONFLICT ON CONSTRAINT uq_task_usage_hourly_dirty_key DO UPDATE\n            SET enqueued_at = GREATEST(task_usage_hourly_dirty.enqueued_at, EXCLUDED.enqueued_at);\n\n        -- NEW project buckets.\n        INSERT INTO task_usage_hourly_dirty (\n            bucket_hour, workspace_id, runtime_id, agent_id,\n            project_id, provider, model\n        )\n        SELECT DISTINCT\n            task_usage_hour_bucket(tu.created_at),\n            NEW.workspace_id,\n            atq.runtime_id,\n            atq.agent_id,\n            NEW.project_id,\n            tu.provider,\n            tu.model\n          FROM agent_task_queue atq\n          JOIN task_usage tu ON tu.task_id = atq.id\n         WHERE atq.issue_id = NEW.id\n           AND atq.runtime_id IS NOT NULL\n        ON CONFLICT ON CONSTRAINT uq_task_usage_hourly_dirty_key DO UPDATE\n            SET enqueued_at = GREATEST(task_usage_hourly_dirty.enqueued_at, EXCLUDED.enqueued_at);\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+      "definition": "CREATE TRIGGER trg_issue_project_dirty_hourly BEFORE UPDATE OF project_id ON public.issue FOR EACH ROW EXECUTE FUNCTION enqueue_task_usage_hourly_dirty_for_issue_project()"
+    },
+    {
+      "name": "trg_clear_runtime_mcp_overlay",
+      "table": "agent_task_queue",
+      "enabled": "O",
+      "function": "CREATE OR REPLACE FUNCTION public.clear_runtime_mcp_overlay_on_terminal_state()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\nBEGIN\n    IF NEW.status IN ('completed', 'failed', 'cancelled')\n       AND OLD.status IS DISTINCT FROM NEW.status\n       AND (NEW.runtime_mcp_overlay IS NOT NULL OR NEW.runtime_connected_apps IS NOT NULL) THEN\n        NEW.runtime_mcp_overlay := NULL;\n        NEW.runtime_connected_apps := NULL;\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+      "definition": "CREATE TRIGGER trg_clear_runtime_mcp_overlay BEFORE UPDATE OF status ON public.agent_task_queue FOR EACH ROW EXECUTE FUNCTION clear_runtime_mcp_overlay_on_terminal_state()"
+    },
+    {
+      "name": "trg_atq_dirty_hourly",
+      "table": "agent_task_queue",
+      "enabled": "O",
+      "function": "CREATE OR REPLACE FUNCTION public.enqueue_task_usage_hourly_dirty_for_atq()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\nBEGIN\n    IF TG_OP = 'UPDATE' THEN\n        IF OLD.runtime_id IS DISTINCT FROM NEW.runtime_id\n           OR OLD.issue_id IS DISTINCT FROM NEW.issue_id THEN\n            -- OLD side. NULL runtime_id rows are not aggregated (no\n            -- runtime → no bucket); skip those.\n            IF OLD.runtime_id IS NOT NULL THEN\n                INSERT INTO task_usage_hourly_dirty (\n                    bucket_hour, workspace_id, runtime_id, agent_id,\n                    project_id, provider, model\n                )\n                SELECT DISTINCT\n                    task_usage_hour_bucket(tu.created_at),\n                    a.workspace_id,\n                    OLD.runtime_id,\n                    OLD.agent_id,\n                    i_old.project_id,\n                    tu.provider,\n                    tu.model\n                  FROM task_usage tu\n                  JOIN agent a ON a.id = OLD.agent_id\n                  LEFT JOIN issue i_old ON i_old.id = OLD.issue_id\n                 WHERE tu.task_id = OLD.id\n                ON CONFLICT ON CONSTRAINT uq_task_usage_hourly_dirty_key DO UPDATE\n                    SET enqueued_at = GREATEST(task_usage_hourly_dirty.enqueued_at, EXCLUDED.enqueued_at);\n            END IF;\n\n            IF NEW.runtime_id IS NOT NULL THEN\n                INSERT INTO task_usage_hourly_dirty (\n                    bucket_hour, workspace_id, runtime_id, agent_id,\n                    project_id, provider, model\n                )\n                SELECT DISTINCT\n                    task_usage_hour_bucket(tu.created_at),\n                    a.workspace_id,\n                    NEW.runtime_id,\n                    NEW.agent_id,\n                    i_new.project_id,\n                    tu.provider,\n                    tu.model\n                  FROM task_usage tu\n                  JOIN agent a ON a.id = NEW.agent_id\n                  LEFT JOIN issue i_new ON i_new.id = NEW.issue_id\n                 WHERE tu.task_id = NEW.id\n                ON CONFLICT ON CONSTRAINT uq_task_usage_hourly_dirty_key DO UPDATE\n                    SET enqueued_at = GREATEST(task_usage_hourly_dirty.enqueued_at, EXCLUDED.enqueued_at);\n            END IF;\n        END IF;\n        RETURN NEW;\n    ELSIF TG_OP = 'DELETE' THEN\n        IF OLD.runtime_id IS NOT NULL THEN\n            INSERT INTO task_usage_hourly_dirty (\n                bucket_hour, workspace_id, runtime_id, agent_id,\n                project_id, provider, model\n            )\n            SELECT DISTINCT\n                task_usage_hour_bucket(tu.created_at),\n                a.workspace_id,\n                OLD.runtime_id,\n                OLD.agent_id,\n                i.project_id,\n                tu.provider,\n                tu.model\n              FROM task_usage tu\n              JOIN agent a ON a.id = OLD.agent_id\n              LEFT JOIN issue i ON i.id = OLD.issue_id\n             WHERE tu.task_id = OLD.id\n            ON CONFLICT ON CONSTRAINT uq_task_usage_hourly_dirty_key DO UPDATE\n                SET enqueued_at = GREATEST(task_usage_hourly_dirty.enqueued_at, EXCLUDED.enqueued_at);\n        END IF;\n        RETURN OLD;\n    END IF;\n    RETURN NULL;\nEND;\n$function$\n",
+      "definition": "CREATE TRIGGER trg_atq_dirty_hourly BEFORE DELETE OR UPDATE OF runtime_id, issue_id ON public.agent_task_queue FOR EACH ROW WHEN ((current_setting('multica.workspace_teardown'::text, true) IS DISTINCT FROM 'on'::text)) EXECUTE FUNCTION enqueue_task_usage_hourly_dirty_for_atq()"
+    },
+    {
+      "name": "trg_issue_delete_dirty_hourly",
+      "table": "issue",
+      "enabled": "O",
+      "function": "CREATE OR REPLACE FUNCTION public.enqueue_task_usage_hourly_dirty_for_issue_delete()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\nBEGIN\n    INSERT INTO task_usage_hourly_dirty (\n        bucket_hour, workspace_id, runtime_id, agent_id,\n        project_id, provider, model\n    )\n    SELECT DISTINCT\n        task_usage_hour_bucket(tu.created_at),\n        OLD.workspace_id,\n        atq.runtime_id,\n        atq.agent_id,\n        OLD.project_id,\n        tu.provider,\n        tu.model\n      FROM agent_task_queue atq\n      JOIN task_usage tu ON tu.task_id = atq.id\n     WHERE atq.issue_id = OLD.id\n       AND atq.runtime_id IS NOT NULL\n    ON CONFLICT ON CONSTRAINT uq_task_usage_hourly_dirty_key DO UPDATE\n        SET enqueued_at = GREATEST(task_usage_hourly_dirty.enqueued_at, EXCLUDED.enqueued_at);\n    RETURN OLD;\nEND;\n$function$\n",
+      "definition": "CREATE TRIGGER trg_issue_delete_dirty_hourly BEFORE DELETE ON public.issue FOR EACH ROW WHEN ((current_setting('multica.workspace_teardown'::text, true) IS DISTINCT FROM 'on'::text)) EXECUTE FUNCTION enqueue_task_usage_hourly_dirty_for_issue_delete()"
+    },
+    {
+      "name": "agent_task_queue_state_version",
+      "table": "agent_task_queue",
+      "enabled": "O",
+      "function": "CREATE OR REPLACE FUNCTION public.multica_advance_task_state_version()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\nBEGIN\n    NEW.state_version := OLD.state_version + 1;\n    RETURN NEW;\nEND;\n$function$\n",
+      "definition": "CREATE TRIGGER agent_task_queue_state_version BEFORE UPDATE OF status, runtime_id, dispatched_at ON public.agent_task_queue FOR EACH ROW WHEN ((((old.status IS DISTINCT FROM new.status) OR (old.runtime_id IS DISTINCT FROM new.runtime_id)) OR (old.dispatched_at IS DISTINCT FROM new.dispatched_at))) EXECUTE FUNCTION multica_advance_task_state_version()"
+    },
+    {
+      "name": "agent_task_queue_clock",
+      "table": "agent_task_queue",
+      "enabled": "O",
+      "function": "CREATE OR REPLACE FUNCTION public.multica_track_task_queue_time()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\nBEGIN\n    IF TG_OP='INSERT' THEN\n        IF NEW.status='queued' THEN\n            NEW.queued_at := NEW.created_at;\n            NEW.queued_at_source := 'transition';\n        END IF;\n    ELSIF NEW.status='queued' AND OLD.status IS DISTINCT FROM NEW.status THEN\n        NEW.queued_at := now();\n        NEW.queued_at_source := 'transition';\n    END IF;\n    RETURN NEW;\nEND;\n$function$\n",
+      "definition": "CREATE TRIGGER agent_task_queue_clock BEFORE INSERT OR UPDATE OF status ON public.agent_task_queue FOR EACH ROW EXECUTE FUNCTION multica_track_task_queue_time()"
+    }
+  ]
+}

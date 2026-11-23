@@ -1,0 +1,102 @@
+[
+  {
+    "name": "realtime-all",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/realtime",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.2302889823913574,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21",
+    "redis": "isolated redis:7-alpine 127.0.0.1:50326"
+  },
+  {
+    "name": "sockets-related",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/server",
+      "-run",
+      "^(TestKnowledge|TestCollaborationRealtime|TestCollaborationSourceMembership|TestScopeAuthorizer_)",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.904694080352783,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21",
+    "redis": "isolated redis:7-alpine 127.0.0.1:50326"
+  },
+  {
+    "name": "realtime-race",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./internal/realtime",
+      "-run",
+      "^TestKnowledge",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 5.18999981880188,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21",
+    "redis": "isolated redis:7-alpine 127.0.0.1:50326"
+  },
+  {
+    "name": "sockets-race",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./cmd/server",
+      "-run",
+      "^TestKnowledge",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 17.92931079864502,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21",
+    "redis": "isolated redis:7-alpine 127.0.0.1:50326"
+  },
+  {
+    "name": "vet",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./..."
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.0955111980438232,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21",
+    "redis": "isolated redis:7-alpine 127.0.0.1:50326"
+  },
+  {
+    "name": "build",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./..."
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 6.258978843688965,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21",
+    "redis": "isolated redis:7-alpine 127.0.0.1:50326"
+  }
+]

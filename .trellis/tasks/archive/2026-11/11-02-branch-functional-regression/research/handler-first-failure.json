@@ -1,0 +1,62 @@
+[
+  {
+    "test": "TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos",
+    "output": "=== RUN   TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos"
+  },
+  {
+    "test": "TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos",
+    "output": "daemon_test.go:2040: expected task in response"
+  },
+  {
+    "test": "TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos",
+    "output": "--- FAIL: TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos (0.02s)"
+  },
+  {
+    "test": "TestClaimTask_ProjectDescriptionInjected",
+    "output": "=== RUN   TestClaimTask_ProjectDescriptionInjected"
+  },
+  {
+    "test": "TestClaimTask_ProjectDescriptionInjected",
+    "output": "daemon_test.go:2105: expected task in response"
+  },
+  {
+    "test": "TestClaimTask_ProjectDescriptionInjected",
+    "output": "--- FAIL: TestClaimTask_ProjectDescriptionInjected (0.05s)"
+  },
+  {
+    "test": "TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos",
+    "output": "=== RUN   TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos"
+  },
+  {
+    "test": "TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos",
+    "output": "daemon_test.go:2193: expected task in response"
+  },
+  {
+    "test": "TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos",
+    "output": "--- FAIL: TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos (0.02s)"
+  },
+  {
+    "test": "TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext",
+    "output": "=== RUN   TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext"
+  },
+  {
+    "test": "TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext",
+    "output": "daemon_test.go:2288: expected a task in response, got nil"
+  },
+  {
+    "test": "TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext",
+    "output": "--- FAIL: TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext (0.02s)"
+  },
+  {
+    "test": "TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects",
+    "output": "=== RUN   TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects"
+  },
+  {
+    "test": "TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects",
+    "output": "daemon_test.go:2391: ClaimTaskByRuntime (mismatch): expected 500, got 200: {\"task\":null}"
+  },
+  {
+    "test": "TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects",
+    "output": "--- FAIL: TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects (0.01s)"
+  }
+]

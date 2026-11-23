@@ -1,0 +1,13 @@
+{
+  "old_source_sha256": "47b7b50839b332455acbabdf5bac39ef7c6f63798d80efa5fdc3291affba887d",
+  "new_source_sha256": "03f58c4f5539e307e75cc7892520907823b89b8700e523536e27c290d03b2811",
+  "new_binary_sha256": "41aed9791158c689de91deffbbf203a6e3459db06c74c2779a970fc2c1d2531e",
+  "changes": [
+    "validated real config sets SECREM_REAL_EXECUTION_AUTHORIZED for transport after production reserved env filtering",
+    "noncompleted daemon result emits incomplete instead of model failure",
+    "normal comment count required for attribution"
+  ],
+  "fake_regression": "harness-fake-p1-05.log PASS",
+  "log_sha256": "06378d18c1a939a34100cc4c90cebfd0efc07904564084cf0da481b3354742fe",
+  "original_consumed_trial_verdict_preserved": true
+}

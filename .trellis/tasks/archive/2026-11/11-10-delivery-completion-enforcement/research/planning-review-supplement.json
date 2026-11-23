@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "review_type": "local documentation format correction and handoff supplement",
+  "reviewed_at": "2026-11-10T10:39:52.732159+00:00",
+  "reviewer": "native trellis-check / enforcement_plan_check",
+  "reviewed_head": "cdadbe4e415f7c22421034a40c5d3ad2a9aa1c2e",
+  "verdict": "PASS_FORMAT_AND_HANDOFF_SUPPLEMENT",
+  "implementation_ready": false,
+  "full_delivery_gate_complete": false,
+  "full_m1_complete": false,
+  "original_review_baseline": "a37bee7cd1c05122383a6c40e157ef9ed5890bf4",
+  "original_reviewed_at": "2026-11-10T10:32:13.248594+00:00",
+  "original_review_records_unchanged": true,
+  "original_review_limitation": "Tracked git diff check excluded then-untracked PRD; direct text check did not cover Git extra-blank-line-at-EOF rule. Original report is retained without retrospective edits.",
+  "historical_failure": {
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "a37bee7cd..cdadbe4e4"
+    ],
+    "exit_code": 2,
+    "stdout": ".trellis/tasks/11-10-delivery-completion-enforcement/prd.md:45: new blank line at EOF.\n",
+    "stderr": "",
+    "matches_retained_record": true,
+    "classification": "document_format_failure_not_product_red",
+    "commit_preserved": true
+  },
+  "prd_change": {
+    "old_sha256": "3622029887c5a64b2442a3e7de591cd71e280c5e04c26ccbf44cf4e0eb11352e",
+    "current_sha256": "d2f95e9f030106efc992e8110f8578442f7a1f06914ff4d0e7d246238aef8cd6",
+    "old_hash_matches_original_review": true,
+    "bytes_removed": 1,
+    "only_final_extra_LF_removed": true,
+    "semantic_change": false
+  },
+  "failure_notes_change": {
+    "old_sha256": "e4dfa4c623cde34156d868dc442ffe668b75b7b5222e7885f8f9342c7103606c",
+    "current_sha256": "a46f789c1f2afb944c836462c30740399801c9d484b3561b8a7b66d3548dfe0b",
+    "original_prefix_preserved": true,
+    "change": "append retained staged-format failure and correction record"
+  },
+  "old_review_manifest_changes": [
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/prd.md",
+      "original_review_sha256": "3622029887c5a64b2442a3e7de591cd71e280c5e04c26ccbf44cf4e0eb11352e",
+      "current_sha256": "d2f95e9f030106efc992e8110f8578442f7a1f06914ff4d0e7d246238aef8cd6"
+    },
+    {
+      "path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/intake-failures.md",
+      "original_review_sha256": "e4dfa4c623cde34156d868dc442ffe668b75b7b5222e7885f8f9342c7103606c",
+      "current_sha256": "a46f789c1f2afb944c836462c30740399801c9d484b3561b8a7b66d3548dfe0b"
+    }
+  ],
+  "handoff_previously_in_review_manifest": false,
+  "handoff_review": {
+    "status": "pass",
+    "planning_not_product_delivery": true,
+    "pending_decisions_preserved": true,
+    "model_stops_and_budgets_preserved": true,
+    "integration_not_claimed_before_record": true
+  },
+  "checks": {
+    "baseline_plus_worktree_diff_check": {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "a37bee7cd"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "product_diff_empty": true,
+    "task_status": "planning",
+    "product_lint": "not_run_docs_only",
+    "product_typecheck": "not_run_docs_only",
+    "product_tests": "not_run_docs_only",
+    "database_runs": 0,
+    "provider_runs": 0
+  },
+  "reviewed_sha256": {
+    ".trellis/tasks/11-10-delivery-completion-enforcement/research/planning-review.md": "356cb2d5f5b346688d6619f4660e475cbdb4e6f0cfb2bccbb29a6f1fb62a4953",
+    ".trellis/tasks/11-10-delivery-completion-enforcement/research/planning-review.json": "1361daf1b5e10a63729f3ec72d8c229a725fd253d4ff711336761cd5db2fb9b0",
+    ".trellis/tasks/11-10-delivery-completion-enforcement/prd.md": "d2f95e9f030106efc992e8110f8578442f7a1f06914ff4d0e7d246238aef8cd6",
+    ".trellis/tasks/11-10-delivery-completion-enforcement/research/intake-failures.md": "a46f789c1f2afb944c836462c30740399801c9d484b3561b8a7b66d3548dfe0b",
+    ".trellis/tasks/11-10-delivery-completion-enforcement/research/staged-diff-failure.json": "6a4def95b7da9b8fcee9c530ba435d887d21c229d63ad30272afef8487fc7901",
+    ".trellis/tasks/11-10-delivery-completion-enforcement/handoff.md": "9667e56f94bf0c08248e260c0152693735c5da4ece16a2fba96474918e26f73d",
+    ".trellis/tasks/11-10-delivery-completion-enforcement/task.json": "4679fe272c45c4d33001413036ca644af538f6c5441f44747e40ae7056b46e8a"
+  },
+  "next_gate": "Main session must inspect a successful staged diff check before separate corrective Lore commit, then verify actual local integration and preserved user work.",
+  "corrective_commit_verified": false,
+  "local_integration_verified": false
+}

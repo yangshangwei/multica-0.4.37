@@ -1,0 +1,1213 @@
+{
+  "schema_version": 1,
+  "kind": "independent_readonly_documentation_and_PARSER_C1_v3_closure",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check",
+  "at": "2026-11-15T14:43:59.914166+00:00",
+  "verdict": "CLOSURE_CHECK_FAILED",
+  "blocking_findings": [
+    "documentation_bytes_unchanged"
+  ],
+  "blocking_count": 1,
+  "PARSER_C1": "closed_by_immutable_v3_uniform_output_type_guard_and_same_29_fixture_RED_GREEN_evidence",
+  "prior_doc_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-mixed-Go-JSON-doc-review-20261115-bf16972f02c6.json",
+    "sha256": "de5de983e04404c374b8e3934528388b4152cce28942319cc57d3ae900cc76d7",
+    "preserved": true
+  },
+  "v3_final_receipt": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-service-independent-v3-normal-race-20261115-87a4b72f8b7f.json",
+    "sha256": "1b13ebacb9034175c674869c5e8adac029ead3aee908be12b43f42b7f8800bbb",
+    "scope": "bounded_current_ROOT_knowledge_service_normal_and_race_only"
+  },
+  "acceptance_checks": {
+    "v3_uniform_Output_string_guard_present": true,
+    "only_v2_to_v3_change_is_single_guard": true,
+    "original_v2_matches_prior_doc_review": true,
+    "actual_v2_counterexample_RED_has_six_expected_rejections_accepted": true,
+    "v3_29_cases_all_GREEN": true,
+    "all_29_expected_outcomes_and_fixture_hashes_unchanged": true,
+    "all_file_hash_bindings_match": true,
+    "raw_independent_summaries_match": true,
+    "both_raw_streams_have_no_failure_unknown_invalid_Output_duplicate_or_unfinished": true,
+    "normal_race_named_and_leaf_sets_equal": true,
+    "prior_doc_review_immutable": true,
+    "normal_v2_receipt_immutable": true,
+    "original_failed_results_retained_in_final_receipt": true,
+    "old_execution_lane_quiescence_ack_recorded": true,
+    "document_seven_sections_retained": true,
+    "documentation_bytes_unchanged": false,
+    "index_bytes_unchanged": true,
+    "ROOT_P2_product_final_flags_remain_false": true
+  },
+  "parser_diff": "--- immutable-v2\n+++ immutable-v3\n@@ -20,6 +20,7 @@\n       continue;\n     }\n     if (typeof event.Package !== 'string' || (Object.hasOwn(event,'Test') && (typeof event.Test !== 'string' || !event.Test))) { parseErrors.push({line:index+1,sha256:hash(line),kind:'invalid_test_event_shape'}); continue; }\n+    if (event.Action === 'output' && typeof event.Output !== 'string') { parseErrors.push({line:index+1,sha256:hash(line),kind:'invalid_test_output_shape'}); continue; }\n     if (!event.Test) {\n       if (event.Package !== packageName || !['start','pass','fail','skip','output'].includes(event.Action) || (event.Action === 'output' && typeof event.Output !== 'string')) { anomalies.push({kind:'unclassified_package_event',action:event.Action,package:event.Package,line:index+1}); continue; }\n       if (event.Action !== 'output') packages.push({action:event.Action,line:index+1,elapsed:event.Elapsed ?? null});\n",
+  "regression_evidence": {
+    "v2_named_output_RED": {
+      "file": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-regression-result.json",
+        "sha256": "2376ba356586d831b656935727a246c5ee653eb6d07c05b6a4b4cb7227ce49c6"
+      },
+      "passed": 23,
+      "failed": 6,
+      "failed_case_names": [
+        "named_output_missing_Output",
+        "named_output_null_Output",
+        "named_output_number_Output",
+        "named_output_object_Output",
+        "named_output_array_Output",
+        "named_output_boolean_Output"
+      ]
+    },
+    "v3_29_GREEN": {
+      "file": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-regression-result.json",
+        "sha256": "bc0ea4e2a1cbab6bc8cb74b9027af5500f4caf231f0c3bca55d20e551a1b405a"
+      },
+      "passed": 29,
+      "failed": 0
+    },
+    "case_parity": [
+      {
+        "name": "minimal_actual_BuildEvent",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "complete_TestEvents_without_build",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "multiple_valid_build_outputs",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "build_failure_remains_failure",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "unknown_build_action",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "build_output_missing_ImportPath",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "build_output_missing_Output",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "build_output_wrong_ImportPath_type",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "build_output_wrong_Output_type",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "build_output_cannot_hide_Test",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "build_output_cannot_hide_Package",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "build_output_unknown_field",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "build_failure_unknown_field",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "unknown_package_action",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "unknown_named_action",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "named_failure_remains_failure",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "missing_named_terminal",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "duplicate_named_run",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "missing_package_start",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "wrong_named_Test_type",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "invalid_JSON",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "JSON_array_is_not_event",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "named_output_missing_Output",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "named_output_null_Output",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "named_output_number_Output",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "named_output_object_Output",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "named_output_array_Output",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "named_output_boolean_Output",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      },
+      {
+        "name": "named_output_empty_string_Output",
+        "same_expected_acceptance": true,
+        "same_fixture_sha256": true,
+        "new_outcome_matches_expected": true
+      }
+    ],
+    "test_executions_by_this_reviewer": 0
+  },
+  "independent_original_raw_checks": {
+    "normal": {
+      "raw_sha256": "2316db743f9b3d35dfd3518fb46de8bc8f6ba4d91b2de4227ef208f6c4f5214c",
+      "raw_sha256_match": true,
+      "top_count": 194,
+      "named_count": 428,
+      "leaf_count": 365,
+      "named_pass": 428,
+      "named_fail": 0,
+      "named_skip": 0,
+      "build_output": 2226,
+      "build_fail": 0,
+      "unknown_actions": 0,
+      "invalid_output_fields": 0,
+      "duplicates": 0,
+      "unfinished": 0,
+      "missing_run": 0,
+      "named_set_sha256": "db2ac45793cd2144566791c6925ecac46954f6f97af231052178871673af7396",
+      "leaf_set_sha256": "8b53f22354fed3edecc7eababda03f118110e69aa95aea8b64e1e38275524821",
+      "declared_summary_matches": true
+    },
+    "race": {
+      "raw_sha256": "a42df79c4cf3ec90f3a61e9d71d5a47e7f1dd26a1a0d5789bcadd9a5d32cacc6",
+      "raw_sha256_match": true,
+      "top_count": 194,
+      "named_count": 428,
+      "leaf_count": 365,
+      "named_pass": 428,
+      "named_fail": 0,
+      "named_skip": 0,
+      "build_output": 2846,
+      "build_fail": 0,
+      "unknown_actions": 0,
+      "invalid_output_fields": 0,
+      "duplicates": 0,
+      "unfinished": 0,
+      "missing_run": 0,
+      "named_set_sha256": "db2ac45793cd2144566791c6925ecac46954f6f97af231052178871673af7396",
+      "leaf_set_sha256": "8b53f22354fed3edecc7eababda03f118110e69aa95aea8b64e1e38275524821",
+      "declared_summary_matches": true
+    }
+  },
+  "file_hash_bindings": {
+    "count": 115,
+    "matching": 115,
+    "checks": [
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-tests.stdout.log",
+        "expected_sha256": "2316db743f9b3d35dfd3518fb46de8bc8f6ba4d91b2de4227ef208f6c4f5214c",
+        "actual_sha256": "2316db743f9b3d35dfd3518fb46de8bc8f6ba4d91b2de4227ef208f6c4f5214c",
+        "match": true,
+        "reference": "v3_final.referenceBindings[2]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-execution-result.json",
+        "expected_sha256": "c6c65a9c306920ae490c23fffe4958389fbcadc42b333e7e5105d88c0c20f25a",
+        "actual_sha256": "c6c65a9c306920ae490c23fffe4958389fbcadc42b333e7e5105d88c0c20f25a",
+        "match": true,
+        "reference": "v3_final.summaries.normal.result"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/normal-v3-final-inventory.json",
+        "expected_sha256": "eb82a450c60a20806aeff859109b1b10e93b58b1e6a65bafe2db9e0447d37a56",
+        "actual_sha256": "eb82a450c60a20806aeff859109b1b10e93b58b1e6a65bafe2db9e0447d37a56",
+        "match": true,
+        "reference": "v3_final.summaries.normal.inventory_receipt"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-tests.stdout.log",
+        "expected_sha256": "a42df79c4cf3ec90f3a61e9d71d5a47e7f1dd26a1a0d5789bcadd9a5d32cacc6",
+        "actual_sha256": "a42df79c4cf3ec90f3a61e9d71d5a47e7f1dd26a1a0d5789bcadd9a5d32cacc6",
+        "match": true,
+        "reference": "v3_final.referenceBindings[20]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-execution-result.json",
+        "expected_sha256": "14f7414f1aa82fccf66d04b4f9d2c73894f5d5bd8995bf6c09e5401524eb89d3",
+        "actual_sha256": "14f7414f1aa82fccf66d04b4f9d2c73894f5d5bd8995bf6c09e5401524eb89d3",
+        "match": true,
+        "reference": "v3_final.summaries.race.result"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/race-v3-final-inventory.json",
+        "expected_sha256": "bbdfba17bbd4ee5c5403823292f29f0d00a3885c07db4b601d9e61a3b9aa5fd3",
+        "actual_sha256": "bbdfba17bbd4ee5c5403823292f29f0d00a3885c07db4b601d9e61a3b9aa5fd3",
+        "match": true,
+        "reference": "v3_final.summaries.race.inventory_receipt"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-final-current-ROOT-source-manifest.json",
+        "expected_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "actual_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "match": true,
+        "reference": "v3_final.current_ROOT_source"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-tests-wrapper.stdout.log",
+        "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "match": true,
+        "reference": "v3_final.referenceBindings[0]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-tests-wrapper.stderr.log",
+        "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "match": true,
+        "reference": "v3_final.referenceBindings[1]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-tests.stderr.log",
+        "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "match": true,
+        "reference": "v3_final.referenceBindings[3]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-actual-inventory.json",
+        "expected_sha256": "250d9dcb18b1fbeca57541277550527ca2582ca78f055591588af3396d7c2614",
+        "actual_sha256": "250d9dcb18b1fbeca57541277550527ca2582ca78f055591588af3396d7c2614",
+        "match": true,
+        "reference": "v3_final.referenceBindings[4]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-source-before-manifest.json",
+        "expected_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "actual_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "match": true,
+        "reference": "v3_final.referenceBindings[5]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-source-after-manifest.json",
+        "expected_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "actual_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "match": true,
+        "reference": "v3_final.referenceBindings[6]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-consumed-before-manifest.json",
+        "expected_sha256": "84804cbe9032224e3cd18f7f773a2b9e7645cd52be6291402ce2f870d7789d9f",
+        "actual_sha256": "84804cbe9032224e3cd18f7f773a2b9e7645cd52be6291402ce2f870d7789d9f",
+        "match": true,
+        "reference": "v3_final.referenceBindings[7]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-consumed-after-manifest.json",
+        "expected_sha256": "84804cbe9032224e3cd18f7f773a2b9e7645cd52be6291402ce2f870d7789d9f",
+        "actual_sha256": "84804cbe9032224e3cd18f7f773a2b9e7645cd52be6291402ce2f870d7789d9f",
+        "match": true,
+        "reference": "v3_final.compiled_consumed_closure.normal"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-tools-before-manifest.json",
+        "expected_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+        "actual_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+        "match": true,
+        "reference": "v3_final.referenceBindings[9]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-tools-after-manifest.json",
+        "expected_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+        "actual_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+        "match": true,
+        "reference": "v3_final.referenceBindings[10]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-config-before-manifest.json",
+        "expected_sha256": "c8aecfbc88177ac101bfca289df97b688d0aa255ba9d028c26d172b2056a7b04",
+        "actual_sha256": "c8aecfbc88177ac101bfca289df97b688d0aa255ba9d028c26d172b2056a7b04",
+        "match": true,
+        "reference": "v3_final.referenceBindings[11]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-test-config-after-manifest.json",
+        "expected_sha256": "c8aecfbc88177ac101bfca289df97b688d0aa255ba9d028c26d172b2056a7b04",
+        "actual_sha256": "c8aecfbc88177ac101bfca289df97b688d0aa255ba9d028c26d172b2056a7b04",
+        "match": true,
+        "reference": "v3_final.referenceBindings[12]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-before-git-identity.json",
+        "expected_sha256": "2d048e035ba4c26ba324ef5c747817815a730a05e063ab41e437024ed91125be",
+        "actual_sha256": "2d048e035ba4c26ba324ef5c747817815a730a05e063ab41e437024ed91125be",
+        "match": true,
+        "reference": "v3_final.referenceBindings[13]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-after-git-identity.json",
+        "expected_sha256": "af5cb49e1b62703afa19c974c0b38ffed31146399b7116ddda633e09cf55ca37",
+        "actual_sha256": "af5cb49e1b62703afa19c974c0b38ffed31146399b7116ddda633e09cf55ca37",
+        "match": true,
+        "reference": "v3_final.referenceBindings[14]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-generated-inputs-manifest.json",
+        "expected_sha256": "12faf4a3897fc3cf03983c20c0f8501f63b7f3b655ba03afd8bf168426df7557",
+        "actual_sha256": "12faf4a3897fc3cf03983c20c0f8501f63b7f3b655ba03afd8bf168426df7557",
+        "match": true,
+        "reference": "v3_final.referenceBindings[15]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-post-schema-schema.json",
+        "expected_sha256": "c7b137d128b663139ad904511389688bdda3e4470e0577157400abe48c5dcad9",
+        "actual_sha256": "c7b137d128b663139ad904511389688bdda3e4470e0577157400abe48c5dcad9",
+        "match": true,
+        "reference": "v3_final.referenceBindings[16]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/normal-post-owned-processes.json",
+        "expected_sha256": "a0e1f98fa3679a263767b93e5c39a7e7926188e87ba62f1505749f2c3c99f92c",
+        "actual_sha256": "a0e1f98fa3679a263767b93e5c39a7e7926188e87ba62f1505749f2c3c99f92c",
+        "match": true,
+        "reference": "v3_final.referenceBindings[17]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-tests-wrapper.stdout.log",
+        "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "match": true,
+        "reference": "v3_final.referenceBindings[18]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-tests-wrapper.stderr.log",
+        "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "match": true,
+        "reference": "v3_final.referenceBindings[19]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-tests.stderr.log",
+        "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "match": true,
+        "reference": "v3_final.referenceBindings[21]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-actual-inventory.json",
+        "expected_sha256": "d9ae1cbc61e1b3cfde63ec4224a438361d7f0c5290dbcce4183edddbff7ce423",
+        "actual_sha256": "d9ae1cbc61e1b3cfde63ec4224a438361d7f0c5290dbcce4183edddbff7ce423",
+        "match": true,
+        "reference": "v3_final.referenceBindings[22]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-test-source-before-manifest.json",
+        "expected_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "actual_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "match": true,
+        "reference": "v3_final.referenceBindings[23]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-test-source-after-manifest.json",
+        "expected_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "actual_sha256": "1a06ef228b390769377e36c716a0572ffe40d57ae6ece1659cf49de7aadf3753",
+        "match": true,
+        "reference": "v3_final.referenceBindings[24]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-consumed-before-manifest.json",
+        "expected_sha256": "24d8e970e65efe244dc74bfda8da8be1f637524a89fc2ea06a28ff589d26a240",
+        "actual_sha256": "24d8e970e65efe244dc74bfda8da8be1f637524a89fc2ea06a28ff589d26a240",
+        "match": true,
+        "reference": "v3_final.referenceBindings[25]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-consumed-after-manifest.json",
+        "expected_sha256": "24d8e970e65efe244dc74bfda8da8be1f637524a89fc2ea06a28ff589d26a240",
+        "actual_sha256": "24d8e970e65efe244dc74bfda8da8be1f637524a89fc2ea06a28ff589d26a240",
+        "match": true,
+        "reference": "v3_final.compiled_consumed_closure.race"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-test-tools-before-manifest.json",
+        "expected_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+        "actual_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+        "match": true,
+        "reference": "v3_final.referenceBindings[27]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-test-tools-after-manifest.json",
+        "expected_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+        "actual_sha256": "ae935a5f2a7188a2f2ba6023801bd105e8c7bf8cec270e8c678191451cdc8e5a",
+        "match": true,
+        "reference": "v3_final.referenceBindings[28]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-test-config-before-manifest.json",
+        "expected_sha256": "2546a3dc791cb049a5301cf6b5869d33a2c7d22c505c8e9f31195c454a62b89b",
+        "actual_sha256": "2546a3dc791cb049a5301cf6b5869d33a2c7d22c505c8e9f31195c454a62b89b",
+        "match": true,
+        "reference": "v3_final.referenceBindings[29]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-test-config-after-manifest.json",
+        "expected_sha256": "2546a3dc791cb049a5301cf6b5869d33a2c7d22c505c8e9f31195c454a62b89b",
+        "actual_sha256": "2546a3dc791cb049a5301cf6b5869d33a2c7d22c505c8e9f31195c454a62b89b",
+        "match": true,
+        "reference": "v3_final.referenceBindings[30]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-before-git-identity.json",
+        "expected_sha256": "a78682b7f24b3b105f7004cdbc8ffe40b20baf4450d5fe1828be04f186643667",
+        "actual_sha256": "a78682b7f24b3b105f7004cdbc8ffe40b20baf4450d5fe1828be04f186643667",
+        "match": true,
+        "reference": "v3_final.referenceBindings[31]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-after-git-identity.json",
+        "expected_sha256": "cb05fc42901e432ce1f64be50431af03e560e69a977e0190327e039256e0b9d3",
+        "actual_sha256": "cb05fc42901e432ce1f64be50431af03e560e69a977e0190327e039256e0b9d3",
+        "match": true,
+        "reference": "v3_final.referenceBindings[32]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-generated-inputs-manifest.json",
+        "expected_sha256": "589c5a492c603b8519bfa4d8ef573785cbf396c7666c60333674940b385952a6",
+        "actual_sha256": "589c5a492c603b8519bfa4d8ef573785cbf396c7666c60333674940b385952a6",
+        "match": true,
+        "reference": "v3_final.referenceBindings[33]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-post-schema-schema.json",
+        "expected_sha256": "5d9ed528772e539dae1c80b98355ecdd93f164066d0417a533e9fb7b97e90639",
+        "actual_sha256": "5d9ed528772e539dae1c80b98355ecdd93f164066d0417a533e9fb7b97e90639",
+        "match": true,
+        "reference": "v3_final.referenceBindings[34]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/race-post-owned-processes.json",
+        "expected_sha256": "c057f810ca4539778b22e6aca33de90815ac029301b66e9019cf0c1441821064",
+        "actual_sha256": "c057f810ca4539778b22e6aca33de90815ac029301b66e9019cf0c1441821064",
+        "match": true,
+        "reference": "v3_final.referenceBindings[35]"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/recorded-configuration-bytes-receipt.json",
+        "expected_sha256": "c257eb7aa9fe047ba8f49d336e8504ed7ac06db334b9d1a1a374acbd62ea701a",
+        "actual_sha256": "c257eb7aa9fe047ba8f49d336e8504ed7ac06db334b9d1a1a374acbd62ea701a",
+        "match": true,
+        "reference": "v3_final.recorded_configuration_bytes_archive"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/normal-race-final-resource-and-configuration.json",
+        "expected_sha256": "b751caf71d883511a0ca8fe02d3e8edad6d1e4e4c84c8182c06cbd653d004a99",
+        "actual_sha256": "b751caf71d883511a0ca8fe02d3e8edad6d1e4e4c84c8182c06cbd653d004a99",
+        "match": true,
+        "reference": "v3_final.configuration_and_resources"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/normal-race-profile-semantic-checks.json",
+        "expected_sha256": "781b4b686003ba94f8e81999e7df726494869ebf332276927d439785cc02cb3a",
+        "actual_sha256": "781b4b686003ba94f8e81999e7df726494869ebf332276927d439785cc02cb3a",
+        "match": true,
+        "reference": "v3_final.semantic_profile_checks"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/inventory-parser.cjs",
+        "expected_sha256": "1c3d0927529ecbf5e7ac249c5224583d6ace6d6f4a86ebb53e946a5bf2c74ced",
+        "actual_sha256": "1c3d0927529ecbf5e7ac249c5224583d6ace6d6f4a86ebb53e946a5bf2c74ced",
+        "match": true,
+        "reference": "v3_final.parser_original"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/inventory-parser-v2.cjs",
+        "expected_sha256": "a28625ce70f1a5122852d8b6afce22184d9fd7a2b5267cd347a6fa4af2eb97f6",
+        "actual_sha256": "a28625ce70f1a5122852d8b6afce22184d9fd7a2b5267cd347a6fa4af2eb97f6",
+        "match": true,
+        "reference": "v3_final.parser_v2"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/inventory-parser-v3.cjs",
+        "expected_sha256": "7c10d5d3b60ba701767acbb2be128d12b18542460c3711540c76d7f312b7e3e2",
+        "actual_sha256": "7c10d5d3b60ba701767acbb2be128d12b18542460c3711540c76d7f312b7e3e2",
+        "match": true,
+        "reference": "v3_final.parser_v3"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/parser-minimal-original-raw.jsonl",
+        "expected_sha256": "502938a06174b713db1597ddb0a186d3ef1434f25c1bd58d86330c6e640eef69",
+        "actual_sha256": "502938a06174b713db1597ddb0a186d3ef1434f25c1bd58d86330c6e640eef69",
+        "match": true,
+        "reference": "v3_final.original_minimal_mixed_stream_fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/original-red-regression-result.json",
+        "expected_sha256": "69293cf35c042ef4838dfdc320917f6c12380a68aee5c1dbc2740c378bfc4d05",
+        "actual_sha256": "69293cf35c042ef4838dfdc320917f6c12380a68aee5c1dbc2740c378bfc4d05",
+        "match": true,
+        "reference": "v3_final.original_parser_RED"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/original-red-minimal_actual_BuildEvent.jsonl",
+        "expected_sha256": "502938a06174b713db1597ddb0a186d3ef1434f25c1bd58d86330c6e640eef69",
+        "actual_sha256": "502938a06174b713db1597ddb0a186d3ef1434f25c1bd58d86330c6e640eef69",
+        "match": true,
+        "reference": "v3_final.original_minimal_RED_case.fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/corrected-green-regression-result.json",
+        "expected_sha256": "4de5ddd60b478fa7cf9cf33d36ba7158927861db7d7dbd1ce1b24d6eac4f6a38",
+        "actual_sha256": "4de5ddd60b478fa7cf9cf33d36ba7158927861db7d7dbd1ce1b24d6eac4f6a38",
+        "match": true,
+        "reference": "v3_final.v2_22_case_GREEN"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-regression-result.json",
+        "expected_sha256": "2376ba356586d831b656935727a246c5ee653eb6d07c05b6a4b4cb7227ce49c6",
+        "actual_sha256": "2376ba356586d831b656935727a246c5ee653eb6d07c05b6a4b4cb7227ce49c6",
+        "match": true,
+        "reference": "v3_final.v2_named_output_RED"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-regression-result.json",
+        "expected_sha256": "bc0ea4e2a1cbab6bc8cb74b9027af5500f4caf231f0c3bca55d20e551a1b405a",
+        "actual_sha256": "bc0ea4e2a1cbab6bc8cb74b9027af5500f4caf231f0c3bca55d20e551a1b405a",
+        "match": true,
+        "reference": "v3_final.v3_29_case_GREEN"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/selected-service-gofmt.json",
+        "expected_sha256": "30258369734bbf1d7fd5d864923f83fe4695184dc2dcd92b90787f47c3355427",
+        "actual_sha256": "30258369734bbf1d7fd5d864923f83fe4695184dc2dcd92b90787f47c3355427",
+        "match": true,
+        "reference": "v3_final.gofmt_selected_service"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-normal-reparse-20261115-87a4b72f8b7f.json",
+        "expected_sha256": "f893752b7f46e38ed469528cc8581ec335a29203375aa3e99575b7627aa75305",
+        "actual_sha256": "f893752b7f46e38ed469528cc8581ec335a29203375aa3e99575b7627aa75305",
+        "match": true,
+        "reference": "v3_final.normal_v2_read_only_receipt"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/enumeration-setup-failure.json",
+        "expected_sha256": "fb4fb86717af7eb5b62174776e95fe1d39feb962b7ec679b770607490f47db9c",
+        "actual_sha256": "fb4fb86717af7eb5b62174776e95fe1d39feb962b7ec679b770607490f47db9c",
+        "match": true,
+        "reference": "v3_final.original_failed_cache_copy"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/original-normal-execution-result.json",
+        "expected_sha256": "c6c65a9c306920ae490c23fffe4958389fbcadc42b333e7e5105d88c0c20f25a",
+        "actual_sha256": "c6c65a9c306920ae490c23fffe4958389fbcadc42b333e7e5105d88c0c20f25a",
+        "match": true,
+        "reference": "v3_final.original_failed_normal_result"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-minimal_actual_BuildEvent.jsonl",
+        "expected_sha256": "502938a06174b713db1597ddb0a186d3ef1434f25c1bd58d86330c6e640eef69",
+        "actual_sha256": "502938a06174b713db1597ddb0a186d3ef1434f25c1bd58d86330c6e640eef69",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[0].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-complete_TestEvents_without_build.jsonl",
+        "expected_sha256": "708ee728760fe85aa79da800f7c8f8e2c7d7661920a43852b204ab2d3a287c11",
+        "actual_sha256": "708ee728760fe85aa79da800f7c8f8e2c7d7661920a43852b204ab2d3a287c11",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[1].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-multiple_valid_build_outputs.jsonl",
+        "expected_sha256": "5d11063b94dd3f29d7816ee774db723f364672ccd37f99487de6a1a99b9694dc",
+        "actual_sha256": "5d11063b94dd3f29d7816ee774db723f364672ccd37f99487de6a1a99b9694dc",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[2].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-build_failure_remains_failure.jsonl",
+        "expected_sha256": "42fb26e1fd4f8e132c41bc33a1108257d8ba2515562b0e7cf4b40827bab882c3",
+        "actual_sha256": "42fb26e1fd4f8e132c41bc33a1108257d8ba2515562b0e7cf4b40827bab882c3",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[3].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-unknown_build_action.jsonl",
+        "expected_sha256": "84be7cde741e171841fe7a664d86a93cae159e8367cc80e7ff5fb9685c924caf",
+        "actual_sha256": "84be7cde741e171841fe7a664d86a93cae159e8367cc80e7ff5fb9685c924caf",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[4].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-build_output_missing_ImportPath.jsonl",
+        "expected_sha256": "a4b58227dde01b6926461b75429344834335783a7f20ef93541e9fffb1d7dc3f",
+        "actual_sha256": "a4b58227dde01b6926461b75429344834335783a7f20ef93541e9fffb1d7dc3f",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[5].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-build_output_missing_Output.jsonl",
+        "expected_sha256": "5fe455478efbc23fa3dbb36aa1cad6552587394d862133b4cd3a20c01d25c810",
+        "actual_sha256": "5fe455478efbc23fa3dbb36aa1cad6552587394d862133b4cd3a20c01d25c810",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[6].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-build_output_wrong_ImportPath_type.jsonl",
+        "expected_sha256": "bd2186de06ee8a525b14ac71615c5a4237530ef61955a71bfdd0333f2415dd76",
+        "actual_sha256": "bd2186de06ee8a525b14ac71615c5a4237530ef61955a71bfdd0333f2415dd76",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[7].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-build_output_wrong_Output_type.jsonl",
+        "expected_sha256": "5ced89f167af5501efafa2dcd38e42fea1a88e49449a017530e3ef342d9b009f",
+        "actual_sha256": "5ced89f167af5501efafa2dcd38e42fea1a88e49449a017530e3ef342d9b009f",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[8].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-build_output_cannot_hide_Test.jsonl",
+        "expected_sha256": "86025c5265bf0d25e6ee3ad31c3d29ef721a5110474591baa4e08de6a1629792",
+        "actual_sha256": "86025c5265bf0d25e6ee3ad31c3d29ef721a5110474591baa4e08de6a1629792",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[9].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-build_output_cannot_hide_Package.jsonl",
+        "expected_sha256": "4a2425c9845e08ef246e4cc3ed601cd1595fe9bb3232ead6193e21359ef2d31c",
+        "actual_sha256": "4a2425c9845e08ef246e4cc3ed601cd1595fe9bb3232ead6193e21359ef2d31c",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[10].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-build_output_unknown_field.jsonl",
+        "expected_sha256": "36fce73292db0711ee35b73b02bd53c27f5294038139c13f4fd038a193a412ca",
+        "actual_sha256": "36fce73292db0711ee35b73b02bd53c27f5294038139c13f4fd038a193a412ca",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[11].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-build_failure_unknown_field.jsonl",
+        "expected_sha256": "609e9dfd28b466278e3a9b681b04000f6668d1e0fe840e2fd29225f56351c4bf",
+        "actual_sha256": "609e9dfd28b466278e3a9b681b04000f6668d1e0fe840e2fd29225f56351c4bf",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[12].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-unknown_package_action.jsonl",
+        "expected_sha256": "2c629a5a18c7051bfb5e32ebd4e9d002b0b4fdadf9b77c0b862b7988174c4ee6",
+        "actual_sha256": "2c629a5a18c7051bfb5e32ebd4e9d002b0b4fdadf9b77c0b862b7988174c4ee6",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[13].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-unknown_named_action.jsonl",
+        "expected_sha256": "b9dfe68905722720ce5a6ab210158cdce3b9d0deab468b14d4bd9bcb105ccd03",
+        "actual_sha256": "b9dfe68905722720ce5a6ab210158cdce3b9d0deab468b14d4bd9bcb105ccd03",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[14].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-named_failure_remains_failure.jsonl",
+        "expected_sha256": "291c1208b54473deef4e636bb499fc245b93bbccc3e6f8bdd09f2800435086ca",
+        "actual_sha256": "291c1208b54473deef4e636bb499fc245b93bbccc3e6f8bdd09f2800435086ca",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[15].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-missing_named_terminal.jsonl",
+        "expected_sha256": "c1b561e724979e4dbb843017598131ae0953c3413c17ffffb83e06917c1fb7a8",
+        "actual_sha256": "c1b561e724979e4dbb843017598131ae0953c3413c17ffffb83e06917c1fb7a8",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[16].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-duplicate_named_run.jsonl",
+        "expected_sha256": "3d9d81773fa4372e40870dd9340a591f7b8abc076d22ddf510e81fb1ba6592ed",
+        "actual_sha256": "3d9d81773fa4372e40870dd9340a591f7b8abc076d22ddf510e81fb1ba6592ed",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[17].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-missing_package_start.jsonl",
+        "expected_sha256": "ea99fd5e3395c927befd338c2fe0f5251f565263be7d2f5cbf1470c518177eb9",
+        "actual_sha256": "ea99fd5e3395c927befd338c2fe0f5251f565263be7d2f5cbf1470c518177eb9",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[18].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-wrong_named_Test_type.jsonl",
+        "expected_sha256": "59432f6b12077ddfe7714298d9e4be96bab8f6c22b4c64b165cb7bb1dc128549",
+        "actual_sha256": "59432f6b12077ddfe7714298d9e4be96bab8f6c22b4c64b165cb7bb1dc128549",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[19].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-invalid_JSON.jsonl",
+        "expected_sha256": "aa19c2026df655e7564083c36cc1058f2f5d25d95ef7e22d4047c9c8504fd48f",
+        "actual_sha256": "aa19c2026df655e7564083c36cc1058f2f5d25d95ef7e22d4047c9c8504fd48f",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[20].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-JSON_array_is_not_event.jsonl",
+        "expected_sha256": "f8b7c98df6b2a31b78ac7e5e9fa940fc48c8f3e347f47cc90f685d0f8cf17004",
+        "actual_sha256": "f8b7c98df6b2a31b78ac7e5e9fa940fc48c8f3e347f47cc90f685d0f8cf17004",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[21].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-named_output_missing_Output.jsonl",
+        "expected_sha256": "0f49b06e96ae8fc7989ac95e728d161dc31e059fa1d6a9a562ad563d3267f8bc",
+        "actual_sha256": "0f49b06e96ae8fc7989ac95e728d161dc31e059fa1d6a9a562ad563d3267f8bc",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[22].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-named_output_null_Output.jsonl",
+        "expected_sha256": "2a6b11cb6f1795756c0490ffa2775a199430890967743af5993b057125313a5f",
+        "actual_sha256": "2a6b11cb6f1795756c0490ffa2775a199430890967743af5993b057125313a5f",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[23].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-named_output_number_Output.jsonl",
+        "expected_sha256": "4580cf80b0091618109c217cea8ff0f604306053aca20007392517b8c25d5386",
+        "actual_sha256": "4580cf80b0091618109c217cea8ff0f604306053aca20007392517b8c25d5386",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[24].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-named_output_object_Output.jsonl",
+        "expected_sha256": "cc74f2e61ab7adeb2a7f4c92a3adfbfb68930b0951e31cafae61e91f16ed7efd",
+        "actual_sha256": "cc74f2e61ab7adeb2a7f4c92a3adfbfb68930b0951e31cafae61e91f16ed7efd",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[25].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-named_output_array_Output.jsonl",
+        "expected_sha256": "4ab19ae087cab54d0594e01c8f67747a7602517e39c12be593c4a17ae3f37517",
+        "actual_sha256": "4ab19ae087cab54d0594e01c8f67747a7602517e39c12be593c4a17ae3f37517",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[26].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-named_output_boolean_Output.jsonl",
+        "expected_sha256": "fddcda2a8c129c886452f35f8304de31b47b20efacb7f6a49ae47dd363d4ed49",
+        "actual_sha256": "fddcda2a8c129c886452f35f8304de31b47b20efacb7f6a49ae47dd363d4ed49",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[27].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v2-named-output-red-named_output_empty_string_Output.jsonl",
+        "expected_sha256": "966a8944f83836c0a83fbd106498733eba225af88c65a43d5befc4d2a10fc1eb",
+        "actual_sha256": "966a8944f83836c0a83fbd106498733eba225af88c65a43d5befc4d2a10fc1eb",
+        "match": true,
+        "reference": "v2_named_output_RED.cases[28].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-minimal_actual_BuildEvent.jsonl",
+        "expected_sha256": "502938a06174b713db1597ddb0a186d3ef1434f25c1bd58d86330c6e640eef69",
+        "actual_sha256": "502938a06174b713db1597ddb0a186d3ef1434f25c1bd58d86330c6e640eef69",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[0].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-complete_TestEvents_without_build.jsonl",
+        "expected_sha256": "708ee728760fe85aa79da800f7c8f8e2c7d7661920a43852b204ab2d3a287c11",
+        "actual_sha256": "708ee728760fe85aa79da800f7c8f8e2c7d7661920a43852b204ab2d3a287c11",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[1].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-multiple_valid_build_outputs.jsonl",
+        "expected_sha256": "5d11063b94dd3f29d7816ee774db723f364672ccd37f99487de6a1a99b9694dc",
+        "actual_sha256": "5d11063b94dd3f29d7816ee774db723f364672ccd37f99487de6a1a99b9694dc",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[2].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-build_failure_remains_failure.jsonl",
+        "expected_sha256": "42fb26e1fd4f8e132c41bc33a1108257d8ba2515562b0e7cf4b40827bab882c3",
+        "actual_sha256": "42fb26e1fd4f8e132c41bc33a1108257d8ba2515562b0e7cf4b40827bab882c3",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[3].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-unknown_build_action.jsonl",
+        "expected_sha256": "84be7cde741e171841fe7a664d86a93cae159e8367cc80e7ff5fb9685c924caf",
+        "actual_sha256": "84be7cde741e171841fe7a664d86a93cae159e8367cc80e7ff5fb9685c924caf",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[4].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-build_output_missing_ImportPath.jsonl",
+        "expected_sha256": "a4b58227dde01b6926461b75429344834335783a7f20ef93541e9fffb1d7dc3f",
+        "actual_sha256": "a4b58227dde01b6926461b75429344834335783a7f20ef93541e9fffb1d7dc3f",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[5].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-build_output_missing_Output.jsonl",
+        "expected_sha256": "5fe455478efbc23fa3dbb36aa1cad6552587394d862133b4cd3a20c01d25c810",
+        "actual_sha256": "5fe455478efbc23fa3dbb36aa1cad6552587394d862133b4cd3a20c01d25c810",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[6].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-build_output_wrong_ImportPath_type.jsonl",
+        "expected_sha256": "bd2186de06ee8a525b14ac71615c5a4237530ef61955a71bfdd0333f2415dd76",
+        "actual_sha256": "bd2186de06ee8a525b14ac71615c5a4237530ef61955a71bfdd0333f2415dd76",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[7].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-build_output_wrong_Output_type.jsonl",
+        "expected_sha256": "5ced89f167af5501efafa2dcd38e42fea1a88e49449a017530e3ef342d9b009f",
+        "actual_sha256": "5ced89f167af5501efafa2dcd38e42fea1a88e49449a017530e3ef342d9b009f",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[8].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-build_output_cannot_hide_Test.jsonl",
+        "expected_sha256": "86025c5265bf0d25e6ee3ad31c3d29ef721a5110474591baa4e08de6a1629792",
+        "actual_sha256": "86025c5265bf0d25e6ee3ad31c3d29ef721a5110474591baa4e08de6a1629792",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[9].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-build_output_cannot_hide_Package.jsonl",
+        "expected_sha256": "4a2425c9845e08ef246e4cc3ed601cd1595fe9bb3232ead6193e21359ef2d31c",
+        "actual_sha256": "4a2425c9845e08ef246e4cc3ed601cd1595fe9bb3232ead6193e21359ef2d31c",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[10].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-build_output_unknown_field.jsonl",
+        "expected_sha256": "36fce73292db0711ee35b73b02bd53c27f5294038139c13f4fd038a193a412ca",
+        "actual_sha256": "36fce73292db0711ee35b73b02bd53c27f5294038139c13f4fd038a193a412ca",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[11].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-build_failure_unknown_field.jsonl",
+        "expected_sha256": "609e9dfd28b466278e3a9b681b04000f6668d1e0fe840e2fd29225f56351c4bf",
+        "actual_sha256": "609e9dfd28b466278e3a9b681b04000f6668d1e0fe840e2fd29225f56351c4bf",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[12].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-unknown_package_action.jsonl",
+        "expected_sha256": "2c629a5a18c7051bfb5e32ebd4e9d002b0b4fdadf9b77c0b862b7988174c4ee6",
+        "actual_sha256": "2c629a5a18c7051bfb5e32ebd4e9d002b0b4fdadf9b77c0b862b7988174c4ee6",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[13].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-unknown_named_action.jsonl",
+        "expected_sha256": "b9dfe68905722720ce5a6ab210158cdce3b9d0deab468b14d4bd9bcb105ccd03",
+        "actual_sha256": "b9dfe68905722720ce5a6ab210158cdce3b9d0deab468b14d4bd9bcb105ccd03",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[14].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-named_failure_remains_failure.jsonl",
+        "expected_sha256": "291c1208b54473deef4e636bb499fc245b93bbccc3e6f8bdd09f2800435086ca",
+        "actual_sha256": "291c1208b54473deef4e636bb499fc245b93bbccc3e6f8bdd09f2800435086ca",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[15].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-missing_named_terminal.jsonl",
+        "expected_sha256": "c1b561e724979e4dbb843017598131ae0953c3413c17ffffb83e06917c1fb7a8",
+        "actual_sha256": "c1b561e724979e4dbb843017598131ae0953c3413c17ffffb83e06917c1fb7a8",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[16].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-duplicate_named_run.jsonl",
+        "expected_sha256": "3d9d81773fa4372e40870dd9340a591f7b8abc076d22ddf510e81fb1ba6592ed",
+        "actual_sha256": "3d9d81773fa4372e40870dd9340a591f7b8abc076d22ddf510e81fb1ba6592ed",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[17].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-missing_package_start.jsonl",
+        "expected_sha256": "ea99fd5e3395c927befd338c2fe0f5251f565263be7d2f5cbf1470c518177eb9",
+        "actual_sha256": "ea99fd5e3395c927befd338c2fe0f5251f565263be7d2f5cbf1470c518177eb9",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[18].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-wrong_named_Test_type.jsonl",
+        "expected_sha256": "59432f6b12077ddfe7714298d9e4be96bab8f6c22b4c64b165cb7bb1dc128549",
+        "actual_sha256": "59432f6b12077ddfe7714298d9e4be96bab8f6c22b4c64b165cb7bb1dc128549",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[19].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-invalid_JSON.jsonl",
+        "expected_sha256": "aa19c2026df655e7564083c36cc1058f2f5d25d95ef7e22d4047c9c8504fd48f",
+        "actual_sha256": "aa19c2026df655e7564083c36cc1058f2f5d25d95ef7e22d4047c9c8504fd48f",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[20].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-JSON_array_is_not_event.jsonl",
+        "expected_sha256": "f8b7c98df6b2a31b78ac7e5e9fa940fc48c8f3e347f47cc90f685d0f8cf17004",
+        "actual_sha256": "f8b7c98df6b2a31b78ac7e5e9fa940fc48c8f3e347f47cc90f685d0f8cf17004",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[21].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-named_output_missing_Output.jsonl",
+        "expected_sha256": "0f49b06e96ae8fc7989ac95e728d161dc31e059fa1d6a9a562ad563d3267f8bc",
+        "actual_sha256": "0f49b06e96ae8fc7989ac95e728d161dc31e059fa1d6a9a562ad563d3267f8bc",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[22].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-named_output_null_Output.jsonl",
+        "expected_sha256": "2a6b11cb6f1795756c0490ffa2775a199430890967743af5993b057125313a5f",
+        "actual_sha256": "2a6b11cb6f1795756c0490ffa2775a199430890967743af5993b057125313a5f",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[23].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-named_output_number_Output.jsonl",
+        "expected_sha256": "4580cf80b0091618109c217cea8ff0f604306053aca20007392517b8c25d5386",
+        "actual_sha256": "4580cf80b0091618109c217cea8ff0f604306053aca20007392517b8c25d5386",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[24].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-named_output_object_Output.jsonl",
+        "expected_sha256": "cc74f2e61ab7adeb2a7f4c92a3adfbfb68930b0951e31cafae61e91f16ed7efd",
+        "actual_sha256": "cc74f2e61ab7adeb2a7f4c92a3adfbfb68930b0951e31cafae61e91f16ed7efd",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[25].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-named_output_array_Output.jsonl",
+        "expected_sha256": "4ab19ae087cab54d0594e01c8f67747a7602517e39c12be593c4a17ae3f37517",
+        "actual_sha256": "4ab19ae087cab54d0594e01c8f67747a7602517e39c12be593c4a17ae3f37517",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[26].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-named_output_boolean_Output.jsonl",
+        "expected_sha256": "fddcda2a8c129c886452f35f8304de31b47b20efacb7f6a49ae47dd363d4ed49",
+        "actual_sha256": "fddcda2a8c129c886452f35f8304de31b47b20efacb7f6a49ae47dd363d4ed49",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[27].fixture"
+      },
+      {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/v3-output-guard-green-named_output_empty_string_Output.jsonl",
+        "expected_sha256": "966a8944f83836c0a83fbd106498733eba225af88c65a43d5befc4d2a10fc1eb",
+        "actual_sha256": "966a8944f83836c0a83fbd106498733eba225af88c65a43d5befc4d2a10fc1eb",
+        "match": true,
+        "reference": "v3_29_case_GREEN.cases[28].fixture"
+      }
+    ]
+  },
+  "documentation": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/verification-environment.md",
+    "sha256": "c839200904601863c13b9aa8f62102ba54ab4766ece31e7fdfff73cad0dc9260",
+    "index": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/index.md",
+    "index_sha256": "e2850ded1d9a0dff3dca2ed2201daff8b80377152889fee240ecf835a50012af",
+    "seven_sections": [
+      [
+        "1",
+        "Scope / trigger"
+      ],
+      [
+        "2",
+        "Signatures"
+      ],
+      [
+        "3",
+        "Contracts"
+      ],
+      [
+        "4",
+        "Validation / error matrix"
+      ],
+      [
+        "5",
+        "Good / base / bad cases"
+      ],
+      [
+        "6",
+        "Required tests and assertion points"
+      ],
+      [
+        "7",
+        "Wrong vs correct"
+      ]
+    ],
+    "unknown_actions_and_build_fail_rejection_retained": true,
+    "known_valid_empty_Output_preserved": true,
+    "installed_Go_contract_review_reused_from_prior_immutable_doc_review": true
+  },
+  "progress_truthfulness": {
+    "current_files": [
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+        "sha256": "941659b4a710d9b6eee0454b4b0932c4ccd6a818becdc5905d94c96458c53191",
+        "19_profile_preparation_and_actual_503_RED_present": true,
+        "P2_final_pending_and_private_ROOT_separation_retained": true,
+        "race_execution_state_is_main_owned_and_not_rewritten_here": true
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/implementation-progress.md",
+        "sha256": "008194bd2a4b499ba6973f5d0aa067c198353a9d8d457060d86aef8eee2b2016",
+        "19_profile_preparation_and_actual_503_RED_present": true,
+        "P2_final_pending_and_private_ROOT_separation_retained": true,
+        "race_execution_state_is_main_owned_and_not_rewritten_here": true
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/implement.md",
+        "sha256": "4b38cb04dc065fd5b1ceda09624f2219b1f71e0ee5c48c7fa3921eaff83b0388",
+        "19_profile_preparation_and_actual_503_RED_present": true,
+        "P2_final_pending_and_private_ROOT_separation_retained": true,
+        "race_execution_state_is_main_owned_and_not_rewritten_here": true
+      }
+    ],
+    "corrections_needed": [],
+    "nineteen_profiles_and_actual_red_not_promoted_to_P2_GREEN": true,
+    "private_vs_ROOT_boundary_retained": true,
+    "race_status_update_owner": "main after independent v3 final intake"
+  },
+  "retained_after_ack_resource_evidence": {
+    "old_lane_ack": {
+      "source": "parent_verified_TUI_read_thread",
+      "thread_id": "01a1df52-c6c6-7c92-ac4f-a632d47446ad",
+      "turn_id": "01a1df9b-0ee0-7b32-85db-bbadc36a09b0",
+      "message_id": "msg18e83e3bfe4866c800003a90",
+      "thread_state": "notLoaded",
+      "turn_state": "interrupted",
+      "text": "no more writes or executions in old292e lane—no Go,SQL,parser/controller edits,report writes,reruns; last permissions audit returned,no command pending."
+    },
+    "resource_record": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/normal-race-final-resource-and-configuration.json",
+      "sha256": "b751caf71d883511a0ca8fe02d3e8edad6d1e4e4c84c8182c06cbd653d004a99"
+    },
+    "post_ack_recorded_owned_database_connections": [
+      {
+        "name": "p6_root_knowledge_service_292e45b21e81_normal",
+        "oid": "16206740",
+        "owner": "multica",
+        "connections": 0
+      },
+      {
+        "name": "p6_root_knowledge_service_292e45b21e81_race",
+        "oid": "16212133",
+        "owner": "multica",
+        "connections": 0
+      }
+    ],
+    "live_resource_audit_repeated_by_this_lane": false
+  },
+  "ownership": {
+    "only_new_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-mixed-Go-JSON-doc-review-v3-closure-20261115-f3ac5d567e8e.json",
+    "source_test_spec_metadata_progress_or_existing_receipt_mutations": 0,
+    "Go_test_or_build_or_lint_typecheck_commands": 0,
+    "parser_or_regression_test_executions": 0,
+    "database_or_process_resource_operations": 0,
+    "descendants_spawned": 0
+  },
+  "acceptance_limits": {
+    "bounded_service_evidence_supported": true,
+    "ROOT_final": false,
+    "P2_final": false,
+    "product_final": false,
+    "real_model_semantic_quality_or_installed_Main_acceptance": false
+  }
+}

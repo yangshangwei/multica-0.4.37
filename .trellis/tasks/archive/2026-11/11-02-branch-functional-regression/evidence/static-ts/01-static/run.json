@@ -1,0 +1,24 @@
+{
+  "id": "01-static",
+  "command": [
+    "pnpm",
+    "exec",
+    "turbo",
+    "run",
+    "lint",
+    "typecheck",
+    "--filter=!@multica/mobile",
+    "--concurrency=1",
+    "--force"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:03:49.937710+00:00",
+  "note": "",
+  "state": "complete",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:07:06.132425+00:00",
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "stdout_sha256": "0499f71b2c890437d0eff9cc59520971f7f7a9d302444b223c2334e5268a3355",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+}

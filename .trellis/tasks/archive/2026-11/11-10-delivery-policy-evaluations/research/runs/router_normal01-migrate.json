@@ -1,0 +1,24 @@
+{
+  "name": "router_normal01-migrate",
+  "started_at": "2026-11-10T08:26:54.706131+00:00",
+  "finished_at": "2026-11-10T08:26:55.192705+00:00",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-delivery-policy-20261110",
+  "database": "policy_final_router_normal01",
+  "exit_code": 0,
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/router_normal01-migrate.log",
+  "log_sha256": "87affe043eb53ebfd1f5db14944ec20a7e1f2b0bf2a10153a51cba06182901eb",
+  "tests": []
+}

@@ -23,6 +23,11 @@ type cursorBackend struct {
 }
 
 func (b *cursorBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execName := b.cfg.ExecutablePath
 	if execName == "" {
 		execName = "cursor-agent"
@@ -331,7 +336,7 @@ func (b *cursorBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 			resultUsage = stepUsage
 		}
 
-		exitErr := cmd.Wait()
+		exitErr := waitOwnedProcessTree(cmd)
 		releaseProcessGroup(cmd)
 		duration := time.Since(startTime)
 

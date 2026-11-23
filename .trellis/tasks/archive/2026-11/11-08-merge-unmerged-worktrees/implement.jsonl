@@ -1,0 +1,8 @@
+{"file":".trellis/spec/guides/index.md","reason":"Shared cross-layer and code-reuse checks apply while reconciling overlapping worktree patches."}
+{"file":".trellis/spec/server/index.md","reason":"Runtime handoff, Knowledge and collaboration server changes must follow the server spec index."}
+{"file":".trellis/spec/server/collaboration-host-execution.md","reason":"Runtime handoff and host execution compatibility contracts are part of the integration boundary."}
+{"file":".trellis/spec/server/collaboration-preparation.md","reason":"Preparation, frozen inputs and contained adapter contracts constrain runtime patch integration."}
+{"file":".trellis/spec/server/database-test-isolation.md","reason":"Targeted Go verification must preserve explicit test database isolation."}
+{"file":".trellis/spec/web/frontend/e2e-run-environment.md","reason":"E2E batches require the repository's environment, evidence and cleanup rules."}
+{"file":".trellis/tasks/11-08-merge-unmerged-worktrees/research/branch-worktree-audit.md","reason":"The source inventory, overlap measurements and merge classification drive the implementation order."}
+{"file": ".trellis/tasks/11-08-merge-unmerged-worktrees/research/committed-source-decision.md", "reason": "Committed branch dedupe and selective merge decisions"}

@@ -5,7 +5,8 @@ import {
   type NavigationAdapter,
 } from "@multica/views/navigation";
 import { useAuthStore } from "@multica/core/auth";
-import { isReservedSlug } from "@multica/core/paths";
+import { accountPath, parseAccountPath, isReservedSlug } from "@multica/core/paths";
+import { setCurrentWorkspace } from "@multica/core/platform";
 import {
   useTabStore,
   getActiveTab,
@@ -13,23 +14,14 @@ import {
   useActiveTabUrl,
 } from "@/stores/tab-store";
 import { useWindowOverlayStore } from "@/stores/window-overlay-store";
-
-function requireRuntimeAppUrl(scope: string): string {
-  const runtimeConfig = window.desktopAPI.runtimeConfig;
-  if (!runtimeConfig.ok) {
-    throw new Error(
-      `Invariant violated: ${scope} rendered before App accepted runtime config`,
-    );
-  }
-  return runtimeConfig.config.appUrl;
-}
+import { useAppUrl } from "./app-url";
 
 /**
  * Extract the leading workspace slug from a path, or null if the path isn't
  * workspace-scoped (root, login, any reserved prefix).
  */
 function extractWorkspaceSlug(path: string): string | null {
-  const first = path.split("/").filter(Boolean)[0] ?? "";
+  const first = splitTabUrl(path).pathname.split("/").filter(Boolean)[0] ?? "";
   if (!first) return null;
   if (isReservedSlug(first)) return null;
   return first;
@@ -96,6 +88,33 @@ function tryRouteToOtherWorkspace(path: string): boolean {
   return true;
 }
 
+/** Global scope controls resume existing sessions instead of opening a default URL. */
+export function resumeDesktopScope(
+  scope: "workspace" | "account",
+  workspaceSlugs?: readonly string[],
+): boolean {
+  const store = useTabStore.getState();
+  if (store.activeScope === scope) return true;
+  if (scope === "account") {
+    tryRouteToOverlay(accountPath());
+    setCurrentWorkspace(null, null);
+    store.switchAccount();
+    return true;
+  }
+  const last = store.lastWorkspaceSlug;
+  const slug = last && (workspaceSlugs === undefined || workspaceSlugs.includes(last))
+    ? last : workspaceSlugs?.[0];
+  if (!slug) {
+    if (workspaceSlugs === undefined) return false;
+    tryRouteToOverlay("/workspaces/new");
+    return true;
+  }
+  const overlay = useWindowOverlayStore.getState();
+  if (overlay.overlay) overlay.close();
+  store.switchWorkspace(slug);
+  return true;
+}
+
 /**
  * Execute a content link (the `multica:navigate` event fired by the shared
  * editor/markdown link handler) with the disposition the click resolved to:
@@ -113,6 +132,12 @@ export function routeContentLinkPath(
   disposition: LinkClickIntent = "push",
 ): void {
   const store = useTabStore.getState();
+  if (parseAccountPath(path)) {
+    if (tryRouteToOverlay(path)) return;
+    setCurrentWorkspace(null, null);
+    store.switchAccount(path);
+    return;
+  }
   const slug = extractWorkspaceSlug(path);
   if (slug && slug !== store.activeWorkspaceSlug) {
     store.switchWorkspace(slug, path);
@@ -120,7 +145,7 @@ export function routeContentLinkPath(
   }
   if (disposition === "push") {
     const active = getActiveTab(store);
-    if (active && active.url === path) return;
+    if (active && active.url === path) { store.navigateActiveSession(path); return; }
     if (tryRouteToPinnedNewTab(path)) return;
     store.navigateActiveSession(path);
     return;
@@ -171,10 +196,18 @@ export function DesktopNavigationProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const appUrl = requireRuntimeAppUrl("DesktopNavigationProvider");
+  const appUrl = useAppUrl();
+  if (appUrl === null) {
+    throw new Error(
+      "Invariant violated: DesktopNavigationProvider rendered before App accepted runtime config",
+    );
+  }
   // The active session's url IS the location. Primitive subscription: this
   // only re-renders when the active url actually changes.
   const activeUrl = useActiveTabUrl();
+  const isScopeResume = useTabStore((state) => state.isScopeResume);
+  const isHistoryTraversal = useTabStore((state) => state.isHistoryTraversal);
+  const navigationKey = useTabStore((state) => state.navigationKey);
   const location = useMemo(() => {
     const url = activeUrl ?? "/";
     const { pathname, suffix } = splitTabUrl(url);
@@ -192,15 +225,25 @@ export function DesktopNavigationProvider({
           return;
         }
         if (tryRouteToOverlay(path)) return;
+        if (parseAccountPath(path)) {
+          setCurrentWorkspace(null, null);
+          useTabStore.getState().switchAccount(path);
+          return;
+        }
         const store = useTabStore.getState();
         const active = getActiveTab(store);
-        if (active && active.url === path) return;
+        if (active && active.url === path) { store.navigateActiveSession(path); return; }
         if (tryRouteToOtherWorkspace(path)) return;
         if (tryRouteToPinnedNewTab(path)) return;
         store.navigateActiveSession(path);
       },
       replace: (path: string) => {
         if (tryRouteToOverlay(path)) return;
+        if (parseAccountPath(path)) {
+          setCurrentWorkspace(null, null);
+          useTabStore.getState().switchAccount(path, { replace: true });
+          return;
+        }
         if (tryRouteToOtherWorkspace(path)) return;
         useTabStore.getState().navigateActiveSession(path, { replace: true });
       },
@@ -222,6 +265,9 @@ export function DesktopNavigationProvider({
       // The tab's URL is the only place the fragment survives on desktop: the
       // renderer's own `window.location` is the packaged file:// page.
       hash: location.hash,
+      isScopeResume,
+      isHistoryTraversal,
+      navigationKey,
       openInNewTab: (
         path: string,
         title?: string,
@@ -239,6 +285,12 @@ export function DesktopNavigationProvider({
         // `activate: true` to bring the new tab to the foreground.
         const slug = extractWorkspaceSlug(path);
         const store = useTabStore.getState();
+        if (parseAccountPath(path)) {
+          if (tryRouteToOverlay(path)) return;
+          setCurrentWorkspace(null, null);
+          store.switchAccount(path);
+          return;
+        }
         if (slug && slug !== store.activeWorkspaceSlug) {
           store.switchWorkspace(slug, path);
           return;
@@ -247,7 +299,7 @@ export function DesktopNavigationProvider({
       },
       getShareableUrl: (path: string) => `${appUrl}${path}`,
     }),
-    [appUrl, location],
+    [appUrl, location, isScopeResume, isHistoryTraversal, navigationKey],
   );
 
   return <NavigationProvider value={adapter}>{children}</NavigationProvider>;

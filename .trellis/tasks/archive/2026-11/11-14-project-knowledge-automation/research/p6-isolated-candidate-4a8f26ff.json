@@ -1,0 +1,198 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "state": "isolated_candidate_prepared",
+  "created_at": "2026-11-15T08:04:14.049462+00:00",
+  "public_source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "candidate_source_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+  "original_build": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-0cc54918/build-7a8aefbc52c2/build.json",
+  "original_snapshot_source_id": "fa86e9dd1f5b2e10cc323b15311b587c2d4d003f8b6adfdfe63a447ff0047d75",
+  "original_snapshot_unchanged": true,
+  "candidate_source_id": "2ac0b36939db68ff2e767f2f86f50a06586506cb70e17a34a49af22cbb622198",
+  "public_source_id": "5821832e1728a1faec70f9e2225a808d415d46ecfd7e99b7dceb775cbd57e873",
+  "commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "candidate_ownership": "Complete retained knowledge candidate with current E1/E2 assertions, proven Web package cwd correction and current project title fixture wire contract. Public peer source remains preserved.",
+  "applied_owned_paths": [
+    {
+      "path": "e2e/project-knowledge-automation.spec.ts",
+      "before_sha256": "d10f577675a666ab029a66884869c0374aa0716e2da5b9b93f1856e05d12c5ca",
+      "after_sha256": "af0b644f25a9089c55ca9ce8604f405458576b967df1572d4851d0b6397b35a0",
+      "proof_assertions_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-e2e-proof-assertions-afa49cc0.json"
+    }
+  ],
+  "public_candidate_differences": [
+    {
+      "path": "apps/web/next-env.d.ts",
+      "kind": "different",
+      "candidate": {
+        "sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+        "normalized_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+        "mode": 493,
+        "link": null
+      },
+      "public": {
+        "sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc",
+        "normalized_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+        "mode": 493,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/core/collaboration/comment-threads.test.ts",
+      "kind": "public_added",
+      "candidate": null,
+      "public": {
+        "sha256": "0bd9aba457d3e581f3231e3e53af1b4797e915e1e8c07d9d417d943950ee6e38",
+        "normalized_sha256": "0bd9aba457d3e581f3231e3e53af1b4797e915e1e8c07d9d417d943950ee6e38",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/core/collaboration/comment-threads.ts",
+      "kind": "public_added",
+      "candidate": null,
+      "public": {
+        "sha256": "5f5c3777fb4a43d4ed26660f4ac8472620309bcf001e35275026794dbb87002a",
+        "normalized_sha256": "5f5c3777fb4a43d4ed26660f4ac8472620309bcf001e35275026794dbb87002a",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "kind": "different",
+      "candidate": {
+        "sha256": "6588f2664ed6e8f15d361a48a0ca1c803f93b1c9d81d9d089549d9bdebb98121",
+        "normalized_sha256": "6588f2664ed6e8f15d361a48a0ca1c803f93b1c9d81d9d089549d9bdebb98121",
+        "mode": 420,
+        "link": null
+      },
+      "public": {
+        "sha256": "c5209dc9aa4a9e7e0b99de9e74d10b6cea12d90644095dc91aa1ededb07a55f2",
+        "normalized_sha256": "c5209dc9aa4a9e7e0b99de9e74d10b6cea12d90644095dc91aa1ededb07a55f2",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/views/collaboration/comment-history.tsx",
+      "kind": "different",
+      "candidate": {
+        "sha256": "25e805e9477e8427bfa35a4ce2d31788ecad08a2ba5569fadb8d306769ad6530",
+        "normalized_sha256": "25e805e9477e8427bfa35a4ce2d31788ecad08a2ba5569fadb8d306769ad6530",
+        "mode": 420,
+        "link": null
+      },
+      "public": {
+        "sha256": "ea5ffe8a065acf9a40e9215f9bbd1954c470595d68653b02d88c6475f893f04f",
+        "normalized_sha256": "ea5ffe8a065acf9a40e9215f9bbd1954c470595d68653b02d88c6475f893f04f",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/views/collaboration/comment-list.tsx",
+      "kind": "different",
+      "candidate": {
+        "sha256": "fd18168b323fdcf7647dd727f025a49f9556cf794827d42f1387c85acb77625b",
+        "normalized_sha256": "fd18168b323fdcf7647dd727f025a49f9556cf794827d42f1387c85acb77625b",
+        "mode": 420,
+        "link": null
+      },
+      "public": {
+        "sha256": "627add95cc3987e4480a851c7bf565b33fe38ff3f908d92d2ba30a21a0bc9d4b",
+        "normalized_sha256": "627add95cc3987e4480a851c7bf565b33fe38ff3f908d92d2ba30a21a0bc9d4b",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/views/collaboration/discussion-actions.tsx",
+      "kind": "different",
+      "candidate": {
+        "sha256": "305f7a85e3ba6b5b80d8de96f2c4f3e5a0f86f5ae82574fec9fc471bbe313525",
+        "normalized_sha256": "305f7a85e3ba6b5b80d8de96f2c4f3e5a0f86f5ae82574fec9fc471bbe313525",
+        "mode": 420,
+        "link": null
+      },
+      "public": {
+        "sha256": "a605f351b136ce26dc850e29a898f44674909e2a1a60c14db54468347401a1b5",
+        "normalized_sha256": "a605f351b136ce26dc850e29a898f44674909e2a1a60c14db54468347401a1b5",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "kind": "different",
+      "candidate": {
+        "sha256": "032d5d6f4eb6357d2a6db88ffa6fe4ea2efc4ca94c3fc77090b5c8b1d00a70b8",
+        "normalized_sha256": "032d5d6f4eb6357d2a6db88ffa6fe4ea2efc4ca94c3fc77090b5c8b1d00a70b8",
+        "mode": 420,
+        "link": null
+      },
+      "public": {
+        "sha256": "0d19d46dafefd4a1067c524ee27695f03d94e159cdd46a106f1644c0c972f1c5",
+        "normalized_sha256": "0d19d46dafefd4a1067c524ee27695f03d94e159cdd46a106f1644c0c972f1c5",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "kind": "different",
+      "candidate": {
+        "sha256": "597ced6a452b6a1137f9a55b9a89d1ac9930967a3567a31c4f1341ba839fbd16",
+        "normalized_sha256": "597ced6a452b6a1137f9a55b9a89d1ac9930967a3567a31c4f1341ba839fbd16",
+        "mode": 420,
+        "link": null
+      },
+      "public": {
+        "sha256": "8d805fe807c6aec6af765105183b51008e1f4da103e2f3c6bfaefef3448c3c64",
+        "normalized_sha256": "8d805fe807c6aec6af765105183b51008e1f4da103e2f3c6bfaefef3448c3c64",
+        "mode": 420,
+        "link": null
+      }
+    },
+    {
+      "path": "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+      "kind": "public_added",
+      "candidate": null,
+      "public": {
+        "sha256": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+        "normalized_sha256": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+        "mode": 420,
+        "link": null
+      }
+    }
+  ],
+  "shared_runtime_services_started": false,
+  "current_public_frontend_verified": false,
+  "final_acceptance_verified": false,
+  "real_accounts": false,
+  "new_dependencies": false,
+  "new_git_branch_or_commit": false,
+  "initial_public_comparison_source_id": "3ca985c0cb91b43feccfd9b36c50c62ac1d4d0245a5174bd784062820611abed",
+  "candidate_source_files": 11017,
+  "public_source_files": 11020,
+  "private_index_scope": "Exactly all copied parent snapshot files; staged only in owned private checkout, preserving cached-path inclusion of ignored source witnesses; no public Git index mutation",
+  "source_guard_unchanged": true,
+  "updated_at": "2026-11-15T08:53:21.521819+00:00",
+  "independent_allocation": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json",
+  "independent_run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156",
+  "database": "mca_knowledge_browser_073bb20e614e",
+  "ports": {
+    "api": 61990,
+    "web": 61991,
+    "renderer": 61992,
+    "model": 61993
+  },
+  "original_root_allocation_cleanup": {
+    "state": "not_started",
+    "owned_pids_remaining": [],
+    "root_write_hold_released": true
+  },
+  "retained_initial_candidate_source_id": "d1a929957a32b63c683c642528afb6e73872fd993b3ee7c7c65328ecc4f9379b",
+  "runtime_launcher_repair": "research/p6-web-cwd-repair-bc721d1a.json",
+  "fixture_wire_repair_report": "research/p6-project-fixture-wire-repair-e3563f14.json"
+}

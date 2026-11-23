@@ -18,12 +18,16 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | To fill |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
+| [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Last workspace pointer, no-path resume and fixed shell geometry | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Intranet Updates](./intranet-updates.md) | Release publication, Nginx static download page, first-install data contracts and installed-client validation | Filled |
 | [Close Behavior](./close-behavior.md) | Windows/Linux close button semantics: minimize-to-tray vs quit vs ask; prefs, tray, prompt, settings | Filled |
 | [Renderer File Access](./renderer-file-access.md) | Native local-file denial for untrusted HTML and real Electron verification | Active |
 | [Connection Recovery](./connection-recovery.md) | Bounded boot requests, truthful retry state, persistent server editing and child-window handoff | Active |
+| [Account Navigation](./account-navigation.md) | Persistent account tabs, independent bootstrap, scoped popouts and native validation | Active |
+| [Collaboration Notifications](../../core/frontend/collaboration-notifications.md) | Account filter/selection, Bell presentation, retained scrolling and main-tab ownership | Active |
+| [Personal Inbox snooze](../../server/inbox-snooze.md) | Native resource-key view identity, localized Snoozed title and shared notification recovery | Shared contract; evidence in task |
 | [Daemon Diagnostics](./daemon-diagnostics.md) | Independent CLI/reconnect failures, safe IPC diagnostics and localized initial recovery steps | Active |
 | [Desktop Core Interaction](../../views/frontend/desktop-core-accessibility.md) | Tab reorder alternatives/current destination, interrupted reduced-motion springs and native acceptance | Active |
 | [Settings Recovery](../../views/frontend/settings-recovery.md) | Named desktop preference controls, stable update announcements and shared settings verification | Active |

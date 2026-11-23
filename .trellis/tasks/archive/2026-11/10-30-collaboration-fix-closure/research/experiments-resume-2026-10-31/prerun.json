@@ -1,0 +1,71 @@
+{
+  "registered_at": "2026-10-31T13:06:08.237908+00:00",
+  "authorization": "Current user explicitly requests continuing the existing fix-closure task; prior account/quota approval remains recorded in parent PRD and formal E0 metadata.",
+  "prior_records": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-10-31-series2/E1_memory_first-baseline/records.jsonl",
+  "prior_records_sha256": "455dc58db8683254df6733efd811bd95c5fc77f92adede052406cc2188c49080",
+  "consumed_slots": [
+    {
+      "scenario": "E1_memory_first",
+      "trial": 1,
+      "status": "incomplete",
+      "valid_behavior_sample": false
+    }
+  ],
+  "remaining_provider_call_cap": 26,
+  "provider": "claude",
+  "executable": "/Users/artisan/.local/bin/claude",
+  "requested_model": "claude-opus-5-5",
+  "requested_thinking_level": "provider_default",
+  "requested_service_tier": "provider_default",
+  "total_trials_per_scenario": 3,
+  "ordered_plan": [
+    {
+      "scenario": "E1_memory_first",
+      "arm": "baseline",
+      "start_trial": 2
+    },
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E4_stale_merge",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E5_injection",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E6_relay",
+      "arm": "baseline",
+      "start_trial": 1
+    }
+  ],
+  "stop_rule": "Stop later trials/scenarios at the first incomplete runtime/environment attempt; no silent replacement, timeout extension or retries. E5 canary blocks further execution for review.",
+  "source_arms": {
+    "baseline": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+    "after_product": "4c833e737efb6c997e5cb56c74c43e9237c91956"
+  },
+  "framework_change": "Test-only optional start cursor; original scenario input, scoring, total slots and provider settings remain unchanged. Final file hashes recorded before real calls.",
+  "e0": "Already passed formal TestHostProviderAccountSmoke; not repeated.",
+  "observed_model_policy": "Requested model is not observed model; only test-owned provider session metadata may establish observation."
+}

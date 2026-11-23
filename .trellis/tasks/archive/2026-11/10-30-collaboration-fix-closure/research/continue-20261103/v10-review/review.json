@@ -1,0 +1,262 @@
+{
+  "recorded_at": "2026-11-03T01:03:06.895633+00:00",
+  "reviewer": "/root/v10_review",
+  "active_task": ".trellis/tasks/10-30-collaboration-fix-closure",
+  "scope": "Independent current-byte v10 launcher/adapter/configuration review and private fake preflight; existing later complete run preserved read-only",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+  "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+  "current_hashes": {
+    "launcher": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+    "source_env": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+    "run_record": "a691caa6d0168db903bff9abf12d3a393f8949725110710302d4ac42d9034019",
+    "run_log": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+    "raw_playwright": "bb72fb895375db673b301c9dcbeda229405143e2f1af2c12659e4cda7d9ed131",
+    "clearance": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae",
+    "execution_claim": "0204ae10c8daca9cdaf57fa39f886228a03274abb732d10d130d7b6b13efaff1",
+    "canonical_env": "b2bc3ffbde4008106ae43bf7b2b7dc5bb2c08134411e12ebdf3bf57b3ee84a16",
+    "preflight": "8face46aaf0c79aff33771778bb54aa2e617e2d1c585aa7a19c91b0ae1e8ab93",
+    "artifact_manifest": "6c319701f08a159b31d4ebcec6140e28a1c693531c5a8dfa77d95a6d1cbb20f7",
+    "CLI": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+  },
+  "source_functions_unchanged": [
+    "require",
+    "sha256",
+    "parse_generated_environment",
+    "renderer_url"
+  ],
+  "checks": {
+    "run_and_clearance_executable_bindings_match": true,
+    "canonical_env_matches_run": true,
+    "finished_log_matches_run": true,
+    "all_clearance_references_match": true,
+    "closed_rollout_flags_preserved": true,
+    "source_dollar_control_hash_comment_values_absent": true,
+    "task_catalog_modes": "0700",
+    "fake_preflight_pass": 32,
+    "fake_preflight_fail": 0,
+    "fake_preflight_skip": 0,
+    "syntax_compile_pass": 4,
+    "fresh_private_paths_and_exclusive_creation_guarded": true,
+    "hash_binding_precedes_execution_state_creation": true,
+    "API_pool_preserved_and_Go_test_override_removal_retained": true,
+    "ordinary_Go_API_publisher_key_removed_only_at_test_boundary": true,
+    "Go_package_permit_and_compile_boundary_unchanged_v9": true,
+    "original_Agent_CLI_guard_retained": true,
+    "repository_full_command_and_original_assertions_retained": true,
+    "no_reviewer_runtime_clearance_created": true
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "V10-RUN-FAIL",
+      "type": "acceptance_gate",
+      "source": "make-check-v10.json and raw Playwright report",
+      "issue": "The later actual whole run completed with exit2; browser stats are 39 expected,36 unexpected,364 skipped,0 flaky. This remains failed evidence. Executable preflight does not replace full acceptance.",
+      "owner": "root",
+      "reason_not_fixed": "Outside bounded executable review; root owns runtime diagnosis, repair and new full run."
+    },
+    {
+      "id": "V10-SOURCE-GENERATED",
+      "type": "readiness_note",
+      "file": "apps/web/next-env.d.ts",
+      "issue": "Only the production-generated route-types import changed from .next/dev/types/routes.d.ts to .next/types/routes.d.ts; HEAD remains118fc53e.",
+      "owner": "root",
+      "reason_not_fixed": "Root instructed preservation until runtime ownership reconciliation; no product edits by reviewer."
+    },
+    {
+      "id": "V10-OLD-PREP",
+      "type": "evidence_note",
+      "issue": "Historical preparation says prepared-not-run, but later actual claim/clearance/run/report exist. Interpret preparation as historical and the completed exit2 record as current.",
+      "owner": "root",
+      "reason_not_fixed": "Task metadata and acceptance reconciliation are root responsibilities."
+    }
+  ],
+  "observed_whole_run": {
+    "state": "complete",
+    "exit_code": 2,
+    "started_at": "2026-11-02T19:56:51.936099+00:00",
+    "finished_at": "2026-11-02T21:12:33.404620+00:00",
+    "process_id": 92594,
+    "Playwright_stats": {
+      "startTime": "2026-11-02T20:47:27.808Z",
+      "duration": 1503271.6840000001,
+      "expected": 39,
+      "skipped": 364,
+      "unexpected": 36,
+      "flaky": 0
+    },
+    "workers": 1,
+    "full_check_pass": false,
+    "real_provider_allowed": false
+  },
+  "reference_verification": [
+    {
+      "purpose": "v10 executable reviewer",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-executable-review.json",
+      "expected_sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
+      "actual_sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
+      "hash_matches": true
+    },
+    {
+      "purpose": "v9 exact integrated adapter review",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v9-review.json",
+      "expected_sha256": "60cf0b4189d5674c7fade1a495f4aaf54003054a5691c42365f58f4653b8fcd0",
+      "actual_sha256": "60cf0b4189d5674c7fade1a495f4aaf54003054a5691c42365f58f4653b8fcd0",
+      "hash_matches": true
+    },
+    {
+      "purpose": "ancestor closed-invariant adapter review, superseded by v9",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-adapter-review.json",
+      "expected_sha256": "fdf67ea2fbea8eb2404f96a6c615b795ac85c43737c9416d6e8e4e4b9704fc80",
+      "actual_sha256": "fdf67ea2fbea8eb2404f96a6c615b795ac85c43737c9416d6e8e4e4b9704fc80",
+      "hash_matches": true
+    },
+    {
+      "purpose": "v9 actual catalog 7-case red/green",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/catalog-actual-redgreen.json",
+      "expected_sha256": "88bb001b361d9e3acf72bc8e5af90a43981cd1823895cda2d661c0a9df8de955",
+      "actual_sha256": "88bb001b361d9e3acf72bc8e5af90a43981cd1823895cda2d661c0a9df8de955",
+      "hash_matches": true
+    },
+    {
+      "purpose": "two preserved-assertion E2E additions review",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/noncatalog-repair-review.json",
+      "expected_sha256": "95b91f778f6783cf3ddb6b75d6491981416adf042e7d7f041758c8cafd34a00f",
+      "actual_sha256": "95b91f778f6783cf3ddb6b75d6491981416adf042e7d7f041758c8cafd34a00f",
+      "hash_matches": true
+    },
+    {
+      "purpose": "selected v10 preparation",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/preparation.json",
+      "expected_sha256": "61ef2efdb3192c8ede7db1e5ff028ec307bdcc04b03229f218040d72f73457e6",
+      "actual_sha256": "61ef2efdb3192c8ede7db1e5ff028ec307bdcc04b03229f218040d72f73457e6",
+      "hash_matches": true
+    },
+    {
+      "purpose": "original v10 fake preflight",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/fake-preflight.json",
+      "expected_sha256": "e8cc80d85b4169a9c606e3866b8b36f7b9693b44bb9982b008164bdb4914cdce",
+      "actual_sha256": "e8cc80d85b4169a9c606e3866b8b36f7b9693b44bb9982b008164bdb4914cdce",
+      "hash_matches": true
+    },
+    {
+      "purpose": "original v10 offline static checks",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/static-checks.json",
+      "expected_sha256": "f45dea54d25d731c7fec74f53425ee942222ea58c65a4737da932cc519ee700a",
+      "actual_sha256": "f45dea54d25d731c7fec74f53425ee942222ea58c65a4737da932cc519ee700a",
+      "hash_matches": true
+    },
+    {
+      "purpose": "launcher v9 to v10 diff",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/launcher-v9-to-v10.diff",
+      "expected_sha256": "aad82df7464e95d8a2a202f5d31fb608d2db64c2249a7e1231e9b1088deca64e",
+      "actual_sha256": "aad82df7464e95d8a2a202f5d31fb608d2db64c2249a7e1231e9b1088deca64e",
+      "hash_matches": true
+    },
+    {
+      "purpose": "accepted RKI6 actual-result review",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/rki6-review.json",
+      "expected_sha256": "109bdcbadd1f4edd11da9ed82137e75a50a67e0b61c9679589f8094a313dd442",
+      "actual_sha256": "109bdcbadd1f4edd11da9ed82137e75a50a67e0b61c9679589f8094a313dd442",
+      "hash_matches": true
+    },
+    {
+      "purpose": "CCG1 independent actual-input review",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-crosschain-correction-20261102/independent-review/review.json",
+      "expected_sha256": "592969bbd1cc06039d14224b1808a60379d3bd06c3e096bf9e1d8672ee5a2604",
+      "actual_sha256": "592969bbd1cc06039d14224b1808a60379d3bd06c3e096bf9e1d8672ee5a2604",
+      "hash_matches": true
+    },
+    {
+      "purpose": "CCG2 independent deployed OFF/ON review",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-deployed-probe-20261102/independent-review/review.json",
+      "expected_sha256": "e442d8b24c93e0c2f9281760fd7f7dcb83d180cc7ea6e60d802c5c0b46a64272",
+      "actual_sha256": "e442d8b24c93e0c2f9281760fd7f7dcb83d180cc7ea6e60d802c5c0b46a64272",
+      "hash_matches": true
+    },
+    {
+      "purpose": "CCG2 actual deployed results",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-deployed-probe-20261102/root-deployed-results.json",
+      "expected_sha256": "4b741252a8a98745515d760577626ae6aea9e83715a5e31dc460e3d7c7881f1e",
+      "actual_sha256": "4b741252a8a98745515d760577626ae6aea9e83715a5e31dc460e3d7c7881f1e",
+      "hash_matches": true
+    },
+    {
+      "purpose": "CCG2 actual deployment manifest",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-deployed-probe-20261102/root-deployment-manifest.json",
+      "expected_sha256": "bf2482d79447dde2effcfe9bf8e3168ce60a5a1b786bb4eeb023bf3a1faf8ba5",
+      "actual_sha256": "bf2482d79447dde2effcfe9bf8e3168ce60a5a1b786bb4eeb023bf3a1faf8ba5",
+      "hash_matches": true
+    },
+    {
+      "purpose": "prior knowledge closure source/result reconciliation",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/knowledge-closure-readiness.json",
+      "expected_sha256": "189bb720f79bc433f0df9199c9e90c71beb50d6f655225db3d3bec0c0d3ee33c",
+      "actual_sha256": "189bb720f79bc433f0df9199c9e90c71beb50d6f655225db3d3bec0c0d3ee33c",
+      "hash_matches": true
+    },
+    {
+      "purpose": "new independent v10 offline replay",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-preflight-replay.json",
+      "expected_sha256": "db30eb62c10b242b4a26640ff684a0a1d55e499a260000ba49cd1dee99763579",
+      "actual_sha256": "db30eb62c10b242b4a26640ff684a0a1d55e499a260000ba49cd1dee99763579",
+      "hash_matches": true
+    },
+    {
+      "purpose": "new independent v10 offline replay raw log",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-preflight-replay.log",
+      "expected_sha256": "e6250ae95528528ec9a0eec27b61e4ce854bb93d698df70ca7bc4cce43439c5c",
+      "actual_sha256": "e6250ae95528528ec9a0eec27b61e4ce854bb93d698df70ca7bc4cce43439c5c",
+      "hash_matches": true
+    }
+  ],
+  "reviewer_verification": {
+    "recorded_at": "2026-11-03T01:01:52.975598+00:00",
+    "command": [
+      "python3",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-launcher-v10-preflight.py"
+    ],
+    "exit_code": 0,
+    "private_fake_test_count": 32,
+    "repository_commands_executed": 0,
+    "database_actions": 0,
+    "service_actions": 0,
+    "Provider_executions": 0,
+    "log_sha256": "ca59bb61cfb9676f2f67fc9a72c097c0c6fa4547daca7708ca8a52cfeeee95dd",
+    "syntax_files": {
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/run-make-check-v10.py": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+      "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/check-launcher-v10-preflight.py": "8face46aaf0c79aff33771778bb54aa2e617e2d1c585aa7a19c91b0ae1e8ab93",
+      ".omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      ".omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+    },
+    "syntax_pass": 4
+  },
+  "pending_root_work": [
+    "Diagnose all actual v10 browser failures and infrastructure cascades against original assertions.",
+    "Preserve v10 run/clearance/configuration and use fresh numbered launcher/output/Home/registry/database allocations for any replay.",
+    "Verify actual API/database/production Web/native renderer identities and exact registered service ownership before any fixture write.",
+    "Freeze and independently review any successor bytes before actual execution.",
+    "Complete separate password7 and original E3\u2013E6 gates after whole-check acceptance; do not infer either from private fake preflight."
+  ],
+  "reviewer_actions": {
+    "repository_tests": 0,
+    "database_actions": 0,
+    "service_actions": 0,
+    "Provider_calls": 0,
+    "product_edits": 0,
+    "old_evidence_edits": 0,
+    "runtime_clearances": 0
+  },
+  "lint": "not_applicable_no_product_or_executable_changes_private_Python_syntax_pass",
+  "typecheck": "not_applicable_private_Python_review",
+  "tests": "32_private_fake_pass_0fail_0skip"
+}

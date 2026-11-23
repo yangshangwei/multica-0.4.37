@@ -1,0 +1,79 @@
+{
+  "candidate": "49e99115610fad4c88447d9580cac24498d49a1a",
+  "ux_product_commit": "5a7440952",
+  "fixture_delta": "reviewed one-hunk issue-attachment region scoping",
+  "test_count": 5,
+  "passed": 5,
+  "failed": 0,
+  "automatic_retries": 0,
+  "cases": [
+    {
+      "run": "ux01",
+      "spec": "e2e/collaboration-recipient-picker-web.spec.ts",
+      "title": "Web recipient picker exposes self/recent/search results and preserves the outer dialog on Escape",
+      "status": "expected",
+      "terminals": [
+        "passed"
+      ],
+      "duration_ms": 3196,
+      "source_unchanged": true,
+      "database": "multica_ux_49e991_20261105_ux01_recipient",
+      "cleanup_connections": 0
+    },
+    {
+      "run": "ux02",
+      "spec": "e2e/collaboration-delivery-web.spec.ts",
+      "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "status": "expected",
+      "terminals": [
+        "passed"
+      ],
+      "duration_ms": 5054,
+      "source_unchanged": true,
+      "database": "multica_ux_49e991_20261105_ux02_delivery",
+      "cleanup_connections": 0
+    },
+    {
+      "run": "ux02",
+      "spec": "e2e/collaboration-delivery-web.spec.ts",
+      "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "status": "expected",
+      "terminals": [
+        "passed"
+      ],
+      "duration_ms": 2018,
+      "source_unchanged": true,
+      "database": "multica_ux_49e991_20261105_ux02_delivery",
+      "cleanup_connections": 0
+    },
+    {
+      "run": "ux02",
+      "spec": "e2e/collaboration-administration-web.spec.ts",
+      "title": "Web administers disabled-creator collaborations with explicit succession and original receipt recovery",
+      "status": "expected",
+      "terminals": [
+        "passed"
+      ],
+      "duration_ms": 4031,
+      "source_unchanged": true,
+      "database": "multica_ux_49e991_20261105_ux02_admin_web",
+      "cleanup_connections": 0
+    },
+    {
+      "run": "ux02",
+      "spec": "e2e/collaboration-administration-desktop.spec.ts",
+      "title": "Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt",
+      "status": "expected",
+      "terminals": [
+        "passed"
+      ],
+      "duration_ms": 8882,
+      "source_unchanged": true,
+      "database": "multica_ux_49e991_20261105_ux02_admin_desktop",
+      "cleanup_connections": 0
+    }
+  ],
+  "preserved_interruption": "ux01 AFTER recipient PASS, BEFORE delivery browser execution: stopped API TIME_WAIT preflight bind; reused port preflight corrected, ux02 fresh databases",
+  "resource_audit": "evidence/final-resource-audit.json",
+  "evidence_scope": "Real API human recipient/file/admin flows plus actualElectron harness, not installedMain or models"
+}

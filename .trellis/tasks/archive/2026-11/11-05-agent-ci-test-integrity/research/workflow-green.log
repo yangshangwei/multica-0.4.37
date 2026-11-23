@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: release verification prepares its declared database before running required tests
+ok 1 - release verification prepares its declared database before running required tests
+  ---
+  duration_ms: 0.39825
+  type: 'test'
+  ...
+# Subtest: backend CI runs the offline database and release regressions when their inputs change
+ok 2 - backend CI runs the offline database and release regressions when their inputs change
+  ---
+  duration_ms: 0.212959
+  type: 'test'
+  ...
+# Subtest: repository-wide serialization starts before discovery and never cancels an active release
+ok 3 - repository-wide serialization starts before discovery and never cancels an active release
+  ---
+  duration_ms: 0.067833
+  type: 'test'
+  ...
+# Subtest: fork publication requires verified backend/frontend manifests but no upstream-only job
+ok 4 - fork publication requires verified backend/frontend manifests but no upstream-only job
+  ---
+  duration_ms: 0.219166
+  type: 'test'
+  ...
+# Subtest: one generated artifact reaches every consuming build before compilation
+ok 5 - one generated artifact reaches every consuming build before compilation
+  ---
+  duration_ms: 0.308542
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 35.664167

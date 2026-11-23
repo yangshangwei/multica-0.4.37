@@ -1,0 +1,33 @@
+{
+  "candidate_sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+  "attempt": 2,
+  "at": "2026-11-01T19:31:31.687176+00:00",
+  "static_tasks_pass": 15,
+  "typescript_pass": {
+    "core": 4340,
+    "docs": 62,
+    "views": 7118,
+    "web": 290,
+    "desktop": 1272
+  },
+  "typescript_total_pass": 13082,
+  "typescript_fail": 0,
+  "prefix_log_sha256": "1d72c1f93cb6013ef0ba424a7134630cb0eeed09e503d83f67c7ba73a4994940",
+  "private_prefix_log": "/Volumes/artisan/code/2026/mc-collaboration-final2-20261102/.omx/private/final-candidate/static-typescript-completed-prefix.log",
+  "completed_summary_lines": [
+    " Tasks:    15 successful, 15 total",
+    "@multica/core:test:  Test Files  327 passed (327)",
+    "@multica/core:test:       Tests  4340 passed (4340)",
+    "@multica/docs:test:  Test Files  9 passed (9)",
+    "@multica/docs:test:       Tests  62 passed (62)",
+    "@multica/views:test:  Test Files  591 passed (591)",
+    "@multica/views:test:       Tests  7118 passed (7118)",
+    "@multica/desktop:test:  Test Files  102 passed (102)",
+    "@multica/desktop:test:       Tests  1272 passed (1272)",
+    "@multica/web:test:  Test Files  34 passed (34)",
+    "@multica/web:test:       Tests  290 passed (290)",
+    " Tasks:    5 successful, 5 total"
+  ],
+  "overall": "makecheck stillrunning; not finalpass",
+  "Provider_calls": 0
+}

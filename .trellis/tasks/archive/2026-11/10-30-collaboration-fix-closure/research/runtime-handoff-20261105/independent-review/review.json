@@ -1,0 +1,106 @@
+{
+  "reviewed_at": "2026-11-05T03:13:45.058323+00:00",
+  "verdict": "pass_preparation_binding_readback_not_execution_clearance",
+  "blocking_integrity_findings": [],
+  "latest_describe_at": "2026-11-05T03:03:02.983366+00:00",
+  "describe_exit": 0,
+  "execution_head": "f0d2296fad92e20aef4e37f1ae76a21ee2700827",
+  "tested_product_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "product_source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "product_roots_git_diff_empty": true,
+  "whole_checkout_clean": true,
+  "old17framework_files_match": true,
+  "frozen_framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "quote_successor265f_applied": false,
+  "hashes": {
+    "describe": "75d2644ca40eb35737378430bd12b0bbf218163d1b655b5831d870879fd0f736",
+    "helper": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+    "helper_prior_independent_review": "3e10b0192a6432555e692a76d1a79929f69807910751471420d42247887f6587",
+    "registration": "0d7fc917d3ae35261ff8e6657c971e5d0652153d9317625b010d3cc34541da8a",
+    "private_config_hash_only": "2c16a4f70fe4db6ae59ca544d6e893f63a541de9d8b9a727d3a605438b898d50",
+    "private_binding_proposal": "5e4d791b4b9ea3725e95f8b159ce72d4320237d616d4a4b800dc00099a4d1b27",
+    "launcher": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "permit": "919ae53509d367b892f5e7f01d820266fbf1eaa31169418e0952945986073ef2"
+  },
+  "binding": {
+    "head": "f0d2296fad92e20aef4e37f1ae76a21ee2700827",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+    "config_sha256": "2c16a4f70fe4db6ae59ca544d6e893f63a541de9d8b9a727d3a605438b898d50",
+    "environment_sha256": "e3a9f834d2a79ad94a81ce80c692cc6a23c5c83c9520cf4b383f9f810f9d6b3f",
+    "operator_configuration_sha256": "d8ad401d764c2f078cd45b0c8c7fe46ad6aac89f32fdd76684722e68b0551bc2",
+    "git": "/opt/homebrew/Cellar/git/2.52.0/bin/git",
+    "git_sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197",
+    "python": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "python_sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43",
+    "go_sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+    "provider_sha256": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d",
+    "registration_sha256": "0d7fc917d3ae35261ff8e6657c971e5d0652153d9317625b010d3cc34541da8a",
+    "addendum_sha256": "0c6ad76508fb2f5ee513026d5f30bedd4c11bccb04eaeb3082245e4304bc81e8",
+    "whole_status": ""
+  },
+  "permit_states": {
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false,
+    "window_id": null,
+    "window_expires_at": null,
+    "binding": null,
+    "build_result_sha256": null,
+    "check_result_sha256": null
+  },
+  "stage_artifacts_present": {
+    "build-attempt.json": false,
+    "build-result.json": false,
+    "check-result.json": false,
+    "run-attempt.json": false,
+    "run-result.json": false
+  },
+  "real_invocation_result_paths_found": 0,
+  "runtime_consumed": 0,
+  "runtime_budget": 25,
+  "stale_vs_current": [
+    {
+      "older": "readiness17:34 operator tree mismatch/PREPARED_NOT_STABLE",
+      "current": "03:01 intended-env and03:03 describe operator facts match disabled registration; fresh equality still required at admission"
+    },
+    {
+      "older": "Warp PID68552 unknown activity",
+      "current": "latest peer records report user closed Warp and absence checked at their time; no assumption about later current processes"
+    },
+    {
+      "older": "a222 executionhead and normal62/race60+2",
+      "current": "f0d2296fa executionhead; quiet02normal/race03 each62pass accepted separately; source1a32/old17 retained"
+    },
+    {
+      "older": "03:01 saved envSHA082f454f…",
+      "current": "03:03 binding-proposal envSHAe3a9f834…; proposal full hash5e4d791b… matches describe. Do not bind stale earlier environmental snapshot."
+    }
+  ],
+  "remaining_prerequisites": [
+    "sole runtime execution owner obtains explicit core-boundary and current bounded model-window agreement; user/current coretest+browser activity means not open now",
+    "allocate/migrate and verify fresh owned paid database764; existing config names one but metadata records database_allocatedfalse",
+    "review/commit exact enabled registration without product/framework changes; recompute final helper binding under actual unchanged operator environment, keep checkoutclean",
+    "permit only upfront CLI build; inspect/capture bytehash and VCS metadata; hash-bind buildresult",
+    "original launcher check-only with exact binding then rootbind checkresult",
+    "permit single RK1-E0a1 in live window; preserve actual launch/CLI capture/verdict/lifecycle evidence; no automatic later scenarios"
+  ],
+  "execution_owner": "runtime peer only; no duplicate launch by first-task session",
+  "scope_limits": [
+    "config.json hashed as bytes only; no credential values decoded or displayed",
+    "no operator tree regeneration or private credential contents read",
+    "latest recorded equality is not ongoing plugin/config/process stability",
+    "preparation acceptance is not real-model acceptance; original8 still blocked; runtime25 independent"
+  ],
+  "operations": {
+    "tests": 0,
+    "Go_builds": 0,
+    "database": 0,
+    "services": 0,
+    "Provider_or_CLI_probes": 0,
+    "new_operator_scans": 0,
+    "sibling_edits": 0
+  }
+}

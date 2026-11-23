@@ -1,0 +1,287 @@
+import { DesktopAccountWorkbenchRoute } from "./platform/account-workbench-route";
+import { IterationsPage } from "@multica/views/iterations";
+import { useEffect } from "react";
+import { createMemoryRouter, Outlet, useMatches, useParams } from "react-router-dom";
+import type { RouteObject } from "react-router-dom";
+import { IssueDetailPage } from "./pages/issue-detail-page";
+import { ProjectDetailPage } from "./pages/project-detail-page";
+import { AutopilotDetailPage } from "./pages/autopilot-detail-page";
+import { SkillDetailPage } from "./pages/skill-detail-page";
+import { AgentDetailPage } from "./pages/agent-detail-page";
+import { AiBuilderSessionPage } from "./pages/ai-builder-session-page";
+import { MemberDetailPage } from "./pages/member-detail-page";
+import {
+  RuntimeDetailPage,
+  RuntimeSettingsPage,
+} from "./pages/runtime-detail-page";
+import { AttachmentPreviewRoute } from "./pages/attachment-preview-page";
+import { IssuesPage } from "@multica/views/issues/components";
+import { ProjectsPage } from "@multica/views/projects/components";
+import { DashboardPage } from "@multica/views/dashboard";
+import { AutopilotsPage, TemplateCreateAutopilotRoute } from "@multica/views/autopilots/components";
+import { MyIssuesPage } from "@multica/views/my-issues";
+import { SkillsPage } from "@multica/views/skills";
+import { McpPage } from "@multica/views/mcp";
+import { MarketplacePage } from "@multica/views/marketplace";
+import { DesktopRuntimesPage } from "./components/desktop-runtimes-page";
+import { DesktopAgentsPage } from "./components/desktop-agents-page";
+import {
+  AgentApprovalsPage,
+  AiCreateAgentPage,
+  ChooseCreateMethodPage,
+  ManualCreateAgentPage,
+  TemplateCreateAgentPage,
+} from "@multica/views/agents";
+import { SquadsPage, SquadDetailPage as SquadDetailPageView } from "@multica/views/squads/components";
+import { TriagePage } from "@multica/views/triage";
+import { InboxPage } from "@multica/views/inbox";
+import { ChatPage } from "@multica/views/chat";
+import { DocsPage } from "@multica/views/docs";
+import { ChangelogPage } from "@multica/views/changelog";
+import { DesktopSettingsRoute } from "./components/desktop-settings-route";
+import { WorkspaceRouteLayout } from "./components/workspace-route-layout";
+import { DesktopRouteErrorPage } from "./components/route-error-page";
+
+/**
+ * Wraps `DocsPage` so it can read the slug out of the splat param.
+ *
+ * A docs slug can contain a slash (`developers/contributing`), so the route is
+ * `docs/*` and the whole remainder is the slug. Undefined at `/docs` itself,
+ * which is the index.
+ */
+function DocsRoute() {
+  const params = useParams();
+  const slug = params["*"] ?? "";
+  return <DocsPage slug={slug || undefined} />;
+}
+
+function ChangelogRoute() {
+  return <ChangelogPage desktopVersion={window.desktopAPI.appInfo.version || null} />;
+}
+
+/**
+ * Sets document.title from the deepest matched route's handle.title.
+ * The tab system observes document.title via MutationObserver.
+ * Pages with dynamic titles (e.g. issue detail) override by setting
+ * document.title directly via useDocumentTitle().
+ */
+function TitleSync() {
+  const matches = useMatches();
+  const title = [...matches]
+    .reverse()
+    .find((m) => (m.handle as { title?: string })?.title)
+    ?.handle as { title?: string } | undefined;
+
+  useEffect(() => {
+    if (title?.title) document.title = title.title;
+  }, [title?.title]);
+
+  return null;
+}
+
+/** Wrapper that renders route children + TitleSync */
+function PageShell() {
+  return (
+    <>
+      <TitleSync />
+      <Outlet />
+    </>
+  );
+}
+
+/**
+ * Route definitions shared by all tabs.
+ *
+ * Account is a persistent global tab. Workspace session paths are scoped: `/{slug}/{route}/...`. Pre-workspace
+ * flows (create workspace, accept invite) are NOT routes — they render as a
+ * window-level overlay via `WindowOverlay`, dispatched by the navigation
+ * adapter's transition-path interception. The `activeWorkspaceSlug` in the
+ * tab store decides which workspace's tabs are visible in the TabBar;
+ * workspace-less state (zero-workspace user) shows the overlay instead.
+ *
+ * The root index route stays as a harmless safety net. With per-workspace
+ * tabs, nothing should construct a tab at `/` — but if one ever slips
+ * through (malformed persisted state that dodges the migration, direct
+ * router.navigate from unforeseen code), the index falls back to null
+ * rather than 404; App.tsx's bootstrap repoints activeWorkspaceSlug on the
+ * next render pass.
+ */
+export const appRoutes: RouteObject[] = [
+  {
+    element: <PageShell />,
+    errorElement: <DesktopRouteErrorPage />,
+    children: [
+      { index: true, element: null },
+      { path: "account", element: <DesktopAccountWorkbenchRoute /> },
+      {
+        path: ":workspaceSlug",
+        element: <WorkspaceRouteLayout />,
+        children: [
+          // A bare `/{slug}` URL is normalized to `/{slug}/issues` by
+          // sanitizeTabPath before it ever becomes a session, so the index
+          // route is unreachable in practice; null keeps it a harmless
+          // safety net instead of an in-router <Navigate> (MUL-4741
+          // invariant 1: the router never self-navigates).
+          { index: true, element: null },
+          {
+            path: "issues",
+            element: <IssuesPage />,
+            handle: { title: "Issues" },
+          },
+          {
+            path: "issues/:id",
+            element: <IssueDetailPage />,
+            handle: { title: "Issue" },
+          },
+          {
+            path: "projects",
+            element: <ProjectsPage />,
+            handle: { title: "Projects" },
+          },
+          {
+            path: "projects/:id",
+            element: <ProjectDetailPage />,
+            handle: { title: "Project" },
+          },
+          {
+            path: "autopilots",
+            element: <AutopilotsPage />,
+            handle: { title: "Autopilot" },
+          },
+          {
+            // Static, so it resolves ahead of autopilots/:id — the same
+            // ordering agents/new relies on. A workspace-scoped session route,
+            // not a WindowOverlay: overlays are for pre-workspace one-shots.
+            path: "autopilots/new/template",
+            element: <TemplateCreateAutopilotRoute />,
+            handle: { title: "Autopilot" },
+          },
+          {
+            path: "autopilots/:id",
+            element: <AutopilotDetailPage />,
+            handle: { title: "Autopilot" },
+          },
+          {
+            path: "my-issues",
+            element: <MyIssuesPage />,
+            handle: { title: "My Issues" },
+          },
+          {
+            path: "runtimes",
+            element: <DesktopRuntimesPage />,
+            handle: { title: "Runtimes" },
+          },
+          {
+            path: "runtimes/:id",
+            element: <RuntimeDetailPage />,
+            handle: { title: "Machine" },
+          },
+          {
+            path: "runtimes/:id/runtime/:runtimeId",
+            element: <RuntimeSettingsPage />,
+            handle: { title: "Runtime" },
+          },
+          { path: "skills", element: <SkillsPage />, handle: { title: "Skills" } },
+          { path: "mcp", element: <McpPage />, handle: { title: "MCP" } },
+          { path: "marketplace", element: <MarketplacePage />, handle: { title: "Capability market" } },
+          {
+            path: "skills/:id",
+            element: <SkillDetailPage />,
+            handle: { title: "Skill" },
+          },
+          { path: "agents", element: <DesktopAgentsPage />, handle: { title: "Agents" } },
+          {
+            path: "agents/new",
+            element: <ChooseCreateMethodPage />,
+            handle: { title: "Create Agent" },
+          },
+          {
+            path: "agents/new/manual",
+            element: <ManualCreateAgentPage />,
+            handle: { title: "Create Agent" },
+          },
+          {
+            path: "agents/new/template",
+            element: <TemplateCreateAgentPage />,
+            handle: { title: "Create Agent" },
+          },
+          {
+            // Static, so it resolves ahead of agents/:id — the same ordering
+            // agents/new relies on.
+            path: "agents/approvals",
+            element: <AgentApprovalsPage />,
+            handle: { title: "Approvals" },
+          },
+          {
+            path: "agents/new/ai",
+            element: <AiCreateAgentPage />,
+            handle: { title: "Create Agent" },
+          },
+          {
+            path: "agents/new/ai/:sessionId",
+            element: <AiBuilderSessionPage />,
+            handle: { title: "Create Agent" },
+          },
+          {
+            path: "agents/:id",
+            element: <AgentDetailPage />,
+            handle: { title: "Agent" },
+          },
+          {
+            path: "members/:id",
+            element: <MemberDetailPage />,
+            handle: { title: "Member" },
+          },
+          { path: "squads", element: <SquadsPage />, handle: { title: "Squads" } },
+          {
+            path: "squads/:id",
+            element: <SquadDetailPageView />,
+            handle: { title: "Squad" },
+          },
+          { path: "iterations", element: <IterationsPage mainLandmark />, handle: { title: "Iterations" } },
+          { path: "iterations/:id", element: <IterationsPage mainLandmark />, handle: { title: "Iteration" } },
+          { path: "triage", element: <TriagePage />, handle: { title: "Triage" } },
+          { path: "inbox", element: <InboxPage />, handle: { title: "Inbox" } },
+          { path: "chat", element: <ChatPage />, handle: { title: "Chat" } },
+          {
+            path: "attachments/:id/preview",
+            element: <AttachmentPreviewRoute />,
+            handle: { title: "Attachment" },
+          },
+          {
+            path: "usage",
+            element: <DashboardPage />,
+            handle: { title: "Usage" },
+          },
+          // In-app documentation. An ordinary session route, not a
+          // WindowOverlay: it is workspace-scoped and belongs in a tab.
+          { path: "docs", element: <DocsRoute />, handle: { title: "Docs" } },
+          { path: "changelog", element: <ChangelogRoute />, handle: { title: "Changelog" } },
+          {
+            // A splat rather than `:page` because a docs slug can nest —
+            // `developers/contributing` is two segments.
+            path: "docs/*",
+            element: <DocsRoute />,
+            handle: { title: "Docs" },
+          },
+          {
+            path: "settings",
+            element: <DesktopSettingsRoute />,
+            handle: { title: "Settings" },
+          },
+        ],
+      },
+    ],
+  },
+];
+
+/**
+ * Create THE app router (MUL-4741 single-router session architecture).
+ * There is exactly one instance, owned by the tab Coordinator; it projects
+ * the active tab session's URL and is never navigated by anything else.
+ */
+export function createAppRouter() {
+  return createMemoryRouter(appRoutes, {
+    initialEntries: ["/"],
+  });
+}

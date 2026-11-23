@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-02T19:36:13.310896+00:00",
+  "reviewer": "/root/shared_verification_reconcile",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "verdict_scope": "evidence reconciliation only, not executable v10 clearance or task/product completion",
+  "reviewed_result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/shared-check-v9-result.json",
+  "reviewed_result_sha256": "a2dee0aef851ed8a8597c92b8ba0070809b21975e79954182d823bcbd31784bc",
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "remaining_acceptance_gaps": [
+    {
+      "id": "SVR-1",
+      "scope": "shared whole-run gate",
+      "fact": "v9 exit2,334 pass16 fail89skip; directed16 pass is not a full pass",
+      "owner": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+      "required": "new reviewed candidate complete make check exit0"
+    },
+    {
+      "id": "SVR-2",
+      "scope": "invitation original failure cause",
+      "fact": "original redirect remained at invite URL; accurate cause remains unknown despite unchanged directed green",
+      "required": "preserve unknown attribution and investigate further if fresh whole-run repeats"
+    },
+    {
+      "id": "SVR-3",
+      "scope": "knowledge deployed gate",
+      "fact": "7 Web +1 native knowledge scenarios passed; explicit deployed startup OFF/ON probe skipped",
+      "required": "separate existing exact-source CCG2 evidence rebind or owner-run required deployment gate"
+    },
+    {
+      "id": "SVR-4",
+      "scope": "v10 launch readiness",
+      "fact": "actual selected hashes match and candidate clean; no clearance/run record at observation",
+      "required": "owner independent clearance, staged artifact installation, live resource identity/window and actual fresh run"
+    },
+    {
+      "id": "SVR-5",
+      "scope": "skip coverage",
+      "fact": "22 explicit Go skips and89 browser skips remain individually recorded",
+      "required": "do not collapse conditional/platform gates into a full product acceptance claim"
+    }
+  ],
+  "verification": {
+    "JSON": true,
+    "all_82_Go_counts_and_log_hashes": true,
+    "browser_identity_accounting": true,
+    "all_16_original_failure_titles_matched_directed_green": true,
+    "original_two_file_source_preservation": true,
+    "v10_selected_hashes_and_equal_product_trees": true,
+    "syntax": true,
+    "lint": "not rerun; no source edits; retained v9 static stage15 successful with warnings",
+    "typecheck": "not rerun; no source edits; retained v9 static stage passed",
+    "repository_tests": "not rerun; direct retained actual-result parsing only"
+  },
+  "limits": [
+    "No local source repair or runtime manipulation.",
+    "This report is not independent executable v10 clearance.",
+    "Catalog original-path/API facts are retained observations, not new live checks.",
+    "A directed green sample does not prove permanent flake removal or reconstruct earlier removed runtime state."
+  ]
+}

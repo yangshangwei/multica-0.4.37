@@ -1,0 +1,43 @@
+{
+  "score": 95,
+  "verdict": "pass",
+  "category_match": true,
+  "differences": [
+    "The approved three-action header replaces the old creation dropdown; long workspace captions ellipsize intentionally while primary action labels and full accessible descriptions remain available."
+  ],
+  "suggestions": [],
+  "reasoning": "Production Web and actual Electron captures in both themes and Chinese/English compact layouts show the three direct controls with clear primary/secondary hierarchy, intact focus rings and no main-label clipping. All six browser journeys passed with zero retries/skips, including exact workspace ownership and anchored return restoration.",
+  "threshold": 90,
+  "threshold_pass": true,
+  "next_actions": [],
+  "reference_images": [
+    ".trellis/tasks/11-22-sidebar-start-work/design.md",
+    "artifacts/qa/full-e2e-20261120-r3/broad-results/global-scope-navigation-We-2f8bc-s-and-both-scroll-positions-chromium/web-scope-workspace.png"
+  ],
+  "generated_screenshots": [
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-We-9523d-ilters-and-scroll-positions-chromium/web-scope-start-work-chat.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-We-9523d-ilters-and-scroll-positions-chromium/web-scope-compact-zh.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-We-9523d-ilters-and-scroll-positions-chromium/web-scope-compact.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-We-9523d-ilters-and-scroll-positions-chromium/web-scope-start-work-light.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-We-9523d-ilters-and-scroll-positions-chromium/web-scope-start-work-dark.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-We-9523d-ilters-and-scroll-positions-chromium/web-scope-wide-zh.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-We-9523d-ilters-and-scroll-positions-chromium/web-scope-compact-dismissed.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-We-9523d-ilters-and-scroll-positions-chromium/web-scope-start-work-creation.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-De-e504c-ilters-and-scroll-positions-chromium/desktop-scope-compact-dismissed.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-De-e504c-ilters-and-scroll-positions-chromium/desktop-scope-start-work-dark.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-De-e504c-ilters-and-scroll-positions-chromium/desktop-scope-compact.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-De-e504c-ilters-and-scroll-positions-chromium/desktop-scope-start-work-creation.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-De-e504c-ilters-and-scroll-positions-chromium/desktop-scope-compact-zh.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-De-e504c-ilters-and-scroll-positions-chromium/desktop-scope-wide-zh.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-De-e504c-ilters-and-scroll-positions-chromium/desktop-scope-start-work-light.png",
+    "artifacts/qa/sidebar-start-work-20261122/accepted/browser-results/global-scope-navigation-De-e504c-ilters-and-scroll-positions-chromium/desktop-scope-start-work-chat.png"
+  ],
+  "browser_stats": {
+    "startTime": "2026-11-22T15:52:52.696Z",
+    "duration": 44753.121,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "recordedAt": "2026-10-14T11:35:27.308Z",
+  "environment": "Isolated Electron renderer; all writes used below are memory-only API mocks.",
+  "cases": [
+    {
+      "id": "avatar-failure",
+      "sources": [
+        "packages/views/settings/components/account-tab.tsx:126",
+        "packages/views/common/avatar-upload-control.tsx:186"
+      ],
+      "status": "product_behavior",
+      "findingReproduced": false,
+      "observed": {
+        "calls": [
+          {
+            "method": "uploadFile",
+            "name": "avatar-source.webp",
+            "size": 9368,
+            "type": "image/webp"
+          },
+          {
+            "method": "updateMe",
+            "fields": [
+              "avatar_url"
+            ],
+            "nameEmpty": false
+          }
+        ],
+        "freshToasts": [
+          {
+            "type": "error",
+            "text": "AUDIT_PERSONAL_PROFILE_WRITE_FAILED"
+          }
+        ],
+        "dialogOpen": true
+      },
+      "expected": "Rejected profile save keeps the crop dialog open and never announces avatar success.",
+      "evidence": [
+        {
+          "screenshot": "screenshots/resume-personal-avatar-failure.png",
+          "ax": "ax/resume-personal-avatar-failure.txt"
+        }
+      ],
+      "mocksRestored": true
+    },
+    {
+      "id": "empty-name",
+      "sources": [
+        "packages/views/settings/components/account-tab.tsx:90",
+        "packages/views/settings/components/use-auto-save.ts:114"
+      ],
+      "status": "product_behavior",
+      "findingReproduced": false,
+      "observed": {
+        "calls": [],
+        "freshToasts": [],
+        "validation": {
+          "value": "",
+          "required": true,
+          "invalid": "true",
+          "describedBy": "_r_3t_",
+          "validationMessage": "请填写此字段。"
+        },
+        "alerts": [],
+        "statuses": [
+          "有未保存的修改"
+        ],
+        "validationHints": [
+          "有未保存的修改"
+        ],
+        "draftRetainedBeforeNavigation": true,
+        "draftLostAfterNavigation": true
+      },
+      "evidence": [
+        {
+          "screenshot": "screenshots/resume-personal-empty-name-draft.png",
+          "ax": "ax/resume-personal-empty-name-draft.txt"
+        },
+        {
+          "screenshot": "screenshots/resume-personal-empty-name-returned.png",
+          "ax": "ax/resume-personal-empty-name-returned.txt"
+        }
+      ],
+      "expected": "An empty required name explains why profile context cannot be saved; unsaved content is identifiable.",
+      "mocksRestored": true
+    },
+    {
+      "id": "invite-repeat-enter",
+      "sources": [
+        "packages/views/settings/components/members-tab.tsx:434",
+        "packages/views/settings/components/members-tab.tsx:812"
+      ],
+      "status": "product_behavior",
+      "findingReproduced": false,
+      "observed": {
+        "calls": [
+          {
+            "method": "createMember",
+            "workspaceId": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+            "email": "audit-double-enter-1791977732646@example.invalid",
+            "role": "member"
+          }
+        ],
+        "freshToasts": [],
+        "pending": {
+          "buttonDisabled": true,
+          "emailEnabled": false
+        },
+        "requestCount": 1
+      },
+      "expected": "A second Enter during a pending invitation does not dispatch another request.",
+      "evidence": [
+        {
+          "screenshot": "screenshots/resume-personal-invite-repeat-enter.png",
+          "ax": "ax/resume-personal-invite-repeat-enter.txt"
+        }
+      ],
+      "mocksRestored": true
+    }
+  ]
+}

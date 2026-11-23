@@ -380,6 +380,55 @@ func TestPluginActionCannotReachAnotherWorkspacesIssue(t *testing.T) {
 	}
 }
 
+// A collaboration issue in the plugin's own workspace is still out of reach
+// (R53): neither the install token nor the browser bridge reads its content or
+// writes to it, and the answer is the same 404 an unreachable id gets.
+func TestPluginActionCannotReachACollaborationIssue(t *testing.T) {
+	installationID := installPluginForAction(t, []string{"issues:read", "issues:write", "comments:read", "comments:write"})
+	token, err := testHandler.PluginService.IssueInstallToken(context.Background(), parseUUID(installationID))
+	if err != nil {
+		t.Fatalf("issue install token: %v", err)
+	}
+	issueID := collaborationBoundaryIssue(t, testWorkspaceID)
+	params := map[string]string{"issue_ref": issueID}
+	for _, tc := range []struct {
+		name    string
+		handler http.HandlerFunc
+		method  string
+		body    any
+	}{
+		{"read issue", testHandler.GetPluginIssue, http.MethodGet, nil},
+		{"patch issue", testHandler.PatchPluginIssue, http.MethodPatch, map[string]any{"title": "Rewritten by a plugin"}},
+		{"list comments", testHandler.ListPluginComments, http.MethodGet, nil},
+		{"create comment", testHandler.CreatePluginComment, http.MethodPost, map[string]any{"content": "Written by a plugin"}},
+	} {
+		for name, request := range map[string]*http.Request{
+			"bridge":        pluginActionRequest(tc.method, "/v1/issues/"+issueID, installationID, tc.body, params),
+			"install token": pluginInstallTokenRequest(tc.method, "/v1/issues/"+issueID, token, tc.body, params),
+		} {
+			recorder := httptest.NewRecorder()
+			tc.handler(recorder, request)
+			if recorder.Code != http.StatusNotFound {
+				t.Fatalf("%s via %s status=%d body=%s", tc.name, name, recorder.Code, recorder.Body.String())
+			}
+		}
+	}
+	// The page-context call resolves its issue through the same check.
+	page := httptest.NewRecorder()
+	testHandler.GetPluginContext(page, pluginActionRequest(http.MethodGet, "/v1/context?issue_id="+issueID, installationID, nil, nil))
+	if page.Code != http.StatusNotFound || strings.Contains(page.Body.String(), "Protected collaboration") {
+		t.Fatalf("plugin context exposed a collaboration issue: status=%d body=%s", page.Code, page.Body.String())
+	}
+	var title string
+	dbfx.QueryRow(t, `SELECT title FROM issue WHERE id=$1`, issueID).Scan(&title)
+	if title != "Protected collaboration" {
+		t.Fatalf("plugin rewrote collaboration title to %q", title)
+	}
+	if n := dbfx.Count(t, `SELECT count(*) FROM comment WHERE issue_id=$1`, issueID); n != 0 {
+		t.Fatalf("plugin wrote %d comment(s) on a collaboration issue", n)
+	}
+}
+
 // createIssueInForeignWorkspace seeds a workspace the test user is NOT a member
 // of, so a cross-tenant read has something real to fail against rather than a
 // made-up uuid that would 404 for the wrong reason.

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-json",
+    "./internal/daemon",
+    "-run",
+    "TestKnowledge|TestOrdinaryKnowledge|TestOrdinaryUnsupportedKnowledge|TestExecuteAndDrain|TestReconcileFreshRetryResult|TestShouldRetryWithFreshSession|TestReportTaskResult|TestClaimTasksWSFirst|TestManagedTransport|TestBuildPrompt|TestTaskRunFailureReason",
+    "-count=1",
+    "-timeout=180s"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 35.499,
+  "database_packages_executed": false,
+  "installed_provider_cli_allowed": false
+}

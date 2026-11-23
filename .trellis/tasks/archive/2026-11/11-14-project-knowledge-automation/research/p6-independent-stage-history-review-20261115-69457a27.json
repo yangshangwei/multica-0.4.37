@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "approved_revision": "2026-11-14-v1",
+  "run_id": "independent-nondb-20261115T043510Z-69457a27",
+  "role": "trellis-check",
+  "lane": "independent parallel acceptance, read-only product review",
+  "created_at": "2026-11-15T04:44:28.814184+00:00",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "server_source_sha256": "81e0466690e815c97d9f0b2d167bda99aec6db246e08805b542718856e9b79dc",
+  "hook_output_sha256": "268a320e75a1b1c22f34e4c88ee93f023ac3639e7b7050e2a52a64f63a657edd",
+  "checks": [
+    {
+      "id": "absent-stage-policy-found-guard",
+      "status": "pass_static_review",
+      "conclusion": "The absent row is the virtual disabled revision 0. The found guard applies only to the persisted contract check; it does not skip stageReady or the current enabled-policy exit refusal.",
+      "evidence": [
+        {
+          "path": "server/internal/service/collaboration_stage_project.go",
+          "line": 31,
+          "observation": "stageReady(ctx,q) executes before currentStagePolicy and returns its error."
+        },
+        {
+          "path": "server/internal/service/collaboration_stage_project.go",
+          "line": 39,
+          "observation": "found && policy.Contract != collaboration.StageContract yields 503 stage_schema_unavailable."
+        },
+        {
+          "path": "server/internal/service/collaboration_stage_project.go",
+          "line": 42,
+          "observation": "policy.Enabled yields DeliveryCompletionError 409 stage_policy_exit_required."
+        },
+        {
+          "path": "server/internal/service/collaboration_stage_policy.go",
+          "line": 142,
+          "observation": "Only pgx.ErrNoRows becomes an empty ProjectStagePolicy, false, nil. Other query errors are returned."
+        },
+        {
+          "path": "server/internal/service/collaboration_stage_view.go",
+          "line": 219,
+          "observation": "stageReady returns 503 stage_schema_unavailable when CollaborationStageSchemaReady is false."
+        },
+        {
+          "path": "server/pkg/db/queries/collaboration_stage.sql",
+          "line": 224,
+          "observation": "The retained readiness query checks presence of all six stage tables. This review does not claim an independently executed DDL readiness test."
+        },
+        {
+          "path": "server/internal/service/collaboration_edit.go",
+          "line": 98,
+          "observation": "The actual EditIssue writer checks project change before UpdateCollaborationIssueStructure."
+        },
+        {
+          "path": "server/internal/service/delivery_project_change.go",
+          "line": 53,
+          "observation": "The real project-change transaction joins CheckStageProjectChangeInTx."
+        }
+      ],
+      "database_execution_by_this_reviewer": false
+    },
+    {
+      "id": "source-project-edit-tests-and-both-commit-orders",
+      "status": "pass_static_review",
+      "conclusion": "The regression uses actual EditIssue for all policy states and for both edit/proposal commit orders. It retains the policy outcomes and immutable original proposal target; it does not replace the edit with direct SQL at the interleaving seam.",
+      "evidence": [
+        {
+          "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "line": 201,
+          "observation": "TestKnowledgeSourceProjectEditRespectsStagePolicy covers absent, explicit_disabled, enabled; checks receipt code/status and actual issue project. Absent policy remains unpersisted."
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "line": 238,
+          "observation": "Edit-first calls the actual editor before LockCollaborationUsers, requires knowledge_target_not_found and zero persisted candidate rows."
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "line": 261,
+          "observation": "Proposal-first holds the actual proposal immediately before Commit, observes pg_blocking_pids for the competing real EditIssue, releases, requires both calls without error, and verifies the candidate target remains the original project."
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "line": 172,
+          "observation": "Commit gate cleanup releases an owned barrier; knowledgeWaitForBlock observes the actual PostgreSQL blocker with a 3-second bound."
+        }
+      ],
+      "database_execution_by_this_reviewer": false,
+      "scope_limit": "Owner retains the DB execution and its GREEN evidence; these are independent code-path checks only."
+    },
+    {
+      "id": "source-hook-error-propagation",
+      "status": "pass_static_review",
+      "conclusion": "The hook returns errors through the transaction Query boundary. A failed actual editor call no longer calls t.Fatalf from inside the seam; it returns a wrapped error before the underlying LockCollaborationUsers query can run.",
+      "evidence": [
+        {
+          "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "line": 109,
+          "observation": "before has signature func() error on the starter and wrapped transaction."
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "line": 129,
+          "observation": "The first sync.Once hook invocation captures an error and returns nil,err before forwarding tx.Tx.Query."
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "line": 248,
+          "observation": "The real EditIssue call wraps its error with fmt.Errorf and %w."
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge.go",
+          "line": 246,
+          "observation": "lockKnowledgeWrite returns LockCollaborationUsers errors to the mutation caller."
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge.go",
+          "line": 174,
+          "observation": "The real mutation calls lockKnowledgeWrite and returns its error."
+        }
+      ],
+      "scope_limit": "The seam deliberately runs once. This is verification of its first-call propagation, not a new DB fault-injection or sticky-error guarantee across retries.",
+      "database_execution_by_this_reviewer": false
+    },
+    {
+      "id": "core-stage-history-42-server-bound",
+      "status": "pass_static_review",
+      "conclusion": "42 is the complete latest-execution projection maximum: 7 batch slots x 2 stages x 3 attempt numbers. Both boundaries reject 43 rather than dropping legitimate rows. The worker currently uses attempt 1 (usually <=14 rows), which does not reduce the retained schema limit.",
+      "evidence": [
+        {
+          "path": "server/migrations/844_project_knowledge_automation.up.sql",
+          "line": 48,
+          "observation": "batch_index is constrained to 0..6; create uses slot 6 and revalidate uses slots 0..5."
+        },
+        {
+          "path": "server/migrations/852_project_knowledge_automation_batch_slot.up.sql",
+          "line": 1,
+          "observation": "Concurrent unique index on (job_id,batch_index) enforces seven job batch slots."
+        },
+        {
+          "path": "server/migrations/844_project_knowledge_automation.up.sql",
+          "line": 71,
+          "observation": "Only generating/checking stages and attempt_number 1..3 are permitted."
+        },
+        {
+          "path": "server/migrations/854_project_knowledge_automation_attempt_identity.up.sql",
+          "line": 1,
+          "observation": "Concurrent unique index on (batch_id,execution_revision,stage,attempt_number) enforces each attempt identity."
+        },
+        {
+          "path": "server/pkg/db/queries/collaboration_knowledge_automation.sql",
+          "line": 131,
+          "observation": "CreateKnowledgeModelAttempt joins b.job_id=j.id and the current execution revision under the exact lease."
+        },
+        {
+          "path": "server/pkg/db/queries/collaboration_knowledge_automation.sql",
+          "line": 157,
+          "observation": "ListKnowledgeExecutionModelUsage selects the exact job and execution revision with LIMIT 43 and metadata-only columns."
+        },
+        {
+          "path": "server/pkg/db/generated/collaboration_knowledge_automation.sql.go",
+          "line": 1457,
+          "observation": "Generated SQL retains the same exact-execution LIMIT 43 boundary."
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_automation_jobs.go",
+          "line": 239,
+          "observation": "More than 42 rows returns 503 knowledge_unavailable before appending any public attempts."
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_automation_worker.go",
+          "line": 295,
+          "observation": "Current worker writes AttemptNumber:1 and binds a stage/execution-derived attempt ID."
+        },
+        {
+          "path": "packages/core/collaboration/knowledge-automation-schema.ts",
+          "line": 46,
+          "observation": "Strict stage/state/model/usage attempt array uses .max(42), with required per-attempt fields."
+        },
+        {
+          "path": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+          "line": 51,
+          "observation": "Existing Core regression constructs all 7x2x3 attempts, asserts complete equality at 42, and refusal at 43."
+        }
+      ],
+      "database_execution_by_this_reviewer": false,
+      "core_tests_executed_by_this_reviewer": false
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "server/internal/service/collaboration_stage_project.go",
+      "sha256": "53906a02c02fcce5e89d6e522d27407fce2a420cc1f27368a2d66550937f7ce8",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_policy.go",
+      "sha256": "a892c72b67010b78a7d1383406ba11412efc2a9ecc3acd1e3df36295265cf9d6",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_view.go",
+      "sha256": "deb2632c3b93f78f00bf553f6e8efd88bb69685795ffa9c43a7bee1e8e25c516",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_edit.go",
+      "sha256": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/delivery_project_change.go",
+      "sha256": "60feb58309b60e28b9f1c2a7606a380c5870e1c3ffa63f72a7b9dbb749f1228a",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+      "sha256": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge.go",
+      "sha256": "da54ec317d768ad11c490c1d518d3b9c1ce88a1605e2067c6e45bd66d072e4a7",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_stage.sql",
+      "sha256": "57ff366abcaf8b81e86b6d281c149b5148ea3584dfccfecda2c0a09f5d62c5bb",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_knowledge_automation.sql",
+      "sha256": "762be1786b369f3d59d4cb5a3ffac8f2af75adb655e8bf169e5c84abe8e09c34",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_knowledge_automation.sql.go",
+      "sha256": "6f21beab35f4c288c1cb7a87c591c37d4d9b1cf783ca7b6859b55f66ebd7ed79",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/migrations/844_project_knowledge_automation.up.sql",
+      "sha256": "3a5b212e52a7c799c75d04c8258108b290b48dff19ebff8c69d466903932c660",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/migrations/852_project_knowledge_automation_batch_slot.up.sql",
+      "sha256": "5afd560475976cc179ae53ec2c00956c45ebeb5711cb863617598713a9e4dbef",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/migrations/854_project_knowledge_automation_attempt_identity.up.sql",
+      "sha256": "c3879973979806c977b8f1b0977d8f7f6aaaa31e3be0133867ee45cd9693ec29",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_automation_jobs.go",
+      "sha256": "57f5277c0f9fd61a2842365cbbad524cc00e4ff6d51a6b02089436f5912b0e95",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_automation_worker.go",
+      "sha256": "e07bfac34dc94bd1483a084862e1face9f5b41435f18258f6fadf6edbd87952c",
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-automation-schema.ts",
+      "sha256": "00b74d5515e02916c60c717bd7a4da4a18a3072a67b5fe4df070a737b07b95a5",
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+      "sha256": "b672b3f27c55de295e64cbcc12249def6d012b853cb6e5d6bd660d0520a8f4b1",
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-knowledge.md",
+      "sha256": "96a8c2e6f96726358799b0e09243c4d9222d743896f8f99b4c0c87cac8acc054",
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/core/frontend/collaboration-knowledge.md",
+      "sha256": "62455636fe00153c4f1219b814ef437acd5c48d5843b635d71cb8841f05d8c73",
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "be229701226d051a86adfac59fdaadec7be286aea0f057dea0de1361171c80bc",
+      "mode": "0o644"
+    }
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "review_scope_product_findings": 0,
+  "product_test_spec_markdown_metadata_files_modified": [],
+  "database_tests_executed": false,
+  "delegated_agents": 0,
+  "verification": {
+    "build": {
+      "stage": "build",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server",
+        "build",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "command_sha256": "728f1950eea713d87a1b13e08fcb4a8ba32e1a38c617fc4a355a5815ac1a21f7",
+      "source_sha256_before": "81e0466690e815c97d9f0b2d167bda99aec6db246e08805b542718856e9b79dc",
+      "started_at": "2026-11-15T04:37:43.887385+00:00",
+      "state": "pass",
+      "testmain_executed": false,
+      "environment_sha256": "fd3ad4d06e29d6c4de0583430e021b3d62121c80bc1e6a85b0bb32b72fe9e8a7",
+      "exit_code": 0,
+      "source_sha256_after": "81e0466690e815c97d9f0b2d167bda99aec6db246e08805b542718856e9b79dc",
+      "source_stable": true,
+      "finished_at": "2026-11-15T04:38:11.699296+00:00",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vet": {
+      "stage": "vet",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server",
+        "vet",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "command_sha256": "9f441cd12c25d111d730cf00b917f2b11800d7738af233921860b948ec5fd6f5",
+      "source_sha256_before": "81e0466690e815c97d9f0b2d167bda99aec6db246e08805b542718856e9b79dc",
+      "started_at": "2026-11-15T04:38:12.018025+00:00",
+      "state": "pass",
+      "testmain_executed": false,
+      "environment_sha256": "fd3ad4d06e29d6c4de0583430e021b3d62121c80bc1e6a85b0bb32b72fe9e8a7",
+      "exit_code": 0,
+      "source_sha256_after": "81e0466690e815c97d9f0b2d167bda99aec6db246e08805b542718856e9b79dc",
+      "source_stable": true,
+      "finished_at": "2026-11-15T04:38:30.750835+00:00",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "gofmt": {
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/gofmt",
+        "-l",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_project.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_knowledge_concurrency_test.go"
+      ],
+      "command_sha256": "5a83d7610dfdaf8a1101204da0dfa2255375f9b9a0f680e8e2180cc92ec29fca",
+      "executable_sha256": "0bcfa961e5c2a8ef2cac1e8a03e3267d615196ee59248eab3ab152495a397185",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "state": "pass",
+      "files_modified": false,
+      "finished_at": "2026-11-15T04:43:23.577406+00:00"
+    },
+    "frontend_lint_typecheck_tests": "not repeated; main owner owns root frontend verification",
+    "db_testmatrix": "not repeated; main owner owns service/handler/router/migrations DB matrix"
+  },
+  "external_state_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/independent-nondb-20261115T043510Z-69457a27",
+  "completion_scope": "Static checks and non-DB verification only; does not mark AC1-AC12, real-model, DB or native UI acceptance complete."
+}

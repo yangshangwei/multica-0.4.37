@@ -1,7 +1,8 @@
 "use client";
 
 import { createContext, useContext, type ReactNode } from "react";
-import type { Issue, UpdateIssueRequest } from "@multica/core/types";
+import type { BatchUpdateIssuesOptions, BatchUpdateIssuesResponse, Issue, UpdateIssueRequest } from "@multica/core/types";
+import type { SourceCollaborationAction } from "@multica/core/issues";
 import type { IssueCreateDefaults } from "./types";
 
 export type IssueSurfaceMutationOptions = {
@@ -9,9 +10,12 @@ export type IssueSurfaceMutationOptions = {
   onSuccess?: (issue: Issue) => void;
   onError?: (err: unknown) => void;
   onSettled?: () => void;
+  /** Internal: the caller already ran the shared completion-hint gate. */
+  skipCompletionHint?: boolean;
 };
 
 export interface IssueSurfaceActions {
+  openCollaboration?: (action: SourceCollaborationAction) => void;
   isPending: boolean;
   createIssue: (defaults?: IssueCreateDefaults) => void;
   updateIssue: (
@@ -27,7 +31,8 @@ export interface IssueSurfaceActions {
   batchUpdate: (
     issueIds: string[],
     updates: Partial<UpdateIssueRequest>,
-  ) => Promise<void>;
+    options?: BatchUpdateIssuesOptions,
+  ) => Promise<BatchUpdateIssuesResponse>;
   batchDelete: (issueIds: string[]) => Promise<void>;
 }
 

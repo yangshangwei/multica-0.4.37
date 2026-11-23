@@ -1,0 +1,151 @@
+{
+  "ROOT_Source_MD_or_existing_report_mutations": 0,
+  "actual_Go_SQL_parser_SourceCOPY_processes": 0,
+  "at": "2026-11-16T02:03:35.886436+00:00",
+  "config": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/tagged-runner-config-v3.json",
+    "sha256": "1b9a599ceb33fd5ea118c1a6b44696148851d60ad6549342674f642a24a93a34"
+  },
+  "kind": "independent_TAG3_partial_cross_source_guard_pure_probe_receipt",
+  "method": "Imported pinned new runner definitions only; invoked proof/review/prior-result guard functions. Body mutations are in-memory JSON injection after the separately checked file hash; reference-hash and acceptance negatives use real guard paths. No main/execute_step/raw parser/test suite/Go/SQL/source scan/COPY/process was run.",
+  "negative_cases": [
+    {
+      "case": "reference accepted bool",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "reference blocking_findings_open int",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "reference blocking_findings_open bool",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "reference sha256 str",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body source_id",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body source_root",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body old_source_id",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body proof_sha256",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body old_Go6_result_sha256",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body old_Go6_review_sha256",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body default_compiler_inputs_equivalent",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body tagged_top_count",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body declared_named_count",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "review-body blocking_findings_open",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "proof-body default_MatchFile_excludes_changed_file",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "proof-body tagged_MatchFile_includes_changed_file",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "proof-body build_tag",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "proof-body PG_only_sha256",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "extra Go input delta",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "swapped old result SHA",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "swapped old result path",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "swapped old review SHA",
+      "exception": "RuntimeError",
+      "rejected": true
+    },
+    {
+      "case": "missing active independent source review",
+      "exception": "RuntimeError",
+      "rejected": true
+    }
+  ],
+  "negative_count": 23,
+  "new_source_id": "6cc2f561d1d8eb6c81569147dc7611d1feb84c8ccb06b2290d43b5b54dcb1f54",
+  "new_source_root": "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source",
+  "old_Go6_result_sha256": "aabc436fb07a2275bed7650e08a1f22674b6f14dbe6610ca14fc9a7c56449c8e",
+  "old_Go6_review_sha256": "00396ffe08965cc0bc8a4d7029c1f98a0356e136139b45cef67702fab3418157",
+  "old_Go6_source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+  "physical_source_and_fixture_review_reused_from_sourcechecker": true,
+  "positive_original_prerequisite_consumption_passed": true,
+  "positive_review_binding_passed": true,
+  "proof_sha256": "f27b2a45a148909093edbab3e50588f485bc26459b463303e041f9edca44d719",
+  "remaining_blocker": "TracedPopen post-fork metadata constructor failure is separately recorded in595140; wait for author numbered r2.",
+  "reviewer": "/root/continuation_gate_audit",
+  "runner": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-tagged-runner-v3.py",
+    "sha256": "1df758d09dbbd32a65b8d37621839a8a6c4ad5d4a4546134f645b0fb46c7eab2"
+  },
+  "scope_accepted": "cross-source_guard_functions_only",
+  "source_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-tag3-source-fixture-inputeq-independent-review-20261116-6cc2f561d1d8.json",
+    "sha256": "64635164078c226fda1b31b2db364ae2d36520f87807daa91956947a5688712a"
+  },
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "whole_runner_accepted": false
+}

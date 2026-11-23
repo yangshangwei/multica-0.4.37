@@ -1,0 +1,167 @@
+{
+  "date": "2026-11-05T04:04:31.315Z",
+  "browser": "Playwright Chromium",
+  "headless": true,
+  "viewport": {
+    "width": 390,
+    "height": 740
+  },
+  "coarsePointer": true,
+  "directCors": true,
+  "cases": [
+    {
+      "name": "live-source-filter",
+      "source": "real API, production web, coarse pointer",
+      "status": "passed",
+      "geometry": {
+        "label": "External collaborators",
+        "x": 202,
+        "y": 104,
+        "width": 44,
+        "height": 44,
+        "visible": true,
+        "inViewport": true,
+        "coarse": true,
+        "documentOverflow": false,
+        "target44": true
+      },
+      "sourceDialog": "Not exercised: collaboration row context menu only exposes open/copy links; no direct edit action. Source dialog close is not claimed verified."
+    },
+    {
+      "name": "live-recipient-query-commit",
+      "source": "real API discovery; response delivery delayed 450 ms, payload unchanged",
+      "status": "unverified",
+      "reason": "locator.waitFor: Timeout 6500ms exceeded.\n"
+    },
+    {
+      "name": "fixture-attachment-preview-close",
+      "source": "actual UI with controlled attachment metadata and text bytes",
+      "status": "passed",
+      "geometry": {
+        "label": "Close preview",
+        "x": 322,
+        "y": 282,
+        "width": 44,
+        "height": 44,
+        "visible": true,
+        "inViewport": true,
+        "coarse": true,
+        "documentOverflow": false,
+        "target44": true
+      }
+    },
+    {
+      "name": "fixture-memory-version-targets",
+      "source": "actual UI with controlled memory current/version metadata and content",
+      "status": "passed",
+      "version": {
+        "label": "View v1",
+        "x": 46,
+        "y": 696,
+        "width": 44,
+        "height": 44,
+        "visible": true,
+        "inViewport": true,
+        "coarse": true,
+        "documentOverflow": false,
+        "target44": true
+      },
+      "close": {
+        "label": "Close",
+        "x": 322,
+        "y": 235.25,
+        "width": 44,
+        "height": 44,
+        "visible": true,
+        "inViewport": true,
+        "coarse": true,
+        "documentOverflow": false,
+        "target44": true
+      }
+    },
+    {
+      "name": "fixture-knowledge-review-summaries",
+      "source": "actual UI with controlled candidate/list/history projections",
+      "status": "passed",
+      "digest": {
+        "label": "Content SHA-256",
+        "x": 33,
+        "y": 431.5,
+        "width": 324,
+        "height": 44,
+        "visible": true,
+        "inViewport": true,
+        "coarse": true,
+        "documentOverflow": false,
+        "target44": true
+      },
+      "history": {
+        "label": "Version history",
+        "x": 33,
+        "y": 491.5,
+        "width": 324,
+        "height": 44,
+        "visible": true,
+        "inViewport": true,
+        "coarse": true,
+        "documentOverflow": false,
+        "target44": true
+      }
+    }
+  ],
+  "pageErrors": [],
+  "fixtures": [
+    "/api/collaboration/issues/01a1a9a7-53d0-777a-9305-01532d06cf17/attachments",
+    "/api/collaboration/issues/01a1a9a7-53d0-777a-9305-01532d06cf17/memory",
+    "/api/collaboration/issues/01a1a9a7-53d0-777a-9305-01532d06cf17/knowledge-candidates",
+    "/api/collaboration/issues/01a1a9a7-53d0-777a-9305-01532d06cf17/memory/versions",
+    "/api/collaboration/issues/01a1a9a7-53d0-777a-9305-01532d06cf17/memory/versions/1",
+    "/api/collaboration/knowledge-candidates/00000000-0000-4000-8000-000000001120"
+  ],
+  "writes": [
+    {
+      "method": "POST",
+      "path": "/api/client-usage"
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/table/facets"
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/table/facets"
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/table/rows"
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/table/rows"
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/table/rows"
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/table/rows"
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/table/rows"
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/table/rows"
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/table/rows"
+    },
+    {
+      "method": "POST",
+      "path": "/api/client-usage"
+    }
+  ]
+}

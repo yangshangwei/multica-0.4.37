@@ -1,0 +1,387 @@
+{
+  "mode": "round-2",
+  "fixture": "Production build of original shared components/CSS/locales, synthetic API and memory StorageAdapter",
+  "provenance": {
+    "mode": "round-2",
+    "output": "/tmp/collaboration-create-assist-round-2-86688",
+    "builtAt": "2026-11-07T15:07:28.940Z",
+    "buildPid": 86688,
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "sources": [
+      {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "d32ad71d98a427f0204e61a9f2943cbd1a1c389aa2c6ecb581fb01526b9232a3"
+      },
+      {
+        "path": "packages/views/collaboration/creation-form.test.tsx",
+        "sha256": "a63a9ff9110526daba596a6158d7a4e07adf45b929de37df108a952f2a89c138"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.tsx",
+        "sha256": "047eb23f902b6fef30573e4e571290d80fc59deb831a5310efc613d066f8257e"
+      },
+      {
+        "path": "packages/views/collaboration/attachment-picker.tsx",
+        "sha256": "d909037eb0910954168c7ef7710e0ca6466f5fa5ab7cbe0138bb2f43c56c70c8"
+      },
+      {
+        "path": "packages/views/collaboration/creation-description-assist.tsx",
+        "sha256": "0bda3ef2edaa4548c1b0f2b9b8f2f94b6ea4ae7c41eddc3e99234517a1740081"
+      },
+      {
+        "path": "packages/views/modals/issue-description-assist.tsx",
+        "sha256": "c27764b9d0bd8288e790fcabd2717e4b9003c29c43d8ea085938a221cc4b6552"
+      },
+      {
+        "path": "packages/core/api/issue-description-stream.ts",
+        "sha256": "b0841552950178ead6bed4ac3b9b29622b66568cad6d23e03122790383039317"
+      },
+      {
+        "path": "packages/views/locales/en/modals.json",
+        "sha256": "2d06e8dfd98c517db05d1bca79e07df1d44fc4250f501a2a7c31aabd03c66531"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/modals.json",
+        "sha256": "5f04a651a2f1e725eae993f46ba1402fb8e80e68c58cd2456b3f1d8c4a37fb52"
+      },
+      {
+        "path": "packages/views/collaboration/field-inputs.tsx",
+        "sha256": "823c7a6d1898eea6b85f39ff0b103fdec32b8858d70f85200c3f811049967987"
+      },
+      {
+        "path": "packages/views/collaboration/form-styles.ts",
+        "sha256": "fc42e560df3ce9a76db383e586a3a456f8c5e2c3596e7c58486452530ba74e8f"
+      },
+      {
+        "path": "packages/views/collaboration/focus.ts",
+        "sha256": "b9e0e438e5afcd5778e39b39991bdd49ff9b2bddb7af3c46f818083627fe4870"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.tsx",
+        "sha256": "7ae19a5d2e4ea1d3c94caf29187f0a256dacb5bdfaf46a545acd432db0e8d6a7"
+      },
+      {
+        "path": "packages/views/locales/en/collaboration.json",
+        "sha256": "e8c13afb0eea0849c13730510b5acde27e55833f722af3759fc0f6ba45bb4722"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "sha256": "415a3273a4b0abd4636b6d02fce3203591d9a0869f8dbb3181726142b3000269"
+      },
+      {
+        "path": "packages/ui/styles/tokens.css",
+        "sha256": "0ac7c9603d5bd945f26a46ebe6d3ea42594a45acadf8e88a9300898ce968dc3c"
+      },
+      {
+        "path": "packages/ui/styles/base.css",
+        "sha256": "c01e09bc563ff342966c1edfc0de756eff288ba4907680fd1c89e30748a6ab82"
+      },
+      {
+        "path": "packages/ui/components/ui/dialog.tsx",
+        "sha256": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf"
+      },
+      {
+        "path": "packages/ui/components/ui/input.tsx",
+        "sha256": "7119bac8d69289dbf6c0fe81df25ff5102a474d98f8a7ebf05ae551f969f9749"
+      },
+      {
+        "path": "packages/ui/components/ui/textarea.tsx",
+        "sha256": "16c7355c309cf87ed3dcbd35d98fda8490cc0525d4e4d05534b01d0e3b3d385c"
+      },
+      {
+        "path": "packages/ui/components/ui/button.tsx",
+        "sha256": "132669be5d65af6b27bb492b5237b90c27c2869227251efc65a1d1f9b174da28"
+      },
+      {
+        "path": "packages/ui/components/ui/popover.tsx",
+        "sha256": "46d8d14a5637d48f6342f011027c2ac6e9e8cc53f6f4bbc41b633a773fd506e8"
+      },
+      {
+        "path": "packages/views/modals/create-issue.tsx",
+        "sha256": "16f154a27dc64ecd435b40d560a076546b7c90c27f0571e95d2f75b90b676b70"
+      },
+      {
+        "path": ".trellis/tasks/11-07-collaboration-create-assist/research/preview/main.tsx",
+        "sha256": "28aa5741f30d8b097e8e618cd21f03a417f71beaa213695a19c53606c008a8b1"
+      },
+      {
+        "path": ".trellis/tasks/11-07-collaboration-create-assist/research/preview/verify.mjs",
+        "sha256": "ca100e0ae3366589a8198b91aa5fd16e1bfd5128e327a8fd0f1a7d492535751d"
+      },
+      {
+        "path": ".trellis/tasks/11-07-collaboration-create-assist/research/preview/build.mjs",
+        "sha256": "3fa024063e9ab52e97e7674ffd7fe104683bc4a20b3774c96daf71e0f91c00ed"
+      }
+    ]
+  },
+  "driverPid": 86808,
+  "startedAt": "2026-11-07T15:07:37.161Z",
+  "scenarios": {
+    "expand-320-light": {
+      "initial": {
+        "width": 296,
+        "height": 511.1875,
+        "top": 28.40625,
+        "bottom": 539.59375,
+        "left": 12,
+        "right": 308,
+        "visible": true
+      },
+      "expanded": {
+        "width": 296,
+        "height": 544,
+        "top": 12,
+        "bottom": 556,
+        "left": 12,
+        "right": 308,
+        "visible": true
+      },
+      "controls": {
+        "expand": {
+          "width": 44,
+          "height": 44,
+          "top": 24,
+          "bottom": 68,
+          "left": 196,
+          "right": 240,
+          "visible": true
+        },
+        "close": {
+          "width": 44,
+          "height": 44,
+          "top": 24,
+          "bottom": 68,
+          "left": 244,
+          "right": 288,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        }
+      },
+      "streaming": {
+        "cancelled": false,
+        "aborted": false
+      },
+      "draftRetained": true,
+      "resetOnReopen": true
+    },
+    "expand-320-dark": {
+      "initial": {
+        "width": 296,
+        "height": 511.1875,
+        "top": 28.40625,
+        "bottom": 539.59375,
+        "left": 12,
+        "right": 308,
+        "visible": true
+      },
+      "expanded": {
+        "width": 296,
+        "height": 544,
+        "top": 12,
+        "bottom": 556,
+        "left": 12,
+        "right": 308,
+        "visible": true
+      },
+      "controls": {
+        "expand": {
+          "width": 44,
+          "height": 44,
+          "top": 24,
+          "bottom": 68,
+          "left": 196,
+          "right": 240,
+          "visible": true
+        },
+        "close": {
+          "width": 44,
+          "height": 44,
+          "top": 24,
+          "bottom": 68,
+          "left": 244,
+          "right": 288,
+          "visible": true
+        },
+        "footer": {
+          "width": 296,
+          "height": 121,
+          "top": 435,
+          "bottom": 556,
+          "left": 12,
+          "right": 308,
+          "visible": true
+        }
+      },
+      "streaming": {
+        "cancelled": false,
+        "aborted": false
+      },
+      "draftRetained": true,
+      "resetOnReopen": true
+    },
+    "assist-adopt-undo-light": {
+      "explicitWorkspace": "00000000-0000-4000-8000-000000000002",
+      "rawOriginalPreserved": true,
+      "longOutputLength": 532,
+      "mergeLatestAndUndo": true,
+      "ambientFetches": 0
+    },
+    "assist-adopt-undo-dark": {
+      "explicitWorkspace": "00000000-0000-4000-8000-000000000002",
+      "rawOriginalPreserved": true,
+      "longOutputLength": 532,
+      "mergeLatestAndUndo": true,
+      "ambientFetches": 0
+    },
+    "assist-delivery-screenshots": {
+      "defaultAndExpandedCaptured": true
+    },
+    "assist-delivery-screenshots-dark": {
+      "defaultAndExpandedCaptured": true
+    }
+  },
+  "diagnostics": {
+    "long-output-clarification-light": {
+      "clarificationGeometry": {
+        "width": 300,
+        "height": 44,
+        "top": 314,
+        "bottom": 358,
+        "left": 45,
+        "right": 345,
+        "visible": true
+      },
+      "footer": {
+        "width": 366,
+        "height": 121,
+        "top": 549,
+        "bottom": 670,
+        "left": 12,
+        "right": 378,
+        "visible": true
+      }
+    },
+    "long-output-clarification-dark": {
+      "clarificationGeometry": {
+        "width": 300,
+        "height": 44,
+        "top": 311,
+        "bottom": 355,
+        "left": 45,
+        "right": 345,
+        "visible": true
+      },
+      "footer": {
+        "width": 366,
+        "height": 121,
+        "top": 549,
+        "bottom": 670,
+        "left": 12,
+        "right": 378,
+        "visible": true
+      }
+    },
+    "default-722-density-light": {
+      "summary": {
+        "width": 632,
+        "height": 36,
+        "top": 502,
+        "bottom": 538,
+        "left": 45,
+        "right": 677,
+        "visible": true
+      },
+      "body": {
+        "width": 672,
+        "height": 431,
+        "top": 114,
+        "bottom": 545,
+        "left": 25,
+        "right": 697,
+        "visible": true
+      },
+      "footer": {
+        "width": 672,
+        "height": 57,
+        "top": 545,
+        "bottom": 602,
+        "left": 25,
+        "right": 697,
+        "visible": true
+      },
+      "scroll": {
+        "top": 0,
+        "client": 431,
+        "content": 456
+      }
+    },
+    "default-722-density-dark": {
+      "summary": {
+        "width": 632,
+        "height": 36,
+        "top": 502,
+        "bottom": 538,
+        "left": 45,
+        "right": 677,
+        "visible": true
+      },
+      "body": {
+        "width": 672,
+        "height": 431,
+        "top": 114,
+        "bottom": 545,
+        "left": 25,
+        "right": 697,
+        "visible": true
+      },
+      "footer": {
+        "width": 672,
+        "height": 57,
+        "top": 545,
+        "bottom": 602,
+        "left": 25,
+        "right": 697,
+        "visible": true
+      },
+      "scroll": {
+        "top": 0,
+        "client": 431,
+        "content": 456
+      }
+    }
+  },
+  "failures": [],
+  "pageErrors": [],
+  "blockedExternalRequests": [],
+  "listener": {
+    "origin": "http://127.0.0.1:63475",
+    "pid": 86808,
+    "owned": true
+  },
+  "engine": "Playwright Chromium 145.0.7632.6",
+  "ownedBrowserProcesses": [
+    {
+      "id": 86812,
+      "type": "browser"
+    },
+    {
+      "id": 86837,
+      "type": "GPU"
+    },
+    {
+      "id": 86838,
+      "type": "network.mojom.NetworkService"
+    }
+  ],
+  "listenerClosed": true,
+  "browserClosed": true,
+  "finishedAt": "2026-11-07T15:07:50.841Z"
+}

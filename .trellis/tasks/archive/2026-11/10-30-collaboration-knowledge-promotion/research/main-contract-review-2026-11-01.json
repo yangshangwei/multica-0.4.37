@@ -1,0 +1,33 @@
+{
+  "reviewed_at": "2026-10-31T19:29:49.156578+00:00",
+  "reviewer": "main independently of contract-revision author",
+  "result": "passed_for_implementation",
+  "files": {
+    "prd.md": "76f42ea2c9f2e802b4b74900c7cb780ebb5a897c576a94287ed93ce1dd6e4578",
+    "design.md": "0e3631b6e35984c6d2cdde779bf123acf5c972fb8045c389aec33afe79f736cf",
+    "implement.md": "f09a750646c13889ba70129db929d68a7a808959c6a1c8c50c6fe02fd0c60595",
+    "implement.jsonl": "d029e29c2a94fa52efeeee49beea9b4c5b013ecb59096dd308ecf99f6469dd94",
+    "check.jsonl": "d029e29c2a94fa52efeeee49beea9b4c5b013ecb59096dd308ecf99f6469dd94"
+  },
+  "findings": {
+    "F1": "Parent KEY SHARE compatibility; separate role SHARE retained",
+    "F2": "Independent target counter; first insertion bounded; deletion prevents resurrection",
+    "F3": "Source-only intent append preserves existing authority linearization; worker never locks back into source; once-per-cause target hint; pending-only targets excluded; stable replay and 30s conservative projection lease",
+    "F4": "Shared request UUID namespace and cross-kind conflict/recovery regressions specified",
+    "K1_K5": "Exact cumulative session exposure, non-disclosing claims, separate current preparation/launch authorization, terminal refusal without automatic input replay, availability suppression and actor-owned content-free receipts retained"
+  },
+  "limits": [
+    "Design review only; no new product behavior verified.",
+    "G0/G1 bind committed deterministic contracts; supplementary runtime matrix tests still progressing.",
+    "G2 must pass before managed knowledge enablement; all product implementation/tests remain pending.",
+    "Original and new-runtime real-model acceptance remain separate and currently upstream-blocked."
+  ],
+  "reviewed_hash_scope": "Design content before status-only annotations",
+  "final_plan_hashes": {
+    "prd.md": "76f42ea2c9f2e802b4b74900c7cb780ebb5a897c576a94287ed93ce1dd6e4578",
+    "design.md": "2b7d864917ae8f5e8cbbdfdc0592e53e3e8c41985eff159790dc3c6a4b2bf72e",
+    "implement.md": "df6f6b90d6a79eb85daf85675537f97c974cdbf0c63c2d688588c8a628725aa6",
+    "implement.jsonl": "d029e29c2a94fa52efeeee49beea9b4c5b013ecb59096dd308ecf99f6469dd94",
+    "check.jsonl": "d029e29c2a94fa52efeeee49beea9b4c5b013ecb59096dd308ecf99f6469dd94"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "reviewed_at": "2026-11-05T04:41:07.346773+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Prospective scenario recorder, root criteria disposition and narrow operator-observation spec addition; no real execution admission",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "helper_sha256": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+  "private_copy_equal": true,
+  "findings_fixed": [
+    {
+      "file": "runtime_entry.py",
+      "issue": "os.walk default silently skips an unreadable directory, permitting an incomplete private inventory to match an equally omitted aggregate",
+      "fix": "Explicit onerror rethrows traversal errors; valid complete-tree digest format unchanged",
+      "validation": "Independent unreadable-subdirectory mock control passed"
+    },
+    {
+      "file": "test_runtime_entry.py",
+      "issue": "Initial drift test exercised separate primitives but not the actual recorder result path",
+      "fix": "Added synthetic main(run) control with postbindingValueError plus original commandexit1/canary; checks preserved paidcount and no next authorization",
+      "validation": "Independent actual-recorder control passed"
+    }
+  ],
+  "findings_not_fixed": [],
+  "verified_contracts": [
+    "Original full operator equality remains mandatory at admission in each build/check/run stage",
+    "Scenario/start/expectedlabels/paidcounts are explicit bound facts in root permit and before/after records",
+    "Per-file path/kind/hash/linktarget manifest exactly matches original digest on readable trees; no symlink traversal or cache-category exclusion",
+    "Five selected mutable metadata byte copies stay private and match exact manifest leaf hashes; absence explicit; mismatched bytes refuse",
+    "Post-run drift/inventory failures do not prevent separate actual result and accounting collection",
+    "Original command failure/incomplete/canary cannot become ready_for_independent_review; completewronganswers retain their actual verdict",
+    "H1 counts3measured and3fake seeds separately; H6 requires2measured pertrial and retains partial consumed counts",
+    "Every launch-record CLI path including fake seeds is compared to observed prepared copy; no paid inflation from seed files",
+    "Prior public outputs remain hashchecked, exclusive directories/markers avoid silent rerun",
+    "next_scenario_authorized alwaysfalse; drift flag requires root review; no automated registration or nextscenario",
+    "Product17framework/launcher/E0ahelper and historical outputs untouched",
+    "Spec new section reflects admissionversuspostobservation boundary and does not excuse proved environmentfaults"
+  ],
+  "verification": {
+    "command": "python3 -B .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/test_runtime_entry.py -v",
+    "independent_actual_tests": 11,
+    "exit_code": 0,
+    "syntax_AST": "pass",
+    "spec_diff_whitespace": "pass",
+    "controls_report_hash_matches_executor": true,
+    "Go_DB_Provider_calls": 0,
+    "operator_tree_scans": 0,
+    "lint_typecheck": "not applicable to task-private Python/docs; Python AST and11controls used"
+  },
+  "root_disposition_review": "Consistent with criteria review: originalE0afinishedpass and1consumed retained; helperexit1 and unprovenpostconfiguration claim unchanged; concrete future environmentfaults remain actionable",
+  "spec_scope": "Only Runtime operator observations and registered trial outcomes section reviewed; unrelated existing changes outside scope",
+  "remaining_operational_conditions": [
+    "review/commit successor and registration in frozen execution checkout",
+    "full current actual operator/source/CLI binding and fresh owned DB",
+    "explicit coordinated H1 window covering registered3measured launches",
+    "review every future drift before next invocation; no automatic rebaseline",
+    "original1/25consumed accounting; E0a cannot rerun"
+  ],
+  "next_scenario_authorized": false,
+  "hashes": {
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/runtime_entry.py": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/test_runtime_entry.py": "36cf63e92f3599ef2ef6596b19383c069a978f0a218996701c43af2d001fdc50",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/verification.json": "e9d7a43242e8ab2fafcbecb2d2549a1933e64cbe77a33a884c46840873c338d0",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/controls.txt": "79b1048643ef0c772799e8735507afe51342b4fbf79012d9e18bdb112cc40c59",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/README.md": "9a28ab1c6b43fb51f04e693595e2ccd4e65cf04811419fcdc0c598d1c96a6549",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/implementation-boundary.md": "0c5f79322d9f762b798c22cc0f7bca9361c667bebf987610dc8564ed6e577744",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/disposition.json": "af35572559f0db14540baacf9bc086f7f41b55f2a66577cc6dac1ce20df435ca",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/disposition.md": "c259ae90dae5b3916888b6f186186dd311b2e2c636d98252b2f1368c1020bc19",
+    ".trellis/spec/server/collaboration-context-experiments.md": "d351b94ebb9fd47ac813767b3867d4e5100d31412accec9ef48aa3d82948a722"
+  }
+}

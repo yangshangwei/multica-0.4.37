@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_collaboration_group_command_history ON collaboration_execution_group(command_id);

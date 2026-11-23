@@ -1,0 +1,89 @@
+--- a/check-bin/go
++++ b/check-bin/go
+@@ -21,37 +21,60 @@
+ 
+ global_args = []
+ command_index = 0
++test_command = False
+ while command_index < len(args):
+     arg = args[command_index]
+-    if arg == "-C":
++    if arg in ("-C", "--C"):
+         if command_index + 1 >= len(args):
+             refuse("missing Go working directory")
+         global_args += args[command_index:command_index + 2]
+         command_index += 2
+-    elif arg.startswith("-C="):
++    elif arg.startswith(("-C=", "--C=")):
+         global_args.append(arg)
++        command_index += 1
++    elif arg == "test" and not test_command:
++        test_command = True
+         command_index += 1
+     else:
+         break
+-command_args = args[command_index:]
+-if not command_args or command_args[0] != "test":
++command_args = ["test", *args[command_index:]] if test_command else args[command_index:]
++if not test_command:
+     os.execv(real_go, [real_go, *args])
+ 
+ # Only a real Go compile flag before -args/-- exempts TestMain execution.
+-value_flags = {"-timeout", "-p", "-parallel", "-run", "-skip", "-count", "-tags", "-cpu", "-coverprofile", "-coverpkg", "-vet", "-o", "-overlay", "-ldflags", "-gcflags", "-asmflags", "-toolexec", "-modfile", "-mod", "-pkgdir", "-exec", "-list"}
+-test_value_flags = {"-bench", "-benchtime", "-blockprofile", "-blockprofilerate", "-count", "-cpu", "-cpuprofile",
++value_flags = {"-C", "-p", "-asmflags", "-compiler", "-buildmode", "-gcflags", "-gccgoflags", "-mod", "-modfile",
++               "-overlay", "-installsuffix", "-ldflags", "-pgo", "-pkgdir", "-tags", "-toolexec",
++               "-debug-actiongraph", "-debug-runtime-trace", "-debug-trace", "-covermode", "-coverpkg", "-coverprofile",
++               "-o", "-exec", "-vet"}
++test_value_flags = {"-bench", "-benchtime", "-blockprofile", "-blockprofilerate", "-count", "-coverprofile", "-cpu", "-cpuprofile",
+                     "-fuzz", "-fuzzminimizetime", "-fuzztime", "-list", "-memprofile", "-memprofilerate",
+                     "-mutexprofile", "-mutexprofilefraction", "-outputdir", "-parallel", "-run", "-shuffle",
+                     "-skip", "-timeout", "-trace"}
+ value_flags |= test_value_flags | {"-test." + flag[1:] for flag in test_value_flags}
++boolean_flags = {"-n", "-x", "-a", "-asan", "-buildvcs", "-linkshared", "-modcacherw", "-msan", "-race", "-trimpath",
++                 "-work", "-cover", "-c", "-json"}
++test_boolean_flags = {"-artifacts", "-benchmem", "-failfast", "-fullpath", "-short", "-v"}
++boolean_flags |= test_boolean_flags | {"-test." + flag[1:] for flag in test_boolean_flags}
+ compile_only = False
++source_override = False
++package_list_closed = False
+ patterns = []
+ index = 1
+ while index < len(command_args):
+     arg = command_args[index]
+-    if arg in ("-args", "--"):
++    if arg in ("-args", "--args", "--"):
+         break
+-    if arg in value_flags:
++    if arg.startswith("--"):
++        arg = arg[1:]
++    name = arg.split("=", 1)[0]
++    if arg.startswith("-"):
++        if name not in value_flags and name not in boolean_flags:
++            refuse("unclassified Go test option")
++        package_list_closed = bool(patterns)
++        source_override = source_override or name in ("-modfile", "-overlay")
++    if name in value_flags and "=" not in arg:
++        if index + 1 >= len(command_args):
++            refuse("missing test flag value")
+         index += 2
+         continue
+     if arg == "-c":
+@@ -59,6 +82,8 @@
+     elif arg.startswith("-c="):
+         compile_only = arg.split("=", 1)[1].lower() in ("true", "t", "1")
+     elif not arg.startswith("-"):
++        if package_list_closed:
++            break
+         patterns.append(arg)
+     index += 1
+ if compile_only:
+@@ -69,6 +94,8 @@
+     os.environ.pop(key, None)
+ 
+ mode = os.environ.get("MULTICA_TASK_PACKAGE_DB_MODE")
++if mode == "0" and source_override:
++    refuse("recursive test source overrides are not permitted")
+ if mode == "0":
+     child_url = urlsplit(os.environ.get("DATABASE_URL", ""))
+     child_database = unquote(child_url.path.lstrip("/"))

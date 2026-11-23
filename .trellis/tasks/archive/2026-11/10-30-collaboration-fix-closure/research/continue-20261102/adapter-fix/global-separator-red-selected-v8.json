@@ -1,0 +1,12 @@
+{
+  "at": "2026-11-02T14:27:30.649989+00:00",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-go-global-separator-test.py"
+  ],
+  "exit_code": 1,
+  "expected": "6cases3fail3pass: two unmarked global separator tests bypass guard; recursive path skips package resolver",
+  "log_sha256": "d0855e0050ae8159d8c2c51fe5f1efef1093e4d3da452b35e63c5372a1d10ab6",
+  "actual_Go_TestMain_or_SQL_or_Provider": 0
+}

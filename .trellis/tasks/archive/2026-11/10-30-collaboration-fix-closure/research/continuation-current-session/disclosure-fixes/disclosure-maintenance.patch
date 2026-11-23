@@ -1,0 +1,280 @@
+diff --git a/e2e/collaboration-account-desktop.spec.ts b/e2e/collaboration-account-desktop.spec.ts
+index c27c39dba..c1b19ef94 100644
+--- a/e2e/collaboration-account-desktop.spec.ts
++++ b/e2e/collaboration-account-desktop.spec.ts
+@@ -9,11 +9,12 @@ import { TestApiClient } from "./fixtures";
+ import { openDesktop, deepLink, selectDesktopWorkspace, nativeScreenshot, captureNativeSection, responseEvidence, type NativeHarness } from "./fixtures/collaboration-native";
+ import { seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
+ import { createCollaborationWithInitialFields, exerciseCollaborationDiscussion, exerciseCollaborationFields,
+-  seedCollaborationEditing } from "./fixtures/collaboration-editing";
++  revealCollaborationEditingAction, seedCollaborationEditing } from "./fixtures/collaboration-editing";
+ import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, recordedAccountPath,
+   removeRecordViewer, seedCollaborationRecordJourney, showRecordedUsage } from "./fixtures/collaboration-records";
+ import { exerciseCollaborationResourceOffers, resourceOfferAccountPath, seedCollaborationResourceOfferJourney } from "./fixtures/collaboration-resource-offers";
+ import { exerciseCollaborationCommandHistory } from "./fixtures/collaboration-command-history";
++import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+ 
+ // Existing-record tests use a DB seed; the named creation/attachment test below
+ // uses the actual gated creation API and an explicitly enabled isolated server.
+@@ -355,6 +356,7 @@ test("Desktop creates a private collaboration issue, downloads through native IP
+     await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
+     expect((await snapshot(page)).accountGroup!.tabs).toHaveLength(1);
+     expect((await snapshot(page)).accountGroup!.tabs[0].url).toContain(`issue=${issue.id}`);
++    await revealCollaborationDisclosure(page, "Attachments");
+     const attachments = page.getByRole("region", { name: "Attachments", exact: true });
+     await attachments.getByRole("button", { name: "Preview desktop-note.txt", exact: true }).click();
+     await expect(page.getByText(bytes.toString(), { exact: true })).toBeVisible();
+@@ -382,6 +384,7 @@ test("Desktop creates a private collaboration issue, downloads through native IP
+     app = native.app; page = native.page;
+     await native.start();
+     await expect(page.getByRole("heading", { name: title, exact: true })).toBeVisible();
++    await revealCollaborationDisclosure(page, "Attachments");
+     await expect(page.getByRole("region", { name: "Attachments", exact: true }).getByRole("button", { name: "Preview desktop-note.txt", exact: true })).toBeVisible();
+     expect((await snapshot(page)).accountGroup!.tabs).toHaveLength(1);
+     expect((await snapshot(page)).accountGroup!.tabs[0].url).toContain(`issue=${issue.id}`);
+@@ -406,6 +409,7 @@ test("Desktop child links, recorded pages and result notifications survive popou
+     const source = await openDesktop(sourceProfile, { token: records.member.getToken()!, deepLink: `multica://account${recordedAccountPath(records).slice("/account".length)}` });
+     app = source.app;
+     await source.start();
++    await revealCollaborationDisclosure(source.page, "Sub-issues");
+     const sourceChildren = source.page.getByRole("region", { name: "Sub-issues", exact: true });
+     const childLink = sourceChildren.getByRole("link", { name: `${records.child.identifier} ${records.child.title}`, exact: true });
+     await expect(childLink).toBeVisible();
+@@ -419,6 +423,7 @@ test("Desktop child links, recorded pages and result notifications survive popou
+     await attachRecordedChild(source.page, records);
+     await expect.poll(async () => (await records.member.requestJSON<{ parent_issue_id: string | null }>(`/api/issues/${records.child.id}`)).parent_issue_id).toBe(records.issue.id);
+     await deepLink(app, recordedAccountPath(records));
++    await revealCollaborationDisclosure(source.page, "Sub-issues");
+     await expect(childLink).toBeVisible();
+     const copied = await copyNativeAccountLink(app, source.page, recordedAccountPath(records), testInfo, "source-account");
+     expect(new URL(copied).pathname + new URL(copied).search).toBe(recordedAccountPath(records));
+@@ -436,6 +441,7 @@ test("Desktop child links, recorded pages and result notifications survive popou
+     expect(sourceAccountUrl.pathname + sourceAccountUrl.search + sourceAccountUrl.hash).toBe(recordedAccountPath(records, true));
+     const copiedRun = new URL(await copyNativeAccountLink(app, sourcePopup, recordedAccountPath(records, true), testInfo, "source-run"));
+     expect(copiedRun.pathname + copiedRun.search + copiedRun.hash).toBe(recordedAccountPath(records, true));
++    await revealCollaborationDisclosure(sourcePopup, "Sub-issues");
+     await expect(sourcePopup.getByRole("region", { name: "Sub-issues", exact: true }).getByRole("link", { name: `${records.child.identifier} ${records.child.title}`, exact: true })).toBeVisible();
+     await showRecordedUsage(sourcePopup, records.runId);
+     await nativeScreenshot(app, sourcePopup, testInfo.outputPath("desktop-record-source-popout.png"));
+@@ -450,6 +456,7 @@ test("Desktop child links, recorded pages and result notifications survive popou
+     const viewer = await openDesktop(viewerProfile, { token: records.viewer.getToken()!, deepLink: `multica://account${new URL(copied).search}` });
+     app = viewer.app;
+     await viewer.start();
++    await revealCollaborationDisclosure(viewer.page, "Sub-issues");
+     const outsideChildren = viewer.page.getByRole("region", { name: "Sub-issues", exact: true });
+     await expect(outsideChildren.getByText(records.child.title, { exact: true })).toBeVisible();
+     await expect(outsideChildren.getByRole("link")).toHaveCount(0);
+@@ -506,6 +513,8 @@ test("Desktop child links, recorded pages and result notifications survive popou
+     await restarted.page.getByText("Open as new window", { exact: true }).click();
+     const popup = await popupReady;
+     await expect(popup.getByText(records.input, { exact: true })).toBeVisible();
++    await revealCollaborationDisclosure(popup, "Sub-issues");
++    await expect(popup.getByRole("region", { name: "Sub-issues", exact: true }).getByText(records.child.title, { exact: true })).toBeVisible();
+     await expect(popup.getByRole("region", { name: "Sub-issues", exact: true }).getByRole("link")).toHaveCount(0);
+     await nativeScreenshot(app, popup, testInfo.outputPath("desktop-records-outside-popout.png"));
+     await removeRecordViewer(records);
+@@ -550,7 +559,7 @@ test("Desktop authors initial fields and preserves discussion through shared edi
+     const window = await app.browserWindow(native.page);
+     await window.evaluate((target) => target.webContents.setZoomFactor(2));
+     await window.dispose();
+-    await native.page.getByRole("button", { name: "Edit issue", exact: true }).click();
++    await (await revealCollaborationEditingAction(native.page, "Edit issue")).click();
+     const editDescription = native.page.getByLabel("Description", { exact: true });
+     await editDescription.evaluate((element) => element.scrollIntoView({ block: "center" }));
+     await expect(editDescription).toBeInViewport({ ratio: 1 });
+@@ -584,6 +593,7 @@ test("Desktop resource owners authorize, withdraw and commit a held configuratio
+     const page = native.page;
+     await native.start();
+     await expect(page.getByRole("heading", { name: resource.title, exact: true })).toBeVisible();
++    await revealCollaborationDisclosure(page, "AI execution");
+     await page.getByRole("button", { name: "Manage AI resources", exact: true }).click();
+     await page.getByRole("button", { name: "Add AI target", exact: true }).click();
+     await page.getByLabel("Resource workspace", { exact: true }).selectOption(resource.workspace.id);
+diff --git a/e2e/collaboration-delivery-web.spec.ts b/e2e/collaboration-delivery-web.spec.ts
+index 782f00ac7..f30af8d64 100644
+--- a/e2e/collaboration-delivery-web.spec.ts
++++ b/e2e/collaboration-delivery-web.spec.ts
+@@ -4,6 +4,7 @@ import { test, expect, type Page } from "@playwright/test";
+ import pg from "pg";
+ import { TestApiClient } from "./fixtures";
+ import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
++import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+ 
+ const apiUrl = process.env.COLLABORATION_E2E_API_URL;
+ type Snapshot = { id: string; collaboration_revision: string; lifecycle_epoch: string; write_context: { participant_epoch: string; account_epoch: string } };
+@@ -144,6 +145,7 @@ test("Web creates one private issue after lost upload/create responses and revok
+     const commentReceipt = await posted.json();
+     expect(commentReceipt.attachment_ids).toHaveLength(1);
+     const imageId = commentReceipt.attachment_ids[0];
++    await revealCollaborationDisclosure(recipientPage, "Attachments");
+     const recipientAttachments = recipientPage.getByRole("region", { name: "Attachments", exact: true });
+     await expect(recipientAttachments.getByRole("button", { name: "Preview comment-preview.png", exact: true })).toBeVisible();
+ 
+@@ -237,7 +239,7 @@ test("Web explicitly resubmits rejected creation input without losing files or r
+     const rejectedInput: unknown = refusal.request().postDataJSON();
+     expect(await (await resultResponse).json()).toEqual({ request_id: createKeys[0], source_workspace_id: workspace.id,
+       actor_user_id: actor.id, outcome: "rejected", code: "account_unavailable" });
+-    const message = "The issue was not created. Your draft and files are preserved; you can submit again.";
++    const message = "The issue was not created. Your draft and files are preserved.";
+     await expect(dialog.getByText(message, { exact: true })).toBeVisible();
+     await expect(dialog.getByLabel("Title", { exact: true })).toBeEnabled();
+     await expect(dialog.getByRole("checkbox", { name: "Include correction-note.txt", exact: true })).toBeChecked();
+diff --git a/e2e/collaboration-knowledge.spec.ts b/e2e/collaboration-knowledge.spec.ts
+index f5dd0622a..0a3c32e67 100644
+--- a/e2e/collaboration-knowledge.spec.ts
++++ b/e2e/collaboration-knowledge.spec.ts
+@@ -8,6 +8,7 @@ import { setCollaborationGate, legacyLaneMissing } from "./fixtures/lane-guards"
+ import { deepLink, openDesktop, type NativeHarness } from "./fixtures/collaboration-native";
+ import { seedCollaborationRecordJourney } from "./fixtures/collaboration-records";
+ import { memoryAuthority } from "./fixtures/collaboration-memory";
++import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+ import { apiApprove, apiProposal, approveKnowledge, captureKnowledge, chooseCandidate, fillKnowledge, openKnowledge,
+   observeKnowledgeHints, openTarget, reviewPanel, seedKnowledge, selectKnowledgeOption, sourcePanel, submitKnowledge, targetItems, targetPanel,
+   type KnowledgeFixture } from "./fixtures/collaboration-knowledge";
+@@ -301,6 +302,7 @@ test("Desktop native source review and independent project/workspace contributio
+     await deepLink(native.app, f.path);
+     await native.page.bringToFront();
+     await expect.poll(() => connected.length, { timeout: 10_000 }).toBeGreaterThan(0);
++    await revealCollaborationDisclosure(native.page, "Knowledge candidates");
+     await expect(sourcePanel(native.page)).toBeVisible();
+     const first = await externalProposal(native.page, f);
+     expect(native.errors).toEqual([]);
+@@ -313,6 +315,7 @@ test("Desktop native source review and independent project/workspace contributio
+     traceStarted = true;
+     await native.start();
+     await deepLink(native.app, f.path);
++    await revealCollaborationDisclosure(native.page, "Knowledge candidates");
+     await ownerVersions(native.page, f, first, info, native);
+     const previous = (await targetItems(f.owner, f.workspace.id)).knowledge_revision;
+     await f.owner.requestJSON(`${f.root}/memory`, { method: "PUT", headers: { "Idempotency-Key": randomUUID() }, body: { expected_version: "1", content: "Replacement source without the old conclusion." } });
+diff --git a/e2e/collaboration-records-web.spec.ts b/e2e/collaboration-records-web.spec.ts
+index 9038147c6..bc4adafaa 100644
+--- a/e2e/collaboration-records-web.spec.ts
++++ b/e2e/collaboration-records-web.spec.ts
+@@ -1,5 +1,6 @@
+ import { test, expect } from "@playwright/test";
+ import { authenticateCollaborationEditor } from "./fixtures/collaboration-editing";
++import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+ import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, recordedAccountPath,
+   removeRecordViewer, seedCollaborationRecordJourney, showRecordedUsage } from "./fixtures/collaboration-records";
+ 
+@@ -18,6 +19,7 @@ test("Web shares ordinary child references and retained run records through acco
+   await authenticateCollaborationEditor(page, fixture.member.getToken()!);
+   await page.goto(`/${fixture.workspace.slug}/issues/${fixture.issue.id}`);
+   await expect(page.getByRole("heading", { name: fixture.issue.title, exact: true })).toBeVisible();
++  await revealCollaborationDisclosure(page, "Sub-issues");
+   const children = page.getByRole("region", { name: "Sub-issues", exact: true });
+   const childLink = children.getByRole("link", { name: `${fixture.child.identifier} ${fixture.child.title}`, exact: true });
+   await expect(childLink).toHaveAttribute("href", `/${fixture.workspace.slug}/issues/${fixture.child.id}`);
+@@ -43,6 +45,7 @@ test("Web shares ordinary child references and retained run records through acco
+   await expect(page).toHaveURL(new RegExp(`#run-${fixture.runId}$`));
+   await expect(sourceRun.getByText(fixture.input, { exact: true })).toBeVisible();
+   await page.goto(`/${fixture.workspace.slug}/issues/${fixture.issue.id}`);
++  await revealCollaborationDisclosure(page, "Sub-issues");
+   await expect(childLink).toBeVisible();
+ 
+   const outsideContext = await browser.newContext();
+@@ -60,6 +63,7 @@ test("Web shares ordinary child references and retained run records through acco
+     }));
+     await authenticateCollaborationEditor(outside, fixture.viewer.getToken()!);
+     await outside.goto(sharedLink);
++    await revealCollaborationDisclosure(outside, "Sub-issues");
+     const outsideChildren = outside.getByRole("region", { name: "Sub-issues", exact: true });
+     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();
+     await expect(outsideChildren.getByRole("link")).toHaveCount(0);
+@@ -79,6 +83,7 @@ test("Web shares ordinary child references and retained run records through acco
+     expect(await fixture.source.requestJSON(`/api/collaboration/issues/${fixture.issue.id}`)).toMatchObject({ collaboration_revision: before.collaboration_revision });
+ 
+     await outside.reload();
++    await revealCollaborationDisclosure(outside, "Sub-issues");
+     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();
+     await outside.getByRole("button", { name: /Notifications/ }).click();
+     const notification = outside.getByRole("listitem").filter({ has: outside.getByText("AI execution failed", { exact: true }) });
+diff --git a/e2e/collaboration-resources-web.spec.ts b/e2e/collaboration-resources-web.spec.ts
+index 8a204be49..ce9e3daa8 100644
+--- a/e2e/collaboration-resources-web.spec.ts
++++ b/e2e/collaboration-resources-web.spec.ts
+@@ -1,5 +1,6 @@
+ import { test, expect } from "@playwright/test";
+ import { authenticateCollaborationResourcesPage, seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
++import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+ 
+ test.use({ actionTimeout: 15_000, screenshot: "only-on-failure", trace: "retain-on-failure" });
+ 
+@@ -16,6 +17,7 @@ test("resource owners register, authorize, withdraw and switch while participant
+   const path = `/account?view=participating&issue=${fixture.issueId}`;
+   await page.goto(path);
+   await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
++  await revealCollaborationDisclosure(page, "AI execution");
+   await page.getByRole("button", { name: "Manage AI resources", exact: true }).click();
+   await page.getByRole("button", { name: "Add AI target", exact: true }).click();
+   await page.getByLabel("Resource workspace", { exact: true }).selectOption(fixture.workspace.id);
+@@ -77,6 +79,7 @@ test("resource owners register, authorize, withdraw and switch while participant
+     await authenticateCollaborationResourcesPage(peerPage, fixture.peer);
+     await peerPage.goto(new URL(path, page.url()).href);
+     await expect(peerPage.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
++    await revealCollaborationDisclosure(peerPage, "AI execution");
+     await peerPage.getByRole("button", { name: "Manage AI resources", exact: true }).click();
+     await expect(peerPage.getByRole("heading", { name: fixture.agentName, exact: true })).toBeVisible();
+     await expect(peerPage.getByRole("button", { name: "Add AI target", exact: true })).toHaveCount(0);
+diff --git a/e2e/fixtures/collaboration-knowledge.ts b/e2e/fixtures/collaboration-knowledge.ts
+index 8a3f7e347..89c8ef92a 100644
+--- a/e2e/fixtures/collaboration-knowledge.ts
++++ b/e2e/fixtures/collaboration-knowledge.ts
+@@ -6,6 +6,7 @@ import { TestApiClient } from "../fixtures";
+ import { authenticateCollaborationEditor } from "./collaboration-editing";
+ import { memoryAuthority, memoryEnvironment } from "./collaboration-memory";
+ import { nativeScreenshot, selectDesktopWorkspace } from "./collaboration-native";
++import { revealCollaborationDisclosure } from "./collaboration-disclosures";
+ 
+ export const digest = (text: string) => createHash("sha256").update(text).digest("hex");
+ export const sourcePanel = (page: Page) => page.getByRole("region", { name: "Knowledge candidates", exact: true });
+@@ -90,6 +91,7 @@ export async function openKnowledge(page: Page, actor: TestApiClient, path: stri
+   observeKnowledgeHints(page);
+   await authenticateCollaborationEditor(page, actor.getToken()!);
+   await page.goto(path);
++  await revealCollaborationDisclosure(page, "Knowledge candidates");
+   await expect(sourcePanel(page)).toBeVisible();
+ }
+ 
+diff --git a/e2e/fixtures/collaboration-resource-offers.ts b/e2e/fixtures/collaboration-resource-offers.ts
+index 36b6ecc3e..79abf4653 100644
+--- a/e2e/fixtures/collaboration-resource-offers.ts
++++ b/e2e/fixtures/collaboration-resource-offers.ts
+@@ -3,6 +3,7 @@ import pg from "pg";
+ import { expect, type Locator, type Page } from "@playwright/test";
+ import { TestApiClient } from "../fixtures";
+ import type { CollaborationResourceSnapshot } from "./collaboration-resources";
++import { revealCollaborationDisclosure } from "./collaboration-disclosures";
+ 
+ interface OfferIssue extends CollaborationResourceSnapshot {
+   session: { queue_state: string; control_version: string };
+@@ -213,6 +214,7 @@ export async function exerciseCollaborationResourceOffers(ownerPage: Page, organ
+     });
+     await adapter.navigate(page, resourceOfferAccountPath(fixture));
+     await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
++    await revealCollaborationDisclosure(page, "AI execution");
+     await page.getByRole("button", { name: "Manage AI resources", exact: true }).click();
+     await expect(page.getByText("No resources have been offered.", { exact: true })).toBeVisible();
+   }
+diff --git a/e2e/fixtures/collaboration-disclosures.ts b/e2e/fixtures/collaboration-disclosures.ts
+new file mode 100644
+index 000000000..e356b56c8
+--- /dev/null
++++ b/e2e/fixtures/collaboration-disclosures.ts
+@@ -0,0 +1,15 @@
++import { expect, type Page } from "@playwright/test";
++
++type CollaborationDisclosure = "Attachments" | "Sub-issues" | "Knowledge candidates" | "AI execution" | "Activity" | "More actions";
++
++// Use only for ordinary discovery. Anchors and pending requests must reveal
++// their own sections without this helper so those recovery assertions stay real.
++export async function revealCollaborationDisclosure(page: Page, name: CollaborationDisclosure) {
++  const exactName = new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`);
++  const summary = page.locator("details > summary:visible").filter({ hasText: exactName });
++  await expect(summary).toBeVisible();
++  const disclosure = summary.locator("..");
++  if (await disclosure.getAttribute("open") === null) await summary.click();
++  await expect(disclosure).toHaveAttribute("open", "");
++  return disclosure;
++}

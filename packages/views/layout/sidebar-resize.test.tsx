@@ -1,10 +1,11 @@
-import { fireEvent } from "@testing-library/react";
+import { act, fireEvent } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   Sidebar,
   SidebarProvider,
   SidebarRail,
+  SidebarTrigger,
   useSidebar,
 } from "@multica/ui/components/ui/sidebar";
 import { renderWithI18n } from "../test/i18n";
@@ -144,5 +145,108 @@ describe("left sidebar resizing", () => {
     expect(setItem).not.toHaveBeenCalled();
     expect(wrapper).not.toHaveAttribute("data-sidebar-resizing");
     expect(document.documentElement).not.toHaveAttribute("data-sidebar-resizing");
+  });
+
+  it("preserves the expanded width when a collapsed icon rail receives a pointer gesture", () => {
+    localStorage.setItem("sidebar_width", "320");
+    const setItem = vi.spyOn(Storage.prototype, "setItem");
+    const { container } = renderWithI18n(
+      <SidebarProvider defaultOpen={false}>
+        <Sidebar variant="inset" collapsible="icon">
+          <SidebarTrigger />
+          <SidebarRail />
+        </Sidebar>
+      </SidebarProvider>,
+    );
+    const wrapper = container.querySelector<HTMLElement>("[data-slot='sidebar-wrapper']")!;
+    const sidebarContainer = container.querySelector<HTMLElement>("[data-slot='sidebar-container']")!;
+    const rail = container.querySelector<HTMLButtonElement>("[data-slot='sidebar-rail']")!;
+    vi.spyOn(sidebarContainer, "getBoundingClientRect").mockReturnValue(new DOMRect(0, 0, 64, 800));
+
+    fireEvent.pointerDown(rail, { button: 0, clientX: 64, isPrimary: true, pointerId: 9 });
+    fireEvent.pointerMove(document, { buttons: 1, clientX: 100, pointerId: 9 });
+    fireEvent.pointerUp(document, { pointerId: 9 });
+
+    expect(wrapper).not.toHaveAttribute("data-sidebar-resizing");
+    expect(setItem).not.toHaveBeenCalled();
+    fireEvent.click(container.querySelector("[data-slot='sidebar-trigger']")!);
+    expect(container.querySelector("[data-slot='sidebar']")).toHaveAttribute("data-state", "expanded");
+    expect(wrapper.style.getPropertyValue("--sidebar-width")).toBe("320px");
+  });
+
+  it("cancels an active width preview when the sidebar folds to its icon rail", () => {
+    const setItem = vi.spyOn(Storage.prototype, "setItem");
+    const { container } = renderWithI18n(
+      <SidebarProvider>
+        <Sidebar variant="inset" collapsible="icon">
+          <SidebarTrigger />
+          <SidebarRail />
+        </Sidebar>
+      </SidebarProvider>,
+    );
+    const wrapper = container.querySelector<HTMLElement>("[data-slot='sidebar-wrapper']")!;
+    const sidebarContainer = container.querySelector<HTMLElement>("[data-slot='sidebar-container']")!;
+    const gap = container.querySelector<HTMLElement>("[data-slot='sidebar-gap']")!;
+    const rail = container.querySelector<HTMLButtonElement>("[data-slot='sidebar-rail']")!;
+    rail.setPointerCapture = vi.fn();
+    rail.hasPointerCapture = vi.fn(() => true);
+    rail.releasePointerCapture = vi.fn();
+    vi.spyOn(sidebarContainer, "getBoundingClientRect").mockReturnValue(new DOMRect(0, 0, 256, 800));
+
+    fireEvent.pointerDown(rail, { button: 0, clientX: 256, isPrimary: true, pointerId: 10 });
+    fireEvent.pointerMove(document, { buttons: 1, clientX: 300, pointerId: 10 });
+    expect(gap.style.width).toBe("300px");
+    fireEvent.click(container.querySelector("[data-slot='sidebar-trigger']")!);
+
+    expect(gap.style.width).toBe("");
+    expect(sidebarContainer.style.width).toBe("");
+    expect(wrapper).not.toHaveAttribute("data-sidebar-resizing");
+    expect(document.documentElement).not.toHaveAttribute("data-sidebar-resizing");
+    fireEvent.pointerUp(document, { pointerId: 10 });
+    expect(setItem).not.toHaveBeenCalled();
+    expect(wrapper.style.getPropertyValue("--sidebar-width")).toBe("256px");
+    expect(rail.releasePointerCapture).toHaveBeenCalledWith(10);
+  });
+
+  it("cancels the width preview when the in-flow sidebar becomes a compact sheet", () => {
+    const mediaEvents = new EventTarget();
+    vi.stubGlobal("innerWidth", 1440);
+    vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: mediaEvents.addEventListener.bind(mediaEvents),
+      removeEventListener: mediaEvents.removeEventListener.bind(mediaEvents),
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: mediaEvents.dispatchEvent.bind(mediaEvents),
+    }));
+    const setItem = vi.spyOn(Storage.prototype, "setItem");
+    const { container } = renderWithI18n(
+      <SidebarProvider>
+        <Sidebar variant="inset" collapsible="icon"><SidebarRail /></Sidebar>
+      </SidebarProvider>,
+    );
+    const wrapper = container.querySelector<HTMLElement>("[data-slot='sidebar-wrapper']")!;
+    const sidebarContainer = container.querySelector<HTMLElement>("[data-slot='sidebar-container']")!;
+    const gap = container.querySelector<HTMLElement>("[data-slot='sidebar-gap']")!;
+    const rail = container.querySelector<HTMLButtonElement>("[data-slot='sidebar-rail']")!;
+    vi.spyOn(sidebarContainer, "getBoundingClientRect").mockReturnValue(new DOMRect(0, 0, 256, 800));
+
+    fireEvent.pointerDown(rail, { button: 0, clientX: 256, isPrimary: true, pointerId: 11 });
+    fireEvent.pointerMove(document, { buttons: 1, clientX: 300, pointerId: 11 });
+    expect(gap.style.width).toBe("300px");
+    act(() => {
+      vi.stubGlobal("innerWidth", 900);
+      mediaEvents.dispatchEvent(new Event("change"));
+    });
+
+    expect(container.querySelector("[data-slot='sidebar-container']")).toBeNull();
+    expect(gap.style.width).toBe("");
+    expect(sidebarContainer.style.width).toBe("");
+    expect(wrapper).not.toHaveAttribute("data-sidebar-resizing");
+    expect(document.documentElement).not.toHaveAttribute("data-sidebar-resizing");
+    fireEvent.pointerUp(document, { pointerId: 11 });
+    expect(setItem).not.toHaveBeenCalled();
   });
 });

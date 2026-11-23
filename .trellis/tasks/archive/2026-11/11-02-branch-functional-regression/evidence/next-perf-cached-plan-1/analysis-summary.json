@@ -1,0 +1,982 @@
+{
+  "at": "2026-11-02T08:00:03.623900+00:00",
+  "status": "PASS_DIAGNOSTIC_ONLY",
+  "scope": "Actual canonical protocol-prepared plans, identical original args, same backend; task-only transaction rollback and ANALYZE comparison",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "database": "multica_func7af9_next_cached_diag_1",
+  "backend_pid": 2643,
+  "phases": [
+    {
+      "mode": "original",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 2643,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": true,
+      "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+      "prepared_prepare_time": "2026-11-02T07:53:28.054363+00:00",
+      "generic_plans_delta": 995,
+      "custom_plans_delta": 5,
+      "prepared_before_counts": {
+        "generic_plans": 0,
+        "custom_plans": 0
+      },
+      "prepared_after_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 670.134,
+      "root_actual_total_ms_sum": 669.739,
+      "client_batch_ms": 726.066125,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000,
+        "Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 3003000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 3003,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = '45cd17b7-b0af-4102-a2a7-e0ed782a634a'::uuid)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4023,
+        "WAL FPI": 0,
+        "WAL Bytes": 1191614,
+        "Shared Hit Blocks": 363657,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 111,
+        "Shared Written Blocks": 111
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 540672,
+          "n_dead_tup": 1000,
+          "n_live_tup": 469,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 2736128,
+          "n_dead_tup": 0,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1024000,
+          "n_dead_tup": 1000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-original-LeaveDeletedIssueIterationParticipationBatch.json"
+    },
+    {
+      "mode": "original",
+      "phase": "JoinIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 2643,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": true,
+      "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+      "prepared_prepare_time": "2026-11-02T07:53:24.259813+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 1995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 249.11,
+      "root_actual_total_ms_sum": 248.918,
+      "client_batch_ms": 309.085833,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Nested Loop": 1000,
+        "Result": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 1001000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 1001,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = $1)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4048,
+        "WAL FPI": 0,
+        "WAL Bytes": 482389,
+        "Shared Hit Blocks": 120523,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 31,
+        "Shared Written Blocks": 31
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 540672,
+          "n_dead_tup": 1000,
+          "n_live_tup": 469,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 3555328,
+          "n_dead_tup": 0,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1933312,
+          "n_dead_tup": 1000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-original-JoinIterationParticipationBatch.json"
+    },
+    {
+      "mode": "cache_control",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 2643,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+      "prepared_prepare_time": "2026-11-02T07:53:28.054363+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 1995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 694.49,
+      "root_actual_total_ms_sum": 694.102,
+      "client_batch_ms": 746.577458,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000,
+        "Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 3003000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 3003,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = $2)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4016,
+        "WAL FPI": 0,
+        "WAL Bytes": 1186175,
+        "Shared Hit Blocks": 366506,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 111,
+        "Shared Written Blocks": 111
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 819200,
+          "n_dead_tup": 2000,
+          "n_live_tup": 469,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 4374528,
+          "n_dead_tup": 2001,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1998848,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-cache_control-LeaveDeletedIssueIterationParticipationBatch.json"
+    },
+    {
+      "mode": "cache_control",
+      "phase": "JoinIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 2643,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+      "prepared_prepare_time": "2026-11-02T07:53:24.259813+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 1995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 2995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 248.412,
+      "root_actual_total_ms_sum": 248.241,
+      "client_batch_ms": 305.980375,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Nested Loop": 1000,
+        "Result": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 1001000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 1001,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = $1)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4017,
+        "WAL FPI": 0,
+        "WAL Bytes": 388648,
+        "Shared Hit Blocks": 119335,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 11,
+        "Shared Written Blocks": 11
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 819200,
+          "n_dead_tup": 2000,
+          "n_live_tup": 469,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 5193728,
+          "n_dead_tup": 2001,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 2908160,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-cache_control-JoinIterationParticipationBatch.json"
+    },
+    {
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 2643,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+      "prepared_prepare_time": "2026-11-02T07:53:28.054363+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 1995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 2995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 23.32,
+      "root_actual_total_ms_sum": 22.766,
+      "client_batch_ms": 78.6355,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Limit": 1000,
+        "Index Scan": 2000
+      },
+      "iteration_event_rows_visited": 1000,
+      "event_scan_first": {
+        "Node Type": "Index Scan",
+        "Index Name": "iteration_event_sequence",
+        "Scan Direction": "Backward",
+        "Plan Rows": 1502,
+        "Actual Rows": 1,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Index Cond": "(iteration_id = $3)",
+        "Filter": "(workspace_id = $2)"
+      },
+      "event_scan_shapes": {
+        "Index Scan Backward": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4033,
+        "WAL FPI": 0,
+        "WAL Bytes": 1188167,
+        "Shared Hit Blocks": 18279,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 111,
+        "Shared Written Blocks": 111
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": 0,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 134,
+          "reltuples": 1000,
+          "heap_bytes": 1097728,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 734,
+          "reltuples": 3004,
+          "heap_bytes": 6012928,
+          "n_dead_tup": 4002,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 366,
+          "reltuples": 1000,
+          "heap_bytes": 2998272,
+          "n_dead_tup": 4997,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 53,
+      "artifact": "plans-after_analyze-LeaveDeletedIssueIterationParticipationBatch.json"
+    },
+    {
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 2643,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+      "prepared_prepare_time": "2026-11-02T07:53:24.259813+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 2995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 3995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 12.105,
+      "root_actual_total_ms_sum": 11.86,
+      "client_batch_ms": 60.36175,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Nested Loop": 1000,
+        "Result": 1000,
+        "Limit": 1000,
+        "Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 1000,
+      "event_scan_first": {
+        "Node Type": "Index Scan",
+        "Index Name": "iteration_event_sequence",
+        "Scan Direction": "Backward",
+        "Plan Rows": 2002,
+        "Actual Rows": 1,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Index Cond": "(iteration_id = $2)",
+        "Filter": "(workspace_id = $1)"
+      },
+      "event_scan_shapes": {
+        "Index Scan Backward": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4025,
+        "WAL FPI": 0,
+        "WAL Bytes": 392184,
+        "Shared Hit Blocks": 11628,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 11,
+        "Shared Written Blocks": 11
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": 0,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 134,
+          "reltuples": 1000,
+          "heap_bytes": 1097728,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 834,
+          "reltuples": 4004,
+          "heap_bytes": 6832128,
+          "n_dead_tup": 4002,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 477,
+          "reltuples": 1000,
+          "heap_bytes": 3907584,
+          "n_dead_tup": 4997,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 53,
+      "artifact": "plans-after_analyze-JoinIterationParticipationBatch.json"
+    }
+  ],
+  "explicit_analyze_commands": [
+    {
+      "at": "2026-11-02T07:53:32.813979Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "sql": "ANALYZE public.iteration_event"
+    },
+    {
+      "at": "2026-11-02T07:53:32.818544Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "sql": "ANALYZE public.iteration_participation"
+    },
+    {
+      "at": "2026-11-02T07:53:32.826129Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "sql": "ANALYZE public.issue"
+    },
+    {
+      "at": "2026-11-02T07:53:32.82679Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "sql": "ANALYZE public.agent_task_queue"
+    },
+    {
+      "at": "2026-11-02T07:53:33.031689Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "sql": "ANALYZE public.iteration_event"
+    },
+    {
+      "at": "2026-11-02T07:53:33.036064Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "sql": "ANALYZE public.iteration_participation"
+    },
+    {
+      "at": "2026-11-02T07:53:33.043344Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "sql": "ANALYZE public.issue"
+    },
+    {
+      "at": "2026-11-02T07:53:33.043651Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "sql": "ANALYZE public.agent_task_queue"
+    }
+  ],
+  "ordered_canonical_commands": 3058,
+  "command_kinds": {
+    "exec": 9,
+    "queryrow": 2022,
+    "query": 1020,
+    "batch": 7
+  },
+  "membership_batches": [
+    {
+      "name": "AppendIterationLifecycleEventBatch",
+      "statements": 1000
+    },
+    {
+      "name": "LeaveDeletedIssueIterationParticipationBatch",
+      "statements": 1000
+    },
+    {
+      "name": "AdvanceIterationScopeRevisionBatch",
+      "statements": 1000
+    },
+    {
+      "name": "AppendIterationLifecycleEventBatch",
+      "statements": 1000
+    },
+    {
+      "name": "JoinIterationParticipationBatch",
+      "statements": 1000
+    },
+    {
+      "name": "AdvanceIterationScopeRevisionBatch",
+      "statements": 1000
+    },
+    {
+      "name": "SetIssueCurrentIterationBatch",
+      "statements": 1000
+    }
+  ],
+  "full_transaction_rollback": [
+    {
+      "mode": "original",
+      "equal": true,
+      "fingerprint": "d669678397a615f160bb8087c6580fbe",
+      "column_statistics_rows_after_rollback": 0,
+      "tables_after_rollback": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 819200,
+          "n_dead_tup": 2000,
+          "n_live_tup": 469,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 3555328,
+          "n_dead_tup": 2001,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1998848,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "actual_counts_after_rollback": {
+        "issue": 1000,
+        "iteration_event": 2003,
+        "agent_task_queue": 0,
+        "iteration_participation": 1000
+      }
+    },
+    {
+      "mode": "cache_control",
+      "equal": true,
+      "fingerprint": "d669678397a615f160bb8087c6580fbe",
+      "column_statistics_rows_after_rollback": 0,
+      "tables_after_rollback": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1097728,
+          "n_dead_tup": 3000,
+          "n_live_tup": 469,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 5193728,
+          "n_dead_tup": 4002,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 2998272,
+          "n_dead_tup": 4997,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "actual_counts_after_rollback": {
+        "issue": 1000,
+        "iteration_event": 2003,
+        "agent_task_queue": 0,
+        "iteration_participation": 1000
+      }
+    },
+    {
+      "mode": "after_analyze",
+      "equal": true,
+      "fingerprint": "d669678397a615f160bb8087c6580fbe",
+      "column_statistics_rows_after_rollback": 0,
+      "tables_after_rollback": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": 0,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": "2026-11-02T07:53:33.043052+00:00",
+          "analyze_count": 2,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 134,
+          "reltuples": 1000,
+          "heap_bytes": 1376256,
+          "n_dead_tup": 4000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": "2026-11-02T07:53:33.042734+00:00",
+          "analyze_count": 2,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 834,
+          "reltuples": 4004,
+          "heap_bytes": 6832128,
+          "n_dead_tup": 6003,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": "2026-11-02T07:53:33.030984+00:00",
+          "analyze_count": 2,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 477,
+          "reltuples": 1000,
+          "heap_bytes": 3997696,
+          "n_dead_tup": 6990,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": "2026-11-02T07:53:33.03543+00:00",
+          "analyze_count": 2,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "actual_counts_after_rollback": {
+        "issue": 1000,
+        "iteration_event": 2003,
+        "agent_task_queue": 0,
+        "iteration_participation": 1000
+      }
+    }
+  ],
+  "original_gate": {
+    "p95_ms": 2171,
+    "threshold_ms": 2000,
+    "status": "FAIL",
+    "rerun": false
+  },
+  "findings": [
+    "Both no-statistics passes use bitmap scans and sorts even after generic cached-plan reuse; this is not resolved by cache warming alone in this fixture.",
+    "After explicit ANALYZE all 2000 selected executions reuse the same protocol-prepared identities as generic plans and use the existing sequence index backward with one event row each and no sort. No missing index is demonstrated.",
+    "Full business rollback preserves six-table logical fingerprints, but does not undo WAL/cache/dead versions or reltuples/relpages/cumulative ANALYZE tracking; pg_stats rows revert to empty after rollback."
+  ],
+  "limits": [
+    "No original tail sample plan or shared-host load reconstructed; original P95 remains FAIL.",
+    "auto_explain node timing and notice transport add overhead; instrumented timings are not uninstrumented endpoint savings.",
+    "First pass is the original typed production mutation flow but its task-only Commit rolls back rather than commits; no commit/durable HTTP acceptance claim.",
+    "Replays execute all canonical SQL/args and lock order but consume generic Rows.Values, not the full production authorization/typed-scan/error branch logic; no product optimization equivalence claimed.",
+    "One backend deliberately retained prepared cache; actual production pool backend assignment and original P95 cache/statistics history unknown.",
+    "ANALYZE runs within the new diagnostic transaction at each selected phase; target no-statistics baselines both completed before any task ANALYZE; after-statistics target receives a second explicit refresh after target events exist.",
+    "ANALYZE changes all four relevant tables at each phase; this discriminates statistics versus unchanged cache-only paths but does not isolate the marginal effect of any single column statistic.",
+    "Rollback fingerprints cover issues, participation, events, iterations, snapshots and operations; notification rollback follows transaction semantics but is not included in that fingerprint.",
+    "Snapshot assertion checks 1000 scope entries with three labels and nonnull priority, not exact IDs/values.",
+    "ANALYZE refreshes statistics and invalidates cached plans together. There is no separate no-statistics DEALLOCATE/reprepare control; the evidence identifies the combined statistics-refresh/replanning effect, not a single-variable causal estimate.",
+    "Replayed clock_timestamp reads produce new values that are consumed generically, while the following writes deliberately reuse the original captured business-time arguments; this is not a second full service decision flow.",
+    "No cold-cache reset, no VACUUM and no first-lock/concurrency/new result-path optimization proof."
+  ]
+}

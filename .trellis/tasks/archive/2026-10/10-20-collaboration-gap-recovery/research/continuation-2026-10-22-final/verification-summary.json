@@ -1,0 +1,154 @@
+{
+  "at": "2026-10-22T12:20:41.561371+00:00",
+  "task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "claims": {
+    "handoff_serial_race": {
+      "top_level": 112,
+      "total": 406,
+      "fail": 0,
+      "skip": 0,
+      "raw": "handoff-service-race.stdout",
+      "sha256": "3e4de7ae4ffe26aec67c98046572595bd37264c54721c536841df322004f8348"
+    },
+    "source_runtime_canonical": {
+      "top_level": 23,
+      "total": 75,
+      "fail": 0,
+      "skip": 0,
+      "raw": "source-machine-runtime-canonical.stdout",
+      "sha256": "fa46a880bb382b3aeed59f0e918726446a4196697d936998f686114c8dfd6d67"
+    },
+    "catalogue_current": {
+      "top_level": 1,
+      "total": 1,
+      "fail": 0,
+      "skip": 0,
+      "raw": "catalogue-race-final.jsonl",
+      "sha256": "b92be9b110ebe7a8a96241755f7f82deffc2f2f5d12df006b60d867ef2bffb85"
+    },
+    "catalogue_isolated": {
+      "top_level": 1,
+      "total": 1,
+      "fail": 0,
+      "skip": 0,
+      "raw": "catalogue-isolated-final.stdout",
+      "sha256": "ee902f2120128ebf8e8ee529a99d21dc27cb54168efd9bdad48d79859d4e0117"
+    },
+    "stage_isolated": {
+      "top_level": 3,
+      "total": 9,
+      "fail": 0,
+      "skip": 0,
+      "raw": "source-stage-isolated-head.stdout",
+      "sha256": "5c8c7e93873586d596da23aa9996725bd1f84062cb45a15c38d63cafff7341bf"
+    },
+    "outbound_current": {
+      "top_level": 238,
+      "total": 414,
+      "fail": 0,
+      "skip": 3,
+      "raw": "outbound-tail-adjacent.jsonl",
+      "sha256": "d2ac55764fe6a4c254c56ecd1176515b66d4a7e44818c53cb1ef6c2fe4834ae2"
+    },
+    "outbound_redis_supplement": {
+      "top_level": 3,
+      "total": 3,
+      "fail": 0,
+      "skip": 0,
+      "raw": "outbound-tail-redis-final.jsonl",
+      "sha256": "f8c9321c10848b2a03e80859a65f4fd08fbf63f85bb0fc17b9d5222e560389b7"
+    },
+    "outbound_isolated": {
+      "top_level": 33,
+      "total": 97,
+      "fail": 0,
+      "skip": 0,
+      "raw": "outbound-tail-isolated-final.jsonl",
+      "sha256": "e80db4c95c7a0682db22ad9e715b783c2bd6541c1252d74c1f28b1f8f4be7281"
+    },
+    "core_collaboration": {
+      "files": 60,
+      "tests": 1024,
+      "exit": 0,
+      "raw": "core-collaboration-final.stdout",
+      "sha256": "54475df0de5cc082ffe42f37c93953aed4e40b8dbd67c19ea11123639d800456"
+    },
+    "views_collaboration": {
+      "files": 19,
+      "tests": 94,
+      "exit": 0,
+      "raw": "views-collaboration-final.stdout",
+      "sha256": "21476ae658b38de264d1ad5a9494d1a4de85242e1d0c3e1f9ca16c55dc15f661"
+    },
+    "core_admin": {
+      "files": 28,
+      "tests": 239,
+      "exit": 0,
+      "raw": "core-admin-final.stdout",
+      "sha256": "e68d3d1f301a8b9e10e47aba2eaed99e3e56f3bd136d92b162f82a24844dbc91"
+    },
+    "views_admin": {
+      "files": 3,
+      "tests": 28,
+      "exit": 0,
+      "raw": "views-admin-final.stdout",
+      "sha256": "0002d8bfa1713c7a0c1d0c584002efc8fc4185af58186c23096c77abf9e132cf"
+    }
+  },
+  "client_claims": [
+    {
+      "prefix": "source-clients-reviewed-final",
+      "stats": {
+        "startTime": "2026-10-22T12:06:00.853Z",
+        "duration": 32144.142,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "raw_sha256": "583524a22e92cb80bd28d39ad0d64cdcf266b2a9c6368fcf4a13d809b0ed8bdc"
+    },
+    {
+      "prefix": "offline-s5-current-clients",
+      "stats": {
+        "startTime": "2026-10-22T11:09:54.317Z",
+        "duration": 60516.737,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "raw_sha256": "4641592c1ef8cc8418a51e183732858425d0c86f4a37bdaa1dae70727f3c8e47"
+    },
+    {
+      "prefix": "mentions-legacy-current",
+      "stats": {
+        "startTime": "2026-10-22T11:36:05.612Z",
+        "duration": 46694.987,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "raw_sha256": "ae59fad87a8157d0fbc0a0e2f56774c0988589885ade741bef21e77388426d27"
+    }
+  ],
+  "typecheck": "Core/Views/Web/Desktop exit0; source strict checked current source",
+  "static": "go vet./... and UI wildcard exports exit0; Core lint exit0 Views0 errors/27 existing warnings",
+  "knip": {
+    "exit_code": 1,
+    "existing_unused_files": 11,
+    "existing_dependency_entries": 2,
+    "HEAD_byte_equality": "static-knip-boundary.json"
+  },
+  "never_claimed": [
+    "new complete monolithic make check",
+    "real provider/account/quota",
+    "other OS containment",
+    "full installed Main/old released client",
+    "full97 acceptance"
+  ],
+  "production_gate_changed": false,
+  "new_task": false,
+  "new_plan": false
+}

@@ -1,0 +1,130 @@
+{
+  "date": "2026-11-01",
+  "checkout": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "observed_head": "71379546ce1941c2429011569308d89fa50a58e8",
+  "go_version": "go1.27.0",
+  "native_platform": "darwin/arm64",
+  "source_hashes": "source-hashes.json",
+  "runs": [
+    {
+      "command": "bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test ./pkg/agent -parallel=4 -count=1 -json",
+      "log": "agent-suite-final.jsonl",
+      "log_sha256": "545b59cbbbc96aeea066ada2cc1f09ab70f6c383f3b5d7b36057ee7978af5d8c",
+      "exit_code": 0,
+      "elapsed_seconds": 225.618,
+      "counts": {
+        "pass": 1938,
+        "fail": 0,
+        "skip": 4
+      },
+      "skipped_tests": [
+        "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+        "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+        "TestPiExecuteAttachesStdinPipe",
+        "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+      ],
+      "ambient_cli_guard_violations": 0,
+      "source_hashes": "source-hashes-before-native-bounds.json"
+    },
+    {
+      "command": "bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -race ./pkg/agent -run '^(TestKnowledge|TestOrdinaryKnowledge|TestCollaborationLifecycleStill|TestHostLifecycle)' -count=1 -json",
+      "log": "agent-race-final.jsonl",
+      "log_sha256": "3fce16e79ac69f96994bfb1e2969e0057e47c383847c9157a573b3f7d9d15473",
+      "exit_code": 0,
+      "elapsed_seconds": 26.672,
+      "counts": {
+        "pass": 127,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "ambient_cli_guard_violations": 0,
+      "source_hashes": "source-hashes-before-native-bounds.json"
+    },
+    {
+      "command": "bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test ./internal/daemon/collaborationrun -parallel=4 -run '^TestHostHandoffLaunch' -count=1 -json",
+      "log": "collaboration-handoff.jsonl",
+      "log_sha256": "ddf042f9a0fed2ee46ebcb274ae76ee23162d4a5caf13b8a599e6a02d6a28e76",
+      "exit_code": 0,
+      "elapsed_seconds": 8.433,
+      "counts": {
+        "pass": 44,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "ambient_cli_guard_violations": 0,
+      "source_hashes": "source-hashes-before-native-bounds.json"
+    },
+    {
+      "command": "bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test ./pkg/agent -parallel=4 -run '^(TestClaudeExecuteClassifiesContextExhaustionWithoutUsableProse|TestDevecoBackendArgvShapeAndNoPrompt|TestCursorExecuteStopsAfterTerminalErrorResult|TestCursorExecuteEmitsTerminalResultText|TestProbeReturnsWhenLeaderExitsHoldingPipes|TestProbeOutputCancellationKillsDescendants)$' -count=1 -json",
+      "log": "fixture-timeout-recheck.jsonl",
+      "log_sha256": "47cad908b53d8357986e5538dbb4dd1ff6e581c4ec97321ad00008bb1639850d",
+      "exit_code": 0,
+      "elapsed_seconds": 2.524,
+      "counts": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "ambient_cli_guard_violations": 0,
+      "source_hashes": "source-hashes-before-native-bounds.json"
+    },
+    {
+      "command": "bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -race ./pkg/agent -run '^(TestKnowledge|TestOrdinaryKnowledge|TestCollaborationLifecycleStill|TestHostLifecycle)' -count=1 -json",
+      "log": "agent-race-bounded-final.jsonl",
+      "source_hashes": "source-hashes.json",
+      "log_sha256": "27d63c76abd4d3f7341afe2a693023e276533929728507439ad0ee7ea8c0b4c8",
+      "exit_code": 0,
+      "elapsed_seconds": 26.722,
+      "counts": {
+        "pass": 128,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "ambient_cli_guard_violations": 0
+    }
+  ],
+  "other_checks": [
+    {
+      "command": "go vet ./pkg/agent",
+      "exit_code": 0
+    },
+    {
+      "command": "go build ./pkg/agent",
+      "exit_code": 0
+    },
+    {
+      "command": "GOOS=linux GOARCH=amd64 go build ./pkg/agent",
+      "exit_code": 0
+    },
+    {
+      "command": "GOOS=windows GOARCH=amd64 go build ./pkg/agent",
+      "exit_code": 0
+    },
+    {
+      "command": "gofmt -l <five owned Go files> (empty output)",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check -- <three modified Go files>",
+      "exit_code": 0
+    }
+  ],
+  "historical_failures": {
+    "fail-first.log": "Original constructor removed ordinary credentials; resolved by explicit ordinary policy. The first harness also checked a trailing newline; final harness compares the complete environment exactly.",
+    "agent-race.jsonl": "Detected kill/natural-exit timing-dependent failed Output retention; fixed by preserving KnowledgeOutput separately.",
+    "agent-suite.jsonl": "Earlier overlapping full package run: short fixture timeouts, all affected tests subsequently passed at bounded parallelism.",
+    "agent-focused-final.jsonl": "Superseded broad focused run overlapped the full package run; two existing Claude fixture timeouts, both passed in isolation and final full suite."
+  },
+  "limits": [
+    "No new knowledge or handoff tests were skipped; final full suite includes four existing OS/host-condition skips listed above.",
+    "Only native Darwin C1/race/handoff execution is proven; Linux/Windows are compile checks.",
+    "No DB, service/handler/daemon integration or actual managed knowledge injection in this slice.",
+    "No installed agent CLI, real model, model discovery or account invocation.",
+    "No G2 enablement or provider-understanding claim."
+  ],
+  "final_delta": "After the full package/collaboration runs: reject malformed/unbounded native IDs before the metadata callback, with one new fake regression. Entire affected knowledge/lifecycle race suite, vet, native/cross builds, and formatting were rerun on the final source snapshot."
+}

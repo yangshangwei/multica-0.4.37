@@ -1,0 +1,45 @@
+{
+  "at": "2026-11-08T17:07:19.357165+08:00",
+  "health_identity": {
+    "pid": 74178,
+    "commit": "52162f19a",
+    "started_at": "2026-11-08T09:04:55Z",
+    "status": "ok"
+  },
+  "api_provenance": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=52162f19a' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-merge-unmerged-worktrees-20261108/server)",
+    "source_id": "d9457c9a37af2141ae51e24d27032d7c2935269f241f9977b70a0247a3162d97",
+    "configuration_id": "1f9fccda039540cd515ae01cd041d64e2f89f52a5c9cc0adc964c109be9c6e57",
+    "commit": "52162f19a",
+    "launcher_pid": 74093,
+    "started_at": "2026-11-08T09:04:48Z",
+    "listener_pid": 74178
+  },
+  "web_provenance": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "8sDG_Wkr6rvP-3JOWuvuj",
+    "command": "pnpm --filter @multica/web exec next start --port 13850",
+    "source_id": "d9457c9a37af2141ae51e24d27032d7c2935269f241f9977b70a0247a3162d97",
+    "configuration_id": "d3943426b22ea4c5d3c088ec40c98ae5d2bc647bd8208304ff4e9fc190d5354d",
+    "commit": "52162f19a",
+    "launcher_pid": 74964,
+    "started_at": "2026-11-08T09:06:09Z",
+    "listener_pid": 74990
+  },
+  "renderer_provenance": {
+    "pid": 74386,
+    "renderer": "/Volumes/artisan/code/2026/mc-merge-unmerged-worktrees-20261108/apps/desktop/out/renderer",
+    "origin": "http://127.0.0.1:6024",
+    "index_sha256": "d8d33ca1ba75dde27c7f8446381aa5f0bcac7fbea3a78bbffd6c085a49877879"
+  },
+  "renderer_served_sha256": "d8d33ca1ba75dde27c7f8446381aa5f0bcac7fbea3a78bbffd6c085a49877879",
+  "web_login_sha256": "41bcb98e20eb4a2cf2745f5dfb6ab322d57695c206e8455eb295f9d1ad7125e1",
+  "web_includes_expected_api": true,
+  "web_includes_expected_ws": true,
+  "registry_desktop_state_note": "production Electron Main is intentionally absent; built renderer fixture ownership uses separate desktop-renderer PID/hash evidence",
+  "processes": "  PID  PPID  PGID STARTED                      COMMAND\n74178 74093 74093 Sun Nov  8 17:04:54 2026     /Users/artisan/.multica/dev-tmp/go-build3876750706/b001/exe/server\n74386     1 74386 Sun Nov  8 17:05:04 2026     node /Volumes/artisan/code/2026/mc-merge-unmerged-worktrees-20261108/scripts/check-desktop-renderer.mjs /Volumes/artisan/code/2026/mc-merge-unmerged-worktrees-20261108/apps/desktop/out/renderer 6024 /Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/dev-registry/envs/check-20261108081625-22666/desktop-renderer.running.json\n74990 74984 74964 Sun Nov  8 17:06:10 2026     next-server (v16.2.6)    \n"
+}

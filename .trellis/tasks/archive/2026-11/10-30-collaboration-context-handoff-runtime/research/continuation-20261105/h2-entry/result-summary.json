@@ -1,0 +1,76 @@
+{
+  "at": "2026-11-05T12:01:57.533725+00:00",
+  "scenario": "RK1-H2",
+  "original_exit": 0,
+  "helper_review_ready": true,
+  "trials": [
+    {
+      "label": "RK1-H2-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H2-t2",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H2-t3",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    }
+  ],
+  "new_paid": 3,
+  "fake_seed_starts": 6,
+  "total_paid": 7,
+  "remaining": 18,
+  "source_stable": true,
+  "capture_hashes_match_upfront": true,
+  "CLI_captures": 10,
+  "final_status_allowed": true,
+  "operator_changes": {
+    "~/.claude/plugins/": {
+      "before": "ba5687bb8bf3302c8779b7aeef8ced2582fbb16dc181b0f96c8aa40dcba51b92",
+      "after": "3abdc4664960b40751b006320fcd79b7bcc179112b2d4a88cbec3e2d63e5ea74"
+    }
+  },
+  "plugin_changed_paths_count": 3,
+  "independent_review": "independent-review.json",
+  "next_scenario_authorized": false,
+  "private_result": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/run-result.json",
+  "private_result_sha256": "4fb7bcd564080b1fb73ff19bace488b0453095d1c35f45d5d03cb722c99c8044",
+  "public_results": [
+    {
+      "label": "RK1-H2-t1",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t1.json",
+      "sha256": "f1a4ce9102ffae32f7282ab402c66f2753bdafb0b2cc97095e18e814a1885d55"
+    },
+    {
+      "label": "RK1-H2-t2",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t2.json",
+      "sha256": "f820e5486141649e86949fa7e47324f9235ee947830994cb24839a7a43539956"
+    },
+    {
+      "label": "RK1-H2-t3",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t3.json",
+      "sha256": "9422623b33c342fcee96a9f91004fab7d235499796ab0f3aa879b436d4a00476"
+    }
+  ],
+  "window_release": "window-release.json",
+  "independent_checks_passed": 273,
+  "independent_checks_failed": 0,
+  "registered_H2_accepted": true,
+  "operator_delta_disposition": "specific catalog/usage refresh reviewed; no observed selected or installed plugin mutation; fulltree drift retained"
+}

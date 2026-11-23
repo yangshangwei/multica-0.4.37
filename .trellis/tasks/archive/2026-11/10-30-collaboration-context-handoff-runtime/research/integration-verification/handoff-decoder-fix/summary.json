@@ -1,0 +1,170 @@
+{
+  "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "owned_files": {
+    "server/pkg/protocol/collaboration_handoff.go": {
+      "before_sha256": "955695d8d8313cb6cc5e1a719062fc36d2b4753bca0175e58c7143a5ad4f6483",
+      "after_sha256": "e06248a86f7f343d799bf618d644b2927f98a6cdfdfd12e022e3a9fe4a615401"
+    },
+    "server/pkg/protocol/collaboration_checkpoint.go": {
+      "before_sha256": "c73b8eda68fcfb53f0fba1c27f85bdc46b7c979d4ed287ade4b9f2293d681b42",
+      "after_sha256": "2e7ea3a09d209b7e081c90c05f72d5b3acd4c9f13c46af97dbf0854d1f657c61"
+    },
+    "server/pkg/protocol/collaboration_handoff_decode_test.go": {
+      "before_sha256": null,
+      "after_sha256": "bfdc5f03511eee38589cab90c211b72f342da712d4dd309f62371e83eaebfa05"
+    },
+    "server/pkg/protocol/collaboration_recording_retention_test.go": {
+      "before_sha256": null,
+      "after_sha256": "6cb8d84fd13cfbee6e4c1d988e5caa4775852bdba348288f3ca5506fbc703674"
+    },
+    "server/internal/daemon/collaborationrun/host_handoff_wire_test.go": {
+      "before_sha256": null,
+      "after_sha256": "86c56ddc10d1d7e509f19388cb16f8cb3a9eeec098c61117ee01272663bcd7f3"
+    }
+  },
+  "verification": [
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./pkg/protocol",
+        "-run",
+        "TestCollaboration(HandoffWireRequires|HandoffWirePreserves|HandoffRejectsMalformedRetention|RecordingRetention)",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 1,
+      "started_at": "2026-10-31T17:45:19.853135+00:00",
+      "finished_at": "2026-10-31T17:45:20.517324+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 1,
+      "failed_top_level_tests": [
+        "TestCollaborationHandoffWireRequiresDeclaredFields",
+        "TestCollaborationHandoffWireRequiresEmptyPageFacts",
+        "TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields",
+        "TestCollaborationRecordingRetentionWireRequiresFacts",
+        "TestCollaborationHandoffRejectsMalformedRetention"
+      ]
+    },
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "^TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof$",
+        "-count=1",
+        "-timeout=60s",
+        "-json"
+      ],
+      "exit_code": 1,
+      "started_at": "2026-10-31T17:45:19.853186+00:00",
+      "finished_at": "2026-10-31T17:45:21.506725+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 0,
+      "failed_top_level_tests": [
+        "TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof"
+      ]
+    },
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./pkg/protocol",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-31T17:47:20.638657+00:00",
+      "finished_at": "2026-10-31T17:47:21.395166+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 28,
+      "failed_top_level_tests": []
+    },
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "TestHostHandoff|TestClientHostContextExtensions|TestClientNamespaceCannotAcquireHostContextExtensions",
+        "-count=1",
+        "-timeout=5m",
+        "-json"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-31T17:47:20.638655+00:00",
+      "finished_at": "2026-10-31T17:47:36.310921+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 23,
+      "failed_top_level_tests": []
+    },
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./pkg/protocol",
+        "./internal/daemon/collaborationrun"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-31T17:48:01.839504+00:00",
+      "finished_at": "2026-10-31T17:48:02.135956+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 0,
+      "failed_top_level_tests": []
+    }
+  ],
+  "format_checks": [
+    {
+      "command": [
+        "gofmt",
+        "-l",
+        "server/pkg/protocol/collaboration_handoff.go",
+        "server/pkg/protocol/collaboration_checkpoint.go",
+        "server/pkg/protocol/collaboration_handoff_decode_test.go",
+        "server/pkg/protocol/collaboration_recording_retention_test.go",
+        "server/internal/daemon/collaborationrun/host_handoff_wire_test.go"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "server/pkg/protocol/collaboration_handoff.go",
+        "server/pkg/protocol/collaboration_checkpoint.go",
+        "server/pkg/protocol/collaboration_handoff_decode_test.go",
+        "server/pkg/protocol/collaboration_recording_retention_test.go",
+        "server/internal/daemon/collaborationrun/host_handoff_wire_test.go"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "frozen_handoff_tests_unchanged": true,
+  "frozen_handoff_test_files": [
+    "server/internal/daemon/collaborationrun/host_handoff_budget_test.go",
+    "server/internal/daemon/collaborationrun/host_handoff_checkpoint_lifecycle_test.go",
+    "server/internal/daemon/collaborationrun/host_handoff_checkpoint_test.go",
+    "server/internal/daemon/collaborationrun/host_handoff_codex_launch_test.go",
+    "server/internal/daemon/collaborationrun/host_handoff_launch_test.go"
+  ],
+  "owned_sources_match_green_and_vet": true,
+  "limitations": [
+    "No DB or real Provider tests in this lane.",
+    "Server/service/handler generated-envelope integration remains in coordinator-owned gate."
+  ]
+}

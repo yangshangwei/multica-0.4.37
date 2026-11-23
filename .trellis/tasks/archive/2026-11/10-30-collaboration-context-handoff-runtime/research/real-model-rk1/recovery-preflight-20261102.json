@@ -1,0 +1,226 @@
+{
+  "scope": "read-only RKI6 recovery preflight; no reproduction or final acceptance",
+  "owner": "/root/rk1_recovery_preflight",
+  "source_sha": "cc6c3f2257d3d67376a8ac67563e10344ebb6c43",
+  "recorded_at": "2026-11-01T18:32:44.214853+00:00",
+  "rki6_state": "OPEN",
+  "framework_runnable_changed": false,
+  "Provider_launches": 0,
+  "tests_or_database_or_service_operations": false,
+  "source_files": [
+    {
+      "path": "server/internal/daemon/collaborationrun/host_runner.go",
+      "sha256": "3c24bbecf6036c354653d35a6872d94fd0cbac1bed3cd317c51178d19786a0d7",
+      "historical_sha256": "3c24bbecf6036c354653d35a6872d94fd0cbac1bed3cd317c51178d19786a0d7",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoints.go",
+      "sha256": "d0c9c920865fdf3e7318cef1935ff58c871c1ca58d894e466262f0fa24f8a5f6",
+      "historical_sha256": "d0c9c920865fdf3e7318cef1935ff58c871c1ca58d894e466262f0fa24f8a5f6",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go",
+      "sha256": "ef28f07f95682414bfbb043b0b0f6b6601fa15267a8765d62ab66f6d89ac4172",
+      "historical_sha256": "ef28f07f95682414bfbb043b0b0f6b6601fa15267a8765d62ab66f6d89ac4172",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_ledger.go",
+      "sha256": "a174a3597f683a2dbed7302c6e18f6583ff24d77c0ef415016d051361c286347",
+      "historical_sha256": "a174a3597f683a2dbed7302c6e18f6583ff24d77c0ef415016d051361c286347",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/ledger.go",
+      "sha256": "69b3e6fef876cd802c5690558de874c71d153f16552164b74bffc15090524b33",
+      "historical_sha256": "69b3e6fef876cd802c5690558de874c71d153f16552164b74bffc15090524b33",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/runner.go",
+      "sha256": "19252b5f861dc382669ef3637694acf76d9de60cb4a545332dc7eef9b31f67c7",
+      "historical_sha256": "19252b5f861dc382669ef3637694acf76d9de60cb4a545332dc7eef9b31f67c7",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/recovery.go",
+      "sha256": "02b6510a97801453854db3d818517f262b383e672ec2719d5eb763470cda9dca",
+      "historical_sha256": "02b6510a97801453854db3d818517f262b383e672ec2719d5eb763470cda9dca",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/internal/daemon/collaboration.go",
+      "sha256": "ab92baecb348ca71319adbc499e220f0f370cb40ec1723b3f1624039b05d44e6",
+      "historical_sha256": "ab92baecb348ca71319adbc499e220f0f370cb40ec1723b3f1624039b05d44e6",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/internal/daemon/daemon.go",
+      "sha256": "c1f51b2ab7b26f6f560db9e0dd5061407496f234c34c85922cda4f4d8fd65d97",
+      "historical_sha256": "3223e56aa3a66a715c7c02a8d6a4b64d143536bdcd8ae45b82e000cde470131b",
+      "identical_to_historical": false
+    },
+    {
+      "path": "server/cmd/server/rk1_run_test.go",
+      "sha256": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+      "historical_sha256": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/cmd/server/rk1_observe_test.go",
+      "sha256": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+      "historical_sha256": "70ba39c9c433d3ae3b9a775c579dd0e9c6372cd37281bfd3a903ef6b5be91d5a",
+      "identical_to_historical": false
+    },
+    {
+      "path": "server/cmd/server/rk1_lifecycle_test.go",
+      "sha256": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+      "historical_sha256": "9830ba4f12e97f45d772a5052b103e048098d260b6dabe6c1b8cb2edc350687b",
+      "identical_to_historical": false
+    },
+    {
+      "path": "server/cmd/server/rk1_trace_test.go",
+      "sha256": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+      "historical_sha256": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+      "identical_to_historical": true
+    },
+    {
+      "path": "server/cmd/server/rk1_trial_test.go",
+      "sha256": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5",
+      "historical_sha256": "c3c89ded96055f952311becd35bf8b8a6b6076f37485d51fad9e8f5861c5c909",
+      "identical_to_historical": false
+    }
+  ],
+  "historical_evidence": {
+    "source_sha": "4b508179f3e6197f170a99acd4df42d567e7ba1b",
+    "private_root": "/Volumes/artisan/code/2026/mc-rk1-framework-20261101/.omx/private/rk1-runtime-fixed-20261102/fake-proof-run/E0a/RK1-E0a-t1",
+    "public_sha256": "69a835c2e497d624af578930c7df68ee927532c239a424d059b1a302e37879bd",
+    "trace_sha256": "20bb196c9f2640b01bc027a204be8553d66baa7b2637e10ce299f0637056c5cf",
+    "private_ledger_sha256": "df12ac0a79a26ad6934e4c46a41a57ce2f21c9b080a20f71d356c4e150d88de5",
+    "public_facts": {
+      "lifecycle_incomplete": "handoff_or_recording_event_missing",
+      "runner_error": "context deadline exceeded",
+      "physical_launches": 1,
+      "authorized_attempts": 1,
+      "progress_state": "settled",
+      "proof_state": "host_exit_observed",
+      "business_outcome": "success",
+      "recording_incomplete": false,
+      "outcome_record_completeness": "complete",
+      "provider_recordable_messages": 3,
+      "run_events": {
+        "handoff_binding": 1,
+        "handoff_snapshot": 1,
+        "outcome": 1,
+        "preparation": 1,
+        "record_checkpoint": 1,
+        "resource_snapshot": 1
+      }
+    },
+    "ledger_facts": {
+      "phase": "proof_acknowledged",
+      "outcome_recorded": true,
+      "recording_drained": true,
+      "chunk_count": 1,
+      "accepted_chunks": 1,
+      "retained_message_count": 3,
+      "seal_present": true,
+      "seal_accepted": false,
+      "seal": {
+        "version": 1,
+        "sequence": 1,
+        "observed_through": 3,
+        "acknowledged_through": 3,
+        "reason": "completed"
+      },
+      "physical_launch_records": 1
+    },
+    "terminal_trace_facts": [
+      {
+        "seq": 68,
+        "completed_at": "2026-11-01T16:25:47.072138Z",
+        "endpoint": "checkpoints",
+        "status": 200
+      },
+      {
+        "seq": 70,
+        "completed_at": "2026-11-01T16:25:47.660088Z",
+        "endpoint": "outcome",
+        "status": 200
+      },
+      {
+        "seq": 71,
+        "completed_at": "2026-11-01T16:25:48.171819Z",
+        "endpoint": "proof",
+        "status": 200
+      }
+    ],
+    "seal_http_requests": 0,
+    "trace_timestamp_semantics": "handler completion time; no request-start/deadline/duration field, so exact budget consumption cannot be allocated among endpoints"
+  },
+  "findings": [
+    {
+      "id": "RP1",
+      "confidence": "high",
+      "kind": "current_source_fact",
+      "finding": "The foreground recovery budget and single-Runner harness code remain byte-identical to the preserved failing source. Knowledge/framework merge alone did not remove this mechanism.",
+      "sources": [
+        "server/internal/daemon/collaborationrun/host_runner.go:476",
+        "server/internal/daemon/collaborationrun/host_checkpoints.go:192",
+        "server/cmd/server/rk1_run_test.go:112"
+      ]
+    },
+    {
+      "id": "RP2",
+      "confidence": "high",
+      "kind": "historical_evidence_fact",
+      "finding": "E0a already ACKed its only checkpoint and outcome/proof; the exact completed seal was staged and remained unacknowledged. It is a pending seal, not evidence of unretained message content. Missing seal still makes the registered sample incomplete."
+    },
+    {
+      "id": "RP3",
+      "confidence": "high",
+      "kind": "current_static_inference",
+      "finding": "The same context starts before checkpoint recovery and expires in wall-clock time while independent outcome/proof run; deferred seal persists its payload before checking the expired context and can send no HTTP request. This supported path needs a later bounded recovery round.",
+      "sources": [
+        "server/internal/daemon/collaborationrun/host_runner.go:485",
+        "server/internal/daemon/collaborationrun/host_runner.go:520",
+        "server/internal/daemon/collaborationrun/host_checkpoints.go:369",
+        "server/internal/daemon/collaborationrun/host_checkpoints.go:441"
+      ]
+    },
+    {
+      "id": "RP4",
+      "confidence": "high",
+      "kind": "current_source_fact",
+      "finding": "Production keeps acknowledged v2 runs with pending recording, marks them CanProve and recovers them with a Runner that has no Host. RK1 observes/scorers immediately after a single foreground Runner and does not drive that reconciliation.",
+      "sources": [
+        "server/internal/daemon/collaborationrun/ledger.go:114",
+        "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go:104",
+        "server/internal/daemon/collaborationrun/host_ledger.go:185",
+        "server/internal/daemon/collaboration.go:178",
+        "server/internal/daemon/daemon.go:4844",
+        "server/cmd/server/rk1_trial_test.go:119"
+      ]
+    },
+    {
+      "id": "RP5",
+      "confidence": "high",
+      "kind": "acceptance_boundary",
+      "finding": "No current-source rerun occurred. Static inspection does not prove the unmodified happy fake always fails, nor that one quiet pass repairs the old failure. Do not add an ad hoc second Run or clear RunErr/lifecycle to convert the original incomplete."
+    }
+  ],
+  "recommended_next": [
+    "Run the already-planned unchanged final-candidate normal/race once after local heavy work quiesces; bind its exact source. This report is not a substitute.",
+    "If incomplete, preserve its public/trace/ledger/DB and stop paid entry. Classify the actual new failure before choosing a repair.",
+    "For the same acknowledged/pending-seal state, root may create an isolated diagnostic copy of the failed DB and private ledger, then run one explicitly recorded production-style proof-recovery round with no Host. Require identical original seal, one physical launch/attempt total, no new Claim/Permit/handoff/business execution/proof, durable SealAccepted and no pending inventory; preserve all first-pass errors and do not relabel the failed sample.",
+    "If daemon recovery succeeds, a future framework could explicitly model bounded production reconciliation before scoring, but only as a preregistered/reviewed new framework candidate with per-round evidence and unchanged Provider count/deadlines/stop semantics. Do not patch this into an already incomplete trial. If recovery fails under the isolated conditions, fix that demonstrated product/ledger issue first."
+  ],
+  "not_tested": [
+    "final-candidate fake normal/race",
+    "actual daemon reconciliation of the retained historical E0a",
+    "real Provider or model behavior",
+    "native platforms/installers/account scope"
+  ]
+}

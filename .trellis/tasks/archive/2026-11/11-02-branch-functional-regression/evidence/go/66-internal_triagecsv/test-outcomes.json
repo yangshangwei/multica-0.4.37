@@ -1,0 +1,17 @@
+{
+  "TestClientImportTemplateMapsEveryColumn": "pass",
+  "TestParseQuotedBOMAndIgnoredExecutionFields": "pass",
+  "TestParseRejectsWholeInvalidFiles/invalid_utf8": "pass",
+  "TestParseRejectsWholeInvalidFiles/oversize": "pass",
+  "TestParseRejectsWholeInvalidFiles/too_many_rows": "pass",
+  "TestParseRejectsWholeInvalidFiles/duplicate_header": "pass",
+  "TestParseRejectsWholeInvalidFiles/empty_header": "pass",
+  "TestParseRejectsWholeInvalidFiles/empty_file": "pass",
+  "TestParseRejectsWholeInvalidFiles/bad_quote": "pass",
+  "TestParseRejectsWholeInvalidFiles": "pass",
+  "TestParseRowsKeepValidationErrorsAndWarnings": "pass",
+  "TestParseNormalizesPriorityLabelsAndKeepsOriginalCells": "pass",
+  "TestParseMappingCanOverrideAndIgnore": "pass",
+  "TestParseBoundsFieldSizeAndNULWithoutDroppingValidRows": "pass",
+  "TestFailureCSVPreservesCellsAndNeutralizesFormula": "pass"
+}

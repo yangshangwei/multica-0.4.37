@@ -1,0 +1,78 @@
+{
+  "recorded_at": "2026-11-04T02:40:25.219477+00:00",
+  "state": "released",
+  "windows": [
+    {
+      "window": "triage-focus-v15-01a1a3c9",
+      "before": {
+        "api": {
+          "component": "api",
+          "mode": "development",
+          "build_id": "",
+          "command": "go run -ldflags '-X main.commit=d41573e3a' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/server)",
+          "source_id": "32abb413f4e23b6031ff7d22aa9637bb6756eca28b832c01f812d3d3f0c3029a",
+          "configuration_id": "55b2d4489664e5b1c68b1cc87df14486480930ffe33b32564611647393a1a653",
+          "commit": "d41573e3a",
+          "launcher_pid": 95329,
+          "started_at": "2026-11-04T01:51:10Z",
+          "listener_pid": 95486
+        },
+        "web": {
+          "component": "web",
+          "mode": "production",
+          "build_id": "dy7TchAcyEEd1S2BGilpR",
+          "command": "pnpm --filter @multica/web exec next start --port 13951",
+          "source_id": "32abb413f4e23b6031ff7d22aa9637bb6756eca28b832c01f812d3d3f0c3029a",
+          "configuration_id": "2aae495905c8d98bbd6699d7dc90cb4e758c28f38bd656487d4d7944900cd545",
+          "commit": "d41573e3a",
+          "launcher_pid": 95861,
+          "started_at": "2026-11-04T01:53:21Z",
+          "listener_pid": 95880
+        }
+      },
+      "already_released": true
+    },
+    {
+      "window": "triage-green-v15-01a1a3c9",
+      "before": {
+        "api": {
+          "component": "api",
+          "mode": "development",
+          "build_id": "",
+          "command": "go run -ldflags '-X main.commit=d41573e3a' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/server)",
+          "source_id": "03da7d3b12a0eba3cf7bfe2dc67c9875e255305f8f8ec8255b18d3bde7f58e17",
+          "configuration_id": "555f20132a3b2bba8e6b1a48c637c608ea4de0908ade79b4b28b47bdc1a74f90",
+          "commit": "d41573e3a",
+          "launcher_pid": 2983,
+          "started_at": "2026-11-04T02:26:24Z",
+          "listener_pid": 3006
+        },
+        "web": {
+          "component": "web",
+          "mode": "production",
+          "build_id": "1ms49xStP6TA8-tXRGPzC",
+          "command": "pnpm --filter @multica/web exec next start --port 13926",
+          "source_id": "03da7d3b12a0eba3cf7bfe2dc67c9875e255305f8f8ec8255b18d3bde7f58e17",
+          "configuration_id": "d6e87564567d2dcbe544e2e43dd9beaa4ea84792d75183621f9f2d2f1909849e",
+          "commit": "d41573e3a",
+          "launcher_pid": 3281,
+          "started_at": "2026-11-04T02:27:29Z",
+          "listener_pid": 3300
+        }
+      },
+      "down_exit": 0,
+      "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/triage-green-v15-01a1a3c9-release.log",
+      "log_sha256": "75596a0d1a3df066395bb915eb207b5ca65f8514289daaff38ab0900d13a3fff"
+    },
+    {
+      "window": "retired_v15_renderer",
+      "before_process": "51108     1 51108 Wed Nov  4 08:02:30 2026     /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u -m http.server 61276 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "proof_sha256": "f2842568ce4556147dd1697b12f082a05d9d785f051de29233d16def7447a94a",
+      "signal": "SIGTERM"
+    }
+  ],
+  "remaining": [],
+  "old_logs_DB_history_removed": false,
+  "unowned_75467_54873_or_accounts_modified": false,
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312"
+}

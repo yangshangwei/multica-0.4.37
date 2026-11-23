@@ -1,0 +1,19 @@
+=== RUN   TestSelectPreparationAttachmentsSkipsOptionalFilesOutsideRuntimeBudget
+--- PASS: TestSelectPreparationAttachmentsSkipsOptionalFilesOutsideRuntimeBudget (0.00s)
+=== RUN   TestSelectPreparationAttachmentsRejectsReferencedFileOverRuntimeBudget
+--- PASS: TestSelectPreparationAttachmentsRejectsReferencedFileOverRuntimeBudget (0.00s)
+=== RUN   TestSelectPreparationAttachmentsRejectsTooManyReferencedFiles
+--- PASS: TestSelectPreparationAttachmentsRejectsTooManyReferencedFiles (0.00s)
+=== RUN   TestSelectPreparationAttachmentsRejectsMissingReferencedFile
+--- PASS: TestSelectPreparationAttachmentsRejectsMissingReferencedFile (0.00s)
+=== RUN   TestSelectPreparationAttachmentsSkipsOptionalFilesOutsideTotalBudget
+--- PASS: TestSelectPreparationAttachmentsSkipsOptionalFilesOutsideTotalBudget (0.00s)
+=== RUN   TestSelectPreparationAttachmentsAccountsForGitWorkspaceBudget
+--- PASS: TestSelectPreparationAttachmentsAccountsForGitWorkspaceBudget (0.00s)
+=== RUN   TestSelectPreparationAttachmentsSkipsOptionalFilesOverTotalInputBudget
+--- PASS: TestSelectPreparationAttachmentsSkipsOptionalFilesOverTotalInputBudget (0.00s)
+=== RUN   TestSelectPreparationAttachmentsReservesGitWorkspaceBudget
+--- PASS: TestSelectPreparationAttachmentsReservesGitWorkspaceBudget (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	0.704s
+exit_code=0

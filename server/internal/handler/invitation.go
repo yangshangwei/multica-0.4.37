@@ -14,6 +14,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/seatcapacity"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
@@ -524,6 +525,12 @@ func (h *Handler) AcceptInvitation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(member.ID.Bytes), []byte("collaboration-knowledge:member-added")), Valid: true}
+	if err = service.EnqueueKnowledgeSourceInvalidation(r.Context(), qtx, cause, "source_workspace", accepted.WorkspaceID); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to create membership")
+		return
+	}
+
 	// Accepting an invite marks the invitee as onboarded. The web /
 	// desktop workspace layout has a hard onboarded_at gate; without
 	// this mark, an invitee landing on their first workspace would be
@@ -595,7 +602,6 @@ func (h *Handler) AcceptInvitation(w http.ResponseWriter, r *http.Request) {
 			wsID,
 			analytics.OnboardingPathInviteAccept,
 			onboardedAt,
-			onboardedUser.CloudWaitlistEmail.Valid,
 		))
 	}
 

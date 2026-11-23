@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/agentconfig"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/service"
@@ -24,7 +25,7 @@ import (
 // the onboarding gate. Letting it would both forge a "Mika" and break the
 // one-per-workspace invariant.
 const (
-	mikaAgentMaxConcurrency = 3
+	mikaAgentMaxConcurrency = agentconfig.DefaultMaxConcurrentTasks
 	mikaAgentVisibility     = "workspace"
 	mikaAgentPermissionMode = "public_to"
 	mikaAgentAvatarURL      = "/api/avatars/builtin/afu-seal-v1.png"

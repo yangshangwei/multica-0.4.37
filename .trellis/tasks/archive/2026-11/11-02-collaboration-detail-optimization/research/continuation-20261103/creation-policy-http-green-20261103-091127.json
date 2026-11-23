@@ -1,0 +1,30 @@
+{
+  "started_at": "2026-11-03T01:11:27.157889+00:00",
+  "database": "multica_detail_20261103_080906_handler",
+  "package": "./internal/handler",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-count=1",
+    "./internal/handler",
+    "-run",
+    "^TestCollaborationCreationPolicyHTTPPersistsExplicitManualAndDefaultAssisted$"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/creation-policy-http-green-20261103-091127.jsonl",
+  "exit_code": 0,
+  "inventory": {
+    "pass": [
+      "TestCollaborationCreationPolicyHTTPPersistsExplicitManualAndDefaultAssisted"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

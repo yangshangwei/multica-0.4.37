@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_collaboration_attempt_identity ON collaboration_attempt(run_id,attempt_seq);

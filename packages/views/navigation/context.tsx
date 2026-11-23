@@ -5,14 +5,21 @@ import {
   use,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
   useTransition,
 } from "react";
+import {
+  createIterationParticipationStore,
+  registerIterationParticipationStore,
+  type IterationParticipationStore,
+} from "@multica/core/issues/stores/iteration-participation-store";
 import type { NavigationAdapter } from "./types";
 
 const NavigationContext = createContext<NavigationAdapter | null>(null);
 const NavigationPendingContext = createContext<boolean>(false);
+const IterationParticipationContext = createContext<IterationParticipationStore | null>(null);
 
 /** `+1` while a reported swap is in flight, `-1` when it settles. */
 type PendingReporter = (delta: 1 | -1) => void;
@@ -27,6 +34,12 @@ export function NavigationProvider({
   value: NavigationAdapter;
   children: React.ReactNode;
 }) {
+  const [iterationParticipationStore] = useState(() => createIterationParticipationStore(value.pathname));
+  useLayoutEffect(() => {
+    iterationParticipationStore.getState().syncPath(value.pathname);
+  }, [iterationParticipationStore, value.pathname]);
+  useEffect(() => registerIterationParticipationStore(iterationParticipationStore), [iterationParticipationStore]);
+
   // Wrap push/replace in startTransition so any caller of useNavigation()
   // (sidebar AppLink, command palette, modal post-create jumps) gets a
   // React pending signal during route commit. On web this stays true until
@@ -46,7 +59,7 @@ export function NavigationProvider({
     () => ({
       ...value,
       push: (path: string) => startTransition(() => value.push(path)),
-      replace: (path: string) => startTransition(() => value.replace(path)),
+      replace: (...args: Parameters<NavigationAdapter["replace"]>) => startTransition(() => value.replace(...args)),
     }),
     [value],
   );
@@ -56,11 +69,19 @@ export function NavigationProvider({
         <NavigationPendingContext.Provider
           value={isPending || reportedPending > 0}
         >
-          {children}
+          <IterationParticipationContext.Provider value={iterationParticipationStore}>
+            {children}
+          </IterationParticipationContext.Provider>
         </NavigationPendingContext.Provider>
       </NavigationPendingReportContext.Provider>
     </NavigationContext.Provider>
   );
+}
+
+export function useIterationParticipationStoreApi(): IterationParticipationStore {
+  const store = use(IterationParticipationContext);
+  if (!store) throw new Error("useIterationParticipationStoreApi must be used within NavigationProvider");
+  return store;
 }
 
 /**

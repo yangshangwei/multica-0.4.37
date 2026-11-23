@@ -1,0 +1,34 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-runtime-integration-20261031/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/frontend
+
+ × retention-chain-repro.test.ts > rejects changing recording stream and coverage within one immutable page chain 5ms
+   → expected [Function] to throw an error
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  retention-chain-repro.test.ts > rejects changing recording stream and coverage within one immutable page chain
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ retention-chain-repro.test.ts:17:133
+     15|   const client = new QueryClient();
+     16|   const options = collaborationRunRecordsOptions(client, {server: "htt…
+     17|   expect(() => (options.structuralSharing as Function)(undefined, { pa…
+       |                                                                                                                                     ^
+     18|   client.clear();
+     19| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  22:54:01
+   Duration  551ms (transform 257ms, setup 0ms, import 466ms, tests 6ms, environment 0ms)
+

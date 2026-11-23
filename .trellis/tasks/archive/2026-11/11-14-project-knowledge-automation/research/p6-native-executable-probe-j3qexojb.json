@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-11-15T06:44:17.909434+00:00",
+  "started_at": "2026-11-15T06:44:12.573753+00:00",
+  "state": "pass",
+  "exit_code": 0,
+  "scalar_result": "PASS",
+  "product_acceptance": false,
+  "product_runtime_started": false,
+  "models_or_accounts_used": false,
+  "real_accounts_inherited": false,
+  "probe_directory": "/private/tmp/multica-p6-native-executable-probe-j3qexojb",
+  "probe_directory_mode": "0o700",
+  "git_independent": true,
+  "repair": {
+    "main_pattern": "app.whenReady().then(async () => ...)",
+    "top_level_ready_await": false,
+    "launch_timeout_ms": 20000,
+    "blank_url": "about:blank",
+    "reference_fixture": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-account-electron.mjs",
+    "product_fixture_modified": false,
+    "cause_scope": "Prior ESM module awaited app readiness before completing evaluation; event callback allows module evaluation to finish."
+  },
+  "chromium": {
+    "status": "pass",
+    "version": "145.0.7632.6",
+    "user_data": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/tmp/playwright_chromiumdev_profile-aiCnWZ",
+    "blank": {
+      "url": "about:blank",
+      "ready": "complete",
+      "body_children": 0,
+      "script_result": 42
+    }
+  },
+  "electron": {
+    "status": "pass",
+    "version": "39.8.7",
+    "chromium": "142.0.7444.265",
+    "ready": true,
+    "windows": 1,
+    "paths": {
+      "home": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/home",
+      "temp": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/tmp",
+      "userData": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/electron-user-data",
+      "sessionData": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/electron-session-data",
+      "crashDumps": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/electron-crash-dumps"
+    },
+    "environment": {
+      "HOME": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/home",
+      "TMPDIR": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/tmp",
+      "TMP": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/tmp",
+      "TEMP": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/tmp",
+      "XDG_CONFIG_HOME": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/home/.config",
+      "XDG_CACHE_HOME": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/home/.cache",
+      "XDG_DATA_HOME": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/home/.local/share"
+    },
+    "preferences": {
+      "nodeIntegration": false,
+      "contextIsolation": true,
+      "sandbox": true
+    },
+    "blank": {
+      "url": "about:blank",
+      "ready": "complete",
+      "body_children": 0,
+      "script_result": 42,
+      "node_require": "undefined",
+      "node_process": "undefined"
+    }
+  },
+  "binary_identity": {
+    "electron": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "realpath": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "bytes": 33968,
+      "sha256_before": "cf74833a9b0c242e26c177005d7d61819e5bf5ed199acc794fed2eb0cc4f3149",
+      "sha256_after": "cf74833a9b0c242e26c177005d7d61819e5bf5ed199acc794fed2eb0cc4f3149"
+    },
+    "chromium": {
+      "path": "/Volumes/artisan/dev-cache/playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+      "realpath": "/Volumes/artisan/dev-cache/playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+      "bytes": 52064,
+      "sha256_before": "d999cf00c6244a84279785c48eb78f97764a8a13ea3a1a7cc5030bf2f4ca481e",
+      "sha256_after": "d999cf00c6244a84279785c48eb78f97764a8a13ea3a1a7cc5030bf2f4ca481e"
+    },
+    "chromium_headless": {
+      "path": "/Volumes/artisan/dev-cache/playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+      "realpath": "/Volumes/artisan/dev-cache/playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+      "bytes": 154876784,
+      "sha256_before": "a46b3b1e63163fa2d2437fb6ae967cb5a73b50050bca32f1964e6129b6228244",
+      "sha256_after": "a46b3b1e63163fa2d2437fb6ae967cb5a73b50050bca32f1964e6129b6228244"
+    },
+    "node": {
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "realpath": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "bytes": 112937728,
+      "sha256_before": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "sha256_after": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+    }
+  },
+  "integrity": {
+    "executables_unchanged": true,
+    "bundles_and_dependencies_unchanged": true,
+    "protected_files_unchanged": true,
+    "prior_receipt_and_probe_bytes_unchanged": true,
+    "electron_matches_original_failure_binary": true,
+    "chromium_prior_hash_available": false,
+    "bundle_fingerprints": {
+      "electron": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app",
+        "entries": 1450,
+        "before": "22f65b5def0a18e9e11615a97e22a37716844773b2adfe66d9033ba9a034960c",
+        "after": "22f65b5def0a18e9e11615a97e22a37716844773b2adfe66d9033ba9a034960c"
+      },
+      "chromium": {
+        "path": "/Volumes/artisan/dev-cache/playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app",
+        "entries": 645,
+        "before": "225fec462b1711cd91f8e75968991dba66e2ef92d3f9ab45fb59de20ba372c9f",
+        "after": "225fec462b1711cd91f8e75968991dba66e2ef92d3f9ab45fb59de20ba372c9f"
+      },
+      "chromium_headless": {
+        "path": "/Volumes/artisan/dev-cache/playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64",
+        "entries": 21,
+        "before": "03158d5c6d2ade68d04a29aac368d81fb4e2924e208eae6eefa4ea7abb86523c",
+        "after": "03158d5c6d2ade68d04a29aac368d81fb4e2924e208eae6eefa4ea7abb86523c"
+      },
+      "playwright": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test",
+        "entries": 14,
+        "before": "d9459e7bb1475e08a50f822ab627edc96613f1e126030c123a5d2a6ef2754972",
+        "after": "d9459e7bb1475e08a50f822ab627edc96613f1e126030c123a5d2a6ef2754972"
+      },
+      "playwright_core": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core",
+        "entries": 403,
+        "before": "6d2de5b81475d11f237bb4d19c6d6d01a92c04524dfd330b2909bfa632b5f3be",
+        "after": "6d2de5b81475d11f237bb4d19c6d6d01a92c04524dfd330b2909bfa632b5f3be"
+      }
+    }
+  },
+  "prior_failure": {
+    "receipt": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-native-executable-probe-95598bb7.json",
+    "receipt_sha256_before": "7ceadd75c8ad71bf50a59a161714399aa3409647c1865f8d8311f2466837d106",
+    "receipt_sha256_after": "7ceadd75c8ad71bf50a59a161714399aa3409647c1865f8d8311f2466837d106",
+    "probe_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-native-launch-probe-zq7umjun",
+    "tree_sha256_before": "4e52004d56c35d97e52ac53c6e1e0e3d8f1d113e1b3e4fed898025a0a141622d",
+    "tree_sha256_after": "4e52004d56c35d97e52ac53c6e1e0e3d8f1d113e1b3e4fed898025a0a141622d",
+    "raw_byte_copies": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/preserved-prior",
+    "state": "failed",
+    "electron_error": "TimeoutError"
+  },
+  "process_ownership_and_cleanup": {
+    "node_pid": 74339,
+    "node_process_group": 74339,
+    "node_exited": true,
+    "owned_groups": [
+      {
+        "role": "node",
+        "pid": 74339,
+        "pgid": 74339
+      },
+      {
+        "role": "probe-helper",
+        "pid": 74343,
+        "pgid": 74343
+      },
+      {
+        "role": "chromium",
+        "pid": 74346,
+        "pgid": 74346
+      },
+      {
+        "role": "electron",
+        "pid": 74358,
+        "pgid": 74358
+      }
+    ],
+    "owned_processes_seen": 11,
+    "owned_processes_remaining": 0,
+    "signal_actions": [],
+    "unowned_processes_signalled": 0,
+    "playwright_close_results": [
+      {
+        "role": "chromium-connection",
+        "status": "closed"
+      },
+      {
+        "role": "chromium-server",
+        "status": "closed"
+      },
+      {
+        "role": "electron",
+        "status": "closed"
+      }
+    ],
+    "audit": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/process-ownership.json"
+  },
+  "diagnostics": {
+    "outer_timeout": false,
+    "error": null,
+    "stderr_tail": "5/devtools/browser/fcbf514a-6931-4eea-ab4c-1a9a4b211492\n2026-11-15T06:44:16.520Z pw:browser <ws connecting> ws://127.0.0.1:56735/devtools/browser/fcbf514a-6931-4eea-ab4c-1a9a4b211492\n2026-11-15T06:44:16.808Z pw:browser <ws connected> ws://127.0.0.1:56735/devtools/browser/fcbf514a-6931-4eea-ab4c-1a9a4b211492\n2026-11-15T06:44:16.852Z pw:browser <ws disconnecting> ws://127.0.0.1:56733/1f416191-6583-420b-87d5-8715beaf930d\n2026-11-15T06:44:16.852Z pw:browser [pid=74358][err] Debugger ending on ws://127.0.0.1:56733/1f416191-6583-420b-87d5-8715beaf930d\n2026-11-15T06:44:16.852Z pw:browser [pid=74358][err] For help, see: https://nodejs.org/en/docs/inspector\n2026-11-15T06:44:16.852Z pw:browser <ws disconnected> ws://127.0.0.1:56733/1f416191-6583-420b-87d5-8715beaf930d code=1005 reason=\n2026-11-15T06:44:16.900Z pw:browser <ws disconnected> ws://127.0.0.1:56735/devtools/browser/fcbf514a-6931-4eea-ab4c-1a9a4b211492 code=1006 reason=\n2026-11-15T06:44:16.900Z pw:browser [pid=74358] <process did exit: exitCode=0, signal=null>\n2026-11-15T06:44:16.900Z pw:browser [pid=74358] starting temporary directories cleanup\n2026-11-15T06:44:16.901Z pw:browser [pid=74358] finished temporary directories cleanup\n",
+    "raw": [
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/run-probe.py",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/run-probe.py",
+        "bytes": 16269,
+        "mode": "0o600",
+        "sha256": "03d835b35fa1644550e4ca4889010aae5a1449e1ca319d1ff7310ff5e34ee618"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/probe.mjs",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/probe.mjs",
+        "bytes": 7505,
+        "mode": "0o600",
+        "sha256": "d3d0876a19ff60c8051d0817622d33198d31fc318db02d5b3060503b71d0f050"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/electron-main.mjs",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/electron-main.mjs",
+        "bytes": 2376,
+        "mode": "0o600",
+        "sha256": "06d9f9b6fd95a54c0deb8812fa7eb9bff9427467ec31bee8f14e6698447357e6"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/preflight.json",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/preflight.json",
+        "bytes": 1760,
+        "mode": "0o600",
+        "sha256": "3349f200be2a6156940cc66ee4f588db7098c63397739c9e5f54d940219616a1"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/inputs-before.json",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/inputs-before.json",
+        "bytes": 625264,
+        "mode": "0o600",
+        "sha256": "127bffb1a51679d6fa7a69211ac44cc0bc1f6c99527b0f356aeba6ebd612baef"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/inputs-after.json",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/inputs-after.json",
+        "bytes": 625264,
+        "mode": "0o600",
+        "sha256": "1ea11ea3aeb46242969e5fb77971d27ee9a27c8f49a384a9d17db70dc0717c19"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/result.json",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/result.json",
+        "bytes": 4912,
+        "mode": "0o600",
+        "sha256": "c0e174b3aeee97d39462759601b56bd2bc38ac40a23b8b282d46aeabf9c303e3"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/probe-events.jsonl",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/probe-events.jsonl",
+        "bytes": 2910,
+        "mode": "0o600",
+        "sha256": "c189110892ca1cb13f19707aaf475896e8ea2567a72920746a76e69b66ef0297"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/electron-events.jsonl",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/electron-events.jsonl",
+        "bytes": 470,
+        "mode": "0o600",
+        "sha256": "9b0ef4081ad7308a2cc5eede0e25d4d848cc5134865afbba4d93a8d22a90c76f"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/process-registrations.jsonl",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/process-registrations.jsonl",
+        "bytes": 2254,
+        "mode": "0o600",
+        "sha256": "ee15821bed58d526a51339a0bbb87c1cca86a90888e45288dc73e6e35b1ae036"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/process-ownership.json",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/process-ownership.json",
+        "bytes": 31181,
+        "mode": "0o600",
+        "sha256": "639913377796b600d506f22dae932369ed58310dce42fc0b640a33202af76848"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/logs/node.stdout",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/logs/node.stdout",
+        "bytes": 0,
+        "mode": "0o600",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/logs/node.stderr",
+        "realpath": "/private/tmp/multica-p6-native-executable-probe-j3qexojb/logs/node.stderr",
+        "bytes": 2705,
+        "mode": "0o600",
+        "sha256": "5a05f81668750016771358c604fb1b997ce088a570c7167cdf6d5cf85fb630d4"
+      }
+    ]
+  },
+  "repository_files_created": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-native-executable-probe-j3qexojb.json"
+  ],
+  "production_source_or_dependencies_modified": false
+}

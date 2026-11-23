@@ -1,0 +1,176 @@
+{
+  "recorded_at": "2026-11-03T11:31:24.353972+00:00",
+  "state": "complete_failed",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "started_at": "2026-11-03T10:01:06.135061+00:00",
+  "finished_at": "2026-11-03T11:23:27.231689+00:00",
+  "make_exit_code": 2,
+  "static_tasks_pass": 15,
+  "TS_pass": 13244,
+  "TS_package_pass": {
+    "core": 4455,
+    "views": 7165,
+    "docs": 62,
+    "desktop": 1272,
+    "web": 290
+  },
+  "Go": {
+    "packages": 82,
+    "tested_packages": 73,
+    "compiled_without_tests": 9,
+    "named_pass": 20963,
+    "named_fail": 0,
+    "named_skip": 22,
+    "top_level_pass": 10392,
+    "all_race": true,
+    "vet": "passed_before_API_stage"
+  },
+  "Playwright": {
+    "total": 441,
+    "pass": 337,
+    "fail": 13,
+    "explicit_skip": 91,
+    "unrun_or_blocked": 0,
+    "flaky": 0,
+    "workers": 1,
+    "retries": 0,
+    "skips_by_file": {
+      "admin-collaboration-switches.spec.ts": 1,
+      "admin-resource-publishing.spec.ts": 3,
+      "auth-device.spec.ts": 1,
+      "changelog.spec.ts": 1,
+      "cli-forbidden-reason.spec.ts": 3,
+      "collaboration-administration-desktop.spec.ts": 1,
+      "collaboration-administration-web.spec.ts": 1,
+      "collaboration-control-journey-desktop.spec.ts": 2,
+      "collaboration-control-journey-web.spec.ts": 2,
+      "collaboration-cross-client-execution.spec.ts": 1,
+      "collaboration-detail-journey.spec.ts": 2,
+      "collaboration-handoff-chain-desktop.spec.ts": 1,
+      "collaboration-handoff-chain-web.spec.ts": 1,
+      "collaboration-host-installed.spec.ts": 1,
+      "collaboration-host-runtime.spec.ts": 1,
+      "collaboration-host-squad.spec.ts": 1,
+      "collaboration-host-switch.spec.ts": 1,
+      "collaboration-installed-clients.spec.ts": 1,
+      "collaboration-installed-main.spec.ts": 1,
+      "collaboration-knowledge-deployed.spec.ts": 1,
+      "collaboration-lane-close-controls.spec.ts": 6,
+      "collaboration-leave-web.spec.ts": 1,
+      "collaboration-lifecycle-controls.spec.ts": 2,
+      "collaboration-live-revoke-web.spec.ts": 1,
+      "collaboration-memory-runtime.spec.ts": 1,
+      "collaboration-offline-handoff.spec.ts": 2,
+      "collaboration-offline-result-notifications.spec.ts": 2,
+      "collaboration-retained-attachment.spec.ts": 3,
+      "collaboration-runtime-handoff-desktop.spec.ts": 1,
+      "collaboration-runtime-handoff-web.spec.ts": 2,
+      "collaboration-selection-boundary.spec.ts": 1,
+      "collaboration-source-surface.spec.ts": 1,
+      "collaboration-terminal-reopen-web.spec.ts": 1,
+      "issue-assist-flow.spec.ts": 8,
+      "mcp-desktop.spec.ts": 1,
+      "password-binding-desktop.spec.ts": 1,
+      "password-branches.spec.ts": 12,
+      "password-migration.spec.ts": 2,
+      "password-registration.spec.ts": 2,
+      "password-server-switch.spec.ts": 1,
+      "platform-admin-accounts.spec.ts": 1,
+      "platform-admin-controls.spec.ts": 1,
+      "platform-admin-executions.spec.ts": 1,
+      "platform-admin-initialization.spec.ts": 1,
+      "platform-admin-installations-read.spec.ts": 1,
+      "platform-admin-observability.spec.ts": 1,
+      "platform-admin.spec.ts": 1,
+      "quick-create-actor-picker-phase2.spec.ts": 3,
+      "upstream-backports-cli.spec.ts": 3
+    },
+    "knowledge_pass": 8,
+    "deployed_knowledge": [
+      {
+        "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+        "outcome": "explicit_skipped",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Requires an explicit true/false expectation and isolated task-owned deployment",
+            "location": {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-knowledge-deployed.spec.ts",
+              "line": 18,
+              "column": 8
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "final_identity_audit": {
+    "status": "pass",
+    "exit_code": 0,
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/final-state-audit-v13/post-make-v13.json",
+    "sha256": "adc2306d3d4b4a82918048806a4ed09a11af558a7a9923db7c5442104558a385",
+    "scope": "filesystem/source/tool/workspace/artifact identity only",
+    "wholecheck_exit_code": 2
+  },
+  "inventory_complete": true,
+  "wholecheck_accepted": false,
+  "task7_closed": false,
+  "provider_calls": 0,
+  "reruns": 0,
+  "artifacts": {
+    "run": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/make-check-v13.json",
+      "sha256": "28a7509eba24869e21597f1cf548d5f02cfbb24535adbe0f1152a3ba6c42d75d"
+    },
+    "log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/make-check-v13.log",
+      "sha256": "3eb025bbe0da5a7b175a1da2edb2be5886d8493d5c7a5b37b9a39ac48f39d5a4"
+    },
+    "Go_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/go-inventory.json",
+      "sha256": "b18cad8f184e9fdc50d673d4dda4a013039e42a822355e87a05ad27c4d0911c0"
+    },
+    "Playwright_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/playwright-inventory.json",
+      "sha256": "d914006b1879b118350360af3fc5eb5bb1130a41cd2d827d9ec5fa42034bc3f7"
+    },
+    "browser_failures": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/browser-failures.json",
+      "sha256": "ea85f1e9bc5f0a27496166deab05d312c6cb89da9d6fb9e47843a4a2746368b1"
+    }
+  },
+  "root_live_and_startup_evidence": {
+    "root-live-api-proof.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/root-live-api-proof.json",
+      "sha256": "c0c9b5aadc9c50cda15e37bfb8f3966e03aa77b422949d5f46c666a9ac99d4c2"
+    },
+    "root-live-web-proof.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/root-live-web-proof.json",
+      "sha256": "51079aed2e54bc07521f895e4d416e44d31c7d1fcd31645b8b097ea6281a57b2"
+    },
+    "runtime-started.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/runtime-started.json",
+      "sha256": "d1afed2a8b0d122d763074846b220ec9b9aff9f6546604b9b6dcd2f897704f80"
+    },
+    "runtime-allocation.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/runtime-allocation.json",
+      "sha256": "6395376a5aa25be257c5088f9be3645b80de31dff9470c8830a05eb9c1fc4aac"
+    },
+    "launch.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/launch.json",
+      "sha256": "60f3fd54f820d6bfdbfebc43c58921c41a1a0b004d16ee1c51bfee46c17c6d4e"
+    }
+  },
+  "remaining": "13 original browser failures require disposition; future new candidate complete check and independent closure; CCG current-source replays remain separate",
+  "manual_source_edits_during_run": false,
+  "allowed_generated_source_change": {
+    "path": "apps/web/next-env.d.ts",
+    "generated_rewrite": true,
+    "raw_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+    "normalized_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc"
+  },
+  "final_tracked_status": [
+    " M apps/web/next-env.d.ts"
+  ]
+}

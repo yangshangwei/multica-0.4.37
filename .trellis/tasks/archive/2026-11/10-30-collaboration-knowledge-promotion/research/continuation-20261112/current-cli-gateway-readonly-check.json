@@ -1,0 +1,135 @@
+{
+  "recorded_at_utc": "2026-11-11T23:18:19Z",
+  "head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+  "workspace_status": {
+    "count": 386,
+    "sample": [
+      " M .trellis/spec/server/collaboration-host-execution.md",
+      " M .trellis/spec/server/collaboration-preparation.md",
+      " M .trellis/spec/server/database-test-isolation.md",
+      " M .trellis/spec/server/index.md",
+      " M .trellis/tasks/10-10-cross-workspace-collaboration/progress.md",
+      " M .trellis/tasks/10-10-cross-workspace-collaboration/task.json",
+      " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/continuation-plan-2026-11-02.md",
+      " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/progress.md",
+      " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json",
+      " M .trellis/tasks/10-30-collaboration-context-handoff/acceptance-2026-11-01.md",
+      " M .trellis/tasks/10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
+      " M .trellis/tasks/10-30-collaboration-context-handoff/prd.md",
+      " M .trellis/tasks/10-30-collaboration-context-handoff/task.json",
+      " M .trellis/tasks/10-30-collaboration-fix-closure/check.jsonl",
+      " M .trellis/tasks/10-30-collaboration-fix-closure/implement.jsonl",
+      " M .trellis/tasks/10-30-collaboration-fix-closure/implement.md",
+      " M .trellis/tasks/10-30-collaboration-fix-closure/task.json",
+      " M .trellis/tasks/10-30-collaboration-knowledge-promotion/progress.md",
+      " M .trellis/tasks/10-30-collaboration-knowledge-promotion/task.json",
+      " D .trellis/tasks/11-04-core-business-e2e-acceptance/.gitignore"
+    ]
+  },
+  "source_id": "7d9b7fa2be856c3a573c14c8dd682045c053034f897997567f2b3e78fce2c4d5",
+  "source_file_count": 8193,
+  "dirty_product_path_count": 147,
+  "framework_file_count": 19,
+  "framework_sha256": "72c51f98d36aaed382749cfd153340f54f2d91cf266c7627a29ddfc1666754f9",
+  "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+  "provider_cli": {
+    "claude_version": "2.1.322",
+    "path": "/Users/artisan/.local/bin/claude",
+    "target": "/Users/artisan/.local/share/claude/versions/2.1.322",
+    "sha256": "a9d237949db816a0b7afd88a9a8e1df36b3a597a30f5a41d1c0539eb180a3450"
+  },
+  "codex_cli": {
+    "version": "0.167.0",
+    "native_sha256": "030316ecfbb41f4e7946e584b0063ef333b7a36cd312ba349f2f6869e39b62cc",
+    "wrapper_sha256": "e14fc83739c13c1074b12bd1acce4010c893c7f6fbfc1593b4a31d74cabb57af",
+    "config_sha256": "2d8fa41539c89927342ccf16cdf3af13a322fe646615917dc0c7688f3dbad52a"
+  },
+  "historical_evidence_sha256": {
+    "h3a_t2_public_result": "9a4b94050ad696c46512b0833d27398ac0c6ef48770f6085d1db1283f9d628ce",
+    "h3a_t2_invocation": "909ac2da3054ab19ce4a75290ce9c5b06778740835efa414f6f206d863ddd3ed",
+    "h3a_t2_invocation_review_inventory": "e5807dddbc40ff880b431fb5ba002457c407fb2d77b75ee76d3b3841d30b991b",
+    "approval_registration": "7d743b5e1defa5fe8875c79a84d95c9982e9b0bfb650258a936a9214ed74f53c",
+    "real_execution_authorization": "1f56add2daca80c4f17575550979ce783f7a1ea860ef63e78e584e80e258f580",
+    "current_runtime_binding_check": "b41f81440727691be0943dbb46b8b70c0350e3784454280f5aef6a55dc6b096b",
+    "implementation_verification": "a90ca36a61f237ca5e86aeeb4ab595a4e8b63b11ad3739c03e566fa33ed4af1a",
+    "knowledge_cli_binding_check": "c704db668ed6eee6859b240542f832fcad84c5aef413f36e42c10eced6c64643"
+  },
+  "read_only_commands": [
+    "python3 ./.trellis/scripts/get_context.py",
+    "python3 ./.trellis/scripts/get_context.py --mode phase",
+    "git rev-parse HEAD",
+    "git status --short",
+    "git diff --stat",
+    "git diff --check",
+    "python3 .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source_manifest.py . /tmp/multica-current-source-manifest.json",
+    "read-only process/listener/permit/window inspection",
+    "docker exec multica-postgres-1 psql ... (read-only database inspection)"
+  ],
+  "kind": "knowledge_current_cli_gateway_readonly_block",
+  "historical_cli_bindings": [
+    {
+      "version": "0.165.0",
+      "native_sha256": "a45099154d7fb4a5ed8a56f40966a95deb938e508bab23e6985035c709e9a85a",
+      "wrapper_sha256": "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70"
+    },
+    {
+      "version": "0.166.0",
+      "native_sha256": "39acf979729dd290f9a24ee38b2914e036c91b65952872e28ae2a6b88a7db7c1"
+    }
+  ],
+  "exact_registered_cli_binding": false,
+  "gateway_admission_confirmed": false,
+  "execution": {
+    "cli_invoked": false,
+    "model_calls": 0,
+    "gateway_calls": 0,
+    "permit_used": false
+  },
+  "budget": {
+    "cap": 17,
+    "consumed": 2,
+    "remaining": 15
+  },
+  "order": [
+    "E0b",
+    "K1",
+    "K2",
+    "K3"
+  ],
+  "unrun": [
+    "K1",
+    "K2",
+    "K3"
+  ],
+  "gate": {
+    "runnable": false,
+    "permit_issued": false,
+    "window_confirmed": false
+  },
+  "historical_e0b": {
+    "attempts": 2,
+    "disposition": "failed-with-valid-evidence",
+    "reason": "gateway rejected official clients (HTTP 403)",
+    "do_not_rerun_without_legal_admission": true
+  },
+  "process_observation": {
+    "target_codex_knowledge_processes": 0,
+    "target_gateway_processes": 0,
+    "stale_historical_window_lock_pids": [
+      44080,
+      64934
+    ],
+    "stale_lock_pids_alive": false
+  },
+  "identity_constraints": [
+    "do not modify client identity",
+    "do not modify User-Agent",
+    "do not modify originator",
+    "do not use exec bridge"
+  ],
+  "blocking_reasons": [
+    "current 0.167.0 native/wrapper bytes do not match registered 0.165/0.166 bytes",
+    "no legal native gateway admission",
+    "no current permit or exclusive window"
+  ]
+}

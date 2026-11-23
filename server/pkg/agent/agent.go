@@ -26,6 +26,14 @@ type Backend interface {
 type ExecOptions struct {
 	Cwd   string
 	Model string
+	// Lifecycle is supplied by collaboration or negotiated ordinary knowledge
+	// execution. Nil preserves the legacy path; it confers no authorization.
+	Lifecycle *LaunchLifecycle
+	// Knowledge is the admitted session/invocation intent for this command.
+	// Only supported built-in adapters with an ordinary lifecycle accept it.
+	Knowledge *KnowledgeLaunchIntent
+	// CodexEphemeral requires a fresh nonpersistent app-server thread for private host runs.
+	CodexEphemeral bool
 	// SystemPrompt carries the Multica runtime brief for the few providers
 	// that cannot pick it up from disk. The daemon leaves it empty for every
 	// other provider (see daemon.providerNeedsInlineSystemPrompt), because the
@@ -198,15 +206,28 @@ const CostUSDTicksPerUSD = 10_000_000_000
 
 // Result is the final outcome after an agent session completes.
 type Result struct {
+	// BusinessOutcomeMissing distinguishes an absent provider result from the
+	// ordinary caller's status default. Collaboration must not turn an empty
+	// stream and a process exit into a business success or failure.
+	BusinessOutcomeMissing bool `json:"-"`
 	// ProcessExited is affirmative process-reap evidence, not inferred from
 	// task status or channel closure. Providers that cannot prove it leave false.
 	ProcessExited bool   `json:"-"`
 	Status        string // "completed", "failed", "aborted", "timeout", "cancelled"
 	Output        string // final user-facing output selected by the backend
 	Error         string // error message if failed
-	DurationMs    int64
-	SessionID     string
-	Usage         map[string]TokenUsage // keyed by model name
+	// KnowledgeFailure preserves the terminal knowledge classification apart
+	// from provider text. The daemon must serialize this through its ordinary
+	// failure reason and must not automatically replay the logical input.
+	KnowledgeFailure string `json:"-"`
+	// KnowledgeOutput retains already observed provider text and bounded stderr
+	// diagnostics when knowledge refusal interrupts/rejects an execution. It is
+	// execution evidence, not
+	// a successful final answer. Failed Output keeps its existing empty shape.
+	KnowledgeOutput string `json:"-"`
+	DurationMs      int64
+	SessionID       string
+	Usage           map[string]TokenUsage // keyed by model name
 	// ResumeRejected is positive evidence that this run's requested resume
 	// was permanently refused — the transcript is gone, the session belongs to
 	// another provider account, OR the session still exists but its history
@@ -261,10 +282,14 @@ type Config struct {
 	CLIVersion     string            // detected version paired with ExecutablePath; observation only, never used to choose behavior
 	Env            map[string]string // extra environment variables
 	Logger         *slog.Logger
-	TaskID         string
-	RuntimeID      string
-	DaemonVersion  string
-	CodexVersion   string
+	// PrivateInput suppresses raw provider stderr in generic logs for this
+	// backend instance. Claude retains its bounded diagnostic tail for the
+	// authorized result/evidence path. This flag grants no execution authority.
+	PrivateInput  bool
+	TaskID        string
+	RuntimeID     string
+	DaemonVersion string
+	CodexVersion  string
 	// BuiltinRuntime reports that ExecutablePath is the provider's own
 	// discovered binary rather than a custom runtime profile's command. A
 	// custom profile keeps its protocol family as the provider, so the
@@ -289,6 +314,9 @@ type Config struct {
 	// Command boundary applies it to every process the package spawns, task
 	// launches and CLI probes alike. Backends never read it directly.
 	LaunchPrefix []string
+	// Preserve the presence of a configured prefix even if ordinary protocol
+	// filtering removes it. A wrapper is not a managed built-in invocation.
+	knowledgeLaunchPrefix bool
 }
 
 // New creates a Backend for the given agent type.
@@ -391,6 +419,7 @@ func New(agentType string, cfg Config) (Backend, error) {
 	// opt-in arrangement that let ExtraArgs rot: a family that forgot the call
 	// would accept a fixed_args `--output-format text` and break its own
 	// stream-json channel.
+	cfg.knowledgeLaunchPrefix = len(cfg.LaunchPrefix) != 0
 	cfg.LaunchPrefix = filterLaunchPrefix(cfg.LaunchPrefix, agentType, cfg.Logger)
 
 	switch agentType {

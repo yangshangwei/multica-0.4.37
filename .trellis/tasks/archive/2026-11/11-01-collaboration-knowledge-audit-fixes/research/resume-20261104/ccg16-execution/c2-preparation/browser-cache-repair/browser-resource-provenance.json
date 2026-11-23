@@ -1,0 +1,85 @@
+{
+  "binding_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+  "binding_sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13",
+  "current_two_executables": {
+    "chromium": {
+      "path": "/Users/artisan/Library/Caches/ms-playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+      "sha256": "d999cf00c6244a84279785c48eb78f97764a8a13ea3a1a7cc5030bf2f4ca481e",
+      "bytes": 52064,
+      "uid": 501,
+      "mode": 493
+    },
+    "chromium-headless-shell": {
+      "path": "/Users/artisan/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+      "sha256": "a46b3b1e63163fa2d2437fb6ae967cb5a73b50050bca32f1964e6129b6228244",
+      "bytes": 154876784,
+      "uid": 501,
+      "mode": 493
+    }
+  },
+  "required_resource_count": 11,
+  "tool_sources": {
+    "playwright_package": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/package.json",
+      "sha256": "718c91812946dcfbb4b724cfa0084ee3be205c571df09094f218bc4571f43c2b",
+      "bytes": 2238,
+      "uid": 501,
+      "mode": 420
+    },
+    "playwright_core_package": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/package.json",
+      "sha256": "16a25dbd7368a87af8b58a45c6216b9cec5a91a72cf704533344701997ebde22",
+      "bytes": 1499,
+      "uid": 501,
+      "mode": 420
+    },
+    "playwright_test_package": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/package.json",
+      "sha256": "c3633ad1a5096090c15b0a3b414ede7b9628e0b1cafa62e8c0b4321683cc1d90",
+      "bytes": 754,
+      "uid": 501,
+      "mode": 420
+    },
+    "browsers_json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/browsers.json",
+      "sha256": "6b6e0538d6e46eef71d3e1a0dcb65f8f5ea7914033c8150529d8e207afb6030c",
+      "bytes": 1883,
+      "uid": 501,
+      "mode": 420
+    },
+    "registry_source": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/lib/server/registry/index.js",
+      "sha256": "0a35b418606183a0f64b977f2b467e0f7ffd874cb2ad077ee21aa6d72fa3d625",
+      "bytes": 70280,
+      "uid": 501,
+      "mode": 420
+    },
+    "playwright_config": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/playwright.config.ts",
+      "sha256": "de9a385def3e04d929d514b3d5eca092a78c6b1ea2895429e863e06f1ad285fd",
+      "bytes": 529,
+      "uid": 501,
+      "mode": 493
+    }
+  },
+  "actual_V16_report": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/makecheck-playwright-results-v9.json",
+    "sha256": "8f7c2b55fa3c5f8cefa6625b9dbb88d73bb468f5b91336cd70bde4a472994bfc",
+    "config_version": "1.58.2",
+    "stats": {
+      "startTime": "2026-11-04T03:54:00.427Z",
+      "duration": 1112065.8930000002,
+      "expected": 350,
+      "skipped": 91,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "projects": [
+      "chromium"
+    ]
+  },
+  "historical_V16_executable_hash_observed": false,
+  "scope_note": "V16 proves same current Playwright version/project and a successful complete run; current Root-approved cache identities are independently pinned now, not invented historical executable observations",
+  "cache_written": false,
+  "real_Provider_calls": 0
+}

@@ -1,0 +1,40 @@
+{
+  "issued_at": "2026-11-04T05:03:26.508047+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "executor": "/root/shared_executor",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "independent_review": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg1-admission-review/review.json",
+  "independent_review_sha256": "a5202eba9538260f9bfabbebd3ed032d3e93d421c4d2fb6ce95a2fbc22888e8d",
+  "shared_readiness": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v16-actual-01/independent-shared-readiness-review.json",
+  "shared_readiness_sha256": "b84ae87408a08e3e2536dfef08935c92b1ec23deddfc8e8a5c88b00d343734a2",
+  "Root_release": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/root-v16-resource-release.json",
+  "Root_release_sha256": "ffd84568037732e3642d3a0c661fbd90a34596150086e26460bdc1f034bf9200",
+  "approved_order": [
+    "normal",
+    "race"
+  ],
+  "scope": "Exactly one unchanged CCG1 normal and one unchanged CCG1 race on two reviewed fresh DBs; Root allocator prep now frozen; no C2 execution or real models",
+  "real_allowed": false,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "permits": [
+    {
+      "mode": "normal",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-normal.json",
+      "sha256": "4e6f0e061a0ac57714ececcc7e18f52c72fc876b41e5243fa190f1e2756cf259",
+      "before_sha256": "3f6d63519a055b7ca65d715a017d40f4c93248a17b3406c0814ff91719024358",
+      "database": "multica_knowledge_host_composite_20261101_v16n_a3c9",
+      "identity": "multica_knowledge_host_composite_20261101_v16n_a3c9|764_collaboration_ai_policy",
+      "temp": "/private/tmp/multica-ccg-v16-normal-pts2beua"
+    },
+    {
+      "mode": "race",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-race.json",
+      "sha256": "53c11556d5749b9baf4e661b9fe14a33deaf1a23467fb2c1eac32831002a86bb",
+      "before_sha256": "0033d13871f72ca4d1460d7ea9319f8077a56a50e377d0a38911801942f8e682",
+      "database": "multica_knowledge_host_composite_20261101_v16r_a3c9",
+      "identity": "multica_knowledge_host_composite_20261101_v16r_a3c9|764_collaboration_ai_policy",
+      "temp": "/private/tmp/multica-ccg-v16-race-yerk581i"
+    }
+  ]
+}

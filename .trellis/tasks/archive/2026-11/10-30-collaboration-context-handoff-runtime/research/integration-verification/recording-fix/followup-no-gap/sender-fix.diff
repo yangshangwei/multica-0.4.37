@@ -1,0 +1,41 @@
+--- before/host_checkpoints.go
++++ after/host_checkpoints.go
+@@ -98,8 +98,11 @@
+ 	defer timer.Stop()
+ 	batch := []protocol.CollaborationRecordedMessage{}
+ 	bytes := 0
++	// A local staging failure loses this batch. Later queued messages cannot
++	// reuse its offsets; HTTP uncertainty still has a durable original payload.
++	stagingFailed := false
+ 	flush := func() {
+-		if len(batch) == 0 {
++		if stagingFailed || len(batch) == 0 {
+ 			return
+ 		}
+ 		supervisor := s.supervisor
+@@ -114,6 +117,7 @@
+ 		launch, found := lastAuthorizedRecordingLaunch(local.record.Host)
+ 		if !found {
+ 			supervisor.mu.Unlock()
++			stagingFailed = true
+ 			s.failed.Store(true)
+ 			s.closed.Store(true)
+ 			batch = nil
+@@ -127,6 +131,7 @@
+ 		batch = []protocol.CollaborationRecordedMessage{}
+ 		bytes = 0
+ 		if err != nil {
++			stagingFailed = true
+ 			s.failed.Store(true)
+ 			s.closed.Store(true)
+ 			return
+@@ -159,6 +164,9 @@
+ 			if len(batch) > 0 && (len(batch) >= protocol.CollaborationCheckpointMessageLimit || bytes+len(m.Body) > protocol.CollaborationCheckpointBodyLimit) {
+ 				flush()
+ 			}
++			if stagingFailed {
++				continue
++			}
+ 			batch = append(batch, m)
+ 			bytes += len(m.Body)
+ 			if len(batch) >= protocol.CollaborationCheckpointMessageLimit || bytes >= protocol.CollaborationCheckpointBodyLimit {

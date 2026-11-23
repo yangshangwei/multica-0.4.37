@@ -3,7 +3,6 @@
 import type { ReactNode } from "react";
 import { SidebarProvider, SidebarInset } from "@multica/ui/components/ui/sidebar";
 import { ModalRegistry } from "../modals/registry";
-import { SourceBackfillModal } from "../onboarding";
 import { AppSidebar } from "./app-sidebar";
 import { DashboardGuard } from "./dashboard-guard";
 import { NavigationProgress } from "./navigation-progress";
@@ -16,6 +15,8 @@ interface DashboardLayoutProps {
   extra?: ReactNode;
   /** Rendered inside sidebar header as a search trigger */
   searchSlot?: ReactNode;
+  /** Platform-wired navigation; defaults to the shared workspace sidebar. */
+  sidebar?: ReactNode;
   /** Loading indicator */
   loadingIndicator?: ReactNode;
 }
@@ -24,25 +25,25 @@ export function DashboardLayout({
   children,
   extra,
   searchSlot,
+  sidebar,
   loadingIndicator,
 }: DashboardLayoutProps) {
   return (
     <DashboardGuard
       loadingFallback={
-        <div className="flex h-svh items-center justify-center">
+        <div className="flex h-full items-center justify-center">
           {loadingIndicator}
         </div>
       }
     >
-      <SidebarProvider className="h-svh bg-app-shell">
+      <SidebarProvider className="h-full min-h-0 bg-app-shell">
         <GlobalShortcuts />
         <WorkspacePresencePrefetch />
-        <AppSidebar searchSlot={searchSlot} />
+        {sidebar ?? <AppSidebar searchSlot={searchSlot} />}
         <SidebarInset className="relative overflow-hidden">
           <NavigationProgress />
           {children}
           <ModalRegistry />
-          <SourceBackfillModal />
           {extra}
         </SidebarInset>
       </SidebarProvider>

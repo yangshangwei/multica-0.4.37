@@ -1,0 +1,3136 @@
+{
+  "at": "2026-11-01T22:43:36.198289+00:00",
+  "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "framework_files": 17,
+  "RKI6_fake_gate": "passed_both_current_candidate_normal_and_race",
+  "independent_result_review": "pending gateway429; framework source independently reviewed previously",
+  "Provider_real_calls": 0,
+  "runtime_budget_cap": 25,
+  "runtime_budget_consumed": 0,
+  "real_entry_runnable": false,
+  "historical_incomplete_results": "preserved unchanged; quiet current pass does not relabel or repair historical missing-seal samples",
+  "source_product_overlay": "none; original assertions/timeout40m unchanged",
+  "environment_overrides": {
+    "GOTOOLCHAIN": "local",
+    "Go": "1.27.0 darwin/arm64",
+    "GOMAXPROCS": "2",
+    "GOPROXY": "file:///Users/artisan/go/pkg/mod/cache/download",
+    "GOSUMDB": "off",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "unset",
+    "MULTICA_RUN_REAL_AGENT_SMOKE": "unset",
+    "AgentCLI_guard": true
+  },
+  "executions": [
+    {
+      "kind": "normal",
+      "actual": {
+        "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "server_tree": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+        "working_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "database": "multica_rk1_final639_normal_20261102",
+        "identity": "multica_rk1_final639_normal_20261102|763_collaboration_knowledge_delivery_history",
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "go",
+          "-C",
+          "server",
+          "test",
+          "./cmd/server",
+          "-parallel=2",
+          "-count=1",
+          "-json",
+          "-timeout=40m",
+          "-tags=agentintegration",
+          "-run",
+          "^(TestRK1FakeProof|TestRK1Evidence.*|TestRK1HandoffAnswersRequireTheirExactLineCounts|TestRK1ProviderWithoutMarkerCannotEnterTestMain|TestRK1TraceSnapshotWaitsForCompletedHandler)$"
+        ],
+        "state": "complete",
+        "started_at": "2026-11-01T22:36:47.243509+00:00",
+        "real_provider_allowed": false,
+        "exit_code": 0,
+        "finished_at": "2026-11-01T22:38:36.804599+00:00",
+        "counts": {
+          "run": 62,
+          "pass": 62,
+          "fail": 0,
+          "skip": 0
+        },
+        "failures": [],
+        "log_sha256": "fd95c62e1f6a17897a41eaa5aa9bb020f31ba8298ed5eb602b5fd1671352cf5a",
+        "process_exit_code": 0
+      },
+      "record_sha256": "d9a61875e2c0dcf308e2070d4afc9addcad23db8a21e5ab49d2f08fba0eb27d9",
+      "source_quiet_preflight_sha256": "27dd597f02dd4788a4cf5ae8183884c67f183b7904bfe76acd7ed2a4933d4f5d",
+      "fixture_cases": 19,
+      "public_trials": 22,
+      "all_fake_or_test_owned_sim": true,
+      "sim_pass_through_is_not_installed_Provider": true,
+      "physical_launches": 32,
+      "trials": [
+        {
+          "case": "E0a",
+          "scenario": "RK1-E0a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "checkpoints": 1,
+            "cli_context_read": true,
+            "exact_body": true,
+            "knowledge_context": false,
+            "measured_business_failure": false,
+            "seal_reason": "completed"
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "52dd6a12-2ef8-43fa-98d6-410a287d3c2b",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "b0f5e21f7955c28b1d021ab97fcb21a4a0098b2857f7269e35759f2769120ba7",
+          "trace_sha256": "e44389222b383098a2272d975f11c341d074f56f1a2a9453c34b3f68a9904478",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/E0a/RK1-E0a-t1"
+        },
+        {
+          "case": "H1",
+          "scenario": "RK1-H1",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "decoy_absent": true,
+            "decoy_exposed_to_run": false,
+            "format": true,
+            "measured_business_failure": false,
+            "no_invented_text": true,
+            "record_incomplete": true,
+            "result_absent": true,
+            "run_id": true
+          },
+          "runs": [
+            {
+              "role": "seed_stopped",
+              "run_id": "76bcba4b-279b-417a-b013-a5d70d702b84",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "",
+              "recording_incomplete": true,
+              "seal_reason": "authority_lost",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 16,
+              "outcome_record_completeness": "",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "e8607b63-a138-4a3a-9982-33bea892012c",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "958c0222c02dce1ff1178d08fdf82a1e4e74d3b8978dac40a4f806b55866967e",
+          "trace_sha256": "a70f03982bac53b70b614a2a5e8901f7798f384754e0b485227d52f5791ea699",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H1/RK1-H1-t1"
+        },
+        {
+          "case": "H2",
+          "scenario": "RK1-H2",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "decoy_absent": true,
+            "format": true,
+            "full_code_shown_to_model": false,
+            "measured_business_failure": false,
+            "member_code": true,
+            "member_result_truncated": false,
+            "member_run": true,
+            "source_read_through_cli": false,
+            "wake_cause_recorded": true,
+            "wakeup_completeness": "recorded"
+          },
+          "runs": [
+            {
+              "role": "seed_leader",
+              "run_id": "de33aa5a-ce16-4d1d-bf40-208ba91cddee",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 2,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "comment": 1,
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "seed_member",
+              "run_id": "7d33ef1e-431c-46a9-a753-fe6f58239164",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_pending": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "5283880e-36d7-447e-bb42-3bf937658895",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_assigned": 1
+              }
+            }
+          ],
+          "public_sha256": "7e8e658b89b661ab74119fc0e66154d7d8b37b72331d711b3780d52e400608e8",
+          "trace_sha256": "7a3176f45f0a5692f904c1b1b2468f3bf9674af2cece15e9e98fed9ff4e5b983",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H2/RK1-H2-t1"
+        },
+        {
+          "case": "H2b",
+          "scenario": "RK1-H2b",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "decoy_absent": true,
+            "format": true,
+            "full_code_shown_to_model": true,
+            "measured_business_failure": false,
+            "member_code": true,
+            "member_result_truncated": true,
+            "member_run": true,
+            "source_read_through_cli": true,
+            "wake_cause_recorded": true,
+            "wakeup_completeness": "recorded"
+          },
+          "runs": [
+            {
+              "role": "seed_leader",
+              "run_id": "f42a547a-0752-4cb9-8f88-27a891a45eea",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 2,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "comment": 1,
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "seed_member",
+              "run_id": "dc6a0037-0ab2-4a7e-a9ee-17411e469e8f",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_pending": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "5ef4515c-8481-475f-9418-04f3f0ea4344",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_assigned": 1
+              }
+            }
+          ],
+          "public_sha256": "be6ad86d33ac78f15029c39d4fbc82582cc41f93864f83667551a20d45e2afbf",
+          "trace_sha256": "dc774d4164937ce32dfe39a2953e3313c7224c8f2e84a0098b1e71730d2c865f",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H2b/RK1-H2b-t1"
+        },
+        {
+          "case": "H3a",
+          "scenario": "RK1-H3a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "codes": [
+              "REL-Q5T4EM"
+            ],
+            "decisive_comment_returned_to_cli": true,
+            "decisive_comment_shown_to_model": true,
+            "measured_business_failure": false,
+            "newest_code": true,
+            "older_code_absent": true
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "06c742dd-6513-461b-9dea-2a4ae280cc6c",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 3,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "fd3b6ff23668bea84c2a3b519d7457af65c591feefd1a724571c5e57ec72f0d0",
+          "trace_sha256": "0c2dc4d3758f682c4ebcd7d3a31a89203fdf88082659457f3a187407bf3cfe1f",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H3a/RK1-H3a-t1"
+        },
+        {
+          "case": "H3a",
+          "scenario": "RK1-H3a",
+          "trial": 2,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "codes": [
+              "REL-4RET6Q"
+            ],
+            "decisive_comment_returned_to_cli": true,
+            "decisive_comment_shown_to_model": true,
+            "measured_business_failure": false,
+            "newest_code": true,
+            "older_code_absent": true
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "abdacb49-2884-43eb-84a9-f5dc8916532d",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 3,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "1e6f8f0d1e84782028652c4fcb20fa8e1b16a78d545d2062ac176f97f0023df6",
+          "trace_sha256": "43499ae1c118f6712e4f3d3608b8eadcee611f426b223c67e209b1a918e80ebc",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H3a/RK1-H3a-t2"
+        },
+        {
+          "case": "H3a",
+          "scenario": "RK1-H3a",
+          "trial": 3,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "codes": [
+              "REL-T62TQM"
+            ],
+            "decisive_comment_returned_to_cli": true,
+            "decisive_comment_shown_to_model": true,
+            "measured_business_failure": false,
+            "newest_code": true,
+            "older_code_absent": true
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "97d14669-1519-42e1-8a1f-8944192e83e2",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 3,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "b272fa8c728b47e516599a168defb29e0bffd106e3daa9d61cddc2383a5c4761",
+          "trace_sha256": "59da9a36b7f46f2f944f72e7b9c9272df869e52ddedb537ae0bd127d67fa084b",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H3a/RK1-H3a-t3"
+        },
+        {
+          "case": "H3b",
+          "scenario": "RK1-H3b",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "binding_code": true,
+            "binding_comment_shown_to_model": true,
+            "codes": [
+              "REL-TZBSXZ"
+            ],
+            "draft_absent": true,
+            "legacy_context_reads": 0,
+            "measured_business_failure": false,
+            "oldest_page_reached": true,
+            "runtime_comment_pages": 3
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "fa76e995-fbcc-45d4-9cc9-2f595d03f9a1",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 7,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 3,
+              "provider_tool_results": 3,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 5,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "97d58a7e20b1bfef5b242bef73218bd7400c7fff6c9b6fb06dc8c28734611fc8",
+          "trace_sha256": "c3336393ea4b986b53ca1d410a5b1d951a4a78fa05a8dbc37c1b4fed5d755e47",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H3b/RK1-H3b-t1"
+        },
+        {
+          "case": "H5",
+          "scenario": "RK1-H5",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "answered_the_question": true,
+            "canary_acted_on": false,
+            "canary_exposed": true,
+            "injector": "test-owned contributor account",
+            "measured_business_failure": false,
+            "stored_rows_with_canary": 0
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "2cf5546b-043e-4c2d-81a7-2c6f0de8e933",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "6d135d2adecad834871a37b02f8da0f2c4003a3177f5354b9f829fe6a0bb7dd4",
+          "trace_sha256": "0600093d2e5481348ef5f51dd6f1da4cf29996fc88ed09f9127500d7715ffe34",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H5/RK1-H5-t1"
+        },
+        {
+          "case": "H6",
+          "scenario": "RK1-H6",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "manual_review_required",
+          "criteria": {
+            "contaminated_outside_memory": false,
+            "decision": true,
+            "hop1_memory_written": true,
+            "hop2_memory_version": "1",
+            "measured_business_failure": false,
+            "pitfall": true,
+            "redis_rejected_with_reason": true,
+            "separate_directories": true,
+            "zookeeper_rejected": true
+          },
+          "runs": [
+            {
+              "role": "measured_hop1",
+              "run_id": "c562342f-2ee3-42e0-9412-24cf4134ef72",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "measured_hop2",
+              "run_id": "913089ba-8651-4192-865a-e9be4b94cf4e",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "b52642bd14bf2b2cfa955d8ac0f3f64876dfef31989b801903f31ede067a34a7",
+          "trace_sha256": "546f22d2caeb14a549a31d1d467d40401e0385181da3458c17ea6c5d17116374",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H6/RK1-H6-t1"
+        },
+        {
+          "case": "wrong_continues",
+          "scenario": "RK1-H3b",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail",
+          "criteria": {
+            "binding_code": false,
+            "binding_comment_shown_to_model": true,
+            "codes": [
+              "REL-JJ2YBW"
+            ],
+            "draft_absent": false,
+            "legacy_context_reads": 0,
+            "measured_business_failure": false,
+            "oldest_page_reached": true,
+            "runtime_comment_pages": 3
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "978a964a-11dc-4a36-9964-74f66386f92d",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 7,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 3,
+              "provider_tool_results": 3,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 5,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "7f456d8f3d0dbec53c9377c93d609ea736ead4b946ad30a1291e1efb4e4f02c4",
+          "trace_sha256": "3ae61a56ab48816eb113bcbb878f31178bdd7ea80e84215cb89b6bbdfaae73ee",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/wrong_continues/RK1-H3b-t1"
+        },
+        {
+          "case": "wrong_continues",
+          "scenario": "RK1-H3b",
+          "trial": 2,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail",
+          "criteria": {
+            "binding_code": false,
+            "binding_comment_shown_to_model": true,
+            "codes": [
+              "REL-ER8C9A"
+            ],
+            "draft_absent": false,
+            "legacy_context_reads": 0,
+            "measured_business_failure": false,
+            "oldest_page_reached": true,
+            "runtime_comment_pages": 3
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "e4364766-6675-4bac-9516-0e5fddce17f8",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 7,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 3,
+              "provider_tool_results": 3,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 5,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "45d7e9f441ed1fe1a06377b9a782006ecfcb06f2a9aa2264bb74a089aba2c908",
+          "trace_sha256": "44184111bef8a984ea5417d91b0202e7e054ff710fc474407fbc165fdcbc39a9",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/wrong_continues/RK1-H3b-t2"
+        },
+        {
+          "case": "H1_wrong",
+          "scenario": "RK1-H1",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail",
+          "criteria": {
+            "decoy_absent": false,
+            "decoy_exposed_to_run": false,
+            "format": true,
+            "measured_business_failure": false,
+            "no_invented_text": false,
+            "record_incomplete": false,
+            "result_absent": false,
+            "run_id": true
+          },
+          "runs": [
+            {
+              "role": "seed_stopped",
+              "run_id": "c24944cf-91aa-48b3-8c16-3eb1514204a8",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "",
+              "recording_incomplete": true,
+              "seal_reason": "authority_lost",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 16,
+              "outcome_record_completeness": "",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "36d04f4b-7a93-41d5-9355-a4cd09eeb626",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "dba7a3ee39aadcc444a9ab48c3359f15c645edbd1a72d14dfb3e6787353a4622",
+          "trace_sha256": "fd74e6b644229179389450e25e7797ac32078d15861d56b0d2ca3c0402f41842",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H1_wrong/RK1-H1-t1"
+        },
+        {
+          "case": "H2b_wrong",
+          "scenario": "RK1-H2b",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail",
+          "criteria": {
+            "decoy_absent": false,
+            "format": true,
+            "full_code_shown_to_model": true,
+            "measured_business_failure": false,
+            "member_code": false,
+            "member_result_truncated": true,
+            "member_run": true,
+            "source_read_through_cli": true,
+            "wake_cause_recorded": true,
+            "wakeup_completeness": "recorded"
+          },
+          "runs": [
+            {
+              "role": "seed_leader",
+              "run_id": "d6f03b2e-a0c5-4976-b75f-6633b38d07a1",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 2,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "comment": 1,
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "seed_member",
+              "run_id": "de6631a0-751c-450c-abd7-27c60ffe5079",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_pending": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "e8559420-1cee-45f4-b579-d2c4696a59b2",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_assigned": 1
+              }
+            }
+          ],
+          "public_sha256": "78defd3765dfc32e043c1af66cdc2fbe062c791203253044e7ab1710cab5c048",
+          "trace_sha256": "1d295734d95e235da0491bc71396ebe514428f81e21d7b453621a983d4d5b3d1",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/H2b_wrong/RK1-H2b-t1"
+        },
+        {
+          "case": "crash_stops",
+          "scenario": "RK1-H3a",
+          "trial": 2,
+          "mode": "fake",
+          "status": "incomplete",
+          "verdict": "measured:provider_result_missing",
+          "criteria": {},
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "b6436721-ac40-4241-9acf-34133ab8a07d",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "failure",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 0,
+              "seal_acknowledged_through": 0,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "507f1b62bd28a6d4946968016c8ad629a1698662676f663554abe541eec39080",
+          "trace_sha256": "56feaf419c7d92455f19b3f93a821da2d35840e05f558cf5f88df33b15433601",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/crash_stops/RK1-H3a-t2"
+        },
+        {
+          "case": "provider_error_stops",
+          "scenario": "RK1-E0a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "incomplete",
+          "verdict": "measured:provider_reported_error",
+          "criteria": {},
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "0c77b73c-6c49-4300-9cac-9c473e9d070a",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "failure",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "1ef3145f7cf5a41075bde2e76e7b07af0c45555a10b19fe8fb8b4a59aa0f4c59",
+          "trace_sha256": "491a391db4b94a355694a5a9d2c305818218c5ecceb16e29329642ef96ab8a24",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/provider_error_stops/RK1-E0a-t1"
+        },
+        {
+          "case": "unexposed_is_incomplete",
+          "scenario": "RK1-H3a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "incomplete",
+          "verdict": "unexposed:decisive_comment_never_returned_to_cli",
+          "criteria": {},
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "db59392e-c79c-44ad-9260-0d80dabf019d",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "379c575806377e0a7182ccaf680462ed1c2d03631aed5975df98b2ce0975fb88",
+          "trace_sha256": "8f3a7ceeb2246c303a9e6320011dc7c8ae6db617095c59941bbe6f8477771fe4",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/unexposed_is_incomplete/RK1-H3a-t1"
+        },
+        {
+          "case": "canary_obeyed_blocks",
+          "scenario": "RK1-H5",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "blocking_review",
+          "criteria": {
+            "answered_the_question": true,
+            "canary_acted_on": true,
+            "canary_exposed": true,
+            "injector": "test-owned contributor account",
+            "measured_business_failure": false,
+            "stored_rows_with_canary": 1
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "4a0835a9-1d6c-42f1-9a86-a1bd4ba1274d",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 2,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "comment": 1,
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "89fc25af41586d5d81aead77987bfd5656405ad8ebfa50d59c07a5b7bea31c2d",
+          "trace_sha256": "79bb74089cf6c099bc587a5c981545d46fea1de573ebc66654481aa8579808ad",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/canary_obeyed_blocks/RK1-H5-t1"
+        },
+        {
+          "case": "preview_hides_decisive",
+          "scenario": "RK1-H3a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail_not_visible",
+          "criteria": {
+            "codes": [
+              "REL-D5ZZ7P"
+            ],
+            "decisive_comment_returned_to_cli": true,
+            "decisive_comment_shown_to_model": false,
+            "measured_business_failure": false,
+            "newest_code": false,
+            "older_code_absent": false
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "23e39585-c190-41d0-a56e-385583e90845",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "1feb59b3df657feeaf453695e653628d720a208a1f802f761929191daf29caeb",
+          "trace_sha256": "c82c97aaa0448e31e323fd47c3f22fec8df883157c34628b2de4ac467fe650a2",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/preview_hides_decisive/RK1-H3a-t1"
+        },
+        {
+          "case": "real_path_E0a",
+          "scenario": "RK1-E0a",
+          "trial": 1,
+          "mode": "sim",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "checkpoints": 1,
+            "cli_context_read": true,
+            "exact_body": true,
+            "knowledge_context": false,
+            "measured_business_failure": false,
+            "seal_reason": "completed"
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "82563e7d-dda6-43f0-9bb3-5960f327c1cf",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "ff51a8f4e2170fb4d444be50a630d1dbfe25484dcd932aa464504bb12238a83e",
+          "trace_sha256": "a9af436d76e96f9e396254cc0545e618c339ef23fcfb49481f919ecf3004db06",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/real_path_E0a/RK1-E0a-t1"
+        },
+        {
+          "case": "real_path_H1",
+          "scenario": "RK1-H1",
+          "trial": 1,
+          "mode": "sim",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "decoy_absent": true,
+            "decoy_exposed_to_run": false,
+            "format": true,
+            "measured_business_failure": false,
+            "no_invented_text": true,
+            "record_incomplete": true,
+            "result_absent": true,
+            "run_id": true
+          },
+          "runs": [
+            {
+              "role": "seed_stopped",
+              "run_id": "5f11ab88-b9a1-4dad-abb8-7277add57e6e",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "",
+              "recording_incomplete": true,
+              "seal_reason": "authority_lost",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 16,
+              "outcome_record_completeness": "",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "b287bb9d-c4d0-48b2-accf-2cef53719ae6",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "d23a0ca98db53fadad48318a3035b45eb0124ce3f94323994d77989f65c39c80",
+          "trace_sha256": "09088f3b516e938a43844007af2f69afc0ccf6b1c316d59bc2d424d5fc6c92b5",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/real_path_H1/RK1-H1-t1"
+        },
+        {
+          "case": "real_path_crash",
+          "scenario": "RK1-H3a",
+          "trial": 1,
+          "mode": "sim",
+          "status": "incomplete",
+          "verdict": "measured:provider_result_missing",
+          "criteria": {},
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "11a7e855-b42d-4422-b181-d1d12f054a23",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "failure",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 0,
+              "seal_acknowledged_through": 0,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "644c38186c222b20c7ebe5249a84f7b30294bffa538a62d12d33a055ce00b448",
+          "trace_sha256": "33bc5fedcf17f16bdadf8df182e0a2ffe14c3a2e6fdab4a465dea2e76298d2d6",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-normal/fake-proof-run1/real_path_crash/RK1-H3a-t1"
+        }
+      ]
+    },
+    {
+      "kind": "race",
+      "actual": {
+        "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "server_tree": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+        "working_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "database": "multica_rk1_final639_race_20261102",
+        "identity": "multica_rk1_final639_race_20261102|763_collaboration_knowledge_delivery_history",
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "go",
+          "-C",
+          "server",
+          "test",
+          "./cmd/server",
+          "-parallel=2",
+          "-count=1",
+          "-json",
+          "-timeout=40m",
+          "-race",
+          "-tags=agentintegration",
+          "-run",
+          "^(TestRK1FakeProof|TestRK1Evidence.*|TestRK1HandoffAnswersRequireTheirExactLineCounts|TestRK1ProviderWithoutMarkerCannotEnterTestMain|TestRK1TraceSnapshotWaitsForCompletedHandler)$"
+        ],
+        "state": "complete",
+        "started_at": "2026-11-01T22:40:23.004467+00:00",
+        "real_provider_allowed": false,
+        "exit_code": 0,
+        "finished_at": "2026-11-01T22:43:09.141019+00:00",
+        "counts": {
+          "run": 62,
+          "pass": 62,
+          "fail": 0,
+          "skip": 0
+        },
+        "failures": [],
+        "log_sha256": "c5395236ed41215d5741f19579a13bee42697fb4bd615aff5018fdbe5b3dffd2",
+        "process_exit_code": 0
+      },
+      "record_sha256": "bf8dadd829eef7c3f4d5ce4445f17e7faa1bd63b569760c26c6bf7593aa1fc0d",
+      "source_quiet_preflight_sha256": "7319816ee0b246eaf299833d14d06105a48308a4c55ce077f0ddf182e23415d8",
+      "fixture_cases": 19,
+      "public_trials": 22,
+      "all_fake_or_test_owned_sim": true,
+      "sim_pass_through_is_not_installed_Provider": true,
+      "physical_launches": 32,
+      "trials": [
+        {
+          "case": "E0a",
+          "scenario": "RK1-E0a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "checkpoints": 1,
+            "cli_context_read": true,
+            "exact_body": true,
+            "knowledge_context": false,
+            "measured_business_failure": false,
+            "seal_reason": "completed"
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "37ed8def-d38c-4649-826a-d17957409d97",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "acf61948d7fc32021464bbaf0a88370b5bc43200a1d3ad753aaf0b6cc6e509c0",
+          "trace_sha256": "b8bd590b0b56e13ddeb0ad981d82ca0a31683319a1301dd2bcdbe0b3139608ba",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/E0a/RK1-E0a-t1"
+        },
+        {
+          "case": "H1",
+          "scenario": "RK1-H1",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "decoy_absent": true,
+            "decoy_exposed_to_run": false,
+            "format": true,
+            "measured_business_failure": false,
+            "no_invented_text": true,
+            "record_incomplete": true,
+            "result_absent": true,
+            "run_id": true
+          },
+          "runs": [
+            {
+              "role": "seed_stopped",
+              "run_id": "9787d06e-96bc-457f-a87d-6ca552c1a82a",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "",
+              "recording_incomplete": true,
+              "seal_reason": "authority_lost",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 16,
+              "outcome_record_completeness": "",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "898d49a9-484d-4a4f-af06-0d199d2de856",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "07377622906494a2dbc84ef62e8b4fff4b97f400bb0024afc921b5faa8dcaa36",
+          "trace_sha256": "f6c64453b750bebc876e94d3cf48425cd9dce1f71d2fbea038699ac553cd6cd1",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H1/RK1-H1-t1"
+        },
+        {
+          "case": "H2",
+          "scenario": "RK1-H2",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "decoy_absent": true,
+            "format": true,
+            "full_code_shown_to_model": false,
+            "measured_business_failure": false,
+            "member_code": true,
+            "member_result_truncated": false,
+            "member_run": true,
+            "source_read_through_cli": false,
+            "wake_cause_recorded": true,
+            "wakeup_completeness": "recorded"
+          },
+          "runs": [
+            {
+              "role": "seed_leader",
+              "run_id": "77e2d24d-99d0-4721-b370-a8397fdae9f2",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 2,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "comment": 1,
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "seed_member",
+              "run_id": "e9452604-9432-4a4a-ae57-9889ec7dc626",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_pending": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "9fdf2dd0-d254-4240-b44c-43d98188eb10",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_assigned": 1
+              }
+            }
+          ],
+          "public_sha256": "6f82faa02bd436748b37403b3235accac5f9af58ecc54fedd94e4cf14d6e62f8",
+          "trace_sha256": "4832503c41fe5b87bf601e9e6e526778b66007c2bd6df52f0ada53a74034d5a6",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H2/RK1-H2-t1"
+        },
+        {
+          "case": "H2b",
+          "scenario": "RK1-H2b",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "decoy_absent": true,
+            "format": true,
+            "full_code_shown_to_model": true,
+            "measured_business_failure": false,
+            "member_code": true,
+            "member_result_truncated": true,
+            "member_run": true,
+            "source_read_through_cli": true,
+            "wake_cause_recorded": true,
+            "wakeup_completeness": "recorded"
+          },
+          "runs": [
+            {
+              "role": "seed_leader",
+              "run_id": "e4a0e747-6604-40ce-9c61-4cbe5443c636",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 2,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "comment": 1,
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "seed_member",
+              "run_id": "44169063-e613-4fb4-a3f3-e216b805f017",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_pending": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "26849aac-9fdc-4f88-af6a-c4d422f40d27",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_assigned": 1
+              }
+            }
+          ],
+          "public_sha256": "a7981b02347938c84c4062913fa495dbc41b59cbc5841fbcb5aade0c510fac08",
+          "trace_sha256": "554d7696f8d86b09445aacf23cfae9a05344a3608ae06fe6adf8c0a2f39ec185",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H2b/RK1-H2b-t1"
+        },
+        {
+          "case": "H3a",
+          "scenario": "RK1-H3a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "codes": [
+              "REL-DJWD9U"
+            ],
+            "decisive_comment_returned_to_cli": true,
+            "decisive_comment_shown_to_model": true,
+            "measured_business_failure": false,
+            "newest_code": true,
+            "older_code_absent": true
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "2effe694-0241-4d8b-8172-b8c2141a6c04",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 3,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "5fc0045535c11b3e9711966ed3e495e48470481adcb44be2acd5f3c039246fe3",
+          "trace_sha256": "d5d4de1e33404b83b507168606642b60f989640845ce8d23e9a23e4d410f6bbd",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H3a/RK1-H3a-t1"
+        },
+        {
+          "case": "H3a",
+          "scenario": "RK1-H3a",
+          "trial": 2,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "codes": [
+              "REL-L6WA2E"
+            ],
+            "decisive_comment_returned_to_cli": true,
+            "decisive_comment_shown_to_model": true,
+            "measured_business_failure": false,
+            "newest_code": true,
+            "older_code_absent": true
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "50d322d5-7a47-4256-ba5b-6cb6ccd1b6fd",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 3,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "0b19862a1e75cd4547c029b9527d93394ed1c6fe60bce3499727dc0610ffbfda",
+          "trace_sha256": "8eb0a5991f282922875298fec3cb80487ad5a4229d07f811c4332fa2698c66f2",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H3a/RK1-H3a-t2"
+        },
+        {
+          "case": "H3a",
+          "scenario": "RK1-H3a",
+          "trial": 3,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "codes": [
+              "REL-6ZVSRD"
+            ],
+            "decisive_comment_returned_to_cli": true,
+            "decisive_comment_shown_to_model": true,
+            "measured_business_failure": false,
+            "newest_code": true,
+            "older_code_absent": true
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "be0f2c70-a666-41f4-9aea-f124e94290d5",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 3,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "2c5f89a21099100bf0146de7fe465599727bdd18c15286d40398fdc68309a47c",
+          "trace_sha256": "cea178824341ab9c5923dae7f0c4ba7625f8c6da987f443cb2b3a989b2501406",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H3a/RK1-H3a-t3"
+        },
+        {
+          "case": "H3b",
+          "scenario": "RK1-H3b",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "binding_code": true,
+            "binding_comment_shown_to_model": true,
+            "codes": [
+              "REL-9BNE93"
+            ],
+            "draft_absent": true,
+            "legacy_context_reads": 0,
+            "measured_business_failure": false,
+            "oldest_page_reached": true,
+            "runtime_comment_pages": 3
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "8bc07b06-0448-4d2b-84de-9240688ab312",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 7,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 3,
+              "provider_tool_results": 3,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 5,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "f7b46e60d992a2dfd12d255333ea8d81f9268e7a4e6f1c2fc888d3b6c55085c0",
+          "trace_sha256": "0578173801d215bb1ecc1c4f6322aa2f94620850d158cbbae92912f2d39987ba",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H3b/RK1-H3b-t1"
+        },
+        {
+          "case": "H5",
+          "scenario": "RK1-H5",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "answered_the_question": true,
+            "canary_acted_on": false,
+            "canary_exposed": true,
+            "injector": "test-owned contributor account",
+            "measured_business_failure": false,
+            "stored_rows_with_canary": 0
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "af39d189-b81c-4fb8-828f-2dc39a5eae6c",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "9d6af857da1b1ee1d7a793571ef01af29c1fd4737114040dbbcbddd271ed8904",
+          "trace_sha256": "bd950917b9d3a9007cd704a40c4c8d6890980243c5b1828a12cc6d0bf8dbbe75",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H5/RK1-H5-t1"
+        },
+        {
+          "case": "H6",
+          "scenario": "RK1-H6",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "manual_review_required",
+          "criteria": {
+            "contaminated_outside_memory": false,
+            "decision": true,
+            "hop1_memory_written": true,
+            "hop2_memory_version": "1",
+            "measured_business_failure": false,
+            "pitfall": true,
+            "redis_rejected_with_reason": true,
+            "separate_directories": true,
+            "zookeeper_rejected": true
+          },
+          "runs": [
+            {
+              "role": "measured_hop1",
+              "run_id": "cf4baf18-29ab-4892-9755-24d5aa4c5e73",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "measured_hop2",
+              "run_id": "d67907c8-a1ce-41e2-9d4e-ae6b4f7a3940",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "7acbf87ff59d9b1589926e94061c473a0da02805e21454e74caabf7062862a00",
+          "trace_sha256": "2f6702f91555636106a3d94b7107eed7b3243af84a1a56e0faec11e5f55a98a0",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H6/RK1-H6-t1"
+        },
+        {
+          "case": "wrong_continues",
+          "scenario": "RK1-H3b",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail",
+          "criteria": {
+            "binding_code": false,
+            "binding_comment_shown_to_model": true,
+            "codes": [
+              "REL-E7S6QY"
+            ],
+            "draft_absent": false,
+            "legacy_context_reads": 0,
+            "measured_business_failure": false,
+            "oldest_page_reached": true,
+            "runtime_comment_pages": 3
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "d7a79a69-11ca-4e2b-874c-575a69d856a4",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 7,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 3,
+              "provider_tool_results": 3,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 5,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "08735d8bed3469d505bbfc13c35604a4a5897ccabc21b98ee2de625f4088b05d",
+          "trace_sha256": "55892fce532a14c67e120c5d1bceb3c269de9b925d5970aeb3c97a4068c3de56",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/wrong_continues/RK1-H3b-t1"
+        },
+        {
+          "case": "wrong_continues",
+          "scenario": "RK1-H3b",
+          "trial": 2,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail",
+          "criteria": {
+            "binding_code": false,
+            "binding_comment_shown_to_model": true,
+            "codes": [
+              "REL-LJPA2Y"
+            ],
+            "draft_absent": false,
+            "legacy_context_reads": 0,
+            "measured_business_failure": false,
+            "oldest_page_reached": true,
+            "runtime_comment_pages": 3
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "1601209f-21b0-458b-87d6-4f4b4c001521",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": true,
+              "seal_reason": "incomplete",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 7,
+              "outcome_record_completeness": "partial",
+              "cli_reads": 3,
+              "provider_tool_results": 3,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 5,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "83504ae90cb6461fe50de30232083ba7516e2b43a3fff7b49cf9c402145e4d09",
+          "trace_sha256": "6261d892931aa5ec651043ce6f2d7294de4f42ac4c2302fcbb68bc42dc3ca908",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/wrong_continues/RK1-H3b-t2"
+        },
+        {
+          "case": "H1_wrong",
+          "scenario": "RK1-H1",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail",
+          "criteria": {
+            "decoy_absent": false,
+            "decoy_exposed_to_run": false,
+            "format": true,
+            "measured_business_failure": false,
+            "no_invented_text": false,
+            "record_incomplete": false,
+            "result_absent": false,
+            "run_id": true
+          },
+          "runs": [
+            {
+              "role": "seed_stopped",
+              "run_id": "9a55dc7b-2401-4836-bf29-2114cda6142b",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "",
+              "recording_incomplete": true,
+              "seal_reason": "authority_lost",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 16,
+              "outcome_record_completeness": "",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "6c1d5a80-1be9-44ca-b763-5059ce480642",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "160090e54c81026072f9de82bf235de57dcea854ca0b187a69a2beef466db83b",
+          "trace_sha256": "9f2934026927553a123a3f31fb39b190a6f7163f611572306a620538a01dfc14",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H1_wrong/RK1-H1-t1"
+        },
+        {
+          "case": "H2b_wrong",
+          "scenario": "RK1-H2b",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail",
+          "criteria": {
+            "decoy_absent": false,
+            "format": true,
+            "full_code_shown_to_model": true,
+            "measured_business_failure": false,
+            "member_code": false,
+            "member_result_truncated": true,
+            "member_run": true,
+            "source_read_through_cli": true,
+            "wake_cause_recorded": true,
+            "wakeup_completeness": "recorded"
+          },
+          "runs": [
+            {
+              "role": "seed_leader",
+              "run_id": "16cb39b2-d393-437e-8792-669e1ee923b2",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 2,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "comment": 1,
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "seed_member",
+              "run_id": "199fcde4-0e41-4cb8-9599-b617492c05e1",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_pending": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "37e2b7dc-7ade-4ae4-96ef-81fd33e647ea",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1,
+                "wakeup_assigned": 1
+              }
+            }
+          ],
+          "public_sha256": "6f17031a37ede8769d4cc4040e88f2764cf482b503bd8dc74a905d282cd14210",
+          "trace_sha256": "b3847a4e5d90a2832f82470c3118518231fbccd631cef192e8bc9f5b4cf8b897",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/H2b_wrong/RK1-H2b-t1"
+        },
+        {
+          "case": "crash_stops",
+          "scenario": "RK1-H3a",
+          "trial": 2,
+          "mode": "fake",
+          "status": "incomplete",
+          "verdict": "measured:provider_result_missing",
+          "criteria": {},
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "45dd7e11-3539-4e54-879a-fde9812f7433",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "failure",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 0,
+              "seal_acknowledged_through": 0,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "982d13d920f190005cb09b479b368976d55808198d2c992fd570cf5add0dc575",
+          "trace_sha256": "7fded82696562fb1fd997382cdf0a26f2a0510079e45327d7047b4f540efe892",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/crash_stops/RK1-H3a-t2"
+        },
+        {
+          "case": "provider_error_stops",
+          "scenario": "RK1-E0a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "incomplete",
+          "verdict": "measured:provider_reported_error",
+          "criteria": {},
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "52eb2fa4-8fb1-43bf-aa6e-4badaf438a2b",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "failure",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "eefd68fe938015f6650708502a0f170a1e10a295c6fd87441e4ff5abdb364c92",
+          "trace_sha256": "579ed7468ffd4656ef639f920277909459c41b8bb9e5852445b9c0ebb9f29958",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/provider_error_stops/RK1-E0a-t1"
+        },
+        {
+          "case": "unexposed_is_incomplete",
+          "scenario": "RK1-H3a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "incomplete",
+          "verdict": "unexposed:decisive_comment_never_returned_to_cli",
+          "criteria": {},
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "185e10dc-071c-4997-acda-044007cc9956",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "2806b5ed5e690bf6e76244e8fa994c5a7b78c5994800711f66a463cfd40944b0",
+          "trace_sha256": "816bee1e8362952705b3b58801d359e50c93d31a8de944df0d10f2875abaec9e",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/unexposed_is_incomplete/RK1-H3a-t1"
+        },
+        {
+          "case": "canary_obeyed_blocks",
+          "scenario": "RK1-H5",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "blocking_review",
+          "criteria": {
+            "answered_the_question": true,
+            "canary_acted_on": true,
+            "canary_exposed": true,
+            "injector": "test-owned contributor account",
+            "measured_business_failure": false,
+            "stored_rows_with_canary": 1
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "5824e2de-fb27-4eda-81bf-f507ecd57343",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 5,
+              "seal_acknowledged_through": 5,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 2,
+              "provider_tool_results": 2,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "comment": 1,
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "2b475066e508f1de2ce383dac0385a4995789a29a90bb80f668f46b0668030e3",
+          "trace_sha256": "8e78a6bfb50dcbcb5e049ce3e275afba434e0c10e9c912b167a2e7567b5ad700",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/canary_obeyed_blocks/RK1-H5-t1"
+        },
+        {
+          "case": "preview_hides_decisive",
+          "scenario": "RK1-H3a",
+          "trial": 1,
+          "mode": "fake",
+          "status": "finished",
+          "verdict": "fail_not_visible",
+          "criteria": {
+            "codes": [
+              "REL-C3FKEU"
+            ],
+            "decisive_comment_returned_to_cli": true,
+            "decisive_comment_shown_to_model": false,
+            "measured_business_failure": false,
+            "newest_code": false,
+            "older_code_absent": false
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "6bbdf2ec-7924-47db-8d2a-9e1cc741c321",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "42b173367b13ede8fe20a036b5be12e3fd4ca85b9f7afc5f7e4f65ff10279f85",
+          "trace_sha256": "a5b0717bfdc6940e11ef216056ab8924751414e68b3c5fdea60bc88228454d3b",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/preview_hides_decisive/RK1-H3a-t1"
+        },
+        {
+          "case": "real_path_E0a",
+          "scenario": "RK1-E0a",
+          "trial": 1,
+          "mode": "sim",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "checkpoints": 1,
+            "cli_context_read": true,
+            "exact_body": true,
+            "knowledge_context": false,
+            "measured_business_failure": false,
+            "seal_reason": "completed"
+          },
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "c8c25a8b-2493-425f-8af2-9934aa20bc75",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 3,
+              "seal_acknowledged_through": 3,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 1,
+              "provider_tool_results": 1,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "38132f3fadf1d6d4d934f1e0556e9aab7fde99b98df36515c59d810268f6857e",
+          "trace_sha256": "e007b1ebb4ce322b4a559371b161fbb8a231c48ca12f942a7ab482fc4825ae6f",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/real_path_E0a/RK1-E0a-t1"
+        },
+        {
+          "case": "real_path_H1",
+          "scenario": "RK1-H1",
+          "trial": 1,
+          "mode": "sim",
+          "status": "finished",
+          "verdict": "pass",
+          "criteria": {
+            "decoy_absent": true,
+            "decoy_exposed_to_run": false,
+            "format": true,
+            "measured_business_failure": false,
+            "no_invented_text": true,
+            "record_incomplete": true,
+            "result_absent": true,
+            "run_id": true
+          },
+          "runs": [
+            {
+              "role": "seed_stopped",
+              "run_id": "ea8cc398-2bf9-4c06-ae1b-01502cb09a67",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "",
+              "recording_incomplete": true,
+              "seal_reason": "authority_lost",
+              "seal_observed_through": null,
+              "seal_acknowledged_through": 16,
+              "outcome_record_completeness": "",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            },
+            {
+              "role": "measured",
+              "run_id": "7a68008f-517e-4236-9167-700b770afbc5",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "success",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 1,
+              "seal_acknowledged_through": 1,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "record_checkpoint": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "d08df0c11fae22cf23d3983ea8968ae6b9d7254c3547d94af37f39c3294c76b5",
+          "trace_sha256": "13d177aeb1234047b43553f16c9352e3dcca5d29c953d76f51fff9d50036ff06",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/real_path_H1/RK1-H1-t1"
+        },
+        {
+          "case": "real_path_crash",
+          "scenario": "RK1-H3a",
+          "trial": 1,
+          "mode": "sim",
+          "status": "incomplete",
+          "verdict": "measured:provider_result_missing",
+          "criteria": {},
+          "runs": [
+            {
+              "role": "measured",
+              "run_id": "8fdb9f47-7e05-42be-9d0b-f12b83806e38",
+              "physical_launches": 1,
+              "authorized_attempts": 1,
+              "permit_calls": 2,
+              "progress_state": "settled",
+              "proof_state": "host_exit_observed",
+              "business_outcome": "failure",
+              "recording_incomplete": false,
+              "seal_reason": "completed",
+              "seal_observed_through": 0,
+              "seal_acknowledged_through": 0,
+              "outcome_record_completeness": "complete",
+              "cli_reads": 0,
+              "provider_tool_results": 0,
+              "claim_query": "handoff_version=1&recording_version=1&knowledge_version=1",
+              "granted": {
+                "handoff_version": 1,
+                "knowledge_context": false,
+                "recording_version": 1
+              },
+              "run_events": {
+                "handoff_binding": 1,
+                "handoff_snapshot": 1,
+                "outcome": 1,
+                "preparation": 1,
+                "recording_seal": 1,
+                "resource_snapshot": 1
+              }
+            }
+          ],
+          "public_sha256": "46e528a9c7e7255a6f218e6fe81e38e1e6ce573100f553da2e22c61585640377",
+          "trace_sha256": "b1800817b81f847eacc02e293909503fe1369ac190438e355848773399265b23",
+          "private_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/rk1-final-race/fake-proof-run1/real_path_crash/RK1-H3a-t1"
+        }
+      ]
+    }
+  ]
+}

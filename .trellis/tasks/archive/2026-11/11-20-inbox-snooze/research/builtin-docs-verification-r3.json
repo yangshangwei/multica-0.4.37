@@ -1,0 +1,133 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-run",
+    "^(TestBuiltinSkillsConformToTemplate|TestBuiltinSkillsFrontmatterIsStrictYAML|TestWorkingOnIssuesSkillCoversIssueLoopContracts|TestProjectsAndResourcesSkillCoversDurableContext)$",
+    "-count=1",
+    "-json",
+    "-timeout=5m"
+  ],
+  "exit_code": 0,
+  "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-builtin-docs-r3.stdout.jsonl",
+  "stderr": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-builtin-docs-r3.stderr.txt",
+  "stdout_sha256": "0e992b86f968e1c99de5eda88a25596f0e7452166bfdc94fd45351defa3f3016",
+  "terminals": [
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate/multica-autopilots",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate/multica-creating-agents",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate/multica-mentioning",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate/multica-onboarding",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate/multica-projects-and-resources",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate/multica-runtimes-and-repos",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate/multica-skill-importing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate/multica-squads",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsConformToTemplate",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-autopilots",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-creating-agents",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-mentioning",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-onboarding",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-projects-and-resources",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-runtimes-and-repos",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-skill-importing",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-squads",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-working-on-issues",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestBuiltinSkillsFrontmatterIsStrictYAML",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestWorkingOnIssuesSkillCoversIssueLoopContracts",
+      "Elapsed": 0
+    },
+    {
+      "Action": "pass",
+      "Test": "TestProjectsAndResourcesSkillCoversDurableContext",
+      "Elapsed": 0
+    }
+  ]
+}

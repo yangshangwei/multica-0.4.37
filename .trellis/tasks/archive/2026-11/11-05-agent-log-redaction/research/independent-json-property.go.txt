@@ -1,0 +1,25 @@
+package main
+import (
+ "encoding/json"
+ "fmt"
+ "math/rand"
+ "strings"
+ "github.com/multica-ai/multica/server/pkg/redact"
+)
+func main(){
+ rng:=rand.New(rand.NewSource(20261105))
+ keys:=[]string{"password","apiKey","APIKey","TOKEN","clientSecret","Authorization","aws_secret_access_key","secretAccessKey","Proxy-Authorization"}
+ chars:=[]rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 \\\"\n\t:[]{}中")
+ checked:=0
+ for n:=0;n<1000;n++{
+  b:=make([]rune,rng.Intn(90))
+  for i:=range b{b[i]=chars[rng.Intn(len(chars))]}
+  value:="synthetic-audit-only:"+string(b)
+  object:=map[string]any{"items":[]any{map[string]any{keys[n%len(keys)]:value,"token_count":9007199254740993}},"note":"normal output"}
+  data,err:=json.MarshalIndent(object,"","  ");if err!=nil{panic(err)}
+  out:=redact.Text(string(data))
+  if strings.Contains(out,"synthetic-audit-only")||!json.Valid([]byte(out))||redact.Text(out)!=out{panic(fmt.Sprintf("case %d fails",n))}
+  checked++
+ }
+ fmt.Printf("deterministic_valid_json_cases=%d fail=0\n",checked)
+}

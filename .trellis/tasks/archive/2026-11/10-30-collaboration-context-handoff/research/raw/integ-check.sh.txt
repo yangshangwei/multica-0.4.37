@@ -1,0 +1,22 @@
+#!/bin/bash
+# Local-only checks for the integrated fix branch. No model calls.
+cd /Volumes/artisan/code/2026/mc-collab-integ/server || exit 1
+DB='postgres://multica:multica@127.0.0.1:55432/ctx_integ?sslmode=disable'
+LOG=/Volumes/artisan/code/2026/mc-collab-integ/.integ-check.log
+: > "$LOG"
+step() { echo "=== $1 $(date -u +%H:%M:%S)" >> "$LOG"; }
+step "vet+build"
+env -u GIT_CONFIG_COUNT go vet ./... >> "$LOG" 2>&1; echo "vet exit=$?" >> "$LOG"
+env -u GIT_CONFIG_COUNT go build ./... >> "$LOG" 2>&1; echo "build exit=$?" >> "$LOG"
+step "agentintegration vet"
+env -u GIT_CONFIG_COUNT go vet -tags=agentintegration ./internal/daemon/collaborationrun/ >> "$LOG" 2>&1; echo "vet-tag exit=$?" >> "$LOG"
+step "daemon collaborationrun"
+env -u GIT_CONFIG_COUNT go test ./internal/daemon/collaborationrun/ -count=1 > /tmp/integ-daemon.log 2>&1; echo "daemon exit=$?" >> "$LOG"
+env -u GIT_CONFIG_COUNT go test -tags=agentintegration ./internal/daemon/collaborationrun/ -run 'TestHostProviderAccountSmokeAuthorizesSharedContextBase' -count=1 -v >> "$LOG" 2>&1; echo "authorizer exit=$?" >> "$LOG"
+step "cmd/multica"
+env -u GIT_CONFIG_COUNT go test ./cmd/multica/ -count=1 > /tmp/integ-cmd.log 2>&1; echo "cmd exit=$?" >> "$LOG"
+step "service collaboration"
+env -u GIT_CONFIG_COUNT DATABASE_URL="$DB" go test ./internal/service/ -run 'Collaboration' -count=1 -timeout 40m > /tmp/integ-service.log 2>&1; echo "service exit=$?" >> "$LOG"
+step "handler collaboration"
+env -u GIT_CONFIG_COUNT DATABASE_URL="$DB" go test ./internal/handler/ -run 'Collaboration' -count=1 -timeout 40m > /tmp/integ-handler.log 2>&1; echo "handler exit=$?" >> "$LOG"
+step "done"

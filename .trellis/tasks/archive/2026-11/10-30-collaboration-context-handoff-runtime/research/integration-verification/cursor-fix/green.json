@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "test",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationHandoffCursor",
+    "-count=1",
+    "-v"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 4.53,
+  "top_level_pass": 3,
+  "all_pass_items": 34,
+  "skips": 0,
+  "database_configured": false
+}

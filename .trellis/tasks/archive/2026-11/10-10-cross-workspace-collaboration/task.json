@@ -1,0 +1,1287 @@
+{
+  "id": "cross-workspace-collaboration",
+  "name": "cross-workspace-collaboration",
+  "title": "跨账号任务流转与共享 AI 协作工作台",
+  "description": "已交付阶段结项：跨账号协作工作台、人类流转、资源授权、受控执行与停止恢复等已交付核心能力；已归档子任务结果保留。 原范围剩余事项已移交后续待办，完整路线与真实验收未因此完成。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-10",
+  "completedAt": "2026-11-12",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "b6f1e3ec9",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "10-19-cross-workspace-qa-report",
+    "10-20-collaboration-gap-recovery",
+    "10-30-collaboration-recipient-picker"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/tasks/10-10-cross-workspace-collaboration/mention-redesign-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/review-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/prd.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/design.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/implement.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/discussion.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/audit-2026-10-10.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/runtime-identity-and-usage.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/status-and-access-contracts.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/cross-space-authority-design.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/shared-queue-runtime-design.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/account-workbench-client-design.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/design-contracts.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/data-contract.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/execution-contract.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/design-review-authority.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/design-review-queue.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/design-review-client.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/review-2026-10-13.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/review-baseline-2026-10-13.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/review-2026-10-13-authority.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/review-2026-10-13-clients.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/review-2026-10-13-execution.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/progress.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-2026-10-13.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-compatibility-2026-10-13.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-queue-review-2026-10-13.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-2026-10-14.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-2026-10-14.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-2026-10-14.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-issue-editing-2026-10-14.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-account-fanout-2026-10-14.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-handoff-contract-2026-10-14.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-integration-review-2026-10-14.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-revision-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/revision-execution-audit-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/revision-mention-client-audit-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-revision-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-revision-2026-10-17.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-revision-review-2026-10-17.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/review-followup-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-followup-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-followup-final-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-hold-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/hold-control-map-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/lane-squad-map-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/client-gap-map-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-hold-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-hold-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-hold-review-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-fifo-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/fifo-switch-sql-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/config-convergence-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-fifo-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-fifo-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-fifo-review-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/core-fifo-switch-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-completion-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/cli-runtime-handoff-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/cli-runtime-implementation-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/squad-completion-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-runtime-completion-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/grant-regression-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-completion-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-summary-completion-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-source-manifest-completion-2026-10-18.json",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/remaining-product-work-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-desktop-account-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-workbench-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/verification-fixture-knip-2026-10-18.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/continuation-preview-wakeup-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/check-preview-wakeup-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/implementation-parent-wakeup-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/implementation-preview-server-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/research/implementation-preview-client-2026-10-20.md",
+    ".trellis/tasks/10-10-cross-workspace-collaboration/verification-preview-wakeup-2026-10-20.md"
+  ],
+  "notes": "2026-11-12 用户确认“归档已交付阶段”。本任务仅关闭已交付工程阶段；见stage-closure-2026-11-12.md及后续待办。原失败、授权、预算、默认关闭状态保留。",
+  "meta": {
+    "planning_status": "approved_revision_in_implementation",
+    "implementation_authorized": true,
+    "open_product_questions": [],
+    "pending_confirmation": null,
+    "review_status": "preview_wakeup_increment_verified",
+    "final_planning_summary_presented": true,
+    "previous_final_summary": "discussion.md#32-最终规划摘要等待实现批准",
+    "planning_validation": {
+      "date": "2026-10-17",
+      "status": "passed_docs_only_all_product_choices_confirmed",
+      "requirements": 58,
+      "acceptance_criteria": 97,
+      "single_owner_acceptance_criteria": 97,
+      "relative_links_checked": 186,
+      "protocol_sections": 8,
+      "context_entries_per_lane": 5,
+      "fully_loaded_files_per_lane": 8,
+      "rendered_context_bytes": {
+        "implement": 193251,
+        "check": 193251
+      },
+      "context_limit_bytes": 196608,
+      "independent_document_review": "product_and_execution_reviews_passed_all_findings_closed",
+      "product_tests_run": false,
+      "requirements_review_complete": true,
+      "report": "review-2026-10-17.md"
+    },
+    "implementation_authorization": {
+      "date": "2026-10-13",
+      "source": "User requested latest-58 technical consistency review and validation during implementation; discussion §55",
+      "scope": "Existing P1–P8 plan after technical review; no production deployment authorization"
+    },
+    "current_phase": "delivered_stage_closure",
+    "technical_review": {
+      "date": "2026-10-13",
+      "report": "review-2026-10-13.md",
+      "status": "contracts_reconciled",
+      "product_tests_run": false,
+      "independent_execution_review": true,
+      "authority_and_client_integration": "main_session_verified"
+    },
+    "implementation_validation": {
+      "date": "2026-10-14",
+      "status": "workflow_editing_invalidation_verified_full_acceptance_pending",
+      "report": "verification-2026-10-14.md",
+      "summary": "verification-summary-2026-10-14.json",
+      "requirements": 58,
+      "acceptance_criteria": 89,
+      "end_to_end_acceptance_passed": 0,
+      "go_test_groups": 259,
+      "go_subtests": 323,
+      "go_skipped": 0,
+      "go_failed": 0,
+      "core_tests": 1061,
+      "core_test_files": 40,
+      "workspace_typecheck": "passed_9_tasks",
+      "creation_enabled": false,
+      "native_termination_verified": false,
+      "positive_resume_implemented": false,
+      "account_invalidation_fanout_implemented": true,
+      "migration_version": 619,
+      "independent_review": "research/verification-integration-review-2026-10-14.md"
+    },
+    "planning_validation_history": [
+      {
+        "date": "2026-10-13",
+        "status": "passed_docs_only",
+        "requirements": 58,
+        "acceptance_criteria": 89,
+        "rendered_context_bytes": 148876,
+        "context_limit_bytes": 196608,
+        "product_tests_run": false,
+        "requirements_review_complete": true
+      },
+      {
+        "date": "2026-10-17",
+        "status": "passed_docs_only_product_decisions_open",
+        "requirements": 58,
+        "acceptance_criteria": 97,
+        "single_owner_acceptance_criteria": 97,
+        "relative_links_checked": 177,
+        "context_entries_per_lane": 5,
+        "fully_loaded_files_per_lane": 8,
+        "rendered_context_bytes": {
+          "implement": 184945,
+          "check": 184945
+        },
+        "context_limit_bytes": 196608,
+        "product_tests_run": false,
+        "requirements_review_complete": false,
+        "independent_document_review": "requirements_and_execution_review_completed; notification_destination_corrected",
+        "report": "mention-redesign-2026-10-17.md"
+      },
+      {
+        "date": "2026-10-17",
+        "status": "passed_docs_only_m01_confirmed_m02_m03_open",
+        "requirements": 58,
+        "acceptance_criteria": 97,
+        "single_owner_acceptance_criteria": 97,
+        "relative_links_checked": 177,
+        "context_entries_per_lane": 5,
+        "fully_loaded_files_per_lane": 8,
+        "rendered_context_bytes": {
+          "implement": 186096,
+          "check": 186096
+        },
+        "context_limit_bytes": 196608,
+        "product_tests_run": false,
+        "requirements_review_complete": false,
+        "report": "mention-redesign-2026-10-17.md"
+      },
+      {
+        "date": "2026-10-17",
+        "status": "passed_docs_only_m01_m02_confirmed_m03_open",
+        "requirements": 58,
+        "acceptance_criteria": 97,
+        "single_owner_acceptance_criteria": 97,
+        "relative_links_checked": 177,
+        "context_entries_per_lane": 5,
+        "fully_loaded_files_per_lane": 8,
+        "rendered_context_bytes": {
+          "implement": 188215,
+          "check": 188215
+        },
+        "context_limit_bytes": 196608,
+        "product_tests_run": false,
+        "requirements_review_complete": false,
+        "report": "mention-redesign-2026-10-17.md"
+      }
+    ],
+    "requirements_revision": {
+      "date": "2026-10-17",
+      "report": "mention-redesign-2026-10-17.md",
+      "source": "User accepted the recommendations and requested an inventory of requirement/design adjustments; discussion §57",
+      "scope": "Existing-task planning documentation only; no product implementation or deployment",
+      "accepted": [
+        "Explicit agent/squad mentions submit targeted execution",
+        "Human mentions create deduplicated account notifications without assignment or enrollment",
+        "Multiple distinct execution targets per issue",
+        "Trigger preview and applicable authority/pause gates remain",
+        "M01 confirmed: resource-bounded concurrent execution across distinct targets; ordered inputs per target",
+        "M02 confirmed: target/squad and whole-issue stop/resume; squad scope includes descendant executions",
+        "M03 confirmed: mention menu only fully authorized issue targets; creator/handler organize additions; actual resource owners consent"
+      ],
+      "pending": [],
+      "baseline_implementation_authorization_preserved": true,
+      "baseline_verification_applies_to_revision": false,
+      "confirmed_product_decisions": {
+        "M01": {
+          "date": "2026-10-17",
+          "source": "discussion.md §58; user explicitly selected concurrency when resources allow",
+          "behavior": "Different targets may run concurrently subject to authority and capacity; inputs for the same target remain ordered",
+          "implementation_authorized": false
+        },
+        "M02": {
+          "date": "2026-10-17",
+          "source": "discussion.md §59; user chose A for target/squad plus whole-issue controls",
+          "behavior": "Controls act on the selected target/squad or whole issue; squad includes descendants; target resume cannot bypass issue-wide pause; stop proofs and authorization remain required",
+          "implementation_authorized": false
+        },
+        "M03": {
+          "date": "2026-10-17",
+          "source": "discussion.md §60; user chose A for issue-authorized target catalogue",
+          "behavior": "Only fully authorized issue agent/squad targets are mentionable; creator or handler organizes additions and actual resource owners consent; no automatic membership/resource grants",
+          "implementation_authorized": false
+        }
+      },
+      "technical_draft": "design.md and research/data-contract.md, research/execution-contract.md",
+      "summary": "discussion.md §61"
+    },
+    "current_final_summary": "discussion.md#61-三项选择收敛后的完整规划摘要2026-10-17",
+    "revision_technical_review": {
+      "date": "2026-10-17",
+      "report": "review-2026-10-17.md",
+      "status": "passed_documents_only",
+      "independent_product_review": true,
+      "independent_execution_review": true,
+      "open_findings": 0,
+      "product_tests_run": false
+    },
+    "revision_implementation_authorization": {
+      "date": "2026-10-17",
+      "source": "Current user message: 刚才更新了一版需求，请根据需求核对一下已经实现的代码是否需要调整，并请继续推进这个任务",
+      "scope": "Review and implement the current revised plan; no deployment or release",
+      "baseline_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-collab-revision-20261017-hgtrswox"
+    },
+    "revision_code_review": {
+      "date": "2026-10-17",
+      "execution_report": "research/revision-execution-audit-2026-10-17.md",
+      "client_report": "research/revision-mention-client-audit-2026-10-17.md",
+      "status": "existing_foundation_adjusted_independent_review_passed",
+      "context_bytes": 194001,
+      "product_acceptance_complete": false,
+      "review_report": "research/verification-revision-review-2026-10-17.md",
+      "fixed_findings": [
+        "Whole-scope stop/close refuses missing target rows for retained execution",
+        "Whole stop refuses a dangling legacy active-run pointer"
+      ]
+    },
+    "revision_implementation_validation": {
+      "date": "2026-10-17",
+      "status": "passed_foundation_revision_full_product_pending",
+      "report": "verification-revision-2026-10-17.md",
+      "summary": "verification-summary-revision-2026-10-17.json",
+      "go_toolchain": "1.26.6",
+      "go_top_level": 323,
+      "go_subtests": 638,
+      "core_tests": 3452,
+      "creation_enabled": false,
+      "positive_resume_implemented": false,
+      "full_product_acceptance_passed": 0,
+      "independent_blocking_findings": 0,
+      "document_validation": {
+        "requirements": 58,
+        "acceptance_criteria": 97,
+        "relative_links": 274,
+        "context_bytes": {
+          "implement": 194001,
+          "check": 194001
+        },
+        "source_drift": []
+      },
+      "commits": [
+        "e6bc3759e8a07b480e6aedf246eda8304a253752",
+        "f5259e24533a68ca9ed3d283810de7988bc3d753"
+      ]
+    },
+    "next_steps": [
+      "当前分支已包含本地 main；任务变更尚未合回本地 main。主线交付保持单独处理。",
+      "AC43：本地 Codex/Claude 调用已获不限次数授权，用户明确排除网关用量/账单对账。多目标、混合作者、普通转交通过；跨环境小队在 Claude 队长收到供应商 safeguards 拒绝，成员/续作未执行。保留真实拒绝，待正常供应商执行条件恢复。Codex exec 测试路径不替代原生 app-server 网关403结果。",
+      "10-24跨平台任务已于2026-11-07按约定范围归档；Windows原生由用户自行验证，安装/正式发布不由历史受控回归代替。新建默认开启；AI执行/host准入仍需显式开放。"
+    ],
+    "implementation_commits": [
+      "e6bc3759e8a07b480e6aedf246eda8304a253752",
+      "f5259e24533a68ca9ed3d283810de7988bc3d753",
+      "188a7f4a5b0dc0e08873389c6261be0a55f012f9",
+      "6794f4e3680526d0105df9d58fa93edc4f937603",
+      "a389ef8596791cb8639ce21b27f64868cf93d715",
+      "33f584ae14f8eae77a96381e5c273ed3fecac497",
+      "b434d191dcc3df0e44d521e50839f9d315ec44f1",
+      "0155ee7353a02c082e6c49d61e7c652e7ad97ff4",
+      "6063a2682a10d7b5123f480f6aa56ab0f2e8ec9a",
+      "374049cecd4a2f30595e9131722722d5c7782937"
+    ],
+    "implementation_complete": false,
+    "quality_gate_scope": "switch_squad_skill_existing_record_clients",
+    "current_scope_doc": "continuation-completion-2026-10-18.md",
+    "followup_review": {
+      "date": "2026-10-18",
+      "report": "review-followup-2026-10-18.md",
+      "source": "Current user requested review of the completed Claude planning review and continuation based on implementation progress",
+      "status": "verified_single_agent_slice_independent_review_passed",
+      "baseline_head": "d62d6169c",
+      "confirmed_failures": [
+        "business_outcome_protocol_mismatch",
+        "stale_access_denial_after_epoch_recovery",
+        "v3_execution_projection_and_schema_incomplete",
+        "batch_input_order_uses_transaction_start_timestamp",
+        "proof_settlement_orphan_delegation_check",
+        "missing_concurrent_index_retry_registration",
+        "batch_and_external_identity_test_preconditions"
+      ],
+      "investigating": [],
+      "product_choices_reopened": false,
+      "full_product_acceptance_complete": false,
+      "context_validation": {
+        "implement": {
+          "bytes": 214542,
+          "files": 9,
+          "not_fully_loaded": []
+        },
+        "check": {
+          "bytes": 214542,
+          "files": 9,
+          "not_fully_loaded": []
+        }
+      },
+      "latest_document_update_acknowledged": true,
+      "future_contract_reread_required": true
+    },
+    "followup_implementation_validation": {
+      "date": "2026-10-18",
+      "status": "passed_M09_full_product_pending",
+      "report": "review-followup-2026-10-18.md",
+      "summary": "verification-summary-followup-2026-10-18.json",
+      "source_manifest": "verification-source-manifest-2026-10-18.json",
+      "independent_review": "research/verification-followup-final-2026-10-18.md",
+      "core_tests": 3484,
+      "go_collaboration_top_level": 300,
+      "go_collaboration_subtests": 517,
+      "go_runtime_top_level": 1995,
+      "go_runtime_subtests": 1987,
+      "linux_top_level": 24,
+      "creation_enabled": false,
+      "client_execution_enabled": false,
+      "single_agent_resume_verified": true,
+      "full_product_acceptance_passed": 0,
+      "migration_version": 697,
+      "concurrent_index_registrations_fixed": 82,
+      "commits": [
+        "188a7f4a5b0dc0e08873389c6261be0a55f012f9",
+        "6794f4e3680526d0105df9d58fa93edc4f937603"
+      ]
+    },
+    "hold_continuation": {
+      "date": "2026-10-18",
+      "source": "User: M09 已验证并提交，任务仍进行中，请继续推进",
+      "baseline_head": "5a0817b8a0ef22f5ae0d901bab6c125db5f6c757",
+      "latest_execution_contract_fully_reread": true,
+      "status": "verified_independent_review_passed",
+      "full_product_acceptance_complete": false,
+      "baseline_validation": {
+        "controls_tests_passed": 78,
+        "skipped": 0,
+        "migration_baseline": 697
+      },
+      "context_validation": {
+        "implement": {
+          "bytes": 211022,
+          "files": 8,
+          "not_fully_loaded": []
+        },
+        "check": {
+          "bytes": 211022,
+          "files": 8,
+          "not_fully_loaded": []
+        }
+      }
+    },
+    "hold_implementation_validation": {
+      "date": "2026-10-18",
+      "status": "passed_current_slice_full_product_pending",
+      "report": "continuation-hold-2026-10-18.md",
+      "summary": "verification-summary-hold-2026-10-18.json",
+      "source_manifest": "verification-source-manifest-hold-2026-10-18.json",
+      "independent_review": "research/verification-hold-review-2026-10-18.md",
+      "go_race_top_level": 603,
+      "go_race_subtests": 687,
+      "linux_top_level": 5,
+      "core_tests": 3509,
+      "migration_version": 698,
+      "outstanding_skipped_tests": 0,
+      "independent_blockers": 0,
+      "creation_enabled": false,
+      "client_execution_enabled": false,
+      "commits": [
+        "a389ef8596791cb8639ce21b27f64868cf93d715"
+      ]
+    },
+    "fifo_continuation": {
+      "date": "2026-10-18",
+      "source": "User requested continuation after a389ef859, with mixed FIFO, complete Switch/M11, configuration convergence and both clients pending",
+      "baseline_head": "6356cd9cf",
+      "status": "verified",
+      "full_product_acceptance_complete": false,
+      "projection_protocol_version": 4,
+      "runtime_protocol_version": 2
+    },
+    "fifo_implementation_validation": {
+      "date": "2026-10-18",
+      "status": "passed_current_slice_full_product_pending",
+      "report": "continuation-fifo-2026-10-18.md",
+      "summary": "verification-summary-fifo-2026-10-18.json",
+      "source_manifest": "verification-source-manifest-fifo-2026-10-18.json",
+      "go_race_top_level": 1191,
+      "go_race_subtests": 1211,
+      "linux_top_level": 10,
+      "core_tests": 3532,
+      "migration_version": 708,
+      "independent_blockers": 0,
+      "creation_enabled": false,
+      "client_execution_enabled": false,
+      "commits": [
+        "33f584ae14f8eae77a96381e5c273ed3fecac497"
+      ],
+      "environment_cleanup": "complete"
+    },
+    "continuation_recovery": {
+      "date": "2026-10-18",
+      "source": "看一下当前任务的进度，请继续推进",
+      "baseline_head": "bd168d18e",
+      "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-resume-20261018-23vtl_pb",
+      "full_product_acceptance_complete": false
+    },
+    "completion_slice_validation": {
+      "date": "2026-10-18",
+      "status": "passed_existing_record_runtime_and_clients_slice",
+      "task_status": "in_progress",
+      "baseline_head": "bd168d18edb37829203cd97c980d3e36895cce64",
+      "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-resume-20261018-23vtl_pb",
+      "typescript": {
+        "core": 3602,
+        "views": 6897,
+        "docs": 62,
+        "desktop": 1143,
+        "web": 289,
+        "total": 11993
+      },
+      "go": {
+        "passed_top_level": 6168,
+        "passed_subtests": 6402,
+        "skipped_top_level": 81,
+        "passed_packages": 12,
+        "package_without_tests": 1,
+        "selection": "latest complete successful result per affected package; service/handler replaced by go-primary-final-race.jsonl",
+        "package_results": [
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/migrate",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/multica",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/cli",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "log": "go-primary-final-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/migrations",
+            "log": "go-full-affected-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "log": "go-primary-final-race.jsonl",
+            "result": "pass"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/pkg/protocol",
+            "log": "go-full-affected-race.jsonl",
+            "result": "skip"
+          }
+        ],
+        "skips": [
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/migrate",
+            "test": "TestCommentContentBigramRequirementMatchesRealPGBigm"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationPartialResumeRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationSingleAgentRuntimeRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/cmd/server",
+            "test": "TestCollaborationSquadCapacityOneRoutesLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/cli",
+            "test": "TestCLIConfig_UnknownFieldsArePreserved"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon",
+            "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/daemon",
+            "test": "TestIsDriveRoot"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRequireDaemonWorkspaceAccess_CacheHit"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRequireDaemonWorkspaceAccess_CacheMissBackfills"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMembershipCache_InvalidatedOnDeleteMember"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMembershipCache_InvalidatedOnUpdateMember"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMembershipCache_InvalidatedOnLeaveWorkspace"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMembershipCache_InvalidatedOnDeleteWorkspace"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestIterationI1P95"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestIterationI1DisableP95"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLivenessStore_TouchAndIsAlive"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLivenessStore_TTLExpiry"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLivenessStore_Forget"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLivenessStore_BatchEmptyInput"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_CreateGetComplete"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_CreateWithoutMultiPermission"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PopPendingAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PopPendingConcurrent"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PendingTimeout"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_PreservesCreatorID"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_CreateWithoutMultiPermission"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_CompletePreservesFiles"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_PreservesConflict"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_PopPendingAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PerRuntimeIsolation"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillListStore_PopPendingAtomicClaim"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisLocalSkillImportStore_PopPendingBatch"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelCatalogCache_RoundTrip"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelCatalogCache_SkipsUncacheableResults"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelCatalogCache_InvalidateAndExpiry"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelCatalogCache_DropsUndecodableSnapshot"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_CreateGetComplete"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_CreateWithoutMultiPermission"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_PopPendingAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_PopPendingConcurrent"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_PendingTimeout"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_RunningTimeout"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisModelListStore_HasPending"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_CreateGetComplete"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_CreateWithoutMultiPermission"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_PopPendingAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_ReportAndPollAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_FailAcrossInstances"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_RejectsConcurrentActive"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_RunningTimeoutClearsActive"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisUpdateStore_PopPendingConcurrent"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestTriageQueueScaleBaseline"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestTriageWireFixtures"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisWebhookRateLimiter_RejectsAboveLimit"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisWebhookIPRateLimiter_HasSeparateBudgetFromTokenLimiter"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisSlidingWindowRateLimiter_SeparatesInvitationNamespaces"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestRedisSlidingWindowRateLimiter_PreservesWebhookFailOpenAndExposesErrors"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/handler",
+            "test": "TestMcpMarketPublicHTTPRecipeLifecycle"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_BumpInvalidatesPriorMark"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_StaleMarkRejected"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_TTL"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestEmptyClaimCache_RuntimeIsolation"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_TrackLaterAndForget"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_CollectionCheckAlignsBackstops"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestNotifyTaskAvailable_BumpsBeforeWakeup"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup"
+          },
+          {
+            "package": "github.com/multica-ai/multica/server/internal/service",
+            "test": "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict"
+          }
+        ]
+      },
+      "static": {
+        "lint_typecheck_tasks": 15,
+        "go_vet": "passed_all_affected_then_changed_test_packages",
+        "go_compile": "82_packages",
+        "ui_exports": "passed",
+        "sqlc_files": 108,
+        "sqlc_drift": [],
+        "migration_version": 726,
+        "knip": "preexisting_findings_no_new_dependency_or_unlisted_import"
+      },
+      "native": {
+        "linux_existing_routes": 5,
+        "linux_real_cli_daemon_capacity_one": 1,
+        "desktop_macos_scenarios": 6,
+        "web_production_scenarios": 1,
+        "visual_verdict": 94,
+        "web_build": "5vA9q4KPddaHoty4Os0St",
+        "final_current_source_recheck": {
+          "linux_all_current_route_tests": 6,
+          "linux_current_daemon_tests": 5,
+          "linux_current_runner_tests": 18,
+          "linux_runner_skip": "opposite-platform unsupported-controller test; exercised on host",
+          "logs": [
+            "linux-routes-all-final.log",
+            "linux-daemon-final.log",
+            "linux-runner-final.log"
+          ]
+        }
+      },
+      "independent_review": "no_unresolved_defects_in_implemented_slice",
+      "creation_enabled": false,
+      "new_client_execution_enabled": false,
+      "full_product_acceptance_complete": false,
+      "acceptance_criteria": 97,
+      "full_product_criteria_checked": 0,
+      "remaining_report": "research/remaining-product-work-2026-10-18.md",
+      "report": "verification-completion-2026-10-18.md",
+      "work_commits": [
+        {
+          "key": "fixture",
+          "oid": "b434d191dcc3df0e44d521e50839f9d315ec44f1",
+          "files": 2,
+          "subject": "test(projects): keep canonical verification valid after task archival"
+        },
+        {
+          "key": "runtime",
+          "oid": "0155ee7353a02c082e6c49d61e7c652e7ad97ff4",
+          "files": 148,
+          "subject": "feat(collaboration): keep shared runs authorized and recoverable"
+        },
+        {
+          "key": "core",
+          "oid": "6063a2682a10d7b5123f480f6aa56ab0f2e8ec9a",
+          "files": 40,
+          "subject": "feat(collaboration): preserve account intent through uncertain responses"
+        },
+        {
+          "key": "clients",
+          "oid": "374049cecd4a2f30595e9131722722d5c7782937",
+          "files": 74,
+          "subject": "feat(collaboration): keep account work reachable across clients"
+        }
+      ],
+      "test_services": "stopped; test databases and evidence retained"
+    },
+    "preview_wakeup_increment": {
+      "date": "2026-10-20",
+      "authorization": "User requested continuing trigger previews and collaboration child completion waking the parent in the existing task",
+      "status": "verified",
+      "continuation": "continuation-preview-wakeup-2026-10-20.md",
+      "review": "research/check-preview-wakeup-2026-10-20.md",
+      "full_product_acceptance_complete": false,
+      "creation_execution_defaults_changed": false,
+      "report": "verification-preview-wakeup-2026-10-20.md",
+      "typescript_tests": 934,
+      "go_race_top_level": 104,
+      "production_web_unique_scenarios": 5,
+      "visual_score": 94,
+      "commits": [
+        "5dd5ccd8b",
+        "b6f1e3ec9"
+      ]
+    },
+    "status_refresh_2026_10_27": {
+      "reason": "next_steps and current_phase were unchanged since 2026-10-20 and listed work a child task had already finished",
+      "ledger": ".trellis/tasks/archive/2026-10/10-20-collaboration-gap-recovery/acceptance-matrix.json",
+      "ledger_counts": {
+        "passed": 96,
+        "not_verified": 1,
+        "failed": 0
+      },
+      "ledger_not_verified": [
+        "AC43"
+      ],
+      "ledger_passed_without_e2e": 67,
+      "e2e_backfill_commit": "8d1b2b09d",
+      "e2e_gaps_open": [],
+      "coverage_audit": ".omx/reports/core-journey-audit-20261025/collab-audit.md",
+      "completed_children": [
+        "10-19-cross-workspace-qa-report",
+        "10-20-collaboration-gap-recovery"
+      ],
+      "related_tasks": {
+        "10-24-cross-platform-collaboration-runtime": "in_progress; owns host-mode execution, Windows native evidence, installers",
+        "10-26-collaboration-memory": "archived; merged in c67346c73"
+      },
+      "branch_vs_main": {
+        "merge_base": "296c377a4",
+        "behind": 45,
+        "ahead": 181
+      },
+      "production_gates_open": false,
+      "e2e_backfill_2026_10_27": {
+        "worktree": "removed after commit; built and verified from 5701a7695",
+        "squad_spec": "e2e/collaboration-host-squad.spec.ts: AC92/AC94 passed 3/3 on native host lane",
+        "switch_spec": "e2e/collaboration-host-switch.spec.ts: AC39-AC42 passed 2/2 after the generation fix",
+        "blocking_bug": "fixed in 91004d47a: promotion uses max(channel.group_generation, target max generation)+1 and AssignCollaborationChannelGroup sets that value; regression TestCollaborationSwitchToFreshChannelStartsANewTargetGeneration failed with SQLSTATE 23505 before and passes after",
+        "commits": [
+          "91004d47a",
+          "f8993a684"
+        ]
+      }
+    },
+    "status_refresh_2026_10_29": {
+      "reason": "migration 744 changed the creation gate default, so records saying production creation stays closed no longer hold",
+      "commit": "f0ad59ea6",
+      "migration": "server/migrations/744_collaboration_creation_default.up.sql",
+      "creation_enabled_default": true,
+      "upgrade_rule": "opens the existing gate unless a succeeded collaboration.gate admin_operation with result collaboration_creation_opened or collaboration_creation_closed exists; that stored choice is kept",
+      "unchanged_defaults": [
+        "enabled (AI execution)",
+        "host_execution_enabled",
+        "epoch",
+        "freeze state"
+      ],
+      "released": false,
+      "latest_release_without_collaboration": "v0.6.7 (migrations end at 570)",
+      "superseded_current_state": [
+        "meta.next_steps[2] wording before 2026-10-29",
+        "meta.status_refresh_2026_10_27.production_gates_open, for creation only",
+        "design.md D11 step 1: creation stays closed until no old writer remains",
+        "implement.md P8: open creation only after no old writer is deployed"
+      ],
+      "open_question": "D11/P8 asked operators to confirm no old writer before opening creation; migrate up now opens it, and upgrades from v0.6.7 or earlier have no receipt to keep it closed. Whether mixed or rolling deployments accept this is undecided.",
+      "docs_updated": [
+        "docs/offline-upgrade.zh-CN.md section 8.3: gate defaults after 744, closing creation after upgrade, read-only state query, no mixed old/new backends on one database"
+      ]
+    },
+    "ac43_continuation_2026_11_05": {
+      "status": "partial_acceptance_three_scenarios_passed_squad_provider_blocked",
+      "authorization": "User authorized local Codex/Claude Code calls without call or quota limits. External gateway usage/billing reconciliation excluded by explicit user instruction.",
+      "scope": "runtime configuration selection, human authorship, actual executor and grant provenance across four scenarios",
+      "external_billing_reconciliation": "excluded_by_user",
+      "original_full_ac43_billing_clause_verified": false,
+      "source_commit": "d862c5c4bb55d11074d9f4c51643871764e3a9bb",
+      "plan": "research/ac43-20261105/execution-plan.md",
+      "connectivity": "Both local CLIs returned exact inert-prompt markers.",
+      "fixture": "TestAC43FixtureContract passed after correcting test-only executable/directory collision; original failure retained.",
+      "claude_partial_result": "real3: baseline, mixed authors and ordinary transfer passed with three actual Claude runs",
+      "ordinary_codex_appserver_result": "real2: gateway returned 403 official-clients-only; managed termination was observed",
+      "codex_exec_authorization": "User explicitly selected direct codex exec after the gateway rejection",
+      "codex_exec_scope": "Explicit task-only exec protocol bridge; not a production app-server acceptance claim",
+      "scenarios": {
+        "multiple_targets": "passed",
+        "mixed_human_authors": "passed",
+        "ordinary_transfer": "passed",
+        "cross_environment_squad": "blocked_at_claude_leader"
+      },
+      "final_result": "research/ac43-20261105/real5-result.json",
+      "report": "research/ac43-20261105/report.md",
+      "codex_exec_result": "actual official codex exec 0.165.0 passed the B target through the explicit test bridge",
+      "squad_result": "Claude leader returned provider safeguards rejection; member and continuation not run",
+      "full_ac43_complete": false,
+      "final_environment_unchanged": false,
+      "owned_database_connections": 0
+    },
+    "latest_controlled_qa": "artifacts/qa/collaboration-multi-account-20261109/report.md",
+    "latest_native_codex_probe": "artifacts/qa/real-codex-20261109/report.md",
+    "status_reconciliation_2026_11_09": {
+      "source_head": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+      "report": "docs/audits/2026-11-09-active-task-reconciliation.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "description": "跨账号共享协作：三个子任务已归档，历史台账96/97。2026-11-05 AC43按用户排除账单的范围完成多目标、混合作者和普通转交真实验收，跨环境小队被Claude供应商拒绝阻挡；本地Codex exec通过专用测试接线。父任务保持进行中，主线交付另行处理；跨平台与Windows交付归10-24。",
+        "notes": "2026-10-20：触发预览合批/续作与 R58/AC89 普通父任务唤醒增量验证通过；TS934、Go race104顶层、Web5及独立复核通过。父任务与默认发布门禁保持未完成/未开放。 2026-10-27 状态校准：meta.next_steps 自 2026-10-20 起过时，其中失败前缀恢复、资源提供授权链路、@all、取消指令历史与 P7 有限代管已由 10-20-collaboration-gap-recovery 完成；运行端 provider 与非 Linux 执行改由 10-24 以 host 模式承接。台账 67 条 passed 仅有 Go 证据，8d1b2b09d 已补 Web E2E（重开、离开、运行中撤权、转交链、删除空间被拦、越权拒绝、机器边界）；AC92/AC94 小队真实执行与 AC39–AC42 切换后恢复/准备仍无 E2E。 2026-10-28：小队执行与切换后恢复的原生 host E2E 及 Switch generation 修复已提交（91004d47a、f8993a684）。 2026-10-29：迁移 744（f0ad59ea6）把“新建协作任务”改为默认开启，升级时无成功设置记录也会打开；AI 执行、host 准入、执行 epoch 默认值不变。此前“创建/执行门禁默认关闭”的说法从此只对执行成立，见 meta.status_refresh_2026_10_29。",
+        "meta": {
+          "next_steps": [
+            "当前分支已包含本地 main；任务变更尚未合回本地 main。主线交付保持单独处理。",
+            "AC43：本地 Codex/Claude 调用已获不限次数授权，用户明确排除网关用量/账单对账。多目标、混合作者、普通转交通过；跨环境小队在 Claude 队长收到供应商 safeguards 拒绝，成员/续作未执行。保留真实拒绝，待正常供应商执行条件恢复。Codex exec 测试路径不替代原生 app-server 网关403结果。",
+            "Windows 原生验证、安装包与发布归 10-24。迁移 744（f0ad59ea6）起“新建协作任务”默认开启，升级时没有成功的新建开关设置记录也会打开；AI 执行、host 准入和执行 epoch 仍默认关闭，开放执行与发版由用户决定。"
+          ]
+        }
+      }
+    },
+    "progress_audit_2026_11_10": {
+      "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
+      "finding": "AC43 remains incomplete; historical frozen candidate differs in three pinned product files from HEAD. Existing business QA tests are implemented; first S2/S3 run failed, now repairing only harness."
+    },
+    "next_action": "Remaining scope transferred to 11-12-collaboration-real-runtime-acceptance; old stage is not an execution target.",
+    "latest_business_qa": {
+      "task": ".trellis/tasks/archive/2026-11/11-09-collaboration-business-scenario-qa",
+      "commit": "b6cf86433",
+      "archive_commit": "73b56b1fa",
+      "scenarios_passed": 3,
+      "reproduction_passed": 4,
+      "real_model_gate_closed": false
+    },
+    "status_refresh_2026_11_11": {
+      "source_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+      "report": "docs/audits/2026-11-11-active-task-progress-refresh.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "notes": "2026-11-09校准：三个子任务已归档；历史96/97，AC43真实跨环境小队尚未完成。11-09三账号模拟协议闭环和11-08核心回归已归档，可证明各自受控范围，不替代AC43真实供应商验收。11-09真实Codex原生适配器仍返回网关403，CLI直连成功单列。10-24跨平台任务已于11-07按范围归档，Windows原生由用户自行验证，不能再列为待开发任务。",
+        "meta": {
+          "next_action": "Rebind current AC43 candidate before real acceptance; finish independent synthetic business QA without counting it as AC43."
+        }
+      }
+    },
+    "delivered_stage_closure_2026_11_12": {
+      "date": "2026-11-12",
+      "kind": "delivered_stage_only",
+      "user_instruction": "归档已交付阶段",
+      "status": "archived_delivered_stage",
+      "delivered_scope": "跨账号协作工作台、人类流转、资源授权、受控执行与停止恢复等已交付核心能力；已归档子任务结果保留。",
+      "remaining_scope": "AC43真实跨环境小队验收仍受阻，成员与续作未执行；原生适配器与直接exec证据不可混同。",
+      "original_full_scope_complete": false,
+      "successor_tasks": [
+        ".trellis/tasks/11-12-collaboration-real-runtime-acceptance"
+      ],
+      "report": "stage-closure-2026-11-12.md",
+      "historical_failures_reclassified": false,
+      "budgets_reset": false,
+      "new_provider_calls": 0,
+      "execution_enabled_by_archive": false,
+      "previous_state": {
+        "description": "跨账号共享协作已实现并集成，三个子任务已归档；保留AC43真实跨环境小队供应商验收缺口，主线交付独立处理。受控多账号闭环已验证；10-24跨平台任务已归档。",
+        "notes": "2026-11-11刷新：S1/S2/S3模拟业务验收已3/3通过并由73b56b1fa归档，历史主线复现4/4独立保留；不能代替AC43真实跨环境小队验收。三个原子任务归档、历史96/97；AC43小队仍供应商受阻，11-09原生Codex403没有本轮新解阻证据。10-24已归档，Windows原生由用户自行验证。",
+        "meta": {
+          "next_action": "Synthetic business QA completed and archived at 73b56b1fa; rebind current AC43 candidate and legitimate provider identities before remaining real squad acceptance.",
+          "next_steps": [
+            "当前分支已包含本地 main；任务变更尚未合回本地 main。主线交付保持单独处理。",
+            "AC43：本地 Codex/Claude 调用已获不限次数授权，用户明确排除网关用量/账单对账。多目标、混合作者、普通转交通过；跨环境小队在 Claude 队长收到供应商 safeguards 拒绝，成员/续作未执行。保留真实拒绝，待正常供应商执行条件恢复。Codex exec 测试路径不替代原生 app-server 网关403结果。",
+            "10-24跨平台任务已于2026-11-07按约定范围归档；Windows原生由用户自行验证，安装/正式发布不由历史受控回归代替。新建默认开启；AI执行/host准入仍需显式开放。"
+          ],
+          "current_phase": "ac43_three_scenarios_verified_cross_runtime_squad_provider_blocked"
+        }
+      },
+      "original_full_real_acceptance_passed": false,
+      "code_commits": [
+        "e08ab34ce228cf11a39c153ccd33d61626ebd75b",
+        "c5c6fd29a74deee2b52726c92d6c05fbfc289748"
+      ],
+      "verification": {
+        "hints": {
+          "commit": "c5c6fd29a74deee2b52726c92d6c05fbfc289748",
+          "core_tests_passed": 22,
+          "views_tests_passed": 131,
+          "cli_tests": "passed",
+          "lint_typecheck_vet_contracts": "passed",
+          "existing_views_lint_warnings": 27,
+          "scope": "ordinary single-issue status-only consumer only"
+        },
+        "runtime_preparation": {
+          "commit": "e08ab34ce228cf11a39c153ccd33d61626ebd75b",
+          "mock_tests_passed": 5,
+          "compile_vet_gofmt": "passed",
+          "current_db_controls_run": false,
+          "real_provider_tests_run": false,
+          "historical_go_framework_and_fake_evidence_hashes": "matched",
+          "H6_real_continuation_delivered": false
+        },
+        "new_provider_calls": 0,
+        "independent_scope_review": "passed"
+      },
+      "archive_ready": true,
+      "historical_paths_preserved_without_rebinding": true,
+      "archived_path": ".trellis/tasks/archive/2026-11/10-10-cross-workspace-collaboration"
+    },
+    "archive_ready": true,
+    "archive_ready_scope": "delivered_stage_only_remaining_scope_transferred"
+  },
+  "continuation_product_2026_10_18": {
+    "status": "verified_product_increment",
+    "authorization": "用户在上一轮实现提交和验证完成后明确要求继续推进；恢复既有任务，沿用原规划与实施授权。",
+    "baseline_commit": "4dd643126f4ade9fa70e1dfa90cad0ba21350425",
+    "plan": "continuation-product-2026-10-18.md",
+    "evidence_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-cwc-product-20261018-nebz79rl",
+    "scope": [
+      "public creation and controlled attachments",
+      "resource consent and Switch forms",
+      "account and issue realtime",
+      "follow-up product integration from existing P1-P8 plan"
+    ],
+    "completed_at": "2026-10-19T00:36:45.131423+08:00",
+    "verification": "verification-product-2026-10-19.md",
+    "summary": "verification-summary-product-2026-10-19.json",
+    "source_manifest": "verification-source-manifest-product-2026-10-19.json",
+    "remaining": "research/remaining-product-work-2026-10-18.md",
+    "default_gates_enabled": false,
+    "commits": [
+      {
+        "key": "server",
+        "sha": "2f39f00be81be0f2294ee967282071a4e12bdf52",
+        "subject": "feat(collaboration): keep newly shared work private and recoverable",
+        "file_count": 90
+      },
+      {
+        "key": "core",
+        "sha": "e5876258b49f7ddc72106813cf6f42249d15af4b",
+        "subject": "feat(collaboration): retain account intent through delivery and denial",
+        "file_count": 45
+      },
+      {
+        "key": "clients",
+        "sha": "9a8b7f4833cf0ceac6df38106cbdb3232116149a",
+        "subject": "feat(collaboration): make account delivery and consent usable across clients",
+        "file_count": 26
+      }
+    ]
+  },
+  "continuation_source_editing_2026_10_19": {
+    "status": "verified_source_editing_increment",
+    "authorization": "用户明确要求梳理原任务待办并继续推进，复用原 in_progress 任务及实施授权。",
+    "baseline_commit": "5f5fb9138",
+    "plan": "continuation-source-editing-2026-10-19.md",
+    "evidence_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/cwc-source-editing-20261019T035920Z",
+    "scope": [
+      "source issue entry and authorized source projections",
+      "initial and remaining issue/source field editing",
+      "comment editing, replies, resolution and own reactions"
+    ],
+    "default_gates_enabled": false,
+    "completed_at": "2026-10-19T06:53:34.169612+00:00",
+    "verification": "verification-source-editing-2026-10-19.md",
+    "summary": "verification-summary-source-editing-2026-10-19.json",
+    "source_manifest": "verification-source-manifest-source-editing-2026-10-19.json",
+    "remaining": "research/remaining-product-work-2026-10-18.md",
+    "full_product_acceptance_complete": false,
+    "commits": [
+      {
+        "key": "server",
+        "sha": "5c6ec11c763c3c246a130ba90fae200cdfa1391a",
+        "subject": "feat(collaboration): keep source edits within shared authority",
+        "file_count": 54
+      },
+      {
+        "key": "clients",
+        "sha": "34a01fa16f76db19f37ac55e83003e0723c725fc",
+        "subject": "feat(collaboration): keep shared work usable from source pages",
+        "file_count": 94
+      }
+    ]
+  },
+  "continuation_r51_r52_2026_10_19": {
+    "status": "verified_increment",
+    "authorization": "用户明确要求推进共享详情中的普通子任务展示、旧入口兼容，以及完整运行记录、用量、资源来源和 AI 结果通知；复用现有实施任务与已批准设计。",
+    "plan": "continuation-r51-r52-2026-10-19.md",
+    "baseline_commit": "a157fd140",
+    "evidence_directory": ".omx/reports/cwc-r51-r52-20261019T110745Z",
+    "default_gates_enabled": false,
+    "full_product_acceptance_complete": false,
+    "completed_at": "2026-10-19T13:45:41.468122+00:00",
+    "verification": "verification-r51-r52-2026-10-19.md",
+    "summary": "verification-summary-r51-r52-2026-10-19.json",
+    "source_manifest": "verification-source-manifest-r51-r52-2026-10-19.json",
+    "commits": [
+      {
+        "oid": "28d8df6282c22014dd8387fe4b09a0af77953f7c",
+        "subject": "feat(collaboration): retain shared execution history and result notices",
+        "files": 71
+      },
+      {
+        "oid": "c74d6c58cac31e2bc9ae96f6b209891ee3147264",
+        "subject": "feat(collaboration): make shared children and run results usable across clients",
+        "files": 31
+      }
+    ]
+  }
+}

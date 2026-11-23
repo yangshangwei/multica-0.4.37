@@ -1,0 +1,84 @@
+{
+  "recorded_at": "2026-11-03T09:53:12.185304+00:00",
+  "state": "prepared_for_independent_review_not_execution_clearance",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "bindings_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/owned-bindings-v13-provenance.json",
+  "bindings_sha256": "1cfa678161864af3bbd5e1507362dd47b06797d28f23ecf1cc9197f9a9708d65",
+  "source_identities": {
+    "canonical_product": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+    "development_HEAD_overlay": "c77e3cab13a324e3041cbc9633b4d107e51700d817e7347fd972fe9dca4929fb",
+    "tracked_snapshot": "2cbcdbe2da407ce8dbb9faf9ea34d41c1a8c769caf14f11545115bdb9eb1fcfa"
+  },
+  "product_files": 7984,
+  "tracked_files": 17536,
+  "workspace_edges": 22,
+  "workspace_exports": 66,
+  "launcher_sha256": "a6eee46c0181ccec94dc10cd9c440644cddc908e6a3474d28f754f10acfeb205",
+  "source_env_sha256": "353c65725576d2f478f3333bc8324927e26e14fc1336830a8772388977f17709",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "auditor_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/final-state-audit-v13/final_state_audit.py",
+  "auditor_sha256": "03cf1fbebc5582256aa73c77c8bfcfa09cf4bd493680f7fa0c37d5f0b64611ba",
+  "auditor_expected_review_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/independent-review/review.json",
+  "private_checks": {
+    "launcher": {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/launcher-private-preflight.json",
+      "record_sha256": "cf49d2d3a3a9cd1e432565d6235f574bf9d72fc946acde762329a7c13498131c",
+      "tests": 45,
+      "exit_code": 0,
+      "log_sha256": "ec12078f9692a8ed64b9903d770e5736e76cdb803cdd719ff3db5b0822c6c1e9"
+    },
+    "adapter-env": {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/adapter-env-private-preflight.json",
+      "record_sha256": "99e047198e930481b0a16dfc236e251f93b780f94cff1921d689119e9cc013d4",
+      "tests": 5,
+      "exit_code": 0,
+      "log_sha256": "a318b89bb6510ac5667327974e1635d8c5e1b6512612a1c5da7a295359c73674"
+    },
+    "final-audit": {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/final-audit-private-preflight.json",
+      "record_sha256": "202614998f9c275570cd03dade49c037dbd15248af2c9c42b5fb2b6ac656ffa3",
+      "tests": 16,
+      "exit_code": 0,
+      "log_sha256": "b2740724fa1df8fd731607d0facc51763329934fae795bcdc2f665de8c939ff9"
+    }
+  },
+  "private_test_count": 66,
+  "builds": {
+    "cli": {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/candidate-setup/cli-build-v13.json",
+      "record_sha256": "18dcc859b4f9c518798f27f22d901bf15f5dfd717fde879541e7a410a7fd7380",
+      "exit_code": 0,
+      "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+      "output": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/multica"
+    },
+    "desktop": {
+      "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/candidate-setup/desktop-build-v13.json",
+      "record_sha256": "2610c6615deaeb4ec6a8eb47930d104def71a3bfc15692ff31e44d7c6bdd6ab2",
+      "exit_code": 0,
+      "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+      "output": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/artifacts-build"
+    }
+  },
+  "retained_v12_input_files_unchanged": true,
+  "old_installed_desktop_preserved_by_root": "../desktop-v13-install.json",
+  "changes": "new versioned private scripts/configuration; same adapter bytes and guard logic; source-bound CLI; staged Desktop copied by root; no product/test source edit",
+  "tests_not_run": [
+    "repository full check",
+    "DB-backed Go",
+    "browser",
+    "Provider"
+  ],
+  "remaining_root_gates": [
+    "actual live resource ownership proof",
+    "independent exact-byte review",
+    "root execution clearance",
+    "single complete make check",
+    "actual final identity audit plus complete named inventory"
+  ],
+  "fullcheck_started": false,
+  "Provider_calls": 0
+}

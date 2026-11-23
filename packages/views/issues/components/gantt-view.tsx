@@ -20,6 +20,7 @@ import {
 import { Button } from "@multica/ui/components/ui/button";
 import { AppLink } from "../../navigation";
 import { ActorAvatar } from "../../common/actor-avatar";
+import { SourceCollaborationAccount } from "../../collaboration/source-bridge";
 import { ProjectIcon } from "../../projects/components/project-icon";
 import { StatusIcon } from "./status-icon";
 import { PriorityIcon } from "./priority-icon";
@@ -415,6 +416,7 @@ function ScheduledRow({
           <span className="truncate flex-1">{issue.title}</span>
           {project && <ProjectIcon project={project} size="sm" />}
           {issue.assignee_type && issue.assignee_id && (
+            issue.collaboration ? <SourceCollaborationAccount account={issue.collaboration.handler} showName={false} /> :
             <ActorAvatar
               actorType={issue.assignee_type}
               actorId={issue.assignee_id}

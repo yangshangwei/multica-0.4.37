@@ -1,3 +1,4 @@
+import { openNewIssue, sidebarNewButton } from "./fixtures/sidebar-navigation";
 import { test, expect } from "@playwright/test";
 import pg from "pg";
 import { loginAsDefault, createTestApi, preferManualCreateMode, reloadAppPage } from "./helpers";
@@ -56,13 +57,16 @@ test.describe("Issues", () => {
 
   test("can switch from board to list view", async ({ page }) => {
     const title = "E2E List Switch " + Date.now();
-    await api.createIssue(title);
+    const issue = await api.createIssue(title);
     await reloadAppPage(page);
     await expect(page.locator("text=Backlog")).toBeVisible();
 
-    // Switch to list view
-    await page.click("text=List");
-    await expect(page.getByText(title)).toBeVisible();
+    const listUrl = page.url();
+    await page.getByRole("button", { name: "Board", exact: true }).click();
+    await page.getByRole("menuitemradio", { name: "List", exact: true }).click();
+    await expect(page.getByRole("button", { name: "List", exact: true })).toBeVisible();
+    await expect(page.locator(`a[href$="/issues/${issue.id}"]`).getByText(title, { exact: true })).toBeVisible();
+    await expect(page).toHaveURL(listUrl);
   });
 
   test("can filter issues by created and updated dates", async ({ page }) => {
@@ -137,12 +141,10 @@ test.describe("Issues", () => {
   test("can create a new issue", async ({ page }) => {
     await preferManualCreateMode(page);
 
-    const newIssueButton = page.getByRole("button", { name: "New Issue" });
-    await expect(newIssueButton).toBeVisible();
-    await newIssueButton.click();
+    await openNewIssue(page);
 
     const title = "E2E Created " + Date.now();
-    const titleInput = page.getByRole("textbox", { name: "Title (required)" });
+    const titleInput = page.getByRole("textbox", { name: "Title", exact: true });
     await expect(titleInput).toBeVisible();
     await titleInput.fill(title);
     await page.getByRole("button", { name: "Create Issue" }).click();
@@ -189,14 +191,14 @@ test.describe("Issues", () => {
   test("can dismiss issue creation", async ({ page }) => {
     await preferManualCreateMode(page);
 
-    await page.getByRole("button", { name: "New Issue" }).click();
+    await openNewIssue(page);
 
-    const titleInput = page.getByRole("textbox", { name: "Title (required)" });
+    const titleInput = page.getByRole("textbox", { name: "Title", exact: true });
     await expect(titleInput).toBeVisible();
 
     await page.keyboard.press("Escape");
 
     await expect(titleInput).not.toBeVisible();
-    await expect(page.getByRole("button", { name: "New Issue" })).toBeVisible();
+    await expect(sidebarNewButton(page)).toBeVisible();
   });
 });

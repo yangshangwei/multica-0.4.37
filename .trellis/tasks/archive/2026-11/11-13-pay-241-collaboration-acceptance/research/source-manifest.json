@@ -1,0 +1,30 @@
+{
+  "recorded_at": "2026-11-13T05:04:18.576059+00:00",
+  "method": "Read-only local source and retained artifact review; no product tests executed",
+  "repository_head": "c79dfe304d172c1127d2271fb3932eb751b7c0fb",
+  "repository_branch": "codex/cross-workspace-collaboration",
+  "historical_counts": {
+    "PASS": 8,
+    "CONTROLLED_PASS": 1,
+    "PARTIAL": 9,
+    "GAP": 2,
+    "SIMULATION_ONLY": 4
+  },
+  "current_counts": {
+    "NOT_RUN": 24
+  },
+  "sources": [
+    {
+      "file": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv",
+      "sha256": "71344faa76501ebf3eef1cb1b2689cba16a94b851464fd58263e609f9a5a0b2e"
+    },
+    {
+      "file": "artifacts/qa/pay-collaboration-20261113/report.md",
+      "sha256": "9b00f0e87b956c1d6721b771eec48a893945738cd9bcfb16e97ae3e01a1913e4"
+    },
+    {
+      "file": "artifacts/qa/pay-collaboration-20261113/README.md",
+      "sha256": "6522851a0278bce483bd24d827effde7c1089b5e270995afe157590707e5c20f"
+    }
+  ]
+}

@@ -1,0 +1,1331 @@
+{
+  "verified_at": "2026-10-26T08:37:45.332145+00:00",
+  "scope": "58 original collaboration identities; 30 retained qualified-source passes plus 28 fresh 1bfd169dc passes",
+  "current_source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+  "counts": {
+    "originals": 58,
+    "passed": 58,
+    "failed": 0,
+    "pending": 0,
+    "new_current_source": 28,
+    "retained_qualified_source": 30,
+    "selected_new_result_retries": 0,
+    "selected_new_result_skips": 0
+  },
+  "identity_originals": 31,
+  "native_provider_accounts": "synthetic test-owned CLI only; vendor accounts not accessed",
+  "package_client": "Linux arm64 full Main; macOS host runtime separate",
+  "cases": [
+    {
+      "n": 66,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 9907,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 67,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 4669,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 68,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 13597,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 69,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 7464,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 70,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 3652,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 71,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop account links retain one tab across workspaces, popouts and restart",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 6834,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 72,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop cold account links work without workspaces and survive a controlled list error",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 3895,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 73,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop login opens the pending account destination while workspace loading is stalled",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 1913,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 74,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop account entry obeys the requires_account_setup guard",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 1544,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 75,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop account entry obeys the requires_password_change guard",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 1479,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 76,
+      "project": "chromium",
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "title": "Desktop viewer and server changes discard the previous account tab and close popouts",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 4582,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json",
+      "results_sha256": "cccd7175e09f3dbb25a62b2f8000092c5c987d8a6a5f72ed2d933f9002e7e8c5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:10:11.488Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-account-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 77,
+      "project": "chromium",
+      "file": "e2e/collaboration-delivery-web.spec.ts",
+      "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 7690,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-delivery-web.json",
+      "results_sha256": "00ef10b9d2d551f8ea885ec361ad1f9a09c4b295d85fcbf6cac9518886eac766",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:01:12.559Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-delivery-web.json"
+        }
+      ]
+    },
+    {
+      "n": 78,
+      "project": "chromium",
+      "file": "e2e/collaboration-delivery-web.spec.ts",
+      "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 3250,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-delivery-web.json",
+      "results_sha256": "00ef10b9d2d551f8ea885ec361ad1f9a09c4b295d85fcbf6cac9518886eac766",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:01:12.559Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-delivery-web.json"
+        }
+      ]
+    },
+    {
+      "n": 79,
+      "project": "chromium",
+      "file": "e2e/collaboration-editing-web.spec.ts",
+      "title": "Web source creation, field edits and discussion share one authorized issue",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 12534,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-editing-web.json",
+      "results_sha256": "32518d64c0d30d103c6da5b2e44bbfabccc714048e10e5fef79730e09fdee2fd",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:01:25.869Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-editing-web.json"
+        }
+      ]
+    },
+    {
+      "n": 80,
+      "project": "chromium",
+      "file": "e2e/collaboration-editing-web.spec.ts",
+      "title": "A source member outside the collaboration receives only an empty workspace refresh",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 2085,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-editing-web.json",
+      "results_sha256": "32518d64c0d30d103c6da5b2e44bbfabccc714048e10e5fef79730e09fdee2fd",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:01:25.869Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-editing-web.json"
+        }
+      ]
+    },
+    {
+      "n": 81,
+      "project": "chromium",
+      "file": "e2e/collaboration-installed-clients.spec.ts",
+      "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 9824,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-installed-clients.json",
+      "results_sha256": "d2e327831948388704f22d77fac1ae7102d8ede1c6dfd9f96d50129ea3b37b6b",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 9824,
+          "started_at": "2026-10-26T07:41:55.955Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-priority-controls",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-installed-clients.json"
+        }
+      ]
+    },
+    {
+      "n": 82,
+      "project": "chromium",
+      "file": "e2e/collaboration-preparation-records-desktop.spec.ts",
+      "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 5059,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/preparation-unique-registration/collaboration-preparation-records-desktop.json",
+      "results_sha256": "aae63dc98ffc14663a92b7374e9dafa61485f767e0178eecf3cb60d03e9020a5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T04:46:43.024Z",
+          "result": "unexpected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/baseline-mechanical/collaboration-preparation-records-desktop.json"
+        },
+        {
+          "started_at": "2026-10-26T04:58:57.830Z",
+          "result": "unexpected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/baseline-open-gate/collaboration-preparation-records-desktop.json"
+        },
+        {
+          "started_at": "2026-10-26T05:10:09.122Z",
+          "result": "unexpected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-preparation-records-desktop.json"
+        },
+        {
+          "started_at": "2026-10-26T05:43:56.839Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/preparation-unique-registration/collaboration-preparation-records-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 83,
+      "project": "chromium",
+      "file": "e2e/collaboration-records-web.spec.ts",
+      "title": "Web shares ordinary child references and retained run records through account notification links",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 11686,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-records-web.json",
+      "results_sha256": "ec7848bcd0624711636d604b5666cb172abe0b8e94d1cde4c924c5c9e557612f",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:01:42.295Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-records-web.json"
+        }
+      ]
+    },
+    {
+      "n": 298,
+      "project": "chromium",
+      "file": "e2e/collaboration-command-history-web.spec.ts",
+      "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 9101,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-command-history-web.json",
+      "results_sha256": "d4eabcc21c9886bf890077bdd9f73e3e3b2dacad512894298dab5614f6d6199e",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:01:55.727Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-command-history-web.json"
+        }
+      ]
+    },
+    {
+      "n": 299,
+      "project": "chromium",
+      "file": "e2e/collaboration-control-journey-web.spec.ts",
+      "title": "Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 6618,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-control-journey-web.json",
+      "results_sha256": "310f9aef914f1ea71def49c11db25696d5c73985af5afa61c8a088739a0a1bf3",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 6618,
+          "started_at": "2026-10-26T07:41:30.236Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-priority-controls",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-control-journey-web.json"
+        }
+      ]
+    },
+    {
+      "n": 300,
+      "project": "chromium",
+      "file": "e2e/collaboration-control-journey-web.spec.ts",
+      "title": "Web pending termination proof keeps A paused while whole Resume releases B and squad S",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 5259,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-control-journey-web.json",
+      "results_sha256": "310f9aef914f1ea71def49c11db25696d5c73985af5afa61c8a088739a0a1bf3",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 5259,
+          "started_at": "2026-10-26T07:41:37.422Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-priority-controls",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-control-journey-web.json"
+        }
+      ]
+    },
+    {
+      "n": 301,
+      "project": "chromium",
+      "file": "e2e/collaboration-cross-client-execution.spec.ts",
+      "title": "AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 16644,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-cross-client-execution.json",
+      "results_sha256": "c8a0070a90a73790ed7b76e075f4ef64341e99ce69c43e87c303047e5b11031e",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 16644,
+          "started_at": "2026-10-26T08:10:58.070Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-lanes",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-cross-client-execution.json"
+        }
+      ]
+    },
+    {
+      "n": 302,
+      "project": "chromium",
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 4774,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-web.json",
+      "results_sha256": "ae6d1f6452045db238bdf4529bcbaacf93a8c6a536fd5bf5a147db3bc808108e",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:02:06.508Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-web.json"
+        }
+      ]
+    },
+    {
+      "n": 303,
+      "project": "chromium",
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 5875,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-web.json",
+      "results_sha256": "ae6d1f6452045db238bdf4529bcbaacf93a8c6a536fd5bf5a147db3bc808108e",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:02:06.508Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-web.json"
+        }
+      ]
+    },
+    {
+      "n": 304,
+      "project": "chromium",
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 8025,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-web.json",
+      "results_sha256": "ae6d1f6452045db238bdf4529bcbaacf93a8c6a536fd5bf5a147db3bc808108e",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:02:06.508Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-web.json"
+        }
+      ]
+    },
+    {
+      "n": 305,
+      "project": "chromium",
+      "file": "e2e/collaboration-preparation-records-web.spec.ts",
+      "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 5792,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/preparation-unique-registration/collaboration-preparation-records-web.json",
+      "results_sha256": "5d0bd43a29248abc3e0823817d0bcb75fc6f97b256f44c52e7225a43fb44191f",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T04:46:40.309Z",
+          "result": "unexpected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/baseline-mechanical/collaboration-preparation-records-web.json"
+        },
+        {
+          "started_at": "2026-10-26T04:58:53.901Z",
+          "result": "unexpected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/baseline-open-gate/collaboration-preparation-records-web.json"
+        },
+        {
+          "started_at": "2026-10-26T05:10:02.518Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-followup/collaboration-preparation-records-web.json"
+        },
+        {
+          "started_at": "2026-10-26T05:43:48.909Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/preparation-unique-registration/collaboration-preparation-records-web.json"
+        }
+      ]
+    },
+    {
+      "n": 306,
+      "project": "chromium",
+      "file": "e2e/collaboration-preview-web.spec.ts",
+      "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 3828,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-preview-web.json",
+      "results_sha256": "0d7f4ec832c28d1a0ed6c83b794bdb4df74fdc0569c537b72763a9a467252084",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:02:26.954Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-preview-web.json"
+        }
+      ]
+    },
+    {
+      "n": 307,
+      "project": "chromium",
+      "file": "e2e/collaboration-resource-offers-web.spec.ts",
+      "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 8266,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-resource-offers-web.json",
+      "results_sha256": "38147ca157871ea3293940284d53e6fc0e06b9112aa73e82b3d660b0d6e24c07",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:02:32.533Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-resource-offers-web.json"
+        }
+      ]
+    },
+    {
+      "n": 308,
+      "project": "chromium",
+      "file": "e2e/collaboration-resources-web.spec.ts",
+      "title": "resource owners register, authorize, withdraw and switch while participant management preserves authority",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 5685,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-resources-web.json",
+      "results_sha256": "c6a78d24bf9221282b1f3b2b3dd141176a531a61da47ae0a55d2e5f89bdd10e5",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:02:42.629Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-resources-web.json"
+        }
+      ]
+    },
+    {
+      "n": 309,
+      "project": "chromium",
+      "file": "e2e/collaboration-workbench-web.spec.ts",
+      "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 8100,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-workbench-web.json",
+      "results_sha256": "0ba6434d61ad2ca5a6fd4be22ec9b5ec8c7cf1a0abaf1d1a8106ecc316defe82",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:02:50.080Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-workbench-web.json"
+        }
+      ]
+    },
+    {
+      "n": 310,
+      "project": "chromium",
+      "file": "e2e/collaboration-workbench-web.spec.ts",
+      "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 2683,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-workbench-web.json",
+      "results_sha256": "0ba6434d61ad2ca5a6fd4be22ec9b5ec8c7cf1a0abaf1d1a8106ecc316defe82",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:02:50.080Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-workbench-web.json"
+        }
+      ]
+    },
+    {
+      "n": 347,
+      "project": "chromium",
+      "file": "e2e/collaboration-control-journey-desktop.spec.ts",
+      "title": "Desktop controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 5898,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-control-journey-desktop.json",
+      "results_sha256": "e0b605f0b1e0856107d1d232104dc0305c4d07e7d36ab83ddcc9bfe57f675d57",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 5898,
+          "started_at": "2026-10-26T07:41:43.885Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-priority-controls",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-control-journey-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 348,
+      "project": "chromium",
+      "file": "e2e/collaboration-control-journey-desktop.spec.ts",
+      "title": "Desktop pending termination proof keeps A paused while whole Resume releases B and squad S",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 4920,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-control-journey-desktop.json",
+      "results_sha256": "e0b605f0b1e0856107d1d232104dc0305c4d07e7d36ab83ddcc9bfe57f675d57",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 4920,
+          "started_at": "2026-10-26T07:41:49.791Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-priority-controls",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-controls/collaboration-control-journey-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 349,
+      "project": "chromium",
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 9399,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-desktop.json",
+      "results_sha256": "ff0c04a46d74d7c89563fa84fddb15142e6faf9903921308f452f38eac776a42",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:03:03.429Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 350,
+      "project": "chromium",
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 6377,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-desktop.json",
+      "results_sha256": "ff0c04a46d74d7c89563fa84fddb15142e6faf9903921308f452f38eac776a42",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:03:03.429Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 351,
+      "project": "chromium",
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "status": "passed",
+      "category": "retained-qualified-source",
+      "duration_ms": 9966,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-desktop.json",
+      "results_sha256": "ff0c04a46d74d7c89563fa84fddb15142e6faf9903921308f452f38eac776a42",
+      "attempt_history": [
+        {
+          "started_at": "2026-10-26T05:03:03.429Z",
+          "result": "expected",
+          "results_file": "/tmp/multica-specialized-acceptance-20261026/collaboration/results/legacy-web-native/collaboration-mention-journeys-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 368,
+      "project": "chromium",
+      "file": "e2e/collaboration-administration-desktop.spec.ts",
+      "title": "Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 5646,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-administration-desktop/collaboration-administration-desktop.json",
+      "results_sha256": "c45754ea1687b9a6caeca1ea9398ffab2bc65b52b174debdbe5a7e32968549d6",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 5646,
+          "started_at": "2026-10-26T08:25:50.068Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-administration-desktop",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-administration-desktop/collaboration-administration-desktop.json"
+        }
+      ]
+    },
+    {
+      "n": 369,
+      "project": "chromium",
+      "file": "e2e/collaboration-administration-web.spec.ts",
+      "title": "Web administers disabled-creator collaborations with explicit succession and original receipt recovery",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 3464,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-administration-web/collaboration-administration-web.json",
+      "results_sha256": "e7dd848cee2131699cc4116f1ea579590b1617fa01de1a488ff2d6624fc4324b",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 3464,
+          "started_at": "2026-10-26T08:21:03.827Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-administration-web",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-administration-web/collaboration-administration-web.json"
+        }
+      ]
+    },
+    {
+      "n": 370,
+      "project": "chromium",
+      "file": "e2e/collaboration-offline-handoff.spec.ts",
+      "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 8853,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-offline-handoff.json",
+      "results_sha256": "93a94e39efc03fb1d5fed2b36924b6e10c83080d07389e3d537171219503ab3d",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 8853,
+          "started_at": "2026-10-26T07:51:28.402Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-independent-native",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-offline-handoff.json"
+        }
+      ]
+    },
+    {
+      "n": 371,
+      "project": "chromium",
+      "file": "e2e/collaboration-offline-handoff.spec.ts",
+      "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 9637,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-offline-handoff.json",
+      "results_sha256": "93a94e39efc03fb1d5fed2b36924b6e10c83080d07389e3d537171219503ab3d",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 9637,
+          "started_at": "2026-10-26T07:51:37.849Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-independent-native",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-offline-handoff.json"
+        }
+      ]
+    },
+    {
+      "n": 372,
+      "project": "chromium",
+      "file": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "title": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 18291,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-recovery/collaboration-offline-result-notifications.json",
+      "results_sha256": "e9068e8da00d2d0fceef9d99edefc1a40b9953772d66617c977338c9e2767b42",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 18291,
+          "started_at": "2026-10-26T08:28:14.413Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-recovery",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-recovery/collaboration-offline-result-notifications.json"
+        }
+      ]
+    },
+    {
+      "n": 373,
+      "project": "chromium",
+      "file": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "title": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 19203,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-recovery/collaboration-offline-result-notifications.json",
+      "results_sha256": "e9068e8da00d2d0fceef9d99edefc1a40b9953772d66617c977338c9e2767b42",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 19203,
+          "started_at": "2026-10-26T08:28:33.098Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-recovery",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-recovery/collaboration-offline-result-notifications.json"
+        }
+      ]
+    },
+    {
+      "n": 374,
+      "project": "chromium",
+      "file": "e2e/collaboration-retained-attachment.spec.ts",
+      "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 6393,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-retained-attachment.json",
+      "results_sha256": "89b5e5f2daefcd350a691caa1b768a5e5b3dfe916c14c16c95b33fe60c048fd2",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 6393,
+          "started_at": "2026-10-26T07:51:48.965Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-independent-native",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-retained-attachment.json"
+        }
+      ]
+    },
+    {
+      "n": 375,
+      "project": "chromium",
+      "file": "e2e/collaboration-retained-attachment.spec.ts",
+      "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 5827,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-retained-attachment.json",
+      "results_sha256": "89b5e5f2daefcd350a691caa1b768a5e5b3dfe916c14c16c95b33fe60c048fd2",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 5827,
+          "started_at": "2026-10-26T07:51:55.778Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-independent-native",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-retained-attachment.json"
+        }
+      ]
+    },
+    {
+      "n": 376,
+      "project": "chromium",
+      "file": "e2e/collaboration-retained-attachment.spec.ts",
+      "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 14250,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-retained-attachment.json",
+      "results_sha256": "89b5e5f2daefcd350a691caa1b768a5e5b3dfe916c14c16c95b33fe60c048fd2",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 14250,
+          "started_at": "2026-10-26T07:52:01.609Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-independent-native",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-retained-attachment.json"
+        }
+      ]
+    },
+    {
+      "n": 377,
+      "project": "chromium",
+      "file": "e2e/collaboration-selection-boundary.spec.ts",
+      "title": "AC87 Web and actual Electron hide subtask creation for shared body/comment selections while ordinary children retain it",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 8788,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-selection-boundary.json",
+      "results_sha256": "ae18c328d0a45b0af598ca87199f0dd06de164fba5f38ddec6006c96cec792ad",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 8788,
+          "started_at": "2026-10-26T07:52:17.423Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-independent-native",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-selection-boundary.json"
+        }
+      ]
+    },
+    {
+      "n": 378,
+      "project": "chromium",
+      "file": "e2e/collaboration-source-surface.spec.ts",
+      "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 29794,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-source-surface.json",
+      "results_sha256": "0cc5d22398a20fec9585a7201f4f04f39734355262f898009c72fe56810f8638",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 29794,
+          "started_at": "2026-10-26T07:52:28.377Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-independent-native",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-independent-native/collaboration-source-surface.json"
+        }
+      ]
+    },
+    {
+      "n": 379,
+      "project": "chromium",
+      "file": "e2e/collaboration-host-installed.spec.ts",
+      "title": "Linux packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 23744,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-host-acceptance/collaboration-host-installed.json",
+      "results_sha256": "44f422478808b98b66ef53e3e1efeddbeeeac473756b4569237b6492fe6d4f60",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "host_process_supervision_v1",
+          "actual_executions": 1,
+          "duration_ms": 23744,
+          "started_at": "2026-10-26T08:32:10.895Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-host-acceptance",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-host-acceptance/collaboration-host-installed.json"
+        }
+      ]
+    },
+    {
+      "n": 380,
+      "project": "chromium",
+      "file": "e2e/collaboration-installed-main.spec.ts",
+      "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 41806,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-installed-main-shared/collaboration-installed-main.json",
+      "results_sha256": "dcca64d901d1b5cd662d7bbbb388872cbef0cda7adaea324a4f1f5ee9d965b70",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 4284,
+          "started_at": "2026-10-26T07:44:56.644Z",
+          "result": "unexpected",
+          "actual_status": "failed",
+          "pass": "continuation-priority-installed-main",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-installed-main/collaboration-installed-main.json"
+        },
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 41806,
+          "started_at": "2026-10-26T08:08:01.337Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-priority-installed-main-shared",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-priority-installed-main-shared/collaboration-installed-main.json"
+        }
+      ]
+    },
+    {
+      "n": 381,
+      "project": "chromium",
+      "file": "e2e/collaboration-host-runtime.spec.ts",
+      "title": "host Web and actual Electron share one ordinary Agent, preserve authors, and explicitly resume after scoped Stop",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 27122,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-host-acceptance/collaboration-host-runtime.json",
+      "results_sha256": "9c45a02b6b42c9ef0904326deb4f2ed5fbeee95ae6670cf3436fb60ec144be5e",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "host_process_supervision_v1",
+          "actual_executions": 1,
+          "duration_ms": 27122,
+          "started_at": "2026-10-26T08:31:41.892Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-host-acceptance",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-host-acceptance/collaboration-host-runtime.json"
+        }
+      ]
+    },
+    {
+      "n": 382,
+      "project": "chromium",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "title": "Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 19093,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json",
+      "results_sha256": "db0746b21a3a6fbf4211be362fcc05709ca020e977a0822a2e49e9dc7f79ba63",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 19093,
+          "started_at": "2026-10-26T08:11:16.862Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-lanes",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json"
+        }
+      ]
+    },
+    {
+      "n": 383,
+      "project": "chromium",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "title": "Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 14686,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json",
+      "results_sha256": "db0746b21a3a6fbf4211be362fcc05709ca020e977a0822a2e49e9dc7f79ba63",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 14686,
+          "started_at": "2026-10-26T08:11:36.344Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-lanes",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json"
+        }
+      ]
+    },
+    {
+      "n": 384,
+      "project": "chromium",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "title": "Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 14454,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json",
+      "results_sha256": "db0746b21a3a6fbf4211be362fcc05709ca020e977a0822a2e49e9dc7f79ba63",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 14454,
+          "started_at": "2026-10-26T08:11:51.036Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-lanes",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json"
+        }
+      ]
+    },
+    {
+      "n": 385,
+      "project": "chromium",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "title": "Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 18962,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json",
+      "results_sha256": "db0746b21a3a6fbf4211be362fcc05709ca020e977a0822a2e49e9dc7f79ba63",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 18962,
+          "started_at": "2026-10-26T08:12:05.494Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-lanes",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json"
+        }
+      ]
+    },
+    {
+      "n": 386,
+      "project": "chromium",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "title": "Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 16855,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json",
+      "results_sha256": "db0746b21a3a6fbf4211be362fcc05709ca020e977a0822a2e49e9dc7f79ba63",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 16855,
+          "started_at": "2026-10-26T08:12:24.460Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-lanes",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json"
+        }
+      ]
+    },
+    {
+      "n": 387,
+      "project": "chromium",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "title": "Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 18873,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json",
+      "results_sha256": "db0746b21a3a6fbf4211be362fcc05709ca020e977a0822a2e49e9dc7f79ba63",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 18873,
+          "started_at": "2026-10-26T08:12:41.321Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-lanes",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-lanes/collaboration-lane-close-controls.json"
+        }
+      ]
+    },
+    {
+      "n": 388,
+      "project": "chromium",
+      "file": "e2e/collaboration-lifecycle-controls.spec.ts",
+      "title": "Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 18295,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-recovery/collaboration-lifecycle-controls.json",
+      "results_sha256": "da1b68a333121ede66b9cedff81e16a83befa36dabe2392c8b8cac35049c6819",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 18295,
+          "started_at": "2026-10-26T08:27:35.054Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-recovery",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-recovery/collaboration-lifecycle-controls.json"
+        }
+      ]
+    },
+    {
+      "n": 389,
+      "project": "chromium",
+      "file": "e2e/collaboration-lifecycle-controls.spec.ts",
+      "title": "Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "status": "passed",
+      "category": "new-current-source",
+      "duration_ms": 19061,
+      "actual_executions_in_selected_result": 1,
+      "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-recovery/collaboration-lifecycle-controls.json",
+      "results_sha256": "da1b68a333121ede66b9cedff81e16a83befa36dabe2392c8b8cac35049c6819",
+      "attempt_history": [
+        {
+          "source_commit": "1bfd169dca196dfd22bc1429a2933204d7f9e05b",
+          "execution_mode": "linux_pid_namespace_v1",
+          "actual_executions": 1,
+          "duration_ms": 19061,
+          "started_at": "2026-10-26T08:27:53.893Z",
+          "result": "expected",
+          "actual_status": "passed",
+          "pass": "continuation-namespace-recovery",
+          "results_file": "/private/tmp/multica-specialized-acceptance-20261026/collaboration/results/continuation-namespace-recovery/collaboration-lifecycle-controls.json"
+        }
+      ]
+    }
+  ]
+}

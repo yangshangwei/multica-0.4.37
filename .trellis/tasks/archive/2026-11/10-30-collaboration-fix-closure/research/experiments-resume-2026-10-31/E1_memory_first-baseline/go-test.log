@@ -1,0 +1,10 @@
+=== RUN   TestHostContextExperiment
+=== RUN   TestHostContextExperiment/E1_memory_first
+    host_context_experiment_test.go:180: E1_memory_first trial 2: outcome=success verdict=manual_review_required context_reads=1 puts=0 216s
+    host_context_experiment_test.go:180: E1_memory_first trial 3: outcome=failure verdict=provider_failure_unclassified context_reads=1 puts=0 301s
+    host_context_experiment_test.go:182: incomplete experiment; later trials stopped: provider_failure_unclassified
+--- FAIL: TestHostContextExperiment (520.40s)
+    --- FAIL: TestHostContextExperiment/E1_memory_first (517.58s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	520.654s
+FAIL

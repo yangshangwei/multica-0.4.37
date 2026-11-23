@@ -1,0 +1,149 @@
+[
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+    "top_level": true,
+    "reason": "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500\n    autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant\n--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/02-internal_handler"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestIterationI1P95",
+    "top_level": true,
+    "reason": "=== RUN   TestIterationI1P95\n    iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1P95 (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/02-internal_handler"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestIterationI1DisableP95",
+    "top_level": true,
+    "reason": "=== RUN   TestIterationI1DisableP95\n    iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1DisableP95 (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/02-internal_handler"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+    "top_level": true,
+    "reason": "=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration\n    skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test\n--- SKIP: TestFetchFromSkillsSh_AnthropicPptxIntegration (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/02-internal_handler"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestTriageQueueScaleBaseline",
+    "top_level": true,
+    "reason": "=== RUN   TestTriageQueueScaleBaseline\n    triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending\n--- SKIP: TestTriageQueueScaleBaseline (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/02-internal_handler"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestTriageWireFixtures",
+    "top_level": true,
+    "reason": "=== RUN   TestTriageWireFixtures\n    triage_test.go:566: wire fixture export requested only by cross-package verification\n--- SKIP: TestTriageWireFixtures (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/02-internal_handler"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+    "top_level": true,
+    "reason": "=== RUN   TestMcpMarketPublicHTTPRecipeLifecycle\n    workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes\n--- SKIP: TestMcpMarketPublicHTTPRecipeLifecycle (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/02-internal_handler"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+    "top_level": true,
+    "reason": "=== RUN   TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux\n    collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/03-cmd_server"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationPartialResumeRoutesLinux",
+    "top_level": true,
+    "reason": "=== RUN   TestCollaborationPartialResumeRoutesLinux\n    collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationPartialResumeRoutesLinux (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/03-cmd_server"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+    "top_level": true,
+    "reason": "=== RUN   TestCollaborationSingleAgentRuntimeRoutesLinux\n    collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSingleAgentRuntimeRoutesLinux (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/03-cmd_server"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+    "top_level": true,
+    "reason": "=== RUN   TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux\n    collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/03-cmd_server"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+    "top_level": true,
+    "reason": "=== RUN   TestCollaborationRuntimeProofSurvivesOwnerDisableLinux\n    collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationRuntimeProofSurvivesOwnerDisableLinux (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/03-cmd_server"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+    "top_level": true,
+    "reason": "=== RUN   TestCollaborationSquadCapacityOneRoutesLinux\n    collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCapacityOneRoutesLinux (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/03-cmd_server"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+    "top_level": true,
+    "reason": "=== RUN   TestCollaborationBatchPollerSlotsAndRunnerLinux\n    collaboration_test.go:189: requires real Linux kernel containment\n--- SKIP: TestCollaborationBatchPollerSlotsAndRunnerLinux (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/04-internal_daemon"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestIsDriveRoot",
+    "top_level": true,
+    "reason": "=== RUN   TestIsDriveRoot\n    local_directory_test.go:383: windows-only behaviour\n--- SKIP: TestIsDriveRoot (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/04-internal_daemon"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+    "top_level": true,
+    "reason": "=== RUN   TestACPManagedTerminalPreservesWindowsUnicodeShellOutput\n    acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows\n--- SKIP: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/05-pkg_agent"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+    "top_level": true,
+    "reason": "=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped\n    codex_test.go:3198: Linux signal/reap semantics regression\n--- SKIP: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/05-pkg_agent"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestPiExecuteAttachesStdinPipe",
+    "top_level": true,
+    "reason": "=== RUN   TestPiExecuteAttachesStdinPipe\n=== PAUSE TestPiExecuteAttachesStdinPipe\n=== CONT  TestPiExecuteAttachesStdinPipe\n    pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0\n--- SKIP: TestPiExecuteAttachesStdinPipe (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/05-pkg_agent"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+    "top_level": false,
+    "reason": "=== RUN   TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n    claude_test.go:756: root-only preflight assertion\n--- SKIP: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-2/05-pkg_agent"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/migrate",
+    "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+    "top_level": true,
+    "reason": "=== RUN   TestCommentContentBigramRequirementMatchesRealPGBigm\n    migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test\n--- SKIP: TestCommentContentBigramRequirementMatchesRealPGBigm (0.18s)\n",
+    "evidence": "evidence/backend/normal-race-3/09-cmd_migrate"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/cli",
+    "test": "TestCLIConfig_UnknownFieldsArePreserved",
+    "top_level": true,
+    "reason": "=== RUN   TestCLIConfig_UnknownFieldsArePreserved\n    config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder\n--- SKIP: TestCLIConfig_UnknownFieldsArePreserved (0.00s)\n",
+    "evidence": "evidence/backend/normal-race-3/21-internal_cli"
+  }
+]

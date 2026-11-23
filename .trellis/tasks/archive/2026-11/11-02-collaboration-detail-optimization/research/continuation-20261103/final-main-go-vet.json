@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-03T05:45:27.249259+00:00",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "-p",
+    "2",
+    "./..."
+  ],
+  "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "exit_code": 0,
+  "output": "/tmp/multica-detail-verification-20261103/final-main-go-vet.log",
+  "prior_source_failure": {
+    "output": "/tmp/multica-detail-verification-20261103/final-additional-static-5.log",
+    "reason": "Earlier frozen test snapshot retained obsolete unused closeParams; the final main source had already passed full service race. No production fix was needed."
+  }
+}

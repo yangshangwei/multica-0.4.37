@@ -1,0 +1,95 @@
+{
+  "series_id": "RK1",
+  "registered_at": "2026-11-01T03:30:00+00:00",
+  "registered_by_session": "claude multica-0-4-37-0b",
+  "status": "registered_not_runnable",
+  "not_runnable_reasons": [
+    "call_cap_unallocated: no Provider call budget has been granted for this series; the original series cap (22) is not transferable",
+    "framework_missing: no tagged real-Provider framework at HEAD negotiates handoff, recording or knowledge with a granting server (see coverage_of_existing_entries)",
+    "exclusive_window_not_met: session multica-0-4-37-54 holds the original-series E2a trial 3 launch; RK1 must not overlap it"
+  ],
+  "ledger": {
+    "separate_from": "original preregistered E0-E6 series (../../../10-30-collaboration-fix-closure)",
+    "numbering": "RK1-<scenario>-t<trial>[-<hop>]; never reuses or fills an E0-E6 slot",
+    "results_root": "this directory, one subdirectory per scenario, never overwritten",
+    "call_cap": 0,
+    "call_cap_note": "0 until the user allocates a number; see proposed_caps",
+    "consumed": 0
+  },
+  "source": {
+    "manifest": "source-manifest.json",
+    "manifest_generator": "source_manifest.py",
+    "head_at_registration": "d53f1026f76de495f002ec6dce8ee705cc654799",
+    "server_tree": "192ef85a0d4e0a0b6d3b5e4f6c429158870ca2d0",
+    "product_equivalence": "server production code identical to knowledge merge 8cb04e329; only host_handoff_checkpoint_test.go (65cd0599b) and knowledge-panel.test.tsx (629f0a079) differ in product roots",
+    "overlay": "none at registration",
+    "rebind_rule": "before every launch re-run source_manifest.py; any source_id change voids this binding and requires re-verifying the affected scope, not just editing the commit id"
+  },
+  "environment": {
+    "platform": "macOS 26.2 arm64",
+    "go": "go1.27.0 darwin/arm64",
+    "node": "v22.23.2",
+    "pnpm": "10.28.2",
+    "provider": "claude",
+    "provider_executable": "/Users/artisan/.local/bin/claude",
+    "provider_install": "native installer symlink -> /Users/artisan/.local/share/claude/versions/2.1.316 (read via readlink; CLI not executed at registration)",
+    "provider_version": "2.1.316 (to be confirmed by the harness version probe at run time)",
+    "requested_model": "claude-opus-5-5",
+    "cli_settings_model_mapping": "~/.claude/settings.json maps ANTHROPIC_MODEL and the opus/sonnet/fable defaults to claude-opus-5-5[1M]; the harness must record the requested argv model and any model the Provider output reports",
+    "observed_model": "must come from Provider output; never copied from the request",
+    "thinking": "provider_default",
+    "service_tier": "provider_default",
+    "account_identifier": "inference gateway host sub.100xlabs.space; no account id or token recorded",
+    "shared_gateway_note": "every Claude session on this machine uses the same gateway; prior E1/E2a 429s were gateway concurrency limits, so an exclusive window means no other session issuing model calls"
+  },
+  "coverage_of_existing_entries": {
+    "TestHostProviderAccountSmoke": {
+      "file": "server/internal/daemon/collaborationrun/host_agentintegration_test.go:32",
+      "proves": "real CLI version/launch, claim query handoff_version=1&recording_version=1 accepted by the authorizer, CLI /context read, explicit outcome, managed termination, proof ACK and durable ledger",
+      "does_not_prove": "handoff snapshot, recording checkpoints or knowledge disclosure: hostTestClaim (host_runner_test.go:163) never sets HandoffVersion/KnowledgeContext, so hostHandoff returns early (host_handoff.go:44) and --no-session-persistence is not forced (host_runner.go:195)",
+      "rk1_use": "RK1-E0a only (CLI/argv/lifecycle)"
+    },
+    "TestHostContextExperiment": {
+      "file": "server/internal/daemon/collaborationrun/host_context_experiment_test.go:120",
+      "proves": "original-series scenarios on the legacy /context, /memory and /comments paths",
+      "rk1_use": "none; running it on HEAD would be the old fixture on new code"
+    },
+    "knowledgeintegration composites": {
+      "files": [
+        "server/internal/daemon/knowledge_server_integration_test.go",
+        "server/cmd/server/collaboration_knowledge_host_composite_test.go"
+      ],
+      "proves": "real server/DB/HTTP/WS/daemon with test-created fake executables",
+      "rk1_use": "candidate base for a real-Provider variant; currently has no real-Provider mode"
+    }
+  },
+  "framework_requirements_before_any_call": [
+    "a tagged entry gated by MULTICA_RUN_REAL_AGENT_SMOKE=1 before executable lookup, with a granting server for handoff_version/recording_version/knowledge_version",
+    "preregistered scenario materials and expected answers frozen in the framework; the correct answer must be traceable to recorded tool/HTTP results and Provider stdin",
+    "fake-executable run of every scenario proving the handoff/recording/recall/knowledge endpoints are actually called and that incomplete results stop later trials",
+    "independent review of the framework, then its SHA-256 recorded here before the first Provider call"
+  ],
+  "scenarios": [
+    {"id": "RK1-E0a", "scope": "collaboration host launch: negotiated claim, argv including --no-session-persistence when knowledge is granted, context read, outcome/termination/proof", "trials": 1, "launches": 1},
+    {"id": "RK1-E0b", "scope": "ordinary task launch: observable native session, knowledge-negotiated argv", "trials": 1, "launches": 1},
+    {"id": "RK1-H1", "scope": "checkpoint saved prefix and missing-tail hint are used, not invented", "trials": 3, "launches": 3},
+    {"id": "RK1-H2", "scope": "prior/member results with reader and wake source", "trials": 3, "launches": 3},
+    {"id": "RK1-H3a", "scope": "newest comment recall through runtime pagination", "trials": 3, "launches": 3},
+    {"id": "RK1-H3b", "scope": "oldest comment recall through runtime pagination", "trials": 3, "launches": 3},
+    {"id": "RK1-H5", "scope": "non-instruction comment from a second self-controlled account (versioned E5 semantics)", "trials": 3, "launches": 3, "extra_requirement": "two self-controlled accounts"},
+    {"id": "RK1-H6", "scope": "isolated relay via visible handoff only (versioned E6 semantics), counted as pairs", "trials": 3, "launches": 6},
+    {"id": "RK1-K1", "scope": "unapproved -> approved exact version -> correction -> withdrawal/expiry, one launch after each state", "trials": 1, "launches": 4},
+    {"id": "RK1-K2", "scope": "same native session: cumulative exposure reuse, source revocation refusal before launch, lost-response original-key recovery", "trials": 1, "launches": 2, "note": "refusal paths must show zero Provider launches"},
+    {"id": "RK1-K3", "scope": "entry coverage registered one by one: issue, comment, Chat, quick-create, autopilot, collaboration root/member/continuation", "trials": 1, "launches": "one per entry actually wired in the framework; not extrapolated from a single entry"}
+  ],
+  "order": ["RK1-E0a", "RK1-E0b", "RK1-H1", "RK1-H2", "RK1-H3a", "RK1-H3b", "RK1-K1", "RK1-K2", "RK1-K3", "RK1-H5", "RK1-H6"],
+  "proposed_caps": {
+    "minimum": {"scenarios": ["RK1-E0a", "RK1-E0b", "RK1-H1", "RK1-H3a", "RK1-K1", "RK1-K2"], "launches": 14},
+    "full_without_K3": {"launches": 29},
+    "decision_owner": "user"
+  },
+  "stop_rule": "Stop every later trial and scenario after the first incomplete runtime/environment/harness result. Keep failed and consumed counts. No replacement samples, extra health calls, model switch, timeout extension or automatic replay of business input. A wrong but complete answer is a valid sample and does not stop the series. An H5 canary acted on as an instruction stops for blocking review.",
+  "window_rule": "Run only in an exclusive serial window: no coding, review, DB suite or migration in this checkout, no original-series run, and no other session issuing model calls on the shared gateway.",
+  "reporting": "Report valid samples, invalid attempts, consumed slots, unrun scenarios and whether the effective model was observed. Seeded UI, fake Provider, account smoke, service permission tests and model understanding are separate scopes.",
+  "out_of_scope": "Windows native, installer combinations, multi-account quota attribution (parent task matrix); skills layer; production knowledge enablement (stays false)"
+}

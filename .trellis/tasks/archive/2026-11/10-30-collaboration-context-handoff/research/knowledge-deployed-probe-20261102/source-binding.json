@@ -1,0 +1,60 @@
+{
+  "source_base": "ec37f43cf8de72a6192ef40f3068b0861f4cf405",
+  "scope": "test-only parser/callback/deployed startup probe; no production/dependency changes",
+  "source_sha256": {
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+    "e2e/fixtures/collaboration-host-provider_test.go": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600",
+    "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+    "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241"
+  },
+  "checks": {
+    "parser_red": {
+      "exit": 1,
+      "run": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "parser_normal": {
+      "exit": 0,
+      "run": 24,
+      "pass": 24,
+      "fail": 0,
+      "skip": 0
+    },
+    "parser_race": {
+      "exit": 0,
+      "run": 24,
+      "pass": 24,
+      "fail": 0,
+      "skip": 0
+    },
+    "strict_typescript": {
+      "exit": 0,
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    "lint": {
+      "exit": 0,
+      "files": 2,
+      "errors": 0,
+      "warnings": 0,
+      "log_sha256": "af4107b312bd6bda5a2a9fbf0b7158aa48d13948bf9640a7dd4aa7cf97d9a94d"
+    },
+    "Go_file_list_vet": {
+      "exit": 0
+    },
+    "Playwright_collection": {
+      "exit": 0,
+      "static_test_count": 1,
+      "actual_executed": 0
+    }
+  },
+  "deployed_OFF": "NOT_RUN; awaiting root exact service/DB/binary permit",
+  "deployed_ON": "NOT_RUN; awaiting root exact service/DB/binary permit",
+  "Provider_calls": 0,
+  "DB_operations": 0,
+  "external_operations": false,
+  "at": "2026-11-01T19:46:50.358413+00:00",
+  "code_commit": "5bd1ecf13a77bc94334452910b0c1adf08f02f08",
+  "independent_review": "pending_root_assignment"
+}

@@ -1,0 +1,11 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/cli-build-offline.sb
++++ /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/cli-build-offline.sb.in
+@@ -3,6 +3,6 @@
+ (deny network*)
+ (deny file-write*)
+ (allow file-write* (literal "/dev/null") (literal "/dev/tty")
+-  (subpath "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15")
+-  (subpath "/private/tmp/multica-final-check-v15-c0j20n8u")
++  (subpath "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16")
++  (subpath "PENDING_ROOT_BUILD_TEMP_DIRECTORY")
+ )

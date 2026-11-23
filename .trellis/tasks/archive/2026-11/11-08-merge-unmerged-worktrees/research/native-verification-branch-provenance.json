@@ -1,0 +1,892 @@
+[
+  {
+    "path": ".github/workflows/ci.yml",
+    "source_blob": "b4ddac8f676bb73c61b7aacea98b7af77b7c42a9",
+    "same_product_path_history": true
+  },
+  {
+    "path": ".github/workflows/collaboration-host-native-verification.yml",
+    "source_blob": "2982590f7c649d68048ce99e78b859198d512805",
+    "same_product_path_history": false
+  },
+  {
+    "path": "docs/collaboration-host-runtime.zh-CN.md",
+    "source_blob": "e93b3e5054b7263c4936bf59433c6e6ff175d868",
+    "same_product_path_history": true
+  },
+  {
+    "path": "e2e/collaboration-host-runtime.spec.ts",
+    "source_blob": "9db694c2ddc0535b90ca0458bf1630732363ea43",
+    "same_product_path_history": true
+  },
+  {
+    "path": "e2e/fixtures/collaboration-host-provider.go",
+    "source_blob": "9a6c98357b9d73d24ae43891d106ac78ba820c89",
+    "same_product_path_history": true
+  },
+  {
+    "path": "e2e/fixtures/collaboration-host-runtime.ts",
+    "source_blob": "9ee85f10b37cc42e2b20d159bc779435b995d159",
+    "same_product_path_history": false
+  },
+  {
+    "path": "packages/core/api/client.ts",
+    "source_blob": "4830857afee742a4ef30eea25d6a366ccb7894d2",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/api/collaboration-run-records.test.ts",
+    "source_blob": "0231068b899c3bd6164954bce6ce64b7514ed8a7",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/command-history-queries.test.ts",
+    "source_blob": "0a18d407e5436923f2711f7df19227ef29e407fc",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/command-schema.ts",
+    "source_blob": "84023bebe22802d1ea2af60022720d8e5d876b9b",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/command.ts",
+    "source_blob": "a63b2ff7bf43910ad42e1d64a1f6d3ac456c23b3",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/comment.test.ts",
+    "source_blob": "5a2c9006cea262b841093bc43bf756fe8d5da0a3",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/comment.ts",
+    "source_blob": "51c8c8f0d7e519ab1860c011600fb837572490f6",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/content-schema.ts",
+    "source_blob": "b669db8c22970006d42cb33f7fd6a5d46adc22b2",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/control-schema.ts",
+    "source_blob": "c6997124c143d6f95e62c56d689de415de659822",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/control.test.ts",
+    "source_blob": "a8905c681546a37cdf5f41d76747deec255efcbd",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/control.ts",
+    "source_blob": "7358d6b6ee6a10041824584ccc0fbc68ef2557d1",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/delivery.test.ts",
+    "source_blob": "0c210b52ef991171b4ec255cea72d5b2e3f47955",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/execution-host.test.ts",
+    "source_blob": "7bfddc0e366156385f3fe0d8b937faabf7a10f80",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/execution-negotiation.test.ts",
+    "source_blob": "dba4cec129ca58060650bc06c505e950bd1f5f30",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/execution-schema.ts",
+    "source_blob": "20c0c40aceddb25a8fd24f0018e455f2b927a641",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/execution-squad.test.ts",
+    "source_blob": "e17cc01a5b46368b4b77cf65c1ef3beddd0864d1",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/index.ts",
+    "source_blob": "05637d949315ed7923eee0aa6578187739eb5dba",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/resource-offer-schema.ts",
+    "source_blob": "cde952ddb137b6187751f8a5504be3817dbfee75",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/resource-schema.test.ts",
+    "source_blob": "86ea6831acfceeef612edfb255be5aec082c516d",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/resource-schema.ts",
+    "source_blob": "506d46f2f2bd6424aa7589531ce00f1054eda63e",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/resource.test.ts",
+    "source_blob": "2c5df6a8e88e07e4eb4288a2324ba41f2cf11761",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/resource.ts",
+    "source_blob": "0cf11b667afe597f10b560566a727ff203e4dcb6",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/run-records-queries.test.ts",
+    "source_blob": "4cdff39558525d1582d5ae6d5748b30cb14b196a",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/run-records-schema.ts",
+    "source_blob": "6d3c54704d03c920b30ed9e2c81634bb76687b0b",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/switch-api.test.ts",
+    "source_blob": "af14ecc131d8bbd63d9e24020e335f567ec46f95",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/switch-schema.ts",
+    "source_blob": "83ed8a407657dc56fe3a8fbd165afca1936c403d",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/switch.test.ts",
+    "source_blob": "d0aa3f9fb0174c64b4731c1d4267d2fc5870fddd",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/switch.ts",
+    "source_blob": "f616e160e7ce9a4d50cb6a48d87d9c7db638aee0",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/core/collaboration/test-fixtures.ts",
+    "source_blob": "558ec2239a5a1a1da12a1b64cdfe5be4ed845700",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/comment-composer.test.tsx",
+    "source_blob": "69537c95f843a915320662363ba580ee2659c585",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/comment-composer.tsx",
+    "source_blob": "010839c79beb148084a42f3873aa05d1f48447ca",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/execution-panel.test.tsx",
+    "source_blob": "d580765888a77f1826209a95f9defa848d598d5d",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/execution-panel.tsx",
+    "source_blob": "084b608a52891c6b9a1bd48fe6bc036d5f189a50",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/host-execution.test.tsx",
+    "source_blob": "5ba572f1b95902de897f8650054c0ea6cd17d12a",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/labels.ts",
+    "source_blob": "f1dd318bba64e60c65bf375f281a927fa2c236c8",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/resource-form.tsx",
+    "source_blob": "30ffd5d058dae7b1647d31e9807a2cf88bc4f8d7",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/resource-offers.test.tsx",
+    "source_blob": "5dc34fc04b64455a10b19f01de6e4239367c6f23",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/resource-panel.test.tsx",
+    "source_blob": "53f18843a6591087475ed1bc5bbf01056c06ecc3",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/resource-panel.tsx",
+    "source_blob": "169268354301dc2ef6064f600d6a091dffbbfd1a",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/run-records.tsx",
+    "source_blob": "102dc6ba37a47b345d628dd71a000f5f4549a6a2",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/collaboration/switch-panel.tsx",
+    "source_blob": "e48523b2c60af214bef36b2a7dec4eb3c159191c",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/locales/en/collaboration.json",
+    "source_blob": "ca398a22ef06cf48aee504e66782235b4e2d2ced",
+    "same_product_path_history": true
+  },
+  {
+    "path": "packages/views/locales/zh-Hans/collaboration.json",
+    "source_blob": "1d9445af1481448419f3b2e4b07cb4021a04f87b",
+    "same_product_path_history": true
+  },
+  {
+    "path": "scripts/check-collaboration-native-tests.mjs",
+    "source_blob": "6733f2845fa75c1d1258b536ad7eb28e110b6968",
+    "same_product_path_history": true
+  },
+  {
+    "path": "scripts/check-collaboration-native-tests.test.mjs",
+    "source_blob": "0de9516416d9481292872227beea4585ea1f2186",
+    "same_product_path_history": true
+  },
+  {
+    "path": "scripts/test-go.sh",
+    "source_blob": "282a123887b37f48b11ce504fcc5ac7cc011d37b",
+    "same_product_path_history": true
+  },
+  {
+    "path": "scripts/test-go.test.sh",
+    "source_blob": "e19c0e287467d3d519a09e84fbbe8ac3ed4ee01b",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/cmd/server/router.go",
+    "source_blob": "d3a9764fa26ff20f72e17f5ce508745b839bc352",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/cli/collaboration.go",
+    "source_blob": "9c3d74f1f07c2ef23564705af9a67b6ab92492c3",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/cli/collaboration_test.go",
+    "source_blob": "899e7605981880aa50ea286f11bc18e271e8d59e",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaboration.go",
+    "source_blob": "4466cb9f9fdaed3dd1c6393eca0f6d8cf5b96e09",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaboration_host_router_test.go",
+    "source_blob": "31d24ea9ac7c13ddf777fb4956b8ab2202a22daa",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaboration_host_test.go",
+    "source_blob": "0f3569a46536ca5059e8f02de73347e34cbafd67",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaboration_host_version_test.go",
+    "source_blob": "2e0d00cf470e3711294e097886d9857e26cdd728",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/client.go",
+    "source_blob": "50a38ac2dbe1f761fc04c4e016ab233fc8159e4a",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/client_host.go",
+    "source_blob": "db7dce75ba0437fad058a4a7fe41a47e69adb9dd",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/client_preparation.go",
+    "source_blob": "7d6f9aa635f4098f288c0e5f357ee4c48f56317f",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/controller_test.go",
+    "source_blob": "eb6f5bb309d50b8dee5542963b20cb5ff8a713cc",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_agentintegration_test.go",
+    "source_blob": "2a76c292ad83fdca29e4dd7c1897de7752460fa4",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_config.go",
+    "source_blob": "e113dc8a18c85ba5589fcf8dc1985912585e9b17",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_config_test.go",
+    "source_blob": "df63db7d158420a1462f13a4e9bc85a2d6b86268",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_git_test.go",
+    "source_blob": "df4ac0969e433de202a73e6a369b6b5a071d612d",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_ledger.go",
+    "source_blob": "9b83d622e7151e3dff6322bcf4795901da06ac27",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_ledger_test.go",
+    "source_blob": "e96bd6ad831bae43ca2348a5d82a8370504e6d35",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_preparation.go",
+    "source_blob": "fa7e475ba07176bb91d3d42412c2220a12405df2",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_recording.go",
+    "source_blob": "3d028baf603d62b62723c66154f7b8f8448fdada",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_review_test.go",
+    "source_blob": "681dd5f2c3e8392b7366949ac6b3bf1272ca4447",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_runner.go",
+    "source_blob": "018a9c221abaea853b3de28bb21ef808394eac81",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_runner_test.go",
+    "source_blob": "4419c3769b5b752acca69f1e5faabf213a2ef2c0",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_session.go",
+    "source_blob": "13f6e1b6701b4d938214afef3d363a110b6fd4b1",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/host_session_test.go",
+    "source_blob": "935e9b10fb24cec61bbdca9009bb82ceac872784",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/ledger.go",
+    "source_blob": "88d569ebf9a1c5596378c8e5cb495fccf9b6e9c7",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/ledger_test.go",
+    "source_blob": "9dc146dcb0f0fcf164ae204481979e1187435ab5",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/ledger_unix.go",
+    "source_blob": "ef80ad162dca1983df2810891ad935ec4939d317",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/ledger_unsupported.go",
+    "source_blob": "36ba44e90a7f872b180a758cff0ff7c789b6cd34",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/ledger_windows.go",
+    "source_blob": "39d76c00708469cd75486dca9d8bb2a0f406419d",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/ledger_windows_test.go",
+    "source_blob": "160c684af1f6c12b77a63857d007fd6007345a71",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/preparation.go",
+    "source_blob": "b542e6c8d5d1c04b66e4874bd8a635f767523e98",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/collaborationrun/runner.go",
+    "source_blob": "fe011cac7064ddd484d01a9af7f5e08c2abdd03e",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/daemon/execenv/collaboration.go",
+    "source_blob": "52f237fcc0f645077f7bdf6b0152634aaf5508bc",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration.go",
+    "source_blob": "803e6454f856dc39728732fc47a7938706b842d1",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration_authority.go",
+    "source_blob": "ccb80ea596893475a50302d1c4e3f5115b046cd4",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration_comments_create.go",
+    "source_blob": "365e071d61d09a4c40fd817a8d050aaa6246fa55",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration_execution_version.go",
+    "source_blob": "c302b2ce5bb3396abc5dc9e2130fcd1d458e0da2",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration_execution_version_test.go",
+    "source_blob": "75c2481fbf166eb0710f643a4a2dfdca098cbb16",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration_mentions.go",
+    "source_blob": "1843f545b895fc5265de4484b3009c8835b51071",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration_records.go",
+    "source_blob": "890c5bf069e239171aec5ced1e337fbbe58db019",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration_resources.go",
+    "source_blob": "eaaa3bd67b41de40e33a0bd297e59ad534084cfb",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration_runtime.go",
+    "source_blob": "5a2eb506035d325b1bbafdf1bfe7803d4144896a",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/handler/collaboration_switch.go",
+    "source_blob": "10fdad9a256216c33fec16d645fcdf527584e366",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+    "source_blob": "ad4678e65eefc77bddc4a8e97f7440231c98af1c",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+    "source_blob": "9901a6de5a6033c3e52cf4373bd6429f95a6577a",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+    "source_blob": "7f3a307a9ab3d643fb07f1e177de01a5fb630217",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_comments_create.go",
+    "source_blob": "997a0ff158d9ca027c38994e6404724e7c1ca71d",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_execution_view.go",
+    "source_blob": "e50590c58d2b0a12dd4c686d452afc9f638af6a5",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_groups.go",
+    "source_blob": "3948506bcdd254a16a7cde623ab4ae3ec4cb961e",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_host_compatibility.go",
+    "source_blob": "8fd0b096d013a9a0afcfac08833ea24af88904f5",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_host_cutover_test.go",
+    "source_blob": "3cc1ab929b8573bc3c23438b36e5d0cd022536ea",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_host_integration_test.go",
+    "source_blob": "7164a018f4b085d5695775465c2be7fd4e9e8a8d",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_host_platform_test.go",
+    "source_blob": "ae6496369e29508d969356e6bc2745e611fc26c1",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_host_runtime.go",
+    "source_blob": "1b59a9a15e0a897f31ebf78f36f966e02ac0d5ad",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_host_runtime_test.go",
+    "source_blob": "a8cda6aea3051c093653a148882f8c352234eaba",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_host_test.go",
+    "source_blob": "eefc676baffb072b3fba3e5c88f19d6a4da2439d",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_mention_grouping.go",
+    "source_blob": "c2879f4134eedd538b83ac5f19b3a8d9a7a790dc",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_mentions.go",
+    "source_blob": "cc83dbfad4f32115ab9e67a19cb46ea0c519ab89",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_outcome_receipt_test.go",
+    "source_blob": "8013ad1fd8297ffe4f22222b5311ed55a781e691",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_preparation_records.go",
+    "source_blob": "b9f4b94087547e04c389412c21b96ba30152fd6c",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_queue.go",
+    "source_blob": "506501cb10f2cf4a04662bf71e31768c4184bfac",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_records.go",
+    "source_blob": "556ba38e5c1d17f44b218741476d12ff96ff34ab",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_resource_options.go",
+    "source_blob": "2a46992b0f193a643d9c33a3925b8a997358c7dd",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_resources_view.go",
+    "source_blob": "5d1e19d0b2f6ff777e1f929c23b189b74199f391",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_runtime.go",
+    "source_blob": "13f27417bea0093e0c323cfbed031cf7a0abaa01",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_runtime_capabilities.go",
+    "source_blob": "9f68da7a5dc27f2b82fa9e18cbde683881841f56",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_runtime_preparation.go",
+    "source_blob": "7cc34dda207d2eef800b69d8e02471657ca432e1",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_runtime_preparation_capabilities.go",
+    "source_blob": "47b9da3339336be04ea2bffef1c7c127dff88210",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/internal/service/collaboration_runtime_test.go",
+    "source_blob": "a188b5533f219c70a5bd59a93d0debb47db4b1be",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/migrations/738_collaboration_host_execution.down.sql",
+    "source_blob": "576fc9de6f12173d2c537b8c295039f7fca57c28",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/migrations/738_collaboration_host_execution.up.sql",
+    "source_blob": "b4b2d5ca08cdf82c880b8394b309fdc673920249",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/acp_terminal.go",
+    "source_blob": "7cf68e574bdd8596eb7f34530634c1331e6f4dea",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/agent.go",
+    "source_blob": "4e441997682e91fc003ee771466f090ee231818a",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/antigravity.go",
+    "source_blob": "562470ff4349a6019b32f19046f2981bd0baa4fb",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/claude.go",
+    "source_blob": "ac5984a044c631023511c6b0a4166909fe7a2ab7",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/claude_deadlock_test.go",
+    "source_blob": "e2bd90c3d1193faf161898ee93cafca9134cacfe",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/codearts.go",
+    "source_blob": "3cea1dc3c215b378739285476dac4724c96f1e52",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/codebuddy.go",
+    "source_blob": "e46826220934c19c58bf42804c14dbc9eaa72da5",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/codex.go",
+    "source_blob": "1d8379ac75622e5dcd70ca9d2cd33363272f5518",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/copilot.go",
+    "source_blob": "131357d1277a51d9b701e81fc2d3203ed432fa4e",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/cursor.go",
+    "source_blob": "2711d605a3d8fdfac4859ea64343afc4800778da",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/deveco.go",
+    "source_blob": "293b2f492840dead691f31f47805ee052458473f",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/dim.go",
+    "source_blob": "a886c3646bbef724af6d67ee5f8bd8ea4957bf2b",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/dsh.go",
+    "source_blob": "3a07f35bc1fbb485eaf8124b7139b73c7d5d2dac",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/grok.go",
+    "source_blob": "ff42363db2f27b43427d795bf454a375a1345f67",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/hermes.go",
+    "source_blob": "d06a9e76674fe49e2d60d8d9dbfdb4ea27672959",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/host_version_test.go",
+    "source_blob": "e75c08751ca47dedb54c3b8c3514f5c4c9edda59",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/kimi.go",
+    "source_blob": "f2c5625f65eed57fd246f69f6f91e3a967feeec2",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/kiro.go",
+    "source_blob": "f10dad1ffb9b3e4351238f4e2d485178d8b9a551",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/launch.go",
+    "source_blob": "679949b4b7d1b4e673c5726421d6e7a82d9b9da4",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/launch_instance_darwin.go",
+    "source_blob": "63f552e68999b671fa3ccdd99a61ec41b8f59f9f",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/launch_instance_linux.go",
+    "source_blob": "f14f385f1690c416652895ca86c760b9d2828769",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/launch_instance_other.go",
+    "source_blob": "ace6c6ab86b8f02d1867d8e9537b03134ed85a56",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/launch_instance_windows.go",
+    "source_blob": "75a17fc09ba485f05d5ccad35770de9842ae6e08",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/launch_lifecycle.go",
+    "source_blob": "7ac4eb3123d979be8822ace5a98dcad309984d99",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/launch_lifecycle_test.go",
+    "source_blob": "8229e15659871c407ee356ab01df1a4912d0cce7",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/launch_lifecycle_unix_test.go",
+    "source_blob": "6ca83ec2cdfcf336a5c9d26826dc89a101d604ae",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/launch_lifecycle_windows_test.go",
+    "source_blob": "d82966a9725d31191e96ea1faddef5a0bd770c70",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/mcode.go",
+    "source_blob": "d9f4b47b319c62225edc14d0d85f64dc6783fa23",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/models.go",
+    "source_blob": "9d7a4c5e11f1fc65a57a2a2dd78830b1dad55e2c",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/openclaw.go",
+    "source_blob": "5f16d8ad7915543a8b040b58b567d9965dd1cd78",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/opencode.go",
+    "source_blob": "2c4c5e3ae877066bb018f5fc29ba4ca335b00cf6",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/pi.go",
+    "source_blob": "07c021d6f23fb65e4655dec8716496b6f5c8021b",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/proc_other.go",
+    "source_blob": "aac228316727e4b667514c4ecb8c2814eed65934",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/proc_windows.go",
+    "source_blob": "fee9d3a2cdd7f3240b4ae09bd08ec50be7f7e48b",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/qoder.go",
+    "source_blob": "cbf6ff71304f2b52bfe81456fdae6818f2f47674",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/qwen.go",
+    "source_blob": "c1d8733b48751959a800b26c954580aa46bd0b58",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/qwenpaw.go",
+    "source_blob": "5aaecbaa1eae54d98627d99200bda152187d1a4e",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/reasonix.go",
+    "source_blob": "7ab9514364007014816a232e8952c0219bdefb42",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/run_collect.go",
+    "source_blob": "d977c16d8c17374536e93fedc7cf6961df1dc470",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/traecli.go",
+    "source_blob": "227bb3f90e6701e66c559d1186f9178805c36348",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/version.go",
+    "source_blob": "05bb68b3040b336a184070835f95c6ccc967f0f9",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/agent/zeroclaw.go",
+    "source_blob": "0589004abdbcacaa997b6784de598b32d3c83fcc",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/db/generated/collaboration.sql.go",
+    "source_blob": "93f5308032de2d84d45a3489a0618cf515de4d51",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/db/generated/collaboration_runtime.sql.go",
+    "source_blob": "e7af8cf50cec9b2face594a8a8e2a9c99ea00516",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/db/generated/collaboration_targets.sql.go",
+    "source_blob": "2868d7ab8ad11baca717d4a34a51bd613d7718cb",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/db/generated/models.go",
+    "source_blob": "0e039394fd7cb4debfdd6e8141ab6a5650b603d8",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/db/queries/collaboration_runtime.sql",
+    "source_blob": "369c385ea790682c8d82f9c20e5c9581753a1c6b",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/db/queries/collaboration_targets.sql",
+    "source_blob": "72a286fd57e3a061e21b4f67444ba6fc3cad7749",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/protocol/collaboration.go",
+    "source_blob": "afaebb6e95144c73c0c94dcde0f3cba1f32a4522",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/protocol/collaboration_host.go",
+    "source_blob": "5df9fd9b13cfccaf1ff1187f6fd2174b02de91c5",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/protocol/collaboration_host_test.go",
+    "source_blob": "0390bb6d372ffd643f3318fe6d8a596f0d82ed59",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/protocol/collaboration_preparation.go",
+    "source_blob": "63b9e96684a04948d339c88eed536d04f81be2ed",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/redact/redact.go",
+    "source_blob": "bf0f0926837c212f45b7f095045c9fb00637a7f0",
+    "same_product_path_history": true
+  },
+  {
+    "path": "server/pkg/redact/redact_test.go",
+    "source_blob": "0d9c68f7f9fb5d99cab2c1285f5dbf87e5748470",
+    "same_product_path_history": true
+  }
+]

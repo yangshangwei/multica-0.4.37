@@ -18,6 +18,9 @@ export function useCreateAutopilot() {
   return useMutation({
     mutationFn: (data: CreateAutopilotRequest) => api.createAutopilot(data),
     onSuccess: (newAutopilot) => {
+      // An unreadable response parses to EMPTY_AUTOPILOT; leave the list to
+      // the onSettled refetch rather than inserting a row with no identity.
+      if (newAutopilot.id === "") return;
       qc.setQueryData<ListAutopilotsResponse>(autopilotKeys.list(wsId), (old) =>
         old && !old.autopilots.some((a) => a.id === newAutopilot.id)
           ? { ...old, autopilots: [...old.autopilots, newAutopilot], total: old.total + 1 }

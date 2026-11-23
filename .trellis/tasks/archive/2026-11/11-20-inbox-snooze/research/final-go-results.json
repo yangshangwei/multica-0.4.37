@@ -1,0 +1,2240 @@
+{
+  "runs": [
+    {
+      "role": "cmd_final_normal",
+      "package": "./cmd/server",
+      "mode": "normal",
+      "database": "multica_inbox_snooze_final_cmd_normal",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^Test(InboxSnoozeRouteMovesOwnedGroup$|Notification_|NotificationCommentReplay|NotificationSnoozed|Delegated|Subscriber|IsNotifMuted|NotifTypeToGroup|AutopilotFailureMonitor)",
+        "-count=1",
+        "-json",
+        "-timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-cmd_final_normal.stdout.jsonl",
+      "stderr": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-cmd_final_normal.stderr.txt",
+      "stdout_sha256": "47315c131ac27a58ee34bbc3e37e6f15e54e3c644558a4c37033419ce86279d0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminals": [
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotFailureMonitor_PausesOffenderAndNotifiesCreator",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotFailureMonitor_LeavesAlreadyPausedAlone",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotFailureMonitor_AgentCreatorRoutesToOwner",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotFailureMonitor_BelowThresholdNoOp",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_BlocksOnConcurrentSubtreeOptOut",
+          "Elapsed": 0.53
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_BlocksOnConcurrentMemberRevoke",
+          "Elapsed": 0.45
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_SkipsOriginatorRemovedFromWorkspace",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_SubscribesOriginatorStillInWorkspace",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedUpgradesToDirectReason",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_AgentCreatedSubIssue",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_QuickCreateKeepsDirectReason",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_UnattributedOriginSubscribesNobody",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ArmedTriggerRunSubscribesNobody",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ChainRootDecidesBelowTheFirstHop/member_asked,_two_agents_deep",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ChainRootDecidesBelowTheFirstHop/schedule_fired,_two_agents_deep",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ChainRootDecidesBelowTheFirstHop",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_LineageWalkStopsAt32Hops/the_deepest_chain_still_proven",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_LineageWalkStopsAt32Hops/one_hop_past_the_limit",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_LineageWalkStopsAt32Hops",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ForeignLineageResolvesNobody/the_issue_points_straight_at_a_foreign_run",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ForeignLineageResolvesNobody/a_local_run_claims_a_foreign_parent",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ForeignLineageResolvesNobody",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_RespectsSubtreeOptOut",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedTier_ChildCompletionDeliversExactlyOnce",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeRouteMovesOwnedGroup",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential/identical_event",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential/fresh_bus",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential/case_equivalent_uuid",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential/map_payload",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayConcurrent/shared_bus",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayConcurrent/independent_buses",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayConcurrent",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRetainedState/read",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRetainedState/archived",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRetainedState/read_and_archived",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRetainedState",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows/random_v4_read",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows/random_v7_archived",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows/uppercase_legacy_id",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows/existing_duplicates_retained",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayDistinctTuples/distinct_comments_and_recipients",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayDistinctTuples/distinct_workspace_sources",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayDistinctTuples/unrelated_retained_tuple_fields",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayDistinctTuples",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRecipientControls/ordinary_delivery_tiers",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRecipientControls/current_late_subscriber_and_unsubscribe",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRecipientControls",
+          "Elapsed": 0.1
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback/empty_identity",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback/invalid_identity",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback/zero_identity",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback/generic_status_writer_keeps_random_v7",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback",
+          "Elapsed": 0.05
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_IssueCreated_AssigneeNotified",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_IssueCreated_SelfAssign",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_IssueCreated_NoAssignee",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChanged_Muted",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_CommentCreated",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_SystemCommentSkipsInboxAndMentions",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberSystemCommentDoesNotSubscribe",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_AssigneeChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_TaskCompleted",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_TaskFailed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_PriorityChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_DueDateChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StartDateChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_ParentBubble_StatusChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_ParentBubble_NewCommentSuppressed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_ParentBubble_PriorityChangeSuppressed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChange_ArchivesStaleTaskFailed",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChange_NonTerminalKeepsTaskFailed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChange_ReopenSurfacesNewTaskFailed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muted_comments_still_delivers_mentions",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muted_comments_drops_new_comment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muted_mentions_drops_mentioned",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muted_mentions_still_delivers_new_comment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/both_muted_drops_both",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/empty_prefs_delivers_mentions",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/empty_prefs_delivers_comments",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/explicit_all_delivers",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/assignments_group_intact",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/status_group_intact",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muting_comments_leaves_assignments_alone",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/unconfigurable_type_always_delivered",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotifTypeToGroupMentionsIsOwnGroup",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedOrdinaryCommentRetainsGroup",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedDirectMentionWakesOnce",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedMentionScope/all_only",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedMentionScope/all_then_direct",
+          "Elapsed": 0.05
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedMentionScope/direct_then_all",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedMentionScope",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedAssignmentUsesOriginalRevision",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedDescriptionMentionUsesOriginalRevision",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedFailureUsesOriginalTask",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedResolvedFailureCleanup/last_failure",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedResolvedFailureCleanup/ordinary_sibling_remains",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedResolvedFailureCleanup",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueCreated_CreatorSubscribed",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueCreated_CreatorAndAssignee",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueCreated_SelfAssign",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueUpdated_AssigneeChanged",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueUpdated_NoAssigneeChange",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberCommentCreated_CommenterSubscribed",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberAddedEventPublished",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueCreated_AutopilotMapPayload",
+          "Elapsed": 0
+        }
+      ],
+      "package_terminals": [
+        "pass"
+      ],
+      "passed": 108,
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "role": "handler_final_normal",
+      "package": "./internal/handler",
+      "mode": "normal",
+      "database": "multica_inbox_snooze_final_handler_normal",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/handler",
+        "-run",
+        "^Test(Inbox|ArchivedSnooze|UnreadInboxCount|ArchiveAllReadInbox|ArchiveCompletedInbox|ListArchivedInbox|ListInbox|WorkspaceDelet|TriageNotificationDeliveryRespectsInboxSnooze|ProjectUpdate.*Notification|ProjectUpdateMentions|ProjectUpdateInbox|IterationInbox)",
+        "-count=1",
+        "-json",
+        "-timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-handler_final_normal.stdout.jsonl",
+      "stderr": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-handler_final_normal.stderr.txt",
+      "stdout_sha256": "7e95027d7683fd25ce1de7cc553c069f5f93c6e7ef67542d9313ab1b60614846",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminals": [
+        {
+          "Action": "pass",
+          "Test": "TestTriageNotificationDeliveryRespectsInboxSnooze",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeGroupAndItemIsolation",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeValidationAndOwnership",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeUndoAndNewerVersionConflict",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxRemindNowUndoPreservesReadState",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxReadChangeInvalidatesSnoozeUndo",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxExpiryProjectionAndSingleConsumption",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxOverdueBulkReadAndReadArchive/read",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxOverdueBulkReadAndReadArchive/archive_read",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxOverdueBulkReadAndReadArchive",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxFutureSnoozesSurviveMainBulkActions",
+          "Elapsed": 0.05
+        },
+        {
+          "Action": "pass",
+          "Test": "TestArchivedSnoozeNeverReappears",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeCleanupFollowsIssueAndMembership/issue",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeCleanupFollowsIssueAndMembership/membership",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeCleanupFollowsIssueAndMembership",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxNewActivityRisesPastOldReminder",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestListInboxProjectsCurrentIssueStatusAndPriority",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestUnreadInboxCountUsesNewestGroupProjection",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestListArchivedInboxLimitsIssueGroupsNotRows",
+          "Elapsed": 0.18
+        },
+        {
+          "Action": "pass",
+          "Test": "TestArchiveAllReadInboxUsesNewestIssueRow",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestArchiveCompletedInboxExpandsCustomTerminalStatuses",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/null_body_stays_null",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/short_comment_is_untouched",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/exactly_at_the_limit_is_untouched",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/one_past_the_limit_is_cut,_ellipsis_included",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/long_comment_is_cut_to_the_limit",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/comment_without_an_issue_keeps_its_full_body",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/other_types_keep_their_full_body",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/multi-byte_text_is_cut_on_a_character_boundary",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListsShipCommentPreviewNotFullComment",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxStateChangesReturnFullCommentBody/read",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxStateChangesReturnFullCommentBody/archive",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxStateChangesReturnFullCommentBody",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestWorkspaceDeletionLeavesBudgetRowsUntouched",
+          "Elapsed": 0.09
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationInboxEventPreservesRecipientRouting",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationConcurrentWorkersAndCorrection",
+          "Elapsed": 0.17
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationFailureRecoveryAndDeadLetter",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationDeletionBothLockOrders/delivery-first",
+          "Elapsed": 0.1
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationDeletionBothLockOrders/delete-first",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationDeletionBothLockOrders",
+          "Elapsed": 0.12
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationRevocationBothLockOrders/delivery-first",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationRevocationBothLockOrders/revoke-first",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationRevocationBothLockOrders",
+          "Elapsed": 0.09
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateMentionsNeverExecuteAndNotifyOnce",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateInboxDetailsRemainStringValues",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestWorkspaceDeletionManifestPreservesKnowledgeHistory",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Test": "TestWorkspaceDeletionRemovesKnowledgePolicy",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestWorkspaceDeletionManifestCoversPublicSchema",
+          "Elapsed": 0.01
+        }
+      ],
+      "package_terminals": [
+        "pass"
+      ],
+      "passed": 49,
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "role": "service_final_normal",
+      "package": "./internal/service",
+      "mode": "normal",
+      "database": "multica_inbox_snooze_final_service_normal",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^Test(AutopilotSubscriberDelivery|QuickCreateCompletionDelivery|IterationNotification|IterationOverdue|DelegatedFailureRecoveryStopsAfterBoundedUndeliveredAttempts|FailTaskFinalDelegatedFailureWakesCoordinatorOnce)",
+        "-count=1",
+        "-json",
+        "-timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-service_final_normal.stdout.jsonl",
+      "stderr": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-service_final_normal.stderr.txt",
+      "stdout_sha256": "fe9a1dbe9bbb7276237569faee65327d5d2d5690f2b05f811dcf95145c008181",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminals": [
+        {
+          "Action": "pass",
+          "Test": "TestFailTaskFinalDelegatedFailureWakesCoordinatorOnce",
+          "Elapsed": 0.21
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedFailureRecoveryStopsAfterBoundedUndeliveredAttempts",
+          "Elapsed": 0.22
+        },
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotSubscriberDeliveryRespectsInboxSnooze",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestQuickCreateCompletionDeliveryRespectsInboxSnooze",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationDeliveryAndRevocation",
+          "Elapsed": 0.12
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueLocalDayAndFallback",
+          "Elapsed": 0.16
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationDeliveryCrashRetry",
+          "Elapsed": 0.23
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueSuppressedAfterDateExtension",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationRevocationFence",
+          "Elapsed": 0.16
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueRevokedCoordinatorDoesNotFallback",
+          "Elapsed": 0.1
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueRejoinRetainsSuppression",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueDSTAndDisabled",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationRetryDeadLetter",
+          "Elapsed": 0.1
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueScanBoundedAndDrains",
+          "Elapsed": 0.63
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationWorkerResumesPersistedDelivery/enabled",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationWorkerResumesPersistedDelivery/disabled",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationWorkerResumesPersistedDelivery",
+          "Elapsed": 0.22
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationDisableWorkspaceSummary",
+          "Elapsed": 0.09
+        }
+      ],
+      "package_terminals": [
+        "pass"
+      ],
+      "passed": 18,
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "role": "cmd_final_race",
+      "package": "./cmd/server",
+      "mode": "race",
+      "database": "multica_inbox_snooze_final_cmd_race",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-race",
+        "-run",
+        "^Test(InboxSnoozeRouteMovesOwnedGroup$|Notification_|NotificationCommentReplay|NotificationSnoozed|Delegated|Subscriber|IsNotifMuted|NotifTypeToGroup|AutopilotFailureMonitor)",
+        "-count=1",
+        "-json",
+        "-timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-cmd_final_race.stdout.jsonl",
+      "stderr": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-cmd_final_race.stderr.txt",
+      "stdout_sha256": "89cf5e981324f619d9f0919ef1be06b646df4572f27474c75347af7fcb08eac0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminals": [
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotFailureMonitor_PausesOffenderAndNotifiesCreator",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotFailureMonitor_LeavesAlreadyPausedAlone",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotFailureMonitor_AgentCreatorRoutesToOwner",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotFailureMonitor_BelowThresholdNoOp",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_BlocksOnConcurrentSubtreeOptOut",
+          "Elapsed": 0.54
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_BlocksOnConcurrentMemberRevoke",
+          "Elapsed": 0.45
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_SkipsOriginatorRemovedFromWorkspace",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_SubscribesOriginatorStillInWorkspace",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedUpgradesToDirectReason",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_AgentCreatedSubIssue",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_QuickCreateKeepsDirectReason",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_UnattributedOriginSubscribesNobody",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ArmedTriggerRunSubscribesNobody",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ChainRootDecidesBelowTheFirstHop/member_asked,_two_agents_deep",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ChainRootDecidesBelowTheFirstHop/schedule_fired,_two_agents_deep",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ChainRootDecidesBelowTheFirstHop",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_LineageWalkStopsAt32Hops/the_deepest_chain_still_proven",
+          "Elapsed": 0.05
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_LineageWalkStopsAt32Hops/one_hop_past_the_limit",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_LineageWalkStopsAt32Hops",
+          "Elapsed": 0.09
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ForeignLineageResolvesNobody/the_issue_points_straight_at_a_foreign_run",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ForeignLineageResolvesNobody/a_local_run_claims_a_foreign_parent",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_ForeignLineageResolvesNobody",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedSubscribe_RespectsSubtreeOptOut",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedTier_ChildCompletionDeliversExactlyOnce",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeRouteMovesOwnedGroup",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential/identical_event",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential/fresh_bus",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential/case_equivalent_uuid",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential/map_payload",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplaySequential",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayConcurrent/shared_bus",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayConcurrent/independent_buses",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayConcurrent",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRetainedState/read",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRetainedState/archived",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRetainedState/read_and_archived",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRetainedState",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows/random_v4_read",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows/random_v7_archived",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows/uppercase_legacy_id",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows/existing_duplicates_retained",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyRows",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayDistinctTuples/distinct_comments_and_recipients",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayDistinctTuples/distinct_workspace_sources",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayDistinctTuples/unrelated_retained_tuple_fields",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayDistinctTuples",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRecipientControls/ordinary_delivery_tiers",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRecipientControls/current_late_subscriber_and_unsubscribe",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayRecipientControls",
+          "Elapsed": 0.1
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback/empty_identity",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback/invalid_identity",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback/zero_identity",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback/generic_status_writer_keeps_random_v7",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationCommentReplayLegacyFallback",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_IssueCreated_AssigneeNotified",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_IssueCreated_SelfAssign",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_IssueCreated_NoAssignee",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChanged_Muted",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_CommentCreated",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_SystemCommentSkipsInboxAndMentions",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberSystemCommentDoesNotSubscribe",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_AssigneeChanged",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_TaskCompleted",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_TaskFailed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_PriorityChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_DueDateChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StartDateChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_ParentBubble_StatusChanged",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_ParentBubble_NewCommentSuppressed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_ParentBubble_PriorityChangeSuppressed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChange_ArchivesStaleTaskFailed",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChange_NonTerminalKeepsTaskFailed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotification_StatusChange_ReopenSurfacesNewTaskFailed",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muted_comments_still_delivers_mentions",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muted_comments_drops_new_comment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muted_mentions_drops_mentioned",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muted_mentions_still_delivers_new_comment",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/both_muted_drops_both",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/empty_prefs_delivers_mentions",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/empty_prefs_delivers_comments",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/explicit_all_delivers",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/assignments_group_intact",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/status_group_intact",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/muting_comments_leaves_assignments_alone",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit/unconfigurable_type_always_delivered",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIsNotifMutedGroupSplit",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotifTypeToGroupMentionsIsOwnGroup",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedOrdinaryCommentRetainsGroup",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedDirectMentionWakesOnce",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedMentionScope/all_only",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedMentionScope/all_then_direct",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedMentionScope/direct_then_all",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedMentionScope",
+          "Elapsed": 0.05
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedAssignmentUsesOriginalRevision",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedDescriptionMentionUsesOriginalRevision",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedFailureUsesOriginalTask",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedResolvedFailureCleanup/last_failure",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedResolvedFailureCleanup/ordinary_sibling_remains",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNotificationSnoozedResolvedFailureCleanup",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueCreated_CreatorSubscribed",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueCreated_CreatorAndAssignee",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueCreated_SelfAssign",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueUpdated_AssigneeChanged",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueUpdated_NoAssigneeChange",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberCommentCreated_CommenterSubscribed",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberAddedEventPublished",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSubscriberIssueCreated_AutopilotMapPayload",
+          "Elapsed": 0
+        }
+      ],
+      "package_terminals": [
+        "pass"
+      ],
+      "passed": 108,
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "role": "handler_final_race",
+      "package": "./internal/handler",
+      "mode": "race",
+      "database": "multica_inbox_snooze_final_handler_race",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/handler",
+        "-race",
+        "-run",
+        "^Test(Inbox|ArchivedSnooze|UnreadInboxCount|ArchiveAllReadInbox|ArchiveCompletedInbox|ListArchivedInbox|ListInbox|WorkspaceDelet|TriageNotificationDeliveryRespectsInboxSnooze|ProjectUpdate.*Notification|ProjectUpdateMentions|ProjectUpdateInbox|IterationInbox)",
+        "-count=1",
+        "-json",
+        "-timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-handler_final_race.stdout.jsonl",
+      "stderr": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-handler_final_race.stderr.txt",
+      "stdout_sha256": "48da4be68696a67bc0c89dd1e48b9ee9bcea02324011fc24657b983d2d2ae742",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminals": [
+        {
+          "Action": "pass",
+          "Test": "TestTriageNotificationDeliveryRespectsInboxSnooze",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeGroupAndItemIsolation",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeValidationAndOwnership",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeUndoAndNewerVersionConflict",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxRemindNowUndoPreservesReadState",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxReadChangeInvalidatesSnoozeUndo",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxExpiryProjectionAndSingleConsumption",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxOverdueBulkReadAndReadArchive/read",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxOverdueBulkReadAndReadArchive/archive_read",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxOverdueBulkReadAndReadArchive",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxFutureSnoozesSurviveMainBulkActions",
+          "Elapsed": 0.07
+        },
+        {
+          "Action": "pass",
+          "Test": "TestArchivedSnoozeNeverReappears",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeCleanupFollowsIssueAndMembership/issue",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeCleanupFollowsIssueAndMembership/membership",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxSnoozeCleanupFollowsIssueAndMembership",
+          "Elapsed": 0.05
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxNewActivityRisesPastOldReminder",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestListInboxProjectsCurrentIssueStatusAndPriority",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestUnreadInboxCountUsesNewestGroupProjection",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestListArchivedInboxLimitsIssueGroupsNotRows",
+          "Elapsed": 0.24
+        },
+        {
+          "Action": "pass",
+          "Test": "TestArchiveAllReadInboxUsesNewestIssueRow",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestArchiveCompletedInboxExpandsCustomTerminalStatuses",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/null_body_stays_null",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/short_comment_is_untouched",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/exactly_at_the_limit_is_untouched",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/one_past_the_limit_is_cut,_ellipsis_included",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/long_comment_is_cut_to_the_limit",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/comment_without_an_issue_keeps_its_full_body",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/other_types_keep_their_full_body",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview/multi-byte_text_is_cut_on_a_character_boundary",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListBodyPreview",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxListsShipCommentPreviewNotFullComment",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxStateChangesReturnFullCommentBody/read",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxStateChangesReturnFullCommentBody/archive",
+          "Elapsed": 0.01
+        },
+        {
+          "Action": "pass",
+          "Test": "TestInboxStateChangesReturnFullCommentBody",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestWorkspaceDeletionLeavesBudgetRowsUntouched",
+          "Elapsed": 0.06
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationInboxEventPreservesRecipientRouting",
+          "Elapsed": 0
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationConcurrentWorkersAndCorrection",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationFailureRecoveryAndDeadLetter",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationDeletionBothLockOrders/delivery-first",
+          "Elapsed": 0.09
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationDeletionBothLockOrders/delete-first",
+          "Elapsed": 0.03
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationDeletionBothLockOrders",
+          "Elapsed": 0.12
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationRevocationBothLockOrders/delivery-first",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationRevocationBothLockOrders/revoke-first",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateNotificationRevocationBothLockOrders",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateMentionsNeverExecuteAndNotifyOnce",
+          "Elapsed": 0.04
+        },
+        {
+          "Action": "pass",
+          "Test": "TestProjectUpdateInboxDetailsRemainStringValues",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestWorkspaceDeletionManifestPreservesKnowledgeHistory",
+          "Elapsed": 0.08
+        },
+        {
+          "Action": "pass",
+          "Test": "TestWorkspaceDeletionRemovesKnowledgePolicy",
+          "Elapsed": 0.02
+        },
+        {
+          "Action": "pass",
+          "Test": "TestWorkspaceDeletionManifestCoversPublicSchema",
+          "Elapsed": 0.01
+        }
+      ],
+      "package_terminals": [
+        "pass"
+      ],
+      "passed": 49,
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "role": "service_final_race",
+      "package": "./internal/service",
+      "mode": "race",
+      "database": "multica_inbox_snooze_final_service_race",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/service",
+        "-race",
+        "-run",
+        "^Test(AutopilotSubscriberDelivery|QuickCreateCompletionDelivery|IterationNotification|IterationOverdue|DelegatedFailureRecoveryStopsAfterBoundedUndeliveredAttempts|FailTaskFinalDelegatedFailureWakesCoordinatorOnce)",
+        "-count=1",
+        "-json",
+        "-timeout=10m"
+      ],
+      "exit_code": 0,
+      "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-service_final_race.stdout.jsonl",
+      "stderr": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-service_final_race.stderr.txt",
+      "stdout_sha256": "6007d3468b6a696bab9bb26f7160824d6c5180f4934383a2db89b1089a4d07dc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminals": [
+        {
+          "Action": "pass",
+          "Test": "TestFailTaskFinalDelegatedFailureWakesCoordinatorOnce",
+          "Elapsed": 0.22
+        },
+        {
+          "Action": "pass",
+          "Test": "TestDelegatedFailureRecoveryStopsAfterBoundedUndeliveredAttempts",
+          "Elapsed": 0.26
+        },
+        {
+          "Action": "pass",
+          "Test": "TestAutopilotSubscriberDeliveryRespectsInboxSnooze",
+          "Elapsed": 0.14
+        },
+        {
+          "Action": "pass",
+          "Test": "TestQuickCreateCompletionDeliveryRespectsInboxSnooze",
+          "Elapsed": 0.15
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationDeliveryAndRevocation",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueLocalDayAndFallback",
+          "Elapsed": 0.14
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationDeliveryCrashRetry",
+          "Elapsed": 0.21
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueSuppressedAfterDateExtension",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationRevocationFence",
+          "Elapsed": 0.2
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueRevokedCoordinatorDoesNotFallback",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueRejoinRetainsSuppression",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueDSTAndDisabled",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationRetryDeadLetter",
+          "Elapsed": 0.12
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationOverdueScanBoundedAndDrains",
+          "Elapsed": 0.73
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationWorkerResumesPersistedDelivery/enabled",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationWorkerResumesPersistedDelivery/disabled",
+          "Elapsed": 0.13
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationWorkerResumesPersistedDelivery",
+          "Elapsed": 0.25
+        },
+        {
+          "Action": "pass",
+          "Test": "TestIterationNotificationDisableWorkspaceSummary",
+          "Elapsed": 0.11
+        }
+      ],
+      "package_terminals": [
+        "pass"
+      ],
+      "passed": 18,
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "role": "state_final_normal",
+      "package": "./internal/inboxstate",
+      "mode": "normal",
+      "database": "multica_inbox_snooze_final_state_normal",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/inboxstate",
+        "-count=1",
+        "-json",
+        "-timeout=5m"
+      ],
+      "exit_code": 0,
+      "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-state_final_normal.stdout.jsonl",
+      "stderr": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-state_final_normal.stderr.txt",
+      "stdout_sha256": "7dec36fda8ab27a3d01c0cee91b8f60f319d7242528ffb6e1bfb72fa8cbdbd23",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminals": [
+        {
+          "Action": "pass",
+          "Test": "TestOrdinaryDeliveryPreservesNumericDetails",
+          "Elapsed": 0.44
+        },
+        {
+          "Action": "pass",
+          "Test": "TestScheduledWritersRetainExistingIdentityAndReadState/project_update",
+          "Elapsed": 0.1
+        },
+        {
+          "Action": "pass",
+          "Test": "TestScheduledWritersRetainExistingIdentityAndReadState/iteration",
+          "Elapsed": 0.1
+        },
+        {
+          "Action": "pass",
+          "Test": "TestScheduledWritersRetainExistingIdentityAndReadState/triage",
+          "Elapsed": 0.1
+        },
+        {
+          "Action": "pass",
+          "Test": "TestScheduledWritersRetainExistingIdentityAndReadState",
+          "Elapsed": 0.3
+        },
+        {
+          "Action": "pass",
+          "Test": "TestCriticalSourceReplayCannotWakeAnotherSnooze",
+          "Elapsed": 0.14
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/unread_active",
+          "Elapsed": 0.12
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/read_active",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/unread_archived",
+          "Elapsed": 0.12
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/read_archived",
+          "Elapsed": 0.12
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/uppercase_legacy",
+          "Elapsed": 0.12
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow",
+          "Elapsed": 0.59
+        },
+        {
+          "Action": "pass",
+          "Test": "TestBroadMentionsRemainOrdinaryAndSuppressed",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyFailureAndDescriptionWatermarksSuppressOldSources",
+          "Elapsed": 0.16
+        },
+        {
+          "Action": "pass",
+          "Test": "TestConcurrentCriticalDeliveryClaimsOnce",
+          "Elapsed": 0.15
+        },
+        {
+          "Action": "pass",
+          "Test": "TestFirstSnoozeAndDeliveryFenceOrders/delivery",
+          "Elapsed": 0.21
+        },
+        {
+          "Action": "pass",
+          "Test": "TestFirstSnoozeAndDeliveryFenceOrders/snooze",
+          "Elapsed": 0.22
+        },
+        {
+          "Action": "pass",
+          "Test": "TestFirstSnoozeAndDeliveryFenceOrders",
+          "Elapsed": 0.43
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSourceTransactionBeforeSnoozeCommitRemainsNew/comment",
+          "Elapsed": 0.19
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSourceTransactionBeforeSnoozeCommitRemainsNew/failure",
+          "Elapsed": 0.2
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSourceTransactionBeforeSnoozeCommitRemainsNew",
+          "Elapsed": 0.39
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNewCriticalDeliveryInvalidatesManualReminderUndo",
+          "Elapsed": 0.12
+        }
+      ],
+      "passed": 22,
+      "failed": [],
+      "skipped": []
+    },
+    {
+      "role": "state_final_race",
+      "package": "./internal/inboxstate",
+      "mode": "race",
+      "database": "multica_inbox_snooze_final_state_race",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/inboxstate",
+        "-race",
+        "-count=1",
+        "-json",
+        "-timeout=5m"
+      ],
+      "exit_code": 0,
+      "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-state_final_race.stdout.jsonl",
+      "stderr": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-state_final_race.stderr.txt",
+      "stdout_sha256": "9372fb31dfb586b9bebc5337597dfefddae50903b0f292ceaf19e9bce03e0520",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminals": [
+        {
+          "Action": "pass",
+          "Test": "TestOrdinaryDeliveryPreservesNumericDetails",
+          "Elapsed": 0.28
+        },
+        {
+          "Action": "pass",
+          "Test": "TestScheduledWritersRetainExistingIdentityAndReadState/project_update",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestScheduledWritersRetainExistingIdentityAndReadState/iteration",
+          "Elapsed": 0.12
+        },
+        {
+          "Action": "pass",
+          "Test": "TestScheduledWritersRetainExistingIdentityAndReadState/triage",
+          "Elapsed": 0.11
+        },
+        {
+          "Action": "pass",
+          "Test": "TestScheduledWritersRetainExistingIdentityAndReadState",
+          "Elapsed": 0.35
+        },
+        {
+          "Action": "pass",
+          "Test": "TestCriticalSourceReplayCannotWakeAnotherSnooze",
+          "Elapsed": 0.16
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/unread_active",
+          "Elapsed": 0.15
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/read_active",
+          "Elapsed": 0.14
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/unread_archived",
+          "Elapsed": 0.15
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/read_archived",
+          "Elapsed": 0.18
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow/uppercase_legacy",
+          "Elapsed": 0.14
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyCriticalMentionDeliveryAdoptsRetainedRow",
+          "Elapsed": 0.75
+        },
+        {
+          "Action": "pass",
+          "Test": "TestBroadMentionsRemainOrdinaryAndSuppressed",
+          "Elapsed": 0.14
+        },
+        {
+          "Action": "pass",
+          "Test": "TestLegacyFailureAndDescriptionWatermarksSuppressOldSources",
+          "Elapsed": 0.15
+        },
+        {
+          "Action": "pass",
+          "Test": "TestConcurrentCriticalDeliveryClaimsOnce",
+          "Elapsed": 0.18
+        },
+        {
+          "Action": "pass",
+          "Test": "TestFirstSnoozeAndDeliveryFenceOrders/delivery",
+          "Elapsed": 0.25
+        },
+        {
+          "Action": "pass",
+          "Test": "TestFirstSnoozeAndDeliveryFenceOrders/snooze",
+          "Elapsed": 0.27
+        },
+        {
+          "Action": "pass",
+          "Test": "TestFirstSnoozeAndDeliveryFenceOrders",
+          "Elapsed": 0.52
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSourceTransactionBeforeSnoozeCommitRemainsNew/comment",
+          "Elapsed": 0.19
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSourceTransactionBeforeSnoozeCommitRemainsNew/failure",
+          "Elapsed": 0.22
+        },
+        {
+          "Action": "pass",
+          "Test": "TestSourceTransactionBeforeSnoozeCommitRemainsNew",
+          "Elapsed": 0.4
+        },
+        {
+          "Action": "pass",
+          "Test": "TestNewCriticalDeliveryInvalidatesManualReminderUndo",
+          "Elapsed": 0.14
+        }
+      ],
+      "passed": 22,
+      "failed": [],
+      "skipped": []
+    }
+  ]
+}

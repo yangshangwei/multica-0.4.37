@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "review": "S2 server2a follow-up independent recheck",
+  "owner": "/root/s2_server_check",
+  "recorded_at": "2026-11-14T07:41:27.845308+00:00",
+  "verdict": "changes_requested_remaining_a5_membership_fence",
+  "scope": "2a follow-up only, not2b or fullS2 acceptance",
+  "product_edits": false,
+  "database_commands_by_reviewer": false,
+  "git_writes": false,
+  "runtime_launches": false,
+  "input_verification": {
+    "followup_files": 11,
+    "logs_and_exits": 6,
+    "base_files": 4864,
+    "errors": []
+  },
+  "frozen_changes": [
+    {
+      "path": "server/cmd/migrate/main.go",
+      "sha256": "ec488de1b9b5e6411b32db8351ab197ecb1190d094dbb419a4936e67bea532cf"
+    },
+    {
+      "path": "server/cmd/migrate/collaboration_stage_cleanup_test.go",
+      "sha256": "8170ed27d52f1b9e4cd02b8237b49f8942cc1b5c4535f4fa0052a71dc2b6c39a"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage.go",
+      "sha256": "b6f1c501243529556123497061d539c6c7954c08f2afe8445cfd08c59b9a14dd"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_view.go",
+      "sha256": "deb2632c3b93f78f00bf553f6e8efd88bb69685795ffa9c43a7bee1e8e25c516"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_actions.go",
+      "sha256": "d2c5a90f17dcefef0a5a5f84ee931c0cd09bfdd9fec027ceeaa49086b8003469"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_signer.go",
+      "sha256": "8fb56b403a4cc881eafd73bc70b9e30c6adc98029e18a1ef4fdf53a784a5762a"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "sha256": "6b2bdf09d6c9c3e3418d23e77f8eb75d3645b9244645ff6a27f0263f111167f5"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_scope_code_test.go",
+      "sha256": "69176a5f00027c8f6d16dfa453cb8c042557c68e47732449afc37dd72e725df8"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review_test.go",
+      "sha256": "6b55c53c798962dfa266baaa0837dd2d3447a83dc48ef46e8e81fb3d011d0494"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_followup_test.go",
+      "sha256": "4219256640c5c221f5149e0514d14d7d2e926c6b7d4f7460977f908492c53dad"
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_review_test.go",
+      "sha256": "3dc8a212881d1db0ffe3e1a437a417b06530ce08e2ecdb16caa1fafc4f1752a2"
+    }
+  ],
+  "certified_fixture_supplement": {
+    "status": "followup_manifest_omission_corrected_by_separate_supplement",
+    "scope": "Three nullable ContentDigest test-fixture adaptations were already present when the prior green follow-up tests ran but omitted from its 11-file manifest. Original report/manifests and independent failed reconstruction vet log are retained.",
+    "files": [
+      {
+        "path": "server/internal/service/collaboration_stage_admission_test.go",
+        "sha256": "153a5652b2484e50ac7fe24b4e79b1b363596e0cefcbcca10fc988e3729b7188",
+        "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-fixture-supplement/server/internal/service/collaboration_stage_admission_test.go",
+        "previous_frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-source/server/internal/service/collaboration_stage_admission_test.go",
+        "previous_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_enqueue_test.go",
+        "sha256": "55a50b5957a8c06f50552985a2d3e3925694fffbd0e9210b7cf383866bde30c5",
+        "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-fixture-supplement/server/internal/service/collaboration_stage_enqueue_test.go",
+        "previous_frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-source/server/internal/service/collaboration_stage_enqueue_test.go",
+        "previous_sha256": null
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_test.go",
+        "sha256": "207fe086999e347c437fd648fc343e1d8baff4332fccc2ad2bdeb0420f16111c",
+        "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-fixture-supplement/server/internal/service/collaboration_stage_test.go",
+        "previous_frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-source/server/internal/service/collaboration_stage_test.go",
+        "previous_sha256": "b87ac68039d97f2b4a415ddcf36ed20523215f35f75788f4f5019d43c768dc02"
+      }
+    ]
+  },
+  "implementation_evidence": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-red-1.log",
+      "sha256": "59b39a98cab833252ca49e7f6de68f998908372faa5c90bb2e856f91aef71b91",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named": {
+        "pass": [],
+        "fail": [
+          "TestStageConcurrentIndexCleanupInventory"
+        ],
+        "skip": []
+      }
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-green-1.log",
+      "sha256": "7eddce97c854445d991cb1b0d70645eea83df0effad860ba1be4e9eacafd07c7",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named": {
+        "pass": [
+          "TestStageConcurrentIndexCleanupInventory"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-red-1.log",
+      "sha256": "fce2b8da9f8f243dcc51aa9390e745c443870f3bc8c1b372df821ca06e804f70",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named": {
+        "pass": [
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/caller"
+        ],
+        "fail": [
+          "TestStageSourceDeniedDigestAndCachedScopeSelection",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_approval",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_issuer",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock"
+        ],
+        "skip": []
+      }
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-green-1.log",
+      "sha256": "1ad2fb0a0858ea849201d7dbe4201acca255bdc35900852fdec42574ddab0f95",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named": {
+        "pass": [
+          "TestStageChildCreationRequiresApprovedProposalForMachines",
+          "TestStageChildExecutionGateAtEnqueueAndStart",
+          "TestStageChildStartSerializesWithRootLifecycle",
+          "TestStageChildUpdateKeepsMappingAndRefusesMachineAttach",
+          "TestStageDescendantsOfManagedRootAreGatedAndConfirmable",
+          "TestStageDescendantEnqueueEntryPoints/assignment",
+          "TestStageDescendantEnqueueEntryPoints/handoff",
+          "TestStageDescendantEnqueueEntryPoints/mention",
+          "TestStageDescendantEnqueueEntryPoints/thread",
+          "TestStageDescendantEnqueueEntryPoints/squad",
+          "TestStageDescendantEnqueueEntryPoints/squad_handoff",
+          "TestStageDescendantEnqueueEntryPoints/deferred_fallback",
+          "TestStageDescendantEnqueueEntryPoints/deferred_channel",
+          "TestStageDescendantEnqueueEntryPoints",
+          "TestStagePreparedEnqueueAdmitsExactlyConfirmedDescendant",
+          "TestStageApprovedChildCannotAuthorizeMachineDecomposition",
+          "TestStageSourceDeniedDigestAndCachedScopeSelection",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_approval",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_issuer",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/caller",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock",
+          "TestStageCodeReviewTransitionsAndOriginalKey",
+          "TestStageCodeReviewStrictCIRefusals/missing",
+          "TestStageCodeReviewStrictCIRefusals/legacy_incomplete",
+          "TestStageCodeReviewStrictCIRefusals/old_head",
+          "TestStageCodeReviewStrictCIRefusals/stale",
+          "TestStageCodeReviewStrictCIRefusals/future",
+          "TestStageCodeReviewStrictCIRefusals/running",
+          "TestStageCodeReviewStrictCIRefusals/skipped",
+          "TestStageCodeReviewStrictCIRefusals/neutral",
+          "TestStageCodeReviewStrictCIRefusals/failure",
+          "TestStageCodeReviewStrictCIRefusals",
+          "TestStageCodeReviewDigestAndSourceDrift/head",
+          "TestStageCodeReviewDigestAndSourceDrift/checks",
+          "TestStageCodeReviewDigestAndSourceDrift/trust",
+          "TestStageCodeReviewDigestAndSourceDrift/child",
+          "TestStageCodeReviewDigestAndSourceDrift/requirement",
+          "TestStageCodeReviewDigestAndSourceDrift",
+          "TestStageCodeReviewReturnAndSourcePrivacy",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/participant",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/account",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/pat",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/password",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/source_access",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds/limit_and_expired",
+          "TestStageCodeReviewSignerRevocationAndExpiryBounds",
+          "TestStageCodeCandidateVersionsAndReviewerIsolation",
+          "TestStageCodeCandidateRejectsUnboundInputs/pull_request",
+          "TestStageCodeCandidateRejectsUnboundInputs/head",
+          "TestStageCodeCandidateRejectsUnboundInputs/child",
+          "TestStageCodeCandidateRejectsUnboundInputs/artifact",
+          "TestStageCodeCandidateRejectsUnboundInputs",
+          "TestStageCodeVCSWithoutRepositoryCheckIdentityIsUnsupported",
+          "TestStageCodeReviewConcurrentIntentAndLostCommit/concurrent_same_key",
+          "TestStageCodeReviewConcurrentIntentAndLostCommit/lost_commit",
+          "TestStageCodeReviewConcurrentIntentAndLostCommit",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/sign/head",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/sign/checks",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/sign/trust",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/advance/head",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/advance/checks",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption/advance/trust",
+          "TestStageCodeReviewFencesChecksAndTrustThroughConsumption",
+          "TestStageCodeReviewRevocationIsAppendOnly",
+          "TestStageCodeReviewSourceMembershipRejoinDoesNotReviveApproval",
+          "TestStageCodeCandidateDiscoveryEmpty",
+          "TestStageScopeRoleRestorationDoesNotReviveApproval",
+          "TestStageScopeWriteRequiresCurrentCredentialWithoutRetainedExpiry/expired_jwt",
+          "TestStageScopeWriteRequiresCurrentCredentialWithoutRetainedExpiry/revoked_pat",
+          "TestStageScopeWriteRequiresCurrentCredentialWithoutRetainedExpiry",
+          "TestStageScopeConfirmationBindsVerifiedCodeVersion",
+          "TestStageScopeConfirmationFencesCodeUntilCommit/head",
+          "TestStageScopeConfirmationFencesCodeUntilCommit/link",
+          "TestStageScopeConfirmationFencesCodeUntilCommit",
+          "TestStagePolicyRevisionCASAuthorityAndOriginalKey",
+          "TestStageRolesRequireSourceAdminParticipantsAndSeparation",
+          "TestStageProposalVersionsDecisionsAndSingleMaterialization",
+          "TestStageProposalConcurrentAcceptCreatesOneChildSet",
+          "TestStageProposalAcceptRollsBackEveryChildOnRefusal",
+          "TestStageProposalSourceIsVerifiedByTheServer",
+          "TestStageScopeConfirmationFirstEnableAndReopen",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_child",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_decision",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_issue_collaboration_SET_revision",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_event",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_notification",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_collaboration_operation",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit/lost_commit",
+          "TestStageAcceptRequiredWriteFailuresAndLostCommit",
+          "TestStageReadinessPredicateIsSharedWithMigration"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-race-1.log",
+      "sha256": "c2f272a325f5d203a6fc8b25098abe3b8acba82ea59a80a4bcdcceb90175368a",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-race-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named": {
+        "pass": [
+          "TestStageSourceDeniedDigestAndCachedScopeSelection",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_approval",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/original_issuer",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock/caller",
+          "TestStageAdvanceRechecksOriginalApprovalAtFinalClock"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-handler-1.log",
+      "sha256": "1e9ef8d7d333cc40e79acd4d6a244d5e1176f38740e8992c0512fdbf7b8e1029",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-handler-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named": {
+        "pass": [
+          "TestStageHTTPCodeReviewContractAndProtectedEvidence",
+          "TestStageHTTPReviewStrictBodies/absent_supersedes",
+          "TestStageHTTPReviewStrictBodies/absent_artifact",
+          "TestStageHTTPReviewStrictBodies/upper_alias",
+          "TestStageHTTPReviewStrictBodies/unknown_field",
+          "TestStageHTTPReviewStrictBodies/short_head",
+          "TestStageHTTPReviewStrictBodies",
+          "TestStageHTTPStrictBodies",
+          "TestStageHTTPActionsConfirmationsRefusalsAndRecovery",
+          "TestStageHTTPScopeConfirmationRequiresExplicitVerifiedCode"
+        ],
+        "fail": [],
+        "skip": []
+      }
+    }
+  ],
+  "independent_checks": [
+    {
+      "id": "gofmt",
+      "argv": [
+        "gofmt",
+        "-l",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/cmd/migrate/main.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/cmd/migrate/collaboration_stage_cleanup_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/internal/service/collaboration_stage.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/internal/service/collaboration_stage_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/internal/service/collaboration_stage_actions.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/internal/service/collaboration_stage_signer.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/internal/service/collaboration_stage_review.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/internal/service/collaboration_stage_scope_code_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/internal/service/collaboration_stage_review_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/internal/service/collaboration_stage_followup_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server/internal/handler/collaboration_stage_review_test.go"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/gofmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "id": "vet",
+      "argv": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server",
+        "vet",
+        "./internal/service",
+        "./internal/handler",
+        "./cmd/migrate"
+      ],
+      "exit_code": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/vet.log",
+      "log_sha256": "170ea8a8f01951a406e1a7eecb84e9ed6e9ea1fab17f88fee302cb0e4e2a1b16",
+      "log_bytes": 893
+    },
+    {
+      "id": "migration-invariants",
+      "argv": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server",
+        "test",
+        "./cmd/migrate",
+        "-run",
+        "^(TestStageConcurrentIndexCleanupInventory|TestConcurrentIndexCleanupsMatchTheirMigrations|TestEveryConcurrentUpBuildHasCleanup)$",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/migration-invariants.log",
+      "log_sha256": "cc8c80e3fe7773286c807cc4b5224287e0368f6ddf8564e0a10fdb4108df88b8",
+      "log_bytes": 6203
+    },
+    {
+      "argv": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server",
+        "build",
+        "./internal/service",
+        "./internal/handler",
+        "./cmd/migrate"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/production-build.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "argv": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source/server",
+        "vet",
+        "./internal/service",
+        "./internal/handler",
+        "./cmd/migrate"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/vet-supplement-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    }
+  ],
+  "migration_test_inventory": {
+    "counts": {
+      "pass": 2,
+      "fail": 1,
+      "skip": 0
+    },
+    "tests": {
+      "pass": [
+        "TestStageConcurrentIndexCleanupInventory",
+        "TestConcurrentIndexCleanupsMatchTheirMigrations"
+      ],
+      "fail": [
+        "TestEveryConcurrentUpBuildHasCleanup"
+      ],
+      "skip": []
+    },
+    "remaining_global_diagnostics": [
+      "migrate_mul5999_index_retry_test.go:85: 795_report_snapshot_id: builds \"report_snapshot_id_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 796_report_snapshot_request: builds \"report_snapshot_request_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 797_report_snapshot_sequence: builds \"report_snapshot_sequence_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 798_report_snapshot_cycle: builds \"report_snapshot_cycle_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 799_report_snapshot_correction: builds \"report_snapshot_correction_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 801_report_snapshot_control_identity: builds \"report_snapshot_control_identity_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 802_report_snapshot_withdrawal_request: builds \"report_snapshot_withdrawal_request_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 803_report_snapshot_withdrawal_identity: builds \"report_snapshot_withdrawal_identity_key\" concurrently on up but has no up cleanup"
+    ],
+    "sha256": "cc8c80e3fe7773286c807cc4b5224287e0368f6ddf8564e0a10fdb4108df88b8",
+    "scope": "16originalS2hookfixes validated; additional827hook checked against root-frozen826–828DDL, not2bacceptance"
+  },
+  "findings": [
+    {
+      "id": "S2A-C01",
+      "status": "resolved",
+      "evidence": "16originalS2hooks registered; scopedinventory and registered-to-file invariant pass. Global test retains exactly8unrelatedF2failures.",
+      "limits": "Actual interrupted-index execution notrerun;827registration verified against separatelyfrozenDDL, not2bacceptance."
+    },
+    {
+      "id": "V01",
+      "status": "resolved",
+      "evidence": "Original red reproduced approval and issuer expiration success after earlyguards, callerexpiryalreadyrefused; helper now rechecks allretained/caller expiry after artifactobservations at finalDBclock."
+    },
+    {
+      "id": "S2A-C02",
+      "status": "projection_and_sequential_negative_fixed_fence_pending",
+      "evidence": "Source-denied childdigest explicitnull; source-readablehex64; cachednonempty A5selection denies if membershipalreadyabsent.",
+      "remaining": "S2A-F01"
+    },
+    {
+      "id": "S2A-F01",
+      "priority": "P1",
+      "status": "open_routed",
+      "file": "server/internal/service/collaboration_stage.go",
+      "line": 45,
+      "issue": "stageKindConfirmScope omittedfromliveSourceMemberlockallowlist although newA5nonemptyselectionrequiresSourceMember. Snapshotboolean canoutlive canonicalDeleteMember before scopefactcommit.",
+      "reproduction_status": "Code-path finding; DBinterleaving delegated tosoleowner, notexecuted byreviewer. Subsequentownerreported red verbally but unboundnewproof notyetaccepted.",
+      "required": "ExistingNOWAITmemberfence plus current-read afterlock; bothcommitorders andexternalemptycontrol; frozenrepairsource/logs."
+    },
+    {
+      "id": "E01",
+      "status": "resolved_with_separate_provenance_supplement",
+      "issue": "Three nullablefixtureadaptationfiles omittedfromoriginal11filemanifest; initialfrozenvet failed at5uses.",
+      "resolution": "3hashesverified; compareagainstrootfulloriginalsnapshot shows onlystageReadableDigestadaptations; staticvetrepeatpasses. Originalfailure/reportretained."
+    }
+  ],
+  "limits": [
+    "No reviewer database-backed tests/migrations/API/browser/Desktop/model/external integration.",
+    "GlobalmigrationinventoryremainsfailedonecaseforeightunrelatedF2registrations.",
+    "A5memberfence follow-on source/logs awaitingverification; donotclose2a followupyet.",
+    "Implementation90service/5race/10HTTPgreenlogs verifiedasretainedexecutions, notindependentDBreruns."
+  ],
+  "evidence_references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2a-followup-results.json",
+      "sha256": "edbcd7c3d73a4e859e94d83e67fc39d161fb5f57292f2ad87b3740ee781021fb"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2a-followup-fixture-supplement.json",
+      "sha256": "b9528e090d54803f0ec2b667560a84134178eb14c648ba566feced049a7cc4b5"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-coordinator-hash-check.json",
+      "sha256": "3cda90badc589c40f833507570ac709ad2366805046a1fc6604a1cdfec2dd7fb"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source.json",
+      "sha256": "702a6fcfb19ca8ed4d210f45e0c11fb866b80a0869489579bf0c33e5db07f73b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2b-ddl-before.json",
+      "sha256": "f89357319919c7c4009d173c45d6c4656d605f0eba0c2b37922653c41e731929"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2b-migrations.json",
+      "sha256": "60afa592eec2ccc4a4b4886255551284b390e0d8012c107b731c42f2ac2c7f74"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/input-check.json",
+      "sha256": "6045249335fe5ab575f34390e2c7383491f951c554453f4d0c80f6c3ae86e0bf"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/source-binding.json",
+      "sha256": "07f98f72e847703f87748d0087bb363eb1d3c33850e95838c6b4bb4b4a387669"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/fixture-supplement-check.json",
+      "sha256": "e1a5815efb47eae4ee1d71c037d80e0e986d32df7393f7f7475b70c6816deeab"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/checks.json",
+      "sha256": "4b2fcd202f5dc742c3f28c89092c27762df29e91183536cb0f0461e57745d5d3"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/migration-invariants-summary.json",
+      "sha256": "5cde5be3a15887dbe2c1c07a42008113781fb6d8c5478743c121abd3d9109bed"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/production-build.json",
+      "sha256": "6cfe6fe94d84a6e55b3a1326a52f9a4db19f6b0727744c31ec1b3a90a3901255"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-check/vet-supplement-1.json",
+      "sha256": "960dd1002bc0e04571a74745f8e2fd94745549b9f6ba883104bcf2ed41ca9822"
+    }
+  ],
+  "report_markdown_sha256": "8262f2da89e9d9c81a4baff9cb98e00ba10d3736b60019a99f722d62d9a3b92f"
+}

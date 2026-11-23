@@ -1,0 +1,16 @@
+fix(core): keep settings data trustworthy across failures
+
+Discard denied query snapshots through retry cancellation and remounts while
+retaining authorized data after transient failures. Parse personal token
+responses with redacted diagnostics and deliver new secrets outside query
+and mutation state. Credential writes fail immediately instead of queuing
+for another session.
+
+Constraint: Installed clients must tolerate response drift without exposing credentials
+Rejected: Clear only visible query state | cancellation can restore the denied rollback snapshot
+Confidence: high
+Scope-risk: moderate
+Directive: Keep the manual Query update, cancellation guard and secret-free mutation result together
+Tested: 105 core tests; core and consumer TypeScript checks; scoped ESLint; 907 combined tests
+Not-tested: Live backend writes or real credential creation
+Co-authored-by: OmX <omx@oh-my-codex.dev>

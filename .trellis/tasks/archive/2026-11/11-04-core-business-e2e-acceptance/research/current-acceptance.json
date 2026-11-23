@@ -1,0 +1,20 @@
+{
+  "acceptance": "CORE_FUNCTIONAL_PASS_WITH_ACCEPTED_PERFORMANCE_EXCEPTION",
+  "cases": 441,
+  "audited_pass": 441,
+  "base_candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "base_pass_cases": 440,
+  "fixed_linux_case": {
+    "test": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+    "patch_sha256": "d6f4ceeb660833114171946763b850da890b5115503faa95e6d14d3d632c0bcb",
+    "cli_sha256": "8ad7a9ac0df22fa916a9d006080effb9409193c3b5b8624b5f3365cb42a395b2",
+    "duration_ms": 47268.546,
+    "restart_close_ms": 52.386916
+  },
+  "independent_review_commit": "15da8bd8f",
+  "performance_decision_commit": "877664072",
+  "old_failures_preserved": true,
+  "not_release_readiness": true,
+  "remaining_scope": "conditional platform/upgrade/trust/realprovider as matrix",
+  "cleanup": "evidence/fd-fix-final-cleanup/"
+}

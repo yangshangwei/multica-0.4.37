@@ -1,0 +1,68 @@
+{
+  "processes": {
+    "web": {
+      "pid": 69870,
+      "pgid": 69870,
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/web",
+        "exec",
+        "next",
+        "start",
+        "--hostname",
+        "127.0.0.1",
+        "--port",
+        "61719"
+      ],
+      "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/runtime-final-web.log"
+    },
+    "renderer": {
+      "pid": 69871,
+      "pgid": 69871,
+      "command": [
+        "node",
+        "scripts/check-desktop-renderer.mjs",
+        "apps/desktop/out/renderer",
+        "61720",
+        "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/renderer-final-provenance.json"
+      ],
+      "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/runtime-final-renderer.log"
+    },
+    "api": {
+      "pid": 51659,
+      "pgid": 51659,
+      "commit": "baa30e755",
+      "binary": "/private/tmp/multica-inbox-snooze-n9cwnxds/bin/server",
+      "binary_sha256": "ca6d5bb98fe5db3e25c846ea5691562bad3a33873c74688c92b096b5183a333c",
+      "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/runtime-api.log",
+      "origin": "http://127.0.0.1:61718",
+      "database": "multica_inbox_snooze_api"
+    }
+  },
+  "api_health": {
+    "status": "ok",
+    "pid": 51659,
+    "commit": "baa30e755",
+    "started_at": "2026-11-20T17:44:18Z"
+  },
+  "renderer_provenance": {
+    "pid": 69871,
+    "renderer": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/out/renderer",
+    "origin": "http://127.0.0.1:61720",
+    "index_sha256": "9ed084c0a7c5992602d043703bd66640439f7a4965a60a02def05188ab2fb40b"
+  },
+  "web_origin": "http://localhost:61719",
+  "renderer_origin": "http://localhost:61720",
+  "source_hashes": {
+    "packages/core/api/client.ts": "cbb3bf01487e3101a19f4cbc7bee6b1384da1cb59e842b912063460084570888",
+    "packages/core/paths/tab-presentation.ts": "7595558cb4c3dec948703c7acfe007b4d27889d6f1cede9cb527edc1bef95f65",
+    "apps/desktop/src/renderer/src/stores/tab-store.ts": "678d84553ce237bbefed7687cbc04c876289058d969a8fb1a56e97fa5eff7692",
+    "packages/views/layout/tab-presentation.tsx": "92d7ed90ed2ae7f68d430599aef0b99a0036dea8e09a174487b354fb1a5be201",
+    "packages/views/inbox/components/inbox-snooze-picker.tsx": "d9f8ae55a4d7cd4efb1891f616d50caa580381b5402c1877869a04cfe4e3dc7e",
+    "server/internal/inboxstate/state.go": "c588fb1265b91483a27c7cedd217f2b5550a4783b03e0e3f844b6040283c771b",
+    "server/internal/handler/inbox_snooze.go": "29c1024e158a36e0a7bb11f0735320b05433bd126928d34524d6560d2a2a3920",
+    "server/cmd/server/notification_listeners.go": "f52689818cec121c41f38af6c9bcb4e77ceb17f3a57fb13fe8fe7a130665eff2"
+  },
+  "web_build_id": "A0QCiuXVKMCHoP2EWhF3H"
+}

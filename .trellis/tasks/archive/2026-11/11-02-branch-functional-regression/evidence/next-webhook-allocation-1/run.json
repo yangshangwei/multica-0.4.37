@@ -1,0 +1,135 @@
+{
+  "started_at": "2026-11-02T09:52:14.881805+00:00",
+  "state": "complete",
+  "scope": "Coordinator allocation for new meaningful Webhook lookup diagnostic",
+  "database": "multica_func7af9_next_webhook_lookup_1",
+  "template": "multica_func7af9_template_20261102",
+  "admin_database": "multica_func7af9_next_sql_diag_1",
+  "steps": [
+    {
+      "name": "admin-identity",
+      "database": "multica_func7af9_next_sql_diag_1",
+      "sql": "SELECT current_database()",
+      "started_at": "2026-11-02T09:52:14.882861+00:00",
+      "finished_at": "2026-11-02T09:52:14.959857+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "7047cc2cde8acc5ec9e3ef2cf49221053e74c86635ebaed6e12797c9d274f9e7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": false
+    },
+    {
+      "name": "headroom",
+      "database": "multica_func7af9_next_sql_diag_1",
+      "sql": "SELECT current_setting('max_connections'),count(*) FROM pg_stat_activity",
+      "started_at": "2026-11-02T09:52:14.960141+00:00",
+      "finished_at": "2026-11-02T09:52:15.020050+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "8629b150334f0e4e9db1c99b52b04290283fc0f35bdab1eb7ac5247d97727089",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": false
+    },
+    {
+      "name": "template-identity",
+      "database": "multica_func7af9_template_20261102",
+      "sql": "SELECT current_database()",
+      "started_at": "2026-11-02T09:52:15.020241+00:00",
+      "finished_at": "2026-11-02T09:52:15.060968+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "80691cf87a1395607392cb5ad6eef9cc0343c7029602d7efe0d7c49368ac1b50",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": false
+    },
+    {
+      "name": "template-empty",
+      "database": "multica_func7af9_template_20261102",
+      "sql": "SELECT (SELECT count(*) FROM \"user\"),(SELECT count(*) FROM workspace),(SELECT count(*) FROM issue),(SELECT count(*) FROM schema_migrations)",
+      "started_at": "2026-11-02T09:52:15.061155+00:00",
+      "finished_at": "2026-11-02T09:52:15.112517+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "f68bfc711c1cb743fa52d3d34c2cd66ed8de1b6ed1f36c5f4f14f0cee055a1bd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": false
+    },
+    {
+      "name": "template-other-connections",
+      "database": "multica_func7af9_template_20261102",
+      "sql": "SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()",
+      "started_at": "2026-11-02T09:52:15.112719+00:00",
+      "finished_at": "2026-11-02T09:52:15.172261+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": false
+    },
+    {
+      "name": "target-absent",
+      "database": "multica_func7af9_next_sql_diag_1",
+      "sql": "SELECT count(*) FROM pg_database WHERE datname='multica_func7af9_next_webhook_lookup_1'",
+      "started_at": "2026-11-02T09:52:15.172441+00:00",
+      "finished_at": "2026-11-02T09:52:15.219923+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": false
+    },
+    {
+      "name": "create-database",
+      "database": "multica_func7af9_next_sql_diag_1",
+      "sql": "CREATE DATABASE \"multica_func7af9_next_webhook_lookup_1\" TEMPLATE \"multica_func7af9_template_20261102\"",
+      "started_at": "2026-11-02T09:52:15.220119+00:00",
+      "finished_at": "2026-11-02T09:52:15.515514+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "691e4b64d448c6cffd680247056c2f445e4fbf2dcbc9be821934064e906d1ce7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": true
+    },
+    {
+      "name": "created-identity",
+      "database": "multica_func7af9_next_webhook_lookup_1",
+      "sql": "SELECT current_database()",
+      "started_at": "2026-11-02T09:52:15.516157+00:00",
+      "finished_at": "2026-11-02T09:52:15.573772+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "c29c262263c446ba0f5ebb1c20d39ffbfc15d8906d2f4244ccde59474e3a28f4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": false
+    },
+    {
+      "name": "created-migrations",
+      "database": "multica_func7af9_next_webhook_lookup_1",
+      "sql": "SELECT count(*) FROM schema_migrations",
+      "started_at": "2026-11-02T09:52:15.574067+00:00",
+      "finished_at": "2026-11-02T09:52:15.626330+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "d2b583d5d8eca49087a2ae8dbcc11e0ce5a3c2585c1d85373b7bd4e5653c5c40",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": false
+    },
+    {
+      "name": "created-other-connections",
+      "database": "multica_func7af9_next_webhook_lookup_1",
+      "sql": "SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()",
+      "started_at": "2026-11-02T09:52:15.626557+00:00",
+      "finished_at": "2026-11-02T09:52:15.692862+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create_database_only": false
+    }
+  ],
+  "finished_at": "2026-11-02T09:52:15.723739+00:00",
+  "migration_count": 751,
+  "headroom_before": {
+    "max_connections": 100,
+    "used": 40,
+    "available": 60
+  },
+  "private_environment_sha256": "a2c1637268f93eaf6b3dc3ef7444e301cc3ae498596f013460794cb78f607252",
+  "private_environment_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/environment.json",
+  "database_connections_after": 0,
+  "default_database_accessed": false,
+  "original_p95_rerun": false,
+  "product_sql_ddl_changed": false,
+  "commercial_calls": 0,
+  "remote_dispatches": 0
+}

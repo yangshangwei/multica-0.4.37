@@ -1,0 +1,46 @@
+{
+  "scenario": "E1_memory_first",
+  "arm": "baseline",
+  "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+  "product_after_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+  "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+  "command": [
+    "go",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostContextExperiment$",
+    "-count=1",
+    "-v",
+    "-timeout=45m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-context-baseline-20261031/server",
+  "environment": {
+    "MULTICA_RUN_REAL_AGENT_SMOKE": "1",
+    "MULTICA_HOST_SMOKE_PROVIDER": "claude",
+    "MULTICA_HOST_SMOKE_EXECUTABLE": "/Users/artisan/.local/bin/claude",
+    "MULTICA_CONTEXT_EXPERIMENT_OUT": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/E1_memory_first-baseline/records.jsonl",
+    "MULTICA_CONTEXT_EXPERIMENT_COMMIT": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+    "MULTICA_CONTEXT_EXPERIMENT_ARM": "baseline",
+    "MULTICA_CONTEXT_EXPERIMENT_SCENARIO": "E1_memory_first",
+    "MULTICA_CONTEXT_EXPERIMENT_TRIALS": "3",
+    "MULTICA_CONTEXT_EXPERIMENT_START_TRIAL": "2",
+    "MULTICA_CONTEXT_EXPERIMENT_MODEL": "claude-opus-5-5",
+    "MULTICA_CONTEXT_EXPERIMENT_THINKING_LEVEL": "provider_default",
+    "MULTICA_CONTEXT_EXPERIMENT_SERVICE_TIER": "provider_default"
+  },
+  "started_at": "2026-10-31T13:14:17.459985+00:00",
+  "started_epoch": 1793452457.460259,
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "previous_e1_attempt": ".trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-10-31-series2/E1_memory_first-baseline/records.jsonl",
+  "call_cap_this_scenario": 2,
+  "exit_code": 1,
+  "finished_at": "2026-10-31T13:22:58.465341+00:00",
+  "elapsed_seconds": 521.005,
+  "terminal_count": 2,
+  "verdicts": [
+    "manual_review_required",
+    "provider_failure_unclassified"
+  ]
+}

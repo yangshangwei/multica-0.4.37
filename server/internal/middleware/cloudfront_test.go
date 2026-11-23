@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/util"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
 // testSigner sets up env vars and creates a CloudFrontSigner with a throwaway RSA key.
@@ -99,5 +101,44 @@ func TestRefreshCloudFrontCookies_SkipsWhenCookiePresent(t *testing.T) {
 
 	if len(rec.Result().Cookies()) != 0 {
 		t.Error("should not refresh cookies when CloudFront-Policy is already present")
+	}
+}
+
+func TestRefreshCloudFrontCookies_RestrictedTaskCannotMintWildcard(t *testing.T) {
+	signer := testSigner(t)
+	handler := RefreshCloudFrontCookies(signer)(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(200) }))
+	req := httptest.NewRequest(http.MethodGet, "/api/issues", nil)
+	req = req.WithContext(auth.WithVerifiedTaskToken(req.Context(), db.TaskToken{ID: util.MustParseUUID("00000000-0000-4000-8000-000000000001"), ApiCapability: []byte(`{"version":1}`)}))
+	rec := httptest.NewRecorder()
+	handler.ServeHTTP(rec, req)
+	if rec.Code != 200 {
+		t.Fatal("protected read was not forwarded")
+	}
+	if len(rec.Result().Cookies()) != 0 {
+		t.Fatal("restricted task obtained a wildcard CDN credential")
+	}
+}
+
+func TestRefreshCloudFrontCookies_ReportSnapshotNeverMintsWildcard(t *testing.T) {
+	signer := testSigner(t)
+	for _, actor := range []string{"human", "legacy_task", "scoped_task"} {
+		for _, status := range []int{http.StatusOK, http.StatusForbidden} {
+			t.Run(actor+http.StatusText(status), func(t *testing.T) {
+				next := RefreshCloudFrontCookies(signer)(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(status) }))
+				req := httptest.NewRequest(http.MethodGet, "/api/issues/00000000-0000-4000-8000-000000000001/report-snapshots/current", nil)
+				if actor != "human" {
+					token := db.TaskToken{ID: util.MustParseUUID("00000000-0000-4000-8000-000000000002")}
+					if actor == "scoped_task" {
+						token.ApiCapability = []byte(`{"version":1}`)
+					}
+					req = req.WithContext(auth.WithVerifiedTaskToken(req.Context(), token))
+				}
+				out := httptest.NewRecorder()
+				PreserveReportSnapshotHeaders(next).ServeHTTP(out, req)
+				if out.Code != status || len(out.Result().Cookies()) != 0 || out.Header().Get("Cache-Control") != "no-store" {
+					t.Fatal("snapshot request minted wildcard credentials or changed the response")
+				}
+			})
+		}
 	}
 }

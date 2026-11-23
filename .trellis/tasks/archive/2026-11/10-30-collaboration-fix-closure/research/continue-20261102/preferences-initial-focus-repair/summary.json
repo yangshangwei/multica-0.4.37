@@ -1,0 +1,28 @@
+{
+  "at": "2026-11-02T17:32:00.162530+00:00",
+  "state": "minimal_preferences_fixture_ready_pending_independent_review_and_root_trace_replay",
+  "worktree": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+  "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "file": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/e2e/settings-preferences.spec.ts",
+  "source_before_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+  "source_after_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+  "patch": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/preferences-initial-focus-repair/preferences-natural-focus.patch",
+  "patch_sha256": "cddc2a8f0c0f65163087946dfb5b34a73030d6b0bb67ed1452ad619fa6249b80",
+  "additions": 3,
+  "deletions": 0,
+  "preserved": "create/persist/hiddenQuickvsManual/order/HTTP201/priority/cleanup/timeouts; exact original selectors and no forced focus or sleeps",
+  "validation": {
+    "TypeScript_version": "5.9.3",
+    "syntactic_diagnostics": 0,
+    "exact_three_statement_diff": true,
+    "git_diff_check_exit": 0
+  },
+  "preexisting_memory_patch_unchanged": true,
+  "main_preferences_unchanged": true,
+  "original_v9_status": "timedOut",
+  "original_v9_raw_report": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/makecheck-playwright-results-v9.json",
+  "original_v9_raw_report_sha256": "8dea30021a5f386e6a217600223c3c6ec299e1a8bd156849a317b48b98de14d3",
+  "actual_browser_API_DB_Provider_calls": 0,
+  "project_lint_typecheck": "not run; root owns broader commands, only file syntax and diff scope verified",
+  "remaining": "Root-owned modified-one-case actual trace replay after independent review; unknown workspace invite untouched"
+}

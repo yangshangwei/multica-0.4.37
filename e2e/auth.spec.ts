@@ -1,5 +1,6 @@
+import { openAccountMenu, sidebarNewButton } from "./fixtures/sidebar-navigation";
 import { test, expect } from "@playwright/test";
-import { createTestApi, loginAsDefault, openWorkspaceMenu, waitForPageText } from "./helpers";
+import { createTestApi, loginAsDefault, waitForPageText } from "./helpers";
 
 test.describe("Authentication", () => {
   test("login page renders correctly", async ({ page }) => {
@@ -16,7 +17,7 @@ test.describe("Authentication", () => {
     const workspaceSlug = await loginAsDefault(page);
 
     await expect(page).toHaveURL(new RegExp(`/${workspaceSlug}/issues$`));
-    await expect(page.getByRole("button", { name: "New Issue" })).toBeVisible();
+    await expect(sidebarNewButton(page)).toBeVisible();
   });
 
   test("unauthenticated user is redirected to /login", async ({ page }) => {
@@ -34,8 +35,7 @@ test.describe("Authentication", () => {
   test("logout redirects to /login", async ({ page }) => {
     await loginAsDefault(page);
 
-    // Open the workspace dropdown menu
-    await openWorkspaceMenu(page);
+    await openAccountMenu(page);
 
     await page.getByRole("menuitem", { name: "Log out" }).click();
 

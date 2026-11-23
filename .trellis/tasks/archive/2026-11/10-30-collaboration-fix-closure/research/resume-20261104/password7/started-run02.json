@@ -1,0 +1,25 @@
+{
+  "command": [
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-handoff-chain-web.spec.ts",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts",
+    "e2e/collaboration-offline-handoff.spec.ts",
+    "e2e/collaboration-runtime-handoff-web.spec.ts",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+    "--project=chromium",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/run-02/artifacts"
+  ],
+  "candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "readiness_sha256": "67c6095e62ba3a9eac2a21011ebdf5f703043d3a75bfbd77ad0290b15bbe1b11",
+  "started_at": "2026-11-04T15:55:20.905441+00:00",
+  "runner_sha256": "25fc1c740931f23eff04387bc11674e7e6e7f1102b682f00e67ec71f4cdabc49",
+  "permit_sha256": "2d11bcbde73e0c20e14d9dcca60b85e3e04f69c4fbaeaac3ccf9bc8ebd7f0497",
+  "provider_calls": 0
+}

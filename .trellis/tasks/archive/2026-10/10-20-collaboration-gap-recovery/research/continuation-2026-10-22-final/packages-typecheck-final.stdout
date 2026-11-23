@@ -1,0 +1,54 @@
+
+   • Packages in scope: @multica/core, @multica/desktop, @multica/views, @multica/web
+   • Running typecheck in 4 packages
+   • Remote caching disabled
+
+@multica/web:mdx: cache miss, executing 34ff584f260b869a
+@multica/core:typecheck: cache miss, executing 93d6835cd3174c27
+@multica/ui:typecheck: cache hit, replaying logs 2ce1154daa70ef52
+@multica/ui:typecheck: 
+@multica/ui:typecheck: > @multica/ui@0.0.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/ui
+@multica/ui:typecheck: > tsc --noEmit
+@multica/ui:typecheck: 
+@multica/plugin-sdk:typecheck: cache hit, replaying logs c5e9b9f40e147e05
+@multica/plugin-sdk:typecheck: 
+@multica/plugin-sdk:typecheck: > @multica/plugin-sdk@0.1.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/plugin-sdk
+@multica/plugin-sdk:typecheck: > tsc --noEmit
+@multica/plugin-sdk:typecheck: 
+@multica/core:typecheck: 
+@multica/core:typecheck: > @multica/core@0.0.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/core
+@multica/core:typecheck: > tsc --noEmit
+@multica/core:typecheck: 
+@multica/web:mdx: 
+@multica/web:mdx: > @multica/web@0.4.40 mdx /Volumes/artisan/code/2026/multica-0.4.37/apps/web
+@multica/web:mdx: > fumadocs-mdx
+@multica/web:mdx: 
+@multica/web:mdx: [MDX] types generated
+@multica/views:typecheck: cache miss, executing 7a7fb8157bfe0646
+@multica/views:typecheck: 
+@multica/views:typecheck: > @multica/views@0.0.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/views
+@multica/views:typecheck: > tsc --noEmit
+@multica/views:typecheck: 
+@multica/web:typecheck: cache miss, executing 2bfbe9b958e7462f
+@multica/desktop:typecheck: cache miss, executing 690c3fbc0497b885
+@multica/web:typecheck: 
+@multica/web:typecheck: > @multica/web@0.4.40 typecheck /Volumes/artisan/code/2026/multica-0.4.37/apps/web
+@multica/web:typecheck: > tsc --noEmit
+@multica/web:typecheck: 
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: > @multica/desktop@0.1.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+@multica/desktop:typecheck: > pnpm run typecheck:node && pnpm run typecheck:web
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: > @multica/desktop@0.1.0 typecheck:node /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+@multica/desktop:typecheck: > tsc --noEmit -p tsconfig.node.json --composite false
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: 
+@multica/desktop:typecheck: > @multica/desktop@0.1.0 typecheck:web /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+@multica/desktop:typecheck: > tsc --noEmit -p tsconfig.web.json --composite false
+@multica/desktop:typecheck: 
+
+ Tasks:    7 successful, 7 total
+Cached:    2 cached, 7 total
+  Time:    1m11.416s 
+

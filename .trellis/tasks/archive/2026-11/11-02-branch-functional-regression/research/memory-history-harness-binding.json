@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-02T00:45:25.572260+00:00",
+  "product_candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "product_code_changed": false,
+  "verification_harness_change": "Explicitly reopen observed collapsed history after completion, then assert restore remains unavailable with real history rows open",
+  "file": "e2e/collaboration-memory-web.spec.ts",
+  "patch_sha256": "6378d5bb6185e8b986b9c52177e5ae2b5040fbdbd149792fe0e05c549982781a",
+  "original_failures": [
+    "legacy-full-1",
+    "legacy-memory-replay-1"
+  ],
+  "assertions_removed": 0,
+  "timeouts_or_retries_changed": false,
+  "original_results_remain_failed": true,
+  "previous_patch_sha256": "85b0ec959becb5b3ec4b19c53d8ae7347ffe65399df85e47638085cf0626e12e",
+  "collapse_trigger": "Not established; no claim that collapse is a product requirement",
+  "review": "research/memory-harness-review.md: PASS WITH NOTES; notes applied",
+  "line_number_fallback": "Only unique title/project in the same explicitly changed file"
+}

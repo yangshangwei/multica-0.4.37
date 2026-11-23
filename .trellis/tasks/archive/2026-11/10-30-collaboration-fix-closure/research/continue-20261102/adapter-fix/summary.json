@@ -1,0 +1,116 @@
+{
+  "at": "2026-11-02T14:31:36.967729+00:00",
+  "state": "implementation_complete_frozen_pending_final_independent_overall_review",
+  "adapter_version": "v6",
+  "adapter_sha256": {
+    "go": "8963ebcc64d89881a6f1966f9ac7a09f1a9121dd32a4f0a9518493ed3b4dd9a9",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "launcher_sha256": "3938151d67aa91346aa1898a7be7c561a94d16e86fb8c8d79ab9cb75c71f3e34",
+  "test_sha256": {
+    "check-go-isolation-test.py": "8958d3da58df2be7f367092c4d2b400e9cbaf94034b76105adcedae6b9618d3e",
+    "check-go-global-separator-test.py": "026db94a5efe6106b41b3c0cfcfeb23955614c20ab0e52d81aeac1dbc076ebc6",
+    "check-launcher-test.py": "f7ad963df247e7d44f1360ea001ae3b508e1685531d5085d42bd22ef7439dbb8"
+  },
+  "source_env_sha256_at_report": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+  "original_v5_and_launcher_preserved": true,
+  "original_sha256": {
+    "go": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "original_launcher_sha256": "3c50f99cb9b995fa29a0d1ee4e54e98d6aaa28bdf10ebc827c3cb5b302f5f566",
+  "checks": {
+    "Go_adapter_base_HOME_pool_fake": {
+      "pass": 17,
+      "fail": 0
+    },
+    "Go_global_separator_fake": {
+      "pass": 6,
+      "fail": 0
+    },
+    "Go_peer_package_binding_matrix": {
+      "pass": 38,
+      "fail": 0,
+      "network": "denied"
+    },
+    "launcher_fake_entrypoint": {
+      "pass": 22,
+      "fail": 0
+    },
+    "total_fake_pass": 83,
+    "syntax": [
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin/go",
+        "result": "syntax_ok"
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin/pnpm",
+        "result": "syntax_ok"
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-go-isolation-test.py",
+        "result": "syntax_ok"
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-go-global-separator-test.py",
+        "result": "syntax_ok"
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-launcher-test.py",
+        "result": "syntax_ok"
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v6.py",
+        "result": "syntax_ok"
+      }
+    ],
+    "actual_Go_TestMain_or_SQL_or_Provider": 0
+  },
+  "red_proof": {
+    "pool_on_v5": "3cases2fail1pass",
+    "launcher_on_v5": "7cases7fail",
+    "canonical_effective_env_before_fix": "1case1fail",
+    "invalid_fixture_probe": "preserved separately; macOS path alias corrected before meaningful regression",
+    "normalized_Make_values": "6cases6fail;3actualtempMakeexpressionmarkerscreated",
+    "HOME_cache": "Go3cases2fail1pass;launcher1case1fail",
+    "unreferenced_export_probe": "limitedprobe retained; no markerwithoutforcedvalueuse",
+    "global_separator": "6cases3fail3pass before the exact four-line dispatcher prefix fix"
+  },
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin/go",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin/pnpm",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-go-isolation-test.py",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-go-global-separator-test.py",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-launcher-test.py",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v6.py"
+  ],
+  "clearance_required": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/independent-review-clearance-v6.json",
+    "fields": [
+      "verdict",
+      "blocking_findings_open",
+      "candidate_sha",
+      "adapter_sha256",
+      "launcher_sha256",
+      "source_env_sha256"
+    ],
+    "created_by_implementer": false
+  },
+  "output_paths": {
+    "record": "make-check-v6.json",
+    "log": "make-check-v6.log",
+    "Go_package_evidence": "go-packages-v6/",
+    "runtime_canonical_env": "check-source-v6.safe.env"
+  },
+  "real_provider_calls": 0,
+  "full_check_started": false,
+  "source_env_written": false,
+  "remaining": "Final independent overall review and clearance, then root-owned whole make check. No further implementer code changes after these hashes.",
+  "prior_v6_snapshot": "v6-before-make-dollar-fix/",
+  "peer_v8": {
+    "go_sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+    "approved_delta_sha256": "a1d3f34093940ba07ac6f4808ca76ac398bff5f48a5bdcf6f8c1b0ccea4210c8",
+    "approved_delta": "incoming-approved-v6-to-v8-go.patch",
+    "original_peer_source_unchanged": true
+  }
+}

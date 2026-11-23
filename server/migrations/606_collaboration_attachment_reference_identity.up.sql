@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_attachment_reference_identity_idx ON collaboration_attachment_reference (attachment_id, reference_kind, reference_id, reference_revision);

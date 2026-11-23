@@ -19,6 +19,7 @@ import (
 	"github.com/redis/go-redis/v9"
 
 	"github.com/multica-ai/multica/server/internal/analytics"
+	"github.com/multica-ai/multica/server/internal/artifact"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/cloudruntime"
 	"github.com/multica-ai/multica/server/internal/daemonws"
@@ -80,6 +81,7 @@ var corsAllowedHeaders = []string{
 	"X-Client-Version",
 	"X-Client-OS",
 	"X-Client-Capabilities",
+	handler.HeaderKnowledgeVersion,
 	// Sent by the host page when it relays a plugin surface's Action API call.
 	"X-Multica-Plugin-Installation",
 }
@@ -96,6 +98,7 @@ var corsExposedHeaders = []string{
 	"ETag",
 	"X-Request-ID",
 	"Retry-After",
+	handler.HeaderKnowledgeVersion,
 	handler.HeaderCommentsTruncated,
 	handler.HeaderTimelineTruncated,
 }
@@ -255,6 +258,10 @@ type RouterOptions struct {
 	// any test that happened to have the variable set. nil means unset, which
 	// is what tests and NewRouter get.
 	LLMMaxRetries *llm.RetryOverride
+	// CollaborationMemoryMaxBytes carries the parsed
+	// MULTICA_COLLABORATION_MEMORY_MAX_BYTES limit, injected for the same
+	// fail-the-boot reason. Zero means the default.
+	CollaborationMemoryMaxBytes int
 }
 
 func buildChannelSupervisor(
@@ -422,8 +429,11 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 	cfSigner := auth.NewCloudFrontSignerFromEnv()
 	origins := allowedOrigins()
+	knowledgeSetting := os.Getenv("MULTICA_KNOWLEDGE_CONTEXT_ENABLED")
 
 	signupConfig := handler.Config{
+		ArtifactConfig:                artifact.Config{StagingRoot: strings.TrimSpace(os.Getenv("MULTICA_ARTIFACT_STAGING_ROOT")), OutputRoot: strings.TrimSpace(os.Getenv("MULTICA_ARTIFACT_OUTPUT_ROOT")), Identity: strings.TrimSpace(os.Getenv("MULTICA_ARTIFACT_CONFIG_ID"))},
+		KnowledgeContextEnabled:       knowledgeSetting == "" || knowledgeSetting == "true",
 		ManagedInstallationsEnabled:   os.Getenv("MULTICA_MANAGED_INSTALLATIONS_ENABLED") == "true",
 		DeploymentID:                  auth.ManagedDeploymentID(),
 		PlatformAdminEnabled:          os.Getenv("MULTICA_PLATFORM_ADMIN_ENABLED") == "true",
@@ -453,6 +463,12 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		LLMMaxRetries:                 opts.LLMMaxRetries,
 		ServerVersion:                 normalizeServerVersion(version),
 		ChangelogFile:                 strings.TrimSpace(os.Getenv("CHANGELOG_FILE")),
+		CollaborationMemoryMaxBytes:   service.EffectiveCollaborationMemoryMaxBytes(opts.CollaborationMemoryMaxBytes),
+		CollaborationDirectoryEnabled: os.Getenv("MULTICA_COLLABORATION_DIRECTORY_ENABLED") != "false",
+	}
+	if signupConfig.CollaborationDirectoryEnabled && signupConfig.AllowSignup {
+		slog.Warn("collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account",
+			"fix", "set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false")
 	}
 	h := handler.New(queries, pool, hub, bus, emailSvc, store, cfSigner, analyticsClient, signupConfig, daemonHub)
 	mode, registrationPolicy := "classic", "disabled"
@@ -465,7 +481,8 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	h.AdminReadConfig = handler.AdminReadConfig{Configured: true, AuthMode: mode, RegistrationEnabled: signupConfig.AllowSignup, RegistrationPolicy: registrationPolicy,
 		ManagedInstallationsEnabled: signupConfig.ManagedInstallationsEnabled, WorkspaceCreationEnabled: !signupConfig.DisableWorkspaceCreation,
 		ConfirmedOperationsDays: configuredAdminRetention("MULTICA_ADMIN_CONFIRMED_OPERATIONS_RETENTION_DAYS"),
-		AlertsDays:              configuredAdminRetention("MULTICA_ADMIN_ALERT_RETENTION_DAYS"), AuditDays: configuredAdminRetention("MULTICA_ADMIN_AUDIT_RETENTION_DAYS")}
+		AlertsDays:              configuredAdminRetention("MULTICA_ADMIN_ALERT_RETENTION_DAYS"), AuditDays: configuredAdminRetention("MULTICA_ADMIN_AUDIT_RETENTION_DAYS"),
+		CollaborationMemoryMaxBytes: signupConfig.CollaborationMemoryMaxBytes}
 	h.PasswordLimiter = auth.NewPasswordLimiter(rdb)
 	invitationRateLimits := handler.DefaultInvitationRateLimits()
 	invitationRateLimits.Actor.Limit = envNonNegativeInt("RATE_LIMIT_INVITATION_ACTOR_10M", invitationRateLimits.Actor.Limit)
@@ -1391,6 +1408,48 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// The authenticated /api/attachments/{id}/download route below is
 	// unchanged — this one is purely additive.
 	r.Get("/api/attachments/{id}/signed-download", h.DownloadAttachmentWithCapability)
+	r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}/capability", h.ReadCollaborationAttachmentCapability)
+
+	// Run endpoints validate their own purpose-bound capabilities. Termination
+	// recovery survives revocation; business access rechecks current authority.
+	// Never replace these checks with ordinary Auth.
+	r.Post("/api/collaboration/runtime/runs/{runId}/outcome", h.RecordCollaborationRuntimeOutcome)
+	r.Post("/api/collaboration/runtime/runs/{runId}/checkpoints", h.RecordCollaborationRuntimeCheckpoint)
+	r.Post("/api/collaboration/runtime/runs/{runId}/recording/seal", h.SealCollaborationRuntimeRecording)
+	r.Get("/api/collaboration/runtime/runs/{runId}/context", h.GetCollaborationRuntimeContext)
+	r.Get("/api/collaboration/runtime/runs/{runId}/test-subject", h.GetCollaborationRuntimeTestSubject)
+	r.Post("/api/collaboration/runtime/runs/{runId}/test-reports", h.RecordCollaborationRuntimeTestReport)
+	r.Get("/api/collaboration/runtime/runs/{runId}/test-reports/by-request/{requestId}", h.GetCollaborationRuntimeTestReportReceipt)
+	r.Get("/api/collaboration/runtime/runs/{runId}/handoff", h.GetCollaborationRuntimeHandoff)
+	r.Post("/api/collaboration/runtime/runs/{runId}/handoff/snapshots", h.CreateCollaborationRuntimeHandoffSnapshot)
+	r.Post("/api/collaboration/runtime/runs/{runId}/handoff/bind", h.BindCollaborationRuntimeHandoff)
+	r.Get("/api/collaboration/runtime/runs/{runId}/handoff/sources/{sourceId}", h.GetCollaborationRuntimeHandoffSource)
+	r.Get("/api/collaboration/runtime/runs/{runId}/preparation", h.GetCollaborationRuntimePreparation)
+	r.Get("/api/collaboration/runtime/runs/{runId}/attachments/{attachmentId}/content", h.GetCollaborationRuntimeAttachmentContent)
+	r.Post("/api/collaboration/runtime/runs/{runId}/preparation/observations", h.RecordCollaborationRuntimePreparation)
+	r.Post("/api/collaboration/runtime/runs/{runId}/comments", h.CreateCollaborationRuntimeComment)
+	r.Post("/api/collaboration/runtime/runs/{runId}/comments/attachments", h.CreateCollaborationRuntimeCommentAttachment)
+	r.Get("/api/collaboration/runtime/runs/{runId}/comments", h.ListCollaborationRuntimeComments)
+	r.Get("/api/collaboration/runtime/runs/{runId}/comments/{commentId}/content", h.GetCollaborationRuntimeCommentContent)
+	r.Post("/api/collaboration/runtime/runs/{runId}/squad-activity", h.RecordCollaborationRuntimeSquadActivity)
+	r.Post("/api/collaboration/runtime/runs/{runId}/memory/base", h.GetCollaborationRuntimeMemoryBase)
+	r.Get("/api/collaboration/runtime/runs/{runId}/memory", h.GetCollaborationRuntimeMemory)
+	r.Put("/api/collaboration/runtime/runs/{runId}/memory", h.UpdateCollaborationRuntimeMemory)
+	r.Get("/api/collaboration/runtime/runs/{runId}/stop-intent", h.GetCollaborationRuntimeStopIntent)
+	r.Get("/api/collaboration/runtime/runs/{runId}/knowledge-context/status", h.GetCollaborationRuntimeKnowledgeStatus)
+	r.Post("/api/collaboration/runtime/runs/{runId}/proof", h.AcceptCollaborationRuntimeProof)
+	r.Post("/api/collaboration/runtime/runs/{runId}/launches/{launchId}/termination", h.AcceptCollaborationLaunchTermination)
+	r.Group(func(r chi.Router) {
+		r.Use(handler.RequireCollaborationManagedBearer)
+		r.Use(middleware.DaemonAuth(queries, patCache, daemonTokenCache, cloudPATVerifier))
+		r.Get("/api/collaboration/runtime/runs", h.ListCollaborationRuntimeRuns)
+		r.Get("/api/collaboration/runtime/capabilities", h.GetCollaborationRuntimeCapabilities)
+		r.Post("/api/collaboration/runtime/capabilities", h.RegisterCollaborationRuntimeCapabilities)
+		r.Post("/api/collaboration/runtime/runs/{runId}/claim", h.ClaimCollaborationRuntimeRun)
+		r.Post("/api/collaboration/runtime/runs/{runId}/permit", h.PermitCollaborationRuntimeRun)
+		r.Post("/api/collaboration/runtime/runs/{runId}/knowledge-context/prepare", h.PrepareCollaborationRuntimeKnowledge)
+		r.Post("/api/collaboration/runtime/runs/{runId}/knowledge-context/authorize", h.AuthorizeCollaborationRuntimeKnowledge)
+	})
 
 	// Avatar serving. Public for the same reason as the capability download
 	// above: the auth cookie is SameSite=Strict, so an auth-gated URL cannot
@@ -1491,7 +1550,10 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// Daemon API routes (require daemon token or valid user token)
 	r.Route("/api/daemon", func(r chi.Router) {
 		r.Use(handler.PlatformAdminNoStore)
+		r.Use(middleware.IssueBudgetNoStore)
 		r.Use(middleware.DaemonAuth(queries, patCache, daemonTokenCache, cloudPATVerifier))
+		r.Post("/budget/attempts/{attemptId}/usage", h.ReportBudgetAttemptUsage)
+		r.Get("/budget/attempts/{attemptId}/usage/{batchKey}", h.GetBudgetAttemptUsage)
 		r.Post("/installations/challenges", h.DaemonInstallationChallenge)
 		r.Post("/installation-bindings", h.BindInstallation)
 		r.Post("/installation-bindings/renew", h.RenewInstallationBinding)
@@ -1528,6 +1590,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 		r.Get("/tasks/{taskId}/status", h.GetTaskStatus)
 		r.Post("/tasks/{taskId}/start", h.StartTask)
+		r.Post("/tasks/{taskId}/knowledge-context/prepare", h.PrepareTaskKnowledge)
+		r.Post("/tasks/{taskId}/knowledge-context/authorize", h.AuthorizeTaskKnowledgeLaunch)
+		r.Post("/tasks/{taskId}/knowledge-context/observations", h.ObserveTaskKnowledgeLaunch)
 		r.Post("/tasks/{taskId}/wait-local-directory", h.MarkTaskWaitingLocalDirectory)
 		r.Post("/tasks/{taskId}/progress", h.ReportTaskProgress)
 		r.Post("/tasks/{taskId}/complete", h.CompleteTask)
@@ -1567,6 +1632,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// /v1 prevents the Public API from accepting session cookies.
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.Auth(queries, patCache, cloudPATVerifier))
+		r.Use(h.TaskCapabilityGuard)
 		r.Use(handler.RequireHumanActor)
 		r.Route(pluginBridgePrefix, func(r chi.Router) {
 			registerPluginActionRoutes(r, h)
@@ -1578,7 +1644,11 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 	r.Group(func(r chi.Router) {
 		r.Use(handler.PlatformAdminNoStore)
+		r.Use(middleware.PreserveReportSnapshotHeaders)
+		r.Use(middleware.IssueBudgetNoStore)
 		r.Use(middleware.Auth(queries, patCache, cloudPATVerifier))
+		r.Use(h.RequireIssueBudgetHuman)
+		r.Use(h.TaskCapabilityGuard)
 		r.Use(middleware.InstallationMetadata(queries))
 		r.Use(middleware.RefreshCloudFrontCookies(cfSigner))
 
@@ -1603,6 +1673,134 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Get("/api/changelog", h.GetChangelog)
 
 		r.Get("/api/me", h.GetMe)
+		r.Get("/api/me/workbench", h.GetCollaborationWorkbench)
+		r.Get("/api/me/collaboration-notifications", h.ListCollaborationNotifications)
+		r.Post("/api/me/collaboration-notifications/{notificationId}/read", h.ReadCollaborationNotification)
+		r.Post("/api/me/collaboration-notifications/{notificationId}/archive", h.ArchiveCollaborationNotification)
+		// Creation uses the persisted default-disabled creation gate. Existing
+		// content and recovery continue to use current object/account authority.
+		r.Get("/api/collaboration/creation-options", h.GetCollaborationCreationOptions)
+		r.Post("/api/collaboration/issues", h.CreateCollaborationIssue)
+		r.Post("/api/collaboration/attachments/drafts", h.UploadCollaborationAttachmentDraft)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}", h.ListCollaborationDraftAttachments)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}/operations/{requestId}", h.GetCollaborationAttachmentUpload)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}/{attachmentId}", h.GetCollaborationAttachment)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}/{attachmentId}/content", h.GetCollaborationAttachmentContent)
+		r.Get("/api/collaboration/attachments/drafts/{draftId}/{attachmentId}/download", h.DownloadCollaborationAttachment)
+		r.Delete("/api/collaboration/attachments/drafts/{draftId}/{attachmentId}", h.DiscardCollaborationAttachmentDraft)
+		r.Get("/api/collaboration/issues/{id}/attachments", h.ListCollaborationAttachments)
+		r.Post("/api/collaboration/issues/{id}/attachments/deliver", h.DeliverCollaborationAttachments)
+		r.Get("/api/collaboration/issues/{id}/attachments/operations/{requestId}", h.GetCollaborationAttachmentDeliveryOperation)
+		r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}", h.GetCollaborationAttachment)
+		r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}/content", h.GetCollaborationAttachmentContent)
+		r.Get("/api/collaboration/issues/{id}/attachments/{attachmentId}/download", h.DownloadCollaborationAttachment)
+		r.Post("/api/collaboration/issues/{id}/attachments/{attachmentId}/capabilities", h.CreateCollaborationAttachmentCapability)
+		r.Get("/api/collaboration/issues/{id}", h.GetCollaborationIssue)
+		r.Get("/api/collaboration/issues/{id}/activity", h.ListCollaborationActivity)
+		r.Get("/api/collaboration/issues/{id}/runs/{runId}/records", h.GetCollaborationRunRecords)
+		r.Get("/api/collaboration/issues/{id}/runs/{runId}/test-reports", h.GetCollaborationTestReports)
+		r.Get("/api/collaboration/issues/{id}/runs/{runId}/test-reports/{reportId}", h.GetCollaborationTestReport)
+		r.Get("/api/collaboration/issues/{id}/runs/{runId}/handoff", h.GetCollaborationRunHandoff)
+		r.Get("/api/collaboration/issues/{id}/commands", h.GetCollaborationCommandHistory)
+		r.Get("/api/collaboration/creations/{requestId}", h.GetCollaborationCreation)
+		r.Get("/api/collaboration/creations/{requestId}/result", h.GetCollaborationCreationResult)
+		r.Post("/api/collaboration/recipients/resolve", h.ResolveCollaborationRecipient)
+		r.Post("/api/collaboration/recipients/search", h.SearchCollaborationRecipients)
+		r.Post("/api/collaboration/issues/{id}/participants", h.InviteCollaborationParticipant)
+		r.Post("/api/collaboration/issues/{id}/handoffs", h.TransferCollaborationIssue)
+		r.Get("/api/collaboration/issues/{id}/handoffs", h.ListCollaborationInformationHistory)
+		r.Get("/api/collaboration/issues/{id}/handoffs/{handoffID}", h.GetCollaborationInformationHandoff)
+		r.Get("/api/collaboration/issues/{id}/handoffs/{handoffID}/superseded-requests", h.ListCollaborationInformationRepairAffected)
+		r.Post("/api/collaboration/issues/{id}/information-returns", h.ReturnCollaborationInformation)
+		r.Get("/api/collaboration/issues/{id}/delivery-evidence/candidates", h.ListCollaborationDeliveryCandidates)
+		r.Post("/api/collaboration/issues/{id}/delivery-evidence/completion-preview", h.GetCollaborationCompletionPreview)
+		r.Post("/api/collaboration/issues/{id}/acceptance-submissions", h.SubmitCollaborationAcceptance)
+		r.Get("/api/collaboration/issues/{id}/acceptance-submissions", h.ListCollaborationAcceptanceSubmissions)
+		r.Post("/api/collaboration/issues/{id}/acceptance-returns", h.ReturnCollaborationAcceptance)
+		r.Post("/api/collaboration/issues/{id}/ai-policy", h.UpdateCollaborationAIPolicy)
+		r.Get("/api/collaboration/issues/{id}/stage", h.GetCollaborationStage)
+		r.Post("/api/collaboration/issues/{id}/stage/roles", h.ConfigureCollaborationStageRoles)
+		r.Get("/api/collaboration/issues/{id}/stage/proposals", h.ListCollaborationStageProposals)
+		r.Post("/api/collaboration/issues/{id}/stage/proposals", h.CreateCollaborationStageProposal)
+		r.Get("/api/collaboration/issues/{id}/stage/proposals/{proposalId}", h.GetCollaborationStageProposal)
+		r.Post("/api/collaboration/issues/{id}/stage/proposals/{proposalId}/versions", h.ReviseCollaborationStageProposal)
+		r.Post("/api/collaboration/issues/{id}/stage/proposals/{proposalId}/decisions", h.DecideCollaborationStageProposal)
+		r.Post("/api/collaboration/issues/{id}/stage/scope-confirmations", h.ConfirmCollaborationStageScope)
+		r.Post("/api/collaboration/issues/{id}/stage/code-candidates", h.CreateCollaborationStageCodeCandidate)
+		r.Get("/api/collaboration/issues/{id}/stage/code-candidates/{candidateId}", h.GetCollaborationStageCodeEvidence)
+		r.Post("/api/collaboration/issues/{id}/stage/decisions", h.DecideCollaborationStage)
+		r.Post("/api/collaboration/issues/{id}/stage/decisions/{decisionId}/revocations", h.RevokeCollaborationStageDecision)
+		r.Post("/api/collaboration/issues/{id}/stage/advance", h.AdvanceCollaborationStage)
+		r.Post("/api/collaboration/issues/{id}/participants/{userID}/remove", h.RemoveCollaborationParticipant)
+		r.Post("/api/collaboration/issues/{id}/leave", h.LeaveCollaborationIssue)
+		r.Get("/api/collaboration/issues/{id}/operations/{requestId}", h.GetCollaborationOperation)
+		r.Get("/api/collaboration/issues/{id}/status-options", h.GetCollaborationStatusOptions)
+		r.Get("/api/collaboration/issues/{id}/field-options", h.GetCollaborationFieldOptions)
+		r.Put("/api/collaboration/issues/{id}/iteration", h.UpdateCollaborationIteration)
+		r.Post("/api/collaboration/issues/{id}/targets", h.RegisterCollaborationTarget)
+		r.Get("/api/collaboration/issues/{id}/resources", h.GetCollaborationResources)
+		r.Get("/api/collaboration/issues/{id}/participants", h.GetCollaborationParticipants)
+		r.Get("/api/collaboration/issues/{id}/resources/options", h.GetCollaborationResourceOptions)
+		r.Get("/api/collaboration/issues/{id}/resources/offers/options", h.GetCollaborationResourceOfferOptions)
+		r.Get("/api/collaboration/issues/{id}/resources/offers", h.ListCollaborationResourceOffers)
+		r.Post("/api/collaboration/issues/{id}/resources/offers", h.OfferCollaborationResource)
+		r.Get("/api/collaboration/issues/{id}/resources/offers/{offerId}", h.GetCollaborationResourceOffer)
+		r.Post("/api/collaboration/issues/{id}/resources/offers/{offerId}/withdraw", h.WithdrawCollaborationResourceOffer)
+		r.Post("/api/collaboration/issues/{id}/resources/offers/{offerId}/adopt", h.AdoptCollaborationResourceOffer)
+		r.Get("/api/collaboration/issues/{id}/resources/identity", h.GetCollaborationResourceIdentity)
+		r.Get("/api/collaboration/issues/{id}/resources/operations/{requestId}", h.GetCollaborationResourceOperation)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/consents", h.ConsentCollaborationTarget)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals", h.ProposeCollaborationTargetSwitch)
+		r.Get("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals", h.ListCollaborationTargetSwitchProposals)
+		r.Get("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals/{proposalId}", h.GetCollaborationTargetSwitchProposal)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals/{proposalId}/consents", h.ConsentCollaborationTargetSwitch)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals/{proposalId}/consents/{agentId}/revoke", h.RevokeCollaborationTargetSwitchConsent)
+		r.Post("/api/collaboration/issues/{id}/targets/{targetId}/switch-proposals/{proposalId}/commit", h.CommitCollaborationTargetSwitch)
+		r.Get("/api/collaboration/issues/{id}/switch/operations/{requestId}", h.GetCollaborationSwitchOperation)
+		r.Post("/api/collaboration/issues/{id}/grants/{grantId}/revoke", h.RevokeCollaborationGrant)
+		r.Post("/api/collaboration/issues/{id}/control", h.ControlCollaborationIssue)
+		r.Get("/api/collaboration/issues/{id}/control/operations/{requestId}", h.GetCollaborationControlOperation)
+		r.Post("/api/collaboration/issues/{id}/commands/{commandId}/cancel", h.CancelCollaborationWaitingCommand)
+		r.Get("/api/collaboration/issues/{id}/commands/operations/{requestId}", h.GetCollaborationCommandOperation)
+		r.Get("/api/collaboration/issues/{id}/comments", h.ListCollaborationComments)
+		r.Post("/api/collaboration/issues/{id}/comments", h.CreateCollaborationComment)
+		r.Get("/api/collaboration/issues/{id}/comments/operations/{requestId}", h.GetCollaborationCommentOperation)
+		r.Get("/api/collaboration/issues/{id}/mention-targets", h.GetCollaborationMentionTargets)
+		r.Post("/api/collaboration/issues/{id}/comments/trigger-preview", h.PreviewCollaborationComment)
+		r.Get("/api/collaboration/issues/{id}/comments/{commentId}", h.GetCollaborationComment)
+		r.Get("/api/collaboration/issues/{id}/comments/{commentId}/history", h.GetCollaborationCommentHistory)
+		r.Patch("/api/collaboration/issues/{id}/comments/{commentId}", h.EditCollaborationComment)
+		r.Delete("/api/collaboration/issues/{id}/comments/{commentId}", h.DeleteCollaborationComment)
+		r.Post("/api/collaboration/issues/{id}/comments/{commentId}/resolve", h.ResolveCollaborationComment)
+		r.Post("/api/collaboration/issues/{id}/comments/{commentId}/unresolve", h.UnresolveCollaborationComment)
+		r.Post("/api/collaboration/issues/{id}/comments/{commentId}/reactions/{emoji}", h.AddCollaborationCommentReaction)
+		r.Delete("/api/collaboration/issues/{id}/comments/{commentId}/reactions/{emoji}", h.RemoveCollaborationCommentReaction)
+		r.Get("/api/collaboration/issues/{id}/reactions", h.ListCollaborationIssueReactions)
+		r.Post("/api/collaboration/issues/{id}/reactions/{emoji}", h.AddCollaborationIssueReaction)
+		r.Delete("/api/collaboration/issues/{id}/reactions/{emoji}", h.RemoveCollaborationIssueReaction)
+		r.Get("/api/collaboration/issues/{id}/discussion/operations/{requestId}", h.GetCollaborationDiscussionOperation)
+		// Shared context has its own version counter; writes never advance the
+		// issue revision, notify, or enter the activity feed.
+		r.Get("/api/collaboration/issues/{id}/memory", h.GetCollaborationMemory)
+		r.Put("/api/collaboration/issues/{id}/memory", h.UpdateCollaborationMemory)
+		r.Get("/api/collaboration/issues/{id}/memory/versions", h.ListCollaborationMemoryVersions)
+		r.Get("/api/collaboration/issues/{id}/memory/versions/{version}", h.GetCollaborationMemoryVersion)
+		r.Post("/api/collaboration/issues/{id}/memory/versions/{version}/restore", h.RestoreCollaborationMemoryVersion)
+		r.Post("/api/collaboration/issues/{id}/memory/versions/{version}/purge", h.PurgeCollaborationMemoryVersion)
+		r.Get("/api/collaboration/issues/{id}/memory/operations/{requestId}", h.GetCollaborationMemoryOperation)
+		r.Get("/api/collaboration/issues/{id}/knowledge-candidates", h.ListCollaborationKnowledgeCandidates)
+		r.Post("/api/collaboration/issues/{id}/knowledge-candidates", h.ProposeCollaborationKnowledge)
+		r.Get("/api/collaboration/knowledge-candidates/{candidateId}", h.GetCollaborationKnowledgeCandidate)
+		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/approve", h.ApproveCollaborationKnowledge)
+		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/reject", h.RejectCollaborationKnowledge)
+		r.Post("/api/collaboration/knowledge-candidates/{candidateId}/withdraw", h.WithdrawCollaborationKnowledge)
+		r.Get("/api/collaboration/knowledge-candidates/{candidateId}/operations/{requestId}", h.GetCollaborationKnowledgeOperation)
+		r.Get("/api/collaboration/issues/{id}/knowledge-jobs", h.ListCollaborationKnowledgeJobs)
+		r.Post("/api/collaboration/issues/{id}/knowledge-jobs/{jobId}/retry", h.RetryCollaborationKnowledgeJob)
+		r.Get("/api/collaboration/issues/{id}/knowledge-jobs/{jobId}/operations/{requestId}", h.GetCollaborationKnowledgeJobOperation)
+		r.With(handler.RequireHumanActor).Get("/api/projects/{id}/knowledge-policy/operations/{requestId}", h.GetProjectKnowledgePolicyOperation)
+		r.Patch("/api/collaboration/issues/{id}", h.UpdateCollaborationIssue)
+		r.Post("/api/collaboration/issues/{id}/lifecycle", h.ChangeCollaborationLifecycle)
 		r.Post("/api/installations/challenges", h.InstallationChallenge)
 		r.Post("/api/installations/enroll", h.EnrollInstallation)
 		r.Get("/api/installations/{id}/binding", h.InstallationBindingHint)
@@ -1633,6 +1831,17 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Get("/tasks/{id}", h.AdminTask)
 			r.Post("/tasks/{id}/cancel", h.AdminCancelTask)
 			r.Get("/issues", h.AdminIssues)
+			r.Get("/collaboration/gate", h.AdminCollaborationGate)
+			r.Post("/collaboration/gate", h.AdminChangeCollaborationGate)
+			r.Get("/collaboration/issues", h.AdminCollaborationIssues)
+			r.Get("/collaboration/issues/{id}", h.AdminCollaborationIssue)
+			r.Get("/collaboration/issues/{id}/reopen-candidates", h.AdminCollaborationReopenCandidates)
+			r.Post("/collaboration/issues/{id}/lifecycle", h.AdminCollaborationLifecycle)
+			r.Get("/collaboration/issues/{id}/delivery-evidence/candidates", h.ListAdminCollaborationDeliveryCandidates)
+			r.Post("/collaboration/issues/{id}/delivery-evidence/completion-preview", h.GetAdminCollaborationCompletionPreview)
+			r.Get("/collaboration/issues/{id}/memory/versions", h.AdminCollaborationMemoryVersions)
+			r.Post("/collaboration/issues/{id}/memory/versions/{version}/purge", h.AdminCollaborationMemoryPurge)
+			r.Get("/collaboration/issues/{id}/operations/{requestId}", h.AdminCollaborationOperation)
 			r.Get("/users", h.AdminUsers)
 			r.Get("/users/{id}", h.AdminUser)
 			r.Post("/users/{id}/disable", h.AdminDisableUser)
@@ -1647,7 +1856,6 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 		r.Patch("/api/me", h.UpdateMe)
 		r.Patch("/api/me/onboarding", h.PatchOnboarding)
 		r.Post("/api/me/onboarding/complete", h.CompleteOnboarding)
-		r.Post("/api/me/onboarding/cloud-waitlist", h.JoinCloudWaitlist)
 		// DEPRECATED — shim routes for desktop < v3 during the rollout
 		// window. v3 frontend creates the Helper agent + starter issue
 		// via generic CreateAgent / CreateIssue and only calls /complete
@@ -1698,6 +1906,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Group(func(r chi.Router) {
 					r.Use(middleware.RequireWorkspaceMemberFromURL(queries, "id"))
 					r.Get("/", h.GetWorkspace)
+					r.Get("/knowledge", h.GetWorkspaceKnowledge)
 					r.Get("/members", h.ListMembersWithUser)
 					r.Get("/project-capabilities", h.GetProjectCapabilities)
 					r.Get("/iteration-operations/{requestID}", h.GetIterationOperation)
@@ -1952,6 +2161,16 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Delete("/{id}", h.RevokePersonalAccessToken)
 		})
 
+		// Completion receipts are account-scoped: an explicitly designated
+		// collaboration participant or administrator may be outside the source
+		// workspace. Each transaction rechecks its exact source/target authority.
+		r.Route("/api/delivery-completion-authorizations", func(r chi.Router) {
+			r.With(handler.RequireHumanActor).Post("/", h.CreateDeliveryCompletionAuthorization)
+			r.With(handler.RequireHumanActor).Get("/by-request-key/{requestKey}", h.GetDeliveryCompletionAuthorizationByRequestKey)
+			r.Get("/{authorizationId}", h.GetDeliveryCompletionAuthorization)
+			r.With(handler.RequireHumanActor).Post("/{authorizationId}/revocations", h.RevokeDeliveryCompletionAuthorization)
+		})
+
 		// Cloud Billing proxy. Same upstream service / port as
 		// cloud-runtime — multica-cloud's Fleet and Billing share
 		// :8080 and the same chi router. All routes here forward
@@ -2015,7 +2234,15 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 		// --- Workspace-scoped routes (all require workspace membership) ---
 		r.Group(func(r chi.Router) {
-			r.Use(middleware.RequireWorkspaceMember(queries))
+			r.Use(h.RequireIssueBudgetWorkspace)
+
+			r.Route("/api/issue-budgets/{rootId}", func(r chi.Router) {
+				r.Get("/", h.ShowIssueBudget)
+				r.Post("/operations", h.ManageIssueBudget)
+				r.Get("/operations/{key}", h.GetIssueBudgetOperation)
+				r.Get("/observations", h.ListIssueBudgetObservations)
+				r.Get("/attempts", h.ListIssueBudgetAttempts)
+			})
 
 			// Triage owns admission; review handlers also verify the resolved actor.
 			r.Route("/api/triage", func(r chi.Router) {
@@ -2063,11 +2290,25 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Route("/{id}", func(r chi.Router) {
 					r.Get("/", h.GetIssue)
 					r.Put("/", h.UpdateIssue)
+					r.Post("/budget", h.EnableIssueBudget)
+					r.Get("/budget", h.GetIssueBudgetBinding)
+					r.Get("/budget/operations/{key}", h.GetIssueBudgetEnableOperation)
 					r.Post("/lifecycle-handoffs", h.CreateLifecycleHandoff)
+					r.With(handler.RequireHumanActor).Post("/report-snapshots", h.CreateReportSnapshot)
+					r.With(handler.RequireHumanActor).Post("/report-snapshots/withdrawals", h.WithdrawReportSnapshots)
+					r.Get("/report-snapshots/current", h.GetReportSnapshot)
+					r.Get("/report-snapshots/{snapshotId}", h.GetReportSnapshot)
+					r.With(handler.RequireHumanActor).Post("/delivery-evidence/evaluate", h.EvaluateDeliveryEvidence)
+					r.With(handler.RequireHumanActor).Post("/delivery-evidence/evaluations", h.CreateDeliveryEvaluation)
+					r.With(handler.RequireHumanActor).Get("/delivery-evidence/evaluations/{key}", h.GetDeliveryEvaluation)
+					r.With(handler.RequireHumanActor).Post("/delivery-evidence/completion-hint", h.GetDeliveryCompletionHint)
+					r.With(handler.RequireHumanActor).Get("/delivery-evidence/candidates", h.ListDeliveryEvidenceCandidates)
+					r.With(handler.RequireHumanActor).Post("/delivery-evidence/completion-preview", h.GetDeliveryCompletionPreview)
 					r.Post("/move", h.MoveIssue)
 					r.Delete("/", h.DeleteIssue)
 					r.Post("/comments/trigger-preview", h.PreviewCommentTriggers)
 					r.Post("/comments", h.CreateComment)
+					r.Get("/delegation-receipts/{key}", h.GetDelegationReceipt)
 					r.Get("/comments", h.ListComments)
 					r.Get("/timeline", h.ListTimeline)
 					r.Get("/subscribers", h.ListIssueSubscribers)
@@ -2153,6 +2394,14 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Post("/", h.CreateProject)
 				r.Route("/{id}", func(r chi.Router) {
 					r.Get("/", h.GetProject)
+					r.Get("/knowledge", h.GetProjectKnowledge)
+					r.With(handler.RequireHumanActor).Get("/knowledge-policy", h.GetProjectKnowledgePolicy)
+					r.With(handler.RequireHumanActor).Put("/knowledge-policy", h.UpdateProjectKnowledgePolicy)
+					r.With(handler.RequireHumanActor).Get("/delivery-policy", h.GetDeliveryPolicy)
+					r.With(handler.RequireHumanActor).Put("/delivery-policy", h.UpdateDeliveryPolicy)
+					r.With(handler.RequireHumanActor).Get("/stage-policy", h.GetStagePolicy)
+					r.With(handler.RequireHumanActor).Put("/stage-policy", h.UpdateStagePolicy)
+					r.With(handler.RequireHumanActor).Get("/stage-policy/operations/{requestId}", h.GetStagePolicyOperation)
 					r.Get("/delete-impact", h.GetProjectDeleteImpact)
 					r.Get("/overview", h.GetProjectOverview)
 					r.Get("/health/issues", h.GetProjectHealthIssues)
@@ -2200,8 +2449,11 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 			r.Route("/api/agent-approvals", func(r chi.Router) {
 				r.Get("/", h.ListAgentApprovals)
 				r.Post("/", h.CreateAgentApproval)
+				r.Post("/artifact-package", h.CreateArtifactPackage)
 				r.Route("/{approvalId}", func(r chi.Router) {
 					r.Get("/", h.GetAgentApproval)
+					r.Get("/artifact-package", h.GetArtifactPackage)
+					r.Post("/artifact-package/execution", h.ExecuteArtifactPackage)
 					r.With(handler.RequireHumanActor).Post("/decision", h.DecideAgentApproval)
 					r.Post("/execution", h.RecordAgentApprovalExecution)
 					r.Post("/cancel", h.CancelAgentApproval)
@@ -2503,6 +2755,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				// Separate from "/" so the main list keeps its contract and
 				// never carries the unbounded archive.
 				r.Get("/archived", h.ListArchivedInbox)
+				r.Get("/snoozed", h.ListSnoozedInbox)
 				r.Get("/unread-count", h.CountUnreadInbox)
 				// Cross-workspace unread summary: account-level, keyed on the
 				// user. Backs the workspace-switcher dot for OTHER workspaces.
@@ -2515,6 +2768,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Post("/{id}/unread", h.MarkInboxUnread)
 				r.Post("/{id}/archive", h.ArchiveInboxItem)
 				r.Post("/{id}/unarchive", h.UnarchiveInboxItem)
+				r.Post("/{id}/snooze", h.SnoozeInboxItem)
+				r.Post("/{id}/unsnooze", h.UnsnoozeInboxItem)
+				r.Post("/{id}/snooze/undo", h.UndoInboxSnooze)
 			})
 
 			// Notification preferences

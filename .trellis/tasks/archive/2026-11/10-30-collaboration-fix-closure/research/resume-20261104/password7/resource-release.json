@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-11-04T16:06:45.703676+00:00",
+  "owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+  "before": {
+    "api": {
+      "pid": 46328,
+      "port": 18851,
+      "identity": "46328 46283 46283 /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+      "cwd": "p46328\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server"
+    },
+    "web": {
+      "pid": 48643,
+      "port": 13771,
+      "identity": "48643 48624 48624 next-server (v16.2.6)",
+      "cwd": "p48643\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web"
+    },
+    "renderer": {
+      "pid": 48700,
+      "port": 54290,
+      "identity": "48700     1 48700 /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B -m http.server 54290 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "cwd": "p48700\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer"
+    }
+  },
+  "stop_command_exit": 0,
+  "after": {
+    "api": {
+      "listener_absent": true,
+      "pid_absent": true
+    },
+    "web": {
+      "listener_absent": true,
+      "pid_absent": true
+    },
+    "renderer": {
+      "listener_absent": true,
+      "pid_absent": true
+    }
+  },
+  "database_retained": "multica_password7_20261104_f90b6a65|764_collaboration_ai_policy|0",
+  "all_original_logs_artifacts_retained": true,
+  "real_provider_calls": 0
+}

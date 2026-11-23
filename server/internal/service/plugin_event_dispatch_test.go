@@ -1,11 +1,14 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"testing"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/featureflags"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -216,6 +219,41 @@ func TestEventDispatchStampsThePluginActor(t *testing.T) {
 	}
 	if grant.Actor.Type != "plugin" {
 		t.Fatalf("the grant must carry the plugin actor, got %q", grant.Actor.Type)
+	}
+}
+
+// No hook receives an event about a collaboration issue (R53), and a failed
+// check withholds rather than delivers. Events about no issue are untouched.
+func TestEventDispatchWithholdsCollaborationIssues(t *testing.T) {
+	issueID := issueIDFromPayload(map[string]any{"issue": map[string]any{"id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}})
+	lookup := func(shared bool, err error) (func(context.Context, pgtype.UUID) (bool, error), *int) {
+		calls := 0
+		return func(_ context.Context, id pgtype.UUID) (bool, error) {
+			calls++
+			if id != issueID {
+				t.Fatalf("looked up %v, want the payload issue", id)
+			}
+			return shared, err
+		}, &calls
+	}
+	for _, tc := range []struct {
+		name     string
+		shared   bool
+		err      error
+		withhold bool
+	}{
+		{"collaboration issue", true, nil, true},
+		{"ordinary issue", false, nil, false},
+		{"lookup failure", false, errors.New("database unavailable"), true},
+	} {
+		check, calls := lookup(tc.shared, tc.err)
+		if got := withholdCollaborationEvent(t.Context(), issueID, check); got != tc.withhold || *calls != 1 {
+			t.Fatalf("%s: withhold=%v calls=%d, want %v after one lookup", tc.name, got, *calls, tc.withhold)
+		}
+	}
+	check, calls := lookup(true, nil)
+	if withholdCollaborationEvent(t.Context(), pgtype.UUID{}, check) || *calls != 0 {
+		t.Fatal("an event about no issue must be delivered without a lookup")
 	}
 }
 

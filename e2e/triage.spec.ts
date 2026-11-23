@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { writeFile } from "node:fs/promises";
 import { expect, test, type Page } from "@playwright/test";
 import pg from "pg";
 import { TestApiClient } from "./fixtures";
@@ -59,8 +60,15 @@ test("triage settings, manual intake and ordinary acceptance preserve the execut
     await page.getByRole("button", { name: "Save settings", exact: true }).click();
     await expect(page.getByText("Settings saved", { exact: true })).toBeVisible();
     await page.goto(`/${workspace.slug}/triage`);
-    await expect(page.getByText("Queue is clear", { exact: true })).toBeVisible();
-    await page.getByRole("button", { name: "Create pending task", exact: true }).click();
+    const welcome = page.getByRole("region", { name: "Collect first, decide what to do" });
+    await expect(welcome).toBeVisible();
+    await welcome.getByRole("link", { name: "Read docs", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/docs/triage`);
+    await expect(page.getByRole("heading", { name: "分拣台", exact: true })).toBeVisible();
+    await page.goBack();
+    const start = welcome.getByRole("button", { name: "Create pending task", exact: true });
+    await start.focus();
+    await page.keyboard.press("Enter");
     const create = page.getByRole("dialog");
     const title = `Customer request ${randomUUID().slice(0, 8)}`;
     await create.getByRole("textbox", { name: "Title", exact: true }).fill(title);
@@ -92,8 +100,10 @@ test("triage settings, manual intake and ordinary acceptance preserve the execut
     expect(accepted.issue.admission_status).toBe("accepted");
     expect(await api.countIssueDispatches(item.issue.id)).toBe(0);
     await expect.poll(async () => (await api.requestJSON<Queue>("/api/triage/items")).counts.pending).toBe(0);
-    await expect(page.getByRole("heading", { name: "Queue is clear", exact: true })).toBeFocused();
-    await page.goto(`/${workspace.slug}/triage?view=history`);
+    await expect(page.getByRole("heading", { name: "No tasks ready for review", exact: true })).toBeFocused();
+    await expect(welcome).toHaveCount(0);
+    await page.screenshot({ path: info.outputPath("triage-daily-empty.png"), animations: "disabled" });
+    await page.getByRole("button", { name: "View review history", exact: true }).click();
     await expect(page.getByRole("button", { name: new RegExp(title) }).first()).toBeVisible();
     await page.setViewportSize({ width: 390, height: 844 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
@@ -103,6 +113,61 @@ test("triage settings, manual intake and ordinary acceptance preserve the execut
     await info.attach("triage-failure-state", { body: `${page.url()}\n${await page.locator("body").innerText()}`, contentType: "text/plain" });
     await page.screenshot({ path: info.outputPath("triage-before-cleanup.png"), fullPage: true });
     throw error;
+  } finally {
+    await api.deleteFeatureWorkspace(workspace.id);
+  }
+});
+
+test("triage welcome keeps its actions reachable in both languages and themes", async ({ page }, info) => {
+  test.setTimeout(120_000);
+  const { api, workspace } = await fixture(page);
+  const origin = info.project.use.baseURL;
+  if (typeof origin !== "string") throw new Error("Playwright baseURL is required");
+  const layouts: Array<{ locale: string; theme: string; width: number; height: number; overflow: boolean; exampleRadius: string }> = [];
+  try {
+    for (const locale of ["en", "zh-Hans"] as const) {
+      await api.requestJSON("/api/me", { method: "PATCH", body: { language: locale } });
+      await page.context().addCookies([{ name: "multica-locale", value: locale, url: origin }]);
+      await page.goto(`/${workspace.slug}/triage`);
+      const chinese = locale === "zh-Hans";
+      const welcome = page.getByRole("region", { name: chinese ? "先收集，再决定做什么" : "Collect first, decide what to do" });
+      const createName = chinese ? "创建待分拣任务" : "Create pending task";
+      const create = welcome.getByRole("button", { name: createName, exact: true });
+      await expect(page.getByRole("button", { name: createName, exact: true })).toHaveCount(1);
+      for (const theme of ["light", "dark"] as const) {
+        await page.evaluate((value) => {
+          document.documentElement.classList.remove("light", "dark");
+          document.documentElement.classList.add(value);
+          document.documentElement.style.colorScheme = value;
+        }, theme);
+        for (const viewport of [{ width: 1440, height: 900 }, { width: 1024, height: 768 }, { width: 390, height: 844 }, { width: 320, height: 568 }]) {
+          await page.setViewportSize(viewport);
+          await welcome.evaluate((element) => { element.scrollTop = 0; });
+          await expect(create).toBeInViewport();
+          const metrics = await welcome.evaluate((element) => {
+            const figure = element.querySelector("figure");
+            if (!figure) throw new Error("Welcome example missing");
+            return {
+              overflow: document.documentElement.scrollWidth > innerWidth + 1 || element.scrollWidth > element.clientWidth + 1,
+              exampleRadius: getComputedStyle(figure).borderTopLeftRadius,
+            };
+          });
+          layouts.push({ locale, theme, ...viewport, ...metrics });
+          expect(metrics.overflow).toBe(false);
+          expect(parseFloat(metrics.exampleRadius)).toBeGreaterThan(0);
+          await page.evaluate(() => document.fonts.ready);
+          await page.screenshot({ path: info.outputPath(`welcome-${locale}-${theme}-${viewport.width}.png`), animations: "disabled" });
+          if (viewport.width === 390) {
+            await welcome.locator("figcaption").scrollIntoViewIfNeeded();
+            await expect(welcome.locator("figcaption")).toBeInViewport();
+            await page.screenshot({ path: info.outputPath(`welcome-${locale}-${theme}-example.png`), animations: "disabled" });
+          }
+        }
+      }
+    }
+    const metricsPath = info.outputPath("welcome-layout-metrics.json");
+    await writeFile(metricsPath, JSON.stringify(layouts, null, 2));
+    await info.attach("welcome layout metrics", { path: metricsPath, contentType: "application/json" });
   } finally {
     await api.deleteFeatureWorkspace(workspace.id);
   }
@@ -122,6 +187,8 @@ test("snooze, rejection and reopen retain old review rounds", async ({ page }, i
     await dialog.getByRole("button", { name: "Snooze", exact: true }).click();
     await expect(dialog).toHaveCount(0);
     await expect.poll(async () => (await api.requestJSON<Queue>("/api/triage/items")).counts.snoozed).toBe(1);
+    await page.getByRole("button", { name: "View snoozed tasks", exact: true }).click();
+    await expect(page.getByRole("tab", { name: /Snoozed/ })).toHaveAttribute("aria-selected", "true");
     await page.goto(`/${workspace.slug}/triage?view=snoozed&issue=${item.issue.id}`);
     await page.getByRole("button", { name: "Reject", exact: true }).click();
     await dialog.getByRole("textbox", { name: "Reason", exact: true }).fill("Outside the team's current scope");
@@ -151,7 +218,8 @@ test("CSV preview, mapping and partial import create only selected pending rows"
   try {
     await enable(api);
     await page.goto(`/${workspace.slug}/triage`);
-    await page.getByRole("button", { name: "Import CSV", exact: true }).click();
+    const welcome = page.getByRole("region", { name: "Collect first, decide what to do" });
+    await welcome.getByRole("button", { name: "Import CSV", exact: true }).click();
     const dialog = page.getByRole("dialog");
     await dialog.locator('input[type="file"]').setInputFiles({ name: "backlog.csv", mimeType: "text/csv", buffer: Buffer.from("title,description,status,external_id\nValid input,\"@agent quoted, description\",in_progress,EXT-1\n,,,EXT-2\nDuplicate ID,Context,todo,EXT-1\n", "utf8") });
     await expect(dialog.getByText("Map columns", { exact: true })).toBeVisible();
@@ -164,6 +232,10 @@ test("CSV preview, mapping and partial import create only selected pending rows"
     expect(queue.items[0].issue.admission_status).toBe("pending");
     expect(await api.countIssueDispatches(queue.items[0].issue.id)).toBe(0);
     await page.screenshot({ path: info.outputPath("triage-csv-results.png"), fullPage: true });
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    await expect(page.getByRole("button", { name: `${queue.items[0].issue.identifier} Valid input`, exact: true })).toBeVisible();
+    await expect(welcome).toHaveCount(0);
     const history = await api.requestJSON<{ entries: { kind: string; filename: string | null }[] }>("/api/triage/history");
     expect(history.entries).toEqual(expect.arrayContaining([expect.objectContaining({ kind: "import", filename: "backlog.csv" })]));
   } finally {

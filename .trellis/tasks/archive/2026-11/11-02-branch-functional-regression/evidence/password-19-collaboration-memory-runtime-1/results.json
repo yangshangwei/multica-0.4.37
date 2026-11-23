@@ -1,0 +1,150 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-19-collaboration-memory-runtime-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-memory-runtime.spec.ts",
+      "file": "collaboration-memory-runtime.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "two native runtime profiles hand off shared context through the actual run-local CLI",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 7926,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"content\": \"Queued handoff decision: retain the source findings.\", \"version\": 1}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"content\": \"Queued handoff decision: retain the source findings.\", \"version\": 1}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-runtime.spec.ts:81:33",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-runtime.spec.ts",
+                      "column": 33,
+                      "line": 81
+                    },
+                    "snippet": "  79 |     const visitA = await first.daemon.waitForVisit(1) as MemoryVisit;\n  80 |     expect(visitA.resource_owner_id).toBe(first.webActor.id);\n> 81 |     expect(visitA.memory_input).toEqual({ version: 1, content: seed });\n     |                                 ^\n  82 |     expect(visitA.memory_shown).toMatchObject({ issue_id: first.main.id, run_id: visitA.identity.run_id, version: \"1\", content: seed });\n  83 |     expect(visitA.memory_written).toMatchObject({ code: \"memory_updated\", issue_id: first.main.id, run_id: visitA.identity.run_id, version: \"2\" });\n  84 |     expect(visitA.instruction_files_clean).toBe(true);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-runtime.spec.ts",
+                        "column": 33,
+                        "line": 81
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m{\"content\": \"Queued handoff decision: retain the source findings.\", \"version\": 1}\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  79 |     const visitA = await first.daemon.waitForVisit(1) as MemoryVisit;\n  80 |     expect(visitA.resource_owner_id).toBe(first.webActor.id);\n> 81 |     expect(visitA.memory_input).toEqual({ version: 1, content: seed });\n     |                                 ^\n  82 |     expect(visitA.memory_shown).toMatchObject({ issue_id: first.main.id, run_id: visitA.identity.run_id, version: \"1\", content: seed });\n  83 |     expect(visitA.memory_written).toMatchObject({ code: \"memory_updated\", issue_id: first.main.id, run_id: visitA.identity.run_id, version: \"2\" });\n  84 |     expect(visitA.instruction_files_clean).toBe(true);\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-runtime.spec.ts:81:33"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:06:01.949Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "memory-runtime-handoff-evidence",
+                      "contentType": "application/json",
+                      "body": "ewogICJzY29wZSI6ICJUd28gc2VwYXJhdGVseSBlbnJvbGxlZCBuYXRpdmUgcnVudGltZSBwcm9jZXNzZXMsIHVzZXIgYWNjb3VudHMsIHByaXZhdGUgd29ya2RpcnMgYW5kIGVtcHR5IHByb3ZpZGVyLWFjY291bnQgcHJvZmlsZXMgb24gdGhpcyBob3N0OyB0ZXN0LW93bmVkIG9yZGluYXJ5IENsYXVkZSBwcm90b2NvbCBvbmx5IiwKICAiZXhjbHVzaW9ucyI6IFsKICAgICJwaHlzaWNhbCBzZWNvbmQgbWFjaGluZSIsCiAgICAiY29tbWVyY2lhbCBwcm92aWRlciBjcmVkZW50aWFscyBvciBxdW90YSIsCiAgICAib3RoZXIgb3BlcmF0aW5nIHN5c3RlbXMiCiAgXSwKICAiZ2F0ZV9iZWZvcmUiOiB7CiAgICAiZGF0YWJhc2VfbmFtZSI6ICJtdWx0aWNhX2Z1bmM3YWY5X3Bhc3N3b3JkXzIwMjYxMTAyIiwKICAgICJlbmFibGVkIjogZmFsc2UsCiAgICAiY3JlYXRpb25fZW5hYmxlZCI6IHRydWUsCiAgICAiaG9zdF9leGVjdXRpb25fZW5hYmxlZCI6IGZhbHNlLAogICAgImVwb2NoIjogIjIiCiAgfSwKICAic2Vjb25kX2RhZW1vbiI6IHsKICAgICJleGl0X2NvZGUiOiAwLAogICAgIm1lc3NhZ2VzIjogWwogICAgICB7CiAgICAgICAgImFyY2giOiAiYXJtNjQiLAogICAgICAgICJleGVjdXRpb25fbW9kZSI6ICJob3N0X3Byb2Nlc3Nfc3VwZXJ2aXNpb25fdjEiLAogICAgICAgICJtYXhfY29uY3VycmVudF90YXNrcyI6IDEsCiAgICAgICAgIm9zIjogImRhcndpbiIsCiAgICAgICAgInByZXBhcmF0aW9uX3ZlcnNpb24iOiAyLAogICAgICAgICJwcm90b2NvbF92ZXJzaW9uIjogMywKICAgICAgICAicmVhZHkiOiB0cnVlLAogICAgICAgICJydW50aW1lX2NvbmZpZ19lcG9jaCI6ICIyIgogICAgICB9LAogICAgICB7CiAgICAgICAgImFjdGl2ZV90YXNrcyI6IDAsCiAgICAgICAgImF2YWlsYWJsZV9zbG90cyI6IDEsCiAgICAgICAgImNsYWltcyI6IDAsCiAgICAgICAgImh0dHAiOiBudWxsLAogICAgICAgICJpbnZhbGlkX2NhcGFjaXR5IjogZmFsc2UKICAgICAgfQogICAgXSwKICAgICJsZWRnZXIiOiBbXSwKICAgICJlcnJvcnMiOiBbXSwKICAgICJzdGRlcnIiOiAiIgogIH0sCiAgImZpcnN0X2RhZW1vbiI6IHsKICAgICJleGl0X2NvZGUiOiAwLAogICAgIm1lc3NhZ2VzIjogWwogICAgICB7CiAgICAgICAgImFyY2giOiAiYXJtNjQiLAogICAgICAgICJleGVjdXRpb25fbW9kZSI6ICJob3N0X3Byb2Nlc3Nfc3VwZXJ2aXNpb25fdjEiLAogICAgICAgICJtYXhfY29uY3VycmVudF90YXNrcyI6IDEsCiAgICAgICAgIm9zIjogImRhcndpbiIsCiAgICAgICAgInByZXBhcmF0aW9uX3ZlcnNpb24iOiAyLAogICAgICAgICJwcm90b2NvbF92ZXJzaW9uIjogMywKICAgICAgICAicmVhZHkiOiB0cnVlLAogICAgICAgICJydW50aW1lX2NvbmZpZ19lcG9jaCI6ICIyIgogICAgICB9LAogICAgICB7CiAgICAgICAgImFjdGl2ZV90YXNrcyI6IDAsCiAgICAgICAgImF2YWlsYWJsZV9zbG90cyI6IDEsCiAgICAgICAgImNsYWltcyI6IDEsCiAgICAgICAgImh0dHAiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJvcGVyYXRpb24iOiAiY2xhaW0iLAogICAgICAgICAgICAicnVuX2lkIjogImMxYWRlOWNmLTVkNjUtNDI5Zi1hMWUwLTYzNDBkNjVhZTQzMyIsCiAgICAgICAgICAgICJwcm90b2NvbF92ZXJzaW9uIjogMywKICAgICAgICAgICAgImNvbnRhaW5tZW50IjogImhvc3RfcHJvY2Vzc19zdXBlcnZpc2lvbl92MSIsCiAgICAgICAgICAgICJzdGF0dXMiOiAyMDAKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgICJvcGVyYXRpb24iOiAicGVybWl0IiwKICAgICAgICAgICAgInJ1bl9pZCI6ICJjMWFkZTljZi01ZDY1LTQyOWYtYTFlMC02MzQwZDY1YWU0MzMiLAogICAgICAgICAgICAicHJvdG9jb2xfdmVyc2lvbiI6IDMsCiAgICAgICAgICAgICJjb250YWlubWVudCI6ICJob3N0X3Byb2Nlc3Nfc3VwZXJ2aXNpb25fdjEiLAogICAgICAgICAgICAiYXR0ZW1wdF9zZXEiOiAiMSIsCiAgICAgICAgICAgICJsYXVuY2hfaGFzaCI6ICIzMWJkYjViYzMxYmUyYmRhZGEwNjBjMjI1NWNmZWI5ODA2YmIxNTY0MTRkZWFiY2RkMGM3OWE1MjA0ZmQ0YjdlIiwKICAgICAgICAgICAgInN0YXR1cyI6IDIwMAogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgIm9wZXJhdGlvbiI6ICJwZXJtaXQiLAogICAgICAgICAgICAicnVuX2lkIjogImMxYWRlOWNmLTVkNjUtNDI5Zi1hMWUwLTYzNDBkNjVhZTQzMyIsCiAgICAgICAgICAgICJwcm90b2NvbF92ZXJzaW9uIjogMywKICAgICAgICAgICAgImNvbnRhaW5tZW50IjogImhvc3RfcHJvY2Vzc19zdXBlcnZpc2lvbl92MSIsCiAgICAgICAgICAgICJhdHRlbXB0X3NlcSI6ICIxIiwKICAgICAgICAgICAgImxhdW5jaF9oYXNoIjogIjMxYmRiNWJjMzFiZTJiZGFkYTA2MGMyMjU1Y2ZlYjk4MDZiYjE1NjQxNGRlYWJjZGQwYzc5YTUyMDRmZDRiN2UiLAogICAgICAgICAgICAic3RhdHVzIjogMjAwCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAib3BlcmF0aW9uIjogInRlcm1pbmF0aW9uIiwKICAgICAgICAgICAgInJ1bl9pZCI6ICJjMWFkZTljZi01ZDY1LTQyOWYtYTFlMC02MzQwZDY1YWU0MzMiLAogICAgICAgICAgICAicHJvdG9jb2xfdmVyc2lvbiI6IDMsCiAgICAgICAgICAgICJjb250YWlubWVudCI6ICJob3N0X3Byb2Nlc3Nfc3VwZXJ2aXNpb25fdjEiLAogICAgICAgICAgICAiYXR0ZW1wdF9zZXEiOiAiMSIsCiAgICAgICAgICAgICJsYXVuY2hfaGFzaCI6ICIzMWJkYjViYzMxYmUyYmRhZGEwNjBjMjI1NWNmZWI5ODA2YmIxNTY0MTRkZWFiY2RkMGM3OWE1MjA0ZmQ0YjdlIiwKICAgICAgICAgICAgImtpbmQiOiAibWFuYWdlZF9sYXVuY2hfZW5kZWQiLAogICAgICAgICAgICAic3RhdHVzIjogMjAwCiAgICAgICAgICB9LAogICAgICAgICAgewogICAgICAgICAgICAib3BlcmF0aW9uIjogInByb29mIiwKICAgICAgICAgICAgInJ1bl9pZCI6ICJjMWFkZTljZi01ZDY1LTQyOWYtYTFlMC02MzQwZDY1YWU0MzMiLAogICAgICAgICAgICAicHJvdG9jb2xfdmVyc2lvbiI6IDMsCiAgICAgICAgICAgICJjb250YWlubWVudCI6ICJob3N0X3Byb2Nlc3Nfc3VwZXJ2aXNpb25fdjEiLAogICAgICAgICAgICAibGF1bmNoX2hhc2giOiAiMzFiZGI1YmMzMWJlMmJkYWRhMDYwYzIyNTVjZmViOTgwNmJiMTU2NDE0ZGVhYmNkZDBjNzlhNTIwNGZkNGI3ZSIsCiAgICAgICAgICAgICJzdGF0ZSI6ICJob3N0X2V4aXRfb2JzZXJ2ZWQiLAogICAgICAgICAgICAic3RhdHVzIjogMjAwCiAgICAgICAgICB9CiAgICAgICAgXSwKICAgICAgICAiaW52YWxpZF9jYXBhY2l0eSI6IGZhbHNlCiAgICAgIH0KICAgIF0sCiAgICAibGVkZ2VyIjogWwogICAgICB7CiAgICAgICAgInZlcnNpb24iOiAyLAogICAgICAgICJydW5faWQiOiAiYzFhZGU5Y2YtNWQ2NS00MjlmLWExZTAtNjM0MGQ2NWFlNDMzIiwKICAgICAgICAiaXNzdWVfaWQiOiAiMDFhMTk5Y2EtYzViYS03NzkxLWJhYzUtMzBjMjRhZGQxYTlkIiwKICAgICAgICAicGhhc2UiOiAicHJvb2ZfYWNrbm93bGVkZ2VkIiwKICAgICAgICAic2Vzc2lvbl9rZXkiOiAiMzJkODIwN2VlODBhYzI2NzBmODE5Nzc2ZjQzZGE3ZTJmMTBmNTY1YjhjYWQ0ZjQyNTVkMmY3YWQ5ODgxNmI1MyIsCiAgICAgICAgIm5hbWVzcGFjZV9wcmVzZW50IjogZmFsc2UsCiAgICAgICAgInNlYWxlZCI6IHRydWUsCiAgICAgICAgInByb29mX3N0YXRlIjogImhvc3RfZXhpdF9vYnNlcnZlZCIsCiAgICAgICAgImNsZWFudXAiOiB7CiAgICAgICAgICAic3RhdGUiOiAidHJhY2tlZF9zY29wZV9jb21wbGV0ZSIsCiAgICAgICAgICAic2NvcGUiOiAicHJvY2Vzc19ncm91cCIsCiAgICAgICAgICAiYXR0ZW1wdGVkIjogdHJ1ZQogICAgICAgIH0sCiAgICAgICAgImxhdW5jaGVzIjogWwogICAgICAgICAgewogICAgICAgICAgICAiYXR0ZW1wdF9zZXEiOiAiMSIsCiAgICAgICAgICAgICJraW5kIjogInByb3ZpZGVyIiwKICAgICAgICAgICAgInBoYXNlIjogImF0dGVtcHRfcmVhcGVkIiwKICAgICAgICAgICAgInByb2Nlc3Nfb2JzZXJ2ZWQiOiB0cnVlLAogICAgICAgICAgICAic2NvcGUiOiAicHJvY2Vzc19ncm91cCIsCiAgICAgICAgICAgICJ0ZXJtaW5hbF9hY2NlcHRlZCI6IHRydWUsCiAgICAgICAgICAgICJhdXRob3JpemVkIjogdHJ1ZSwKICAgICAgICAgICAgInRlcm1pbmFsX2tpbmQiOiAibWFuYWdlZF9sYXVuY2hfZW5kZWQiLAogICAgICAgICAgICAiY2xlYW51cCI6IHsKICAgICAgICAgICAgICAic3RhdGUiOiAidHJhY2tlZF9zY29wZV9jb21wbGV0ZSIsCiAgICAgICAgICAgICAgInNjb3BlIjogInByb2Nlc3NfZ3JvdXAiLAogICAgICAgICAgICAgICJhdHRlbXB0ZWQiOiB0cnVlCiAgICAgICAgICAgIH0KICAgICAgICAgIH0KICAgICAgICBdCiAgICAgIH0KICAgIF0sCiAgICAiZXJyb3JzIjogW10sCiAgICAic3RkZXJyIjogIiIKICB9LAogICJnYXRlX2FmdGVyIjogewogICAgImRhdGFiYXNlX25hbWUiOiAibXVsdGljYV9mdW5jN2FmOV9wYXNzd29yZF8yMDI2MTEwMiIsCiAgICAiZW5hYmxlZCI6IGZhbHNlLAogICAgImNyZWF0aW9uX2VuYWJsZWQiOiB0cnVlLAogICAgImhvc3RfZXhlY3V0aW9uX2VuYWJsZWQiOiBmYWxzZSwKICAgICJlcG9jaCI6ICI0IgogIH0KfQ=="
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-19-collaboration-memory-runtime-1/artifacts/collaboration-memory-runti-eb04e-gh-the-actual-run-local-CLI-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-19-collaboration-memory-runtime-1/artifacts/collaboration-memory-runti-eb04e-gh-the-actual-run-local-CLI-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-memory-runtime.spec.ts",
+                    "column": 33,
+                    "line": 81
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "d420fa0c9305d09d3888-e920b9cd65c404e6c8ac",
+          "file": "collaboration-memory-runtime.spec.ts",
+          "line": 45,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:06:01.506Z",
+    "duration": 8837.273,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

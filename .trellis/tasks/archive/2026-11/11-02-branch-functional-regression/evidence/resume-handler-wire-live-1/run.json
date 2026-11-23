@@ -1,0 +1,66 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "started_at": "2026-11-02T02:36:29.919831+00:00",
+  "state": "complete",
+  "database": "multica_func7af9_resume_wire_live_1",
+  "template_database": "multica_func7af9_template_20261102",
+  "commercial_provider_calls": 0,
+  "new_test_source_changes": false,
+  "agent_cli_guard": true,
+  "automatic_retries": 0,
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "preexisting_patch_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "migration_count": 751,
+  "pg_headroom_before": {
+    "maximum": 100,
+    "used": 45
+  },
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-json",
+    "-run",
+    "^(TestTriageWireFixtures|TestFetchFromSkillsSh_AnthropicPptxIntegration)$",
+    "./internal/handler"
+  ],
+  "selected_tests": [
+    "TestTriageWireFixtures",
+    "TestFetchFromSkillsSh_AnthropicPptxIntegration"
+  ],
+  "race_enabled": true,
+  "private_environment_sha256": "88ef3411679c1f662f8a8ff4375673ee7ece1aa3081828d504ba3b75ce0de8d6",
+  "execution_started_at": "2026-11-02T02:36:33.051810+00:00",
+  "measurement_scope": "local handler and isolated database; shared host/PG resources, no production latency claim",
+  "runner_sha256": "21801f3e2bf4116688822dd09cb6281e73a971a2a09f0674f3443327b42119dd",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T02:36:50.582103+00:00",
+  "outcomes": {
+    "TestFetchFromSkillsSh_AnthropicPptxIntegration": "pass",
+    "TestTriageWireFixtures": "pass"
+  },
+  "counts": {
+    "pass": 2
+  },
+  "all_selected_executed": true,
+  "stdout_sha256": "356a560ee12ac8c04223f9f0f54f34f0bd69d191f2c0f86643ad2f901f347b4d",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "connections_after": 0,
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4"
+}

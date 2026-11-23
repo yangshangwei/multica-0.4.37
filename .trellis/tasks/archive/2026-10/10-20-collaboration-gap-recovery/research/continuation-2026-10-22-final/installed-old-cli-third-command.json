@@ -1,0 +1,31 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-installed-clients.spec.ts",
+    "--project=chromium",
+    "--workers=1",
+    "--reporter=json",
+    "--output=/private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-old-cli-third"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-10-22T13:17:24.400599+00:00",
+  "head": "63c0beeb5d62496baccdebc670a9485d84e4ca60",
+  "source_sha256": {
+    "e2e/collaboration-installed-clients.spec.ts": "1384e3c1b6b1f3168cc556c92016f0ec1d32b0488d2cea79dbddc7b66dd184a3",
+    "e2e/fixtures/collaboration-installed-clients.ts": "51487a607e05e52d9cf33a5357a889fc422f7713dc63e10b6720657a627d45c9",
+    "e2e/fixtures/collaboration-installed-cli-relay.go": "ab34c4c323616c18887371d543784cac32168d8ccada2007eeceb20de888a568",
+    "e2e/fixtures/collaboration-control-journey.ts": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488"
+  },
+  "safe_environment": {
+    "COLLABORATION_E2E_API_URL": "http://localhost:18996",
+    "PLAYWRIGHT_BASE_URL": "http://localhost:13916",
+    "COLLABORATION_INSTALLED_CLI_RELAY": "/private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay",
+    "E2E_PASSWORD_AUTH": "1"
+  },
+  "environment_loaded_from": "/private/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-api.env",
+  "real_provider_account_access": false,
+  "production_gate_change": false
+}

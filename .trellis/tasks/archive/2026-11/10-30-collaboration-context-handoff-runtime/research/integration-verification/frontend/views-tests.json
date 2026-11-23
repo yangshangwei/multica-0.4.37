@@ -1,0 +1,21 @@
+{
+  "command": [
+    "pnpm",
+    "-C",
+    "packages/views",
+    "exec",
+    "vitest",
+    "run",
+    "collaboration/comment-list.test.tsx",
+    "collaboration/run-handoff.test.tsx",
+    "collaboration/workflow.test.tsx",
+    "--maxWorkers=2",
+    "--reporter=json",
+    "--outputFile=../../.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/frontend/views-tests-results.json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "started_at": "2026-10-31T14:47:30.984292+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 11.556,
+  "finished_at": "2026-10-31T14:47:42.540433+00:00"
+}

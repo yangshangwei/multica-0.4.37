@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-02T03:28:10.282209+00:00",
+  "scope": "Read-only database platform inspection; no container/environment changes",
+  "postgres_identity": "multica_func7af9_template_20261102|172.20.0.2|5432|PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit|100|46",
+  "endpoint_host": "localhost",
+  "endpoint_port": 5432,
+  "published_containers": [
+    {
+      "container_id": "f06e055b60eb02897965374bf85474b7c7bc5e40e533ca84716707b07088c842",
+      "name": "/multica-postgres-1",
+      "image_id": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+      "architecture": "amd64",
+      "os": "linux",
+      "published_port": 5432,
+      "network_ips": [
+        "172.20.0.2"
+      ]
+    }
+  ],
+  "docker_engine_architecture": "aarch64",
+  "host_machine": "arm64",
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "original_failure_retained": true
+}

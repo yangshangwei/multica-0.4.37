@@ -1,0 +1,399 @@
+{
+  "samples": [
+    {
+      "label": "E0b",
+      "surface": "chat",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/E0b/samples/E0b.json",
+      "sha256": "da8f84e356565d39e37c71e9ad69d6fc90aa1771bd87f0c2e8d338e328537352",
+      "identity": {
+        "kind": "task",
+        "task_id": "01a1a5e9-c539-73fb-9a6e-2bf12535d1ef",
+        "workspace_id": "be974a06-09aa-41b4-8e37-a9196bc436b3",
+        "agent_id": "29a9d09d-7747-4b19-9ac9-072ade91572f"
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K1-approved",
+      "surface": "agent",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K1/samples/K1-approved.json",
+      "sha256": "a45485f2895799bef62cd7804c3e2379d4f3927d727238e91833558946904535",
+      "identity": {
+        "kind": "run",
+        "run_id": "06957a85-6f71-4537-9536-ede682c397bd",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "e69c9543-8878-4711-8588-f322365e4df2",
+          "issue_id": "01a1a5e9-d7d6-790c-9c17-e66dbe369802",
+          "session_id": "853d7911-b91b-4e9d-a7e8-e1b454b98782",
+          "target_id": "053f6022-469e-40d3-9f84-63e44717e038",
+          "channel_id": "d946e701-e591-48d7-abe9-f89d9aa224ee",
+          "batch_id": "a26389be-fbd2-4508-a25a-a51a5d922135",
+          "group_id": "cfada50e-22e1-4915-8cef-10117fcf0051",
+          "run_id": "06957a85-6f71-4537-9536-ede682c397bd",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "d4381361-7d5e-47bf-a09f-5ab09fb9965a"
+        }
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K1-corrected",
+      "surface": "agent",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K1/samples/K1-corrected.json",
+      "sha256": "3c530f6228c5540d5c973241afbf70e1c9433398267db7dad697fa84ab8aa7e9",
+      "identity": {
+        "kind": "run",
+        "run_id": "39628147-0aec-44a6-ac23-b92e59a2a279",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "e69c9543-8878-4711-8588-f322365e4df2",
+          "issue_id": "01a1a5e9-dcd8-7893-9476-33cc766a8bc9",
+          "session_id": "b226a541-d987-40ae-bf5d-ccef72f7be18",
+          "target_id": "ca7532f1-04ee-48a1-a3e4-6a3ed9e5d18b",
+          "channel_id": "8025e30f-6bce-4c4c-b428-94b4a8337cec",
+          "batch_id": "35cdc935-7881-4369-b1a5-818e4c0112c4",
+          "group_id": "0b8b08cc-a801-44da-8e17-ffbfc02b0e46",
+          "run_id": "39628147-0aec-44a6-ac23-b92e59a2a279",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "5617aff6-df85-4dce-8e66-d31deb91e2b1"
+        }
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K1-pending",
+      "surface": "agent",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K1/samples/K1-pending.json",
+      "sha256": "cc3e11482eeb7a70326844c2116b9cbf2b7f41d45ef48f7f34a8f7e7bcea3971",
+      "identity": {
+        "kind": "run",
+        "run_id": "7cb52237-1cec-40e0-b702-b1b04f1d9d83",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "e69c9543-8878-4711-8588-f322365e4df2",
+          "issue_id": "01a1a5e9-cedc-7b33-bb1d-f98302d93298",
+          "session_id": "c441a736-930d-419d-8e5d-288a50816dfc",
+          "target_id": "30eab648-d6f7-465e-8f6f-67cde3e8593c",
+          "channel_id": "949b07ef-9204-42e0-93b6-6905751ff1c4",
+          "batch_id": "59368b17-f353-4046-bf47-acb3df49fa25",
+          "group_id": "5681775d-03fa-4751-ac64-3b8f93783ca6",
+          "run_id": "7cb52237-1cec-40e0-b702-b1b04f1d9d83",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "95e13475-3cc6-42cb-9ff4-2d7c5a5bb563"
+        }
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K1-withdrawn",
+      "surface": "agent",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K1/samples/K1-withdrawn.json",
+      "sha256": "2e0e32358667c7ade574415e884238f8887a0f862c307748441b19d143f70cba",
+      "identity": {
+        "kind": "run",
+        "run_id": "0a702b89-2d58-4268-93b6-e31ee81c0b81",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "e69c9543-8878-4711-8588-f322365e4df2",
+          "issue_id": "01a1a5e9-e173-77c0-be01-895054f0b172",
+          "session_id": "b984c120-ccba-48e9-a130-4e39cc5788b9",
+          "target_id": "a4b2c7b7-8cc2-430b-8fc4-2b679762c1eb",
+          "channel_id": "dc49df56-6144-44e3-a979-f1c6e18e0f2d",
+          "batch_id": "4a5ae419-f70a-4dbc-917b-444c6258f55f",
+          "group_id": "376c5b10-c040-4e18-ae4f-7fc4e93fa4d2",
+          "run_id": "0a702b89-2d58-4268-93b6-e31ee81c0b81",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "d29689d2-900b-4f64-bdca-3b89fa62b752"
+        }
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K2-fresh",
+      "surface": "chat",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K2/samples/K2-fresh.json",
+      "sha256": "efe911aa470628215055414329c3c16cc6d19f89424bc81e3ff21f27e6fc944b",
+      "identity": {
+        "kind": "task",
+        "task_id": "01a1a5e9-e95e-7372-9617-dcdcf0283d48",
+        "workspace_id": "7920437e-1b29-4b38-804e-05b2e4cb48bf",
+        "agent_id": "b3416b4a-f7f5-4478-9772-c651584358a0"
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K2-frozen-refusal",
+      "surface": "chat",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K2/samples/K2-frozen-refusal.json",
+      "sha256": "d7f55baa225e1b76d020aa66fb4765ef97d862a37babf502cac8c8d9b8c8428e",
+      "identity": {
+        "kind": "task",
+        "task_id": "01a1a5e9-f02a-74af-a485-d3bf87f66829",
+        "workspace_id": "7920437e-1b29-4b38-804e-05b2e4cb48bf",
+        "agent_id": "b3416b4a-f7f5-4478-9772-c651584358a0"
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 0,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K2-resume",
+      "surface": "chat",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K2/samples/K2-resume.json",
+      "sha256": "4a81340f95e35e764c7be2f982d7212578e6f1133b72012688db27692c5675a6",
+      "identity": {
+        "kind": "task",
+        "task_id": "01a1a5e9-eea0-70c7-8a64-d7d40fa335d5",
+        "workspace_id": "7920437e-1b29-4b38-804e-05b2e4cb48bf",
+        "agent_id": "b3416b4a-f7f5-4478-9772-c651584358a0"
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K3-autopilot",
+      "surface": "autopilot",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-autopilot.json",
+      "sha256": "80ef75f545011132d77a63b1e0aecefae411039b624fe605bd8a1d36d370f6b5",
+      "identity": {
+        "kind": "task",
+        "task_id": "01a1a5e9-fc89-7ae8-91c8-9681777c4746",
+        "workspace_id": "1d9d5ab6-a132-4746-baaf-d417aa97d63d",
+        "agent_id": "91fba8ce-7e61-48fb-a42b-d661494da035"
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K3-chat",
+      "surface": "chat",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-chat.json",
+      "sha256": "1b149f186f3567820290dbb281696f551dfcff5abc49220b863bee6ae1344d57",
+      "identity": {
+        "kind": "task",
+        "task_id": "01a1a5e9-fa81-7841-bbf5-5f333631fc14",
+        "workspace_id": "1d9d5ab6-a132-4746-baaf-d417aa97d63d",
+        "agent_id": "91fba8ce-7e61-48fb-a42b-d661494da035"
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K3-comment",
+      "surface": "comment",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-comment.json",
+      "sha256": "d361e3637ed9d828f75818a4cb4795bf4e64ecd295db18e30d4708eb745dda0c",
+      "identity": {
+        "kind": "task",
+        "task_id": "01a1a5e9-f98f-7a12-bced-1e6038493a9d",
+        "workspace_id": "1d9d5ab6-a132-4746-baaf-d417aa97d63d",
+        "agent_id": "91fba8ce-7e61-48fb-a42b-d661494da035"
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K3-issue",
+      "surface": "issue",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-issue.json",
+      "sha256": "bb2e08f3f00910b6afe897cd196045653e964686b6a55c51081835ce431c2088",
+      "identity": {
+        "kind": "task",
+        "task_id": "01a1a5e9-f45e-7236-ae17-481d9fe43f06",
+        "workspace_id": "1d9d5ab6-a132-4746-baaf-d417aa97d63d",
+        "agent_id": "91fba8ce-7e61-48fb-a42b-d661494da035"
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K3-member",
+      "surface": "member",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-member.json",
+      "sha256": "6404a8c6341a0ba77d93f2f6990ee6e0d0321dfefa36d1934245c94f991282ab",
+      "identity": {
+        "kind": "run",
+        "run_id": "c889950b-1a2b-4203-8ae9-41a7b95bfa38",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "4e635658-0bd6-4a37-a615-463b1b4d4972",
+          "issue_id": "01a1a5ea-035c-72f9-acd5-2567d5e842fe",
+          "session_id": "9418a065-f092-446a-b9f4-0c96a2eae835",
+          "target_id": "f774d776-5342-4162-88d3-9d06995102dc",
+          "channel_id": "ffb3e38a-9eea-4c79-9afb-47a5e358e0a8",
+          "batch_id": "0f71ad85-6828-4c66-90b2-bfdec5e4c666",
+          "group_id": "ff3c107e-0756-4584-aca8-297baeda3f3b",
+          "run_id": "c889950b-1a2b-4203-8ae9-41a7b95bfa38",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "9e38caaa-1036-4c99-b8af-cb8d142cd0e7"
+        }
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K3-member-seed-root",
+      "surface": "leader",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-member-seed-root.json",
+      "sha256": "85b2326d104e91c752c123bd9293d135fe5c4ed59ca1c30663e40ff2c0c8bd34",
+      "identity": {
+        "kind": "run",
+        "run_id": "8643d3fd-fe40-431f-bea4-e8d50c43e593",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "4e635658-0bd6-4a37-a615-463b1b4d4972",
+          "issue_id": "01a1a5ea-035c-72f9-acd5-2567d5e842fe",
+          "session_id": "9418a065-f092-446a-b9f4-0c96a2eae835",
+          "target_id": "f774d776-5342-4162-88d3-9d06995102dc",
+          "channel_id": "ffb3e38a-9eea-4c79-9afb-47a5e358e0a8",
+          "batch_id": "0f71ad85-6828-4c66-90b2-bfdec5e4c666",
+          "group_id": "ff3c107e-0756-4584-aca8-297baeda3f3b",
+          "run_id": "8643d3fd-fe40-431f-bea4-e8d50c43e593",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "3ed20e64-4a5a-4efb-b774-a8c84288ad64"
+        }
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 0,
+        "fake_seed_starts": 1,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K3-quick_create",
+      "surface": "quick_create",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-quick_create.json",
+      "sha256": "89fd0afe372fe8ed4b39226cba76308b137ae144dbb525e5dfd76ea1b993d8dd",
+      "identity": {
+        "kind": "task",
+        "task_id": "01a1a5e9-fb8b-7635-b137-52114a1cdbe8",
+        "workspace_id": "1d9d5ab6-a132-4746-baaf-d417aa97d63d",
+        "agent_id": "91fba8ce-7e61-48fb-a42b-d661494da035"
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    },
+    {
+      "label": "K3-root",
+      "surface": "leader",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-root.json",
+      "sha256": "06398b52aff70eba621643788d0b453441525aefa4bf9917eb8377d5139395e7",
+      "identity": {
+        "kind": "run",
+        "run_id": "3a54b6f4-2fe5-4bbf-83b2-3460551b586a",
+        "host_identity": {
+          "deployment_id": "00000000-0000-4000-8000-000000000009",
+          "installation_id": "4e635658-0bd6-4a37-a615-463b1b4d4972",
+          "issue_id": "01a1a5e9-fd61-7de6-bd79-a06db474fafa",
+          "session_id": "b311f77e-2509-4bfc-9731-ffb261cfd2f1",
+          "target_id": "953a453c-70dc-471d-a29b-3648afff4f22",
+          "channel_id": "b842f810-795e-4c35-af53-d7c04ab4045c",
+          "batch_id": "9854a844-bab6-45ee-b9ee-44a7564f5527",
+          "group_id": "64a838c4-20da-44fb-b351-cb774c4703e6",
+          "run_id": "3a54b6f4-2fe5-4bbf-83b2-3460551b586a",
+          "fence": "1",
+          "claim_generation": "1",
+          "launch_nonce": "d8e79a2f-bcbf-43dd-8b08-03e91cb7e56e"
+        }
+      },
+      "state": "finished",
+      "verdict": "pass",
+      "physical_counts": {
+        "measured_fake_starts": 1,
+        "fake_seed_starts": 0,
+        "paid_starts": 0
+      }
+    }
+  ],
+  "partial_fixed_schedule_physical_counts": {
+    "measured_fake_starts": 14,
+    "fake_seed_starts": 1,
+    "paid_starts": 0
+  },
+  "complete_summary_present": false,
+  "counts_scope": "Persisted E0b/K1/K2/K3 finite samples only; excludes auxiliary wrapper/evidence-fault control subprocesses"
+}

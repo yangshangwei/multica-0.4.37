@@ -9,8 +9,31 @@ import (
 
 	"github.com/go-chi/cors"
 	"github.com/multica-ai/multica/server/internal/handler"
+	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
+
+func TestCORSKnowledgeVersionNegotiation(t *testing.T) {
+	const origin = "https://desktop.example.test"
+	server := cors.Handler(cors.Options{
+		AllowedOrigins: []string{origin}, AllowedMethods: []string{"GET", "POST", "PUT"},
+		AllowedHeaders: corsAllowedHeaders, ExposedHeaders: corsExposedHeaders, AllowCredentials: true,
+	})(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set(handler.HeaderKnowledgeVersion, "2")
+		w.WriteHeader(http.StatusOK)
+	}))
+	request := testutil.WithHeaders(testutil.JSONRequest("OPTIONS", "/api/projects/project/knowledge-policy", nil),
+		"Origin", origin, "Access-Control-Request-Method", "PUT", "Access-Control-Request-Headers", handler.HeaderKnowledgeVersion)
+	preflight := testutil.Call(t, server.ServeHTTP, request).Want(http.StatusOK)
+	if !strings.Contains(strings.ToLower(preflight.Header().Get("Access-Control-Allow-Headers")), strings.ToLower(handler.HeaderKnowledgeVersion)) {
+		t.Fatal("browser knowledge-version preflight was rejected")
+	}
+	request = testutil.WithHeaders(testutil.JSONRequest("GET", "/api/projects/project/knowledge-policy", nil), "Origin", origin)
+	response := testutil.Call(t, server.ServeHTTP, request).Want(http.StatusOK)
+	if response.Header().Get(handler.HeaderKnowledgeVersion) != "2" || !strings.Contains(strings.ToLower(response.Header().Get("Access-Control-Expose-Headers")), strings.ToLower(handler.HeaderKnowledgeVersion)) {
+		t.Fatal("browser cannot read the server knowledge-version response")
+	}
+}
 
 // The app advertises its capabilities on the cancel request (#5219). Browsers
 // preflight a custom request header, so an entry missing from AllowedHeaders is

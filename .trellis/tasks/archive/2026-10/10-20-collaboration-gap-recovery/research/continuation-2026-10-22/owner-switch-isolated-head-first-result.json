@@ -1,0 +1,16 @@
+{
+  "exit_code": 0,
+  "elapsed_s": 15.31,
+  "finished_at": "2026-10-21T23:55:34.417677+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-isolated-head.jsonl",
+  "stdout_sha256": "59ecf7c842f6c5e1432c72a8a25a0665aa1837d3fbfe801882235940925aedcb",
+  "source_changed_during_run": [
+    "server/internal/service/collaboration_owner_departure_targets_test.go"
+  ],
+  "passed_top_level": 2,
+  "passed_including_subtests": 2,
+  "failed": [],
+  "skipped": [],
+  "retention_reason": "Earlier pair snapshot passed2/2, but coordinator current source changed during run due final owned delegation fixture cleanup; rerun final snapshot before commit.",
+  "coordinator_annotation": "Earlier coordination message mistakenly inferred compile failure before reading actual result; exact result remains exit0/2PASS and this annotation corrects it."
+}

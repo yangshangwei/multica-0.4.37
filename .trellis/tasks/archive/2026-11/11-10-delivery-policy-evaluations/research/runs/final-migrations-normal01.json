@@ -1,0 +1,219 @@
+{
+  "name": "final-migrations-normal01",
+  "started_at": "2026-11-10T08:33:17.070869+00:00",
+  "finished_at": "2026-11-10T08:33:25.403025+00:00",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-p",
+    "1",
+    "./cmd/migrate",
+    "-run",
+    "^Test(DeliveryPolicy|DeliveryEvaluation|ConcurrentIndexCleanupsMatchTheirMigrations|EveryConcurrentDownBuildHasCleanup|EveryConcurrentUpBuildHasCleanup)",
+    "-count=1",
+    "-timeout=10m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-delivery-policy-20261110",
+  "database": "policy_final_migrations_normal01",
+  "exit_code": 0,
+  "counts": {
+    "pass": 37,
+    "fail": 0,
+    "skip": 0
+  },
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-migrations-normal01.log",
+  "log_sha256": "3c8d49a2109d73d2d89df1b6be6deb0ec141117bfaac1feb2870e9f5891768af",
+  "tests": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsUpgradeAndEmptyRollback",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRetainEachHistory/project_delivery_policy",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRetainEachHistory/delivery_evidence_evaluation",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRetainEachHistory",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsFenceConcurrentHistory/project_delivery_policy",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsFenceConcurrentHistory/delivery_evidence_evaluation",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsFenceConcurrentHistory",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/project_delivery_policy_revision_idx/missing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/project_delivery_policy_revision_idx/nonunique",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/project_delivery_policy_revision_idx/wrong_columns",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/project_delivery_policy_revision_idx/partial",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/project_delivery_policy_revision_idx/included_column",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/project_delivery_policy_revision_idx/descending",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/project_delivery_policy_revision_idx",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_key_idx/missing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_key_idx/nonunique",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_key_idx/wrong_columns",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_key_idx/partial",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_key_idx/included_column",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_key_idx/descending",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_key_idx",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_id_idx/missing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_id_idx/nonunique",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_id_idx/wrong_columns",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_id_idx/partial",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_id_idx/included_column",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_id_idx/descending",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes/delivery_evaluation_id_idx",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRejectIncorrectIndexShapes",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRecoverRealInvalidIndexes/project_delivery_policy_revision_idx",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRecoverRealInvalidIndexes/delivery_evaluation_key_idx",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRecoverRealInvalidIndexes/delivery_evaluation_id_idx",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsRecoverRealInvalidIndexes",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestDeliveryPolicyMigrationsUniqueIdentities",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestConcurrentIndexCleanupsMatchTheirMigrations",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestEveryConcurrentDownBuildHasCleanup",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestEveryConcurrentUpBuildHasCleanup",
+      "action": "pass"
+    }
+  ]
+}

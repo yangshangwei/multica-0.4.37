@@ -12,6 +12,8 @@
  *  - Zero runtime deps means this module is safe in Node (tests) and browsers
  */
 
+import { accountPath } from "./account";
+
 const encode = (id: string) => encodeURIComponent(id);
 
 /**
@@ -85,6 +87,9 @@ function workspaceScoped(slug: string) {
       `${ws}/agents/${encode(id)}?view=instructions&focus=${AGENT_FOCUS_CONVERSATION_STARTERS}`,
     memberDetail: (id: string) => `${ws}/members/${encode(id)}`,
     squads: () => `${ws}/squads`,
+    newSquad: () => `${ws}/squads/new`,
+    newSquadManual: () => `${ws}/squads/new/manual`,
+    newSquadTemplate: () => `${ws}/squads/new/template`,
     squadDetail: (id: string) => `${ws}/squads/${encode(id)}`,
     inbox: () => `${ws}/inbox`,
     triage: () => `${ws}/triage`,
@@ -99,7 +104,7 @@ function workspaceScoped(slug: string) {
     runtimeSettings: (machineId: string, runtimeId: string) =>
       `${ws}/runtimes/${encode(machineId)}/runtime/${encode(runtimeId)}`,
     marketplace: () => `${ws}/marketplace`,
-    marketplaceTab: (type: "mcp" | "skills") => `${ws}/marketplace?type=${type}`,
+    marketplaceTab: (type: "mcp" | "skills" | "squad-templates" | "agent-templates") => `${ws}/marketplace?type=${type}`,
     skills: () => `${ws}/skills`,
     mcp: () => `${ws}/mcp`,
     skillDetail: (id: string) => `${ws}/skills/${encode(id)}`,
@@ -125,6 +130,7 @@ export const paths = {
   workspace: workspaceScoped,
 
   // Global (pre-workspace) routes
+  account: accountPath,
   login: () => "/login",
   newWorkspace: () => "/workspaces/new",
   invite: (id: string) => `/invite/${encode(id)}`,
@@ -143,5 +149,6 @@ export type WorkspacePaths = ReturnType<typeof workspaceScoped>;
 const GLOBAL_PREFIXES = ["/login", "/workspaces/", "/invite/", "/invitations", "/onboarding", "/auth/", "/logout", "/signup"];
 
 export function isGlobalPath(path: string): boolean {
+  if (/^\/account(?:[?#]|$)/.test(path)) return true;
   return GLOBAL_PREFIXES.some((p) => path === p || path.startsWith(p));
 }

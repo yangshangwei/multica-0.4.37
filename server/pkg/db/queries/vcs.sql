@@ -26,6 +26,7 @@ ON CONFLICT (workspace_id, instance_url) DO UPDATE SET
     access_token_encrypted   = EXCLUDED.access_token_encrypted,
     webhook_secret_encrypted = EXCLUDED.webhook_secret_encrypted,
     connected_by_id          = EXCLUDED.connected_by_id,
+    trust_revision           = vcs_connection.trust_revision + 1,
     updated_at               = now()
 RETURNING *;
 
@@ -57,6 +58,7 @@ DELETE FROM vcs_connection WHERE vcs_connection.id = $1 AND vcs_connection.works
 -- name: RotateVCSConnectionWebhookSecret :one
 UPDATE vcs_connection
 SET webhook_secret_encrypted = $3,
+    trust_revision = trust_revision + 1,
     updated_at = now()
 WHERE id = $1 AND workspace_id = $2
 RETURNING *;

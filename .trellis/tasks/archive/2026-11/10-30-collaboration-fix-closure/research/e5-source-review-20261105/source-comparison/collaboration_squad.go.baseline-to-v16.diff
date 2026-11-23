@@ -1,0 +1,95 @@
+--- baseline/server/internal/service/collaboration_squad.go
++++ v16/server/internal/service/collaboration_squad.go
+@@ -39,6 +39,7 @@
+ 	ID         pgtype.UUID `json:"id"`
+ 	AuthorType string      `json:"author_type"`
+ 	AuthorID   pgtype.UUID `json:"author_id"`
++	AuthorName string      `json:"author_name,omitempty"`
+ 	Content    string      `json:"content"`
+ 	ParentID   pgtype.UUID `json:"parent_id"`
+ 	CreatedAt  time.Time   `json:"created_at"`
+@@ -181,8 +182,22 @@
+ 		if err != nil {
+ 			return out, err
+ 		}
++		authorIDs := make([]pgtype.UUID, 0, len(comments))
+ 		for _, c := range comments {
+-			out.Comments = append(out.Comments, CollaborationRuntimeComment{ID: c.ID, AuthorType: c.AuthorType, AuthorID: c.AuthorID, Content: c.Content, ParentID: c.ParentID, CreatedAt: c.CreatedAt.Time})
++			if c.AuthorType == "member" {
++				authorIDs = append(authorIDs, c.AuthorID)
++			}
++		}
++		accounts, err := collaborationContentAccounts(ctx, r.q, r.access.Issue.WorkspaceID, authorIDs)
++		if err != nil {
++			return out, err
++		}
++		for _, c := range comments {
++			name := ""
++			if account := accounts[c.AuthorID]; c.AuthorType == "member" && account != nil {
++				name = account.Name
++			}
++			out.Comments = append(out.Comments, CollaborationRuntimeComment{ID: c.ID, AuthorType: c.AuthorType, AuthorID: c.AuthorID, AuthorName: name, Content: c.Content, ParentID: c.ParentID, CreatedAt: c.CreatedAt.Time})
+ 		}
+ 		delegations, err := r.q.LockCollaborationGroupDelegations(ctx, r.group.ID)
+ 		if err != nil {
+@@ -192,11 +207,11 @@
+ 			if d.RunID != runID {
+ 				continue
+ 			}
+-			c, err := r.q.GetCollaborationComment(ctx, db.GetCollaborationCommentParams{IssueID: r.access.Issue.ID, WorkspaceID: r.access.Issue.WorkspaceID, CommentID: d.SourceCommentID})
++			body, _, err := immutableHandoffDelegation(ctx, r.q, r.access.Issue.ID, d)
+ 			if err != nil {
+ 				return out, err
+ 			}
+-			out.DispatchComment = c.Content
++			out.DispatchComment = body
+ 		}
+ 		return out, nil
+ 	})
+@@ -285,6 +300,9 @@
+ 		if _, err = r.q.CreateCollaborationBusinessEvent(ctx, db.CreateCollaborationBusinessEventParams{IssueID: r.access.Issue.ID, RunID: runID, EventID: eventID, Kind: "comment", Payload: payload}); err != nil {
+ 			return empty, err
+ 		}
++		if err = r.recordAssignedWakeCause(ctx, out.ContinuationRunID, "comment", comment.ID); err != nil {
++			return empty, err
++		}
+ 		seq, err := r.q.AdvanceCollaborationEventSequence(ctx, r.access.Issue.ID)
+ 		if err != nil {
+ 			return empty, err
+@@ -358,17 +376,21 @@
+ 		if resource.Role != "leader" {
+ 			continue
+ 		}
+-		run, err := r.createDerivedRun(ctx, resource, parent, "continuation", "continuation:"+uuid.NewString())
++		run, err := r.createDerivedRun(ctx, resource, parent, "continuation", collaborationRecordedContinuationPrefix+uuid.NewString())
+ 		return run.ID, err
+ 	}
+ 	return pgtype.UUID{}, invalidCollaborationLedger("squad has no frozen leader")
+ }
++
++// CollaborationSquadActivityReasonMaxBytes bounds a squad activity reason's
++// decoded text.
++const CollaborationSquadActivityReasonMaxBytes = 64 << 10
+ 
+ // Existing squad activity is business evidence, independent of supervisor proof.
+ // action/no_action finish this turn successfully; failed records failure. The
+ // final leader turn decides the group, while member failure only wakes it.
+ func (s *CollaborationService) RuntimeSquadActivity(ctx context.Context, runID pgtype.UUID, token, eventID, outcome, reason string) error {
+-	if len(eventID) == 0 || len(eventID) > 128 || len(reason) > 64<<10 || (outcome != "action" && outcome != "no_action" && outcome != "failed") {
++	if len(eventID) == 0 || len(eventID) > 128 || len(reason) > CollaborationSquadActivityReasonMaxBytes || (outcome != "action" && outcome != "no_action" && outcome != "failed") {
+ 		return collaborationError(http.StatusBadRequest, "invalid_squad_activity")
+ 	}
+ 	_, err := collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (bool, error) {
+@@ -426,7 +448,11 @@
+ 		if err = r.currentGroupAdmission(ctx); err != nil {
+ 			return false, err
+ 		}
+-		if _, err = r.queueContinuation(ctx, parent); err != nil {
++		queued, err := r.queueContinuation(ctx, parent)
++		if err != nil {
++			return false, err
++		}
++		if err = r.assignPendingWakeCauses(ctx, queued); err != nil {
+ 			return false, err
+ 		}
+ 		return true, r.q.ClearCollaborationSquadWakeup(ctx, r.group.ID)

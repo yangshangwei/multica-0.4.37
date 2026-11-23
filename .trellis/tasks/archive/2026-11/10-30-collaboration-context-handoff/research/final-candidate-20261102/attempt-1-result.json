@@ -1,0 +1,343 @@
+{
+  "candidate_sha": "7f8ca87252b53f16041485ac867e501962377802",
+  "command": [
+    "make",
+    "check",
+    "ENV_FILE=<private task source env>"
+  ],
+  "state": "failed_not_accepted",
+  "actual_make_exit_code": 2,
+  "underlying_Go_package_exit_code": 1,
+  "started_at": "2026-11-01T18:48:35.419210+00:00",
+  "finished_at": "2026-11-01T19:04:42.149298+00:00",
+  "log_sha256": "cb637cab0a95c93b5dd63ed150f05ab90557b703e0701fd30ec10f56e99bdd3f",
+  "static_tasks_pass": 15,
+  "TS_pass": 13082,
+  "Go_packages": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "database": "ccheck_20261101185750539422_bb940f8eb38e",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "6d7204283ac4b4895934f358f36f148f148777cf776e91186e759938350d7514"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "database": "ccheck_20261101185758663861_07eb79fa72b8",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 2,
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "bb3371d3283db305e334cc923cea6f2e81682a33f4e9033be58163782d573374"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "database": "ccheck_20261101185800956644_f47ea76e9369",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": true,
+      "log_sha256": "6474cadc2e7494bc3b4428f889ddb2270d10ab0be20a49dbf11d36f33c32935d"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "database": "ccheck_20261101185801498753_f9a6f66e94fe",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 71,
+        "pass": 70,
+        "fail": 0,
+        "skip": 1
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "4e47b12960a699a76ba279f9335711dc3779cc633dd0b32ede8bfa21d32a6877"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "database": "ccheck_20261101185821452803_b0ca13f2a1d5",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1074,
+        "pass": 1074,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "b416e56dfab6ffe5d900bf54f0649b405472fef40b6923f37d50da8e84a032a9"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "database": "ccheck_20261101185838143910_6f87875654d8",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 741,
+        "pass": 735,
+        "fail": 0,
+        "skip": 6
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "b0a96ad83bb23433be3fb9adc1cd96bc73f4a9ecf1fde84b353cc38f4223ba30"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/admission",
+      "database": "ccheck_20261101190018577239_7427887f8751",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": true,
+      "log_sha256": "218470b96c5b654e2340d9816a65028ba1d85a271fa0b94335e9c952878d6d2d"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+      "database": "ccheck_20261101190019309345_e243b33d7b90",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": true,
+      "log_sha256": "93dc7fee08ca45f8c226302aceaa8be3648bcaa539b5ec933a5ddc855d24d936"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/analytics",
+      "database": "ccheck_20261101190019643226_a33d11aa74fd",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 8,
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "640c6914c8b6427577b58e0d340e04e6c32e6caed7c0f807ee4a95909d1d9d51"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attribution",
+      "database": "ccheck_20261101190036942742_8ec97853df30",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 31,
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "4bbbd2c0a46bba7b122ade12998ff718398685bd9f8084ca7af26d0215690d34"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "database": "ccheck_20261101190038932970_d642fc7111ff",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 4,
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "e73f1b280f813d4fe4e6e9f054e4f34e59e47f45fa0e0f6ca4994b97f099c011"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "database": "ccheck_20261101190041663584_d4b8dc307441",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 113,
+        "pass": 112,
+        "fail": 0,
+        "skip": 1
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "7e800137cddf109f5a34e50d806a9285b654fb0bec638d611648f638684b375a"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/changelog",
+      "database": "ccheck_20261101190048022226_cc1252fad4dc",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 56,
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "19f4348f224e2d54351f7ae701596868a03d0713f63ef3bf7800efb62d3485c8"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+      "database": "ccheck_20261101190050209079_4b76585c3aa4",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 3,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "d52f2f68d3b0de7ec5893125687f7a2fb66c4cf016398e968928c29fe0fbd3a5"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "database": "ccheck_20261101190052105098_b8d431c478e1",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": true,
+      "log_sha256": "bd86159230c59e40cad9587bea9a90b9d4e2436c0822ac3923f0a2dfeb8f1067"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chattitle",
+      "database": "ccheck_20261101190052602258_f26ab7ece539",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": true,
+      "log_sha256": "3ccc7323a540a08709ef002bb40d9a3e3cd7f3bd012cf86852156ee0a3ce5612"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "database": "ccheck_20261101190052843283_248934fbfb73",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 326,
+        "pass": 325,
+        "fail": 0,
+        "skip": 1
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "c01ac1b750e4ce74f5462c875edfc43b2885b3302a91d504d8ef965942c6017e"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "database": "ccheck_20261101190057830004_cffe407cfbfc",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 3,
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "84106b02032bd471f9b4816ccf232c197f10e4bd8736dcfcfce9c197d7fe8e2e"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "database": "ccheck_20261101190100333491_472bb8236d85",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "e69fbe73d0620a2594c7446958a7e23f79ae0051d3cc08ddb4a87789004aebe1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "database": "ccheck_20261101190102697670_7a21f045e560",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1716,
+        "pass": 1714,
+        "fail": 0,
+        "skip": 2
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "726a16a8c5c997398f1b623681564e40c5427c75259a31d7524da941a3755a5a"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "database": "ccheck_20261101190234420686_e304ab6e77ff",
+      "template": "multica_check_20261101184835_59670_go",
+      "state": "complete",
+      "exit_code": 1,
+      "counts": {
+        "run": 347,
+        "pass": 345,
+        "fail": 2,
+        "skip": 0
+      },
+      "compiled_without_tests": false,
+      "log_sha256": "aaae74b7ecadde21041fd72ca361086e85d9863fe1eb0c763e08e8566bccebcc"
+    }
+  ],
+  "failed_names": [
+    "TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/valid",
+    "TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles"
+  ],
+  "actual_failure": "provider_bundle_test.go:146 snapshot kind=valid err=collaboration containment is unavailable",
+  "later_stages": "Go later packages/vet,API,productionWeb,Playwright not reached",
+  "failed_package_database_retained": true,
+  "test_template_cleanup": "make check dropped only its unused migration template; all per-package clones retained",
+  "Provider_calls": 0,
+  "next": "isolated provider bundle platform-contract diagnosis and minimal reviewed repair; current source/failure frozen"
+}

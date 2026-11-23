@@ -1,0 +1,3024 @@
+{
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "generated_at": "2026-11-07T05:59:49.498707+00:00",
+  "final_case_counts": {
+    "failed": 2,
+    "passed": 66
+  },
+  "unique_acceptance_cases": 68,
+  "scope": "Selected current branch business/risk regression, not full inventory or release acceptance",
+  "real_provider_calls": 0,
+  "final_cases": [
+    {
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "project": "chromium",
+      "status": "failed",
+      "skip_reasons": [],
+      "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 620\nReceived: 476\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+      "run": "detail-journey-first",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/results.json"
+    },
+    {
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "project": "chromium",
+      "status": "failed",
+      "skip_reasons": [],
+      "error": "TimeoutError: page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"",
+      "run": "detail-journey-first",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "drawer-readiness-recheck-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop account links retain one tab across workspaces, popouts and restart",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop cold account links work without workspaces and survive a controlled list error",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop login opens the pending account destination while workspace loading is stalled",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop account entry obeys the requires_account_setup guard",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop account entry obeys the requires_password_change guard",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop viewer and server changes discard the previous account tab and close popouts",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-boundaries-web.spec.ts",
+      "title": "Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-boundaries-web.spec.ts",
+      "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-two-final-proof",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-two-final-proof/results.json"
+    },
+    {
+      "file": "collaboration-boundaries-web.spec.ts",
+      "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-delivery-web.spec.ts",
+      "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "drawer-readiness-recheck-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+    },
+    {
+      "file": "collaboration-delivery-web.spec.ts",
+      "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-editing-web.spec.ts",
+      "title": "Web source creation, field edits and discussion share one authorized issue",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-editing-web.spec.ts",
+      "title": "A source member outside the collaboration receives only an empty workspace refresh",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Web required memory purge clears open source and managed target material",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "final-memory-knowledge-recheck",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/final-memory-knowledge-recheck/results.json"
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Web recorded-run source is selected through the authorized reader",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Web target-only administrator loses source material but can withdraw",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Web expiry clears active target material when refresh fails",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "title": "Desktop native source review and independent project/workspace contributions",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "drawer-readiness-recheck-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+    },
+    {
+      "file": "collaboration-memory-web.spec.ts",
+      "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-memory-web.spec.ts",
+      "title": "shared context recovers a lost save response with its original request after reload",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-recipient-picker-web.spec.ts",
+      "title": "Web recipient picker exposes self/recent/search results and preserves the outer dialog on Escape",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "collaboration-records-web.spec.ts",
+      "title": "Web shares ordinary child references and retained run records through account notification links",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-deployment-final",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+    },
+    {
+      "file": "collaboration-workbench-web.spec.ts",
+      "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "workbench-final-proof",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/workbench-final-proof/results.json"
+    },
+    {
+      "file": "collaboration-workbench-web.spec.ts",
+      "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-agent-loops.spec.ts",
+      "title": "G5 a chat message runs on the daemon and its reply, then its failure, appear without reload",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-agent-loops.spec.ts",
+      "title": "G6 a plain comment re-engages the assignee, an @mention engages another agent and /note engages none",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-agent-loops.spec.ts",
+      "title": "G7 an agent-mode quick create files the issue and notifies the requester; a run that files nothing reports why",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-agent-loops.spec.ts",
+      "title": "G8 a running task streams its transcript, leaves the issue status alone and stays stopped after a late completion",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G2 a teammate's status change and mention reach the owner's open page and inbox without reload",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G3 members invite, role change and removal work through the settings UI with matching server permissions",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G4 My Issues lists only my assignments and search opens a teammate's issue by identifier",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G1-01 assigning an agent queues one task that the daemon runs to a live completed reply",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "title": "G1-02 a failed run notifies the creator, retries exactly once and can be stopped before it runs",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-workflow.spec.ts",
+      "title": "G-E1 assigning a teammate notifies them live; inbox bulk read/archive clear the badge until they are reassigned away",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-workflow.spec.ts",
+      "title": "G-E2 clearing a teammate's assignment to nobody notifies them and records the change",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-workflow.spec.ts",
+      "title": "G-D1 list-view bulk status change and bulk delete write once each and survive reload",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "core-business-workflow.spec.ts",
+      "title": "G-D2 dragging a board card into another status column moves it once and it stays there after reload",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "squads-design.spec.ts",
+      "title": "squad discovery keeps keyboard navigation, saved choices and project setup usable",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "task-lifecycle-qa.spec.ts",
+      "title": "persists a manually created feature request through edits, workflow, comments and confirmed deletion",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "legacy-test-repair-1",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+    },
+    {
+      "file": "agent-role-template.spec.ts",
+      "title": "offers a template starting point and creates from a role",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "extra-template-first",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/extra-template-first/results.json"
+    },
+    {
+      "file": "localized-template-defaults.spec.ts",
+      "title": "Chinese squad staffing creates localized roles and English restaffing preserves customized agents",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "extra-template-first",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/extra-template-first/results.json"
+    },
+    {
+      "file": "localized-template-defaults.spec.ts",
+      "title": "a localized name collision leaves no partial squad and does not block English role names",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "extra-template-first",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/extra-template-first/results.json"
+    },
+    {
+      "file": "manual.spec.ts",
+      "title": "manual squad route creates exactly one persisted custom squad through the real form",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "manual-squad-first",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/manual-squad-first/results.json"
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "password-collaboration-runtime-handoff-web",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-runtime-handoff-web/results.json"
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "password-collaboration-runtime-handoff-web",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-runtime-handoff-web/results.json"
+    },
+    {
+      "file": "collaboration-handoff-chain-web.spec.ts",
+      "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "password-collaboration-handoff-chain-web",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-handoff-chain-web/results.json"
+    },
+    {
+      "file": "collaboration-leave-web.spec.ts",
+      "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "password-leave-final-proof",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-leave-final-proof/results.json"
+    },
+    {
+      "file": "collaboration-retained-attachment.spec.ts",
+      "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "password-collaboration-retained-attachment",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+    },
+    {
+      "file": "collaboration-retained-attachment.spec.ts",
+      "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "password-collaboration-retained-attachment",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+    },
+    {
+      "file": "collaboration-retained-attachment.spec.ts",
+      "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "password-retained-final-proof",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-retained-final-proof/results.json"
+    },
+    {
+      "file": "collaboration-source-surface.spec.ts",
+      "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "password-final-collaboration-source-surface",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-source-surface/results.json"
+    },
+    {
+      "file": "collaboration-terminal-reopen-web.spec.ts",
+      "title": "Web closed issue refuses @agent and Resume, only the creator reopens, and reopening revives nothing or the stop barrier",
+      "project": "chromium",
+      "status": "passed",
+      "skip_reasons": [],
+      "error": "",
+      "run": "password-final-collaboration-terminal-reopen-web",
+      "retry": 0,
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-terminal-reopen-web/results.json"
+    }
+  ],
+  "runs": [
+    {
+      "label": "detail-journey-first",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:08:01.702251+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/results.json",
+      "raw_sha256": "2f8b38f93409d6159e1142c090e3c6271ed571e9b1ee5d8ccb30b3b496626f81",
+      "stats": {
+        "startTime": "2026-11-07T05:08:02.607Z",
+        "duration": 58031.454999999994,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-detail-journey.spec.ts",
+          "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 620\nReceived: 476\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+          "run": "detail-journey-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/results.json"
+        },
+        {
+          "file": "collaboration-detail-journey.spec.ts",
+          "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"",
+          "run": "detail-journey-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/detail-journey-first/results.json"
+        }
+      ]
+    },
+    {
+      "label": "legacy-first",
+      "kind": "acceptance",
+      "exit_code": 130,
+      "state": "complete",
+      "started_at": "2026-11-07T05:10:03.184011+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json",
+      "raw_sha256": "527331ef50c2711591452d292f2a90f4cb5b6d1807586ac4c0681a7135a5f46e",
+      "stats": {
+        "startTime": "2026-11-07T05:10:04.364Z",
+        "duration": 177807.25,
+        "expected": 7,
+        "skipped": 44,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires the task-owned deployment with collaboration creation enabled"
+          ],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('group', { name: 'Issue resources', exact: true }).getByRole('button', { name: /^Attachments(?: d+)?$/ })\n",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('group', { name: 'Issue resources', exact: true }).getByRole('button', { name: /^Sub-issues(?: d+)?$/ })\n    - waiting for\" http://localhost:5979/\" navigation to finish...\n    - navigated to \"http://localhost:5979/\"\n",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires a matching task-only runtime enrollment deployment"
+          ],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop account links retain one tab across workspaces, popouts and restart",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop cold account links work without workspaces and survive a controlled list error",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop login opens the pending account destination while workspace loading is stalled",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop account entry obeys the requires_account_setup guard",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop account entry obeys the requires_password_change guard",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop viewer and server changes discard the previous account tab and close popouts",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-boundaries-web.spec.ts",
+          "title": "Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-boundaries-web.spec.ts",
+          "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-boundaries-web.spec.ts",
+          "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-delivery-web.spec.ts",
+          "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-delivery-web.spec.ts",
+          "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-editing-web.spec.ts",
+          "title": "Web source creation, field edits and discussion share one authorized issue",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-editing-web.spec.ts",
+          "title": "A source member outside the collaboration receives only an empty workspace refresh",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web required memory purge clears open source and managed target material",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web recorded-run source is selected through the authorized reader",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web target-only administrator loses source material but can withdraw",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web expiry clears active target material when refresh fails",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Desktop native source review and independent project/workspace contributions",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-memory-web.spec.ts",
+          "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-memory-web.spec.ts",
+          "title": "shared context recovers a lost save response with its original request after reload",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-recipient-picker-web.spec.ts",
+          "title": "Web recipient picker exposes self/recent/search results and preserves the outer dialog on Escape",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-records-web.spec.ts",
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-workbench-web.spec.ts",
+          "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "collaboration-workbench-web.spec.ts",
+          "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "title": "G5 a chat message runs on the daemon and its reply, then its failure, appear without reload",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "title": "G6 a plain comment re-engages the assignee, an @mention engages another agent and /note engages none",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "title": "G7 an agent-mode quick create files the issue and notifies the requester; a run that files nothing reports why",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "title": "G8 a running task streams its transcript, leaves the issue status alone and stays stopped after a late completion",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G2 a teammate's status change and mention reach the owner's open page and inbox without reload",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G3 members invite, role change and removal work through the settings UI with matching server permissions",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G4 My Issues lists only my assignments and search opens a teammate's issue by identifier",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G1-01 assigning an agent queues one task that the daemon runs to a live completed reply",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G1-02 a failed run notifies the creator, retries exactly once and can be stopped before it runs",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-workflow.spec.ts",
+          "title": "G-E1 assigning a teammate notifies them live; inbox bulk read/archive clear the badge until they are reassigned away",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-workflow.spec.ts",
+          "title": "G-E2 clearing a teammate's assignment to nobody notifies them and records the change",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-workflow.spec.ts",
+          "title": "G-D1 list-view bulk status change and bulk delete write once each and survive reload",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "core-business-workflow.spec.ts",
+          "title": "G-D2 dragging a board card into another status column moves it once and it stays there after reload",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "squads-design.spec.ts",
+          "title": "squad discovery keeps keyboard navigation, saved choices and project setup usable",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        },
+        {
+          "file": "task-lifecycle-qa.spec.ts",
+          "title": "persists a manually created feature request through edits, workflow, comments and confirmed deletion",
+          "project": "chromium",
+          "status": "not_run",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-first",
+          "retry": null,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-first/results.json"
+        }
+      ]
+    },
+    {
+      "label": "helper-browser-regression",
+      "kind": "helper",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:14:39.092168+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression/results.json",
+      "raw_sha256": "b1ec2ae53418390f2f4fafa89e8c8774928829f26793477aa6d3dfe8505ab932",
+      "stats": {
+        "startTime": "2026-11-07T05:14:40.419Z",
+        "duration": 16.26699999999994,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": []
+    },
+    {
+      "label": "helper-browser-regression-2",
+      "kind": "helper",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:15:18.830543+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression-2/results.json",
+      "raw_sha256": "40109a52e307d3d358c7dfa809c69280fbb93c133a87fa268d703589d4bdcee0",
+      "stats": {
+        "startTime": "2026-11-07T05:15:19.886Z",
+        "duration": 1896.8000000000002,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "helper.spec.ts",
+          "title": "actual disclosure helper resolves accessible resource count ''",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "helper-browser-regression-2",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression-2/results.json"
+        },
+        {
+          "file": "helper.spec.ts",
+          "title": "actual disclosure helper resolves accessible resource count ' 12'",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "helper-browser-regression-2",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression-2/results.json"
+        },
+        {
+          "file": "helper.spec.ts",
+          "title": "actual helper preserves action menu and native details branches",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "helper-browser-regression-2",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/helper-browser-regression-2/results.json"
+        }
+      ]
+    },
+    {
+      "label": "legacy-test-repair-1",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:13:50.168359+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json",
+      "raw_sha256": "cfe3943af16350fe24b513116111b9be7d9ce21cc85383aba35d988a3529090c",
+      "stats": {
+        "startTime": "2026-11-07T05:13:51.261Z",
+        "duration": 653484.505,
+        "expected": 37,
+        "skipped": 9,
+        "unexpected": 7,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires the task-owned deployment with collaboration creation enabled"
+          ],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Copy link', exact: true })\n",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires a matching task-only runtime enrollment deployment"
+          ],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop account links retain one tab across workspaces, popouts and restart",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop cold account links work without workspaces and survive a controlled list error",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop login opens the pending account destination while workspace loading is stalled",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop account entry obeys the requires_account_setup guard",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop account entry obeys the requires_password_change guard",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop viewer and server changes discard the previous account tab and close popouts",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-boundaries-web.spec.ts",
+          "title": "Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-boundaries-web.spec.ts",
+          "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires the isolated collaboration API/database and a same-origin production Web build with creation enabled"
+          ],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-boundaries-web.spec.ts",
+          "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-delivery-web.spec.ts",
+          "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+          "project": "chromium",
+          "status": "timedOut",
+          "skip_reasons": [],
+          "error": "Test timeout of 180000ms exceeded.",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-delivery-web.spec.ts",
+          "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-editing-web.spec.ts",
+          "title": "Web source creation, field edits and discussion share one authorized issue",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-editing-web.spec.ts",
+          "title": "A source member outside the collaboration receives only an empty workspace refresh",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web required memory purge clears open source and managed target material",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Check original result', exact: true })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeEnabled\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Check original result', exact: true })\n",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web recorded-run source is selected through the authorized reader",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web target-only administrator loses source material but can withdraw",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web expiry clears active target material when refresh fails",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Desktop native source review and independent project/workspace contributions",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('navigation', { name: 'Application navigation', exact: true }).getByRole('button', { name: 'Workspaces', exact: true })\n",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-memory-web.spec.ts",
+          "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Submit result', exact: true })\n",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-memory-web.spec.ts",
+          "title": "shared context recovers a lost save response with its original request after reload",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires the task-owned API/DB, production native renderer and explicit enrollment deployment"
+          ],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires the task-owned API/DB, production native renderer and explicit enrollment deployment"
+          ],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires the task-owned API/DB, production native renderer and explicit enrollment deployment"
+          ],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires task-owned loopback API/DB and a matching production Web build"
+          ],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires task-owned loopback API/DB and a matching production Web build"
+          ],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+          "project": "chromium",
+          "status": "skipped",
+          "skip_reasons": [
+            "Requires task-owned loopback API/DB and a matching production Web build"
+          ],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-recipient-picker-web.spec.ts",
+          "title": "Web recipient picker exposes self/recent/search results and preserves the outer dialog on Escape",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-records-web.spec.ts",
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "project": "chromium",
+          "status": "timedOut",
+          "skip_reasons": [],
+          "error": "Test timeout of 180000ms exceeded.",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-workbench-web.spec.ts",
+          "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Browser source owner', exact: true })\n",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "collaboration-workbench-web.spec.ts",
+          "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "title": "G5 a chat message runs on the daemon and its reply, then its failure, appear without reload",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "title": "G6 a plain comment re-engages the assignee, an @mention engages another agent and /note engages none",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "title": "G7 an agent-mode quick create files the issue and notifies the requester; a run that files nothing reports why",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "title": "G8 a running task streams its transcript, leaves the issue status alone and stays stopped after a late completion",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G2 a teammate's status change and mention reach the owner's open page and inbox without reload",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G3 members invite, role change and removal work through the settings UI with matching server permissions",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G4 My Issues lists only my assignments and search opens a teammate's issue by identifier",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G1-01 assigning an agent queues one task that the daemon runs to a live completed reply",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-journeys.spec.ts",
+          "title": "G1-02 a failed run notifies the creator, retries exactly once and can be stopped before it runs",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-workflow.spec.ts",
+          "title": "G-E1 assigning a teammate notifies them live; inbox bulk read/archive clear the badge until they are reassigned away",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-workflow.spec.ts",
+          "title": "G-E2 clearing a teammate's assignment to nobody notifies them and records the change",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-workflow.spec.ts",
+          "title": "G-D1 list-view bulk status change and bulk delete write once each and survive reload",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "core-business-workflow.spec.ts",
+          "title": "G-D2 dragging a board card into another status column moves it once and it stays there after reload",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "squads-design.spec.ts",
+          "title": "squad discovery keeps keyboard navigation, saved choices and project setup usable",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        },
+        {
+          "file": "task-lifecycle-qa.spec.ts",
+          "title": "persists a manually created feature request through edits, workflow, comments and confirmed deletion",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-test-repair-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-test-repair-1/results.json"
+        }
+      ]
+    },
+    {
+      "label": "extra-template-first",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:26:17.216486+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/extra-template-first/results.json",
+      "raw_sha256": "befc354d2264c5e9280e9a75f47c68503794b48c87c973b5018a52b77895f693",
+      "stats": {
+        "startTime": "2026-11-07T05:26:18.231Z",
+        "duration": 7584.035000000001,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "agent-role-template.spec.ts",
+          "title": "offers a template starting point and creates from a role",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "extra-template-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/extra-template-first/results.json"
+        },
+        {
+          "file": "localized-template-defaults.spec.ts",
+          "title": "Chinese squad staffing creates localized roles and English restaffing preserves customized agents",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "extra-template-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/extra-template-first/results.json"
+        },
+        {
+          "file": "localized-template-defaults.spec.ts",
+          "title": "a localized name collision leaves no partial squad and does not block English role names",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "extra-template-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/extra-template-first/results.json"
+        }
+      ]
+    },
+    {
+      "label": "manual-squad-first",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:27:41.300192+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/manual-squad-first/results.json",
+      "raw_sha256": "65f91e898699db898a698bff9e50dff4f0e335cf348b979bcb7945fe89c4664e",
+      "stats": {
+        "startTime": "2026-11-07T05:27:42.265Z",
+        "duration": 3044.5769999999998,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "manual.spec.ts",
+          "title": "manual squad route creates exactly one persisted custom squad through the real form",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "manual-squad-first",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/manual-squad-first/results.json"
+        }
+      ]
+    },
+    {
+      "label": "drawer-readiness-recheck-1",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:29:34.548051+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json",
+      "raw_sha256": "d404817d273ce105c86c9875aecbc6c6adefd618f406eae05d0cc228645ffdf4",
+      "stats": {
+        "startTime": "2026-11-07T05:29:35.472Z",
+        "duration": 74899.02100000001,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "drawer-readiness-recheck-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+        },
+        {
+          "file": "collaboration-delivery-web.spec.ts",
+          "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "drawer-readiness-recheck-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "drawer-readiness-recheck-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+        },
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Desktop native source review and independent project/workspace contributions",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "drawer-readiness-recheck-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+        },
+        {
+          "file": "collaboration-memory-web.spec.ts",
+          "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.getAttribute: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'More actions', exact: true })\n",
+          "run": "drawer-readiness-recheck-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+        },
+        {
+          "file": "collaboration-records-web.spec.ts",
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "drawer-readiness-recheck-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/drawer-readiness-recheck-1/results.json"
+        }
+      ]
+    },
+    {
+      "label": "detail-diagnostic-1",
+      "kind": "diagnostic",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:31:04.711191+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/detail-diagnostic-1/results.json",
+      "raw_sha256": "130536b7689437db6f4b0002fd37bd608ef9e046ff519fecffeae7676ecb3388",
+      "stats": {
+        "startTime": "2026-11-07T05:31:05.671Z",
+        "duration": 47791.554,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "detail.spec.ts",
+          "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "detail-diagnostic-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/detail-diagnostic-1/results.json"
+        },
+        {
+          "file": "detail.spec.ts",
+          "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 620\nReceived: 476\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+          "run": "detail-diagnostic-1",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/detail-diagnostic-1/results.json"
+        }
+      ]
+    },
+    {
+      "label": "final-memory-knowledge-recheck",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:32:39.213835+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/final-memory-knowledge-recheck/results.json",
+      "raw_sha256": "8b1b465188bdc83bd814d5222a9886f10acb039c0cd5ef7eba7c3152dcf7180a",
+      "stats": {
+        "startTime": "2026-11-07T05:32:40.298Z",
+        "duration": 13402.212000000001,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-knowledge.spec.ts",
+          "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "final-memory-knowledge-recheck",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/final-memory-knowledge-recheck/results.json"
+        },
+        {
+          "file": "collaboration-memory-web.spec.ts",
+          "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "final-memory-knowledge-recheck",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/final-memory-knowledge-recheck/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-collaboration-runtime-handoff-web",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:36:14.476148+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-runtime-handoff-web/results.json",
+      "raw_sha256": "00dff59bc6e8244055a9376cece507067b240ff112bf8d0234758a3c37b16454",
+      "stats": {
+        "startTime": "2026-11-07T05:36:15.443Z",
+        "duration": 6749.759,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-runtime-handoff-web.spec.ts",
+          "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "password-collaboration-runtime-handoff-web",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-runtime-handoff-web/results.json"
+        },
+        {
+          "file": "collaboration-runtime-handoff-web.spec.ts",
+          "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "password-collaboration-runtime-handoff-web",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-runtime-handoff-web/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-collaboration-handoff-chain-web",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:36:26.098141+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-handoff-chain-web/results.json",
+      "raw_sha256": "a790cfd6afdbd1378e7c03744a15f67d9191830de3a8b6fbf358deb7580a5957",
+      "stats": {
+        "startTime": "2026-11-07T05:36:26.909Z",
+        "duration": 12603.968,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-handoff-chain-web.spec.ts",
+          "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "password-collaboration-handoff-chain-web",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-handoff-chain-web/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-collaboration-leave-web",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:36:43.347176+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-leave-web/results.json",
+      "raw_sha256": "e0fc1e032cabc2224e662cdaa36614b96b855ea37fed872b026d73dd7cef581f",
+      "stats": {
+        "startTime": "2026-11-07T05:36:44.446Z",
+        "duration": 19939.314,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-leave-web.spec.ts",
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('group', { name: 'AI targets', exact: true }).getByRole('button', { name: 'Independent control agent A', exact: true })\n",
+          "run": "password-collaboration-leave-web",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-leave-web/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-collaboration-retained-attachment",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:37:08.220527+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json",
+      "raw_sha256": "8cea5c971c99f9a15da672eef072ba6f62f98e256c506cf0a2c21bb3e79e7b78",
+      "stats": {
+        "startTime": "2026-11-07T05:37:09.082Z",
+        "duration": 32298.179,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "password-collaboration-retained-attachment",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+        },
+        {
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "password-collaboration-retained-attachment",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+        },
+        {
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('button', { name: 'Independent control agent A', exact: true })\n",
+          "run": "password-collaboration-retained-attachment",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-retained-attachment/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-collaboration-source-surface",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:37:45.261120+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-source-surface/results.json",
+      "raw_sha256": "634df942fa8752d7a9654db67071e1c398c874221c81fecfdce5c685c701b74b",
+      "stats": {
+        "startTime": "2026-11-07T05:37:46.215Z",
+        "duration": 6913.576999999999,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-source-surface.spec.ts",
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "Error: Explicit freshly built source acceptance CLI is required",
+          "run": "password-collaboration-source-surface",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-source-surface/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-collaboration-terminal-reopen-web",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:37:56.995029+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-terminal-reopen-web/results.json",
+      "raw_sha256": "71013711e2601eac53f8e441307d5b4efd2f3877320b4afa6163fcd17b88a4d9",
+      "stats": {
+        "startTime": "2026-11-07T05:37:57.858Z",
+        "duration": 18506.412,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-terminal-reopen-web.spec.ts",
+          "title": "Web closed issue refuses @agent and Resume, only the creator reopens, and reopening revives nothing or the stop barrier",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('group', { name: 'AI targets', exact: true }).getByRole('button', { name: 'Independent control agent A', exact: true })\n",
+          "run": "password-collaboration-terminal-reopen-web",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-collaboration-terminal-reopen-web/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-final-collaboration-leave-web",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:41:23.479452+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-leave-web/results.json",
+      "raw_sha256": "0aa7df2d6c84ce0c984a7bafa72b7de7622eb77ee34751b774519f26503669cb",
+      "stats": {
+        "startTime": "2026-11-07T05:41:25.039Z",
+        "duration": 21099.458000000002,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-leave-web.spec.ts",
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Transfer', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Transfer', exact: true })\n",
+          "run": "password-final-collaboration-leave-web",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-leave-web/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-final-collaboration-retained-attachment",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:41:50.232621+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-retained-attachment/results.json",
+      "raw_sha256": "c58ede4047efae46d1d8765767834c76f6adfefb4e83efa792769e2f56518b20",
+      "stats": {
+        "startTime": "2026-11-07T05:41:51.608Z",
+        "duration": 33072.254,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.getAttribute: Timeout 15000ms exceeded.\nCall log:\n  - waiting for locator('[id=\"comment-990878cc-ef27-460d-864a-3b486741ee2f\"]').getByRole('button', { name: 'Comment history', exact: true })\n",
+          "run": "password-final-collaboration-retained-attachment",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-retained-attachment/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-final-collaboration-source-surface",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:42:29.002919+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-source-surface/results.json",
+      "raw_sha256": "7dd24afc72102b594dd7227c488adf86b8a91bb852f57589c3277e0b031b5dad",
+      "stats": {
+        "startTime": "2026-11-07T05:42:30.500Z",
+        "duration": 54037.291,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-source-surface.spec.ts",
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "password-final-collaboration-source-surface",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-source-surface/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-final-collaboration-terminal-reopen-web",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:43:29.206046+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-terminal-reopen-web/results.json",
+      "raw_sha256": "087c6141d2b4910da51ef3a79ae0484fbd781e2cb80560f677229569c75e6464",
+      "stats": {
+        "startTime": "2026-11-07T05:43:31.290Z",
+        "duration": 24951.422,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-terminal-reopen-web.spec.ts",
+          "title": "Web closed issue refuses @agent and Resume, only the creator reopens, and reopening revives nothing or the stop barrier",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "password-final-collaboration-terminal-reopen-web",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-final-collaboration-terminal-reopen-web/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-closure-collaboration-leave-web",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:45:02.519796+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-leave-web/results.json",
+      "raw_sha256": "8b7d457757917c835bd7945aaa4adf7ba1cddca07de83281d42fc8cab27dda6e",
+      "stats": {
+        "startTime": "2026-11-07T05:45:04.734Z",
+        "duration": 31122.261,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-leave-web.spec.ts",
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('form', { name: 'Comments', exact: true }).getByRole('group', { name: 'People', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" with timeout 5000ms\n  - waiting for getByRole('form', { name: 'Comments', exact: true }).getByRole('group', { name: 'People', exact: true })\n",
+          "run": "password-closure-collaboration-leave-web",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-leave-web/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-closure-collaboration-retained-attachment",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:45:40.103302+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-retained-attachment/results.json",
+      "raw_sha256": "adc053836007cd4fc3a270914a1d8dd46ca2e50fb26fa3b49073c9539726ad63",
+      "stats": {
+        "startTime": "2026-11-07T05:45:41.563Z",
+        "duration": 56652.575,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('region', { name: 'Attachments', exact: true }).getByRole('button', { name: 'Preview retained-comment.txt', exact: true })\n",
+          "run": "password-closure-collaboration-retained-attachment",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-closure-collaboration-retained-attachment/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-leave-final-proof",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:47:31.189751+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-leave-final-proof/results.json",
+      "raw_sha256": "7175642d75c8988be43608d27c4d75146f52c5c5bab5bceea8f7cff9c443e91a",
+      "stats": {
+        "startTime": "2026-11-07T05:47:32.295Z",
+        "duration": 22880.347,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-leave-web.spec.ts",
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "password-leave-final-proof",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-leave-final-proof/results.json"
+        }
+      ]
+    },
+    {
+      "label": "password-retained-final-proof",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:48:50.000735+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-retained-final-proof/results.json",
+      "raw_sha256": "99a3119def2dc8a5b8b6231b1b7f61a5f14dd9dac60a49469b6543a31bfce4fe",
+      "stats": {
+        "startTime": "2026-11-07T05:48:51.357Z",
+        "duration": 28870.421,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-retained-attachment.spec.ts",
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "password-retained-final-proof",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/password-retained-final-proof/results.json"
+        }
+      ]
+    },
+    {
+      "label": "legacy-deployment-final",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:49:43.996958+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json",
+      "raw_sha256": "c5e75bb4d61d4239d7e2d7e7b409ad5c9b2a575b6c09c62bd8c5906e575c9a4f",
+      "stats": {
+        "startTime": "2026-11-07T05:49:45.413Z",
+        "duration": 368865.594,
+        "expected": 10,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-account-desktop.spec.ts",
+          "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-boundaries-web.spec.ts",
+          "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+          "project": "chromium",
+          "status": "timedOut",
+          "skip_reasons": [],
+          "error": "Test timeout of 240000ms exceeded.",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-memory-web.spec.ts",
+          "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-records-web.spec.ts",
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        },
+        {
+          "file": "collaboration-workbench-web.spec.ts",
+          "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Transfer', exact: true })\n",
+          "run": "legacy-deployment-final",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-deployment-final/results.json"
+        }
+      ]
+    },
+    {
+      "label": "legacy-two-final-proof",
+      "kind": "acceptance",
+      "exit_code": 1,
+      "state": "complete",
+      "started_at": "2026-11-07T05:56:24.309769+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-two-final-proof/results.json",
+      "raw_sha256": "8e2846eb9ab184b2b1361c571447be11851fe661e642fc56ab324c5055fd8aa0",
+      "stats": {
+        "startTime": "2026-11-07T05:56:25.492Z",
+        "duration": 34763.072,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-boundaries-web.spec.ts",
+          "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "legacy-two-final-proof",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-two-final-proof/results.json"
+        },
+        {
+          "file": "collaboration-workbench-web.spec.ts",
+          "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+          "project": "chromium",
+          "status": "failed",
+          "skip_reasons": [],
+          "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Participating', exact: true })\n",
+          "run": "legacy-two-final-proof",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/legacy-two-final-proof/results.json"
+        }
+      ]
+    },
+    {
+      "label": "workbench-final-proof",
+      "kind": "acceptance",
+      "exit_code": 0,
+      "state": "complete",
+      "started_at": "2026-11-07T05:58:53.793615+00:00",
+      "raw_results": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/workbench-final-proof/results.json",
+      "raw_sha256": "b511111244e72ca30986218d204c562354e41fc6a8cbcb7ea7b3fe24b11ddced",
+      "stats": {
+        "startTime": "2026-11-07T05:58:55.018Z",
+        "duration": 10124.019,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "collaboration-workbench-web.spec.ts",
+          "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+          "project": "chromium",
+          "status": "passed",
+          "skip_reasons": [],
+          "error": "",
+          "run": "workbench-final-proof",
+          "retry": 0,
+          "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/browser/runs/workbench-final-proof/results.json"
+        }
+      ]
+    }
+  ]
+}

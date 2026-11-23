@@ -1,0 +1,33 @@
+{
+  "head": "5ab2db8593d48124342038afbddb13d667620abc",
+  "product_commit": "9de37277d651b4d2d39ffe0cc1d2171286744550",
+  "base": "822c15785",
+  "files_sha256": {
+    ".github/workflows/desktop-smoke.yml": "35e6fab7ca674ec3a3c68fb1e907ad2beb18b1de374cc58688ee56a9035ccc5a",
+    ".trellis/spec/desktop/frontend/intranet-updates.md": "02bf2eaefcbc0ad0b579d728386805e048af03cfb65704b74f715b98ecdfa161",
+    ".trellis/tasks/10-30-collaboration-context-handoff/delivery-preparation-plan-2026-11-01.md": "20bc9cd1d916ec55e2365707a2c47aeddbab8da98b3d1934a94e88eebb129858",
+    "apps/desktop/scripts/WINDOWS_ACCEPTANCE.md": "0ebedb939a7e063408f1d93ee96a85f336820b57be4e13dcac20e4b76fc4c944",
+    "apps/desktop/scripts/accept-windows-installer.ps1": "c5ebea0d508d9eb646d89e95acd4b7834327f2c6a13f5ccb8aac58e54b57f411",
+    "apps/desktop/scripts/windows-business-server.ps1": "897a03493beb35a4f4d40815c485c8de884cb8bb51805e6548547bf840c0927e",
+    "apps/desktop/scripts/windows-collaboration-config.mjs": "b8300f0bd44994cafed977791b8fd251e9c85b94500f09cf52cde1f96d56a286",
+    "apps/desktop/scripts/windows-collaboration-config.node-test.mjs": "f682b15dcd89ea387a4084c3c88dbc5e7411e5a5a9b68450e44e94015437c728",
+    "apps/desktop/scripts/windows-collaboration-server.ps1": "83ab72169491bf5d9295fc38afe747aa25ec791e5226154dfdcd2d1db9a81111",
+    "apps/desktop/scripts/windows-collaboration-workflow.node-test.mjs": "56ae6407b22a14ff1f0fa3a31e5c0a8a78a93f12d727bfaf2519e1cca69aede3",
+    "apps/desktop/scripts/windows-collaboration.mjs": "88b6de5b28a5c33a3f7ac9196f64b8e60de3e4a04dc171f7d5047739135611c2",
+    "docs/offline-upgrade.zh-CN.md": "5e66b737bd0c42851eda3229f47ca02dfd8f9b87d8340dc19fc90f2ecdd859d6",
+    "e2e/collaboration-host-installed.spec.ts": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+    "e2e/fixtures/collaboration-installed-layout.d.mts": "5cfd090a0d43f38a6562fa96b27787739c1354a6948cb34b2ceb94228097fc44",
+    "e2e/fixtures/collaboration-installed-layout.mjs": "014cfef46f6abe42a93e696bd68d8651f3b44aebbfbc7723816de37d71a78f4d",
+    "e2e/fixtures/collaboration-installed-layout.node-test.mjs": "918148e5d5ebc2cc845e90f46638e4f390d4b1580079ad932d72b8e91bdd6729",
+    "e2e/fixtures/collaboration-installed-main.mjs": "ebe914eaa5d71e8b7d7c8e0d937b99ba67df72b255754a69eef899b5e70fd475",
+    "e2e/fixtures/collaboration-installed-main.node-test.mjs": "49c98c6db0c2876cf2c6db7d9f8d36af039a79629223a0b28a71eede7a1901a1",
+    "e2e/fixtures/collaboration-installed-main.ts": "f63d1e7e098e7634b9e90f75605fd63e22a4866cd6d27c93d564d8c4be9e50fb",
+    "scripts/check-collaboration-native-tests.mjs": "b5bc4130c93c3e75fddcde2873500c1f060f6bfdbb434c1bf11f1f560d4f47d7",
+    "scripts/check-collaboration-native-tests.test.mjs": "771f47bee01035ed2f723e430d33883724448c3bf3fecfeb0051918042508a11"
+  },
+  "extra_reviewed_unchanged_paths": [
+    "e2e/fixtures/collaboration-host-runtime.ts",
+    "server/internal/daemon/collaboration_host_router_test.go"
+  ],
+  "product_read_only": true
+}

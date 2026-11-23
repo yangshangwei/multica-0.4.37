@@ -31,6 +31,52 @@ Goldmark alone cannot protect the editor's standalone `!file[name](url)` syntax:
 
 - Both modes share bounded 440px default / 600px assist sizing with an 85dvh cap and 12px phone gutters. Assistance requests space once when generation starts; retain expanded space through completion and mode switches. Explicit user expansion takes precedence.
 - The middle editor/assist region scrolls; footer remains outside it. Keep the scroll container min-height zero and constrain the editor minimum inside that region, scoped to create panels rather than changing ContentEditor globally. The editor wrapper needs an intrinsic flex basis (`flex-auto shrink-0`): a zero flex basis with a fixed minimum lets long Markdown overflow over the assist controls and intercept clicks.
+- Agent creation includes recipient/recommendation controls and blocking notices
+  in that middle scroller. Their variable height can otherwise consume the
+  entire 85dvh budget at 667×375 and clip the submission footer. Keep the
+  source-context preview as its existing separate pane, and keep properties and
+  the footer outside the scroller. Editor reveal uses the editor's offset inside
+  the scroller, not an assumed zero offset. The real browser regression verifies
+  complete submit visibility and footer containment in both modes at desktop,
+  phone and short landscape sizes; do not shrink touch targets to make it pass.
 - `onNeedsSpace` and `onRevealEditor` are layout callbacks only; do not mirror assistance business state in the shell. Reveal after the next animation frame so post-adoption DOM height is current.
+- The generate button takes its tone from the exported `AI_ASSIST_BUTTON_TONE`, which the creator-recommendation button in agent create shares: `text-muted-foreground` when enabled, and the foreground colour under the Button's own disabled opacity when disabled (about 3.7:1 light, 5:1 dark, the same as any disabled ghost button). Do not stack the disabled opacity on the muted tone; that lands near 2:1 and reads fainter than the helper's own hint. Do not use `--faint-foreground` here: that token is not valid for text. Change the constant, not one caller. Status copy uses the same verb as the action (完善 / refine), never 优化 / optimize.
 - Clarification disclosure preserves typed answers, exposes aria-expanded, and displays outstanding counts. Single-line textareas grow through field-sizing-content to roughly four lines. Keep mobile assist controls at least 44px tall.
 - Visual QA must mount the full CreateIssueDialog with real panels and editors; API/provider fixtures may be mocked. Verify both modes, viewport gutters, fixed footer position, and low-height scrolling in addition to isolated component tests.
+
+## Collaboration plain-text integration
+
+`IssueDescriptionAssist` exports the four-method `IssueDescriptionAssistEditor`
+port. Optional `textFormat="plain"` preserves exact textarea reads/undo and
+renders completed previews as inert text. Default `markdown` callers retain
+their normalization and real ContentEditor behavior. `actionLabel` changes
+only the action text, not the request mode. Collaboration uses `mode="manual"`
+even when its task execution policy is assisted.
+An optional root `className` supports surface-specific spacing. Collaboration
+uses `py-0` to retain advanced-field visibility; ordinary callers keep `py-2`.
+
+`disabledReason` is visible and gates generate/retry/regenerate only. Undo and
+answer merging must remain usable when an AI-generated result exceeds the next
+request's input limit. `isCurrent` is a live authority/owner predicate: evaluate
+it before starting, publishing deltas/completion, adopting, merging or undoing.
+An invalid owner aborts/discards temporary state instead of showing private
+output as a stale suggestion. Ordinary edit/upload/create blocks still permit
+the existing inspection-only stale/blocked result.
+
+Collaboration passes its selected source UUID explicitly, keys the assistant
+by draft ID inside the server/viewer/source-keyed form and persists through the
+existing delivery draft. A fresh empty, not-yet-persisted draft still exposes a
+disabled helper with its empty-input hint. A nonempty request must own its
+persisted draft, and retirement/source/API/viewer changes fence late callbacks.
+The textarea adapter must synchronously expose adopted text before the shared
+assistant rereads it; it must not create another persistent store.
+
+AI limits (20000 body and 500 title Unicode code points) do not reduce ordinary
+collaboration input limits. Do not truncate user text or include private file
+contents/credentials. AI route404/503/stream failure preserves draft/files;
+never wrap the AI route in source-denial cleanup, since an older server may
+simply lack the route. Current source authority comes from creation options.
+
+Tests cover raw whitespace undo, inert resource preview, explicit source header,
+late result cancellation/ownership, newer edits, upload/create locks, AI-only
+limits/errors and ordinary real-editor compatibility.

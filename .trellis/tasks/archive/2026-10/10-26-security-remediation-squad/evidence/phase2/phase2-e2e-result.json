@@ -1,0 +1,26 @@
+{
+  "command": [
+    "bash",
+    "scripts/dev-env.sh",
+    "exec",
+    "security-phase2-web-20261027",
+    "--",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "e2e/security-remediation-squad.spec.ts",
+    "e2e/squads-audit.spec.ts",
+    "e2e/project-squad-workspace.spec.ts",
+    "e2e/agent-role-template.spec.ts",
+    "e2e/agent-autonomy-gates.spec.ts"
+  ],
+  "exit_code": 1,
+  "started_at": "2026-10-27T11:37:16.173299+00:00",
+  "completed_at": "2026-10-27T11:37:59.787321+00:00",
+  "worktree": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/security-remediation-phase2/checkout",
+  "environment": "security-phase2-web-20261027"
+}

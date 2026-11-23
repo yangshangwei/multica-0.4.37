@@ -1,0 +1,2 @@
+SELECT collaboration_assert_knowledge_empty();
+DROP INDEX IF EXISTS collaboration_knowledge_runtime_history_idx;

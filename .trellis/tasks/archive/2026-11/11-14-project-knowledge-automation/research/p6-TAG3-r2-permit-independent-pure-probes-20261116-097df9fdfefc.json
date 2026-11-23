@@ -1,0 +1,156 @@
+{
+  "ROOT_Source_MD_or_existing_report_writes": 0,
+  "actual_Go_SQL_parser_SourceCOPY_or_process_execution": 0,
+  "actual_MAIN_permit_created": false,
+  "all_nonapproval_schema_consts_match_template": true,
+  "at": "2026-11-16T02:12:38.364109+00:00",
+  "config": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/tagged-runner-config-v3-r2.json",
+    "sha256": "1b9a599ceb33fd5ea118c1a6b44696148851d60ad6549342674f642a24a93a34"
+  },
+  "correct_source_review_and_old_prerequisite_consumed": true,
+  "correctly_bound_in_memory_permit_validated": true,
+  "kind": "independent_TAG3_r2_permit_schema_and_refusal_pure_probes",
+  "method": "Invoked the pinned r2 validate_permit/prior_result guard functions on an in-memory permit only. No main or execute path. Template references left unchanged on disk; simulated review entries validate structure only, not a real issued handoff.",
+  "negative_cases": [
+    {
+      "case": "approved",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "source_ready",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "issuer",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "recipient",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "runner_sha256",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "config_sha256",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "source_id",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "source_root",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "scope_sha256",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "database_prefix",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "typed_helper_sha256",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "expires_at",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "schema",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "unknown capability key",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "remove required source review",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "review boolean blocker masquerade",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "wrong order",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "extra third mode",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "wildcard package",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "broaden selector",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "extra tag",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "deadline override",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "suite budget expansion",
+      "exception": "RuntimeError",
+      "refused": true
+    },
+    {
+      "case": "remove forbidden capability",
+      "exception": "RuntimeError",
+      "refused": true
+    }
+  ],
+  "negative_count": 24,
+  "reviewer": "/root/continuation_gate_audit",
+  "runner": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-tagged-runner-v3-r2.py",
+    "sha256": "0b9850c279d847425407465038e930aedbbd6e38dd984babd287d4900d2a07ce"
+  },
+  "schema": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/tagged-v3-r2-permit-schema.json",
+    "sha256": "b5b53c07b22d9f07b101d80bdf621f96adfdc5d39afe99aa0f1109767d88902c"
+  },
+  "schema_properties_required_template_keys_equal": true,
+  "source_review_sha256": "64635164078c226fda1b31b2db364ae2d36520f87807daa91956947a5688712a",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "template": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/tagged-v3-r2-permit-template.json",
+    "sha256": "f265512a463901270162acba013469d8d95d759fcb0c634907b036b60a347efd"
+  },
+  "template_approved": false,
+  "template_source_ready": false
+}

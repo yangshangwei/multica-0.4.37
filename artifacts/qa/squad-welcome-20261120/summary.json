@@ -1,0 +1,66 @@
+{
+  "task": ".trellis/tasks/11-20-squad-welcome",
+  "commitAtBuild": "f0f0776887b9bece64ec2fa004bc83fde1762313",
+  "sourceRoot": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "launchMode": "production Web (next build --webpack + next start) and production Electron renderer (electron-vite build + native routing/preload fixture)",
+  "webBuildId": "yISe9EtuoakuXvlpxoPNH",
+  "origins": {
+    "web": "http://localhost:59366",
+    "api": "http://localhost:59365",
+    "renderer": "http://127.0.0.1:59367"
+  },
+  "productionBuilds": {
+    "api": 0,
+    "web": 0,
+    "desktop": 0
+  },
+  "browserStats": {
+    "startTime": "2026-11-20T15:51:35.209Z",
+    "duration": 22210.253,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browserErrors": [],
+  "staticTests": {
+    "views": 93,
+    "docs": 5,
+    "core": 28
+  },
+  "lint": "passed",
+  "viewsTypecheck": "passed",
+  "docsEmbed": "passed (go test ./internal/docs/...)",
+  "detector": [],
+  "visualVerdict": {
+    "score": 94,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [
+      "The existing workspace shell leaves less canvas than the standalone reference, so the shared type scale and preview are sized to the actual content container.",
+      "The reference avatars use decorative flowers; the implementation keeps the established Lucide icon language and labels every scene as illustrative."
+    ],
+    "suggestions": [],
+    "reasoning": "The two-column introduction, semantic primary creation action, light-blue delegation scene, rounded panels and partial next-card preview match the approved composition. Final production Web and Electron renderer checks preserve navigation, narrow layouts, keyboard controls and 200% zoom without horizontal overflow."
+  },
+  "sourceSha256": {
+    "packages/views/squads/components/squad-welcome.tsx": "b8449766772e3cd3dc6ed0965bf42c71a10baa2205a5d6cc6c404a09f9fc1e4f",
+    "packages/views/squads/components/squad-welcome.module.css": "95794122816e07225f9bff5b6f4cc094015c598998605d3d95ad2c1bd2c77b1d",
+    "packages/views/squads/components/squad-welcome.module.css.d.ts": "f3f8c2f7c77b154b24adf6e338061597e7173ac3af9a8d6b058c6e9ba682f509",
+    "packages/views/squads/components/squads-page.tsx": "276202bdb60d9ab9e60d822d12ce6a3dce893bd7b1a03a8f06cb48b72b4e3df7",
+    "packages/views/squads/components/squads-page.test.tsx": "82d28a66989ffa7300f19710cc15a217d3ae1fbce0edabc74919c0978604d394",
+    "packages/views/locales/en/squads.json": "68509e2b2093a30aa220b88c9258ee4357b52beaf202c75d7f7d78da03882073",
+    "packages/views/locales/zh-Hans/squads.json": "f376a931f7d56e86150c51ed8ef058f79f936c4e68d0619d3496fc2e7a0b1c09",
+    "packages/core/docs/slugs.ts": "0cd78334945de5fec9bdcf1070c87200a63b99f352a4654d63b47e4dcb0510e0",
+    "apps/docs/content/docs/squads.mdx": "c6532c58d084c20658363354a7159db606d659733f868a62be5394713aec0933",
+    "apps/docs/content/docs/squads.zh.mdx": "0812ea8635e1f8f113a91c3568644fe29201cbca3afacb0ea78ba15a46ed7df7",
+    "server/internal/docs/content/pages/squads.json": "6159ccf7477917e90652bacfe65da3f23b03a981f8dd0046ee62bdc1b0af59eb",
+    "e2e/squad-welcome.spec.ts": "5d038a586368e981eb8ba6e5d795853bef0c5dcd4098d0f5579f00b17adb3b95"
+  },
+  "desktopRendererIndexSha256": "b0a6ed32e49e12f136172735734d1516dba15925ce4cd7a33c2580aadf11614c",
+  "notes": [
+    "Initial browser run passed functionally but native screenshots did not await painted scroll; retained in results-r1. Final full three-case replay adds stable layout/paint and viewport-bound assertions.",
+    "No packaged Electron Main, installer/updater or real-model execution acceptance is claimed.",
+    "Inherited malformed-success squad response fallback remains EMPTY_SQUAD_LIST."
+  ]
+}

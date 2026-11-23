@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-05T13:03:49.470074+00:00",
+  "scenario": "RK1-H3a",
+  "original_exit": 1,
+  "helper_review_ready": false,
+  "trials": [
+    {
+      "label": "RK1-H3a-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    },
+    {
+      "label": "RK1-H3a-t2",
+      "status": "incomplete",
+      "verdict": "measured:provider_result_missing",
+      "provider_version": "2.1.318",
+      "observed_models": [
+        "claude-opus-5-5"
+      ]
+    }
+  ],
+  "new_paid": 2,
+  "fake_seeds": 0,
+  "total_paid": 12,
+  "remaining": 13,
+  "source_stable": true,
+  "capture_hashes_match_upfront": true,
+  "CLI_captures": 3,
+  "final_status_allowed": true,
+  "operator_changes": {
+    "~/.claude/plugins/": {
+      "before": "e58713833ac71539dee81727c478519818dc10326e501ebcceee8ba7de2303e9",
+      "after": "9e80c5d42bc15059ee18ab419d8de12258e4e783c09d3e685721bbd284923c6e"
+    }
+  },
+  "plugin_changed_paths_count": 1,
+  "original_stop_triggered": true,
+  "stopped_at": "RK1-H3a-t2",
+  "t3": "not_started_no_public_record",
+  "independent_review": "independent-review.json",
+  "no_retry_or_followup": true,
+  "private_result": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H3a-from-1/run-result.json",
+  "private_result_sha256": "74d9564df4510570e62163e8edb0125034efd0ecb43001f9ce57cb22ae422db0",
+  "public_results": [
+    {
+      "label": "RK1-H3a-t1",
+      "sha256": "a94635dbb69088503f87a5010cdca6128d20dc74324c763ffc0bdcf8dab1d21e",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H3a-t1.json"
+    },
+    {
+      "label": "RK1-H3a-t2",
+      "sha256": "9a4b94050ad696c46512b0833d27398ac0c6ef48770f6085d1db1283f9d628ce",
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H3a-t2.json"
+    }
+  ],
+  "window_release": "window-release.json",
+  "independent_checks_passed": 120,
+  "independent_checks_failed": 0,
+  "scenario_verdict": "STOP_ORIGINAL_INCOMPLETE",
+  "direct_failure": "fixed5minuteProviderexecutiontimeout; exit143 and no result frame",
+  "upstream_cause": "UNKNOWN; exactreferencedsession has no recordedAPIerror/retry fields, cannotexcludeunobservedretry",
+  "failure_diagnosis": "failure-diagnosis.json",
+  "t2_correct_code_exposed": true
+}

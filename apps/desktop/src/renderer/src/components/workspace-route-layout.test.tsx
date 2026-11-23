@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 // vi.hoisted shared state for all the stores / hooks the layout consumes.
 const state = vi.hoisted(() => ({
+  activeScope: "workspace" as "account" | "workspace",
   user: null as { id: string } | null,
   isAuthLoading: false,
   overlay: null as { type: string } | null,
@@ -13,8 +14,6 @@ const state = vi.hoisted(() => ({
   listFetched: true,
   wsList: [] as { id: string; slug: string }[],
   workspaceSeen: true,
-  modalRenders: 0,
-  modalAriaLabel: "source-backfill-modal-marker",
   currentSlug: null as string | null,
   pendingDeletes: new Set<string>(),
   childQuerySlugs: [] as (string | null)[],
@@ -89,28 +88,19 @@ vi.mock("@multica/views/workspace/use-workspace-seen", () => ({
   useWorkspaceSeen: () => state.workspaceSeen,
 }));
 
+// Marker stub: renders only when the layout actually mounted it (and not
+// e.g. suppressed by overlayActive).
 vi.mock("@multica/views/workspace/welcome-after-onboarding", () => ({
-  WelcomeAfterOnboarding: () => null,
+  WelcomeAfterOnboarding: () => <div data-testid="welcome-after-onboarding-marker" />,
 }));
 
 vi.mock("@multica/views/layout", () => ({
   WorkspacePresencePrefetch: () => null,
 }));
 
-// The point of this whole test: assert the desktop layout mounts the
-// SourceBackfillModal. We stub the real component with a marker that
-// renders only when the layout actually rendered it (and not e.g.
-// suppressed by overlayActive).
-vi.mock("@multica/views/onboarding", () => ({
-  SourceBackfillModal: () => {
-    state.modalRenders += 1;
-    return <div data-testid={state.modalAriaLabel} />;
-  },
-}));
-
 vi.mock("@/stores/tab-store", () => ({
   useTabStore: Object.assign(() => null, {
-    getState: () => ({ validateWorkspaceSlugs: vi.fn() }),
+    getState: () => ({ activeScope: state.activeScope, validateWorkspaceSlugs: vi.fn() }),
   }),
 }));
 
@@ -146,6 +136,7 @@ function renderLayout() {
 }
 
 beforeEach(() => {
+  state.activeScope = "workspace";
   state.user = { id: "u1" };
   state.isAuthLoading = false;
   state.overlay = null;
@@ -154,24 +145,21 @@ beforeEach(() => {
   state.listFetched = true;
   state.wsList = [{ id: "ws-1", slug: "acme" }];
   state.workspaceSeen = true;
-  state.modalRenders = 0;
   state.currentSlug = null;
   state.pendingDeletes = new Set<string>();
   state.childQuerySlugs = [];
 });
 
 describe("WorkspaceRouteLayout", () => {
-  it("mounts SourceBackfillModal when no WindowOverlay is active", () => {
+  it("mounts WelcomeAfterOnboarding when no WindowOverlay is active", () => {
     const { queryByTestId } = renderLayout();
-    expect(queryByTestId(state.modalAriaLabel)).not.toBeNull();
-    expect(state.modalRenders).toBeGreaterThan(0);
+    expect(queryByTestId("welcome-after-onboarding-marker")).not.toBeNull();
   });
 
-  it("suppresses SourceBackfillModal while a WindowOverlay is active", () => {
+  it("suppresses WelcomeAfterOnboarding while a WindowOverlay is active", () => {
     state.overlay = { type: "new-workspace" };
     const { queryByTestId } = renderLayout();
-    expect(queryByTestId(state.modalAriaLabel)).toBeNull();
-    expect(state.modalRenders).toBe(0);
+    expect(queryByTestId("welcome-after-onboarding-marker")).toBeNull();
   });
 
   it("keeps workspace content mounted when a background refetch fails", async () => {
@@ -204,6 +192,15 @@ describe("WorkspaceRouteLayout", () => {
  * nothing until a `useWorkspaceId()` throw blanked the whole renderer.
  */
 describe("WorkspaceRouteLayout workspace singleton lifecycle", () => {
+  it("does not re-adopt stale workspace context after account navigation", () => {
+    state.activeScope = "account";
+    state.currentSlug = null;
+
+    renderLayout();
+
+    expect(state.currentSlug).toBeNull();
+  });
+
   it("adopts the workspace while it resolves", () => {
     renderLayout();
     expect(state.currentSlug).toBe("acme");

@@ -1,0 +1,15 @@
+[
+  {
+    "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+    "status": "failed",
+    "error": {
+      "message": "Error: response.json: Protocol error (Network.getResponseBody): No data found for resource with given identifier\n    at refreshIssue (/workspace/e2e/fixtures/collaboration-installed-main.mjs:81:41)\n    at async dispatch (/workspace/e2e/fixtures/collaboration-installed-main.mjs:315:24)\n    at async file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:387:23",
+      "stack": "Error: response.json: Protocol error (Network.getResponseBody): No data found for resource with given identifier\n    at refreshIssue (/workspace/e2e/fixtures/collaboration-installed-main.mjs:81:41)\n    at async dispatch (/workspace/e2e/fixtures/collaboration-installed-main.mjs:315:24)\n    at async file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:387:23\n    at refreshIssue (/workspace/e2e/fixtures/collaboration-installed-main.mjs:81:41)\n    at async dispatch (/workspace/e2e/fixtures/collaboration-installed-main.mjs:315:24)\n    at async file:///workspace/e2e/fixtures/collaboration-installed-main.mjs:387:23\n    at Interface.<anonymous> (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-main.ts:61:39)",
+      "location": {
+        "file": "/workspace/e2e/fixtures/collaboration-installed-main.mjs",
+        "column": 41,
+        "line": 81
+      }
+    }
+  }
+]

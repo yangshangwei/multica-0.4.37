@@ -1,0 +1,72 @@
+{
+  "recorded_at": "2026-11-03T11:56:15.496480+00:00",
+  "state": "prepared_templates_only_waiting_final_SHA_and_build_dispatch",
+  "template_manifest": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate-v14/template-manifest.json",
+  "template_manifest_sha256": "c82a550b6d1d57d1d81c8f067d1d8ad8063318d34ae8d28f10430bf39cd64520",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": null,
+  "templates": 16,
+  "static_checks": {
+    "python_AST": 10,
+    "node_syntax": 2,
+    "input_and_template_hashes": "all matched",
+    "runtime_controls": "deferred until final SHA/resource bindings"
+  },
+  "cache": {
+    "command": [
+      "/bin/cp",
+      "-cR",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v13/go-build-cache/.",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-build-cache"
+    ],
+    "exit_code": 0,
+    "source_written": false,
+    "sampled_equal_separate_inodes": [
+      {
+        "relative": "00/0002282ac5fad18c81c8ea8f7ce3a0de9124593e418369652277f0258ae7e5f8-a",
+        "sha256": "03cc3ef9fdcd6455a8eb19e0e02e7808c4ab98ace8a066b98b12960d85a988ae",
+        "separate_inodes": true
+      },
+      {
+        "relative": "00/00022a5efb5c8c90306b7978c6bd703de82cc8e96e91efffac70a600a7c9adde-a",
+        "sha256": "72121b61a067ccee63cbb2b8de3dce5c6b8a4573975850e63f6d441e9708318f",
+        "separate_inodes": true
+      },
+      {
+        "relative": "00/000313d1742f48c8d54a4d0403b4a29a0f5d95ba58f49bc0ff13df1442f146a0-a",
+        "sha256": "344d84307c79c45359d455b0a10a30b50ad3c13faf98f84d818aa426d8a21646",
+        "separate_inodes": true
+      },
+      {
+        "relative": "00/000737b2b57faa240159a8b5af34a6b07a63838df1d2312ef39cc92ee2d807d5-a",
+        "sha256": "1564cf40e04dceaee3aebf733c323b05f1d477b526b3d4abb46eca7d9fbe45ec",
+        "separate_inodes": true
+      },
+      {
+        "relative": "00/000cb6bd29cf1b1d7325e38f9eea2e858c4cba145b4a1cc28df4192f4880f085-a",
+        "sha256": "3cf3b74c0b406d8f5e12febd63b444f2f4080de0f63686aa2c68c13b5e17ae24",
+        "separate_inodes": true
+      },
+      {
+        "relative": "00/001c0b5b9a72994d2af4cc11b3c94d4b780f4bfafc18717069efdb4b685d3a30-a",
+        "sha256": "8c4570a566ad1bd393a8e509d794474fec14dde93469692d4da7eb0b49b5efda",
+        "separate_inodes": true
+      },
+      {
+        "relative": "00/00249887101bb6f98e686830679e31081c15b700437d2b0bd8d272fb890cb17c-a",
+        "sha256": "7ccc3acefb7618b48b680d72a16ee239045b61e69d137e37ff1170e3e9a3fbd6",
+        "separate_inodes": true
+      },
+      {
+        "relative": "00/003b3d33274dc9fed3948c32df35cf48e6e8b75d6ee87c22e8303de2534b6f94-a",
+        "sha256": "0f9990df6e60f8be23b74a092c79e2d2cbdbba23b47d49c75ec0d729a1b41956",
+        "separate_inodes": true
+      }
+    ]
+  },
+  "temp_allocation": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/build-temp-allocation-v14.json",
+  "no_builds_tests_DB_services_or_Provider": true,
+  "no_commit_or_tracked_source_edits": true,
+  "v13_preservation": "original sources and protected run/result/clearance/binding/audit hashes matched after preparation",
+  "next": "Root supplies final successor SHA after directed17 validation; bind templates, build/install new artifacts under root dispatch, rebind resource fields, replay private controls and independent review before unique full launch."
+}

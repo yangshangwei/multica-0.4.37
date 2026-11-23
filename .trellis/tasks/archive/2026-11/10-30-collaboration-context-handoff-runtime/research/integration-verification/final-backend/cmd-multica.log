@@ -1,0 +1,2581 @@
+=== RUN   TestAgentCopySameRuntimeCopiesPortableFields
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopySameRuntimeCopiesPortableFields (0.00s)
+=== RUN   TestAgentCopyOmitsInvalidHistoricalConcurrency
+=== RUN   TestAgentCopyOmitsInvalidHistoricalConcurrency/0
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopyOmitsInvalidHistoricalConcurrency/0 (0.00s)
+=== RUN   TestAgentCopyOmitsInvalidHistoricalConcurrency/-1
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopyOmitsInvalidHistoricalConcurrency/-1 (0.00s)
+=== RUN   TestAgentCopyOmitsInvalidHistoricalConcurrency/51
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopyOmitsInvalidHistoricalConcurrency/51 (0.00s)
+--- PASS: TestAgentCopyOmitsInvalidHistoricalConcurrency (0.01s)
+=== RUN   TestAgentCopyValidConcurrencyOverrideRepairsInvalidSource
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopyValidConcurrencyOverrideRepairsInvalidSource (0.00s)
+=== RUN   TestAgentCopyRejectsInvalidConcurrencyOverrideBeforeRequest
+--- PASS: TestAgentCopyRejectsInvalidConcurrencyOverrideBeforeRequest (0.00s)
+=== RUN   TestAgentCopyCrossRuntimeRequiresModel
+--- PASS: TestAgentCopyCrossRuntimeRequiresModel (0.00s)
+=== RUN   TestAgentCopyCrossRuntimeDropsRuntimeSpecificFields
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopyCrossRuntimeDropsRuntimeSpecificFields (0.00s)
+=== RUN   TestAgentCopyCrossRuntimeEmptyModelIsAllowed
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopyCrossRuntimeEmptyModelIsAllowed (0.00s)
+=== RUN   TestAgentCopyNoSkillsOmitsSkillIDs
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopyNoSkillsOmitsSkillIDs (0.00s)
+=== RUN   TestAgentCopyPermissionOverrideReplacesSource
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopyPermissionOverrideReplacesSource (0.00s)
+=== RUN   TestAgentCopyAcceptsExplicitCustomEnv
+{
+  "id": "agent-new",
+  "name": "Src (copy)"
+}
+--- PASS: TestAgentCopyAcceptsExplicitCustomEnv (0.00s)
+=== RUN   TestAgentCopyExposesSecretSafeFlags
+--- PASS: TestAgentCopyExposesSecretSafeFlags (0.00s)
+=== RUN   TestHumanLocalCommandDistinguishesPortHintFromTaskIdentity
+--- PASS: TestHumanLocalCommandDistinguishesPortHintFromTaskIdentity (0.00s)
+=== RUN   TestHumanLocalCommandRejectsWorkdirTaskMarker
+--- PASS: TestHumanLocalCommandRejectsWorkdirTaskMarker (0.00s)
+=== RUN   TestHumanLocalCommandRejectsExplicitTaskIdentity
+=== RUN   TestHumanLocalCommandRejectsExplicitTaskIdentity/agent_ID_blocks_setup
+--- PASS: TestHumanLocalCommandRejectsExplicitTaskIdentity/agent_ID_blocks_setup (0.00s)
+=== RUN   TestHumanLocalCommandRejectsExplicitTaskIdentity/task_ID_blocks_daemon_stop
+--- PASS: TestHumanLocalCommandRejectsExplicitTaskIdentity/task_ID_blocks_daemon_stop (0.00s)
+--- PASS: TestHumanLocalCommandRejectsExplicitTaskIdentity (0.00s)
+=== RUN   TestMissingServerConfigMessageExplainsPortOnlyContext
+--- PASS: TestMissingServerConfigMessageExplainsPortOnlyContext (0.00s)
+=== RUN   TestNewAPIClient_WorkdirParentEscapeFailsClosed
+--- PASS: TestNewAPIClient_WorkdirParentEscapeFailsClosed (0.00s)
+=== RUN   TestNewAPIClient_LeftoverMarkerActionableError
+--- PASS: TestNewAPIClient_LeftoverMarkerActionableError (0.00s)
+=== RUN   TestResolveWorkspaceID_AgentContextSkipsConfig
+=== RUN   TestResolveWorkspaceID_AgentContextSkipsConfig/outside_agent_context_falls_back_to_config
+--- PASS: TestResolveWorkspaceID_AgentContextSkipsConfig/outside_agent_context_falls_back_to_config (0.00s)
+=== RUN   TestResolveWorkspaceID_AgentContextSkipsConfig/agent_context_with_explicit_env_uses_env
+--- PASS: TestResolveWorkspaceID_AgentContextSkipsConfig/agent_context_with_explicit_env_uses_env (0.00s)
+=== RUN   TestResolveWorkspaceID_AgentContextSkipsConfig/agent_context_without_env_returns_empty,_never_config
+--- PASS: TestResolveWorkspaceID_AgentContextSkipsConfig/agent_context_without_env_returns_empty,_never_config (0.00s)
+=== RUN   TestResolveWorkspaceID_AgentContextSkipsConfig/task_marker_alone_also_counts_as_agent_context
+--- PASS: TestResolveWorkspaceID_AgentContextSkipsConfig/task_marker_alone_also_counts_as_agent_context (0.00s)
+=== RUN   TestResolveWorkspaceID_AgentContextSkipsConfig/daemon_port_marker_also_skips_config
+--- PASS: TestResolveWorkspaceID_AgentContextSkipsConfig/daemon_port_marker_also_skips_config (0.00s)
+=== RUN   TestResolveWorkspaceID_AgentContextSkipsConfig/workdir_marker_also_skips_config_when_env_is_stripped
+--- PASS: TestResolveWorkspaceID_AgentContextSkipsConfig/workdir_marker_also_skips_config_when_env_is_stripped (0.00s)
+=== RUN   TestResolveWorkspaceID_AgentContextSkipsConfig/requireWorkspaceID_surfaces_agent-context_error
+--- PASS: TestResolveWorkspaceID_AgentContextSkipsConfig/requireWorkspaceID_surfaces_agent-context_error (0.00s)
+--- PASS: TestResolveWorkspaceID_AgentContextSkipsConfig (0.01s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig
+=== RUN   TestResolveToken_AgentContextSkipsConfig/outside_agent_context_falls_back_to_config
+--- PASS: TestResolveToken_AgentContextSkipsConfig/outside_agent_context_falls_back_to_config (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/explicit_server_URL_alone_still_allows_normal_config_token_fallback
+--- PASS: TestResolveToken_AgentContextSkipsConfig/explicit_server_URL_alone_still_allows_normal_config_token_fallback (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/agent_context_without_env_never_reads_config
+--- PASS: TestResolveToken_AgentContextSkipsConfig/agent_context_without_env_never_reads_config (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/daemon_port_marker_without_env_never_reads_config
+--- PASS: TestResolveToken_AgentContextSkipsConfig/daemon_port_marker_without_env_never_reads_config (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/workdir_marker_without_env_never_reads_config
+--- PASS: TestResolveToken_AgentContextSkipsConfig/workdir_marker_without_env_never_reads_config (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/unreadable_marker_path_does_not_fail_closed
+--- PASS: TestResolveToken_AgentContextSkipsConfig/unreadable_marker_path_does_not_fail_closed (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/agent_context_uses_explicit_task_token_env
+--- PASS: TestResolveToken_AgentContextSkipsConfig/agent_context_uses_explicit_task_token_env (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/daemon_port_set_without_agent_context_avoids_config_fallback
+--- PASS: TestResolveToken_AgentContextSkipsConfig/daemon_port_set_without_agent_context_avoids_config_fallback (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/daemon_port_set_with_explicit_task_token_uses_task_token
+--- PASS: TestResolveToken_AgentContextSkipsConfig/daemon_port_set_with_explicit_task_token_uses_task_token (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/MULTICA_SERVER_URL_alone_does_not_block_config_fallback
+--- PASS: TestResolveToken_AgentContextSkipsConfig/MULTICA_SERVER_URL_alone_does_not_block_config_fallback (0.00s)
+=== RUN   TestResolveToken_AgentContextSkipsConfig/no_daemon_signals,_normal_CLI_reads_config_token
+--- PASS: TestResolveToken_AgentContextSkipsConfig/no_daemon_signals,_normal_CLI_reads_config_token (0.00s)
+--- PASS: TestResolveToken_AgentContextSkipsConfig (0.00s)
+=== RUN   TestNewAPIClient_AgentContextRequiresTaskToken
+=== RUN   TestNewAPIClient_AgentContextRequiresTaskToken/missing_token_fails_closed
+--- PASS: TestNewAPIClient_AgentContextRequiresTaskToken/missing_token_fails_closed (0.00s)
+=== RUN   TestNewAPIClient_AgentContextRequiresTaskToken/member_token_fails_closed
+--- PASS: TestNewAPIClient_AgentContextRequiresTaskToken/member_token_fails_closed (0.00s)
+=== RUN   TestNewAPIClient_AgentContextRequiresTaskToken/task_token_succeeds
+--- PASS: TestNewAPIClient_AgentContextRequiresTaskToken/task_token_succeeds (0.00s)
+--- PASS: TestNewAPIClient_AgentContextRequiresTaskToken (0.00s)
+=== RUN   TestNewAPIClient_DaemonPortRequiresTaskToken
+--- PASS: TestNewAPIClient_DaemonPortRequiresTaskToken (0.00s)
+=== RUN   TestNewAPIClient_WorkdirMarkerRequiresTaskToken
+--- PASS: TestNewAPIClient_WorkdirMarkerRequiresTaskToken (0.00s)
+=== RUN   TestParseCustomEnv
+=== RUN   TestParseCustomEnv/single_pair
+--- PASS: TestParseCustomEnv/single_pair (0.00s)
+=== RUN   TestParseCustomEnv/multiple_pairs
+--- PASS: TestParseCustomEnv/multiple_pairs (0.00s)
+=== RUN   TestParseCustomEnv/explicit_empty_object_clears
+--- PASS: TestParseCustomEnv/explicit_empty_object_clears (0.00s)
+=== RUN   TestParseCustomEnv/empty_string_errors
+--- PASS: TestParseCustomEnv/empty_string_errors (0.00s)
+=== RUN   TestParseCustomEnv/whitespace_only_errors
+--- PASS: TestParseCustomEnv/whitespace_only_errors (0.00s)
+=== RUN   TestParseCustomEnv/not_JSON
+--- PASS: TestParseCustomEnv/not_JSON (0.00s)
+=== RUN   TestParseCustomEnv/JSON_array_not_object
+--- PASS: TestParseCustomEnv/JSON_array_not_object (0.00s)
+=== RUN   TestParseCustomEnv/non-string_value
+--- PASS: TestParseCustomEnv/non-string_value (0.00s)
+--- PASS: TestParseCustomEnv (0.00s)
+=== RUN   TestAgentUpdateNoFieldsErrorPointsAtEnvCommand
+--- PASS: TestAgentUpdateNoFieldsErrorPointsAtEnvCommand (0.00s)
+=== RUN   TestAgentUpdateDoesNotExposeCustomEnvFlags
+--- PASS: TestAgentUpdateDoesNotExposeCustomEnvFlags (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/create_rejects_0
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/create_rejects_0 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/update_rejects_0
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/update_rejects_0 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/create_rejects_-1
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/create_rejects_-1 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/update_rejects_-1
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/update_rejects_-1 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/create_rejects_51
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/create_rejects_51 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/update_rejects_51
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/update_rejects_51 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/create_accepts_1
+{
+  "id": "agent-123",
+  "name": "TestAgent"
+}
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/create_accepts_1 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/update_accepts_1
+{
+  "id": "agent-123",
+  "name": "TestAgent"
+}
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/update_accepts_1 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/create_accepts_50
+{
+  "id": "agent-123",
+  "name": "TestAgent"
+}
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/create_accepts_50 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/update_accepts_50
+{
+  "id": "agent-123",
+  "name": "TestAgent"
+}
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/update_accepts_50 (0.00s)
+=== RUN   TestAgentMaxConcurrentTasksFlagValidation/create_omission_stays_omitted
+{
+  "id": "agent-123",
+  "name": "TestAgent"
+}
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation/create_omission_stays_omitted (0.00s)
+--- PASS: TestAgentMaxConcurrentTasksFlagValidation (0.00s)
+=== RUN   TestParseCustomEnvErrorSanitization
+--- PASS: TestParseCustomEnvErrorSanitization (0.00s)
+=== RUN   TestParseCustomArgsErrorSanitization
+--- PASS: TestParseCustomArgsErrorSanitization (0.00s)
+=== RUN   TestAgentCreateAndEnvSetExposeSecretSafeFlags
+--- PASS: TestAgentCreateAndEnvSetExposeSecretSafeFlags (0.00s)
+=== RUN   TestResolveCustomEnv
+=== RUN   TestResolveCustomEnv/not_supplied
+--- PASS: TestResolveCustomEnv/not_supplied (0.00s)
+=== RUN   TestResolveCustomEnv/inline_flag
+--- PASS: TestResolveCustomEnv/inline_flag (0.00s)
+=== RUN   TestResolveCustomEnv/stdin
+--- PASS: TestResolveCustomEnv/stdin (0.00s)
+=== RUN   TestResolveCustomEnv/file
+--- PASS: TestResolveCustomEnv/file (0.00s)
+=== RUN   TestResolveCustomEnv/mutually_exclusive:_inline_+_stdin
+--- PASS: TestResolveCustomEnv/mutually_exclusive:_inline_+_stdin (0.00s)
+=== RUN   TestResolveCustomEnv/mutually_exclusive:_inline_+_file
+--- PASS: TestResolveCustomEnv/mutually_exclusive:_inline_+_file (0.00s)
+=== RUN   TestResolveCustomEnv/mutually_exclusive:_stdin_+_file
+--- PASS: TestResolveCustomEnv/mutually_exclusive:_stdin_+_file (0.00s)
+=== RUN   TestResolveCustomEnv/file:_missing_path_surfaces_filesystem_error
+--- PASS: TestResolveCustomEnv/file:_missing_path_surfaces_filesystem_error (0.00s)
+=== RUN   TestResolveCustomEnv/stdin:_empty_input_errors
+--- PASS: TestResolveCustomEnv/stdin:_empty_input_errors (0.00s)
+=== RUN   TestResolveCustomEnv/stdin:_whitespace-only_input_errors
+--- PASS: TestResolveCustomEnv/stdin:_whitespace-only_input_errors (0.00s)
+=== RUN   TestResolveCustomEnv/stdin:_explicit_{}_still_clears
+--- PASS: TestResolveCustomEnv/stdin:_explicit_{}_still_clears (0.00s)
+=== RUN   TestResolveCustomEnv/file:_empty_contents_errors
+--- PASS: TestResolveCustomEnv/file:_empty_contents_errors (0.00s)
+=== RUN   TestResolveCustomEnv/file:_empty_path_errors_instead_of_being_silently_swallowed
+--- PASS: TestResolveCustomEnv/file:_empty_path_errors_instead_of_being_silently_swallowed (0.00s)
+=== RUN   TestResolveCustomEnv/file:_explicit_{}_still_clears
+--- PASS: TestResolveCustomEnv/file:_explicit_{}_still_clears (0.00s)
+--- PASS: TestResolveCustomEnv (0.00s)
+=== RUN   TestParseMcpConfig
+=== RUN   TestParseMcpConfig/object_with_servers
+--- PASS: TestParseMcpConfig/object_with_servers (0.00s)
+=== RUN   TestParseMcpConfig/explicit_empty_object_is_a_valid_empty_set
+--- PASS: TestParseMcpConfig/explicit_empty_object_is_a_valid_empty_set (0.00s)
+=== RUN   TestParseMcpConfig/null_clears
+--- PASS: TestParseMcpConfig/null_clears (0.00s)
+=== RUN   TestParseMcpConfig/null_with_surrounding_whitespace_clears
+--- PASS: TestParseMcpConfig/null_with_surrounding_whitespace_clears (0.00s)
+=== RUN   TestParseMcpConfig/empty_string_errors
+--- PASS: TestParseMcpConfig/empty_string_errors (0.00s)
+=== RUN   TestParseMcpConfig/whitespace_only_errors
+--- PASS: TestParseMcpConfig/whitespace_only_errors (0.00s)
+=== RUN   TestParseMcpConfig/not_JSON
+--- PASS: TestParseMcpConfig/not_JSON (0.00s)
+=== RUN   TestParseMcpConfig/top-level_array_rejected
+--- PASS: TestParseMcpConfig/top-level_array_rejected (0.00s)
+=== RUN   TestParseMcpConfig/top-level_string_rejected
+--- PASS: TestParseMcpConfig/top-level_string_rejected (0.00s)
+=== RUN   TestParseMcpConfig/top-level_number_rejected
+--- PASS: TestParseMcpConfig/top-level_number_rejected (0.00s)
+--- PASS: TestParseMcpConfig (0.00s)
+=== RUN   TestParseMcpConfigErrorSanitization
+--- PASS: TestParseMcpConfigErrorSanitization (0.00s)
+=== RUN   TestResolveMcpConfig
+=== RUN   TestResolveMcpConfig/not_supplied
+--- PASS: TestResolveMcpConfig/not_supplied (0.00s)
+=== RUN   TestResolveMcpConfig/inline_object
+--- PASS: TestResolveMcpConfig/inline_object (0.00s)
+=== RUN   TestResolveMcpConfig/inline_null_clears
+--- PASS: TestResolveMcpConfig/inline_null_clears (0.00s)
+=== RUN   TestResolveMcpConfig/stdin
+--- PASS: TestResolveMcpConfig/stdin (0.00s)
+=== RUN   TestResolveMcpConfig/file
+--- PASS: TestResolveMcpConfig/file (0.00s)
+=== RUN   TestResolveMcpConfig/mutually_exclusive:_inline_+_stdin
+--- PASS: TestResolveMcpConfig/mutually_exclusive:_inline_+_stdin (0.00s)
+=== RUN   TestResolveMcpConfig/stdin:_empty_input_errors
+--- PASS: TestResolveMcpConfig/stdin:_empty_input_errors (0.00s)
+=== RUN   TestResolveMcpConfig/file:_missing_path_surfaces_filesystem_error
+--- PASS: TestResolveMcpConfig/file:_missing_path_surfaces_filesystem_error (0.00s)
+--- PASS: TestResolveMcpConfig (0.00s)
+=== RUN   TestAgentCreateAndUpdateExposeMcpConfigFlags
+--- PASS: TestAgentCreateAndUpdateExposeMcpConfigFlags (0.00s)
+=== RUN   TestAgentSkillsAddCallsAdditiveEndpoint
+[
+  {
+    "description": "",
+    "id": "skill-a",
+    "name": "Skill A"
+  },
+  {
+    "description": "",
+    "id": "skill-b",
+    "name": "Skill B"
+  }
+]
+--- PASS: TestAgentSkillsAddCallsAdditiveEndpoint (0.00s)
+=== RUN   TestAgentSkillsAddRequiresSkillIDs
+--- PASS: TestAgentSkillsAddRequiresSkillIDs (0.00s)
+=== RUN   TestAgentAvatarHappyPath
+{
+  "agent_id": "agent-123",
+  "avatar_url": "https://cdn.example.com/avatars/agent-123.png",
+  "id": "att-456"
+}
+--- PASS: TestAgentAvatarHappyPath (0.00s)
+=== RUN   TestAgentAvatarUnsupportedFormat
+--- PASS: TestAgentAvatarUnsupportedFormat (0.00s)
+=== RUN   TestAgentAvatarOversizedFile
+--- PASS: TestAgentAvatarOversizedFile (0.00s)
+=== RUN   TestAgentAvatarMissingAgent
+--- PASS: TestAgentAvatarMissingAgent (0.00s)
+=== RUN   TestAgentAvatarUploadFailure
+--- PASS: TestAgentAvatarUploadFailure (0.00s)
+=== RUN   TestAgentAvatarUpdateFailure
+--- PASS: TestAgentAvatarUpdateFailure (0.00s)
+=== RUN   TestAgentAvatarMissingFileFlag
+--- PASS: TestAgentAvatarMissingFileFlag (0.00s)
+=== RUN   TestAgentAvatarNonexistentFile
+--- PASS: TestAgentAvatarNonexistentFile (0.00s)
+=== RUN   TestAgentAvatarSizeBoundary
+=== RUN   TestAgentAvatarSizeBoundary/exactly_5MB_passes
+--- PASS: TestAgentAvatarSizeBoundary/exactly_5MB_passes (0.00s)
+=== RUN   TestAgentAvatarSizeBoundary/5MB_plus_one_byte_is_rejected
+--- PASS: TestAgentAvatarSizeBoundary/5MB_plus_one_byte_is_rejected (0.00s)
+--- PASS: TestAgentAvatarSizeBoundary (0.01s)
+=== RUN   TestAgentAvatarCaseInsensitiveExtension
+=== RUN   TestAgentAvatarCaseInsensitiveExtension/avatar.PNG
+--- PASS: TestAgentAvatarCaseInsensitiveExtension/avatar.PNG (0.00s)
+=== RUN   TestAgentAvatarCaseInsensitiveExtension/avatar.JPG
+--- PASS: TestAgentAvatarCaseInsensitiveExtension/avatar.JPG (0.00s)
+=== RUN   TestAgentAvatarCaseInsensitiveExtension/avatar.JPEG
+--- PASS: TestAgentAvatarCaseInsensitiveExtension/avatar.JPEG (0.00s)
+=== RUN   TestAgentAvatarCaseInsensitiveExtension/avatar.GIF
+--- PASS: TestAgentAvatarCaseInsensitiveExtension/avatar.GIF (0.00s)
+=== RUN   TestAgentAvatarCaseInsensitiveExtension/avatar.WEBP
+--- PASS: TestAgentAvatarCaseInsensitiveExtension/avatar.WEBP (0.00s)
+--- PASS: TestAgentAvatarCaseInsensitiveExtension (0.00s)
+=== RUN   TestAgentGetTableIncludesAvatarURL
+--- PASS: TestAgentGetTableIncludesAvatarURL (0.00s)
+=== RUN   TestAgentCreateSendsThinkingLevel
+{
+  "id": "agent-123",
+  "name": "TestAgent",
+  "thinking_level": "high"
+}
+--- PASS: TestAgentCreateSendsThinkingLevel (0.00s)
+=== RUN   TestAgentCreateOmitsThinkingLevelWhenUnset
+{
+  "id": "agent-123",
+  "name": "TestAgent"
+}
+--- PASS: TestAgentCreateOmitsThinkingLevelWhenUnset (0.00s)
+=== RUN   TestAgentUpdateSendsThinkingLevel
+=== RUN   TestAgentUpdateSendsThinkingLevel/set_explicit_level
+{
+  "id": "agent-123",
+  "name": "TestAgent",
+  "thinking_level": "xhigh"
+}
+--- PASS: TestAgentUpdateSendsThinkingLevel/set_explicit_level (0.00s)
+=== RUN   TestAgentUpdateSendsThinkingLevel/empty_string_clears
+{
+  "id": "agent-123",
+  "name": "TestAgent",
+  "thinking_level": ""
+}
+--- PASS: TestAgentUpdateSendsThinkingLevel/empty_string_clears (0.00s)
+--- PASS: TestAgentUpdateSendsThinkingLevel (0.00s)
+=== RUN   TestAgentCreateAndUpdateExposeThinkingLevelFlag
+--- PASS: TestAgentCreateAndUpdateExposeThinkingLevelFlag (0.00s)
+=== RUN   TestAgentServiceTierFlagsAndBodies
+=== RUN   TestAgentServiceTierFlagsAndBodies/create_sends_catalog_id
+{
+  "id": "agent-123"
+}
+--- PASS: TestAgentServiceTierFlagsAndBodies/create_sends_catalog_id (0.00s)
+=== RUN   TestAgentServiceTierFlagsAndBodies/update_sends_explicit_clear
+{
+  "id": "agent-123"
+}
+--- PASS: TestAgentServiceTierFlagsAndBodies/update_sends_explicit_clear (0.00s)
+--- PASS: TestAgentServiceTierFlagsAndBodies (0.00s)
+=== RUN   TestAgentCreateThinkingLevelServerRejectionSurfaces
+--- PASS: TestAgentCreateThinkingLevelServerRejectionSurfaces (0.00s)
+=== RUN   TestRunApprovalRequestDecodesUTF16PlanFile
+{
+  "id": "apr-1",
+  "risk_class": "database_migration",
+  "status": "pending"
+}
+--- PASS: TestRunApprovalRequestDecodesUTF16PlanFile (0.00s)
+=== RUN   TestRunApprovalRequestRefusesBOMlessANSIPlanFile
+--- PASS: TestRunApprovalRequestRefusesBOMlessANSIPlanFile (0.00s)
+=== RUN   TestRunAttachmentDownloadWritesBasenameIntoOutputDir
+--- PASS: TestRunAttachmentDownloadWritesBasenameIntoOutputDir (0.00s)
+=== RUN   TestRunAttachmentDownloadCreatesMissingOutputDir
+--- PASS: TestRunAttachmentDownloadCreatesMissingOutputDir (0.00s)
+=== RUN   TestRunAttachmentUploadSendsTaskIDAndPrintsContract
+Uploaded: chart.png
+--- PASS: TestRunAttachmentUploadSendsTaskIDAndPrintsContract (0.00s)
+=== RUN   TestRunAttachmentUploadNonImageUsesFileCardMarkdown
+Uploaded: report.pdf
+--- PASS: TestRunAttachmentUploadNonImageUsesFileCardMarkdown (0.00s)
+=== RUN   TestRunAttachmentUploadEscapesFilename
+Uploaded: a]b.pdf
+--- PASS: TestRunAttachmentUploadEscapesFilename (0.00s)
+=== RUN   TestRunAttachmentUploadRequiresTask
+--- PASS: TestRunAttachmentUploadRequiresTask (0.00s)
+=== RUN   TestRunAttachmentDownloadRequiresDownloadURL
+--- PASS: TestRunAttachmentDownloadRequiresDownloadURL (0.00s)
+=== RUN   TestResolveAppURL
+=== RUN   TestResolveAppURL/prefers_MULTICA_APP_URL
+--- PASS: TestResolveAppURL/prefers_MULTICA_APP_URL (0.00s)
+=== RUN   TestResolveAppURL/falls_back_to_FRONTEND_ORIGIN
+--- PASS: TestResolveAppURL/falls_back_to_FRONTEND_ORIGIN (0.00s)
+--- PASS: TestResolveAppURL (0.00s)
+=== RUN   TestResolveCallbackBinding
+=== RUN   TestResolveCallbackBinding/public_app_URL_stays_on_loopback
+--- PASS: TestResolveCallbackBinding/public_app_URL_stays_on_loopback (0.00s)
+=== RUN   TestResolveCallbackBinding/localhost_app_URL_stays_on_loopback
+--- PASS: TestResolveCallbackBinding/localhost_app_URL_stays_on_loopback (0.00s)
+=== RUN   TestResolveCallbackBinding/same-machine_self-host_uses_loopback_(CLI_IP_matches_app_IP)
+--- PASS: TestResolveCallbackBinding/same-machine_self-host_uses_loopback_(CLI_IP_matches_app_IP) (0.00s)
+=== RUN   TestResolveCallbackBinding/cross-machine_self-host_points_callback_at_CLI's_LAN_IP
+--- PASS: TestResolveCallbackBinding/cross-machine_self-host_points_callback_at_CLI's_LAN_IP (0.00s)
+=== RUN   TestResolveCallbackBinding/outbound_detection_failure_falls_back_to_app_IP
+--- PASS: TestResolveCallbackBinding/outbound_detection_failure_falls_back_to_app_IP (0.00s)
+=== RUN   TestResolveCallbackBinding/--callback-host_flag_overrides_everything
+--- PASS: TestResolveCallbackBinding/--callback-host_flag_overrides_everything (0.00s)
+--- PASS: TestResolveCallbackBinding (0.00s)
+=== RUN   TestBrowserLoginInstructionsSSHRemoteHint
+--- PASS: TestBrowserLoginInstructionsSSHRemoteHint (0.00s)
+=== RUN   TestCallbackHostFlagValueReadsParentSetupFlag
+--- PASS: TestCallbackHostFlagValueReadsParentSetupFlag (0.00s)
+=== RUN   TestLoginTokenFlagWiring
+--- PASS: TestLoginTokenFlagWiring (0.00s)
+=== RUN   TestLoginTokenHelpOutputRendersCleanly
+--- PASS: TestLoginTokenHelpOutputRendersCleanly (0.00s)
+=== RUN   TestLoginTokenFlagParsing
+=== RUN   TestLoginTokenFlagParsing/space-separated_value_(the_form_from_#1994)
+--- PASS: TestLoginTokenFlagParsing/space-separated_value_(the_form_from_#1994) (0.00s)
+=== RUN   TestLoginTokenFlagParsing/equals-separated_value
+--- PASS: TestLoginTokenFlagParsing/equals-separated_value (0.00s)
+=== RUN   TestLoginTokenFlagParsing/no_value_falls_through_to_prompt_(legacy_CLI_INSTALL.md_form)
+--- PASS: TestLoginTokenFlagParsing/no_value_falls_through_to_prompt_(legacy_CLI_INSTALL.md_form) (0.00s)
+=== RUN   TestLoginTokenFlagParsing/explicit_empty_value_also_falls_through_to_prompt
+--- PASS: TestLoginTokenFlagParsing/explicit_empty_value_also_falls_through_to_prompt (0.00s)
+=== RUN   TestLoginTokenFlagParsing/no_flag_at_all_→_browser_flow
+--- PASS: TestLoginTokenFlagParsing/no_flag_at_all_→_browser_flow (0.00s)
+--- PASS: TestLoginTokenFlagParsing (0.00s)
+=== RUN   TestRunAuthStatusTaskContextDoesNotPrintCredential
+--- PASS: TestRunAuthStatusTaskContextDoesNotPrintCredential (0.00s)
+=== RUN   TestRunAuthStatusTaskContextRequiresTaskToken
+=== RUN   TestRunAuthStatusTaskContextRequiresTaskToken/missing_token
+--- PASS: TestRunAuthStatusTaskContextRequiresTaskToken/missing_token (0.00s)
+=== RUN   TestRunAuthStatusTaskContextRequiresTaskToken/human_token
+--- PASS: TestRunAuthStatusTaskContextRequiresTaskToken/human_token (0.00s)
+--- PASS: TestRunAuthStatusTaskContextRequiresTaskToken (0.00s)
+=== RUN   TestHumanAuthCommandsFailClosedInTaskContext
+--- PASS: TestHumanAuthCommandsFailClosedInTaskContext (0.00s)
+=== RUN   TestNormalizeAPIBaseURL
+=== RUN   TestNormalizeAPIBaseURL/converts_websocket_base_URL
+--- PASS: TestNormalizeAPIBaseURL/converts_websocket_base_URL (0.00s)
+=== RUN   TestNormalizeAPIBaseURL/keeps_http_base_URL
+--- PASS: TestNormalizeAPIBaseURL/keeps_http_base_URL (0.00s)
+=== RUN   TestNormalizeAPIBaseURL/falls_back_to_raw_value_for_invalid_URL
+--- PASS: TestNormalizeAPIBaseURL/falls_back_to_raw_value_for_invalid_URL (0.00s)
+--- PASS: TestNormalizeAPIBaseURL (0.00s)
+=== RUN   TestValidateLoginTokenPrefix
+=== RUN   TestValidateLoginTokenPrefix/mul__PAT
+--- PASS: TestValidateLoginTokenPrefix/mul__PAT (0.00s)
+=== RUN   TestValidateLoginTokenPrefix/mcn__Cloud_Node_PAT
+--- PASS: TestValidateLoginTokenPrefix/mcn__Cloud_Node_PAT (0.00s)
+=== RUN   TestValidateLoginTokenPrefix/empty_token
+--- PASS: TestValidateLoginTokenPrefix/empty_token (0.00s)
+=== RUN   TestValidateLoginTokenPrefix/no_prefix
+--- PASS: TestValidateLoginTokenPrefix/no_prefix (0.00s)
+=== RUN   TestValidateLoginTokenPrefix/wrong_prefix_mdt_
+--- PASS: TestValidateLoginTokenPrefix/wrong_prefix_mdt_ (0.00s)
+=== RUN   TestValidateLoginTokenPrefix/wrong_prefix_mat_
+--- PASS: TestValidateLoginTokenPrefix/wrong_prefix_mat_ (0.00s)
+=== RUN   TestValidateLoginTokenPrefix/case-sensitive:_MUL__rejected
+--- PASS: TestValidateLoginTokenPrefix/case-sensitive:_MUL__rejected (0.00s)
+=== RUN   TestValidateLoginTokenPrefix/leading_whitespace_not_allowed_(callers_TrimSpace_first)
+--- PASS: TestValidateLoginTokenPrefix/leading_whitespace_not_allowed_(callers_TrimSpace_first) (0.00s)
+--- PASS: TestValidateLoginTokenPrefix (0.00s)
+=== RUN   TestAutopilotCommandsRejectRemovedPriorityFlag
+=== RUN   TestAutopilotCommandsRejectRemovedPriorityFlag/create
+--- PASS: TestAutopilotCommandsRejectRemovedPriorityFlag/create (0.00s)
+=== RUN   TestAutopilotCommandsRejectRemovedPriorityFlag/update
+--- PASS: TestAutopilotCommandsRejectRemovedPriorityFlag/update (0.00s)
+--- PASS: TestAutopilotCommandsRejectRemovedPriorityFlag (0.00s)
+=== RUN   TestRunAutopilotGetRedactsWebhookCredentialsByDefault
+--- PASS: TestRunAutopilotGetRedactsWebhookCredentialsByDefault (0.00s)
+=== RUN   TestRunAutopilotGetShowSecretsIsExplicitAndWarns
+--- PASS: TestRunAutopilotGetShowSecretsIsExplicitAndWarns (0.00s)
+=== RUN   TestRunAutopilotGetTableOutputDoesNotExposeWebhookCredentials
+--- PASS: TestRunAutopilotGetTableOutputDoesNotExposeWebhookCredentials (0.00s)
+=== RUN   TestRedactAutopilotWebhookCredentialsDoesNotDependOnTriggerKind
+--- PASS: TestRedactAutopilotWebhookCredentialsDoesNotDependOnTriggerKind (0.00s)
+=== RUN   TestRedactAutopilotWebhookCredentialsReportsServerRedactedToken
+--- PASS: TestRedactAutopilotWebhookCredentialsReportsServerRedactedToken (0.00s)
+=== RUN   TestWebhookTokenHintDoesNotExposeShortToken
+--- PASS: TestWebhookTokenHintDoesNotExposeShortToken (0.00s)
+=== RUN   TestRunAutopilotGetRejectsShowSecretsWithTableOutput
+--- PASS: TestRunAutopilotGetRejectsShowSecretsWithTableOutput (0.00s)
+=== RUN   TestResolveAgent
+=== RUN   TestResolveAgent/passes_through_a_UUID_without_lookup
+--- PASS: TestResolveAgent/passes_through_a_UUID_without_lookup (0.00s)
+=== RUN   TestResolveAgent/exact_name_match
+--- PASS: TestResolveAgent/exact_name_match (0.00s)
+=== RUN   TestResolveAgent/case-insensitive_substring
+--- PASS: TestResolveAgent/case-insensitive_substring (0.00s)
+=== RUN   TestResolveAgent/no_match
+--- PASS: TestResolveAgent/no_match (0.00s)
+=== RUN   TestResolveAgent/ambiguous_match
+--- PASS: TestResolveAgent/ambiguous_match (0.00s)
+=== RUN   TestResolveAgent/missing_workspace_ID_for_name_lookup
+--- PASS: TestResolveAgent/missing_workspace_ID_for_name_lookup (0.00s)
+=== RUN   TestResolveAgent/UUID_works_without_workspace_ID
+--- PASS: TestResolveAgent/UUID_works_without_workspace_ID (0.00s)
+--- PASS: TestResolveAgent (0.00s)
+=== RUN   TestRunAutopilotCreateSendsProjectID
+{
+  "id": "autopilot-1",
+  "project_id": "22222222-2222-2222-2222-222222222222",
+  "title": "Daily planner"
+}
+--- PASS: TestRunAutopilotCreateSendsProjectID (0.00s)
+=== RUN   TestRunAutopilotCreateSendsSubscribers
+{
+  "id": "autopilot-1",
+  "subscribers": [
+    {
+      "user_id": "22222222-2222-2222-2222-222222222222",
+      "user_type": "member"
+    }
+  ],
+  "title": "Daily planner"
+}
+--- PASS: TestRunAutopilotCreateSendsSubscribers (0.00s)
+=== RUN   TestRunAutopilotUpdateSendsProjectIDChanges
+=== RUN   TestRunAutopilotUpdateSendsProjectIDChanges/set_project
+{
+  "id": "33333333-3333-3333-3333-333333333333",
+  "project_id": "44444444-4444-4444-4444-444444444444",
+  "title": "Daily planner"
+}
+--- PASS: TestRunAutopilotUpdateSendsProjectIDChanges/set_project (0.00s)
+=== RUN   TestRunAutopilotUpdateSendsProjectIDChanges/clear_project
+{
+  "id": "33333333-3333-3333-3333-333333333333",
+  "project_id": null,
+  "title": "Daily planner"
+}
+--- PASS: TestRunAutopilotUpdateSendsProjectIDChanges/clear_project (0.00s)
+--- PASS: TestRunAutopilotUpdateSendsProjectIDChanges (0.00s)
+=== RUN   TestRunAutopilotUpdateAgentSwitchesAssigneeType
+{
+  "assignee_id": "11111111-1111-1111-1111-111111111111",
+  "assignee_type": "agent",
+  "id": "33333333-3333-3333-3333-333333333333"
+}
+--- PASS: TestRunAutopilotUpdateAgentSwitchesAssigneeType (0.00s)
+=== RUN   TestRunAutopilotUpdateSendsSubscriberReplacement
+{
+  "id": "33333333-3333-3333-3333-333333333333",
+  "subscribers": [
+    {
+      "user_id": "22222222-2222-2222-2222-222222222222",
+      "user_type": "member"
+    }
+  ],
+  "title": "Daily planner"
+}
+--- PASS: TestRunAutopilotUpdateSendsSubscriberReplacement (0.00s)
+=== RUN   TestRunAutopilotUpdateCanClearSubscribers
+{
+  "id": "33333333-3333-3333-3333-333333333333",
+  "subscribers": [],
+  "title": "Daily planner"
+}
+--- PASS: TestRunAutopilotUpdateCanClearSubscribers (0.00s)
+=== RUN   TestRunAutopilotUpdateRejectsSubscriberAndClear
+--- PASS: TestRunAutopilotUpdateRejectsSubscriberAndClear (0.00s)
+=== RUN   TestUUIDRegexp
+--- PASS: TestUUIDRegexp (0.00s)
+=== RUN   TestRunAutopilotTriggerListSurfacesIDs
+--- PASS: TestRunAutopilotTriggerListSurfacesIDs (0.00s)
+=== RUN   TestRunAutopilotTriggerListRedactsWebhookCredentials
+--- PASS: TestRunAutopilotTriggerListRedactsWebhookCredentials (0.00s)
+=== RUN   TestRelativeTimestampAt
+=== RUN   TestRelativeTimestampAt/empty
+--- PASS: TestRelativeTimestampAt/empty (0.00s)
+=== RUN   TestRelativeTimestampAt/unparseable
+--- PASS: TestRelativeTimestampAt/unparseable (0.00s)
+=== RUN   TestRelativeTimestampAt/seconds_ahead
+--- PASS: TestRelativeTimestampAt/seconds_ahead (0.00s)
+=== RUN   TestRelativeTimestampAt/minutes_ahead
+--- PASS: TestRelativeTimestampAt/minutes_ahead (0.00s)
+=== RUN   TestRelativeTimestampAt/hours_ahead
+--- PASS: TestRelativeTimestampAt/hours_ahead (0.00s)
+=== RUN   TestRelativeTimestampAt/days_ahead
+--- PASS: TestRelativeTimestampAt/days_ahead (0.00s)
+=== RUN   TestRelativeTimestampAt/minutes_past
+--- PASS: TestRelativeTimestampAt/minutes_past (0.00s)
+=== RUN   TestRelativeTimestampAt/hours_past
+--- PASS: TestRelativeTimestampAt/hours_past (0.00s)
+=== RUN   TestRelativeTimestampAt/days_past
+--- PASS: TestRelativeTimestampAt/days_past (0.00s)
+--- PASS: TestRelativeTimestampAt (0.00s)
+=== RUN   TestCollaborationMemoryCommandsAreRegisteredAndAllowed
+--- PASS: TestCollaborationMemoryCommandsAreRegisteredAndAllowed (0.00s)
+=== RUN   TestCollaborationMemoryShowReadsOnlyTheRunDocument
+=== RUN   TestCollaborationMemoryShowReadsOnlyTheRunDocument/table
+--- PASS: TestCollaborationMemoryShowReadsOnlyTheRunDocument/table (0.00s)
+=== RUN   TestCollaborationMemoryShowReadsOnlyTheRunDocument/json
+--- PASS: TestCollaborationMemoryShowReadsOnlyTheRunDocument/json (0.00s)
+--- PASS: TestCollaborationMemoryShowReadsOnlyTheRunDocument (0.00s)
+=== RUN   TestCollaborationMemoryShowRejectsAnotherRunsDocument
+--- PASS: TestCollaborationMemoryShowRejectsAnotherRunsDocument (0.00s)
+=== RUN   TestCollaborationMemoryUpdateSendsTheWholeDocument
+=== RUN   TestCollaborationMemoryUpdateSendsTheWholeDocument/file
+--- PASS: TestCollaborationMemoryUpdateSendsTheWholeDocument/file (0.00s)
+=== RUN   TestCollaborationMemoryUpdateSendsTheWholeDocument/stdin
+--- PASS: TestCollaborationMemoryUpdateSendsTheWholeDocument/stdin (0.00s)
+--- PASS: TestCollaborationMemoryUpdateSendsTheWholeDocument (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/missing_request
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/missing_request (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/noncanonical_request
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/noncanonical_request (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/missing_base
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/missing_base (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/negative_base
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/negative_base (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/noncanonical_base
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/noncanonical_base (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/missing_content
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/missing_content (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/two_sources
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/two_sources (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/external_file
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/external_file (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/local_link
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/local_link (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/other_issue
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/other_issue (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/workspace_override
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP/workspace_override (0.00s)
+--- PASS: TestCollaborationMemoryUpdateRejectsBadInputBeforeHTTP (0.01s)
+=== RUN   TestCollaborationMemoryUpdateRefusalsNameTheNextAction
+=== RUN   TestCollaborationMemoryUpdateRefusalsNameTheNextAction/stale
+--- PASS: TestCollaborationMemoryUpdateRefusalsNameTheNextAction/stale (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRefusalsNameTheNextAction/too_large
+--- PASS: TestCollaborationMemoryUpdateRefusalsNameTheNextAction/too_large (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRefusalsNameTheNextAction/reused_request
+--- PASS: TestCollaborationMemoryUpdateRefusalsNameTheNextAction/reused_request (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRefusalsNameTheNextAction/unsupported
+--- PASS: TestCollaborationMemoryUpdateRefusalsNameTheNextAction/unsupported (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRefusalsNameTheNextAction/revoked
+--- PASS: TestCollaborationMemoryUpdateRefusalsNameTheNextAction/revoked (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRefusalsNameTheNextAction/unknown
+--- PASS: TestCollaborationMemoryUpdateRefusalsNameTheNextAction/unknown (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRefusalsNameTheNextAction/invalid_content
+--- PASS: TestCollaborationMemoryUpdateRefusalsNameTheNextAction/invalid_content (0.00s)
+=== RUN   TestCollaborationMemoryUpdateRefusalsNameTheNextAction/body_too_large
+--- PASS: TestCollaborationMemoryUpdateRefusalsNameTheNextAction/body_too_large (0.00s)
+--- PASS: TestCollaborationMemoryUpdateRefusalsNameTheNextAction (0.01s)
+=== RUN   TestCollaborationMemoryShowRefusalAndUpdateJSON
+--- PASS: TestCollaborationMemoryShowRefusalAndUpdateJSON (0.00s)
+=== RUN   TestCollaborationMemoryCommandsThroughTheRoot
+=== RUN   TestCollaborationMemoryCommandsThroughTheRoot/show
+--- PASS: TestCollaborationMemoryCommandsThroughTheRoot/show (0.00s)
+=== RUN   TestCollaborationMemoryCommandsThroughTheRoot/show_workspace_override
+--- PASS: TestCollaborationMemoryCommandsThroughTheRoot/show_workspace_override (0.00s)
+=== RUN   TestCollaborationMemoryCommandsThroughTheRoot/show_profile_override
+--- PASS: TestCollaborationMemoryCommandsThroughTheRoot/show_profile_override (0.00s)
+=== RUN   TestCollaborationMemoryCommandsThroughTheRoot/show_server_override
+--- PASS: TestCollaborationMemoryCommandsThroughTheRoot/show_server_override (0.00s)
+=== RUN   TestCollaborationMemoryCommandsThroughTheRoot/show_extra_argument
+--- PASS: TestCollaborationMemoryCommandsThroughTheRoot/show_extra_argument (0.00s)
+=== RUN   TestCollaborationMemoryCommandsThroughTheRoot/update
+--- PASS: TestCollaborationMemoryCommandsThroughTheRoot/update (0.00s)
+=== RUN   TestCollaborationMemoryCommandsThroughTheRoot/update_unknown_flag
+--- PASS: TestCollaborationMemoryCommandsThroughTheRoot/update_unknown_flag (0.00s)
+--- PASS: TestCollaborationMemoryCommandsThroughTheRoot (0.01s)
+=== RUN   TestCollaborationMemoryRefusesOutsideACollaborationRun
+--- PASS: TestCollaborationMemoryRefusesOutsideACollaborationRun (0.00s)
+=== RUN   TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse
+=== RUN   TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse/valid
+--- PASS: TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse/valid (0.00s)
+=== RUN   TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse/malformed
+--- PASS: TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse/malformed (0.00s)
+--- PASS: TestCollaborationCLIRecallExplicitEnvelopeAndMalformedResponse (0.00s)
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/other_issue
+--- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/other_issue (0.00s)
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/override
+--- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/override (0.00s)
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/filter
+--- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/filter (0.00s)
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/limit
+--- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/limit (0.00s)
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/cursor
+--- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/cursor (0.00s)
+=== RUN   TestCollaborationCLIRecallGuardsBeforeHTTP/content_revision
+--- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP/content_revision (0.00s)
+--- PASS: TestCollaborationCLIRecallGuardsBeforeHTTP (0.00s)
+=== RUN   TestCollaborationCLIRecallContentOperation
+--- PASS: TestCollaborationCLIRecallContentOperation (0.00s)
+=== RUN   TestCollaborationRecallCursorRejectsMissingAndDuplicateFields
+--- PASS: TestCollaborationRecallCursorRejectsMissingAndDuplicateFields (0.00s)
+=== RUN   TestCollaborationCLIRejectsOrdinaryClientFallback
+--- PASS: TestCollaborationCLIRejectsOrdinaryClientFallback (0.00s)
+=== RUN   TestCollaborationCLIIssueGetUsesOnlyItsRunContext
+--- PASS: TestCollaborationCLIIssueGetUsesOnlyItsRunContext (0.00s)
+=== RUN   TestCollaborationCLICommentListDoesNotLoadWorkspaceActors
+=== RUN   TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/json
+--- PASS: TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/json (0.00s)
+=== RUN   TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/table
+--- PASS: TestCollaborationCLICommentListDoesNotLoadWorkspaceActors/table (0.00s)
+--- PASS: TestCollaborationCLICommentListDoesNotLoadWorkspaceActors (0.00s)
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/other_issue
+--- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/other_issue (0.00s)
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/attachment
+--- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/attachment (0.00s)
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/content_file
+--- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/content_file (0.00s)
+=== RUN   TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/missing_request
+--- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP/missing_request (0.00s)
+--- PASS: TestCollaborationCLIRejectsOtherIssueAndUnsupportedFilesBeforeHTTP (0.00s)
+=== RUN   TestCollaborationCLIWholeCommandGuard
+=== RUN   TestCollaborationCLIWholeCommandGuard/config_show
+--- PASS: TestCollaborationCLIWholeCommandGuard/config_show (0.00s)
+=== RUN   TestCollaborationCLIWholeCommandGuard/auth_status
+--- PASS: TestCollaborationCLIWholeCommandGuard/auth_status (0.00s)
+=== RUN   TestCollaborationCLIWholeCommandGuard/workspace_list
+--- PASS: TestCollaborationCLIWholeCommandGuard/workspace_list (0.00s)
+=== RUN   TestCollaborationCLIWholeCommandGuard/issue_update
+--- PASS: TestCollaborationCLIWholeCommandGuard/issue_update (0.00s)
+=== RUN   TestCollaborationCLIWholeCommandGuard/daemon_start
+--- PASS: TestCollaborationCLIWholeCommandGuard/daemon_start (0.00s)
+--- PASS: TestCollaborationCLIWholeCommandGuard (0.00s)
+=== RUN   TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity
+=== RUN   TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/comment
+--- PASS: TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/comment (0.00s)
+=== RUN   TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/activity
+--- PASS: TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity/activity (0.00s)
+--- PASS: TestCollaborationCLIRetriesUncertainWriteWithOriginalIdentity (0.00s)
+=== RUN   TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice
+=== RUN   TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/other_run
+--- PASS: TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/other_run (0.00s)
+=== RUN   TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/401
+--- PASS: TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/401 (0.00s)
+=== RUN   TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/403
+--- PASS: TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice/403 (0.00s)
+--- PASS: TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice (0.00s)
+=== RUN   TestCollaborationCLICommentAddRejectsLocalPathLinksBeforeHTTP
+--- PASS: TestCollaborationCLICommentAddRejectsLocalPathLinksBeforeHTTP (0.00s)
+=== RUN   TestLegacyCompatibilityCommandsRemainAvailable
+=== RUN   TestLegacyCompatibilityCommandsRemainAvailable/workspace_get_remains_available
+--- PASS: TestLegacyCompatibilityCommandsRemainAvailable/workspace_get_remains_available (0.00s)
+=== RUN   TestLegacyCompatibilityCommandsRemainAvailable/workspace_member_list_remains_available
+--- PASS: TestLegacyCompatibilityCommandsRemainAvailable/workspace_member_list_remains_available (0.00s)
+=== RUN   TestLegacyCompatibilityCommandsRemainAvailable/config_show_and_set_remain_available
+--- PASS: TestLegacyCompatibilityCommandsRemainAvailable/config_show_and_set_remain_available (0.00s)
+--- PASS: TestLegacyCompatibilityCommandsRemainAvailable (0.00s)
+=== RUN   TestRunConfigSetPersistsValues
+Set server_url = http://example.com
+Set workspace_id = ws-123
+--- PASS: TestRunConfigSetPersistsValues (0.00s)
+=== RUN   TestRunConfigSetPersistsSupportedKeysInProfile
+--- PASS: TestRunConfigSetPersistsSupportedKeysInProfile (0.00s)
+=== RUN   TestRunConfigShowIncludesProfileAndDefaults
+--- PASS: TestRunConfigShowIncludesProfileAndDefaults (0.00s)
+=== RUN   TestRunConfigCommandsUseTaskLocalConfigWithoutTouchingOwner
+Set server_url = https://task.invalid
+--- PASS: TestRunConfigCommandsUseTaskLocalConfigWithoutTouchingOwner (0.00s)
+=== RUN   TestRunConfigCommandsFailClosedWithoutTaskRoot
+--- PASS: TestRunConfigCommandsFailClosedWithoutTaskRoot (0.00s)
+=== RUN   TestRunConfigSetRejectsUnknownKey
+--- PASS: TestRunConfigSetRejectsUnknownKey (0.00s)
+=== RUN   TestApplyConfigSetSupportsDaemonKeys
+=== PAUSE TestApplyConfigSetSupportsDaemonKeys
+=== RUN   TestApplyConfigSetNormalizesWorkspacesRoot
+--- PASS: TestApplyConfigSetNormalizesWorkspacesRoot (0.00s)
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/heartbeat_interval
+--- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/heartbeat_interval (0.00s)
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/codex_semantic_inactivity_timeout
+--- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/codex_semantic_inactivity_timeout (0.00s)
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/codex_handshake_timeout
+--- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/codex_handshake_timeout (0.00s)
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/auto_update_check_interval
+--- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/auto_update_check_interval (0.00s)
+--- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver (0.00s)
+=== RUN   TestApplyConfigSetAgentTimeoutTriState
+=== PAUSE TestApplyConfigSetAgentTimeoutTriState
+=== RUN   TestApplyConfigSetRejectsBadValues
+=== PAUSE TestApplyConfigSetRejectsBadValues
+=== RUN   TestApplyConfigSetPollIntervalZeroDoesNotOverwrite
+=== PAUSE TestApplyConfigSetPollIntervalZeroDoesNotOverwrite
+=== RUN   TestApplyConfigSetEmptyStringClearsTypedKeys
+=== PAUSE TestApplyConfigSetEmptyStringClearsTypedKeys
+=== RUN   TestPollIntervalRoundTripThroughDuration
+=== PAUSE TestPollIntervalRoundTripThroughDuration
+=== RUN   TestDiskUsageNeedsParentStatus
+=== PAUSE TestDiskUsageNeedsParentStatus
+=== RUN   TestRunDaemonDiskUsageByWorkspaceTableMakesNoRequest
+--- PASS: TestRunDaemonDiskUsageByWorkspaceTableMakesNoRequest (0.00s)
+=== RUN   TestRunDaemonDiskUsageTaskTableResolvesStatus
+--- PASS: TestRunDaemonDiskUsageTaskTableResolvesStatus (0.00s)
+=== RUN   TestRunDaemonDiskUsageJSONSurvivesServerFailure
+warning: could not resolve issue statuses, STATUS column may be blank: POST /api/daemon/workspaces/11111111-1111-1111-1111-111111111111/issues/gc-check returned 500: 
+--- PASS: TestRunDaemonDiskUsageJSONSurvivesServerFailure (0.00s)
+=== RUN   TestRunDaemonDiskUsageAllProfilesUsesPerProfileToken
+--- PASS: TestRunDaemonDiskUsageAllProfilesUsesPerProfileToken (0.00s)
+=== RUN   TestPrintRepoCacheLineAppearsInEveryView
+=== PAUSE TestPrintRepoCacheLineAppearsInEveryView
+=== RUN   TestPrintRepoCacheLineSilentWhenEmpty
+=== PAUSE TestPrintRepoCacheLineSilentWhenEmpty
+=== RUN   TestRunDaemonDiskUsageTaskContextScansInjectedRootWithoutOwnerToken
+--- PASS: TestRunDaemonDiskUsageTaskContextScansInjectedRootWithoutOwnerToken (0.00s)
+=== RUN   TestRunDaemonDiskUsageTaskContextRejectsWideningFlags
+=== RUN   TestRunDaemonDiskUsageTaskContextRejectsWideningFlags/all-profiles
+--- PASS: TestRunDaemonDiskUsageTaskContextRejectsWideningFlags/all-profiles (0.00s)
+=== RUN   TestRunDaemonDiskUsageTaskContextRejectsWideningFlags/workspaces-root
+--- PASS: TestRunDaemonDiskUsageTaskContextRejectsWideningFlags/workspaces-root (0.00s)
+=== RUN   TestRunDaemonDiskUsageTaskContextRejectsWideningFlags/profile
+--- PASS: TestRunDaemonDiskUsageTaskContextRejectsWideningFlags/profile (0.00s)
+--- PASS: TestRunDaemonDiskUsageTaskContextRejectsWideningFlags (0.01s)
+=== RUN   TestResolveDiskUsageRootTaskContext
+=== RUN   TestResolveDiskUsageRootTaskContext/uses_the_injected_root
+--- PASS: TestResolveDiskUsageRootTaskContext/uses_the_injected_root (0.00s)
+=== RUN   TestResolveDiskUsageRootTaskContext/fails_closed_on_a_missing_root
+--- PASS: TestResolveDiskUsageRootTaskContext/fails_closed_on_a_missing_root (0.00s)
+=== RUN   TestResolveDiskUsageRootTaskContext/fails_closed_on_a_relative_root
+--- PASS: TestResolveDiskUsageRootTaskContext/fails_closed_on_a_relative_root (0.00s)
+=== RUN   TestResolveDiskUsageRootTaskContext/outside_a_task_keeps_profile_resolution
+--- PASS: TestResolveDiskUsageRootTaskContext/outside_a_task_keeps_profile_resolution (0.00s)
+--- PASS: TestResolveDiskUsageRootTaskContext (0.00s)
+=== RUN   TestRunDaemonDiskUsageHonorsProfileWorkspacesRoot
+--- PASS: TestRunDaemonDiskUsageHonorsProfileWorkspacesRoot (0.00s)
+=== RUN   TestResolveDiskUsageRootEnvOverridesProfileConfig
+--- PASS: TestResolveDiskUsageRootEnvOverridesProfileConfig (0.00s)
+=== RUN   TestEnumerateDiskUsageRootsUsesAndDeduplicatesProfileConfig
+--- PASS: TestEnumerateDiskUsageRootsUsesAndDeduplicatesProfileConfig (0.00s)
+=== RUN   TestBlockingChildProcess
+--- PASS: TestBlockingChildProcess (0.00s)
+=== RUN   TestDaemonIdentityMismatch
+=== RUN   TestDaemonIdentityMismatch/same_named_profile
+--- PASS: TestDaemonIdentityMismatch/same_named_profile (0.00s)
+=== RUN   TestDaemonIdentityMismatch/default_profile_identifying_itself
+--- PASS: TestDaemonIdentityMismatch/default_profile_identifying_itself (0.00s)
+=== RUN   TestDaemonIdentityMismatch/different_profile_on_our_port
+--- PASS: TestDaemonIdentityMismatch/different_profile_on_our_port (0.00s)
+=== RUN   TestDaemonIdentityMismatch/our_port_serving_the_default_daemon
+--- PASS: TestDaemonIdentityMismatch/our_port_serving_the_default_daemon (0.00s)
+=== RUN   TestDaemonIdentityMismatch/we_asked_for_default,_a_named_daemon_answered
+--- PASS: TestDaemonIdentityMismatch/we_asked_for_default,_a_named_daemon_answered (0.00s)
+=== RUN   TestDaemonIdentityMismatch/older_daemon_omits_the_field
+--- PASS: TestDaemonIdentityMismatch/older_daemon_omits_the_field (0.00s)
+--- PASS: TestDaemonIdentityMismatch (0.00s)
+=== RUN   TestDaemonProfileMismatchErrorNamesBothSides
+--- PASS: TestDaemonProfileMismatchErrorNamesBothSides (0.00s)
+=== RUN   TestDaemonLifecycleRefusesForeignDaemon
+=== RUN   TestDaemonLifecycleRefusesForeignDaemon/stop
+--- PASS: TestDaemonLifecycleRefusesForeignDaemon/stop (0.00s)
+=== RUN   TestDaemonLifecycleRefusesForeignDaemon/restart
+--- PASS: TestDaemonLifecycleRefusesForeignDaemon/restart (0.00s)
+=== RUN   TestDaemonLifecycleRefusesForeignDaemon/start
+--- PASS: TestDaemonLifecycleRefusesForeignDaemon/start (0.00s)
+--- PASS: TestDaemonLifecycleRefusesForeignDaemon (0.00s)
+=== RUN   TestDaemonStopAcceptsDaemonWithoutProfileField
+Stopping daemon (pid 45959)...
+Daemon stopped.
+--- PASS: TestDaemonStopAcceptsDaemonWithoutProfileField (0.51s)
+=== RUN   TestDaemonStatusReportsPortConflictInsteadOfClaimingItsOwn
+=== RUN   TestDaemonStatusReportsPortConflictInsteadOfClaimingItsOwn/table_says_stopped_and_names_the_occupant
+--- PASS: TestDaemonStatusReportsPortConflictInsteadOfClaimingItsOwn/table_says_stopped_and_names_the_occupant (0.01s)
+=== RUN   TestDaemonStatusReportsPortConflictInsteadOfClaimingItsOwn/json_keeps_status_stopped_and_adds_the_conflict
+--- PASS: TestDaemonStatusReportsPortConflictInsteadOfClaimingItsOwn/json_keeps_status_stopped_and_adds_the_conflict (0.00s)
+--- PASS: TestDaemonStatusReportsPortConflictInsteadOfClaimingItsOwn (0.01s)
+=== RUN   TestDaemonStatusShowsWhoManagesTheDaemon
+=== RUN   TestDaemonStatusShowsWhoManagesTheDaemon/desktop-managed_daemon_says_so
+--- PASS: TestDaemonStatusShowsWhoManagesTheDaemon/desktop-managed_daemon_says_so (0.00s)
+=== RUN   TestDaemonStatusShowsWhoManagesTheDaemon/standalone_daemon_output_is_unchanged
+--- PASS: TestDaemonStatusShowsWhoManagesTheDaemon/standalone_daemon_output_is_unchanged (0.00s)
+--- PASS: TestDaemonStatusShowsWhoManagesTheDaemon (0.01s)
+=== RUN   TestDaemonStatusInTaskContextReportsNamedProfileHost
+=== RUN   TestDaemonStatusInTaskContextReportsNamedProfileHost/table_reports_the_host_as_running
+--- PASS: TestDaemonStatusInTaskContextReportsNamedProfileHost/table_reports_the_host_as_running (0.00s)
+=== RUN   TestDaemonStatusInTaskContextReportsNamedProfileHost/json_reports_the_host_as_running
+--- PASS: TestDaemonStatusInTaskContextReportsNamedProfileHost/json_reports_the_host_as_running (0.00s)
+--- PASS: TestDaemonStatusInTaskContextReportsNamedProfileHost (0.00s)
+=== RUN   TestDaemonIdentityRejectsUnreadableProfileField
+=== RUN   TestDaemonIdentityRejectsUnreadableProfileField/null
+--- PASS: TestDaemonIdentityRejectsUnreadableProfileField/null (0.00s)
+=== RUN   TestDaemonIdentityRejectsUnreadableProfileField/number
+--- PASS: TestDaemonIdentityRejectsUnreadableProfileField/number (0.00s)
+=== RUN   TestDaemonIdentityRejectsUnreadableProfileField/object
+--- PASS: TestDaemonIdentityRejectsUnreadableProfileField/object (0.00s)
+=== RUN   TestDaemonIdentityRejectsUnreadableProfileField/bool
+--- PASS: TestDaemonIdentityRejectsUnreadableProfileField/bool (0.00s)
+--- PASS: TestDaemonIdentityRejectsUnreadableProfileField (0.00s)
+=== RUN   TestDaemonRefusesDaemonWithUnreadableIdentity
+=== RUN   TestDaemonRefusesDaemonWithUnreadableIdentity/stop_refuses
+--- PASS: TestDaemonRefusesDaemonWithUnreadableIdentity/stop_refuses (0.00s)
+=== RUN   TestDaemonRefusesDaemonWithUnreadableIdentity/status_does_not_claim_it
+--- PASS: TestDaemonRefusesDaemonWithUnreadableIdentity/status_does_not_claim_it (0.00s)
+--- PASS: TestDaemonRefusesDaemonWithUnreadableIdentity (0.00s)
+=== RUN   TestEnvPositiveIntOrDefault
+=== RUN   TestEnvPositiveIntOrDefault/unset
+--- PASS: TestEnvPositiveIntOrDefault/unset (0.00s)
+=== RUN   TestEnvPositiveIntOrDefault/blank
+--- PASS: TestEnvPositiveIntOrDefault/blank (0.00s)
+=== RUN   TestEnvPositiveIntOrDefault/whitespace
+--- PASS: TestEnvPositiveIntOrDefault/whitespace (0.00s)
+=== RUN   TestEnvPositiveIntOrDefault/valid
+--- PASS: TestEnvPositiveIntOrDefault/valid (0.00s)
+=== RUN   TestEnvPositiveIntOrDefault/zero_falls_back
+--- PASS: TestEnvPositiveIntOrDefault/zero_falls_back (0.00s)
+=== RUN   TestEnvPositiveIntOrDefault/negative
+--- PASS: TestEnvPositiveIntOrDefault/negative (0.00s)
+=== RUN   TestEnvPositiveIntOrDefault/malformed
+--- PASS: TestEnvPositiveIntOrDefault/malformed (0.00s)
+=== RUN   TestEnvPositiveIntOrDefault/padded
+--- PASS: TestEnvPositiveIntOrDefault/padded (0.00s)
+--- PASS: TestEnvPositiveIntOrDefault (0.00s)
+=== RUN   TestOpenBoundedErrLogRolls
+--- PASS: TestOpenBoundedErrLogRolls (0.01s)
+=== RUN   TestOpenBoundedErrLogKeepsSmall
+--- PASS: TestOpenBoundedErrLogKeepsSmall (0.00s)
+=== RUN   TestNewDaemonLogRotatorDefaults
+--- PASS: TestNewDaemonLogRotatorDefaults (0.00s)
+=== RUN   TestNewDaemonLogRotatorEnvOverride
+--- PASS: TestNewDaemonLogRotatorEnvOverride (0.00s)
+=== RUN   TestDaemonLogRotatorRotates
+--- PASS: TestDaemonLogRotatorRotates (0.01s)
+=== RUN   TestDaemonStderrLogPathIsSeparate
+--- PASS: TestDaemonStderrLogPathIsSeparate (0.00s)
+=== RUN   TestDaemonLogSourcePathResolvesPerProfile
+=== RUN   TestDaemonLogSourcePathResolvesPerProfile/default_profile
+--- PASS: TestDaemonLogSourcePathResolvesPerProfile/default_profile (0.00s)
+=== RUN   TestDaemonLogSourcePathResolvesPerProfile/named_profile
+--- PASS: TestDaemonLogSourcePathResolvesPerProfile/named_profile (0.00s)
+=== RUN   TestDaemonLogSourcePathResolvesPerProfile/result_is_absolute
+--- PASS: TestDaemonLogSourcePathResolvesPerProfile/result_is_absolute (0.00s)
+--- PASS: TestDaemonLogSourcePathResolvesPerProfile (0.00s)
+=== RUN   TestRunDaemonLogsAnnouncesResolvedPath
+=== RUN   TestRunDaemonLogsAnnouncesResolvedPath/default_profile
+--- PASS: TestRunDaemonLogsAnnouncesResolvedPath/default_profile (0.00s)
+=== RUN   TestRunDaemonLogsAnnouncesResolvedPath/default_profile_with_lines
+--- PASS: TestRunDaemonLogsAnnouncesResolvedPath/default_profile_with_lines (0.00s)
+=== RUN   TestRunDaemonLogsAnnouncesResolvedPath/named_profile
+--- PASS: TestRunDaemonLogsAnnouncesResolvedPath/named_profile (0.00s)
+=== RUN   TestRunDaemonLogsAnnouncesResolvedPath/named_profile_following
+--- PASS: TestRunDaemonLogsAnnouncesResolvedPath/named_profile_following (0.00s)
+--- PASS: TestRunDaemonLogsAnnouncesResolvedPath (0.00s)
+=== RUN   TestRunDaemonLogsAnnouncementDoesNotPolluteStdout
+--- PASS: TestRunDaemonLogsAnnouncementDoesNotPolluteStdout (0.00s)
+=== RUN   TestRunDaemonLogsMissingFileNamesProfilePath
+--- PASS: TestRunDaemonLogsMissingFileNamesProfilePath (0.00s)
+=== RUN   TestResolveDaemonStringOverridePrecedence
+=== RUN   TestResolveDaemonStringOverridePrecedence/flag_wins_over_env_and_cfg
+--- PASS: TestResolveDaemonStringOverridePrecedence/flag_wins_over_env_and_cfg (0.00s)
+=== RUN   TestResolveDaemonStringOverridePrecedence/env_suppresses_cfg
+--- PASS: TestResolveDaemonStringOverridePrecedence/env_suppresses_cfg (0.00s)
+=== RUN   TestResolveDaemonStringOverridePrecedence/cfg_used_when_flag_and_env_unset
+--- PASS: TestResolveDaemonStringOverridePrecedence/cfg_used_when_flag_and_env_unset (0.00s)
+=== RUN   TestResolveDaemonStringOverridePrecedence/all_unset_returns_empty
+--- PASS: TestResolveDaemonStringOverridePrecedence/all_unset_returns_empty (0.00s)
+=== RUN   TestResolveDaemonStringOverridePrecedence/whitespace_env_counts_as_unset
+--- PASS: TestResolveDaemonStringOverridePrecedence/whitespace_env_counts_as_unset (0.00s)
+--- PASS: TestResolveDaemonStringOverridePrecedence (0.00s)
+=== RUN   TestResolveDaemonWorkspacesRootPrecedence
+--- PASS: TestResolveDaemonWorkspacesRootPrecedence (0.00s)
+=== RUN   TestResolveDaemonDurationOverridePrecedence
+=== RUN   TestResolveDaemonDurationOverridePrecedence/flag_wins
+--- PASS: TestResolveDaemonDurationOverridePrecedence/flag_wins (0.00s)
+=== RUN   TestResolveDaemonDurationOverridePrecedence/env_suppresses_cfg
+--- PASS: TestResolveDaemonDurationOverridePrecedence/env_suppresses_cfg (0.00s)
+=== RUN   TestResolveDaemonDurationOverridePrecedence/cfg_parsed_when_flag_and_env_unset
+--- PASS: TestResolveDaemonDurationOverridePrecedence/cfg_parsed_when_flag_and_env_unset (0.00s)
+=== RUN   TestResolveDaemonDurationOverridePrecedence/empty_cfg_returns_zero
+--- PASS: TestResolveDaemonDurationOverridePrecedence/empty_cfg_returns_zero (0.00s)
+=== RUN   TestResolveDaemonDurationOverridePrecedence/invalid_cfg_errors
+--- PASS: TestResolveDaemonDurationOverridePrecedence/invalid_cfg_errors (0.00s)
+=== RUN   TestResolveDaemonDurationOverridePrecedence/zero_cfg_errors
+--- PASS: TestResolveDaemonDurationOverridePrecedence/zero_cfg_errors (0.00s)
+=== RUN   TestResolveDaemonDurationOverridePrecedence/negative_cfg_errors
+--- PASS: TestResolveDaemonDurationOverridePrecedence/negative_cfg_errors (0.00s)
+--- PASS: TestResolveDaemonDurationOverridePrecedence (0.00s)
+=== RUN   TestResolveDaemonIntOverridePrecedence
+=== RUN   TestResolveDaemonIntOverridePrecedence/flag_wins
+--- PASS: TestResolveDaemonIntOverridePrecedence/flag_wins (0.00s)
+=== RUN   TestResolveDaemonIntOverridePrecedence/env_suppresses_cfg
+--- PASS: TestResolveDaemonIntOverridePrecedence/env_suppresses_cfg (0.00s)
+=== RUN   TestResolveDaemonIntOverridePrecedence/cfg_used_when_flag_and_env_unset
+--- PASS: TestResolveDaemonIntOverridePrecedence/cfg_used_when_flag_and_env_unset (0.00s)
+=== RUN   TestResolveDaemonIntOverridePrecedence/zero_everywhere_returns_zero
+--- PASS: TestResolveDaemonIntOverridePrecedence/zero_everywhere_returns_zero (0.00s)
+--- PASS: TestResolveDaemonIntOverridePrecedence (0.00s)
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence/explicit_zero_flag_wins
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence/explicit_zero_flag_wins (0.00s)
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence/positive_flag_wins
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence/positive_flag_wins (0.00s)
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence/env_suppresses_cfg
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence/env_suppresses_cfg (0.00s)
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_positive_applied_when_flag+env_silent
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_positive_applied_when_flag+env_silent (0.00s)
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_zero_string_persists_as_explicit_disable
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_zero_string_persists_as_explicit_disable (0.00s)
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_nil_->_no_override
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_nil_->_no_override (0.00s)
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_empty_string_->_no_override
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_empty_string_->_no_override (0.00s)
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_unparseable_errors
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_unparseable_errors (0.00s)
+=== RUN   TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_negative_errors
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence/cfg_negative_errors (0.00s)
+--- PASS: TestResolveDaemonAgentTimeoutOverridePrecedence (0.00s)
+=== RUN   TestResolveDaemonDisableSignalPrecedence
+=== RUN   TestResolveDaemonDisableSignalPrecedence/flag_true_wins
+--- PASS: TestResolveDaemonDisableSignalPrecedence/flag_true_wins (0.00s)
+=== RUN   TestResolveDaemonDisableSignalPrecedence/env=false_disables
+--- PASS: TestResolveDaemonDisableSignalPrecedence/env=false_disables (0.00s)
+=== RUN   TestResolveDaemonDisableSignalPrecedence/env=0_disables
+--- PASS: TestResolveDaemonDisableSignalPrecedence/env=0_disables (0.00s)
+=== RUN   TestResolveDaemonDisableSignalPrecedence/env=off_disables
+--- PASS: TestResolveDaemonDisableSignalPrecedence/env=off_disables (0.00s)
+=== RUN   TestResolveDaemonDisableSignalPrecedence/env=true_leaves_override_off
+--- PASS: TestResolveDaemonDisableSignalPrecedence/env=true_leaves_override_off (0.00s)
+=== RUN   TestResolveDaemonDisableSignalPrecedence/cfg=true_when_flag+env_silent
+--- PASS: TestResolveDaemonDisableSignalPrecedence/cfg=true_when_flag+env_silent (0.00s)
+=== RUN   TestResolveDaemonDisableSignalPrecedence/cfg=false_when_flag+env_silent
+--- PASS: TestResolveDaemonDisableSignalPrecedence/cfg=false_when_flag+env_silent (0.00s)
+--- PASS: TestResolveDaemonDisableSignalPrecedence (0.00s)
+=== RUN   TestDaemonRuntimeProbeFromAgents
+--- PASS: TestDaemonRuntimeProbeFromAgents (0.00s)
+=== RUN   TestLoadConfigAllowNoAgentsIsOptIn
+--- PASS: TestLoadConfigAllowNoAgentsIsOptIn (0.00s)
+=== RUN   TestDaemonAlive
+=== PAUSE TestDaemonAlive
+=== RUN   TestDaemonLocalCommandsFailClosedInTaskContext
+--- PASS: TestDaemonLocalCommandsFailClosedInTaskContext (0.00s)
+=== RUN   TestPrintDaemonStatusIncludesCLIVersion
+=== PAUSE TestPrintDaemonStatusIncludesCLIVersion
+=== RUN   TestBuildDaemonStartArgsForwardsCodexHandshakeTimeout
+--- PASS: TestBuildDaemonStartArgsForwardsCodexHandshakeTimeout (0.00s)
+=== RUN   TestBuildDaemonStartArgsForwardsWorkspacesRoot
+--- PASS: TestBuildDaemonStartArgsForwardsWorkspacesRoot (0.00s)
+=== RUN   TestBuildDaemonStartArgsForwardsNoAutoReload
+--- PASS: TestBuildDaemonStartArgsForwardsNoAutoReload (0.00s)
+=== RUN   TestNoAutoReloadFlagRegisteredOnBothDaemonCommands
+=== PAUSE TestNoAutoReloadFlagRegisteredOnBothDaemonCommands
+=== RUN   TestWorkspacesRootFlagRegisteredOnBothDaemonCommands
+=== PAUSE TestWorkspacesRootFlagRegisteredOnBothDaemonCommands
+=== RUN   TestPrintDaemonStatusExplainsDeferredRestart
+=== PAUSE TestPrintDaemonStatusExplainsDeferredRestart
+=== RUN   TestPrintDaemonStatusOmitsVersionWhenMissing
+=== PAUSE TestPrintDaemonStatusOmitsVersionWhenMissing
+=== RUN   TestRequireDaemonAuth
+=== RUN   TestRequireDaemonAuth/not_logged_in
+--- PASS: TestRequireDaemonAuth/not_logged_in (0.00s)
+=== RUN   TestRequireDaemonAuth/not_logged_in_with_profile
+--- PASS: TestRequireDaemonAuth/not_logged_in_with_profile (0.00s)
+=== RUN   TestRequireDaemonAuth/authenticated
+--- PASS: TestRequireDaemonAuth/authenticated (0.00s)
+--- PASS: TestRequireDaemonAuth (0.00s)
+=== RUN   TestDaemonStartBackgroundUnauthenticatedFailsFast
+--- PASS: TestDaemonStartBackgroundUnauthenticatedFailsFast (0.00s)
+=== RUN   TestReadLogTailSince
+=== PAUSE TestReadLogTailSince
+=== RUN   TestDaemonStartupFailureError
+=== PAUSE TestDaemonStartupFailureError
+=== RUN   TestDaemonStartBackgroundReportsEarlyChildExit
+--- PASS: TestDaemonStartBackgroundReportsEarlyChildExit (0.00s)
+=== RUN   TestDaemonRestartUnauthenticatedFailsBeforeStopping
+--- PASS: TestDaemonRestartUnauthenticatedFailsBeforeStopping (0.00s)
+=== RUN   TestDaemonRestartRejectedTokenFailsBeforeStopping
+--- PASS: TestDaemonRestartRejectedTokenFailsBeforeStopping (0.00s)
+=== RUN   TestDaemonRestartUnreachableServerFailsBeforeStopping
+--- PASS: TestDaemonRestartUnreachableServerFailsBeforeStopping (0.00s)
+=== RUN   TestPrintDaemonStatusAlignsValuesWithProfileLabel
+=== PAUSE TestPrintDaemonStatusAlignsValuesWithProfileLabel
+=== RUN   TestPrintDiskUsageOtherRootsHintSuggestsProfilesWithTasks
+--- PASS: TestPrintDiskUsageOtherRootsHintSuggestsProfilesWithTasks (0.00s)
+=== RUN   TestPrintDiskUsageOtherRootsHintFiresWhenCurrentRootNonEmpty
+--- PASS: TestPrintDiskUsageOtherRootsHintFiresWhenCurrentRootNonEmpty (0.00s)
+=== RUN   TestPrintDiskUsageOtherRootsHintSuggestsDefaultFromNamedProfile
+--- PASS: TestPrintDiskUsageOtherRootsHintSuggestsDefaultFromNamedProfile (0.00s)
+=== RUN   TestPrintDiskUsageOtherRootsHintUsesProfileConfig
+--- PASS: TestPrintDiskUsageOtherRootsHintUsesProfileConfig (0.00s)
+=== RUN   TestPrintDiskUsageOtherRootsHintSkipsExplicitRootOverride
+--- PASS: TestPrintDiskUsageOtherRootsHintSkipsExplicitRootOverride (0.00s)
+=== RUN   TestEnumerateDiskUsageRoots
+--- PASS: TestEnumerateDiskUsageRoots (0.00s)
+=== RUN   TestPrintAggregateDiskUsageShowsRootsAndGrandTotal
+--- PASS: TestPrintAggregateDiskUsageShowsRootsAndGrandTotal (0.00s)
+=== RUN   TestVersionTemplateMatchesDaemonProbe
+--- PASS: TestVersionTemplateMatchesDaemonProbe (0.00s)
+=== RUN   TestDaemonStatusHealthPortInTaskContext
+=== RUN   TestDaemonStatusHealthPortInTaskContext/outside_a_task_derives_the_port_from_the_profile
+--- PASS: TestDaemonStatusHealthPortInTaskContext/outside_a_task_derives_the_port_from_the_profile (0.00s)
+=== RUN   TestDaemonStatusHealthPortInTaskContext/port-only_host_context_derives_the_port_from_the_profile
+--- PASS: TestDaemonStatusHealthPortInTaskContext/port-only_host_context_derives_the_port_from_the_profile (0.00s)
+=== RUN   TestDaemonStatusHealthPortInTaskContext/inside_a_task_uses_the_injected_port
+--- PASS: TestDaemonStatusHealthPortInTaskContext/inside_a_task_uses_the_injected_port (0.00s)
+=== RUN   TestDaemonStatusHealthPortInTaskContext/inside_a_task_rejects_--profile
+--- PASS: TestDaemonStatusHealthPortInTaskContext/inside_a_task_rejects_--profile (0.00s)
+=== RUN   TestDaemonStatusHealthPortInTaskContext/inside_a_task_fails_closed_on_a_missing_or_invalid_port
+=== RUN   TestDaemonStatusHealthPortInTaskContext/inside_a_task_fails_closed_on_a_missing_or_invalid_port/missing
+--- PASS: TestDaemonStatusHealthPortInTaskContext/inside_a_task_fails_closed_on_a_missing_or_invalid_port/missing (0.00s)
+=== RUN   TestDaemonStatusHealthPortInTaskContext/inside_a_task_fails_closed_on_a_missing_or_invalid_port/invalid
+--- PASS: TestDaemonStatusHealthPortInTaskContext/inside_a_task_fails_closed_on_a_missing_or_invalid_port/invalid (0.00s)
+=== RUN   TestDaemonStatusHealthPortInTaskContext/inside_a_task_fails_closed_on_a_missing_or_invalid_port/zero
+--- PASS: TestDaemonStatusHealthPortInTaskContext/inside_a_task_fails_closed_on_a_missing_or_invalid_port/zero (0.00s)
+--- PASS: TestDaemonStatusHealthPortInTaskContext/inside_a_task_fails_closed_on_a_missing_or_invalid_port (0.00s)
+--- PASS: TestDaemonStatusHealthPortInTaskContext (0.00s)
+=== RUN   TestRequireKnownProfile
+=== RUN   TestRequireKnownProfile/default_profile_is_never_validated
+--- PASS: TestRequireKnownProfile/default_profile_is_never_validated (0.00s)
+=== RUN   TestRequireKnownProfile/existing_profile_passes
+--- PASS: TestRequireKnownProfile/existing_profile_passes (0.00s)
+=== RUN   TestRequireKnownProfile/unknown_profile_lists_the_known_ones_sorted
+--- PASS: TestRequireKnownProfile/unknown_profile_lists_the_known_ones_sorted (0.00s)
+=== RUN   TestRequireKnownProfile/nested_profile_created_by_the_CLI_is_accepted
+--- PASS: TestRequireKnownProfile/nested_profile_created_by_the_CLI_is_accepted (0.00s)
+=== RUN   TestRequireKnownProfile/a_bare_parent_directory_is_not_offered_as_a_profile
+--- PASS: TestRequireKnownProfile/a_bare_parent_directory_is_not_offered_as_a_profile (0.00s)
+=== RUN   TestRequireKnownProfile/login_hint_quotes_an_awkward_profile_name
+--- PASS: TestRequireKnownProfile/login_hint_quotes_an_awkward_profile_name (0.00s)
+=== RUN   TestRequireKnownProfile/no_profiles_root_yet_points_at_login
+--- PASS: TestRequireKnownProfile/no_profiles_root_yet_points_at_login (0.00s)
+--- PASS: TestRequireKnownProfile (0.01s)
+=== RUN   TestDaemonStatusUnknownProfile
+=== RUN   TestDaemonStatusUnknownProfile/text_mode_fails_without_touching_stdout
+--- PASS: TestDaemonStatusUnknownProfile/text_mode_fails_without_touching_stdout (0.00s)
+=== RUN   TestDaemonStatusUnknownProfile/json_mode_prints_one_document_and_exits_non-zero
+--- PASS: TestDaemonStatusUnknownProfile/json_mode_prints_one_document_and_exits_non-zero (0.00s)
+=== RUN   TestDaemonStatusUnknownProfile/json_mode_renders_known_profiles_as_[]_not_null
+--- PASS: TestDaemonStatusUnknownProfile/json_mode_renders_known_profiles_as_[]_not_null (0.00s)
+--- PASS: TestDaemonStatusUnknownProfile (0.00s)
+=== RUN   TestDaemonStatusKnownProfileStillReportsStopped
+--- PASS: TestDaemonStatusKnownProfileStillReportsStopped (0.00s)
+=== RUN   TestDaemonStatusNestedProfileStillProbes
+--- PASS: TestDaemonStatusNestedProfileStillProbes (0.00s)
+=== RUN   TestDaemonStatusDefaultProfileNeverValidated
+--- PASS: TestDaemonStatusDefaultProfileNeverValidated (0.00s)
+=== RUN   TestDaemonStartAcceptsUnknownProfile
+--- PASS: TestDaemonStartAcceptsUnknownProfile (0.00s)
+=== RUN   TestDaemonLifecycleCommandsRejectUnknownProfile
+=== RUN   TestDaemonLifecycleCommandsRejectUnknownProfile/stop
+--- PASS: TestDaemonLifecycleCommandsRejectUnknownProfile/stop (0.00s)
+=== RUN   TestDaemonLifecycleCommandsRejectUnknownProfile/restart
+--- PASS: TestDaemonLifecycleCommandsRejectUnknownProfile/restart (0.00s)
+=== RUN   TestDaemonLifecycleCommandsRejectUnknownProfile/logs
+--- PASS: TestDaemonLifecycleCommandsRejectUnknownProfile/logs (0.00s)
+--- PASS: TestDaemonLifecycleCommandsRejectUnknownProfile (0.00s)
+=== RUN   TestDaemonStatusTaskContextRejectsProfileBeforeListing
+--- PASS: TestDaemonStatusTaskContextRejectsProfileBeforeListing (0.00s)
+=== RUN   TestRunIssueMetadataListDegradesOn404JSON
+--- PASS: TestRunIssueMetadataListDegradesOn404JSON (0.00s)
+=== RUN   TestRunIssueMetadataListDegradesOn404Table
+--- PASS: TestRunIssueMetadataListDegradesOn404Table (0.00s)
+=== RUN   TestRunIssueMetadataListSuccessReturnsServerMetadata
+--- PASS: TestRunIssueMetadataListSuccessReturnsServerMetadata (0.00s)
+=== RUN   TestRunIssueMetadataListPropagatesNon404Error
+--- PASS: TestRunIssueMetadataListPropagatesNon404Error (0.00s)
+=== RUN   TestRunIssueMetadataListPropagates401Error
+--- PASS: TestRunIssueMetadataListPropagates401Error (0.00s)
+=== RUN   TestRunIssueMetadataGetReturnsErrorOn404
+--- PASS: TestRunIssueMetadataGetReturnsErrorOn404 (0.00s)
+=== RUN   TestRunIssueMetadataSetReturnsErrorOn404
+--- PASS: TestRunIssueMetadataSetReturnsErrorOn404 (0.00s)
+=== RUN   TestRunIssueMetadataDeleteReturnsErrorOn404
+--- PASS: TestRunIssueMetadataDeleteReturnsErrorOn404 (0.00s)
+=== RUN   TestResolveTextFlag
+=== RUN   TestResolveTextFlag/inline_value_is_unescaped
+--- PASS: TestResolveTextFlag/inline_value_is_unescaped (0.00s)
+=== RUN   TestResolveTextFlag/stdin_body_is_preserved_verbatim
+--- PASS: TestResolveTextFlag/stdin_body_is_preserved_verbatim (0.00s)
+=== RUN   TestResolveTextFlag/inline_+_stdin_is_rejected
+--- PASS: TestResolveTextFlag/inline_+_stdin_is_rejected (0.00s)
+=== RUN   TestResolveTextFlag/missing_both_returns_hasValue=false
+--- PASS: TestResolveTextFlag/missing_both_returns_hasValue=false (0.00s)
+=== RUN   TestResolveTextFlag/file_body_is_preserved_verbatim_with_non-ASCII_content
+--- PASS: TestResolveTextFlag/file_body_is_preserved_verbatim_with_non-ASCII_content (0.00s)
+=== RUN   TestResolveTextFlag/UTF-8_BOM_is_treated_as_an_encoding_marker
+--- PASS: TestResolveTextFlag/UTF-8_BOM_is_treated_as_an_encoding_marker (0.00s)
+=== RUN   TestResolveTextFlag/UTF-16LE_file_from_PowerShell_Out-File_is_decoded
+--- PASS: TestResolveTextFlag/UTF-16LE_file_from_PowerShell_Out-File_is_decoded (0.00s)
+=== RUN   TestResolveTextFlag/BOM-less_ANSI_file_is_refused_with_an_actionable_hint
+--- PASS: TestResolveTextFlag/BOM-less_ANSI_file_is_refused_with_an_actionable_hint (0.00s)
+=== RUN   TestResolveTextFlag/file_path_that_doesn't_exist_surfaces_a_useful_error
+--- PASS: TestResolveTextFlag/file_path_that_doesn't_exist_surfaces_a_useful_error (0.00s)
+=== RUN   TestResolveTextFlag/empty_file_is_rejected
+--- PASS: TestResolveTextFlag/empty_file_is_rejected (0.00s)
+=== RUN   TestResolveTextFlag/file_outside_the_working_directory_is_rejected
+--- PASS: TestResolveTextFlag/file_outside_the_working_directory_is_rejected (0.00s)
+=== RUN   TestResolveTextFlag/--allow-external-file_permits_a_path_outside_the_working_directory
+--- PASS: TestResolveTextFlag/--allow-external-file_permits_a_path_outside_the_working_directory (0.00s)
+=== RUN   TestResolveTextFlag/a_symlink_inside_the_workdir_pointing_outside_is_rejected
+--- PASS: TestResolveTextFlag/a_symlink_inside_the_workdir_pointing_outside_is_rejected (0.00s)
+=== RUN   TestResolveTextFlag/file_plus_inline_is_rejected
+--- PASS: TestResolveTextFlag/file_plus_inline_is_rejected (0.00s)
+=== RUN   TestResolveTextFlag/file_plus_stdin_is_rejected
+--- PASS: TestResolveTextFlag/file_plus_stdin_is_rejected (0.00s)
+--- PASS: TestResolveTextFlag (0.00s)
+=== RUN   TestEnsureAttachmentWithinWorkdir
+=== RUN   TestEnsureAttachmentWithinWorkdir/attachment_inside_the_working_directory_is_accepted
+--- PASS: TestEnsureAttachmentWithinWorkdir/attachment_inside_the_working_directory_is_accepted (0.00s)
+=== RUN   TestEnsureAttachmentWithinWorkdir/attachment_outside_the_working_directory_is_rejected
+--- PASS: TestEnsureAttachmentWithinWorkdir/attachment_outside_the_working_directory_is_rejected (0.00s)
+=== RUN   TestEnsureAttachmentWithinWorkdir/--allow-external-file_permits_an_attachment_outside_the_working_directory
+--- PASS: TestEnsureAttachmentWithinWorkdir/--allow-external-file_permits_an_attachment_outside_the_working_directory (0.00s)
+--- PASS: TestEnsureAttachmentWithinWorkdir (0.00s)
+=== RUN   TestIssueCommentUpdateCommandRegistration
+--- PASS: TestIssueCommentUpdateCommandRegistration (0.00s)
+=== RUN   TestRunIssueCommentUpdateSendsExpectedRequest
+--- PASS: TestRunIssueCommentUpdateSendsExpectedRequest (0.00s)
+=== RUN   TestRunIssueCommentUpdateReadsContentFileAndHonorsTableOutput
+--- PASS: TestRunIssueCommentUpdateReadsContentFileAndHonorsTableOutput (0.00s)
+=== RUN   TestRunIssueCommentUpdateRejectsMissingContentBeforeRequest
+--- PASS: TestRunIssueCommentUpdateRejectsMissingContentBeforeRequest (0.00s)
+=== RUN   TestRunIssueCommentUpdateRejectsMissingOrInvalidRevisionBeforeRequest
+--- PASS: TestRunIssueCommentUpdateRejectsMissingOrInvalidRevisionBeforeRequest (0.00s)
+=== RUN   TestRunIssueCommentUpdateWrapsAPIErrorWithoutRetry
+=== RUN   TestRunIssueCommentUpdateWrapsAPIErrorWithoutRetry/403
+--- PASS: TestRunIssueCommentUpdateWrapsAPIErrorWithoutRetry/403 (0.00s)
+=== RUN   TestRunIssueCommentUpdateWrapsAPIErrorWithoutRetry/409
+--- PASS: TestRunIssueCommentUpdateWrapsAPIErrorWithoutRetry/409 (0.00s)
+--- PASS: TestRunIssueCommentUpdateWrapsAPIErrorWithoutRetry (0.00s)
+=== RUN   TestRunIssueCommentUpdateReadsStdinVerbatim
+--- PASS: TestRunIssueCommentUpdateReadsStdinVerbatim (0.00s)
+=== RUN   TestRunIssueCommentAddRejectsExternalAttachmentWithZeroUploads
+--- PASS: TestRunIssueCommentAddRejectsExternalAttachmentWithZeroUploads (0.00s)
+=== RUN   TestRunIssueCreateSendsAllowDuplicate
+{
+  "id": "issue-1",
+  "identifier": "MUL-1",
+  "priority": "none",
+  "status": "todo",
+  "title": "Duplicate allowed"
+}
+--- PASS: TestRunIssueCreateSendsAllowDuplicate (0.00s)
+=== RUN   TestRunIssueCreateSendsExistingAttachmentIDs
+{
+  "id": "issue-1",
+  "identifier": "MUL-1",
+  "priority": "none",
+  "status": "todo",
+  "title": "With attachments"
+}
+--- PASS: TestRunIssueCreateSendsExistingAttachmentIDs (0.00s)
+=== RUN   TestRunIssueCreateShowsDuplicateMessage
+--- PASS: TestRunIssueCreateShowsDuplicateMessage (0.00s)
+=== RUN   TestRunIssuePullRequestsListsLinkedPRsAsJSON
+--- PASS: TestRunIssuePullRequestsListsLinkedPRsAsJSON (0.00s)
+=== RUN   TestRunIssueUsageReturnsTokenSummaryAsJSON
+--- PASS: TestRunIssueUsageReturnsTokenSummaryAsJSON (0.00s)
+=== RUN   TestRunIssuePullRequestsTableIncludesCoreFields
+--- PASS: TestRunIssuePullRequestsTableIncludesCoreFields (0.00s)
+=== RUN   TestTruncateID
+=== RUN   TestTruncateID/short
+--- PASS: TestTruncateID/short (0.00s)
+=== RUN   TestTruncateID/exact_8
+--- PASS: TestTruncateID/exact_8 (0.00s)
+=== RUN   TestTruncateID/longer_than_8
+--- PASS: TestTruncateID/longer_than_8 (0.00s)
+=== RUN   TestTruncateID/empty
+--- PASS: TestTruncateID/empty (0.00s)
+=== RUN   TestTruncateID/unicode
+--- PASS: TestTruncateID/unicode (0.00s)
+--- PASS: TestTruncateID (0.00s)
+=== RUN   TestFormatAssignee
+=== RUN   TestFormatAssignee/empty
+--- PASS: TestFormatAssignee/empty (0.00s)
+=== RUN   TestFormatAssignee/no_type
+--- PASS: TestFormatAssignee/no_type (0.00s)
+=== RUN   TestFormatAssignee/no_id
+--- PASS: TestFormatAssignee/no_id (0.00s)
+=== RUN   TestFormatAssignee/member
+--- PASS: TestFormatAssignee/member (0.00s)
+=== RUN   TestFormatAssignee/agent
+--- PASS: TestFormatAssignee/agent (0.00s)
+=== RUN   TestFormatAssignee/squad
+--- PASS: TestFormatAssignee/squad (0.00s)
+=== RUN   TestFormatAssignee/unknown_fallback
+--- PASS: TestFormatAssignee/unknown_fallback (0.00s)
+--- PASS: TestFormatAssignee (0.00s)
+=== RUN   TestActorDisplayLookupLazyLoads
+--- PASS: TestActorDisplayLookupLazyLoads (0.00s)
+=== RUN   TestResolveIDByPrefix
+=== RUN   TestResolveIDByPrefix/full_UUID_passes_through
+--- PASS: TestResolveIDByPrefix/full_UUID_passes_through (0.00s)
+=== RUN   TestResolveIDByPrefix/unique_short_prefix_resolves
+--- PASS: TestResolveIDByPrefix/unique_short_prefix_resolves (0.00s)
+=== RUN   TestResolveIDByPrefix/short_prefix_can_include_dashes
+--- PASS: TestResolveIDByPrefix/short_prefix_can_include_dashes (0.00s)
+=== RUN   TestResolveIDByPrefix/ambiguous_prefix_is_rejected
+--- PASS: TestResolveIDByPrefix/ambiguous_prefix_is_rejected (0.00s)
+=== RUN   TestResolveIDByPrefix/too_short_prefix_is_rejected
+--- PASS: TestResolveIDByPrefix/too_short_prefix_is_rejected (0.00s)
+--- PASS: TestResolveIDByPrefix (0.00s)
+=== RUN   TestResolveIssueRef
+=== RUN   TestResolveIssueRef/identifier_is_resolved_before_prefix_lookup
+--- PASS: TestResolveIssueRef/identifier_is_resolved_before_prefix_lookup (0.00s)
+=== RUN   TestResolveIssueRef/full_UUID_resolves_locally_with_zero_HTTP_requests
+--- PASS: TestResolveIssueRef/full_UUID_resolves_locally_with_zero_HTTP_requests (0.00s)
+=== RUN   TestResolveIssueRef/short_UUID_prefix_is_rejected_without_any_HTTP_call
+--- PASS: TestResolveIssueRef/short_UUID_prefix_is_rejected_without_any_HTTP_call (0.00s)
+=== RUN   TestResolveIssueRef/short_UUID_prefix_with_dashes_is_rejected
+--- PASS: TestResolveIssueRef/short_UUID_prefix_with_dashes_is_rejected (0.00s)
+=== RUN   TestResolveIssueRef/bare_numeric_input_is_rejected_as_a_short_prefix
+--- PASS: TestResolveIssueRef/bare_numeric_input_is_rejected_as_a_short_prefix (0.00s)
+=== RUN   TestResolveIssueRef/non-hex_gibberish_is_rejected_with_key/UUID_guidance
+--- PASS: TestResolveIssueRef/non-hex_gibberish_is_rejected_with_key/UUID_guidance (0.00s)
+--- PASS: TestResolveIssueRef (0.00s)
+=== RUN   TestFetchAutopilotCandidatesPaginates
+--- PASS: TestFetchAutopilotCandidatesPaginates (0.00s)
+=== RUN   TestResolveTaskRunID
+--- PASS: TestResolveTaskRunID (0.00s)
+=== RUN   TestRunIssueRunMessagesResolvesShortTaskPrefix
+[
+  {
+    "content": "done",
+    "seq": 1,
+    "type": "text"
+  }
+]
+--- PASS: TestRunIssueRunMessagesResolvesShortTaskPrefix (0.00s)
+=== RUN   TestResolveAssignee
+=== RUN   TestResolveAssignee/exact_match_member
+--- PASS: TestResolveAssignee/exact_match_member (0.00s)
+=== RUN   TestResolveAssignee/case-insensitive_substring
+--- PASS: TestResolveAssignee/case-insensitive_substring (0.00s)
+=== RUN   TestResolveAssignee/match_member_by_email
+--- PASS: TestResolveAssignee/match_member_by_email (0.00s)
+=== RUN   TestResolveAssignee/match_member_by_email_case-insensitively
+--- PASS: TestResolveAssignee/match_member_by_email_case-insensitively (0.00s)
+=== RUN   TestResolveAssignee/email_outranks_a_name_substring_match
+--- PASS: TestResolveAssignee/email_outranks_a_name_substring_match (0.00s)
+=== RUN   TestResolveAssignee/resolveActorPropertyRef_renders_a_prefixed_reference
+--- PASS: TestResolveAssignee/resolveActorPropertyRef_renders_a_prefixed_reference (0.00s)
+=== RUN   TestResolveAssignee/resolveActorPropertyRef_rejects_a_non-member_kind
+--- PASS: TestResolveAssignee/resolveActorPropertyRef_rejects_a_non-member_kind (0.00s)
+=== RUN   TestResolveAssignee/match_agent
+--- PASS: TestResolveAssignee/match_agent (0.00s)
+=== RUN   TestResolveAssignee/match_squad_by_exact_name
+--- PASS: TestResolveAssignee/match_squad_by_exact_name (0.00s)
+=== RUN   TestResolveAssignee/match_squad_by_case-insensitive_substring
+--- PASS: TestResolveAssignee/match_squad_by_case-insensitive_substring (0.00s)
+=== RUN   TestResolveAssignee/match_squad_by_bare_@_display_name
+--- PASS: TestResolveAssignee/match_squad_by_bare_@_display_name (0.00s)
+=== RUN   TestResolveAssignee/no_match
+--- PASS: TestResolveAssignee/no_match (0.00s)
+=== RUN   TestResolveAssignee/ambiguous
+--- PASS: TestResolveAssignee/ambiguous (0.00s)
+=== RUN   TestResolveAssignee/missing_workspace_ID
+--- PASS: TestResolveAssignee/missing_workspace_ID (0.00s)
+--- PASS: TestResolveAssignee (0.01s)
+=== RUN   TestResolveAssigneeRetriesTransientNetworkErrors
+--- PASS: TestResolveAssigneeRetriesTransientNetworkErrors (0.00s)
+=== RUN   TestResolveAssigneeDoesNotRetryHTTPStatusErrors
+--- PASS: TestResolveAssigneeDoesNotRetryHTTPStatusErrors (0.00s)
+=== RUN   TestNormalizeAssigneeLookupInput
+=== RUN   TestNormalizeAssigneeLookupInput/plain_name
+--- PASS: TestNormalizeAssigneeLookupInput/plain_name (0.00s)
+=== RUN   TestNormalizeAssigneeLookupInput/bare_at_name
+--- PASS: TestNormalizeAssigneeLookupInput/bare_at_name (0.00s)
+=== RUN   TestNormalizeAssigneeLookupInput/fullwidth_at_name
+--- PASS: TestNormalizeAssigneeLookupInput/fullwidth_at_name (0.00s)
+=== RUN   TestNormalizeAssigneeLookupInput/spaced_at_name
+--- PASS: TestNormalizeAssigneeLookupInput/spaced_at_name (0.00s)
+=== RUN   TestNormalizeAssigneeLookupInput/mention_link
+--- PASS: TestNormalizeAssigneeLookupInput/mention_link (0.00s)
+--- PASS: TestNormalizeAssigneeLookupInput (0.00s)
+=== RUN   TestResolveAssigneeRespectsKinds
+=== RUN   TestResolveAssigneeRespectsKinds/memberOrAgentKinds_skips_the_/api/squads_fetch_entirely
+--- PASS: TestResolveAssigneeRespectsKinds/memberOrAgentKinds_skips_the_/api/squads_fetch_entirely (0.00s)
+=== RUN   TestResolveAssigneeRespectsKinds/memberOrAgentKinds_rejects_a_squad_name_with_a_member-or-agent-only_error
+--- PASS: TestResolveAssigneeRespectsKinds/memberOrAgentKinds_rejects_a_squad_name_with_a_member-or-agent-only_error (0.00s)
+=== RUN   TestResolveAssigneeRespectsKinds/memberOrAgentKinds_rejects_a_squad_UUID_via_the_strict_resolver
+--- PASS: TestResolveAssigneeRespectsKinds/memberOrAgentKinds_rejects_a_squad_UUID_via_the_strict_resolver (0.00s)
+=== RUN   TestResolveAssigneeRespectsKinds/issueAssigneeKinds_still_resolves_the_same_squad_name_(control)
+--- PASS: TestResolveAssigneeRespectsKinds/issueAssigneeKinds_still_resolves_the_same_squad_name_(control) (0.00s)
+--- PASS: TestResolveAssigneeRespectsKinds (0.00s)
+=== RUN   TestResolveAssigneeExactMatchWins
+=== RUN   TestResolveAssigneeExactMatchWins/exact_shorter_name_resolves_to_shorter_agent
+--- PASS: TestResolveAssigneeExactMatchWins/exact_shorter_name_resolves_to_shorter_agent (0.00s)
+=== RUN   TestResolveAssigneeExactMatchWins/exact_longer_name_still_resolves_unambiguously
+--- PASS: TestResolveAssigneeExactMatchWins/exact_longer_name_still_resolves_unambiguously (0.00s)
+=== RUN   TestResolveAssigneeExactMatchWins/exact_match_is_case-insensitive_and_tolerates_whitespace
+--- PASS: TestResolveAssigneeExactMatchWins/exact_match_is_case-insensitive_and_tolerates_whitespace (0.00s)
+=== RUN   TestResolveAssigneeExactMatchWins/substring-only_input_falls_back_and_stays_ambiguous
+--- PASS: TestResolveAssigneeExactMatchWins/substring-only_input_falls_back_and_stays_ambiguous (0.00s)
+--- PASS: TestResolveAssigneeExactMatchWins (0.00s)
+=== RUN   TestResolveAssigneeByID
+=== RUN   TestResolveAssigneeByID/full_UUID_resolves_agent
+--- PASS: TestResolveAssigneeByID/full_UUID_resolves_agent (0.00s)
+=== RUN   TestResolveAssigneeByID/8-char_ShortID_resolves_agent
+--- PASS: TestResolveAssigneeByID/8-char_ShortID_resolves_agent (0.00s)
+=== RUN   TestResolveAssigneeByID/uppercase_ShortID_still_resolves
+--- PASS: TestResolveAssigneeByID/uppercase_ShortID_still_resolves (0.00s)
+=== RUN   TestResolveAssigneeByID/ShortID_resolves_a_member
+--- PASS: TestResolveAssigneeByID/ShortID_resolves_a_member (0.00s)
+--- PASS: TestResolveAssigneeByID (0.00s)
+=== RUN   TestResolveAssigneeByIDStrict
+=== RUN   TestResolveAssigneeByIDStrict/full_UUID_resolves_the_right_agent_in_a_substring-collision_workspace
+--- PASS: TestResolveAssigneeByIDStrict/full_UUID_resolves_the_right_agent_in_a_substring-collision_workspace (0.00s)
+=== RUN   TestResolveAssigneeByIDStrict/uppercase_UUID_is_normalized
+--- PASS: TestResolveAssigneeByIDStrict/uppercase_UUID_is_normalized (0.00s)
+=== RUN   TestResolveAssigneeByIDStrict/UUID_resolves_a_member
+--- PASS: TestResolveAssigneeByIDStrict/UUID_resolves_a_member (0.00s)
+=== RUN   TestResolveAssigneeByIDStrict/UUID_resolves_a_squad
+--- PASS: TestResolveAssigneeByIDStrict/UUID_resolves_a_squad (0.00s)
+=== RUN   TestResolveAssigneeByIDStrict/non-UUID_input_is_rejected_without_name_fallback
+--- PASS: TestResolveAssigneeByIDStrict/non-UUID_input_is_rejected_without_name_fallback (0.00s)
+=== RUN   TestResolveAssigneeByIDStrict/UUID_prefix_(ShortID)_is_rejected_—_strict_mode_requires_canonical_form
+--- PASS: TestResolveAssigneeByIDStrict/UUID_prefix_(ShortID)_is_rejected_—_strict_mode_requires_canonical_form (0.00s)
+=== RUN   TestResolveAssigneeByIDStrict/well-formed_UUID_with_no_matching_entity_errors
+--- PASS: TestResolveAssigneeByIDStrict/well-formed_UUID_with_no_matching_entity_errors (0.00s)
+=== RUN   TestResolveAssigneeByIDStrict/missing_workspace_ID
+--- PASS: TestResolveAssigneeByIDStrict/missing_workspace_ID (0.00s)
+--- PASS: TestResolveAssigneeByIDStrict (0.00s)
+=== RUN   TestResolveAssigneeByIDRetriesTransientNetworkErrors
+--- PASS: TestResolveAssigneeByIDRetriesTransientNetworkErrors (0.00s)
+=== RUN   TestPickAssigneeFromFlags
+=== RUN   TestPickAssigneeFromFlags/neither_flag_set_returns_hasValue=false
+--- PASS: TestPickAssigneeFromFlags/neither_flag_set_returns_hasValue=false (0.00s)
+=== RUN   TestPickAssigneeFromFlags/name_flag_uses_fuzzy_resolver
+--- PASS: TestPickAssigneeFromFlags/name_flag_uses_fuzzy_resolver (0.00s)
+=== RUN   TestPickAssigneeFromFlags/id_flag_uses_strict_resolver
+--- PASS: TestPickAssigneeFromFlags/id_flag_uses_strict_resolver (0.00s)
+=== RUN   TestPickAssigneeFromFlags/both_flags_set_is_rejected
+--- PASS: TestPickAssigneeFromFlags/both_flags_set_is_rejected (0.00s)
+=== RUN   TestPickAssigneeFromFlags/explicit_empty_--assignee-id_surfaces_as_UUID_error,_not_silent_skip
+--- PASS: TestPickAssigneeFromFlags/explicit_empty_--assignee-id_surfaces_as_UUID_error,_not_silent_skip (0.00s)
+=== RUN   TestPickAssigneeFromFlags/explicit_empty_--assignee_surfaces_as_not-found,_not_silent_skip
+--- PASS: TestPickAssigneeFromFlags/explicit_empty_--assignee_surfaces_as_not-found,_not_silent_skip (0.00s)
+=== RUN   TestPickAssigneeFromFlags/explicit_empty_on_both_flags_is_mutually_exclusive_(set_wins_over_value)
+--- PASS: TestPickAssigneeFromFlags/explicit_empty_on_both_flags_is_mutually_exclusive_(set_wins_over_value) (0.00s)
+--- PASS: TestPickAssigneeFromFlags (0.00s)
+=== RUN   TestPickAssigneeFromFlagsMemberOrAgentKinds
+=== RUN   TestPickAssigneeFromFlagsMemberOrAgentKinds/subscriber_--user_with_a_squad_name_is_rejected_without_hitting_/api/squads
+--- PASS: TestPickAssigneeFromFlagsMemberOrAgentKinds/subscriber_--user_with_a_squad_name_is_rejected_without_hitting_/api/squads (0.00s)
+=== RUN   TestPickAssigneeFromFlagsMemberOrAgentKinds/subscriber_--user-id_with_a_squad_UUID_is_rejected
+--- PASS: TestPickAssigneeFromFlagsMemberOrAgentKinds/subscriber_--user-id_with_a_squad_UUID_is_rejected (0.00s)
+=== RUN   TestPickAssigneeFromFlagsMemberOrAgentKinds/project_--lead_with_a_member_name_still_resolves_cleanly
+--- PASS: TestPickAssigneeFromFlagsMemberOrAgentKinds/project_--lead_with_a_member_name_still_resolves_cleanly (0.00s)
+=== RUN   TestPickAssigneeFromFlagsMemberOrAgentKinds/project_--lead_with_an_agent_name_still_resolves_cleanly
+--- PASS: TestPickAssigneeFromFlagsMemberOrAgentKinds/project_--lead_with_an_agent_name_still_resolves_cleanly (0.00s)
+--- PASS: TestPickAssigneeFromFlagsMemberOrAgentKinds (0.00s)
+=== RUN   TestIssueSubscriberList
+--- PASS: TestIssueSubscriberList (0.00s)
+=== RUN   TestIssueSubscriberMutationBody
+=== RUN   TestIssueSubscriberMutationBody/subscribe_caller_(no_user_flag)
+--- PASS: TestIssueSubscriberMutationBody/subscribe_caller_(no_user_flag) (0.00s)
+=== RUN   TestIssueSubscriberMutationBody/unsubscribe_caller
+--- PASS: TestIssueSubscriberMutationBody/unsubscribe_caller (0.00s)
+=== RUN   TestIssueSubscriberMutationBody/subscribe_a_member_by_name
+--- PASS: TestIssueSubscriberMutationBody/subscribe_a_member_by_name (0.00s)
+=== RUN   TestIssueSubscriberMutationBody/subscribe_an_agent_by_name
+--- PASS: TestIssueSubscriberMutationBody/subscribe_an_agent_by_name (0.00s)
+--- PASS: TestIssueSubscriberMutationBody (0.00s)
+=== RUN   TestRunIssueCommentResolution
+=== RUN   TestRunIssueCommentResolution/resolve_posts_to_resolve_endpoint
+Comment comment-123 resolved.
+--- PASS: TestRunIssueCommentResolution/resolve_posts_to_resolve_endpoint (0.00s)
+=== RUN   TestRunIssueCommentResolution/unresolve_deletes_resolve_endpoint
+Comment comment-123 unresolved.
+--- PASS: TestRunIssueCommentResolution/unresolve_deletes_resolve_endpoint (0.00s)
+--- PASS: TestRunIssueCommentResolution (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards
+=== RUN   TestRunIssueCommentListFlagGuards/explicit_zero_recent_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/explicit_zero_recent_rejected (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/negative_recent_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/negative_recent_rejected (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/before_+_before-id_without_recent_or_thread+tail_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/before_+_before-id_without_recent_or_thread+tail_rejected (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/thread_+_recent_still_rejected_when_--recent_explicit_zero
+--- PASS: TestRunIssueCommentListFlagGuards/thread_+_recent_still_rejected_when_--recent_explicit_zero (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/tail_without_thread_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/tail_without_thread_rejected (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/negative_tail_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/negative_tail_rejected (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/thread_+_before_without_tail_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/thread_+_before_without_tail_rejected (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/roots-only_+_thread_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/roots-only_+_thread_rejected (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/roots-only_+_recent_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/roots-only_+_recent_rejected (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/roots-only_+_tail_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/roots-only_+_tail_rejected (0.00s)
+=== RUN   TestRunIssueCommentListFlagGuards/roots-only_+_before_rejected
+--- PASS: TestRunIssueCommentListFlagGuards/roots-only_+_before_rejected (0.00s)
+--- PASS: TestRunIssueCommentListFlagGuards (0.00s)
+=== RUN   TestRunIssueCommentList_RootsOnlyPassesThroughWithSince
+[]
+--- PASS: TestRunIssueCommentList_RootsOnlyPassesThroughWithSince (0.00s)
+=== RUN   TestRunIssueCommentList_SummaryPassesThrough
+[]
+--- PASS: TestRunIssueCommentList_SummaryPassesThrough (0.00s)
+=== RUN   TestRunIssueCommentList_FoldDefaultAndFullEscape
+=== RUN   TestRunIssueCommentList_FoldDefaultAndFullEscape/default_list_folds
+[]
+--- PASS: TestRunIssueCommentList_FoldDefaultAndFullEscape/default_list_folds (0.00s)
+=== RUN   TestRunIssueCommentList_FoldDefaultAndFullEscape/recent_folds
+[]
+--- PASS: TestRunIssueCommentList_FoldDefaultAndFullEscape/recent_folds (0.00s)
+=== RUN   TestRunIssueCommentList_FoldDefaultAndFullEscape/untailed_thread_folds
+[]
+--- PASS: TestRunIssueCommentList_FoldDefaultAndFullEscape/untailed_thread_folds (0.00s)
+=== RUN   TestRunIssueCommentList_FoldDefaultAndFullEscape/full_opts_out
+[]
+--- PASS: TestRunIssueCommentList_FoldDefaultAndFullEscape/full_opts_out (0.00s)
+=== RUN   TestRunIssueCommentList_FoldDefaultAndFullEscape/since_never_folds
+[]
+--- PASS: TestRunIssueCommentList_FoldDefaultAndFullEscape/since_never_folds (0.00s)
+=== RUN   TestRunIssueCommentList_FoldDefaultAndFullEscape/thread+tail_never_folds
+[]
+--- PASS: TestRunIssueCommentList_FoldDefaultAndFullEscape/thread+tail_never_folds (0.00s)
+=== RUN   TestRunIssueCommentList_FoldDefaultAndFullEscape/roots-only_never_folds
+[]
+--- PASS: TestRunIssueCommentList_FoldDefaultAndFullEscape/roots-only_never_folds (0.00s)
+--- PASS: TestRunIssueCommentList_FoldDefaultAndFullEscape (0.00s)
+=== RUN   TestRunIssueCommentList_ThreadTailPassesThroughAndPrintsReplyCursor
+[]
+--- PASS: TestRunIssueCommentList_ThreadTailPassesThroughAndPrintsReplyCursor (0.00s)
+=== RUN   TestRunIssueCommentList_RecentStillLabelsCursorAsThread
+[]
+--- PASS: TestRunIssueCommentList_RecentStillLabelsCursorAsThread (0.00s)
+=== RUN   TestRunIssueCommentList_DoesNotPrintShowingPreamble
+[
+  {
+    "id": "c1"
+  },
+  {
+    "id": "c2"
+  }
+]
+--- PASS: TestRunIssueCommentList_DoesNotPrintShowingPreamble (0.00s)
+=== RUN   TestValidIssueStatuses
+--- PASS: TestValidIssueStatuses (0.00s)
+=== RUN   TestValidateIssueStatus
+--- PASS: TestValidateIssueStatus (0.00s)
+=== RUN   TestValidateIssuePriority
+--- PASS: TestValidateIssuePriority (0.00s)
+=== RUN   TestRunIssueCreateRejectsInvalidStatusBeforeRequest
+--- PASS: TestRunIssueCreateRejectsInvalidStatusBeforeRequest (0.00s)
+=== RUN   TestRunIssueCreateRejectsInvalidPriorityBeforeRequest
+--- PASS: TestRunIssueCreateRejectsInvalidPriorityBeforeRequest (0.00s)
+=== RUN   TestRunIssueUpdateRejectsInvalidStatusBeforeRequest
+--- PASS: TestRunIssueUpdateRejectsInvalidStatusBeforeRequest (0.00s)
+=== RUN   TestRunIssueUpdateRejectsInvalidPriorityBeforeRequest
+--- PASS: TestRunIssueUpdateRejectsInvalidPriorityBeforeRequest (0.00s)
+=== RUN   TestRunIssueUpdateSendsPosition
+{
+  "id": "issue-1",
+  "identifier": "MUL-1",
+  "priority": "none",
+  "status": "todo"
+}
+--- PASS: TestRunIssueUpdateSendsPosition (0.00s)
+=== RUN   TestRunIssueUpdateNoStartSendsSuppressRun
+{
+  "id": "issue-1",
+  "identifier": "MUL-1",
+  "status": "in_progress"
+}
+--- PASS: TestRunIssueUpdateNoStartSendsSuppressRun (0.00s)
+=== RUN   TestRunIssueStatusNoStartSendsSuppressRun
+Issue MUL-1 status changed to in_progress.
+--- PASS: TestRunIssueStatusNoStartSendsSuppressRun (0.00s)
+=== RUN   TestRunIssueAssignNoStartSendsSuppressRun
+Issue MUL-1 assigned to agent:CodeBot.
+{
+  "id": "issue-1",
+  "identifier": "MUL-1",
+  "status": "todo"
+}
+--- PASS: TestRunIssueAssignNoStartSendsSuppressRun (0.00s)
+=== RUN   TestRunIssueAssignRejectsNoStartWithUnassign
+--- PASS: TestRunIssueAssignRejectsNoStartWithUnassign (0.00s)
+=== RUN   TestIssueReadCommandsUseInjectedTaskToken
+--- PASS: TestIssueReadCommandsUseInjectedTaskToken (0.00s)
+=== RUN   TestIssueReadCommandsFailClosedWithoutTaskToken
+--- PASS: TestIssueReadCommandsFailClosedWithoutTaskToken (0.00s)
+=== RUN   TestRunIssueListSendsSortAndDirection
+{
+  "has_more": false,
+  "issues": [],
+  "limit": 50,
+  "offset": 0,
+  "total": 0
+}
+--- PASS: TestRunIssueListSendsSortAndDirection (0.00s)
+=== RUN   TestRunIssueListRejectsInvalidSortAndDirection
+--- PASS: TestRunIssueListRejectsInvalidSortAndDirection (0.00s)
+=== RUN   TestRunIssueListRejectsDirectionWithoutDirectionalSort
+=== RUN   TestRunIssueListRejectsDirectionWithoutDirectionalSort/direction_without_sort
+--- PASS: TestRunIssueListRejectsDirectionWithoutDirectionalSort/direction_without_sort (0.00s)
+=== RUN   TestRunIssueListRejectsDirectionWithoutDirectionalSort/direction_with_explicit_position_sort
+--- PASS: TestRunIssueListRejectsDirectionWithoutDirectionalSort/direction_with_explicit_position_sort (0.00s)
+--- PASS: TestRunIssueListRejectsDirectionWithoutDirectionalSort (0.00s)
+=== RUN   TestComputeReorderPosition
+=== RUN   TestComputeReorderPosition/single_item_keeps_position
+--- PASS: TestComputeReorderPosition/single_item_keeps_position (0.00s)
+=== RUN   TestComputeReorderPosition/absent_active_keeps_position
+--- PASS: TestComputeReorderPosition/absent_active_keeps_position (0.00s)
+=== RUN   TestComputeReorderPosition/top_is_one_below_the_next
+--- PASS: TestComputeReorderPosition/top_is_one_below_the_next (0.00s)
+=== RUN   TestComputeReorderPosition/bottom_is_one_above_the_prev
+--- PASS: TestComputeReorderPosition/bottom_is_one_above_the_prev (0.00s)
+=== RUN   TestComputeReorderPosition/interior_is_the_midpoint
+--- PASS: TestComputeReorderPosition/interior_is_the_midpoint (0.00s)
+--- PASS: TestComputeReorderPosition (0.00s)
+=== RUN   TestIssueReorderTargetFlagGroup
+=== RUN   TestIssueReorderTargetFlagGroup/no_target_flag
+--- PASS: TestIssueReorderTargetFlagGroup/no_target_flag (0.00s)
+=== RUN   TestIssueReorderTargetFlagGroup/two_bool_targets
+--- PASS: TestIssueReorderTargetFlagGroup/two_bool_targets (0.00s)
+=== RUN   TestIssueReorderTargetFlagGroup/before_and_after_together
+--- PASS: TestIssueReorderTargetFlagGroup/before_and_after_together (0.00s)
+--- PASS: TestIssueReorderTargetFlagGroup (0.00s)
+=== RUN   TestRunIssueReorderRejectsNoOpTargetValues
+=== RUN   TestRunIssueReorderRejectsNoOpTargetValues/before
+--- PASS: TestRunIssueReorderRejectsNoOpTargetValues/before (0.00s)
+=== RUN   TestRunIssueReorderRejectsNoOpTargetValues/after
+--- PASS: TestRunIssueReorderRejectsNoOpTargetValues/after (0.00s)
+=== RUN   TestRunIssueReorderRejectsNoOpTargetValues/top
+--- PASS: TestRunIssueReorderRejectsNoOpTargetValues/top (0.00s)
+=== RUN   TestRunIssueReorderRejectsNoOpTargetValues/bottom
+--- PASS: TestRunIssueReorderRejectsNoOpTargetValues/bottom (0.00s)
+--- PASS: TestRunIssueReorderRejectsNoOpTargetValues (0.00s)
+=== RUN   TestRunIssueReorderComputesPosition
+=== RUN   TestRunIssueReorderComputesPosition/top_of_column
+Issue MUL-9 reordered.
+{
+  "id": "t-id",
+  "identifier": "MUL-9",
+  "position": 0,
+  "status": "todo"
+}
+--- PASS: TestRunIssueReorderComputesPosition/top_of_column (0.00s)
+=== RUN   TestRunIssueReorderComputesPosition/bottom_of_column
+Issue MUL-9 reordered.
+{
+  "id": "t-id",
+  "identifier": "MUL-9",
+  "position": 10,
+  "status": "todo"
+}
+--- PASS: TestRunIssueReorderComputesPosition/bottom_of_column (0.00s)
+=== RUN   TestRunIssueReorderComputesPosition/before_another_issue
+Issue MUL-9 reordered.
+{
+  "id": "t-id",
+  "identifier": "MUL-9",
+  "position": 5,
+  "status": "todo"
+}
+--- PASS: TestRunIssueReorderComputesPosition/before_another_issue (0.00s)
+=== RUN   TestRunIssueReorderComputesPosition/after_another_issue
+Issue MUL-9 reordered.
+{
+  "id": "t-id",
+  "identifier": "MUL-9",
+  "position": 10,
+  "status": "todo"
+}
+--- PASS: TestRunIssueReorderComputesPosition/after_another_issue (0.00s)
+--- PASS: TestRunIssueReorderComputesPosition (0.01s)
+=== RUN   TestRunIssueReorderRejectsCrossColumnTarget
+--- PASS: TestRunIssueReorderRejectsCrossColumnTarget (0.00s)
+=== RUN   TestReorderTargetNotInColumnErrorUsesFetchedIssueKey
+--- PASS: TestReorderTargetNotInColumnErrorUsesFetchedIssueKey (0.00s)
+=== RUN   TestFetchIssueColumnPaginates
+--- PASS: TestFetchIssueColumnPaginates (0.00s)
+=== RUN   TestRunIssueReorderNoOpSkipsPut
+Issue MUL-9 is already in that position.
+{
+  "id": "t-id",
+  "identifier": "MUL-9",
+  "position": 5,
+  "status": "todo"
+}
+--- PASS: TestRunIssueReorderNoOpSkipsPut (0.00s)
+=== RUN   TestRunIssueReorderSingleItemColumnValidatesTarget
+=== RUN   TestRunIssueReorderSingleItemColumnValidatesTarget/cross-column_target_errors
+--- PASS: TestRunIssueReorderSingleItemColumnValidatesTarget/cross-column_target_errors (0.00s)
+=== RUN   TestRunIssueReorderSingleItemColumnValidatesTarget/self_target_errors
+--- PASS: TestRunIssueReorderSingleItemColumnValidatesTarget/self_target_errors (0.00s)
+--- PASS: TestRunIssueReorderSingleItemColumnValidatesTarget (0.00s)
+=== RUN   TestRunIssueReorderOnlyIssueInColumnIsNoOp
+Issue MUL-9 is the only issue in the todo column; nothing to reorder.
+{
+  "id": "t-id",
+  "identifier": "MUL-9",
+  "position": 5,
+  "status": "todo"
+}
+--- PASS: TestRunIssueReorderOnlyIssueInColumnIsNoOp (0.00s)
+=== RUN   TestRunIssueUpdateOmitsPositionWhenUnset
+{
+  "id": "issue-1",
+  "identifier": "MUL-1",
+  "title": "Renamed"
+}
+--- PASS: TestRunIssueUpdateOmitsPositionWhenUnset (0.00s)
+=== RUN   TestIssueCommentListHelpCarriesReadContract
+--- PASS: TestIssueCommentListHelpCarriesReadContract (0.00s)
+=== RUN   TestCompactCommentsDropsReaderNoise
+=== PAUSE TestCompactCommentsDropsReaderNoise
+=== RUN   TestRunIssueCommentListCompactWiring
+--- PASS: TestRunIssueCommentListCompactWiring (0.00s)
+=== RUN   TestIsTerminalChildIssue
+=== RUN   TestIsTerminalChildIssue/built-in_done
+--- PASS: TestIsTerminalChildIssue/built-in_done (0.00s)
+=== RUN   TestIsTerminalChildIssue/built-in_cancelled
+--- PASS: TestIsTerminalChildIssue/built-in_cancelled (0.00s)
+=== RUN   TestIsTerminalChildIssue/built-in_in_progress
+--- PASS: TestIsTerminalChildIssue/built-in_in_progress (0.00s)
+=== RUN   TestIsTerminalChildIssue/custom_status_in_the_done_category
+--- PASS: TestIsTerminalChildIssue/custom_status_in_the_done_category (0.00s)
+=== RUN   TestIsTerminalChildIssue/custom_status_in_the_in_review_category_is_not_terminal
+--- PASS: TestIsTerminalChildIssue/custom_status_in_the_in_review_category_is_not_terminal (0.00s)
+=== RUN   TestIsTerminalChildIssue/no_category_from_an_older_backend_falls_back_to_status
+--- PASS: TestIsTerminalChildIssue/no_category_from_an_older_backend_falls_back_to_status (0.00s)
+=== RUN   TestIsTerminalChildIssue/unknown_custom_status_with_no_category_is_not_counted
+--- PASS: TestIsTerminalChildIssue/unknown_custom_status_with_no_category_is_not_counted (0.00s)
+--- PASS: TestIsTerminalChildIssue (0.00s)
+=== RUN   TestTimelineFilterApply
+=== RUN   TestTimelineFilterApply/no_filter_keeps_everything
+--- PASS: TestTimelineFilterApply/no_filter_keeps_everything (0.00s)
+=== RUN   TestTimelineFilterApply/activity-only_drops_comments
+--- PASS: TestTimelineFilterApply/activity-only_drops_comments (0.00s)
+=== RUN   TestTimelineFilterApply/action_filter_narrows_to_matching_activities
+--- PASS: TestTimelineFilterApply/action_filter_narrows_to_matching_activities (0.00s)
+=== RUN   TestTimelineFilterApply/since_keeps_only_strictly_later_entries
+--- PASS: TestTimelineFilterApply/since_keeps_only_strictly_later_entries (0.00s)
+=== RUN   TestTimelineFilterApply/tail_keeps_the_most_recent_entries
+--- PASS: TestTimelineFilterApply/tail_keeps_the_most_recent_entries (0.00s)
+=== RUN   TestTimelineFilterApply/tail_larger_than_the_result_is_a_no-op
+--- PASS: TestTimelineFilterApply/tail_larger_than_the_result_is_a_no-op (0.00s)
+=== RUN   TestTimelineFilterApply/tail_applies_after_the_other_filters
+--- PASS: TestTimelineFilterApply/tail_applies_after_the_other_filters (0.00s)
+=== RUN   TestTimelineFilterApply/unknown_action_matches_nothing
+--- PASS: TestTimelineFilterApply/unknown_action_matches_nothing (0.00s)
+--- PASS: TestTimelineFilterApply (0.00s)
+=== RUN   TestTimelineFilterApplyDropsUnparsableTimestampsWhenSinceSet
+--- PASS: TestTimelineFilterApplyDropsUnparsableTimestampsWhenSinceSet (0.00s)
+=== RUN   TestTimelineFilterFromFlagsActionImpliesActivityOnly
+--- PASS: TestTimelineFilterFromFlagsActionImpliesActivityOnly (0.00s)
+=== RUN   TestTimelineFilterFromFlagsRejectsBadInput
+=== RUN   TestTimelineFilterFromFlagsRejectsBadInput/since
+--- PASS: TestTimelineFilterFromFlagsRejectsBadInput/since (0.00s)
+=== RUN   TestTimelineFilterFromFlagsRejectsBadInput/tail
+--- PASS: TestTimelineFilterFromFlagsRejectsBadInput/tail (0.00s)
+--- PASS: TestTimelineFilterFromFlagsRejectsBadInput (0.00s)
+=== RUN   TestTimelineDetail
+=== RUN   TestTimelineDetail/status_transition
+--- PASS: TestTimelineDetail/status_transition (0.00s)
+=== RUN   TestTimelineDetail/assignee_set_from_nobody
+--- PASS: TestTimelineDetail/assignee_set_from_nobody (0.00s)
+=== RUN   TestTimelineDetail/unassigned
+--- PASS: TestTimelineDetail/unassigned (0.00s)
+=== RUN   TestTimelineDetail/task_completed_carries_no_from/to_and_falls_back
+--- PASS: TestTimelineDetail/task_completed_carries_no_from/to_and_falls_back (0.00s)
+=== RUN   TestTimelineDetail/empty_details_render_as_blank
+--- PASS: TestTimelineDetail/empty_details_render_as_blank (0.00s)
+=== RUN   TestTimelineDetail/unknown_detail_shape_falls_back_to_sorted_key=value
+--- PASS: TestTimelineDetail/unknown_detail_shape_falls_back_to_sorted_key=value (0.00s)
+=== RUN   TestTimelineDetail/comment_body_is_flattened_to_one_line
+--- PASS: TestTimelineDetail/comment_body_is_flattened_to_one_line (0.00s)
+--- PASS: TestTimelineDetail (0.00s)
+=== RUN   TestTimelineActorSystemWithoutIDRendersType
+--- PASS: TestTimelineActorSystemWithoutIDRendersType (0.00s)
+=== RUN   TestWarnTimelineTruncated
+=== RUN   TestWarnTimelineTruncated/silent_when_the_header_is_absent
+--- PASS: TestWarnTimelineTruncated/silent_when_the_header_is_absent (0.00s)
+=== RUN   TestWarnTimelineTruncated/names_the_truncated_kinds_and_voids_duration_claims
+--- PASS: TestWarnTimelineTruncated/names_the_truncated_kinds_and_voids_duration_claims (0.00s)
+--- PASS: TestWarnTimelineTruncated (0.00s)
+=== RUN   TestRunIssueTimelineReportsTruncationOnStderr
+--- PASS: TestRunIssueTimelineReportsTruncationOnStderr (0.00s)
+=== RUN   TestRunIssueTimelineSilentWhenNotTruncated
+--- PASS: TestRunIssueTimelineSilentWhenNotTruncated (0.00s)
+=== RUN   TestIssueTimelineHelpCarriesDiscoveryContract
+--- PASS: TestIssueTimelineHelpCarriesDiscoveryContract (0.00s)
+=== RUN   TestClipTimelineText
+--- PASS: TestClipTimelineText (0.00s)
+=== RUN   TestRunIssueTimelineRequestsFlatShapeAndFilters
+--- PASS: TestRunIssueTimelineRequestsFlatShapeAndFilters (0.00s)
+=== RUN   TestRunIssueTimelineEmptyResultPrintsEmptyJSONArray
+--- PASS: TestRunIssueTimelineEmptyResultPrintsEmptyJSONArray (0.00s)
+=== RUN   TestRunLabelCreateSendsExpectedRequest
+--- PASS: TestRunLabelCreateSendsExpectedRequest (0.00s)
+=== RUN   TestRunLabelUpdateSendsOnlyChangedFields
+--- PASS: TestRunLabelUpdateSendsOnlyChangedFields (0.00s)
+=== RUN   TestRunLabelDeletePrintsJsonConfirmation
+--- PASS: TestRunLabelDeletePrintsJsonConfirmation (0.00s)
+=== RUN   TestRunLabelCreateRequiresNameAndColor
+--- PASS: TestRunLabelCreateRequiresNameAndColor (0.00s)
+=== RUN   TestRunLabelCreateWithResourceType
+--- PASS: TestRunLabelCreateWithResourceType (0.00s)
+=== RUN   TestRunLabelListWithResourceType
+--- PASS: TestRunLabelListWithResourceType (0.00s)
+=== RUN   TestRunLabelUpdateDescription
+=== RUN   TestRunLabelUpdateDescription/Review_helpers
+--- PASS: TestRunLabelUpdateDescription/Review_helpers (0.00s)
+=== RUN   TestRunLabelUpdateDescription/#00
+--- PASS: TestRunLabelUpdateDescription/#00 (0.00s)
+--- PASS: TestRunLabelUpdateDescription (0.00s)
+=== RUN   TestRunIssueLabelCommandsKeepIssueScopedPrefixes
+--- PASS: TestRunIssueLabelCommandsKeepIssueScopedPrefixes (0.00s)
+=== RUN   TestResolveLoginTokenServerURLDefaultsToCloud
+--- PASS: TestResolveLoginTokenServerURLDefaultsToCloud (0.00s)
+=== RUN   TestResolveLoginTokenServerURLPrefersConfiguredServer
+--- PASS: TestResolveLoginTokenServerURLPrefersConfiguredServer (0.00s)
+=== RUN   TestRunLoginTokenAutoWatchesDiscoveredWorkspaces
+--- PASS: TestRunLoginTokenAutoWatchesDiscoveredWorkspaces (0.00s)
+=== RUN   TestValidateProjectStatus
+--- PASS: TestValidateProjectStatus (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsGithubMergesHint
+=== RUN   TestBuildResourceRefFromFlagsGithubMergesHint/hint-only_edit_preserves_existing_url
+--- PASS: TestBuildResourceRefFromFlagsGithubMergesHint/hint-only_edit_preserves_existing_url (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsGithubMergesHint/hint=empty_clears_the_hint_but_keeps_url
+--- PASS: TestBuildResourceRefFromFlagsGithubMergesHint/hint=empty_clears_the_hint_but_keeps_url (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsGithubMergesHint/url_override_survives_merge
+--- PASS: TestBuildResourceRefFromFlagsGithubMergesHint/url_override_survives_merge (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsGithubMergesHint/checkout_ref_edit_preserves_existing_url_and_hint
+--- PASS: TestBuildResourceRefFromFlagsGithubMergesHint/checkout_ref_edit_preserves_existing_url_and_hint (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsGithubMergesHint/empty_checkout_ref_clears_existing_ref
+--- PASS: TestBuildResourceRefFromFlagsGithubMergesHint/empty_checkout_ref_clears_existing_ref (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsGithubMergesHint/hint-only_with_no_existing_url_fails_fast
+--- PASS: TestBuildResourceRefFromFlagsGithubMergesHint/hint-only_with_no_existing_url_fails_fast (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsGithubMergesHint/no_flags_set_returns_has=false
+--- PASS: TestBuildResourceRefFromFlagsGithubMergesHint/no_flags_set_returns_has=false (0.00s)
+--- PASS: TestBuildResourceRefFromFlagsGithubMergesHint (0.00s)
+=== RUN   TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch
+=== RUN   TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch/json_payload_wins_over_github_shortcuts
+--- PASS: TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch/json_payload_wins_over_github_shortcuts (0.00s)
+=== RUN   TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch/broken_json_is_still_rejected
+--- PASS: TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch/broken_json_is_still_rejected (0.00s)
+=== RUN   TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch/bare_scalar_github_ref_is_a_checkout_ref,_not_JSON
+--- PASS: TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch/bare_scalar_github_ref_is_a_checkout_ref,_not_JSON (0.00s)
+=== RUN   TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch/non-json_ref_rejected_for_non-github_type
+--- PASS: TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch/non-json_ref_rejected_for_non-github_type (0.00s)
+--- PASS: TestBuildResourceRefFromRefFlagKeepsJSONEscapeHatch (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsLocalDirectoryMerges
+=== RUN   TestBuildResourceRefFromFlagsLocalDirectoryMerges/ref-label_only_edit_preserves_existing_path_+_daemon
+--- PASS: TestBuildResourceRefFromFlagsLocalDirectoryMerges/ref-label_only_edit_preserves_existing_path_+_daemon (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsLocalDirectoryMerges/local-path_only_without_existing_daemon_fails
+--- PASS: TestBuildResourceRefFromFlagsLocalDirectoryMerges/local-path_only_without_existing_daemon_fails (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsLocalDirectoryMerges/ref-label_cleared_on_empty_input
+--- PASS: TestBuildResourceRefFromFlagsLocalDirectoryMerges/ref-label_cleared_on_empty_input (0.00s)
+--- PASS: TestBuildResourceRefFromFlagsLocalDirectoryMerges (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsLocalDirectoryExecutionMode
+=== RUN   TestBuildResourceRefFromFlagsLocalDirectoryExecutionMode/sets_worktree_mode
+--- PASS: TestBuildResourceRefFromFlagsLocalDirectoryExecutionMode/sets_worktree_mode (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsLocalDirectoryExecutionMode/unrelated_edit_preserves_existing_mode
+--- PASS: TestBuildResourceRefFromFlagsLocalDirectoryExecutionMode/unrelated_edit_preserves_existing_mode (0.00s)
+=== RUN   TestBuildResourceRefFromFlagsLocalDirectoryExecutionMode/empty_value_clears_back_to_the_default
+--- PASS: TestBuildResourceRefFromFlagsLocalDirectoryExecutionMode/empty_value_clears_back_to_the_default (0.00s)
+--- PASS: TestBuildResourceRefFromFlagsLocalDirectoryExecutionMode (0.00s)
+=== RUN   TestProjectUpdateRevisionFlagsRegistered
+--- PASS: TestProjectUpdateRevisionFlagsRegistered (0.00s)
+=== RUN   TestRunProjectUpdateExplicitRevisions
+=== RUN   TestRunProjectUpdateExplicitRevisions/description_with_both_versions
+--- PASS: TestRunProjectUpdateExplicitRevisions/description_with_both_versions (0.00s)
+=== RUN   TestRunProjectUpdateExplicitRevisions/clear_description
+--- PASS: TestRunProjectUpdateExplicitRevisions/clear_description (0.00s)
+=== RUN   TestRunProjectUpdateExplicitRevisions/legacy_description
+--- PASS: TestRunProjectUpdateExplicitRevisions/legacy_description (0.00s)
+=== RUN   TestRunProjectUpdateExplicitRevisions/other_fields_unchanged
+--- PASS: TestRunProjectUpdateExplicitRevisions/other_fields_unchanged (0.00s)
+=== RUN   TestRunProjectUpdateExplicitRevisions/safe_maximum
+--- PASS: TestRunProjectUpdateExplicitRevisions/safe_maximum (0.00s)
+--- PASS: TestRunProjectUpdateExplicitRevisions (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/0
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/0 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/-1
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/-1 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/9007199254740992
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/9007199254740992 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/9223372036854775807
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/9223372036854775807 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/9223372036854775808
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/9223372036854775808 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/1.5
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/1.5 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/abc
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/abc (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-description-revision/ (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/0
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/0 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/-1
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/-1 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/9007199254740992
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/9007199254740992 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/9223372036854775807
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/9223372036854775807 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/9223372036854775808
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/9223372036854775808 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/1.5
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/1.5 (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/abc
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/abc (0.00s)
+=== RUN   TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags/expected-revision/ (0.00s)
+--- PASS: TestRunProjectUpdateRejectsInvalidRevisionFlags (0.00s)
+=== RUN   TestRunProjectUpdateConflictDoesNotRefreshOrRetry
+=== RUN   TestRunProjectUpdateConflictDoesNotRefreshOrRetry/400
+--- PASS: TestRunProjectUpdateConflictDoesNotRefreshOrRetry/400 (0.00s)
+=== RUN   TestRunProjectUpdateConflictDoesNotRefreshOrRetry/409
+--- PASS: TestRunProjectUpdateConflictDoesNotRefreshOrRetry/409 (0.00s)
+=== RUN   TestRunProjectUpdateConflictDoesNotRefreshOrRetry/428
+--- PASS: TestRunProjectUpdateConflictDoesNotRefreshOrRetry/428 (0.00s)
+--- PASS: TestRunProjectUpdateConflictDoesNotRefreshOrRetry (0.00s)
+=== RUN   TestRunProjectUpdatePrefixResolutionDoesNotSupplyVersions
+=== RUN   TestRunProjectUpdatePrefixResolutionDoesNotSupplyVersions/false
+--- PASS: TestRunProjectUpdatePrefixResolutionDoesNotSupplyVersions/false (0.00s)
+=== RUN   TestRunProjectUpdatePrefixResolutionDoesNotSupplyVersions/true
+--- PASS: TestRunProjectUpdatePrefixResolutionDoesNotSupplyVersions/true (0.00s)
+--- PASS: TestRunProjectUpdatePrefixResolutionDoesNotSupplyVersions (0.00s)
+=== RUN   TestRunRepoAddAppendsAndDedupes
+{
+  "workspace_id": "ws-1",
+  "added": [
+    {
+      "url": "https://git.example.com/api.git"
+    }
+  ],
+  "repos": [
+    {
+      "url": "https://git.example.com/web.git"
+    },
+    {
+      "url": "https://git.example.com/api.git"
+    }
+  ]
+}
+--- PASS: TestRunRepoAddAppendsAndDedupes (0.00s)
+=== RUN   TestRunRepoAddUpdatesDescriptionForExistingRepo
+{
+  "workspace_id": "ws-1",
+  "updated": [
+    {
+      "url": "https://git.example.com/web.git",
+      "description": "new"
+    }
+  ],
+  "repos": [
+    {
+      "url": "https://git.example.com/web.git",
+      "description": "new"
+    }
+  ]
+}
+--- PASS: TestRunRepoAddUpdatesDescriptionForExistingRepo (0.00s)
+=== RUN   TestRunRepoAddRejectsDescriptionForMultipleRepos
+--- PASS: TestRunRepoAddRejectsDescriptionForMultipleRepos (0.00s)
+=== RUN   TestRunRepoRemoveDeletesExistingRepos
+{
+  "workspace_id": "ws-1",
+  "removed": [
+    {
+      "url": "https://git.example.com/web.git"
+    },
+    {
+      "url": "https://git.example.com/mobile.git"
+    }
+  ],
+  "repos": [
+    {
+      "url": "https://git.example.com/api.git"
+    }
+  ]
+}
+--- PASS: TestRunRepoRemoveDeletesExistingRepos (0.00s)
+=== RUN   TestRunRepoRemoveRejectsMissingRepoWithoutPatch
+--- PASS: TestRunRepoRemoveRejectsMissingRepoWithoutPatch (0.00s)
+=== RUN   TestRunRepoCheckoutForwardsManagedCheckoutMode
+/work/repo
+Checked out https://github.com/org/repo.git → /work/repo (branch: agent/test/task)
+--- PASS: TestRunRepoCheckoutForwardsManagedCheckoutMode (0.00s)
+=== RUN   TestRunRepoCheckoutRequiresTaskCredential
+--- PASS: TestRunRepoCheckoutRequiresTaskCredential (0.00s)
+=== RUN   TestRunRepoCheckoutRetriesServiceUnavailable
+/work/repo
+Checked out https://github.com/org/repo.git → /work/repo (branch: agent/test/task)
+--- PASS: TestRunRepoCheckoutRetriesServiceUnavailable (0.00s)
+=== RUN   TestRunRepoCheckoutDoesNotRetryUnmarkedServiceUnavailable
+--- PASS: TestRunRepoCheckoutDoesNotRetryUnmarkedServiceUnavailable (0.00s)
+=== RUN   TestRepoCheckoutRetryDelay
+=== PAUSE TestRepoCheckoutRetryDelay
+=== RUN   TestRuntimeProfileCommandsRegistered
+--- PASS: TestRuntimeProfileCommandsRegistered (0.00s)
+=== RUN   TestRunRuntimeProfileList
+[
+  {
+    "command_name": "company-codex",
+    "display_name": "Company Codex",
+    "enabled": true,
+    "id": "prof-1",
+    "protocol_family": "codex",
+    "visibility": "workspace"
+  }
+]
+--- PASS: TestRunRuntimeProfileList (0.00s)
+=== RUN   TestRunRuntimeProfileCreate
+{
+  "display_name": "Company Codex",
+  "id": "prof-1"
+}
+--- PASS: TestRunRuntimeProfileCreate (0.00s)
+=== RUN   TestRunRuntimeProfileCreateRejectsBadFamily
+--- PASS: TestRunRuntimeProfileCreateRejectsBadFamily (0.00s)
+=== RUN   TestRunRuntimeProfileCreateRequiresFlags
+--- PASS: TestRunRuntimeProfileCreateRequiresFlags (0.00s)
+=== RUN   TestRunRuntimeProfileUpdateOnlySendsChangedFlags
+{
+  "id": "prof-1"
+}
+--- PASS: TestRunRuntimeProfileUpdateOnlySendsChangedFlags (0.00s)
+=== RUN   TestRunRuntimeProfileUpdateNoFieldsErrors
+--- PASS: TestRunRuntimeProfileUpdateNoFieldsErrors (0.00s)
+=== RUN   TestRunRuntimeProfileDeleteSuccess
+Deleted runtime profile prof-1
+--- PASS: TestRunRuntimeProfileDeleteSuccess (0.00s)
+=== RUN   TestRunRuntimeProfileDeleteConflictSurfacesServerMessage
+--- PASS: TestRunRuntimeProfileDeleteConflictSurfacesServerMessage (0.00s)
+=== RUN   TestRunRuntimeProfileSetAndUnsetPath
+Pinned runtime profile prof-1 to /opt/bin/company-codex on this machine.
+Restart the daemon for the change to take effect.
+Removed per-machine path override for runtime profile prof-1.
+Restart the daemon for the change to take effect.
+--- PASS: TestRunRuntimeProfileSetAndUnsetPath (0.00s)
+=== RUN   TestRunRuntimeProfileSetPathRejectsRelative
+--- PASS: TestRunRuntimeProfileSetPathRejectsRelative (0.00s)
+=== RUN   TestRunRuntimeProfileSetPathPreservesExistingConfig
+Pinned runtime profile prof-1 to /opt/bin/company-codex on this machine.
+Restart the daemon for the change to take effect.
+--- PASS: TestRunRuntimeProfileSetPathPreservesExistingConfig (0.00s)
+=== RUN   TestRuntimeProfilePathMutationFailsClosedInTaskContext
+--- PASS: TestRuntimeProfilePathMutationFailsClosedInTaskContext (0.00s)
+=== RUN   TestRunRuntimeDeleteStrictSuccessPrintsJSON
+--- PASS: TestRunRuntimeDeleteStrictSuccessPrintsJSON (0.00s)
+=== RUN   TestRunRuntimeDeleteConflictSuggestsCascade
+--- PASS: TestRunRuntimeDeleteConflictSuggestsCascade (0.00s)
+=== RUN   TestRunRuntimeDeleteCascadeConfirmsActiveAgentSnapshot
+--- PASS: TestRunRuntimeDeleteCascadeConfirmsActiveAgentSnapshot (0.00s)
+=== RUN   TestPersistSelfHostConfigIfReachable
+=== RUN   TestPersistSelfHostConfigIfReachable/unreachable_server_preserves_existing_config_and_token
+--- PASS: TestPersistSelfHostConfigIfReachable/unreachable_server_preserves_existing_config_and_token (0.00s)
+=== RUN   TestPersistSelfHostConfigIfReachable/reachable_server_writes_new_self-host_config
+--- PASS: TestPersistSelfHostConfigIfReachable/reachable_server_writes_new_self-host_config (0.00s)
+--- PASS: TestPersistSelfHostConfigIfReachable (0.00s)
+=== RUN   TestDispatchDaemonAfterSetup
+=== RUN   TestDispatchDaemonAfterSetup/restarts_an_existing_daemon_so_new_config_takes_effect
+
+Restarting daemon to apply the new configuration...
+--- PASS: TestDispatchDaemonAfterSetup/restarts_an_existing_daemon_so_new_config_takes_effect (0.00s)
+=== RUN   TestDispatchDaemonAfterSetup/starts_when_no_daemon_is_running
+
+Starting daemon...
+--- PASS: TestDispatchDaemonAfterSetup/starts_when_no_daemon_is_running (0.00s)
+=== RUN   TestDispatchDaemonAfterSetup/does_not_restart_while_tasks_are_active
+--- PASS: TestDispatchDaemonAfterSetup/does_not_restart_while_tasks_are_active (0.00s)
+--- PASS: TestDispatchDaemonAfterSetup (0.00s)
+=== RUN   TestResolveSelfHostServerURL
+=== RUN   TestResolveSelfHostServerURL/env_var_honored_when_flag_absent
+--- PASS: TestResolveSelfHostServerURL/env_var_honored_when_flag_absent (0.00s)
+=== RUN   TestResolveSelfHostServerURL/flag_wins_over_env
+--- PASS: TestResolveSelfHostServerURL/flag_wins_over_env (0.00s)
+=== RUN   TestResolveSelfHostServerURL/falls_back_to_localhost_with_--port_when_neither_set
+--- PASS: TestResolveSelfHostServerURL/falls_back_to_localhost_with_--port_when_neither_set (0.00s)
+=== RUN   TestResolveSelfHostServerURL/falls_back_to_existing_config_server_url_when_no_flag,_env,_or_--port
+--- PASS: TestResolveSelfHostServerURL/falls_back_to_existing_config_server_url_when_no_flag,_env,_or_--port (0.00s)
+=== RUN   TestResolveSelfHostServerURL/explicit_--port_overrides_existing_config_server_url
+--- PASS: TestResolveSelfHostServerURL/explicit_--port_overrides_existing_config_server_url (0.00s)
+=== RUN   TestResolveSelfHostServerURL/flag_wins_over_existing_config
+--- PASS: TestResolveSelfHostServerURL/flag_wins_over_existing_config (0.00s)
+=== RUN   TestResolveSelfHostServerURL/normalizes_ws://_daemon_form_from_existing_config
+--- PASS: TestResolveSelfHostServerURL/normalizes_ws://_daemon_form_from_existing_config (0.00s)
+=== RUN   TestResolveSelfHostServerURL/normalizes_the_documented_ws://_daemon_form
+--- PASS: TestResolveSelfHostServerURL/normalizes_the_documented_ws://_daemon_form (0.00s)
+--- PASS: TestResolveSelfHostServerURL (0.00s)
+=== RUN   TestSelfHostAppURLHonorsEnv
+=== RUN   TestSelfHostAppURLHonorsEnv/env_honored_when_flag_absent
+--- PASS: TestSelfHostAppURLHonorsEnv/env_honored_when_flag_absent (0.00s)
+=== RUN   TestSelfHostAppURLHonorsEnv/flag_wins_over_env
+--- PASS: TestSelfHostAppURLHonorsEnv/flag_wins_over_env (0.00s)
+--- PASS: TestSelfHostAppURLHonorsEnv (0.00s)
+=== RUN   TestResolveSelfHostAppURL
+=== RUN   TestResolveSelfHostAppURL/flag_wins_over_env_and_config
+--- PASS: TestResolveSelfHostAppURL/flag_wins_over_env_and_config (0.00s)
+=== RUN   TestResolveSelfHostAppURL/env_wins_over_config_when_flag_absent
+--- PASS: TestResolveSelfHostAppURL/env_wins_over_config_when_flag_absent (0.00s)
+=== RUN   TestResolveSelfHostAppURL/falls_back_to_existing_config_when_no_flag,_env,_or_--frontend-port
+--- PASS: TestResolveSelfHostAppURL/falls_back_to_existing_config_when_no_flag,_env,_or_--frontend-port (0.00s)
+=== RUN   TestResolveSelfHostAppURL/explicit_--frontend-port_skips_config_fallback
+--- PASS: TestResolveSelfHostAppURL/explicit_--frontend-port_skips_config_fallback (0.00s)
+=== RUN   TestResolveSelfHostAppURL/empty_when_nothing_set
+--- PASS: TestResolveSelfHostAppURL/empty_when_nothing_set (0.00s)
+--- PASS: TestResolveSelfHostAppURL (0.00s)
+=== RUN   TestSetupCallbackHostFlagWiring
+=== RUN   TestSetupCallbackHostFlagWiring/setup
+--- PASS: TestSetupCallbackHostFlagWiring/setup (0.00s)
+=== RUN   TestSetupCallbackHostFlagWiring/setup_cloud
+--- PASS: TestSetupCallbackHostFlagWiring/setup_cloud (0.00s)
+=== RUN   TestSetupCallbackHostFlagWiring/setup_self-host
+--- PASS: TestSetupCallbackHostFlagWiring/setup_self-host (0.00s)
+--- PASS: TestSetupCallbackHostFlagWiring (0.00s)
+=== RUN   TestSetupHelpShowsCallbackHostFlag
+--- PASS: TestSetupHelpShowsCallbackHostFlag (0.00s)
+=== RUN   TestFormatURLChange
+=== RUN   TestFormatURLChange/changed
+--- PASS: TestFormatURLChange/changed (0.00s)
+=== RUN   TestFormatURLChange/unchanged
+--- PASS: TestFormatURLChange/unchanged (0.00s)
+=== RUN   TestFormatURLChange/empty_new_keeps_old
+--- PASS: TestFormatURLChange/empty_new_keeps_old (0.00s)
+--- PASS: TestFormatURLChange (0.00s)
+=== RUN   TestServerHostIsLocal
+=== RUN   TestServerHostIsLocal/localhost
+--- PASS: TestServerHostIsLocal/localhost (0.00s)
+=== RUN   TestServerHostIsLocal/127.0.0.1
+--- PASS: TestServerHostIsLocal/127.0.0.1 (0.00s)
+=== RUN   TestServerHostIsLocal/IPv6_loopback
+--- PASS: TestServerHostIsLocal/IPv6_loopback (0.00s)
+=== RUN   TestServerHostIsLocal/LAN_IP
+--- PASS: TestServerHostIsLocal/LAN_IP (0.00s)
+=== RUN   TestServerHostIsLocal/public_FQDN
+--- PASS: TestServerHostIsLocal/public_FQDN (0.00s)
+=== RUN   TestServerHostIsLocal/unparseable
+--- PASS: TestServerHostIsLocal/unparseable (0.00s)
+--- PASS: TestServerHostIsLocal (0.00s)
+=== RUN   TestSetupCommandsFailClosedInTaskContext
+--- PASS: TestSetupCommandsFailClosedInTaskContext (0.00s)
+=== RUN   TestSkillLabelCommandsRegistered
+=== RUN   TestSkillLabelCommandsRegistered/list
+--- PASS: TestSkillLabelCommandsRegistered/list (0.00s)
+=== RUN   TestSkillLabelCommandsRegistered/add
+--- PASS: TestSkillLabelCommandsRegistered/add (0.00s)
+=== RUN   TestSkillLabelCommandsRegistered/remove
+--- PASS: TestSkillLabelCommandsRegistered/remove (0.00s)
+--- PASS: TestSkillLabelCommandsRegistered (0.00s)
+=== RUN   TestRunSkillImportJsonTreatsDuplicateAsConflictResult
+--- PASS: TestRunSkillImportJsonTreatsDuplicateAsConflictResult (0.00s)
+=== RUN   TestRunSkillImportSendsOnConflictAndPrintsStructuredResult
+--- PASS: TestRunSkillImportSendsOnConflictAndPrintsStructuredResult (0.00s)
+=== RUN   TestRunSkillSearchRequestsSearchEndpoint
+[
+  {
+    "description": "React engineering skill",
+    "github_stars": null,
+    "install_count": 62,
+    "name": "React",
+    "repo": null,
+    "source": "clawhub.ai",
+    "url": "https://clawhub.ai/ivangdavila/react"
+  }
+]
+--- PASS: TestRunSkillSearchRequestsSearchEndpoint (0.00s)
+=== RUN   TestRunSkillCreateReadsContentFileVerbatim
+--- PASS: TestRunSkillCreateReadsContentFileVerbatim (0.00s)
+=== RUN   TestRunSkillCreateKeepsInlineContentLiteral
+--- PASS: TestRunSkillCreateKeepsInlineContentLiteral (0.00s)
+=== RUN   TestRunSkillUpdateReadsContentStdinVerbatim
+--- PASS: TestRunSkillUpdateReadsContentStdinVerbatim (0.00s)
+=== RUN   TestRunSkillFilesUpsertReadsContentFileVerbatim
+--- PASS: TestRunSkillFilesUpsertReadsContentFileVerbatim (0.00s)
+=== RUN   TestRunSkillContentInputsAreMutuallyExclusive
+=== RUN   TestRunSkillContentInputsAreMutuallyExclusive/inline_+_stdin
+--- PASS: TestRunSkillContentInputsAreMutuallyExclusive/inline_+_stdin (0.00s)
+=== RUN   TestRunSkillContentInputsAreMutuallyExclusive/inline_+_file
+--- PASS: TestRunSkillContentInputsAreMutuallyExclusive/inline_+_file (0.00s)
+=== RUN   TestRunSkillContentInputsAreMutuallyExclusive/stdin_+_file
+--- PASS: TestRunSkillContentInputsAreMutuallyExclusive/stdin_+_file (0.00s)
+--- PASS: TestRunSkillContentInputsAreMutuallyExclusive (0.00s)
+=== RUN   TestRunSkillContentFileAndStdinRejectEmptyInput
+--- PASS: TestRunSkillContentFileAndStdinRejectEmptyInput (0.00s)
+=== RUN   TestRunSkillInlineEmptyContentKeepsExistingBehavior
+--- PASS: TestRunSkillInlineEmptyContentKeepsExistingBehavior (0.00s)
+=== RUN   TestRunSkillRefreshPostsToRefreshEndpointAndPrintsTable
+--- PASS: TestRunSkillRefreshPostsToRefreshEndpointAndPrintsTable (0.00s)
+=== RUN   TestRunSkillRefreshJsonPrintsSkill
+--- PASS: TestRunSkillRefreshJsonPrintsSkill (0.00s)
+=== RUN   TestRunSkillGetAsksForMetadataUnlessContentRequested
+=== RUN   TestRunSkillGetAsksForMetadataUnlessContentRequested/default
+--- PASS: TestRunSkillGetAsksForMetadataUnlessContentRequested/default (0.00s)
+=== RUN   TestRunSkillGetAsksForMetadataUnlessContentRequested/--with-content
+--- PASS: TestRunSkillGetAsksForMetadataUnlessContentRequested/--with-content (0.00s)
+--- PASS: TestRunSkillGetAsksForMetadataUnlessContentRequested (0.00s)
+=== RUN   TestRunSkillFilesListAsksForMetadataUnlessContentRequested
+=== RUN   TestRunSkillFilesListAsksForMetadataUnlessContentRequested/default
+--- PASS: TestRunSkillFilesListAsksForMetadataUnlessContentRequested/default (0.00s)
+=== RUN   TestRunSkillFilesListAsksForMetadataUnlessContentRequested/--with-content
+--- PASS: TestRunSkillFilesListAsksForMetadataUnlessContentRequested/--with-content (0.00s)
+--- PASS: TestRunSkillFilesListAsksForMetadataUnlessContentRequested (0.00s)
+=== RUN   TestRunSkillFilesListRendersReadableSizes
+--- PASS: TestRunSkillFilesListRendersReadableSizes (0.00s)
+=== RUN   TestRunSkillLabelCommands
+--- PASS: TestRunSkillLabelCommands (0.00s)
+=== RUN   TestSquadMemberSetRoleCommandIsRegistered
+--- PASS: TestSquadMemberSetRoleCommandIsRegistered (0.00s)
+=== RUN   TestRunSquadMemberSetRolePatchesRole
+{
+  "member_id": "member-456",
+  "member_type": "agent",
+  "role": "reviewer",
+  "squad_id": "squad-123"
+}
+--- PASS: TestRunSquadMemberSetRolePatchesRole (0.00s)
+=== RUN   TestRunSquadMemberSetRoleValidatesRequiredFlags
+--- PASS: TestRunSquadMemberSetRoleValidatesRequiredFlags (0.00s)
+=== RUN   TestRunUpdateRejectsNonPositiveDownloadTimeout
+--- PASS: TestRunUpdateRejectsNonPositiveDownloadTimeout (0.00s)
+=== RUN   TestUpdateCommandRegistersDownloadTimeoutFlag
+--- PASS: TestUpdateCommandRegistersDownloadTimeoutFlag (0.00s)
+=== RUN   TestRunUserProfileGetPrintsMeJSON
+--- PASS: TestRunUserProfileGetPrintsMeJSON (0.00s)
+=== RUN   TestRunUserProfileUpdateSendsResolvedDescription
+--- PASS: TestRunUserProfileUpdateSendsResolvedDescription (0.00s)
+=== RUN   TestRunUserProfileUpdateClearSendsEmptyDescription
+--- PASS: TestRunUserProfileUpdateClearSendsEmptyDescription (0.00s)
+=== RUN   TestRunWorkspaceMcpListShowsTheLibrary
+--- PASS: TestRunWorkspaceMcpListShowsTheLibrary (0.00s)
+=== RUN   TestRunWorkspaceMcpListEmptyLibrary
+--- PASS: TestRunWorkspaceMcpListEmptyLibrary (0.00s)
+=== RUN   TestRunWorkspaceMcpNeverPrintsSecrets
+=== RUN   TestRunWorkspaceMcpNeverPrintsSecrets/json
+--- PASS: TestRunWorkspaceMcpNeverPrintsSecrets/json (0.00s)
+=== RUN   TestRunWorkspaceMcpNeverPrintsSecrets/table
+--- PASS: TestRunWorkspaceMcpNeverPrintsSecrets/table (0.00s)
+--- PASS: TestRunWorkspaceMcpNeverPrintsSecrets (0.00s)
+=== RUN   TestRunWorkspaceMcpAddNeverPrintsSecrets
+--- PASS: TestRunWorkspaceMcpAddNeverPrintsSecrets (0.00s)
+=== RUN   TestRunWorkspaceMcpAddPostsNameAndEntry
+--- PASS: TestRunWorkspaceMcpAddPostsNameAndEntry (0.00s)
+=== RUN   TestRunWorkspaceMcpAddRequiresAnInputChannel
+--- PASS: TestRunWorkspaceMcpAddRequiresAnInputChannel (0.00s)
+=== RUN   TestRunWorkspaceMcpAddRejectsNullEntry
+--- PASS: TestRunWorkspaceMcpAddRejectsNullEntry (0.00s)
+=== RUN   TestRunWorkspaceMcpUpdateSendsOnlyWhatChanged
+--- PASS: TestRunWorkspaceMcpUpdateSendsOnlyWhatChanged (0.00s)
+=== RUN   TestRunWorkspaceMcpUpdateRequiresSomethingToChange
+--- PASS: TestRunWorkspaceMcpUpdateRequiresSomethingToChange (0.00s)
+=== RUN   TestRunWorkspaceMcpRemoveDeletesTheLibraryEntry
+--- PASS: TestRunWorkspaceMcpRemoveDeletesTheLibraryEntry (0.00s)
+=== RUN   TestRunWorkspaceMcpUsesWorkspaceArgument
+--- PASS: TestRunWorkspaceMcpUsesWorkspaceArgument (0.00s)
+=== RUN   TestRunAgentMcpAddAssignsAServer
+--- PASS: TestRunAgentMcpAddAssignsAServer (0.00s)
+=== RUN   TestRunAgentMcpDisableAndEnable
+--- PASS: TestRunAgentMcpDisableAndEnable (0.00s)
+=== RUN   TestRunAgentMcpRemoveDropsTheAssignment
+--- PASS: TestRunAgentMcpRemoveDropsTheAssignment (0.00s)
+=== RUN   TestRunAgentMcpListNeverPrintsSecrets
+--- PASS: TestRunAgentMcpListNeverPrintsSecrets (0.00s)
+=== RUN   TestRunWorkspaceCreatePostsWorkspaceAndDoesNotSwitchDefault
+--- PASS: TestRunWorkspaceCreatePostsWorkspaceAndDoesNotSwitchDefault (0.00s)
+=== RUN   TestRunWorkspaceCreateRequiresName
+--- PASS: TestRunWorkspaceCreateRequiresName (0.00s)
+=== RUN   TestRunWorkspaceCreateRequiresSlug
+--- PASS: TestRunWorkspaceCreateRequiresSlug (0.00s)
+=== RUN   TestRunWorkspaceCreateRejectsDualStdin
+--- PASS: TestRunWorkspaceCreateRejectsDualStdin (0.00s)
+=== RUN   TestRunWorkspaceCreateReadsDescriptionFromStdin
+--- PASS: TestRunWorkspaceCreateReadsDescriptionFromStdin (0.00s)
+=== RUN   TestRunWorkspaceCreatePrintsTable
+--- PASS: TestRunWorkspaceCreatePrintsTable (0.00s)
+=== RUN   TestRunWorkspaceSwitch
+=== RUN   TestRunWorkspaceSwitch/switches_by_slug_and_persists_workspace_id
+Switched to workspace: Beta (22222222-2222-2222-2222-222222222222)
+--- PASS: TestRunWorkspaceSwitch/switches_by_slug_and_persists_workspace_id (0.00s)
+=== RUN   TestRunWorkspaceSwitch/rejects_unknown_workspace_and_leaves_config_untouched
+--- PASS: TestRunWorkspaceSwitch/rejects_unknown_workspace_and_leaves_config_untouched (0.00s)
+=== RUN   TestRunWorkspaceSwitch/isolates_by_profile
+Switched to workspace: Alpha (11111111-1111-1111-1111-111111111111)
+--- PASS: TestRunWorkspaceSwitch/isolates_by_profile (0.00s)
+--- PASS: TestRunWorkspaceSwitch (0.00s)
+=== RUN   TestRunWorkspaceSwitchFailsClosedInTaskContext
+--- PASS: TestRunWorkspaceSwitchFailsClosedInTaskContext (0.00s)
+=== RUN   TestFetchWorkspacesExplainsPortOnlyFailClosedContext
+--- PASS: TestFetchWorkspacesExplainsPortOnlyFailClosedContext (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug
+=== RUN   TestResolveWorkspaceByIDOrSlug/matches_by_exact_UUID
+--- PASS: TestResolveWorkspaceByIDOrSlug/matches_by_exact_UUID (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/matches_by_slug
+--- PASS: TestResolveWorkspaceByIDOrSlug/matches_by_slug (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/slug_match_is_case-insensitive
+--- PASS: TestResolveWorkspaceByIDOrSlug/slug_match_is_case-insensitive (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/unknown_target_returns_access-style_error
+--- PASS: TestResolveWorkspaceByIDOrSlug/unknown_target_returns_access-style_error (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/empty_target_is_rejected
+--- PASS: TestResolveWorkspaceByIDOrSlug/empty_target_is_rejected (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/whitespace-padded_target_is_trimmed
+--- PASS: TestResolveWorkspaceByIDOrSlug/whitespace-padded_target_is_trimmed (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/matches_unique_short_UUID_prefix
+--- PASS: TestResolveWorkspaceByIDOrSlug/matches_unique_short_UUID_prefix (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/short_UUID_prefix_with_dashes_is_accepted
+--- PASS: TestResolveWorkspaceByIDOrSlug/short_UUID_prefix_with_dashes_is_accepted (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/ambiguous_prefix_lists_all_matches
+--- PASS: TestResolveWorkspaceByIDOrSlug/ambiguous_prefix_lists_all_matches (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/slug_wins_over_colliding_UUID_prefix
+--- PASS: TestResolveWorkspaceByIDOrSlug/slug_wins_over_colliding_UUID_prefix (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/non-hex_unknown_target_falls_through_to_not-found
+--- PASS: TestResolveWorkspaceByIDOrSlug/non-hex_unknown_target_falls_through_to_not-found (0.00s)
+=== RUN   TestResolveWorkspaceByIDOrSlug/prefix_shorter_than_4_hex_chars_is_rejected
+--- PASS: TestResolveWorkspaceByIDOrSlug/prefix_shorter_than_4_hex_chars_is_rejected (0.00s)
+--- PASS: TestResolveWorkspaceByIDOrSlug (0.00s)
+=== RUN   TestBuildWorkspaceUpdateBody
+=== RUN   TestBuildWorkspaceUpdateBody/only_changed_flags_appear_in_body
+--- PASS: TestBuildWorkspaceUpdateBody/only_changed_flags_appear_in_body (0.00s)
+=== RUN   TestBuildWorkspaceUpdateBody/multiple_fields_combine_into_one_PATCH_body
+--- PASS: TestBuildWorkspaceUpdateBody/multiple_fields_combine_into_one_PATCH_body (0.00s)
+=== RUN   TestBuildWorkspaceUpdateBody/inline_+_stdin_is_rejected_for_description
+--- PASS: TestBuildWorkspaceUpdateBody/inline_+_stdin_is_rejected_for_description (0.00s)
+=== RUN   TestBuildWorkspaceUpdateBody/context-stdin_reads_from_stdin
+--- PASS: TestBuildWorkspaceUpdateBody/context-stdin_reads_from_stdin (0.00s)
+=== RUN   TestBuildWorkspaceUpdateBody/empty_issue-prefix_is_rejected
+--- PASS: TestBuildWorkspaceUpdateBody/empty_issue-prefix_is_rejected (0.00s)
+=== RUN   TestBuildWorkspaceUpdateBody/whitespace-only_issue-prefix_is_rejected
+--- PASS: TestBuildWorkspaceUpdateBody/whitespace-only_issue-prefix_is_rejected (0.00s)
+=== RUN   TestBuildWorkspaceUpdateBody/no_flags_set_produces_empty_body
+--- PASS: TestBuildWorkspaceUpdateBody/no_flags_set_produces_empty_body (0.00s)
+--- PASS: TestBuildWorkspaceUpdateBody (0.00s)
+=== RUN   TestWorkspaceMemberInviteCommandIsRegistered
+--- PASS: TestWorkspaceMemberInviteCommandIsRegistered (0.00s)
+=== RUN   TestRunWorkspaceMemberInvitePostsInvitation
+{
+  "invitee_email": "alice@example.com",
+  "role": "member",
+  "status": "pending"
+}
+--- PASS: TestRunWorkspaceMemberInvitePostsInvitation (0.00s)
+=== RUN   TestRunWorkspaceMemberInviteUsesWorkspaceArgAndRoleFlag
+{
+  "invitee_email": "bob@example.com",
+  "role": "admin",
+  "status": "pending"
+}
+--- PASS: TestRunWorkspaceMemberInviteUsesWorkspaceArgAndRoleFlag (0.00s)
+=== RUN   TestRunWorkspaceMemberInviteRejectsOwnerRole
+--- PASS: TestRunWorkspaceMemberInviteRejectsOwnerRole (0.00s)
+=== RUN   TestRunWorkspaceMemberInviteRejectsUnknownRole
+--- PASS: TestRunWorkspaceMemberInviteRejectsUnknownRole (0.00s)
+=== RUN   TestFindLocalPathLinksHighConfidenceSignals
+=== RUN   TestFindLocalPathLinksHighConfidenceSignals/file://_URL_in_a_link
+--- PASS: TestFindLocalPathLinksHighConfidenceSignals/file://_URL_in_a_link (0.00s)
+=== RUN   TestFindLocalPathLinksHighConfidenceSignals/file://_URL_in_an_autolink_renders_clickable_too
+--- PASS: TestFindLocalPathLinksHighConfidenceSignals/file://_URL_in_an_autolink_renders_clickable_too (0.00s)
+=== RUN   TestFindLocalPathLinksHighConfidenceSignals/absolute_path_inside_the_task_workdir
+--- PASS: TestFindLocalPathLinksHighConfidenceSignals/absolute_path_inside_the_task_workdir (0.00s)
+=== RUN   TestFindLocalPathLinksHighConfidenceSignals/absolute_path_to_a_file_that_exists_on_this_machine
+--- PASS: TestFindLocalPathLinksHighConfidenceSignals/absolute_path_to_a_file_that_exists_on_this_machine (0.00s)
+=== RUN   TestFindLocalPathLinksHighConfidenceSignals/the_reported_repro:_image_link_to_a_workdir_file
+--- PASS: TestFindLocalPathLinksHighConfidenceSignals/the_reported_repro:_image_link_to_a_workdir_file (0.00s)
+=== RUN   TestFindLocalPathLinksHighConfidenceSignals/one_path_linked_repeatedly_reports_once
+--- PASS: TestFindLocalPathLinksHighConfidenceSignals/one_path_linked_repeatedly_reports_once (0.00s)
+--- PASS: TestFindLocalPathLinksHighConfidenceSignals (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/origin-relative_in-app_link
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/origin-relative_in-app_link (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/external_http_link
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/external_http_link (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/mention_link
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/mention_link (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/path_inside_a_code_span
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/path_inside_a_code_span (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/path_inside_a_fenced_code_block
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/path_inside_a_fenced_code_block (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/path_inside_an_indented_code_block
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/path_inside_an_indented_code_block (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/path_as_plain_prose_is_not_a_link
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/path_as_plain_prose_is_not_a_link (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/relative_link_is_left_alone
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/relative_link_is_left_alone (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/absolute_path_that_does_not_exist
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/absolute_path_that_does_not_exist (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/link_text_mentioning_a_path_is_not_a_destination
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/link_text_mentioning_a_path_is_not_a_destination (0.00s)
+=== RUN   TestFindLocalPathLinksAllowsLegitimateContent/empty_body
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent/empty_body (0.00s)
+--- PASS: TestFindLocalPathLinksAllowsLegitimateContent (0.00s)
+=== RUN   TestFindLocalPathLinksIgnoresDirectories
+--- PASS: TestFindLocalPathLinksIgnoresDirectories (0.00s)
+=== RUN   TestGuardLocalPathLinksOnlyFiresInAgentContext
+=== RUN   TestGuardLocalPathLinksOnlyFiresInAgentContext/human_PAT_context_is_never_linted
+--- PASS: TestGuardLocalPathLinksOnlyFiresInAgentContext/human_PAT_context_is_never_linted (0.00s)
+=== RUN   TestGuardLocalPathLinksOnlyFiresInAgentContext/agent_task_context_hard-fails
+--- PASS: TestGuardLocalPathLinksOnlyFiresInAgentContext/agent_task_context_hard-fails (0.00s)
+=== RUN   TestGuardLocalPathLinksOnlyFiresInAgentContext/agent_context_with_a_clean_body_passes
+--- PASS: TestGuardLocalPathLinksOnlyFiresInAgentContext/agent_context_with_a_clean_body_passes (0.00s)
+--- PASS: TestGuardLocalPathLinksOnlyFiresInAgentContext (0.00s)
+=== RUN   TestGuardLocalPathLinksHintIsPerCommand
+--- PASS: TestGuardLocalPathLinksHintIsPerCommand (0.00s)
+=== RUN   TestManagedShutdownRequiresAcceptedIntent
+--- PASS: TestManagedShutdownRequiresAcceptedIntent (0.00s)
+=== RUN   TestManagedShutdownPeerReceivesSignedIntentBody
+--- PASS: TestManagedShutdownPeerReceivesSignedIntentBody (0.00s)
+=== RUN   TestManagedBackgroundStartRequiresProvenProcessExit
+=== RUN   TestManagedBackgroundStartRequiresProvenProcessExit/invalid
+--- PASS: TestManagedBackgroundStartRequiresProvenProcessExit/invalid (0.06s)
+=== RUN   TestManagedBackgroundStartRequiresProvenProcessExit/45958
+--- PASS: TestManagedBackgroundStartRequiresProvenProcessExit/45958 (0.02s)
+--- PASS: TestManagedBackgroundStartRequiresProvenProcessExit (0.08s)
+=== RUN   TestManagedPIDHolder
+--- PASS: TestManagedPIDHolder (0.00s)
+=== RUN   TestManagedForegroundDuplicateCannotErasePredecessorPID
+=== RUN   TestManagedForegroundDuplicateCannotErasePredecessorPID/invalid
+--- PASS: TestManagedForegroundDuplicateCannotErasePredecessorPID/invalid (0.02s)
+=== RUN   TestManagedForegroundDuplicateCannotErasePredecessorPID/45963
+--- PASS: TestManagedForegroundDuplicateCannotErasePredecessorPID/45963 (0.02s)
+--- PASS: TestManagedForegroundDuplicateCannotErasePredecessorPID (0.04s)
+=== RUN   TestManagedHandoffForwardingDoesNotUseArgsOrEnvironment
+--- PASS: TestManagedHandoffForwardingDoesNotUseArgsOrEnvironment (0.00s)
+=== RUN   TestManagedHandoffRequiresExplicitProfile
+--- PASS: TestManagedHandoffRequiresExplicitProfile (0.00s)
+=== RUN   TestLeftoverMarkerReportedIdenticallyOnEveryRefusalPath
+=== RUN   TestLeftoverMarkerReportedIdenticallyOnEveryRefusalPath/issue_task
+--- PASS: TestLeftoverMarkerReportedIdenticallyOnEveryRefusalPath/issue_task (0.00s)
+=== RUN   TestLeftoverMarkerReportedIdenticallyOnEveryRefusalPath/chat_task
+--- PASS: TestLeftoverMarkerReportedIdenticallyOnEveryRefusalPath/chat_task (0.00s)
+--- PASS: TestLeftoverMarkerReportedIdenticallyOnEveryRefusalPath (0.00s)
+=== RUN   TestWorkspacesRootMarkerNeverReportedAsLeftover
+--- PASS: TestWorkspacesRootMarkerNeverReportedAsLeftover (0.00s)
+=== RUN   TestLeftoverMarkerNotReportedUnderRealTaskIdentity
+=== RUN   TestLeftoverMarkerNotReportedUnderRealTaskIdentity/agent_id
+--- PASS: TestLeftoverMarkerNotReportedUnderRealTaskIdentity/agent_id (0.00s)
+=== RUN   TestLeftoverMarkerNotReportedUnderRealTaskIdentity/task_id
+--- PASS: TestLeftoverMarkerNotReportedUnderRealTaskIdentity/task_id (0.00s)
+=== RUN   TestLeftoverMarkerNotReportedUnderRealTaskIdentity/task_config_root
+--- PASS: TestLeftoverMarkerNotReportedUnderRealTaskIdentity/task_config_root (0.00s)
+=== RUN   TestLeftoverMarkerNotReportedUnderRealTaskIdentity/daemon_port
+--- PASS: TestLeftoverMarkerNotReportedUnderRealTaskIdentity/daemon_port (0.00s)
+--- PASS: TestLeftoverMarkerNotReportedUnderRealTaskIdentity (0.00s)
+=== CONT  TestPrintDaemonStatusIncludesCLIVersion
+=== CONT  TestApplyConfigSetSupportsDaemonKeys
+=== CONT  TestDaemonAlive
+--- PASS: TestPrintDaemonStatusIncludesCLIVersion (0.00s)
+=== CONT  TestPrintRepoCacheLineAppearsInEveryView
+=== RUN   TestPrintRepoCacheLineAppearsInEveryView/task_table,_full_totals
+--- PASS: TestDaemonAlive (0.00s)
+--- PASS: TestPrintRepoCacheLineAppearsInEveryView/task_table,_full_totals (0.00s)
+=== RUN   TestPrintRepoCacheLineAppearsInEveryView/task_table,_--top_truncated
+--- PASS: TestPrintRepoCacheLineAppearsInEveryView/task_table,_--top_truncated (0.00s)
+=== RUN   TestPrintRepoCacheLineAppearsInEveryView/workspace_table,_full_totals
+--- PASS: TestApplyConfigSetSupportsDaemonKeys (0.00s)
+--- PASS: TestPrintRepoCacheLineAppearsInEveryView/workspace_table,_full_totals (0.00s)
+=== CONT  TestPrintRepoCacheLineSilentWhenEmpty
+--- PASS: TestPrintRepoCacheLineSilentWhenEmpty (0.00s)
+=== CONT  TestDiskUsageNeedsParentStatus
+--- PASS: TestDiskUsageNeedsParentStatus (0.00s)
+=== CONT  TestPollIntervalRoundTripThroughDuration
+--- PASS: TestPollIntervalRoundTripThroughDuration (0.00s)
+=== CONT  TestApplyConfigSetPollIntervalZeroDoesNotOverwrite
+--- PASS: TestApplyConfigSetPollIntervalZeroDoesNotOverwrite (0.00s)
+=== RUN   TestPrintRepoCacheLineAppearsInEveryView/workspace_table,_--top_truncated
+--- PASS: TestPrintRepoCacheLineAppearsInEveryView/workspace_table,_--top_truncated (0.00s)
+--- PASS: TestPrintRepoCacheLineAppearsInEveryView (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues
+=== RUN   TestApplyConfigSetRejectsBadValues/max_non-int
+=== PAUSE TestApplyConfigSetRejectsBadValues/max_non-int
+=== CONT  TestApplyConfigSetEmptyStringClearsTypedKeys
+--- PASS: TestApplyConfigSetEmptyStringClearsTypedKeys (0.00s)
+=== RUN   TestApplyConfigSetRejectsBadValues/max_negative
+=== CONT  TestApplyConfigSetAgentTimeoutTriState
+--- PASS: TestApplyConfigSetAgentTimeoutTriState (0.00s)
+=== PAUSE TestApplyConfigSetRejectsBadValues/max_negative
+=== RUN   TestApplyConfigSetRejectsBadValues/poll_bad_duration
+=== PAUSE TestApplyConfigSetRejectsBadValues/poll_bad_duration
+=== RUN   TestApplyConfigSetRejectsBadValues/poll_zero
+=== PAUSE TestApplyConfigSetRejectsBadValues/poll_zero
+=== RUN   TestApplyConfigSetRejectsBadValues/poll_negative
+=== CONT  TestPrintDaemonStatusOmitsVersionWhenMissing
+=== RUN   TestPrintDaemonStatusOmitsVersionWhenMissing/key_missing
+=== PAUSE TestApplyConfigSetRejectsBadValues/poll_negative
+=== PAUSE TestPrintDaemonStatusOmitsVersionWhenMissing/key_missing
+=== RUN   TestApplyConfigSetRejectsBadValues/heartbeat_bad_duration
+=== RUN   TestPrintDaemonStatusOmitsVersionWhenMissing/empty_string
+=== PAUSE TestPrintDaemonStatusOmitsVersionWhenMissing/empty_string
+=== CONT  TestRepoCheckoutRetryDelay
+=== PAUSE TestApplyConfigSetRejectsBadValues/heartbeat_bad_duration
+--- PASS: TestRepoCheckoutRetryDelay (0.00s)
+=== CONT  TestCompactCommentsDropsReaderNoise
+--- PASS: TestCompactCommentsDropsReaderNoise (0.00s)
+=== CONT  TestDaemonStartupFailureError
+=== RUN   TestDaemonStartupFailureError/token_rejected
+=== PAUSE TestDaemonStartupFailureError/token_rejected
+=== RUN   TestApplyConfigSetRejectsBadValues/heartbeat_zero
+=== RUN   TestDaemonStartupFailureError/token_rejected_with_profile
+=== PAUSE TestApplyConfigSetRejectsBadValues/heartbeat_zero
+=== PAUSE TestDaemonStartupFailureError/token_rejected_with_profile
+=== RUN   TestApplyConfigSetRejectsBadValues/codex_semantic_zero
+=== PAUSE TestApplyConfigSetRejectsBadValues/codex_semantic_zero
+=== RUN   TestDaemonStartupFailureError/server_unreachable_via_crash_sink
+=== RUN   TestApplyConfigSetRejectsBadValues/codex_handshake_bad
+=== PAUSE TestDaemonStartupFailureError/server_unreachable_via_crash_sink
+=== RUN   TestDaemonStartupFailureError/unrecognized_failure_keeps_filtered_excerpt_plus_crash_output
+=== PAUSE TestApplyConfigSetRejectsBadValues/codex_handshake_bad
+=== PAUSE TestDaemonStartupFailureError/unrecognized_failure_keeps_filtered_excerpt_plus_crash_output
+=== RUN   TestApplyConfigSetRejectsBadValues/agent_timeout_bad_duration
+=== PAUSE TestApplyConfigSetRejectsBadValues/agent_timeout_bad_duration
+=== RUN   TestApplyConfigSetRejectsBadValues/agent_timeout_negative
+=== PAUSE TestApplyConfigSetRejectsBadValues/agent_timeout_negative
+=== RUN   TestDaemonStartupFailureError/empty_logs
+=== RUN   TestApplyConfigSetRejectsBadValues/disable_auto_update_bad_bool
+=== PAUSE TestApplyConfigSetRejectsBadValues/disable_auto_update_bad_bool
+=== RUN   TestApplyConfigSetRejectsBadValues/auto_update_check_interval_zero
+=== PAUSE TestApplyConfigSetRejectsBadValues/auto_update_check_interval_zero
+=== RUN   TestApplyConfigSetRejectsBadValues/disable_auto_reload_bad_bool
+=== PAUSE TestDaemonStartupFailureError/empty_logs
+=== PAUSE TestApplyConfigSetRejectsBadValues/disable_auto_reload_bad_bool
+=== CONT  TestReadLogTailSince
+=== CONT  TestWorkspacesRootFlagRegisteredOnBothDaemonCommands
+--- PASS: TestWorkspacesRootFlagRegisteredOnBothDaemonCommands (0.00s)
+=== CONT  TestPrintDaemonStatusAlignsValuesWithProfileLabel
+--- PASS: TestPrintDaemonStatusAlignsValuesWithProfileLabel (0.00s)
+=== CONT  TestPrintDaemonStatusExplainsDeferredRestart
+--- PASS: TestPrintDaemonStatusExplainsDeferredRestart (0.00s)
+=== CONT  TestNoAutoReloadFlagRegisteredOnBothDaemonCommands
+--- PASS: TestNoAutoReloadFlagRegisteredOnBothDaemonCommands (0.00s)
+=== CONT  TestPrintDaemonStatusOmitsVersionWhenMissing/key_missing
+--- PASS: TestPrintDaemonStatusOmitsVersionWhenMissing/key_missing (0.00s)
+=== CONT  TestPrintDaemonStatusOmitsVersionWhenMissing/empty_string
+--- PASS: TestPrintDaemonStatusOmitsVersionWhenMissing/empty_string (0.00s)
+--- PASS: TestPrintDaemonStatusOmitsVersionWhenMissing (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/poll_zero
+--- PASS: TestApplyConfigSetRejectsBadValues/poll_zero (0.00s)
+=== CONT  TestDaemonStartupFailureError/token_rejected
+--- PASS: TestReadLogTailSince (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/poll_negative
+--- PASS: TestApplyConfigSetRejectsBadValues/poll_negative (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/disable_auto_reload_bad_bool
+--- PASS: TestApplyConfigSetRejectsBadValues/disable_auto_reload_bad_bool (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/auto_update_check_interval_zero
+--- PASS: TestApplyConfigSetRejectsBadValues/auto_update_check_interval_zero (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/disable_auto_update_bad_bool
+--- PASS: TestApplyConfigSetRejectsBadValues/disable_auto_update_bad_bool (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/agent_timeout_negative
+--- PASS: TestApplyConfigSetRejectsBadValues/agent_timeout_negative (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/codex_handshake_bad
+--- PASS: TestApplyConfigSetRejectsBadValues/codex_handshake_bad (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/codex_semantic_zero
+--- PASS: TestApplyConfigSetRejectsBadValues/codex_semantic_zero (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/agent_timeout_bad_duration
+--- PASS: TestApplyConfigSetRejectsBadValues/agent_timeout_bad_duration (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/heartbeat_bad_duration
+--- PASS: TestApplyConfigSetRejectsBadValues/heartbeat_bad_duration (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/heartbeat_zero
+--- PASS: TestApplyConfigSetRejectsBadValues/heartbeat_zero (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/poll_bad_duration
+--- PASS: TestApplyConfigSetRejectsBadValues/poll_bad_duration (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/max_negative
+--- PASS: TestDaemonStartupFailureError/token_rejected (0.00s)
+=== CONT  TestApplyConfigSetRejectsBadValues/max_non-int
+--- PASS: TestApplyConfigSetRejectsBadValues/max_negative (0.00s)
+=== CONT  TestDaemonStartupFailureError/empty_logs
+=== CONT  TestDaemonStartupFailureError/server_unreachable_via_crash_sink
+--- PASS: TestDaemonStartupFailureError/empty_logs (0.00s)
+=== CONT  TestDaemonStartupFailureError/unrecognized_failure_keeps_filtered_excerpt_plus_crash_output
+--- PASS: TestDaemonStartupFailureError/server_unreachable_via_crash_sink (0.00s)
+--- PASS: TestApplyConfigSetRejectsBadValues/max_non-int (0.00s)
+=== CONT  TestDaemonStartupFailureError/token_rejected_with_profile
+--- PASS: TestDaemonStartupFailureError/unrecognized_failure_keeps_filtered_excerpt_plus_crash_output (0.00s)
+--- PASS: TestDaemonStartupFailureError/token_rejected_with_profile (0.00s)
+--- PASS: TestApplyConfigSetRejectsBadValues (0.00s)
+--- PASS: TestDaemonStartupFailureError (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/cmd/multica	2.789s

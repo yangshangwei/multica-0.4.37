@@ -1,0 +1,15 @@
+# Independent launch lane review
+
+Verdict: **pass-with-notes**, no blocking product defect found. Product tip `77df70afc053c7772a0e0f81be70158868e9f24b`, base `4e3b61500ed0afbc12cf4c79b1c6aea866778d0e`. Reviewer `/root/knowledge_web_review` is independent of implementers. Only this report directory was written; no database, migration, installed Agent CLI or Provider operation ran.
+
+- **H2:** Only the daemon's own recorded reachability drop accepts a claimed-session mismatch; both task and execution options must have cleared resume. The server changes only generation/native ID before first preparation and any attempt, inside the disclosure transaction. Original request ID/hash/flag/session replay is reauthorized against the retained preparation. Prior exposed rows remain unchanged. Daemon response acceptance preserves provider/runtime/agent/configuration/scope identity and creates a fresh launch intent from the prepared binding. Older-server refusal has no ordinary-execution downgrade.
+- **M2:** Ordinary and collaboration prepare/authorize retry complete rolled-back transactions and fresh pre-reads. All deferred rollbacks run before backoff; late namespace/member/status fences remain try-lock/NOWAIT. Caller cancellation and the retry window retain the last busy classification. Nonbusy failures return immediately; collaboration commit uncertainty is not retried. Terminal busy behavior and request idempotency remain unchanged.
+- **L6:** Task decoding isolates a strict knowledge descriptor error to that task, with an unexported rejection marker and only validated original-fence recovery. The rejected task cannot prepare a base prompt or authorize a process. Other tasks in the batch survive; persisted delivery decoding remains strict. The spec records reader/version rollout and rollback constraints.
+- **L7:** The preserved actual lifecycle kills and waits after a Started callback refusal, reports exactly one waited termination and does not authorize another process. New tests lock that existing behavior; no unnecessary lifecycle product patch was introduced.
+- **H2 follow-up:** The canonical boundary tests exercise provenance, both cleared resume options, session invariance and use of the prepared fresh binding. All seven retained overlay mutants are killed by the final unchanged test bytes; each raw log hash matches its manifest.
+
+## Independent checks
+
+Guarded fake/strict-decoder/rebind/termination/protocol selection: **44 named passes,0 failures/skips**, across agent/protocol/daemon packages. Current affected service/handler/daemon/agent/protocol **build and vet exit0**. Commands, exact tree/file hashes and raw-log hashes are in `review.json`, `source-binding.json` and the per-command records.
+
+The coordinator's handler full run is separately source-bound and its retained log hash matches; service full-run state is recorded as a snapshot in review.json and is not counted complete while running. Final combined-source and platform/model gates remain open. This pass-with-notes does not replace the required whole candidate validation.

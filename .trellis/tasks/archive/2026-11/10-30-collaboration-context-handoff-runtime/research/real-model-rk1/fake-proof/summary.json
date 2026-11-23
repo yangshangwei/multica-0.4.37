@@ -1,0 +1,916 @@
+{
+  "status": "historical normal fake passed; current old-product race incomplete; final merged-candidate proof pending",
+  "source_head_before_framework_commit": "b8fd547dca9808f309386c31854c45ad71334901",
+  "framework_sha256": "aa11727c8bd7770039dac3f30c0dec03b2cd60e38d146a5f41a99ed593e67ab4",
+  "launcher_sha256": "d49f1757ab42df7f279d43b3c2cd8dc008676903f92cedc8ec07865f8187ed20",
+  "launcher_regression_sha256": "adc770e05ea7e65ceea8046ca54e76051a0a3e5e2c241e8a8d03d4aa21407c31",
+  "product_binding": "historical branch product only; final merged candidate must be rebound and rerun",
+  "database": "multica_rk1_takeover_full_20261101_2320 (new mem_template clone; migrated to 760)",
+  "database_isolation": "one owned DB for this cmd/server full suite; prior failure environments preserved",
+  "commands": [
+    {
+      "command": "env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 -u MULTICA_RUN_REAL_AGENT_SMOKE -u ELECTRON_RUN_AS_NODE -u MULTICA_KNOWLEDGE_CONTEXT_ENABLED RK1_FAKE_PROOF_OUT=<private>/fake-proof-final DATABASE_URL=<owned multica_rk1_takeover_full_20261101_2320 URL> scripts/go-test-with-agent-cli-guard.sh go -C server test -json -tags=agentintegration ./cmd/server -count=1 -timeout=30m",
+      "exit_code": 0,
+      "elapsed_seconds": 120.477,
+      "counts": {
+        "all_named": {
+          "pass": 774,
+          "fail": 0,
+          "skip": 8
+        },
+        "top_level": {
+          "pass": 368,
+          "fail": 0,
+          "skip": 8
+        }
+      },
+      "skips": [
+        "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+        "TestCollaborationPartialResumeRoutesLinux",
+        "TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry",
+        "TestCollaborationSingleAgentRuntimeRoutesLinux",
+        "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+        "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+        "TestCollaborationSquadCapacityOneRoutesLinux",
+        "TestRK1RealProvider"
+      ],
+      "failures": []
+    },
+    {
+      "command": "python3 .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/check_launcher.py",
+      "exit_code": 0,
+      "cases": 29
+    },
+    {
+      "command": "go -C server vet -tags=agentintegration ./cmd/server",
+      "exit_code": 0
+    }
+  ],
+  "provider_real_calls": 0,
+  "runtime_paid_cap": 25,
+  "runtime_paid_consumed": 0,
+  "fake_cases": 19,
+  "fake_trials": 22,
+  "cases": {
+    "E0a": [
+      {
+        "label": "RK1-E0a-t1",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "H1": [
+      {
+        "label": "RK1-H1-t1",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "seed_stopped",
+            "measured": false,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "authority_lost",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          },
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "H1_wrong": [
+      {
+        "label": "RK1-H1-t1",
+        "status": "finished",
+        "verdict": "fail",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "seed_stopped",
+            "measured": false,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "authority_lost",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          },
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "H2": [
+      {
+        "label": "RK1-H2-t1",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "seed_leader",
+            "measured": false,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "comment": 1,
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          },
+          {
+            "role": "seed_member",
+            "measured": false,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1,
+              "wakeup_pending": 1
+            }
+          },
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1,
+              "wakeup_assigned": 1
+            }
+          }
+        ]
+      }
+    ],
+    "H2b": [
+      {
+        "label": "RK1-H2b-t1",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "seed_leader",
+            "measured": false,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "comment": 1,
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          },
+          {
+            "role": "seed_member",
+            "measured": false,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1,
+              "wakeup_pending": 1
+            }
+          },
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1,
+              "wakeup_assigned": 1
+            }
+          }
+        ]
+      }
+    ],
+    "H2b_wrong": [
+      {
+        "label": "RK1-H2b-t1",
+        "status": "finished",
+        "verdict": "fail",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "seed_leader",
+            "measured": false,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "comment": 1,
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          },
+          {
+            "role": "seed_member",
+            "measured": false,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1,
+              "wakeup_pending": 1
+            }
+          },
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1,
+              "wakeup_assigned": 1
+            }
+          }
+        ]
+      }
+    ],
+    "H3a": [
+      {
+        "label": "RK1-H3a-t1",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "incomplete",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 3,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      },
+      {
+        "label": "RK1-H3a-t2",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "incomplete",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 3,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      },
+      {
+        "label": "RK1-H3a-t3",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "incomplete",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 3,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "H3b": [
+      {
+        "label": "RK1-H3b-t1",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "incomplete",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 5,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "H5": [
+      {
+        "label": "RK1-H5-t1",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "H6": [
+      {
+        "label": "RK1-H6-t1",
+        "status": "finished",
+        "verdict": "manual_review_required",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured_hop1",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          },
+          {
+            "role": "measured_hop2",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "canary_obeyed_blocks": [
+      {
+        "label": "RK1-H5-t1",
+        "status": "finished",
+        "verdict": "blocking_review",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "comment": 1,
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "crash_stops": [
+      {
+        "label": "RK1-H3a-t2",
+        "status": "incomplete",
+        "verdict": "measured:provider_result_missing",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "preview_hides_decisive": [
+      {
+        "label": "RK1-H3a-t1",
+        "status": "finished",
+        "verdict": "fail_not_visible",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "provider_error_stops": [
+      {
+        "label": "RK1-E0a-t1",
+        "status": "incomplete",
+        "verdict": "measured:provider_reported_error",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "real_path_E0a": [
+      {
+        "label": "RK1-E0a-t1",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "sim",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "real_path_H1": [
+      {
+        "label": "RK1-H1-t1",
+        "status": "finished",
+        "verdict": "pass",
+        "mode": "sim",
+        "runs": [
+          {
+            "role": "seed_stopped",
+            "measured": false,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "authority_lost",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          },
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "real_path_crash": [
+      {
+        "label": "RK1-H3a-t1",
+        "status": "incomplete",
+        "verdict": "measured:provider_result_missing",
+        "mode": "sim",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "unexposed_is_incomplete": [
+      {
+        "label": "RK1-H3a-t1",
+        "status": "incomplete",
+        "verdict": "unexposed:decisive_comment_never_returned_to_cli",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "completed",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 1,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ],
+    "wrong_continues": [
+      {
+        "label": "RK1-H3b-t1",
+        "status": "finished",
+        "verdict": "fail",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "incomplete",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 5,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      },
+      {
+        "label": "RK1-H3b-t2",
+        "status": "finished",
+        "verdict": "fail",
+        "mode": "fake",
+        "runs": [
+          {
+            "role": "measured",
+            "measured": true,
+            "physical_launches": 1,
+            "authorized_attempts": 1,
+            "proof": "host_exit_observed",
+            "seal_reason": "incomplete",
+            "events": {
+              "handoff_binding": 1,
+              "handoff_snapshot": 1,
+              "outcome": 1,
+              "preparation": 1,
+              "record_checkpoint": 5,
+              "recording_seal": 1,
+              "resource_snapshot": 1
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "public_files": {
+    "fake-proof/E0a/RK1-E0a-t1.json": "5d4ad53cceae66ca216d0b57831354cb721611a8a120008460b1577aa086453e",
+    "fake-proof/H1/RK1-H1-t1.json": "5f6d67ed27e9af7a4d866b63049b30ec3ce449b4c2f729722d57cdca7f6645cd",
+    "fake-proof/H1_wrong/RK1-H1-t1.json": "67104c19c7ea6fad2a2ae8d481b6e35d77c8c749049a83127858de3d540a9fa0",
+    "fake-proof/H2/RK1-H2-t1.json": "b66e58e8c55de201d534b164d7fe827047a4961387914c1e45284322710f333a",
+    "fake-proof/H2b/RK1-H2b-t1.json": "03b562f2bc2d1d726692cf109a2b2246299cdc1f5727e353fa40c26201b01e79",
+    "fake-proof/H2b_wrong/RK1-H2b-t1.json": "2706e7b009d5a486690d696d57c9e0258a7b4d0458e5e5af33e9eaffe889f78d",
+    "fake-proof/H3a/RK1-H3a-t1.json": "edfc6a21e9b99898e7784f360579f3bfc48139ebd22d5cc4c3587a40db3b2c27",
+    "fake-proof/H3a/RK1-H3a-t2.json": "214da735825eb35322696ffdc24dabf5ba1dc7fc00dff164fd821dee69eccbb0",
+    "fake-proof/H3a/RK1-H3a-t3.json": "3c0a1dc89e78d0c99931ec107e7bb62550e0a46e288b91b4b2192697d6c951a4",
+    "fake-proof/H3b/RK1-H3b-t1.json": "49bfde11eeaa94e587d0f734b35c46c087a5aa2e5d31026b8d05f9c28b9e8242",
+    "fake-proof/H5/RK1-H5-t1.json": "c1b366071be230ae74db3b0692c167f383ab47cf3f3206637c9fa229640dceab",
+    "fake-proof/H6/RK1-H6-t1.json": "e2704d40a5f17b7417398fbf8d1818711faaa2b6d731efe97079236770473968",
+    "fake-proof/canary_obeyed_blocks/RK1-H5-t1.json": "1a3c52d2f1c1f985a4c8d0a670d24733a19985ffdb8ab6f6066877093462af64",
+    "fake-proof/crash_stops/RK1-H3a-t2.json": "15a06f074c1363d67fff907c2d8b498bf8227da4e6dbcef922bf0c293db133f0",
+    "fake-proof/preview_hides_decisive/RK1-H3a-t1.json": "58c4e0eccf4453baee670b3ad5dce210b684ed5d6179a19f786abfadcc4b0783",
+    "fake-proof/provider_error_stops/RK1-E0a-t1.json": "31565deb667d4da5cd81b298ba1a85cd152b0b6e836fdf6617191ab50446a8cc",
+    "fake-proof/real_path_E0a/RK1-E0a-t1.json": "d8c75b403b7481b2c01b879389ed2252b7d0426e362c7c2a0e718802a7dc6dd8",
+    "fake-proof/real_path_H1/RK1-H1-t1.json": "8678128d62d5fb72b80de29d0f4d3d6c6f24ee78f8c4b8160d729b6aebb65f38",
+    "fake-proof/real_path_crash/RK1-H3a-t1.json": "8ef13c80db6be055050e00309679f73c31bf10ffe4fd7aac77e7c7bd229e223e",
+    "fake-proof/unexposed_is_incomplete/RK1-H3a-t1.json": "9d663cc800020b50044e9655768e2d06ec04408e964f3cf8d7b92c8f7613a26d",
+    "fake-proof/wrong_continues/RK1-H3b-t1.json": "fe1f767c25b19145d3285abd15f259316cde951048440f6373a9314c67416dbd",
+    "fake-proof/wrong_continues/RK1-H3b-t2.json": "2a8ca60dcbbed116a6d0e4a660e5170826d7a735de9c0576f8cfa154fbfaab27"
+  },
+  "private_logs": {
+    "fake-proof.log": {
+      "path": ".omx/private/rk1-takeover-20261101/fake-proof.log",
+      "bytes": 7384,
+      "sha256": "63c8d41ea35bfd7f0f0a2e19caf00ae4e33ad39b21453dc27610777f30611533"
+    },
+    "fake-proof-r2.log": {
+      "path": ".omx/private/rk1-takeover-20261101/fake-proof-r2.log",
+      "bytes": 312216,
+      "sha256": "2ca8aba7e4edc14b7da464c89929ea83d4c5501b441a6f214f825c16ae0ed5d1"
+    },
+    "full-tests.jsonl": {
+      "path": ".omx/private/rk1-takeover-20261101/full-tests.jsonl",
+      "bytes": 2176760,
+      "sha256": "3196561f9152d4685df4780d8ea475fed2c90e4c9b89575d39abe67013b973db"
+    },
+    "launcher-red-confirm.log": {
+      "path": ".omx/private/rk1-takeover-20261101/launcher-red-confirm.log",
+      "bytes": 3147,
+      "sha256": "ed1774744b7b22da5d88493b3d472e3e412019f325e7b9c1d6df7ed13f89895c"
+    },
+    "launcher-final-r3.log": {
+      "path": ".omx/private/rk1-takeover-20261101/launcher-final-r3.log",
+      "bytes": 3755,
+      "sha256": "d9cb67805c021c7258c2d405079f83eda241a93827d58b55afa18d8c7487fcb3"
+    },
+    "vet.log": {
+      "path": ".omx/private/rk1-takeover-20261101/vet.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "migrate-full.log": {
+      "path": ".omx/private/rk1-takeover-20261101/migrate-full.log",
+      "bytes": 46043,
+      "sha256": "c6ff9c094c2f87521a86c89a1fec9fdaeebe6e4afd039659628e8e6453ac510a"
+    }
+  },
+  "original_failure": {
+    "reason": "First fake invocation selected a nonexistent explicit output directory; all case setup failed before any Provider process. Preserved fake-proof.log; second and final outputs use separate newly created directories.",
+    "classification": "operator_test_setup",
+    "replaced_paid_samples": 0
+  },
+  "remaining_gates": [
+    "independent coordinator review",
+    "runtime and knowledge fixes merged",
+    "final source/CLI/config binding",
+    "candidate fake rerun after product changes",
+    "exclusive real Provider window"
+  ],
+  "untested": [
+    "induced public evidence filesystem write/sync failure",
+    "native Windows (tag excludes Windows)",
+    "paid Provider account path; sim only"
+  ],
+  "race_attempt": {
+    "exit_code": 1,
+    "database": "multica_rk1_takeover_race_20261101_2319",
+    "named_counts": {
+      "run": 43,
+      "pass": 40,
+      "fail": 2,
+      "skip": 1
+    },
+    "failures": [
+      "TestRK1FakeProof/wrong_continues",
+      "TestRK1FakeProof"
+    ],
+    "reason": "wrong_continues first trial incomplete: measured:handoff_or_recording_event_missing",
+    "log_sha256": "3c6ae1ef38fa20c7a2a48f5ce05a952fa021b871f3d6e6680c3fe39505066500",
+    "state": "unresolved; preserve original attempt; do not claim race passed"
+  },
+  "current_framework_product": "af04f64295d524171aa3d1e49dab8e5a9b4344cd",
+  "latest_old_product_race": "root-race-r2-summary.json"
+}

@@ -13,6 +13,7 @@ import {
 } from "@multica/ui/components/ui/dialog";
 import { cn } from "@multica/ui/lib/utils";
 import type { AgentRuntime } from "@multica/core/types";
+import { useConfigStore } from "@multica/core/config";
 import { runtimeDisplayLabel } from "@multica/core/runtimes";
 import {
   StepFooter,
@@ -32,8 +33,9 @@ import { useT } from "../../i18n";
  * an explicit right-side button that says what clicking does:
  *
  *   1. **Download desktop** — primary card, black bg, "Download" pill.
- *      Opens the installer in a new tab; the user finishes onboarding
- *      inside the desktop app.
+ *      Opens the operator's download page (`desktop_download_url` from
+ *      /api/config) in a new tab; the user finishes onboarding inside the
+ *      desktop app. Hidden when the deployment has not configured one.
  *   2. **Install the CLI** — alt card, "Show steps" pill → opens a
  *      dialog containing the real install instructions + live runtime
  *      probe. When a runtime appears and the user selects it, the
@@ -45,12 +47,6 @@ import { useT } from "../../i18n";
  */
 
 type DialogState = "cli" | null;
-
-// Single canonical download destination — the /download page owns
-// OS + arch detection, the All-Platforms matrix, release-note links,
-// and the CLI / Cloud alternates. Kept in sync with landing-hero.tsx
-// and landing footer nav, both of which target the same path.
-const DOWNLOAD_PAGE_URL = "/download";
 
 export function StepPlatformFork({
   wsId,
@@ -68,6 +64,7 @@ export function StepPlatformFork({
   cliInstructions?: ReactNode;
 }) {
   const { t } = useT("onboarding");
+  const downloadUrl = useConfigStore((s) => s.desktopDownloadUrl);
 
   const [dialog, setDialog] = useState<DialogState>(null);
   const [connecting, setConnecting] = useState(false);
@@ -81,7 +78,7 @@ export function StepPlatformFork({
     // and the copy it used to flip to ("Opened in a new tab.") was a claim we
     // had no way to stand behind. The card states the intent up front
     // instead, which is true either way.
-    window.open(DOWNLOAD_PAGE_URL, "_blank", "noopener,noreferrer");
+    window.open(downloadUrl, "_blank", "noopener,noreferrer");
   };
 
   const handleOpenCli = () => {
@@ -113,7 +110,7 @@ export function StepPlatformFork({
         />
 
         <div className="flex flex-col gap-2">
-          <ForkPrimary onClick={pickDesktop} />
+          {downloadUrl && <ForkPrimary onClick={pickDesktop} />}
 
           <ForkAlt
             title={t(($) => $.step_platform.cli_title)}
@@ -359,15 +356,15 @@ function formatElapsed(seconds: number) {
  *   2. Progressively reveal troubleshooting hints as elapsed time
  *      crosses thresholds — so a user who stalls mid-setup gets
  *      useful guidance without being dogpiled at t=0.
- *   3. At the 90s+ "stalled" tier, point the user at alternate paths
- *      (Skip / Cloud waitlist) — parallels desktop's EmptyView, which
- *      already exposes the same two exits when no runtime registers.
+ *   3. At the 90s+ "stalled" tier, point the user at alternate paths:
+ *      Desktop (only when a download page is configured) and Skip.
  *
  * Elapsed-time counter only ticks while the dialog is open so reopen
  * after closing resets the staging.
  */
 function CliWaitingStatus({ dialogOpen }: { dialogOpen: boolean }) {
   const { t } = useT("onboarding");
+  const downloadUrl = useConfigStore((s) => s.desktopDownloadUrl);
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
@@ -386,9 +383,8 @@ function CliWaitingStatus({ dialogOpen }: { dialogOpen: boolean }) {
   //   ~2s daemon boot → immediate WS register. So under 15s means
   //   "still normal", 15–45s means "probably stuck on browser auth",
   //   45–90s means "probably an error in the terminal", 90s+ means
-  //   "nothing's coming through, suggest alt paths" (the stalled tier
-  //   parallels desktop StepRuntimeConnect's EmptyView — by that point
-  //   it's worth pointing the user at Skip or Cloud waitlist).
+  //   "nothing's coming through, suggest alt paths" (Desktop when a
+  //   download page is configured, otherwise just Skip).
   const stage: "normal" | "midway" | "slow" | "stalled" =
     elapsed < 15
       ? "normal"
@@ -441,7 +437,8 @@ function CliWaitingStatus({ dialogOpen }: { dialogOpen: boolean }) {
             {t(($) => $.step_platform.stage_slow_suffix)}
           </>
         )}
-        {stage === "stalled" && (
+        {stage === "stalled" && !downloadUrl && t(($) => $.step_platform.stage_stalled_no_desktop)}
+        {stage === "stalled" && downloadUrl && (
           <>
             {t(($) => $.step_platform.stage_stalled_prefix)}
             <span className="font-medium text-foreground">{t(($) => $.step_platform.stage_stalled_term)}</span>

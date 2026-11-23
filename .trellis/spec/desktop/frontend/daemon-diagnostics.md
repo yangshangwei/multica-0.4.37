@@ -130,6 +130,12 @@ availability and the displayed path must come from this same result.
 - Manager tests: separate categories, read/push consistency, persistence,
   success clearing, context reset, late-result fencing and retention of
   external-management/runtime metadata on diagnosis-only status pushes.
+- VM-based manager fixtures must provide `electron.app.getPath("home")` from
+  their existing temporary root, for example `getPath: () => root`. Mocking
+  `os.homedir()` alone no longer isolates managed sessions or preferences.
+  An omitted `getPath` throws before credential probes and produces secondary
+  health/restart expectation failures. Keep the production Electron home
+  boundary and the original assertions; update the fixture's Electron double.
 - Transition tests: current failures report for stopped, same-scope and
   scope-switch paths; no start/drain follows a failed preparation; superseded
   failures do not report. Manager tests prove background refresh retains the

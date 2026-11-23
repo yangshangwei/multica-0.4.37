@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "gofmt",
+      "-l",
+      "server/internal/service/collaboration_outbound_boundary_test.go",
+      "server/internal/integrations/slack/collaboration_outbound_boundary_test.go"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "started_at": "2026-10-21T16:15:20.945924+00:00",
+    "exit_code": 0,
+    "finished_at": "2026-10-21T16:15:20.958335+00:00",
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "vet",
+      "./internal/service",
+      "./internal/integrations/slack"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "started_at": "2026-10-21T16:15:20.958361+00:00",
+    "exit_code": 0,
+    "finished_at": "2026-10-21T16:15:22.045912+00:00",
+    "stdout": "",
+    "stderr": ""
+  }
+]

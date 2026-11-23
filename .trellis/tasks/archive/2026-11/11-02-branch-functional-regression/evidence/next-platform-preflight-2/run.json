@@ -1,0 +1,150 @@
+{
+  "started_at": "2026-11-02T07:45:06.208944+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "scope": "Read-only bounded local platform prerequisite check; no application launch, installation, account or remote action",
+  "steps": [
+    {
+      "name": "os",
+      "command": [
+        "uname",
+        "-srm"
+      ],
+      "started_at": "2026-11-02T07:45:06.209382+00:00",
+      "finished_at": "2026-11-02T07:45:06.212282+00:00",
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "stdout_sha256": "fbcf26fb9058bc45b68007bec15ae5998059197cd9b43dc1850894a44aae6878",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered": false
+    },
+    {
+      "name": "xcode-select",
+      "command": [
+        "xcode-select",
+        "-p"
+      ],
+      "started_at": "2026-11-02T07:45:06.212442+00:00",
+      "finished_at": "2026-11-02T07:45:06.216091+00:00",
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "stdout_sha256": "a8044fec385da5d3d686b9c06000917f00d0f27ca72b7db5b47bfc277f748301",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered": false
+    },
+    {
+      "name": "simctl-location",
+      "command": [
+        "xcrun",
+        "--find",
+        "simctl"
+      ],
+      "started_at": "2026-11-02T07:45:06.216210+00:00",
+      "finished_at": "2026-11-02T07:45:06.224399+00:00",
+      "exit_code": 72,
+      "expected_exit_codes": [
+        0,
+        72
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "99b8da8adc7e70feba56cd931740e16d0f5724d7515e98d84d2c8bf1bb63dec8",
+      "stdout_filtered": false
+    },
+    {
+      "name": "protocol-readonly",
+      "command": [
+        "osascript",
+        "-l",
+        "JavaScript",
+        "-e",
+        "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+      ],
+      "started_at": "2026-11-02T07:45:06.225350+00:00",
+      "finished_at": "2026-11-02T07:45:06.299465+00:00",
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "stdout_sha256": "2151fbce42f76f5cc8b11f4a58a9afa626658b26852d09b3c5447622867feacd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered": false
+    },
+    {
+      "name": "docker-engine",
+      "command": [
+        "docker",
+        "info",
+        "--format",
+        "{{json .Architecture}}"
+      ],
+      "started_at": "2026-11-02T07:45:06.299725+00:00",
+      "finished_at": "2026-11-02T07:45:07.090913+00:00",
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "stdout_sha256": "f83d27460d6dcc1136368a918a30a01c48eeb4546e2e9851085c955f41327fac",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_filtered": false
+    }
+  ],
+  "remote_dispatches": 0,
+  "commercial_provider_calls": 0,
+  "services_started": 0,
+  "completed_gates_rerun": 0,
+  "local_vm_tools": {
+    "qemu-system-aarch64": null,
+    "qemu-system-x86_64": null,
+    "prlctl": null,
+    "VBoxManage": null,
+    "vmrun": null,
+    "tart": null,
+    "multipass": null
+  },
+  "bounded_application_inventory": {
+    "roots": [
+      "/Applications",
+      "/System/Applications",
+      "/Developer/Applications"
+    ],
+    "matches": [],
+    "limit": "Top-level local app roots only; does not assert absence of remote runners"
+  },
+  "protocol": {
+    "observed": {
+      "defaultApplicationPath": "/Applications/Multica.app",
+      "registeredApplications": [
+        "/Applications/Multica.app",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app"
+      ]
+    },
+    "original_exact_default_preserved": true,
+    "original_registration_set_preserved": true,
+    "task_registrations": []
+  },
+  "handoff_source_sha256": {
+    ".github/workflows/desktop-smoke.yml": "1cd3a6580968201102d0e5d9b9bf4091cb059fbedd1a904751ecce78368cf927",
+    "apps/desktop/scripts/accept-windows-installer.ps1": "c5ebea0d508d9eb646d89e95acd4b7834327f2c6a13f5ccb8aac58e54b57f411",
+    "e2e/fixtures/collaboration-installed-layout.mjs": "1c93ce8f0bbadad74e6cb23f157dff2df03b6af2bdcb208369f1da09bedacd28",
+    "apps/mobile/scripts/ios-run.sh": "036fc53467a9074d3380b3260498fae1e304cfb34f18e929525136d7c664f9a7"
+  },
+  "gates": {
+    "IOS-UI": "BLOCKED_NO_COMPLETE_XCODE_SIMCTL",
+    "LINUX-NATIVE-DESKTOP": "BLOCKED_NO_PROVIDED_NATIVE_SESSION",
+    "WIN-INSTALL-UPGRADE": "BLOCKED_NO_AUTHORIZED_DISPOSABLE_WINDOWS_RUNNER",
+    "MAC-AUTH-MIGRATION": "NOT_RUN_NO_REAL_LOGIN_JOURNEY",
+    "MAC-AUTOMATIC-UPDATER": "NOT_RUN",
+    "MAC-TRUST": "BLOCKED_NO_SIGNED_DISTRIBUTION",
+    "REAL-PROVIDER": "BLOCKED_NO_CURRENT_ACCOUNT_MODEL_CALL_BUDGET_AUTHORIZATION"
+  },
+  "state": "complete",
+  "finished_at": "2026-11-02T07:45:07.092373+00:00"
+}

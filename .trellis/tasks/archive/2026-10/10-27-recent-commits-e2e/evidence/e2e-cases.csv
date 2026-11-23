@@ -1,0 +1,412 @@
+kind,file,case,project,final_status,last_report,executions
+existing,admin-resource-publishing.spec.ts,administrator resource publishing > first resource page screenshot,chromium,passed,admin-resource-publishing-run2-acceptance.json,1
+existing,admin-resource-publishing.spec.ts,administrator resource publishing > localized responsive states and deployment-disabled feedback,chromium,passed,admin-resource-publishing-run2-acceptance.json,1
+existing,admin-resource-publishing.spec.ts,"administrator resource publishing > real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",chromium,passed,admin-resource-publishing-run2-acceptance.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy escalation > a Coordinator cannot mint an Operator,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy escalation > a Coordinator may staff lower-level agents and an equal-level squad leader,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy escalation > a person may still set an agent's level,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy escalation > an Observer cannot staff a role at all,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy escalation > an Operator may staff agents at or below its own level,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy escalation > an agent cannot promote itself through UpdateAgent,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy escalation > an agent without a declared level retains its staffing access,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy gate: bypass regressions > a batch of one is not a way around the gate,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy gate: bypass regressions > a capitalized status key does not slip past the gate,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,"autonomy gate: bypass regressions > an Observer cannot delete issues, singly or in a batch",chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy gate: bypass regressions > an explicit null assignee is a direction change,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy ladder on issue writes > a Contributor may direct an issue,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,autonomy ladder on issue writes > an Observer may edit an issue but not direct it,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,coordination gates on squads and automation > a Contributor cannot create or delete standing automation,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,coordination gates on squads and automation > a Contributor cannot edit a squad or its membership,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,role templates: provenance is a server decision > a client cannot choose its own autonomy_level or template_key,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,role templates: provenance is a server decision > an unlisted leader key is refused,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,role templates: provenance is a server decision > the roster is listed with its autonomy defaults,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,squad staffing from a template > an Observer cannot staff a squad,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,"squad staffing from a template > an existing role agent is reused, not re-applied",chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,squad staffing from a template > staffing cannot pull in a role agent the caller may not invoke,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,squad staffing from a template > the roster and the squad are created together,chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,"the human approval boundary > ""executed"" is a status, not a decision a client can post",chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,"the human approval boundary > an agent files a request, only a person decides it",chromium,passed,legacy-playwright.json,1
+existing,agent-autonomy-gates.spec.ts,the human approval boundary > an unknown risk class is refused,chromium,passed,legacy-playwright.json,1
+existing,agent-categories.spec.ts,"custom categories survive creation, editing and clearing and compose with directory grouping",chromium,passed,legacy-playwright.json,1
+existing,agent-category-grouping.spec.ts,"saved categories drive the default directory, counts and filters after legacy preference migration",chromium,passed,legacy-playwright.json,1
+existing,agent-mcp.spec.ts,Agent MCP tab (creator-only) > a non-creator viewer does not see the MCP Apps tab,chromium,passed,legacy-playwright.json,1
+existing,agent-mcp.spec.ts,Agent MCP tab (creator-only) > creator sees the MCP Apps tab and toggling a toolkit writes the allowlist,chromium,passed,legacy-playwright.json,1
+existing,agent-role-template.spec.ts,agent role templates > offers a template starting point and creates from a role,chromium,passed,legacy-playwright.json,1
+existing,agent-role-template.spec.ts,agent role templates > opens existing members without mutation and restores template browsing,chromium,passed,legacy-playwright.json,1
+existing,agent-role-template.spec.ts,agent role templates > shows the diagnostician evidence contract and server-owned defaults,chromium,passed,legacy-playwright.json,1
+existing,agents-discovery.spec.ts,agent discovery keeps role and squad identification accurate without changing members,chromium,passed,legacy-playwright.json,1
+existing,auth-device.spec.ts,device login authenticates a distinct user without granting another user's workspace,chromium,passed,device-auth.json,1
+existing,auth-qa.spec.ts,"email login verifies a real code, restores access after reload, and logout protects the workspace",chromium,passed,legacy-playwright.json,1
+existing,auth.spec.ts,Authentication > login and redirect to /issues,chromium,passed,legacy-playwright.json,1
+existing,auth.spec.ts,Authentication > login page renders correctly,chromium,passed,legacy-playwright.json,1
+existing,auth.spec.ts,Authentication > logout redirects to /login,chromium,passed,legacy-playwright.json,1
+existing,auth.spec.ts,Authentication > unauthenticated user is redirected to /login,chromium,passed,legacy-playwright.json,1
+existing,autopilot-lifecycle-branches.spec.ts,autopilot lifecycle branches > adds an explicitly requested default schedule to a manual autopilot exactly once,chromium,passed,legacy-playwright.json,1
+existing,autopilot-lifecycle-branches.spec.ts,autopilot lifecycle branches > cancels detail deletion without issuing a delete or losing the manual autopilot,chromium,passed,legacy-playwright.json,1
+existing,autopilot-lifecycle-branches.spec.ts,autopilot lifecycle branches > creates a non-template run-only autopilot with its default schedule and persists it on reload,chromium,passed,legacy-playwright.json,1
+existing,autopilot-lifecycle-branches.spec.ts,autopilot lifecycle branches > focuses missing required fields and creates nothing until title and executor are supplied,chromium,passed,legacy-playwright.json,1
+existing,autopilot-lifecycle-branches.spec.ts,autopilot lifecycle branches > persists pause and resume across reload and gates manual runs while paused,chromium,passed,legacy-playwright.json,1
+existing,autopilot-lifecycle-branches.spec.ts,autopilot lifecycle branches > preserves a created autopilot when its schedule fails and repairs it without a duplicate,chromium,passed,legacy-playwright.json,1
+existing,autopilot-lifecycle-branches.spec.ts,autopilot lifecycle branches > renames a manual autopilot without silently creating a schedule,chromium,passed,legacy-playwright.json,1
+existing,autopilot-lifecycle-branches.spec.ts,autopilot lifecycle branches > restores the list row after failed deletion and removes it after a real retry,chromium,passed,legacy-playwright.json,1
+existing,autopilot-lifecycle-branches.spec.ts,autopilot lifecycle branches > rolls back a rejected pause and can pause successfully after retry,chromium,passed,legacy-playwright.json,1
+existing,autopilot-template-zh.spec.ts,"adopts, edits and dispatches Chinese briefs through the real template API",chromium,passed,legacy-playwright.json,1
+existing,autopilot-template.spec.ts,"autopilot templates > picks a template, requires an assignee, and creates without claiming the prompt",chromium,passed,legacy-playwright.json,1
+existing,autopilot-template.spec.ts,autopilot templates > restores gallery filters and scroll with native and in-flow Back,chromium,passed,legacy-playwright.json,1
+existing,capability-market.spec.ts,"capability market isolates workspace resources, preferences and transient drafts",chromium,passed,legacy-playwright.json,1
+existing,capability-market.spec.ts,capability market restores type and draft through history while resource management stays separate,chromium,passed,legacy-playwright.json,1
+existing,capability-market.spec.ts,capability market separates catalog failures and polls only the active type,chromium,passed,legacy-playwright.json,1
+existing,changelog-desktop.spec.ts,"desktop Help, tab restoration and updater action use the in-app reader",chromium,passed,legacy-playwright.json,1
+existing,changelog.spec.ts,Help opens this deployment's attributed changelog,chromium,passed,legacy-playwright.json,1
+existing,changelog.spec.ts,generated publication reaches an open reader and a fresh client without restart,chromium,passed,changelog-live.json,1
+existing,chat-actor-picker.spec.ts,floating chat avatar uses the same agent discovery and restores focus on Escape,chromium,passed,legacy-playwright.json,1
+existing,chat-actor-picker.spec.ts,"new chat reuses responsibility discovery, categories and keyboard selection at wide and narrow widths (en)",chromium,passed,legacy-playwright.json,1
+existing,chat-actor-picker.spec.ts,"new chat reuses responsibility discovery, categories and keyboard selection at wide and narrow widths (zh-Hans)",chromium,passed,legacy-playwright.json,1
+existing,chat-attachments.spec.ts,Chat attachments > upload-file binds attachment to the chat_session; send back-fills chat_message_id,chromium,passed,legacy-playwright.json,1
+existing,chat-recovery-branches.spec.ts,late send acceptance preserves the other session's draft and selection [latency injection],chromium,passed,legacy-playwright.json,1
+existing,chat-recovery-branches.spec.ts,message rejection retains the draft and retry persists no duplicate [fault injection],chromium,passed,legacy-playwright.json,1
+existing,chat-recovery-branches.spec.ts,removing an uploaded attachment sends only the remaining text [real API],chromium,passed,legacy-playwright.json,1
+existing,chat-recovery-branches.spec.ts,repeated keyboard submit during a pending send creates only one message [latency injection],chromium,passed,legacy-playwright.json,1
+existing,chat-recovery-branches.spec.ts,session creation rejection keeps the new draft and retries without empty navigation [fault injection],chromium,passed,legacy-playwright.json,1
+existing,chat-recovery-branches.spec.ts,upload rejection preserves text and reattaching binds exactly one file on send [fault injection],chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,Desktop account entry obeys the requires_account_setup guard,chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,Desktop account entry obeys the requires_password_change guard,chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,"Desktop account links retain one tab across workspaces, popouts and restart",chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,Desktop authors initial fields and preserves discussion through shared edit controls,chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,"Desktop child links, recorded pages and result notifications survive popouts and restart",chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,Desktop cold account links work without workspaces and survive a controlled list error,chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,"Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,Desktop login opens the pending account destination while workspace loading is stalled,chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,"Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,"Desktop resource owners authorize, withdraw and commit a held configuration switch",chromium,passed,legacy-playwright.json,1
+existing,collaboration-account-desktop.spec.ts,Desktop viewer and server changes discard the previous account tab and close popouts,chromium,passed,legacy-playwright.json,1
+existing,collaboration-administration-desktop.spec.ts,Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt,chromium,passed,collaboration-administration-desktop-run2-acceptance.json,1
+existing,collaboration-administration-web.spec.ts,Web administers disabled-creator collaborations with explicit succession and original receipt recovery,chromium,passed,collaboration-administration-web-run2-acceptance.json,1
+existing,collaboration-boundaries-web.spec.ts,"Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up",chromium,passed,legacy-playwright.json,1
+existing,collaboration-boundaries-web.spec.ts,Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues,chromium,passed,legacy-playwright.json,1
+existing,collaboration-boundaries-web.spec.ts,"Smaller gaps: title/date edits leave attributed records, recipient lookup is exact-only, a source member resolves and reacts without notifications",chromium,passed,legacy-playwright.json,1
+existing,collaboration-command-history-web.spec.ts,"cancelled waiting commands retain original content after comment changes, refresh and another account reads",chromium,passed,legacy-playwright.json,1
+existing,collaboration-control-journey-desktop.spec.ts,"Desktop controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",chromium,passed,password-playwright.json,1
+existing,collaboration-control-journey-desktop.spec.ts,Desktop pending termination proof keeps A paused while whole Resume releases B and squad S,chromium,passed,password-playwright.json,1
+existing,collaboration-control-journey-web.spec.ts,"Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",chromium,passed,password-playwright.json,1
+existing,collaboration-control-journey-web.spec.ts,Web pending termination proof keeps A paused while whole Resume releases B and squad S,chromium,passed,password-playwright.json,1
+existing,collaboration-cross-client-execution.spec.ts,AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up,chromium,passed,linux-crossclient.json,1
+existing,collaboration-delivery-web.spec.ts,Web creates one private issue after lost upload/create responses and revokes an open preview through account WS,chromium,passed,legacy-playwright.json,1
+existing,collaboration-delivery-web.spec.ts,Web explicitly resubmits rejected creation input without losing files or reviving the rejected key,chromium,passed,legacy-playwright.json,1
+existing,collaboration-editing-web.spec.ts,A source member outside the collaboration receives only an empty workspace refresh,chromium,passed,legacy-playwright.json,1
+existing,collaboration-editing-web.spec.ts,"Web source creation, field edits and discussion share one authorized issue",chromium,passed,legacy-playwright.json,1
+existing,collaboration-handoff-chain-web.spec.ts,Web directed handoff chain moves current todos with responsibility and only the creator completes,chromium,passed,password-playwright.json,1
+existing,collaboration-host-installed.spec.ts,Packaged full Main controls a real native host run and explicitly resumes the shared Agent,chromium,passed,macos-packaged.json,1
+existing,collaboration-host-runtime.spec.ts,"host Web and actual Electron share one ordinary Agent, preserve authors, and explicitly resume after scoped Stop",chromium,passed,runtime-host.json,1
+existing,collaboration-installed-clients.spec.ts,"cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",chromium,passed,linux-installed-cli.json,1
+existing,collaboration-installed-main.spec.ts,"installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",chromium,passed,linux-packaged-main.json,1
+existing,collaboration-lane-close-controls.spec.ts,Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed,chromium,passed,linux-lane-close-6.json,1
+existing,collaboration-lane-close-controls.spec.ts,Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed,chromium,passed,linux-lane-close-5.json,1
+existing,collaboration-lane-close-controls.spec.ts,Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets,chromium,passed,linux-lane-close-4.json,1
+existing,collaboration-lane-close-controls.spec.ts,Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed,chromium,passed,linux-lane-close-3.json,1
+existing,collaboration-lane-close-controls.spec.ts,Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed,chromium,passed,linux-lane-close-2.json,1
+existing,collaboration-lane-close-controls.spec.ts,Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets,chromium,passed,linux-lane-close-1.json,1
+existing,collaboration-leave-web.spec.ts,"Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",chromium,passed,password-playwright.json,1
+existing,collaboration-lifecycle-controls.spec.ts,Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect,chromium,passed,linux-lifecycle.json,1
+existing,collaboration-lifecycle-controls.spec.ts,Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect,chromium,passed,linux-lifecycle.json,1
+existing,collaboration-live-revoke-web.spec.ts,"Web withdrawing a grant during a permitted run stops that work, holds only its target, keeps the queued input, and needs proof plus explicit Resume",chromium,passed,password-playwright.json,1
+existing,collaboration-machine-boundary.spec.ts,C13 an ordinary agent's task token sees a collaboration issue only as a reference and cannot write it,chromium,passed,legacy-playwright.json,1
+existing,collaboration-memory-runtime.spec.ts,two native runtime profiles hand off shared context through the actual run-local CLI,chromium,passed,runtime-memory.json,1
+existing,collaboration-memory-web.spec.ts,"shared context keeps concurrent edits, restores versions, and permits historical purge after closure",chromium,passed,password-playwright.json,2
+existing,collaboration-memory-web.spec.ts,shared context recovers a lost save response with its original request after reload,chromium,passed,password-playwright.json,2
+existing,collaboration-mention-journeys-desktop.spec.ts,Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations,chromium,passed,legacy-playwright.json,1
+existing,collaboration-mention-journeys-desktop.spec.ts,Desktop offline mentions survive a fresh profile and edits notify only newly added people,chromium,passed,legacy-playwright.json,1
+existing,collaboration-mention-journeys-desktop.spec.ts,Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated,chromium,passed,legacy-playwright.json,1
+existing,collaboration-mention-journeys-web.spec.ts,Web mixed H+A+B+S mentions retain one comment and exact queued target associations,chromium,passed,legacy-playwright.json,1
+existing,collaboration-mention-journeys-web.spec.ts,Web offline mentions survive a fresh context and edits notify only newly added people,chromium,passed,legacy-playwright.json,1
+existing,collaboration-mention-journeys-web.spec.ts,Web owner revocation after preview refuses only A and original-key replay stays deduplicated,chromium,passed,legacy-playwright.json,1
+existing,collaboration-offline-handoff.spec.ts,Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal,chromium,passed,collaboration-offline-handoff-retry.json,2
+existing,collaboration-offline-handoff.spec.ts,Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal,chromium,passed,collaboration-offline-handoff-retry.json,2
+existing,collaboration-offline-result-notifications.spec.ts,"Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",chromium,passed,linux-notifications.json,1
+existing,collaboration-offline-result-notifications.spec.ts,"Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",chromium,passed,linux-notifications.json,1
+existing,collaboration-preparation-records-desktop.spec.ts,Desktop reads synthetic preparation with native 200 percent captures and unchanged proof,chromium,passed,legacy-playwright.json,1
+existing,collaboration-preparation-records-web.spec.ts,Web reads synthetic frozen preparation without inferring termination across refresh and viewers,chromium,passed,legacy-playwright.json,1
+existing,collaboration-preview-web.spec.ts,trigger preview explains shared and later batches before a suppressed target is sent,chromium,passed,legacy-playwright.json,1
+existing,collaboration-records-web.spec.ts,Web shares ordinary child references and retained run records through account notification links,chromium,passed,legacy-playwright.json,1
+existing,collaboration-resource-offers-web.spec.ts,a private owner offers a resource to an external organizer and independently authorizes it,chromium,passed,legacy-playwright.json,1
+existing,collaboration-resources-web.spec.ts,"resource owners register, authorize, withdraw and switch while participant management preserves authority",chromium,passed,legacy-playwright.json,1
+existing,collaboration-retained-attachment.spec.ts,Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart,chromium,passed,collaboration-retained-attachment-retry.json,2
+existing,collaboration-retained-attachment.spec.ts,"Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",chromium,passed,collaboration-retained-attachment-retry.json,2
+existing,collaboration-retained-attachment.spec.ts,Web typed human and owned AI creation stays atomic and idle from its first private upload through restart,chromium,passed,collaboration-retained-attachment-retry.json,2
+existing,collaboration-selection-boundary.spec.ts,AC87 Web and actual Electron hide subtask creation for shared body/comment selections while ordinary children retain it,chromium,passed,collaboration-selection-boundary-retry.json,2
+existing,collaboration-source-surface.spec.ts,"Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",chromium,passed,collaboration-source-surface-retry.json,2
+existing,collaboration-terminal-reopen-web.spec.ts,"Web closed issue refuses @agent and Resume, only the creator reopens, and reopening revives nothing or the stop barrier",chromium,passed,password-playwright.json,1
+existing,collaboration-workbench-web.spec.ts,Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry,chromium,passed,legacy-playwright.json,1
+existing,collaboration-workbench-web.spec.ts,"Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",chromium,passed,legacy-playwright.json,1
+existing,comments.spec.ts,Comments > can add a comment on an issue,chromium,passed,legacy-playwright.json,1
+existing,comments.spec.ts,Comments > comment submit button is disabled when empty,chromium,passed,legacy-playwright.json,1
+existing,core-business-agent-loops.spec.ts,"G5 a chat message runs on the daemon and its reply, then its failure, appear without reload",chromium,passed,legacy-playwright.json,1
+existing,core-business-agent-loops.spec.ts,"G6 a plain comment re-engages the assignee, an @mention engages another agent and /note engages none",chromium,passed,legacy-playwright.json,1
+existing,core-business-agent-loops.spec.ts,G7 an agent-mode quick create files the issue and notifies the requester; a run that files nothing reports why,chromium,passed,legacy-playwright.json,1
+existing,core-business-agent-loops.spec.ts,"G8 a running task streams its transcript, leaves the issue status alone and stays stopped after a late completion",chromium,passed,legacy-playwright.json,1
+existing,core-business-journeys.spec.ts,G1 agent execution loop > G1-01 assigning an agent queues one task that the daemon runs to a live completed reply,chromium,passed,legacy-playwright.json,1
+existing,core-business-journeys.spec.ts,"G1 agent execution loop > G1-02 a failed run notifies the creator, retries exactly once and can be stopped before it runs",chromium,passed,legacy-playwright.json,1
+existing,core-business-journeys.spec.ts,G2 a teammate's status change and mention reach the owner's open page and inbox without reload,chromium,passed,legacy-playwright.json,1
+existing,core-business-journeys.spec.ts,"G3 members invite, role change and removal work through the settings UI with matching server permissions",chromium,passed,legacy-playwright.json,1
+existing,core-business-journeys.spec.ts,G4 My Issues lists only my assignments and search opens a teammate's issue by identifier,chromium,passed,legacy-playwright.json,1
+existing,core-business-workflow.spec.ts,G-D bulk edits and board moves > G-D1 list-view bulk status change and bulk delete write once each and survive reload,chromium,passed,legacy-playwright.json,1
+existing,core-business-workflow.spec.ts,G-D bulk edits and board moves > G-D2 dragging a board card into another status column moves it once and it stays there after reload,chromium,passed,legacy-playwright.json,1
+existing,core-business-workflow.spec.ts,G-E1 assigning a teammate notifies them live; inbox bulk read/archive clear the badge until they are reassigned away,chromium,passed,legacy-playwright.json,1
+existing,core-business-workflow.spec.ts,G-E2 clearing a teammate's assignment to nobody notifies them and records the change,chromium,passed,legacy-playwright.json,1
+existing,desktop-settings.spec.ts,desktop Help selects Updates by keyboard and grouped settings show the stopped daemon in Chinese,chromium,passed,legacy-playwright.json,1
+existing,iframe-scroll-bridge.spec.ts,"iframe scroll bridge (real Chromium, sandboxed srcdoc) > holds position across a 1s-delayed content append, then yields on user wheel (v4 guarantee)",chromium,passed,legacy-playwright.json,1
+existing,iframe-scroll-bridge.spec.ts,"iframe scroll bridge (real Chromium, sandboxed srcdoc) > ignores restore messages with a mismatched token",chromium,passed,legacy-playwright.json,1
+existing,iframe-scroll-bridge.spec.ts,"iframe scroll bridge (real Chromium, sandboxed srcdoc) > parent handshake is bounded (no ready→request-sync→ready loop) and restores once",chromium,passed,legacy-playwright.json,1
+existing,iframe-scroll-bridge.spec.ts,"iframe scroll bridge (real Chromium, sandboxed srcdoc) > reports scroll position to the parent with the correct token",chromium,passed,legacy-playwright.json,1
+existing,iframe-scroll-bridge.spec.ts,"iframe scroll bridge (real Chromium, sandboxed srcdoc) > restores scroll position on a parent restore message",chromium,passed,legacy-playwright.json,1
+existing,iframe-scroll-bridge.spec.ts,"iframe scroll bridge (real Chromium, sandboxed srcdoc) > sandbox without allow-same-origin blocks sessionStorage (documents why we cannot use it)",chromium,passed,legacy-playwright.json,1
+existing,issue-assist-flow.spec.ts,AI refinement through real server and task creation > agent creation queues the refined prompt through the real API without executing a daemon,chromium,passed,assist-acceptance.json,1
+existing,issue-assist-flow.spec.ts,AI refinement through real server and task creation > agent keeps creation reachable at desktop and phone widths with long content,chromium,passed,assist-acceptance.json,1
+existing,issue-assist-flow.spec.ts,AI refinement through real server and task creation > creates the unchanged manual draft after a refinement failure,chromium,passed,assist-acceptance.json,1
+existing,issue-assist-flow.spec.ts,AI refinement through real server and task creation > handles 0 dynamic clarification questions and undo,chromium,passed,assist-acceptance.json,1
+existing,issue-assist-flow.spec.ts,AI refinement through real server and task creation > handles 1 dynamic clarification questions and undo,chromium,passed,assist-acceptance.json,1
+existing,issue-assist-flow.spec.ts,AI refinement through real server and task creation > manual keeps creation reachable at desktop and phone widths with long content,chromium,passed,assist-acceptance.json,1
+existing,issue-assist-flow.spec.ts,"AI refinement through real server and task creation > preserves edits during generation, supports cancellation and real provider failure",chromium,passed,assist-acceptance.json,1
+existing,issue-assist-flow.spec.ts,"AI refinement through real server and task creation > refines a vague feature, preserves folded answers, merges and undoes, then persists exactly once",chromium,passed,assist-acceptance.json,1
+existing,issue-mutation-branches.spec.ts,cancelling after a failed deletion leaves the issue readable after reload,chromium,passed,legacy-playwright.json,1
+existing,issue-mutation-branches.spec.ts,failed comment send preserves the draft across reload and retry posts exactly once,chromium,passed,legacy-playwright.json,1
+existing,issue-mutation-branches.spec.ts,failed deletion keeps the confirmation and issue until a successful retry,chromium,passed,legacy-playwright.json,1
+existing,issue-mutation-branches.spec.ts,failed manual creation retains title and description and retry creates exactly one issue,chromium,passed,legacy-playwright.json,1
+existing,issue-mutation-branches.spec.ts,failed priority update restores the existing priority and retry persists,chromium,passed,legacy-playwright.json,1
+existing,issue-mutation-branches.spec.ts,failed status update rolls back the optimistic value before a successful retry,chromium,passed,legacy-playwright.json,1
+existing,issue-mutation-branches.spec.ts,repeated send shortcuts while a comment is pending create only one comment,chromium,passed,legacy-playwright.json,1
+existing,issue-table.spec.ts,Issue Table server grouping > drops stale branch cursors after a realtime sort-boundary update,chromium,passed,legacy-playwright.json,1
+existing,issue-table.spec.ts,"Issue Table server grouping > groups 1,001 issues exactly without materializing the full result",chromium,passed,legacy-playwright.json,1
+existing,issue-table.spec.ts,Issue Table server grouping > keeps same-group children nested and cross-group children at the group root,chromium,passed,legacy-playwright.json,1
+existing,issue-table.spec.ts,Issue Table server grouping > shows a branch-level retry and never falls back to client grouping,chromium,passed,legacy-playwright.json,1
+existing,issues.spec.ts,Issues > can create a new issue,chromium,passed,legacy-playwright.json,1
+existing,issues.spec.ts,Issues > can dismiss issue creation,chromium,passed,legacy-playwright.json,1
+existing,issues.spec.ts,Issues > can filter issues by created and updated dates,chromium,passed,legacy-playwright.json,1
+existing,issues.spec.ts,Issues > can filter issues by custom created date,chromium,passed,legacy-playwright.json,1
+existing,issues.spec.ts,Issues > can navigate to issue detail page,chromium,passed,legacy-playwright.json,1
+existing,issues.spec.ts,Issues > can switch from board to list view,chromium,passed,legacy-playwright.json,1
+existing,issues.spec.ts,Issues > issues page loads with board view,chromium,passed,legacy-playwright.json,1
+existing,iteration-scope-business-desktop.spec.ts,"ISB Electron en: planned scope, exact change details, retained filters and frozen history",chromium,passed,legacy-playwright.json,1
+existing,iteration-scope-business-desktop.spec.ts,"ISB Electron zh-Hans: planned scope, exact change details, retained filters and frozen history",chromium,passed,legacy-playwright.json,1
+existing,iteration-scope-business.spec.ts,"ISB Web en: planned scope, exact change details, retained filters and frozen history",chromium,passed,legacy-playwright.json,1
+existing,iteration-scope-business.spec.ts,"ISB Web zh-Hans: planned scope, exact change details, retained filters and frozen history",chromium,passed,legacy-playwright.json,1
+existing,iteration-scope-business.spec.ts,ISB Web: empty planning history and cancellation before versus after a real empty start,chromium,passed,legacy-playwright.json,1
+existing,iteration-settings.spec.ts,workspace iteration settings report normal closure without remounting,chromium,passed,legacy-playwright.json,1
+existing,iteration-settings.spec.ts,workspace iteration settings survive lost closure responses and update another client,chromium,passed,legacy-playwright.json,1
+existing,iteration-settings.spec.ts,workspace planning timezone has one editor (en),chromium,passed,legacy-playwright.json,1
+existing,iteration-settings.spec.ts,workspace planning timezone has one editor (zh-Hans),chromium,passed,legacy-playwright.json,1
+existing,iterations-audit-desktop.spec.ts,"iteration audit: actual contrast, focus, controls, touch, history and responsive rendering",chromium,passed,legacy-playwright.json,1
+existing,iterations-audit-desktop.spec.ts,iteration task toolbar: planned hierarchy and visible refinements (en),chromium,passed,legacy-playwright.json,1
+existing,iterations-audit-desktop.spec.ts,iteration task toolbar: planned hierarchy and visible refinements (zh-Hans),chromium,passed,legacy-playwright.json,1
+existing,iterations-i1-desktop.spec.ts,I1 Electron atomic handoff preserves existing next-period commitments,chromium,passed,legacy-playwright.json,1
+existing,iterations-i1-desktop.spec.ts,"I1 Electron manual planning, atomic carryover and immutable history",chromium,passed,legacy-playwright.json,1
+existing,iterations-i1-desktop.spec.ts,I1 Electron settings report normal closure without remounting,chromium,passed,legacy-playwright.json,1
+existing,iterations-i1-history.spec.ts,"I1 filters and groups the complete scope and preserves historical priority, labels and participation",chromium,passed,legacy-playwright.json,1
+existing,iterations-i1.spec.ts,"I1 Web manual planning, atomic carryover and immutable history",chromium,passed,legacy-playwright.json,1
+existing,iterations-i1.spec.ts,"I1 Web retries detail reads, creates work in the searched iteration and opens chart data by keyboard",chromium,passed,legacy-playwright.json,1
+existing,iterations-i1.spec.ts,I1 Web starts the chosen next period atomically and disables the complete workspace,chromium,passed,legacy-playwright.json,1
+existing,lifecycle-handoff.spec.ts,creates and reuses an RCA repair with a visible issue audit trail,chromium,passed,legacy-playwright.json,1
+existing,lifecycle-handoff.spec.ts,"refuses unauthorized duplicate title reuse without metadata, audit, or queue writes",chromium,passed,legacy-playwright.json,1
+existing,lifecycle-handoff.spec.ts,"refuses unauthorized explicit child reuse without metadata, audit, or queue writes",chromium,passed,legacy-playwright.json,1
+existing,localized-template-defaults.spec.ts,Chinese squad staffing creates localized roles and English restaffing preserves customized agents,chromium,passed,legacy-playwright.json,1
+existing,localized-template-defaults.spec.ts,a localized name collision leaves no partial squad and does not block English role names,chromium,passed,legacy-playwright.json,1
+existing,localized-template-defaults.spec.ts,diagnostician API creation preserves workspace skill and agent copies,chromium,passed,legacy-playwright.json,1
+existing,localized-template-defaults.spec.ts,role picker defaults and omitted-name API creation follow Chinese and English locales,chromium,passed,legacy-playwright.json,1
+existing,localized-template-defaults.spec.ts,"specialist skills localize, search and open their official copies without rewriting stored content",chromium,passed,legacy-playwright.json,1
+existing,main-supplemental-qa.spec.ts,"an onboarded member creates another workspace through Welcome, About you and runtime",chromium,passed,legacy-playwright.json,1
+existing,main-supplemental-qa.spec.ts,"manual issue status, priority and comment persist through refresh and confirmed deletion",chromium,passed,legacy-playwright.json,1
+existing,main-supplemental-qa.spec.ts,real email code login survives refresh and logout protects the workspace,chromium,passed,legacy-playwright.json,1
+existing,mcp-desktop.spec.ts,"native desktop MCP preserves collection, settings and agent discovery flows",chromium,passed,password-native-recheck.json,3
+existing,mcp-market.spec.ts,a member can discover templates and reuse a workspace instance for their agent without creating one,chromium,passed,legacy-playwright.json,1
+existing,mcp-market.spec.ts,"creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",chromium,passed,legacy-playwright.json,1
+existing,mcp-market.spec.ts,deployment MCP files appear live and saved snapshots survive updates and withdrawal,chromium,passed,legacy-playwright.json,1
+existing,mcp-market.spec.ts,retries a failed assignment without recreating the saved MCP or repeating successful grants,chromium,passed,legacy-playwright.json,1
+existing,mcp-market.spec.ts,uses the collection canvas and adapts template columns to the available width,chromium,passed,legacy-playwright.json,1
+existing,missing-user-session.spec.ts,an obsolete session returns to sign-in and can open the MCP market after a fresh login,chromium,passed,legacy-playwright.json,1
+existing,navigation.spec.ts,Navigation > agents page shows agent list,chromium,passed,legacy-playwright.json,1
+existing,navigation.spec.ts,Navigation > settings page loads via sidebar,chromium,passed,legacy-playwright.json,1
+existing,navigation.spec.ts,Navigation > sidebar navigation works,chromium,passed,legacy-playwright.json,1
+existing,onboarding-shell.spec.ts,onboarding — structural blocks match the column width on every step,chromium,passed,legacy-playwright.json,1
+existing,onboarding-shell.spec.ts,onboarding — the shell survives step changes instead of re-mounting,chromium,passed,legacy-playwright.json,1
+existing,onboarding-smoke.spec.ts,onboarding — answer path completes on Projects after skipping runtime,chromium,passed,legacy-playwright.json,1
+existing,onboarding-smoke.spec.ts,onboarding — one skip clears the whole questionnaire step,chromium,passed,legacy-playwright.json,1
+existing,onboarding-smoke.spec.ts,onboarding — zh-Hans renders Chinese labels,chromium,passed,legacy-playwright.json,1
+existing,password-binding-desktop.spec.ts,an existing Desktop account binds password login without losing its history,chromium,passed,password-native-recheck.json,3
+existing,password-branches.spec.ts,password authentication branch recovery > Retry-After disables login submissions until cooldown ends without discarding credentials,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > duplicate username after normalization leaves the original identity and password intact,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > five-character password error can be corrected to the supported six-character minimum,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > incorrect password preserves the login form and a corrected retry restores the same identity,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > invalid username preserves registration fields and can be corrected without restarting,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > lost registration response offers sign-in recovery for the account the server already created,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > network failure during login keeps credentials and succeeds after connection recovery,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > overlong pasted password is rejected and accepts the corrected 128-character boundary,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > pending registration locks the form and ignores repeated native submissions,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > temporary authentication service failure preserves the form and permits a real retry,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > unknown account gives a generic error and can sign in after the account is created,chromium,passed,password-branches-retry.json,2
+existing,password-branches.spec.ts,password authentication branch recovery > whitespace-only display name reaches server validation and keeps credentials for correction,chromium,passed,password-branches-retry.json,2
+existing,password-migration.spec.ts,intranet password migration > legacy setup returns to the original identity and workspace,chromium,passed,password-migration-retry.json,2
+existing,password-migration.spec.ts,intranet password migration > temporary recovery returns to the original identity and workspace,chromium,passed,password-migration-retry.json,2
+existing,password-registration.spec.ts,intranet password registration > confirmation requires an exact match and password visibility stays independent,chromium,passed,password-registration-retry.json,2
+existing,password-registration.spec.ts,intranet password registration > confirmed password registers without email and a second device keeps the same identity,chromium,passed,password-registration-retry.json,2
+existing,password-server-switch.spec.ts,Electron server switch clears same-host credentials and closes issue windows,chromium,passed,password-playwright.json,1
+existing,password-session-persistence.spec.ts,Desktop remembers password login across restart and rejects a revoked session,chromium,passed,legacy-playwright.json,1
+existing,platform-admin-accounts.spec.ts,"platform account administration > account controls, lost response recovery, forced password change and observer UI",chromium,passed,platform-admin-accounts-run2-acceptance.json,1
+existing,platform-admin-controls.spec.ts,platform execution controls > admission receipts and original-key recovery survive a lost cancellation response and reload,chromium,passed,platform-admin-controls-run2-acceptance.json,1
+existing,platform-admin-executions.spec.ts,"platform execution metadata > private metadata, filters, cursor, attempt detail and original content permissions",chromium,passed,platform-admin-executions-run2-acceptance.json,1
+existing,platform-admin-initialization.spec.ts,initialized administrator changes the temporary password before entering administration,chromium,passed,admin-initialization.json,1
+existing,platform-admin-installations-read.spec.ts,"managed installation read model > real enrollment and binding keep client, daemon and engine status separate",chromium,passed,platform-admin-installations-read-run2-acceptance.json,1
+existing,platform-admin-observability.spec.ts,"platform observability > windowed metrics, active alerts, original-key recovery and observer boundaries",chromium,passed,platform-admin-observability-run2-acceptance.json,1
+existing,platform-admin.spec.ts,"platform administration access > zero-workspace cookie access, ordinary-user denial, and live role revocation",chromium,passed,admin-preflight.json,1
+existing,plugin-surface-document.spec.ts,"plugin surface document (real Chromium, hosted sandbox) > a host-authored launch replacement is not reported as hostile navigation",chromium,passed,legacy-playwright.json,1
+existing,plugin-surface-document.spec.ts,"plugin surface document (real Chromium, hosted sandbox) > reports a synchronous hosted plugin error to the pre-armed host listener",chromium,passed,legacy-playwright.json,1
+existing,plugin-surface-security.spec.ts,plugin surface browser boundary > a first-line external navigation sends no request and cannot retain a bridge,chromium,passed,legacy-playwright.json,1
+existing,plugin-surface-security.spec.ts,plugin surface browser boundary > a normal hosted document relays exactly one guest-created port,chromium,passed,legacy-playwright.json,1
+existing,plugin-surface-security.spec.ts,plugin surface browser boundary > two script-capable plugin frames cannot inspect each other,chromium,passed,legacy-playwright.json,1
+existing,progress-reporting.spec.ts,adopts daily and weekly reports and completes fixture delivery on only their report issues,chromium,passed,legacy-playwright.json,1
+existing,progress-reporting.spec.ts,creates the reporter from the Chinese catalog and reopens its ordinary agent,chromium,passed,legacy-playwright.json,1
+existing,progress-reporting.spec.ts,publishes one built-in reporter and adjacent daily and weekly templates,chromium,passed,legacy-playwright.json,1
+existing,project-squad-workspace.spec.ts,"keeps project work visible with 1, 8 and 20 squads and persists explicit defaults and issue links",chromium,passed,legacy-playwright.json,1
+existing,projects-p1-desktop.spec.ts,P1-D01 native navigation opens the exact project risk list from the keyboard,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-desktop.spec.ts,P1-D02 a native fast preview survives the editor flush and publishes once,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-desktop.spec.ts,P1-D03 cancelling and reloading restores the last native draft without publishing,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-desktop.spec.ts,P1-D04 native revision history renders the original and corrected progress,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-desktop.spec.ts,P1-D05 a Chinese native window keeps progress actions readable at 680px,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-desktop.spec.ts,P1-D06 native project tabs do not share progress drafts,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-goals.spec.ts,P1-G01 template preview and cancellation never write the description,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-goals.spec.ts,P1-G02 selected missing sections append without replacing the original goal,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-goals.spec.ts,P1-G03 selecting only existing headings disables duplicate template insertion,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-goals.spec.ts,P1-G04 a real concurrent description conflict preserves local text for reviewed saving,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-goals.spec.ts,P1-G05 explicit server adoption survives failed refetch and uses that revision for the next edit,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H01 six done plus two cancelled plus two open display distinct totals and legacy closure,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H02 a candidate-only project has no percentage while its own overdue date remains visible,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H03 all completed issues close scope without accepting the goal or completing the project,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H04 all cancelled issues close scope without claiming delivered work or acceptance,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H05 board independently retains formal issues and excludes candidate-only project links,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H06 list independently retains formal issues and excludes candidate-only project links,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H07 table independently retains formal issues and excludes candidate-only project links,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H08 swimlane independently retains formal issues and excludes candidate-only project links,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H09 gantt independently retains formal issues and excludes candidate-only project links,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H10 ordinary triage acceptance adds one formal issue without starting the default squad,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-health.spec.ts,P1-H11 finishing the open remainder closes a mixed done and cancelled scope without human acceptance,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L01 cancelling the completion warning leaves project and work unchanged,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L02 completion records the user's reason without completing issues or execution,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L03 status controls pause cancel and reopen only the project,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L04 a member cannot delete a project but retains ordinary read access,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L05 cancelling project deletion sends no delete request,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L06 owner deletion through the dialog preserves issues and running execution,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L07 a failed deletion keeps the project readable and can be retried,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L08 an initially unavailable overview recovers through Retry,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L09 refresh failure marks old statistics stale and disables risk navigation,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L10 unsupported capabilities retain the description and hide unsafe editing,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L11 an owner selects and changes the shared planning timezone and restores the Shanghai default,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L12 the picker excludes invalid timezones and rejected writes leave planning unchanged,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L13 loss of timezone write permission preserves readable project and local progress,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L14 real workspace revocation clears visible drafts even without WebSocket delivery,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,P1-L15 Chinese compact editing supports keyboard preview and an unobstructed publish button,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,"P1-L16 when an owner removes the member without WebSocket delivery, requests stay bounded for 20 seconds",chromium,passed,legacy-playwright.json,1
+existing,projects-p1-lifecycle.spec.ts,"P1-L16 when the member leaves without WebSocket delivery, requests stay bounded for 20 seconds",chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P01 mention preview identifies its recipient without publishing or executing,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P02 a fast trailing-space mention preview stays publishable past the editor debounce,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P03 ordinary publication preserves its server statistics snapshot after issue changes,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P04 cancelling immediately retains the last characters when reopening and reloading,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P05 leaving the overview retains pending progress text without a publication,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,"P1-P06 retrying a committed lost response reuses one intent, record and member notification",chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P07 correction requires a reason and retains immutable original text and authorship,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P08 stale correction compares the latest revision before an explicit retry,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P09 missing acceptance basis preserves input and can be corrected before publishing,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P10 changed goals require explicit description adoption before acceptance publication,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P11 previous acceptance stays on its original goals and a new failed result can stand alone,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P12 execution evidence opens its real authorized revision-scoped transcript,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P13 a real notification opens an older update without exposing its private execution,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P14 source-level403 preserves the member's draft and permits publication after evidence removal,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-progress.spec.ts,P1-P15 correcting repeated mentions neither duplicates notifications nor starts an agent,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-risk.spec.ts,P1-R01 blocked drilldown shows exactly its formal risk IDs despite personal filters,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-risk.spec.ts,P1-R02 overdue drilldown shows exactly its formal risk IDs despite personal filters,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-risk.spec.ts,P1-R03 unassigned drilldown shows exactly its formal risk IDs despite personal filters,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-risk.spec.ts,P1-R04 in_review drilldown shows exactly its formal risk IDs despite personal filters,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-risk.spec.ts,P1-R05 changed cursors advance by ID and keep the disclosure across a later unchanged page,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-risk.spec.ts,P1-R06 a successful fresh restart includes reentered low IDs and clears the changed notice,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-risk.spec.ts,P1-R07 failed fresh restart preserves the current rows and sticky notice until recovery succeeds,chromium,passed,legacy-playwright.json,1
+existing,projects-p1-risk.spec.ts,P1-R08 an emptied suffix with a positive total does not claim that the project has no risks,chromium,passed,legacy-playwright.json,1
+existing,projects-p1.spec.ts,"P1-C01 convergence performance: two real pages observe 30 due-date, assignee and admission changes within five seconds",chromium,passed,legacy-playwright.json,1
+existing,property-icons.spec.ts,"creates, persists, and clears a custom property icon",chromium,passed,legacy-playwright.json,1
+existing,quick-actions.spec.ts,renders assistant quick actions and sends the hidden prompt,chromium,passed,legacy-playwright.json,1
+existing,quick-create-actor-picker-phase2.spec.ts,Chinese narrow-screen controls expose defaults and grounded suggestions,chromium,passed,actor-recommendation.json,1
+existing,quick-create-actor-picker-phase2.spec.ts,actual Electron renderer adopts suggestions without running a daemon,chromium,passed,actor-recommendation.json,1
+existing,quick-create-actor-picker-phase2.spec.ts,explicit default outranks accepted history and project candidates do not replace it,chromium,passed,actor-recommendation.json,2
+existing,quick-create-actor-picker-phase2.spec.ts,"recommendations require a click, adoption stays explicit, and changed text discards late results",chromium,passed,actor-recommendation.json,1
+existing,quick-create-actor-picker.spec.ts,550 route-mocked actors remain searchable and pageable with browser render samples,chromium,passed,legacy-playwright.json,1
+existing,quick-create-actor-picker.spec.ts,category tabs expose Mika and squad leaders at wide and narrow widths (en),chromium,passed,legacy-playwright.json,1
+existing,quick-create-actor-picker.spec.ts,category tabs expose Mika and squad leaders at wide and narrow widths (zh-Hans),chromium,passed,legacy-playwright.json,1
+existing,quick-create-actor-picker.spec.ts,desktop renderer supports picker search and pinning without starting a daemon,chromium,passed,legacy-playwright.json,1
+existing,quick-create-actor-picker.spec.ts,keyboard actions preserve draft and reset stale choices in a narrow viewport,chromium,passed,legacy-playwright.json,1
+existing,quick-create-actor-picker.spec.ts,manual assignment reuses discovery and preserves the draft (en),chromium,passed,legacy-playwright.json,1
+existing,quick-create-actor-picker.spec.ts,manual assignment reuses discovery and preserves the draft (zh-Hans),chromium,passed,legacy-playwright.json,1
+existing,quick-create-actor-picker.spec.ts,real API actors keep favorites and accepted recents local to their workspace,chromium,passed,legacy-playwright.json,1
+existing,retained-languages-desktop.spec.ts,Desktop keeps retained languages after upgrading ja preferences,chromium,passed,legacy-playwright.json,1
+existing,retained-languages-desktop.spec.ts,Desktop keeps retained languages after upgrading ko preferences,chromium,passed,legacy-playwright.json,1
+existing,retained-languages.spec.ts,a new client normalizes a retired preference returned by an older server,chromium,passed,legacy-playwright.json,1
+existing,retained-languages.spec.ts,retired ja preference falls back to English and both retained choices persist,chromium,passed,legacy-playwright.json,1
+existing,retained-languages.spec.ts,retired ko preference falls back to English and both retained choices persist,chromium,passed,legacy-playwright.json,1
+existing,settings-integration-catalog.spec.ts,"integration catalog navigation, preferences and responsive layout (en)",chromium,passed,legacy-playwright.json,1
+existing,settings-integration-catalog.spec.ts,"integration catalog navigation, preferences and responsive layout (zh-Hans)",chromium,passed,legacy-playwright.json,1
+existing,settings-preferences.spec.ts,grouped settings remain reachable from the sidebar and floating chat survives navigation and reload,chromium,passed,legacy-playwright.json,1
+existing,settings-preferences.spec.ts,hidden manual issue fields persist and remain usable through the overflow menu,chromium,passed,legacy-playwright.json,1
+existing,settings.spec.ts,Settings > connecting a Composio toolkit shows a toast and refreshes the list,chromium,passed,legacy-playwright.json,1
+existing,settings.spec.ts,Settings > updating workspace name reflects in sidebar immediately,chromium,passed,legacy-playwright.json,1
+existing,skill-category-taxonomy.spec.ts,renders eight lifecycle categories and the batch label menu across presentations,chromium,passed,legacy-playwright.json,1
+existing,skill-library-accessibility.spec.ts,"skill library supports keyboard selection, filter recovery and compact layouts",chromium,passed,legacy-playwright.json,1
+existing,skill-market.spec.ts,discovers deployment templates and creates a workspace copy while keeping market context,chromium,passed,legacy-playwright.json,1
+existing,skill-template-creation.spec.ts,creates an edited independent skill after previewing and cancelling without writes,chromium,passed,legacy-playwright.json,1
+existing,squads-audit.spec.ts,"squad audit: browser interactions, responsive layout and performance",chromium,passed,legacy-playwright.json,1
+existing,squads-design.spec.ts,"squad discovery keeps keyboard navigation, saved choices and project setup usable",chromium,passed,legacy-playwright.json,1
+existing,task-lifecycle-qa.spec.ts,"persists a manually created feature request through edits, workflow, comments and confirmed deletion",chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,Triage API integration branch coverage > decision replay preserves the original revision and history while rejecting a reused key with a new reason,chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,Triage API integration branch coverage > intake replay returns one identity and a changed payload cannot reuse its request ID,chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,Triage API integration branch coverage > pending items reject rerun and ordinary assignment while retaining editable content,chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,Triage browser + real API branch coverage > a past snooze time keeps the item ready until a valid future time is confirmed,chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,Triage browser + real API branch coverage > a rejected item cannot reopen while disabled and uses current responsibility in the next round,chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,Triage browser + real API branch coverage > a snoozed pending item prevents disabling triage in both settings and the API,chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,"Triage browser + real API branch coverage > a stale review draft retains its reason, refreshes the revision and commits exactly once",chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,Triage browser + real API branch coverage > disabled triage hides intake and rejects a direct submission without creating work,chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,Triage browser + real API branch coverage > required priority preserves the acceptance draft until a valid priority is selected,chromium,passed,legacy-playwright.json,1
+existing,triage-branches.spec.ts,Triage browser + real API branch coverage > responsibility requires a reviewer and applies only to new intake without assigning execution,chromium,passed,legacy-playwright.json,1
+existing,triage-desktop.spec.ts,"native desktop triage navigation, review and compact history use the shared real backend",chromium,passed,legacy-playwright.json,1
+existing,triage-duplicate-picker-desktop.spec.ts,Native duplicate picker browses all formal tasks and confirms the chosen target (en),chromium,passed,legacy-playwright.json,1
+existing,triage-duplicate-picker-desktop.spec.ts,Native duplicate picker browses all formal tasks and confirms the chosen target (zh-Hans),chromium,passed,legacy-playwright.json,1
+existing,triage-duplicate-picker.spec.ts,Web duplicate picker browses all formal tasks and confirms the chosen target (en),chromium,passed,legacy-playwright.json,1
+existing,triage-duplicate-picker.spec.ts,Web duplicate picker browses all formal tasks and confirms the chosen target (zh-Hans),chromium,passed,legacy-playwright.json,1
+existing,triage-layout.spec.ts,triage review layout keeps queue controls and decisions usable (en),chromium,passed,legacy-playwright.json,1
+existing,triage-layout.spec.ts,triage review layout keeps queue controls and decisions usable (zh-Hans),chromium,passed,legacy-playwright.json,1
+existing,triage.spec.ts,"CSV preview, mapping and partial import create only selected pending rows",chromium,passed,legacy-playwright.json,1
+existing,triage.spec.ts,Chinese compact triage keeps validation input and visible review controls,chromium,passed,legacy-playwright.json,1
+existing,triage.spec.ts,explicit execution shows the real executor and resource context before queuing once,chromium,passed,legacy-playwright.json,1
+existing,triage.spec.ts,real comment listeners notify the creator without changing a snoozed review,chromium,passed,legacy-playwright.json,1
+existing,triage.spec.ts,"snooze, rejection and reopen retain old review rounds",chromium,passed,legacy-playwright.json,1
+existing,triage.spec.ts,"triage settings, manual intake and ordinary acceptance preserve the execution boundary",chromium,passed,legacy-playwright.json,1
+existing,upstream-backports-cli.spec.ts,B1 compiled CLI against the isolated API > an unrelated member and an outsider cannot update another member's comment,chromium,passed,cli-retry.json,2
+existing,upstream-backports-cli.spec.ts,B1 compiled CLI against the isolated API > comment updates preserve UTF-8 files and reject stale revisions,chromium,passed,cli-retry.json,2
+existing,upstream-backports-cli.spec.ts,B1 compiled CLI against the isolated API > skill labels remain typed and idempotent while issue labels still work,chromium,passed,cli-retry.json,2
+existing,upstream-selected-fixes.spec.ts,selectively merged upstream regressions > defers hidden private runtime version 0.0.1 to the server's quick-create gate,chromium,passed,legacy-playwright.json,1
+existing,upstream-selected-fixes.spec.ts,selectively merged upstream regressions > defers hidden private runtime version 0.4.40 to the server's quick-create gate,chromium,passed,legacy-playwright.json,1
+existing,upstream-selected-fixes.spec.ts,selectively merged upstream regressions > edits a bullet inside a checkbox and persists the selected list level after reopening,chromium,passed,legacy-playwright.json,1
+existing,upstream-selected-fixes.spec.ts,selectively merged upstream regressions > keeps one usable Inbox sidebar toggle in split view and a way back at compact widths,chromium,passed,legacy-playwright.json,1
+existing,upstream-selected-fixes.spec.ts,selectively merged upstream regressions > keeps the full Chinese and emoji comment behind active and archived Inbox previews,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,[API integration] foreign issue identifiers cannot bypass the selected workspace on reads or writes,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,[browser fault injection] failed workspace deletion keeps the dialog and data until a successful retry,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,a nonexistent invitation shows a recoverable empty state,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,a nonmember cannot open or mutate another workspace and can recover to their own,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,accepting an invitation joins exactly once and revisiting shows its accepted state,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,another account cannot read accept or decline an invitation addressed to its owner,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,cancelling workspace deletion preserves data and resets the typed confirmation,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,declining an invitation persists without membership and prevents later acceptance,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,removing a member from an open workspace relocates the browser and revokes stale API access,chromium,passed,legacy-playwright.json,1
+existing,workspace-access-branches.spec.ts,revoking an invitation while its page is open rejects stale acceptance,chromium,passed,legacy-playwright.json,1
+existing,workspace-defaults.spec.ts,workspace built-in defaults > keeps built-in resources available on request and retains a project without a runtime,chromium,passed,legacy-playwright.json,1
+existing,workspace-defaults.spec.ts,"workspace built-in defaults > prepares a squad, dispatches an issue and enables an automation only on submission",chromium,passed,legacy-playwright.json,1
+existing,workspace-defaults.spec.ts,"workspace built-in defaults > saves multiple squads, supports select-all and clear, and keeps creation usable on narrow screens",chromium,passed,legacy-playwright.json,1
+existing,workspace-name-series.spec.ts,en naming preference survives reload and generated workspace preserves manual URL and prefix,chromium,passed,legacy-playwright.json,1
+existing,workspace-name-series.spec.ts,zh-Hans naming preference survives reload and generated workspace preserves manual URL and prefix,chromium,passed,legacy-playwright.json,1
+additional,additional-memory.spec.ts,a committed shared-context write survives a lost response and retries without creating a second version,chromium,passed,committed-memory-retry.json,2
+additional,additional-memory.spec.ts,native Desktop and Web share context updates and preserve history after native restoration,chromium,passed,additional-memory.json,1
+additional,admin-memory.spec.ts,administrator purges historical context for a disabled creator without receiving document content,chromium,passed,admin-memory-run3.json,2

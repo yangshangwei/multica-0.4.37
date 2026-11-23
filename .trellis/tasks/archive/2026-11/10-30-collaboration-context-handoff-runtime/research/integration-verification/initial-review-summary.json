@@ -1,0 +1,176 @@
+{
+  "reviewed_at": "2026-10-31T14:53:08.681401+00:00",
+  "source_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "source_provenance": "non-db-source.json",
+  "source_files_changed_during_review": [],
+  "source_edits": false,
+  "real_provider_calls": false,
+  "database": "multica_runtime_integrate_20261031_f2478725",
+  "database_use": "New service then handler tests only, sequential; DB is released for the main coordinator now.",
+  "suites": {
+    "protocol": {
+      "exit_code": 0,
+      "passed_top_level_tests": 16,
+      "passed_test_items": 66,
+      "failed_tests": [],
+      "skipped_tests": [],
+      "unfinished_tests": []
+    },
+    "cli": {
+      "exit_code": 0,
+      "passed_top_level_tests": 24,
+      "passed_test_items": 92,
+      "failed_tests": [],
+      "skipped_tests": [],
+      "unfinished_tests": []
+    },
+    "daemon-client": {
+      "exit_code": 1,
+      "passed_top_level_tests": 11,
+      "passed_test_items": 47,
+      "failed_tests": [],
+      "skipped_tests": [],
+      "unfinished_tests": [
+        "TestHostCheckpointBackpressureDoesNotBlockMessageDrain"
+      ]
+    },
+    "daemon-remaining": {
+      "exit_code": 0,
+      "passed_top_level_tests": 24,
+      "passed_test_items": 50,
+      "failed_tests": [],
+      "skipped_tests": [],
+      "unfinished_tests": []
+    },
+    "service-targeted": {
+      "exit_code": 0,
+      "passed_top_level_tests": 7,
+      "passed_test_items": 7,
+      "failed_tests": [],
+      "skipped_tests": [],
+      "unfinished_tests": []
+    },
+    "handler-targeted": {
+      "exit_code": 0,
+      "passed_top_level_tests": 2,
+      "passed_test_items": 6,
+      "failed_tests": [],
+      "skipped_tests": [],
+      "unfinished_tests": []
+    }
+  },
+  "static_checks": [
+    {
+      "check": "gofmt",
+      "command": [
+        "gofmt",
+        "-l",
+        "server/cmd/multica/cmd_collaboration.go",
+        "server/cmd/multica/cmd_issue.go",
+        "server/cmd/server/router.go",
+        "server/internal/daemon/collaborationrun/client.go",
+        "server/internal/daemon/collaborationrun/client_host.go",
+        "server/internal/daemon/collaborationrun/host_ledger.go",
+        "server/internal/daemon/collaborationrun/host_recording.go",
+        "server/internal/daemon/collaborationrun/host_runner.go",
+        "server/internal/daemon/collaborationrun/ledger.go",
+        "server/internal/handler/collaboration_comments.go",
+        "server/internal/handler/collaboration_runtime.go",
+        "server/internal/service/collaboration_comments_view.go",
+        "server/internal/service/collaboration_records.go",
+        "server/internal/service/collaboration_runtime_capabilities.go",
+        "server/internal/service/collaboration_squad.go",
+        "server/internal/service/collaboration_squad_join.go",
+        "server/pkg/db/generated/collaboration_records.sql.go",
+        "server/pkg/protocol/collaboration.go",
+        "server/pkg/protocol/collaboration_record.go",
+        "server/cmd/multica/cmd_collaboration_recall.go",
+        "server/cmd/multica/cmd_collaboration_recall_test.go",
+        "server/internal/cli/collaboration_recall.go",
+        "server/internal/daemon/collaborationrun/client_context_extensions_test.go",
+        "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go",
+        "server/internal/daemon/collaborationrun/host_checkpoints.go",
+        "server/internal/daemon/collaborationrun/host_checkpoints_test.go",
+        "server/internal/daemon/collaborationrun/host_handoff.go",
+        "server/internal/handler/collaboration_checkpoints.go",
+        "server/internal/handler/collaboration_comments_recall.go",
+        "server/internal/handler/collaboration_comments_recall_test.go",
+        "server/internal/handler/collaboration_runtime_extensions_test.go",
+        "server/internal/handler/collaboration_runtime_handoff.go",
+        "server/internal/service/collaboration_checkpoints.go",
+        "server/internal/service/collaboration_checkpoints_test.go",
+        "server/internal/service/collaboration_comments_recall.go",
+        "server/internal/service/collaboration_comments_recall_test.go",
+        "server/internal/service/collaboration_handoff_snapshot.go",
+        "server/internal/service/collaboration_handoff_wakeup.go",
+        "server/internal/service/collaboration_runtime_handoff.go",
+        "server/internal/service/collaboration_runtime_handoff_test.go",
+        "server/pkg/db/generated/collaboration_handoff.sql.go",
+        "server/pkg/db/generated/collaboration_recall.sql.go",
+        "server/pkg/protocol/collaboration_checkpoint.go",
+        "server/pkg/protocol/collaboration_checkpoint_test.go",
+        "server/pkg/protocol/collaboration_handoff.go",
+        "server/pkg/protocol/collaboration_handoff_test.go",
+        "server/pkg/protocol/collaboration_recall.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "exit_code": 0,
+      "elapsed_seconds": 0.021,
+      "passed": true
+    },
+    {
+      "check": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./pkg/protocol",
+        "./internal/cli",
+        "./cmd/multica",
+        "./internal/daemon/collaborationrun"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/server",
+      "exit_code": 0,
+      "elapsed_seconds": 0.954,
+      "passed": true
+    },
+    {
+      "check": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "server",
+        "packages"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+      "exit_code": 0,
+      "elapsed_seconds": 0.037,
+      "passed": true
+    }
+  ],
+  "blockers": [
+    {
+      "kind": "test_fixture_cleanup",
+      "owner": "checkpoint implement owner",
+      "file": "server/internal/daemon/collaborationrun/host_checkpoints_test.go",
+      "lines": [
+        83,
+        124
+      ],
+      "evidence": "daemon-client.jsonl",
+      "description": "Backpressure test body reaches deferred Server.Close while its handler waits indefinitely for request.Context().Done; package hits 2m timeout. No product sender-drain hang established."
+    },
+    {
+      "kind": "design_contract_gap",
+      "owner": "checkpoint service owner + main coordinator",
+      "file": "server/internal/service/collaboration_checkpoints.go",
+      "lines": [
+        245,
+        249
+      ],
+      "description": "SealRuntimeRecording rejects every non-identical reseal, so it cannot accept the monotonic later completeness/observation update required by design.md. Decide and cover this contract before acceptance."
+    }
+  ],
+  "pending_owner_handoff": "Startup injection patch from mc-handoff-launch-20261031 remains pending and was not classified as a failure."
+}

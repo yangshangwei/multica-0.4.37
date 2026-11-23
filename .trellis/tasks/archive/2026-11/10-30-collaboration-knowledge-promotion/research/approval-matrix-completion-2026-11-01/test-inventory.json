@@ -1,0 +1,453 @@
+{
+  "expected": {
+    "server/internal/service/collaboration_knowledge_final_matrix_test.go": [
+      "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders",
+      "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders",
+      "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders",
+      "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders",
+      "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation",
+      "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders",
+      "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds",
+      "TestKnowledgeApprovalMatrixDeletedCommentSuppressesAllHumanProjections"
+    ],
+    "server/internal/handler/collaboration_knowledge_final_matrix_test.go": [
+      "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders",
+      "TestKnowledgeApprovalHTTPMatrixWrongCandidateRecoveryIsContentFree",
+      "TestKnowledgeApprovalHTTPMatrixLegacyDeletedSourceKeepsDeletionGuard"
+    ]
+  },
+  "runs": {
+    "service": {
+      "log": "final-service.jsonl",
+      "top_level": 8,
+      "pass_events": 27,
+      "leaf_cases": 20,
+      "missing": [],
+      "failures": [],
+      "skips": [],
+      "test_names": [
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/memory_purge/approval_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/memory_purge/source_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_edit/approval_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_edit/source_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_delete/approval_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_delete/source_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders",
+        "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders/approval_first",
+        "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders/disable_first",
+        "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders",
+        "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders/approval_first",
+        "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders/withdraw_first",
+        "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders",
+        "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version2_first",
+        "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version3_first",
+        "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders",
+        "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation/creator_first",
+        "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation/handler_first",
+        "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation",
+        "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/correction_first",
+        "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/approved_withdrawal_first",
+        "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders",
+        "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds/different_existing_candidate",
+        "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds/memory_kind",
+        "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds/command_kind",
+        "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds",
+        "TestKnowledgeApprovalMatrixDeletedCommentSuppressesAllHumanProjections"
+      ],
+      "barrier_observations": [
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/memory_purge/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/memory_purge/source_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_edit/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_edit/source_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_delete/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_delete/source_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:315: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders/disable_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:315: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:372: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders/withdraw_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:372: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version2_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version2_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version2_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version3_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version3_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version3_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation/creator_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:504: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation/handler_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:504: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/correction_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/correction_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/correction_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/approved_withdrawal_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/approved_withdrawal_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/approved_withdrawal_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        }
+      ]
+    },
+    "service_race": {
+      "log": "final-service-race.jsonl",
+      "top_level": 8,
+      "pass_events": 27,
+      "leaf_cases": 20,
+      "missing": [],
+      "failures": [],
+      "skips": [],
+      "test_names": [
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/memory_purge/approval_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/memory_purge/source_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_edit/approval_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_edit/source_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_delete/approval_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_delete/source_first",
+        "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders",
+        "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders/approval_first",
+        "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders/disable_first",
+        "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders",
+        "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders/approval_first",
+        "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders/withdraw_first",
+        "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders",
+        "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version2_first",
+        "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version3_first",
+        "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders",
+        "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation/creator_first",
+        "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation/handler_first",
+        "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation",
+        "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/correction_first",
+        "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/approved_withdrawal_first",
+        "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders",
+        "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds/different_existing_candidate",
+        "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds/memory_kind",
+        "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds/command_kind",
+        "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds",
+        "TestKnowledgeApprovalMatrixDeletedCommentSuppressesAllHumanProjections"
+      ],
+      "barrier_observations": [
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/memory_purge/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/memory_purge/source_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_edit/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_edit/source_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_delete/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders/comment_delete/source_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:234: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:315: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders/disable_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:315: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:372: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders/withdraw_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:372: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version2_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version2_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version2_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version3_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version3_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders/version3_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:443: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation/creator_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:504: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation/handler_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:504: observed actual follower's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/correction_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/correction_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/correction_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/approved_withdrawal_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/approved_withdrawal_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders/approved_withdrawal_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:561: production NOWAIT boundary: -- name: LockKnowledgeTargetForWrite :one SQLSTATE 55P03"
+        }
+      ]
+    },
+    "handler": {
+      "log": "final-handler.jsonl",
+      "top_level": 3,
+      "pass_events": 11,
+      "leaf_cases": 10,
+      "missing": [],
+      "failures": [],
+      "skips": [],
+      "test_names": [
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders",
+        "TestKnowledgeApprovalHTTPMatrixWrongCandidateRecoveryIsContentFree",
+        "TestKnowledgeApprovalHTTPMatrixLegacyDeletedSourceKeepsDeletionGuard"
+      ],
+      "barrier_observations": [
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeMember :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeMember :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeMember :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProjectLead :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProjectLead :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProjectLead :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProject :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProject :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProject :one SQLSTATE 55P03"
+        }
+      ]
+    },
+    "handler_race": {
+      "log": "final-handler-race.jsonl",
+      "top_level": 3,
+      "pass_events": 11,
+      "leaf_cases": 10,
+      "missing": [],
+      "failures": [],
+      "skips": [],
+      "test_names": [
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/approval_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/authority_first",
+        "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders",
+        "TestKnowledgeApprovalHTTPMatrixWrongCandidateRecoveryIsContentFree",
+        "TestKnowledgeApprovalHTTPMatrixLegacyDeletedSourceKeepsDeletionGuard"
+      ],
+      "barrier_observations": [
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeMember :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeMember :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/role_downgrade/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeMember :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/member_removal/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProjectLead :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProjectLead :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/lead_change/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProjectLead :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/approval_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: observed actual handler writer's PostgreSQL wait chain before first commit"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProject :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProject :one SQLSTATE 55P03"
+        },
+        {
+          "test": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders/project_delete/authority_first",
+          "output": "collaboration_knowledge_final_matrix_test.go:275: actual handler NOWAIT boundary: -- name: LockKnowledgeProject :one SQLSTATE 55P03"
+        }
+      ]
+    }
+  }
+}

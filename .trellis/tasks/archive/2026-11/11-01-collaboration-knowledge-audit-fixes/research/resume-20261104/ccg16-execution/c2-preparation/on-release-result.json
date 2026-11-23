@@ -1,0 +1,205 @@
+{
+  "state": "owned_ON_release_pass",
+  "recorded_at": "2026-11-04T08:18:15.097638+00:00",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "private_release_seam_status": 0,
+  "resources_released": [
+    {
+      "component": "api",
+      "port": 18295,
+      "original_pid": 67212,
+      "original_pgid": 67173,
+      "listener_absent": true
+    },
+    {
+      "component": "web",
+      "port": 13215,
+      "original_pid": 67517,
+      "original_pgid": 67496,
+      "listener_absent": true
+    },
+    {
+      "component": "renderer",
+      "port": 49338,
+      "original_pid": 67409,
+      "original_pgid": 67409,
+      "listener_absent": true
+    }
+  ],
+  "owned_before": [
+    {
+      "component": "api",
+      "pid": 67212,
+      "ppid": 67173,
+      "pgid": 67173,
+      "port": 18295,
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+      "command": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+      "matched_before_release": true
+    },
+    {
+      "component": "web",
+      "pid": 67517,
+      "ppid": 67496,
+      "pgid": 67496,
+      "port": 13215,
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web",
+      "command": "next-server (v16.2.6)",
+      "matched_before_release": true
+    },
+    {
+      "component": "renderer",
+      "pid": 67409,
+      "ppid": 1,
+      "pgid": 67409,
+      "port": 49338,
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "command": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B -m http.server 49338 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "matched_before_release": true
+    }
+  ],
+  "protected_original_hashes": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/source-values.env": {
+      "sha256": "f69987226394d14629f0ab7e3186b6a6e08b98258fe972ecdb392351c562bd00",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/deployment-proof.json": {
+      "sha256": "4f70b06e906db26168869b3821075000b70caca9830594c2748010316bf4d8ae",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/registry/envs/knowledge-v16-on-a3c9-01/manifest.env": {
+      "sha256": "9e126fa9a2bf4685e944a8f6dff0a747f7d500e46b493ee165b6bd0f865cd273",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binary-binding.json": {
+      "sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json": {
+      "sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg2-browser-bound.py": {
+      "sha256": "95206bf27c50b16acd2a087fcbbb925671a1b1ee55ad3952a000b4c400789b79",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/source-inputs.json": {
+      "sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-on-v16-01.json": {
+      "sha256": "7d5c3cee62fa02c0df666770c1d4b81b3b45bd2a0394698268f23fa607c668b7",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on01-execution-handoff.json": {
+      "sha256": "dbe3d4edea05e201a9d31b6290905a1c84e42877d0e46ab2f3b36a1750b87e45",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on01-actual-deployed-evidence.json": {
+      "sha256": "eb8ebb0a38cc3b6f85096f6ef9c3ac90c99bfd009f158e44f909a0616be347c3",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/started.json": {
+      "sha256": "128190a9a73463920e90873e7b031cb273e3d97ef121ffd6e1bfb87ea6666789",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/result.json": {
+      "sha256": "6aa58a5fe4829f2023661cb6767e42abbfbbbd6573fc0ea9076628df6cf33a37",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/results.json": {
+      "sha256": "1dfb9490264c17b0058ff39a5abd6426edc1fb206a9e29f884d95efdafbb77d4",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/output.log": {
+      "sha256": "f6bb8d359e433c508efd4585a449b41cdcf60d6c65e5b3aa79cac6c1cbe1f852",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/started.json": {
+      "sha256": "ae05447d23df220699f25edd88205cb287ae098136a5d9d5efba480d35cedb4f",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/result.json": {
+      "sha256": "7ce251ea2e611178d356aa54358360b693fa779fcc3317b200f388590e19775a",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/results.json": {
+      "sha256": "366d9811c75a86bee31981bdbaed90eec00a24fe1eeeea6ed7d319ad2190339c",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/output.log": {
+      "sha256": "40bf07f657ba835431190a463a55dfd5798642f403be81efce5d9e351f1820d3",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/started.json": {
+      "sha256": "90ae9483322e8374e52eeec29553309c1c18b597099c223e9b22d4502b1ede99",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/result.json": {
+      "sha256": "1e198c8177e4650e620af16a959ba53924b7356dda969ffa318558e950d7a5a2",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/results.json": {
+      "sha256": "64746297003c500ff61272acdb6328cc5c33410bb985ca8aaa9ef190f72cd80f",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/output.log": {
+      "sha256": "3c6ea7eb61ddc1282adc5a9cc740cca13b19fa064fdc2ed53d80a27c68ca20c1",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-normal-v16-01/started.json": {
+      "sha256": "110ff29560372f47f6df479b89cecb8c211a515a47ed0443c3ce53c0308ef852",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-normal-v16-01/result.json": {
+      "sha256": "3c2129cef77ef6914d665938c137e01db7c17cbbe440dd8b821acaf99b9ddc22",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-normal-v16-01/tests.jsonl": {
+      "sha256": "5dd39b9ec6ed4cb4990337ba35d1194259c78f48a7042ef859b41dcb05f6e8e8",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-race-v16-01/started.json": {
+      "sha256": "f29955a3f3c3d783cbdc5275654c83cd09d524b71bb9a623a5c2a9a0cbc1165d",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-race-v16-01/result.json": {
+      "sha256": "85078914fd957ef4836c17a1954cff329e4e083bdd1a46801aea07c47d0ab0cf",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-race-v16-01/tests.jsonl": {
+      "sha256": "ef7daca07c64a46d3455e52c96abaa918a3634744983a4402f8498f4353da65d",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.json": {
+      "sha256": "bf9fa963e44a90af50ed51e258cf50434923a9a5820846f61c688c4bf0df7fa2",
+      "mode": 384
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.log": {
+      "sha256": "699a2e82527ffae908fbec8d7471ce7b94047f19b914d9ca40fe3a27094fc5c7",
+      "mode": 420
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/.next/BUILD_ID": {
+      "sha256": "a426a8eea75e938519db2150f43216d78a3352780795a3eb079334a166cd3dde",
+      "mode": 420
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/.next/routes-manifest.json": {
+      "sha256": "a9607702d8f5cf575a2b037647ba956489f1fcc1f0bc5fed0c4d9f844a7da385",
+      "mode": 420
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/.next/required-server-files.json": {
+      "sha256": "b935a955b430fa564c64b6a60568b1ae94a0ca1005c9658f95252dd006b3cd79",
+      "mode": 420
+    }
+  },
+  "before_record_sha256": "814396093e271dbc1609062d8e88d1a30c05973f59b2f34a2c9e392c914667a3",
+  "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on-release.log",
+  "log_sha256": "6f8a2c33b0e65975f83d77715f6c800887a80254e0ae718e833e181bf46783e9",
+  "ON_DB_env_proof_next_and_raw_retained": true,
+  "all_OFF_C1_V16_inputs_and_evidence_conserved": true,
+  "unrelated_renderer75467_and_default_services_touched": false,
+  "new_probe_build_test_or_auditor": false,
+  "task6_started": false,
+  "knowledge_allocated": 0,
+  "real_Provider_calls": 0
+}

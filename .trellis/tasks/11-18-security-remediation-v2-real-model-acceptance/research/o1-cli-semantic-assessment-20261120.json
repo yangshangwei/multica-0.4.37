@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "case": "O1-other-hold",
+  "sample": "direct-real-o1-01",
+  "evidence_type": "real-model-official-cli-direct",
+  "reviewer": "independent-cli-review",
+  "reviewed_at": "2026-11-20T05:55:45.410756+00:00",
+  "frozen_requirement_verdict": "proved-in-this-sample",
+  "automatic_platform_criteria": {
+    "all_four_runs_complete": true,
+    "comment_identity_and_scope": true,
+    "exact_role_task_counts": true,
+    "issue_in_review": true,
+    "no_extra_workspace_issue": true,
+    "owner_releases_new_and_unchanged": true,
+    "restricted_reviewer_result_dispatch_inert": true,
+    "roster_and_config_unchanged": true
+  },
+  "criteria": [
+    {
+      "step": "O1.1",
+      "passed": true,
+      "evidence": "Leader G1 identifies other/hold/unknown with named owner, evidence gaps and exact security reviewer. Actual reviewer comments on original gate with capability suppression; task count unchanged after restricted result. Report grounded in frozen embedded JSON, explicit missing-file/unknown-commit limit, no download or safety claim."
+    },
+    {
+      "step": "O1.2",
+      "passed": true,
+      "evidence": "Owner replies without mention under agent-rooted gate; server creates plain leader task without protocol/squad body. Model only explains valid release route, says no approval; issue stays in_progress and no new delegation is queued."
+    },
+    {
+      "step": "O1.3",
+      "passed": true,
+      "evidence": "Root read actual report before private permit, owner posts fresh no-mention top-level decision, revision1 and later timestamp. Model reads author/source/revision/order, accepts six decisions, explicit reason and12-04 review date; closes to in_review with no implementer/verifier and no risk-fixed claim."
+    }
+  ],
+  "identities": {
+    "issue_id": "01a1f76a-a4e9-7c21-9a4b-ea8ec66d8734",
+    "owner_id": "145c9a88-ba1b-4583-9ac9-ec750c851342",
+    "gate_comment_id": "01a1f771-72ec-7ae1-b491-501efc6cab9d",
+    "review_comment_id": "01a1f778-8826-7b98-8c29-5b5a325b5e65",
+    "review_source_task_id": "01a1f771-741b-71ad-a8d0-fc9f677e0918",
+    "invalid_reply_id": "01a1f779-2faf-77e3-bca9-d6167ce86d80",
+    "plain_explanation_id": "01a1f77a-f540-70e2-8c27-116437ff8d09",
+    "hold_release_id": "01a1f77e-0f18-7887-a56e-657484bb7001",
+    "closing_comment_id": "01a1f782-3077-7a8b-8a4f-60b5189b086c"
+  },
+  "filesystem_review": "Four native transports completed with valid terminal, AGENTS unchanged, no session-retention failure; actual file changes limited to scratch comment markdown. All broker requests in this sample completed without refusal; no external access or source modifications observed.",
+  "platform_review": "Exactly2squadleader tasks+1plainleadertask+1restrictedreviewer, allcompleted; 6comments originalauthor/source/revision1; only expected issue lifecycle/agents updated_at/subscription/comments/receipt/activity changes, no member/squad config drift or extraissue.",
+  "limits": [
+    "Single synthetic other-route hold sample; no repaired artifact security claim",
+    "Embedded source JSON exposure, not independent artifact/file acquisition",
+    "No C1/D1, G2, code patch or real production behavior proven",
+    "Official CLI direct seam only, not production app-server backend"
+  ],
+  "evidence_sha256": {
+    "final.json": "4077ca87b57d263a4fd664e4d4a5cbe775f0befee20001ed0e08f620c6d38457",
+    "O1-workspace-diff.json": "c65dee8118ed22431eccd3e07b11d89346133da773e9b3d5a78a9fb9b7862b2e",
+    "O1-verdict.json": "ba434fc6ced125c743cb02b3b32202c140faed6f008a330b02ac3ff11122b34c",
+    "http.jsonl": "64a352faffa7a1188b081700079552eda216068f9afc96429c4ba8388430a5bd",
+    "human-hold-pending.json": "f00674465027f48e8b2c961e43351b7cfd6ad3af01c7d96b68327533c3291500",
+    "human-hold-approved.json": "e1dbfc1aeab7af726bc839dcc47171a40eede8908a0a685d30498490f199b279",
+    "O1-human-decisions.json": "101d6ce01845fad5e17c20e33598b0134d7cbbe2ab2fe77f3c8dd8c45bf7bc11"
+  }
+}

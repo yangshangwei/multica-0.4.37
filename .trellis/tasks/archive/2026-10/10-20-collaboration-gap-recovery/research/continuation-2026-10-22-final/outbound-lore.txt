@@ -1,0 +1,14 @@
+Prevent relayed chat replies from bypassing private collaboration delivery
+
+A relayed WeCom reply could reach its live sender without validating the original task delivery, session, input origin and active workspace. Recheck those facts before text or attachment access; missing or mismatched identity terminates without wire work, while a transient read fault retains the same bounded retry.
+
+Ordinary relay fixtures now carry their real provenance. Local tests cover all existing plugin/IM text, failure, stream, relay, typing and attachment-field exits with private sentinels and ordinary positives. Text-only adapters retain their current capability boundary.
+
+Constraint: Preserve shared working-tree changes and production rollout gates; no external provider or IM account
+Rejected: Trust a live socket or mutable chat binding | neither proves the exact immutable task delivery
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Directive: Revalidate reply identity before wire or media; keep pre-wire retry distinct from attempted-write uncertainty
+Tested: Current five-package race238/414 plus Redis3/3; exact HEAD plus nine files33/97 zero skips; current go vet; independent full AC84 review
+Not-tested: Commercial IM/provider accounts, ordinary relayed MessageID attachment association beyond collaboration-private scope, installed old clients, complete monolithic pipeline

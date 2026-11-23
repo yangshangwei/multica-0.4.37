@@ -1,0 +1,1123 @@
+{
+  "mode": "final-focus-integration",
+  "fixture": "Production build of original shared components/CSS/locales, synthetic API and memory StorageAdapter",
+  "provenance": {
+    "mode": "final-focus-integration",
+    "output": "/tmp/collaboration-create-polish-final-focus-integration-64660",
+    "builtAt": "2026-11-07T14:23:38.455Z",
+    "buildPid": 64660,
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "sources": [
+      {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "469f21843f5ed126907c49c328b20087a75be6239ff9cdf4cde320277d10504c"
+      },
+      {
+        "path": "packages/views/collaboration/creation-form.test.tsx",
+        "sha256": "a441c855469be6629946a2f7f2385f1da0d93290101d5cc9aeac36ae2f6519b1"
+      },
+      {
+        "path": "packages/views/collaboration/account-picker.tsx",
+        "sha256": "047eb23f902b6fef30573e4e571290d80fc59deb831a5310efc613d066f8257e"
+      },
+      {
+        "path": "packages/views/collaboration/attachment-picker.tsx",
+        "sha256": "d909037eb0910954168c7ef7710e0ca6466f5fa5ab7cbe0138bb2f43c56c70c8"
+      },
+      {
+        "path": "packages/views/collaboration/field-inputs.tsx",
+        "sha256": "823c7a6d1898eea6b85f39ff0b103fdec32b8858d70f85200c3f811049967987"
+      },
+      {
+        "path": "packages/views/collaboration/form-styles.ts",
+        "sha256": "fc42e560df3ce9a76db383e586a3a456f8c5e2c3596e7c58486452530ba74e8f"
+      },
+      {
+        "path": "packages/views/collaboration/focus.ts",
+        "sha256": "b9e0e438e5afcd5778e39b39991bdd49ff9b2bddb7af3c46f818083627fe4870"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.tsx",
+        "sha256": "7ae19a5d2e4ea1d3c94caf29187f0a256dacb5bdfaf46a545acd432db0e8d6a7"
+      },
+      {
+        "path": "packages/views/locales/en/collaboration.json",
+        "sha256": "14686a1b176b3e6a75f00592d818104c848419f6e05f0a751b1323c110c5c94a"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "sha256": "66670fb842dc2d81655a0dc911c4c3daf2d9208543c1ef84ee89bb67d1c2f93d"
+      },
+      {
+        "path": "packages/ui/styles/tokens.css",
+        "sha256": "0ac7c9603d5bd945f26a46ebe6d3ea42594a45acadf8e88a9300898ce968dc3c"
+      },
+      {
+        "path": "packages/ui/styles/base.css",
+        "sha256": "c01e09bc563ff342966c1edfc0de756eff288ba4907680fd1c89e30748a6ab82"
+      },
+      {
+        "path": "packages/ui/components/ui/dialog.tsx",
+        "sha256": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf"
+      },
+      {
+        "path": "packages/ui/components/ui/input.tsx",
+        "sha256": "7119bac8d69289dbf6c0fe81df25ff5102a474d98f8a7ebf05ae551f969f9749"
+      },
+      {
+        "path": "packages/ui/components/ui/textarea.tsx",
+        "sha256": "16c7355c309cf87ed3dcbd35d98fda8490cc0525d4e4d05534b01d0e3b3d385c"
+      },
+      {
+        "path": "packages/ui/components/ui/button.tsx",
+        "sha256": "132669be5d65af6b27bb492b5237b90c27c2869227251efc65a1d1f9b174da28"
+      },
+      {
+        "path": "packages/ui/components/ui/popover.tsx",
+        "sha256": "46d8d14a5637d48f6342f011027c2ac6e9e8cc53f6f4bbc41b633a773fd506e8"
+      },
+      {
+        "path": "packages/views/modals/create-issue.tsx",
+        "sha256": "16f154a27dc64ecd435b40d560a076546b7c90c27f0571e95d2f75b90b676b70"
+      },
+      {
+        "path": ".trellis/tasks/11-07-collaboration-create-polish/research/preview/main.tsx",
+        "sha256": "71fb32502e69d6874404d2975a53703db310bb59f70c70fb7d8515d4ca656b0f"
+      },
+      {
+        "path": ".trellis/tasks/11-07-collaboration-create-polish/research/preview/verify.mjs",
+        "sha256": "34c0f2045d9d903ab354fe8601dc7a3c50ce313f7008dc334ca850a64a93360e"
+      },
+      {
+        "path": ".trellis/tasks/11-07-collaboration-create-polish/research/preview/build.mjs",
+        "sha256": "4ac171a94ab3fe51f4fda5cf68f295169979b642b6a94fdce24962fe9364c165"
+      }
+    ]
+  },
+  "driverPid": 64793,
+  "startedAt": "2026-11-07T14:23:51.707Z",
+  "scenarios": {
+    "attachment-focus-light": {
+      "chooserCancelFocus": true,
+      "requestCountAfterCancel": 0,
+      "cancelFocus": {
+        "tag": "BUTTON",
+        "text": "Attach files",
+        "role": null,
+        "disabled": false,
+        "body": false
+      },
+      "cancelTriggerFocused": true,
+      "cancelTrace": [
+        {
+          "type": "before-cancel-focus",
+          "at": 1091.4000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1096.9000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1100.4000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "cancel-click-capture",
+          "at": 1101.0999999940395,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1101.7000000178814,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1108.9000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": false,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        }
+      ],
+      "recoveryFocus": true,
+      "recoveryGeometry": {
+        "width": 112.0625,
+        "height": 44,
+        "top": 411.59375,
+        "bottom": 455.59375,
+        "left": 36,
+        "right": 148.0625,
+        "visible": true
+      },
+      "recoveryPaint": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60.6% .016 285.938)",
+        "ring": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "background": [
+          251,
+          251,
+          251,
+          255
+        ],
+        "compositedRing": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "ratio": 3.7261186965011373,
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+        "borderColor": "oklch(0.606 0.016 285.938)",
+        "ringPresent": true,
+        "outlinePresent": false,
+        "bottomBorderPresent": false,
+        "bottomBorderWidth": "1px",
+        "bottomBorderColor": "oklch(0.606 0.016 285.938)",
+        "effectiveOpacity": 1,
+        "indicatorPainted": true
+      },
+      "retryFocus": true
+    },
+    "attachment-focus-dark": {
+      "chooserCancelFocus": true,
+      "requestCountAfterCancel": 0,
+      "cancelFocus": {
+        "tag": "BUTTON",
+        "text": "Attach files",
+        "role": null,
+        "disabled": false,
+        "body": false
+      },
+      "cancelTriggerFocused": true,
+      "cancelTrace": [
+        {
+          "type": "before-cancel-focus",
+          "at": 1032.5,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1037.5,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1040.6000000238419,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "cancel-click-capture",
+          "at": 1041.2000000178814,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1041.6000000238419,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1046.7000000178814,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": false,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        }
+      ],
+      "recoveryFocus": true,
+      "recoveryGeometry": {
+        "width": 112.0625,
+        "height": 44,
+        "top": 411.59375,
+        "bottom": 455.59375,
+        "left": 36,
+        "right": 148.0625,
+        "visible": true
+      },
+      "recoveryPaint": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60% .015 286.067)",
+        "ring": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "background": [
+          17,
+          17,
+          20,
+          255
+        ],
+        "compositedRing": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "ratio": 4.756584738536813,
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+        "borderColor": "oklch(0.6 0.015 286.067)",
+        "ringPresent": true,
+        "outlinePresent": false,
+        "bottomBorderPresent": false,
+        "bottomBorderWidth": "1px",
+        "bottomBorderColor": "oklch(0.6 0.015 286.067)",
+        "effectiveOpacity": 1,
+        "indicatorPainted": true
+      },
+      "retryFocus": true
+    },
+    "native-enter-and-browser-composition": {
+      "duringCompositionPosts": 0,
+      "postCount": 1,
+      "input": {
+        "source_workspace_id": "00000000-0000-4000-8000-000000000002",
+        "title": "Native Enter proof中文",
+        "description": "Plain description retained",
+        "handler_user_id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be",
+        "ai_policy": "assisted"
+      },
+      "finalTitle": "Native Enter proof中文",
+      "caveat": "Chromium CDP composition; no physical OS IME tested"
+    },
+    "english-320-empty-light": {
+      "sourceTextFit": {
+        "needed": 83.50189208984375,
+        "actual": 212
+      },
+      "cancel": {
+        "width": 67.359375,
+        "height": 44,
+        "top": 483.59375,
+        "bottom": 527.59375,
+        "left": 37.96875,
+        "right": 105.328125,
+        "visible": true
+      },
+      "submit": {
+        "width": 172.671875,
+        "height": 44,
+        "top": 483.59375,
+        "bottom": 527.59375,
+        "left": 111.328125,
+        "right": 284,
+        "visible": true
+      },
+      "source": {
+        "width": 212,
+        "height": 44,
+        "top": 40.40625,
+        "bottom": 84.40625,
+        "left": 36,
+        "right": 248,
+        "visible": true
+      },
+      "body": {
+        "width": 288,
+        "height": 280.1875,
+        "top": 118.40625,
+        "bottom": 398.59375,
+        "left": 16,
+        "right": 304,
+        "visible": true
+      },
+      "initialFocus": {
+        "tag": "INPUT",
+        "role": null,
+        "id": "_r_e_-title"
+      },
+      "sourceLabel": "产品研发",
+      "titleFocused": true,
+      "hintInitially": {
+        "width": 169.109375,
+        "height": 16,
+        "top": 122.40625,
+        "bottom": 138.40625,
+        "left": 72.703125,
+        "right": 241.8125,
+        "visible": true
+      },
+      "help": {
+        "width": 248,
+        "height": 32,
+        "top": 302.40625,
+        "bottom": 334.40625,
+        "left": 36,
+        "right": 284,
+        "visible": true
+      },
+      "viewportOverflow": false,
+      "hintScrolled": {
+        "width": 169.109375,
+        "height": 16,
+        "top": 122.40625,
+        "bottom": 138.40625,
+        "left": 72.703125,
+        "right": 241.8125,
+        "visible": true
+      }
+    },
+    "english-320-empty-dark": {
+      "sourceTextFit": {
+        "needed": 83.50189208984375,
+        "actual": 212
+      },
+      "cancel": {
+        "width": 67.359375,
+        "height": 44,
+        "top": 483.59375,
+        "bottom": 527.59375,
+        "left": 37.96875,
+        "right": 105.328125,
+        "visible": true
+      },
+      "submit": {
+        "width": 172.671875,
+        "height": 44,
+        "top": 483.59375,
+        "bottom": 527.59375,
+        "left": 111.328125,
+        "right": 284,
+        "visible": true
+      },
+      "source": {
+        "width": 212,
+        "height": 44,
+        "top": 40.40625,
+        "bottom": 84.40625,
+        "left": 36,
+        "right": 248,
+        "visible": true
+      },
+      "body": {
+        "width": 288,
+        "height": 280.1875,
+        "top": 118.40625,
+        "bottom": 398.59375,
+        "left": 16,
+        "right": 304,
+        "visible": true
+      },
+      "initialFocus": {
+        "tag": "INPUT",
+        "role": null,
+        "id": "_r_e_-title"
+      },
+      "sourceLabel": "产品研发",
+      "titleFocused": true,
+      "hintInitially": {
+        "width": 169.109375,
+        "height": 16,
+        "top": 122.40625,
+        "bottom": 138.40625,
+        "left": 72.703125,
+        "right": 241.8125,
+        "visible": true
+      },
+      "help": {
+        "width": 248,
+        "height": 32,
+        "top": 302.40625,
+        "bottom": 334.40625,
+        "left": 36,
+        "right": 284,
+        "visible": true
+      },
+      "viewportOverflow": false,
+      "hintScrolled": {
+        "width": 169.109375,
+        "height": 16,
+        "top": 122.40625,
+        "bottom": 138.40625,
+        "left": 72.703125,
+        "right": 241.8125,
+        "visible": true
+      }
+    },
+    "delayed-source-focus-light": {
+      "heldFrames": 2,
+      "beforeFrameSourceFocus": true,
+      "afterFrameSourceFocus": true,
+      "selectedValue": "00000000-0000-4000-8000-000000000003",
+      "touchBackgroundFocusContained": true,
+      "delayedKnownTitleFocused": true,
+      "emptySourceFocused": true,
+      "closeReturnsOpener": true,
+      "method": "Real Chromium DOM/touch with delayed mock source response; only one subcase temporarily defers rAF to make the initial-focus race deterministic, then restores native scheduling"
+    },
+    "delayed-source-focus-dark": {
+      "heldFrames": 2,
+      "beforeFrameSourceFocus": true,
+      "afterFrameSourceFocus": true,
+      "selectedValue": "00000000-0000-4000-8000-000000000003",
+      "touchBackgroundFocusContained": true,
+      "delayedKnownTitleFocused": true,
+      "emptySourceFocused": true,
+      "closeReturnsOpener": true,
+      "method": "Real Chromium DOM/touch with delayed mock source response; only one subcase temporarily defers rAF to make the initial-focus race deterministic, then restores native scheduling"
+    }
+  },
+  "diagnostics": {
+    "attachment-focus-light": {
+      "chooserCancelFocus": true,
+      "requestCountAfterCancel": 0,
+      "cancelFocus": {
+        "tag": "BUTTON",
+        "text": "Attach files",
+        "role": null,
+        "disabled": false,
+        "body": false
+      },
+      "cancelTriggerFocused": true,
+      "cancelTrace": [
+        {
+          "type": "before-cancel-focus",
+          "at": 1091.4000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1096.9000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1100.4000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "cancel-click-capture",
+          "at": 1101.0999999940395,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1101.7000000178814,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1108.9000000059605,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": false,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        }
+      ],
+      "recoveryFocus": true,
+      "recoveryGeometry": {
+        "width": 112.0625,
+        "height": 44,
+        "top": 411.59375,
+        "bottom": 455.59375,
+        "left": 36,
+        "right": 148.0625,
+        "visible": true
+      },
+      "recoveryPaint": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60.6% .016 285.938)",
+        "ring": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "background": [
+          251,
+          251,
+          251,
+          255
+        ],
+        "compositedRing": [
+          129,
+          129,
+          139,
+          255
+        ],
+        "ratio": 3.7261186965011373,
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.606 0.016 285.938) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "outline": "oklab(0.705 0.00415142 -0.0144141 / 0.5) none 0px",
+        "borderColor": "oklch(0.606 0.016 285.938)",
+        "ringPresent": true,
+        "outlinePresent": false,
+        "bottomBorderPresent": false,
+        "bottomBorderWidth": "1px",
+        "bottomBorderColor": "oklch(0.606 0.016 285.938)",
+        "effectiveOpacity": 1,
+        "indicatorPainted": true
+      },
+      "retryFocus": true
+    },
+    "attachment-focus-dark": {
+      "chooserCancelFocus": true,
+      "requestCountAfterCancel": 0,
+      "cancelFocus": {
+        "tag": "BUTTON",
+        "text": "Attach files",
+        "role": null,
+        "disabled": false,
+        "body": false
+      },
+      "cancelTriggerFocused": true,
+      "cancelTrace": [
+        {
+          "type": "before-cancel-focus",
+          "at": 1032.5,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1037.5,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1040.6000000238419,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "cancel-click-capture",
+          "at": 1041.2000000178814,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Cancel upload"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "focusin",
+          "at": 1041.6000000238419,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": true,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        },
+        {
+          "type": "mutation",
+          "at": 1046.7000000178814,
+          "active": {
+            "tag": "BUTTON",
+            "role": null,
+            "text": "Attach files"
+          },
+          "cancelPresent": false,
+          "trigger": {
+            "connected": true,
+            "disabled": false,
+            "ariaDisabled": "true",
+            "tabIndex": 0
+          }
+        }
+      ],
+      "recoveryFocus": true,
+      "recoveryGeometry": {
+        "width": 112.0625,
+        "height": 44,
+        "top": 411.59375,
+        "bottom": 455.59375,
+        "left": 36,
+        "right": 148.0625,
+        "visible": true
+      },
+      "recoveryPaint": {
+        "focusVisible": true,
+        "ringCSS": "oklch(60% .015 286.067)",
+        "ring": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "background": [
+          17,
+          17,
+          20,
+          255
+        ],
+        "compositedRing": [
+          127,
+          127,
+          137,
+          255
+        ],
+        "ratio": 4.756584738536813,
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.6 0.015 286.067) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "outline": "oklab(0.552 0.00439355 -0.015385 / 0.5) none 0px",
+        "borderColor": "oklch(0.6 0.015 286.067)",
+        "ringPresent": true,
+        "outlinePresent": false,
+        "bottomBorderPresent": false,
+        "bottomBorderWidth": "1px",
+        "bottomBorderColor": "oklch(0.6 0.015 286.067)",
+        "effectiveOpacity": 1,
+        "indicatorPainted": true
+      },
+      "retryFocus": true
+    },
+    "native-enter-and-browser-composition": {
+      "duringCompositionPosts": 0,
+      "postCount": 1,
+      "input": {
+        "source_workspace_id": "00000000-0000-4000-8000-000000000002",
+        "title": "Native Enter proof中文",
+        "description": "Plain description retained",
+        "handler_user_id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be",
+        "ai_policy": "assisted"
+      },
+      "finalTitle": "Native Enter proof中文",
+      "caveat": "Chromium CDP composition; no physical OS IME tested"
+    },
+    "english-320-empty-light": {
+      "sourceTextFit": {
+        "needed": 83.50189208984375,
+        "actual": 212
+      },
+      "cancel": {
+        "width": 67.359375,
+        "height": 44,
+        "top": 483.59375,
+        "bottom": 527.59375,
+        "left": 37.96875,
+        "right": 105.328125,
+        "visible": true
+      },
+      "submit": {
+        "width": 172.671875,
+        "height": 44,
+        "top": 483.59375,
+        "bottom": 527.59375,
+        "left": 111.328125,
+        "right": 284,
+        "visible": true
+      },
+      "source": {
+        "width": 212,
+        "height": 44,
+        "top": 40.40625,
+        "bottom": 84.40625,
+        "left": 36,
+        "right": 248,
+        "visible": true
+      },
+      "body": {
+        "width": 288,
+        "height": 280.1875,
+        "top": 118.40625,
+        "bottom": 398.59375,
+        "left": 16,
+        "right": 304,
+        "visible": true
+      },
+      "initialFocus": {
+        "tag": "INPUT",
+        "role": null,
+        "id": "_r_e_-title"
+      },
+      "sourceLabel": "产品研发",
+      "titleFocused": true,
+      "hintInitially": {
+        "width": 169.109375,
+        "height": 16,
+        "top": 122.40625,
+        "bottom": 138.40625,
+        "left": 72.703125,
+        "right": 241.8125,
+        "visible": true
+      },
+      "help": {
+        "width": 248,
+        "height": 32,
+        "top": 302.40625,
+        "bottom": 334.40625,
+        "left": 36,
+        "right": 284,
+        "visible": true
+      },
+      "viewportOverflow": false,
+      "hintScrolled": {
+        "width": 169.109375,
+        "height": 16,
+        "top": 122.40625,
+        "bottom": 138.40625,
+        "left": 72.703125,
+        "right": 241.8125,
+        "visible": true
+      }
+    },
+    "english-320-empty-dark": {
+      "sourceTextFit": {
+        "needed": 83.50189208984375,
+        "actual": 212
+      },
+      "cancel": {
+        "width": 67.359375,
+        "height": 44,
+        "top": 483.59375,
+        "bottom": 527.59375,
+        "left": 37.96875,
+        "right": 105.328125,
+        "visible": true
+      },
+      "submit": {
+        "width": 172.671875,
+        "height": 44,
+        "top": 483.59375,
+        "bottom": 527.59375,
+        "left": 111.328125,
+        "right": 284,
+        "visible": true
+      },
+      "source": {
+        "width": 212,
+        "height": 44,
+        "top": 40.40625,
+        "bottom": 84.40625,
+        "left": 36,
+        "right": 248,
+        "visible": true
+      },
+      "body": {
+        "width": 288,
+        "height": 280.1875,
+        "top": 118.40625,
+        "bottom": 398.59375,
+        "left": 16,
+        "right": 304,
+        "visible": true
+      },
+      "initialFocus": {
+        "tag": "INPUT",
+        "role": null,
+        "id": "_r_e_-title"
+      },
+      "sourceLabel": "产品研发",
+      "titleFocused": true,
+      "hintInitially": {
+        "width": 169.109375,
+        "height": 16,
+        "top": 122.40625,
+        "bottom": 138.40625,
+        "left": 72.703125,
+        "right": 241.8125,
+        "visible": true
+      },
+      "help": {
+        "width": 248,
+        "height": 32,
+        "top": 302.40625,
+        "bottom": 334.40625,
+        "left": 36,
+        "right": 284,
+        "visible": true
+      },
+      "viewportOverflow": false,
+      "hintScrolled": {
+        "width": 169.109375,
+        "height": 16,
+        "top": 122.40625,
+        "bottom": 138.40625,
+        "left": 72.703125,
+        "right": 241.8125,
+        "visible": true
+      }
+    },
+    "delayed-source-focus-light": {
+      "heldFrames": 2,
+      "beforeFrameSourceFocus": true,
+      "afterFrameSourceFocus": true,
+      "selectedValue": "00000000-0000-4000-8000-000000000003",
+      "touchBackgroundFocusContained": true,
+      "delayedKnownTitleFocused": true,
+      "emptySourceFocused": true,
+      "closeReturnsOpener": true,
+      "method": "Real Chromium DOM/touch with delayed mock source response; only one subcase temporarily defers rAF to make the initial-focus race deterministic, then restores native scheduling"
+    },
+    "delayed-source-focus-dark": {
+      "heldFrames": 2,
+      "beforeFrameSourceFocus": true,
+      "afterFrameSourceFocus": true,
+      "selectedValue": "00000000-0000-4000-8000-000000000003",
+      "touchBackgroundFocusContained": true,
+      "delayedKnownTitleFocused": true,
+      "emptySourceFocused": true,
+      "closeReturnsOpener": true,
+      "method": "Real Chromium DOM/touch with delayed mock source response; only one subcase temporarily defers rAF to make the initial-focus race deterministic, then restores native scheduling"
+    }
+  },
+  "failures": [],
+  "pageErrors": [],
+  "blockedExternalRequests": [],
+  "listener": {
+    "origin": "http://127.0.0.1:53620",
+    "pid": 64793,
+    "owned": true
+  },
+  "engine": "Playwright Chromium 145.0.7632.6",
+  "ownedBrowserProcesses": [
+    {
+      "id": 64796,
+      "type": "browser"
+    },
+    {
+      "id": 64815,
+      "type": "GPU"
+    },
+    {
+      "id": 64816,
+      "type": "network.mojom.NetworkService"
+    }
+  ],
+  "listenerClosed": true,
+  "browserClosed": true,
+  "finishedAt": "2026-11-07T14:24:09.098Z"
+}

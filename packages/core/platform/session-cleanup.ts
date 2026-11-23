@@ -2,6 +2,10 @@ import type { QueryClient } from "@tanstack/react-query";
 import { resetProjectAccessSession } from "../projects/access";
 import { resetAllRegisteredDrafts } from "../drafts/cleanup-registry";
 import { clearAdminControlDrafts } from "../admin/operation-draft";
+import { clearCollaborationDrafts } from "../collaboration/draft";
+import { clearCompletionDrafts } from "../issues/completion-draft";
+import { resetIterationParticipationStores } from "../issues/stores/iteration-participation-store";
+import { useModalStore } from "../modals";
 import type { StorageAdapter } from "../types/storage";
 import type { Workspace } from "../types";
 import { workspaceKeys } from "../workspace/queries";
@@ -40,8 +44,12 @@ export function clearClientSessionData(
   // reload the page, so the singletons would otherwise surface the previous
   // user's draft after the next login.
   resetProjectAccessSession(queryClient);
+  useModalStore.getState().cancelWorkspaceIssueCreation();
   resetAllRegisteredDrafts();
+  resetIterationParticipationStores();
   clearAdminControlDrafts(storage);
+  clearCollaborationDrafts(storage);
+  clearCompletionDrafts(storage);
 
   // Then clear workspace-scoped storage, BEFORE clearing the React Query cache
   // (which holds the workspace list). Otherwise per-workspace drafts/chat/etc

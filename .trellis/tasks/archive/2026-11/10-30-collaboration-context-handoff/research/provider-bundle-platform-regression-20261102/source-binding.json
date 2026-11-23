@@ -1,0 +1,15 @@
+{
+  "base": "f634cf48016952164732843a66d9f53ba8b506f9",
+  "code_commit": "91113cbebca4e08423172e86f26db5307784e215",
+  "changed_product_root_paths": [
+    "server/internal/daemon/collaborationrun/provider_bundle_test.go"
+  ],
+  "production_changes": false,
+  "test_file_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+  "production_sha256": {
+    "server/internal/daemon/collaborationrun/provider_bundle.go": "6226850f8577faeb3ed35a921671198e75821596e5351e063a4de4cab1ef9c12",
+    "server/internal/daemon/collaborationrun/provider_bundle_unix.go": "096e1303ad3addcdc587837b8ce1107d0bcf6c24078d18fd5ea1dfd1f7dfeabe",
+    "server/internal/daemon/collaborationrun/provider_bundle_unsupported.go": "b300a765bf08ff27d9cadaa48dd9fa27f2e0e87e715290cb0da96961bd047b92"
+  },
+  "tested_patch_sha256": "33c872bea520e48aaafed762ea9a100cd9a01dea61f313c3d7ff33fe0300bb70"
+}

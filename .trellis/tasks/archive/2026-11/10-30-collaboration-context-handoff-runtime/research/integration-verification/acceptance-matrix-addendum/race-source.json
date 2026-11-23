@@ -1,0 +1,27 @@
+{
+  "captured_at": "2026-10-31T19:30:59.974588+00:00",
+  "head": "765ab186a222df1e0135f311d081a79779d51726",
+  "database": "multica_runtime_integrate_20261031_f2478725",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "go": "go version go1.27.0 darwin/arm64",
+  "test_sha256": {
+    "server/internal/service/collaboration_checkpoint_authority_matrix_test.go": "2adea8eadd3d6da5ba12a0b6e296b4c0fc0d92ba6f1a89673b5532681f4bd2e8",
+    "server/internal/service/collaboration_wakeup_boundary_test.go": "073822db3b3e130259b572b53e7b4562c477a057a6e4485937d3a1c08e5d412e"
+  },
+  "git_status": " M .trellis/tasks/10-24-cross-platform-collaboration-runtime/research/s6-delivery-matrix-2026-10-26.md\n M .trellis/tasks/10-30-collaboration-context-handoff-runtime/implement.md\n M .trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json\n M .trellis/tasks/10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md\n M .trellis/tasks/10-30-collaboration-context-handoff/implement.md\n M .trellis/tasks/10-30-collaboration-context-handoff/prd.md\n M .trellis/tasks/10-30-collaboration-context-handoff/task.json\n M .trellis/workspace/artisan/index.md\n M .trellis/workspace/artisan/journal-2.md\n?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/real-model-acceptance-plan.md\n?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-coordination-2026-10-31/acceptance-matrix.status.json\n?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/acceptance-matrix-addendum/\n?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/remaining-acceptance-addendum/\n?? .trellis/tasks/10-30-collaboration-context-handoff/acceptance-2026-11-01.json\n?? .trellis/tasks/10-30-collaboration-context-handoff/acceptance-2026-11-01.md\n?? server/internal/service/collaboration_checkpoint_authority_matrix_test.go\n?? server/internal/service/collaboration_wakeup_boundary_test.go\n",
+  "production_diff": "",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(CheckpointAuthorityTransactionOrder|HandoffTwoMembersAndClaimBoundary)$",
+    "-count=1",
+    "-timeout",
+    "5m",
+    "-json"
+  ]
+}

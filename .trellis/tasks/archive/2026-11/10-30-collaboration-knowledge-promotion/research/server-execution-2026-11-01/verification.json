@@ -1,0 +1,147 @@
+{
+  "date": "2026-11-01",
+  "checkout": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "private_env": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+  "go_version": "go1.27.0 darwin/arm64",
+  "source_allowlist": "owned-files.json",
+  "source_hashes": "source-hashes.json",
+  "dependency_hashes": "dependency-hashes.json",
+  "test_inventory": "test-inventory.json",
+  "runs": [
+    {
+      "log": "service-race-complete.jsonl",
+      "log_sha256": "8e4c71ae24c9fc2bc5d91ce43be2a8c26a51a55e03c99a8330cb50f56414b288",
+      "exit_code": 0,
+      "expected_top_level_tests": 37,
+      "missing_tests": [],
+      "counts": {
+        "pass": 60,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "package_seconds": {
+        "github.com/multica-ai/multica/server/internal/service": 21.669
+      }
+    },
+    {
+      "log": "handler-race-final.jsonl",
+      "log_sha256": "2bf9a948c87900c82e610f11aead5abaf4f52bd5c9f7a6d85f667c1ff246415e",
+      "exit_code": 0,
+      "expected_top_level_tests": 6,
+      "missing_tests": [],
+      "counts": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "package_seconds": {
+        "github.com/multica-ai/multica/server/internal/handler": 4.55
+      }
+    },
+    {
+      "log": "protocol-failure-final.jsonl",
+      "log_sha256": "54fbd0c4f350e9cdaef22f51c2dcc851654d78cc2f43d36be73a2af65a38d48d",
+      "exit_code": 0,
+      "expected_top_level_tests": 7,
+      "missing_tests": [],
+      "counts": {
+        "pass": 562,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "package_seconds": {
+        "github.com/multica-ai/multica/server/pkg/protocol": 0.604,
+        "github.com/multica-ai/multica/server/pkg/taskfailure": 0.776
+      }
+    },
+    {
+      "log": "router-final.jsonl",
+      "log_sha256": "f3392415c1c68885ec6afa5b5b1c96e9e6c597b15bcf83ce2b5292fcbaf1fe5b",
+      "exit_code": 0,
+      "expected_top_level_tests": 1,
+      "missing_tests": [],
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "package_seconds": {
+        "github.com/multica-ai/multica/server/cmd/server": 1.2349999999999999
+      }
+    },
+    {
+      "log": "service-regressions.jsonl",
+      "log_sha256": "c9e9ee1baf9a0ef2fd395c76ad028eca0bd0c0ea4bc3a9186afc287a3d0edfc9",
+      "exit_code": 0,
+      "expected_top_level_tests": 0,
+      "missing_tests": [],
+      "counts": {
+        "pass": 41,
+        "fail": 0,
+        "skip": 2
+      },
+      "skipped_tests": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "package_seconds": {
+        "github.com/multica-ai/multica/server/internal/service": 5.896
+      }
+    },
+    {
+      "log": "handler-regressions.jsonl",
+      "log_sha256": "ed70c5b8488d2e6e8f25a8f9bd8c5b55912c68b832f01a06e3b9f8e7ed184250",
+      "exit_code": 0,
+      "expected_top_level_tests": 0,
+      "missing_tests": [],
+      "counts": {
+        "pass": 129,
+        "fail": 0,
+        "skip": 0
+      },
+      "skipped_tests": [],
+      "package_seconds": {
+        "github.com/multica-ai/multica/server/internal/handler": 5.607
+      }
+    }
+  ],
+  "static_checks": [
+    {
+      "command": "go vet ./internal/service ./internal/handler ./pkg/protocol ./pkg/taskfailure",
+      "exit_code": 0
+    },
+    {
+      "command": "go build ./...",
+      "exit_code": 0
+    },
+    {
+      "command": "gofmt -l <all owned Go source files>",
+      "exit_code": 0,
+      "output": "empty"
+    },
+    {
+      "command": "git diff --check -- <owned files>",
+      "exit_code": 0,
+      "output": "empty"
+    }
+  ],
+  "source_unchanged_since_review_freeze": true,
+  "raw_task_json_audit": {
+    "query_pattern": "to_jsonb/row_to_json/json_agg/jsonb_agg in SQL files mentioning agent_task_queue",
+    "match": "autopilot_quota.sql:41 scalar blocked-count update only; no raw task-row JSON conversion found",
+    "go_projection": "A2 generated reserved-column json:- overrides plus TestKnowledgeMetadataDoesNotSerializeThroughOrdinaryTask"
+  },
+  "limits": [
+    "New C2 tests: zero skipped/missing; two existing Redis cache regressions skipped, no REDIS_TEST_URL or installed Redis executable. No shared Redis was used because helper FlushDB is destructive.",
+    "HTTP matrix uses real authenticated handlers and actual WS-to-handler bridge, not a live socket. Production-router test uses NewRouter.",
+    "C2 contains no real Provider invocation; C1/C3/C4 fake input evidence and composite DB+daemon/host integration are separate.",
+    "Feature gate remains false; no G2/production enablement.",
+    "Two early compile-only handler invocations without DATABASE_URL are excluded from acceptance evidence; incident inference and independent safety fix are separate artifacts."
+  ],
+  "remaining_owner": "Main independent review and actual combined server+daemon/host DB acceptance; C4 must close its separate provider-history contract."
+}

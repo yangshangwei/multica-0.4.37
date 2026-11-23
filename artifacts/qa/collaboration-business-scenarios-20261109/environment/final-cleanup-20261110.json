@@ -1,0 +1,54 @@
+{
+  "at": "2026-11-10T00:36:28.980906+08:00",
+  "state": "stopped_database_retained",
+  "database": "multica_qa_biz_20261109_b45ace53198f",
+  "database_retained": true,
+  "knowledge_context": "off",
+  "gate": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": "14"
+  },
+  "binaries": {
+    "api": {
+      "sha256": "0013085372c51d88d406c5e2f760a35b11d0861b6f9d072a0067c583af1f3a16",
+      "matches_allocation": true
+    },
+    "closure-provider": {
+      "sha256": "97f63e3fea2d19f7adcff7c465c0972a1d3e05f0623a75a5b0c7de2bf51c5e48",
+      "matches_allocation": true
+    },
+    "host-daemon": {
+      "sha256": "5704422b35d99128cd5a53f9fc5d05dcacfca727cf9c86059ec81495cdf2d01c",
+      "matches_allocation": true
+    },
+    "host-provider": {
+      "sha256": "67b7140de0e9d7628c86e05ab2c959b4a869d8c1892f52abfe1dd20e84b3a92d",
+      "matches_allocation": true
+    },
+    "memory-provider": {
+      "sha256": "8af163944fd448735142f54a7a94d7bfaede568b6a2fcb8f36b1dc268e2d024a",
+      "matches_allocation": true
+    },
+    "multica": {
+      "sha256": "38c79f5e3b6194548951b28da503177eedb3540431c482b2559cb4d2d510f192",
+      "matches_allocation": true
+    }
+  },
+  "test_sources": {
+    "e2e/collaboration-business-scenarios.spec.ts": {
+      "sha256": "f58d0ab26ac93c9535ab7618354a59b6069b4f0e2869d05dfaa4dddd89e94cea",
+      "matches_snapshot": true
+    },
+    "e2e/fixtures/collaboration-business-scenarios.ts": {
+      "sha256": "14d9be8fd6a6b60a85c8afd1d1b71aaa38744cf6b330c453631b60f98207e0d2",
+      "matches_snapshot": true
+    }
+  },
+  "ports_free": {
+    "api": true,
+    "web": true,
+    "renderer": true
+  }
+}

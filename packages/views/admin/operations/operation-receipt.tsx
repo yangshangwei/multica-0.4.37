@@ -5,7 +5,8 @@ import { useT } from "../../i18n";
 import { AppLink, useNavigation } from "../../navigation";
 import { formatAdminTime } from "../executions/list-controls";
 
-const knownResults = ["cancelled_before_dispatch", "awaiting_daemon_confirmation", "confirmation_unavailable", "already_terminal", "already_cancelled_unverified", "daemon_stopped", "admission_stopped", "admission_accepting", "execution_fence_conflict", "unknown"] as const;
+const knownResults = ["cancelled_before_dispatch", "awaiting_daemon_confirmation", "confirmation_unavailable", "already_terminal", "already_cancelled_unverified", "daemon_stopped", "admission_stopped", "admission_accepting", "execution_fence_conflict",
+  "collaboration_creation_opened", "collaboration_creation_closed", "collaboration_execution_opened", "collaboration_gate_conflict", "unknown"] as const;
 const alertResults = ["alert_acknowledged", "alert_assigned", "alert_closed", "alert_version_conflict", "alert_state_conflict", "alert_assignee_unavailable", "alert_resolution_invalid"] as const;
 function resultKey(code: string): typeof knownResults[number] {
   return knownResults.find(value => value === code) ?? "unknown";
@@ -19,7 +20,8 @@ export function AdminOperationReceipt({ scope, id, initialData, requestKey, deta
   const receipt = query.data;
   const alertResult = alertResults.find(code => code === receipt?.resultCode);
   const alertOperation = receipt && ["alert.acknowledge", "alert.assign", "alert.close"].includes(receipt.kind);
-  const targetListPath = `/admin/${alertOperation ? "alerts" : receipt?.kind === "task.cancel" ? "tasks" : "installations"}`;
+  const gateOperation = receipt?.kind === "collaboration.gate";
+  const targetListPath = `/admin/${alertOperation ? "alerts" : receipt?.kind === "task.cancel" ? "tasks" : gateOperation ? "settings" : "installations"}`;
   // The target's list filters travel through the receipt and back to the target.
   const listParams = adminListParams(nav.searchParams, targetListPath);
   return <section aria-labelledby="operation-receipt-title" className="space-y-4 rounded-md border border-surface-border p-5">
@@ -43,6 +45,7 @@ export function AdminOperationReceipt({ scope, id, initialData, requestKey, deta
         {[[t($ => $.operations.accepted), receipt.acceptedAt], [t($ => $.operations.appliedAt), receipt.appliedAt], [t($ => $.operations.confirmedAt), receipt.confirmedAt], [t($ => $.operations.deadline), receipt.ackDeadline], [t($ => $.operations.updated), receipt.updatedAt]].map(([label, value]) => <div key={label}><dt className="text-muted-foreground">{label}</dt><dd>{value ? <time dateTime={value}>{formatAdminTime(value, nav.searchParams.get("timezone") ?? "UTC")}</time> : t($ => $.operations.unknown)}</dd></div>)}
       </dl>
       {!detail && <AppLink className="inline-flex min-h-11 items-center text-body underline underline-offset-4" href={adminDetailHref(`/admin/operations/${receipt.id}`, targetListPath, listParams)}>{t($ => $.operations.openReceipt)}</AppLink>}
+      {detail && gateOperation && <AppLink className="inline-flex min-h-11 items-center text-body underline underline-offset-4" href={targetListPath}>{t($ => $.operations.back)}</AppLink>}
       {detail && (alertOperation || receipt.kind === "task.cancel" || receipt.kind === "installation.admission") && <AppLink className="inline-flex min-h-11 items-center text-body underline underline-offset-4" href={adminDetailHref(`${targetListPath}/${receipt.targetId}`, targetListPath, listParams)}>{t($ => $.operations.back)}</AppLink>}
     </>}
     <p className="max-w-prose text-caption text-muted-foreground">{t($ => $.operations.manual)}</p>

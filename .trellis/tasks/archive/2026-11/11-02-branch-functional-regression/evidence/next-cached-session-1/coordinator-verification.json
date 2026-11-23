@@ -1,0 +1,63 @@
+{
+  "at": "2026-11-02T08:08:36.903600+00:00",
+  "verifier": "coordinator, separate from implement child and independent native reviewer",
+  "status": "PASS_DIAGNOSTIC_ONLY",
+  "runs": {
+    "next-perf-cached-plan-1": {
+      "status": "PASS_DIAGNOSTIC_ONLY",
+      "artifact_hashes_checked": 34,
+      "mismatches": [],
+      "terminals": {
+        "diagnostic": {
+          "top": 1,
+          "sub": 0,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "run_sha256": "872686610868838348073ba58c97140beaad449e0d74c3be37540bdadec2160a",
+      "verification_sha256": "38409941b8769f7f685b65af41f315794b6044fb8e624db3ef6f707d4f5f6318"
+    },
+    "next-read-semantics-1": {
+      "status": "PASS_DIAGNOSTIC_ONLY",
+      "artifact_hashes_checked": 19,
+      "mismatches": [],
+      "terminals": {
+        "run-handler": {
+          "top": 4,
+          "sub": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "run-service": {
+          "top": 8,
+          "sub": 8,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "run_sha256": "af1c8f345449df4370ae900fee8de934a514d42910fc935b28d8fa5d6265b198",
+      "verification_sha256": "ba96c6ee1f7e1697fe69ffa7f6526882cbed0e6f7ae17fb6b48ab6637a9c61aa"
+    },
+    "next-perf-cached-plan-2": {
+      "status": "PASS_DIAGNOSTIC_ONLY",
+      "artifact_hashes_checked": 37,
+      "mismatches": [],
+      "terminals": {
+        "diagnostic": {
+          "top": 1,
+          "sub": 0,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "run_sha256": "c6f5bafcd10f0320fdae7f91061c6e5865d6dad087f0aff3f1364e27ded2ffe8",
+      "verification_sha256": "23dc5615177ab3223cafdb3c9c038168abe61185346300a58c73545cb5a06a19"
+    }
+  },
+  "typed_result_parity": true,
+  "first_actual_wait_and_new_rc_snapshot": true,
+  "server_error_and_rollback": true,
+  "original_p95_status": "FAIL2171ms>2000ms retained, not rerun",
+  "scope": "Raw command/terminal/hash/source and typed evidence verification; extra no-stat reprepare control executed by coordinator after empty followup notifications; independent review separate"
+}

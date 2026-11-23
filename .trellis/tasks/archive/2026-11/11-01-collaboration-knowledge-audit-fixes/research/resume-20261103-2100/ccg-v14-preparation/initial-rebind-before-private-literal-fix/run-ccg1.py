@@ -1,0 +1,132 @@
+import argparse
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import types
+from urllib.parse import urlsplit
+
+ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+PRIVATE = ROOT / '.omx/private/knowledge-final-gates-v13'
+EXPECTED = 'd0b132fff0c477eb2d744933e13db730240231aa'
+
+def require(condition, message):
+    if not condition:
+        raise RuntimeError(message)
+
+def digest(path):
+    with Path(path).open('rb') as source:
+        return hashlib.file_digest(source, 'sha256').hexdigest()
+
+def write_json(path, value):
+    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(descriptor, 'w') as target:
+        json.dump(value, target, indent=2)
+        target.write('\n')
+
+def admission(gate, permit_path, label):
+    require(re.fullmatch(r'[a-z0-9][a-z0-9._-]*', label), 'Invalid private result label')
+    require(not permit_path.is_symlink(), 'Permit must not be redirected')
+    permit_path = permit_path.resolve()
+    require(permit_path.parent == PRIVATE / 'permissions', 'Permit outside owned directory')
+    permission = json.loads(permit_path.read_text())
+    require(permission.get('ready_to_execute') is True and permission.get('gate') == gate, 'Later root execution permission is required')
+    require(permission.get('root_released_complete_check_resources') is True and permission.get('root_verified_complete_named_inventory') is True,
+            'Complete-check resources and inventory are not cleared by root')
+    require(permission.get('root_verified_fresh_database') is True and permission.get('real_provider_allowed') is False, 'A fresh fake-only database permission is required')
+    require(permission.get('candidate_sha') == EXPECTED and permission.get('runner_sha256') == digest(__file__), 'Runner or candidate differs from root permission')
+    inputs_path = PRIVATE / 'source-inputs.json'
+    require(permission.get('source_inputs_sha256') == digest(inputs_path), 'Source inputs differ from root permission')
+    inputs = json.loads(inputs_path.read_text())
+    require(inputs['candidate_sha'] == EXPECTED and inputs['candidate_root'] == str(ROOT), 'Wrong source candidate')
+    for name, item in inputs['tools'].items():
+        require(digest(item['path']) == item['sha256'], 'Pinned tool changed: ' + name)
+    for name, sha in inputs['source_sha256'].items():
+        require(digest(ROOT / name) == sha, 'Gate source changed: ' + name)
+    audit_spec, review_spec = inputs['audit_module'], inputs['audit_review']
+    require(digest(audit_spec['path']) == audit_spec['sha256'] and digest(review_spec['path']) == review_spec['sha256'], 'Reviewed final source verifier changed')
+    module = types.ModuleType('registered_ccg_final_source_auditor')
+    module.__file__ = audit_spec['path']
+    exec(compile(Path(audit_spec['path']).read_bytes(), audit_spec['path'], 'exec'), module.__dict__)
+    audited = module.audit(ROOT, json.loads(Path(review_spec['path']).read_text()))
+    require(audited['status'] == 'pass' and audited['wholecheck_passed'] is True, 'Actual successful complete check and final source identities are required')
+    raw_temp = Path(permission['temp_directory'])
+    require(not raw_temp.is_symlink(), 'Build temp must not be redirected')
+    temp = raw_temp.resolve()
+    require(str(temp).startswith('/private/tmp/multica-ccg-v14-') and temp.is_dir() and not temp.is_symlink()
+            and temp.stat().st_uid == os.geteuid() and temp.stat().st_mode & 0o777 == 0o700, 'Missing root-allocated isolated build temp')
+    require(subprocess.run(['git', '-C', str(temp), 'rev-parse', '--show-toplevel'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode != 0,
+            'CCG build temp must be outside every Git checkout')
+    database = permission['database']
+    parsed = urlsplit(permission['DATABASE_URL'])
+    require(re.fullmatch(r'[a-z0-9_]+', database) and database not in ('multica', 'postgres', 'template0', 'template1')
+            and parsed.hostname in ('127.0.0.1', 'localhost') and parsed.path == '/' + database, 'Database does not match root allocation')
+    identity = subprocess.run([inputs['tools']['psql']['path'], permission['DATABASE_URL'], '-X', '-Atqc',
+                               'SELECT current_database(),max(version) FROM schema_migrations'], capture_output=True, text=True)
+    require(identity.returncode == 0 and identity.stdout.strip() == permission['identity_verified']
+            and permission['identity_verified'].startswith(database + '|764_'), 'Database identity/migration 764 does not match root proof')
+    output = PRIVATE / 'runs' / label
+    output.parent.mkdir(mode=0o700, exist_ok=True)
+    output.mkdir(mode=0o700)
+    cache = permission['cache_paths']
+    require(cache['GOCACHE'] == str(PRIVATE / 'go-build-cache') and cache['GOPATH'] == str(PRIVATE / 'go-path')
+            and cache['GOMODCACHE'] == '/Users/artisan/go/pkg/mod', 'Unreviewed cache paths')
+    environment = {'PATH': str(Path(inputs['tools']['node']['path']).parent) + ':' + str(Path(inputs['tools']['go']['path']).parent)
+                   + ':/opt/homebrew/opt/libpq/bin:/usr/bin:/bin:/usr/sbin:/sbin',
+                   'HOME': str(output / 'home'), 'TMPDIR': str(temp), 'TMP': str(temp), 'TEMP': str(temp),
+                   'GOROOT': inputs['goroot'], 'GOCACHE': cache['GOCACHE'], 'GOMODCACHE': cache['GOMODCACHE'], 'GOPATH': cache['GOPATH'],
+                   'GOPROXY': 'file:///Users/artisan/go/pkg/mod/cache/download', 'GOSUMDB': 'off', 'GOTOOLCHAIN': 'local',
+                   'GOENV': 'off', 'GOWORK': 'off', 'GOTELEMETRY': 'off', 'GOMAXPROCS': '2', 'LC_ALL': 'C',
+                   'DATABASE_URL': permission['DATABASE_URL'], 'NEXT_TELEMETRY_DISABLED': '1', 'COREPACK_ENABLE_NETWORK': '0',
+                   'PNPM_DISABLE_SELF_UPDATE_CHECK': '1', 'NPM_CONFIG_USERCONFIG': '/dev/null', 'NPM_CONFIG_GLOBALCONFIG': '/dev/null'}
+    (output / 'home').mkdir(mode=0o700)
+    return permission, inputs, audited, output, environment
+
+def main():
+    parser = argparse.ArgumentParser(description='Current CCG1 only; root prepares a new database and grants execution after full-check release')
+    parser.add_argument('mode', choices=('normal', 'race'))
+    parser.add_argument('--permit', type=Path, required=True)
+    parser.add_argument('--label', required=True)
+    args = parser.parse_args()
+    permission, inputs, audited, output, environment = admission('ccg1-' + args.mode, args.permit, args.label)
+    require(permission['database'].startswith('multica_knowledge_host_composite_20261101_'), 'The retained Host fixture requires its literal database prefix')
+    test = 'TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch'
+    command = ['bash', 'scripts/go-test-with-agent-cli-guard.sh', '--', inputs['tools']['go']['path'], '-C', 'server', 'test', './cmd/server',
+               '-tags=knowledgeintegration', '-run', '^' + test + '$', '-p=1', '-parallel=2', '-count=1', '-json', '-timeout=5m']
+    if args.mode == 'race':
+        command.append('-race')
+    record = {'candidate_sha': EXPECTED, 'gate': 'CCG1', 'mode': args.mode, 'command': command,
+              'database': permission['database'], 'database_identity': permission['identity_verified'],
+              'permit_sha256': digest(args.permit), 'source_inputs_sha256': digest(PRIVATE / 'source-inputs.json'),
+              'root_fullcheck_identity_audit': audited, 'state': 'running',
+              'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'real_Provider_calls': 0}
+    write_json(output / 'started.json', record)
+    log_path = output / 'tests.jsonl'
+    descriptor = os.open(log_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(descriptor, 'w') as log:
+        result = subprocess.run(command, cwd=ROOT, env=environment, stdout=log, stderr=subprocess.STDOUT)
+    events = []
+    for line in log_path.read_text().splitlines():
+        try:
+            events.append(json.loads(line))
+        except ValueError:
+            continue
+    counts = {action: sum(event.get('Action') == action and bool(event.get('Test')) for event in events) for action in ('run', 'pass', 'fail', 'skip')}
+    expected_fact = 'physical_launches=2 corrected_version=2 superseded_stdin_absent=true third_authorization_refused=true third_physical_launches=0 original_exposure_and_receipts_retained=true'
+    fact_seen = any(event.get('Test') == test and expected_fact in event.get('Output', '') for event in events)
+    accepted = result.returncode == 0 and counts == {'run': 1, 'pass': 1, 'fail': 0, 'skip': 0} and fact_seen
+    record.update(state='complete', exit_code=result.returncode, counts=counts, exact_physical_input_fact_seen=fact_seen,
+                  accepted=accepted, finished_at=datetime.datetime.now(datetime.timezone.utc).isoformat(), log_sha256=digest(log_path))
+    write_json(output / 'result.json', record)
+    print(json.dumps({'gate': 'CCG1', 'mode': args.mode, 'exit_code': result.returncode, 'counts': counts, 'accepted': accepted, 'record': str(output / 'result.json')}))
+    return result.returncode or (0 if accepted else 1)
+
+if __name__ == '__main__':
+    try:
+        raise SystemExit(main())
+    except (RuntimeError, OSError, ValueError, KeyError, TypeError) as error:
+        print('REFUSED: ' + (str(error) if isinstance(error, RuntimeError) else 'Required private gate input unavailable'))
+        raise SystemExit(2)

@@ -1,0 +1,11 @@
+# Linux daemon diagnostic preparation
+
+Root fixture only; frozen runtime bytes remain unchanged. The original metadata30s assertion remains strict. On failure, a bounded3s diagnostic reads only existing state and appends an allowlisted summary to the existing error protocol; the private runner retains it. No logger or product API is modified.
+
+Safe data includes daemon state/PID and expected profile/server matching, known diagnostic codes/stages, installation metadata existence and server/user matching booleans (proof never leaves renderer), private profile file modes/UID/size/PID and server/deployment/user matching, credential presence only, CLI mode/UID/size, home/tmp mode/UID and W_OK access result. No probe file is written. Two profile log tails are bounded64KiB and emitted only as SHA256 plus known error codes/markers. Main stderr is scanned for known codes/markers only, at most8KiB per chunk and20 retained codes; raw stderr is never stored or printed by this code. A failed diagnostic preserves the original assertion and adds only a generic bounded capture-failure marker.
+
+Static evidence: current CLI is ELF64 AArch64, mode0755, exact accepted SHA7cd6e1b4364842c98760983f5e248e4e2de8dcbe49701846907b3f5c120ad648. Program headers show no PT_INTERP or PT_DYNAMIC; it is a static executable. Host owner501 is not proof of runtime container ownership. Cached Linux arm64 image has no configured User override, so its default is root; the fixture sets no --read-only rootfs or temp mount and mounts only source/package read-only. Actual root/tmp permissions are not known from image metadata and are now collected without writes when failure occurs.
+
+Potential interpretations remain separate: absent metadata and no deployment marker points toward login/enrollment preparation; present matching metadata with a stopped daemon and startup log codes points toward CLI startup; permission or missing binary evidence must be measured rather than inferred. No Linux-only exemption and no arbitrary acceptance of either state was added.
+
+This slice was static preparation during the shared quiet window. Syntax tests, pure diagnostic projection tests, independent review and one new original Linux E2E run remain coordinator follow-ups.

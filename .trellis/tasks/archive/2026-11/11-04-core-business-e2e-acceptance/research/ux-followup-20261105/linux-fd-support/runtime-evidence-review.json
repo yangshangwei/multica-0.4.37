@@ -1,0 +1,65 @@
+{
+  "reviewed_at": "2026-11-05T11:39:13.058332+00:00",
+  "verdict": "PASS for actual focused Linux regression and final cleanup source review",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "patch_sha256": "d6f4ceeb660833114171946763b850da890b5115503faa95e6d14d3d632c0bcb",
+  "source_hashes": {
+    "server/cmd/multica/cmd_daemon.go": "7b0edfb4dea604c6383b05e799b90541f1ac0663a52bffa594a50acfef5d9833",
+    "server/cmd/multica/daemon_fd_linux.go": "6c3321981381b34a135a98566a2ec0a6b9607a9a9010cbb5c511846a768bc2d4",
+    "server/cmd/multica/daemon_fd_other.go": "82716ee1bf0756274b1700ee4f3ee7ed182f2b1a4180a77c69a6f6c6c3c0943c",
+    "server/cmd/multica/daemon_fd_linux_test.go": "3b01449bbe6c2c2776f6d7f6fb0631c11052d4fcc06752b69420112de3d81e6c"
+  },
+  "binary_observations": {
+    "red": {
+      "file": ".omx/private/core-e2e-20261104/fd-fix/bin/fd-red-final.test",
+      "sha256": "31c1d58d5b0ec408c9b7fc4631a4ec628bf3e5934063e7bc7cd82aa5b66fb805",
+      "format": "ELF64 little-endian AArch64",
+      "exit_code": 1,
+      "image": "multica-gap-full-main@sha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4"
+    },
+    "green": {
+      "file": ".omx/private/core-e2e-20261104/fd-fix/bin/fd-green-final.test",
+      "sha256": "d1b6321ce2cbfcab16eeff4173a2bde53258c22b6ceee1989f6e850c473c45ba",
+      "format": "ELF64 little-endian AArch64",
+      "exit_code": 0,
+      "image": "multica-gap-full-main@sha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4"
+    },
+    "cleanup_green": {
+      "file": ".omx/private/core-e2e-20261104/fd-fix/bin/fd-green-cleanup.test",
+      "sha256": "2b04536aec3db2cfc88d7c36c0150e3dc8a5f8aff10bc91f8f9306222fce0a54",
+      "format": "ELF64 little-endian AArch64",
+      "exit_code": 0,
+      "image": "multica-gap-full-main@sha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4"
+    }
+  },
+  "red_observations": [
+    "FD64/65 survived",
+    "pipe EOF timed out with leaf alive"
+  ],
+  "green_observations": [
+    "Initial corrected helper PASS0.06s",
+    "Final fixture cleanup PASS0.07s"
+  ],
+  "baseline_overlay": {
+    "sha256": "1109779d8be1435bfe1683c61412631976c8b5650115a3d1fe368f52abbaf581",
+    "replaces_only_helper": true,
+    "replacement_sha256": "29b11b4eccfea81ce27288af5439c4cb9dc3dfba59329e14bc0d6f38c10f1d67"
+  },
+  "cleanup_source_review": "Wait installed immediately after Start, deferred kill/drain before PID publication, consumed flag on both terminal paths",
+  "independent_read_only": true,
+  "new_tests_or_builds_executed": false,
+  "not_established": [
+    "Original installed Main full workflow",
+    "Self-update runtime end-to-end",
+    "macOS/Windows runtime behavior"
+  ],
+  "artifact_hashes": {
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/fd-fix/red-linux-final.json": "5314114bd37794fbf489f40c74e13272956db3d8c9a6f40eae054a4667d03612",
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/fd-fix/red-linux-final.stdout": "f59b96e85c806535165ddf3a145f53cbe8ce80fb9ec2313ef080c4d7ec285518",
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/fd-fix/green-linux-final.json": "3a8eb55fd5bc7eff9bc97754bc55bcda4cf1b4f377af3877351cdad9db7c9fa7",
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/fd-fix/green-linux-final.stdout": "c5dfc02c404ffbda671b82a7d9898dc3bd1e527cd25a1d79e31af958f7b99ca0",
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/fd-fix/green-cleanup-run.json": "593b9adbfe9bbacac46e1bac31119004b5d206ffe2493f145d1d3922510bbdeb",
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/fd-fix/green-cleanup-compile.json": "784aa38bb1dc599f219c7b534a0993576d11b5510223c331de86c33f825e2fd3",
+    ".trellis/tasks/11-04-core-business-e2e-acceptance/research/fd-fix-result.json": "11ae3931f13cd38676b282eeeafe0fe923f709c5b333e9c1aaa8637188a2d657"
+  }
+}

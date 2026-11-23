@@ -1,0 +1,5 @@
+# WD-2 — low: literal percent sequences do not round-trip in native file URLs
+
+`e2e/fixtures/collaboration-installed-layout.mjs:15–16` assigns a filesystem path directly to `URL.pathname`. The setter preserves an existing percent escape. For the lawful package path `/task/Multica%20Candidate.app/Contents/MacOS/Multica`, the helper returns `file:///task/Multica%20Candidate.app/...`; decoding that URL points to `Multica Candidate.app`, while Electron's actual file URL escapes the literal percent as `%2520`. The new exact renderer URL assertion therefore rejects a valid native package in such a directory. The same issue applies to Windows paths containing percent-escape-shaped text.
+
+The disposable hosted Windows default paths have no such component, so this is nonblocking for the selected runner path. A pure executable probe is in `layout-percent-probe.mjs` / `.txt`; no filesystem package, GUI or process was launched. Use platform-aware filesystem-to-file-URL conversion or correctly encode path segments, and add percent-escape round-trip coverage alongside existing space tests. Existing `#` escaping was checked and is correct.

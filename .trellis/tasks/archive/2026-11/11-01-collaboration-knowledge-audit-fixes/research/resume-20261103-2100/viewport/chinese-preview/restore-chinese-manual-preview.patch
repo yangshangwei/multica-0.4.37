@@ -1,0 +1,61 @@
+--- a/e2e/collaboration-preview-web.spec.ts
++++ b/e2e/collaboration-preview-web.spec.ts
+@@ -81,23 +81,41 @@
+   await expect(chineseGrouping).toBeVisible();
+   await expect(suppressed).not.toBeChecked();
+   await expect(chineseComposer.getByText("请核对 AI 对象及影响，再发送评论确认。", { exact: true })).toBeVisible();
+-  expect(commentPosts).toBe(0);
+-  const commentsAfter = await fixture.creator.requestJSON<CollaborationComments>(`${root}/comments`);
+-  expect(commentsAfter.items.map((comment, index) => {
+-    const previous = commentsBefore.items[index];
+-    expect(previous?.author_authority).toBeDefined();
+-    expect(comment.author_authority).toBeDefined();
+-    const previousTime = previous!.author_authority!.evaluated_at;
+-    const currentTime = comment.author_authority!.evaluated_at;
+-    for (const timestamp of [previousTime, currentTime]) {
+-      expect(timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/);
+-      expect(Number.isFinite(Date.parse(timestamp))).toBe(true);
+-    }
+-    expect(Date.parse(currentTime)).toBeGreaterThanOrEqual(Date.parse(previousTime));
+-    // Authority is re-evaluated on every read; all other comment fields must remain unchanged.
+-    return { ...comment, author_authority: { ...comment.author_authority, evaluated_at: previousTime } };
+-  })).toEqual(commentsBefore.items);
+-  expect((await fixture.creator.requestJSON<CollaborationIssue>(root)).execution).toEqual(executionBeforeRefresh);
++  await expect(chineseComposer.getByLabel("添加评论", { exact: true })).toHaveValue(original);
++  const expectPreviewDidNotPublish = async () => {
++    expect(commentPosts).toBe(0);
++    const commentsAfter = await fixture.creator.requestJSON<CollaborationComments>(`${root}/comments`);
++    expect(commentsAfter.items.map((comment, index) => {
++      const previous = commentsBefore.items[index];
++      expect(previous?.author_authority).toBeDefined();
++      expect(comment.author_authority).toBeDefined();
++      const previousTime = previous!.author_authority!.evaluated_at;
++      const currentTime = comment.author_authority!.evaluated_at;
++      for (const timestamp of [previousTime, currentTime]) {
++        expect(timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/);
++        expect(Number.isFinite(Date.parse(timestamp))).toBe(true);
++      }
++      expect(Date.parse(currentTime)).toBeGreaterThanOrEqual(Date.parse(previousTime));
++      // Authority is re-evaluated on every read; all other comment fields must remain unchanged.
++      return { ...comment, author_authority: { ...comment.author_authority, evaluated_at: previousTime } };
++    })).toEqual(commentsBefore.items);
++    expect((await fixture.creator.requestJSON<CollaborationIssue>(root)).execution).toEqual(executionBeforeRefresh);
++  };
++  await expectPreviewDidNotPublish();
++  // Manual Preview preserves the suppressed target and retained draft without publishing.
++  const manualPreviewPending = chinesePage.waitForResponse((item) => new URL(item.url()).pathname === `${root}/comments/trigger-preview`
++    && item.request().method() === "POST");
++  await chineseComposer.getByRole("button", { name: "预览发送", exact: true }).click();
++  const manualPreviewResponse = await manualPreviewPending;
++  expect(manualPreviewResponse.status()).toBe(200);
++  const manualPreview: CollaborationTriggerPreview = await manualPreviewResponse.json();
++  expect(manualPreview.issue_id).toBe(fixture.issueId);
++  expect(manualPreview.targets.find((item) => item.resource_id === buildSquad.id)?.state).toBe("suppressed");
++  await expect(chineseGrouping).toBeVisible();
++  await expect(chineseGrouping.getByText(buildSquad.name, { exact: false })).toHaveCount(0);
++  await expect(suppressed).not.toBeChecked();
++  await expect(chineseComposer.getByLabel("添加评论", { exact: true })).toHaveValue(original);
++  await expectPreviewDidNotPublish();
+   const response = chinesePage.waitForResponse((item) => item.url().endsWith(`${root}/comments`) && item.request().method() === "POST");
+   await chineseComposer.getByRole("button", { name: "发送评论", exact: true }).click();
+   const sent = await response;

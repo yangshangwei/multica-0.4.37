@@ -1,0 +1,61 @@
+{
+  "platforms": [
+    {
+      "platform": "Web",
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-final-web-identities.json",
+      "sha256": "e04dd78209d8326232064496ba42169d41e147a3f362e4ad59cb572e517720a8",
+      "notice_kinds": [
+        "information_requested",
+        "information_returned",
+        "acceptance_submitted",
+        "ai_completed",
+        "ai_failed",
+        "ai_stopped"
+      ],
+      "read_archived_count": 6,
+      "run_groups": 3,
+      "lost_outcome_group": "ddffcc3a-1f18-42aa-95a9-8b239592e27e",
+      "source_isolation": {
+        "creator_source_membership": 1,
+        "recipient_source_membership": 0,
+        "inbox_rows": 0,
+        "subscriber_rows": 0
+      },
+      "actual_visits": [
+        "A",
+        "A",
+        "A"
+      ],
+      "old_entry_denied": true
+    },
+    {
+      "platform": "Electron",
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-final-electron-identities.json",
+      "sha256": "49dc460a0c4fa7c776ff4f61e9756017db7ca4eb6cf1dcdd4652dc7654f61038",
+      "notice_kinds": [
+        "information_requested",
+        "information_returned",
+        "acceptance_submitted",
+        "ai_completed",
+        "ai_failed",
+        "ai_stopped"
+      ],
+      "read_archived_count": 6,
+      "run_groups": 3,
+      "lost_outcome_group": "0f2b8c35-a52c-4a15-ae59-77e88a7b633f",
+      "source_isolation": {
+        "creator_source_membership": 1,
+        "recipient_source_membership": 0,
+        "inbox_rows": 0,
+        "subscriber_rows": 0
+      },
+      "actual_visits": [
+        "A",
+        "A",
+        "A"
+      ],
+      "old_entry_denied": true
+    }
+  ],
+  "source_drift": []
+}

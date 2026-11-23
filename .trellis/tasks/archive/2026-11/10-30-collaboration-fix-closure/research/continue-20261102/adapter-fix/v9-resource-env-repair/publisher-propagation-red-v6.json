@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-02T15:18:17.622870+00:00",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-go-isolation-test.py",
+    "-k",
+    "publisher"
+  ],
+  "wrapper": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin/go",
+  "exit_code": 1,
+  "expected": "3cases1fail2pass: ordinary package child inherits API publisher; compile/non-test and test-selected recursive paths preserve it",
+  "log_sha256": "a37db0caacdaa83693ed1a56b6787217db817d9e15e0a8cf1c3920c9736d70a3",
+  "actual_Go_TestMain_or_SQL_or_Provider": 0
+}

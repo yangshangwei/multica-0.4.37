@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/delivery_independent_review",
+  "reviewed_at": "2026-11-01T17:04:13.311062+00:00",
+  "head": "69bbc9cf0f74f3b0177d9c8bd4c812acaa9a3187",
+  "original_product": "9de37277d651b4d2d39ffe0cc1d2171286744550",
+  "WD1_fix_product": "8d976a696560b0d8122f7da8fd65fdf8aaf8e6ff",
+  "base": "822c15785",
+  "verdict": "pass-with-notes",
+  "blocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "WD-1",
+      "severity": "blocking original Windows journey",
+      "location": "e2e/fixtures/collaboration-host-runtime.ts:302",
+      "description": "Unconditional POSIX SIGCONT occurred before EOF and prevented graceful Windows summary/exit. Owner fixed platform guard, retained actual EOF/exit/claims assertions, and marked POSIX freeze/thaw unsupported on Windows.",
+      "fix_commit": "8d976a696560b0d8122f7da8fd65fdf8aaf8e6ff",
+      "independent_evidence": "committed-source-recheck.json and host-close-fixed-contracts.txt; no hash mismatches from precommit reviewer recheck to committed fix"
+    }
+  ],
+  "nonblocking_findings": [
+    {
+      "id": "WD-2",
+      "severity": "low",
+      "location": "e2e/fixtures/collaboration-installed-layout.mjs:15-16",
+      "description": "Literal percent escape text in a lawful native package path does not round-trip through pathname assignment; default hosted-runner paths do not trigger it.",
+      "evidence": "finding-WD2.md; layout-percent-probe.txt",
+      "recommendation": "Use platform-aware filesystem-to-file-URL conversion or correctly encoded path segments and extend space-path tests to literal-percent paths."
+    }
+  ],
+  "notes": [
+    {
+      "id": "WD-3",
+      "type": "final_candidate_gate",
+      "description": "Guide migration maximum760 is accurate for this branch server tree but must become the actual final candidate ceiling after knowledge indexes merge. The guide already states the recheck rule. Formal packaging and both guide-byte comparisons remain unrun."
+    },
+    {
+      "id": "WD-4",
+      "type": "platform_scope",
+      "description": "PowerShell parse/runtime, Windows native Host/installed journey, installer upgrade/reinstall, signed/offline trust, accounts/quota and arm64 are unrun; no local contract or cross-compile is native evidence."
+    }
+  ],
+  "coverage": [
+    "Native Windows/macOS layout and encoded file URLs, explicit local home, unchanged Linux Docker path",
+    "Actual installed Main/preload/renderer journey reuse; no fake IPC/auth substitution; source/EXE/ASAR/bundled CLI and fixture pins",
+    "Candidate-only lifecycle invocation, separate default-false workflow input, exact non-skipped/non-retried single-test result requirement",
+    "Disposable task PostgreSQL/API/Web preparation, explicit database and cluster identity before migration; bounded owned cleanup; private-state upload exclusion",
+    "Native controller PID-tree cleanup and Windows Host EOF path with unchanged real summary/exit assertions",
+    "Mandatory native Windows recovery-case omission/skip rejection",
+    "Offline candidate docs, auth preservation, knowledge false and final source binding limitations"
+  ],
+  "independent_checks": [
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--strict",
+        "--allowImportingTsExtensions",
+        "--module",
+        "nodenext",
+        "--moduleResolution",
+        "nodenext",
+        "--target",
+        "es2022",
+        "--esModuleInterop",
+        "--skipLibCheck",
+        "e2e/fixtures/collaboration-installed-main.ts"
+      ],
+      "exit_code": 0,
+      "log": "transport-typecheck.txt",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--strict",
+        "--module",
+        "esnext",
+        "--moduleResolution",
+        "bundler",
+        "--jsx",
+        "react-jsx",
+        "--target",
+        "es2022",
+        "--lib",
+        "esnext,dom,dom.iterable",
+        "--esModuleInterop",
+        "--skipLibCheck",
+        "e2e/collaboration-host-installed.spec.ts"
+      ],
+      "exit_code": 0,
+      "log": "journey-typecheck.txt",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/desktop",
+        "exec",
+        "eslint",
+        "scripts/windows-collaboration.mjs",
+        "scripts/windows-collaboration-config.mjs",
+        "scripts/windows-collaboration-config.node-test.mjs",
+        "scripts/windows-collaboration-workflow.node-test.mjs"
+      ],
+      "exit_code": 0,
+      "log": "scripts-lint.txt",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": "node --experimental-strip-types --test layout, controller, Host-close, Windows config/workflow and native-checker canonical suites",
+      "exit_code": 0,
+      "log": "node-contracts-final.txt",
+      "sha256": "3ccf4d481e853e9a3a566d51274a0b1d9be591148512c4a75b4011719c0b6605",
+      "pass_count": 25,
+      "fail_count": 0,
+      "skip_count": 0
+    },
+    {
+      "command": "node --test e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+      "exit_code": 0,
+      "log": "host-close-fixed-contracts.txt",
+      "sha256": "3cd135aa6bfae3454f8c9e4d876ef0e72766339641f25191d1ddf6076a60734b",
+      "pass_count": 4,
+      "fail_count": 0,
+      "skip_count": 0
+    },
+    {
+      "command": "pnpm exec tsc --noEmit --strict --module esnext --moduleResolution bundler --jsx react-jsx --target es2022 --lib esnext,dom,dom.iterable --esModuleInterop --skipLibCheck e2e/collaboration-host-installed.spec.ts",
+      "exit_code": 0,
+      "log": "journey-typecheck-final.txt",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": "pnpm --filter @multica/core exec node using existing yaml to parse workflow and assert default-false input/service preparation",
+      "exit_code": 0,
+      "log": "workflow-yaml.txt",
+      "sha256": "425d315cde2311234aa349baf98476abe10237d6121ef418efb3dd01ba9e69d7"
+    },
+    {
+      "command": "node independent-review/host-close-probe.mjs; extracts pre-fix 9de37277d close and confirms unsupported SIGCONT prevents EOF",
+      "exit_code": 0,
+      "log": "host-close-probe-source-bound.txt",
+      "sha256": "6da61e62ee833b34f600aa40f8b014f17fe90870e44e62128438251cada02785",
+      "pass_count": 1,
+      "fail_count": 0,
+      "skip_count": 0
+    },
+    {
+      "command": "node independent-review/node-signal-contract.mjs; embedded Node convertToValidSignal with Windows names, no process signal",
+      "exit_code": 0,
+      "log": "node-signal-contract.txt",
+      "sha256": "27f6a68531d75f152bea72d61dd0c7948b998f37f2fd68a2f2122368954bccf3",
+      "pass_count": 1,
+      "fail_count": 0,
+      "skip_count": 0
+    },
+    {
+      "command": "node independent-review/layout-percent-probe.mjs; confirms WD-2 literal-percent round-trip mismatch",
+      "exit_code": 0,
+      "log": "layout-percent-probe.txt",
+      "sha256": "d5e3f0cc511c0d1ba67489c5d37b5cc77a05f268c0010136b05a43cf012587e3",
+      "pass_count": 1,
+      "fail_count": 0,
+      "skip_count": 0
+    }
+  ],
+  "source_files_sha256": {
+    ".github/workflows/desktop-smoke.yml": "1cd3a6580968201102d0e5d9b9bf4091cb059fbedd1a904751ecce78368cf927",
+    ".trellis/spec/desktop/frontend/intranet-updates.md": "a96a0df47a82cec80e76f0ce08ea24832763c5a7e761ff14041c057ffe7c1019",
+    ".trellis/tasks/10-30-collaboration-context-handoff/delivery-preparation-plan-2026-11-01.md": "20bc9cd1d916ec55e2365707a2c47aeddbab8da98b3d1934a94e88eebb129858",
+    "apps/desktop/scripts/WINDOWS_ACCEPTANCE.md": "2f6b882cd236128baf544d80c1f623411fdb83065933c3457054b1ed9936abdd",
+    "apps/desktop/scripts/accept-windows-installer.ps1": "c5ebea0d508d9eb646d89e95acd4b7834327f2c6a13f5ccb8aac58e54b57f411",
+    "apps/desktop/scripts/windows-business-server.ps1": "897a03493beb35a4f4d40815c485c8de884cb8bb51805e6548547bf840c0927e",
+    "apps/desktop/scripts/windows-collaboration-config.mjs": "b8300f0bd44994cafed977791b8fd251e9c85b94500f09cf52cde1f96d56a286",
+    "apps/desktop/scripts/windows-collaboration-config.node-test.mjs": "f682b15dcd89ea387a4084c3c88dbc5e7411e5a5a9b68450e44e94015437c728",
+    "apps/desktop/scripts/windows-collaboration-server.ps1": "83ab72169491bf5d9295fc38afe747aa25ec791e5226154dfdcd2d1db9a81111",
+    "apps/desktop/scripts/windows-collaboration-workflow.node-test.mjs": "56ae6407b22a14ff1f0fa3a31e5c0a8a78a93f12d727bfaf2519e1cca69aede3",
+    "apps/desktop/scripts/windows-collaboration.mjs": "88b6de5b28a5c33a3f7ac9196f64b8e60de3e4a04dc171f7d5047739135611c2",
+    "docs/offline-upgrade.zh-CN.md": "5e66b737bd0c42851eda3229f47ca02dfd8f9b87d8340dc19fc90f2ecdd859d6",
+    "e2e/collaboration-host-installed.spec.ts": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+    "e2e/fixtures/collaboration-host-runtime.node-test.mjs": "6dd3cf1793efb493601f9cf1ec719046ad3353bc18d89dea4baf7984c73b71a4",
+    "e2e/fixtures/collaboration-host-runtime.ts": "41558a125ded2b5303e29c256d9e3bbe0b3ef04b2af69611209a815589ef96d4",
+    "e2e/fixtures/collaboration-installed-layout.d.mts": "5cfd090a0d43f38a6562fa96b27787739c1354a6948cb34b2ceb94228097fc44",
+    "e2e/fixtures/collaboration-installed-layout.mjs": "014cfef46f6abe42a93e696bd68d8651f3b44aebbfbc7723816de37d71a78f4d",
+    "e2e/fixtures/collaboration-installed-layout.node-test.mjs": "918148e5d5ebc2cc845e90f46638e4f390d4b1580079ad932d72b8e91bdd6729",
+    "e2e/fixtures/collaboration-installed-main.mjs": "ebe914eaa5d71e8b7d7c8e0d937b99ba67df72b255754a69eef899b5e70fd475",
+    "e2e/fixtures/collaboration-installed-main.node-test.mjs": "49c98c6db0c2876cf2c6db7d9f8d36af039a79629223a0b28a71eede7a1901a1",
+    "e2e/fixtures/collaboration-installed-main.ts": "f63d1e7e098e7634b9e90f75605fd63e22a4866cd6d27c93d564d8c4be9e50fb",
+    "scripts/check-collaboration-native-tests.mjs": "b5bc4130c93c3e75fddcde2873500c1f060f6bfdbb434c1bf11f1f560d4f47d7",
+    "scripts/check-collaboration-native-tests.test.mjs": "771f47bee01035ed2f723e430d33883724448c3bf3fecfeb0051918042508a11"
+  },
+  "product_modified": false,
+  "db_commands": false,
+  "migrations": false,
+  "installer_or_gui": false,
+  "provider_calls": 0,
+  "native_windows": false,
+  "external_ci": false,
+  "dependencies_changed": false,
+  "verification_failures_preserved": [
+    "host-close-probe.txt initial reviewer relative path mistake",
+    "host-close-probe-r2.txt extracted TypeScript generic needed erasure; corrected r3/source-bound probe passed",
+    "An initial YAML check used a wrong relative path from packages/core; corrected recorded YAML check passed",
+    "Web tool documentation lookup returned gateway404; no remote documentation claim used"
+  ],
+  "author_evidence_binding": "committed-source-recheck.json verifies original author source hashes at9de37277d and WD1 recheck hashes at8d976a696; no mismatches",
+  "cross_compile_artifact": "cross-compile-artifact-audit.json; hash/PE machine match author record; not executed"
+}

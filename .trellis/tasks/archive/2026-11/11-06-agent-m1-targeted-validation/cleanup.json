@@ -1,0 +1,29 @@
+{
+  "exact_test_tasks": [
+    "01a1ac9a-2e17-757a-995e-3e0edb1ce72f",
+    "01a1ac9a-2e80-70fa-b13b-a0abb90d17be",
+    "01a1acac-737a-7a1d-9fc4-9fe6db4edcf3"
+  ],
+  "revoked_rows": 4,
+  "api_stop_exit": 0,
+  "ports": [
+    {
+      "port": 18251,
+      "listener_present": false
+    },
+    {
+      "port": 53022,
+      "listener_present": false
+    },
+    {
+      "port": 56613,
+      "listener_present": false
+    }
+  ],
+  "postgres": "owned container stopped, databases retained",
+  "tracked_evidence_secret_scan": {
+    "files": 45,
+    "matches": 0
+  },
+  "cli_sha256": "d078fef1e06c4395a5413dc7b024cfb7591db786fa4042e38ca2122748f2d2fd"
+}

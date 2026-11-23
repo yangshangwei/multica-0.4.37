@@ -1,0 +1,39 @@
+{
+  "at": "2026-11-05T10:12:24.199192+00:00",
+  "historical_ledgers": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/knowledge-codex-20261105/real-ledger.json",
+      "sha256": "a5c786be5a8128b52779eee3db3a850980610924540efd0612ef8b9a66ae9c9e",
+      "cap": 15,
+      "actual": 1,
+      "reserved": 1,
+      "stopped": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/knowledge-e0b-retry02-20261105/real-ledger.json",
+      "sha256": "dc9e8779a6fb6ac3ac010a77a115239a024fab5aa53e16a578c753caccb69a4c",
+      "cap": 15,
+      "actual": 1,
+      "reserved": 1,
+      "stopped": true
+    }
+  ],
+  "counting": "physical process starts; prior_actual_starts is a reference and not counted twice",
+  "consumed": 2,
+  "authorized_cap": 17,
+  "remaining_authorized": 15,
+  "required_successful_schedule": {
+    "E0b": 1,
+    "K1": 4,
+    "K2": 2,
+    "K3": 8
+  },
+  "fake_seeds": 3,
+  "required_new_physical_starts": 15,
+  "minimum_total_if_no_new_failure": 17,
+  "minimum_cap_increase": 2,
+  "budget_increase_authorized": true,
+  "gateway_ready": false,
+  "runnable": false,
+  "authorization_source": "User 调整吧 in answer to15→17"
+}

@@ -1,0 +1,44 @@
+{"Time":"2026-11-02T08:56:44.209463+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/util/secretbox"}
+{"Time":"2026-11-02T08:56:44.638679+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestRoundTrip"}
+{"Time":"2026-11-02T08:56:44.638862+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestRoundTrip","Output":"=== RUN   TestRoundTrip\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.638952+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestRoundTrip","Output":"--- PASS: TestRoundTrip (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.63897+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestRoundTrip","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.638983+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestSealIsNonDeterministic"}
+{"Time":"2026-11-02T08:56:44.63899+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestSealIsNonDeterministic","Output":"=== RUN   TestSealIsNonDeterministic\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639011+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestSealIsNonDeterministic","Output":"--- PASS: TestSealIsNonDeterministic (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.63902+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestSealIsNonDeterministic","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.639031+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestOpenRejectsTampered"}
+{"Time":"2026-11-02T08:56:44.639038+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestOpenRejectsTampered","Output":"=== RUN   TestOpenRejectsTampered\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639083+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestOpenRejectsTampered","Output":"--- PASS: TestOpenRejectsTampered (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639103+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestOpenRejectsTampered","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.639117+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestOpenRejectsShort"}
+{"Time":"2026-11-02T08:56:44.639127+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestOpenRejectsShort","Output":"=== RUN   TestOpenRejectsShort\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639142+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestOpenRejectsShort","Output":"--- PASS: TestOpenRejectsShort (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639151+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestOpenRejectsShort","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.639159+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestNewRejectsBadKey"}
+{"Time":"2026-11-02T08:56:44.639166+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestNewRejectsBadKey","Output":"=== RUN   TestNewRejectsBadKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639197+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestNewRejectsBadKey","Output":"--- PASS: TestNewRejectsBadKey (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639216+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestNewRejectsBadKey","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.639245+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey"}
+{"Time":"2026-11-02T08:56:44.639252+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey","Output":"=== RUN   TestLoadKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.63926+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/missing"}
+{"Time":"2026-11-02T08:56:44.639265+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/missing","Output":"=== RUN   TestLoadKey/missing\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639305+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/missing","Output":"--- PASS: TestLoadKey/missing (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639316+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/missing","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.639323+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/bad_base64"}
+{"Time":"2026-11-02T08:56:44.639328+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/bad_base64","Output":"=== RUN   TestLoadKey/bad_base64\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639427+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/bad_base64","Output":"--- PASS: TestLoadKey/bad_base64 (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639436+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/bad_base64","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.639447+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/wrong_length"}
+{"Time":"2026-11-02T08:56:44.639453+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/wrong_length","Output":"=== RUN   TestLoadKey/wrong_length\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639507+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/wrong_length","Output":"--- PASS: TestLoadKey/wrong_length (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639525+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/wrong_length","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.639533+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/happy_path"}
+{"Time":"2026-11-02T08:56:44.639538+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/happy_path","Output":"=== RUN   TestLoadKey/happy_path\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639588+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/happy_path","Output":"--- PASS: TestLoadKey/happy_path (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639599+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey/happy_path","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.639621+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey","Output":"--- PASS: TestLoadKey (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:44.639629+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Test":"TestLoadKey","Elapsed":0}
+{"Time":"2026-11-02T08:56:44.639648+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-02T08:56:45.647014+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Output":"ok  \tgithub.com/multica-ai/multica/server/internal/util/secretbox\t1.437s\n"}
+{"Time":"2026-11-02T08:56:45.647136+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/util/secretbox","Elapsed":1.438}

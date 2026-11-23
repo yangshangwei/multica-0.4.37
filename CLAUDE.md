@@ -165,15 +165,17 @@ CSS for web/desktop is shared from `packages/ui/styles/`. Use semantic tokens su
 
 ## Desktop Rules
 
-Desktop routing has three categories:
+Desktop routing has four categories:
 
 - Session routes: workspace-scoped tab destinations such as `/:slug/issues`.
+- Account routes: authenticated `/account` destinations use one persisted account tab outside workspace groups. They remain available with zero workspaces or a failed/pending workspace list; login, setup and password guards still apply.
 - Transition flows: pre-workspace one-shot actions such as create workspace or accept invite. These are `WindowOverlay` state, not routes.
 - Error/stale states: stale workspace tabs should auto-heal by dropping stale tab groups, not render desktop error pages.
 
 More desktop constraints:
 
-- New pre-workspace desktop flows register a `WindowOverlay` type in `stores/window-overlay-store.ts`; do not add them to `routes.tsx`.
+- New one-shot pre-workspace desktop flows register a `WindowOverlay` type in `stores/window-overlay-store.ts`; do not add them to `routes.tsx`.
+- Account tabs, history, scroll and detail windows are scoped to the Server/viewer identity. Clear the workspace mirror before account children render and prevent outgoing workspace layouts from restoring it. Keep account route wiring in `platform/` and business content in shared views.
 - `setCurrentWorkspace(slug, uuid)` from `@multica/core/platform` mirrors the active route for headers, storage namespaces, and reconnects; workspace route layouts own setting it.
 - Code that leaves workspace context must call `setCurrentWorkspace(null, null)` explicitly.
 - Workspace delete must await the server before navigation/cleanup. Workspace leave currently clears/navigates before mutation only to avoid the `member:removed` realtime race; treat that as known debt, not a reusable pattern.

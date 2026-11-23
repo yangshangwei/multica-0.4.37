@@ -1,0 +1,532 @@
+{
+  "candidate": "52162f19af7e4a1e2459ce3f08e4627ca14c3dfc",
+  "full_gate": {
+    "run_id": "full-check-06",
+    "head": "52162f19af7e4a1e2459ce3f08e4627ca14c3dfc",
+    "worktree": "/Volumes/artisan/code/2026/mc-merge-unmerged-worktrees-20261108",
+    "command": [
+      "make",
+      "check"
+    ],
+    "started_at": "2026-11-08T16:16:25.573027+08:00",
+    "log": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/full-check-06/make-check.log",
+    "registry": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/dev-registry",
+    "pid": 22658,
+    "status": "passed",
+    "stage": "6/6 complete and cleanup passed",
+    "known_failures": [],
+    "exec_session": 89144,
+    "static_tasks": 15,
+    "typescript_tests": 13377,
+    "typescript_files": 1076,
+    "daemon_race": "passed86.393s",
+    "last_update": "2026-11-08T17:27:22.199481+08:00",
+    "go_race": "all packages passed",
+    "go_vet": "passed",
+    "production_builds": [
+      "Desktop",
+      "Web"
+    ],
+    "exit_code": 0,
+    "completed_at": "2026-11-08T17:23:55.594181+08:00",
+    "ending_head": "52162f19af7e4a1e2459ce3f08e4627ca14c3dfc",
+    "log_sha256": "cdb0137975bedddbe74bd1ac0606c973aa4ccbddac0aaab26fbcd07556aaa527",
+    "playwright": {
+      "pass": 329,
+      "skip": 112,
+      "fail": 0
+    }
+  },
+  "targeted": {
+    "knowledge_controls": {
+      "normal": 119,
+      "race": 119,
+      "fail": 0,
+      "skip": 0
+    },
+    "context_fixed_sha": {
+      "pass": 32,
+      "fail": 0,
+      "skip": 0
+    },
+    "views_focused": 54,
+    "web_styles": 37,
+    "translations": 66,
+    "independent_path_probes": 23,
+    "visual": {
+      "score": 96,
+      "screenshots": 8
+    },
+    "runtime_lookup_fix": {
+      "behavior-after": {
+        "top_level_pass": 17,
+        "all_pass": 40,
+        "skip": 0,
+        "fail": 0,
+        "exit_code": 0
+      },
+      "auth-metrics-service-after": {
+        "top_level_pass": 10,
+        "all_pass": 20,
+        "skip": 0,
+        "fail": 0,
+        "exit_code": 0
+      },
+      "focused-race": {
+        "top_level_pass": 28,
+        "all_pass": 61,
+        "skip": 0,
+        "fail": 0,
+        "exit_code": 0
+      },
+      "vet": {
+        "exit_code": 0
+      }
+    },
+    "e2e_repair_01": {
+      "pass": 27,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "run": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/e2e-repair-01",
+      "scope": "all27 failed full-check-02 cases",
+      "source": "c52eeb53f plus recorded uncommitted environment and L14 repair",
+      "remaining_review": "stale source renderer port override and doc consistency"
+    },
+    "e2e_activated_01": {
+      "pass": 23,
+      "fail": 0,
+      "skip": 3,
+      "exit_code": 0
+    },
+    "navigation_repair_02": {
+      "pass": 20,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "platforms": "Web10 + Desktop10",
+      "prior_original": "17pass3fail/20",
+      "prior_finite_set": "19pass1Desktopfail/20"
+    },
+    "lifecycle_repair_01": {
+      "pass": 51,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0,
+      "repeat_each": 3
+    },
+    "watchdog_repair": {
+      "red": {
+        "exit_code": 1,
+        "all_test_events": {
+          "fail": 3
+        },
+        "top_level_test_events": {
+          "fail": 1
+        },
+        "skipped": [],
+        "failed": [
+          "TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush/completed",
+          "TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush/failed",
+          "TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush"
+        ],
+        "log_sha256": "1c0e63a6ff41fc7e7bceb632c02aa698f909c2e144c3757d4128c1f03cf97731",
+        "source_hashes": null,
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "go",
+          "-C",
+          "server",
+          "test",
+          "./internal/daemon",
+          "-run",
+          "^TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush$",
+          "-count=1",
+          "-parallel=1",
+          "-timeout=2m",
+          "-json"
+        ]
+      },
+      "mutation-no-terminal-stop": {
+        "exit_code": 1,
+        "all_test_events": {
+          "fail": 3
+        },
+        "top_level_test_events": {
+          "fail": 1
+        },
+        "skipped": [],
+        "failed": [
+          "TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush/completed",
+          "TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush/failed",
+          "TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush"
+        ],
+        "log_sha256": "2ce815db7ed54e025a79c446651eab3d93a3703f437dfce4a60646e83383f669",
+        "source_hashes": {
+          "server/internal/daemon/daemon.go": "3e9d855120ae2d095babbba8d25066c06a96238faa32fec9c10898b6bca4f9ea",
+          "server/internal/daemon/daemon_test.go": "5dbf3586b2db68600658c54fe117af3e6304244c513b2062eb963c3fa01aa220"
+        },
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "go",
+          "-C",
+          "server",
+          "test",
+          "./internal/daemon",
+          "-run",
+          "^TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush$",
+          "-count=1",
+          "-parallel=1",
+          "-timeout=2m",
+          "-json"
+        ]
+      },
+      "mutation-early-agent-cancel": {
+        "exit_code": 1,
+        "all_test_events": {
+          "fail": 3
+        },
+        "top_level_test_events": {
+          "fail": 1
+        },
+        "skipped": [],
+        "failed": [
+          "TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush/completed",
+          "TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush/failed",
+          "TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush"
+        ],
+        "log_sha256": "396068b05d7fc83d48c2bb887517d081b4ee5e0955fb7928386b3cc5f9e16ec8",
+        "source_hashes": {
+          "server/internal/daemon/daemon.go": "89c4b74a5676e23614650a29a8e81f6c2222369d1fe241f1685fdc6edc8aea5d",
+          "server/internal/daemon/daemon_test.go": "5dbf3586b2db68600658c54fe117af3e6304244c513b2062eb963c3fa01aa220"
+        },
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "go",
+          "-C",
+          "server",
+          "test",
+          "./internal/daemon",
+          "-run",
+          "^TestExecuteAndDrain_IdleWatchdog_StopsBeforeFinalTranscriptFlush$",
+          "-count=1",
+          "-parallel=1",
+          "-timeout=2m",
+          "-json"
+        ]
+      },
+      "original-repeat-race": {
+        "exit_code": 0,
+        "all_test_events": {
+          "pass": 100
+        },
+        "top_level_test_events": {
+          "pass": 100
+        },
+        "skipped": [],
+        "failed": [],
+        "log_sha256": "8822f2699dee566a03a0cc88ae56251a6c762295b756370ce15bd2ad43ab105c",
+        "source_hashes": {
+          "server/internal/daemon/daemon.go": "27a914766f0cfebf0be1f66fa6a089a27506cf442fdf597fa0d1f4740fdc7bd9",
+          "server/internal/daemon/daemon_test.go": "5dbf3586b2db68600658c54fe117af3e6304244c513b2062eb963c3fa01aa220"
+        },
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "go",
+          "-C",
+          "server",
+          "test",
+          "./internal/daemon",
+          "-run",
+          "^TestExecuteAndDrain_IdleWatchdog_DoesNotFireDuringInFlightToolCall$",
+          "-race",
+          "-count=100",
+          "-parallel=2",
+          "-timeout=3m",
+          "-json"
+        ]
+      },
+      "reviewed-focused-race": {
+        "exit_code": 0,
+        "all_test_events": {
+          "pass": 126
+        },
+        "top_level_test_events": {
+          "pass": 90
+        },
+        "skipped": [],
+        "failed": [],
+        "log_sha256": "a1cdbd5b7df0046ef889df7e17f7e045faa68d1ec22b5a434563e8217a80441a",
+        "source_hashes": {
+          "server/internal/daemon/daemon.go": "27a914766f0cfebf0be1f66fa6a089a27506cf442fdf597fa0d1f4740fdc7bd9",
+          "server/internal/daemon/daemon_test.go": "7c377d4a6e3e808fb806b2f0a3e8004d74b2b6404858ad2f5b227c9aa4825c48"
+        },
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "go",
+          "-C",
+          "server",
+          "test",
+          "./internal/daemon",
+          "-run",
+          "^(TestExecuteAndDrain|TestIdleWatchdogTickInterval)",
+          "-race",
+          "-count=3",
+          "-parallel=2",
+          "-timeout=5m",
+          "-json"
+        ]
+      },
+      "reviewed-daemon-package-race": {
+        "exit_code": 0,
+        "all_test_events": {
+          "pass": 1723,
+          "skip": 2
+        },
+        "top_level_test_events": {
+          "pass": 900,
+          "skip": 2
+        },
+        "skipped": [
+          "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+          "TestIsDriveRoot"
+        ],
+        "failed": [],
+        "log_sha256": "3f618c70be544f82571ea9f1c5e6bc461280150936328cd2cbcb42c5365a9c1b",
+        "source_hashes": {
+          "server/internal/daemon/daemon.go": "27a914766f0cfebf0be1f66fa6a089a27506cf442fdf597fa0d1f4740fdc7bd9",
+          "server/internal/daemon/daemon_test.go": "7c377d4a6e3e808fb806b2f0a3e8004d74b2b6404858ad2f5b227c9aa4825c48"
+        },
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "go",
+          "-C",
+          "server",
+          "test",
+          "./internal/daemon",
+          "-race",
+          "-count=1",
+          "-parallel=2",
+          "-timeout=5m",
+          "-json"
+        ]
+      },
+      "reviewed-vet": {
+        "exit_code": 0,
+        "all_test_events": {},
+        "top_level_test_events": {},
+        "skipped": [],
+        "failed": [],
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_hashes": {
+          "server/internal/daemon/daemon.go": "27a914766f0cfebf0be1f66fa6a089a27506cf442fdf597fa0d1f4740fdc7bd9",
+          "server/internal/daemon/daemon_test.go": "7c377d4a6e3e808fb806b2f0a3e8004d74b2b6404858ad2f5b227c9aa4825c48"
+        },
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "go",
+          "-C",
+          "server",
+          "vet",
+          "./internal/daemon"
+        ]
+      },
+      "commit": "52162f19af7e4a1e2459ce3f08e4627ca14c3dfc",
+      "review": "APPROVE; test cleanup finding fixed"
+    }
+  },
+  "root_landing": {
+    "status": "passed",
+    "head": "52162f19af7e4a1e2459ce3f08e4627ca14c3dfc",
+    "strategy": "ff-only/no-autostash",
+    "preserved_landing_paths": 892,
+    "landed_paths": 66,
+    "original_tracked_paths": 53,
+    "original_unrelated_untracked": 740,
+    "staged_diff_unchanged": true,
+    "original_patch_hashes_match": true
+  },
+  "previous_full_gates": [
+    {
+      "status": "failed",
+      "run": "full-check-01",
+      "pid": 87322,
+      "exec_session": 31496,
+      "stage": "3/6 Go race and vet",
+      "static_tasks": 15,
+      "typescript_tests": 13377,
+      "typescript_files": 1076,
+      "last_update": "2026-11-08T11:06:28.009376+08:00",
+      "go_passed_notable": [
+        "cmd/server",
+        "internal/daemon",
+        "internal/daemon/collaborationrun",
+        "internal/daemon/execenv",
+        "internal/handler",
+        "internal/migrations",
+        "internal/service"
+      ],
+      "currently": "run finished; metrics guard repair underway",
+      "known_failures": [
+        {
+          "test": "TestNoDirectGetAgentRuntimeCalls",
+          "package": "server/internal/metrics",
+          "location": "server/internal/auth/task_capability.go:126",
+          "log_lines": [
+            8431,
+            8435
+          ],
+          "baseline_files_unchanged": true
+        }
+      ],
+      "exit_code": 2,
+      "completed_at": "2026-11-08T10:58:21.726922+08:00"
+    },
+    {
+      "status": "failed",
+      "run": "full-check-02",
+      "head": "c52eeb53f637f1f5f3dc19ba5d1ac51b974fb56c",
+      "pid": 44117,
+      "exec_session": 34508,
+      "started_at": "2026-11-08T11:13:22.224622+08:00",
+      "log": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/full-check-02/make-check.log",
+      "known_failures": [
+        "18 native tests missing desktop renderer/preload",
+        "8 Knowledge environment failures",
+        "P1-L14 ambiguous Refresh locator"
+      ],
+      "stage": "6/6 Playwright",
+      "typescript_tests": 13377,
+      "last_update": "2026-11-08T12:24:43.888063+08:00",
+      "metrics_guard": "passed in full-check-02 internal/metrics 4.157s",
+      "go_race": "passed all packages",
+      "go_vet": "passed",
+      "api": "started with candidate identity",
+      "exit_code": 2,
+      "completed_at": "2026-11-08T12:24:19.948238+08:00",
+      "playwright": {
+        "passed": 279,
+        "skipped": 135,
+        "failed": 27
+      }
+    },
+    {
+      "status": "failed",
+      "run": "full-check-03",
+      "head": "00e99892fdf2ad65b1bdd04669c800bf97d4649a",
+      "pid": 9594,
+      "exec_session": 80393,
+      "started_at": "2026-11-08T12:40:32.105449+08:00",
+      "log": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/full-check-03/make-check.log",
+      "known_failures": [
+        {
+          "test": "global-scope-navigation Web",
+          "item": 112,
+          "kind": "timeout3m",
+          "log_line": 9164
+        }
+      ],
+      "stage": "6/6 Playwright",
+      "static_tasks": 15,
+      "typescript_tests": 13377,
+      "metrics_guard": "passed",
+      "last_update": "2026-11-08T13:36:40.044293+08:00",
+      "service_pid": 44382,
+      "go_race": "passed all packages",
+      "go_vet": "passed",
+      "production_builds": [
+        "Desktop",
+        "Web"
+      ],
+      "exit_code": 2,
+      "completed_at": "2026-11-08T13:48:43.337688+08:00",
+      "playwright": {
+        "pass": 328,
+        "skip": 112,
+        "fail": 1
+      }
+    },
+    {
+      "status": "failed",
+      "run": "full-check-04",
+      "head": "d4af1d6d396176e086c0c8dfdfac66663003b756",
+      "pid": 80171,
+      "exec_session": 62151,
+      "started_at": "2026-11-08T14:21:39.547455+08:00",
+      "log": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/full-check-04/make-check.log",
+      "known_failures": [
+        "P1-L16 owner removal unscoped Refresh strict collision"
+      ],
+      "stage": "6/6 Playwright",
+      "static_tasks": 15,
+      "typescript_tests": 13377,
+      "go_race": "passed all packages",
+      "go_vet": "passed",
+      "production_builds": [
+        "Desktop",
+        "Web"
+      ],
+      "last_update": "2026-11-08T15:09:27.318871+08:00",
+      "exit_code": 2,
+      "completed_at": "2026-11-08T15:25:15.766334+08:00",
+      "playwright": {
+        "pass": 328,
+        "skip": 112,
+        "fail": 1
+      }
+    },
+    {
+      "status": "failed",
+      "run": "full-check-05",
+      "head": "7038918a7793d722f47124a19b976a446b3c7f3e",
+      "pid": 34345,
+      "exec_session": 9657,
+      "started_at": "2026-11-08T15:32:47.514870+08:00",
+      "log": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/full-check-05/make-check.log",
+      "known_failures": [
+        {
+          "test": "TestExecuteAndDrain_IdleWatchdog_DoesNotFireDuringInFlightToolCall",
+          "package": "server/internal/daemon",
+          "log_line": 8437,
+          "status": "diagnosing while original run continues"
+        }
+      ],
+      "stage": "3/6 Go race",
+      "static_tasks": 15,
+      "typescript_tests": 13377,
+      "last_update": "2026-11-08T15:57:04.027035+08:00",
+      "run_id": "full-check-05",
+      "worktree": "/Volumes/artisan/code/2026/mc-merge-unmerged-worktrees-20261108",
+      "command": [
+        "make",
+        "check"
+      ],
+      "registry": "/Volumes/artisan/code/2026/mc-merge-takeover-archives-20261108/verification/dev-registry",
+      "exit_code": 2,
+      "completed_at": "2026-11-08T16:15:07.706459+08:00",
+      "ending_head": "7038918a7793d722f47124a19b976a446b3c7f3e",
+      "log_sha256": "dee2f6161734d6a6333b2e8c88b88474001337fa50a8bf0a00089f961217e177"
+    }
+  ],
+  "handoff": "handoff-20261108-1544.md",
+  "closure": {
+    "status": "completed and archived; selective records-only commit",
+    "source_refs_worktrees_retained": true,
+    "owned_postgres": "stopped after0 other clients; data retained",
+    "no_push_deploy_paid_agents": true
+  }
+}

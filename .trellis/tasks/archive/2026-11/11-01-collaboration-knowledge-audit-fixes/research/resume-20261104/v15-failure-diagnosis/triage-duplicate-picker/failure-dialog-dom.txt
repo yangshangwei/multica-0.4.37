@@ -1,0 +1,25 @@
+  - dialog "Mark duplicate" [ref=e274]:
+    - generic [ref=e275]:
+      - heading "Mark duplicate" [level=2] [ref=e276]
+      - paragraph [ref=e277]: P109-37 · Customer reports the same upload failure
+    - paragraph [ref=e278]: Choose a formal task in this workspace, including completed tasks. Comments and attachments stay on this submission.
+    - generic [ref=e279]:
+      - generic [ref=e280]: Duplicate target task
+      - generic [ref=e281]:
+        - generic [ref=e282]: Duplicate target task
+        - group [ref=e284]:
+          - combobox "Duplicate target task" [expanded] [active] [ref=e285]: Same upload failure; retain the customer's additional context
+          - group [ref=e286]:
+            - img [ref=e287]
+        - listbox "Eligible tasks" [ref=e290]:
+          - status [ref=e292]: No matching tasks.
+    - generic [ref=e293]:
+      - generic [ref=e294]: Reason
+      - textbox "Reason" [ref=e295]
+    - generic [ref=e296]:
+      - button "Cancel" [ref=e297]
+      - button "Mark duplicate" [ref=e298]
+    - button "Close" [ref=e299]:
+      - img
+      - generic [ref=e300]: Close
+```

@@ -1,0 +1,57 @@
+import { pinyin } from "pinyin-pro";
+
+export const WORKSPACE_SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+/** Maximal runs of Han characters, including the extension-A and compatibility blocks. */
+const HAN_RUN = /[㐀-䶿一-鿿豈-﫿]+/g;
+
+/** Hiragana / katakana, including the halfwidth katakana block. */
+const KANA = /[\u3041-\u3096\u309B-\u30FF\uFF66-\uFF9F]/;
+
+/**
+ * Romanize Han characters so a Chinese name can produce a slug at all.
+ *
+ * Each run is converted whole rather than per character: pinyin-pro resolves
+ * 多音字 from its phrase dictionary, so 长沙 is "changsha" (not "zhangsha")
+ * and 重庆 is "chongqing" (not "zhongqing") — but only when it can see the
+ * surrounding characters. Syllables are joined without separators ("蜘蛛侠"
+ * → "zhizhuxia") because one word should read as one slug segment; the
+ * surrounding spaces keep a run from gluing onto adjacent Latin text.
+ */
+function romanizeHan(name: string): string {
+  return name.replace(HAN_RUN, (run) => {
+    const syllables = pinyin(run, { toneType: "none", type: "array", v: true });
+    return ` ${syllables.join("")} `;
+  });
+}
+
+/**
+ * Auto-generate a slug from a workspace name.
+ *
+ * Chinese names are romanized first (蜘蛛侠 → "zhizhuxia"), so the create
+ * form can fill in a URL — and, through it, an issue prefix — for a name
+ * with no Latin characters at all (MUL-6050). This is a derived default the
+ * user can still edit before creating, not a hardcoded one: the objection to
+ * a fixed fallback like "workspace" was that it picks a useless URL and
+ * collides for the second such workspace on the instance, and neither is
+ * true of a romanized name.
+ *
+ * Kana-bearing names bypass pinyin. Other names use Chinese Han readings;
+ * kana-only, Hangul-only and emoji-only names leave a blank editable slug.
+ */
+export function nameToWorkspaceSlug(name: string): string {
+  const romanized = KANA.test(name) ? name : romanizeHan(name);
+  return romanized
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function isWorkspaceSlugConflict(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "status" in error &&
+    (error as { status?: unknown }).status === 409
+  );
+}

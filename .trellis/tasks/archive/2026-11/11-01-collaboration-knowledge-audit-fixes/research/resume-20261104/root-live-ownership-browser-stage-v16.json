@@ -1,0 +1,69 @@
+{
+  "status": "pass",
+  "recorded_at": "2026-11-04T03:58:40.858154+00:00",
+  "reviewer": "/root",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "scope": "Root independent live V16 API/Web/database/renderer/Redis identity during actual browser stage; final exit/auditor pending",
+  "manifest_sha256": "8003de59056c7d7dec4a5f1c32aba9397c12b1a9ead5f8788bb20ab2e419bddf",
+  "task_environment_sha256": "09295d055cfd2d244f82199c3479c5b19a6109ba4e6dcca25e1bf4bc9d948b04",
+  "resource_ownership_sha256": "510ed31219209da5129229de4bcfc99530e011fced5940a79d40934bcc0a6e5a",
+  "api": {
+    "pid": 33694,
+    "origin": "http://127.0.0.1:18974",
+    "process": "33694 33628 33628 Wed Nov  4 11:52:58 2026     /private/tmp/multica-final-check-v16-gpuoybuq/go-build1447386199/b001/exe/server",
+    "cwd": "p33694\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+    "running_record_sha256": "10a78c9fd29b2bf37077cd02cb73e5c5ad64b345663c5af1414bdbe380d0c52e",
+    "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+    "configuration_id": "5bb45ae6aa2945bf157ff50e64dd292e025e97db737de9a961d589286024985b",
+    "mode": "development",
+    "ownership_verified": true,
+    "actual_database_url_matches_registered": true,
+    "actual_knowledge_enabled": false
+  },
+  "web": {
+    "pid": 34873,
+    "origin": "http://127.0.0.1:13894",
+    "process": "34873 34854 34854 Wed Nov  4 11:53:56 2026     next-server (v16.2.6)",
+    "cwd": "p34873\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web",
+    "running_record_sha256": "6724b2496a3fbd6334d9ab23961732a173602e7585c1aaed06a0fe22751eba17",
+    "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+    "configuration_id": "1d0be98969ce00322461c1c6a201152bf7db074e431bd983f767061f8557aba6",
+    "mode": "production",
+    "ownership_verified": true,
+    "build_id": "wJb8_oXVm-RQLLW3V6hi3",
+    "rendered_public_config": {
+      "apiBaseUrl": "http://localhost:18974",
+      "wsUrl": "ws://localhost:18974/ws"
+    },
+    "html_sha256": "e5940ad1d217c01957e0afa5746b45c127672bfa4f2936122a049ff68e9f1615"
+  },
+  "database": {
+    "database": "multica_check_20261104030822_8966_api",
+    "server_addr": "172.20.0.2",
+    "server_port": 5432,
+    "latest": "764_collaboration_ai_policy",
+    "cluster_connections": 36,
+    "max_connections": "100"
+  },
+  "renderer": {
+    "pid": 5896,
+    "url": "http://127.0.0.1:58268/",
+    "index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+    "ownership_verified": true
+  },
+  "redis": {
+    "port": 58269,
+    "container_id": "b619c546fcc72eb3180512d1568a6b39388fc1fead041e8ca9d484a0853f54be",
+    "PONG": true,
+    "owner_labels_verified": true
+  },
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_knowledge_default": false,
+  "candidate_source_changes": [
+    " M apps/web/next-env.d.ts"
+  ],
+  "real_model_or_write_operations": 0,
+  "make_exit_known": false
+}

@@ -1,0 +1,136 @@
+{
+  "recorded_at": "2026-11-03T07:41:54.342510+00:00",
+  "active_task": ".trellis/tasks/10-30-collaboration-fix-closure",
+  "reviewer": "/root/fix_check",
+  "state": "focused_fix_verified_browser_pending_root",
+  "git_head": "084ea3c987fa4ab8418a2ae5b3b7a20c096c36d8",
+  "source_sha256": {
+    "e2e/fixtures/collaboration-editing.ts": "f6a33e2ccf36799ad3f8fb5a557599b7d71ce3a9a8be42140700482d2bf08207",
+    "e2e/collaboration-delivery-web.spec.ts": "8fa5489d0d647ebbed607b72b021c620658796a6c63634511270c5969a42598e"
+  },
+  "changed_by_agent": [
+    "e2e/fixtures/collaboration-editing.ts"
+  ],
+  "preexisting_repair_retained": [
+    "e2e/collaboration-delivery-web.spec.ts"
+  ],
+  "product_behavior_changes": 0,
+  "dependencies_added": 0,
+  "preserved_assertions": [
+    "source parent UUID",
+    "initial stage=2",
+    "edited stage=3",
+    "recipient UUID",
+    "labels/properties/iteration",
+    "creation403 plus correlated durable rejection",
+    "retained file identity",
+    "explicit new-key resubmission",
+    "old-key rejection remains"
+  ],
+  "checks": [
+    {
+      "command": [
+        "pnpm",
+        "-C",
+        "packages/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/creation-form.test.tsx",
+        "collaboration/field-inputs.test.tsx",
+        "collaboration/field-editing.test.tsx"
+      ],
+      "exit_code": 0,
+      "test_files": 3,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "log": "views-focused-tests.log",
+      "log_sha256": "ebff9e1d51e10652793a25839741cc93b35f9d42e625290cebdf443eefa891c1"
+    },
+    {
+      "command": [
+        "pnpm",
+        "-C",
+        "packages/views",
+        "exec",
+        "eslint",
+        "collaboration/creation-form.test.tsx",
+        "collaboration/field-inputs.test.tsx",
+        "collaboration/field-editing.test.tsx"
+      ],
+      "exit_code": 0,
+      "log": "views-focused-lint.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-editing-web.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "e2e/collaboration-delivery-web.spec.ts",
+        "--list"
+      ],
+      "exit_code": 0,
+      "discovered": 15,
+      "executed_browser_tests": 0,
+      "log": "playwright-discovery.log",
+      "log_sha256": "21bf972104d4146337b73f550bda51b864f1abafef70bf68e470f0f59ceb4a03"
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--strict",
+        "--target",
+        "ESNext",
+        "--module",
+        "ESNext",
+        "--moduleResolution",
+        "Bundler",
+        "--lib",
+        "ESNext,DOM,DOM.Iterable",
+        "--jsx",
+        "react-jsx",
+        "--esModuleInterop",
+        "--skipLibCheck",
+        "--resolveJsonModule",
+        "--types",
+        "node",
+        "e2e/fixtures/collaboration-editing.ts",
+        "e2e/collaboration-delivery-web.spec.ts"
+      ],
+      "exit_code": 0,
+      "log": "e2e-focused-typecheck-esnext.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "e2e/fixtures/collaboration-editing.ts",
+        "e2e/collaboration-delivery-web.spec.ts"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "configuration_failure_preserved": {
+    "log": "e2e-focused-typecheck.log",
+    "exit_code": 2,
+    "log_sha256": "883b1725bbf26575b3986efafa1eada6b0b646d76e2f9ced5715bc4bdddf5fe1",
+    "reason": "An initial ad hoc compiler invocation used ES2022 and omitted JSX, incompatible with repository ESNext/React settings; corrected ESNext/JSX command above passed without code changes."
+  },
+  "remaining": [
+    "root production Web and native Electron directed E2E runs on the frozen candidate",
+    "root final complete make check and bound post-run audit",
+    "password7 and original Provider experiments remain separate gates"
+  ],
+  "real_services_DB_Provider_calls": 0
+}

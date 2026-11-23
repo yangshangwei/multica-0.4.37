@@ -1,0 +1,220 @@
+{
+  "started_at": "2026-11-02T07:50:25.284055+00:00",
+  "state": "complete",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "commercial_provider_calls": 0,
+  "product_source_changed": false,
+  "original_p95_gate_executed": false,
+  "original_p95_status": "FAIL2171ms>2000ms retained",
+  "automatic_retries": 0,
+  "agent_cli_guard": true,
+  "race_enabled": true,
+  "steps": [
+    {
+      "name": "format-private-test",
+      "command": [
+        "gofmt",
+        "-w",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-read-semantics-1/diagnostic_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T07:50:25.355405+00:00",
+      "pid": 5624,
+      "finished_at": "2026-11-02T07:50:25.367803+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "compile-handler",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-race",
+        "-p",
+        "2",
+        "-overlay",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-read-semantics-1/overlay.json",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-read-semantics-1/handler-read-semantics.test",
+        "./internal/handler"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T07:50:25.368907+00:00",
+      "pid": 5625,
+      "finished_at": "2026-11-02T07:50:48.813506+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "compile-service",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-race",
+        "-p",
+        "2",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-read-semantics-1/service-read-semantics.test",
+        "./internal/service"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T07:50:48.867476+00:00",
+      "pid": 5694,
+      "finished_at": "2026-11-02T07:51:11.489367+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "run-handler",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-read-semantics-1/handler-read-semantics.test",
+        "-test.v",
+        "-test.run",
+        "^(TestIterationCanonicalReadSemanticsDiagnostic|TestIterationClosureRealMemberRevocationRaces|TestUpdateIssueIterationReadPipelineLockOrder|TestIterationPipelinePostFenceSnapshot)$",
+        "-test.count=1",
+        "-test.parallel=1",
+        "-test.timeout=5m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T07:51:12.210167+00:00",
+      "pid": 5807,
+      "finished_at": "2026-11-02T07:51:19.568998+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "63755cf2b081a58f17cc82081eebfce58bd78e4c12cd3d30b548b52c077d1df7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "run-service",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/service",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-read-semantics-1/service-read-semantics.test",
+        "-test.v",
+        "-test.run",
+        "^(TestIterationClosureBatchCASFailureRollsBackAllPhases|TestIterationClosureFinalSnapshotFailureRollsBackHandoff|TestIterationClosureBatchMultiTargetHandoff|TestIterationLifecycleBatchSwappedSources|TestIterationClosureManagementPreservesRunningTask|TestIterationClosureDaemonCompletionBarrierDoesNotRestartExecution|TestIterationClosureRolloverEventsMatchCommittedCounters|TestIterationClosurePreservesSampledClockAndFinalProcessingTime)$",
+        "-test.count=1",
+        "-test.parallel=1",
+        "-test.timeout=5m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T07:51:20.385713+00:00",
+      "pid": 5900,
+      "finished_at": "2026-11-02T07:51:26.282962+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "6c1ddd9621f5b2d71525cc980aa103829ba090347538dd2dba07c67157d14fdf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "database_allocations": [
+    {
+      "database": "multica_func7af9_next_read_semantics_1",
+      "template": "multica_func7af9_template_20261102",
+      "migration_count": 751,
+      "headroom_before": {
+        "maximum": 100,
+        "used": 45
+      }
+    },
+    {
+      "database": "multica_func7af9_next_read_semantics_service_1",
+      "template": "multica_func7af9_template_20261102",
+      "migration_count": 751,
+      "headroom_before": {
+        "maximum": 100,
+        "used": 45
+      }
+    }
+  ],
+  "source_diff_sha256_before": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "frozen_test_sha256_before": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "overlay_virtual_target": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102/server/internal/handler/zz_task_private_read_semantics_test.go",
+  "overlay_new_file_only": true,
+  "diagnostic_sha256": "2a0adf9b4851e10ac1b60dbc7c78ff6e1c246b55ce478b184914aa2dc3d8555b",
+  "overlay_sha256": "08831b1f3b74902b370aaef2faf68a686b6149a986caff058da9828e705b20cf",
+  "handler_binary_sha256": "8d9ca5603ee27b97558c8d37fb41c5f9071e00c3abc0d15f9f28b70160681d40",
+  "service_binary_sha256": "abf652b4bd70d0015159550453459f11e704437597928e3bdd194837af4bb53d",
+  "handler_private_environment_sha256": "56e90526bf56a4ece59f6333596c023c9bcfa08254688a84760b6f2cd51c9950",
+  "handler_outcomes": {
+    "TestIterationClosureRealMemberRevocationRaces/end/closure_first": "pass",
+    "TestIterationClosureRealMemberRevocationRaces/end/revoke_first": "pass",
+    "TestIterationClosureRealMemberRevocationRaces/disable/closure_first": "pass",
+    "TestIterationClosureRealMemberRevocationRaces/disable/revoke_first": "pass",
+    "TestIterationClosureRealMemberRevocationRaces": "pass",
+    "TestIterationPipelinePostFenceSnapshot": "pass",
+    "TestUpdateIssueIterationReadPipelineLockOrder/join_behind_fence": "pass",
+    "TestUpdateIssueIterationReadPipelineLockOrder/iteration_before_issue": "pass",
+    "TestUpdateIssueIterationReadPipelineLockOrder": "pass",
+    "TestIterationCanonicalReadSemanticsDiagnostic": "pass"
+  },
+  "handler_top_counts": {
+    "pass": 4
+  },
+  "handler_subtest_counts": {
+    "pass": 6
+  },
+  "handler_exit_code": 0,
+  "handler_connections_after": 0,
+  "service_private_environment_sha256": "2484bd94b491bfe86cb33c7c7c8437bdb2139d2dd2124b0f1b3c45c517badc32",
+  "service_outcomes": {
+    "TestIterationClosureFinalSnapshotFailureRollsBackHandoff": "pass",
+    "TestIterationClosurePreservesSampledClockAndFinalProcessingTime": "pass",
+    "TestIterationClosureBatchMultiTargetHandoff": "pass",
+    "TestIterationLifecycleBatchSwappedSources": "pass",
+    "TestIterationClosureBatchCASFailureRollsBackAllPhases": "pass",
+    "TestIterationClosureDaemonCompletionBarrierDoesNotRestartExecution": "pass",
+    "TestIterationClosureManagementPreservesRunningTask/end": "pass",
+    "TestIterationClosureManagementPreservesRunningTask/cancel": "pass",
+    "TestIterationClosureManagementPreservesRunningTask/handoff": "pass",
+    "TestIterationClosureManagementPreservesRunningTask/disable": "pass",
+    "TestIterationClosureManagementPreservesRunningTask": "pass",
+    "TestIterationClosureRolloverEventsMatchCommittedCounters/end/1": "pass",
+    "TestIterationClosureRolloverEventsMatchCommittedCounters/end/2": "pass",
+    "TestIterationClosureRolloverEventsMatchCommittedCounters/handoff/1": "pass",
+    "TestIterationClosureRolloverEventsMatchCommittedCounters/handoff/2": "pass",
+    "TestIterationClosureRolloverEventsMatchCommittedCounters": "pass"
+  },
+  "service_top_counts": {
+    "pass": 8
+  },
+  "service_subtest_counts": {
+    "pass": 8
+  },
+  "service_exit_code": 0,
+  "service_connections_after": 0,
+  "finished_at": "2026-11-02T07:51:26.349558+00:00",
+  "connections_final": {
+    "multica_func7af9_next_read_semantics_1": 0,
+    "multica_func7af9_next_read_semantics_service_1": 0
+  },
+  "source_diff_unchanged": true,
+  "frozen_test_sha256_after": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "frozen_test_unchanged": true,
+  "overlay_target_absent_after": true,
+  "cleanup_checked_at": "2026-11-02T07:51:26.523387+00:00"
+}

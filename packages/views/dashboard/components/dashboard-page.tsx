@@ -11,7 +11,9 @@ import {
   CurrencyNumberFlow,
   NumberFlow,
 } from "@multica/ui/components/ui/number-flow";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { useWorkspaceId } from "@multica/core/hooks";
+import { useWorkspacePaths } from "@multica/core/paths";
 import type { Agent } from "@multica/core/types";
 import { agentListOptions } from "@multica/core/workspace/queries";
 import { projectListOptions } from "@multica/core/projects/queries";
@@ -150,6 +152,7 @@ function useDataFreshness(
 export function DashboardPage() {
   const { t, i18n } = useT("usage");
   const wsId = useWorkspaceId();
+  const paths = useWorkspacePaths();
   const viewTZ = useViewingTimezone();
   const navigation = useNavigation();
   const locales = i18n.resolvedLanguage ?? i18n.language;
@@ -465,6 +468,11 @@ export function DashboardPage() {
       <CollectionPageHeader
         icon={BarChart3}
         title={t(($) => $.title)}
+        description={t(($) => $.header.tagline)}
+        learnMore={{
+          href: paths.docsPage(DOCS_SLUGS.usage),
+          label: t(($) => $.header.learn_more),
+        }}
         actions={
           /* Data freshness cluster: the timestamp and the action that advances
              it stay together. Refresh re-pulls the same scope, so it lives here

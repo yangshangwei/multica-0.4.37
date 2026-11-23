@@ -1,0 +1,8 @@
+{
+  "classification": "commit_format_hook_refusal_not_product_failure",
+  "attempted_command": "git commit -F .omx/private/enforcement-implementation-20261111/p0-commit-message.txt",
+  "outcome": "PreToolUse rejected before commit",
+  "required_resolution": "Inline git commit -m paragraphs with Lore body/trailers and Co-authored-by: OmX <omx@oh-my-codex.dev>",
+  "source": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/oh-my-codex/dist/scripts/codex-native-pre-post.js",
+  "business_or_runtime_authority_change": false
+}

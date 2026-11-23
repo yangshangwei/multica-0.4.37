@@ -1,0 +1,170 @@
+{
+  "recorded_at": "2026-11-03T01:10:56.685812+00:00",
+  "reviewer": "/root/v10_review",
+  "active_task": ".trellis/tasks/10-30-collaboration-fix-closure",
+  "scope": "Independent exact latest v11 provenance initial executable/environment/source/tool/workspace/CLI/desktop binding review; no runtime clearance or whole acceptance",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "acceptance_findings_pending_root": 1,
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "launcher_sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+  "bindings_sha256": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+  "source_env_sha256": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "current_hashes": {
+    "launcher": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+    "bindings": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+    "source_env": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f",
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+    "corrected_fake_preflight": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+    "adapter_env_matrix": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+    "resolver": "1ded34cc530c40b9f995b80178f07df0a49ce3658ba5f4484ed36fc25f819c1c",
+    "dev_source_id_helper": "817348f249009f05e0e05a4a08d0f76581cda60fac9f9ce88b18255fd4e85bc8",
+    "canonical_manifest": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+    "canonical_source_method": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3"
+  },
+  "source_identities": {
+    "canonical_product": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "canonical_product_file_count": 7962,
+    "development_HEAD_overlay": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "all_tracked_snapshot": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "tracked_file_count": 17182
+  },
+  "workspace": {
+    "declared_edges": 22,
+    "all_links_owned_and_match": true,
+    "actual_exports": 66,
+    "actual_owned_exports": 66,
+    "registered_graph_matches": true,
+    "one_auth_source_identity": true,
+    "auth_paths": [
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts"
+    ]
+  },
+  "artifact_verification_scope": "Actual pinned tool/CLI bytes, hash-bound unchanged build records, all layout-record manifest digests, installed/staged renderer/preload/Main entrypoint and renderer JS samples; no repeated full repository scan or install",
+  "binding_checks_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/v11-review/binding-checks.json",
+  "binding_checks_sha256": "ae6a28b242d2a1e07818bd5cfe7877d6a72f7717c53ef1d11f85761d5274af1f",
+  "verification": {
+    "recorded_at": "2026-11-03T01:06:30.118729+00:00",
+    "tests": [
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-offline.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11-provenance.py"
+        ],
+        "expected_cases": 45,
+        "exit_code": 0,
+        "log_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/v11-review/fake-preflight-v11-provenance.log",
+        "log_sha256": "87f2e640d85cde47300ad4cd4e00df8cce9d4156ad733ed39799fec2a97076d9",
+        "script_sha256": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+        "network_denied": true,
+        "repository_tests": 0,
+        "real_sql_or_services_or_Provider": 0
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-offline.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/adapter-env-preflight-v11.py"
+        ],
+        "expected_cases": 5,
+        "exit_code": 0,
+        "log_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/v11-review/adapter-env-preflight-v11.log",
+        "log_sha256": "3576d53499df9dd1411d668ef7230738c62eac08ab5f7edb88668831ba6597e8",
+        "script_sha256": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+        "network_denied": true,
+        "repository_tests": 0,
+        "real_sql_or_services_or_Provider": 0
+      }
+    ],
+    "syntax_files": {
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11-provenance.py": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/adapter-env-preflight-v11.py": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+    },
+    "syntax_pass": 5,
+    "actual_repository_tests_or_Go_TestMain_or_services_or_DB_or_Provider": 0
+  },
+  "private_fake_tests": {
+    "corrected_provenance": 45,
+    "adapter_environment": 5,
+    "total_pass": 50,
+    "total_fail": 0,
+    "total_skip": 0,
+    "network_denied": true
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "V11-POSTRUN-IDENTITY",
+      "severity": "required_acceptance_gate",
+      "issue": "verify_owned_bindings strongly checks before Make, but after process.wait the launcher records the exit and log hash without final source/tool/workspace/artifact revalidation.",
+      "evidence": "post-start-binding-counterexample.json: exact synthetic entrypoint returns complete/exit0 after tracked auth source mutation or foreign core workspace retargeting after initial checks. This is not evidence of a real mutation.",
+      "owner": "root",
+      "reason_not_fixed": "Frozen launcher and all live/private artifact files are read-only for this reviewer. A root final-state audit is a valid separate solution; no launcher edit is required if that audit is bound and mandatory before accepting the result.",
+      "acceptance_requirement": "Root must retain a post-run source/tool/workspace/CLI/desktop audit against initial bindings, allowing only the explicitly documented generated next-env import and separately recording canonical versus normalized source identities. Do not accept a raw Make exit0 alone."
+    },
+    {
+      "id": "V11-LIVE-READINESS",
+      "severity": "root_precondition",
+      "issue": "A hash-bound resource proof schema cannot establish current live ownership by itself. Existing resource proof, renderer-start and allocation records remain read-only.",
+      "owner": "root",
+      "reason_not_fixed": "Root owns actual listener/Redis/database provenance, current exclusive window, new resource record, SSR/login precondition and clearance."
+    },
+    {
+      "id": "V11-HISTORICAL-PROVENANCE",
+      "severity": "note",
+      "issue": "Older v11 summary/launcher/binding labels are superseded by the exact corrected provenance files and hashes.",
+      "reason_not_fixed": "Preserved historical evidence; root owns current acceptance reconciliation."
+    }
+  ],
+  "supported_root_command": [
+    "python3",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py"
+  ],
+  "repository_command": [
+    "make",
+    "check",
+    "ENV_FILE=/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-source-v11.safe.env"
+  ],
+  "supported_Go_admission": [
+    "Normal build/vet/list/version commands forward to the explicit pinned Go executable.",
+    "Genuine pre-binary-boundary test -c compiles without TestMain/SQL.",
+    "Ordinary root make-check test selection uses one new migrated clone/private HOME per expanded package.",
+    "Recursive tests are restricted to the recorded clone and exact canonical package; wildcard/multiple package or source-override selection is rejected."
+  ],
+  "pending_root_requirements": [
+    "Establish fresh hash-bound resource ownership and exclusive renderer/Redis/PostgreSQL window using current main-session identity.",
+    "Verify current production SSR/auth-store prerequisite and live API/Web/database/runtime addresses.",
+    "Create clearance matching these exact launcher/bindings/source/adapters/resource hashes.",
+    "Run the unchanged full Make command and preserve all raw named test and browser inventories.",
+    "Before accepting completion, perform and retain the mandatory separate final-state identity audit for source/tools/workspace/CLI/desktop.",
+    "Keep password7 and original14-call E3\u2013E6 experiments separate from fake/complete default checks."
+  ],
+  "product_lint_typecheck": "Not rerun in bounded metadata/private-Python review; root owns full repository verification. Reviewed Python syntax5 pass.",
+  "reviewer_actions": {
+    "product_edits": 0,
+    "private_launcher_or_binding_or_old_evidence_edits": 0,
+    "live_services_or_DB": 0,
+    "repository_tests_or_Go_TestMain": 0,
+    "Provider_calls": 0,
+    "clearance_writes": 0,
+    "installs_or_full_file_rescans": 0
+  },
+  "whole_check_pass": false
+}

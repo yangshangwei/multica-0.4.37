@@ -1,0 +1,34 @@
+{
+  "checks": [
+    {
+      "name": "format",
+      "command": [
+        "gofmt",
+        "-l",
+        "server/internal/daemon/collaborationrun/host_handoff_checkpoint_lifecycle_test.go"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.003,
+      "passed": true
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "vet",
+        "-tags=agentintegration",
+        "./internal/daemon/collaborationrun"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.215,
+      "passed": true
+    }
+  ],
+  "source_hashes": {
+    "server/internal/daemon/collaborationrun/host_handoff_checkpoint_lifecycle_test.go": "bdcfd02210d871918a3e16537b6605bbca9c93381b9067effe40a466857830c9",
+    "server/internal/daemon/collaborationrun/host_handoff_checkpoint_test.go": "717c992a0e4b11ba5e6d3c2d9b667e663e325070043bd150bdd0096714b88455",
+    "server/internal/daemon/collaborationrun/host_runner.go": "565d518d352199050f110e847f89558d1980b94ddc67d0c6db5a33eff6e6afa2",
+    "server/internal/daemon/collaborationrun/host_checkpoints.go": "b70f1ddd0078c09c35dcea1407e5f7348f0e374b5f8fababe1a7794fd0fc79a1"
+  },
+  "source_edits": "Only the new lifecycle regression file"
+}

@@ -328,6 +328,34 @@ it("refreshes settings dependencies after a confirmed local command", async () =
   client.clear();
 });
 
+it("notifies applied listeners before cache refreshes settle", async () => {
+  const client = new QueryClient();
+  const refresh = deferred<void>();
+  vi.spyOn(client, "invalidateQueries").mockImplementation(() => refresh.promise);
+  vi.mocked(api.createIteration).mockResolvedValue(receipt);
+  const onApplied = vi.fn();
+  const hook = renderHook(
+    () => useIterationCommand("w", "create", { onApplied }),
+    {
+      wrapper: ({ children }) => (
+        <QueryClientProvider client={client}>{children}</QueryClientProvider>
+      ),
+    },
+  );
+
+  let settled = false;
+  const mutation = hook.result.current
+    .mutateAsync({ command })
+    .then(() => { settled = true; });
+  await waitFor(() => expect(onApplied).toHaveBeenCalledOnce());
+  expect(settled).toBe(false);
+
+  refresh.resolve();
+  await act(async () => { await mutation; });
+  expect(settled).toBe(true);
+  client.clear();
+});
+
 it("refreshes the shared timezone after a rejected command before a new intent", async () => {
   const client = new QueryClient();
   const invalidate = vi.spyOn(client, "invalidateQueries");

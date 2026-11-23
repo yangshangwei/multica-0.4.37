@@ -1,0 +1,18 @@
+test(collaboration): keep cross-client execution grounded in natural proof
+
+Commit the verified actual Web/Electron execution fixture before the
+removal and reconnect slice that reuses it. Two independent Linux namespaces
+execute their exact service-issued identities with a test-created provider.
+
+Preserve concurrent A/B work, a single waiting-input cancellation and one
+coalesced follow-up with durable history. Credential input stays private and
+container cleanup never manufactures a termination proof.
+
+Constraint: Test-created provider and actual kernel evidence are separate from provider accounts
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Tested: Fresh combined Web/Electron1/1 with zero retries/skips; lifecycle2/2 reuse; strict TypeScript/root ESLint/gofmt; independent review
+Not-tested: Real provider account/quota, installed full Main/old clients and other OS containment
+Directive: Match run/group/input/namespace identities and natural sealed proof before inferring execution
+Co-authored-by: OmX <omx@oh-my-codex.dev>

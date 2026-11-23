@@ -1,0 +1,70 @@
+=== RUN   TestCollaborationHandoffCursorEmptyStartsAtRequestedRun
+--- PASS: TestCollaborationHandoffCursorEmptyStartsAtRequestedRun (0.00s)
+=== RUN   TestCollaborationHandoffCursorRoundTripsEmittedKinds
+=== RUN   TestCollaborationHandoffCursorRoundTripsEmittedKinds/inputs
+=== RUN   TestCollaborationHandoffCursorRoundTripsEmittedKinds/results
+=== RUN   TestCollaborationHandoffCursorRoundTripsEmittedKinds/causes
+=== RUN   TestCollaborationHandoffCursorRoundTripsEmittedKinds/readers
+=== RUN   TestCollaborationHandoffCursorRoundTripsEmittedKinds/whitespace_at_encoded_limit
+--- PASS: TestCollaborationHandoffCursorRoundTripsEmittedKinds (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRoundTripsEmittedKinds/inputs (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRoundTripsEmittedKinds/results (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRoundTripsEmittedKinds/causes (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRoundTripsEmittedKinds/readers (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRoundTripsEmittedKinds/whitespace_at_encoded_limit (0.00s)
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/omitted_run_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/null_run_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/empty_run_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/wrong_run_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_same_run_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_replaced_run_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_escaped_run_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_kind
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_offset
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/unknown_field
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/case_variant_run_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/case_variant_duplicate
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/missing_kind
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/unknown_kind
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/negative_offset
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/fractional_offset
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/bad_after_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/bad_command_id
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/bad_before_at
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/null_document
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/array_document
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/trailing_document
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/trailing_garbage
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/truncated_document
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/invalid_base64
+=== RUN   TestCollaborationHandoffCursorRejectsMalformedBindings/encoded_limit_exceeded
+--- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/omitted_run_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/null_run_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/empty_run_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/wrong_run_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_same_run_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_replaced_run_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_escaped_run_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_kind (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/duplicate_offset (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/unknown_field (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/case_variant_run_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/case_variant_duplicate (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/missing_kind (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/unknown_kind (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/negative_offset (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/fractional_offset (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/bad_after_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/bad_command_id (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/bad_before_at (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/null_document (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/array_document (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/trailing_document (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/trailing_garbage (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/truncated_document (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/invalid_base64 (0.00s)
+    --- PASS: TestCollaborationHandoffCursorRejectsMalformedBindings/encoded_limit_exceeded (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	0.793s

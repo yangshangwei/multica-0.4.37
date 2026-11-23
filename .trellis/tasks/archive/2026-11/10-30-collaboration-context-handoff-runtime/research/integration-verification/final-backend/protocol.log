@@ -1,0 +1,164 @@
+=== RUN   TestCollaborationCheckpointBoundsAndKinds
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/stream
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/stream (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/sequence
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/sequence (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/offset
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/offset (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/empty
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/empty (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/body
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/body (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/aggregate
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/aggregate (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/tool_shape
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/tool_shape (0.00s)
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/version
+--- PASS: TestCollaborationCheckpointBoundsAndKinds/version (0.00s)
+--- PASS: TestCollaborationCheckpointBoundsAndKinds (0.00s)
+=== RUN   TestCollaborationCheckpointRecordVersionCompatibility
+--- PASS: TestCollaborationCheckpointRecordVersionCompatibility (0.00s)
+=== RUN   TestCollaborationRecordingSealHasOnlyBoundedMetadata
+--- PASS: TestCollaborationRecordingSealHasOnlyBoundedMetadata (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/same_key
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/same_key (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_becomes_unknown
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_becomes_unknown (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/reason_changes
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/reason_changes (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/run_changes
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/run_changes (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/past_limit
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/past_limit (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/gap
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/gap (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/ack_decreases
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/ack_decreases (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_decreases
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_decreases (0.00s)
+=== RUN   TestCollaborationRecordingSealAdvancesBoundedKnowledge/stream_changes
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge/stream_changes (0.00s)
+--- PASS: TestCollaborationRecordingSealAdvancesBoundedKnowledge (0.00s)
+=== RUN   TestCollaborationHandoffPreservesEscapedAdmittedAssignment
+--- PASS: TestCollaborationHandoffPreservesEscapedAdmittedAssignment (0.15s)
+=== RUN   TestCollaborationHandoffRejectsOversizedRawJSON
+--- PASS: TestCollaborationHandoffRejectsOversizedRawJSON (0.02s)
+=== RUN   TestCollaborationHandoffMaterialBudgetIncludesMetadata
+--- PASS: TestCollaborationHandoffMaterialBudgetIncludesMetadata (0.08s)
+=== RUN   TestCollaborationHandoffRejectsFalseCompletenessAndUnknownVersion
+--- PASS: TestCollaborationHandoffRejectsFalseCompletenessAndUnknownVersion (0.00s)
+=== RUN   TestCollaborationHandoffWireRejectsUnrecognizedAuthority
+--- PASS: TestCollaborationHandoffWireRejectsUnrecognizedAuthority (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_version
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_version (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_preparation
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_preparation (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/remote_unobserved
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/remote_unobserved (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/unknown_provider
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/unknown_provider (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/missing_observer
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/missing_observer (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/unknown_scope
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/unknown_scope (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/duplicate_scope
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/duplicate_scope (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/private_account_path
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/private_account_path (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_mode
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/legacy_mode (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/missing_version
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/missing_version (0.00s)
+=== RUN   TestCollaborationHostCapabilityBindsModeAndConfiguration/unbound_config
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration/unbound_config (0.00s)
+--- PASS: TestCollaborationHostCapabilityBindsModeAndConfiguration (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/cleanup_not_attempted
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/cleanup_not_attempted (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/all_process_claim
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/all_process_claim (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/never_started_with_exit
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/never_started_with_exit (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/legacy_version
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/legacy_version (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/legacy_mode
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/legacy_mode (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/different_launch
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/different_launch (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/business_success
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/business_success (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/EOF
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/EOF (0.00s)
+=== RUN   TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/timer
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup/timer (0.00s)
+--- PASS: TestCollaborationHostTerminationDoesNotConfuseResultOrCleanup (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/false_cleanup
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/false_cleanup (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/legacy_strong_proof
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/legacy_strong_proof (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/missing_launch
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/missing_launch (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/unsealed_launch
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/unsealed_launch (0.00s)
+=== RUN   TestCollaborationHostProofSealsEveryLaunch/different_final_nonce
+--- PASS: TestCollaborationHostProofSealsEveryLaunch/different_final_nonce (0.00s)
+--- PASS: TestCollaborationHostProofSealsEveryLaunch (0.00s)
+=== RUN   TestCollaborationLegacyRuntimeWireRemainsUnchanged
+--- PASS: TestCollaborationLegacyRuntimeWireRemainsUnchanged (0.00s)
+=== RUN   TestCollaborationHostCleanupRequiresCompleteStrictFacts
+--- PASS: TestCollaborationHostCleanupRequiresCompleteStrictFacts (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions
+=== RUN   TestCollaborationHostPreparationObservationVersions/legacy_version_with_host_mode
+--- PASS: TestCollaborationHostPreparationObservationVersions/legacy_version_with_host_mode (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions/host_version_with_legacy_mode
+--- PASS: TestCollaborationHostPreparationObservationVersions/host_version_with_legacy_mode (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions/unknown_version
+--- PASS: TestCollaborationHostPreparationObservationVersions/unknown_version (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions/excess_attempts
+--- PASS: TestCollaborationHostPreparationObservationVersions/excess_attempts (0.00s)
+=== RUN   TestCollaborationHostPreparationObservationVersions/ambiguous_sequence
+--- PASS: TestCollaborationHostPreparationObservationVersions/ambiguous_sequence (0.00s)
+--- PASS: TestCollaborationHostPreparationObservationVersions (0.00s)
+=== RUN   TestCollaborationPreparationInvocationRequiresExplicitSafeFields
+--- PASS: TestCollaborationPreparationInvocationRequiresExplicitSafeFields (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/input_too_large
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/input_too_large (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/resume
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/resume (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/unknown_adapter
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/unknown_adapter (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/mutable_git
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/mutable_git (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/other_prompt
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/other_prompt (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/missing_input_file
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/missing_input_file (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/duplicate_file
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/duplicate_file (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/rounded_version
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/rounded_version (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/secret_account_path
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/secret_account_path (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/fallback
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/fallback (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/other_run
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/other_run (0.00s)
+=== RUN   TestCollaborationPreparationBindsManifestAndActualPrompt/path_traversal
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt/path_traversal (0.00s)
+--- PASS: TestCollaborationPreparationBindsManifestAndActualPrompt (0.00s)
+=== RUN   TestCollaborationPreparationObservationHasNoOutcomeOrProofAuthority
+--- PASS: TestCollaborationPreparationObservationHasNoOutcomeOrProofAuthority (0.00s)
+=== RUN   TestCollaborationRecallCursorRequiresExactFields
+--- PASS: TestCollaborationRecallCursorRequiresExactFields (0.00s)
+=== RUN   TestCollaborationRecallDecoderRequiresMetadataAndDataOnlyTrust
+--- PASS: TestCollaborationRecallDecoderRequiresMetadataAndDataOnlyTrust (0.00s)
+=== RUN   TestCollaborationOutcomePreservesTypedRecording
+--- PASS: TestCollaborationOutcomePreservesTypedRecording (0.00s)
+=== RUN   TestCollaborationRecordingRejectsMalformedAndOversizedTelemetry
+--- PASS: TestCollaborationRecordingRejectsMalformedAndOversizedTelemetry (0.01s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/protocol	1.757s

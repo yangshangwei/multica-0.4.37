@@ -153,9 +153,9 @@ test("uses the collection canvas and adapts template columns to the available wi
     }
     await page.goto(`/${slug}/mcp`);
     await expect(page.getByRole("heading", { name: "MCP", exact: true })).toHaveCount(1);
-    const header = page.locator("header").filter({ has: page.getByRole("heading", { level: 1, name: "MCP", exact: true }) });
-    await expect(header.getByRole("button", { name: "Add custom server", exact: true })).toBeVisible();
-    await header.getByRole("button", { name: "Browse capability market", exact: true }).click();
+    const welcome = page.getByRole("region", { name: "Connect your agents to your tools", exact: true });
+    await expect(welcome.getByRole("button", { name: "Add custom server", exact: true })).toBeVisible();
+    await welcome.getByRole("button", { name: "Browse capability market", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Capability market", exact: true })).toHaveCount(1);
     const market = page.getByTestId("mcp-market");
     const cards = market.locator(".grid > div");

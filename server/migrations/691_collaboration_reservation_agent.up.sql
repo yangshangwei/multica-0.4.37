@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY idx_collaboration_reservation_agent ON collaboration_runtime_reservation(agent_id) WHERE released_at IS NULL;

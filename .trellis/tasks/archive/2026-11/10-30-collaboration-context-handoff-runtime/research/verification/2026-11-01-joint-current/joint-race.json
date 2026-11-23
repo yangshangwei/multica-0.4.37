@@ -1,0 +1,201 @@
+{
+  "argv": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-json",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "TestHost(HandoffCheckpoint|Checkpoint|Recording|RunnerPending|Ledger|SupervisorLateCallback)",
+    "-count=1",
+    "-timeout",
+    "3m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-11-01T02:43:10.245863+00:00",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "head": "93afc3cb0eedb4936e5d62b9f4e4841dc99309d5",
+  "server_source_id": "f8b47ee964aba898123ee2239ac7396f33a0504cdc02e31ab5a8fdfc279fd469",
+  "tracked_dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "real_agent_gate_enabled": false,
+  "scope": "synthetic HTTP, persisted ledger and fake executable only; no DB or authenticated Provider",
+  "exit_code": 0,
+  "elapsed_seconds": 25.832,
+  "finished_at": "2026-11-01T02:43:36.078248+00:00",
+  "head_after": "93afc3cb0eedb4936e5d62b9f4e4841dc99309d5",
+  "tests": [
+    {
+      "test": "TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/invalid_first_batch",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/accepted_prefix_invalid_middle",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_invalid_middle",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_valid_suffix",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostCheckpointLocalFailureCannotRebaseQueuedMessages",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostCheckpointsKeepOriginalPayloadAcrossLostACK",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostCheckpointBackpressureDoesNotBlockMessageDrain",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointBlockedRecordingCannotHoldProof",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointRestartRecoversWithoutExecution",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointFailureCleanup/snapshot_refused",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointFailureCleanup/binding_refused",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostHandoffCheckpointFailureCleanup",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRetryNeedsAcceptedPriorWaitAndStopSealsEveryAttempt",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerUnissuedPermitTombstoneDoesNotInventAnAuthorizedLaunch",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRetainsUnknownLaunchWithoutReinterpretingLinuxProof",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRecordingRecoveredUnflushedTailRemainsUnknown",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRecordingLedgerRejectsSealWithUnissuedNonce",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRecordingRecoveryCancelledBacklogKeepsUnresolvedPayloads",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRecordingRecoveryBlockedUploadCannotPreventStopAndProof",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRecordingRecoveryMalformedSealACKKeepsOriginalPending",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRecordingRedactsCollaborationCapabilities",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRejectsCorruptRetainedClaim/different_agent_owner",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRejectsCorruptRetainedClaim/missing_preparation",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRejectsCorruptRetainedClaim/missing_context",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRejectsCorruptRetainedClaim/different_session",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRejectsCorruptRetainedClaim/different_capability",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRejectsCorruptRetainedClaim/different_configuration",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRejectsCorruptRetainedClaim/missing_author_epoch",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostLedgerRejectsCorruptRetainedClaim",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/missing_outcome_remains_incomplete",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/recorded_outcome_recovers_acknowledgement",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostRunnerPendingProofHasPriorityOverBlockedOutcome",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_start_observation",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_terminal_observation",
+      "action": "pass"
+    },
+    {
+      "test": "TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun",
+      "action": "pass"
+    }
+  ],
+  "counts": {
+    "pass": 40,
+    "fail": 0,
+    "skip": 0
+  },
+  "top_level_passes": 22,
+  "server_source_id_after": "f8b47ee964aba898123ee2239ac7396f33a0504cdc02e31ab5a8fdfc279fd469",
+  "source_changes": []
+}

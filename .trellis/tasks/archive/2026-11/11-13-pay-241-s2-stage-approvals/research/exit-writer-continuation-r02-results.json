@@ -1,0 +1,2460 @@
+{
+  "status": "TEST_SLICE_VERIFIED_ON_INTERMEDIATE_15_PATH_PRODUCT_SOURCE",
+  "at": "2026-11-15T08:13:51.171213+00:00",
+  "task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+  "source_file_count": 4961,
+  "source_inventory_sha256": "222456cd0cf3a77920bdc20cd3e13cfbc31c953a33539bcdc0682dffc1d3b7e9",
+  "final_source_manifest": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/evidence/final-source-r02.json",
+    "sha256": "a6dceb69f98bbe67a5781e61d989b0abb00c44cbcb31ccd7c8ee9567ec9487e4"
+  },
+  "base_manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+  "owner_product_manifest_sha256": "22421f02d6a7ca2688eeb95c1c056e04d72086cfac07f7d2ed076977e01ee24e",
+  "owner_product_paths": [
+    {
+      "path": "server/internal/handler/issue.go",
+      "sha256": "df3abff6e56a65404fe8b818f32c344f503150bb20a07201499368fdbee18f43",
+      "green_r03_sha256": "d2226da64d30ee23d71b444e915c4c89b8eecf64b521b13cb30ab2321c458bbb",
+      "initial_working_sha256": "d2226da64d30ee23d71b444e915c4c89b8eecf64b521b13cb30ab2321c458bbb"
+    },
+    {
+      "path": "server/internal/service/admin_collaboration.go",
+      "sha256": "e9b088aa834f8b1456109e2758dbeeaf2a76d0aab4e82e9db07f340eba5e0749",
+      "green_r03_sha256": "2366d6425943a873fcca8f2aefe613310f24c09ce81608e7b29112151be1bbb4",
+      "initial_working_sha256": "a21e3be68bf8e019ad701baca3971b5d54c93a42f737a792fb9a1aaeef6b3b47"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff.go",
+      "sha256": "dd4bdccb6c613e3309f32ec5e756e70b9909e7b4cedf292a3faa3ad98f17836d",
+      "green_r03_sha256": "0c917ac4b50f7ee7b7ed75615ba562a9ba93ca643236a58f23752a6eecea3fb4",
+      "initial_working_sha256": "e93510ae234e5667db3dfca6cdb327d054a9cd84730f4630303fdf7b16dd6e42"
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "sha256": "93d2331c409fec08b21cb07f7520eb232dacc1b5f229dd2715a6759511c7a529",
+      "green_r03_sha256": "b3c05e30188f3a1fa5bbbb53b07ecce5fa3bfbd1acdb080ce882a945e1479da8",
+      "initial_working_sha256": "93d2331c409fec08b21cb07f7520eb232dacc1b5f229dd2715a6759511c7a529"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_completion_binding.go",
+      "sha256": "c6d19831a6bdd294d572ec5aedd09093835da000ebb147c610bc11e5d8e2cfcb",
+      "green_r03_sha256": null,
+      "initial_working_sha256": "3608b980f96541ac6a39fa14a58a41a5a19a49a897ccead2bd790e69751f4af3"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_completion.go",
+      "sha256": "9d47fe441cc62a7ccacb1d27358ed2adcf5107d6d0ab60adb1c347a38bd4d31c",
+      "green_r03_sha256": "e9a93b5e175c8eaa36f27c9dda7b394d3b23668598e1e1e8ac6313193ca55552",
+      "initial_working_sha256": "cf47991bd877c699f93adb1632ccd05df60f81752394320abf8ce136209b9d2b"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_project.go",
+      "sha256": "eae4a82e751354f19fb48cb9146506dfb79a51dbcf7f938ffc37e4b44474c4ac",
+      "green_r03_sha256": "9df42b7053f6ea0b5d5ad308fa9ff403e61528962f27ab0a9338baadad1c98f6",
+      "initial_working_sha256": "9df42b7053f6ea0b5d5ad308fa9ff403e61528962f27ab0a9338baadad1c98f6"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_signer.go",
+      "sha256": "b7bd097e41d8d97ff6f81a274d9e778c6fe870473c93e120e7ca12b522f9d5d8",
+      "green_r03_sha256": "98752861a27e396558625ef6ed5b78269b3abeadb0ff4b61e063b0d8806e3018",
+      "initial_working_sha256": "1d3f2da2a3b43a6f1c7e8d5ac3d7ae863beb6923a05d1dcd6703a5bd00342473"
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "6b64869101f78a5646166d05c24a3e67dbed5837bf2cc08a8fa1918810247b9b",
+      "green_r03_sha256": "cfc9e748a1a5e4cd1c417e417166fdd4a0dc4d50ab0633ba8f24ca48ac54c8e4",
+      "initial_working_sha256": "cfc9e748a1a5e4cd1c417e417166fdd4a0dc4d50ab0633ba8f24ca48ac54c8e4"
+    },
+    {
+      "path": "server/internal/service/delivery_completion.go",
+      "sha256": "2ba7220b5e95d73db6bdff2f2c012905e4e3f4928e573a7e8413332f91b53a5e",
+      "green_r03_sha256": "c0632d70654ea263dd1f30985196f35b2686447a18523f17bdade6d2f74626cf",
+      "initial_working_sha256": "3405a0158332c07e50f8256b6f302d1c0d718e087ce765b4f358df761da9a3c5"
+    },
+    {
+      "path": "server/internal/service/task.go",
+      "sha256": "28c28dfe8bc3a75bb6e38d9727ed8632d7d52ac120d3d61cb06422021625fd50",
+      "green_r03_sha256": "e6c67b8687f8f65f64fc9a6766f95b3e2e8fc7f77d955475e94c0047ea29a500",
+      "initial_working_sha256": "e6c67b8687f8f65f64fc9a6766f95b3e2e8fc7f77d955475e94c0047ea29a500"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+      "sha256": "452a117f792292857a7be07d9467317389c666f2608ccde313bc310fd1a8b9ca",
+      "green_r03_sha256": "bc81aa51901ec304b1a923ba90108a96cb1a9d37e71e928095cbb856da595f55",
+      "initial_working_sha256": "bee2c4e9df602b8582a6beefbbb6a8df057e4747d328354e80592fc47a75a1be"
+    },
+    {
+      "path": "server/pkg/db/generated/issue_delete.sql.go",
+      "sha256": "6e16b3b1ba1f815c36c6f675c021ef5d14201ea7e47952fc1d1ac119344aa522",
+      "green_r03_sha256": null,
+      "initial_working_sha256": null
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+      "sha256": "f7cbbd528644f4fe5fda27184cbdb7a97cf9f3f18b3355b194547b880ca11529",
+      "green_r03_sha256": "03a4feaf53021e0bffd72bcd5c2021928092b48054d7674556180005384ae113",
+      "initial_working_sha256": "be72388be9621d211aab2fb86ce8739d5d1e20a96657d3b853bc35ce3ee88da1"
+    },
+    {
+      "path": "server/pkg/db/queries/issue_delete.sql",
+      "sha256": "16c6e968254da55ecf40ce6558492a98b251ef7f273cf25969392b2ce5e8a74a",
+      "green_r03_sha256": null,
+      "initial_working_sha256": null
+    }
+  ],
+  "owner_product_state": "INTERMEDIATE; later R38 blocker-envelope change and final server input are not included",
+  "changed_test_files": [
+    {
+      "path": "server/internal/service/collaboration_stage_exit_continuation_test.go",
+      "sha256": "d0321fd11ba88c42cc9eb373b015c0c5682dc4f82262a18692821c4688088deb",
+      "bytes": 13778,
+      "lines": 305,
+      "top_level_tests": [
+        "TestStageExitContinuationRootMoveClearM1Modes",
+        "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority",
+        "TestStageExitContinuationPolicyCompletionCommitOrders",
+        "TestStageExitContinuationRootMoveCompletionCommitOrders"
+      ],
+      "live_path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_exit_continuation_test.go",
+      "live_sha256": "d0321fd11ba88c42cc9eb373b015c0c5682dc4f82262a18692821c4688088deb"
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_exit_continuation_test.go",
+      "sha256": "8c14dd6c3bcef49c2e52962ba8ea9f29e9dc19d9f6037bfbaf3b892a13ad4c95",
+      "bytes": 25333,
+      "lines": 568,
+      "top_level_tests": [
+        "TestStageExitContinuationProjectImpactAndDeleteM1Modes",
+        "TestStageExitContinuationRootAndParentDeleteBeforeEffects",
+        "TestStageExitContinuationParentAttachAfterDeletePreflight",
+        "TestStageExitContinuationDeleteRequiredWritesRollBackEffects",
+        "TestStageExitContinuationProjectDeleteSubmitCommitOrders"
+      ],
+      "live_path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_stage_exit_continuation_test.go",
+      "live_sha256": "8c14dd6c3bcef49c2e52962ba8ea9f29e9dc19d9f6037bfbaf3b892a13ad4c95"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_writer_continuation_test.go",
+      "sha256": "188dad13be50f366bcfc6ed4d94eeca0a0a63c03699ebdf1b34a758281b4168f",
+      "bytes": 8167,
+      "lines": 146,
+      "top_level_tests": [
+        "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+        "TestStageWriterContinuationApprovedMaterializationM1Modes",
+        "TestStageWriterContinuationSystemRootRefusalM1Modes",
+        "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate"
+      ],
+      "live_path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_writer_continuation_test.go",
+      "live_sha256": "188dad13be50f366bcfc6ed4d94eeca0a0a63c03699ebdf1b34a758281b4168f"
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_writer_continuation_test.go",
+      "sha256": "7e9323fe9387e831c112d340d6613ada15a93a4ee53a4247ef409394e99f695b",
+      "bytes": 29018,
+      "lines": 468,
+      "top_level_tests": [
+        "TestStageWriterContinuationLegacyRootWritersM1Modes",
+        "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes",
+        "TestStageWriterContinuationBatchCommittedPrefix",
+        "TestStageWriterContinuationDuplicateBatchBindingsBeforeEffects",
+        "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes",
+        "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate",
+        "TestStageWriterContinuationGitHubVCSRootM1Modes"
+      ],
+      "live_path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_stage_writer_continuation_test.go",
+      "live_sha256": "7e9323fe9387e831c112d340d6613ada15a93a4ee53a4247ef409394e99f695b"
+    }
+  ],
+  "test_inventory": {
+    "normal": {
+      "top_level": 20,
+      "named_pass": 95,
+      "named_fail": 0,
+      "named_skip": 0
+    },
+    "race": {
+      "top_level": 20,
+      "named_pass": 95,
+      "named_fail": 0,
+      "named_skip": 0
+    },
+    "note": "Named inventory includes parent and subtest records. Normal and race are separate runs; they do not add business cases."
+  },
+  "selected_runs": [
+    {
+      "run": "exit-service-final-normal-r01",
+      "profile": "exit_service",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "package": "./internal/service",
+      "selector": "^TestStageExitContinuation",
+      "race": "normal",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:05:21.902Z",
+      "named": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": [
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationPolicyCompletionCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveCompletionCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        }
+      ],
+      "inventory": [
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/off/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/off/clear",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/observe/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/observe/clear",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/enforce/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/enforce/clear",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/reason",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/done",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/source_member",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationPolicyCompletionCommitOrders/completion_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationPolicyCompletionCommitOrders/policy_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationPolicyCompletionCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveCompletionCommitOrders/completion_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveCompletionCommitOrders/move_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveCompletionCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        }
+      ],
+      "log_sha256": "5f78b2eba3d8341434d75172c71dad0d7fd043f51ce0da49643cf45fdc2f1502",
+      "source_changed": false,
+      "command_sha256": "f462d5af851e56ed773c104f7ef145dd9764639c9dad1a22b724bca9692db51e",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-final-normal-r01.result.json",
+      "result_sha256": "b214baf742c2e4bd5d1d8950348e1bf986392beb996082df45bac8aa23221c87",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/exit_service.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "test",
+          "./internal/service",
+          "-run",
+          "^TestStageExitContinuation",
+          "-count=1",
+          "-json"
+        ],
+        "config_sha256": "cac86bbd67bec1911718ac3f05e36fbd5ff2aae713a3f58f10ea661aa190d833",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "started_at": "2026-11-15T08:04:55.186Z"
+      },
+      "raw_paths": {
+        ".command.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-final-normal-r01.command.json",
+          "sha256": "f462d5af851e56ed773c104f7ef145dd9764639c9dad1a22b724bca9692db51e"
+        },
+        ".command.txt": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-final-normal-r01.command.txt",
+          "sha256": "99c513f7fb1e52e244ff55bcb0ed36671add59058df149bd47cd51bf3873f080"
+        },
+        ".jsonl": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-final-normal-r01.jsonl",
+          "sha256": "5f78b2eba3d8341434d75172c71dad0d7fd043f51ce0da49643cf45fdc2f1502"
+        },
+        ".exit": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-final-normal-r01.exit",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        ".before-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-final-normal-r01.before-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        },
+        ".after-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-final-normal-r01.after-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        }
+      }
+    },
+    {
+      "run": "exit-handler-product-r02",
+      "profile": "exit_handler",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "package": "./internal/handler",
+      "selector": "^TestStageExitContinuation",
+      "race": "normal",
+      "exit": 0,
+      "finished_at": "2026-11-15T07:59:23.512Z",
+      "named": {
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": [
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationParentAttachAfterDeletePreflight",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectDeleteSubmitCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "inventory": [
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off/root_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off/root_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off/parent_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off/parent_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe/root_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe/root_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe/parent_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe/parent_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce/root_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce/root_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce/parent_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce/parent_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationParentAttachAfterDeletePreflight/single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationParentAttachAfterDeletePreflight/batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationParentAttachAfterDeletePreflight",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects/DeleteTaskTokensByTask",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects/FailAutopilotRunsByIssue",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects/DeleteIssue",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectDeleteSubmitCommitOrders/submit_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectDeleteSubmitCommitOrders/delete_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectDeleteSubmitCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "log_sha256": "812c4856ec457103b69f7ceac81141307afc64de2767717306aa9c199e459e4a",
+      "source_changed": false,
+      "command_sha256": "9d0dbe7267217befb5c7835e6fcb4244cd6fe56b148dea5c1b4d9db62c41a60f",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-r02.result.json",
+      "result_sha256": "57230e0e31d58ba365fd0f07e79b7f045b567e6f6c6fa59d953336de82cc4951",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/exit_handler.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "test",
+          "./internal/handler",
+          "-run",
+          "^TestStageExitContinuation",
+          "-count=1",
+          "-json"
+        ],
+        "config_sha256": "4022432902dd3fe8a957fdf6dbf27003fa230ef8bd3cd025dfbf09084c875cc1",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "started_at": "2026-11-15T07:58:59.803Z"
+      },
+      "raw_paths": {
+        ".command.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-r02.command.json",
+          "sha256": "9d0dbe7267217befb5c7835e6fcb4244cd6fe56b148dea5c1b4d9db62c41a60f"
+        },
+        ".command.txt": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-r02.command.txt",
+          "sha256": "5377cecf10217199ea419e9045f0fe88f27eb3c9e4963536d4cecc0c46b5b014"
+        },
+        ".jsonl": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-r02.jsonl",
+          "sha256": "812c4856ec457103b69f7ceac81141307afc64de2767717306aa9c199e459e4a"
+        },
+        ".exit": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-r02.exit",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        ".before-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-r02.before-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        },
+        ".after-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-r02.after-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        }
+      }
+    },
+    {
+      "run": "writer-service-final-normal-r01",
+      "profile": "writer_service",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "package": "./internal/service",
+      "selector": "^TestStageWriterContinuation",
+      "race": "normal",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:05:34.716Z",
+      "named": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": [
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        }
+      ],
+      "inventory": [
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        }
+      ],
+      "log_sha256": "802ac1de7252d4d22dde02c2e22e1c51cefd70213ec73500d377b9dda912100f",
+      "source_changed": false,
+      "command_sha256": "9bb3772a5d2d47318f2b18eb593ee071f1d4bce678a2b67ffbf2de433aa37c42",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-final-normal-r01.result.json",
+      "result_sha256": "aa0b38a30b23cf9dce037d2be81f5496c7126c5d623703a41ddf32065cb43107",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/writer_service.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "test",
+          "./internal/service",
+          "-run",
+          "^TestStageWriterContinuation",
+          "-count=1",
+          "-json"
+        ],
+        "config_sha256": "1bc4bc3a2a97433445e38c94e4441d9462872459f7b30fd50cce283d01d1d61d",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "started_at": "2026-11-15T08:05:22.053Z"
+      },
+      "raw_paths": {
+        ".command.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-final-normal-r01.command.json",
+          "sha256": "9bb3772a5d2d47318f2b18eb593ee071f1d4bce678a2b67ffbf2de433aa37c42"
+        },
+        ".command.txt": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-final-normal-r01.command.txt",
+          "sha256": "abeeabc8e489074a5bbf4e2d192f89884e34aa8a42a983292be3d93631eb4828"
+        },
+        ".jsonl": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-final-normal-r01.jsonl",
+          "sha256": "802ac1de7252d4d22dde02c2e22e1c51cefd70213ec73500d377b9dda912100f"
+        },
+        ".exit": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-final-normal-r01.exit",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        ".before-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-final-normal-r01.before-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        },
+        ".after-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-final-normal-r01.after-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        }
+      }
+    },
+    {
+      "run": "writer-handler-r05",
+      "profile": "writer_handler",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "package": "./internal/handler",
+      "selector": "^TestStageWriterContinuation",
+      "race": "normal",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:02:06.123Z",
+      "named": {
+        "pass": 32,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": [
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationBatchCommittedPrefix",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationDuplicateBatchBindingsBeforeEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "inventory": [
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/off/put",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/off/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/observe/put",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/observe/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/enforce/put",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/enforce/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationBatchCommittedPrefix",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationDuplicateBatchBindingsBeforeEffects/authorization",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationDuplicateBatchBindingsBeforeEffects/operation",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationDuplicateBatchBindingsBeforeEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/title",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/description",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/parent",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/project",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/delete",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/off/github",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/off/forgejo",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/observe/github",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/observe/forgejo",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/enforce/github",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/enforce/forgejo",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "log_sha256": "14656fb8a080648da433d6649ba9f9cd6492e697dd44f49cd1a4f4d2cf799838",
+      "source_changed": false,
+      "command_sha256": "ebe286f045795f5f1756e2cc26345abc928b2b1fe9bf8fb1713c1a5b1d400e2a",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r05.result.json",
+      "result_sha256": "47733930c9e6a9917d4fffe76a687d38bb98d05309c1ee08b1a3212f6dcc669b",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/writer_handler.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "test",
+          "./internal/handler",
+          "-run",
+          "^TestStageWriterContinuation",
+          "-count=1",
+          "-json"
+        ],
+        "config_sha256": "4401e4efdb28672e0cc5e23775c379db510dedac67d02e5eae9c57fc79a23361",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "started_at": "2026-11-15T08:01:47.573Z"
+      },
+      "raw_paths": {
+        ".command.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r05.command.json",
+          "sha256": "ebe286f045795f5f1756e2cc26345abc928b2b1fe9bf8fb1713c1a5b1d400e2a"
+        },
+        ".command.txt": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r05.command.txt",
+          "sha256": "8274c4992bde01fa3988243bf5711e36bc1fa5f4675720feb2e124855407dc85"
+        },
+        ".jsonl": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r05.jsonl",
+          "sha256": "14656fb8a080648da433d6649ba9f9cd6492e697dd44f49cd1a4f4d2cf799838"
+        },
+        ".exit": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r05.exit",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        ".before-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r05.before-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        },
+        ".after-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r05.after-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        }
+      }
+    },
+    {
+      "run": "exit-service-product-race-r01",
+      "profile": "exit_service_race",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "package": "./internal/service",
+      "selector": "^TestStageExitContinuation",
+      "race": "race",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:02:05.949Z",
+      "named": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": [
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationPolicyCompletionCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveCompletionCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        }
+      ],
+      "inventory": [
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/off/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/off/clear",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/observe/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/observe/clear",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/enforce/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes/enforce/clear",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveClearM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/reason",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/done",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority/source_member",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationExplicitClosePreservesM1AndSourceAuthority",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationPolicyCompletionCommitOrders/completion_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationPolicyCompletionCommitOrders/policy_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationPolicyCompletionCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveCompletionCommitOrders/completion_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveCompletionCommitOrders/move_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageExitContinuationRootMoveCompletionCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        }
+      ],
+      "log_sha256": "aa64f04d6089e86bfe188d45f0eb25be8b3d2b1be7c4393c7dc9f04a75071457",
+      "source_changed": false,
+      "command_sha256": "d9419c590600feb66e10c1d417c1c380b31cf7d897ec84855200644cb41ca247",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-product-race-r01.result.json",
+      "result_sha256": "2338de41c4873144e2be651da54cd3b329c25b1ddd8bf252f329128f3dac90d7",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/exit_service_race.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "test",
+          "./internal/service",
+          "-run",
+          "^TestStageExitContinuation",
+          "-count=1",
+          "-json",
+          "-race"
+        ],
+        "config_sha256": "166d17ca87ea548c192606eb4ed8b42902f6668dce3128ef7da14d8c4a13e2b8",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "started_at": "2026-11-15T08:00:52.061Z"
+      },
+      "raw_paths": {
+        ".command.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-product-race-r01.command.json",
+          "sha256": "d9419c590600feb66e10c1d417c1c380b31cf7d897ec84855200644cb41ca247"
+        },
+        ".command.txt": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-product-race-r01.command.txt",
+          "sha256": "6020b2c18cdce50b100369f4e60ca708c7a6429f8094231e913e95dd555dbb8f"
+        },
+        ".jsonl": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-product-race-r01.jsonl",
+          "sha256": "aa64f04d6089e86bfe188d45f0eb25be8b3d2b1be7c4393c7dc9f04a75071457"
+        },
+        ".exit": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-product-race-r01.exit",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        ".before-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-product-race-r01.before-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        },
+        ".after-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-product-race-r01.after-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        }
+      }
+    },
+    {
+      "run": "exit-handler-product-race-r01",
+      "profile": "exit_handler_race",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "package": "./internal/handler",
+      "selector": "^TestStageExitContinuation",
+      "race": "race",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:01:47.370Z",
+      "named": {
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": [
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationParentAttachAfterDeletePreflight",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectDeleteSubmitCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "inventory": [
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectImpactAndDeleteM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off/root_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off/root_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off/parent_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off/parent_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe/root_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe/root_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe/parent_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe/parent_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce/root_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce/root_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce/parent_single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce/parent_mixed_batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationRootAndParentDeleteBeforeEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationParentAttachAfterDeletePreflight/single",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationParentAttachAfterDeletePreflight/batch",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationParentAttachAfterDeletePreflight",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects/DeleteTaskTokensByTask",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects/FailAutopilotRunsByIssue",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects/DeleteIssue",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationDeleteRequiredWritesRollBackEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectDeleteSubmitCommitOrders/submit_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectDeleteSubmitCommitOrders/delete_first",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageExitContinuationProjectDeleteSubmitCommitOrders",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "log_sha256": "1780a586c98a7bf1e1e1db957342febd5afeb5df1c78c872994d31b9f9baaea8",
+      "source_changed": false,
+      "command_sha256": "218db1ffad7577a4ed421893d9654da940e465b8df4f9b4d05127e4b0d143e94",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-race-r01.result.json",
+      "result_sha256": "16c1c0c2308e29c6c5251e100a9668efefdfedec1bf66d7241894a7cc1a01cad",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/exit_handler_race.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "test",
+          "./internal/handler",
+          "-run",
+          "^TestStageExitContinuation",
+          "-count=1",
+          "-json",
+          "-race"
+        ],
+        "config_sha256": "d8804402bc5fc3589e4479496a8ea8e2c01dc337d4cd30c9328919b36b7c75c4",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "started_at": "2026-11-15T08:00:52.102Z"
+      },
+      "raw_paths": {
+        ".command.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-race-r01.command.json",
+          "sha256": "218db1ffad7577a4ed421893d9654da940e465b8df4f9b4d05127e4b0d143e94"
+        },
+        ".command.txt": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-race-r01.command.txt",
+          "sha256": "11ab3a84132593fea989cffe44e4704f007a3b7a04ed66212e25f84326da5185"
+        },
+        ".jsonl": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-race-r01.jsonl",
+          "sha256": "1780a586c98a7bf1e1e1db957342febd5afeb5df1c78c872994d31b9f9baaea8"
+        },
+        ".exit": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-race-r01.exit",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        ".before-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-race-r01.before-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        },
+        ".after-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-race-r01.after-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        }
+      }
+    },
+    {
+      "run": "writer-service-product-race-r01",
+      "profile": "writer_service_race",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "package": "./internal/service",
+      "selector": "^TestStageWriterContinuation",
+      "race": "race",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:02:24.069Z",
+      "named": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": [
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        }
+      ],
+      "inventory": [
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationApprovedMaterializationM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationSystemRootRefusalM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/service"
+        }
+      ],
+      "log_sha256": "902b09751735bd5ee70a667639786dfc632f7335592e165e0f2aa973eeb1042d",
+      "source_changed": false,
+      "command_sha256": "6b8c3df381d5befdfac7e5330d81322f1a937d2b19f57c11156f156f2805318d",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-product-race-r01.result.json",
+      "result_sha256": "0cb65f6d6f3f0eda543e7b8efbdfa136aa2f4fd4e7e7de6b29b1cca528d77bc0",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/writer_service_race.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "test",
+          "./internal/service",
+          "-run",
+          "^TestStageWriterContinuation",
+          "-count=1",
+          "-json",
+          "-race"
+        ],
+        "config_sha256": "ab8c4ee8803c95eeaa83c1fd11154a9b832349ac8b71e83fbf47729d833d1dee",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "started_at": "2026-11-15T08:02:06.123Z"
+      },
+      "raw_paths": {
+        ".command.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-product-race-r01.command.json",
+          "sha256": "6b8c3df381d5befdfac7e5330d81322f1a937d2b19f57c11156f156f2805318d"
+        },
+        ".command.txt": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-product-race-r01.command.txt",
+          "sha256": "9ca8f8b6183a80ecc3060cd2fd9f8469d86e0bc1217a71954ad808213caeac06"
+        },
+        ".jsonl": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-product-race-r01.jsonl",
+          "sha256": "902b09751735bd5ee70a667639786dfc632f7335592e165e0f2aa973eeb1042d"
+        },
+        ".exit": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-product-race-r01.exit",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        ".before-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-product-race-r01.before-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        },
+        ".after-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-product-race-r01.after-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        }
+      }
+    },
+    {
+      "run": "writer-handler-product-race-r01",
+      "profile": "writer_handler_race",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "package": "./internal/handler",
+      "selector": "^TestStageWriterContinuation",
+      "race": "race",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:02:32.607Z",
+      "named": {
+        "pass": 32,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level": [
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationBatchCommittedPrefix",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationDuplicateBatchBindingsBeforeEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "inventory": [
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationLegacyRootWritersM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/off/put",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/off/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/observe/put",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/observe/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/enforce/put",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes/enforce/move",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationOrdinaryCompletionAndMoveM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationBatchCommittedPrefix",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationDuplicateBatchBindingsBeforeEffects/authorization",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationDuplicateBatchBindingsBeforeEffects/operation",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationDuplicateBatchBindingsBeforeEffects",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes/off",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes/observe",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes/enforce",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationHumanCreateAndCommentChildM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/title",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/description",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/parent",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/project",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate/delete",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationChildSemanticEditsInvalidateCandidate",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/off/github",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/off/forgejo",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/observe/github",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/observe/forgejo",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/enforce/github",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes/enforce/forgejo",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        },
+        {
+          "name": "TestStageWriterContinuationGitHubVCSRootM1Modes",
+          "action": "pass",
+          "package": "github.com/multica-ai/multica/server/internal/handler"
+        }
+      ],
+      "log_sha256": "a40ae0747b41a935e4bbce7c29e9d7d14d8ffb56dc78e029d2d073679e9da068",
+      "source_changed": false,
+      "command_sha256": "eb0c76d735c8517c5a6db6eb13cce0df83877a7cf132567c50ada54da00b72d4",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-product-race-r01.result.json",
+      "result_sha256": "29a46b93d2493f6e71dc4a56deabfbd8d03a9439397cde6c980b28593b1ee3ea",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/writer_handler_race.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "test",
+          "./internal/handler",
+          "-run",
+          "^TestStageWriterContinuation",
+          "-count=1",
+          "-json",
+          "-race"
+        ],
+        "config_sha256": "b40b9ab20cb4f9dad7086ab7952643d06283cc858ef710dda8c4fb9f6b50ae08",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "started_at": "2026-11-15T08:02:06.285Z"
+      },
+      "raw_paths": {
+        ".command.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-product-race-r01.command.json",
+          "sha256": "eb0c76d735c8517c5a6db6eb13cce0df83877a7cf132567c50ada54da00b72d4"
+        },
+        ".command.txt": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-product-race-r01.command.txt",
+          "sha256": "99775eef757a4977c37f7045088be998a24cf6862fb033ea1b6bf339983f2904"
+        },
+        ".jsonl": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-product-race-r01.jsonl",
+          "sha256": "a40ae0747b41a935e4bbce7c29e9d7d14d8ffb56dc78e029d2d073679e9da068"
+        },
+        ".exit": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-product-race-r01.exit",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        ".before-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-product-race-r01.before-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        },
+        ".after-source.json": {
+          "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-product-race-r01.after-source.json",
+          "sha256": "e05d5fa5f520354bf3b3ece5800c6f4f163f728cdb3062101fa1459b0a8df6e9"
+        }
+      }
+    }
+  ],
+  "static_checks": [
+    {
+      "run": "static-vet-r03",
+      "operation": "vet",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:02:25.258Z",
+      "source_changed": false,
+      "format_files": null,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command_sha256": "9d5e7af0365a1bb2d749418fdd6a13dc14450b3c1da94d5fd20a320328379a5a",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-vet-r03.result.json",
+      "result_sha256": "7bc73a2e799538cb7ac64dc4ad158c46c0806d91d7321b01136f3322a13fe1a1",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/exit_service.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "vet",
+          "./internal/service",
+          "./internal/handler"
+        ],
+        "started_at": "2026-11-15T08:02:20.546Z",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_sha256": "cac86bbd67bec1911718ac3f05e36fbd5ff2aae713a3f58f10ea661aa190d833"
+      },
+      "log_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-vet-r03.log"
+    },
+    {
+      "run": "static-build-r02",
+      "operation": "build",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:02:36.788Z",
+      "source_changed": false,
+      "format_files": null,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command_sha256": "0bd9838a4aabb1f51c393d80a804fde29abe632b6cd85f1d9506d93a233d7911",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-build-r02.result.json",
+      "result_sha256": "5f4bbbe64fbf46d307ccb0e6e825d0870cc30c1ae650a6766dfb5332a7697261",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/exit_service.json",
+          "go",
+          "-C",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server",
+          "build",
+          "./..."
+        ],
+        "started_at": "2026-11-15T08:02:25.453Z",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_sha256": "cac86bbd67bec1911718ac3f05e36fbd5ff2aae713a3f58f10ea661aa190d833"
+      },
+      "log_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-build-r02.log"
+    },
+    {
+      "run": "static-gofmt-r02",
+      "operation": "gofmt",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "exit": 0,
+      "finished_at": "2026-11-15T08:02:37.223Z",
+      "source_changed": false,
+      "format_files": [],
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command_sha256": "a186378360d4ba6f2ccd3794aa974d3b127f84eeaf88dbb2ca67d9dbeb1c74c5",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-gofmt-r02.result.json",
+      "result_sha256": "c8b077a40b6110d0b06e7b8828469ecddfc5ac5968fe99e3e45d2ead15837fd3",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/exit_service.json",
+          "gofmt",
+          "-l",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server/internal/service/collaboration_stage_exit_continuation_test.go",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server/internal/handler/collaboration_stage_exit_continuation_test.go",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server/internal/service/collaboration_stage_writer_continuation_test.go",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02/server/internal/handler/collaboration_stage_writer_continuation_test.go"
+        ],
+        "started_at": "2026-11-15T08:02:36.963Z",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_sha256": "cac86bbd67bec1911718ac3f05e36fbd5ff2aae713a3f58f10ea661aa190d833"
+      },
+      "log_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-gofmt-r02.log"
+    },
+    {
+      "run": "static-version-r01",
+      "operation": "version",
+      "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/source-product-r02",
+      "exit": 0,
+      "finished_at": "2026-11-15T07:48:25.178Z",
+      "source_changed": false,
+      "format_files": null,
+      "log_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+      "command_sha256": "caaf9fc9204154e3f5ee004a2ea26ff9f0361e1e87eac40501baf7b145befa2d",
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-version-r01.result.json",
+      "result_sha256": "69a0e4faff3de661840050d7f33657ea8cc8a6233e7af9da1baab4c08e762855",
+      "command": {
+        "program": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+          "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/exit_service.json",
+          "go",
+          "version"
+        ],
+        "started_at": "2026-11-15T07:48:24.990Z",
+        "runner_sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+        "config_sha256": "cac86bbd67bec1911718ac3f05e36fbd5ff2aae713a3f58f10ea661aa190d833"
+      },
+      "log_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-version-r01.log"
+    }
+  ],
+  "all_preserved_attempts": [
+    {
+      "run": "exit-handler-postquota-red-r01",
+      "exit": 1,
+      "named": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-postquota-red-r01.result.json",
+      "result_sha256": "6ac8f7833191e2356d13c6b3f6b433a0b396a347d2122da17e3a07e95ed34c81"
+    },
+    {
+      "run": "exit-handler-product-r01",
+      "exit": 0,
+      "named": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-r01.result.json",
+      "result_sha256": "94c15353b3d3cf0ffc60df2b217a661d36849f7ae5384c483cfd180b44896c07"
+    },
+    {
+      "run": "exit-handler-product-r02",
+      "exit": 0,
+      "named": {
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-r02.result.json",
+      "result_sha256": "57230e0e31d58ba365fd0f07e79b7f045b567e6f6c6fa59d953336de82cc4951"
+    },
+    {
+      "run": "exit-handler-product-race-r01",
+      "exit": 0,
+      "named": {
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-product-race-r01.result.json",
+      "result_sha256": "16c1c0c2308e29c6c5251e100a9668efefdfedec1bf66d7241894a7cc1a01cad"
+    },
+    {
+      "run": "exit-handler-r02",
+      "exit": 1,
+      "named": {
+        "pass": 19,
+        "fail": 7,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-r02.result.json",
+      "result_sha256": "698be451f2b42f3b6f49bd7df9cb6bc1a06ecaf880bbee4a7dc875e61b23b377"
+    },
+    {
+      "run": "exit-handler-red-r01",
+      "exit": 1,
+      "named": {
+        "pass": 3,
+        "fail": 11,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-handler-red-r01.result.json",
+      "result_sha256": "b2cbe317ee7756b655561a7285480748f1a24812cf08a8e6c3b58b052353666f"
+    },
+    {
+      "run": "exit-service-final-normal-r01",
+      "exit": 0,
+      "named": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-final-normal-r01.result.json",
+      "result_sha256": "b214baf742c2e4bd5d1d8950348e1bf986392beb996082df45bac8aa23221c87"
+    },
+    {
+      "run": "exit-service-product-r01",
+      "exit": 0,
+      "named": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-product-r01.result.json",
+      "result_sha256": "182a74fb31631f5aac4ed2514235bb2f7b5e1917fec1b5bd099665a48da5e077"
+    },
+    {
+      "run": "exit-service-product-race-r01",
+      "exit": 0,
+      "named": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-product-race-r01.result.json",
+      "result_sha256": "2338de41c4873144e2be651da54cd3b329c25b1ddd8bf252f329128f3dac90d7"
+    },
+    {
+      "run": "exit-service-r02",
+      "exit": 1,
+      "named": {
+        "pass": 15,
+        "fail": 2,
+        "skip": 0
+      },
+      "source_changed": true,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-r02.result.json",
+      "result_sha256": "80c4392e8aa771016411bc667f1cdfa6223e083251a778a2179a9b6e60173e45"
+    },
+    {
+      "run": "exit-service-r03",
+      "exit": 0,
+      "named": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-r03.result.json",
+      "result_sha256": "4bc7c327e608b1a7bae7e3d15132ba85b3067f1bdb0ebe2ce2ff05ecbc92dd0f"
+    },
+    {
+      "run": "exit-service-race-r01",
+      "exit": 0,
+      "named": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-race-r01.result.json",
+      "result_sha256": "aac0e1c8bc24c40a3be949594bac1fc56eecdd717c370c97e355bb10c98c70a8"
+    },
+    {
+      "run": "exit-service-red-r01",
+      "exit": 1,
+      "named": {
+        "pass": 11,
+        "fail": 3,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/exit-service-red-r01.result.json",
+      "result_sha256": "a55874f4921c1656fef5d7b732fc9e580bd97917763ffeb0260dbbb6b7cbbdbe"
+    },
+    {
+      "run": "static-build-r01",
+      "exit": 0,
+      "named": null,
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-build-r01.result.json",
+      "result_sha256": "d9cd987651bfb9c50f42b89cbc66e358d802b6fd309241e6b0c001c9d80cf57a"
+    },
+    {
+      "run": "static-build-r02",
+      "exit": 0,
+      "named": null,
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-build-r02.result.json",
+      "result_sha256": "5f4bbbe64fbf46d307ccb0e6e825d0870cc30c1ae650a6766dfb5332a7697261"
+    },
+    {
+      "run": "static-gofmt-r01",
+      "exit": 0,
+      "named": null,
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-gofmt-r01.result.json",
+      "result_sha256": "0dd67b0a279b4b017f99ca69d502e4535092b5ddca7afb242d24c18003570fa3"
+    },
+    {
+      "run": "static-gofmt-r02",
+      "exit": 0,
+      "named": null,
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-gofmt-r02.result.json",
+      "result_sha256": "c8b077a40b6110d0b06e7b8828469ecddfc5ac5968fe99e3e45d2ead15837fd3"
+    },
+    {
+      "run": "static-version-r01",
+      "exit": 0,
+      "named": null,
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-version-r01.result.json",
+      "result_sha256": "69a0e4faff3de661840050d7f33657ea8cc8a6233e7af9da1baab4c08e762855"
+    },
+    {
+      "run": "static-vet-r01",
+      "exit": 1,
+      "named": null,
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-vet-r01.result.json",
+      "result_sha256": "d8b3a4dc77bd81408b2fe35ecebeb3439049649ef0b1636a7e0fb1db17e45549"
+    },
+    {
+      "run": "static-vet-r02",
+      "exit": 0,
+      "named": null,
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-vet-r02.result.json",
+      "result_sha256": "3765a0682dd186135159efc5155047d2177a19712b1cfc4324bb41194c716fee"
+    },
+    {
+      "run": "static-vet-r03",
+      "exit": 0,
+      "named": null,
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/static-vet-r03.result.json",
+      "result_sha256": "7bc73a2e799538cb7ac64dc4ad158c46c0806d91d7321b01136f3322a13fe1a1"
+    },
+    {
+      "run": "writer-handler-product-race-r01",
+      "exit": 0,
+      "named": {
+        "pass": 32,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-product-race-r01.result.json",
+      "result_sha256": "29a46b93d2493f6e71dc4a56deabfbd8d03a9439397cde6c980b28593b1ee3ea"
+    },
+    {
+      "run": "writer-handler-r02",
+      "exit": 1,
+      "named": {
+        "pass": 21,
+        "fail": 11,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r02.result.json",
+      "result_sha256": "380d48fea8db0419cfb5255f7b00015f3069cf687e368faa8f038ff13e75fb7c"
+    },
+    {
+      "run": "writer-handler-r03",
+      "exit": 1,
+      "named": {
+        "pass": 26,
+        "fail": 6,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r03.result.json",
+      "result_sha256": "9f8861ed518127f696e2e2de2a879ab4b965586b92423d1d524641507f2b9d22"
+    },
+    {
+      "run": "writer-handler-r04",
+      "exit": 0,
+      "named": {
+        "pass": 32,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r04.result.json",
+      "result_sha256": "11aedec8c7c20616cd4508a68db775717019f3949b308ac61f94cbc23dcdd51c"
+    },
+    {
+      "run": "writer-handler-r05",
+      "exit": 0,
+      "named": {
+        "pass": 32,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-r05.result.json",
+      "result_sha256": "47733930c9e6a9917d4fffe76a687d38bb98d05309c1ee08b1a3212f6dcc669b"
+    },
+    {
+      "run": "writer-handler-red-r01",
+      "exit": 1,
+      "named": {
+        "pass": 8,
+        "fail": 24,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-handler-red-r01.result.json",
+      "result_sha256": "232e991d0f3b03344e16769b53b6524728061644194b8f6ac78a712fe7b44d4d"
+    },
+    {
+      "run": "writer-service-final-normal-r01",
+      "exit": 0,
+      "named": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-final-normal-r01.result.json",
+      "result_sha256": "aa0b38a30b23cf9dce037d2be81f5496c7126c5d623703a41ddf32065cb43107"
+    },
+    {
+      "run": "writer-service-product-r01",
+      "exit": 0,
+      "named": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-product-r01.result.json",
+      "result_sha256": "829813dc668d48f9b1d6179ead6e98aeab18f8476b5a27188a1b6c470faa6489"
+    },
+    {
+      "run": "writer-service-product-race-r01",
+      "exit": 0,
+      "named": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-product-race-r01.result.json",
+      "result_sha256": "0cb65f6d6f3f0eda543e7b8efbdfa136aa2f4fd4e7e7de6b29b1cca528d77bc0"
+    },
+    {
+      "run": "writer-service-red-r01",
+      "exit": 1,
+      "named": {
+        "pass": 12,
+        "fail": 4,
+        "skip": 0
+      },
+      "source_changed": false,
+      "result_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/logs/writer-service-red-r01.result.json",
+      "result_sha256": "1efaaa131e5b731b2c9c72afa3a1fd68c5a5a0f7844ea62653c7faa6ded58fac"
+    }
+  ],
+  "coverage": {
+    "W05": "Real PUT, legacy payload and AgentActor/task credential fixtures refuse collaboration root; ordinary child consumes existing M1 authorization.",
+    "W06": "Real Move remains on ordinary writer; exact TargetPosition is signed for enforce; root refuses, child independently completes.",
+    "W07": "Root mixed batch zero prefix; ordinary committed/rejected/not_attempted prefix; duplicate authorization/operation IDs reject before consumption.",
+    "W08": "Actual IssueService.Create/CreateInTx plus HTTP Create/comment-sub-issue; inherited project, custom done, manual versus machine approval and plain approved materialization controls.",
+    "W09": "Actual WriteIssueStatus/advanceIssueToDone and signed GitHub/Forgejo webhook adapters; root never completes; ordinary child retains M1/status/semantic contract.",
+    "W11": "Actual collaboration EditIssue move/clear under stage enabled x M1 off/observe/enforce, historical refusal recovery and explicit close; original M1 reason/done/source fences remain.",
+    "W12": "Actual project impact/delete blocks in all M1 modes; virtual-off empty project deletes; explicit close retains M1 and collaboration-project refusal.",
+    "W13": "Actual root/mixed/ordinary-parent deletion before effects; separate committed lateAttach; task token and reserved run_only quota preservation; post-cancel/token/quota required-write rollback with zero task/issue events.",
+    "Q10": "Real backend/goroutine lock observation, first actual commit/rollback and waiting writer result for policy replacement, root clear/completion and project deletion/submission; existing NOWAIT policy refusal is separately retained, not mistaken for two commits.",
+    "W14_supplement": "Actual ordinary-child title/body/parent/project/delete writers preserve mapping, change semantic identity and prevent old-candidate A9 consumption. Status/position remain independent."
+  },
+  "findings": [
+    {
+      "id": "EXIT-R02-C01",
+      "root_cause": "Cancel/task-token/autopilot/quota effects occurred outside the actual delete transaction before authoritative collaboration-child recheck or before a later required write failed.",
+      "status": "RED_TO_GREEN_ON_OWNER_INTERMEDIATE_R02",
+      "original_red_runs": [
+        "exit-handler-red-r01",
+        "exit-handler-r02",
+        "exit-handler-postquota-red-r01"
+      ],
+      "green_runs": [
+        "exit-handler-product-r02",
+        "exit-handler-product-race-r01"
+      ],
+      "post_quota_note": "Supplemental late DeleteIssue failure is the same root cause, not a third product defect."
+    },
+    {
+      "id": "EXIT-R02-C02",
+      "root_cause": "CheckStageProjectDeleteInTx ignored found=false and treated an absent virtual-off policy empty contract as stage_schema_unavailable.",
+      "status": "RED_TO_GREEN_ON_OWNER_INTERMEDIATE_R02",
+      "original_red_runs": [
+        "exit-handler-red-r01",
+        "exit-handler-r02"
+      ],
+      "green_runs": [
+        "exit-handler-product-r02",
+        "exit-handler-product-race-r01"
+      ],
+      "diagnosis": "Actual P1 200 virtual off, actual validator *CollaborationError stage_schema_unavailable; no PgError. It failed before the original knowledge deletion hook, which was preserved."
+    }
+  ],
+  "infrastructure_corrections": [
+    "Initial service fixture policy credential omitted password-session provenance; commit-order test initially expected busy from a waiting LockCollaborationUsers. Owned test process SIGQUIT and wait evidence are preserved. Final tests use real waiting/commit order.",
+    "One original service run detected formatting drift in the independently edited new handler file. Its failed identity record is retained; all selected final runs match one 4961-file manifest.",
+    "New fixture repeated agent name, missing explicit first-enable empty A5, and missing workspace counter alignment were corrected in owned tests.",
+    "M1 Move TargetPosition, strict A9 body (unsupported reason removed), terminal table join/alias, and deleted R4 current-head versus source availability were corrected using actual contracts.",
+    "Go vet lock-copy failure was fixed by reusing NewTaskService instead of copying a struct containing sync.Map.",
+    "Original after-audit execution_epoch probe failed SQLSTATE 42703 read-only; corrected epoch audit has a new path and retains the failed audit."
+  ],
+  "database_preflight": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/evidence/database-before-r01.json",
+    "sha256": "9c78a957c49bb93c279c19e1e01b31d121fd82481930c234eaed5ff65443c873"
+  },
+  "database_postflight": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/evidence/database-after-r03.json",
+    "sha256": "46635a54037994449cd6ccd35a8a2085a149f28380196c4c2bcb6602a1cbfd5e",
+    "all_eight_identity_and_835_last864_ledger_match": true,
+    "other_connections": 0,
+    "retained_failed_exit_service_state": {
+      "label": "exit_service",
+      "config": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/configs/exit_service.json",
+      "config_sha256": "cac86bbd67bec1911718ac3f05e36fbd5ff2aae713a3f58f10ea661aa190d833",
+      "database": "multica_pay241_20261115_s2_exit_service",
+      "other_connections": 0,
+      "cluster_connections": 30,
+      "ledger_count": 835,
+      "last": "864_collaboration_stage_submission_ready",
+      "ledger_sha256": "9919f5b8882f6129f70d0b4cce822843d04fa3bfdb8eb478507a4457c5b9dcc7",
+      "retained_stage_counts": {
+        "policies": 1,
+        "roles": 1,
+        "candidates": 1,
+        "decisions": 4,
+        "submissions": 0
+      },
+      "gate": {
+        "enabled": true,
+        "creation_enabled": false,
+        "host_execution_enabled": false,
+        "epoch": "3"
+      },
+      "pass": true
+    }
+  },
+  "integration": {
+    "live_test_files_added": true,
+    "method": "apply_patch only four new test paths, after root explicitly released peer freeze",
+    "product_or_existing_helpers_modified_in_live": false,
+    "git_mutations": false,
+    "patch": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/evidence/tests-r02.patch",
+      "sha256": "1a32c4d0f195204500422598d31fe9d8f56aa6c73a13675b8d2ae2fb0160dd29"
+    },
+    "native_patch": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/exit-writer-tests-r02/evidence/tests-r02.apply_patch",
+      "sha256": "ffc422338d586f675e9468740e09921f876d89c1922f8b4f154a4d6fadc7d810"
+    }
+  },
+  "limits": [
+    "This is an independent test slice, not A01-A12 or parent 24-case acceptance.",
+    "Only the exact intermediate 15 product paths plus checked green-r03 are bound. Root must integrate final server manifest and independently rerun.",
+    "Synthetic human principals, CI/PR metadata and local controlled archive fixtures are not actual account-login, remote CI, deployment, payment or provider acceptance.",
+    "No P2 opening, API/browser process, real model/money/production, dependency, migration or database allocation/drop operation.",
+    "The initial SIGQUIT failed exit_service database intentionally retains one policy/role/candidate and four decisions, with execution gate enabled=true and epoch3; zero connections. No protected-history cleanup or speculative gate restoration was performed. Root should use its fresh independent final database."
+  ],
+  "full_acceptance": false,
+  "independent_check": "PENDING_ROOT"
+}

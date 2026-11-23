@@ -1,0 +1,36 @@
+{
+  "independent_coordinator_review": true,
+  "source_hashes_match_current_race": true,
+  "race_top_level_passed": 13,
+  "pass_including_subtests": 21,
+  "failed": 0,
+  "skipped": 0,
+  "AC74": "Two actual DB edit/delete lock orderings; exact original receipts, tombstone/history/attachment/reply and frozen AI state assertions",
+  "AC88": "Participant and independent source-member authorized resolve/unresolve, original keys and lost-authority refusal; unchanged content/AI/notification/history",
+  "remaining": "No missing clauses for primary AC74/88 after exact-HEAD DB race confirmation and canonical HTTP/author/reaction/legacy pass mapping; provider/native/packaged limits remain separate.",
+  "base_clause_checks": {
+    "AC74": {
+      "canonical_tests": [
+        "internal/service::TestCollaborationCommentAuthorEditRetainsHistoryAndDeletedReplyAnchor",
+        "internal/service::TestCollaborationCommentEditsSerializeAndUnknownCommitDoesNotRepeat",
+        "internal/service::TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification",
+        "internal/service::TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+        "internal/handler::TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection"
+      ],
+      "all_have_current_pass": true
+    },
+    "AC88": {
+      "canonical_tests": [
+        "internal/service::TestCollaborationDiscussionKeepsContentVersionsAndOriginalActions",
+        "internal/service::TestCollaborationDiscussionSourceAccessAndOwnReactionRemoval",
+        "internal/service::TestCollaborationDiscussionRequiredWriteFailureRollsBackResolution",
+        "internal/service::TestCollaborationDiscussionResolvesOneReplyAndPreservesDeletedRoot",
+        "internal/handler::TestCollaborationDiscussionHTTPUsesPrivateRoutesAndOwnReceipts",
+        "internal/handler::TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify"
+      ],
+      "all_have_current_pass": true
+    }
+  },
+  "isolated_head_result": "content-isolated-head-race-result.json",
+  "isolated_head_passed": true
+}

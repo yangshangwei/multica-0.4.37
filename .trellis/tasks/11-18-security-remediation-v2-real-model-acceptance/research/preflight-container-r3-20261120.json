@@ -1,0 +1,77 @@
+{
+  "evidence_type": "fixture-and-environment-preflight",
+  "sources": {
+    "files": 15,
+    "hashes_match": true,
+    "real_model_calls": 0
+  },
+  "containers": {
+    "image": "sha256:9d2e5553305c7c7b0097999bb17187c69b921ccd6bc9d40e4bb5ebe652c00285 linux arm64",
+    "baselines": {
+      "code": {
+        "tests": 2,
+        "exit": 0,
+        "expected_failure": false,
+        "output": "test_missing_issue_has_no_audit (test_baseline.BaselineTests.test_missing_issue_has_no_audit) ... ok\ntest_same_workspace_read (test_baseline.BaselineTests.test_same_workspace_read) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.006s\n\nOK\n"
+      },
+      "dependency": {
+        "tests": 3,
+        "exit": 1,
+        "expected_failure": true,
+        "output": "test_label_at_limit_is_accepted (test_dependency.DependencyContractTests.test_label_at_limit_is_accepted) ... ok\ntest_label_over_limit_is_rejected (test_dependency.DependencyContractTests.test_label_over_limit_is_rejected) ... FAIL\ntest_regular_label_is_trimmed (test_dependency.DependencyContractTests.test_regular_label_is_trimmed) ... ok\n\n======================================================================\nFAIL: test_label_over_limit_is_rejected (test_dependency.DependencyContractTests.test_label_over_limit_is_rejected)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/fixture/tests/test_dependency.py\", line 16, in test_label_over_limit_is_rejected\n    with self.assertRaises(ValueError):\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\nAssertionError: ValueError not raised\n\n----------------------------------------------------------------------\nRan 3 tests in 0.050s\n\nFAILED (failures=1)\n"
+      }
+    },
+    "roles": {
+      "leader": {
+        "own_read_write": true,
+        "peer_unmounted": true,
+        "external_route_absent": true,
+        "external_connect_denied": true,
+        "docker_socket_absent": true
+      },
+      "verifier": {
+        "own_read_write": true,
+        "peer_unmounted": true,
+        "external_route_absent": true,
+        "external_connect_denied": true,
+        "docker_socket_absent": true
+      },
+      "implementer": {
+        "own_read_write": true,
+        "peer_unmounted": true,
+        "external_route_absent": true,
+        "external_connect_denied": true,
+        "docker_socket_absent": true
+      },
+      "qa": {
+        "own_read_write": true,
+        "peer_unmounted": true,
+        "external_route_absent": true,
+        "external_connect_denied": true,
+        "docker_socket_absent": true
+      },
+      "security-reviewer": {
+        "own_read_write": true,
+        "peer_unmounted": true,
+        "external_route_absent": true,
+        "external_connect_denied": true,
+        "docker_socket_absent": true
+      },
+      "code-reviewer": {
+        "own_read_write": true,
+        "peer_unmounted": true,
+        "external_route_absent": true,
+        "external_connect_denied": true,
+        "docker_socket_absent": true
+      },
+      "migration-reviewer": {
+        "own_read_write": true,
+        "peer_unmounted": true,
+        "external_route_absent": true,
+        "external_connect_denied": true,
+        "docker_socket_absent": true
+      }
+    },
+    "scope": "offline disposable container probes only; production gateway and daemon not started"
+  }
+}

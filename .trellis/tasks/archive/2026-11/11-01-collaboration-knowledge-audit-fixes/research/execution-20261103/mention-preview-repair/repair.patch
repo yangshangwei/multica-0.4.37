@@ -1,0 +1,145 @@
+diff --git a/e2e/fixtures/collaboration-mention-journeys.ts b/e2e/fixtures/collaboration-mention-journeys.ts
+--- a/e2e/fixtures/collaboration-mention-journeys.ts
++++ b/e2e/fixtures/collaboration-mention-journeys.ts
+@@ -1,5 +1,5 @@
+ import { randomUUID } from "node:crypto";
+-import { expect, type Locator, type Page, type Route } from "@playwright/test";
++import { expect, type Locator, type Page, type Request, type Route } from "@playwright/test";
+ import type {
+   CollaborationActivity, CollaborationCommentInput, CollaborationCommentReceipt, CollaborationComments,
+   CollaborationIssue, CollaborationMentionTargets, CollaborationNotification, CollaborationParticipants,
+@@ -8,6 +8,7 @@
+ } from "@multica/core/collaboration";
+ import { TestApiClient } from "../fixtures";
+ import { seedCollaborationResourceOfferJourney } from "./collaboration-resource-offers";
++import { revealCollaborationEditingAction } from "./collaboration-editing";
+ 
+ interface ResourceReceipt {
+   issue_id: string; status: number; code: string; request_id: string;
+@@ -217,16 +218,26 @@
+   for (const target of targets) expect(content).toContain(`mention://${target.kind}/${target.resourceId}`);
+   return content;
+ }
+-async function previewComment(page: Page, fixture: CollaborationMentionJourney) {
+-  const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issuePath(fixture)}/comments/trigger-preview`
+-    && response.request().method() === "POST");
+-  await composerFor(page).getByRole("button", { name: "Preview delivery", exact: true }).click();
+-  const response = await responsePending;
+-  expect(response.status()).toBe(200);
+-  const preview: CollaborationTriggerPreview = await response.json();
+-  expect(preview.issue_id).toBe(fixture.issueId);
+-  await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
+-  return preview;
++async function previewComment(page: Page, fixture: CollaborationMentionJourney,
++  buttonName: "Preview delivery" | "Send comment" = "Preview delivery") {
++  const commentPath = `${issuePath(fixture)}/comments`;
++  const commentPosts: Request[] = [];
++  const observeWrite = (request: Request) => {
++    if (new URL(request.url()).pathname === commentPath && request.method() === "POST") commentPosts.push(request);
++  };
++  page.on("request", observeWrite);
++  try {
++    const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === `${commentPath}/trigger-preview`
++      && response.request().method() === "POST");
++    await composerFor(page).getByRole("button", { name: buttonName, exact: true }).click();
++    const response = await responsePending;
++    expect(response.status()).toBe(200);
++    const preview: CollaborationTriggerPreview = await response.json();
++    expect(preview.issue_id).toBe(fixture.issueId);
++    await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
++    expect(commentPosts).toHaveLength(0);
++    return preview;
++  } finally { page.off("request", observeWrite); }
+ }
+ function assertPreview(preview: CollaborationTriggerPreview, fixture: CollaborationMentionJourney, targets: MentionTarget[], suppressed: string[] = []) {
+   expect(preview.targets).toHaveLength(targets.length);
+@@ -373,11 +384,13 @@
+   assertPreview(await previewComment(page, fixture), fixture, targets);
+   const selectedA = composerFor(page).getByRole("checkbox", { name: new RegExp(fixture.agentA.name) });
+   await expect(selectedA).toBeChecked();
+-  // Changing suppression retires this preview; inspect the next preview's state.
++  // Suppression retires the preview. Send obtains fresh impact confirmation without publishing.
+   await selectedA.click();
+-  await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeDisabled();
++  await expect(selectedA).toHaveCount(0);
++  await expect(composerFor(page).getByRole("button", { name: "Send comment", exact: true })).toBeEnabled();
+   await expect(composerFor(page).getByLabel("Add comment", { exact: true })).toHaveValue(content);
+-  assertPreview(await previewComment(page, fixture), fixture, targets, [fixture.agentA.targetId]);
++  assertPreview(await previewComment(page, fixture, "Send comment"), fixture, targets, [fixture.agentA.targetId]);
++  expect(await readJourneyState(fixture)).toEqual(before);
+   await expect(selectedA).not.toBeChecked();
+   await expect(composerFor(page).getByText("AI trigger suppressed", { exact: true })).toBeVisible();
+   await selectedA.click();
+@@ -489,7 +502,7 @@
+   return receipt;
+ }
+ async function editBody(page: Page, fixture: CollaborationMentionJourney, description: string) {
+-  await page.getByRole("button", { name: "Edit issue", exact: true }).click();
++  await (await revealCollaborationEditingAction(page, "Edit issue")).click();
+   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit issue", exact: true }) });
+   await form.getByLabel("Description", { exact: true }).fill(description);
+   const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === issuePath(fixture) && response.request().method() === "PATCH");
+diff --git a/e2e/collaboration-preview-web.spec.ts b/e2e/collaboration-preview-web.spec.ts
+--- a/e2e/collaboration-preview-web.spec.ts
++++ b/e2e/collaboration-preview-web.spec.ts
+@@ -1,5 +1,5 @@
+ import { test, expect } from "@playwright/test";
+-import type { CollaborationCommentReceipt, CollaborationComments, CollaborationIssue } from "@multica/core/collaboration";
++import type { CollaborationCommentReceipt, CollaborationComments, CollaborationIssue, CollaborationTriggerPreview } from "@multica/core/collaboration";
+ import { authenticateCollaborationResourcesPage } from "./fixtures/collaboration-resources";
+ import { seedCollaborationPreviewJourney } from "./fixtures/collaboration-preview";
+ 
+@@ -32,7 +32,8 @@
+   await expect(grouping.getByText("Preview only. Sending rechecks permissions and queue state.", { exact: true })).toBeVisible();
+   const commentsBefore = await fixture.creator.requestJSON<CollaborationComments>(`${root}/comments`);
+   expect(commentsBefore.items).toHaveLength(1);
+-  expect((await fixture.creator.requestJSON<CollaborationIssue>(root)).execution?.runs).toEqual([]);
++  const executionBefore = (await fixture.creator.requestJSON<CollaborationIssue>(root)).execution;
++  expect(executionBefore?.runs).toEqual([]);
+   await grouping.scrollIntoViewIfNeeded();
+   await page.screenshot({ path: testInfo.outputPath("preview-en-wide.png"), animations: "disabled" });
+   await page.setViewportSize({ width: 390, height: 844 });
+@@ -45,6 +46,10 @@
+   await fixture.creator.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
+   await page.context().addCookies([{ name: "multica-locale", value: "zh-Hans", url: new URL(page.url()).origin }]);
+   const chinesePage = await page.context().newPage();
++  let commentPosts = 0;
++  chinesePage.on("request", (request) => {
++    if (new URL(request.url()).pathname === `${root}/comments` && request.method() === "POST") commentPosts += 1;
++  });
+   chinesePage.on("pageerror", (error) => errors.push(error.message));
+   await chinesePage.setViewportSize({ width: 390, height: 844 });
+   await authenticateCollaborationResourcesPage(chinesePage, fixture.creator, "zh-Hans");
+@@ -61,15 +66,30 @@
+   await suppressed.focus();
+   await suppressed.press("Space");
+   await expect(chineseGrouping).toBeHidden();
+-  await expect(chineseComposer.getByRole("button", { name: "发送评论", exact: true })).toBeDisabled();
++  await expect(chineseComposer.getByRole("button", { name: "发送评论", exact: true })).toBeEnabled();
+   await expect(chineseComposer.getByLabel("添加评论", { exact: true })).toHaveValue(original);
+-  await chineseComposer.getByRole("button", { name: "预览发送", exact: true }).click();
++  // The first Send after suppression refreshes AI impact; it must not publish the stale preview.
++  const refreshedPending = chinesePage.waitForResponse((item) => new URL(item.url()).pathname === `${root}/comments/trigger-preview`
++    && item.request().method() === "POST");
++  await chineseComposer.getByRole("button", { name: "发送评论", exact: true }).click();
++  const refreshedResponse = await refreshedPending;
++  expect(refreshedResponse.status()).toBe(200);
++  const refreshed: CollaborationTriggerPreview = await refreshedResponse.json();
++  expect(refreshed.issue_id).toBe(fixture.issueId);
++  expect(refreshed.targets.find((item) => item.resource_id === buildSquad.id)?.state).toBe("suppressed");
+   await expect(chineseGrouping.getByText(buildSquad.name, { exact: false })).toHaveCount(0);
+   await expect(chineseGrouping).toBeVisible();
++  await expect(suppressed).not.toBeChecked();
++  await expect(chineseComposer.getByText("请核对 AI 对象及影响，再发送评论确认。", { exact: true })).toBeVisible();
++  expect(commentPosts).toBe(0);
++  expect((await fixture.creator.requestJSON<CollaborationComments>(`${root}/comments`)).items.map((item) => item.id))
++    .toEqual(commentsBefore.items.map((item) => item.id));
++  expect((await fixture.creator.requestJSON<CollaborationIssue>(root)).execution).toEqual(executionBefore);
+   const response = chinesePage.waitForResponse((item) => item.url().endsWith(`${root}/comments`) && item.request().method() === "POST");
+   await chineseComposer.getByRole("button", { name: "发送评论", exact: true }).click();
+   const sent = await response;
+   expect(sent.status()).toBe(201);
++  expect(commentPosts).toBe(1);
+   const receipt: CollaborationCommentReceipt = await sent.json();
+   expect(receipt.targets.find((item) => item.resource_id === buildSquad.id)?.state).toBe("suppressed");
+   expect(receipt.targets.filter((item) => item.state === "waiting")).toHaveLength(2);

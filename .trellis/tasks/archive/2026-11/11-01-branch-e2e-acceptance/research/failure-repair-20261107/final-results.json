@@ -1,0 +1,279 @@
+{
+  "baseline": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+  "repair_source": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+  "source_hashes": {
+    "e2e/fixtures/collaboration-detail-journey.ts": "ec727d740cf074b4b7f47a257ef29a3e2e233736b7f69c845c2b69fd58bc88e2",
+    "e2e/global-scope-navigation.spec.ts": "5313dea3fee384ae097bf0c3e9b2467ffbc28afa673503da0d039a932174f624",
+    "packages/core/diagnostics/diagnostic-context.test.ts": "1230f927b7137a1b3f83b6279f0e4c75782a0eff4ece586f7b6480ea90f5975b",
+    "packages/core/diagnostics/diagnostic-context.ts": "6f4a130597f61732708de0fa6a9b0a775146382a70f39cd6cd125f03e4fcabf5",
+    "packages/views/collaboration/account-workbench-page.tsx": "1cf48d9d88a716910fdf5552aaed79aa1da751c6cd7495dad477e9c1a84130a6",
+    "packages/views/locales/en/skills.json": "4add3757bc24b0aff74724108727bfab32540bfced1e67af51f596898610bd71",
+    "packages/views/locales/zh-Hans/skills.json": "02341991cb95f686f9beee099a84ce3371ac27529644545c83dccdffc77f6049",
+    "packages/views/skills/lib/skill-presentation.test.ts": "d7cf0a7bd91c24ddef8c1d083460f6890f7bd3573fd588833ad0f9e2990fdc40",
+    "packages/views/skills/lib/skill-presentation.ts": "b325455fabb8e5f92873913b53daf59687d85920315e6808b2d285fe639cb17f"
+  },
+  "canonical_run": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2",
+  "cases": [
+    {
+      "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "file": "collaboration-detail-journey.spec.ts",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "file": "collaboration-detail-journey.spec.ts",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Web global switching resumes the task, collaboration filters and both scroll positions",
+      "file": "global-scope-navigation.spec.ts",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Desktop global switching resumes the task, collaboration filters and both scroll positions",
+      "file": "global-scope-navigation.spec.ts",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "details": [
+    {
+      "platform": "web",
+      "restored_scroll": {
+        "issue_id": "01a1b521-edea-7a16-8222-255341a555cd",
+        "saved": 620,
+        "restored": 620,
+        "used": "application scope switches"
+      },
+      "captures": 19,
+      "evidence": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/artifacts/collaboration-detail-journ-f64b8-ission-and-exact-acceptance-chromium/detail-journey-evidence.json"
+    },
+    {
+      "platform": "desktop",
+      "restored_scroll": {
+        "issue_id": "01a1b522-3c47-719e-ae77-b5bac8536fb8",
+        "saved": 620,
+        "restored": 620,
+        "used": "application scope switches"
+      },
+      "captures": 19,
+      "evidence": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/artifacts/collaboration-detail-journ-c170c-ission-and-exact-acceptance-chromium/detail-journey-evidence.json"
+    }
+  ],
+  "attempts": [
+    {
+      "run": "baseline-desktop",
+      "state": "complete",
+      "exit_code": 0
+    },
+    {
+      "run": "baseline-stable-start",
+      "state": "complete",
+      "exit_code": 0
+    },
+    {
+      "run": "baseline-start",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "canonical-final1",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "canonical-final2",
+      "state": "complete",
+      "exit_code": 0
+    },
+    {
+      "run": "capture-diagnosis",
+      "state": "complete",
+      "exit_code": 0
+    },
+    {
+      "run": "diagnosis-after-recovery",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "diagnosis-baseline",
+      "state": "complete",
+      "exit_code": 0
+    },
+    {
+      "run": "fixed-desktop",
+      "state": "complete",
+      "exit_code": 0
+    },
+    {
+      "run": "fixed-start",
+      "state": "complete",
+      "exit_code": 0
+    },
+    {
+      "run": "recovery-regression-red",
+      "state": "complete",
+      "exit_code": 130
+    },
+    {
+      "run": "recovery-regression-red-2",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "repaired-canonical",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "scope-recovery-diagnosis",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "scope-response-diagnosis",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "scope-transport-continue",
+      "state": "complete",
+      "exit_code": 0
+    },
+    {
+      "run": "scope-transport-explicit-bytes",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "scope-transport-probe1",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "scope-transport-probe2",
+      "state": "complete",
+      "exit_code": 1
+    },
+    {
+      "run": "stop-before-fix-build",
+      "state": "complete",
+      "exit_code": 0
+    }
+  ],
+  "evidence": [
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/ownership-resume-20261107.json",
+      "sha256": "716118217a51b1a41fb6fc39be1f2493ef946f6b5917bde3d4efc98fac53838f"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/revision-canonical-final2/audit.json",
+      "sha256": "5ef1e7d6599709dbcd9280c21dd38220bd234a87d481fe18ce5d8ddf800bef15"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/revision-canonical-final2/detail-provenance.json",
+      "sha256": "781ace94440013ffabb7fb334bcf655f2cf29c7364bf8550d6ca1e31a0a59fcd"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final1/run.json",
+      "sha256": "964a1725f35c96df442af9b5937b34e5886c06c1f061b0a25129da9b2200be4c"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final1/results.json",
+      "sha256": "5a3ab90cea927abac62a4f8996f7c797b8bb3d06f0c3d18cab215b78c5ff6eaf"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/run.json",
+      "sha256": "97a627bfbb538d96e8c3e9a70b072b7f1addc67b6777ca67dd4a28a3aa277773"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/results.json",
+      "sha256": "34645fc591e4bffc2f6a3bd0f505fb8d09f408cade1ff008ce3d587c1674c655"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/runs/canonical-final2/stdout.txt",
+      "sha256": "c638ab58e9acc917cdfcacf62e9f96eac8c23b5d1499b1e578cd415389e0fbdc"
+    },
+    {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/research/failure-repair-20261107/unit-full-results.json",
+      "sha256": "0bb51591bcb6be323d05433f15c62f3e605f7283bfd9cbdb3aff4ee238ee0486"
+    },
+    {
+      "path": ".omx/private/acceptance-repair-20261107/scroll/cleanup-final.json",
+      "sha256": "8493d419ac62816aeb6d28afd252659af9f7f9d2699202f0b81e529092e3754d"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-11-07T08:30:59.354Z",
+    "duration": 57316.759,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "unit_validation": {
+    "requested_failures_resolved": 4,
+    "targeted_pass": 213,
+    "unique_tests_with_pass_across_runs": 13332,
+    "single_full_green_run": false,
+    "first_full_views_failures": 3,
+    "unchanged_create_issue_file_recheck_pass": 61,
+    "static_product_tasks_pass": 15,
+    "static_warnings": 30,
+    "static_errors": 0
+  },
+  "limitations": [
+    "Original full acceptance remains open (installer/provider/other inventory gates).",
+    "Initial full views had3 failures in unchanged create-issue.test.tsx;61-test unchanged recheck passed; exact first-run cause unknown.",
+    "Ad-hoc Web ESLint config on E2E reports pre-existing errors identical atHEAD; rootE2E has no supported lint/typecheck project.",
+    "Canonical-final1 and all earlier failures retained; automatic-recovery probe replaced by explicit-current-Refresh regression after native synthetic-response incompatibility diagnosis.",
+    "No backend product changes or new Go run; no paid models, pushes or deployments."
+  ],
+  "cleanup": {
+    "time": "2026-11-07T08:32:24.291132+00:00",
+    "ports": {
+      "19793": [],
+      "14713": [],
+      "5981": []
+    },
+    "owned_pids_exited": [
+      73841,
+      73882,
+      76378,
+      76404,
+      62666
+    ],
+    "database": "multica_scroll_repair_20261107",
+    "other_database_connections": 0,
+    "retained": "Database, worktree, private state and original failed evidence retained; no resource deletion or provider calls.",
+    "owned_process_groups_empty": [
+      62666,
+      73841,
+      76378
+    ]
+  }
+}

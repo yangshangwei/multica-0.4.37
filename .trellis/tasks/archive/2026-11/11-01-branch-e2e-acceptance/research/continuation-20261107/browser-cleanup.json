@@ -1,0 +1,61 @@
+{
+  "at": "2026-11-07T06:00:36.874016+00:00",
+  "stopped": [
+    {
+      "kind": "renderer",
+      "pid": 19730
+    }
+  ],
+  "databases": [
+    {
+      "database": "multica_branch4c817_20261107_browser",
+      "connections": 0,
+      "gate": {
+        "id": 1,
+        "enabled": false,
+        "creation_enabled": true,
+        "epoch": 2,
+        "freeze_operation_id": null,
+        "freeze_progress": null,
+        "host_execution_enabled": false
+      }
+    },
+    {
+      "database": "multica_branch4c817_20261107_password",
+      "connections": 0,
+      "gate": {
+        "id": 1,
+        "enabled": false,
+        "creation_enabled": true,
+        "epoch": 4,
+        "freeze_operation_id": null,
+        "freeze_progress": null,
+        "host_execution_enabled": false
+      }
+    },
+    {
+      "database": "multica_branch4c817_20261107_deployment",
+      "connections": 0,
+      "gate": {
+        "id": 1,
+        "enabled": false,
+        "creation_enabled": true,
+        "epoch": 2,
+        "freeze_operation_id": null,
+        "freeze_progress": null,
+        "host_execution_enabled": false
+      }
+    }
+  ],
+  "ports": {
+    "19791": [],
+    "14711": [],
+    "19792": [],
+    "14712": [],
+    "5979": []
+  },
+  "service_stop_exit": 0,
+  "state_processes": [],
+  "all_owned_ports_closed": true,
+  "retained_database_connections_zero": true
+}

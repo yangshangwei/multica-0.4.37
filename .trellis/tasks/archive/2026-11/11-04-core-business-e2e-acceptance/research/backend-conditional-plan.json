@@ -1,0 +1,186 @@
+{
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "root_allocation_required": true,
+  "not_executed": true,
+  "knowledge_unique_count": 23,
+  "rows": [
+    {
+      "id": "knowledge-ordinary-normal",
+      "package": "./internal/daemon",
+      "tag": "knowledgeintegration",
+      "database": "multica_knowledge_composite_20261101_core1a32_1105_normal",
+      "race": false,
+      "expected_names": [
+        "TestKnowledgeServerDaemonCompositeHappyPath",
+        "TestKnowledgeServerDaemonCompositeOrdinarySurfaces",
+        "TestKnowledgeServerDaemonCompositeLiveWebSocketClaim",
+        "TestKnowledgeServerDaemonCompositeLostCommittedResponses",
+        "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch",
+        "TestKnowledgeServerDaemonCompositeLostDisclosureThenWithdrawal",
+        "TestKnowledgeServerDaemonCompositeGateClosureKeepsObservationCleanup",
+        "TestKnowledgeServerDaemonCompositeZeroNativeStaleFence",
+        "TestKnowledgeServerDaemonCompositeLaterLaunchRefusal",
+        "TestKnowledgeServerDaemonCompositeExactResumeThenFreshReplacement",
+        "TestKnowledgeServerDaemonCompositeLegacyCannotReuseExposure",
+        "TestKnowledgeServerDaemonCompositeAccountabilityIsNotOriginator",
+        "TestKnowledgeServerDaemonCompositeSourceParticipationRevoked",
+        "TestKnowledgeServerDaemonCompositeDatabaseGuard"
+      ],
+      "run_pattern": "^(TestKnowledgeServerDaemonCompositeHappyPath|TestKnowledgeServerDaemonCompositeOrdinarySurfaces|TestKnowledgeServerDaemonCompositeLiveWebSocketClaim|TestKnowledgeServerDaemonCompositeLostCommittedResponses|TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch|TestKnowledgeServerDaemonCompositeLostDisclosureThenWithdrawal|TestKnowledgeServerDaemonCompositeGateClosureKeepsObservationCleanup|TestKnowledgeServerDaemonCompositeZeroNativeStaleFence|TestKnowledgeServerDaemonCompositeLaterLaunchRefusal|TestKnowledgeServerDaemonCompositeExactResumeThenFreshReplacement|TestKnowledgeServerDaemonCompositeLegacyCannotReuseExposure|TestKnowledgeServerDaemonCompositeAccountabilityIsNotOriginator|TestKnowledgeServerDaemonCompositeSourceParticipationRevoked|TestKnowledgeServerDaemonCompositeDatabaseGuard)$",
+      "environment": {},
+      "scope": "real product paths with test-created controlled processes; no real model"
+    },
+    {
+      "id": "knowledge-host-normal",
+      "package": "./cmd/server",
+      "tag": "knowledgeintegration",
+      "database": "multica_knowledge_host_composite_20261101_core1a32_1105_normal",
+      "race": false,
+      "expected_names": [
+        "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+        "TestCollaborationKnowledgeHostCompositeHappyPath",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+        "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+        "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose",
+        "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence",
+        "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch"
+      ],
+      "run_pattern": "^(TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain|TestCollaborationKnowledgeHostCompositeHappyPath|TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch|TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity|TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource|TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces|TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose|TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence|TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch)$",
+      "environment": {},
+      "scope": "real product paths with test-created controlled processes; no real model"
+    },
+    {
+      "id": "knowledge-ordinary-race",
+      "package": "./internal/daemon",
+      "tag": "knowledgeintegration",
+      "database": "multica_knowledge_composite_20261101_core1a32_1105_race",
+      "race": true,
+      "expected_names": [
+        "TestKnowledgeServerDaemonCompositeHappyPath",
+        "TestKnowledgeServerDaemonCompositeOrdinarySurfaces",
+        "TestKnowledgeServerDaemonCompositeLiveWebSocketClaim",
+        "TestKnowledgeServerDaemonCompositeLostCommittedResponses",
+        "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch",
+        "TestKnowledgeServerDaemonCompositeLostDisclosureThenWithdrawal",
+        "TestKnowledgeServerDaemonCompositeGateClosureKeepsObservationCleanup",
+        "TestKnowledgeServerDaemonCompositeZeroNativeStaleFence",
+        "TestKnowledgeServerDaemonCompositeLaterLaunchRefusal",
+        "TestKnowledgeServerDaemonCompositeExactResumeThenFreshReplacement",
+        "TestKnowledgeServerDaemonCompositeLegacyCannotReuseExposure",
+        "TestKnowledgeServerDaemonCompositeAccountabilityIsNotOriginator",
+        "TestKnowledgeServerDaemonCompositeSourceParticipationRevoked",
+        "TestKnowledgeServerDaemonCompositeDatabaseGuard"
+      ],
+      "run_pattern": "^(TestKnowledgeServerDaemonCompositeHappyPath|TestKnowledgeServerDaemonCompositeOrdinarySurfaces|TestKnowledgeServerDaemonCompositeLiveWebSocketClaim|TestKnowledgeServerDaemonCompositeLostCommittedResponses|TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch|TestKnowledgeServerDaemonCompositeLostDisclosureThenWithdrawal|TestKnowledgeServerDaemonCompositeGateClosureKeepsObservationCleanup|TestKnowledgeServerDaemonCompositeZeroNativeStaleFence|TestKnowledgeServerDaemonCompositeLaterLaunchRefusal|TestKnowledgeServerDaemonCompositeExactResumeThenFreshReplacement|TestKnowledgeServerDaemonCompositeLegacyCannotReuseExposure|TestKnowledgeServerDaemonCompositeAccountabilityIsNotOriginator|TestKnowledgeServerDaemonCompositeSourceParticipationRevoked|TestKnowledgeServerDaemonCompositeDatabaseGuard)$",
+      "environment": {},
+      "scope": "real product paths with test-created controlled processes; no real model"
+    },
+    {
+      "id": "knowledge-host-race",
+      "package": "./cmd/server",
+      "tag": "knowledgeintegration",
+      "database": "multica_knowledge_host_composite_20261101_core1a32_1105_race",
+      "race": true,
+      "expected_names": [
+        "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+        "TestCollaborationKnowledgeHostCompositeHappyPath",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+        "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+        "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose",
+        "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence",
+        "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch"
+      ],
+      "run_pattern": "^(TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain|TestCollaborationKnowledgeHostCompositeHappyPath|TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch|TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity|TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource|TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces|TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose|TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence|TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch)$",
+      "environment": {},
+      "scope": "real product paths with test-created controlled processes; no real model"
+    },
+    {
+      "id": "wire-export",
+      "package": "./internal/handler",
+      "database": "multica_core1a32_20261105_wire",
+      "race": true,
+      "expected_names": [
+        "TestTriageWireFixtures"
+      ],
+      "run_pattern": "^TestTriageWireFixtures$",
+      "environment": {
+        "TRIAGE_WIRE_FIXTURES": "<private absolute output JSON>"
+      },
+      "typescript_consumer": "packages/core/api/triage-schemas.ts parseTriageResponse plus matching 7 schemas"
+    },
+    {
+      "id": "performance",
+      "package": "./internal/handler",
+      "database": "multica_core1a32_20261104_performance",
+      "race": false,
+      "expected_names": [
+        "TestIterationI1P95",
+        "TestIterationI1DisableP95",
+        "TestTriageQueueScaleBaseline"
+      ],
+      "run_pattern": "^(TestIterationI1P95|TestIterationI1DisableP95|TestTriageQueueScaleBaseline)$",
+      "environment": {
+        "MULTICA_RUN_I1_P95": "1",
+        "MULTICA_TRIAGE_PERF": "1"
+      },
+      "notes": "Root already allocated. Run without concurrent heavy load, preserve frozen thresholds. 30 samples+5 warmup for iteration."
+    },
+    {
+      "id": "linux-router",
+      "package": "./cmd/server",
+      "database": "multica_core1a32_20261105_linux_routes",
+      "race": false,
+      "target": "actual linux arm64 container and static test binary",
+      "expected_names": [
+        "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+        "TestCollaborationPartialResumeRoutesLinux",
+        "TestCollaborationSingleAgentRuntimeRoutesLinux",
+        "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+        "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+        "TestCollaborationSquadCapacityOneRoutesLinux"
+      ],
+      "run_pattern": "^(TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux|TestCollaborationPartialResumeRoutesLinux|TestCollaborationSingleAgentRuntimeRoutesLinux|TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux|TestCollaborationRuntimeProofSurvivesOwnerDisableLinux|TestCollaborationSquadCapacityOneRoutesLinux)$",
+      "environment": {
+        "MULTICA_RUN_COLLAB_RUNTIME_E2E": "1",
+        "MULTICA_REQUIRE_COLLAB_NAMESPACE": "1",
+        "MULTICA_TEST_COLLAB_CLI": "<current static Linux CLI>",
+        "MULTICA_TEST_COLLAB_DAEMON": "<current static Linux daemon test executable>"
+      },
+      "notes": "Use fresh root-owned DB; Docker host URL must select same local PostgreSQL endpoint. namespace-capable task container; do not accept skip."
+    },
+    {
+      "id": "linux-daemon",
+      "package": "./internal/daemon",
+      "database": null,
+      "race": false,
+      "target": "actual linux arm64 container and static test binary",
+      "expected_names": [
+        "TestCollaborationBatchPollerSlotsAndRunnerLinux"
+      ],
+      "run_pattern": "^TestCollaborationBatchPollerSlotsAndRunnerLinux$",
+      "environment": {
+        "MULTICA_REQUIRE_COLLAB_NAMESPACE": "1"
+      },
+      "notes": "Does not need DB; real namespace must work."
+    },
+    {
+      "id": "linux-agent",
+      "package": "./pkg/agent",
+      "database": null,
+      "race": false,
+      "target": "actual linux arm64 task-owned container; executable tmpfs",
+      "expected_names": [
+        "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+        "TestPiExecuteAttachesStdinPipe",
+        "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+      ],
+      "run_pattern": "^(TestCodexExecuteRetriesAfterSignaledProcessIsReaped|TestPiExecuteAttachesStdinPipe|TestClaudeRootSudoPreflight)$",
+      "environment": {},
+      "notes": "Controlled fake CLIs only; no ambient provider/host account. Preserve Windows-only skips as separate platform gap."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Final Linux failure: primary error masked by cleanup
+
+The last Linux run remains FAIL. It executed for214.9 seconds and reports only `Installed Main close exceeded30000ms`. The spec disables tracing, so this run contains no trace.zip/test.trace or command timeline. Its failure-capture code asks the same controller for status with20s timeout; when that fails it drops the capture. The finally block then awaits `native.close()` without preserving an earlier error, so a close failure replaces the original exception. This masking is directly established by the source and current artifacts.
+
+API logs establish completed business progress through both exact result returns, native/Web controls, command cancellation, the expected409 stop-unconfirmed response, and the final native handoff back to the creator. Last write:13:03:01.829 handoff200. Last nonpolling commands read:13:03:02.608 GET commands200. The next source operation is the installed client restart. Its default120s timeout, catch status20s, close30s and bounded termination wait align with the elapsed time, so a restart-stage stall is the leading inference. This is not proof of which restart step failed; the underlying exception is absent.
+
+Do not weaken close or mark business acceptance passed. There is no evidence-supported product fix in this slice, and another unchanged full replay would repeat poor observability. If further diagnosis is approved, first preserve the primary error before status capture, preserve cleanup errors separately (aggregate when needed), and record controller command id/name/start/completion/error category without stdin payload or credentials. Then isolate restart in a new owned environment. The original run and all prior corrected-fixture results remain distinct.
+
+No source edits, browser replay, service action, database access or process changes occurred in this analysis. Safe API timeline extraction is in the accompanying JSON.

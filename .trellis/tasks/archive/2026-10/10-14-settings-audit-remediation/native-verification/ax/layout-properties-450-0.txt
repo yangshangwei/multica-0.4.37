@@ -1,0 +1,24 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 属性"': 设置目录 属性
+- tabpanel "属性":
+  - banner:
+    - heading "属性" [level=2]
+    - paragraph: 为该工作空间的任务定义类型化的自定义属性。属性值设置在每个任务上，智能体可读写。
+  - textbox "按名称筛选..."
+  - switch "显示已归档"
+  - text: 显示已归档 1/20 个启用中属性
+  - button "新建属性"
+  - text: Native acceptance property 单选 0 个任务 2026/10/14
+  - button "Native acceptance property 的操作" [expanded]
+  - menu "Native acceptance property 的操作":
+    - menuitem "编辑"
+    - menuitem "归档"
+- button "1 条未读对话"
+- region "Notifications alt+T"

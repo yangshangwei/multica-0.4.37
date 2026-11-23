@@ -1,0 +1,120 @@
+{
+  "recorded_at": "2026-10-27T05:28:20.388659+00:00",
+  "application_source": "a8e374bb99c5f3c407f76c2d607e623ce15d6552",
+  "later_docs_only_commit": "87939bbe0",
+  "e2e": {
+    "existing_passed": 408,
+    "existing_failed": 0,
+    "existing_not_executed": 0,
+    "files": 133,
+    "additional_passed": 3,
+    "automatic_retries": 0
+  },
+  "typescript": {
+    "core": 4173,
+    "docs": 62,
+    "views": 7046,
+    "web": 285,
+    "desktop": 1238,
+    "total_passed": 12804,
+    "failed": 0
+  },
+  "go": {
+    "passed_packages": 73,
+    "race": true,
+    "vet_exit_code": 0,
+    "includes_go_test_cache": true
+  },
+  "static": {
+    "initial_tasks_passed": 15,
+    "eslint_warnings": 31,
+    "errors": 0,
+    "desktop_lint_and_typecheck_repeated_after_fix": true
+  },
+  "fix": {
+    "cause": "Electron app.getPath was absent in two VM-based test doubles after b24f5b92e",
+    "files": [
+      "apps/desktop/src/main/daemon-manager-auth.test.ts",
+      "apps/desktop/src/main/daemon-manager-managed-recovery.test.ts"
+    ],
+    "initial_failed_tests": 18,
+    "final_desktop_passed": 1238,
+    "production_code_changed": false
+  },
+  "cleanup": {
+    "environments": [
+      {
+        "environment": "check-20261027043733-97243",
+        "exit_code": 0
+      },
+      {
+        "environment": "check-20261027042126-52974",
+        "exit_code": 0
+      },
+      {
+        "environment": "check-20261027041101-45178",
+        "exit_code": 0
+      },
+      {
+        "environment": "check-20261027043331-93966",
+        "exit_code": 0
+      }
+    ],
+    "helpers": [
+      {
+        "name": "assist-provider",
+        "pid": 10940,
+        "state": "stopped"
+      },
+      {
+        "name": "actor-provider",
+        "pid": 10952,
+        "state": "stopped"
+      },
+      {
+        "name": "native renderer",
+        "pid": 64962,
+        "state": "stopped"
+      }
+    ],
+    "ports": [
+      {
+        "port": 18266,
+        "closed": true
+      },
+      {
+        "port": 13186,
+        "closed": true
+      },
+      {
+        "port": 18273,
+        "closed": true
+      },
+      {
+        "port": 13193,
+        "closed": true
+      },
+      {
+        "port": 5360,
+        "closed": true
+      },
+      {
+        "port": 61388,
+        "closed": true
+      },
+      {
+        "port": 61401,
+        "closed": true
+      }
+    ],
+    "collaboration_gates_closed": true,
+    "go_database_dropped": true,
+    "admin_initialization_database_dropped": true
+  },
+  "limitations": [
+    "No authenticated commercial Provider accounts or quota were used",
+    "Two runtime profiles run on one host; not a physical two-machine acceptance",
+    "No native Windows, installer upgrade, release signing or notarization acceptance"
+  ],
+  "raw_evidence": ".omx/reports/recent-commits-e2e-20261027/"
+}

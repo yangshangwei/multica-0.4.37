@@ -1,0 +1,285 @@
+{
+  "started_at": "2026-10-31T15:18:28.292328+00:00",
+  "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "read_only": true,
+  "tests_run": false,
+  "files": [
+    {
+      "path": "server/internal/service/collaboration_handoff_snapshot.go",
+      "initial_sha256": "b0968d48aee1596ab759747c0d6174f2621660a9706ce69602fae9311311c4e7",
+      "bytes": 10602,
+      "final_sha256": "b0968d48aee1596ab759747c0d6174f2621660a9706ce69602fae9311311c4e7",
+      "unchanged": true,
+      "git_blob": "3858cbd3e539422045ac492db4adbd4052fa75a5"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "initial_sha256": "a0c06e6125c571655865885129513d95011893d6361fc4edc1e06d1b22c791f4",
+      "bytes": 15485,
+      "final_sha256": "a0c06e6125c571655865885129513d95011893d6361fc4edc1e06d1b22c791f4",
+      "unchanged": true,
+      "git_blob": "f5b2ff23e0023fb6599b47850d81cb74a9f4e198"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_wakeup.go",
+      "initial_sha256": "2d8f6261246708c5cc5df95c4b956d6be883cb8745bd26f98d16091d893855a1",
+      "bytes": 4427,
+      "final_sha256": "2d8f6261246708c5cc5df95c4b956d6be883cb8745bd26f98d16091d893855a1",
+      "unchanged": true,
+      "git_blob": "03dfce54a32e7a8a11472007a84ec3a52c4f1fff"
+    },
+    {
+      "path": "server/internal/service/collaboration_squad.go",
+      "initial_sha256": "ddbd86dfd594d3c28ff64746a74343704dfd9ab4eceb1d81b52e66b46696a583",
+      "bytes": 19272,
+      "final_sha256": "ddbd86dfd594d3c28ff64746a74343704dfd9ab4eceb1d81b52e66b46696a583",
+      "unchanged": true,
+      "git_blob": "8916fc4e4b9397b1761a46f533b61b342bbb2dc8"
+    },
+    {
+      "path": "server/internal/service/collaboration_squad_join.go",
+      "initial_sha256": "54c48f8905633aa6060bb7c0a6ceca54e9c42a59e46f033610cd416572fb28af",
+      "bytes": 6588,
+      "final_sha256": "54c48f8905633aa6060bb7c0a6ceca54e9c42a59e46f033610cd416572fb28af",
+      "unchanged": true,
+      "git_blob": "17a8f8a985d15164605ca104b59aacc30b58abcb"
+    },
+    {
+      "path": "server/internal/service/collaboration_input_readers.go",
+      "initial_sha256": "a3e2f01ef5081bf76c52c448ddc8419ee9352880a4660d7447ee30ed6b42485f",
+      "bytes": 1849,
+      "final_sha256": "a3e2f01ef5081bf76c52c448ddc8419ee9352880a4660d7447ee30ed6b42485f",
+      "unchanged": true,
+      "git_blob": "9dc6aa77830f07f4eee7d6d38db9a041d076d780"
+    },
+    {
+      "path": "server/internal/service/collaboration_memory.go",
+      "initial_sha256": "6ab2345e0e691bdc70dc1ff376ca05c9baccffc379ac88aa5cc03b1c7136cda8",
+      "bytes": 14665,
+      "final_sha256": "6ab2345e0e691bdc70dc1ff376ca05c9baccffc379ac88aa5cc03b1c7136cda8",
+      "unchanged": true,
+      "git_blob": "62824e749f730f555cf2e2ca9184c6035741b4b0"
+    },
+    {
+      "path": "server/internal/service/collaboration_memory_runtime.go",
+      "initial_sha256": "86f55b3b935af3686369fd768f97c30533cd8fd6c439e9733c84c9aef298b8bd",
+      "bytes": 10773,
+      "final_sha256": "86f55b3b935af3686369fd768f97c30533cd8fd6c439e9733c84c9aef298b8bd",
+      "unchanged": true,
+      "git_blob": "4c688a56b30aaa0f9e17f2ed45db77bd260d3502"
+    },
+    {
+      "path": "server/internal/service/collaboration_memory_operation.go",
+      "initial_sha256": "380af080379d319d6280deff6d210038ea341b3083f66d44b33385c3d3e2f686",
+      "bytes": 8766,
+      "final_sha256": "380af080379d319d6280deff6d210038ea341b3083f66d44b33385c3d3e2f686",
+      "unchanged": true,
+      "git_blob": "59f67bb3c402a86871aaaec5359395318de58a0b"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "initial_sha256": "057c06a9ff71e576c0bdb246849ccd5fcf0f3af896204bda8b142527dbaf3b73",
+      "bytes": 33303,
+      "final_sha256": "057c06a9ff71e576c0bdb246849ccd5fcf0f3af896204bda8b142527dbaf3b73",
+      "unchanged": true,
+      "git_blob": "064aaf0cc9ea45f1af4fc046354adc2eb2c61e39"
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime_handoff.go",
+      "initial_sha256": "f7bda75af6a374ad3ffc7763947159cdf8c255c40181f8fbadf86a36bd0bac85",
+      "bytes": 3779,
+      "final_sha256": "f7bda75af6a374ad3ffc7763947159cdf8c255c40181f8fbadf86a36bd0bac85",
+      "unchanged": true,
+      "git_blob": "e3b0c3faf8750c525bf3a4d44ebea80dbae29c90"
+    },
+    {
+      "path": "server/internal/handler/collaboration_memory.go",
+      "initial_sha256": "c76c467f63b257e84dcf814bc270d6e754c42151bb947ef211c40b998dcec51e",
+      "bytes": 7294,
+      "final_sha256": "c76c467f63b257e84dcf814bc270d6e754c42151bb947ef211c40b998dcec51e",
+      "unchanged": true,
+      "git_blob": "ec87faab0a223df3eb49d24edb1db450e4b27bd9"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_handoff.sql",
+      "initial_sha256": "35a7172bf64ab5e93b0e6fcb37b7c9ab524edf6f04115c2761c18f3ea8c16038",
+      "bytes": 2585,
+      "final_sha256": "35a7172bf64ab5e93b0e6fcb37b7c9ab524edf6f04115c2761c18f3ea8c16038",
+      "unchanged": true,
+      "git_blob": "dde9ff4f7e5036c2492768d884d71b8a14d0ce3f"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_memory.sql",
+      "initial_sha256": "ec76405e5f360b9bb64b31ead2a166fc381f007ef03d976b5d84dbff3af66f97",
+      "bytes": 3855,
+      "final_sha256": "ec76405e5f360b9bb64b31ead2a166fc381f007ef03d976b5d84dbff3af66f97",
+      "unchanged": true,
+      "git_blob": "e4e061bcc3a35a417201707473ffd2dba02a17a8"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_squad.sql",
+      "initial_sha256": "f36357d7156c7bf1a6f55eaee64f569f5e8e14c6d052f42243e601f48d606af2",
+      "bytes": 4854,
+      "final_sha256": "f36357d7156c7bf1a6f55eaee64f569f5e8e14c6d052f42243e601f48d606af2",
+      "unchanged": true,
+      "git_blob": "5e3e699fe29bceeecb7a79f209963817d55a408d"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_handoff.go",
+      "initial_sha256": "2e6372b0b40b4c095de7ef126c1e5400cef961bacbd7a7b74e12b5079f3880a9",
+      "bytes": 11124,
+      "final_sha256": "2e6372b0b40b4c095de7ef126c1e5400cef961bacbd7a7b74e12b5079f3880a9",
+      "unchanged": true,
+      "git_blob": "479bffe5a48aac8e77bf1027075629b771c51939"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff_test.go",
+      "initial_sha256": "159b8282970619dfbb7a11cbc77600c9bf380c701e6184767c098bdac60d07d5",
+      "bytes": 7278,
+      "final_sha256": "159b8282970619dfbb7a11cbc77600c9bf380c701e6184767c098bdac60d07d5",
+      "unchanged": true,
+      "git_blob": "484e53339b3be91f9d0d81e21883cf851f9ca720"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "initial_sha256": "eaed10f96dafc5f1a9a6501b939c069ad6698f93bd70035db4ed0d353a8c9884",
+      "bytes": 36321,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "eaed10f96dafc5f1a9a6501b939c069ad6698f93bd70035db4ed0d353a8c9884",
+      "unchanged": true,
+      "git_blob": "222cd10162fa80b672969050964e047abc00b008"
+    },
+    {
+      "path": "server/internal/service/collaboration.go",
+      "initial_sha256": "93ac3df35c7d052bc0e89240eaef64d69e655b551da2f8c02c54ca4c0542cce0",
+      "bytes": 18693,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "93ac3df35c7d052bc0e89240eaef64d69e655b551da2f8c02c54ca4c0542cce0",
+      "unchanged": true,
+      "git_blob": "e3453ac99095dd6ce3e31869ebea2c3785a479f1"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments.go",
+      "initial_sha256": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+      "bytes": 12051,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+      "unchanged": true,
+      "git_blob": "2fbe6219f94b1b37e230196b35bf0ad43cda30d5"
+    },
+    {
+      "path": "server/internal/service/admin_collaboration.go",
+      "initial_sha256": "cdec52032de891a84ad5dd7ac1256d90ac8e3c54e70a1e048d5df88530a7cc0c",
+      "bytes": 19309,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "cdec52032de891a84ad5dd7ac1256d90ac8e3c54e70a1e048d5df88530a7cc0c",
+      "unchanged": true,
+      "git_blob": "18ebd65fcd65147c7256e2e96883b3cdcc674a2b"
+    },
+    {
+      "path": "server/internal/service/admin_collaboration_memory.go",
+      "initial_sha256": "b717f0e329c1289f5f2b2f75d75b46eae53cdd4924ffb28c37f9ca785fc07b7b",
+      "bytes": 10822,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "b717f0e329c1289f5f2b2f75d75b46eae53cdd4924ffb28c37f9ca785fc07b7b",
+      "unchanged": true,
+      "git_blob": "b4ed6fb7586cd114b13fc64bfd26b404d9783cb3"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration.sql",
+      "initial_sha256": "91a1d8490447862b090789b226e5112886072e6b73c715af0c420c430c59c98c",
+      "bytes": 13288,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "91a1d8490447862b090789b226e5112886072e6b73c715af0c420c430c59c98c",
+      "unchanged": true,
+      "git_blob": "951594f92d2d0e8edfa27cf67338587de90a9437"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_authority.sql",
+      "initial_sha256": "e93071ea811eb4df6735ee897b47fb1a65e674fddd5575933c599e5b8effb33b",
+      "bytes": 4770,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "e93071ea811eb4df6735ee897b47fb1a65e674fddd5575933c599e5b8effb33b",
+      "unchanged": true,
+      "git_blob": "e528f1710352d31926deb2c106ab1698c7f494bf"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_workflow.sql",
+      "initial_sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+      "bytes": 4934,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+      "unchanged": true,
+      "git_blob": "766f433279be5d174ef9a5e9179033d800140e88"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_batches.sql",
+      "initial_sha256": "d3c2cb240aa17298f76007b0fbc71e9d9e526625507dd97dac883ebc9a7f22b0",
+      "bytes": 6159,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "d3c2cb240aa17298f76007b0fbc71e9d9e526625507dd97dac883ebc9a7f22b0",
+      "unchanged": true,
+      "git_blob": "361f96de7379f57d3b7d2e113883229a03340b87"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_recall.sql",
+      "initial_sha256": "4dc4d6f6aade8397b6efc709b6ab39b20facfd8aafdf5a3afe4ce0165eccb6d2",
+      "bytes": 1179,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "4dc4d6f6aade8397b6efc709b6ab39b20facfd8aafdf5a3afe4ce0165eccb6d2",
+      "unchanged": true,
+      "git_blob": "e9b5ed4638fd93cd83492c8ed58da253dd5f0f8e"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_recall.go",
+      "initial_sha256": "e9373ef926637fb506e16946f2aa4fa083c08634486fe2e482cf221e9a574e99",
+      "bytes": 10711,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "e9373ef926637fb506e16946f2aa4fa083c08634486fe2e482cf221e9a574e99",
+      "unchanged": true,
+      "git_blob": "b3aba5e669bbb5779e8113705ee7c327a3ef30a1"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_checkpoint.go",
+      "initial_sha256": "eb87a6d54b8e352797209d8e7258df4eba07d8641dfc4c2661201220793a8f5d",
+      "bytes": 4665,
+      "scope": "supporting contract read; captured at final check",
+      "final_sha256": "eb87a6d54b8e352797209d8e7258df4eba07d8641dfc4c2661201220793a8f5d",
+      "unchanged": true,
+      "git_blob": "d6089c153933181a9790d755b86f9f9c94dfd822"
+    }
+  ],
+  "finished_at": "2026-10-31T15:34:24.603313+00:00",
+  "final_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "changed_during_audit": [],
+  "findings": [
+    {
+      "id": "SSA1",
+      "severity": "P2",
+      "status": "owner_fix_requested",
+      "title": "Runtime projection drops event watermark and open information request; nested request sequence is zero"
+    },
+    {
+      "id": "SSA2",
+      "severity": "P2",
+      "status": "owner_fix_requested",
+      "title": "Handoff cursor accepts missing run binding because decoding starts with trusted RunID"
+    },
+    {
+      "id": "SSA3",
+      "severity": "P2",
+      "status": "owner_review_requested",
+      "title": "Handoff source content endpoint echoes unvalidated run/version provenance"
+    }
+  ],
+  "verification": {
+    "source_inspection": true,
+    "hash_recheck": true,
+    "source_changed": false,
+    "db_calls": false,
+    "provider_calls": false,
+    "tests_run": false,
+    "lint_run": false,
+    "typecheck_run": false
+  }
+}

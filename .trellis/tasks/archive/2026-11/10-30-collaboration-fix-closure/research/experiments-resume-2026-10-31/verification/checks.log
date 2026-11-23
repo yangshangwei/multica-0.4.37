@@ -1,0 +1,17 @@
+Gate command: env -u MULTICA_RUN_REAL_AGENT_SMOKE -u MULTICA_CONTEXT_EXPERIMENT_OUT go test -tags=agentintegration ./internal/daemon/collaborationrun -run '^TestHostContextExperiment$' -count=1 -v
+Exit code: 0
+=== RUN   TestHostContextExperiment
+    host_context_experiment_test.go:122: real-model context experiments need MULTICA_RUN_REAL_AGENT_SMOKE=1 and MULTICA_CONTEXT_EXPERIMENT_OUT
+--- SKIP: TestHostContextExperiment (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.272s
+
+Vet command: go vet -tags=agentintegration ./internal/daemon/collaborationrun
+Exit code: 0
+
+Diff command: git diff --check && git diff --stat && git diff -- server/internal/daemon/collaborationrun/host_context_experiment_test.go
+Exit code: 0
+ .../host_context_experiment_fixture_test.go        | 120 +++++++++++++++++++--
+ .../host_context_experiment_test.go                |  29 +++--
+ 2 files changed, 135 insertions(+), 14 deletions(-)
+

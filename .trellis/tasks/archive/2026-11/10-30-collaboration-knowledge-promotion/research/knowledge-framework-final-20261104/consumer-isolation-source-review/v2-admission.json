@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T10:36:21.722198+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion",
+  "scope": "Read-only v2 path-only fake admission after frozen isolated consumer source review",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "ready_for_Root_normal2_signature": true,
+  "normal2_or_race2_body_executed": false,
+  "refs": {
+    "v2_handoff": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-repair/v2-preparation-handoff.json",
+      "sha256": "33a2f873af7f54e65f4de5346b9029fd9aca44ff66d415dbf0d9ede0269006a7"
+    },
+    "runner": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/run-fake-knowledge-v16.py",
+      "sha256": "eeb017c76c24a63023c9f0f44b35f14809a69d9507d3b531b129b204007d73a4"
+    },
+    "binding": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/input-binding.json",
+      "sha256": "7ab6f2ade592f84b40f5e26362759e057793257920e565965833f17bdaf804d3"
+    },
+    "path_only_patch": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-repair/runner-path-only.patch",
+      "sha256": "419b84d42a907d1517b4ee0a83e96b709cb73b2e52350f470e775198fd1094a5"
+    },
+    "source_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-source-review/review.json",
+      "sha256": "3fd21f1e42329f4d66cd157fb9f7f9d8943a4a2bac0d7efa38e61a26557c9aae"
+    },
+    "old_runner_admission": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fake-run-admission-review/review.json",
+      "sha256": "ae3e0dd61b6258b556e53f23b8f3d4b6bf230babcd56d56ba891a63825575d93"
+    },
+    "new2_resources": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-repair/v2-prepared-resources.json",
+      "sha256": "ebced9c9d0a91b241dad580d9593380ec4c213232c88757de7215d4d65e6e6d6"
+    },
+    "Root_new2_allocations": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/root-database-allocations-private.json",
+      "sha256": "7bccd4990984fb1ecc851568050831d6243389d1112e3f300692636ad97819ae"
+    }
+  },
+  "normalized_runner": {
+    "exact_old_bytes_after_only_private_v2_label02_and_new2_DB_constants": true,
+    "AST_equal": true,
+    "original_command_source_signature_real_guards_acceptance_failure_journaling_lock_and_normal_before_race_logic_unchanged": true
+  },
+  "source_binding_delta": {
+    "only_manifest_delta": [
+      "server/cmd/server/rk1k_fixture_test.go"
+    ],
+    "fixture_sha256": "9ad91d89d9f43c63759c69274db18c99108b49de7000e6a74a7a08bbb872e0d8",
+    "other8196_entries_same_as_verified_old_manifest": true,
+    "tools_cli_product_trees_old17_filter_summary_equal": true,
+    "all_inventory_details_referenced_not_duplicated": true
+  },
+  "actual_false_permits": [
+    {
+      "lane": "normal",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/permissions/rk1k-normal-v16-02.json",
+      "false_permit_sha256": "600048173ecb0e525f0130d414bc9f4009d310fc8511d926c38eb448f3e03dfe",
+      "label": "rk1k-normal-v16-02",
+      "database": "multica_rk1k_20261104_v16_normal2_a3c9",
+      "identity": "multica_rk1k_20261104_v16_normal2_a3c9|764_collaboration_ai_policy",
+      "Root_empty_764_record_matches": true,
+      "environment_sha256": "f7e6b3e6e8d7a174716c55c31bc9104f473f9a35046476bb7e6c56ad3eaa3d7f",
+      "home": "/private/tmp/multica-rk1k-20261104-v2-normal-z5lrrfo9/home",
+      "temp": "/private/tmp/multica-rk1k-20261104-v2-normal-z5lrrfo9",
+      "independent_owner_0700_canonical_Git_free_resources": true,
+      "model_keys_empty": true,
+      "ready_to_execute": false,
+      "Root_signature_pending": true
+    },
+    {
+      "lane": "race",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/permissions/rk1k-race-v16-02.json",
+      "false_permit_sha256": "4b3ea6a91845fdcf7ccd824dc56bda86f12afadcdcf67e076e6ffbf909310caf",
+      "label": "rk1k-race-v16-02",
+      "database": "multica_rk1k_20261104_v16_race2_a3c9",
+      "identity": "multica_rk1k_20261104_v16_race2_a3c9|764_collaboration_ai_policy",
+      "Root_empty_764_record_matches": true,
+      "environment_sha256": "0440ecee500952da02a9569dbd86b6a96c82023638e101c79a37adf09260eff7",
+      "home": "/private/tmp/multica-rk1k-20261104-v2-race-fhzydzkw/home",
+      "temp": "/private/tmp/multica-rk1k-20261104-v2-race-fhzydzkw",
+      "independent_owner_0700_canonical_Git_free_resources": true,
+      "model_keys_empty": true,
+      "ready_to_execute": false,
+      "Root_signature_pending": true
+    }
+  ],
+  "contract": {
+    "tests": [
+      "TestRK1KnowledgeEntryGuard",
+      "TestRK1KnowledgeWrapperGuard",
+      "TestRK1KnowledgePromptData",
+      "TestRK1KnowledgeTraceCredentialLabels",
+      "TestRK1KnowledgeNativeMetadataUsesRawOutput",
+      "TestRK1KnowledgeEvidenceFaults",
+      "TestRK1KnowledgeFakeProof"
+    ],
+    "filter": "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+    "required_summary": {
+      "measured_fake_starts": 15,
+      "fake_seed_starts": 3,
+      "paid_starts": 0,
+      "knowledge_allocated": 0,
+      "real_runnable": false
+    },
+    "tags_p_parallel_count_json_timeout_race_unchanged": true,
+    "actual_same_binding_normal2_pass_required_before_race2": true,
+    "current_CLI": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/multica",
+      "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac"
+    },
+    "no_repeated_control_or_diagnostic_or_Go_body": true
+  },
+  "Root_next": "Preserve false permits; sign unchanged normal2 once with this review and frozen source review; sole executor full7 normal2, then separately admitted race2 after normal2 success. Require complete finite15+3/0 and final dynamic six-file binding.",
+  "operations": {
+    "tests_models_migrations_auditors_agents": 0,
+    "original_source_input_permission_or_old_review_mutations": 0,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-source-review"
+  },
+  "real_gate": {
+    "budget": 0,
+    "calls": 0,
+    "production_default_enabled": false
+  },
+  "report_md_sha256": "e55e32947511b49c77e13894dbf929c5bb659f8bb290c1f9d1043d7e14239d85"
+}

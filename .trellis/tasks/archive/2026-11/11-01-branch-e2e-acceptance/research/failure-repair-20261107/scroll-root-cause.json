@@ -1,0 +1,93 @@
+{
+  "baseline": "e54d09be4835e03488a2cde0a90ff451ac266f5b + independent diagnostic/Skill fixes",
+  "diagnosis": "Native scroll anchoring adjusts the account detail root after the platform restored its exact saved offset. A retained query error above the header is112px plus32px sibling gap; successful refetch removes144px. Native top changes620\u2192476 with no JS setter476, max scroll remains above620.",
+  "red_run": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/scroll/runs/diagnosis-after-recovery",
+  "raw_layout_sha256": "91a29b81c10ccb6a877d4a2e254f4164550131cd860977cd2d082833ad37ca0d",
+  "observations": [
+    {
+      "kind": "start",
+      "time": 3003.9000000059605,
+      "top": 620,
+      "height": 3939,
+      "client": 788,
+      "overflowAnchor": "auto",
+      "extra": null
+    },
+    {
+      "kind": "frame",
+      "time": 3120.9000000059605,
+      "top": 0,
+      "height": 3113,
+      "client": 788,
+      "overflowAnchor": "auto",
+      "extra": null
+    },
+    {
+      "kind": "frame",
+      "time": 3144.4000000059605,
+      "top": 0,
+      "height": 3947,
+      "client": 788,
+      "overflowAnchor": "auto",
+      "extra": null
+    },
+    {
+      "kind": "setter",
+      "time": 3258.5999999940395,
+      "top": 0,
+      "height": 3955,
+      "client": 788,
+      "overflowAnchor": "auto",
+      "extra": {
+        "value": 620,
+        "stack": "Error\n    at HTMLElement.set [as scrollTop] (eval at evaluate (:290:30), <anonymous>:38:18)\n    at http://localhost:5981/assets/index-BBxU6jaN.js:77829:16\n    at safelyAttachRef (http://localhost:5981/assets/index-BBxU6jaN.js:5711:54)\n    at commitLayoutEffectOnFiber (http://localhost:5981/assets/index-BBxU6jaN.js:5965:20)\n    at recursivelyTraverseLayoutEffects (http://localhost:5981/assets/index-BBxU6jaN.js:6423:101)\n    at commitLayoutEffectOnFiber (http://localhost:5981/assets/index-BBxU6jaN.js:5963:5)\n    at recursivelyTraverseLayoutEffects (http://localhost:5981/assets/index-BBxU6jaN.js:6423:101)\n    at commitLayoutEffectOnFiber (http://localhost:5981/assets/index-BBxU6jaN.js:5920:5)\n    at recursivelyTraverseLayoutEffects (http://localhost:5981/assets/index-BBxU6jaN.js:6423:101)\n    at commitLayoutEffectOnFiber (http://localhost:5981/assets/index-BBxU6jaN.js:5963:5)"
+      }
+    },
+    {
+      "kind": "setter",
+      "time": 3266.4000000059605,
+      "top": 620,
+      "height": 3955,
+      "client": 788,
+      "overflowAnchor": "auto",
+      "extra": {
+        "value": 620,
+        "stack": "Error\n    at HTMLElement.set [as scrollTop] (eval at evaluate (:290:30), <anonymous>:38:18)\n    at http://localhost:5981/assets/index-BBxU6jaN.js:77829:16\n    at http://localhost:5981/assets/index-BBxU6jaN.js:304158:3\n    at commitHookEffectListMount (http://localhost:5981/assets/index-BBxU6jaN.js:5639:20)\n    at commitPassiveMountOnFiber (http://localhost:5981/assets/index-BBxU6jaN.js:6544:21)\n    at recursivelyTraversePassiveMountEffects (http://localhost:5981/assets/index-BBxU6jaN.js:6535:102)\n    at commitPassiveMountOnFiber (http://localhost:5981/assets/index-BBxU6jaN.js:6582:13)\n    at recursivelyTraversePassiveMountEffects (http://localhost:5981/assets/index-BBxU6jaN.js:6535:102)\n    at commitPassiveMountOnFiber (http://localhost:5981/assets/index-BBxU6jaN.js:6582:13)\n    at recursivelyTraversePassiveMountEffects (http://localhost:5981/assets/index-BBxU6jaN.js:6535:102)"
+      }
+    },
+    {
+      "kind": "scroll",
+      "time": 3311,
+      "top": 660,
+      "height": 3305,
+      "client": 788,
+      "overflowAnchor": "auto",
+      "extra": null
+    },
+    {
+      "kind": "scroll",
+      "time": 3458.5999999940395,
+      "top": 620,
+      "height": 3265,
+      "client": 788,
+      "overflowAnchor": "auto",
+      "extra": null
+    },
+    {
+      "kind": "scroll",
+      "time": 3477.4000000059605,
+      "top": 476,
+      "height": 3121,
+      "client": 788,
+      "overflowAnchor": "auto",
+      "extra": null
+    }
+  ],
+  "fix": "Opt out of native scroll anchoring only on account-workbench account-detail, whose offset belongs to platform memento restoration. No global restoration hook or source-workspace scroller changed.",
+  "tradeoff": "Within this explicit-offset root, subsequent query layout changes no longer automatically move the numeric scroll position; explicit links/focus and ordinary user scrolling remain unchanged.",
+  "files": [
+    "packages/views/collaboration/account-workbench-page.tsx",
+    "e2e/global-scope-navigation.spec.ts"
+  ],
+  "verification": "Final production rebuild and canonical2+scope2 runs pending"
+}

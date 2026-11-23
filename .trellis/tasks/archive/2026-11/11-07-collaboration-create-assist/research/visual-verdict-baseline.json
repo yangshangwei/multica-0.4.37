@@ -1,0 +1,18 @@
+{
+  "score": 78,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "Current screenshot lacks the requested adjacent expand/collapse affordance and AI description action; existing compact composer hierarchy should be retained."
+  ],
+  "suggestions": [
+    "Add single-mounted expansion next to Close and source-scoped plain-text AI assistance without regressing density or recovery."
+  ],
+  "reasoning": "This baseline evaluates the new feature request against the supplied screenshots, not the already-approved previous polish.",
+  "threshold": 90,
+  "threshold_pass": false,
+  "round": 0,
+  "next_actions": [
+    "Wait for both implementations to stabilize, then inspect one batched production preview."
+  ]
+}

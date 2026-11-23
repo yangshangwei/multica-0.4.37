@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, screen, within } from "@testing-library/react";
 import type { Squad, SquadTemplate } from "@multica/core/types";
+import type { SupportedLocale } from "@multica/core/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import { renderWithI18n } from "../../test/i18n";
 import { BuiltinSquadCatalog } from "./builtin-squad-catalog";
@@ -10,15 +11,19 @@ const mocks = vi.hoisted(() => ({
   pending: false,
   failed: false,
   retry: vi.fn(),
+  templateQueryEnabled: true,
 }));
 
 vi.mock("../../agents/create/use-role-templates", () => ({
-  useSquadTemplates: () => ({
-    data: mocks.templates,
-    isPending: mocks.pending,
-    isError: mocks.failed,
-    refetch: mocks.retry,
-  }),
+  useSquadTemplates: (options?: { enabled?: boolean }) => {
+    mocks.templateQueryEnabled = options?.enabled ?? true;
+    return {
+      data: mocks.templates,
+      isPending: mocks.pending,
+      isError: mocks.failed,
+      refetch: mocks.retry,
+    };
+  },
 }));
 vi.mock("@multica/core/paths", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@multica/core/paths")>();
@@ -59,13 +64,13 @@ function squad(id: string, name: string, overrides: Partial<Squad> = {}): Squad 
   };
 }
 
-function renderCatalog(squads: Squad[] = []) {
+function renderCatalog(squads: Squad[] = [], locale: SupportedLocale = "en", active = true) {
   const navigation: NavigationAdapter = {
     push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/acme/squads",
     searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path,
   };
   return {
-    ...renderWithI18n(<NavigationProvider value={navigation}><BuiltinSquadCatalog squads={squads} /></NavigationProvider>),
+    ...renderWithI18n(<NavigationProvider value={navigation}><BuiltinSquadCatalog squads={squads} active={active} /></NavigationProvider>, { locale }),
     navigation,
   };
 }
@@ -75,6 +80,7 @@ beforeEach(() => {
   mocks.templates = [TEMPLATE];
   mocks.pending = false;
   mocks.failed = false;
+  mocks.templateQueryEnabled = true;
 });
 
 describe("BuiltinSquadCatalog", () => {
@@ -128,6 +134,56 @@ describe("BuiltinSquadCatalog", () => {
     expect(within(dialog).getByText(TEMPLATE.instructions)).toBeVisible();
     fireEvent.click(within(dialog).getByRole("button", { name: "Close" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("stops fetching and closes project setup when the market panel becomes inactive", () => {
+    const { rerender, navigation } = renderCatalog();
+    fireEvent.click(screen.getByRole("button", { name: "Apply to project" }));
+    expect(screen.getByRole("dialog", { name: TEMPLATE.title })).toBeVisible();
+
+    rerender(
+      <NavigationProvider value={navigation}>
+        <BuiltinSquadCatalog squads={[]} active={false} />
+      </NavigationProvider>,
+    );
+
+    expect(mocks.templateQueryEnabled).toBe(false);
+    expect(screen.queryByRole("dialog", { name: TEMPLATE.title })).not.toBeInTheDocument();
+  });
+
+  it.each([
+    {
+      locale: "en" as const,
+      title: "Security Remediation Squad",
+      summary: "Triage security risks, reproduce code vulnerabilities before repairing outside production, verify with independent review, and have a security owner confirm key decisions.",
+      apply: "Apply to project",
+    },
+    {
+      locale: "zh-Hans" as const,
+      title: "安全漏洞修复小队",
+      summary: "分诊安全风险，代码漏洞先复现再在非生产环境修复，由独立成员验证和审查，关键决策由安全负责人确认。",
+      apply: "应用到项目",
+    },
+  ])("localizes security remediation in $locale and keeps its original setup content", ({ locale, title, summary, apply }) => {
+    const securityTemplate: SquadTemplate = {
+      ...TEMPLATE,
+      key: "security-remediation",
+      title,
+      name: title,
+      description: "The server's complete security routing description.",
+      instructions: "Keep the source evidence and stop for human handling when required.",
+    };
+    mocks.templates = [securityTemplate];
+    renderCatalog([], locale);
+
+    const entry = screen.getByRole("listitem", { name: title });
+    expect(within(entry).getByRole("heading", { name: title })).toBeVisible();
+    expect(within(entry).getByText(summary)).toBeVisible();
+    expect(within(entry).queryByText(securityTemplate.description)).not.toBeInTheDocument();
+    fireEvent.click(within(entry).getByRole("button", { name: apply }));
+    const dialog = screen.getByRole("dialog", { name: title });
+    expect(within(dialog).getByText(securityTemplate.description)).toBeVisible();
+    expect(within(dialog).getByText(securityTemplate.instructions)).toBeVisible();
   });
 
   it("keeps unknown templates usable and falls back to their server copy", () => {

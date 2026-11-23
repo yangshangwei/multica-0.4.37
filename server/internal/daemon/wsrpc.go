@@ -347,11 +347,7 @@ func (d *Daemon) claimTasksUsingTransport(ctx context.Context, client *Client, r
 		}
 		// batchClaimRequestTimeout is the server-side execution budget; the
 		// daemon waits that plus the client's grace margin for the response.
-		_, err := rpc.CallIfRPCV1Supported(ctx, "tasks.claim", batchClaimRequestTimeout, map[string]any{
-			"daemon_id":   daemonID,
-			"runtime_ids": runtimeIDs,
-			"max_tasks":   maxTasks,
-		}, &resp)
+		_, err := rpc.CallIfRPCV1Supported(ctx, "tasks.claim", batchClaimRequestTimeout, client.taskClaimBody(daemonID, runtimeIDs, maxTasks), &resp)
 		if err == nil {
 			return resp.Tasks, nil
 		}

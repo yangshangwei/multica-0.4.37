@@ -1,0 +1,33 @@
+{
+  "source_sha": "77df70afc053c7772a0e0f81be70158868e9f24b",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./pkg/agent",
+    "./pkg/protocol",
+    "./internal/daemon",
+    "-p",
+    "2",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-run",
+    "^Test(Knowledge(Rebind|PromptRebind|UnreachablePriorWorkdir|UnreachableResumeOnOlderServer|ClaimDescriptorDecodeFailure|BatchClaimSurvivesOne|StartedObservationRefusal|ClaudeStartedCallback)|TaskKnowledgePrepareRequestCarriesResumeUnavailable)"
+  ],
+  "started_at": "2026-11-01T16:46:00.569106+00:00",
+  "database_access": false,
+  "provider_calls": 0,
+  "exit_code": 0,
+  "counts": {
+    "run": 44,
+    "pass": 44,
+    "fail": 0,
+    "skip": 0
+  },
+  "log_sha256": "d0dcf1d9af3346a667c6209a700d82d364a8e2d141f3cb9f964d42595afe72fe"
+}

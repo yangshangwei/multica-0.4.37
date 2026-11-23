@@ -42,9 +42,56 @@
     "active_link": "活跃智能体",
     "title": "已归档智能体"
   },
-  "empty": {
-    "title": "还没有智能体",
-    "description": "创建一个智能体，像分配给同事那样把任务交给它。本地智能体在你的机器上运行，云智能体在 Multica 运行时上运行。"
+  "welcome": {
+    "title": "招第一位 AI 队友",
+    "description": "智能体像团队成员一样接任务：在你的运行时上用 Claude Code、Codex 等工具动手做，做完在评论里交付。",
+    "docs": "阅读文档",
+    "examples": "智能体如何工作",
+    "example": "示例",
+    "previous": "上一个示例",
+    "next": "下一个示例",
+    "show_example": "查看示例 {{number}}：{{title}}",
+    "position": "示例 {{number}} / {{total}}：{{title}}",
+    "steps": {
+      "label": "智能体上手步骤",
+      "connect": "接入运行时",
+      "connect_action": "去接入",
+      "connected": "已接入运行时",
+      "view_runtimes": "查看运行时",
+      "create": "创建智能体",
+      "assign": "给它分配一个任务"
+    },
+    "people": {
+      "agent": "Turing",
+      "other_agent": "Kepler",
+      "member": "Mia"
+    },
+    "setup": {
+      "title": "一句话说清它做什么",
+      "description": "描述职责，选好运行时和模型，就能创建。之后随时改指令、加 skill。",
+      "question": "这个智能体需要做什么？",
+      "prompt": "审查前端 PR，重点看可访问性和性能，结论写在 PR 评论里。",
+      "machine": "studio-mbp",
+      "provider": "Claude Code",
+      "model": "Sonnet 4.5"
+    },
+    "assignment": {
+      "title": "像同事一样分配任务",
+      "description": "在任务的负责人里选它。它会带着任务上下文，在运行时上开始工作。",
+      "issue_id": "MUL-142",
+      "issue_title": "定价页移动端排版错位",
+      "search": "分配给...",
+      "members": "成员"
+    },
+    "delivery": {
+      "title": "在评论里查看交付",
+      "description": "查看结论、检查改动，再留下反馈。工作结果和讨论都留在任务里。",
+      "thread": "任务评论",
+      "just_now": "刚刚",
+      "result": "已修复移动端排版，并检查了键盘导航。改动已提交，请查看。",
+      "review": "查看 PR",
+      "status": "等待审核"
+    }
   },
   "no_matches": {
     "title": "无匹配项",
@@ -382,6 +429,10 @@
     }
   },
   "role_templates": {
+    "market_title": "智能体模板",
+    "market_description": "选择角色模板，创建适合团队工作的智能体。",
+    "market_loading": "正在加载智能体模板...",
+    "use_template": "使用模板",
     "title": "从角色模板开始",
     "description": "打开已创建的智能体，或从角色模板创建新成员。",
     "step_pick": "选择角色",
@@ -417,7 +468,6 @@
   "approvals": {
     "title": "审批",
     "tagline": "智能体请求人工授权的高风险动作。",
-    "learn_more": "了解更多",
     "open_button": "审批",
     "filter_pending": "待处理",
     "filter_all": "全部",

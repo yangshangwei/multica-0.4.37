@@ -1,0 +1,471 @@
+{
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "acceptance": "FAIL",
+  "static": {
+    "tasks_passed": 15,
+    "lint_errors": 0,
+    "lint_warnings": 30,
+    "ui_exports": "PASS"
+  },
+  "verification_scripts": {
+    "node_pass": 101,
+    "node_fail": 0,
+    "node_top_level": 89,
+    "node_children": 12,
+    "go_test_wrapper": "PASS"
+  },
+  "unit_packages": [
+    {
+      "package": "core",
+      "pass": 4460,
+      "fail": 1,
+      "files": 331,
+      "run": "units-reconfigured"
+    },
+    {
+      "package": "views",
+      "pass": 7236,
+      "fail": 3,
+      "files": 598,
+      "run": "units-remaining"
+    },
+    {
+      "package": "docs",
+      "pass": 62,
+      "fail": 0,
+      "files": 9,
+      "run": "units-remaining"
+    },
+    {
+      "package": "desktop",
+      "pass": 1272,
+      "fail": 0,
+      "files": 102,
+      "run": "units-final-packages"
+    },
+    {
+      "package": "web",
+      "pass": 290,
+      "fail": 0,
+      "files": 34,
+      "run": "units-final-packages"
+    }
+  ],
+  "unit_totals": {
+    "pass": 13320,
+    "fail": 4,
+    "files": 1074
+  },
+  "reproductions": {
+    "diagnostic-route": {
+      "pass": 14,
+      "fail": 1
+    },
+    "skill-presentation": {
+      "pass": 106,
+      "fail": 3
+    }
+  },
+  "historical_admin_clock_regression": "Current whole views run lists admin/executions/list-controls.test.tsx8PASS",
+  "runs": {
+    "static-first": {
+      "label": "static-first",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "lint",
+        "typecheck",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force"
+      ],
+      "start": "2026-11-07T05:03:33.086798+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished": "2026-11-07T05:06:40.659286+00:00"
+    },
+    "ui-exports": {
+      "label": "ui-exports",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "check:ui-exports"
+      ],
+      "start": "2026-11-07T05:05:10.521833+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished": "2026-11-07T05:05:14.529459+00:00"
+    },
+    "verification-scripts": {
+      "label": "verification-scripts",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "node",
+        "--test",
+        "scripts/agent-critical-path.test.mjs",
+        "scripts/check-agent-critical-path.test.mjs",
+        "scripts/agent-critical-path-workflow.test.mjs",
+        "scripts/go-test-database-preconditions.test.mjs",
+        "e2e/fixtures/collaboration-installed-main.node-test.mjs"
+      ],
+      "start": "2026-11-07T05:11:11.319334+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished": "2026-11-07T05:12:00.833628+00:00"
+    },
+    "units-first": {
+      "label": "units-first",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2",
+        "--reporter=json",
+        "--outputFile=vitest-acceptance.json"
+      ],
+      "start": "2026-11-07T05:05:38.826268+00:00",
+      "state": "complete",
+      "exit_code": 1,
+      "finished": "2026-11-07T05:06:47.423590+00:00"
+    },
+    "units-reconfigured": {
+      "label": "units-reconfigured",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "start": "2026-11-07T05:06:57.733946+00:00",
+      "state": "complete",
+      "exit_code": 1,
+      "finished": "2026-11-07T05:07:47.834233+00:00"
+    },
+    "units-remaining": {
+      "label": "units-remaining",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=!@multica/mobile",
+        "--filter=!@multica/core",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "start": "2026-11-07T05:08:29.535029+00:00",
+      "state": "complete",
+      "exit_code": 1,
+      "finished": "2026-11-07T05:15:35.614264+00:00"
+    },
+    "units-final-packages": {
+      "label": "units-final-packages",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=!@multica/mobile",
+        "--filter=!@multica/core",
+        "--filter=!@multica/views",
+        "--filter=!@multica/docs",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "start": "2026-11-07T05:17:09.203941+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished": "2026-11-07T05:17:49.430929+00:00"
+    },
+    "diagnostic-route-reproduction": {
+      "label": "diagnostic-route-reproduction",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "vitest",
+        "run",
+        "diagnostics/diagnostic-context.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/frontend/diagnostic-route-reproduction/results.json"
+      ],
+      "start": "2026-11-07T05:08:30.713857+00:00",
+      "state": "complete",
+      "exit_code": 1,
+      "finished": "2026-11-07T05:08:31.980476+00:00"
+    },
+    "skill-presentation-reproduction": {
+      "label": "skill-presentation-reproduction",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "vitest",
+        "run",
+        "skills/lib/skill-presentation.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/frontend/skill-presentation-reproduction/results.json"
+      ],
+      "start": "2026-11-07T05:17:10.413644+00:00",
+      "state": "complete",
+      "exit_code": 1,
+      "finished": "2026-11-07T05:17:11.700228+00:00"
+    },
+    "go-wrapper-contracts": {
+      "label": "go-wrapper-contracts",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "bash",
+        "scripts/test-go.test.sh"
+      ],
+      "start": "2026-11-07T05:20:46.173381+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished": "2026-11-07T05:20:47.487845+00:00"
+    },
+    "changelog-workflow-contracts": {
+      "label": "changelog-workflow-contracts",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "node",
+        "--test",
+        "scripts/changelog-workflow.test.mjs"
+      ],
+      "start": "2026-11-07T05:20:46.173380+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished": "2026-11-07T05:20:46.241132+00:00"
+    }
+  },
+  "evidence": [
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/static-first/run.json",
+      "bytes": 467,
+      "sha256": "1d746a7f4398020769f1a4f759e303595e3df3bfe0222a7d96b249e203ce5fdf"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/static-first/stderr.txt",
+      "bytes": 211,
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/static-first/stdout.txt",
+      "bytes": 14097,
+      "sha256": "52773017270285d4cbeab0b9b404f52e53edae698a759b23eeafc72f99ef239b"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/ui-exports/run.json",
+      "bytes": 353,
+      "sha256": "9ee3880e85e37b93d14573936741b7c5e0a9a4d4e1b27f43a333d8e8051c81a2"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/ui-exports/stderr.txt",
+      "bytes": 211,
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/ui-exports/stdout.txt",
+      "bytes": 243,
+      "sha256": "f85ce0cd0df3eb152df73e381f2760d39bab8db95bf533756e85dd37ccf89231"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/verification-scripts/run.json",
+      "bytes": 618,
+      "sha256": "1c21af519d00520b22c6653bdb4511477e255d0287250a4d457ed42467456367"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/verification-scripts/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/verification-scripts/stdout.txt",
+      "bytes": 15392,
+      "sha256": "0bcceb9fa4cb45ef70869e2e6f90cd6e35be3cdb7f1273ab4cf0ecbfc57b3506"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-first/interruption.json",
+      "bytes": 149,
+      "sha256": "1244c36599618339f804e6714a33db56eed2a85090989b31222fd92603bd847e"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-first/run.json",
+      "bytes": 547,
+      "sha256": "d414032f857d2e808a08d6f98ee77fa259d5944beb1065578e1a70a2377f43c7"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-first/stderr.txt",
+      "bytes": 251,
+      "sha256": "06a3eaec358021f4d30e11f753d7bd146dceaa3cad0d2e37204d52d184b7b63a"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-first/stdout.txt",
+      "bytes": 684,
+      "sha256": "8c20b0b7ba2b956c733f32ce43061b73444b2c038058a4f85435d85f76385bf3"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-reconfigured/run.json",
+      "bytes": 488,
+      "sha256": "ba1c7ec4f1261672378c67c3fa7481837d50a1758457f85f2e78ab9f345281e1"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-reconfigured/stderr.txt",
+      "bytes": 531,
+      "sha256": "2541296a516a4fe3c06475825abd80d0d37c5aadf7868ad38b1e9bca48ff5d62"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-reconfigured/stdout.txt",
+      "bytes": 79384,
+      "sha256": "12049f1b7655f3be5c97e8c022ae590f93e67d20eba6336b3e936f8d38b3471b"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-remaining/run.json",
+      "bytes": 516,
+      "sha256": "ec09cc61fbea54ecaaac000efbdd004be13df9b5118dd6a8b43764242b0afc25"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-remaining/stderr.txt",
+      "bytes": 533,
+      "sha256": "5179668838e997da021b598ff2ee90e634611d48f1d6c2bebcd4968de53d3906"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-remaining/stdout.txt",
+      "bytes": 548791,
+      "sha256": "ea0e79634129ffedce6f80991734ad5f9b3c10c878fc68e7d3e4c803b96352cf"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-final-packages/run.json",
+      "bytes": 584,
+      "sha256": "b47f165a22dc560e30867cc466425abd12639450b27d5d5b090b936ff253266e"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-final-packages/stderr.txt",
+      "bytes": 211,
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/units-final-packages/stdout.txt",
+      "bytes": 80177,
+      "sha256": "ddd9ab79f9667105c1e59b837f6a9719c2e56e5d01e130b14130e755cc025373"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/diagnostic-route-reproduction/results.json",
+      "bytes": 6197,
+      "sha256": "8a110003d49ac1cdd503a14649659f298a6617535513ebf881732956f5f4397c"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/diagnostic-route-reproduction/run.json",
+      "bytes": 657,
+      "sha256": "69683865dc462321116b4f996208751215d1daa0394071a563c5630e5ee3a9b9"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/diagnostic-route-reproduction/stderr.txt",
+      "bytes": 211,
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/diagnostic-route-reproduction/stdout.txt",
+      "bytes": 150,
+      "sha256": "df3d4ab86d0b329f668678f243e11dee46f7cfed040af425ce8096949233c40b"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/skill-presentation-reproduction/results.json",
+      "bytes": 43246,
+      "sha256": "95da61a379e01157b199d793413db33eadd9252f90471d5551887b49d7b2b1be"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/skill-presentation-reproduction/run.json",
+      "bytes": 661,
+      "sha256": "f1eb093b21220d97808b86fda4c030d3c616148a55a2516f3eff93b7e65c0093"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/skill-presentation-reproduction/stderr.txt",
+      "bytes": 211,
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/skill-presentation-reproduction/stdout.txt",
+      "bytes": 152,
+      "sha256": "5ad59ecb2d4a5640f0af365da1236017643a714266c9db48993593036f11b230"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/go-wrapper-contracts/stdout.txt",
+      "bytes": 22,
+      "sha256": "a01cbecf6343b7c02ca46a5116b40b28bcb6c0d6d53858ae111829b15066a43d"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/go-wrapper-contracts/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/go-wrapper-contracts/run.json",
+      "bytes": 370,
+      "sha256": "cd8ded6e8a3e2a32b92b01484fedbf919476045445d6952a94cfd98a4aac4567"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/changelog-workflow-contracts/stdout.txt",
+      "bytes": 1297,
+      "sha256": "463389c649e979c784c8e8f241f80fcef36793b6312d6726fbf903f6887908fb"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/changelog-workflow-contracts/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".omx/private/branch-e2e-20261107/frontend/changelog-workflow-contracts/run.json",
+      "bytes": 404,
+      "sha256": "24e94372d629cccc839d4b9252774567caa8bfa54eb8eadb775bde7bc5423faa"
+    }
+  ],
+  "limits": [
+    "Non-Mobile only",
+    "Runs split after actual Turbo fail-fast stops; no whole command pass claimed",
+    "Reproductions excluded from package totals",
+    "Initial JSON-reporter run manually interrupted; no finished package/report; retained separately",
+    "Known current product regressions not repaired under acceptance R08"
+  ]
+}

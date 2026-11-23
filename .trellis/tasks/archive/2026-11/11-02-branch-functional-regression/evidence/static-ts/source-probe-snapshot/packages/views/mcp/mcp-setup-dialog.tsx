@@ -1,0 +1,687 @@
+"use client";
+
+import { useEffect, useId, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { ExternalLink, Loader2 } from "lucide-react";
+import type {
+  Agent,
+  McpServerTemplate,
+  WorkspaceMcpServer,
+} from "@multica/core/types";
+import { errorCode } from "@multica/core/api";
+import { getAgentCategory } from "@multica/core/agents";
+import { isUsableMcpTemplate, matchesMcpTemplate } from "./mcp-catalog";
+import { useRoleTemplates, useSquadTemplates } from "../agents/create/use-role-templates";
+import { agentListOptions } from "@multica/core/workspace/queries";
+import {
+  useAssignWorkspaceMcpServer,
+  useCreateWorkspaceMcpServerFromTemplate,
+} from "@multica/core/workspace/mutations";
+import { Button } from "@multica/ui/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@multica/ui/components/ui/dialog";
+import { Input } from "@multica/ui/components/ui/input";
+import { Label } from "@multica/ui/components/ui/label";
+import { useT } from "../i18n";
+import type { McpCustomPreset } from "./mcp-market";
+import { McpAgentPicker, type McpAgentChoice } from "./mcp-agent-picker";
+
+function templateInputValue(values: Record<string, string>, key: string): string {
+  const value = Object.prototype.hasOwnProperty.call(values, key) ? values[key] : undefined;
+  return typeof value === "string" ? value : "";
+}
+
+export type McpAgentContext = {
+  agent: Pick<Agent, "id" | "name">;
+  managedNames: ReadonlySet<string>;
+  runtimeNames: ReadonlySet<string>;
+  unsupported: boolean;
+};
+
+export function McpConflictNotice({
+  name,
+  context,
+}: {
+  name: string;
+  context?: McpAgentContext;
+}) {
+  const { t } = useT("settings");
+  if (!context) return null;
+  return (
+    <>
+      {context.unsupported ? (
+        <p role="status" className="text-caption text-muted-foreground">
+          {t(($) => $.mcp.market.runtime_unsupported)}
+        </p>
+      ) : null}
+      {context.managedNames.has(name) ? (
+        <p role="status" className="text-caption text-muted-foreground">
+          {t(($) => $.mcp.market.same_name_agent)}
+        </p>
+      ) : context.runtimeNames.has(name) ? (
+        <p role="status" className="text-caption text-muted-foreground">
+          {t(($) => $.mcp.market.same_name_runtime)}
+        </p>
+      ) : null}
+    </>
+  );
+}
+
+export function McpSetupDialog({
+  active = true,
+  finalFocus,
+  workspaceId,
+  template,
+  initialServer,
+  available,
+  latestTemplate,
+  catalogUnavailable,
+  onRefresh,
+  onReload,
+  servers,
+  canManage,
+  agentContext,
+  onClose,
+  onCustom,
+}: {
+  active?: boolean;
+  finalFocus?: () => HTMLElement | false | null;
+  workspaceId: string;
+  servers: readonly WorkspaceMcpServer[] | undefined;
+  canManage: boolean;
+  agentContext?: McpAgentContext;
+  onClose: () => void;
+} & (
+  | {
+      template: McpServerTemplate;
+      available: boolean;
+      latestTemplate?: McpServerTemplate;
+      catalogUnavailable?: boolean;
+      onRefresh?: () => Promise<unknown>;
+      onReload?: () => Promise<boolean>;
+      onCustom: (preset: McpCustomPreset) => void;
+      initialServer?: never;
+    }
+  | {
+      initialServer: WorkspaceMcpServer;
+      template?: never;
+      available?: never;
+      latestTemplate?: never;
+      catalogUnavailable?: never;
+      onRefresh?: never;
+      onReload?: never;
+      onCustom?: never;
+    }
+)) {
+  const { t } = useT("settings");
+  const create = useCreateWorkspaceMcpServerFromTemplate(workspaceId);
+  const assign = useAssignWorkspaceMcpServer(workspaceId);
+  const [name, setName] = useState(() => {
+    if (initialServer) return initialServer.name;
+    const names = new Set(servers?.map((server) => server.name));
+    let candidate = template?.key ?? "";
+    for (let suffix = 2; names.has(candidate); suffix++)
+      candidate = `${template?.key}-${suffix}`;
+    return candidate;
+  });
+  const [saved, setSaved] = useState<WorkspaceMcpServer | null>(
+    initialServer ?? null,
+  );
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [succeeded, setSucceeded] = useState<Set<string>>(new Set());
+  const [failures, setFailures] = useState<
+    { agentId: string; message: string }[]
+  >([]);
+  const [error, setError] = useState("");
+  const [templateFailure, setTemplateFailure] = useState<"changed" | "unavailable" | null>(null);
+  const [catalogFailure, setCatalogFailure] = useState(false);
+  const [templateInputs, setTemplateInputs] = useState<Record<string, string>>({});
+  const [inputErrorKey, setInputErrorKey] = useState<string | null>(null);
+  const templateInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const [busy, setBusy] = useState(false);
+  const operation = useRef(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (active && saved) titleRef.current?.focus();
+  }, [active, saved]);
+  const id = useId();
+  const inputs = template?.inputs ?? [];
+  const agents = useQuery({
+    ...agentListOptions(workspaceId),
+    enabled: active && !!saved && !agentContext,
+  });
+  const malformedAgents =
+    agents.data !== undefined && !Array.isArray(agents.data);
+  const choices: McpAgentChoice[] = agentContext
+    ? [agentContext.agent]
+    : (Array.isArray(agents.data) ? agents.data : []).filter(
+        (agent) =>
+          agent &&
+          typeof agent.id === "string" &&
+          typeof agent.name === "string" &&
+          !agent.archived_at &&
+          !agent.system_key,
+      );
+  const metadataEnabled = active && !!saved && !agentContext && choices.some(
+    (agent) => !getAgentCategory(agent) && !!agent.template_key,
+  );
+  const roleTemplatesQuery = useRoleTemplates({ enabled: metadataEnabled });
+  const squadTemplatesQuery = useSquadTemplates({ enabled: metadataEnabled });
+  const metadataPending = metadataEnabled && (
+    (roleTemplatesQuery.isPending && roleTemplatesQuery.data === undefined) ||
+    (squadTemplatesQuery.isPending && squadTemplatesQuery.data === undefined)
+  );
+  const metadataError = metadataEnabled && (roleTemplatesQuery.isError || squadTemplatesQuery.isError);
+  // Cached catalogs still classify rows when a background refresh fails.
+  const rolesReady = !metadataEnabled || (
+    roleTemplatesQuery.data !== undefined && squadTemplatesQuery.data !== undefined
+  );
+  const retryMetadata = () => {
+    if (!metadataEnabled) return;
+    void roleTemplatesQuery.refetch();
+    void squadTemplatesQuery.refetch();
+  };
+  const related =
+    servers?.filter(
+      (server) => template && matchesMcpTemplate(server, template),
+    ) ?? [];
+  const actionable = !!template && isUsableMcpTemplate(template);
+  const recipe = actionable && typeof template?.version === "string" && template.version.length > 0;
+  const failure = templateFailure ?? (!available ? (latestTemplate ? "changed" : "unavailable") : null);
+  const catalogError = catalogUnavailable || catalogFailure;
+  const reload = async () => {
+    if (operation.current || !onReload) return;
+    operation.current = true;
+    setBusy(true);
+    try {
+      if (await onReload()) {
+        setTemplateInputs({});
+        setTemplateFailure(null);
+        setCatalogFailure(false);
+        setError("");
+        setInputErrorKey(null);
+        inputRef.current?.focus();
+      }
+    } finally {
+      operation.current = false;
+      setBusy(false);
+    }
+  };
+  const docsUrl = template?.documentationUrl?.startsWith("https://")
+    ? template.documentationUrl
+    : null;
+  const failedIds = new Set(failures.map((failure) => failure.agentId));
+  const canAssign = canManage || !!agentContext;
+  const pendingIds = [...selected].filter(
+    (agentId) =>
+      !succeeded.has(agentId) && choices.some((agent) => agent.id === agentId),
+  );
+  const selectionDisabled = !canAssign || busy || agentContext?.unsupported === true;
+  const changeSelection = (agentIds: readonly string[], checked: boolean) => {
+    if (operation.current || !canAssign || agentContext?.unsupported) return;
+    setSelected((previous) => {
+      const next = new Set(previous);
+      for (const agentId of agentIds) {
+        if (succeeded.has(agentId)) continue;
+        if (checked) {
+          if (choices.some((agent) => agent.id === agentId)) next.add(agentId);
+        } else {
+          next.delete(agentId);
+        }
+      }
+      return next;
+    });
+  };
+  const clearSelection = () => {
+    if (operation.current || !canAssign || agentContext?.unsupported) return;
+    setSelected((previous) =>
+      new Set([...previous].filter((agentId) => succeeded.has(agentId))),
+    );
+  };
+
+  const save = async () => {
+    if (operation.current || !canManage || !available || failure || !actionable || !servers || !template)
+      return;
+    const value = name.trim();
+    const message = !value
+      ? t(($) => $.mcp.rename_required)
+      : !/^[A-Za-z0-9_-]+$/.test(value)
+        ? t(($) => $.mcp.rename_invalid)
+        : servers.some((server) => server.name === value)
+          ? t(($) => $.mcp.rename_duplicate)
+          : "";
+    if (message) {
+      setInputErrorKey(null);
+      setError(message);
+      inputRef.current?.focus();
+      return;
+    }
+    if (!recipe) {
+      onCustom?.({ name: value, config: template.config });
+      return;
+    }
+    const missing = inputs.find((input) => input.required && !templateInputValue(templateInputs, input.key).trim());
+    if (missing) {
+      setInputErrorKey(missing.key);
+      setError(t(($) => $.mcp.market.input_required, { name: missing.label }));
+      templateInputRefs.current[missing.key]?.focus();
+      return;
+    }
+    operation.current = true;
+    setBusy(true);
+    setError("");
+    setInputErrorKey(null);
+    try {
+      const result = await create.mutateAsync({
+        name: value,
+        templateSource: template.source ?? "builtin",
+        templateKey: template.key,
+        templateVersion: template.version!,
+        ...(inputs.length > 0 ? { templateInputs } : {}),
+      });
+      if (!result.id) throw new Error(t(($) => $.mcp.market.save_failed));
+      setSaved(result);
+      setTemplateInputs({});
+    } catch (cause) {
+      switch (errorCode(cause)) {
+        case "mcp_template_changed":
+          setTemplateFailure("changed");
+          void onRefresh?.();
+          break;
+        case "mcp_template_unavailable":
+          setTemplateFailure("unavailable");
+          void onRefresh?.();
+          break;
+        case "mcp_catalog_unavailable":
+          setCatalogFailure(true);
+          break;
+        default:
+          setError(cause instanceof Error && cause.message ? cause.message : t(($) => $.mcp.market.save_failed));
+      }
+    } finally {
+      // The dialog retains failed drafts, but the mutation cache must not.
+      create.reset();
+      operation.current = false;
+      setBusy(false);
+    }
+  };
+  const assignSelected = async (retry: boolean) => {
+    if (!saved || operation.current || !canAssign || agentContext?.unsupported)
+      return;
+    const agentIds = pendingIds.filter((agentId) =>
+      retry ? failedIds.has(agentId) : !failedIds.has(agentId),
+    );
+    if (!agentIds.length) return;
+    operation.current = true;
+    setBusy(true);
+    setError("");
+    try {
+      const result = await assign.mutateAsync({ serverId: saved.id, agentIds });
+      setSucceeded((previous) => new Set([...previous, ...result.succeeded]));
+      setFailures((previous) => [
+        ...previous.filter((failure) => !agentIds.includes(failure.agentId)),
+        ...result.failed,
+      ]);
+    } catch (cause) {
+      const message =
+        cause instanceof Error && cause.message
+          ? cause.message
+          : t(($) => $.mcp.market.assignment_failed);
+      setFailures(agentIds.map((agentId) => ({ agentId, message })));
+    } finally {
+      operation.current = false;
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Dialog
+      open={active}
+      onOpenChange={(open) => {
+        if (!open && !operation.current) onClose();
+      }}
+    >
+      <DialogContent
+        finalFocus={active ? finalFocus : false}
+        className="flex max-h-[88vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-xl pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-h-11 pointer-coarse:[&_[data-slot=dialog-close]]:min-w-11"
+        showCloseButton={!busy}
+      >
+        <DialogHeader className="shrink-0 px-5 pb-4 pt-5 pr-12">
+          <DialogTitle
+            ref={titleRef}
+            tabIndex={-1}
+            className="[overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-foreground focus-visible:outline-offset-2"
+          >
+            {saved
+              ? t(($) => $.mcp.market.assign_title)
+              : t(($) => $.mcp.market.setup_title, {
+                  name: template?.title || template?.key || "",
+                })}
+          </DialogTitle>
+          <DialogDescription className="[overflow-wrap:anywhere]">
+            {saved
+              ? t(($) => $.mcp.market.saved, { name: saved.name })
+              : template?.description}
+          </DialogDescription>
+        </DialogHeader>
+        <div
+          className={saved
+            ? "flex min-h-0 flex-1 flex-col gap-4 px-5 pb-5"
+            : "min-h-0 space-y-5 overflow-y-auto px-5 pb-5"}
+          data-slot="mcp-setup-scroll-area"
+        >
+          {!saved ? (
+            <>
+              {template?.source === "deployment" ? (
+                <p className="text-caption text-muted-foreground">{t(($) => $.mcp.market.source_deployment)}</p>
+              ) : template?.version ? (
+                <p className="text-caption text-muted-foreground">
+                  {t(($) => $.mcp.market.version, {
+                    version: template.version,
+                  })}
+                </p>
+              ) : null}
+              {(template?.requirements ?? []).length > 0 ? (
+                <section className="space-y-2">
+                  <h3 className="text-body font-medium">
+                    {t(($) => $.mcp.market.requirements)}
+                  </h3>
+                  <ul className="list-disc space-y-1 pl-5 text-caption text-muted-foreground">
+                    {(template?.requirements ?? []).map((requirement) => (
+                      <li key={requirement}>{requirement}</li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
+              {docsUrl ? (
+                <a
+                  href={docsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-caption underline underline-offset-4 pointer-coarse:min-h-11"
+                >
+                  {t(($) => $.mcp.market.documentation)}
+                  <ExternalLink className="size-3" aria-hidden="true" />
+                </a>
+              ) : null}
+              {related.length > 0 ? (
+                <section className="space-y-2">
+                  <h3 className="text-body font-medium">
+                    {t(($) => $.mcp.market.related)}
+                  </h3>
+                  {related.map((server) => (
+                    <div
+                      key={server.id}
+                      className="flex min-w-0 flex-wrap items-center justify-between gap-2 rounded-lg border p-3"
+                    >
+                      <span className="min-w-0 break-all text-caption">
+                        {server.name}
+                      </span>
+                      {canManage || agentContext ? (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-auto min-h-8 max-w-full whitespace-normal break-all py-1 text-left"
+                          disabled={busy}
+                          onClick={() => {
+                            if (!operation.current) {
+                              setTemplateInputs({});
+                              setSaved(server);
+                            }
+                          }}
+                        >
+                          {t(($) => $.mcp.market.reuse, { name: server.name })}
+                        </Button>
+                      ) : null}
+                    </div>
+                  ))}
+                </section>
+              ) : null}
+              {failure ? (
+                <div role="alert" className="space-y-2 text-caption">
+                  <p>{failure === "changed" ? t(($) => $.mcp.market.template_changed) : t(($) => $.mcp.market.template_unavailable)}</p>
+                  {onReload && latestTemplate ? (
+                    <Button size="sm" variant="outline" disabled={busy} onClick={() => void reload()}>
+                      {t(($) => $.mcp.market.reload_template)}
+                    </Button>
+                  ) : onRefresh ? (
+                    <Button size="sm" variant="outline" disabled={busy} onClick={() => void onRefresh()}>
+                      {t(($) => $.mcp.market.refresh_catalog)}
+                    </Button>
+                  ) : null}
+                </div>
+              ) : null}
+              {catalogError ? (
+                <div role="alert" className="space-y-2 text-caption">
+                  <p>{t(($) => $.mcp.market.catalog_unavailable)}</p>
+                  {onRefresh ? (
+                    <Button size="sm" variant="outline" disabled={busy} onClick={async () => { await onRefresh(); setCatalogFailure(false); }}>
+                      {t(($) => $.mcp.market.refresh_catalog)}
+                    </Button>
+                  ) : null}
+                </div>
+              ) : null}
+              {!servers ? (
+                <p role="alert" className="text-caption">
+                  {t(($) => $.mcp.market.unknown_library)}
+                </p>
+              ) : null}
+              {canManage ? (
+                <form
+                  id={`${id}-form`}
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    void save();
+                  }}
+                  className="space-y-2"
+                >
+                  <Label htmlFor={`${id}-name`}>
+                    {t(($) => $.mcp.market.configuration_name)}
+                  </Label>
+                  <Input
+                    ref={inputRef}
+                    id={`${id}-name`}
+                    value={name}
+                    onChange={(event) => {
+                      setName(event.target.value);
+                      setError("");
+                    }}
+                    aria-invalid={error && !inputErrorKey ? true : undefined}
+                    aria-required="true"
+                    aria-describedby={`${id}-name-hint${error ? ` ${id}-error` : ""}`}
+                    disabled={busy}
+                    autoComplete="off"
+                  />
+                  <p
+                    id={`${id}-name-hint`}
+                    className="text-caption text-muted-foreground"
+                  >
+                    {t(($) => $.mcp.market.configuration_name_hint)}
+                  </p>
+                  <p className="text-caption leading-5 text-muted-foreground">
+                    {recipe
+                      ? t(($) => $.mcp.market.save_note)
+                      : t(($) => $.mcp.market.legacy_note)}
+                  </p>
+                  {inputs.map((input) => (
+                    <div key={input.key} className="space-y-2 pt-3">
+                      <Label htmlFor={`${id}-input-${input.key}`}>
+                        {input.label}
+                        {input.required ? (
+                          <span className="text-caption font-normal text-muted-foreground">
+                            {t(($) => $.mcp.market.required_field)}
+                          </span>
+                        ) : null}
+                      </Label>
+                      <Input
+                        ref={(element) => { templateInputRefs.current[input.key] = element; }}
+                        id={`${id}-input-${input.key}`}
+                        type={input.secret ? "password" : "text"}
+                        value={templateInputValue(templateInputs, input.key)}
+                        onChange={(event) => {
+                          setTemplateInputs((previous) => ({ ...previous, [input.key]: event.target.value }));
+                          setInputErrorKey(null);
+                          setError("");
+                        }}
+                        aria-required={input.required}
+                        aria-invalid={inputErrorKey === input.key ? true : undefined}
+                        aria-describedby={`${id}-input-${input.key}-hint${input.secret ? ` ${id}-input-${input.key}-secret` : ""}${inputErrorKey === input.key ? ` ${id}-error` : ""}`}
+                        disabled={busy}
+                        autoComplete="off"
+                        spellCheck={false}
+                        maxLength={8192}
+                      />
+                      <p id={`${id}-input-${input.key}-hint`} className="text-caption text-muted-foreground">
+                        {input.description}
+                      </p>
+                      {input.secret ? (
+                        <p id={`${id}-input-${input.key}-secret`} className="text-caption text-muted-foreground">
+                          {t(($) => $.mcp.market.secret_input_note)}
+                        </p>
+                      ) : null}
+                    </div>
+                  ))}
+                </form>
+              ) : (
+                <p className="text-caption text-muted-foreground">
+                  {t(($) => $.mcp.admin_only_note)}
+                </p>
+              )}
+              <McpConflictNotice name={name.trim()} context={agentContext} />
+            </>
+          ) : (
+            <>
+              <div className="shrink-0 space-y-2">
+                <p className="text-caption leading-5 text-muted-foreground">
+                  {t(($) => $.mcp.market.assignment_note)}
+                </p>
+                <McpConflictNotice name={saved.name} context={agentContext} />
+                {!agentContext && agents.isPending ? (
+                  <p role="status" className="text-caption text-muted-foreground">
+                    {t(($) => $.mcp.market.agents_loading)}
+                  </p>
+                ) : null}
+                {!agentContext && (agents.isError || malformedAgents) ? (
+                  <div role="alert" className="space-y-2">
+                    <p className="text-caption">
+                      {t(($) => $.mcp.market.agents_error)}
+                    </p>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={busy}
+                      onClick={() => void agents.refetch()}
+                    >
+                      {t(($) => $.mcp.market.retry)}
+                    </Button>
+                  </div>
+                ) : null}
+                {!agentContext &&
+                !agents.isPending &&
+                !agents.isError &&
+                !malformedAgents &&
+                choices.length === 0 ? (
+                  <p className="text-caption text-muted-foreground">
+                    {t(($) => $.mcp.market.agents_empty)}
+                  </p>
+                ) : null}
+                {failures.length > 0 ? (
+                  <p role="alert" className="text-caption">
+                    {t(($) => $.mcp.market.partial_failure)}
+                  </p>
+                ) : null}
+              </div>
+              {choices.length > 0 ? (
+                <McpAgentPicker
+                  agents={choices}
+                  selected={selected}
+                  succeeded={succeeded}
+                  failures={failures}
+                  disabled={selectionDisabled}
+                  showTools={!agentContext}
+                  onSelectionChange={changeSelection}
+                  onClearSelection={clearSelection}
+                  roleTemplates={roleTemplatesQuery.data}
+                  squadTemplates={squadTemplatesQuery.data}
+                  rolesReady={rolesReady}
+                  metadataPending={metadataPending}
+                  metadataError={metadataError}
+                  directoryReady={!!agentContext || (!agents.isPending && !agents.isError && !malformedAgents)}
+                  onRetryMetadata={retryMetadata}
+                />
+              ) : null}
+            </>
+          )}
+          {error ? (
+            <p
+              role="alert"
+              id={`${id}-error`}
+              className="shrink-0 text-caption text-destructive [overflow-wrap:anywhere]"
+            >
+              {error}
+            </p>
+          ) : null}
+        </div>
+        <DialogFooter
+          className="mx-0 mb-0 shrink-0 border-t bg-muted/30 px-5 py-4 sm:flex-wrap [&_[data-slot=button]]:h-auto [&_[data-slot=button]]:min-h-8 [&_[data-slot=button]]:whitespace-normal [&_[data-slot=button]]:py-1.5"
+          data-slot="mcp-setup-footer"
+        >
+          <Button variant="outline" disabled={busy} onClick={onClose}>
+            {saved
+              ? succeeded.size
+                ? t(($) => $.mcp.market.done)
+                : t(($) => $.mcp.market.skip)
+              : t(($) => $.mcp.cancel)}
+          </Button>
+          {!saved && template && canManage ? (
+            <Button
+              type="submit"
+              form={`${id}-form`}
+              disabled={busy || !available || !!failure || !actionable || !servers}
+            >
+              {busy ? (
+                <Loader2
+                  className="size-4 animate-spin motion-reduce:animate-none"
+                  aria-hidden="true"
+                />
+              ) : null}
+              {recipe || template.source !== undefined && template.source !== "builtin"
+                ? t(($) => $.mcp.market.save_continue)
+                : t(($) => $.mcp.market.custom)}
+            </Button>
+          ) : null}
+          {saved && pendingIds.some((agentId) => failedIds.has(agentId)) ? (
+            <Button
+              disabled={selectionDisabled}
+              onClick={() => void assignSelected(true)}
+            >
+              {busy ? <Loader2 className="size-4 animate-spin motion-reduce:animate-none" aria-hidden="true" /> : null}
+              {t(($) => $.mcp.market.retry_failed)}
+            </Button>
+          ) : null}
+          {saved ? (
+            <Button
+              disabled={selectionDisabled || !pendingIds.some((agentId) => !failedIds.has(agentId))}
+              onClick={() => void assignSelected(false)}
+            >
+              {busy ? (
+                <Loader2
+                  className="size-4 animate-spin motion-reduce:animate-none"
+                  aria-hidden="true"
+                />
+              ) : null}
+              {t(($) => $.mcp.market.assign_selected)}
+            </Button>
+          ) : null}
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}

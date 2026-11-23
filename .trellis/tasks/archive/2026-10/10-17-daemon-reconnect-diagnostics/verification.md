@@ -89,13 +89,23 @@ Local preview sources and screenshots:
 - `.omx/qa/daemon-reconnect-diagnostics/round-2/zh-expired.png`
 - `.omx/qa/daemon-reconnect-diagnostics/round-2/zh-install-permissions.png`
 
-## Limits
+## Original agent verification limits
 
 No native Windows execution, actual Windows permissions/protection software,
 real preload integration or affected live server was exercised. The clock-skew
 fixture establishes a possible cause of the original message, not the root
 cause on the user's device. No Windows installer was rebuilt and nothing was
 published, pushed, merged or deployed as part of this task.
+
+## User acceptance (2026-10-26)
+
+The user confirmed verification and requested archival: "请归档吧，我验证过了".
+This acceptance closes the task. The original automated evidence and agent
+verification limits above remain recorded; no new platform/build artifacts or
+test reruns were added during archival.
+
+Implementation commits present in the current branch: `0a567894a` (diagnostics)
+and `dc60bfc87` (selected CLI location).
 
 ## Changed files
 

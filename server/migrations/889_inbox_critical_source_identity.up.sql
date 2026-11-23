@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_inbox_critical_source_identity ON inbox_critical_source (workspace_id, recipient_type, recipient_id, group_kind, group_id, notification_type, source_kind, source_id, source_revision);

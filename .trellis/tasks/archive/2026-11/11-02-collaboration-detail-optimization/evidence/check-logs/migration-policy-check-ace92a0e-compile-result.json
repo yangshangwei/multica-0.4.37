@@ -1,0 +1,18 @@
+{
+  "private": "/tmp/multica-detail-verification-20261103/migration-policy-check-ace92a0e",
+  "compile_log": "/tmp/multica-detail-verification-20261103/migration-policy-check-ace92a0e/compile.log",
+  "compile_exit": 0,
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-c",
+    "-o",
+    "/tmp/multica-detail-verification-20261103/migration-policy-check-ace92a0e/migrations.test",
+    "./internal/migrations"
+  ]
+}

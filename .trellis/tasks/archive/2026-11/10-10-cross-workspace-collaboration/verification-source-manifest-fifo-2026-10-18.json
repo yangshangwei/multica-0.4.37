@@ -1,0 +1,432 @@
+{
+  "baseline_head": "6356cd9cfc6fc8d7cdf687c06a8f3755f48cf164",
+  "scope": "channel FIFO, consumed input history, pending configuration movement, durable config invalidation and v4 reads",
+  "files": [
+    {
+      "path": ".trellis/spec/core/frontend/index.md",
+      "sha256": "cc9d66b11b57e83586de824b562334029e3de5cddc5ed85eb7c010b9586484de",
+      "bytes": 2281
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-targets.md",
+      "sha256": "3e6f45717eb9c7f6b6a1a4bab5610fd2be455bfbcd7b1e26d15376e2d854c01d",
+      "bytes": 24636
+    },
+    {
+      "path": ".trellis/spec/server/index.md",
+      "sha256": "fcc50c58d05a212b8c375422778c8a512f9bcc680be57d982ef934bf0e593074",
+      "bytes": 2462
+    },
+    {
+      "path": "packages/core/api/collaboration.test.ts",
+      "sha256": "11a87f6d006c6e75a9dea76eade35ee785f2b74645c2e4fc3463b7dfa387e17f",
+      "bytes": 10457
+    },
+    {
+      "path": "packages/core/collaboration/execution-fifo-switch.test.ts",
+      "sha256": "62c0bde8105473248997b806ea6e9a2cb4df3821b94531e32081d0e052a9daa3",
+      "bytes": 19611
+    },
+    {
+      "path": "packages/core/collaboration/execution-schema.test.ts",
+      "sha256": "feffd5db71200442ceb97876aff1cac1f7a478e6694fc3e09b10599bc793c57e",
+      "bytes": 22159
+    },
+    {
+      "path": "packages/core/collaboration/execution-schema.ts",
+      "sha256": "1c93f552c71ac7039f4583ddc03e6938c9c0091f91519db7a3ed2e6b60ed2200",
+      "bytes": 13921
+    },
+    {
+      "path": "packages/core/collaboration/test-fixtures.ts",
+      "sha256": "9658d110f6069ab82d98c96987907137bf89dbe5cba9e21776a2ff4099cd5d93",
+      "bytes": 9396
+    },
+    {
+      "path": "server/cmd/migrate/main.go",
+      "sha256": "8f589834bfb9811dad0ff4f7eb716dc725cc58daba5846045836b7b376b6dc82",
+      "bytes": 63701
+    },
+    {
+      "path": "server/cmd/server/collaboration_execution_routes_test.go",
+      "sha256": "0cc4315ce4178126896422a12fdbb687db3916eac1913af1950cfc7c97525b18",
+      "bytes": 5651
+    },
+    {
+      "path": "server/cmd/server/collaboration_lifecycle_routes_test.go",
+      "sha256": "cefe2ddf0d4034a9dacb758c2ed11141e0b1f42c587909b0fca934328952abdd",
+      "bytes": 8336
+    },
+    {
+      "path": "server/cmd/server/collaboration_single_agent_routes_test.go",
+      "sha256": "b36b3fe2d2ebe886add885fbc7b50a4e1c75410fb1dfb9db6518b49691878847",
+      "bytes": 38613
+    },
+    {
+      "path": "server/cmd/server/main.go",
+      "sha256": "def633ee00ceaf9e89d5a7a38b69c6df41342de63d71c3e66a85956b73c160f2",
+      "bytes": 37085
+    },
+    {
+      "path": "server/cmd/server/main_test.go",
+      "sha256": "5a5360b0ee503f51b854130e10d7b53a31462b9a070f08690a645e030606ffa5",
+      "bytes": 19102
+    },
+    {
+      "path": "server/internal/handler/agent.go",
+      "sha256": "904162b506aea3e945d9a5b99b77c4a4fd9e7e83b5fd9873389521f0f1d1c2cd",
+      "bytes": 136391
+    },
+    {
+      "path": "server/internal/handler/agent_access_test.go",
+      "sha256": "ca5f1a39a2e5bfdc380ab75ec280411efb1b4bd6813fe8a60816a65171ccc612",
+      "bytes": 29483
+    },
+    {
+      "path": "server/internal/handler/agent_permission.go",
+      "sha256": "af1cd76279b974352bd2f9e21fcc562987e15233f58b3d3532022981ce692638",
+      "bytes": 11526
+    },
+    {
+      "path": "server/internal/handler/collaboration_config_invalidation_test.go",
+      "sha256": "412a0a12dbe9c34b66379a24a305be4d59493762fecba4547a4ef326c7b2c0a0",
+      "bytes": 10995
+    },
+    {
+      "path": "server/internal/handler/collaboration_execution_test.go",
+      "sha256": "fe2701a54fab5efcaa48b05967607697cc6196d8d4eac22aa489da21d2714a9e",
+      "bytes": 21044
+    },
+    {
+      "path": "server/internal/handler/handler.go",
+      "sha256": "8ad1eca3039bd0951399ae0adb94e767e489afa864c3bdf866fc66014392ec19",
+      "bytes": 58367
+    },
+    {
+      "path": "server/internal/migrations/collaboration_channel_inputs_test.go",
+      "sha256": "3579f5453e374f48bd13bcebaee880c84c9d38d53cc55f1a2a712940f8998cac",
+      "bytes": 13534
+    },
+    {
+      "path": "server/internal/migrations/collaboration_config_invalidation_test.go",
+      "sha256": "175509629b71ce698ea63fbcd60a849c2507288dd68be33c4d016e0310f082cb",
+      "bytes": 10940
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "sha256": "0145cca72bccaac558832fb3f58eed1f60d665d18e1f8c57179db3c998bdb3aa",
+      "bytes": 26868
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "sha256": "eeb40ac54a8751e6783f3065d98aa67025c4ed780631c4fcf22b8d1aa9c6814d",
+      "bytes": 1546
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "sha256": "b1fd6592308b9d53cc7fd29703c4ce26865c5691ea42fa5356e3c48f60f51a3e",
+      "bytes": 31390
+    },
+    {
+      "path": "server/internal/service/collaboration_account_reconciliation.go",
+      "sha256": "cc5cbd2c371c037192c502c1fbdb772331d80db3605a1cfa05278a62fd5afa46",
+      "bytes": 9941
+    },
+    {
+      "path": "server/internal/service/collaboration_account_reconciliation_test.go",
+      "sha256": "47540f2623cc3652e9e310f733e2f08e7954379e0dddd8739079d16782775cd5",
+      "bytes": 32717
+    },
+    {
+      "path": "server/internal/service/collaboration_authority.go",
+      "sha256": "c1b9684adc512dcfa99b0c25c6f819708b45ade163e03e6df27b98e6092f3d46",
+      "bytes": 33969
+    },
+    {
+      "path": "server/internal/service/collaboration_batches.go",
+      "sha256": "9d0dc865465a58c58f320079157082ce379be1306806a1c368c2b8e92d99c1b4",
+      "bytes": 16610
+    },
+    {
+      "path": "server/internal/service/collaboration_batches_test.go",
+      "sha256": "ece847099cc9c1fb38139177d4f25dfee9389e0cd458a4eca81519aeb421dcb8",
+      "bytes": 7980
+    },
+    {
+      "path": "server/internal/service/collaboration_config_invalidation.go",
+      "sha256": "3ea2ade388842da03aa0386891ecf33e8689f192ec5a719ab49dcd75c5e3be0e",
+      "bytes": 10675
+    },
+    {
+      "path": "server/internal/service/collaboration_config_invalidation_test.go",
+      "sha256": "7ab40ade4fd8a15407b9805b5704d2a49e0f5d7973ab06eff114ac758e4cb452",
+      "bytes": 22340
+    },
+    {
+      "path": "server/internal/service/collaboration_control_test.go",
+      "sha256": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+      "bytes": 19476
+    },
+    {
+      "path": "server/internal/service/collaboration_execution_fixture_test.go",
+      "sha256": "3ea56f2989fcfaf6e7391b1dafaf4887ba92983f1d9621ab094e77693a7b5bf2",
+      "bytes": 10940
+    },
+    {
+      "path": "server/internal/service/collaboration_execution_history_test.go",
+      "sha256": "f51c702a1dd157a45b96d28d5cbc3dc43dff2352ccd895858c5eec676366ee17",
+      "bytes": 16893
+    },
+    {
+      "path": "server/internal/service/collaboration_execution_view.go",
+      "sha256": "a376b49f4c59eacebb4e30b1d1ed531c20363860f8323778e1b022fb87409b6a",
+      "bytes": 26456
+    },
+    {
+      "path": "server/internal/service/collaboration_execution_view_test.go",
+      "sha256": "bdacf192a90205af168665f7b0f44ad6ece43275064df6a3eebe64b5e9b2c87b",
+      "bytes": 13930
+    },
+    {
+      "path": "server/internal/service/collaboration_fifo_review_test.go",
+      "sha256": "2a7839eae009590552d578c4b05ff7e9503e58b696146e9ade70631d44648e1c",
+      "bytes": 2850
+    },
+    {
+      "path": "server/internal/service/collaboration_fifo_test.go",
+      "sha256": "ff88eb1bf77082bde2125dfd92c5c3ad680e607bb6f76042e47810f35059e3b7",
+      "bytes": 30177
+    },
+    {
+      "path": "server/internal/service/collaboration_groups.go",
+      "sha256": "24655273698f940c15f57b10f562550315010588dc11c31cacf148ff2b8e197a",
+      "bytes": 11094
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle_test.go",
+      "sha256": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+      "bytes": 33908
+    },
+    {
+      "path": "server/internal/service/collaboration_queue_test.go",
+      "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+      "bytes": 26904
+    },
+    {
+      "path": "server/internal/service/collaboration_resource_invalidation.go",
+      "sha256": "9efde388b948820ac794148c4bdb17c150edfaf5048b42fa5e4d82e5f95cf13d",
+      "bytes": 9238
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "sha256": "2ce8aa29c9e329ea45c59a14ed797da73cc45dfb383aa35322570814ce70b2de",
+      "bytes": 25201
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "sha256": "1707909c7ef3df11f011593d97cecc609f931a21474062766d2e301640abed8b",
+      "bytes": 20738
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_test.go",
+      "sha256": "565e1be0f68a354505692a40e3bd387135f79619a807e00e8a8536f388928b51",
+      "bytes": 17089
+    },
+    {
+      "path": "server/internal/service/collaboration_targets_test.go",
+      "sha256": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef",
+      "bytes": 19904
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow_test.go",
+      "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+      "bytes": 38336
+    },
+    {
+      "path": "server/migrations/699_collaboration_channel_inputs.down.sql",
+      "sha256": "8e646d33aee65cf57531ec4daca337bf93bd688a5b9dfa534b59bf47cf2d714c",
+      "bytes": 301
+    },
+    {
+      "path": "server/migrations/699_collaboration_channel_inputs.up.sql",
+      "sha256": "ef2cbc2b96d1384b999436e68afc6945b8a97acfa8dcc5cb9eebc202a25c8dbe",
+      "bytes": 13267
+    },
+    {
+      "path": "server/migrations/700_collaboration_command_channel_sequence.down.sql",
+      "sha256": "a8ee5f0267e32f006e025d554cc84fb9a212ed3cc25de8bb37d9239b69d5fce7",
+      "bytes": 98
+    },
+    {
+      "path": "server/migrations/700_collaboration_command_channel_sequence.up.sql",
+      "sha256": "f16b75a8f7fb7e3cd5715111b273d0cd7447ebd92f29a8fb2a570ada3b0a8c2f",
+      "bytes": 132
+    },
+    {
+      "path": "server/migrations/701_collaboration_command_channel_waiting.down.sql",
+      "sha256": "174c5d778f5349130568772321bdb1193b371690c283126e1e641e04e0b88a86",
+      "bytes": 64
+    },
+    {
+      "path": "server/migrations/701_collaboration_command_channel_waiting.up.sql",
+      "sha256": "fcab6a17e87f433c2b070c44aa0c7143b239774f1a2c9e9ad2639384316a3cb0",
+      "bytes": 130
+    },
+    {
+      "path": "server/migrations/702_collaboration_group_input_identity.down.sql",
+      "sha256": "186ffaa883d07cae17a1cd49ad0aaf53d16e48f161811313274c83229dc25f89",
+      "bytes": 99
+    },
+    {
+      "path": "server/migrations/702_collaboration_group_input_identity.up.sql",
+      "sha256": "c5e1638d250dad04f3466ba87e3710fc6b4414c9ea9cf791b45eb8fe8ddebb04",
+      "bytes": 137
+    },
+    {
+      "path": "server/migrations/703_collaboration_group_input_command.down.sql",
+      "sha256": "2b0b37b447c43a63271df0819a6d79ad01b1862900553f19bbbad4abb8d5d0a5",
+      "bytes": 60
+    },
+    {
+      "path": "server/migrations/703_collaboration_group_input_command.up.sql",
+      "sha256": "7496d4d9aef8acdeaf103191c7ca7e51d8d617a2e2d04d1c3bcc304b9d377bd4",
+      "bytes": 129
+    },
+    {
+      "path": "server/migrations/704_collaboration_config_invalidation.down.sql",
+      "sha256": "84c10152646952aecb39bdc769e759d9ccac3cbbd6acc787eaf38df06f90e0d6",
+      "bytes": 2818
+    },
+    {
+      "path": "server/migrations/704_collaboration_config_invalidation.up.sql",
+      "sha256": "4f726a781212280c4537e79be83c3c1e6751557dffe18f1117fd1eafe3c6bdfa",
+      "bytes": 9783
+    },
+    {
+      "path": "server/migrations/705_collaboration_config_invalidation_id.down.sql",
+      "sha256": "76a8239747591c58a1a1df0973db0189e464620235d939b7bf39bc71bd4ec548",
+      "bytes": 351
+    },
+    {
+      "path": "server/migrations/705_collaboration_config_invalidation_id.up.sql",
+      "sha256": "a2effa3069fef29f5354b32d105e621d28941f6c6c615bb0c6791d36d3f968b8",
+      "bytes": 130
+    },
+    {
+      "path": "server/migrations/706_collaboration_config_invalidation_resource.down.sql",
+      "sha256": "5de3ca8dceba8b937d4bd1f49c7781c49089520f64304900e14996bb87640591",
+      "bytes": 357
+    },
+    {
+      "path": "server/migrations/706_collaboration_config_invalidation_resource.up.sql",
+      "sha256": "cffe5462403581893428f86e9aeb56203343b8ab2b94698ffd704b9ed7b2e69d",
+      "bytes": 199
+    },
+    {
+      "path": "server/migrations/707_collaboration_config_invalidation_poll.down.sql",
+      "sha256": "ca5179002514dc9b2f2104c7b1fb5d6fb98637da32bed8bcaa3d70f202ab7345",
+      "bytes": 355
+    },
+    {
+      "path": "server/migrations/707_collaboration_config_invalidation_poll.up.sql",
+      "sha256": "6e86c2b2418dd0de7baf45aee069ae4ed6b2e43bfe95e56cc34998b4dfbcebb7",
+      "bytes": 196
+    },
+    {
+      "path": "server/migrations/708_collaboration_group_command_history.down.sql",
+      "sha256": "86f2e879593283eda0d2f0b64f77fbab5467a9b89677533d6a744ce49b2543be",
+      "bytes": 62
+    },
+    {
+      "path": "server/migrations/708_collaboration_group_command_history.up.sql",
+      "sha256": "149fff1a8cd55b0bc4da9f7b10837547ac3ac0ff3f74311182190d4f104a0baf",
+      "bytes": 126
+    },
+    {
+      "path": "server/pkg/db/generated/agent_invocation_target.sql.go",
+      "sha256": "ce8f5b1dccb2f5263639b72899da669df55ac2316f87a142b85dec2e7e3cb398",
+      "bytes": 6122
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration.sql.go",
+      "sha256": "eaaff99159ea54e6fc4c4142b8b6febfae5ccb240e9e5528f84bf40a8a4287ef",
+      "bytes": 44753
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_authority.sql.go",
+      "sha256": "b73d3e147be70a2ddc69500b2fcee6207bd8c2576345f6f14012db199b7fa9d7",
+      "bytes": 20045
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_batches.sql.go",
+      "sha256": "dcc033cf03c67a1c5f376744aed5012fab781a327735a70596d1e3af528c1125",
+      "bytes": 25987
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_config_invalidation.sql.go",
+      "sha256": "bbe2b1c772e89d60730265d133f176422696dec451c2a1695768e0b2f8c51535",
+      "bytes": 7159
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_resource_invalidation.sql.go",
+      "sha256": "016effa66685e5525ec0aeadf9d52aadfe2c442cb9c6201e6a73c567e134a14e",
+      "bytes": 16371
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_runtime.sql.go",
+      "sha256": "f9f55dc909def81126b5b7287459b5efa217e7fad826b81c541b3e60532e35c7",
+      "bytes": 47354
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_targets.sql.go",
+      "sha256": "5c90deb98d1c10d308c03af540a712a959c25e092f99d7d6a01782b078c8fe19",
+      "bytes": 30020
+    },
+    {
+      "path": "server/pkg/db/generated/models.go",
+      "sha256": "76550e6d35fad805f35ea5f0681b6518c9ab9db96c861a5f63bb99fb35938c48",
+      "bytes": 127894
+    },
+    {
+      "path": "server/pkg/db/generated/skill.sql.go",
+      "sha256": "3517c44487d062b4941ee90dda729f1d47a86b15a4da9dd0576df4937583c633",
+      "bytes": 21767
+    },
+    {
+      "path": "server/pkg/db/queries/agent_invocation_target.sql",
+      "sha256": "ec9b32ff00063c616d15c91ecca2bab8b4a64838c2966525447194955e09a59d",
+      "bytes": 3174
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration.sql",
+      "sha256": "3e2a3adf000953872e947ff21dfe7fd746842a8c0b9219dba8a4626aa2c0f628",
+      "bytes": 12679
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_batches.sql",
+      "sha256": "d2f4d3624530d4abd7ccd8421b3384c28bf3b6479872c65dc1696d8d0b68d033",
+      "bytes": 6129
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_config_invalidation.sql",
+      "sha256": "a27703e3f28cdc743b20ed41ad25d4d83a9c71fc1e5c14ffcbdc3a49e2b81188",
+      "bytes": 4982
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_runtime.sql",
+      "sha256": "8d64e21ed5ddd8d1c555925460d8a40e11bc323c538e00ea962806f89c8c6b4f",
+      "bytes": 11227
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_targets.sql",
+      "sha256": "1dea9f1af9dadeb3901e3d86db92741a1859d9ac7aacfa54036d1ee2cf93d413",
+      "bytes": 6240
+    },
+    {
+      "path": "server/pkg/db/queries/skill.sql",
+      "sha256": "60acfd677647f90d6cbddbfb3e275b3e7d56c8c12eff9560c5026b0dd7835122",
+      "bytes": 6834
+    }
+  ],
+  "implementation_commit": "33f584ae14f8eae77a96381e5c273ed3fecac497"
+}

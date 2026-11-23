@@ -1,0 +1,28 @@
+{
+  "state": "running",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "started_at": "2026-11-04T08:00:01.025992+00:00",
+  "command": [
+    "/bin/bash",
+    "-c",
+    "set -euo pipefail\nsource scripts/dev-env.sh\nload_manifest \"$1\"\nbind_paths\nload_env_file \"$ENV_FILE\" \"$DIR\"\nexport PORT=\"$BACKEND_PORT\" FRONTEND_PORT DATABASE_URL POSTGRES_DB=\"$DB_NAME\"\nWEB_MODE=production\nstart_api\nstart_web\n",
+    "_",
+    "knowledge-v16-on-a3c9-01"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "shell_code_sha256": "625a994d62e5b352cf8215372a7fd14783b4bd718b287cf21ec1d7793c55202c",
+  "source_environment_sha256": "f69987226394d14629f0ab7e3186b6a6e08b98258fe972ecdb392351c562bd00",
+  "private_environment_sha256": "94b121551a43f1ad47e883000d7aa11919b9e56076347190b968bffbaa324d82",
+  "registry_manifest_sha256": "9e126fa9a2bf4685e944a8f6dff0a747f7d500e46b493ee165b6bd0f865cd273",
+  "database": "multica_ccg2_v16_on_a3c9",
+  "origins": {
+    "api": "http://127.0.0.1:18295",
+    "web": "http://127.0.0.1:13215",
+    "renderer": "http://127.0.0.1:49338"
+  },
+  "knowledge_flag": "true_in_isolated_fake_acceptance_only",
+  "allocation_or_migration_called": false,
+  "OFF_resources_released": true,
+  "ON_probe_started": false,
+  "real_Provider_calls": 0
+}

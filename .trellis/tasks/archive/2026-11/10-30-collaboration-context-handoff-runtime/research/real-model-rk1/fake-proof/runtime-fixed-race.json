@@ -1,0 +1,42 @@
+{
+  "source_sha": "4b508179f3e6197f170a99acd4df42d567e7ba1b",
+  "server_tree": "3c4dfefaa430ac3f9b044a0788a7fe052036f418",
+  "working_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "database": "multica_rk1_runtime_fixed_20261102_0022",
+  "identity": "multica_rk1_runtime_fixed_20261102_0022|760_collaboration_knowledge_hint_pending",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./cmd/server",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=40m",
+    "-race",
+    "-tags=agentintegration",
+    "-run",
+    "^(TestRK1FakeProof|TestRK1ProviderWithoutMarkerCannotEnterTestMain|TestRK1RealProvider|TestRK1Trace.*)$"
+  ],
+  "state": "complete",
+  "started_at": "2026-11-01T16:24:42.669786+00:00",
+  "real_provider_allowed": false,
+  "exit_code": 1,
+  "finished_at": "2026-11-01T16:29:08.054269+00:00",
+  "counts": {
+    "run": 45,
+    "pass": 42,
+    "fail": 2,
+    "skip": 1
+  },
+  "failures": [
+    "TestRK1FakeProof/E0a",
+    "TestRK1FakeProof",
+    "github.com/multica-ai/multica/server/cmd/server"
+  ],
+  "log_sha256": "20fd5e9859299e94669b2a13db5d39aa029828e4d5f04013c451e61bf951fae0"
+}

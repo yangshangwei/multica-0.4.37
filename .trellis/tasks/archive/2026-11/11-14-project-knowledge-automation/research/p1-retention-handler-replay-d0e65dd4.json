@@ -1,0 +1,61 @@
+{
+  "run_id": "p1-retention-handler-replay-d0e65dd4",
+  "database": "mca_knowledge_handler_93fd364b9f36",
+  "package": "./internal/handler",
+  "test_pattern": "^Test(ProjectDeletionPreservesKnowledgeAutomationHistory|WorkspaceDeletion(RemovesKnowledgePolicy|ManifestPreservesKnowledgeHistory))$",
+  "run_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p1-retention-handler-replay-d0e65dd4",
+  "state": "complete",
+  "cluster_before": {
+    "database": "postgres",
+    "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": 100,
+    "connections": 29
+  },
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "source_sha256_before": "eadbc3e7e09ca43b5e2425fd3f12ff1782da90a85567d4e2d6d0b20a62c5f59e",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "created_at": "2026-11-14T11:57:09.269305+00:00",
+  "real_model_credentials_inherited": false,
+  "agent_cli_guard": true,
+  "launcher_sha256": "8b0c310e77af0f694d187306332e208a2910da1e3e95cbb045d4ee4f5ae68446",
+  "migration_exit": 0,
+  "migration_ledger": "847:859_project_knowledge_automation_validity_source",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-timeout=15m",
+    "./internal/handler",
+    "-run",
+    "^Test(ProjectDeletionPreservesKnowledgeAutomationHistory|WorkspaceDeletion(RemovesKnowledgePolicy|ManifestPreservesKnowledgeHistory))$"
+  ],
+  "test_exit": 0,
+  "tests": {
+    "run": [
+      "TestWorkspaceDeletionManifestPreservesKnowledgeHistory",
+      "TestProjectDeletionPreservesKnowledgeAutomationHistory",
+      "TestWorkspaceDeletionRemovesKnowledgePolicy"
+    ],
+    "pass": [
+      "TestWorkspaceDeletionManifestPreservesKnowledgeHistory",
+      "TestProjectDeletionPreservesKnowledgeAutomationHistory",
+      "TestWorkspaceDeletionRemovesKnowledgePolicy"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "source_sha256_after": "eadbc3e7e09ca43b5e2425fd3f12ff1782da90a85567d4e2d6d0b20a62c5f59e",
+  "connections_after": 0,
+  "finished_at": "2026-11-14T11:57:31.441396+00:00",
+  "source_stable": true
+}

@@ -318,7 +318,7 @@ func TestDefaultTimezoneInvalidatesLegacyUTCSnapshot(t *testing.T) {
 }
 
 func TestBatchScopeCountsMatchHealthClassification(t *testing.T) {
-	categories := statusCategories([]Status{{Key: "delivered", Category: "done"}, {Key: "abandoned", Category: "cancelled"}})
+	categories := StatusCategories([]Status{{Key: "delivered", Category: "done"}, {Key: "abandoned", Category: "cancelled"}})
 	counts := countScope(map[string]int64{"delivered": 6, "abandoned": 2, "todo": 1, "future": 1}, categories)
 	checkCount(t, "total", counts.Total, 10)
 	checkCount(t, "done", counts.Completed, 6)

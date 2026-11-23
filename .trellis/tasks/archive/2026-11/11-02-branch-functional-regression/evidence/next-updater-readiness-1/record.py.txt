@@ -1,0 +1,123 @@
+import ast
+import base64
+import datetime
+import hashlib
+import json
+import plistlib
+import subprocess
+import zipfile
+from pathlib import Path
+
+ROOT = Path('/Volumes/artisan/code/2026/multica-0.4.37')
+TASK = ROOT / '.trellis/tasks/11-02-branch-functional-regression'
+PRIVATE = Path(__file__).resolve().parent
+RUN = TASK / 'evidence/next-updater-readiness-1'
+CANDIDATE = '7af9ab9905c98c77bb091223ebe687c639475bb4'
+VERSION = '0.6.8-rc.20261102'
+RUN.mkdir(exist_ok=False)
+now = lambda: datetime.datetime.now(datetime.timezone.utc).isoformat()
+sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+record = {'started_at': now(), 'state': 'preparing', 'candidate': CANDIDATE,
+          'candidate_version': VERSION, 'scope': 'Offline source-faithful updater readiness only',
+          'reviewer': 'Native implement child self-check; coordinator and independent review separate',
+          'commands': [], 'application_launches': 0, 'updater_runs': 0, 'network_calls': 0,
+          'services_started': 0, 'ports_created': 0, 'containers_started': 0, 'mounts_created': 0,
+          'protocol_mutations': 0, 'database_connections': 0, 'account_accesses': 0,
+          'commercial_calls': 0, 'remote_dispatches': 0, 'product_changes': 0, 'dependency_changes': 0}
+
+def save():
+    (RUN / 'run.json').write_text(json.dumps(record, indent=2) + '\n')
+
+def command(name, args, expected=0):
+    started = now()
+    result = subprocess.run(args, cwd=ROOT, capture_output=True, timeout=55)
+    for stream in ['stdout', 'stderr']:
+        (RUN / (name + '.' + stream)).write_bytes(getattr(result, stream))
+    record['commands'].append({'name': name, 'command': args, 'started_at': started,
+                              'finished_at': now(), 'exit_code': result.returncode,
+                              'stdout_sha256': hashlib.sha256(result.stdout).hexdigest(),
+                              'stderr_sha256': hashlib.sha256(result.stderr).hexdigest()})
+    save()
+    assert result.returncode == expected, f'{name} failed: {result.returncode}'
+    return result
+
+save()
+try:
+    observed = command('candidate-head', ['git', 'rev-parse', 'HEAD']).stdout.decode().strip()
+    assert observed == CANDIDATE
+    before_diff = command('source-diff', ['git', 'diff', '--', 'server', 'apps', 'packages']).stdout
+    assert hashlib.sha256(before_diff).hexdigest() == 'f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe'
+    record['source_diff_sha256'] = hashlib.sha256(before_diff).hexdigest()
+    record['frozen_p95_sha256'] = sha(ROOT / 'server/internal/handler/iteration_i1_p95_test.go')
+    assert record['frozen_p95_sha256'] == 'fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef'
+    pins = json.loads((TASK / 'research/reusable-package-pins.json').read_text())
+    old = json.loads((TASK / 'evidence/next-mac-upgrade-1/run.json').read_text())['artifacts']['baseline']
+    app = Path(pins['mac_app'])
+    distribution = app.parent.parent
+    metadata = distribution / 'latest-mac.yml'
+    (RUN / 'latest-mac.yml').write_bytes(metadata.read_bytes())
+    (RUN / 'candidate-app-update.yml').write_bytes((app / 'Contents/Resources/app-update.yml').read_bytes())
+    baseline_asar = Path(old['asar_inspection_path'])
+    candidate_asar = Path(pins['mac']['Resources/app.asar']['path'])
+    record['payload_identity'] = {'baseline_asar_sha256': sha(baseline_asar), 'candidate_asar_sha256': sha(candidate_asar)}
+    assert record['payload_identity']['baseline_asar_sha256'] == old['asar_sha256']
+    assert record['payload_identity']['candidate_asar_sha256'] == pins['mac']['Resources/app.asar']['sha256']
+    artifacts = []
+    expected_sha256 = {'zip': 'b50a00fa6fc44ca612a834aa8fd1c638f91431b87d5b6bb47abbd479433183d9',
+                       'dmg': 'bd82fe6ddc6b65fce891f078d64326d91742d951f310b67589eb654bdaceabf6'}
+    for extension in ['zip', 'dmg']:
+        path = distribution / f'multica-desktop-{VERSION}-mac-arm64.{extension}'
+        sha256, sha512, size = hashlib.sha256(), hashlib.sha512(), 0
+        with path.open('rb') as source:
+            while chunk := source.read(4 * 1024 * 1024):
+                sha256.update(chunk); sha512.update(chunk); size += len(chunk)
+        observed_hash = sha256.hexdigest()
+        assert observed_hash == expected_sha256[extension]
+        artifacts.append({'path': str(path), 'name': path.name, 'bytes': size,
+                          'sha256': observed_hash, 'sha512': base64.b64encode(sha512.digest()).decode(),
+                          'role': 'Fixed bytes for offline metadata preparation, not installation acceptance'})
+    baseline_zip = Path(old['zip'])
+    with zipfile.ZipFile(baseline_zip) as archive:
+        info = plistlib.loads(archive.read('Multica.app/Contents/Info.plist'))
+        config = archive.read('Multica.app/Contents/Resources/app-update.yml')
+        (RUN / 'baseline-app-update.yml').write_bytes(config)
+        record['baseline_bundle_info'] = {key: info.get(key) for key in ['CFBundleIdentifier', 'CFBundleShortVersionString']}
+    record['baseline_zip'] = {'path': str(baseline_zip), 'sha256': sha(baseline_zip), 'version': info['CFBundleShortVersionString'],
+                              'provenance_limit': old['bundle']['CFBundleShortVersionString'] + '; exact dirty ZIP, source diff unreconstructed'}
+    assert record['baseline_zip']['sha256'] == old['zip_sha256']
+    (RUN / 'artifact-fingerprints.json').write_text(json.dumps(artifacts, indent=2) + '\n')
+    for name in ['record.py', 'validate.mjs']:
+        (RUN / (name + '.txt')).write_bytes((PRIVATE / name).read_bytes())
+    ast.parse((PRIVATE / 'record.py').read_text())
+    command('node-version', ['node', '--version'])
+    validation = command('offline-validation', ['node', str(PRIVATE / 'validate.mjs'), str(ROOT), str(RUN),
+                                               str(metadata), str(baseline_asar), str(candidate_asar)])
+    facts = json.loads(validation.stdout)
+    (RUN / 'offline-validation.json').write_text(json.dumps(facts, indent=2) + '\n')
+    source_names = ['apps/desktop/src/main/updater.ts', 'apps/desktop/src/main/updater-preferences.ts',
+                    'apps/desktop/src/main/index.ts', 'apps/desktop/src/main/packaged-acceptance-home.ts',
+                    'apps/desktop/src/main/runtime-config-loader.ts', 'apps/desktop/src/shared/runtime-config.ts',
+                    'apps/desktop/src/preload/index.ts', 'apps/desktop/electron-builder.yml',
+                    'apps/desktop/scripts/update-artifacts.mjs', 'apps/desktop/scripts/configure-updates.mjs',
+                    'apps/desktop/scripts/windows-update-probe.mjs', 'apps/desktop/scripts/package.mjs']
+    record['source_sha256'] = {name: sha(ROOT / name) for name in source_names}
+    dependency = ROOT / 'node_modules/.pnpm/electron-updater@6.8.3/node_modules/electron-updater'
+    record['dependency_sha256'] = {name: sha(dependency / name) for name in ['package.json', 'out/AppUpdater.js',
+            'out/MacUpdater.js', 'out/AppAdapter.js', 'out/ElectronAppAdapter.js', 'out/providers/GenericProvider.js', 'out/providers/Provider.js']}
+    record['generated_metadata'] = {'source': str(metadata), 'filename': metadata.name, 'sha256': sha(metadata),
+                                    'template_exact_bytes': sha(metadata) == sha(RUN / metadata.name)}
+    record['offline_validation'] = facts
+    record['source_diff_unchanged'] = subprocess.check_output(['git', 'diff', '--', 'server', 'apps', 'packages'], cwd=ROOT) == before_diff
+    assert record['source_diff_unchanged']
+    command('git-diff-check', ['git', 'diff', '--check'])
+    record.update(state='complete', finished_at=now(), status='PASS_OFFLINE_READINESS_ONLY',
+                  mac_automatic_updater='NOT_RUN', mac_trust='BLOCKED_ADHOC_NO_NOTARIZATION',
+                  original_performance='2171ms>2000ms FAIL retained; not rerun',
+                  full_lint_typecheck_tests='NOT_RERUN: evidence/private preparation only, no product/dependency change')
+    save()
+    print(json.dumps({'state': record['state'], 'channel': facts['channel'], 'appFacts': facts['appFacts'],
+                      'network_calls': 0, 'updater_runs': 0}, indent=2))
+except Exception as error:
+    record.update(state='failed', finished_at=now(), error=str(error))
+    save()
+    raise

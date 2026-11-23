@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-22T00:15:23.442879+00:00",
+  "head": "238d4bb3974094ce55ab911c99cf2eedb845d278",
+  "active_task": "10-20-collaboration-gap-recovery",
+  "write_scope": [
+    "e2e/collaboration-offline-result-notifications.spec.ts",
+    "e2e/fixtures/collaboration-offline-result-notifications.ts",
+    "research/continuation-2026-10-22/notification-*"
+  ],
+  "gap": "AC83 offline external P6 information request/return/acceptance and proven completed/failed/stopped notifications; fresh Web/Electron login, read/archive/anchors and revoked-entry denial",
+  "approach": "Reuse existing public offline/password actor and cross-client actual Linux supervisor fixture. New narrow transport only drops an original outcome for genuine failed/incomplete result and temporarily holds sealed proofs. Canonical source inbox/subscription/outbox/replay/failure matrix stays service primary; no DB writes or product/shared fixture edits.",
+  "runtime_slot": "Coordinator owns listener/build/restarts and serial native slot; static/discovery first, native only after handoff.",
+  "baseline": [
+    {
+      "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+      "sha256": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-lifecycle-controls.ts",
+      "sha256": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-execution.ts",
+      "sha256": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-provider.go",
+      "sha256": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+    }
+  ],
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "new_task_or_replan": false
+}

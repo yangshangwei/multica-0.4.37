@@ -1,0 +1,2 @@
+SELECT collaboration_assert_knowledge_automation_empty();
+DROP INDEX IF EXISTS project_knowledge_policy_id_idx;

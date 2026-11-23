@@ -1,0 +1,74 @@
+[
+  {
+    "name": "invite-original-trace",
+    "state": "complete",
+    "started_at": "2026-11-02T17:32:55.621443+00:00",
+    "cwd": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102",
+    "command": [
+      "bash",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/workspace-access-branches.spec.ts",
+      "--grep",
+      "accepting an invitation joins exactly once",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--trace=on",
+      "--output=/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/invite-original-trace/artifacts"
+    ],
+    "code_changed": false,
+    "real_Provider_calls": 0,
+    "result_code": 0,
+    "finished_at": "2026-11-02T17:33:02.495891+00:00",
+    "log_sha256": "21130c8e3d99a75d3d9cd5308d14d415ba5289b1170a22e6a3af5ff6370dc062",
+    "stats": {
+      "startTime": "2026-11-02T17:32:56.968Z",
+      "duration": 5496.8279999999995,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "name": "memory-visible-history",
+    "state": "complete",
+    "started_at": "2026-11-02T17:33:02.496644+00:00",
+    "cwd": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+    "command": [
+      "bash",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-memory-web.spec.ts",
+      "--grep",
+      "shared context keeps concurrent edits",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--trace=on",
+      "--output=/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/memory-visible-history/artifacts"
+    ],
+    "code_changed": true,
+    "real_Provider_calls": 0,
+    "result_code": 0,
+    "finished_at": "2026-11-02T17:33:08.106603+00:00",
+    "log_sha256": "3c5515c3d6c2be844febd8cceeed82aa6e3a2f4d4fe46d0cdd23cbc469dc75e2",
+    "stats": {
+      "startTime": "2026-11-02T17:33:03.491Z",
+      "duration": 4589.329,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "id": "e2e-37-issue-optimistic-status",
+  "name": "e2e-37-issue-optimistic-status",
+  "title": "#37 普通事项详情即时显示状态更改",
+  "description": "对照 UUID 和可读编号，验证普通状态更新的即时显示、503 回滚和成功重试。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-18",
+  "completedAt": "2026-11-19",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "22e0b202f60255f5dc9030139454ec87e4606270",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-18-e2e-1118-followup",
+  "relatedFiles": [],
+  "notes": "#37 已通过单项和最终 Web14/14 联验、独立审查；同批 Electron 迭代回归6/6；仅此首批验收，已于本轮归档。",
+  "meta": {
+    "acceptance_status": "passed",
+    "acceptance_report": ".trellis/tasks/archive/2026-11/11-18-e2e-37-issue-optimistic-status/research/execution-20261119.md",
+    "acceptance_verified_at": "2026-11-18T18:02:37.555649+00:00",
+    "joint_verified_at": "2026-11-18T19:01:18.137236+00:00",
+    "joint_report": ".artifacts/e2e-fix-20261119-002358-fc3f5ec4/joint/verification-summary.json"
+  }
+}

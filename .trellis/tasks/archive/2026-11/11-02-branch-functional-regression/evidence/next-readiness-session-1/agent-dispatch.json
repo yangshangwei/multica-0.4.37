@@ -1,0 +1,109 @@
+{
+  "started_at": "2026-11-02T09:40:20.036547+00:00",
+  "active_task": ".trellis/tasks/11-02-branch-functional-regression",
+  "mode": "native Trellis bounded missing-assertion research and updater readiness",
+  "agents": [
+    {
+      "task_name": "/root/skipped_assertion_scope",
+      "role": "trellis-research",
+      "ownership": [
+        "research/skipped-assertion-scope-1.md",
+        "research/skipped-assertion-scope-1.json"
+      ],
+      "status": "complete_landed_research",
+      "result": "CLI known limitation retained; meaningful new Webhook500/404/429 diagnostic proposed and adopted"
+    },
+    {
+      "task_name": "/root/mac_updater_readiness",
+      "role": "trellis-implement",
+      "ownership": [
+        "evidence/next-updater-readiness-1",
+        "research/mac-updater-readiness-1.md/.json"
+      ],
+      "status": "complete_landed_offline_readiness",
+      "result": "5 commands; exactgeneratedfeed, SHA512/size, installedparser/channel/ZIP selection; runtime remainsNOT_RUN"
+    },
+    {
+      "task_name": "/root/webhook_lookup_diagnostic",
+      "role": "trellis-implement",
+      "ownership": [
+        "evidence/next-webhook-lookup-1",
+        "research/webhook-lookup-diagnostic-1.md/.json",
+        "ignored private next-webhook-lookup-1"
+      ],
+      "status": "complete_landed_diagnostic",
+      "coordinator_database": "multica_func7af9_next_webhook_lookup_1",
+      "permit": "research/webhook-lookup-execution-permit-1.json",
+      "result": "Onceguardedracecompile/test1top+4subPASS,44artifacthashes;serverprepare42P01/clientclosed/404/429 distinct;DB0/sourcefrozen/originalskips unchanged"
+    },
+    {
+      "task_name": "/root/readiness_code_evidence_review",
+      "role": "trellis-check",
+      "status": "phase1_complete_landed_and_coordinator_verified",
+      "ownership": [
+        "research/readiness-code-evidence-review-1.md/.json",
+        "evidence/next-readiness-review-1"
+      ],
+      "result": "PASS_WITH_NOTES_CODE_RAW_PHASE1_REQUIRED_GATES_OPEN"
+    }
+  ],
+  "delivery_observations": [
+    {
+      "at": "2026-11-02T09:42:33.126113+00:00",
+      "agent": "/root/skipped_assertion_scope",
+      "kind": "nonempty_progress_received",
+      "content": "Current CLI code and originalskip document unknown-field loss as known limitation; no preservation requirement may be invented. Webhook500/404 is actual current contract and db.New(DBTX) accepts existing seam; independent closedpool/realquery counting is feasible without touchingtestPool. Coordinator narrowed proposed actual probe to Webhook500 only; CLI stays scope note."
+    },
+    {
+      "at": "2026-11-02T09:44:42.380526+00:00",
+      "agent": "/root/mac_updater_readiness",
+      "kind": "nonempty_progress_received",
+      "content": "Full saved injection read. Actual MacARM64 channel is latest-mac.yml; latest-arm64 belongs Windows. Manual updater:check is not blocked by automaticUpdates=false; autoDownload=true and explicit install invokesquitAndInstall(false,true). Preparing offline template/currentGenericProvider parse; no app/update action."
+    },
+    {
+      "at": "2026-11-02T09:56:54.524384+00:00",
+      "agent": "/root/mac_updater_readiness",
+      "kind": "nonempty_progress_received",
+      "content": "Actual updaterAppAdapter cache usesNodeos.homedir()/Library/Caches, not automatically Electronapp.setPath(home/userData); future runtime must also isolate processHOME and verifyactualcachepath. Squirrel local proxy can allocate dynamicport afterdownload. Source-derived readiness only; no updaterexecuted or priorresultreclassified."
+    },
+    {
+      "at": "2026-11-02T10:11:14.611546+00:00",
+      "agent": "/root/webhook_lookup_diagnostic",
+      "kind": "nonempty_execution_progress_received",
+      "content": "Once guardedrace compile/run exit0;1top+4subPASS/noSKIP/no retry;DBconnections0/sourcefrozen and10watchedfiles/virtualtarget unchanged. Serverfault is actualPrepareError->PgError42P01 prepare/parse, not SELECTexecution. Closedpoolclientacquisition/ErrNoRows404/absolute429 all passed;body/writes0/fingerprints unchanged/debt split correct. Finishing self-review/report; no moretestexecutions."
+    },
+    {
+      "at": "2026-11-02T10:22:46.653412+00:00",
+      "agent": "/root/readiness_code_evidence_review",
+      "kind": "nonempty_progress_received_child_spawn_observation",
+      "content": "Child says parent spawn may display aborted, but task was delivered and actualtoolwork started. Coordinator visible spawn result provided normal task_name. Native injection truncated/fullsaved context fallback underway; onceprivateGoVet only/noDB/no tests."
+    },
+    {
+      "at": "2026-11-02T10:45:31.137764+00:00",
+      "agent": "/root/readiness_code_evidence_review",
+      "kind": "nonempty_phase2_completion_received",
+      "content": "Final independent review PASS WITH NOTES; 6234 history files, 36 preserved files, spec/journal prefixes/index117-only, 57 DB cleanup and source/frozen identities verified. Mechanical coordinator text/status fixes verified. No DB/native/test/vet/app/account/remote action in phase2."
+    }
+  ],
+  "product_changes": 0,
+  "commercial_calls": 0,
+  "remote_dispatches": 0,
+  "original_skips": "six retained; any actual new probe gets separate identity/inventory",
+  "coordinator_verification": "pending",
+  "independent_review": "both phase1 code/raw and phase2 final documents PASS WITH NOTES",
+  "phase2_followup": {
+    "target": "/root/readiness_code_evidence_review",
+    "scope": "separate final document/history/savedcleanup review only",
+    "report": "research/readiness-final-coordination-review-1.md/.json",
+    "status": "complete_landed_and_verified",
+    "tests_or_resources_authorized_in_phase2": false,
+    "result": "PASS_WITH_NOTES_FINAL_COORDINATION_REQUIRED_ACCEPTANCE_GATES_OPEN"
+  },
+  "phase2_mechanical_note": {
+    "issue": "two coordination documents had duplicated punctuation/residualcleanup sentence",
+    "fix": "coordinator removed residual text only; no raw/source/test/resource changes",
+    "verifier": "independent phase2 reviewer"
+  },
+  "state": "completed_scoped_batch_required_gates_open",
+  "finished_at": "2026-11-02T10:45:31.137767+00:00"
+}

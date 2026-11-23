@@ -1,6 +1,6 @@
 "use client";
 
-import { Archive, ArchiveRestore, Check, CircleDot, ExternalLink } from "lucide-react";
+import { Archive, ArchiveRestore, BellRing, Check, CircleDot, Clock, ExternalLink } from "lucide-react";
 import { paths, useWorkspaceSlug } from "@multica/core/paths";
 import type { InboxItem } from "@multica/core/types";
 import type { RowActionItem } from "../../common/row-actions-menu";
@@ -8,6 +8,8 @@ import { useIntentNavigate } from "../../navigation";
 import { useT } from "../../i18n";
 import type { InboxView } from "./inbox-view";
 import { getInboxDestination } from "./inbox-display";
+
+export const INBOX_MENU_CONTENT_CLASS = "[@media(pointer:coarse)]:[&_[role=menuitem]]:min-h-11";
 
 /** Row-level actions the menus invoke, all keyed by inbox item id. */
 export interface InboxRowActions {
@@ -18,6 +20,8 @@ export interface InboxRowActions {
    * reversal-of-the-current-view the row's inline button performs.
    */
   onAction: (id: string) => void;
+  onSnooze?: (id: string, anchor?: HTMLElement) => void;
+  onUnsnooze?: (id: string) => void;
 }
 
 /**
@@ -44,6 +48,7 @@ export function useInboxItemActions(
 
   const issueHref = slug ? getInboxDestination(item, paths.workspace(slug)) : null;
   const isArchivedView = view === "archived";
+  const isSnoozedView = view === "snoozed";
 
   const groups: RowActionItem[][] = [];
 
@@ -81,6 +86,28 @@ export function useInboxItemActions(
             onSelect: () => actions.onMarkRead(item.id),
           },
     ]);
+  }
+
+  if (!isArchivedView && actions.onSnooze) {
+    const snoozeActions: RowActionItem[] = [
+      {
+        key: "snooze",
+        label: isSnoozedView
+          ? t(($) => $.snooze.change_time_menu)
+          : t(($) => $.snooze.menu),
+        icon: <Clock className="h-4 w-4" />,
+        onSelect: () => actions.onSnooze?.(item.id),
+      },
+    ];
+    if (isSnoozedView && actions.onUnsnooze) {
+      snoozeActions.push({
+        key: "remind-now",
+        label: t(($) => $.snooze.remind_now),
+        icon: <BellRing className="h-4 w-4" />,
+        onSelect: () => actions.onUnsnooze?.(item.id),
+      });
+    }
+    groups.push(snoozeActions);
   }
 
   groups.push([

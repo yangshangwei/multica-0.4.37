@@ -1,0 +1,157 @@
+{
+  "at": "2026-11-02T08:51:17.872828+00:00",
+  "status": "PASS_IDENTITY_AND_EVIDENCE_CHECK_REQUIRED_GATES_OPEN",
+  "reviewer": "native trellis-check /root/remaining_identity_symptom",
+  "scope": "Source/test/frozen identity, preserved raw hashes and task-local new-symptom inventory only",
+  "original_checker_failure_retained": "evidence/next-remaining-identity-1/run.json",
+  "original_run_sha256": "e8e3bcb44cb198ad3ca0ada3c7b6b57071696482488c474be450ba7cc9e26c7c",
+  "mechanical_correction": "Strict exact Next generated-route import check resolves checker classification, preserving initial failed checker output; no source edit or test rerun.",
+  "generated_import_normalization": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/apps/web/next-env.d.ts",
+      "candidate_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc",
+      "current_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+      "only_exact_import_changed": true,
+      "other_bytes_equal": true,
+      "command": [
+        "git",
+        "show",
+        "7af9ab9905c98c77bb091223ebe687c639475bb4:apps/web/next-env.d.ts"
+      ],
+      "started_at": "2026-11-02T08:51:17.823050+00:00",
+      "finished_at": "2026-11-02T08:51:17.844886+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source_and_frozen_identity_unchanged": true,
+  "new_product_behavior_changes": 0,
+  "historical_files_checked": 6113,
+  "older_historical_files_checked": 5949,
+  "preserved_workspace_files_checked": 36,
+  "reviewed_raw_artifact_hash_checks": 158,
+  "reviewed_raw_hash_mismatches": [],
+  "missing_or_unexpected_historical_changes": [],
+  "e2e_inventory": {
+    "PASS": 439
+  },
+  "matrix": {
+    "PASS": 21,
+    "BLOCKED": 6,
+    "FAIL": 1,
+    "NOT_RUN": 3
+  },
+  "original_frozen_gate": {
+    "warmup": 5,
+    "measured": 30,
+    "p95_ms": 2171,
+    "threshold_ms": 2000,
+    "terminal": [
+      "fail"
+    ],
+    "rerun": false,
+    "stdout_sha256": "d1cc8478e2f2a98db8737f3d93dce4e9d13084de01386d3934b5d3b2e3708276"
+  },
+  "new_symptom_evidence": {
+    "cutoff_saved_final_at": "2026-11-02T08:25:25.724000+00:00",
+    "runs_after_cutoff": [
+      {
+        "path": "evidence/next-remaining-platform-1/run.json",
+        "time": "2026-11-02T08:44:47.441025+00:00",
+        "scope": "Read-only bounded local prerequisites and known artifact identities; no app/account/remote/DB action",
+        "state": "complete",
+        "sha256": "ce5f0d6e4d128e1de9efd54822063748882a72cbba1a1cb9d4fcc73660e690bb"
+      }
+    ],
+    "unparseable_timestamp_runs": [],
+    "genuine_symptom_runs": [],
+    "method": "Task-local run ledger start times plus preserved6113file inventory; mtime alone does not establish execution or historical state.",
+    "conclusion": "Only current read-only platform prerequisite audit follows cutoff; no new genuine symptom-environment observation. No cached-plan/statistics/backend probing justified."
+  },
+  "untracked_helper": {
+    "path": "e2e/fixtures/collaboration-recipient-picker.mjs",
+    "sha256": "4f3ed8fcac50f7fdef4a35dbd4a9c0f2e92c3d64faffdffb23f8df047250bdb5",
+    "snapshot_coverage": true,
+    "ledger_note": "Initially observed 35-file snapshot omitted helper; coordinator supplemented to36 without source change before this check."
+  },
+  "private_recorder_ast": "PASS",
+  "git_diff_check": "PASS",
+  "lint": "NOT_RERUN: evidence-only; no product/dependency change",
+  "typecheck": "NOT_RERUN: evidence-only; no TypeScript/product change",
+  "tests": "NOT_RERUN: original frozenFAIL and completed gates retained; no new true symptom condition",
+  "database_connections_created": 0,
+  "applications_started": 0,
+  "commercial_calls": 0,
+  "remote_actions": 0,
+  "task_status": "in_progress",
+  "findings_fixed": [
+    {
+      "id": "CHECK-NEXT-GENERATED-IMPORT",
+      "scope": "private checker only",
+      "issue": "Initial classifier counted known production-build generated import as product behavior delta",
+      "fix": "Exact one-line import normalization with all other bytes compared; initial failure saved unchanged."
+    }
+  ],
+  "findings_not_fixed": [
+    "Original2171ms performanceFAIL and required native/auth/updater/trust/Provider gates remain open."
+  ],
+  "artifact_sha256": {
+    "evidence/next-remaining-identity-1/check.py.txt": "106114e35425f4797b9917d0b4a9dcd04635013a68c32875cde7b71d63370765",
+    "evidence/next-remaining-identity-1/final-diff-check.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/final-diff-check.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/finalize.py.txt": "1135f9f2701e9db37e440b2342317a5fbfb9896c3b524e6f3889beddc9df31a7",
+    "evidence/next-remaining-identity-1/generated-import-candidate.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/generated-import-candidate.stdout": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc",
+    "evidence/next-remaining-identity-1/git-diff-check.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/git-diff-check.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/historical-checks.json": "e3484c8aff0d51854dec3fe0e00652e87913ec9f6a1d384f9985c79a60dcbef2",
+    "evidence/next-remaining-identity-1/local-main.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/local-main.stdout": "b8bd3ec99b07d2cb92dfd5c4de7059c8e21513ddfe5a011fd0be7a6f0672469f",
+    "evidence/next-remaining-identity-1/local-merge-base.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/local-merge-base.stdout": "b8bd3ec99b07d2cb92dfd5c4de7059c8e21513ddfe5a011fd0be7a6f0672469f",
+    "evidence/next-remaining-identity-1/local-origin-main.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/local-origin-main.stdout": "b8bd3ec99b07d2cb92dfd5c4de7059c8e21513ddfe5a011fd0be7a6f0672469f",
+    "evidence/next-remaining-identity-1/preserved-workspace-checks.json": "7965adf13a36f98aeeb8218a8da84480acf11a9645a1c3b3e5c0c5357ff4e33e",
+    "evidence/next-remaining-identity-1/run.json": "e8e3bcb44cb198ad3ca0ada3c7b6b57071696482488c474be450ba7cc9e26c7c",
+    "evidence/next-remaining-identity-1/source-0-branch.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-0-branch.stdout": "1b485cc4b285caea401e60b3583e531818df14c7118faf2e7ea610ac3e48ddca",
+    "evidence/next-remaining-identity-1/source-0-changed-paths.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-0-changed-paths.stdout": "4203524a100c0d2ab64e1f1a9db1e0c5f142dcd1e5a465bb0e2a525260bf07b6",
+    "evidence/next-remaining-identity-1/source-0-diff.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-0-diff.stdout": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+    "evidence/next-remaining-identity-1/source-0-file-manifest.json": "d05ac8be73a30c2f2930a7a19e27c50a58deb37f1a4cb23781173ad8c51d6141",
+    "evidence/next-remaining-identity-1/source-0-head.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-0-head.stdout": "233ebbcdbbe586452eed069d8c05735937f481f8a2dfab577cf3aadf5442cf3e",
+    "evidence/next-remaining-identity-1/source-0-tree.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-0-tree.stdout": "d862833d4687084bc8a5f8357e2ebe8da1f635676fee42bf9cbe336d9a7e9fa9",
+    "evidence/next-remaining-identity-1/source-0-untracked.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-0-untracked.stdout": "4184655b2079660c97a50c83fe2391719c18f39a871424f251951aa44942dcc8",
+    "evidence/next-remaining-identity-1/source-1-branch.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-1-branch.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-1-changed-paths.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-1-changed-paths.stdout": "48e73880ab4a2b099e37a64b9fa3585192950a8ba7bf77559b20f3c04a9ece7c",
+    "evidence/next-remaining-identity-1/source-1-diff.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-1-diff.stdout": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+    "evidence/next-remaining-identity-1/source-1-file-manifest.json": "5a9ee8a23ced86690e2f04ed5c21b7380f8d2e954c9875df13b7d950f5e32745",
+    "evidence/next-remaining-identity-1/source-1-head.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-1-head.stdout": "233ebbcdbbe586452eed069d8c05735937f481f8a2dfab577cf3aadf5442cf3e",
+    "evidence/next-remaining-identity-1/source-1-tree.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-1-tree.stdout": "d862833d4687084bc8a5f8357e2ebe8da1f635676fee42bf9cbe336d9a7e9fa9",
+    "evidence/next-remaining-identity-1/source-1-untracked.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-1-untracked.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-2-branch.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-2-branch.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-2-changed-paths.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-2-changed-paths.stdout": "6edceb5639e028bf12f0b470103898ee29d0de9cac4e24b284ec1431a31b087b",
+    "evidence/next-remaining-identity-1/source-2-diff.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-2-diff.stdout": "3ef8ec0f8841f4448237c0d3a99e466dbf817a143259b5916cd826d1f6a6a280",
+    "evidence/next-remaining-identity-1/source-2-file-manifest.json": "7a280796478284c4d50704152e82cdf2aea9e4542ca3a23a2c95efbb4c205a10",
+    "evidence/next-remaining-identity-1/source-2-head.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-2-head.stdout": "233ebbcdbbe586452eed069d8c05735937f481f8a2dfab577cf3aadf5442cf3e",
+    "evidence/next-remaining-identity-1/source-2-tree.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-2-tree.stdout": "d862833d4687084bc8a5f8357e2ebe8da1f635676fee42bf9cbe336d9a7e9fa9",
+    "evidence/next-remaining-identity-1/source-2-untracked.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-identity-1/source-2-untracked.stdout": "4184655b2079660c97a50c83fe2391719c18f39a871424f251951aa44942dcc8"
+  }
+}

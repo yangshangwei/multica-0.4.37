@@ -1,0 +1,15 @@
+# History index plan regression independent recheck
+
+Verdict: **pass-with-notes** for the test-only delta based on `0702d5039b235adc88dbd3d7d949a1a8f165d247`. Reviewed test SHA-256 `daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12`; the eventual commit must preserve these bytes. No production H3/M3 SQL, generated query, migration or authorization logic changed. Reviewer `/root/knowledge_web_review` wrote only this report directory and ran no database, migration, Provider or installed Agent CLI command.
+
+The actual catalog lookup is anchored to the table OID resolved by `'agent_task_queue'::regclass`, and verifies the index relation belongs to that table's namespace. A same-named index on another table/schema cannot satisfy it. All three new indexes must be valid, ready, live and nonunique; method, exact btree key/DESC order or GINjsonb_path_ops definition and negotiated-row nonnull predicate must match. Missing, wrong-definition or unusable indexes therefore cannot silently pass by choosing a legacy runtime/primary index.
+
+The EXPLAIN probe still walks the actual production namespace-key query's plan and refuses a SeqScan on agent_task_queue under the existing local enable_seqscan=off control. It now logs whether a new partial index won rather than requiring a cost-based optimizer choice under every retained history. This is an eligibility/schema regression plus controlled-plan check, not a default-planner, selectivity or production-scale performance guarantee.
+
+The missing-index overlay creates only a transaction-owned TEMPshadow table without indexes. The real lookup fails the named test with “agent history index is missing or unreadable: no rows”, rather than a compile/SQL setup error. No real index was dropped or modified. Fresh allocated normal1/1 and race9/9 pass; preserved-history clone normal1/1 and race9/9 also pass. All recorded raw hashes and current test/SQL/generated hashes match their manifests.
+
+**PI-2:** The old strict assertion overlay on the preserved-history clone actually passes1/1 because the optimizer selected a partial index at that moment. The record correctly calls this not reproduced; it is not a killed mutant or a red result. The original45efa full-service log remains the real failure provenance: it selected legal existing runtime/primary indexes and failed the old assumption. Any later recorded-plan replay has its own assertion-only scope and is not included as a new optimizer measurement here.
+
+Independent compile-only service test binary creation (`go test -c -o /dev/null`) exits0; no TestMain or DB test ran. Missing-index negative execution is verified; wrong-definition/unready cases are statically guarded by the inspected catalog conditions, not claimed as extra executed DB mutations. Exact head/dirty-delta/source/log hashes and command results are in `plan-recheck.json`.
+
+Final full service/makecheck must run on the complete committed candidate. The original45efa service result3319pass/3fail/18skip stays failed; targeted checks do not relabel it green. No reviewer product edit or self-fix was made.

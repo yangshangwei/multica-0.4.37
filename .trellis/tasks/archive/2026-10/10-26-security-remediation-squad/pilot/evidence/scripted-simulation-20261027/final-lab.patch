@@ -1,0 +1,37 @@
+diff --git a/application.py b/application.py
+index c859276..660c1e2 100644
+--- a/application.py
++++ b/application.py
+@@ -12,4 +12,4 @@ def render_label(value: str) -> str:
+         "2.0.0": "vendor.labelkit_v2",
+     }[lock["version"]]
+     dependency = importlib.import_module(module_name)
+-    return dependency.format_label(value).label
++    return dependency.format_label(value).text
+diff --git a/dependency.lock.json b/dependency.lock.json
+index e27ade4..d9ad167 100644
+--- a/dependency.lock.json
++++ b/dependency.lock.json
+@@ -1,7 +1,7 @@
+ {
+   "synthetic": true,
+   "name": "pilot-labelkit",
+-  "version": "1.0.0",
+-  "source": "vendor/labelkit_v1.py",
+-  "sha256": "622b37d7981f64eb6ba764231b561f7c3306f8c732a1b8086d6a7faeb69d4c73"
++  "version": "2.0.0",
++  "source": "vendor/labelkit_v2.py",
++  "sha256": "520e06ee1887d5fc831434152d5606d8323510c9144ab883167c5ad5e8156063"
+ }
+diff --git a/workspace_reader.py b/workspace_reader.py
+index dc50924..28d6e5f 100644
+--- a/workspace_reader.py
++++ b/workspace_reader.py
+@@ -19,5 +19,7 @@ def read_issue(
+     row = rows.get(issue_id)
+     if row is None:
+         return None
++    if row.workspace_id != workspace_id:
++        return None
+     audit.append(issue_id)
+     return {"id": issue_id, "title": row.title}

@@ -1,0 +1,42 @@
+# R29 consumed-read regression boundary independent check
+
+**ACCEPTED_R29_CONSUMED_READ_REGRESSION_BOUNDARY_PRE_RUN_ONLY** — no blocking regression-boundary issue found. This accepts the frozen test, the authorized pre-execution assertion correction, and the retained formatting/AST/compile evidence. It does not accept a business RED, a product repair or GREEN.
+
+Active task: `.trellis/tasks/11-13-pay-241-s2-stage-approvals`. Reviewed source: `/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01`. Reviewer write ownership is only this new Markdown/JSON pair. All source, tests, configurations, previous reports/history and other tasks stayed read-only. This reviewer executed no Go, go list, TestMain, SQL/DB, API/browser, build, process/signal or Git command and spawned no agent.
+
+## Findings (fixed)
+
+None fixed by this reviewer. No new static or in-scope blocking issue was found. The existing implementer correction was independently verified as follows.
+
+- File: `server/internal/service/delivery_completion_consumed_read_concurrency_test.go`, writer-first assertion at455–463.
+- Prior issue: requiring only the old `LockDeliveryCompletionAuthorization` annotation would force a legitimate future shared-read implementation to retain that annotation or change the regression after execution.
+- Authorized correction: preserve real `55P03` and require the actual reader PID, exactly the one real grant UUID, canonical hex64 SQL hash, and an authorization-row Lock/Read/Get intent or explicit ID-row SHARE/KEY SHARE/UPDATE NOWAIT statement. The first error comes from the unchanged SQL-forwarding tracer, not an injected result. A generic409, another row, another PID or an arbitrary query/error does not satisfy this witness.
+- Exact preserved-draft comparison: old550-line SHA `d0633ca0e78712c49c1b40856cfc5a4a80ef065212e9198fac3742a76493071d`; first454 and last96 lines are identical. The sole delta replaces one assertion line with nine lines. Reader-first Revoke still requires its exact original `LockDeliveryCompletionAuthorization`, `55P03` and terminal-scans0; post-release semantic409/terminal-scans1 recovery is unchanged. Main's preservation record states the correction preceded Go execution.
+
+## Findings (not fixed)
+
+No unresolved regression-boundary defect is identified. The following verification and scope limits remain open and were not changed:
+
+- Actual selected service test bodies have not been reviewed as executed here. Main must run the frozen original-product RED and provide complete13-name terminals, first real query/PID/SQLSTATE, before-release outcomes, equality snapshots and source/profile/resource bindings. A fixture or preparation failure before the target read does not establish read/read RED. The present original GetByID still calls exclusive grant/root/issuer-artifact fences; no product repair is authorized by this preparation report.
+- Full lint/vet and normal/race execution are outside this filesystem-only review. The accepted compile-only command does not execute TestMain or establish live database health, current connection counts or owning-layer test success. Subsequent repair and affected original controls need a separately bounded main dispatch/review; retain by-request/Create/Revoke/Prepare/Finish and original writer defaults unless their actual change is explicitly authorized.
+- The original R28 HTTP409 holder and exact PG cause remain unproved. Desktop's original completion200 and consumed GET200, then Web's own operation200 followed by grant409 are retained facts; the actual Web requests were sequential. Early project-exit probes executed, while the later final assertions/screenshot and administrator block were not reached. Do not replay the successful completion or relabel that original409 as55P03/R4-held. Full S2/A01–A12, parent24 and S3–S5 remain open; parent is still0PASS/9PARTIAL/15NOT_RUN.
+
+## Verification
+
+- **Protected source: PASS.** Independently hashed and compared every5051 protected file against `evidence/source-before.json` and accepted R28 `source-green-r01`; zero byte/mode/type mismatch. Current source is5052 regular-file paths with exactly one new test, SHA `7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5`,558 lines, mode0644. Canonical sorted-key compact JSON of rows ordered by path components, plus trailing newline, matches `8b75897917a1d02f04aad1cc881bb2dc06d5e41ca14c0982be11499f31285998`. Existing helpers/products/tests/SQL/generated files and defaults retain accepted bytes/modes; no dependency, template or detection change is present.
+- **Inventory: PASS.** Independent literal function-body inventory matches the main Go AST output and sealed plan exactly:3 top/10 leaf/13 named, with no Skip/Parallel calls. Full names are retained in the companion JSON. Both operation orders remain positive controls.
+
+| Top-level test | Exact leaves |
+| --- | --- |
+| `TestDeliveryCompletionConsumedGetReadCoexistence` | `r4_first`, `authorization_first`, `same_grant_siblings`, `operation_first`, `operation_after_authorization` |
+| `TestDeliveryCompletionConsumedGetWriterFences` | `writer_first`, `reader_first` |
+| `TestDeliveryCompletionConsumedGetCurrentAuthority` | `wrong_actor`, `changed_password`, `source_revoked` |
+
+- **Genuine setup and read boundaries: PASS by source inspection.** Lines37–107 use bare `newStageCompletionFixture`, enforce policy, real stage submit/target, same-P issuer/consumer authorization and exactly one actual `ChangeLifecycle`. Persisted grant/request/artifact/producer, original terminal/before-after revisions and immutable submission identities are checked. Real unheld consumed GetByID and own completed operation precede the no-write baseline. R4 compares its actual post-completion projection, which may be stale; no candidate/approval/epoch is reset. GET borrows the actual pgx.Tx, checks the real credential again and commits; held GET remains in transaction until the second terminal. Real P R4/operation barriers, distinct nonzero PostgreSQL PIDs, pending-holder checks and unchanged five-second/250ms limits are present. Revoke actually scans the consumed terminal and holds its original UPDATE without fabricating a revocation.
+- **Authority/effects: PASS by source inspection.** Wrong D is a real different current readable participant; password control performs the actual version CAS while preserving the old P session; source control deletes the actual member before its equality baseline and then checks the own operation still reads. Exact404/403 domain/code, zero private view and absence of a PG error are required. The reused72-relation/stage-exit/admin snapshots and actual adapter calls/target/invocation compare after LIFO release/cancel/drain/rollback. These assertions are not a new all-table or tar-byte audit.
+- **Lint: NOT_RUN.** No lint/vet process was authorized for this reviewer. Retained main gofmt-l r02 is PASS: exit0 with empty stdout/stderr, hashes verified.
+- **TypeCheck: PASS, retained compile-only evidence.** Main `verification/compile-red-r02/result.json` records exit0 for `go test -c -o .../service.test ./internal/service` under the recorded RED profile SHA `3428a23ea11257d7972547ad5989435208d313a6d42dbd562814686bb019a178`, no ambient environment inherited. The actual86,281,250-byte binary matches SHA `3c93ac66d10d9032c45cb1d13c07d947d78729ea7f96150a7ca014665e8ffcc7`; empty logs, captured test source and both5052-file compile snapshots match current inputs. Main AST uses go/parser without importing/executing the service package; source/plan/output hashes and exact inventory agree.
+- **Tests: NOT_RUN for genuine RED/GREEN.** Retained compile-r01 is `FAILED_PRE_GO_MANIFEST_MODE_REPRESENTATION_GUARD`, caused by comparing an octal-string mode to an integer, with Go execution0. Actual modes match after representation normalization. This is preserved tooling/preparation failure, not business RED. Corrected compile-r02 and AST are preparation PASS only.
+- **Spec sync:** existing minimum-receipt/current-authority/read-fence and database-isolation specs already govern this test-only preparation. No spec was edited; a future explicit GetByID repair may need its read-only entry contract recorded after genuine RED/GREEN acceptance.
+
+Only the two authorized reports were created and sealed0444; the companion JSON binds this Markdown's full SHA256. Previous reports and failed preparation records remain untouched.

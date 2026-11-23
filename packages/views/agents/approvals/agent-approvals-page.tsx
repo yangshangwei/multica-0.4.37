@@ -72,7 +72,7 @@ export function AgentApprovalsPage() {
         description={t(($) => $.approvals.tagline)}
         learnMore={{
           href: paths.docsPage(DOCS_SLUGS.agents),
-          label: t(($) => $.approvals.learn_more),
+          label: t(($) => $.page.learn_more),
         }}
         actions={
           <QueueFilter value={onlyWaiting} onChange={setOnlyWaiting} />

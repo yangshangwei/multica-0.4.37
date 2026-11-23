@@ -1,0 +1,986 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-10T19:13:16.932795+00:00",
+  "reviewer": "native trellis-check / check_resume_evidence",
+  "verdict": "PASS_COLLAB_UNION_FIXES_AND_TARGETED_REGRESSIONS",
+  "scope": "Twelve frozen collaboration/common-union files plus narrow reviewer fixes and two new regressions; P4/public enablement/full runtime acceptance excluded",
+  "producer_report_sha256": "13e69a1d6a4d75050f54940c39674e240a9abe80afd900bb49a072f656ef6085",
+  "original_source_sha256": {
+    "server/internal/service/delivery_completion.go": "51cad03d2611eebe96504ece66f041a9916959e69b4aa45e8e5e74c27d7df8d7",
+    "server/internal/service/delivery_completion_authorization.go": "214b9ebd813795b97d31aac6cdde6975ab8cfe083cf81c6335b38199ed537420",
+    "server/internal/service/delivery_completion_collaboration.go": "678986fa927381ee487850dce33f9f3db313e4fd99434f0fd8f10c4041c20f97",
+    "server/internal/service/collaboration_lifecycle.go": "18c2630f044887762c4ee59ef5e4b1bebb0afc49821b88f3e6d2a7e41ba9e67c",
+    "server/internal/service/collaboration_delivery.go": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+    "server/internal/service/collaboration_attachments.go": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+    "server/internal/service/collaboration_edit.go": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+    "server/internal/service/admin_collaboration.go": "d1905d1b04ea6baa19eca5226930c4984cef945556aae49ea2dbbb365eaa5adf",
+    "server/internal/handler/collaboration_lifecycle.go": "83bcc24297c482d650940d7e53aae15199fa697e8b049024920aca0848818ecc",
+    "server/internal/handler/admin_collaboration.go": "cb2e44e7d4d7452d1e2d9335f939091bb892dca6324273f15016d957a340d7c8",
+    "server/internal/handler/collaboration_edit.go": "ed57619518845efad7b7fb001e58dd0872e71ad471e3fa283736d1b786d9dbec",
+    "server/internal/handler/delivery_completion_collaboration_test.go": "787173a5173a0afb6e19e6980e43540efb1b16ea04f469cca780abe48650e750"
+  },
+  "current_source_sha256": {
+    "server/internal/service/delivery_completion.go": "48ef3b9fa0be3707ee962bab79b541b10cf8e8c5ac28532f3651bca73a3f8994",
+    "server/internal/service/delivery_completion_authorization.go": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+    "server/internal/service/delivery_completion_collaboration.go": "678986fa927381ee487850dce33f9f3db313e4fd99434f0fd8f10c4041c20f97",
+    "server/internal/service/collaboration_lifecycle.go": "18c2630f044887762c4ee59ef5e4b1bebb0afc49821b88f3e6d2a7e41ba9e67c",
+    "server/internal/service/collaboration_delivery.go": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+    "server/internal/service/collaboration_attachments.go": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+    "server/internal/service/collaboration_edit.go": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+    "server/internal/service/admin_collaboration.go": "8268be7e80b4ead6c5fab3ac90209b8a4adb9f72d6de2f8d2c4561843bd8174e",
+    "server/internal/handler/collaboration_lifecycle.go": "83bcc24297c482d650940d7e53aae15199fa697e8b049024920aca0848818ecc",
+    "server/internal/handler/admin_collaboration.go": "cb2e44e7d4d7452d1e2d9335f939091bb892dca6324273f15016d957a340d7c8",
+    "server/internal/handler/collaboration_edit.go": "ed57619518845efad7b7fb001e58dd0872e71ad471e3fa283736d1b786d9dbec",
+    "server/internal/handler/delivery_completion_collaboration_test.go": "787173a5173a0afb6e19e6980e43540efb1b16ea04f469cca780abe48650e750"
+  },
+  "reviewer_modified_source_sha256": {
+    "server/internal/service/delivery_completion_authorization.go": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+    "server/internal/service/admin_collaboration.go": "8268be7e80b4ead6c5fab3ac90209b8a4adb9f72d6de2f8d2c4561843bd8174e",
+    "server/internal/service/delivery_completion_receipt_test.go": "4ffedb25c3f90e400b3bba93edc456cdb243d71673d94cfb11ecafd88ead0037",
+    "server/internal/handler/delivery_completion_admin_compat_test.go": "fe55c3573b468cbe8609ecc8242521fd929abe72a170c778a1cc21622de6e186",
+    "server/internal/service/delivery_completion.go": "48ef3b9fa0be3707ee962bab79b541b10cf8e8c5ac28532f3651bca73a3f8994"
+  },
+  "findings_fixed": [
+    {
+      "id": "C-R1",
+      "finding": "Union receipt conversion removed exact original authorization/before/after checks and admitted wrong consumer/variant retained facts",
+      "fix": "Restore authorization and operation IDs, exact before and strictly advancing after revision, mutation digest, actor and closed target variant bindings; refuse mismatched collaboration/admin/submission/provider fact shapes",
+      "red": "collab-review-receipt-red01 18fail (16 scenarios plus2parents)",
+      "green": "collab-review-receipt-green01 18pass,0fail/skip; all seven valid variants also admitted before each corrupted variant is rejected"
+    },
+    {
+      "id": "C-R2",
+      "finding": "R38 access omitted the locked session event sequence, so real pending-submission authorization was signed correctly but actual admin completion built an absence intent and refused",
+      "fix": "Copy current locked session sequence into access and use currentDelivery for explicit binding; no-binding completes through current-policy gate without reading delivery history, preserving administrative off/observe semantics and enforce428",
+      "red": "p3-review-admin-pending-red01 1fail expected200 actual409 after real signed exact source grant",
+      "green": "p3-review-admin-green01 28pass,0fail/skip"
+    },
+    {
+      "id": "C-R3",
+      "finding": "Actual NewRouter issuer revocation refused completion but surfaced503 instead of a current-authority refusal",
+      "fix": "Only pgx.ErrNoRows maps to content-free404 delivery_completion_not_found in deliveryCompletionError; actual database failures continue to propagate, and terminal INSERT no-row already maps to conflict before this function",
+      "red": "collab-auth-router03:9pass/2fail including revoked_issuer and parent; actual state remained uncompleted",
+      "green": "collab-auth-router04:11pass/0fail/skip on new enf_p3_collab_auth04, frozen compile04 matches all12 current reviewed scope files"
+    }
+  ],
+  "findings_not_fixed": [],
+  "hypothesis_correction": {
+    "original_suspicion": "Unconditional admin delivery summary might regress off/observe on corrupt historical delivery",
+    "baseline": "p3-review-admin-red01 was actually5PASS, not red; omitted EventSequence made the old call ignore history",
+    "revised_root_cause": "A real pending submission instead exposed the event-sequence bug. Compatibility control remains positive and is re-run with fix.",
+    "no_false_defect_claim": true
+  },
+  "assessment": {
+    "source_exact_formal_ordinary_child_same_workspace_project_parent_revision": true,
+    "issuer_current_rights_and_original_credential_separate": true,
+    "consumer_original_initiator_or_distinct_R38_role_org_session": true,
+    "self_preparation_read_only_attachments_before_gate": true,
+    "exact_submission_or_self_or_admin_intent_digest": true,
+    "same_tx_status_decision_stop_terminal_and_failure_rollback": true,
+    "historical_minimal_reads_do_not_grant_source_content": true,
+    "original_workflow_key_replay_before_new_consumption": true
+  },
+  "records": [
+    {
+      "id": "collab-red-compile01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-red-compile01.json",
+      "record_sha256": "f490b7c540d5309efc9e1f03f84e21c5045daa12c033c47725ada4ff48ae069d",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-red-compile01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-red-tests",
+        "./internal/handler"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-red01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-red01.json",
+      "record_sha256": "45bce4f21731dd604efe606480ffcd160d271693311f9b48bba49daede7403a8",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-red01.log",
+      "log_sha256": "eba50a0f5ef23ddba326f083060806772b7494a4dabf3529b35cd9c466cc1ba6",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-red-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletion(CollaborationRequiresAuthorization|R38RequiresSourceAuthorization)$",
+        "-test.count=1",
+        "-test.timeout=5m"
+      ],
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 4,
+        "skip": 0
+      },
+      "database": "enf_p3_collab_red01",
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-core-build01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-core-build01.json",
+      "record_sha256": "1ded16eacc2877804afceb8ba8d9ee10abe521ac63d4924931b7876251b072fb",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-core-build01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-writer-build01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-writer-build01.json",
+      "record_sha256": "22cb638e2c9d8503c6039945df324cf4b7bd0287a1677a568ce8bba8e2645ded",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-writer-build01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-union-build02",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-union-build02.json",
+      "record_sha256": "9d5a015124ab27a74053f405163d7a78b92c1341f8eb8f2da82db489567c2fbf",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-union-build02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-green01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-green01.json",
+      "record_sha256": "b5236d1179b6cc96b25f5e0676a5d2cf7e5545635ce37810efa415c4b0c54367",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-green01.log",
+      "log_sha256": "233cf9e26e8868802237e1d6e5dc28c90b1df41b383f1a474e6aea6b95fadd7a",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^TestDeliveryCompletion(CollaborationRequiresAuthorization|R38RequiresSourceAuthorization)$",
+        "-count=1",
+        "-timeout=5m"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p3_collab_green01",
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-positive-compile01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-positive-compile01.json",
+      "record_sha256": "4323ab0f1b7ea9ad81f8fe57bb4c0db8aeafd2350335a38d6e7231a595af4dcb",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-positive-compile01.log",
+      "log_sha256": "a18642224b4559cdc22e5c016afe2228c5fc3c77a11831cfdc08aeb58cb68b47",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-positive-tests",
+        "./internal/handler"
+      ],
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-positive-compile02",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-positive-compile02.json",
+      "record_sha256": "9fb0e7347058718930cabba428b6f36ff671a209e80457be6831712d17652292",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-positive-compile02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-positive-tests",
+        "./internal/handler"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-actual01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-actual01.json",
+      "record_sha256": "ac2f784db4ac2e8a46f34f6a1813e0e062459bd9c3a18a81f22b54dc0e43e182",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-actual01.log",
+      "log_sha256": "5f31c44ec61ea8c124c82628d9b4fd44baef2ff8e9819599b1b95c2fbf67618a",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-positive-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery$",
+        "-test.count=1",
+        "-test.timeout=5m"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p3_collab_actual01",
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-full-compile01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-full-compile01.json",
+      "record_sha256": "6e60b0d9cd213ca15c68d95a17045946ef2e0bb768acdce44c50fd63c3a2e8f6",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-full-compile01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-full-tests",
+        "./internal/handler"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-iter02",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-iter02.json",
+      "record_sha256": "ed452c2892410493a3092d5bf778b0f15c8600c3bd3272f738ec3ebe10b15ffa",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-iter02.log",
+      "log_sha256": "af6a17171cdfbd3e7b52053f740d1abce443913cb90cb650102aecd40557119e",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-full-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletion(Collaboration|R38)",
+        "-test.count=1",
+        "-test.timeout=5m"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p3_collab_iter02",
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-consumer-intersection-build01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-consumer-intersection-build01.json",
+      "record_sha256": "15b9e8e8f32e4a9054cbbf1f00e260e39fe7fa43097d3f2e4420f8216fd8b914",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-consumer-intersection-build01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-final-compile01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-final-compile01.json",
+      "record_sha256": "3bcbf26f3a180269dc22aeeefc120d68ce392a072655a20d5ddd8d7441cb793f",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-final-compile01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-final-tests",
+        "./internal/handler"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-final-vet01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-final-vet01.json",
+      "record_sha256": "174320735ac2252c711c4d5ee3f62844532d3226587a2e7ff407d82aad02ed13",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-final-vet01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./..."
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-final01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-final01.json",
+      "record_sha256": "3b578d9bca727d33cac345403953bf8a17935def9cf5ba5dbf894e1c6cede026",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-final01.log",
+      "log_sha256": "72b85c2c349a1a5d50b0abbf4f6419ae57bce315671421c069b4abab9835c889",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-final-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletion(Collaboration|R38)",
+        "-test.count=1",
+        "-test.timeout=5m"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p3_collab_final01",
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-review-receipt-red01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-review-receipt-red01.json",
+      "record_sha256": "08650386a933cda4dc921b56305d610cd1a447b887d147bae3542321afe4fab9",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-review-receipt-red01.log",
+      "log_sha256": "e3ce3074aae3b42533872dd38a0b9aab9da379cf1bf0158626e664d3ca3ec503",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/service",
+        "-run",
+        "^TestDeliveryCompletionReceipt",
+        "-count=1",
+        "-timeout=2m"
+      ],
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 18,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-review-admin-compile01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-review-admin-compile01.json",
+      "record_sha256": "6f3389eb9abc831229d406a69b1b3d1607b491db4e7181f865b8009d3629d47c",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-review-admin-compile01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-review-admin-red-tests",
+        "./internal/handler"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "p3-review-admin-red01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p3-review-admin-red01.json",
+      "record_sha256": "a008e3358febf22d150dfe56cba93cc1bc1cdac5ac216ebdc591cc2351fded33",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p3-review-admin-red01.log",
+      "log_sha256": "3366b57b68626d52f311d15782d3b54a548a4763789a5d55346320bb792bfcda",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-review-admin-red-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletionR38UnenforcedLegacyEvidenceRemainsAdministrative$",
+        "-test.count=1",
+        "-test.timeout=3m"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p3_review_red01",
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-review-admin-pending-compile01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-review-admin-pending-compile01.json",
+      "record_sha256": "efcf8e317cde795fca809ab38ff565927c2b627359a27f9f75dc2c4b4f48c907",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-review-admin-pending-compile01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-review-admin-pending-red-tests",
+        "./internal/handler"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "p3-review-admin-pending-red01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p3-review-admin-pending-red01.json",
+      "record_sha256": "e9c9abcc27a8e661f65025d1b5bda798ba0d7ba0d4c5c8947dd309744a934ecc",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p3-review-admin-pending-red01.log",
+      "log_sha256": "fe1e82af49351f397d49626cfacc3d1c5b2f149a85e8489d68882d2767c0eac4",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-review-admin-pending-red-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletionR38BindsActualPendingSubmission$",
+        "-test.count=1",
+        "-test.timeout=3m"
+      ],
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "database": "enf_p3_review_admin_pending_red01",
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-review-receipt-green01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-review-receipt-green01.json",
+      "record_sha256": "e810a1ada29afe91fd48c1ff2590aa2746b80280368529cac73af557b65d64c6",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-review-receipt-green01.log",
+      "log_sha256": "d572d196430b2810d44ac1df101c5d10671005cca0b5db7392c1325fca304809",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/service",
+        "-run",
+        "^TestDeliveryCompletionReceipt",
+        "-count=1",
+        "-timeout=2m"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-review-admin-compile02",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-review-admin-compile02.json",
+      "record_sha256": "f207ac8a1e51e9c0885e2c7e2d3722978ef72ed034dff0028c6f817c3c355ab7",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-review-admin-compile02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-review-fixed-tests",
+        "./internal/handler"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "p3-review-admin-green01",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p3-review-admin-green01.json",
+      "record_sha256": "593084453205c9bae7dba95e2feaaa3174386ee57b42f9891d374faf974b94d2",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p3-review-admin-green01.log",
+      "log_sha256": "d2ed1f236925c141b72e77dbd5981f13403fad3aead5eda8f6d063e3d7b359dc",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-review-fixed-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletion(Collaboration|R38)",
+        "-test.count=1",
+        "-test.timeout=5m"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p3_review_admin_green01",
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-auth-router03",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-auth-router03.json",
+      "record_sha256": "69848bb84d336049a58be62ea2dcf83aba60125819e25962fbec07f7e97dabad",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-auth-router03.log",
+      "log_sha256": "9c9caec2fb5d61b72bdcde1d6f50bef13e445b808079e893c803e00979c184f8",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/cmd/server",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-auth-router03",
+        "-test.run",
+        "^TestDeliveryCompletionCollaborationRouter",
+        "-test.count=1",
+        "-test.timeout=10m",
+        "-test.v"
+      ],
+      "exit": 1,
+      "named_counts": {
+        "pass": 9,
+        "fail": 2,
+        "skip": 0
+      },
+      "database": "enf_p3_collab_auth03",
+      "evidence_note": "Actual middleware regression identified after targeted handler review; no success-state bypass"
+    },
+    {
+      "id": "collab-auth-compile04",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-auth-compile04.json",
+      "record_sha256": "e65cd953faf732e43f4bbea355eda0f94d36a73e637f9a601c5e2c68653de885",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-auth-compile04.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-auth-router04",
+        "./cmd/server"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    },
+    {
+      "id": "collab-auth-router04",
+      "record": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/collab-auth-router04.json",
+      "record_sha256": "adc379b3f1ca0ba9f9c34fd85cffbb80915b0e0f4bd6199a85f0d445dd64dcbb",
+      "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/collab-auth-router04.log",
+      "log_sha256": "3f3f85cd3ff7a39554e5e5a5b9fb3f9db22af3f33a5173ed90afd950bcf17707",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/cmd/server",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-auth-router04",
+        "-test.run",
+        "^TestDeliveryCompletionCollaborationRouter",
+        "-test.count=1",
+        "-test.timeout=10m",
+        "-test.v"
+      ],
+      "exit": 0,
+      "named_counts": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p3_collab_auth04",
+      "hash_inventory_unique_terminals_match": true,
+      "owned_changes_during_run": []
+    }
+  ],
+  "compiled_binaries": {
+    "collab-final-tests": {
+      "sha256": "727164d7da0e022496d11fa412ec7e039e05ff6fba52e2623c3608f723b40a36",
+      "compile_record": "collab-final-compile01",
+      "compile_scope_stable": true,
+      "scope_sha256": {
+        "server/internal/service/delivery_completion.go": "51cad03d2611eebe96504ece66f041a9916959e69b4aa45e8e5e74c27d7df8d7",
+        "server/internal/service/delivery_completion_authorization.go": "214b9ebd813795b97d31aac6cdde6975ab8cfe083cf81c6335b38199ed537420",
+        "server/internal/service/delivery_completion_collaboration.go": "678986fa927381ee487850dce33f9f3db313e4fd99434f0fd8f10c4041c20f97",
+        "server/internal/service/collaboration_lifecycle.go": "18c2630f044887762c4ee59ef5e4b1bebb0afc49821b88f3e6d2a7e41ba9e67c",
+        "server/internal/service/collaboration_delivery.go": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+        "server/internal/service/collaboration_attachments.go": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+        "server/internal/service/collaboration_edit.go": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+        "server/internal/service/admin_collaboration.go": "d1905d1b04ea6baa19eca5226930c4984cef945556aae49ea2dbbb365eaa5adf",
+        "server/internal/handler/collaboration_lifecycle.go": "83bcc24297c482d650940d7e53aae15199fa697e8b049024920aca0848818ecc",
+        "server/internal/handler/admin_collaboration.go": "cb2e44e7d4d7452d1e2d9335f939091bb892dca6324273f15016d957a340d7c8",
+        "server/internal/handler/collaboration_edit.go": "ed57619518845efad7b7fb001e58dd0872e71ad471e3fa283736d1b786d9dbec",
+        "server/internal/handler/delivery_completion_collaboration_test.go": "787173a5173a0afb6e19e6980e43540efb1b16ea04f469cca780abe48650e750",
+        "server/internal/service/delivery_completion_receipt_test.go": null,
+        "server/internal/handler/delivery_completion_admin_compat_test.go": null
+      }
+    },
+    "collab-review-admin-red-tests": {
+      "sha256": "4b4a858f5c249beb1e2b9be6791264ba4919180c0910a8f17c0f3189af7d097e",
+      "compile_record": "collab-review-admin-compile01",
+      "compile_scope_stable": true,
+      "scope_sha256": {
+        "server/internal/service/delivery_completion.go": "51cad03d2611eebe96504ece66f041a9916959e69b4aa45e8e5e74c27d7df8d7",
+        "server/internal/service/delivery_completion_authorization.go": "214b9ebd813795b97d31aac6cdde6975ab8cfe083cf81c6335b38199ed537420",
+        "server/internal/service/delivery_completion_collaboration.go": "678986fa927381ee487850dce33f9f3db313e4fd99434f0fd8f10c4041c20f97",
+        "server/internal/service/collaboration_lifecycle.go": "18c2630f044887762c4ee59ef5e4b1bebb0afc49821b88f3e6d2a7e41ba9e67c",
+        "server/internal/service/collaboration_delivery.go": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+        "server/internal/service/collaboration_attachments.go": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+        "server/internal/service/collaboration_edit.go": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+        "server/internal/service/admin_collaboration.go": "d1905d1b04ea6baa19eca5226930c4984cef945556aae49ea2dbbb365eaa5adf",
+        "server/internal/handler/collaboration_lifecycle.go": "83bcc24297c482d650940d7e53aae15199fa697e8b049024920aca0848818ecc",
+        "server/internal/handler/admin_collaboration.go": "cb2e44e7d4d7452d1e2d9335f939091bb892dca6324273f15016d957a340d7c8",
+        "server/internal/handler/collaboration_edit.go": "ed57619518845efad7b7fb001e58dd0872e71ad471e3fa283736d1b786d9dbec",
+        "server/internal/handler/delivery_completion_collaboration_test.go": "787173a5173a0afb6e19e6980e43540efb1b16ea04f469cca780abe48650e750",
+        "server/internal/service/delivery_completion_receipt_test.go": "4ffedb25c3f90e400b3bba93edc456cdb243d71673d94cfb11ecafd88ead0037",
+        "server/internal/handler/delivery_completion_admin_compat_test.go": "e203b2e4ce1ea49f1c2a2b6c1d4638c46249b2178a8bd678ba3ae7e483001c56"
+      }
+    },
+    "collab-review-admin-pending-red-tests": {
+      "sha256": "ea18d23644ce6daf4809aca8a4fb4c6d77f3d9fb3187d007f6accc31faf19ac5",
+      "compile_record": "collab-review-admin-pending-compile01",
+      "compile_scope_stable": true,
+      "scope_sha256": {
+        "server/internal/service/delivery_completion.go": "51cad03d2611eebe96504ece66f041a9916959e69b4aa45e8e5e74c27d7df8d7",
+        "server/internal/service/delivery_completion_authorization.go": "214b9ebd813795b97d31aac6cdde6975ab8cfe083cf81c6335b38199ed537420",
+        "server/internal/service/delivery_completion_collaboration.go": "678986fa927381ee487850dce33f9f3db313e4fd99434f0fd8f10c4041c20f97",
+        "server/internal/service/collaboration_lifecycle.go": "18c2630f044887762c4ee59ef5e4b1bebb0afc49821b88f3e6d2a7e41ba9e67c",
+        "server/internal/service/collaboration_delivery.go": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+        "server/internal/service/collaboration_attachments.go": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+        "server/internal/service/collaboration_edit.go": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+        "server/internal/service/admin_collaboration.go": "d1905d1b04ea6baa19eca5226930c4984cef945556aae49ea2dbbb365eaa5adf",
+        "server/internal/handler/collaboration_lifecycle.go": "83bcc24297c482d650940d7e53aae15199fa697e8b049024920aca0848818ecc",
+        "server/internal/handler/admin_collaboration.go": "cb2e44e7d4d7452d1e2d9335f939091bb892dca6324273f15016d957a340d7c8",
+        "server/internal/handler/collaboration_edit.go": "ed57619518845efad7b7fb001e58dd0872e71ad471e3fa283736d1b786d9dbec",
+        "server/internal/handler/delivery_completion_collaboration_test.go": "787173a5173a0afb6e19e6980e43540efb1b16ea04f469cca780abe48650e750",
+        "server/internal/service/delivery_completion_receipt_test.go": "4ffedb25c3f90e400b3bba93edc456cdb243d71673d94cfb11ecafd88ead0037",
+        "server/internal/handler/delivery_completion_admin_compat_test.go": "fe55c3573b468cbe8609ecc8242521fd929abe72a170c778a1cc21622de6e186"
+      }
+    },
+    "collab-review-fixed-tests": {
+      "sha256": "e8076dd9f993aa3d0fd2d3c017500178e13affd2e534dbe9d2deebbbaaf51aa3",
+      "compile_record": "collab-review-admin-compile02",
+      "compile_scope_stable": true,
+      "scope_sha256": {
+        "server/internal/service/delivery_completion.go": "51cad03d2611eebe96504ece66f041a9916959e69b4aa45e8e5e74c27d7df8d7",
+        "server/internal/service/delivery_completion_authorization.go": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+        "server/internal/service/delivery_completion_collaboration.go": "678986fa927381ee487850dce33f9f3db313e4fd99434f0fd8f10c4041c20f97",
+        "server/internal/service/collaboration_lifecycle.go": "18c2630f044887762c4ee59ef5e4b1bebb0afc49821b88f3e6d2a7e41ba9e67c",
+        "server/internal/service/collaboration_delivery.go": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+        "server/internal/service/collaboration_attachments.go": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+        "server/internal/service/collaboration_edit.go": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+        "server/internal/service/admin_collaboration.go": "8268be7e80b4ead6c5fab3ac90209b8a4adb9f72d6de2f8d2c4561843bd8174e",
+        "server/internal/handler/collaboration_lifecycle.go": "83bcc24297c482d650940d7e53aae15199fa697e8b049024920aca0848818ecc",
+        "server/internal/handler/admin_collaboration.go": "cb2e44e7d4d7452d1e2d9335f939091bb892dca6324273f15016d957a340d7c8",
+        "server/internal/handler/collaboration_edit.go": "ed57619518845efad7b7fb001e58dd0872e71ad471e3fa283736d1b786d9dbec",
+        "server/internal/handler/delivery_completion_collaboration_test.go": "787173a5173a0afb6e19e6980e43540efb1b16ea04f469cca780abe48650e750",
+        "server/internal/service/delivery_completion_receipt_test.go": "4ffedb25c3f90e400b3bba93edc456cdb243d71673d94cfb11ecafd88ead0037",
+        "server/internal/handler/delivery_completion_admin_compat_test.go": "fe55c3573b468cbe8609ecc8242521fd929abe72a170c778a1cc21622de6e186"
+      }
+    },
+    "collab-auth-router04": {
+      "path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/collab-auth-router04",
+      "sha256": "eed208ba2f41e04132f338ea9b7213ef7bbe0cd9d897109e6a5dfb36a6b9f6e3",
+      "compile_record": "collab-auth-compile04",
+      "compile_scope_stable": true,
+      "scope_sha256": {
+        "server/internal/service/delivery_completion.go": "48ef3b9fa0be3707ee962bab79b541b10cf8e8c5ac28532f3651bca73a3f8994",
+        "server/internal/service/delivery_completion_authorization.go": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+        "server/internal/service/delivery_completion_collaboration.go": "678986fa927381ee487850dce33f9f3db313e4fd99434f0fd8f10c4041c20f97",
+        "server/internal/service/collaboration_lifecycle.go": "18c2630f044887762c4ee59ef5e4b1bebb0afc49821b88f3e6d2a7e41ba9e67c",
+        "server/internal/service/collaboration_delivery.go": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+        "server/internal/service/collaboration_attachments.go": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+        "server/internal/service/collaboration_edit.go": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+        "server/internal/service/admin_collaboration.go": "8268be7e80b4ead6c5fab3ac90209b8a4adb9f72d6de2f8d2c4561843bd8174e",
+        "server/internal/handler/collaboration_lifecycle.go": "83bcc24297c482d650940d7e53aae15199fa697e8b049024920aca0848818ecc",
+        "server/internal/handler/admin_collaboration.go": "cb2e44e7d4d7452d1e2d9335f939091bb892dca6324273f15016d957a340d7c8",
+        "server/internal/handler/collaboration_edit.go": "ed57619518845efad7b7fb001e58dd0872e71ad471e3fa283736d1b786d9dbec",
+        "server/internal/handler/delivery_completion_collaboration_test.go": "787173a5173a0afb6e19e6980e43540efb1b16ea04f469cca780abe48650e750"
+      }
+    }
+  },
+  "verification": {
+    "pure_retained_receipt_contract": {
+      "pass": 18,
+      "fail": 0,
+      "skip": 0
+    },
+    "actual_targeted_handler": {
+      "pass": 28,
+      "fail": 0,
+      "skip": 0,
+      "database": "enf_p3_review_admin_green01",
+      "old22_preserved": true,
+      "legacy_no_project_off_observe_and_enforce_missing_binding_control": true,
+      "actual_pending_R38_submission_positive": true
+    },
+    "gofmt": "pass reviewer four files",
+    "current_compile": "collab-review-admin-compile02 pass",
+    "whole_vet": "producer collab-final-vet01 passed before reviewer changes; final current whole vet remains root responsibility",
+    "final_full_normal_race_newrouter": "not claimed",
+    "actual_newrouter_targeted": {
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "run": "collab-auth-router04",
+      "database": "enf_p3_collab_auth04",
+      "compile_source_current": true
+    }
+  },
+  "remaining": [
+    "Root final full normal/race suite on new databases and complete all-writer public-enforcement acceptance; targeted NewRouter11 is now verified.",
+    "All legacy collaboration/admin/attachment/source-edit compatibility and P4 public activation must pass their own integration checks.",
+    "Later all-file source freeze/build/vet/sqlc/static and safe local integration remain root obligations."
+  ],
+  "reviewer_DB_permits_used": [
+    "enf_p3_review_red01",
+    "enf_p3_review_admin_pending_red01",
+    "enf_p3_review_admin_green01"
+  ],
+  "no_db_allocation_drop_or_historical_reuse": true,
+  "real_provider_calls": 0,
+  "reviewer_commits": 0,
+  "full_delivery_gate_complete": false,
+  "full_m1_complete": false
+}

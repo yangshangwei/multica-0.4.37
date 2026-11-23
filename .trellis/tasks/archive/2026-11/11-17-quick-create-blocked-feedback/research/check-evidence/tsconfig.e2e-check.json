@@ -1,0 +1,21 @@
+{
+  "extends": "/Volumes/artisan/code/2026/multica-0.4.37/packages/tsconfig/base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ]
+  },
+  "include": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/e2e/quick-create-blocked-feedback.spec.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

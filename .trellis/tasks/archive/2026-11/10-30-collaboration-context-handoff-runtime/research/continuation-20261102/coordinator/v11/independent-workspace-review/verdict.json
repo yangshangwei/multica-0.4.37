@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-11-02 22:12:22 UTC",
+  "finalized_at_utc": "2026-11-02 22:14:51 UTC",
+  "task": ".trellis/tasks/10-30-collaboration-context-handoff-runtime",
+  "review_scope": "Read-only independent review of installed workspace source identity; no product or runtime acceptance review",
+  "status": "preliminary_static_layout_pass",
+  "blocking_layout_issues": [],
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "candidate_head_before_and_after": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "verification_and_dependency_install_owner_thread": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+  "observation_provenance": {
+    "procedure_author": "/root/owned_workspace_identity_review",
+    "execution": "Executed once by root coordinator after reviewer exec transport failed; reviewed facts were returned by coordinator from the saved JSON",
+    "command": "python3 .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-workspace-review/collect_workspace_identity.py",
+    "exit_code": 0,
+    "execution_time_utc_from_coordinator": "2026-11-02 22:05 UTC",
+    "executed_source_sha256": "aa6f28e3cc6c559ad15191ea0e8023b6e176de426b366dc19b3c5d0eec26289e",
+    "preserved_executed_source": "collect_workspace_identity.executed.py",
+    "preserved_executed_source_hash_verified": true,
+    "preserved_executed_source_hash_verified_by": "Root coordinator using its working shell",
+    "preservation_note": "The later unexecuted self-reference patch was removed and the restored file moved to the preserved path. The coordinator verified the preserved file's exact SHA-256 equals the executed source hash and rechecked the original observation hash. The original procedure path was moved, not lost. No rerun occurred.",
+    "observation_file": "collector-observation.json",
+    "observation_sha256": "7f763147f0fb912406bbcddfe580043ee9198d7b1ef26547d30e9211486bf6d2",
+    "observation_bytes": 207459,
+    "observation_hash_rechecked_after_source_preservation": true,
+    "reviewer_transport_limit": "Local exec lost its connection during context reads. Native resource fallback exposed no files. Subsequent collection used the coordinator's shell and reviewer-authored filesystem-only procedure."
+  },
+  "pinned_context_inputs": [
+    {
+      "path": "../workspace-identity-expectations.json",
+      "sha256": "579f69cdd7c561a9d65c20fa21cde1443092696fcef860c8a315ce9ba7daf49d",
+      "matches": true
+    },
+    {
+      "path": "../workspace-links-observation.json",
+      "sha256": "f90d90b40111034a67cb7b4b71aa6fecb62a5c61b315f99c589dfcf4e7359191",
+      "matches": true
+    },
+    {
+      "path": "../../v10/category-timeouts/20261103-readonly-diagnosis.json",
+      "sha256": "2b7be3a02c890f6afe6aec419a76b228e9261801b15e32c02bc791c447af89a5",
+      "matches": true
+    },
+    {
+      "path": "../../v10/workspace-identity-contract.md",
+      "sha256": "89e1498470ec3117d6c8bf53d379866dd781bd59864250880bdcdf8e27ff0d2b",
+      "matches": true
+    }
+  ],
+  "observations": {
+    "declared_internal_dependencies": {
+      "checked": 22,
+      "matched_expected_workspace_root": 22,
+      "inside_owned_candidate": 22
+    },
+    "discovered_internal_workspace_links": {
+      "checked": 32,
+      "matched_declared_workspace_root": 32,
+      "inside_owned_candidate": 32
+    },
+    "configuration_hashes": {
+      "checked": 3,
+      "matched_expectations": 3,
+      "details": "See configuration_checks in collector-observation.json"
+    },
+    "own_node_modules_symlink_count": 0,
+    "source_symlink_or_overlay_count": 0,
+    "unresolved_donor_workspace_source_links": 0,
+    "auth_resolution": {
+      "specifier": "@multica/core/auth",
+      "consumers": ["Web", "core/CoreProvider", "shared views"],
+      "static_export_target_status": "All observed probes reach the owned core root; no missing or outside target was reported",
+      "auth_source_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth",
+      "source_inode_groups": [
+        {
+          "relative_source": "auth/index.ts",
+          "device": 16777244,
+          "inode": 39590398,
+          "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+          "same_for_all_observed_consumers": true
+        },
+        {
+          "relative_source": "auth/store.ts",
+          "device": 16777244,
+          "inode": 39590403,
+          "sha256": "5eca090ecd465844777a3f48b58b5c214011a5868a659d797675bacbd0a951d7",
+          "same_for_all_observed_consumers": true
+        }
+      ]
+    },
+    "lock_and_profile": {
+      "committed_and_installed_lock_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+      "lockfiles_byte_identical": true,
+      "committed_importer_count": 11,
+      "installed_importer_count": 11,
+      "package_manager": "pnpm@10.28.2",
+      "layout_version": 5,
+      "node_linker": "isolated",
+      "store_dir": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10",
+      "virtual_store_dir": ".pnpm",
+      "virtual_store_dir_max_length": 120,
+      "pruned_at_time_from_coordinator": "21:45:37 GMT",
+      "snapshot_count_limit": {
+        "collector_multiline_entry_count_per_lock": 1462,
+        "installer_claimed_snapshot_count": 2031,
+        "complete_snapshot_count_verified_by_review": false,
+        "explanation": "The collector counted only level-two entries ending in a bare colon. Inline empty entries ending in ': {}' were omitted. This is a collector limitation, not evidence that the identical installed lock differs from the committed graph."
+      }
+    },
+    "stable_inputs": {
+      "scope": "Root install/config inputs; Web/Desktop/shared package source/config/docs; all importer manifests; installed lock/profile/workspace state; own node_modules directories and declared internal dependency origins",
+      "before_file_count": 2885,
+      "after_file_count": 2885,
+      "before_sha256": "19f47fa81a546ce94e31adac321b08ed99bb00c37408ef1d0fa338968846a189",
+      "after_sha256": "19f47fa81a546ce94e31adac321b08ed99bb00c37408ef1d0fa338968846a189",
+      "unchanged": true,
+      "changed_files": [],
+      "changed_own_directories": [],
+      "changed_dependency_origins": []
+    },
+    "existing_web_build": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/.next",
+      "exists": false,
+      "fresh_production_build_verified": false
+    },
+    "installation_receipt": {
+      "receipts_found_in_collector_search_scope": 0,
+      "search_scope": "Task research/continuation-20261102/coordinator/v11",
+      "complete_owner_freeze_receipt_read": false,
+      "limit": "The search did not cover the candidate's private/owned-workspace-links directory. No conclusion is made that a receipt is globally absent; completed Electron runtime/cache freeze was not established by the bounded results returned to the reviewer."
+    }
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "kind": "verification_gap",
+      "finding": "The complete owner installation freeze receipt, including Electron runtime/cache identity, was not verified",
+      "why_not_fixed": "Owner-only installation/freeze responsibility and read-only output scope"
+    },
+    {
+      "kind": "verification_gap",
+      "finding": "A fresh production build and actual SSR auth registration/reference graph remain unverified; .next is absent",
+      "why_not_fixed": "Build, Node, tests and services were explicitly excluded from this review"
+    },
+    {
+      "kind": "collector_limit",
+      "finding": "The executed collector used directory lookup without an explicit package self-reference branch and inspected exports without evaluating runtime conditions",
+      "why_not_fixed": "All returned static auth probes reached the correct root. The later self-reference correction was unexecuted and discarded to preserve the executed revision; the coordinator explicitly prohibited a rerun"
+    },
+    {
+      "kind": "collector_limit",
+      "finding": "The multiline-only YAML counter is not a complete snapshot inventory",
+      "why_not_fixed": "No rerun; exact committed/installed lock equality is already established. The owner can include inline empty entries when documenting the complete frozen profile"
+    }
+  ],
+  "owner_next_steps": [
+    "Freeze and record the completed owned installation, including Electron runtime/cache and installed source/config/lock/profile origins. Reconcile snapshot counts with a counter that includes inline empty YAML entries.",
+    "Build fresh from this candidate and verify the actual SSR/webpack auth module registration and references agree. Preserve product guards, assertions, timeouts and interrupted v10 evidence.",
+    "Run the required owned SSR, new wholecheck and password7 verification under the sole owner's control before any paid-provider clearance."
+  ],
+  "verification": {
+    "static_layout": "pass within the observed scope",
+    "lint": "not run; read-only dispatch excluded project execution",
+    "typecheck": "not run; read-only dispatch excluded Node/project execution",
+    "tests": "not run; explicitly excluded",
+    "build": "not run; explicitly excluded",
+    "ssr": "not run; explicitly excluded",
+    "candidate_or_dependency_mutations_by_review": false,
+    "git_mutations_by_review": false,
+    "database_api_redis_network_browser_operations_by_review": false,
+    "provider_invocations_by_review": 0
+  },
+  "clearances_granted": {
+    "read_only_static_layout_consistency": true,
+    "completed_installation_freeze": false,
+    "fresh_build_or_ssr": false,
+    "wholecheck": false,
+    "password7": false,
+    "paid_provider": false,
+    "E5_E6": false,
+    "task_completion": false
+  },
+  "paid_budget_from_dispatch_only": {
+    "final_runtime_cap": 25,
+    "final_runtime_consumed": 0,
+    "original_cap": 14,
+    "original_budget_remains_separate": true,
+    "review_spend": 0
+  }
+}

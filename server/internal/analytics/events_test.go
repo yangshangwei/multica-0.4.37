@@ -36,7 +36,7 @@ func TestIsMetricsOnly(t *testing.T) {
 		EventChatMessageSent, EventTeamInviteSent, EventTeamInviteAccepted,
 		EventOnboardingStarted, EventOnboardingQuestionnaireSubmit, EventOnboardingSourceSubmit,
 		EventAgentCreated,
-		EventOnboardingCompleted, EventCloudWaitlistJoined, EventFeedbackSubmitted,
+		EventOnboardingCompleted, EventFeedbackSubmitted,
 		EventContactSalesSubmitted, EventSquadCreated, EventAutopilotCreated,
 	} {
 		if !IsMetricsOnly(name) {

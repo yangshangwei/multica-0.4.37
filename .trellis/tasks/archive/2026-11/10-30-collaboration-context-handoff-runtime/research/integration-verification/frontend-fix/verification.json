@@ -1,0 +1,90 @@
+{
+  "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "captured_at": "2026-10-31T17:00:23.451256+00:00",
+  "working_directory": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "changed_files": {
+    "apps/web/platform/navigation.tsx": "725295f47abbbb945c760a213f4d790856dbd03900f3c9a6b8be72a80452f615",
+    "apps/web/platform/navigation.test.tsx": "cdde94c86dbd4872b09d023de9580d7e424d21b39e78dc56fefe6fddca926b5e",
+    "packages/core/api/client.ts": "bea9b58078278af59f42b98a49a1bd2d77f895d9af2c81e16f0efb882ee6b82d",
+    "packages/core/collaboration/run-handoff-schema.ts": "9094c9395e1b6ba41541d03f310c24c79af8ec082a59d47c9d0fcc5642ff8ff8",
+    "packages/core/collaboration/run-handoff-schema.test.ts": "16b56f39286680b75c9a6c191b0d9145a0ae7bb1efb7331af64be9f3460a6545",
+    "packages/core/collaboration/run-handoff-queries.ts": "893c1bf49c162a87bde7a2852d9cebd70a1d2e494e5997760dd6635c3672396d",
+    "packages/core/collaboration/run-handoff-queries.test.ts": "4405e962a970bbf34f8aa61f2e69cb43bcd9a469e0f710b37a6e23306a235929",
+    "packages/views/collaboration/run-handoff.tsx": "91e048116b8aa6f8fc35d9748c72665bed12c0e7ab8cc88b8ef060785fa2e0db",
+    "packages/views/collaboration/run-handoff.test.tsx": "e11ea123eaac050ebbb5dff1cacee85cbabb19ea29d1a661824cb3c3b90648f5",
+    "packages/views/collaboration/run-records.tsx": "8453df243b24c976b84a075a11c7a0fff08b3f84e0b99d8bf79c8293333d5ce8",
+    "packages/views/collaboration/execution-panel.test.tsx": "fec822bde7cc4fc87288cbf5335e9ed0f7b4529251f157d5e1a984cb85831459"
+  },
+  "commands": [
+    {
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/run-handoff-schema.test.ts",
+      "log": "budget-red.log",
+      "exit_code": 1,
+      "result": "8 failed, 6 passed; control escaping/material boundary/raw cap regressions"
+    },
+    {
+      "command": "pnpm --filter @multica/web exec vitest run platform/navigation.test.tsx",
+      "log": "navigation-red.log",
+      "exit_code": 1,
+      "result": "2 failed, 13 passed; source anchor/history replacement regressions"
+    },
+    {
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/run-handoff-queries.test.ts",
+      "log": "query-red.log",
+      "exit_code": 1,
+      "result": "1 failed, 16 passed; normalized run query key"
+    },
+    {
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/run-handoff-queries.test.ts collaboration/run-handoff-schema.test.ts collaboration/run-records-queries.test.ts collaboration/run-records-schema.test.ts api/collaboration-run-records.test.ts realtime/collaboration.test.ts",
+      "log": "core-final.log",
+      "exit_code": 0,
+      "result": "125 passed, 6 files, no skipped tests"
+    },
+    {
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/run-handoff.test.tsx collaboration/run-navigation.test.tsx collaboration/execution-panel.test.tsx collaboration/collaboration-detail.test.tsx collaboration/host-execution.test.tsx navigation/app-link.test.tsx",
+      "log": "views-final-green.log",
+      "exit_code": 0,
+      "result": "52 passed, 6 files, no skipped tests; jsdom emits its existing unsupported full-document navigation diagnostic"
+    },
+    {
+      "command": "pnpm --filter @multica/web exec vitest run platform/navigation.test.tsx platform/account-route.test.tsx",
+      "log": "navigation-final.log",
+      "exit_code": 0,
+      "result": "21 passed, 2 files, no skipped tests"
+    },
+    {
+      "command": "pnpm typecheck",
+      "log": "typecheck-final.log",
+      "exit_code": 0,
+      "result": "9 successful tasks, 5 cached"
+    },
+    {
+      "command": "pnpm lint",
+      "log": "lint-final.log",
+      "exit_code": 0,
+      "result": "6 successful tasks, 3 cached; existing warnings, zero errors"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "passed"
+    },
+    {
+      "command": "pnpm --filter @multica/views typecheck",
+      "log": "views-typecheck-final.log",
+      "exit_code": 0,
+      "result": "Passed after the final record-read mock adjustment"
+    },
+    {
+      "command": "pnpm --filter @multica/views exec eslint collaboration/execution-panel.test.tsx",
+      "log": "views-lint-final.log",
+      "exit_code": 0,
+      "result": "Passed after the final record-read mock adjustment"
+    }
+  ],
+  "preserved_imports": [
+    "packages/core/collaboration/run-records-queries.ts",
+    "packages/core/collaboration/run-records-queries.test.ts"
+  ],
+  "runtime_changes": "No rebuild, restart, migration, Go test, commit, or frozen E2E file edit by this agent. Parent owns final production Web/native Desktop verification."
+}

@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS agent_artifact_execution_idempotency_idx;

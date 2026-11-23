@@ -14,6 +14,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/multica-ai/multica/server/internal/middleware"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -207,6 +208,10 @@ func TestAdminHealthAndSettingsDoNotInventAvailabilityOrRetention(t *testing.T) 
 	retention := settings["retention"].(map[string]any)
 	if retention["audit_days"] != nil || retention["automatic_deletion_enabled"] != false || retention["policy_source"] != "unknown" {
 		t.Fatal("unset policy invented deletion/retention")
+	}
+	// An unset shared-context limit reports the documented default, read-only.
+	if configuration := settings["configuration"].(map[string]any); configuration["collaboration_memory_max_bytes"] != float64(service.CollaborationMemoryDefaultMaxBytes) {
+		t.Fatalf("shared-context limit missing from read-only settings: %v", configuration)
 	}
 	ordinary := passwordRegister(t, fmt.Sprintf("s06ordinary%d", time.Now().UnixNano()))
 	passwordCall(t, "GET", "/api/admin/settings", nil, ordinary.Token, testHandler.AdminSettings).Want(http.StatusForbidden)

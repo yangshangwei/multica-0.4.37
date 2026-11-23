@@ -3,6 +3,19 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { RowActionsMenu } from "./row-actions-menu";
 
 describe("RowActionsMenu", () => {
+  it("forwards scoped trigger and portal sizing without changing defaults", async () => {
+    const triggerClassName = "[@media(pointer:coarse)]:size-11";
+    const contentClassName = "[@media(pointer:coarse)]:[&_[role=menuitem]]:min-h-11";
+    render(<RowActionsMenu label="Inbox actions" triggerClassName={triggerClassName} contentClassName={contentClassName}
+      groups={[[{ key: "snooze", icon: null, label: "Snooze", onSelect: vi.fn() }]]} />);
+
+    const trigger = screen.getByRole("button", { name: "Inbox actions" });
+    expect(trigger.className).toContain(triggerClassName);
+    expect(trigger.className).toContain("size-8");
+    fireEvent.click(trigger);
+    expect((await screen.findByRole("menu")).className).toContain(contentClassName);
+  });
+
   it("names its trigger so a screen reader can announce the row's actions", () => {
     render(
       <RowActionsMenu

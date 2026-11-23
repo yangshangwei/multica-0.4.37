@@ -1,0 +1,15 @@
+--- built/apps/web/platform/scroll-restoration.tsx
++++ final/apps/web/platform/scroll-restoration.tsx
+@@ -15,5 +15,4 @@
+- * in the tab coordinator). The browser only restores the window's own scroll
+- * position on back/forward — the app's scrollable containers
+- * (`data-tab-scroll-root`) are inner divs and virtualized lists it knows
+- * nothing about, so without this, navigating back lands every list at the
+- * top.
++ * in the tab coordinator). App-owned containers need route-specific offsets;
++ * native history restoration can also move inner scrollers to old fragments.
++ * The notification navigation owner temporarily disables that competing
++ * browser behavior while this provider supplies the authoritative mementos.
+@@ -25 +24 @@
+- * uses — views read the offset at mount through `useRestoredScrollOffset` /
++ * protocol — views read the offset at mount through `useRestoredScrollOffset` /

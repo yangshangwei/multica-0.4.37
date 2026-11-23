@@ -1,0 +1,33 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=120s",
+    "./internal/daemon/execenv",
+    "-run",
+    "^TestInjectRuntimeConfigMentionLoopHardening$"
+  ],
+  "exit": 0,
+  "counts": {
+    "pass": 4,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestInjectRuntimeConfigMentionLoopHardening/workflow-reply-is-unconditional-and-no-signoff-mention",
+      "TestInjectRuntimeConfigMentionLoopHardening/mentions-section-lists-loop-protocol",
+      "TestInjectRuntimeConfigMentionLoopHardening/closing-line-no-longer-says-always-mention",
+      "TestInjectRuntimeConfigMentionLoopHardening"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "2ac15c33c703c6170791a6b0ace812d0a849857063f3337f13ffe4a4cc099bb8",
+  "classification": "pass",
+  "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-execenv-green-01.jsonl"
+}

@@ -1,0 +1,171 @@
+[
+  {
+    "id": "c400dd9b-689c-4cf6-8224-682fd8d0cee8",
+    "name": "产品分析师",
+    "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
+    "runtime_bound": true,
+    "template_key": "product-analyst",
+    "template_version": 1,
+    "autonomy_level": "observer",
+    "permission_mode": "private",
+    "visibility": "private",
+    "model": "",
+    "skills": [
+      {
+        "id": "196f7c0a-5693-4090-a13e-42db71f31587",
+        "name": "multica-requirement-clarification",
+        "description": "需求尚不清楚、难以实施或验收时使用。根据任务已有信息整理待确认问题、可核验的验收标准、风险与工作拆分，将业务决策交由人工确认。",
+        "enabled": true
+      }
+    ],
+    "status": "idle",
+    "instructions_sha256": "523277103a12a939219594004ec94026edbc143c91d777f55e9835e04fcbba25"
+  },
+  {
+    "id": "2e1aa5ca-4b7d-4278-a0bb-e47f7820ebff",
+    "name": "实现工程师",
+    "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
+    "runtime_bound": true,
+    "template_key": "implementer",
+    "template_version": 1,
+    "autonomy_level": "contributor",
+    "permission_mode": "private",
+    "visibility": "private",
+    "model": "",
+    "skills": [
+      {
+        "id": "1714f831-3d0a-421d-8746-a7e2471377e0",
+        "name": "multica-test-report",
+        "description": "汇报代码变更的验证结果时使用。记录实际执行的检查和结果，说明新增测试验证了什么，以及未运行或未覆盖的部分。",
+        "enabled": true
+      }
+    ],
+    "status": "idle",
+    "instructions_sha256": "cc6df5efa6d07daf89b915a8e0f2d4ebb6a87d4a925458a5f51c7070f31ac99c"
+  },
+  {
+    "id": "0275de41-ff8b-4e4c-965b-d33a3bc2dbae",
+    "name": "代码审查员",
+    "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
+    "runtime_bound": true,
+    "template_key": "code-reviewer",
+    "template_version": 1,
+    "autonomy_level": "observer",
+    "permission_mode": "private",
+    "visibility": "private",
+    "model": "",
+    "skills": [
+      {
+        "id": "10319edc-7ba6-40d9-bc33-fe895af1f7f1",
+        "name": "multica-code-review",
+        "description": "审查任务、拉取请求或工作树中的变更时使用。围绕正确性、兼容性和失败场景，给出有代码依据、可执行的审查意见；不修改代码。",
+        "enabled": true
+      }
+    ],
+    "status": "idle",
+    "instructions_sha256": "a203c84f38811f49303c74c05d4ed01c51970252494977e4dfb0ed69e87325e3"
+  },
+  {
+    "id": "08377736-afba-4140-b64c-67705fc5ba46",
+    "name": "迁移审查员",
+    "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
+    "runtime_bound": true,
+    "template_key": "migration-reviewer",
+    "template_version": 2,
+    "autonomy_level": "observer",
+    "permission_mode": "private",
+    "visibility": "private",
+    "model": "",
+    "skills": [
+      {
+        "id": "d1537f35-b20e-4a2b-8bb8-9268f3ab9757",
+        "name": "multica-migration-review",
+        "description": "审查 schema、API 和客户端迁移的兼容窗口、校验、幂等、重试与回滚证据；缺失材料时阻塞或标记 unknown。",
+        "enabled": true
+      }
+    ],
+    "status": "idle",
+    "instructions_sha256": "0bee6b1301abdf7266095fd4b6f6c58fb2642d8f2904a273ee38c25ec7059bad"
+  },
+  {
+    "id": "da164006-db36-4041-8898-d88f14fb23cf",
+    "name": "测试工程师",
+    "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
+    "runtime_bound": true,
+    "template_key": "qa-engineer",
+    "template_version": 1,
+    "autonomy_level": "contributor",
+    "permission_mode": "private",
+    "visibility": "private",
+    "model": "",
+    "skills": [
+      {
+        "id": "1714f831-3d0a-421d-8746-a7e2471377e0",
+        "name": "multica-test-report",
+        "description": "汇报代码变更的验证结果时使用。记录实际执行的检查和结果，说明新增测试验证了什么，以及未运行或未覆盖的部分。",
+        "enabled": true
+      }
+    ],
+    "status": "idle",
+    "instructions_sha256": "e33cf8349a299d6fd442eff6760b6676c93235a9bcd78c8b08def2207f3194ff"
+  },
+  {
+    "id": "328e2d0c-338a-46f1-aec9-0f0ff14dccfb",
+    "name": "诊断工程师",
+    "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
+    "runtime_bound": true,
+    "template_key": "diagnostician",
+    "template_version": 1,
+    "autonomy_level": "contributor",
+    "permission_mode": "private",
+    "visibility": "private",
+    "model": "",
+    "skills": [
+      {
+        "id": "fdea994f-1973-498c-885f-82a95db5cc2e",
+        "name": "multica-debugging",
+        "description": "定位已观察到但原因未知的失败时使用，包括间歇性或暂时无法复现的失败。系统地复现、最小化、提出并验证假设，给出按证据分档的根因结论和建议修复方向；不提交正式修复。",
+        "enabled": true
+      }
+    ],
+    "status": "idle",
+    "instructions_sha256": "3c17a3d43f144197514ca3c32f2e3d1edc0f41374c679abc5b055f2a796f5427"
+  },
+  {
+    "id": "aae540c4-6bbe-42b6-a362-c62e2e434318",
+    "name": "安全审查员",
+    "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
+    "runtime_bound": true,
+    "template_key": "security-reviewer",
+    "template_version": 1,
+    "autonomy_level": "observer",
+    "permission_mode": "private",
+    "visibility": "private",
+    "model": "",
+    "skills": [
+      {
+        "id": "88a1dd33-7fa2-406d-ba20-90a703764d9c",
+        "name": "multica-security-review",
+        "description": "审查代码变更的安全风险时使用。区分实际漏洞与加固建议，报告风险成立条件、影响和修复建议；不修改代码或编写攻击代码。",
+        "enabled": true
+      }
+    ],
+    "status": "idle",
+    "instructions_sha256": "7a1a6a5f10e9c930960b7d7f129a7ef7d6f623e1c09796e8840b28cae627ea6c"
+  },
+  {
+    "id": "70f335f0-1f27-47f5-ac3f-4defb309a736",
+    "name": "例行维护负责人",
+    "runtime_id": "39443bc2-1bf7-4515-8bdd-4684a41d64c9",
+    "runtime_bound": true,
+    "template_key": "maintenance-lead",
+    "template_version": 3,
+    "autonomy_level": "coordinator",
+    "permission_mode": "private",
+    "visibility": "private",
+    "model": "",
+    "skills": [],
+    "status": "idle",
+    "instructions_sha256": "78d50c440ab1ede60646059eca86f610254b95e905e7bae1086e90bb76cb74da"
+  }
+]

@@ -1,0 +1,70 @@
+{
+  "at": "2026-10-21T23:32:41.814122+00:00",
+  "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source",
+  "head": "8298157751aa6ca5ed4d9635175cdbf66dc50fa5",
+  "production_gate_change": false,
+  "real_provider_account_access": false,
+  "expected_api_source_patch": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b",
+  "compared_product_files": 4549,
+  "application_differences": [],
+  "api_provenance": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source/server)",
+    "source_id": "1e29021a392ca6c6cdc7d9932453af61973d696322f914bf59ed0d0eeca71f79",
+    "configuration_id": "805fc993af4daf895e4de11a22cd372244d7845eed807b7eaa56a50f30b39cd3",
+    "commit": "8ecb98883",
+    "launcher_pid": 22331,
+    "started_at": "2026-10-21T23:28:54Z",
+    "listener_pid": 22414
+  },
+  "api_listener_pids": [
+    "22414"
+  ],
+  "web_provenance": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "tP4r55FoDsuyXfi1EylGw",
+    "command": "pnpm --filter @multica/web exec next start --port 13916",
+    "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+    "configuration_id": "526b29f6d2edc3c37c7c6fedf70b2fe975d603c1e83d791d4492bdc259b5ead1",
+    "commit": "8ecb98883",
+    "launcher_pid": 76915,
+    "started_at": "2026-10-21T01:23:30Z",
+    "listener_pid": 76944
+  },
+  "web_listener_pids": [
+    "76944"
+  ],
+  "api_health": {
+    "status": "ok",
+    "pid": 22414,
+    "commit": "8ecb98883",
+    "started_at": "2026-10-21T23:29:04Z"
+  },
+  "public_configuration": {
+    "auth_mode": "password",
+    "platform_admin_available": true,
+    "managed_installation_supported": true,
+    "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+    "messaging_integrations_enabled": true
+  },
+  "web_http_status": 200,
+  "renderer_http_status": 200,
+  "renderer_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "renderer_expected_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+  "native_harness_source": "e2e/fixtures/collaboration-account-electron.mjs",
+  "native_harness_sha256": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+  "native_harness_matches_snapshot": true,
+  "playwright_native_helper": {
+    "path": "e2e/fixtures/collaboration-native.ts",
+    "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+    "snapshot_difference": "four-line document.fonts.ready and two animation frames before screenshot geometry; host-side test helper executes current source"
+  },
+  "native_renderer_listener_pids": [
+    "36145"
+  ],
+  "ready": true
+}

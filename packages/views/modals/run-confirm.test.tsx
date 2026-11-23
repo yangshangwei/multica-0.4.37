@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { buildIssueStatusCatalog } from "@multica/core/issue-statuses";
+import { ApiError } from "@multica/core/api";
 import {
   configureShortcutPlatform,
   createShortcutChord,
@@ -107,6 +108,7 @@ vi.mock("../i18n", () => ({
         // useStatusLabel resolves BUILT-IN keys through i18n and custom ones
         // through the catalog, so the promote headline needs both sources.
         status: { todo: "Todo" },
+        revision: { conflict: "The latest issue was refreshed; compare before saving again." },
       };
       return sel(labels).replace(/\{\{(\w+)\}\}/g, (_m, k) => String(vars?.[k] ?? ""));
     },
@@ -115,7 +117,9 @@ vi.mock("../i18n", () => ({
 
 // Keep the ui primitives as light DOM so the logic is what's under test.
 vi.mock("@multica/ui/components/ui/dialog", () => ({
-  Dialog: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  Dialog: ({ children, onOpenChange }: { children: React.ReactNode; onOpenChange: (open: boolean) => void }) => (
+    <div><button onClick={() => onOpenChange(false)}>Cancel dialog</button>{children}</div>
+  ),
   // Keeps the real Popup's prop passthrough, which the send chord binds to.
   DialogContent: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div data-testid="dialog-content" {...props}>{children}</div>
@@ -183,6 +187,67 @@ const promote = {
 };
 
 describe("RunConfirmModal", () => {
+  // Numeric validity belongs to Core field-revision.test.ts; this is retained intent wiring.
+  it.each([
+    { name: "single Go with handoff", issueIds: ["issue-1"], suppress: false },
+    { name: "single suppress", issueIds: ["issue-1"], suppress: true },
+    { name: "batch Go with handoff", issueIds: ["i1", "i2"], suppress: false },
+    { name: "batch suppress", issueIds: ["i1", "i2"], suppress: true },
+  ])("retains the captured revision for $name", async ({ issueIds, suppress }) => {
+    const data = { ...single, issueIds, issueRevision: 11 };
+    const onClose = vi.fn();
+    const view = render(<RunConfirmModal onClose={onClose} data={data} />);
+    fireEvent.change(noteBox(), { target: { value: "  original handoff  " } });
+    cache.agents = [...cache.agents];
+    view.rerender(<RunConfirmModal onClose={onClose} data={data} />);
+    fireEvent.click(suppress ? screen.getByText("Don't start yet") : confirmButton());
+    const payload = {
+      assignee_type: "agent",
+      assignee_id: "agent-1",
+      expected_revision: 11,
+      ...(suppress ? { suppress_run: true } : { handoff_note: "original handoff" }),
+    };
+    if (issueIds.length === 1) {
+      await waitFor(() => expect(mockUpdate).toHaveBeenCalledOnce());
+      expect(mockUpdate).toHaveBeenCalledWith({ id: issueIds[0], ...payload });
+      expect(mockBatch).not.toHaveBeenCalled();
+    } else {
+      await waitFor(() => expect(mockBatch).toHaveBeenCalledOnce());
+      expect(mockBatch).toHaveBeenCalledWith({ ids: issueIds, updates: payload });
+      expect(mockUpdate).not.toHaveBeenCalled();
+    }
+    await waitFor(() => expect(onClose).toHaveBeenCalledOnce());
+  });
+
+  it("retains an explicitly supplied promotion revision", async () => {
+    render(<RunConfirmModal onClose={vi.fn()} data={{ ...promote, issueRevision: 11 }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Move and start" }));
+    await waitFor(() => expect(mockUpdate).toHaveBeenCalledWith({ id: "issue-1", status: "rework", expected_revision: 11 }));
+  });
+
+  it("keeps the original revision and handoff note visible after a field conflict without resending", async () => {
+    const onClose = vi.fn();
+    mockUpdate.mockRejectedValueOnce(new ApiError("Issue changed", 409, "Conflict", { code: "revision_conflict" }));
+    render(<RunConfirmModal onClose={onClose} data={{ ...single, issueRevision: 11 }} />);
+    fireEvent.change(noteBox(), { target: { value: "original handoff" } });
+    fireEvent.click(confirmButton());
+    await waitFor(() => expect(mockToast.error).toHaveBeenCalledWith("The latest issue was refreshed; compare before saving again."));
+    expect(mockUpdate).toHaveBeenCalledWith({ id: "issue-1", assignee_type: "agent", assignee_id: "agent-1", expected_revision: 11, handoff_note: "original handoff" });
+    expect(mockUpdate).toHaveBeenCalledOnce();
+    expect(noteBox()).toHaveValue("original handoff");
+    expect(confirmButton()).toBeEnabled();
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("cancels a captured assignment without writing", () => {
+    const onClose = vi.fn();
+    render(<RunConfirmModal onClose={onClose} data={{ ...single, issueRevision: 11 }} />);
+    fireEvent.click(screen.getByRole("button", { name: "Cancel dialog" }));
+    expect(onClose).toHaveBeenCalledOnce();
+    expect(mockUpdate).not.toHaveBeenCalled();
+    expect(mockBatch).not.toHaveBeenCalled();
+  });
+
   it("is fully operable on the first frame — no preview request, no spinner", () => {
     // The MUL-5010 core: opening the dialog fires nothing and blocks nothing.
     const { container } = render(<RunConfirmModal onClose={vi.fn()} data={single} />);
@@ -310,6 +375,18 @@ describe("RunConfirmModal", () => {
     });
     expect(mockUpdate).not.toHaveBeenCalled();
     expect(mockToast.success).not.toHaveBeenCalled();
+  });
+
+  it("keeps a batch confirmation open after a partial or unknown result", async () => {
+    const onClose = vi.fn();
+    mockBatch.mockRejectedValueOnce(new Error("Some updates may have committed; refresh before continuing."));
+    render(<RunConfirmModal onClose={onClose} data={{ ...single, issueIds: ["i1", "i2"] }} />);
+    fireEvent.click(confirmButton());
+    await waitFor(() => expect(mockToast.error).toHaveBeenCalledWith("Some updates may have committed; refresh before continuing."));
+    expect(onClose).not.toHaveBeenCalled();
+    expect(mockToast.success).not.toHaveBeenCalled();
+    expect(mockBatch).toHaveBeenCalledOnce();
+    expect(confirmButton()).not.toBeDisabled();
   });
 
   // --- Send chord (MUL-5694) ------------------------------------------------

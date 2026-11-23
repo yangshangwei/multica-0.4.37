@@ -77,6 +77,7 @@ func perTurnContextBlocks(task Task, opts promptOpts) string {
 // daemon's own execution context can answer. Kept behind PromptOption so the
 // common BuildPrompt(task, provider) call sites stay unchanged.
 type promptOpts struct {
+	knowledgeContext        string
 	sharedLocalDirectory    bool
 	worktreeReplayConflicts []string
 }
@@ -229,6 +230,9 @@ func BuildPrompt(task Task, provider string, options ...PromptOption) string {
 			body += "\n"
 		}
 		body += blocks
+	}
+	if opts.knowledgeContext != "" {
+		body += "\n\n" + opts.knowledgeContext
 	}
 	return body
 }

@@ -1,0 +1,56 @@
+{
+  "recorded_at": "2026-11-03T11:49:12.734708+00:00",
+  "base_candidate": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "scope": "exact reviewed seven E2E files; generated Next import restored to recorded blob after original audit; product source unchanged",
+  "review_sha256": "c9c3229ed8e47860aee3b432bfe74481ab421a4aaaabc34fa072e8430a9a8f9e",
+  "manifest_sha256": "729010073050609c59ad0f8a35ecabaf9709a7534a998c2bf4dc9478ca8d939a",
+  "files": [
+    {
+      "path": "e2e/collaboration-boundaries-web.spec.ts",
+      "base_sha256": "c2b37edb1e7fb8f0bc9f054f8b6fc2c8d27dcb398e033ff7ed6b4c81c0c5635d",
+      "lane": "boundary",
+      "proposed_sha256": "aea75d2300b18b58d8e0c8bb57853d5b74ad8ca498128d86958e447b3823dbf3"
+    },
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "base_sha256": "767ae9c4d8331184a41d640fa89ded564a7d37e0023932021e27f288f29f2a73",
+      "lane": "workbench",
+      "proposed_sha256": "90c8e1e60fd0cb897cf7428bbf8edbdb06bc4546f1c1b9e67a578dd8c67ce007"
+    },
+    {
+      "path": "e2e/collaboration-memory-web.spec.ts",
+      "base_sha256": "2d3ab36d74220324ad4f38b3f70eace05a8a01f1f576d173f100799d54dc1e41",
+      "lane": "memory",
+      "proposed_sha256": "f2613925854c343a768e5458d9103921b5db43e684db46372ccd757d687c784a"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "base_sha256": "0a2b14cb1ebebe159e274a67b9306ab291067257c7557494cb211ccbf5e47697",
+      "lane": "mention-preview",
+      "proposed_sha256": "ef347d2137d78ab1d2ddc3d7bb28ff393a5b5bd6ae3195bc9f7bec60d82bcc91"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "base_sha256": "4ea82836095e23f1f4b0569265b44a8d98cd1335e7d4b3ba0f5ecee4d9019efb",
+      "lane": "mention-preview",
+      "proposed_sha256": "321c051a4de1c815f05f9ac7b12a780564e066774530752abeb2722e5181dd29"
+    },
+    {
+      "path": "e2e/collaboration-preparation-records-web.spec.ts",
+      "base_sha256": "12d92bc59a2ca10a42441157332aa6c8dd00699af4be0737e2d612e17b652da3",
+      "lane": "viewport",
+      "proposed_sha256": "6ff9e181295b93079bfd16d618c2fac2b5ba2295591631b30b997d06112a9fec"
+    },
+    {
+      "path": "e2e/settings-preferences.spec.ts",
+      "base_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+      "lane": "preferences",
+      "proposed_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7"
+    }
+  ],
+  "canonical_product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "product_files_checked": 7984,
+  "candidate_status": " M e2e/collaboration-boundaries-web.spec.ts\n M e2e/collaboration-memory-web.spec.ts\n M e2e/collaboration-preparation-records-web.spec.ts\n M e2e/collaboration-preview-web.spec.ts\n M e2e/collaboration-workbench-web.spec.ts\n M e2e/fixtures/collaboration-mention-journeys.ts\n M e2e/settings-preferences.spec.ts\n",
+  "runtime_tests_run": false,
+  "committed": false
+}

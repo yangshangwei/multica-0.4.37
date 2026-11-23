@@ -6,8 +6,6 @@ import { iterationDateRange } from "./fixtures/iterations-i1";
 import { p1DB } from "./fixtures/project-p1";
 import { captureLayout, scopeAPI, setScopeViewport } from "./fixtures/iteration-scope-business";
 
-test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires an isolated local iteration API");
-
 for (const locale of ["en", "zh-Hans"] as const) {
   test(`iteration task toolbar: planned hierarchy and visible refinements (${locale})`, async ({ native }, info) => {
     test.setTimeout(120_000);
@@ -298,7 +296,7 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
     await page.keyboard.press("Escape");
     await sidebarIterations().click();
   }
-  await page.getByRole("link", { name: "Settings", exact: true }).and(page.locator('[data-sidebar="menu-button"]')).click();
+  await page.getByRole("link", { name: "Settings", exact: true }).and(page.locator(`a[href$="/${workspace.slug}/settings"]`)).click();
   await page.getByRole("tab", { name: "Iterations", exact: true }).click();
   await capture("settings-light-wide");
   await page.getByRole("switch", { name: "Enable iterations", exact: true }).click();

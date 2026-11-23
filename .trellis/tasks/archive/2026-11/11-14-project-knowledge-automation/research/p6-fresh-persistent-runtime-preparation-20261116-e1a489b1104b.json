@@ -1,0 +1,28 @@
+{
+  "schema": "multica.knowledge.temp_asset_loss_fresh_runtime_preparation.v1",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-implement",
+  "at": "2026-11-15T16:34:39.669729+00:00",
+  "state": "original_assets_unavailable_fresh_persistent_wrapper_ready_for_review",
+  "plan": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fresh-runtime-plan.json",
+    "sha256": "a4ce9427b81318547b842407a61d3c121fb234ff85bad0e2875d5200c87917f5"
+  },
+  "recovery": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/recovery-search-and-state-preparation.json",
+    "sha256": "ed816cd53e2aab16f5766df978ad56c25ddda89141b3f8445183bd2a447fba21"
+  },
+  "wrapper": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper.py",
+    "sha256": "7597bdfab9ab9ca891610a0ef4c73e24417cc991b0f0e5c80b474b7fba5f9772"
+  },
+  "fixtures": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-fixtures.json",
+    "sha256": "e7dce8d4c554bdc70d021c882845f6e1ba333faf1789d75893ff6668448c952e"
+  },
+  "fixture_cases_passed": 7,
+  "old_source_or_allocation_or_env_or_provenance_rewritten": false,
+  "new_actual_DB_or_runtime_or_account_operations": 0,
+  "physical_full_source_COPY_completed": false,
+  "source_ready": false
+}

@@ -1,0 +1,148 @@
+{
+  "candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "exit_code": 0,
+  "accepted": true,
+  "stats": {
+    "startTime": "2026-11-04T16:02:03.660Z",
+    "duration": 104211.08099999999,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "exact_inventory_matched": true,
+  "cases": [
+    {
+      "file": "collaboration-handoff-chain-desktop.spec.ts",
+      "title": "Electron information return shows the original requester and note before restoring responsibility",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 12883,
+          "errors": [],
+          "attachments": [
+            "native-information-return-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-handoff-chain-web.spec.ts",
+      "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 21658,
+          "errors": [],
+          "attachments": [
+            "handoff-chain-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 16594,
+          "errors": [],
+          "attachments": [
+            "offline-handoff-identities"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 25506,
+          "errors": [],
+          "attachments": [
+            "offline-handoff-identities"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-runtime-handoff-desktop.spec.ts",
+      "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 4985,
+          "errors": [],
+          "attachments": [
+            "desktop-runtime-handoff",
+            "runtime-handoff-native-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 3522,
+          "errors": [],
+          "attachments": [
+            "ENV-1-startup-and-latest-context"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 8710,
+          "errors": [],
+          "attachments": [
+            "web-runtime-handoff",
+            "source-run-navigation",
+            "source-run-navigation-screen",
+            "runtime-handoff-web-evidence"
+          ]
+        }
+      ]
+    }
+  ],
+  "top_level_errors": [],
+  "source_changed": [],
+  "native_changed": [],
+  "raw_report": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/run-03/results.json",
+  "raw_report_sha256": "09e253295c1d44eb6ad022c8e2716ed7d5d588b9435e8f4c71dd29aa022b6ac7",
+  "log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/run-03/output.log",
+  "log_sha256": "49bef8bf448e60a994487d6a2b55a40960ed6c4430ed790662cf91d571f0afc7",
+  "finished_at": "2026-11-04T16:03:55.428092+00:00",
+  "provider_calls": 0
+}

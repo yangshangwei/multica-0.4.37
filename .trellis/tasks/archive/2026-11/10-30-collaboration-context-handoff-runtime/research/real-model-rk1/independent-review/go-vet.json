@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "-tags=agentintegration",
+    "./cmd/server"
+  ],
+  "exit_code": 0,
+  "started_at": "2026-11-01T16:57:58.508081+00:00",
+  "finished_at": "2026-11-01T16:58:02.883251+00:00",
+  "database_commands": false,
+  "provider_calls": 0,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

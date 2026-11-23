@@ -60,3 +60,6 @@ RETURNING *;
 -- name: CountPendingAgentApprovalRequests :one
 SELECT COUNT(*) FROM agent_approval_request
 WHERE workspace_id = $1 AND status = 'pending';
+
+-- name: LockAgentApprovalRequest :one
+SELECT * FROM agent_approval_request WHERE id = $1 FOR UPDATE NOWAIT;

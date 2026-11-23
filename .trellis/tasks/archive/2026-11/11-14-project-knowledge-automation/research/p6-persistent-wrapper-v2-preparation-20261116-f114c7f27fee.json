@@ -1,0 +1,57 @@
+{
+  "kind": "P6_persistent_wrapper_v2_preparation_and_offline_regression_evidence",
+  "at": "2026-11-15T16:52:52.712820+00:00",
+  "wrapper": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+    "sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8"
+  },
+  "v1_wrapper": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper.py",
+    "sha256": "7597bdfab9ab9ca891610a0ef4c73e24417cc991b0f0e5c80b474b7fba5f9772"
+  },
+  "v1_preserved": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v1-preserved-before-query-guard/preserved-inputs.json",
+    "sha256": "ef9a05833ba94acf65a29fa0db0f7922785e29bb2a52a7be9e4e51ce597ef1f2"
+  },
+  "v1_original_fixture_results": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-fixtures.json",
+    "sha256": "e7dce8d4c554bdc70d021c882845f6e1ba333faf1789d75893ff6668448c952e"
+  },
+  "RED": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v1-query-override-red/v1-query-override-red.json",
+    "sha256": "8d6be9ab199562270cd6b29103ad87290b97e43082a430dee5dd9d66be4ed640"
+  },
+  "patch": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-v1-to-v2.patch",
+    "sha256": "f396e0395f59ebf984a604fd47eccc0a7c0c4ade5e75244d395e699421db406a"
+  },
+  "fixtures": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-v2-fixtures.json",
+    "sha256": "d978a7fb2161de91db9a69d93ef3397ad4a9514ff6f04b229f4bc59c97285dcc"
+  },
+  "fixture_script": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-wrapper-v2-fixtures.py",
+    "sha256": "e1995fc49091775a66bcce7fff80218bca957c7bb461fcdb0d5cfa80c4746c9e"
+  },
+  "plan": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fresh-runtime-plan-v2.json",
+    "sha256": "382bb57268d9dd8bb091131895601fd63dc223bbc8755fc2551a4a06a9647b7f"
+  },
+  "original_controller": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+    "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c"
+  },
+  "original_controller_modified": false,
+  "v1_originals_modified": false,
+  "old7_passed": 7,
+  "expanded_URI_cases_passed": 49,
+  "preservation_guards_passed": 2,
+  "total_offline_passed": 58,
+  "failed": 0,
+  "actual_database_connections": 0,
+  "actual_controller_main_calls": 0,
+  "actual_execute_actions": 0,
+  "source_ready": false,
+  "whole_SOURCE_COPY_status": "authorized by main; not yet executed at this receipt",
+  "remaining_review": "independent v2 wrapper closure plus new full physical SOURCE review before any actual allocation/build/runtime"
+}

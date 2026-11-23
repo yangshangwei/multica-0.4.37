@@ -1,0 +1,2 @@
+SELECT collaboration_assert_knowledge_empty();
+DROP INDEX IF EXISTS collaboration_knowledge_lineage_version_idx;

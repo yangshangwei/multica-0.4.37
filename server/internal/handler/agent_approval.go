@@ -364,6 +364,9 @@ func (h *Handler) DecideAgentApproval(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	if h.controlledApproval(w, r, approval, "decision") {
+		return
+	}
 	// The approver must be able to manage the agent whose action this is: its owner,
 	// or a workspace owner/admin. A member who cannot configure the agent has no
 	// standing to authorize it operating production.
@@ -442,6 +445,9 @@ func (h *Handler) RecordAgentApprovalExecution(w http.ResponseWriter, r *http.Re
 	if !ok {
 		return
 	}
+	if h.controlledApproval(w, r, approval, "execution") {
+		return
+	}
 	workspaceID := uuidToString(approval.WorkspaceID)
 	actorType, actorID := h.resolveActor(r, requestUserID(r), workspaceID)
 
@@ -502,6 +508,9 @@ func (h *Handler) RecordAgentApprovalExecution(w http.ResponseWriter, r *http.Re
 func (h *Handler) CancelAgentApproval(w http.ResponseWriter, r *http.Request) {
 	approval, ok := h.loadApprovalInWorkspace(w, r)
 	if !ok {
+		return
+	}
+	if h.controlledApproval(w, r, approval, "cancel") {
 		return
 	}
 	actorType, actorID := h.resolveActor(r, requestUserID(r), uuidToString(approval.WorkspaceID))

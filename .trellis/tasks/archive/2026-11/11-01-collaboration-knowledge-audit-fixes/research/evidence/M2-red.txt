@@ -1,0 +1,60 @@
+M2 red run (unfixed production code, new tests only)
+Defect M2: prepare/authorize take the installation namespace (and member/status fences) as try-locks
+and meet claim/finalize row locks with NOWAIT; one miss returns 503 knowledge_busy (or collaboration_busy
+after collaborationRuntimeMutation's three quick 55P03 retries) and the task ends.
+
+Base commit: 680ad868fc9ce5e2b9ba665c20a626d3c6bbb0ab (production code unchanged; only the test files below are new or edited)
+Uncommitted files at the time of this run:
+ M server/internal/service/collaboration_knowledge_runtime_test.go
+ M server/internal/service/task_knowledge_concurrency_test.go
+?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M2-red.txt
+
+Database: postgres://multica:multica@127.0.0.1:5432/kfix_launch_svc (migrated to 760, 748 ledger rows)
+Command: (cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=...kfix_launch_svc go test ./internal/service/ -run '<names below>' -count=1 -v)
+
+Classification
+BEHAVIORAL (must fail for the defect's reason):
+  TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/installation_namespace -> knowledge_busy after ~68ms while LockManagedRuntime holds the namespace
+  TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/member_fence           -> knowledge_busy after ~68ms while LockSubscriberWrites holds the member fence
+  TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder                     -> knowledge_busy while the namespace is held
+  TestKnowledgePreparationNamespaceBusyBudgetIsBounded                         -> 1 transaction, no retry
+  TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/*/installation_namespace -> knowledge_busy (late try-lock, not retried by collaborationRuntimeMutation)
+  TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/*/managed_claim          -> collaboration_busy (owner FOR UPDATE from LockPasswordSession; three 55P03 retries in ~100ms)
+EXISTING TEST SHOWN FOR CONTEXT (passes here, encodes the defect's immediate refusal; updated with the fix):
+  TestCollaborationKnowledgeRuntimeLateRunLockIsNowait (asserts a refusal within 500ms under a 1s context)
+
+Exit code: 1
+---------------------------------------------------------------- full output
+=== RUN   TestCollaborationKnowledgeRuntimeLateRunLockIsNowait
+--- PASS: TestCollaborationKnowledgeRuntimeLateRunLockIsNowait (0.76s)
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/managed_claim
+    collaboration_knowledge_runtime_test.go:382: prepare returned while the sibling held the namespace: collaboration_busy
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/installation_namespace
+    collaboration_knowledge_runtime_test.go:382: prepare returned while the sibling held the namespace: knowledge_busy
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/managed_claim
+    collaboration_knowledge_runtime_test.go:382: authorize returned while the sibling held the namespace: collaboration_busy
+=== RUN   TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/installation_namespace
+    collaboration_knowledge_runtime_test.go:382: authorize returned while the sibling held the namespace: knowledge_busy
+--- FAIL: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder (3.21s)
+    --- FAIL: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/managed_claim (0.77s)
+    --- FAIL: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/prepare/installation_namespace (0.63s)
+    --- FAIL: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/managed_claim (1.02s)
+    --- FAIL: TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder/authorize/installation_namespace (0.79s)
+=== RUN   TestKnowledgePreparationWaitsOutSiblingNamespaceHolder
+=== RUN   TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/installation_namespace
+    task_knowledge_concurrency_test.go:329: preparation returned while the sibling held the key: err=knowledge_busy after 68.110334ms
+=== RUN   TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/member_fence
+    task_knowledge_concurrency_test.go:329: preparation returned while the sibling held the key: err=knowledge_busy after 68.482167ms
+--- FAIL: TestKnowledgePreparationWaitsOutSiblingNamespaceHolder (0.59s)
+    --- FAIL: TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/installation_namespace (0.29s)
+    --- FAIL: TestKnowledgePreparationWaitsOutSiblingNamespaceHolder/member_fence (0.30s)
+=== RUN   TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder
+    task_knowledge_concurrency_test.go:375: authorization returned while the sibling held the namespace: knowledge_busy
+--- FAIL: TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder (0.42s)
+=== RUN   TestKnowledgePreparationNamespaceBusyBudgetIsBounded
+    task_knowledge_concurrency_test.go:422: contended preparation ran 1 transaction(s), want a retry
+--- FAIL: TestKnowledgePreparationNamespaceBusyBudgetIsBounded (0.30s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	6.040s
+FAIL

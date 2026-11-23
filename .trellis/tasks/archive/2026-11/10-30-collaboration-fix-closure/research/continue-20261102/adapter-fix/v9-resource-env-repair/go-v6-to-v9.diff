@@ -1,0 +1,11 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin/go
++++ /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go
+@@ -191,6 +191,8 @@
+     package_home = homes / database
+     package_home.mkdir(mode=0o700)
+     environment = os.environ.copy()
++    # Publishing is API configuration; fixtures attach it explicitly when needed.
++    environment.pop("MULTICA_RESOURCE_PUBLISH_DIR", None)
+     environment.update(DATABASE_URL=selected, POSTGRES_DB=database, MULTICA_TASK_PACKAGE_DB_MODE="0", HOME=str(package_home))
+     command = [real_go, *global_args, "test", *flags, package]
+     evidence = {"package": package, "database": database, "template": template, "command": command,

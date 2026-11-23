@@ -1,0 +1,14 @@
+scope,status,meaning
+core_browser_inventory,PASS,441 unique identities have actual pass evidence across explicit configurations
+final_single_suite,FAIL_CLOSED_BY_TARGETED_REGRESSION,356PASS/1FAIL/84SKIP retained; causal repair plus complete12PASS and all441 latestPASS
+real_commercial_model,NOT_RUN,explicitly deferred in accepted scope; no quota or account accessed
+iOS_native_UI,NOT_RUN,no simulator runtime on current host;196unit tests pass
+Windows_native,NOT_RUN,current hostmacOS;2Go platformcases skipped
+Linux_full_Main,PASS,currentarm64directorypackage in isolatedLinuxcontainer
+macOS_full_Main,PASS,currentarm64directorypackage with dedicatedlocalhostalias
+installer_upgrade_updater,NOT_RUN,directorypackage lifecycle does not establish installedoldversionupgrade or updater
+formal_signing_notarization,NOT_RUN,unsignedlocalacceptancepackages only
+external_SMTP_VCS_messages,NOT_RUN,localcontrolledfixtures only
+public_GitHub_skill_import,EXTERNAL_FAILURE,GitHub403rate limit; originalfailure retained
+pg_bigm,SKIP,extension unavailable
+performance_original_thresholds,PASS,all3 original gates passed; closure1662.866ms disable1937.854ms

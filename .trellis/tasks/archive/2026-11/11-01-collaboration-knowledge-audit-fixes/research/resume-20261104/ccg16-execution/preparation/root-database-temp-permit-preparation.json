@@ -1,0 +1,51 @@
+{
+  "recorded_at": "2026-11-04T04:49:35.132111+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "seed_clean_witness": {
+    "db": "multica_closure_v16_seed_01a1a3c9",
+    "latest": "764_collaboration_ai_policy",
+    "task_rows": 0,
+    "issue_rows": 0
+  },
+  "shared_readiness": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v16-actual-01/independent-shared-readiness-review.json",
+    "sha256": "b84ae87408a08e3e2536dfef08935c92b1ec23deddfc8e8a5c88b00d343734a2"
+  },
+  "Root_release": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/root-v16-resource-release.json",
+    "sha256": "ffd84568037732e3642d3a0c661fbd90a34596150086e26460bdc1f034bf9200"
+  },
+  "source_inputs_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+  "databases": [
+    {
+      "mode": "normal",
+      "database": "multica_knowledge_host_composite_20261101_v16n_a3c9",
+      "absent_before": true,
+      "temp": "/private/tmp/multica-ccg-v16-normal-pts2beua",
+      "temp_mode": "0700",
+      "Git_free": true,
+      "identity": "multica_knowledge_host_composite_20261101_v16n_a3c9|764_collaboration_ai_policy",
+      "created_fresh": true,
+      "permit": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-normal.json",
+      "permit_sha256": "3f6d63519a055b7ca65d715a017d40f4c93248a17b3406c0814ff91719024358",
+      "ready_to_execute": false
+    },
+    {
+      "mode": "race",
+      "database": "multica_knowledge_host_composite_20261101_v16r_a3c9",
+      "absent_before": true,
+      "temp": "/private/tmp/multica-ccg-v16-race-yerk581i",
+      "temp_mode": "0700",
+      "Git_free": true,
+      "identity": "multica_knowledge_host_composite_20261101_v16r_a3c9|764_collaboration_ai_policy",
+      "created_fresh": true,
+      "permit": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg1-race.json",
+      "permit_sha256": "0033d13871f72ca4d1460d7ea9319f8077a56a50e377d0a38911801942f8e682",
+      "ready_to_execute": false
+    }
+  ],
+  "real_allowed": false,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0
+}

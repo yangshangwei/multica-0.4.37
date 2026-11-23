@@ -376,6 +376,9 @@ WHERE runtime_id = $1 AND kind = 'user'
 RETURNING *;
 
 -- name: DeleteAgentRuntime :exec
+WITH deleted_scan_cursors AS (
+    DELETE FROM collaboration_runtime_scan_cursor WHERE runtime_id = $1
+)
 DELETE FROM agent_runtime WHERE id = $1;
 
 -- name: DeleteSystemAgentsByRuntime :exec

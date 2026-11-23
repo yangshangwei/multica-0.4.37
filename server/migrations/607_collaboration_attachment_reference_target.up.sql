@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY collaboration_attachment_reference_target_idx ON collaboration_attachment_reference (reference_kind, reference_id);

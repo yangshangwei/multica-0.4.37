@@ -39,13 +39,13 @@ export type TabSubject =
   | { kind: "attachment"; id: string; filename: string | null }
   /**
    * The Inbox container; `selectedKey` is the `?issue=` selection or null,
-   * `archived` is the `?view=archived` sub-list (its own list/cache).
+   * `archived` / `snoozed` identify the independently cached sub-lists.
    */
-  | { kind: "inbox"; selectedKey: string | null; archived: boolean }
+  | { kind: "inbox"; selectedKey: string | null; archived: boolean; snoozed?: boolean }
   /** The Chat container; `sessionId` is the `?session=` selection or null. */
   | { kind: "chat"; sessionId: string | null }
   /** A creation flow that has not produced a resource yet. */
-  | { kind: "flow"; flow: "create-agent" }
+  | { kind: "flow"; flow: "create-agent" | "create-squad" }
   /** An unrecognized URL. Never impersonate a real page. */
   | { kind: "unknown" };
 
@@ -96,6 +96,7 @@ export function parseTabSubject(url: string): TabSubject {
       // No members collection route exists; only `/members/:id`.
       return id ? { kind: "actor", actorType: "member", id } : { kind: "unknown" };
     case "squads":
+      if (id === "new") return { kind: "flow", flow: "create-squad" };
       return id
         ? { kind: "actor", actorType: "squad", id }
         : { kind: "page", page: "squads" };
@@ -106,6 +107,7 @@ export function parseTabSubject(url: string): TabSubject {
         kind: "inbox",
         selectedKey: query.get("issue") || null,
         archived: query.get("view") === "archived",
+        ...(query.get("view") === "snoozed" ? { snoozed: true } : {}),
       };
     case "chat":
       return { kind: "chat", sessionId: query.get("session") || null };
@@ -163,7 +165,7 @@ export function tabSubjectKey(subject: TabSubject): string {
     case "attachment":
       return `attachment:${subject.id}:${subject.filename ?? ""}`;
     case "inbox":
-      return `inbox:${subject.archived ? "archived" : "inbox"}:${subject.selectedKey ?? ""}`;
+      return `inbox:${subject.snoozed ? "snoozed" : subject.archived ? "archived" : "inbox"}:${subject.selectedKey ?? ""}`;
     case "chat":
       return `chat:${subject.sessionId ?? ""}`;
     case "flow":

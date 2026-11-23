@@ -98,6 +98,18 @@ describe("DiagnosticRouteReporter", () => {
     });
   });
 
+  it("reports account tabs without leaking query or comment identities", () => {
+    tabState.slug = null;
+    tabState.url = "/account?view=current&issue=8db920bc-f982-4d38-95f3-56ec43cbefa8#comment-private";
+
+    render(<DiagnosticRouteReporter />);
+
+    expect(setRendererRouteContext).toHaveBeenCalledWith({
+      surface: "tab",
+      path: "/account",
+    });
+  });
+
   it("reports an overlay, which is window state rather than a tab route", () => {
     overlayState.overlay = { type: "onboarding" };
 

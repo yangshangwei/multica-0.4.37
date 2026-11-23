@@ -725,7 +725,7 @@ func writeWorkflowIssue(b *strings.Builder, ctx TaskContextForEnv) {
 
 	b.WriteString("**Issue status — write the state the issue is in, whenever it changes** (skip any status call your Agent Identity forbids)\n\n")
 	b.WriteString("Status reflects the state the ISSUE is in, not your run's lifecycle — keep it true at every point in the turn, not only at checkpoints: write the new value the moment your work changes it, mid-turn included. Write only when the new value differs from the current one, whoever the assignee is:\n\n")
-	b.WriteString("- You delivered what the issue itself asks for and it awaits acceptance → `in_review`. Delivering an issue assigned to you — including a sub-issue in a chain or stage — always lands here; stage barriers and parent notifications depend on that signal. `done` stays human.\n")
+	b.WriteString("- You delivered what the issue itself asks for and it awaits acceptance → `in_review`. Delivering an issue assigned to you — including a sub-issue in a chain or stage — always lands here. A sub-issue in `in_review` still awaits acceptance; stage barriers close only when all children in the stage reach `done` or `cancelled`. `done` stays human / integration-owned.\n")
 	b.WriteString("- The issue's work continues beyond this turn — you dispatched sub-issues, or delivered one part with more underway → `in_progress`.\n")
 	b.WriteString("- You cannot proceed without something you are missing → `blocked`, and post a comment explaining the blocker unless your Agent Identity forbids issue comments.\n")
 	if ctx.IsSquadLeader {
@@ -793,7 +793,8 @@ func writeMentions(b *strings.Builder) {
 	// client unfurls into the same chip) a project reference stays dead text.
 	b.WriteString("- `[Project Name](mention://project/<project-id>)` — clickable link (no side effect)\n")
 	b.WriteString("- `[@Name](mention://member/<user-id>)` — **notifies a human**\n")
-	b.WriteString("- `[@Name](mention://agent/<agent-id>)` — **enqueues a new run for that agent**\n\n")
+	b.WriteString("- `[@Name](mention://agent/<agent-id>)` — **requests work from that agent**\n")
+	b.WriteString("Read `trigger_outcomes` in the comment write's JSON response and match each intended target's type and UUID. `queued/coalesced/deferred` confirm admission or coverage, not proof of completion; blocked, missing or unknown outcomes do not confirm delegation. Do not repost a saved comment merely because no new run appeared. For attachment-free ordinary delegation, retain a canonical UUID with `--idempotency-key <key>`; `delegation_receipt` state `recorded` retains admission facts, not completion. Recover with `multica issue comment receipt <issue-id> <key>` under current authority. Unknown or missing receipts do not permit a new key or dispatch; unkeyed creates and edits remain immediate-only. Per-target receipts cover explicit agent/squad mentions only; an empty target list does not guarantee implicit follow-up. `runtime_observation` records historical status/time for the admitted task runtime, not current availability; recovery never recomputes it. Offline runtimes may queue work to wait; unbound/unusable runtimes are refused.\n\n")
 	// No prescriptive default here (MUL-6417): the mention syntax hides its
 	// semantics — it reads like a free social gesture but is a spawn/notify
 	// operation — so what this paragraph must supply is the facts that

@@ -217,7 +217,7 @@ func (s *PlatformAdminService) ChangeAccount(ctx context.Context, p PlatformAcco
 	if err = EnsureEffectiveSuperAdmin(ctx, tx); err != nil {
 		return result, err
 	}
-	result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, target.ID)
+	result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, target.ID, "admin:"+util.UUIDToString(op.ID))
 	if err != nil {
 		return PlatformRoleChangeResult{}, err
 	}

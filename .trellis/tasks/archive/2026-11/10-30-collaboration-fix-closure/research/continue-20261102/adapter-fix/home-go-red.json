@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-02T13:39:55.942859+00:00",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-go-isolation-test.py",
+    "IsolationLauncherTests.test_packages_get_private_homes_keep_caches_and_remove_override_roots",
+    "IsolationLauncherTests.test_recursive_same_package_preserves_test_selected_home_and_caches",
+    "IsolationLauncherTests.test_non_test_and_compile_preserve_caller_home_and_caches"
+  ],
+  "exit_code": 1,
+  "expected": "FAILED (failures=2)",
+  "log_sha256": "5c1c2b056372422ee0710445a21453af57d423e686cfe053a0686d82ef4e9832",
+  "real_database_commands": 0,
+  "real_provider_calls": 0
+}

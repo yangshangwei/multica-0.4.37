@@ -1,0 +1,360 @@
+{
+  "schema_version": 1,
+  "type": "r28_preview_read_RED_independent_check",
+  "at": "2026-11-17T15:36:50.713Z",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "reviewer": "/root/r27_submission_check",
+  "r28_root": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y",
+  "verdict": "ACCEPTED_R28_RED_READ_BOUNDARY",
+  "RED_boundary_accepted": true,
+  "three_file_design_accepted_for_bounded_GREEN": true,
+  "GREEN_accepted": false,
+  "full_preview_accepted": false,
+  "full_S2_accepted": false,
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-red-independent-check-20261117.md",
+    "sha256": "42cb70c61be2ba72cb42035e3d66a07bd95e4e3d9854672337f2e6a6c206cdf6"
+  },
+  "private_support": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/read-red-independent-check/retained-red-reconciliation-r01.json",
+    "sha256": "483d8e9ad335a86bf3a0b4aeda94f66ad8f206d984188b77ed38be789731a84a"
+  },
+  "checks": {
+    "exact_5051_source_files_bytes_modes": true,
+    "protected_5050_records_unchanged": true,
+    "sole_new_602_line_test": true,
+    "exact_permit_hash_and_all_5057_inputs": true,
+    "profile_command_and_database_match": true,
+    "implementation_AST_compile_artifact_refs_match": true,
+    "actual_18_complete_raw_names_once": true,
+    "genuine_RED_13_pass_5_fail_0_skip": true,
+    "no_missing_extra_pending_parse_drift_or_retries": true,
+    "all_three_reached_SQL_hashes_UUIDs_and_real_PIDs_match": true,
+    "second_terminal_precedes_first_release_commit": true,
+    "ten_writer_authority_binding_control_leaves_pass": true,
+    "all_26_no_write_comparisons_72_and_zero_M1_effect_rows": true,
+    "no_admin_adapter_hold_or_scope_assertion_failures": true,
+    "actual_preview_RC_and_R4_RR_checks_preserved": true,
+    "original_binding_queries_are_SHARE": true,
+    "stage_task_getter_virtual_absence_and_real_SHARE_literal_verified": true,
+    "design_MD_JSON_reference_match": true,
+    "final_database_connections_zero_ledger_indexes_unchanged": true
+  },
+  "source": {
+    "root": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/source-red-r01",
+    "manifest_sha256": "6ae31d56df12e78b88e333e602d622b9249c9b2287de7dfe634f83aab23010a6",
+    "protected_manifest_sha256": "5d6530ea2116819b8b16de92a22a33fdc568c7d20b8b0f71171c08ae2160d71e",
+    "actual_count": 5051,
+    "manifest_count": 5051,
+    "protected_count": 5050,
+    "missing": [],
+    "extra": [],
+    "byte_mode_mismatches": [],
+    "protected_manifest_changes": [],
+    "sole_extra": "server/internal/service/collaboration_completion_preview_read_concurrency_test.go",
+    "new_test": {
+      "path": "server/internal/service/collaboration_completion_preview_read_concurrency_test.go",
+      "sha256": "31885022def923d4d4d07a27855ab7d7e19f51776a69682ba61a2c1cc0993bf8",
+      "mode": "0o644"
+    }
+  },
+  "permit": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/verification/preview-read-red-permit-r01.json",
+    "sha256": "0c36e60f277bb456e8d4d3cd85b033193c4288a65f4a3fd5c3ff8961956e98e6",
+    "required_count": 5057,
+    "required_hash_mismatches": []
+  },
+  "profile": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/database/profiles-r01/red-environment.json",
+    "sha256": "c9dabc506cf7c160315d074738075055de2c0f31c529214dedafb1ec202a5098",
+    "database": "multica_pay241_20261117_s2_previewread_red_r28",
+    "exact_database_matches": true
+  },
+  "implementation": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-red-implementation-20261117.json",
+    "sha256": "0649e1f8a15dc7d6cc917b5412897e0413604659a75c8901db00fd6b3d79daff"
+  },
+  "compile_binary_sha256": "b50cad40ef95785bae5708c6780fdac3bf146936175ff169aa19b0bdaccf44a6",
+  "actual_RED_result": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/verification/preview-read-red-r01/result.json",
+    "sha256": "e0cd8f3efef746a02a35d6f1baf5f54f4156302b3a1952f19b3ca1c30559d04f",
+    "counts": {
+      "top_level": 5,
+      "leaf": 13,
+      "named": 18,
+      "pass": 13,
+      "fail": 5,
+      "skip": 0
+    },
+    "raw_terminal_results": {
+      "pass": [
+        "TestCollaborationCompletionPreviewManagedSubmissionWriterFences/writer_first",
+        "TestCollaborationCompletionPreviewManagedSubmissionWriterFences/reader_first",
+        "TestCollaborationCompletionPreviewManagedSubmissionWriterFences/stage_state_plain",
+        "TestCollaborationCompletionPreviewManagedSubmissionWriterFences/stage_state_read_marker",
+        "TestCollaborationCompletionPreviewManagedSubmissionWriterFences",
+        "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/disabled_account",
+        "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/changed_password",
+        "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/revoked_artifact_manager",
+        "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/revoked_qa_issuer",
+        "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority",
+        "TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals/missing_stage_binding",
+        "TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals/stale_stage",
+        "TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals"
+      ],
+      "fail": [
+        "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/r4_first",
+        "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/preview_first",
+        "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence",
+        "TestCollaborationCompletionPreviewManagedSubmissionSiblingReads/same_creator",
+        "TestCollaborationCompletionPreviewManagedSubmissionSiblingReads"
+      ],
+      "skip": []
+    },
+    "command": {
+      "at": "2026-11-17T15:05:40.511971+00:00",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=10m",
+        "./internal/service",
+        "-run",
+        "^TestCollaborationCompletionPreviewManagedSubmission(R4Coexistence|SiblingReads|WriterFences|CurrentAuthority|BindingRefusals)$"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/source-red-r01/server",
+      "environment": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/database/profiles-r01/red-environment.json",
+        "sha256": "c9dabc506cf7c160315d074738075055de2c0f31c529214dedafb1ec202a5098"
+      },
+      "permit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/verification/preview-read-red-permit-r01.json",
+        "sha256": "0c36e60f277bb456e8d4d3cd85b033193c4288a65f4a3fd5c3ff8961956e98e6"
+      },
+      "ambient_environment_inherited": false
+    }
+  },
+  "reached_fences": [
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/r4_first",
+      "first_pg": {
+        "query": "SELECT issue_id FROM issue_collaboration WHERE issue_id=$1 FOR UPDATE NOWAIT",
+        "sql_sha256": "2069277eaf66ff534a1a5b24b6ffdf9bbb2b3ed99024b95e6ba13e1a220bf71b",
+        "uuid_args": [
+          "01a1ea0a-f482-708c-840e-1250ba1fa6fe"
+        ],
+        "phase": "exec",
+        "backend_pid": 2458,
+        "sqlstate": "55P03",
+        "outer_type": "*pgconn.PgError",
+        "message": "could not obtain lock on row in relation \"issue_collaboration\"",
+        "detail": "",
+        "where": "",
+        "table": "",
+        "constraint": "",
+        "recorded_at": "2026-11-17T15:05:52.125517Z"
+      },
+      "second_pid": 2458,
+      "matched_actual_SQL_hash": true,
+      "matched_target_or_child_UUID": true,
+      "first_still_held_assertions_without_failure": true,
+      "first_PID_explicitly_logged": 2427,
+      "first_pid": 2427,
+      "distinct_nonzero_pids": true
+    },
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/preview_first",
+      "first_pg": {
+        "query": "LockDeliveryEvidenceIssueRead",
+        "sql_sha256": "a0960f3c146c3313edc3f6f049c26103c341d0c74974669574ad9019f0ed5adc",
+        "uuid_args": [
+          "e996ceff-69be-4820-b0a1-78d65e2869cb",
+          "7855616d-40cc-4b83-b9eb-ff92043e0204"
+        ],
+        "phase": "row_scan",
+        "backend_pid": 2484,
+        "sqlstate": "55P03",
+        "outer_type": "*pgconn.PgError",
+        "message": "could not obtain lock on row in relation \"issue\"",
+        "detail": "",
+        "where": "",
+        "table": "",
+        "constraint": "",
+        "recorded_at": "2026-11-17T15:05:54.763224Z"
+      },
+      "second_pid": 2484,
+      "matched_actual_SQL_hash": true,
+      "matched_target_or_child_UUID": true,
+      "first_still_held_assertions_without_failure": true,
+      "first_PID_explicitly_logged": 2460,
+      "first_pid": 2460,
+      "distinct_nonzero_pids": true
+    },
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmissionSiblingReads/same_creator",
+      "first_pg": {
+        "query": "TryLockCollaborationStageRootShared",
+        "sql_sha256": "7c9acce43b514db93adcaffba3eb5b2e924e4118e0a77f9172a8ecd6749bb25b",
+        "uuid_args": [
+          "01a1ea0b-0bff-76c6-9a79-4b220da3b97e"
+        ],
+        "phase": "row_scan",
+        "backend_pid": 2507,
+        "sqlstate": "55P03",
+        "outer_type": "*pgconn.PgError",
+        "message": "could not obtain lock on row in relation \"issue_collaboration\"",
+        "detail": "",
+        "where": "",
+        "table": "",
+        "constraint": "",
+        "recorded_at": "2026-11-17T15:05:57.161107Z"
+      },
+      "second_pid": 2507,
+      "matched_actual_SQL_hash": true,
+      "matched_target_or_child_UUID": true,
+      "first_still_held_assertions_without_failure": true,
+      "first_PID_explicitly_logged": 2486,
+      "first_pid": 2486,
+      "distinct_nonzero_pids": true
+    }
+  ],
+  "hold_order_evidence": [
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/r4_first",
+      "first_pid": 2427,
+      "second_pid": 2458,
+      "second_terminal_recorded_at": "2026-11-17T23:05:52.126054+08:00",
+      "first_commit_recorded_at": null,
+      "second_before_first_commit": null,
+      "held_R4_release_after_second_enforced_in_executed_test": true,
+      "no_unexpected_hold_deadline_or_transaction_status_assertion": true
+    },
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/preview_first",
+      "first_pid": 2460,
+      "second_pid": 2484,
+      "second_terminal_recorded_at": "2026-11-17T23:05:54.763679+08:00",
+      "first_commit_recorded_at": "2026-11-17T23:05:54.76827+08:00",
+      "second_before_first_commit": true,
+      "held_R4_release_after_second_enforced_in_executed_test": false,
+      "no_unexpected_hold_deadline_or_transaction_status_assertion": true
+    },
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmissionSiblingReads/same_creator",
+      "first_pid": 2486,
+      "second_pid": 2507,
+      "second_terminal_recorded_at": "2026-11-17T23:05:57.161621+08:00",
+      "first_commit_recorded_at": "2026-11-17T23:05:57.166425+08:00",
+      "second_before_first_commit": true,
+      "held_R4_release_after_second_enforced_in_executed_test": false,
+      "no_unexpected_hold_deadline_or_transaction_status_assertion": true
+    }
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "R28-READ-C01",
+      "severity": "P1",
+      "issue": "Actual submission-preview/R4 and sibling reads contend on reached original root/child fences",
+      "files": [
+        "server/internal/service/collaboration_completion_preview.go",
+        "server/internal/service/delivery_completion_collaboration.go",
+        "server/internal/service/collaboration_stage_completion.go"
+      ],
+      "fix_recommendation": "Implement only the separately admitted submission read entries, same exact value marker and compatible root/source/artifact/observer/stage-task read dispatches; preserve current authority and constant-false writer defaults",
+      "reason_not_fixed": "Source read-only checker ownership; original RED preserved and GREEN separate"
+    },
+    {
+      "id": "R28-FULL-PREVIEW-AND-ACCEPTANCE",
+      "issue": "Fresh GREEN/race/default controls, nonempty attachments, self/R38 and broader preview/joint/S2/parent acceptance remain unproved",
+      "reason_not_fixed": "Outside RED-boundary scope"
+    }
+  ],
+  "repair_design": {
+    "markdown": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-repair-design-20261117.md",
+      "sha256": "b0b4d7e525ed8a1ae5f6f6e67d503f78805cdd75a0a96c1841aa1c55e2c75696"
+    },
+    "json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-repair-design-20261117.json",
+      "sha256": "ef5b3a5a3fb19042ec19e247b534821268b772f4245e74201279731280474c74"
+    },
+    "allowed_three_product_files": [
+      "server/internal/service/collaboration_completion_preview.go",
+      "server/internal/service/delivery_completion_collaboration.go",
+      "server/internal/service/collaboration_stage_completion.go"
+    ],
+    "submission_only": true,
+    "existing_exact_value_marker": "collaborationStageEvidenceReadTx",
+    "same_actual_borrowed_transaction_required": true,
+    "no_new_Begin_or_isolation_change": true,
+    "original_intent_facts_state_wrappers_constant_false_required": true,
+    "QA_access_observer_defaults_unchanged": true,
+    "all_nested_retained_signer_run_source_observations_must_retain_marker": true,
+    "task_SHARE_literal": "SELECT issue_id FROM collaboration_stage_task WHERE issue_id=$1 FOR SHARE NOWAIT",
+    "generated_shared_task_query_exists": false,
+    "use_existing_task_getter_details_virtual_development_head": true,
+    "absent_head_requires_original_root_SHARE_and_schema_guards": true,
+    "no_Ensure_or_ready_fake_on_read": true,
+    "original_submission_operation_handoff_shared_queries_unchanged": true,
+    "accepted_R27_binding_UTC_flags_predicates_preserved": true,
+    "new_helpers_are_proposal_names": true,
+    "SQL_generated_migration_dependency_or_public_read_flag_changes_authorized": false
+  },
+  "no_effect_scope": {
+    "comparisons": 26,
+    "relations_each": 72,
+    "complete_rows_counts_plus_stage_exit": true,
+    "root_admin_control_metadata_adapter_no_fake_admin": true,
+    "actual_adapter_call_target_last_invocation_no_failure": true,
+    "M1_authorization_terminal_evaluation_rows": 0,
+    "negative_setup_before_new_equality_baseline": true,
+    "all_database_tables_audited": false,
+    "fresh_archive_bytes_audited": false
+  },
+  "db_snapshot": {
+    "before_other_connections": 0,
+    "after_other_connections": 0,
+    "same_database": true,
+    "same_ledger": true,
+    "same_indexes": true,
+    "post_fixture_cleanup_count_changes": {
+      "issue_handoff": {
+        "before": 0,
+        "after": 13
+      },
+      "collaboration_config_invalidation": {
+        "before": 21,
+        "after": 86
+      },
+      "collaboration_knowledge_invalidation": {
+        "before": 18,
+        "after": 57
+      }
+    }
+  },
+  "verification": {
+    "lint": "RETAINED_GOFMT_EXIT0_NO_NEW_CHECKER_LINT_OR_VET_RUN",
+    "typecheck": "RETAINED_SINGLE_ISOLATED_GO_COMPILE_EXIT0",
+    "tests": "RETAINED_GENUINE_RED_13PASS_5FAIL_0SKIP_NAMED",
+    "checker_tests_DB_SQL_API_browser_build_signal_Git_subagent_executions": 0
+  },
+  "historical_R24_R25_holders_attributed": false,
+  "synthetic_fixtures_are_real_external_S4_evidence": false,
+  "source_configs_old_history_changed": false,
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-red-independent-check-20261117.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-red-independent-check-20261117.json",
+    "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/read-red-independent-check/retained-red-reconciliation-r01.json"
+  ],
+  "simplifications_made": [],
+  "remaining_gates": [
+    "same-source fresh GREEN and race with protected new test bytes",
+    "original affected writer/default source/authority controls and constant-false audits",
+    "independent GREEN review",
+    "nonempty submitted attachments and self/R38 read paths if separately admitted",
+    "matching original four and A01-A12/final S2",
+    "parent24 and S3-S5"
+  ]
+}

@@ -42,6 +42,10 @@ You also need to pick an email service, otherwise verification codes and invitat
 | `LOG_LEVEL` | application default | Log level |
 | `MULTICA_SHUTDOWN_HOLD_DURATION` | `0` | How long to wait after a termination signal before graceful shutdown begins |
 | `MULTICA_RUNTIME_RECONNECT_GRACE` | `3h` | How long an offline runtime may reconnect before its in-flight tasks fail; values below `150s` are clamped |
+| `MULTICA_COLLABORATION_MEMORY_MAX_BYTES` | `131072` (128 KiB) | Maximum UTF-8 byte length of a collaboration issue's Shared context document; valid range is `32768`–`524288` (32–512 KiB), and values outside the range reject API startup |
+| `MULTICA_KNOWLEDGE_CONTEXT_ENABLED` | `true` | Unset or empty enables guarded knowledge use; literal `true` enables it, while `false` and other nonempty values disable it. Existing explicit disables survive upgrades. Project extraction/adoption has a separate project policy and uses `MULTICA_LLM_*`; current source, audience, runtime and exact-session authorization still apply |
+
+Shared context is the per-collaboration-issue Markdown document that agents use to hand off current findings and decisions across runs, machines, and provider accounts. The server returns the active limit to clients; it is not a client-side constant. Lowering the limit does not make an existing document unreadable or prevent it from being injected into a run, but the next write must fit the new limit. Changes take effect after restarting the API (or recreating the backend container with Compose).
 
 When setting a shutdown hold on Kubernetes, `terminationGracePeriodSeconds` must exceed the hold plus the time the actual shutdown needs.
 
@@ -96,6 +100,21 @@ The server displays them without executing them. After editing Compose `.env`,
 recreate the backend. Helm uses `backend.config.cliInstallCommands.windows`,
 `.macos`, `.linux` and `backend.config.cliInstallCommand`.
 
+### Desktop download page
+
+| Variable | Default | Description |
+|---|---|---|
+| `MULTICA_DESKTOP_DOWNLOAD_URL` | empty | Desktop download page linked from the Web login page, onboarding and landing page |
+
+Point it at the page users install Desktop from, normally the standalone
+desktop download service (`http://<download-host>:18080/desktop/`). It must be
+an absolute `http` or `https` URL whose host is an IP address or an ASCII host
+name (internationalized domain names are not supported), with a port no higher
+than 65535 and no username or password. The server logs a startup warning for
+any other value and treats it as empty. When empty,
+every Web download link is hidden. The value is public through `/api/config`
+as `desktop_download_url`. Helm uses `backend.config.desktopDownloadUrl`.
+
 When the frontend and API run on different hosts and the browser talks to the API domain directly, you must set `COOKIE_DOMAIN` — otherwise the browser cannot read the CSRF cookie: every write request returns `403 CSRF validation failed` while reads work fine. Use the narrowest parent domain that covers both hosts (`.agent.example.com` over `.example.com`). It spreads the sign-in session cookie to every host under that domain, which is only acceptable when all of those hosts are operated by the same trusted party. After changing it, clear the old cookies on both hosts and sign in again. If you follow the same-origin recipe in the [self-host quickstart](/self-host-quickstart#3-choose-how-to-access) (the browser only visits the app domain), keep it empty. Do not use an IP address — browsers ignore cookies whose Domain is an IP.
 
 <Callout type="warning">
@@ -142,9 +161,12 @@ SMTP takes priority over Resend whenever `SMTP_HOST` is non-empty.
 | `ALLOWED_EMAILS` | empty | Full email addresses allowed to sign up, comma-separated |
 | `ALLOWED_EMAIL_DOMAINS` | empty | Email domains allowed to sign up, comma-separated |
 | `DISABLE_WORKSPACE_CREATION` | `false` | Blocks all users from creating workspaces; no owner/admin exception |
+| `MULTICA_COLLABORATION_DIRECTORY_ENABLED` | `true` | The collaboration recipient picker lists every available account on this server; only `false` limits it to people who share a workspace or a collaboration issue with the viewer, and others remain reachable by exact username, email, or account ID. With it on and `ALLOW_SIGNUP` not `false`, the API logs a startup warning |
 | `MULTICA_DEV_VERIFICATION_CODE` | empty | Fixed 6-digit test code for non-production environments |
 
 For the exact allowlist evaluation order, see [Sign-in and signup](/auth-setup#signup-restrictions).
+
+The recipient picker shows only each account's name, avatar, and whether it is outside the source workspace; it never shows email, username, or workspaces. When self-service signup stays open, anyone who registers can browse that list, so turn one of the two off on deployments that should not expose it. Restart the API after changing it.
 
 ## Attachment storage
 
@@ -238,14 +260,15 @@ This group configures server-side assist generation, such as conversation titles
 
 `MULTICA_LLM_MAX_RETRIES` is the single source for the retry policy. Leave it unset for the default of 2, set `0` to send exactly one request per call, or set 1–5 to cap retries at that many. It is a ceiling, not a quota: only retryable failures consume it, and a success or the caller's own deadline can end the call sooner. Any other value — negative, non-numeric, or above 5 — fails startup instead of being corrected silently. The ceiling is a latency budget: backoff starts at 0.5s and doubles to an 8s cap, so a larger budget would outlast the callers' own deadlines and turn a retryable failure into a timeout. Retries cover connection failures and HTTP 408, 409, 429 and 5xx; all other 4xx responses are returned as-is. The server logs the effective policy at startup as `llm retry policy`, with no credentials in the line.
 
-Three features use this layer, sending the following content to the endpoint you configure:
+Five features use this layer, sending the following content to the endpoint you configure:
 
 - **Chat auto-titling** — the first user message of a new chat session, sent verbatim. Attachments are never included.
 - **Follow-up questions** (the suggestion buttons under an agent reply) — the tail of the conversation: up to 6 messages, with the reply being answered capped at 3000 characters and each older message at 800.
 - **Issue description optimization** — only when requested, the current description or agent instructions (up to 20000 characters), optional title (500 characters), and creation mode. Markdown links, mentions, code and attachment references are included; attachment file contents are never fetched or sent. Optimization returns a suggestion without creating an issue or running an agent.
 - **Creator recommendations** — only after a human member clicks “Help me choose”, task text (up to 20000 Unicode characters) and up to 40 saved responsibility excerpts (600 characters each), actor types and temporary references. The payload is capped at 128 KiB. Actor names, database IDs, system instructions, runtime credentials and attachment contents are excluded. Results quote validated description evidence; they never assign or execute work. Large directories use text-evidence retrieval before model comparison, so semantic or cross-language matches may be missed.
+- **Project knowledge automation** — after formal acceptance of an eligible project collaboration, generation receives up to eight complete source texts (128 KiB) and exact predecessors from the same source. A separate check receives the frozen candidates and all authorized project comparison texts (up to sixteen, 128 KiB). Requests use temporary references rather than database IDs, with at most 288 KiB decoded input, 2 MiB wire JSON and 60 seconds per stage. Attachments and links are not fetched. No-project and manual tasks skip extraction. Calls use this configuration and its billing account; they do not borrow personal CLI credentials. Model checks are rule inputs, not proof that a conclusion is factually correct.
 
-When both the API key and the base URL are empty, this layer is disabled and makes no upstream request at all. That is the supported configuration when your policy does not allow this layer to send content off the deployment: chat sessions keep the title the client derives from the first message, follow-up question buttons do not appear, and AI description optimization and creator recommendations are unavailable. Manual assistant selection remains available. Ordinary issue creation remains available.
+When both the API key and the base URL are empty, this layer is disabled and makes no upstream request at all. That is the supported configuration when your policy does not allow this layer to send content off the deployment: chat sessions keep the title the client derives from the first message, follow-up question buttons do not appear, and AI description optimization and creator recommendations are unavailable. Project knowledge extraction waits for configuration without blocking task acceptance. Manual assistant selection remains available. Ordinary issue creation remains available.
 
 Issue description optimization supports streaming previews with the same configuration. The model endpoint must support streaming JSON output through Chat Completions; reverse proxies in front of the API must allow SSE without response buffering. Users can cancel while generating and apply only the complete, validated result.
 

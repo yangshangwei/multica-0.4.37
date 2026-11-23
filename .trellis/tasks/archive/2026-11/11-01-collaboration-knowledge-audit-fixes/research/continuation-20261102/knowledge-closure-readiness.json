@@ -1,0 +1,2317 @@
+{
+  "schema_version": 1,
+  "reviewer": "native trellis-check /root/rki6_result_review",
+  "reviewed_at": "2026-11-02T13:39:14.888824+00:00",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "read-only #6/#7 closure-readiness; no source/status/launcher/parent AC0/AC3 writes, no commits/agents or DB/test/service/browser/provider operations",
+  "states": [
+    "verified",
+    "conditional",
+    "open"
+  ],
+  "summary": {
+    "audit_dispositions": 21,
+    "audits_with_independent_lane_review": 21,
+    "blocking_product_findings_open": 0,
+    "task7_closable_now": false,
+    "task7_can_close_independently_of_task6_real_model_release_gates": true,
+    "task7_remaining_local_conditions": [
+      "Coordinator clarifies AC1 L7 against accepted disposition",
+      "Sole-owner actual full check success and required named knowledge result reconciliation"
+    ],
+    "task6_deterministic_feature_scope": "verified with final-source evidence and stated layering",
+    "task6_local_complete_candidate_reconciliation": "conditional",
+    "task6_real_model_release_tracking": "open",
+    "provider_authorization_created": false,
+    "production_knowledge_default": false,
+    "shared_complete_check_owner": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba"
+  },
+  "source_binding": {
+    "candidate": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+    "product_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+    "server_tree": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "product_regular_files": 7960,
+    "no_product_delta_from_final639": true,
+    "no_product_delta_from_CCG2_e6": true,
+    "audit_merge_6cb9fcb36_is_ancestor": true,
+    "baseline_product_6aed_to_4e3_delta": [],
+    "accepted_RKI6_review_sha256": "109bdcbadd1f4edd11da9ed82137e75a50a67e0b61c9679589f8094a313dd442",
+    "accepted_RKI6_review_unchanged": true
+  },
+  "audit_dispositions": [
+    {
+      "id": "H1",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "safe invocation remains ordinary; unsafe session selectors refuse; managed settings precede trailing value arguments",
+      "canonical_regression": {
+        "path": "server/internal/service/task_knowledge_invocation_test.go",
+        "line": 33,
+        "name": "TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H1-red.txt",
+          "sha256": "c495627f83b78f628db23dc69e88bc5d8f1c2f09eb2c118282d14d773afc20e9",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H1-green.txt",
+          "sha256": "211083d521c32ae0ee3d84fb26e7a706804f03c73b33d47e67897cd397c8c9a9",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "4cf4d45a2 /6f7a601ce /30edf3e36"
+    },
+    {
+      "id": "H2",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "unreachable prior workdir rebinds an untouched preparation to a fresh generation; stale bindings refuse",
+      "canonical_regression": {
+        "path": "server/internal/daemon/knowledge_context_claim_test.go",
+        "line": 346,
+        "name": "TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H2-red.txt",
+          "sha256": "803aa3282a0322b8e227b0f1ec9be7e3e5d5186981acbace07f5dec017a9180e",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H2-green.txt",
+          "sha256": "d6aa8d0d4250853c5ab8514ae03aee2e71c54535061424ac584ea3bde21f5981",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "680ad868f /f00c94962; seven acceptance mutants"
+    },
+    {
+      "id": "H3",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "complete keyset/session and namespace history; deep exposure/corruption still refuses",
+      "canonical_regression": {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "line": 47,
+        "name": "TestKnowledgeResumeReadsCompleteLongSessionHistory",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H3-M3-red.txt",
+          "sha256": "3f8574e1e0cac70bdeb9911cb143a3b846bac8f889590514554218c4b5a64770",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H3-M3-green.txt",
+          "sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "94e790d2d; CT1 5c3549001"
+    },
+    {
+      "id": "M1",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "transient claim errors requeue; domain/finalize refusals settle without retry loops",
+      "canonical_regression": {
+        "path": "server/internal/handler/daemon_knowledge_test.go",
+        "line": 342,
+        "name": "TestKnowledgeClaimTransientHistoryErrorRequeuesTask",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M1-red.txt",
+          "sha256": "24cbf173096764665d96b9024e2b2e072c73f708297aabbe9243c2a85ca5f9a3",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M1-green.txt",
+          "sha256": "4d4e9da2f7b990a03e07c7001d5240bb22e9877b2c3fecced3191d2569b88e96",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "2dd633df4 /3110295d0"
+    },
+    {
+      "id": "M2",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "retry whole namespace transaction up to1.5s without holding locks; exhaustion retains terminal busy",
+      "canonical_regression": {
+        "path": "server/internal/service/task_knowledge_concurrency_test.go",
+        "line": 297,
+        "name": "TestKnowledgePreparationWaitsOutSiblingNamespaceHolder",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M2-red.txt",
+          "sha256": "f7ae89607cf2eae4470f4f12f1e0abc41326e587b91bd57585be112a97349f0e",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M2-green.txt",
+          "sha256": "4de2097bbc20ac2749ba37d985304903d9e200cd9025309dba56ad4edda69628",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "launch f00c94962"
+    },
+    {
+      "id": "M3",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "three concurrent metadata history indexes and complete namespace key lookup; catalog/negative control corrected",
+      "canonical_regression": {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "line": 175,
+        "name": "TestKnowledgeRuntimeHistoryIsIndexDriven",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M3-red.txt",
+          "sha256": "7ad9375c8c021b53c7f5f766aa31159bc93872630b731b92777728ff84d1b0a1",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/H3-M3-green.txt",
+          "sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "94e790d2d; plan 742abb217"
+    },
+    {
+      "id": "M4",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "decision input survives unchanged refresh; identity changes reset it while private body is erased",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 112,
+        "name": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M4-red.txt",
+          "sha256": "2caaa0b76179b00e888aa391702ebc7058e728e4a4d79193103cc2c89ac83528",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M4-green.txt",
+          "sha256": "79d477b0a6c41ba1aeb11b30beb80bd18fa44e5ad5b0dde0d85c67926ba4c258",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "500781f4c"
+    },
+    {
+      "id": "M5",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "only own proposal completion closes its draft; recovery and unrelated decisions preserve new drafts",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 354,
+        "name": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M5-red.txt",
+          "sha256": "6d4033503d5d50b43468620823e43b28d9dc5877ae72c967212f6ce1d92a10c0",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M5-green.txt",
+          "sha256": "062f64de849f4e524ab03eb95152a42f28e32f9b36aa119f6e545d5e31710ee4",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "2e28c2c98; own-loss/page followups in ed0026525"
+    },
+    {
+      "id": "L1",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "DB clock expiry returns sealed409; non-expiry NoRows is not synthesized as expiry retry",
+      "canonical_regression": {
+        "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+        "line": 408,
+        "name": "TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L1-red.txt",
+          "sha256": "16216540f9744bc9c082cc2d1bf7f8a2bbca4711c43dd114d07ccef272f5d801",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L1-green.txt",
+          "sha256": "e4f1b54a92fdbcb7a8a0316ea726a9056413ccfa8c67ae4f9610995546efe15f",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "0cf5f7918; d4bc37a86; IW1 464540191"
+    },
+    {
+      "id": "L2",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "expiry CHECK violation is invalid request; unrelated database defects retain server-error semantics",
+      "canonical_regression": {
+        "path": "server/internal/service/collaboration_knowledge_authority_test.go",
+        "line": 186,
+        "name": "TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L2-red.txt",
+          "sha256": "c9d2183aed7c62921f561bdb872351f45f78f12758f5e70d4f8e95210f52d598",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L2-green.txt",
+          "sha256": "c323ca50d1a22821f62cafcfe9c39afd928d98a79efc5136d79a8875d9aeb11e",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "3aee019aa"
+    },
+    {
+      "id": "L3",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "final-send authorization runs before each write deadline",
+      "canonical_regression": {
+        "path": "server/internal/realtime/collaboration_knowledge_test.go",
+        "line": 130,
+        "name": "TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L3-red.txt",
+          "sha256": "e42384422f55d179f8c2d1e6ed3bd4c3c7ff5cd1a83d2724649012a129b1ad3d",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L3-green.txt",
+          "sha256": "15d9e9c4403c9e09675c4990926a1b37e982218eea99de245d257e3f234c9758",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "931446b23"
+    },
+    {
+      "id": "L4",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "timeout attempts are recorded and later hints progress under bounded consecutive failures",
+      "canonical_regression": {
+        "path": "server/internal/service/collaboration_knowledge_invalidation_test.go",
+        "line": 704,
+        "name": "TestKnowledgeTimedOutHintDoesNotBlockLaterHints",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L4-red.txt",
+          "sha256": "7e725fed2a1714c221332d54b562cae59014a0bc598a3224c6310b207fdb31f7",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L4-green.txt",
+          "sha256": "c44172c2813a5f4445ce4ce860db51958b0ad3cf1b39b6682a6f680f6dbfcffb",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "write lane through d4bc37a86"
+    },
+    {
+      "id": "L5",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "PAT last-used contention waits briefly while revoke/write serialization remains",
+      "canonical_regression": {
+        "path": "server/internal/service/collaboration_knowledge_credentials_test.go",
+        "line": 142,
+        "name": "TestKnowledgePATWriteWaitsOutLastUsedUpdate",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L5-red.txt",
+          "sha256": "52f5a3cc995b599ca79363352f3015301e5f2ed5296256f9fec74af413251cdf",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L5-takeover-green.jsonl",
+          "sha256": "f8aff1a4f4a8f5e4545e1953a4d6702346196549bdfd819a106f4835e3ceab1c",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "ac6546772"
+    },
+    {
+      "id": "L6",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "descriptor decode failure refuses only that task; siblings and strict ledger versioning remain",
+      "canonical_regression": {
+        "path": "server/internal/daemon/knowledge_context_claim_test.go",
+        "line": 719,
+        "name": "TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L6-red.txt",
+          "sha256": "994344c9ede976c4aa1317970dd211267398942bb85c8b2ea270878861484bff",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L6-green.txt",
+          "sha256": "13cd451a91b04dd98080abd2dc176e91a0c1784091d121d393ee579149de8da0",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "launch f00c94962"
+    },
+    {
+      "id": "L7",
+      "state": "verified",
+      "disposition": "not_reproduced_test_covered",
+      "behavior": "not reproduced; existing correct Started-failure cleanup is locked by actual process/daemon tests",
+      "canonical_regression": {
+        "path": "server/pkg/agent/knowledge_launch_test.go",
+        "line": 772,
+        "name": "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+        "retained_final639_terminal": "pass"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L7-takeover-green.jsonl",
+          "sha256": "54ecd106a30226d8a208e56e7afa132649dab15da3353c10a359b9bf4235126c",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "test-only L7 takeover; no claimed product repair"
+    },
+    {
+      "id": "L8",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "refresh waits for the source grant; source/authority/validation errors preserve draft and stay distinct",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 491,
+        "name": "submit waits for a refreshing source list instead of reporting a changed source",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L8-red.txt",
+          "sha256": "cf92bf66d3405f0d32c9ce64bf15fc4ffd0b848557961357210f16cc2a85986d",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L8-green.txt",
+          "sha256": "9e9ecc5c4f3203c7c5c1af59d28cb7ddb3a8513e168c49613ddec0fcd4f9a7c7",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "a5e8941b7; M5-L8 followups ed0026525"
+    },
+    {
+      "id": "L9",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "UTF-8 byte limits give field errors for proposal and decision reason",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 532,
+        "name": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L9-red.txt",
+          "sha256": "0a225c0fd57784e05301a7bf41910d8826a072b9376e2857178079f01f037fa1",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L9-green.txt",
+          "sha256": "f96d0702890b0a349cf36bc3b15511e2c624b7cf3ccf3ddd5ee0b2828a965cd7",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "60ca94822"
+    },
+    {
+      "id": "L10",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "expired later-page authorization resets to page1 rather than recurring generic errors",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 221,
+        "name": "restarts at the first page when a later page loses its authorization boundary",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L11-red.txt",
+          "sha256": "977d11da76a07a30d3ebcaec31379be6c17c268048bb645538e2f74a7be0877d",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L11-green.txt",
+          "sha256": "e2f71f7c16306d0b63079db1255cb34410bfebe44fe81dbadb5714f8f6109a26",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "web ed0026525"
+    },
+    {
+      "id": "L11",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "unavailable interface stops interval polling until explicit refresh",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 211,
+        "name": "stops interval polling an unavailable knowledge interface until an explicit refresh",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L11-red.txt",
+          "sha256": "977d11da76a07a30d3ebcaec31379be6c17c268048bb645538e2f74a7be0877d",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L11-green.txt",
+          "sha256": "e2f71f7c16306d0b63079db1255cb34410bfebe44fe81dbadb5714f8f6109a26",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "web ed0026525"
+    },
+    {
+      "id": "L12",
+      "state": "verified",
+      "disposition": "repaired",
+      "behavior": "same-source recovery works beyond loaded page; foreign recovery stays outside; dismissal is local only",
+      "canonical_regression": {
+        "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+        "line": 390,
+        "name": "recovering a request from the same source opens it even when it is outside the loaded list page",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L12-red.txt",
+          "sha256": "b866ec7247b1abb4da522a8b7e0068af2cd9a924918489cb93c15782481e581b",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        },
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L12-green.txt",
+          "sha256": "0b2b4339db99b8d569aa260198c3a98d17328737b27f4ba43bd17c2e695825f5",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "web ed0026525; core actions dismissal"
+    },
+    {
+      "id": "L13",
+      "state": "verified",
+      "disposition": "terminology_repair",
+      "behavior": "workspace/issue terminology aligned; locale key parity preserved",
+      "canonical_regression": {
+        "path": "packages/views/locales/parity.test.ts",
+        "line": 73,
+        "name": "locale namespace key parity and knowledge terminology",
+        "retained_final639_terminal": "current source is within retained full TS scope and reviewed web lane"
+      },
+      "reviews": [
+        ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json"
+      ],
+      "evidence": [
+        {
+          "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L10-L13-green.txt",
+          "sha256": "e05f8171124f687f3d0563aedd449c29f17897386d286dbbfe701ed90d3b1dd9",
+          "history_scope": "retained chronology; green filename does not assert every embedded attempt passed"
+        }
+      ],
+      "commits_or_followups": "web ed0026525"
+    }
+  ],
+  "task7_AC1_AC9": [
+    {
+      "id": "AC1",
+      "state": "conditional",
+      "verified_evidence": "20 actual defect/terminology dispositions have retained red/control and regression evidence; L7 correct behavior has2 retained pass names and3 final default pass names.",
+      "condition_or_limit": "Apply the proposed L7 clarification; never manufacture baseline red or classify every historical green-file segment as passed."
+    },
+    {
+      "id": "AC2",
+      "state": "verified",
+      "verified_evidence": "H1 current safe OFF ordinary/nil descriptor and unsafe selector tests pass; managed argv ordering reviewed.",
+      "condition_or_limit": "No extra run; retain unsupported/legacy/exposure boundaries."
+    },
+    {
+      "id": "AC3",
+      "state": "verified",
+      "verified_evidence": "H3 long histories, deep exposure/corruption and CT1 tied cursor controls are present and passed; all reviewed SQL bytes merged.",
+      "condition_or_limit": "Keep O(N) namespace cost and lack of production-scale default-planner benchmark explicit."
+    },
+    {
+      "id": "AC4",
+      "state": "verified",
+      "verified_evidence": "M1 requeue and M2 bounded retry regressions pass.",
+      "condition_or_limit": "Beyond the1.5s budget busy remains terminal by accepted design; no indefinite or business-input replay promise."
+    },
+    {
+      "id": "AC5",
+      "state": "verified",
+      "verified_evidence": "H2 real HTTP/daemon rebinding and seven acceptance mutants reviewed; stale binding cannot launch.",
+      "condition_or_limit": "No same-source rerun needed."
+    },
+    {
+      "id": "AC6",
+      "state": "verified",
+      "verified_evidence": "M4/M5/L8–L12 shared UI tests cover refresh, exact-identity reset, own/foreign/lost recovery and field attribution; security cache erase remains.",
+      "condition_or_limit": "Retained TS/current code and lane review; no assertion that every interaction was rerun in native UI."
+    },
+    {
+      "id": "AC7",
+      "state": "verified",
+      "verified_evidence": "761–763 are reviewed single-statement concurrent indexes, no FK; down guards/cleanup registration and generated SQL retained; migration fixture and plan rechecks pass.",
+      "condition_or_limit": "Historical523pass/13fail migration attempt stays failed."
+    },
+    {
+      "id": "AC8",
+      "state": "conditional",
+      "verified_evidence": "Retained final639 Go82 package hashes/counts reconstruct without mismatch:20852 named passes/0fail/22skip,9 compile-only; current product bytes equal final64. TS13082/static15 passed in the failed whole-check attempt.",
+      "condition_or_limit": "Only shared owner 01a19c0d-cce1-73e3-99ee-2c3c9e9239ba may supply actual new full-check exit0 and required named knowledge results; skips remain explicit."
+    },
+    {
+      "id": "AC9",
+      "state": "verified",
+      "verified_evidence": "Claim/write/web/launch docs and built-in guidance/source maps were reviewed and merged; skill-entry template recheck passes10 named events.",
+      "condition_or_limit": "Retain original service failures and per-commit scope; no source/spec edit performed here."
+    }
+  ],
+  "proposed_AC1_L7_clarification": {
+    "text": "每个已复现的产品缺陷 ID 都有具名回归测试：在 6aed33aad 的对应未修复产品代码上失败，修复后通过，并保留实际红绿运行输出。L13 用 locale parity 测试和术语核对代替。L7 经设计和独立分道复核未复现，不要求伪造失败基线或新增产品修复；以 TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated 与 TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit 的实际进程退出、Terminated 恰好一次、无再次授权断言作为测试处置，相关 Host lifecycle 回归保留。原审计主张和所有历史失败样本原样保留；L7 只能记为“未复现，已有正确行为由测试覆盖”，不能计作已复现并修复的产品缺陷。",
+    "state": "conditional until coordinator updates PRD",
+    "accepted_basis": [
+      "design.md:312 not reproduced; test existing correct behavior",
+      "research/launch-independent-review/review.json pass-with-notes; audits include L7; no blocking findings",
+      "research/evidence/L7-takeover-green.jsonl two named passes; no failed baseline asserted"
+    ],
+    "canonical_tests": [
+      {
+        "path": "server/pkg/agent/knowledge_launch_test.go",
+        "line": 772,
+        "name": "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+        "retained_final639_terminal": "pass"
+      },
+      {
+        "path": "server/internal/daemon/knowledge_context_claim_test.go",
+        "line": 850,
+        "name": "TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit",
+        "retained_final639_terminal": "pass"
+      },
+      {
+        "path": "server/pkg/agent/launch_lifecycle_test.go",
+        "line": 358,
+        "name": "TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback",
+        "retained_final639_terminal": "pass"
+      }
+    ]
+  },
+  "task6_AC1_AC11": [
+    {
+      "id": "AC1",
+      "state": "verified",
+      "verified_evidence": "A1/A2 external-handler/hidden-target policy tests plus original deterministic review and pending-v2 CCG1 assertion prove unapproved state cannot affect contributions.",
+      "condition_or_limit": "Real RK1-K1 understanding still open."
+    },
+    {
+      "id": "AC2",
+      "state": "verified",
+      "verified_evidence": "Human source Read plus target-role/lead matrix, actor/machine refusal and both commit orders independently reviewed.",
+      "condition_or_limit": "No Agent/machine or runtime owner substitutes human approval."
+    },
+    {
+      "id": "AC3",
+      "state": "verified",
+      "verified_evidence": "Immutable lineage and atomic correction matrix; CCG1 actual second fake stdin contains v2 and excludes v1.",
+      "condition_or_limit": "Retain version/hash/source evidence; no real-model proof."
+    },
+    {
+      "id": "AC4",
+      "state": "verified",
+      "verified_evidence": "Shared UUID namespace and original-actor content-free recovery matrices; ordinary/Host lost-response composites pass.",
+      "condition_or_limit": "Do not mint replacement IDs or sum overlapping runs."
+    },
+    {
+      "id": "AC5",
+      "state": "verified",
+      "verified_evidence": "Source availability/purge/delete and expiry/withdraw/supersede matrices; CCG1 withdrawal gives409 and no third process; Host invalidation composite passes.",
+      "condition_or_limit": "Historical lawful disclosures are not retroactively erased."
+    },
+    {
+      "id": "AC6",
+      "state": "verified",
+      "verified_evidence": "Ordinary surfaces, originator/accountability separation, source participation and squad root/member/continuation layered evidence retained.",
+      "condition_or_limit": "K3 real entry coverage is unimplemented and must be preregistered per entry."
+    },
+    {
+      "id": "AC7",
+      "state": "verified",
+      "verified_evidence": "Final639 ordinary27 and Host17 pass per normal/race; CCG1 exact fake stdin and CCG2 deployed ON/OFF provenance bind relevant unchanged final64 bytes.",
+      "condition_or_limit": "Fake executable input proves application delivery, not model comprehension."
+    },
+    {
+      "id": "AC8",
+      "state": "verified",
+      "verified_evidence": "ExactResumeThenFreshReplacement, LegacyCannotReuseExposure and refusal composites; history/audit fixes reviewed.",
+      "condition_or_limit": "RK1-K2 actual native Provider reuse/revoke/original-key evidence remains open."
+    },
+    {
+      "id": "AC9",
+      "state": "conditional",
+      "verified_evidence": "Original7 Web/1 native macOS layered UI acceptance, current shared UI/cache regressions and F3 rechecks retained.",
+      "condition_or_limit": "Reconcile required final-candidate Web/Desktop identities with sole-owner complete check; original platform counts are not all post-audit interactions or installer/account evidence."
+    },
+    {
+      "id": "AC10",
+      "state": "conditional",
+      "verified_evidence": "Original747–760 and new761–763 migrations, sqlc/static/full-package evidence and built-in no-skills rules reviewed; current source equivalence verified.",
+      "condition_or_limit": "New shared complete-check success remains the local joint prerequisite; keep all historical failure/skip boundaries."
+    },
+    {
+      "id": "AC11",
+      "state": "verified",
+      "verified_evidence": "F1–F4 parent KEY SHARE/member SHARE/independent revision and no-source-relock fanout matrices reviewed; IW1 DB-time budget followup passes.",
+      "condition_or_limit": "Do not claim untested production-scale planner or arbitrary retained-history workload guarantees."
+    }
+  ],
+  "task6_Gates": {
+    "G0": "verified historical deterministic frozen runtime dependency; no real-model implication",
+    "G1": "verified application input/handoff binding; no model understanding implication",
+    "G2": "verified deterministic ordinary/Host/session/authorization feature scope; conditional joint-candidate reconciliation; real scenarios separate",
+    "G3": "verified original ownership/environment allocation; current full-check owner separate"
+  },
+  "independent_lane_reviews": {
+    "claim-independent-review": {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+      "sha256": "1392c85dd4921e24e0113a6b7d12ce967b2635d23b2653b4a926530ed71f2979",
+      "verdict": "pass-with-notes",
+      "audits": [
+        "H1",
+        "H1-followup",
+        "M1",
+        "H3",
+        "M3",
+        "managed-settings-followup"
+      ],
+      "blocking_findings": []
+    },
+    "claim-security-review": {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+      "sha256": "37b800389b5cff7d6eb2a7fc73eff0f65d7fc208957dffb49108efaccb3a0d03",
+      "verdict": "pass-with-notes",
+      "audits": [],
+      "blocking_findings": []
+    },
+    "claim-test-review": {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json",
+      "sha256": "8f157d51ce5fff3290c9cd37314d55de805aed4c21d804e067f470a7ca782b19",
+      "verdict": "pass-with-notes",
+      "audits": [],
+      "blocking_findings": []
+    },
+    "launch-independent-review": {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json",
+      "sha256": "d23065aba2ad593687d74928c49d09d9799765e3b80f4aaee659a7f63ae1c798",
+      "verdict": "pass-with-notes",
+      "audits": [
+        "H2",
+        "M2",
+        "L6",
+        "L7",
+        "seven_H2_acceptance_mutants"
+      ],
+      "blocking_findings": []
+    },
+    "write-independent-review": {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json",
+      "sha256": "21bc41f87450ec9cf9a39383991a4e198ef09c3be1618e0061336ee13513f020",
+      "verdict": "pass-with-notes",
+      "audits": [
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5",
+        "nonexpiry_NoRows_followup"
+      ],
+      "blocking_findings": []
+    },
+    "web-independent-review": {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json",
+      "sha256": "94c42344cf20a4e85b27f2e31bb0efa68af0d62c50d0e16991faf2538912bc92",
+      "verdict": "pass-with-notes",
+      "audits": [
+        "M4",
+        "M5",
+        "L8",
+        "L9",
+        "L10",
+        "L11",
+        "L12",
+        "L13"
+      ],
+      "blocking_findings": []
+    },
+    "integration-independent-review": {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/review.json",
+      "sha256": "79de55a3f3725cf1fb15f18dd6822127da16bfd1238613b0f6b7e67b6f768e99",
+      "verdict": "pass-with-notes",
+      "audits": [],
+      "blocking_findings": []
+    }
+  },
+  "reviewed_followups": [
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/CT1-root-recheck-r2.json",
+      "sha256": "389c6202e76ae7e9c001716dd150e92a768c94dca5494390581a68b96087c3b7",
+      "verdict": "pass",
+      "scope": "32 lines in canonical service test; no production SQL or Go behavior changed"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/iw1-recheck.json",
+      "sha256": "e8bcf2c988e0efd80c8a054bffea042dcc1785ca49f0f25a39cd0153b0b95807",
+      "verdict": "pass",
+      "scope": "IW-1 delta only"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/migration-fixture-recheck.json",
+      "sha256": "806aed5823a40af1a6e5d0c801cced85e685608b9b434b12c7e81723746715e1",
+      "verdict": "pass",
+      "scope": "migration test fixture delta only"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/skill-entry-recheck.json",
+      "sha256": "142bf9af42b94ec3fc4648df5be6786e96f4842de472376cf412bd538eae113a",
+      "verdict": "pass",
+      "scope": "built-in skill entry wording/progressive disclosure delta"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/plan-recheck.json",
+      "sha256": "2a086e9804ffa5702c10c4b0da8d4dd1a6ba5f25b0afe7d11ef103417f1307d5",
+      "verdict": "pass-with-notes",
+      "scope": "test-only history index eligibility/probe delta"
+    }
+  ],
+  "retained_result_reconstruction": {
+    "Go_packages": [
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+        "counts": {
+          "run": 11,
+          "pass": 11,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "c96fcdc12997847767ad941a61abf95c4109c71bf0fede8d671c3ec1d666aeea"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "927d2cd08d1e59046dd89beb77c9d1ae5d1fa32601991a72fb2d6bc2d9c6b1fc"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": false,
+        "compiled_without_tests": true,
+        "raw_log_sha256": "0e054f9af5b5f63a18fb252ad1c263c4e6e0cf2a1e765544eb28774c72e81253"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/migrate",
+        "counts": {
+          "run": 71,
+          "pass": 70,
+          "fail": 0,
+          "skip": 1
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "83426721cd40ee59159dd3bb29a1936816aac51835bedaac6e95b08b774352cb"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/multica",
+        "counts": {
+          "run": 1074,
+          "pass": 1074,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "045002167492179d72a283e83968f66d7bfb9c57c61f597ed4c102e6d365610b"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "counts": {
+          "run": 741,
+          "pass": 735,
+          "fail": 0,
+          "skip": 6
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "a42fde4e1a1f7680d5d5ecdb66d8dd925441ef7e03b118df91956c8215c4f3ff"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/admission",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": false,
+        "compiled_without_tests": true,
+        "raw_log_sha256": "902efa3e88082ab8278162450a33303dcc4f4e62b1bcdc7cbf6b90feb611d0cb"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": false,
+        "compiled_without_tests": true,
+        "raw_log_sha256": "c00c086a4edcbd373ab4d3838c3aac5e62ee9e0b66328f92551855dd10fe3436"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/analytics",
+        "counts": {
+          "run": 8,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "a27636effad6a656e20f3a28062359355c33ab56023099111597255a80ea25f1"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/attribution",
+        "counts": {
+          "run": 31,
+          "pass": 31,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "16c6f4c5dae55ea76e2e71f2c21bd721f3c131140b5eebe9361fb4fa2be83390"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+        "counts": {
+          "run": 4,
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "a31231f270297d83f70a033a801037ea3c99e88a28b3cf4176397bf518ba1267"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "counts": {
+          "run": 113,
+          "pass": 112,
+          "fail": 0,
+          "skip": 1
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "8b4ca5bffb334e058939c2c312164d5d7b746c714b4e8922790b150dcf8eece0"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/changelog",
+        "counts": {
+          "run": 56,
+          "pass": 56,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "0737c62774f10df25e63f71e772b114e713cc69f48a0f3e6642cfc2375de1cf5"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+        "counts": {
+          "run": 3,
+          "pass": 3,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "c0becbbdec6cbecaf46ced0101d37c94abaedc45a2537a9b444592bcc4df0cc4"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": false,
+        "compiled_without_tests": true,
+        "raw_log_sha256": "f70332920b636eef0478840ac548cba8b5135f3a40a07e883e2aa3d59ccfe4a6"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/chattitle",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": false,
+        "compiled_without_tests": true,
+        "raw_log_sha256": "6df5aaf26d17c6cf19ec36cf0db3fa46c5fbed8f76440acb991601cf89bbe817"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/cli",
+        "counts": {
+          "run": 326,
+          "pass": 325,
+          "fail": 0,
+          "skip": 1
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "f52d53b0831628b51fa1ebe862fe1c9aec7c42e89dc1c3e1e2810252d3e63b09"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+        "counts": {
+          "run": 3,
+          "pass": 3,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "4904754d48cd25fd43b60850b9ae44e1cff1fbd4e15573e2a0fbb5b915b11a94"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/collaboration",
+        "counts": {
+          "run": 11,
+          "pass": 11,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "b455a548a1b189b139c6fa26422b2a47771ee6a627b29846d2411f503a148798"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "counts": {
+          "run": 1716,
+          "pass": 1714,
+          "fail": 0,
+          "skip": 2
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "5381701b13e640d8aaa4aba06e0feacad9970935f31d6b8c9bfe036e4a90fc67"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+        "counts": {
+          "run": 348,
+          "pass": 348,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "b72fa33bb572ebcbbe0ef9e3df225153b002622af94928772d6dd879bbb6ffb7"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+        "counts": {
+          "run": 1345,
+          "pass": 1345,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "5073d40aed63cba212b725a638588650164f87c934c4bb8e2abe7dad62e1a2ce"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "d7b9e50e4b348a949a6b5a54f2af05b51037da359b398a7bd58a78b89e0dc38e"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+        "counts": {
+          "run": 61,
+          "pass": 61,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "dfa97dd7c97a5f27b0e8884fb87cd2ba87889ea1aab88921d59435797eb8e626"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemonws",
+        "counts": {
+          "run": 30,
+          "pass": 30,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "7213aee53d32a445e97e00898c7fef02ad9ce139786607beb190162ee5ed8bb7"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+        "counts": {
+          "run": 33,
+          "pass": 33,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "71707b52316b73adf449850f4d90250e2753ffbd745d7287132d6af364d284f9"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/dispatch",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": false,
+        "compiled_without_tests": true,
+        "raw_log_sha256": "2bc6cff926c06d8c81403e83d59b4fcae4a64b3e8971d7ec4c7c254ac1b18f53"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/docs",
+        "counts": {
+          "run": 16,
+          "pass": 16,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "4ceb6f21fa6a4899ee468815837494f896092b73bfda32a73f5a74a6358fef63"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/entitlement",
+        "counts": {
+          "run": 33,
+          "pass": 33,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "025cadc153681478ae41c8114e0ee34dad3d15fc44054001da998b693b0345eb"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "9d0c5a2da8bbb11b1d476ac6b0a2d20e250b0b7bad407b0153b8cd82b682bd43"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/events",
+        "counts": {
+          "run": 8,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "1cea02e8a936f91b7859f07bb39031f7d7bcc386c108bdbe5bd806c6909ff71e"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/featureflags",
+        "counts": {
+          "run": 7,
+          "pass": 7,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "bc9c38d319185fc9d43be5b0362b5266842c398cb369fb663ccdc87d7b6db7c6"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "counts": {
+          "run": 5332,
+          "pass": 5325,
+          "fail": 0,
+          "skip": 7
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "a851f4321d5f16377bf617764eac0e74f0557c4cdabd53e111152ca5374a44f0"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/installation",
+        "counts": {
+          "run": 8,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "d1a4358f4ff700eea04dddcf31650d15e45fc4555433a3501709c0ca850f5da9"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+        "counts": {
+          "run": 22,
+          "pass": 22,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "eec1a7bb6543da70963fd1950287b5818847c1f6bdb05bd9a9e821c5acc7d836"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+        "counts": {
+          "run": 211,
+          "pass": 211,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "526d684f9e031f351962be454a74d4e7ea3b01283bdd74140b08695ed8eb3075"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+        "counts": {
+          "run": 42,
+          "pass": 42,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "ad752de4747c4579d1e7baa59b546383e04725795aec5c52c06795a3488a61e4"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+        "counts": {
+          "run": 212,
+          "pass": 212,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "90eaefecd65197e5681f40fa370be6cf71d88d791facdd50bc24fe77f6ad5e82"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+        "counts": {
+          "run": 36,
+          "pass": 36,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "b371310606c0815f7510a5ab9ddb0defc565aeab2db5951878f8eb48d6aaa41e"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+        "counts": {
+          "run": 426,
+          "pass": 426,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "f4854aaef605ed13925e925432e46390ff9cd47c49afb0268b452f9dc0568df0"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+        "counts": {
+          "run": 188,
+          "pass": 188,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "9bfe99f0e493ba02f93d06c83a887cc7a7893a468071476fe3ce17f315d560cf"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+        "counts": {
+          "run": 114,
+          "pass": 114,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "e2009ab6e091ad5df176fa32660d267601ced5642715c9ec22d8f0e463608e4e"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+        "counts": {
+          "run": 15,
+          "pass": 15,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "1cb76cc9701f5c9baeb30507b7459040e47478549d46be61b2f4251c589dc284"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+        "counts": {
+          "run": 616,
+          "pass": 616,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "613803693919aea93ada4add5141631e39c0517a983f239706317503bb6ab0ab"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "30973af6ac36a037ede978e4027115b18fdafc78880aa2389fe6cd538aeec6fc"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issueguard",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "0b277c80ea676d204f4821b285c5a9bf8834d7c3f8cf8cc97fcbe1e0db191f29"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issueposition",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": false,
+        "compiled_without_tests": true,
+        "raw_log_sha256": "7f7f9f8d4b608c191918a4d20a12ab3b0f7f65aab20fd47de61eed369a33e27d"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+        "counts": {
+          "run": 26,
+          "pass": 26,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "4a65322d97ac0586f97f9c1f8c5fe40e71719e7647efcde14226a14f1fbd64c0"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/iteration",
+        "counts": {
+          "run": 122,
+          "pass": 122,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "d17ee54c498219929df0f05d6f4b4c7d9fb12b4501c98e4c96b40955aeca419e"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/logger",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "3eb83edbcab0660f80be58d5320b4f14373f9a9d5407e4cc188c6f364f028415"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/metrics",
+        "counts": {
+          "run": 87,
+          "pass": 87,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "9e053a4d70bd964a5d66c37f1f096047a842756b06003390279fe39bfcf3eb51"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "counts": {
+          "run": 119,
+          "pass": 119,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "31e612833d45158723a644d62f5e6013ee4970f6a1bce0c819490eba99db58a1"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/migrations",
+        "counts": {
+          "run": 536,
+          "pass": 536,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "87712214f968b2c8209941c7dbd1d1c2d3916e6e61a6c763258d951d3451e21f"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/profiling",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": false,
+        "compiled_without_tests": true,
+        "raw_log_sha256": "4fb07bf6d2403034c8818317be57f7faab2436d3475700ea9003780aa9920a58"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+        "counts": {
+          "run": 18,
+          "pass": 18,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "8af45649bf669ad1399664cf625ce563018e436d5bec14e51a34e4a02fa921e4"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/realtime",
+        "counts": {
+          "run": 87,
+          "pass": 87,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "bfa5c44d0f5636bd7f0243e8cd4a3010f8875ab3f0c3d3282db682870d0862a0"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+        "counts": {
+          "run": 0,
+          "pass": 0,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": false,
+        "compiled_without_tests": true,
+        "raw_log_sha256": "1d8f8897db3c628cf84aaecc65495114cc7b0c5e5a9e34ec1b9729a2cd0fec30"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/scheduler",
+        "counts": {
+          "run": 31,
+          "pass": 31,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "c1d483d7981f65039daa5bd28c704ab7c7e482416e9564a20fb96863c82aae8e"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+        "counts": {
+          "run": 23,
+          "pass": 23,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "8f1f71e8e511198e81dbf1ce61d9919e26688f8bcbe6ea969eeca5f7252f1b06"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/selfexec",
+        "counts": {
+          "run": 10,
+          "pass": 10,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "1590dfee1b2bdbaa151a6fb2bc6a47dc3a4a9156b0945bba64f71c08881e62ef"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "counts": {
+          "run": 3340,
+          "pass": 3340,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "2cf18906aba8f72072ab87673da04d6ff237cb6063016f48a32e4167cc39219c"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/skill",
+        "counts": {
+          "run": 66,
+          "pass": 66,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "bf5adf7547867dc6960640ba3f2727da94b84dfc6aa04021bafa9abad7da807a"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/storage",
+        "counts": {
+          "run": 99,
+          "pass": 99,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "63f5c842d83d25d11fa9ff8a28505f5f02491a0e21e15838357cc84ec974f71a"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "b9d9be8af843fa09f66ee8a992146cd3dd2fa53a7bd8a281348c1516521cc127"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/testutil",
+        "counts": {
+          "run": 18,
+          "pass": 18,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "6d637b90cdd5ef05992b9283754b9569a02c9566c76272b0bef3cff2d1c7d647"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+        "counts": {
+          "run": 15,
+          "pass": 15,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "0a4af702b9646e6324c0df3ae2a8583e5f97a6cfd84a61e975f621632ea29479"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/util",
+        "counts": {
+          "run": 115,
+          "pass": 115,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "2a3e6ef14d9bf1f8423678df82fa655f584fc5f12fc4f5fa43c1ac7b2f4c262b"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+        "counts": {
+          "run": 10,
+          "pass": 10,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "384888faa322da48d50912e30ca0f5f72e75cfce8a8e3f15f465168bc9873da9"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/composio",
+        "counts": {
+          "run": 39,
+          "pass": 39,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "b55be86215c12eed0423a19a9d1ab22b6951407c1b8bd7e790d1baa33ff46f93"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+        "counts": {
+          "run": 6,
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "fcd17a66ccac0adff1bc29049101bb72a90efa48b115cc1b85a84a79045888d1"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/dbid",
+        "counts": {
+          "run": 23,
+          "pass": 23,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "177661f7d649a016b23fa7d8a8f412f2c7617741243224b15d7b435fa3f4a37f"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+        "counts": {
+          "run": 51,
+          "pass": 51,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "13fa355e94e1d2dcf54ff67f9ae7e734be06b39da3eeac1671fe5c6250eda2e4"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/llm",
+        "counts": {
+          "run": 34,
+          "pass": 34,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "7374e60b50c1897f904faba7b6948ba82ec196fa9d9b210c5f9199a034aa23fe"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+        "counts": {
+          "run": 99,
+          "pass": 99,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "2de68199e8642802908568eae313cb8601bdd790fbc4bfedf7399eb239de3c68"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/protocol",
+        "counts": {
+          "run": 390,
+          "pass": 390,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "997ca32eda65e4fdbeb0e3def3e7008d1d2ece1249684b98f61614b33e3e6de7"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+        "counts": {
+          "run": 5,
+          "pass": 5,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "dd087a8dbba65ebf02c5274c79d81143513a4619900b8a7b16df2fe95d78e959"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/redact",
+        "counts": {
+          "run": 35,
+          "pass": 35,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "3f39d635e491b27bc609218ee9b718c3fb6981b72428b44a1ca1c559e1a18247"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+        "counts": {
+          "run": 8,
+          "pass": 8,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "fbe264be880a6b79cc5b1b885a9809b1888f88a188d8347d0ab5619e4ed2290b"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+        "counts": {
+          "run": 1,
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "867efc88eaacfd5846b5c98a0fab305c4fe1f35d9c0ea9a47e660095e3353d93"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "3e30422864e442624dc1af40ff5ad59f979f845c55709bd221d0787127ce84fe"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+        "counts": {
+          "run": 222,
+          "pass": 222,
+          "fail": 0,
+          "skip": 0
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "88e06ca33e8c4dddf03eead65d53d88b9497204ffafb62f62cc0b22efeac1286"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "counts": {
+          "run": 1955,
+          "pass": 1951,
+          "fail": 0,
+          "skip": 4
+        },
+        "exit_code": 0,
+        "package_passed": true,
+        "compiled_without_tests": false,
+        "raw_log_sha256": "061b322e613bc04abbdb7d4e197f33156593fdac392ba9d8eec09caf4037e08f"
+      }
+    ],
+    "Go_named_pass": 20852,
+    "Go_named_fail": 0,
+    "Go_named_skip": 22,
+    "Go_compile_only": 9,
+    "composites": [
+      {
+        "family": "ordinary",
+        "mode": "normal",
+        "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "counts": {
+          "run": 27,
+          "pass": 27,
+          "fail": 0,
+          "skip": 0
+        },
+        "raw_log_sha256": "d05906999e45f71faf99062efcd3a4daaa2ba4e0802b913128fceb5222c34339",
+        "exit_code": 0,
+        "top_level_tests": [
+          "TestKnowledgeServerDaemonCompositeHappyPath",
+          "TestKnowledgeServerDaemonCompositeOrdinarySurfaces",
+          "TestKnowledgeServerDaemonCompositeLiveWebSocketClaim",
+          "TestKnowledgeServerDaemonCompositeLostCommittedResponses",
+          "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch",
+          "TestKnowledgeServerDaemonCompositeLostDisclosureThenWithdrawal",
+          "TestKnowledgeServerDaemonCompositeGateClosureKeepsObservationCleanup",
+          "TestKnowledgeServerDaemonCompositeZeroNativeStaleFence",
+          "TestKnowledgeServerDaemonCompositeLaterLaunchRefusal",
+          "TestKnowledgeServerDaemonCompositeExactResumeThenFreshReplacement",
+          "TestKnowledgeServerDaemonCompositeLegacyCannotReuseExposure",
+          "TestKnowledgeServerDaemonCompositeAccountabilityIsNotOriginator",
+          "TestKnowledgeServerDaemonCompositeSourceParticipationRevoked",
+          "TestKnowledgeServerDaemonCompositeDatabaseGuard"
+        ]
+      },
+      {
+        "family": "ordinary",
+        "mode": "race",
+        "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "counts": {
+          "run": 27,
+          "pass": 27,
+          "fail": 0,
+          "skip": 0
+        },
+        "raw_log_sha256": "5bf31de93999e755bb396b527bb9f4a2014a85675a6b60dd55d64c679f821db9",
+        "exit_code": 0,
+        "top_level_tests": [
+          "TestKnowledgeServerDaemonCompositeHappyPath",
+          "TestKnowledgeServerDaemonCompositeOrdinarySurfaces",
+          "TestKnowledgeServerDaemonCompositeLiveWebSocketClaim",
+          "TestKnowledgeServerDaemonCompositeLostCommittedResponses",
+          "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch",
+          "TestKnowledgeServerDaemonCompositeLostDisclosureThenWithdrawal",
+          "TestKnowledgeServerDaemonCompositeGateClosureKeepsObservationCleanup",
+          "TestKnowledgeServerDaemonCompositeZeroNativeStaleFence",
+          "TestKnowledgeServerDaemonCompositeLaterLaunchRefusal",
+          "TestKnowledgeServerDaemonCompositeExactResumeThenFreshReplacement",
+          "TestKnowledgeServerDaemonCompositeLegacyCannotReuseExposure",
+          "TestKnowledgeServerDaemonCompositeAccountabilityIsNotOriginator",
+          "TestKnowledgeServerDaemonCompositeSourceParticipationRevoked",
+          "TestKnowledgeServerDaemonCompositeDatabaseGuard"
+        ]
+      },
+      {
+        "family": "host",
+        "mode": "normal",
+        "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "counts": {
+          "run": 17,
+          "pass": 17,
+          "fail": 0,
+          "skip": 0
+        },
+        "raw_log_sha256": "168d794726e0c442992fcb7b99e0c71ed4f1856d02275d09593eece4867708f0",
+        "exit_code": 0,
+        "top_level_tests": [
+          "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch",
+          "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+          "TestCollaborationKnowledgeHostCompositeHappyPath",
+          "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+          "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+          "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+          "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+          "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose",
+          "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence"
+        ]
+      },
+      {
+        "family": "host",
+        "mode": "race",
+        "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "counts": {
+          "run": 17,
+          "pass": 17,
+          "fail": 0,
+          "skip": 0
+        },
+        "raw_log_sha256": "3ed04a5fd0de45360d3b3f55c1f29247c765228426c5265a06ff64dec9969e97",
+        "exit_code": 0,
+        "top_level_tests": [
+          "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch",
+          "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+          "TestCollaborationKnowledgeHostCompositeHappyPath",
+          "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+          "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+          "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+          "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+          "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose",
+          "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence"
+        ]
+      }
+    ],
+    "whole_attempt3_state": "failed_not_accepted",
+    "whole_attempt3_make_exit_code": 2,
+    "whole_attempt3_not_reclassified": true
+  },
+  "CCG_reuse": {
+    "CCG1": {
+      "state": "verified",
+      "code": "057bc96163c5ef38fe82920784b80d5e0d619c35",
+      "source_file": "server/cmd/server/collaboration_knowledge_correction_composite_test.go",
+      "source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "final64_file_exact": true,
+      "independent_review": "knowledge-crosschain-correction-20261102/independent-review/review.json pass-with-notes",
+      "normal_pass": 1,
+      "race_pass": 1,
+      "counted_inside_current_Host17_composite": true,
+      "facts": [
+        "baseline approved project v1 in first actual fake Host stdin",
+        "real authenticated human HTTP v2 proposal remains pending and does not displace v1",
+        "exact reviewed v2 hash/state/version approved via real HTTP",
+        "separate second run and workdir, fresh no-resume physical child receives v2 and excludes superseded v1",
+        "real prepare contribution matches v2 exact identity/version/hash; real authorize prompt hash matches captured stdin",
+        "human withdrawal at third actual authorization causes409 and no third physical child",
+        "prior two physical-success proofs retained, original preparation metadata and proposal/approval receipts unchanged"
+      ],
+      "no_extra_rerun_needed": true
+    },
+    "CCG2": {
+      "state": "verified",
+      "original_product": "e6e7fe07da184247c93584bbd07e6b66b38f6fc1",
+      "harness_code": "5bd1ecf13a77bc94334452910b0c1adf08f02f08",
+      "relevant_final64_product_and_four_harness_files_unchanged": true,
+      "independent_review": "knowledge-deployed-probe-20261102/independent-review/review.json pass-with-notes",
+      "OFF_pass": 1,
+      "ON_pass": 1,
+      "real_provider": 0,
+      "source_env_hashes": [
+        "684c90893e458ec0a74eebdf0efc5fe4a2fa28154e04306fd1eaed401d5b7603",
+        "1483d3f9bb4c830d5a3ef1f31b5d57b20dfdb5ae55ffaec50a19bf5442471b37"
+      ],
+      "actual_OFF": {
+        "knowledge_section": false,
+        "contributions": 0,
+        "knowledge_events": 0,
+        "no_session_persistence": false
+      },
+      "actual_ON": {
+        "knowledge_section": true,
+        "exact_approved_contribution": true,
+        "knowledge_claim_preparation_authorization_each": 1,
+        "no_session_persistence": true
+      },
+      "no_extra_rerun_needed": true
+    }
+  },
+  "real_framework_current": {
+    "existing_runtime_framework_files": 17,
+    "existing_framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "existing_launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "runtime_RKI1_RKI5_review": "existing pass-with-notes",
+    "runtime_RKI6_result_review": "accepted pass-with-notes, blocking0, original reports unchanged",
+    "executable_scenarios": [
+      "RK1-E0a",
+      "RK1-H1",
+      "RK1-H2",
+      "RK1-H2b",
+      "RK1-H3a",
+      "RK1-H3b",
+      "RK1-H5",
+      "RK1-H6"
+    ],
+    "K1_K2_K3_E0b_executable_dispatch": false,
+    "fixture_knowledge_force_false_lines": [
+      75,
+      86
+    ],
+    "knowledge_and_E0b_budget_dispatch": false,
+    "paid_source_id": "",
+    "runnable": false
+  },
+  "real_knowledge_missing_inputs": [
+    {
+      "id": "K-FRAME",
+      "state": "open",
+      "code_refs": [
+        "server/cmd/server/rk1_scenarios_recall_test.go:223",
+        "server/cmd/server/rk1_fixture_test.go:75",
+        "server/cmd/server/rk1_fixture_test.go:86"
+      ],
+      "fact": "Existing17-file runtime framework and accepted RKI6 fake results are present. K1/K2/K3/E0b are absent from executable scenario map, and newRK1Fixture explicitly disables knowledge.",
+      "minimum_input": "A separately reviewed knowledge-capable fixture/scenario dispatch and ordinary-native entry. Preserve real router authorization, actual handoff/recording/knowledge grants, input/bind/proof/ledger capture and fake/stand-in no-provider guards; do not merely flip existing runtime registration flags."
+    },
+    {
+      "id": "K-REGISTER",
+      "state": "open",
+      "code_refs": [
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json",
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py:269"
+      ],
+      "fact": "Registry has RK1-K1=4 launches, RK1-K2=2, K3 launch count per actually wired entry; runtime launcher admits only runtime_addendum scenarios.",
+      "minimum_input": "Freeze exact K1 state schedule (including which withdrawal/expiry paths are actually measured), K2 same-native-session/revoke/recovery schedule and zero-launch refusal expectations, and K3 entry table: issue, comment, Chat, quick-create, autopilot, root, member, continuation. Define exact call counts/order/cursor/stop rules before requesting or using any knowledge budget."
+    },
+    {
+      "id": "K-BUDGET",
+      "state": "open",
+      "code_refs": [
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json",
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json"
+      ],
+      "fact": "Knowledge K1–K3 and ordinary E0b have no allocated calls; runtime25 and original14 are separate.",
+      "minimum_input": "Explicit knowledge allocation covering registered K1 four + K2 two + final K3 N launches, with E0b one separately accounted if selected as prerequisite. Refusals must use zero paid launches. Old proposed14/29 aggregate estimates are not authorization; no transfer from runtime25/original14."
+    },
+    {
+      "id": "K-BIND",
+      "state": "open",
+      "code_refs": [
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json",
+        "server/cmd/server/rk1_entry_test.go:223"
+      ],
+      "fact": "Existing runtime framework/launcher hashes match; paid source_id is empty and runnable=false.",
+      "minimum_input": "After the sole-owner local complete check actually succeeds, freeze final product/overlay, new knowledge framework/launcher, actual API/daemon/CLI/artifacts, applied configuration hashes, requested/observed model, thinking/tier, isolated DB and run/session/attempt/output identities. No automatic paid binding from fake source equivalence."
+    },
+    {
+      "id": "K-ACCOUNT-WINDOW",
+      "state": "open",
+      "code_refs": [
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json",
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json"
+      ],
+      "fact": "Registration names a Claude CLI/model/gateway and production profile exposure; current scope authorizes local work only.",
+      "minimum_input": "Verify the selected permitted Provider/account source and nonsecret identity/configuration fingerprints within applicable authority; explicit exclusive gateway window and existing upstream recovery evidence, serial launch ownership and first-incomplete stop. No new Provider authorization is inferred. Runtime H5 already uses self-controlled Multica owner/contributor with one Provider account; separate AC43 two-Provider-account acceptance remains parent-owned."
+    },
+    {
+      "id": "K-OBSERVE",
+      "state": "open",
+      "code_refs": [
+        ".trellis/tasks/10-30-collaboration-knowledge-promotion/real-model-acceptance-plan.md",
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json"
+      ],
+      "fact": "Fake/raw application-input evidence is complete for its scope; real K1/K2/K3 observations are absent.",
+      "minimum_input": "Run only after all above inputs/authority exist; preserve actual per-launch prompts, readable tool results, semantic criterion verdicts, exact native-session/exposure/recovery/refusal evidence, numbering and consumed counts. A test exit0 or configured model must not replace actual model/visibility evidence."
+    }
+  ],
+  "budget_separation": [
+    {
+      "ledger": "original E0–E6",
+      "state": "open separate continuation",
+      "remaining": 14,
+      "next": "E3 after trial2 then E4→E5→E6",
+      "frozen_source_and_invalid_samples_preserved": true,
+      "transferable": false
+    },
+    {
+      "ledger": "RK1 runtime addendum",
+      "state": "approved cap; paid entry not runnable",
+      "cap": 25,
+      "consumed": 0,
+      "remaining": 25,
+      "includes_H2b": true,
+      "H6_launches_per_trial": 2,
+      "excludes": [
+        "RK1-E0b",
+        "RK1-K1",
+        "RK1-K2",
+        "RK1-K3"
+      ],
+      "transferable": false
+    },
+    {
+      "ledger": "knowledge RK1-K1–K3 / ordinary E0b",
+      "state": "open unallocated",
+      "allocated": 0,
+      "consumed": 0,
+      "registered_K1_launches": 4,
+      "registered_K2_launches": 2,
+      "K3_count": "N requires explicit entry registration",
+      "ordinary_E0b_launches": 1,
+      "old_proposed_14_29_are_not_grants": true,
+      "transferable": false
+    }
+  ],
+  "source_history_caveats": [
+    "Older #6 real-model plan/registration original22 and broad framework_missing text are historical; current original14/runtime25/knowledge0 and accepted runtime framework evidence control this matrix.",
+    "Old #6 runtime recheck changes_required and #7 CT1/IW1 notes remain historical; subsequent scoped/final rechecks provide dispositions rather than rewriting originals.",
+    "Some green.txt files contain earlier failures and setup/build faults; no whole file is renamed successful. Current canonical default Go terminals, scoped follow-ups and current composite raw results are used.",
+    "#7 design/progress historical page-recovery limitation is superseded for loaded-page coverage by current test at knowledge-panel.test.tsx:390; no broad new recovery behavior or native rerun is claimed.",
+    "Third full check exit2 and old service/migration failure counts remain failed; retained targeted passes are not summed into a whole-check pass."
+  ],
+  "source_artifact_sha256": {
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/check.jsonl": "c0bd7db5492b3f9b227110db5cd2f2b1b8790c93c7898f73e3253c1eefd27bb3",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/prd.md": "b5f748cb96abe97c06fa4f29e384865ace283771ec0a2b9d774dfc2b2d8000a4",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/design.md": "341bdd3148907b0879e918330b07819e40041850fd16e5a0497c40b071638112",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/implement.md": "3c5a3dbbf3e03242e105d7b33817fedd22f650f9669c7eb325759f265395bc5e",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/advance-plan-2026-11-02.md": "455d46c9d54d27fbc2a83e85e7fd76dc9fb5d035dc521ce8e4ae736a3e235300",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/progress.md": "7100a95d893eec4c2ddeb88ceb1c82b391de31fd9de18487faec452a42d61b6c",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/combined-ready-for-main-integration.json": "e0e4636da0af36f53f85cbfae3b36f1e61b8ebd995eb3260dda508217a55a622",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/prd.md": "c2654c998a75fca176e7e1634a71ad9cee68e62330b8d94764a385a221889938",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/design.md": "e4aeb6ca5e248c8e1d01fc087a80b9620694f61a3da6f99eb9f812573deef1ea",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/implement.md": "e2ec15862fd032bae6891d0c710133b8461b06883fe63f6eeb89af0b003ed7aa",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/progress.md": "2b395b22424ec58304af6bed57ca89534cf08dee94382baf45d15572cf01c95f",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/task.json": "ca5ae23f49269c4acc8c2c7d8f4189ff9566540fa1c3a4d89adf0e33f16c88aa",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/real-model-acceptance-plan.md": "30d39a45176be03930e28969f186512e2c41c351a620205703ab48c0ec8b7ae8",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/final-acceptance-review-2026-11-01.json": "e710ea701e08c31fde5a426f2a2379017568fd976ecaf418f6ab783e8352ce1b",
+    ".trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/attempt-3-result.json": "e42695ac5f59c44f69f93555d46a2c90dd6b20e8e526ab9a8300c653b9324079",
+    ".trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/attempt-3-Go-complete.json": "6fcd0eab0dde97a24837ae3e7fa046f69b68117dd0124d9348985adba62c40b8",
+    ".trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/attempt-3-knowledge-composites.json": "ad56840f433715e4b3a6fc53e899e6dad4483b3fed400f2786ca2af62247f0a0",
+    ".trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-crosschain-correction-20261102/summary.json": "88a5fe53ba7826a8c68d49d0963c288dbf4b23e49d0a58bcbf1dc1ec9fe6dfd9",
+    ".trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-crosschain-correction-20261102/independent-review/review.json": "592969bbd1cc06039d14224b1808a60379d3bd06c3e096bf9e1d8672ee5a2604",
+    ".trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-deployed-probe-20261102/root-deployed-results.json": "4b741252a8a98745515d760577626ae6aea9e83715a5e31dc460e3d7c7881f1e",
+    ".trellis/tasks/10-30-collaboration-context-handoff/research/knowledge-deployed-probe-20261102/independent-review/review.json": "e442d8b24c93e0c2f9281760fd7f7dcb83d180cc7ea6e60d802c5c0b46a64272",
+    ".trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/rki6-review.json": "109bdcbadd1f4edd11da9ed82137e75a50a67e0b61c9679589f8094a313dd442",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/registration.json": "4c626e50af5aaffb2feb1eb9db0c35f05c0c0dcdd8d7dcfd932c08e22af0e2cf",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json": "9226e482d73a38d87d684c830d6330491f77d77610a322775f754e2a4b40163e",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json": "9844a73c665a6614a59d7a487d093b60b1c141815093fa2c38a0547ecef5ba11",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    ".trellis/spec/views/frontend/collaboration-knowledge.md": "82aa61230b3c40a5507160fc3628cbc615453495c12cc1ade3c7fdf8270f7ffd"
+  },
+  "operations": {
+    "source_edits": false,
+    "status_changes": false,
+    "launcher_changes": false,
+    "parent_AC0_AC3_changes": false,
+    "tests_run": false,
+    "database_operations": false,
+    "service_browser_container_operations": false,
+    "provider_calls": 0,
+    "agents_spawned": 0,
+    "commits": 0,
+    "only_reports_written": true
+  },
+  "spec_recovery_ownership_check": {
+    "state": "verified",
+    "path": ".trellis/spec/views/frontend/collaboration-knowledge.md",
+    "line": 106,
+    "sha256": "82aa61230b3c40a5507160fc3628cbc615453495c12cc1ade3c7fdf8270f7ffd",
+    "contract": "Missing current-list membership is unknown; current authorized detail can establish source ownership. This matches final knowledge-panel.test.tsx:390; older design/progress page-limitation text is historical."
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "completed_at": "2026-10-31T19:17:49.253337+00:00",
+  "status": "environment_blocked",
+  "scope": "Original frozen series only; does not validate new runtime 0e1ee8e1e",
+  "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+  "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+  "provider_version": "2.1.316",
+  "requested_model": "claude-opus-5-5",
+  "observed_model": null,
+  "provider_launches_this_continuation": 1,
+  "valid_samples_this_continuation": 0,
+  "invalid_attempts_this_continuation": 1,
+  "initial_provider_call_cap": 23,
+  "remaining_provider_call_cap": 22,
+  "stop_reason": "E2a trial 2 incomplete with upstream 502; first-incomplete stop rule applied.",
+  "next_scenario": "E2a_window_fact_newest",
+  "next_arm": "baseline",
+  "next_start_trial": 3,
+  "next_total_trials": 3,
+  "next_scenario_call_cap": 1,
+  "later_trials_or_scenarios_run": false,
+  "prior_e1_summary": {
+    "consumed_slots": [
+      1,
+      2,
+      3
+    ],
+    "valid_samples": 1,
+    "invalid_attempts": 2,
+    "facts_correct_valid_samples": 1,
+    "memory_writes_valid_samples": 0
+  },
+  "e2a_summary": {
+    "consumed_slots": [
+      1,
+      2
+    ],
+    "valid_samples": 0,
+    "invalid_attempts": 2,
+    "unrun_trials": [
+      3
+    ]
+  },
+  "later_order": [
+    "E2b baseline trials 1-3",
+    "E3 baseline trials 1-3",
+    "E3 after trials 1-3",
+    "E4 baseline trials 1-3",
+    "E5 baseline trials 1-3",
+    "E6 baseline trials 1-3 (two launches each)"
+  ],
+  "trial_evidence": {
+    "scenario": "E2a_window_fact_newest",
+    "arm": "baseline",
+    "trial": 2,
+    "run_id": "bd1f29a8-2650-4704-9362-b94c1f7bef93",
+    "runtime_status": "incomplete",
+    "raw_harness_verdict": "provider_failure_unclassified",
+    "valid_behavior_sample": false,
+    "classification": "environment_provider_upstream_502",
+    "criterion_passed": null,
+    "criterion_evidence": "Provider returned API Error: 502 after 195.7443795 seconds; no context reads and no factual answer. Do not score environment failure as wrong answer or success.",
+    "context_reads": 0,
+    "memory_reads": 0,
+    "memory_puts": 0,
+    "requested_model": "claude-opus-5-5",
+    "observed_model": null,
+    "model_observation": "unavailable_in_host_projection",
+    "effective_thinking_level": "unobserved",
+    "effective_service_tier": "unobserved",
+    "provider_error_body": "API Error: 502 Upstream service temporarily unavailable. This is a server-side issue, usually temporary — try again in a moment. If it persists, check your inference gateway (sub.100xlabs.space).",
+    "provider_internal_retry_count": "unobserved; no private Provider transcript accessed",
+    "lifecycle": {
+      "complete": true,
+      "prompt_coverage_complete": true,
+      "ledger_phase": "proof_acknowledged",
+      "permits": 1,
+      "terminations": 1,
+      "proofs": 1,
+      "run_identity_verified": true
+    },
+    "http_exchange_count": 1964,
+    "http_request_response_pairs_verified": true,
+    "event_sequence_monotonic": true,
+    "terminal_event_matches_record": true,
+    "prompt_hash_verified": true,
+    "local_events": "E2a_window_fact_newest-baseline/records.jsonl.trials/bd1f29a8-2650-4704-9362-b94c1f7bef93/events.jsonl",
+    "seconds": 195.7443795,
+    "usage": {
+      "cache_creation_tokens": "0",
+      "cache_read_tokens": "0",
+      "cost_usd": null,
+      "input_tokens": "0",
+      "output_tokens": "0",
+      "total_tokens": null
+    },
+    "fees": "unobserved; not inferred from reported zero token fields"
+  },
+  "limitations": [
+    "No effective model or tier observation from this failed Provider output.",
+    "Lifecycle settlement is not behavioral acceptance.",
+    "No replacement trial, additional probe, model switch or timeout extension.",
+    "New-runtime real-model acceptance requires separate source-bound registration and coverage."
+  ]
+}

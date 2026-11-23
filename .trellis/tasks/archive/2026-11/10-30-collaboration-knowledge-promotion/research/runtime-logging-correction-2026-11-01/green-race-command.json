@@ -1,0 +1,21 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-json",
+    "./pkg/agent",
+    "./internal/daemon",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "Test(Claude|Knowledge|OrdinaryKnowledge|OrdinaryUnsupportedKnowledge|Host|ExecuteAndDrain|Launch|RunCollect|CollaborationLifecycle|ReconcileFreshRetryResult|ShouldRetryWithFreshSession)",
+    "-count=1",
+    "-timeout=180s"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 112.151
+}

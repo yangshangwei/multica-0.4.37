@@ -1,0 +1,1008 @@
+{
+  "issueId": "01a163f5-44e4-70a0-af62-a05da21b9d0b",
+  "creatorId": "0d9277f5-b043-4585-b790-fe880e36d54d",
+  "installedHandlerId": "3e6810a4-9738-4757-b186-9f7f38cf3c36",
+  "sourceWorkspaceId": "e7d92338-4516-4eeb-bf29-79790479b1c4",
+  "webTransfer": {
+    "receipt": {
+      "code": "transferred",
+      "collaboration_revision": "4"
+    },
+    "requestId": "6de43118-297a-4c7b-9e24-4904e7134267",
+    "input": {
+      "expected_collaboration_revision": "3",
+      "expected_lifecycle_epoch": "1",
+      "expected_participant_epoch": "1",
+      "expected_account_epoch": "1",
+      "target_user_id": "3e6810a4-9738-4757-b186-9f7f38cf3c36",
+      "purpose": "transfer",
+      "note": "Web hands the same issue to the installed full Main"
+    }
+  },
+  "nativeExecutionScope": "Full packaged production Main/preload/renderer and bundled CLI version bootstrap; remote permit is a public protocol simulation with no executable, outcome or proof",
+  "boot": {
+    "main": {
+      "packaged": true,
+      "appPath": "/opt/multica/resources/app.asar",
+      "name": "Multica",
+      "version": "0.6.5-collaboration.63c0beeb5",
+      "executable": "/opt/multica/multica-desktop",
+      "home": "/root",
+      "userData": "/root/.config/Multica",
+      "platform": "linux",
+      "arch": "arm64",
+      "electron": "39.8.7"
+    },
+    "native": {
+      "appInfo": {
+        "version": "0.6.5-collaboration.63c0beeb5",
+        "os": "linux"
+      },
+      "config": {
+        "ok": true,
+        "source": "configured",
+        "config": {
+          "schemaVersion": 1,
+          "apiUrl": "http://host.docker.internal:18996",
+          "wsUrl": "ws://host.docker.internal:18996/ws",
+          "appUrl": "http://host.docker.internal:13916",
+          "updateUrl": "http://host.docker.internal:18996/desktop"
+        }
+      },
+      "daemon": {
+        "state": "stopped"
+      },
+      "preferences": {
+        "autoStart": false,
+        "autoStop": false
+      },
+      "cliInstalled": true,
+      "updater": {
+        "automaticUpdates": false
+      }
+    },
+    "tabs": null,
+    "rendererUrl": "file:///opt/multica/resources/app.asar/out/renderer/index.html",
+    "artifactSha256": "35690546d3148df7c702ae39a5589e684eeb379893e34e79b2438ada578b3ea5",
+    "executableSha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+    "errors": [],
+    "accountRequests": [],
+    "responses": [],
+    "writes": [],
+    "bundledCLI": {
+      "sha256": "d4f9091acf534ec4fff9f3110d063ac58ead160b4badedf0607a5b989edfc732",
+      "version": "v0.6.5-100-g8ecb98883-dirty",
+      "command": [
+        "<packaged-bundled-cli>",
+        "version",
+        "--output",
+        "json"
+      ]
+    }
+  },
+  "login": {
+    "status": 200,
+    "userId": "3e6810a4-9738-4757-b186-9f7f38cf3c36",
+    "actualPasswordForm": true
+  },
+  "failureState": {
+    "main": {
+      "packaged": true,
+      "appPath": "/opt/multica/resources/app.asar",
+      "name": "Multica",
+      "version": "0.6.5-collaboration.63c0beeb5",
+      "executable": "/opt/multica/multica-desktop",
+      "home": "/root",
+      "userData": "/root/.config/Multica",
+      "platform": "linux",
+      "arch": "arm64",
+      "electron": "39.8.7"
+    },
+    "native": {
+      "appInfo": {
+        "version": "0.6.5-collaboration.63c0beeb5",
+        "os": "linux"
+      },
+      "config": {
+        "ok": true,
+        "source": "configured",
+        "config": {
+          "schemaVersion": 1,
+          "apiUrl": "http://host.docker.internal:18996",
+          "wsUrl": "ws://host.docker.internal:18996/ws",
+          "appUrl": "http://host.docker.internal:13916",
+          "updateUrl": "http://host.docker.internal:18996/desktop"
+        }
+      },
+      "daemon": {
+        "state": "stopped",
+        "profile": "desktop-host.docker.internal-18996"
+      },
+      "preferences": {
+        "autoStart": false,
+        "autoStop": false
+      },
+      "cliInstalled": true,
+      "updater": {
+        "automaticUpdates": false
+      }
+    },
+    "tabs": {
+      "activeScope": "account",
+      "activeWorkspaceSlug": null,
+      "accountTabs": [
+        {
+          "id": "0705b2a6-f412-46d2-ab52-daaa3508c784",
+          "url": "/account?view=current&issue=01a163f5-44e4-70a0-af62-a05da21b9d0b"
+        }
+      ]
+    },
+    "rendererUrl": "file:///opt/multica/resources/app.asar/out/renderer/index.html",
+    "artifactSha256": "35690546d3148df7c702ae39a5589e684eeb379893e34e79b2438ada578b3ea5",
+    "executableSha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+    "errors": [],
+    "accountRequests": [
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/reactions",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/attachments",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/activity",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/mention-targets",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/comments",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": null,
+        "clientOS": null
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": null,
+        "clientOS": null
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": null,
+        "clientOS": null
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/reactions",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/attachments",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/activity",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/mention-targets",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/comments",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/status-options",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/recipients/resolve",
+        "method": "POST",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/handoffs",
+        "method": "POST",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/comments",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/reactions",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/attachments",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/activity",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/mention-targets",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/status-options",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/recipients/resolve",
+        "method": "POST",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": null,
+        "clientOS": null
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": null,
+        "clientOS": null
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/reactions",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/attachments",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/activity",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/mention-targets",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/comments",
+        "method": "GET",
+        "workspaceId": null,
+        "workspaceSlug": null,
+        "clientVersion": "0.6.5-collaboration.63c0beeb5",
+        "clientOS": "linux"
+      }
+    ],
+    "responses": [
+      {
+        "path": "/api/config",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/workspaces",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/admin/me",
+        "method": "GET",
+        "status": 403
+      },
+      {
+        "path": "/api/me/collaboration-notifications",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/workspaces",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/collaboration-notifications",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/client-usage",
+        "method": "POST",
+        "status": 204
+      },
+      {
+        "path": "/api/me/collaboration-notifications",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/reactions",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/attachments",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/activity",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/comments",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/mention-targets",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/workspaces",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/config",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/workspaces",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/admin/me",
+        "method": "GET",
+        "status": 403
+      },
+      {
+        "path": "/api/me/collaboration-notifications",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/collaboration-notifications",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/reactions",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/attachments",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/activity",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/comments",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/mention-targets",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/status-options",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/recipients/resolve",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/handoffs",
+        "method": "POST",
+        "status": 200
+      },
+      {
+        "path": "/api/me/collaboration-notifications",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/attachments",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/reactions",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/comments",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/recipients/resolve",
+        "method": "POST",
+        "status": 403
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/status-options",
+        "method": "GET",
+        "status": 403
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/activity",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/mention-targets",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/collaboration-notifications",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/config",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/workspaces",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/admin/me",
+        "method": "GET",
+        "status": 403
+      },
+      {
+        "path": "/api/me/collaboration-notifications",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/collaboration-notifications",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/me/workbench",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/attachments",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/reactions",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/activity",
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/comments",
+        "method": "GET",
+        "status": 200
+      }
+    ],
+    "writes": [
+      {
+        "path": "/api/collaboration/issues/01a163f5-44e4-70a0-af62-a05da21b9d0b/handoffs",
+        "status": 200,
+        "expectedStatus": 200,
+        "receipt": {
+          "code": "information_requested",
+          "collaboration_revision": "5"
+        },
+        "requestId": "fc1ad00e-b03c-4172-ba8c-d35dc2156bdf",
+        "input": {
+          "expected_collaboration_revision": "4",
+          "expected_lifecycle_epoch": "1",
+          "expected_participant_epoch": "1",
+          "expected_account_epoch": "1",
+          "target_user_id": "0d9277f5-b043-4585-b790-fe880e36d54d",
+          "purpose": "information",
+          "note": "Installed handler requests information from the Web creator",
+          "expected_status": "blocked",
+          "status_options_version": "34a1627e71c70b69ec3039012523a37c5d1f3d9bfe77a2f68c3057b288a41f2b"
+        },
+        "baseline": {
+          "issue_id": "01a163f5-44e4-70a0-af62-a05da21b9d0b",
+          "collaboration_revision": "4",
+          "lifecycle_epoch": "1",
+          "write_context": {
+            "participant_epoch": "1",
+            "account_epoch": "1"
+          },
+          "session": {
+            "id": "f596fd38-cd28-45ac-92d8-da88826a3fb2",
+            "queue_state": "paused",
+            "control_version": "1"
+          },
+          "execution": {
+            "protocol_version": 5,
+            "issue_id": "01a163f5-44e4-70a0-af62-a05da21b9d0b",
+            "session_id": "f596fd38-cd28-45ac-92d8-da88826a3fb2",
+            "availability": "unavailable",
+            "unavailable_reason": "shared_runtime_unavailable",
+            "target_set_version": "4",
+            "control": {
+              "scope": "issue",
+              "queue_state": "paused",
+              "control_version": "1"
+            },
+            "execution_gate": {
+              "enabled": true,
+              "epoch": "3"
+            },
+            "channels": [
+              {
+                "id": "780265ce-b9c1-446b-9379-c17f6a2ec42f",
+                "queue_state": "paused",
+                "control_version": "1",
+                "group_generation": "0",
+                "next_command_seq": "1",
+                "active_group_id": null,
+                "pause_reason": "new_channel"
+              },
+              {
+                "id": "e239f538-2405-4b09-b26b-d77dc7f1182e",
+                "queue_state": "paused",
+                "control_version": "1",
+                "group_generation": "0",
+                "next_command_seq": "1",
+                "active_group_id": null,
+                "pause_reason": "new_channel"
+              },
+              {
+                "id": "f18147de-2519-46a1-9759-edd12ec1b820",
+                "queue_state": "paused",
+                "control_version": "1",
+                "group_generation": "0",
+                "next_command_seq": "1",
+                "active_group_id": null,
+                "pause_reason": "new_channel"
+              }
+            ],
+            "targets": [
+              {
+                "id": "2a86c653-4236-4ee9-9efd-bfbf1ce94f2e",
+                "channel_id": "f18147de-2519-46a1-9759-edd12ec1b820",
+                "kind": "agent",
+                "resource_id": "2e1967f9-cd08-4f34-9064-6695c2b19389",
+                "target_epoch": "1",
+                "config_version": "1",
+                "hold_reason": "initial",
+                "hold_version": "2",
+                "control": {
+                  "scope": "target",
+                  "queue_state": "paused",
+                  "control_version": "1"
+                },
+                "group_generation": "0",
+                "active_group_id": null,
+                "pause_reason": "new_channel",
+                "revoked_at": null
+              },
+              {
+                "id": "2d729361-9a76-4431-8d6b-86c2f5d7adfa",
+                "channel_id": "e239f538-2405-4b09-b26b-d77dc7f1182e",
+                "kind": "squad",
+                "resource_id": "23c273e3-6723-4802-a23a-eca4852e57f1",
+                "target_epoch": "1",
+                "config_version": "1",
+                "hold_reason": "initial",
+                "hold_version": "3",
+                "control": {
+                  "scope": "target",
+                  "queue_state": "paused",
+                  "control_version": "1"
+                },
+                "group_generation": "0",
+                "active_group_id": null,
+                "pause_reason": "new_channel",
+                "revoked_at": null
+              },
+              {
+                "id": "858a3411-df3c-4dd3-b003-23dd8d97f78b",
+                "channel_id": "780265ce-b9c1-446b-9379-c17f6a2ec42f",
+                "kind": "agent",
+                "resource_id": "7d24c207-e855-46ba-a1c6-b8010ac978e8",
+                "target_epoch": "1",
+                "config_version": "1",
+                "hold_reason": "initial",
+                "hold_version": "2",
+                "control": {
+                  "scope": "target",
+                  "queue_state": "paused",
+                  "control_version": "1"
+                },
+                "group_generation": "0",
+                "active_group_id": null,
+                "pause_reason": "new_channel",
+                "revoked_at": null
+              }
+            ],
+            "commands": [],
+            "groups": [],
+            "runs": []
+          }
+        }
+      }
+    ]
+  }
+}

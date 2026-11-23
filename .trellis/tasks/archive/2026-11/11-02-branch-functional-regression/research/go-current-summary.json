@@ -1,0 +1,591 @@
+{
+  "at": "2026-11-02T01:41:17.222326+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_first_run": "research/go-result.json",
+  "first_run_remains_failed": true,
+  "derived_current_complete_package_view": true,
+  "packages": 82,
+  "package_exit0": 82,
+  "with_named_tests": 73,
+  "no_named_tests": 9,
+  "top_level": {
+    "pass": 10365,
+    "skip": 18
+  },
+  "subtests": {
+    "pass": 10491
+  },
+  "current_skips": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCommentContentBigramRequirementMatchesRealPGBigm"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationPartialResumeRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSingleAgentRuntimeRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCapacityOneRoutesLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "test": "TestCLIConfig_UnknownFieldsArePreserved"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestIsDriveRoot"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestIterationI1P95"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestIterationI1DisableP95"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestTriageQueueScaleBaseline"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestTriageWireFixtures"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestMcpMarketPublicHTTPRecipeLifecycle"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput"
+    }
+  ],
+  "package_results": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "run": "evidence/go/01-cmd_backfill_codex_usage_cache",
+      "exit_code": 0,
+      "named_test_count": 11
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "run": "evidence/go/02-cmd_backfill_issue_last_activity",
+      "exit_code": 0,
+      "named_test_count": 2
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "run": "evidence/go/03-cmd_backfill_task_usage_hourly",
+      "exit_code": 0,
+      "named_test_count": 0
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "run": "evidence/go/04-cmd_migrate",
+      "exit_code": 0,
+      "named_test_count": 71
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "run": "evidence/go/05-cmd_multica",
+      "exit_code": 0,
+      "named_test_count": 1074
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "run": "evidence/go-cmd-server-replay/full",
+      "exit_code": 0,
+      "named_test_count": 738
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/admission",
+      "run": "evidence/go/07-internal_admission",
+      "exit_code": 0,
+      "named_test_count": 0
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+      "run": "evidence/go/08-internal_agentconfig",
+      "exit_code": 0,
+      "named_test_count": 0
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/analytics",
+      "run": "evidence/go/09-internal_analytics",
+      "exit_code": 0,
+      "named_test_count": 8
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attribution",
+      "run": "evidence/go/10-internal_attribution",
+      "exit_code": 0,
+      "named_test_count": 31
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "run": "evidence/go/11-internal_attributionbackfill",
+      "exit_code": 0,
+      "named_test_count": 4
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "run": "evidence/auth-redis-full-1",
+      "exit_code": 0,
+      "named_test_count": 113
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/changelog",
+      "run": "evidence/go/13-internal_changelog",
+      "exit_code": 0,
+      "named_test_count": 56
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+      "run": "evidence/go/14-internal_channelmedia",
+      "exit_code": 0,
+      "named_test_count": 3
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "run": "evidence/go/15-internal_chatoriginbackfill",
+      "exit_code": 0,
+      "named_test_count": 0
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chattitle",
+      "run": "evidence/go/16-internal_chattitle",
+      "exit_code": 0,
+      "named_test_count": 0
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "run": "evidence/go-home-replay/cli-full",
+      "exit_code": 0,
+      "named_test_count": 326
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "run": "evidence/go/18-internal_cloudruntime",
+      "exit_code": 0,
+      "named_test_count": 3
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "run": "evidence/go/19-internal_collaboration",
+      "exit_code": 0,
+      "named_test_count": 11
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "run": "evidence/go-home-replay/daemon-full",
+      "exit_code": 0,
+      "named_test_count": 1716
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "run": "evidence/go/21-internal_daemon_collaborationrun",
+      "exit_code": 0,
+      "named_test_count": 348
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "run": "evidence/go-home-replay/execenv-full",
+      "exit_code": 0,
+      "named_test_count": 1345
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+      "run": "evidence/go/23-internal_daemon_processtree",
+      "exit_code": 0,
+      "named_test_count": 1
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+      "run": "evidence/go/24-internal_daemon_repocache",
+      "exit_code": 0,
+      "named_test_count": 61
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemonws",
+      "run": "evidence/go/25-internal_daemonws",
+      "exit_code": 0,
+      "named_test_count": 30
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+      "run": "evidence/go/26-internal_dbstartup",
+      "exit_code": 0,
+      "named_test_count": 33
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dispatch",
+      "run": "evidence/go/27-internal_dispatch",
+      "exit_code": 0,
+      "named_test_count": 0
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/docs",
+      "run": "evidence/go/28-internal_docs",
+      "exit_code": 0,
+      "named_test_count": 16
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement",
+      "run": "evidence/go/29-internal_entitlement",
+      "exit_code": 0,
+      "named_test_count": 33
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "run": "evidence/go/30-internal_entitlement_entitlementtest",
+      "exit_code": 0,
+      "named_test_count": 1
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/events",
+      "run": "evidence/go/31-internal_events",
+      "exit_code": 0,
+      "named_test_count": 8
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/featureflags",
+      "run": "evidence/go/32-internal_featureflags",
+      "exit_code": 0,
+      "named_test_count": 7
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "run": "evidence/handler-full-freshfixture-1",
+      "exit_code": 0,
+      "named_test_count": 5332
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/installation",
+      "run": "evidence/go/34-internal_installation",
+      "exit_code": 0,
+      "named_test_count": 8
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "run": "evidence/go/35-internal_integrations_channel",
+      "exit_code": 0,
+      "named_test_count": 22
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "run": "evidence/go/36-internal_integrations_channel_engine",
+      "exit_code": 0,
+      "named_test_count": 211
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "run": "evidence/go/37-internal_integrations_composio",
+      "exit_code": 0,
+      "named_test_count": 42
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "run": "evidence/go/38-internal_integrations_dingtalk",
+      "exit_code": 0,
+      "named_test_count": 212
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "run": "evidence/go/39-internal_integrations_ghsnapshot",
+      "exit_code": 0,
+      "named_test_count": 36
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "run": "evidence/go/40-internal_integrations_lark",
+      "exit_code": 0,
+      "named_test_count": 426
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "run": "evidence/go/41-internal_integrations_slack",
+      "exit_code": 0,
+      "named_test_count": 188
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "run": "evidence/go/42-internal_integrations_telegram",
+      "exit_code": 0,
+      "named_test_count": 114
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "run": "evidence/go/43-internal_integrations_vcs",
+      "exit_code": 0,
+      "named_test_count": 15
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "run": "evidence/go/44-internal_integrations_wecom",
+      "exit_code": 0,
+      "named_test_count": 616
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "run": "evidence/go/45-internal_issueactivitybackfill",
+      "exit_code": 0,
+      "named_test_count": 2
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueguard",
+      "run": "evidence/go/46-internal_issueguard",
+      "exit_code": 0,
+      "named_test_count": 2
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueposition",
+      "run": "evidence/go/47-internal_issueposition",
+      "exit_code": 0,
+      "named_test_count": 0
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "run": "evidence/go/48-internal_issuestatus",
+      "exit_code": 0,
+      "named_test_count": 26
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/iteration",
+      "run": "evidence/go/49-internal_iteration",
+      "exit_code": 0,
+      "named_test_count": 122
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/logger",
+      "run": "evidence/go/50-internal_logger",
+      "exit_code": 0,
+      "named_test_count": 1
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "run": "evidence/go/51-internal_metrics",
+      "exit_code": 0,
+      "named_test_count": 87
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "run": "evidence/go/52-internal_middleware",
+      "exit_code": 0,
+      "named_test_count": 119
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "run": "evidence/go/53-internal_migrations",
+      "exit_code": 0,
+      "named_test_count": 536
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/profiling",
+      "run": "evidence/go/54-internal_profiling",
+      "exit_code": 0,
+      "named_test_count": 0
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+      "run": "evidence/go/55-internal_projecthealth",
+      "exit_code": 0,
+      "named_test_count": 18
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/realtime",
+      "run": "evidence/go/56-internal_realtime",
+      "exit_code": 0,
+      "named_test_count": 87
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+      "run": "evidence/go/57-internal_runtimeapps",
+      "exit_code": 0,
+      "named_test_count": 0
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/scheduler",
+      "run": "evidence/go/58-internal_scheduler",
+      "exit_code": 0,
+      "named_test_count": 31
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "run": "evidence/go/59-internal_seatcapacity",
+      "exit_code": 0,
+      "named_test_count": 23
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/selfexec",
+      "run": "evidence/go/60-internal_selfexec",
+      "exit_code": 0,
+      "named_test_count": 10
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "run": "evidence/go/61-internal_service",
+      "exit_code": 0,
+      "named_test_count": 3340
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/skill",
+      "run": "evidence/go/62-internal_skill",
+      "exit_code": 0,
+      "named_test_count": 66
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/storage",
+      "run": "evidence/go/63-internal_storage",
+      "exit_code": 0,
+      "named_test_count": 99
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "run": "evidence/go/64-internal_taskusagebackfill",
+      "exit_code": 0,
+      "named_test_count": 2
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/testutil",
+      "run": "evidence/go/65-internal_testutil",
+      "exit_code": 0,
+      "named_test_count": 18
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+      "run": "evidence/go/66-internal_triagecsv",
+      "exit_code": 0,
+      "named_test_count": 15
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util",
+      "run": "evidence/go/67-internal_util",
+      "exit_code": 0,
+      "named_test_count": 115
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "run": "evidence/go/68-internal_util_secretbox",
+      "exit_code": 0,
+      "named_test_count": 10
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "run": "evidence/go/69-pkg_agent",
+      "exit_code": 0,
+      "named_test_count": 1955
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/composio",
+      "run": "evidence/go/70-pkg_composio",
+      "exit_code": 0,
+      "named_test_count": 39
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+      "run": "evidence/go/71-pkg_db_generated",
+      "exit_code": 0,
+      "named_test_count": 6
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/dbid",
+      "run": "evidence/go/72-pkg_dbid",
+      "exit_code": 0,
+      "named_test_count": 23
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+      "run": "evidence/go/73-pkg_featureflag",
+      "exit_code": 0,
+      "named_test_count": 51
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/llm",
+      "run": "evidence/go/74-pkg_llm",
+      "exit_code": 0,
+      "named_test_count": 34
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "run": "evidence/go/75-pkg_plugincontract",
+      "exit_code": 0,
+      "named_test_count": 99
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/protocol",
+      "run": "evidence/go/76-pkg_protocol",
+      "exit_code": 0,
+      "named_test_count": 390
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "run": "evidence/go/77-pkg_publicapi_v1",
+      "exit_code": 0,
+      "named_test_count": 5
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/redact",
+      "run": "evidence/go/78-pkg_redact",
+      "exit_code": 0,
+      "named_test_count": 35
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "run": "evidence/go/79-pkg_remotemcp",
+      "exit_code": 0,
+      "named_test_count": 8
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "run": "evidence/go/80-pkg_remotemcp_remotemcptest",
+      "exit_code": 0,
+      "named_test_count": 1
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "run": "evidence/go/81-pkg_skillbundle",
+      "exit_code": 0,
+      "named_test_count": 2
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+      "run": "evidence/go/82-pkg_taskfailure",
+      "exit_code": 0,
+      "named_test_count": 222
+    }
+  ],
+  "supplemental_runs": [
+    "evidence/cmd-redis-1",
+    "evidence/linux-agent-kernel-2"
+  ],
+  "scope": "Per-package latest full results, plus explicit conditional tests; never a single full command pass or all-platform claim"
+}

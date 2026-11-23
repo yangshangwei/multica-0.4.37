@@ -1,0 +1,9 @@
+=== RUN   TestHostRecordingRecoveryAdvancesSealAfterOriginalACK
+    host_recording_recovery_test.go:406: newly learned checkpoint ACK did not retain a pending metadata advance
+--- FAIL: TestHostRecordingRecoveryAdvancesSealAfterOriginalACK (0.29s)
+=== RUN   TestHostRecordingRecoveryBoundsTheWholeCheckpointPass
+    host_recording_recovery_test.go:493: checkpoint pass did not leave a bounded original prefix pending: requests=64, error=<nil>
+--- FAIL: TestHostRecordingRecoveryBoundsTheWholeCheckpointPass (3.77s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	4.781s
+FAIL

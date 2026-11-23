@@ -1,0 +1,274 @@
+{
+  "started_at": "2026-11-02T01:50:51.110693+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "state": "complete",
+  "only_owned_resources": true,
+  "databases_and_evidence_retained": true,
+  "gates": [
+    {
+      "database": "multica_func7af9_assist_20261102",
+      "before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "after": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "cleanup_changed_booleans": false
+    },
+    {
+      "database": "multica_func7af9_device_20261102",
+      "before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "after": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "cleanup_changed_booleans": false
+    },
+    {
+      "database": "multica_functional_7af9_legacy_full1_20261102",
+      "before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "after": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "cleanup_changed_booleans": false
+    },
+    {
+      "database": "multica_func7af9_host_off_20261102",
+      "before": {
+        "id": 1,
+        "epoch": 12,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "after": {
+        "id": 1,
+        "epoch": 12,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "cleanup_changed_booleans": false
+    },
+    {
+      "database": "multica_func7af9_knowledge_on_20261102",
+      "before": {
+        "id": 1,
+        "epoch": 4,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "after": {
+        "id": 1,
+        "epoch": 4,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "cleanup_changed_booleans": false
+    },
+    {
+      "database": "multica_func7af9_admin_init_20261102",
+      "before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "after": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "cleanup_changed_booleans": false
+    },
+    {
+      "database": "multica_func7af9_password_20261102",
+      "before": {
+        "id": 1,
+        "epoch": 8,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "after": {
+        "id": 1,
+        "epoch": 8,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "cleanup_changed_booleans": false
+    },
+    {
+      "database": "multica_func7af9_recommend_20261102",
+      "before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "after": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "cleanup_changed_booleans": false
+    },
+    {
+      "database": "multica_functional_7af9_legacy_20261102",
+      "before": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "after": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "cleanup_changed_booleans": false
+    }
+  ],
+  "processes": [
+    {
+      "pid": 44414,
+      "identity": "Mon Nov  2 09:45:59 2026     node /opt/homebrew/bin/pnpm --filter @multica/web exec next start --port 13840",
+      "signal": "SIGTERM",
+      "process_group": 44414
+    },
+    {
+      "pid": 68589,
+      "identity": "Mon Nov  2 08:12:43 2026     /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/serve-renderer.py /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/apps/desktop/out/renderer 19860",
+      "signal": "SIGTERM",
+      "process_group": null
+    },
+    {
+      "pid": 17981,
+      "identity": "Mon Nov  2 08:47:56 2026     node e2e/fixtures/creator-recommendation-provider.mjs",
+      "signal": "SIGTERM",
+      "process_group": null
+    },
+    {
+      "pid": 16154,
+      "identity": "Mon Nov  2 08:44:06 2026     node e2e/support/assist-provider.mjs",
+      "signal": "SIGTERM",
+      "process_group": null
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "bash",
+        "scripts/dev-env.sh",
+        "down",
+        "functional-7af9-knowledge-on",
+        "--components",
+        "api,web"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "docker",
+        "stop",
+        "multica-functional-7af9-redis-20261102"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "multica-functional-7af9-redis-20261102"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "checked_ports": {
+    "18920": "no_listener",
+    "13840": "no_listener",
+    "19860": "no_listener",
+    "16390": "no_listener"
+  },
+  "unexpected_live_ports": [],
+  "owned_runtime_process_matches_after": [],
+  "finished_at": "2026-11-02T01:50:54.349065+00:00",
+  "exit_code": 0,
+  "browser_environment_ttl_note": "Stopped registered agent environments retain databases until their recorded24-hour TTL is collected; Go explicit databases have no registry TTL",
+  "no_default_or_other_task_processes_stopped": true
+}

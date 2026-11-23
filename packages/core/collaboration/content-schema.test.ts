@@ -1,0 +1,263 @@
+// @vitest-environment node
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { setSchemaLogger } from "../api/schema";
+import { noopLogger } from "../logger";
+import { parseCollaborationComment, parseCollaborationComments, parseCollaborationMentionTargets, parseCollaborationTriggerPreview, parseCollaborationCommentReceipt, parseCollaborationNotifications } from "./content-schema";
+
+const id = (tail: number) => `00000000-0000-4000-8000-${String(tail).padStart(12, "0")}`;
+const account = { user_id: id(1), name: "Participant", avatar_url: "", external: true };
+const timestamp = "2026-10-17T00:00:00Z";
+const comment = { id: id(2), issue_id: id(3), author_type: "member", author: account, content: "Private comment", type: "regular", parent_id: null, comment_revision: "9007199254740993", created_at: timestamp, updated_at: timestamp, deleted_at: null, resolved_at: null, resolved_by: null, can_edit: true, can_resolve: true, reactions: [] };
+const target = { target_id: id(4), kind: "agent", resource_id: id(5), name: "Agent", target_epoch: "1", config_version: "1", queue_state: "paused", waiting_reason: "target_paused", execution_available: false, hold_reason: "initial", hold_version: "9007199254740993" };
+afterEach(() => setSchemaLogger(noopLogger));
+
+describe("comment Agent author summaries", () => {
+  const authorAgent = { agent_id: "ABCDEFAB-0000-4000-8000-000000000005", name: "Payment reviewer" };
+  const agentComment = { ...comment, author_type: "agent", author: null, can_edit: false };
+
+  it("preserves only the minimal Agent identity consistently in detail and list responses", () => {
+    const wire = { ...agentComment, author_agent: { ...authorAgent, workspace_id: id(99), owner: account, runtime: { secret: "not-public" } } };
+    const expected = { agent_id: authorAgent.agent_id.toLowerCase(), name: authorAgent.name };
+    expect(parseCollaborationComment(wire)?.author_agent).toEqual(expected);
+    expect(parseCollaborationComments({ issue_id: comment.issue_id, items: [wire], next_cursor: null })?.items[0]?.author_agent).toEqual(expected);
+    expect(parseCollaborationComment(wire)?.author).toBeNull();
+  });
+
+  it.each([
+    undefined, null, "Agent", 42, [], {},
+    { name: "Missing identity" },
+    { ...authorAgent, agent_id: "not-a-uuid" },
+    { ...authorAgent, name: null },
+    { ...authorAgent, name: 42 },
+  ])("keeps a valid comment readable when its optional summary is absent or malformed: %j", (author_agent) => {
+    const parsed = parseCollaborationComment({ ...agentComment, author_agent });
+    expect(parsed).toMatchObject({ id: comment.id, author: null, content: comment.content, author_agent: null });
+    expect(parseCollaborationComments({ issue_id: comment.issue_id, items: [{ ...agentComment, author_agent }], next_cursor: null })?.items).toHaveLength(1);
+  });
+
+  it("retains a known Agent ID with an empty display name", () => {
+    expect(parseCollaborationComment({ ...agentComment, author_agent: { ...authorAgent, name: "" } })?.author_agent)
+      .toEqual({ agent_id: authorAgent.agent_id.toLowerCase(), name: "" });
+  });
+
+  it.each(["member", "system", "future_author"])("ignores an Agent summary on a %s comment without changing the human author", (author_type) => {
+    expect(parseCollaborationComment({ ...comment, author_type, author_agent: authorAgent }))
+      .toMatchObject({ author_type, author: account, author_agent: null, can_edit: true });
+  });
+
+  it.each([
+    { id: "invalid-id" },
+    { comment_revision: "0" },
+    { can_edit: "true" },
+    { author_authority: { role: "creator", can_submit_command: "true", evaluated_at: timestamp } },
+    { content_state: "omitted", content: "", can_edit: false },
+  ])("does not let an optional display summary relax protected comment fields: %j", (patch) => {
+    expect(parseCollaborationComment({ ...agentComment, ...patch, author_agent: authorAgent })).toBeNull();
+    expect(parseCollaborationComment({ ...agentComment, ...patch, author_agent: {} })).toBeNull();
+  });
+});
+
+describe("trigger preview grouping", () => {
+  const direct = { target_id: id(4), kind: "agent", resource_id: id(5), target_epoch: "1", config_version: "1", hold_reason: null, hold_version: "1", state: "waiting", code: "command_waiting", command_id: null };
+  const squad = { ...direct, target_id: id(6), kind: "squad", resource_id: id(7) };
+  const grouping = { kind: "pending_batch", target_ids: [direct.target_id, squad.target_id], has_existing_inputs: true, follows_pending_batch: false };
+  const preview = { protocol_version: 2, issue_id: id(3), lifecycle_epoch: "1", targets: [{ ...direct, grouping }, { ...squad, grouping }], recipients: [] };
+
+  it("preserves same-comment grouping and distinguishes existing inputs, later batches and squad continuation", () => {
+    expect(parseCollaborationTriggerPreview(preview)?.targets[0]).toMatchObject({ grouping, command_id: null, group_id: null });
+    for (const facts of [
+      { ...grouping, target_ids: [direct.target_id], has_existing_inputs: false },
+      { ...grouping, target_ids: [direct.target_id], follows_pending_batch: true },
+      { ...grouping, target_ids: [direct.target_id], kind: "squad_continuation" },
+    ]) {
+      expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping: facts }] })?.targets[0]).toHaveProperty("grouping", facts);
+    }
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping }, { ...squad, grouping: { ...grouping, target_ids: [...grouping.target_ids].reverse() } }] })).not.toBeNull();
+  });
+
+  it("accepts older previews without grouping without changing queued receipt semantics", () => {
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [direct] })?.targets[0]).not.toHaveProperty("grouping");
+    const receipt = { status: 201, code: "comment_created", protocol_version: 2, issue_id: id(3), comment_id: id(2), comment_revision: "1", event_id: id(8), event_seq: "1", targets: [{ ...direct, command_id: id(9), command_sequence: "1", grouping }] };
+    expect(parseCollaborationCommentReceipt(receipt)?.targets[0]).not.toHaveProperty("grouping");
+    expect(parseCollaborationCommentReceipt({ ...receipt, targets: [{ ...direct, grouping }] })).toBeNull();
+  });
+
+  it.each([
+    null,
+    {},
+    { ...grouping, kind: "started" },
+    { ...grouping, target_ids: [] },
+    { ...grouping, target_ids: [direct.target_id, direct.target_id] },
+    { ...grouping, target_ids: [squad.target_id] },
+    { ...grouping, target_ids: [direct.target_id, id(99)] },
+    { ...grouping, target_ids: [direct.target_id, "private-invalid-id"] },
+    { ...grouping, has_existing_inputs: undefined },
+    { ...grouping, has_existing_inputs: "true" },
+    { ...grouping, follows_pending_batch: undefined },
+    { ...grouping, follows_pending_batch: "false" },
+    { ...grouping, kind: "squad_continuation", follows_pending_batch: true },
+  ])("rejects malformed or contradictory grouping: %j", (invalid) => {
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping: invalid }, { ...squad, grouping: invalid }] })).toBeNull();
+  });
+
+  it("requires reciprocal facts for eligible unsuppressed targets in the same preview", () => {
+    for (const patch of [
+      { grouping: undefined },
+      { grouping: { ...grouping, target_ids: [squad.target_id] } },
+      { grouping: { ...grouping, has_existing_inputs: false } },
+      { grouping: { ...grouping, follows_pending_batch: true } },
+      { grouping: { ...grouping, kind: "squad_continuation" } },
+      { state: "suppressed" },
+      { state: "blocked" },
+      { hold_reason: "initial" },
+    ]) {
+      expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping }, { ...squad, grouping, ...patch }] })).toBeNull();
+    }
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, target_id: null, target_epoch: undefined, config_version: undefined, hold_version: null, state: "blocked", grouping }] })).toBeNull();
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping }, { ...squad, target_id: direct.target_id, grouping }] })).toBeNull();
+  });
+
+  it("redacts malformed grouping instead of logging its private values", () => {
+    const warn = vi.fn();
+    setSchemaLogger({ ...noopLogger, warn });
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...direct, grouping: { ...grouping, kind: "PRIVATE_GROUPING_SENTINEL" } }] })).toBeNull();
+    expect(warn).toHaveBeenCalledOnce();
+    expect(JSON.stringify(warn.mock.calls)).not.toContain("PRIVATE_GROUPING_SENTINEL");
+  });
+});
+
+describe("private collaboration content boundaries", () => {
+  it("keeps legacy completeness unknown and validates budgeted placeholders without inventing admission", () => {
+    const legacy = { issue_id: id(3), items: [comment], next_cursor: null };
+    expect(parseCollaborationComments(legacy)?.total).toBeUndefined();
+    expect(parseCollaborationComments(legacy)?.items[0]?.author_authority).toBeUndefined();
+    const item = { ...comment, content: "", can_edit: false, trust: "data_only", content_state: "omitted", content_bytes: 9000,
+      author_authority: { role: "creator", can_submit_command: true, evaluated_at: timestamp },
+      content_ref: `/api/collaboration/issues/${id(3)}/comments/${id(2)}`, omission_reason: "byte_budget" };
+    const page = { ...legacy, protocol_version: 1, items: [item], total: 5, returned: 1, bytes: 1200, max_bytes: 4096, truncated: true, truncation_reasons: ["byte_budget"] };
+    expect(parseCollaborationComments(page)?.items[0]).toMatchObject({ trust: "data_only", author_authority: { can_submit_command: true } });
+    for (const patch of [{ total: undefined }, { returned: 0 }, { bytes: 4097 }, { max_bytes: undefined }, { truncated: false }, { protocol_version: 2 }]) {
+      expect(parseCollaborationComments({ ...page, ...patch })).toBeNull();
+    }
+    for (const patch of [{ can_edit: true }, { content: "clipped" }, { content_ref: "/another/issue" }, { trust: "instruction" },
+      { author_authority: { role: "creator", evaluated_at: timestamp } }]) {
+      expect(parseCollaborationComments({ ...page, items: [{ ...item, ...patch }] })).toBeNull();
+    }
+    expect(parseCollaborationComments({ ...legacy, items: [item] })).toBeNull();
+  });
+  it("retains exact versions, checks each comment belongs to the envelope, and rejects missing capabilities", () => {
+    const page = { issue_id: id(3), items: [comment], next_cursor: null };
+    expect(parseCollaborationComments(page)?.items[0]?.comment_revision).toBe("9007199254740993");
+    expect(parseCollaborationComments({ ...page, issue_id: id(8) })).toBeNull();
+    expect(parseCollaborationComments({ ...page, items: [{ ...comment, can_edit: undefined }] })).toBeNull();
+  });
+
+  it("accepts paused authorized candidates without claiming execution availability or accepting duplicate identities", () => {
+    const candidates = { protocol_version: 2, issue_id: id(3), participants: [account], targets: [target], can_submit_commands: true };
+    expect(parseCollaborationMentionTargets(candidates)?.targets[0]?.execution_available).toBe(false);
+    expect(parseCollaborationMentionTargets({ ...candidates, targets: [target, target] })).toBeNull();
+    expect(parseCollaborationMentionTargets({ ...candidates, protocol_version: 3 })).toBeNull();
+  });
+
+  it("separates a side-effect-free preview from accepted immutable inputs in a pending batch", () => {
+    const result = { target_id: id(4), kind: "agent", resource_id: id(5), target_epoch: "1", config_version: "1", state: "waiting", code: "command_queued", command_id: null, group_id: null, hold_reason: "initial", hold_version: "9007199254740993" };
+    const preview = { protocol_version: 2, issue_id: id(3), lifecycle_epoch: "1", targets: [result], recipients: [{ recipient: account, is_mention: true }] };
+    expect(parseCollaborationTriggerPreview(preview)).not.toBeNull();
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...result, command_id: id(6) }] })).toBeNull();
+    const receipt = { status: 201, code: "comment_created", protocol_version: 2, issue_id: id(3), comment_id: id(2), comment_revision: "1", event_id: id(7), event_seq: "9", targets: [{ ...result, command_id: id(6), command_sequence: "1", channel_id: id(8), batch_id: id(9) }] };
+    expect(parseCollaborationCommentReceipt(receipt)?.targets[0]?.batch_id).toBe(id(9));
+    expect(parseCollaborationCommentReceipt({ ...receipt, targets: [{ ...receipt.targets[0], group_id: undefined }] })?.targets[0]?.group_id).toBeNull();
+    expect(parseCollaborationCommentReceipt({ ...receipt, targets: [result] })).toBeNull();
+    const joined = { ...receipt, targets: [{ ...receipt.targets[0], code: "command_joined_squad", waiting_reason: "joined_squad", group_id: id(10) }] };
+    expect(parseCollaborationCommentReceipt(joined)?.targets[0]?.group_id).toBe(id(10));
+    for (const patch of [{ group_id: null }, { group_id: undefined }, { waiting_reason: "waiting" }, { channel_id: null }, { batch_id: null }, { state: "blocked" }]) {
+      expect(parseCollaborationCommentReceipt({ ...joined, targets: [{ ...joined.targets[0], ...patch }] })).toBeNull();
+    }
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...result, group_id: id(10) }] })).toBeNull();
+    expect(parseCollaborationCommentReceipt({ ...receipt, targets: [{ ...receipt.targets[0], group_id: id(10) }] })).toBeNull();
+  });
+
+  it("keeps hold feedback explicit and withholds it when the target is unavailable", () => {
+    const candidates = { protocol_version: 2, issue_id: id(3), participants: [account], targets: [target], can_submit_commands: true };
+    expect(parseCollaborationMentionTargets(candidates)?.targets[0]).toMatchObject({ hold_reason: "initial", hold_version: "9007199254740993", queue_state: "paused" });
+    for (const patch of [{ hold_reason: undefined }, { hold_reason: "paused" }, { hold_version: null }, { hold_version: "0" }]) {
+      expect(parseCollaborationMentionTargets({ ...candidates, targets: [{ ...target, ...patch }] })).toBeNull();
+    }
+    const hidden = { target_id: null, kind: "agent", resource_id: id(5), state: "blocked", code: "target_unavailable", command_id: null, group_id: null, hold_reason: null, hold_version: null };
+    const preview = { protocol_version: 2, issue_id: id(3), lifecycle_epoch: "1", targets: [hidden], recipients: [] };
+    expect(parseCollaborationTriggerPreview(preview)?.targets[0]?.hold_version).toBeNull();
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...hidden, hold_version: "1" }] })).toBeNull();
+    expect(parseCollaborationTriggerPreview({ ...preview, targets: [{ ...hidden, hold_reason: "grant_required" }] })).toBeNull();
+  });
+
+  it("keeps an unchanged edit receipt without inventing an event or weakening changed receipts", () => {
+    const receipt = {
+      status: 200, code: "unchanged", protocol_version: 2, issue_id: id(3),
+      comment_id: id(2), comment_revision: "9007199254740993", event_id: null, targets: [],
+    };
+    expect(parseCollaborationCommentReceipt(receipt)?.comment_revision).toBe("9007199254740993");
+    expect(parseCollaborationCommentReceipt({ ...receipt, event_id: undefined, event_seq: null })).not.toBeNull();
+    for (const invalid of [
+      { ...receipt, comment_id: undefined },
+      { ...receipt, comment_revision: "0" },
+      { ...receipt, event_id: id(7) },
+      { ...receipt, event_seq: "1" },
+      { ...receipt, targets: [{ target_id: null, kind: "agent", resource_id: id(5), state: "blocked", code: "target_unavailable", command_id: null }] },
+      ...["comment_created", "comment_edited", "comment_deleted"].map((code) => ({ ...receipt, code })),
+    ]) {
+      expect(parseCollaborationCommentReceipt(invalid)).toBeNull();
+    }
+  });
+
+  it("keeps a denied notification as a minimal record and never logs malformed private content", () => {
+    const item = { id: id(1), issue_id: id(3), event_seq: "1", kind: "removed", is_mention: false, source_kind: "issue", source_id: null, issue_title: null, can_open: false, created_at: timestamp, read_at: null, archived_at: null };
+    expect(parseCollaborationNotifications({ items: [item], unread_count: 1, next_cursor: null })).not.toBeNull();
+    const warn = vi.fn();
+    setSchemaLogger({ ...noopLogger, warn });
+    expect(parseCollaborationNotifications({ items: [{ ...item, issue_title: "PRIVATE_SENTINEL", source_kind: "comment", source_id: id(2) }], unread_count: 1, next_cursor: null })).toBeNull();
+    expect(parseCollaborationComments({ issue_id: id(3), items: [{ ...comment, content: { token: "PRIVATE_SENTINEL" } }], next_cursor: null })).toBeNull();
+    expect(warn).toHaveBeenCalledTimes(2);
+    expect(JSON.stringify(warn.mock.calls)).not.toContain("PRIVATE_SENTINEL");
+    expect(JSON.stringify(warn.mock.calls)).not.toContain("received");
+  });
+});
+
+describe("notification view envelopes", () => {
+  const item = { id: id(1), issue_id: id(3), event_seq: "1", kind: "future_event", is_mention: false,
+    source_kind: "issue", source_id: null, issue_title: "Shared issue", can_open: true,
+    created_at: timestamp, read_at: null, archived_at: null };
+  const envelope = { items: [item], unread_count: 7, next_cursor: null };
+
+  it.each(["unread", "all", "archived"] as const)("retains the additive %s view and the global unread count", (view) => {
+    const wire = { ...envelope, view, items: [{ ...item, archived_at: view === "archived" ? timestamp : null }] };
+    expect(parseCollaborationNotifications(wire)).toEqual(wire);
+  });
+
+  it("continues accepting legacy mixed history without a view marker", () => {
+    const legacy = { ...envelope, items: [item, { ...item, id: id(4), read_at: timestamp, archived_at: timestamp }] };
+    expect(parseCollaborationNotifications(legacy)).toEqual(legacy);
+  });
+
+  it.each([null, "", "future_view", 42, {}])("refuses a malformed view marker: %j", (view) => {
+    expect(parseCollaborationNotifications({ ...envelope, items: [], view })).toBeNull();
+  });
+
+  it.each([
+    { view: "unread", read_at: timestamp, archived_at: null },
+    { view: "unread", read_at: null, archived_at: timestamp },
+    { view: "all", read_at: null, archived_at: timestamp },
+    { view: "archived", read_at: null, archived_at: null },
+  ])("rejects a row outside its marked view: %j", ({ view, ...state }) => {
+    expect(parseCollaborationNotifications({ ...envelope, view, items: [{ ...item, ...state }] })).toBeNull();
+  });
+
+  it("allows archived unread rows without marking them read or making the global count a page count", () => {
+    const wire = { ...envelope, view: "archived", items: [{ ...item, archived_at: timestamp }] };
+    expect(parseCollaborationNotifications(wire)).toEqual(wire);
+  });
+
+  it("requires removed notifications to stay content-free even when can_open contradicts removal", () => {
+    expect(parseCollaborationNotifications({ ...envelope, items: [{ ...item, kind: "removed" }] })).toBeNull();
+    expect(parseCollaborationNotifications({ ...envelope, items: [{ ...item, kind: "removed", can_open: false, issue_title: null }] })).not.toBeNull();
+  });
+});

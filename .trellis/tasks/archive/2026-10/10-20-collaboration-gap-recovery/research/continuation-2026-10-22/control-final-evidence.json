@@ -1,0 +1,113 @@
+{
+  "at": "2026-10-21T23:47:41.730422+00:00",
+  "raw": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-clients-final.stdout",
+  "raw_sha256": "04aa8f758661ed31146429f7e76d956dde425db966705e2974bfc347ade9f780",
+  "stats": {
+    "startTime": "2026-10-21T23:44:54.832Z",
+    "duration": 27890.639,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "Desktop controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+      "file": "collaboration-control-journey-desktop.spec.ts",
+      "line": 14,
+      "expected": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 7706
+        }
+      ]
+    },
+    {
+      "title": "Desktop pending termination proof keeps A paused while whole Resume releases B and squad S",
+      "file": "collaboration-control-journey-desktop.spec.ts",
+      "line": 14,
+      "expected": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 5173
+        }
+      ]
+    },
+    {
+      "title": "Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+      "file": "collaboration-control-journey-web.spec.ts",
+      "line": 10,
+      "expected": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 6534
+        }
+      ]
+    },
+    {
+      "title": "Web pending termination proof keeps A paused while whole Resume releases B and squad S",
+      "file": "collaboration-control-journey-web.spec.ts",
+      "line": 10,
+      "expected": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 6756
+        }
+      ]
+    }
+  ],
+  "attachments": [
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-native-control-journey-identities-14.json",
+      "sha256": "ff47c1f9b2ec589d1e8e096234f94cd13eb7d534740a157f4fc8dff9380fbf76"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-native-control-capture-geometry-14.json",
+      "sha256": "725b5aefc2d673642395aae7fa9efb7d3d95e886dfbd11ff829a0391fc7a3ab1"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-571c7a8637.json",
+      "sha256": "571c7a8637809f695baca4ebf1a029e1ed2d4cf64ac702405b1d3034dac0c5b4"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-795a459592.json",
+      "sha256": "795a4595922a755ee4e5dea22a8f24125c6fc612cb3c27e44430d2fd0200a32d"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-control-journey-identities-10.json",
+      "sha256": "c1442e619f0e1fa396a9cbf898ebc1458d5f37516a9d7e6a8e13315d636cea25"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-control-capture-geometry-10.json",
+      "sha256": "280d5c47734f2efefa3dc9aee5a26f3772c4126cdd16dde871f6847eee89567e"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-a41a5a85bd.json",
+      "sha256": "a41a5a85bdf225db7236011f9ffbb33c739df3df4f62b06bc3b02539e1c76a4b"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-b996d9746a.json",
+      "sha256": "b996d9746ad4087e013a70fae01121b5795a3e0cec7f3d39a1c4c571269d8e16"
+    }
+  ],
+  "source_hashes": {
+    "e2e/fixtures/collaboration-control-journey.ts": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488",
+    "e2e/collaboration-control-journey-web.spec.ts": "4e1e3b5cb93e536feff9973aa49ccba6295f2a6a014d166d355052b9831026c2",
+    "e2e/collaboration-control-journey-desktop.spec.ts": "705b5648f4a675ab43283688e0145dbf6b7f6544eb38fed64e0f2e7214f62c01",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+  },
+  "first_capture_failure_retained": "control-clients-current.stdout",
+  "source_change": "Test-only scrollIntoView block:center before strict no-overflow geometry; two return-only actor authentication closures",
+  "provider_process_started": false,
+  "actual_pending_permit": true,
+  "production_gate_change": false,
+  "preflight": "content-admin-preflight.json"
+}

@@ -4,7 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand/v2"
+	"time"
 
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -32,6 +35,61 @@ type RuntimeTeardownResult struct {
 	UnboundAgents    []db.Agent
 	CancelledTasks   []db.AgentTaskQueue
 	PausedAutopilots []db.Autopilot
+}
+
+// WithRuntimeResourceTransaction retries an entirely rolled-back resource
+// mutation at most three times. The callback must use only the borrowed queries,
+// reset captured results on each attempt, and leave publication until commit.
+// In particular, a commit failure is never retried: its outcome may be unknown.
+func WithRuntimeResourceTransaction(ctx context.Context, starter TxStarter, queries *db.Queries, mutate func(*db.Queries) error) error {
+	for attempt := 0; attempt < 3; attempt++ {
+		tx, err := starter.Begin(ctx)
+		if err != nil {
+			return err
+		}
+		err = mutate(queries.WithTx(tx))
+		if err == nil {
+			if err = tx.Commit(ctx); err != nil {
+				rollbackCollaborationQueue(ctx, tx)
+				return &runtimeResourceCommitError{cause: err}
+			}
+			return nil
+		}
+		rollbackCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
+		rollbackErr := tx.Rollback(rollbackCtx)
+		cancel()
+		if rollbackErr != nil {
+			return errors.Join(err, rollbackErr)
+		}
+		if !IsRuntimeResourceBusy(err) || attempt == 2 {
+			return err
+		}
+		timer := time.NewTimer(time.Duration(25+attempt*50+rand.IntN(26)) * time.Millisecond)
+		select {
+		case <-ctx.Done():
+			timer.Stop()
+			return ctx.Err()
+		case <-timer.C:
+		}
+	}
+	return nil
+}
+
+type runtimeResourceCommitError struct{ cause error }
+
+func (e *runtimeResourceCommitError) Error() string {
+	return fmt.Sprintf("commit runtime resource mutation: %v", e.cause)
+}
+
+func (e *runtimeResourceCommitError) Unwrap() error { return e.cause }
+
+func IsRuntimeResourceBusy(err error) bool {
+	var commit *runtimeResourceCommitError
+	if errors.As(err, &commit) {
+		return false
+	}
+	var conflict *pgconn.PgError
+	return errors.As(err, &conflict) && (conflict.Code == "55P03" || conflict.Code == "40P01" || conflict.Code == "40001")
 }
 
 // ValidateRuntimeAgentWorkspaces refuses to mutate cross-workspace bindings.
@@ -69,6 +127,18 @@ func TeardownRuntime(ctx context.Context, qtx *db.Queries, runtimeID pgtype.UUID
 	}
 	if err := ValidateRuntimeAgentWorkspaces(runtime, lockedAgents); err != nil {
 		return out, err
+	}
+	if !opts.CancelNonTerminalTasks {
+		unproven, err := qtx.HasUnprovenCollaborationRuntimeWork(ctx, runtimeID)
+		if err != nil {
+			return out, fmt.Errorf("check collaboration runtime proof: %w", err)
+		}
+		if unproven {
+			return out, fmt.Errorf("%w: collaboration termination unconfirmed", ErrRuntimeNotDrained)
+		}
+	}
+	if err := InvalidateCollaborationRuntimeInTx(ctx, qtx, runtimeID, "runtime_deleted"); err != nil {
+		return out, fmt.Errorf("invalidate collaboration runtime: %w", err)
 	}
 
 	lockedAgentIDs := make([]pgtype.UUID, len(lockedAgents))

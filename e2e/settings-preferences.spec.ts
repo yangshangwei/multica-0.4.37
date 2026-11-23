@@ -1,3 +1,4 @@
+import { openNewIssue, sidebarNewButton } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test as base, expect, type Page } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
@@ -29,7 +30,7 @@ const test = base.extend<{ preferences: PreferencesFixture }>({
         localStorage.setItem("multica:chat:isOpen", "false");
       }, token);
       await page.goto(`/${slug}/issues`);
-      await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+      await expect(sidebarNewButton(page)).toBeVisible();
       await runFixture({ api, slug });
     } finally {
       if (testInfo.status !== testInfo.expectedStatus) {
@@ -81,7 +82,7 @@ test("grouped settings remain reachable from the sidebar and floating chat survi
   await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
-  await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+  await expect(sidebarNewButton(page)).toBeVisible();
   await expect(launcher).toHaveCount(0);
   await openPreferences(page, slug);
   await expect(floating).not.toBeChecked();
@@ -96,10 +97,10 @@ test("grouped settings remain reachable from the sidebar and floating chat survi
   await expect(page.getByText("Chat with your agents", { exact: true })).toBeVisible();
 
   // The dedicated Chat route must remain usable and own the sole chat surface.
-  await page.getByRole("link", { name: "Chat", exact: true }).click();
+  await page.getByRole("link", { name: "AI Chat", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/chat`);
   await expect(launcher).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Chat", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "AI Chat", exact: true })).toBeVisible();
   await expect(page.getByText("Pick a conversation, or start a new one with +", { exact: true })).toBeVisible();
   await expect(page.getByText("Chat with your agents", { exact: true })).toHaveCount(0);
 });
@@ -126,18 +127,21 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await expect(priority).not.toBeChecked();
   await expect(quickPriority).toBeChecked();
   await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
-  await page.getByRole("button", { name: "New Issue", exact: true }).click();
+  await openNewIssue(page);
   await expect(page.getByRole("dialog", { name: "Quick create issue", exact: true }).getByRole("button", { name: "No priority", exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Switch to Manual", exact: true }).click();
+  await page.getByTitle("Switch to manual create — fill the fields yourself", { exact: true }).click();
 
   const dialog = page.getByRole("dialog", { name: "New Issue", exact: true });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("textbox", { name: "Title", exact: true })).toBeFocused();
   await expect(dialog.getByRole("button", { name: "No priority", exact: true })).toHaveCount(0);
   await dialog.getByRole("button", { name: "More options", exact: true }).click();
+  await expect(page.getByRole("menuitem", { name: "Set priority...", exact: true })).toBeVisible();
   await page.getByRole("menuitem", { name: "Set priority...", exact: true }).click();
-  await page.getByRole("button", { name: "High", exact: true }).click();
+  await page.getByRole("listbox", { name: "Priority", exact: true }).getByRole("option", { name: "High", exact: true }).click();
   await expect(dialog.getByRole("button", { name: "High", exact: true })).toBeVisible();
   const title = "Priority selected through the hidden-field menu";
-  await dialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
+  await dialog.getByRole("textbox", { name: "Title", exact: true }).fill(title);
   const created = page.waitForResponse((response) =>
     new URL(response.url()).pathname === "/api/issues" && response.request().method() === "POST",
   );
@@ -158,7 +162,7 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
-  await page.getByRole("button", { name: "New Issue", exact: true }).click();
+  await openNewIssue(page);
   await expect(dialog.getByRole("button", { name: "No priority", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
 });

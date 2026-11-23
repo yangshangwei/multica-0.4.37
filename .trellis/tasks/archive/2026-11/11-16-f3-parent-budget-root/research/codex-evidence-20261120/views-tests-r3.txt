@@ -1,0 +1,607 @@
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/views
+
+stderr | iterations/iteration-navigation.test.tsx > iteration pagination and access > retains an open dirty editor through a transient detail refresh failure (ApiError: Rate limited)
+An update to IterationPageContent inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | iterations/iteration-navigation.test.tsx > iteration pagination and access > retains an open dirty editor through a transient detail refresh failure (ApiError: Rate limited)
+An update to IterationWorkspace inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | iterations/iteration-navigation.test.tsx > iteration pagination and access > retains an open dirty editor through a transient detail refresh failure (ApiError: Rate limited)
+An update to IterationDetail inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | iterations/iteration-navigation.test.tsx > iteration pagination and access > retains an open dirty editor through a transient detail refresh failure (ApiError: Rate limited)
+An update to CompositeList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CompositeList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CompositeList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CompositeList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CompositeList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to CompositeList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to MenuTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TooltipTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TooltipTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TooltipTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TooltipTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TooltipTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SelectRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TooltipTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SelectRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsTab inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsTab inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsTab inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SelectRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to SelectRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to TabsList inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | iterations/iteration-navigation.test.tsx > iteration pagination and access > retains an open dirty editor through a transient detail refresh failure (ApiError: Rate limited)
+An update to TabsPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ❯ modals/quick-create-issue.test.tsx (51 tests | 1 failed) 23360ms
+     × forwards parent_issue_id from the carry payload to the quick-create API 5873ms
+ ❯ modals/create-issue.test.tsx (61 tests | 1 failed) 44351ms
+     × keeps manual mode open and clears content when create another is enabled 5188ms
+ ❯ mcp/mcp-market.test.tsx (42 tests | 1 failed) 46548ms
+     × blocks changed snapshots, preserves drafts on refresh failure, and clears inputs only when reloading 6374ms
+stderr | collaboration/creation-form.test.tsx > does not reuse retained parent options after authoritative source-access denial
+An update to SelectedCreationSource inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | collaboration/creation-form.test.tsx > does not reuse retained parent options after authoritative source-access denial
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to PopoverTrigger inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ❯ collaboration/knowledge-panel.test.tsx (42 tests | 5 failed) 76680ms
+   × requires keyboard confirmation of the displayed version and awaits the exact approval receipt 5183ms
+   × locally retries a failed selected project, retaining proposal fields and requiring an available target before submit 5187ms
+   × does not submit a removed destination after resolving sources or silently retarget it to the workspace 5161ms
+   × a review decision leaves an open proposal draft intact and only the panel's own proposal closes it 6243ms
+   × recovering an older stored proposal keeps a new draft open while it opens the recovered candidate 5214ms
+ ❯ iterations/iteration-navigation.test.tsx (62 tests | 6 failed) 78756ms
+     × retains an open dirty editor through a transient workspace refresh failure (ApiError: Timed out) 5290ms
+     × retains an open dirty editor through a transient detail refresh failure (ApiError: Rate limited) 6014ms
+     × resets entity-local editor input and filters when the route changes period 5077ms
+     × offers the original commitment after an actual start with a zero baseline 5606ms
+     × explains the original task counter in en and preserves scope selection 7253ms
+     × explains the original task counter in zh-Hans and preserves scope selection 5648ms
+ ❯ collaboration/creation-form.test.tsx (28 tests | 3 failed) 49110ms
+   × opens real source-option candidates and ignores a late previous search without submitting the creation form 5177ms
+   × keeps the parent picker and draft mounted after a failed search and retries that search 7112ms
+   × does not reuse retained parent options after authoritative source-access denial 5470ms
+ ❯ iterations/iteration-events.test.tsx (32 tests | 2 failed) 54009ms
+     × counts added tasks once while preserving removal and re-entry occurrences and their audits 5273ms
+     × explains a net-zero change with contributing records and keeps counters unchanged by refinements 10296ms
+ ❯ issues/components/issue-detail.test.tsx (87 tests | 1 failed) 61589ms
+     × does not show retry for child-done system comments 5923ms
+stderr | projects/components/project-detail.test.tsx > ProjectDetail sidebar accessibility > names the compact properties Sheet in zh-Hans
+An update to DialogRoot inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | projects/components/project-detail.test.tsx > ProjectDetail sidebar accessibility > names the compact properties Sheet in zh-Hans
+An update to DialogBackdrop inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to DialogPopup inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ❯ collaboration/workflow.test.tsx (18 tests | 2 failed) 41329ms
+   × opens comment preparation in a named modal without scrolling, preserves focus through refetch, and returns to its opener 5098ms
+   × keeps a submission modal open during the request and allows dismissal of an uncertain result 6364ms
+ ❯ projects/components/project-detail.test.tsx (26 tests | 2 failed) 33177ms
+     × names the compact properties Sheet in en 7864ms
+     × names the compact properties Sheet in zh-Hans 5665ms
+ ❯ agents/components/tabs/mcp-config-tab.test.tsx (40 tests | 2 failed) 37513ms
+     × edits one historical server without replacing its siblings 6490ms
+     × round-trips empty stdio arguments and environment values 5523ms
+Not implemented: navigation to another Document
+Not implemented: navigation to another Document
+Not implemented: navigation to another Document
+ ❯ iterations/iteration-details.test.tsx (26 tests | 1 failed) 37311ms
+     × clears previous-page history when scope, grouping or advanced filters change 5182ms
+ ❯ skills/components/create-skill-template-flow.test.tsx (45 tests | 3 failed) 93894ms
+     × requires an explicit discard before using a different template 5372ms
+     × guards switching creation methods after returning to the chooser 7705ms
+     × retains every field on 409 and waits for a deliberate renamed submission 5420ms
+ ❯ settings/components/mcp-tab.test.tsx (53 tests | 2 failed) 39522ms
+     × adds a server to the library 5041ms
+     × waits for an explicit save attempt before showing inline validation 823ms
+ ❯ collaboration/creation-description-assist.test.tsx (15 tests | 1 failed) 18538ms
+   × keeps the popup interactive over desktop drag regions and closes its stream: expanded=true 7078ms
+ ❯ modals/quick-create-actor-picker.test.tsx (23 tests | 2 failed) 38987ms
+     × appends a display page, retains it through pinning and resets it when the search changes 5059ms
+   × keeps leader-only favorites directly reachable 7108ms
+ ❯ settings/components/preferences-tab.test.tsx (17 tests | 1 failed) 22251ms
+     × renders a switch per create-mode field with the persisted selection 6716ms
+stderr | skills/components/skill-market-panel.test.tsx > SkillMarketPanel template-session lifetime > keeps ordinary library creation navigating to the new skill detail
+Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (/Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/ui/components/ui/button.tsx:42:57)
+    at PageHeaderBar (/Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/views/skills/components/skills-page.tsx:155:161)
+    at SkillsPage (/Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/views/skills/components/skills-page.tsx:1152:63)
+
+ ❯ agents/components/agent-overview-pane.test.tsx (25 tests | 1 failed) 21225ms
+     × keeps a dirty editor mounted while secondary tabs receive focus and honors discard/cancel 5294ms
+ ❯ triage/triage-create-dialog.test.tsx (12 tests | 4 failed) 44030ms
+     × preserves input and request identity after failures, maps candidate fields, and closes only on success 9270ms
+     × fences a rapid button/shortcut pair while the request is unresolved 5483ms
+     × blocks submission during attachment upload and sends only attachments retained in the draft 5530ms
+     × keeps an ambiguous intake or server failure global without blaming valid fields 5252ms
+ ❯ skills/components/skill-market-panel.test.tsx (11 tests | 4 failed) 42290ms
+     × opens a selected market template and keeps browsing after creating its copy 6558ms
+     × keeps ordinary library creation navigating to the new skill detail 7335ms
+     × returns focus to New skill after closing the template browser 5117ms
+     × keeps a pending related-skill discard cancellable through list failure and retry 5089ms
+ ❯ runtimes/components/connect-remote-dialog.test.tsx (17 tests | 1 failed) 19212ms
+     × starts with no selected system or commands and supports keyboard selection 5193ms

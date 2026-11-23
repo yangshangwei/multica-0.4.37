@@ -1,0 +1,198 @@
+[
+  {
+    "label": "runtime-host",
+    "file": "e2e/collaboration-host-runtime.spec.ts",
+    "exit_code": 0,
+    "report": "runtime-host.json",
+    "stats": {
+      "startTime": "2026-10-27T05:11:32.227Z",
+      "duration": 30103.559999999998,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "runtime-memory",
+    "file": "e2e/collaboration-memory-runtime.spec.ts",
+    "exit_code": 0,
+    "report": "runtime-memory.json",
+    "stats": {
+      "startTime": "2026-10-27T05:12:08.454Z",
+      "duration": 13864.565,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "macos-packaged",
+    "file": "e2e/collaboration-host-installed.spec.ts",
+    "exit_code": 0,
+    "report": "macos-packaged.json",
+    "stats": {
+      "startTime": "2026-10-27T05:12:28.376Z",
+      "duration": 34523.901000000005,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-crossclient",
+    "file": "e2e/collaboration-cross-client-execution.spec.ts",
+    "exit_code": 0,
+    "report": "linux-crossclient.json",
+    "stats": {
+      "startTime": "2026-10-27T05:13:09.161Z",
+      "duration": 18824.450999999997,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-lifecycle",
+    "file": "e2e/collaboration-lifecycle-controls.spec.ts",
+    "exit_code": 0,
+    "report": "linux-lifecycle.json",
+    "stats": {
+      "startTime": "2026-10-27T05:13:34.122Z",
+      "duration": 42219.879,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-notifications",
+    "file": "e2e/collaboration-offline-result-notifications.spec.ts",
+    "exit_code": 0,
+    "report": "linux-notifications.json",
+    "stats": {
+      "startTime": "2026-10-27T05:14:23.560Z",
+      "duration": 46747.928,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-lane-close-1",
+    "file": "e2e/collaboration-lane-close-controls.spec.ts",
+    "exit_code": 0,
+    "report": "linux-lane-close-1.json",
+    "stats": {
+      "startTime": "2026-10-27T05:15:16.589Z",
+      "duration": 21440.253,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-lane-close-2",
+    "file": "e2e/collaboration-lane-close-controls.spec.ts",
+    "exit_code": 0,
+    "report": "linux-lane-close-2.json",
+    "stats": {
+      "startTime": "2026-10-27T05:15:44.284Z",
+      "duration": 17235.008,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-lane-close-3",
+    "file": "e2e/collaboration-lane-close-controls.spec.ts",
+    "exit_code": 0,
+    "report": "linux-lane-close-3.json",
+    "stats": {
+      "startTime": "2026-10-27T05:16:08.134Z",
+      "duration": 18076.622,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-lane-close-4",
+    "file": "e2e/collaboration-lane-close-controls.spec.ts",
+    "exit_code": 0,
+    "report": "linux-lane-close-4.json",
+    "stats": {
+      "startTime": "2026-10-27T05:16:32.619Z",
+      "duration": 19481.118,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-lane-close-5",
+    "file": "e2e/collaboration-lane-close-controls.spec.ts",
+    "exit_code": 0,
+    "report": "linux-lane-close-5.json",
+    "stats": {
+      "startTime": "2026-10-27T05:16:58.274Z",
+      "duration": 17922.063000000002,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-lane-close-6",
+    "file": "e2e/collaboration-lane-close-controls.spec.ts",
+    "exit_code": 0,
+    "report": "linux-lane-close-6.json",
+    "stats": {
+      "startTime": "2026-10-27T05:17:23.753Z",
+      "duration": 27869.772,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-installed-cli",
+    "file": "e2e/collaboration-installed-clients.spec.ts",
+    "exit_code": 0,
+    "report": "linux-installed-cli.json",
+    "stats": {
+      "startTime": "2026-10-27T05:17:58.370Z",
+      "duration": 14468.380000000001,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  {
+    "label": "linux-packaged-main",
+    "file": "e2e/collaboration-installed-main.spec.ts",
+    "exit_code": 0,
+    "report": "linux-packaged-main.json",
+    "stats": {
+      "startTime": "2026-10-27T05:18:18.086Z",
+      "duration": 45958.971,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  }
+]

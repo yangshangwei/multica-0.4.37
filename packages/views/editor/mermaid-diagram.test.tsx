@@ -68,6 +68,7 @@ beforeEach(() => {
 afterEach(() => {
   vi.restoreAllMocks();
   document.documentElement.className = "";
+  document.querySelector("[data-mermaid-test-theme]")?.remove();
 });
 
 function currentScale(): number {
@@ -130,9 +131,17 @@ describe("MermaidDiagram theme changes", () => {
   it(
     "keeps the viewer open and preserves zoom when the theme flips",
     async () => {
+      const themeStyle = document.createElement("style");
+      themeStyle.dataset.mermaidTestTheme = "";
+      themeStyle.textContent = ".mermaid-diagram { color-scheme: light; } .dark .mermaid-diagram { color-scheme: dark; }";
+      document.head.appendChild(themeStyle);
       render(<MermaidDiagram chart={CHART} />);
       await openViewer();
 
+      for (const frame of document.querySelectorAll<HTMLIFrameElement>(".mermaid-diagram-frame, .mermaid-viewer-frame")) {
+        expect(frame.srcdoc).toContain("color-scheme: light;");
+        expect(frame.getAttribute("sandbox")).toBe("");
+      }
       fireEvent.click(screen.getByRole("button", { name: "Zoom in" }));
       const zoomed = currentScale();
       expect(zoomed).toBeGreaterThan(0.8);
@@ -154,6 +163,15 @@ describe("MermaidDiagram theme changes", () => {
       // throwing away the user's zoom and position mid-read.
       expect(screen.getByRole("application")).toBeInTheDocument();
       expect(currentScale()).toBeCloseTo(zoomed, 5);
+      // Chromium gives a transparent iframe an opaque canvas when its scheme
+      // differs from the embedding page. Both documents must follow the host.
+      await waitFor(() => {
+        for (const selector of [".mermaid-diagram-frame", ".mermaid-viewer-frame"]) {
+          const frame = document.querySelector<HTMLIFrameElement>(selector)!;
+          expect(frame.srcdoc).toContain("color-scheme: dark;");
+          expect(frame.getAttribute("sandbox")).toBe("");
+        }
+      });
     },
     // Dialog portal setup and the MutationObserver callback can be starved while
     // the full views suite shares a saturated CI runner. Keep the larger budget

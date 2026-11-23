@@ -1,0 +1,4 @@
+# WD-2 final low-risk path follow-up
+
+Active task: .trellis/tasks/10-30-collaboration-context-handoff
+WD1 independent review closed, full deliverypass-with-notes at69bbc9cf0. Close remaining WD2 before finalsourcebinding: read independent-review/finding-WD2.md. Native renderer URL helper assigns raw filesystem path to URL.pathname, preserving literal%20 and pointing at another path afterdecode. Fix minimal platform-aware encoding ofliteral% forWindows/mac/Linux contract, preserve existing #/space/driveletter behavior. Add canonical literalpercent+%20 roundtripNode coverage and redbaseline evidence. Only helper/test/docstatus/evidence in thisdeliveryworktree, no DB/GUI/installer/Provider/CI actions/dependencies. Do not modify reviewerreports. Lorecommit, exact hash/count/commandrecords, independently recheckafter. Thisfileistheactualtaskwhenawakened; Payloadblank.

@@ -1,0 +1,49 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+◇ injected env (1) from .env.worktree // tip: ⌘ override existing { override: true }
+
+Running 1 test using 1 worker
+
+[1A[2K(node:56850) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:56850) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K◇ injected env (0) from .env.worktree // tip: ⌘ suppress logs { quiet: true }
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-runtime-handoff-web.spec.ts:6:1 › Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal
+[1A[2K  1) [chromium] › e2e/collaboration-runtime-handoff-web.spec.ts:6:1 › Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[id="run-ecb1ec16-9419-4927-a58a-8f5d99b5e157"]').getByRole('region', { name: 'Run records', exact: true }).getByText('Recording range is unavailable on this server.', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "soft toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('[id="run-ecb1ec16-9419-4927-a58a-8f5d99b5e157"]').getByRole('region', { name: 'Run records', exact: true }).getByText('Recording range is unavailable on this server.', { exact: true })[22m
+
+
+      53 |   const targetRun = page.locator(`[id="run-${fixture.priorRunId}"]`);
+      54 |   const prior = targetRun.getByRole("region", { name: "Run records", exact: true });
+    > 55 |   await expect.soft(prior.getByText("Recording range is unavailable on this server.", { exact: true })).toBeVisible();
+         |                                                                                                         ^
+      56 |   page.off("request", observeRequest);
+      57 |   page.off("response", observeResponse);
+      58 |   await info.attach("source-run-navigation", { contentType: "application/json", body: JSON.stringify({
+        at /Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/collaboration-runtime-handoff-web.spec.ts:55:105
+
+    attachment #5: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/navigation-detail-artifacts/collaboration-runtime-hand-5a631-es-private-reads-on-removal-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/navigation-detail-artifacts/collaboration-runtime-hand-5a631-es-private-reads-on-removal-chromium/error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-runtime-handoff-web.spec.ts:6:1 › Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal 
+make: *** [env-exec] Error 1

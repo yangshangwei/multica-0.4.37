@@ -1,7 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render } from "@testing-library/react";
 
 const mockFocus = vi.hoisted(() => vi.fn());
+const mockViewFocus = vi.hoisted(() => vi.fn());
+const mockDispatch = vi.hoisted(() => vi.fn());
+const mockSetSelection = vi.hoisted(() => vi.fn((selection: unknown) => ({ selection })));
 const mockSetContent = vi.hoisted(() => vi.fn());
 const mockBlur = vi.hoisted(() => vi.fn());
 const editorState = vi.hoisted(() => ({
@@ -31,12 +34,18 @@ vi.mock("@tiptap/react", () => ({
           blur: mockBlur,
           setContent: mockSetContent,
         },
+        state: { doc: { type: "doc" }, tr: { setSelection: mockSetSelection } },
+        view: { dispatch: mockDispatch, focus: mockViewFocus },
         getText: () => editorState.text,
       };
     }
     return editorRef.current;
   },
   EditorContent: () => <div data-testid="editor-content" />,
+}));
+
+vi.mock("@tiptap/pm/state", () => ({
+  Selection: { atEnd: (doc: unknown) => ({ atEndOf: doc }) },
 }));
 
 import { createShortcutChord } from "@multica/core/shortcuts";
@@ -135,6 +144,62 @@ describe("TitleEditor", () => {
 
     expect(mockSetContent).toHaveBeenCalledTimes(1);
     expect(mockSetContent).toHaveBeenCalledWith("", { emitUpdate: false });
+  });
+
+  describe("autoFocus", () => {
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => {
+      vi.useRealTimers();
+      document.body.replaceChildren();
+    });
+
+    it("focuses the title at its end once the dialog has settled", () => {
+      render(<TitleEditor autoFocus />);
+      expect(mockViewFocus).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(50);
+      expect(mockSetSelection).toHaveBeenCalledWith({ atEndOf: { type: "doc" } });
+      expect(mockDispatch).toHaveBeenCalledWith({ selection: { atEndOf: { type: "doc" } } });
+      expect(mockViewFocus).toHaveBeenCalledTimes(1);
+    });
+
+    // The deferred command focuses in the next animation frame, after the
+    // check below could already be stale; the autofocus must not use it.
+    it("focuses in the same task as the focus check", () => {
+      render(<TitleEditor autoFocus />);
+      vi.advanceTimersByTime(50);
+      expect(mockFocus).not.toHaveBeenCalled();
+      expect(mockViewFocus).toHaveBeenCalledTimes(1);
+    });
+
+    it("still focuses the title when focus sits on a non-text control", () => {
+      const button = document.body.appendChild(document.createElement("button"));
+      render(<TitleEditor autoFocus />);
+      button.focus();
+      vi.advanceTimersByTime(50);
+      expect(mockViewFocus).toHaveBeenCalledTimes(1);
+    });
+
+    // Regression: the delayed focus used to fire unconditionally, so text typed
+    // into the description inside the 50ms window landed in the title instead.
+    it.each([
+      // ProseMirror sets the attribute; jsdom does not reflect the property.
+      ["a rich-text editor", () => {
+        const editable = document.createElement("div");
+        editable.setAttribute("contenteditable", "true");
+        editable.tabIndex = 0;
+        return editable;
+      }],
+      ["a text input", () => document.createElement("input")],
+      ["a textarea", () => document.createElement("textarea")],
+    ])("does not steal focus from %s the user moved to first", (_label, make) => {
+      const field = document.body.appendChild(make());
+      render(<TitleEditor autoFocus />);
+      field.focus();
+      expect(document.activeElement).toBe(field);
+      vi.advanceTimersByTime(50);
+      expect(mockViewFocus).not.toHaveBeenCalled();
+      expect(mockFocus).not.toHaveBeenCalled();
+    });
   });
 });
 

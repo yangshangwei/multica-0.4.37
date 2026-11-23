@@ -1,0 +1,5 @@
+{
+  "format": "unified-diff",
+  "patch": "diff --git a/packages/views/collaboration/creation-form.test.tsx b/packages/views/collaboration/creation-form.test.tsx\nindex be57dd6cf..ce5cfdd84 100644\n--- a/packages/views/collaboration/creation-form.test.tsx\n+++ b/packages/views/collaboration/creation-form.test.tsx\n@@ -705,7 +705,7 @@ it(\"restores the opener when creation closes before its initial focus frame\", as\n   await screen.findByLabelText(\"Title\");\n   await waitFor(() => expect(frames.size).toBeGreaterThan(0));\n   const dialog = screen.getByRole(\"dialog\", { name: \"New collaboration issue\" });\n-  await user.click(screen.getByRole(\"button\", { name: \"Close\", exact: true }));\n+  await user.click(screen.getByRole(\"button\", { name: \"Close\" }));\n   await waitFor(async () => {\n     await act(() => {\n       const callbacks = [...frames.values()];\n",
+  "ownership": "Pre-existing contribution, independently reviewed and adopted as scoped typecheck repair: ByRoleOptions has no exact option; the name string already matches the Close accessible name exactly."
+}

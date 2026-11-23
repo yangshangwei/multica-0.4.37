@@ -1,0 +1,32 @@
+{
+  "focused-daemon": {
+    "github.com/multica-ai/multica/server/internal/daemon/collaborationrun": {
+      "top_level_pass": 5,
+      "subtest_pass": 13,
+      "failed": [],
+      "skipped": []
+    }
+  },
+  "full-daemon-protocol-race": {
+    "github.com/multica-ai/multica/server/pkg/protocol": {
+      "top_level_pass": 31,
+      "subtest_pass": 267,
+      "failed": [],
+      "skipped": []
+    },
+    "github.com/multica-ai/multica/server/internal/daemon/collaborationrun": {
+      "top_level_pass": 101,
+      "subtest_pass": 217,
+      "failed": [],
+      "skipped": []
+    }
+  },
+  "final-daemon-race": {
+    "github.com/multica-ai/multica/server/internal/daemon/collaborationrun": {
+      "top_level_pass": 101,
+      "subtest_pass": 217,
+      "failed": [],
+      "skipped": []
+    }
+  }
+}

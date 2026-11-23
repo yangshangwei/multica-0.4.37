@@ -4,13 +4,21 @@ set -euo pipefail
 root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 test_dir="$(mktemp -d)"
 trap 'rm -rf "$test_dir"' EXIT
+# Each case supplies its own optional native fixture configuration.
+unset COLLABORATION_ELECTRON_RENDERER_URL CHANGELOG_ELECTRON_RENDERER_URL
 cat > "$test_dir/source.env" <<'ENV'
 DATABASE_URL=postgres://test:test@localhost:5432/original
 CORS_ALLOWED_ORIGINS=http://localhost:13000
 ALLOWED_ORIGINS=http://localhost:13001
 MULTICA_AUTH_MODE=password
 MULTICA_MANAGED_INSTALLATIONS_ENABLED=true
+MULTICA_KNOWLEDGE_CONTEXT_ENABLED=true
 MULTICA_PLATFORM_ADMIN_ENABLED=true
+COLLABORATION_E2E_API_URL=http://localhost:19998
+COLLABORATION_ELECTRON_WS_URL=ws://localhost:19998/ws
+COLLABORATION_ELECTRON_SOURCE_ROOT=/stale/checkout
+MULTICA_E2E_DESKTOP_OUTPUT_DIR=/stale/build
+DESKTOP_RENDERER_PORT=19996
 ENV
 
 cat > "$test_dir/fixture.sh" <<'FIXTURE'
@@ -31,7 +39,11 @@ prepare_check_environment() {
   CHECK_GO_DB_NAME=go_fixture
   DB_NAME=api_fixture
 }
-pnpm() { record "pnpm $*"; [ "$phase" != ts-failure ] || return 17; }
+pnpm() {
+  record "pnpm $*"
+  [ "$phase" != ts-failure ] || return 17
+  if [ "$*" = '--filter @multica/desktop build' ]; then [ "$phase" != desktop-build-failure ] || return 37; fi
+}
 psql() { record "psql $*"; }
 lsof() { :; }
 go() { record "go $*"; }
@@ -43,6 +55,7 @@ ensure_database() { record database; [ "$phase" != database-failure ] || return 
 migrate_database() { record "migrate $DATABASE_URL"; }
 start_api() { record api; [ "$phase" != api-failure ] || return 23; }
 start_web() { record web; [ "$phase" != web-failure ] || return 29; }
+start_check_desktop_renderer() { record renderer; [ "$phase" != renderer-failure ] || return 41; }
 stop_component() { record "stop $1"; [ "$phase" != cleanup-failure ] || return 31; }
 print_status_json() { printf '{}\n'; }
 check_main
@@ -71,8 +84,22 @@ grep -Fxq 'stop api' "$test_dir/calls"
 run_case web-failure 29
 ! grep -Eq '^pnpm exec playwright' "$test_dir/calls" || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
 grep -Fxq 'stop web' "$test_dir/calls"
+run_case desktop-build-failure 37
+! grep -Eq '^renderer$|^pnpm exec playwright' "$test_dir/calls" || { echo 'Browser ran after Desktop build failure'; exit 1; }
+run_case renderer-failure 41
+! grep -Eq '^pnpm exec playwright' "$test_dir/calls" || { echo 'Browser ran after renderer failure'; exit 1; }
+grep -Fxq 'stop desktop-renderer' "$test_dir/calls"
 run_case cleanup-failure 1
 run_case success 0
+grep -Fxq 'stop desktop-renderer' "$test_dir/calls"
+node - "$test_dir/calls" <<'JS'
+const fs = require('node:fs');
+const calls = fs.readFileSync(process.argv[2], 'utf8').trim().split('\n');
+const sequence = ['pnpm --filter @multica/desktop build', 'renderer', 'pnpm exec playwright test --workers=1 --retries=0', 'stop desktop-renderer'];
+for (let i = 1; i < sequence.length; i++) {
+  if (calls.indexOf(sequence[i - 1]) < 0 || calls.indexOf(sequence[i]) <= calls.indexOf(sequence[i - 1])) throw new Error('Desktop preparation/cleanup order is incorrect');
+}
+JS
 grep -Fxq 'pnpm exec playwright test --workers=1 --retries=0' "$test_dir/calls"
 grep -Fq -- '--concurrency=1 --force -- --maxWorkers=2' "$test_dir/calls"
 grep -Fxq 'migrate postgres://test:test@localhost:5432/go_fixture' "$test_dir/calls"
@@ -90,15 +117,30 @@ LOCK_DIR="$DEV_HOME/lock.d"
 load_env_file() { set -a; source "$1"; set +a; }
 allocate_offset() { printf 907; }
 load_env_file "$fixture_dir/source.env"
+DESKTOP_RENDERER_PORT=19997
 prepare_check_environment "$fixture_dir/source.env"
 [ "$MULTICA_DEVICE_AUTH_ENABLED" = false ]
 [ "$MULTICA_AUTH_MODE" = legacy ]
 [ "$MULTICA_MANAGED_INSTALLATIONS_ENABLED" = false ]
+[ "$MULTICA_KNOWLEDGE_CONTEXT_ENABLED" = false ]
 [ "$MULTICA_PLATFORM_ADMIN_ENABLED" = false ]
 [ "$DATABASE_URL" != "$CHECK_GO_DATABASE_URL" ]
 [ "$WEB_MODE" = production ]
-[ "$CORS_ALLOWED_ORIGINS" = "http://localhost:$FRONTEND_PORT" ]
-[ "$ALLOWED_ORIGINS" = "http://localhost:$FRONTEND_PORT" ]
+[ "$DESKTOP_RENDERER_PORT" = "$(renderer_port_for_offset "$OFFSET")" ] || {
+  echo 'Reloading copied env restored a stale source-file renderer port'; exit 1;
+}
+[ "$CORS_ALLOWED_ORIGINS" = "http://localhost:$FRONTEND_PORT,http://127.0.0.1:$DESKTOP_RENDERER_PORT" ]
+[ "$ALLOWED_ORIGINS" = "$CORS_ALLOWED_ORIGINS" ]
+[ "$COLLABORATION_E2E_API_URL" = "$NEXT_PUBLIC_API_URL" ]
+[ "$COLLABORATION_ELECTRON_WS_URL" = "$NEXT_PUBLIC_WS_URL" ]
+[ "$COLLABORATION_ELECTRON_RENDERER_URL" = "http://127.0.0.1:$DESKTOP_RENDERER_PORT" ]
+[ "$COLLABORATION_ELECTRON_SOURCE_ROOT" = "$REPO_ROOT" ]
+[ "$MULTICA_E2E_DESKTOP_OUTPUT_DIR" = "$REPO_ROOT/apps/desktop/out" ]
+grep -Fxq 'COLLABORATION_E2E_API_URL=http://localhost:19998' "$fixture_dir/source.env"
+grep -Fxq 'COLLABORATION_ELECTRON_SOURCE_ROOT=/stale/checkout' "$fixture_dir/source.env"
+grep -Fxq 'MULTICA_E2E_DESKTOP_OUTPUT_DIR=/stale/build' "$fixture_dir/source.env"
+grep -Fxq 'DESKTOP_RENDERER_PORT=19996' "$fixture_dir/source.env"
+grep -Fxq "DESKTOP_RENDERER_PORT=$DESKTOP_RENDERER_PORT" "$STATE_DIR/manifest.env"
 grep -Fxq 'CORS_ALLOWED_ORIGINS=http://localhost:13000' "$fixture_dir/source.env"
 grep -Fxq 'ALLOWED_ORIGINS=http://localhost:13001' "$fixture_dir/source.env"
 grep -Fxq 'MULTICA_AUTH_MODE=password' "$fixture_dir/source.env"
@@ -107,6 +149,108 @@ grep -Fxq 'MULTICA_PLATFORM_ADMIN_ENABLED=true' "$fixture_dir/source.env"
 ! grep -q 'MULTICA_DEVICE_AUTH_ENABLED' "$fixture_dir/source.env" || { echo "Unexpected match in rejection assertion" >&2; exit 1; }
 grep -Fq 'WEB_MODE=production' "$STATE_DIR/manifest.env"
 FIXTURE
+
+# Each isolated check owns its signing key, even when the source has a real key.
+jwt_key_case() {
+  local name=$1 source_key=$2 run
+  local fixture_dir="$test_dir/jwt-$name"
+  mkdir -p "$fixture_dir"
+  cp "$test_dir/source.env" "$fixture_dir/source.env"
+  if [ "$name" != missing ]; then
+    printf 'JWT_SECRET=%s\n' "$source_key" >> "$fixture_dir/source.env"
+  fi
+  cp "$fixture_dir/source.env" "$fixture_dir/source-before.env"
+  for run in first second; do
+    bash -s -- "$root_dir" "$fixture_dir" "$run" <<'FIXTURE'
+set -euo pipefail
+source "$1/scripts/check.sh"
+fixture_dir=$2
+run=$3
+REPO_ROOT="$fixture_dir"
+DEV_HOME="$fixture_dir/registry-$run"
+ENVS_DIR="$DEV_HOME/envs"
+LOCK_DIR="$DEV_HOME/lock.d"
+load_env_file() { set -a; source "$1"; set +a; }
+allocate_offset() { printf 907; }
+unset JWT_SECRET
+load_env_file "$fixture_dir/source.env"
+source_key=${JWT_SECRET:-}
+prepare_check_environment "$fixture_dir/source.env"
+[[ ${JWT_SECRET:-} =~ ^[0-9a-f]{64}$ ]] || { echo 'Check signing key must be 32 random bytes encoded as hex'; exit 1; }
+[ "$JWT_SECRET" != "$source_key" ] || { echo 'Check reused its source signing key'; exit 1; }
+if [ "$run" = first ]; then
+  (umask 077; printf '%s' "$JWT_SECRET" > "$fixture_dir/first-key")
+else
+  [ "$JWT_SECRET" != "$(cat "$fixture_dir/first-key")" ] || { echo 'Two checks reused one signing key'; exit 1; }
+fi
+cmp -s "$fixture_dir/source.env" "$fixture_dir/source-before.env" || { echo 'Check changed its source environment'; exit 1; }
+node - "$ENV_FILE" <<'JS'
+const fs = require('node:fs');
+if ((fs.statSync(process.argv[2]).mode & 0o777) !== 0o600) throw new Error('Check environment must remain private');
+JS
+FIXTURE
+  done
+  echo "jwt-$name: PASS"
+}
+
+jwt_key_case missing ''
+jwt_key_case blank ''
+jwt_key_case default 'multica-dev-secret-change-in-production'
+jwt_key_case historical-default 'change-me-in-production'
+jwt_key_case custom 'source-signing-key-must-not-reach-the-check'
+
+native_origin_case() {
+  local name=$1 collaboration=$2 changelog=$3 expected=$4 expected_status=${5:-0} status=0
+  local fixture_dir="$test_dir/native-$name"
+  mkdir -p "$fixture_dir"
+  bash -s -- "$root_dir" "$fixture_dir" "$collaboration" "$changelog" "$expected" > "$fixture_dir/output" 2>&1 <<'FIXTURE' || status=$?
+set -euo pipefail
+source "$1/scripts/check.sh"
+fixture_dir=$2
+export COLLABORATION_ELECTRON_RENDERER_URL=$3 CHANGELOG_ELECTRON_RENDERER_URL=$4
+expected=$5
+REPO_ROOT="$fixture_dir"
+DEV_HOME="$fixture_dir/registry"
+ENVS_DIR="$DEV_HOME/envs"
+LOCK_DIR="$DEV_HOME/lock.d"
+load_env_file() { set -a; source "$1"; set +a; }
+allocate_offset() { printf 907; }
+source_env="$fixture_dir/source.env"
+cat > "$source_env" <<'ENV'
+DATABASE_URL=postgres://test:test@localhost:5432/original
+CORS_ALLOWED_ORIGINS=https://production.invalid
+ALLOWED_ORIGINS=https://production.invalid
+ENV
+write_manifest_value COLLABORATION_ELECTRON_RENDERER_URL "$COLLABORATION_ELECTRON_RENDERER_URL" >> "$source_env"
+write_manifest_value CHANGELOG_ELECTRON_RENDERER_URL "$CHANGELOG_ELECTRON_RENDERER_URL" >> "$source_env"
+cp "$source_env" "$fixture_dir/source-before.env"
+load_env_file "$source_env"
+prepare_check_environment "$source_env"
+expected="$expected,http://127.0.0.1:$DESKTOP_RENDERER_PORT"
+[ "$CORS_ALLOWED_ORIGINS" = "$expected" ] || { echo 'Native HTTP fixture origin was not preserved'; exit 1; }
+[ "$ALLOWED_ORIGINS" = "$expected" ] || { echo 'Native WebSocket fixture origin was not preserved'; exit 1; }
+cmp "$source_env" "$fixture_dir/source-before.env"
+! grep -Fq 'production.invalid' <(printf '%s\n' "$CORS_ALLOWED_ORIGINS" "$ALLOWED_ORIGINS")
+FIXTURE
+  [ "$status" -eq "$expected_status" ] || { cat "$fixture_dir/output"; echo "native-$name: exit $status, expected $expected_status"; exit 1; }
+  if [ "$expected_status" -ne 0 ]; then
+    grep -Fq 'Native fixture renderer URL' "$fixture_dir/output"
+    ! grep -Fq 'private-fixture-secret' "$fixture_dir/output" || { echo 'Rejected renderer credentials were printed'; exit 1; }
+  fi
+  echo "native-$name: PASS"
+}
+
+native_origin_case collaboration 'http://127.0.0.1:19841/' '' 'http://localhost:13907,http://127.0.0.1:19841'
+native_origin_case changelog '' 'https://localhost:19842/renderer/index.html' 'http://localhost:13907,https://localhost:19842'
+native_origin_case distinct 'http://127.0.0.1:19841/' 'http://localhost:19842/' 'http://localhost:13907,http://127.0.0.1:19841,http://localhost:19842'
+native_origin_case duplicate 'http://localhost:13907/renderer/' 'http://localhost:13907/' 'http://localhost:13907'
+native_origin_case shared-renderer 'http://127.0.0.1:19841/renderer/' 'http://127.0.0.1:19841/index.html' 'http://localhost:13907,http://127.0.0.1:19841'
+native_origin_case ipv6 'http://[::1]:19843/' '' 'http://localhost:13907,http://[::1]:19843'
+native_origin_case remote 'https://renderer.example.invalid/' '' '' 1
+native_origin_case credential 'http://private-fixture-secret@localhost:19841/' '' '' 1
+native_origin_case malformed 'not-a-url' '' '' 1
+native_origin_case protocol 'file:///private-fixture-secret' '' '' 1
+native_origin_case zero-port 'http://localhost:0/' '' '' 1
 
 
 # A real Make parent must not reparse the Bash-escaped task env on API launch.
@@ -167,5 +311,7 @@ FIXTURE
 make --no-print-directory -f "$test_dir/make-case/Makefile" verify \
   FIXTURE="$test_dir/make-case/fixture.sh" REPO="$root_dir" CASE_DIR="$test_dir/make-case" > "$test_dir/make-output" 2>&1 \
   || { cat "$test_dir/make-output"; exit 1; }
+
+node --test "$root_dir/scripts/check-desktop-renderer.test.mjs"
 
 echo 'check.test.sh: PASS'

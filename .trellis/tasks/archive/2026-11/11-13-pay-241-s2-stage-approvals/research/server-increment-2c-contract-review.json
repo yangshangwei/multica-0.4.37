@@ -1,0 +1,427 @@
+{
+  "schema_version": 1,
+  "review": "S2 increment2c independent technical contract review",
+  "owner": "/root/s2_server_check",
+  "recorded_at": "2026-11-14T08:39:05.662014+00:00",
+  "verdict": "ready_for_sole_owner_freeze_with_mandatory_amendments",
+  "scope": "Technical preparation only; existing role/product scope and conservative current-valid A9 rule retained.",
+  "ready_choices": [
+    "Trusted internal resolver/verifier with nil/unavailable default and separate code/deployment/metric identities; no public simulation path.",
+    "Rollback v1 immediate previous observed artifact only; unknown previous artifact unavailable; provider conditional target/version required.",
+    "Release artifact must be observed and match candidate/selected QA report; source-only null is not build proof.",
+    "A9 derives the unique successful fact from its selected release approval rather than selecting latest by target.",
+    "Amend A8 wire explicitly: durable intent permanently consumes one dispatch opportunity (including later not_started), distinct from actual execution and external cancellation.",
+    "Exact terminal duplicate returns existing fact; changed terminal identity conflicts; genuine failed retry requires new approval/intent/external execution.",
+    "Preserve current-valid A9 after late authenticated facts; no renewal, endorsement or automatic reexecution.",
+    "R4 new arrays stay inside existing anonymous source-denied group."
+  ],
+  "harness_review": {
+    "feasible": true,
+    "actual_seams": [
+      "NewRouterWithOptions returns actual Handler before serving",
+      "stageService constructs per-request CollaborationService",
+      "TestMain creates own fixture/hub/default listener",
+      "PrepareDeliveryMutationInTx is a free function with DeliveryMutationIntent"
+    ],
+    "required_2d_injection": "Same trusted dependency must pass explicitly through shared construction/DeliveryMutationIntent and private stage guard for ordinary handler/status, collaboration lifecycle, admin and submit consumers; Handler-only stage reader injection is insufficient.",
+    "constraints": [
+      "fresh dedicated router-harness/API database",
+      "account for both listeners and TestMain cleanup identity",
+      "actual required outbox/realtime lifecycle recorded",
+      "public human approval actions; no approval/fact seeding as complete proof",
+      "private test-only control pipe, no public fixture route",
+      "full Web/Desktop positive waits for legitimate2dactivation",
+      "normal production default without adapter remains unavailable"
+    ]
+  },
+  "preparation_identity": {
+    "report_json_sha256": "1bb81c190227ede622a4c0f3ad778435823ff6ffe5f5aef7d5b9f49df6311da1",
+    "report_markdown_sha256": "928a19132401b4d63ac711fcfd7933f56096c99ecf49153a9cfeadd38033fca3",
+    "source_capture_count": 36,
+    "same_at_review": 34,
+    "bindings": [
+      {
+        "path": ".trellis/workflow.md",
+        "prepared_sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+        "review_observed_sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": ".trellis/spec/server/security-boundaries.md",
+        "prepared_sha256": "eafe18806e77423c13062317ab9168019f0148131107179bfdd162876957e2cf",
+        "review_observed_sha256": "eafe18806e77423c13062317ab9168019f0148131107179bfdd162876957e2cf",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": ".trellis/spec/server/controlled-artifact-execution.md",
+        "prepared_sha256": "c2bcaeed50eb4ff5619b6dce64b90c8973304d24fda3166e934af8e79042f0db",
+        "review_observed_sha256": "c2bcaeed50eb4ff5619b6dce64b90c8973304d24fda3166e934af8e79042f0db",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": ".trellis/spec/server/delivery-completion-enforcement.md",
+        "prepared_sha256": "95d593960e679098649757f727c33153c5564bb666446eed2c6bb14f70b9cd9b",
+        "review_observed_sha256": "95d593960e679098649757f727c33153c5564bb666446eed2c6bb14f70b9cd9b",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/design.md",
+        "prepared_sha256": "a377e9011ef7d3f4dc2e77a4dbc10d331bdf32247761782d8ee233c7b131493a",
+        "review_observed_sha256": "a377e9011ef7d3f4dc2e77a4dbc10d331bdf32247761782d8ee233c7b131493a",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2-brief.md",
+        "prepared_sha256": "f67a6fe24e109f3201307ba90149b4d739a981dfb01944a93b7bc2cc84fa9db0",
+        "review_observed_sha256": "f67a6fe24e109f3201307ba90149b4d739a981dfb01944a93b7bc2cc84fa9db0",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+        "prepared_sha256": "a71d71570cf1f337d0f8c299e77e307e6d37516dd516eaa6e0882548c5669520",
+        "review_observed_sha256": "a71d71570cf1f337d0f8c299e77e307e6d37516dd516eaa6e0882548c5669520",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness.md",
+        "prepared_sha256": "6e67a6e8d107fb97de5a2723e9e4645f78440e3a5794b972b6943880c09e76b7",
+        "review_observed_sha256": "6e67a6e8d107fb97de5a2723e9e4645f78440e3a5794b972b6943880c09e76b7",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness.json",
+        "prepared_sha256": "c68389515d4c61c2ee2e961ac7db240b130f81116ee28af36967c721b6ad3613",
+        "review_observed_sha256": "c68389515d4c61c2ee2e961ac7db240b130f81116ee28af36967c721b6ad3613",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_review_types.go",
+        "prepared_sha256": "4e10961e17cfd3f53b5ce6478c01e1063d47c9a55384340da0ba1f3cc5246526",
+        "review_observed_sha256": "4e10961e17cfd3f53b5ce6478c01e1063d47c9a55384340da0ba1f3cc5246526",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_review.go",
+        "prepared_sha256": "b5b3d8fa48bb2fb5cd1056314dcc18f4b2af6157d12a6cbdfb0bb37391bd5d8b",
+        "review_observed_sha256": "82f14c257b9d6b98ef0f6d4ab2e3945c59e29a39cfcc86093a331f9d405ccd3b",
+        "matches_prepared_capture": false
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_review_view.go",
+        "prepared_sha256": "159f0be9305a83550c46b4d8d567357f3dd60d2f7536dbf061348e6254aa9a24",
+        "review_observed_sha256": "ecb3fade3f27a8fe9c8be5540cf34d7ac4788ff42b6ff0ba074bc35630bb5910",
+        "matches_prepared_capture": false
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_signer.go",
+        "prepared_sha256": "8fb56b403a4cc881eafd73bc70b9e30c6adc98029e18a1ef4fdf53a784a5762a",
+        "review_observed_sha256": "8fb56b403a4cc881eafd73bc70b9e30c6adc98029e18a1ef4fdf53a784a5762a",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_evidence.go",
+        "prepared_sha256": "5d4b8e07d1338841dae6ac18214f3908bcd017dcc9df011c9018f13240dd0127",
+        "review_observed_sha256": "5d4b8e07d1338841dae6ac18214f3908bcd017dcc9df011c9018f13240dd0127",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/service/collaboration_workflow.go",
+        "prepared_sha256": "a2334a92b62c6eb1a3a231587c77a9e4fc59383005f770066f3e854522f08568",
+        "review_observed_sha256": "a2334a92b62c6eb1a3a231587c77a9e4fc59383005f770066f3e854522f08568",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/service/delivery_completion_webhook.go",
+        "prepared_sha256": "ab39ace3439f5332cbaa2a789608cf5766ff828ff7cec5a5fe4afec0f47a573b",
+        "review_observed_sha256": "ab39ace3439f5332cbaa2a789608cf5766ff828ff7cec5a5fe4afec0f47a573b",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/handler/agent_artifact.go",
+        "prepared_sha256": "8a153b06bb7e462da2639cee19cb4af5862973f7fb7eb76f422d81089b874d5e",
+        "review_observed_sha256": "8a153b06bb7e462da2639cee19cb4af5862973f7fb7eb76f422d81089b874d5e",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/pkg/db/queries/agent_artifact_execution.sql",
+        "prepared_sha256": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+        "review_observed_sha256": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/migrations/766_agent_artifact_execution.up.sql",
+        "prepared_sha256": "242f2c35ca6f918c59662ed6988622d071dd85bb7c9a5e79a3eacb45ea4446c4",
+        "review_observed_sha256": "242f2c35ca6f918c59662ed6988622d071dd85bb7c9a5e79a3eacb45ea4446c4",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/service/admin_operation.go",
+        "prepared_sha256": "ebb3a08b6d866692790470c3d634523f147547ff353da4cea39e81d6d663779b",
+        "review_observed_sha256": "ebb3a08b6d866692790470c3d634523f147547ff353da4cea39e81d6d663779b",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/pkg/db/queries/admin_operation.sql",
+        "prepared_sha256": "070a2d906638fcf577c0a632f2a94872903cecb8b49579df136607a53a2fc9eb",
+        "review_observed_sha256": "070a2d906638fcf577c0a632f2a94872903cecb8b49579df136607a53a2fc9eb",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/service/admin_alert.go",
+        "prepared_sha256": "bc76df13c92a3a6b0f7f57b4607b4b3ca40edaf1d465a038289f58ac98269f1d",
+        "review_observed_sha256": "bc76df13c92a3a6b0f7f57b4607b4b3ca40edaf1d465a038289f58ac98269f1d",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/handler/admin_health.go",
+        "prepared_sha256": "6d964e3d7c3cb61d4c11b0e18d7237a2e6e4485863b18b6ee3f591d82f003d9b",
+        "review_observed_sha256": "6d964e3d7c3cb61d4c11b0e18d7237a2e6e4485863b18b6ee3f591d82f003d9b",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/service/platform_admin.go",
+        "prepared_sha256": "f82c1f9a462a6f996133d9d5950c72f476fae143eec04169214af31c1aba5c3f",
+        "review_observed_sha256": "f82c1f9a462a6f996133d9d5950c72f476fae143eec04169214af31c1aba5c3f",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/pkg/db/queries/collaboration_stage_review.sql",
+        "prepared_sha256": "ee9ad53f3fe61d0797115909eb5c83e4aaf0753cd3bf019db535f63fa2091ec4",
+        "review_observed_sha256": "ee9ad53f3fe61d0797115909eb5c83e4aaf0753cd3bf019db535f63fa2091ec4",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/migrations/821_collaboration_stage_reviews.up.sql",
+        "prepared_sha256": "0a779c62b6bc7348b83a4fdff0be2be4fd63079c210a7f7a50e356366fb7851c",
+        "review_observed_sha256": "0a779c62b6bc7348b83a4fdff0be2be4fd63079c210a7f7a50e356366fb7851c",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/migrations/825_collaboration_stage_reviews_ready.up.sql",
+        "prepared_sha256": "aad09b6d3c9cee4ba324f2a1d0ea67eb10560270fcc46e98f23f6fd68d7fdb64",
+        "review_observed_sha256": "aad09b6d3c9cee4ba324f2a1d0ea67eb10560270fcc46e98f23f6fd68d7fdb64",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/migrations/825_collaboration_stage_reviews_ready.down.sql",
+        "prepared_sha256": "99ddbae22d191c4bd8ed005b590f6e87657e7d7c5af813bb04c321eb5d0c1df7",
+        "review_observed_sha256": "99ddbae22d191c4bd8ed005b590f6e87657e7d7c5af813bb04c321eb5d0c1df7",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/cmd/server/router.go",
+        "prepared_sha256": "657e364e202f2fe5441cb6e841cf9eb4c52faf5d888cb10fef4a5e3a182f487a",
+        "review_observed_sha256": "657e364e202f2fe5441cb6e841cf9eb4c52faf5d888cb10fef4a5e3a182f487a",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/cmd/server/integration_test.go",
+        "prepared_sha256": "25f1acc56ce6802909feae8d1e5dca1204cd94428171ccc686de9875ee2adcb1",
+        "review_observed_sha256": "25f1acc56ce6802909feae8d1e5dca1204cd94428171ccc686de9875ee2adcb1",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/handler/handler.go",
+        "prepared_sha256": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+        "review_observed_sha256": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage.go",
+        "prepared_sha256": "1689734f18c3055c4c079b48dcd4d205bd373dc62fdd6a9b4b8f4ee9de0fa7a8",
+        "review_observed_sha256": "1689734f18c3055c4c079b48dcd4d205bd373dc62fdd6a9b4b8f4ee9de0fa7a8",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage_review.go",
+        "prepared_sha256": "134d56f576a38be7528bed1cd92f508db840a95eab1d81781cfabf563f08cff0",
+        "review_observed_sha256": "134d56f576a38be7528bed1cd92f508db840a95eab1d81781cfabf563f08cff0",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/cmd/server/agent_artifact_integration_test.go",
+        "prepared_sha256": "0b26d4afc5a3e44ecb8004572d0fd89a208271719c0b7b90072239e967af0085",
+        "review_observed_sha256": "0b26d4afc5a3e44ecb8004572d0fd89a208271719c0b7b90072239e967af0085",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/cmd/server/delivery_completion_collaboration_integration_test.go",
+        "prepared_sha256": "1b37f836ac441fb1c81a3d535810a7dc866d9dd555795cf254d1efc745ddc6ad",
+        "review_observed_sha256": "1b37f836ac441fb1c81a3d535810a7dc866d9dd555795cf254d1efc745ddc6ad",
+        "matches_prepared_capture": true
+      },
+      {
+        "path": "server/go.mod",
+        "prepared_sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+        "review_observed_sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+        "matches_prepared_capture": true
+      }
+    ],
+    "interpretation": "Prepared hashes are research capture, not executable frozen candidate; current2b drift is recorded separately.",
+    "initial_identity_check": {
+      "matching_prepared_hashes": 35,
+      "changed_paths": [
+        "server/internal/service/collaboration_stage_review.go"
+      ]
+    }
+  },
+  "additional_code_observations": [
+    {
+      "path": "server/internal/service/delivery_completion.go",
+      "sha256": "48ef3b9fa0be3707ee962bab79b541b10cf8e8c5ac28532f3651bca73a3f8994"
+    },
+    {
+      "path": "server/internal/service/issue_status_write.go",
+      "sha256": "71c96fea42ad2f07017577091face61c5295921883b74a09744d2153771ed286"
+    },
+    {
+      "path": "server/internal/service/admin_collaboration.go",
+      "sha256": "8268be7e80b4ead6c5fab3ac90209b8a4adb9f72d6de2f8d2c4561843bd8174e"
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "sha256": "3dbabdf7fd7917ae83d38f42f5ebd9162eb8998248701dd686a8d23645c257fc"
+    },
+    {
+      "path": "server/internal/service/issue.go",
+      "sha256": "0696dfbc0acb4221be78b8f63bb0d58f5546f744292e3d52c4aec243da4a3223"
+    },
+    {
+      "path": "server/internal/service/collaboration.go",
+      "sha256": "3ad137953cd0e2e2e8c491a1c80eeb5b97318233059649efbd90a9e00bdccf19"
+    },
+    {
+      "path": "server/internal/handler/issue.go",
+      "sha256": "39b7074ae75f9f5e612ba22987c42d147f41763cf965eb654997302ffe844db4"
+    }
+  ],
+  "verification": {
+    "markdown_structure": "pass",
+    "local_references": "pass",
+    "json_structure": "pass",
+    "code_lint": "not_run_document_only",
+    "typecheck": "not_run_no_2c_implementation",
+    "tests": "not_run_contract_review_only",
+    "database": false,
+    "network": false,
+    "runtime": false,
+    "accounts": false,
+    "git_writes": false,
+    "product_wire_spec_task_status_changes": false
+  },
+  "limits": [
+    "No provider, idempotency/CAS, original-query, metric rule or real execution semantics verified; S4 stays NOT_RUN.",
+    "No public contract edited/frozen and no2b/fullS2 implementation acceptance.",
+    "Sole owner must incorporate the accepted amendments into the actual freeze; no further role/product approval or generic integration framework is required."
+  ],
+  "report_markdown_sha256": "2aea82ef694da3cc27a9fac3ce49eca47afc76af986a0108b98cdb162f405ad9",
+  "prior_reports_preserved": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2a-check.md",
+      "sha256": "e0acf960518aaa34d21d63a69995a84235d413d79f0bae8cc935503d36ed0fbe"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2a-followup-check.md",
+      "sha256": "8262f2da89e9d9c81a4baff9cb98e00ba10d3736b60019a99f722d62d9a3b92f"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2a-source-fence-check.md",
+      "sha256": "f8877f70661256e7a3320dc67f643ec7384a192e97f9462a7bc53eb5c476235b"
+    }
+  ],
+  "updated_at": "2026-11-14T08:42:09.031036+00:00",
+  "coordinator_resolution": "Coordinator accepted 2C-R01–R03 and requested final minimum freeze rules. No product/wire edits or implementation acceptance in this review.",
+  "technical_amendments": [
+    {
+      "id": "2C-R01",
+      "proposal_lines": [
+        53,
+        57,
+        59,
+        78,
+        138
+      ],
+      "title": "Separate stable physical-target conflict key from versioned approval target digest",
+      "counterexample": "Pending intent under binding/configA; reconnect or another root/workspace resolves same external target underB; local/digest-scoped lock permits a second operation.",
+      "minimal_repair": "Trusted resolver returns versioned target_digest plus stable conflict-domain key excluding root/workspace/local integration and mutable trust/config identifiers. Serialize unresolved query and insertion on existing transaction advisory namespace across all local bindings; hide foreign-operation identifiers.",
+      "tests": [
+        "same target across roots",
+        "same target after reconnect",
+        "same target across local workspace bindings",
+        "same display name for unrelated targets"
+      ],
+      "status": "accepted_for_owner_freeze_not_yet_implemented"
+    },
+    {
+      "id": "2C-R02",
+      "proposal_lines": [
+        45,
+        53,
+        63,
+        64,
+        65,
+        66
+      ],
+      "title": "Define enforceable single-use and dispatch-deadline semantics after definite intent commit",
+      "counterexample": "A legitimate caller reuses a handle or reaches invocation after its stored dispatch deadline; unexported/nonserializable alone does not consume it.",
+      "minimal_repair": "Synchronous service-owned one-shot handoff after definite intent commit. No cached/serializable permit escapes; atomically consume entry once and check its bounded deadline immediately before callback entry. Keep exact original external key/target/build/conditional version.",
+      "tests": [
+        "same handle twice",
+        "concurrent handle use",
+        "postcommit expiry",
+        "ambiguous commit",
+        "restart/original-key receipt returns no permit"
+      ],
+      "status": "accepted_for_owner_freeze_not_yet_implemented",
+      "outcomes": [
+        {
+          "when": "Intent commit failed or ambiguous",
+          "result": "Zero entries, no opportunity returned; retained intent remains unresolved until original-key reconciliation."
+        },
+        {
+          "when": "Live sole guard detects deadline/cancellation before callback entry",
+          "result": "Permanently retire entry and make zero external calls. Internal-only not_started observation may be persisted, bound to original intent/executor and sole-entry proof; no native operation ID and no execution fact."
+        },
+        {
+          "when": "Pre-entry not_started persistence fails or is ambiguous",
+          "result": "Unresolved/unknown; history recovery only, no recreated opportunity or invocation."
+        },
+        {
+          "when": "Process dies without conclusive observation after commit",
+          "result": "Pending/unknown; loss of a memory guard does not prove not_started."
+        },
+        {
+          "when": "Error/cancellation/deadline/panic after callback entry",
+          "result": "Unknown unless authenticated provider evidence proves a definite outcome or zero-execution refusal."
+        },
+        {
+          "when": "Authenticated original-operation query proves result",
+          "result": "Retain exact historical outcome, never invoke again. Native not-found is conclusive only under verified provider query/idempotency semantics."
+        }
+      ],
+      "additional_invariants": [
+        "Entry deadline does not rewrite completion of an already-entered operation.",
+        "Use bounded finalization context for local not_started even after caller cancellation.",
+        "Local not_started origin has no public writer/flag; sole service-owned guard only, in the existing observation ledger.",
+        "Definite not_started can release target uncertainty for a fresh explicit approval; the old approval remains consumed and nonrevocable."
+      ]
+    },
+    {
+      "id": "2C-R03",
+      "proposal_lines": [
+        114,
+        148
+      ],
+      "title": "Equal native metric version with contradictory digest must invalidate current anomaly",
+      "counterexample": "Current anomaly followed by authenticated equal-version healthy payload; merely rejecting the later payload leaves ambiguous evidence consumable.",
+      "minimal_repair": "Retain an ambiguous/unavailable stream state under exact deployment/target/query/rule identity; both new rollback approval and prior-approval consumption refuse until strictly newer authenticated observation resolves it. Arrival timestamps never renew validity.",
+      "tests": [
+        "anomaly then equal-version healthy/unknown/different anomaly",
+        "reverse arrival orders",
+        "older event cannot clear ambiguity",
+        "deadline expiry at final database clock"
+      ],
+      "status": "accepted_for_owner_freeze_not_yet_implemented"
+    }
+  ]
+}

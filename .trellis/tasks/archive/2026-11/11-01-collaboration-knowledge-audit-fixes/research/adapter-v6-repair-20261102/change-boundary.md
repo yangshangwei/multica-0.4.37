@@ -1,0 +1,13 @@
+# Private adapter repair boundary
+
+Owner: `/root/adapter_v6_fix`. The coordinator owns integration, independent review and launcher clearance. No commit is made by this implementer.
+
+AV5-1: mode 0 verifies the clone database/template/state but does not bind the recursive Go package selection to `allocation.package`. It can forward other packages, multiple selectors, recursive patterns or a changed working directory onto one parent's clone. AV5-2: ordinary mode 1 tests with missing explicit `MULTICA_TASK_REAL_GO` use the fallback Go executable and can reach SQL, listing, allocation and test execution.
+
+The behavior lives in the private Python `check-bin/go` adapter. The smallest correction collects selectors with its existing compile-flag parser, resolves a single selector (default `.`) with the explicitly pinned/fakeable Go executable and the original leading `-C` / `-C=` arguments, and compares the canonical result with the recorded package. Mode 0 refuses multiple/recursive selections and malformed package identity; ordinary tests require nonblank explicit executable/evidence context before subprocess/SQL operations. Original arguments remain intact for permitted mode 0 tests and for non-test/compile-only forwarding.
+
+Expected writes are confined to `.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/` and this evidence directory. The pre-existing v6 directory was inspected without changes; its pool-variable isolation delta and tests are copied into v7. Incoming v5/v6 source snapshots and hashes are retained here. `pnpm` remains byte-identical. Product source, specs, task status, the prepared fourth worktree, v5/v6 and launchers are outside this implementation's write scope.
+
+First run the new failing regression matrix against exact v5. Every execution boundary in this matrix is mocked, including fallback Go, SQL and test executables. Then change v7, rerun the same matrix and the inherited fake-executable contracts under network denial. No real Go tests/TestMain, databases, migrations, services, browsers, agent CLIs, Provider/account access, downloads or global configuration changes are part of verification.
+
+The coordinator subsequently authorized a demonstrated adjacent scanner correction. The inherited value-flag set omitted forwarded Go test flags and their registered `-test.*` aliases, so a value such as `-c` after `-bench` or `-test.run` was mistaken for a compile-only flag. Separate mocked red runs against exact v5 and first-green v7 precede the small value-set extension; first-green v7 bytes and results remain retained.

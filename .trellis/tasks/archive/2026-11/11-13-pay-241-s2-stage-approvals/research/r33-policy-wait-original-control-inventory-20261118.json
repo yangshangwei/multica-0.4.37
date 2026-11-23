@@ -1,0 +1,548 @@
+{
+  "schema": "pay241-r33-policy-wait-original-control-inventory-v1",
+  "date": "2026-11-18",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "SEALED_STATIC_EIGHT_ORIGINAL_CONTROL_INVENTORY_NO_EXECUTION",
+  "markdown": "r33-policy-wait-original-control-inventory-20261118.md",
+  "markdown_sha256": "385919d3d2690fd0ea845d95bd6e68842385cb97dcae088cd2f203ddc9f11320",
+  "source_root": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r01",
+  "baseline_file_count_coordinator_supplied": 5055,
+  "full_manifest_recounted": false,
+  "source_files": [
+    {
+      "path": "server/internal/handler/delivery_policy_test.go",
+      "sha256": "9f6a3b45e67c146f7f8a0ac0005aa2f2a17608e995f56b48547cbdd93c68b12d"
+    },
+    {
+      "path": "server/internal/handler/delivery_policy_schema_test.go",
+      "sha256": "96676a7adb2377e541a46a02393d242de4e05b53e5e0852d12f2146df64fdaae"
+    },
+    {
+      "path": "server/internal/handler/delivery_completion_activation_test.go",
+      "sha256": "98ce60c923f145813333d7e8b723c5ac8cc3977cae87b74b1ef2fc6c018907b0"
+    }
+  ],
+  "method": "Direct textual inspection of focal function bodies and literal t.Run loops; no Go/test-list/AST",
+  "count_rule": "Childless top counts as one top/name/leaf; parents with children are named but not leaves; unnamed loops/switches add no names",
+  "prior_plan": {
+    "path": "r33-policy-project-wait-plan-20261118.json",
+    "sha256": "64486bd4ff02d9a88eb46f507c52abc18104fc09d2ac41311cbb3e22212d7e8a",
+    "unchanged": true
+  },
+  "six_original_counts": {
+    "top": 6,
+    "named": 30,
+    "leaf": 26
+  },
+  "added_writer_counts": {
+    "top": 2,
+    "named": 4,
+    "leaf": 3
+  },
+  "original": {
+    "counts": {
+      "top": 8,
+      "named": 34,
+      "leaf": 29
+    },
+    "groups": [
+      {
+        "top": "TestDeliveryPolicyDefaultAppendAndCAS",
+        "source": "server/internal/handler/delivery_policy_test.go",
+        "line": 94,
+        "children": [],
+        "named": [
+          "TestDeliveryPolicyDefaultAppendAndCAS"
+        ],
+        "leaf": [
+          "TestDeliveryPolicyDefaultAppendAndCAS"
+        ],
+        "counts": {
+          "top": 1,
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "top": "TestDeliveryPolicyManagementAuthority",
+        "source": "server/internal/handler/delivery_policy_test.go",
+        "line": 120,
+        "children": [
+          "owner",
+          "admin",
+          "member"
+        ],
+        "named": [
+          "TestDeliveryPolicyManagementAuthority",
+          "TestDeliveryPolicyManagementAuthority/owner",
+          "TestDeliveryPolicyManagementAuthority/admin",
+          "TestDeliveryPolicyManagementAuthority/member"
+        ],
+        "leaf": [
+          "TestDeliveryPolicyManagementAuthority/owner",
+          "TestDeliveryPolicyManagementAuthority/admin",
+          "TestDeliveryPolicyManagementAuthority/member"
+        ],
+        "counts": {
+          "top": 1,
+          "named": 4,
+          "leaf": 3
+        }
+      },
+      {
+        "top": "TestDeliveryPolicyStrictRequests",
+        "source": "server/internal/handler/delivery_policy_test.go",
+        "line": 142,
+        "children": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10"
+        ],
+        "named": [
+          "TestDeliveryPolicyStrictRequests",
+          "TestDeliveryPolicyStrictRequests/0",
+          "TestDeliveryPolicyStrictRequests/1",
+          "TestDeliveryPolicyStrictRequests/2",
+          "TestDeliveryPolicyStrictRequests/3",
+          "TestDeliveryPolicyStrictRequests/4",
+          "TestDeliveryPolicyStrictRequests/5",
+          "TestDeliveryPolicyStrictRequests/6",
+          "TestDeliveryPolicyStrictRequests/7",
+          "TestDeliveryPolicyStrictRequests/8",
+          "TestDeliveryPolicyStrictRequests/9",
+          "TestDeliveryPolicyStrictRequests/10"
+        ],
+        "leaf": [
+          "TestDeliveryPolicyStrictRequests/0",
+          "TestDeliveryPolicyStrictRequests/1",
+          "TestDeliveryPolicyStrictRequests/2",
+          "TestDeliveryPolicyStrictRequests/3",
+          "TestDeliveryPolicyStrictRequests/4",
+          "TestDeliveryPolicyStrictRequests/5",
+          "TestDeliveryPolicyStrictRequests/6",
+          "TestDeliveryPolicyStrictRequests/7",
+          "TestDeliveryPolicyStrictRequests/8",
+          "TestDeliveryPolicyStrictRequests/9",
+          "TestDeliveryPolicyStrictRequests/10"
+        ],
+        "counts": {
+          "top": 1,
+          "named": 12,
+          "leaf": 11
+        }
+      },
+      {
+        "top": "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes",
+        "source": "server/internal/handler/delivery_policy_schema_test.go",
+        "line": 12,
+        "children": [
+          "missing",
+          "nonunique",
+          "reordered",
+          "partial",
+          "included"
+        ],
+        "named": [
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes",
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/missing",
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/nonunique",
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/reordered",
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/partial",
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/included"
+        ],
+        "leaf": [
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/missing",
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/nonunique",
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/reordered",
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/partial",
+          "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/included"
+        ],
+        "counts": {
+          "top": 1,
+          "named": 6,
+          "leaf": 5
+        }
+      },
+      {
+        "top": "TestDeliveryCompletionActivationExplicitCASAndCapabilities",
+        "source": "server/internal/handler/delivery_completion_activation_test.go",
+        "line": 15,
+        "children": [],
+        "named": [
+          "TestDeliveryCompletionActivationExplicitCASAndCapabilities"
+        ],
+        "leaf": [
+          "TestDeliveryCompletionActivationExplicitCASAndCapabilities"
+        ],
+        "counts": {
+          "top": 1,
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "top": "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff",
+        "source": "server/internal/handler/delivery_completion_activation_test.go",
+        "line": 74,
+        "children": [
+          "authorization_index",
+          "project_change_index",
+          "github_trust",
+          "vcs_trust",
+          "github_trust_weakened"
+        ],
+        "named": [
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff",
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/authorization_index",
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/project_change_index",
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust",
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/vcs_trust",
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust_weakened"
+        ],
+        "leaf": [
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/authorization_index",
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/project_change_index",
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust",
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/vcs_trust",
+          "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust_weakened"
+        ],
+        "counts": {
+          "top": 1,
+          "named": 6,
+          "leaf": 5
+        }
+      },
+      {
+        "top": "TestDeliveryPolicyConcurrentCAS",
+        "source": "server/internal/handler/delivery_policy_test.go",
+        "line": 595,
+        "children": [],
+        "named": [
+          "TestDeliveryPolicyConcurrentCAS"
+        ],
+        "leaf": [
+          "TestDeliveryPolicyConcurrentCAS"
+        ],
+        "counts": {
+          "top": 1,
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "top": "TestDeliveryPolicyWriterFirstRefuses",
+        "source": "server/internal/handler/delivery_policy_test.go",
+        "line": 630,
+        "children": [
+          "project",
+          "member"
+        ],
+        "named": [
+          "TestDeliveryPolicyWriterFirstRefuses",
+          "TestDeliveryPolicyWriterFirstRefuses/project",
+          "TestDeliveryPolicyWriterFirstRefuses/member"
+        ],
+        "leaf": [
+          "TestDeliveryPolicyWriterFirstRefuses/project",
+          "TestDeliveryPolicyWriterFirstRefuses/member"
+        ],
+        "counts": {
+          "top": 1,
+          "named": 3,
+          "leaf": 2
+        }
+      }
+    ],
+    "top_set": [
+      "TestDeliveryPolicyDefaultAppendAndCAS",
+      "TestDeliveryPolicyManagementAuthority",
+      "TestDeliveryPolicyStrictRequests",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes",
+      "TestDeliveryCompletionActivationExplicitCASAndCapabilities",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff",
+      "TestDeliveryPolicyConcurrentCAS",
+      "TestDeliveryPolicyWriterFirstRefuses"
+    ],
+    "named_set": [
+      "TestDeliveryPolicyDefaultAppendAndCAS",
+      "TestDeliveryPolicyManagementAuthority",
+      "TestDeliveryPolicyManagementAuthority/owner",
+      "TestDeliveryPolicyManagementAuthority/admin",
+      "TestDeliveryPolicyManagementAuthority/member",
+      "TestDeliveryPolicyStrictRequests",
+      "TestDeliveryPolicyStrictRequests/0",
+      "TestDeliveryPolicyStrictRequests/1",
+      "TestDeliveryPolicyStrictRequests/2",
+      "TestDeliveryPolicyStrictRequests/3",
+      "TestDeliveryPolicyStrictRequests/4",
+      "TestDeliveryPolicyStrictRequests/5",
+      "TestDeliveryPolicyStrictRequests/6",
+      "TestDeliveryPolicyStrictRequests/7",
+      "TestDeliveryPolicyStrictRequests/8",
+      "TestDeliveryPolicyStrictRequests/9",
+      "TestDeliveryPolicyStrictRequests/10",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/missing",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/nonunique",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/reordered",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/partial",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/included",
+      "TestDeliveryCompletionActivationExplicitCASAndCapabilities",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/authorization_index",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/project_change_index",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/vcs_trust",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust_weakened",
+      "TestDeliveryPolicyConcurrentCAS",
+      "TestDeliveryPolicyWriterFirstRefuses",
+      "TestDeliveryPolicyWriterFirstRefuses/project",
+      "TestDeliveryPolicyWriterFirstRefuses/member"
+    ],
+    "leaf_set": [
+      "TestDeliveryPolicyDefaultAppendAndCAS",
+      "TestDeliveryPolicyManagementAuthority/owner",
+      "TestDeliveryPolicyManagementAuthority/admin",
+      "TestDeliveryPolicyManagementAuthority/member",
+      "TestDeliveryPolicyStrictRequests/0",
+      "TestDeliveryPolicyStrictRequests/1",
+      "TestDeliveryPolicyStrictRequests/2",
+      "TestDeliveryPolicyStrictRequests/3",
+      "TestDeliveryPolicyStrictRequests/4",
+      "TestDeliveryPolicyStrictRequests/5",
+      "TestDeliveryPolicyStrictRequests/6",
+      "TestDeliveryPolicyStrictRequests/7",
+      "TestDeliveryPolicyStrictRequests/8",
+      "TestDeliveryPolicyStrictRequests/9",
+      "TestDeliveryPolicyStrictRequests/10",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/missing",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/nonunique",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/reordered",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/partial",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/included",
+      "TestDeliveryCompletionActivationExplicitCASAndCapabilities",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/authorization_index",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/project_change_index",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/vcs_trust",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust_weakened",
+      "TestDeliveryPolicyConcurrentCAS",
+      "TestDeliveryPolicyWriterFirstRefuses/project",
+      "TestDeliveryPolicyWriterFirstRefuses/member"
+    ],
+    "run_selector": "^(TestDeliveryPolicyDefaultAppendAndCAS|TestDeliveryPolicyManagementAuthority|TestDeliveryPolicyStrictRequests|TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes|TestDeliveryCompletionActivationExplicitCASAndCapabilities|TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff|TestDeliveryPolicyConcurrentCAS|TestDeliveryPolicyWriterFirstRefuses)$"
+  },
+  "new_planned": {
+    "file": "server/internal/handler/delivery_policy_project_wait_test.go",
+    "source_inspected": false,
+    "counts": {
+      "top": 2,
+      "named": 6,
+      "leaf": 4
+    },
+    "groups": {
+      "TestDeliveryPolicyProjectWaitShortReader": [
+        "short_reader_release"
+      ],
+      "TestDeliveryPolicyProjectWaitBoundaries": [
+        "long_reader",
+        "competing_writer",
+        "member_denied"
+      ]
+    },
+    "top_set": [
+      "TestDeliveryPolicyProjectWaitShortReader",
+      "TestDeliveryPolicyProjectWaitBoundaries"
+    ],
+    "named_set": [
+      "TestDeliveryPolicyProjectWaitShortReader",
+      "TestDeliveryPolicyProjectWaitShortReader/short_reader_release",
+      "TestDeliveryPolicyProjectWaitBoundaries",
+      "TestDeliveryPolicyProjectWaitBoundaries/long_reader",
+      "TestDeliveryPolicyProjectWaitBoundaries/competing_writer",
+      "TestDeliveryPolicyProjectWaitBoundaries/member_denied"
+    ],
+    "leaf_set": [
+      "TestDeliveryPolicyProjectWaitShortReader/short_reader_release",
+      "TestDeliveryPolicyProjectWaitBoundaries/long_reader",
+      "TestDeliveryPolicyProjectWaitBoundaries/competing_writer",
+      "TestDeliveryPolicyProjectWaitBoundaries/member_denied"
+    ],
+    "actual_authored_source_must_be_frozen_and_match": true
+  },
+  "combined_expected": {
+    "counts": {
+      "top": 10,
+      "named": 40,
+      "leaf": 33
+    },
+    "top_set": [
+      "TestDeliveryPolicyProjectWaitShortReader",
+      "TestDeliveryPolicyProjectWaitBoundaries",
+      "TestDeliveryPolicyDefaultAppendAndCAS",
+      "TestDeliveryPolicyManagementAuthority",
+      "TestDeliveryPolicyStrictRequests",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes",
+      "TestDeliveryCompletionActivationExplicitCASAndCapabilities",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff",
+      "TestDeliveryPolicyConcurrentCAS",
+      "TestDeliveryPolicyWriterFirstRefuses"
+    ],
+    "named_set": [
+      "TestDeliveryPolicyProjectWaitShortReader",
+      "TestDeliveryPolicyProjectWaitShortReader/short_reader_release",
+      "TestDeliveryPolicyProjectWaitBoundaries",
+      "TestDeliveryPolicyProjectWaitBoundaries/long_reader",
+      "TestDeliveryPolicyProjectWaitBoundaries/competing_writer",
+      "TestDeliveryPolicyProjectWaitBoundaries/member_denied",
+      "TestDeliveryPolicyDefaultAppendAndCAS",
+      "TestDeliveryPolicyManagementAuthority",
+      "TestDeliveryPolicyManagementAuthority/owner",
+      "TestDeliveryPolicyManagementAuthority/admin",
+      "TestDeliveryPolicyManagementAuthority/member",
+      "TestDeliveryPolicyStrictRequests",
+      "TestDeliveryPolicyStrictRequests/0",
+      "TestDeliveryPolicyStrictRequests/1",
+      "TestDeliveryPolicyStrictRequests/2",
+      "TestDeliveryPolicyStrictRequests/3",
+      "TestDeliveryPolicyStrictRequests/4",
+      "TestDeliveryPolicyStrictRequests/5",
+      "TestDeliveryPolicyStrictRequests/6",
+      "TestDeliveryPolicyStrictRequests/7",
+      "TestDeliveryPolicyStrictRequests/8",
+      "TestDeliveryPolicyStrictRequests/9",
+      "TestDeliveryPolicyStrictRequests/10",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/missing",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/nonunique",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/reordered",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/partial",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/included",
+      "TestDeliveryCompletionActivationExplicitCASAndCapabilities",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/authorization_index",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/project_change_index",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/vcs_trust",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust_weakened",
+      "TestDeliveryPolicyConcurrentCAS",
+      "TestDeliveryPolicyWriterFirstRefuses",
+      "TestDeliveryPolicyWriterFirstRefuses/project",
+      "TestDeliveryPolicyWriterFirstRefuses/member"
+    ],
+    "leaf_set": [
+      "TestDeliveryPolicyProjectWaitShortReader/short_reader_release",
+      "TestDeliveryPolicyProjectWaitBoundaries/long_reader",
+      "TestDeliveryPolicyProjectWaitBoundaries/competing_writer",
+      "TestDeliveryPolicyProjectWaitBoundaries/member_denied",
+      "TestDeliveryPolicyDefaultAppendAndCAS",
+      "TestDeliveryPolicyManagementAuthority/owner",
+      "TestDeliveryPolicyManagementAuthority/admin",
+      "TestDeliveryPolicyManagementAuthority/member",
+      "TestDeliveryPolicyStrictRequests/0",
+      "TestDeliveryPolicyStrictRequests/1",
+      "TestDeliveryPolicyStrictRequests/2",
+      "TestDeliveryPolicyStrictRequests/3",
+      "TestDeliveryPolicyStrictRequests/4",
+      "TestDeliveryPolicyStrictRequests/5",
+      "TestDeliveryPolicyStrictRequests/6",
+      "TestDeliveryPolicyStrictRequests/7",
+      "TestDeliveryPolicyStrictRequests/8",
+      "TestDeliveryPolicyStrictRequests/9",
+      "TestDeliveryPolicyStrictRequests/10",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/missing",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/nonunique",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/reordered",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/partial",
+      "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes/included",
+      "TestDeliveryCompletionActivationExplicitCASAndCapabilities",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/authorization_index",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/project_change_index",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/vcs_trust",
+      "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff/github_trust_weakened",
+      "TestDeliveryPolicyConcurrentCAS",
+      "TestDeliveryPolicyWriterFirstRefuses/project",
+      "TestDeliveryPolicyWriterFirstRefuses/member"
+    ],
+    "run_selector": "^(TestDeliveryPolicyProjectWaitShortReader|TestDeliveryPolicyProjectWaitBoundaries|TestDeliveryPolicyDefaultAppendAndCAS|TestDeliveryPolicyManagementAuthority|TestDeliveryPolicyStrictRequests|TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes|TestDeliveryCompletionActivationExplicitCASAndCapabilities|TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff|TestDeliveryPolicyConcurrentCAS|TestDeliveryPolicyWriterFirstRefuses)$",
+    "same_selector_for_normal_and_race": true,
+    "passed_result_claimed": false,
+    "missing_extra_skip_names_allowed": false
+  },
+  "strict_request_index_meanings": [
+    "empty object",
+    "null body",
+    "unsupported skip mode",
+    "null reason",
+    "blank reason",
+    "duplicate reason",
+    "wrong stage",
+    "differently cased Reason field",
+    "negative expected revision",
+    "wrong policy version",
+    "extra skip field"
+  ],
+  "coverage": {
+    "existing_long_actual_writer": "ConcurrentCAS holds real first PUT commit barrier until second409, commits first, stale409 and oneappend; waiting250ms allowed",
+    "existing_writer_first": "Real uncommitted project revision and member role writers; busy409 with zero policy rows",
+    "new_short_reader": "Actual GET shared-fence held, PUT enters before release below250ms; original55P03/409 RED then new200/oneappend",
+    "new_long_reader": "Real held reader through actual55P03/409 budget refusal; no effects; no exact249/250ms assertion",
+    "new_competing_writer": "Short first writer release then waiting second reaches exact stale CAS409 and one committed append",
+    "roles": "Owner/admin200, member403 and no wrong-authority append",
+    "request_and_schema": "11 strict400 cases, five policy503 index shapes, five enforcement503 dependencies with permitted off rollback",
+    "post_wait_credential_dynamic_test_claimed": false,
+    "credential_retention_rule": "Keep unchanged pre/final credential calls and helper with exact source binding; retain prior accepted credential/password evidence without a new mirrored matrix",
+    "excluded_expiry_top": {
+      "name": "TestDeliveryCompletionActivationExpiryAndOffRetention",
+      "source": "server/internal/handler/delivery_completion_activation_test.go:117",
+      "kind": "completion authorization grant expiry/retained observation, not JWT/password expiry during policy wait",
+      "included": false
+    }
+  },
+  "product_boundary": {
+    "files": [
+      "server/internal/handler/delivery_policy.go",
+      "server/pkg/db/queries/delivery_policy.sql",
+      "server/pkg/db/generated/delivery_policy.sql.go"
+    ],
+    "new_query": "LockDeliveryPolicyProjectWait",
+    "only_new_caller": "deliveryPolicyInTx PUT",
+    "exclusive_for_update_and_project_workspace_predicates_preserved": true,
+    "lock_timeout_ms": 250,
+    "timeout_scope": "per lock acquisition",
+    "original_query_and_stage_caller_must_be_byte_preserved": true,
+    "current_frozen_baseline_hashes": {
+      "server/internal/handler/delivery_policy.go": "97bde61992f28bb278c5ec27ae71b361ed6a371ad27cc49649dc28bebbb366f8",
+      "server/internal/service/artifact_authority.go": "61e457c83e94f46e8ace6dd58d772fa20c9334dc217421f874b4037f9af7aab8",
+      "server/internal/service/collaboration_stage_policy.go": "a892c72b67010b78a7d1383406ba11412efc2a9ecc3acd1e3df36295265cf9d6",
+      "server/pkg/db/queries/delivery_policy.sql": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8"
+    },
+    "current_hashes_match_sealed_plan": true,
+    "service_whole_handler99_router54_rerun_needed_when_scope_preserved": false,
+    "blanket_gate_or_rerun_exemption": false,
+    "scope_drift_rule": "Changed original query/caller, new dependency or failure requires affected-scope review"
+  },
+  "native_r32_busy_cause_retained": "Actual LockDeliveryPolicyProject55P03 correlated to HTTP409 artifact_authority_busy; physical holder unknown",
+  "researcher_execution": {
+    "go": 0,
+    "test_list": 0,
+    "tests": 0,
+    "ast": 0,
+    "database": 0,
+    "api": 0,
+    "browser": 0,
+    "process_control": 0,
+    "agents": 0,
+    "source_edits": 0
+  },
+  "final_permissions_requested": "0444"
+}

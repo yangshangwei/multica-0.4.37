@@ -1,0 +1,194 @@
+{
+  "updated_at": "2026-10-31T17:59:49.451288+00:00",
+  "task_status": "in_progress",
+  "scope": "recording upload outage, original-request recovery, strict recording-seal receipts, record test isolation",
+  "main_source_matches_verified_delta": true,
+  "source_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "dirty_source_snapshot": "baseline.json",
+  "owned_delta": "owned-delta.json",
+  "ts_tests": 12949,
+  "go_pass_events_including_subtests": 1640,
+  "go_known_skips": [
+    "TestCLIConfig_UnknownFieldsArePreserved"
+  ],
+  "race_pass_events_including_subtests": 38,
+  "race_skips": [],
+  "checks": {
+    "go-runtime-final": {
+      "exit_code": 0,
+      "passed_test_events": 1640,
+      "skips": [
+        "TestCLIConfig_UnknownFieldsArePreserved"
+      ],
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "./pkg/protocol",
+        "./internal/cli",
+        "./cmd/multica",
+        "./internal/daemon/collaborationrun",
+        "-count=1",
+        "-timeout=5m",
+        "-parallel=2"
+      ]
+    },
+    "recovery-ack-race-final": {
+      "exit_code": 0,
+      "passed_test_events": 38,
+      "skips": [],
+      "command": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "^(TestHostRecordingRecovery|TestHostCheckpoint|TestClientRecording|TestClientHostContextExtensions)",
+        "-count=1",
+        "-timeout=3m"
+      ]
+    },
+    "go-vet-final": {
+      "exit_code": 0,
+      "passed_test_events": 0,
+      "skips": [],
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ]
+    },
+    "go-build-final": {
+      "exit_code": 0,
+      "passed_test_events": 0,
+      "skips": [],
+      "command": [
+        "go",
+        "build",
+        "./..."
+      ]
+    },
+    "pnpm-test-final": {
+      "exit_code": 0,
+      "passed_test_events": 0,
+      "skips": [],
+      "command": [
+        "pnpm",
+        "test"
+      ]
+    },
+    "pnpm-lint-final": {
+      "exit_code": 0,
+      "passed_test_events": 0,
+      "skips": [],
+      "command": [
+        "pnpm",
+        "lint"
+      ]
+    },
+    "pnpm-typecheck-final": {
+      "exit_code": 0,
+      "passed_test_events": 0,
+      "skips": [],
+      "command": [
+        "pnpm",
+        "typecheck"
+      ]
+    },
+    "service-context-targeted": {
+      "exit_code": 0,
+      "passed_test_events": 8,
+      "skips": [],
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "./internal/service",
+        "-run",
+        "^TestCollaboration(Checkpoint|Handoff|Recall)",
+        "-count=1",
+        "-timeout=10m",
+        "-parallel=2"
+      ]
+    },
+    "handler-runtime-boundaries": {
+      "exit_code": 0,
+      "passed_test_events": 11,
+      "skips": [],
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "./internal/handler",
+        "-run",
+        "^TestCollaboration(ClaimRejectsInvalidExtension|Runtime(ManagedBoundary|RecordingHTTP|NarrowHandlers)|RecordingSealRejects|RecallHTTP)",
+        "-count=1",
+        "-timeout=10m",
+        "-parallel=2"
+      ]
+    },
+    "execution-panel-green": {
+      "exit_code": 0,
+      "passed_test_events": 0,
+      "skips": [],
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/execution-panel.test.tsx",
+        "collaboration/run-handoff.test.tsx"
+      ]
+    },
+    "strict-seal-recovery-green": {
+      "exit_code": 0,
+      "passed_test_events": 27,
+      "skips": [],
+      "command": [
+        "go",
+        "test",
+        "-json",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "^(TestClientRecording|TestHostRecordingRecovery)",
+        "-count=1",
+        "-timeout=1m"
+      ]
+    }
+  },
+  "remaining": [
+    "Independent final review unavailable after model token-rate-limit failures and unavailable reviewer model routes; manual coordinator review only.",
+    "Complete task-wide DB revoke/leave/race and launch-injection integration acceptance.",
+    "Final production Web/native Desktop acceptance for integrated source.",
+    "Source-bound real-model acceptance; earlier E-series evidence and slots unchanged."
+  ],
+  "files": [
+    "server/internal/daemon/collaborationrun/host_runner.go",
+    "server/internal/daemon/collaborationrun/host_checkpoints.go",
+    "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go",
+    "server/internal/daemon/collaborationrun/client_host.go",
+    "server/internal/daemon/collaborationrun/host_recording_recovery_test.go",
+    "server/internal/daemon/collaborationrun/client_recording_ack_test.go",
+    "packages/views/collaboration/execution-panel.test.tsx",
+    ".trellis/spec/server/collaboration-runtime-recovery.md",
+    ".trellis/spec/server/index.md",
+    ".trellis/spec/core/frontend/collaboration-workbench.md"
+  ],
+  "primary_integration_verification": {
+    "exit_code": 0,
+    "passed_test_events": 316,
+    "skips": [],
+    "source_changed_during_check": false,
+    "command": [
+      "go",
+      "test",
+      "-json",
+      "./pkg/protocol",
+      "./internal/daemon/collaborationrun",
+      "-count=1",
+      "-timeout=3m",
+      "-parallel=2"
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "at": "2026-10-21T23:58:55.670535+00:00",
+  "decision": "approve_bounded_prerequisite",
+  "reviewer": "content_creation; independent of existing control journeys and root capture fix",
+  "authorship_disclosure": "Reviewer authored only return-object aliases authenticateOwnerWeb and authenticateHandlerWeb; root/owner_switch own independent review of those two additions. Control tests use existing creator.authenticateWeb.",
+  "blocking_findings": [],
+  "closed_verification_finding": "Root final lint originally ignored outside-base E2E files. Root-scoped verified lint now empty/pass.",
+  "clients": {
+    "startTime": "2026-10-21T23:44:54.832Z",
+    "duration": 27890.639,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "actual_retries": 0,
+  "source_matches_current": true,
+  "source_hashes": {
+    "e2e/fixtures/collaboration-control-journey.ts": "a9ffc9f134dd0471c1dc984b6dcf2be130f98e390558e9940b0724a49cfd5488",
+    "e2e/collaboration-control-journey-web.spec.ts": "4e1e3b5cb93e536feff9973aa49ccba6295f2a6a014d166d355052b9831026c2",
+    "e2e/collaboration-control-journey-desktop.spec.ts": "705b5648f4a675ab43283688e0145dbf6b7f6544eb38fed64e0f2e7214f62c01",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+  },
+  "strict_typecheck": "pass",
+  "actual_scoped_lint": "control-lint-verified-result.json pass/empty diagnostics",
+  "scope": "real public client controls and actual server-issued synthetic permit; no provider/kernel proof inferred",
+  "acceptance_promotions": [],
+  "artifacts": [
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-review.md",
+      "sha256": "b8d9fe562529da39478394dcd2ff415ffcea670d7353efa6ceaac97b2d6a2a84"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-clients-final-command.json",
+      "sha256": "ed99438df5ed2265e5b3be481253a634cc95e9dd0ebd0bba518d71de1f99aef2"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-clients-final-result.json",
+      "sha256": "9fb9c334234d6573f23e9b31dd8a421236ee01652a472eabf78f1f1bba4e7e2a"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-clients-final.stdout",
+      "sha256": "04aa8f758661ed31146429f7e76d956dde425db966705e2974bfc347ade9f780"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-final-evidence.json",
+      "sha256": "4b52480ab2c7a3526658119aede420d250081dce6e0866a64432162ba4eeee9b"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-static-final-command.json",
+      "sha256": "e98d7db5dcc48cb4bcb22123949ea25ffb2873c0b9583ac4f740e1474d6df7d1"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-static-final-result.json",
+      "sha256": "2f54ce19e9362361ecf8cac01ab788cdc10f9a64e08bafaadea01cd6c994cf65"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-lint-verified-command.json",
+      "sha256": "042733cfcc3625815e8bcb0e224c2169a82ab7402a349a44df72763556e7d799"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-lint-verified-result.json",
+      "sha256": "4542838298d01850efb212eefa43c7edc3580be078cfba06d649109c7fac24bb"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-lint-verified.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/control-lint-final.stdout",
+      "sha256": "a16feefda84ad692b87d5ccca59af4a56a113c2f94891a414f50c9e141a77936"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/content-admin-preflight.json",
+      "sha256": "1d61bb69c472c869a756fb0a230df2ba8ddb765b06cce59cb462e36b73a34d0e"
+    }
+  ]
+}

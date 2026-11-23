@@ -25,6 +25,7 @@ import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useActorName } from "@multica/core/workspace/hooks";
 import type { Autopilot } from "@multica/core/types";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { Button } from "@multica/ui/components/ui/button";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import {
@@ -670,6 +671,11 @@ export function AutopilotsPage() {
         icon={Zap}
         title={t(($) => $.page.title)}
         count={totalCount}
+        description={t(($) => $.page.tagline)}
+        learnMore={{
+          href: wsPaths.docsPage(DOCS_SLUGS.autopilots),
+          label: t(($) => $.page.learn_more),
+        }}
         actions={
           !showEmpty && <CollectionPageHeaderAction
             icon={Plus}
@@ -843,6 +849,10 @@ function EmptyAutopilots({ onStartBlank }: { onStartBlank: () => void }) {
       failed={isError}
       onRetry={() => void refetch()}
       onStartBlank={onStartBlank}
+      welcome={{
+        docsHref: paths.docsPage(DOCS_SLUGS.autopilots),
+        templatesHref: paths.newAutopilotTemplate(),
+      }}
       onPick={(key) => navigation.push(autopilotTemplateHref(
         paths.newAutopilotTemplate(), { initialReturnTo: "autopilots" }, key,
       ))}

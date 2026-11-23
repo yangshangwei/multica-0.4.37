@@ -1,0 +1,44 @@
+{
+  "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-overlay=/Volumes/artisan/code/2026/mc-kfix-lane-claim/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/managed-append-last-overlay.json",
+    "./pkg/agent",
+    "-parallel=2",
+    "-run",
+    "^TestBuildClaudeArgsManaged(SettingsSurvivesIncompleteUserOption|SkillSettingsWins)$",
+    "-count=1",
+    "-json"
+  ],
+  "expected_exit": "nonzero; mutation restores unsafe settings-last construction",
+  "started_at": "2026-11-01T16:32:26.457739+00:00",
+  "production_modified": false,
+  "database_access": false,
+  "provider_calls": 0,
+  "exit_code": 1,
+  "finished_at": "2026-11-01T16:32:30.122439+00:00",
+  "counts": {
+    "run": 9,
+    "pass": 1,
+    "fail": 8,
+    "skip": 0
+  },
+  "failures": [
+    "TestBuildClaudeArgsManagedSettingsSurvivesIncompleteUserOption/default_model",
+    "TestBuildClaudeArgsManagedSettingsSurvivesIncompleteUserOption/custom_model",
+    "TestBuildClaudeArgsManagedSettingsSurvivesIncompleteUserOption/default_system_prompt",
+    "TestBuildClaudeArgsManagedSettingsSurvivesIncompleteUserOption/custom_system_prompt",
+    "TestBuildClaudeArgsManagedSettingsSurvivesIncompleteUserOption/filtered_settings_value",
+    "TestBuildClaudeArgsManagedSettingsSurvivesIncompleteUserOption/filtered_inline_settings",
+    "TestBuildClaudeArgsManagedSettingsSurvivesIncompleteUserOption/value_becomes_operand",
+    "TestBuildClaudeArgsManagedSettingsSurvivesIncompleteUserOption"
+  ],
+  "log_sha256": "e989363338fcac4052c28ca78e4d7d3a01785944c9b6525628c8838d71a458cb",
+  "mutant_sha256": "14c6ba2dfebd78c6d7e8a982160a750f72da177148cf292d92fac9c2fed4f0fd"
+}

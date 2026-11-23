@@ -1,5 +1,7 @@
 package service
 
+import "github.com/multica-ai/multica/server/internal/agentconfig"
+
 // The built-in roster. Order is product-controlled — the picker renders it as
 // given, roughly in the order a change moves through a team — so this is a slice
 // rather than a map.
@@ -17,7 +19,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Product Analyst",
 		AvatarEmoji:        "🔍",
 		Autonomy:           AutonomyObserver,
-		MaxConcurrentTasks: 3,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-requirement-clarification"},
 		Titles: map[string]string{
 			"en": "Product Analyst",
@@ -35,7 +37,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Architect",
 		AvatarEmoji:        "📐",
 		Autonomy:           AutonomyObserver,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-architecture-decision-record"},
 		Titles: map[string]string{
 			"en": "Architect",
@@ -53,7 +55,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Implementer",
 		AvatarEmoji:        "🛠️",
 		Autonomy:           AutonomyContributor,
-		MaxConcurrentTasks: 1,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-test-report"},
 		Titles: map[string]string{
 			"en": "Implementer",
@@ -71,7 +73,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "QA Engineer",
 		AvatarEmoji:        "🧪",
 		Autonomy:           AutonomyContributor,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-test-report"},
 		Titles: map[string]string{
 			"en": "QA Engineer",
@@ -89,7 +91,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Diagnostician",
 		AvatarEmoji:        "🩺",
 		Autonomy:           AutonomyContributor,
-		MaxConcurrentTasks: 1,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-debugging"},
 		Titles: map[string]string{
 			"en": "Diagnostician",
@@ -102,12 +104,12 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "code-reviewer",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Code Reviewer",
 		AvatarEmoji:        "🔬",
 		Autonomy:           AutonomyObserver,
-		MaxConcurrentTasks: 3,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-code-review"},
 		Titles: map[string]string{
 			"en": "Code Reviewer",
@@ -120,12 +122,12 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "security-reviewer",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Security Reviewer",
 		AvatarEmoji:        "🛡️",
 		Autonomy:           AutonomyObserver,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-security-review"},
 		Titles: map[string]string{
 			"en": "Security Reviewer",
@@ -143,7 +145,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Release Engineer",
 		AvatarEmoji:        "🚦",
 		Autonomy:           AutonomyOperator,
-		MaxConcurrentTasks: 1,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-release-check"},
 		Titles: map[string]string{
 			"en": "Release Engineer",
@@ -161,7 +163,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Technical Writer",
 		AvatarEmoji:        "📝",
 		Autonomy:           AutonomyContributor,
-		MaxConcurrentTasks: 3,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-documentation-change"},
 		Titles: map[string]string{
 			"en": "Technical Writer",
@@ -174,12 +176,12 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "progress-reporter",
-		Version:            1,
+		Version:            2,
 		Listed:             true,
 		DefaultName:        "Progress Reporter",
 		AvatarEmoji:        "📊",
 		Autonomy:           AutonomyContributor,
-		MaxConcurrentTasks: 1,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-progress-report"},
 		Titles: map[string]string{
 			"en": "Progress Reporter",
@@ -197,7 +199,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Reliability Engineer",
 		AvatarEmoji:        "📡",
 		Autonomy:           AutonomyContributor,
-		MaxConcurrentTasks: 1,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-reliability-engineering"},
 		Titles: map[string]string{
 			"en": "Reliability Engineer",
@@ -215,7 +217,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Agent Evaluator",
 		AvatarEmoji:        "🤖",
 		Autonomy:           AutonomyObserver,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-agent-evaluation"},
 		Titles: map[string]string{
 			"en": "Agent Evaluator",
@@ -233,7 +235,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Experience Validation Engineer",
 		AvatarEmoji:        "🖥️",
 		Autonomy:           AutonomyContributor,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-experience-validation"},
 		Titles: map[string]string{
 			"en": "Experience Validation Engineer",
@@ -246,12 +248,12 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "migration-reviewer",
-		Version:            2,
+		Version:            3,
 		Listed:             true,
 		DefaultName:        "Migration Reviewer",
 		AvatarEmoji:        "🗃️",
 		Autonomy:           AutonomyObserver,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-migration-review"},
 		Titles: map[string]string{
 			"en": "Migration Reviewer",
@@ -276,7 +278,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Feature Delivery Lead",
 		AvatarEmoji:        "🧭",
 		Autonomy:           AutonomyCoordinator,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-requirement-clarification"},
 		Titles: map[string]string{
 			"en": "Feature Delivery Lead",
@@ -293,7 +295,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Bug Fix Lead",
 		AvatarEmoji:        "🚑",
 		Autonomy:           AutonomyCoordinator,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		Titles: map[string]string{
 			"en": "Bug Fix Lead",
 			"zh": "缺陷修复负责人",
@@ -305,18 +307,18 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "review-gate-lead",
-		Version:            2,
+		Version:            3,
 		DefaultName:        "Review Gate Lead",
 		AvatarEmoji:        "🚧",
 		Autonomy:           AutonomyCoordinator,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		Titles: map[string]string{
 			"en": "Review Gate Lead",
 			"zh": "合并门禁负责人",
 		},
 		Descriptions: map[string]string{
-			"en": "Routes a finished change through code, security and verification review, then reports one verdict.",
-			"zh": "把已完成的改动依次交给代码审查、安全审查和验证，最后给出一个结论。",
+			"en": "Coordinates code, security and test review, plus agent, experience and migration checks when applicable.",
+			"zh": "协调改动所需的代码、安全、测试，以及智能体评测、体验和迁移审查，给出统一结论。",
 		},
 	},
 	{
@@ -325,7 +327,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Discovery Lead",
 		AvatarEmoji:        "🔭",
 		Autonomy:           AutonomyCoordinator,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-requirement-clarification"},
 		Titles: map[string]string{
 			"en": "Discovery Lead",
@@ -342,7 +344,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Docs Lead",
 		AvatarEmoji:        "📚",
 		Autonomy:           AutonomyCoordinator,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		Titles: map[string]string{
 			"en": "Docs Lead",
 			"zh": "文档同步负责人",
@@ -358,7 +360,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Maintenance Lead",
 		AvatarEmoji:        "🧹",
 		Autonomy:           AutonomyCoordinator,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		Titles: map[string]string{
 			"en": "Maintenance Lead",
 			"zh": "例行维护负责人",
@@ -369,12 +371,28 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		},
 	},
 	{
+		Key:                "security-remediation-lead",
+		Version:            2,
+		DefaultName:        "Security Remediation Lead",
+		AvatarEmoji:        "🛡️",
+		Autonomy:           AutonomyCoordinator,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
+		Titles: map[string]string{
+			"en": "Security Remediation Lead",
+			"zh": "安全漏洞修复负责人",
+		},
+		Descriptions: map[string]string{
+			"en": "Routes security triage, minimal repairs and independent verification, stopping for human handling when production or sensitive data is at risk.",
+			"zh": "安排安全分诊、最小修复和独立验证；涉及生产或敏感数据风险时停止并交人工处理。",
+		},
+	},
+	{
 		Key:                "release-lead",
 		Version:            3,
 		DefaultName:        "Release Lead",
 		AvatarEmoji:        "📦",
 		Autonomy:           AutonomyCoordinator,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-rollout-and-canary-verification"},
 		Titles: map[string]string{
 			"en": "Release Lead",
@@ -391,7 +409,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 		DefaultName:        "Incident Lead",
 		AvatarEmoji:        "🚨",
 		Autonomy:           AutonomyCoordinator,
-		MaxConcurrentTasks: 2,
+		MaxConcurrentTasks: agentconfig.DefaultMaxConcurrentTasks,
 		RoleSkills:         []string{"multica-incident-learning"},
 		Titles: map[string]string{
 			"en": "Incident Lead",

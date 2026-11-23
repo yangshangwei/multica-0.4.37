@@ -58,11 +58,14 @@ const healthSchema = z.object({ ...observationEnvelope, detector_state: healthSt
   .transform(value => ({ scope: value.scope, asOf: value.as_of, dataQuality: value.data_quality, detectorState: value.detector_state, sources: value.sources }));
 const optionalBoolean = z.boolean().nullable();
 const settingsSchema = z.object({ ...observationEnvelope,
-  configuration: z.object({ auth_mode: z.string().nullable(), registration_enabled: optionalBoolean, registration_policy: z.string().nullable(), managed_installations_enabled: optionalBoolean, workspace_creation_enabled: optionalBoolean, read_only: z.literal(true), source: z.enum(["deployment", "unknown"]).catch("unknown") }),
+  configuration: z.object({ auth_mode: z.string().nullable(), registration_enabled: optionalBoolean, registration_policy: z.string().nullable(), managed_installations_enabled: optionalBoolean, workspace_creation_enabled: optionalBoolean,
+    // Additive: older servers omit it, and an unusable value displays as unknown.
+    collaboration_memory_max_bytes: z.number().int().positive().safe().nullish().catch(null).transform(value => value ?? null),
+    read_only: z.literal(true), source: z.enum(["deployment", "unknown"]).catch("unknown") }),
   retention: z.object({ confirmed_operations_days: optionalCount, alerts_days: optionalCount, audit_days: optionalCount, automatic_deletion_enabled: z.literal(false), policy_source: z.enum(["configured", "unknown"]).catch("unknown") }),
   refresh_intervals_seconds: z.object({ list: observationCount, detail: observationCount }),
 }).transform(value => ({ scope: value.scope, asOf: value.as_of, dataQuality: value.data_quality,
-  configuration: { authMode: value.configuration.auth_mode, registrationEnabled: value.configuration.registration_enabled, registrationPolicy: value.configuration.registration_policy, managedInstallationsEnabled: value.configuration.managed_installations_enabled, workspaceCreationEnabled: value.configuration.workspace_creation_enabled, readOnly: value.configuration.read_only, source: value.configuration.source },
+  configuration: { authMode: value.configuration.auth_mode, registrationEnabled: value.configuration.registration_enabled, registrationPolicy: value.configuration.registration_policy, managedInstallationsEnabled: value.configuration.managed_installations_enabled, workspaceCreationEnabled: value.configuration.workspace_creation_enabled, collaborationMemoryMaxBytes: value.configuration.collaboration_memory_max_bytes, readOnly: value.configuration.read_only, source: value.configuration.source },
   retention: { confirmedOperationsDays: value.retention.confirmed_operations_days, alertsDays: value.retention.alerts_days, auditDays: value.retention.audit_days, automaticDeletionEnabled: value.retention.automatic_deletion_enabled, policySource: value.retention.policy_source },
   refreshIntervalsSeconds: value.refresh_intervals_seconds,
 }));
@@ -78,6 +81,7 @@ const auditSnapshot = z.object({
   auth_version: snapshotVersion, version: snapshotVersion.or(z.uuid()), admission_version: snapshotVersion, binding_epoch: snapshotVersion,
   state: snapshotCode, status: snapshotCode, admission: snapshotCode, result_code: snapshotCode, confirmation: snapshotCode, reconciliation_state: snapshotCode, rule: snapshotCode, severity: snapshotCode, resolution_code: snapshotCode.nullable(),
   assignee_id: snapshotId, assigned_to: snapshotId, responsible_user_id: snapshotId, related_task_id: snapshotId,
+  creation_enabled: z.boolean().optional(), execution_enabled: z.boolean().optional(), host_execution_enabled: z.boolean().optional(), execution_epoch: snapshotVersion,
 }).nullish().transform(value => value ?? {});
 const auditSchema = z.object({ ...observationPage, items: z.array(z.object({
   id: z.uuid(), operation_id: z.uuid().nullable(), actor_kind: z.string(), actor_user_id: z.uuid().nullable(), actor_display_name: z.string().nullable(), actor_snapshot_quality: z.enum(["captured", "unknown"]).catch("unknown"),

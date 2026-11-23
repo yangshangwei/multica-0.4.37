@@ -1,0 +1,17 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "./pkg/protocol",
+    "./internal/cli",
+    "./cmd/multica",
+    "./internal/daemon/collaborationrun",
+    "./internal/service",
+    "./internal/handler"
+  ],
+  "exit_code": 0,
+  "seconds": 8.86,
+  "diff_sha256": "fb573c5896a8ec2c5e3561a85b4895bbe5cb9f58e2efa845b26b3d38f70816a3"
+}

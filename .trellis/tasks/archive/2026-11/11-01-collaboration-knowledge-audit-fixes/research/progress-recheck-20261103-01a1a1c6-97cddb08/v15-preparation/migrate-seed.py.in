@@ -1,0 +1,75 @@
+from pathlib import Path
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+import shlex
+import subprocess
+from urllib.parse import urlsplit, unquote
+
+HERE = Path(__file__).resolve().parent
+ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+OUT = ROOT / '.omx/private/final-check-v15'
+EXPECTED = 'PENDING_ROOT_FINAL_SHA'
+GO = '/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go'
+PSQL = '/opt/homebrew/opt/libpq/bin/psql'
+
+def digest(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+def checked(args, **kwargs):
+    return subprocess.run(args, capture_output=True, text=True, check=True, **kwargs)
+
+allocation = json.loads((HERE / 'resource-allocation-redis.json').read_text())
+assert allocation['candidate_sha'] == EXPECTED
+assert checked(['git', 'rev-parse', 'HEAD'], cwd=ROOT).stdout.strip() == EXPECTED
+assert not checked(['git', 'status', '--porcelain'], cwd=ROOT).stdout.strip()
+values = {}
+for line in (OUT / 'check-source-v15.env').read_text().splitlines():
+    if line and not line.startswith('#'):
+        key, raw = line.split('=', 1)
+        tokens = shlex.split(raw)
+        values[key] = tokens[0] if tokens else ''
+url = urlsplit(values['DATABASE_URL'])
+database = allocation['database']
+assert url.path == '/' + database
+sql_env = {'PATH': '/usr/bin:/bin', 'HOME': str(OUT / 'metadata-home-not-created'),
+           'PGHOST': url.hostname, 'PGPORT': str(url.port), 'PGUSER': unquote(url.username),
+           'PGPASSWORD': unquote(url.password), 'PGDATABASE': database, 'PGSSLMODE': 'disable',
+           'PGCONNECT_TIMEOUT': '5', 'PGOPTIONS': '-c statement_timeout=30000'}
+sql_cmd = [PSQL, '-X', '-v', 'ON_ERROR_STOP=1', '-At', '-c']
+assert checked(sql_cmd + ['SELECT current_database()'], env=sql_env).stdout.strip() == database
+env = json.loads((HERE / 'candidate-setup/cli-build-v15.json').read_text())['environment']
+env.update(HOME=str(OUT / 'build-home-migrate'), TMPDIR=str(Path(allocation['allocation']['directory']) / 'migrate-build'))
+Path(env['HOME']).mkdir(mode=0o700)
+Path(env['TMPDIR']).mkdir(mode=0o700)
+binary = OUT / 'migrate'
+assert not binary.exists()
+record = {'started_at': datetime.now(timezone.utc).isoformat(), 'candidate_sha': EXPECTED,
+          'database': database, 'source_env_sha256': digest(OUT / 'check-source-v15.env'),
+          'allocation_sha256': digest(HERE / 'resource-allocation-redis.json'), 'script_sha256': digest(__file__),
+          'database_before': database, 'no_default_or_docker_database_execution': True}
+build_cmd = ['/usr/bin/sandbox-exec', '-f', str(OUT / 'cli-build-offline.sb'), GO,
+             'build', '-p=1', '-mod=readonly', '-o', str(binary), './cmd/migrate']
+with (HERE / 'migrate-build.log').open('x') as sink:
+    build = subprocess.run(build_cmd, cwd=ROOT / 'server', env=env, stdout=sink, stderr=subprocess.STDOUT)
+record.update(build_command=build_cmd, build_exit=build.returncode, build_log_sha256=digest(HERE / 'migrate-build.log'))
+if build.returncode == 0:
+    env.update(DATABASE_URL=values['DATABASE_URL'], DATABASE_MAX_CONNS='4', DATABASE_MIN_CONNS='0',
+               MULTICA_AUTH_MODE='legacy', MULTICA_KNOWLEDGE_CONTEXT_ENABLED='false')
+    assert checked(sql_cmd + ['SELECT current_database()'], env=sql_env).stdout.strip() == database
+    with (HERE / 'migrate-up.log').open('x') as sink:
+        result = subprocess.run([str(binary), 'up'], cwd=ROOT / 'server', env=env, stdout=sink, stderr=subprocess.STDOUT)
+    record.update(migration_exit=result.returncode, migration_log_sha256=digest(HERE / 'migrate-up.log'),
+                  migrate_binary_sha256=digest(binary), migration_command=[str(binary), 'up'])
+    if result.returncode == 0:
+        witness = checked(sql_cmd + ["SELECT json_build_object('database',current_database(),'server_addr',inet_server_addr(),'server_port',inet_server_port(),'migration_count',(SELECT count(*) FROM schema_migrations),'latest_migration',(SELECT max(version) FROM schema_migrations))"], env=sql_env)
+        record['final_database_witness'] = json.loads(witness.stdout)
+        assert record['final_database_witness']['database'] == database
+record.update(finished_at=datetime.now(timezone.utc).isoformat(),
+              candidate_status_after=checked(['git', 'status', '--porcelain'], cwd=ROOT).stdout.strip())
+with (HERE / 'seed-migration-result.json').open('x') as target:
+    json.dump(record, target, indent=2)
+    target.write('\n')
+print(json.dumps({key: record.get(key) for key in ['candidate_sha', 'database', 'build_exit', 'migration_exit', 'final_database_witness', 'candidate_status_after']}))
+raise SystemExit(record.get('migration_exit', record['build_exit']))

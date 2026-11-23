@@ -1,0 +1,233 @@
+{
+  "owner": "/root/adapter_v6_fix",
+  "implementation_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+  "evidence_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102",
+  "independent_review": "pending coordinator-owned trellis-check",
+  "commit_created": false,
+  "adapter_hashes": {
+    "check-bin/go": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+    "check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "tests": [
+    {
+      "record": "red-v5-command.json",
+      "exit_code": 1,
+      "tests_run": 27,
+      "failure_count": 55,
+      "error_count": 0,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py"
+      ]
+    },
+    {
+      "record": "green-v7-command.json",
+      "exit_code": 0,
+      "tests_run": 27,
+      "failure_count": 0,
+      "error_count": 0,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py"
+      ]
+    },
+    {
+      "record": "scanner-red-v5-command.json",
+      "exit_code": 1,
+      "tests_run": 3,
+      "failure_count": 121,
+      "error_count": 0,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+        "PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries"
+      ]
+    },
+    {
+      "record": "scanner-red-v7-command.json",
+      "exit_code": 1,
+      "tests_run": 3,
+      "failure_count": 114,
+      "error_count": 0,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+        "PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries"
+      ]
+    },
+    {
+      "record": "scanner-green-v7-command.json",
+      "exit_code": 0,
+      "tests_run": 3,
+      "failure_count": 0,
+      "error_count": 0,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+        "PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+        "PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries"
+      ]
+    },
+    {
+      "record": "final-green-v7-command.json",
+      "exit_code": 0,
+      "tests_run": 30,
+      "failure_count": 0,
+      "error_count": 0,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py"
+      ]
+    },
+    {
+      "record": "legacy-v7-command.json",
+      "exit_code": 0,
+      "tests_run": 14,
+      "failure_count": 0,
+      "error_count": 0,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-isolation-test.py"
+      ]
+    },
+    {
+      "record": "legacy-final-v7-command.json",
+      "exit_code": 0,
+      "tests_run": 14,
+      "failure_count": null,
+      "error_count": null,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-isolation-test.py"
+      ]
+    },
+    {
+      "record": "pnpm-v7-command.json",
+      "exit_code": 0,
+      "tests_run": 5,
+      "failure_count": 0,
+      "error_count": 0,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-pnpm-reporting-test.py"
+      ]
+    },
+    {
+      "record": "source-v7-command.json",
+      "exit_code": 0,
+      "tests_run": null,
+      "failure_count": null,
+      "error_count": null,
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/check-source.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102"
+      ]
+    }
+  ],
+  "final_distinct_named_methods": 49,
+  "final_binding_observations": 222,
+  "pnpm_evidence_reused_because_source_is_byte_identical": true,
+  "confirmed_scanner_bypass_before_final_fix": [
+    {
+      "flag": "-bench",
+      "terminal": "forwarded",
+      "call_kinds": [
+        "exec"
+      ],
+      "would_forward_to": "/opt/homebrew/bin/go",
+      "actual_go_or_sql_calls": 0
+    },
+    {
+      "flag": "-benchtime",
+      "terminal": "forwarded",
+      "call_kinds": [
+        "exec"
+      ],
+      "would_forward_to": "/opt/homebrew/bin/go",
+      "actual_go_or_sql_calls": 0
+    },
+    {
+      "flag": "-test.run",
+      "terminal": "forwarded",
+      "call_kinds": [
+        "exec"
+      ],
+      "would_forward_to": "/opt/homebrew/bin/go",
+      "actual_go_or_sql_calls": 0
+    }
+  ],
+  "actual_go_tests": 0,
+  "actual_sql_connections": 0,
+  "actual_product_browser_provider_installed_agent_cli_calls": 0,
+  "source_snapshot_and_syntax_check": "source-check.json",
+  "diffs": [
+    {
+      "path": "adapter-v5-to-v7.diff",
+      "sha256": "3bccfb3263af494a30de6fe8556892e1ce0e5b86b86da182da538b2d0451d0a3"
+    },
+    {
+      "path": "adapter-v6-to-v7.diff",
+      "sha256": "aa1badc823f5c2214d32b29d11b20e93b25fd4509cba34ed5b5e8bc13327376d"
+    },
+    {
+      "path": "v6-to-v7-go-and-fixtures.patch",
+      "sha256": "843268bd093429fe7a1488b2e62b2a0ba63204faf084241f1c552122bf5db465"
+    }
+  ],
+  "changes_to_unowned_v5_v6_launcher_product_resources": false,
+  "known_limitations": [
+    "All Go list/SQL/test execution boundaries were mocked or test-created recorders; no real Go/DB/product acceptance was run.",
+    "Mode0 retains running/complete allocation states and permits only the recorded package; it does not allocate fresh clones.",
+    "Mode1 retains its existing argument splitter; broader outer-mode test-binary forwarding and flag-dependent module/overlay listing were not redesigned.",
+    "Executable availability/content pinning and actual database/service identity remain coordinator/launcher responsibilities.",
+    "The fixed forwarded-value flag set and aliases are backed by cached Go testflag source; recheck them when the toolchain changes.",
+    "Unowned v6 check-launcher-test.py changed concurrently; incoming bytes are preserved, and this agent made no v6 edits."
+  ]
+}

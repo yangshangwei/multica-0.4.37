@@ -1,0 +1,22 @@
+{
+  "source_sha": "3110295d0eca364937f08c97102ca74f08a7e235",
+  "working_diff_sha256": "18c13b3541dce9b5b39313a679ba6f09968033d7c5d4ebc6099ac49b726e872d",
+  "database": "kfix_claim_svc_full_20261101",
+  "database_identity": "kfix_claim_svc_full_20261101|763_collaboration_knowledge_delivery_history",
+  "command": [
+    "/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "./internal/service",
+    "-count=1",
+    "-json"
+  ],
+  "started_at": "2026-11-01T15:19:16.326789+00:00",
+  "exit_code": 1,
+  "finished_at": "2026-11-01T15:29:21.265712+00:00",
+  "sha256": "7e693ad456ecde205060cb25a5f69953151cb1e44fe5ebaf91fd28777f8e6637",
+  "test_events": {
+    "pass": 2024
+  },
+  "failures": []
+}

@@ -1,0 +1,126 @@
+{
+  "at": "2026-11-18T13:14:01.979089+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "AUTHOR_STATIC_COMPLETE_RUNTIME_NOT_RUN",
+  "implementer": "/root/s3_runtime_extras_implement",
+  "coordinator_session": "01a1ee9f-bdfc-7f31-ac53-9d7e072a20d7",
+  "main_current_execution_scope": "Unique Extras-A R05 owner; no Extras-B build/provision/body in this turn",
+  "owned_code": [
+    "e2e/collaboration-recovery-runtime.spec.ts",
+    "e2e/fixtures/collaboration-recovery-runtime.ts"
+  ],
+  "owned_reports": [
+    "recovery-runtime-intake-20261118.md",
+    "recovery-runtime-intake-20261118.json",
+    "recovery-runtime-implementation-20261118.md",
+    "recovery-runtime-implementation-20261118.json"
+  ],
+  "execution_lane": {
+    "mode": "host_process_supervision_v1",
+    "runtime_protocol": 3,
+    "preparation_version": 2,
+    "execution_read_version": 6,
+    "native_scope": "macOS controlled stdlib Provider",
+    "capacity": 1
+  },
+  "build_permit_argv": [
+    [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-c",
+      "-o",
+      "<absolute>/s3-host-daemon.test",
+      "./internal/daemon"
+    ],
+    [
+      "go",
+      "build",
+      "-o",
+      "<absolute>/s3-host-provider",
+      "e2e/fixtures/collaboration-host-provider.go"
+    ],
+    [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "-o",
+      "<absolute>/s3-host-cli",
+      "./cmd/multica"
+    ]
+  ],
+  "daemon_guard_argv": [
+    "<absolute>/s3-host-daemon.test",
+    "__multica_collaboration_host_router_poller"
+  ],
+  "daemon_guard_source": "server/internal/daemon/collaboration_host_router_test.go",
+  "provider_probe_argv": [
+    [
+      "<absolute>/s3-host-provider",
+      "--fixture-kind"
+    ],
+    [
+      "<absolute>/s3-host-provider",
+      "--fixture-capabilities"
+    ]
+  ],
+  "provider_kind": "multica-host-e2e-provider-v1",
+  "closed_runtime_keys": [
+    "PAY241_S3_RECOVERY_ACCEPTANCE=1",
+    "PAY241_S3_RECOVERY_RUNTIME_ACCEPTANCE=1",
+    "E2E_PASSWORD_AUTH=1",
+    "TASK_DATABASE_NAME",
+    "DATABASE_URL",
+    "COLLABORATION_E2E_API_URL",
+    "NEXT_PUBLIC_API_URL",
+    "PLAYWRIGHT_BASE_URL",
+    "MULTICA_DEPLOYMENT_ID",
+    "COLLABORATION_ELECTRON_RENDERER_URL",
+    "COLLABORATION_ELECTRON_SOURCE_ROOT",
+    "COLLABORATION_HOST_DAEMON",
+    "COLLABORATION_HOST_PROVIDER",
+    "COLLABORATION_HOST_CLI",
+    "HOME",
+    "TMPDIR",
+    "TMP",
+    "TEMP",
+    "PAY241_S3_PROFILE_ROOT"
+  ],
+  "planned_denominator": {
+    "tops": 4,
+    "subcases": 10,
+    "managed_provider_launches": 10,
+    "human_inputs": 12,
+    "original_input_uploads": 6,
+    "recovery_launches": 0,
+    "retries": 0,
+    "workers": 1
+  },
+  "subcase_names_per_platform": [
+    "proven_success_result",
+    "proven_failed_or_incomplete_result",
+    "proven_stopped_result",
+    "queued_input_author_withdrawal",
+    "live_resource_grant_withdrawal"
+  ],
+  "runtime_body_execution": 0,
+  "DB_API_browser_provider_build_execution": 0,
+  "pending_final_source": {
+    "intended_directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-integrated-r03",
+    "intended_origins": [
+      "serverR04",
+      "clientR03"
+    ],
+    "not_created_or_used_by_author": true
+  },
+  "actual_author_product_graph": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01",
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-runtime-intake-20261118.md",
+    "resolved_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-runtime-intake-20261118.md",
+    "sha256": "e8ae647e279d1f2cfe80808ab3775dedbdca23bb11f490f7d293704f65cafe4d",
+    "bytes": 7778,
+    "mode": "0o644"
+  }
+}

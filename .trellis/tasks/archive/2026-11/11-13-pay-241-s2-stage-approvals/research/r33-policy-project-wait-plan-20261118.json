@@ -1,0 +1,210 @@
+{
+  "schema": "pay241-r33-policy-project-wait-plan-v1",
+  "date": "2026-11-18",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "SEALED_M1_ONLY_REGRESSION_PLAN_BEFORE_PRODUCT_RED",
+  "markdown": "r33-policy-project-wait-plan-20261118.md",
+  "source_r32": "/Volumes/artisan/.multica-acceptance/pay241-r32-policy-read-20261118-24y0i9dv/source-red-r01",
+  "source_r33_coordinator_prepared": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r01",
+  "full_5055_manifest_reaudited": false,
+  "native_evidence": {
+    "runtime_root": "/Volumes/artisan/.multica-acceptance/pay241-r32-policy-read-20261118-24y0i9dv/runtime",
+    "policy_diagnostics": "policy-diagnostics.jsonl",
+    "policy_diagnostics_sha256": "6437153cc866dc6199520a961ba0902f67fa3e679e919e38f2f5981a96a0bc5a",
+    "records": 37,
+    "capture_limit_markers": 0,
+    "get": {
+      "line": 33,
+      "trace": 11,
+      "status": 200,
+      "revision": 5,
+      "mode": "enforce",
+      "complete": true
+    },
+    "put": {
+      "query_line": 35,
+      "http_line": 37,
+      "trace": 12,
+      "request_id": "yangshangweideMac-mini.local/aY6tT5zTQu-005716",
+      "verified_actor": "d8104f1b-a39e-4a1c-ae62-c1a90059f281",
+      "project_id": "771cb66e-265b-4983-aabe-6cc7882389e6",
+      "backend_pid": 4038,
+      "query": "LockDeliveryPolicyProject",
+      "query_sha256": "f56557e1843a2ebb4a8d99175df7e5edd369d42445f06127536eab0cd93eab7e",
+      "sqlstate": "55P03",
+      "query_at": "2026-11-17T23:50:01.653428Z",
+      "http_at": "2026-11-17T23:50:01.657868Z",
+      "status": 409,
+      "response_body": {
+        "error": "artifact_authority_busy"
+      },
+      "response_body_complete": true,
+      "query_to_handler_frames": [
+        "generated/delivery_policy.sql.go:209",
+        "handler/delivery_policy.go:135"
+      ]
+    },
+    "branch_proven_for_r32_request": "project fence busy before CAS",
+    "physical_holder_known": false,
+    "r31_request_retroactively_attributed": false,
+    "four_result_sha256": "8131dec68f33043ab8b320a2f8cc2ba26cecf0227a628fcbb5e731d1795c26ca",
+    "four": {
+      "pass": 3,
+      "fail": 1,
+      "not_run": 0,
+      "retry": 0
+    },
+    "summary_coordinator_supplied": {
+      "path": "final-policy-busy-capture-summary-r01.json",
+      "sha256": "b9fd84832ce53bc0e04f8d683d75de09b20c2106d55c126b58aad24627428791",
+      "reaudited": false
+    }
+  },
+  "chosen_product_slice_after_accepted_red": {
+    "files": [
+      "server/pkg/db/queries/delivery_policy.sql",
+      "server/pkg/db/generated/delivery_policy.sql.go",
+      "server/internal/handler/delivery_policy.go"
+    ],
+    "new_query": "LockDeliveryPolicyProjectWait",
+    "sql": "SELECT * FROM project WHERE id=$1 AND workspace_id=$2 FOR UPDATE;",
+    "params": [
+      "ID",
+      "WorkspaceID"
+    ],
+    "single_new_caller": "Handler.deliveryPolicyInTx PUT branch at delivery_policy.go:135",
+    "original_query_and_stage_caller_unchanged": true,
+    "stage_caller": "service/collaboration_stage_policy.go:122",
+    "existing_lock_timeout_ms": 250,
+    "timeout_scope": "per lock acquisition, not whole transaction",
+    "may_wait_behind_short_writer": true,
+    "immediate_writer_refusal_preserved_claim": false,
+    "preserved": [
+      "exclusive FOR UPDATE",
+      "project/workspace predicates",
+      "current owner/admin/credential checks",
+      "schema",
+      "revision CAS",
+      "final credential recheck",
+      "rollback/commit ambiguity",
+      "ordinary pool",
+      "timeouts/retry policy",
+      "GET shared NOWAIT",
+      "stage policy original NOWAIT"
+    ],
+    "rejected": [
+      "global removal of NOWAIT also changes stage policy timing",
+      "LockProjectForUpdate uses weaker FOR NO KEY UPDATE",
+      "using execution-squad-named lock hides the policy wait contract"
+    ],
+    "risk": "waiting retains earlier authority fences; reverse lock order can stall/cycle, contained by existing finite lock timeout and rollback",
+    "final_credential_pwd_fences_preserved_by_exact_source": true
+  },
+  "new_test_slice": {
+    "only_new_file": "server/internal/handler/delivery_policy_project_wait_test.go",
+    "top": 2,
+    "leaf": 4,
+    "named": 6,
+    "tops": {
+      "TestDeliveryPolicyProjectWaitShortReader": [
+        "short_reader_release"
+      ],
+      "TestDeliveryPolicyProjectWaitBoundaries": [
+        "long_reader",
+        "competing_writer",
+        "member_denied"
+      ]
+    },
+    "fixture": [
+      "newDeliveryPolicyFixture",
+      "deliveryPolicyAttach",
+      "artifactFixture.request",
+      "testutil.Call",
+      "dbfx",
+      "borrowed real transaction pre-Commit barrier"
+    ],
+    "fixture_principal": "CredentialJWT with real current database authority; handler fixture, not router/login evidence",
+    "long_reader": "GET held through writer result; native55P03/409 busy, zero added effects, real250ms setting and elapsed measurement; no exact249/250ms assertion",
+    "competing_writer": "actual first PUT holds exclusive fence before commit, second same-CAS PUT begins before short release; first200, second409 revision_conflict, exactly oneappend",
+    "old_source_short_reader_must_fail": true,
+    "other_old_source_failures_retained_not_predetermined_as_pass": true,
+    "same_test_source_frozen_for_red_green": true,
+    "requirements": [
+      "distinct real reader/writer PIDs",
+      "causal barrier/native query events",
+      "real wait witness where applicable",
+      "no fabricated SQL/result/clock/reader skip",
+      "independent handler copies",
+      "mandatory channel/goroutine/transaction cleanup",
+      "fixture-owned before/after facts, permit intended winner effects"
+    ],
+    "short_reader": "actual GET-held shared project fence; actual PUT expected revision0 starts before20-50ms release below250ms; old409/55P03 RED, new200 and oneappend",
+    "member_denied": "real current member from dbfx.User/Member; actual PUT403 management_denied before project writer query, noappend; owner row unchanged",
+    "no_new_expiry_authority_matrix": true
+  },
+  "existing_focused_handler_controls": [
+    "TestDeliveryPolicyDefaultAppendAndCAS",
+    "TestDeliveryPolicyManagementAuthority",
+    "TestDeliveryPolicyStrictRequests",
+    "TestDeliveryPolicyRuntimeSchemaRefusesPartialAndWrongIndexes",
+    "TestDeliveryCompletionActivationExplicitCASAndCapabilities",
+    "TestDeliveryCompletionActivationRejectsPartialSchemaAllowsOff"
+  ],
+  "execution_handoff": [
+    "coordinator allocates fresh handler RED/GREEN/race profiles",
+    "author new test only then freeze/source compile and genuine RED",
+    "independent RED acceptance before three product files",
+    "fresh same-source new/affected controls normal and race",
+    "canonical sqlc/gofmt/scoped build-vet/static exact diffs and independent review",
+    "ROOT integration/matched builds then original four once with unchanged assertions/deadlines/retry0"
+  ],
+  "whole_handler99_or_router54_repeat_required_without_new_affected_path": false,
+  "spec_followup": "After acceptance document explicit M1-only bounded wait; preserve stage/original NOWAIT and no retry. Researcher cannot edit specs.",
+  "original_successful_completed_writes_preserved": true,
+  "r38_reached": false,
+  "full_s2": false,
+  "parent24_coordinator_supplied": {
+    "pass": 0,
+    "partial": 9,
+    "not_run": 15
+  },
+  "researcher_execution": {
+    "go": 0,
+    "tests": 0,
+    "database": 0,
+    "api": 0,
+    "browser": 0,
+    "application_process_control": 0,
+    "agents_spawned": 0,
+    "product_test_config_edits": 0
+  },
+  "final_permissions_requested": "0444",
+  "bounded_baseline_five_files": [
+    {
+      "path": "server/pkg/db/queries/delivery_policy.sql",
+      "r32_r33_equal": true,
+      "sha256": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8"
+    },
+    {
+      "path": "server/pkg/db/generated/delivery_policy.sql.go",
+      "r32_r33_equal": true,
+      "sha256": "7cf3a60e58209f406dc55f909de0d527791aa7d72c70e2d5d1006df86ff79fdf"
+    },
+    {
+      "path": "server/internal/handler/delivery_policy.go",
+      "r32_r33_equal": true,
+      "sha256": "97bde61992f28bb278c5ec27ae71b361ed6a371ad27cc49649dc28bebbb366f8"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_policy.go",
+      "r32_r33_equal": true,
+      "sha256": "a892c72b67010b78a7d1383406ba11412efc2a9ecc3acd1e3df36295265cf9d6"
+    },
+    {
+      "path": "server/internal/service/artifact_authority.go",
+      "r32_r33_equal": true,
+      "sha256": "61e457c83e94f46e8ace6dd58d772fa20c9334dc217421f874b4037f9af7aab8"
+    }
+  ],
+  "markdown_sha256": "9886dddc507196ef952771f1ea59db55364dd4d323bd19d8b4476a5eb0e64603"
+}

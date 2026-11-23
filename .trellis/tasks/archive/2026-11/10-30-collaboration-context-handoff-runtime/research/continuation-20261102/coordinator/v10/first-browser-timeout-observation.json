@@ -1,0 +1,24 @@
+{
+  "observed_at": "2026-11-02T20:55:40.153512+00:00",
+  "state": "browser-failures-observed; full-run-still-running",
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "timeout_ms": 180000,
+  "failures": [
+    {
+      "test": "agent-categories.spec.ts:10",
+      "error": "test timeout",
+      "error_context": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/test-results/agent-categories-custom-ca-068a8-ose-with-directory-grouping-chromium/error-context.md",
+      "error_context_sha256": "65dd60569309289b51140c4ff51cd90ce85c2e524bbc6cbdd530f616a8d9f276"
+    },
+    {
+      "test": "agent-category-grouping.spec.ts:23",
+      "error": "test timeout",
+      "error_context": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/test-results/agent-category-grouping-sa-6059c-legacy-preference-migration-chromium/error-context.md",
+      "error_context_sha256": "65dd60569309289b51140c4ff51cd90ce85c2e524bbc6cbdd530f616a8d9f276"
+    }
+  ],
+  "full_result_accepted": false,
+  "Provider_calls_by_this_thread": 0,
+  "live_reproduction_started_by_this_thread": false,
+  "diagnosis_agent": "/root/v10_category_timeout_diagnosis"
+}

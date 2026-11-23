@@ -1,0 +1,65 @@
+[
+  {
+    "command": [
+      "pnpm",
+      "exec",
+      "tsc",
+      "--noEmit",
+      "--strict",
+      "--allowImportingTsExtensions",
+      "--module",
+      "nodenext",
+      "--moduleResolution",
+      "nodenext",
+      "--target",
+      "es2022",
+      "--esModuleInterop",
+      "--skipLibCheck",
+      "e2e/fixtures/collaboration-installed-main.ts"
+    ],
+    "exit_code": 0,
+    "log": "transport-typecheck.txt",
+    "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  },
+  {
+    "command": [
+      "pnpm",
+      "exec",
+      "tsc",
+      "--noEmit",
+      "--strict",
+      "--module",
+      "esnext",
+      "--moduleResolution",
+      "bundler",
+      "--jsx",
+      "react-jsx",
+      "--target",
+      "es2022",
+      "--lib",
+      "esnext,dom,dom.iterable",
+      "--esModuleInterop",
+      "--skipLibCheck",
+      "e2e/collaboration-host-installed.spec.ts"
+    ],
+    "exit_code": 0,
+    "log": "journey-typecheck.txt",
+    "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  },
+  {
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/desktop",
+      "exec",
+      "eslint",
+      "scripts/windows-collaboration.mjs",
+      "scripts/windows-collaboration-config.mjs",
+      "scripts/windows-collaboration-config.node-test.mjs",
+      "scripts/windows-collaboration-workflow.node-test.mjs"
+    ],
+    "exit_code": 0,
+    "log": "scripts-lint.txt",
+    "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "ready_to_execute": false,
+  "gate": "ccg2-on",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "source_inputs_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+  "runner_sha256": "95206bf27c50b16acd2a087fcbbb925671a1b1ee55ad3952a000b4c400789b79",
+  "root_released_complete_check_resources": true,
+  "root_verified_complete_named_inventory": true,
+  "root_verified_fresh_database": true,
+  "database": "multica_ccg2_v16_on_a3c9",
+  "DATABASE_URL": "postgres://multica:multica@127.0.0.1:5432/multica_ccg2_v16_on_a3c9?sslmode=disable",
+  "identity_verified": "multica_ccg2_v16_on_a3c9|764_collaboration_ai_policy",
+  "temp_directory": "/private/tmp/multica-ccg-v16-on-6fs2lm6r",
+  "cache_paths": {
+    "GOCACHE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache",
+    "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+    "GOPATH": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-path"
+  },
+  "root_permission_record": null,
+  "real_provider_allowed": false,
+  "source_environment": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/source-values.env",
+  "source_environment_sha256": "f69987226394d14629f0ab7e3186b6a6e08b98258fe972ecdb392351c562bd00",
+  "deployment_proof": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/on/deployment-proof.json",
+  "deployment_proof_sha256": "4f70b06e906db26168869b3821075000b70caca9830594c2748010316bf4d8ae",
+  "binary_binding": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binary-binding.json",
+  "binary_binding_sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60",
+  "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "browser_binding": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+    "sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13"
+  },
+  "intended_label": "ccg2-on-v16-01",
+  "root_review_pending": true,
+  "OFF_release": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on-off-release-result.json",
+    "sha256": "8db43cb9561afdff6d06e38d7d38c9b7cdeb52c85bd54d0a8696bcda3008c491"
+  }
+}

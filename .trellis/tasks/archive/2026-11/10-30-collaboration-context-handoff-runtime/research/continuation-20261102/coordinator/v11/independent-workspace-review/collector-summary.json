@@ -1,0 +1,57 @@
+{
+  "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-workspace-review/collector-observation.json",
+  "collector_sha256": "aa6f28e3cc6c559ad15191ea0e8023b6e176de426b366dc19b3c5d0eec26289e",
+  "output_sha256": "7f763147f0fb912406bbcddfe580043ee9198d7b1ef26547d30e9211486bf6d2",
+  "bytes": 207459,
+  "pinned_inputs_match": {
+    "contract": true,
+    "diagnosis": true,
+    "expectations": true,
+    "observation": true
+  },
+  "head": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "dependency_summary": {
+    "all_inside_candidate": true,
+    "checked": 22,
+    "matches_expected_workspace_root": 22
+  },
+  "configuration_match": true,
+  "lock": {
+    "importer_count": 11,
+    "snapshot_count": 1462,
+    "lockfile_version": "9.0"
+  },
+  "installed_lock": {
+    "importer_count": 11,
+    "snapshot_count": 1462,
+    "lockfile_version": "9.0"
+  },
+  "profile": {
+    "layoutVersion": "5",
+    "nodeLinker": "isolated",
+    "packageManager": "pnpm@10.28.2",
+    "prunedAt": "Mon, 02 Nov 2026 21:45:37 GMT",
+    "storeDir": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10",
+    "virtualStoreDir": ".pnpm",
+    "virtualStoreDirMaxLength": "120"
+  },
+  "own_node_modules_symlinks": [],
+  "auth_specs": [
+    "@multica/core/auth"
+  ],
+  "auth_probes_outside_or_missing": [],
+  "source_overlays": 0,
+  "stable_inputs": {
+    "after_file_count": 2885,
+    "after_sha256": "19f47fa81a546ce94e31adac321b08ed99bb00c37408ef1d0fa338968846a189",
+    "before_file_count": 2885,
+    "before_sha256": "19f47fa81a546ce94e31adac321b08ed99bb00c37408ef1d0fa338968846a189",
+    "changed_dependency_origins": [],
+    "changed_directories": [],
+    "changed_files": [],
+    "scope": "root install/config inputs; all Web/Desktop/shared package source/config/docs files; all importer manifests; installed lock/profile/workspace state; own node_modules directory and declared internal package origins",
+    "unchanged": true
+  },
+  "existing_build": false,
+  "receipt_count": 0
+}

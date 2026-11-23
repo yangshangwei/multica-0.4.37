@@ -6,6 +6,7 @@ export const inboxKeys = {
   all: (wsId: string) => ["inbox", wsId] as const,
   list: (wsId: string) => [...inboxKeys.all(wsId), "list"] as const,
   archived: (wsId: string) => [...inboxKeys.all(wsId), "archived"] as const,
+  snoozed: (wsId: string) => [...inboxKeys.all(wsId), "snoozed"] as const,
   // Account-level (not workspace-scoped): a single shared cache entry that
   // holds unread counts for every workspace the user belongs to.
   unreadSummary: () => ["inbox", "unread-summary"] as const,
@@ -14,7 +15,10 @@ export const inboxKeys = {
 export function inboxListOptions(wsId: string) {
   return queryOptions({
     queryKey: inboxKeys.list(wsId),
-    queryFn: () => api.listInbox(),
+    queryFn: () => api.listInbox({ workspaceId: wsId }),
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: "always",
+    refetchOnReconnect: "always",
   });
 }
 
@@ -28,7 +32,20 @@ export function inboxListOptions(wsId: string) {
 export function archivedInboxListOptions(wsId: string) {
   return queryOptions({
     queryKey: inboxKeys.archived(wsId),
-    queryFn: () => api.listArchivedInbox(),
+    queryFn: () => api.listArchivedInbox({ workspaceId: wsId }),
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: "always",
+    refetchOnReconnect: "always",
+  });
+}
+
+export function snoozedInboxListOptions(wsId: string) {
+  return queryOptions({
+    queryKey: inboxKeys.snoozed(wsId),
+    queryFn: () => api.listSnoozedInbox({ workspaceId: wsId }),
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: "always",
+    refetchOnReconnect: "always",
   });
 }
 
@@ -41,6 +58,9 @@ export function inboxUnreadSummaryOptions() {
   return queryOptions({
     queryKey: inboxKeys.unreadSummary(),
     queryFn: () => api.getInboxUnreadSummary(),
+    refetchInterval: 30_000,
+    refetchOnWindowFocus: "always",
+    refetchOnReconnect: "always",
   });
 }
 
@@ -69,13 +89,12 @@ export function unreadWorkspaceIds(summary: InboxWorkspaceUnread[]): Set<string>
 
 /**
  * Unread inbox count for the given workspace, aligned with what the inbox
- * list UI renders: archived items excluded, then deduplicated by issue so a
+ * list UI renders: archived and future-snoozed groups excluded, then deduped so a
  * single issue with three unread notifications counts once.
  */
 export function useInboxUnreadCount(wsId: string | null | undefined): number {
   const { data } = useQuery({
-    queryKey: inboxKeys.list(wsId ?? ""),
-    queryFn: () => api.listInbox(),
+    ...inboxListOptions(wsId ?? ""),
     enabled: !!wsId,
     select: (items: InboxItem[]) =>
       deduplicateInboxItems(items).filter((i) => !i.read).length,
@@ -89,7 +108,10 @@ export function useInboxUnreadCount(wsId: string | null | undefined): number {
  * (to avoid new array references on every cache update).
  */
 export function deduplicateInboxItems(items: InboxItem[]): InboxItem[] {
-  return groupInboxItemsByIssue(items.filter((i) => !i.archived));
+  const snoozed = snoozedGroupKeys(items);
+  return groupInboxItemsByIssue(
+    items.filter((i) => !i.archived && !snoozed.has(inboxGroupKey(i))),
+  );
 }
 
 /**
@@ -102,10 +124,27 @@ export function deduplicateArchivedInboxItems(items: InboxItem[]): InboxItem[] {
   return groupInboxItemsByIssue(items.filter((i) => i.archived));
 }
 
+export function deduplicateSnoozedInboxItems(items: InboxItem[]): InboxItem[] {
+  const states = new Map<string, InboxItem>();
+  for (const item of items) {
+    if (!item.archived && isInboxItemSnoozed(item)) states.set(inboxGroupKey(item), item);
+  }
+  return groupInboxItemsByIssue(
+    items.filter((item) => !item.archived && states.has(inboxGroupKey(item))),
+  ).map((item) => {
+    const state = states.get(inboxGroupKey(item));
+    return {
+      ...item,
+      snoozed_until: state?.snoozed_until,
+      ...(state?.snooze_revision !== undefined ? { snooze_revision: state.snooze_revision } : {}),
+    };
+  }).sort((a, b) => inboxTimestamp(a.snoozed_until) - inboxTimestamp(b.snoozed_until));
+}
+
 function groupInboxItemsByIssue(items: InboxItem[]): InboxItem[] {
   const groups = new Map<string, InboxItem[]>();
   for (const item of items) {
-    const key = item.issue_id ?? item.id;
+    const key = inboxGroupKey(item);
     const group = groups.get(key) ?? [];
     group.push(item);
     groups.set(key, group);
@@ -135,6 +174,26 @@ function groupInboxItemsByIssue(items: InboxItem[]): InboxItem[] {
   }
   return merged.sort(
     (a, b) =>
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      Math.max(inboxTimestamp(b.reminded_at), inboxTimestamp(b.created_at)) -
+      Math.max(inboxTimestamp(a.reminded_at), inboxTimestamp(a.created_at)),
+  );
+}
+
+function inboxGroupKey(item: InboxItem): string {
+  return `${item.workspace_id}:${item.issue_id ? "issue" : "item"}:${item.issue_id ?? item.id}`;
+}
+
+function inboxTimestamp(value: string | null | undefined): number {
+  const timestamp = value ? new Date(value).getTime() : NaN;
+  return Number.isFinite(timestamp) ? timestamp : 0;
+}
+
+export function isInboxItemSnoozed(item: InboxItem, now = Date.now()): boolean {
+  return inboxTimestamp(item.snoozed_until) > now;
+}
+
+function snoozedGroupKeys(items: InboxItem[]): Set<string> {
+  return new Set(
+    items.filter((item) => !item.archived && isInboxItemSnoozed(item)).map(inboxGroupKey),
   );
 }

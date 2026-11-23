@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-11-03T01:26:39.345689+00:00",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/offline-tests.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/final_state_audit_test.py"
+  ],
+  "exit_code": 0,
+  "cases": 12,
+  "pass": 12,
+  "fail": 0,
+  "skip": 0,
+  "syntax": {
+    "final_state_audit.py": "be288aea29914f5bd8740c84c0699c83b39f4c8a9d9c3b9e5e68461378daada2",
+    "final_state_audit_test.py": "bf205c4f14f7bdd2bea6691a754c3cfefb536c1ca699688efab6734aad140e7c"
+  },
+  "log_sha256": "303ddddafed2a8731dec944eb73e052fe1ce1a96daed695ca449d619bd786ac7",
+  "network_denied": true,
+  "actual_candidate_or_old_evidence_modified": false,
+  "actual_repository_commands_DB_services_Provider": 0
+}

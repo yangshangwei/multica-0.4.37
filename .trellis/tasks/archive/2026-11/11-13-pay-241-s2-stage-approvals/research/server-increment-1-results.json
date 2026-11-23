@@ -1,0 +1,594 @@
+{
+ "task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+ "increment": 1,
+ "date": "2026-11-14",
+ "base_head": "fb9f4c070",
+ "status": "increment_1_implemented_not_accepted",
+ "wire_contract": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+ "wire_contract_sha256": "516e6dd9066b434cc59d46d44878bb5c2fe3d357582674d445c4612779d2288b",
+ "policy_enable_over_http": "refused 503 stage_policy_unavailable (handler constant stagePolicyActivationAvailable=false); no CLI command exists",
+ "files": [
+  {
+   "path": "server/cmd/server/router.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "530ee558e7bd93d6b9fce2d63ff7dd727795ea946884fc47031ecda89f3d88c2"
+  },
+  {
+   "path": "server/internal/handler/collaboration_workflow.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "752e73006846ac4c1edcbea180fa5bc9c7129faef9af77e3cca8fec7902a02b4"
+  },
+  {
+   "path": "server/internal/handler/issue.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "0a85a2b6af2d92b4214943b0459f784d8726f5d959ff7ca071b6b2805f505fa2"
+  },
+  {
+   "path": "server/internal/handler/lifecycle_handoff.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "2080e094b8a42989080c0f1d40010cfe38b9b804121ef9d1281f355138878c38"
+  },
+  {
+   "path": "server/internal/handler/workspace_delete_manifest_test.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "c49a91280ff1c27c6b5e49f0965e6eee5ad7e7ae794ff82e70c360e8e7823820"
+  },
+  {
+   "path": "server/internal/service/collaboration_workflow.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "49d64238b28af4375c19c0767a989b902061a5d80df35c151b86911958203e58"
+  },
+  {
+   "path": "server/internal/service/issue.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "0696dfbc0acb4221be78b8f63bb0d58f5546f744292e3d52c4aec243da4a3223"
+  },
+  {
+   "path": "server/internal/service/issue_admission.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "e11f53064d852adf0c0c91736e8150f058d56416daaa41d58e0c34188a211ac9"
+  },
+  {
+   "path": "server/internal/service/issue_task_transaction.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "665daf66c43c9b40e692fa60cea4211fcbf8fdcf6e977f0c4efca6c11cdd3be4"
+  },
+  {
+   "path": "server/internal/service/task_start.go",
+   "change": "modified",
+   "generated": false,
+   "sha256": "87d1049417c148b6fc92964fb2d1e51c3029fda01b7ddb2b1c8c7fffa6537917"
+  },
+  {
+   "path": "server/pkg/db/generated/models.go",
+   "change": "modified",
+   "generated": true,
+   "sha256": "dd3ad05f8db56cbaefb474aff3fd614b3458d2b0a9b339aeda23917964cc06c7"
+  },
+  {
+   "path": "server/cmd/migrate/collaboration_stage_test.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "8c88763a3d8b76362b8ae693ffead0e4237fd81098ae2fa26001b354dc64c83b"
+  },
+  {
+   "path": "server/cmd/server/collaboration_stage_routes_test.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "0aaf32df7f7ef4b14fb9f60e661d038959976699a5d0f064e97e256ee20e18e0"
+  },
+  {
+   "path": "server/internal/collaboration/stage.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "a4cdec5092cab3ab1459198459b180d227df8f9501fa4d50264a83d773728c3e"
+  },
+  {
+   "path": "server/internal/collaboration/stage_test.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "a8116fb30aba683f73d851e7cc30f5c1830396ecd83e7ce7f99f6932c34c9843"
+  },
+  {
+   "path": "server/internal/handler/collaboration_stage.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "b1b329c5a3f85f2978c68bfb7f74f16be4d64edd69303e9e927304b94bf0d3a7"
+  },
+  {
+   "path": "server/internal/handler/collaboration_stage_test.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "e836cf3ef9a984091c5d7568c29a5fdf685240c96524f07bb21b438ed49aa423"
+  },
+  {
+   "path": "server/internal/migrations/collaboration_stage_test.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "4f220b43e021859692d5477e05d278bf0bc2455c975e6cefecf1555a521e6950"
+  },
+  {
+   "path": "server/internal/service/collaboration_stage.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "95c489f2f1c4bf8abfc638183c4abfe719bf15537e588f354d9e5e5ef040c562"
+  },
+  {
+   "path": "server/internal/service/collaboration_stage_actions.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "95ad4d69e8e14309e92c161d0aa9b37057fb87ed04b9257b989c0dfac15d3380"
+  },
+  {
+   "path": "server/internal/service/collaboration_stage_admission.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "0337c013bdbb2d858620d7a7aa4418d8b6050a6e952a074b6dfb50a8287d5480"
+  },
+  {
+   "path": "server/internal/service/collaboration_stage_admission_test.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "c4f5e185502fe2f277218d140f48f97fbd691da7d1b37af0ba492d402c7c17a6"
+  },
+  {
+   "path": "server/internal/service/collaboration_stage_policy.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "aa9db1a3fdabbc14f34e4b673ac18e052648694eba1c78f4759c6fec78a9949e"
+  },
+  {
+   "path": "server/internal/service/collaboration_stage_schema.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "d29c267593bbe8de671f7cdcc8301a18e73376595cc21fd09a14fdd5cc7532ec"
+  },
+  {
+   "path": "server/internal/service/collaboration_stage_test.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "cff41dc6e225f29ee4fa52978fcb2cac701d6ca0fd69676eda18d5768fb4d541"
+  },
+  {
+   "path": "server/internal/service/collaboration_stage_view.go",
+   "change": "created",
+   "generated": false,
+   "sha256": "9165ba696faa970cdca63346f50bd0bc2d14477d9642d04525a5680a2f83b947"
+  },
+  {
+   "path": "server/migrations/805_collaboration_stage.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "ce79bc9eba29c7d918c0547a2a9707b97d42e6d099aefa1f4ca3c3e6271d22da"
+  },
+  {
+   "path": "server/migrations/805_collaboration_stage.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "73fa9d226e376c4fd030d387922d0a7ab036f02f02a94c94592bfcebce9bb930"
+  },
+  {
+   "path": "server/migrations/806_project_stage_policy_revision.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "4c50bfca095e627b11b5c93148e0e63138e175862f5a7496fd2a761add9bb084"
+  },
+  {
+   "path": "server/migrations/806_project_stage_policy_revision.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "6e364699fc351ad88d8e044d3eeecf83dd2ace2b32269f54b1a9675d21751795"
+  },
+  {
+   "path": "server/migrations/807_project_stage_policy_request.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "7e5e750a4dd378c83ea8cc594d0b1d3d98867bea8ffabb91d229872754a36dea"
+  },
+  {
+   "path": "server/migrations/807_project_stage_policy_request.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "968d48139085f9a962b75e167f8e6242775dffd6a4ac5b44f82e8a87fb12e04b"
+  },
+  {
+   "path": "server/migrations/808_collaboration_stage_task_issue.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "1687218b9200acda1c42d8e25d89420f9cbfd647090b5e4342be492aa4f58e9d"
+  },
+  {
+   "path": "server/migrations/808_collaboration_stage_task_issue.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "0d3a8a435e83bdc7f770f46903083c261ee1711c9c5b06d1e1642897f84d7ee6"
+  },
+  {
+   "path": "server/migrations/809_collaboration_stage_role_revision.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "bbf2e9c89e6ca009775f05991efc8f770c204c5216b22afbb0e6a7b10eb1a18d"
+  },
+  {
+   "path": "server/migrations/809_collaboration_stage_role_revision.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "a6c230f6487826b589b5a22e0ec0f395362c626a2eeda43288ef45e661a27569"
+  },
+  {
+   "path": "server/migrations/810_collaboration_stage_candidate_id.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "23231cdc251496a311040e9601812362fa3a97611973d2533d2db1cead8ba077"
+  },
+  {
+   "path": "server/migrations/810_collaboration_stage_candidate_id.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "1f8dbdc7df19a0bf522bed842feaacff07a5dfbbc92387655c290e1870470494"
+  },
+  {
+   "path": "server/migrations/811_collaboration_stage_candidate_version.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "96467dbdfe6d51ce3a6b34da5e0cd0a8e441ef113d0756e6e37d8ab34dd8429c"
+  },
+  {
+   "path": "server/migrations/811_collaboration_stage_candidate_version.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "75ad3fd34c37e0ed631b66a1d4b99f70528ca472f1043271e238bc0a10f6a762"
+  },
+  {
+   "path": "server/migrations/812_collaboration_stage_decision_id.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "b91a8132f20c2993a5fd112ce91a5a6b507d55b76c9af7bb271b23210f661c9d"
+  },
+  {
+   "path": "server/migrations/812_collaboration_stage_decision_id.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "f2a89d6f5b0e86adc4dd1fbf95154090c9cb9563791c643c58f5d3a7234767d3"
+  },
+  {
+   "path": "server/migrations/813_collaboration_stage_decision_issue.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "f95b0fd133208d3fefe54b2e2b3d77a164493c2c65fd864c5b75f7c8cf8eff53"
+  },
+  {
+   "path": "server/migrations/813_collaboration_stage_decision_issue.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "8be4fcbd1ab48972161f8c8bed0b3bdafd1de9eb00f499e7a2f93e40914f645d"
+  },
+  {
+   "path": "server/migrations/814_collaboration_stage_decision_candidate.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "97421af0d073d9ab9828ff111eaed639b42dd854116daaa66829f5a1baaf6502"
+  },
+  {
+   "path": "server/migrations/814_collaboration_stage_decision_candidate.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "bc8234fbe202e4037c3b057cb933615efe57a3eb4ac1297a37498b362da1f2c9"
+  },
+  {
+   "path": "server/migrations/815_collaboration_stage_decision_accept.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "b707fcb71368b0661c41e8fba84768422340fb9ec67a6696f32abada6ecbd001"
+  },
+  {
+   "path": "server/migrations/815_collaboration_stage_decision_accept.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "fb095a11ebdcce95f75570068769fabf2f4e8d0069c4ae2184dbd9d24d29f3dc"
+  },
+  {
+   "path": "server/migrations/816_collaboration_stage_child_issue.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "c49394dd3af9ead5b3f8c9da85ad3e17efcbcd8e37fe631ebafa1743c30a47e5"
+  },
+  {
+   "path": "server/migrations/816_collaboration_stage_child_issue.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "041d1dc91a06bdfe3fb7b51d8c299804eb1f7602abaceac43c6dd87260b99104"
+  },
+  {
+   "path": "server/migrations/817_collaboration_stage_child_root.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "30484df8d40ad2ff241f3087af13f63c0247d3754779c18ac8af5b102916edc1"
+  },
+  {
+   "path": "server/migrations/817_collaboration_stage_child_root.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "c85e3f0839b52ed2bd3235855b08de3d8316391406db5c86712aca0ec3a5f8a4"
+  },
+  {
+   "path": "server/migrations/818_collaboration_stage_child_materialization.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "56a24711230343d1f817844542f2a5fe92607f4d35b44663337c8b70067eee29"
+  },
+  {
+   "path": "server/migrations/818_collaboration_stage_child_materialization.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "f8cb12c4ef2fdcfc50d99d4fc35b642e3ca74bb54e5b1fca0906b90e26357c7f"
+  },
+  {
+   "path": "server/migrations/819_collaboration_stage_ready.down.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "155554b4117ca4fd6da715f461240ab59b3402ba31768732372f033e61eadb30"
+  },
+  {
+   "path": "server/migrations/819_collaboration_stage_ready.up.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "845e53bd3b916d3275ff24648f6aae9afdb57ef4e79d5bf35b7f469de3e478bb"
+  },
+  {
+   "path": "server/pkg/db/generated/collaboration_stage.sql.go",
+   "change": "created",
+   "generated": true,
+   "sha256": "316dccd87ef5f6ac1ba04549fe8c5654ef0c06246d0364945186fd083fc0b91d"
+  },
+  {
+   "path": "server/pkg/db/queries/collaboration_stage.sql",
+   "change": "created",
+   "generated": false,
+   "sha256": "6691d754b682d4b9f07b24d82901b8dbe35e616da6f0ad5f6f5906249dd03c38"
+  }
+ ],
+ "migrations": {
+  "range": "805-819",
+  "tables": "805",
+  "indexes": "806-818 (one CREATE [UNIQUE] INDEX CONCURRENTLY each)",
+  "readiness": "819",
+  "foreign_keys": 0,
+  "applied_with_cli_up": [
+   "multica_pay241_20261113_01_s2_impl_service",
+   "multica_pay241_20261113_01_s2_impl_handler"
+  ],
+  "cli_down_public_schema": "not run (the CLI walks the whole reverse chain); rehearsed by runner and private-schema tests in the service database"
+ },
+ "commands": [
+  {
+   "cmd": "run.mjs s2_impl_service.json go -C server run ./cmd/migrate up",
+   "exit": 0,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-migrate-service-up-1.log"
+  },
+  {
+   "cmd": "run.mjs s2_impl_handler.json go -C server run ./cmd/migrate up",
+   "exit": 0,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-migrate-handler-up-1.log"
+  },
+  {
+   "cmd": "cd server && go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 generate (run twice)",
+   "exit": 0
+  },
+  {
+   "cmd": "run-nodb.mjs ... go -C server test ./internal/collaboration/ -run TestStage (before implementation)",
+   "exit": 1,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-rules-red.log",
+   "kind": "first_failure"
+  },
+  {
+   "cmd": "run.mjs s2_impl_service.json go -C server test ./internal/service -run TestStage -v (stubs)",
+   "exit": 1,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-service-red.log",
+   "kind": "first_failure"
+  },
+  {
+   "cmd": "same, first run after implementation",
+   "exit": 1,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-service-green-1.log",
+   "kind": "first_failure (test fixture bypassed the issue counter; test fixed, product code unchanged)"
+  },
+  {
+   "cmd": "run.mjs s2_impl_service.json go -C server test ./internal/service -count=1 -timeout 40m -json (full package)",
+   "exit": 0,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-service-full.jsonl",
+   "log_sha256": "62d9590e371fb7a0cfc4d120fff41e335a260c6f7ecea55386be45a5c0d48a31",
+   "counts": {
+    "pass": 3511,
+    "skip": 18
+   },
+   "failed": []
+  },
+  {
+   "cmd": "run.mjs s2_impl_handler.json go -C server test ./internal/handler -count=1 -timeout 40m -json (full package, before the manifest classification)",
+   "exit": 1,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-handler-full.jsonl",
+   "log_sha256": "462aeeeeedc6c7bd311ad1b8f5168dea4e536ce66a05ba01660ba8586d78cdfb",
+   "counts": {
+    "pass": 5829,
+    "skip": 53,
+    "fail": 4
+   },
+   "failed": [
+    "TestBatchUpdateIssues_AutopilotRunAssign/assigns_nothing_when_the_run's_human_holds_no_rights",
+    "TestBatchUpdateIssues_AutopilotRunAssign/assigns_nothing_when_the_run_carries_no_human",
+    "TestBatchUpdateIssues_AutopilotRunAssign",
+    "TestWorkspaceDeletionManifestCoversPublicSchema"
+   ]
+  },
+  {
+   "cmd": "handler two failing tests under a HEAD overlay of every file this increment changed",
+   "exit": 1,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-handler-head-overlay-failures.log"
+  },
+  {
+   "cmd": "handler two failing tests with current code",
+   "exit": 1,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-handler-current-failures.log"
+  },
+  {
+   "cmd": "run.mjs s2_impl_service.json go -C server test ./cmd/server -run TestCollaboration -json",
+   "exit": 0,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-router-collaboration.jsonl",
+   "log_sha256": "bfd633f3e8a0e308e0487b4c2272c186458307adff123c3c292f6d90f256c371",
+   "counts": {
+    "pass": 32,
+    "skip": 6
+   },
+   "failed": []
+  },
+  {
+   "cmd": "go -C server build ./...",
+   "exit": 0,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-build.log"
+  },
+  {
+   "cmd": "go -C server vet ./internal/collaboration/... ./internal/service/ ./internal/handler/ ./internal/migrations/ ./cmd/server/ ./cmd/migrate/ ./pkg/db/...",
+   "exit": 0,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-vet.log"
+  },
+  {
+   "cmd": "gofmt -l <every file created or modified>",
+   "exit": 0,
+   "listed": 0,
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-gofmt.log"
+  }
+ ],
+ "final_named_inventory": {
+  "service": {
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-final-service.jsonl",
+   "log_sha256": "2b305aeec53f8c3a598b327c26bd28d7976884ff4bb5f2ba4a0306a1880e3601",
+   "counts": {
+    "pass": 20
+   },
+   "tests": {
+    "TestStageChildCreationRequiresApprovedProposalForMachines": "pass",
+    "TestStageChildExecutionGateAtEnqueueAndStart": "pass",
+    "TestStageChildStartSerializesWithRootLifecycle": "pass",
+    "TestStageChildUpdateKeepsMappingAndRefusesMachineAttach": "pass",
+    "TestStagePolicyRevisionCASAuthorityAndOriginalKey": "pass",
+    "TestStageRolesRequireSourceAdminParticipantsAndSeparation": "pass",
+    "TestStageProposalVersionsDecisionsAndSingleMaterialization": "pass",
+    "TestStageProposalConcurrentAcceptCreatesOneChildSet": "pass",
+    "TestStageProposalAcceptRollsBackEveryChildOnRefusal": "pass",
+    "TestStageProposalSourceIsVerifiedByTheServer": "pass",
+    "TestStageScopeConfirmationFirstEnableAndReopen": "pass",
+    "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_child": "pass",
+    "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_decision": "pass",
+    "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_issue_collaboration_SET_revision": "pass",
+    "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_event": "pass",
+    "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_notification": "pass",
+    "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_collaboration_operation": "pass",
+    "TestStageAcceptRequiredWriteFailuresAndLostCommit/lost_commit": "pass",
+    "TestStageAcceptRequiredWriteFailuresAndLostCommit": "pass",
+    "TestStageReadinessPredicateIsSharedWithMigration": "pass"
+   }
+  },
+  "handler": {
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-final-handler.jsonl",
+   "log_sha256": "b70847691a6e99aefc6394239e54435abb8a1f7c16693487d326a0e1aa38f046",
+   "counts": {
+    "pass": 4
+   },
+   "tests": {
+    "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists": "pass",
+    "TestStageHTTPStrictBodies": "pass",
+    "TestStageHTTPActionsConfirmationsRefusalsAndRecovery": "pass",
+    "TestStageAdmissionThroughOrdinaryIssueHandlers": "pass"
+   }
+  },
+  "router": {
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-final-router.jsonl",
+   "log_sha256": "cc8ef16064fd858aebe987ef07cc8531ff636a76ceaafd30ca46feb362bbad50",
+   "counts": {
+    "pass": 1
+   },
+   "tests": {
+    "TestCollaborationStageRoutesAreRegisteredAndEnablingStaysUnavailable": "pass"
+   }
+  },
+  "migrations": {
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-final-migrations.jsonl",
+   "log_sha256": "3590952207c86320f387621f889a44cca1705d3c9e0e4fc910a34e7ad3d5115e",
+   "counts": {
+    "pass": 1
+   },
+   "tests": {
+    "TestCollaborationStageMigrationsShapeGuardsAndRollback": "pass"
+   }
+  },
+  "migrate-runner": {
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-final-migrate-runner.jsonl",
+   "log_sha256": "284fdb83cdb3a52e59bcb60ab2eb48d1b14189f67fd5de7ed4b7ec6da22ad9cc",
+   "counts": {
+    "pass": 1
+   },
+   "tests": {
+    "TestCollaborationStageMigrationsRunnerUpgradeRefusalRollbackAndReupgrade": "pass"
+   }
+  },
+  "rules-race": {
+   "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-final-rules-race.jsonl",
+   "log_sha256": "22325ee835002a75351fc15f17852bc3f8024141c3abef94288e5a43ef4f4270",
+   "counts": {
+    "pass": 5
+   },
+   "tests": {
+    "TestStageRolesAllowExplicitOverlapButSeparateReviewAndRelease": "pass",
+    "TestStageProposalContentBoundsAndStableDigest": "pass",
+    "TestStageScopeStateNeedsExplicitCurrentConfirmation": "pass",
+    "TestStageChildExecutionOnlyGatesMachineOriginUnderManagedRoot": "pass",
+    "TestStageMachineCreationUsesVerifiedCredentialNotSelfReport": "pass"
+   }
+  }
+ },
+ "baseline": {
+  "service_named": 50,
+  "service_pass": 50,
+  "handler_named": 31,
+  "handler_pass": 31,
+  "source": "full package runs above"
+ },
+ "known_failures_not_from_this_increment": [
+  {
+   "test": "TestBatchUpdateIssues_AutopilotRunAssign (2 subtests)",
+   "evidence": "fails identically under the HEAD overlay; refusal is access_denied from the authorize step that runs before the stage gate"
+  },
+  {
+   "test": "TestWorkspaceDeletionManifestCoversPublicSchema",
+   "evidence": "after classifying the six stage tables only report_snapshot and report_snapshot_control remain unclassified; those tables belong to another task and already drift at HEAD"
+  }
+ ],
+ "deviations": [
+  "v1 proposal children carry title/description/priority only: unassigned, status todo, project inherited from the root (F04 \"责任/项目\" not carried in the proposal)",
+  "stage admission gates cover direct children of a managed root; deeper descendants keep ordinary behaviour",
+  "modify-accept is two explicit requests (revise by the approver, then accept that exact version)",
+  "policy service and all handler/router/migration/fault tests were written after their implementation: no first-failure log exists for them",
+  "scope confirmation already rechecks the signer participant/account generation; credential identity and expiry are not stored yet",
+  "whole-chain CLI migrate down was not run on the public schema"
+ ],
+ "not_verified": [
+  "DB-backed race runs (no race databases allocated in this dispatch)",
+  "password authentication mode for stage routes and the policy credential check",
+  "a real mat_ task token through the production router on stage routes",
+  "project move/clear/delete and root project change while a stage policy is enabled (increment 2)",
+  "completion/submission writers (increment 2)",
+  "notification kind compatibility with the current client",
+  "Web/Desktop",
+  "18 service and 53 handler pre-existing skips (Redis, Linux-only, P95) are unrelated and were not run"
+ ]
+}

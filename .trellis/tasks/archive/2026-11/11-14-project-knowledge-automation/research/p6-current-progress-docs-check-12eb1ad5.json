@@ -1,0 +1,346 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "created_at": "2026-11-15T13:02:22.682355+00:00",
+  "state": "PASS_CURRENT_PROGRESS_DOCS",
+  "scope": "Latest progress/spec Markdown links/fences, bash syntax only, task JSON/gate consistency and readonly already integrated narrow patch reverse checks",
+  "files": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "sha256_before": "d9d1e995f41d67fac0816c1610ac183c371713ce334fce8f46d0676718cc6fcd",
+      "sha256_after": "d9d1e995f41d67fac0816c1610ac183c371713ce334fce8f46d0676718cc6fcd"
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "sha256_before": "1ccee2f2c9a4f891618a7ce99de077a93bd71a645952fbc011eaa34691c93929",
+      "sha256_after": "1ccee2f2c9a4f891618a7ce99de077a93bd71a645952fbc011eaa34691c93929"
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime-usage.md",
+      "sha256_before": "63a70a058bcb6cd0cdb1798fef7a5ed0eb98081af31615a287b6652cd0c62ad6",
+      "sha256_after": "63a70a058bcb6cd0cdb1798fef7a5ed0eb98081af31615a287b6652cd0c62ad6"
+    },
+    {
+      "path": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "sha256_before": "bfbb84bf41649483b255af787eab0844c620efb84c772dcca47b8bf8cd1ac758",
+      "sha256_after": "bfbb84bf41649483b255af787eab0844c620efb84c772dcca47b8bf8cd1ac758"
+    },
+    {
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "sha256_before": "821acfdbdf300c2673672d270b394393d9506e7bdbe6e2d25cd19779098a90e4",
+      "sha256_after": "821acfdbdf300c2673672d270b394393d9506e7bdbe6e2d25cd19779098a90e4"
+    },
+    {
+      "path": ".trellis/spec/web/frontend/index.md",
+      "sha256_before": "1ffb7447bec59b3b959ccbddb11106385c837a7203e3518cfb9d5d6055550c6f",
+      "sha256_after": "1ffb7447bec59b3b959ccbddb11106385c837a7203e3518cfb9d5d6055550c6f"
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/task.json",
+      "sha256_before": "c365ebcb4688410a9083d66945f7334208a4a42f07d2a1f3dfeb0875b6ca0564",
+      "sha256_after": "c365ebcb4688410a9083d66945f7334208a4a42f07d2a1f3dfeb0875b6ca0564"
+    }
+  ],
+  "markdown": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "fences": 0,
+      "balanced": true
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "fences": 0,
+      "balanced": true
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime-usage.md",
+      "fences": 2,
+      "balanced": true
+    },
+    {
+      "path": "docs/plans/2026-11-15-pay-241-continuation.md",
+      "fences": 0,
+      "balanced": true
+    },
+    {
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "fences": 2,
+      "balanced": true
+    },
+    {
+      "path": ".trellis/spec/web/frontend/index.md",
+      "fences": 0,
+      "balanced": true
+    }
+  ],
+  "local_links": {
+    "checked": 31,
+    "results": [
+      {
+        "from": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+        "target": "../../11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+        "target": "../../11-13-pay-241-s2-stage-approvals/research/server-increment-2d-handler-router-check-r05.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-handler-router-check-r05.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+        "target": "../../11-13-pay-241-s2-stage-approvals/research/coordination-freeze-r05.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/coordination-freeze-r05.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-narrow-fixture-binding-b7dc8f78.json",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-narrow-fixture-binding-b7dc8f78.json",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/p6-password-managed-spec-check-52067d2e.json",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-password-managed-spec-check-52067d2e.json",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/pay241-current-normal-race-116-pass-observation-ef9fe50a.json",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/pay241-current-normal-race-116-pass-observation-ef9fe50a.json",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/pay241-owner-s2-running-and-final-binding-callback-718237a5.json",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/pay241-owner-s2-running-and-final-binding-callback-718237a5.json",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/pay241-owner-data-singleton-callback-6daea70e.json",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/pay241-owner-data-singleton-callback-6daea70e.json",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/final-acceptance-matrix-preflight-20261114.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/final-acceptance-matrix-preflight-20261114.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r05.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-handler-router-check-r05.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-handler-router-check-r05.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/coordination-freeze-r05.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/coordination-freeze-r05.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-resume-r05-results.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-resume-r05-results.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/continuation-validation-preflight-20261115.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/continuation-validation-preflight-20261115.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": "docs/plans/2026-11-15-pay-241-continuation.md",
+        "target": "../../.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/e2e-run-environment.md",
+        "target": "../../server/database-test-isolation.md#private-environment-registry-identity",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/database-test-isolation.md",
+        "exists": true,
+        "anchor_valid": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./directory-structure.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/directory-structure.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./component-guidelines.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/component-guidelines.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./hook-guidelines.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/hook-guidelines.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./state-management.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/state-management.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "../../core/frontend/global-scope-navigation.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/core/frontend/global-scope-navigation.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./quality-guidelines.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/quality-guidelines.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./type-safety.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/type-safety.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./agent-critical-path-ci.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/agent-critical-path-ci.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./e2e-run-environment.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/e2e-run-environment.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./collaboration-closure-qa.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/collaboration-closure-qa.md",
+        "exists": true,
+        "passed": true
+      },
+      {
+        "from": ".trellis/spec/web/frontend/index.md",
+        "target": "./collaboration-performance-qa.md",
+        "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/collaboration-performance-qa.md",
+        "exists": true,
+        "passed": true
+      }
+    ]
+  },
+  "shell_blocks": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime-usage.md",
+      "line": 15,
+      "language": "sh",
+      "exit_code": 0,
+      "stderr": ""
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime-usage.md",
+      "line": 29,
+      "language": "sh",
+      "exit_code": 0,
+      "stderr": ""
+    },
+    {
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "line": 12,
+      "language": "bash",
+      "exit_code": 0,
+      "stderr": ""
+    }
+  ],
+  "patch_checks": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-root-narrow-fixture-binding-b7dc8f78-password.patch",
+      "sha256": "25d0097ce90f6f93ccf957364adb0e1ee81541b4cd3ce035e6305298aca36e62",
+      "reverse_check_exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-root-narrow-fixture-binding-b7dc8f78-profile.patch",
+      "sha256": "832ee22f1663f5a55fc36ae63cad257ae7e7728b344379cf93f23dea0d89da70",
+      "reverse_check_exit": 0,
+      "stderr": ""
+    }
+  ],
+  "git_diff_check": {
+    "exit": 0,
+    "output": ""
+  },
+  "issues": [],
+  "stable": true,
+  "standalone_fixture_lint_pass_claimed": false,
+  "shared_root_final_acceptance_claimed": false,
+  "full_PAY_code_acceptance_claimed": false,
+  "product_checks_run_by_this_document_check": false,
+  "source_or_resource_mutations": false
+}

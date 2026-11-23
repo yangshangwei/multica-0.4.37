@@ -1,0 +1,23 @@
+{
+  "at": "2026-10-31T17:26:53.925676+00:00",
+  "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "source_tree_sha256": "e18295d0c892811870fb2f8d42572751288e26061f311ec157942553e4b6736b",
+  "command": [
+    "go",
+    "test",
+    "-overlay",
+    "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-final-review-gap-xmiosvbq/overlay.json",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestFinalReviewInvalidChunkMustNotRebaseSuffix$",
+    "-count=1",
+    "-timeout",
+    "30s",
+    "-v"
+  ],
+  "probe_source": "package collaborationrun\nimport(\"fmt\";\"strings\";\"testing\";\"github.com/multica-ai/multica/server/pkg/agent\";\"github.com/multica-ai/multica/server/pkg/protocol\")\nfunc TestFinalReviewInvalidChunkMustNotRebaseSuffix(t *testing.T){\n ledger:=newHostTestLedger(t);local:=registerHostTestRun(t,ledger);defer local.Close();hostTestPermit(t,local)\n supervisor:=&hostSupervisor{runner:&Runner{},local:local};record:=&hostRecording{}\n sender,err:=startHostCheckpoints(t.Context(),supervisor,record,1);if err!=nil{t.Fatal(err)}\n supervisor.mu.Lock()\n record.message(agent.Message{Type:agent.MessageToolUse,CallID:\"call\",Tool:strings.Repeat(\"n\",129),Input:map[string]any{}},&HostActivity{})\n for i:=1;i<32;i++{record.add(protocol.CollaborationRecordedMessage{Kind:\"message\",Role:\"assistant\",Body:fmt.Sprintf(\"original-ordinal-%d\",i)})}\n supervisor.mu.Unlock();sender.finish()\n rec:=local.record.Host.Recording\n for _,c:=range rec.Chunks{t.Logf(\"retained chunk seq=%d offset=%d count=%d first=%s\",c.Sequence,c.Offset,c.Count,c.Payload.Messages[0].Body)}\n if len(rec.Chunks)>0{t.Fatal(\"later queued messages were staged after an irrecoverable first chunk rejection\")}\n}",
+  "exit_code": 1,
+  "stdout": "=== RUN   TestFinalReviewInvalidChunkMustNotRebaseSuffix\n    zz_finalreview_gap_test.go:12: retained chunk seq=1 offset=0 count=16 first=original-ordinal-16\n    zz_finalreview_gap_test.go:13: later queued messages were staged after an irrecoverable first chunk rejection\n--- FAIL: TestFinalReviewInvalidChunkMustNotRebaseSuffix (0.06s)\nFAIL\nFAIL\tgithub.com/multica-ai/multica/server/internal/daemon/collaborationrun\t0.421s\nFAIL\n",
+  "stderr": "",
+  "execution_scope": "Temporary Go overlay; existing test-only ledger/permit fixtures; no database, Provider or product source edit."
+}

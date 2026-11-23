@@ -1,0 +1,30 @@
+{
+  "command": [
+    "python3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source_manifest.py",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/provenance-correction-v11/canonical-product-source-manifest.json"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"head\": \"304f74dd3ba4ddea862c94917c5bb0770355a351\", \"tree\": {\"server\": \"e8655555ac581b67f11baf61b82bb06db7a38e80\", \"apps\": \"ba60665b581dc6569d0beb2fb98ad975173dadb7\", \"packages\": \"a3bfe577dcbfb5fc44d50673b1c0dc92cc169ef9\"}, \"source_id\": \"4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb\", \"file_count\": 7962, \"dirty_product_paths\": []}\n",
+  "standard_script": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source_manifest.py",
+  "standard_script_sha256": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3",
+  "manifest_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/provenance-correction-v11/canonical-product-source-manifest.json",
+  "manifest_sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+  "canonical_product_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+  "canonical_file_count": 7962,
+  "ROOTS": [
+    "server",
+    "apps",
+    "packages",
+    "scripts",
+    "Makefile",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "method": "sha256 over sorted path NUL sha256 LF lines of tracked regular files under roots",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "clean": true,
+  "no_API_DB_provider_or_services": true
+}

@@ -1,0 +1,24 @@
+{
+  "product_semantics_unchanged": true,
+  "helper_body_byte_for_byte": true,
+  "snapshot_changes": [
+    {
+      "path": "server/internal/service/collaboration_command_history.go",
+      "sha256": "6ddc3e26ef0d06a449140e6638731cb9693660b38b1d78ccd83d3c0c860ff2be"
+    },
+    {
+      "path": "server/internal/service/collaboration_command_history_reason.go",
+      "sha256": "b015d70086ff0646cd3ca16ad4012e2d48b2dea15d9138a78754c46c8e0f5a1b"
+    },
+    {
+      "path": "server/internal/service/collaboration_command_history_reason_test.go",
+      "sha256": "3152071d3350f18099e924cd978067763b98dfbaa3e07c17ceb70523f17935ec"
+    },
+    {
+      "path": "server/internal/service/collaboration_command_history_test.go",
+      "sha256": "869196731ce555206557c1464a4495a1aad6bab3aed22994ba56fcedb16df976"
+    }
+  ],
+  "commit": "839a6606b",
+  "purpose": "Refresh task-owned API to exact post-extraction source while retaining frontend build"
+}

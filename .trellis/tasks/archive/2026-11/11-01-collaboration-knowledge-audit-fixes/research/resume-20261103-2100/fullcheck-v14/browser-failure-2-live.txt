@@ -1,0 +1,64 @@
+  2) [chromium] › e2e/collaboration-account-desktop.spec.ts:402:1 › Desktop child links, recorded pages and result notifications survive popouts and restart 
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('menuitem', { name: 'Remove parent issue', exact: true })
+
+
+       at fixtures/collaboration-records.ts:139
+
+      137 |   await page.getByRole("button", { name: "Issue actions", exact: true }).click();
+      138 |   await page.getByRole("menuitem", { name: "Relations", exact: true }).click();
+    > 139 |   await page.getByRole("menuitem", { name: "Remove parent issue", exact: true }).click();
+          |                                                                                  ^
+      140 | }
+      141 |
+      142 | export async function attachRecordedChild(page: Page, fixture: CollaborationRecordFixture) {
+        at detachRecordedChild (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-records.ts:139:82)
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-account-desktop.spec.ts:421:5
+
+    attachment #1: desktop-account-failure (image/png) ─────────────────────────────────────────────
+    test-results/collaboration-account-desk-fcee6-survive-popouts-and-restart-chromium/attachments/desktop-account-failure-63efc49c5272099ac1d848de2a305cf70c1d4768.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: desktop-account-failure-text (text/plain) ───────────────────────────────────────
+    Workspaces
+    Collaboration
+    Toggle left sidebar
+    R
+    Record source workspace
+    Search...
+    K
+    New Issue
+    C
+    Inbox
+    My Issues
+    Chat
+    Work
+    Workspace issues
+    Projects
+    Iterations
+    Triage
+    0
+    AI Team
+    Agents
+    Squads
+    Autopilot
+    Resources & connections
+    Skills
+    MCP
+    Capability market
+    Runtimes
+    Analytics
+    Settings
+    RECO-2: Ordinary chi...
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:77284) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:77284) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+

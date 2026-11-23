@@ -1,0 +1,21 @@
+{
+  "score": 99,
+  "verdict": "pass",
+  "category_match": true,
+  "differences": [
+    "Current screenshot layout matches the retained narrow control result; DOM bottom measures844.25 CSSpx against844 viewport due fractional scroll rounding."
+  ],
+  "suggestions": [
+    "Center the bounded control-result section explicitly inside the scroll root before capture, retaining strict visible bounds rather than loosening assertions."
+  ],
+  "reasoning": "Both screenshots show the complete three-lane termination result with consistent type and spacing. The failure is fractional placement at the viewport boundary in the test capture, requiring deterministic positioning.",
+  "reference_images": [
+    ".omx/reports/cwc-gap-recovery-20261021/continuation-controls-web-v5/collaboration-control-jour-ecacb-es-and-stop-the-whole-issue-chromium/control-stopped-all-narrow.png"
+  ],
+  "generated_screenshot": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-gap-resume-20261022-zkx9kfqv/control-current-artifacts/collaboration-control-jour-ecacb-es-and-stop-the-whole-issue-chromium/test-failed-1.png",
+  "threshold": 90,
+  "next_actions": [
+    "Update test-only capture to center its own visible result; rerun exact four controls; no product/layout edit."
+  ],
+  "at": "2026-10-21T23:44:36.981130+00:00"
+}

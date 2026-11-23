@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_stage_rollback_observation_content_idx ON collaboration_stage_rollback_observation (stream_key, native_version, observation_digest);

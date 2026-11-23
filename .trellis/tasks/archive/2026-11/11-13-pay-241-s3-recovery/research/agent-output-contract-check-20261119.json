@@ -1,0 +1,480 @@
+{
+  "report_version": 1,
+  "at": "2026-11-19T05:32:39.473886+00:00",
+  "agent_role": "trellis-check",
+  "agent_task": "/root/output_contract_check",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "disposition": "PLANNING_CONTRACT_PASS_AFTER_MAIN_ACCEPTED_CORRECTIONS",
+  "code_acceptance": false,
+  "test_acceptance": false,
+  "current_client_acceptance": false,
+  "full_s3_acceptance": false,
+  "open_product_decisions": 0,
+  "implementation_required": true,
+  "markdown": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/agent-output-contract-check-20261119.md",
+  "markdown_sha256": "6a2b9539ba8fc4b5e727f1af7a89a53a483f6a808863c5ca5bf62b1a5134bd19",
+  "native_hook_path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/hook_outputs/01a1f23f-1c4e-7331-9a8f-08d91fe253f9/d43f98a4-2fdb-465d-a18c-1f1a092d0c97.txt",
+  "native_hook_sha256": "a6233a8d28a576a9415f9eb6f49283517f159eca2a86cfa0dde1665481e9a919",
+  "allocation_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/agent-output-allocation-20261119-r01.json",
+  "allocation_sha256": "578c6981185f07ae0173f252bc2d419420e130f07b253e41f95b1995a1dcdf15",
+  "allocated_base_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-base-r01",
+  "allocation_source_file_count": 5076,
+  "allocation_full_inventory_recertified_by_this_review": false,
+  "named_server_files_compared": 17,
+  "named_server_files_matching_base": 17,
+  "server_source_evidence": [
+    {
+      "path": "server/internal/service/collaboration_squad.go",
+      "sha256": "a2f790d7afcf6c678292832ebe9ff15d8db2a5759455c1fedc2288a31b880c71",
+      "base_sha256": "a2f790d7afcf6c678292832ebe9ff15d8db2a5759455c1fedc2288a31b880c71",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "sha256": "cac2866b400b27010cddc3f48b4a1a3b9d7cab7ec5c40a66d729478183a07614",
+      "base_sha256": "cac2866b400b27010cddc3f48b4a1a3b9d7cab7ec5c40a66d729478183a07614",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/service/collaboration_attachments.go",
+      "sha256": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+      "base_sha256": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_preparation.go",
+      "sha256": "ab064e11e61320eb8ce62573226f9a2eebede36d4103652f2ecb63a8716c1227",
+      "base_sha256": "ab064e11e61320eb8ce62573226f9a2eebede36d4103652f2ecb63a8716c1227",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/service/collaboration_checkpoints.go",
+      "sha256": "7bd01f667e6bc2fc9e3c4e67a64741c8b4b7df41c8b2f01db4198ec18e3b182f",
+      "base_sha256": "7bd01f667e6bc2fc9e3c4e67a64741c8b4b7df41c8b2f01db4198ec18e3b182f",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/service/collaboration_records.go",
+      "sha256": "943c7a80c9cbc66e97da9b42fc6a7ca03590e59bf0dacf476ea64b4cac9c5e10",
+      "base_sha256": "943c7a80c9cbc66e97da9b42fc6a7ca03590e59bf0dacf476ea64b4cac9c5e10",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "sha256": "3a5f0168d469627b7d4b61358203b0a97b7858406dd471ad157bcdc6d4ecdf80",
+      "base_sha256": "3a5f0168d469627b7d4b61358203b0a97b7858406dd471ad157bcdc6d4ecdf80",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report.go",
+      "sha256": "fe59a237b93eb3b72a94faf784544cb760df167a3572efffb7f6b4fd18810437",
+      "base_sha256": "fe59a237b93eb3b72a94faf784544cb760df167a3572efffb7f6b4fd18810437",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "base_sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime_business.go",
+      "sha256": "a242b33893903ff1c24c6ce7362c345522e6d7b09df96d3686da677a77486efb",
+      "base_sha256": "a242b33893903ff1c24c6ce7362c345522e6d7b09df96d3686da677a77486efb",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime_preparation.go",
+      "sha256": "2f7a5a238bb8137d8fd08ff542991fae44f79998fb3280919c8b47dd2a88bd1f",
+      "base_sha256": "2f7a5a238bb8137d8fd08ff542991fae44f79998fb3280919c8b47dd2a88bd1f",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/handler/collaboration_attachments.go",
+      "sha256": "02a5bbbaa005a7690ef84d3ac76f76be923380f12ad172b39c9646b3cf79a1a3",
+      "base_sha256": "02a5bbbaa005a7690ef84d3ac76f76be923380f12ad172b39c9646b3cf79a1a3",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/internal/cli/collaboration.go",
+      "sha256": "127ad16d7b9e2288e934b9e0dbdda6b5ceaac65e6ab23e56a7f821db5dd773b4",
+      "base_sha256": "127ad16d7b9e2288e934b9e0dbdda6b5ceaac65e6ab23e56a7f821db5dd773b4",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/cmd/multica/cmd_collaboration.go",
+      "sha256": "6aa066fa82508e2cf7590972c0ee7c35b29bdc99d352635bb84bbe68ab32c71e",
+      "base_sha256": "6aa066fa82508e2cf7590972c0ee7c35b29bdc99d352635bb84bbe68ab32c71e",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/cmd/multica/cmd_issue.go",
+      "sha256": "193bcb6a2a8519d767f00bab779333ae88acd6a70b05ac7090459d27a719cc59",
+      "base_sha256": "193bcb6a2a8519d767f00bab779333ae88acd6a70b05ac7090459d27a719cc59",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/pkg/protocol/collaboration.go",
+      "sha256": "261485f959840a638ace1f0260141ce6fbb6432be6b3cdb97d9115fadf5dd4ee",
+      "base_sha256": "261485f959840a638ace1f0260141ce6fbb6432be6b3cdb97d9115fadf5dd4ee",
+      "root_equals_allocated_base": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_attachments.sql",
+      "sha256": "76b0b8e90767596fccae049db23d24b02237d8c6550d32020958c0919ca18364",
+      "base_sha256": "76b0b8e90767596fccae049db23d24b02237d8c6550d32020958c0919ca18364",
+      "root_equals_allocated_base": true
+    }
+  ],
+  "additional_evidence": [
+    {
+      "path": "CLAUDE.md",
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed"
+    },
+    {
+      "path": ".agents/skills/trellis-check/SKILL.md",
+      "sha256": "dfb0600e95c19c7a83200465b6a92a5514ec9778ba4083efa881bed541cc74a8"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/prd.md",
+      "sha256": "25b23da4e9257f265103f5bdfab2f4afc05587995c356ae519ad4eeabb765297"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/design.md",
+      "sha256": "949eb4263e91a26e8114a924dce6f41b459cdc87fb243875b274e3592dea7957"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/implement.md",
+      "sha256": "1ea5e511e99d874b00346342dd54a92b23bdbfcb6978180aa75b093a936ce647"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/check.jsonl",
+      "sha256": "ff6bf60cfa06c86fcf7942547738a5fa8c875d210a0984d01d4b211c471e7da7"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-content.md",
+      "sha256": "637c2911ceb9d3713ee79e3c2b3ff92227dbbeae6ebc51a37cebcb803bf9416e"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-runtime-recovery.md",
+      "sha256": "567d1503719db0bc04e04480d292b18c1b700a4cfeed53c47ef5df64d4b5b064"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-command-history.md",
+      "sha256": "ada35ce0d66562fc57eca2a44a257d40807e99f43b97d11ab55f8404c25655c9"
+    },
+    {
+      "path": ".trellis/spec/core/frontend/collaboration-workbench.md",
+      "sha256": "1246539800787b057417b536162ceb34ae24dfc69f34d563f5e4226c25e6dd2e"
+    },
+    {
+      "path": ".trellis/spec/views/frontend/collaboration-detail.md",
+      "sha256": "e22ebc719859105987954568397721a74e50599691a1e77d538c86d8deee1cde"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_preparation_capabilities.go",
+      "sha256": "e625a0286ff4e7f468f956145a149727b2c1836399d0afdeadc72320215f14b9"
+    },
+    {
+      "path": "server/internal/service/collaboration_mentions.go",
+      "sha256": "a20b671c1541c93f808881950e387302c5af1e33269c7f98b034fb5d93c2add1"
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime.go",
+      "sha256": "fcbe586428d83a9e47545ddfe9a34cc3b3ac4e157f5151dd9de32a1061e97628"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_preparation.go",
+      "sha256": "8b897ba497b013c0ca47eeb2b82658cfa425bdb3c3dcfcd90120d716879e3c2f"
+    },
+    {
+      "path": "server/internal/service/collaboration_host_runtime.go",
+      "sha256": "2c5b44b5f3d1a58064b38f8b682e9761fddfcd212f8cca3a710d5f892814936f"
+    },
+    {
+      "path": "server/migrations/571_collaboration_schema.up.sql",
+      "sha256": "d799d35327b530b72fd366354bcb9c8fac9c63d748faa1a0bffd461f7dc61b5f"
+    },
+    {
+      "path": "server/migrations/727_collaboration_attachment_delivery.up.sql",
+      "sha256": "98827e20c08cc8dbc9ac1e74076ab22a5b07149deb64b4bffa7a36bb526c71df"
+    },
+    {
+      "path": "server/migrations/727_collaboration_attachment_delivery.down.sql",
+      "sha256": "90aaca14e43f17cf7c7964e6ba34866499faea5a75b435cebcf44ca66e2421ec"
+    },
+    {
+      "path": "server/migrations/728_collaboration_attachment_upload_request.up.sql",
+      "sha256": "d5e93b25dc85ce86f2cb2c62a09fb1f611d9b4f5d31585ea30900132fe1ebcb5"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_squad.sql",
+      "sha256": "f36357d7156c7bf1a6f55eaee64f569f5e8e14c6d052f42243e601f48d606af2"
+    },
+    {
+      "path": "packages/core/collaboration/attachment-schema.ts",
+      "sha256": "5bf13062dcc770dda0cc8691f3e8728802968b8c714c206df4b4bd6ca451db64"
+    },
+    {
+      "path": "packages/core/collaboration/run-records-schema.ts",
+      "sha256": "08cd19d4e7c12ea0af057f6dfc96aaf82daebc0477f07d5a548f260bac3d3152"
+    },
+    {
+      "path": "packages/core/collaboration/content-schema.ts",
+      "sha256": "7f83b682b18066c66171aa188b4d1590d66894d2a4a213d8adc0590e7fc04dcb"
+    },
+    {
+      "path": "packages/views/collaboration/attachment-panel.tsx",
+      "sha256": "6a1e6b1100c958a4d2d01683d24c10c9fd504c065116977509c6f9f6efcd4f20"
+    },
+    {
+      "path": "packages/views/collaboration/run-records.tsx",
+      "sha256": "8453df243b24c976b84a075a11c7a0fff08b3f84e0b99d8bf79c8293333d5ce8"
+    }
+  ],
+  "findings_fixed_in_code": [],
+  "findings_not_fixed_in_code": [
+    {
+      "id": "C01",
+      "title": "All stored outcome consumers need one decoder",
+      "status": "CORRECTION_ACCEPTED_BY_MAIN_IMPLEMENTATION_PENDING",
+      "fixed_in_code": false,
+      "references": [
+        {
+          "path": "server/internal/service/collaboration_runtime_capabilities.go",
+          "line": 567
+        },
+        {
+          "path": "server/internal/service/collaboration_checkpoints.go",
+          "line": 80
+        },
+        {
+          "path": "server/internal/service/collaboration_test_report.go",
+          "line": 283
+        },
+        {
+          "path": "server/internal/service/collaboration_records.go",
+          "line": 299
+        },
+        {
+          "path": "server/internal/service/collaboration_records.go",
+          "line": 411
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime_handoff.go",
+          "line": 446
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime_preparation_capabilities.go",
+          "line": 24
+        }
+      ],
+      "correction": "One internal flat stored-payload decoder separates original CollaborationRunOutcome from optional server-owned output_attachment_ids; all consumers use it; ACK compares the entire original request only; incoming wire and Provider/Runner/ledger stay unchanged.",
+      "why_not_fixed": "Report-only initial review ownership; Main accepted private Go scope extension."
+    },
+    {
+      "id": "C02",
+      "title": "JSON and multipart must not alias one comment event",
+      "status": "CORRECTION_ACCEPTED_BY_MAIN_IMPLEMENTATION_PENDING",
+      "fixed_in_code": false,
+      "references": [
+        {
+          "path": "server/internal/service/collaboration_squad.go",
+          "line": 20
+        },
+        {
+          "path": "server/internal/service/collaboration_squad.go",
+          "line": 234
+        },
+        {
+          "path": "server/internal/service/collaboration_squad.go",
+          "line": 236
+        },
+        {
+          "path": "server/internal/service/collaboration_squad.go",
+          "line": 252
+        }
+      ],
+      "correction": "Preserve comment:<UUID>, distinguish old no-file input from multipart fingerprint/current-attempt input, return correlated file identity, and borrow one locked writer for the atomic file/ref/comment/receipt/original notification and squad effects.",
+      "why_not_fixed": "Shared writer and stored event format are private implementation responsibilities outside this phase."
+    },
+    {
+      "id": "C03",
+      "title": "Real Agent rows need end-to-end validator/schema/rendering changes",
+      "status": "CORRECTION_ACCEPTED_BY_MAIN_IMPLEMENTATION_PENDING",
+      "fixed_in_code": false,
+      "references": [
+        {
+          "path": "server/migrations/571_collaboration_schema.up.sql",
+          "line": 165
+        },
+        {
+          "path": "server/migrations/727_collaboration_attachment_delivery.up.sql",
+          "line": 11
+        },
+        {
+          "path": "server/internal/service/collaboration_attachments.go",
+          "line": 267
+        },
+        {
+          "path": "packages/core/collaboration/attachment-schema.ts",
+          "line": 9
+        },
+        {
+          "path": "packages/core/collaboration/run-records-schema.ts",
+          "line": 26
+        },
+        {
+          "path": "packages/views/collaboration/run-records.tsx",
+          "line": 191
+        }
+      ],
+      "correction": "Exact human/Agent nullable provenance union in DDL and shared stored validator, minimal metadata projection and Core parsing, bounded optional output refs in records, and existing shared attachment renderer for results; no invented human uploader/draft.",
+      "why_not_fixed": "Main owns migration/SQL/generated model and later current-client Core/Views allocation."
+    },
+    {
+      "id": "C04",
+      "title": "Bound committed outputs by run and current attempt",
+      "status": "CORRECTION_ACCEPTED_BY_MAIN_IMPLEMENTATION_PENDING",
+      "fixed_in_code": false,
+      "references": [
+        {
+          "path": "server/internal/service/collaboration_attachments.go",
+          "line": 30
+        },
+        {
+          "path": "server/internal/service/collaboration_attachments.go",
+          "line": 455
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime_preparation.go",
+          "line": 20
+        }
+      ],
+      "correction": "At most32 committed outputs for exact run/current attempt under existing run locks; replay consumes no capacity; refuse unique33; freeze complete deterministic <=32 IDs without truncation; do not cap whole issue history.",
+      "why_not_fixed": "Accepted finite bound still needs private SQL/writer/decoder implementation and tests."
+    },
+    {
+      "id": "C05",
+      "title": "Use a bounded strict single-file runtime CLI path",
+      "status": "CORRECTION_ACCEPTED_BY_MAIN_IMPLEMENTATION_PENDING",
+      "fixed_in_code": false,
+      "references": [
+        {
+          "path": "server/cmd/multica/cmd_collaboration.go",
+          "line": 49
+        },
+        {
+          "path": "server/cmd/multica/cmd_collaboration.go",
+          "line": 194
+        },
+        {
+          "path": "server/cmd/multica/cmd_issue.go",
+          "line": 141
+        },
+        {
+          "path": "server/cmd/multica/cmd_issue.go",
+          "line": 1113
+        },
+        {
+          "path": "server/internal/cli/collaboration.go",
+          "line": 19
+        },
+        {
+          "path": "server/internal/daemon/collaborationrun/host_preparation.go",
+          "line": 297
+        }
+      ],
+      "correction": "Exactly one regular local file read bounded to100MiB through invocation CWD root; refuse URL/multiple/special/escape paths and allow-external/profile overrides; one original-key multipart POST with typed file receipt validation; preserve unknown intent; no journal/automatic retry/new key.",
+      "why_not_fixed": "Report-only scope, no CLI/runtime write ownership.",
+      "accepted_containment_boundary": "Process invocation CWD, not an immutable admitted run root or OS sandbox."
+    }
+  ],
+  "accepted_existing_paths": {
+    "current_authority": [
+      "server/internal/service/collaboration_squad.go:88",
+      "server/internal/service/collaboration_runtime.go:116",
+      "server/internal/service/collaboration_runtime.go:227",
+      "server/internal/service/collaboration_runtime.go:336"
+    ],
+    "input_reader_preserved_with_exact_own_output_branch": [
+      "server/internal/service/collaboration_runtime_preparation.go:517",
+      "server/internal/handler/collaboration_runtime_preparation.go:89"
+    ],
+    "after_storage_read_authority": [
+      "server/internal/handler/collaboration_runtime_preparation.go:96",
+      "server/internal/handler/collaboration_attachments.go:295"
+    ],
+    "unknown_commit_marker": "server/internal/service/collaboration_runtime.go:440",
+    "ciphertext_and_digest_read": "server/internal/service/collaboration_attachments.go:419",
+    "squad_business_outcome_fence": "server/internal/service/collaboration_squad.go:419",
+    "old_original_outcome_ack": "server/internal/service/collaboration_runtime_capabilities.go:534"
+  },
+  "finite_obligations": [
+    {
+      "id": "O01",
+      "status": "NOT_EXECUTED_IN_THIS_REVIEW",
+      "proof": "Actual route, true Agent/run/current attempt, immutable fingerprint, ciphertext/plaintext/ref/comment/result identities, old effects, and spoof/extra-file denials."
+    },
+    {
+      "id": "O02",
+      "status": "NOT_EXECUTED_IN_THIS_REVIEW",
+      "proof": "Committed response unknown then original same-token/key/file recovery with one persistent winner and retained unknown evidence."
+    },
+    {
+      "id": "O03",
+      "status": "NOT_EXECUTED_IN_THIS_REVIEW",
+      "proof": "Deterministic same-key/same-byte concurrent requests, both receipts reconciled, unique winner and exact losing object deletion."
+    },
+    {
+      "id": "O04",
+      "status": "NOT_EXECUTED_IN_THIS_REVIEW",
+      "proof": "Different bytes/metadata/body/parent and JSON/multipart in both orders conflict without altering winner; newer attempt reuse cannot reattribute."
+    },
+    {
+      "id": "O05",
+      "status": "NOT_EXECUTED_IN_THIS_REVIEW",
+      "proof": "Required-write rollback, own-object cleanup, RuntimeCommitError-only uncertain retention and per-callback ownership reset."
+    },
+    {
+      "id": "O06",
+      "status": "NOT_EXECUTED_IN_THIS_REVIEW",
+      "proof": "Slow storage plus actual withdrawal; original replay and runtime/human/indirect reads deny under lost authority; slow byte read rechecks before plaintext."
+    },
+    {
+      "id": "O07",
+      "status": "NOT_EXECUTED_IN_THIS_REVIEW",
+      "proof": "Stop/settlement/stale attempt/late output rejection, immutable old failure, content-free outcome ACK, explicit new run and zero recovery launch."
+    },
+    {
+      "id": "O08",
+      "status": "NOT_EXECUTED_IN_THIS_REVIEW",
+      "proof": "Output/outcome commit ordering, exact frozen current-attempt<=32 refs,33 denial/no truncation, complete original ACK/legacy absence/malformed extension and all consumer controls."
+    },
+    {
+      "id": "O09",
+      "status": "NOT_EXECUTED_IN_THIS_REVIEW",
+      "proof": "Bound actual runtime CLI, strict CWD regular-file/identity/size/error boundaries and typed/unknown receipt preservation through controlled Provider."
+    }
+  ],
+  "verification": {
+    "source_inspection": "COMPLETED_FOR_NAMED_CONTRACT_PATHS",
+    "lint": "NOT_RUN_REPORT_ONLY_PHASE",
+    "typecheck": "NOT_RUN_REPORT_ONLY_PHASE",
+    "tests": "NOT_RUN_NO_CODE_DB_TEST_RUNTIME_EXECUTION_OWNERSHIP",
+    "report_json_parse": "PASS"
+  },
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/agent-output-contract-check-20261119.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/agent-output-contract-check-20261119.json"
+  ],
+  "code_db_tests_runtime_git_task_spec_changed": false,
+  "simplifications_made": [],
+  "remaining_risks": [
+    "Implementation and O01-O09 proof pending.",
+    "Fresh matching production Web/Desktop controlled Provider output evidence pending.",
+    "Older installed schemas may report Agent-containing attachments unavailable; current-client output display is not established by this planning review.",
+    "Previously accepted unrelated S3 scopes and retained failures are not replaced or reaccepted here."
+  ]
+}

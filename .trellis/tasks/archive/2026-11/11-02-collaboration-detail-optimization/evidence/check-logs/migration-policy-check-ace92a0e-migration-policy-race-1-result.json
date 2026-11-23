@@ -1,0 +1,43 @@
+{
+  "database": "multica_detail_migration_policy_20261103_ace92a0e",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-race",
+    "-p",
+    "2",
+    "-parallel",
+    "2",
+    "-count=1",
+    "-timeout",
+    "90s",
+    "./internal/migrations",
+    "-run",
+    "^TestCollaborationAIPolicyMigrationPreservesDefaultAndGuardsDowngrade$"
+  ],
+  "exit_code": 0,
+  "raw_log": "/tmp/multica-detail-verification-20261103/migration-policy-check-ace92a0e/migration-policy-race-1.jsonl",
+  "named": {
+    "run": [
+      "TestCollaborationAIPolicyMigrationPreservesDefaultAndGuardsDowngrade",
+      "TestCollaborationAIPolicyMigrationPreservesDefaultAndGuardsDowngrade/unknown",
+      "TestCollaborationAIPolicyMigrationPreservesDefaultAndGuardsDowngrade/empty",
+      "TestCollaborationAIPolicyMigrationPreservesDefaultAndGuardsDowngrade/null"
+    ],
+    "pass": [
+      "TestCollaborationAIPolicyMigrationPreservesDefaultAndGuardsDowngrade/unknown",
+      "TestCollaborationAIPolicyMigrationPreservesDefaultAndGuardsDowngrade/empty",
+      "TestCollaborationAIPolicyMigrationPreservesDefaultAndGuardsDowngrade/null",
+      "TestCollaborationAIPolicyMigrationPreservesDefaultAndGuardsDowngrade"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "test_sha256": "5265ac5a954aa8ac71de8ff5f0cbacf1cc2367014ebe05979f160de441d84257"
+}

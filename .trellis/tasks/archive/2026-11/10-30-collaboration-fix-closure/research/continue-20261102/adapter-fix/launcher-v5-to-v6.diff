@@ -1,0 +1,194 @@
+--- run-make-check.py
++++ run-make-check-v6.py
+@@ -1,43 +1,149 @@
+-import datetime, hashlib, json, os, subprocess
++import datetime
++import hashlib
++import json
++import os
+ from pathlib import Path
+-root=Path(__file__).resolve().parents[3]
+-assert root==Path("/Volumes/artisan/code/2026/mc-collaboration-final4-20261102")
+-out=root/".omx/private/final-candidate"
+-record_path=out/"make-check.json"
+-assert not record_path.exists(), "Never overwrite previous check evidence"
+-head=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
+-assert not subprocess.check_output(["git","status","--porcelain"],cwd=root,text=True).strip(), "Final candidate must start clean"
+-clearance_path=out/"independent-review-clearance.json"
+-assert clearance_path.is_file(), "Pending independent v5 and current RKI6 result review; do not start full check"
+-clearance=json.loads(clearance_path.read_text())
+-assert clearance.get("verdict") in ("pass", "pass-with-notes") and clearance.get("blocking_findings_open")==0
+-assert clearance.get("adapter_sha256")=={'go': '2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943', 'pnpm': '7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48'}
+-source=out/"check-source.env"
+-loaded=subprocess.check_output(["bash","-c",'set -a; . "$1"; env -0',"trusted-check-env",str(source)])
+-env=dict(p.decode().split("=",1) for p in loaded.split(b"\0") if b"=" in p)
+-for key in list(env):
+-    if key.startswith(("MULTICA_TASK_","GIT_CONFIG_")) or key in ("MULTICA_TOKEN","MULTICA_SERVER_URL","MULTICA_WORKSPACE_ID","MULTICA_AGENT_ID","MULTICA_AGENT_NAME","MULTICA_RUN_REAL_AGENT_SMOKE","ELECTRON_RUN_AS_NODE"):
+-        env.pop(key,None)
+-assert not env.get("MULTICA_LLM_API_KEY") and not env.get("MULTICA_LLM_BASE_URL")
+-adapters=Path("/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin")
+-env.update(PATH=str(adapters)+":/opt/homebrew/opt/libpq/bin:"+env["PATH"], MULTICA_TASK_REAL_GO="/opt/homebrew/bin/go", MULTICA_TASK_REAL_PNPM="/opt/homebrew/bin/pnpm", MULTICA_TASK_PSQL="/opt/homebrew/opt/libpq/bin/psql", MULTICA_TASK_PACKAGE_DB_MODE="1", MULTICA_TASK_PACKAGE_DB_EVIDENCE=str(out/"go-packages"), MULTICA_TASK_CANDIDATE_ROOT=str(root), MULTICA_TASK_RENDERER_URL="http://127.0.0.1:19844", MULTICA_DEV_HOME=str(out/"dev-registry"), MULTICA_DEV_TMPDIR='/private/tmp/multica-final-check4-yxg6alb4', MULTICA_DEV_PROFILES_HOME=str(out/"profiles"), MULTICA_DEV_WORKSPACES_PARENT=str(out/"workspaces"), NEXT_TELEMETRY_DISABLED="1")
+-env.update(GOPROXY="file:///Users/artisan/go/pkg/mod/cache/download", GOSUMDB="off", GOTOOLCHAIN="local")
+-env.update(DATABASE_MAX_CONNS="10",DATABASE_MIN_CONNS="1",ENV_FILE=str(source))
+-allocation=json.loads((out/"build-temp-allocation.json").read_text())
+-task_temp=Path(env["MULTICA_DEV_TMPDIR"])
+-assert str(task_temp)==allocation["directory"] and str(task_temp).startswith("/private/tmp/multica-final-check4-")
+-assert task_temp.is_dir() and task_temp.stat().st_uid==os.geteuid() and task_temp.stat().st_mode & 0o777==0o700
+-assert subprocess.run(["git","-C",str(task_temp),"rev-parse","--show-toplevel"],env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE).returncode != 0, "Build TMPDIR must be outside every Git worktree"
+-assert env["COLLABORATION_ELECTRON_RENDERER_URL"]==env["MULTICA_TASK_RENDERER_URL"]
+-assert env["CHANGELOG_ELECTRON_RENDERER_URL"]==env["MULTICA_TASK_RENDERER_URL"]
+-command=["make","check","ENV_FILE="+str(source)]
+-record={"candidate_sha":head,"candidate_root":str(root),"command":["make","check","ENV_FILE=<private task source env>"],"adapter_sha256":{n:hashlib.sha256((adapters/n).read_bytes()).hexdigest() for n in ("go","pnpm")},"source_env_sha256":hashlib.sha256(source.read_bytes()).hexdigest(),"database_policy":"a separate newly migrated task clone per Go package; never business default; package databases and failures retained","renderer":"same-candidate separately built production renderer at127.0.0.1:19844","knowledge_default":False,"real_provider_allowed":False,"build_temp_directory":str(task_temp),"build_temp_git_root_absent":True,"state":"running","started_at":datetime.datetime.now(datetime.timezone.utc).isoformat()}
+-with (out/"make-check.log").open("w") as sink:
+-    process=subprocess.Popen(command,cwd=root,env=env,stdout=sink,stderr=subprocess.STDOUT)
+-    record["process_id"]=process.pid
+-    record_path.write_text(json.dumps(record,indent=2)+"\n")
+-    code=process.wait()
+-record.update(state="complete",exit_code=code,finished_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),log_sha256=hashlib.sha256((out/"make-check.log").read_bytes()).hexdigest())
+-record_path.write_text(json.dumps(record,indent=2)+"\n")
+-print(json.dumps(record))
+-raise SystemExit(code)
++import re
++import shlex
++import subprocess
++from urllib.parse import urlsplit
++
++
++EXPECTED_ROOT = Path("/Volumes/artisan/code/2026/mc-collaboration-final4-20261102")
++ADAPTERS = Path("/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin")
++
++
++def require(condition, message):
++    if not condition:
++        raise RuntimeError(message)
++
++
++def sha256(data):
++    return hashlib.sha256(data).hexdigest()
++
++
++def parse_generated_environment(source):
++    values = {}
++    for number, line in enumerate(source.splitlines(), 1):
++        if not line.strip() or line.lstrip().startswith("#"):
++            continue
++        key, separator, raw = line.partition("=")
++        require(separator and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", key), "Invalid task environment assignment")
++        require("$(" not in raw and "`" not in raw, "Task environment command substitution is forbidden")
++        try:
++            tokens = shlex.split(raw, posix=True)
++        except ValueError:
++            raise RuntimeError("Invalid task environment value at line " + str(number)) from None
++        require(len(tokens) <= 1, "Task environment value requires generated quoting")
++        values[key] = tokens[0] if tokens else ""
++    return values
++
++
++def renderer_url(values):
++    raw = values.get("COLLABORATION_ELECTRON_RENDERER_URL", "")
++    require(raw == values.get("CHANGELOG_ELECTRON_RENDERER_URL") and raw, "Task renderer URLs must agree")
++    try:
++        url = urlsplit(raw)
++        valid = (url.scheme in ("http", "https") and url.hostname in ("127.0.0.1", "localhost", "::1")
++                 and url.username is None and url.password is None and url.port != 0)
++    except ValueError:
++        valid = False
++    require(valid, "Task renderer URL requires credential-free loopback HTTP(S)")
++    return raw
++
++
++def main():
++    launcher = Path(__file__).resolve()
++    root = launcher.parents[3]
++    require(root == EXPECTED_ROOT, "Unexpected candidate checkout")
++    out = root / ".omx/private/final-candidate"
++    record_path = out / "make-check-v6.json"
++    log_path = out / "make-check-v6.log"
++    safe_source = out / "check-source-v6.safe.env"
++    require(not record_path.exists() and not log_path.exists() and not safe_source.exists(), "Never overwrite previous check evidence")
++    head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
++    require(not subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip(), "Final candidate must start clean")
++    clearance_path = out / "independent-review-clearance-v6.json"
++    require(clearance_path.is_file(), "Pending independent v6 and current RKI6 result review")
++    clearance = json.loads(clearance_path.read_text())
++    require(clearance.get("verdict") in ("pass", "pass-with-notes") and clearance.get("blocking_findings_open") == 0,
++            "Independent review has open blocking findings")
++    source = out / "check-source.env"
++    source_bytes = source.read_bytes()
++    adapter_hashes = {name: sha256((ADAPTERS / name).read_bytes()) for name in ("go", "pnpm")}
++    launcher_hash = sha256(launcher.read_bytes())
++    source_hash = sha256(source_bytes)
++    require(clearance.get("candidate_sha") == head, "Candidate differs from independent review")
++    require(clearance.get("adapter_sha256") == adapter_hashes, "Actual adapter differs from independent review")
++    require(clearance.get("launcher_sha256") == launcher_hash, "Actual launcher differs from independent review")
++    require(clearance.get("source_env_sha256") == source_hash, "Actual source configuration differs from independent review")
++
++    # Parse the reviewed source as data. The unchanged make scripts receive a
++    # canonical, shell-quoted copy, never the original unparsed dotenv bytes.
++    values = parse_generated_environment(source_bytes.decode())
++    renderer = renderer_url(values)
++    env = {**os.environ, **values}
++    for key in list(env):
++        if key.startswith(("MULTICA_TASK_", "GIT_CONFIG_")) or key in (
++            "MULTICA_TOKEN", "MULTICA_SERVER_URL", "MULTICA_WORKSPACE_ID", "MULTICA_AGENT_ID",
++            "MULTICA_AGENT_NAME", "MULTICA_RUN_REAL_AGENT_SMOKE", "ELECTRON_RUN_AS_NODE",
++        ):
++            env.pop(key, None)
++            values.pop(key, None)
++    require(not env.get("MULTICA_LLM_API_KEY") and not env.get("MULTICA_LLM_BASE_URL"), "External model configuration is forbidden")
++    values.update(DATABASE_MAX_CONNS="10", DATABASE_MIN_CONNS="1")
++    env.update(
++        PATH=str(ADAPTERS) + ":/opt/homebrew/opt/libpq/bin:" + env["PATH"],
++        MULTICA_TASK_REAL_GO="/opt/homebrew/bin/go", MULTICA_TASK_REAL_PNPM="/opt/homebrew/bin/pnpm",
++        MULTICA_TASK_PSQL="/opt/homebrew/opt/libpq/bin/psql", MULTICA_TASK_PACKAGE_DB_MODE="1",
++        MULTICA_TASK_PACKAGE_DB_EVIDENCE=str(out / "go-packages-v6"), MULTICA_TASK_CANDIDATE_ROOT=str(root),
++        MULTICA_TASK_RENDERER_URL=renderer, MULTICA_DEV_HOME=str(out / "dev-registry"),
++        MULTICA_DEV_TMPDIR="/private/tmp/multica-final-check4-yxg6alb4", MULTICA_DEV_PROFILES_HOME=str(out / "profiles"),
++        MULTICA_DEV_WORKSPACES_PARENT=str(out / "workspaces"), NEXT_TELEMETRY_DISABLED="1",
++        GOPROXY="file:///Users/artisan/go/pkg/mod/cache/download", GOSUMDB="off", GOTOOLCHAIN="local",
++        DATABASE_MAX_CONNS="10", DATABASE_MIN_CONNS="1", ENV_FILE=str(safe_source),
++    )
++    allocation = json.loads((out / "build-temp-allocation.json").read_text())
++    task_temp = Path(env["MULTICA_DEV_TMPDIR"])
++    require(str(task_temp) == allocation["directory"] and str(task_temp).startswith("/private/tmp/multica-final-check4-"),
++            "Build temporary directory differs from allocation")
++    require(task_temp.is_dir() and task_temp.stat().st_uid == os.geteuid() and task_temp.stat().st_mode & 0o777 == 0o700,
++            "Build temporary directory must be task-owned mode0700")
++    require(subprocess.run(["git", "-C", str(task_temp), "rev-parse", "--show-toplevel"], env=env,
++                           stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode != 0,
++            "Build temporary directory must be outside every Git worktree")
++
++    safe_bytes = ("".join(key + "=" + shlex.quote(value) + "\n" for key, value in values.items())).encode()
++    descriptor = os.open(safe_source, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
++    with os.fdopen(descriptor, "wb") as target:
++        target.write(safe_bytes)
++    command = ["make", "check", "ENV_FILE=" + str(safe_source)]
++    record = {
++        "candidate_sha": head, "candidate_root": str(root), "command": ["make", "check", "ENV_FILE=<canonical private task env>"],
++        "adapter_sha256": adapter_hashes, "launcher_sha256": launcher_hash, "source_env_sha256": source_hash,
++        "effective_env_sha256": sha256(safe_bytes), "environment_loading": "data parsing plus canonical shell-quoted task copy",
++        "database_policy": "a separate newly migrated task clone per Go package; never business default; package databases and failures retained",
++        "api_pool": {"max": 10, "min": 1}, "Go_test_pool_overrides": "removed only in actual test adapter branch",
++        "renderer": renderer, "knowledge_default": False, "real_provider_allowed": False,
++        "build_temp_directory": str(task_temp), "build_temp_git_root_absent": True,
++        "state": "running", "started_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
++    }
++    with log_path.open("x") as sink:
++        process = subprocess.Popen(command, cwd=root, env=env, stdout=sink, stderr=subprocess.STDOUT)
++        record["process_id"] = process.pid
++        record_path.write_text(json.dumps(record, indent=2) + "\n")
++        code = process.wait()
++    record.update(state="complete", exit_code=code, finished_at=datetime.datetime.now(datetime.timezone.utc).isoformat(),
++                  log_sha256=sha256(log_path.read_bytes()))
++    record_path.write_text(json.dumps(record, indent=2) + "\n")
++    print(json.dumps(record))
++    return code
++
++
++if __name__ == "__main__":
++    try:
++        raise SystemExit(main())
++    except (RuntimeError, ValueError, OSError) as error:
++        message = str(error) if isinstance(error, RuntimeError) else "Required task file or data is unavailable"
++        print("REFUSED: " + message)
++        raise SystemExit(2)

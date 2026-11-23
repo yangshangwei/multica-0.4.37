@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-02T15:33:56.429356+00:00",
+  "scope": "coordinator read-only minimal v6-to-v9 diff and byte/path/syntax verification; not independent runtime replay",
+  "verdict": "pass-for-stated-static-scope",
+  "blocking_findings_open": 0,
+  "go_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+  "pnpm_sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+  "launcher_sha256": "68dfc4c48a42e7ea276eee815b7f0985e96cf950ec3e2e623187e8ab583bf475",
+  "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+  "go_diff": "one comment and environment.pop(MULTICA_RESOURCE_PUBLISH_DIR,None) only in fresh mode1 per-package child construction; mode0 early return/test-owned mutation/API/non-test/compile unchanged",
+  "pnpm_diff": "only JSON result/environment filenames get v9 suffix; selectors/workers/retries/guard unchanged",
+  "launcher_diff": "only variant and fresh record/log/safeenv/clearance/home/evidence/registry/profile/workspace paths; source/temp/flags unchanged",
+  "syntax_parse_pass": 3,
+  "tests_run": 0,
+  "db_actions": 0,
+  "providers": 0,
+  "requires_for_launch": "sole executor native v9 independent pass and its86fake+actual7 regression evidence; do not reuse v6 byte clearance as v9"
+}

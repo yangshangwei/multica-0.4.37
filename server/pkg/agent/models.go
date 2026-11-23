@@ -1070,7 +1070,7 @@ func discoverPiModelsRPC(ctx context.Context, runtimeCmd Command, lookedUp strin
 	for _, request := range requests {
 		if err := encoder.Encode(request); err != nil {
 			_ = stdin.Close()
-			_ = cmd.Wait()
+			_ = waitOwnedProcessTree(cmd)
 			return nil, false
 		}
 	}
@@ -1114,7 +1114,7 @@ func discoverPiModelsRPC(ctx context.Context, runtimeCmd Command, lookedUp strin
 	// older/forked CLI that ignores EOF or never completes both responses.
 	_ = stdin.Close()
 	_, _ = io.Copy(io.Discard, stdout)
-	if err := cmd.Wait(); err != nil && ctx.Err() == nil {
+	if err := waitOwnedProcessTree(cmd); err != nil && ctx.Err() == nil {
 		return nil, false
 	}
 	if !modelsDone || len(rawModels) == 0 {

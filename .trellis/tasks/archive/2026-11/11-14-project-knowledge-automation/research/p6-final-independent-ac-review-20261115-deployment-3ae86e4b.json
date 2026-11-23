@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "review_id": "p6-final-independent-ac-review-20261115-deployment-3ae86e4b",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "reviewer_role": "independent_trellis_check_subagent",
+  "reviewed_at": "2026-11-15T10:37:40.363Z",
+  "review_mode": "bounded_read_only_f75_to_f8a_two_path_deployment_and_fixture_guard_review",
+  "state": "interim_deployment_prerequisite_admission_not_final_ac",
+  "approved_implementation_revision": "existing2026-11-14-v1",
+  "verdict": "zero_confirmed_two_path_admission_blockers",
+  "blocking_findings": [],
+  "blocking_findings_open": 0,
+  "admitted_for_source_bound_candidate_build_start_and_actual_journeys": true,
+  "final_ac_or_p6_acceptance_verified": false,
+  "current_root_frontend_accepted": false,
+  "source_ready_or_runtime_permit_issued_by_reviewer": false,
+  "ownership": {
+    "only_new_public_file": "research/p6-final-independent-ac-review-20261115-deployment-3ae86e4b.json",
+    "source_spec_markdown_or_task_json_edits": 0,
+    "guards_mutated_by_reviewer": 0,
+    "tests_lint_typecheck_builds_or_db_suites_run_by_reviewer": 0,
+    "services_or_native_apps_started_or_stopped_by_reviewer": 0,
+    "descendants_spawned": 0,
+    "root_current_checks_and_mapping_owner": "Descartes",
+    "prior_interim_reused": {
+      "path": "research/p6-final-independent-ac-review-20261115-fa158b1b.json",
+      "sha256": "1e16728a7da63269834a1785db1e1a018a518b58a297fcea0318b8a297c54fa1"
+    }
+  },
+  "source": {
+    "candidate_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+    "before": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+    "after": "f8a313ea125c357cc3a05f90770da33e15d6d0dc7d733854d7d533615eb339fc",
+    "file_count": 11017,
+    "path_sets_equal": true,
+    "source_links": 0,
+    "changed_paths": [
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+        "before_sha256": "e3aeae6a78dd882127121f9c813cd7f83ea14cabd28d3178b7e6d7b67c96d253",
+        "after_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "mode_and_link_unchanged": true
+      },
+      {
+        "path": "e2e/fixtures/project-knowledge-automation.ts",
+        "before_sha256": "195f255c761a88bd70fae3cd0d5eb17ca739ac92b446d7321a56d3f224ac27ad",
+        "after_sha256": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+        "mode_and_link_unchanged": true
+      }
+    ],
+    "receipt_rows_exactly_match": true,
+    "inverse_source_id": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+    "inverse_all_11017_rows_equal_f75": true,
+    "workspace_binding_count": 32,
+    "workspace_bindings_unchanged": true,
+    "private_git_index_sha256": "d4c7194a00eb3176dd4b6d4146749a86b35a2c323e674cf69de673eab2115e7b",
+    "private_git_index_unchanged": true,
+    "base_commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "base_commit_unchanged": true,
+    "retained_original_and_current_two_path_bytes_verified": true,
+    "product_go_sql_ui_delta": false,
+    "private_go_sql_sha256": "d9fe7fcb1b35657cf930a4c1c60b03b0c093bbfbbb192a927636475dd705531c",
+    "production_compiler_or_dependency_changes": false,
+    "receipt": {
+      "path": "research/p6-deployment-and-fixture-type-repair-d369df2e.json",
+      "sha256": "5cdf11f6f654a234f2b083f144d7c3416be8dab4669f06c76ab5978ad807483e"
+    },
+    "root_comparison": "No current full ROOT comparison or tests repeated; exact equality is the private f75-to-f8a mapping."
+  },
+  "findings": [
+    {
+      "id": "DEPLOYMENT-1",
+      "severity": "info",
+      "status": "reviewed_no_blocker",
+      "finding": "Controller now writes the real MULTICA_DEPLOYMENT_ID key, replaces the unused MANAGED_DEPLOYMENT scaffold key, and derives a deterministic task-only UUID from the fixed allocated DB.",
+      "uuid_namespace": "uuid.NAMESPACE_URL",
+      "uuid_name": "multica-knowledge-p6/mca_knowledge_browser_073bb20e614e",
+      "independently_derived_uuid": "3cc23866-f1a4-575b-a56c-40351c7d35d7",
+      "derivation_matches_receipt": true,
+      "configuration": {
+        "MULTICA_AUTH_MODE": "password",
+        "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "true",
+        "MULTICA_PASSWORD_LIMITER_MODE": "single",
+        "MULTICA_DEVICE_AUTH_ENABLED": "false",
+        "MULTICA_PLATFORM_ADMIN_ENABLED": "false",
+        "MULTICA_CLOUD_URL": "",
+        "MULTICA_DEPLOYMENT_ID": "3cc23866-f1a4-575b-a56c-40351c7d35d7"
+      },
+      "original_allocation_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+      "original_allocation_bytes_unchanged": true,
+      "original_source_environment_sha256": "bc1f96e026f7dc801bcad1d1c3344b10105a8aa05dc0a809d578d641aae2166b",
+      "original_source_environment_bytes_unchanged": true
+    },
+    {
+      "id": "DEPLOYMENT-2",
+      "severity": "info",
+      "status": "reviewed_no_blocker",
+      "finding": "Runtime.assert_build compares the complete expected auth configuration including the derived UUID. Live API proof additionally requires deployment_id to equal the bound execution environment while retaining listener PID, commit, managed support and UUID-format checks.",
+      "controller_function_count": 41,
+      "new_function": "auth_configuration",
+      "changed_existing_functions": [
+        "Runtime.assert_build",
+        "Runtime.environment",
+        "Runtime.prove_services",
+        "main"
+      ],
+      "other_original_36_functions_ast_unchanged": true,
+      "source_allocation_environment_hash_tool_artifact_and_resource_owner_fences_retained": true,
+      "default_legacy_fixture_and_managed_stdin_transport_unchanged": true
+    },
+    {
+      "id": "FIXTURE-TYPES-1",
+      "severity": "info",
+      "status": "reviewed_no_blocker",
+      "finding": "knowledgeCandidate now requires availability=available before exposing readable candidate content. executeConsumer explicitly fails when the matching capture is missing and retains exact body/hash/session assertions. These guards repair the real candidate-version and capture-nullability errors without bypassing types or deleting acceptance assertions.",
+      "actual_guards": [
+        "detail.candidate.availability !== \"available\" -> throw",
+        "!capture -> throw"
+      ],
+      "spec_bytes_unchanged_from_f75": true,
+      "auth_detail_fixture_bytes_unchanged_from_f75": true,
+      "no_new_as_any_nonnull_bypass_suppression_or_dependency": true
+    }
+  ],
+  "static_evidence": {
+    "scoped_noemit_typecheck": {
+      "receipt": "research/p6-managed-types-noemit-2247f9f8.json",
+      "sha256": "1edad35d9f06667fce30aac7d8f37b6ac781ae86aa2aebcfb036187599d28ebf",
+      "typescript_version": "5.9.3",
+      "entry_files": [
+        "e2e/fixtures/collaboration-detail-journey.ts",
+        "e2e/fixtures/project-knowledge-automation.ts",
+        "e2e/project-knowledge-automation.spec.ts"
+      ],
+      "strict": true,
+      "noEmit": true,
+      "declaration": false,
+      "declarationMap": false,
+      "only_metadata_options_changed": true,
+      "compiler_option_changes": [
+        {
+          "option": "declaration",
+          "before": true,
+          "after": false
+        },
+        {
+          "option": "declarationMap",
+          "before": true,
+          "after": false
+        }
+      ],
+      "production_compiler_options_changed": false,
+      "original_errors": 3,
+      "original_error_codes": [
+        2339,
+        18048,
+        18048
+      ],
+      "current_errors": 0,
+      "current_passed": true,
+      "new_diagnostics": 0,
+      "current_source_hashes_match": true,
+      "source_files_stable": true,
+      "old_metadata_receipt_sha256": "1c77248c4634f26194b547326d32a1918a41cd28b159b820baf20bf85b16c5bc",
+      "old_metadata_counts": [
+        {
+          "label": "original",
+          "diagnostics": 8
+        },
+        {
+          "label": "current",
+          "diagnostics": 8
+        }
+      ],
+      "full_repository_e2e_check_claimed": false,
+      "interpretation": "The three P6 entry points and their imports were checked under strict noEmit options with declaration/declarationMap disabled. This scoped current check passes; it does not erase the historical declaration-enabled 8/8 run or claim every repository E2E entry point was checked."
+    },
+    "standalone_eslint": {
+      "receipt": "research/p6-deployment-type-lint-d9db49eb.json",
+      "sha256": "8523d49b4ff0376fa8d6bfad8354efe610fbc9b4cefdc876e7ad9d23d98a5c2a",
+      "file": "e2e/fixtures/project-knowledge-automation.ts",
+      "current_source_sha256": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+      "exit": 1,
+      "original_dependency_diagnostics": 5,
+      "current_dependency_diagnostics": 5,
+      "new_diagnostics": 0,
+      "raw_messages_equal_receipt": true,
+      "old_rule_message_multiset_preserved": true,
+      "raw_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-deployment-static-d9db49eb/lint.log",
+      "raw_log_sha256": "3421e07b250471599156a84951c55ac8cd042a122de3ae7b21b8ad56da934a21",
+      "standalone_lint_passed": false
+    },
+    "prior_listing_and_package_quality": {
+      "f75_listing_actual_named_tests": 2,
+      "current_f8a_listing_rerun_claimed": false,
+      "canonical_package_lint_typecheck_and_tests_carried_from_prior_source": true,
+      "reason": "Complete private mapping changes only controller and fixture guards; product/package/unit inputs and production compiler configuration are unchanged.",
+      "prior_interim": "research/p6-final-independent-ac-review-20261115-fa158b1b.json"
+    }
+  },
+  "preserved_f75_build_and_start": {
+    "build_file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-5da5f97393ec/build.json",
+    "build_file_sha256": "9806c5cea2ce2a7ac1bea915eeb84be94f5f14048f6fa1a6e3e88f56b372f2de",
+    "build_state": "built",
+    "source_id": "f75ed59db8b83e5f149334817897a1d570e9ead6bc89de576a9251d058a8e846",
+    "build_id": "wu-lplywoa9vyqTXex63I",
+    "build_is_distinct_from_runtime_acceptance": true,
+    "original_start_failure_receipt": "research/p6-original-missing-deployment-start-failure-265a01f8.json",
+    "original_start_failure_receipt_sha256": "ddfdc58f39832a8dbd7a97e5356957530b5a7611d21cf0def74b9a52bfea0243",
+    "original_api_error": "18:19:41.312 ERR managed installations require password mode and a stable MULTICA_DEPLOYMENT_ID UUID",
+    "original_api_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/api.log",
+    "original_api_log_sha256": "6385618ff059c2fbf188fecdd742bc99c9b3ef6b3f192875ac4c9f463ba78d0b",
+    "api_log_hash_verified": true,
+    "original_runtime": {
+      "preserved_as": "inline full snapshot in immutable original failure receipt",
+      "state": "start_failed",
+      "original_sha256": "89aa40cf785847ee7b9d3cf5fcbab357003b060fa0cb4901fa0efb0596b1bbc2",
+      "exact_indent2_newline_bytes_reconstruct_original_sha256": true
+    },
+    "post_cleanup_runtime": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-990cedc47368/runtime.json",
+      "state": "stopped",
+      "sha256": "021084f57c2aa669f0499a6a944599eeb83253718fbd6f98b85fe2a8a052324a",
+      "only_changed_field_since_original": "state",
+      "runtime_permitted": false,
+      "owned_process_groups": 4,
+      "remaining_owned_pids": 0,
+      "unproven_group_pids": 0
+    },
+    "diagnosis": "Production API correctly refused managed mode without a stable real deployment UUID. This is a task launcher configuration prerequisite, not a confirmed Go/product defect.",
+    "original_failure_reclassified_as_pass": false
+  },
+  "scope_and_remaining_gates": {
+    "current_f8a_build": "Leader is executing a fresh source-bound full build; its completion/actual journeys/cleanup were not awaited or accepted in this bounded review.",
+    "final_candidate_gate": "Require immutable same-source build/live ownership/config/source/tool/artifact receipts, both complete named Web/Desktop journeys with actual managed private-knowledge delivery and exact body/version/validity, reopened-old-session refusal, fresh reacceptance proof and zero-work negatives, then owned cleanup with remaining processes/listeners/connections and retained resources stated.",
+    "final_root_integration": "Pending separate Descartes-owned current ROOT evidence; candidate admission does not accept mutable ROOT.",
+    "C3": "Direct original prepare/authorize replay after proof replacement is separate, low/nonblocking and still not executed by this review.",
+    "controlled_model": "No real-provider semantic quality claim.",
+    "native": "Renderer/preload/routes, matching CLI and direct production managed-session helper do not prove installed Main, installer or other platforms.",
+    "dependencies": "Shared dependency caches are not hermetic.",
+    "PAY_parent24": {
+      "PARTIAL": 4,
+      "NOT_RUN": 20,
+      "closed_by_this_review": false
+    },
+    "PAY_S2": {
+      "passed": 0,
+      "total": 4,
+      "closed_by_this_review": false
+    }
+  },
+  "recommended_patches": [],
+  "reviewer_fix_required": false
+}

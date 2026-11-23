@@ -1,0 +1,36 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-json",
+    "./cmd/migrate",
+    "-run",
+    "^TestArtifactExecutionConcurrentIndexRetryRecoversInvalidRelation$|^TestEveryConcurrentUpBuildHasCleanup$|^TestConcurrentIndexCleanupsMatchTheirMigrations$",
+    "-count=1"
+  ],
+  "environment": "migrations",
+  "database": "multica_artifact_20261110_migrations",
+  "exit_code": 0,
+  "seconds": 4.883,
+  "finished_at": "2026-11-10T07:45:13.009407+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/db-retry-01.log",
+  "log_sha256": "3c4044c96f930dfe45d5a2109ac985d75d02e817a5bf35a1aa4ca3b8571c17b6",
+  "named_test_counts": {
+    "pass": 3,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/cmd/migrate:TestArtifactExecutionConcurrentIndexRetryRecoversInvalidRelation",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestConcurrentIndexCleanupsMatchTheirMigrations",
+      "github.com/multica-ai/multica/server/cmd/migrate:TestEveryConcurrentUpBuildHasCleanup"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

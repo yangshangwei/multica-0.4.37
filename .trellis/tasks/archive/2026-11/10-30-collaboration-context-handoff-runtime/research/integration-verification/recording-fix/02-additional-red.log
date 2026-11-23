@@ -1,0 +1,15 @@
+=== RUN   TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof
+    host_recording_recovery_test.go:98: unfinished telemetry must remain pending independently of proof: <nil>
+--- FAIL: TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof (0.36s)
+=== RUN   TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement
+    host_recording_recovery_test.go:166: seal ACK recovery changed the original key/payload or failed to advance: [{Sequence:1 Version:1 Identity:{DeploymentID:00000000-0000-4000-8000-000000000001 InstallationID:00000000-0000-4000-8000-000000000002 IssueID:00000000-0000-4000-8000-000000000003 SessionID:00000000-0000-4000-8000-000000000004 TargetID:00000000-0000-4000-8000-000000000005 ChannelID:00000000-0000-4000-8000-000000000006 BatchID:00000000-0000-4000-8000-000000000007 GroupID:00000000-0000-4000-8000-000000000008 RunID:00000000-0000-4000-8000-000000000009 Fence:1 ClaimGeneration:1 LaunchNonce:00000000-0000-4000-8000-000000000010} AttemptSeq:1 AttemptNonce:b4207763-623b-48f0-8c7b-253d4af4d77e StreamID:fbe15c8d-d9fc-4852-a211-cd14dc8df7ff ObservedThrough:0x295a5f790c40 AcknowledgedThrough:0 Reason:incomplete} {Sequence:1 Version:1 Identity:{DeploymentID:00000000-0000-4000-8000-000000000001 InstallationID:00000000-0000-4000-8000-000000000002 IssueID:00000000-0000-4000-8000-000000000003 SessionID:00000000-0000-4000-8000-000000000004 TargetID:00000000-0000-4000-8000-000000000005 ChannelID:00000000-0000-4000-8000-000000000006 BatchID:00000000-0000-4000-8000-000000000007 GroupID:00000000-0000-4000-8000-000000000008 RunID:00000000-0000-4000-8000-000000000009 Fence:1 ClaimGeneration:1 LaunchNonce:00000000-0000-4000-8000-000000000010} AttemptSeq:1 AttemptNonce:b4207763-623b-48f0-8c7b-253d4af4d77e StreamID:fbe15c8d-d9fc-4852-a211-cd14dc8df7ff ObservedThrough:0x295a5f9d2120 AcknowledgedThrough:0 Reason:incomplete}]
+--- FAIL: TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement (0.11s)
+=== RUN   TestHostRecordingRecoveredUnflushedTailRemainsUnknown
+    host_recording_recovery_test.go:188: restart invented a fully observed tail from the persisted prefix
+--- FAIL: TestHostRecordingRecoveredUnflushedTailRemainsUnknown (0.12s)
+=== RUN   TestHostRecordingLedgerRejectsSealWithUnissuedNonce
+    host_recording_recovery_test.go:212: unissued recording seal nonce survived ledger validation: <nil>
+--- FAIL: TestHostRecordingLedgerRejectsSealWithUnissuedNonce (0.07s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.907s
+FAIL

@@ -1,0 +1,11 @@
+# Bounded CCG2 deployment probe plan
+
+The existing external Host fake parses the frozen issue JSON with json.Unmarshal over the entire prompt suffix. A true deployed knowledge grant appends an exact managed-knowledge marker and contributions, so the fake would reject a valid product prompt. This is a test-parser gap, not a production bug.
+
+Ownership: only collaboration-host-provider.go, its new standalone file-list unit test, HostVisit observation fields in collaboration-host-runtime.ts and a new opt-in collaboration-knowledge-deployed.spec.ts; evidence stays here. Other agents own all product changes, services, database allocation/migration, integration and review. The tested candidate/worktrees remain untouched. No new dependencies, timeouts, retry or product surfaces.
+
+1. Extract the existing frozen-input parser without behavior change and add canonical valid-knowledge regression; retain its true red failure.
+2. Decode one frozen JSON value and require empty trailing whitespace or the exact product marker followed by one contribution array and EOF. Validate contribution identities/version/content hash, retaining all existing identity, CLI, credential and attachment checks. Unit-test empty/valid/malformed/garbage/double-value/hash cases.
+3. Export only actual-input SHA and validated contribution identity/hash summaries, plus actual no-session-persistence argv boolean, through the existing test callback. Existing Host consumers remain compatible.
+4. Add explicit true/false opt-in test. Reuse password Host fixture and actual human proposal/approve routes. One actual fake launch must succeed in each independent deployment: ON observes its unique approved contribution and three persisted knowledge event kinds, OFF observes no managed knowledge section or events. Record exact accepted-input/run/launch/proof identities and safe fingerprints. Do not mutate the API flag from the test or infer it from /api/config.
+5. Run only parser unit tests, narrow TS/lint and test collection until root supplies READY service/DB/binary permission. Actual deployed acceptance remains NOT_RUN. Preserve raw failure/input evidence privately and only sanitized facts/hashes publicly. Root independently reviews before local integration.

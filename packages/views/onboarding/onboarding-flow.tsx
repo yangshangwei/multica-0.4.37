@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
+import { api } from "@multica/core/api";
 import { useAuthStore } from "@multica/core/auth";
 import {
   completeOnboarding,
@@ -146,6 +147,8 @@ function OnboardingStepFlow({
   // deliberately not saved. Both entry modes start at Welcome.
   const storedQuestionnaire = mergeQuestionnaire(user.onboarding_questionnaire);
   const [answers, setAnswers] = useState<QuestionnaireAnswers>(storedQuestionnaire);
+  const currentAnswers = useRef(answers);
+  const answerWrites = useRef<Promise<void>>(Promise.resolve());
 
   const isNewWorkspace = mode === "new_workspace";
   const [step, setStep] = useState<OnboardingStep>("welcome");
@@ -201,21 +204,26 @@ function OnboardingStepFlow({
     setStep(ONBOARDING_STEP_ORDER[0]!);
   }, []);
 
-  // Apply an in-memory patch and fire-and-forget a PATCH to persist
-  // it. We never block UI on the request — the next step's render is
-  // what matters; a transient save failure surfaces as a toast but
-  // does not roll the user back.
+  // The API replaces the whole questionnaire. Keep saves in selection order
+  // without blocking local interaction, and keep effects out of state updaters.
   const applyAnswers = useCallback(
     (patch: Partial<QuestionnaireAnswers>) => {
-      setAnswers((a) => {
-        const next = { ...a, ...patch };
-        void saveQuestionnaire(next).catch((err) => {
-          if (err instanceof Error) toast.error(err.message);
-        });
-        return next;
+      const next = { ...currentAnswers.current, ...patch };
+      currentAnswers.current = next;
+      setAnswers(next);
+      const scope = api.getSessionScope();
+      const pending = answerWrites.current.catch(() => undefined).then(() => {
+        if (api.getSessionScope() !== scope || useAuthStore.getState().user?.id !== user.id) {
+          throw new DOMException("Onboarding session changed", "AbortError");
+        }
+        return saveQuestionnaire(next);
+      });
+      answerWrites.current = pending;
+      void pending.catch((err) => {
+        if (err instanceof Error) toast.error(err.message);
       });
     },
-    [],
+    [user.id],
   );
 
   // "I've done this before" path — returning user who already has a
@@ -251,14 +259,21 @@ function OnboardingStepFlow({
   const handleRuntimeNext = useCallback(
     async (rt: AgentRuntime | null, model?: string) => {
       if (!workspace) return;
+      const scope = api.getSessionScope();
+      const flushAnswers = async () => {
+        await answerWrites.current.catch(() => undefined);
+        if (api.getSessionScope() !== scope || useAuthStore.getState().user?.id !== user.id) {
+          throw new DOMException("Onboarding session changed", "AbortError");
+        }
+        await saveQuestionnaire(currentAnswers.current);
+      };
       // Mika remains available in chat; project setup is the next visible step.
       if (rt) {
         const contentLang = pickContentLang(i18n.language);
         try {
-          // The earlier questionnaire saves are deliberately optimistic. Flush
-          // the latest snapshot here so the server-authored kickoff can read
-          // reliable role/use-case context instead of racing the last PATCH.
-          await saveQuestionnaire(answers);
+          // Drain earlier snapshots before flushing the final choice. A failed
+          // autosave can recover here, but completion requires a confirmed save.
+          await flushAnswers();
           await bootstrapMika.mutateAsync({
             workspaceSlug: workspace.slug,
             runtimeId: rt.id,
@@ -278,6 +293,7 @@ function OnboardingStepFlow({
         return;
       }
       try {
+        await flushAnswers();
         await completeOnboarding("runtime_skipped", workspace.id);
       } catch (err) {
         toast.error(
@@ -291,7 +307,7 @@ function OnboardingStepFlow({
       });
       onComplete(workspace, { kind: "projects" });
     },
-    [answers, bootstrapMika, i18n.language, workspace, onComplete, t],
+    [bootstrapMika, i18n.language, workspace, onComplete, t, user.id],
   );
 
   const handleBack = useCallback((from: OnboardingStep) => {

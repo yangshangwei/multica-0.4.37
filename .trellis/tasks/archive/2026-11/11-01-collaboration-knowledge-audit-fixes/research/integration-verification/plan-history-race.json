@@ -1,0 +1,38 @@
+{
+  "source_sha": "0702d5039b235adc88dbd3d7d949a1a8f165d247",
+  "test_file_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+  "database": "kfix_joint_plan_history_20261102_0122",
+  "identity": "kfix_joint_plan_history_20261102_0122|763_collaboration_knowledge_delivery_history",
+  "clone_source": "kfix_joint_svc_20261102_0110",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=10m",
+    "-race",
+    "-run",
+    "^TestKnowledge(RuntimeHistoryIsIndexDriven|RuntimeHistoryReadsCompleteNamespace|RuntimeHistoryLostMetadataRefuses|ResumeEqualTimestampHistoryStillChecksLaterIDs)$"
+  ],
+  "started_at": "2026-11-01T17:28:45.551541+00:00",
+  "state": "complete",
+  "real_provider_calls": 0,
+  "migration_by_child": false,
+  "exit_code": 0,
+  "finished_at": "2026-11-01T17:28:55.822148+00:00",
+  "counts": {
+    "run": 9,
+    "pass": 9,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": [],
+  "log_sha256": "55351eeea8f8e9bf9231fc4955c37f7b0921b27fa33ec35d2f2cff614d76084e"
+}

@@ -1,0 +1,75 @@
+{
+  "completed_at": "2026-11-01T01:43:00.899348+00:00",
+  "owned_test_sources": [
+    "server/internal/service/task_knowledge_preparation_boundary_test.go",
+    "server/internal/service/task_knowledge_logging_test.go"
+  ],
+  "source_frozen": true,
+  "production_edits": false,
+  "protected_history_edits": false,
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "runs": [
+    {
+      "record": "fixture-red.command.json",
+      "exit_code": 0,
+      "top_level_passes": 3,
+      "leaf_passes": 11,
+      "pass_events": 13,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "record": "dispatcher-red.command.json",
+      "exit_code": 1,
+      "top_level_passes": 0,
+      "leaf_passes": 0,
+      "pass_events": 0,
+      "failures": 4,
+      "skips": 0
+    },
+    {
+      "record": "fixture-green.command.json",
+      "exit_code": 0,
+      "top_level_passes": 3,
+      "leaf_passes": 11,
+      "pass_events": 13,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "record": "dispatcher-green.command.json",
+      "exit_code": 0,
+      "top_level_passes": 4,
+      "leaf_passes": 4,
+      "pass_events": 4,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "record": "fixture-race.command.json",
+      "exit_code": 0,
+      "top_level_passes": 3,
+      "leaf_passes": 11,
+      "pass_events": 13,
+      "failures": 0,
+      "skips": 0
+    },
+    {
+      "record": "dispatcher-race.command.json",
+      "exit_code": 0,
+      "top_level_passes": 4,
+      "leaf_passes": 4,
+      "pass_events": 4,
+      "failures": 0,
+      "skips": 0
+    }
+  ],
+  "final_pending": 0,
+  "final_orphan_pending": 0,
+  "retained_owned_source_histories": 57,
+  "all_owned_transient_source_rows_removed": true,
+  "static": "static-checks.json",
+  "source_hashes": "source-after.json",
+  "production_hashes": "production-hashes.json",
+  "broad_suite_rerun": false
+}

@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-11-01T21:23:24.455414+00:00",
+  "product_source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "harness_base": "56ae50d613831a905293fa29834e5a5be4167c03",
+  "code_commit": "5dec88f9809b4a703a0e82d65796876dfd31ffaf",
+  "tested_code_sha256": "0a28c4248892aafe8cfca5ad1f99c37c3a8cdef2276c42239d072bcd9169d18c",
+  "tested_diff_sha256": "977d72b56c14c60a481f6fca8435538b0ab8080d15ba42b66ada4f33966fb10c",
+  "green_execution_matches_committed_test": true,
+  "unchanged_product_roots": [
+    "server",
+    "apps",
+    "packages",
+    "scripts",
+    "Makefile",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "only_changed_code_file": "e2e/collaboration-memory-runtime.spec.ts",
+  "runner_sha256": "70b9ec7287175b638141e29103ad417ba7bbc010bdd330719fa90a8c36b670fa",
+  "red_source_sha256": "e6743766c0e49488a928638a62026b5a383517bca7cede1253d5604625dddee9",
+  "red_source_retained_private_path": "/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/.omx/private/memory-gate-closure/red-source.spec.ts",
+  "root_ready_snapshot_sha256": "0b1de9374da60bbe23b58cf202aa3fee8f88afd3c056427a3e2002fd09b1b798"
+}

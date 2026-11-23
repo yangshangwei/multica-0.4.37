@@ -1,0 +1,629 @@
+{
+  "recorded_at": "2026-11-04T02:08:12.342712+00:00",
+  "reviewer_required": true,
+  "executor": "/root/shared_executor",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "scope": "Bounded EN/ZH natural observation then one red and one green real-modal mechanism control; no production/source fix or complete check",
+  "natural": {
+    "result_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/natural-result.json",
+    "result_sha256": "3843f59bb575ddb1d7dc764a836bc78d4ef4a1db1cdebbbbd2820cfa1f6a83ac",
+    "exit": 0,
+    "report_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/natural-report.json",
+    "report_sha256": "1c6ffbdee49ba89393c9a0d9ab38ae7aa5101977f3f5ffb151000991888115c7",
+    "stats": {
+      "startTime": "2026-11-04T01:55:15.270Z",
+      "duration": 9140.229,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "natural_cause_reproduced": false,
+  "natural_EN_observed_correct_initial_focus_then_reason_input": true,
+  "natural_ZH_focus_observation_limitation": "Final window collector unavailable; trace present, all original assertions pass, no focus ownership claim",
+  "mechanism_proof": {
+    "confidence": "high",
+    "same_real_BaseUI_callback_captured_in_both_controls": true,
+    "callback_source": "()=>e?.focus({preventScroll:n})",
+    "negative": "Real queued initial focus callback released after textarea focus/select and immediately before the actual Playwright server Keyboard.insertText; reason lands in combobox, textarea empty; original empty assertion fails",
+    "negative_root_case": {
+      "result_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/redirect-result.json",
+      "result_sha256": "00329e46fffe240c89e4df12972d0db2654c85bfe2d388a732d0c366e48f8f90",
+      "exit": 1,
+      "report_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/redirect-report.json",
+      "report_sha256": "4fc0a1c6e16ff188e77c241b3775fa50f736dc431bbc38213b8514378fcd3654",
+      "stats": {
+        "startTime": "2026-11-04T02:03:33.249Z",
+        "duration": 8496.502,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    "positive": "Wait for intended initial target focus, immediately assert Reason after fill; actual initial callback executes before Reason focus, pending0 at server insertText; all original pagination/keyboard/list/selected-target/API/history assertions pass",
+    "positive_case": {
+      "result_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/await-initial-result.json",
+      "result_sha256": "0e34c71ea4e106025953a1cfd76a4e9897dcfa7fb2c39b03b7add4ad546b1741",
+      "exit": 0,
+      "report_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/await-initial-report.json",
+      "report_sha256": "2449dc2b1e3b234370a5212de94aee3c06a4725d2148245f2ff754fd21fc6800",
+      "stats": {
+        "startTime": "2026-11-04T02:05:24.457Z",
+        "duration": 6447.571,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "forced_schedule_not_original_reproduction": true,
+    "installed_SDK_source_written": false,
+    "browser_DOM_values_assigned_or_cleared": false
+  },
+  "historical_v15_cause": {
+    "confirmed": false,
+    "confidence": "medium; mechanism and exact symptom agree, original V15 has no focus timeline",
+    "limit": "Natural instrumented run did not steal focus. The deterministic red control establishes a reachable installed-code mechanism, not original event scheduling."
+  },
+  "recommended_minimum_fix": {
+    "owning_file": "e2e/fixtures/triage-duplicate-picker.ts",
+    "location": "After resolving dialog/target locator and before existing Reason.fill",
+    "changes": [
+      "await expect(input).toBeFocused() before Reason.fill",
+      "immediately assert Reason textarea value equals original synthetic reason after fill"
+    ],
+    "preserve": [
+      "existing input.click and blank-target assertion",
+      "all 52 original assertions",
+      "scroll/page retry/keyboard/screenshot/selection/API/history logic",
+      "all original failure and natural/control samples"
+    ],
+    "production_component_changes_justified": false,
+    "implementation_authorized_by_this_report": false
+  },
+  "observations": {
+    "focus-observation-zh-Hans": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/natural-artifacts/triage-duplicate-picker-We-ae290--the-chosen-target-zh-Hans--chromium/focus-observation-zh-Hans.json",
+      "sha256": "2a238680b52e139ec487a453ff3ab0c92ae08d8541bb0f772081a4b7d055f313",
+      "unavailable": true,
+      "events": 0,
+      "dropped": null
+    },
+    "focus-observation-en": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/natural-artifacts/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/focus-observation-en.json",
+      "sha256": "f1e487e810c10932d2f560d4d8cd760c6ba920d69febd4bc455fea4e142d1b6f",
+      "unavailable": false,
+      "events": 29,
+      "dropped": 0
+    },
+    "redirect": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/redirect-artifacts/triage-duplicate-picker-Me-9379b-firms-the-chosen-target-en--chromium/initial-focus-control.json",
+      "sha256": "bd24602ab75216b5b2b47d6bc4ed320835cb2013683bb745109907474801b381",
+      "callback": {
+        "mode": "redirect",
+        "captured": 1,
+        "pending": 0,
+        "released": 1,
+        "callbacks": [
+          {
+            "source": "()=>e?.focus({preventScroll:n})",
+            "stack": "Error\n    at window.requestAnimationFrame (eval at evaluate (:290:30), <anonymous>:38:34)\n    at o (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19682)\n    at http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:30794",
+            "queued": 733.8000000119209,
+            "nativeFrame": 730.1,
+            "released": 758.1999999880791,
+            "releasePhase": "server-after-textarea-focus-select-before-keyboard-insertText"
+          }
+        ],
+        "snapshots": [
+          {
+            "phase": "actual-focus-callback-queued",
+            "time": 733.8999999761581,
+            "active": {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "actual-focus-native-frame",
+            "time": 744.8000000119209,
+            "active": {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "server-before-keyboard-insert-before-release",
+            "time": 758.1999999880791,
+            "active": {
+              "tag": "TEXTAREA",
+              "role": null,
+              "label": "Reason"
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "server-before-keyboard-insert-after-release",
+            "time": 759.1999999880791,
+            "active": {
+              "tag": "INPUT",
+              "role": "combobox",
+              "label": "Duplicate target task"
+            },
+            "target": "",
+            "reason": ""
+          }
+        ]
+      },
+      "events": [
+        {
+          "stage": "focusin",
+          "time": 757.5,
+          "frame": 16,
+          "active": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusin",
+          "eventTime": 757.5,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at async <anonymous>:316:30"
+          ]
+        },
+        {
+          "stage": "focusout",
+          "time": 758.1999999880791,
+          "frame": 16,
+          "active": {
+            "tag": "BODY",
+            "role": null,
+            "label": null,
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusout",
+          "eventTime": 758.1999999880791,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at u (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19649)",
+            "    at window.__triageReleaseInitialFocus (eval at evaluate (:290:30), <anonymous>:71:7)",
+            "    at eval (eval at evaluate (:290:30), <anonymous>:1:8)",
+            "    at eval (<anonymous>)",
+            "    at UtilityScript.evaluate (<anonymous>:290:30)",
+            "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+          ]
+        },
+        {
+          "stage": "focusin",
+          "time": 758.5999999642372,
+          "frame": 16,
+          "active": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusin",
+          "eventTime": 758.5,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at u (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19649)",
+            "    at window.__triageReleaseInitialFocus (eval at evaluate (:290:30), <anonymous>:71:7)",
+            "    at eval (eval at evaluate (:290:30), <anonymous>:1:8)",
+            "    at eval (<anonymous>)",
+            "    at UtilityScript.evaluate (<anonymous>:290:30)",
+            "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+          ]
+        },
+        {
+          "stage": "beforeinput",
+          "time": 762.0999999642372,
+          "frame": 16,
+          "active": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "target": "",
+          "reason": "",
+          "type": "beforeinput",
+          "eventTime": 762.0999999642372,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": "insertText",
+          "data": "Same upload failure; retain the customer's additional context",
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)"
+          ]
+        },
+        {
+          "stage": "input",
+          "time": 766,
+          "frame": 16,
+          "active": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "target": "Same upload failure; retain the customer's additional context",
+          "reason": "",
+          "type": "input",
+          "eventTime": 765,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": "insertText",
+          "data": "Same upload failure; retain the customer's additional context",
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)"
+          ]
+        }
+      ]
+    },
+    "await-initial": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/await-initial-artifacts/triage-duplicate-picker-Me-41613-firms-the-chosen-target-en--chromium/initial-focus-control.json",
+      "sha256": "33acbc0fc681ad5db4fbb2a8127c073b926fd761a97548d83e83e6c79a2f923e",
+      "callback": {
+        "mode": "await-initial",
+        "captured": 1,
+        "pending": 0,
+        "released": 1,
+        "callbacks": [
+          {
+            "source": "()=>e?.focus({preventScroll:n})",
+            "stack": "Error\n    at window.requestAnimationFrame (eval at evaluate (:290:30), <anonymous>:38:34)\n    at o (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19682)\n    at http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:30794",
+            "queued": 617.6000000238419,
+            "nativeFrame": 615.4,
+            "released": 631.1999999880791,
+            "releasePhase": "native-frame-before-initial-focus-await"
+          }
+        ],
+        "snapshots": [
+          {
+            "phase": "actual-focus-callback-queued",
+            "time": 617.6000000238419,
+            "active": {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "actual-focus-native-frame",
+            "time": 631.1999999880791,
+            "active": {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "actual-focus-native-frame-after",
+            "time": 631.8000000119209,
+            "active": {
+              "tag": "INPUT",
+              "role": "combobox",
+              "label": "Duplicate target task"
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "server-after-focus-await-before-keyboard-insertText",
+            "time": 664.1000000238419,
+            "active": {
+              "tag": "TEXTAREA",
+              "role": null,
+              "label": "Reason"
+            },
+            "target": "",
+            "reason": ""
+          }
+        ]
+      },
+      "events": [
+        {
+          "stage": "focusin",
+          "time": 631.5,
+          "frame": 11,
+          "active": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusin",
+          "eventTime": 631.5,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at u (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19649)",
+            "    at eval (eval at evaluate (:290:30), <anonymous>:52:13)"
+          ]
+        },
+        {
+          "stage": "focusout",
+          "time": 662.1000000238419,
+          "frame": 13,
+          "active": {
+            "tag": "BODY",
+            "role": null,
+            "label": null,
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusout",
+          "eventTime": 662.1000000238419,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at async <anonymous>:316:30"
+          ]
+        },
+        {
+          "stage": "focusin",
+          "time": 662.6999999880791,
+          "frame": 13,
+          "active": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusin",
+          "eventTime": 662.6000000238419,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at async <anonymous>:316:30"
+          ]
+        },
+        {
+          "stage": "beforeinput",
+          "time": 664.6999999880791,
+          "frame": 13,
+          "active": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "beforeinput",
+          "eventTime": 664.6999999880791,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": "insertText",
+          "data": "Same upload failure; retain the customer's additional context",
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)"
+          ]
+        },
+        {
+          "stage": "input",
+          "time": 665.1000000238419,
+          "frame": 13,
+          "active": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "target": "",
+          "reason": "Same upload failure; retain the customer's additional context",
+          "type": "input",
+          "eventTime": 665,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": "insertText",
+          "data": "Same upload failure; retain the customer's additional context",
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)"
+          ]
+        }
+      ]
+    }
+  },
+  "v15_history": {
+    "all_registered_final_references_unchanged": true,
+    "original_web_all_files_bytes_modes_unchanged": true,
+    "original_installed_desktop_all_files_bytes_modes_unchanged": true,
+    "original_status": " M apps/web/next-env.d.ts\n",
+    "runtime_status": " M apps/web/next-env.d.ts\n",
+    "copy_manifest_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/copy-manifests.json",
+    "copy_manifest_sha256": "a1f9ffd95ca0a551fb25eb8a6b4043248b267a99a34b8cbe2dc4d120397ac9d2"
+  },
+  "resources": {
+    "recorded_at": "2026-11-04T01:54:19.574482+00:00",
+    "diagnostic_checkout": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime",
+    "manifest_sha256": "54c857fcce5325bc52f27d5df8876ac7691c3e0e9ff2d8bf6f89585a9bef17cb",
+    "source_env_sha256": "80f0cdde1446c1913785748c78805743c0525dd1a7a90c027b6975202a9190ac",
+    "api": "http://localhost:19031",
+    "web": "http://localhost:13951",
+    "health": {
+      "status": "ok",
+      "pid": 95486,
+      "commit": "d41573e3a",
+      "started_at": "2026-11-04T01:51:26Z"
+    },
+    "config_nonsecret": {
+      "auth_mode": "legacy",
+      "deployment_id": "3c878e96-7515-4b53-b8de-5ff689cb6b5d"
+    },
+    "actual_API_process": "95486 95329 95329 /private/tmp/multica-triage-focus-v15-ttcgnuwq/go-build2079219947/b001/exe/server\n",
+    "actual_API_cwd": "p95486\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/server\n",
+    "actual_API_flags": {
+      "MULTICA_AUTH_MODE": "legacy",
+      "MULTICA_DEPLOYMENT_ID": "3c878e96-7515-4b53-b8de-5ff689cb6b5d",
+      "MULTICA_DEVICE_AUTH_ENABLED": "false",
+      "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+      "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false",
+      "MULTICA_PLATFORM_ADMIN_ENABLED": "false",
+      "DATABASE_MAX_CONNS": "6",
+      "DATABASE_MIN_CONNS": "0"
+    },
+    "actual_database_url_matches": true,
+    "database": {
+      "database": "multica_triage_focus_v15_01a1a3c9",
+      "latest": "764_collaboration_ai_policy",
+      "cluster_connections": 26,
+      "max_connections": "100"
+    },
+    "bootstrap": {
+      "apiBaseUrl": "http://localhost:19031",
+      "wsUrl": "ws://localhost:19031/ws"
+    },
+    "api_provenance": {
+      "component": "api",
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=d41573e3a' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/server)",
+      "source_id": "32abb413f4e23b6031ff7d22aa9637bb6756eca28b832c01f812d3d3f0c3029a",
+      "configuration_id": "55b2d4489664e5b1c68b1cc87df14486480930ffe33b32564611647393a1a653",
+      "commit": "d41573e3a",
+      "launcher_pid": 95329,
+      "started_at": "2026-11-04T01:51:10Z",
+      "listener_pid": 95486
+    },
+    "web_provenance": {
+      "component": "web",
+      "mode": "production",
+      "build_id": "dy7TchAcyEEd1S2BGilpR",
+      "command": "pnpm --filter @multica/web exec next start --port 13951",
+      "source_id": "32abb413f4e23b6031ff7d22aa9637bb6756eca28b832c01f812d3d3f0c3029a",
+      "configuration_id": "2aae495905c8d98bbd6699d7dc90cb4e758c28f38bd656487d4d7944900cd545",
+      "commit": "d41573e3a",
+      "launcher_pid": 95861,
+      "started_at": "2026-11-04T01:53:21Z",
+      "listener_pid": 95880
+    },
+    "html_sha256": "a95905f415321afa8c9fe2cbd0076bd7d9d72d931b1a98d31aa5a34e6389efbd",
+    "knowledge_budget": 0,
+    "knowledge_calls": 0,
+    "real_provider_allowed": false,
+    "test_fixture_writes_started": false
+  },
+  "resources_left_running_for_root_review": true,
+  "artifact_manifest_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/diagnostic-artifact-manifest.json",
+  "artifact_manifest_sha256": "4804cbda749952b3fc4bd99f2ff8dc62dd0a18c3f38dd7a14c49d55d2b2e1958",
+  "source_registration_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/control-source-registration.json",
+  "source_registration_sha256": "a32d67b7810607b9ef617f50255cb2ce065d6fd99ce5a8ce666d223e1c606eba",
+  "original_assertion_count": 52,
+  "new_initial_focus_reason_assertion_count": 2,
+  "ordinary_invocations": 2,
+  "control_invocations": 2,
+  "retry_count": 0,
+  "knowledge_budget_allocated": 0,
+  "knowledge_calls": 0,
+  "real_provider_allowed": false,
+  "production_knowledge_default": false,
+  "remaining": "Independent root review of cause/control/source boundary; root authorization before tracked fixture fix and separate directed full four client/locale green."
+}

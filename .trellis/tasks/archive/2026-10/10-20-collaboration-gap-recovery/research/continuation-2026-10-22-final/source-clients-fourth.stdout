@@ -1,0 +1,142 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-clients-fourth",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-source-surface.spec.ts",
+      "file": "collaboration-source-surface.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 15034,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('dialog', { name: 'Issue actions', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Issue actions', exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('dialog', { name: 'Issue actions', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Issue actions', exact: true })\u001b[22m\n\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:147:26)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:187:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                      "column": 26,
+                      "line": 147
+                    },
+                    "snippet": "  145 |       expect(await cardColumns(current, fixture.shared.title)).toEqual(terminalColumns);\n  146 |     });\n> 147 |     await expect(dialog).toBeVisible();\n      |                          ^\n  148 |     await expect(dialog).toContainText(\"Use Complete, Cancel or Reopen\");\n  149 |     expect(terminalWrites.writes).toEqual([]);\n  150 |     expect(await sourceSnapshot(fixture)).toEqual(terminalBefore);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                        "column": 26,
+                        "line": 147
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('dialog', { name: 'Issue actions', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Issue actions', exact: true })\u001b[22m\n\n\n  145 |       expect(await cardColumns(current, fixture.shared.title)).toEqual(terminalColumns);\n  146 |     });\n> 147 |     await expect(dialog).toBeVisible();\n      |                          ^\n  148 |     await expect(dialog).toContainText(\"Use Complete, Cancel or Reopen\");\n  149 |     expect(terminalWrites.writes).toEqual([]);\n  150 |     expect(await sourceSnapshot(fixture)).toEqual(terminalBefore);\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:147:26)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:187:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-22T10:10:31.061Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "web-board-layout-request",
+                      "contentType": "application/json",
+                      "body": "ewogICJiZWZvcmUiOiAwLAogICJhZnRlciI6IDIwMSwKICAicmVxdWVzdCI6IHsKICAgICJwb3NpdGlvbiI6IDIwMSwKICAgICJleHBlY3RlZF9yZXZpc2lvbiI6IDMKICB9LAogICJ3b3JrZmxvd191bmNoYW5nZWQiOiB0cnVlCn0="
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-clients-fourth/collaboration-source-surfa-1d694-ity-and-scoped-layout-order-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                    "column": 26,
+                    "line": 147
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fd76911901244b93c23f-3e206b9269e8f7353c12",
+          "file": "collaboration-source-surface.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-22T10:10:30.545Z",
+    "duration": 16240.260999999999,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

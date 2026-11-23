@@ -1,0 +1,42 @@
+{
+  "task_fixture_only": true,
+  "changed_configuration": {
+    "MULTICA_MANAGED_INSTALLATIONS_ENABLED": {
+      "before": false,
+      "after": true
+    }
+  },
+  "config": {
+    "managed_installation_supported": true,
+    "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+    "platform_admin_available": true,
+    "auth_mode": "password",
+    "password_auth_available": true,
+    "password_signup_available": true,
+    "account_binding_available": false,
+    "cdn_domain": "localhost",
+    "allow_signup": true,
+    "daemon_server_url": "http://localhost:18996",
+    "daemon_app_url": "http://localhost:13916",
+    "messaging_integrations_enabled": true,
+    "posthog_key": "",
+    "posthog_host": "",
+    "analytics_environment": "dev",
+    "feature_flags": {
+      "agents_agent_builder": true,
+      "agents_skill_toggles": true,
+      "billing_workspace_subscriptions": false,
+      "composio_mcp_apps": false,
+      "plugins_v1": false,
+      "settings_resource_labels": true
+    },
+    "local_worktree_supported": true,
+    "agent_conversation_starters_supported": true
+  },
+  "health": {
+    "status": "ok",
+    "pid": 61506,
+    "commit": "8ecb98883",
+    "started_at": "2026-10-21T05:11:37Z"
+  }
+}

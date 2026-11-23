@@ -252,6 +252,9 @@ func resolveProfile(cmd *cobra.Command) string {
 }
 
 func newAPIClient(cmd *cobra.Command) (*cli.APIClient, error) {
+	if cli.HasCollaborationContext() {
+		return nil, fmt.Errorf("ordinary API clients are unavailable inside a collaboration run")
+	}
 	taskContext := inDaemonManagedExecutionContext()
 	token := resolveToken(cmd)
 	if taskContext && !strings.HasPrefix(token, "mat_") {
@@ -423,6 +426,9 @@ func requireTaskLocalConfigRoot() error {
 // set up, or operate the human-owned local daemon/profile. Task API commands
 // remain available with the injected mat_ token; these local commands do not.
 func requireHumanLocalCommand(command string) error {
+	if cli.HasCollaborationContext() {
+		return fmt.Errorf("%s is unavailable inside a collaboration run", command)
+	}
 	if !inDaemonTaskIdentityContext() {
 		return nil
 	}

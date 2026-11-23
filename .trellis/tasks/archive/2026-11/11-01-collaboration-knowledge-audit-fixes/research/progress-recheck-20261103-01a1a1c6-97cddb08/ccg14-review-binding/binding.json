@@ -1,0 +1,31 @@
+{
+  "recorded_at": "2026-11-03T14:32:19.434323+00:00",
+  "recheck_session": "01a1a1c6-9f9b-7521-8341-f57c97cddb08",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "binding_kind": "Offline actual v14 review pin and still-false permission input refresh only",
+  "accepted_v14_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/independent-review/review.json",
+    "sha256": "7b7047c02fba74dbc2a080581eb8adcf99922a2aa6a89d43e2942bbc041497c3"
+  },
+  "before": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/source-inputs.json": "b86c5c6416dfd21a0e579f47d7cbe57ba76e8a2dcdb5fc5a00859fa0ece75197",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg1-normal.json.template": "7459a6298c7b135463b62d50e37c88325c70e5d9189508e06bf1c20dd84e23ff",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg1-race.json.template": "27fee8774ec9fc441c107ad6f7f80b2759fe8905faa65c6c39bbd06c56fa0021",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg2-off.json.template": "9713629b585c18942ea9fdce4807e1d452bbd9bf8cdb54c502c11b0290ba4639",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg2-on.json.template": "d41708d3c915216de3dd89c7d783ec0620bebd51149a5f88505b432dd98ae48d"
+  },
+  "after": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/source-inputs.json": "e688795a758ae51478175bd1bf5a8cd99e1164545d522bab93235dddffe45589",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg1-normal.json.template": "a08666866d8c794e8cf02af3db4b86cfe1a7cd4f5c029bfec7896e4e1def99f0",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg1-race.json.template": "c15bc0131bd48ad00d8b893f1ee0d6f45871c217e638939e3cd782297941c420",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg2-off.json.template": "d883715de8cc987521b9d7364cd759a3e4debadb3420348b7cd7e04ce8f2ff66",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg2-on.json.template": "2cd7f76252eedc7f8a31af5649755970eaf89c423d1d59c211b885917b087a1f"
+  },
+  "all_four_permits_false": true,
+  "runner_bytes_changed": false,
+  "resources_allocated": false,
+  "tests_executed": false,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "next": "Independent exact-byte review before any permit; actual fullcheck exit0/audit/inventory/release and fresh roots still required"
+}

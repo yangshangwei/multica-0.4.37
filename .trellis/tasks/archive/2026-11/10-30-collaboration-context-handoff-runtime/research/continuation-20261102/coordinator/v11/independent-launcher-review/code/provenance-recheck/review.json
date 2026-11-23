@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "role": "trellis-check",
+  "scope": "Narrow read-only recheck of the owner-supplied corrected v11 launcher/binding delta and retained 45-case evidence",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "source_or_shared_edits": false,
+  "execution_clearance_created": false,
+  "authorizes_execution": false,
+  "full_candidate_accepted": false,
+  "paid_or_real_provider_completion_granted": false,
+  "reviewed_at_utc": "2026-11-03T00:52:34.056184+00:00",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "corrected_launcher": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+    "sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e"
+  },
+  "corrected_binding": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/owned-bindings-v11-provenance.json",
+    "sha256": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b"
+  },
+  "unchanged_inputs": {
+    "original_launcher": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11.py",
+      "sha256": "b2d17a742c45134640a070e980937b9f0ce4f724611c7e5c0fb6f2f0a333ffd2"
+    },
+    "original_binding": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/owned-bindings-v11.json",
+      "sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba"
+    },
+    "source_env": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-source-v11.env",
+      "sha256": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f"
+    },
+    "go_adapter": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/go",
+      "sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce"
+    },
+    "pnpm_adapter": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/pnpm",
+      "sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+    }
+  },
+  "non_source_binding_fields_unchanged": true,
+  "preexisting_source_fields_unchanged": true,
+  "source_identities": {
+    "canonical_product": {
+      "purpose": "canonical RK1/product source identity",
+      "source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+      "file_count": 7962,
+      "roots": [
+        "server",
+        "apps",
+        "packages",
+        "scripts",
+        "Makefile",
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml"
+      ],
+      "algorithm": "sha256 over sorted path NUL sha256 LF lines of tracked regular files under roots",
+      "selection": "git ls-files tracked regular files under ROOTS; skip symlink/nonfile; HEAD and evidence paths are metadata, not digest inputs",
+      "manifest_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/canonical-product-source-manifest-v11-provenance.json",
+      "manifest_sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+      "standard_script_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source_manifest.py",
+      "standard_script_sha256": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3"
+    },
+    "dev_environment_overlay": {
+      "value": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+      "purpose": "development environment HEAD/overlay/normalized-next-env identity only",
+      "helper_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/checkout-source-id-v11.cjs",
+      "helper_sha256": "817348f249009f05e0e05a4a08d0f76581cda60fac9f9ce88b18255fd4e85bc8",
+      "algorithm": "SHA256(HEAD bytes, binary HEAD diff excluding next-env, next-env normalized path/symlink/execute bits/content JSON, then sorted untracked product path/bytes)",
+      "canonical_product_source": false
+    },
+    "all_tracked_snapshot": {
+      "value": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+      "file_count": 17182,
+      "purpose": "all Git-tracked snapshot using ordered path/file SHA/lstat mode compact JSON; separate from canonical product source"
+    }
+  },
+  "canonical_validation": {
+    "bound_manifest_sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+    "standard_script_sha256": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3",
+    "manifest_record_copy_sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+    "computed_manifest_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "map_file_count": 7962,
+    "verification_record_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/provenance-correction-v11/canonical-product-verification.json",
+    "verification_record_sha256": "9788360b2864ee2402916bf15d9d9f38fb942b8014880b37d1069b550efce5e2",
+    "recorded_verification_exit_code": 0,
+    "manifest_record_and_binding_hashes_match": true,
+    "manifest_digest_matches_binding_and_record": true,
+    "all_tracked_compact_json_hash_matches": true,
+    "standard_script_not_executed_here": true,
+    "complete_current_source_file_rehash_not_repeated_here": true
+  },
+  "retained_45_preflight": {
+    "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11-provenance.py",
+    "source_sha256": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+    "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/provenance-correction-v11/fake-preflight-v11-provenance.log",
+    "log_sha256": "58fe58271850779c8edfdb51b8c88a93094d7b4077f276080eda66f0b63c3011",
+    "metadata_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/provenance-correction-v11/fake-preflight-v11-provenance.json",
+    "metadata_sha256": "5576743792bae6571c592830f94299fa47ac9203a7e78a56ecbe5e74f1f41d67",
+    "recorded_exit_code": 0,
+    "raw_terminal_count": 45,
+    "all_terminals_ok": true,
+    "terminals_match_source": true,
+    "metadata_bound_bytes_match_actual": true,
+    "original_42_case_names_preserved": true,
+    "new_cases": [
+      "test_run_record_separates_product_overlay_and_tracked_identities",
+      "test_wrong_canonical_product_digest_refuses_before_make",
+      "test_wrong_canonical_product_roots_refuses_before_make"
+    ],
+    "all_case_names": [
+      "test_actual_graph_mismatch_refuses_before_make",
+      "test_backtick_substitution_is_not_executed",
+      "test_blocking_review_cannot_launch",
+      "test_build_temp_git_root_refuses_before_make",
+      "test_candidate_mismatch_is_refused_before_make",
+      "test_catalog_path_mismatch_refuses_before_make",
+      "test_changed_cli_refuses_before_make",
+      "test_changed_pinned_node_refuses_before_make",
+      "test_changed_pinned_pnpm_bundle_refuses_before_make",
+      "test_changed_renderer_refuses_before_make",
+      "test_changed_rollout_gate_refuses_before_make",
+      "test_command_substitution_is_not_executed",
+      "test_credentialed_renderer_is_refused_before_make",
+      "test_escaped_normalized_braced_make_function_is_refused",
+      "test_escaped_normalized_parenthesized_make_function_is_refused",
+      "test_existing_dsh_refuses_before_make",
+      "test_existing_execution_directory_refuses_before_make",
+      "test_foreign_workspace_link_refuses_before_make",
+      "test_generated_quoted_escaped_empty_and_duplicate_values_are_data",
+      "test_launcher_child_gets_private_home_and_explicit_actual_caches",
+      "test_matching_own_tools_and_provider_env_scrub",
+      "test_matching_review_preserves_api_pool_and_dynamic_renderer",
+      "test_missing_catalog_refuses_before_make",
+      "test_missing_resource_ownership_refuses_before_make",
+      "test_missing_review_cannot_launch",
+      "test_modified_tracked_source_refuses_before_make",
+      "test_new_v11_process_paths_and_record_are_bound",
+      "test_non_loopback_renderer_is_refused_before_make",
+      "test_normalized_ascii_control_is_refused",
+      "test_normalized_dollar_reference_is_refused",
+      "test_normalized_tab_is_refused",
+      "test_quoted_normalized_braced_make_function_is_refused",
+      "test_repeated_launch_preserves_previous_evidence",
+      "test_repository_env_copy_preserves_enforced_pool_and_removed_context",
+      "test_root_resource_proof_rejects_unowned_redis",
+      "test_run_record_separates_product_overlay_and_tracked_identities",
+      "test_shared_writable_catalog_refuses_before_make",
+      "test_shell_metacharacters_stay_literal_in_canonical_configuration",
+      "test_symlinked_catalog_refuses_before_make",
+      "test_tampered_go_adapter_is_refused_before_make",
+      "test_tampered_launcher_is_refused_before_make",
+      "test_tampered_pnpm_adapter_is_refused_before_make",
+      "test_tampered_source_config_is_refused_before_make",
+      "test_wrong_canonical_product_digest_refuses_before_make",
+      "test_wrong_canonical_product_roots_refuses_before_make"
+    ],
+    "raw_summary": [
+      "Ran 45 tests in 0.426s",
+      "OK"
+    ],
+    "replayed_here": false
+  },
+  "retained_original_preflight": {
+    "fake-preflight-v11": {
+      "source_sha256": "fcc6fb2693ca19d4355116080ab66e974623a7e9696c64f72a53c2a71ddbeaad",
+      "log_sha256": "a7b097df04e8dc5b915714bc28df92dd03b551dbe3375d6c9fe231458c4e075e",
+      "metadata_sha256": "76d43c02af5c46e1ea29081094812a98f390b2861e4a7f74a194da87bbbc295a"
+    },
+    "adapter-env-preflight-v11": {
+      "source_sha256": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+      "log_sha256": "113295e6dc91da955d1e2795b79f22954c6baca7ad1acc119657e519c803dc12",
+      "metadata_sha256": "4c2a8f8f3125a8419585e4f6658877f70e83173b2b960184e3ac30709d50da15"
+    }
+  },
+  "artifact_pins_unchanged_in_binding": {
+    "cli": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/multica",
+      "sha256": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197",
+      "bytes": 29314610,
+      "version": "v0.6.7-460-g304f74dd3"
+    },
+    "renderer": {
+      "installed": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/renderer",
+        "file_count": 493,
+        "recorded_fields": {
+          "file_count": 493,
+          "manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18"
+        },
+        "entry_hashes": {
+          "index.html": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb"
+        }
+      },
+      "staged": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/artifacts/renderer",
+        "file_count": 493,
+        "recorded_fields": {
+          "file_count": 493,
+          "manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18"
+        },
+        "entry_hashes": {
+          "index.html": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb"
+        }
+      }
+    },
+    "preload": {
+      "installed": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/preload",
+        "file_count": 1,
+        "recorded_fields": {
+          "file_count": 1,
+          "manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e"
+        },
+        "entry_hashes": {
+          "index.js": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5"
+        }
+      },
+      "staged": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/artifacts/preload",
+        "file_count": 1,
+        "recorded_fields": {
+          "file_count": 1,
+          "manifest_sha256": "eb6f5654d511b3b23a8856597deeabf4277c8a21afffcce04c8703ad6b4c128e"
+        },
+        "entry_hashes": {
+          "index.js": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5"
+        }
+      }
+    },
+    "main": {
+      "installed": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/out/main",
+        "file_count": 1,
+        "recorded_fields": {
+          "file_count": 1,
+          "manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360"
+        },
+        "entry_hashes": {
+          "index.js": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678"
+        }
+      },
+      "staged": {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/artifacts/main",
+        "file_count": 1,
+        "recorded_fields": {
+          "file_count": 1,
+          "manifest_sha256": "7e4cfb3a45cb26761edb8b73b3f2cd2fe433d2d25e67010ea22156d4287a0360"
+        },
+        "entry_hashes": {
+          "index.js": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678"
+        }
+      }
+    }
+  },
+  "current_admission_path_presence": {
+    "resource-ownership-v11.json": false,
+    "independent-review-clearance-v11.json": false,
+    "check-source-v11.safe.env": false,
+    "make-check-v11.json": false,
+    "make-check-v11.log": false,
+    "full-check-home-v11": false,
+    "go-packages-v11": false,
+    "dev-registry-v11": false,
+    "profiles-v11": false,
+    "workspaces-v11": false
+  },
+  "original_code_reports_sha256": {
+    "review.json": "4c4e45192733c052dd259ae421fc8c5c6008fbf297a2a890bd5557e1421f37b8",
+    "review.md": "227340c75f2b117d493f38ad54b21477b45f085a5bc2085de79aafcc0161a871"
+  },
+  "checks": [
+    {
+      "name": "Exact corrected bytes and unchanged inputs",
+      "result": "pass",
+      "detail": "Launcher dd0f5903… and binding 6db6435e… match dispatch and correction metadata. Original b2d17a74…/ccc11e4d…, env 999decf0… and Go/pnpm 70ca24bb…/acb022a8… remain unchanged. Every preexisting source binding field and all non-source fields are unchanged; only new provenance labels/canonical source metadata are added."
+    },
+    {
+      "name": "Canonical guard before writable state",
+      "result": "pass-code",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+      "lines": [
+        67,
+        74,
+        79,
+        82,
+        84,
+        85,
+        87,
+        88,
+        90,
+        92,
+        93,
+        94,
+        95,
+        96,
+        200,
+        239,
+        244,
+        267,
+        269
+      ],
+      "detail": "The corrected binding hash is required, then all tracked real bytes/modes are checked. Canonical manifest/method hashes, standard ROOTS, exact selected regular-file hash map, HEAD/clean metadata, counts and sorted path-NUL-fileSHA-LF digest must match before verify_owned_bindings returns and before execution HOME/safe env/record/Make creation. The standard script is hashed only; the new guard does not execute its writing main()."
+    },
+    {
+      "name": "Canonical method equivalence",
+      "result": "pass-static-and-retained-record",
+      "detail": "Matches unchanged source_manifest.py ROOTS and skip-symlink/nonfile selection, and its digest over sorted relative paths plus raw file hashes. Canonical product SourceID 4622182a… over 7,962 entries matches the bound/recorded manifests and independent reassembly of their map. Development identity 3f9788ba… remains explicitly HEAD/overlay/normalized-next-env metadata; all-tracked 26e38d9e… over 17,182 entries retains its separate compact-JSON method."
+    },
+    {
+      "name": "Clearance and ownership source bindings",
+      "result": "pass-code-only",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+      "lines": [
+        67,
+        69,
+        133,
+        134,
+        137,
+        138,
+        140,
+        141,
+        144,
+        161,
+        164,
+        171,
+        172,
+        173,
+        174
+      ],
+      "detail": "Clearance must match the corrected launcher SHA and corrected binding SHA, plus the unchanged candidate/env/adapters. Canonical source fields are bound by the whole corrected bindings_sha256; there is no added direct canonical-source scalar check in the resource proof. The resource proof remains whole-hash-bound and candidate/root/window/renderer 19846/index/Redis 16422/container validated. Neither actual proof nor clearance exists at observation time."
+    },
+    {
+      "name": "Distinct run-record identities",
+      "result": "pass-code-and-retained-fake",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+      "lines": [
+        258,
+        259,
+        260,
+        261,
+        262
+      ],
+      "detail": "Writes dev_environment_source_id, canonical_product_source_id/count and tracked_snapshot_fingerprint separately; drops ambiguous checkout_source_id output label. The new positive fake case asserts each field and the absence of the old label."
+    },
+    {
+      "name": "Retained 45-case evidence",
+      "result": "pass-read-only",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11-provenance.py",
+      "lines": [
+        545,
+        555,
+        565
+      ],
+      "detail": "45 source test methods exactly match 45 distinct raw ok terminals, recorded exit 0 and bound launcher/binding/source/log hashes. All original 42 names remain. Added cases assert wrong canonical digest/root refusals before Make and distinct run-record labels. Fake execution retains mocked Git/Node/Make and synthetic materials; this reviewer did not replay any case."
+    },
+    {
+      "name": "Original evidence preservation",
+      "result": "pass-read-only",
+      "detail": "Original 42+5 source/log/metadata hashes and original code-review outputs are preserved. The corrected 45-case result is separate and does not replace historical failed/incomplete full-run records or establish historical fake 62+62 reuse."
+    }
+  ],
+  "verification": {
+    "lint": "not run; prohibited by narrow read-only scope",
+    "typecheck": "not run; prohibited by narrow read-only scope",
+    "tests": "not run or replayed here; retained 45 source assertions/raw terminals/hash bindings verified",
+    "canonical_standard_script": "not executed here; source/manifest/record bytes read and checked",
+    "current_product_full_rehash": "not repeated here; canonical map and stored verification record checked, with actual-file guards reviewed",
+    "services_database_sql_api_playwright_provider_network": "not executed",
+    "code_delta": "pass",
+    "full_paid_resource_SSR_gates": "not evaluated or granted"
+  },
+  "limitations": [
+    "A code/metadata recheck is not a live renderer, Redis or exclusive-window ownership proof.",
+    "The canonical manifest digest was reassembled from its bound hash map; complete current product-file rehashing remains with the source/evidence review owner.",
+    "This result does not reclassify the 3f9788ba… overlay identity as canonical source, reuse historical 9f72/639 with Go 1.27 fake 62+62, or establish new runtime-model acceptance.",
+    "Production SSR, full repository checks, password-mode and paid acceptance remain separate root-owned gates."
+  ],
+  "smallest_owner_followup": [
+    "Use corrected launcher SHA dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e and bindings_sha256 6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b when combining independent reviews and creating clearance.",
+    "Keep canonical product 4622182a… separate from dev-environment 3f9788ba… and all-tracked 26e38d9e… in source registration/resource evidence.",
+    "Supply current root resource proof and complete the separate root-owned SSR/full-run gates. No code correction requested by this scoped recheck."
+  ]
+}

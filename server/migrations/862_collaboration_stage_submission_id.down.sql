@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS collaboration_stage_submission_id_idx;

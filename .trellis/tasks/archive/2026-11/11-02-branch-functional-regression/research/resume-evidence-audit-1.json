@@ -1,0 +1,39 @@
+{
+  "at": "2026-11-02T02:44:01.507167+00:00",
+  "reviewer": "coordinator; independent dispatches returned429 before tool work",
+  "status": "PASS_WITH_OPEN_GATES",
+  "source_evidence_audit": "evidence/resume-cleanup-1/run.json",
+  "historical_fingerprints_checked": 4614,
+  "intended_changed_old_files": [
+    "implement.md",
+    "report.md",
+    "task.json",
+    "progress.md",
+    "session-prompt.md",
+    "conditional-matrix.csv",
+    "defects.md",
+    "research/session-record.md"
+  ],
+  "historical_raw_evidence_and_439_coverage_unchanged": true,
+  "json_csv_and_replay_sources_valid": true,
+  "git_diff_check_exit_code": 0,
+  "go_latest_top_level": {
+    "pass": 10376,
+    "fail": 1,
+    "skip": 6
+  },
+  "linux_deb_assertions_passed": 87,
+  "actual_go_typescript_schema_checks_passed": 7,
+  "task_status": "in_progress",
+  "product_lint_typecheck": "Not repeated: no product/dependency change; scoped actual Go, schema and package checks executed",
+  "open_gates": [
+    "QA-PERF-001",
+    "native Linux desktop",
+    "Windows native/install/upgrade",
+    "iOS actual UI",
+    "macOS installed upgrade",
+    "signing/notarization",
+    "other package formats/architectures",
+    "commercial provider/account/model acceptance"
+  ]
+}

@@ -34,11 +34,11 @@ An autopilot is enabled by default after saving; **Run now** manually executes t
 
 Schedules use the selected timezone, such as `Asia/Shanghai`. The template creation page lets you select the assignee, project and timezone; edit the Runbook and schedule from the detail page after creation.
 
-Create a **Progress Reporter** from the [role catalog](/agents-create#role-templates) and assign both autopilots to it. State whether each report covers the workspace or one project. Linking a project sets the report issue's project and execution context; the agent must still filter its source-issue queries to the requested scope.
+Create a **Progress Reporter** from the [role catalog](/agents-create#role-templates) and assign both autopilots to it. For template v2, select **Create issue** mode and link the project to report on. The reporter can read only that project's issues, comments and activity, and must include the project filter in its queries. Without a linked project it can read only the report issue itself, so it cannot produce workspace-wide totals.
 
 Reports cite task history and comments, list completions, ongoing work and blockers, and give verifiable new/closed/net counts. Reporting issues themselves are excluded from business counts. An empty period still gets a report, while missing data is disclosed rather than counted as zero.
 
-Each run creates a dated report issue. After posting its report comment successfully, the reporter moves only that issue to `in_review`, completing the autopilot run while leaving source issues unchanged. An Observer assignee needs a member to make that review transition. Template updates never rewrite saved autopilots; edit an older weekly Runbook to adopt the new closeout rule.
+Each run creates a dated report issue. Reporter v2 posts its report comment and leaves the issue status unchanged, even if a saved Runbook asks it to move the issue to `in_review`. A person or another already authorized actor makes the review transition through the existing issue lifecycle. Posting the comment alone does not complete the autopilot run or automatically wake a squad leader. Template updates do not rewrite existing agents, skills or saved autopilots; older role versions retain their prior policy until explicitly migrated.
 
 ## Choose an execution mode
 

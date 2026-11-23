@@ -1,0 +1,38 @@
+{
+  "name": "backend-handler02",
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^TestDurableDelegation",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T04:09:46.805938+00:00",
+  "finished_at": "2026-11-10T04:10:07.813276+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_handler_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-handler02.log",
+  "log_sha256": "7384aa0736fb53807aee81f10794fed3a76e0543b2c8b749677ab68eedf30f8c",
+  "counts": {
+    "pass": 5,
+    "fail": 1,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDurableDelegationRejectionsAndFrozenTargets",
+      "TestDurableDelegationUnknownDoesNotRedispatch/claim_commit_after",
+      "TestDurableDelegationUnknownDoesNotRedispatch/finalization",
+      "TestDurableDelegationUnknownDoesNotRedispatch",
+      "TestDurableDelegationRejectsInvalidKeyAndAttachmentsBeforeWrite"
+    ],
+    "fail": [
+      "TestDurableDelegationActualQueueMergeDeferredAndRestart"
+    ],
+    "skip": []
+  }
+}

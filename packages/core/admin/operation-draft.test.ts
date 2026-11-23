@@ -68,3 +68,13 @@ it("preserves exact nonsecret alert disposition and owner across refresh", () =>
   saveAdminControlDraft(scope, alert);
   expect(readAdminControlDraft(scope, id)?.input).toEqual(alert);
 });
+it("restores a pending collaboration gate change with its epoch and refuses malformed gate intents", () => {
+  const gate = { id, key, action: "collaboration_gate" as const, body: { action: "open_execution" as const, expectedExecutionEpoch: "8", reason: "Pilot agents" } };
+  saveAdminControlDraft(scope, gate);
+  expect(readAdminControlDraft(scope, id)?.input).toEqual(gate);
+  removeAdminControlDraft(scope, id, key);
+  for (const body of [{ action: "close_execution", reason: "Not offered" }, { action: "open_execution", reason: "No epoch" }, { action: "open_creation", expectedExecutionEpoch: "8", reason: "Unrelated epoch" }]) {
+    expect(() => saveAdminControlDraft(scope, { ...gate, body } as unknown as typeof gate)).toThrow(AdminControlDraftError);
+  }
+  expect(values.size).toBe(0);
+});

@@ -1,0 +1,97 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationMentionCommentAdmissionAcrossExecutionStates$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "database_alias": "service_s5",
+    "schema_migration": 737,
+    "provider_execution": false
+  },
+  "started_at": "2026-10-21T15:38:29.186035+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+    "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+    "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+    "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+    "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+    "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+    "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+    "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+    "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+    "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+    "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+    "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+    "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+    "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+    "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+    "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+    "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+    "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+    "server/internal/service/collaboration_mention_admission_states_test.go": "7af3b4eda508dc5748f40f4e3cde59d991ed1a633e4feef0f6bbfec6c7c33fd5"
+  },
+  "returncode": 1,
+  "elapsed_seconds": 16.289,
+  "finished_at": "2026-10-21T15:38:45.475293+00:00",
+  "test_passes": [
+    "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/idle",
+    "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/paused",
+    "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/unconfirmed_stop",
+    "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/revoked_resource",
+    "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/removed_author",
+    "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/terminal_issue"
+  ],
+  "test_failures": [
+    "TestCollaborationMentionCommentAdmissionAcrossExecutionStates/busy",
+    "TestCollaborationMentionCommentAdmissionAcrossExecutionStates"
+  ],
+  "test_skips": [],
+  "package_results": [
+    {
+      "Time": "2026-10-21T23:38:45.440991+08:00",
+      "Action": "fail",
+      "Package": "github.com/multica-ai/multica/server/internal/service",
+      "Elapsed": 5.779
+    }
+  ],
+  "final_source_sha256": {
+    "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+    "server/internal/service/collaboration_comments_create.go": "5117be7583614a245a5fd4db2129d47e9c783e55ab2b7ee75ac205c4ef4f2f5d",
+    "server/internal/service/collaboration_mentions.go": "eed8e4fa3ff918223ec2e139ad78b160cd34c8e43a3e26fbc4783eb980d74508",
+    "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+    "server/internal/service/collaboration_batches.go": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+    "server/internal/service/collaboration_authority.go": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+    "server/internal/service/collaboration_control.go": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+    "server/internal/service/collaboration_runtime.go": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+    "server/internal/service/collaboration_runtime_capabilities.go": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+    "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+    "server/internal/service/collaboration_lifecycle.go": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+    "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+    "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+    "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+    "server/internal/service/collaboration_control_managed_test.go": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+    "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+    "server/internal/service/collaboration_hold_test.go": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+    "server/internal/service/collaboration_lifecycle_test.go": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+    "server/internal/service/collaboration_mention_admission_states_test.go": "7af3b4eda508dc5748f40f4e3cde59d991ed1a633e4feef0f6bbfec6c7c33fd5"
+  },
+  "raw_sha256": "2fd73abba2644e4484b43dc2857b414668f7e81c7027c7d95aa7d86855455b8f"
+}

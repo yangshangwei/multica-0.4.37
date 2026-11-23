@@ -1,0 +1,15 @@
+{
+  "kind": "test_binary_source_binding_and_plain_log_inventory",
+  "compile_record": "runs/p1-consumer-compile01.json",
+  "compile_exit_code": 0,
+  "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-consumer-red.test",
+  "binary_sha256": "22a807c83b4226de4f14d45567c544d84445dce4a538f1349692e5d17cc68572",
+  "source_bound_to_compile_record": true,
+  "execution_record": "runs/p1-consumer-red01.json",
+  "execution_exit_code": 1,
+  "log_sha256": "dc0c551ffcf057a3a3820d61c956a939c647dca75bcd33d302c601325917d0c0",
+  "named_test": "TestDeliveryCompletionConsumerDistinctContributor",
+  "named_failures": 1,
+  "cause": "expected authorization201, actual403 for distinct Contributor consumer while producer is Operator",
+  "parser_limit": "original run used plain test binary -test.v; launcher Go JSON inventory is zero and is not used as executed-test count"
+}

@@ -1,0 +1,52 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/final-state-audit-v15/final_state_audit_test.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit_test.py.in
+@@ -11,7 +11,7 @@
+ 
+ 
+ HERE = Path(__file__).resolve().parent
+-REGISTERED = Path("/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15")
++REGISTERED = Path("/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16")
+ NEXT_PATH = "apps/web/next-env.d.ts"
+ NEXT_BEFORE = b'/// <reference types="next" />\nimport "./.next/dev/types/routes.d.ts";\n// generated declaration\n'
+ NEXT_AFTER = NEXT_BEFORE.replace(b'"./.next/dev/types/routes.d.ts"', b'"./.next/types/routes.d.ts"')
+@@ -31,8 +31,8 @@
+ class FinalStateTests(unittest.TestCase):
+     def setUp(self):
+         self.auditor_path = HERE / "final_state_audit.py"
+-        with patch.dict(os.environ, {"CHECK_LAUNCHER_SOURCE": str(REGISTERED / "run-make-check-v15-provenance.py")}):
+-            fixture_module = load(REGISTERED / "fake-preflight-v15-provenance.py")
++        with patch.dict(os.environ, {"CHECK_LAUNCHER_SOURCE": str(REGISTERED / "run-make-check-v16-provenance.py")}):
++            fixture_module = load(REGISTERED / "fake-preflight-v16-provenance.py")
+         self.fixture = fixture_module.LauncherEntryTests(methodName="runTest")
+         self.fixture.setUp()
+         self.addCleanup(self.fixture.doCleanups)
+@@ -57,9 +57,9 @@
+         self.fixture.binding_file.write_text(json.dumps(binding))
+         self.fixture.write_clearance()
+         self.review = {**json.loads(self.fixture.clearance.read_text()), "candidate_root": str(self.root)}
+-        self.safe_env = self.out / "check-source-v15.safe.env"
++        self.safe_env = self.out / "check-source-v16.safe.env"
+         self.safe_env.write_bytes(self.fixture.source_env.read_bytes())
+-        log = self.out / "make-check-v15.log"
++        log = self.out / "make-check-v16.log"
+         log.write_text("Synthetic completion; no repository command executed.\n")
+         self.run = {
+             "state": "complete", "exit_code": 0, "candidate_root": str(self.root),
+@@ -73,7 +73,7 @@
+             "canonical_product_file_count": len(rows), "tracked_snapshot_fingerprint": binding["source"]["tracked_fingerprint"],
+             "cli_sha256": binding["cli"]["sha256"],
+         }
+-        self.run_file = self.out / "make-check-v15.json"
++        self.run_file = self.out / "make-check-v16.json"
+         self.run_file.write_text(json.dumps(self.run))
+ 
+     def audit(self):
+@@ -186,7 +186,7 @@
+             self.audit()
+ 
+     def test_completed_run_log_mutation_is_rejected(self):
+-        (self.out / "make-check-v15.log").write_text("changed after Make\n")
++        (self.out / "make-check-v16.log").write_text("changed after Make\n")
+         with self.assertRaisesRegex(RuntimeError, "Complete run log changed"):
+             self.audit()
+ 

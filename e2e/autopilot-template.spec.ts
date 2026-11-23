@@ -185,16 +185,25 @@ async function mockTemplateApis(page: Page, workspaceId: string, userId: string)
 }
 
 test.describe("autopilot templates", () => {
-  test("restores gallery filters and scroll with native and in-flow Back", async ({ page }) => {
+  test("restores welcome and gallery scroll and focus with native and in-flow Back", async ({ page }) => {
     const { slug, workspaceId, userId, api } = await login(page);
     try {
       const createdBody = await mockTemplateApis(page, workspaceId, userId);
       await page.setViewportSize({ width: 360, height: 420 });
       for (const entry of ["autopilots", "autopilots/new/template"]) {
         await page.goto(`/${slug}/${entry}`);
-        const gallery = page.getByRole("region", { name: "Start from a template" });
+        const isWelcome = entry === "autopilots";
+        const gallery = page.getByRole("region", {
+          name: isWelcome ? "Let your agents get to work on schedule" : "Start from a template",
+        });
         await expect(gallery.getByRole("listitem")).toHaveCount(2);
-        await gallery.getByRole("button", { name: "Repository maintenance 1" }).click();
+        if (isWelcome) {
+          await expect(gallery.getByRole("link", { name: "Read documentation" })).toHaveAttribute("href", `/${slug}/docs/autopilots`);
+          await expect(gallery.getByRole("link", { name: "Browse all templates" })).toHaveAttribute("href", `/${slug}/autopilots/new/template`);
+          await expect(gallery.getByRole("button", { name: "New autopilot", exact: true })).toBeVisible();
+        } else {
+          await gallery.getByRole("button", { name: "Repository maintenance 1" }).click();
+        }
         const card = gallery.getByRole("button", { name: /Hourly Queue Check/ });
         await card.scrollIntoViewIfNeeded();
         const scrollTop = await gallery.evaluate((element) => element.scrollTop);
@@ -206,8 +215,11 @@ test.describe("autopilot templates", () => {
           if (nativeBack) await page.goBack();
           else await page.getByRole("button", { name: "Go back", exact: true }).click();
           await expect(page).toHaveURL(new RegExp(`/${entry}$`));
-          await expect(gallery.getByRole("button", { name: "Repository maintenance 1" })).toHaveAttribute("aria-pressed", "true");
+          if (!isWelcome) {
+            await expect(gallery.getByRole("button", { name: "Repository maintenance 1" })).toHaveAttribute("aria-pressed", "true");
+          }
           await expect.poll(() => gallery.evaluate((element) => element.scrollTop)).toBe(scrollTop);
+          await expect(card).toBeFocused();
         }
       }
       expect(createdBody()).toBeUndefined();

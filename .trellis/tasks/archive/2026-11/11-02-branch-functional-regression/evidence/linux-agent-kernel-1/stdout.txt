@@ -1,0 +1,26 @@
+=== RUN   TestClaudeRootSudoPreflight
+=== PAUSE TestClaudeRootSudoPreflight
+=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped
+    codex_test.go:3215: execute: codex executable not found at "/tmp/TestCodexExecuteRetriesAfterSignaledProcessIsReaped3268910505/002/codex": exec: "/tmp/TestCodexExecuteRetriesAfterSignaledProcessIsReaped3268910505/002/codex": permission denied
+--- FAIL: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.00s)
+=== RUN   TestPiExecuteAttachesStdinPipe
+=== PAUSE TestPiExecuteAttachesStdinPipe
+=== CONT  TestClaudeRootSudoPreflight
+=== RUN   TestClaudeRootSudoPreflight/sandbox_bypass_allowed
+=== PAUSE TestClaudeRootSudoPreflight/sandbox_bypass_allowed
+=== RUN   TestClaudeRootSudoPreflight/non_bypass_allowed
+=== PAUSE TestClaudeRootSudoPreflight/non_bypass_allowed
+=== CONT  TestPiExecuteAttachesStdinPipe
+=== RUN   TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors
+=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors
+=== CONT  TestClaudeRootSudoPreflight/sandbox_bypass_allowed
+=== CONT  TestClaudeRootSudoPreflight/non_bypass_allowed
+=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors
+--- PASS: TestClaudeRootSudoPreflight (0.00s)
+    --- PASS: TestClaudeRootSudoPreflight/sandbox_bypass_allowed (0.00s)
+    --- PASS: TestClaudeRootSudoPreflight/non_bypass_allowed (0.00s)
+    --- PASS: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)
+=== NAME  TestPiExecuteAttachesStdinPipe
+    pi_test.go:259: execute: pi executable not found at "/tmp/TestPiExecuteAttachesStdinPipe155899896/001/pi": exec: "/tmp/TestPiExecuteAttachesStdinPipe155899896/001/pi": permission denied
+--- FAIL: TestPiExecuteAttachesStdinPipe (0.00s)
+FAIL

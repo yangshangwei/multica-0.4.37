@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_test_subject_command_idx ON collaboration_test_subject(command_id);

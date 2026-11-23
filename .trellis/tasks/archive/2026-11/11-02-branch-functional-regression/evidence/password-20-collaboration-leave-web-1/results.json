@@ -1,0 +1,145 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-20-collaboration-leave-web-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-leave-web.spec.ts",
+      "file": "collaboration-leave-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 2549,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m503\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m503\u001b[39m\n    at readResponse (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:292:31)\n    at clickControl (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:304:27)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-leave-web.spec.ts:25:21",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts",
+                      "column": 31,
+                      "line": 292
+                    },
+                    "snippet": "   at fixtures/collaboration-control-journey.ts:292\n\n  290 |   const path = `${issuePath(fixture)}/control`;\n  291 |   const readResponse = async (response: Pick<APIResponse, \"status\" | \"json\">, request: Request): Promise<ObservedControl> => {\n> 292 |     expect(response.status()).toBe(status);\n      |                               ^\n  293 |     const requestId = request.headers()[\"idempotency-key\"];\n  294 |     if (!requestId) throw new Error(\"A UI control request omitted its original key\");\n  295 |     const receipt: CollaborationControlReceipt = await response.json();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts",
+                        "column": 31,
+                        "line": 292
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m503\u001b[39m\n\n   at fixtures/collaboration-control-journey.ts:292\n\n  290 |   const path = `${issuePath(fixture)}/control`;\n  291 |   const readResponse = async (response: Pick<APIResponse, \"status\" | \"json\">, request: Request): Promise<ObservedControl> => {\n> 292 |     expect(response.status()).toBe(status);\n      |                               ^\n  293 |     const requestId = request.headers()[\"idempotency-key\"];\n  294 |     if (!requestId) throw new Error(\"A UI control request omitted its original key\");\n  295 |     const receipt: CollaborationControlReceipt = await response.json();\n    at readResponse (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:292:31)\n    at clickControl (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:304:27)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-leave-web.spec.ts:25:21"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:06:11.868Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-20-collaboration-leave-web-1/artifacts/collaboration-leave-web-We-37be9--rejoining-restores-nothing-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-20-collaboration-leave-web-1/artifacts/collaboration-leave-web-We-37be9--rejoining-restores-nothing-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts",
+                    "column": 31,
+                    "line": 292
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "c32a5058833059c3776e-cc2b7d39a133cac5df19",
+          "file": "collaboration-leave-web.spec.ts",
+          "line": 13,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:06:11.427Z",
+    "duration": 3382.6330000000003,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

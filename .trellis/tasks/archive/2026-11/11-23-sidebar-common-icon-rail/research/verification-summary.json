@@ -1,0 +1,120 @@
+{
+  "kind": "implementation-no-commit",
+  "static": {
+    "typecheck": {
+      "packages": [
+        "@multica/ui",
+        "@multica/views",
+        "@multica/web",
+        "@multica/desktop"
+      ],
+      "status": "passed",
+      "note": "Full recursive checks passed after test-type corrections."
+    },
+    "lint": {
+      "status": "passed",
+      "errors": 0,
+      "warnings": 31,
+      "note": "Warnings in pre-existing unrelated stepper, views and tab-content files; changed-file scoped ESLint clean."
+    }
+  },
+  "unit": {
+    "views": {
+      "files": 7,
+      "tests": 110,
+      "status": "passed"
+    },
+    "web": {
+      "files": 2,
+      "tests": 13,
+      "status": "passed"
+    },
+    "desktop": {
+      "files": 2,
+      "tests": 20,
+      "status": "passed"
+    },
+    "followup_tooltips": {
+      "tests": 90,
+      "status": "passed"
+    },
+    "followup_centering": {
+      "tests": 85,
+      "status": "passed"
+    },
+    "followup_compact": {
+      "tests": 91,
+      "status": "passed"
+    }
+  },
+  "runtime": {
+    "r1": {
+      "original_scope_web": "passed",
+      "original_scope_desktop": "passed",
+      "rail_web": "test-tooltip-selector-failed",
+      "rail_desktop": "test-tooltip-selector-failed"
+    },
+    "r2": {
+      "rail_web": "trigger-slot-regression-failed",
+      "rail_desktop": "fixture-default-failed"
+    },
+    "r3": {
+      "rail_web": "all-product-steps-completed-coarse-centering-failed",
+      "rail_desktop": "native-start-readiness-failed"
+    },
+    "final": "passed",
+    "r4": {
+      "original_scope_web": "passed",
+      "original_scope_desktop": "passed",
+      "rail_web": "passed",
+      "rail_desktop": "compact-sheet-scroll-height-failed",
+      "coarse_web": "all ten icon centers dx=0,dy=0",
+      "coarse_desktop": "all ten icon centers dx=0,dy=0"
+    },
+    "r5": {
+      "originals": [
+        {
+          "name": "Web sidebar disclosure and navigation history preserve collaboration filters and scroll positions",
+          "status": "passed",
+          "duration_ms": 13038,
+          "retry": 0
+        },
+        {
+          "name": "Desktop sidebar disclosure and navigation history preserve collaboration filters and scroll positions",
+          "status": "passed",
+          "duration_ms": 14455,
+          "retry": 0
+        },
+        {
+          "name": "Web collapsed sidebar keeps common icons, overflow navigation and restored width",
+          "status": "passed",
+          "duration_ms": 10240,
+          "retry": 0
+        },
+        {
+          "name": "Desktop collapsed sidebar keeps common icons, overflow navigation and restored width",
+          "status": "passed",
+          "duration_ms": 9545,
+          "retry": 0
+        }
+      ],
+      "status": "passed",
+      "report": "artifacts/qa/sidebar-icon-rail-20261123/confirmed/report.json",
+      "coarse_icon_centers": "all measured 16px icons centered in 44px targets",
+      "native_compact": "actual 200-percent zoom, 450x500 CSS pixels, disclosure and child link passed"
+    }
+  },
+  "completed_at": "2026-11-23T09:33:13.479722+00:00",
+  "design_detector_findings": 0,
+  "preservation": {
+    "head_unchanged": true,
+    "staged_paths": 0,
+    "root_next_env_unchanged": true,
+    "source_overlay_equal": true
+  },
+  "delivery": {
+    "authorization": "User explicitly requested local commit after acceptance",
+    "work_commit": "76c61f95dbbd2f0d7450af1df633a78449d2f8e9",
+    "push_requested": false
+  }
+}

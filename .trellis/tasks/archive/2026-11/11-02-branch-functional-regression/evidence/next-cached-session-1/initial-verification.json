@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T07:47:47.390290+00:00",
+  "scope": "Coordinator initial evidence verification, separate from child review",
+  "previous_review_unchanged_artifacts_checked": 27,
+  "previous_review_unexpected_hash_mismatches": [],
+  "coverage_count": 439,
+  "coverage_columns": [
+    "case_id",
+    "project",
+    "spec",
+    "line",
+    "title",
+    "domain",
+    "priority",
+    "status",
+    "run_id",
+    "evidence",
+    "note"
+  ],
+  "matrix_count": 28,
+  "matrix_statuses": {
+    "PASS": 18,
+    "FAIL": 1,
+    "BLOCKED": 6,
+    "NOT_RUN": 3
+  },
+  "performance_gate": [
+    {
+      "id": "PERF-ITERATION-CLOSURE",
+      "acceptance": "Iteration closure frozen P95 <=2000ms",
+      "priority": "P1",
+      "status": "FAIL",
+      "evidence_or_blocker": "evidence/resume-handler-perf-1: TestIterationI1P95 closure2171ms; exit1; original failure retained; next-perf-sql-plan-1 diagnostic only, no P95 rerun/product fix"
+    }
+  ],
+  "previous_coordinator_final_preserved": true
+}

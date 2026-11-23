@@ -2,7 +2,15 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { buildIssueStatusCatalog } from "@multica/core/issue-statuses";
-import type { Issue, IssueStatusEntry } from "@multica/core/types";
+import type { Issue, IssueStatusEntry, UpdateIssueRequest } from "@multica/core/types";
+import { issueKeys } from "@multica/core/issues/queries";
+import { IssueSurfaceActionsProvider, type IssueSurfaceActions } from "../../surface/actions-context";
+
+const { mockCompletionHint } = vi.hoisted(() => ({ mockCompletionHint: vi.fn() }));
+vi.mock("@multica/core/api", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@multica/core/api")>();
+  return { ...actual, api: { getDeliveryCompletionHint: mockCompletionHint } };
+});
 
 vi.mock("@multica/core/hooks", () => ({
   useWorkspaceId: () => "ws-1",
@@ -44,7 +52,8 @@ vi.mock("@multica/core/pins", () => ({
 }));
 
 const mockUpdateMutate = vi.fn();
-vi.mock("@multica/core/issues/mutations", () => ({
+vi.mock("@multica/core/issues/mutations", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/issues/mutations")>(),
   useUpdateIssue: () => ({ mutate: mockUpdateMutate }),
 }));
 
@@ -91,12 +100,14 @@ vi.mock("@multica/core/paths", async () => {
   };
 });
 
+const navigationState = vi.hoisted(() => ({ pathname: "/test/issues/issue-1", hash: "", openInNewTab: vi.fn(), push: vi.fn() }));
 vi.mock("../../../navigation", () => ({
   useNavigation: () => ({
-    push: vi.fn(),
-    pathname: "/test/issues/issue-1",
+    push: navigationState.push,
+    openInNewTab: navigationState.openInNewTab,
+    pathname: navigationState.pathname,
     searchParams: new URLSearchParams(),
-    hash: "",
+    hash: navigationState.hash,
     back: vi.fn(),
     replace: vi.fn(),
     getShareableUrl: (p: string) => `https://app.multica.com${p}`,
@@ -140,6 +151,10 @@ function wrapper({ children }: { children: React.ReactNode }) {
 }
 
 beforeEach(() => {
+  navigationState.pathname = "/test/issues/issue-1";
+  navigationState.hash = "";
+  navigationState.openInNewTab.mockClear();
+  navigationState.push.mockClear();
   mockOpenModal.mockReset();
   mockUpdateMutate.mockReset();
   mockCreatePinMutate.mockReset();
@@ -155,8 +170,61 @@ beforeEach(() => {
 });
 
 describe("useIssueActions", () => {
+  // The full observation/compatibility matrix belongs to Core field-revision.test.ts.
+  it.each<{ name: string; updates: Partial<UpdateIssueRequest> }>([
+    { name: "priority", updates: { priority: "high" } },
+    { name: "member assignment", updates: { assignee_type: "member", assignee_id: "user-2" } },
+    { name: "clearing the assignee", updates: { assignee_type: null, assignee_id: null } },
+  ])("passes the rendered revision through a direct $name action", ({ updates }) => {
+    const { result } = renderHook(() => useIssueActions({ ...mockIssue, revision: 11 }), { wrapper });
+    act(() => result.current.updateField(updates));
+    expect(mockUpdateMutate).toHaveBeenCalledWith(
+      { id: mockIssue.id, ...updates, expected_revision: 11 },
+      expect.any(Object),
+    );
+  });
+
+  it("retains the supplied menu observation when the surface cache already has a newer revision", () => {
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    qc.setQueryData(issueKeys.detail("ws-1", mockIssue.id), { ...mockIssue, revision: 12 });
+    const updateIssue = vi.fn();
+    const actions: IssueSurfaceActions = {
+      isPending: false,
+      createIssue: vi.fn(),
+      updateIssue,
+      moveIssue: vi.fn(),
+      batchUpdate: vi.fn().mockResolvedValue({ updated: 0 }),
+      batchDelete: vi.fn().mockResolvedValue(undefined),
+    };
+    const { result, unmount } = renderHook(() => useIssueActions({ ...mockIssue, revision: 11 }), {
+      wrapper: ({ children }) => (
+        <QueryClientProvider client={qc}>
+          <IssueSurfaceActionsProvider actions={actions}>{children}</IssueSurfaceActionsProvider>
+        </QueryClientProvider>
+      ),
+    });
+    act(() => result.current.updateField({ priority: "high" }));
+    expect(updateIssue).toHaveBeenCalledWith(mockIssue.id, { priority: "high", expected_revision: 11 }, expect.any(Object));
+    expect(mockUpdateMutate).not.toHaveBeenCalled();
+    unmount();
+    qc.clear();
+  });
+
+  it.each(["agent", "squad"] as const)("pins the rendered revision before %s confirmation", (assigneeType) => {
+    const { result } = renderHook(() => useIssueActions({ ...mockIssue, revision: 11 }), { wrapper });
+    act(() => result.current.updateField({ assignee_type: assigneeType, assignee_id: `${assigneeType}-1` }));
+    expect(mockOpenModal).toHaveBeenCalledWith("issue-run-confirm", {
+      issueIds: [mockIssue.id],
+      mode: "assign",
+      assigneeType,
+      assigneeId: `${assigneeType}-1`,
+      issueRevision: 11,
+    });
+    expect(mockUpdateMutate).not.toHaveBeenCalled();
+  });
+
   it("updateField dispatches useUpdateIssue.mutate with the correct payload", () => {
-    const { result } = renderHook(() => useIssueActions(mockIssue), { wrapper });
+    const { result } = renderHook(() => useIssueActions({ ...mockIssue, revision: 11 }), { wrapper });
 
     act(() => {
       result.current.updateField({ status: "done" });
@@ -166,6 +234,55 @@ describe("useIssueActions", () => {
       { id: "issue-1", status: "done" },
       expect.any(Object),
     );
+  });
+
+  it("keeps success continuations for detail actions until the mutation succeeds", () => {
+    const onSuccess = vi.fn();
+    const { result } = renderHook(() => useIssueActions(mockIssue), { wrapper });
+
+    act(() => {
+      result.current.updateField({ status: "done" }, { onSuccess });
+    });
+
+    const options = mockUpdateMutate.mock.calls[0]?.[1] as { onSuccess?: (issue: Issue) => void };
+    expect(onSuccess).not.toHaveBeenCalled();
+    const updated = { ...mockIssue, status: "done" } as Issue;
+    options.onSuccess?.(updated);
+    expect(onSuccess).toHaveBeenCalledWith(updated);
+  });
+
+  it("keeps one completion in flight until the actual mutation settles", async () => {
+    const hint = mockCompletionHint.mockResolvedValue({
+      issue_id: mockIssue.id,
+      issue_revision: 4,
+      target_status: "done",
+      target_category: "done",
+      project_id: "project-1",
+      policy_revision: 1,
+      policy_mode: "observe",
+      hint: "attention",
+      reason: "evaluation_required",
+      checked_at: "2026-11-12T00:00:00Z",
+      enforced: false,
+      usable_for_completion: false,
+    });
+    try {
+      const { result } = renderHook(() => useIssueActions({
+        ...mockIssue, project_id: "project-1", revision: 4, status_category: "todo",
+      }), { wrapper });
+      act(() => result.current.updateField({ status: "done" }));
+      await waitFor(() => expect(mockOpenModal).toHaveBeenCalledWith("issue-completion-hint", expect.anything()));
+      const data = mockOpenModal.mock.calls[0]?.[1] as { onConfirm: () => Promise<void> };
+      let confirmation!: Promise<void>;
+      act(() => { confirmation = data.onConfirm(); });
+      expect(mockUpdateMutate).toHaveBeenCalledTimes(1);
+      act(() => result.current.updateField({ status: "done" }));
+      expect(hint).toHaveBeenCalledTimes(1);
+      const options = mockUpdateMutate.mock.calls[0]?.[1] as { onSettled: () => void };
+      await act(async () => { options.onSettled(); await confirmation; });
+    } finally {
+      hint.mockReset();
+    }
   });
 
   it("assigning an agent routes through the run-confirm modal instead of mutating directly", () => {
@@ -287,6 +404,33 @@ describe("useIssueActions", () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
       "https://app.multica.com/test/issues/issue-1",
     );
+  });
+
+  it("copies shared issues using the account UUID destination", async () => {
+    const id = "00000000-0000-4000-8000-000000000009";
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    const shared: Issue = { ...mockIssue, id, collaboration: { creator: account, handler: account, has_external_collaborators: true } };
+    const { result } = renderHook(() => useIssueActions(shared), { wrapper });
+    await act(async () => { await result.current.copyLink(); });
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(`https://app.multica.com/account?view=participating&issue=${id}`);
+  });
+
+  it("preserves the current shared issue's run anchor for copy/open but never carries it to a different row", async () => {
+    const id = "00000000-0000-4000-8000-000000000009";
+    const runId = "00000000-0000-4000-8000-000000000010";
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    const shared: Issue = { ...mockIssue, id, collaboration: { creator: account, handler: account, has_external_collaborators: true } };
+    navigationState.pathname = "/test/issues/TES-1";
+    navigationState.hash = `#run-${runId}`;
+    const { result, rerender } = renderHook(() => useIssueActions(shared), { wrapper });
+    await act(async () => { await result.current.copyLink(); });
+    expect(navigator.clipboard.writeText).toHaveBeenLastCalledWith(`https://app.multica.com/account?view=participating&issue=${id}#run-${runId}`);
+    act(() => result.current.openInNewTab());
+    expect(navigationState.openInNewTab).toHaveBeenCalledWith(`/account?view=participating&issue=${id}#run-${runId}`, "TES-1", { activate: true });
+    navigationState.pathname = "/test/issues/TES-2";
+    rerender();
+    await act(async () => { await result.current.copyLink(); });
+    expect(navigator.clipboard.writeText).toHaveBeenLastCalledWith(`https://app.multica.com/account?view=participating&issue=${id}`);
   });
 
   it("openSetParent / openAddChild / openDeleteConfirm / openCreateSubIssue open the correct modal with payload", () => {

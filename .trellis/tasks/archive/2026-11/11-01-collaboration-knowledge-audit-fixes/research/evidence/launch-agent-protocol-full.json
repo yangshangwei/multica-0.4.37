@@ -1,0 +1,13 @@
+{
+  "source_sha": "77df70afc",
+  "command": "guarded go -C server test ./pkg/agent ./pkg/protocol -parallel=2 -p=1 -count=1 -json -timeout=15m",
+  "exit_code": 0,
+  "counts": {
+    "run": 2291,
+    "pass": 2287,
+    "fail": 0,
+    "skip": 4
+  },
+  "log_sha256": "b9357ba7357b011edb346bfffc6c2b32bed527cb258dc10eef881887c3d3379a",
+  "real_provider_calls": 0
+}

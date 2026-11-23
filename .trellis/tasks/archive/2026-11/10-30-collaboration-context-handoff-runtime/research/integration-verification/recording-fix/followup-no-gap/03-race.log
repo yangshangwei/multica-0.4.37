@@ -1,0 +1,78 @@
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/invalid_first_batch
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/accepted_prefix_invalid_middle
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_invalid_middle
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_valid_suffix
+--- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages (1.02s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/invalid_first_batch (0.24s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/accepted_prefix_invalid_middle (0.21s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_invalid_middle (0.23s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_valid_suffix (0.34s)
+=== RUN   TestHostCheckpointsKeepOriginalPayloadAcrossLostACK
+--- PASS: TestHostCheckpointsKeepOriginalPayloadAcrossLostACK (0.14s)
+=== RUN   TestHostCheckpointBackpressureDoesNotBlockMessageDrain
+--- PASS: TestHostCheckpointBackpressureDoesNotBlockMessageDrain (0.14s)
+=== RUN   TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim
+--- PASS: TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim (0.82s)
+=== RUN   TestHostHandoffCheckpointBlockedRecordingCannotHoldProof
+--- PASS: TestHostHandoffCheckpointBlockedRecordingCannotHoldProof (3.51s)
+=== RUN   TestHostHandoffCheckpointRestartRecoversWithoutExecution
+--- PASS: TestHostHandoffCheckpointRestartRecoversWithoutExecution (1.58s)
+=== RUN   TestHostHandoffCheckpointFailureCleanup
+=== RUN   TestHostHandoffCheckpointFailureCleanup/snapshot_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/binding_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift
+--- PASS: TestHostHandoffCheckpointFailureCleanup (1.28s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/snapshot_refused (0.32s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/binding_refused (0.43s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift (0.54s)
+=== RUN   TestHostLedgerRetryNeedsAcceptedPriorWaitAndStopSealsEveryAttempt
+--- PASS: TestHostLedgerRetryNeedsAcceptedPriorWaitAndStopSealsEveryAttempt (0.27s)
+=== RUN   TestHostLedgerUnissuedPermitTombstoneDoesNotInventAnAuthorizedLaunch
+--- PASS: TestHostLedgerUnissuedPermitTombstoneDoesNotInventAnAuthorizedLaunch (0.11s)
+=== RUN   TestHostLedgerRetainsUnknownLaunchWithoutReinterpretingLinuxProof
+--- PASS: TestHostLedgerRetainsUnknownLaunchWithoutReinterpretingLinuxProof (0.03s)
+=== RUN   TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof
+--- PASS: TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof (1.72s)
+=== RUN   TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement
+--- PASS: TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement (0.24s)
+=== RUN   TestHostRecordingRecoveredUnflushedTailRemainsUnknown
+--- PASS: TestHostRecordingRecoveredUnflushedTailRemainsUnknown (0.22s)
+=== RUN   TestHostRecordingLedgerRejectsSealWithUnissuedNonce
+--- PASS: TestHostRecordingLedgerRejectsSealWithUnissuedNonce (0.15s)
+=== RUN   TestHostRecordingRecoveryCancelledBacklogKeepsUnresolvedPayloads
+--- PASS: TestHostRecordingRecoveryCancelledBacklogKeepsUnresolvedPayloads (0.19s)
+=== RUN   TestHostRecordingRedactsCollaborationCapabilities
+--- PASS: TestHostRecordingRedactsCollaborationCapabilities (0.01s)
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_configuration
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/missing_author_epoch
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_agent_owner
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/missing_preparation
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/missing_context
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_session
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_capability
+--- PASS: TestHostLedgerRejectsCorruptRetainedClaim (0.44s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_configuration (0.07s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/missing_author_epoch (0.05s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_agent_owner (0.08s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/missing_preparation (0.06s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/missing_context (0.07s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_session (0.05s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_capability (0.06s)
+=== RUN   TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement
+=== RUN   TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/missing_outcome_remains_incomplete
+=== RUN   TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/recorded_outcome_recovers_acknowledgement
+--- PASS: TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement (3.15s)
+    --- PASS: TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/missing_outcome_remains_incomplete (1.58s)
+    --- PASS: TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/recorded_outcome_recovers_acknowledgement (1.57s)
+=== RUN   TestHostRunnerPendingProofHasPriorityOverBlockedOutcome
+--- PASS: TestHostRunnerPendingProofHasPriorityOverBlockedOutcome (1.62s)
+=== RUN   TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun
+=== RUN   TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_start_observation
+=== RUN   TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_terminal_observation
+--- PASS: TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun (0.70s)
+    --- PASS: TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_start_observation (0.35s)
+    --- PASS: TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_terminal_observation (0.35s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	18.824s

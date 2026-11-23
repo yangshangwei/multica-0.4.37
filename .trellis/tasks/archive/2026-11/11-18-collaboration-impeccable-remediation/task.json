@@ -1,0 +1,34 @@
+{
+  "id": "collaboration-impeccable-remediation",
+  "name": "collaboration-impeccable-remediation",
+  "title": "修复协作空间 Impeccable 审计问题并完成回归",
+  "description": "修复审计确认的 C01–C09：字段搜索与无障碍、审阅光标、弹窗和触摸布局、错误恢复及隐藏读取，并提供回归证据。",
+  "status": "completed",
+  "dev_type": "frontend",
+  "scope": "collaboration",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-18",
+  "completedAt": "2026-11-18",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "a8232f9bb14b7b7039253a5cd0a8de6a28ffa79f",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "docs/audits/2026-11-17-collaboration-impeccable.md",
+    "packages/views/collaboration",
+    "packages/views/issues/components/pickers",
+    "packages/core/collaboration/knowledge-queries.ts"
+  ],
+  "notes": "C01–C09 fixed and verified: Views590/Core56/Chromium17; full typecheck9 tasks and lint6 tasks pass; independent review clear. Preserve31 unrelated lint warnings and unrelated existing hunks. See verification.md.",
+  "meta": {
+    "verification": "passed",
+    "issues_closed": "C01,C02,C03,C04,C05,C06,C07,C08,C09"
+  }
+}

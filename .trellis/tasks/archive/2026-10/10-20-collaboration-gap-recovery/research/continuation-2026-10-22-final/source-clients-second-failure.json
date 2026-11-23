@@ -1,0 +1,29 @@
+{
+  "stats": {
+    "startTime": "2026-10-22T09:51:05.762Z",
+    "duration": 7895.213,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "observations": [
+    {
+      "status": "failed",
+      "error": {
+        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m201\u001b[39m\nReceived:   \u001b[31m200\u001b[39m",
+        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m201\u001b[39m\nReceived:   \u001b[31m200\u001b[39m\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:94:28)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:186:5",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+          "column": 28,
+          "line": 94
+        },
+        "snippet": "  92 |     const second = await sourceCurrent(fixture, fixture.second.id);\n  93 |     const later = first.position > after.position ? first : second;\n> 94 |     expect(later.position).toBeGreaterThan(after.position);\n     |                            ^\n  95 |     const cli = await runReorderCLI(fixture, later.id);\n  96 |     expect((await sourceCurrent(fixture)).position).toBeLessThan((await sourceCurrent(fixture, later.id)).position);\n  97 |     expect(await sourceSnapshot(fixture)).toEqual(layout);"
+      },
+      "attachments": [
+        "web-board-layout-request",
+        "error-context"
+      ]
+    }
+  ]
+}

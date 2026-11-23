@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-01T19:08:02.626854+00:00",
+  "owner": "/root/bundle_platform_regression",
+  "state": "root_cause_investigation_before_edits",
+  "important_correction": "openBundleSource supports linux OR darwin, not Linux-only. Its source ancestor ownership/write-mode validation rejects /Volumes/artisan (uid501 mode0775). Full makecheck TMPDIR is below that ancestor. No test skip or broader product support is justified by this failure.",
+  "observed_ancestor": {
+    "path": "/Volumes/artisan",
+    "mode": "0o775",
+    "uid": 501
+  },
+  "source_sha256": {
+    "server/internal/daemon/collaborationrun/provider_bundle_unix.go": "096e1303ad3addcdc587837b8ce1107d0bcf6c24078d18fd5ea1dfd1f7dfeabe",
+    "server/internal/daemon/collaborationrun/provider_bundle_unsupported.go": "b300a765bf08ff27d9cadaa48dd9fa27f2e0e87e715290cb0da96961bd047b92",
+    "server/internal/daemon/collaborationrun/provider_bundle_test.go": "e8fb279692e6bf93eff134d3511687828ec23a750b16343ebe10a2e2899c1b8c"
+  },
+  "next": "reproduce canonical case under explicit recorded long TMPDIR; contrast standard safe temp base and then minimal fixture repair, preserving Linux/darwin secure-open contract and unsupported-platform refusal",
+  "DB_service_Provider_operations": false
+}

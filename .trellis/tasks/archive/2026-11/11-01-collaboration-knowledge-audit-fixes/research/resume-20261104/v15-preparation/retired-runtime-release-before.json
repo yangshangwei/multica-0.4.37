@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-11-03T23:58:13.324098+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "live_proof_sha256": "9fb1ece8ea39f32b3a3e2dbf5c3d0e88092f63c73a3154d0fc7e79852204b252",
+  "renderer_proof_sha256": "0f75d3df45c33933d25ded728faf46529a073a76ca5697ad710099944cd59655",
+  "groups": [
+    {
+      "pgid": 35776,
+      "state": "matching_owned_retired_group",
+      "cwd": "p35776\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103\n",
+      "processes": [
+        {
+          "pid": 35776,
+          "ppid": 1,
+          "pgid": 35776,
+          "started": "Tue Nov 3 21:52:21 2026",
+          "command": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u -m http.server 55132 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer"
+        }
+      ]
+    },
+    {
+      "pgid": 98904,
+      "state": "matching_owned_retired_group",
+      "cwd": "p98904\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server\n",
+      "processes": [
+        {
+          "pid": 98904,
+          "ppid": 1,
+          "pgid": 98904,
+          "started": "Wed Nov 4 00:27:46 2026",
+          "command": "go run -ldflags -X main.commit=d0b132fff ./cmd/server"
+        },
+        {
+          "pid": 99298,
+          "ppid": 98904,
+          "pgid": 98904,
+          "started": "Wed Nov 4 00:28:01 2026",
+          "command": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/tmp/go-build1215691896/b001/exe/server"
+        }
+      ]
+    },
+    {
+      "pgid": 99782,
+      "state": "matching_owned_retired_group",
+      "cwd": "p99782\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103\n",
+      "processes": [
+        {
+          "pid": 99782,
+          "ppid": 1,
+          "pgid": 99782,
+          "started": "Wed Nov 4 00:29:30 2026",
+          "command": "node /opt/homebrew/bin/pnpm --dir /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103 --filter @multica/web exec next start --port 13740"
+        },
+        {
+          "pid": 99801,
+          "ppid": 99782,
+          "pgid": 99782,
+          "started": "Wed Nov 4 00:29:30 2026",
+          "command": "node /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/home/Library/pnpm/store/v11/links/@/pnpm/10.28.2/4107b7fdb6a6eec95e194ae0c35ca87833d5d698fe6b074c4952a3ef6f590957/bin/../node_modules/pnpm/bin/pnpm.cjs --dir /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103 --filter @multica/web exec next start --port 13740"
+        },
+        {
+          "pid": 99807,
+          "ppid": 99801,
+          "pgid": 99782,
+          "started": "Wed Nov 4 00:29:30 2026",
+          "command": "next-server (v16.2.6)"
+        },
+        {
+          "pid": 99813,
+          "ppid": 99807,
+          "pgid": 99782,
+          "started": "Wed Nov 4 00:29:31 2026",
+          "command": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/@esbuild+darwin-arm64@0.25.12/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.25.12 --ping"
+        }
+      ]
+    }
+  ],
+  "signals": [],
+  "data_or_logs_removed": false,
+  "other_runtime_modified": false
+}

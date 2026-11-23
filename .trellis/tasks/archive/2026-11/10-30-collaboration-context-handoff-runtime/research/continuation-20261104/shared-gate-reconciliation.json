@@ -1,0 +1,52 @@
+{
+  "recorded_at": "2026-11-04T15:37:49.700101+00:00",
+  "main_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "shared_candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "shared_summary": {
+    "path": ".trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v16-actual-01/summary.json",
+    "sha256": "2b01e61d31a5b9f7057b6d1e9c59c95b22647ed110e692b5cff9f73e024cbed8"
+  },
+  "original_inputs": [
+    {
+      "kind": "full_result",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.json",
+      "sha256": "bf9fa963e44a90af50ed51e258cf50434923a9a5820846f61c688c4bf0df7fa2",
+      "matches": true
+    },
+    {
+      "kind": "raw_log",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.log",
+      "sha256": "699a2e82527ffae908fbec8d7471ce7b94047f19b914d9ca40fe3a27094fc5c7",
+      "matches": true
+    }
+  ],
+  "make_exit": 0,
+  "TS_pass": 13244,
+  "Go": {
+    "packages": 82,
+    "counts": {
+      "run": 20985,
+      "pass": 20963,
+      "skip": 22
+    }
+  },
+  "browser_counts": {
+    "skipped": 91,
+    "passed": 350
+  },
+  "shared_gate_ready": true,
+  "final_identity_audit_pass": true,
+  "complete_named_inventory": true,
+  "delta_default_excluded_test_files": [
+    "server/cmd/server/rk1k_entry_test.go",
+    "server/cmd/server/rk1k_evidence_test.go",
+    "server/cmd/server/rk1k_fixture_test.go",
+    "server/cmd/server/rk1k_provider_test.go",
+    "server/cmd/server/rk1k_scenarios_test.go",
+    "server/internal/daemon/rk1k_driver_agentintegration.go"
+  ],
+  "runtime_password_lane_closed": false,
+  "current_source_runtime_fake_closed": false,
+  "real_provider_calls": 0,
+  "note": "Shared complete check is accepted; runtime/password and model evidence remain separate. Old v9-v15 failures remain historical."
+}

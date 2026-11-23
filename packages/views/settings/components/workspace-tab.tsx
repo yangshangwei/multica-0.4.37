@@ -37,6 +37,7 @@ import { AvatarUploadControl } from "../../common/avatar-upload-control";
 import { useNavigation } from "../../navigation";
 import { DeleteWorkspaceDialog } from "./delete-workspace-dialog";
 import { useT } from "../../i18n";
+import { ManagedKnowledgePanel } from "../../collaboration/knowledge-panel";
 import {
   SettingsCard,
   SettingsRow,
@@ -537,6 +538,8 @@ export function WorkspaceTab() {
       </SettingsSection>
 
       <WorkspacePlanningTimezone key={workspace.id} wsId={workspace.id} canManage={canManageWorkspace} />
+
+      {hasMembership && <ManagedKnowledgePanel workspaceId={workspace.id} />}
 
       {/* A failed or pending membership read never authorizes leaving. */}
       {hasMembership && (

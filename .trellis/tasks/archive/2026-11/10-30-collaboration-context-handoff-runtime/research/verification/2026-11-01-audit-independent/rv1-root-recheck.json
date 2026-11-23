@@ -1,0 +1,12 @@
+{
+  "product_sha": "58d486656e146237d5de08ccac62dc6b1ec5876b",
+  "reviewer": "root; did not author RV1",
+  "delta": "9 additions/1 deletion in existing Core refinement + canonical snapshot rejection case",
+  "command": "pnpm --filter @multica/core exec vitest run collaboration/run-handoff-schema.test.ts",
+  "exit_code": 0,
+  "pass": 16,
+  "fail": 0,
+  "skip": 0,
+  "log_sha256": "afd468bdf85b7ba5f42d2e29cec0840782750b277de46a359bffb6beb5aa9269",
+  "verdict": "pass; original RV-1 closed; integrated acceptance separate"
+}

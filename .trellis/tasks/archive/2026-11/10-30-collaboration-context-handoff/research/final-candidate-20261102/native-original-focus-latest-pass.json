@@ -1,0 +1,71 @@
+{
+  "at": "2026-11-01T22:55:29.467296+00:00",
+  "actual": {
+    "selected_provider_binary": "host-provider",
+    "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+    "deployed_expectation": null,
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "verification_harness_head": "e98ee95696da34e7d396107bda163015bacd3acd",
+    "verification_harness_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lane": "legacy",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-account-desktop.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/focus-original-after-typed-GUI-recheck-1/artifacts",
+      "--grep",
+      "Desktop child links, recorded pages and result notifications survive popouts and restart$"
+    ],
+    "database": "collab_joint_legacy_diag_20261102_2120",
+    "health": {
+      "status": "ok",
+      "pid": 46860,
+      "commit": "639bf6ef8",
+      "started_at": "2026-11-01T22:52:29Z"
+    },
+    "source_env_sha256": "1e4338ce392567848096f73b5e320998926fc8f5c664a24dd78725b38cff35ff",
+    "production_Web_build_id": "bZdrH1PZyQLlxQhg2khWv",
+    "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+    "test_source_sha256": {
+      "e2e/collaboration-account-desktop.spec.ts": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c"
+    },
+    "controlled_binary_sha256": {
+      "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+      "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+      "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+      "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+    },
+    "package_pin": null,
+    "actual_real_Provider_calls": 0,
+    "state": "complete",
+    "started_at": "2026-11-01T22:54:21.464836+00:00",
+    "exit_code": 0,
+    "finished_at": "2026-11-01T22:54:37.791861+00:00",
+    "log_sha256": "5f127bf1c645b93ab6b9d4a4f636a4b8da66737f6c11f69e07bd9ff7228fda85",
+    "stats": {
+      "startTime": "2026-11-01T22:54:22.662Z",
+      "duration": 15087.275000000001,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "results_sha256": "fdcb4233ae2718bc7d7e97b8dd40fdc472069167bb508242e741971dc5240590",
+    "gate_exit_code": 0
+  },
+  "original_spec_sha256": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+  "assertions_or_activation_or_timeout_changed": false,
+  "prior_focus_failures": "retained; historical cause not retrospectively proven",
+  "current_native_focus_gate": "passed original case once",
+  "whole_make_check_pass": false,
+  "real_Provider_calls": 0,
+  "execution_record_sha256": "65b91def8163d0edcc7a43cac7d0fb2fd8cd6ac04d1c148b025f7953f94c5506"
+}

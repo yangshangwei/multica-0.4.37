@@ -1,0 +1,126 @@
+{
+  "recorded_at": "2026-11-03T08:46:39.190487+00:00",
+  "agent": "/root/candidate_setup",
+  "scope": "assigned shared E2E native-disclosure maintenance only",
+  "files": {
+    "e2e/fixtures/collaboration-disclosures.ts": "87b156d9da50daa7af35dab40130fe03579cfb9ef6c1a10e15b6f2a88499bb32",
+    "e2e/collaboration-account-desktop.spec.ts": "0e20376018ab0225ea81a637ffc67fdafa4dd73f84a71dad25321e5524b4c328",
+    "e2e/collaboration-delivery-web.spec.ts": "2abe357d3dda931edae450548183a9501d00daec98c124c28227f23b4342f110",
+    "e2e/collaboration-records-web.spec.ts": "5a3e3dc51da3a45d20b0e5b6befe01a329464fc02fdb57ff9f73f221f797a6a5",
+    "e2e/fixtures/collaboration-knowledge.ts": "7a3f68f8a7213dbc40de3e7a8bf02222fb39d27411a0244b8ae2ea6ea89b1960",
+    "e2e/collaboration-knowledge.spec.ts": "5da7bfe9e0d7b3755e079b01eda7f6a71fcf0a8ee2f6559b57c75589937be4cb",
+    "e2e/fixtures/collaboration-resource-offers.ts": "73f6005d8830877bec3b7c7710417ac6cd39fd6eb70dd17d18d3129136add4c4",
+    "e2e/collaboration-resources-web.spec.ts": "faa9bd82e145f6c473ca8365fb2408ab080fa6fd12126d132a14ac93df5994bf"
+  },
+  "changes": [
+    "Real exact visible native summaries reveal ordinary Attachments/Sub-issues/Knowledge/AI entry points on fresh navigation",
+    "Run-anchor focus and pending-recovery automatic opening remain unassisted",
+    "Outside native popup additionally proves visible title-only child projection before zero-links privacy assertion",
+    "Existing native editing helper and rejected-creation copy sync retained",
+    "Shared helper also supports Activity and More actions for fix_check lane"
+  ],
+  "preserved": [
+    "native download bytes and IPC",
+    "actual WS revocation/no duplicate POST",
+    "source UUID/privacy/no workspace headers",
+    "record paging/denial/run-focus",
+    "exact knowledge sources/versions/decisions/lease erasure",
+    "resource offers/owner consent/explicit resume/history"
+  ],
+  "checks": [
+    {
+      "started_at": "2026-11-03T08:42:21.173567+00:00",
+      "finished_at": "2026-11-03T08:42:24.333515+00:00",
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--strict",
+        "--target",
+        "ESNext",
+        "--module",
+        "ESNext",
+        "--moduleResolution",
+        "Bundler",
+        "--lib",
+        "ESNext,DOM,DOM.Iterable",
+        "--jsx",
+        "react-jsx",
+        "--esModuleInterop",
+        "--skipLibCheck",
+        "--resolveJsonModule",
+        "--types",
+        "node",
+        "e2e/fixtures/collaboration-disclosures.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "e2e/collaboration-delivery-web.spec.ts",
+        "e2e/collaboration-records-web.spec.ts",
+        "e2e/fixtures/collaboration-knowledge.ts",
+        "e2e/collaboration-knowledge.spec.ts",
+        "e2e/fixtures/collaboration-resource-offers.ts",
+        "e2e/collaboration-resources-web.spec.ts"
+      ],
+      "exit_code": 0,
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/disclosure-fixes/typecheck-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "files": [
+        "e2e/fixtures/collaboration-disclosures.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "e2e/collaboration-delivery-web.spec.ts",
+        "e2e/collaboration-records-web.spec.ts",
+        "e2e/fixtures/collaboration-knowledge.ts",
+        "e2e/collaboration-knowledge.spec.ts",
+        "e2e/fixtures/collaboration-resource-offers.ts",
+        "e2e/collaboration-resources-web.spec.ts"
+      ]
+    },
+    {
+      "started_at": "2026-11-03T08:36:29.819821+00:00",
+      "finished_at": "2026-11-03T08:36:31.329575+00:00",
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "e2e/collaboration-delivery-web.spec.ts",
+        "e2e/collaboration-records-web.spec.ts",
+        "e2e/collaboration-knowledge.spec.ts",
+        "e2e/collaboration-resources-web.spec.ts",
+        "e2e/collaboration-resource-offers-web.spec.ts",
+        "e2e/collaboration-command-history-web.spec.ts",
+        "--list"
+      ],
+      "exit_code": 0,
+      "log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/disclosure-fixes/discovery.log",
+      "log_sha256": "cd9e76f5c24732fdfb7af9e10f41a9c6648b357a581f57ba3f8cf32b5a5176e9",
+      "test_execution": false
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "e2e/fixtures/collaboration-disclosures.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "e2e/collaboration-delivery-web.spec.ts",
+        "e2e/collaboration-records-web.spec.ts",
+        "e2e/fixtures/collaboration-knowledge.ts",
+        "e2e/collaboration-knowledge.spec.ts",
+        "e2e/fixtures/collaboration-resource-offers.ts",
+        "e2e/collaboration-resources-web.spec.ts"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "new_helper_final_note": "More actions type-union member added after final tsc; executable helper flow unchanged. Root integration check covers consuming semantic lane.",
+  "discovered_cases": 25,
+  "actual_tests_services_DB_Provider": 0,
+  "frozen_v12_edits": 0,
+  "product_or_timeout_skip_retry_changes": false,
+  "remaining": "Root directed/full production Web/native execution and independent review pending"
+}

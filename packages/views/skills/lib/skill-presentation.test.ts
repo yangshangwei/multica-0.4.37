@@ -29,7 +29,8 @@ const names = Object.entries(zh.builtin_role_skills).map(([name, entry]) =>
   [name as keyof typeof zh.builtin_role_skills, entry.name] as const,
 );
 
-// Defaults shipped in ca3a79d18 and retained by existing workspace copies.
+// Defaults shipped before the corresponding template updates and retained by
+// existing workspace copies (ca3a79d18 and the parent of cd95c8e40).
 const legacyDescriptions = [
   [
     "multica-release-check",
@@ -40,6 +41,11 @@ const legacyDescriptions = [
     "multica-architecture-decision-record",
     "Use when a technical decision will constrain later work: writes an ADR with context, the decision, the rejected alternatives and the consequences.",
     "用于会影响后续工作的技术决策：编写 ADR，记录背景、决策、被否决的备选方案，以及决策的影响。",
+  ],
+  [
+    "multica-progress-report",
+    "Use for daily or weekly workspace or project reports: verify issues and status history, then publish traceable progress, counts and data gaps on the current report issue without changing source issues.",
+    "汇总工作空间或项目的日报、周报时使用。核对任务与状态变更历史，在当前报告任务中交付可追溯的进展、统计和数据缺口；不修改业务任务。",
   ],
 ] as const;
 
@@ -170,6 +176,29 @@ describe("built-in role skill presentation", () => {
       expect(presentation.searchText).not.toContain(chinese.toLowerCase());
     },
   );
+
+  it("localizes the shipped Chinese progress-report default without rewriting its workspace copy", () => {
+    const [name, english, chinese] = legacyDescriptions[2];
+    const skill = builtin(name, chinese);
+    const before = structuredClone(skill);
+    for (const locale of ["en", "zh-Hans"] as const) {
+      const instance = createI18n(locale, { [locale]: { skills: locale === "en" ? en : zh } });
+      const presentation = getSkillPresentation(skill, instance.getFixedT(locale, "skills"));
+      expect(presentation.description).toBe(locale === "en" ? english : chinese);
+      expect(presentation.searchText).toContain(english.toLowerCase());
+      expect(presentation.searchText).toContain(chinese.toLowerCase());
+    }
+    expect(skill).toEqual(before);
+  });
+
+  it("preserves a customized Chinese progress-report description", () => {
+    const [name, english, chinese] = legacyDescriptions[2];
+    const custom = `${chinese} 仅汇总本团队明确指定的任务。`;
+    const skill = builtin(name, custom);
+    expect(getSkillPresentation(skill, enT).description).toBe(custom);
+    expect(getSkillPresentation(skill, enT).searchText).not.toContain(english.toLowerCase());
+    expect(getBuiltinRoleSkillSummary(name, enT, custom)).toBe(custom);
+  });
 
   it.each(["en", "zh-Hans"] as const)(
     "supports bilingual search when only the %s locale is mounted",
@@ -328,10 +357,20 @@ describe("built-in role template summaries", () => {
     }
   });
 
-  it.each(legacyDescriptions)("summarizes only the recognized historical English default for %s", (name, description, chinese) => {
+  it.each(legacyDescriptions.filter(([name]) => name !== "multica-progress-report"))("summarizes only the recognized historical English default for %s", (name, description, chinese) => {
     expect(getBuiltinRoleSkillSummary(name, zhT, ` ${description}\n`))
       .toBe(zh.builtin_role_skills[name].summary);
     expect(getBuiltinRoleSkillSummary(name, zhT, chinese)).toBe(chinese);
+  });
+
+  it("summarizes both shipped progress-report defaults", () => {
+    const [name, english, chinese] = legacyDescriptions[2];
+    for (const description of [english, chinese]) {
+      expect(getBuiltinRoleSkillSummary(name, zhT, ` ${description}\n`))
+        .toBe(zh.builtin_role_skills[name].summary);
+      expect(getBuiltinRoleSkillSummary(name, enT, description))
+        .toBe(en.builtin_role_skills[name].summary);
+    }
   });
 
   it.each(names)("keeps a customized description for %s verbatim", (name) => {

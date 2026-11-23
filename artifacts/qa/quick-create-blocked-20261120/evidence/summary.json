@@ -1,0 +1,465 @@
+{
+  "task": ".trellis/tasks/11-17-quick-create-blocked-feedback",
+  "result": "PASS",
+  "uniqueNewCases": 18,
+  "existingCases": 15,
+  "totalUniqueCases": 33,
+  "passComposition": "14 mechanical cases in acceptance-final; four visual cases in visual-final-r3; pending+four visual cases rechecked after fixture finally cleanup. Existing 13 Web + two native cases passed separately. No cumulative pass claim for failed attempts.",
+  "build": {
+    "mode": "production",
+    "buildId": "yPiCLeEob9_90sBlHK-1y",
+    "sourceCommitAtAllocation": "6e52b73003f51670f9334cf62f110d27924ae2ad",
+    "headAtEvidence": "c69a243b50e782ee324708a341ee29b57e7bfec5",
+    "command": "pnpm exec next build --webpack",
+    "sharedBuildTouched": false,
+    "apiBinarySha256": "fc154970278740ce901cf0726cb1a5d775047e29e7a07300ee6047f83a3663d4",
+    "desktopRendererIndexSha256": "bf358179c456970561370f4fc7f476aaa1999669a02fa988219d4b986f18d1b4",
+    "productSourceSha256": {
+      "packages/views/modals/quick-create-issue.tsx": "9bf089caf226d7baef748e95ad9c532874cc8cea4ad792496685556161183e94",
+      "packages/views/modals/creator-recommendations.tsx": "319e6b39f691352ba2542b57cff0bd6ad807613c0d4909fcbbd0a14d29162820",
+      "packages/views/modals/issue-description-assist.tsx": "21375986807eac91a02ff8c60bc3739997f21dcd3f1dd0811fb45c9b3e4096ff",
+      "packages/views/modals/quick-create-actor-picker.tsx": "879d5d7ee557e17e82088ebb35a35e16f05929986a0d825bf9307ffddcab4079",
+      "packages/views/locales/en/modals.json": "607d9a3418b39d5d7fea96fcb92d39baa196960cb7b18c6b294a36dbaed6afe5",
+      "packages/views/locales/zh-Hans/modals.json": "aa136303e2a9ab52f59a6e7a750504f62f96c9206a5380e658541c6e64a27804",
+      "packages/core/issues/quick-create-submit-state.ts": "1729ff0fd0573babf5fde416bb12b9c6106427657e738f9d4ddf94e2b28d41bf"
+    }
+  },
+  "fixtureSourceSha256": {
+    "e2e/quick-create-blocked-feedback.spec.ts": "27ef828493adb8ac1ba695cc7f03fda90c42084823b8abe4df75a0314ba4e3f0",
+    "e2e/quick-create-actor-picker.spec.ts": "e12cd6f68a8370014593a18de734df9a698add3f8c5c8bffba53399a06ae1518",
+    "e2e/quick-create-actor-picker-phase2.spec.ts": "d18ebae97affebf6b352577a5cb9f8927e9beb74346281b8eb9e51ff28e0b995",
+    "e2e/quick-create-autonomy.spec.ts": "f9cbb770e70aaa451630ed5f1bb06eb98ad6edc509bb71ee70af63be95831837",
+    "e2e/fixtures.ts": "40adcbabe7224359458a1a92c9537c3e6e8bb10e219802b0b8db4b703b6b26dc",
+    "e2e/fixtures/lane-guards.ts": "f83a83d0dcb4106664a52e3f018018a171f6ab00f4ca1624b57f6ebae61c0777",
+    "e2e/fixtures/changelog-electron.cjs": "873ffdfbd96beaae1c2513293456caa7af87de2875cef274c424d4c027e4320f"
+  },
+  "boundaries": [
+    "Actual production Web, real components, API-created synthetic actors, runtime row with no daemon.",
+    "Recommendation API uses deterministic local provider; no paid model execution.",
+    "Controlled routes only cover list loading/failure, delayed upload/acceptance and clarification-input exclusion.",
+    "No real screen-reader, physical touch, packaged Main, installer or real-agent execution claim.",
+    "Core submit decision matrix remains canonical in its unit test."
+  ],
+  "runs": [
+    {
+      "name": "acceptance-final",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/quick-create-blocked-feedback.spec.ts",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "exit": 1,
+      "stats": {
+        "startTime": "2026-11-20T07:21:21.913Z",
+        "duration": 234156.72999999998,
+        "expected": 14,
+        "skipped": 0,
+        "unexpected": 4,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "empty description remains in the Tab order, explains itself and routes blocked activation to the editor",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "clearing the editor and immediately submitting uses live Markdown",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "zero candidates has two working exits, keeps the draft and makes no recommendation request",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "loading recipients routes activation to the persistent picker",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "failed recipients routes activation to the persistent picker",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "autonomy and CLI version refusals keep their dedicated focus destinations",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "recommendation adoption submits from the restored picker focus",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "modifier Enter sends exactly once from the close",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "modifier Enter sends exactly once from the property",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "modifier Enter sends exactly once from the switch",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "modifier Enter sends exactly once from the editor",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "portal search and refinement answer inputs keep modifier Enter to themselves",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "plain Enter activates the focused Close button without handing off",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "pending submission and upload use native disabled",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "real geometry and helper contrast: en, light",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "timedOut"
+        },
+        {
+          "title": "real geometry and helper contrast: en, dark",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "failed"
+        },
+        {
+          "title": "real geometry and helper contrast: zh-Hans, light",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "failed"
+        },
+        {
+          "title": "real geometry and helper contrast: zh-Hans, dark",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "timedOut"
+        }
+      ],
+      "rawResultSha256": "87425dca86d49e589907eaa077bcdf6071fffdee0add8ea50957f3b3e892917e"
+    },
+    {
+      "name": "visual-final-r3",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/quick-create-blocked-feedback.spec.ts",
+        "--grep",
+        "real geometry",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-11-20T07:31:13.434Z",
+        "duration": 17535.977,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "real geometry and helper contrast: en, light",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "real geometry and helper contrast: en, dark",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "real geometry and helper contrast: zh-Hans, light",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "real geometry and helper contrast: zh-Hans, dark",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        }
+      ],
+      "rawResultSha256": "03b43f605493e3225901a251517bd2e757fa05ed572aefca2a07131127af06b1"
+    },
+    {
+      "name": "fixture-cleanup-confirmation",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/quick-create-blocked-feedback.spec.ts",
+        "--grep",
+        "pending submission|real geometry",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-11-20T07:33:50.397Z",
+        "duration": 20330.656,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "pending submission and upload use native disabled",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "real geometry and helper contrast: en, light",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "real geometry and helper contrast: en, dark",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "real geometry and helper contrast: zh-Hans, light",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "real geometry and helper contrast: zh-Hans, dark",
+          "file": "quick-create-blocked-feedback.spec.ts",
+          "status": "passed"
+        }
+      ],
+      "rawResultSha256": "7eb6f2876619b07416b6a6ca63ca8b8d9b5733feb39e1ea3fcf6790314f6f61c"
+    },
+    {
+      "name": "existing-picker",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/quick-create-actor-picker.spec.ts",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-11-20T07:26:58.800Z",
+        "duration": 23603.226,
+        "expected": 7,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "manual assignment reuses discovery and preserves the draft (en)",
+          "file": "quick-create-actor-picker.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "category tabs expose Mika and squad leaders at wide and narrow widths (en)",
+          "file": "quick-create-actor-picker.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "manual assignment reuses discovery and preserves the draft (zh-Hans)",
+          "file": "quick-create-actor-picker.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "category tabs expose Mika and squad leaders at wide and narrow widths (zh-Hans)",
+          "file": "quick-create-actor-picker.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "real API actors keep favorites and accepted recents local to their workspace",
+          "file": "quick-create-actor-picker.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "550 route-mocked actors remain searchable and pageable with browser render samples",
+          "file": "quick-create-actor-picker.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "keyboard actions preserve draft and reset stale choices in a narrow viewport",
+          "file": "quick-create-actor-picker.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "desktop renderer supports picker search and pinning without starting a daemon",
+          "file": "quick-create-actor-picker.spec.ts",
+          "status": "skipped"
+        }
+      ],
+      "rawResultSha256": "33a66d3260091e0d8a005b95e2da80ad543919e8099682e67e0b73fc3495f803"
+    },
+    {
+      "name": "existing-autonomy",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/quick-create-autonomy.spec.ts",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-11-20T07:30:47.858Z",
+        "duration": 4470.597,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "the creator picker lists Observer-level creators disabled with the reason and seeds a Contributor",
+          "file": "quick-create-autonomy.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "an explicitly requested Observer explains the refusal and hands off to manual creation assigned to it",
+          "file": "quick-create-autonomy.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "the API refuses an Observer or an Observer-led squad before enqueueing and accepts Contributors",
+          "file": "quick-create-autonomy.spec.ts",
+          "status": "passed"
+        }
+      ],
+      "rawResultSha256": "887655a71d9a4b94375a2a76c1c52c31fa46fbb7a88a062e934b7c4983370bdc"
+    },
+    {
+      "name": "existing-recommendations",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/quick-create-actor-picker-phase2.spec.ts",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-11-20T07:30:53.255Z",
+        "duration": 10960.508,
+        "expected": 3,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "explicit default outranks accepted history and project candidates do not replace it",
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "status": "passed"
+        },
+        {
+          "title": "actual Electron renderer adopts suggestions without running a daemon",
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "status": "skipped"
+        },
+        {
+          "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "status": "passed"
+        }
+      ],
+      "rawResultSha256": "a9d34d0b82bd2aa1b42fd880977c90ea3376300c8bd4d4cd9012ccf3a730640b"
+    },
+    {
+      "name": "native-picker",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/quick-create-actor-picker.spec.ts",
+        "--grep",
+        "desktop renderer",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-11-20T07:32:06.361Z",
+        "duration": 4320.969999999999,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "desktop renderer supports picker search and pinning without starting a daemon",
+          "file": "quick-create-actor-picker.spec.ts",
+          "status": "passed"
+        }
+      ],
+      "rawResultSha256": "8e561c6c42b0d5c7dc83b0b6ccee652dcbdaeb7c3315b9f1b86c48110491ca8c"
+    },
+    {
+      "name": "native-recommendations",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/quick-create-actor-picker-phase2.spec.ts",
+        "--grep",
+        "actual Electron",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "exit": 0,
+      "stats": {
+        "startTime": "2026-11-20T07:32:11.535Z",
+        "duration": 2607.255,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "actual Electron renderer adopts suggestions without running a daemon",
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "status": "passed"
+        }
+      ],
+      "rawResultSha256": "e93fa589c99a781f963bd2248a09ecdbc9561c8818c09cc31faac40e5b4ea708"
+    }
+  ]
+}

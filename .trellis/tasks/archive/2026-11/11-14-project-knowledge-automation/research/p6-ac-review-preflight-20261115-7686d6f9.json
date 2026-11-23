@@ -1,0 +1,919 @@
+{
+  "schema_version": 1,
+  "review_id": "20261115-7686d6f9",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "reviewer_role": "trellis-check",
+  "review_mode": "independent_full_scope_read_only_preflight",
+  "reviewed_at": "2026-11-15T07:13:54.226Z",
+  "approved_revision": "2026-11-14-v1",
+  "verdict": "zero_confirmed_unresolved_code_or_spec_blockers",
+  "blocking_findings_open": 0,
+  "code_spec_preflight_complete": true,
+  "final_ac_or_p6_acceptance_verified": false,
+  "product_runtime_acceptance": false,
+  "source_ready_or_runtime_permit_issued": false,
+  "ownership": {
+    "source_spec_task_docs": "read_only",
+    "only_written_path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-ac-review-preflight-20261115-7686d6f9.json",
+    "source_fixes_by_reviewer": [],
+    "descendants_spawned": 0,
+    "db_suites_run_by_reviewer": 0,
+    "product_servers_or_native_apps_started_by_reviewer": 0,
+    "model_or_account_calls_by_reviewer": 0,
+    "outputs_regenerated_by_reviewer": 0
+  },
+  "context": {
+    "saved_hook_read": true,
+    "check_jsonl_and_all_listed_context_read": true,
+    "context_artifact_count": 17,
+    "unchanged_since_initial_context": 16,
+    "sole_expected_context_change": ".trellis/spec/server/collaboration-knowledge.md migration range only; inverse text substitution matches original hash",
+    "get_context_packages": {
+      "command": "python3 .trellis/scripts/get_context.py --mode packages",
+      "result": "No packages configured; applicable server/Core/Views/Web/Desktop/Docs layer indexes, Quality Check guidance and domain Tests required sections were read."
+    },
+    "skill": ".agents/skills/trellis-check/SKILL.md",
+    "task_status_observed": "in_progress",
+    "implementation_authorized": true,
+    "task_final_acceptance_verified": false,
+    "documents": [
+      {
+        "file": ".trellis/tasks/11-14-project-knowledge-automation/prd.md",
+        "sha256": "d19c57d142313c8d0a5fd4d5af385642ff75f481539db2b7298fef1efdab6e82"
+      },
+      {
+        "file": ".trellis/tasks/11-14-project-knowledge-automation/design.md",
+        "sha256": "fd0233809bf13ec5d6da71bd326aafda6966f7c261ec104df024d2a6f96999e2"
+      },
+      {
+        "file": ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+        "sha256": "438b5d1219de6c2bad5ccafbf82c6814487854c4770d7fd38e5411e7fb074216"
+      },
+      {
+        "file": ".trellis/tasks/11-14-project-knowledge-automation/research/implementation-approval.md",
+        "sha256": "ad729707ebabfec84cd503bc88d4c0760c6ea09eceb5479fdb1d31b1bf662bfd"
+      },
+      {
+        "file": ".trellis/tasks/11-14-project-knowledge-automation/check.jsonl",
+        "sha256": "20f0cedf1a905995081afaa4ce0342fa83ca3d119283e456ca4e03730ae30036"
+      }
+    ]
+  },
+  "source": {
+    "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "server_input_algorithm": "SHA-256 over sorted repository-relative server .go/.sql/go.mod/go.sum/sqlc.yaml paths, NUL, then complete bytes; mode compared separately",
+    "server_file_count": 4765,
+    "current_server_sha256": "d9fe7fcb1b35657cf930a4c1c60b03b0c093bbfbbb192a927636475dd705531c",
+    "pre_rename_server_sha256": "f827689ea5d568481fafbce19efac4a30a143198ce461391e391b9d71b0c7f4e",
+    "rename_normalized_server_sha256": "f827689ea5d568481fafbce19efac4a30a143198ce461391e391b9d71b0c7f4e",
+    "rename_normalized_sha_matches": true,
+    "rename_normalized_mode_or_byte_differences": 0,
+    "original_service_file_count": 4764,
+    "original_service_reconstructed_sha256": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+    "original_service_receipt_sha256": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+    "original_service_reconstruction_match": true,
+    "known_test_only_delta_since_service": [
+      "server/internal/service/task_knowledge_mixed_history_integration_test.go",
+      "server/internal/handler/config_test.go",
+      "server/internal/handler/issue_autopilot_assignment_authority_test.go",
+      "server/internal/handler/workspace_delete_manifest_test.go"
+    ],
+    "new_source_delta_since_pre_rename": [
+      "server/migrations/861_knowledge_automation_origin.down.sql",
+      "server/migrations/861_knowledge_automation_origin.up.sql",
+      "server/migrations/865_knowledge_automation_origin.down.sql",
+      "server/migrations/865_knowledge_automation_origin.up.sql"
+    ],
+    "production_go_or_sql_byte_drift_since_service": false,
+    "focused_source_hashes": [
+      {
+        "file": "server/internal/service/task_knowledge.go",
+        "sha256": "a2258373d8c0abc4883e5fdd7fc28a0bca80ce106bc41758d5ecdb795f21d9e7"
+      },
+      {
+        "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+        "sha256": "f9302a6ce63fee9c86b0449cac4b2d0bf698cd38cf2fb13840cd2a616221f2bb"
+      },
+      {
+        "file": "packages/core/collaboration/knowledge-automation-schema.ts",
+        "sha256": "00b74d5515e02916c60c717bd7a4da4a18a3072a67b5fe4df070a737b07b95a5"
+      },
+      {
+        "file": "packages/core/collaboration/knowledge-automation-actions.ts",
+        "sha256": "0d1034a72b00ee89afc49259c4e456f24a55c365418cc9906f7169cc76932f03"
+      },
+      {
+        "file": "packages/views/collaboration/knowledge-automation-status.tsx",
+        "sha256": "6cd7049a93756c7ffece84281ae76a0eca4a6158f44946da03d551337fe32585"
+      },
+      {
+        "file": "packages/views/projects/components/project-knowledge-policy.tsx",
+        "sha256": "c798ec8f5b957bad302f5b5ffc608bf0801d6dd26c8199b12d1fe83b389c8255"
+      },
+      {
+        "file": "e2e/project-knowledge-automation.spec.ts",
+        "sha256": "d10f577675a666ab029a66884869c0374aa0716e2da5b9b93f1856e05d12c5ca"
+      },
+      {
+        "file": "e2e/fixtures/project-knowledge-automation.ts",
+        "sha256": "9ed10ec2f4d468c5b368347e7c6322d41f7a193d52744ad1bbd710bb7e373444"
+      }
+    ],
+    "source_freeze_pending": true,
+    "frontend_receipt_source_sha256": "093485d5a3f76a274946382cbb74f7d82497e8af91a9b809652e775865372db4",
+    "frontend_receipt_source_files": 3495,
+    "frontend_binding_limit": "The root TS receipt records its stable digest/count without the full file map or fingerprint implementation. It is retained as historical root verification; fresh reviewer Core/Views checks and current focused hashes are separate. Final frozen build receipts must supply current full source/input bindings."
+  },
+  "findings_fixed_by_reviewer": [],
+  "findings_resolved_by_leader": [
+    {
+      "id": "M1",
+      "severity": "blocking_at_discovery",
+      "status": "resolved_and_freshly_verified",
+      "issue": "Duplicate migration prefix861: stage submission plus knowledge automation origin index.",
+      "files": [
+        "server/migrations/865_knowledge_automation_origin.up.sql",
+        "server/migrations/865_knowledge_automation_origin.down.sql"
+      ],
+      "repair": "Only the unreleased knowledge-owned index pair moved861→865; both SQL bytes and file modes match exactly. No legacy-prefix exemption or test relaxation.",
+      "sql_byte_parity": [
+        {
+          "direction": "up",
+          "old_path": "server/migrations/861_knowledge_automation_origin.up.sql",
+          "new_path": "server/migrations/865_knowledge_automation_origin.up.sql",
+          "old_sha256": "0816309f0602aaf351ca0f7b40e5c800bfd9b8614b42a6c5bb20c022ce8e4b1a",
+          "new_sha256": "0816309f0602aaf351ca0f7b40e5c800bfd9b8614b42a6c5bb20c022ce8e4b1a",
+          "exact_bytes_match": true,
+          "old_name_present": false
+        },
+        {
+          "direction": "down",
+          "old_path": "server/migrations/861_knowledge_automation_origin.down.sql",
+          "new_path": "server/migrations/865_knowledge_automation_origin.down.sql",
+          "old_sha256": "1edf462a5f95b4a3d3fccd19d3a91cb09e7019b30a3aef855e594ff2583b5eef",
+          "new_sha256": "1edf462a5f95b4a3d3fccd19d3a91cb09e7019b30a3aef855e594ff2583b5eef",
+          "exact_bytes_match": true,
+          "old_name_present": false
+        }
+      ],
+      "mode_parity": [
+        {
+          "direction": "up",
+          "mode_before": "0o644",
+          "mode_after": "0o644",
+          "match": true
+        },
+        {
+          "direction": "down",
+          "mode_before": "0o644",
+          "mode_after": "0o644",
+          "match": true
+        }
+      ],
+      "spec": {
+        "file": ".trellis/spec/server/collaboration-knowledge.md",
+        "prior_sha256": "96a8c2e6f96726358799b0e09243c4d9222d743896f8f99b4c0c87cac8acc054",
+        "current_sha256": "86ee1aa0dd823b3dce5a421809157e1e583a43fd5e673a14e1bea8372ae15c79",
+        "inverse_range_only_hash_matches": true
+      },
+      "evidence": [
+        "migrations_old_red",
+        "migration_repair",
+        "migration_contract",
+        "migrations_current",
+        "knowledge_post_prefix",
+        "sqlc_current",
+        "go_static_current",
+        "testutil_current"
+      ],
+      "fresh_replay": {
+        "migrations_pass": 569,
+        "knowledge_pass": 428,
+        "testutil_pass": 18,
+        "fail": 0,
+        "skip": 0,
+        "source_stable": true,
+        "owned_connections_after": 0
+      },
+      "old_databases_or_original_receipts_rewritten": false
+    }
+  ],
+  "findings_not_fixed": [
+    {
+      "id": "E1",
+      "category": "runtime_proof_gap",
+      "blocking_code_or_spec": false,
+      "severity": "medium",
+      "file": "e2e/project-knowledge-automation.spec.ts",
+      "line": 85,
+      "issue": "Planned journey checks candidate ID/body/hash/validity but lacks explicit delivered candidate-version equality.",
+      "recommendation": "Apply E1-first-version and E1-renewed-version before recording final AC2 runtime proof.",
+      "executed": false
+    },
+    {
+      "id": "E2",
+      "category": "runtime_proof_gap",
+      "blocking_code_or_spec": false,
+      "severity": "medium",
+      "file": "e2e/project-knowledge-automation.spec.ts",
+      "line": 132,
+      "issue": "Negative journey checks zero jobs/model calls/Provider captures but does not directly check zero automatic candidate rows or unchanged workspace automatic target/base context.",
+      "recommendation": "Apply E2 snapshot and exact-source candidate assertions; keep DB reads limited to owned fixture IDs.",
+      "executed": false
+    },
+    {
+      "id": "C3",
+      "category": "inherited_coverage_comment",
+      "severity": "low",
+      "blocking_code_or_spec": false,
+      "source_review": "mixed_history_review",
+      "issue": "Direct original prepare/authorize replay after automatic proof1→proof2 replacement remains unexecuted.",
+      "disposition": "Inherited nonblocking coverage gap. Static original-manifest recheck and other withdrawal/reopen tests are evidence, not execution of this exact replay. Dewey owns the independent mixed-history review; no duplicate assertion review or source edit."
+    }
+  ],
+  "proposed_patch": {
+    "status": "proposed_only_not_applied",
+    "owner_for_sequential_fix": "leader",
+    "file": "e2e/project-knowledge-automation.spec.ts",
+    "source_sha256": "d10f577675a666ab029a66884869c0374aa0716e2da5b9b93f1856e05d12c5ca",
+    "exact_unique_anchor_edits": [
+      {
+        "id": "E1-first-version",
+        "file": "e2e/project-knowledge-automation.spec.ts",
+        "old_text": "        expect(execution.entry.candidate_id).toBe(candidate.candidate_id);\n",
+        "new_text": "        expect(execution.entry.candidate_id).toBe(candidate.candidate_id);\n        expect(execution.entry.version).toBe(candidate.version);\n"
+      },
+      {
+        "id": "E1-renewed-version",
+        "file": "e2e/project-knowledge-automation.spec.ts",
+        "old_text": "        expect(fresh.entry.candidate_id).toBe(first.entry.candidate_id);\n",
+        "new_text": "        expect(fresh.entry.candidate_id).toBe(first.entry.candidate_id);\n        expect(fresh.entry.version).toBe(first.entry.version);\n"
+      },
+      {
+        "id": "E2-before-snapshot",
+        "file": "e2e/project-knowledge-automation.spec.ts",
+        "old_text": "        const executionsBefore = providerCaptures().length;\n",
+        "new_text": "        const executionsBefore = providerCaptures().length;\n        const negativeIssues = [fixture.noProject.issue.id, fixture.manual.issue.id];\n        const workspaceSnapshot = async () => ({\n          base: await ownedQuery(\"SELECT context FROM workspace WHERE id=$1\", [fixture.workspace.id]),\n          target: await ownedQuery(\"SELECT target_id,knowledge_revision FROM collaboration_knowledge_target WHERE target_kind='workspace' AND workspace_id=$1 ORDER BY target_id\", [fixture.workspace.id]),\n          automatic: await ownedQuery(\"SELECT id,version,state,state_revision,published_target_revision FROM collaboration_knowledge_candidate WHERE target_kind='workspace' AND target_workspace_id=$1 AND proposal_origin='automation' ORDER BY id\", [fixture.workspace.id]),\n        });\n        const workspaceBefore = await workspaceSnapshot();\n        expect(workspaceBefore.base).toHaveLength(1);\n"
+      },
+      {
+        "id": "E2-candidate-workspace-assertions",
+        "file": "e2e/project-knowledge-automation.spec.ts",
+        "old_text": "        expect(rows[0]!.count).toBe(0);\n        expect((await modelCalls()).length).toBe(callsBefore);\n",
+        "new_text": "        expect(rows[0]!.count).toBe(0);\n        const candidateRows = await ownedQuery(\"SELECT count(*)::int AS count FROM collaboration_knowledge_candidate WHERE source_issue_id=ANY($1::uuid[]) AND proposal_origin='automation'\", [negativeIssues]);\n        expect(candidateRows[0]!.count).toBe(0);\n        const workspaceAfter = await workspaceSnapshot();\n        expect(workspaceAfter).toEqual(workspaceBefore);\n        evidence.zero_automatic_candidates_and_workspace_writes = { candidates: candidateRows[0]!.count, workspaceBefore, workspaceAfter };\n        expect((await modelCalls()).length).toBe(callsBefore);\n"
+      }
+    ],
+    "anchor_validation": [
+      {
+        "id": "E1-first-version",
+        "matches": 1
+      },
+      {
+        "id": "E1-renewed-version",
+        "matches": 1
+      },
+      {
+        "id": "E2-before-snapshot",
+        "matches": 1
+      },
+      {
+        "id": "E2-candidate-workspace-assertions",
+        "matches": 1
+      }
+    ],
+    "verification_after_fix": "Leader runs normal static checks and the two frozen Web/native-Desktop journeys; this reviewer does not run DB/product suites."
+  },
+  "acceptance_criteria": [
+    {
+      "id": "AC1",
+      "static_status": "pass",
+      "final_status": "pending_frozen_build_binding",
+      "finding": "Unset/empty API configuration and Compose default enable guarded use; literal false and other nonempty values disable it. Existing runtime, authority and retained-history fences remain.",
+      "paths": [
+        "server/cmd/server/router.go",
+        ".env.example",
+        "docker-compose.selfhost.yml"
+      ],
+      "tests": [
+        "TestKnowledgeContextDefaultEnabled",
+        "TestCORSKnowledgeVersionNegotiation"
+      ],
+      "test_receipt": "router",
+      "pending": [
+        "Bind startup and supported Web/Desktop builds to frozen source; no Docker installation/all-platform claim."
+      ]
+    },
+    {
+      "id": "AC2",
+      "static_status": "pass",
+      "final_status": "pending_web_desktop_daemon_journey",
+      "finding": "Only formal accepted project delivery creates exact acceptance-bound durable work. The worker checks complete inputs and adopts atomically; consumption binds candidate/version/hash and automatic validity before each physical launch.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_automation_jobs.go",
+        "server/internal/service/collaboration_knowledge_automation_settle.go",
+        "server/internal/service/task_knowledge_prepare.go"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationWorkerAcceptedCreateAndCompleteRevalidation",
+        "TestKnowledgeDeliverySourceExactAcceptedSnapshot",
+        "TestKnowledgeResolverCurrentSourcesConsumersAndExactManifest"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "pending": [
+        "Actual Web/Desktop acceptance-to-daemon captured input after frozen production build.",
+        "E1 explicit candidate-version equality in first and renewed execution."
+      ]
+    },
+    {
+      "id": "AC3",
+      "static_status": "pass",
+      "final_status": "pending_negative_runtime_evidence",
+      "finding": "No-project/manual acceptance exits before automatic enqueue; automatic target remains the source project and cannot become a workspace contribution. Human proposal/review remains separate.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_automation_jobs.go",
+        "server/internal/service/collaboration_knowledge_automation_snapshot.go",
+        "packages/views/collaboration/knowledge-panel.tsx"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationOnlyFormalProjectAcceptanceCreatesIntent",
+        "TestKnowledgeHumanApprovalAndWithdrawalUseExactReviewedVersion"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "pending": [
+        "E2 zero exact-source automatic candidates and unchanged workspace automatic target/base context in both platform journeys."
+      ]
+    },
+    {
+      "id": "AC4",
+      "static_status": "pass",
+      "final_status": "backend_evidence_pass_final_binding_pending",
+      "finding": "Accepted event identity, unique durable job/batch/attempt slots and lease fences prevent ordinary success, unaccepted delivery and replay from producing duplicate adoption. Saved successful stages are reused; uncertain generation is retained.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_automation_jobs.go",
+        "server/internal/service/collaboration_knowledge_automation_worker.go",
+        "server/pkg/db/queries/collaboration_knowledge_automation.sql"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationOnlyFormalProjectAcceptanceCreatesIntent",
+        "TestKnowledgeAutomationWorkerAtomicSettlementAndStageReuse",
+        "TestKnowledgeAutomationWorkerExpiredLeasePreservesUncertainty"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "pending": [
+        "Final frozen source and resource binding."
+      ]
+    },
+    {
+      "id": "AC5",
+      "static_status": "pass",
+      "final_status": "deterministic_rules_evidence_pass_final_binding_pending",
+      "finding": "Full source/comparison closure is authorized before both model stages and settlement, independent of model related_refs. Closed schemas, exact references, source availability/expiry, content hashes, three intents, duplicates, conflict and uncertainty gate adoption; restricted projections omit private bodies/reasons.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_automation_model.go",
+        "server/internal/service/collaboration_knowledge_automation_snapshot.go",
+        "server/internal/service/collaboration_knowledge_automation_settle.go"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationRuleOutcomes",
+        "TestKnowledgeAutomationWorkerComparisonClosureAndPrivateReason",
+        "TestKnowledgeAutomationWorkerLateComparisonIsAuthorizedBeforeAnyModel"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "pending": [
+        "Final source binding; fake responses establish orchestration and rules, not real-provider semantic quality."
+      ]
+    },
+    {
+      "id": "AC6",
+      "static_status": "pass",
+      "final_status": "pending_web_desktop_ui_journey",
+      "finding": "Public/Core v2 models keep system/human proposal, last decision and immutable original approval distinct. Shared status/review/policy UI attributes actual acceptance/source/rule/usage and uses current private-source availability and original-request recovery. React Query owns server state and shared routing uses adapters.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_public.go",
+        "packages/core/collaboration/knowledge-automation-schema.ts",
+        "packages/views/collaboration/knowledge-automation-status.tsx"
+      ],
+      "tests": [
+        "TestKnowledgePublicV2PreservesHumanReceiptsAndAudit",
+        "TestKnowledgeHumanListDetailHistoryAndTargetSuppressPurgedSourceText"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "frontend_receipts": [
+        "frontend_quality"
+      ],
+      "frontend_tests": [
+        "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "packages/views/collaboration/knowledge-automation.test.tsx"
+      ],
+      "pending": [
+        "Observe actual Web and native Desktop attribution, source/paused state and retained recovery from built outputs."
+      ]
+    },
+    {
+      "id": "AC7",
+      "static_status": "pass",
+      "final_status": "pending_nonblocking_runtime_journey",
+      "finding": "Acceptance performs only the lightweight durable intent within its existing transaction and waits on no model or target knowledge counter. Worker/model configuration, timeout, uncertainty and bounded DB backoff occur after commit without reopening the closed business queue.",
+      "paths": [
+        "server/internal/service/collaboration_lifecycle.go",
+        "server/internal/service/collaboration_knowledge_automation_jobs.go",
+        "server/internal/service/collaboration_knowledge_automation_worker.go"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationOnlyFormalProjectAcceptanceCreatesIntent",
+        "TestKnowledgeAutomationWorkerUnconfiguredZeroAndUncertain",
+        "TestKnowledgeAutomationWorkerExpiredLeasePreservesUncertainty"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "contract_limit": "Design line 66 explicitly keeps acceptance transaction/intent DB failures as business transaction failures; this review does not claim acceptance succeeds if its own transaction fails.",
+      "pending": [
+        "Observe committed UI acceptance while controlled model is held and no daemon/business replay in both journeys."
+      ]
+    },
+    {
+      "id": "AC8a",
+      "static_status": "pass",
+      "final_status": "pending_reopen_runtime_journey",
+      "finding": "The original accepted source and close epoch are checked in prepare, authorize and exact replay transactions. Reopen immediately invalidates automatic proofs after commit without waiting for the outbox; legal history remains visibly paused.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_validity.go",
+        "server/internal/service/collaboration_knowledge_locks.go",
+        "server/internal/service/task_knowledge_prepare.go"
+      ],
+      "tests": [
+        "TestKnowledgeReopenFencesPreparationAndAuthorizationBothOrders",
+        "TestKnowledgeAutomaticValidityPausesOnReopenWithoutOutbox"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "pending": [
+        "Actual UI reopen and zero additional Provider invocation for old continuation on both built platforms."
+      ]
+    },
+    {
+      "id": "AC8b",
+      "static_status": "pass",
+      "final_status": "pending_reacceptance_runtime_journey",
+      "finding": "Reacceptance reviews every fixed predecessor in bounded batches and atomically advances validity only for complete, current support and policy. Old acceptance/lease/model results cannot restore changed or withdrawn heads. Old automatic manifest proofs remain mismatched after a new proof.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_automation_worker.go",
+        "server/internal/service/collaboration_knowledge_automation_settle.go",
+        "server/internal/service/collaboration_knowledge_validity.go"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationWorkerAcceptedCreateAndCompleteRevalidation",
+        "TestKnowledgeReacceptanceCannotReplaceOldManifestProof",
+        "TestKnowledgeAutomaticValidityChecksNewSupportSources"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "pending": [
+        "Both platform journeys: restore same version with proof2, reject old native continuation and admit a fresh session with current proof.",
+        "C3 remains low/nonblocking: original prepare/authorize replay after proof replacement is not directly executed."
+      ]
+    },
+    {
+      "id": "AC8c",
+      "static_status": "pass",
+      "final_status": "backend_evidence_pass_final_binding_pending",
+      "finding": "Original approval origin/job/actor/time are immutable and separate from later decisions. Human withdrawal/correction and head revisions fence late automatic results; human approvals and other source tasks are not unconditionally paused by automatic reopen policy.",
+      "paths": [
+        "server/migrations/844_project_knowledge_automation.up.sql",
+        "server/internal/service/collaboration_knowledge_automation_settle.go",
+        "server/internal/service/collaboration_knowledge_validity.go"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationWorkerRevisionAndHumanWithdrawal",
+        "TestKnowledgeHumanApprovalOfAutomationProposalSurvivesReopen",
+        "TestKnowledgeReopenKeepsOtherSourceInSameProjectActive"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "pending": [
+        "Final frozen source binding; planned browser journey does not replace these concurrent transaction tests."
+      ]
+    },
+    {
+      "id": "AC9",
+      "static_status": "pass",
+      "final_status": "backend_budget_evidence_pass_final_binding_pending",
+      "finding": "Target capacity preserves all published lineages including paused ones, checks 16 entries/128 KiB and complete delivery budgets, saves a deterministic fitting set with explicit pending outcomes and rolls back a failing settlement as one transaction; no eviction/truncation or false success.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_automation_settle.go",
+        "server/internal/service/collaboration_knowledge_resolve.go",
+        "server/pkg/protocol/task_knowledge.go"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationWorkerPartialCapacityIsAtomic",
+        "TestKnowledgeHumanTargetBudgetRefusalRetainsOriginalOutcome",
+        "TestKnowledgePreparationCompleteEnvelopeBudgetRollsBackDisclosure"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "pending": [
+        "Final frozen source binding; capacity stress is backend evidence, outside the two planned UI journeys."
+      ]
+    },
+    {
+      "id": "AC10",
+      "static_status": "pass",
+      "final_status": "fake_model_and_accounting_evidence_pass_final_binding_pending",
+      "finding": "Server-owned extraction uses the existing llm client and documented fifth consumer. Unconfigured calls return before building HTTP requests; actual returned model and token-field presence retain zero/partial/unknown without invented totals. Typed JSON results preserve usage on rejected content and existing parameter negotiation/retry semantics.",
+      "paths": [
+        "server/pkg/llm/json_result.go",
+        "server/pkg/llm/client.go",
+        "server/internal/service/collaboration_knowledge_automation_model.go"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationModelCallPreservesUsageAndSanitizesFailures"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "llm_tests": [
+        "TestGenerateJSONResultUsagePresence",
+        "TestGenerateJSONResultDoesNotInventResponseModel",
+        "TestGenerateJSONResultRetainsUsageWhenContentIsRejected",
+        "TestGenerateJSONResultUnconfiguredAndTimeoutUsageUnknown",
+        "TestGenerateJSONResultSharesParameterNegotiation",
+        "TestUnconfiguredClientMakesZeroUpstreamRequests",
+        "TestDocumentedConsumersAreTheOnlyCallers",
+        "TestOpenAISDKIsImportedOnlyByThisPackage"
+      ],
+      "llm_receipt": "current_nondb",
+      "pending": [
+        "Final source binding and controlled runtime traces. Real-provider quality/accounting evaluation is outside this acceptance."
+      ]
+    },
+    {
+      "id": "AC11",
+      "static_status": "pass",
+      "final_status": "pending_built_shared_policy_ui_binding",
+      "finding": "Absent override means versioned system default, not fabricated human activation. Current human lead/workspace owner/admin controls policy with CAS and original request identity; explicit false survives default upgrades and a changed policy/authority cancels late adoption.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_policy.go",
+        "packages/core/collaboration/knowledge-automation-actions.ts",
+        "packages/views/projects/components/project-knowledge-policy.tsx"
+      ],
+      "tests": [
+        "TestKnowledgeAutomationPolicyPermissionsAndOriginalRecovery",
+        "TestKnowledgeAutomationRuleUpgradePreservesExplicitPolicy",
+        "TestKnowledgeAutomationWorkerCurrentAuthorityWinsAfterModel"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "frontend_receipts": [
+        "frontend_quality"
+      ],
+      "pending": [
+        "Bind shared policy UI to final Web/Desktop builds; the planned journey verifies effective default policy, not every concurrent policy branch."
+      ]
+    },
+    {
+      "id": "AC12",
+      "static_status": "pass",
+      "final_status": "pending_frozen_runtime_compatibility_binding",
+      "finding": "Public v1 refuses new-only shapes without dropping automation beyond the first page; versioned cursors and CORS are explicit. Runtime/public v2, retained ordinary dual reads, monotonic envelope and fixed collaboration prepare slot preserve original receipts. Already exposed automatic history cannot be hidden by v1 downgrade or fresh namespace fallback.",
+      "paths": [
+        "server/internal/service/collaboration_knowledge_public.go",
+        "server/internal/service/task_knowledge.go",
+        "server/pkg/protocol/task_knowledge.go"
+      ],
+      "tests": [
+        "TestKnowledgePublicV1CannotHideAutomationBeyondPage",
+        "TestKnowledgeV1CannotResumeV2Exposure",
+        "TestKnowledgeStorageVersionReadersRejectMismatches",
+        "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection"
+      ],
+      "test_receipt": "knowledge_post_prefix",
+      "independent_review": "mixed_history_review",
+      "pending": [
+        "Actual built native retained-session refusal and fresh supported v2 execution; C3 is not counted as executed."
+      ]
+    }
+  ],
+  "verification": {
+    "fresh_reviewer_static": {
+      "core_lint": {
+        "command": "pnpm --dir packages/core exec eslint . --no-cache",
+        "exit_code": 0,
+        "errors": 0
+      },
+      "views_lint": {
+        "command": "pnpm --dir packages/views exec eslint . --no-cache",
+        "exit_code": 0,
+        "errors": 0,
+        "warnings": 27,
+        "warnings_scope": "existing unrelated hooks/unused suppressions"
+      },
+      "core_types": {
+        "command": "pnpm --dir packages/core exec tsc --noEmit --incremental false --pretty false",
+        "exit_code": 0
+      },
+      "views_types": {
+        "command": "pnpm --dir packages/views exec tsc --noEmit --incremental false --pretty false",
+        "exit_code": 0
+      },
+      "record": "Observed completed in-session tool output; no extra log file written."
+    },
+    "frontend_root": {
+      "evidence": "frontend_quality",
+      "lint_exit": 0,
+      "typecheck_exit": 0,
+      "test_exit": 0,
+      "named_pass": 14112,
+      "named_fail": 0,
+      "named_skip": 0,
+      "packages": {
+        "Core": 5060,
+        "Views": 7420,
+        "Desktop": 1278,
+        "Web": 290,
+        "Docs": 64
+      },
+      "cached_packages": [
+        "@multica/docs:test"
+      ],
+      "docs_cache_not_relabelled_fresh": true
+    },
+    "backend": {
+      "service_full": {
+        "evidence": "service_full",
+        "pass": 3840,
+        "fail": 0,
+        "skip": 0,
+        "kind": "actual historical full race, production bytes preserved by explicit reconstruction"
+      },
+      "handler_full": {
+        "evidence": "handler_full",
+        "pass": 5912,
+        "fail": 0,
+        "skip": 7,
+        "skip_reasons": {
+          "TestWebhookHandler_DBErrorOnTokenLookupReturns500": "autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant",
+          "TestIterationI1P95": "iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+          "TestIterationI1DisableP95": "iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL",
+          "TestFetchFromSkillsSh_AnthropicPptxIntegration": "skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test",
+          "TestTriageQueueScaleBaseline": "triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending",
+          "TestTriageWireFixtures": "triage_test.go:566: wire fixture export requested only by cross-package verification",
+          "TestMcpMarketPublicHTTPRecipeLifecycle": "workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes"
+        }
+      },
+      "router_full": {
+        "evidence": "router",
+        "pass": 1014,
+        "fail": 0,
+        "skip": 8,
+        "skip_reasons": {
+          "linux_namespace": {
+            "count": 6,
+            "names": [
+              "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+              "TestCollaborationPartialResumeRoutesLinux",
+              "TestCollaborationSingleAgentRuntimeRoutesLinux",
+              "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+              "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+              "TestCollaborationSquadCapacityOneRoutesLinux"
+            ],
+            "reason": "requires explicit Linux namespace integration environment"
+          },
+          "stage_harness": {
+            "name": "TestCollaborationStageExecutionHarness",
+            "reason": "dedicated coordinator-owned stage harness only"
+          },
+          "m1_browser_fixture": {
+            "name": "TestDeliveryCompletionM1BrowserFixture",
+            "reason": "opt-in M1 browser fixture"
+          }
+        }
+      },
+      "migrations_current": {
+        "evidence": "migrations_current",
+        "pass": 569,
+        "fail": 0,
+        "skip": 0
+      },
+      "knowledge_current": {
+        "evidence": "knowledge_post_prefix",
+        "pass": 428,
+        "fail": 0,
+        "skip": 0,
+        "scope": "current knowledge, authority and mixed-history after865 migration; not a new full3840-service run"
+      },
+      "testutil_current": {
+        "evidence": "testutil_current",
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "go_build_vet_current": {
+        "evidence": "go_static_current",
+        "status": "pass"
+      },
+      "nondb": {
+        "evidence": "current_nondb",
+        "fresh_unit": {
+          "pass": 2552,
+          "fail": 0,
+          "skip": 2
+        },
+        "fresh_race": {
+          "pass": 2552,
+          "fail": 0,
+          "skip": 2
+        },
+        "fresh_skip_reasons": [
+          {
+            "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+            "reason": "See source receipt named raw output"
+          },
+          {
+            "test": "TestIsDriveRoot",
+            "reason": "See source receipt named raw output"
+          }
+        ],
+        "unchanged_closures": "Original4724 named-pass matrix is carried only where input closure is unchanged; the full matrix was not freshly repeated.",
+        "llm_each_mode": {
+          "pass": 56,
+          "fail": 0,
+          "skip": 0
+        },
+        "protocol_each_mode": {
+          "pass": 451,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      "count_semantics": "Counts are actual named test events, including parent tests where the receipts include them; skipped cases remain skipped.",
+      "model_credentials_inherited": false
+    },
+    "migrations": {
+      "evidence": "migration_contract",
+      "knowledge_owned_up_files": 18,
+      "concurrent_index_files": 16,
+      "no_new_foreign_keys_or_cascades": true,
+      "every_new_index_in_own_single_statement_file": true,
+      "fresh_ledger": "853:865_knowledge_automation_origin",
+      "source_path_rename_is_not_logic_drift": true
+    },
+    "sqlc": {
+      "evidence": "sqlc_current",
+      "version": "v1.31.1",
+      "generated_files": 141,
+      "current_marked_files": 141,
+      "reviewer_current_hash_matches": 141,
+      "drift": 0,
+      "manual_helpers_excluded": [
+        "attachment_row.go",
+        "comment_row.go",
+        "comment_row_test.go",
+        "knowledge_serialization_test.go"
+      ],
+      "production_outputs_written": false,
+      "external_network_or_install": false,
+      "original_attempt": "sqlc_old_attempt",
+      "original_attempt_interpretation": "Offline metadata lookup failed before generation; zero generated outputs are not141 drifted files."
+    },
+    "help": {
+      "evidence": "help",
+      "recorded_compared_files": 157,
+      "recorded_mismatches": 0,
+      "reviewer_current_hash_checks": 9,
+      "reviewer_current_hash_matches": 9,
+      "regenerated_by_reviewer": false
+    },
+    "offline": {
+      "evidence": "offline",
+      "status": "pass",
+      "ui_wildcard_files": 62,
+      "shell_regressions": 3,
+      "product_runtime_started": false
+    }
+  },
+  "runtime_journey": {
+    "status": "pending",
+    "products": [
+      "production Web",
+      "native Electron Desktop"
+    ],
+    "planned_scope": [
+      "Commit formal acceptance while fake server model is held; show automatic status and original system attribution.",
+      "Release bounded model stages and observe adopted candidate/source/rule/usage.",
+      "Production daemon launches fake Provider and captures exact approved body/version/hash/accepted validity in actual input.",
+      "UI reopen pauses history and old continuation makes zero additional Provider calls.",
+      "UI reacceptance restores the same version with new validity; old native history remains refused while a fresh supported session consumes proof2.",
+      "No-project/manual formal acceptance: zero jobs/model calls/Provider captures; E2 adds direct zero candidates and workspace before/after proof."
+    ],
+    "required_receipts": [
+      "Frozen source/input closure and command/tool hashes for API/CLI/Web/native-Desktop builds.",
+      "Both platform journeys with zero failed or skipped acceptance cases, captured actual daemon input, native runtime identity and owned resource cleanup.",
+      "Final source/tool/resource audit matching build and journey receipts."
+    ],
+    "coverage_limits": [
+      "These journeys do not exercise every capacity/rule/concurrent-policy branch; current backend/Core/Views receipts remain the evidence for those branches.",
+      "Blank executable readiness is not product acceptance.",
+      "No real-provider semantic quality, installed-package/all-platform matrix or parent PAY-241 completion is claimed."
+    ],
+    "native_probe": {
+      "evidence": "native_probe",
+      "Chromium": "145.0.7632.6",
+      "Electron": "39.8.7",
+      "readiness": "isolated blank window via app.whenReady().then",
+      "binary_and_dependency_hashes_unchanged": true,
+      "owned_processes_remaining": 0,
+      "force_signals": 0,
+      "product_acceptance": false,
+      "original_timeout_preserved": "native_probe_original"
+    }
+  },
+  "next_final_review_gates": [
+    "Leader integrates E1/E2 evidence assertions before final journey recording.",
+    "Freeze docs/source and record final complete source/workspace input bindings.",
+    "Build API/CLI and production Web/native-Desktop outputs from that freeze; verify health/schema/readiness including865.",
+    "Execute both owned Web/native-Desktop journeys with fake server model and fake Provider actual input capture.",
+    "Supply immutable build/journey/resource receipts for this reviewer to recheck pending AC proof without restarting completed contextual/static review.",
+    "Only after those gates update final AC/P6 acceptance; PAY-241 parent matrix stays4 PARTIAL/20 NOT_RUN."
+  ],
+  "evidence": {
+    "frontend_quality": {
+      "path": "research/p5-ts-quality-final-ae5ef55c.json",
+      "sha256": "6c0cee3a50e12f1e6eccd53ddb5cfdf837995922c4670d839a804b359fbd8550"
+    },
+    "service_full": {
+      "path": "research/p6-service-final-race-4f72f717.json",
+      "sha256": "3be924a7c0a8151d1d7c53bdc3afa797ddc435f24ab5ced7f1c8a9d83e7240ff"
+    },
+    "handler_full": {
+      "path": "research/p6-handler-current-full-race-72340538.json",
+      "sha256": "dad4e1a88c9d8ec1673ac3dfbb1aec1054522cd62ea41024db120b829686e2a8"
+    },
+    "handler_skip_summary": {
+      "path": "research/p6-handler-current-full-summary.json",
+      "sha256": "19c93982e994bef8b6ebd8d54ff6596aac6040e6728f5ea43965926e57d14212"
+    },
+    "router": {
+      "path": "research/p6-router-current-full-race-fd976616.json",
+      "sha256": "40b19032b0ff42549b429b2646fef6989db49fa8ff4048f7cb07d64a4f478fcc"
+    },
+    "migrations_old_red": {
+      "path": "research/p6-migrations-current-full-race-6322b51d.json",
+      "sha256": "860d1a416fc8352189d591eade028ea64a8fcf07286c0f66b80188831bf3d66f"
+    },
+    "migrations_current": {
+      "path": "research/p6-migrations-unique-prefix-race-9d74fbcd.json",
+      "sha256": "49437646829b6fd9962021a95ef9fe04ac1940deb6a483521f79122ae384a5a3"
+    },
+    "knowledge_post_prefix": {
+      "path": "research/p6-knowledge-post-prefix-race-2b28b210.json",
+      "sha256": "edfcc267e947c349afa4813dad89c0c8782d2e6d8d93f13fbe5c497e8fa3092e"
+    },
+    "testutil_current": {
+      "path": "research/p6-testutil-current-full-race-e8b788d7.json",
+      "sha256": "9bf4eaa3e47388cea3c60379c31eb0778c80cd307caa6677a413e1fd2a402f60"
+    },
+    "go_static_current": {
+      "path": "research/p6-post-unique-prefix-go-static-1dc78e90.json",
+      "sha256": "b786675779bb3b6f02265aa849dd70942ba56fc5512ed767af52478b58610c5a"
+    },
+    "current_nondb": {
+      "path": "research/p6-current-go-nondb-matrix-20261115-sjf89wb8.json",
+      "sha256": "5afde30d5c3d64856a8cc9624465315366d5bc432186607bcb9db557fe23ab16"
+    },
+    "current_nondb_binding": {
+      "path": "research/p6-current-go-binding-20261115-sjf89wb8.json",
+      "sha256": "b74b1ddb7a30df86f5e2d9f9c05d451aa92571c94fad2daa2804c447ae75d0fc"
+    },
+    "migration_contract": {
+      "path": "research/p6-migration-contract-unique-prefix-ebc4f688.json",
+      "sha256": "fc453a906d455613eca02c30242898c6a74f7322e4af041efbbb5acaacc842cc"
+    },
+    "migration_repair": {
+      "path": "research/p6-migration-prefix-repair-25e839da.json",
+      "sha256": "fe41723a8652cad3d52bb333f67cff7a8e47aa6a0ce6e437f30854c1c63c74a3"
+    },
+    "sqlc_old_attempt": {
+      "path": "research/p6-sqlc-unique-prefix-2cc3b384.json",
+      "sha256": "fe634b05e42d37279d1d2e8a0e468b7c336a0cc8c1f43915841d8a3fc5465a8f"
+    },
+    "sqlc_current": {
+      "path": "research/p6-sqlc-filecache-097c96ba.json",
+      "sha256": "8b493dbe2805d263d947cfc4f0c46ac0312545f9df49f4fff0de32393bc8260d"
+    },
+    "help": {
+      "path": "research/p5-generated-help-current.json",
+      "sha256": "cfae070d14ee4e51e890a0cf398b60253bb30d78738b827b945b610a74c37dae"
+    },
+    "offline": {
+      "path": "research/p6-offline-entry-checks-679282ac.json",
+      "sha256": "200ae519df5882bec59fa34b627d896dd6f36605b1be0d92e1832855970910f3"
+    },
+    "native_probe": {
+      "path": "research/p6-native-executable-probe-j3qexojb.json",
+      "sha256": "451ac556242ff4ac3ff2dfdeab2d5b8102f1f22e5422030a465caa097f4d9437"
+    },
+    "native_probe_original": {
+      "path": "research/p6-native-executable-probe-95598bb7.json",
+      "sha256": "7ceadd75c8ad71bf50a59a161714399aa3409647c1865f8d8311f2466837d106"
+    },
+    "mixed_history_review": {
+      "path": "research/p6-mixed-history-independent-review-20261115-e24067c7.json",
+      "sha256": "512162ca89bd75c57bf1628ec473f49885040639e0fb03175b0d3e998bca0591"
+    },
+    "source_preflight": {
+      "path": "research/p6-source-preflight-current.json",
+      "sha256": "78d288f3b55d11c1b6f8758b061bc784db7c0717d11da654c769c55594cafbba"
+    }
+  }
+}

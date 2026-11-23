@@ -1,0 +1,95 @@
+{
+  "candidate": "73a28ed90fdcfd9eda1ac5d2970df5af2c486f94",
+  "method": "Completed package suites plus whole changed-file replays. Initial interrupted Views run excluded. Current new marketplace tests included by group replay; counts are deduplicated, not summed across attempts.",
+  "packages": {
+    "core": {
+      "files": 381,
+      "tests": 5502,
+      "source": "cb192014b; no core changes through final candidate",
+      "log": "ts-tests.log",
+      "latest_tests": 5503,
+      "access_loop_replay": {
+        "files": 4,
+        "tests": 27,
+        "new_tests": 1,
+        "report": "notification-denial-loop.md",
+        "bounded_core_fix": "idempotent repeated forbidden subscribe_error; recovery unchanged"
+      }
+    },
+    "views": {
+      "baseline_files": 630,
+      "baseline_tests": 7845,
+      "baseline_pass": 7844,
+      "baseline_fail": 1,
+      "baseline_source": "95c8b12dc",
+      "baseline_log": "ts-tests-r2.log",
+      "settings_replay": {
+        "files": 2,
+        "tests": 32,
+        "fixed_original_failure": 1,
+        "source": "73a28ed90",
+        "report": "settings-test-repair.md"
+      },
+      "incoming_replay": {
+        "files": 4,
+        "tests": 53,
+        "baseline_same_files_tests": 46,
+        "added_tests": 7,
+        "source": "73a28ed90",
+        "log": "ts-incoming.log"
+      },
+      "latest_files": 631,
+      "latest_tests": 7856,
+      "latest_unresolved_failures": 0
+    },
+    "docs": {
+      "files": 10,
+      "tests": 64,
+      "log": "ts-tests-r2.log"
+    },
+    "web": {
+      "files": 36,
+      "tests": 322,
+      "log": "ts-consumers.log"
+    },
+    "desktop": {
+      "files": 104,
+      "tests": 1314,
+      "log": "ts-consumers.log"
+    }
+  },
+  "non_mobile_latest_tests": 15059,
+  "mobile": {
+    "files": 28,
+    "tests": 196,
+    "log": "mobile-tests.log",
+    "native_ui_covered": false
+  },
+  "static": {
+    "main_tasks": 15,
+    "errors": 0,
+    "existing_warnings": 31,
+    "log": "static-final.log",
+    "mobile_errors": 0,
+    "mobile_existing_warnings": 7,
+    "main_lint_typecheck_tasks": 13,
+    "mdx_prerequisite_tasks": 2
+  },
+  "logs_root": ".omx/private/qa-work/main-readiness-20261123",
+  "not_claimed": "A single complete post-fix run of every Views test; raw original failed full-suite output is preserved.",
+  "modal_fix_replay": {
+    "owning_files": 4,
+    "tests": 126,
+    "new_cases": 4,
+    "last_typing_only_replay": 33,
+    "report": "responsive-dialog-fix.md",
+    "consumer_types": "modal-consumer-typecheck.log exit0",
+    "runtime_pending": true
+  },
+  "denial_fix_consumer_typecheck": {
+    "tasks": 7,
+    "exit": 0,
+    "log": "denial-consumer-typecheck.log",
+    "runtime_originals": "2/2 Web/Electron offline handoff latest pass; targeted23 regressions ongoing"
+  }
+}

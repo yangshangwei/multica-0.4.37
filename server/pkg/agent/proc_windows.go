@@ -3,9 +3,12 @@
 package agent
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
 	"os/exec"
+	"path/filepath"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -62,6 +65,7 @@ type ownedProcessTree struct {
 var (
 	ownedProcessTreesMu sync.Mutex
 	ownedProcessTrees   = map[*exec.Cmd]ownedProcessTree{}
+	attachProcessTree   = ownProcessTree
 )
 
 // jobObjectBasicAccountingInformation mirrors JOBOBJECT_BASIC_ACCOUNTING_INFORMATION.
@@ -92,12 +96,12 @@ type jobObjectBasicAccountingInformation struct {
 // the escaped app-server is still running, and cleanup would be reported as
 // confirmed when it is not.
 //
-// The child is never left suspended. If ownership cannot be taken it is resumed
-// anyway and runs unowned, exactly as it did before Job Objects, with the reason
-// logged. Only a failure to resume is unrecoverable: that child is killed and
-// the error returned, so the caller fails the launch instead of waiting forever
-// on a process that will never run.
-func startOwnedProcessTree(cmd *exec.Cmd, logger *slog.Logger) error {
+// If ownership cannot be taken, ordinary commands and direct host executables
+// retain the existing unowned fallback, with the reason logged. A managed host
+// shell/batch wrapper is killed and waited before resume: without its Job, the
+// provider child could outlive the wrapper without an end observation. A failed
+// resume also kills and waits the child instead of leaving it suspended.
+func startNativeProcessTree(cmd *exec.Cmd, logger *slog.Logger) error {
 	if cmd.SysProcAttr == nil {
 		cmd.SysProcAttr = &syscall.SysProcAttr{}
 	}
@@ -107,28 +111,65 @@ func startOwnedProcessTree(cmd *exec.Cmd, logger *slog.Logger) error {
 		return err
 	}
 
-	if err := ownProcessTree(cmd); err != nil && logger != nil {
+	_, observed := observedRuntimeCommands.Load(cmd)
+	if err := attachProcessTree(cmd); err != nil {
+		if observed && managedProcessTreeRequired(cmd) {
+			// A shell/batch wrapper's exit does not prove that the provider
+			// child ended. Refuse before resume, while Windows still guarantees
+			// that this process has not executed or created any children.
+			_ = cmd.Process.Kill()
+			waitErr := cmd.Wait()
+			return errors.Join(errUnresumedWrapper, err, waitErr)
+		}
 		// Deliberately fail open. Failing the launch instead would take a host
 		// down entirely rather than degrade it, and the realistic causes are
 		// environmental — an outer job that forbids assignment, or a hardened
 		// policy denying PROCESS_SET_QUOTA — not per-task. The consequence is
 		// named in the message because it is the only signal an operator gets
 		// that cancellation on this host is back to killing the leader alone.
-		logger.Warn("could not take ownership of the agent process tree; cancelling or timing out this "+
-			"process will kill only the direct child and can leave its descendants running",
-			"error", err, "pid", cmd.Process.Pid, "executable", cmd.Path)
+		if logger != nil {
+			logger.Warn("could not take ownership of the agent process tree; cancelling or timing out this "+
+				"process will kill only the direct child and can leave its descendants running",
+				"error", err, "pid", cmd.Process.Pid, "executable", cmd.Path)
+		}
 	}
 
 	if err := resumeProcess(cmd.Process.Pid); err != nil {
 		// The child cannot run, so nothing downstream can succeed. Drop
 		// ownership first: closing the job terminates the suspended child, and
 		// Kill covers the case where ownership was never taken.
-		releaseProcessGroup(cmd)
+		if observed {
+			// Preserve the original Job scope until the lifecycle records its
+			// real wait and accounting observation, even on a resume failure.
+			signalProcessGroup(cmd, syscall.SIGKILL)
+		} else {
+			releaseProcessGroup(cmd)
+		}
 		_ = cmd.Process.Kill()
 		_ = cmd.Wait()
 		return fmt.Errorf("resume suspended child: %w", err)
 	}
 	return nil
+}
+
+func processSupervisionScope(cmd *exec.Cmd) string {
+	if _, ok := lookupProcessTree(cmd); ok {
+		return SupervisionWindowsJob
+	}
+	return SupervisionDirect
+}
+
+func managedProcessTreeRequired(cmd *exec.Cmd) bool {
+	name := strings.ToLower(filepath.Base(cmd.Path))
+	switch name {
+	case "cmd", "cmd.exe", "powershell", "powershell.exe", "pwsh", "pwsh.exe":
+		return true
+	}
+	switch strings.ToLower(filepath.Ext(name)) {
+	case ".cmd", ".bat", ".ps1":
+		return true
+	}
+	return false
 }
 
 // ownProcessTree creates the Job Object and assigns the (still suspended) child

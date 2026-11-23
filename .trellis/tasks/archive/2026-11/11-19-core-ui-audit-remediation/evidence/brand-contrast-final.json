@@ -1,0 +1,198 @@
+{
+  "kind": "WCAG 2.x relative luminance calculation from current opaque source tokens; not screenshot sampling",
+  "tokensSha256": "c0c5365f288b36a2139e3906a0b502e8a5234e48c89120cad12798e617e12b54",
+  "buttonSha256": "1e4a2fd59e2548555a68247490ffa963044019fb3bbadf025cdb68b3d8096f4e",
+  "method": "OKLCH to clamped 8-bit sRGB, then WCAG relative-luminance ratio; actual brand variant utilities extracted from source",
+  "threshold": 4.5,
+  "results": [
+    {
+      "theme": "light",
+      "state": "default",
+      "backgroundUtility": "bg-brand",
+      "fgToken": "--brand-foreground",
+      "bgToken": "--brand",
+      "foreground": "oklch(0.985 0 0)",
+      "background": "oklch(0.55 0.16 255)",
+      "foregroundRgb": [
+        250,
+        250,
+        250
+      ],
+      "backgroundRgb": [
+        33,
+        113,
+        204
+      ],
+      "ratio": 4.680421586907551,
+      "normalTextAA": true
+    },
+    {
+      "theme": "light",
+      "state": "hover",
+      "backgroundUtility": "hover:bg-brand-hover",
+      "fgToken": "--brand-foreground",
+      "bgToken": "--brand-hover",
+      "foreground": "oklch(0.985 0 0)",
+      "background": "oklch(0.51 0.16 255)",
+      "foregroundRgb": [
+        250,
+        250,
+        250
+      ],
+      "backgroundRgb": [
+        15,
+        100,
+        191
+      ],
+      "ratio": 5.595738952685837,
+      "normalTextAA": true
+    },
+    {
+      "theme": "light",
+      "state": "active",
+      "backgroundUtility": "active:bg-brand-active",
+      "fgToken": "--brand-foreground",
+      "bgToken": "--brand-active",
+      "foreground": "oklch(0.985 0 0)",
+      "background": "oklch(0.47 0.16 255)",
+      "foregroundRgb": [
+        250,
+        250,
+        250
+      ],
+      "backgroundRgb": [
+        0,
+        88,
+        177
+      ],
+      "ratio": 6.638435383366601,
+      "normalTextAA": true
+    },
+    {
+      "theme": "light",
+      "state": "expanded",
+      "backgroundUtility": "aria-expanded:bg-brand-hover",
+      "fgToken": "--brand-foreground",
+      "bgToken": "--brand-hover",
+      "foreground": "oklch(0.985 0 0)",
+      "background": "oklch(0.51 0.16 255)",
+      "foregroundRgb": [
+        250,
+        250,
+        250
+      ],
+      "backgroundRgb": [
+        15,
+        100,
+        191
+      ],
+      "ratio": 5.595738952685837,
+      "normalTextAA": true
+    },
+    {
+      "theme": "dark",
+      "state": "default",
+      "backgroundUtility": "bg-brand",
+      "fgToken": "--brand-foreground",
+      "bgToken": "--brand",
+      "foreground": "oklch(0.141 0.005 285.823)",
+      "background": "oklch(0.65 0.16 255)",
+      "foregroundRgb": [
+        9,
+        9,
+        11
+      ],
+      "backgroundRgb": [
+        67,
+        144,
+        238
+      ],
+      "ratio": 6.12262693415081,
+      "normalTextAA": true
+    },
+    {
+      "theme": "dark",
+      "state": "hover",
+      "backgroundUtility": "hover:bg-brand-hover",
+      "fgToken": "--brand-foreground",
+      "bgToken": "--brand-hover",
+      "foreground": "oklch(0.141 0.005 285.823)",
+      "background": "oklch(0.69 0.16 255)",
+      "foregroundRgb": [
+        9,
+        9,
+        11
+      ],
+      "backgroundRgb": [
+        80,
+        157,
+        252
+      ],
+      "ratio": 7.1713650620582845,
+      "normalTextAA": true
+    },
+    {
+      "theme": "dark",
+      "state": "active",
+      "backgroundUtility": "active:bg-brand-active",
+      "fgToken": "--brand-foreground",
+      "bgToken": "--brand-active",
+      "foreground": "oklch(0.141 0.005 285.823)",
+      "background": "oklch(0.73 0.16 255)",
+      "foregroundRgb": [
+        9,
+        9,
+        11
+      ],
+      "backgroundRgb": [
+        92,
+        169,
+        255
+      ],
+      "ratio": 8.123226265278594,
+      "normalTextAA": true
+    },
+    {
+      "theme": "dark",
+      "state": "expanded",
+      "backgroundUtility": "aria-expanded:bg-brand-hover",
+      "fgToken": "--brand-foreground",
+      "bgToken": "--brand-hover",
+      "foreground": "oklch(0.141 0.005 285.823)",
+      "background": "oklch(0.69 0.16 255)",
+      "foregroundRgb": [
+        9,
+        9,
+        11
+      ],
+      "backgroundRgb": [
+        80,
+        157,
+        252
+      ],
+      "ratio": 7.1713650620582845,
+      "normalTextAA": true
+    }
+  ],
+  "minimum": {
+    "theme": "light",
+    "state": "default",
+    "backgroundUtility": "bg-brand",
+    "fgToken": "--brand-foreground",
+    "bgToken": "--brand",
+    "foreground": "oklch(0.985 0 0)",
+    "background": "oklch(0.55 0.16 255)",
+    "foregroundRgb": [
+      250,
+      250,
+      250
+    ],
+    "backgroundRgb": [
+      33,
+      113,
+      204
+    ],
+    "ratio": 4.680421586907551,
+    "normalTextAA": true
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "captured_at": "2026-10-31T17:31:21.019661+00:00",
+  "failures": [
+    {
+      "test": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+      "events": [
+        {
+          "Time": "2026-11-01T01:28:42.741624+08:00",
+          "Action": "run",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence"
+        },
+        {
+          "Time": "2026-11-01T01:28:42.741628+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+          "Output": "=== RUN   TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence\n",
+          "OutputType": "frame"
+        },
+        {
+          "Time": "2026-11-01T01:28:43.189799+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+          "Output": "    collaboration_records_test.go:186: unknown stored payload became a complete recording or escaped redaction\n",
+          "OutputType": "error"
+        },
+        {
+          "Time": "2026-11-01T01:28:43.22675+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+          "Output": "--- FAIL: TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence (0.49s)\n",
+          "OutputType": "frame"
+        },
+        {
+          "Time": "2026-11-01T01:28:43.226776+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+          "Elapsed": 0.49
+        }
+      ],
+      "output": "=== RUN   TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence\n    collaboration_records_test.go:186: unknown stored payload became a complete recording or escaped redaction\n--- FAIL: TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence (0.49s)\n"
+    },
+    {
+      "test": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+      "events": [
+        {
+          "Time": "2026-11-01T01:29:34.510897+08:00",
+          "Action": "run",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot"
+        },
+        {
+          "Time": "2026-11-01T01:29:34.510906+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+          "Output": "=== RUN   TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot\n",
+          "OutputType": "frame"
+        },
+        {
+          "Time": "2026-11-01T01:29:35.095455+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+          "Output": "2026/11/01 01:29:35 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotSta1960605220/001 baseURL=\"\"\n"
+        },
+        {
+          "Time": "2026-11-01T01:29:35.527513+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+          "Output": "    collaboration_runtime_preparation_derived_test.go:51: unclaimed derived preparation kept the pending-derived fence forever: healthy=false refused=map[continuation:true member:true]\n",
+          "OutputType": "error"
+        },
+        {
+          "Time": "2026-11-01T01:29:35.568969+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+          "Output": "--- FAIL: TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot (1.06s)\n",
+          "OutputType": "frame"
+        },
+        {
+          "Time": "2026-11-01T01:29:35.568994+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot",
+          "Elapsed": 1.06
+        }
+      ],
+      "output": "=== RUN   TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot\n2026/11/01 01:29:35 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotSta1960605220/001 baseURL=\"\"\n    collaboration_runtime_preparation_derived_test.go:51: unclaimed derived preparation kept the pending-derived fence forever: healthy=false refused=map[continuation:true member:true]\n--- FAIL: TestCollaborationRuntimePreparationDerivedLateDeliveryDoesNotStarveHealthyRoot (1.06s)\n"
+    },
+    {
+      "test": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+      "events": [
+        {
+          "Time": "2026-11-01T01:29:39.837678+08:00",
+          "Action": "run",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork"
+        },
+        {
+          "Time": "2026-11-01T01:29:39.837681+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+          "Output": "=== RUN   TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork\n",
+          "OutputType": "frame"
+        },
+        {
+          "Time": "2026-11-01T01:29:40.284929+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+          "Output": "2026/11/01 01:29:40 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesO1570638034/001 baseURL=\"\"\n"
+        },
+        {
+          "Time": "2026-11-01T01:29:40.707888+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+          "Output": "    collaboration_runtime_preparation_derived_test.go:238: an unread pre-claim continuation stranded the reserved unsupported root\n",
+          "OutputType": "error"
+        },
+        {
+          "Time": "2026-11-01T01:29:40.747915+08:00",
+          "Action": "output",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+          "Output": "--- FAIL: TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork (0.91s)\n",
+          "OutputType": "frame"
+        },
+        {
+          "Time": "2026-11-01T01:29:40.747939+08:00",
+          "Action": "fail",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Test": "TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork",
+          "Elapsed": 0.91
+        }
+      ],
+      "output": "=== RUN   TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork\n2026/11/01 01:29:40 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesO1570638034/001 baseURL=\"\"\n    collaboration_runtime_preparation_derived_test.go:238: an unread pre-claim continuation stranded the reserved unsupported root\n--- FAIL: TestCollaborationRuntimePreparationJoinBeforeFirstClaimReleasesOnlyUnclaimedWork (0.91s)\n"
+    }
+  ]
+}

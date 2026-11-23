@@ -103,7 +103,7 @@ test("desktop Help selects Updates by keyboard and grouped settings show the sto
     const daemon = page.getByRole("tabpanel");
     await expect(daemon.getByRole("heading", { name: "守护进程", exact: true })).toBeVisible();
     await expect(daemon.getByText("设置本地智能体守护进程如何随桌面应用启动和停止。", { exact: true })).toBeVisible();
-    await expect(daemon.getByText("已安装 multica CLI，可通过 PATH 环境变量找到并调用。", { exact: true })).toBeVisible();
+    await expect(daemon.getByText("此应用已找到可用的 multica CLI。", { exact: true })).toBeVisible();
     for (const label of ["登录后自动启动", "退出应用时自动停止"]) {
       await expect(daemon.getByText(label, { exact: true })).toBeVisible();
     }

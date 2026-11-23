@@ -11,6 +11,8 @@ import { workspaceKeys } from "@multica/core/workspace/queries";
 import type { McpServerTemplate, WorkspaceMcpServer } from "@multica/core/types";
 import enSettings from "../locales/en/settings.json";
 import enAgents from "../locales/en/agents.json";
+import zhSettings from "../locales/zh-Hans/settings.json";
+import zhAgents from "../locales/zh-Hans/agents.json";
 import { McpMarketPanel } from "./mcp-market-panel";
 
 const api = vi.hoisted(() => ({
@@ -47,11 +49,14 @@ const saved: WorkspaceMcpServer = {
   created_at: "", updated_at: "",
 };
 
-function renderPanel() {
+function renderPanel(locale: "en" | "zh-Hans" = "en") {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   function Wrapper({ children }: { children: ReactNode }) {
     return <QueryClientProvider client={client}>
-      <I18nProvider locale="en" resources={{ en: { settings: enSettings, agents: enAgents } }}>
+      <I18nProvider locale={locale} resources={{
+        en: { settings: enSettings, agents: enAgents },
+        "zh-Hans": { settings: zhSettings, agents: zhAgents },
+      }}>
         {children}
       </I18nProvider>
     </QueryClientProvider>;
@@ -75,6 +80,18 @@ describe("McpMarketPanel", () => {
 
   // Catalog identity/freshness and assignment matrices stay in mcp-market.test.tsx.
   // This suite covers the extracted panel's actual query/mutation lifetimes.
+  it.each([
+    { locale: "en", guidance: "Save a shared configuration, then assign it to agents." },
+    { locale: "zh-Hans", guidance: "保存为共享配置，再手动分配给智能体。" },
+  ] as const)("explains shared save and explicit assignment before setup in $locale", async ({ locale, guidance }) => {
+    renderPanel(locale);
+    expect(screen.getByText(guidance)).toBeVisible();
+    await screen.findByRole("button", { name: locale === "en" ? "View configuration: Playwright" : "查看配置：Playwright" });
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(api.createWorkspaceMcpServerFromTemplate).not.toHaveBeenCalled();
+    expect(api.addAgentMcpServer).not.toHaveBeenCalled();
+  });
+
   it("keeps the first saved instance in its explicit assignment step after inventory invalidation", async () => {
     const user = userEvent.setup();
     const { client, rerender } = renderPanel();

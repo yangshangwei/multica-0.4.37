@@ -1,0 +1,122 @@
+--- baseline/server/internal/service/collaboration_resource_owner_identity_test.go
++++ server/internal/service/collaboration_resource_owner_identity_test.go
+@@ -10,7 +10,6 @@
+ 
+ 	"github.com/google/uuid"
+ 	"github.com/jackc/pgx/v5"
+-	"github.com/jackc/pgx/v5/pgtype"
+ 	"github.com/multica-ai/multica/server/internal/auth"
+ 	"github.com/multica-ai/multica/server/internal/collaboration"
+ 	"github.com/multica-ai/multica/server/internal/testutil"
+@@ -20,12 +19,18 @@
+ 
+ type resourceIdentityQueryError struct {
+ 	db.DBTX
+-	err error
++	err     error
++	inspect func(context.Context)
+ }
+ 
+ func (q resourceIdentityQueryError) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
+ 	if strings.HasPrefix(sql, "-- name: GetPasswordCredential ") {
+-		return queueFailureRow{err: q.err}
++		if q.inspect != nil {
++			q.inspect(ctx)
++		}
++		if q.err != nil {
++			return queueFailureRow{err: q.err}
++		}
+ 	}
+ 	return q.DBTX.QueryRow(ctx, sql, args...)
+ }
+@@ -33,7 +38,7 @@
+ // This regression borrows only tracked fixtures. A resource owner's validated
+ // binding is an authority fact; it must never replace the request's caller.
+ func TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller(t *testing.T) {
+-	for _, scenario := range []string{"valid", "owner_password_stale", "binding_epoch_stale", "binding_revoked", "owner_membership_lost", "owner_disabled", "database_failure", "cancelled"} {
++	for _, scenario := range []string{"valid", "owner_unknown", "owner_password_missing", "owner_password_stale", "binding_missing", "binding_epoch_stale", "binding_revoked", "owner_membership_lost", "owner_disabled", "installation_revoked", "database_failure", "cancelled", "cancelled_during_owner_check"} {
+ 		t.Run(scenario, func(t *testing.T) {
+ 			f := newManagedCollaborationFixture(t)
+ 			caller := f.handler
+@@ -51,12 +56,20 @@
+ 			resource := collaboration.TargetResource{Role: "agent", AgentID: util.UUIDToString(f.grant.AgentID), RuntimeID: util.UUIDToString(f.runtime.ID),
+ 				OwnerUserID: f.creator, ExecutionWorkspaceID: f.workspace}
+ 			identity := collaborationGrantIdentity(f.grant)
+-			queries := f.svc.Queries
+ 			wanted, injected := true, error(nil)
+ 			switch scenario {
++			case "owner_unknown":
++				wanted = false
++				resource.OwnerUserID = uuid.NewString()
++			case "owner_password_missing":
++				wanted = false
++				f.fx.Exec(t, `DELETE FROM user_password_credential WHERE user_id=$1`, f.creator)
+ 			case "owner_password_stale":
+ 				wanted = false
+ 				f.fx.Exec(t, `UPDATE user_password_credential SET session_version=session_version+1 WHERE user_id=$1`, f.creator)
++			case "binding_missing":
++				wanted = false
++				identity.BindingID = util.MustParseUUID(uuid.NewString())
+ 			case "binding_epoch_stale":
+ 				wanted = false
+ 				f.fx.Exec(t, `UPDATE installation_daemon_binding SET binding_epoch=binding_epoch+1 WHERE id=$1`, f.binding.ID)
+@@ -69,10 +82,12 @@
+ 			case "owner_disabled":
+ 				wanted = false
+ 				f.fx.Exec(t, `UPDATE "user" SET disabled_at=now() WHERE id=$1`, f.creator)
++			case "installation_revoked":
++				wanted = false
++				f.fx.Exec(t, `UPDATE managed_installation SET lifecycle='retired' WHERE id=$1`, f.installation.ID)
+ 			case "database_failure":
+ 				wanted, injected = false, errors.New("resource owner password lookup unavailable")
+-				queries = db.New(resourceIdentityQueryError{DBTX: f.pool, err: injected})
+-			case "cancelled":
++			case "cancelled", "cancelled_during_owner_check":
+ 				wanted, injected = false, context.Canceled
+ 			}
+ 			for _, contextCase := range []struct {
+@@ -87,6 +102,25 @@
+ 					}
+ 					before, hasSession := auth.PasswordSessionFromContext(ctx)
+ 					deadline, hasDeadline := ctx.Deadline()
++					observed := false
++					passwordErr := error(nil)
++					if scenario == "database_failure" {
++						passwordErr = injected
++					}
++					queries := db.New(resourceIdentityQueryError{DBTX: f.pool, err: passwordErr, inspect: func(ownerCtx context.Context) {
++						observed = true
++						owner, ok := auth.PasswordSessionFromContext(ownerCtx)
++						ownerDeadline, ownerHasDeadline := ownerCtx.Deadline()
++						if !ok || owner.UserID != resource.OwnerUserID || owner.Version != f.binding.AuthVersion || owner.Kind != "daemon_token" ||
++							owner.BindingID != util.UUIDToString(f.binding.ID) || owner.BindingEpoch != f.binding.BindingEpoch ||
++							owner.WorkspaceID != resource.ExecutionWorkspaceID || owner.DaemonID != f.binding.DaemonID ||
++							ownerHasDeadline != hasDeadline || ownerDeadline != deadline {
++							t.Fatal("password check did not use the verified stored owner with the original request deadline")
++						}
++						if scenario == "cancelled_during_owner_check" {
++							cancel()
++						}
++					}})
+ 					current, err := collaborationIdentityCurrent(ctx, queries, resource, identity)
+ 					if injected != nil {
+ 						if !errors.Is(err, injected) || current {
+@@ -100,6 +134,9 @@
+ 					if hasSession != stillSession || !reflect.DeepEqual(before, after) || hasDeadline != stillDeadline || deadline != afterDeadline {
+ 						t.Fatal("resource identity validation replaced the request's caller/deadline")
+ 					}
++					if (scenario == "valid" || scenario == "database_failure" || scenario == "cancelled_during_owner_check") && !observed {
++						t.Fatal("resource owner password check was bypassed")
++					}
+ 				})
+ 			}
+ 			if scenario != "valid" {
+@@ -112,7 +149,7 @@
+ 			if _, err := f.svc.ClaimRuntimeRun(foreign, run, request); err == nil || before != controlStateSnapshot(t, f.collaborationQueueFixture) {
+ 				t.Fatalf("different valid daemon caller acquired resource owner's claim: %v", err)
+ 			}
+-			if input.CommandID.Valid == false {
++			if !input.CommandID.Valid {
+ 				t.Fatal("valid independent caller control lacked a retained input")
+ 			}
+ 			staleCaller := foreignSession

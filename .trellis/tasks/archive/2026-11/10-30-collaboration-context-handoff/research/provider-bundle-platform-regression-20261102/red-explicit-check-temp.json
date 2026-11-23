@@ -1,0 +1,40 @@
+{
+  "source_sha": "f634cf48016952164732843a66d9f53ba8b506f9",
+  "working_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles$",
+    "-count=1",
+    "-json",
+    "-parallel=2"
+  ],
+  "environment": {
+    "TMPDIR": "/Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102/.omx/private/provider-bundle-platform-regression/tmp",
+    "DATABASE_URL": "unset",
+    "MULTICA_RUN_REAL_AGENT_SMOKE": "unset",
+    "GOPROXY": "file:///Users/artisan/go/pkg/mod/cache/download"
+  },
+  "exit_code": 1,
+  "counts": {
+    "run": 8,
+    "pass": 6,
+    "fail": 2,
+    "skip": 0
+  },
+  "failures": [
+    "TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/valid",
+    "TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles"
+  ],
+  "log_sha256": "d37324951e64f35d4d44f98cc79e6c4404de41b5a3cd6bccdb10736e8a060fef",
+  "at": "2026-11-01T19:08:42.803176+00:00",
+  "Provider_calls": 0,
+  "DB_operations": false
+}

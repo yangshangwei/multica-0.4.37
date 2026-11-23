@@ -1,0 +1,88 @@
+{
+  "at": "2026-11-01T23:01:41.687305+00:00",
+  "actual": {
+    "selected_provider_binary": "host-provider",
+    "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+    "deployed_expectation": null,
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "lane": "green",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/mac-installed-network-diagnostic.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/final-candidate/browser-gates/installed-mac-newDB-missingDSH-network-diagnostic-1/artifacts"
+    ],
+    "database": "collab_joint_macdiag639_20261102_2300",
+    "health": {
+      "status": "ok",
+      "pid": 47925,
+      "commit": "639bf6ef8",
+      "started_at": "2026-11-01T22:57:12Z"
+    },
+    "source_env_sha256": "fd071d5f5f92e146621a349ae4d7ad800cc390d1ace33d746a3d783920218eb4",
+    "production_Web_build_id": "RrMt0XBWQ8MsElyxNfV9R",
+    "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+    "test_source_sha256": {
+      "e2e/mac-installed-network-diagnostic.spec.ts": "a03121b8e6089c6e8a7ffe2a8b2541c5b44f91221cefbb7f8438d298fbb31fa0"
+    },
+    "controlled_binary_sha256": {
+      "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+      "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+      "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+      "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+    },
+    "package_pin": {
+      "platform": "mac",
+      "asar_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+      "executable_sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "CLI_sha256": "706b6ac4fcef6fb41493785c0ac70d4ea3b1886efcd817882305eb5ab272a475",
+      "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2"
+    },
+    "actual_real_Provider_calls": 0,
+    "state": "complete",
+    "started_at": "2026-11-01T22:59:06.057271+00:00",
+    "exit_code": 1,
+    "finished_at": "2026-11-01T22:59:21.303813+00:00",
+    "log_sha256": "d48b301310329ac7ad27d3f93fc4845c85221d189018e05fb2b98ad7dbececb2",
+    "stats": {
+      "startTime": "2026-11-01T22:59:07.287Z",
+      "duration": 13976.524,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "results_sha256": "7c3f8a9dded3cf7d2a513551af1391283105db8ccd00daa39adf4a6b22247c0c",
+    "gate_exit_code": 1
+  },
+  "diagnostic_assertions_and_timeouts": "unchanged; added passive page response/requestfailed recording only",
+  "network_log_sha256": "17b4789e8cc372ea13c0d92ab26f9051481f796cb35c5331ecc676a57e3226b4",
+  "network_facts": {
+    "api_config_and_me": "ERR_CONNECTION_REFUSED at500ms then1s/2s retries",
+    "HTML_rendered_browser_API": "http://localhost:18774",
+    "HTML_rendered_browser_WS": "ws://localhost:18774/ws",
+    "actual_owned_API": "http://localhost:19065",
+    "cause": "dev-env up loaded default .env.worktree before reusing private manifest; source shell vars were overridden; ENV_FILE must be explicit before up"
+  },
+  "guard_unexpected_AgentCLI_invocations": 0,
+  "DSH_fix": "explicit nonexistent test-owned MULTICA_DSH_PATH disables its ambient profile probe; guard unchanged",
+  "source_chain": [
+    "scripts/dev-env.sh cmd_up/load_env_file before load_manifest",
+    "apps/web/app/layout.tsx RootLayout runtime API/WS props",
+    "apps/desktop/src/main/daemon-manager.ts probeLocalRuntimes",
+    "server/cmd/multica/cmd_daemon.go runDaemonProbeRuntimes",
+    "server/internal/daemon/agents_probe.go probeDshMulticaProfile"
+  ],
+  "original_and_diagnostic_failures_preserved": true,
+  "frozen_DB": "collab_joint_macdiag639_20261102_2300",
+  "next": "freshDB; explicit registry AND ENV_FILE; rendered HTML origin preflight; original canonical spec",
+  "real_Provider_calls": 0
+}

@@ -1,0 +1,74 @@
+
+Running 2 tests using 1 worker
+
+[1A[2K[1/2] [chromium] › e2e/collaboration-control-journey-web.spec.ts:10:1 › Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue
+[1A[2K  1) [chromium] › e2e/collaboration-control-journey-web.spec.ts:10:1 › Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+       at fixtures/collaboration-control-journey.ts:229
+
+      227 |   const issue = await fixture.creator.requestJSON<CollaborationIssue>(issuePath(fixture));
+      228 |   if (!issue.execution) throw new Error("The control projection is missing");
+    > 229 |   expect(issue.execution.execution_gate.enabled).toBe(true);
+          |                                                  ^
+      230 |   expect(issue.execution.channels).toHaveLength(3);
+      231 |   expect(issue.execution.targets).toHaveLength(3);
+      232 |   if (pending) {
+        at readControlIssue (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:229:50)
+        at exerciseCollaborationControlJourney (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:349:21)
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-control-journey-web.spec.ts:20:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-ecacb-es-and-stop-the-whole-issue-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-ecacb-es-and-stop-the-whole-issue-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-ecacb-es-and-stop-the-whole-issue-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-ecacb-es-and-stop-the-whole-issue-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[1A[2K[2/2] [chromium] › e2e/collaboration-control-journey-web.spec.ts:10:1 › Web pending termination proof keeps A paused while whole Resume releases B and squad S
+[1A[2K  2) [chromium] › e2e/collaboration-control-journey-web.spec.ts:10:1 › Web pending termination proof keeps A paused while whole Resume releases B and squad S 
+
+    Error: password registration failed: 429
+
+       at fixtures.ts:77
+
+      75 |       body: JSON.stringify({ username, password, name }),
+      76 |     });
+    > 77 |     if (!response.ok) throw new Error(`password registration failed: ${response.status}`);
+         |                             ^
+      78 |     const data = await response.json();
+      79 |     if (typeof data.token !== "string" || !data.token || typeof data.user?.id !== "string") {
+      80 |       throw new Error("Password registration returned an unusable test session");
+        at TestApiClient.registerPassword (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts:77:29)
+        at createActor (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:139:21)
+        at seedCollaborationControlJourney (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:152:17)
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-control-journey-web.spec.ts:15:19
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-b441f-sume-releases-B-and-squad-S-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-b441f-sume-releases-B-and-squad-S-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-b441f-sume-releases-B-and-squad-S-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[1A[2K  2 failed
+    [chromium] › e2e/collaboration-control-journey-web.spec.ts:10:1 › Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue 
+    [chromium] › e2e/collaboration-control-journey-web.spec.ts:10:1 › Web pending termination proof keeps A paused while whole Resume releases B and squad S 

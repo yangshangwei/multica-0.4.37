@@ -1,0 +1,37 @@
+[
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-json",
+      "./pkg/agent",
+      "-run",
+      "Test(Claude|Knowledge|Launch|RunCollect|Ordinary|CollaborationLifecycle)",
+      "-count=1",
+      "-timeout=180s"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 35.077
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-json",
+      "./internal/daemon",
+      "./internal/daemon/collaborationrun",
+      "-count=1",
+      "-timeout=180s"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 73.558
+  }
+]

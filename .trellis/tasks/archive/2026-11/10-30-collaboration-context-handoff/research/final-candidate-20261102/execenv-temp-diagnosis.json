@@ -1,0 +1,46 @@
+{
+  "source_sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "./internal/daemon/execenv",
+    "-run",
+    "^(TestPrepareLocalWorktreeRejectsNonGitDirectory|TestPrepareRollsBackSidecarsWhenPrepareFailsInPlace|TestPrepareCursorMcpConfigManagedEmptySet|TestPrepareCursorMcpConfigSeedsExplicitAuthSource|TestPrepareCursorMcpConfigWritesProjectConfigAndApprovals)$",
+    "-race",
+    "-count=1",
+    "-parallel=2",
+    "-json",
+    "-timeout=40m"
+  ],
+  "TMPDIR": "/private/tmp/multica-execenv-check-rtialr8a",
+  "git_root_absent_at_temp": true,
+  "scope": "single-variable external TMPDIR diagnosis for five previously failed names; no code changes",
+  "state": "complete",
+  "started_at": "2026-11-01T19:41:00.151428+00:00",
+  "Provider_calls": 0,
+  "DB_used": false,
+  "exit_code": 0,
+  "counts": {
+    "run": 5,
+    "pass": 5,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": [],
+  "log_sha256": "f9e8a750b04760989643b7acbac341d10a063356b4f2fff63957085c5586e764",
+  "finished_at": "2026-11-01T19:41:05.684727+00:00",
+  "original_failure": "attempt-2-result.json; actual5execenvfailures withTMPDIRbelowcandidateGitroot",
+  "private_raw_log": "/Volumes/artisan/code/2026/mc-execenv-temp-diagnostic-20261102/.omx/private/execenv-temp-diagnostic/tests.jsonl",
+  "explanation": {
+    "resolveGitRoot": "git rev-parse --show-toplevel walks into real candidate Git root when nominalnonGitTempDir isbeneathit",
+    "cursorProjectRoot": "walksupancestors tofirst.git, sharingcandidate.cursor/mcp.json acrossnominaltempfixtures",
+    "rootcursorartifact": "preservedinfailedcandidateandprivatecopiedhash; noreset/cleanup",
+    "correction": "futureprivatebuildTMPDIRmustbeexplicituniqueownednongitrepo directory; no productiontestassertionchanges",
+    "complete_package_race": "running separately; no fullcheckpassinferred"
+  }
+}

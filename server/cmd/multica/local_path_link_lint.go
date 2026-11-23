@@ -138,6 +138,13 @@ func guardLocalPathLinks(body, field, deliveryHint string) error {
 	if !inAgentExecutionContext() {
 		return nil
 	}
+	return rejectLocalPathLinks(body, field, deliveryHint)
+}
+
+// rejectLocalPathLinks is the same check without the task-context gate, for
+// writers whose author is always an agent. A collaboration run carries no
+// MULTICA_AGENT_ID / MULTICA_TASK_ID, so guardLocalPathLinks would skip it.
+func rejectLocalPathLinks(body, field, deliveryHint string) error {
 	findings := findLocalPathLinks(body)
 	if len(findings) == 0 {
 		return nil

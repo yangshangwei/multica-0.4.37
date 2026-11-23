@@ -1,0 +1,22 @@
+{
+  "started_at": "2026-11-04T02:26:21.604033+00:00",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/scripts/dev-env.sh",
+    "up",
+    "--name",
+    "triage-green-v15-01a1a3c9",
+    "--components",
+    "api,web",
+    "--web-mode",
+    "production",
+    "--ephemeral"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime",
+  "source_env_sha256": "e45d6ca44e68594080e70ed97e0c1122b57adaa998dc7350f3d03063d3660ebf",
+  "expected_database": "multica_triage_green_v15_01a1a3c9",
+  "scope": "uncontrolled green only, new production API/Web; no model or extra tests",
+  "finished_at": "2026-11-04T02:27:32.190460+00:00",
+  "exit": 0,
+  "log_sha256": "22ac10b87bfcfe2218a495402a0f7d3766009b7762a40f89674eabe61a92638d"
+}

@@ -4,6 +4,7 @@ import {
   deriveWsUrl,
   mergeRuntimeConfigInput,
   parseRuntimeConfig,
+  resolveAppUrl,
   runtimeConfigFromDevEnv,
 } from "./runtime-config";
 
@@ -227,5 +228,89 @@ describe("runtime config", () => {
       wsUrl: "wss://api.test.multica.ai/ws",
       appUrl: "https://staging.multica.ai",
     });
+  });
+});
+
+// Canonical matrix for the origin used by copied/share/invite links. The
+// navigation suites only assert that the adapters are wired to it.
+describe("resolveAppUrl", () => {
+  const installed = (apiUrl: string, appUrl?: string) => ({
+    source: "configured" as const,
+    config: parseRuntimeConfig(
+      JSON.stringify({ schemaVersion: 1, apiUrl, ...(appUrl ? { appUrl } : {}) }),
+    ),
+  });
+
+  it("uses the origin the server publishes when the local one is only a guess", () => {
+    // An intranet desktop is given the API address alone; the guess is that
+    // same origin, where /join answers 404.
+    const runtime = installed("http://10.10.10.30:8080");
+    expect(runtime.config.appUrl).toBe("http://10.10.10.30:8080");
+    expect(resolveAppUrl(runtime, "http://10.10.10.30:3000/")).toBe(
+      "http://10.10.10.30:3000",
+    );
+  });
+
+  it("keeps an appUrl that was configured on purpose", () => {
+    const runtime = installed("http://10.10.10.30:8080", "https://work.corp.test");
+    expect(resolveAppUrl(runtime, "http://10.10.10.30:3000")).toBe(
+      "https://work.corp.test",
+    );
+  });
+
+  it.each([undefined, null, "", "   "])(
+    "keeps the derived origin when the server publishes nothing (%j)",
+    (published) => {
+      // The managed cloud omits daemon_app_url; so do older servers.
+      expect(resolveAppUrl(installed("https://api.multica.ai"), published)).toBe(
+        "https://multica.ai",
+      );
+    },
+  );
+
+  it.each([
+    "10.10.10.30:3000",
+    "ftp://10.10.10.30",
+    "http://user:pass@10.10.10.30:3000",
+    "not a url",
+  ])("ignores a malformed published origin (%s)", (published) => {
+    expect(resolveAppUrl(installed("http://10.10.10.30:8080"), published)).toBe(
+      "http://10.10.10.30:8080",
+    );
+  });
+
+  it.each(["http://localhost:3000", "http://127.0.0.1:3000", "http://[::1]:3000"])(
+    "ignores a loopback origin published by a networked server (%s)",
+    (published) => {
+      // docker-compose.selfhost.yml defaults MULTICA_APP_URL to localhost:3000;
+      // on another machine that address is the reader's own computer.
+      expect(resolveAppUrl(installed("http://10.10.10.30:8080"), published)).toBe(
+        "http://10.10.10.30:8080",
+      );
+    },
+  );
+
+  it("replaces the dev localhost:3000 guess with the environment's web origin", () => {
+    const runtime = {
+      source: "dev" as const,
+      config: runtimeConfigFromDevEnv({ apiUrl: "http://localhost:18572" }),
+    };
+    expect(runtime.config.appUrl).toBe("http://localhost:3000");
+    expect(resolveAppUrl(runtime, "http://localhost:13492")).toBe(
+      "http://localhost:13492",
+    );
+  });
+
+  it("keeps a dev VITE_APP_URL over the published origin", () => {
+    const runtime = {
+      source: "dev" as const,
+      config: runtimeConfigFromDevEnv({
+        apiUrl: "http://localhost:18572",
+        appUrl: "http://localhost:4000",
+      }),
+    };
+    expect(resolveAppUrl(runtime, "http://localhost:13492")).toBe(
+      "http://localhost:4000",
+    );
   });
 });

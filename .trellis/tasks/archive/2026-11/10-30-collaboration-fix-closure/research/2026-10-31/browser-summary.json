@@ -1,0 +1,109 @@
+{
+  "product_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+  "test_checkout": "/Volumes/artisan/code/2026/mc-context-resume-20261031",
+  "test_base_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+  "test_overlay_sha256": {
+    "e2e/collaboration-handoff-chain-web.spec.ts": "c5d29e955de515eb43c09952e6cb594f5ce71e842cc94ba2800a5aebb269b098",
+    "e2e/collaboration-offline-handoff.spec.ts": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e",
+    "e2e/fixtures/collaboration-offline-handoff.ts": "ebbce5318f0cfbbfaba35a52f554af2637f16870329077b3b1fc36b0bf183897",
+    "e2e/fixtures/collaboration-handoff-chain.ts": "bf84e9bc84b9924e811870f11868cc1f1acd962923a8365b1461437abc8f2c8b",
+    "e2e/fixtures/collaboration-native.ts": "88b19f3fcc107997d5b4a1ab8364de3ba4a4930bacbda3c25fa97d60463c3095",
+    "e2e/fixtures/collaboration-account-electron.mjs": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts": "9444fa57fef1fa73641dbced0409eb606d22e0ad44992990526684e30cdb1e1d"
+  },
+  "test_overlay_hash": "a27497ee71b81c68c5158487b2f359f67305edc034c76c56686446f4fb0396a1",
+  "desktop_build_sha256": {
+    "apps/desktop/out/preload/index.js": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+    "apps/desktop/out/renderer/index.html": "b19b8cce628c331c70cc5867986232b7d6e2720ac363c4699ae04fe1cb4992aa"
+  },
+  "desktop_assets_manifest_sha256": "4f74770d4df44d21c8d435ba8c798dca07d1ef4d6f7a2c2baa650f7abaafeb9a",
+  "desktop_asset_count": 492,
+  "api_url": "http://localhost:18991",
+  "production_web_url": "http://localhost:13911",
+  "native_renderer_url": "http://localhost:14911",
+  "native_platform": "darwin/arm64",
+  "provider_execution": false,
+  "reports": [
+    {
+      "file": "playwright-web.json",
+      "stats": {
+        "startTime": "2026-10-31T11:58:09.125Z",
+        "duration": 35591.524999999994,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      }
+    },
+    {
+      "file": "playwright-corrected.json",
+      "stats": {
+        "startTime": "2026-10-31T12:02:38.303Z",
+        "duration": 35620.26,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    {
+      "file": "playwright-native-diagnosis.json",
+      "stats": {
+        "startTime": "2026-10-31T12:04:47.118Z",
+        "duration": 16267.489000000001,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    {
+      "file": "playwright-native-body.json",
+      "stats": {
+        "startTime": "2026-10-31T12:05:43.845Z",
+        "duration": 16585.602000000003,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    {
+      "file": "playwright-native-valid-origin.json",
+      "stats": {
+        "startTime": "2026-10-31T12:09:48.856Z",
+        "duration": 12089.246000000001,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "file": "playwright-native-directed.json",
+      "stats": {
+        "startTime": "2026-10-31T12:15:07.022Z",
+        "duration": 7164.368,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "file": "playwright-native-final.json",
+      "stats": {
+        "startTime": "2026-10-31T12:20:03.136Z",
+        "duration": 18902.790999999997,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "limits": [
+    "Native acceptance uses real Electron and compiled production renderer/preload with the native IPC fixture. It does not prove packaged installers, other OSes or real provider/account execution.",
+    "The production Web passes use the final shared selector implementation. Native final passes use the final test code before an ESLint explanatory comment was added; executable statements are unchanged."
+  ]
+}

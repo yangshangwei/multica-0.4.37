@@ -1,0 +1,35 @@
+{
+  "at": "2026-11-05T03:07:05.559073+00:00",
+  "status": "completed_scoped_regression",
+  "code_commit": "4d107f503",
+  "normal": {
+    "named_pass": 7,
+    "leaf_trials": 3,
+    "fake_starts": 3,
+    "fail": 0,
+    "skip": 0
+  },
+  "race": {
+    "named_pass": 7,
+    "leaf_trials": 3,
+    "fake_starts": 3,
+    "fail": 0,
+    "skip": 0
+  },
+  "mutation": {
+    "raw_exit": 1,
+    "expected_failure": true,
+    "old_controls_passed": true,
+    "quote_only_trials": 2,
+    "fake_starts": 4
+  },
+  "static": "gofmt/taggedvetpass",
+  "real_provider_calls": 0,
+  "shared_database_touched": false,
+  "owned_container_stopped": true,
+  "original_remaining8": "paused",
+  "task_archive_ready": false,
+  "runtime_frozen17_changed": false,
+  "framework_successor": "265f3dad838f87ce7f319bbeaf555d702060f5bb2863e0585cdc73e268fb122c",
+  "framework_successor_acceptance": "scoped H5 proof only; no fullframework/realmodelpass"
+}

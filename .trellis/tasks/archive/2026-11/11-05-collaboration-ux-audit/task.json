@@ -1,0 +1,31 @@
+{
+  "id": "collaboration-ux-audit",
+  "name": "collaboration-ux-audit",
+  "title": "跨工作区协作全页面体验审计与修复",
+  "description": "以 impeccable 审核跨工作区协作的全部现有页面，形成评审与修复计划，完成界面和交互修复并复核。",
+  "status": "completed",
+  "dev_type": "frontend",
+  "scope": "views",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-05",
+  "completedAt": "2026-11-05",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "5a744095279eec613a4c1b5b7d208f9932d47633",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/collaboration",
+    "packages/views/admin/collaboration",
+    "packages/views/locales/en/collaboration.json",
+    "packages/views/locales/zh-Hans/collaboration.json"
+  ],
+  "notes": "Completed. Independent review PASS.312tests/30files, Views/Web/Desktop types, lint and production build pass.54main captures+4admin checks pass; six touch controls and two real recipient assertions pass. Admin/auxiliary fixture use and native limits documented. Work5a7440952. Owned services stopped and test token revoked. No push.",
+  "meta": {}
+}

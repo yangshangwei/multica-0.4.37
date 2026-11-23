@@ -1,0 +1,276 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "scope": "actualLinuxarm64ordinaryHost4packagefilter only; excludes legacy namespace route6/daemon and installedGUI",
+  "preflight": {
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "purpose": "cachedLinuxGo/Git/runtimepreflightonly; notnativeacceptance",
+    "image_id": "sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36",
+    "container_id": "41cb034561d4ae278c9ef9a1d30855ef010985e3772ebce17d4f05003577f1b1",
+    "container_name": "multica-final639-linux-host-preflight-20261102",
+    "command": [
+      "docker",
+      "create",
+      "--pull=never",
+      "--name",
+      "multica-final639-linux-host-preflight-20261102",
+      "--network",
+      "none",
+      "--read-only",
+      "--user",
+      "1000:1000",
+      "--tmpfs",
+      "/tmp:rw,exec,nosuid,nodev,mode=1777",
+      "--env",
+      "HOME=/tmp/home",
+      "--env",
+      "GOTOOLCHAIN=local",
+      "--env",
+      "GOPROXY=off",
+      "--env",
+      "GOSUMDB=off",
+      "--entrypoint",
+      "/bin/bash",
+      "sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36",
+      "--noprofile",
+      "--norc",
+      "-c",
+      "set -eu\nmkdir -p /tmp/home\ngo version\ngit --version\nuname -sm\nid -u\n"
+    ],
+    "exit_code": 0,
+    "docker_start_exit": 0,
+    "runtime_output": [
+      "go version go1.26.6 linux/arm64",
+      "git version 2.39.5",
+      "Linux aarch64",
+      "1000"
+    ],
+    "log_sha256": "421cf2be29609335c98c54d250137957ace529db625d1bb1a63c20d998cb74e3",
+    "network": "none",
+    "root_filesystem": "read-only",
+    "uid": 1000,
+    "container_retained": true,
+    "image_download": false,
+    "DB_or_Provider_calls": false,
+    "at": "2026-11-01T21:02:04.123586+00:00"
+  },
+  "crosscompile": {
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "state": "complete",
+    "target": "linux/arm64",
+    "TestMain_executed": false,
+    "commands": [
+      {
+        "package": "./pkg/agent",
+        "command": [
+          "/opt/homebrew/bin/go",
+          "-C",
+          "server",
+          "test",
+          "-c",
+          "-o",
+          "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/linux-native-gates/binaries/agent.test",
+          "./pkg/agent"
+        ],
+        "exit_code": 0
+      },
+      {
+        "package": "./internal/daemon/collaborationrun",
+        "command": [
+          "/opt/homebrew/bin/go",
+          "-C",
+          "server",
+          "test",
+          "-c",
+          "-o",
+          "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/linux-native-gates/binaries/runner.test",
+          "./internal/daemon/collaborationrun"
+        ],
+        "exit_code": 0
+      },
+      {
+        "package": "./internal/daemon",
+        "command": [
+          "/opt/homebrew/bin/go",
+          "-C",
+          "server",
+          "test",
+          "-c",
+          "-o",
+          "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/linux-native-gates/binaries/daemon.test",
+          "./internal/daemon"
+        ],
+        "exit_code": 0
+      },
+      {
+        "package": "./internal/cli",
+        "command": [
+          "/opt/homebrew/bin/go",
+          "-C",
+          "server",
+          "test",
+          "-c",
+          "-o",
+          "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/linux-native-gates/binaries/cli.test",
+          "./internal/cli"
+        ],
+        "exit_code": 0
+      }
+    ],
+    "Provider_calls": 0,
+    "started_at": "2026-11-01T21:35:54.287463+00:00",
+    "exit_code": 0,
+    "binary_sha256": {
+      "runner.test": "ca7c1e318d895ddb7d2e4d0f0ac554d4575afe30685ee77996d3dd54b930442f",
+      "daemon.test": "b3d781fce2f3136040509edfef8c50b1474f6f1ac43647775f68aabe8d603eb9",
+      "cli.test": "131b706d667a0712f16e96434dab665d12d395b86f43f52071dc988f899333b3",
+      "agent.test": "eae319d62583382eb8d5598ac495734f4fbf0a516fdacd5ce87326a16e2aeb58"
+    },
+    "finished_at": "2026-11-01T21:36:15.092291+00:00"
+  },
+  "actual_matrix": {
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "state": "complete",
+    "command": [
+      "docker",
+      "create",
+      "--pull=never",
+      "--name",
+      "multica-final639-linux-host-matrix-2",
+      "--network",
+      "none",
+      "--read-only",
+      "--user",
+      "501:20",
+      "--tmpfs",
+      "/tmp:rw,exec,nosuid,nodev,mode=1777",
+      "--mount",
+      "type=bind,src=/Volumes/artisan/code/2026/mc-collaboration-final3-20261102,dst=/Volumes/artisan/code/2026/mc-collaboration-final3-20261102,readonly",
+      "--mount",
+      "type=bind,src=/Volumes/artisan/code/2026/multica-0.4.37/.git,dst=/Volumes/artisan/code/2026/multica-0.4.37/.git,readonly",
+      "--mount",
+      "type=bind,src=/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/linux-native-gates/binaries,dst=/fixtures,readonly",
+      "--mount",
+      "type=bind,src=/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/linux-native-gates/host-matrix-2,dst=/results",
+      "--env",
+      "HOME=/tmp/home",
+      "--env",
+      "TMPDIR=/tmp",
+      "--env",
+      "GOCACHE=/tmp/gocache",
+      "--env",
+      "GOMODCACHE=/tmp/modcache",
+      "--env",
+      "GOTOOLCHAIN=local",
+      "--env",
+      "GOPROXY=off",
+      "--env",
+      "GOSUMDB=off",
+      "--env",
+      "GIT_OPTIONAL_LOCKS=0",
+      "--env",
+      "CGO_ENABLED=0",
+      "--env",
+      "GOMAXPROCS=2",
+      "--entrypoint",
+      "/bin/bash",
+      "sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36",
+      "--noprofile",
+      "--norc",
+      "/fixtures/run-host-matrix.sh"
+    ],
+    "container_name": "multica-final639-linux-host-matrix-2",
+    "image_id": "sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36",
+    "network": "none",
+    "uid": 501,
+    "scope": "nativeLinuxarm64ordinaryHost4packagefilter; no DB or Provider",
+    "binary_sha256": {
+      "runner.test": "ca7c1e318d895ddb7d2e4d0f0ac554d4575afe30685ee77996d3dd54b930442f",
+      "daemon.test": "b3d781fce2f3136040509edfef8c50b1474f6f1ac43647775f68aabe8d603eb9",
+      "cli.test": "131b706d667a0712f16e96434dab665d12d395b86f43f52071dc988f899333b3",
+      "agent.test": "eae319d62583382eb8d5598ac495734f4fbf0a516fdacd5ce87326a16e2aeb58"
+    },
+    "started_at": "2026-11-01T21:47:33.353170+00:00",
+    "container_retained": true,
+    "container_id": "f2de331654e8f3657a900fbac67afb0a851570239cde94cf4bb0bc47825b6320",
+    "exit_code": 0,
+    "docker_start_exit": 0,
+    "packages": [
+      {
+        "package": "pkg/agent",
+        "state": "complete",
+        "exit_code": 0,
+        "counts": {
+          "run": 33,
+          "pass": 33,
+          "fail": 0,
+          "skip": 0
+        },
+        "failures": [],
+        "raw_log_sha256": "6f92e808a04b02676ba9ff60cccbfb6eb5ed4971525462d6c5c7c8997f7b8def",
+        "JSON_sha256": "2d99726e6786a433f543aad5ee42aad0230315d9fdf674c9f210757104e5437d"
+      },
+      {
+        "package": "internal/daemon/collaborationrun",
+        "state": "complete",
+        "exit_code": 0,
+        "counts": {
+          "run": 183,
+          "pass": 183,
+          "fail": 0,
+          "skip": 0
+        },
+        "failures": [],
+        "raw_log_sha256": "a38e0240937758eda09f6c9ebdb6d0951e29e99cf503d7989c596e00aa3f56a5",
+        "JSON_sha256": "6404f4d3b264c2fd8f1118bb2e933ea4be52db0201d198f184864c4ce8eecd26"
+      },
+      {
+        "package": "internal/daemon",
+        "state": "complete",
+        "exit_code": 0,
+        "counts": {
+          "run": 12,
+          "pass": 12,
+          "fail": 0,
+          "skip": 0
+        },
+        "failures": [],
+        "raw_log_sha256": "98fd2163ec213597e320fb9dbeebeb2d9f3626b9ec81bf77e4f772d36e9fa40b",
+        "JSON_sha256": "7d29c933507984f3e08175d1a559ecbafb20b0c11832c4a7443c1e5616e9a218"
+      },
+      {
+        "package": "internal/cli",
+        "state": "complete",
+        "exit_code": 0,
+        "counts": {
+          "run": 2,
+          "pass": 2,
+          "fail": 0,
+          "skip": 0
+        },
+        "failures": [],
+        "raw_log_sha256": "65463b6b4ece932889108b962920a5a67ab09bd2f386c536728f5ceb2d142661",
+        "JSON_sha256": "f54b3d520835b9f84aad7994204c214cb77a895abe402024ec52b69cb288635f"
+      }
+    ],
+    "finished_at": "2026-11-01T21:47:52.781667+00:00",
+    "JSON_sha256": "1dce69a94431342a6ef80ad6b4d00d6b766448b738f3f4b0a1ef3ee40a06f2a4"
+  },
+  "required_checker": {
+    "command": [
+      "node",
+      "scripts/check-collaboration-native-tests.mjs",
+      "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/linux-native-gates/host-matrix-2/all-tests.jsonl",
+      "Linux"
+    ],
+    "exit_code": 0,
+    "stdout": "Linux: 11 required native collaboration cases passed.",
+    "log_sha256": "de43f7e4475b4df9a689b4b5bab777dcb4be1bd485e408b9f74f0a6d77210184"
+  },
+  "named_pass_events": 230,
+  "named_fail_events": 0,
+  "named_skip_events": 0,
+  "network": "none",
+  "container_retained": true,
+  "DB_and_Provider_calls": false,
+  "at": "2026-11-01T21:49:49.319594+00:00"
+}

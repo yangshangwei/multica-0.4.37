@@ -1,0 +1,19 @@
+{
+  "id": "repository",
+  "recordedAt": "2026-10-14T12:13:16.162Z",
+  "fixture": "Memory-only API responses and writes in the disposable renderer.",
+  "failureRetained": true,
+  "evidence": {
+    "screenshot": "screenshots/state-repository-failure-retry.png",
+    "ax": "ax/state-repository-failure-retry.txt"
+  },
+  "requests": 2,
+  "status": "pass",
+  "cleanup": {
+    "restored": true,
+    "methods": 3,
+    "queries": 2,
+    "safetyPresent": true
+  },
+  "completedAt": "2026-10-14T12:13:18.655Z"
+}

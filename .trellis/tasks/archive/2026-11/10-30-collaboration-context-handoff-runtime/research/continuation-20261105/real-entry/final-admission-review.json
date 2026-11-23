@@ -1,0 +1,86 @@
+{
+  "reviewed_at": "2026-11-05T03:37:46.193181+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Bounded E0a activation record and saved allocation review; preparation may proceed, live call still requires root final facts",
+  "verdict": "pass-with-conditions",
+  "blocking_source_framework_budget_findings": 0,
+  "approved_scope": [
+    "scoped activation-record commit and clean execution synchronization",
+    "fresh metadata-only describe with exact root binding",
+    "root-permitted upfront build then unchanged launcher check-only"
+  ],
+  "real_call_disposition": "One RK1-E0a trial1 only after actual build/check success, exact current bound facts and a model window held through completion; no automatic later scenario",
+  "protected_source_framework_provider_model_budget_unchanged": true,
+  "runtime_cap": 25,
+  "runtime_consumed": 0,
+  "registration_runnable": true,
+  "saved_allocation": {
+    "database": "multica_rk1_20261105_real_e0a_a729",
+    "identity": "multica_rk1_20261105_real_e0a_a729|764_collaboration_ai_policy",
+    "template": "template0",
+    "initial_issue_count": 0,
+    "migration_exit": 0,
+    "source": "Root saved receipt, not a reviewer database query",
+    "sha256": "5424aceb6047696d3270450595a22acbecf51810e80376c0e8624724af7b41b9"
+  },
+  "saved_environment": {
+    "operator_equals_intended_facts": true,
+    "config_hash_matches": true,
+    "helper_hash_matches": true,
+    "live_binding_still_required": true
+  },
+  "window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "granted_by": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+    "scenario": "RK1-E0a",
+    "start_trial": 1,
+    "launches": 1,
+    "outer_timeout_minutes": 12,
+    "expires_at": "2026-11-05T03:46:30+00:00",
+    "recorded_at": "2026-11-05T03:36:06.461469+00:00"
+  },
+  "conditions_before_call": [
+    "Recorded expiry03:46:30 must cover actual launch through completion or receive explicit until-completion/extended hold; helper only checks admission time and12min outer budget exceeds current remaining preparation-inclusive interval.",
+    "Preserve prior binding-proposal as historical evidence and create new exact postcommit proposal; old f0d2296f proposal is not current activation proof.",
+    "Root must inspect actual build/check records and bind their hashes before opening allow_run.",
+    "Update current coordination/allocation status references to new READY receipt; oldcorefalse/database_allocatedfalse are historical facts."
+  ],
+  "permit_snapshot": {
+    "allow_build": true,
+    "allow_check": false,
+    "allow_run": false,
+    "window_id": "core-ready-runtime-e0a-20261105",
+    "window_expires_at": "2026-11-05T03:46:30+00:00",
+    "binding": {
+      "head": "62ef8afd6a386af0602060aebf3b90e64a9fb27a",
+      "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+      "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+      "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+      "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+      "config_sha256": "2c16a4f70fe4db6ae59ca544d6e893f63a541de9d8b9a727d3a605438b898d50",
+      "environment_sha256": "0a38605c83e19f43a7f4edd0701ac3ebbc0a62a21a3d97378eaba75a29ee2d43",
+      "operator_configuration_sha256": "d8ad401d764c2f078cd45b0c8c7fe46ad6aac89f32fdd76684722e68b0551bc2",
+      "git": "/opt/homebrew/Cellar/git/2.52.0/bin/git",
+      "git_sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197",
+      "python": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "python_sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43",
+      "go_sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+      "provider_sha256": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d",
+      "registration_sha256": "517078a322ff24d84ac99dba74e9fe406e96ab55fd3ddc1583b7818c2f6ef68f",
+      "addendum_sha256": "0c6ad76508fb2f5ee513026d5f30bedd4c11bccb04eaeb3082245e4304bc81e8",
+      "whole_status": ""
+    },
+    "build_result_sha256": null,
+    "check_result_sha256": null
+  },
+  "registration_sha256": "517078a322ff24d84ac99dba74e9fe406e96ab55fd3ddc1583b7818c2f6ef68f",
+  "active_window_sha256": "ea358a346140c12b733f60a633d2a5fb9e8094f4852d4b8273bfeeae4eec150b",
+  "operations": {
+    "Go": 0,
+    "DB": 0,
+    "Provider": 0,
+    "tests": 0,
+    "plugin_scan": 0
+  },
+  "old_failures_and_original8_stop_preserved": true
+}

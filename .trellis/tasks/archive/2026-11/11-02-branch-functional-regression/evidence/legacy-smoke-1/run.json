@@ -1,0 +1,47 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "lane": "legacy",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/issues.spec.ts",
+    "e2e/comments.spec.ts",
+    "e2e/task-lifecycle-qa.spec.ts",
+    "e2e/issue-mutation-branches.spec.ts",
+    "e2e/workspace-access-branches.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/legacy-smoke-1/artifacts"
+  ],
+  "database": "multica_functional_7af9_legacy_20261102",
+  "api_health": {
+    "status": "ok",
+    "pid": 64664,
+    "commit": "7af9ab990",
+    "started_at": "2026-11-02T00:05:46Z"
+  },
+  "web_build_id": "vuNmD_X84RDSCT3qszVfd",
+  "config_sha256": "d8651739dea96927181bc6dbb9b44166d5d4e8c0a1002b5ec1672a3cfaf2fc5c",
+  "started_at": "2026-11-02T00:09:22.853972+00:00",
+  "state": "complete",
+  "commercial_provider_calls": 0,
+  "agent_cli_guard": true,
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:10:40.874472+00:00",
+  "stats": {
+    "startTime": "2026-11-02T00:09:24.593Z",
+    "duration": 76221.619,
+    "expected": 27,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "collection_errors": []
+}

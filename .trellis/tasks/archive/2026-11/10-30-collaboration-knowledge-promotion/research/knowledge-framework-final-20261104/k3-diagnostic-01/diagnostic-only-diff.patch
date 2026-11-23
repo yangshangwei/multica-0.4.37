@@ -1,0 +1,43 @@
+--- fixture-before-diagnostic.go
++++ rk1k_fixture_test.go
+@@ -256,6 +256,40 @@
+ 			return util.UUIDToString(pending[0].ID)
+ 		}
+ 		if len(pending) > 1 || time.Now().After(deadline) {
++			diagnostic := map[string]any{"issue_id": f.issue, "session_id": util.UUIDToString(session.ID),
++				"runtime_id": f.base.runtime, "binding_id": f.request.BindingID, "last_list_run_ids": list.RunIDs,
++				"task_service_knowledge_enabled": f.h.TaskService.KnowledgeContextEnabled}
++			listed := make([]map[string]any, 0, len(list.RunIDs))
++			for _, id := range list.RunIDs {
++				row := map[string]any{"run_id": id}
++				run, err := f.q.GetCollaborationRuntimeRun(f.t.Context(), util.MustParseUUID(id))
++				if err != nil {
++					row["lookup_failed"] = true
++				} else {
++					row["session_id"], row["step_kind"] = util.UUIDToString(run.SessionID), run.StepKind.String
++					row["unsettled"], row["progress_state"] = !run.SettledAt.Valid, run.ProgressState
++					row["runtime_id"], row["binding_id"] = util.UUIDToString(run.RuntimeID), util.UUIDToString(run.BindingID)
++					if owner, err := f.q.GetCollaborationSessionByID(f.t.Context(), run.SessionID); err == nil {
++						row["issue_id"], row["same_issue"] = util.UUIDToString(owner.IssueID), owner.IssueID == session.IssueID
++					}
++					var reserved bool
++					if err := f.base.managed.pool.QueryRow(f.t.Context(),
++						"SELECT EXISTS(SELECT 1 FROM collaboration_runtime_reservation WHERE run_id=$1 AND released_at IS NULL)", run.ID).Scan(&reserved); err == nil {
++						row["reserved"] = reserved
++					} else {
++						row["reservation_lookup_failed"] = true
++					}
++				}
++				listed = append(listed, row)
++			}
++			diagnostic["listed_runs"] = listed
++			if derived, err := f.q.HasCollaborationRuntimePendingDerivedRun(f.t.Context(),
++				db.HasCollaborationRuntimePendingDerivedRunParams{RuntimeID: util.MustParseUUID(f.base.runtime), BindingID: util.MustParseUUID(f.request.BindingID)}); err == nil {
++				diagnostic["pending_derived_run"] = derived
++			}
++			if raw, err := json.Marshal(diagnostic); err == nil {
++				f.t.Logf("RK1K_K3_POLL_FAILURE_METADATA_V1=%s", raw)
++			}
+ 			ids := make([]string, 0, len(pending))
+ 			for _, run := range pending {
+ 				ids = append(ids, util.UUIDToString(run.ID)+":"+run.StepKind.String)

@@ -1,0 +1,24 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostCheckpointBackpressureDoesNotBlockMessageDrain$",
+    "-count=1",
+    "-json",
+    "-timeout=40s"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/server",
+  "exit_code": 0,
+  "elapsed_seconds": 2.925,
+  "finished_at": "2026-10-31T15:14:49.539399+00:00",
+  "file_sha256": "9d948ef3194f519b2354c6bd6bee2d972003e9ff70b98cb91af7ac543a00f886",
+  "passed_tests": [
+    "TestHostCheckpointBackpressureDoesNotBlockMessageDrain"
+  ],
+  "failed_tests": [],
+  "skipped_tests": []
+}

@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-21T23:54:07.800866+00:00",
+  "cases": [
+    {
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "line": 14,
+      "title": "Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 32675,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "line": 14,
+      "title": "Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 25286,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "startTime": "2026-10-21T23:46:55.059Z",
+    "duration": 59500.801,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "raw_sha256": "64b1212ca0017cec9d0e0ff39bad7b9a992490aad27e3380863a07b50ac11cda",
+  "sources": {
+    "e2e/collaboration-lifecycle-controls.spec.ts": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+    "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+    "e2e/fixtures/collaboration-cross-client-provider.go": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+  },
+  "coordinator_note": "Implementation sub-agent delivered full PASS then a provider routing error prevented final prose; raw source/identity/proof evidence was complete. Root records it; independent other-agent review remains required.",
+  "evidence_files": [
+    "lifecycle-web-identities.json",
+    "lifecycle-electron-identities.json",
+    "lifecycle-clients-first-command.json",
+    "lifecycle-clients-first-result.json",
+    "lifecycle-service-canonical-command.json",
+    "lifecycle-service-canonical-result.json",
+    "lifecycle-canonical-receipt-review.json"
+  ],
+  "full_acceptance_complete": false
+}

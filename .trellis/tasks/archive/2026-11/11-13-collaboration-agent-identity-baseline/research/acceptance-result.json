@@ -1,0 +1,192 @@
+{
+  "recorded_at": "2026-11-13T07:31:47.270470+00:00",
+  "status": "runtime_pass_cleanup_pass",
+  "candidate_head": "c79dfe304d172c1127d2271fb3932eb751b7c0fb",
+  "root_head": "fafb27b1d334e4d9b705917d6b1f825df09f9419",
+  "scope": "committed HEAD plus S1-owned product/test changes; unrelated concurrent work excluded",
+  "source_match": true,
+  "source_files": {
+    "server/internal/service/collaboration_comments_view.go": "612d325ad9bb5ebc5842324eb8d292958c0412dd1fde21b537d22450e66b50d0",
+    "server/internal/service/collaboration_comments_test.go": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0",
+    "server/internal/service/collaboration_comments_recall_test.go": "2fef734cebd6d102c7e5a993a74197cdc4cea32ecdbf09603dda31d6059ee0cd",
+    "server/internal/handler/collaboration_comments_test.go": "a4604f0b1062f98303e571143d1d57c741650661bc12de047a8b4718a2e2d59e",
+    "packages/core/collaboration/content-schema.ts": "29e2202db901cddfc98b7bc5cc7ef4840b7d9585cffc6e1bc5f157473b51920f",
+    "packages/core/collaboration/content-schema.test.ts": "3a527a1bb32fdd37ed23799deb824a9df7c8f8aedfadda8fc4e5985802571270",
+    "packages/views/collaboration/comment-author.ts": "d157aaa7346ee2a718ad3290f73e521039d1ab273200aa8379ff0394fa2ee213",
+    "packages/views/collaboration/comment-list.tsx": "fd18168b323fdcf7647dd727f025a49f9556cf794827d42f1387c85acb77625b",
+    "packages/views/collaboration/comment-list.test.tsx": "7cfe31e8f849327702695ac370b6e41e6b03372c69e311047a571b304d0d6a35",
+    "packages/views/collaboration/comment-composer.tsx": "114d4188f8cc423c652fdef8452e6925924f306840859b9050b17f165c1c0aca",
+    "packages/views/collaboration/comment-composer.test.tsx": "0e3d5eed18576e29e7d53cc5288c8b906bc6952ccf08b366e562d9bb3b524143",
+    "e2e/collaboration-multi-account-closure.spec.ts": "e2bbcda9340f930c20b49936b7f2b6d4a1a567d44314c101f11c50b5cb03db53"
+  },
+  "generated_next_env": "Exact documented dev/types to types import only",
+  "builds_unchanged": true,
+  "runs": [
+    {
+      "run": "b05-run1",
+      "test": "three account owners and three native agents close one cross-workspace issue after revision",
+      "status": "failed",
+      "duration_ms": 19901,
+      "error_messages": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed"
+      ]
+    },
+    {
+      "run": "b05-run2",
+      "test": "three account owners and three native agents close one cross-workspace issue after revision",
+      "status": "failed",
+      "duration_ms": 22757,
+      "error_messages": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed"
+      ]
+    },
+    {
+      "run": "b05-run3",
+      "test": "three account owners and three native agents close one cross-workspace issue after revision",
+      "status": "passed",
+      "duration_ms": 59726,
+      "error_messages": []
+    },
+    {
+      "run": "supplemental-run1",
+      "test": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "status": "passed",
+      "duration_ms": 11295,
+      "error_messages": []
+    },
+    {
+      "run": "supplemental-run1",
+      "test": "Web withdrawing a grant during a permitted run stops that work, holds only its target, keeps the queued input, and needs proof plus explicit Resume",
+      "status": "failed",
+      "duration_ms": 2712,
+      "error_messages": [
+        "Error: Synthetic managed registration /api/collaboration/runtime/runs?runtime_id=b44112d0-9af0-4f05-a2ed-25a73b2291a9 failed: 409"
+      ]
+    },
+    {
+      "run": "supplemental-run1",
+      "test": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "failed",
+      "duration_ms": 37470,
+      "error_messages": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m"
+      ]
+    },
+    {
+      "run": "supplemental-run1",
+      "test": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "failed",
+      "duration_ms": 46071,
+      "error_messages": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m"
+      ]
+    },
+    {
+      "run": "supplemental-run2",
+      "test": "Web withdrawing a grant during a permitted run stops that work, holds only its target, keeps the queued input, and needs proof plus explicit Resume",
+      "status": "passed",
+      "duration_ms": 9411,
+      "error_messages": []
+    },
+    {
+      "run": "supplemental-run2",
+      "test": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "passed",
+      "duration_ms": 25036,
+      "error_messages": []
+    },
+    {
+      "run": "supplemental-run2",
+      "test": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "passed",
+      "duration_ms": 28742,
+      "error_messages": []
+    }
+  ],
+  "required_current_results": {
+    "B05_B06": "b05-run3",
+    "B08": "supplemental-run2",
+    "B09_handoff": "supplemental-run1 passed handoff case",
+    "B09_live_revoke": "supplemental-run2"
+  },
+  "report_files": {
+    "b05-run1": {
+      "path": "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run1.json",
+      "sha256": "ae424e459fba029e24d907c3ea222ee725b37093272979e2d7d975a35505d2f2"
+    },
+    "b05-run2": {
+      "path": "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run2.json",
+      "sha256": "a120d198ede07c07e21785cdb531ae61ea0bc7c880b25763b43a12421d9eb6de"
+    },
+    "b05-run3": {
+      "path": "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/b05-run3.json",
+      "sha256": "d9cb80f8a6c0e4fa354be09528da8e6e6968e9935eb1a78e50c692740dc2f891"
+    },
+    "supplemental-run1": {
+      "path": "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/supplemental-run1.json",
+      "sha256": "5ee358ba441b00920e3c9f9f731c04e65eb9016ebd5e861300781e8847b9afa8"
+    },
+    "supplemental-run2": {
+      "path": "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/supplemental-run2.json",
+      "sha256": "f0848b04ff0ca67870cfe54c585c389f968b729ad8a45db28545d84cbd1c4d91"
+    }
+  },
+  "final_gate": {
+    "database": "multica_s1_identity_20261113_01_api",
+    "previous": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "10"
+    },
+    "after": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "12"
+    },
+    "restored": true,
+    "exit_code": 0
+  },
+  "limits": [
+    "Controlled providers and test accounts only",
+    "No real payment/provider/production release",
+    "Electron renderer only; installed full Main not covered",
+    "Parent 24-case acceptance and S2-S5 remain open",
+    "Browser evidence uses isolated c79dfe304 + S1; final fafb27b1d root integration separately passed service/handler build and 7 targeted tests/subtests. Concurrent F2 browser acceptance is not claimed."
+  ],
+  "cleanup": {
+    "recorded_at": "2026-11-13T07:32:56.185263+00:00",
+    "port_checks": {
+      "18970": {
+        "127.0.0.1": false,
+        "::1": false
+      },
+      "13890": {
+        "127.0.0.1": false,
+        "::1": false
+      },
+      "6064": {
+        "127.0.0.1": false,
+        "::1": false
+      },
+      "18572": {
+        "127.0.0.1": true,
+        "::1": true
+      },
+      "13492": {
+        "127.0.0.1": false,
+        "::1": true
+      }
+    },
+    "task_ports_closed": true,
+    "human_services_still_running": true,
+    "docker_containers_remaining": [
+      "multica-postgres-1"
+    ],
+    "initial_probe_note": "An IPv4-only probe could not reach the pre-existing IPv6-only Web listener; corrected dual-stack checks verify it remains running. No process action followed the failed probe.",
+    "log": "/Users/artisan/.multica/acceptance/s1-agent-identity-20261113-01/logs/cleanup.log",
+    "databases": "retained for evidence; no user database deleted"
+  },
+  "root_integration_evidence": "server-root-integration.json"
+}

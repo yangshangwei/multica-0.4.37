@@ -1,0 +1,72 @@
+{
+  "scope": "actual selectedrun evidence hashes; private raw/credentials remain excluded",
+  "runs": [
+    {
+      "mode": "mutation",
+      "result_file": "mutation-result.json",
+      "result_sha256": "1559da5cb0a73a698f835540ea34c3c155f23f87d52994cd0749bac652b034c7",
+      "raw_log": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/mutation/tests.jsonl",
+      "raw_log_sha256": "f5a1ac80a20989b10159f421d78c2994ce0eeca2b04176755dd8a5e79d3429aa",
+      "trials": [
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/mutation/proof/H5/RK1-H5-t1/public.json",
+          "sha256": "dbd116be2af9ee73ceaa4a3cc451fb70b46141abe095915d36cfd069853a7516"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/mutation/proof/canary_obeyed_blocks/RK1-H5-t1/public.json",
+          "sha256": "f328e4ca5d5b6ac701a09089ca068ba7dd01c91c1177ef1104b42102a3828e7b"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/mutation/proof/canary_quoted_without_writes_blocks/RK1-H5-t1/public.json",
+          "sha256": "d40a6399e856f6e54b6a60025387c530ec5d0a21200ccaea5fcd32258e74c32c"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/mutation/proof/canary_quoted_without_writes_blocks/RK1-H5-t2/public.json",
+          "sha256": "c7e18e41cc59ae0a72dc873bfa6c7918b60945adbd018c99aa1852b79d6ae854"
+        }
+      ]
+    },
+    {
+      "mode": "normal",
+      "result_file": "normal-result.json",
+      "result_sha256": "da049322c1f968cfbaea83706f57b198350c956eea48206c23f712e6b4952742",
+      "raw_log": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/normal/tests.jsonl",
+      "raw_log_sha256": "dcb5f0ce203f931950f0541f25535da301b715b1c38bf2524419ea19b927e1c9",
+      "trials": [
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/normal/proof/H5/RK1-H5-t1/public.json",
+          "sha256": "f4439a890c5c6c7a55ed32a81392bc8184b03a77962ec490b180ec2c37a178bf"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/normal/proof/canary_obeyed_blocks/RK1-H5-t1/public.json",
+          "sha256": "e3f55883d7d5de92a472ac106319a7d00038c761306bebaf4b2efc25fabb9cdc"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/normal/proof/canary_quoted_without_writes_blocks/RK1-H5-t1/public.json",
+          "sha256": "47dc2d9a2faabf5f557d8a5f4aa99e8922cc3c05bf63a00f41c87af0e1704713"
+        }
+      ]
+    },
+    {
+      "mode": "race",
+      "result_file": "race-result.json",
+      "result_sha256": "0ba0dcf9fdd53bd5f6d0680ba151077cc5e68ff8d400bbee49bfa68773ab7de6",
+      "raw_log": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/race/tests.jsonl",
+      "raw_log_sha256": "4b8730b1f70e48aea3a414998361e7ef8d9c36b1c2a89e3032608f595a7f4da2",
+      "trials": [
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/race/proof/H5/RK1-H5-t1/public.json",
+          "sha256": "fc68a85ef38f58273713007892e4e0650ee923b5018901821cb06220c23803fa"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/race/proof/canary_obeyed_blocks/RK1-H5-t1/public.json",
+          "sha256": "05d00bf7bd2cec14b4b304604f1fc90736ba07ce93c1291dd8cd6229b15f3c62"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/race/proof/canary_quoted_without_writes_blocks/RK1-H5-t1/public.json",
+          "sha256": "1ac2f0284db7d96d9f39a4fa15c1c66f11e7cbb99aaf9ed18126eaaa88e17f42"
+        }
+      ]
+    }
+  ]
+}

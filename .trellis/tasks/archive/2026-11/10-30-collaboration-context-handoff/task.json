@@ -1,0 +1,289 @@
+{
+  "id": "collaboration-context-handoff",
+  "name": "collaboration-context-handoff",
+  "title": "协作上下文交接、召回与沉淀",
+  "description": "已交付阶段结项：三个子任务已集成的核心工程及其确定性验收统筹；已接受全栈候选记录保留。 原范围剩余事项已移交后续待办，完整路线与真实验收未因此完成。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-30",
+  "completedAt": "2026-11-12",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "codex/cross-workspace-collaboration",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "10-30-collaboration-fix-closure",
+    "10-30-collaboration-context-handoff-runtime",
+    "10-30-collaboration-knowledge-promotion"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "2026-11-12 用户确认“归档已交付阶段”。本任务仅关闭已交付工程阶段；见stage-closure-2026-11-12.md及后续待办。原失败、授权、预算、默认关闭状态保留。",
+  "meta": {
+    "delivery": "parent-orchestration",
+    "planning_scope": "phase1-closure-handoff-promotion",
+    "planning_worktree": "/Volumes/artisan/code/2026/mc-context-plan-20261030",
+    "implementation_started": true,
+    "permission_decision": "approved",
+    "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
+    "approval_user_turn": 14,
+    "active_execution_target": "10-30-collaboration-fix-closure",
+    "integration_worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "six_step_execution_approved": true,
+    "latest_model_evidence": "../10-30-collaboration-fix-closure/verification-2026-11-05.md",
+    "runtime_integration_commit": "0e1ee8e1e",
+    "runtime_deterministic_acceptance": "passed_normal02_race03_and_password7_run03_on_recorded_candidate",
+    "knowledge_planning": "K1_K5_F1_F4_approved_complete",
+    "model_acceptance": "original19calls_E5t1_canary_fail_cap8_onhold; runtime_knowledge_acceptance_separate",
+    "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
+    "knowledge_implementation": "integrated_product_codex_support_and_cap17_continuation; real_acceptance_blocked",
+    "knowledge_worktree": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+    "knowledge_product_commit": "96cedf485",
+    "knowledge_evidence_commit": "93093d2e9",
+    "knowledge_main_merge": "8cb04e3295474073b4b991bc4883ef3901c14f01",
+    "parent_acceptance": "shared_v16_and_password7_passed_original_E5_blocker_and_other_gates_open",
+    "progress_phase": "delivered_stage_closure",
+    "next_action": "Remaining scope transferred to 11-12-collaboration-real-runtime-acceptance; old stage is not an execution target.",
+    "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+    "resume_ledger": "../10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
+    "original_series_next": "BLOCKED_REVIEW E5baseline2 cursor; cap8 remains; no_auto_resume",
+    "rk1_runtime_budget": {
+      "approved_cap": 25,
+      "consumed": 12,
+      "includes_H2b": true,
+      "H6_launches_per_trial": 2
+    },
+    "final_candidate_registration": "research/final-candidate-20261102/registration.json",
+    "integration_head_snapshot": "4085e5b38f384feed296be4f1b300400acff8302",
+    "closure_resume_20261104": {
+      "recorded_at": "2026-11-04T15:32:48.757603+00:00",
+      "owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+      "user_authorized": "Refresh existing ledger; password7 -> original E3 after2 through E6 -> acceptance review/archive when complete",
+      "shared_candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "shared_make_exit": 0,
+      "final_identity_audit": "pass",
+      "named_inventory_complete": true,
+      "TS_pass": 13244,
+      "Go_named_pass": 20963,
+      "Go_terminal_leaf_pass": 19147,
+      "Go_skip": 22,
+      "browser_pass": 350,
+      "browser_skip": 91,
+      "browser_fail": 0,
+      "browser_retry": 0,
+      "shared_evidence": ".trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/final-acceptance-review.md",
+      "password7": "pending_actual_execution",
+      "original_series": {
+        "next": "E3 after trial 2",
+        "remaining_cap": 14,
+        "new_calls": 0,
+        "stop_rules": "first incomplete or E5 canary; never refill consumed trials"
+      },
+      "archive_ready": false
+    },
+    "historical_summary_before_closure_takeover_20261104": {
+      "notes": "2026-11-02：runtime/知识/RK1/交付及memory/Transfer测试修复均已独立复核本地合入。最终产品639源指纹9f72…d80ee与集成4085等价；RKIfake normal/race各62pass0fail/skip，原生焦点原断言1pass，Mac.app原旅程1pass/3fake启动，Linux230Host/7namespace/1Main通过有界范围，Windows两架构12编译检查0。原Mac失败归因ENV_FILE默认读取导致页面API18774错配；显式registry+ENV_FILE+实际HTML检查修正，DSH使用测试自有missing路径，原失败DB均保留。最新完整check仍exit2，未拼接改判；v5/RKI6结果独立复核受429阻断，下一新完整check APImax10/min1。真实Provider0，runtime25未耗，原系列余14/E3aftertrial2。仅本地准备；业务默认库事故无前快照、未恢复。",
+      "progress_phase": "bounded_final_proofs_recorded; independent_review_gateway429; whole_candidate_open",
+      "next_action": "independent v5/RKI6 result review, then fresh complete same-harness check; missing native/account/tool gates remain open"
+    },
+    "closure_resume_20261104_latest": {
+      "at": "2026-11-04T16:27:03.072761+00:00",
+      "password7": "independentpass7/0/0/0",
+      "E3after2_3": "independentpass",
+      "E4": "3semanticpass",
+      "E5t1": "registered_canary_behaviorfail",
+      "E5t2_3_E6": "unrun_stopped",
+      "calls_this_session": 6,
+      "original_total": 19,
+      "remaining_cap": 8,
+      "archive_ready": false
+    },
+    "status_reconciliation_2026_11_09": {
+      "source_head": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+      "report": "docs/audits/2026-11-09-active-task-reconciliation.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "notes": "2026-11-05首轮闭环：共享V16完整门与password7独立通过；原E3after2/3及E4三轮通过，E5t1最终答复复述登记canary，按原规则停止。累计19次/余8次，E5t2/3和E6未运行，首轮保持in_progress待阻塞评审。runtime、知识真实验收和发布矩阵独立保留，其他会话正在推进。",
+        "meta": {
+          "latest_model_evidence": "../10-30-collaboration-fix-closure/verification-e2a-resume3-2026-11-01.md",
+          "runtime_deterministic_acceptance": "audit_repairs_reviewed_and_merged; final_candidate_verification_pending",
+          "knowledge_implementation": "audit_repairs_reviewed_and_merged; final_candidate_and_model_acceptance_pending",
+          "progress_phase": "closure_E5_canary_review_pending_other_children_independent",
+          "next_action": "review original_E5_baseline_canary_before_remaining_trials; runtime_and_knowledge_owned_by_peers",
+          "rk1_runtime_budget": {
+            "approved_cap": 25,
+            "consumed": 0,
+            "includes_H2b": true,
+            "H6_launches_per_trial": 2
+          },
+          "current_acceptance_matrix": "acceptance-2026-11-01.json"
+        }
+      }
+    },
+    "current_status_report": "docs/audits/2026-11-11-active-task-progress-refresh.zh-CN.md",
+    "progress_audit_2026_11_10": {
+      "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
+      "finding": "Three real acceptance gates remain open independently; no child failure is reclassified or new real budget consumed."
+    },
+    "runtime_real_execution_authorization_2026_11_11": {
+      "record": "10-30-collaboration-context-handoff-runtime/research/continuation-20261111/real-execution-authorization.json",
+      "user_message_exact": "批准",
+      "scope": "Authorize H3a trial3 onward only after current source/CLI/config/database/exclusive-window/provider-gateway bindings are fresh",
+      "runnable": false,
+      "remaining_runtime_slots": 13,
+      "historical_files_immutable": true
+    },
+    "status_refresh_2026_11_11": {
+      "source_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+      "report": "docs/audits/2026-11-11-active-task-progress-refresh.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "notes": "2026-11-09校准：实现与确定性修复已集成。原系列已用19/剩8，E5t1登记canary失败后停止；runtime已用12/25，H3a t2超时后停止；知识已用2/17，两次E0b网关403，K1/K2/K3未运行。各自验收与发布边界独立，父任务尚不能归档。",
+        "meta": {
+          "current_status_report": "docs/audits/2026-11-09-active-task-reconciliation.zh-CN.md"
+        }
+      }
+    },
+    "status_refresh_2026_11_12": {
+      "record": "status_refresh_2026_11_12",
+      "evidence": [
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/current-binding-readonly-check.json",
+        ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/continuation-20261112/current-cli-gateway-readonly-check.json",
+        ".trellis/tasks/10-30-collaboration-fix-closure/research/continuation-20261112/e5-disposition-readonly-check.json"
+      ],
+      "head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+      "archive_ready": false,
+      "real_provider_calls": 0,
+      "next_action": "Keep all three real gates closed; rebind Runtime/Knowledge only after lawful gateway and current source/CLI/config/database/window evidence; retain E5 failed-with-valid-evidence."
+    },
+    "direct_codex_cli_development_20261112": {
+      "recorded_at": "2026-11-12T02:51:36.271764+00:00",
+      "user_scope": "Use the currently configured Codex CLI directly for development work; do not require Multica SDK for coding-tool connectivity.",
+      "scope_correction": "research/codex-rebind-20261112/scope-correction.json",
+      "cli_attempt_01": "research/codex-rebind-20261112/direct-coding-cli-01.json",
+      "cli_attempt_01_result": "coding review timed out at coordinator five-minute ceiling; model responses and read-only commands observed; no final audit report",
+      "cli_attempt_02": "research/codex-rebind-20261112/direct-coding-cli-02.json",
+      "extra_sdk_migration": "retained only in detached isolated worktree; unintegrated; dynamic controls NOT_RUN; independent preparatory review incomplete",
+      "source_snapshot": "research/codex-rebind-20261112/source-snapshot.json",
+      "configuration_candidates": "Earlier agentrouter preparation is historical; latest direct CLI follows current user configuration and records its own start hash.",
+      "database_allocation": "research/codex-rebind-20261112/database-allocation.json",
+      "product_budget_change": 0,
+      "all_tasks_remain_in_progress": true,
+      "real_gate": {
+        "runnable": false,
+        "allow_build": false,
+        "allow_check": false,
+        "allow_run": false
+      },
+      "quality_check": "research/codex-rebind-20261112/preparation-quality-check.json",
+      "evidence_task": "10-30-collaboration-knowledge-promotion"
+    },
+    "direct_codex_cli_development_result_20261112": {
+      "result": "direct Codex CLI produced nonempty handoff, exit0; no Multica SDK used",
+      "successful_record": "research/codex-rebind-20261112/direct-coding-cli-04.json",
+      "summary": "research/codex-rebind-20261112/scope-resolution.json",
+      "global_configuration_modified": false,
+      "product_provider_starts": 0,
+      "sdk_migration_integrated": false
+    },
+    "runtime_continuation_20261112": {
+      "task": "10-30-collaboration-context-handoff-runtime",
+      "status": "in_progress",
+      "registration": "10-30-collaboration-context-handoff-runtime/research/continuation-20261112/real-execution-registration.json",
+      "registration_sha256": "1dba4041d1ec45ef24a14de055c9ac292e3f3dab78512bb993c1b5b0c0c0fe64",
+      "implementation_verification": "10-30-collaboration-context-handoff-runtime/research/continuation-20261112/verification/implementation-verification.json",
+      "independent_review": "10-30-collaboration-context-handoff-runtime/research/continuation-20261112/independent-review.json",
+      "source_id": "60cad529c638fc3a56fe2cfbd41af1f142677ee23af0350d937b9623ac6ff7db",
+      "framework_sha256": "71f7ca86b99d1e12cc71980d4f5c506e5c6d15b6e56ebab8731ea0d43609bad8",
+      "consumed": 12,
+      "remaining": 13,
+      "provider_calls": 0,
+      "real_gate": {
+        "runnable": false,
+        "allow_build": false,
+        "allow_check": false,
+        "allow_run": false
+      },
+      "next_action": "Rebind all current runtime prerequisites and obtain lawful Provider gateway admission before H3a-t3; preserve historical H3a-t2 and all tasks in_progress.",
+      "independent_review_sha256": "dd9c6d99ae88d9759d07d1eb44566db255c53bc4009ee457aa6f6ca344e9729a",
+      "verification_sha256": "bb5665f9d453e77ab37de9476a02cf781352ee550b32e04ffc0c5f6985539e8c"
+    },
+    "status_update_2026_11_12_turn2": {
+      "updated_at": "2026-11-12T05:57:58Z",
+      "status": "in_progress",
+      "scope": "Runtime continuation entry implementation and candidate binding completed; parent remains open for real acceptance and other child gates",
+      "runtime_gate": {
+        "runnable": false,
+        "allow_build": false,
+        "allow_check": false,
+        "allow_run": false
+      },
+      "provider_calls": 0,
+      "next_action": "Keep parent and all three children in_progress; resolve current Runtime source/CLI/config/database/window/permit/gateway bindings before any H3a-t3 run."
+    },
+    "delivered_stage_closure_2026_11_12": {
+      "date": "2026-11-12",
+      "kind": "delivered_stage_only",
+      "user_instruction": "归档已交付阶段",
+      "status": "archived_delivered_stage",
+      "delivered_scope": "三个子任务已集成的核心工程及其确定性验收统筹；已接受全栈候选记录保留。",
+      "remaining_scope": "原E5/E6、Runtime、知识与跨分支最终真实行为结论转入真实运行验收；旧发布快照不自动恢复为当前必做。",
+      "original_full_scope_complete": false,
+      "successor_tasks": [
+        ".trellis/tasks/11-12-collaboration-real-runtime-acceptance"
+      ],
+      "report": "stage-closure-2026-11-12.md",
+      "historical_failures_reclassified": false,
+      "budgets_reset": false,
+      "new_provider_calls": 0,
+      "execution_enabled_by_archive": false,
+      "previous_state": {
+        "description": "统筹首轮交付闭环、可靠上下文交接召回及经人确认的项目/空间知识沉淀",
+        "notes": "2026-11-12 Runtime续作入口已实现并完成候选冻结/绑定登记；控制与fake普通/竞态验证通过，独立绑定审查为BLOCKED_PREPARATION_ONLY，真实Provider未启动，父任务及三个子任务仍in_progress。",
+        "meta": {
+          "next_action": "Close E5 disposition, H3a bounded successor and knowledge gateway plus CLI provenance separately.",
+          "progress_phase": "implementation_integrated_real_acceptance_blocked"
+        }
+      },
+      "original_full_real_acceptance_passed": false,
+      "code_commits": [
+        "e08ab34ce228cf11a39c153ccd33d61626ebd75b",
+        "c5c6fd29a74deee2b52726c92d6c05fbfc289748"
+      ],
+      "verification": {
+        "hints": {
+          "commit": "c5c6fd29a74deee2b52726c92d6c05fbfc289748",
+          "core_tests_passed": 22,
+          "views_tests_passed": 131,
+          "cli_tests": "passed",
+          "lint_typecheck_vet_contracts": "passed",
+          "existing_views_lint_warnings": 27,
+          "scope": "ordinary single-issue status-only consumer only"
+        },
+        "runtime_preparation": {
+          "commit": "e08ab34ce228cf11a39c153ccd33d61626ebd75b",
+          "mock_tests_passed": 5,
+          "compile_vet_gofmt": "passed",
+          "current_db_controls_run": false,
+          "real_provider_tests_run": false,
+          "historical_go_framework_and_fake_evidence_hashes": "matched",
+          "H6_real_continuation_delivered": false
+        },
+        "new_provider_calls": 0,
+        "independent_scope_review": "passed"
+      },
+      "archive_ready": true,
+      "historical_paths_preserved_without_rebinding": true,
+      "archived_path": ".trellis/tasks/archive/2026-11/10-30-collaboration-context-handoff"
+    },
+    "archive_ready": true,
+    "archive_ready_scope": "delivered_stage_only_remaining_scope_transferred"
+  }
+}

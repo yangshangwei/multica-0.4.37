@@ -1,0 +1,31 @@
+
+==> Prerequisites
+    TMPDIR pinned to /Users/artisan/.multica/dev-tmp (was /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/) so builds outlive the run that made them.
+    ✓ node, go, curl found
+
+==> Environment
+    Reusing environment runtime-integration (ports 18080/13000, database multica_runtime_browser_32d8f014)
+
+==> Database
+    ✓ multica_runtime_browser_32d8f014 reachable through DATABASE_URL and migrated
+
+==> Components: api web
+    ! api on :18080 is ours but its commit/source/configuration differs; restarting it.
+    ✓ api stopped (pid 94714)
+    api launching (pid 96441), log: /Volumes/artisan/code/2026/mc-runtime-integration-20261031/.omx/runtime-dev/envs/runtime-integration/logs/api.log
+    ✓ api healthy at http://localhost:18080 (pid 96466, commit e3620721e)
+    Building production web; log: /Volumes/artisan/code/2026/mc-runtime-integration-20261031/.omx/runtime-dev/envs/runtime-integration/logs/web-build.log
+    web launching (pid 96907), log: /Volumes/artisan/code/2026/mc-runtime-integration-20261031/.omx/runtime-dev/envs/runtime-integration/logs/web.log
+    ✓ web serving http://localhost:13000 (pid 96932, production, build oIbqTqiNWd3_eOixPDKgv)
+
+✓ Environment ready.
+
+  Open        http://localhost:13000/dev/issues
+  Sign in     dev@localhost  ·  code 888888
+  Backend     http://localhost:18080   (GET /health reports pid + commit + started_at)
+  Commit      e3620721e
+  Environment runtime-integration (expires 2026-11-01T14:55:54Z)
+
+  Inspect     make status
+  Stop        make down            (keeps the database, restarts in seconds)
+  Delete      make destroy         (drops the database and frees the slot)

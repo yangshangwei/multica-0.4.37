@@ -1,0 +1,64 @@
+{
+  "recorded_at": "2026-11-04T07:40:30.962542+00:00",
+  "session": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "state": "same_owner_continuation; no new takeover or duplicate execution",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "sole_executor": "/root/shared_executor",
+  "shared_complete_pass": true,
+  "CCG1_normal_race_accepted": true,
+  "CCG2_OFF01": "failed before browser body; historical cache lookup failure retained",
+  "CCG2_OFF02": "false permit; independent review pending; not started",
+  "CCG2_ON": "allocated database/temp; runtime/probe not started",
+  "owned_OFF_processes": [
+    "51638 51602 51602    01:56:14 /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+    "51848     1 51848    01:55:22 /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B -m http.server 60377 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+    "51913 51891 51891    01:55:17 next-server (v16.2.6)    "
+  ],
+  "main_dirty_count": 84,
+  "main_status_sha256": "86868baecb691f29ccd17c293e8d6b8cb5bc5cf5e026e0028fe42355e185429b",
+  "candidate_dirty_paths": [
+    "apps/web/next-env.d.ts"
+  ],
+  "candidate_generated_overlay_sha256": "3ef8ec0f8841f4448237c0d3a99e466dbf817a143259b5916cd826d1f6a6a280",
+  "evidence": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v16-actual-01/independent-shared-readiness-review.json",
+      "sha256": "b84ae87408a08e3e2536dfef08935c92b1ec23deddfc8e8a5c88b00d343734a2"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg1-result-review/review.json",
+      "sha256": "fcaba0f89bad4ad584cdddd8cd474fb681d3e09c28d0f9aa4f8f1d80c88b3583"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.json",
+      "sha256": "bf9fa963e44a90af50ed51e258cf50434923a9a5820846f61c688c4bf0df7fa2"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/post-make-v16.json",
+      "sha256": "73c198b8f21f92235f5d20f54031e486ce0de23fcdb4521712daaf03e0194baf"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-01/result.json",
+      "sha256": "1e198c8177e4650e620af16a959ba53924b7356dda969ffa318558e950d7a5a2"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg2-browser-bound.py",
+      "sha256": "95206bf27c50b16acd2a087fcbbb925671a1b1ee55ad3952a000b4c400789b79"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+      "sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off-v16-02.json",
+      "sha256": "bb546f9ffe3c497373cea272372f83402723d40bf2d587e0d77a4f767908a69b"
+    }
+  ],
+  "knowledge_budget_calls": {
+    "allocated": 0,
+    "calls": 0,
+    "transfers": false,
+    "production_injection": false
+  },
+  "tests_started_this_recheck": false
+}

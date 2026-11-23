@@ -1,0 +1,43 @@
+{
+  "created_at": "2026-11-15T07:28:06.550014+00:00",
+  "state": "pass",
+  "source_sha256_before": "1a6199aa6706ad9e4ff1ea13c06ee1c08e2fbab5122939a17c3cfe17dcf0eb4d",
+  "source_sha256_after": "1a6199aa6706ad9e4ff1ea13c06ee1c08e2fbab5122939a17c3cfe17dcf0eb4d",
+  "source_stable": true,
+  "steps": [
+    {
+      "command": [
+        "/opt/homebrew/bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server",
+        "vet",
+        "-p",
+        "2",
+        "./cmd/server"
+      ],
+      "exit_code": 0,
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-rebind-static-catntv9h/check-0.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_tail": ""
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "--list",
+        "e2e/project-knowledge-automation.spec.ts",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "exit_code": 0,
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-rebind-static-catntv9h/check-1.log",
+      "log_sha256": "847d3049f910da0509b746d3ceceb9dd6df8eb170ba2c6b1992d73705a0f3414",
+      "output_tail": "◇ injected env (103) from .env // tip: ⌘ override existing { override: true }\nListing tests:\n  [chromium] › project-knowledge-automation.spec.ts:34:3 › web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof\n  [chromium] › project-knowledge-automation.spec.ts:34:3 › desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof\nTotal: 2 tests in 1 file\n[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n"
+    }
+  ],
+  "new_peer_test_not_owned": "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+  "product_runtime_started": false,
+  "real_accounts_or_models_used": false
+}

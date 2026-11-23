@@ -1,0 +1,31 @@
+{
+  "evidence_type": "offline-native-network-split-and-unix-api-probe",
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--network=none",
+    "--read-only",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--security-opt=seccomp=unconfined",
+    "--user=1000:1000",
+    "--tmpfs=/tmp:rw,nosuid,size=32m",
+    "--tmpfs=/home/node/.codex:rw,nosuid,size=32m,uid=1000,gid=1000",
+    "-e",
+    "HOME=/home/node",
+    "-e",
+    "CODEX_HOME=/home/node/.codex",
+    "--mount",
+    "type=bind,src=/Volumes/artisan/code/2026/mc-secrem-v2-20261118/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts,dst=/probe,readonly",
+    "--workdir=/tmp",
+    "--entrypoint",
+    "node",
+    "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+    "/probe/native_boundary_probe.js"
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "sandbox probe exit 1: \n"
+}

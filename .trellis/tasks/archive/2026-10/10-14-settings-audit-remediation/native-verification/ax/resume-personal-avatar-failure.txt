@@ -1,0 +1,17 @@
+- banner:
+  - status
+- tabpanel "个人资料": 0/2000
+- region "Notifications alt+T":
+  - list:
+    - listitem: AUDIT_PERSONAL_PROFILE_WRITE_FAILED
+- dialog "编辑头像":
+  - heading "编辑头像" [level=2]
+  - button "旋转"
+  - button "缩小"
+  - group "缩放":
+    - slider: "1"
+  - button "放大"
+  - button "重置"
+  - button "取消"
+  - button "保存"
+  - button "Close"

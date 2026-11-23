@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { paths, isGlobalPath } from "./paths";
 import { RESERVED_SLUGS } from "./reserved-slugs";
@@ -32,6 +33,9 @@ describe("paths.workspace() shape", () => {
         "chat",
         "docs",
         "squads",
+        "newSquad",
+        "newSquadManual",
+        "newSquadTemplate",
         "inbox",
         "triage",
         "myIssues",
@@ -65,6 +69,9 @@ describe("paths.workspace() shape", () => {
       ["chat", "chat"],
       ["docs", "docs"],
       ["squads", "squads"],
+      ["newSquad", "squads/new"],
+      ["newSquadManual", "squads/new/manual"],
+      ["newSquadTemplate", "squads/new/template"],
       ["inbox", "inbox"],
       ["triage", "triage"],
       ["myIssues", "my-issues"],

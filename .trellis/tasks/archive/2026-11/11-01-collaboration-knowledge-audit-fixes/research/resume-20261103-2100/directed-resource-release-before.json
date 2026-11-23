@@ -1,0 +1,22 @@
+{
+  "recorded_at": "2026-11-03T13:42:44.016732+00:00",
+  "exact_owned_groups": [
+    {
+      "pid": 15167,
+      "pgid": 15167,
+      "command": "go run -ldflags -X main.commit=85ef5d205 ./cmd/server"
+    },
+    {
+      "pid": 15939,
+      "pgid": 15939,
+      "command": "node /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/tool-bin/pnpm --dir /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103 --filter @multica/web exec next start --port 13225"
+    },
+    {
+      "pid": 16111,
+      "pgid": 16111,
+      "command": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -u -m http.server 20021 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/renderer"
+    }
+  ],
+  "database_retained": "multica_failure_repair_v13_d18fcdca8b",
+  "redis_retained": "eca6ad16e34354782c4f68bb5471d6dacc298c64da5b18660883fd6560f158e8"
+}

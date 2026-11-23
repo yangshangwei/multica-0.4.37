@@ -1,0 +1,302 @@
+package handler
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+	"runtime"
+	"strings"
+	"sync"
+	"testing"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/multica-ai/multica/server/internal/iteration"
+	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/testutil"
+
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
+)
+
+// This task-only additive overlay is a single-operation attribution probe.
+// It never changes a production query or the frozen 35-cycle P95 test.
+type phaseProbeRequestKey struct{}
+type phaseProbeQueryKey struct{}
+type phaseProbeBatchKey struct{}
+type phaseProbeAcquireKey struct{}
+type phaseProbeSpan struct {
+	Began time.Time
+	Name  string
+	Count int
+}
+type phaseProbeQuery struct {
+	Count   int     `json:"count"`
+	TotalMS float64 `json:"total_ms"`
+	MaxMS   float64 `json:"max_ms"`
+	Errors  int     `json:"errors"`
+}
+type phaseProbeBatch struct {
+	Name       string  `json:"name"`
+	Statements int     `json:"statements"`
+	DurationMS float64 `json:"duration_ms"`
+	Error      string  `json:"error,omitempty"`
+}
+type phaseProbeTracer struct {
+	mu               sync.Mutex
+	Queries          map[string]phaseProbeQuery `json:"queries"`
+	Batches          []phaseProbeBatch          `json:"batches"`
+	BatchQueryCounts map[string]int             `json:"batch_query_counts"`
+	BatchQueryErrors int                        `json:"batch_query_errors"`
+	AcquireCount     int                        `json:"acquire_count"`
+	AcquireTotalMS   float64                    `json:"acquire_total_ms"`
+	AcquireErrors    int                        `json:"acquire_errors"`
+}
+
+var _ pgx.QueryTracer = (*phaseProbeTracer)(nil)
+var _ pgx.BatchTracer = (*phaseProbeTracer)(nil)
+var _ pgxpool.AcquireTracer = (*phaseProbeTracer)(nil)
+
+func phaseProbeName(sql string) string {
+	if strings.HasPrefix(sql, "-- name: ") {
+		return strings.Fields(sql)[2]
+	}
+	sql = strings.Join(strings.Fields(sql), " ")
+	if len(sql) > 180 {
+		sql = sql[:180]
+	}
+	return sql
+}
+func phaseProbeMeasured(ctx context.Context) bool {
+	value, _ := ctx.Value(phaseProbeRequestKey{}).(bool)
+	return value
+}
+func (p *phaseProbeTracer) TraceQueryStart(ctx context.Context, _ *pgx.Conn, data pgx.TraceQueryStartData) context.Context {
+	if !phaseProbeMeasured(ctx) {
+		return ctx
+	}
+	return context.WithValue(ctx, phaseProbeQueryKey{}, phaseProbeSpan{Began: time.Now(), Name: phaseProbeName(data.SQL)})
+}
+func (p *phaseProbeTracer) TraceQueryEnd(ctx context.Context, _ *pgx.Conn, data pgx.TraceQueryEndData) {
+	span, ok := ctx.Value(phaseProbeQueryKey{}).(phaseProbeSpan)
+	if !ok {
+		return
+	}
+	ms := float64(time.Since(span.Began).Nanoseconds()) / 1e6
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	stat := p.Queries[span.Name]
+	stat.Count++
+	stat.TotalMS += ms
+	if ms > stat.MaxMS {
+		stat.MaxMS = ms
+	}
+	if data.Err != nil {
+		stat.Errors++
+	}
+	p.Queries[span.Name] = stat
+}
+func (p *phaseProbeTracer) TraceBatchStart(ctx context.Context, _ *pgx.Conn, data pgx.TraceBatchStartData) context.Context {
+	if !phaseProbeMeasured(ctx) {
+		return ctx
+	}
+	name := "empty"
+	if data.Batch.Len() > 0 {
+		name = phaseProbeName(data.Batch.QueuedQueries[0].SQL)
+	}
+	return context.WithValue(ctx, phaseProbeBatchKey{}, phaseProbeSpan{Began: time.Now(), Name: name, Count: data.Batch.Len()})
+}
+func (p *phaseProbeTracer) TraceBatchQuery(ctx context.Context, _ *pgx.Conn, data pgx.TraceBatchQueryData) {
+	if !phaseProbeMeasured(ctx) {
+		return
+	}
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.BatchQueryCounts[phaseProbeName(data.SQL)]++
+	if data.Err != nil {
+		p.BatchQueryErrors++
+	}
+}
+func (p *phaseProbeTracer) TraceBatchEnd(ctx context.Context, _ *pgx.Conn, data pgx.TraceBatchEndData) {
+	span, ok := ctx.Value(phaseProbeBatchKey{}).(phaseProbeSpan)
+	if !ok {
+		return
+	}
+	batch := phaseProbeBatch{Name: span.Name, Statements: span.Count, DurationMS: float64(time.Since(span.Began).Nanoseconds()) / 1e6}
+	if data.Err != nil {
+		batch.Error = data.Err.Error()
+	}
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.Batches = append(p.Batches, batch)
+}
+func (p *phaseProbeTracer) TraceAcquireStart(ctx context.Context, _ *pgxpool.Pool, _ pgxpool.TraceAcquireStartData) context.Context {
+	if !phaseProbeMeasured(ctx) {
+		return ctx
+	}
+	return context.WithValue(ctx, phaseProbeAcquireKey{}, time.Now())
+}
+func (p *phaseProbeTracer) TraceAcquireEnd(ctx context.Context, _ *pgxpool.Pool, data pgxpool.TraceAcquireEndData) {
+	began, ok := ctx.Value(phaseProbeAcquireKey{}).(time.Time)
+	if !ok {
+		return
+	}
+	ms := float64(time.Since(began).Nanoseconds()) / 1e6
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	p.AcquireCount++
+	p.AcquireTotalMS += ms
+	if data.Err != nil {
+		p.AcquireErrors++
+	}
+}
+
+func TestIterationClosurePhaseDiagnostic(t *testing.T) {
+	if os.Getenv("MULTICA_ITERATION_PHASE_DIAGNOSTIC") != "1" {
+		t.Fatal("this private diagnostic requires an explicit task permit")
+	}
+	base := lifecycleHTTPHandler(t)
+	tracer := &phaseProbeTracer{Queries: map[string]phaseProbeQuery{}, BatchQueryCounts: map[string]int{}}
+	cfg := testPool.Config()
+	cfg.ConnConfig.RuntimeParams["application_name"] = "i1-phase-probe-" + uuid.NewString()
+	cfg.ConnConfig.Tracer = tracer
+	pool, err := pgxpool.NewWithConfig(t.Context(), cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(pool.Close)
+	h := *testHandler
+	h.Queries, h.DB, h.TxStarter, h.FeatureFlags = db.New(pool), pool, pool, base.FeatureFlags
+	dbfx.Cleanup(t, "DELETE FROM iteration_notification WHERE workspace_id=$1", testWorkspaceID)
+	var postgres string
+	dbfx.QueryRow(t, "SELECT version()").Scan(&postgres)
+
+	const count = 1000
+	first := lifecycleHTTPCreate(t, &h, "Phase probe source")
+	next := lifecycleHTTPCreate(t, &h, "Phase probe next")
+	projects := make([]string, 10)
+	for n := range projects {
+		projects[n] = dbfx.Project(t, fmt.Sprintf("Phase probe project %d", n))
+	}
+	labels := make([]string, 6)
+	for n := range labels {
+		labels[n] = dbfx.Insert(t, "issue_label", testutil.Cols{"workspace_id": testWorkspaceID, "name": fmt.Sprintf("Phase probe label %d", n), "resource_type": "issue", "color": "#123456"})
+	}
+	priorities := []string{"urgent", "high", "medium", "low", "none"}
+	ids := make([]string, 0, count)
+	moves := make([]iteration.Move, 0, count)
+	for n := range count {
+		id := dbfx.Issue(t, fmt.Sprintf("Phase probe work %04d", n), testutil.Cols{"project_id": projects[n%len(projects)], "assignee_type": "member", "assignee_id": testUserID, "priority": priorities[n%len(priorities)]})
+		for j := range 3 {
+			label := labels[(n+j)%len(labels)]
+			dbfx.InsertNoID(t, "issue_to_label", testutil.Cols{"issue_id": id, "label_id": label}, "issue_id=$1 AND label_id=$2", id, label)
+		}
+		ids = append(ids, id)
+		moves = append(moves, iteration.Move{IssueID: id, ExpectedIssueRevision: 1, TargetID: &first})
+	}
+	lifecycleHTTPApply(t, &h, iteration.Draft{Operation: "move", ExpectedSettingsRevision: 2, Moves: moves})
+	row, err := h.Queries.GetIteration(t.Context(), db.GetIterationParams{WorkspaceID: parseUUID(testWorkspaceID), ID: parseUUID(first)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	lifecycleHTTPApply(t, &h, iteration.Draft{Operation: "start", IterationID: &first, ExpectedIterationRevision: &row.Revision, ExpectedScopeRevision: &row.ScopeRevision, ExpectedSettingsRevision: 2, Start: &iteration.StartDraft{TargetID: first, Mode: "scheduled", TerminalChoices: []iteration.TerminalChoice{}}})
+	var detail struct {
+		Iteration  iteration.Iteration  `json:"iteration"`
+		Statistics iteration.Statistics `json:"statistics"`
+	}
+	testutil.Call(t, h.GetIteration, lifecycleHTTPRequest("GET", "iterations/"+first, first, nil)).Want(200).JSON(&detail)
+	if detail.Statistics.Original != count || detail.Statistics.Current != count {
+		t.Fatalf("diagnostic incomplete population: %+v", detail.Statistics)
+	}
+	moves = moves[:0]
+	for _, id := range ids {
+		issue, e := h.Queries.GetIssue(t.Context(), parseUUID(id))
+		if e != nil {
+			t.Fatal(e)
+		}
+		moves = append(moves, iteration.Move{IssueID: id, ExpectedIssueRevision: issue.Revision, ExpectedSourceID: &first, TargetID: &next})
+	}
+	reason := "Task-only phase attribution"
+	draft := iteration.Draft{Operation: "end", IterationID: &first, ExpectedIterationRevision: &detail.Iteration.Revision, ExpectedScopeRevision: &detail.Iteration.ScopeRevision, ExpectedSettingsRevision: 2, Reason: &reason, Moves: moves}
+	var preview iteration.Preview
+	testutil.Call(t, h.PreviewIterationOperation, lifecycleHTTPRequest("POST", "iteration-previews", "", draft)).Want(200).JSON(&preview)
+	if !preview.Complete || preview.TotalAffected != count || len(preview.InvalidItems) != 0 {
+		t.Fatalf("diagnostic incomplete preview: %+v", preview)
+	}
+
+	before := pool.Stat()
+	var memoryBefore, memoryAfter runtime.MemStats
+	runtime.ReadMemStats(&memoryBefore)
+	var result iteration.WriteResult
+	began := time.Now()
+	req := lifecycleHTTPRequest("POST", "iteration-operations", "", service.ApplyIterationInput{RequestID: uuid.NewString(), Draft: preview.Draft, PreviewHash: preview.PreviewHash})
+	req = req.WithContext(context.WithValue(req.Context(), phaseProbeRequestKey{}, true))
+	testutil.Call(t, h.ApplyIterationOperation, req).Want(200).JSON(&result)
+	wallMS := float64(time.Since(began).Nanoseconds()) / 1e6
+	runtime.ReadMemStats(&memoryAfter)
+	after := pool.Stat()
+
+	if got := dbfx.Count(t, "SELECT count(*) FROM issue WHERE current_iteration_id=$1 AND iteration_rollover_count=1", next); got != count {
+		t.Fatalf("diagnostic only %d tasks rolled over exactly once", got)
+	}
+	if got := dbfx.Count(t, "SELECT count(*) FROM iteration_snapshot s, jsonb_array_elements(s.body->'scope') item WHERE s.iteration_id=$1 AND jsonb_array_length(item->'labels')=3 AND item->>'priority' IS NOT NULL", first); got != count {
+		t.Fatalf("diagnostic froze display facts for only %d members", got)
+	}
+
+	queryTotal, batchTotal := 0.0, 0.0
+	queryCount, batchStatements, membershipPhases := 0, 0, 0
+	for _, stat := range tracer.Queries {
+		queryTotal += stat.TotalMS
+		queryCount += stat.Count
+	}
+	for _, batch := range tracer.Batches {
+		batchTotal += batch.DurationMS
+		batchStatements += batch.Statements
+		if batch.Statements == count {
+			membershipPhases++
+		}
+	}
+	report := map[string]any{
+		"scope": "One real HTTP closure; setup/start/preview excluded by request-context marker; no P95 gate claim",
+		"tasks": count, "closure_operations": 1, "handler_ms": wallMS, "queries": tracer.Queries, "batches": tracer.Batches,
+		"batch_query_counts": tracer.BatchQueryCounts, "batch_query_errors": tracer.BatchQueryErrors,
+		"query_count": queryCount, "query_total_ms": queryTotal, "batch_statements": batchStatements, "batch_total_ms": batchTotal,
+		"acquire_count": tracer.AcquireCount, "acquire_total_ms": tracer.AcquireTotalMS, "acquire_errors": tracer.AcquireErrors,
+		"pool_acquire_count_delta":       after.AcquireCount() - before.AcquireCount(),
+		"pool_acquire_ms_delta":          float64((after.AcquireDuration() - before.AcquireDuration()).Nanoseconds()) / 1e6,
+		"pool_empty_acquire_count_delta": after.EmptyAcquireCount() - before.EmptyAcquireCount(),
+		"pool_empty_wait_ms_delta":       float64((after.EmptyAcquireWaitTime() - before.EmptyAcquireWaitTime()).Nanoseconds()) / 1e6,
+		"handler_residual_ms":            wallMS - queryTotal - batchTotal - tracer.AcquireTotalMS,
+		"allocated_bytes_delta":          memoryAfter.TotalAlloc - memoryBefore.TotalAlloc, "gc_count_delta": memoryAfter.NumGC - memoryBefore.NumGC,
+		"postgres": postgres, "go": runtime.Version(), "os": runtime.GOOS, "arch": runtime.GOARCH, "cpus": runtime.NumCPU(),
+		"lock_sampler":        "not running; original 1ms Lock-only observer deliberately excluded from this attribution diagnostic",
+		"original_p95_status": "FAIL retained", "pool_max_conns": cfg.MaxConns, "pool_min_conns": cfg.MinConns,
+		"count_checks": map[string]any{
+			"active_task_reads":        tracer.Queries["ListActiveTasksByIssue"].Count,
+			"participation_lock_reads": tracer.Queries["LockIssueIterationParticipation"].Count,
+			"membership_phases":        membershipPhases,
+		},
+	}
+	raw, err := json.MarshalIndent(report, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(os.Getenv("MULTICA_ITERATION_PHASE_REPORT"), append(raw, '\n'), 0600); err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("I1_PHASE_DIAGNOSTIC_JSON=%s", raw)
+	if tracer.Queries["ListActiveTasksByIssue"].Count != count {
+		t.Errorf("unexpected active-task reads: %d", tracer.Queries["ListActiveTasksByIssue"].Count)
+	}
+	if tracer.Queries["LockIssueIterationParticipation"].Count != 2*count {
+		t.Errorf("unexpected participation reads: %d", tracer.Queries["LockIssueIterationParticipation"].Count)
+	}
+	if membershipPhases != 7 || batchStatements != 7000 {
+		t.Errorf("unexpected membership pipeline: phases=%d statements=%d", membershipPhases, batchStatements)
+	}
+	if tracer.AcquireErrors != 0 || tracer.BatchQueryErrors != 0 {
+		t.Errorf("diagnostic database errors: acquire=%d batch=%d", tracer.AcquireErrors, tracer.BatchQueryErrors)
+	}
+}

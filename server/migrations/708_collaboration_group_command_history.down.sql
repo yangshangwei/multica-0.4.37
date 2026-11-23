@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS idx_collaboration_group_command_history;

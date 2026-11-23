@@ -1,0 +1,74 @@
+{
+  "run_id": "p4-http-version-policy-03b48214",
+  "database": "mca_knowledge_handler_f91953591be4",
+  "package": "./internal/handler",
+  "test_pattern": "^(TestKnowledgeHTTP|TestKnowledgePolicyHTTP)",
+  "run_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p4-http-version-policy-03b48214",
+  "state": "failed",
+  "cluster_before": {
+    "database": "postgres",
+    "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": 100,
+    "connections": 27
+  },
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "source_sha256_before": "22ebfefd30ade5ea014c9c316b66a02ba575f5968cfa68a873c6ff89d36a669f",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "created_at": "2026-11-14T13:26:05.428419+00:00",
+  "real_model_credentials_inherited": false,
+  "agent_cli_guard": true,
+  "launcher_sha256": "8b0c310e77af0f694d187306332e208a2910da1e3e95cbb045d4ee4f5ae68446",
+  "migration_exit": 0,
+  "migration_ledger": "848:860_knowledge_automation_execution_policy",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-timeout=5m",
+    "./internal/handler",
+    "-run",
+    "^(TestKnowledgeHTTP|TestKnowledgePolicyHTTP)"
+  ],
+  "test_exit": 1,
+  "tests": {
+    "run": [
+      "TestKnowledgeHTTPHumanRoundTripAndPurgedProjection",
+      "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery",
+      "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery/unknown",
+      "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery/duplicate",
+      "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery/alias",
+      "TestKnowledgeHTTPVersionNegotiationAndOriginalReceipts",
+      "TestKnowledgePolicyHTTPRequiresExplicitToggleAndRecoversAfterRoleLoss",
+      "TestKnowledgeHTTPRejectsHumanCredentialFallback",
+      "TestKnowledgeHTTPNegotiationDoesNotEnableClosedGate"
+    ],
+    "pass": [
+      "TestKnowledgeHTTPHumanRoundTripAndPurgedProjection",
+      "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery/unknown",
+      "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery/duplicate",
+      "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery/alias",
+      "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery",
+      "TestKnowledgeHTTPVersionNegotiationAndOriginalReceipts",
+      "TestKnowledgeHTTPRejectsHumanCredentialFallback",
+      "TestKnowledgeHTTPNegotiationDoesNotEnableClosedGate"
+    ],
+    "fail": [
+      "TestKnowledgePolicyHTTPRequiresExplicitToggleAndRecoversAfterRoleLoss"
+    ],
+    "skip": []
+  },
+  "source_sha256_after": "22ebfefd30ade5ea014c9c316b66a02ba575f5968cfa68a873c6ff89d36a669f",
+  "connections_after": 0,
+  "finished_at": "2026-11-14T13:26:34.212520+00:00",
+  "source_stable": true
+}

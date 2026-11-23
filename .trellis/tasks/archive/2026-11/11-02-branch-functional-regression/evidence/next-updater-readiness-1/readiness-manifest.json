@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "created_at": "2026-11-02T09:55:46.601041+00:00",
+  "status": "PREPARED_OFFLINE_NOT_EXECUTABLE_NOT_ACCEPTANCE",
+  "owner": "/root/mac_updater_readiness",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "candidate_version": "0.6.8-rc.20261102",
+  "platform": "darwin",
+  "arch": "arm64",
+  "metadata": {
+    "source": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/latest-mac.yml",
+    "filename": "latest-mac.yml",
+    "sha256": "addb8b0e3a3d31888bed89db52b02315d9b7c129da55296290f6643a79c59dbf",
+    "template_exact_bytes": true
+  },
+  "feed_template": "evidence/next-updater-readiness-1/latest-mac.yml",
+  "feed_template_preserves_original_generated_bytes": true,
+  "files_to_materialize_later": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+      "bytes": 223524090,
+      "sha256": "b50a00fa6fc44ca612a834aa8fd1c638f91431b87d5b6bb47abbd479433183d9",
+      "sha512": "JWDSnUuNQmDKJQGa9PnhYPZ4j2gqDhlGPjMWUQ9ymS9q/QJ4Ge0b/wVh0rZfR9BrK9GhSUhpXJ8Iku31OgfTaQ==",
+      "role": "Fixed bytes for offline metadata preparation, not installation acceptance"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+      "bytes": 233408426,
+      "sha256": "bd82fe6ddc6b65fce891f078d64326d91742d951f310b67589eb654bdaceabf6",
+      "sha512": "P7kbdU8Z5fW/S8eSWY1HzVmYKxIAlt7RQPSmZjX8lSQVmPKAcM8arDW7K+G8BwuRzS/az4evQfYiMCxdnlaUbA==",
+      "role": "Fixed bytes for offline metadata preparation, not installation acceptance"
+    }
+  ],
+  "selected_install_zip": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+  "updater_library": {
+    "installed_version": "6.8.3",
+    "bundled_versions": [
+      {
+        "role": "baseline",
+        "version": "0.6.5-185-g61ff581d2-dirty",
+        "main": "./out/main/index.js",
+        "main_sha256": "39bde0d10b61642148d78ec8ae3067c8b2d94794ad8ee8b99c5b7609b04695a5",
+        "bundled_updater_version": "6.8.3",
+        "packaged_acceptance_and_real_updater_ipc_present": true
+      },
+      {
+        "role": "candidate",
+        "version": "0.6.8-rc.20261102",
+        "main": "./out/main/index.js",
+        "main_sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+        "bundled_updater_version": "6.8.3",
+        "packaged_acceptance_and_real_updater_ipc_present": true
+      }
+    ]
+  },
+  "baseline": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/multica-desktop-0.6.5-185-g61ff581d2-dirty-mac-arm64.zip",
+    "sha256": "807cf1adb72639dc696070de8c0e0a684386b5092daac1da48b8c2b56cc473a1",
+    "version": "0.6.5-185-g61ff581d2-dirty",
+    "provenance_limit": "0.6.5-185-g61ff581d2-dirty; exact dirty ZIP, source diff unreconstructed"
+  },
+  "payload_identity": {
+    "baseline_asar_sha256": "da566a4d55d35948fdf8150251e5980bbfcc6ffd0845f659f8f02737fe4201c6",
+    "candidate_asar_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485"
+  },
+  "source_sha256": {
+    "apps/desktop/src/main/updater.ts": "6e95d909d534bfd2e8c029734dd863cae1d20a5ecb5bd5c5e85fc10c925269ee",
+    "apps/desktop/src/main/updater-preferences.ts": "c13d4606d76963d29db0f5f5f82c04bed7799b103e8e6ad3ea7d735a48e0366c",
+    "apps/desktop/src/main/index.ts": "d05fea06767481958ee0b0be80ff72a7149c67b87cd48c91b94bb62345645f41",
+    "apps/desktop/src/main/packaged-acceptance-home.ts": "c4151d143a4a0ff362e0f7dada939979dffe24d6bc66d125c74afdd53b350aa6",
+    "apps/desktop/src/main/runtime-config-loader.ts": "ef290261cb679f3eb006f918d6a9880214ba51cc9fbe5f0d9ac55d3344c0f151",
+    "apps/desktop/src/shared/runtime-config.ts": "06a9def1bdb68ce113a30c6accfb87fdd030406f9c6cfa853f4cc00fe4f67da9",
+    "apps/desktop/src/preload/index.ts": "7e37e02111d76f015c7ede1a6f811d9540cdf215115c47874244e818a875feec",
+    "apps/desktop/electron-builder.yml": "962eea177f02bdfa75937312e339e042664724245086fbb6d24eeb387d6cf4d6",
+    "apps/desktop/scripts/update-artifacts.mjs": "3829bfeafe125838eae6cf5aa80590a8b46196cc2d9b3f025e1679e1ab45c61f",
+    "apps/desktop/scripts/configure-updates.mjs": "1123fb0a291f102f4d34aed5091072f87f24fd91abdb96c5ce14ae64e9bf078c",
+    "apps/desktop/scripts/windows-update-probe.mjs": "59e67f789d5219dc529683b7121d29de7cb64a470e924c861473564d8e31ce1a",
+    "apps/desktop/scripts/package.mjs": "690d75463c57593b926deed3d06e023ac6ca6f7656d757697b65d3af1c81aa6a"
+  },
+  "dependency_sha256": {
+    "package.json": "0c2b8e2b7a81902332cb13cb683730a4f4955b836acf8d157d46411f4afffa53",
+    "out/AppUpdater.js": "da6d8f1add2e0825bc1f09f1b1db1b115e099b0f82ec72999383e3fd658edeb8",
+    "out/MacUpdater.js": "47a521a1698333b83d4308b38c4a7bacda5f2ca6b5a3627b45bed3f4ee2549c6",
+    "out/AppAdapter.js": "2fd4359fe091d7a42e2e2df8327e03aa52e202cbf593b11d9bc891cefd09caa8",
+    "out/ElectronAppAdapter.js": "fa8fbf1de1c69924942aa3926878d391fba95007095836abe5f5b878506d4931",
+    "out/providers/GenericProvider.js": "c0d1f1aed62d7418e4d292118b3e079f9680914c554fe7604786b73771297d8a",
+    "out/providers/Provider.js": "48601c5ceb7aaaeec096b84186a1155964128e64bbe8c009dd2d9cb9afccda37"
+  },
+  "source_contracts": {
+    "mac_arm64_channel": "latest-mac.yml; latest-arm64 belongs to Windows arm64, latest-x64-mac to Mac x64",
+    "manual_check_with_automatic_updates_disabled": "Permitted by current IPC; autoDownload remains true. Preference controls scheduled checks only.",
+    "download_install": "ZIP -> checksum/cache -> local Squirrel proxy -> native update -> explicit quit/install/restart; wrapper event alone is not install evidence.",
+    "runtime_config": "Packaged task home .multica/desktop.json; actual owned updateUrl overrides generated GitHub provider. No server config blocks manual/automatic checks.",
+    "cache_home": "Electron home/userData override does not change Node os.homedir. Actual child HOME plus cache-path verification required.",
+    "prerelease": "Generated RC validates only with updateReferences(info,true) / collector --allow-prerelease; no release/version/channel rewrite."
+  },
+  "future_conditions": [
+    {
+      "id": "IDENTITY",
+      "status": "PREPARED_ONLY",
+      "requirement": "Recheck exact source, fixed baseline/candidate bytes and actual installed versions before any future run; dirty baseline scope is exact ZIP only."
+    },
+    {
+      "id": "FEED",
+      "status": "NOT_STARTED",
+      "requirement": "Materialize original latest-mac.yml plus its exact ZIP/DMG into a fresh owned directory; run a controlled loopback HTTP feed and prove GET/HEAD/full checksum/Range before app launch."
+    },
+    {
+      "id": "PROFILE",
+      "status": "TEMPLATE_UNRESOLVED",
+      "requirement": "Use one stable task-owned baseline installation/profile; render actual owned API/app/WS/update endpoints without changing auth mode, using no user account store."
+    },
+    {
+      "id": "NODE_CACHE_HOME",
+      "status": "NOT_VERIFIED_IN_RUNTIME",
+      "requirement": "Set child-process HOME to OWNED_RUN_HOME as well as MULTICA_PACKAGED_ACCEPTANCE=1 and MULTICA_PACKAGED_ACCEPTANCE_HOME; verify Node os.homedir(), Electron home/userData and updater cache are all task-owned before update."
+    },
+    {
+      "id": "NATIVE_MAC_DRIVER",
+      "status": "MISSING",
+      "requirement": "Use a separately reviewed Mac-specific manual/native updater journey; existing windows-update-probe.mjs rejects darwin and cannot be reused by faking its environment."
+    },
+    {
+      "id": "SIGNED_UPDATE_COMPATIBILITY",
+      "status": "UNPROVED",
+      "requirement": "Validate baseline/candidate compatibility with actual Squirrel.Mac signing requirements in the intended owned run. Known artifacts are ad-hoc; this preparation does not prove they can update or satisfy Developer ID/notarization trust."
+    },
+    {
+      "id": "PROTOCOL",
+      "status": "FUTURE_CAPTURE_REQUIRED",
+      "requirement": "Capture exact multica default application path and same-bundle set before baseline launch; remove only new task-prefix registrations afterward and prove exact original set/default."
+    },
+    {
+      "id": "NATIVE_STAGE_AND_RESTART",
+      "status": "NOT_RUN",
+      "requirement": "Capture wrapper download plus native Squirrel readiness/error, explicit install, actual replaced payload hashes and actual restarted candidate version. A wrapper event or mtime change alone is insufficient."
+    },
+    {
+      "id": "CACHE_PROXY_CLEANUP",
+      "status": "FUTURE_AUDIT_REQUIRED",
+      "requirement": "Track task-owned updater cache/pending paths, .updaterId, native update proxy listener and updater-created process tree; clean/check only owned resources."
+    },
+    {
+      "id": "REAL_AUTH_MIGRATION",
+      "status": "NOT_RUN_SEPARATE_GATE",
+      "requirement": "Synthetic updater/profile sentinels do not verify real logged-in state, credentials or business-account migration; requires separately approved owned real account journey."
+    },
+    {
+      "id": "TRUST",
+      "status": "BLOCKED",
+      "requirement": "Exact Developer ID-signed/notarized distribution and target trust evidence are not supplied. No signing/notarization action in this batch."
+    }
+  ],
+  "profile_template": "evidence/next-updater-readiness-1/runtime-config.template.json",
+  "updater_preferences_template": "evidence/next-updater-readiness-1/updater-preferences.template.json",
+  "future_recipe": "evidence/next-updater-readiness-1/future-run.recipe.json",
+  "current_gates": {
+    "MAC-AUTOMATIC-UPDATER": "NOT_RUN",
+    "MAC-TRUST": "BLOCKED",
+    "MAC-AUTH-MIGRATION": "NOT_RUN"
+  },
+  "new_runnable_actual_updater_gate": false,
+  "resources": {
+    "application_launches": 0,
+    "updater_runs": 0,
+    "network_calls": 0,
+    "services_started": 0,
+    "ports_created": 0,
+    "containers_started": 0,
+    "mounts_created": 0,
+    "protocol_mutations": 0,
+    "database_connections": 0,
+    "account_accesses": 0,
+    "commercial_calls": 0,
+    "remote_dispatches": 0
+  },
+  "limitations": [
+    "Only offline parsing/source/artifact identity is verified. No updater/network/install/restart/native signature or authentication migration was run.",
+    "The copied metadata retains original builder releaseDate; it is not publication evidence.",
+    "Known baseline is a dirty exact ZIP; reproducible dirty source was not reconstructed.",
+    "Current ad-hoc signature is a trust limitation, not an observed failed automatic-update attempt.",
+    "Profile template endpoints are explicit unresolved placeholders; the separate parser-only localhost:1 fixture had no listener and is not a configured environment."
+  ],
+  "optional_existing_blockmaps": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.zip.blockmap",
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip.blockmap",
+      "bytes": 234398,
+      "sha256": "8d7c47b036732c679d30288d02cb308d0cca9179207fc754a76ba4878a0be880",
+      "scope": "Associated existing blockmap identity observed; no expected hash from latest-mac.yml, no transport/differential update run"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg.blockmap",
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg.blockmap",
+      "bytes": 242248,
+      "sha256": "a4fd2024019699c31568daa41b38f1801011c4cad4c3c536a9d39a38ac1bc5c7",
+      "scope": "Associated existing blockmap identity observed; no expected hash from latest-mac.yml, no transport/differential update run"
+    }
+  ],
+  "differential_download_scope": "Fresh owned cache without update.zip uses the existing full ZIP path. Cached/differential path needs its own old/new blockmap availability and real transport proof; no flags were changed."
+}

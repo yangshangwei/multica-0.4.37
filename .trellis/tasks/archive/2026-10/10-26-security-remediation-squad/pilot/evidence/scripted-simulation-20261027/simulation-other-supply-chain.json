@@ -1,0 +1,366 @@
+{
+  "observed_at": "2026-10-27T08:11:59.026281+00:00",
+  "issue": {
+    "id": "01a17c62-9456-731c-bea9-459411b9a123",
+    "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+    "identifier": "POLA-19",
+    "title": "【脚本模拟】供应链缺证与完整往返",
+    "status": "in_review",
+    "assignee_type": "squad",
+    "assignee_id": "26156f72-d413-42be-a075-e46f2b9184ea",
+    "project_id": "6d369c93-b6af-4a83-8fba-93b1489e0789"
+  },
+  "task_runs": [
+    {
+      "id": "01a17c6a-6333-74be-92be-f9aa09a85523",
+      "agent_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "runtime_id": "191dac8a-0b3f-4c2d-90a4-51da68ecfd6a",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+      "status": "completed",
+      "priority": 2,
+      "dispatched_at": "2026-10-27T16:11:51+08:00",
+      "started_at": "2026-10-27T16:11:51+08:00",
+      "completed_at": "2026-10-27T16:11:53+08:00",
+      "result": {
+        "output": "SCRIPTED SIMULATION — NO MODEL: sequence settled at in_review; real-model gate remains open.",
+        "pr_url": "",
+        "session_id": "",
+        "session_rollout_missing": true,
+        "work_dir": "/work/tasks/polaris-fkx-5a4bc733949c/pola-19-f9aa09a85523/workdir"
+      },
+      "error": null,
+      "attempt": 1,
+      "max_attempts": 2,
+      "is_leader_task": true,
+      "created_at": "2026-10-27T16:11:49+08:00",
+      "work_dir": "/work/tasks/polaris-fkx-5a4bc733949c/pola-19-f9aa09a85523/workdir",
+      "relative_work_dir": "polaris-fkx-5a4bc733949c/pola-19-f9aa09a85523/workdir",
+      "trigger_comment_id": "01a17c6a-6326-7b9c-9680-076bedac4293",
+      "delivered_comment_ids": [
+        "01a17c6a-6326-7b9c-9680-076bedac4293"
+      ],
+      "trigger_summary": "SCRIPTED SIMULATION — NO MODEL SIMULATION_RECORD {\"kind\": \"result\", \"role\": \"security-reviewer\", \"simulation\": \"security-squad-sim-20261027\", \"stage\": 0, \"task\": \"01a17c6a-5a1f-7534-89cb-b6ae00ff2ecd\"…",
+      "kind": "comment",
+      "attribution": {
+        "source": "delegation",
+        "precise": true,
+        "initiator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "originator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "evidence": {
+          "kind": "comment",
+          "ref_id": "01a17c6a-6326-7b9c-9680-076bedac4293"
+        },
+        "delegated_from_task_id": "01a17c6a-5a1f-7534-89cb-b6ae00ff2ecd"
+      }
+    },
+    {
+      "id": "01a17c6a-5a1f-7534-89cb-b6ae00ff2ecd",
+      "agent_id": "ce9b9709-d57c-4ea2-9e9f-7f62fe17a917",
+      "runtime_id": "191dac8a-0b3f-4c2d-90a4-51da68ecfd6a",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+      "status": "completed",
+      "priority": 2,
+      "dispatched_at": "2026-10-27T16:11:49+08:00",
+      "started_at": "2026-10-27T16:11:49+08:00",
+      "completed_at": "2026-10-27T16:11:51+08:00",
+      "result": {
+        "output": "SCRIPTED SIMULATION — NO MODEL: role result submitted in comment 01a17c6a-6326-7b9c-9680-076bedac4293",
+        "pr_url": "",
+        "session_id": "",
+        "session_rollout_missing": true,
+        "work_dir": "/work/lab"
+      },
+      "error": null,
+      "attempt": 1,
+      "max_attempts": 2,
+      "created_at": "2026-10-27T16:11:47+08:00",
+      "work_dir": "/work/lab",
+      "relative_work_dir": "lab",
+      "trigger_comment_id": "01a17c6a-5a07-7311-87bf-e4684ab65415",
+      "delivered_comment_ids": [
+        "01a17c6a-5a07-7311-87bf-e4684ab65415"
+      ],
+      "trigger_summary": "SCRIPTED SIMULATION — NO MODEL SIMULATION_RECORD {\"kind\": \"dispatch\", \"role\": \"security-reviewer\", \"simulation\": \"security-squad-sim-20261027\", \"stage\": 0, \"task\": \"01a17c6a-5922-70cb-aacf-ed0aae10ec0…",
+      "kind": "comment",
+      "attribution": {
+        "source": "delegation",
+        "precise": true,
+        "initiator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "originator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "evidence": {
+          "kind": "comment",
+          "ref_id": "01a17c6a-5a07-7311-87bf-e4684ab65415"
+        },
+        "delegated_from_task_id": "01a17c6a-5922-70cb-aacf-ed0aae10ec09"
+      }
+    },
+    {
+      "id": "01a17c6a-5922-70cb-aacf-ed0aae10ec09",
+      "agent_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "runtime_id": "191dac8a-0b3f-4c2d-90a4-51da68ecfd6a",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+      "status": "completed",
+      "priority": 2,
+      "dispatched_at": "2026-10-27T16:11:46+08:00",
+      "started_at": "2026-10-27T16:11:46+08:00",
+      "completed_at": "2026-10-27T16:11:49+08:00",
+      "result": {
+        "output": "SCRIPTED SIMULATION — NO MODEL: dispatched one member and ended the coordinator turn.",
+        "pr_url": "",
+        "session_id": "",
+        "session_rollout_missing": true,
+        "work_dir": "/work/tasks/polaris-fkx-5a4bc733949c/pola-19-ed0aae10ec09/workdir"
+      },
+      "error": null,
+      "attempt": 1,
+      "max_attempts": 2,
+      "is_leader_task": true,
+      "created_at": "2026-10-27T16:11:46+08:00",
+      "work_dir": "/work/tasks/polaris-fkx-5a4bc733949c/pola-19-ed0aae10ec09/workdir",
+      "relative_work_dir": "polaris-fkx-5a4bc733949c/pola-19-ed0aae10ec09/workdir",
+      "trigger_comment_id": "01a17c6a-5904-7999-b36c-57798154bd6b",
+      "delivered_comment_ids": [
+        "01a17c6a-5904-7999-b36c-57798154bd6b"
+      ],
+      "trigger_summary": "[@安全修复流程小队（脚本模拟）](mention://squad/26156f72-d413-42be-a075-e46f2b9184ea) SCRIPTED SIMULATION — NO MODEL. The adapter now writes comment files inside its current task workdir, as required by the real CL…",
+      "kind": "comment",
+      "attribution": {
+        "source": "direct_human",
+        "precise": true,
+        "initiator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "originator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "evidence": {
+          "kind": "comment",
+          "ref_id": "01a17c6a-5904-7999-b36c-57798154bd6b"
+        }
+      }
+    },
+    {
+      "id": "01a17c66-5204-7261-b347-8fa6c44cdcdd",
+      "agent_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "runtime_id": "191dac8a-0b3f-4c2d-90a4-51da68ecfd6a",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+      "status": "failed",
+      "priority": 2,
+      "dispatched_at": "2026-10-27T16:07:22+08:00",
+      "started_at": "2026-10-27T16:07:23+08:00",
+      "completed_at": "2026-10-27T16:07:25+08:00",
+      "result": null,
+      "error": "SCRIPTED SIMULATION — NO MODEL: Multica CLI rejected simulation operation: --content-file path \"/tmp/multica-task-3033026163/tmpm8l1k7zj.md\" resolves outside the current working directory; write agent temp files inside the task workdir (e.g. ./content.md) rather than machine-shared paths like /tmp, where another run's stale file can be read by mistake. Pass --allow-external-file to override.\n",
+      "failure_reason": "agent_error.unknown",
+      "attempt": 1,
+      "max_attempts": 2,
+      "is_leader_task": true,
+      "created_at": "2026-10-27T16:07:22+08:00",
+      "work_dir": "/work/tasks/polaris-fkx-5a4bc733949c/pola-19-8fa6c44cdcdd/workdir",
+      "relative_work_dir": "polaris-fkx-5a4bc733949c/pola-19-8fa6c44cdcdd/workdir",
+      "trigger_comment_id": "01a17c66-51eb-70cb-a054-c05594561624",
+      "delivered_comment_ids": [
+        "01a17c66-51eb-70cb-a054-c05594561624"
+      ],
+      "trigger_summary": "[@安全修复流程小队（脚本模拟）](mention://squad/26156f72-d413-42be-a075-e46f2b9184ea) SCRIPTED SIMULATION — NO MODEL. Start the configured other-supply-chain finite fixture sequence. Test malformed mention rejectio…",
+      "kind": "comment",
+      "attribution": {
+        "source": "direct_human",
+        "precise": true,
+        "initiator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "originator": {
+          "id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be"
+        },
+        "evidence": {
+          "kind": "comment",
+          "ref_id": "01a17c66-51eb-70cb-a054-c05594561624"
+        }
+      }
+    }
+  ],
+  "comments": [
+    {
+      "id": "01a17c66-51eb-70cb-a054-c05594561624",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "author_type": "member",
+      "author_id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be",
+      "content": "[@安全修复流程小队（脚本模拟）](mention://squad/26156f72-d413-42be-a075-e46f2b9184ea) SCRIPTED SIMULATION — NO MODEL. Start the configured other-supply-chain finite fixture sequence. Test malformed mention rejection before the valid member handoff. No real runtime or model call is permitted.",
+      "type": "comment",
+      "parent_id": null,
+      "created_at": "2026-10-27T16:07:22+08:00",
+      "updated_at": "2026-10-27T16:07:22+08:00"
+    },
+    {
+      "id": "01a17c66-5af1-7246-bf05-0396bf36c97c",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "author_type": "agent",
+      "author_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "content": "SCRIPTED SIMULATION — NO MODEL: Multica CLI rejected simulation operation: --content-file path \"/tmp/multica-task-3033026163/tmpm8l1k7zj.md\" resolves outside the current working directory; write agent temp files inside the task workdir (e.g. ./content.md) rather than machine-shared paths like /tmp, where another run's stale file can be read by mistake. Pass --allow-external-file to override.\n",
+      "type": "system",
+      "parent_id": "01a17c66-51eb-70cb-a054-c05594561624",
+      "created_at": "2026-10-27T16:07:25+08:00",
+      "updated_at": "2026-10-27T16:07:25+08:00",
+      "source_task_id": "01a17c66-5204-7261-b347-8fa6c44cdcdd"
+    },
+    {
+      "id": "01a17c6a-5904-7999-b36c-57798154bd6b",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "author_type": "member",
+      "author_id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be",
+      "content": "[@安全修复流程小队（脚本模拟）](mention://squad/26156f72-d413-42be-a075-e46f2b9184ea) SCRIPTED SIMULATION — NO MODEL. The adapter now writes comment files inside its current task workdir, as required by the real CLI. Start the configured supply-chain simulation and its malformed-mention control from this fresh trigger.",
+      "type": "comment",
+      "parent_id": null,
+      "created_at": "2026-10-27T16:11:46+08:00",
+      "updated_at": "2026-10-27T16:11:46+08:00"
+    },
+    {
+      "id": "01a17c6a-59e9-77cc-b081-7058ad48fb87",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "author_type": "agent",
+      "author_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "content": "SCRIPTED SIMULATION — NO MODEL\nNEGATIVE CONTROL: intentionally missing Markdown brackets.\n@security-reviewer(mention://agent/ce9b9709-d57c-4ea2-9e9f-7f62fe17a917)",
+      "type": "comment",
+      "parent_id": "01a17c6a-5904-7999-b36c-57798154bd6b",
+      "created_at": "2026-10-27T16:11:47+08:00",
+      "updated_at": "2026-10-27T16:11:47+08:00",
+      "source_task_id": "01a17c6a-5922-70cb-aacf-ed0aae10ec09"
+    },
+    {
+      "id": "01a17c6a-5a07-7311-87bf-e4684ab65415",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "author_type": "agent",
+      "author_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "content": "SCRIPTED SIMULATION — NO MODEL\nSIMULATION_RECORD {\"kind\": \"dispatch\", \"role\": \"security-reviewer\", \"simulation\": \"security-squad-sim-20261027\", \"stage\": 0, \"task\": \"01a17c6a-5922-70cb-aacf-ed0aae10ec09\"}\n\n## Security triage\n- type: other\n- source: synthetic local fixture; scripted assessment\n- affected_surface: isolated synthetic lab only\n- severity: unknown\n- exploitability: unknown\n- evidence_state: unknown\n- production_impact: no\n- route: human\n- blocked_actions: production, secret, external notice, destructive\n- next_owner: security-reviewer\n\n[@security-reviewer](mention://agent/ce9b9709-d57c-4ea2-9e9f-7f62fe17a917) Execute only your configured scripted fixture stage and post your own marked result in this thread.",
+      "type": "comment",
+      "parent_id": "01a17c6a-5904-7999-b36c-57798154bd6b",
+      "created_at": "2026-10-27T16:11:47+08:00",
+      "updated_at": "2026-10-27T16:11:47+08:00",
+      "source_task_id": "01a17c6a-5922-70cb-aacf-ed0aae10ec09"
+    },
+    {
+      "id": "01a17c6a-6326-7b9c-9680-076bedac4293",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "author_type": "agent",
+      "author_id": "ce9b9709-d57c-4ea2-9e9f-7f62fe17a917",
+      "content": "SCRIPTED SIMULATION — NO MODEL\nSIMULATION_RECORD {\"kind\": \"result\", \"role\": \"security-reviewer\", \"simulation\": \"security-squad-sim-20261027\", \"stage\": 0, \"task\": \"01a17c6a-5a1f-7534-89cb-b6ae00ff2ecd\"}\n\n## Security triage\n- type: other\n- source: synthetic local fixture; scripted assessment\n- affected_surface: isolated synthetic lab only\n- severity: unknown\n- exploitability: unknown\n- evidence_state: unknown\n- production_impact: no\n- route: human\n- blocked_actions: production, secret, external notice, destructive\n- next_owner: maintenance-lead\n\n```json\n{\n  \"assessment\": \"predefined simulation logic; not an AI assessment\",\n  \"role\": \"security-reviewer\",\n  \"decision\": \"hold\",\n  \"evidence_state\": \"unknown\",\n  \"next_owner\": \"pilot-build-owner\",\n  \"required_evidence\": [\n    \"Reviewed artifact digest from an independently trusted source\",\n    \"Producer identity and build provenance\",\n    \"Component inventory and runtime permission boundary\"\n  ],\n  \"source_sha256\": \"67e56ea93bf4c5de81a2c57dffbd1d7c75ac1852a3a9748dfcb865f100078a8a\",\n  \"code_ref\": \"6c4e32e688a2f71509055aae4de32c4531e08fec\",\n  \"residual_risk\": \"Synthetic checks only; no production vulnerability assessment or model behavior proof.\"\n}\n```",
+      "type": "comment",
+      "parent_id": "01a17c6a-5a07-7311-87bf-e4684ab65415",
+      "created_at": "2026-10-27T16:11:49+08:00",
+      "updated_at": "2026-10-27T16:11:49+08:00",
+      "source_task_id": "01a17c6a-5a1f-7534-89cb-b6ae00ff2ecd"
+    },
+    {
+      "id": "01a17c6a-6c3b-75b8-9483-96275c4f574c",
+      "issue_id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "author_type": "agent",
+      "author_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "content": "SCRIPTED SIMULATION — NO MODEL\nSIMULATION_RECORD {\"kind\": \"final\", \"role\": \"maintenance-lead\", \"simulation\": \"security-squad-sim-20261027\", \"stage\": 1, \"task\": \"01a17c6a-6333-74be-92be-f9aa09a85523\"}\n\n## Security triage\n- type: other\n- source: synthetic local fixture; scripted assessment\n- affected_surface: isolated synthetic lab only\n- severity: unknown\n- exploitability: unknown\n- evidence_state: unknown\n- production_impact: no\n- route: human\n- blocked_actions: production, secret, external notice, destructive\n- next_owner: pilot-build-owner\n\nCompleted product task IDs: {\"0\": \"01a17c6a-5a1f-7534-89cb-b6ae00ff2ecd\"}\nDecision: hold/unknown. Owner pilot-build-owner must provide trusted digest, producer provenance and component inventory before release.",
+      "type": "comment",
+      "parent_id": "01a17c6a-6326-7b9c-9680-076bedac4293",
+      "created_at": "2026-10-27T16:11:51+08:00",
+      "updated_at": "2026-10-27T16:11:51+08:00",
+      "source_task_id": "01a17c6a-6333-74be-92be-f9aa09a85523"
+    }
+  ],
+  "timeline": [
+    {
+      "type": "activity",
+      "id": "01a17c62-9460-7f32-9bbc-9bf449403252",
+      "actor_type": "member",
+      "actor_id": "1e486130-bb06-4e6e-8be9-dd58c8eb83be",
+      "created_at": "2026-10-27T16:03:17+08:00",
+      "action": "created",
+      "details": {}
+    },
+    {
+      "type": "activity",
+      "id": "01a17c66-5afe-7612-a2c6-c92739ddf5e8",
+      "actor_type": "agent",
+      "actor_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "created_at": "2026-10-27T16:07:25+08:00",
+      "action": "task_failed",
+      "details": {}
+    },
+    {
+      "type": "activity",
+      "id": "01a17c6a-5a33-7b08-b6d4-0fabf933db85",
+      "actor_type": "agent",
+      "actor_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "created_at": "2026-10-27T16:11:47+08:00",
+      "action": "squad_leader_evaluated",
+      "details": {
+        "reason": "SCRIPTED SIMULATION — NO MODEL: dispatched stage 0",
+        "outcome": "action",
+        "task_id": "01a17c6a-5922-70cb-aacf-ed0aae10ec09",
+        "squad_id": "26156f72-d413-42be-a075-e46f2b9184ea"
+      }
+    },
+    {
+      "type": "activity",
+      "id": "01a17c6a-6261-7d17-8f52-6bb836137054",
+      "actor_type": "agent",
+      "actor_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "created_at": "2026-10-27T16:11:49+08:00",
+      "action": "task_completed",
+      "details": {}
+    },
+    {
+      "type": "activity",
+      "id": "01a17c6a-6b92-750c-a659-81a4ba1c5104",
+      "actor_type": "agent",
+      "actor_id": "ce9b9709-d57c-4ea2-9e9f-7f62fe17a917",
+      "created_at": "2026-10-27T16:11:51+08:00",
+      "action": "task_completed",
+      "details": {}
+    },
+    {
+      "type": "activity",
+      "id": "01a17c6a-6c61-7338-9f9d-828c1065dd85",
+      "actor_type": "agent",
+      "actor_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "created_at": "2026-10-27T16:11:51+08:00",
+      "action": "status_changed",
+      "details": {
+        "to": "in_review",
+        "from": "backlog"
+      }
+    },
+    {
+      "type": "activity",
+      "id": "01a17c6a-6c6d-7ef4-a166-f15e915f165f",
+      "actor_type": "agent",
+      "actor_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "created_at": "2026-10-27T16:11:51+08:00",
+      "action": "squad_leader_evaluated",
+      "details": {
+        "reason": "SCRIPTED SIMULATION — NO MODEL: finite sequence finished; human review",
+        "outcome": "no_action",
+        "task_id": "01a17c6a-6333-74be-92be-f9aa09a85523",
+        "squad_id": "26156f72-d413-42be-a075-e46f2b9184ea"
+      }
+    },
+    {
+      "type": "activity",
+      "id": "01a17c6a-748c-7659-831f-71d891c75516",
+      "actor_type": "agent",
+      "actor_id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+      "created_at": "2026-10-27T16:11:53+08:00",
+      "action": "task_completed",
+      "details": {}
+    }
+  ]
+}

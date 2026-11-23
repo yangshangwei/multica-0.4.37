@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { IssuePriority, UpdateIssueRequest } from "@multica/core/types";
 import { PRIORITY_DISPLAY_ORDER, PRIORITY_CONFIG } from "@multica/core/issues/config";
 import { PriorityIcon } from "../priority-icon";
@@ -72,6 +72,7 @@ function PriorityPickerImpl({
   const open = controlledOpen ?? internalOpen;
   const setOpen = controlledOnOpenChange ?? setInternalOpen;
   const { t } = useT("issues");
+  const listboxId = useId();
 
   return (
     <PropertyPicker
@@ -81,6 +82,8 @@ function PriorityPickerImpl({
       align={align}
       triggerAriaLabel={triggerAriaLabel}
       triggerRender={triggerRender}
+      listboxId={listboxId}
+      listboxLabel={t(($) => $.actions.priority)}
       trigger={
         customTrigger ??
         (priority != null ? (
@@ -97,6 +100,7 @@ function PriorityPickerImpl({
         return (
           <PickerItem
             key={p}
+            optionId={`${listboxId}-${p}`}
             selected={p === priority}
             onClick={() => {
               onUpdate({ priority: p });

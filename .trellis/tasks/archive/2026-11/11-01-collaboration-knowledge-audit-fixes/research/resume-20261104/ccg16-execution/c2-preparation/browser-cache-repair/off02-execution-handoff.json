@@ -1,0 +1,195 @@
+{
+  "state": "OFF02_actual_pass_verified",
+  "recorded_at": "2026-11-04T07:53:09.968215+00:00",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "label": "ccg2-off-v16-02",
+  "exit_status": 0,
+  "accepted": true,
+  "stats": {
+    "startTime": "2026-11-04T07:50:15.576Z",
+    "duration": 7975.906999999999,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "named_attempts": [
+    {
+      "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+      "status": "passed",
+      "retry": 0
+    }
+  ],
+  "files": {
+    "started.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/started.json",
+      "sha256": "ae05447d23df220699f25edd88205cb287ae098136a5d9d5efba480d35cedb4f",
+      "bytes": 3514
+    },
+    "result.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/result.json",
+      "sha256": "7ce251ea2e611178d356aa54358360b693fa779fcc3317b200f388590e19775a",
+      "bytes": 4064
+    },
+    "results.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/results.json",
+      "sha256": "366d9811c75a86bee31981bdbaed90eec00a24fe1eeeea6ed7d319ad2190339c",
+      "bytes": 11181
+    },
+    "output.log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/output.log",
+      "sha256": "40bf07f657ba835431190a463a55dfd5798642f403be81efce5d9e351f1820d3",
+      "bytes": 233
+    }
+  },
+  "actual_evidence": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/browser-cache-repair/off02-actual-deployed-evidence.json",
+    "sha256": "385c0077de8b37cf1807d3446b2fbb43488ee79c1e18806a3b2f60f18dabfabb",
+    "canonical_observation_sha256": "40229282ec1b961bdf5dd4f2f75553ca0c0d34c71f028aac10f4c44b00499de4"
+  },
+  "actual_input": {
+    "prompt_sha256": "a04941df72d43723b3e666d22221de8bc0c16257562f4871b1e565650aee9bd1",
+    "section_present": false,
+    "contributions": [],
+    "no_session_persistence": false
+  },
+  "knowledge_events": {
+    "knowledge_claim": 0,
+    "knowledge_preparation": 0,
+    "knowledge_authorization": 0
+  },
+  "run": {
+    "id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+    "progress_state": "settled",
+    "proof_state": "host_exit_observed",
+    "business_outcome": "success",
+    "launch_count": "1"
+  },
+  "one_physical_provider_launch": {
+    "attempt_seq": "1",
+    "kind": "provider",
+    "phase": "attempt_reaped",
+    "process_observed": true,
+    "scope": "process_group",
+    "terminal_accepted": true,
+    "authorized": true,
+    "terminal_kind": "managed_launch_ended",
+    "cleanup": {
+      "state": "tracked_scope_complete",
+      "scope": "process_group",
+      "attempted": true
+    }
+  },
+  "termination_ledger": {
+    "version": 2,
+    "run_id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+    "issue_id": "01a1a589-949d-7451-bc6b-b68b29f76ccc",
+    "phase": "proof_acknowledged",
+    "session_key": "64ebc24141c0201d9f6c1c332223564d203919ef569f4adc4a614a6d9d57f58e",
+    "namespace_present": false,
+    "sealed": true,
+    "proof_state": "host_exit_observed",
+    "cleanup": {
+      "state": "tracked_scope_complete",
+      "scope": "process_group",
+      "attempted": true
+    },
+    "launches": [
+      {
+        "attempt_seq": "1",
+        "kind": "provider",
+        "phase": "attempt_reaped",
+        "process_observed": true,
+        "scope": "process_group",
+        "terminal_accepted": true,
+        "authorized": true,
+        "terminal_kind": "managed_launch_ended",
+        "cleanup": {
+          "state": "tracked_scope_complete",
+          "scope": "process_group",
+          "attempted": true
+        }
+      }
+    ]
+  },
+  "real_Provider_calls": 0,
+  "browser_cache_binding_sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13",
+  "browser_path": "/Users/artisan/Library/Caches/ms-playwright",
+  "OFF01_originals": [
+    {
+      "label": "runner",
+      "sha256": "a6d070263badb138855b1caaaa45d8ea22cfdaebf66e33c09f1e2378748fab3e",
+      "unchanged": true
+    },
+    {
+      "label": "source_inputs",
+      "sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+      "unchanged": true
+    },
+    {
+      "label": "OFF_permit",
+      "sha256": "cd8d5b01ad663a5e6bdfbe714e53d0824e3147c1334ebe2ac4af6467129e4cc1",
+      "unchanged": true
+    },
+    {
+      "label": "OFF_environment",
+      "sha256": "e0a6a47cc30e26b36c2b3e7dbf2a219481401362c73a1e0323ecbabc17ba15a1",
+      "unchanged": true
+    },
+    {
+      "label": "OFF_deployment_proof",
+      "sha256": "3fc506a0c4275afe6037626e8da96cec5c33f1547e020115bd692ee0c1ef193a",
+      "unchanged": true
+    },
+    {
+      "label": "binary_binding",
+      "sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60",
+      "unchanged": true
+    },
+    {
+      "label": "failed_OFF_started.json",
+      "sha256": "90ae9483322e8374e52eeec29553309c1c18b597099c223e9b22d4502b1ede99",
+      "unchanged": true
+    },
+    {
+      "label": "failed_OFF_result.json",
+      "sha256": "1e198c8177e4650e620af16a959ba53924b7356dda969ffa318558e950d7a5a2",
+      "unchanged": true
+    },
+    {
+      "label": "failed_OFF_results.json",
+      "sha256": "64746297003c500ff61272acdb6328cc5c33410bb985ca8aaa9ef190f72cd80f",
+      "unchanged": true
+    },
+    {
+      "label": "failed_OFF_output.log",
+      "sha256": "3c6ea7eb61ddc1282adc5a9cc740cca13b19fa064fdc2ed53d80a27c68ca20c1",
+      "unchanged": true
+    }
+  ],
+  "OFF_services_preserved": {
+    "api": {
+      "port": 18231,
+      "pid": 51638,
+      "preserved": true
+    },
+    "web": {
+      "port": 13151,
+      "pid": 51913,
+      "preserved": true
+    },
+    "renderer": {
+      "port": 60377,
+      "pid": 51848,
+      "preserved": true
+    }
+  },
+  "source_dirty": [
+    " M apps/web/next-env.d.ts"
+  ],
+  "new_source_or_environment_or_assertion_changes": false,
+  "ON_preparation_build_start_probe": false,
+  "standalone_auditor_rerun": false,
+  "knowledge_allocated": 0,
+  "release_waits_for_Root": true
+}

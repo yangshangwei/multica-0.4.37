@@ -4,6 +4,7 @@ export {
   useOptionalNavigation,
   useIsNavigating,
   useReportNavigating,
+  useIterationParticipationStoreApi,
 } from "./context";
 export { AppLink } from "./app-link";
 export { currentPath } from "./current-path";

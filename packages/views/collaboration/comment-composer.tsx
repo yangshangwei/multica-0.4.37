@@ -1,0 +1,236 @@
+import { useEffect, useId, useRef, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { collaborationCommentOptions, collaborationKeys, collaborationMentionMarkdown, collaborationMentionTargetsOptions, executeCollaborationComment,
+  prepareCollaborationComment, useCollaborationCommentPreview, useCollaborationPendingDrafts,
+  useCollaborationDeliveryForm, readCollaborationDeliveryRecords, collaborationExecutionViewInput,
+  collaborationStageViewOptions, useCollaborationStageCodeCandidate, canPrepareCollaborationTest,
+  type CollaborationComment, type CollaborationDraft, type CollaborationIssue, type CollaborationScope, type CollaborationTriggerPreview } from "@multica/core/collaboration";
+import { Button } from "@multica/ui/components/ui/button";
+import { Textarea } from "@multica/ui/components/ui/textarea";
+import { Checkbox } from "@multica/ui/components/ui/checkbox";
+import { AtSign, Paperclip } from "lucide-react";
+import { useT } from "../i18n";
+import { useCollaborationLabels } from "./labels";
+import { CollaborationQueryState } from "./query-state";
+import { CollaborationAttachmentPicker } from "./attachment-picker";
+import { recoverFocus } from "./focus";
+import { collaborationCommentAuthor } from "./comment-author";
+
+export function CollaborationCommentComposer({ scope, issue, replyTo = null, onCancelReply, onSent }: {
+  scope: CollaborationScope; issue: CollaborationIssue; replyTo?: CollaborationComment | null; onCancelReply?: () => void; onSent?: () => void;
+}) {
+  const { t } = useT("collaboration");
+  const labels = useCollaborationLabels();
+  const client = useQueryClient();
+  const fieldId = useId();
+  const textarea = useRef<HTMLTextAreaElement>(null);
+  const selectedParentId = replyTo?.issue_id === issue.id ? replyTo.id : null;
+  const selectedParent = useRef<string | null>(null);
+  const delivery = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId, context: { kind: "issue", issueId: issue.id, sourceWorkspaceId: issue.source_workspace.id } }, "comment");
+  const parentId = selectedParentId ?? delivery.form.parentCommentId ?? null;
+  const parent = useQuery({ ...collaborationCommentOptions(client, scope, issue.id, parentId ?? ""), enabled: parentId !== null && selectedParentId === null && issue.capabilities.comment === true });
+  const parentComment = selectedParentId ? replyTo : parent.data;
+  const parentAuthor = collaborationCommentAuthor(parentComment, { agent: t(($) => $.execution.agent), unknownAuthor: t(($) => $.detail.unknownAuthor) });
+  useEffect(() => {
+    if (selectedParentId && selectedParent.current !== selectedParentId) delivery.update({ parentCommentId: selectedParentId });
+    selectedParent.current = selectedParentId;
+  }, [selectedParentId, delivery]);
+  useEffect(() => {
+    if (parentId) { textarea.current?.focus(); textarea.current?.scrollIntoView?.({ block: "nearest" }); }
+  }, [parentId]);
+  const content = delivery.form.content;
+  const testSubject = delivery.form.testSubject;
+  const testView = useQuery({ ...collaborationStageViewOptions(client, scope, issue.id, issue.source_workspace.id), enabled: testSubject !== undefined });
+  const testCode = useCollaborationStageCodeCandidate(scope, issue.id, testSubject?.candidate_id ?? null, issue.source_workspace.id,
+    testView.data?.state === "available" ? testView.data.value.code_candidates : undefined);
+  const subjectIdentity = JSON.stringify(testSubject);
+  useEffect(() => {
+    if (subjectIdentity) { setMentionsOpen(true); textarea.current?.focus(); textarea.current?.scrollIntoView?.({ block: "nearest" }); }
+  }, [subjectIdentity]);
+  const [uploading, setUploading] = useState(false);
+  const [mentionsOpen, setMentionsOpen] = useState(false);
+  const [attachmentsOpen, setAttachmentsOpen] = useState(false);
+  useEffect(() => {
+    if (delivery.form.selectedAttachmentIds.length > 0 || delivery.uploads.length > 0 || delivery.error || uploading) setAttachmentsOpen(true);
+  }, [delivery.form.selectedAttachmentIds.length, delivery.uploads.length, delivery.error, uploading]);
+  const [suppressed, setSuppressed] = useState<string[]>([]);
+  const [draftChanged, setDraftChanged] = useState(false);
+  const submitting = useRef(false);
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  const mentions = useQuery({ ...collaborationMentionTargetsOptions(client, scope, issue.id), enabled: issue.capabilities.comment === true });
+  const testEligible = () => testSubject === undefined || !testView.error && !testCode.error && canPrepareCollaborationTest(issue,
+    testView.data?.state === "available" ? testView.data.value : null, testCode.data?.state === "available" ? testCode.data.value : null, scope.userId,
+    !mentions.error && mentions.data?.can_submit_commands === true, testSubject);
+  const testReady = testEligible();
+  const drafts = useCollaborationPendingDrafts({ ...scope, issueId: issue.id });
+  const inspect = useCollaborationCommentPreview(scope, issue.id);
+  const [inspectedDraftId, setInspectedDraftId] = useState<string | null>(null);
+  const [inspectedIntentVersion, setInspectedIntentVersion] = useState<string | null>(null);
+  // Shared drafts can change outside this component's local reset handlers.
+  const inspected = inspect.variables;
+  const executionView = collaborationExecutionViewInput(issue.execution);
+  const matchingPreview = inspectedDraftId === delivery.form.draftId && inspected?.content === content && inspected.parent_id === parentId &&
+    inspected.execution_view_version === executionView.execution_view_version &&
+    (inspected.suppressed_target_ids ?? []).join(",") === suppressed.join(",") &&
+    (inspected.attachment_ids ?? []).join(",") === delivery.form.selectedAttachmentIds.join(",") &&
+    inspected.draft_id === (delivery.form.selectedAttachmentIds.length ? delivery.form.draftId : undefined)
+    ? inspect.data : undefined;
+  const intentVersion = JSON.stringify([scope.server, scope.apiScope, scope.userId, issue.id, delivery.form.draftId, content, parentId,
+    delivery.form.selectedAttachmentIds, suppressed, executionView, issue.collaboration_revision, issue.lifecycle_epoch,
+    issue.write_context?.participant_epoch, issue.write_context?.account_epoch, issue.capabilities.comment, testSubject, testReady]);
+  const currentIntent = useRef(intentVersion);
+  currentIntent.current = intentVersion;
+  const preview = inspectedIntentVersion === intentVersion ? matchingPreview : undefined;
+  const send = useMutation({ mutationKey: [...collaborationKeys.issue(scope, issue.id), "comment-send"], retry: false, networkMode: "always", mutationFn: ({ draft, recovery }: { draft: CollaborationDraft; recovery: boolean }) => executeCollaborationComment(client, scope, draft, recovery),
+    onSuccess: (receipt) => { if (receipt.status >= 200 && receipt.status < 300) { inspect.reset(); setSuppressed([]); setDraftChanged(false); onSent?.(); } } });
+  const locked = inspect.isPending || send.isPending || drafts.comments.length > 0 || drafts.error || uploading || delivery.uploads.length > 0 || Boolean(delivery.error);
+  function change(next: string) { delivery.update({ content: next }); inspect.reset(); send.reset(); setDraftChanged(false); }
+  async function publish() {
+    if (locked || !content.trim() || submitting.current || !testEligible()) return;
+    const capturedVersion = intentVersion;
+    const captured = { draftId: delivery.form.draftId, content, parentId, attachmentIds: [...delivery.form.selectedAttachmentIds], suppressed: [...suppressed], testSubject };
+    const stillCurrent = () => {
+      if (!mounted.current || currentIntent.current !== capturedVersion || !testEligible()) return false;
+      const current = readCollaborationDeliveryRecords(delivery.form.scope).find((record) => record.kind === "form" && record.purpose === "comment");
+      return current?.kind === "form" && current.draftId === captured.draftId && current.content === captured.content &&
+        (current.parentCommentId ?? null) === captured.parentId && current.selectedAttachmentIds.join(",") === captured.attachmentIds.join(",") &&
+        JSON.stringify(current.testSubject) === JSON.stringify(captured.testSubject);
+    };
+    submitting.current = true;
+    setDraftChanged(false);
+    try {
+      let reviewed = preview;
+      if (!reviewed) {
+        setInspectedDraftId(captured.draftId);
+        setInspectedIntentVersion(capturedVersion);
+        reviewed = await inspect.mutateAsync({ ...executionView, content: captured.content, parent_id: captured.parentId,
+          suppressed_target_ids: captured.suppressed, ...(captured.attachmentIds.length ? { draft_id: captured.draftId, attachment_ids: captured.attachmentIds } : {}) });
+        if (!stillCurrent()) {
+          if (mounted.current) { inspect.reset(); setDraftChanged(true); }
+          return;
+        }
+        // Every explicit target, including refused or suppressed ones, needs
+        // visible impact confirmation before the input is published.
+        if (reviewed.targets.length > 0) return;
+      }
+      if (!stillCurrent()) return;
+      const draft = prepareCollaborationComment(scope, issue.id, crypto.randomUUID(), captured.content, captured.suppressed, reviewed,
+        { draftId: captured.draftId, attachmentIds: captured.attachmentIds }, captured.parentId, captured.testSubject);
+      await send.mutateAsync({ draft, recovery: false });
+    } catch { /* Validated preflight errors and original-key recovery remain visible. */ }
+    finally { submitting.current = false; }
+  }
+  const targetName = (target: { kind: "agent" | "squad"; resource_id: string }) => mentions.data?.targets.find((item) => item.kind === target.kind && item.resource_id === target.resource_id)?.name
+    ?? `${target.kind === "squad" ? t(($) => $.execution.squad) : t(($) => $.execution.agent)} ${target.resource_id}`;
+  if (issue.capabilities.comment !== true) return null;
+  return <form aria-label={t(($) => $.detail.comments)} className="min-w-0 space-y-4" onSubmit={(event) => {
+    event.preventDefault();
+    void publish();
+  }}>
+    <label htmlFor={fieldId} className="block text-body font-medium">{t(($) => $.composer.label)}</label>
+    {testSubject && <section aria-label={t(($) => $.stage.testInput.title)} className="space-y-2 rounded-md border border-border p-3 text-caption [overflow-wrap:anywhere]">
+      <p>{t(($) => $.stage.testInput.subject, { candidate: testSubject.candidate_id, version: testSubject.candidate_version })}</p>
+      <p className="text-muted-foreground">{t(($) => $.stage.testInput.hint)}</p>
+      {!testReady && <p role="status">{t(($) => $.stage.testInput.unavailable)}</p>}
+      <Button type="button" variant="ghost" size="sm" disabled={locked} onClick={() => { delivery.update({ testSubject: undefined }); inspect.reset(); }}>{t(($) => $.stage.testInput.remove)}</Button>
+    </section>}
+    {parentId && <div className="flex min-w-0 flex-wrap items-center gap-3 text-caption text-muted-foreground"><span className="min-w-0 [overflow-wrap:anywhere]">{t(($) => $.commentActions.replyingTo, { name: parentAuthor.name })}</span>
+      {parentAuthor.agentLabel && <span className="shrink-0 rounded bg-muted px-1.5 py-0.5">{parentAuthor.agentLabel}</span>}
+      <Button type="button" variant="ghost" size="sm" disabled={locked} className="pointer-coarse:min-h-11" onClick={() => { delivery.update({ parentCommentId: null }); inspect.reset(); onCancelReply?.(); recoverFocus(() => textarea.current); }}>{t(($) => $.commentActions.cancelReply)}</Button></div>}
+    {parent.error && <CollaborationQueryState error={parent.error} retry={() => void parent.refetch()} />}
+    <Textarea ref={textarea} id={fieldId} placeholder={t(($) => $.composer.placeholder)} value={content} disabled={locked} onChange={(event) => change(event.target.value)} className="min-h-28" />
+    <div id={`${fieldId}-mentions`} hidden={!mentionsOpen} className="space-y-3">
+    {mentions.isPending && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.page.loading)}</p>}
+    {mentions.data && <div className="min-w-0 space-y-3" role="group" aria-label={t(($) => $.composer.mentions)}>
+      <div role="group" aria-labelledby={`${fieldId}-people`} className="min-w-0 space-y-1">
+        <p id={`${fieldId}-people`} className="text-caption font-medium text-muted-foreground">{t(($) => $.composer.mentionPeople)}</p>
+        <div className="flex min-w-0 flex-wrap gap-2">
+          <Button type="button" size="sm" variant="ghost" disabled={locked} className="h-auto min-h-8 whitespace-normal [overflow-wrap:anywhere] pointer-coarse:min-h-11"
+            onClick={() => change(`${content}${content ? " " : ""}${collaborationMentionMarkdown("all", "all", "all", mentions.data!)}`)}>{t(($) => $.composer.mentionAll)}</Button>
+          {mentions.data.participants.map((person) => <Button key={person.user_id} type="button" size="sm" variant="ghost" disabled={locked} className="h-auto min-h-8 whitespace-normal [overflow-wrap:anywhere] pointer-coarse:min-h-11"
+            onClick={() => change(`${content}${content ? " " : ""}${collaborationMentionMarkdown("member", person.user_id, person.name, mentions.data!)}`)}>{person.name}</Button>)}
+        </div>
+      </div>
+      {issue.ai_policy !== "manual" && mentions.data.targets.length > 0 && <div role="group" aria-labelledby={`${fieldId}-ai`} className="min-w-0 space-y-1">
+        <p id={`${fieldId}-ai`} className="text-caption font-medium text-muted-foreground">{t(($) => $.composer.mentionAI)}</p>
+        <div className="flex min-w-0 flex-wrap gap-2">{mentions.data.targets.map((target) => <Button key={target.target_id} type="button" size="sm" variant="ghost" disabled={locked} className="h-auto min-h-8 whitespace-normal [overflow-wrap:anywhere] pointer-coarse:min-h-11"
+          onClick={() => change(`${content}${content ? " " : ""}${collaborationMentionMarkdown(target.kind, target.resource_id, target.name, mentions.data!)}`)}>{target.name}</Button>)}</div>
+      </div>}
+    </div>}
+    {mentions.error && <CollaborationQueryState error={mentions.error} retry={() => void mentions.refetch()} />}
+    </div>
+    <div id={`${fieldId}-attachments`} hidden={!attachmentsOpen}>
+    <CollaborationAttachmentPicker scope={scope} form={delivery.form} update={delivery.update} uploads={delivery.uploads} onBusyChange={setUploading}
+      disabled={inspect.isPending || send.isPending || drafts.comments.length > 0 || drafts.error || Boolean(delivery.error)} onChange={() => inspect.reset()} />
+    </div>
+    {Boolean(delivery.error) && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
+    <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
+      <div className="flex min-w-0 flex-wrap gap-1">
+        <Button type="button" variant="ghost" size="sm" aria-expanded={mentionsOpen} aria-controls={`${fieldId}-mentions`}
+          onClick={() => setMentionsOpen((open) => !open)} className="pointer-coarse:min-h-11"><AtSign className="size-4" aria-hidden="true" />{t(($) => $.composer.mention)}</Button>
+        <Button type="button" variant="ghost" size="sm" aria-expanded={attachmentsOpen} aria-controls={`${fieldId}-attachments`} disabled={uploading}
+          onClick={() => setAttachmentsOpen((open) => !open)} className="pointer-coarse:min-h-11"><Paperclip className="size-4" aria-hidden="true" />{t(($) => $.attachments.title)}</Button>
+      </div>
+      <div className="flex flex-wrap gap-2"><Button variant="ghost" type="button" disabled={locked || !content.trim()} onClick={() => {
+      setInspectedDraftId(delivery.form.draftId);
+      setInspectedIntentVersion(intentVersion);
+      inspect.mutate({ ...executionView, content, parent_id: parentId, suppressed_target_ids: suppressed,
+        ...(delivery.form.selectedAttachmentIds.length ? { draft_id: delivery.form.draftId, attachment_ids: delivery.form.selectedAttachmentIds } : {}) });
+    }} className="pointer-coarse:min-h-11">{t(($) => $.composer.preview)}</Button>
+      <Button type="submit" aria-describedby={preview?.targets.length ? `${fieldId}-ai-confirmation` : undefined} disabled={locked || !content.trim() || !testReady || testSubject !== undefined && preview !== undefined && !preview.targets.some((target) => target.target_id !== null && target.target_epoch !== undefined && target.config_version !== undefined)} className="pointer-coarse:min-h-11">{t(($) => $.composer.send)}</Button>
+      </div>
+    </div>
+    {draftChanged && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.composer.draftChanged)}</p>}
+    {preview && <div className="space-y-3 text-body"><p className="text-caption text-muted-foreground">{t(($) => $.composer.recipients, { count: preview.recipients.length })}</p>
+      {preview.targets.length > 0 && <p id={`${fieldId}-ai-confirmation`} role="status" className="text-body">{t(($) => $.composer.confirmAI)}</p>}
+      <ul className="flex flex-wrap gap-x-4 gap-y-1 text-caption">{preview.recipients.map((person) => <li key={person.recipient.user_id}>{person.recipient.name}</li>)}</ul>
+      <ul className="space-y-3">{preview.targets.map((target) => <li key={`${target.kind}:${target.resource_id}`} className="space-y-1 [overflow-wrap:anywhere]">
+        <label className="flex min-h-11 items-start gap-3"><Checkbox checked={target.target_id !== null && !suppressed.includes(target.target_id)} disabled={locked || target.target_id === null} onCheckedChange={(checked) => {
+          if (!target.target_id) return;
+          setSuppressed(checked === true ? suppressed.filter((id) => id !== target.target_id) : [...suppressed, target.target_id]); inspect.reset();
+        }} /><span>{targetName(target)}
+          <span className="block text-caption text-muted-foreground">{target.state === "suppressed" ? t(($) => $.composer.suppressed) : target.state === "blocked" ? labels.reason(target.code) : labels.reason(target.waiting_reason ?? target.hold_reason ?? "waiting")}</span></span></label>
+      </li>)}</ul>
+      <CollaborationPreviewGrouping preview={preview} targetName={targetName} />
+    </div>}
+    {(inspect.error || send.error) && <CollaborationQueryState error={inspect.error ?? send.error} />}
+    {drafts.error && <p role="alert">{t(($) => $.workflow.storageError)}</p>}
+    {(inspect.isPending || send.isPending) && <p role="status">{t(($) => $.workflow.pending)}</p>}
+    {send.data && <div role="status" className="space-y-2"><p>{send.data.status < 300 ? t(($) => $.composer.sent) : t(($) => $.workflow.refused)}</p>{send.data.targets.map((target) => <p key={`${target.kind}:${target.resource_id}`} className="text-caption [overflow-wrap:anywhere]">{targetName(target)} · {target.state === "waiting" ? target.code === "command_joined_squad" ? t(($) => $.composer.joined) : labels.reason(target.waiting_reason ?? target.hold_reason ?? "waiting") : target.state === "suppressed" ? t(($) => $.composer.suppressed) : labels.reason(target.code)}</p>)}</div>}
+    {!send.isPending && drafts.comments.map((draft) => <div key={draft.requestId} className="space-y-2"><p role="status">{t(($) => $.workflow.unknown)}</p><div className="flex flex-wrap gap-2"><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={drafts.error} onClick={() => send.mutate({ draft, recovery: true })}>{t(($) => $.workflow.recover)}</Button><Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={drafts.error} onClick={() => send.mutate({ draft, recovery: false })}>{t(($) => $.workflow.retryOriginal)}</Button></div></div>)}
+  </form>;
+}
+
+function CollaborationPreviewGrouping({ preview, targetName }: {
+  preview: CollaborationTriggerPreview;
+  targetName: (target: { kind: "agent" | "squad"; resource_id: string }) => string;
+}) {
+  const { t } = useT("collaboration");
+  const groups = new Map<string, NonNullable<CollaborationTriggerPreview["targets"][number]["grouping"]>>();
+  for (const target of preview.targets) {
+    if (target.grouping) groups.set([...target.grouping.target_ids].sort().join(":"), target.grouping);
+  }
+  if (!groups.size) return null;
+  return <section aria-label={t(($) => $.composer.grouping.title)} className="space-y-2">
+    <p className="text-caption text-muted-foreground">{t(($) => $.composer.grouping.previewOnly)}</p>
+    <ul className="space-y-3">{[...groups].map(([key, grouping]) => {
+      const targets = preview.targets.filter((target) => target.target_id !== null && grouping.target_ids.includes(target.target_id));
+      let description: string;
+      switch (grouping.kind) {
+        case "pending_batch":
+          description = targets.length > 1 && targets.some((target) => target.kind === "squad")
+            ? t(($) => $.composer.grouping.mergedSquad) : t(($) => $.composer.grouping.pendingBatch);
+          break;
+        case "squad_continuation": description = t(($) => $.composer.grouping.continuation); break;
+        default: return null;
+      }
+      return <li key={key} className="space-y-1 text-caption [overflow-wrap:anywhere]">
+        <p className="font-medium">{targets.map(targetName).join(", ")}</p>
+        <p className="text-muted-foreground">{description}</p>
+        {grouping.has_existing_inputs === true && <p className="text-muted-foreground">{grouping.kind === "squad_continuation" ? t(($) => $.composer.grouping.existingContinuation) : t(($) => $.composer.grouping.existingInputs)}</p>}
+        {grouping.follows_pending_batch === true && <p className="text-muted-foreground">{t(($) => $.composer.grouping.laterBatch)}</p>}
+      </li>;
+    })}</ul>
+  </section>;
+}

@@ -338,10 +338,11 @@ deleted_draft_restores AS (
 deleted_agent_builder_drafts AS (
     DELETE FROM agent_builder_draft WHERE workspace_id = $1
 ),
--- Approval requests are workspace-keyed with no FK of their own, so teardown
--- has to name them explicitly or they outlive the workspace they audited.
+-- Bound approvals retain the human decision beside durable execution evidence.
+-- Match approval identity alone: a damaged execution workspace must not erase it.
 deleted_agent_approvals AS (
-    DELETE FROM agent_approval_request WHERE workspace_id = $1
+    DELETE FROM agent_approval_request a WHERE workspace_id = $1
+      AND NOT EXISTS (SELECT 1 FROM agent_artifact_execution e WHERE e.approval_id = a.id)
 ),
 deleted_comment_reactions AS (
     DELETE FROM comment_reaction WHERE workspace_id = $1
@@ -351,6 +352,12 @@ deleted_issue_reactions AS (
 ),
 deleted_activity AS (
     DELETE FROM activity_log WHERE workspace_id = $1
+),
+deleted_inbox_snoozes AS (
+ DELETE FROM inbox_snooze WHERE workspace_id=$1
+),
+deleted_inbox_critical_sources AS (
+ DELETE FROM inbox_critical_source WHERE workspace_id=$1
 ),
 deleted_inbox AS (
     DELETE FROM inbox_item WHERE workspace_id = $1
@@ -553,7 +560,9 @@ WITH deleted_notifications AS (
 DELETE FROM workspace_iteration_settings WHERE workspace_iteration_settings.workspace_id = $1;
 
 -- name: DeleteWorkspaceIssueRoots :exec
-WITH triage_settings AS (DELETE FROM workspace_triage_settings WHERE workspace_id=$1),
+WITH report_snapshots AS (DELETE FROM report_snapshot WHERE workspace_id=$1),
+report_snapshot_controls AS (DELETE FROM report_snapshot_control WHERE workspace_id=$1),
+triage_settings AS (DELETE FROM workspace_triage_settings WHERE workspace_id=$1),
 triage_items AS (DELETE FROM issue_triage WHERE workspace_id=$1),
 triage_intake AS (DELETE FROM triage_intake_request WHERE workspace_id=$1),
 triage_actions AS (DELETE FROM triage_action WHERE workspace_id=$1),
@@ -681,6 +690,11 @@ DELETE FROM agent WHERE agent.workspace_id = $1;
 
 -- name: DeleteWorkspaceRuntimesAndProjects :exec
 WITH
+deleted_runtime_scan_cursors AS (
+    DELETE FROM collaboration_runtime_scan_cursor cursor
+    USING agent_runtime runtime
+    WHERE cursor.runtime_id = runtime.id AND runtime.workspace_id = $1
+),
 deleted_runtimes AS (
     DELETE FROM agent_runtime WHERE agent_runtime.workspace_id = $1
 ),

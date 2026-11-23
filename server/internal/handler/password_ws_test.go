@@ -95,6 +95,7 @@ func TestPasswordRealtimeRevocationBeforeSendAndSubscribe(t *testing.T) {
 			passwordWSWait(t, func() bool { return hub.HasLocalSubscribers(realtime.ScopeWorkspace, "ws-password") })
 			hub.BroadcastToWorkspace("ws-password", []byte(`{"type":"before"}`))
 			passwordWSRead(t, c)
+			initialScopeCalls := a.calls.Load()
 			if tc.disabled {
 				dbfx.Exec(t, `UPDATE "user" SET disabled_at=now(), disabled_reason='test suspension' WHERE id=$1`, user.User.ID)
 			} else {
@@ -108,7 +109,7 @@ func TestPasswordRealtimeRevocationBeforeSendAndSubscribe(t *testing.T) {
 				hub.BroadcastToWorkspace("ws-password", []byte(`{"type":"secret-after-reset"}`))
 			}
 			passwordWSClosed(t, c)
-			if a.calls.Load() != 0 {
+			if a.calls.Load() != initialScopeCalls {
 				t.Fatal("revoked subscription reached scope handler")
 			}
 		})

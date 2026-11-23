@@ -1,0 +1,7 @@
+# Installed cross-client workflow after pending delivery
+
+The actual Linux replay passed managed registration, daemon startup, real login, native information request, Web information return, native submission, Web information request and native return. Its next Transfer click failed. The failure snapshot explicitly shows Awaiting acceptance, Accept and complete, Return for revision, and an expanded More actions with no Transfer. The current presentation contract removes ordinary transfer while an exact result is pending; it requires an explicit creator decision.
+
+Only the test sequence changed. Both ordinary transfers attempted after a submission are now real UI Return for revision actions that select the current actual author, fill a concrete revision reason, and bind the exact current submission, lifecycle/participant/account/revision/status observations. The returned result remains immutable in latest delivery with the exact returned decision. Execution/session equality is asserted before continuing. The original six Web/native directed writes, counts and history assertions remain; two explicit return-decision records are also retained. Subsequent real Stop/Resume/unconfirmed-proof workflow remains unchanged.
+
+Root and frozen test spec were updated together under the coordinator's explicit no-inflight-browser authorization. One spec/one case collects successfully and diff check passes. No product, timeout, permission or business response was changed; full E2E completion remains the coordinator's next fresh-database run.

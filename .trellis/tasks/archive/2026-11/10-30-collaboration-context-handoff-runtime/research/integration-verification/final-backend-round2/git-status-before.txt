@@ -1,0 +1,122 @@
+ M .trellis/spec/server/collaboration-host-execution.md
+ M .trellis/spec/server/collaboration-records.md
+ M .trellis/spec/server/index.md
+ M .trellis/tasks/10-30-collaboration-context-handoff-runtime/check.jsonl
+ M .trellis/tasks/10-30-collaboration-context-handoff-runtime/implement.jsonl
+ M .trellis/tasks/10-30-collaboration-context-handoff-runtime/prd.md
+ M .trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json
+ M apps/web/next-env.d.ts
+ M apps/web/platform/navigation.test.tsx
+ M apps/web/platform/navigation.tsx
+ M packages/core/api/client.ts
+ M packages/core/api/collaboration-content.test.ts
+ M packages/core/collaboration/content-queries.ts
+ M packages/core/collaboration/content-schema.test.ts
+ M packages/core/collaboration/content-schema.ts
+ M packages/core/collaboration/index.ts
+ M packages/core/collaboration/run-records-queries.test.ts
+ M packages/core/collaboration/run-records-queries.ts
+ M packages/core/collaboration/run-records-schema.test.ts
+ M packages/core/collaboration/run-records-schema.ts
+ M packages/views/collaboration/collaboration-detail.test.tsx
+ M packages/views/collaboration/collaboration-detail.tsx
+ M packages/views/collaboration/comment-list.test.tsx
+ M packages/views/collaboration/comment-list.tsx
+ M packages/views/collaboration/execution-panel.test.tsx
+ M packages/views/collaboration/labels.ts
+ M packages/views/collaboration/run-records.tsx
+ M packages/views/collaboration/workflow.tsx
+ M packages/views/locales/en/collaboration.json
+ M packages/views/locales/zh-Hans/collaboration.json
+ M server/cmd/multica/cmd_collaboration.go
+ M server/cmd/multica/cmd_issue.go
+ M server/cmd/server/router.go
+ M server/internal/daemon/collaborationrun/client.go
+ M server/internal/daemon/collaborationrun/client_host.go
+ M server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go
+ M server/internal/daemon/collaborationrun/host_agentintegration_test.go
+ M server/internal/daemon/collaborationrun/host_ledger.go
+ M server/internal/daemon/collaborationrun/host_recording.go
+ M server/internal/daemon/collaborationrun/host_runner.go
+ M server/internal/daemon/collaborationrun/ledger.go
+ M server/internal/handler/collaboration_comments.go
+ M server/internal/handler/collaboration_runtime.go
+ M server/internal/handler/collaboration_runtime_test.go
+ M server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md
+ M server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md
+ M server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md
+ M server/internal/service/collaboration_comments_view.go
+ M server/internal/service/collaboration_records.go
+ M server/internal/service/collaboration_records_test.go
+ M server/internal/service/collaboration_runtime.go
+ M server/internal/service/collaboration_runtime_capabilities.go
+ M server/internal/service/collaboration_runtime_preparation_derived_test.go
+ M server/internal/service/collaboration_squad.go
+ M server/internal/service/collaboration_squad_join.go
+ M server/pkg/db/generated/collaboration_preparation.sql.go
+ M server/pkg/db/generated/collaboration_records.sql.go
+ M server/pkg/db/queries/collaboration_preparation.sql
+ M server/pkg/db/queries/collaboration_records.sql
+ M server/pkg/protocol/collaboration.go
+ M server/pkg/protocol/collaboration_host.go
+ M server/pkg/protocol/collaboration_record.go
+?? .trellis/spec/server/collaboration-startup-handoff.md
+?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/design.md
+?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/implement.md
+?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/
+?? e2e/collaboration-runtime-handoff-desktop.spec.ts
+?? e2e/collaboration-runtime-handoff-web.spec.ts
+?? e2e/fixtures/collaboration-runtime-handoff.ts
+?? packages/core/collaboration/comment-recall-queries.test.ts
+?? packages/core/collaboration/run-handoff-queries.test.ts
+?? packages/core/collaboration/run-handoff-queries.ts
+?? packages/core/collaboration/run-handoff-schema.test.ts
+?? packages/core/collaboration/run-handoff-schema.ts
+?? packages/views/collaboration/run-handoff.test.tsx
+?? packages/views/collaboration/run-handoff.tsx
+?? server/cmd/multica/cmd_collaboration_recall.go
+?? server/cmd/multica/cmd_collaboration_recall_test.go
+?? server/internal/cli/collaboration_recall.go
+?? server/internal/daemon/collaborationrun/client_context_extensions_test.go
+?? server/internal/daemon/collaborationrun/host_checkpoint_gap_test.go
+?? server/internal/daemon/collaborationrun/host_checkpoint_ledger.go
+?? server/internal/daemon/collaborationrun/host_checkpoints.go
+?? server/internal/daemon/collaborationrun/host_checkpoints_test.go
+?? server/internal/daemon/collaborationrun/host_handoff.go
+?? server/internal/daemon/collaborationrun/host_handoff_budget_test.go
+?? server/internal/daemon/collaborationrun/host_handoff_checkpoint_lifecycle_test.go
+?? server/internal/daemon/collaborationrun/host_handoff_checkpoint_test.go
+?? server/internal/daemon/collaborationrun/host_handoff_codex_launch_test.go
+?? server/internal/daemon/collaborationrun/host_handoff_launch_test.go
+?? server/internal/daemon/collaborationrun/host_handoff_wire_test.go
+?? server/internal/daemon/collaborationrun/host_recording_recovery_test.go
+?? server/internal/handler/collaboration_checkpoints.go
+?? server/internal/handler/collaboration_checkpoints_test.go
+?? server/internal/handler/collaboration_comments_recall.go
+?? server/internal/handler/collaboration_comments_recall_test.go
+?? server/internal/handler/collaboration_handoff_budget_test.go
+?? server/internal/handler/collaboration_runtime_extensions_test.go
+?? server/internal/handler/collaboration_runtime_handoff.go
+?? server/internal/service/collaboration_checkpoints.go
+?? server/internal/service/collaboration_checkpoints_test.go
+?? server/internal/service/collaboration_comments_recall.go
+?? server/internal/service/collaboration_comments_recall_test.go
+?? server/internal/service/collaboration_handoff_cursor_test.go
+?? server/internal/service/collaboration_handoff_snapshot.go
+?? server/internal/service/collaboration_handoff_wakeup.go
+?? server/internal/service/collaboration_runtime_handoff.go
+?? server/internal/service/collaboration_runtime_handoff_budget_test.go
+?? server/internal/service/collaboration_runtime_handoff_source_test.go
+?? server/internal/service/collaboration_runtime_handoff_test.go
+?? server/pkg/db/generated/collaboration_handoff.sql.go
+?? server/pkg/db/generated/collaboration_recall.sql.go
+?? server/pkg/db/queries/collaboration_handoff.sql
+?? server/pkg/db/queries/collaboration_recall.sql
+?? server/pkg/protocol/collaboration_checkpoint.go
+?? server/pkg/protocol/collaboration_checkpoint_test.go
+?? server/pkg/protocol/collaboration_handoff.go
+?? server/pkg/protocol/collaboration_handoff_decode_test.go
+?? server/pkg/protocol/collaboration_handoff_test.go
+?? server/pkg/protocol/collaboration_recall.go
+?? server/pkg/protocol/collaboration_recall_test.go
+?? server/pkg/protocol/collaboration_recording_retention_test.go

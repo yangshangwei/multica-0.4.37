@@ -1,0 +1,62 @@
+#!/bin/sh
+set -eu
+
+fail() {
+    printf '%s\n' "codex-pilot: $1" >&2
+    exit 1
+}
+
+# This is a daemon launch adapter, never a setuid program.
+if [ "$(id -u)" -ne 0 ]; then
+    exec /usr/local/bin/codex "$@"
+fi
+
+pilot_cwd=$(pwd -P)
+case "$pilot_cwd" in
+    /work|/work/lab|/work/lab/*|/work/tasks/*) ;;
+    *) fail 'working directory is outside the synthetic pilot' ;;
+esac
+
+pilot_env_root=
+pilot_session_store=
+if [ -n "${CODEX_HOME:-}" ]; then
+    pilot_codex_dir=$(realpath -e -- "$CODEX_HOME")
+    case "$pilot_codex_dir" in
+        /work/tasks/*/*/codex-home) ;;
+        *) fail 'Codex home is not a generated pilot task home' ;;
+    esac
+    pilot_env_root=$(dirname -- "$pilot_codex_dir")
+    [ -f "$pilot_env_root/.task_lock" ] || fail 'task root has no daemon lock marker'
+
+    # Local-directory turns share only their own agent/issue rollout store.
+    if [ -L "$pilot_codex_dir/sessions" ]; then
+        pilot_session_store=$(realpath -e -- "$pilot_codex_dir/sessions")
+        case "$pilot_session_store" in
+            /root/.codex/multica-sessions/*/*/*) ;;
+            *) fail 'session link is outside the pilot session stores' ;;
+        esac
+    fi
+fi
+
+pilot_task_tmp=
+if [ -n "${TMPDIR:-}" ]; then
+    pilot_task_tmp=$(realpath -e -- "$TMPDIR")
+    case "$pilot_task_tmp" in
+        /tmp/multica-task-*) ;;
+        *) fail 'temporary directory is not a generated pilot task directory' ;;
+    esac
+fi
+
+# Do not follow symlinks while handing generated files to the provider UID.
+# The daemon profile and the credential-free shared Codex config remain root-owned.
+for pilot_dir in "$pilot_env_root" "$pilot_session_store" "$pilot_task_tmp"; do
+    if [ -n "$pilot_dir" ]; then
+        chown -R -P -h node:node -- "$pilot_dir"
+    fi
+done
+if [ "$pilot_cwd" != /work ]; then
+    chown -R -P -h node:node -- "$pilot_cwd"
+fi
+
+# Keep app-server JSON-RPC stdin/stdout intact; diagnostics belong on stderr.
+exec runuser -u node -- /usr/local/bin/codex "$@"

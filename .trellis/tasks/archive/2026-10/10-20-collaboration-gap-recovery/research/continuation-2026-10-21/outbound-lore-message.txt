@@ -1,0 +1,16 @@
+fix(collaboration): keep private issue events out of plugin transport
+
+Classify collaboration identity before callback grants and transport so shared
+issue events and lookup failures cannot reach plugin hooks. Retain ordinary
+child delivery and exercise the real TLS and Slack consumers rather than infer
+privacy from a helper result. The existing shared gate is carried unchanged
+with its own transport and immutable-origin regression evidence.
+
+Constraint: Preserve shared source and all production creation/execution gates
+Rejected: Commit only new tests | exact HEAD lacks the required outbound classification gate
+Confidence: high
+Scope-risk: narrow
+Directive: Modern collaboration runs do not inherit ordinary channel-task delivery; other IM private/media paths still need dedicated evidence
+Tested: Current guarded race4/11; adjacency16/65; isolated HEAD plus exact four-source slice5/12; local TLS signature and Slack durable provenance; gofmt/vet
+Not-tested: Other IM private direct/stream/failure/relay/media paths, malformed synthetic payload compatibility, external accounts and real providers
+Co-authored-by: OmX <omx@oh-my-codex.dev>

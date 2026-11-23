@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/util"
@@ -29,6 +30,15 @@ func rejectTemporarilyDisabledUser(w http.ResponseWriter, r *http.Request, userI
 	)
 	writeError(w, http.StatusForbidden, auth.TemporarilyDisabledUserError)
 	return true
+}
+
+func withAuthenticatedRequestPrincipal(r *http.Request, principal auth.AuthenticatedPrincipal) *http.Request {
+	// Legacy agent calls can use a human JWT/PAT. Either nonempty hint denies
+	// human collaboration authority, including incomplete or malformed pairs.
+	// Keep the verified credential kind and ordinary actor headers unchanged:
+	// untrusted hints cannot authenticate an agent or grant any authority.
+	principal.AgentActor = r.Header.Get("X-Agent-ID") != "" || r.Header.Get("X-Task-ID") != ""
+	return r.WithContext(auth.WithAuthenticatedPrincipal(r.Context(), principal))
 }
 
 // Auth middleware validates JWT tokens or Personal Access Tokens.
@@ -59,9 +69,20 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 			// to convince a downstream handler that its request came
 			// from a non-task-token path.
 			r.Header.Del("X-Actor-Source")
+			r = r.WithContext(auth.WithVerifiedTaskToken(r.Context(), db.TaskToken{}))
+			r = r.WithContext(auth.WithAuthenticatedPrincipal(r.Context(), auth.AuthenticatedPrincipal{}))
 			if auth.PasswordMode() {
 				if s, ok := passwordAuthenticate(w, r, queries); ok {
-					next.ServeHTTP(w, r.WithContext(auth.WithPasswordSession(r.Context(), s)))
+					r = r.WithContext(auth.WithPasswordSession(r.Context(), s))
+					principal := auth.AuthenticatedPrincipal{
+						UserID: s.UserID, Kind: auth.CredentialKind(s.Kind), Restricted: s.Setup || s.Change, ExpiresAt: s.ExpiresAt,
+					}
+					if s.Kind == "pat" {
+						token, _ := extractToken(r)
+						principal.PATTokenHash = auth.HashToken(token)
+					}
+					r = withAuthenticatedRequestPrincipal(r, principal)
+					next.ServeHTTP(w, r)
 				}
 				return
 			}
@@ -98,6 +119,10 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				hash := auth.HashToken(tokenString)
 				tt, err := queries.GetTaskTokenByHash(r.Context(), hash)
 				if err != nil {
+					if !errors.Is(err, pgx.ErrNoRows) {
+						writeError(w, http.StatusServiceUnavailable, "task authentication unavailable")
+						return
+					}
 					slog.Warn("auth: invalid task token", "path", r.URL.Path, "error", err)
 					http.Error(w, `{"error":"invalid token"}`, http.StatusUnauthorized)
 					return
@@ -116,6 +141,8 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				// this header is allowed to carry — strip anything else a
 				// client tried to send.
 				r.Header.Set("X-Actor-Source", "task_token")
+				r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialTask})
+				r = r.WithContext(auth.WithVerifiedTaskToken(r.Context(), tt))
 				next.ServeHTTP(w, r)
 				return
 			}
@@ -176,6 +203,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				// treated as the owner having approved an account-
 				// level action.
 				r.Header.Set("X-Actor-Source", "cloud_pat")
+				r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: r.Header.Get("X-User-ID"), Kind: auth.CredentialCloud})
 				next.ServeHTTP(w, r)
 				return
 			}
@@ -193,6 +221,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 						return
 					}
 					r.Header.Set("X-User-ID", userID)
+					r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT, PATTokenHash: hash})
 					next.ServeHTTP(w, r)
 					return
 				}
@@ -228,6 +257,7 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				// within the TTL window skip this write entirely.
 				go queries.UpdatePersonalAccessTokenLastUsed(context.Background(), pat.ID)
 
+				r = withAuthenticatedRequestPrincipal(r, auth.AuthenticatedPrincipal{UserID: userID, Kind: auth.CredentialPAT, PATTokenHash: hash})
 				next.ServeHTTP(w, r)
 				return
 			}
@@ -267,6 +297,11 @@ func Auth(queries *db.Queries, patCache *auth.PATCache, cloudPAT *auth.CloudPATV
 				r.Header.Set("X-User-Email", email)
 			}
 
+			principal := auth.AuthenticatedPrincipal{UserID: sub, Kind: auth.CredentialJWT}
+			if expiry, err := claims.GetExpirationTime(); err == nil && expiry != nil {
+				principal.ExpiresAt = expiry.Time
+			}
+			r = withAuthenticatedRequestPrincipal(r, principal)
 			next.ServeHTTP(w, r)
 		})
 	}

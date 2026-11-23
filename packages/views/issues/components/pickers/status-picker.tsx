@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import type { IssueStatus, UpdateIssueRequest } from "@multica/core/types";
 import { STATUS_CONFIG } from "@multica/core/issues/config";
 import { useIssueStatuses } from "@multica/core/issue-statuses/hooks";
@@ -42,6 +42,7 @@ export function StatusPicker({
   const setOpen = controlledOnOpenChange ?? setInternalOpen;
   const [query, setQuery] = useState("");
   const { t } = useT("issues");
+  const listboxId = useId();
   // Every StatusPicker call site lives inside the workspace shell (issue
   // detail, table, board batch toolbar, create-issue modal), so the provider
   // is guaranteed here.
@@ -80,6 +81,8 @@ export function StatusPicker({
       searchable={searchable}
       searchPlaceholder={t(($) => $.filters.search_status)}
       onSearchChange={setQuery}
+      listboxId={listboxId}
+      listboxLabel={t(($) => $.actions.status)}
       trigger={
         customTrigger ??
         (status != null ? (
@@ -98,6 +101,7 @@ export function StatusPicker({
       {options.map((option) => (
         <PickerItem
           key={option.key}
+          optionId={`${listboxId}-${option.key}`}
           selected={option.key === status}
           hoverClassName={STATUS_CONFIG[option.category].hoverBg}
           onClick={() => {

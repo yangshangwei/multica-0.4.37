@@ -1,0 +1,8 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/01 03:39:23 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestCollaborationRuntimeCredentialMatrix
+2026/11/01 03:39:23 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimeCredentialMatrix4022684931/001 baseURL=""
+    collaboration_runtime_credential_matrix_test.go:27: target_pause_required
+--- FAIL: TestCollaborationRuntimeCredentialMatrix (0.40s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/handler	1.557s

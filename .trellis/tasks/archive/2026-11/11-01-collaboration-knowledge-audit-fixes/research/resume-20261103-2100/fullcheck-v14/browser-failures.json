@@ -1,0 +1,598 @@
+[
+  {
+    "id": "d830fff7a787071ac252-cce5cce322a1d9534728",
+    "project": "chromium",
+    "file": "collaboration-account-desktop.spec.ts",
+    "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 577,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts",
+          "column": 5,
+          "line": 100
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resource-offers.ts:100\n\n   98 |     const updated = await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3\", [runtime.id, ownerAccount.id, executionWorkspace.id]);\n   99 |     expect(updated.rowCount).toBe(1);\n> 100 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n      |     ^\n  101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  102 |     await db.query(\"COMMIT\");\n  103 |   } catch (error) { await db.query(\"ROLLBACK\"); throw error; }\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-account-desktop.spec.ts:280:19"
+      }
+    ],
+    "attachments": []
+  },
+  {
+    "id": "d830fff7a787071ac252-2802bec50cf95487730b",
+    "project": "chromium",
+    "file": "collaboration-account-desktop.spec.ts",
+    "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 32851,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-records.ts",
+          "column": 82,
+          "line": 139
+        },
+        "message": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: 'Remove parent issue', exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-records.ts:139\n\n  137 |   await page.getByRole(\"button\", { name: \"Issue actions\", exact: true }).click();\n  138 |   await page.getByRole(\"menuitem\", { name: \"Relations\", exact: true }).click();\n> 139 |   await page.getByRole(\"menuitem\", { name: \"Remove parent issue\", exact: true }).click();\n      |                                                                                  ^\n  140 | }\n  141 |\n  142 | export async function attachRecordedChild(page: Page, fixture: CollaborationRecordFixture) {\n    at detachRecordedChild (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-records.ts:139:82)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-account-desktop.spec.ts:421:5"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "desktop-account-failure",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-account-desk-fcee6-survive-popouts-and-restart-chromium/attachments/desktop-account-failure-63efc49c5272099ac1d848de2a305cf70c1d4768.png"
+      },
+      {
+        "name": "desktop-account-failure-text",
+        "contentType": "text/plain",
+        "body": "V29ya3NwYWNlcwpDb2xsYWJvcmF0aW9uClRvZ2dsZSBsZWZ0IHNpZGViYXIKUgpSZWNvcmQgc291cmNlIHdvcmtzcGFjZQpTZWFyY2guLi4KSwpOZXcgSXNzdWUKQwpJbmJveApNeSBJc3N1ZXMKQ2hhdApXb3JrCldvcmtzcGFjZSBpc3N1ZXMKUHJvamVjdHMKSXRlcmF0aW9ucwpUcmlhZ2UKMApBSSBUZWFtCkFnZW50cwpTcXVhZHMKQXV0b3BpbG90ClJlc291cmNlcyAmIGNvbm5lY3Rpb25zClNraWxscwpNQ1AKQ2FwYWJpbGl0eSBtYXJrZXQKUnVudGltZXMKQW5hbHl0aWNzClNldHRpbmdzClJFQ08tMjogT3JkaW5hcnkgY2hpbGQgMGI4ZjRkYzgtNwpSRUNPLTEKUkVDTy0yIE9yZGluYXJ5IGNoaWxkIDBiOGY0ZGM4LTcKT3JkaW5hcnkgY2hpbGQgMGI4ZjRkYzgtNwpTdWItaXNzdWUgb2YKUkVDTy0xClJlY29yZGVkIGNvbGxhYm9yYXRpb24gMGI4ZjRkYzgtNwowLzEKClBSSVZBVEVfT1JESU5BUllfQ0hJTERfQk9EWV9ET19OT1RfUFJPSkVDVAoKQWRkIHN1Yi1pc3N1ZXMKQWN0aXZpdHkKVW5zdWJzY3JpYmUKU00KMSBhY3Rpdml0eQpTTQpTb3VyY2UgbWVtYmVyIG91dHNpZGUgY29sbGFib3JhdGlvbgpjcmVhdGVkIHRoaXMgaXNzdWUKanVzdCBub3cKCkxlYXZlIGEgY29tbWVudC4uLgoKUHJvcGVydGllcwpTdGF0dXMKVG9kbwpBc3NpZ25lZQpVbmFzc2lnbmVkClByb2plY3QKTm8gcHJvamVjdApDdXJyZW50IGl0ZXJhdGlvbgpObyBjdXJyZW50IGl0ZXJhdGlvbgpDYXJyeS1vdmVyIGNvdW50CjAKQXNzaWduIHRvIGl0ZXJhdGlvbgpJdGVyYXRpb24gaGlzdG9yeQpBZGQgcHJvcGVydHkKUGFyZW50IGlzc3VlClJFQ08tMQpSZWNvcmRlZCBjb2xsYWJvcmF0aW9uIDBiOGY0ZGM4LTcKUHVsbCByZXF1ZXN0cwoKTm8gbGlua2VkIHB1bGwgcmVxdWVzdHMgeWV0LiBSZWZlcmVuY2UgdGhpcyBpc3N1ZSdzIGlkZW50aWZpZXIgaW4gYSBQUidzIGJyYW5jaCBuYW1lLCB0aXRsZSwgb3IgYm9keSB0byBhdXRvLWxpbmsgaXQuCgpEZXRhaWxzCkNyZWF0ZWQgYnkKU00KU291cmNlIG1lbWJlciBvdXRzaWRlIGNvbGxhYm9yYXRpb24KQ3JlYXRlZApOb3YgMwpVcGRhdGVkCk5vdiAzCkNoYXQgd2l0aCB5b3VyIGFnZW50cwoKQXNrIGZvciBhIHN1bW1hcnksIHBsYW4geW91ciBkYXksIG9yIGhhbmQgb2ZmIGEgcXVpY2sgdGFzay4KCllvdSBuZWVkIGFuIGFnZW50IHRvIHN0YXJ0IGNoYXR0aW5nLgoKCgoKU3RhdHVzClByaW9yaXR5CkFzc2lnbmVlClN0YXJ0IGRhdGUKRHVlIGRhdGUKT3BlbiBpbiBuZXcgdGFiClBpbiB0byBzaWRlYmFyCkNvcHkgbGluawpDb3B5IGxvY2FsIHdvcmtkaXIgcGF0aApSZWxhdGlvbnMKRGVsZXRlIGlzc3Vl"
+      }
+    ]
+  },
+  {
+    "id": "d830fff7a787071ac252-eac673a2b556e5572224",
+    "project": "chromium",
+    "file": "collaboration-account-desktop.spec.ts",
+    "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 619,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resources.ts",
+          "column": 5,
+          "line": 70
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resources.ts:70\n\n  68 |     await db.query(\"BEGIN\");\n  69 |     await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Resource journey machine' WHERE id=$1 AND owner_id=$2\", [runtime.id, owner.id]);\n> 70 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n     |     ^\n  71 |       [deploymentId, owner.id, workspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  72 |     await db.query('UPDATE \"user\" SET disabled_at=now() WHERE id=$1', [disabledAccount.id]);\n  73 |     await db.query(\"COMMIT\");\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resources.ts:70:5)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-account-desktop.spec.ts:586:20"
+      }
+    ],
+    "attachments": []
+  },
+  {
+    "id": "6e126002765c26c65f32-f3f66911ac00e604b913",
+    "project": "chromium",
+    "file": "collaboration-boundaries-web.spec.ts",
+    "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 1274,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/core-journeys.ts",
+          "column": 17,
+          "line": 84
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/core-journeys.ts:84\n\n  82 |   const client = new pg.Client(DATABASE_URL);\n  83 |   await client.connect();\n> 84 |   try { return (await client.query<T>(text, values)).rows; } finally { await client.end(); }\n     |                 ^\n  85 | }\n  86 |\n  87 | export const issueTasks = (issueId: string) =>\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at sql (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/core-journeys.ts:84:17)\n    at authorizeOwnAgent (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-boundaries-web.spec.ts:268:3)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-boundaries-web.spec.ts:320:19"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-1.png"
+      },
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-2.png"
+      },
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-5.png"
+      },
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-3.png"
+      },
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-4.png"
+      },
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "dc6e451f347c4093ecd2-a28eb97dd4e993efe152",
+    "project": "chromium",
+    "file": "collaboration-command-history-web.spec.ts",
+    "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 668,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts",
+          "column": 5,
+          "line": 100
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resource-offers.ts:100\n\n   98 |     const updated = await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3\", [runtime.id, ownerAccount.id, executionWorkspace.id]);\n   99 |     expect(updated.rowCount).toBe(1);\n> 100 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n      |     ^\n  101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  102 |     await db.query(\"COMMIT\");\n  103 |   } catch (error) { await db.query(\"ROLLBACK\"); throw error; }\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-command-history-web.spec.ts:12:19"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-command-hist-3d820-h-and-another-account-reads-chromium/test-failed-1.png"
+      },
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-command-hist-3d820-h-and-another-account-reads-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "e1244c64bf212413b472-21e1aed1c8d6c522f803",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-desktop.spec.ts",
+    "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 576,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts",
+          "column": 5,
+          "line": 100
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resource-offers.ts:100\n\n   98 |     const updated = await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3\", [runtime.id, ownerAccount.id, executionWorkspace.id]);\n   99 |     expect(updated.rowCount).toBe(1);\n> 100 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n      |     ^\n  101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  102 |     await db.query(\"COMMIT\");\n  103 |   } catch (error) { await db.query(\"ROLLBACK\"); throw error; }\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)\n    at seedCollaborationMentionJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:42:19)\n    at withNativeJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:32:19)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:98:3"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-9c5dc--queued-target-associations-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "e1244c64bf212413b472-40cb2a40180050917361",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-desktop.spec.ts",
+    "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 577,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts",
+          "column": 5,
+          "line": 100
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resource-offers.ts:100\n\n   98 |     const updated = await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3\", [runtime.id, ownerAccount.id, executionWorkspace.id]);\n   99 |     expect(updated.rowCount).toBe(1);\n> 100 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n      |     ^\n  101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  102 |     await db.query(\"COMMIT\");\n  103 |   } catch (error) { await db.query(\"ROLLBACK\"); throw error; }\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)\n    at seedCollaborationMentionJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:42:19)\n    at withNativeJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:32:19)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:103:3"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-7b292-y-replay-stays-deduplicated-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "e1244c64bf212413b472-f56f261bd296c36c7784",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-desktop.spec.ts",
+    "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 558,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts",
+          "column": 5,
+          "line": 100
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resource-offers.ts:100\n\n   98 |     const updated = await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3\", [runtime.id, ownerAccount.id, executionWorkspace.id]);\n   99 |     expect(updated.rowCount).toBe(1);\n> 100 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n      |     ^\n  101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  102 |     await db.query(\"COMMIT\");\n  103 |   } catch (error) { await db.query(\"ROLLBACK\"); throw error; }\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)\n    at seedCollaborationMentionJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:42:19)\n    at withNativeJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:32:19)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-desktop.spec.ts:108:3"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-fc623-ify-only-newly-added-people-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "a2c6b754d21b70f11df3-e4beab049273f7979057",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-web.spec.ts",
+    "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 731,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts",
+          "column": 5,
+          "line": 100
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resource-offers.ts:100\n\n   98 |     const updated = await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3\", [runtime.id, ownerAccount.id, executionWorkspace.id]);\n   99 |     expect(updated.rowCount).toBe(1);\n> 100 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n      |     ^\n  101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  102 |     await db.query(\"COMMIT\");\n  103 |   } catch (error) { await db.query(\"ROLLBACK\"); throw error; }\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)\n    at seedCollaborationMentionJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:42:19)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-web.spec.ts:47:21"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-1499f--queued-target-associations-chromium/test-failed-1.png"
+      },
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-1499f--queued-target-associations-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "a2c6b754d21b70f11df3-64a32e62b06c28657aa8",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-web.spec.ts",
+    "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 829,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts",
+          "column": 5,
+          "line": 100
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resource-offers.ts:100\n\n   98 |     const updated = await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3\", [runtime.id, ownerAccount.id, executionWorkspace.id]);\n   99 |     expect(updated.rowCount).toBe(1);\n> 100 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n      |     ^\n  101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  102 |     await db.query(\"COMMIT\");\n  103 |   } catch (error) { await db.query(\"ROLLBACK\"); throw error; }\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)\n    at seedCollaborationMentionJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:42:19)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-web.spec.ts:47:21"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/test-failed-1.png"
+      },
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-d3535-y-replay-stays-deduplicated-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "a2c6b754d21b70f11df3-24073f543fb2f4024711",
+    "project": "chromium",
+    "file": "collaboration-mention-journeys-web.spec.ts",
+    "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 775,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts",
+          "column": 5,
+          "line": 100
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resource-offers.ts:100\n\n   98 |     const updated = await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3\", [runtime.id, ownerAccount.id, executionWorkspace.id]);\n   99 |     expect(updated.rowCount).toBe(1);\n> 100 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n      |     ^\n  101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  102 |     await db.query(\"COMMIT\");\n  103 |   } catch (error) { await db.query(\"ROLLBACK\"); throw error; }\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)\n    at seedCollaborationMentionJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:42:19)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-web.spec.ts:66:19"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/test-failed-1.png"
+      },
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "cde037303ed86892b546-c487173c2ca4fe36791b",
+    "project": "chromium",
+    "file": "collaboration-preparation-records-desktop.spec.ts",
+    "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 1428,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts",
+          "column": 20,
+          "line": 96
+        },
+        "message": "Error: Command failed: go run -mod=readonly /private/tmp/multica-final-check-v14-8062y7c6/multica-preparation-seal-iijtsm/main.go\npanic: synthetic preparation protocol validation failed\n\ngoroutine 1 [running]:\nmain.main.func1(...)\n\t/private/tmp/multica-final-check-v14-8062y7c6/multica-preparation-seal-iijtsm/main.go:18\nmain.main()\n\t/private/tmp/multica-final-check-v14-8062y7c6/multica-preparation-seal-iijtsm/main.go:22 +0x4d4\nexit status 2\n\n\n   at fixtures/collaboration-preparation-records.ts:96\n\n  94 |     const source = join(directory, \"main.go\");\n  95 |     writeFileSync(source, preparationSealer, { mode: 0o600 });\n> 96 |     const output = execFileSync(\"go\", [\"run\", \"-mod=readonly\", source], {\n     |                    ^\n  97 |       cwd: resolve(import.meta.dirname, \"../../server\"), input: JSON.stringify({ manifest, inputs, observations, result }),\n  98 |       env: { ...Object.fromEntries([\"PATH\", \"HOME\", \"TMPDIR\", \"GOPATH\", \"GOCACHE\", \"GOMODCACHE\"].flatMap((key) => process.env[key] ? [[key, process.env[key]]] : [])), GOTOOLCHAIN: \"go1.26.6\" },\n  99 |       encoding: \"utf8\", timeout: 60_000, maxBuffer: 1 << 20,\n    at sealPreparation (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts:96:20)\n    at seedCollaborationPreparationRecords (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts:168:18)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preparation-records-desktop.spec.ts:14:19"
+      }
+    ],
+    "attachments": []
+  },
+  {
+    "id": "a51aed25ed03c8fdf991-8eebfabe4531dc636537",
+    "project": "chromium",
+    "file": "collaboration-preparation-records-web.spec.ts",
+    "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 1905,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts",
+          "column": 20,
+          "line": 96
+        },
+        "message": "Error: Command failed: go run -mod=readonly /private/tmp/multica-final-check-v14-8062y7c6/multica-preparation-seal-8i1tnz/main.go\npanic: synthetic preparation protocol validation failed\n\ngoroutine 1 [running]:\nmain.main.func1(...)\n\t/private/tmp/multica-final-check-v14-8062y7c6/multica-preparation-seal-8i1tnz/main.go:18\nmain.main()\n\t/private/tmp/multica-final-check-v14-8062y7c6/multica-preparation-seal-8i1tnz/main.go:22 +0x4d4\nexit status 2\n\n\n   at fixtures/collaboration-preparation-records.ts:96\n\n  94 |     const source = join(directory, \"main.go\");\n  95 |     writeFileSync(source, preparationSealer, { mode: 0o600 });\n> 96 |     const output = execFileSync(\"go\", [\"run\", \"-mod=readonly\", source], {\n     |                    ^\n  97 |       cwd: resolve(import.meta.dirname, \"../../server\"), input: JSON.stringify({ manifest, inputs, observations, result }),\n  98 |       env: { ...Object.fromEntries([\"PATH\", \"HOME\", \"TMPDIR\", \"GOPATH\", \"GOCACHE\", \"GOMODCACHE\"].flatMap((key) => process.env[key] ? [[key, process.env[key]]] : [])), GOTOOLCHAIN: \"go1.26.6\" },\n  99 |       encoding: \"utf8\", timeout: 60_000, maxBuffer: 1 << 20,\n    at sealPreparation (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts:96:20)\n    at seedCollaborationPreparationRecords (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts:168:18)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preparation-records-web.spec.ts:14:19"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/test-failed-1.png"
+      },
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "6a3286d9ccab8513fbec-e93b6369b5b4939e29a8",
+    "project": "chromium",
+    "file": "collaboration-preview-web.spec.ts",
+    "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 661,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resources.ts",
+          "column": 5,
+          "line": 70
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resources.ts:70\n\n  68 |     await db.query(\"BEGIN\");\n  69 |     await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Resource journey machine' WHERE id=$1 AND owner_id=$2\", [runtime.id, owner.id]);\n> 70 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n     |     ^\n  71 |       [deploymentId, owner.id, workspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  72 |     await db.query('UPDATE \"user\" SET disabled_at=now() WHERE id=$1', [disabledAccount.id]);\n  73 |     await db.query(\"COMMIT\");\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resources.ts:70:5)\n    at seedCollaborationPreviewJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preview.ts:9:19)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preview-web.spec.ts:12:19"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preview-web--9c86c-a-suppressed-target-is-sent-chromium/test-failed-1.png"
+      },
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-preview-web--9c86c-a-suppressed-target-is-sent-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "c78071dd87551f1b6349-e8466e8ab1e2b5c666b4",
+    "project": "chromium",
+    "file": "collaboration-resource-offers-web.spec.ts",
+    "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 1036,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts",
+          "column": 5,
+          "line": 100
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resource-offers.ts:100\n\n   98 |     const updated = await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3\", [runtime.id, ownerAccount.id, executionWorkspace.id]);\n   99 |     expect(updated.rowCount).toBe(1);\n> 100 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n      |     ^\n  101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  102 |     await db.query(\"COMMIT\");\n  103 |   } catch (error) { await db.query(\"ROLLBACK\"); throw error; }\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-resource-offers-web.spec.ts:11:19"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-resource-off-c74df-independently-authorizes-it-chromium/test-failed-1.png"
+      },
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-resource-off-c74df-independently-authorizes-it-chromium/trace.zip"
+      }
+    ]
+  },
+  {
+    "id": "217ddf7a66d97257e3f4-2fc69945ab2d775c7b1e",
+    "project": "chromium",
+    "file": "collaboration-resources-web.spec.ts",
+    "title": "resource owners register, authorize, withdraw and switch while participant management preserves authority",
+    "suite": [],
+    "expected_status": "passed",
+    "runner_status": "unexpected",
+    "actual_status": "failed",
+    "outcome": "failed",
+    "annotations": [],
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "duration_ms": 957,
+    "errors": [
+      {
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resources.ts",
+          "column": 5,
+          "line": 70
+        },
+        "message": "error: invalid input syntax for type uuid: \"collaboration-closure-v14-01a1a186\"\n\n   at fixtures/collaboration-resources.ts:70\n\n  68 |     await db.query(\"BEGIN\");\n  69 |     await db.query(\"UPDATE agent_runtime SET status='offline', custom_name='Resource journey machine' WHERE id=$1 AND owner_id=$2\", [runtime.id, owner.id]);\n> 70 |     await db.query(\"INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)\",\n     |     ^\n  71 |       [deploymentId, owner.id, workspace.id, runtime.id, randomUUID(), randomBytes(32)]);\n  72 |     await db.query('UPDATE \"user\" SET disabled_at=now() WHERE id=$1', [disabledAccount.id]);\n  73 |     await db.query(\"COMMIT\");\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17\n    at seedCollaborationResourceJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resources.ts:70:5)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-resources-web.spec.ts:11:19"
+      }
+    ],
+    "attachments": [
+      {
+        "name": "screenshot",
+        "contentType": "image/png",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-resources-we-86988-agement-preserves-authority-chromium/test-failed-1.png"
+      },
+      {
+        "name": "trace",
+        "contentType": "application/zip",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-resources-we-86988-agement-preserves-authority-chromium/trace.zip"
+      }
+    ]
+  }
+]

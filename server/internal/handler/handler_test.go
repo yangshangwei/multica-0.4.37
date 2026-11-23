@@ -42,21 +42,25 @@ const (
 )
 
 func TestMain(m *testing.M) {
-	ctx := context.Background()
-	dbURL := os.Getenv("DATABASE_URL")
+	dbURL := strings.TrimSpace(os.Getenv("DATABASE_URL"))
 	if dbURL == "" {
-		dbURL = "postgres://multica:multica@localhost:5432/multica?sslmode=disable"
+		fmt.Fprintln(os.Stderr, "handler tests require an explicit DATABASE_URL for an isolated test database; use go build or go test -c for compile-only checks")
+		os.Exit(2)
 	}
+	ctx := context.Background()
 
 	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
-		fmt.Printf("Skipping tests: could not connect to database: %v\n", err)
-		os.Exit(0)
+		fmt.Fprintln(os.Stderr, "handler tests: invalid DATABASE_URL; configure an isolated, migrated test database")
+		os.Exit(2)
 	}
-	if err := pool.Ping(ctx); err != nil {
-		fmt.Printf("Skipping tests: database not reachable: %v\n", err)
+	probeCtx, cancelProbe := context.WithTimeout(ctx, 5*time.Second)
+	probeErr := pool.Ping(probeCtx)
+	cancelProbe()
+	if probeErr != nil {
+		fmt.Fprintln(os.Stderr, "handler tests: database connection failed; verify DATABASE_URL and test database readiness")
 		pool.Close()
-		os.Exit(0)
+		os.Exit(2)
 	}
 
 	queries := db.New(pool)
@@ -176,6 +180,11 @@ func cleanupHandlerTestFixture(ctx context.Context, pool *pgxpool.Pool) error {
 		if _, err := pool.Exec(ctx, `DELETE FROM client_usage_daily WHERE user_id IN (SELECT id FROM "user" WHERE email = $1)`, handlerTestEmail); err != nil {
 			return err
 		}
+	}
+	if _, err := pool.Exec(ctx, `DELETE FROM agent_invocation_target WHERE agent_id IN (
+		SELECT a.id FROM agent a JOIN workspace w ON w.id = a.workspace_id WHERE w.slug = $1
+	)`, handlerTestWorkspaceSlug); err != nil {
+		return err
 	}
 	if _, err := pool.Exec(ctx, `DELETE FROM workspace WHERE slug = $1`, handlerTestWorkspaceSlug); err != nil {
 		return err

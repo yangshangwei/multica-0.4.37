@@ -1,0 +1,22 @@
+{
+  "initial_process_failure": {
+    "reason": "Root-created task temp directory had mode 0700 and provider uid 1000 could not create its OpenCode temp subdirectory.",
+    "fixed": true,
+    "verification": "Wrapper transfers only task cwd and temp ownership. Provider can write its temp directory and still cannot read root daemon profile."
+  },
+  "anonymous_model": {
+    "model": "opencode/big-pickle",
+    "error": "AI_APICallError: Free usage limit reached.",
+    "source": "Actual OpenCode provider log, primary and title streams.",
+    "role_result": null,
+    "local_opencode_configured_credentials": 0
+  },
+  "alternate_transport": {
+    "model": "opencode/hy3-free",
+    "error": "UnknownError: Unexpected server error. Check server logs for details.",
+    "ref": "err_42a1de2a",
+    "role_result": null
+  },
+  "attempts": "Initial process failure; explicit rerun timed out after 3m; one automatic retry timed out after 3m; no remaining active or pending task.",
+  "network_gate": "Default bridge egress is unrestricted; least-network-privilege acceptance still open."
+}

@@ -1,0 +1,285 @@
+package handler
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"net/http"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/collaboration"
+	"github.com/multica-ai/multica/server/internal/service"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
+)
+
+type CollaborationAccountSummary struct {
+	UserID    string `json:"user_id"`
+	Name      string `json:"name"`
+	AvatarURL string `json:"avatar_url"`
+	External  bool   `json:"external"`
+}
+
+type CollaborationWriteContext struct {
+	ParticipantEpoch string `json:"participant_epoch"`
+	AccountEpoch     string `json:"account_epoch"`
+}
+
+type CollaborationOrdinaryChild struct {
+	ID         string `json:"id"`
+	Identifier string `json:"identifier"`
+	Title      string `json:"title"`
+	CanOpen    bool   `json:"can_open"`
+}
+
+type CollaborationOrdinaryChildren struct {
+	Items               []CollaborationOrdinaryChild `json:"items"`
+	SourceWorkspaceSlug *string                      `json:"source_workspace_slug"`
+}
+
+type CollaborationIssueResponse struct {
+	service.CollaborationIssueFields
+	ID              string  `json:"id"`
+	Title           string  `json:"title"`
+	Description     string  `json:"description"`
+	Status          string  `json:"status"`
+	StatusCategory  string  `json:"status_category"`
+	Priority        string  `json:"priority"`
+	StartDate       *string `json:"start_date"`
+	DueDate         *string `json:"due_date"`
+	SourceWorkspace struct {
+		ID         string `json:"id"`
+		Name       string `json:"name"`
+		Identifier string `json:"identifier"`
+	} `json:"source_workspace"`
+	Creator        CollaborationAccountSummary `json:"creator"`
+	Handler        CollaborationAccountSummary `json:"handler"`
+	Revision       string                      `json:"collaboration_revision"`
+	LifecycleEpoch string                      `json:"lifecycle_epoch"`
+	WriteContext   *CollaborationWriteContext  `json:"write_context,omitempty"`
+	Realtime       struct {
+		EventSequence  string `json:"event_seq"`
+		AuthorityEpoch string `json:"authority_epoch"`
+	} `json:"realtime"`
+	Session struct {
+		ID             string `json:"id"`
+		QueueState     string `json:"queue_state"`
+		ControlVersion string `json:"control_version"`
+	} `json:"session"`
+	Execution                 service.CollaborationExecutionView        `json:"execution"`
+	CurrentInformationRequest *CollaborationInformationRequestResponse  `json:"current_information_request"`
+	InformationWorkflow       *service.CollaborationInformationWorkflow `json:"information_workflow,omitempty"`
+	AIPolicy                  string                                    `json:"ai_policy"`
+	Delivery                  *service.CollaborationDeliverySummary     `json:"delivery,omitempty"`
+	Capabilities              collaboration.Capabilities                `json:"capabilities"`
+	OrdinaryChildren          CollaborationOrdinaryChildren             `json:"ordinary_children"`
+}
+
+// CollaborationInformationRequestResponse names the open request and where a
+// return lands. Clients display ReturnStatus and send it back unchanged.
+type CollaborationInformationRequestResponse struct {
+	ID                   string                                 `json:"id"`
+	Requester            CollaborationAccountSummary            `json:"requester"`
+	Recipient            CollaborationAccountSummary            `json:"recipient"`
+	Note                 string                                 `json:"note"`
+	ReturnStatus         *string                                `json:"return_status"`
+	ReturnStatusFallback bool                                   `json:"return_status_fallback"`
+	CreatedAt            string                                 `json:"created_at"`
+	Block                *service.CollaborationInformationBlock `json:"block,omitempty"`
+}
+
+func writeCollaborationError(w http.ResponseWriter, err error) {
+	var domain *service.CollaborationError
+	if errors.As(err, &domain) {
+		writeJSON(w, domain.Status, map[string]string{"error": domain.Code, "code": domain.Code})
+		return
+	}
+	writeJSON(w, http.StatusServiceUnavailable, map[string]string{"error": "Collaboration data is unavailable.", "code": "collaboration_unavailable"})
+}
+
+func (h *Handler) collaborationAccountSummary(ctx context.Context, userID, workspaceID pgtype.UUID) (CollaborationAccountSummary, error) {
+	u, err := h.Queries.GetUser(ctx, userID)
+	if err != nil {
+		return CollaborationAccountSummary{}, err
+	}
+	_, err = h.Queries.GetMemberByUserAndWorkspace(ctx, db.GetMemberByUserAndWorkspaceParams{UserID: userID, WorkspaceID: workspaceID})
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return CollaborationAccountSummary{}, err
+	}
+	return CollaborationAccountSummary{UserID: uuidToString(u.ID), Name: u.Name, AvatarURL: u.AvatarUrl.String, External: errors.Is(err, pgx.ErrNoRows)}, nil
+}
+
+func (h *Handler) collaborationIssueResponse(ctx context.Context, access service.CollaborationIssueAccess) (CollaborationIssueResponse, error) {
+	// Values, referenced definitions, role/version and source summaries must
+	// come from one snapshot; a concurrent edit must not splice them together.
+	tx, err := h.TxStarter.Begin(ctx)
+	if err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	defer tx.Rollback(ctx)
+	if _, err = tx.Exec(ctx, "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY"); err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	scoped := *h
+	scoped.Queries, scoped.DB = h.Queries.WithTx(tx), tx
+	svc := service.NewCollaborationService(scoped.Queries, h.TxStarter, h.IssueService)
+	access, err = svc.ResolveIssueAccess(ctx, scoped.Queries, access.Issue.ID)
+	if err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	out, err := scoped.collaborationIssueResponseInSnapshot(ctx, access)
+	if err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	if err = tx.Commit(ctx); err != nil {
+		return CollaborationIssueResponse{}, err
+	}
+	return out, nil
+}
+
+func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, access service.CollaborationIssueAccess) (CollaborationIssueResponse, error) {
+	var out CollaborationIssueResponse
+	i := access.Issue
+	if i.CreatorType != "member" || !i.AssigneeType.Valid || i.AssigneeType.String != "member" || !i.AssigneeID.Valid {
+		return out, errors.New("collaboration has invalid human identity")
+	}
+	workspace, err := h.Queries.GetWorkspace(ctx, i.WorkspaceID)
+	if err != nil {
+		return out, err
+	}
+	out.Creator, err = h.collaborationAccountSummary(ctx, i.CreatorID, i.WorkspaceID)
+	if err != nil {
+		return out, err
+	}
+	out.Handler, err = h.collaborationAccountSummary(ctx, i.AssigneeID, i.WorkspaceID)
+	if err != nil {
+		return out, err
+	}
+	out.ID, out.Title, out.Description = uuidToString(i.ID), i.Title, i.Description.String
+	out.Status, out.StatusCategory, out.Priority = i.Status, access.StatusCategory, i.Priority
+	out.StartDate, out.DueDate = dateToPtr(i.StartDate), dateToPtr(i.DueDate)
+	out.SourceWorkspace.ID, out.SourceWorkspace.Name = uuidToString(workspace.ID), workspace.Name
+	prefix := h.getIssuePrefix(ctx, workspace.ID)
+	out.SourceWorkspace.Identifier = fmt.Sprintf("%s-%d", prefix, i.Number)
+	children, err := h.Queries.ListCollaborationOrdinaryChildren(ctx, db.ListCollaborationOrdinaryChildrenParams{WorkspaceID: i.WorkspaceID, ParentIssueID: i.ID})
+	if err != nil {
+		return out, err
+	}
+	out.OrdinaryChildren.Items = make([]CollaborationOrdinaryChild, 0, len(children))
+	if access.SourceMember {
+		out.OrdinaryChildren.SourceWorkspaceSlug = &workspace.Slug
+	}
+	for _, child := range children {
+		out.OrdinaryChildren.Items = append(out.OrdinaryChildren.Items, CollaborationOrdinaryChild{ID: uuidToString(child.ID), Identifier: fmt.Sprintf("%s-%d", prefix, child.Number), Title: child.Title, CanOpen: access.SourceMember})
+	}
+	out.Revision = strconv.FormatInt(access.Revision, 10)
+	out.LifecycleEpoch = strconv.FormatInt(access.LifecycleEpoch, 10)
+	out.Realtime.EventSequence = strconv.FormatInt(access.EventSequence, 10)
+	out.Realtime.AuthorityEpoch = strconv.FormatInt(access.AuthorityEpoch, 10)
+	if access.ParticipantEpoch.Valid && access.ParticipantEpoch.Int64 > 0 && access.AccountEpoch.Valid && access.AccountEpoch.Int64 > 0 {
+		out.WriteContext = &CollaborationWriteContext{ParticipantEpoch: strconv.FormatInt(access.ParticipantEpoch.Int64, 10), AccountEpoch: strconv.FormatInt(access.AccountEpoch.Int64, 10)}
+	}
+	out.Session.ID, out.Session.QueueState = uuidToString(access.SessionID), access.QueueState
+	out.Session.ControlVersion = strconv.FormatInt(access.ControlVersion, 10)
+	out.Capabilities = access.Capabilities
+	// Submission remains gated. Controls require current human write context
+	// and a complete supported projection, independently of runtime availability.
+	out.Capabilities.ControlAI, out.Capabilities.SubmitCommand = false, false
+	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	out.AIPolicy = access.AIPolicy
+	out.Delivery, err = svc.DeliveryView(ctx, access)
+	if err != nil {
+		return out, err
+	}
+	out.Capabilities = service.CollaborationDeliveryCapabilities(access, out.Delivery)
+	out.Capabilities.ControlAI, out.Capabilities.SubmitCommand = false, false
+	out.CollaborationIssueFields, err = svc.IssueFields(ctx, access)
+	if err != nil {
+		return out, err
+	}
+	out.Execution, err = svc.ExecutionView(ctx, access)
+	if err != nil {
+		return out, err
+	}
+	out.Capabilities.ControlAI = access.Capabilities.ControlAI && out.WriteContext != nil && !out.Execution.RequiresUpgrade && (out.Execution.ProtocolVersion == 5 || out.Execution.ProtocolVersion == 6)
+	out.InformationWorkflow, err = svc.InformationWorkflowView(ctx, access)
+	if err != nil {
+		return out, err
+	}
+	if out.InformationWorkflow != nil {
+		out.Capabilities.RequestInformation = out.Capabilities.RequestInformation && out.InformationWorkflow.Actions.Request.Available
+		out.Capabilities.ReturnInformation = out.Capabilities.ReturnInformation && out.InformationWorkflow.Actions.Return.Available
+		if out.InformationWorkflow.Managed && access.StatusCategory == "blocked" {
+			out.Capabilities.Transfer, out.Capabilities.ChangeStatus = false, false
+		}
+	}
+	request, err := svc.InformationRequestView(ctx, access)
+	if err != nil || request == nil {
+		return out, err
+	}
+	view := &CollaborationInformationRequestResponse{ID: uuidToString(request.ID), Note: request.Note,
+		ReturnStatusFallback: request.ReturnStatusFallback, CreatedAt: timestampToString(request.CreatedAt), Block: request.Block}
+	if view.Requester, err = h.collaborationAccountSummary(ctx, request.RequesterID, i.WorkspaceID); err != nil {
+		return out, err
+	}
+	if view.Recipient, err = h.collaborationAccountSummary(ctx, request.RecipientID, i.WorkspaceID); err != nil {
+		return out, err
+	}
+	if request.ReturnStatus != "" {
+		view.ReturnStatus = &request.ReturnStatus
+	}
+	out.CurrentInformationRequest = view
+	return out, nil
+}
+
+func (h *Handler) GetCollaborationIssue(w http.ResponseWriter, r *http.Request) {
+	if !collaborationExecutionRead(w, r) {
+		return
+	}
+	w.Header().Set("Cache-Control", "no-store")
+	id, ok := parseUUIDOrBadRequest(w, chi.URLParam(r, "id"), "issue id")
+	if !ok {
+		return
+	}
+	r.Header.Del("X-Workspace-ID")
+	r.Header.Del("X-Workspace-Slug")
+	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	access, err := svc.ResolveIssueAccess(r.Context(), nil, id)
+	if err != nil {
+		writeCollaborationError(w, err)
+		return
+	}
+	out, err := h.collaborationIssueResponse(r.Context(), access)
+	if err != nil {
+		writeCollaborationError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, out)
+}
+
+func (h *Handler) GetCollaborationCreation(w http.ResponseWriter, r *http.Request) {
+	if !collaborationExecutionRead(w, r) {
+		return
+	}
+	w.Header().Set("Cache-Control", "no-store")
+	source, ok := parseUUIDOrBadRequest(w, r.URL.Query().Get("source_workspace_id"), "source workspace id")
+	if !ok {
+		return
+	}
+	r.Header.Del("X-Workspace-ID")
+	r.Header.Del("X-Workspace-Slug")
+	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
+	access, err := svc.GetCreation(r.Context(), source, chi.URLParam(r, "requestId"))
+	if err != nil {
+		writeCollaborationError(w, err)
+		return
+	}
+	out, err := h.collaborationIssueResponse(r.Context(), access)
+	if err != nil {
+		writeCollaborationError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, out)
+}

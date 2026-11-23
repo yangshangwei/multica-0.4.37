@@ -1,0 +1,146 @@
+{
+  "at": "2026-10-21T23:51:45.360039+00:00",
+  "reviewer": "content_creation independent of owner_switch implementation",
+  "decision": "approve_bounded_fix",
+  "blocking_findings": [],
+  "review_scope": "stored owner identity vs daemon caller; 13 scenarios/three contexts; deadline/cancellation; generic authorization unchanged; two-file HEAD isolation",
+  "source": [
+    {
+      "path": "server/internal/service/collaboration_authority.go",
+      "sha256": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b"
+    },
+    {
+      "path": "server/internal/service/collaboration_resource_owner_identity_test.go",
+      "sha256": "0150c893b834cde047a48a01ef97a8595cadb8c343e44aedf1ad5b8b5e6ea6fc"
+    }
+  ],
+  "actual_pass_events": [
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/valid/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/valid/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/valid/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/valid",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_unknown/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_unknown/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_unknown/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_unknown",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_password_missing/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_password_missing/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_password_missing/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_password_missing",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_password_stale/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_password_stale/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_password_stale/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_password_stale",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_missing/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_missing/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_missing/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_missing",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_epoch_stale/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_epoch_stale/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_epoch_stale/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_epoch_stale",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_revoked/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_revoked/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_revoked/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/binding_revoked",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_membership_lost/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_membership_lost/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_membership_lost/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_membership_lost",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_disabled/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_disabled/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_disabled/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/owner_disabled",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/installation_revoked/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/installation_revoked/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/installation_revoked/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/installation_revoked",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/database_failure/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/database_failure/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/database_failure/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/database_failure",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/cancelled/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/cancelled/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/cancelled/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/cancelled",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/cancelled_during_owner_check/same_owner_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/cancelled_during_owner_check/different_valid_daemon",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/cancelled_during_owner_check/human",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller/cancelled_during_owner_check",
+    "TestCollaborationResourceIdentityValidatesStoredOwnerSeparatelyFromDaemonCaller"
+  ],
+  "leaf_passes": 39,
+  "top_level_passes": 1,
+  "total_passes": 53,
+  "failed": [],
+  "skipped": [],
+  "checked_gofmt": "empty",
+  "checked_diff_check": "pass",
+  "spec_recommendation": "Preserve stored owner child context and original caller/deadline; never use Background or transfer owner session to runtime authorization.",
+  "artifacts": [
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head-source.json",
+      "sha256": "2360e708621e2b6d14fd5e29de0e383c62ac11af3595405296c3cfeb2fbdd395"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head-command.json",
+      "sha256": "870bdcf3f56cdeebca57983da26495a00c59ab79dd480a00151a9b4770ae5962"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head-result.json",
+      "sha256": "9f81aa8f6cfec329cd7a950eb471c72fbb8ecf2ba2bb3ebb368233e7d780d88f"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-isolated-head.jsonl",
+      "sha256": "df3d55e644a9d450498106bea4a64e91cd244209b8b89ffd33820321bd295253"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-vet-command.json",
+      "sha256": "e22b20a9fb06d291768ea073ecbb01c46f78ea1ade1d76dabd520dcef4351ce1"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-vet-result.json",
+      "sha256": "d2d56b5c8b9c35504eaa68efcc1dd844f181ac96200026224b82cc1dbf8e7c16"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-vet.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-vet.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-resource-identity-red-current-20261022-command.json",
+      "sha256": "afb601bdaecb4063f4a7eed756b87134314e753045d60056a2f98c88151f5a75"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-resource-identity-red-current-20261022-result.json",
+      "sha256": "d51422dbdcfe45c0a90e5b9aab46bf1e022759ccc9d8fdb077c5328af22a4114"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-resource-identity-red-current-20261022.jsonl",
+      "sha256": "1c66b3cc21fe84d9114165ee54b5152d776c917544110a9e37f39d87c225d2d0"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-resource-identity-expanded-current-20261022-result.json",
+      "sha256": "50ca66594065c059a3e3ccb40298dd6f1bfb6881f4dd485edb583a478df27dcd"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/handoff-service-race-final-result.json",
+      "sha256": "2b6a0bf07bceb02b958ce31376b8001c0a73e63125efa412393fcb604844488b"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-identity-final-review.md",
+      "sha256": "80a2adbe89bd70a96f54cafdac317f3d81036ac69e5161f890ad35f568d29934"
+    }
+  ],
+  "acceptance_promotions": [],
+  "not_tested": [
+    "real provider account/quota",
+    "kernel containment",
+    "installed full Main/old clients",
+    "other OS",
+    "full task acceptance"
+  ]
+}

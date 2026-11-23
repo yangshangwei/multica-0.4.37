@@ -137,6 +137,9 @@ type timelinePaginatedResponse struct {
 // threads cut by the window are completed afterwards within a bounded context
 // budget; a thread that cannot be completed is omitted as one unit (MUL-5492).
 func (h *Handler) ListTimeline(w http.ResponseWriter, r *http.Request) {
+	if h.taskCapabilityRead(w, r, (*Handler).ListTimeline) {
+		return
+	}
 	id := chi.URLParam(r, "id")
 	issue, ok := h.loadIssueForUser(w, r, id)
 	if !ok {

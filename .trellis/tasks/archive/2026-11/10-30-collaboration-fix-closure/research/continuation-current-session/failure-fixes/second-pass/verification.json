@@ -1,0 +1,130 @@
+{
+  "recorded_at": "2026-11-03T08:21:34.360932+00:00",
+  "active_task": ".trellis/tasks/10-30-collaboration-fix-closure",
+  "agent": "/root/fix_check",
+  "state": "second_pass_fixture_maintenance_checked_live_browser_pending_root",
+  "git_head": "084ea3c987fa4ab8418a2ae5b3b7a20c096c36d8",
+  "source_sha256": {
+    "e2e/fixtures/collaboration-editing.ts": "085b5af7434d93e3c6efe659c51f7c83bff7ac5c9712a1413e480e4d0e92c58d",
+    "e2e/collaboration-editing-web.spec.ts": "fa0aace8ffd19da4dc32eee5c01324df711e4089b79d5472649f54f71a4e3963",
+    "e2e/collaboration-account-desktop.spec.ts": "7e421e01c1eafbbe9bb3ae28513dd7c60d685ad5e84e2041bae255d6a98235df"
+  },
+  "frozen_v12_source_sha256": {
+    "e2e/fixtures/collaboration-editing.ts": "085b5af7434d93e3c6efe659c51f7c83bff7ac5c9712a1413e480e4d0e92c58d",
+    "e2e/collaboration-editing-web.spec.ts": "fa0aace8ffd19da4dc32eee5c01324df711e4089b79d5472649f54f71a4e3963",
+    "e2e/collaboration-account-desktop.spec.ts": "7e421e01c1eafbbe9bb3ae28513dd7c60d685ad5e84e2041bae255d6a98235df"
+  },
+  "delta_patch": "second-pass.patch",
+  "delta_patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "changes": [
+    "Reveal current editing actions within Issue actions/More actions using existing journey interaction pattern",
+    "Ordinary comment helper uses one Send comment click with current internal preflight",
+    "Web source navigation pins the canonical issue identifier",
+    "External source-field/iteration absence checks include hidden buttons",
+    "Native editing final zoom action uses shared reveal helper"
+  ],
+  "preserved_assertions": [
+    "creation201 parent UUID and stage2",
+    "handler UUID and all labels/properties/project/iteration facts",
+    "stage3 and reason-gated next iteration",
+    "comment201 and stable comment/reply identities",
+    "one PATCH despite original-response loss and reload/recovery",
+    "comment history exact original twice",
+    "comment revision unchanged by resolve/reopen and own reactions",
+    "issue reactions and tombstone plus retained reply",
+    "external catalogs remain empty",
+    "external source options absent",
+    "external priority edit persists",
+    "private draft removed on access loss",
+    "native one account tab/zoom200/description in viewport/no page errors/no workspace headers"
+  ],
+  "checks": [
+    {
+      "command": [
+        "pnpm",
+        "-C",
+        "packages/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/workflow.test.tsx",
+        "collaboration/comment-composer.test.tsx",
+        "collaboration/comment-list.test.tsx"
+      ],
+      "exit_code": 0,
+      "files": 3,
+      "passed": 29,
+      "failed": 0,
+      "skipped": 0,
+      "log": "views-workflow-comment-tests.log",
+      "log_sha256": "5779486fce2b32336bb0f8d121033002c7502e23b302a30367ea3a8a1bc44113"
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--strict",
+        "--target",
+        "ESNext",
+        "--module",
+        "ESNext",
+        "--moduleResolution",
+        "Bundler",
+        "--lib",
+        "ESNext,DOM,DOM.Iterable",
+        "--jsx",
+        "react-jsx",
+        "--esModuleInterop",
+        "--skipLibCheck",
+        "--resolveJsonModule",
+        "--types",
+        "node",
+        "e2e/fixtures/collaboration-editing.ts",
+        "e2e/collaboration-editing-web.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts"
+      ],
+      "exit_code": 0,
+      "log": "e2e-typecheck-final.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-editing-web.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts",
+        "e2e/collaboration-delivery-web.spec.ts",
+        "--list"
+      ],
+      "exit_code": 0,
+      "discovered": 15,
+      "executed_browser_tests": 0,
+      "log": "playwright-discovery.log",
+      "note": "Discovery preceded the final includeHidden authority-strengthening option; final current bytes subsequently passed targeted tsc.",
+      "log_sha256": "61bb85653556e85fcaac8b373376cb2dda186e678ab533b62720b04524c13226"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "e2e/fixtures/collaboration-editing.ts",
+        "e2e/collaboration-editing-web.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "product_API_timeouts_skips_changed": false,
+  "live_browser_services_DB_Provider_calls": 0,
+  "full_project_lint_typecheck": "root owns current frozen candidate complete gate; this lane changed E2E TypeScript only",
+  "remaining": [
+    "root must preserve v12 failed directed3 and execute new production Web/native directed tests on new candidate",
+    "full make check, final identity audit, password7 and original model experiments remain separate gates"
+  ]
+}

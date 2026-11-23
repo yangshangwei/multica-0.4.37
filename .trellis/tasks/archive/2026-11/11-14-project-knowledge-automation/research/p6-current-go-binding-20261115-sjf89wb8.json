@@ -1,0 +1,2666 @@
+{
+  "schema_version": 1,
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "approved_revision": "2026-11-14-v1",
+  "phase": "P6 in progress",
+  "run_id": "multica-p6-current-go-20261115T053937Z-sjf89wb8",
+  "role": "trellis-check",
+  "lane": "current Go build/vet and non-DB input-closure verification",
+  "created_at": "2026-11-15T06:02:02.061237+00:00",
+  "status": "pass_current_go_scopes_with_explicit_carried_results",
+  "current_go_lane_complete": true,
+  "full_product_acceptance_claimed": false,
+  "source": {
+    "head_before": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "head_after": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "fingerprint_algorithm": "SHA-256 over sorted repository-relative server .go/.sql/go.mod/go.sum/sqlc.yaml paths, NUL, then complete bytes (same algorithm as run-owned-go.py). Modes independently compared in final audit.",
+    "server_source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+    "server_source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+    "source_stable": true,
+    "source_file_count": 4764,
+    "before_snapshot": {
+      "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/source-initial.json",
+      "sha256": "fe68265ab83c4130b539bd091457ce15e17cb75f7ca402357d2fd3dfe294a523"
+    },
+    "after_snapshot": {
+      "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/source-final.json",
+      "sha256": "288d885a7d4e8e016881b1629efd0857483b805fb490302d2d214f4e64c23d92"
+    },
+    "paths_changed_since_original_matrix": [
+      {
+        "path": "server/internal/service/admin_collaboration.go",
+        "before": {
+          "path": "server/internal/service/admin_collaboration.go",
+          "sha256": "2366d6425943a873fcca8f2aefe613310f24c09ce81608e7b29112151be1bbb4",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/admin_collaboration.go",
+          "sha256": "a21e3be68bf8e019ad701baca3971b5d54c93a42f737a792fb9a1aaeef6b3b47",
+          "mode": "0o644",
+          "size": 21877
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_handoff.go",
+        "before": {
+          "path": "server/internal/service/collaboration_handoff.go",
+          "sha256": "0c917ac4b50f7ee7b7ed75615ba562a9ba93ca643236a58f23752a6eecea3fb4",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_handoff.go",
+          "sha256": "e93510ae234e5667db3dfca6cdb327d054a9cd84730f4630303fdf7b16dd6e42",
+          "mode": "0o644",
+          "size": 19736
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_lifecycle.go",
+        "before": {
+          "path": "server/internal/service/collaboration_lifecycle.go",
+          "sha256": "83a8a66f6624e8e3b144a83d7a968ecab1edd3a45806b237ec2133d21b15a9a1",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_lifecycle.go",
+          "sha256": "c9e39896113df41d7d516b5bcdf524082ea272878da15f6aa0ffe6908a344fd2",
+          "mode": "0o644",
+          "size": 27366
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_completion.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_completion.go",
+          "sha256": "e9a93b5e175c8eaa36f27c9dda7b394d3b23668598e1e1e8ac6313193ca55552",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_completion.go",
+          "sha256": "cf47991bd877c699f93adb1632ccd05df60f81752394320abf8ce136209b9d2b",
+          "mode": "0o644",
+          "size": 19649
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_completion_binding.go",
+        "before": null,
+        "after": {
+          "path": "server/internal/service/collaboration_stage_completion_binding.go",
+          "sha256": "3608b980f96541ac6a39fa14a58a41a5a19a49a897ccead2bd790e69751f4af3",
+          "mode": "0o644",
+          "size": 10253
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_completion_tx_test.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_completion_tx_test.go",
+          "sha256": "9b78d4f69eeb1e3cb3dd1d4bc1ae4d9c3b4632168f1b8790781b5464500bba35",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_completion_tx_test.go",
+          "sha256": "4c7dfad5af7516ce00224d778f0d78acc2a4ce15fd44d49eb67af55c718fef69",
+          "mode": "0o644",
+          "size": 20686
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_signer.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_signer.go",
+          "sha256": "98752861a27e396558625ef6ed5b78269b3abeadb0ff4b61e063b0d8806e3018",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_signer.go",
+          "sha256": "1d3f2da2a3b43a6f1c7e8d5ac3d7ae863beb6923a05d1dcd6703a5bd00342473",
+          "mode": "0o644",
+          "size": 12810
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_test.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_test.go",
+          "sha256": "207fe086999e347c437fd648fc343e1d8baff4332fccc2ad2bdeb0420f16111c",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_test.go",
+          "sha256": "6743dfc3dd52db65dc15dcc2a867d1bc61b41dab39a2e8bc71558b6bceef17a4",
+          "mode": "0o644",
+          "size": 56720
+        }
+      },
+      {
+        "path": "server/internal/service/delivery_completion.go",
+        "before": {
+          "path": "server/internal/service/delivery_completion.go",
+          "sha256": "c0632d70654ea263dd1f30985196f35b2686447a18523f17bdade6d2f74626cf",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/delivery_completion.go",
+          "sha256": "3405a0158332c07e50f8256b6f302d1c0d718e087ce765b4f358df761da9a3c5",
+          "mode": "0o644",
+          "size": 20272
+        }
+      },
+      {
+        "path": "server/internal/service/task_knowledge.go",
+        "before": {
+          "path": "server/internal/service/task_knowledge.go",
+          "sha256": "2e7d25c82db827acea28b82a515098ff08c90682ed44240e244a0abf309aa330",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/task_knowledge.go",
+          "sha256": "a2258373d8c0abc4883e5fdd7fc28a0bca80ce106bc41758d5ecdb795f21d9e7",
+          "mode": "0o644",
+          "size": 30104
+        }
+      },
+      {
+        "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+        "before": {
+          "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+          "sha256": "bc81aa51901ec304b1a923ba90108a96cb1a9d37e71e928095cbb856da595f55",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+          "sha256": "bee2c4e9df602b8582a6beefbbb6a8df057e4747d328354e80592fc47a75a1be",
+          "mode": "0o644",
+          "size": 14129
+        }
+      },
+      {
+        "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+        "before": {
+          "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+          "sha256": "03a4feaf53021e0bffd72bcd5c2021928092b48054d7674556180005384ae113",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+          "sha256": "be72388be9621d211aab2fb86ce8739d5d1e20a96657d3b853bc35ce3ee88da1",
+          "mode": "0o644",
+          "size": 4220
+        }
+      }
+    ],
+    "paths_changed_since_previous_binding": [
+      {
+        "path": "server/internal/service/admin_collaboration.go",
+        "before": {
+          "path": "server/internal/service/admin_collaboration.go",
+          "sha256": "2366d6425943a873fcca8f2aefe613310f24c09ce81608e7b29112151be1bbb4",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/admin_collaboration.go",
+          "sha256": "a21e3be68bf8e019ad701baca3971b5d54c93a42f737a792fb9a1aaeef6b3b47",
+          "mode": "0o644",
+          "size": 21877
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_handoff.go",
+        "before": {
+          "path": "server/internal/service/collaboration_handoff.go",
+          "sha256": "0c917ac4b50f7ee7b7ed75615ba562a9ba93ca643236a58f23752a6eecea3fb4",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_handoff.go",
+          "sha256": "e93510ae234e5667db3dfca6cdb327d054a9cd84730f4630303fdf7b16dd6e42",
+          "mode": "0o644",
+          "size": 19736
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_lifecycle.go",
+        "before": {
+          "path": "server/internal/service/collaboration_lifecycle.go",
+          "sha256": "83a8a66f6624e8e3b144a83d7a968ecab1edd3a45806b237ec2133d21b15a9a1",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_lifecycle.go",
+          "sha256": "c9e39896113df41d7d516b5bcdf524082ea272878da15f6aa0ffe6908a344fd2",
+          "mode": "0o644",
+          "size": 27366
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_completion.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_completion.go",
+          "sha256": "e9a93b5e175c8eaa36f27c9dda7b394d3b23668598e1e1e8ac6313193ca55552",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_completion.go",
+          "sha256": "cf47991bd877c699f93adb1632ccd05df60f81752394320abf8ce136209b9d2b",
+          "mode": "0o644",
+          "size": 19649
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_completion_binding.go",
+        "before": null,
+        "after": {
+          "path": "server/internal/service/collaboration_stage_completion_binding.go",
+          "sha256": "3608b980f96541ac6a39fa14a58a41a5a19a49a897ccead2bd790e69751f4af3",
+          "mode": "0o644",
+          "size": 10253
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_completion_tx_test.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_completion_tx_test.go",
+          "sha256": "28a0807ec90dd0960f8d6a10d1e8f4529b665de96ff418e544fd0370c1ff6fde",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_completion_tx_test.go",
+          "sha256": "4c7dfad5af7516ce00224d778f0d78acc2a4ce15fd44d49eb67af55c718fef69",
+          "mode": "0o644",
+          "size": 20686
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_signer.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_signer.go",
+          "sha256": "98752861a27e396558625ef6ed5b78269b3abeadb0ff4b61e063b0d8806e3018",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_signer.go",
+          "sha256": "1d3f2da2a3b43a6f1c7e8d5ac3d7ae863beb6923a05d1dcd6703a5bd00342473",
+          "mode": "0o644",
+          "size": 12810
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_test.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_test.go",
+          "sha256": "207fe086999e347c437fd648fc343e1d8baff4332fccc2ad2bdeb0420f16111c",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_test.go",
+          "sha256": "6743dfc3dd52db65dc15dcc2a867d1bc61b41dab39a2e8bc71558b6bceef17a4",
+          "mode": "0o644",
+          "size": 56720
+        }
+      },
+      {
+        "path": "server/internal/service/delivery_completion.go",
+        "before": {
+          "path": "server/internal/service/delivery_completion.go",
+          "sha256": "c0632d70654ea263dd1f30985196f35b2686447a18523f17bdade6d2f74626cf",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/delivery_completion.go",
+          "sha256": "3405a0158332c07e50f8256b6f302d1c0d718e087ce765b4f358df761da9a3c5",
+          "mode": "0o644",
+          "size": 20272
+        }
+      },
+      {
+        "path": "server/internal/service/task_knowledge.go",
+        "before": {
+          "path": "server/internal/service/task_knowledge.go",
+          "sha256": "2e7d25c82db827acea28b82a515098ff08c90682ed44240e244a0abf309aa330",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/internal/service/task_knowledge.go",
+          "sha256": "a2258373d8c0abc4883e5fdd7fc28a0bca80ce106bc41758d5ecdb795f21d9e7",
+          "mode": "0o644",
+          "size": 30104
+        }
+      },
+      {
+        "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+        "before": {
+          "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+          "sha256": "bc81aa51901ec304b1a923ba90108a96cb1a9d37e71e928095cbb856da595f55",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+          "sha256": "bee2c4e9df602b8582a6beefbbb6a8df057e4747d328354e80592fc47a75a1be",
+          "mode": "0o644",
+          "size": 14129
+        }
+      },
+      {
+        "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+        "before": {
+          "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+          "sha256": "03a4feaf53021e0bffd72bcd5c2021928092b48054d7674556180005384ae113",
+          "mode": "0o644"
+        },
+        "after": {
+          "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+          "sha256": "be72388be9621d211aab2fb86ce8739d5d1e20a96657d3b853bc35ce3ee88da1",
+          "mode": "0o644",
+          "size": 4220
+        }
+      }
+    ],
+    "changed_compiled_go_inputs": [
+      {
+        "path": "server/internal/service/admin_collaboration.go",
+        "before": {
+          "path": "server/internal/service/admin_collaboration.go",
+          "sha256": "2366d6425943a873fcca8f2aefe613310f24c09ce81608e7b29112151be1bbb4"
+        },
+        "after": {
+          "path": "server/internal/service/admin_collaboration.go",
+          "sha256": "a21e3be68bf8e019ad701baca3971b5d54c93a42f737a792fb9a1aaeef6b3b47",
+          "mode": "0o644",
+          "size": 21877
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_handoff.go",
+        "before": {
+          "path": "server/internal/service/collaboration_handoff.go",
+          "sha256": "0c917ac4b50f7ee7b7ed75615ba562a9ba93ca643236a58f23752a6eecea3fb4"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_handoff.go",
+          "sha256": "e93510ae234e5667db3dfca6cdb327d054a9cd84730f4630303fdf7b16dd6e42",
+          "mode": "0o644",
+          "size": 19736
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_lifecycle.go",
+        "before": {
+          "path": "server/internal/service/collaboration_lifecycle.go",
+          "sha256": "83a8a66f6624e8e3b144a83d7a968ecab1edd3a45806b237ec2133d21b15a9a1"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_lifecycle.go",
+          "sha256": "c9e39896113df41d7d516b5bcdf524082ea272878da15f6aa0ffe6908a344fd2",
+          "mode": "0o644",
+          "size": 27366
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_completion.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_completion.go",
+          "sha256": "e9a93b5e175c8eaa36f27c9dda7b394d3b23668598e1e1e8ac6313193ca55552"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_completion.go",
+          "sha256": "cf47991bd877c699f93adb1632ccd05df60f81752394320abf8ce136209b9d2b",
+          "mode": "0o644",
+          "size": 19649
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_completion_binding.go",
+        "before": null,
+        "after": {
+          "path": "server/internal/service/collaboration_stage_completion_binding.go",
+          "sha256": "3608b980f96541ac6a39fa14a58a41a5a19a49a897ccead2bd790e69751f4af3",
+          "mode": "0o644",
+          "size": 10253
+        }
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_signer.go",
+        "before": {
+          "path": "server/internal/service/collaboration_stage_signer.go",
+          "sha256": "98752861a27e396558625ef6ed5b78269b3abeadb0ff4b61e063b0d8806e3018"
+        },
+        "after": {
+          "path": "server/internal/service/collaboration_stage_signer.go",
+          "sha256": "1d3f2da2a3b43a6f1c7e8d5ac3d7ae863beb6923a05d1dcd6703a5bd00342473",
+          "mode": "0o644",
+          "size": 12810
+        }
+      },
+      {
+        "path": "server/internal/service/delivery_completion.go",
+        "before": {
+          "path": "server/internal/service/delivery_completion.go",
+          "sha256": "c0632d70654ea263dd1f30985196f35b2686447a18523f17bdade6d2f74626cf"
+        },
+        "after": {
+          "path": "server/internal/service/delivery_completion.go",
+          "sha256": "3405a0158332c07e50f8256b6f302d1c0d718e087ce765b4f358df761da9a3c5",
+          "mode": "0o644",
+          "size": 20272
+        }
+      },
+      {
+        "path": "server/internal/service/task_knowledge.go",
+        "before": {
+          "path": "server/internal/service/task_knowledge.go",
+          "sha256": "2e7d25c82db827acea28b82a515098ff08c90682ed44240e244a0abf309aa330"
+        },
+        "after": {
+          "path": "server/internal/service/task_knowledge.go",
+          "sha256": "a2258373d8c0abc4883e5fdd7fc28a0bca80ce106bc41758d5ecdb795f21d9e7",
+          "mode": "0o644",
+          "size": 30104
+        }
+      },
+      {
+        "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+        "before": {
+          "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+          "sha256": "bc81aa51901ec304b1a923ba90108a96cb1a9d37e71e928095cbb856da595f55"
+        },
+        "after": {
+          "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+          "sha256": "bee2c4e9df602b8582a6beefbbb6a8df057e4747d328354e80592fc47a75a1be",
+          "mode": "0o644",
+          "size": 14129
+        }
+      }
+    ],
+    "compiled_original_selector_go_count": 1358,
+    "compiled_original_plus_host_go_count": 1394,
+    "final_actual_input_audit": [
+      {
+        "mode": "unit",
+        "distinct_compiled_embed_and_runtime_source_scan_inputs": 3158,
+        "status": "pass",
+        "closure": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/closure-unit-summary.json",
+          "sha256": "5bb1ebdc886ccbae22154dedc0ba8696a4cb7143753f0aeeaec8ac5c8b406d54"
+        },
+        "non_go_embed_binding_count": 241
+      },
+      {
+        "mode": "race",
+        "distinct_compiled_embed_and_runtime_source_scan_inputs": 3158,
+        "status": "pass",
+        "closure": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/closure-race-summary.json",
+          "sha256": "e8e8098ea28b7d3dca360adab4d22283f345891663e92b99ce5beedc2809f4e8"
+        },
+        "non_go_embed_binding_count": 241
+      }
+    ]
+  },
+  "toolchain": {
+    "go": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+    "go_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+    "go_version": "go version go1.27.0 darwin/arm64",
+    "module_go_directive": "1.26.6",
+    "go_env": {
+      "CC": "cc",
+      "CGO_ENABLED": "1",
+      "GOARCH": "arm64",
+      "GOCACHE": "/Volumes/artisan/dev-cache/go-build",
+      "GOENV": "",
+      "GOFLAGS": "-mod=readonly",
+      "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+      "GOOS": "darwin",
+      "GOPATH": "/Users/artisan/go",
+      "GOPROXY": "off",
+      "GOROOT": "/opt/homebrew/Cellar/go/1.27.0/libexec",
+      "GOSUMDB": "off",
+      "GOTOOLCHAIN": "local",
+      "GOVERSION": "go1.27.0",
+      "GOWORK": "off"
+    },
+    "clang": "Apple clang version 17.0.0 (clang-1700.0.13.5)\nTarget: arm64-apple-darwin25.2.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin",
+    "git": "git version 2.39.5 (Apple Git-154)",
+    "python": "Python 3.14.3",
+    "macos": "ProductName:\t\tmacOS\nProductVersion:\t\t26.2\nBuildVersion:\t\t25C56",
+    "tool_version_commands_and_output_hashes": [
+      {
+        "label": "toolchain",
+        "argv": [
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "version"
+        ],
+        "command_sha256": "c077d94c2deba6f6b394c3f4b16ad5af247b7c67c7a5660a38280d2d22949ab2",
+        "started_at": "2026-11-15T05:42:03.022445+00:00",
+        "finished_at": "2026-11-15T05:42:03.385270+00:00",
+        "elapsed_seconds": 0.3628205410204828,
+        "exit_code": 0,
+        "timed_out": false,
+        "environment": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain/environment.json",
+          "sha256": "68cb53794098963a1bba392a6c89a568a5245310adba78c7a021f6ce93bc140a"
+        },
+        "environment_keys": [
+          "ANALYTICS_DISABLED",
+          "APP_ENV",
+          "GOCACHE",
+          "GOENV",
+          "GOFLAGS",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "LANG",
+          "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+          "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+          "MULTICA_VCS_INTEGRATION_ENABLED",
+          "PATH",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "state_boundary": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain/state-boundary.json",
+          "sha256": "a78341183e40cd39f13e1e0f90f64cd1f35d2286c8fbf6c89bd1d4e321719aa9"
+        },
+        "source_before": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain/source-before.json",
+          "sha256": "dad3f4fd221ccc8ba93f0a0793add59f6ee3d6b2a12429e5087768ea76510e5d"
+        },
+        "source_after": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain/source-after.json",
+          "sha256": "8ef8b6559fa7bcc38d2b63a2311f9fe67c559d49920f4033cc361f8041d68402"
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_stable": true,
+        "head_stable": true,
+        "changed_paths_during_command": [],
+        "tools_before": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_after": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_stable": true,
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain/stdout.log",
+          "sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+          "size": 33
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "database_tests_executed": false,
+        "real_accounts_or_credentials_inherited": false,
+        "status": "pass"
+      },
+      {
+        "label": "toolchain-go-env",
+        "argv": [
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "env",
+          "-json",
+          "GOVERSION",
+          "GOOS",
+          "GOARCH",
+          "GOROOT",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "CGO_ENABLED",
+          "CC",
+          "GOTOOLCHAIN",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOENV",
+          "GOWORK",
+          "GOFLAGS"
+        ],
+        "command_sha256": "27502096587beaf9c9e69e9600ea07df3101248f6f652fd4c5007cb43eb949ee",
+        "started_at": "2026-11-15T05:47:21.978127+00:00",
+        "finished_at": "2026-11-15T05:47:22.372811+00:00",
+        "elapsed_seconds": 0.3946835419628769,
+        "exit_code": 0,
+        "timed_out": false,
+        "environment": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-go-env/environment.json",
+          "sha256": "fdc5e0dd0030658d80d7f6db773ba2b219b136bd06a39bd1e12acab703f212fe"
+        },
+        "environment_keys": [
+          "ANALYTICS_DISABLED",
+          "APP_ENV",
+          "GOCACHE",
+          "GOENV",
+          "GOFLAGS",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "LANG",
+          "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+          "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+          "MULTICA_VCS_INTEGRATION_ENABLED",
+          "PATH",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "state_boundary": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-go-env/state-boundary.json",
+          "sha256": "defa208aba0cb5a6ce859543e823c46162e9b097c57fafc99618cc4337c01755"
+        },
+        "source_before": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-go-env/source-before.json",
+          "sha256": "e77966e40e0900f1e75ec769ad8002ea2f7809170477616c46f8371a68130829"
+        },
+        "source_after": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-go-env/source-after.json",
+          "sha256": "8e5ac30dec47b657754dcb55a04ced2e6c25dda858a4e045accc46a2dc751e11"
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_stable": true,
+        "head_stable": true,
+        "changed_paths_during_command": [],
+        "tools_before": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_after": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_stable": true,
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-go-env/stdout.log",
+          "sha256": "636376cccdc23bc4abb10e5967a9f0785e634c84919af2cbd923b9a19e4e07a8",
+          "size": 406
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-go-env/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "database_tests_executed": false,
+        "real_accounts_or_credentials_inherited": false,
+        "status": "pass"
+      },
+      {
+        "label": "toolchain-clang",
+        "argv": [
+          "/usr/bin/clang",
+          "--version"
+        ],
+        "command_sha256": "093369ea400d8f65fbec5a77db6536e08f404b9cc289e64bc453fc423981e716",
+        "started_at": "2026-11-15T05:47:22.736388+00:00",
+        "finished_at": "2026-11-15T05:47:23.092413+00:00",
+        "elapsed_seconds": 0.3560235840268433,
+        "exit_code": 0,
+        "timed_out": false,
+        "environment": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-clang/environment.json",
+          "sha256": "8c2451c872e0796ccff9438cb12df9690b87633c932227f44a18c4cdaa318eb6"
+        },
+        "environment_keys": [
+          "ANALYTICS_DISABLED",
+          "APP_ENV",
+          "GOCACHE",
+          "GOENV",
+          "GOFLAGS",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "LANG",
+          "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+          "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+          "MULTICA_VCS_INTEGRATION_ENABLED",
+          "PATH",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "state_boundary": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-clang/state-boundary.json",
+          "sha256": "6da268da48f677b54194eebc2b1b48a1e8355376d1b4ce9c952ad2237232e068"
+        },
+        "source_before": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-clang/source-before.json",
+          "sha256": "bf44db407a6f8877272d30ea5b9db0773ef2de35eab6379b7ec5d17a4bedbe72"
+        },
+        "source_after": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-clang/source-after.json",
+          "sha256": "bd2cb2963288cd037ac21daee83d02c5915847778db17cef4e0f1de115595872"
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_stable": true,
+        "head_stable": true,
+        "changed_paths_during_command": [],
+        "tools_before": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_after": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_stable": true,
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-clang/stdout.log",
+          "sha256": "0d335ffc63aa1fbc4bdf2fed7f461d328ac815d907f79504c4a7662e87bfc44d",
+          "size": 158
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-clang/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "database_tests_executed": false,
+        "real_accounts_or_credentials_inherited": false,
+        "status": "pass"
+      },
+      {
+        "label": "toolchain-git",
+        "argv": [
+          "/usr/bin/git",
+          "--version"
+        ],
+        "command_sha256": "7b2cb967ee5c00e2b06aba05fa9f63bddfae18816266b102721ec1909dff268c",
+        "started_at": "2026-11-15T05:47:23.475170+00:00",
+        "finished_at": "2026-11-15T05:47:23.818727+00:00",
+        "elapsed_seconds": 0.3435551669681445,
+        "exit_code": 0,
+        "timed_out": false,
+        "environment": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-git/environment.json",
+          "sha256": "06465991ac9e63145e12b0fb3a8dd9b77b802c6f275d8495f56ba701eeb6c5ef"
+        },
+        "environment_keys": [
+          "ANALYTICS_DISABLED",
+          "APP_ENV",
+          "GOCACHE",
+          "GOENV",
+          "GOFLAGS",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "LANG",
+          "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+          "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+          "MULTICA_VCS_INTEGRATION_ENABLED",
+          "PATH",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "state_boundary": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-git/state-boundary.json",
+          "sha256": "f3fd57047e1f76946f3b2308684c23f90fedeb4c5f4317c9b7fcbba52127389d"
+        },
+        "source_before": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-git/source-before.json",
+          "sha256": "83826409e60c37bbbbab4c1e1f04f78185697919cd300ee2e788332a110c5aa5"
+        },
+        "source_after": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-git/source-after.json",
+          "sha256": "4eabfb715b122e4a53ca50391a035c363084435ee78958be7514b527c4bf49e6"
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_stable": true,
+        "head_stable": true,
+        "changed_paths_during_command": [],
+        "tools_before": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_after": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_stable": true,
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-git/stdout.log",
+          "sha256": "b6d9afe6e5be5d40f0e18a09a0708100902e19a4d0e11fb5d3930d59785cb1aa",
+          "size": 35
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-git/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "database_tests_executed": false,
+        "real_accounts_or_credentials_inherited": false,
+        "status": "pass"
+      },
+      {
+        "label": "toolchain-python",
+        "argv": [
+          "/opt/homebrew/bin/python3",
+          "--version"
+        ],
+        "command_sha256": "e16da5e8d2dbeaa60e18ae8aa3f4a2851d26670c23019c2587182bbca6e19186",
+        "started_at": "2026-11-15T05:47:24.179737+00:00",
+        "finished_at": "2026-11-15T05:47:24.530382+00:00",
+        "elapsed_seconds": 0.35064258403144777,
+        "exit_code": 0,
+        "timed_out": false,
+        "environment": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-python/environment.json",
+          "sha256": "ebdd0059250ffa562ba2c07f37ec410b481803600fbaf627311352a8b63d9ec8"
+        },
+        "environment_keys": [
+          "ANALYTICS_DISABLED",
+          "APP_ENV",
+          "GOCACHE",
+          "GOENV",
+          "GOFLAGS",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "LANG",
+          "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+          "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+          "MULTICA_VCS_INTEGRATION_ENABLED",
+          "PATH",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "state_boundary": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-python/state-boundary.json",
+          "sha256": "da5a49f93455802ea2bbe6da600897e76f011414b245f0c420fd8e801210fa94"
+        },
+        "source_before": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-python/source-before.json",
+          "sha256": "4a718b1c3a9fe8c4a71e06263a5fb668aafe52ccde0925b462bd840fa72055a9"
+        },
+        "source_after": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-python/source-after.json",
+          "sha256": "52e903ad6396542ad95441f2ff86c86d789b0fad448707270c824eeafc8d33da"
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_stable": true,
+        "head_stable": true,
+        "changed_paths_during_command": [],
+        "tools_before": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_after": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_stable": true,
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-python/stdout.log",
+          "sha256": "25c3049ed7f825e0565baa3279c7e5218335801d85737ffddce1b39e394d8793",
+          "size": 14
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-python/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "database_tests_executed": false,
+        "real_accounts_or_credentials_inherited": false,
+        "status": "pass"
+      },
+      {
+        "label": "toolchain-macos",
+        "argv": [
+          "/usr/bin/sw_vers"
+        ],
+        "command_sha256": "288a31a842ba9fb76cc272e1506865ca059cb5815b1d8ba5a2230a8407295a73",
+        "started_at": "2026-11-15T05:47:24.889627+00:00",
+        "finished_at": "2026-11-15T05:47:25.224977+00:00",
+        "elapsed_seconds": 0.33535187505185604,
+        "exit_code": 0,
+        "timed_out": false,
+        "environment": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-macos/environment.json",
+          "sha256": "7c61d738cee1553631f1cd09399b66c8deed3744268f7a5128c703c7c9feca1d"
+        },
+        "environment_keys": [
+          "ANALYTICS_DISABLED",
+          "APP_ENV",
+          "GOCACHE",
+          "GOENV",
+          "GOFLAGS",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "LANG",
+          "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+          "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+          "MULTICA_VCS_INTEGRATION_ENABLED",
+          "PATH",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "state_boundary": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-macos/state-boundary.json",
+          "sha256": "e03e0bf0b25f5f221dd3e5515a449c8e390fbf73d1ecb57dd44392025a9dacd6"
+        },
+        "source_before": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-macos/source-before.json",
+          "sha256": "0683f30c06d5c076f7ab2f761b2367f18329f2f4ecac42f694dbd054b4c2fd6c"
+        },
+        "source_after": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-macos/source-after.json",
+          "sha256": "c018e2b9e848c62822b19a90538454e1d9c5b92e87d3aed551d71c5afd913c5c"
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_stable": true,
+        "head_stable": true,
+        "changed_paths_during_command": [],
+        "tools_before": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_after": {
+          "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+          "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+          "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+        },
+        "tools_stable": true,
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-macos/stdout.log",
+          "sha256": "50d598276e1b5fb38874dedb2e0829126024993316eb2afda985821d3946863c",
+          "size": 63
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/toolchain-macos/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "database_tests_executed": false,
+        "real_accounts_or_credentials_inherited": false,
+        "status": "pass"
+      }
+    ],
+    "go_tool_matches_original": true
+  },
+  "environment": {
+    "constructed_from_allowlist_not_inherited": true,
+    "allowed_keys": [
+      "ANALYTICS_DISABLED",
+      "APP_ENV",
+      "GOCACHE",
+      "GOENV",
+      "GOFLAGS",
+      "GOMODCACHE",
+      "GOPATH",
+      "GOPROXY",
+      "GOSUMDB",
+      "GOTOOLCHAIN",
+      "GOWORK",
+      "HOME",
+      "JWT_SECRET",
+      "LANG",
+      "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+      "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+      "MULTICA_VCS_INTEGRATION_ENABLED",
+      "PATH",
+      "TEMP",
+      "TMP",
+      "TMPDIR"
+    ],
+    "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "cache_paths_explicit": {
+      "GOCACHE": "/Volumes/artisan/dev-cache/go-build",
+      "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+      "GOPATH": "/Users/artisan/go"
+    },
+    "canonical_0700_git_external_home_tmp_per_command": true,
+    "database_postgres_redis_model_account_cli_environment_inherited": false,
+    "dotenv_loaded": false,
+    "download_or_install_performed": false,
+    "go_proxy": "off",
+    "go_sumdb": "off",
+    "go_toolchain": "local",
+    "go_env": "off",
+    "go_workspace": "off",
+    "go_flags": "-mod=readonly",
+    "synthetic_jwt_only": true,
+    "deployment_pool_publisher_task_roots_inherited": false
+  },
+  "agent_cli_guard": {
+    "script": "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "script_sha256": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+    "command_names_file": "/Volumes/artisan/code/2026/multica-0.4.37/scripts/agent-cli-command-names.txt",
+    "command_names_sha256": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0",
+    "actual_wrapper_in_every_fresh_test_case": true,
+    "unexpected_invocations": []
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "preexisting_limitations_retained": [
+    {
+      "path": "server/internal/cli/config_test.go",
+      "line": 265,
+      "test": "TestCLIConfig_UnknownFieldsArePreserved",
+      "classification": "pre-existing documented limitation; explicit SKIP in both modes, outside current product task",
+      "observation": "The test documents encoding/json dropping unknown config fields on round-trip. This review records the skipped contract and leaves code unchanged.",
+      "recommendation": "Preserve this skip in the owning final report; pursue unknown-field round-trip preservation only under its own scope."
+    }
+  ],
+  "scope_limits": [
+    "Go 1.27.0 darwin/arm64 only; module directive is Go 1.26.6. No separate Go 1.26.x, Linux, Windows or root run was performed.",
+    "No DB-backed TestMain, migration, production API, Redis launcher or P6 browser/Desktop journey was executed by this lane. Main session owns serial DB/P6 acceptance.",
+    "The unchanged CLI unknown-field round-trip limitation remains an explicit original SKIP. Existing platform/root skips are preserved.",
+    "Fake providers and credential-free local HTTP fixtures establish tested protocol/lifecycle behavior; they do not establish real-model quality."
+  ],
+  "recursive_delegation": false,
+  "product_tests_specs_markdown_launchers_locks_dependencies_metadata_changed_by_reviewer": [],
+  "external_private_evidence": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8",
+  "verification_script": {
+    "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/verify_current_go.py",
+    "sha256": "1ad008818e35a7402b9e63f5a5f1f195b79742c7f650094d339283a07cd11ace"
+  },
+  "finalization_script": {
+    "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/finalize_current_go.py",
+    "sha256": "1c5358cbdcc10eecec61d94f07e2f94e873bb09e329dc2de42ba646354aee8e2"
+  },
+  "old_matrix_failure_and_outputs_preserved": true,
+  "old_evidence_integrity_audit": {
+    "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/prior-evidence-integrity.json",
+    "sha256": "6bba572652b39235be241e1c9f80f0f2feaf0e9e1f1122f6c427a9ac7f30f3e3"
+  },
+  "research_files_added": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-current-go-binding-20261115-sjf89wb8.json",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-current-go-nondb-matrix-20261115-sjf89wb8.json"
+  ],
+  "private_finalization_strict_name_failure_preserved": {
+    "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/finalization-strict-name-red.json",
+    "sha256": "59e15477fd2eb49ce4927cfd89588ba08c4856b14412a515a0e88eb8be75bdac"
+  },
+  "verification": {
+    "build": {
+      "label": "build",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server",
+        "build",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "command_sha256": "728f1950eea713d87a1b13e08fcb4a8ba32e1a38c617fc4a355a5815ac1a21f7",
+      "started_at": "2026-11-15T05:42:54.411673+00:00",
+      "finished_at": "2026-11-15T05:43:15.022088+00:00",
+      "elapsed_seconds": 20.610393000068143,
+      "exit_code": 0,
+      "timed_out": false,
+      "environment": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/build/environment.json",
+        "sha256": "b0244b517c4fe16a34af47200301f7f97a0c8fc0d61ca025c22a7b3d2a17a159"
+      },
+      "environment_keys": [
+        "ANALYTICS_DISABLED",
+        "APP_ENV",
+        "GOCACHE",
+        "GOENV",
+        "GOFLAGS",
+        "GOMODCACHE",
+        "GOPATH",
+        "GOPROXY",
+        "GOSUMDB",
+        "GOTOOLCHAIN",
+        "GOWORK",
+        "HOME",
+        "JWT_SECRET",
+        "LANG",
+        "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+        "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+        "MULTICA_VCS_INTEGRATION_ENABLED",
+        "PATH",
+        "TEMP",
+        "TMP",
+        "TMPDIR"
+      ],
+      "state_boundary": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/build/state-boundary.json",
+        "sha256": "099454bbe496ea5fa269554f449d2871ca8921b0171312f9d762dd557565c8b1"
+      },
+      "source_before": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/build/source-before.json",
+        "sha256": "c1a017dd0dd2e0d89e03847a89178fcafdb690a482dd93d8aba3a1300bfcc6ab"
+      },
+      "source_after": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/build/source-after.json",
+        "sha256": "e772afe353b81ffc4fc57a73e30872e07a4241140e5279190e28ead05e7abe0b"
+      },
+      "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "source_stable": true,
+      "head_stable": true,
+      "changed_paths_during_command": [],
+      "tools_before": {
+        "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+        "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+        "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+      },
+      "tools_after": {
+        "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+        "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+        "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+      },
+      "tools_stable": true,
+      "stdout": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/build/stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stderr": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/build/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "database_tests_executed": false,
+      "real_accounts_or_credentials_inherited": false,
+      "status": "pass"
+    },
+    "vet": {
+      "label": "vet",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server",
+        "vet",
+        "-p",
+        "2",
+        "./..."
+      ],
+      "command_sha256": "9f441cd12c25d111d730cf00b917f2b11800d7738af233921860b948ec5fd6f5",
+      "started_at": "2026-11-15T05:43:15.395436+00:00",
+      "finished_at": "2026-11-15T05:43:22.334544+00:00",
+      "elapsed_seconds": 6.939100041985512,
+      "exit_code": 0,
+      "timed_out": false,
+      "environment": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/vet/environment.json",
+        "sha256": "ea6d4ff41b7e6daeb191a28dd50359e43e5dee513488ecdb7d65ebfc26a88b0f"
+      },
+      "environment_keys": [
+        "ANALYTICS_DISABLED",
+        "APP_ENV",
+        "GOCACHE",
+        "GOENV",
+        "GOFLAGS",
+        "GOMODCACHE",
+        "GOPATH",
+        "GOPROXY",
+        "GOSUMDB",
+        "GOTOOLCHAIN",
+        "GOWORK",
+        "HOME",
+        "JWT_SECRET",
+        "LANG",
+        "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+        "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+        "MULTICA_VCS_INTEGRATION_ENABLED",
+        "PATH",
+        "TEMP",
+        "TMP",
+        "TMPDIR"
+      ],
+      "state_boundary": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/vet/state-boundary.json",
+        "sha256": "4a48582d02cf30a81483cd12eea04e9b369f9da8d8453e1457ed86a94b7f9148"
+      },
+      "source_before": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/vet/source-before.json",
+        "sha256": "31dabd2f431d4a5b178c6fa50713ab868184c05a222cc41675f39556c8a624df"
+      },
+      "source_after": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/vet/source-after.json",
+        "sha256": "b9153c755055107166de31788c86c2c3aed1508abecc8b26354269a0620007a5"
+      },
+      "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "source_stable": true,
+      "head_stable": true,
+      "changed_paths_during_command": [],
+      "tools_before": {
+        "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+        "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+        "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+      },
+      "tools_after": {
+        "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+        "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+        "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+      },
+      "tools_stable": true,
+      "stdout": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/vet/stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stderr": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/vet/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "database_tests_executed": false,
+      "real_accounts_or_credentials_inherited": false,
+      "status": "pass"
+    },
+    "gofmt_readonly": {
+      "label": "gofmt-readonly",
+      "argv": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/gofmt",
+        "-l",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/admin_collaboration.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_handoff.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_lifecycle.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_completion.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_completion_binding.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_completion_tx_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_signer.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/delivery_completion.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/task_knowledge.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/generated/collaboration_stage_submission.sql.go"
+      ],
+      "command_sha256": "0a3e77a24b19a8fbeab05d10a49343655fd372b5b9366673b5e4b5479600edd5",
+      "started_at": "2026-11-15T05:54:55.619139+00:00",
+      "finished_at": "2026-11-15T05:54:56.047597+00:00",
+      "elapsed_seconds": 0.42845170793589205,
+      "exit_code": 0,
+      "timed_out": false,
+      "environment": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/gofmt-readonly/environment.json",
+        "sha256": "b4d0fef960f7a17bfd50ad27c99073b326c913065cbcab0b67fef507f9cb9c60"
+      },
+      "environment_keys": [
+        "ANALYTICS_DISABLED",
+        "APP_ENV",
+        "GOCACHE",
+        "GOENV",
+        "GOFLAGS",
+        "GOMODCACHE",
+        "GOPATH",
+        "GOPROXY",
+        "GOSUMDB",
+        "GOTOOLCHAIN",
+        "GOWORK",
+        "HOME",
+        "JWT_SECRET",
+        "LANG",
+        "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+        "MULTICA_MESSAGING_INTEGRATIONS_ENABLED",
+        "MULTICA_VCS_INTEGRATION_ENABLED",
+        "PATH",
+        "TEMP",
+        "TMP",
+        "TMPDIR"
+      ],
+      "state_boundary": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/gofmt-readonly/state-boundary.json",
+        "sha256": "57c64c6fc045519a0e46c3fd5af4817b1d58fa74b8b563c8190c92b06ef82ea4"
+      },
+      "source_before": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/gofmt-readonly/source-before.json",
+        "sha256": "e3c357536b406c1b2703db1b6288f6b09b99c5fd4d4b9a5bc6da09078365f283"
+      },
+      "source_after": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/gofmt-readonly/source-after.json",
+        "sha256": "df6ae597f3e20892e55304ed3900d6f26132b97552401dced21d4926530b64ac"
+      },
+      "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "source_stable": true,
+      "head_stable": true,
+      "changed_paths_during_command": [],
+      "tools_before": {
+        "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+        "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+        "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+      },
+      "tools_after": {
+        "go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+        "guard": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+        "names": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0"
+      },
+      "tools_stable": true,
+      "stdout": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/gofmt-readonly/stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "stderr": {
+        "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/gofmt-readonly/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size": 0
+      },
+      "database_tests_executed": false,
+      "real_accounts_or_credentials_inherited": false,
+      "status": "pass"
+    },
+    "fresh_counts_by_mode": {
+      "unit": {
+        "run": 2554,
+        "pass": 2552,
+        "fail": 0,
+        "skip": 2
+      },
+      "race": {
+        "run": 2554,
+        "pass": 2552,
+        "fail": 0,
+        "skip": 2
+      }
+    },
+    "fresh_full_package_counts_by_mode": {
+      "unit": {
+        "run": 2388,
+        "pass": 2386,
+        "fail": 0,
+        "skip": 2
+      },
+      "race": {
+        "run": 2388,
+        "pass": 2386,
+        "fail": 0,
+        "skip": 2
+      }
+    },
+    "fresh_selected_suite_counts_by_mode": {
+      "unit": {
+        "run": 166,
+        "pass": 166,
+        "fail": 0,
+        "skip": 0
+      },
+      "race": {
+        "run": 166,
+        "pass": 166,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "carried_counts_by_mode": {
+      "unit": {
+        "run": 2343,
+        "pass": 2338,
+        "fail": 0,
+        "skip": 5
+      },
+      "race": {
+        "run": 2343,
+        "pass": 2338,
+        "fail": 0,
+        "skip": 5
+      }
+    },
+    "covered_original_matrix_counts_by_mode": {
+      "unit": {
+        "run": 4731,
+        "pass": 4724,
+        "fail": 0,
+        "skip": 7
+      },
+      "race": {
+        "run": 4731,
+        "pass": 4724,
+        "fail": 0,
+        "skip": 7
+      }
+    },
+    "actual_cases_summary": [
+      {
+        "selector": "./pkg/agent",
+        "mode": "race",
+        "run_filter": "Knowledge|OrdinaryLaunchLifecycle",
+        "scope": "selected_actual_named_tests",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-race",
+          "-run",
+          "Knowledge|OrdinaryLaunchLifecycle",
+          "./pkg/agent"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 143,
+          "pass": 143,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/agent-knowledge-race/stdout.log",
+          "sha256": "eee8aa5137d3ab00ac99a01a404b84c4c6bce54fbfec0dc57d75ee2051772950",
+          "size": 141812
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/agent-knowledge-race/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/agent-knowledge-race/test-result.json",
+          "sha256": "9820a24549f5b7ac9a795f3c1c16e14583d19300ae7e9dbee7cd19be669e99af"
+        }
+      },
+      {
+        "selector": "./pkg/agent",
+        "mode": "unit",
+        "run_filter": "Knowledge|OrdinaryLaunchLifecycle",
+        "scope": "selected_actual_named_tests",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-run",
+          "Knowledge|OrdinaryLaunchLifecycle",
+          "./pkg/agent"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 143,
+          "pass": 143,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/agent-knowledge-unit/stdout.log",
+          "sha256": "5974ccb8383ba74899a6b439d2ea4c1e90643241beb4555330f927d4713189b7",
+          "size": 141738
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/agent-knowledge-unit/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/agent-knowledge-unit/test-result.json",
+          "sha256": "9b219c5123d670ae1fec9964f8bb94f55fc209020a542027b95980abb5783147"
+        }
+      },
+      {
+        "selector": "./internal/collaboration",
+        "mode": "race",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-race",
+          "./internal/collaboration"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 16,
+          "pass": 16,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/collaboration-race/stdout.log",
+          "sha256": "94ecc6a85493737976c7a97d3a05d283c639330bcfb78906e9a1c0dd1576d62a",
+          "size": 16924
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/collaboration-race/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/collaboration-race/test-result.json",
+          "sha256": "b4312e6fa16386695930d4d80d9b2298b57acffbc255bfaf1722be9da288c3c1"
+        }
+      },
+      {
+        "selector": "./internal/collaboration",
+        "mode": "unit",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "./internal/collaboration"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 16,
+          "pass": 16,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/collaboration-unit/stdout.log",
+          "sha256": "0b68de87a0b31793a8529130510b15ac54c7875ca97345cefee9aa82aa5f67e3",
+          "size": 16924
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/collaboration-unit/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/collaboration-unit/test-result.json",
+          "sha256": "421881391758fc31a28b3f2bcdb581e22e27a188872b6b937ac93a05fbc18a6b"
+        }
+      },
+      {
+        "selector": "./internal/daemon",
+        "mode": "race",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-race",
+          "./internal/daemon"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 1748,
+          "pass": 1746,
+          "fail": 0,
+          "skip": 2
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemon-race/stdout.log",
+          "sha256": "f9f68f3ae5f83378bf064da4033c53f6989c9e622af9821532a119ce183d9b79",
+          "size": 2395187
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemon-race/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemon-race/test-result.json",
+          "sha256": "90519ce9435fe31485a19a2986052136a5a985a04526c51a1420c9a72904cca5"
+        }
+      },
+      {
+        "selector": "./internal/daemon",
+        "mode": "unit",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "./internal/daemon"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 1748,
+          "pass": 1746,
+          "fail": 0,
+          "skip": 2
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemon-unit/stdout.log",
+          "sha256": "a8951ed2bbdf7615936884ad29ef5c96d98a8d8e15a29dd122bb6aadbb99274d",
+          "size": 2395082
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemon-unit/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemon-unit/test-result.json",
+          "sha256": "4a5a5d556d339ef365d26ba780cc42f9e221b5fa8eeaf0af5434386c8fafe62a"
+        }
+      },
+      {
+        "selector": "./internal/daemonws",
+        "mode": "race",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-race",
+          "./internal/daemonws"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 30,
+          "pass": 30,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemonws-race/stdout.log",
+          "sha256": "0af0c3b73674e8715cedd844bd69558fdda8e4721f7641837ae0c8a480cb4213",
+          "size": 45041
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemonws-race/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemonws-race/test-result.json",
+          "sha256": "47f591ca075a6e04d79f9570dd23151b636d7882ce5ec398e16285685432fb7d"
+        }
+      },
+      {
+        "selector": "./internal/daemonws",
+        "mode": "unit",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "./internal/daemonws"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 30,
+          "pass": 30,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemonws-unit/stdout.log",
+          "sha256": "424bcf56ce4d8ea89158dba9318897ef0e995188ef770de6e3be5dde599b531a",
+          "size": 44646
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemonws-unit/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/daemonws-unit/test-result.json",
+          "sha256": "b20844ea3b514bcf60e35edeeec67bedcc881f1907602c357f9fa7f43ef5116f"
+        }
+      },
+      {
+        "selector": "./internal/daemon/collaborationrun",
+        "mode": "race",
+        "run_filter": "^TestHost(Codex)?Knowledge",
+        "scope": "selected_actual_named_tests",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-race",
+          "-run",
+          "^TestHost(Codex)?Knowledge",
+          "./internal/daemon/collaborationrun"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 23,
+          "pass": 23,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/host-knowledge-race/stdout.log",
+          "sha256": "925a66323e3dc46325ec6604a419de5c8c87dd8c5d86053c4c18e287f29a836d",
+          "size": 25905
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/host-knowledge-race/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/host-knowledge-race/test-result.json",
+          "sha256": "350ce537bca1a78ff892128f705c141244781e06f82ae9fc6b869c020bb9c7f4"
+        }
+      },
+      {
+        "selector": "./internal/daemon/collaborationrun",
+        "mode": "unit",
+        "run_filter": "^TestHost(Codex)?Knowledge",
+        "scope": "selected_actual_named_tests",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-run",
+          "^TestHost(Codex)?Knowledge",
+          "./internal/daemon/collaborationrun"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 23,
+          "pass": 23,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/host-knowledge-unit/stdout.log",
+          "sha256": "00aa42e70e31f1d3471fcf81e1e5d418c9016641a162072180e29da19e97abcd",
+          "size": 25896
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/host-knowledge-unit/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/host-knowledge-unit/test-result.json",
+          "sha256": "ab2763e5e2cc40510d33eb94ac0d40a9ebf4d8779a09c30ca18a4e695ddce6b3"
+        }
+      },
+      {
+        "selector": "./pkg/llm",
+        "mode": "race",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-race",
+          "./pkg/llm"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 56,
+          "pass": 56,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/llm-race/stdout.log",
+          "sha256": "7a70e49a7446a0cd5081bc97ebfbc66acfbc05ff3934d06f2bd4272396caff05",
+          "size": 51367
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/llm-race/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/llm-race/test-result.json",
+          "sha256": "a9f2c00729a87b372a5eced1e8a2d8d8db10a3b146f2a5fb8d5be238aecebf8c"
+        }
+      },
+      {
+        "selector": "./pkg/llm",
+        "mode": "unit",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "./pkg/llm"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 56,
+          "pass": 56,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/llm-unit/stdout.log",
+          "sha256": "f7c15f35af63ece1e14e0339a04442d26fbea8f9aefc6ac3ff745442e0f8a464",
+          "size": 51362
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/llm-unit/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/llm-unit/test-result.json",
+          "sha256": "d54187e84c81f61c86d8426c1d095ee47b7b8e4848c4f8f32c9c8efb318ccb5a"
+        }
+      },
+      {
+        "selector": "./pkg/protocol",
+        "mode": "race",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-race",
+          "./pkg/protocol"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 451,
+          "pass": 451,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/protocol-race/stdout.log",
+          "sha256": "7d478b1f91c0e9ad0b59239460bec8253f66b995cc66be84cd3082c188fbf406",
+          "size": 473703
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/protocol-race/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/protocol-race/test-result.json",
+          "sha256": "74f3e50748bf5ce816423342063c6126a55f15e7833c46187d4fac4bce54b728"
+        }
+      },
+      {
+        "selector": "./pkg/protocol",
+        "mode": "unit",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "./pkg/protocol"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 451,
+          "pass": 451,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/protocol-unit/stdout.log",
+          "sha256": "f527b3a4a48818c753945070fb958ef523ab9ab6f55d591c73ddc9ebc5039cf9",
+          "size": 473650
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/protocol-unit/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/protocol-unit/test-result.json",
+          "sha256": "6693172e8baae4270677a65ea52655a796ab563b941ef330f55153136320faad"
+        }
+      },
+      {
+        "selector": "./internal/realtime",
+        "mode": "race",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "-race",
+          "./internal/realtime"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 87,
+          "pass": 87,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/realtime-race/stdout.log",
+          "sha256": "77ff013a60570eabfb286acd01bd0fec0fd25f6d8b0935ef88abc9abca6524d5",
+          "size": 90062
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/realtime-race/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/realtime-race/test-result.json",
+          "sha256": "f3de997268bf1a3186c4cd54fc352f332b290ed341301047bf88c0287e1bb229"
+        }
+      },
+      {
+        "selector": "./internal/realtime",
+        "mode": "unit",
+        "run_filter": null,
+        "scope": "full_package",
+        "argv": [
+          "/bin/bash",
+          "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/multica-0.4.37/server",
+          "test",
+          "-json",
+          "-count=1",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-timeout=40m",
+          "./internal/realtime"
+        ],
+        "status": "pass",
+        "counts": {
+          "run": 87,
+          "pass": 87,
+          "fail": 0,
+          "skip": 0
+        },
+        "source_sha256_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_sha256_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "stdout": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/realtime-unit/stdout.log",
+          "sha256": "191d0cc2d6a359f4659ebbf7f0b481efc4007f60022d569d175d40d3c4a8ce52",
+          "size": 89997
+        },
+        "stderr": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/realtime-unit/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size": 0
+        },
+        "full_private_result_and_actual_input_manifest": {
+          "path": "/private/tmp/multica-p6-current-go-20261115T053937Z-sjf89wb8/realtime-unit/test-result.json",
+          "sha256": "0e59445a2e741dcfcd6fe63f3df6317d6f08688c2af38383e4c251f61508660b"
+        }
+      }
+    ],
+    "actual_named_inventory_evidence": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-current-go-nondb-matrix-20261115-sjf89wb8.json",
+      "sha256": "5afde30d5c3d64856a8cc9624465315366d5bc432186607bcb9db557fe23ab16"
+    },
+    "original_full_matrix_freshly_repeated": false
+  },
+  "compiled_input_closure_decisions": [
+    {
+      "selector": "./internal/agentconfig",
+      "compiled_go_changes_since_original": [],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": false,
+      "fresh_selected_suite": false,
+      "carried_original_full_package": true,
+      "compiled_input_count": 1,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./internal/cli",
+      "compiled_go_changes_since_original": [],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": false,
+      "fresh_selected_suite": false,
+      "carried_original_full_package": true,
+      "compiled_input_count": 40,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./internal/collaboration",
+      "compiled_go_changes_since_original": [
+        "server/pkg/db/generated/collaboration_stage_submission.sql.go"
+      ],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": true,
+      "fresh_selected_suite": false,
+      "carried_original_full_package": false,
+      "compiled_input_count": 180,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./internal/daemon",
+      "compiled_go_changes_since_original": [
+        "server/internal/service/admin_collaboration.go",
+        "server/internal/service/collaboration_handoff.go",
+        "server/internal/service/collaboration_lifecycle.go",
+        "server/internal/service/collaboration_stage_completion.go",
+        "server/internal/service/collaboration_stage_completion_binding.go",
+        "server/internal/service/collaboration_stage_signer.go",
+        "server/internal/service/delivery_completion.go",
+        "server/internal/service/task_knowledge.go",
+        "server/pkg/db/generated/collaboration_stage_submission.sql.go"
+      ],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [
+        "server/internal/changelog/content/changelog.json",
+        "server/internal/docs/content/assets/images/docs/agent-access-settings-zh.webp",
+        "server/internal/docs/content/assets/images/docs/agent-access-settings.webp",
+        "server/internal/docs/content/assets/images/docs/assign-confirm-dialog-zh.webp",
+        "server/internal/docs/content/assets/images/docs/assign-confirm-dialog.webp",
+        "server/internal/docs/content/assets/images/docs/autopilot-schedule-zh.webp",
+        "server/internal/docs/content/assets/images/docs/autopilot-schedule.webp",
+        "server/internal/docs/content/assets/images/docs/chat-conversation-zh.webp",
+        "server/internal/docs/content/assets/images/docs/chat-conversation.webp",
+        "server/internal/docs/content/assets/images/docs/concepts-core-objects.webp",
+        "server/internal/docs/content/assets/images/docs/how-a-run-works.webp",
+        "server/internal/docs/content/assets/images/docs/members-roster-zh.webp",
+        "server/internal/docs/content/assets/images/docs/members-roster.webp",
+        "server/internal/docs/content/assets/images/docs/mention-trigger-preview-zh.webp",
+        "server/internal/docs/content/assets/images/docs/mention-trigger-preview.webp",
+        "server/internal/docs/content/assets/images/docs/project-detail-zh.webp",
+        "server/internal/docs/content/assets/images/docs/project-detail.webp",
+        "server/internal/docs/content/assets/images/docs/quickstart-add-computer.webp",
+        "server/internal/docs/content/assets/images/docs/quickstart-new-agent-zh.webp",
+        "server/internal/docs/content/assets/images/docs/quickstart-new-agent.webp",
+        "server/internal/docs/content/assets/images/docs/quickstart-new-issue.webp",
+        "server/internal/docs/content/assets/images/docs/quickstart-run-result-zh.webp",
+        "server/internal/docs/content/assets/images/docs/quickstart-run-result.webp",
+        "server/internal/docs/content/assets/images/docs/runtime-machine-detail-zh.webp",
+        "server/internal/docs/content/assets/images/docs/runtime-machine-detail.webp",
+        "server/internal/docs/content/assets/images/docs/task-transcript-zh.webp",
+        "server/internal/docs/content/assets/images/docs/task-transcript.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-agent-detail-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-agent-detail.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-autopilot-create-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-autopilot-create.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-autopilot-detail-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-autopilot-detail.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-autopilot-issue-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-autopilot-issue.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-ask-in-issue-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-ask-in-issue.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-create-engineer-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-create-engineer.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-create-repo-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-create-repo.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-engineer-reply-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-engineer-reply.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-fab-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-fab.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-update-instructions-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-chat-update-instructions.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-comment-mention-reviewer-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-comment-mention-reviewer.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-create-agent-form-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-create-agent-form.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-create-with-agent-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-create-with-agent.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-create-workspace-form-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-create-workspace-form.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-create-workspace-menu-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-create-workspace-menu.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-empty-workspace-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-empty-workspace.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-engineer-fixed-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-engineer-fixed.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-engineer-instructions-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-engineer-instructions.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-engineer-updated-instructions-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-engineer-updated-instructions.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-execution-log-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-execution-log.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-helper-create-squad-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-helper-create-squad.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-invite-member-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-invite-member.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-done-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-done.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-engineer-working-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-engineer-working.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-pr-linked-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-pr-linked.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-review-comment-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-review-comment.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-squad-created-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-issue-squad-created.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-new-issue-agent-mode-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-new-issue-agent-mode.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-repo-settings-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-repo-settings.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-reviewer-detail-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-reviewer-detail.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-reviewer-findings-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-reviewer-findings.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-reviewer-recheck-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-reviewer-recheck.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-runtime-detail-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-runtime-detail.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-runtimes-list-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-runtimes-list.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-site-localhost-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-site-localhost.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-skill-detail-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-skill-detail.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-skill-new-modal-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-skill-new-modal.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-skills-list-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-skills-list.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-squad-delivery-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-squad-delivery.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-squad-detail-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-squad-detail.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-squad-dispatch-zh.webp",
+        "server/internal/docs/content/assets/images/docs/tutorial-squad-dispatch.webp",
+        "server/internal/docs/content/assets/images/docs/workspace-overview-zh.webp",
+        "server/internal/docs/content/assets/images/docs/workspace-overview.webp",
+        "server/internal/docs/content/assets/images/docs/workspace-settings-zh.webp",
+        "server/internal/docs/content/assets/images/docs/workspace-settings.webp",
+        "server/internal/docs/content/manifest.json",
+        "server/internal/docs/content/pages/agents-create.json",
+        "server/internal/docs/content/pages/agents.json",
+        "server/internal/docs/content/pages/assigning-issues.json",
+        "server/internal/docs/content/pages/auth-setup.json",
+        "server/internal/docs/content/pages/auth-tokens.json",
+        "server/internal/docs/content/pages/autopilots.json",
+        "server/internal/docs/content/pages/chat.json",
+        "server/internal/docs/content/pages/cli.json",
+        "server/internal/docs/content/pages/collaboration-knowledge.json",
+        "server/internal/docs/content/pages/collaboration.json",
+        "server/internal/docs/content/pages/comments.json",
+        "server/internal/docs/content/pages/concepts.json",
+        "server/internal/docs/content/pages/daemon-runtimes.json",
+        "server/internal/docs/content/pages/desktop-app.json",
+        "server/internal/docs/content/pages/developers/architecture.json",
+        "server/internal/docs/content/pages/developers/contributing.json",
+        "server/internal/docs/content/pages/developers/conventions.json",
+        "server/internal/docs/content/pages/environment-variables.json",
+        "server/internal/docs/content/pages/feature-overview.json",
+        "server/internal/docs/content/pages/how-multica-works.json",
+        "server/internal/docs/content/pages/inbox.json",
+        "server/internal/docs/content/pages/index.json",
+        "server/internal/docs/content/pages/install-agent-runtime.json",
+        "server/internal/docs/content/pages/issues.json",
+        "server/internal/docs/content/pages/iterations.json",
+        "server/internal/docs/content/pages/mcp.json",
+        "server/internal/docs/content/pages/members-roles.json",
+        "server/internal/docs/content/pages/mentioning-agents.json",
+        "server/internal/docs/content/pages/platform-administration.json",
+        "server/internal/docs/content/pages/project-resources.json",
+        "server/internal/docs/content/pages/projects.json",
+        "server/internal/docs/content/pages/providers.json",
+        "server/internal/docs/content/pages/security-model.json",
+        "server/internal/docs/content/pages/self-host-quickstart.json",
+        "server/internal/docs/content/pages/skills.json",
+        "server/internal/docs/content/pages/squads.json",
+        "server/internal/docs/content/pages/tasks.json",
+        "server/internal/docs/content/pages/triage.json",
+        "server/internal/docs/content/pages/triggering-agents.json",
+        "server/internal/docs/content/pages/troubleshooting.json",
+        "server/internal/docs/content/pages/tutorial.json",
+        "server/internal/docs/content/pages/usage.json",
+        "server/internal/docs/content/pages/vcs-integration.json",
+        "server/internal/docs/content/pages/workspaces.json",
+        "server/internal/handler/builtin_agent_avatars/afu-seal-v1.png",
+        "server/internal/handler/reserved_slugs.json",
+        "server/internal/service/builtin_agent_templates/agent-evaluator/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/architect/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/bug-fix-lead/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/code-reviewer/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/diagnostician/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/discovery-lead/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/docs-lead/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/experience-validation-engineer/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/feature-delivery-lead/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/implementer/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/incident-lead/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/maintenance-lead/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/migration-reviewer/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/product-analyst/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/progress-reporter/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/qa-engineer/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/release-engineer/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/release-lead/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/reliability-engineer/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/review-gate-lead/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/security-remediation-lead/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/security-reviewer/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agent_templates/technical-writer/INSTRUCTIONS.md",
+        "server/internal/service/builtin_agents/mika/INSTRUCTIONS.md",
+        "server/internal/service/builtin_autopilot_templates/bug-triage/PROMPT.md",
+        "server/internal/service/builtin_autopilot_templates/daily-change-review/PROMPT.md",
+        "server/internal/service/builtin_autopilot_templates/daily-progress-report/PROMPT.md",
+        "server/internal/service/builtin_autopilot_templates/dependency-audit/PROMPT.md",
+        "server/internal/service/builtin_autopilot_templates/documentation-check/PROMPT.md",
+        "server/internal/service/builtin_autopilot_templates/hourly-queue-check/PROMPT.md",
+        "server/internal/service/builtin_autopilot_templates/release-readiness/PROMPT.md",
+        "server/internal/service/builtin_autopilot_templates/stale-pr-reminder/PROMPT.md",
+        "server/internal/service/builtin_autopilot_templates/weekly-progress-report/PROMPT.md",
+        "server/internal/service/builtin_autopilot_templates/workday-repo-audit/PROMPT.md",
+        "server/internal/service/builtin_role_skills/multica-agent-evaluation/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-agent-evaluation/references/evaluation-source-map.md",
+        "server/internal/service/builtin_role_skills/multica-architecture-decision-record/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-code-review/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-debugging/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-documentation-change/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-experience-validation/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-incident-learning/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-migration-review/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-progress-report/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-release-check/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-reliability-engineering/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-requirement-clarification/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-rollout-and-canary-verification/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-security-review/SKILL.md",
+        "server/internal/service/builtin_role_skills/multica-test-report/SKILL.md",
+        "server/internal/service/builtin_skills/multica-autopilots/SKILL.md",
+        "server/internal/service/builtin_skills/multica-autopilots/references/autopilots-source-map.md",
+        "server/internal/service/builtin_skills/multica-creating-agents/SKILL.md",
+        "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md",
+        "server/internal/service/builtin_skills/multica-creating-agents/references/workspace-mcp.md",
+        "server/internal/service/builtin_skills/multica-mentioning/SKILL.md",
+        "server/internal/service/builtin_skills/multica-mentioning/references/mentioning-source-map.md",
+        "server/internal/service/builtin_skills/multica-onboarding/SKILL.md",
+        "server/internal/service/builtin_skills/multica-onboarding/references/onboarding-source-map.md",
+        "server/internal/service/builtin_skills/multica-projects-and-resources/SKILL.md",
+        "server/internal/service/builtin_skills/multica-projects-and-resources/references/projects-and-resources-source-map.md",
+        "server/internal/service/builtin_skills/multica-runtimes-and-repos/SKILL.md",
+        "server/internal/service/builtin_skills/multica-runtimes-and-repos/references/runtimes-and-repos-source-map.md",
+        "server/internal/service/builtin_skills/multica-skill-importing/SKILL.md",
+        "server/internal/service/builtin_skills/multica-skill-importing/references/skill-importing-source-map.md",
+        "server/internal/service/builtin_skills/multica-squads/SKILL.md",
+        "server/internal/service/builtin_skills/multica-squads/references/squad-source-map.md",
+        "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+        "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+        "server/internal/service/builtin_skills/multica-working-on-issues/references/report-snapshots.md",
+        "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+        "server/internal/service/builtin_squad_templates/bug-fix/INSTRUCTIONS.md",
+        "server/internal/service/builtin_squad_templates/discovery/INSTRUCTIONS.md",
+        "server/internal/service/builtin_squad_templates/docs/INSTRUCTIONS.md",
+        "server/internal/service/builtin_squad_templates/feature-delivery/INSTRUCTIONS.md",
+        "server/internal/service/builtin_squad_templates/incident/INSTRUCTIONS.md",
+        "server/internal/service/builtin_squad_templates/maintenance/INSTRUCTIONS.md",
+        "server/internal/service/builtin_squad_templates/release/INSTRUCTIONS.md",
+        "server/internal/service/builtin_squad_templates/review-gate/INSTRUCTIONS.md",
+        "server/internal/service/builtin_squad_templates/security-remediation/INSTRUCTIONS.md",
+        "server/pkg/publicapi/v1/openapi.yaml"
+      ],
+      "fresh_full_package": true,
+      "fresh_selected_suite": false,
+      "carried_original_full_package": false,
+      "compiled_input_count": 1466,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./internal/daemonws",
+      "compiled_go_changes_since_original": [
+        "server/pkg/db/generated/collaboration_stage_submission.sql.go"
+      ],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": true,
+      "fresh_selected_suite": false,
+      "carried_original_full_package": false,
+      "compiled_input_count": 205,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./internal/featureflags",
+      "compiled_go_changes_since_original": [],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": false,
+      "fresh_selected_suite": false,
+      "carried_original_full_package": true,
+      "compiled_input_count": 11,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./internal/realtime",
+      "compiled_go_changes_since_original": [
+        "server/pkg/db/generated/collaboration_stage_submission.sql.go"
+      ],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": true,
+      "fresh_selected_suite": false,
+      "carried_original_full_package": false,
+      "compiled_input_count": 206,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./pkg/agent",
+      "compiled_go_changes_since_original": [],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": false,
+      "fresh_selected_suite": true,
+      "carried_original_full_package": true,
+      "compiled_input_count": 169,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [
+        "server/pkg/agent/claude_deadlock_test.go"
+      ],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./pkg/llm",
+      "compiled_go_changes_since_original": [],
+      "runtime_source_scan_changes_since_original": [
+        "server/internal/service/admin_collaboration.go",
+        "server/internal/service/collaboration_handoff.go",
+        "server/internal/service/collaboration_lifecycle.go",
+        "server/internal/service/collaboration_stage_completion.go",
+        "server/internal/service/collaboration_stage_completion_binding.go",
+        "server/internal/service/collaboration_stage_completion_tx_test.go",
+        "server/internal/service/collaboration_stage_signer.go",
+        "server/internal/service/collaboration_stage_test.go",
+        "server/internal/service/delivery_completion.go",
+        "server/internal/service/task_knowledge.go",
+        "server/pkg/db/generated/collaboration_stage_submission.sql.go"
+      ],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": true,
+      "fresh_selected_suite": false,
+      "carried_original_full_package": false,
+      "compiled_input_count": 10,
+      "runtime_source_scan_input_count": 2907,
+      "test_main_files": [],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./pkg/protocol",
+      "compiled_go_changes_since_original": [],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": true,
+      "fresh_selected_suite": false,
+      "carried_original_full_package": false,
+      "compiled_input_count": 29,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [],
+      "db_boundary_matches": []
+    },
+    {
+      "selector": "./internal/daemon/collaborationrun",
+      "compiled_go_changes_since_original": [],
+      "runtime_source_scan_changes_since_original": [],
+      "non_go_embed_inputs_newly_bound_not_claimed_changed_since_original": [],
+      "fresh_full_package": false,
+      "fresh_selected_suite": true,
+      "carried_original_full_package": false,
+      "compiled_input_count": 203,
+      "runtime_source_scan_input_count": 0,
+      "test_main_files": [
+        "server/internal/daemon/collaborationrun/controller_test.go"
+      ],
+      "db_boundary_matches": []
+    }
+  ],
+  "carry_forward_basis": "Nine compiled Go inputs changed, so daemon/collaboration/daemonws/realtime full unit and race suites were actually rerun. LLM scans all server Go sources, so its full unit/race suites were actually rerun. Full protocol and selected host/agent knowledge suites were also actually rerun. CLI, featureflags and full agent compiled/test inputs remain identical and their original named results are retained explicitly; agentconfig still has no test files. Legacy fingerprint excludes non-Go embedded resources, which are newly bound and audited here rather than described as historical changes.",
+  "original_matrix": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-go-nondb-matrix-20261115-69457a27.json",
+    "sha256": "1f88877f4ff988687b6e8c0eda4a39d6eafabd0b9c772b88c8a1b61c912854fa",
+    "status_preserved": "verification_failed",
+    "original_counts": {
+      "unit": {
+        "run": 4731,
+        "pass": 4724,
+        "fail": 0,
+        "skip": 7
+      },
+      "race": {
+        "run": 4731,
+        "pass": 4724,
+        "fail": 0,
+        "skip": 7
+      }
+    }
+  },
+  "previous_current_binding": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-current-binding-20261115-69457a27-r2.json",
+    "sha256": "96ec1aff5f93b6e42a138011f37ce968d6865d5677d928179d3bb72cf781f86e",
+    "status_preserved": "pass_current_inputs_with_explicit_carried_matrix"
+  }
+}

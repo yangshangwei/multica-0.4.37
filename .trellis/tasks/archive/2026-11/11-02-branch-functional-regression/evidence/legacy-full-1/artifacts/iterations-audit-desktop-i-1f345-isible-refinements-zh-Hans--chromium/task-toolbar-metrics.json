@@ -1,0 +1,139 @@
+{
+  "locale": "zh-Hans",
+  "firstTask": {
+    "x": 290,
+    "y": 363,
+    "width": 98,
+    "height": 17
+  },
+  "searchBounds": {
+    "x": 1636,
+    "y": 306,
+    "width": 192,
+    "height": 32
+  },
+  "layouts": [
+    {
+      "name": "tasks-zh-Hans-planned-wide",
+      "expectedViewport": {
+        "width": 2048,
+        "height": 1088,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 2048,
+        "height": 1088,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 2048,
+        "height": 1088,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 2048,
+        "height": 1088
+      },
+      "overflow": [
+        {
+          "scrollWidth": 1718,
+          "clientWidth": 1718
+        }
+      ],
+      "targets": [
+        {
+          "name": "",
+          "x": 1636,
+          "y": 306,
+          "width": 192,
+          "height": 32
+        },
+        {
+          "name": "筛选任务",
+          "x": 1834,
+          "y": 308,
+          "width": 92,
+          "height": 28
+        },
+        {
+          "name": "不分组▼",
+          "x": 1932,
+          "y": 306,
+          "width": 76,
+          "height": 32
+        }
+      ]
+    },
+    {
+      "name": "tasks-zh-Hans-filtered-narrow",
+      "expectedViewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "viewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "viewportAfterCapture": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "screenshotSize": {
+        "width": 680,
+        "height": 900
+      },
+      "overflow": [
+        {
+          "scrollWidth": 606,
+          "clientWidth": 606
+        }
+      ],
+      "targets": [
+        {
+          "name": "",
+          "x": 255.578125,
+          "y": 378,
+          "width": 192,
+          "height": 44
+        },
+        {
+          "name": "筛选任务",
+          "x": 453.578125,
+          "y": 378,
+          "width": 116.421875,
+          "height": 44
+        },
+        {
+          "name": "状态▼",
+          "x": 576,
+          "y": 378,
+          "width": 64,
+          "height": 44
+        },
+        {
+          "name": "移除状态: 已阻塞筛选",
+          "x": 90.078125,
+          "y": 434,
+          "width": 112.421875,
+          "height": 44
+        },
+        {
+          "name": "移除优先级: 高筛选",
+          "x": 211.328125,
+          "y": 434,
+          "width": 99.421875,
+          "height": 44
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "recorded_at": "2026-11-03T01:06:30.118729+00:00",
+  "tests": [
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-offline.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11-provenance.py"
+      ],
+      "expected_cases": 45,
+      "exit_code": 0,
+      "log_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/v11-review/fake-preflight-v11-provenance.log",
+      "log_sha256": "87f2e640d85cde47300ad4cd4e00df8cce9d4156ad733ed39799fec2a97076d9",
+      "script_sha256": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+      "network_denied": true,
+      "repository_tests": 0,
+      "real_sql_or_services_or_Provider": 0
+    },
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-offline.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/adapter-env-preflight-v11.py"
+      ],
+      "expected_cases": 5,
+      "exit_code": 0,
+      "log_path": ".trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/v11-review/adapter-env-preflight-v11.log",
+      "log_sha256": "3576d53499df9dd1411d668ef7230738c62eac08ab5f7edb88668831ba6597e8",
+      "script_sha256": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+      "network_denied": true,
+      "repository_tests": 0,
+      "real_sql_or_services_or_Provider": 0
+    }
+  ],
+  "syntax_files": {
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11-provenance.py": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/adapter-env-preflight-v11.py": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "syntax_pass": 5,
+  "actual_repository_tests_or_Go_TestMain_or_services_or_DB_or_Provider": 0
+}

@@ -5417,7 +5417,20 @@ func TestInjectRuntimeConfigMentionLoopHardening(t *testing.T) {
 		// any one of them re-opens the incident class it closed.
 		for _, want := range []string{
 			"side-effecting actions",
-			"enqueues a new run for that agent",
+			"requests work from that agent",
+			"trigger_outcomes",
+			"queued/coalesced/deferred",
+			"not proof of completion",
+			"--idempotency-key <key>",
+			"delegation_receipt",
+			"multica issue comment receipt <issue-id> <key>",
+			"Unknown or missing receipts do not permit a new key or dispatch",
+			"explicit agent/squad mentions only",
+			"empty target list does not guarantee implicit follow-up",
+			"runtime_observation",
+			"not current availability; recovery never recomputes it",
+			"Offline runtimes may queue work to wait",
+			"unbound/unusable runtimes are refused",
 			// Notifying FOLLOWERS is a false need: delivery already happens.
 			// Scoped to followers on purpose — for a non-follower, a mention
 			// IS how they find out (Elon's review catch on #7245).

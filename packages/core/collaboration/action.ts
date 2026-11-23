@@ -1,0 +1,109 @@
+import { z } from "zod";
+import { getApi, ApiError } from "../api";
+import type { CollaborationIssue, CollaborationOperation } from "./schema";
+import { CollaborationPropertyPatchSchema } from "./schema";
+import { positiveVersion } from "./version";
+import { CollaborationUnavailableError, isCollaborationScopeCurrent, type CollaborationScope } from "./access";
+import type { CollaborationDraft } from "./draft";
+import { CollaborationAIPolicySchema, collaborationBoundedResultText, collaborationResultText } from "./delivery-schema";
+import { collaborationAttachmentIds } from "./attachment-schema";
+import { CompletionBindingSchema, completionUUID } from "../issues/completion-schema";
+import { CollaborationInformationEstimateSchema, CollaborationInformationRepairSelectionSchema,
+  CollaborationInformationTextSchema, collaborationInformationTextValid } from "./information-schema";
+
+const base = {
+  requestId: z.uuid(), expectedCollaborationRevision: positiveVersion, expectedLifecycleEpoch: positiveVersion,
+  expectedParticipantEpoch: positiveVersion, expectedAccountEpoch: positiveVersion,
+};
+const directed = { expectedStatus: z.string().min(1), statusOptionsVersion: z.string().regex(/^[a-f0-9]{64}$/) };
+const evidence = { draftId: z.uuid().optional(), deliveryDraftId: z.uuid().optional(), attachmentIds: collaborationAttachmentIds.optional(), sourceCommentId: z.uuid().optional() };
+export const CollaborationActionSchema = z.discriminatedUnion("action", [
+  z.object({ ...base, action: z.literal("invite"), targetUserId: z.uuid() }),
+  z.object({ ...base, action: z.literal("transfer"), targetUserId: z.uuid(), note: z.string() }),
+  z.object({ ...base, ...directed, action: z.literal("request_information"), targetUserId: z.uuid(), note: z.string(),
+    unblockCondition: CollaborationInformationTextSchema.optional(), estimatedResolutionAt: CollaborationInformationEstimateSchema.optional() })
+    .refine((value) => value.unblockCondition === undefined && value.estimatedResolutionAt === undefined ||
+      value.unblockCondition !== undefined && value.estimatedResolutionAt !== undefined && collaborationInformationTextValid(value.note)),
+  z.strictObject({ ...base, ...directed, action: z.literal("repair_information"), targetUserId: z.uuid(),
+    note: CollaborationInformationTextSchema, informationRepair: CollaborationInformationRepairSelectionSchema }),
+  z.object({ ...base, ...directed, action: z.literal("return_information"), informationRequestId: z.uuid(), note: z.string() }),
+  z.object({ ...base, ...directed, ...evidence, action: z.literal("submit_acceptance"), note: collaborationResultText, basis: collaborationResultText })
+    .refine((value) => value.draftId === undefined || value.deliveryDraftId === undefined || value.draftId === value.deliveryDraftId),
+  z.object({ ...base, ...directed, action: z.literal("return_acceptance"), submissionId: z.uuid(), targetUserId: z.uuid(), note: collaborationResultText }),
+  z.object({ ...base, action: z.literal("change_ai_policy"), aiPolicy: CollaborationAIPolicySchema }),
+  z.object({ ...base, action: z.enum(["change_status", "cancel", "reopen"]), status: z.string().min(1), statusOptionsVersion: directed.statusOptionsVersion }),
+  z.object({ ...base, ...evidence, action: z.literal("complete"), status: z.string().min(1), statusOptionsVersion: directed.statusOptionsVersion,
+    completion: CompletionBindingSchema.optional(), completionSourceWorkspaceId: completionUUID.optional(),
+    submissionId: z.uuid().optional(), submissionAttachmentIds: collaborationAttachmentIds.optional(), note: collaborationBoundedResultText.optional(), basis: collaborationResultText.optional() })
+    .refine((value) => value.submissionId !== undefined ? value.basis === undefined && value.draftId === undefined && value.deliveryDraftId === undefined &&
+      value.attachmentIds === undefined && value.sourceCommentId === undefined && value.submissionAttachmentIds !== undefined :
+      collaborationResultText.safeParse(value.note).success && value.basis !== undefined && value.submissionAttachmentIds === undefined)
+    .refine((value) => value.draftId === undefined || value.deliveryDraftId === undefined || value.draftId === value.deliveryDraftId)
+    .refine((value) => value.completion === undefined ? value.completionSourceWorkspaceId === undefined : value.completionSourceWorkspaceId !== undefined && value.completion.operation_id === value.requestId),
+  z.object({ ...base, action: z.literal("leave") }),
+  z.object({ ...base, action: z.literal("remove"), targetUserId: z.uuid() }),
+  z.object({ ...base, action: z.literal("edit"), title: z.string().min(1), description: z.string(), startDate: z.iso.date().nullable(), dueDate: z.iso.date().nullable(), priority: z.enum(["none", "low", "medium", "high", "urgent"]),
+    labelIds: z.array(z.uuid()).optional(), properties: CollaborationPropertyPatchSchema.optional() }),
+  z.strictObject({ ...base, action: z.literal("edit_source_structure"), projectId: z.uuid().nullable(), parentIssueId: z.uuid().nullable(), stage: z.number().int().min(1).max(2147483647).nullable() }),
+  z.strictObject({ ...base, action: z.literal("change_iteration"), iterationId: z.uuid().nullable(), expectedIssueRevision: positiveVersion,
+    expectedIterationRevision: positiveVersion.optional(), iterationReason: z.string().max(2000), allowCompleted: z.boolean().optional() }).refine((value) => (value.iterationId !== null) === (value.expectedIterationRevision !== undefined)),
+]);
+export type CollaborationAction = z.infer<typeof CollaborationActionSchema>;
+
+export function collaborationWriteContext(issue: CollaborationIssue, requestId: string) {
+  if (!issue.write_context) throw new CollaborationUnavailableError();
+  return {
+    requestId,
+    expectedCollaborationRevision: issue.collaboration_revision,
+    expectedLifecycleEpoch: issue.lifecycle_epoch,
+    expectedParticipantEpoch: issue.write_context.participant_epoch,
+    expectedAccountEpoch: issue.write_context.account_epoch,
+  };
+}
+
+export function parseCollaborationActionDraft(draft: CollaborationDraft): CollaborationAction {
+  const parsed = CollaborationActionSchema.safeParse(draft.payload);
+  if (draft.kind !== "operation" || !parsed.success || parsed.data.requestId !== draft.requestId) throw new CollaborationUnavailableError();
+  return parsed.data;
+}
+
+export async function sendCollaborationAction(scope: CollaborationScope, issueId: string, action: CollaborationAction): Promise<CollaborationOperation> {
+  if (!isCollaborationScopeCurrent(scope)) throw new DOMException("Collaboration session changed", "AbortError");
+  const api = getApi();
+  let result: CollaborationOperation | null;
+  switch (action.action) {
+    case "invite": result = await api.addCollaborationParticipant(issueId, action); break;
+    case "transfer": result = await api.createCollaborationHandoff(issueId, { ...action, purpose: "transfer" }); break;
+    case "request_information": result = await api.createCollaborationHandoff(issueId, { ...action, purpose: "information" }); break;
+    case "repair_information": result = await api.createCollaborationHandoff(issueId, { ...action, purpose: "information_repair" }); break;
+    case "return_information": result = await api.returnCollaborationInformation(issueId, action); break;
+    case "submit_acceptance": result = await api.submitCollaborationAcceptance(issueId, action); break;
+    case "return_acceptance": result = await api.returnCollaborationAcceptance(issueId, action); break;
+    case "change_ai_policy": result = await api.changeCollaborationAIPolicy(issueId, action); break;
+    case "change_status": result = await api.changeCollaborationStatus(issueId, action); break;
+    case "complete": case "cancel": case "reopen": result = await api.changeCollaborationLifecycle(issueId, { ...action, action: action.action }); break;
+    case "leave": result = await api.leaveCollaborationIssue(issueId, action); break;
+    case "remove": result = await api.removeCollaborationParticipant(issueId, action.targetUserId, action); break;
+    case "edit": case "edit_source_structure": result = await api.editCollaborationIssue(issueId, action); break;
+    case "change_iteration": result = await api.changeCollaborationIteration(issueId, action); break;
+    default: throw new CollaborationUnavailableError();
+  }
+  if (!isCollaborationScopeCurrent(scope)) throw new DOMException("Collaboration session changed", "AbortError");
+  if (!result) throw new CollaborationUnavailableError();
+  return result;
+}
+
+/** A missing receipt does not retire an intent; retry its exact original write. */
+export async function recoverCollaborationAction(scope: CollaborationScope, draft: CollaborationDraft): Promise<CollaborationOperation> {
+  const action = parseCollaborationActionDraft(draft);
+  if (draft.scope.server !== scope.server || draft.scope.userId !== scope.userId || !isCollaborationScopeCurrent(scope)) throw new CollaborationUnavailableError();
+  try {
+    const receipt = await getApi().getCollaborationOperation(draft.scope.issueId, draft.requestId);
+    if (!isCollaborationScopeCurrent(scope)) throw new DOMException("Collaboration session changed", "AbortError");
+    if (receipt) return receipt;
+  } catch (error) {
+    if (!(error instanceof ApiError) || error.status !== 404) throw error;
+  }
+  if (action.action === "repair_information" || action.action === "complete" && action.completion) throw new CollaborationUnavailableError();
+  return sendCollaborationAction(scope, draft.scope.issueId, action);
+}

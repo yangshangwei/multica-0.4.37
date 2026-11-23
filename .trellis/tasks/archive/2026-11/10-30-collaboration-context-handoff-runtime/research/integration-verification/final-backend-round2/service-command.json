@@ -1,0 +1,36 @@
+{
+  "started_at": "2026-10-31T18:11:52.576313+00:00",
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "argv": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-timeout",
+    "40m",
+    "-json",
+    "./internal/service",
+    "-run",
+    "Collaboration|Handoff|Checkpoint|Recording|SelectPreparationAttachments|^TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure$"
+  ],
+  "command": "bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -race -count=1 -p 1 -parallel 2 -timeout 40m -json ./internal/service -run 'Collaboration|Handoff|Checkpoint|Recording|SelectPreparationAttachments|^TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure$'",
+  "environment_file": "/tmp/multica_runtime_final2_858f011e.env",
+  "environment_overrides": {
+    "GOMAXPROCS": "2",
+    "GOFLAGS": "",
+    "PGAPPNAME": "multica-runtime-final-backend-round2"
+  },
+  "environment_unset": [],
+  "real_agent_gate_present": false,
+  "database": "multica_runtime_final2_858f011e",
+  "candidate_source_tree_sha256": "5b0262606d143ca44fc2ab19247eece7025087cda2541372f67afc218b76245b"
+}

@@ -1,0 +1,292 @@
+{
+  "status": "targeted_originals_complete",
+  "candidate": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+  "latest_case_count": 5,
+  "latest_passed": 5,
+  "latest_failed": 0,
+  "latest_skipped": 0,
+  "automatic_retries": 0,
+  "latest_runs": [
+    "localized-green",
+    "controls-original",
+    "s1-red-isolated"
+  ],
+  "runs": [
+    {
+      "run": "localized-red",
+      "source_commit": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "web_build_id": "_7zjZ-yIB7lbnEWws5Osv",
+      "fixture_hashes": {
+        "e2e/localized-template-defaults.spec.ts": "2872ab819f410deb38315262231ec7c58a081d0bf64cb0ed3d32b48e40fc5a0a",
+        "e2e/fixtures/collaboration-disclosures.ts": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb",
+        "e2e/fixtures/collaboration-control-journey.ts": "cb548cb272dbf66486a57b2b8ed42ebc93963dbe8043aab652dd00d64f7f115b",
+        "e2e/collaboration-business-scenarios.spec.ts": "3aed85e7902cef8d66f0b1cd17889ef8d7affbda3bc15f84687480fb9523ab6b",
+        "e2e/collaboration-live-revoke-web.spec.ts": "49db85d0cdb4c3f2e87643cf2776dc7463b2a89900a497ffb45dfc7262938718",
+        "e2e/collaboration-terminal-reopen-web.spec.ts": "7178ee24e345789612dd63d02a3908ae9bc2104c0a1dd0696f041bb0155b0b9c"
+      },
+      "stats": {
+        "startTime": "2026-11-23T11:16:17.211Z",
+        "duration": 126974.644,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "exit": 1,
+      "gate_at_browser_start": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_before": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_after": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "ports_closed": {
+        "api": true,
+        "web": true
+      },
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/core/localized-red"
+    },
+    {
+      "run": "localized-green",
+      "source_commit": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "web_build_id": "_7zjZ-yIB7lbnEWws5Osv",
+      "fixture_hashes": {
+        "e2e/localized-template-defaults.spec.ts": "3780a5a736dd80e2a62f0b2fee7277de0b8926db1cfd025e565bacef4a173f7c",
+        "e2e/fixtures/collaboration-disclosures.ts": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb",
+        "e2e/fixtures/collaboration-control-journey.ts": "cb548cb272dbf66486a57b2b8ed42ebc93963dbe8043aab652dd00d64f7f115b",
+        "e2e/collaboration-business-scenarios.spec.ts": "3aed85e7902cef8d66f0b1cd17889ef8d7affbda3bc15f84687480fb9523ab6b",
+        "e2e/collaboration-live-revoke-web.spec.ts": "49db85d0cdb4c3f2e87643cf2776dc7463b2a89900a497ffb45dfc7262938718",
+        "e2e/collaboration-terminal-reopen-web.spec.ts": "7178ee24e345789612dd63d02a3908ae9bc2104c0a1dd0696f041bb0155b0b9c"
+      },
+      "stats": {
+        "startTime": "2026-11-23T11:18:54.440Z",
+        "duration": 39133.030999999995,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": 0,
+      "gate_at_browser_start": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_before": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_after": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "ports_closed": {
+        "api": true,
+        "web": true
+      },
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/core/localized-green"
+    },
+    {
+      "run": "controls-original",
+      "source_commit": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "web_build_id": "_7zjZ-yIB7lbnEWws5Osv",
+      "fixture_hashes": {
+        "e2e/localized-template-defaults.spec.ts": "3780a5a736dd80e2a62f0b2fee7277de0b8926db1cfd025e565bacef4a173f7c",
+        "e2e/fixtures/collaboration-disclosures.ts": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb",
+        "e2e/fixtures/collaboration-control-journey.ts": "cb548cb272dbf66486a57b2b8ed42ebc93963dbe8043aab652dd00d64f7f115b",
+        "e2e/collaboration-business-scenarios.spec.ts": "3aed85e7902cef8d66f0b1cd17889ef8d7affbda3bc15f84687480fb9523ab6b",
+        "e2e/collaboration-live-revoke-web.spec.ts": "49db85d0cdb4c3f2e87643cf2776dc7463b2a89900a497ffb45dfc7262938718",
+        "e2e/collaboration-terminal-reopen-web.spec.ts": "7178ee24e345789612dd63d02a3908ae9bc2104c0a1dd0696f041bb0155b0b9c"
+      },
+      "stats": {
+        "startTime": "2026-11-23T11:19:55.206Z",
+        "duration": 78549.264,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": 0,
+      "gate_at_browser_start": {
+        "enabled": true,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 3
+      },
+      "gate_before": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_after": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 4
+      },
+      "ports_closed": {
+        "api": true,
+        "web": true,
+        "renderer": true
+      },
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/core/controls-original"
+    },
+    {
+      "run": "s1-red",
+      "source_commit": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "web_build_id": "_7zjZ-yIB7lbnEWws5Osv",
+      "fixture_hashes": {
+        "e2e/localized-template-defaults.spec.ts": "3780a5a736dd80e2a62f0b2fee7277de0b8926db1cfd025e565bacef4a173f7c",
+        "e2e/fixtures/collaboration-disclosures.ts": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb",
+        "e2e/fixtures/collaboration-control-journey.ts": "cb548cb272dbf66486a57b2b8ed42ebc93963dbe8043aab652dd00d64f7f115b",
+        "e2e/collaboration-business-scenarios.spec.ts": "3aed85e7902cef8d66f0b1cd17889ef8d7affbda3bc15f84687480fb9523ab6b",
+        "e2e/collaboration-live-revoke-web.spec.ts": "49db85d0cdb4c3f2e87643cf2776dc7463b2a89900a497ffb45dfc7262938718",
+        "e2e/collaboration-terminal-reopen-web.spec.ts": "7178ee24e345789612dd63d02a3908ae9bc2104c0a1dd0696f041bb0155b0b9c"
+      },
+      "stats": {
+        "startTime": "2026-11-23T11:21:44.087Z",
+        "duration": 2803.1,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": 1,
+      "gate_at_browser_start": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_before": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_after": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "ports_closed": {
+        "api": true,
+        "web": true,
+        "renderer": true
+      },
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/core/s1-red"
+    },
+    {
+      "run": "s1-red-original",
+      "source_commit": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "web_build_id": "_7zjZ-yIB7lbnEWws5Osv",
+      "fixture_hashes": {
+        "e2e/localized-template-defaults.spec.ts": "3780a5a736dd80e2a62f0b2fee7277de0b8926db1cfd025e565bacef4a173f7c",
+        "e2e/fixtures/collaboration-disclosures.ts": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb",
+        "e2e/fixtures/collaboration-control-journey.ts": "cb548cb272dbf66486a57b2b8ed42ebc93963dbe8043aab652dd00d64f7f115b",
+        "e2e/collaboration-business-scenarios.spec.ts": "3aed85e7902cef8d66f0b1cd17889ef8d7affbda3bc15f84687480fb9523ab6b",
+        "e2e/collaboration-live-revoke-web.spec.ts": "49db85d0cdb4c3f2e87643cf2776dc7463b2a89900a497ffb45dfc7262938718",
+        "e2e/collaboration-terminal-reopen-web.spec.ts": "7178ee24e345789612dd63d02a3908ae9bc2104c0a1dd0696f041bb0155b0b9c"
+      },
+      "stats": {
+        "startTime": "2026-11-23T11:22:19.012Z",
+        "duration": 247327.21300000002,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "exit": 1,
+      "gate_at_browser_start": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_before": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_after": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 4
+      },
+      "ports_closed": {
+        "api": true,
+        "web": true,
+        "renderer": true
+      },
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/core/s1-red-original"
+    },
+    {
+      "run": "s1-red-isolated",
+      "source_commit": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "web_build_id": "_7zjZ-yIB7lbnEWws5Osv",
+      "fixture_hashes": {
+        "e2e/localized-template-defaults.spec.ts": "3780a5a736dd80e2a62f0b2fee7277de0b8926db1cfd025e565bacef4a173f7c",
+        "e2e/fixtures/collaboration-disclosures.ts": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb",
+        "e2e/fixtures/collaboration-control-journey.ts": "cb548cb272dbf66486a57b2b8ed42ebc93963dbe8043aab652dd00d64f7f115b",
+        "e2e/collaboration-business-scenarios.spec.ts": "3aed85e7902cef8d66f0b1cd17889ef8d7affbda3bc15f84687480fb9523ab6b",
+        "e2e/collaboration-live-revoke-web.spec.ts": "49db85d0cdb4c3f2e87643cf2776dc7463b2a89900a497ffb45dfc7262938718",
+        "e2e/collaboration-terminal-reopen-web.spec.ts": "7178ee24e345789612dd63d02a3908ae9bc2104c0a1dd0696f041bb0155b0b9c"
+      },
+      "stats": {
+        "startTime": "2026-11-23T11:27:50.324Z",
+        "duration": 34400.903000000006,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": 0,
+      "gate_at_browser_start": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_before": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 2
+      },
+      "gate_after": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": 4
+      },
+      "ports_closed": {
+        "api": true,
+        "web": true,
+        "renderer": true
+      },
+      "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/core/s1-red-isolated"
+    }
+  ],
+  "cluster": "retained_running_for_parent_broad_replay",
+  "no_real_provider": true
+}

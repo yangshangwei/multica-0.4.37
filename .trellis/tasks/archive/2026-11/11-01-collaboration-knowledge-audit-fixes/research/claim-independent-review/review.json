@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "scope": "complete knowledge claim lane independent review",
+  "reviewed_at": "2026-11-01T16:16:52.963831+00:00",
+  "head": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "product_commit": "30edf3e36",
+  "base_sha": "4e3b61500ed0afbc12cf4c79b1c6aea866778d0e",
+  "server_tree": "a806fbe6aa17d0dca6777596ed382c8f17eba1ce",
+  "product_diff_sha256": "227edb78d83e30019b086e14696633df421827e00426fcf1e95bd50f5c1838cf",
+  "verdict": "pass-with-notes",
+  "blocking_product_findings": [],
+  "nonblocking_product_findings": [],
+  "audits": [
+    "H1",
+    "H1-followup",
+    "M1",
+    "H3",
+    "M3",
+    "managed-settings-followup"
+  ],
+  "independent_checks": [
+    {
+      "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./pkg/agent",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-run",
+        "^Test(BuildClaudeArgsManaged|KnowledgeSessionSelectorPresent|KnowledgeEffectiveArgsCannotOverrideSessionSelection|KnowledgeInvocationFingerprintRejectsDrift|KnowledgeNoSessionPersistenceFlagHasNoReenableForm)"
+      ],
+      "started_at": "2026-11-01T16:12:41.272507+00:00",
+      "database_env_removed": true,
+      "provider_gate_removed": true,
+      "exit_code": 0,
+      "counts": {
+        "run": 64,
+        "pass": 64,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "1f743331f4dc3a6191c43357d33a1ec59c8305f3f1a529fdb4dee4fb9bdf2581"
+    },
+    {
+      "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./pkg/agent",
+        "-race",
+        "-parallel=2",
+        "-count=2",
+        "-json",
+        "-run",
+        "^Test(BuildClaudeArgsManaged|KnowledgeSessionSelectorPresent|KnowledgeEffectiveArgsCannotOverrideSessionSelection|KnowledgeInvocationFingerprintRejectsDrift|KnowledgeNoSessionPersistenceFlagHasNoReenableForm)"
+      ],
+      "started_at": "2026-11-01T16:14:59.537503+00:00",
+      "database_env_removed": true,
+      "provider_gate_removed": true,
+      "exit_code": 0,
+      "counts": {
+        "run": 128,
+        "pass": 128,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "3f62a3b4faa0c86b44e14a816875fd77949cd68c6f2cf9b66a2413f2378be04d"
+    },
+    {
+      "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "build",
+        "-p",
+        "2",
+        "./internal/service",
+        "./internal/handler",
+        "./cmd/migrate",
+        "./pkg/agent"
+      ],
+      "started_at": "2026-11-01T16:14:07.005841+00:00",
+      "database_env_removed": true,
+      "provider_gate_removed": true,
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "-p",
+        "2",
+        "./internal/service",
+        "./internal/handler",
+        "./cmd/migrate",
+        "./pkg/agent"
+      ],
+      "started_at": "2026-11-01T16:14:14.369591+00:00",
+      "database_env_removed": true,
+      "provider_gate_removed": true,
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "static_migrations": {
+    "duplicate_new_prefixes": {},
+    "new_indices": [
+      {
+        "file": "server/migrations/761_collaboration_knowledge_agent_history.up.sql",
+        "sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+        "single_statement": true,
+        "concurrent": true,
+        "no_foreign_key": true
+      },
+      {
+        "file": "server/migrations/762_collaboration_knowledge_runtime_history.up.sql",
+        "sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+        "single_statement": true,
+        "concurrent": true,
+        "no_foreign_key": true
+      },
+      {
+        "file": "server/migrations/763_collaboration_knowledge_delivery_history.up.sql",
+        "sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+        "single_statement": true,
+        "concurrent": true,
+        "no_foreign_key": true
+      }
+    ]
+  },
+  "author_evidence_reference": "author-evidence-check.json",
+  "notes": [
+    {
+      "id": "CV-1",
+      "kind": "evidence_scope",
+      "description": "DB-backed history/service results were not rerun by this reviewer. Their retained logs match hashes; the H3/M3 run is bound to the recorded dirty source manifest mapped to94e790d2d, not to a fictitious clean final candidate. Handler/migration full suites and final combined-source checks stay coordinator gates."
+    },
+    {
+      "id": "CV-2",
+      "kind": "performance_scope",
+      "description": "Retained EXPLAIN uses enable_seqscan=off and proves negotiated-row partial-index eligibility. Its plan scans a negotiated partial index for some UNION arms rather than demonstrating selective GIN use. This is not a representative default-planner performance benchmark; the approved O(negotiated namespace) cost and complete key collection remain explicit."
+    },
+    {
+      "id": "CV-3",
+      "kind": "incident_scope",
+      "description": "The previously disclosed default-database migration incident0aedf934e remains preserved outside product acceptance. No rollback, default database read or database operation was performed by this reviewer."
+    }
+  ],
+  "product_edits": false,
+  "database_operations": false,
+  "migration_operations": false,
+  "provider_calls": 0,
+  "installed_agent_cli_calls": 0,
+  "spec_sync": "knowledge execution spec and operator runtime doc updated with selector policy, history/index contract, terminal finalization refusal and managed-settings ordering"
+}

@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-01T21:02:58.780714+00:00",
+  "phase": "read_only_source_diagnosis_canonicalrednotrun",
+  "base_sha": "56ae50d613831a905293fa29834e5a5be4167c03",
+  "baseline_memory_spec_sha256": "e98ce55df69b6f39b3d9bbd7ff2c45fd97e57819443e0a1673679cf4858ef8db",
+  "source_sha256": {
+    "e2e/collaboration-memory-runtime.spec.ts": "e6743766c0e49488a928638a62026b5a383517bca7cede1253d5604625dddee9",
+    "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+    "server/internal/service/collaboration_runtime_capabilities.go": "223785a0d0917ce9d28016938c838f7199755dc49829c094af477e253170c639",
+    "server/internal/service/collaboration_runtime.go": "d517f5531a133010c36bbda89ca0d5432e9d3bcfe0e423e5113104aff6573d8f",
+    "server/internal/service/collaboration_runtime_preparation.go": "ab064e11e61320eb8ce62573226f9a2eebede36d4103652f2ecb63a8716c1227"
+  },
+  "observed_parent_failure": {
+    "case": "Web Leave issue",
+    "status": 409,
+    "request": "GET /api/collaboration/runtime/runs?runtime_id=<fixture runtime>",
+    "after_state": {
+      "database": "collab_joint_final3off_20261102_2004",
+      "read_only": true,
+      "gate": {
+        "enabled": true,
+        "creation_enabled": true,
+        "host_execution_enabled": true,
+        "epoch": 12
+      },
+      "failed_runtime_id": "ac5ebd15-1b23-4f05-a59a-eaf09d7a5841"
+    },
+    "snapshot_file_sha256": "b67704c4193c68cb2786d79ecde2e0892f65bce18c1499b4eba11ce9c0e35be8"
+  },
+  "static_cause": "nested snapshot leases closed outer-before-inner; inner restores capturedhosttrue afterouter restoresfalse",
+  "expected_repair": "strict LIFO close second-before-first, preserve firstcleanup through finally; compare actual pre/post flags excluding legitimateepochincrements",
+  "product_mutation": false,
+  "DB_operations_this_lane": 0,
+  "browser_operations_this_lane": 0,
+  "precise_static_HTTP_path": [
+    "handler ListCollaborationRuntimeRuns -> service ListRuntimeRuns",
+    "collaboration_runtime.go:786 checkPreparationPromotion during queued batch promotion",
+    "collaboration_runtime_preparation.go:184-185 Host gate true and missing/nonHost saved capabilities ->409execution_mode_unsupported",
+    "collaborationRuntimeObjectFailure does not classify execution_mode_unsupported as deferrable; list returns the error"
+  ],
+  "actual_HTTP_body_code_captured": false,
+  "actual_HTTP_body_code_note": "parent retained actual status409; execution_mode_unsupported is the source-path inference, not a captured response body"
+}

@@ -7,7 +7,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -38,6 +38,9 @@ const mockSetManual = vi.hoisted(() => vi.fn());
 const mockSetAgent = vi.hoisted(() => vi.fn());
 const mockSetActiveMode = vi.hoisted(() => vi.fn());
 const mockClearDraft = vi.hoisted(() => vi.fn());
+const mockRefetchAgents = vi.hoisted(() => vi.fn());
+const mockEditorFocus = vi.hoisted(() => vi.fn());
+const mockEditorUpdates = vi.hoisted(() => ({ deferred: false }));
 
 const sourceContextPanelData = {
   anchor_comment_id: "comment-source",
@@ -145,7 +148,7 @@ const mockSquadsData = vi.hoisted(
 );
 
 const mockAgentsData = vi.hoisted(() => ({
-  list: [] as Array<{ id: string; name: string; archived_at: string | null; runtime_id: string; template_key?: string; description?: string }>,
+  list: [] as Array<{ id: string; name: string; archived_at: string | null; runtime_id: string; template_key?: string; description?: string; autonomy_level?: string }>,
 }));
 
 // Per-test override for the runtimes list. Non-admin members receive a
@@ -176,6 +179,7 @@ vi.mock("@tanstack/react-query", () => ({
       case "agents":
         return {
           data: mockAgentsData.list,
+          refetch: mockRefetchAgents,
         };
       case "runtimes":
         return { data: mockRuntimesData.list };
@@ -224,6 +228,7 @@ vi.mock("@multica/core/paths", () => ({
   useCurrentWorkspace: () => ({ name: "Test Workspace" }),
   useWorkspacePaths: () => ({
     settings: () => "/ws-test/settings",
+    agents: () => "/ws-test/agents",
   }),
 }));
 
@@ -401,7 +406,7 @@ vi.mock("../editor", async () => {
         setValue("");
       },
       uploadFile: runUpload,
-      focus: vi.fn(),
+      focus: mockEditorFocus,
       hasActiveUploads: () => inFlightRef.current > 0,
       // Placeholder rebuild contract: the real handle draws a card for an
       // upload the document is not showing and reports whether it landed.
@@ -419,7 +424,7 @@ vi.mock("../editor", async () => {
           onChange={(e) => {
             valueRef.current = e.target.value;
             setValue(e.target.value);
-            onUpdate?.(e.target.value);
+            if (!mockEditorUpdates.deferred) onUpdate?.(e.target.value);
           }}
           onKeyDown={(e) => {
             if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
@@ -458,25 +463,45 @@ vi.mock("@multica/ui/components/ui/dialog", () => ({
 vi.mock("./creator-recommendations", () => ({ CreatorRecommendations: ({ children }: { children?: ReactNode }) => <>{children}</> }));
 
 vi.mock("./quick-create-actor-picker", () => ({
-  QuickCreateActorPicker: ({ actor, visibleAgents, visibleSquads, onPick }: {
+  QuickCreateActorPicker: ({ actor, visibleAgents, visibleSquads, onPick, disabledReasons }: {
     actor: { type: "agent" | "squad"; id: string } | null;
     visibleAgents: Array<{ id: string; name: string }>;
     visibleSquads: Array<{ id: string; name: string }>;
     onPick: (actor: { type: "agent" | "squad"; id: string }) => void;
-  }) => <>{(["agent", "squad"] as const).flatMap((type) =>
-    (type === "agent" ? visibleAgents : visibleSquads).map((item) => (
-      <button key={`${type}:${item.id}`} type="button"
-        data-selected={actor?.type === type && actor.id === item.id ? "true" : "false"}
-        onClick={() => onPick({ type, id: item.id })}>{item.name}</button>
-    )))}</>,
+    disabledReasons?: ReadonlyMap<string, string>;
+  }) => <>
+    {/* Stands in for the real popover trigger the panel routes focus to. */}
+    <button type="button" data-slot="popover-trigger">Send to trigger</button>
+    {(["agent", "squad"] as const).flatMap((type) =>
+    (type === "agent" ? visibleAgents : visibleSquads).map((item) => {
+      const reason = disabledReasons?.get(`${type}:${item.id}`);
+      return (
+        <button key={`${type}:${item.id}`} type="button" disabled={!!reason} data-reason={reason}
+          data-selected={actor?.type === type && actor.id === item.id ? "true" : "false"}
+          onClick={() => onPick({ type, id: item.id })}>{item.name}</button>
+      );
+    }))}</>,
 }));
 
 vi.mock("@multica/ui/components/ui/button", () => ({
-  Button: ({ children, disabled, onClick }: { children: ReactNode; disabled?: boolean; onClick?: () => void }) => (
-    <button type="button" disabled={disabled} onClick={onClick}>
+  // The real Button spreads the rest onto the element; forwarding them keeps
+  // ref, aria-disabled and aria-describedby assertable here.
+  Button: ({ children, disabled, onClick, variant: _variant, size: _size, ...rest }: {
+    children: ReactNode; disabled?: boolean; onClick?: () => void; variant?: string; size?: string;
+    [key: string]: unknown;
+  }) => (
+    <button type="button" disabled={disabled} onClick={onClick} {...rest}>
       {children}
     </button>
   ),
+  buttonVariants: () => "",
+}));
+
+vi.mock("@multica/ui/components/ui/tooltip", () => ({
+  Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>,
+  TooltipTrigger: ({ render }: { render: ReactNode }) => <>{render}</>,
+  TooltipContent: () => null,
+  TooltipProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
 }));
 
 vi.mock("@multica/ui/components/ui/switch", () => ({
@@ -509,10 +534,12 @@ import enModals from "../locales/en/modals.json";
 import enEditor from "../locales/en/editor.json";
 import enProjects from "../locales/en/projects.json";
 import enIssues from "../locales/en/issues.json";
+import enAgents from "../locales/en/agents.json";
+import { configureShortcutPlatform, createShortcutChord, useShortcutStore } from "@multica/core/shortcuts";
 import { AgentCreatePanel } from "./quick-create-issue";
 
 const TEST_RESOURCES = {
-  en: { common: enCommon, modals: enModals, editor: enEditor, projects: enProjects, issues: enIssues },
+  en: { common: enCommon, modals: enModals, editor: enEditor, projects: enProjects, issues: enIssues, agents: enAgents },
 };
 
 function renderPanel(props: React.ComponentProps<typeof AgentCreatePanel>) {
@@ -526,6 +553,7 @@ function renderPanel(props: React.ComponentProps<typeof AgentCreatePanel>) {
 describe("AgentCreatePanel", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockEditorUpdates.deferred = false;
     mockCaptureScope.mockImplementation(() => ({ ...mockPreferenceScope }));
     mockIsScopeCurrent.mockReturnValue(true);
     mockIsStoreReady.mockReturnValue(true);
@@ -592,7 +620,7 @@ describe("AgentCreatePanel", () => {
       mockAgentsData.list.push({ id: "agent-2", name: "Ada", archived_at: null, runtime_id: "runtime-1" });
       renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(),
         data: sourceContext ? sourceContextPanelData : undefined });
-      fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
+      fireEvent.click(screen.getByRole("button", { name: /^Send to agent$/i }));
       await waitFor(() => expect(request).toHaveBeenCalledTimes(1));
       expect(mockCaptureScope).toHaveBeenCalledWith("ws-test", "user-1");
       fireEvent.click(screen.getByRole("button", { name: "Ada" }));
@@ -611,7 +639,7 @@ describe("AgentCreatePanel", () => {
         request.mockImplementationOnce(() => new Promise<void>((resolve) => { accept = resolve; }));
         renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(),
           data: sourceContext ? sourceContextPanelData : undefined });
-        fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
+        fireEvent.click(screen.getByRole("button", { name: /^Send to agent$/i }));
         await waitFor(() => expect(request).toHaveBeenCalledTimes(1));
         mockIsScopeCurrent.mockReturnValue(false);
         await act(async () => { accept(); });
@@ -626,7 +654,7 @@ describe("AgentCreatePanel", () => {
       request.mockRejectedValueOnce(new Error("Temporarily unavailable"));
       renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(),
         data: sourceContext ? sourceContextPanelData : undefined });
-      await userEvent.click(screen.getByRole("button", { name: /^Create$/i }));
+      await userEvent.click(screen.getByRole("button", { name: /^Send to agent$/i }));
       expect(await screen.findByRole("alert")).toHaveTextContent("Temporarily unavailable");
       expect(mockRecordSuccessfulActor).not.toHaveBeenCalled();
     });
@@ -659,7 +687,7 @@ describe("AgentCreatePanel", () => {
     renderPanel({ onClose, isExpanded: false, setIsExpanded: vi.fn() });
     await userEvent.click(screen.getByRole("button", { name: "Help me refine" }));
     await screen.findByRole("button", { name: "Undo" });
-    await userEvent.click(screen.getByRole("button", { name: /^Create$/ }));
+    await userEvent.click(screen.getByRole("button", { name: /^Send to agent$/ }));
     await waitFor(() => expect(screen.queryByText("Clarified request")).not.toBeInTheDocument());
     expect(screen.getByRole("textbox", { name: "Issue prompt" })).toHaveValue("");
     expect(screen.getByRole("button", { name: "Help me refine" })).toBeDisabled();
@@ -674,7 +702,7 @@ describe("AgentCreatePanel", () => {
     expect(screen.getByRole("textbox", { name: "Issue prompt" })).toHaveValue("Clarified request");
     expect(mockIssueDraftStore.draft.agent.prompt).toBe("Clarified request");
     expect(mockIssueDraftStore.draft.manual.description).toBe("");
-    await userEvent.click(screen.getByRole("button", { name: /^Create$/ }));
+    await userEvent.click(screen.getByRole("button", { name: /^Send to agent$/ }));
     expect(mockQuickCreateIssue).toHaveBeenCalledWith(expect.objectContaining({ prompt: "Clarified request" }));
   });
 
@@ -770,7 +798,7 @@ describe("AgentCreatePanel", () => {
     await user.type(editor, "New agent prompt");
     expect(mockSetAgent).toHaveBeenLastCalledWith({ prompt: "New agent prompt" });
 
-    await user.click(screen.getByRole("button", { name: /^Create$/i }));
+    await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
 
     await waitFor(() => {
       expect(mockQuickCreateIssue).toHaveBeenCalledWith({
@@ -799,7 +827,7 @@ describe("AgentCreatePanel", () => {
     );
 
     renderPanel({ onClose, isExpanded: false, setIsExpanded: vi.fn() });
-    await user.click(screen.getByRole("button", { name: /^Create$/i }));
+    await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
 
     await waitFor(() => {
       expect(mockShowIssueLimitUpgradePrompt).toHaveBeenCalledTimes(1);
@@ -817,7 +845,7 @@ describe("AgentCreatePanel", () => {
     expect(screen.queryByTestId("priority-picker")).not.toBeInTheDocument();
     await user.click(screen.getByText("Set priority..."));
     await user.click(screen.getByTestId("priority-picker"));
-    await user.click(screen.getByRole("button", { name: /^Create$/i }));
+    await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
 
     await waitFor(() => {
       expect(mockQuickCreateIssue).toHaveBeenCalledWith(
@@ -864,7 +892,7 @@ describe("AgentCreatePanel", () => {
       data: { priority: "urgent", due_date: "2026-08-01" },
     });
 
-    await user.click(screen.getByRole("button", { name: /^Create$/i }));
+    await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
 
     await waitFor(() => {
       expect(mockQuickCreateIssue).toHaveBeenCalledWith(
@@ -887,7 +915,7 @@ describe("AgentCreatePanel", () => {
     renderPanel({ onClose, isExpanded: false, setIsExpanded: vi.fn() });
     const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     fireEvent.change(editor, { target: { value: "Draft A prompt" } });
-    fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^Send to agent$/i }));
     await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalled());
 
     // Mid-flight edit replaces the singleton draft's object identity.
@@ -916,7 +944,7 @@ describe("AgentCreatePanel", () => {
     const view = renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
     const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     fireEvent.change(editor, { target: { value: "Draft A prompt" } });
-    fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^Send to agent$/i }));
     await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalled());
 
     view.unmount();
@@ -942,7 +970,7 @@ describe("AgentCreatePanel", () => {
     const view = renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
     const editor = screen.getByRole("textbox", { name: "Issue prompt" });
     fireEvent.change(editor, { target: { value: "Draft A prompt" } });
-    fireEvent.click(screen.getByRole("button", { name: /^Create$/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^Send to agent$/i }));
     await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalled());
 
     view.unmount();
@@ -971,7 +999,7 @@ describe("AgentCreatePanel", () => {
       },
     });
 
-    await user.click(screen.getByRole("button", { name: /^Create$/i }));
+    await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
 
     await waitFor(() => {
       expect(mockQuickCreateIssue).toHaveBeenCalledWith({
@@ -1005,7 +1033,7 @@ describe("AgentCreatePanel", () => {
     await user.clear(editor);
     await user.type(editor, "Investigate the regression");
 
-    await user.click(screen.getByRole("button", { name: /^Create$/i }));
+    await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
 
     await waitFor(() => {
       expect(mockQuickCreateIssue).toHaveBeenCalledWith({
@@ -1015,6 +1043,99 @@ describe("AgentCreatePanel", () => {
       });
     });
     expect(mockRecordSuccessfulActor).toHaveBeenCalledWith({ type: "squad", id: "squad-1" }, mockPreferenceScope);
+  });
+
+  // An Observer (built-in Architect, reviewers, analysts) cannot run the
+  // `multica issue create` this flow hands it. Picker gating and seeding live
+  // here; the level rule itself is pinned in core/agents/autonomy.test.ts.
+  describe("creators that cannot create issues", () => {
+    const architect = { id: "agent-architect", name: "Architect", archived_at: null, runtime_id: "runtime-1", autonomy_level: "observer" };
+
+    it("lists them disabled with the reason and never seeds one from history", () => {
+      mockAgentsData.list = [architect, ...mockAgentsData.list];
+      mockSquadsData.list = [{ id: "squad-review", name: "Review Squad", leader_id: "agent-architect", archived_at: null }];
+      mockQuickCreateStore.lastActorType = "agent";
+      mockQuickCreateStore.lastActorId = "agent-architect";
+
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
+
+      const row = screen.getByRole("button", { name: "Architect" });
+      expect(row).toBeDisabled();
+      expect(row.dataset.reason).toMatch(/Observer, so it cannot create issues/);
+      // The squad's leader is the one who would run the create.
+      expect(screen.getByRole("button", { name: "Review Squad" })).toBeDisabled();
+      // The last accepted creator is skipped instead of reopening the dead end.
+      expect(screen.getByRole("button", { name: "Bohan" })).toHaveAttribute("data-selected", "true");
+    });
+
+    it("explains an explicitly requested one and hands off to manual creation assigned to it", async () => {
+      const user = userEvent.setup();
+      const onSwitchMode = vi.fn();
+      mockAgentsData.list = [architect, ...mockAgentsData.list];
+      // A stale manual assignee must not survive a button that names Architect.
+      mockIssueDraftStore.draft.manual.assigneeType = "member";
+      mockIssueDraftStore.draft.manual.assigneeId = "user-1";
+
+      renderPanel({ onClose: vi.fn(), onSwitchMode, isExpanded: false, setIsExpanded: vi.fn(), data: { agent_id: "agent-architect" } });
+
+      expect(screen.getByText("Architect cannot create this issue")).toBeInTheDocument();
+      expect(screen.getByText(/needs autonomy level Contributor or above\. Architect is Observer/)).toBeInTheDocument();
+      // Blocked but focusable, so the reason can be reached; see "blocked submit".
+      const create = screen.getByRole("button", { name: /^Send to agent$/i });
+      expect(create).not.toBeDisabled();
+      expect(create).toHaveAttribute("aria-disabled", "true");
+      expect(create).toHaveAccessibleDescription("The selected creator cannot create issues. Create manually instead.");
+
+      await user.click(screen.getByRole("button", { name: "Create manually and assign to Architect" }));
+      expect(mockSetManual).toHaveBeenCalledWith({ assigneeType: "agent", assigneeId: "agent-architect" });
+      expect(onSwitchMode).toHaveBeenCalledTimes(1);
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    });
+
+    // The disabled button does not cover the keyboard path.
+    it("does not send through the send shortcut either", () => {
+      mockAgentsData.list = [architect, ...mockAgentsData.list];
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn(), data: { agent_id: "agent-architect" } });
+
+      fireEvent.keyDown(screen.getByRole("textbox", { name: "Issue prompt" }), { key: "Enter", metaKey: true });
+
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    });
+
+    it("explains the server refusal when the level changed after the list loaded", async () => {
+      const user = userEvent.setup();
+      mockQuickCreateIssue.mockRejectedValueOnce(
+        new ApiError("autonomy refused", 422, "Unprocessable Entity", {
+          code: "agent_autonomy_insufficient", autonomy_level: "observer", required_autonomy: "contributor",
+        }),
+      );
+
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
+      await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
+
+      expect(await screen.findByRole("alert")).toHaveTextContent(
+        "has autonomy level Observer, so it cannot create issues; Create with agent needs Contributor or above.",
+      );
+      // The refreshed list is what disables the creator and shows the notice.
+      expect(mockRefetchAgents).toHaveBeenCalledTimes(1);
+      expect(mockRecordSuccessfulActor).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ["a non-string level", { autonomy_level: 42 }],
+      ["no level at all", {}],
+    ])("falls back to the server sentence for %s", async (_label, fields) => {
+      const user = userEvent.setup();
+      const sentence = "The agent that would create this issue has autonomy level observer.";
+      mockQuickCreateIssue.mockRejectedValueOnce(
+        new ApiError(sentence, 422, "Unprocessable Entity", { code: "agent_autonomy_insufficient", ...fields }),
+      );
+
+      renderPanel({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
+      await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
+
+      expect(await screen.findByRole("alert")).toHaveTextContent(sentence);
+    });
   });
 
   // Squads whose leader agent isn't visible (archived, private, etc.) must
@@ -1064,7 +1185,7 @@ describe("AgentCreatePanel", () => {
         screen.getByRole("textbox", { name: "Issue prompt" }),
         "Ship it",
       );
-      await user.click(screen.getByRole("button", { name: /^Create$/i }));
+      await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
 
       await waitFor(() => {
         expect(mockQuickCreateIssue).toHaveBeenCalledWith(
@@ -1167,7 +1288,7 @@ describe("AgentCreatePanel", () => {
     await user.clear(editor);
     await user.type(editor, "Investigate the regression");
 
-    await user.click(screen.getByRole("button", { name: /^Create$/i }));
+    await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
 
     await waitFor(() => {
       expect(mockQuickCreateIssue).toHaveBeenCalledWith({
@@ -1226,7 +1347,7 @@ describe("AgentCreatePanel", () => {
     );
     await user.clear(editor);
     await user.type(editor, "Investigate with captured context");
-    await user.click(screen.getByRole("button", { name: /^Create$/i }));
+    await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
 
     await waitFor(() => expect(mockCreateCommentSubIssue).toHaveBeenCalledWith(
       "comment-source",
@@ -1240,6 +1361,22 @@ describe("AgentCreatePanel", () => {
       },
     ));
     expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+  });
+
+  it("keeps an empty source comment ID on the ordinary creation path", async () => {
+    renderPanel({
+      onClose: vi.fn(),
+      isExpanded: false,
+      setIsExpanded: vi.fn(),
+      data: { anchor_comment_id: "" },
+    });
+
+    const submit = screen.getByRole("button", { name: /^Send to agent$/i });
+    expect(submit).not.toHaveAttribute("aria-disabled", "true");
+    fireEvent.click(submit);
+
+    await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalledTimes(1));
+    expect(mockCreateCommentSubIssue).not.toHaveBeenCalled();
   });
 
   // MUL-4808 — Quick Create already gated Create; these pin the two gaps:
@@ -1278,7 +1415,9 @@ describe("AgentCreatePanel", () => {
       // land before picking the second was a restriction with no race behind
       // it, and this issue explicitly removed it.
       const submit = await screen.findByRole("button", { name: "Uploading…" });
+      // Busy states stay natively disabled; only explainable blocks are focusable.
       expect(submit).toBeDisabled();
+      expect(submit).toHaveAttribute("aria-busy", "true");
       expect(screen.getByRole("button", { name: "Upload file" })).not.toBeDisabled();
     });
   });
@@ -1312,8 +1451,9 @@ describe("AgentCreatePanel", () => {
         screen.getByRole("textbox", { name: "Issue prompt" }),
         "Ship it",
       );
-      const create = screen.getByRole("button", { name: /^Create$/i });
+      const create = screen.getByRole("button", { name: /^Send to agent$/i });
       expect(create).not.toBeDisabled();
+      expect(create).not.toHaveAttribute("aria-disabled");
 
       await user.click(create);
       await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalledTimes(1));
@@ -1334,7 +1474,13 @@ describe("AgentCreatePanel", () => {
         screen.getByRole("textbox", { name: "Issue prompt" }),
         "Ship it",
       );
-      expect(screen.getByRole("button", { name: /^Create$/i })).toBeDisabled();
+      const create = screen.getByRole("button", { name: /^Send to agent$/i });
+      expect(create).toHaveAttribute("aria-disabled", "true");
+      expect(create).toHaveAccessibleDescription(/^Daemon CLI must be ≥ /);
+      // Activating it points at the recipient instead of sending.
+      await user.click(create);
+      expect(screen.getByRole("button", { name: "Send to trigger" })).toHaveFocus();
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
     });
   });
 
@@ -1370,6 +1516,221 @@ describe("AgentCreatePanel", () => {
     });
   });
 
+  // The panel is a fragment inside the shell's dialog, so the chord is bound on
+  // that element. jsdom shares Chromium's bubbling here but not its focus
+  // handling; the browser specs own the real-popup cases.
+  describe("dialog-level send shortcut", () => {
+    const renderInDialog = () => render(
+      <I18nProvider locale="en" resources={TEST_RESOURCES}>
+        <div role="dialog">
+          <AgentCreatePanel onClose={vi.fn()} isExpanded={false} setIsExpanded={vi.fn()} />
+          <input aria-label="Other field" />
+        </div>
+      </I18nProvider>,
+    );
+    beforeEach(() => {
+      configureShortcutPlatform("macos");
+      useShortcutStore.setState({ overrides: {} });
+    });
+    afterEach(() => {
+      configureShortcutPlatform(null);
+      useShortcutStore.setState({ overrides: {} });
+    });
+
+    it("submits from a non-input control, such as the picker a recommendation leaves focused", async () => {
+      renderInDialog();
+      const trigger = screen.getByRole("button", { name: "Send to trigger" });
+      trigger.focus();
+      fireEvent.keyDown(trigger, { key: "Enter", metaKey: true });
+      await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalledTimes(1));
+    });
+
+    it("submits once per press and ignores repeats, IME and already-handled keys", async () => {
+      renderInDialog();
+      const close = screen.getByRole("button", { name: "Close" });
+      fireEvent.keyDown(close, { key: "Enter", metaKey: true, repeat: true });
+      fireEvent.keyDown(close, { key: "Enter", metaKey: true, isComposing: true });
+      fireEvent.keyDown(close, { key: "Enter" });
+      const handled = (event: Event) => event.preventDefault();
+      close.addEventListener("keydown", handled);
+      fireEvent.keyDown(close, { key: "Enter", metaKey: true });
+      close.removeEventListener("keydown", handled);
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+      fireEvent.keyDown(close, { key: "Enter", metaKey: true });
+      await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalledTimes(1));
+    });
+
+    it("leaves the chord to text fields, so the editor submits exactly once", async () => {
+      renderInDialog();
+      fireEvent.keyDown(screen.getByRole("textbox", { name: "Other field" }), { key: "Enter", metaKey: true });
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+      fireEvent.keyDown(screen.getByRole("textbox", { name: "Issue prompt" }), { key: "Enter", metaKey: true });
+      await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalledTimes(1));
+      await act(async () => {});
+      expect(mockQuickCreateIssue).toHaveBeenCalledTimes(1);
+    });
+
+    it("is inactive when send is a bare Enter, which must keep activating the focused control", () => {
+      useShortcutStore.setState({ overrides: { send: createShortcutChord("Enter") } });
+      renderInDialog();
+      fireEvent.keyDown(screen.getByRole("button", { name: "Close" }), { key: "Enter" });
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    });
+
+    it("routes a blocked press to the blocker instead of submitting", () => {
+      mockAgentsData.list = [];
+      renderInDialog();
+      fireEvent.keyDown(screen.getByRole("button", { name: "Close" }), { key: "Enter", metaKey: true });
+      expect(screen.getByRole("link", { name: "Set up an agent" })).toHaveFocus();
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    });
+  });
+
+  // The order of blockers and its equivalence with the old button condition
+  // are pinned in packages/core/issues/quick-create-submit-state.test.ts. These
+  // cases own the wiring: focusable button, readable reason, focus routing.
+  describe("blocked submit", () => {
+    const panelProps = () => ({ onClose: vi.fn(), isExpanded: false, setIsExpanded: vi.fn() });
+
+    it("explains a missing description and sends focus to the editor", async () => {
+      const user = userEvent.setup();
+      mockIssueDraftStore.draft.agent.prompt = "";
+      renderPanel(panelProps());
+      const create = screen.getByRole("button", { name: /^Send to agent$/i });
+      expect(create).not.toBeDisabled();
+      expect(create).toHaveAttribute("aria-disabled", "true");
+      expect(create).toHaveAccessibleDescription("Write a task description first");
+      expect(create.className).toContain("aria-disabled:opacity-50");
+      expect(create.className).not.toContain("pointer-events-none");
+      expect(create).not.toHaveAttribute("title");
+
+      // The panel also focuses the editor on mount, a frame later; let that
+      // land so only the click is counted.
+      await waitFor(() => expect(mockEditorFocus).toHaveBeenCalled());
+      mockEditorFocus.mockClear();
+      await user.click(create);
+      expect(mockEditorFocus).toHaveBeenCalledTimes(1);
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    });
+
+    it("routes a blocked send shortcut the same way as a blocked click", () => {
+      mockAgentsData.list = [];
+      renderPanel(panelProps());
+      fireEvent.keyDown(screen.getByRole("textbox", { name: "Issue prompt" }), { key: "Enter", metaKey: true });
+      expect(screen.getByRole("link", { name: "Set up an agent" })).toHaveFocus();
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    });
+
+    it("focuses the editor when its description was cleared before the debounced update", async () => {
+      renderPanel(panelProps());
+      await waitFor(() => expect(mockEditorFocus).toHaveBeenCalled());
+      mockEditorFocus.mockClear();
+      mockEditorUpdates.deferred = true;
+
+      fireEvent.change(screen.getByRole("textbox", { name: "Issue prompt" }), { target: { value: "" } });
+      fireEvent.click(screen.getByRole("button", { name: /^Send to agent$/i }));
+
+      expect(mockEditorFocus).toHaveBeenCalledTimes(1);
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ["newly typed text", "Create a task from this description"],
+      ["attachment-only Markdown", "![reference](/uploads/reference.png)"],
+    ])("submits %s before the debounced update", async (_label, prompt) => {
+      mockIssueDraftStore.draft.agent.prompt = "";
+      renderPanel(panelProps());
+      mockEditorUpdates.deferred = true;
+
+      fireEvent.change(screen.getByRole("textbox", { name: "Issue prompt" }), { target: { value: prompt } });
+      fireEvent.click(screen.getByRole("button", { name: /^Send to agent$/i }));
+
+      await waitFor(() => expect(mockQuickCreateIssue).toHaveBeenCalledTimes(1));
+      expect(mockQuickCreateIssue.mock.calls[0]?.[0]).toMatchObject({ prompt });
+    });
+
+    it("points at the recipient picker while no recipient is resolved", async () => {
+      const user = userEvent.setup();
+      // Saved fallbacks wait for preference hydration, so nothing is seeded.
+      mockIsStoreReady.mockReturnValue(false);
+      renderPanel(panelProps());
+      const create = screen.getByRole("button", { name: /^Send to agent$/i });
+      expect(create).toHaveAttribute("aria-disabled", "true");
+      expect(create).toHaveAccessibleDescription("Still loading. Try again in a moment.");
+      await user.click(create);
+      expect(screen.getByRole("button", { name: "Send to trigger" })).toHaveFocus();
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+      expect(screen.queryByText("No agent or squad can take this")).not.toBeInTheDocument();
+    });
+
+    it("moves focus to the manual hand-off when the creator cannot create issues", async () => {
+      const user = userEvent.setup();
+      mockAgentsData.list = [
+        { id: "agent-architect", name: "Architect", archived_at: null, runtime_id: "runtime-1", autonomy_level: "observer" },
+        ...mockAgentsData.list,
+      ];
+      renderPanel({ ...panelProps(), data: { agent_id: "agent-architect" } });
+      await user.click(screen.getByRole("button", { name: /^Send to agent$/i }));
+      expect(screen.getByRole("button", { name: "Create manually and assign to Architect" })).toHaveFocus();
+      expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+    });
+
+    describe("with no agent or squad that can take the request", () => {
+      beforeEach(() => { mockAgentsData.list = []; });
+
+      it("says so, ahead of the empty description, and focuses the first way out", async () => {
+        const user = userEvent.setup();
+        mockIssueDraftStore.draft.agent.prompt = "";
+        renderPanel(panelProps());
+        const notice = screen.getByText("No agent or squad can take this", { selector: "p" }).parentElement!;
+        expect(notice).toHaveAttribute("role", "status");
+        expect(notice).toHaveTextContent("No agent or squad can take this");
+        expect(notice).toHaveTextContent("This workspace has none yet.");
+        expect(notice).toHaveTextContent("Your draft is kept.");
+        const create = screen.getByRole("button", { name: /^Send to agent$/i });
+        expect(create).toHaveAttribute("aria-disabled", "true");
+        expect(create).toHaveAccessibleDescription("No agent or squad can take this");
+        await user.click(create);
+        expect(screen.getByRole("link", { name: "Set up an agent" })).toHaveFocus();
+        expect(mockQuickCreateIssue).not.toHaveBeenCalled();
+      });
+
+      it("leaves for the agents page with the draft saved, and stays open on a modifier click", async () => {
+        const user = userEvent.setup();
+        const onClose = vi.fn();
+        renderPanel({ ...panelProps(), onClose });
+        await user.type(screen.getByRole("textbox", { name: "Issue prompt" }), " plus more");
+        mockSetAgent.mockClear();
+        const link = screen.getByRole("link", { name: "Set up an agent" });
+        expect(link).toHaveAttribute("href", "/ws-test/agents");
+
+        fireEvent.click(link, { metaKey: true });
+        expect(mockSetAgent).toHaveBeenCalledWith({ prompt: "Persisted draft prompt plus more" });
+        expect(onClose).not.toHaveBeenCalled();
+
+        await user.click(link);
+        expect(mockNavigationPush).toHaveBeenCalledWith("/ws-test/agents");
+        expect(onClose).toHaveBeenCalledTimes(1);
+      });
+
+      it("hands the draft to manual creation through a plain button", async () => {
+        const user = userEvent.setup();
+        const onSwitchMode = vi.fn();
+        renderPanel({ ...panelProps(), onSwitchMode });
+        const notice = screen.getByText("No agent or squad can take this", { selector: "p" }).parentElement!;
+        expect(notice).toHaveAttribute("role", "status");
+        const exit = Array.from(notice.querySelectorAll("button")).find((b) => b.textContent === "Switch to Manual");
+        expect(exit).toBeDefined();
+        // The footer switch keeps its owner-approved effect; this one has none.
+        expect(exit!.className).not.toContain("pen-sheen");
+        await user.click(exit!);
+        expect(mockSetManual).toHaveBeenCalledWith({ description: "Persisted draft prompt" });
+        expect(onSwitchMode).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
   // MUL-6236 — the footer reflows to a 2x2 grid on phones. jsdom has no
   // layout, so these pin the two structural preconditions the grid depends
   // on rather than the rendered geometry.
@@ -1380,7 +1741,7 @@ describe("AgentCreatePanel", () => {
 
     it("keeps every footer control a direct child of the grid container", () => {
       const switchToManual = screen.getByRole("button", { name: /Switch to Manual/i });
-      const create = screen.getByRole("button", { name: /^Create$/i });
+      const create = screen.getByRole("button", { name: /^Send to agent$/i });
       const keepOpen = screen.getByRole("checkbox");
       const attach = screen.getByRole("button", { name: "Upload file" });
 

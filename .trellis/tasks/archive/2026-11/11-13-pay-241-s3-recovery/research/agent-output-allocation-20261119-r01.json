@@ -1,0 +1,67 @@
+{
+  "at": "2026-11-19T05:03:30.206797+00:00",
+  "evidence_root": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy",
+  "state_root": "/Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy",
+  "db_prefix": "multica_pay241_s3o_20261119_tm89sjgy_",
+  "accepted_server_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-green-r02",
+  "base_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-base-r01",
+  "implementation_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+  "base_manifest": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/intake/server-base-source-r01.json",
+  "base_manifest_sha256": "f4ea4bff0cea92e7df57e958903cc7e5bb508b1233e5028f0474c81d4f7aa367",
+  "source_file_count": 5076,
+  "ROOT_differences": [
+    "cmd/server/collaboration_knowledge_host_composite_test.go",
+    "cmd/server/collaboration_stage_execution_control_test.go",
+    "cmd/server/integration_test.go",
+    "cmd/server/pay241_read_diagnostics_scope_test.go",
+    "cmd/server/pay241_read_diagnostics_test.go",
+    "internal/service/collaboration_workflow_read_concurrency_test.go"
+  ],
+  "state_outside_git": true,
+  "state_path_chain": [
+    {
+      "path": "/",
+      "uid": 0,
+      "mode": "0o755",
+      "symlink": false
+    },
+    {
+      "path": "/Users",
+      "uid": 0,
+      "mode": "0o755",
+      "symlink": false
+    },
+    {
+      "path": "/Users/artisan",
+      "uid": 501,
+      "mode": "0o750",
+      "symlink": false
+    },
+    {
+      "path": "/Users/artisan/.multica",
+      "uid": 501,
+      "mode": "0o755",
+      "symlink": false
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance",
+      "uid": 501,
+      "mode": "0o700",
+      "symlink": false
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy",
+      "uid": 501,
+      "mode": "0o700",
+      "symlink": false
+    }
+  ],
+  "helpers": {
+    "environment.py": "04ecd97f38732877c0b7b400fd6314a9cd5c4edf5a4cd69d38792095b63cc0cc",
+    "record-run.py": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+    "service.py": "8ccda4eb6dfbf78b30f8c80a1624f5572f86a04e6a00dfb3cb643b12c2b45a26"
+  },
+  "nodb_config_sha256": "0fe70fb29757eab6736ca6f2b41b38ebb8dd5841cf399e7e9fd7dcbc80d19ac5",
+  "baseline_head": "699d510b9478f05cc4160bb1dcfbd24b43527a08",
+  "new_database_allocations": []
+}

@@ -1,0 +1,10 @@
+{"file": ".trellis/tasks/10-26-collaboration-memory/design.md", "reason": "The contract each change is checked against: CAS, idempotency, gating, side-effect isolation, compatibility."}
+{"file": ".trellis/tasks/10-26-collaboration-memory/research/server-patterns.md", "reason": "Expected server patterns and error codes to compare the implementation with."}
+{"file": ".trellis/tasks/10-26-collaboration-memory/research/runtime-cli-patterns.md", "reason": "Expected runtime gating, claim negotiation and CLI allowlist behavior."}
+{"file": ".trellis/tasks/10-26-collaboration-memory/research/client-patterns.md", "reason": "core/views collaboration module patterns, conflict handling, run-records layout and admin settings. Its mobile section is background only: Mobile is out of scope (C25)."}
+{"file": ".trellis/spec/server/collaboration-host-execution.md", "reason": "Host-mode invariants a memory change must not break."}
+{"file": ".trellis/spec/server/collaboration-records.md", "reason": "Run-record compatibility: optional fields only, no new item kinds."}
+{"file": ".trellis/spec/server/collaboration-realtime.md", "reason": "Realtime frames stay content-free; events commit in the owning transaction."}
+{"file": ".trellis/spec/server/collaboration-content.md", "reason": "Concurrent index registration and refused rollback in new migrations."}
+{"file": ".trellis/spec/server/security-boundaries.md", "reason": "Credential and principal boundaries for the new runtime and human routes."}
+{"file": ".trellis/spec/views/frontend/quality-guidelines.md", "reason": "View quality bar for the memory panel and run-record marker."}

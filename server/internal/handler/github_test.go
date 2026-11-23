@@ -1562,8 +1562,12 @@ func TestDerivePRMergeableState(t *testing.T) {
 // firePullRequestWebhookWithHead is like firePullRequestWebhook but lets the
 // caller control the head SHA and mergeable_state on the payload. The CI
 // tests need both knobs to exercise head-change semantics.
-func firePullRequestWebhookWithHead(t *testing.T, secret, identifier string, installationID int64, repo string, prNumber int32, action, headSHA, mergeableState string) {
+func firePullRequestWebhookWithHead(t *testing.T, secret, identifier string, installationID int64, repo string, prNumber int32, action, headSHA, mergeableState string, observedAt ...string) {
 	t.Helper()
+	updatedAt := "2026-04-29T00:00:00Z"
+	if len(observedAt) > 0 {
+		updatedAt = observedAt[0]
+	}
 	payload := map[string]any{
 		"action": action,
 		"pull_request": map[string]any{
@@ -1577,7 +1581,7 @@ func firePullRequestWebhookWithHead(t *testing.T, secret, identifier string, ins
 			"merged_at":       nil,
 			"closed_at":       nil,
 			"created_at":      "2026-04-28T00:00:00Z",
-			"updated_at":      "2026-04-29T00:00:00Z",
+			"updated_at":      updatedAt,
 			"mergeable_state": mergeableState,
 			"head":            map[string]any{"ref": "fix/foo", "sha": headSHA},
 			"user":            map[string]any{"login": "octocat"},
@@ -1659,8 +1663,9 @@ func TestWebhook_PullRequest_SynchronizeClearsMergeable(t *testing.T) {
 		t.Fatalf("setup: expected mergeable_state=clean, got %+v", rows[0].MergeableState)
 	}
 
-	// Synchronize — payload still claims clean, but we must blank it.
-	firePullRequestWebhookWithHead(t, secret, created.Identifier, installationID, "ci-repo-d", 44, "synchronize", "head2", "clean")
+	// A strictly newer synchronize event still claims clean, but must blank it.
+	// Equal timestamps with different heads are covered by the ambiguity test.
+	firePullRequestWebhookWithHead(t, secret, created.Identifier, installationID, "ci-repo-d", 44, "synchronize", "head2", "clean", "2026-04-29T00:00:01Z")
 
 	rows, err = testHandler.Queries.ListPullRequestsByIssue(ctx, parseUUID(created.ID))
 	if err != nil {

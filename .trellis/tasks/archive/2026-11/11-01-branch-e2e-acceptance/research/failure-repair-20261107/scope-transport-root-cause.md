@@ -1,0 +1,15 @@
+# Native scope recovery transport diagnosis
+
+The continued canonical run exposed the current failure precisely: the response for the active Refresh GET was **status0**, despite `route.fetch()` returning200. The error banner was a real renderer error, not a successful response waiting for a longer UI timeout.
+
+A private probe on Electron39.8.7 and Playwright1.58.2 correlated requests by object identity and captured CDP request/response/failure events plus safe response headers. `scope-transport-probe2` shows active GET62: upstream200, followed by CDP and Playwright status0 with empty headers; `response.finished()` was null and the product API logged status0. The injected failure responses also became0. This was a GET, not OPTIONS. Ordinary unmodified native GETs returned200. No CORS rejection was observed in CDP.
+
+`scope-transport-explicit-bytes` independently passed the real upstream status, headers and body into `fulfill` and reproduced the same renderer0 outcome. Thus merely materializing the APIResponse did not repair this native interception boundary. Exact Electron/Chromium internals are outside this bounded task; the evidence establishes the failing injected-response path in these installed versions.
+
+`scope-transport-continue` changed only the probe’s injection mechanics: `route.abort("failed")` establishes a genuine failed read, and the recovery gate calls `route.continue()` for the original renderer GET. Exact current request70 received200 in both CDP and Playwright, with transport completion; the unchanged banner-removal and620 checks and remaining complete scope journey passed: **1PASS,0FAIL,0retries**. The first probe attempt (`scope-transport-probe1`) failed before tests because its private import incorrectly assumed `e2e/fixtures/index.ts`; it was corrected to the existing `e2e/fixtures.ts` and retained separately.
+
+The permanent fixture now uses that abort/continue transport. It still drains earlier handlers, activates the actual Refresh button with keyboard input without scrolling, matches the current request identity, requires200 and completed transport, removes the banner within the original5s, and requires620 before and after recovery. No product source, permissions, native security settings, retry count or screenshot geometry assertion changed. Parent-owned canonical4 execution remains the delivery gate.
+
+Original auto-refetch probe failures remain preserved. Their missing identity-correlated renderer response prevents an exact retrospective mapping; the new probe closes the currently reproduced injection failure without claiming every older canceled request was the same case. The mutable private probe is retained as a final diagnostic snapshot; earlier variant source is represented by the recorded edits and raw runs, not falsely claimed as pre-run snapshots. Final canonical source fingerprints are maintained separately by the parent.
+
+`git diff --check` passes. Explicit Web-config ESLint still reports only the unchanged pre-existing cleanup `no-unsafe-finally`; no rule was suppressed.

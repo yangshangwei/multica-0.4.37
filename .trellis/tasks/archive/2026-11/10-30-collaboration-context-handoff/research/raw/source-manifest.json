@@ -1,0 +1,167 @@
+{
+  "captured_at_utc": "2026-10-29T23:08:09.900708+00:00",
+  "planning_worktree": "/Volumes/artisan/code/2026/mc-context-plan-20261030",
+  "evidence": [
+    {
+      "source": "/Volumes/artisan/code/2026/multica-0.4.37/.omc/research/collab-context-audit-2026-10-29.md",
+      "present": true,
+      "snapshot": "research/raw/audit-2026-10-29.md",
+      "sha256": "6f4eb8810652f0b1f8747ca31dfff9c0e2f1f4a250cc782585995eba78c2596f",
+      "bytes": 17814,
+      "source_mtime_utc": "2026-10-29T10:59:02.554656+00:00"
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/multica-0.4.37/.omc/research/collab-context-experiments-2026-10-29.md",
+      "present": true,
+      "snapshot": "research/raw/experiments-preregistration-2026-10-29.md",
+      "sha256": "a3e7633d1ecbfada94c4601d17f43870088a3406f34b2aad5fc993f0a7897cdd",
+      "bytes": 3574,
+      "source_mtime_utc": "2026-10-29T14:20:07.389920+00:00"
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/mc-collab-integ/.integ-check.sh",
+      "present": true,
+      "snapshot": "research/raw/integ-check.sh.txt",
+      "sha256": "520bd4eb12f0dd4881332134c876b2b7e5f3c8de392d090d5bc85e10309e32a3",
+      "bytes": 1645,
+      "source_mtime_utc": "2026-10-29T16:54:10.675900+00:00"
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/mc-collab-integ/.integ-check.log",
+      "present": true,
+      "snapshot": "research/raw/integ-check.log.txt",
+      "sha256": "1e233cb1bfcdc58d528a019d0bb128981cbb0047a28c6ffa6b848faea1996a7b",
+      "bytes": 546,
+      "source_mtime_utc": "2026-10-29T17:00:43.564131+00:00"
+    },
+    {
+      "source": "/Volumes/artisan/code/2026/mc-context-exp/server/internal/daemon/collaborationrun/host_context_experiment_test.go",
+      "present": true,
+      "snapshot": "research/raw/host_context_experiment_test.go.txt",
+      "sha256": "24149b979f88fdcc604ac4c13b889d99261639999ff1c4a889a7be3828081553",
+      "bytes": 17292,
+      "source_mtime_utc": "2026-10-29T13:16:14.259936+00:00"
+    },
+    {
+      "source": "/tmp/integ-daemon.log",
+      "present": true,
+      "snapshot": "research/raw/integ-daemon.log.txt",
+      "sha256": "6110ee17889da494ec9019a042b2320b978e2cda03d5791af076d9f1380850b3",
+      "bytes": 82,
+      "source_mtime_utc": "2026-10-29T16:54:37.330606+00:00"
+    },
+    {
+      "source": "/tmp/integ-cmd.log",
+      "present": true,
+      "snapshot": "research/raw/integ-cmd.log.txt",
+      "sha256": "5c959aacf351924cafd8a56e7704f1d9d7aaf073963b1d224630280b18077c2f",
+      "bytes": 61,
+      "source_mtime_utc": "2026-10-29T16:54:42.079268+00:00"
+    },
+    {
+      "source": "/tmp/integ-service.log",
+      "present": true,
+      "snapshot": "research/raw/integ-service.log.txt",
+      "sha256": "2754a0c0cac18be435d54c0dab1b0c664bcf2f00551a17c059c33f772e8b0219",
+      "bytes": 68,
+      "source_mtime_utc": "2026-10-29T17:00:22.487926+00:00"
+    },
+    {
+      "source": "/tmp/integ-handler.log",
+      "present": true,
+      "snapshot": "research/raw/integ-handler.log.txt",
+      "sha256": "bcf95451bc3e05ef2e5f4cae2956806598a494f2317ff63a713f88c6990c29d5",
+      "bytes": 67,
+      "source_mtime_utc": "2026-10-29T17:00:43.518408+00:00"
+    },
+    {
+      "source": "/tmp/exp-e0-base.log",
+      "present": false
+    }
+  ],
+  "worktrees": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "head": "5001c97d7d5ec0ba109286990848f68ff1f8201a",
+      "status": " M apps/web/app/brand-variant-cascade.test.ts\n M e2e/collaboration-boundaries-web.spec.ts\n M e2e/fixtures/collaboration-editing.ts\n M packages/ui/components/ui/button.tsx\n M packages/ui/components/ui/checkbox.tsx\n M packages/ui/components/ui/command.tsx\n M packages/ui/components/ui/input-group.tsx\n M packages/ui/components/ui/input-otp.tsx\n M packages/ui/components/ui/input.tsx\n M packages/ui/components/ui/select.tsx\n M packages/ui/components/ui/switch.tsx\n M packages/ui/components/ui/tabs.tsx\n M packages/ui/components/ui/textarea.tsx\n M packages/ui/components/ui/time-input.tsx\n M packages/ui/styles/base.css\n M packages/ui/styles/tokens.css\n M packages/views/admin/filter-feedback.tsx\n M packages/views/agents/components/inspector/model-picker.tsx\n M packages/views/agents/components/inspector/runtime-picker.tsx\n M packages/views/agents/components/inspector/service-tier-setting-field.tsx\n M packages/views/agents/components/inspector/thinking-picker.tsx\n M packages/views/autopilots/components/pickers/timezone-picker.tsx\n M packages/views/autopilots/components/schedule-editor/schedule-editor.tsx\n M packages/views/collaboration/comment-list.test.tsx\n M packages/views/collaboration/discussion-actions.tsx\n M packages/views/collaboration/field-editing.test.tsx\n M packages/views/collaboration/source-bridge.test.tsx\n M packages/views/collaboration/source-bridge.tsx\n M packages/views/collaboration/workflow.tsx\n M packages/views/issues/components/batch-action-toolbar.confirm.test.tsx\n M packages/views/issues/components/batch-action-toolbar.tsx\n M packages/views/issues/components/issue-usage-dialog.tsx\n M packages/views/locales/en/collaboration.json\n M packages/views/locales/en/editor.json\n M packages/views/locales/zh-Hans/collaboration.json\n M packages/views/locales/zh-Hans/editor.json\n M packages/views/projects/components/project-detail.tsx\n M packages/views/projects/components/project-overview.tsx\n M packages/views/projects/components/project-progress.tsx\n M packages/views/projects/components/project-risk-issues.tsx\n M packages/views/rich-content/rich-content-parity.test.tsx\n M packages/views/rich-content/rich-content.tsx\n M packages/views/skills/components/skill-presentation-fields.tsx\n?? .trellis/tasks/archive/2026-10/10-25-multica-introduction/\n?? PRODUCT.md\n?? docs/multica-introduction.html\n",
+      "dirty_file_sha256": {
+        "apps/web/app/brand-variant-cascade.test.ts": "7367da877e6cc609c7532868807428a99f53394ff57eb4da63f931ef7051522b",
+        "e2e/collaboration-boundaries-web.spec.ts": "bf63ae7eac9306903d24c5a143f9c67297603afb0f6afa2c2dfb94d368aa0ec6",
+        "e2e/fixtures/collaboration-editing.ts": "5c18eec21da60b34ccf5a2f41b6bbcf8bf98d7b0986d0a2cf58f8c6ab9c41cbb",
+        "packages/ui/components/ui/button.tsx": "a440a1db53ad25cb9ebda46b182e43f329e4b32f668c76bf9512724fe5bbcaf5",
+        "packages/ui/components/ui/checkbox.tsx": "84f49b5dc12993a97ed0ed88341566fbeb1c411b33c9131f0f6ad355205a36a7",
+        "packages/ui/components/ui/command.tsx": "28ddb958e640335c398a0736caf916054fda3f0bd2cb788682f5d468517b32cb",
+        "packages/ui/components/ui/input-group.tsx": "f7ec43c2fafb9d7f3d101844124644e19d050d682d039e34c2e055572a5cba99",
+        "packages/ui/components/ui/input-otp.tsx": "d9bb9b31b448d2b5140b75a9d8b7db4a952d49804a34b075b82e55b6c265e085",
+        "packages/ui/components/ui/input.tsx": "a5ff3c99a2b9f302ee1291bb9d0a03300a4bbcc5fdbfa5d56421091ce5c7fcd4",
+        "packages/ui/components/ui/select.tsx": "4af60a13a8a798d7aa82ea7943f81762dc593cb04cbfcceee2a11d64003c6b9c",
+        "packages/ui/components/ui/switch.tsx": "e4aceb655b67a84fd936e17288727cdf328a3b231af34c006b389e738f0945f5",
+        "packages/ui/components/ui/tabs.tsx": "2a933fa43cb47640df46bae73c11520d9054a8a216c905c43724f19fa03d64ed",
+        "packages/ui/components/ui/textarea.tsx": "81b3e8aba2f8c955466889f9349911f375b3396fabe995cd5f173ff4d91bfc94",
+        "packages/ui/components/ui/time-input.tsx": "ebcbea77f6f71f1fb7ca2a86867c7003e7a5749c3ccb3fb6a637707daa91e50e",
+        "packages/ui/styles/base.css": "3545cb8854b53302d614bcd01c86038f03a9e5253b836753ef8e70b6904192dd",
+        "packages/ui/styles/tokens.css": "18b70609b67a446cc76d251bef9ea689d7e046a0bdd3c5ab2e26c66edfb03b81",
+        "packages/views/admin/filter-feedback.tsx": "173797a5ee56f6a0f6bdc29a98439bc0f040e9235f732a0f3c81a01d5b842716",
+        "packages/views/agents/components/inspector/model-picker.tsx": "4b9ff34f7f64db027ac0240e08842b718648498237b7df20792e216b6a56e821",
+        "packages/views/agents/components/inspector/runtime-picker.tsx": "db06e33f027efdade81cbb3e84bac293443b75dcdbc2e7a187556f45bfbf94c4",
+        "packages/views/agents/components/inspector/service-tier-setting-field.tsx": "7ba60b3eaa4bb8422f58183e6bb95bdcedfc7a2f8a89aeb9c2af689da619869e",
+        "packages/views/agents/components/inspector/thinking-picker.tsx": "e33a6c8a5f5239d273bb9ac900ed204c484e41ffaa533552bec82f86f41490a0",
+        "packages/views/autopilots/components/pickers/timezone-picker.tsx": "191a82010094946356508562a362e969db6748cea67c04f1c738c009288f5e9f",
+        "packages/views/autopilots/components/schedule-editor/schedule-editor.tsx": "aded98413fbda782d1d70eda943d68ca7d3de7a58f9bc4b270768734fb96ec55",
+        "packages/views/collaboration/comment-list.test.tsx": "63290d862ae5a72fa919f76ef354dca210c49c383add22a45b33dcbe1c434b3d",
+        "packages/views/collaboration/discussion-actions.tsx": "35eff790fd8c47dfac47fdf0c78c5f6dff55b4b2857c45e860a2d4ece231a9c5",
+        "packages/views/collaboration/field-editing.test.tsx": "4a38dda4e850dc9c9ac22c05a05bbd5d5125396fb356902c12b8da0e2fb31387",
+        "packages/views/collaboration/source-bridge.test.tsx": "9d516f646a5abbf5abbff00e04fa45ed5825c39a419a19a9066ab7c71bd4590f",
+        "packages/views/collaboration/source-bridge.tsx": "0563c31ed5681eb1f34ab7e002de846262bac69f2ec60841d789baed7b9738ac",
+        "packages/views/collaboration/workflow.tsx": "91976f1fb1e7e0ae66dbb14e7d7cfac361580cb717f0c9b609dabfcceb0aabea",
+        "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx": "0ddf8cf712a924eef4cd0e17141979fe7e252ba1a2846f82f068e1111a24d50a",
+        "packages/views/issues/components/batch-action-toolbar.tsx": "1a69fd9e965196f9df786c390676d444b1c78e1f574986a8311371c00e21a1ae",
+        "packages/views/issues/components/issue-usage-dialog.tsx": "7c919d561f762061f5c9d9fa3e5c9f20b5fe3afac268eca00bc2e1bc1296d80e",
+        "packages/views/locales/en/collaboration.json": "c7a868baa854a983a1705d6d6560b64540732a25e2d819edb5fb946ba8c06af8",
+        "packages/views/locales/en/editor.json": "c655c87c9b8b59d6e674e37a688a392bdbcd0bfcc1c4f00ef3c0ff6bdc63e167",
+        "packages/views/locales/zh-Hans/collaboration.json": "3b6e2c4ef6fb4e575f6199ede76f53260a4a95d5e08c7c7a8b08cdc94635a36c",
+        "packages/views/locales/zh-Hans/editor.json": "4a1d8277c2b7787fa540f1241af75813786f7badf99853ce231a2031b2e78c56",
+        "packages/views/projects/components/project-detail.tsx": "bef64a02d88b7da9502c1c0567d35e9cbbd0651d330315fe11b1bee9fe44284e",
+        "packages/views/projects/components/project-overview.tsx": "a6ff82acdcd3846a62ac884df0cda1954441c89cc6805410765edfa21581da28",
+        "packages/views/projects/components/project-progress.tsx": "cb9d7722627a800c290a5975254b7b86a29df55dcc3bb20538a1f676f999d258",
+        "packages/views/projects/components/project-risk-issues.tsx": "d35978c1bcc9204a59f60e259dca2cc8bfc903f54a3ddadf9a41c25ecac8888d",
+        "packages/views/rich-content/rich-content-parity.test.tsx": "a417bedb8e477a6f40dc19e385b2978aa14d71fc70f641f44ae0ea4b0b171e01",
+        "packages/views/rich-content/rich-content.tsx": "f3e970aaf3c0595e9c8c56c26aaa9d772819bb8c86d152fd0d10b086d25238bc",
+        "packages/views/skills/components/skill-presentation-fields.tsx": "d4d4b47490c52b4e2879b0e1d5ad0455818299ff2f40a34f0e7d1f320110d074"
+      }
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collab-integ",
+      "head": "4b0cbfde7a2a03142e70ceb91294ec8d8f1ff074",
+      "status": "?? .integ-check.sh\n",
+      "dirty_file_sha256": {}
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-context-audit",
+      "head": "5bcc4d84b80d6244fcf0b42ec31e4406d2d95fae",
+      "status": " M packages/views/collaboration/workflow.test.tsx\n M server/cmd/multica/cmd_collaboration_test.go\n A server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go\n A server/internal/daemon/collaborationrun/host_prompt_role_test.go\n A server/internal/handler/collaboration_runtime_comment_size_test.go\n M server/internal/service/collaboration_runtime_preparation_test.go\n",
+      "dirty_file_sha256": {
+        "packages/views/collaboration/workflow.test.tsx": "a8ac2463d2a361caf2efb2e62b1605566dbe4714a1b683b45ec5146d4f7ffef1",
+        "server/cmd/multica/cmd_collaboration_test.go": "45184d0b37bfa8be79b696f8f8b3e5b3f3534bc083da117c9b01a31332bd7069",
+        "server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go": "3e89f46a6ed8c6a1d3bcf6ec55d0ac6d08676c8b41ac530594faeb490da48a15",
+        "server/internal/daemon/collaborationrun/host_prompt_role_test.go": "7b87220d1be7691b1993cd810bc4c01112c220438aa89608d769e213c4decd4e",
+        "server/internal/handler/collaboration_runtime_comment_size_test.go": "cba1c01a6b825cbd531f729cf8402ec735d02e8fb88d8fb4f16cc6badc825ed8",
+        "server/internal/service/collaboration_runtime_preparation_test.go": "ebafc5808d757d572eba7780b9d3f686ecc93c8d54a4a30c2a70e6ee27a66bb0"
+      }
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-context-exp",
+      "head": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "status": "?? server/internal/daemon/collaborationrun/host_context_experiment_test.go\n",
+      "dirty_file_sha256": {}
+    }
+  ],
+  "planning_observations": {
+    "observed_at_utc": "2026-10-29T23:25:52.061793+00:00",
+    "main_worktree_head": "85b98c3bbb62683bfcc7195f6c4b6897dd42ae72",
+    "main_worktree_status_snapshot": "research/raw/main-worktree-status-final.txt",
+    "concurrent_commit": "85b98c3bbb62683bfcc7195f6c4b6897dd42ae72",
+    "concurrent_commit_evidence": "research/raw/main-concurrent-commit-85b98c3bb.txt",
+    "planning_worktree_head": "4b0cbfde7a2a03142e70ceb91294ec8d8f1ff074"
+  }
+}

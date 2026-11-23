@@ -4,8 +4,6 @@ import { useModalStore } from "@multica/core/modals";
 
 vi.mock("./create-project", () => ({ CreateProjectModal: ({ data }: { data?: object }) => <output aria-label="Project prefill">{JSON.stringify(data)}</output> }));
 vi.mock("./create-issue-dialog", () => ({ CreateIssueDialog: () => null }));
-vi.mock("./create-squad", () => ({ CreateSquadModal: () => null }));
-vi.mock("./staff-squad-template", () => ({ StaffSquadTemplateModal: () => null }));
 vi.mock("./feedback", () => ({ FeedbackModal: () => null }));
 vi.mock("./set-parent-issue", () => ({ SetParentIssueModal: () => null }));
 vi.mock("./add-child-issue", () => ({ AddChildIssueModal: () => null }));

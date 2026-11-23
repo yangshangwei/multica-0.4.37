@@ -3,7 +3,6 @@ import { expect, test } from "@playwright/test";
 import { p1Session, p1Failure, p1Capture, p1NoOverflow, p1Raw } from "./fixtures/project-p1";
 
 test("I1 filters and groups the complete scope and preserves historical priority, labels and participation", async ({ page }, info) => {
-  test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires isolated I1 test API fixture");
   test.setTimeout(180_000);
   const { api, workspace } = await p1Session(page);
   const base = `/api/workspaces/${workspace.id}`;

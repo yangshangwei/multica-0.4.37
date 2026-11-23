@@ -584,6 +584,7 @@ export function SaveViewDialog({
             : null,
       definition_version: 1,
       query: {
+        ...(state.externalCollaborators === true ? { externalCollaborators: true } : {}),
         statusFilters: state.statusFilters,
         priorityFilters: state.priorityFilters,
         assigneeFilters: state.assigneeFilters,

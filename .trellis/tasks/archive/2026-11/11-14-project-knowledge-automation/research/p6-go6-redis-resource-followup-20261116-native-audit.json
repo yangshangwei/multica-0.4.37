@@ -1,0 +1,180 @@
+{
+  "kind": "independent_current_task_owned_Go6_Redis_followup",
+  "at": "2026-11-16T04:20:18.389252+00:00",
+  "reviewer": "/root/p6_progress_audit",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "status": "OWNED_REDIS_STILL_RUNNING_CURRENT_UNUSED_TEARDOWN_PENDING_MAIN",
+  "accepted_readonly_scope": true,
+  "identity": {
+    "fixture_id": "knowledge-redis-20261116-845aff0d7ad2",
+    "original_source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+    "host": "127.0.0.1",
+    "port": 61471,
+    "database": 12,
+    "container": {
+      "id": "692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133",
+      "name": "mca-knowledge-redis-845aff0d7ad2",
+      "running": true,
+      "status": "running",
+      "started_at": "2026-11-15T23:52:03.437032051Z",
+      "image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "user": "501:20",
+      "labels": {
+        "multica.acceptance.fixture": "knowledge-redis-20261116-845aff0d7ad2",
+        "multica.acceptance.owner.uid": "501",
+        "multica.acceptance.source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+        "multica.acceptance.task": "11-14-project-knowledge-automation"
+      },
+      "ports": {
+        "6379/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "61471"
+          }
+        ]
+      },
+      "mount_count": 0
+    },
+    "network": {
+      "id": "3f188721bae173b82f9b483c53f35f167d6d8eaadee3dcc011539fb59a9f336f",
+      "name": "mca-knowledge-redis-host-845aff0d7ad2",
+      "driver": "bridge",
+      "internal": false,
+      "labels": {
+        "multica.acceptance.fixture": "knowledge-redis-20261116-845aff0d7ad2",
+        "multica.acceptance.owner.uid": "501",
+        "multica.acceptance.source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+        "multica.acceptance.task": "11-14-project-knowledge-automation"
+      },
+      "members": [
+        "692628b72aeaad7b1ef3c5ca36ad7e9050795fdae6f6d05cdbf27288df36d133"
+      ]
+    },
+    "same_original_redis_run_id": "144659754d4dbc659943945579aef6b6dc6a389f",
+    "host_and_container_runtime_match": true,
+    "authenticated_ping": "PONG"
+  },
+  "client_observations": [
+    {
+      "sample": 1,
+      "at": "2026-11-16T04:20:18.386955+00:00",
+      "audit_client_id": 17,
+      "all_established_clients_including_this_audit": 1,
+      "external_established_clients": 0,
+      "external_clients_DB12": 0,
+      "client_list_raw_sha256_only": "446b11d65217b8cd55d7426cbdf3a9239aeeee8315ca6fa19e1d78274ebc457e",
+      "sanitized_client_rows": [
+        {
+          "id": "17",
+          "addr": "172.23.0.1:59956",
+          "laddr": "172.23.0.2:6379",
+          "age": "0",
+          "idle": "0",
+          "flags": "N",
+          "db": "12",
+          "cmd": "client|list",
+          "resp": "2"
+        }
+      ],
+      "DB12_size": 0
+    },
+    {
+      "sample": 2,
+      "at": "2026-11-16T04:20:18.388423+00:00",
+      "audit_client_id": 18,
+      "all_established_clients_including_this_audit": 1,
+      "external_established_clients": 0,
+      "external_clients_DB12": 0,
+      "client_list_raw_sha256_only": "42328a9eea53b538ecaec7af9a7dc0e61dc50c55ec2a07579512f7b267243f11",
+      "sanitized_client_rows": [
+        {
+          "id": "18",
+          "addr": "172.23.0.1:59966",
+          "laddr": "172.23.0.2:6379",
+          "age": "0",
+          "idle": "0",
+          "flags": "N",
+          "db": "12",
+          "cmd": "client|list",
+          "resp": "2"
+        }
+      ],
+      "DB12_size": 0
+    }
+  ],
+  "current_unused": true,
+  "established_client_interpretation": "Each bounded CLIENT LIST sees only its own identified authenticated audit connection; all external/application clients=0, includingDB12, in both samples. Both audit sockets close before this receipt. Counts qualify their observation times, not future state.",
+  "original_records": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-owned-Redis-independent-admission-20261116-99354a553485.json",
+      "sha256": "ef0ccc06dd3dff3b73f58872706e11456acd94f84c7329829c7b99a9a4f70503"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/allocation.json",
+      "sha256": "d97a861c3904490f38e9ac4fe2f937bb20882f88751238654e54e5711f981807"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-owned-redis.py",
+      "sha256": "0f26332ac34f285bd7ec6d1e57fd864a1e3f4ea669e161ab44748fb7c7d30de5"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/redis.conf",
+      "sha256": "23c0d6e452780380b770933f48799f07490c56026a3e72dd49bdcb1c7d903a44",
+      "secret_values_not_emitted": true
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/connection.json",
+      "sha256": "6836ff8eae60b6cd0de897dd0a04feae359eacc8ea020a44f5b9b04401a24e3f",
+      "secret_values_not_emitted": true
+    }
+  ],
+  "new_observation_references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-resource-native-20261116T042017/current-client-observations.sanitized.json",
+      "sha256": "f34094977a905f5e07d0b280ce7bebccebc6586a9a2e8937423d3fb38476aae4"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-resource-native-20261116T042017/current-owned-container.sanitized.json",
+      "sha256": "25da59732443530a959e528034c39bbf491c3f1579f337d0fed82415074fcad3"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-resource-native-20261116T042017/current-owned-network.sanitized.json",
+      "sha256": "683d26c834c8b19f2e102669a3722f3dae00fd4aae4e5415091ef57689b38591"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-resource-native-20261116T042017/verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/redis-resource-native-20261116T042017/verify.stdout.json",
+      "sha256": "cc6f6f45899a4da7ef85848071a934fc428c008574ecbb5492c0214f6e679322"
+    }
+  ],
+  "teardown_recommendation": {
+    "not_executed": true,
+    "exact_admitted_command_argv": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "-I",
+      "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-owned-redis.py",
+      "--allocation",
+      "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-redis-20261116-845aff0d7ad2/allocation.json",
+      "--allocation-sha256",
+      "d97a861c3904490f38e9ac4fe2f937bb20882f88751238654e54e5711f981807",
+      "--owned-teardown"
+    ],
+    "preconditions": [
+      "Main completes current production journeys and authorizes this exact Go6 Redis teardown once.",
+      "Immediately re-run hash-bound verify-only with exact allocation/helper/config/connection/sourceenv identities unchanged; authenticated DB12 remainsempty and Redis run_id remains original144659754d4dbc659943945579aef6b6dc6a389f.",
+      "Re-check CLIENT LIST using authenticated own CLIENT ID; external/application clients across every database mustbe0; no other Go tests begin.",
+      "Container CID/name/labels/image/StartedAt and127.0.0.1:61471 port must equal allocation; network must contain onlythis container before removal.",
+      "Preserve allocation/config/authentication files and all original/new receipts.",
+      "After command, require owned_teardown_complete and inspect exact recorded CID/networkID absence; do not rm anyother container/network/volume."
+    ],
+    "behavior": "Existing admitted helper validates exclusiveownership again, removes only recordedcontainer, requires networkempty, then removes only recordednetwork. It does not itself checkclients, so immediate read-only client precondition is required.",
+    "root_resources_cleared_now": false
+  },
+  "other_owned_production_service_audits": 0,
+  "Go_SQL_tests_models_new_DBs_started": 0,
+  "container_network_or_existing_resource_mutations": 0,
+  "credentials_output_or_secret_file_rewrites": 0
+}

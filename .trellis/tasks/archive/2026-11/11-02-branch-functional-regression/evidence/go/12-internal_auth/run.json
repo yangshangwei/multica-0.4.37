@@ -1,0 +1,127 @@
+{
+  "name": "12-internal_auth",
+  "kind": "package",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-json",
+    "github.com/multica-ai/multica/server/internal/auth"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:14:21.706026+00:00",
+  "state": "complete",
+  "database": null,
+  "environment_keys": [
+    "DATABASE_MAX_CONNS",
+    "DATABASE_MIN_CONNS",
+    "GOTOOLCHAIN",
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "LOGNAME",
+    "MULTICA_DSH_PATH",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED",
+    "MULTICA_TASK_CONFIG_ROOT",
+    "MULTICA_TASK_WORKSPACES_ROOT",
+    "NVM_DIR",
+    "PATH",
+    "PGCONNECT_TIMEOUT",
+    "SHELL",
+    "TEMP",
+    "TMP",
+    "TMPDIR",
+    "USER"
+  ],
+  "real_provider_authorization": false,
+  "permit_env_sha256": "7e81ec0c53b587d17aec89e169a7894d5187867204afa4066edf06981259cf9a",
+  "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/12.env",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:14:31.605892+00:00",
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "top_level": {
+    "pass": 37,
+    "fail": 0,
+    "skip": 14
+  },
+  "subtests": {
+    "pass": 62,
+    "fail": 0,
+    "skip": 0
+  },
+  "package_outcome": "pass",
+  "no_named_tests": false,
+  "failed_tests": [],
+  "skips": [
+    {
+      "test": "TestCloudPATVerifier_CacheHitSkipsHTTP",
+      "output": "=== RUN   TestCloudPATVerifier_CacheHitSkipsHTTP\n    cloud_pat_test.go:290: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_CacheHitSkipsHTTP (0.00s)\n"
+    },
+    {
+      "test": "TestCloudPATVerifier_NegativesNotCached",
+      "output": "=== RUN   TestCloudPATVerifier_NegativesNotCached\n    cloud_pat_test.go:324: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_NegativesNotCached (0.00s)\n"
+    },
+    {
+      "test": "TestCloudPATVerifier_LookupRejectsUnknownOwner",
+      "output": "=== RUN   TestCloudPATVerifier_LookupRejectsUnknownOwner\n    cloud_pat_test.go:356: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_LookupRejectsUnknownOwner (0.00s)\n"
+    },
+    {
+      "test": "TestCloudPATVerifier_LookupSuccessIsCached",
+      "output": "=== RUN   TestCloudPATVerifier_LookupSuccessIsCached\n    cloud_pat_test.go:435: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_LookupSuccessIsCached (0.00s)\n"
+    },
+    {
+      "test": "TestDaemonTokenCache_SetGetInvalidate",
+      "output": "=== RUN   TestDaemonTokenCache_SetGetInvalidate\n    daemon_token_cache_test.go:27: REDIS_TEST_URL not set\n--- SKIP: TestDaemonTokenCache_SetGetInvalidate (0.00s)\n"
+    },
+    {
+      "test": "TestDaemonTokenCache_TTL",
+      "output": "=== RUN   TestDaemonTokenCache_TTL\n    daemon_token_cache_test.go:51: REDIS_TEST_URL not set\n--- SKIP: TestDaemonTokenCache_TTL (0.00s)\n"
+    },
+    {
+      "test": "TestDaemonTokenCache_Set_RespectsClampedTTL",
+      "output": "=== RUN   TestDaemonTokenCache_Set_RespectsClampedTTL\n    daemon_token_cache_test.go:69: REDIS_TEST_URL not set\n--- SKIP: TestDaemonTokenCache_Set_RespectsClampedTTL (0.00s)\n"
+    },
+    {
+      "test": "TestMembershipCache_SetGetInvalidate",
+      "output": "=== RUN   TestMembershipCache_SetGetInvalidate\n    membership_cache_test.go:27: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_SetGetInvalidate (0.00s)\n"
+    },
+    {
+      "test": "TestMembershipCache_TTL",
+      "output": "=== RUN   TestMembershipCache_TTL\n    membership_cache_test.go:50: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_TTL (0.00s)\n"
+    },
+    {
+      "test": "TestMembershipCache_IsolatesKeysByUser",
+      "output": "=== RUN   TestMembershipCache_IsolatesKeysByUser\n    membership_cache_test.go:68: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_IsolatesKeysByUser (0.00s)\n"
+    },
+    {
+      "test": "TestPasswordLimiterSharedAtomicAdmission",
+      "output": "=== RUN   TestPasswordLimiterSharedAtomicAdmission\n    password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured\n--- SKIP: TestPasswordLimiterSharedAtomicAdmission (0.00s)\n"
+    },
+    {
+      "test": "TestPATCache_SetGetInvalidate",
+      "output": "=== RUN   TestPATCache_SetGetInvalidate\n    pat_cache_test.go:61: REDIS_TEST_URL not set\n--- SKIP: TestPATCache_SetGetInvalidate (0.00s)\n"
+    },
+    {
+      "test": "TestPATCache_TTL",
+      "output": "=== RUN   TestPATCache_TTL\n    pat_cache_test.go:90: REDIS_TEST_URL not set\n--- SKIP: TestPATCache_TTL (0.00s)\n"
+    },
+    {
+      "test": "TestPATCache_Set_RespectsClampedTTL",
+      "output": "=== RUN   TestPATCache_Set_RespectsClampedTTL\n    pat_cache_test.go:142: REDIS_TEST_URL not set\n--- SKIP: TestPATCache_Set_RespectsClampedTTL (0.00s)\n"
+    }
+  ],
+  "stdout_sha256": "03fd8b134649df54dff951077367504b3ff9cd06454045aeea3f7567b7750413",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

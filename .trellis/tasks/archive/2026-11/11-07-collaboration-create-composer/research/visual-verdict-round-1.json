@@ -1,0 +1,22 @@
+{
+  "score": 82,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "English 320px header leaves source selector only 50.31px wide, clipping 产品研发 to 产品.",
+    "Empty-title reason is below scroll body: top 812.41px while visible body ends 342.59px; disabled Create initially has no visible explanation.",
+    "At 320px recipient popup extends past viewport; second same-name account ID is clipped (row y=528 height=64 in 568px viewport).",
+    "Upload cancellation leaves keyboard focus on the dialog DIV, with no visible control focus; recovery/retry success correctly restore Attach files.",
+    "Known-source initial title autofocus is intermittent: dialog root sometimes wins focus.",
+    "Trusted browser Enter during composition (isComposing=true) sends a create POST and closes the dialog."
+  ],
+  "suggestions": [
+    "Give source selector guaranteed usable width; allow breadcrumb text to wrap or shrink on narrow English layouts.",
+    "Move empty-title reason next to Title or visible submit actions, keeping aria-describedby.",
+    "Bound recipient popup height to actual available viewport space and make its list scroll, verifying full identity at 320px.",
+    "Treat automatic modal-container focus after disappearing upload controls as recoverable lost focus; restore visible attachment trigger without stealing focus from live controls.",
+    "Coordinate async title focus with dialog initial focus lifecycle.",
+    "Prevent native form submission for composing Enter/229 while preserving ordinary Enter after composition ends."
+  ],
+  "reasoning": "Composer hierarchy and scroll ownership are coherent, 32 attachments stay in the body, and shared help remains visible on scroll. Six concrete narrow/keyboard issues need one combined correction before acceptance."
+}

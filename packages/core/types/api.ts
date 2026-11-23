@@ -49,7 +49,69 @@ export type CreateCommentSubIssueRequest =
   | CreateCommentSubIssueManualRequest
   | CreateCommentSubIssueAgentRequest;
 
+export interface DeliveryCompletionBinding {
+  authorization_id: string;
+  operation_id: string;
+  expected_issue_revision: number;
+}
+
+export interface BatchDeliveryCompletionBinding extends DeliveryCompletionBinding {
+  issue_id: string;
+}
+
+export interface BatchUpdateIssuesOptions {
+  completion_bindings?: BatchDeliveryCompletionBinding[];
+}
+
+export type BatchUpdateIssueState = "committed" | "rejected" | "not_attempted" | "unknown";
+
+export interface BatchUpdateIssueResult {
+  index: number;
+  issue_id: string;
+  state: BatchUpdateIssueState;
+  code: string;
+  revision?: number;
+}
+
+export interface BatchUpdateIssuesResponse {
+  updated: number;
+  /** Older servers return only a count; never synthesize per-item results. */
+  results?: BatchUpdateIssueResult[];
+}
+
+/**
+ * A human-only, non-authorizing read performed before an ordinary completion.
+ * The client never creates or forwards an evaluation key; the explicit null
+ * keeps that boundary visible in the wire contract.
+ */
+export interface DeliveryCompletionHintRequest {
+  expected_issue_revision: number;
+  target_status: IssueStatus;
+  evaluation_key: null;
+}
+
+/** Public completion-hint facts. Private evaluation recovery is intentionally
+ * omitted from this DTO even when an older server includes it in the JSON. */
+export interface DeliveryCompletionHintResponse {
+  issue_id: string;
+  issue_revision: number;
+  target_status: IssueStatus;
+  target_category: IssueStatusCategory | (string & {});
+  project_id: string | null;
+  policy_revision: number;
+  policy_mode: string;
+  hint: string;
+  reason: string;
+  checked_at: string;
+  enforced: false;
+  usable_for_completion: false;
+}
+
 export interface UpdateIssueRequest {
+  /** Explicit completion authorization, consumed only by this issue's writer. */
+  completion?: DeliveryCompletionBinding;
+  /** Reason for an authorized project scope change; never an Issue field. */
+  project_change_reason?: string;
   current_iteration_id?: string | null;
   iteration_reason?: string;
   allow_completed?: boolean;
@@ -101,6 +163,8 @@ export interface MoveIssueRequest
     | "assignee_id"
     | "parent_issue_id"
     | "project_id"
+    | "completion"
+    | "project_change_reason"
   > {
   before_id: string | null;
   after_id: string | null;
@@ -135,6 +199,7 @@ export interface IssueTriggerPreview {
 }
 
 export interface ListIssuesParams {
+  external_collaborators?: boolean;
   limit?: number;
   offset?: number;
   workspace_id?: string;
@@ -229,6 +294,7 @@ export interface IssueActorRef {
 }
 
 export interface ListGroupedIssuesParams {
+  external_collaborators?: boolean;
   group_by: "assignee";
   limit?: number;
   offset?: number;
@@ -302,6 +368,7 @@ export type IssueTableScope =
   | { kind: "my"; relation: "assigned" | "created" | "involved" | "any" };
 
 export interface IssueTableFilters {
+  external_collaborators?: boolean;
   statuses?: IssueStatus[];
   priorities?: IssuePriority[];
   assignees?: IssueActorRef[];
@@ -392,7 +459,7 @@ export interface IssueTableParentRef {
 
 export type IssueTableGroupValue =
   | { kind: "status"; status: string }
-  | { kind: "assignee"; actor: IssueTableActorRef | null }
+  | { kind: "assignee"; actor: IssueTableActorRef | null; account?: NonNullable<Issue["collaboration"]>["handler"] }
   | { kind: "project"; project_id: string | null }
   | {
       kind: "parent";

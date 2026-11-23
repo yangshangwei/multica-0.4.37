@@ -1,0 +1,104 @@
+=== RUN   TestHostProviderAccountSmokeAuthorizesSharedContextBase
+--- PASS: TestHostProviderAccountSmokeAuthorizesSharedContextBase (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/legacy
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/both
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/handoff_only
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/unknown
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_version
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_method
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_token
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries (0.01s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/legacy (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/both (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/handoff_only (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/unknown (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_version (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_method (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_token (0.00s)
+=== RUN   TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback
+=== RUN   TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/resume_rejected
+=== RUN   TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/catalog_retry
+--- PASS: TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback (1.07s)
+    --- PASS: TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/resume_rejected (0.23s)
+    --- PASS: TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/catalog_retry (0.85s)
+=== RUN   TestHostHandoffLaunchInjectsAndBindsTheActualFirstInput
+--- PASS: TestHostHandoffLaunchInjectsAndBindsTheActualFirstInput (0.19s)
+=== RUN   TestHostHandoffLaunchKeepsMaximumAdmittedInputsBeyondMetadataPage
+--- PASS: TestHostHandoffLaunchKeepsMaximumAdmittedInputsBeyondMetadataPage (0.25s)
+=== RUN   TestHostHandoffLaunchFreshFallbackKeepsSnapshotAndBindsNewInput
+--- PASS: TestHostHandoffLaunchFreshFallbackKeepsSnapshotAndBindsNewInput (0.22s)
+=== RUN   TestHostHandoffLaunchRejectsAssignmentThatDiffersFromClaim
+--- PASS: TestHostHandoffLaunchRejectsAssignmentThatDiffersFromClaim (0.12s)
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_issue
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_run
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_snapshot
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unknown_version
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/live_instead_of_snapshot
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_step
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_parent
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/missing_delegation
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/extra_executable_delegation
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/incomplete_delegation
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_memory_hash
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/memory_marked_unsupported
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/refused
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/declared_but_unsupported
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unavailable
+--- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider (2.21s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_issue (0.13s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_run (0.13s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_snapshot (0.15s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unknown_version (0.16s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/live_instead_of_snapshot (0.15s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_step (0.18s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_parent (0.18s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/missing_delegation (0.14s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/extra_executable_delegation (0.15s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/incomplete_delegation (0.15s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_memory_hash (0.15s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/memory_marked_unsupported (0.14s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/refused (0.14s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/declared_but_unsupported (0.13s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unavailable (0.13s)
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_issue
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_run
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_snapshot
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_hash
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_nonce
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_sequence
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/not_accepted
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unknown_version
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/revoked
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/purged
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unavailable
+--- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider (1.40s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_issue (0.12s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_run (0.13s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_snapshot (0.12s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_hash (0.13s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_nonce (0.13s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_sequence (0.13s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/not_accepted (0.12s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unknown_version (0.13s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/revoked (0.13s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/purged (0.13s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unavailable (0.13s)
+=== RUN   TestHostHandoffLaunchLostRepliesReplayExactRequests
+--- PASS: TestHostHandoffLaunchLostRepliesReplayExactRequests (0.21s)
+=== RUN   TestHostHandoffLaunchUnsupportedClaimKeepsLegacyPath
+--- PASS: TestHostHandoffLaunchUnsupportedClaimKeepsLegacyPath (0.21s)
+=== RUN   TestHostHandoffLaunchAcceptsRedactedSourceWithOriginalHash
+--- PASS: TestHostHandoffLaunchAcceptsRedactedSourceWithOriginalHash (0.22s)
+=== RUN   TestHostHandoffLaunchFreshFallbackRejectsSnapshotDrift
+--- PASS: TestHostHandoffLaunchFreshFallbackRejectsSnapshotDrift (0.21s)
+=== RUN   TestHostHandoffLaunchGitHelpersDoNotBindProviderInput
+--- PASS: TestHostHandoffLaunchGitHelpersDoNotBindProviderInput (0.59s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	7.378s

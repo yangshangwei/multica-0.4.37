@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { parseTabSubject, tabSubjectKey, type TabSubject } from "./tab-subject";
 
@@ -19,6 +20,7 @@ describe("parseTabSubject", () => {
     ["/acme/skills", { kind: "page", page: "skills" }],
     ["/acme/marketplace?type=skills", { kind: "page", page: "marketplace" }],
     ["/acme/marketplace?type=mcp", { kind: "page", page: "marketplace" }],
+    ["/acme/marketplace?type=squad-templates", { kind: "page", page: "marketplace" }],
     ["/acme/settings", { kind: "page", page: "settings" }],
     // Resource details
     ["/acme/issues/bug-1", { kind: "issue", id: "bug-1" }],
@@ -40,6 +42,9 @@ describe("parseTabSubject", () => {
     ["/acme/squads/sq1", { kind: "actor", actorType: "squad", id: "sq1" }],
     // Flow — /new must win over the actor detail pattern
     ["/acme/agents/new", { kind: "flow", flow: "create-agent" }],
+    ["/acme/squads/new", { kind: "flow", flow: "create-squad" }],
+    ["/acme/squads/new/manual", { kind: "flow", flow: "create-squad" }],
+    ["/acme/squads/new/template?from=list#roles", { kind: "flow", flow: "create-squad" }],
     // Runtime machine vs nested runtime
     ["/acme/runtimes/machine-1", { kind: "machine", machineId: "machine-1" }],
     [
@@ -87,6 +92,13 @@ describe("parseTabSubject", () => {
       id: "bug-1",
     });
   });
+
+  it("gives snoozed Inbox a distinct identity while retaining active/archive keys", () => {
+    const snoozed = parseTabSubject("/acme/inbox?view=snoozed&issue=MUL-9");
+    expect(tabSubjectKey(snoozed)).toBe("inbox:snoozed:MUL-9");
+    expect(tabSubjectKey(parseTabSubject("/acme/inbox?issue=MUL-9"))).toBe("inbox:inbox:MUL-9");
+    expect(tabSubjectKey(parseTabSubject("/acme/inbox?view=archived&issue=MUL-9"))).toBe("inbox:archived:MUL-9");
+  });
 });
 
 describe("tabSubjectKey", () => {
@@ -97,6 +109,7 @@ describe("tabSubjectKey", () => {
     expect(
       tabSubjectKey({ kind: "actor", actorType: "member", id: "m1" }),
     ).toBe("actor:member:m1");
+    expect(tabSubjectKey({ kind: "flow", flow: "create-squad" })).toBe("flow:create-squad");
   });
 
   it("distinguishes archived inbox and the attachment filename", () => {

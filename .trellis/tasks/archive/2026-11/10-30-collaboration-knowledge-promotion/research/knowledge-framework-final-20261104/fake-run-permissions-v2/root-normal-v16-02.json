@@ -1,0 +1,42 @@
+{
+  "issued_at": "2026-11-04T10:37:43.215796+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "executor": "/root/shared_executor",
+  "lane": "normal",
+  "label": "rk1k-normal-v16-02",
+  "scope": "One full original seven-test normal2 suite on new consumer-isolated source; no race until actual normal acceptance",
+  "framework_HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "runner_sha256": "eeb017c76c24a63023c9f0f44b35f14809a69d9507d3b531b129b204007d73a4",
+  "input_binding_sha256": "7ab6f2ade592f84b40f5e26362759e057793257920e565965833f17bdaf804d3",
+  "environment_sha256": "f7e6b3e6e8d7a174716c55c31bc9104f473f9a35046476bb7e6c56ad3eaa3d7f",
+  "source_review_sha256": "3fd21f1e42329f4d66cd157fb9f7f9d8943a4a2bac0d7efa38e61a26557c9aae",
+  "admission_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-source-review/v2-admission.json",
+    "sha256": "d37c6a79f9a2acd5d0c44ba99f8197919c94429e6fd6d96230e7744c2b4b6adb"
+  },
+  "database": "multica_rk1k_20261104_v16_normal2_a3c9",
+  "actual_database_identity": "multica_rk1k_20261104_v16_normal2_a3c9|764_collaboration_ai_policy|0|0",
+  "fixed_filter": "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+  "expected_top_tests": [
+    "TestRK1KnowledgeEntryGuard",
+    "TestRK1KnowledgeWrapperGuard",
+    "TestRK1KnowledgePromptData",
+    "TestRK1KnowledgeTraceCredentialLabels",
+    "TestRK1KnowledgeNativeMetadataUsesRawOutput",
+    "TestRK1KnowledgeEvidenceFaults",
+    "TestRK1KnowledgeFakeProof"
+  ],
+  "expected_summary": {
+    "measured_fake_starts": 15,
+    "fake_seed_starts": 3,
+    "paid_starts": 0,
+    "knowledge_allocated": 0,
+    "real_runnable": false
+  },
+  "normal01_diagnostic_failures_preserved": true,
+  "real_provider_allowed": false,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false
+}

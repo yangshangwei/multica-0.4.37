@@ -5,10 +5,12 @@ import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
 
 import { cn } from "@multica/ui/lib/utils"
 import { Button } from "@multica/ui/components/ui/button"
+import { usePopupVisibility, useScopedPopup } from "./popup-visibility"
 import { XIcon } from "lucide-react"
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
-  return <SheetPrimitive.Root data-slot="sheet" {...props} />
+  const scope = useScopedPopup(props)
+  return <SheetPrimitive.Root data-slot="sheet" {...props} {...scope} />
 }
 
 function SheetTrigger({ ...props }: SheetPrimitive.Trigger.Props) {
@@ -24,6 +26,7 @@ function SheetPortal({ ...props }: SheetPrimitive.Portal.Props) {
 }
 
 function SheetOverlay({ className, ...props }: SheetPrimitive.Backdrop.Props) {
+  const visible = usePopupVisibility()
   return (
     <SheetPrimitive.Backdrop
       data-slot="sheet-overlay"
@@ -32,6 +35,7 @@ function SheetOverlay({ className, ...props }: SheetPrimitive.Backdrop.Props) {
         className
       )}
       {...props}
+      hidden={!visible || props.hidden}
     />
   )
 }
@@ -46,6 +50,7 @@ function SheetContent({
   side?: "top" | "right" | "bottom" | "left"
   showCloseButton?: boolean
 }) {
+  const visible = usePopupVisibility()
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -57,6 +62,10 @@ function SheetContent({
           className
         )}
         {...props}
+        hidden={!visible || props.hidden}
+        inert={!visible || props.inert}
+        aria-hidden={!visible || props["aria-hidden"]}
+        finalFocus={visible ? props.finalFocus : false}
       >
         {children}
         {showCloseButton && (

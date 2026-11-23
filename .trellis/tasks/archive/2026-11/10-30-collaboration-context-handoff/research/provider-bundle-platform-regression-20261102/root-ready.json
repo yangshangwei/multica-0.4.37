@@ -1,0 +1,30 @@
+{
+  "state": "targeted_checks_complete_root_full_package_and_independent_review_pending",
+  "code_file": "server/internal/daemon/collaborationrun/provider_bundle_test.go",
+  "test_source_sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+  "normal": {
+    "run": 29,
+    "pass": 29,
+    "fail": 0,
+    "skip": 0
+  },
+  "race": {
+    "run": 29,
+    "pass": 29,
+    "fail": 0,
+    "skip": 0
+  },
+  "linux_binary": "/Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102/.omx/private/provider-bundle-platform-regression/collaborationrun-linux-arm64.test",
+  "linux_binary_sha256": "7c6f941b3cba73f8e570a76acf9c173f771763093e8ff8a1ffd3239f84094859",
+  "linux_command_arguments": [
+    "-test.run=^TestProviderBundle",
+    "-test.v=true",
+    "-test.parallel=2",
+    "-test.count=1"
+  ],
+  "Linux_actual": "root-linux-native.json:29pass0fail0skip, nonroot Linuxarm64, no network",
+  "Windows_actual": "not executed, compile-only",
+  "Provider_calls": 0,
+  "at": "2026-11-01T19:11:35.035938+00:00",
+  "code_commit": "91113cbebca4e08423172e86f26db5307784e215"
+}

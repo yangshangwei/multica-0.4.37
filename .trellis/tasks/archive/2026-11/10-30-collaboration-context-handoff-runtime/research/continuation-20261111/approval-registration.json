@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "runtime_h3a_historic_stop_exception",
+  "recorded_at_utc": "2026-11-11T08:49:36Z",
+  "approval": {
+    "user_message_exact": "批准",
+    "scope": "Waive only the exact hash-bound historic stop for RK1-H3a-t2; preserve the incomplete result and permit only the unattempted continuation slots in the registered order.",
+    "implementation_approved": true,
+    "real_execution_approved": false
+  },
+  "predecessor": {
+    "scenario": "RK1-H3a",
+    "label": "RK1-H3a-t2",
+    "status": "incomplete",
+    "verdict": "measured:provider_result_missing",
+    "public_result": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H3a-t2.json",
+    "public_result_sha256": "9a4b94050ad696c46512b0833d27398ac0c6ef48770f6085d1db1283f9d628ce",
+    "invocation_sha256": "909ac2da3054ab19ce4a75290ce9c5b06778740835efa414f6f206d863ddd3ed",
+    "invocation_reference": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H3a/invocation-20261105T125045Z.json",
+    "invocation_review_inventory": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h3a-entry/independent-review.json",
+    "historical_invocation_scope": "original RK1-H3a invocation; exact source path is retained in the independent review inventory",
+    "exit_code": 143,
+    "consumed_before_exception": 12,
+    "remaining_slots": 13,
+    "invocation_review_inventory_sha256": "e5807dddbc40ff880b431fb5ba002457c407fb2d77b75ee76d3b3841d30b991b"
+  },
+  "source_binding": {
+    "historical_source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "historical_source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "framework_registration": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json",
+    "runtime_addendum": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json",
+    "continuation_proposal": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/continuation-proposal.md",
+    "independent_review": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h3a-entry/independent-review.json"
+  },
+  "continuation_contract": {
+    "cap": 25,
+    "prior_actual_starts": 12,
+    "new_actual_start_limit": 13,
+    "order": [
+      {
+        "scenario": "RK1-H3a",
+        "start_trial": 3,
+        "launches": 1
+      },
+      {
+        "scenario": "RK1-H3b",
+        "start_trial": 1,
+        "launches": 3
+      },
+      {
+        "scenario": "RK1-H5",
+        "start_trial": 1,
+        "launches": 3
+      },
+      {
+        "scenario": "RK1-H6",
+        "start_trial": 1,
+        "launches": 6
+      }
+    ],
+    "forbidden": [
+      "RK1-H3a-t2",
+      "any completed or previously attempted slot",
+      "any unrelated incomplete, harness, environment or canary result"
+    ],
+    "stop_on_first_new_incomplete_or_h5_canary": true,
+    "historical_files_immutable": true
+  },
+  "execution_gate": {
+    "runnable": false,
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false,
+    "window_id": null,
+    "window_expires_at": null,
+    "reason": "Implementation approval records the exact exception; fresh current source/CLI/config/database/window binding and separate real-run authorization are still required."
+  }
+}

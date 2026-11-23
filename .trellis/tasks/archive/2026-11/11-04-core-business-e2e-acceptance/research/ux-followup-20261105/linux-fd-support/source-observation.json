@@ -1,0 +1,12 @@
+{
+  "observed_at": "2026-11-05T10:49:21.531308+00:00",
+  "source_root": "/Volumes/artisan/code/2026/mc-core-fd-fix-20261105",
+  "files": {
+    "server/cmd/multica/cmd_daemon.go": "7b0edfb4dea604c6383b05e799b90541f1ac0663a52bffa594a50acfef5d9833",
+    "server/cmd/multica/daemon_fd_linux.go": "6c3321981381b34a135a98566a2ec0a6b9607a9a9010cbb5c511846a768bc2d4",
+    "server/cmd/multica/daemon_fd_other.go": "82716ee1bf0756274b1700ee4f3ee7ed182f2b1a4180a77c69a6f6c6c3c0943c",
+    "server/cmd/multica/daemon_fd_linux_test.go": "1ee7be28bee30e62b4ff5b94cc484940f112cb779f1c476ea763db88fd2ae9c2"
+  },
+  "scope": "Independent read-only platform/descriptor-boundary review; no source edits or execution",
+  "original_performance_gate": "ACCEPTED_BY_USER for measured2155.025ms; no performance work"
+}

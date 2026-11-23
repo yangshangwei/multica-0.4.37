@@ -1,0 +1,9 @@
+# Agent output route RED — 2026-11-19
+
+Actual frozen BASE + one router test, fresh dedicated database: **1 top / 2 credential controls / 3 named FAIL**, expected missing-route RED. Both anonymous and human-profile multipart requests received `404 page not found`; the required run-bound output route must return `403 business_capability_required`. There were no build failures, skips, incomplete names or source/config/tool drift. This is absence/credential-entry proof, not successful output acceptance.
+
+Source: `/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-red-r01`. Original raw: `/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-route-red-r01/stdout.log`, SHA256 `dc6aab36dc09c95525c1eb60cceae5b8e5073a026dffadd0c254bc269c2a7f08`. Final reconciliation: `/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-route-red-reconciliation-r03.json`, SHA256 `e3aa7eaea40b3f1b232b56d9d61de7bfbbc5c21eb687451d501ae4c3ec8ef93a`.
+
+Gate remains creation=true/execution=false/host=false, epoch2; connections0. All concrete relation counts match pre-run except two retained fixture-produced collaboration_config_invalidation histories; no deletion was used to make an empty database. Original output-route failures and both coordinator reconciliation assertion errors are retained separately; no test rerun was used to correct a parser or history-count assumption.
+
+Independent minimal contract review is in `agent-output-contract-check-20261119.md/json`. Main released the approved private server/runtime implementation to native trellis-implement r02 after reading this actual RED. ROOT product source has not been changed. Agent output identity/storage/comment/result/current-authority/late scenarios remain untested until the new writer and O01–O09 proof run.

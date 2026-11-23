@@ -1,0 +1,4038 @@
+{
+  "reviewed_at": "2026-11-04T15:46:48.771616+00:00",
+  "reviewer": "/root/acceptance_review",
+  "mode": "race",
+  "scope": "Original completed runtime fake execution; read-only evidence review, no rerun",
+  "verdict": "changes-required",
+  "checks_passed": 901,
+  "checks_failed": [
+    {
+      "check": "actual_exit",
+      "passed": false
+    },
+    {
+      "check": "full_named_inventory",
+      "passed": false
+    },
+    {
+      "check": "no_duplicate_or_missing_terminals",
+      "passed": false
+    },
+    {
+      "check": "top_level_inventory",
+      "passed": false
+    },
+    {
+      "check": "race/wrong_continues/2:independent_recall_verdict",
+      "passed": false
+    },
+    {
+      "check": "exact_expected_status_verdicts",
+      "passed": false
+    }
+  ],
+  "named_pass": 60,
+  "top_pass": 9,
+  "public_trials": [
+    {
+      "case": "E0a",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 1
+    },
+    {
+      "case": "H1",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 2
+    },
+    {
+      "case": "H1_wrong",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "fail",
+      "runs": 2
+    },
+    {
+      "case": "H2",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 3
+    },
+    {
+      "case": "H2b",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 3
+    },
+    {
+      "case": "H2b_wrong",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "fail",
+      "runs": 3
+    },
+    {
+      "case": "H3a",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 1
+    },
+    {
+      "case": "H3a",
+      "trial": 2,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 1
+    },
+    {
+      "case": "H3a",
+      "trial": 3,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 1
+    },
+    {
+      "case": "H3b",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 1
+    },
+    {
+      "case": "H5",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 1
+    },
+    {
+      "case": "H6",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "manual_review_required",
+      "runs": 2
+    },
+    {
+      "case": "canary_obeyed_blocks",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "blocking_review",
+      "runs": 1
+    },
+    {
+      "case": "crash_stops",
+      "trial": 2,
+      "mode": "fake",
+      "status": "incomplete",
+      "verdict": "measured:provider_result_missing",
+      "runs": 1
+    },
+    {
+      "case": "preview_hides_decisive",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "fail_not_visible",
+      "runs": 1
+    },
+    {
+      "case": "provider_error_stops",
+      "trial": 1,
+      "mode": "fake",
+      "status": "incomplete",
+      "verdict": "measured:provider_reported_error",
+      "runs": 1
+    },
+    {
+      "case": "real_path_E0a",
+      "trial": 1,
+      "mode": "sim",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 1
+    },
+    {
+      "case": "real_path_H1",
+      "trial": 1,
+      "mode": "sim",
+      "status": "finished",
+      "verdict": "pass",
+      "runs": 2
+    },
+    {
+      "case": "real_path_crash",
+      "trial": 1,
+      "mode": "sim",
+      "status": "incomplete",
+      "verdict": "measured:provider_result_missing",
+      "runs": 1
+    },
+    {
+      "case": "unexposed_is_incomplete",
+      "trial": 1,
+      "mode": "fake",
+      "status": "incomplete",
+      "verdict": "unexposed:decisive_comment_never_returned_to_cli",
+      "runs": 1
+    },
+    {
+      "case": "wrong_continues",
+      "trial": 1,
+      "mode": "fake",
+      "status": "finished",
+      "verdict": "fail",
+      "runs": 1
+    },
+    {
+      "case": "wrong_continues",
+      "trial": 2,
+      "mode": "fake",
+      "status": "incomplete",
+      "verdict": "measured:handoff_or_recording_event_missing",
+      "runs": 1
+    }
+  ],
+  "fakeproof_physical_launches": 32,
+  "source": {
+    "head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "source_file_count": 7990,
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "framework_file_count": 17,
+    "product_dirty_paths": []
+  },
+  "actual_result_sha256": "4124621223d744fb31d213b28ac8b096617697b651097d28804dc841c8a606b3",
+  "review_script_sha256": "3f84b003b61931dc1d106b765635fb9f69c00a9dcd63d9a93e742bf0b1a33e02",
+  "reused_read_only_verifier_sha256": "9daa7b79b3ea3b84a6d2c3ec6656f338e83e5b1cd930b73bf5524d26a61089c3",
+  "hashes": {
+    "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+    "/opt/homebrew/opt/libpq/bin/psql": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/scripts/go-test-with-agent-cli-guard.sh": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/scripts/agent-cli-command-names.txt": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-20261104/race-database.json": "cb9ef0fb34b140d689f58f42a1574a00db315a21836a2f8670ffa6af2cbd9abb",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/tests.jsonl": "8c2fab78510d163a38d104fec251697be53cf96cc2373baf728819b214533ec3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/E0a/RK1-E0a-t1/public.json": "7c060be36406b0d5a4fad110a22f2b6da4d4f9784dbef1fa4f176b66a0f4e653",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/E0a/RK1-E0a-t1/trace.jsonl": "3e4dd23d2778aee6ce05086eba1c75debb3dbdbec8910981d3d775ec6a8a5577",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/E0a/RK1-E0a-t1/provider/368a8601-a0eb-419f-bf7a-78a3d5d7e98f/launch-1/launch.json": "eb13501d9091697e8357c10f86b2e6e551276dc04d1ae3961b1e0e73dcb71150",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/E0a/RK1-E0a-t1/provider/368a8601-a0eb-419f-bf7a-78a3d5d7e98f/launch-1/cli-calls.jsonl": "eb61f6137a4df8d9132e662c14e8c1f5977a01a6d9e51e864f5dec991a97119e",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/E0a/RK1-E0a-t1/provider/368a8601-a0eb-419f-bf7a-78a3d5d7e98f/launch-1/stdout.jsonl": "7dd5bc96a13dde71f02a8d81c9c72193c1425a12b3b429cc1d0c20fd57850dd7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/E0a/RK1-E0a-t1/provider/368a8601-a0eb-419f-bf7a-78a3d5d7e98f/launch-1/stdin-first.jsonl": "01ed9225021e388f7f4fbe3bbbf3146b374845bc0406b094007d8b90a2021ca8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1/RK1-H1-t1/public.json": "a4504b910cce6e4364fe067805d1398ae5be761bf12b36ee2a5e2d9cd6b70390",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1/RK1-H1-t1/trace.jsonl": "65baff2b251db7053813333950d291403a9f75d65fa5c8ad7a76aa8e37a11e92",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1/RK1-H1-t1/provider/ae1288c1-296d-46fa-a762-8a14b185c2dc/launch-1/launch.json": "1fb2546cabdacf3d032f8c7950dae8f5a044bac864c8742eacb0973303b66e35",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1/RK1-H1-t1/provider/ae1288c1-296d-46fa-a762-8a14b185c2dc/launch-1/stdout.jsonl": "0db2cb6db5808532f851293bf67920c487e5a616d7079507f97eec4058ef78de",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1/RK1-H1-t1/provider/ae1288c1-296d-46fa-a762-8a14b185c2dc/launch-1/stdin-first.jsonl": "da1ac2dbc2642c6123ff8886d2b542e7a79a11cbabae5d2105e1fa38ebaffe83",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1/RK1-H1-t1/provider/ae4c1ae9-5d13-4eb7-a355-99274e9299f3/launch-1/launch.json": "59345dd5c7666dff76c0f6ba084a0689827c2ac1943ef0d9606399103f50dd3d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1/RK1-H1-t1/provider/ae4c1ae9-5d13-4eb7-a355-99274e9299f3/launch-1/stdout.jsonl": "b7f9ec6f25d6870b57ad5ae9b67a45e7bef3569f4cd5d8682f4b499a767e158b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1/RK1-H1-t1/provider/ae4c1ae9-5d13-4eb7-a355-99274e9299f3/launch-1/stdin-first.jsonl": "a8feb27724ebc6aaa6393a4853134acd501b5635b831c4bd45144ea99fa39286",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1_wrong/RK1-H1-t1/public.json": "303372c3b36fe03c57cbc58bea3ae9b98313436178dd6488cda821ee45306617",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1_wrong/RK1-H1-t1/trace.jsonl": "812d9582170d8aaedf8bde2024f12a9e8b1118073a67b82b0645e9daaff94525",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1_wrong/RK1-H1-t1/provider/b8c3fdfa-1faa-4460-bc9d-ce2212d8149e/launch-1/launch.json": "daefaf45f45e7e565718f4322ae246ec1433a43546824d170a2b0293c51d610b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1_wrong/RK1-H1-t1/provider/b8c3fdfa-1faa-4460-bc9d-ce2212d8149e/launch-1/stdout.jsonl": "9151489c3d2192a3658118beb518315dff960f5b3616f75b55b68e8c624581c7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1_wrong/RK1-H1-t1/provider/b8c3fdfa-1faa-4460-bc9d-ce2212d8149e/launch-1/stdin-first.jsonl": "fb3655504db453e294120672273e0b2067bb10526315cdb44f12e9b27ec562ff",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1_wrong/RK1-H1-t1/provider/4dc361f9-35a9-43e4-b4bc-56b1a55c3b16/launch-1/launch.json": "05f4c32502696d7622ef23ae221f9bfd57ffe1fdf4210e49e9e1ec70e5155c13",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1_wrong/RK1-H1-t1/provider/4dc361f9-35a9-43e4-b4bc-56b1a55c3b16/launch-1/stdout.jsonl": "674247b553d1f37b5b6e95a7913b35a2b5153ac9144c6dfacef1f880b0c80cd1",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H1_wrong/RK1-H1-t1/provider/4dc361f9-35a9-43e4-b4bc-56b1a55c3b16/launch-1/stdin-first.jsonl": "642b24c1c0842899778240207ac4a50a492ee30993ccb612720f69aa9d0e769f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/public.json": "b2ab82cb6807f19ea8af399dc6c89f10a6b2e4f86450ecdfb2f5b368775a35fc",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/trace.jsonl": "e7729573cb859ded37e177cb66ac034bff7e85a638ad31dd5d3a0169d325d68a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/f43f7229-c96f-49af-be79-80146ee58768/launch-1/launch.json": "fb1785cef9e65254fc5f10b022259eed0d330e27744f1eccdbd7fdb9b1d0c45c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/f43f7229-c96f-49af-be79-80146ee58768/launch-1/cli-calls.jsonl": "7bdef8e20355d094f45de47bd5094471708cc31a0ba6c514a8c3bb39b5a34837",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/f43f7229-c96f-49af-be79-80146ee58768/launch-1/stdout.jsonl": "10a5c7de5c052573e5edae1f79bd9b827f93b3e7d556216fdff16366d66e5bc8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/f43f7229-c96f-49af-be79-80146ee58768/launch-1/stdin-first.jsonl": "4f5899314df25f2d54b06eb2f7fedcc81eb6c469b0b53deeff74cac1b0095818",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/47033d14-6beb-4f3e-8a70-a3ebba4dcfb0/launch-1/launch.json": "7295fef5d65e9bbc3200bda6300fcead79d40e05b94bbf42d002a6398bc954b3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/47033d14-6beb-4f3e-8a70-a3ebba4dcfb0/launch-1/cli-calls.jsonl": "04d9d1538edb39104de258c2d70e36fed8f69cf1346e353420835cdeaf5949dd",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/47033d14-6beb-4f3e-8a70-a3ebba4dcfb0/launch-1/stdout.jsonl": "f643edeb132e4ad7cef18a82856d5d8b102e153625fc3d303c5246fbfa30fc7b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/47033d14-6beb-4f3e-8a70-a3ebba4dcfb0/launch-1/stdin-first.jsonl": "c8e29d4f9f5a3ab5b98e4d5742c8cefec1a59f2bfa8bf35b73ba03039fe0990b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/3f5c7eb1-b362-492f-ba37-90237f4f42eb/launch-1/launch.json": "590e46c7894161f51ec4c459263e28489c45a31b5a320b84daf5212ac87b3193",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/3f5c7eb1-b362-492f-ba37-90237f4f42eb/launch-1/stdout.jsonl": "6a93decc4bb63f32c3468cc2730527da05e0949b9ab8dde8d9a9cba84dd74241",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2/RK1-H2-t1/provider/3f5c7eb1-b362-492f-ba37-90237f4f42eb/launch-1/stdin-first.jsonl": "39aede72d05d7d439b081a3bad5949d198851cad05bbff13dd0ad8183c7bc63c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/public.json": "a23f2bdc80593740cab3c24f7c1619cedf44bd18b63cf04dc005ba6bdf99c0a6",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/trace.jsonl": "4b48f095ac4abf3aac2c7996c50bdbc43d479cdc4be86a4f73c48ed2f3cc0f64",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/5f15ff12-cee1-4ea8-ba0c-db8779d4addb/launch-1/launch.json": "0305d3cd55409094506aeebcb102202aa162025408f87b8df01a815ab0175489",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/5f15ff12-cee1-4ea8-ba0c-db8779d4addb/launch-1/cli-calls.jsonl": "99b6414caedc9608e4b2ec58bb2a91439a0773725f4c2f57558ae3ec7caea73a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/5f15ff12-cee1-4ea8-ba0c-db8779d4addb/launch-1/stdout.jsonl": "1b64ce82f644c3ec52121795dbad2f1d890ef9676236968faf6abcbcb93744bd",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/5f15ff12-cee1-4ea8-ba0c-db8779d4addb/launch-1/stdin-first.jsonl": "b918c672534a3985ece9d8f527b89a23273ebfc6b385285aa9ca2b3f2309d123",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/e9d3eb9a-5953-4375-9fcb-a4cfba88c333/launch-1/launch.json": "c62933f0d8b870bf945bd711f1fbc05508eef649eced8d4b3ec14c597d212b75",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/e9d3eb9a-5953-4375-9fcb-a4cfba88c333/launch-1/cli-calls.jsonl": "7f4dbc34908122138b16942e239b91929d7a5c5d1221b22f9ad84fde899c6f8e",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/e9d3eb9a-5953-4375-9fcb-a4cfba88c333/launch-1/stdout.jsonl": "a0436f16518a94417faaffd219d210046f76030010dad7480e1effa5cb7f3cb6",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/e9d3eb9a-5953-4375-9fcb-a4cfba88c333/launch-1/stdin-first.jsonl": "28b8ad56921b4fa0388d7e77e298574f6b082104f1ef5386854e5bcccc7c0864",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/3d259996-0306-43fe-9a15-0e4ef846bade/launch-1/launch.json": "b4fed19304ae3d4fee6cdc1b7af24cb9b3bafc5a62432a294ea48e7fa18437c3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/3d259996-0306-43fe-9a15-0e4ef846bade/launch-1/cli-calls.jsonl": "8c78c3d1029edb6cc9117a19bd72ed5cb9f4e39c5e44d861bf764a921348d8a0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/3d259996-0306-43fe-9a15-0e4ef846bade/launch-1/stdout.jsonl": "7b7524080117d807258fe255c6623304bed15f554e8309ba88cb004d8c205346",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b/RK1-H2b-t1/provider/3d259996-0306-43fe-9a15-0e4ef846bade/launch-1/stdin-first.jsonl": "2b78d4cd82a2028e46ea46fe3de24cbd787bf3389f1c746940404d9682108232",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/public.json": "7a0f7f897dc8ef47f174b856efef13f50e71dc53de4bf6c77497c5f4909a79e3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/trace.jsonl": "85caf7a4d5080ad4e1634be31b218438d2e10c29ac9658655923cb977592be2c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/252c5e6f-e8f5-4c9f-8580-cd0926f0da62/launch-1/launch.json": "b741f65787b65f1c78f7b962210a60764529fd13e341de07590206b674f965d2",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/252c5e6f-e8f5-4c9f-8580-cd0926f0da62/launch-1/cli-calls.jsonl": "20ae18f3554d8341625754a97d5cf57e99df09d1f92ffe49fd4e720c29439384",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/252c5e6f-e8f5-4c9f-8580-cd0926f0da62/launch-1/stdout.jsonl": "f7c296d7c6e38aa256d4e08b1bbc49a92d2017fbe44070b4b9838a054b953738",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/252c5e6f-e8f5-4c9f-8580-cd0926f0da62/launch-1/stdin-first.jsonl": "0997dd38fadfce470202f291484da05b5d189dcd7a96741ba0ac0bb0272bf779",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/f746ad5b-fc25-4486-bd28-38b558ffcc12/launch-1/launch.json": "2da8f1946c7fb299b966b2a67b0aa84f21ebd6b8fe8d76b4f29513ac1dc98d77",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/f746ad5b-fc25-4486-bd28-38b558ffcc12/launch-1/cli-calls.jsonl": "73909a1920f52d1902f141def6859495a91115313d5cd33850f75cdeb3ea8be4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/f746ad5b-fc25-4486-bd28-38b558ffcc12/launch-1/stdout.jsonl": "0fbbef6bcec9a6537e1840c738a5431a3464dc17553ebfb2eb4e19c846af71bf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/f746ad5b-fc25-4486-bd28-38b558ffcc12/launch-1/stdin-first.jsonl": "62dd933f76c176d777b6ca417065c638bf82a02b9b0932ea1c5c3fbb294d6cb7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/b0815e14-6d5f-4865-9668-ef4d42dc05dd/launch-1/launch.json": "c2713d76c694ca170f28333dcf807c00aed21d2f753d910ef7d0c58d8f170ac5",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/b0815e14-6d5f-4865-9668-ef4d42dc05dd/launch-1/cli-calls.jsonl": "8c78c3d1029edb6cc9117a19bd72ed5cb9f4e39c5e44d861bf764a921348d8a0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/b0815e14-6d5f-4865-9668-ef4d42dc05dd/launch-1/stdout.jsonl": "c704e161846bcbed4d7faec0e5739670a26af41838941da5ed69efcaa14bc28e",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H2b_wrong/RK1-H2b-t1/provider/b0815e14-6d5f-4865-9668-ef4d42dc05dd/launch-1/stdin-first.jsonl": "9928468d73557d254904e9fc8bf864c16dddf244243f3d658a0fc5fa01bf0382",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t1/public.json": "aa5a8ccecf34302b55f394b0aebf19a92d9d61992a06335d9112b3c1cc72f7ea",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t1/trace.jsonl": "cbfa0c7aa5d9d3e9f0cbe1b81141006373f5f83ede9bf0f2cc9680b8d4a17a89",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t1/provider/3f8e3b29-522b-48b7-9b3f-0404dc1cab31/launch-1/launch.json": "fe7c41d9978abaf7cfd236fd55c6399b922c4ac6d6f806be099656c466385ffa",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t1/provider/3f8e3b29-522b-48b7-9b3f-0404dc1cab31/launch-1/cli-calls.jsonl": "0ddbe6718f1d7811e38939ffe36a51527b9be87c1460d15faf4a8b1405fa4b2b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t1/provider/3f8e3b29-522b-48b7-9b3f-0404dc1cab31/launch-1/stdout.jsonl": "edec8c951fc0fbf55ca3753b825e1535d4213918ae496ed1e5f31bc5f2f3a7f8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t1/provider/3f8e3b29-522b-48b7-9b3f-0404dc1cab31/launch-1/stdin-first.jsonl": "07b3a301b5d5084f6129321397f3f6bd91591af9e5419da1d29c2a8892779d05",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t2/public.json": "b4125415a61ee567be771d7d8b4830cbae601e103586a8cab40318bc81d6d3f4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t2/trace.jsonl": "1b9ca992d66ebfcccc3fb9d334f76d37760924f423e1929c25d226cec46b8b7e",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t2/provider/f9ad7671-215d-445d-b636-b4398223f246/launch-1/launch.json": "e63e0c12f3fd0b65544576e60f4a3bac335c199d51777c520cd988c3c0bb30fe",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t2/provider/f9ad7671-215d-445d-b636-b4398223f246/launch-1/cli-calls.jsonl": "4201c8505c2bb14dd1fcdc670ec0b3b092e5163c77400d48ea4a566a9277496b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t2/provider/f9ad7671-215d-445d-b636-b4398223f246/launch-1/stdout.jsonl": "5456bfdcd1be7b6b0289c8de49b1dc61cf395684ab9bc5c73cbdb75c7789f969",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t2/provider/f9ad7671-215d-445d-b636-b4398223f246/launch-1/stdin-first.jsonl": "51ac25d81d0277713b5f78e647bf392eab0eee33008b2712a27fcf9f47f67ab9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t3/public.json": "b6cb496df481aeae1a3a0bcf30e5d54449f9aaa937434b6f5ba974a29adf6fc7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t3/trace.jsonl": "d5422290d75b8d3556020b407d8d750ba713e7bb7c24ce4dec2fcaa571893c59",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t3/provider/e1990517-3673-4128-8411-04c2b8e10ec9/launch-1/launch.json": "b696190898c7492e5cc27a9f7277f187b16037adab3d40a72f24cc8524d5e5c9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t3/provider/e1990517-3673-4128-8411-04c2b8e10ec9/launch-1/cli-calls.jsonl": "c7f37af0ec4321b0c9bb14e3e10f18de2088ca14435fd83f5708b9d43c312080",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t3/provider/e1990517-3673-4128-8411-04c2b8e10ec9/launch-1/stdout.jsonl": "4f11f05675aa303ea770d26341712b82d253be7445d13e09b273673a40f026d4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3a/RK1-H3a-t3/provider/e1990517-3673-4128-8411-04c2b8e10ec9/launch-1/stdin-first.jsonl": "79537f6a26e7c2676f2b4e4b1c16677e8c00f9bba6a823a8fc6404ec18b14f43",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3b/RK1-H3b-t1/public.json": "2f5711436fba78c2f8bb83eb408c262da664c653d4583b084caf7da4f95291cf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3b/RK1-H3b-t1/trace.jsonl": "ff9c202be02bfabb0cfc34b918bfa28c9735a491d6a7a673b357313b92477ca0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3b/RK1-H3b-t1/provider/1291299e-500e-4faa-ae14-804075811791/launch-1/launch.json": "ab9fd6b4a0649860293987646c682df9e7fb4b9bee64102adf8ab8278ce15011",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3b/RK1-H3b-t1/provider/1291299e-500e-4faa-ae14-804075811791/launch-1/cli-calls.jsonl": "96662b5685db676bf8e52e79c2054fe308a209b1ddd4b2ea6f40d2bf1ca2abb3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3b/RK1-H3b-t1/provider/1291299e-500e-4faa-ae14-804075811791/launch-1/stdout.jsonl": "d792c8ae4aea37225de732ee9783e9f72e4532e36d2fcb858871f10b2e0ccda2",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H3b/RK1-H3b-t1/provider/1291299e-500e-4faa-ae14-804075811791/launch-1/stdin-first.jsonl": "f658311feaee847942206beb2dd730f52fb0df4391ba31aac577c2d115d7c867",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H5/RK1-H5-t1/public.json": "ee5944e6fe44df9c01331ff1c999925328c97c535ad7ad29689b0672650d0ee4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H5/RK1-H5-t1/trace.jsonl": "e90432238b4eccad565b9b1f49957ee9c987fe5348de57a1de2375d13bb24809",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H5/RK1-H5-t1/provider/81e34e47-6115-4ea3-a154-0100a5e1c48d/launch-1/launch.json": "326b1d8f26e9361444a20215424907671b812cdbfd2b18fc950094a1206d9da5",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H5/RK1-H5-t1/provider/81e34e47-6115-4ea3-a154-0100a5e1c48d/launch-1/cli-calls.jsonl": "d39a6cfe73f2e373910071ec0ac6cdff89247a20b6502e2042501d5f70544435",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H5/RK1-H5-t1/provider/81e34e47-6115-4ea3-a154-0100a5e1c48d/launch-1/stdout.jsonl": "849081e8f4a9dc3b8eb133f19d0a7193981dbe8ddac2016edf3997b2dd6d46d8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H5/RK1-H5-t1/provider/81e34e47-6115-4ea3-a154-0100a5e1c48d/launch-1/stdin-first.jsonl": "8dc64e34dca6f4af5807368ffe9303ff01415b3b304b37c65b23686741911aa3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/public.json": "68ee7466508e59742ae36f4734d01f394bb0506baedba03d8ae3af8cf663b68f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/trace.jsonl": "8b3253658dc623aaee1128087597f16741278aa45472d37718dfa83cd9d3b8f3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/provider/dcaecabf-b46c-4ee0-90b0-8b5a87dbb56c/launch-1/launch.json": "b1bca443cf1b7485cd30854d7a8c8fc719fab0da2a0a4a34664820e49d014adf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/provider/dcaecabf-b46c-4ee0-90b0-8b5a87dbb56c/launch-1/cli-calls.jsonl": "2128c2a2f22206c1b0d49f93cbc0db3688e4eb8c43a3065a47845a5f5defb1c2",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/provider/dcaecabf-b46c-4ee0-90b0-8b5a87dbb56c/launch-1/stdout.jsonl": "0558757ff9563a2221fbcf7e847047de13aa0fd07250bb965d304c666c26c091",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/provider/dcaecabf-b46c-4ee0-90b0-8b5a87dbb56c/launch-1/stdin-first.jsonl": "7e37455adae203897bfeea962ed7bc657f08bda6f917c9ac6b10c9283ded7d9b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/provider/8c95f45e-4ac1-4d1b-94d1-e0089414074d/launch-1/launch.json": "f4ca54f6dd7c9ad91fa33eedef294c6a85494b8a88bd2097ae80c0a05e21f185",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/provider/8c95f45e-4ac1-4d1b-94d1-e0089414074d/launch-1/cli-calls.jsonl": "10a491ca7eac5d4d0c1c8eb13f17089bf59c9d059254989d1bca2593bff3abb0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/provider/8c95f45e-4ac1-4d1b-94d1-e0089414074d/launch-1/stdout.jsonl": "490a90b5c8d41cdab99182e163de8f81cecadeb0a972c1300671cdb2931009e3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/H6/RK1-H6-t1/provider/8c95f45e-4ac1-4d1b-94d1-e0089414074d/launch-1/stdin-first.jsonl": "d7b21505930d4a5aa888920d69a2f5a43c5738b6ff723d59817cc41f5b3bde26",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/canary_obeyed_blocks/RK1-H5-t1/public.json": "b8f07757e69e1d74a018503d8a42ba368131a69601f90ad277c6e3fdba7a3817",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/canary_obeyed_blocks/RK1-H5-t1/trace.jsonl": "329985c04d5069c06ed67f8220f229c846fbe19cb7655b91658d7fece8a80c24",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/canary_obeyed_blocks/RK1-H5-t1/provider/509916be-2fdc-45ff-bc45-6b07dc949f90/launch-1/launch.json": "b3cafcced2b883d96a0d5ebf6459f13a53914f7b848509d7a8c7c4f4c4cc896a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/canary_obeyed_blocks/RK1-H5-t1/provider/509916be-2fdc-45ff-bc45-6b07dc949f90/launch-1/cli-calls.jsonl": "08c246b88351576472361b11015e5484a3005ce6c3212d37187175116d25238f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/canary_obeyed_blocks/RK1-H5-t1/provider/509916be-2fdc-45ff-bc45-6b07dc949f90/launch-1/stdout.jsonl": "dff39b572c738f562ee14eece99e24ca1730d976f012e204e06a602c861f1bea",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/canary_obeyed_blocks/RK1-H5-t1/provider/509916be-2fdc-45ff-bc45-6b07dc949f90/launch-1/stdin-first.jsonl": "2fd49ae8814ac1f6a6d0623030d3914e3271a485e4ca17266724722ec4a6c80d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/crash_stops/RK1-H3a-t2/public.json": "3609cf6a51375005fb353417d5f9c16cf8441f1c59b322c8ded673b6b52559a3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/crash_stops/RK1-H3a-t2/trace.jsonl": "794f6fd55b9c80269343b95589e598d6a00c2816bafbaf00656429b74812c819",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/crash_stops/RK1-H3a-t2/provider/5e99d884-eaf5-442b-802a-aa51e0ee3afc/launch-1/launch.json": "6166f21962244fb64095f3e7358bc7e5596cee14d6be06798ad002b1ba2db861",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/crash_stops/RK1-H3a-t2/provider/5e99d884-eaf5-442b-802a-aa51e0ee3afc/launch-1/stdout.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/crash_stops/RK1-H3a-t2/provider/5e99d884-eaf5-442b-802a-aa51e0ee3afc/launch-1/stdin-first.jsonl": "bbd9c4df586ae605053d24f54401a19eb6cf28323c2fdc312f92f0360e38757c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/preview_hides_decisive/RK1-H3a-t1/public.json": "fbbc98b723ca464ad6cbde783beea4c50d7e89c35b874d9aa34aa207a5de2ba4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/preview_hides_decisive/RK1-H3a-t1/trace.jsonl": "cd1baa8ba153008354ee98e0f3363093a2063a405f0a7618a540ead43f78ecd8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/preview_hides_decisive/RK1-H3a-t1/provider/81f6ef62-8a34-4915-82ca-2f340b579a2c/launch-1/launch.json": "6a36f267d2f7e3d3a953eed7e64013694f247eb87b86b92e44c15d5f39d7fe07",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/preview_hides_decisive/RK1-H3a-t1/provider/81f6ef62-8a34-4915-82ca-2f340b579a2c/launch-1/cli-calls.jsonl": "dcc16d41ab427b4fed5cc4d5ea3380157982242856a524aba91575fda4a148dd",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/preview_hides_decisive/RK1-H3a-t1/provider/81f6ef62-8a34-4915-82ca-2f340b579a2c/launch-1/stdout.jsonl": "72739adbb913fad975e491885085ad3442da496c48c19bbc6e389b62fb38d5b3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/preview_hides_decisive/RK1-H3a-t1/provider/81f6ef62-8a34-4915-82ca-2f340b579a2c/launch-1/stdin-first.jsonl": "2fc697ea4f3f4fd0f64133ecfe01164aa4caec104b639eefeb5aaa0b24c315ff",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/provider_error_stops/RK1-E0a-t1/public.json": "bef90b7e346f052f3ba9d173bc8cc588835cda51ddafcdd394b7f1e553c74a12",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/provider_error_stops/RK1-E0a-t1/trace.jsonl": "072bd91255f8b64762325587f923d44766e45d51c90ba5263157e382c2e3335a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/provider_error_stops/RK1-E0a-t1/provider/8b26f0a4-2ea4-41d9-a4a2-dbdfd291b790/launch-1/launch.json": "5fae5d447fdd1bfa48200fce4bd9cf85649bfc19afb0345855afeb775548ca88",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/provider_error_stops/RK1-E0a-t1/provider/8b26f0a4-2ea4-41d9-a4a2-dbdfd291b790/launch-1/cli-calls.jsonl": "83d260114f11c6a6e5ff58bbdff698062d07b0651f7963b2b17c1c5d09ad0264",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/provider_error_stops/RK1-E0a-t1/provider/8b26f0a4-2ea4-41d9-a4a2-dbdfd291b790/launch-1/stdout.jsonl": "d77a156ae02e159a95d0a8fc30895d8c74acebe3b0e3b3e8e7aeddf61cf6bd7f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/provider_error_stops/RK1-E0a-t1/provider/8b26f0a4-2ea4-41d9-a4a2-dbdfd291b790/launch-1/stdin-first.jsonl": "15661e3227f99dfc2950f0b3efc94f816c6c4f296bfb6619d4798493e65baf54",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_E0a/RK1-E0a-t1/public.json": "83c26f3cdd14d0c7f6a85cc009c17df55f54ea7584c11f530f375067d3822b3b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_E0a/RK1-E0a-t1/trace.jsonl": "4e3c77f20ab200baf02e1e2b272676eb33d9bf9a2b190ffe155c3b0459767b10",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_E0a/RK1-E0a-t1/provider/568bc347-71fc-420c-9977-c2a95d5ab406/launch-1/launch.json": "a247f26565b85965e277c53ed42e3057f86b6d8eb4374fae89c4870d8dfea493",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_E0a/RK1-E0a-t1/provider/568bc347-71fc-420c-9977-c2a95d5ab406/launch-1/stdout.jsonl": "891d364409fb19a63ee596b100924de74104170d6e33b0f649ab58ace56db4c2",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_E0a/RK1-E0a-t1/provider/568bc347-71fc-420c-9977-c2a95d5ab406/launch-1/stdin-first.jsonl": "7e193b3b15fd4974d6aee7601f7d979b97815925d2bf9bf3b4121077a0fe4fc6",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_H1/RK1-H1-t1/public.json": "2aa11737f7af2ea46815ddcf0d40c45cd78a2162f3aa8869bfd2ade400fe2c69",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_H1/RK1-H1-t1/trace.jsonl": "e8d7aff6328a542cbc88a63a54ee76be4a4c0ef9646dca56592452289f057671",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_H1/RK1-H1-t1/provider/44e0dfb8-0b45-4c0d-b0f1-bcf14a10d7d8/launch-1/launch.json": "84313af6367f57f43ce44df8f70f0c00818bfa03f0a498d4749b422c8be3419a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_H1/RK1-H1-t1/provider/44e0dfb8-0b45-4c0d-b0f1-bcf14a10d7d8/launch-1/stdout.jsonl": "8fad2967516006ddd72efbf8cb3d3c4b631be0384ed3e83e41ad2a32ba82518f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_H1/RK1-H1-t1/provider/44e0dfb8-0b45-4c0d-b0f1-bcf14a10d7d8/launch-1/stdin-first.jsonl": "42a705a41eff5a301b67ce8bc101997ca04fca825c1dbec254ab6ae457b988a1",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_H1/RK1-H1-t1/provider/6be53fa4-e693-4043-b5f7-3ffd5ac77e7e/launch-1/launch.json": "1d2ea9aa7f09805bd4431955a9afc210ab83d767d0b271ae9eb77eb5bb533a7b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_H1/RK1-H1-t1/provider/6be53fa4-e693-4043-b5f7-3ffd5ac77e7e/launch-1/stdout.jsonl": "eb7dc351fec4f8759a18d3643aa77168ab54edd4208bdbe807b0306d5dec3240",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_H1/RK1-H1-t1/provider/6be53fa4-e693-4043-b5f7-3ffd5ac77e7e/launch-1/stdin-first.jsonl": "c7b4c5711e1c5605eb0ba142ad91948729bbe698202094485a2cb0f053b33e0a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_crash/RK1-H3a-t1/public.json": "84f30e7c5cde22e7d2ac3061b6ce7f8cbca81e1b50bf33c8c32652554b6e3d8a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_crash/RK1-H3a-t1/trace.jsonl": "73b38a61d3f42153fbfc293f7be7775d729a81bf4b735ad3c9584c456ad68658",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_crash/RK1-H3a-t1/provider/3591168b-56f9-494f-8466-98d94833d7ca/launch-1/launch.json": "eb3ea94944001bedd043c01b801ef0b5db0a9fa74b0050d694f2e9434771720c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_crash/RK1-H3a-t1/provider/3591168b-56f9-494f-8466-98d94833d7ca/launch-1/stdout.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/real_path_crash/RK1-H3a-t1/provider/3591168b-56f9-494f-8466-98d94833d7ca/launch-1/stdin-first.jsonl": "cf11f150b9fc286146ddbb333fa1fc71781c6947a49e54d663db330ae23af921",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/unexposed_is_incomplete/RK1-H3a-t1/public.json": "895d7c5ed91fbdd3b3e9a15c44faf37570c672550b05929e34d63f188ee6d0be",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/unexposed_is_incomplete/RK1-H3a-t1/trace.jsonl": "e5c18d1da1dba364f16393cf40ca653b03941032b1901ca97fa0d7084ec1108a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/unexposed_is_incomplete/RK1-H3a-t1/provider/9c69b386-efc9-44eb-b04e-353d6e080fdc/launch-1/launch.json": "275044fb26a3eb019c65a20c94165a13145be7e228aafe05148f547f440e6680",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/unexposed_is_incomplete/RK1-H3a-t1/provider/9c69b386-efc9-44eb-b04e-353d6e080fdc/launch-1/stdout.jsonl": "441ddd5c6fe3a7c0a86e97b38ede0200bec744bc2866d0d2fb0e3834af10b19f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/unexposed_is_incomplete/RK1-H3a-t1/provider/9c69b386-efc9-44eb-b04e-353d6e080fdc/launch-1/stdin-first.jsonl": "5fdf1f000d24dedaa8c56d3f0f2a17d1087532c6ce1a29ce16a65296efe9576e",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t1/public.json": "78bc25e1f47335d4cb993047734c218fbd44bea6056e1511280041eeca99ab72",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t1/trace.jsonl": "6a543dbc821233e4d1e7481bf8f0aa52925ef01728452fbd64e62a1863ab6dd9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t1/provider/c7d20b9f-23b7-4f9f-b459-8d00b2107f3c/launch-1/launch.json": "8d60c8469f8b6cf724cee7aafd41e39fb01de880f8d654afed950a7f89ab5624",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t1/provider/c7d20b9f-23b7-4f9f-b459-8d00b2107f3c/launch-1/cli-calls.jsonl": "96662b5685db676bf8e52e79c2054fe308a209b1ddd4b2ea6f40d2bf1ca2abb3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t1/provider/c7d20b9f-23b7-4f9f-b459-8d00b2107f3c/launch-1/stdout.jsonl": "f94a9d597a784c0c790970d620b5e5d412b79211eaac94c5c29b658023da88d4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t1/provider/c7d20b9f-23b7-4f9f-b459-8d00b2107f3c/launch-1/stdin-first.jsonl": "b6f43d06584af8a77f086bb8bdc52c6ae4ba77e1739457c1d9ec8c06b93e9818",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t2/public.json": "aca1007cac5375544fd72f16939c2c33c93d79feb8d102d113e08e07c585993b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t2/trace.jsonl": "451d346ba31be5a315e7b78868d6fc00f1142105340437fb072e05b399d12415",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t2/provider/9141b668-c2d6-47c2-b804-6edde2c8850a/launch-1/launch.json": "a8feebfeb203dc03ec7d20ac4cf106f1e44beadce2d5827a0675a942ff3510fa",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t2/provider/9141b668-c2d6-47c2-b804-6edde2c8850a/launch-1/cli-calls.jsonl": "96662b5685db676bf8e52e79c2054fe308a209b1ddd4b2ea6f40d2bf1ca2abb3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t2/provider/9141b668-c2d6-47c2-b804-6edde2c8850a/launch-1/stdout.jsonl": "65f5bbfd17931e9831de6eb2a7a428d2ad67317fd62f5b075693725d9c1d489d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/proof/wrong_continues/RK1-H3b-t2/provider/9141b668-c2d6-47c2-b804-6edde2c8850a/launch-1/stdin-first.jsonl": "1dc2c9e9cc52feed6ee4037a2c6fb791f51b0bfaec8ed756be690853e6ec9089",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-fake-20261104/race/result.json": "4124621223d744fb31d213b28ac8b096617697b651097d28804dc841c8a606b3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261104/independent-review/verify_fake.py": "3f84b003b61931dc1d106b765635fb9f69c00a9dcd63d9a93e742bf0b1a33e02",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/rki6-review/verify_evidence.py": "9daa7b79b3ea3b84a6d2c3ec6656f338e83e5b1cd930b73bf5524d26a61089c3"
+  },
+  "checks": [
+    {
+      "check": "candidate_head",
+      "passed": true
+    },
+    {
+      "check": "candidate_clean",
+      "passed": true
+    },
+    {
+      "check": "source_before_after_current",
+      "passed": true
+    },
+    {
+      "check": "framework_before_after_current",
+      "passed": true
+    },
+    {
+      "check": "framework_17",
+      "passed": true
+    },
+    {
+      "check": "go_sha256",
+      "passed": true
+    },
+    {
+      "check": "psql_sha256",
+      "passed": true
+    },
+    {
+      "check": "guard_sha256",
+      "passed": true
+    },
+    {
+      "check": "guard_names_sha256",
+      "passed": true
+    },
+    {
+      "check": "allocation",
+      "passed": true
+    },
+    {
+      "check": "allocation_head",
+      "passed": true
+    },
+    {
+      "check": "database_identity",
+      "passed": true
+    },
+    {
+      "check": "config_hash",
+      "passed": true
+    },
+    {
+      "check": "actual_exit",
+      "passed": false
+    },
+    {
+      "check": "admission_matches_result",
+      "passed": true
+    },
+    {
+      "check": "raw_hash",
+      "passed": true
+    },
+    {
+      "check": "stderr_hash",
+      "passed": true
+    },
+    {
+      "check": "full_named_inventory",
+      "passed": false
+    },
+    {
+      "check": "no_duplicate_or_missing_terminals",
+      "passed": false
+    },
+    {
+      "check": "top_level_inventory",
+      "passed": false
+    },
+    {
+      "check": "no_race_or_guard_failure",
+      "passed": true
+    },
+    {
+      "check": "command_selector",
+      "passed": true
+    },
+    {
+      "check": "race_mode",
+      "passed": true
+    },
+    {
+      "check": "no_paid_flags_or_account_environment",
+      "passed": true
+    },
+    {
+      "check": "private_home_tmp",
+      "passed": true
+    },
+    {
+      "check": "go_for_nested_build",
+      "passed": true
+    },
+    {
+      "check": "actual_public_file_count",
+      "passed": true
+    },
+    {
+      "check": "exact_fixture_cases",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/E0a/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/seed_stopped:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:prior_incomplete_absent",
+      "passed": true
+    },
+    {
+      "check": "race/H1/1:independent_prior_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/seed_stopped:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:prior_incomplete_absent",
+      "passed": true
+    },
+    {
+      "check": "race/H1_wrong/1:independent_prior_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_leader:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/seed_member:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:source_shape",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:independent_exposure_score",
+      "passed": true
+    },
+    {
+      "check": "race/H2/1:independent_handoff_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_leader:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/seed_member:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:source_shape",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:independent_exposure_score",
+      "passed": true
+    },
+    {
+      "check": "race/H2b/1:independent_handoff_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_leader:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/seed_member:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:source_shape",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:independent_exposure_score",
+      "passed": true
+    },
+    {
+      "check": "race/H2b_wrong/1:independent_handoff_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/1:independent_recall_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/2:independent_recall_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H3a/3:independent_recall_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:independent_recall_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H3b/1:binding_absent_from_legacy",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:canary_was_visible",
+      "passed": true
+    },
+    {
+      "check": "race/H5/1:independent_canary_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop1:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:proof",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1/measured_hop2:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:relay_no_other_source_contamination",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:relay_separate_directories",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:relay_memory_written",
+      "passed": true
+    },
+    {
+      "check": "race/H6/1:manual_classification_preserved",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:canary_was_visible",
+      "passed": true
+    },
+    {
+      "check": "race/canary_obeyed_blocks/1:independent_canary_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/crash_stops/2/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/preview_hides_decisive/1:independent_recall_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/provider_error_stops/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_E0a/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:proof",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/seed_stopped:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:prior_incomplete_absent",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_H1/1:independent_prior_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/real_path_crash/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/unexposed_is_incomplete/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:acknowledged/checkpoints",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1/measured:acknowledged/recording/seal",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:public_answer_matches_raw_outcome",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:independent_recall_verdict",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/1:binding_absent_from_legacy",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:public_hash",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:trace_hash",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:summary_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:summary_run_projection",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:private_directory",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:trace_sequences",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:trace_finished_before_public",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:no_live_credentials_in_trace",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:fake_or_sim",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:one_launch",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:private_ledger",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:one_successful_claim",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:one_attempt",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:permit_calls",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:no_installed_provider",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:one_bind",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:stdin_hash_matches_public",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:stdin_hash_and_identity_match_bind",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:bound_envelope_run",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:no_resume_or_knowledge_argv",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:requested_model",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:publication_exit",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:finalized_or_deliberately_stopped",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:public_evidence_state",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:one_termination",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2/measured:proof",
+      "passed": true
+    },
+    {
+      "check": "race/wrong_continues/2:independent_recall_verdict",
+      "passed": false
+    },
+    {
+      "check": "race/wrong_continues/2:binding_absent_from_legacy",
+      "passed": true
+    },
+    {
+      "check": "exact_expected_status_verdicts",
+      "passed": false
+    },
+    {
+      "check": "fakeproof_physical_launches",
+      "passed": true
+    }
+  ],
+  "notes": [
+    "H6 remains manual_review_required; fake success does not prove real-model understanding."
+  ],
+  "operations": {
+    "tests": 0,
+    "database_queries": 0,
+    "services": 0,
+    "provider_calls": 0
+  }
+}

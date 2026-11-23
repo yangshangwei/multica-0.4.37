@@ -1,0 +1,81 @@
+[
+  {
+    "metadata": "normal.json",
+    "metadata_sha256": "31fcf9c7f116a54909c85e65d85096cc2279b0c625021ec1b67fa5eaea6b624d",
+    "source_base": "20f128dcecbf1c5eda793e8feddef892799abe76",
+    "test_source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/server",
+      "-tags=knowledgeintegration",
+      "-run",
+      "^TestCollaborationKnowledgeHostCompositeCorrection",
+      "-count=1",
+      "-json",
+      "-parallel=2",
+      "-timeout=5m"
+    ],
+    "database": "multica_knowledge_host_composite_20261101_ccg1_1102_normal",
+    "verified_identity": "multica_knowledge_host_composite_20261101_ccg1_1102_normal|763_collaboration_knowledge_delivery_history",
+    "exit_code": 0,
+    "counts": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "log_sha256": "4ab01eef800d1136fba9eee7c0873cccb284d57153e41cb443e90f7df62989ae",
+    "actual_named_test": [
+      "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch"
+    ],
+    "safe_fact_line": "collaboration_knowledge_correction_composite_test.go:171: physical_launches=2 corrected_version=2 superseded_stdin_absent=true third_authorization_refused=true third_physical_launches=0 original_exposure_and_receipts_retained=true",
+    "identity_logged": true,
+    "TestMain_not_skipped": true
+  },
+  {
+    "metadata": "race.json",
+    "metadata_sha256": "40c13e6e72de6da4745ab61b969f5e2ae831af8d21e1ec0c6666c764a78edf69",
+    "source_base": "20f128dcecbf1c5eda793e8feddef892799abe76",
+    "test_source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/server",
+      "-race",
+      "-tags=knowledgeintegration",
+      "-run",
+      "^TestCollaborationKnowledgeHostCompositeCorrection",
+      "-count=1",
+      "-json",
+      "-parallel=2",
+      "-timeout=5m"
+    ],
+    "database": "multica_knowledge_host_composite_20261101_ccg1_1102_race",
+    "verified_identity": "multica_knowledge_host_composite_20261101_ccg1_1102_race|763_collaboration_knowledge_delivery_history",
+    "exit_code": 0,
+    "counts": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "log_sha256": "52048a357fb62d33bdb9f66b12149bd7011426ab341a9d6f96651e4424382d9e",
+    "actual_named_test": [
+      "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch"
+    ],
+    "safe_fact_line": "collaboration_knowledge_correction_composite_test.go:171: physical_launches=2 corrected_version=2 superseded_stdin_absent=true third_authorization_refused=true third_physical_launches=0 original_exposure_and_receipts_retained=true",
+    "identity_logged": true,
+    "TestMain_not_skipped": true
+  }
+]

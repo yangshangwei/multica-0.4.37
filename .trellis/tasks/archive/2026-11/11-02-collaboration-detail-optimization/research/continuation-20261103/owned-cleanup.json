@@ -1,0 +1,48 @@
+{
+  "at": "2026-11-03T06:44:29.520378+00:00",
+  "records": [
+    {
+      "operation": "stop owned Web/API via explicit registry",
+      "command": [
+        "bash",
+        "/private/tmp/multica-detail-verification-20261103/source/scripts/dev-env.sh",
+        "down",
+        "detail-20261103",
+        "--components",
+        "web,api"
+      ],
+      "exit_code": 0,
+      "output": "/tmp/multica-detail-verification-20261103/final-owned-runtime-down.log"
+    },
+    {
+      "operation": "stop owned renderer helper",
+      "pid": 39674,
+      "signal": "SIGTERM",
+      "port": 5894,
+      "listener_remaining": false
+    },
+    {
+      "operation": "remove owned detached verification worktree",
+      "path": "/private/tmp/multica-detail-verification-20261103/source",
+      "exit_code": 0
+    },
+    {
+      "operation": "remove owned temporary directory",
+      "path": "/tmp/multica-detail-verification-20261103/sqlc-final-source"
+    },
+    {
+      "operation": "remove owned temporary directory",
+      "path": "/tmp/multica-detail-verification-20261103/incumbent-desktop"
+    }
+  ],
+  "final_listeners": {
+    "api": [],
+    "web": [],
+    "renderer": []
+  },
+  "owned_worktree_removed": true,
+  "databases_dropped": false,
+  "private_evidence_logs_retained": true,
+  "failed_databases_retained": true,
+  "other_environments_stopped": false
+}

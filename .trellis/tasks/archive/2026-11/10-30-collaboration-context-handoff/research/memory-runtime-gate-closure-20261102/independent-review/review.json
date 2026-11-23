@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T21:31:38.015316+00:00",
+  "verdict": "pass-with-notes",
+  "blocking_findings": [],
+  "scope": "test-only memory runtime nested gate lease closure, not product or whole candidate acceptance",
+  "code_commit": "5dec88f9809b4a703a0e82d65796876dfd31ffaf",
+  "evidence_head_at_review": "a06b6bf84d1fbdc4d4737c707ccfe5e9d2041b3f",
+  "product_source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "tested_code_sha256": "0a28c4248892aafe8cfca5ad1f99c37c3a8cdef2276c42239d072bcd9169d18c",
+  "tested_diff_sha256": "977d72b56c14c60a481f6fca8435538b0ab8080d15ba42b66ada4f33966fb10c",
+  "only_changed_code_file": "e2e/collaboration-memory-runtime.spec.ts",
+  "product_and_dependency_roots_unchanged": true,
+  "original_business_body_byte_identical_except_never_invoked_read_closure": true,
+  "guard_review": {
+    "hostEnvironment_before_new_pg_Client": true,
+    "explicit_loopback_nondefault_database_and_binaries_required": true,
+    "actual_current_database_matches_task_URL": true,
+    "initial_snapshot_before_both_seeds": true,
+    "post_cleanup_compares_exact_three_original_flags": true,
+    "epoch_recorded_not_rolled_back_or_required_equal": true,
+    "read_only_snapshot_SQL": true
+  },
+  "cleanup_review": {
+    "order": "second then first then successor browser context then actual gate snapshot/evidence",
+    "first_cleanup_attempted_if_second_close_throws": true,
+    "context_cleanup_attempted_if_first_or_second_close_throws": true,
+    "evidence_attached_before_final_gate_assertion": true,
+    "both_daemon_summaries_preserved_on_normal_close": true,
+    "product_guard_or_manual_gate_force_added": false,
+    "exception_verification_scope": "static nested finally control-flow proof; no new injected cleanup failure executions"
+  },
+  "actual_runs": [
+    {
+      "database": "collab_joint_gate_red_20261102_2055",
+      "health": {
+        "status": "ok",
+        "pid": 21159,
+        "commit": "639bf6ef8",
+        "started_at": "2026-11-01T21:12:26Z"
+      },
+      "source_env_sha256": "87279e2ac8fecadb8cc00788507d15dc788c8024121d8bd89cd950c0f6384a54",
+      "production_Web_build_id": "b4Tmt4WkjtlgyCk6CMPvB",
+      "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+      "controlled_binary_sha256": {
+        "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+        "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+        "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+        "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+      },
+      "test_source_sha256": {
+        "e2e/collaboration-memory-runtime.spec.ts": "e6743766c0e49488a928638a62026b5a383517bca7cede1253d5604625dddee9"
+      },
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-memory-runtime.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output=/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/.omx/private/memory-gate-runs/memory-gate-red-assertion/artifacts"
+      ],
+      "exit_code": 1,
+      "gate_exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-01T21:15:56.945Z",
+        "duration": 12096.493,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "started_at": "2026-11-01T21:15:55.918122+00:00",
+      "finished_at": "2026-11-01T21:16:09.059372+00:00",
+      "results_sha256": "60d4e07448f32348c8335d0384bd1db43b7e1aac00df52f2036470feac40e0ce",
+      "log_sha256": "a329dff7845e4f840a909a31671ccd6c3812de6e030a69428fd3baaa870ba2d7"
+    },
+    {
+      "database": "collab_joint_gate_green_20261102_2055",
+      "health": {
+        "status": "ok",
+        "pid": 21550,
+        "commit": "639bf6ef8",
+        "started_at": "2026-11-01T21:13:31Z"
+      },
+      "source_env_sha256": "bfbb87d1c27689da34b5c8308bb79c7e1403f94016899d8283190094a8993f72",
+      "production_Web_build_id": "lKQL5kHzmI0nj19TdJ0lz",
+      "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+      "controlled_binary_sha256": {
+        "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+        "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+        "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+        "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+      },
+      "test_source_sha256": {
+        "e2e/collaboration-memory-runtime.spec.ts": "0a28c4248892aafe8cfca5ad1f99c37c3a8cdef2276c42239d072bcd9169d18c"
+      },
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-memory-runtime.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output=/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/.omx/private/memory-gate-runs/memory-gate-green-fixed/artifacts"
+      ],
+      "exit_code": 0,
+      "gate_exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T21:18:06.241Z",
+        "duration": 11429.671,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "started_at": "2026-11-01T21:18:05.448136+00:00",
+      "finished_at": "2026-11-01T21:18:17.686287+00:00",
+      "results_sha256": "d201db60da7824cf76194ef9a0f1e330c16f2c44da9b6954afa8ba702f7d4fa3",
+      "log_sha256": "3f265e2f31e4f1ef0389c1341d24f3b8115d1b05cbfc3ff49557d3f15829a73a"
+    },
+    {
+      "database": "collab_joint_gate_green_20261102_2055",
+      "health": {
+        "status": "ok",
+        "pid": 21550,
+        "commit": "639bf6ef8",
+        "started_at": "2026-11-01T21:13:31Z"
+      },
+      "source_env_sha256": "bfbb87d1c27689da34b5c8308bb79c7e1403f94016899d8283190094a8993f72",
+      "production_Web_build_id": "lKQL5kHzmI0nj19TdJ0lz",
+      "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+      "controlled_binary_sha256": {
+        "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+        "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+        "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+        "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+      },
+      "test_source_sha256": {
+        "e2e/collaboration-leave-web.spec.ts": "8f31756ec537294c57b777e1258e660440197a63706d735e368b8e5d08bf1623"
+      },
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-leave-web.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--output=/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/.omx/private/memory-gate-runs/memory-gate-green-leave/artifacts"
+      ],
+      "exit_code": 0,
+      "gate_exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T21:19:14.665Z",
+        "duration": 10610.413,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "started_at": "2026-11-01T21:19:13.894654+00:00",
+      "finished_at": "2026-11-01T21:19:25.291674+00:00",
+      "results_sha256": "68028facadd5f3da4c7f86d9252bb05e061fba83e1475b4c0e405ffc1db3fd4b",
+      "log_sha256": "bba35e7bcd72c49e39d93226463d55c3c31ddde47da75a9ef4568e4a0c150e6f"
+    }
+  ],
+  "canonical_red": {
+    "run": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0,
+    "retry": 0,
+    "gate_before": {
+      "database_name": "collab_joint_gate_red_20261102_2055",
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "3"
+    },
+    "gate_after": {
+      "database_name": "collab_joint_gate_red_20261102_2055",
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": true,
+      "epoch": "6"
+    },
+    "memory_final_version": "3",
+    "two_actual_daemons_exited_zero": true,
+    "actual_evidence_attachment_sha256": "d00320c902fd620d3a7ccaa201ce9cc6240eaa5d25ac8e2caac0ec6cb7793e23",
+    "source_sha256": "e6743766c0e49488a928638a62026b5a383517bca7cede1253d5604625dddee9",
+    "failure_only_new_gate_flag_assertion": true,
+    "red_database_retained_not_reset": true
+  },
+  "green_memory": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0,
+    "retry": 0,
+    "gate_before": {
+      "database_name": "collab_joint_gate_green_20261102_2055",
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "3"
+    },
+    "gate_after": {
+      "database_name": "collab_joint_gate_green_20261102_2055",
+      "enabled": true,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "5"
+    },
+    "memory_final_version": "3",
+    "actual_evidence_attachment_sha256": "5e414579ae00af0f1457d4b0abbe171081317236247ab95482fbd6d616388355",
+    "two_runtime_actor_identities_distinct": true,
+    "base_written_versions": [
+      [
+        "1",
+        "2"
+      ],
+      [
+        "2",
+        "3"
+      ]
+    ],
+    "two_actual_daemons_exited_zero": true
+  },
+  "same_green_then_Leave": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0,
+    "retry": 0,
+    "same_database_API_pid_starttime_source_env_Web_build": true,
+    "chronological_nonoverlap_verified": true,
+    "runner_contains_no_gate_reset_SQL": true,
+    "coordinator_reset_or_restart_reported": false
+  },
+  "evidence_index_records_verified": 22,
+  "source_binding_sha256": "c0180f415d8cf25b98031a553a678324706c2dc49df3dc4fd0e7e30d127a7b71",
+  "runner_sha256": "70b9ec7287175b638141e29103ad417ba7bbc010bdd330719fa90a8c36b670fa",
+  "static_validation_raw_log_hashes_verified": true,
+  "controlled_binaries_actual_hashes_verified": true,
+  "two_service_env_hashes_and_distinct_DB_JWT_deployment_Redis_catalog_verified": true,
+  "service_pool_bounds_verified": {
+    "max": 5,
+    "min": 1
+  },
+  "no_secret_env_or_private_memory_body_copied": true,
+  "main_47_browser_failures_or_PG_capacity_incident_not_reclassified": true,
+  "original_final3_Leave409_not_relabelled": true,
+  "notes": [
+    {
+      "id": "MG-1",
+      "kind": "candidate_binding",
+      "description": "This result binds product639 plus exact test5dec. Parent must integrate/rebind and execute required final candidate checks; third full makecheck remainsfailed."
+    },
+    {
+      "id": "MG-2",
+      "kind": "fault_scope",
+      "description": "The static finally nesting covers second/first close failures after entering try. No injected cleanup fault was executed. The unchanged earlier browser.newContext allocation remains outside the cleanup try; rejection there is outside this bounded nested-close proof and is an existing follow-up concern."
+    }
+  ],
+  "reviewer_operations": {
+    "tests": 0,
+    "browser": 0,
+    "DB": 0,
+    "services": 0,
+    "containers": 0,
+    "CLI": 0,
+    "Provider": 0,
+    "children": 0,
+    "source_or_git_mutations": 0
+  }
+}

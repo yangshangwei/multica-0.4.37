@@ -1,0 +1,51 @@
+{
+  "reviewed_at": "2026-10-31T20:37:45.377339+00:00",
+  "reviewer": "main independently of C1 implementer",
+  "result": "passed_leaf_scope",
+  "source_hashes": [
+    {
+      "path": "server/pkg/agent/agent.go",
+      "sha256": "f5e96fc3486d426ddb0099102246400ef10a200089b2fe68655cf657a1e102ed",
+      "bytes": 25229
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle.go",
+      "sha256": "15431e2e4329ba12a4f3da09114c1d892862fe4e798b124391bf21a25fb326be",
+      "bytes": 17756
+    },
+    {
+      "path": "server/pkg/agent/claude.go",
+      "sha256": "cbe91fb97ef7bc026eef43b074a6cecaab644e6edf2354e007765582c813ee24",
+      "bytes": 49302
+    },
+    {
+      "path": "server/pkg/agent/knowledge_launch.go",
+      "sha256": "aebfd0a5bc382f92c732d0427427746e1fb9aa465975d34c826834a8ffcedb3e",
+      "bytes": 9964
+    },
+    {
+      "path": "server/pkg/agent/knowledge_launch_test.go",
+      "sha256": "6f017d1525b647ba2a4ab2d0266983ebf5ffb5d8d0a144183ed1af0829646f34",
+      "bytes": 28334
+    }
+  ],
+  "checks": [
+    "Existing collaboration environment filter remains default; explicit ordinary constructor rejects all observer overrides",
+    "Copied per-command intent and invocation fingerprint are checked before process start; opaque scope generation is not claimed to be native ID",
+    "Direct raw Claude observation precedes lossy UI/session fallback; duplicate ID idempotent; changed/malformed ID and callback failures seal lifecycle",
+    "Failed answer output remains empty and observed text/usage remain separate evidence; first/later callback/process facts not confused with no-execution",
+    "Legacy nil-Knowledge path, existing handoff closure regression and platform compile scope retained",
+    "Every retained final JSONL hash and selected run/pass/skip inventory checked"
+  ],
+  "known_skips": [
+    "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+    "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+    "TestPiExecuteAttachesStdinPipe",
+    "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors"
+  ],
+  "limits": [
+    "Native Darwin/fake executables only; Windows/Linux compile checks are not native acceptance",
+    "C2/C3 must still implement source authorization, exact cumulative exposure/pointer binding, failure normalization/retry exclusion and actual daemon wiring",
+    "No new private knowledge producer or G2 enablement in this commit"
+  ]
+}

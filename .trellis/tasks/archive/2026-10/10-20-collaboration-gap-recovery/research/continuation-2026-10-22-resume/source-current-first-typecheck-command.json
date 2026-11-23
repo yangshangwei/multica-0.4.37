@@ -1,0 +1,31 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "tsc",
+    "--noEmit",
+    "--module",
+    "ESNext",
+    "--moduleResolution",
+    "Bundler",
+    "--target",
+    "ES2022",
+    "--skipLibCheck",
+    "--strict",
+    "--noUncheckedIndexedAccess",
+    "--esModuleInterop",
+    "--types",
+    "node",
+    "e2e/collaboration-source-surface.spec.ts",
+    "e2e/fixtures/collaboration-source-surface.ts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-10-22T05:56:19.595500+00:00",
+  "head": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "source_sha256": {
+    "e2e/collaboration-source-surface.spec.ts": "3d28ddfbf1da4af7739adb4162816cb8511cb47c8c8f64f101f9d04b6dbd0494",
+    "e2e/fixtures/collaboration-source-surface.ts": "029b4906373479e57ef4fed487023b5eba61f8505a909dd98bdf8eda2cf670c1"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false
+}

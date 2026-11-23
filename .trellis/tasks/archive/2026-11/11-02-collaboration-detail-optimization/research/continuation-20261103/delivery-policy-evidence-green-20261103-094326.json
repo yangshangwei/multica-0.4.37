@@ -1,0 +1,42 @@
+{
+  "started_at": "2026-11-03T01:43:26.623719+00:00",
+  "database": "multica_detail_20261103_080906_service",
+  "package": "./internal/service",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-count=1",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(DeliveryRetainsCommentSnapshotAndEncryptedEvidence|RawReviewSelfResultAndParentLifecycleStayExplicit|DeliveryMalformedFactsRequireExplicitReplacement|ManualPolicy.*)$"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/delivery-policy-evidence-green-20261103-094326.jsonl",
+  "exit_code": 0,
+  "inventory": {
+    "pass": [
+      "TestCollaborationManualPolicyBlocksExplicitInputAndResume/input",
+      "TestCollaborationManualPolicyBlocksExplicitInputAndResume/resume",
+      "TestCollaborationManualPolicyBlocksExplicitInputAndResume",
+      "TestCollaborationManualPolicyFencesRuntimeAdmission/promotion",
+      "TestCollaborationManualPolicyFencesRuntimeAdmission/claim",
+      "TestCollaborationManualPolicyFencesRuntimeAdmission/permit",
+      "TestCollaborationManualPolicyFencesRuntimeAdmission",
+      "TestCollaborationDeliveryRetainsCommentSnapshotAndEncryptedEvidence",
+      "TestCollaborationRawReviewSelfResultAndParentLifecycleStayExplicit",
+      "TestCollaborationDeliveryMalformedFactsRequireExplicitReplacement/version",
+      "TestCollaborationDeliveryMalformedFactsRequireExplicitReplacement/author_user_id",
+      "TestCollaborationDeliveryMalformedFactsRequireExplicitReplacement/lifecycle_epoch",
+      "TestCollaborationDeliveryMalformedFactsRequireExplicitReplacement"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

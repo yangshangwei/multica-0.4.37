@@ -1,0 +1,154 @@
+{
+  "reviewed_at": "2026-11-04T16:13:51.508869+00:00",
+  "scenario": "E3_member_scope",
+  "arm": "after",
+  "status": "pass",
+  "blocking_findings": [],
+  "raw_files": {
+    "records": {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E3_member_scope-after/records.jsonl",
+      "sha256": "5bf27faadfc1e2093cbfd81d869fa00c109a4418f38e004e4707a6d4798c0369",
+      "bytes": 62957
+    },
+    "command": {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E3_member_scope-after/command.json",
+      "sha256": "88d19d2aaf46a426d5f1de41daf3aa7472451bf1c6eb2365e59a06f6292890e5",
+      "bytes": 1924
+    },
+    "log": {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E3_member_scope-after/go-test.log",
+      "sha256": "c66b798660db59754a3fc25f194bdf2b6ffd2200b760c1f39bd4e68826200755",
+      "bytes": 535
+    },
+    "prerun": {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/prerun.json",
+      "sha256": "a6a172d675e48402fbb50d3a8644b413e21c492bcedeccf66b8f6b4091e28a12",
+      "bytes": 5132
+    },
+    "driver": {
+      "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/run_scenario.py",
+      "sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+      "bytes": 8224
+    }
+  },
+  "command_state": "complete",
+  "command_exit": 0,
+  "log_hash_matches": true,
+  "trials": [
+    {
+      "trial": "2",
+      "run_id": "0780a9cc-7da9-490f-b57a-b8faa902a138",
+      "status": "pass",
+      "checks": {
+        "raw_finished_pass_success": true,
+        "exact_original_identity": true,
+        "source_matches": true,
+        "framework_matches": true,
+        "provider_version_matches": true,
+        "requested_model_matches": true,
+        "thinking_tier_match": true,
+        "prompt_hash_matches": true,
+        "prompt_bytes_matches": true,
+        "single_start_terminal": true,
+        "terminal_event_matches_record": true,
+        "monotonic_unique_sequence": true,
+        "paired_http": true,
+        "lifecycle_complete": true,
+        "prompt_coverage_complete": true,
+        "single_physical_launch": true,
+        "run_identity_matches": true,
+        "context_exposure": true,
+        "member_scope_exposed": true,
+        "only_BETA_posted": true,
+        "comment_writes_accepted": true,
+        "record_not_partial": true,
+        "one_proof": true
+      },
+      "raw_events": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E3_member_scope-after/records.jsonl.trials/0780a9cc-7da9-490f-b57a-b8faa902a138/events.jsonl",
+        "sha256": "a5d43164e35b59ef6805c4ea8f15f0e103406ba4b3465c039f769084829b385a",
+        "bytes": 2037471
+      },
+      "started_at": "2026-11-04T16:08:30.192493Z",
+      "finished_at": "2026-11-04T16:11:06.3851Z",
+      "counts": {
+        "events": 3155,
+        "http_pairs": 1575,
+        "context_reads": 5,
+        "physical_launches": 1,
+        "tool_calls": 8,
+        "tool_results": 8
+      },
+      "posted_comments": [
+        "BETA"
+      ],
+      "memory_puts": 1,
+      "body": "I did step B and nothing else. The leader's dispatch comment assigned me only that step and gave steps A and C to other members.\n\n- **Step B:** I posted a comment containing exactly `BETA`, as a reply under the dispatch comment (`7bf18bf6-…`). The server accepted it and returned comment ID `18be55bb-39b7-40a0-8c2a-44c07eb423fe`.\n- **Not confirmed:** right after posting, neither `issue comment list` nor `issue get` showed the reply. Either they leave out threaded replies or they lag. I didn't repost, to avoid a duplicate. If someone needs to retry, they should reuse that same ID as the request ID so no second comment gets created.\n- **Shared memory:** saved as version 1. It records the checklist, that step B is done, the visibility issue above, and that steps A (`ALPHA`) and C (`GAMMA`) are still with the other members.\n\nI didn't change any files or accounts.",
+      "observed_model": null,
+      "model_observation": "unavailable_in_host_projection",
+      "record_cli_sha256": "8d2d98f86669aea480d5f4e8cdab3686a7da7e1bd76e710cb1bf5db769d6e024"
+    },
+    {
+      "trial": "3",
+      "run_id": "92504790-4fe9-4636-b42f-8faf1ab4d938",
+      "status": "pass",
+      "checks": {
+        "raw_finished_pass_success": true,
+        "exact_original_identity": true,
+        "source_matches": true,
+        "framework_matches": true,
+        "provider_version_matches": true,
+        "requested_model_matches": true,
+        "thinking_tier_match": true,
+        "prompt_hash_matches": true,
+        "prompt_bytes_matches": true,
+        "single_start_terminal": true,
+        "terminal_event_matches_record": true,
+        "monotonic_unique_sequence": true,
+        "paired_http": true,
+        "lifecycle_complete": true,
+        "prompt_coverage_complete": true,
+        "single_physical_launch": true,
+        "run_identity_matches": true,
+        "context_exposure": true,
+        "member_scope_exposed": true,
+        "only_BETA_posted": true,
+        "comment_writes_accepted": true,
+        "record_not_partial": true,
+        "one_proof": true
+      },
+      "raw_events": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E3_member_scope-after/records.jsonl.trials/92504790-4fe9-4636-b42f-8faf1ab4d938/events.jsonl",
+        "sha256": "76df9313902215930e750ca16c1fae43c06ead08c4ba105165f1645f29089f70",
+        "bytes": 1387102
+      },
+      "started_at": "2026-11-04T16:11:06.433104Z",
+      "finished_at": "2026-11-04T16:12:50.85872Z",
+      "counts": {
+        "events": 2119,
+        "http_pairs": 1057,
+        "context_reads": 4,
+        "physical_launches": 1,
+        "tool_calls": 10,
+        "tool_results": 10
+      },
+      "posted_comments": [
+        "BETA"
+      ],
+      "memory_puts": 1,
+      "body": "I posted a comment on the issue containing exactly `BETA`. That is step B, and it's the only step the leader's dispatch comment assigned to me. I didn't do steps A or C, which belong to other members, and I didn't change any files or accounts.\n\n- **The comment:** `multica issue comment add` accepted it and returned comment ID `7fe20dd5-d815-46d1-bdd5-8c9e4f79c241`.\n- **Not visible yet:** right after posting, neither `multica issue comment list` nor `multica issue get` showed the new comment. The add command didn't fail, so I didn't post again. If someone needs to check, rerunning the same command with request id `7fe20dd5-d815-46d1-bdd5-8c9e4f79c241` won't create a second comment.\n- **Shared memory:** I saved it as version 1. It records the checklist, that step B is done with its comment ID, that this comment wasn't showing in the lists yet, and that the leader still needs to confirm steps A and C.",
+      "observed_model": null,
+      "model_observation": "unavailable_in_host_projection",
+      "record_cli_sha256": "8d2d98f86669aea480d5f4e8cdab3686a7da7e1bd76e710cb1bf5db769d6e024"
+    }
+  ],
+  "physical_new_launches": 2,
+  "prior_physical_launches": 13,
+  "total_original_series_launches": 15,
+  "remaining_provider_cap": 12,
+  "next": "E4_stale_merge baseline trial1",
+  "continue_recommendation": "Root may proceed to E4 under existing gate/window/budget controls; no incomplete/canary blocker in E3 after2/3.",
+  "historical_after_trial1": "retained incomplete; not rerun or counted as pass",
+  "interpretation": "After has two valid/pass samples and one historical incomplete. Baseline was3/3; no observed degradation in valid after samples, but the preregistered baseline<=2/3 improvement prediction was contradicted, and this series cannot establish improvement.",
+  "new_provider_calls_by_reviewer": 0
+}

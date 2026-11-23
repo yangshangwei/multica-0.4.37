@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/multica-ai/multica/server/pkg/protocol"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/dbid"
 )
@@ -183,7 +183,7 @@ func (h *Handler) deliverTriageNotificationsOnce(ctx context.Context, ws pgtype.
 	if err = rows.Err(); err != nil {
 		return err
 	}
-	delivered := []db.InboxItem{}
+	delivered := []inboxstate.Delivery{}
 	for _, i := range items {
 		if !ws.Valid {
 			if _, err = q.LockWorkspaceForChatSessionCreate(ctx, i.workspace); err != nil {
@@ -235,17 +235,14 @@ func (h *Handler) deliverTriageNotificationsOnce(ctx context.Context, ws pgtype.
 			}
 		}
 		if valid {
-			_, err = tx.Exec(ctx, `INSERT INTO inbox_item(id,workspace_id,recipient_type,recipient_id,type,severity,issue_id,title,body,actor_type,details) VALUES($1,$2,'member',$3,'triage','info',$4,$5,'','system',$6) ON CONFLICT(id) DO UPDATE SET title=EXCLUDED.title,details=EXCLUDED.details`, i.id, i.workspace, i.recipient, i.issue, i.title, i.details)
+			var delivery inboxstate.Delivery
+			delivery, err = inboxstate.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: i.id, WorkspaceID: i.workspace, RecipientType: "member", RecipientID: i.recipient, Type: "triage", Severity: "info", IssueID: i.issue, Title: i.title, Body: pgtype.Text{String: "", Valid: true}, ActorType: pgtype.Text{String: "system", Valid: true}, Details: i.details})
 			if err != nil {
 				return err
 			}
-		}
-		if valid {
-			item, e := q.GetInboxItem(ctx, i.id)
-			if e != nil {
-				return e
+			if delivery.Created {
+				delivered = append(delivered, delivery)
 			}
-			delivered = append(delivered, item)
 		}
 		if _, err = tx.Exec(ctx, `UPDATE triage_notification SET delivered_at=now() WHERE id=$1`, i.id); err != nil {
 			return err
@@ -254,16 +251,8 @@ func (h *Handler) deliverTriageNotificationsOnce(ctx context.Context, ws pgtype.
 	if err = tx.Commit(ctx); err != nil {
 		return err
 	}
-	for _, item := range delivered {
-		raw, e := json.Marshal(inboxToResponse(item))
-		if e != nil {
-			continue
-		}
-		var data map[string]any
-		if json.Unmarshal(raw, &data) != nil {
-			continue
-		}
-		h.publish(protocol.EventInboxNew, uuidToString(item.WorkspaceID), "system", "", map[string]any{"item": data})
+	for _, delivery := range delivered {
+		h.publishInboxDelivery(delivery, "system", "")
 	}
 	return nil
 }

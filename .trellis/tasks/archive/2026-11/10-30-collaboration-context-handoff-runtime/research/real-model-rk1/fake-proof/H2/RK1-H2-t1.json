@@ -1,0 +1,267 @@
+{
+ "series": "RK1",
+ "label": "RK1-H2-t1",
+ "scenario": "RK1-H2",
+ "trial": 1,
+ "mode": "fake",
+ "status": "finished",
+ "verdict": "pass",
+ "criteria": {
+  "decoy_absent": true,
+  "format": true,
+  "full_code_shown_to_model": false,
+  "measured_business_failure": false,
+  "member_code": true,
+  "member_result_truncated": false,
+  "member_run": true,
+  "source_read_through_cli": false,
+  "wake_cause_recorded": true,
+  "wakeup_completeness": "unknown"
+ },
+ "answer": "MEMBER_RUN 751afe19-6268-4da5-9a69-2785b3c02de0\nMEMBER_CODE MEMBER-Y6JJ95\nWOKEN_BY proof 751afe19-6268-4da5-9a69-2785b3c02de0",
+ "runs": [
+  {
+   "role": "seed_leader",
+   "run_id": "31958567-8d10-4f58-9271-e9aea7d498c9",
+   "measured": false,
+   "physical_launches": 1,
+   "authorized_attempts": 1,
+   "permit_calls": 2,
+   "progress_state": "settled",
+   "proof_state": "host_exit_observed",
+   "business_outcome": "success",
+   "step_kind": "leader",
+   "recording_incomplete": false,
+   "seal_reason": "completed",
+   "seal_observed_through": 5,
+   "seal_acknowledged_through": 5,
+   "outcome_record_completeness": "complete",
+   "provider_recordable_messages": 5,
+   "provider_messages_over_record_limit": 0,
+   "provider_init_models": [
+    "rk1-fake"
+   ],
+   "claim_query": "handoff_version=1\u0026recording_version=1\u0026knowledge_version=1",
+   "granted": {
+    "handoff_version": 1,
+    "knowledge_context": false,
+    "recording_version": 1
+   },
+   "stdin_prompt_sha256": [
+    "c091c91ebb8bc26ec7b45d6b418c2d03e3836d5825977dc295ab9dc6db58762b"
+   ],
+   "argv": [
+    [
+     "-p",
+     "--output-format",
+     "stream-json",
+     "--input-format",
+     "stream-json",
+     "--verbose",
+     "--permission-mode",
+     "bypassPermissions",
+     "--disallowedTools",
+     "AskUserQuestion",
+     "--model",
+     "rk1-requested-model"
+    ]
+   ],
+   "removed_child_env": [
+    "DATABASE_URL",
+    "RK1_FAKE_PROOF_OUT",
+    "RK1_PROVIDER_PLAN_DIR"
+   ],
+   "observed_models": [
+    "rk1-fake"
+   ],
+   "cli_reads": 2,
+   "business_writes": 1,
+   "provider_tool_results": 2,
+   "provider_tool_result_max_chars": 2372,
+   "provider_tool_results_with_cursor": 0,
+   "fake_cli_output_sizes": [
+    {
+     "command": "issue get 01a197ae-53dd-761a-ac0d-00c3e5b93c49",
+     "next_cursor_char_offset": -1,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 2177,
+     "stdout_chars": 2177
+    },
+    {
+     "command": "issue comment add",
+     "next_cursor_char_offset": -1,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 153,
+     "stdout_chars": 153
+    }
+   ],
+   "run_events": {
+    "comment": 1,
+    "handoff_binding": 1,
+    "handoff_snapshot": 1,
+    "outcome": 1,
+    "preparation": 1,
+    "record_checkpoint": 1,
+    "recording_seal": 1,
+    "resource_snapshot": 1
+   }
+  },
+  {
+   "role": "seed_member",
+   "run_id": "751afe19-6268-4da5-9a69-2785b3c02de0",
+   "measured": false,
+   "physical_launches": 1,
+   "authorized_attempts": 1,
+   "permit_calls": 2,
+   "progress_state": "settled",
+   "proof_state": "host_exit_observed",
+   "business_outcome": "success",
+   "step_kind": "member",
+   "recording_incomplete": false,
+   "seal_reason": "completed",
+   "seal_observed_through": 3,
+   "seal_acknowledged_through": 3,
+   "outcome_record_completeness": "complete",
+   "provider_recordable_messages": 3,
+   "provider_messages_over_record_limit": 0,
+   "provider_init_models": [
+    "rk1-fake"
+   ],
+   "claim_query": "handoff_version=1\u0026recording_version=1\u0026knowledge_version=1",
+   "granted": {
+    "handoff_version": 1,
+    "knowledge_context": false,
+    "recording_version": 1
+   },
+   "stdin_prompt_sha256": [
+    "9f506d143a0243a0e8915f76734608cefd095ae66b9128719220daaf385e218d"
+   ],
+   "argv": [
+    [
+     "-p",
+     "--output-format",
+     "stream-json",
+     "--input-format",
+     "stream-json",
+     "--verbose",
+     "--permission-mode",
+     "bypassPermissions",
+     "--disallowedTools",
+     "AskUserQuestion",
+     "--model",
+     "rk1-requested-model"
+    ]
+   ],
+   "removed_child_env": [
+    "DATABASE_URL",
+    "RK1_FAKE_PROOF_OUT",
+    "RK1_PROVIDER_PLAN_DIR"
+   ],
+   "observed_models": [
+    "rk1-fake"
+   ],
+   "cli_reads": 1,
+   "business_writes": 0,
+   "provider_tool_results": 1,
+   "provider_tool_result_max_chars": 2910,
+   "provider_tool_results_with_cursor": 0,
+   "fake_cli_output_sizes": [
+    {
+     "command": "issue get 01a197ae-53dd-761a-ac0d-00c3e5b93c49",
+     "next_cursor_char_offset": -1,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 2684,
+     "stdout_chars": 2684
+    }
+   ],
+   "run_events": {
+    "handoff_binding": 1,
+    "handoff_snapshot": 1,
+    "outcome": 1,
+    "preparation": 1,
+    "record_checkpoint": 1,
+    "recording_seal": 1,
+    "resource_snapshot": 1,
+    "wakeup_pending": 1
+   }
+  },
+  {
+   "role": "measured",
+   "run_id": "e993aff0-6d96-45fd-adc1-db01f7815d02",
+   "measured": true,
+   "physical_launches": 1,
+   "authorized_attempts": 1,
+   "permit_calls": 2,
+   "progress_state": "settled",
+   "proof_state": "host_exit_observed",
+   "business_outcome": "success",
+   "step_kind": "continuation",
+   "recording_incomplete": false,
+   "seal_reason": "completed",
+   "seal_observed_through": 1,
+   "seal_acknowledged_through": 1,
+   "outcome_record_completeness": "complete",
+   "provider_recordable_messages": 1,
+   "provider_messages_over_record_limit": 0,
+   "provider_init_models": [
+    "rk1-fake"
+   ],
+   "claim_query": "handoff_version=1\u0026recording_version=1\u0026knowledge_version=1",
+   "granted": {
+    "handoff_version": 1,
+    "knowledge_context": false,
+    "recording_version": 1
+   },
+   "stdin_prompt_sha256": [
+    "9f6ec84ac0a4e1c3f639756e45bc8e4e736946ba913bd57907cbcc05df504b3c"
+   ],
+   "argv": [
+    [
+     "-p",
+     "--output-format",
+     "stream-json",
+     "--input-format",
+     "stream-json",
+     "--verbose",
+     "--permission-mode",
+     "bypassPermissions",
+     "--disallowedTools",
+     "AskUserQuestion",
+     "--model",
+     "rk1-requested-model"
+    ]
+   ],
+   "removed_child_env": [
+    "DATABASE_URL",
+    "RK1_FAKE_PROOF_OUT",
+    "RK1_PROVIDER_PLAN_DIR"
+   ],
+   "observed_models": [
+    "rk1-fake"
+   ],
+   "cli_reads": 0,
+   "business_writes": 0,
+   "provider_tool_results": 0,
+   "provider_tool_result_max_chars": 0,
+   "provider_tool_results_with_cursor": 0,
+   "run_events": {
+    "handoff_binding": 1,
+    "handoff_snapshot": 1,
+    "outcome": 1,
+    "preparation": 1,
+    "record_checkpoint": 1,
+    "recording_seal": 1,
+    "resource_snapshot": 1,
+    "wakeup_assigned": 1
+   }
+  }
+ ],
+ "provider": "claude",
+ "provider_version": "2.1.200",
+ "requested_model": "rk1-requested-model",
+ "observed_models": [
+  "rk1-fake"
+ ],
+ "started_at": "2026-11-01T15:15:46.104917Z",
+ "finished_at": "2026-11-01T15:15:51.565019Z"
+}

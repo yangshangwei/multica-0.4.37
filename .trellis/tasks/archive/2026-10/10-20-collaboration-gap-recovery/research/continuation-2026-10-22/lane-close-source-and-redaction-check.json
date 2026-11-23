@@ -1,0 +1,44 @@
+{
+  "at": "2026-10-22T00:25:27.322632+00:00",
+  "text_artifacts_checked": 42,
+  "capability_literal_violations": [
+    {
+      "path": "lane-close-observed-web-identities.json",
+      "offset": 850,
+      "class": "credential_pattern"
+    },
+    {
+      "path": "lane-close-observed-web-identities.json",
+      "offset": 60284,
+      "class": "credential_pattern"
+    },
+    {
+      "path": "lane-close-first-electron-same-lane-identities.json",
+      "offset": 850,
+      "class": "credential_pattern"
+    },
+    {
+      "path": "lane-close-first-electron-same-lane-identities.json",
+      "offset": 60294,
+      "class": "credential_pattern"
+    },
+    {
+      "path": "lane-close-observed-electron-identities.json",
+      "offset": 850,
+      "class": "credential_pattern"
+    },
+    {
+      "path": "lane-close-observed-electron-identities.json",
+      "offset": 60294,
+      "class": "credential_pattern"
+    }
+  ],
+  "source_changes_since_first": [
+    {
+      "path": "e2e/fixtures/collaboration-lane-close-controls.ts",
+      "before_sha256": "b16d1de73fa198ba49d23c17bd1bc6a313a1dc0f76d3e6a0ca11f8991c8bcf74",
+      "current_sha256": "9f7c65c95c6c642f6161e0f783bcd56814bc57d1760b547426e242b586693eec"
+    }
+  ],
+  "application_changes": false
+}

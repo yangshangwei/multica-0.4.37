@@ -1,0 +1,52 @@
+{
+  "at": "2026-11-02T02:23:16.432998+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "tool_paths": {
+    "xcodebuild": "/usr/bin/xcodebuild",
+    "xcrun": "/usr/bin/xcrun",
+    "idevice_id": null,
+    "idb": null,
+    "maestro": null,
+    "prlctl": null,
+    "VBoxManage": null,
+    "utmctl": null,
+    "virsh": null,
+    "qemu-system-x86_64": null
+  },
+  "known_xcode_locations": {
+    "/Applications/Xcode.app": false,
+    "/Applications/Xcode-beta.app": false,
+    "/Users/artisan/Applications/Xcode.app": false,
+    "/Library/Developer/CommandLineTools": true
+  },
+  "commands": [
+    {
+      "command": [
+        "xcode-select",
+        "-p"
+      ],
+      "exit_code": 0,
+      "stdout": "/Library/Developer/CommandLineTools\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "--find",
+        "simctl"
+      ],
+      "exit_code": 72,
+      "stdout": "",
+      "stderr": "xcrun: error: unable to find utility \"simctl\", not a developer tool or in PATH\n"
+    },
+    {
+      "command": [
+        "xcodebuild",
+        "-version"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "xcode-select: error: tool 'xcodebuild' requires Xcode, but active developer directory '/Library/Developer/CommandLineTools' is a command line tools instance\n"
+    }
+  ]
+}

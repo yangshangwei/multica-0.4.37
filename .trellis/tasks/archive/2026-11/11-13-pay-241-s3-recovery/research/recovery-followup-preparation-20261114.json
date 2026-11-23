@@ -1,0 +1,1928 @@
+{
+  "topic": "S3 recovery follow-up preparation",
+  "status": "preparation_complete_not_implemented",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "scope": "internal",
+  "date": "2026-11-14",
+  "captured_at": "2026-11-14T14:27:47.714864+00:00",
+  "execution": {
+    "tests_run": false,
+    "database_access": false,
+    "git_operations": false,
+    "api_browser_provider_calls": false
+  },
+  "source_manifest_initial": [
+    {
+      "path": ".trellis/spec/server/collaboration-content.md",
+      "sha256": "637c2911ceb9d3713ee79e3c2b3ff92227dbbeae6ebc51a37cebcb803bf9416e",
+      "bytes": 15918
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-foundation.md",
+      "sha256": "f867b6f7cb6ce34c013a3bc1c5266381d2602d756c82aa9bc25a332952f6f099",
+      "bytes": 41981
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-realtime.md",
+      "sha256": "321cc698a38a5629b9ddd1477fd1caa86288df708e1891201c5c6e5d4417d64b",
+      "bytes": 6341
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-runtime-recovery.md",
+      "sha256": "567d1503719db0bc04e04480d292b18c1b700a4cfeed53c47ef5df64d4b5b064",
+      "bytes": 14413
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-source-editing.md",
+      "sha256": "652d71d25519580a88421df1f54d2ce6c621072504c83f3dd1124e1fc5ad1be5",
+      "bytes": 16067
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "be229701226d051a86adfac59fdaadec7be286aea0f057dea0de1361171c80bc",
+      "bytes": 17526
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "sha256": "091831a98d9cf64609d2d9c0017507e9bfdb00b476a5176f50c8001af190346e",
+      "bytes": 11503
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/implement.md",
+      "sha256": "af71a48a62d59dc875e13c876a3531fa5f3aa185346c960812c56cae3d9b9777",
+      "bytes": 24005
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-client-contract.md",
+      "sha256": "0d46ea40ac97b0bef782b959222035dbcdf5c96c921a7ff6d7b1a5a16f17fcc6",
+      "bytes": 9882
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/design.md",
+      "sha256": "7a442abc844b4d1372ce942cc4e03df16a7a82c4792ec44c573f5d9ab3f2002a",
+      "bytes": 1843
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/implement.md",
+      "sha256": "c6e06f258458d4cf5761a21cbcf9979cecec90e1f0267af92b67ea54de4cebc1",
+      "bytes": 1194
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/prd.md",
+      "sha256": "481c2f7cd895eadfa934e044ad6a10650bf0def477d110127c1e0bef7cdb34b4",
+      "bytes": 2498
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-gaps.md",
+      "sha256": "b2145885f0eac50dd459623521daa454c6034e84aada25897f8b4534800f38f7",
+      "bytes": 20897
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "sha256": "8b99920aa58430eef695c4fa2e66703042962aaaeb4addbb84196d7ab2ff6aab",
+      "bytes": 13171
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/task.json",
+      "sha256": "faf25b50dd2b70a051e860a3026a5243354974dd8249e070c6014941beb580e5",
+      "bytes": 1718
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/design.md",
+      "sha256": "bf6a9dd22874a652299d8457729fc59a456e40c899f12b902560dd2eff3a7e9f",
+      "bytes": 3333
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/implement.md",
+      "sha256": "a41be9a7ef474c1dcff74c8c6bb3023861a2bcec1aa3026413ca681240b10009",
+      "bytes": 2113
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/prd.md",
+      "sha256": "d2002f33d4a59790fb3ac2c6b10ae5f9a686e6b357cd8d8da43f998bae9805ba",
+      "bytes": 1815
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md",
+      "sha256": "ffb0264996dbf7700cb934fe66e0a54989928147d6d778e78bcb582590503a60",
+      "bytes": 3638
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/check-review.json",
+      "sha256": "8d687377bdd4e999418807bb5d84e97956c5870c2c2d110e4f39bf72c237f4ef",
+      "bytes": 48211
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/check-review.md",
+      "sha256": "9a1c5100f6200025ef9cbb02548b53adb8f460610dd422fd6cea9673f128906d",
+      "bytes": 10352
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/cleanup-final.json",
+      "sha256": "605a02b893553e5dc0e0807a5d9b1404498175b37ae1ded2f7529b7a6beba28a",
+      "bytes": 881
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/implementation-report.md",
+      "sha256": "57935e15e673ebf9716c9df3824bedb576a2dc327b7e1a8e9d7cad8bc55f20b9",
+      "bytes": 3780
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/implementation-results.json",
+      "sha256": "61b89f1c39ed089408e4a2478d03f5f12baf97a515953fa8ba8497905496d7ff",
+      "bytes": 8401
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/plan-review.json",
+      "sha256": "ab1874b63cebaf90b0d9b19776b32883d251504eecec8a7caa9f3a1342f1ff0b",
+      "bytes": 3237
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/plan-review.md",
+      "sha256": "b9e03bdc613c0be685ef544a853110b1ece96d132331293aa0c5362d2dfab447",
+      "bytes": 7957
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/runtime-final-audit.json",
+      "sha256": "0397dd24ad051db4f351e189f0a641258c4278c9b63913b46d8ca5fd2aab37b5",
+      "bytes": 4303
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/runtime-results.json",
+      "sha256": "679bb2f350dfa453c760589beede56056d1a46459bd64e581f6519ee9a50801c",
+      "bytes": 8015
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/targeted-static-check.json",
+      "sha256": "97b7e3d0d5ec1d4cdae9b4bad8a4adc80511380c33400222e85267ab4830b385",
+      "bytes": 55229
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/task.json",
+      "sha256": "ccb0fecdf3d897a6a0c5ad912c6364744bfc6cab9ef20195dfb1fc4f2e9ccc4b",
+      "bytes": 959
+    },
+    {
+      "path": ".trellis/workflow.md",
+      "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+      "bytes": 39348
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "403ec642d0625862bd042fa3293be4c46bb308b88159cbaa75559cbf1f389289",
+      "bytes": 3840
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+      "bytes": 21075
+    },
+    {
+      "path": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "sha256": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+      "bytes": 8094
+    },
+    {
+      "path": "e2e/collaboration-timeout-recovery.spec.ts",
+      "sha256": "d7d63e25cb4b96c22c5e5577dbb8f0749dcce53c4fca7529eb5723bd3d4fb306",
+      "bytes": 16753
+    },
+    {
+      "path": "e2e/fixtures/collaboration-offline-result-notifications.ts",
+      "sha256": "36d93b95972d3c647bf11d8b89b27d03c166bd41dfaaede365ebbe025cc75b04",
+      "bytes": 25158
+    },
+    {
+      "path": "package.json",
+      "sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+      "bytes": 2669
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "sha256": "89fd63d8439b60882c1a33297172d3595718d7357a505950502c1698516a83a4",
+      "bytes": 366334
+    },
+    {
+      "path": "packages/core/api/ws-client-account.test.ts",
+      "sha256": "c1b6afe8e46ee773cafcc12944108166dd6a21641d56a2540270ab55cbb2c02b",
+      "bytes": 4997
+    },
+    {
+      "path": "packages/core/api/ws-client.ts",
+      "sha256": "93004628a0444e721fbea3ea0fd40f988b1075381b065a703b5d41373d538f88",
+      "bytes": 11636
+    },
+    {
+      "path": "packages/core/collaboration/access.ts",
+      "sha256": "17e87d13d8eafb9329113fe0105b7c67e801e34f6a38491f3d067a7ea9309fe9",
+      "bytes": 7995
+    },
+    {
+      "path": "packages/core/collaboration/action.ts",
+      "sha256": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65",
+      "bytes": 8541
+    },
+    {
+      "path": "packages/core/collaboration/attachment.ts",
+      "sha256": "2a248157d134b718d057e1896718e88a8a9e6d2bab2fc71704a8a23b33c450d4",
+      "bytes": 10076
+    },
+    {
+      "path": "packages/core/collaboration/content-queries.ts",
+      "sha256": "13970e519b1cc266772931b825cf44b2fb42fae0e4a5dc83f67b6475a414938b",
+      "bytes": 5029
+    },
+    {
+      "path": "packages/core/collaboration/delivery-access.ts",
+      "sha256": "a5658205a2dadd1ce3c4b8d2498564729bdc5d1df63ff9ea5ac3133f3759f060",
+      "bytes": 4786
+    },
+    {
+      "path": "packages/core/collaboration/delivery-draft.ts",
+      "sha256": "392256627466acb18df55b03b82ad248696993499bc8a643d0746e8e5ab0aab2",
+      "bytes": 10925
+    },
+    {
+      "path": "packages/core/collaboration/delivery.test.ts",
+      "sha256": "6e9f49c3955253eee661fdfd872ce5a8f69e5cae6efdc56b913eb81081cd8199",
+      "bytes": 20968
+    },
+    {
+      "path": "packages/core/collaboration/draft.ts",
+      "sha256": "591036cf1a5a28d87560d4c8b0fc691ab713dc86d6340b67654ed4e20139eb99",
+      "bytes": 5011
+    },
+    {
+      "path": "packages/core/collaboration/schema.ts",
+      "sha256": "780f2248b0798741b64315c531ff3f84309885468e8b80b27cc2b9df1ab3880b",
+      "bytes": 23858
+    },
+    {
+      "path": "packages/core/realtime/collaboration.test.ts",
+      "sha256": "ca273b27e660a7bc084407769c39f10512ac974f145d7c551295951bd4fb81e9",
+      "bytes": 13469
+    },
+    {
+      "path": "packages/core/realtime/collaboration.ts",
+      "sha256": "5787f6335af600bf186228e4f27ad166bc76051f1368086452508cbbe148c2f8",
+      "bytes": 8099
+    },
+    {
+      "path": "packages/views/collaboration/attachment-picker.tsx",
+      "sha256": "d909037eb0910954168c7ef7710e0ca6466f5fa5ab7cbe0138bb2f43c56c70c8",
+      "bytes": 9474
+    },
+    {
+      "path": "packages/views/collaboration/comment-list.tsx",
+      "sha256": "fd18168b323fdcf7647dd727f025a49f9556cf794827d42f1387c85acb77625b",
+      "bytes": 17300
+    },
+    {
+      "path": "packages/views/collaboration/workflow.test.tsx",
+      "sha256": "f9228b8d05787188f6d084726416fb33d55923a9774191904e36ae710126506b",
+      "bytes": 40146
+    },
+    {
+      "path": "packages/views/collaboration/workflow.tsx",
+      "sha256": "bf247af6b9f93246ebb7e8ea168526d46ed62ac2db3df04484018a7266515d91",
+      "bytes": 44489
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+      "bytes": 1033
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "a1b01b9f10d0de1be4b96547afe698f7d194c5ce8983e3d94a9a214278c7e259",
+      "bytes": 151082
+    },
+    {
+      "path": "server/go.mod",
+      "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+      "bytes": 3586
+    },
+    {
+      "path": "server/internal/handler/collaboration.go",
+      "sha256": "d0a141a653cafb514074c0deebcdb0ce2723a65b8b7448d7bea77c80fb311889",
+      "bytes": 11488
+    },
+    {
+      "path": "server/internal/handler/collaboration_attachments.go",
+      "sha256": "02a5bbbaa005a7690ef84d3ac76f76be923380f12ad172b39c9646b3cf79a1a3",
+      "bytes": 12106
+    },
+    {
+      "path": "server/internal/handler/collaboration_attachments_test.go",
+      "sha256": "63922cf6442ad54ed794492ea0450c58b5e9d95f5502d0c4d2b473d377d0119e",
+      "bytes": 16612
+    },
+    {
+      "path": "server/internal/handler/collaboration_comments.go",
+      "sha256": "86b78fa84e0214a5d10eeb9f2f91fff1fb429d46578699edb6fba506e275365c",
+      "bytes": 7609
+    },
+    {
+      "path": "server/internal/handler/collaboration_workflow.go",
+      "sha256": "7919a83a080f0fffebcd6266552fc38855e6edc6c3ea22b47f3c8c7ab48d43ec",
+      "bytes": 16374
+    },
+    {
+      "path": "server/internal/handler/issue.go",
+      "sha256": "39b7074ae75f9f5e612ba22987c42d147f41763cf965eb654997302ffe844db4",
+      "bytes": 221261
+    },
+    {
+      "path": "server/internal/handler/issue_move.go",
+      "sha256": "d24a2721b68acc381d80f7389aa786ad71c13dbec2e9adb9df79af69b227de45",
+      "bytes": 6713
+    },
+    {
+      "path": "server/internal/handler/issue_revision_test.go",
+      "sha256": "e47687514a63f8d8b34b2f236a957ba5bc32380e1d55cb3edbe87bb440876e09",
+      "bytes": 38979
+    },
+    {
+      "path": "server/internal/handler/issue_status.go",
+      "sha256": "625fd1e613ba891523ae5b74db6d64a90d9a8012a21576d852cb57b3e75da441",
+      "bytes": 24714
+    },
+    {
+      "path": "server/internal/service/collaboration.go",
+      "sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+      "bytes": 19936
+    },
+    {
+      "path": "server/internal/service/collaboration_activity.go",
+      "sha256": "cefc584c85d7f58f788419015ba224fb94adbbc2bab594eaa7915a75f60198ed",
+      "bytes": 11168
+    },
+    {
+      "path": "server/internal/service/collaboration_attachment_access.go",
+      "sha256": "ac216b941ebfe58972730dac5801b4d8b8c32c97c44c6cd5e358d8c6d85d416a",
+      "bytes": 2653
+    },
+    {
+      "path": "server/internal/service/collaboration_attachments.go",
+      "sha256": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+      "bytes": 24398
+    },
+    {
+      "path": "server/internal/service/collaboration_attachments_test.go",
+      "sha256": "6231ea4376e93e0efd6e05672a2ab02816755e008b107f9a7020b97da1fe021f",
+      "bytes": 15324
+    },
+    {
+      "path": "server/internal/service/collaboration_comments.go",
+      "sha256": "4fb2e4668e5288c068e4f4365a68b1a552233f08725611e2080402a3726e5d79",
+      "bytes": 12178
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_create.go",
+      "sha256": "92830ce01ba00b3ae3bc2d2614e86f58ddaced2c474d1c31fcc05c5edb5219e2",
+      "bytes": 7167
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_test.go",
+      "sha256": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0",
+      "bytes": 23820
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_view.go",
+      "sha256": "612d325ad9bb5ebc5842324eb8d292958c0412dd1fde21b537d22450e66b50d0",
+      "bytes": 11651
+    },
+    {
+      "path": "server/internal/service/collaboration_creation_fields.go",
+      "sha256": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+      "bytes": 7356
+    },
+    {
+      "path": "server/internal/service/collaboration_edit_test.go",
+      "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c",
+      "bytes": 28073
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff.go",
+      "sha256": "09f93f41c49d38342be52e1a82019dc47f0d964185a9d184c34f7c6ef82d7aaa",
+      "bytes": 18783
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_sources.go",
+      "sha256": "8303b983b42256a101254a4081b2060e65342e6f3133283b7fb674159df43446",
+      "bytes": 7033
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "sha256": "89835747e96caf731869b35a389b74f548fc2be979328f5bd6dcb928e00b11ea",
+      "bytes": 26725
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle_test.go",
+      "sha256": "a892d2c1d464b76920359594c8195c7403fee360454e801dca6d28bd6586b92a",
+      "bytes": 36797
+    },
+    {
+      "path": "server/internal/service/collaboration_mentions.go",
+      "sha256": "a20b671c1541c93f808881950e387302c5af1e33269c7f98b034fb5d93c2add1",
+      "bytes": 9464
+    },
+    {
+      "path": "server/internal/service/collaboration_notifications.go",
+      "sha256": "99c7a0f1a52c347062432fac16890daa5e1395b41b37bcec5f4eb8d47c605ed4",
+      "bytes": 9163
+    },
+    {
+      "path": "server/internal/service/collaboration_notifications_test.go",
+      "sha256": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec",
+      "bytes": 4966
+    },
+    {
+      "path": "server/internal/service/collaboration_outcome_receipt_test.go",
+      "sha256": "0e5564d334dee7a485b2a7423039ae78f6d1db2493616386e441ca8554ddc7bb",
+      "bytes": 9271
+    },
+    {
+      "path": "server/internal/service/collaboration_result_notifications_test.go",
+      "sha256": "0738215c6b3b7c9440749dd7f4b5fd67da69210078e5ff6a648261f5b07f133e",
+      "bytes": 11854
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "sha256": "cac2866b400b27010cddc3f48b4a1a3b9d7cab7ec5c40a66d729478183a07614",
+      "bytes": 33552
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "sha256": "ee5c0569a6a3b531c41086e0ca5b45b8154e8e0623b7872276da50f781c73ef9",
+      "bytes": 19109
+    },
+    {
+      "path": "server/internal/service/collaboration_source_authority_race_test.go",
+      "sha256": "992d1afb1ee9d71e48daabffe682a6dc034fe593beac97b101ef37dbe9c0f979",
+      "bytes": 14493
+    },
+    {
+      "path": "server/internal/service/collaboration_stage.go",
+      "sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+      "bytes": 17873
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_policy.go",
+      "sha256": "aa9db1a3fdabbc14f34e4b673ac18e052648694eba1c78f4759c6fec78a9949e",
+      "bytes": 11692
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_view.go",
+      "sha256": "deb2632c3b93f78f00bf553f6e8efd88bb69685795ffa9c43a7bee1e8e25c516",
+      "bytes": 27648
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "a2334a92b62c6eb1a3a231587c77a9e4fc59383005f770066f3e854522f08568",
+      "bytes": 31644
+    },
+    {
+      "path": "server/internal/service/issue_status_write.go",
+      "sha256": "71c96fea42ad2f07017577091face61c5295921883b74a09744d2153771ed286",
+      "bytes": 6540
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_comments.sql",
+      "sha256": "367e12d829b345087f8e36d390723115e8e92f88ee62f1d3af870748d52f8e87",
+      "bytes": 3598
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_handoff.sql",
+      "sha256": "05d738cdabae133f5c21cf6c894d6db6d2b07f4bf1f6432b34e3bb2dab61f9db",
+      "bytes": 3012
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_notifications.sql",
+      "sha256": "d964a2bcc3139a4d36f47ba8bec23b3aa97d32ed2691285a3629120282254b31",
+      "bytes": 2201
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_workflow.sql",
+      "sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+      "bytes": 4934
+    },
+    {
+      "path": "server/pkg/db/queries/issue.sql",
+      "sha256": "1a83e00afbfab08d8d75a1cf9c1d9269a209216f9fa24c1e2cc6a2980d98583e",
+      "bytes": 30835
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_handoff.go",
+      "sha256": "a2af3cb853fe14e4fec2d73a59b177ba68a52f17bced2d3ef58b2e54b892f9ac",
+      "bytes": 18020
+    }
+  ],
+  "initial_missing_paths": [
+    "packages/core/collaboration/action-schema.ts",
+    "packages/views/collaboration/detail.tsx"
+  ],
+  "final_capture_at": "2026-11-14T14:38:43.223215+00:00",
+  "source_manifest_final": [
+    {
+      "path": ".trellis/spec/core/frontend/index.md",
+      "sha256": "d8d6010e708abfa1d67b5ae8c392983c0a913d89242d07facc1fadb6268c4ec3",
+      "bytes": 4082,
+      "mtime_ns": 1794643434186983764,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/spec/guides/index.md",
+      "sha256": "d057ba61d5b1d50d929920df249b4d061701f8a08f996eec9c520248617ed40a",
+      "bytes": 4404,
+      "mtime_ns": 1789489496003334404,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-content.md",
+      "sha256": "637c2911ceb9d3713ee79e3c2b3ff92227dbbeae6ebc51a37cebcb803bf9416e",
+      "bytes": 15918,
+      "mtime_ns": 1794552422887691434,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-foundation.md",
+      "sha256": "f867b6f7cb6ce34c013a3bc1c5266381d2602d756c82aa9bc25a332952f6f099",
+      "bytes": 41981,
+      "mtime_ns": 1793683138009711597,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-realtime.md",
+      "sha256": "321cc698a38a5629b9ddd1477fd1caa86288df708e1891201c5c6e5d4417d64b",
+      "bytes": 6341,
+      "mtime_ns": 1793554455079702316,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-runtime-recovery.md",
+      "sha256": "567d1503719db0bc04e04480d292b18c1b700a4cfeed53c47ef5df64d4b5b064",
+      "bytes": 14413,
+      "mtime_ns": 1793549914386107318,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-source-editing.md",
+      "sha256": "652d71d25519580a88421df1f54d2ce6c621072504c83f3dd1124e1fc5ad1be5",
+      "bytes": 16067,
+      "mtime_ns": 1794339675060111597,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "be229701226d051a86adfac59fdaadec7be286aea0f057dea0de1361171c80bc",
+      "bytes": 17526,
+      "mtime_ns": 1794654525635348986,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/spec/server/database-test-isolation.md",
+      "sha256": "6317dea643c1e395aaea3ff7a0aa1cc5b3f33b085636c739606aaa33ff1a6b07",
+      "bytes": 23251,
+      "mtime_ns": 1793890045638902985,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/spec/server/index.md",
+      "sha256": "27c9bdab409b1ce54627cce12b229a92a0167fd4283489c6e857436ac03db35b",
+      "bytes": 9422,
+      "mtime_ns": 1794643434185972807,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/spec/views/frontend/index.md",
+      "sha256": "6cc9a47877abb52ff7090c22e22123f4fcedb4a142fc999ae6c3459842094484",
+      "bytes": 6213,
+      "mtime_ns": 1794339675061906430,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "sha256": "091831a98d9cf64609d2d9c0017507e9bfdb00b476a5176f50c8001af190346e",
+      "bytes": 11503,
+      "mtime_ns": 1794645118282217145,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/implement.md",
+      "sha256": "ab03a6d7892c74a955b72e3c8e4598f7b1ad71e89107ebdad6e3d4851245c845",
+      "bytes": 25968,
+      "mtime_ns": 1794666567118876903,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3d-check.json",
+      "sha256": "cf1edd88845096883fdab04848451d73155f6488ed1589100aef01c17c72dece",
+      "bytes": 183923,
+      "mtime_ns": 1794663485683405406,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3d-check.md",
+      "sha256": "2ff01c27e048db0444d679b2913e394cabe72254680a51dbdb636d255ed2ee73",
+      "bytes": 8775,
+      "mtime_ns": 1794663384850471236,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/new-session-handoff-20261114.md",
+      "sha256": "92f25e34cff08b6759e790655e84ead216385b0aa78aae205d29999d245bcef9",
+      "bytes": 15860,
+      "mtime_ns": 1794649872055682933,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-acl-fix-check.md",
+      "sha256": "ea3e89d37085fa0e55f2ab460712c4a78d16dd9c384f09a4a7dfe9290d302b71",
+      "bytes": 6790,
+      "mtime_ns": 1794652173182781420,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-followup-check.json",
+      "sha256": "7f412e1c9cd2c6a56c7726b4d301d00493ad64902e5e3a9915d53a754ecee3b0",
+      "bytes": 15888,
+      "mtime_ns": 1794665349029658780,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-followup-check.md",
+      "sha256": "8099e524ea0adbd2ebac7c4d5aabb7b8ca4660861f579f889bd3f0a6c4e98862",
+      "bytes": 5448,
+      "mtime_ns": 1794665289942814796,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-client-contract.md",
+      "sha256": "0d46ea40ac97b0bef782b959222035dbcdf5c96c921a7ff6d7b1a5a16f17fcc6",
+      "bytes": 9882,
+      "mtime_ns": 1794657116246702259,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/design.md",
+      "sha256": "7a442abc844b4d1372ce942cc4e03df16a7a82c4792ec44c573f5d9ab3f2002a",
+      "bytes": 1843,
+      "mtime_ns": 1794597217649714585,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/implement.md",
+      "sha256": "c6e06f258458d4cf5761a21cbcf9979cecec90e1f0267af92b67ea54de4cebc1",
+      "bytes": 1194,
+      "mtime_ns": 1794597217649424501,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/prd.md",
+      "sha256": "481c2f7cd895eadfa934e044ad6a10650bf0def477d110127c1e0bef7cdb34b4",
+      "bytes": 2498,
+      "mtime_ns": 1794597217650174795,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-gaps.md",
+      "sha256": "b2145885f0eac50dd459623521daa454c6034e84aada25897f8b4534800f38f7",
+      "bytes": 20897,
+      "mtime_ns": 1794560213587713098,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      "sha256": "8b99920aa58430eef695c4fa2e66703042962aaaeb4addbb84196d7ab2ff6aab",
+      "bytes": 13171,
+      "mtime_ns": 1794657624048864376,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/task.json",
+      "sha256": "faf25b50dd2b70a051e860a3026a5243354974dd8249e070c6014941beb580e5",
+      "bytes": 1718,
+      "mtime_ns": 1794663968409132477,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/design.md",
+      "sha256": "bf6a9dd22874a652299d8457729fc59a456e40c899f12b902560dd2eff3a7e9f",
+      "bytes": 3333,
+      "mtime_ns": 1794560612689049303,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/implement.md",
+      "sha256": "a41be9a7ef474c1dcff74c8c6bb3023861a2bcec1aa3026413ca681240b10009",
+      "bytes": 2113,
+      "mtime_ns": 1794597217649129125,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/prd.md",
+      "sha256": "d2002f33d4a59790fb3ac2c6b10ae5f9a686e6b357cd8d8da43f998bae9805ba",
+      "bytes": 1815,
+      "mtime_ns": 1794560314225354075,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md",
+      "sha256": "ffb0264996dbf7700cb934fe66e0a54989928147d6d778e78bcb582590503a60",
+      "bytes": 3638,
+      "mtime_ns": 1794597217648648665,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/check-review.json",
+      "sha256": "8d687377bdd4e999418807bb5d84e97956c5870c2c2d110e4f39bf72c237f4ef",
+      "bytes": 48211,
+      "mtime_ns": 1794565169422833720,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/check-review.md",
+      "sha256": "9a1c5100f6200025ef9cbb02548b53adb8f460610dd422fd6cea9673f128906d",
+      "bytes": 10352,
+      "mtime_ns": 1794565169424177889,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/cleanup-final.json",
+      "sha256": "605a02b893553e5dc0e0807a5d9b1404498175b37ae1ded2f7529b7a6beba28a",
+      "bytes": 881,
+      "mtime_ns": 1794564216848922051,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/implementation-report.md",
+      "sha256": "57935e15e673ebf9716c9df3824bedb576a2dc327b7e1a8e9d7cad8bc55f20b9",
+      "bytes": 3780,
+      "mtime_ns": 1794562624060407482,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/implementation-results.json",
+      "sha256": "61b89f1c39ed089408e4a2478d03f5f12baf97a515953fa8ba8497905496d7ff",
+      "bytes": 8401,
+      "mtime_ns": 1794562651094215233,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/plan-review.json",
+      "sha256": "ab1874b63cebaf90b0d9b19776b32883d251504eecec8a7caa9f3a1342f1ff0b",
+      "bytes": 3237,
+      "mtime_ns": 1794560734995554706,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/plan-review.md",
+      "sha256": "b9e03bdc613c0be685ef544a853110b1ece96d132331293aa0c5362d2dfab447",
+      "bytes": 7957,
+      "mtime_ns": 1794560734829120899,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/runtime-final-audit.json",
+      "sha256": "0397dd24ad051db4f351e189f0a641258c4278c9b63913b46d8ca5fd2aab37b5",
+      "bytes": 4303,
+      "mtime_ns": 1794563537153795897,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/runtime-results.json",
+      "sha256": "679bb2f350dfa453c760589beede56056d1a46459bd64e581f6519ee9a50801c",
+      "bytes": 8015,
+      "mtime_ns": 1794564115643285592,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/research/targeted-static-check.json",
+      "sha256": "97b7e3d0d5ec1d4cdae9b4bad8a4adc80511380c33400222e85267ab4830b385",
+      "bytes": 55229,
+      "mtime_ns": 1794564715135933817,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/task.json",
+      "sha256": "ccb0fecdf3d897a6a0c5ad912c6364744bfc6cab9ef20195dfb1fc4f2e9ccc4b",
+      "bytes": 959,
+      "mtime_ns": 1794597445751551831,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": ".trellis/workflow.md",
+      "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+      "bytes": 39348,
+      "mtime_ns": 1791544019249305313,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "403ec642d0625862bd042fa3293be4c46bb308b88159cbaa75559cbf1f389289",
+      "bytes": 3840,
+      "mtime_ns": 1788666314169891697,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+      "bytes": 21075,
+      "mtime_ns": 1792324368624446229,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "sha256": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+      "bytes": 8094,
+      "mtime_ns": 1792628320239719292,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "e2e/collaboration-timeout-recovery.spec.ts",
+      "sha256": "d7d63e25cb4b96c22c5e5577dbb8f0749dcce53c4fca7529eb5723bd3d4fb306",
+      "bytes": 16753,
+      "mtime_ns": 1794562570042333335,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-offline-result-notifications.ts",
+      "sha256": "36d93b95972d3c647bf11d8b89b27d03c166bd41dfaaede365ebbe025cc75b04",
+      "bytes": 25158,
+      "mtime_ns": 1793848287643371212,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "package.json",
+      "sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+      "bytes": 2669,
+      "mtime_ns": 1791817605987502875,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "sha256": "89fd63d8439b60882c1a33297172d3595718d7357a505950502c1698516a83a4",
+      "bytes": 366334,
+      "mtime_ns": 1794662718260686575,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/api/ws-client-account.test.ts",
+      "sha256": "c1b6afe8e46ee773cafcc12944108166dd6a21641d56a2540270ab55cbb2c02b",
+      "bytes": 4997,
+      "mtime_ns": 1793497909152303886,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/api/ws-client.ts",
+      "sha256": "93004628a0444e721fbea3ea0fd40f988b1075381b065a703b5d41373d538f88",
+      "bytes": 11636,
+      "mtime_ns": 1793497909152744804,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/collaboration/access.ts",
+      "sha256": "17e87d13d8eafb9329113fe0105b7c67e801e34f6a38491f3d067a7ea9309fe9",
+      "bytes": 7995,
+      "mtime_ns": 1792424069943021166,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/collaboration/action.ts",
+      "sha256": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65",
+      "bytes": 8541,
+      "mtime_ns": 1794655870463218234,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/collaboration/attachment-schema.test.ts",
+      "sha256": "5c9c4fd329bd06ceff3d5db6e8de1d5bd199b7e4ae6f415f1133da603b2e1c42",
+      "bytes": 6045,
+      "mtime_ns": 1792335162904780061,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "packages/core/collaboration/attachment.ts",
+      "sha256": "2a248157d134b718d057e1896718e88a8a9e6d2bab2fc71704a8a23b33c450d4",
+      "bytes": 10076,
+      "mtime_ns": 1792388249264871773,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/collaboration/completion-schema.ts",
+      "sha256": "f7b36b0e2c55f5f09c0dd51cd7a4f3a9ecb86d5239a590eae5d28b9fd1d65145",
+      "bytes": 6355,
+      "mtime_ns": 1794657377996382033,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "packages/core/collaboration/content-queries.ts",
+      "sha256": "13970e519b1cc266772931b825cf44b2fb42fae0e4a5dc83f67b6475a414938b",
+      "bytes": 5029,
+      "mtime_ns": 1793472923649407980,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-access.ts",
+      "sha256": "a5658205a2dadd1ce3c4b8d2498564729bdc5d1df63ff9ea5ac3133f3759f060",
+      "bytes": 4786,
+      "mtime_ns": 1792335689134061298,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-draft.ts",
+      "sha256": "392256627466acb18df55b03b82ad248696993499bc8a643d0746e8e5ab0aab2",
+      "bytes": 10925,
+      "mtime_ns": 1794639254172134803,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/collaboration/delivery.test.ts",
+      "sha256": "6e9f49c3955253eee661fdfd872ce5a8f69e5cae6efdc56b913eb81081cd8199",
+      "bytes": 20968,
+      "mtime_ns": 1792943506480259797,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/collaboration/draft.ts",
+      "sha256": "591036cf1a5a28d87560d4c8b0fc691ab713dc86d6340b67654ed4e20139eb99",
+      "bytes": 5011,
+      "mtime_ns": 1794605964327523355,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/collaboration/run-handoff-schema.ts",
+      "sha256": "509283b3a4734524274962039faecb6b63718254a7290e75739a399d170ec41b",
+      "bytes": 6039,
+      "mtime_ns": 1793549914416013866,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "packages/core/collaboration/schema.ts",
+      "sha256": "780f2248b0798741b64315c531ff3f84309885468e8b80b27cc2b9df1ab3880b",
+      "bytes": 23858,
+      "mtime_ns": 1794655807402103753,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/package.json",
+      "sha256": "fb33e7358a74013bd1f795250c1af691cb40f9f0a0345a25bd786804b814082b",
+      "bytes": 9519,
+      "mtime_ns": 1794440777341479100,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "packages/core/realtime/collaboration.test.ts",
+      "sha256": "ca273b27e660a7bc084407769c39f10512ac974f145d7c551295951bd4fb81e9",
+      "bytes": 13469,
+      "mtime_ns": 1792409095980539991,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/core/realtime/collaboration.ts",
+      "sha256": "5787f6335af600bf186228e4f27ad166bc76051f1368086452508cbbe148c2f8",
+      "bytes": 8099,
+      "mtime_ns": 1793497909158603826,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/views/collaboration/attachment-picker.test.tsx",
+      "sha256": "c0de58e23a92e30cec4afc72e9498e7d416f923238e4a1b140ecbebdbfb30dc2",
+      "bytes": 4795,
+      "mtime_ns": 1794057514028961543,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "packages/views/collaboration/attachment-picker.tsx",
+      "sha256": "d909037eb0910954168c7ef7710e0ca6466f5fa5ab7cbe0138bb2f43c56c70c8",
+      "bytes": 9474,
+      "mtime_ns": 1794058835179747004,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "sha256": "aeff499aecf96267b2e06c2d87537e834e01b202f18c2f8a41a6848f1fba5487",
+      "bytes": 16567,
+      "mtime_ns": 1794664921564697857,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "packages/views/collaboration/collaboration-detail.tsx",
+      "sha256": "03424f55209aaabb85dbc6cefcd46a41fd7417f1bf302cec274cd666b4382ff0",
+      "bytes": 11663,
+      "mtime_ns": 1794663268950441096,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "packages/views/collaboration/comment-list.tsx",
+      "sha256": "fd18168b323fdcf7647dd727f025a49f9556cf794827d42f1387c85acb77625b",
+      "bytes": 17300,
+      "mtime_ns": 1794550758855824634,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/views/collaboration/workflow-upload.test.tsx",
+      "sha256": "928dcc9ce1f17ece855f478f24e0eebf112857f6e5b3ad2854814cee54ac534e",
+      "bytes": 3722,
+      "mtime_ns": 1794011954372869685,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "packages/views/collaboration/workflow.test.tsx",
+      "sha256": "f9228b8d05787188f6d084726416fb33d55923a9774191904e36ae710126506b",
+      "bytes": 40146,
+      "mtime_ns": 1794635079257173320,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/views/collaboration/workflow.tsx",
+      "sha256": "bf247af6b9f93246ebb7e8ea168526d46ed62ac2db3df04484018a7266515d91",
+      "bytes": 44489,
+      "mtime_ns": 1794658779629107067,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "packages/views/package.json",
+      "sha256": "f0ac73d012680db778fd6088ee3c1f1d19fc95a935312836abbb731a387bda07",
+      "bytes": 5650,
+      "mtime_ns": 1792950065164678067,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+      "bytes": 1033,
+      "mtime_ns": 1788971200489973776,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "a1b01b9f10d0de1be4b96547afe698f7d194c5ce8983e3d94a9a214278c7e259",
+      "bytes": 151082,
+      "mtime_ns": 1794665824565259136,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/go.mod",
+      "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+      "bytes": 3586,
+      "mtime_ns": 1791422929078490124,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/handler/admin_collaboration.go",
+      "sha256": "cb2e44e7d4d7452d1e2d9335f939091bb892dca6324273f15016d957a340d7c8",
+      "bytes": 8151,
+      "mtime_ns": 1794339675130311167,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/handler/collaboration.go",
+      "sha256": "d0a141a653cafb514074c0deebcdb0ce2723a65b8b7448d7bea77c80fb311889",
+      "bytes": 11488,
+      "mtime_ns": 1793668100546196433,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/handler/collaboration_attachments.go",
+      "sha256": "02a5bbbaa005a7690ef84d3ac76f76be923380f12ad172b39c9646b3cf79a1a3",
+      "bytes": 12106,
+      "mtime_ns": 1792332326147739108,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/handler/collaboration_attachments_test.go",
+      "sha256": "63922cf6442ad54ed794492ea0450c58b5e9d95f5502d0c4d2b473d377d0119e",
+      "bytes": 16612,
+      "mtime_ns": 1792334765570627854,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/handler/collaboration_comments.go",
+      "sha256": "86b78fa84e0214a5d10eeb9f2f91fff1fb429d46578699edb6fba506e275365c",
+      "bytes": 7609,
+      "mtime_ns": 1793472923669037892,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/handler/collaboration_comments_recall.go",
+      "sha256": "5cfcddf4a6b561e5b9cee54595f4468e338d4d3e467bfb2e10cb04d55f963a3a",
+      "bytes": 3351,
+      "mtime_ns": 1793472923669548186,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/handler/collaboration_comments_recall_test.go",
+      "sha256": "0a8b953a5fe15262629b8599afa4ec9f0486aeab68cb4b6fd5140f6c04f2dcde",
+      "bytes": 2370,
+      "mtime_ns": 1793472923669833562,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/handler/collaboration_edit.go",
+      "sha256": "ed57619518845efad7b7fb001e58dd0872e71ad471e3fa283736d1b786d9dbec",
+      "bytes": 5210,
+      "mtime_ns": 1794339675133283708,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/handler/collaboration_lifecycle.go",
+      "sha256": "83bcc24297c482d650940d7e53aae15199fa697e8b049024920aca0848818ecc",
+      "bytes": 2782,
+      "mtime_ns": 1794339675133777458,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/handler/collaboration_workflow.go",
+      "sha256": "7919a83a080f0fffebcd6266552fc38855e6edc6c3ea22b47f3c8c7ab48d43ec",
+      "bytes": 16374,
+      "mtime_ns": 1794642701281399290,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/handler/issue.go",
+      "sha256": "39b7074ae75f9f5e612ba22987c42d147f41763cf965eb654997302ffe844db4",
+      "bytes": 221261,
+      "mtime_ns": 1794623824424543664,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/handler/issue_move.go",
+      "sha256": "d24a2721b68acc381d80f7389aa786ad71c13dbec2e9adb9df79af69b227de45",
+      "bytes": 6713,
+      "mtime_ns": 1794339675140375791,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/handler/issue_revision_test.go",
+      "sha256": "e47687514a63f8d8b34b2f236a957ba5bc32380e1d55cb3edbe87bb440876e09",
+      "bytes": 38979,
+      "mtime_ns": 1788172177000000000,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/handler/issue_status.go",
+      "sha256": "625fd1e613ba891523ae5b74db6d64a90d9a8012a21576d852cb57b3e75da441",
+      "bytes": 24714,
+      "mtime_ns": 1788172177000000000,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/admin_collaboration.go",
+      "sha256": "8268be7e80b4ead6c5fab3ac90209b8a4adb9f72d6de2f8d2c4561843bd8174e",
+      "bytes": 21351,
+      "mtime_ns": 1794339675144788248,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration.go",
+      "sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+      "bytes": 19936,
+      "mtime_ns": 1794652970250419456,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_account_reconciliation.go",
+      "sha256": "7bb8a48eef77f13fd19f08ae16253f0aaf94ea19058ef07a7b5b43ae1f972177",
+      "bytes": 10043,
+      "mtime_ns": 1792532284935336815,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_activity.go",
+      "sha256": "cefc584c85d7f58f788419015ba224fb94adbbc2bab594eaa7915a75f60198ed",
+      "bytes": 11168,
+      "mtime_ns": 1792384036360200012,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_attachment_access.go",
+      "sha256": "ac216b941ebfe58972730dac5801b4d8b8c32c97c44c6cd5e358d8c6d85d416a",
+      "bytes": 2653,
+      "mtime_ns": 1792331464555819775,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_attachments.go",
+      "sha256": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+      "bytes": 24398,
+      "mtime_ns": 1794339675148753206,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_attachments_test.go",
+      "sha256": "6231ea4376e93e0efd6e05672a2ab02816755e008b107f9a7020b97da1fe021f",
+      "bytes": 15324,
+      "mtime_ns": 1792332973271034940,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments.go",
+      "sha256": "4fb2e4668e5288c068e4f4365a68b1a552233f08725611e2080402a3726e5d79",
+      "bytes": 12178,
+      "mtime_ns": 1794640032124897195,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_create.go",
+      "sha256": "92830ce01ba00b3ae3bc2d2614e86f58ddaced2c474d1c31fcc05c5edb5219e2",
+      "bytes": 7167,
+      "mtime_ns": 1794642701281518248,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_edit.go",
+      "sha256": "7cd5dfabb33d6a384ba337f0182609ba368907c3e800312dae75962f1d671063",
+      "bytes": 8973,
+      "mtime_ns": 1793497909229993545,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_recall.go",
+      "sha256": "5ffa0c1784063a5e07eb8feb5a624b2995a1530e83b653c993011120fbe25ad8",
+      "bytes": 15932,
+      "mtime_ns": 1793549914440948197,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_recall_test.go",
+      "sha256": "2fef734cebd6d102c7e5a993a74197cdc4cea32ecdbf09603dda31d6059ee0cd",
+      "bytes": 14999,
+      "mtime_ns": 1794551304661651115,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_test.go",
+      "sha256": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0",
+      "bytes": 23820,
+      "mtime_ns": 1794550737040670632,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_view.go",
+      "sha256": "612d325ad9bb5ebc5842324eb8d292958c0412dd1fde21b537d22450e66b50d0",
+      "bytes": 11651,
+      "mtime_ns": 1794551131985949980,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_creation_fields.go",
+      "sha256": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+      "bytes": 7356,
+      "mtime_ns": 1792383454934790846,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_discussion.go",
+      "sha256": "e957eeda4c4cb01a0a572230a980f9f81953b5cd4c63dfdf29b2304f3a7e11e2",
+      "bytes": 10019,
+      "mtime_ns": 1792387095642603827,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_edit_test.go",
+      "sha256": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c",
+      "bytes": 28073,
+      "mtime_ns": 1792293501561671294,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff.go",
+      "sha256": "09f93f41c49d38342be52e1a82019dc47f0d964185a9d184c34f7c6ef82d7aaa",
+      "bytes": 18783,
+      "mtime_ns": 1793668100401495984,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_snapshot.go",
+      "sha256": "3f8908055f5e7b5936925d2010df531e1802269bfade7dbf963f00e61d8062c2",
+      "bytes": 11059,
+      "mtime_ns": 1793549914442327824,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_public.go",
+      "sha256": "9946e2d25389cabe12e132486cd4e2799264aad91bfad0a36a9c2efeee6aad55",
+      "bytes": 3917,
+      "mtime_ns": 1794659973784629859,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_resolve.go",
+      "sha256": "71edc228f9afd836b35d45aa422d87fd91e60ae3ea108bd96f6bdae5b7fb9681",
+      "bytes": 16861,
+      "mtime_ns": 1794662496625094072,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_source_auth_test.go",
+      "sha256": "a40af92bc2a57235c66589681ca57968933f45b2761109a517944b62b31ebe9c",
+      "bytes": 2568,
+      "mtime_ns": 1793497909232685430,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_sources.go",
+      "sha256": "8303b983b42256a101254a4081b2060e65342e6f3133283b7fb674159df43446",
+      "bytes": 7033,
+      "mtime_ns": 1794658498282482106,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_validity.go",
+      "sha256": "9c8c5b763352d2647fd0e92402f32aa74ce0d50fd6ac4a9fb355de0f201559e5",
+      "bytes": 7950,
+      "mtime_ns": 1794662496621827449,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_view.go",
+      "sha256": "533cee013c532f8623077ac9fce7271123bf42984cd42eed206705a2a5af3c9e",
+      "bytes": 25986,
+      "mtime_ns": 1794659757166787805,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "sha256": "89835747e96caf731869b35a389b74f548fc2be979328f5bd6dcb928e00b11ea",
+      "bytes": 26725,
+      "mtime_ns": 1794658854192292532,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle_test.go",
+      "sha256": "a892d2c1d464b76920359594c8195c7403fee360454e801dca6d28bd6586b92a",
+      "bytes": 36797,
+      "mtime_ns": 1793671463218093354,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_mentions.go",
+      "sha256": "a20b671c1541c93f808881950e387302c5af1e33269c7f98b034fb5d93c2add1",
+      "bytes": 9464,
+      "mtime_ns": 1793667315655512324,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_notifications.go",
+      "sha256": "99c7a0f1a52c347062432fac16890daa5e1395b41b37bcec5f4eb8d47c605ed4",
+      "bytes": 9163,
+      "mtime_ns": 1792409707151522259,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_notifications_test.go",
+      "sha256": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec",
+      "bytes": 4966,
+      "mtime_ns": 1792249026739838775,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_outcome_receipt_test.go",
+      "sha256": "0e5564d334dee7a485b2a7423039ae78f6d1db2493616386e441ca8554ddc7bb",
+      "bytes": 9271,
+      "mtime_ns": 1792944575363308552,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_realtime_test.go",
+      "sha256": "9609106d2d5728e3fefaea00a93f5ad77b964789480cdee6803016841b1d2439",
+      "bytes": 8774,
+      "mtime_ns": 1792388399047308933,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_records_test.go",
+      "sha256": "df2b8cc44105a963c73c34f32ef2b8ef1d4d6b54eee79aea9d0c4c403b7eb713",
+      "bytes": 14353,
+      "mtime_ns": 1793472923675942545,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_result_notifications_test.go",
+      "sha256": "0738215c6b3b7c9440749dd7f4b5fd67da69210078e5ff6a648261f5b07f133e",
+      "bytes": 11854,
+      "mtime_ns": 1792410808661782796,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "bytes": 36667,
+      "mtime_ns": 1793667315652249517,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "sha256": "cac2866b400b27010cddc3f48b4a1a3b9d7cab7ec5c40a66d729478183a07614",
+      "bytes": 33552,
+      "mtime_ns": 1794639895542194922,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "sha256": "ee5c0569a6a3b531c41086e0ca5b45b8154e8e0623b7872276da50f781c73ef9",
+      "bytes": 19109,
+      "mtime_ns": 1793549914444199619,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff_source_test.go",
+      "sha256": "0c3fb28b3d8ac1f32f40c47c2d0d846355ecd3fadfdd4a17d5dc7938b8a36ab3",
+      "bytes": 7308,
+      "mtime_ns": 1793472923677380301,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_preparation.go",
+      "sha256": "ab064e11e61320eb8ce62573226f9a2eebede36d4103652f2ecb63a8716c1227",
+      "bytes": 26563,
+      "mtime_ns": 1793323355577748405,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_source_authority_race_test.go",
+      "sha256": "992d1afb1ee9d71e48daabffe682a6dc034fe593beac97b101ef37dbe9c0f979",
+      "bytes": 14493,
+      "mtime_ns": 1792591428078840892,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_source_fields.go",
+      "sha256": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade",
+      "bytes": 7289,
+      "mtime_ns": 1793632905508235375,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_squad.go",
+      "sha256": "a2f790d7afcf6c678292832ebe9ff15d8db2a5759455c1fedc2288a31b880c71",
+      "bytes": 19806,
+      "mtime_ns": 1793549914446978040,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage.go",
+      "sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+      "bytes": 17873,
+      "mtime_ns": 1794641677268340545,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_policy.go",
+      "sha256": "aa9db1a3fdabbc14f34e4b673ac18e052648694eba1c78f4759c6fec78a9949e",
+      "bytes": 11692,
+      "mtime_ns": 1794603822067015644,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_view.go",
+      "sha256": "deb2632c3b93f78f00bf553f6e8efd88bb69685795ffa9c43a7bee1e8e25c516",
+      "bytes": 27648,
+      "mtime_ns": 1794638303752509517,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "a2334a92b62c6eb1a3a231587c77a9e4fc59383005f770066f3e854522f08568",
+      "bytes": 31644,
+      "mtime_ns": 1794628021477569758,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/internal/service/issue_status_write.go",
+      "sha256": "71c96fea42ad2f07017577091face61c5295921883b74a09744d2153771ed286",
+      "bytes": 6540,
+      "mtime_ns": 1794339675153655621,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/migrations/860_knowledge_automation_execution_policy.up.sql",
+      "sha256": "55058e7ca7778f1d30deac4e7fd8b0faabce52cb2b18f3c350a976c706a3677b",
+      "bytes": 4877,
+      "mtime_ns": 1794658627702098116,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_comments.sql",
+      "sha256": "367e12d829b345087f8e36d390723115e8e92f88ee62f1d3af870748d52f8e87",
+      "bytes": 3598,
+      "mtime_ns": 1792248473307168498,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_handoff.sql",
+      "sha256": "05d738cdabae133f5c21cf6c894d6db6d2b07f4bf1f6432b34e3bb2dab61f9db",
+      "bytes": 3012,
+      "mtime_ns": 1793472923680384855,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_notifications.sql",
+      "sha256": "d964a2bcc3139a4d36f47ba8bec23b3aa97d32ed2691285a3629120282254b31",
+      "bytes": 2201,
+      "mtime_ns": 1792248473307333915,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_workflow.sql",
+      "sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+      "bytes": 4934,
+      "mtime_ns": 1792532210739000820,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/pkg/db/queries/issue.sql",
+      "sha256": "1a83e00afbfab08d8d75a1cf9c1d9269a209216f9fa24c1e2cc6a2980d98583e",
+      "bytes": 30835,
+      "mtime_ns": 1794549917338446375,
+      "capture_phase": "initial_and_final"
+    },
+    {
+      "path": "server/pkg/db/queries/issue_status.sql",
+      "sha256": "05a61ad6a7863a04e5e21f36bb4a6befa6abac516532933991d584f0da6ca608",
+      "bytes": 8245,
+      "mtime_ns": 1788172177000000000,
+      "capture_phase": "final_only"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_handoff.go",
+      "sha256": "a2af3cb853fe14e4fec2d73a59b177ba68a52f17bced2d3ef58b2e54b892f9ac",
+      "bytes": 18020,
+      "mtime_ns": 1793549914447528457,
+      "capture_phase": "initial_and_final"
+    }
+  ],
+  "source_capture_drift": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/implement.md",
+      "initial_sha256": "af71a48a62d59dc875e13c876a3531fa5f3aa185346c960812c56cae3d9b9777",
+      "final_sha256": "ab03a6d7892c74a955b72e3c8e4598f7b1ad71e89107ebdad6e3d4851245c845"
+    }
+  ],
+  "final_missing_paths": [],
+  "initial_missing_path_resolution": {
+    "packages/core/collaboration/action-schema.ts": "No standalone file; actual discriminated schema is in packages/core/collaboration/action.ts:18",
+    "packages/views/collaboration/detail.tsx": "Actual shared detail is packages/views/collaboration/collaboration-detail.tsx:24"
+  },
+  "source_binding_caveat": "Read-only hashes describe a mixed live workspace, not a coherent accepted/compiled source candidate. Initial capture occurred during research; final-only entries have no first-sample drift evidence. Rebind after S2 and peer changes settle.",
+  "task_state_observed": {
+    "s3": "planning",
+    "knowledge_peer": "in_progress",
+    "parent_matrix": {
+      "PARTIAL": 4,
+      "NOT_RUN": 20
+    },
+    "s2_latest_retained_reports": {
+      "2b": "S2B-C01 independently closed",
+      "2c": "S2C-C01/C02 follow-up independently passed, source4939; full S2 pending",
+      "3d": "bounded client independent approve; Core550 Views112; actual API/Web/Desktop pending"
+    },
+    "latest_migration_observed": "860_knowledge_automation_execution_policy.up.sql",
+    "coordinator_state_file_caveat": "The observed runtime summary predates newer 2c/3d check reports; reports take precedence for those bounded increments.",
+    "s2_latest_implement_update": "2026-11-14T14:28Z: server2d started; E2E4 independent pure/static13 accepted, actual scenario execution0; isolated Web build underway without result"
+  },
+  "archived_evidence": {
+    "task": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof",
+    "scope": "T01-T06 controlled Provider timeout/proof/ACK recovery; do not reimplement",
+    "runtime_source": "feb87aee7 + four runtime/E2E files; two other unit files tested in root",
+    "accepted": "15s actual timeout, Stop both orders, cross-process original receipt recovery, explicit fresh run preserving old failure",
+    "not_established": [
+      "current final S2 candidate",
+      "real model accounts/quality",
+      "Agent output attachment upload",
+      "installed Desktop Main",
+      "remaining full S3"
+    ]
+  },
+  "topics": [
+    {
+      "id": "uploads_and_late_results",
+      "current_contract": [
+        "uploader+draft+original request identity",
+        "unknown commit preserves possible winning ciphertext",
+        "GET upload metadata requires current authority",
+        "late exact recorded outcome ACK is content-free, changed/new late event cannot replace failure"
+      ],
+      "canonical_sources": [
+        "server/internal/service/collaboration_attachments.go:67",
+        "packages/core/collaboration/attachment.ts:63",
+        "server/internal/service/collaboration_comments_edit.go:146",
+        "server/internal/service/collaboration_runtime_capabilities.go:428"
+      ],
+      "planned_cases": [
+        "U1",
+        "U2",
+        "U3",
+        "U4",
+        "U5",
+        "L1",
+        "L2"
+      ]
+    },
+    {
+      "id": "55_comment_reconnect",
+      "current_contract": [
+        "limit50/max_bytes65536 selects v2 RecallComments",
+        "byte budgets may cause more than2pages",
+        "page cursor uses created_at+id; each page chronological",
+        "reconnect waits for auth, re-subscribes and GETs without replaying writes"
+      ],
+      "canonical_sources": [
+        "packages/core/collaboration/content-queries.ts:16",
+        "server/internal/handler/collaboration_comments.go:76",
+        "server/internal/service/collaboration_comments_recall.go:201",
+        "packages/core/realtime/collaboration.ts:125",
+        "packages/views/collaboration/collaboration-detail.tsx:79"
+      ],
+      "planned_cases": [
+        "P1:Web",
+        "P1:Desktop",
+        "P1:revoked_offline",
+        "P1:late_page_fence"
+      ],
+      "denominator": "55 new persistent comment IDs including deleted tombstones, plus separately enumerated baseline/control comments; all pages until null cursor"
+    },
+    {
+      "id": "priority_handler_races",
+      "current_contract": [
+        "workflow current authority precedes revision",
+        "former handler can be403 after transfer wins",
+        "ordinary expected_revision remains optional"
+      ],
+      "canonical_sources": [
+        "server/internal/service/collaboration_edit_test.go:25",
+        "server/internal/service/collaboration_edit_test.go:304",
+        "server/internal/service/collaboration_workflow.go:557",
+        "server/internal/handler/issue.go:3426",
+        "server/internal/handler/issue_revision_test.go:308"
+      ],
+      "planned_cases": [
+        "priority_vs_priority_both_orders",
+        "priority_vs_handler_both_orders",
+        "same_key_same_payload",
+        "same_key_changed_payload",
+        "ordinary_child_priority_vs_assignee_explicit_revision_both_orders",
+        "ordinary_missing_revision_compatibility_control"
+      ]
+    },
+    {
+      "id": "mixed_mentions",
+      "current_contract": [
+        "typed people UUID and kind+resource target dedup",
+        "active participants own original notification recipients",
+        "unique notification recipient+issue+event_seq",
+        "edits produce only newly added human mention delta"
+      ],
+      "canonical_sources": [
+        "server/internal/service/collaboration_mentions.go:27",
+        "server/internal/service/collaboration_comments_create.go:106",
+        "server/internal/service/collaboration_notifications.go:45",
+        "server/pkg/db/queries/collaboration_notifications.sql:1"
+      ],
+      "planned_cases": [
+        "N1:repeated_person",
+        "N1:repeated_agent",
+        "N1:mixed_exact_replay",
+        "N1:edit_delta",
+        "N1:self_outsider_revoked_suppressed",
+        "N1:original_recipients_after_join_rejoin"
+      ]
+    },
+    {
+      "id": "revocation",
+      "current_contract": [
+        "independent source and participant read bases",
+        "native capabilities bind membership identity",
+        "all runtime private reads require live business authority",
+        "own content-free receipt is not private content access",
+        "S2 R1 source denial fences R4/T4 but unsupported old routes do not"
+      ],
+      "canonical_sources": [
+        "server/internal/service/collaboration_attachments.go:277",
+        "server/internal/handler/collaboration_attachments.go:295",
+        "server/internal/service/collaboration_squad.go:85",
+        "server/internal/service/collaboration_comments_edit.go:146",
+        "server/cmd/server/router.go:1419"
+      ],
+      "planned_cases": [
+        "outside_participant",
+        "source_only_member",
+        "source_member_participant",
+        "original_artifact_issuer",
+        "manager_to_member",
+        "original_actor_minimal_receipt",
+        "old_run_token_indirect_reads",
+        "old_cursor",
+        "known_denial_then_late_response",
+        "rejoin_does_not_revive_old_capability"
+      ]
+    },
+    {
+      "id": "block_fields",
+      "settled_product_direction": "Enrich existing information handoff; recipient is block responsible person; stable S2 business owner stays separate. No scheduler or generic workflow engine.",
+      "recommended_fields": {
+        "note": "existing field; nonblank for new managed information request",
+        "target_user_id": "existing eligible explicit recipient",
+        "unblock_condition": "new optional wire; required for managed; recommended4096UTF8byte bound",
+        "estimated_resolution_at": "new optional timezone-bearing RFC3339; required for managed; future at new-write clock, never reevaluated to reject exact historical replay"
+      },
+      "needs_scoped_contract_review": [
+        "exact field naming/text bounds",
+        "complete-versus-legacy read projection",
+        "retained runtime snapshot metadata compatibility",
+        "managed legacy blocked repair and security-removal projection"
+      ],
+      "canonical_sources": [
+        "server/internal/service/collaboration_handoff.go:152",
+        "server/internal/service/collaboration_handoff.go:205",
+        "server/pkg/db/queries/collaboration_workflow.sql:36",
+        "server/internal/service/collaboration_stage.go:203",
+        "server/internal/service/collaboration_workflow.go:415"
+      ],
+      "planned_cases": [
+        "B1:complete_managed_and_owner_unchanged",
+        "B2:missing_invalid_fields",
+        "B3:old_key_hash_and_recovery",
+        "B4:nested_return_actor_time_status",
+        "B5:all_entry_bypass_refusals",
+        "B6:real_policy_source_participant_races",
+        "B7:security_removal_disabled_recipient",
+        "B8:legacy_malformed_cross_client_read"
+      ]
+    }
+  ],
+  "blocked_writer_inventory": [
+    {
+      "path": "request_information",
+      "source": "server/internal/service/collaboration_handoff.go:152",
+      "recommendation": "Require four facts before any bound effect for managed root."
+    },
+    {
+      "path": "change_status",
+      "source": "server/internal/service/collaboration_lifecycle.go:422",
+      "recommendation": "Managed direct blocked entry refuses; existing request/return owns state."
+    },
+    {
+      "path": "human_reopen",
+      "source": "server/internal/service/collaboration_lifecycle.go:341",
+      "recommendation": "Managed blocked target refuses; reopen nonblocked then explicit information request."
+    },
+    {
+      "path": "admin_reopen",
+      "source": "server/internal/service/admin_collaboration.go:200",
+      "recommendation": "Same final guard; no skipped metadata through R38/successor."
+    },
+    {
+      "path": "creation",
+      "source": "server/internal/service/collaboration_creation_fields.go:85",
+      "recommendation": "Refuse initial managed blocked without complete original handoff; minimal create nonblocked then request."
+    },
+    {
+      "path": "return_to_saved_blocked",
+      "source": "server/internal/service/collaboration_handoff.go:253",
+      "recommendation": "Exact complete parent required for managed nested return; preserve legacy behavior and original key."
+    },
+    {
+      "path": "direct_unblock_status",
+      "source": "server/internal/service/collaboration_lifecycle.go:440",
+      "recommendation": "Cannot resolve managed active information request through generic status edit."
+    },
+    {
+      "path": "transfer_and_removal",
+      "source": "server/internal/service/collaboration_workflow.go:207",
+      "recommendation": "Ordinary blocked transfer needs explicit new complete handoff; security removal remains permitted and retains superseded history/recovery-required status."
+    },
+    {
+      "path": "account_disable",
+      "source": "server/internal/service/collaboration_handoff.go:227",
+      "recommendation": "Current recipient/requester eligibility becomes unavailable; no observed automatic pointer supersession. Do not block security revocation."
+    },
+    {
+      "path": "acceptance_and_terminal_lifecycle",
+      "source": "server/internal/service/collaboration_handoff.go:274",
+      "recommendation": "Retain exact superseded/returned history; no fabricated block resolution or bypass of S2 completion gates."
+    },
+    {
+      "path": "project_policy_or_association",
+      "source": "server/internal/service/collaboration_stage.go:203",
+      "recommendation": "Recheck management applicability; no invented backfill or rewriting old committed keys."
+    },
+    {
+      "path": "ordinary_move_batch_system",
+      "source": "server/internal/service/issue_status_write.go:63",
+      "recommendation": "Keep collaboration-root refusal/no-op negative controls; ordinary children retain compatibility."
+    },
+    {
+      "path": "custom_status_catalog",
+      "source": "server/internal/handler/issue_status.go:80",
+      "recommendation": "Use resolved category; test custom blocked names/archive/status-option races; key/category immutable."
+    }
+  ],
+  "ownership": [
+    {
+      "lane": "single_server_after_s2",
+      "scope": "workflow/handoff/lifecycle/creation/admin, SQL/generated/migrations, runtime protocol as needed; service/handler tests",
+      "dependency": "S2 accepted and shared-file owner handoff"
+    },
+    {
+      "lane": "core_views",
+      "scope": "additive action/detail/schema/transport, shared form/history/locales, headless and UI tests",
+      "dependency": "S3 wire contract frozen; preserve mixed API/locale hunks"
+    },
+    {
+      "lane": "e2e",
+      "scope": "new focused recovery spec/fixture using existing native/auth/host helpers",
+      "dependency": "author after wire freeze; execute only integrated source"
+    },
+    {
+      "lane": "coordinator",
+      "scope": "allocation/migrations/builds/actual API-Web-Desktop, specs, local Lore commit/archive",
+      "dependency": "exact environments and acceptance gates"
+    }
+  ],
+  "sequence": [
+    "freeze_accepted_s2_and_peer_boundaries",
+    "composed_recovery_regressions",
+    "review_freeze_information_contract",
+    "single_owner_block_implementation_red_green",
+    "independent_normal_race_core_views_static",
+    "actual_source_matched_s3_journey",
+    "full_independent_s3_check_then_coordinator_matrix_commit_archive"
+  ],
+  "not_run": [
+    "all new proposed S3 tests",
+    "actual55-comment reauthentication/page-complete browser scenario",
+    "actual mixed-mention replay notification journey",
+    "four-field block implementation and acceptance",
+    "final-source S3 normal/race/Core/Views tests",
+    "current API/CLI/production Web/matching Desktop acceptance",
+    "real model account/quality",
+    "real funds/payment/fulfillment",
+    "production deploy",
+    "S4 missing real integrations",
+    "S5 final-candidate performance"
+  ],
+  "environment_constraints": [
+    "no DB/API/test execution by researcher",
+    "coordinator allocates exact package normal/race/router/API DBs; no old profile borrowing",
+    "no ambient model CLI/account",
+    "no new deps/public fixture routes/production simulation switch",
+    "preserve failed runs and complete denominators",
+    "do not raise timeouts/pools or alter cleanup to hide failure",
+    "keep original receipt/hash identity; no automatic Resume or fresh-key mutation",
+    "S2 and knowledge peer hunks preserved"
+  ],
+  "external_references": {
+    "network_used": false,
+    "primary_sources": "repository source/specs/retained checked reports",
+    "declared_versions": {
+      "go": "1.26.6",
+      "pgx/v5": "v5.9.2",
+      "gorilla/websocket": "v1.5.3",
+      "tanstack_query": "^5.96.2",
+      "zod": "^4.1.5",
+      "zustand": "^5.0.0",
+      "typescript": "^5.9.3",
+      "vitest": "^4.1.0",
+      "playwright": "^1.58.2"
+    },
+    "installed_or_executed_here": false
+  },
+  "scope_compliance": {
+    "outputs_written": [
+      ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.md",
+      ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.json"
+    ],
+    "code_edits": false,
+    "tests_edited": false,
+    "spec_edits": false,
+    "other_task_edits": false,
+    "task_state_edits": false,
+    "git_operations": false,
+    "subagents_spawned": false,
+    "implement_or_check_jsonl_loaded": false
+  },
+  "markdown": {
+    "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.md",
+    "sha256": "58ec01d7ead8eb3cca7f5d261e71abde62a2190c116b1dcda67355a72582186e",
+    "bytes": 46767
+  },
+  "source_manifest_digest": "b84b7fab3b3bbdf748eb020244aa3553d5386c7442fbdfffb3aabb64e78eb7b4",
+  "artifact_verification": {
+    "at": "2026-11-14T14:40:38.654556+00:00",
+    "result": "PASS",
+    "checks": [
+      "JSON parses; six required topics; thirteen writer/applicability paths",
+      "required research headings present",
+      "explicit existing repository file references resolve; proposed new E2E files excepted",
+      "no implementation/check JSONL in manifest",
+      "all execution and write-scope flags truthful",
+      "parent CSV remains4PARTIAL20NOT_RUN",
+      "147 final source hashes rechecked against current files"
+    ],
+    "post_capture_source_changes": [],
+    "scope": "artifact consistency only; no product build/test acceptance"
+  }
+}

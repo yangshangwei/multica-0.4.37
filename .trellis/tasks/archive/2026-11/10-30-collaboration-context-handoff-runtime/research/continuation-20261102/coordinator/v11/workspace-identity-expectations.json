@@ -1,0 +1,189 @@
+{
+  "prepared_at": "2026-11-02T21:35:20.073587+00:00",
+  "state": "declared-workspace-map-only; installed graph verification pending",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "candidate_head": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "declared_packages": {
+    "@multica/desktop": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop",
+    "@multica/docs": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs",
+    "@multica/mobile": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile",
+    "@multica/web": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web",
+    "@multica/core": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+    "@multica/eslint-config": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+    "@multica/plugin-sdk": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk",
+    "@multica/tsconfig": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+    "@multica/ui": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+    "@multica/views": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views"
+  },
+  "internal_dependencies": [
+    {
+      "consumer": "@multica/desktop",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop",
+      "dependency": "@multica/core",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core"
+    },
+    {
+      "consumer": "@multica/desktop",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop",
+      "dependency": "@multica/ui",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui"
+    },
+    {
+      "consumer": "@multica/desktop",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop",
+      "dependency": "@multica/views",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views"
+    },
+    {
+      "consumer": "@multica/desktop",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop",
+      "dependency": "@multica/eslint-config",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config"
+    },
+    {
+      "consumer": "@multica/desktop",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop",
+      "dependency": "@multica/tsconfig",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig"
+    },
+    {
+      "consumer": "@multica/docs",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs",
+      "dependency": "@multica/ui",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui"
+    },
+    {
+      "consumer": "@multica/mobile",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile",
+      "dependency": "@multica/core",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core"
+    },
+    {
+      "consumer": "@multica/web",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web",
+      "dependency": "@multica/core",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core"
+    },
+    {
+      "consumer": "@multica/web",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web",
+      "dependency": "@multica/ui",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui"
+    },
+    {
+      "consumer": "@multica/web",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web",
+      "dependency": "@multica/views",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views"
+    },
+    {
+      "consumer": "@multica/web",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web",
+      "dependency": "@multica/eslint-config",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config"
+    },
+    {
+      "consumer": "@multica/core",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+      "dependency": "@multica/eslint-config",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config"
+    },
+    {
+      "consumer": "@multica/core",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+      "dependency": "@multica/tsconfig",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig"
+    },
+    {
+      "consumer": "@multica/plugin-sdk",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk",
+      "dependency": "@multica/eslint-config",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config"
+    },
+    {
+      "consumer": "@multica/plugin-sdk",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk",
+      "dependency": "@multica/tsconfig",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig"
+    },
+    {
+      "consumer": "@multica/ui",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+      "dependency": "@multica/eslint-config",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config"
+    },
+    {
+      "consumer": "@multica/ui",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+      "dependency": "@multica/tsconfig",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig"
+    },
+    {
+      "consumer": "@multica/views",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+      "dependency": "@multica/core",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core"
+    },
+    {
+      "consumer": "@multica/views",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+      "dependency": "@multica/ui",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui"
+    },
+    {
+      "consumer": "@multica/views",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+      "dependency": "@multica/eslint-config",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config"
+    },
+    {
+      "consumer": "@multica/views",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+      "dependency": "@multica/plugin-sdk",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk"
+    },
+    {
+      "consumer": "@multica/views",
+      "consumer_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+      "dependency": "@multica/tsconfig",
+      "declared": "workspace:*",
+      "expected_workspace_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig"
+    }
+  ],
+  "configuration_sha256": {
+    ".npmrc": "4b84eb91234d80d48c16b50746106405c4cd6d97581f7464001a7dc84dd9d185",
+    "pnpm-workspace.yaml": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+    "pnpm-lock.yaml": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac"
+  },
+  "requirements": [
+    "Internal workspace consumers resolve to intended candidate package roots",
+    "Do not mutate donor node_modules directories",
+    "External store content may be shared at frozen package identities",
+    "Same app/build layer registers and reads a singleton from one physical source identity",
+    "Production build trace/manifests must confirm auth identity after layout repair"
+  ],
+  "source_dependency_mutations": false,
+  "tests_or_services_started": false,
+  "Provider_calls": 0
+}

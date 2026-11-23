@@ -1,0 +1,205 @@
+diff --git a/packages/views/collaboration/workflow.test.tsx b/packages/views/collaboration/workflow.test.tsx
+index e95c526be..3521ed1e1 100644
+--- a/packages/views/collaboration/workflow.test.tsx
++++ b/packages/views/collaboration/workflow.test.tsx
+@@ -122,3 +122,23 @@ it("removes the selected participant only after confirmation with the captured r
+   expect(JSON.parse(call?.[1]?.body)).toMatchObject({ expected_collaboration_revision: "9007199254740993" });
+   expect(await screen.findByText(/The server did not apply this action/)).toBeInTheDocument();
+ });
++
++// Context audit 2026-10-29: the server returns the open request's note,
++// requester and return status (schema.ts informationRequest), but the return
++// form uses only its id, so the receiver answers without seeing the question.
++it("shows the open information request to the person returning it", async () => {
++  setApiInstance(new ApiClient("https://server.example"));
++  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ action: "return_information", status_options_version: "v1", default_status: "in_progress",
++    options: [{ key: "in_progress", name: "In progress", category: "started" }] }))));
++  const requester = { ...account, user_id: recipientId, name: "Requester" };
++  const asked = parseCollaborationIssue({ id, title: "Needs input", description: "Body", status: "blocked", status_category: "blocked", priority: "none", source_workspace: { id, name: "Source", identifier: "SRC-1" }, creator: requester, handler: account,
++    collaboration_revision: "9007199254740993", lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, session: { id, queue_state: "paused", control_version: "1" },
++    capabilities: { ...caps, return_information: true },
++    current_information_request: { id: "00000000-0000-4000-8000-000000000009", requester, recipient: account, note: "Which database version did you test against?",
++      return_status: "in_progress", return_status_fallback: false, created_at: "2026-10-29T00:00:00Z" } })!;
++  expect(asked.current_information_request?.note).toBe("Which database version did you test against?");
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={asked} /></QueryClientProvider>);
++  await userEvent.setup().click(screen.getByRole("button", { name: "Return information" }));
++  expect(await screen.findByText(/Which database version did you test against\?/)).toBeInTheDocument();
++  expect(screen.getByText(/Requester/)).toBeInTheDocument();
++});
+diff --git a/server/cmd/multica/cmd_collaboration_test.go b/server/cmd/multica/cmd_collaboration_test.go
+index be53c6558..0265c4fbd 100644
+--- a/server/cmd/multica/cmd_collaboration_test.go
++++ b/server/cmd/multica/cmd_collaboration_test.go
+@@ -251,3 +251,23 @@ func TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice
+ 		})
+ 	}
+ }
++
++// Context audit 2026-10-29: collaboration memory uses rejectLocalPathLinks
++// because a collaboration run carries no MULTICA_AGENT_ID/TASK_ID
++// (local_path_link_lint.go:144-146), but comment add still calls the gated
++// guardLocalPathLinks (cmd_collaboration.go:91), so a runtime-local link
++// reaches every participant.
++func TestCollaborationCLICommentAddRejectsLocalPathLinksBeforeHTTP(t *testing.T) {
++	requests := 0
++	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { requests++; w.WriteHeader(500) }))
++	defer server.Close()
++	id := collaborationCLIEnvironment(t, server.URL)
++	cmd := newIssueCommentAddTestCmd()
++	cmd.Flags().String("request-id", "", "")
++	_ = cmd.Flags().Set("content", "See [log](file:///Users/fixture/run.log)")
++	_ = cmd.Flags().Set("request-id", uuid.NewString())
++	err := runIssueCommentAdd(cmd, []string{id.IssueID})
++	if requests != 0 || err == nil || !strings.Contains(err.Error(), "local") {
++		t.Fatalf("a runtime-local link in a collaboration comment reached HTTP: requests=%d err=%v", requests, err)
++	}
++}
+diff --git a/server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go b/server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go
+new file mode 100644
+index 000000000..fb204fdea
+--- /dev/null
++++ b/server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go
+@@ -0,0 +1,25 @@
++//go:build agentintegration
++
++package collaborationrun
++
++import (
++	"net/http/httptest"
++	"strings"
++	"testing"
++
++	"github.com/multica-ai/multica/server/pkg/protocol"
++)
++
++// Context audit 2026-10-29: runHost always reads the shared-context base
++// after its permit (host_runner.go:133). The real-account smoke authorizer
++// predates that route, so it answers 403 and hostMemory keeps the Provider
++// unlaunched. This checks only the authorizer; it never resolves an agent CLI.
++func TestHostProviderAccountSmokeAuthorizesSharedContextBase(t *testing.T) {
++	fixture := &hostRunFixture{t: t, permits: map[string]protocol.CollaborationRunPermitRequest{"1": {}}}
++	fixture.claim.Identity.RunID = "00000000-0000-4000-8000-000000000001"
++	r := httptest.NewRequest("POST", "/api/collaboration/runtime/runs/"+fixture.claim.Identity.RunID+"/memory/base", strings.NewReader("{}"))
++	r.Header.Set("Authorization", "Bearer mcb_"+strings.Repeat("1", 64))
++	if !authorizeHostAccountSmokeRequest(fixture, r) {
++		t.Fatal("the real-account smoke refuses the shared-context base read that every host run makes before launching its Provider")
++	}
++}
+diff --git a/server/internal/daemon/collaborationrun/host_prompt_role_test.go b/server/internal/daemon/collaborationrun/host_prompt_role_test.go
+new file mode 100644
+index 000000000..28538b9f1
+--- /dev/null
++++ b/server/internal/daemon/collaborationrun/host_prompt_role_test.go
+@@ -0,0 +1,30 @@
++package collaborationrun
++
++import (
++	"strings"
++	"testing"
++
++	"github.com/multica-ai/multica/server/pkg/protocol"
++)
++
++// Context audit 2026-10-29: a squad member run receives the group's root human
++// inputs (claimPromptSnapshot selects by group). The claim carries
++// HostContext.Role and StepKey, but hostPrompt drops them, so the Provider is
++// told to "process the following authorized collaboration inputs" with no sign
++// that its task is the leader's delegation rather than the whole request.
++func TestHostPromptTellsAMemberRunItsRoleAndStep(t *testing.T) {
++	parent := "00000000-0000-4000-8000-0000000000aa"
++	claim := protocol.CollaborationRunClaimResponse{AgentID: "member-agent",
++		HostContext: &protocol.CollaborationHostContext{Role: "member", StepKey: "dispatch-1", ParentRunID: &parent},
++		Preparation: &protocol.CollaborationPreparation{},
++		Inputs:      []protocol.CollaborationRunInput{{CommandID: "root-command", Body: "Ship the whole feature"}}}
++	prompt, err := hostPrompt(claim, false, nil)
++	if err != nil {
++		t.Fatal(err)
++	}
++	for _, want := range []string{`"role":"member"`, `"step_key":"dispatch-1"`} {
++		if !strings.Contains(prompt, want) {
++			t.Errorf("member prompt omits %s, so the Provider cannot tell a delegated step from the root request:\n%s", want, prompt)
++		}
++	}
++}
+diff --git a/server/internal/handler/collaboration_runtime_comment_size_test.go b/server/internal/handler/collaboration_runtime_comment_size_test.go
+new file mode 100644
+index 000000000..c208d8f0d
+--- /dev/null
++++ b/server/internal/handler/collaboration_runtime_comment_size_test.go
+@@ -0,0 +1,42 @@
++package handler
++
++import (
++	"encoding/json"
++	"net/http"
++	"net/http/httptest"
++	"strings"
++	"testing"
++
++	"github.com/google/uuid"
++	"github.com/multica-ai/multica/server/internal/testutil"
++)
++
++// Context audit 2026-10-29: the runtime CLI posts comments with json.Marshal
++// (cmd_collaboration.go:141 -> cli.PostJSON), which escapes each <, > and & to
++// six bytes. The runtime decoder caps the raw body at 96 KiB, while the comment
++// limit is 64 KiB of decoded content (collaboration_mentions.go:119). A body
++// of D decoded bytes with a fraction f of escaped characters is sent as about
++// D*(1+5f) bytes, so a pasted HTML snippet under 64 KiB is refused as 413.
++func TestCollaborationRuntimeCommentBodyAcceptsCodeWithinTheContentLimit(t *testing.T) {
++	content := strings.Repeat("<div><span>&nbsp;</span></div>\n", 1600) // 49,600 bytes decoded
++	if len(content) > 64<<10 {
++		t.Fatalf("fixture exceeds the comment limit: %d bytes", len(content))
++	}
++	raw, err := json.Marshal(map[string]any{"comment_id": uuid.NewString(), "parent_id": nil, "content": content})
++	if err != nil {
++		t.Fatal(err)
++	}
++	req := httptest.NewRequest(http.MethodPost, "/runtime/comments", strings.NewReader(string(raw)))
++	req.Header.Set("Content-Type", "application/json")
++	var body struct {
++		CommentID string  `json:"comment_id"`
++		ParentID  *string `json:"parent_id"`
++		Content   string  `json:"content"`
++	}
++	testutil.Call(t, func(w http.ResponseWriter, r *http.Request) {
++		if decodeCollaborationRuntimeBody(w, r, &body) {
++			w.WriteHeader(http.StatusNoContent)
++		}
++	}, req).Want(http.StatusNoContent)
++	t.Logf("decoded %d bytes, sent %d bytes as CLI JSON", len(content), len(raw))
++}
+diff --git a/server/internal/service/collaboration_runtime_preparation_test.go b/server/internal/service/collaboration_runtime_preparation_test.go
+index 4cabf63eb..5e05646a1 100644
+--- a/server/internal/service/collaboration_runtime_preparation_test.go
++++ b/server/internal/service/collaboration_runtime_preparation_test.go
+@@ -587,3 +587,29 @@ func TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary(t *
+ 		})
+ 	}
+ }
++
++// Context audit 2026-10-29: each comment draft may deliver up to 32 files, but
++// preparation manifests every delivered file on the issue and refuses beyond
++// 32. Delivered files cannot be discarded, so once an issue accumulates 33
++// across separate comments, no later input can run.
++func TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns(t *testing.T) {
++	f := preparedRuntimeFixture(t)
++	for i := 0; i <= collaborationMaxSelectedAttachments; i++ {
++		preparationDeliveredFile(t, f)
++	}
++	if got := f.fx.Count(t, `SELECT count(*) FROM collaboration_attachment WHERE issue_id=$1 AND delivered_at IS NOT NULL AND discarded_at IS NULL`, f.issue.Issue.ID); got != collaborationMaxSelectedAttachments+1 {
++		t.Fatalf("fixture delivered %d files, want %d", got, collaborationMaxSelectedAttachments+1)
++	}
++	f.submitManaged(t, f.creator, "text-only input after a long file history")
++	f.resumeManaged(t)
++	list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
++	if err != nil || len(list.RunIDs) != 1 {
++		target := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++		t.Logf("command states: waiting=%d in_flight=%d; target queue=%s hold=%q",
++			f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE target_id=$1 AND state='waiting'`, f.targetID),
++			f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE target_id=$1 AND state='in_flight'`, f.targetID),
++			target.QueueState, target.HoldReason.String)
++		t.Fatalf("a text-only input could not run because earlier comments delivered more than %d files: %+v %v", collaborationMaxSelectedAttachments, list, err)
++	}
++	claimPreparedCandidate(t, f, util.MustParseUUID(list.RunIDs[0]))
++}

@@ -12,7 +12,6 @@ import { useAuthStore } from "@multica/core/auth";
 import { useWorkspaceSeen } from "@multica/views/workspace/use-workspace-seen";
 import { WelcomeAfterOnboarding } from "@multica/views/workspace/welcome-after-onboarding";
 import { WorkspacePresencePrefetch } from "@multica/views/layout";
-import { SourceBackfillModal } from "@multica/views/onboarding";
 import { useTabStore } from "@/stores/tab-store";
 import { useWindowOverlayStore } from "@/stores/window-overlay-store";
 
@@ -104,7 +103,7 @@ export function WorkspaceRouteLayout() {
   // run — is what makes the unmount release below safe. React renders the
   // incoming tree before it runs the outgoing tree's effect cleanups, so by
   // the time the old layout tries to release, the new one already owns.
-  if (workspace && workspaceSlug && !isWorkspaceDeletePending(workspace.id)) {
+  if (workspace && workspaceSlug && useTabStore.getState().activeScope !== "account" && !isWorkspaceDeletePending(workspace.id)) {
     singletonOwner = instanceId;
     setCurrentWorkspace(workspaceSlug, workspace.id);
   }
@@ -187,13 +186,6 @@ export function WorkspaceRouteLayout() {
        *  Modal — unless the store signal has already been consumed, in
        *  which case the hook renders null. */}
       {!overlayActive && <WelcomeAfterOnboarding />}
-      {/* Source-attribution backfill: same Dialog the web shell mounts
-       *  inside DashboardLayout. Desktop's WorkspaceRouteLayout doesn't
-       *  wrap DashboardLayout, so the modal has to be wired in directly
-       *  here. Same overlay-suppression rule as WelcomeAfterOnboarding —
-       *  a portal-rendered Dialog at z-50 would otherwise sit above an
-       *  active pre-workspace overlay. */}
-      {!overlayActive && <SourceBackfillModal />}
     </WorkspaceSlugProvider>
   );
 }

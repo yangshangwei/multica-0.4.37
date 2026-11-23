@@ -1,0 +1,28 @@
+{
+  "source_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "command": [
+    "make",
+    "check",
+    "ENV_FILE=<private task source env>"
+  ],
+  "state": "interrupted_not_passed",
+  "exit_code": -2,
+  "started_at": "2026-11-01T17:42:11.911662+00:00",
+  "finished_at": "2026-11-01T17:52:35.969581+00:00",
+  "ts_pass": 13082,
+  "ts_packages": {
+    "core": 4340,
+    "views": 7118,
+    "docs": 62,
+    "web": 290,
+    "desktop": 1272
+  },
+  "raw_record_private_path": "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102/.omx/private/final-candidate/make-check.json",
+  "raw_record_sha256": "b3541b80f26cbe50d34aebad31e46eedbfe137f6801052f8a8ba1f34a63e03d4",
+  "raw_log_sha256": "5943aabc7085ffc02c72e244c9c132941dab6ab5c7ef26f45597806c08bced41",
+  "summary_private_path": "/Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102/.omx/private/final-candidate/make-check-interrupted-summary.json",
+  "summary_sha256": "c9ca18e3d6afbbf1b07693ad818a5cba718ae4bafc5dec7b6dfed5680b30dcfe",
+  "go_package_records": 6,
+  "reason": "Coordinator interruption for confirmed native renderer origin preparation gap; gap subsequently fixed and independently reviewed, but complete candidate check must rerun",
+  "final_acceptance_pass": false
+}

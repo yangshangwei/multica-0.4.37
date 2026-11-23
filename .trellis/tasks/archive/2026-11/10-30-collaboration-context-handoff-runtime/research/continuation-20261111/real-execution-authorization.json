@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "runtime_real_execution_authorization",
+  "recorded_at_utc": "2026-11-11T14:56:59Z",
+  "user_message_exact": "批准",
+  "scope": "Authorize a separate real execution window for RK1-H3a trial 3 onward, only after fresh current source, CLI, configuration, database, exclusive-window, evidence and legitimate provider-gateway bindings are complete.",
+  "historical_exception_reference": "approval-registration.json",
+  "historical_files_immutable": true,
+  "authorized_order": [
+    { "scenario": "RK1-H3a", "start_trial": 3, "launches": 1 },
+    { "scenario": "RK1-H3b", "start_trial": 1, "launches": 3 },
+    { "scenario": "RK1-H5", "start_trial": 1, "launches": 3 },
+    { "scenario": "RK1-H6", "start_trial": 1, "launches": 6 }
+  ],
+  "budget": {
+    "cap": 25,
+    "prior_actual_starts": 12,
+    "remaining_actual_start_limit": 13
+  },
+  "stop_rules": {
+    "stop_on_first_new_incomplete": true,
+    "stop_on_runtime_environment_or_harness_failure": true,
+    "stop_on_h5_canary": true,
+    "no_historical_slot_rerun": true
+  },
+  "preconditions": {
+    "current_source_binding": true,
+    "cli_binding": true,
+    "configuration_binding": true,
+    "database_binding": true,
+    "exclusive_window": true,
+    "provider_gateway_admission": true,
+    "separate_permit": true
+  },
+  "execution_gate": {
+    "approval_received": true,
+    "runnable": false,
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false,
+    "reason": "User authorization is recorded, but required current bindings, permit, exclusive window and legitimate provider gateway admission are not present yet."
+  }
+}

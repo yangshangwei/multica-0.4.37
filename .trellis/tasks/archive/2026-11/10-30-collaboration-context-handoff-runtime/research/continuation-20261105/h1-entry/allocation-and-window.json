@@ -1,0 +1,26 @@
+{
+  "at": "2026-11-05T06:21:00.601697+00:00",
+  "database": "multica_rk1_20261105_real_h1_a729",
+  "identity": "multica_rk1_20261105_real_h1_a729|764_collaboration_ai_policy",
+  "migration_exit": 0,
+  "initial_issues": 0,
+  "template": "template0",
+  "connections_before": "27|100",
+  "allowed": "originalRK1-H1 trials1-3",
+  "maximum_new_paid_starts": 3,
+  "consumed_before": 1,
+  "remaining_before": 24,
+  "window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "granted_by": "01a1a7a6-02dc-7722-a9d6-7d05385edb2d",
+    "scenario": "RK1-H1",
+    "start_trial": 1,
+    "trials": 3,
+    "paid_launches": 3,
+    "outer_timeout_minutes": 26,
+    "recorded_at": "2026-11-05T06:21:00.601697+00:00",
+    "hold": "preparation then actualinvocation up to26minutes; release onexit"
+  },
+  "root_live_process_observation": "no.test/Playwright/Claude beforeallocation",
+  "helperpermits": "allfalse beforecommittedbinding"
+}

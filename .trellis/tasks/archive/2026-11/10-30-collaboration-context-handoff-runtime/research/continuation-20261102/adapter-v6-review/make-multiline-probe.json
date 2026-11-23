@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-p",
+    "(version 1) (allow default) (deny network*)",
+    "/usr/bin/make",
+    "-rR",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6-review/make-loader-probe/Makefile",
+    "owned_probe",
+    "ENV_FILE=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6-review/make-loader-probe/multiline.env"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6-review/make-loader-probe/multiline.env:2: *** missing separator.  Stop.\n",
+  "multiline_input_supported_by_parser_and_shell_contract": true,
+  "actual_make_rejects_canonical_file": true,
+  "network_denied": true,
+  "database_connections": 0,
+  "fullcheck_started": false
+}

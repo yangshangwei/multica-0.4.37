@@ -1,0 +1,125 @@
+[
+  {
+    "name": "engine-health-race",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/reportsnapshot",
+      "./internal/projecthealth",
+      "-count=1",
+      "-race",
+      "-json"
+    ],
+    "exit": 0,
+    "counts": {
+      "pass": 46,
+      "fail": 0,
+      "skip": 0
+    },
+    "top_level_counts": {
+      "pass": 35,
+      "fail": 0,
+      "skip": 0
+    },
+    "failed": [],
+    "log": ".trellis/tasks/11-12-agent-squad-followup-roadmap/research/f2-final-evidence-20261113/engine-health-race.jsonl",
+    "sha256": "8c73fd13b46a00da03448544edaf2eb501644caa2db982e3bce08a6e67b4aed8"
+  },
+  {
+    "name": "source-audit-race",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^TestReportSnapshotCollectionAudit",
+      "-count=1",
+      "-race",
+      "-json"
+    ],
+    "exit": 0,
+    "counts": {
+      "pass": 9,
+      "fail": 0,
+      "skip": 0
+    },
+    "top_level_counts": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "failed": [],
+    "log": ".trellis/tasks/11-12-agent-squad-followup-roadmap/research/f2-final-evidence-20261113/source-audit-race.jsonl",
+    "sha256": "dc57a28155abc55ec509e85e548e173612b51f5f28b82ed7e50546a445c7090e"
+  },
+  {
+    "name": "middleware",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/middleware",
+      "-run",
+      "^(TestReportSnapshotHeaders|TestRefreshCloudFrontCookies)",
+      "-count=1",
+      "-json"
+    ],
+    "exit": 0,
+    "counts": {
+      "pass": 17,
+      "fail": 0,
+      "skip": 0
+    },
+    "top_level_counts": {
+      "pass": 7,
+      "fail": 0,
+      "skip": 0
+    },
+    "failed": [],
+    "log": ".trellis/tasks/11-12-agent-squad-followup-roadmap/research/f2-final-evidence-20261113/middleware.jsonl",
+    "sha256": "3a985148c3887f8f97df114140062790647e3e2a51548cd03d9c46e393ab78dd"
+  },
+  {
+    "name": "cli-full",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/multica",
+      "-count=1",
+      "-json"
+    ],
+    "exit": 0,
+    "counts": {
+      "pass": 1283,
+      "fail": 0,
+      "skip": 0
+    },
+    "top_level_counts": {
+      "pass": 487,
+      "fail": 0,
+      "skip": 0
+    },
+    "failed": [],
+    "log": ".trellis/tasks/11-12-agent-squad-followup-roadmap/research/f2-final-evidence-20261113/cli-full.jsonl",
+    "sha256": "74744bf9681862d747cf7e9fcf78349d963bebf52352c25d901cc5a8dd413901"
+  }
+]

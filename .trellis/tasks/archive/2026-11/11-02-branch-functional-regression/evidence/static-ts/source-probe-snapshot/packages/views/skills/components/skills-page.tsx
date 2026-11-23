@@ -1,0 +1,1199 @@
+"use client";
+
+import { useMemo, useRef, useState } from "react";
+import {
+  AlertCircle,
+  AlertTriangle,
+  Download,
+  HardDrive,
+  Lock,
+  Pencil,
+  Plus,
+} from "lucide-react";
+import { SkillIcon } from "../lib/skill-icon";
+import {
+  SKILL_CATEGORIES,
+  readSkillPresentationMeta,
+  type SkillCategory,
+  type SkillPresentationMeta,
+} from "@multica/core/skills";
+import type {
+  Agent,
+  AgentRuntime,
+  Label,
+  MemberWithUser,
+  Skill,
+  SkillSummary,
+} from "@multica/core/types";
+import { useQuery } from "@tanstack/react-query";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useAuthStore } from "@multica/core/auth";
+import { useWorkspaceId } from "@multica/core/hooks";
+import { DOCS_SLUGS } from "@multica/core/docs";
+import { useWorkspacePaths } from "@multica/core/paths";
+import {
+  agentListOptions,
+  memberListOptions,
+  selectSkillAssignments,
+  skillListOptions,
+} from "@multica/core/workspace/queries";
+import { runtimeDisplayLabel, runtimeListOptions } from "@multica/core/runtimes";
+import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
+import { Badge } from "@multica/ui/components/ui/badge";
+import { Button } from "@multica/ui/components/ui/button";
+import { Checkbox } from "@multica/ui/components/ui/checkbox";
+import {
+  LIST_GRID_BOTTOM_CLEARANCE,
+  ListGrid,
+  ListGridBody,
+  ListGridCell,
+  ListGridHeader,
+  ListGridHeaderCell,
+  ListGridRow,
+  type ListGridSortDirection,
+} from "@multica/ui/components/ui/list-grid";
+import { Skeleton } from "@multica/ui/components/ui/skeleton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@multica/ui/components/ui/tooltip";
+import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
+import {
+  AppLink,
+  rowLinkInteractiveProps,
+  useNavigation,
+  useRowLink,
+} from "../../navigation";
+import {
+  CollectionPageHeader,
+  CollectionPageHeaderAction,
+  CollectionPageState,
+} from "../../layout/collection-page";
+import { canEditSkill } from "../hooks/use-can-edit-skill";
+import { useSkillPresentation } from "../hooks/use-skill-presentation";
+import type { SkillPresentation } from "../lib/skill-presentation";
+import { originSourceUrl, readOrigin, type OriginInfo } from "../lib/origin";
+import { CreateSkillDialog } from "./create-skill-dialog";
+import {
+  useSkillsViewStore,
+  DEFAULT_HIDDEN_COLUMNS,
+  type SkillColumnKey,
+  type SkillSortField,
+} from "@multica/core/skills/stores";
+import { SkillListToolbar } from "./skill-list-toolbar";
+import { SkillCategorySidebar } from "./skill-category-sidebar";
+import { SkillCategoryChips } from "./skill-category-chips";
+import { SkillCardGrid } from "./skill-card-grid";
+import { SkillPresentationIcon } from "./skill-presentation-icon";
+import { useSkillListFacets } from "../hooks/use-skill-list-facets";
+import { LabelChip } from "../../labels/label-chip";
+import { useSkillCategoryLabels } from "../hooks/use-skill-category-labels";
+import {
+  SkillBatchToolbar,
+  SkillRowActions,
+  type SkillActionsContext,
+} from "./skill-list-actions";
+import { useLocale, useT, useTimeAgo } from "../../i18n";
+
+// Column template — single source of truth for header, rows, and skeletons.
+// Tracks: [edge 0.75rem] [checkbox 1rem] [name, only fr track]
+// [category] [labels] [usedBy] [source] [creator] [updated] [created]
+// [kebab 1.75rem] [edge 0.75rem].
+// Content cells carry a default px-2 from list-grid.tsx
+// (structural columns opt out with px-0), so the narrow edge tracks plus
+// cell padding land content 20px from the container edge. Non-core cells
+// carry `hidden @2xl:flex`. The breakpoint queries the CONTAINER (the page
+// wrapper is the `@container`), not the viewport, so sidebars and split
+// panes are accounted for.
+// Hideable tracks are DETERMINISTIC widths via CSS vars (no max-content):
+// rows are virtualized, so with only the visible slice mounted a
+// content-driven track would resize as different rows scrolled into view.
+// Truncation moved from per-cell max-w caps to the tracks themselves.
+// A user-hidden column zeroes its var (columnTrackVars), collapsing the
+// track exactly like the old max-content placeholder did; the empty
+// placeholder cell stays rendered to keep subgrid auto-placement intact.
+//
+// TWO-ZONE RESPONSIVENESS (replaces the retired per-tier breakpoints):
+// - Container ≥ @2xl (672px): WYSIWYG — every user-enabled column renders.
+//   The grid carries min-width = Σ(enabled tracks + gaps) so when the
+//   enabled set outgrows the container the wrapper scrolls horizontally.
+//   The scrollbar is the escape valve for an over-provisioned column set,
+//   never the default experience; an enabled column must NEVER silently
+//   vanish (that "dead toggle" bug shipped twice).
+// - Container < @2xl (phones, slim split panes): static core set
+//   (name + usedBy), no horizontal scroll, column toggles don't apply.
+const GRID_COLS =
+  "grid-cols-[0.75rem_1rem_minmax(120px,1fr)_var(--lgc-usedby)_1.75rem_0.75rem] " +
+  "@2xl:grid-cols-[0.75rem_1rem_minmax(200px,1fr)_var(--lgc-category)_var(--lgc-labels)_var(--lgc-usedby)_var(--lgc-source)_var(--lgc-creator)_var(--lgc-updated)_var(--lgc-created)_1.75rem_0.75rem]";
+
+// h-12 rows. The virtualizer's fixed-size contract: every row renders at
+// exactly this height, which is what lets it skip per-row measurement.
+const ROW_HEIGHT = 48;
+
+// Single source for hideable column widths: track vars and the grid's
+// min-width derive from the same numbers.
+const COLUMN_WIDTHS: Record<SkillColumnKey, number> = {
+  category: 128,
+  labels: 176,
+  usedBy: 144,
+  source: 152,
+  creator: 144,
+  updated: 104,
+  created: 104,
+};
+
+// Fixed tracks (edges 12+12, checkbox 16, name min 200, kebab 28) plus the
+// 11 gap-x-3 gaps between the wide template's 12 tracks (gaps = tracks − 1;
+// zero-width tracks still carry gaps).
+const FIXED_TRACKS_WIDTH = 268 + 11 * 12;
+
+function columnTrackVars(
+  isVisible: (key: SkillColumnKey) => boolean,
+): React.CSSProperties {
+  const width = (key: SkillColumnKey) =>
+    isVisible(key) ? `${COLUMN_WIDTHS[key]}px` : "0px";
+  const minWidth =
+    FIXED_TRACKS_WIDTH +
+    (Object.keys(COLUMN_WIDTHS) as SkillColumnKey[]).reduce(
+      (sum, key) => sum + (isVisible(key) ? COLUMN_WIDTHS[key] : 0),
+      0,
+    );
+  return {
+    "--lgc-category": width("category"),
+    "--lgc-labels": width("labels"),
+    "--lgc-usedby": width("usedBy"),
+    "--lgc-source": width("source"),
+    "--lgc-creator": width("creator"),
+    "--lgc-updated": width("updated"),
+    "--lgc-created": width("created"),
+    "--lgc-minw": `${minWidth}px`,
+  } as React.CSSProperties;
+}
+
+// Sort/filter/column types and defaults live in the core view store
+// (@multica/core/skills/stores/view-store) so the persisted state and the
+// UI share one definition. Re-exported here for the toolbar's convenience.
+export type SortField = SkillSortField;
+
+export interface SkillRow {
+  skill: SkillSummary;
+  /** Workspace labels embedded on the summary; `[]` for older servers. */
+  labels: Label[];
+  agents: Agent[];
+  creator: MemberWithUser | null;
+  runtime: AgentRuntime | null;
+  originType: OriginInfo["type"];
+  canEdit: boolean;
+}
+
+export type PresentedSkillRow = SkillRow & {
+  presentation: SkillPresentation;
+  /** Category / icon from `config.presentation`, tolerant-parsed. */
+  meta: SkillPresentationMeta;
+};
+
+// ---------------------------------------------------------------------------
+// Page header bar — uses shared PageHeader so the mobile sidebar trigger and
+// h-12 chrome stay consistent with every other dashboard list page.
+// ---------------------------------------------------------------------------
+
+function PageHeaderBar({
+  onCreate,
+  buttonRef,
+}: {
+  onCreate: () => void;
+  buttonRef: React.Ref<HTMLButtonElement>;
+}) {
+  const { t } = useT("skills");
+  const paths = useWorkspacePaths();
+  return (
+    <CollectionPageHeader
+      icon={SkillIcon}
+      title={t(($) => $.page.title)}
+      description={t(($) => $.page.tagline)}
+      learnMore={{
+        href: paths.docsPage(DOCS_SLUGS.skills),
+        label: t(($) => $.page.learn_more),
+      }}
+      actions={<>
+        <Button variant="outline" size="sm" render={<AppLink href={paths.marketplaceTab("skills")} />}>
+          {t(($) => $.market.from_template)}
+        </Button>
+        <CollectionPageHeaderAction
+          ref={buttonRef}
+          icon={Plus}
+          label={t(($) => $.page.new_skill)}
+          onClick={onCreate}
+        />
+      </>}
+    />
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Cells
+// ---------------------------------------------------------------------------
+
+function CheckboxCell({
+  checked,
+  name,
+  onToggle,
+}: {
+  checked: boolean;
+  name: string;
+  onToggle: () => void;
+}) {
+  const { t } = useT("skills");
+  return (
+    <ListGridCell {...rowLinkInteractiveProps} className="justify-center px-0">
+      <Checkbox
+        checked={checked}
+        aria-label={t(($) => $.table.select_skill, { name })}
+        onCheckedChange={onToggle}
+        className="border-faint-foreground after:-inset-2 focus-visible:border-foreground focus-visible:ring-foreground/50"
+      />
+    </ListGridCell>
+  );
+}
+
+function NameCell({ row }: { row: PresentedSkillRow }) {
+  const { t } = useT("skills");
+  const paths = useWorkspacePaths();
+  const { skill, canEdit, presentation, meta } = row;
+  return (
+    <ListGridCell className="gap-2">
+      <SkillPresentationIcon meta={meta} size="sm" />
+      <div className="min-w-0 flex-1">
+        <Tooltip>
+          <TooltipTrigger render={
+            <AppLink
+              href={paths.skillDetail(skill.id)}
+              newTabTitle={presentation.name}
+              {...rowLinkInteractiveProps}
+              className="block truncate rounded-sm text-body font-medium hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+              title={presentation.name}
+            >
+              {presentation.name}
+            </AppLink>
+          } />
+          <TooltipContent>{presentation.name}</TooltipContent>
+        </Tooltip>
+        {presentation.isBuiltin && presentation.description && (
+          <div
+            className="truncate text-caption text-muted-foreground"
+            title={presentation.description}
+          >
+            {presentation.description}
+          </div>
+        )}
+      </div>
+      {!canEdit && (
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <Lock className="h-3 w-3 shrink-0 text-faint-foreground" />
+            }
+          />
+          <TooltipContent>{t(($) => $.table.lock_tooltip)}</TooltipContent>
+        </Tooltip>
+      )}
+    </ListGridCell>
+  );
+}
+
+function CategoryCell({ meta }: { meta: SkillPresentationMeta }) {
+  const labels = useSkillCategoryLabels();
+  return (
+    <ListGridCell className="hidden gap-1.5 text-caption text-muted-foreground @2xl:flex">
+      <SkillPresentationIcon meta={{ category: meta.category, icon: null }} size="sm" className="size-4 rounded" />
+      <span className="min-w-0 truncate">{labels[meta.category]}</span>
+    </ListGridCell>
+  );
+}
+
+const LIST_LABELS_SHOWN = 2;
+
+function LabelsCell({ labels }: { labels: Label[] }) {
+  const { t } = useT("skills");
+  const visible = labels.slice(0, LIST_LABELS_SHOWN);
+  const extra = labels.length - visible.length;
+  return (
+    <ListGridCell className="hidden gap-1 overflow-hidden @2xl:flex">
+      {visible.map((label) => (
+        <LabelChip key={label.id} label={label} className="max-w-20" />
+      ))}
+      {extra > 0 && (
+        <Badge variant="outline">
+          {t(($) => $.table.labels_more, { count: extra })}
+        </Badge>
+      )}
+    </ListGridCell>
+  );
+}
+
+function UsedByCell({ agents }: { agents: Agent[] }) {
+  const { t } = useT("skills");
+  if (agents.length === 0) {
+    return (
+      <ListGridCell>
+        <span className="text-caption text-muted-foreground">
+          {t(($) => $.table.unused)}
+        </span>
+      </ListGridCell>
+    );
+  }
+  const soleAgent = agents.length === 1 ? agents[0] : undefined;
+  if (soleAgent) {
+    const agent = soleAgent;
+    return (
+      <ListGridCell className="gap-1.5">
+        <ActorAvatar
+          name={agent.name}
+          initials={agent.name.slice(0, 2).toUpperCase()}
+          avatarUrl={resolvePublicFileUrl(agent.avatar_url)}
+          isAgent
+          size="md"
+        />
+        <span className="min-w-0 truncate text-caption text-muted-foreground">
+          {agent.name}
+        </span>
+      </ListGridCell>
+    );
+  }
+  const visible = agents.slice(0, 3);
+  const extra = agents.length - visible.length;
+  return (
+    <ListGridCell>
+      <div className="flex items-center -space-x-1.5">
+        {visible.map((a) => (
+          <Tooltip key={a.id}>
+            <TooltipTrigger
+              render={
+                <span className="inline-flex rounded-full ring-2 ring-background">
+                  <ActorAvatar
+                    name={a.name}
+                    initials={a.name.slice(0, 2).toUpperCase()}
+                    avatarUrl={resolvePublicFileUrl(a.avatar_url)}
+                    isAgent
+                    size="md"
+                  />
+                </span>
+              }
+            />
+            <TooltipContent>{a.name}</TooltipContent>
+          </Tooltip>
+        ))}
+        {extra > 0 && (
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-muted text-caption font-medium text-muted-foreground ring-2 ring-background">
+            +{extra}
+          </span>
+        )}
+      </div>
+    </ListGridCell>
+  );
+}
+
+function SourceCell({
+  skill,
+  runtime,
+}: {
+  skill: SkillSummary;
+  runtime: AgentRuntime | null;
+}) {
+  const { t } = useT("skills");
+  const origin = readOrigin(skill);
+
+  let icon = <Pencil className="h-3 w-3 shrink-0" />;
+  let label: string = t(($) => $.table.source_manual);
+  if (origin.type === "runtime_local") {
+    icon = <HardDrive className="h-3 w-3 shrink-0" />;
+    label = runtime
+      ? t(($) => $.table.source_runtime_named, { name: runtimeDisplayLabel(runtime) })
+      : origin.provider
+        ? t(($) => $.table.source_runtime_provider, {
+            provider: origin.provider,
+          })
+        : t(($) => $.table.source_runtime_unknown);
+  } else if (origin.type === "clawhub") {
+    icon = <Download className="h-3 w-3 shrink-0" />;
+    label = t(($) => $.table.source_clawhub);
+  } else if (origin.type === "skills_sh") {
+    icon = <Download className="h-3 w-3 shrink-0" />;
+    label = t(($) => $.table.source_skills_sh);
+  } else if (origin.type === "github") {
+    icon = <Download className="h-3 w-3 shrink-0" />;
+    label = t(($) => $.table.source_github);
+  }
+
+  // Imported skills link to their upstream page; the anchor must not bubble
+  // its click OR auxclick into the row's whole-row navigation.
+  const sourceUrl = originSourceUrl(origin);
+
+  return (
+    <ListGridCell className="hidden gap-1.5 text-caption text-muted-foreground @2xl:flex">
+      {icon}
+      {sourceUrl ? (
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <a
+                href={sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                {...rowLinkInteractiveProps}
+                className="min-w-0 truncate hover:underline"
+              >
+                {label}
+              </a>
+            }
+          />
+          <TooltipContent side="top">{sourceUrl}</TooltipContent>
+        </Tooltip>
+      ) : (
+        <span className="min-w-0 truncate">{label}</span>
+      )}
+    </ListGridCell>
+  );
+}
+
+function CreatorCell({ creator }: { creator: MemberWithUser | null }) {
+  return (
+    <ListGridCell className="hidden gap-1.5 @2xl:flex">
+      {creator && (
+        <>
+          <ActorAvatar
+            name={creator.name}
+            initials={creator.name.slice(0, 2).toUpperCase()}
+            avatarUrl={resolvePublicFileUrl(creator.avatar_url)}
+            size="md"
+          />
+          <span className="min-w-0 truncate text-caption text-muted-foreground">
+            {creator.name}
+          </span>
+        </>
+      )}
+    </ListGridCell>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Empty state
+// ---------------------------------------------------------------------------
+
+function EmptyState({ onCreate, buttonRef }: { onCreate: () => void; buttonRef: React.Ref<HTMLButtonElement> }) {
+  const { t } = useT("skills");
+  const paths = useWorkspacePaths();
+  return (
+    <CollectionPageState
+      icon={SkillIcon}
+      title={t(($) => $.page.empty.title)}
+      description={t(($) => $.page.empty.description)}
+      actions={<>
+        <Button variant="outline" size="sm" render={<AppLink href={paths.marketplaceTab("skills")} />}>
+          {t(($) => $.market.browse_market)}
+        </Button>
+        <Button ref={buttonRef} type="button" onClick={onCreate} size="sm">
+          <Plus aria-hidden="true" className="size-3" />
+          {t(($) => $.page.new_skill)}
+        </Button>
+      </>}
+    />
+  );
+}
+
+function CategoryEmptyState({
+  category,
+  onCreate,
+  buttonRef,
+}: {
+  category: SkillCategory;
+  onCreate: () => void;
+  buttonRef: React.Ref<HTMLButtonElement>;
+}) {
+  const { t } = useT("skills");
+  const labels = useSkillCategoryLabels();
+  return (
+    <CollectionPageState
+      icon={SkillIcon}
+      title={t(($) => $.categories.empty_title, { category: labels[category] })}
+      description={t(($) => $.categories.empty_hint)}
+      actions={
+        <Button ref={buttonRef} type="button" onClick={onCreate} size="sm">
+          <Plus aria-hidden="true" className="size-3" />
+          {t(($) => $.page.new_skill)}
+        </Button>
+      }
+    />
+  );
+}
+
+// ---------------------------------------------------------------------------
+// List
+// ---------------------------------------------------------------------------
+
+function SkillListHeader({
+  sortField,
+  sortDirection,
+  onSort,
+  allSelected,
+  someSelected,
+  onToggleAll,
+  isColVisible,
+}: {
+  sortField: SortField;
+  sortDirection: ListGridSortDirection;
+  onSort: (field: SortField) => void;
+  allSelected: boolean;
+  someSelected: boolean;
+  onToggleAll: () => void;
+  isColVisible: (key: SkillColumnKey) => boolean;
+}) {
+  const { t } = useT("skills");
+  const sorted = (field: SortField) =>
+    sortField === field ? sortDirection : false;
+  return (
+    <ListGridHeader>
+      <div className="flex items-center justify-center">
+        <Checkbox
+          checked={allSelected}
+          indeterminate={someSelected && !allSelected}
+          aria-label={t(($) => $.table.select_all)}
+          onCheckedChange={onToggleAll}
+          className="border-faint-foreground after:-inset-2 focus-visible:border-foreground focus-visible:ring-foreground/50"
+        />
+      </div>
+      <ListGridHeaderCell sorted={sorted("name")} onSort={() => onSort("name")}>
+        {t(($) => $.table.name)}
+      </ListGridHeaderCell>
+      {isColVisible("category") ? (
+        <ListGridHeaderCell
+          className="hidden @2xl:flex"
+          sorted={sorted("category")}
+          onSort={() => onSort("category")}
+        >
+          {t(($) => $.table.category)}
+        </ListGridHeaderCell>
+      ) : (
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+      )}
+      {isColVisible("labels") ? (
+        <ListGridHeaderCell className="hidden @2xl:flex">
+          {t(($) => $.table.labels)}
+        </ListGridHeaderCell>
+      ) : (
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+      )}
+      {isColVisible("usedBy") ? (
+        <ListGridHeaderCell
+          sorted={sorted("usedBy")}
+          onSort={() => onSort("usedBy")}
+        >
+          {t(($) => $.table.used_by)}
+        </ListGridHeaderCell>
+      ) : (
+        <ListGridHeaderCell className="px-0" />
+      )}
+      {isColVisible("source") ? (
+        <ListGridHeaderCell className="hidden @2xl:flex">
+          {t(($) => $.table.source)}
+        </ListGridHeaderCell>
+      ) : (
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+      )}
+      {isColVisible("creator") ? (
+        <ListGridHeaderCell className="hidden @2xl:flex">
+          {t(($) => $.table.created_by)}
+        </ListGridHeaderCell>
+      ) : (
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+      )}
+      {isColVisible("updated") ? (
+        <ListGridHeaderCell
+          className="hidden @2xl:flex"
+          sorted={sorted("updated")}
+          onSort={() => onSort("updated")}
+        >
+          {t(($) => $.table.updated)}
+        </ListGridHeaderCell>
+      ) : (
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+      )}
+      {isColVisible("created") ? (
+        <ListGridHeaderCell
+          className="hidden @2xl:flex"
+          sorted={sorted("created")}
+          onSort={() => onSort("created")}
+        >
+          {t(($) => $.table.created)}
+        </ListGridHeaderCell>
+      ) : (
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+      )}
+      <span aria-hidden="true" />
+    </ListGridHeader>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <ListGrid
+      className={GRID_COLS}
+      style={columnTrackVars((key) => !DEFAULT_HIDDEN_COLUMNS.includes(key))}
+    >
+      <ListGridHeader>
+        <span aria-hidden="true" />
+        <ListGridHeaderCell>
+          <Skeleton className="h-3 w-12" />
+        </ListGridHeaderCell>
+        <ListGridHeaderCell className="hidden @2xl:flex">
+          <Skeleton className="h-3 w-10" />
+        </ListGridHeaderCell>
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+        <ListGridHeaderCell>
+          <Skeleton className="h-3 w-14" />
+        </ListGridHeaderCell>
+        {/* Source and created are hidden by default — keep their tracks
+            mapped with empty placeholders so the skeleton matches the
+            default layout. */}
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+        <ListGridHeaderCell className="hidden @2xl:flex">
+          <Skeleton className="h-3 w-10" />
+        </ListGridHeaderCell>
+        <ListGridHeaderCell className="hidden @2xl:flex">
+          <Skeleton className="h-3 w-12" />
+        </ListGridHeaderCell>
+        <ListGridHeaderCell className="hidden px-0 @2xl:flex" />
+        <span aria-hidden="true" />
+      </ListGridHeader>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <ListGridRow key={i} className="hover:bg-transparent">
+          <span aria-hidden="true" />
+          <ListGridCell className="gap-2">
+            <Skeleton className="size-6 rounded-md" />
+            <Skeleton className="h-3.5 w-40 max-w-full" />
+          </ListGridCell>
+          <ListGridCell className="hidden @2xl:flex">
+            <Skeleton className="h-3 w-16" />
+          </ListGridCell>
+          <ListGridCell className="hidden px-0 @2xl:flex" />
+          <ListGridCell>
+            <Skeleton className="h-5 w-14" />
+          </ListGridCell>
+          <ListGridCell className="hidden px-0 @2xl:flex" />
+          <ListGridCell className="hidden gap-1.5 @2xl:flex">
+            <Skeleton className="size-5 rounded-full" />
+            <Skeleton className="h-3 w-12" />
+          </ListGridCell>
+          <ListGridCell className="hidden @2xl:flex">
+            <Skeleton className="h-3 w-10" />
+          </ListGridCell>
+          <ListGridCell className="hidden px-0 @2xl:flex" />
+          <span aria-hidden="true" />
+        </ListGridRow>
+      ))}
+    </ListGrid>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
+
+export default function SkillsPage() {
+  const { t } = useT("skills");
+  const locale = useLocale();
+  const presentSkill = useSkillPresentation();
+  const wsId = useWorkspaceId();
+  const paths = useWorkspacePaths();
+  const navigation = useNavigation();
+  const rowLink = useRowLink();
+  const timeAgo = useTimeAgo();
+  const currentUserId = useAuthStore((s) => s.user?.id ?? null);
+
+  const {
+    data: skillData,
+    isLoading,
+    error: listError,
+    refetch: refetchList,
+  } = useQuery(skillListOptions(wsId));
+  const skills = useMemo(() => skillData ?? [], [skillData]);
+  const { data: agents = [], error: agentsError } = useQuery(
+    agentListOptions(wsId),
+  );
+  const { data: members = [], error: membersError } = useQuery(
+    memberListOptions(wsId),
+  );
+  const { data: runtimes = [], error: runtimesError } = useQuery(
+    runtimeListOptions(wsId),
+  );
+
+  const createButtonRef = useRef<HTMLButtonElement>(null);
+  const emptyCreateButtonRef = useRef<HTMLButtonElement>(null);
+  const [creation, setCreation] = useState<{
+    category?: SkillCategory;
+    triggerRef: React.RefObject<HTMLButtonElement | null>;
+  } | null>(null);
+  const [selectedIds, setSelectedIds] = useState<ReadonlySet<string>>(
+    new Set(),
+  );
+  const [search, setSearch] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Persisted view preferences (per workspace, per user/device). Header sort
+  // buttons and the toolbar's display panel mutate the SAME store, so both
+  // surfaces always agree. Search and selection stay session-local on
+  // purpose.
+  const sortField = useSkillsViewStore((s) => s.sortField);
+  const sortDirection = useSkillsViewStore((s) => s.sortDirection);
+  const hiddenColumns = useSkillsViewStore((s) => s.hiddenColumns);
+  const filters = useSkillsViewStore((s) => s.filters);
+  const handleSort = useSkillsViewStore((s) => s.toggleSort);
+  const handleSortFieldSelect = useSkillsViewStore((s) => s.setSortField);
+  const setSortDirection = useSkillsViewStore((s) => s.setSortDirection);
+  const toggleColumn = useSkillsViewStore((s) => s.toggleColumn);
+  const toggleFilter = useSkillsViewStore((s) => s.toggleFilter);
+  const clearFilters = useSkillsViewStore((s) => s.clearFilters);
+  const selectCategory = useSkillsViewStore((s) => s.selectCategory);
+  const viewMode = useSkillsViewStore((s) => s.viewMode);
+  const setViewMode = useSkillsViewStore((s) => s.setViewMode);
+
+  const isColVisible = (key: SkillColumnKey) => !hiddenColumns.includes(key);
+
+  const toggleSelected = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const assignments = useMemo(() => selectSkillAssignments(agents), [agents]);
+
+  const membersById = useMemo(() => {
+    const map = new Map<string, MemberWithUser>();
+    for (const m of members) map.set(m.user_id, m);
+    return map;
+  }, [members]);
+
+  const runtimesById = useMemo(() => {
+    const map = new Map<string, AgentRuntime>();
+    for (const r of runtimes) map.set(r.id, r);
+    return map;
+  }, [runtimes]);
+
+  const myRole =
+    members.find((m: MemberWithUser) => m.user_id === currentUserId)?.role ??
+    null;
+  const isAdmin = myRole === "owner" || myRole === "admin";
+
+  const actionsCtx: SkillActionsContext = {
+    wsId,
+    agents,
+    currentUserId,
+    isAdmin,
+  };
+
+  // Full assembled set — toolbar option lists and counts derive from this.
+  const allRows = useMemo<PresentedSkillRow[]>(() => {
+    return skills.map((skill) => {
+      const origin = readOrigin(skill);
+      const runtime =
+        origin.type === "runtime_local" && origin.runtime_id
+          ? runtimesById.get(origin.runtime_id) ?? null
+          : null;
+      return {
+        skill,
+        labels: skill.labels ?? [],
+        presentation: presentSkill(skill),
+        meta: readSkillPresentationMeta(skill.config),
+        agents: assignments.get(skill.id) ?? [],
+        creator: skill.created_by
+          ? membersById.get(skill.created_by) ?? null
+          : null,
+        runtime,
+        originType: origin.type,
+        canEdit: canEditSkill(skill, { userId: currentUserId, role: myRole }),
+      };
+    });
+  }, [skills, assignments, membersById, runtimesById, currentUserId, myRole, presentSkill]);
+
+  const facets = useSkillListFacets(allRows);
+
+  // Search names and descriptions in both languages (plus label names),
+  // then sort the visible rows.
+  const rows = useMemo<PresentedSkillRow[]>(() => {
+    const q = search.trim().toLowerCase();
+    const filtered = allRows.filter((row) => {
+      if (
+        q &&
+        !row.presentation.searchText.includes(q) &&
+        !row.labels.some((label) => label.name.toLowerCase().includes(q))
+      ) {
+        return false;
+      }
+      if (
+        filters.labels.length > 0 &&
+        !row.labels.some((label) => filters.labels.includes(label.id))
+      ) {
+        return false;
+      }
+      if (
+        filters.categories.length > 0 &&
+        !filters.categories.includes(row.meta.category)
+      ) {
+        return false;
+      }
+      if (filters.usage.length > 0) {
+        const usage = row.agents.length > 0 ? "used" : "unused";
+        if (!filters.usage.includes(usage)) return false;
+      }
+      if (
+        filters.origins.length > 0 &&
+        !filters.origins.includes(row.originType)
+      ) {
+        return false;
+      }
+      if (
+        filters.agents.length > 0 &&
+        !row.agents.some((a) => filters.agents.includes(a.id))
+      ) {
+        return false;
+      }
+      if (
+        filters.creators.length > 0 &&
+        (!row.skill.created_by ||
+          !filters.creators.includes(row.skill.created_by))
+      ) {
+        return false;
+      }
+      return true;
+    });
+
+    const dir = sortDirection === "asc" ? 1 : -1;
+    filtered.sort((a, b) => {
+      if (sortField === "name") {
+        return a.presentation.name.localeCompare(b.presentation.name, locale) * dir;
+      }
+      if (sortField === "category") {
+        return (
+          (SKILL_CATEGORIES.indexOf(a.meta.category) -
+            SKILL_CATEGORIES.indexOf(b.meta.category)) *
+            dir ||
+          a.presentation.name.localeCompare(b.presentation.name, locale)
+        );
+      }
+      if (sortField === "usedBy") {
+        return (
+          (a.agents.length - b.agents.length) * dir ||
+          a.presentation.name.localeCompare(b.presentation.name, locale)
+        );
+      }
+      if (sortField === "created") {
+        return (
+          (Date.parse(a.skill.created_at) - Date.parse(b.skill.created_at)) *
+          dir
+        );
+      }
+      return (
+        (Date.parse(a.skill.updated_at) - Date.parse(b.skill.updated_at)) * dir
+      );
+    });
+    return filtered;
+  }, [allRows, search, filters, sortField, sortDirection, locale]);
+
+  // Row virtualization — Linear-style: the virtualizer only does the math
+  // (visible index range + offsets); the DOM stays ours. Offsets become
+  // padding on the rows wrapper, so the mounted rows remain direct subgrid
+  // children and column alignment is untouched. Fixed ROW_HEIGHT rows mean
+  // no per-row measurement. The scroll element is the SINGLE outer
+  // scroller (both axes) — see ListGridBody's comment for why the split
+  // scroll structure was retired.
+  const listScrollRef = useRef<HTMLDivElement | null>(null);
+  const rowVirtualizer = useVirtualizer({
+    count: rows.length,
+    getScrollElement: () => listScrollRef.current,
+    estimateSize: () => ROW_HEIGHT,
+    overscan: 10,
+  });
+
+  const handleCreated = (skill: Skill) => {
+    navigation.push(paths.skillDetail(skill.id));
+  };
+
+  const selectedRows = rows.filter((row) => selectedIds.has(row.skill.id));
+  const allSelected = rows.length > 0 && selectedRows.length === rows.length;
+  const someSelected = selectedRows.length > 0 && !allSelected;
+  const handleToggleAll = () => {
+    setSelectedIds(
+      allSelected ? new Set() : new Set(rows.map((r) => r.skill.id)),
+    );
+  };
+
+  const hasActiveFilters = Object.values(filters).some((values) => values.length > 0);
+  const totalCount = skills.length;
+  const showEmpty = !isLoading && totalCount === 0;
+  // A single selected category that has no skills at all gets its own empty
+  // state with a pre-filled "New skill" entry. Counted off the unfiltered
+  // facets: when a search or another filter is what narrowed the list to
+  // zero, the plain "no matches" state is the honest one.
+  const soleCategory =
+    filters.categories.length === 1 ? filters.categories[0] : undefined;
+  const categoryEmpty =
+    soleCategory && facets.categoryCounts[soleCategory] === 0 && !search.trim() &&
+    Object.entries(filters).every(([key, values]) => key === "categories" || values.length === 0)
+      ? soleCategory : null;
+  const supportingQueryDown =
+    !!agentsError || !!membersError || !!runtimesError;
+
+  // Unmounted rows above/below the visible slice become padding on the
+  // scrolling body, exactly like Linear's --x-paddingTop/Bottom offsets.
+  const virtualItems = rowVirtualizer.getVirtualItems();
+  const firstVirtual = virtualItems[0];
+  const lastVirtual = virtualItems[virtualItems.length - 1];
+  const virtualPadding = {
+    top: firstVirtual ? firstVirtual.start : 0,
+    bottom: lastVirtual
+      ? rowVirtualizer.getTotalSize() - lastVirtual.end
+      : 0,
+  };
+
+  return (
+    <>
+    <div className="relative flex flex-1 min-h-0 flex-col">
+      <PageHeaderBar
+        buttonRef={createButtonRef}
+        onCreate={() => setCreation({ triggerRef: createButtonRef })}
+      />
+      {listError ? (
+        <CollectionPageState
+          role="alert"
+          tone="destructive"
+          icon={AlertCircle}
+          title={t(($) => $.page.list_error.title)}
+          description={listError instanceof Error ? listError.message : t(($) => $.page.list_error.fallback)}
+          actions={
+            <Button type="button" variant="outline" size="sm" onClick={() => refetchList()}>
+              {t(($) => $.page.list_error.retry)}
+            </Button>
+          }
+        />
+      ) : (
+        <>
+      {supportingQueryDown && (
+        <div
+          role="status"
+          className="flex shrink-0 items-start gap-2 border-b bg-warning/10 px-6 py-2 text-caption text-muted-foreground"
+        >
+          <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-warning" />
+          <span>{t(($) => $.page.supporting_data_warning)}</span>
+        </div>
+      )}
+
+      {isLoading ? (
+        <div className="flex-1 overflow-y-auto @container">
+          <LoadingSkeleton />
+        </div>
+      ) : showEmpty ? (
+        <div className="flex flex-1 items-center justify-center">
+          <EmptyState buttonRef={emptyCreateButtonRef} onCreate={() => setCreation({ triggerRef: emptyCreateButtonRef })} />
+        </div>
+      ) : (
+        <>
+          <span role="status" aria-atomic="true" className="sr-only">
+            {t(($) => $.toolbar.result_count, { visible: rows.length, total: totalCount })}
+          </span>
+          <SkillListToolbar
+            searchInputRef={searchInputRef}
+            search={search}
+            onSearchChange={setSearch}
+            filters={filters}
+            onToggleFilter={toggleFilter}
+            onClearFilters={clearFilters}
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSortFieldChange={handleSortFieldSelect}
+            onSortDirectionChange={setSortDirection}
+            hiddenColumns={hiddenColumns}
+            onToggleColumn={toggleColumn}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+            facets={facets}
+            visibleCount={rows.length}
+          />
+          {/* Category navigation: sidebar in wide containers, a chip row
+              below the toolbar in narrow ones. Both are mounted and the
+              container query picks one, so no JS width measurement. */}
+          <div className="flex min-h-0 flex-1 flex-col @container">
+          <SkillCategoryChips
+            className="@2xl:hidden"
+            facets={facets}
+            filters={filters}
+            onSelectCategory={selectCategory}
+          />
+          <div className="flex min-h-0 flex-1">
+          <SkillCategorySidebar
+            className="hidden @2xl:block"
+            facets={facets}
+            filters={filters}
+            onSelectCategory={selectCategory}
+            onToggleOrigin={(origin) => toggleFilter("origins", origin)}
+          />
+          {categoryEmpty ? (
+            <div className="flex flex-1 items-center justify-center">
+              <CategoryEmptyState
+                category={categoryEmpty}
+                buttonRef={emptyCreateButtonRef}
+                onCreate={() => setCreation({ category: categoryEmpty, triggerRef: emptyCreateButtonRef })}
+              />
+            </div>
+          ) : rows.length === 0 ? (
+            <div className="flex min-w-0 flex-1 items-center justify-center overflow-y-auto px-4">
+              <CollectionPageState
+                icon={SkillIcon}
+                title={t(($) => $.page.no_matches.title)}
+                description={search.trim()
+                  ? t(($) => $.page.no_matches.with_query, {
+                      query: search.trim(),
+                      filterSuffix: hasActiveFilters ? t(($) => $.page.no_matches.with_query_filter_suffix) : "",
+                    })
+                  : t(($) => $.page.no_matches.filter_only)}
+                actions={<>
+                  {search.trim() && <Button variant="outline" size="sm" onClick={() => {
+                    setSearch("");
+                    searchInputRef.current?.focus();
+                  }}>{t(($) => $.page.no_matches.clear_search)}</Button>}
+                  {hasActiveFilters && <Button variant="outline" size="sm" onClick={() => {
+                    clearFilters();
+                    searchInputRef.current?.focus();
+                  }}>{t(($) => $.toolbar.clear_filters)}</Button>}
+                </>}
+              />
+            </div>
+          ) : viewMode === "card" ? (
+            <SkillCardGrid
+              rows={rows}
+              ctx={actionsCtx}
+              selectedIds={selectedIds}
+              onToggleSelected={toggleSelected}
+            />
+          ) : (
+          <div
+            ref={listScrollRef}
+            className="min-h-0 flex-1 overflow-auto @container"
+          >
+          <ListGrid
+            className={`${GRID_COLS} @2xl:min-w-[var(--lgc-minw)]`}
+            style={columnTrackVars(isColVisible)}
+          >
+            <SkillListHeader
+              sortField={sortField}
+              sortDirection={sortDirection}
+              onSort={handleSort}
+              allSelected={allSelected}
+              someSelected={someSelected}
+              onToggleAll={handleToggleAll}
+              isColVisible={isColVisible}
+            />
+            <ListGridBody
+              style={{
+                paddingTop: virtualPadding.top,
+                paddingBottom:
+                  virtualPadding.bottom + LIST_GRID_BOTTOM_CLEARANCE,
+              }}
+            >
+              {virtualItems.map((vi) => {
+                const row = rows[vi.index];
+                if (!row) return null;
+                return (
+              <ListGridRow
+                key={row.skill.id}
+                className={`cursor-pointer ${
+                  selectedIds.has(row.skill.id) ? "bg-accent/30" : ""
+                }`}
+                {...rowLink(paths.skillDetail(row.skill.id), row.presentation.name)}
+              >
+                <CheckboxCell
+                  name={row.presentation.name}
+                  checked={selectedIds.has(row.skill.id)}
+                  onToggle={() => toggleSelected(row.skill.id)}
+                />
+                <NameCell row={row} />
+                {isColVisible("category") ? (
+                  <CategoryCell meta={row.meta} />
+                ) : (
+                  <ListGridCell className="hidden px-0 @2xl:flex" />
+                )}
+                {isColVisible("labels") ? (
+                  <LabelsCell labels={row.labels} />
+                ) : (
+                  <ListGridCell className="hidden px-0 @2xl:flex" />
+                )}
+                {isColVisible("usedBy") ? (
+                  <UsedByCell agents={row.agents} />
+                ) : (
+                  <ListGridCell className="px-0" />
+                )}
+                {isColVisible("source") ? (
+                  <SourceCell skill={row.skill} runtime={row.runtime} />
+                ) : (
+                  <ListGridCell className="hidden px-0 @2xl:flex" />
+                )}
+                {isColVisible("creator") ? (
+                  <CreatorCell creator={row.creator} />
+                ) : (
+                  <ListGridCell className="hidden px-0 @2xl:flex" />
+                )}
+                {isColVisible("updated") ? (
+                  <ListGridCell className="hidden whitespace-nowrap text-caption tabular-nums text-muted-foreground @2xl:flex">
+                    {timeAgo(row.skill.updated_at)}
+                  </ListGridCell>
+                ) : (
+                  <ListGridCell className="hidden px-0 @2xl:flex" />
+                )}
+                {isColVisible("created") ? (
+                  <ListGridCell className="hidden whitespace-nowrap text-caption tabular-nums text-muted-foreground @2xl:flex">
+                    {timeAgo(row.skill.created_at)}
+                  </ListGridCell>
+                ) : (
+                  <ListGridCell className="hidden px-0 @2xl:flex" />
+                )}
+                <ListGridCell {...rowLinkInteractiveProps} className="justify-end px-0">
+                  <SkillRowActions row={row} ctx={actionsCtx} />
+                </ListGridCell>
+              </ListGridRow>
+                );
+              })}
+            </ListGridBody>
+          </ListGrid>
+          </div>
+          )}
+          </div>
+          </div>
+        </>
+      )}
+
+      <SkillBatchToolbar
+        rows={selectedRows}
+        ctx={actionsCtx}
+        onClear={() => setSelectedIds(new Set())}
+      />
+
+        </>
+      )}
+    </div>
+      {creation && (
+        <CreateSkillDialog
+          key={wsId}
+          initialPresentation={creation.category ? { category: creation.category } : undefined}
+          finalFocus={() => creation.triggerRef.current?.isConnected
+            ? creation.triggerRef.current
+            : createButtonRef.current}
+          onClose={() => setCreation(null)}
+          onCreated={handleCreated}
+        />
+      )}
+    </>
+  );
+}

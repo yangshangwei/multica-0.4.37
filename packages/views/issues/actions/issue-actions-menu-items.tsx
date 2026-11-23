@@ -106,12 +106,14 @@ export function IssueActionsMenuItems({
   onDeletedFallbackPath,
 }: IssueActionsMenuItemsProps) {
   const { t } = useT("issues");
+  const { t: tCollaboration } = useT("collaboration");
   const wsId = useWorkspaceId();
   const statusOptions = useStatusOptions(wsId);
   const { categoryOf, colorOf } = useIssueStatuses(wsId);
   const {
     isPinned,
     updateField,
+    openInCurrentTab,
     openInNewTab,
     togglePin,
     copyLink,
@@ -134,6 +136,7 @@ export function IssueActionsMenuItems({
     queryKey: issueKeys.tasks(issue.id),
     queryFn: () => api.listTasksByIssue(issue.id),
     staleTime: 30_000,
+    enabled: !issue.collaboration,
   });
   const workdirCopyTarget = useMemo(
     () => resolveWorkdirCopyTarget(tasks),
@@ -168,6 +171,14 @@ export function IssueActionsMenuItems({
       toast.success(t(($) => $.detail.workdir_path_copied));
     });
   }, [workdirCopyTarget, t]);
+
+  if (issue.collaboration) return <>
+    <P.Item onClick={openInCurrentTab}>
+      <ExternalLink className="size-4" />{tCollaboration(($) => $.source.open)}
+    </P.Item>
+    <P.Item onClick={openInNewTab}><ExternalLink className="size-4" />{t(($) => $.actions.open_in_new_tab)}</P.Item>
+    <P.Item onClick={copyLink}><Link2 className="size-4" />{t(($) => $.actions.copy_link)}</P.Item>
+  </>;
 
   return (
     <>

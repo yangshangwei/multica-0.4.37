@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-22T01:18:49.388830+00:00",
+  "head": "238d4bb3974094ce55ab911c99cf2eedb845d278",
+  "endpoints": {
+    "api": "http://localhost:18996",
+    "web": "http://localhost:13916",
+    "desktop": "http://localhost:6090",
+    "database": "multica_gap_api_admin",
+    "offset": 916
+  },
+  "checks": {
+    "api/health": {
+      "status": 200,
+      "sha256": "fc6aafc44d2b184ac6c8dae6e781e43c0bcfdae6ae43b8a1ce1bf92286c2abd3",
+      "body": {
+        "status": "ok",
+        "pid": 22414,
+        "commit": "8ecb98883",
+        "started_at": "2026-10-21T23:29:04Z"
+      }
+    },
+    "api/api/config": {
+      "status": 200,
+      "sha256": "86adae673029371bafa800007cb5de27b33dbac5af4d50f53492eb9c8b04ff99",
+      "body": {
+        "managed_installation_supported": true,
+        "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+        "platform_admin_available": true,
+        "auth_mode": "password",
+        "password_auth_available": true,
+        "password_signup_available": true,
+        "account_binding_available": false,
+        "cdn_domain": "localhost",
+        "allow_signup": true,
+        "daemon_server_url": "http://localhost:18996",
+        "daemon_app_url": "http://localhost:13916",
+        "messaging_integrations_enabled": true,
+        "posthog_key": "",
+        "posthog_host": "",
+        "analytics_environment": "dev",
+        "feature_flags": {
+          "agents_agent_builder": true,
+          "agents_skill_toggles": true,
+          "billing_workspace_subscriptions": false,
+          "composio_mcp_apps": false,
+          "plugins_v1": false,
+          "settings_resource_labels": true
+        },
+        "local_worktree_supported": true,
+        "agent_conversation_starters_supported": true
+      }
+    },
+    "web": {
+      "status": 200,
+      "sha256": "0749f164d36c18acb16d2386d0c3992d60c2e945854b7cc8af67f1801ac2aafd"
+    },
+    "desktop": {
+      "status": 200,
+      "sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c"
+    }
+  },
+  "source_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source",
+  "compared_product_files": 4460,
+  "product_differences": [],
+  "production_gate_change": false,
+  "real_provider_account_access": false,
+  "comparison_policy": "nonignored versioned/untracked application source and migrations; test source supplied by current checkout; normalize only Next generated route-types import",
+  "renderer_expected_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+  "api_provenance": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=8ecb98883' ./cmd/server (cwd: /tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source/server)",
+    "source_id": "1e29021a392ca6c6cdc7d9932453af61973d696322f914bf59ed0d0eeca71f79",
+    "configuration_id": "805fc993af4daf895e4de11a22cd372244d7845eed807b7eaa56a50f30b39cd3",
+    "commit": "8ecb98883",
+    "launcher_pid": 22331,
+    "started_at": "2026-10-21T23:28:54Z",
+    "listener_pid": 22414
+  },
+  "web_provenance": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "tP4r55FoDsuyXfi1EylGw",
+    "command": "pnpm --filter @multica/web exec next start --port 13916",
+    "source_id": "58b3fa60203026715322f15875f607df0aac1487a544f7d277b43aa137ed35ef",
+    "configuration_id": "526b29f6d2edc3c37c7c6fedf70b2fe975d603c1e83d791d4492bdc259b5ead1",
+    "commit": "8ecb98883",
+    "launcher_pid": 76915,
+    "started_at": "2026-10-21T01:23:30Z",
+    "listener_pid": 76944
+  },
+  "listener_pids": {
+    "api": [
+      "22414"
+    ],
+    "web": [
+      "76944"
+    ],
+    "renderer": [
+      "36145"
+    ]
+  },
+  "ready": true
+}

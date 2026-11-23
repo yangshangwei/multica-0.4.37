@@ -1,9 +1,10 @@
 {
   "page": {
     "title": "AI小队",
+    "tagline": "把任务交给小队，由队长协调各角色协作。",
+    "learn_more": "了解更多 →",
     "new_button": "新建AI小队",
     "template_button": "从模板创建",
-    "empty_no_squads": "还没有AI小队，创建一个开始吧。",
     "empty_no_match": "没有匹配筛选条件的AI小队。",
     "table": {
       "name": "AI小队",
@@ -16,18 +17,62 @@
     "row_menu": "AI小队操作",
     "archive_action": "归档",
     "list_error": "无法加载AI小队。",
-    "tabs": {
-      "workspace": "工作空间",
-      "templates": "模板"
-    },
     "custom_button": "自定义创建",
     "sort_name": "名称"
   },
+  "welcome": {
+    "badge": "AI小队",
+    "title_start": "让智能体组队，",
+    "title_end": "像团队一样干活",
+    "description": "把任务交给AI小队，队长理解需求，按成员的角色分派工作，并跟进每一步。你只需要对接一个入口。",
+    "docs": "阅读文档",
+    "templates": "浏览模板",
+    "examples": "AI小队如何协作",
+    "example": "协作示例",
+    "previous": "上一个示例",
+    "next": "下一个示例",
+    "show_example": "查看示例 {{number}}：{{title}}",
+    "position": "示例 {{number}} / {{total}}：{{title}}",
+    "people": {
+      "leader": "Ada",
+      "builder": "Turing",
+      "reviewer": "Kepler",
+      "human": "Mia"
+    },
+    "issue_id": "MUL-128",
+    "issue_title": "设置页支持深色模式切换",
+    "assignee": "负责人",
+    "squad_name": "前端小队",
+    "delegation": {
+      "title": "一个入口，自动分派",
+      "description": "队长读懂任务后，@ 最适合下一步的成员。只有被点名的成员会开始工作。",
+      "routing": "按角色挑选成员..."
+    },
+    "roles": {
+      "title": "按角色分工",
+      "description": "角色描述告诉队长每位成员擅长什么。成员可以是智能体，也可以是人。",
+      "leader": "协调分工，跟进进展",
+      "builder": "负责功能实现",
+      "reviewer": "负责审查与测试",
+      "human": "确认交付结果"
+    },
+    "handoff": {
+      "title": "每个结果，都接得上下一步",
+      "description": "成员在任务中交回结果，队长据此安排下一步。讨论、进展和交接，都留在同一处。",
+      "thread": "任务讨论",
+      "result": "深色模式已实现，测试通过。",
+      "next_step": "@Kepler，请审查这次改动。",
+      "context": "结果与上下文，始终留在任务中"
+    }
+  },
   "create_chooser": {
+    "title": "你想从哪里开始？",
+    "step": "选择起点",
+    "back": "返回",
     "description": "选择创建AI小队的方式。",
     "template_description": "使用现成的团队配置和角色分工，快速组建AI小队。",
     "custom_description": "自行选择队长和成员，组建适合自己的AI小队。",
-    "close": "关闭"
+    "continue": "继续"
   },
   "inspector": {
     "details_section": "详情",
@@ -138,7 +183,8 @@
     "description": "AI小队指引会在队长智能体处理分配给该AI小队的任务时注入到它的 prompt 中。可用来给队长提供贯穿全队的指导、协作规范，或每次 task 都应遵循的上下文。",
     "unsaved_changes": "有未保存的修改",
     "save_button": "保存",
-    "placeholder": "例如：始终先编写失败测试。提交应保持小而独立。"
+    "placeholder": "例如：始终先编写失败测试。提交应保持小而独立。",
+    "remote_changed": "指引已被其他人修改。你的未保存草稿已保留；保存将替换最新指引。"
   },
   "scope": {
     "mine": "我创建的",
@@ -164,6 +210,8 @@
     "description": "选择适合的工作流程，应用到新项目或已有项目。",
     "loading": "正在加载AI小队模板...",
     "error": "无法加载AI小队模板。",
+    "squads_loading": "正在加载已创建的小队...",
+    "squads_error": "无法加载已创建的小队。",
     "empty": "暂无可用的AI小队模板。",
     "retry": "重试",
     "use_for_project": "应用到项目",
@@ -171,10 +219,11 @@
     "summaries": {
       "feature_delivery": "从需求澄清到实现、测试和审查，完成新功能交付。",
       "bug_fix": "复现缺陷、定位原因，通过回归测试验证修复。",
-      "review_gate": "审查已完成的改动，检查正确性、安全性和测试覆盖。",
+      "review_gate": "审查已完成的改动，按需核对代码、安全、测试、智能体行为、体验和迁移证据。",
       "discovery": "在投入开发前澄清需求，评估可行性和成本。",
       "docs": "为已交付的改动同步发布说明、API 文档和运维手册。",
       "maintenance": "升级依赖，处理安全公告和不稳定测试。",
+      "security_remediation": "分诊安全风险，代码漏洞先复现再在非生产环境修复，由独立成员验证和审查，关键决策由安全负责人确认。",
       "release": "验证待发布版本，备好发布说明和回滚方案，等待人工审批。",
       "incident": "先恢复服务并验证恢复情况，再调查根因。"
     }
@@ -200,5 +249,22 @@
     "applying": "正在准备AI小队...",
     "cancel": "取消",
     "failed": "无法更新项目AI小队，请重试。"
+  },
+  "recovery": {
+    "loading": "加载中...",
+    "agents_loading": "正在加载智能体...",
+    "agents_error": "未能加载智能体。",
+    "members_loading": "正在加载AI小队成员...",
+    "members_error": "未能加载AI小队成员。",
+    "workspace_members_loading": "正在加载工作空间成员...",
+    "workspace_members_error": "未能加载工作空间成员。",
+    "runtimes_loading": "正在加载运行时...",
+    "runtimes_error": "未能加载运行时。",
+    "detail_error": "未能加载此AI小队。",
+    "detail_refresh_error": "未能刷新此AI小队，当前编辑内容已保留。",
+    "not_found": "未找到此AI小队。",
+    "access_denied": "你已无权访问此AI小队。",
+    "unknown_count": "尚未加载",
+    "retry": "重试"
   }
 }

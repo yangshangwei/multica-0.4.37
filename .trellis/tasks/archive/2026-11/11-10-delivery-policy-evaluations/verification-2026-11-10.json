@@ -1,0 +1,529 @@
+{
+  "baseline": "c3bc9abd1bd81560cc6af1dd85d125cb92a095eb",
+  "scope": "project fixed-policy off/observe revisions and durable immutable evaluations; no done enforcement",
+  "accepted": true,
+  "source_manifest": "research/final-source-manifest.json",
+  "final_checks": {
+    "final-build01": {
+      "record": "research/runs/final-build01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-contracts01": {
+      "record": "research/runs/final-contracts01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "fc884bfdf09dcf0d261b5f9654eb5540b26f7f69d86c78bcf3fdd6101a9ede04"
+    },
+    "final-handler-normal01": {
+      "record": "research/runs/final-handler-normal01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 236,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "02522f8f07da0236925e5e8aa7ad64657d70b0383b3d30e649491ae688cbb4e5"
+    },
+    "final-handler-race01": {
+      "record": "research/runs/final-handler-race01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 236,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "b6a56fb8f405853818d9debc79fa1c02d7b3757a8270c75a24cb48b655cf21b9"
+    },
+    "final-migrations-normal01": {
+      "record": "research/runs/final-migrations-normal01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "3c8d49a2109d73d2d89df1b6be6deb0ec141117bfaac1feb2870e9f5891768af"
+    },
+    "final-migrations-race01": {
+      "record": "research/runs/final-migrations-race01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "de122546870e7efc6a8ede86d1b007d8d8f5cb3d362187f6bc3fa9d3693e27a5"
+    },
+    "final-router-normal01": {
+      "record": "research/runs/final-router-normal01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 80,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "285a792b996a8a7687fd3d04fb7fff1a9ca35230bd0f7958febdda9cd501073d"
+    },
+    "final-router-race01": {
+      "record": "research/runs/final-router-race01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 80,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e7ef1fd2f8711677901d0b42c516e7e1b044a644532886cb4b8eeb80bbfaaacb"
+    },
+    "final-sqlc01": {
+      "record": "research/runs/final-sqlc01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-vet01": {
+      "record": "research/runs/final-vet01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "preserved_failures": {
+    "backend-build01": {
+      "record": "research/runs/backend-build01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "92549e3fd1fcdae5e2020797c61310af3ecfbb7e9454c97e237b8c9cb8f7b6f8"
+    },
+    "backend-handler01": {
+      "record": "research/runs/backend-handler01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "044b7b1e20cc8673f41b588755d6a05de6b4e25c65219c04616cb543cf4d63ec"
+    },
+    "backend-handler02": {
+      "record": "research/runs/backend-handler02.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 71,
+        "fail": 2,
+        "skip": 0
+      },
+      "log_sha256": "e63ed0a8924d05966155a470f98b01a1ff0ac810eefa3572fb5c8d84f16f32a3"
+    },
+    "manifest-baseline01": {
+      "record": "research/runs/manifest-baseline01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "94620fea131c427c36b81d1e220acc1a7419d1c7f0b495f35de3688442760892"
+    },
+    "router-compile01": {
+      "record": "research/runs/router-compile01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "92549e3fd1fcdae5e2020797c61310af3ecfbb7e9454c97e237b8c9cb8f7b6f8"
+    },
+    "router01": {
+      "record": "research/runs/router01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 44,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "fc5f70b33904f114d9eca9a6181cf5a30f05113ce250c8c0bc8d46246baf6dd9"
+    }
+  },
+  "all_runs": {
+    "backend-build01": {
+      "record": "research/runs/backend-build01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "92549e3fd1fcdae5e2020797c61310af3ecfbb7e9454c97e237b8c9cb8f7b6f8"
+    },
+    "backend-build02": {
+      "record": "research/runs/backend-build02.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "backend-handler01": {
+      "record": "research/runs/backend-handler01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "044b7b1e20cc8673f41b588755d6a05de6b4e25c65219c04616cb543cf4d63ec"
+    },
+    "backend-handler02": {
+      "record": "research/runs/backend-handler02.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 71,
+        "fail": 2,
+        "skip": 0
+      },
+      "log_sha256": "e63ed0a8924d05966155a470f98b01a1ff0ac810eefa3572fb5c8d84f16f32a3"
+    },
+    "backend-handler03": {
+      "record": "research/runs/backend-handler03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 95,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "2b62cf64b8cbb17181243714856929bad60a2fd6f2dfb54735f9ffc7175c16c8"
+    },
+    "backend-sqlc01": {
+      "record": "research/runs/backend-sqlc01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "82e81be19e70b27058e6e53a14e5038605de577ff0e32541d1c48a83fb815f43"
+    },
+    "backend-sqlc02": {
+      "record": "research/runs/backend-sqlc02.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "82e81be19e70b27058e6e53a14e5038605de577ff0e32541d1c48a83fb815f43"
+    },
+    "baseline-migrate": {
+      "record": "research/runs/baseline-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "530f4fc377e53970046ecd770f482b85a61787280d0051a9e08e0da6a6689855"
+    },
+    "final-build01": {
+      "record": "research/runs/final-build01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-contracts01": {
+      "record": "research/runs/final-contracts01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "fc884bfdf09dcf0d261b5f9654eb5540b26f7f69d86c78bcf3fdd6101a9ede04"
+    },
+    "final-handler-normal01": {
+      "record": "research/runs/final-handler-normal01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 236,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "02522f8f07da0236925e5e8aa7ad64657d70b0383b3d30e649491ae688cbb4e5"
+    },
+    "final-handler-race01": {
+      "record": "research/runs/final-handler-race01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 236,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "b6a56fb8f405853818d9debc79fa1c02d7b3757a8270c75a24cb48b655cf21b9"
+    },
+    "final-migrations-normal01": {
+      "record": "research/runs/final-migrations-normal01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "3c8d49a2109d73d2d89df1b6be6deb0ec141117bfaac1feb2870e9f5891768af"
+    },
+    "final-migrations-race01": {
+      "record": "research/runs/final-migrations-race01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "de122546870e7efc6a8ede86d1b007d8d8f5cb3d362187f6bc3fa9d3693e27a5"
+    },
+    "final-router-normal01": {
+      "record": "research/runs/final-router-normal01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 80,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "285a792b996a8a7687fd3d04fb7fff1a9ca35230bd0f7958febdda9cd501073d"
+    },
+    "final-router-race01": {
+      "record": "research/runs/final-router-race01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 80,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e7ef1fd2f8711677901d0b42c516e7e1b044a644532886cb4b8eeb80bbfaaacb"
+    },
+    "final-sqlc01": {
+      "record": "research/runs/final-sqlc01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-vet01": {
+      "record": "research/runs/final-vet01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "handler-migrate01": {
+      "record": "research/runs/handler-migrate01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "71f3e0fb5d075d94c24e346b7d60db722f3250643e3b399696c02b0df647ed29"
+    },
+    "handler-migrate02": {
+      "record": "research/runs/handler-migrate02.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "8db595de47becf140b5f3c9ba207844a0a1d56acbe8af042355161b714151964"
+    },
+    "handler_normal01-migrate": {
+      "record": "research/runs/handler_normal01-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e4e4ba9eb475d71dddf6d6c60323b7003075ecc8bb8e73830d79be412615fe27"
+    },
+    "handler_race01-migrate": {
+      "record": "research/runs/handler_race01-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "0be9c3a1b7229a70ed7f4e7470e7175d287176fcc43fc15cc8001c90f6d96680"
+    },
+    "manifest-baseline01": {
+      "record": "research/runs/manifest-baseline01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "94620fea131c427c36b81d1e220acc1a7419d1c7f0b495f35de3688442760892"
+    },
+    "migrations-static01": {
+      "record": "research/runs/migrations-static01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "3ff1fe9cb16baab92aab77c5fbd04e7755ab6131ed2bf06f6dae5305be19a0dc"
+    },
+    "migrations01": {
+      "record": "research/runs/migrations01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "db491cb1c7eb05aecd4ed1e5d88d9546a46143bcf1528643a1f1de1bdcfd0777"
+    },
+    "migrations_normal01-migrate": {
+      "record": "research/runs/migrations_normal01-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "8743d9ff6dc50bc2af89dcc5065a6938c77925b5cd91226aea0a8507f964ddaf"
+    },
+    "migrations_race01-migrate": {
+      "record": "research/runs/migrations_race01-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "34508c1fdc06a9b9c63b5a1b0ccfd4945e8bc8f5362a1d0f8285369ff00038d0"
+    },
+    "router-compile01": {
+      "record": "research/runs/router-compile01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "92549e3fd1fcdae5e2020797c61310af3ecfbb7e9454c97e237b8c9cb8f7b6f8"
+    },
+    "router-migrate01": {
+      "record": "research/runs/router-migrate01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "54bab3e412930dc2f2bb5af7c6bcc322880d318ab5abd4548c62e74aa854d16d"
+    },
+    "router-migrate02": {
+      "record": "research/runs/router-migrate02.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "6ccfa0febd6358603f73db1c18ee07ad4dd12285c687236dff8622a483362c26"
+    },
+    "router01": {
+      "record": "research/runs/router01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 44,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "fc5f70b33904f114d9eca9a6181cf5a30f05113ce250c8c0bc8d46246baf6dd9"
+    },
+    "router02": {
+      "record": "research/runs/router02.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 46,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "8a1285b88c8aa348b057d92416cd7c0aa259021660805434887ee4b77b18bd61"
+    },
+    "router_normal01-migrate": {
+      "record": "research/runs/router_normal01-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "87affe043eb53ebfd1f5db14944ec20a7e1f2b0bf2a10153a51cba06182901eb"
+    },
+    "router_race01-migrate": {
+      "record": "research/runs/router_race01-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "25b6e2987b2a8be1c07e3627957ca87799b66a59966aecf243bf47726fa7d6f6"
+    }
+  },
+  "counts_note": "Named counts include subtests. Runs are separate, never sum as independent coverage. Handler236=95new+140prior+1manifest; router80=46new+34prior; migrations37=34new+3registration; contracts23=21skills+1migration+1runtime.",
+  "source_drift": 0,
+  "sqlc": "regenerated and all26 frozen hashes unchanged",
+  "frontend": "No frontend changes; no TypeScript/browser/full-repo acceptance claimed",
+  "real_model_calls": 0,
+  "private_evidence_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi",
+  "independent_review": "research/independent-review.json",
+  "cleanup": "research/cleanup.json",
+  "limits": [
+    "Observe only; no skip, hint or done enforcement",
+    "PR head is database-observed, not live remote Git",
+    "Global PR SHARE NOWAIT and asynchronous PAT ancillary writes can legitimately409",
+    "Schema retained after deletion; down requires maintenance and refuses retained evidence",
+    "Original evaluator-only recovery, no shared audit/UI/CLI",
+    "Go1.27darwin/arm64 with PG17amd64 container; functional, no performance guarantee",
+    "AC43/E5/H3a/knowledge real-model stop rules and budgets unchanged"
+  ]
+}

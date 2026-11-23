@@ -1,0 +1,32 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "related_task": "PAY-241",
+  "created_at": "2026-11-15T11:56:47.390464+00:00",
+  "source_thread": "01a1dde9-4bd6-7c00-9fa1-e29bf5ddb142",
+  "owner_reported_unified_candidate": {
+    "source_input_files": 4968,
+    "test_instrumented_only": true,
+    "production_byte_mode_zero_drift_from_base81": true,
+    "manifest_sha256": "fffeec5a7c48ad8fee7a4bc0933e0a0416d1357fc8ec56c93cc77b0e06c3bda4",
+    "fresh_databases_prepared": 4,
+    "environment_binding": "in_progress",
+    "suite_order": [
+      "completion37 normal→race",
+      "foundation79 normal→race"
+    ],
+    "max_parallel_bounded_suites": 2,
+    "preserves": [
+      "knowledge865",
+      "knowledge lifecycle hooks",
+      "stronger LIVE assertions"
+    ]
+  },
+  "final_accepted_source_binding": "pending",
+  "p2_readiness": false,
+  "product_passed": 0,
+  "product_total": 4,
+  "full_new_code_verdict": "pending",
+  "independent_evidence_receipts_to_follow": true,
+  "root_hold": "released",
+  "external_owner_work_not_repeated": true
+}

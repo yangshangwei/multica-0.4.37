@@ -1,0 +1,21 @@
+{
+  "source_sha256": {
+    "server/pkg/agent/agent.go": "b63e1df50b8e67761ab77a8d931389845cab6dd48c61fb98ec863179fc3fe302",
+    "server/pkg/agent/claude.go": "028a6681547033cb26c4c532c0b4d72cd10fba0096572caabe9821420953f803",
+    "server/pkg/agent/private_stderr_test.go": "38069d137b720cbaa89b4ddf9ffda543f83d56a14f8f46f0a2e5ddd5c6169ffc",
+    "server/internal/daemon/daemon.go": "3223e56aa3a66a715c7c02a8d6a4b64d143536bdcd8ae45b82e000cde470131b",
+    "server/internal/daemon/collaborationrun/host_runner.go": "2d142794ef6f60e060edd6c2a54fe66ce7fd78cb17639496728bc5e2b3eda68f",
+    "server/internal/daemon/knowledge_context_stderr_test.go": "0e53dd4b0db4b1ac9b3bb2fab5c3f80b2e1717f3c979de409933169df14f9270",
+    "server/internal/daemon/collaborationrun/host_knowledge_stderr_test.go": "42202b8c8d23191b86b05c32105037b8d06c1f315c4c19d5764651da55703b86"
+  },
+  "dependency_sha256": {
+    "server/internal/daemon/knowledge_context.go": "62d70842f0614262616fcd4e8831a4e69b03f046dd98b5a103cc3ee8010c6666",
+    "server/internal/daemon/knowledge_context_test.go": "23bcbcb29615dc8db649643d0d35e90f2477bb586b917eb639d573d1ae72670c",
+    "server/internal/daemon/collaborationrun/host_knowledge.go": "1a7345ba6171ee85c738cbd898815d63d2d37e3125931382897c69f1cec61fa2",
+    "server/pkg/agent/knowledge_launch.go": "7d9f2e9f6b898391630ee5cfcb3845a51cfa12f840a109008aa4557007c0bdcc",
+    "server/pkg/agent/launch_lifecycle.go": "15431e2e4329ba12a4f3da09114c1d892862fe4e798b124391bf21a25fb326be",
+    "server/pkg/agent/stderr_tail.go": "1d6cedba7cb99b18d884a7f6ea7c529a75e5b52b536023671288d251512fc760"
+  },
+  "sources_unchanged": true,
+  "dependencies_unchanged": true
+}

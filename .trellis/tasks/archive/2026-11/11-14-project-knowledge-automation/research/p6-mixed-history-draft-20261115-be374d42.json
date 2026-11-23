@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "draft_id": "p6-mixed-history-draft-20261115-be374d42",
+  "created_at": "2026-11-15T06:05:32.247961+00:00",
+  "task_root": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation",
+  "approved_revision": "2026-11-14-v1",
+  "role": "trellis-implement",
+  "mode": "bounded_external_security_regression_draft",
+  "status": "ready_for_main_review_not_integrated_not_executed",
+  "scope": {
+    "shared_checkout_write_allowlist": [
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-mixed-history-draft-20261115-be374d42.json"
+    ],
+    "external_go_write_allowlist": [
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/task_knowledge_mixed_history_integration_test.go"
+    ],
+    "unique_integration_target": "server/internal/service/task_knowledge_mixed_history_integration_test.go",
+    "shared_go_source_or_tests_modified": false,
+    "shared_spec_markdown_launcher_task_json_modified": false,
+    "other_edits_preserved": true,
+    "agents_spawned": 0,
+    "database_connections_created": 0,
+    "database_migrations_executed": 0,
+    "testmain_executed": false,
+    "test_bodies_executed": false,
+    "agent_cli_executions": 0,
+    "model_provider_calls": 0,
+    "api_or_p6_processes_started": 0,
+    "C3_in_scope": false
+  },
+  "draft": {
+    "absolute_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/task_knowledge_mixed_history_integration_test.go",
+    "sha256": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a",
+    "bytes": 23420,
+    "lines": 370,
+    "file_mode": "0600",
+    "directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+    "directory_mode": "0700",
+    "canonical_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/task_knowledge_mixed_history_integration_test.go"
+  },
+  "private_directory": {
+    "git_boundary_probe_command": [
+      "/usr/bin/git",
+      "-C",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+      "rev-parse",
+      "--show-toplevel"
+    ],
+    "git_boundary_probe_exit_code": 128,
+    "git_boundary_probe_stdout_empty": true,
+    "outside_checkout": true,
+    "final_entries": [
+      "task_knowledge_mixed_history_integration_test.go"
+    ],
+    "gofmt_local_telemetry_state_created_in_owned_home_and_removed": true,
+    "last_removed_owned_state": [
+      "Library/Application Support",
+      "Library/Application Support/go",
+      "Library/Application Support/go/telemetry",
+      "Library/Application Support/go/telemetry/local",
+      "Library/Application Support/go/telemetry/local/weekends",
+      "Library/Application Support/go/telemetry/local/gofmt@go1.27.0-go1.27.0-darwin-arm64-2026-11-15.v1.count"
+    ],
+    "cleanup_scope": "only this newly allocated private directory; no shared or unowned paths removed"
+  },
+  "source_identity": {
+    "checkout": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "head_at_draft_review": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "input_count": 22,
+    "read_set_sha256": "a5ced8c234fe84d2979652ea72b3006a41ef19444ca665deb6d596e5588a2dac",
+    "fingerprint_algorithm": "sorted relative path UTF-8 + NUL + exact bytes, concatenated over the listed read set",
+    "scope_limit": "This is the 22-file draft read binding, not the full service source fingerprint or a confirmed compile dependency manifest.",
+    "all_read_inputs_unchanged": true,
+    "inputs": [
+      {
+        "path": ".trellis/spec/server/collaboration-knowledge-execution.md",
+        "sha256_before": "f9302a6ce63fee9c86b0449cac4b2d0bf698cd38cf2fb13840cd2a616221f2bb",
+        "sha256_after": "f9302a6ce63fee9c86b0449cac4b2d0bf698cd38cf2fb13840cd2a616221f2bb",
+        "unchanged": true
+      },
+      {
+        "path": ".trellis/spec/server/database-test-isolation.md",
+        "sha256_before": "6317dea643c1e395aaea3ff7a0aa1cc5b3f33b085636c739606aaa33ff1a6b07",
+        "sha256_after": "6317dea643c1e395aaea3ff7a0aa1cc5b3f33b085636c739606aaa33ff1a6b07",
+        "unchanged": true
+      },
+      {
+        "path": ".trellis/spec/server/verification-environment.md",
+        "sha256_before": "bd1bdb58861d993eb5dc836bd45fe9276b066763265265822dfccec584ece4da",
+        "sha256_after": "bd1bdb58861d993eb5dc836bd45fe9276b066763265265822dfccec584ece4da",
+        "unchanged": true
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/check.jsonl",
+        "sha256_before": "20f0cedf1a905995081afaa4ce0342fa83ca3d119283e456ca4e03730ae30036",
+        "sha256_after": "20f0cedf1a905995081afaa4ce0342fa83ca3d119283e456ca4e03730ae30036",
+        "unchanged": true
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/implement.jsonl",
+        "sha256_before": "9726d6ecf5b6dba9736389da49c9bc6c274305d766eb48e6a5fc064eae63d4b6",
+        "sha256_after": "9726d6ecf5b6dba9736389da49c9bc6c274305d766eb48e6a5fc064eae63d4b6",
+        "unchanged": true
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-security-review-20261115-41b188ec.json",
+        "sha256_before": "a353a29fc1996b846d33f41abaa45ec32657001a77022079d61a171d61c69071",
+        "sha256_after": "a353a29fc1996b846d33f41abaa45ec32657001a77022079d61a171d61c69071",
+        "unchanged": true
+      },
+      {
+        "path": "CLAUDE.md",
+        "sha256_before": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+        "sha256_after": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+        "unchanged": true
+      },
+      {
+        "path": "server/go.mod",
+        "sha256_before": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+        "sha256_after": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+        "unchanged": true
+      },
+      {
+        "path": "server/go.sum",
+        "sha256_before": "7bb6e5e0576e89cb9f7b13c81a0fcd4b39acb2fae75ef9b6499066915b4e281d",
+        "sha256_after": "7bb6e5e0576e89cb9f7b13c81a0fcd4b39acb2fae75ef9b6499066915b4e281d",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_knowledge_consumption_test.go",
+        "sha256_before": "2a9015de956a785d2e330050fe7b5624801c2d523ce0a2ec82d5185e49e93f01",
+        "sha256_after": "2a9015de956a785d2e330050fe7b5624801c2d523ce0a2ec82d5185e49e93f01",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_knowledge_delivery_test.go",
+        "sha256_before": "06eedc36a91d465d1b9e16b6020de8ff3020ca8baf2ed01d91d7b256fa8e54ea",
+        "sha256_after": "06eedc36a91d465d1b9e16b6020de8ff3020ca8baf2ed01d91d7b256fa8e54ea",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/collaboration_knowledge_test.go",
+        "sha256_before": "68043a6de65a48693db5df0b0713f593935fd79a9c1e48e222b963caff8e1192",
+        "sha256_after": "68043a6de65a48693db5df0b0713f593935fd79a9c1e48e222b963caff8e1192",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/task_knowledge.go",
+        "sha256_before": "a2258373d8c0abc4883e5fdd7fc28a0bca80ce106bc41758d5ecdb795f21d9e7",
+        "sha256_after": "a2258373d8c0abc4883e5fdd7fc28a0bca80ce106bc41758d5ecdb795f21d9e7",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/task_knowledge_automation_test.go",
+        "sha256_before": "664da26f7931835af3b3586dbb4241a9796cf7dcf764950c377a8dcdda54e94f",
+        "sha256_after": "664da26f7931835af3b3586dbb4241a9796cf7dcf764950c377a8dcdda54e94f",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/task_knowledge_history_growth_test.go",
+        "sha256_before": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+        "sha256_after": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/task_knowledge_history_test.go",
+        "sha256_before": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+        "sha256_after": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/task_knowledge_observe.go",
+        "sha256_before": "86f909e7bbaedc595c338f7868ed6ef1a2c0a2fdcb1569cb006f62fe8525b443",
+        "sha256_after": "86f909e7bbaedc595c338f7868ed6ef1a2c0a2fdcb1569cb006f62fe8525b443",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/task_knowledge_prepare.go",
+        "sha256_before": "be50608fed856ba0131e81645e2fd9cef17e0227f6b4e6bef1f51a944de80486",
+        "sha256_after": "be50608fed856ba0131e81645e2fd9cef17e0227f6b4e6bef1f51a944de80486",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/task_knowledge_resume_test.go",
+        "sha256_before": "594648c826eadca405dd28d7a1638458d23e3b29455d6e2f5b7dd9204a161967",
+        "sha256_after": "594648c826eadca405dd28d7a1638458d23e3b29455d6e2f5b7dd9204a161967",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/task_knowledge_test.go",
+        "sha256_before": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+        "sha256_after": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+        "unchanged": true
+      },
+      {
+        "path": "server/internal/service/task_knowledge_version_integration_test.go",
+        "sha256_before": "c74e4294a46f19d97167bd9940ad71ca33f6df9846e42e87b35e570d3bb0771a",
+        "sha256_after": "c74e4294a46f19d97167bd9940ad71ca33f6df9846e42e87b35e570d3bb0771a",
+        "unchanged": true
+      },
+      {
+        "path": "server/pkg/db/queries/task_knowledge.sql",
+        "sha256_before": "9f808a9c707ac28a9575eabb8df34734de6fb630d8fa1e5fcb25f0ea2d514d19",
+        "sha256_after": "9f808a9c707ac28a9575eabb8df34734de6fb630d8fa1e5fcb25f0ea2d514d19",
+        "unchanged": true
+      }
+    ]
+  },
+  "review_basis": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-security-review-20261115-41b188ec.json",
+    "sha256": "a353a29fc1996b846d33f41abaa45ec32657001a77022079d61a171d61c69071",
+    "covered_findings": [
+      "C1",
+      "C2"
+    ],
+    "C3": "Main session retains ownership of the P6 original-proof replay journey; no C3 test or product edit in this draft."
+  },
+  "coverage": [
+    {
+      "finding": "C1",
+      "test": "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure",
+      "subtests": [
+        "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/server_configuration",
+        "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/client_binding",
+        "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/native_refused"
+      ],
+      "fixture_sequence": [
+        "Publish a v1 human workspace candidate through existing proposal/approval service calls before formal acceptance.",
+        "Prepare and observe the v1 human turn with the chosen native; publish the existing synthetic consumption proof only afterward.",
+        "Resume that exact generation/native in a real v2 service preparation containing human and automatic entries; assert both descriptors have the same session binding.",
+        "For native_refused, retain the original admitted human attempt until the automatic turn is recorded, then submit an actual contradictory native observation and terminate/fail the human turn.",
+        "Seed insertClaimedHistory(t, 260) from the genuine v1 human row because the existing utility writes storage column version 1.",
+        "Pin created_at to human 03:00, fillers 02:00 and automatic 01:00 UTC on 2026-11-14; inspect the exact 128/128/6 pages and decode every row before the refusal assertion.",
+        "Reopen the source, change server digest or client configuration in its named variant, then request the old native from a new NULL-version turn."
+      ],
+      "assertions": [
+        "409 knowledge_context_changed, descriptor nil, prior empty.",
+        "No replacement claim or attempt is finalized on the newly selected task after refusal.",
+        "Explicit empty selection yields a distinct valid UUID generation and empty native; preparation retains the human contribution and includes zero paused automatic contributions.",
+        "All 262 retained metadata snapshots remain unchanged, with explicit original raw delivery bytes, manifest/hash/version, native pointer and attempt-count checks for both prepared rows."
+      ],
+      "runtime_status": "not_run"
+    },
+    {
+      "finding": "C2",
+      "test": "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding",
+      "subtests": [
+        "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/server_configuration",
+        "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/client_binding"
+      ],
+      "fixture_sequence": [
+        "Create pure v2 human prepared/native history using the existing service fixture, with one actual human candidate and no validity marker.",
+        "Change server configuration or client binding before selecting the native with a supported v1 invocation."
+      ],
+      "assertions": [
+        "The exposure helper returns managed=true, binding=nil, empty entries and highest matching nested manifest protocol version 2 despite incompatibility.",
+        "The v1 old-native request returns 409 knowledge_context_changed with descriptor nil/prior empty and leaves the selected row unfinalized.",
+        "Explicit v2 fresh selection remains supported, has a new valid generation and empty native, and prepares the human contribution.",
+        "Original delivery bytes, manifest/hash/version, native pointer and attempt count remain unchanged."
+      ],
+      "runtime_status": "not_run"
+    },
+    {
+      "finding": "C2_positive_control",
+      "test": "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding",
+      "subtests": [
+        "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v1_envelope",
+        "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v2_envelope_with_v1_claim"
+      ],
+      "fixture_sequence": [
+        "Create genuine v1 human prepared/native history; the v2-envelope variant changes only the outer storage version through encodeTaskKnowledge while retaining nested claims, manifests, authorizations, observations and hashes.",
+        "Assert an unchanged v2 invocation can resume the original generation/native before changing server instructions."
+      ],
+      "assertions": [
+        "Incompatible pure legacy history returns an empty manifest with protocol version 1, including inside an outer v2 envelope.",
+        "A supported v2 invocation requesting that old native may legitimately select a fresh UUID generation with empty native/prior.",
+        "Retained human bytes, original manifest/hash, nested versions and attempt count stay unchanged."
+      ],
+      "runtime_status": "not_run"
+    }
+  ],
+  "bounded_inventory": {
+    "top_level_tests": 3,
+    "subtests": 7,
+    "new_helpers": 0,
+    "fillers_per_C1_variant": 260,
+    "retained_rows_per_C1_variant": 262
+  },
+  "reuse": {
+    "fixtures_and_utilities": [
+      "knowledgeAcceptedSourceFixture",
+      "knowledgeServiceProposal",
+      "automaticConsumerTask",
+      "publishConsumptionProof",
+      "newTaskKnowledgeFixture",
+      "taskKnowledgeFixture.finalize",
+      "taskKnowledgeFixture.recordSession",
+      "taskKnowledgeFixture.nextTurn",
+      "taskKnowledgeFixture.insertClaimedHistory",
+      "taskKnowledgeFixture.prepareRequest",
+      "taskKnowledgeFixture.authorizeRequest",
+      "taskKnowledgeFixture.observe",
+      "decodeTaskKnowledge",
+      "encodeTaskKnowledge",
+      "sameTaskKnowledgeManifest",
+      "testutil Fixture Task/Exec/QueryRow/Count/Cleanup"
+    ],
+    "new_dependencies": 0,
+    "new_helper_abstractions": 0,
+    "simplification": "Reuse the existing fixture and growth utility; keep all seven cases in the single requested service test file without shared fixture/product refactors."
+  },
+  "verification": {
+    "gofmt": {
+      "status": "pass",
+      "executable": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/gofmt",
+      "executable_sha256": "0bcfa961e5c2a8ef2cac1e8a03e3267d615196ee59248eab3ab152495a397185",
+      "format_command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/gofmt",
+        "-w",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/task_knowledge_mixed_history_integration_test.go"
+      ],
+      "format_environment": {
+        "PATH": "/usr/bin:/bin",
+        "HOME": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+        "TMPDIR": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+        "TMP": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+        "TEMP": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+        "GOCACHE": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/gocache",
+        "GOMODCACHE": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/gomodcache",
+        "GOPATH": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/gopath",
+        "GOENV": "off",
+        "GOTOOLCHAIN": "local",
+        "GOWORK": "off"
+      },
+      "format_exit_code": 0,
+      "format_stdout": "",
+      "format_stderr": "",
+      "check_command": [
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/gofmt",
+        "-l",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/task_knowledge_mixed_history_integration_test.go"
+      ],
+      "check_environment": {
+        "PATH": "/usr/bin:/bin",
+        "HOME": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+        "TMPDIR": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+        "TMP": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+        "TEMP": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l",
+        "GOCACHE": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/gocache",
+        "GOMODCACHE": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/gomodcache",
+        "GOPATH": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/gopath",
+        "GOENV": "off",
+        "GOTOOLCHAIN": "local",
+        "GOWORK": "off",
+        "GOTELEMETRY": "off"
+      },
+      "check_exit_code": 0,
+      "check_stdout": "",
+      "check_stderr": "",
+      "check_sha256": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a",
+      "claim_limit": "Formatting and Go syntax only; no compilation, typecheck or runtime assertions."
+    },
+    "compile": {
+      "status": "not_run",
+      "command": null,
+      "exit_code": null,
+      "compiled_binary": null,
+      "conditional_compile_authorization_present": true,
+      "confirmed_exact_source_inventory_or_overlay_compile_permit_received": false,
+      "reason": "用户要求没有确认的源码清单/编译许可时仅 gofmt。本次未接收与此新 draft overlay 绑定的完整编译源码清单，因此未调用 go test -c、go list 或其他 Go 编译命令。",
+      "agent_cli_guard": "No Go compile/test subprocess or agent CLI was admitted; the formatter used an absolute pinned executable with a clean environment and PATH=/usr/bin:/bin."
+    },
+    "overlay_binding": {
+      "status": "proposed_only_not_applied",
+      "overlay_file_created": false,
+      "mapping": {
+        "Replace": {
+          "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/task_knowledge_mixed_history_integration_test.go": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/task_knowledge_mixed_history_integration_test.go"
+        }
+      },
+      "canonical_mapping_sha256": "7a9b9c9dce9ca68d544941ce89dbba6687d79d7f4d2b72552e2cce384733f33b",
+      "canonical_mapping_serialization": "UTF-8 JSON, sorted keys, separators comma/colon, no whitespace",
+      "unique_target_count": 1,
+      "target_absent_on_disk": true,
+      "draft_sha256": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a"
+    },
+    "tests": {
+      "status": "not_run",
+      "selected_names": [
+        "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure",
+        "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding",
+        "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding"
+      ],
+      "named_pass_events": 0,
+      "testmain_executed": false,
+      "database_allocation_permit": null
+    },
+    "lint_typecheck_vet_static_analysis": {
+      "status": "not_run",
+      "reason": "External draft-only scope and no admitted compile manifest; no shared checkout validation entry points were executed."
+    },
+    "json_and_modes": {
+        "status": "pass",
+        "json_parse_pass": true,
+        "mode_pass": true,
+        "draft_hash_binding_pass": true,
+        "overlay_mapping_binding_pass": true,
+        "unique_target_absent_pass": true,
+        "listed_source_hashes_unchanged_pass": true,
+        "validated_by": "python3 JSON/hash/mode assertions and explicit Git-boundary probe",
+      "expected_research_mode": "0600",
+      "expected_draft_mode": "0600",
+      "expected_directory_mode": "0700"
+    }
+  },
+  "remaining_risks_and_handoff": [
+    "This formatted draft has not been compiled or run. Main must inspect it after the current service race finishes, copy only to the unique new test path, allocate its owned database, execute the seven bounded scenarios and bind the final source.",
+    "C1 deliberately pins history timestamps so the human row is visited first and the automatic row is on page three; the in-test strict decoding and exact-binding assertions must run before interpreting a refusal as product evidence.",
+    "The native_refused fixture uses synthetic service observations and no real process/Provider; it proves the retained history scan only once main executes it.",
+    "C3, complete service acceptance, Web/Desktop/P6 and AC closure remain owned by the main session."
+  ],
+  "modified_paths": [
+    {
+      "absolute_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/p6-mixed-history-draft-20261115-be374d42-rkhnbv3l/task_knowledge_mixed_history_integration_test.go",
+      "change": "added_external_draft",
+      "mode": "0600"
+    },
+    {
+      "absolute_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-mixed-history-draft-20261115-be374d42.json",
+      "change": "added_research_receipt",
+      "mode": "0600"
+    }
+  ]
+}

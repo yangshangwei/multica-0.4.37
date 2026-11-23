@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-11-02T19:58:35.161377+00:00",
+  "state": "running; final-result-pending",
+  "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+  "record_sha256_at_observation": "b8b7ba7e685530d147413eeae163020ceff4f59addf2d0af213c8e1d252d0f93",
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "started_at": "2026-11-02T19:56:51.936099+00:00",
+  "process_id": 92594,
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+  "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+  "independent_review": {
+    "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-executable-review.json",
+    "sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
+    "verdict": "pass-with-notes",
+    "blocking_findings_open": 0
+  },
+  "clearance_sha256": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae",
+  "actual_final_acceptance": false,
+  "runtime_real_provider_calls": 0,
+  "initial_not_started_snapshots_preserved": true
+}

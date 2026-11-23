@@ -1,0 +1,8 @@
+ObjC.import("AppKit");
+const url = $.NSURL.URLWithString("multica://branch-functional-regression");
+const current = $.NSWorkspace.sharedWorkspace.URLForApplicationToOpenURL(url);
+let path = null;
+let bundle = null;
+try { path = ObjC.unwrap(current.path) || null; } catch (e) {}
+if (path) bundle = ObjC.unwrap($.NSBundle.bundleWithPath(path).bundleIdentifier) || null;
+JSON.stringify({ scheme: "multica", defaultApplicationPath: path, defaultBundleIdentifier: bundle });

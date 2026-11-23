@@ -75,6 +75,8 @@ ZeroClaw 需要 0.8.0 或更高版本，并成功启用持久化会话存储、�
 
 ## MCP 配置
 
+从市场添加、保存共享配置、分配给智能体以及凭据管理的步骤，见 [MCP 与能力市场](/mcp)。保存配置和安装运行程序是两个步骤。
+
 Antigravity、GitHub Copilot CLI、DevEco Code、Pi 和 ZeroClaw 暂不读取智能体中的 MCP 配置，因此创建智能体时不会显示这一项。ZeroClaw 的 MCP 需要在工具自己的配置中设置。
 
 Oh-My-Pi 支持 Multica 托管的 MCP。下发托管 MCP 配置时，执行前会在工作目录中写入 `.omp/mcp.json`；如果该文件已经存在，执行准备会报配置冲突，Multica 不会覆盖它。未下发托管 MCP 配置时，不会因已有该文件而报此冲突。

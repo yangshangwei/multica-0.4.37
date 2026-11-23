@@ -9,7 +9,9 @@ import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import {
   AVATAR_ICON_COMPONENTS,
   AVATAR_ICON_TONE,
+  BUILTIN_FU_AVATAR_GLYPH,
   formatAvatarIcon,
+  isBuiltinFuAvatar,
   resolveAvatarIcon,
   type AvatarIconName,
 } from "@multica/ui/lib/avatar-icon";
@@ -144,15 +146,18 @@ export function AvatarUploadControl({
   const [previewError, setPreviewError] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  const storedIcon = resolveAvatarIcon(value);
-  const iconName = storedIcon ?? ((!value || previewError)
+  // Same rule as ActorAvatar, so the editor shows the avatar every other
+  // surface shows rather than the raw seal image.
+  const isFuAvatar = variant === "agent" && isBuiltinFuAvatar(value);
+  const storedIcon = isFuAvatar ? null : resolveAvatarIcon(value);
+  const iconName = storedIcon ?? (!isFuAvatar && (!value || previewError)
     ? variant === "agent" ? "bot" : variant === "squad" ? "users" : null
     : null);
   const Icon = iconName ? AVATAR_ICON_COMPONENTS[iconName] : null;
-  const iconTone = iconName ? AVATAR_ICON_TONE[iconName] : null;
-  const resolved = value && !iconName ? resolvePublicFileUrl(value) : null;
+  const iconTone = isFuAvatar ? AVATAR_ICON_TONE.bot : iconName ? AVATAR_ICON_TONE[iconName] : null;
+  const resolved = value && !iconName && !isFuAvatar ? resolvePublicFileUrl(value) : null;
   const hasImage = !!resolved && !previewError;
-  const hasAvatar = !!storedIcon || hasImage;
+  const hasAvatar = isFuAvatar || !!storedIcon || hasImage;
   const iconEnabled = variant === "agent" || variant === "squad" || !!onIconSelected;
 
   const openFileDialog = () => fileInputRef.current?.click();
@@ -239,7 +244,9 @@ export function AvatarUploadControl({
       )}
       style={{ width: size, height: size }}
     >
-      {preview ?? (Icon ? (
+      {preview ?? (isFuAvatar ? (
+        <span aria-hidden="true" className="font-medium" style={{ fontSize: size * 0.45 }}>{BUILTIN_FU_AVATAR_GLYPH}</span>
+      ) : Icon ? (
         <Icon aria-hidden="true" style={{ width: size * 0.5, height: size * 0.5 }} />
       ) : hasImage ? (
         <img

@@ -12,24 +12,27 @@ import (
 )
 
 const addSquadMember = `-- name: AddSquadMember :one
+WITH locked_squad AS MATERIALIZED (SELECT squad.id FROM squad WHERE squad.id = $4::uuid FOR UPDATE)
 INSERT INTO squad_member (squad_id, member_type, member_id, role)
-VALUES ($1, $2, $3, $4)
+SELECT id, $1::text, $2::uuid, $3::text FROM locked_squad
 RETURNING id, squad_id, member_type, member_id, role, created_at
 `
 
 type AddSquadMemberParams struct {
-	SquadID    pgtype.UUID `json:"squad_id"`
 	MemberType string      `json:"member_type"`
 	MemberID   pgtype.UUID `json:"member_id"`
 	Role       string      `json:"role"`
+	SquadID    pgtype.UUID `json:"squad_id"`
 }
 
+// Roster readers hold the owning squad row. Keep membership insertion under
+// the same fence so a new member cannot appear after authorization is checked.
 func (q *Queries) AddSquadMember(ctx context.Context, arg AddSquadMemberParams) (SquadMember, error) {
 	row := q.db.QueryRow(ctx, addSquadMember,
-		arg.SquadID,
 		arg.MemberType,
 		arg.MemberID,
 		arg.Role,
+		arg.SquadID,
 	)
 	var i SquadMember
 	err := row.Scan(
@@ -46,7 +49,7 @@ func (q *Queries) AddSquadMember(ctx context.Context, arg AddSquadMemberParams) 
 const archiveSquad = `-- name: ArchiveSquad :one
 UPDATE squad SET archived_at = now(), archived_by = $2, updated_at = now()
 WHERE id = $1 AND workspace_id = $3 AND archived_at IS NULL
-RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version
+RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch
 `
 
 type ArchiveSquadParams struct {
@@ -73,6 +76,7 @@ func (q *Queries) ArchiveSquad(ctx context.Context, arg ArchiveSquadParams) (Squ
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
@@ -91,7 +95,7 @@ func (q *Queries) CountSquadMembers(ctx context.Context, squadID pgtype.UUID) (i
 const createSquad = `-- name: CreateSquad :one
 INSERT INTO squad (workspace_id, name, description, leader_id, creator_id, avatar_url)
 VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version
+RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch
 `
 
 type CreateSquadParams struct {
@@ -128,6 +132,7 @@ func (q *Queries) CreateSquad(ctx context.Context, arg CreateSquadParams) (Squad
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
@@ -138,7 +143,7 @@ INSERT INTO squad (
     instructions, template_key, template_version
 )
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version
+RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch
 `
 
 type CreateSquadFromTemplateParams struct {
@@ -184,12 +189,13 @@ func (q *Queries) CreateSquadFromTemplate(ctx context.Context, arg CreateSquadFr
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
 
 const getSquad = `-- name: GetSquad :one
-SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad WHERE id = $1
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch FROM squad WHERE id = $1
 `
 
 func (q *Queries) GetSquad(ctx context.Context, id pgtype.UUID) (Squad, error) {
@@ -210,12 +216,13 @@ func (q *Queries) GetSquad(ctx context.Context, id pgtype.UUID) (Squad, error) {
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
 
 const getSquadByAssignee = `-- name: GetSquadByAssignee :one
-SELECT s.id, s.workspace_id, s.name, s.description, s.leader_id, s.creator_id, s.created_at, s.updated_at, s.archived_at, s.archived_by, s.avatar_url, s.instructions, s.template_key, s.template_version FROM squad s WHERE s.id = $1 AND s.workspace_id = $2
+SELECT s.id, s.workspace_id, s.name, s.description, s.leader_id, s.creator_id, s.created_at, s.updated_at, s.archived_at, s.archived_by, s.avatar_url, s.instructions, s.template_key, s.template_version, s.collaboration_config_epoch FROM squad s WHERE s.id = $1 AND s.workspace_id = $2
 `
 
 type GetSquadByAssigneeParams struct {
@@ -242,12 +249,13 @@ func (q *Queries) GetSquadByAssignee(ctx context.Context, arg GetSquadByAssignee
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
 
 const getSquadInWorkspace = `-- name: GetSquadInWorkspace :one
-SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad WHERE id = $1 AND workspace_id = $2
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch FROM squad WHERE id = $1 AND workspace_id = $2
 `
 
 type GetSquadInWorkspaceParams struct {
@@ -273,6 +281,7 @@ func (q *Queries) GetSquadInWorkspace(ctx context.Context, arg GetSquadInWorkspa
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
@@ -298,7 +307,7 @@ func (q *Queries) IsSquadMember(ctx context.Context, arg IsSquadMemberParams) (b
 }
 
 const listAllSquads = `-- name: ListAllSquads :many
-SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad WHERE workspace_id = $1 ORDER BY created_at ASC
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch FROM squad WHERE workspace_id = $1 ORDER BY created_at ASC
 `
 
 func (q *Queries) ListAllSquads(ctx context.Context, workspaceID pgtype.UUID) ([]Squad, error) {
@@ -325,6 +334,7 @@ func (q *Queries) ListAllSquads(ctx context.Context, workspaceID pgtype.UUID) ([
 			&i.Instructions,
 			&i.TemplateKey,
 			&i.TemplateVersion,
+			&i.CollaborationConfigEpoch,
 		); err != nil {
 			return nil, err
 		}
@@ -585,7 +595,7 @@ func (q *Queries) ListSquadMembers(ctx context.Context, squadID pgtype.UUID) ([]
 }
 
 const listSquads = `-- name: ListSquads :many
-SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad WHERE workspace_id = $1 AND archived_at IS NULL ORDER BY created_at ASC
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch FROM squad WHERE workspace_id = $1 AND archived_at IS NULL ORDER BY created_at ASC
 `
 
 func (q *Queries) ListSquads(ctx context.Context, workspaceID pgtype.UUID) ([]Squad, error) {
@@ -612,6 +622,7 @@ func (q *Queries) ListSquads(ctx context.Context, workspaceID pgtype.UUID) ([]Sq
 			&i.Instructions,
 			&i.TemplateKey,
 			&i.TemplateVersion,
+			&i.CollaborationConfigEpoch,
 		); err != nil {
 			return nil, err
 		}
@@ -624,7 +635,7 @@ func (q *Queries) ListSquads(ctx context.Context, workspaceID pgtype.UUID) ([]Sq
 }
 
 const listSquadsByMember = `-- name: ListSquadsByMember :many
-SELECT s.id, s.workspace_id, s.name, s.description, s.leader_id, s.creator_id, s.created_at, s.updated_at, s.archived_at, s.archived_by, s.avatar_url, s.instructions, s.template_key, s.template_version FROM squad s
+SELECT s.id, s.workspace_id, s.name, s.description, s.leader_id, s.creator_id, s.created_at, s.updated_at, s.archived_at, s.archived_by, s.avatar_url, s.instructions, s.template_key, s.template_version, s.collaboration_config_epoch FROM squad s
 JOIN squad_member sm ON sm.squad_id = s.id
 WHERE s.workspace_id = $1 AND sm.member_type = $2 AND sm.member_id = $3
 ORDER BY s.created_at ASC
@@ -661,6 +672,7 @@ func (q *Queries) ListSquadsByMember(ctx context.Context, arg ListSquadsByMember
 			&i.Instructions,
 			&i.TemplateKey,
 			&i.TemplateVersion,
+			&i.CollaborationConfigEpoch,
 		); err != nil {
 			return nil, err
 		}
@@ -673,7 +685,7 @@ func (q *Queries) ListSquadsByMember(ctx context.Context, arg ListSquadsByMember
 }
 
 const listSquadsByTemplateForProject = `-- name: ListSquadsByTemplateForProject :many
-SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch FROM squad
 WHERE workspace_id = $1 AND template_key = $2 AND archived_at IS NULL
 ORDER BY created_at ASC, id ASC
 FOR SHARE
@@ -709,6 +721,7 @@ func (q *Queries) ListSquadsByTemplateForProject(ctx context.Context, arg ListSq
 			&i.Instructions,
 			&i.TemplateKey,
 			&i.TemplateVersion,
+			&i.CollaborationConfigEpoch,
 		); err != nil {
 			return nil, err
 		}
@@ -818,7 +831,7 @@ func (q *Queries) LockSquadAutopilotsForTransfer(ctx context.Context, arg LockSq
 }
 
 const lockSquadForAutopilotAssignment = `-- name: LockSquadForAutopilotAssignment :one
-SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch FROM squad
 WHERE id = $1 AND workspace_id = $2
 FOR SHARE
 `
@@ -850,12 +863,13 @@ func (q *Queries) LockSquadForAutopilotAssignment(ctx context.Context, arg LockS
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
 
 const lockSquadForUpdate = `-- name: LockSquadForUpdate :one
-SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version FROM squad
+SELECT id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch FROM squad
 WHERE id = $1 AND workspace_id = $2
 FOR UPDATE
 `
@@ -886,23 +900,25 @@ func (q *Queries) LockSquadForUpdate(ctx context.Context, arg LockSquadForUpdate
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
 
 const removeSquadMember = `-- name: RemoveSquadMember :execrows
-DELETE FROM squad_member
-WHERE squad_id = $1 AND member_type = $2 AND member_id = $3
+WITH locked_squad AS MATERIALIZED (SELECT squad.id FROM squad WHERE squad.id = $3::uuid FOR UPDATE)
+DELETE FROM squad_member USING locked_squad
+WHERE squad_id = locked_squad.id AND member_type = $1::text AND member_id = $2::uuid
 `
 
 type RemoveSquadMemberParams struct {
-	SquadID    pgtype.UUID `json:"squad_id"`
 	MemberType string      `json:"member_type"`
 	MemberID   pgtype.UUID `json:"member_id"`
+	SquadID    pgtype.UUID `json:"squad_id"`
 }
 
 func (q *Queries) RemoveSquadMember(ctx context.Context, arg RemoveSquadMemberParams) (int64, error) {
-	result, err := q.db.Exec(ctx, removeSquadMember, arg.SquadID, arg.MemberType, arg.MemberID)
+	result, err := q.db.Exec(ctx, removeSquadMember, arg.MemberType, arg.MemberID, arg.SquadID)
 	if err != nil {
 		return 0, err
 	}
@@ -1012,7 +1028,7 @@ WHERE id = $1
   AND workspace_id = $7::uuid
   AND ($8::text IS NULL OR instructions = $8)
   AND ($9::timestamptz IS NULL OR updated_at = $9)
-RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version
+RETURNING id, workspace_id, name, description, leader_id, creator_id, created_at, updated_at, archived_at, archived_by, avatar_url, instructions, template_key, template_version, collaboration_config_epoch
 `
 
 type UpdateSquadParams struct {
@@ -1055,29 +1071,31 @@ func (q *Queries) UpdateSquad(ctx context.Context, arg UpdateSquadParams) (Squad
 		&i.Instructions,
 		&i.TemplateKey,
 		&i.TemplateVersion,
+		&i.CollaborationConfigEpoch,
 	)
 	return i, err
 }
 
 const updateSquadMemberRole = `-- name: UpdateSquadMemberRole :one
-UPDATE squad_member SET role = $4
-WHERE squad_id = $1 AND member_type = $2 AND member_id = $3
-RETURNING id, squad_id, member_type, member_id, role, created_at
+WITH locked_squad AS MATERIALIZED (SELECT squad.id FROM squad WHERE squad.id = $4::uuid FOR UPDATE)
+UPDATE squad_member SET role = $1::text FROM locked_squad
+WHERE squad_id = locked_squad.id AND member_type = $2::text AND member_id = $3::uuid
+RETURNING squad_member.id, squad_member.squad_id, squad_member.member_type, squad_member.member_id, squad_member.role, squad_member.created_at
 `
 
 type UpdateSquadMemberRoleParams struct {
-	SquadID    pgtype.UUID `json:"squad_id"`
+	Role       string      `json:"role"`
 	MemberType string      `json:"member_type"`
 	MemberID   pgtype.UUID `json:"member_id"`
-	Role       string      `json:"role"`
+	SquadID    pgtype.UUID `json:"squad_id"`
 }
 
 func (q *Queries) UpdateSquadMemberRole(ctx context.Context, arg UpdateSquadMemberRoleParams) (SquadMember, error) {
 	row := q.db.QueryRow(ctx, updateSquadMemberRole,
-		arg.SquadID,
+		arg.Role,
 		arg.MemberType,
 		arg.MemberID,
-		arg.Role,
+		arg.SquadID,
 	)
 	var i SquadMember
 	err := row.Scan(

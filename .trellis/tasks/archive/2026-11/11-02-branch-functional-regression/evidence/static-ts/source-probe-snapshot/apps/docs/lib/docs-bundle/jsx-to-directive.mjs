@@ -1,0 +1,126 @@
+// Rewrites the small set of JSX components used in the docs MDX into remark
+// directives, so the in-app renderer can parse the same content with plain
+// remark + remark-directive instead of an MDX pipeline.
+//
+// Why directives and not HTML: remark does not parse markdown inside an HTML
+// block. Downgrading `<Callout>` to `<div>` would render the links, bold runs
+// and inline code inside all callouts as literal text. A container directive
+// keeps its body a normal markdown subtree.
+//
+// The tag registry is closed on purpose. An unregistered component is an error,
+// never a silent drop: the failure mode we are protecting against is the docs
+// site growing a fourth component, the generator ignoring it, and the in-app
+// page quietly missing a section nobody notices until a reader asks.
+
+export class UnknownJsxTagError extends Error {
+  constructor(tag) {
+    super(
+      `Unregistered JSX component <${tag}> in docs MDX. Add a directive mapping ` +
+        `in apps/docs/lib/docs-bundle/jsx-to-directive.mjs AND a renderer in ` +
+        `packages/views/docs/, or the in-app page will be missing this content.`,
+    );
+    this.name = "UnknownJsxTagError";
+    this.tag = tag;
+  }
+}
+
+const CALLOUT_TYPES = new Map([
+  ["info", "info"],
+  ["warn", "warning"],
+  ["warning", "warning"],
+]);
+const DEFAULT_CALLOUT_TYPE = "info";
+
+const LEAF_DIRECTIVES = new Map([
+  ["VideoEmbed", "video-embed"],
+  ["CommunityLinks", "community-links"],
+]);
+
+const DROPPED_IMPORT =
+  /^import\s+\{[^}]*\}\s+from\s+["']fumadocs-ui\/[^"']+["'];?[ \t]*\r?\n?/gm;
+const FENCE = /^([ \t]*)(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\1?\2[ \t]*$/gm;
+const INLINE_CODE = /(`+)(?:[^`]|(?!\1)`)*\1/g;
+
+function maskCode(text) {
+  const stash = [];
+  const keep = (match) => {
+    stash.push(match);
+    // U+0000 cannot occur in MDX source, so this runtime marker is unambiguous.
+    return `\0${stash.length - 1}\0`;
+  };
+  const masked = text.replace(FENCE, keep).replace(INLINE_CODE, keep);
+  return {
+    masked,
+    restore: (value) => value.replace(/\0(\d+)\0/g, (_, i) => stash[Number(i)]),
+  };
+}
+
+function parseAttributes(raw, tag) {
+  const attrs = [];
+  const seen = new Set();
+  let rest = raw.trim();
+
+  while (rest.length > 0) {
+    const match = /^([A-Za-z_][\w-]*)\s*=\s*(?:"([^"]*)"|'([^']*)')\s*/.exec(rest);
+    if (!match) {
+      throw new Error(`Unsupported attributes on <${tag}>: ${JSON.stringify(rest)}`);
+    }
+    if (seen.has(match[1])) {
+      throw new Error(`Duplicate attribute ${JSON.stringify(match[1])} on <${tag}>`);
+    }
+    seen.add(match[1]);
+    attrs.push([match[1], match[2] ?? match[3] ?? ""]);
+    rest = rest.slice(match[0].length);
+  }
+
+  return attrs;
+}
+
+function calloutType(rawAttrs) {
+  const attrs = parseAttributes(rawAttrs ?? "", "Callout");
+  const unsupported = attrs.find(([name]) => name !== "type");
+  if (unsupported) {
+    throw new Error(`Unsupported attribute ${JSON.stringify(unsupported[0])} on <Callout>`);
+  }
+  const type = attrs.find(([name]) => name === "type")?.[1];
+  if (!type) return DEFAULT_CALLOUT_TYPE;
+  const mapped = CALLOUT_TYPES.get(type);
+  if (!mapped) throw new UnknownJsxTagError(`Callout type=${JSON.stringify(type)}`);
+  return mapped;
+}
+
+function assertNoUnknownComponents(text) {
+  const pattern = /<([A-Z][A-Za-z0-9]*)(\s[^<>]*?)?(\/?)>/g;
+  let match;
+  while ((match = pattern.exec(text)) !== null) {
+    const [, tag, rawAttrs, selfClose] = match;
+    const looksLikeComponent =
+      selfClose === "/" ||
+      Boolean(rawAttrs && /[A-Za-z_][\w-]*\s*=/.test(rawAttrs)) ||
+      new RegExp(`</${tag}>`).test(text);
+    if (looksLikeComponent) throw new UnknownJsxTagError(tag);
+  }
+}
+
+export function jsxToDirective(source) {
+  const { masked, restore } = maskCode(source);
+  let out = masked.replace(DROPPED_IMPORT, "");
+
+  out = out.replace(
+    /<Callout(\s[^>]*?)?>[ \t]*\r?\n?([\s\S]*?)\r?\n?[ \t]*<\/Callout>/g,
+    (_, rawAttrs, body) => `:::${calloutType(rawAttrs)}\n${body}\n:::`,
+  );
+
+  for (const [tag, name] of LEAF_DIRECTIVES) {
+    const pattern = new RegExp(`<${tag}(\\s[\\s\\S]*?)?/>`, "g");
+    out = out.replace(pattern, (_, rawAttrs) => {
+      const attrs = parseAttributes(rawAttrs ?? "", tag).map(
+        ([key, value]) => `${key}=${JSON.stringify(value)}`,
+      );
+      return attrs.length ? `::${name}{${attrs.join(" ")}}` : `::${name}`;
+    });
+  }
+
+  assertNoUnknownComponents(out);
+  return restore(out).trimStart();
+}

@@ -1,0 +1,833 @@
+{
+  "checked_at": "2026-10-21T16:13:23.653385+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_source_roles_test.go": "f006430da597c8a62209f72b8f04c32d9104df2f13886b87e8f9b9ac69fe694d",
+    "server/internal/handler/collaboration_iteration_request_boundary_test.go": "7a081b2d5a46b11299b343ca8fcbb6cc5a13372bc77013abb9098fd14b8923a0"
+  },
+  "protected_sources": {
+    "server/internal/service/collaboration_source_fields.go": {
+      "before": "794004765369b97bb9f3960f3eb5b7b48ab4bc0a104c12d41265c0ccba03f1a0",
+      "after": "794004765369b97bb9f3960f3eb5b7b48ab4bc0a104c12d41265c0ccba03f1a0",
+      "unchanged": true
+    },
+    "server/internal/service/collaboration_iteration.go": {
+      "before": "2485b7db6a4e9c50c5823e97e218886df4df5b38c9f9b8406a79fc55c8e73daa",
+      "after": "2485b7db6a4e9c50c5823e97e218886df4df5b38c9f9b8406a79fc55c8e73daa",
+      "unchanged": true
+    },
+    "server/internal/service/collaboration_workflow.go": {
+      "before": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+      "after": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+      "unchanged": true
+    },
+    "server/internal/service/collaboration_source_fields_test.go": {
+      "before": "f5164b80a595fabe18dc727139436f99100faa5873d5ad0afbbb78034c9b3fab",
+      "after": "f5164b80a595fabe18dc727139436f99100faa5873d5ad0afbbb78034c9b3fab",
+      "unchanged": true
+    },
+    "server/internal/service/collaboration_queue_test.go": {
+      "before": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+      "after": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+      "unchanged": true
+    },
+    "server/internal/service/collaboration_control_test.go": {
+      "before": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+      "after": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+      "unchanged": true
+    },
+    "server/internal/handler/collaboration_source_fields.go": {
+      "before": "1b5d1653bbd2cf7dd22ee997f51bf9e6cb1c4192e651081ac75389fe29d4dbd0",
+      "after": "1b5d1653bbd2cf7dd22ee997f51bf9e6cb1c4192e651081ac75389fe29d4dbd0",
+      "unchanged": true
+    },
+    "server/internal/handler/collaboration_edit_test.go": {
+      "before": "81fed906c2135c117f06d738e422b0dff6f02017a2fbb88e8173a9ee913edbc1",
+      "after": "81fed906c2135c117f06d738e422b0dff6f02017a2fbb88e8173a9ee913edbc1",
+      "unchanged": true
+    },
+    "server/internal/handler/iteration_management_test.go": {
+      "before": "db522aa88c408c9ac6bf0fda2d85ba3cb71068a70a4ea44d3e0075b55dddee33",
+      "after": "db522aa88c408c9ac6bf0fda2d85ba3cb71068a70a4ea44d3e0075b55dddee33",
+      "unchanged": true
+    }
+  },
+  "prior_review_sha256": {
+    "source-iteration-final-review.md": "1068caa9e8414901f803b14e89177657b73b91b59123775bfa0a08a89b8ab56c",
+    "source-iteration-final-review.json": "01fd2b3c207db7ada14e008746a05e15d282f1fe6143559bd7f2966844561c8e"
+  },
+  "runs": [
+    {
+      "prefix": "source-role-focused-first-20261021",
+      "result_sha256": "56997a837b93d0aab5342e724b420bc811293c67b2d03658bc46131c5cb335a2",
+      "raw_sha256": "107e132d5cfa44c4af416ef8794cfea884534aeb2caef3fd484ce8141e946e74",
+      "returncode": 0,
+      "top_level_passes": 3,
+      "all_pass_events": 44,
+      "elapsed_seconds": 31.39,
+      "exact_pass_events": [
+        {
+          "line": 9,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 13,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 17,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member/stage",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 21,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member/iteration",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 23,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member",
+          "elapsed_seconds": 0.4
+        },
+        {
+          "line": 29,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 33,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 37,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 41,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner/iteration",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 43,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner",
+          "elapsed_seconds": 0.36
+        },
+        {
+          "line": 49,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant/project",
+          "elapsed_seconds": 0.03
+        },
+        {
+          "line": 53,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 57,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 61,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant/iteration",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 63,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant",
+          "elapsed_seconds": 0.35
+        },
+        {
+          "line": 69,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 73,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 77,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 81,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant/iteration",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 83,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant",
+          "elapsed_seconds": 0.36
+        },
+        {
+          "line": 89,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 93,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 97,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 101,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler/iteration",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 103,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler",
+          "elapsed_seconds": 0.32
+        },
+        {
+          "line": 109,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 113,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 117,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 121,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler/iteration",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 123,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler",
+          "elapsed_seconds": 0.32
+        },
+        {
+          "line": 129,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 133,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 137,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator/stage",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 141,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator/iteration",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 143,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator",
+          "elapsed_seconds": 0.33
+        },
+        {
+          "line": 145,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers",
+          "elapsed_seconds": 2.45
+        },
+        {
+          "line": 151,
+          "identity": "internal/service::TestCollaborationIterationRemovalRequiresReasonAndOriginalRefusal/creator",
+          "elapsed_seconds": 0.39
+        },
+        {
+          "line": 155,
+          "identity": "internal/service::TestCollaborationIterationRemovalRequiresReasonAndOriginalRefusal/source_handler",
+          "elapsed_seconds": 0.31
+        },
+        {
+          "line": 157,
+          "identity": "internal/service::TestCollaborationIterationRemovalRequiresReasonAndOriginalRefusal",
+          "elapsed_seconds": 0.7
+        },
+        {
+          "line": 169,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects/title",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 173,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects/project_id",
+          "elapsed_seconds": 0
+        },
+        {
+          "line": 177,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects/status",
+          "elapsed_seconds": 0
+        },
+        {
+          "line": 181,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects/stage",
+          "elapsed_seconds": 0
+        },
+        {
+          "line": 183,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects",
+          "elapsed_seconds": 0.15
+        }
+      ]
+    },
+    {
+      "prefix": "source-role-adjacent-first-20261021",
+      "result_sha256": "600a742991cb1f45241fb726bb89053ce7627fac60ab9d57d412f69009de84bc",
+      "raw_sha256": "f035c0a251fe1addbd0c317c9a286d1f2ca4458c131d8431ed6383be02a66cf9",
+      "returncode": 0,
+      "top_level_passes": 22,
+      "all_pass_events": 95,
+      "elapsed_seconds": 23.399,
+      "exact_pass_events": [
+        {
+          "line": 5,
+          "identity": "internal/service::TestCollaborationFieldOptionsAuthorityAndProjection",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "line": 11,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/source_change_first",
+          "elapsed_seconds": 0.44
+        },
+        {
+          "line": 15,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/transfer_first",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "line": 19,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/source_change_first",
+          "elapsed_seconds": 0.5
+        },
+        {
+          "line": 23,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/transfer_first",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "line": 25,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler",
+          "elapsed_seconds": 1.7
+        },
+        {
+          "line": 31,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/source_change_first",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "line": 35,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/departure_first",
+          "elapsed_seconds": 0.36
+        },
+        {
+          "line": 39,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/source_change_first",
+          "elapsed_seconds": 0.43
+        },
+        {
+          "line": 43,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/departure_first",
+          "elapsed_seconds": 0.37
+        },
+        {
+          "line": 45,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit",
+          "elapsed_seconds": 1.55
+        },
+        {
+          "line": 51,
+          "identity": "internal/service::TestCollaborationIterationAssignmentSerializesWithTargetRevision/membership_first",
+          "elapsed_seconds": 0.43
+        },
+        {
+          "line": 55,
+          "identity": "internal/service::TestCollaborationIterationAssignmentSerializesWithTargetRevision/iteration_edit_first",
+          "elapsed_seconds": 0.34
+        },
+        {
+          "line": 57,
+          "identity": "internal/service::TestCollaborationIterationAssignmentSerializesWithTargetRevision",
+          "elapsed_seconds": 0.77
+        },
+        {
+          "line": 61,
+          "identity": "internal/service::TestCollaborationSourceStructureAuthorityAndAtomicEdit",
+          "elapsed_seconds": 0.21
+        },
+        {
+          "line": 65,
+          "identity": "internal/service::TestCollaborationSourceStructureRejectsCyclesAndMixedFailure",
+          "elapsed_seconds": 0.23
+        },
+        {
+          "line": 69,
+          "identity": "internal/service::TestCollaborationIterationAssignmentVersionsReasonsAndReplay",
+          "elapsed_seconds": 0.23
+        },
+        {
+          "line": 73,
+          "identity": "internal/service::TestCollaborationCreationInitialFieldsAreOneRecoverableIssue",
+          "elapsed_seconds": 0.18
+        },
+        {
+          "line": 77,
+          "identity": "internal/service::TestCollaborationIterationCompletedJoinRequiresExplicitConfirmation",
+          "elapsed_seconds": 0.24
+        },
+        {
+          "line": 81,
+          "identity": "internal/service::TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates",
+          "elapsed_seconds": 0.17
+        },
+        {
+          "line": 89,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 93,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 97,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 101,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member/iteration",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 103,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_member",
+          "elapsed_seconds": 0.35
+        },
+        {
+          "line": 109,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 113,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 117,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 121,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner/iteration",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 123,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_owner",
+          "elapsed_seconds": 0.34
+        },
+        {
+          "line": 129,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 133,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 137,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 141,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant/iteration",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 143,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/participant",
+          "elapsed_seconds": 0.32
+        },
+        {
+          "line": 149,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 153,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant/parent",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 157,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 161,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant/iteration",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 163,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/source_participant",
+          "elapsed_seconds": 0.32
+        },
+        {
+          "line": 169,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 173,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 177,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 181,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler/iteration",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 183,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/external_handler",
+          "elapsed_seconds": 0.34
+        },
+        {
+          "line": 189,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 193,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 197,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 201,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler/iteration",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 203,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_handler",
+          "elapsed_seconds": 0.33
+        },
+        {
+          "line": 209,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 213,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator/parent",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 217,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 221,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator/iteration",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 223,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers/departed_creator",
+          "elapsed_seconds": 0.31
+        },
+        {
+          "line": 225,
+          "identity": "internal/service::TestCollaborationSourceStructureAndIterationRejectNonManagers",
+          "elapsed_seconds": 2.31
+        },
+        {
+          "line": 231,
+          "identity": "internal/service::TestCollaborationIterationRemovalRequiresReasonAndOriginalRefusal/creator",
+          "elapsed_seconds": 0.29
+        },
+        {
+          "line": 235,
+          "identity": "internal/service::TestCollaborationIterationRemovalRequiresReasonAndOriginalRefusal/source_handler",
+          "elapsed_seconds": 0.29
+        },
+        {
+          "line": 237,
+          "identity": "internal/service::TestCollaborationIterationRemovalRequiresReasonAndOriginalRefusal",
+          "elapsed_seconds": 0.58
+        },
+        {
+          "line": 243,
+          "identity": "internal/service::TestIterationMovePreviewRejectsCollaborationForSourceMembers/join",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "line": 247,
+          "identity": "internal/service::TestIterationMovePreviewRejectsCollaborationForSourceMembers/switch",
+          "elapsed_seconds": 0.17
+        },
+        {
+          "line": 251,
+          "identity": "internal/service::TestIterationMovePreviewRejectsCollaborationForSourceMembers/remove",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "line": 253,
+          "identity": "internal/service::TestIterationMovePreviewRejectsCollaborationForSourceMembers",
+          "elapsed_seconds": 0.48
+        },
+        {
+          "line": 259,
+          "identity": "internal/service::TestIterationMoveApplyRechecksCollaborationAndRejectsWholeMixedSet/join",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "line": 263,
+          "identity": "internal/service::TestIterationMoveApplyRechecksCollaborationAndRejectsWholeMixedSet/switch",
+          "elapsed_seconds": 0.2
+        },
+        {
+          "line": 267,
+          "identity": "internal/service::TestIterationMoveApplyRechecksCollaborationAndRejectsWholeMixedSet/remove",
+          "elapsed_seconds": 0.2
+        },
+        {
+          "line": 269,
+          "identity": "internal/service::TestIterationMoveApplyRechecksCollaborationAndRejectsWholeMixedSet",
+          "elapsed_seconds": 0.57
+        },
+        {
+          "line": 273,
+          "identity": "internal/service::TestIterationPeriodClosureStillRollsOverCollaboration",
+          "elapsed_seconds": 0.25
+        },
+        {
+          "line": 283,
+          "identity": "internal/handler::TestCollaborationEditHTTPSourceFields",
+          "elapsed_seconds": 0.08
+        },
+        {
+          "line": 289,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/assignee",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 293,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/project",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "line": 297,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/priority",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 301,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/properties",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 305,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/labels",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 309,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/position",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 313,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/iteration",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 317,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/stage",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 321,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/title_object",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 325,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/description_array",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 329,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/numeric_date",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 333,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/bad_date",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 337,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/numeric_version",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 341,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/overflow",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 345,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/leading_zero",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 349,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/fraction",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "line": 351,
+          "identity": "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "line": 355,
+          "identity": "internal/handler::TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory",
+          "elapsed_seconds": 0.17
+        },
+        {
+          "line": 361,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects/title",
+          "elapsed_seconds": 0
+        },
+        {
+          "line": 365,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects/project_id",
+          "elapsed_seconds": 0
+        },
+        {
+          "line": 369,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects/status",
+          "elapsed_seconds": 0
+        },
+        {
+          "line": 373,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects/stage",
+          "elapsed_seconds": 0
+        },
+        {
+          "line": 375,
+          "identity": "internal/handler::TestCollaborationIterationPUTRejectsMetadataBeforeEffects",
+          "elapsed_seconds": 0.07
+        },
+        {
+          "line": 379,
+          "identity": "internal/handler::TestCollaborationSourceFieldsHTTPPreservesNullAndSeparatesStatus",
+          "elapsed_seconds": 0.03
+        },
+        {
+          "line": 383,
+          "identity": "internal/handler::TestCollaborationCreationFieldsHTTPAndInitialIteration",
+          "elapsed_seconds": 0.04
+        },
+        {
+          "line": 387,
+          "identity": "internal/handler::TestIterationHTTPExplicitCollaborationMoveRequiresDedicatedWorkflow",
+          "elapsed_seconds": 0.06
+        }
+      ]
+    }
+  ],
+  "static": {
+    "gofmt": {
+      "command": [
+        "gofmt",
+        "-d",
+        "server/internal/service/collaboration_source_roles_test.go",
+        "server/internal/handler/collaboration_iteration_request_boundary_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-10-21T16:11:03.884061+00:00",
+      "source_sha256": {
+        "server/internal/service/collaboration_source_roles_test.go": "f006430da597c8a62209f72b8f04c32d9104df2f13886b87e8f9b9ac69fe694d",
+        "server/internal/handler/collaboration_iteration_request_boundary_test.go": "7a081b2d5a46b11299b343ca8fcbb6cc5a13372bc77013abb9098fd14b8923a0"
+      },
+      "database_access": false,
+      "returncode": 0,
+      "finished_at": "2026-10-21T16:11:03.900802+00:00",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    "vet": {
+      "command": [
+        "go",
+        "vet",
+        "-p",
+        "1",
+        "./internal/service",
+        "./internal/handler"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "started_at": "2026-10-21T16:11:03.901145+00:00",
+      "source_sha256": {
+        "server/internal/service/collaboration_source_roles_test.go": "f006430da597c8a62209f72b8f04c32d9104df2f13886b87e8f9b9ac69fe694d",
+        "server/internal/handler/collaboration_iteration_request_boundary_test.go": "7a081b2d5a46b11299b343ca8fcbb6cc5a13372bc77013abb9098fd14b8923a0"
+      },
+      "database_access": false,
+      "returncode": 0,
+      "finished_at": "2026-10-21T16:11:07.386947+00:00",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    }
+  },
+  "ownership": "Only two new test files, source-role-request-boundaries.md and uniquely prefixed source-role evidence; no existing product/helper/spec/matrix/catalog/progress/task/index edit.",
+  "covered_residuals": [
+    "AC80 direct project/parent/stage source-role rejection and scoped references/catalogs",
+    "AC81 direct iteration source-role rejection and scoped references/catalogs",
+    "AC81 missing/blank removal reason, retained refusal, fresh reasoned removal",
+    "AC81 mixed metadata iteration PUT rejected before effects, legal dedicated PUT/replay"
+  ],
+  "acceptance_promotion": "Coordinator and independent review only; no whole-row promotion performed.",
+  "bounds": [
+    "Existing synthetic active-channel/in-flight run fixture, not provider/kernel launch",
+    "No new Web/Electron/packaged client/paid provider/OS evidence",
+    "No product failure on first actual focused or adjacency runs",
+    "No isolated HEAD+two-file execution by this lane; coordinator-owned follow-up"
+  ]
+}

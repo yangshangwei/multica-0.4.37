@@ -1,0 +1,17 @@
+//go:build agentintegration && !windows
+
+package main
+
+import "regexp"
+
+var rk1PriorLine = regexp.MustCompile(`(?m)^PRIOR_RUN ([0-9a-f-]{36}) RECORD (COMPLETE|INCOMPLETE) RESULT (PRESENT|ABSENT)\s*$`)
+var rk1PriorText = regexp.MustCompile(`(?m)^RESULT_TEXT (.*)$`)
+var rk1SquadAnswer = regexp.MustCompile(`(?m)^MEMBER_RUN ([0-9a-f-]{36})\s*\nMEMBER_CODE (MEMBER-[A-Z0-9]{6})\s*\nWOKEN_BY (\S+) ([0-9a-f-]{36})\s*$`)
+
+func rk1PriorAnswerFields(answer string) []string {
+	line, text := rk1PriorLine.FindStringSubmatch(answer), rk1PriorText.FindStringSubmatch(answer)
+	if line == nil || text == nil {
+		return nil
+	}
+	return append(line, text[1])
+}

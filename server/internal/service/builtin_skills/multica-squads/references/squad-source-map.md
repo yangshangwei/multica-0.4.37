@@ -90,17 +90,30 @@ Source:
 
 ```text
 server/internal/handler/squad_template.go          # ListSquadTemplates, CreateSquadFromTemplate, provisionSquadTemplate, resolveTemplateAgentInTx
+server/internal/handler/project_execution_squad.go # ConfigureProjectSquads
 server/internal/service/builtin_squad_templates.go # SquadTemplate registry, TemplateKeys()
 server/pkg/db/queries/squad.sql                    # CreateSquadFromTemplate
 server/pkg/db/queries/agent.sql                    # GetAgentByWorkspaceAndTemplateKey
+packages/views/squads/components/builtin-squad-catalog.tsx
+packages/views/projects/components/use-squad-for-project-dialog.tsx
+packages/core/projects/mutations.ts                # useConfigureProjectSquads
+packages/core/api/client.ts                        # configureProjectSquads
 ```
 
 Contracts:
 
 - `GET /api/squads/templates` is workspace-independent: the registry ships with
   the binary, so the answer is identical for every workspace on the server;
-- staffing is ONE transaction (`provisionSquadTemplate`) covering the missing
-  role agents, the squad row and every `squad_member` row — a partially staffed
+- standalone `POST /api/squads/from-template` creates an ordinary squad without
+  associating a project and returns created/reused agent IDs;
+- the catalog's "Apply to project" dialog uses
+  `PUT /api/projects/{id}/execution-squads` with `{squads: [...]}`, preserving the
+  existing ordered choices and appending the template/runtime/language selection.
+  The PUT replaces the complete list. Without a runtime the choice remains
+  `needs_runtime`; preparation can retain a `failed` choice for project recovery.
+  Configuration does not start an agent run or establish readiness;
+- standalone staffing is ONE transaction (`provisionSquadTemplate`) covering the
+  missing role agents, the squad row and every `squad_member` row — a partially staffed
   squad is not a reachable state;
 - provisioning order is leader first (`SquadTemplate.TemplateKeys`), because the
   squad row cannot be written without `leader_id`;
@@ -123,8 +136,75 @@ Contracts:
 - the built-in `diagnostician` seat is conditional by workflow: `bug-fix` uses it
   between reproduction and implementation when the cause is unknown,
   `maintenance` uses it for unexplained flaky-test or upgrade failures, and
-  `incident` uses it only for a separate post-recovery follow-up; the other five
+  `security-remediation` separates permitted unknown-cause diagnosis from repair
+  while honoring every member's human-required stop; `incident` uses it only for
+  a separate post-recovery follow-up; the other five
   templates do not provision it;
+- `security-remediation` v2 has a dedicated unlisted `security-remediation-lead`
+  v2 (Coordinator, default concurrency six) and seven existing working roles, with no
+  Operator or new role skill. Its two instruction files require exact current-roster
+  Markdown mentions, one next step per turn (a gate's reviewer batch counts as
+  one) and actual member task/comment provenance before advancing; receipts,
+  activity outcomes (the closing turn's included) and retries are left to the
+  injected Squad Operating Protocol. An `in_review` transition
+  additionally requires actual assignment to this squad and status ownership
+  in the injected operating protocol; guest/quick-create turns without ownership
+  retain the current assignee and status and deliver comments/activity only.
+  Missing evidence or member safety stops halt dispatch for human handling;
+  production/sensitive-data risks hand off to existing incident/release owners.
+  v2 adds two human gates released by a security owner (a human squad member
+  whose role contains "安全负责人" or `security owner`, else the issue's human
+  creator), a minimal security reproduction before a code repair, twelve more
+  triage fields with default deadlines, commit-bound conclusions, a variant
+  list and `need-to-know` wording limits. A release counts only as the owner's
+  own comment read back from the platform (`author_type`, `author_id`),
+  `revision` 1 and later than every reviewer result (`AddReaction`,
+  `ResolveComment` and the attachment queries raise `revision` as an edit does,
+  so a release somebody reacted to is refused too). The owner posts a new
+  release when this check fails, and everyone leaves it unchanged until the
+  leader explicitly confirms validation. A reviewer result is a
+  comment of `type` `comment`, since `TaskService.FailTask` posts a failed
+  reviewer's error under that reviewer's name as `type` `system` and
+  `loadDelegatedFailureRecoveryTarget` wakes nobody for a restricted agent; it
+  must also be later than the comment that last dispatched that reviewer,
+  because the Security Reviewer answers at both gates and a returned G2 is
+  dispatched again. A missing result gets one retry per reviewer per gate or
+  temporary review point (returning G2 does not reset it); another failure
+  requires the owner to fix the cause, with no review waiver. Temporary review points use all three release checks;
+  other human decisions still require the owner's own unchanged comment. Triage
+  updates are new comments; edits to old delegation comments can cancel and
+  retrigger runs (`UpdateComment`). A recoverable stop resumes only from the
+  owner's new comment naming the repaired blocker and permitted next step, with
+  safety and member stop rules still in force. The leader must not change the
+  roster, a role text, the squad instructions, another author's comment or any agent of the squad;
+  `AddSquadMember`, `UpdateSquadMemberRole`, `UpdateSquad`, `UpdateAgent` and
+  the admin branch of `UpdateComment` do not stop it. Four sections
+  (`## 分诊记录`, `## 人工闸门`, `## 最小安全复现`, `## 保密与披露`) are
+  byte-identical in the two files; the squad file must end with `## 最终证据`,
+  which both truncation checks anchor on. Existing workspace copies are never
+  rewritten, so a v1 leader can serve a v2 squad. Runtime binding also gates
+  selection in `packages/views/editor/extensions/mention-suggestion.tsx`;
+  invocation access is a separate check. Codex config copying in
+  `internal/daemon/execenv/codex_home.go` preserves the user's root
+  `project_doc_max_bytes`, while `codex_sandbox.go` writes its own managed block;
+  neither sizes that key to the injected instruction bytes. The manual
+  workaround must cover generated and additional loaded instruction files, and
+  its runtime effectiveness still needs real-model verification.
+  These are template instructions, not an extra execution sandbox or evidence of
+  model compliance. `builtin_security_remediation_templates_test.go` and
+  `squad_template_security_test.go` cover the content, catalog, private creation,
+  authority, reuse and owning/guest runtime-brief composition contracts.
+  `squad_security_remediation_routing_test.go` and
+  `squad_security_remediation_flow_test.go` (handler) and
+  `squad_security_remediation_notification_test.go` (`cmd/server`) pin the
+  comment routing and notifications the gates rely on, and the releases that are
+  allowed (the squad's creator under the default `private` access, another member
+  once access is opened), with test code playing every role. That a member
+  without access cannot release is pinned by
+  `TestCreateComment_SquadMentionPrivateLeaderBlocksPlainMember`
+  (`squad_comment_trigger_test.go`) and
+  `TestComment_SquadPrivateLeader_PlainMemberNoEnqueue`
+  (`squad_private_leader_test.go`);
 - the leader is created from an unlisted role template at `coordinator`
   autonomy; member seats keep their own role's default level;
 - declared agent callers need Coordinator, and cannot staff a template whose
@@ -251,9 +331,11 @@ Contracts:
   that confirms the overall goal is met. Squad Operating Protocol
   (`squad_briefing.go`) still states the ongoing `in_progress` → later
   `in_review` responsibility for owning leaders. `StartTask` / `CompleteTask`
-  do not write issue status. There is no assignee gate anymore: a guest leader
-  writes nothing not because it lacks a grant but because a turn that did not
-  move the issue's state has nothing to record.
+  do not write issue status. The briefing selects `squadParentStatusOwned` only
+  for an issue actually assigned to this squad; guest mentions and quick-create
+  receive `squadParentStatusNotOwned`. That Agent Identity prohibition outranks
+  the workflow's general status guidance. Composition regressions live in
+  `squad_parent_status_contract_test.go` and `squad_template_security_test.go`.
 - status names are category rules: custom statuses inherit their category's
   behavior in full (MUL-6243, `server/internal/issuestatus/issuestatus.go`
   `Effective`/`Resolve`); the brief lists the workspace catalog when any custom
@@ -318,6 +400,13 @@ server/internal/handler/issue_child_done.go       # dispatchParentAssigneeTrigge
 
 Contracts:
 
+- a member result comment on the same squad-assigned issue follows
+  `comment.go`'s assignee fallback; a comment on a separate child is not a
+  result on the parent. `notifyParentOfChildDone` evaluates a child's transition
+  into a terminal category through `isTerminalChildStatus` and
+  `terminalChildPredicate`: only `done`/`cancelled` qualify. `in_review` remains
+  delivery awaiting human/integration acceptance. `TaskService.CompleteTask`
+  does not change that issue status;
 - when a child issue closes a stage barrier and the parent is assigned to a
   squad, the parent squad leader is triggered (triggerChildDoneSquad in
   issue_child_done.go);
@@ -342,8 +431,9 @@ Contracts:
   `multica issue status <parent-id> in_review`. The Squad Operating Protocol's
   standing "Own the parent issue status" responsibility (present exactly when
   the issue is assigned to this squad) states the same expectation; the system
-  comment marks the wrap-up moment. Since MUL-6417 the write itself needs no
-  grant — the brief's fact judgment covers it — but `done` remains
+  comment marks the wrap-up moment. The owning leader's standing instruction
+  permits this transition without a fresh status request; it does not grant
+  status ownership to a guest leader. `done` remains
   human / integration owned.
 
 ## Private Leader Access

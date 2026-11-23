@@ -1,0 +1,13 @@
+# E0b-only retry02 harness
+
+User explicitly authorized one fixed retry. New real entry is `TestRK1KnowledgeRealE0bRetry`; it reuses `rk1kRunE0b`, extracted without changing the original full-series producer, execution or assertions. No K1/K2/K3 run from the new entry.
+
+Registration adds `mode:e0b_retry`, `attempt_limit:1`, prior ledger path/SHA, prior actual/debit counts1, and prior registration path/SHA. History is checked read-only before current executable hashing. The original authorized registration binds the exact prior ledger, output, provider/native/model/version/config namespace; its expired timestamp is historical and does not block the separately current authorization. The stopped prior ledger must contain exactly one genuinely started, unfinished E0b task attempt. Invalid/missing/corrupt/drifted history and arbitrary prior-count overrides refuse.
+
+The new ledger stores the retry mode, one-attempt limit and prior digest/counts. A second current attempt refuses even when the first completed, and the total debit constraint remains15. Original full mode rejects retry registration and retry entry rejects full mode; absent legacy mode stays full for existing registration compatibility. Prior ledger files are never mutated. New summary is clearly `real_e0b_retry`/one E0b sample/one paid start/no seeds, prior actual1 + current actual1 = total2/remaining13 only after the actual successful result exists.
+
+Changed files: `rk1k_codex_registration_test.go`, `rk1k_entry_test.go`, `rk1k_scenarios_test.go`; new `rk1k_codex_retry_test.go`, `rk1k_codex_retry_controls_test.go`; task launcher `run-fake.py` now accepts `--e0b-retry`. The original default launcher explicitly selects its previous8top-level tests, preserving the full53 named-pass suite rather than accidentally appending the new retry proof.
+
+Verification: source-bound normal/race compiles passed; focused normal and race each42namedpass/0fail/skip/invalid JSON, exact4top-levels, one actual shared E0b fake producer run with1fake/0seed/0paid summary. Controls include repeated-attempt refusal, immutable history, identity namespace, mode isolation, count changes and exact retry summary. Existing registration integrity/guard controls cover full-mode compatibility. Tagged cmd/server vet0; gofmt/diff-check pass. Evidence references/hashes are in `e0b-retry02-fake-results.json`.
+
+Normal UTC06:04:29.011574–06:04:35.097934; raceUTC06:04:48.492565–06:04:59.888802. No owned tests remained at06:05:36.056836UTC, shared verification window released. Source remains frozen. No model calls by implementer; root owns final independent review, real registration/permit, one real retry, and integration/commit. Historical first attempt remains stopped with one actual start.

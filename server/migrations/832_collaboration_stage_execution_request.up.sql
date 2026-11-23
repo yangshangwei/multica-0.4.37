@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_stage_execution_request_idx ON collaboration_stage_execution_intent (workspace_id, consumer_subject, request_id);

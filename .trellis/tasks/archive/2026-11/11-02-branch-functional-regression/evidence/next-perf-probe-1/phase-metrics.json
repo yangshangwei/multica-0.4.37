@@ -1,0 +1,279 @@
+{
+  "acquire_count": 1,
+  "acquire_errors": 0,
+  "acquire_total_ms": 0.001958,
+  "allocated_bytes_delta": 242007280,
+  "arch": "arm64",
+  "batch_query_counts": {
+    "AdvanceIterationScopeRevisionBatch": 2000,
+    "AppendIterationLifecycleEventBatch": 2000,
+    "JoinIterationParticipationBatch": 1000,
+    "LeaveDeletedIssueIterationParticipationBatch": 1000,
+    "SetIssueCurrentIterationBatch": 1000
+  },
+  "batch_query_errors": 0,
+  "batch_statements": 7000,
+  "batch_total_ms": 1279.291707,
+  "batches": [
+    {
+      "name": "AppendIterationLifecycleEventBatch",
+      "statements": 1000,
+      "duration_ms": 26.376666
+    },
+    {
+      "name": "LeaveDeletedIssueIterationParticipationBatch",
+      "statements": 1000,
+      "duration_ms": 623.603875
+    },
+    {
+      "name": "AdvanceIterationScopeRevisionBatch",
+      "statements": 1000,
+      "duration_ms": 33.126875
+    },
+    {
+      "name": "AppendIterationLifecycleEventBatch",
+      "statements": 1000,
+      "duration_ms": 29.311458
+    },
+    {
+      "name": "JoinIterationParticipationBatch",
+      "statements": 1000,
+      "duration_ms": 197.019583
+    },
+    {
+      "name": "AdvanceIterationScopeRevisionBatch",
+      "statements": 1000,
+      "duration_ms": 44.660583
+    },
+    {
+      "name": "SetIssueCurrentIterationBatch",
+      "statements": 1000,
+      "duration_ms": 325.192667
+    }
+  ],
+  "closure_operations": 1,
+  "count_checks": {
+    "active_task_reads": 1000,
+    "membership_phases": 7,
+    "participation_lock_reads": 2000
+  },
+  "cpus": 10,
+  "gc_count_delta": 15,
+  "go": "go1.27.0",
+  "handler_ms": 2396.832334,
+  "handler_residual_ms": 130.6826820000004,
+  "lock_sampler": "not running; original 1ms Lock-only observer deliberately excluded from this attribution diagnostic",
+  "original_p95_status": "FAIL retained",
+  "os": "darwin",
+  "pool_acquire_count_delta": 1,
+  "pool_acquire_ms_delta": 0.000625,
+  "pool_empty_acquire_count_delta": 0,
+  "pool_empty_wait_ms_delta": 0,
+  "pool_max_conns": 10,
+  "pool_min_conns": 0,
+  "postgres": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+  "queries": {
+    "AppendIterationLifecycleEvent": {
+      "count": 1,
+      "total_ms": 1.351667,
+      "max_ms": 1.351667,
+      "errors": 0
+    },
+    "CloseActiveIteration": {
+      "count": 1,
+      "total_ms": 1.970666,
+      "max_ms": 1.970666,
+      "errors": 0
+    },
+    "CreateIterationNotification": {
+      "count": 1,
+      "total_ms": 0.394709,
+      "max_ms": 0.394709,
+      "errors": 0
+    },
+    "EnsureIterationSettings": {
+      "count": 1,
+      "total_ms": 1.063291,
+      "max_ms": 1.063291,
+      "errors": 0
+    },
+    "FinalizeIterationProcessedAt": {
+      "count": 1,
+      "total_ms": 1.165667,
+      "max_ms": 1.165667,
+      "errors": 0
+    },
+    "GetIteration": {
+      "count": 3,
+      "total_ms": 1.633249,
+      "max_ms": 0.864958,
+      "errors": 0
+    },
+    "GetIterationOperation": {
+      "count": 1,
+      "total_ms": 3.908625,
+      "max_ms": 3.908625,
+      "errors": 0
+    },
+    "InsertIterationOperation": {
+      "count": 1,
+      "total_ms": 1.634209,
+      "max_ms": 1.634209,
+      "errors": 0
+    },
+    "InsertIterationSnapshot": {
+      "count": 1,
+      "total_ms": 106.104792,
+      "max_ms": 106.104792,
+      "errors": 0
+    },
+    "ListActiveTasksByIssue": {
+      "count": 1000,
+      "total_ms": 226.9874469999996,
+      "max_ms": 2.467875,
+      "errors": 0
+    },
+    "ListAllIterationEvents": {
+      "count": 4,
+      "total_ms": 44.629958,
+      "max_ms": 17.340875,
+      "errors": 0
+    },
+    "ListIssueDeleteIterationIDs": {
+      "count": 1,
+      "total_ms": 2.128458,
+      "max_ms": 2.128458,
+      "errors": 0
+    },
+    "ListIterationCurrentIssues": {
+      "count": 3,
+      "total_ms": 6.930375,
+      "max_ms": 4.224834,
+      "errors": 0
+    },
+    "ListIterationHistoryIssueReferences": {
+      "count": 3,
+      "total_ms": 20.326916,
+      "max_ms": 7.447708,
+      "errors": 0
+    },
+    "ListIterationHistoryLabels": {
+      "count": 2,
+      "total_ms": 20.671,
+      "max_ms": 11.911667,
+      "errors": 0
+    },
+    "ListIterationParticipations": {
+      "count": 3,
+      "total_ms": 13.123999999999999,
+      "max_ms": 8.506292,
+      "errors": 0
+    },
+    "LockActiveMember": {
+      "count": 1,
+      "total_ms": 0.239292,
+      "max_ms": 0.239292,
+      "errors": 0
+    },
+    "LockIssueIterationParticipation": {
+      "count": 2000,
+      "total_ms": 504.42550399999965,
+      "max_ms": 6.9225,
+      "errors": 0
+    },
+    "LockIssueStatusCatalogShared": {
+      "count": 1,
+      "total_ms": 0.27475,
+      "max_ms": 0.27475,
+      "errors": 0
+    },
+    "LockIterationHistoryLabels": {
+      "count": 1,
+      "total_ms": 11.525459,
+      "max_ms": 11.525459,
+      "errors": 0
+    },
+    "LockIterationHistoryMembers": {
+      "count": 1,
+      "total_ms": 0.420167,
+      "max_ms": 0.420167,
+      "errors": 0
+    },
+    "LockIterationHistoryWorkspace": {
+      "count": 1,
+      "total_ms": 0.403083,
+      "max_ms": 0.403083,
+      "errors": 0
+    },
+    "LockIterationOperationIssues": {
+      "count": 1,
+      "total_ms": 3.737833,
+      "max_ms": 3.737833,
+      "errors": 0
+    },
+    "LockIterationSettings": {
+      "count": 1,
+      "total_ms": 0.27575,
+      "max_ms": 0.27575,
+      "errors": 0
+    },
+    "LockIterations": {
+      "count": 1,
+      "total_ms": 0.790416,
+      "max_ms": 0.790416,
+      "errors": 0
+    },
+    "LockProjectForAssociationNowait": {
+      "count": 10,
+      "total_ms": 2.773373,
+      "max_ms": 0.892917,
+      "errors": 0
+    },
+    "LockSubscriberWrites": {
+      "count": 1,
+      "total_ms": 0.233375,
+      "max_ms": 0.233375,
+      "errors": 0
+    },
+    "LockWorkspaceForChatSessionCreate": {
+      "count": 1,
+      "total_ms": 0.286291,
+      "max_ms": 0.286291,
+      "errors": 0
+    },
+    "SELECT clock_timestamp()": {
+      "count": 2,
+      "total_ms": 0.5749580000000001,
+      "max_ms": 0.421833,
+      "errors": 0
+    },
+    "SELECT pg_advisory_xact_lock(hashtextextended('iteration:' || $1::uuid::text, 0))": {
+      "count": 1,
+      "total_ms": 2.109083,
+      "max_ms": 2.109083,
+      "errors": 0
+    },
+    "SET TRANSACTION ISOLATION LEVEL READ COMMITTED, READ WRITE": {
+      "count": 1,
+      "total_ms": 0.256666,
+      "max_ms": 0.256666,
+      "errors": 0
+    },
+    "begin": {
+      "count": 1,
+      "total_ms": 0.462958,
+      "max_ms": 0.462958,
+      "errors": 0
+    },
+    "commit": {
+      "count": 1,
+      "total_ms": 4.042,
+      "max_ms": 4.042,
+      "errors": 0
+    }
+  },
+  "query_count": 3053,
+  "query_total_ms": 986.8559869999997,
+  "scope": "One real HTTP closure; setup/start/preview excluded by request-context marker; no P95 gate claim",
+  "tasks": 1000
+}

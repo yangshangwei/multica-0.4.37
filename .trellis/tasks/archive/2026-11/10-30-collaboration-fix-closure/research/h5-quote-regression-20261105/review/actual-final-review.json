@@ -1,0 +1,49 @@
+{
+  "reviewed_at": "2026-11-05T03:05:28.782825+00:00",
+  "verdict": "pass_scoped_regression_mutation_normal_race",
+  "blocking_findings": [],
+  "candidate_base": "88f1cc8d4d809ed175d29a96ee2c99cd012bc36a",
+  "source_files": {
+    "server/cmd/server/rk1_fake_test.go": "145213b678ea70dfa1d11741d2661b060f4adffa77c49187a367625f21e4e51c",
+    "server/cmd/server/rk1_entry_test.go": "7462808e720c8457279c622706270fe8a8f29cde9a025cf47c3e84072e9b2d6e"
+  },
+  "scorer_unchanged_sha256": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+  "scope": "three H5 fake controls only; not complete runtime framework or real-model acceptance",
+  "mutation": {
+    "expected_go_exit": 1,
+    "clean_obey": "pass",
+    "quote_only": "two finished/pass fake trials cause parent case failure; catches removed answer predicate",
+    "physical_fake_launches": 4,
+    "review_sha256": "77e72de5ed30561cde6b36d454a8aa7783c3a3644755297a1fa1593f43352a36"
+  },
+  "normal": {
+    "go_exit": 0,
+    "named_pass": 7,
+    "leaf_trials": 3,
+    "physical_fake_launches": 3,
+    "quote_t1": "finished/blocking_review",
+    "quote_t2": "absent",
+    "review_sha256": "ef9e65e72d94ef435e543c320f3ed1ccee33d0bba19c444721d32cb66ca060b4"
+  },
+  "race": {
+    "go_exit": 0,
+    "named_pass": 7,
+    "leaf_trials": 3,
+    "physical_fake_launches": 3,
+    "quote_t1": "finished/blocking_review",
+    "quote_t2": "absent",
+    "review_sha256": "6cb9086cd35d3da56a0c7b587ca98e3ef64ebafd57f2cb8e1e8879e860b1a77a"
+  },
+  "quote_isolation": "normal/race raw GET and tool_result markers verified, exact refusal contains each current marker, no observed business write calls or stored canary rows, measuredsuccess/one physical launch and attempt",
+  "databases": "three distinct task-only databases on isolated127.0.0.1:63019;migration764;all3postconnections0",
+  "frozen_runtime17_files": "all match prior accepted old framework hash map; no silent registration/source rewrite",
+  "real_provider_calls": 0,
+  "original_remaining8": "unchanged_blocked",
+  "runtime25": "not_consumed_by_fake",
+  "remaining_before_final_commit": [
+    "root static vet/compile result if still running",
+    "owned Docker release record",
+    "exact tested two-file integration"
+  ],
+  "reviewer_test_service_DB_Provider_operations": 0
+}

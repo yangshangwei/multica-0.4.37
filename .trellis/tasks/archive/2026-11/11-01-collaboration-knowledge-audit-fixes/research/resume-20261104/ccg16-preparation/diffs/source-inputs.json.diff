@@ -1,0 +1,57 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/source-inputs.json
++++ /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/source-inputs.json
+@@ -1,17 +1,17 @@
+ {
+   "state": "prepared_not_runnable",
+   "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+-  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+-  "full_run_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/make-check-v15.json",
++  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
++  "full_run_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.json",
+   "audit_module": {
+-    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/final-state-audit-v15/final_state_audit.py",
+-    "sha256": "d4201c363b2fa8f147915c67e73947fd1b715077ef06754a80688b201a2c6fd8",
+-    "state": "independent_prelaunch_admission_review_bound; actual_final_result_pending"
++    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit.py",
++    "sha256": "2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318",
++    "state": "actual_materialized_bytes_pending_independent_binding"
+   },
+   "audit_review": {
+-    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/independent-review/review.json",
+-    "sha256": "35805fe56528f54818c0151299b2e71f7d358f53ba0bd928bc905303ba28e495",
+-    "state": "independent_prelaunch_admission_review_bound; actual_shared_result_pending"
++    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/review.json",
++    "sha256": null,
++    "state": "pending_actual_V16_independent_review"
+   },
+   "tools": {
+     "node": {
+@@ -48,19 +48,23 @@
+   "knowledge_default_enabled": false,
+   "real_provider_allowed": false,
+   "environment_parser": {
+-    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/run-make-check-v15-provenance.py",
+-    "sha256": "10ee286f89ae1072c3384abeb88b86cac078ecbadba2cfb6b0a07201d107180d",
+-    "state": "independent_prelaunch_admission_review_bound; actual_final_result_pending"
++    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/run-make-check-v16-provenance.py",
++    "sha256": "52c2f0a40fab9dcaabbc20267c106cdffc503d126853e9a3290da280350deaca",
++    "state": "actual_materialized_bytes_pending_independent_binding"
+   },
+   "forbidden_renderer_origins": [
+     "http://127.0.0.1:55132",
+     "http://localhost:55132",
+     "http://127.0.0.1:61276",
+-    "http://localhost:61276"
++    "http://localhost:61276",
++    "http://127.0.0.1:58268",
++    "http://localhost:58268"
+   ],
+   "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+   "pending_bindings": [
+     "actual_full_result_and_independent_final_identity",
+-    "four_actual_permission_resource_and_freshness_fields"
++    "four_actual_permission_resource_and_freshness_fields",
++    "current_CLI_and_fake_binary_builds",
++    "audit_review.actual_sha256"
+   ]
+ }

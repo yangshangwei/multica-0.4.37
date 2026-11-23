@@ -100,21 +100,26 @@ WHERE id = $1 AND workspace_id = $3 AND archived_at IS NULL
 RETURNING *;
 
 -- name: AddSquadMember :one
+-- Roster readers hold the owning squad row. Keep membership insertion under
+-- the same fence so a new member cannot appear after authorization is checked.
+WITH locked_squad AS MATERIALIZED (SELECT squad.id FROM squad WHERE squad.id = sqlc.arg(squad_id)::uuid FOR UPDATE)
 INSERT INTO squad_member (squad_id, member_type, member_id, role)
-VALUES ($1, $2, $3, $4)
+SELECT id, sqlc.arg(member_type)::text, sqlc.arg(member_id)::uuid, sqlc.arg(role)::text FROM locked_squad
 RETURNING *;
 
 -- name: RemoveSquadMember :execrows
-DELETE FROM squad_member
-WHERE squad_id = $1 AND member_type = $2 AND member_id = $3;
+WITH locked_squad AS MATERIALIZED (SELECT squad.id FROM squad WHERE squad.id = sqlc.arg(squad_id)::uuid FOR UPDATE)
+DELETE FROM squad_member USING locked_squad
+WHERE squad_id = locked_squad.id AND member_type = sqlc.arg(member_type)::text AND member_id = sqlc.arg(member_id)::uuid;
 
 -- name: ListSquadMembers :many
 SELECT * FROM squad_member WHERE squad_id = $1 ORDER BY created_at ASC;
 
 -- name: UpdateSquadMemberRole :one
-UPDATE squad_member SET role = $4
-WHERE squad_id = $1 AND member_type = $2 AND member_id = $3
-RETURNING *;
+WITH locked_squad AS MATERIALIZED (SELECT squad.id FROM squad WHERE squad.id = sqlc.arg(squad_id)::uuid FOR UPDATE)
+UPDATE squad_member SET role = sqlc.arg(role)::text FROM locked_squad
+WHERE squad_id = locked_squad.id AND member_type = sqlc.arg(member_type)::text AND member_id = sqlc.arg(member_id)::uuid
+RETURNING squad_member.*;
 
 -- name: IsSquadMember :one
 SELECT EXISTS(

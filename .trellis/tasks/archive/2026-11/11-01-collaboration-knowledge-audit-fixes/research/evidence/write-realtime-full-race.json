@@ -1,0 +1,12 @@
+{
+  "source": "d4bc37a86",
+  "command": "guarded go test ./internal/realtime -race -parallel=2 -count=1 -json -timeout=10m",
+  "exit_code": 0,
+  "counts": {
+    "run": 87,
+    "pass": 87,
+    "fail": 0,
+    "skip": 0
+  },
+  "log_sha256": "1ef7ebf84e692c08c0330a94786eb6859469ae5864bb70038a5965eed96a9598"
+}

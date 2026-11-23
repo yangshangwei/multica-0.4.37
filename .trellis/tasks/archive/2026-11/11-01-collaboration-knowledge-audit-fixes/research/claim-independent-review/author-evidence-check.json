@@ -1,0 +1,120 @@
+{
+  "service_and_history": [
+    {
+      "metadata": "H3-M3-boundary-green.json",
+      "metadata_sha256": "2853eb7299cd04ddc238ce100bf522e75c3e5f62793904831af0c2d679862676",
+      "log": "H3-M3-boundary-green.txt",
+      "log_matches": true,
+      "log_sha256": "395b54f5e88a35f96b237f7c59fcb2f0f19910002843b2206a60b01bd5ed8985",
+      "source_sha": "3110295d0eca364937f08c97102ca74f08a7e235",
+      "working_diff_sha256": "18c13b3541dce9b5b39313a679ba6f09968033d7c5d4ebc6099ac49b726e872d",
+      "verified_product_commit": null,
+      "exit_code": 0,
+      "test_events": {
+        "pass": 11
+      }
+    },
+    {
+      "metadata": "H3-M3-green.json",
+      "metadata_sha256": "119de8b18951adeebb6c9c5681c0d744d662d2ec9bf5fc5a2f6182b2619d3fdf",
+      "log": "H3-M3-green.txt",
+      "log_matches": true,
+      "log_sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+      "source_sha": "3110295d0eca364937f08c97102ca74f08a7e235",
+      "working_diff_sha256": "18c13b3541dce9b5b39313a679ba6f09968033d7c5d4ebc6099ac49b726e872d",
+      "verified_product_commit": null,
+      "exit_code": 0,
+      "test_events": {
+        "pass": 8
+      }
+    },
+    {
+      "metadata": "claim-service-full-r2.json",
+      "metadata_sha256": "0fb0ca27dad83e1ad144cccc8279ad6d3c0e05a69e55e456a6dea71ed7e9d63f",
+      "log": "claim-service-full-r2.txt",
+      "log_matches": true,
+      "log_sha256": "928435d2f810bc386ceaabae5be25e271b333bc53b3d18c5ac638caa0db06338",
+      "source_sha": "0aedf934e0cc2b3a959e9be3216305a25bf4e6ce",
+      "working_diff_sha256": "18c13b3541dce9b5b39313a679ba6f09968033d7c5d4ebc6099ac49b726e872d",
+      "verified_product_commit": "94e790d2d",
+      "exit_code": 0,
+      "test_events": {
+        "pass": 3281,
+        "skip": 18
+      }
+    }
+  ],
+  "managed_args": [
+    {
+      "file": "managed-args-red.jsonl",
+      "matches": true,
+      "sha256": "0f10c4084e69a32ca72d45bb7dc37fd48ef6923ecb32c86525c9539a74b72faa",
+      "counts": {
+        "run": 8,
+        "pass": 0,
+        "fail": 8,
+        "skip": 0
+      },
+      "package_end": [
+        "fail"
+      ]
+    },
+    {
+      "file": "managed-args-green.jsonl",
+      "matches": true,
+      "sha256": "e5842cd671f4505aabddaf21e42d22abf17095fae773a4571275dd9db351526a",
+      "counts": {
+        "run": 9,
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_end": [
+        "pass"
+      ]
+    },
+    {
+      "file": "managed-args-race.jsonl",
+      "matches": true,
+      "sha256": "b907c263926baf5ccd4c97e6365ea118e6e191a22b358b7e42d1db60c7839b5b",
+      "counts": {
+        "run": 18,
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_end": [
+        "pass"
+      ]
+    },
+    {
+      "file": "managed-args-package.jsonl",
+      "matches": true,
+      "sha256": "10920b624cf64408f26f64be612085e19f7d54788822f64529c176780dca9fd2",
+      "counts": {
+        "run": 1954,
+        "pass": 1941,
+        "fail": 9,
+        "skip": 4
+      },
+      "package_end": [
+        "fail"
+      ]
+    },
+    {
+      "file": "managed-args-package-r2.jsonl",
+      "matches": true,
+      "sha256": "4d01f7415172f8a96d277e1b4ead7185aef00734721e3eb91607d33cd243ebda",
+      "counts": {
+        "run": 1954,
+        "pass": 1950,
+        "fail": 0,
+        "skip": 4
+      },
+      "package_end": [
+        "pass"
+      ]
+    }
+  ],
+  "managed_args_current_file_mismatches": []
+}

@@ -1,0 +1,38 @@
+{"Time":"2026-11-02T21:08:29.539325+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-02T21:08:30.114941+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_DefaultsWhenNothingSet"}
+{"Time":"2026-11-02T21:08:30.11501+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_DefaultsWhenNothingSet","Output":"=== RUN   TestPoolSizing_DefaultsWhenNothingSet\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.117732+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_DefaultsWhenNothingSet","Output":"    dbstats_test.go:47: got max=10 min=1, want 25/5\n","OutputType":"error"}
+{"Time":"2026-11-02T21:08:30.11775+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_DefaultsWhenNothingSet","Output":"--- FAIL: TestPoolSizing_DefaultsWhenNothingSet (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.117752+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestPoolSizing_DefaultsWhenNothingSet","Elapsed":0}
+{"Time":"2026-11-02T21:08:30.11776+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_URLParamsHonoredWhenEnvUnset"}
+{"Time":"2026-11-02T21:08:30.117761+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_URLParamsHonoredWhenEnvUnset","Output":"=== RUN   TestPoolSizing_URLParamsHonoredWhenEnvUnset\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.117793+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_URLParamsHonoredWhenEnvUnset","Output":"    dbstats_test.go:55: URL params should win when env unset; got max=10 min=1\n","OutputType":"error"}
+{"Time":"2026-11-02T21:08:30.117801+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_URLParamsHonoredWhenEnvUnset","Output":"--- FAIL: TestPoolSizing_URLParamsHonoredWhenEnvUnset (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.117803+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestPoolSizing_URLParamsHonoredWhenEnvUnset","Elapsed":0}
+{"Time":"2026-11-02T21:08:30.117804+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_EnvOverridesURL"}
+{"Time":"2026-11-02T21:08:30.117805+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_EnvOverridesURL","Output":"=== RUN   TestPoolSizing_EnvOverridesURL\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.117821+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_EnvOverridesURL","Output":"--- PASS: TestPoolSizing_EnvOverridesURL (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.117823+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_EnvOverridesURL","Elapsed":0}
+{"Time":"2026-11-02T21:08:30.117824+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_PartialURLParam"}
+{"Time":"2026-11-02T21:08:30.117825+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_PartialURLParam","Output":"=== RUN   TestPoolSizing_PartialURLParam\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.117844+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_PartialURLParam","Output":"    dbstats_test.go:73: URL pool_max_conns should be honored; got max=10\n","OutputType":"error"}
+{"Time":"2026-11-02T21:08:30.117847+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_PartialURLParam","Output":"--- FAIL: TestPoolSizing_PartialURLParam (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.117848+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestPoolSizing_PartialURLParam","Elapsed":0}
+{"Time":"2026-11-02T21:08:30.117849+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault"}
+{"Time":"2026-11-02T21:08:30.11785+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault","Output":"=== RUN   TestPoolSizing_InvalidEnvFallsBackToCodeDefault\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.117993+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault","Output":"2026/11/02 21:08:30 WARN invalid env var, using default name=DATABASE_MAX_CONNS value=not-a-number default=25 error=\"strconv.ParseInt: parsing \\\"not-a-number\\\": invalid syntax\"\n"}
+{"Time":"2026-11-02T21:08:30.118003+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault","Output":"    dbstats_test.go:89: got min=1, want 5\n","OutputType":"error"}
+{"Time":"2026-11-02T21:08:30.118004+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault","Output":"--- FAIL: TestPoolSizing_InvalidEnvFallsBackToCodeDefault (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.118005+08:00","Action":"fail","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault","Elapsed":0}
+{"Time":"2026-11-02T21:08:30.118006+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam"}
+{"Time":"2026-11-02T21:08:30.118007+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam","Output":"=== RUN   TestPoolSizing_InvalidEnvFallsBackToURLParam\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.118029+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam","Output":"2026/11/02 21:08:30 WARN invalid env var, using default name=DATABASE_MAX_CONNS value=not-a-number default=40 error=\"strconv.ParseInt: parsing \\\"not-a-number\\\": invalid syntax\"\n"}
+{"Time":"2026-11-02T21:08:30.118032+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam","Output":"--- PASS: TestPoolSizing_InvalidEnvFallsBackToURLParam (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.118033+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam","Elapsed":0}
+{"Time":"2026-11-02T21:08:30.118038+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_MinClampedToMax"}
+{"Time":"2026-11-02T21:08:30.118039+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_MinClampedToMax","Output":"=== RUN   TestPoolSizing_MinClampedToMax\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.118052+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_MinClampedToMax","Output":"--- PASS: TestPoolSizing_MinClampedToMax (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.118054+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_MinClampedToMax","Elapsed":0}
+{"Time":"2026-11-02T21:08:30.118055+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.118718+08:00","Action":"output","Package":"command-line-arguments","Output":"FAIL\tcommand-line-arguments\t0.579s\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:30.118738+08:00","Action":"fail","Package":"command-line-arguments","Elapsed":0.579}

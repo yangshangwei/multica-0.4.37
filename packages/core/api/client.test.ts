@@ -3,7 +3,7 @@ import { createAuthStore } from "../auth";
 import { configStore } from "../config";
 import type { StorageAdapter, User } from "../types";
 import { ApiClient, ApiError, CHAT_DRAFT_RESTORE_CAPABILITY, clientErrorMessage } from "./client";
-import { EMPTY_PLUGIN_PACKAGE_LIST, EMPTY_PLUGIN_PREVIEW, EMPTY_PLUGIN_SURFACE_LAUNCH } from "./schemas";
+import { EMPTY_AUTOPILOT, EMPTY_PLUGIN_PACKAGE_LIST, EMPTY_PLUGIN_PREVIEW, EMPTY_PLUGIN_SURFACE_LAUNCH } from "./schemas";
 
 afterEach(() => {
   configStore.getState().setAgentConversationStartersSupported(false);
@@ -1184,6 +1184,59 @@ describe("ApiClient", () => {
       },
     ]);
   });
+
+  it("sends a requested create status and reads the stored one back", async () => {
+    const created = {
+      id: "ap-2",
+      workspace_id: "ws-1",
+      title: "Set up before running",
+      assignee_id: "agent-1",
+      status: "paused",
+      execution_mode: "run_only",
+      created_by_type: "member",
+      created_by_id: "user-1",
+      created_at: "2026-10-29T00:00:00Z",
+      updated_at: "2026-10-29T00:00:00Z",
+    };
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify(created), {
+        status: 201,
+        headers: { "Content-Type": "application/json" },
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const autopilot = await new ApiClient("https://api.example.test").createAutopilot({
+      title: "Set up before running",
+      assignee_id: "agent-1",
+      execution_mode: "run_only",
+      status: "paused",
+    });
+
+    expect(JSON.parse(fetchMock.mock.calls[0]?.[1]?.body as string)).toMatchObject({ status: "paused" });
+    expect(autopilot).toMatchObject({ id: "ap-2", status: "paused", assignee_type: "agent" });
+  });
+
+  it.each([null, "nope", {}, { id: 7, status: "paused" }])(
+    "falls back to an empty, paused autopilot when the create response is %j",
+    async (payload) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(
+          new Response(JSON.stringify(payload), {
+            status: 201,
+            headers: { "Content-Type": "application/json" },
+          }),
+        ),
+      );
+
+      await expect(new ApiClient("https://api.example.test").createAutopilot({
+        title: "Daily triage",
+        assignee_id: "agent-1",
+        execution_mode: "create_issue",
+      })).resolves.toEqual(EMPTY_AUTOPILOT);
+    },
+  );
 
   it("emits X-Client-* headers when identity is configured", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
@@ -2866,5 +2919,42 @@ describe("agent category response compatibility", () => {
     for (const result of results) {
       expect(result).toMatchObject({ id: "agent-1", name: "Reviewer", category: "", template_key: "reviewer" });
     }
+  });
+});
+
+describe("ApiClient shared-context compatibility", () => {
+  const issueId = "00000000-0000-4000-8000-000000000002";
+  const requestId = "00000000-0000-4000-8000-000000000003";
+  const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), {
+    status, headers: { "Content-Type": "application/json" },
+  });
+  const empty = { issue_id: issueId, version: "0", content: "", bytes: 0, max_bytes: 131072,
+    author: null, created_at: null, restored_from_version: null, can_edit: true, can_purge: true };
+
+  it("returns null for a well-formed response belonging to another issue", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json({ ...empty, issue_id: "00000000-0000-4000-8000-000000000004" })));
+    await expect(new ApiClient("https://api.example.test").getCollaborationMemory(issueId)).resolves.toBeNull();
+  });
+
+  it("rejects overflow cursors locally and accepts a sealed stale-write receipt", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(json({ request_id: requestId, action: "memory_update", status: 409,
+      code: "stale_memory_version", protocol_version: 1, issue_id: issueId, version: null, current_version: "2", max_bytes: 131072 }, 409));
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new ApiClient("https://api.example.test");
+    await expect(client.getCollaborationMemoryVersions(issueId, { cursor: "9223372036854775808" })).rejects.toThrow(TypeError);
+    await expect(client.updateCollaborationMemory(issueId, requestId, { expected_version: "1", content: "stale" })).resolves.toMatchObject({ code: "stale_memory_version", status: 409 });
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
+  it("keeps an HTTP/receipt mismatch unconfirmed instead of retiring the write", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json({ request_id: requestId, action: "memory_update", status: 409,
+      code: "stale_memory_version", protocol_version: 1, issue_id: issueId, version: null, current_version: "2", max_bytes: 131072 })));
+    await expect(new ApiClient("https://api.example.test").updateCollaborationMemory(issueId, requestId, { expected_version: "1", content: "draft" })).resolves.toBeNull();
+  });
+
+  it("drops malformed version pages instead of returning partial history", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(json({ issue_id: issueId, current_version: "1", max_bytes: 131072, can_purge: true,
+      items: [{ version: "1", bytes: 1, author: null, created_at: "2026-10-26T00:00:00Z", restored_from_version: null, purged: true, purged_at: null, purged_by: null, purged_by_admin: false }], next_cursor: null })));
+    await expect(new ApiClient("https://api.example.test").getCollaborationMemoryVersions(issueId)).resolves.toBeNull();
   });
 });

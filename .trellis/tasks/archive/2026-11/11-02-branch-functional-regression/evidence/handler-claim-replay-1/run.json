@@ -1,0 +1,38 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:34:26.949958+00:00",
+  "state": "complete",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-timeout=40m",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-json",
+    "-run",
+    "^Test(ClaimTask_ProjectGithubReposOverrideWorkspaceRepos|ClaimTask_ProjectDescriptionInjected|ClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos|ClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext|ClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects)$",
+    "./internal/handler"
+  ],
+  "database": "multica_func7af9_handler_claim_replay_20261102",
+  "first_failure_retained": "evidence/go/33-internal_handler",
+  "hypothesis": "Shared fixture runtime heartbeat may exceed 150-second claim freshness before late tests; do not treat targeted success as full-package pass",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:34:40.611428+00:00",
+  "outcomes": {
+    "TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos": "pass",
+    "TestClaimTask_ProjectDescriptionInjected": "pass",
+    "TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos": "pass",
+    "TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext": "pass",
+    "TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects": "pass"
+  },
+  "full_handler_package_pass": false
+}

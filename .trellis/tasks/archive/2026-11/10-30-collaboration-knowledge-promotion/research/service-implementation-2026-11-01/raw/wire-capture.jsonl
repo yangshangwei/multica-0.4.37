@@ -1,0 +1,10 @@
+{"Time":"2026-11-01T05:46:32.329737+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/handler"}
+{"Time":"2026-11-01T05:46:33.351824+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)\n"}
+{"Time":"2026-11-01T05:46:33.352083+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"2026/11/01 05:46:33 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false\n"}
+{"Time":"2026-11-01T05:46:33.422265+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestKnowledgeHTTPHumanRoundTripAndPurgedProjection"}
+{"Time":"2026-11-01T05:46:33.422297+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestKnowledgeHTTPHumanRoundTripAndPurgedProjection","Output":"=== RUN   TestKnowledgeHTTPHumanRoundTripAndPurgedProjection\n","OutputType":"frame"}
+{"Time":"2026-11-01T05:46:33.539184+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestKnowledgeHTTPHumanRoundTripAndPurgedProjection","Output":"--- PASS: TestKnowledgeHTTPHumanRoundTripAndPurgedProjection (0.12s)\n","OutputType":"frame"}
+{"Time":"2026-11-01T05:46:33.539212+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestKnowledgeHTTPHumanRoundTripAndPurgedProjection","Elapsed":0.12}
+{"Time":"2026-11-01T05:46:33.539281+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-01T05:46:33.546697+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"ok  \tgithub.com/multica-ai/multica/server/internal/handler\t1.217s\n"}
+{"Time":"2026-11-01T05:46:33.546727+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/handler","Elapsed":1.217}

@@ -1,0 +1,83 @@
+{
+  "reviewed_at": "2026-11-05T12:44:33.256785+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "H3a-only bounded stage admission; no live execution by reviewer",
+  "verdict": "pass-with-notes",
+  "checks_passed": 20,
+  "blocking_findings": 0,
+  "checks": {
+    "protected_source17_launcher_model_provider": true,
+    "prior_outcomes_unchanged": true,
+    "budget25_spent10": true,
+    "H3a3trials3paid": true,
+    "conditional_H2b289pass": true,
+    "fulloperator_matches_actualfacts": true,
+    "onlyreviewed_plugin_delta": true,
+    "config_hash": true,
+    "effective_env_hash": true,
+    "helper_frozenhash": true,
+    "provider_frozenhash": true,
+    "DBidentity_matchesconfig": true,
+    "migration764_success": true,
+    "template0empty": true,
+    "quota_receipt": true,
+    "window_exact": true,
+    "stagepermitsfalse": true,
+    "privatefilesowned": true,
+    "executionclean": true,
+    "productunchanged": true
+  },
+  "execution_before_sync": "a22fb5a39",
+  "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "counts": {
+    "trials": 3,
+    "new_paid_cap": 3,
+    "fake_seeds": 0,
+    "CLI_captures": 4,
+    "before_paid": 10,
+    "before_remaining": 15,
+    "after_if_all3start": 13,
+    "remaining_if_all3start": 12
+  },
+  "original_H3a_contract": {
+    "comments": 210,
+    "older_code_position_1based": 41,
+    "decisive_new_code_position_1based": 210,
+    "required_CLI_exposure": "Decisive code returned through runtime context/comments; absent exposure is incomplete and stops",
+    "scoring": "Unique extracted REL code equals newcode and actualProvider tool_result shows it =>pass; correct withoutvisibility=>unsupported_correct_answer; wrongwithvisibility=>fail; wrongnotvisible=>fail_not_visible",
+    "preview": "Do not infer model exposure from HTTP/CLI receipt or assume full30k preview; inspect actualtool_result and preserve truncation facts",
+    "no_unsupported_stricter_exactbody_gate": "OriginalscorercomparesuniqueRELcodes, not byteexactanswer; preserve registeredscoring"
+  },
+  "window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "granted_by": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+    "scenario": "RK1-H3a",
+    "start_trial": 1,
+    "trials": 3,
+    "paid_launches": 3,
+    "outer_timeout_minutes": 26,
+    "recorded_at": "2026-11-05T12:42:19.456100+00:00",
+    "hold": "conditionalwindow H2bPASS met; readiness then original invocation up to26min"
+  },
+  "allowed_next": "Scopedcommit/sync; describe; rootboundactualupfrontbuild andunchangedcheck-only; rootmaypermit onlyH3atrial1-3 afteractualstagespassandwindowvalid. NoH3bautomatic.",
+  "conditions": [
+    "Currentfulloperator/source/helper/Provider/CLI equality staysstrict",
+    "Same savedparentenv acrossstages; newbefore/post manifests andselectedbytes",
+    "Originalincomplete/canary/failurestopandactualpaidcounts preserved",
+    "Reviewactualnewestdecisionexposure/oldercodeabsence/operator delta afterrun",
+    "Releasewindowonexit; no replacementprobe or changedtimeout/model"
+  ],
+  "hashes": {
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json": "f192c3fbd0b8f339e07a486a28170a80c57037422ba7ad6c6912c48de92c3598",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H3a-from-1/allocation.json": "57ee21f86b999f981f56526a28bb9ae2a08668c6a40d784acf3ed175ac148d5f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H3a-from-1/active-env-facts.json": "88f288a8d35c1ac7b0157905731dec09d49d5deffd251c01bcd49fc6811ee37c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H3a-from-1/active-window.json": "8969c845f5ca721cf96e5291f29f444dbd7e179f256485a354a570ec8af23ab5"
+  },
+  "operations": {
+    "Go": 0,
+    "DB": 0,
+    "Provider": 0,
+    "tests": 0,
+    "full_plugin_scan": 0
+  }
+}

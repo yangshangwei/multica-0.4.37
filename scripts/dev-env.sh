@@ -219,7 +219,15 @@ EOF
 # a function aborts the script under `set -e` when fn's last command fails, and
 # "no process is listening" is the normal answer here, not an error.
 port_listener_pid() {
-  lsof -nP -iTCP:"$1" -sTCP:LISTEN -t 2>/dev/null | head -1 || true
+  local pid
+  pid="$(lsof -nP -iTCP:"$1" -sTCP:LISTEN -t 2>/dev/null | head -1 || true)"
+  if [ -n "$pid" ]; then
+    printf '%s\n' "$pid"
+  elif command -v ss >/dev/null 2>&1; then
+    # Some Linux lsof versions omit renamed next-server processes. Query the
+    # kernel socket table without broadening this to clients of the port.
+    ss -H -ltnp "sport = :$1" 2>/dev/null | sed -n 's/.*pid=\([0-9][0-9]*\).*/\1/p' | head -1 || true
+  fi
 }
 
 port_free() { [ -z "$(port_listener_pid "$1")" ]; }
@@ -410,22 +418,12 @@ diagnose_database() {
 }
 
 ensure_database() {
-  local admin_url=""
-  if command -v psql >/dev/null 2>&1 && [ -n "${DATABASE_URL:-}" ]; then
-    admin_url="$(admin_database_url "$DATABASE_URL")"
-  fi
-
-  # Preferred path: create through the same connection string the application
-  # uses, so "created" and "reachable" cannot describe two different servers.
-  if [ -n "$admin_url" ] && PGCONNECT_TIMEOUT=3 psql "$admin_url" -tAc 'SELECT 1' >/dev/null 2>&1; then
-    if ! PGCONNECT_TIMEOUT=3 psql "$admin_url" -tAc "SELECT 1 FROM pg_database WHERE datname='${POSTGRES_DB}'" | grep -q 1; then
-      psql "$admin_url" -v ON_ERROR_STOP=1 -c "CREATE DATABASE \"${POSTGRES_DB}\"" >/dev/null
-      info "Created database ${POSTGRES_DB} through DATABASE_URL."
-    fi
-  else
-    info "Nothing is answering on ${POSTGRES_PORT:-5432} yet; starting the shared container."
-    bash "$REPO_ROOT/scripts/ensure-postgres.sh" "$ENV_FILE" | sed 's/^/    /'
-  fi
+  # The standalone and registry entry points must provision the same endpoint,
+  # including after a transient connection failure during database startup.
+  # cmd_up has already applied the manifest after loading its source env file.
+  # Sourcing that file again would replace the registered endpoint with stale
+  # development defaults before the first database write.
+  bash "$REPO_ROOT/scripts/ensure-postgres.sh" --current-environment --create-database | sed 's/^/    /'
 }
 
 migrate_database() {
@@ -822,6 +820,7 @@ start_web_locked() {
     if curl -sf --max-time 15 "http://localhost:${FRONTEND_PORT}" >/dev/null 2>&1; then
       listener="$(port_listener_pid "$FRONTEND_PORT")"
       if ! listener_belongs_to_component web "$FRONTEND_PORT"; then
+        info "Web ownership mismatch: launcher=$(component_pid web || true), listener=${listener:-none}, listener-group=$(process_group_id "${listener:-0}"), listener-parent=$(parent_process_id "${listener:-0}")."
         stop_component web
         die "Web on :$FRONTEND_PORT is not owned by this environment."
       fi

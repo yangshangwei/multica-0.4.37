@@ -1,0 +1,13 @@
+{
+  "score": 88,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "The collaboration preview and its task/member panels render with square corners, while the approved reference uses rounded panels. The module consumes --radius-xl and --radius-2xl, which are Tailwind inline theme entries rather than runtime custom properties.",
+    "The spacious two-column composition, blue selected member, manual navigation and next-card preview match the approved direction within the existing app shell."
+  ],
+  "suggestions": [
+    "Use the runtime --radius token in the two local border-radius declarations, with the existing theme multipliers, so the preview and its inner panels retain the intended curvature."
+  ],
+  "reasoning": "The reference composition is already present. One local token-resolution defect makes the panels look unfinished; correct it once before the final production Web/Desktop confirmation."
+}

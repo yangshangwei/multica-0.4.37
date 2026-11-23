@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"flag"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -1319,5 +1320,41 @@ func TestBuildClaudeArgsManagedSkillSettingsWins(t *testing.T) {
 	}
 	if !strings.Contains(joined, "--max-turns 7") {
 		t.Fatalf("unrelated custom arg was dropped: %v", args)
+	}
+}
+
+func TestBuildClaudeArgsManagedSettingsSurvivesIncompleteUserOption(t *testing.T) {
+	for _, tc := range []struct {
+		name          string
+		extra, custom []string
+	}{
+		{name: "default_model", extra: []string{"--model"}},
+		{name: "custom_model", custom: []string{"--model"}},
+		{name: "default_system_prompt", extra: []string{"--append-system-prompt"}},
+		{name: "custom_system_prompt", custom: []string{"--append-system-prompt"}},
+		{name: "filtered_settings_value", extra: []string{"--model"}, custom: []string{"--settings", "/tmp/other.json"}},
+		{name: "filtered_inline_settings", custom: []string{"--model", "--settings=/tmp/other.json"}},
+		{name: "value_becomes_operand", extra: []string{"--model"}, custom: []string{"--allowedTools", "Read"}},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			const managed = "/tmp/multica-claude-settings.json"
+			args := buildClaudeArgs(ExecOptions{ClaudeSettingsPath: managed, ExtraArgs: tc.extra, CustomArgs: tc.custom}, slog.Default())
+			// A local fake parser exercises required-value consumption, including
+			// flag-looking values and a later positional operand. Parse errors are
+			// permitted, but they must never bypass the already-owned policy.
+			parser := flag.NewFlagSet("fake-claude", flag.ContinueOnError)
+			var diagnostic bytes.Buffer
+			parser.SetOutput(&diagnostic)
+			parser.Bool("p", false, "")
+			parser.Bool("verbose", false, "")
+			settings := parser.String("settings", "", "")
+			for _, name := range []string{"output-format", "input-format", "permission-mode", "disallowedTools", "model", "append-system-prompt", "allowedTools"} {
+				parser.String(name, "", "")
+			}
+			_ = parser.Parse(args)
+			if *settings != managed {
+				t.Fatalf("an incomplete configured option bypassed the managed settings: %q; argv=%q", *settings, args)
+			}
+		})
 	}
 }

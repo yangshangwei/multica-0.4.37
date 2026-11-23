@@ -1,0 +1,595 @@
+{
+  "engine": "Playwright Chromium",
+  "headless": true,
+  "source": "http://localhost:13493",
+  "api": "http://localhost:18573",
+  "harnessCorsShim": true,
+  "pages": [
+    {
+      "name": "desktop-detail",
+      "geometry": {
+        "width": 1440,
+        "height": 900,
+        "bodyOverflow": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ],
+        "overflow": [],
+        "smallControls": [
+          {
+            "tag": "A",
+            "text": "Current handling",
+            "height": 36,
+            "width": 134.609375
+          },
+          {
+            "tag": "A",
+            "text": "Participating",
+            "height": 36,
+            "width": 110.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "New collaboration issue",
+            "height": 32,
+            "width": 182.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Notifications0 unread",
+            "height": 32,
+            "width": 180.875
+          },
+          {
+            "tag": "INPUT",
+            "text": "Search loaded issues",
+            "height": 32,
+            "width": 319
+          },
+          {
+            "tag": "SELECT",
+            "text": "Sort",
+            "height": 32,
+            "width": 138
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Copy link",
+            "height": 28,
+            "width": 99.765625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Record result and complete",
+            "height": 34,
+            "width": 205.703125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Request information",
+            "height": 34,
+            "width": 156.921875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Transfer",
+            "height": 34,
+            "width": 78.1875
+          },
+          {
+            "tag": "SUMMARY",
+            "text": "More actions",
+            "height": 32,
+            "width": 125.90625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Add participant",
+            "height": 34,
+            "width": 125.078125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Change status",
+            "height": 34,
+            "width": 118.75
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Cancel issue",
+            "height": 34,
+            "width": 107.453125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Edit issue",
+            "height": 34,
+            "width": 86.375
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Participants",
+            "height": 34,
+            "width": 101.765625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Files and reference material",
+            "height": 26,
+            "width": 161.140625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Choose a reaction",
+            "height": 32,
+            "width": 32
+          },
+          {
+            "tag": "SUMMARY",
+            "text": "Sub-issues",
+            "height": 36,
+            "width": 256
+          }
+        ]
+      }
+    },
+    {
+      "name": "desktop-detail-overlay",
+      "injected": true
+    },
+    {
+      "name": "narrow-detail",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "bodyOverflow": false,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ],
+        "overflow": [],
+        "smallControls": [
+          {
+            "tag": "A",
+            "text": "Current handling",
+            "height": 36,
+            "width": 134.609375
+          },
+          {
+            "tag": "A",
+            "text": "Participating",
+            "height": 36,
+            "width": 110.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "New collaboration issue",
+            "height": 32,
+            "width": 182.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Notifications0 unread",
+            "height": 32,
+            "width": 180.875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Copy link",
+            "height": 28,
+            "width": 99.765625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Record result and complete",
+            "height": 34,
+            "width": 205.703125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Request information",
+            "height": 34,
+            "width": 156.921875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Transfer",
+            "height": 34,
+            "width": 78.1875
+          },
+          {
+            "tag": "SUMMARY",
+            "text": "More actions",
+            "height": 32,
+            "width": 125.90625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Add participant",
+            "height": 34,
+            "width": 125.078125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Change status",
+            "height": 34,
+            "width": 118.75
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Participants",
+            "height": 34,
+            "width": 101.765625
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-create",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "bodyOverflow": false,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ],
+        "overflow": [],
+        "smallControls": [
+          {
+            "tag": "A",
+            "text": "Current handling",
+            "height": 36,
+            "width": 134.609375
+          },
+          {
+            "tag": "A",
+            "text": "Participating",
+            "height": 36,
+            "width": 110.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "New collaboration issue",
+            "height": 32,
+            "width": 182.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Notifications0 unread",
+            "height": 32,
+            "width": 180.875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Copy link",
+            "height": 28,
+            "width": 99.765625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Record result and complete",
+            "height": 34,
+            "width": 205.703125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Request information",
+            "height": 34,
+            "width": 156.921875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Transfer",
+            "height": 34,
+            "width": 78.1875
+          },
+          {
+            "tag": "SUMMARY",
+            "text": "More actions",
+            "height": 32,
+            "width": 125.90625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Add participant",
+            "height": 34,
+            "width": 125.078125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Change status",
+            "height": 34,
+            "width": 118.75
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Participants",
+            "height": 34,
+            "width": 101.765625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Cancel",
+            "height": 32,
+            "width": 68.46875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Create collaboration issue",
+            "height": 32,
+            "width": 196.40625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Close",
+            "height": 28,
+            "width": 28
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-create-overlay",
+      "injected": true
+    },
+    {
+      "name": "narrow-list",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "bodyOverflow": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 389,
+            "scrollWidth": 389
+          }
+        ],
+        "overflow": [],
+        "smallControls": [
+          {
+            "tag": "A",
+            "text": "Current handling",
+            "height": 36,
+            "width": 134.609375
+          },
+          {
+            "tag": "A",
+            "text": "Participating",
+            "height": 36,
+            "width": 110.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "New collaboration issue",
+            "height": 32,
+            "width": 182.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Notifications0 unread",
+            "height": 32,
+            "width": 180.875
+          },
+          {
+            "tag": "INPUT",
+            "text": "Search loaded issues",
+            "height": 32,
+            "width": 357
+          },
+          {
+            "tag": "SELECT",
+            "text": "Sort",
+            "height": 32,
+            "width": 171
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-list-overlay",
+      "injected": true
+    },
+    {
+      "name": "narrow-dark-detail",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "bodyOverflow": false,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ],
+        "overflow": [],
+        "smallControls": [
+          {
+            "tag": "A",
+            "text": "Current handling",
+            "height": 36,
+            "width": 134.609375
+          },
+          {
+            "tag": "A",
+            "text": "Participating",
+            "height": 36,
+            "width": 110.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "New collaboration issue",
+            "height": 32,
+            "width": 182.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Notifications0 unread",
+            "height": 32,
+            "width": 180.875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Copy link",
+            "height": 28,
+            "width": 99.765625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Record result and complete",
+            "height": 34,
+            "width": 205.703125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Request information",
+            "height": 34,
+            "width": 156.921875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Transfer",
+            "height": 34,
+            "width": 78.1875
+          },
+          {
+            "tag": "SUMMARY",
+            "text": "More actions",
+            "height": 32,
+            "width": 125.90625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Add participant",
+            "height": 34,
+            "width": 125.078125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Change status",
+            "height": 34,
+            "width": 118.75
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Participants",
+            "height": 34,
+            "width": 101.765625
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-detail",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "bodyOverflow": false,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ],
+        "overflow": [],
+        "smallControls": [
+          {
+            "tag": "A",
+            "text": "Current handling",
+            "height": 36,
+            "width": 134.609375
+          },
+          {
+            "tag": "A",
+            "text": "Participating",
+            "height": 36,
+            "width": 110.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "New collaboration issue",
+            "height": 32,
+            "width": 182.03125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Notifications0 unread",
+            "height": 32,
+            "width": 180.875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Copy link",
+            "height": 28,
+            "width": 99.765625
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Record result and complete",
+            "height": 34,
+            "width": 205.703125
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Request information",
+            "height": 34,
+            "width": 156.921875
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Transfer",
+            "height": 34,
+            "width": 78.1875
+          },
+          {
+            "tag": "SUMMARY",
+            "text": "More actions",
+            "height": 32,
+            "width": 125.90625
+          }
+        ]
+      }
+    }
+  ],
+  "console": [
+    {
+      "type": "startGroup",
+      "text": "%c[impeccable] 1 anti-pattern found color: oklch(84% 0.19 80.46); font-weight: bold"
+    },
+    {
+      "type": "startGroup",
+      "text": "%c[impeccable] 1 anti-pattern found color: oklch(84% 0.19 80.46); font-weight: bold"
+    },
+    {
+      "type": "startGroup",
+      "text": "%c[impeccable] 1 anti-pattern found color: oklch(84% 0.19 80.46); font-weight: bold"
+    }
+  ],
+  "body": "Workspaces\nCollaboration\nCollaboration\nCurrent handling\nParticipating\nNew collaboration issue\nNotifications\n0 unread\n3 issues\nRecently updated\nTitle\n核对项目文档和共享上下文\n产品协作空间\nTodo\n协作体验审计\nReview release handoff and acceptance\n产品协作空间\nTodo\n协作体验审计\n跨工作空间协作体验验收\n产品协作空间\nTodo\n协作体验审计\n跨工作空间协作体验验收\nCopy link\nStatus\nTodo\nHandler\n协作体验审计\nRecord result and complete\nRequest information\nTransfer\nMore actions\nParticipants\nYour role\nCreator · Current handler\nCurrent permissions\nRead · Discuss · Edit issue · Record result and complete\nRequirements\n\n确认任务负责人、交付标准与协作范围。\n\n请核对讨论记录、附件和最终交付结果。\n\nFiles and reference material\nDelivered result\n\nNo result has been submitted yet.\n\nComments\n\nNo comments yet.\n\nLoaded 0 of 0 comments\n\nAdd comment\n\nPeople\n\n@all · All participants\n协作体验审计\nAttachments\n\nFiles stay private. Only selected files are shared when you submit.\n\nAttach files\nPreview delivery\nSend comment\nAI execution\nAttachments\nShared context\nKnowledge candidates\nActivity\nCreator\n协作体验审计\nSource workspace\n产品协作空间\nAI participation\nAssisted\nSub-issues",
+  "injection": {
+    "titleChanged": true,
+    "scriptRan": true
+  },
+  "workflowFocus": {
+    "tag": "BUTTON",
+    "text": "Edit issue"
+  }
+}

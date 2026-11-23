@@ -1,0 +1,42 @@
+=== RUN   TestCollaborationMemoryConflictRefreshMergeRetainsBothFacts
+--- PASS: TestCollaborationMemoryConflictRefreshMergeRetainsBothFacts (0.34s)
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/file_count
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/file_count/optional_history
+2026/11/01 03:33:18 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationSquadPreparationBudgetMatrixfile_countoptiona3145578502/001 baseURL=""
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/file_count/optional_history (1.22s)
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/file_count/mandatory_refusal
+2026/11/01 03:33:19 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationSquadPreparationBudgetMatrixfile_countmandato2666813732/001 baseURL=""
+2026/11/01 03:33:20 WARN collaboration runtime promotion deferred target_id=97917943-9895-4e5a-a91b-edef111bf256 code=runtime_preparation_limits
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/file_count/mandatory_refusal (0.44s)
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/file_count (1.65s)
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/per_file_bytes
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/per_file_bytes/optional_history
+2026/11/01 03:33:20 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationSquadPreparationBudgetMatrixper_file_bytesopt1770137684/001 baseURL=""
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/per_file_bytes/optional_history (1.16s)
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/per_file_bytes/mandatory_refusal
+2026/11/01 03:33:21 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationSquadPreparationBudgetMatrixper_file_bytesman3846081154/001 baseURL=""
+2026/11/01 03:33:21 WARN collaboration runtime promotion deferred target_id=aa3e30e0-5256-4490-8573-423b2eba4eaa code=runtime_preparation_limits
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/per_file_bytes/mandatory_refusal (0.45s)
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/per_file_bytes (1.61s)
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/total_input_bytes
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/total_input_bytes/optional_history
+2026/11/01 03:33:21 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationSquadPreparationBudgetMatrixtotal_input_bytes3394853943/001 baseURL=""
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/total_input_bytes/optional_history (1.19s)
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/total_input_bytes/mandatory_refusal
+2026/11/01 03:33:23 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationSquadPreparationBudgetMatrixtotal_input_bytes2356022015/001 baseURL=""
+2026/11/01 03:33:23 WARN collaboration runtime promotion deferred target_id=893695c1-4159-4d0a-9552-3d0579dd0f6f code=runtime_preparation_limits
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/total_input_bytes/mandatory_refusal (0.44s)
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/total_input_bytes (1.62s)
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/workspace_bytes
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/workspace_bytes/optional_history
+2026/11/01 03:33:23 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationSquadPreparationBudgetMatrixworkspace_bytesop415715255/001 baseURL=""
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/workspace_bytes/optional_history (1.14s)
+=== RUN   TestCollaborationSquadPreparationBudgetMatrix/workspace_bytes/mandatory_refusal
+2026/11/01 03:33:24 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationSquadPreparationBudgetMatrixworkspace_bytesma3273949944/001 baseURL=""
+2026/11/01 03:33:24 WARN collaboration runtime promotion deferred target_id=dffc1de5-3f24-420a-ba14-11f9fd3eaead code=runtime_preparation_limits
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/workspace_bytes/mandatory_refusal (0.45s)
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix/workspace_bytes (1.60s)
+--- PASS: TestCollaborationSquadPreparationBudgetMatrix (6.48s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	7.586s

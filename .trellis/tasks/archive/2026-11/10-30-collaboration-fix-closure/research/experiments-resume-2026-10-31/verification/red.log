@@ -1,0 +1,52 @@
+Command: go test -tags=agentintegration ./internal/daemon/collaborationrun -run '^TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe$' -count=1 -v
+Cwd: /Volumes/artisan/code/2026/mc-context-resume-20261031/server
+Exit code: 1
+Captured from the initial tool output before implementation:
+
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/invalid_total
+    host_context_experiment_fixture_test.go:282: invalid trial configuration was not rejected: err=exit status 1 output==== RUN   TestHostContextExperiment
+            host_context_experiment_test.go:162: provider version probe failed
+        --- FAIL: TestHostContextExperiment (0.03s)
+        FAIL
+    host_context_experiment_fixture_test.go:285: invalid trial configuration reached the provider version probe
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/changed_total
+    host_context_experiment_fixture_test.go:282: invalid trial configuration was not rejected: err=exit status 1 output==== RUN   TestHostContextExperiment
+            host_context_experiment_test.go:162: provider version probe failed
+        --- FAIL: TestHostContextExperiment (0.02s)
+        FAIL
+    host_context_experiment_fixture_test.go:285: invalid trial configuration reached the provider version probe
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/malformed_start
+    host_context_experiment_fixture_test.go:282: invalid trial configuration was not rejected: err=exit status 1 output==== RUN   TestHostContextExperiment
+            host_context_experiment_test.go:162: provider version probe failed
+        --- FAIL: TestHostContextExperiment (0.02s)
+        FAIL
+    host_context_experiment_fixture_test.go:285: invalid trial configuration reached the provider version probe
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/zero_start
+    host_context_experiment_fixture_test.go:282: invalid trial configuration was not rejected: err=exit status 1 output==== RUN   TestHostContextExperiment
+            host_context_experiment_test.go:162: provider version probe failed
+        --- FAIL: TestHostContextExperiment (0.03s)
+        FAIL
+    host_context_experiment_fixture_test.go:285: invalid trial configuration reached the provider version probe
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/negative_start
+    host_context_experiment_fixture_test.go:282: invalid trial configuration was not rejected: err=exit status 1 output==== RUN   TestHostContextExperiment
+            host_context_experiment_test.go:162: provider version probe failed
+        --- FAIL: TestHostContextExperiment (0.03s)
+        FAIL
+    host_context_experiment_fixture_test.go:285: invalid trial configuration reached the provider version probe
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/past_end
+    host_context_experiment_fixture_test.go:282: invalid trial configuration was not rejected: err=exit status 1 output==== RUN   TestHostContextExperiment
+            host_context_experiment_test.go:162: provider version probe failed
+        --- FAIL: TestHostContextExperiment (0.04s)
+        FAIL
+    host_context_experiment_fixture_test.go:285: invalid trial configuration reached the provider version probe
+--- FAIL: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe (0.24s)
+    --- FAIL: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/invalid_total (0.03s)
+    --- FAIL: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/changed_total (0.03s)
+    --- FAIL: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/malformed_start (0.03s)
+    --- FAIL: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/zero_start (0.04s)
+    --- FAIL: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/negative_start (0.03s)
+    --- FAIL: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/past_end (0.04s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.853s
+FAIL

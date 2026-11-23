@@ -1,0 +1,13 @@
+--- before/e2e/collaboration-preparation-records-web.spec.ts
++++ after/e2e/collaboration-preparation-records-web.spec.ts
+@@ -23,8 +23,8 @@
+       await focus.evaluate((element) => {
+         const root = element.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]');
+         if (!root) throw new Error("Preparation screenshot requires its actual account detail scroll root");
+-        // A same-document hash jump can also scroll the outer document.
+-        element.scrollIntoView({ block: "start", inline: "nearest", behavior: "instant" });
++        // Center within all scrolling ancestors so fractional layout cannot clip the top edge.
++        element.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" });
+       });
+       await current.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+       await expect(focus).toBeInViewport({ ratio: 1 });

@@ -1,0 +1,45 @@
+{
+  "checked_at": "2026-10-31T23:55:47.285367+00:00",
+  "base_commit": "53a1662586555d14ea04efb3b951744a4993fa60",
+  "frozen_server_overlay_files": 117,
+  "overlay_hash_drift": [],
+  "frontend_source_changes": [
+    "apps/web/next-env.d.ts"
+  ],
+  "frontend_change_note": "Next-generated route import only; product source unchanged",
+  "e2e_capture_helpers": [
+    {
+      "path": "e2e/collaboration-knowledge.spec.ts",
+      "sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "whitespace_exit": 1
+    },
+    {
+      "path": "e2e/fixtures/collaboration-knowledge.ts",
+      "sha256": "b92926adbca1cabd2fb265ff2f1f80b4b26feda3889502eea9ff3bbb6f7ef5f5",
+      "whitespace_exit": 1
+    }
+  ],
+  "web_build_id": "ljJfztcXmHs5x9Yo6XmXX",
+  "api_health": {
+    "status": "ok",
+    "pid": 83096,
+    "commit": "53a166258",
+    "started_at": "2026-10-31T23:40:23Z"
+  },
+  "native_artifacts": [
+    {
+      "path": "apps/desktop/out/renderer/index.html",
+      "sha256": "cffe02d38f25e0bae6a67eb689218e16e0133a3aa7e3570e554d2daeccc7a546"
+    },
+    {
+      "path": "apps/desktop/out/preload/index.js",
+      "sha256": "d0d1f996c20067570db5e331597db5072b48198de71b547c5655da582b8926f4"
+    }
+  ],
+  "static_checks": {
+    "typescript": "pass",
+    "eslint": "pass",
+    "whitespace": "pass"
+  },
+  "final_recapture_run": "runs/recapture4/results.json"
+}

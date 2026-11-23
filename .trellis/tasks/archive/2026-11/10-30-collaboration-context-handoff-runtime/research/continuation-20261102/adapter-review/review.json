@@ -1,0 +1,109 @@
+{
+  "recorded_at": "2026-11-02T12:55:32+00:00",
+  "reviewer": "native trellis-check adapter_v5_review",
+  "scope": "v5 private adapters and prepared final4 wholecheck launcher; no product changes",
+  "verdict": "changes-required",
+  "blocking_findings_open": 2,
+  "clearance_issued": false,
+  "adapter_sha256": {
+    "go": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "launcher_sha256": "3c50f99cb9b995fa29a0d1ee4e54e98d6aaa28bdf10ebc827c3cb5b302f5f566",
+  "contract_sha256": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "closed_prior_findings": [
+    "AV4-1"
+  ],
+  "findings": [
+    {
+      "id": "AV5-1",
+      "severity": "medium",
+      "blocking": true,
+      "status": "not_fixed_outside_write_scope",
+      "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check.py",
+      "line": 25,
+      "related_file": ".omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+      "related_line": 136,
+      "issue": "API pool overrides are inherited by Go test processes, changing tests that require DATABASE_MAX_CONNS / DATABASE_MIN_CONNS to be unset.",
+      "evidence": "verification.json api_pool_contamination_proof: both test-owned fake package children inherit 10 / 1. The real path scripts/check.sh -> scripts/test-go.sh -> agent-CLI guard strips neither key.",
+      "affected_tests": [
+        "TestPoolSizing_DefaultsWhenNothingSet",
+        "TestPoolSizing_URLParamsHonoredWhenEnvUnset",
+        "TestPoolSizing_PartialURLParam",
+        "TestPoolSizing_InvalidEnvFallsBackToCodeDefault"
+      ],
+      "required_fix": "Separate API launch pool settings from all Go test subprocess environments, including recursive calls; add a no-DB environment contract. Preserve API 10/1 and the original pool-sizing assertions."
+    },
+    {
+      "id": "AV5-2",
+      "severity": "medium",
+      "blocking": true,
+      "status": "not_fixed_outside_write_scope",
+      "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check.py",
+      "line": 16,
+      "issue": "The private launcher loads check-source.env by sourcing shell code, contrary to the explicit dotenv parsing contract.",
+      "evidence": "verification.json dotenv_evaluation_proof: the identical loader executes a harmless command substitution in a reviewer-owned fixture. The actual private env was not executed and no malicious contents are asserted.",
+      "required_fix": "Parse the controlled dotenv file without shell evaluation; reject unsupported shell constructs and preserve literals according to the existing dotenv contract. Add a no-network, no-DB literal/command-substitution regression."
+    }
+  ],
+  "nonblocking_notes": [
+    {
+      "id": "AV5-N1",
+      "issue": "Clearance is compared with hard-coded adapter hashes but the launcher does not enforce that current adapter bytes still equal those hashes before spawning make.",
+      "current_state": "Actual hashes match all recorded values during this review; no drift found.",
+      "recommendation": "The coordinator must recompute and compare actual hashes at launch, as step 1 requires; adding this equality to the replacement launcher makes that contract explicit."
+    },
+    {
+      "id": "AV5-N2",
+      "issue": "The wrapper is a private make-check adapter, not a general replacement for every go test CLI flag combination.",
+      "current_state": "The fixed make-check selectors and their timeout/race/-p/-parallel values are preserved; arbitrary -args, overlays and linker-flag combinations were not verified."
+    },
+    {
+      "id": "AV5-N3",
+      "issue": "No private HOME/GOCACHE/GOMODCACHE/GOPATH is declared in the prepared source env, and the wrapper copies its caller HOME.",
+      "current_state": "No account/home writes were executed by this reviewer. Apply the spec private package-home rule if account isolation is required for the full run."
+    }
+  ],
+  "positive_verification": {
+    "AV4_1_fail_closed": "11 pinned no-DB contracts pass, including missing-mode ordinary tests, -C, -args -c, flag-value -c and -c=false cases; unowned/default/remote recursive contexts refuse.",
+    "per_package_allocation": "Fake contracts prove distinct ccheck clones and corresponding allocation records; no actual database operation was run.",
+    "non_test_forward": "Stripped-environment actual go version succeeds with all network denied, no database or isolation marker keys.",
+    "pnpm": "No selector/worker/retry/timeout changes; explicit loopback API/renderer and default JSON reporter; actual candidate agent-CLI guard invoked by the fake contract.",
+    "build_temp": "Recorded 0700 owner-501 directory exists outside Git; read-only check exit128 for no git root.",
+    "source_identity": "Candidate clean, HEAD64a; Go/pnpm/contracts/launcher bytes unchanged after review."
+  },
+  "verification": {
+    "python_syntax": "AST parse pass for go/pnpm/contracts/launcher",
+    "shell_syntax": "bash -n pass for candidate scripts/check.sh, test-go.sh, go-test-with-agent-cli-guard.sh",
+    "lint": "No Python lint tool installed; repo lint not run because no product/TS source changed and fullcheck is not permitted in this slice.",
+    "typecheck": "Not applicable to private Python verification artifacts; repository TypeScript typecheck belongs to the full candidate step.",
+    "tests": {
+      "contracts_pass": 11,
+      "contracts_fail": 0,
+      "exit_code": 0,
+      "supplemental_fake_pool_proof": "confirmed",
+      "supplemental_owned_dotenv_proof": "confirmed",
+      "deny_network_go_version_exit": 0
+    }
+  },
+  "limitations": [
+    "No database connection, creation, migration, drop or writes.",
+    "No API, browser, GUI, container or real-provider execution.",
+    "No lint/typecheck/full make check of product packages.",
+    "Shared cluster capacity and actual package/GUI outcomes require the authorized fullcheck owner.",
+    "Historical preparation records were read as provenance, not rerun or relabeled."
+  ],
+  "files_written": [
+    "replay.py",
+    "contracts-replay.log",
+    "verification.json",
+    "preparation-readonly.json",
+    "review.json",
+    "review.md"
+  ],
+  "source_files_modified": false,
+  "real_provider_calls": 0,
+  "final_candidate_passed": false,
+  "next_action": "Implement and independently re-review v6 fixes before issuing any wholecheck clearance."
+}

@@ -1,0 +1,24 @@
+{
+  "precommit_sha": "0aedf934e0cc2b3a959e9be3216305a25bf4e6ce",
+  "product_file_sha256": {
+    "server/internal/service/task_knowledge_history_growth_test.go": "b92abe66dbe3a1ef2cfedabd1dfc3bddfff3250fe74fe7e6bd35855e9f8cfd20",
+    "server/migrations/761_collaboration_knowledge_agent_history.down.sql": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53",
+    "server/migrations/761_collaboration_knowledge_agent_history.up.sql": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+    "server/migrations/762_collaboration_knowledge_runtime_history.down.sql": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25",
+    "server/migrations/762_collaboration_knowledge_runtime_history.up.sql": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+    "server/migrations/763_collaboration_knowledge_delivery_history.down.sql": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f",
+    "server/migrations/763_collaboration_knowledge_delivery_history.up.sql": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+    ".trellis/spec/server/collaboration-knowledge-execution.md": "39798f60b0143685ffffb52f79cc848b5ac1e0d61205d3b9ec0d6fe8d8c9a030",
+    ".trellis/spec/server/collaboration-knowledge.md": "9557f0da04f4304e33fc9785d5fd7aeb988a35eb342e392bd5ce51fd9c45151b",
+    "docs/collaboration-knowledge-runtime.md": "c9d77889fdd3f5fb9445df45e321f852a2bc6a878424a2d0bdff2fd46f4c3001",
+    "server/cmd/migrate/main.go": "9847e2e3ccae53093999117c6f254e01ba24f976c220819755902be9c6d023af",
+    "server/internal/service/task_knowledge.go": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+    "server/internal/service/task_knowledge_invocation_test.go": "d4cb3099bf575f4526fafa8bbff1c8df56854c7add1c1cbac99b99adfb589ff5",
+    "server/pkg/db/generated/task_knowledge.sql.go": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+    "server/pkg/db/queries/task_knowledge.sql": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3"
+  },
+  "full_service_r1": "exit1, package default 10m timeout; 2024 named passes, no named failures; preserved",
+  "full_service_r2": "running on fresh task DB with approved 40m deterministic suite bound; no claim of pass",
+  "sqlc_exit": 0,
+  "sqlc_drift": []
+}

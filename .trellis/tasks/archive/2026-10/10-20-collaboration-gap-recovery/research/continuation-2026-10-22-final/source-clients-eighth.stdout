@@ -1,0 +1,142 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-clients-eighth",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-source-surface.spec.ts",
+      "file": "collaboration-source-surface.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 25471,
+                  "error": {
+                    "message": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"",
+                    "stack": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:158:37)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:188:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                      "column": 37,
+                      "line": 158
+                    },
+                    "snippet": "  156 |     const ordinaryStatus = controlBefore.status === \"backlog\" ? \"In Progress\" : \"Backlog\";\n  157 |     const ordinaryKey = ordinaryStatus === \"In Progress\" ? \"in_progress\" : \"backlog\";\n> 158 |     const ordinaryApplied = current.waitForResponse((response) => new URL(response.url()).pathname === `/api/issues/${fixture.control.id}` && response.request().method() === \"PUT\");\n      |                                     ^\n  159 |     await dragBoard(current, boardCard(current, fixture.control.title), statusColumn(current, ordinaryStatus));\n  160 |     const ordinary = await ordinaryApplied;\n  161 |     expect(ordinary.status()).toBe(200);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                        "column": 37,
+                        "line": 158
+                      },
+                      "message": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"\n\n  156 |     const ordinaryStatus = controlBefore.status === \"backlog\" ? \"In Progress\" : \"Backlog\";\n  157 |     const ordinaryKey = ordinaryStatus === \"In Progress\" ? \"in_progress\" : \"backlog\";\n> 158 |     const ordinaryApplied = current.waitForResponse((response) => new URL(response.url()).pathname === `/api/issues/${fixture.control.id}` && response.request().method() === \"PUT\");\n      |                                     ^\n  159 |     await dragBoard(current, boardCard(current, fixture.control.title), statusColumn(current, ordinaryStatus));\n  160 |     const ordinary = await ordinaryApplied;\n  161 |     expect(ordinary.status()).toBe(200);\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:158:37)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:188:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-22T10:24:44.796Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "web-board-layout-request",
+                      "contentType": "application/json",
+                      "body": "ewogICJiZWZvcmUiOiAwLAogICJhZnRlciI6IDIwMSwKICAicmVxdWVzdCI6IHsKICAgICJwb3NpdGlvbiI6IDIwMSwKICAgICJleHBlY3RlZF9yZXZpc2lvbiI6IDMKICB9LAogICJ3b3JrZmxvd191bmNoYW5nZWQiOiB0cnVlCn0="
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-clients-eighth/collaboration-source-surfa-1d694-ity-and-scoped-layout-order-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                    "column": 37,
+                    "line": 158
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fd76911901244b93c23f-3e206b9269e8f7353c12",
+          "file": "collaboration-source-surface.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-22T10:24:44.261Z",
+    "duration": 26804.656,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

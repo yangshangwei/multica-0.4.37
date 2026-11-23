@@ -1,0 +1,37 @@
+{
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "./internal/service",
+    "./internal/handler",
+    "-run",
+    "Test(AgentRoleTemplate|SquadTemplate|SquadLeads|RoleSkillTemplates|ListSquadTemplates|CreateSquadFromTemplate|CreateAgentFromTemplate)",
+    "-count=1",
+    "-json"
+  ],
+  "exit_code": 0,
+  "packages": {
+    "service": {
+      "expected": 26,
+      "top_level_passes": 26,
+      "all_passes": 53,
+      "missing_run": [],
+      "missing_pass": [],
+      "unexpected_run": []
+    },
+    "handler": {
+      "expected": 30,
+      "top_level_passes": 30,
+      "all_passes": 61,
+      "missing_run": [],
+      "missing_pass": [],
+      "unexpected_run": []
+    }
+  },
+  "failures": [],
+  "skips": [],
+  "verified": true
+}

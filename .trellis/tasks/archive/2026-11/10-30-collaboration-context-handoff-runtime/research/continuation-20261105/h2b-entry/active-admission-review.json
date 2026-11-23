@@ -1,0 +1,76 @@
+{
+  "reviewed_at": "2026-11-05T12:08:37.193369+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "H2b bounded conditional stage admission; no actual execution by reviewer",
+  "verdict": "pass-with-notes",
+  "checks_passed": 20,
+  "blocking_findings": 0,
+  "checks": {
+    "protected_source17_launcher_model_provider": true,
+    "prior_E0a_H1_H2_unchanged": true,
+    "budget25_spent7": true,
+    "H2b3trials3paid": true,
+    "conditionalH2review_pass": true,
+    "fulloperator_matches_actualfacts": true,
+    "onlyreviewed_plugin_delta": true,
+    "config_hash": true,
+    "effective_env_hash": true,
+    "helper_frozenhash": true,
+    "provider_frozenhash": true,
+    "DBidentity_matchesconfig": true,
+    "migration764_success": true,
+    "template0empty": true,
+    "quota_receipt": true,
+    "window_exact": true,
+    "all_stage_permits_false": true,
+    "ownedprivatefiles": true,
+    "executionclean": true,
+    "productunchanged": true
+  },
+  "execution_before_sync": "4725149fb",
+  "tested_product_head": "1a32ca36c",
+  "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "new_paid_cap": 3,
+  "expected_fake_seeds": 6,
+  "expected_CLI_captures": 10,
+  "budget_before": {
+    "consumed": 7,
+    "remaining": 18
+  },
+  "budget_after_if_all3start": {
+    "consumed": 10,
+    "remaining": 15
+  },
+  "H2b_extra_criterion": "Measured continuation must actually read decisive code beyond4096-byte member source prefix using handoff/sources CLI; code must appear in actual Provider tool_result. Answer-only correctness without both is unsupported_correct_answer, notpass. Retain strict three-line member/wakecause grammar and decoy exclusion.",
+  "window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "granted_by": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+    "scenario": "RK1-H2b",
+    "start_trial": 1,
+    "trials": 3,
+    "paid_launches": 3,
+    "outer_timeout_minutes": 26,
+    "recorded_at": "2026-11-05T12:07:40.299173+00:00",
+    "hold": "explicitconditionalwindow, H2independentPASS met; preparation then oneinvocation up to26min"
+  },
+  "allocation_receipt_sha256": "191e87d29c576fc58aa9b09a3e2422022e8bf3e8e12c7975ec0fd39da0aaa1eb",
+  "active_facts_sha256": "e29c18be82bfd0a6bca99da1e73d88d8c07a722507c5af64442f120c1514b974",
+  "registration_sha256": "a8f3229d9ed43d1f4159cf139959e126c984efe1063389ced8f79114247ec25f",
+  "env_sha256": "0660927fd9cd466d05826f4850d23e3da334965ccb0f6dfa72bcaa7a0bdc39ab",
+  "config_sha256": "00cd261fc61c8f6b9e4e394a36c8496fe94ad476b0eeb26d2d9945b6c55d956d",
+  "allowed_next": "Commit/sync reviewedbinding, describe metadata, rootbound upfrontbuild and unchangedcheck-only; rootmaypermit oneoriginalH2btrial1-3 invocation onlyafteractualstagespass/windowvalid. NoautomaticH3a.",
+  "conditions": [
+    "Fullcurrentoperator/source/helper/Provider/CLI equality atadmission preserved",
+    "Same savedparentenvironment acrossstages; exact before/post manifests andselectedJSON",
+    "Incomplete/canary/originallauncherfailure stops; partialpaidcounts retained",
+    "Review actualsource-read/tool-exposure evidence andspecificoperator delta afterrun",
+    "Releasewindowonexit; no retryorreplacement"
+  ],
+  "operations": {
+    "Go": 0,
+    "DB": 0,
+    "Provider": 0,
+    "tests": 0,
+    "full_plugin_scan": 0
+  }
+}

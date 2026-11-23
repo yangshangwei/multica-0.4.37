@@ -9,7 +9,9 @@ import {
   type LinkClickIntent,
   type NavigationAdapter,
 } from "@multica/views/navigation";
+import { parseDesktopAccountPath } from "../../../shared/account-navigation";
 import { parseIssueWindowPath } from "../../../shared/issue-window";
+import { useAppUrl } from "./app-url";
 
 /**
  * Answer the `multica:navigate` event inside a dedicated issue window (MUL-5208).
@@ -26,7 +28,7 @@ import { parseIssueWindowPath } from "../../../shared/issue-window";
  */
 function useContentLinkHandler(
   navigate: ReturnType<typeof useNavigate>,
-  runtimeConfig: typeof window.desktopAPI.runtimeConfig,
+  appUrl: string | null,
 ) {
   useEffect(() => {
     const handler = (e: Event) => {
@@ -50,14 +52,17 @@ function useContentLinkHandler(
         void navigate(issuePath.path);
         return;
       }
-      if (!runtimeConfig.ok) return;
-      void window.desktopAPI.openExternal(
-        `${runtimeConfig.config.appUrl}${path}`,
-      );
+      const accountPath = parseDesktopAccountPath(path);
+      if (accountPath) {
+        void window.desktopAPI.openAccount(accountPath);
+        return;
+      }
+      if (appUrl === null) return;
+      void window.desktopAPI.openExternal(`${appUrl}${path}`);
     };
     window.addEventListener("multica:navigate", handler);
     return () => window.removeEventListener("multica:navigate", handler);
-  }, [navigate, runtimeConfig]);
+  }, [navigate, appUrl]);
 }
 
 /**
@@ -73,7 +78,7 @@ export function IssueWindowNavigationProvider({
 }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const runtimeConfig = window.desktopAPI.runtimeConfig;
+  const appUrl = useAppUrl();
   const currentPath = `${location.pathname}${location.search}${location.hash}`;
 
   useEffect(() => {
@@ -90,13 +95,20 @@ export function IssueWindowNavigationProvider({
     });
   }, [currentPath]);
 
-  useContentLinkHandler(navigate, runtimeConfig);
+  useContentLinkHandler(navigate, appUrl);
 
   const adapter = useMemo<NavigationAdapter>(() => {
     const navigateToIssue = (path: string, replace = false) => {
       const issuePath = parseIssueWindowPath(path);
-      if (!issuePath) return;
-      void navigate(issuePath.path, { replace });
+      if (issuePath) {
+        void navigate(issuePath.path, { replace });
+        return;
+      }
+      const accountPath = parseDesktopAccountPath(path);
+      if (accountPath) {
+        void window.desktopAPI.openAccount(accountPath);
+        return;
+      }
     };
 
     return {
@@ -107,20 +119,28 @@ export function IssueWindowNavigationProvider({
       searchParams: new URLSearchParams(location.search),
       hash: location.hash,
       openInNewTab: (path, title) => {
-        void window.desktopAPI.openIssueWindow({
-          path,
-          title: title ?? "Issue",
-        });
+        const issuePath = parseIssueWindowPath(path);
+        if (issuePath) {
+          void window.desktopAPI.openIssueWindow({
+            path: issuePath.path,
+            title: title ?? "Issue",
+          });
+          return;
+        }
+        const accountPath = parseDesktopAccountPath(path);
+        if (accountPath) {
+          void window.desktopAPI.openAccount(accountPath);
+          return;
+        }
       },
-      getShareableUrl: (path) =>
-        runtimeConfig.ok ? `${runtimeConfig.config.appUrl}${path}` : path,
+      getShareableUrl: (path) => (appUrl === null ? path : `${appUrl}${path}`),
     };
   }, [
     location.pathname,
     location.search,
     location.hash,
     navigate,
-    runtimeConfig,
+    appUrl,
   ]);
 
   return <NavigationProvider value={adapter}>{children}</NavigationProvider>;

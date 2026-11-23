@@ -1,0 +1,26 @@
+{
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "status": "PASS",
+  "scope": "Package-manager install/remove/reinstall/purge only; no app GUI/Main/Provider/DB",
+  "package_sha256": "1d19374fbb82b9f1dea694804cd7481981871c6517ba6653edd47b501c63af0b",
+  "container_image": "sha256:0d433ecf8ede66777494051568fd760468be288fd99d36d80bc68d022769471c linux arm64",
+  "lifecycle": [
+    "fresh-install",
+    "remove",
+    "reinstall",
+    "purge"
+  ],
+  "assertions": 95,
+  "accepted": true,
+  "container_cleanup": {
+    "command": [
+      "docker",
+      "rm",
+      "54e8ca8957c314da19890933f0fb7dfa3f9e58992a3ba335e3f2f3b98ab2cd58"
+    ],
+    "exit_code": 0
+  },
+  "owned_container_remaining": "",
+  "source_package_unchanged": true,
+  "raw_private": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/deb-install-1"
+}

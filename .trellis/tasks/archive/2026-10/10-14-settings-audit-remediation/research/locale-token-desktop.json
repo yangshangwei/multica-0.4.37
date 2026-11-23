@@ -1,0 +1,32 @@
+{
+  "packages/views/locales/en/settings.json": {
+    "tokens": {
+      "loading": "Loading API tokens...",
+      "load_failed": "Could not load your API tokens. Try again.",
+      "refresh_failed": "Could not refresh your API tokens. Previously loaded tokens are still shown.",
+      "expiry_label": "Token expiry",
+      "revoking": "Revoking...",
+      "create_response_invalid": "Could not confirm the new token. Check your token list before creating another token."
+    },
+    "desktop": {
+      "updates": {
+        "check_failed": "Could not check for updates. Try again."
+      }
+    }
+  },
+  "packages/views/locales/zh-Hans/settings.json": {
+    "tokens": {
+      "loading": "正在加载 API token...",
+      "load_failed": "无法加载 API token，请重试。",
+      "refresh_failed": "无法刷新 API token，仍显示上次加载的内容。",
+      "expiry_label": "Token 有效期",
+      "revoking": "正在吊销...",
+      "create_response_invalid": "无法确认新 token 是否创建成功。再次创建前，请先检查 token 列表。"
+    },
+    "desktop": {
+      "updates": {
+        "check_failed": "无法检查更新，请重试。"
+      }
+    }
+  }
+}

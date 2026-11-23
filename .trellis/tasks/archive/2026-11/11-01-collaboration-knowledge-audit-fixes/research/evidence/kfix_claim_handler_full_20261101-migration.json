@@ -1,0 +1,19 @@
+{
+  "source_sha": "3110295d0eca364937f08c97102ca74f08a7e235",
+  "working_diff_sha256": "18c13b3541dce9b5b39313a679ba6f09968033d7c5d4ebc6099ac49b726e872d",
+  "database": "kfix_claim_handler_full_20261101",
+  "database_identity": "kfix_claim_handler_full_20261101|760_collaboration_knowledge_hint_pending",
+  "command": [
+    "/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "started_at": "2026-11-01T15:19:09.062669+00:00",
+  "exit_code": 0,
+  "finished_at": "2026-11-01T15:19:11.392581+00:00",
+  "sha256": "3c7245f77add88b988825746805022b0531229a52231f04378066772f5064673",
+  "test_events": {},
+  "failures": []
+}

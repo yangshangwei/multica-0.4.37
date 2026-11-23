@@ -1,0 +1,85 @@
+{
+  "at": "2026-11-02T15:20:45.014297+00:00",
+  "state": "implementation_complete_frozen_pending_independent_check_and_root_real_replay",
+  "version": "v9",
+  "adapter_root": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "launcher": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v9.py",
+  "launcher_sha256": "68dfc4c48a42e7ea276eee815b7f0985e96cf950ec3e2e623187e8ab583bf475",
+  "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+  "clearance_required": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/independent-review-clearance-v9.json",
+  "clearance_required_fields": [
+    "verdict",
+    "blocking_findings_open",
+    "candidate_sha",
+    "adapter_sha256",
+    "launcher_sha256",
+    "source_env_sha256"
+  ],
+  "new_output_names": {
+    "check_record": "make-check-v9.json",
+    "check_log": "make-check-v9.log",
+    "safe_env": "check-source-v9.safe.env",
+    "Go_packages": "go-packages-v9/",
+    "full_check_home": "full-check-home-v9/",
+    "dev_registry": "dev-registry-v9/",
+    "profiles": "profiles-v9/",
+    "workspaces": "workspaces-v9/",
+    "Playwright_json": "makecheck-playwright-results-v9.json",
+    "Playwright_env": "makecheck-playwright-environment-v9.json"
+  },
+  "build_temp": "unchanged previously approved Git-external mode0700 allocation",
+  "tests": {
+    "base_home_pool_publisher": 20,
+    "global_separator": 6,
+    "peer_package_binding_matrix": 38,
+    "launcher": 22,
+    "total": 86,
+    "failed": 0
+  },
+  "red_proof": "v6 3publisher cases1fail2pass; ordinary-only leak reproduced, non-test/compile/explicit recursive preserved",
+  "change": "Remove MULTICA_RESOURCE_PUBLISH_DIR only from mode1 package test child environment; API source env/non-test/compile/mode0 kept",
+  "predecessor_code_records_logs_preserved": true,
+  "actual_Go_TestMain_or_SQL_or_Provider": 0,
+  "full_check_started": false,
+  "source_env_written": false,
+  "product_assertions_changed": false,
+  "syntax": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go",
+      "result": "syntax_ok"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm",
+      "result": "syntax_ok"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-go-isolation-test.py",
+      "result": "syntax_ok"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-go-global-separator-test.py",
+      "result": "syntax_ok"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-launcher-test.py",
+      "result": "syntax_ok"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v9.py",
+      "result": "syntax_ok"
+    }
+  ],
+  "files_changed": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-go-isolation-test.py",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-go-global-separator-test.py",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-launcher-test.py",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v9.py"
+  ],
+  "remaining": "Independent check of successor then root-owned fresh DB cmd/server replay and newly numbered whole check; no success claim for actual503 fixture yet"
+}

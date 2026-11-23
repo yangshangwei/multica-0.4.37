@@ -1,0 +1,220 @@
+{
+  "review_kind": "final_technical_planning_review",
+  "reviewer": "/root/s2_final_plan",
+  "recorded_at": "2026-11-13T10:14:12.838562+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "hook_task_ignored_for_scope": ".trellis/tasks/11-13-pay-241-s3-timeout-proof",
+  "verdict": "ready_for_server_implementation_with_wire_first_client_handoff",
+  "ready_for_implementation": true,
+  "blocking_findings_open": 0,
+  "product_choice_pending": false,
+  "ready_for_client_parallel_implementation": false,
+  "client_dependency": "Server owner first emits the closed per-action wire contract required by implement.md:34; then the client lane starts. This is an implementation handoff, not an approval request.",
+  "ready_for_policy_activation": false,
+  "implementation_or_acceptance_verified": false,
+  "planning_sha256": {
+    "prd.md": "e836dc740301f60cef006ae094e05bdb57686eee1fe199d30d94bc65b8df7c10",
+    "design.md": "ee6a0a60cb47754cbc284e02371486d8548517f97aba2307f68517cfc19a10a9",
+    "implement.md": "d91a914a377afb8232633af64219dbdd6380f4113e18f2c43759224822d8e5a6",
+    "implement.jsonl": "eb12d8c636e1aa6204dcf2dccfebc984b458f42917f924054ecfa75c49d62ee5",
+    "check.jsonl": "eb12d8c636e1aa6204dcf2dccfebc984b458f42917f924054ecfa75c49d62ee5",
+    "research/test-report-contract.md": "9c3bb62bfa7b88ce75184c143a23011880c759da84cb562a2b699724b93c855f"
+  },
+  "planning_before_sha256": {
+    "prd.md": "e836dc740301f60cef006ae094e05bdb57686eee1fe199d30d94bc65b8df7c10",
+    "design.md": "2bd977d10213aa29d467c31f6af2621378c5280ba157c3431184ec02fd9b3ce0",
+    "implement.md": "c94299626c98a43fb65bd06d287412cd95d74cdc73bffbde8ebfb27f1e1bb514",
+    "implement.jsonl": "eb12d8c636e1aa6204dcf2dccfebc984b458f42917f924054ecfa75c49d62ee5",
+    "check.jsonl": "eb12d8c636e1aa6204dcf2dccfebc984b458f42917f924054ecfa75c49d62ee5",
+    "research/test-report-contract.md": "f568f8835be7a7007f559b2dff663000c906116dceef3ae60ecb0730660667e2"
+  },
+  "prior_reviews_sha256": {
+    "research/plan-review.md": "91f444cad08c576542ff1b3af2dd232f0ad77f7c87672ad4eb78713ab509d4a1",
+    "research/plan-review.json": "1223f381981661d2d82c73328c602146710daac207bc71d335fcf55e9433ca61",
+    "research/plan-review-v2.md": "be4be1e1f41edf00441e3ed7f183df8130a99074d46da905d603f117fe629d37",
+    "research/plan-review-v2.json": "ee94a12339fbb2c738d7cd06660211d15707559b4b6f2ccb5cb19764d6996ba4"
+  },
+  "prior_reviews_unchanged": true,
+  "report_markdown_sha256": "0ecf9f73e3be8d6925ecb77cb51da30bcbeecd2c4852a8ad0e4e757a164a2a7a",
+  "context_sha256": {
+    ".trellis/spec/server/collaboration-foundation.md": "f867b6f7cb6ce34c013a3bc1c5266381d2602d756c82aa9bc25a332952f6f099",
+    ".trellis/spec/server/collaboration-delivery.md": "85a8b1556675114aeef2f2b5f8ed2ae22f546ff40e4e64c6afc772dbf1aa4351",
+    ".trellis/spec/server/delivery-completion-enforcement.md": "95d593960e679098649757f727c33153c5564bb666446eed2c6bb14f70b9cd9b",
+    ".trellis/spec/server/database-test-isolation.md": "6317dea643c1e395aaea3ff7a0aa1cc5b3f33b085636c739606aaa33ff1a6b07",
+    ".trellis/spec/server/verification-environment.md": "bd1bdb58861d993eb5dc836bd45fe9276b066763265265822dfccec584ece4da",
+    ".trellis/spec/core/frontend/collaboration-workbench.md": "1246539800787b057417b536162ceb34ae24dfc69f34d563f5e4226c25e6dd2e",
+    ".trellis/spec/views/frontend/collaboration-detail.md": "e914509a427d028d83b81ca24abadbdf5a18d579749cf6a4b1ff53508b39efd8",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-gates.md": "f899ec3a290829b7633fe0be08e0fc3dc61fb4a98f72914725fe1699f0cefc0e",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-gates.md": "a837a99f5afd3b757cdeb3e3470924f173034c22917d8d7c08bf5316ab8c57e5",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/verification-plan.md": "288dfaed94d645a1c636339b7004f30057d6fcfd5af84866b899167980c6edfb",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/test-report-contract.md": "9c3bb62bfa7b88ce75184c143a23011880c759da84cb562a2b699724b93c855f",
+    ".trellis/spec/server/collaboration-runtime-cli.md": "ab55376b7dabf1b59db1d9302a0da722f183e3d8b938bb76755b98c1b8b3c2f5",
+    ".trellis/spec/server/collaboration-preparation.md": "a12b9732983ce9fc61bf4dd64270b80de5ade9ea0784ed10c41574f1bd050e1f"
+  },
+  "inspected_source_sha256": {
+    "AGENTS.md": "403ec642d0625862bd042fa3293be4c46bb308b88159cbaa75559cbf1f389289",
+    "CLAUDE.md": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+    "server/internal/service/collaboration_workflow.go": "1ef46765e1567a1c762f4647d1553f69b9c8dfd31d1fcc168d77d8795dc28724",
+    "server/pkg/db/queries/collaboration_workflow.sql": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+    "server/internal/service/delivery_completion.go": "48ef3b9fa0be3707ee962bab79b541b10cf8e8c5ac28532f3651bca73a3f8994",
+    "server/internal/service/collaboration_lifecycle.go": "18c2630f044887762c4ee59ef5e4b1bebb0afc49821b88f3e6d2a7e41ba9e67c",
+    "server/internal/service/collaboration_handoff.go": "09f93f41c49d38342be52e1a82019dc47f0d964185a9d184c34f7c6ef82d7aaa",
+    "server/internal/service/admin_collaboration.go": "8268be7e80b4ead6c5fab3ac90209b8a4adb9f72d6de2f8d2c4561843bd8174e",
+    "server/internal/handler/issue.go": "417744af42e0becbb07ff83116a61fc55d4ba067f0041aaa5fa02faacb22563b",
+    "server/internal/service/issue.go": "d1f7c8f5aa6e621e117cf97e1f4f2da496ccaeba9dabb7f3fdef12e97cff8ba2",
+    "server/internal/service/issue_status_write.go": "71c96fea42ad2f07017577091face61c5295921883b74a09744d2153771ed286",
+    "server/internal/service/issue_admission.go": "2f54812b6f2190ea160cedfa83420b4f086ce1a8796574e8b05fc05fa56cd2a2",
+    "server/internal/service/issue_task_transaction.go": "a300f6bb3d06639b43e39a1604b966f2e43ee976648ee17f3c547b6f73a51753",
+    "server/internal/service/task_start.go": "f63236fbff502d5a23699b3bff357e009110c6073a287c2e4499e7b248a55979",
+    "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+    "server/internal/service/collaboration_comments_create.go": "6ddcfefb7770ce10af250cbc19a7e75c7e9184db1f21f3481fa4053599fce1d4",
+    "server/internal/service/collaboration_runtime_capabilities.go": "223785a0d0917ce9d28016938c838f7199755dc49829c094af477e253170c639",
+    "server/pkg/db/queries/collaboration_squad.sql": "f36357d7156c7bf1a6f55eaee64f569f5e8e14c6d052f42243e601f48d606af2",
+    "server/migrations/571_collaboration_schema.up.sql": "d799d35327b530b72fd366354bcb9c8fac9c63d748faa1a0bffd461f7dc61b5f",
+    "server/internal/integrations/ghsnapshot/snapshot.go": "bdc5d7548847edd6feea648375f90bd0949969b982a27bbe48acb14c89457da5",
+    "server/internal/service/delivery_policy.go": "c794c984afdde0bd5323581a9da3fdbd548efc221bc8cf8c023e7149aaec4082",
+    "server/internal/service/collaboration_activity.go": "cefc584c85d7f58f788419015ba224fb94adbbc2bab594eaa7915a75f60198ed",
+    "server/cmd/server/router.go": "eff6c8414c8b23d7174abce275cc49d096162aae8f14ca8d2cf6401c14c0d084",
+    "packages/core/issues/completion-schema.ts": "0034c4d653f8df75692719857bf7806331e0a979f9d7c1111285fc7a57fe40a6",
+    "packages/core/collaboration/action.ts": "ff45c1808a94d6068e4c40695a2085c880a266a3d011da6c82dc8f350e6aca55"
+  },
+  "first_round_resolution": {
+    "F01": "resolved_in_plan_current_configuration_owner_and_original_signer_epochs",
+    "F02": "resolved_in_plan_semantic_versions_separate_from_CAS_including_ordinary_children",
+    "F03": "resolved_in_plan_all_writer_final_guard_and_transition_aware_DB_time_checks",
+    "F04": "resolved_in_plan_manual_children_preserved_atomic_proposal_and_explicit_existing_child_confirmation",
+    "F05": "resolved_in_plan_mcb_typed_report_frozen_command_claim_subject_and_separate_human_QA",
+    "F06": "resolved_in_plan_typed_M1_client_GET_only_recovery_action_variants_and_wire_first_handoff"
+  },
+  "second_round_resolution": {
+    "P01": "closed_by_confirmed_configuration_authority_and_trusted_implementation_owner_binding",
+    "P02": "closed_by_confirmed_manual_child_preservation",
+    "P03": "closed_by_confirmed_explicit_confirmation_without_recreation_or_dispatch",
+    "T01": "closed_by_adopted_test_report_contract",
+    "T02": "closed_in_plan_by_action_variant_scope_recovery_and_actual_writer_matrix_wire_inventory_is_first_implementation_deliverable"
+  },
+  "fixed_findings": [
+    {
+      "file": "design.md",
+      "issue": "Stale conflicting prose and ambiguous implementation owner; insufficient action-specific confirmations and actual writer map",
+      "fix": "Aligned confirmed rules, semantic versions and final guard, GitHub strict observation, action variants, project operation scope and child/writer lock obligations"
+    },
+    {
+      "file": "implement.md",
+      "issue": "Report CLI still conditional; second-pass concrete handoff and competition obligations not explicit",
+      "fix": "Assigned report CLI and protocol to server owner, required wire first, added exact child and final-writer test matrix"
+    },
+    {
+      "file": "research/test-report-contract.md",
+      "issue": "Stale product-pending header and impossible local knowledge of server subject binding",
+      "fix": "Recorded confirmed decisions and separated CLI syntactic preflight from mandatory service subject equality with zero event on refusal"
+    }
+  ],
+  "findings_not_fixed": [],
+  "remaining_delivery_gates": [
+    "Server owner freezes request/confirmation variants, routes, errors, expiry and boundary values before client parallel work",
+    "All S2 actual writer gates and schema readiness before enabling project policy",
+    "New A01-A12 implementation tests, race, transaction rollback, strict parsing, original-key recovery and M1 enforce integration",
+    "Production Web and actual Desktop acceptance with source/environment evidence",
+    "S4 real connector/payment/deployment/rollback evidence remains separate"
+  ],
+  "accepted_boundary": {
+    "S2": [
+      "fixed role approvals",
+      "immutable internal external-fact contract and consumption",
+      "run-local runtime-reported typed test evidence",
+      "explicitly synthetic isolated contract verification"
+    ],
+    "S4": [
+      "real payment integration",
+      "repository-scoped GitLab CI",
+      "deployment and rollback adapters",
+      "real operation and execution evidence"
+    ],
+    "missing_external_facts": "wait_without_fabricated_success"
+  },
+  "checks": {
+    "manifests": {
+      "check.jsonl": {
+        "entries": 13,
+        "missing": [],
+        "duplicates": []
+      },
+      "implement.jsonl": {
+        "entries": 13,
+        "missing": [],
+        "duplicates": []
+      }
+    },
+    "acceptance_ids": [
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06",
+      "A07",
+      "A08",
+      "A09",
+      "A10",
+      "A11",
+      "A12"
+    ],
+    "parent_case_count": 24,
+    "parent_case_ids": [
+      "TC-01",
+      "TC-02",
+      "TC-03",
+      "TC-04",
+      "TC-05",
+      "TC-06",
+      "TC-07",
+      "TC-08",
+      "TC-09",
+      "TC-10",
+      "TC-11",
+      "TC-12",
+      "TC-13",
+      "TC-14",
+      "TC-15",
+      "TC-16",
+      "TC-17",
+      "TC-18",
+      "TC-19",
+      "TC-20",
+      "TC-21",
+      "TC-22",
+      "TC-23",
+      "TC-24"
+    ],
+    "parent_matrix_sha256": "9a1fdcf81af464fb81e608868c4ca08cef2a779cc21db9948db8e217a4f0a0fa",
+    "markdown_and_stale_wording": "pass",
+    "source_facts": "read_only_checked",
+    "planning_hash_binding": "pass",
+    "lint": "not_run_planning_only",
+    "typecheck": "not_run_planning_only",
+    "product_tests": "not_run_planning_only"
+  },
+  "review_check_attempts": [
+    {
+      "result": "failed_check_script_only",
+      "detail": "Initial parent case regex expected TC01; actual CSV case_id is TC-01. No source or matrix was modified."
+    },
+    {
+      "result": "pass",
+      "detail": "Checked actual CSV field equals the complete ordered unique TC-01 through TC-24 inventory."
+    }
+  ],
+  "changed_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/design.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/implement.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/test-report-contract.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/plan-review-final.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/plan-review-final.json"
+  ],
+  "product_files_modified": false,
+  "database_or_real_model_or_git_operations": false,
+  "new_dependencies": false,
+  "active_task_pointer_modified": false,
+  "simplification": "Removed obsolete alternative wording and reused existing transaction, event and recovery boundaries; no product refactor performed."
+}

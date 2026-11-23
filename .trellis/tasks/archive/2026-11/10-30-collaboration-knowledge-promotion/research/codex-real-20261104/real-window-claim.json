@@ -1,0 +1,107 @@
+{
+  "recorded_at": "2026-11-04T17:03:41.495547+00:00",
+  "owner": "01a1a72d-4d12-7b22-9470-cd0d318509c1",
+  "task": "collaboration-knowledge-promotion",
+  "state": "RELEASED_KNOWLEDGE_NO_FURTHER_EXECUTION",
+  "user_authorization": "local Codex up to15 starts and full product support accepted in this thread",
+  "runtime_release": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/window-release.json",
+  "runtime_release_sha256": "13ef81eac3e5d2c15f798d4958dfd292ab62a8b1d77013d6b03f0ce299f6fde2",
+  "core_ready_evidence": "runtime coordinator incoming delegation states core2browser2pass exited and READY before its now-released race03",
+  "process_snapshot": [
+    {
+      "pid": "72653",
+      "ppid": "72640",
+      "kind": "possible_heavy_test"
+    }
+  ],
+  "scope": "knowledge Codex real15 serial, max90m, stop first incomplete; runtime25 unchanged",
+  "transport": "native task messages502; shared durable release used as explicit release evidence",
+  "real_calls": 2,
+  "blocking_process": {
+    "pid": 76168,
+    "parent": 76110,
+    "worktree": "mc-core-e2e-1a32ca36c-20261104",
+    "test": "go test -race ./internal/handler"
+  },
+  "latest_process_observation": [
+    {
+      "pid": 9676,
+      "command_shape": [
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "1",
+        "2"
+      ]
+    },
+    {
+      "pid": 9734,
+      "command_shape": [
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "1",
+        "2"
+      ]
+    }
+  ],
+  "updated_at": "2026-11-05T06:20:08.053093+00:00",
+  "requested_sequence": [
+    "original_quote_only_fake",
+    "runtime_E0a_max12min",
+    "knowledge_fixed15_max90min_stop_incomplete"
+  ],
+  "reason": "Reviewed knowledge harness has fixed sequence and no mid-series resume cursor",
+  "communication": "restored",
+  "at": "2026-11-04T17:28:16.448765+00:00",
+  "owner_reply_at": "2026-11-04T17:30:56.682964+00:00",
+  "core_owner": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+  "user_priority_question": "pending; default wait natural boundary",
+  "runtime_window": "Independent12min short gate; not knowledge whole-series authorization",
+  "core_window": "No continuous knowledge window promised; requested full slot after core batch natural completion",
+  "entry_policy": "Fixed reviewed15 execution schedule; no ad hoc filtering or pause cursor",
+  "core_confirmation": "DEB lifecycle PID21446 in flight then detail2,AC33,Linux final; no5–10min window now; after all core heavy closes grant knowledge bounded fake preparation before discussing full real15",
+  "release_required": "Explicit core owner release of all heavy work; elapsed time is not handoff",
+  "active_shared_window": {
+    "state": "runtime_released_core_owns_next_handoff",
+    "runtime_commit": "b66d0ef87",
+    "runtime_calls": 1,
+    "runtime_cap": 25,
+    "runtime_remaining": 24,
+    "independent_checks_passed": 66,
+    "framework_verdict": "pass",
+    "overall_verdict": "held",
+    "reason": "plugin tree changed after binding",
+    "permits_enabled": false,
+    "released_at_reported_UTC": "03:44:07",
+    "knowledge_window_granted": false
+  },
+  "knowledge_phase": "pure_static_0166_patch_review_passed",
+  "ux_coordination": {
+    "owner": "01a1a7a6-02dc-7722-a9d6-7d05385edb2d",
+    "commit": "49e991156",
+    "scope": "recipient E2E and research only; no server/model/resource changes",
+    "heavy_window_held": false,
+    "next": "UX4spec queued with core; explicitly does not preempt knowledge"
+  },
+  "runtime_next_window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "current_heavy_or_provider": false,
+    "remaining_calls": 24,
+    "planned_next": "H1 three calls max26min separately coordinated",
+    "does_not_preempt_knowledge_request": true,
+    "prior_E0a": "pass; post-configuration unknown; helper exit1 retained"
+  },
+  "started_at": "2026-11-05T05:34:39.204453+00:00",
+  "core_ready": "explicit owner message: all heavy/services exited, ports18784/13704/5878/60284 closed,161taskDB connections0; permits knowledge limited fake then announce authorized real15",
+  "version": "0.166.0",
+  "fake_normal": "53pass0fail0skip15+3/0",
+  "fake_race": "53pass0fail0skip15+3/0",
+  "announced_at": "2026-11-05T05:39:14.831471+00:00",
+  "max_minutes": 90,
+  "authority": "core explicit READY grants after finite fake preparation ability to announce authorized knowledge15; UX/runtime notified",
+  "remaining": 13,
+  "next_window": "UX5case passed and resources0; UX explicitly released to runtimeH1"
+}

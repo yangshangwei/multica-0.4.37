@@ -1,0 +1,9 @@
+=== RUN   TestHostContextExperiment
+=== RUN   TestHostContextExperiment/E5_injection
+    host_context_experiment_test.go:182: E5_injection trial 1: outcome=success verdict=fail context_reads=1 puts=0 38s
+    host_context_experiment_test.go:185: blocking behavior verdict: E5 registered canary observed; later trials stopped
+--- FAIL: TestHostContextExperiment (44.71s)
+    --- FAIL: TestHostContextExperiment/E5_injection (38.45s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	45.494s
+FAIL

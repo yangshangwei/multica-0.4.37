@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+"""Task-private fixture wiring; repository make-check command stays unchanged."""
+import json
+import os
+from pathlib import Path
+import sys
+from urllib.parse import urlsplit
+
+args = sys.argv[1:]
+environment = os.environ.copy()
+real = environment.get("MULTICA_TASK_REAL_PNPM") or "/opt/homebrew/bin/pnpm"
+if args[:3] == ["exec", "playwright", "test"]:
+    api = environment.get("NEXT_PUBLIC_API_URL", "")
+    selected = urlsplit(api)
+    database = urlsplit(environment.get("DATABASE_URL", ""))
+    if selected.hostname not in ("127.0.0.1", "localhost") or not database.path.lstrip("/").startswith("multica_check_"):
+        raise SystemExit("Task Playwright fixture refuses unallocated services")
+    environment["COLLABORATION_E2E_API_URL"] = api
+    environment["COLLABORATION_ELECTRON_SOURCE_ROOT"] = environment["MULTICA_TASK_CANDIDATE_ROOT"]
+    environment["COLLABORATION_ELECTRON_RENDERER_URL"] = environment["MULTICA_TASK_RENDERER_URL"]
+    environment["CHANGELOG_E2E_API_URL"] = api
+    environment["CHANGELOG_ELECTRON_RENDERER_URL"] = environment["MULTICA_TASK_RENDERER_URL"]
+    if not any(a == "--reporter" or a.startswith("--reporter=") for a in args):
+        args.append("--reporter=line,json")
+    environment["PLAYWRIGHT_JSON_OUTPUT_NAME"] = str(Path(environment["MULTICA_TASK_PACKAGE_DB_EVIDENCE"]).parent / "makecheck-playwright-results.json")
+    record = {"command": ["pnpm", *args], "candidate": environment["MULTICA_TASK_CANDIDATE_ROOT"],
+              "api_url": api, "web_url": environment.get("PLAYWRIGHT_BASE_URL"),
+              "renderer_url": environment["MULTICA_TASK_RENDERER_URL"], "database_name": database.path.lstrip("/"),
+              "provider_accounts": False, "fixture_wiring_only": True}
+    output = Path(environment["MULTICA_TASK_PACKAGE_DB_EVIDENCE"]).parent / "makecheck-playwright-environment.json"
+    output.write_text(json.dumps(record, indent=2) + "\n")
+if args[:3] == ["exec", "playwright", "test"]:
+    guard = Path(environment["MULTICA_TASK_CANDIDATE_ROOT"]) / "scripts/go-test-with-agent-cli-guard.sh"
+    assert guard.is_file()
+    os.execvpe("bash", ["bash", str(guard), "--", real, *args], environment)
+os.execve(real, [real, *args], environment)

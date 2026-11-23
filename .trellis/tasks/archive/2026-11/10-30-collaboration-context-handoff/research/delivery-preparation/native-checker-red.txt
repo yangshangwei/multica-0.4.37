@@ -1,0 +1,78 @@
+TAP version 13
+# Subtest: accepts required parent and child passes
+ok 1 - accepts required parent and child passes
+  ---
+  duration_ms: 29.440041
+  type: 'test'
+  ...
+# Subtest: rejects a skipped required descendant even when its parent passes
+ok 2 - rejects a skipped required descendant even when its parent passes
+  ---
+  duration_ms: 67.291125
+  type: 'test'
+  ...
+# Subtest: keeps unrelated skipped tests outside required subtrees
+ok 3 - keeps unrelated skipped tests outside required subtrees
+  ---
+  duration_ms: 31.007583
+  type: 'test'
+  ...
+# Subtest: rejects missing and skipped required parents
+ok 4 - rejects missing and skipped required parents
+  ---
+  duration_ms: 66.082292
+  type: 'test'
+  ...
+# Subtest: requires every Windows-specific case
+ok 5 - requires every Windows-specific case
+  ---
+  duration_ms: 104.419666
+  type: 'test'
+  ...
+# Subtest: requires Windows handoff and recording recovery cases without skipped descendants
+not ok 6 - requires Windows handoff and recording recovery cases without skipped descendants
+  ---
+  duration_ms: 31.974042
+  type: 'test'
+  location: '/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/scripts/check-collaboration-native-tests.test.mjs:77:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Missing required recovery case TestHostHandoffCheckpointRestartRecoversWithoutExecution was accepted
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/scripts/check-collaboration-native-tests.test.mjs:80:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: rejects absent or unsupported runner metadata
+ok 7 - rejects absent or unsupported runner metadata
+  ---
+  duration_ms: 150.001375
+  type: 'test'
+  ...
+# Subtest: retains test and package failure checks
+ok 8 - retains test and package failure checks
+  ---
+  duration_ms: 60.505584
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 7
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 583.606833

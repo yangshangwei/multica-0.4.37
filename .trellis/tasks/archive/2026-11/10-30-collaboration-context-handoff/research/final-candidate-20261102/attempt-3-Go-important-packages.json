@@ -1,0 +1,225 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "at": "2026-11-01T20:47:37.754572+00:00",
+  "scope": "completed important Go race packages within still-running complete check; named counts include subtests",
+  "runs": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "database": "ccheck_20261101202313579996_986dfe9cbf73",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/service"
+      ],
+      "counts": {
+        "run": 3340,
+        "pass": 3340,
+        "fail": 0,
+        "skip": 0
+      },
+      "state": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T20:23:13.827617+00:00",
+      "finished_at": "2026-11-01T20:40:59.380979+00:00",
+      "log_sha256": "2cf18906aba8f72072ab87673da04d6ff237cb6063016f48a32e4167cc39219c"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "database": "ccheck_20261101201456032457_199d57419d78",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/handler"
+      ],
+      "counts": {
+        "run": 5332,
+        "pass": 5325,
+        "fail": 0,
+        "skip": 7
+      },
+      "state": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T20:14:56.229937+00:00",
+      "finished_at": "2026-11-01T20:19:56.368272+00:00",
+      "log_sha256": "a851f4321d5f16377bf617764eac0e74f0557c4cdabd53e111152ca5374a44f0"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "database": "ccheck_20261101202221063345_33c023a139ab",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/migrations"
+      ],
+      "counts": {
+        "run": 536,
+        "pass": 536,
+        "fail": 0,
+        "skip": 0
+      },
+      "state": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T20:22:21.274233+00:00",
+      "finished_at": "2026-11-01T20:22:57.327202+00:00",
+      "log_sha256": "87712214f968b2c8209941c7dbd1d1c2d3916e6e61a6c763258d951d3451e21f"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "database": "ccheck_20261101201318152202_443be4706fd4",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/daemon/execenv"
+      ],
+      "counts": {
+        "run": 1345,
+        "pass": 1345,
+        "fail": 0,
+        "skip": 0
+      },
+      "state": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T20:13:18.306644+00:00",
+      "finished_at": "2026-11-01T20:14:23.422360+00:00",
+      "log_sha256": "5073d40aed63cba212b725a638588650164f87c934c4bb8e2abe7dad62e1a2ce"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "database": "ccheck_20261101200755829195_6f87875654d8",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/cmd/server"
+      ],
+      "counts": {
+        "run": 741,
+        "pass": 735,
+        "fail": 0,
+        "skip": 6
+      },
+      "state": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T20:07:56.012703+00:00",
+      "finished_at": "2026-11-01T20:09:24.622739+00:00",
+      "log_sha256": "a42fde4e1a1f7680d5d5ecdb66d8dd925441ef7e03b118df91956c8215c4f3ff"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "database": "ccheck_20261101201008855599_7a21f045e560",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/daemon"
+      ],
+      "counts": {
+        "run": 1716,
+        "pass": 1714,
+        "fail": 0,
+        "skip": 2
+      },
+      "state": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T20:10:09.056044+00:00",
+      "finished_at": "2026-11-01T20:11:34.769856+00:00",
+      "log_sha256": "5381701b13e640d8aaa4aba06e0feacad9970935f31d6b8c9bfe036e4a90fc67"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "database": "ccheck_20261101201134770001_e304ab6e77ff",
+      "template": "multica_check_20261101195745_33955_go",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-timeout=40m",
+        "-race",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-json",
+        "github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
+      ],
+      "counts": {
+        "run": 348,
+        "pass": 348,
+        "fail": 0,
+        "skip": 0
+      },
+      "state": "complete",
+      "exit_code": 0,
+      "started_at": "2026-11-01T20:11:34.965388+00:00",
+      "finished_at": "2026-11-01T20:13:18.152021+00:00",
+      "log_sha256": "b72fa33bb572ebcbbe0ef9e3df225153b002622af94928772d6dd879bbb6ffb7"
+    }
+  ],
+  "Go_build_all": {
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "command": [
+      "/opt/homebrew/bin/go",
+      "-C",
+      "server",
+      "build",
+      "-p=2",
+      "./..."
+    ],
+    "state": "complete",
+    "started_at": "2026-11-01T20:19:20.636540+00:00",
+    "TestMain_executed": false,
+    "DB_or_Provider_calls": false,
+    "exit_code": 0,
+    "finished_at": "2026-11-01T20:19:32.068886+00:00",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "overall": "wholemakecheckstillrunning; no fullpassinferred",
+  "old_failed_service": "45efa093c exit1 retained, thisnew639 actualpassdoesnotrewriteoldresult",
+  "all_package_databases_retained": true,
+  "real_Provider_calls": 0
+}

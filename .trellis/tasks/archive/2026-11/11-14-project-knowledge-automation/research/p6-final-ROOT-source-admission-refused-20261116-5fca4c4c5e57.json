@@ -1,0 +1,69 @@
+{
+  "kind": "final_ROOT_source_advancement_admission_refused",
+  "at": "2026-11-15T16:04:12.145212+00:00",
+  "joint_manifest": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/server-current-r09-r01/manifest.json",
+    "sha256": "e4dbc77ea04f770daad31b65496d181f1a5e5923f0fcdb6baace8eadf6504229",
+    "files": 5038
+  },
+  "current_ROOT_mismatches": [
+    {
+      "path": "server/cmd/server/rk1k_codex_continuation_test.go",
+      "registered_joint": {
+        "path": "server/cmd/server/rk1k_codex_continuation_test.go",
+        "sha256": "4cfa83adbe754ca12352ea9635601d534a4f91ef642dbedb19f47d7dad3a4080",
+        "size": 8732,
+        "mode": 420
+      },
+      "current_ROOT": {
+        "exists": true,
+        "sha256": "7a15ca10c6dc48275e99b8d5908fb91351c2917b90c173022fe633f5627e5c83",
+        "mode": 420,
+        "size": 9012
+      },
+      "bytes_changed": true,
+      "mode_changed": false
+    },
+    {
+      "path": "server/cmd/server/rk1k_codex_registration_test.go",
+      "registered_joint": {
+        "path": "server/cmd/server/rk1k_codex_registration_test.go",
+        "sha256": "5becd7530091c30a8f39324c7b3fa30210302e7eb4ba196b1970899ab5dc6bb3",
+        "size": 11072,
+        "mode": 420
+      },
+      "current_ROOT": {
+        "exists": true,
+        "sha256": "fcbd60bdd8282474c97154e55648db44097d9647e79e2be39c48bb0368eb139a",
+        "mode": 420,
+        "size": 11224
+      },
+      "bytes_changed": true,
+      "mode_changed": false
+    }
+  ],
+  "actual_source_copies_or_promotion": 0,
+  "private_allocation_or_env_or_sealed4e_changes": 0,
+  "source_ready": false,
+  "reason": "current_ROOT_protected_inputs_do_not_match_registered_joint_graph",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-implement",
+  "raw_admission": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-advancement-admission-5fca4c4c5e57/ROOT-joint-mismatch.json",
+    "sha256": "c2e98bedab853e78fb9a60ea35d2171c746c35a5a6512bd4921c35862ae6c7e1"
+  },
+  "accepted_P2": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/p2-r09-independent-check-20261115.json",
+    "sha256": "29d30b7bcace65efde08a700ec14e40503b5dc0297f4d71dfd6350b91b1eb704"
+  },
+  "ROOT_three_file_integration": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-coordinator-r01/root-three-file-integration-r09.json",
+    "sha256": "b52fc31fd8a0e97e0bbbc76532a4dc2c5d63903aa9f43d00a7aa7b3240af5166"
+  },
+  "default_clarification": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-coordinator-r01/root-three-file-integration-default-clarification.json",
+    "sha256": "ddb430dbfdf85ac518a8a6e4c2c79a9967aa5a753f423584d0c83263cd9b616a"
+  },
+  "status": "REFUSED_BEFORE_FULL_SOURCE_COPY_OR_PRIVATE_PROMOTION",
+  "required_next_action": "Main/source owner must reconcile the two current protected test-byte changes and provide fresh joint binding/explicit narrow delta admission; keep all existing files and old receipts."
+}

@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-11-02T19:45:01.892890+00:00",
+  "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+  "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+  "copy_only": true,
+  "artifacts": [
+    {
+      "name": "renderer",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/artifacts/renderer",
+      "destination": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/desktop/out/renderer",
+      "action": "installed_exact_copy",
+      "manifest_sha256": "afaf7bf2c6affc56ce985a3a05431eb39f827137c5a10dc790f685c720b2b8f4",
+      "file_count": 493,
+      "bytes": 35362968
+    },
+    {
+      "name": "preload",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/artifacts/preload",
+      "destination": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/desktop/out/preload",
+      "action": "installed_exact_copy",
+      "manifest_sha256": "a49fce2d4f72308ce155dc1cb89b0853caef94709f837264a72f977087579b71",
+      "file_count": 1,
+      "bytes": 18876
+    }
+  ],
+  "services_started": 0,
+  "services_stopped": 0,
+  "database_changes": 0,
+  "Provider_calls": 0,
+  "CLI": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/multica",
+    "sha256": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19",
+    "bytes": 30456738
+  },
+  "candidate_still_clean": true
+}

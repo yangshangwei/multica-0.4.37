@@ -1,0 +1,30 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+◇ injected env (1) from .env.worktree // tip: ◈ encrypted .env [www.dotenvx.com]
+
+Running 4 tests using 1 worker
+
+[1A[2K(node:55810) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:55810) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K◇ injected env (0) from .env.worktree // tip: ⌘ enable debugging { debug: true }
+
+[1A[2K[1/4] [chromium] › e2e/collaboration-handoff-chain-desktop.spec.ts:16:1 › Electron information return shows the original requester and note before restoring responsibility
+[1A[2K[2/4] [chromium] › e2e/collaboration-offline-handoff.spec.ts:12:3 › Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal
+[1A[2K[3/4] [chromium] › e2e/collaboration-offline-handoff.spec.ts:12:3 › Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal
+[1A[2K(node:55885) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:55885) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K◇ injected env (0) from .env.worktree // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[1A[2K[4/4] [chromium] › e2e/collaboration-handoff-chain-web.spec.ts:11:1 › Web directed handoff chain moves current todos with responsibility and only the creator completes
+[1A[2K  4 passed (35.4s)

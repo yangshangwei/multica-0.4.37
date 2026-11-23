@@ -1,0 +1,200 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+    - main [ref=e8]:
+      - generic [ref=e9]:
+        - heading "Collaboration" [level=1] [ref=e10]
+        - navigation "Collaboration" [ref=e11]:
+          - link "Current handling" [ref=e12] [cursor=pointer]:
+            - /url: /account?view=current&issue=01a199b0-6aeb-7e15-8172-0ff232e3cda1#memory
+          - link "Participating" [ref=e13] [cursor=pointer]:
+            - /url: /account?view=participating&issue=01a199b0-6aeb-7e15-8172-0ff232e3cda1#memory
+        - button "New collaboration issue" [ref=e14]
+        - button "Notifications 0 unread" [ref=e16]:
+          - text: Notifications
+          - generic [ref=e17]: 0 unread
+      - generic [ref=e18]:
+        - region "Collaboration issues" [ref=e19]:
+          - generic [ref=e20]:
+            - textbox "Search loaded issues" [ref=e21]
+            - generic [ref=e22]:
+              - generic [ref=e23]: 1 issues
+              - combobox "Sort" [ref=e24]:
+                - option "Recently updated" [selected]
+                - option "Title"
+          - list [ref=e26]:
+            - listitem [ref=e27]:
+              - link "Memory browser journey 6fbe0ac4c040 Memory source Done Memory participant · External collaborator" [ref=e28] [cursor=pointer]:
+                - /url: /account?view=participating&issue=01a199b0-6aeb-7e15-8172-0ff232e3cda1
+                - generic [ref=e29]: Memory browser journey 6fbe0ac4c040
+                - generic [ref=e30]:
+                  - generic [ref=e31]: Memory source
+                  - generic [ref=e32]: Done
+                - generic [ref=e33]:
+                  - text: Memory participant
+                  - generic [ref=e34]: · External collaborator
+        - region "Issue detail" [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - generic [ref=e38]:
+                - heading "Memory browser journey 6fbe0ac4c040" [level=2] [ref=e39]
+                - button "Copy link" [ref=e40]:
+                  - img
+                  - text: Copy link
+              - generic [ref=e41]:
+                - generic [ref=e42]:
+                  - term [ref=e43]: Status
+                  - definition [ref=e44]: Done
+                - generic [ref=e45]:
+                  - term [ref=e46]: Handler
+                  - definition [ref=e47]: Memory participantExternal collaborator
+                - generic [ref=e48]:
+                  - term [ref=e49]: Creator
+                  - definition [ref=e50]: Memory creator
+                - generic [ref=e51]:
+                  - term [ref=e52]: Source workspace
+                  - definition [ref=e53]: Memory source
+            - region "Issue actions" [ref=e54]:
+              - generic [ref=e55]:
+                - button "Add participant" [ref=e56]
+                - button "Transfer" [ref=e57]
+                - button "Reopen issue" [ref=e58]
+                - button "Edit issue" [ref=e59]
+                - button "Edit source fields" [ref=e60]
+                - button "Change iteration" [ref=e61]
+              - button "Participants" [ref=e63]
+            - generic [ref=e64]:
+              - heading "Description" [level=3] [ref=e65]
+              - paragraph [ref=e67]: Synthetic collaboration context acceptance.
+            - region "Issue fields" [ref=e68]:
+              - generic [ref=e69]:
+                - generic [ref=e70]:
+                  - term [ref=e71]: Priority
+                  - definition [ref=e72]: No priority
+                - generic [ref=e73]:
+                  - term [ref=e74]: Start date
+                  - definition [ref=e75]: None
+                - generic [ref=e76]:
+                  - term [ref=e77]: Due date
+                  - definition [ref=e78]: None
+                - generic [ref=e79]:
+                  - term [ref=e80]: Labels
+                  - definition [ref=e81]: None
+                - generic [ref=e82]:
+                  - term [ref=e83]: Project
+                  - definition [ref=e84]: None
+                - generic [ref=e85]:
+                  - term [ref=e86]: Parent issue
+                  - definition [ref=e87]: None
+                - generic [ref=e88]:
+                  - term [ref=e89]: Stage under parent
+                  - definition [ref=e90]: None
+                - generic [ref=e91]:
+                  - term [ref=e92]: Iteration
+                  - definition [ref=e93]: None
+            - region "Sub-issues" [ref=e94]:
+              - heading "Sub-issues" [level=3] [ref=e95]
+              - paragraph [ref=e96]: No sub-issues.
+            - region "Issue reactions" [ref=e97]:
+              - group "Thread and reactions" [ref=e99]:
+                - button "Choose a reaction" [ref=e100]:
+                  - img [ref=e101]
+            - region "Attachments" [ref=e104]:
+              - heading "Attachments" [level=3] [ref=e105]
+              - paragraph [ref=e106]: Delivered files remain on this issue when a comment or its file reference is removed.
+              - paragraph [ref=e107]: No files delivered yet.
+              - group [ref=e108]:
+                - generic "Attach files" [ref=e109] [cursor=pointer]
+            - region "AI execution" [ref=e110]:
+              - heading "AI execution" [level=3] [ref=e111]
+              - paragraph [ref=e112]: New AI execution is disabled.
+              - paragraph [ref=e113]: Stopping or resuming a target affects every target in its execution lane.
+              - paragraph [ref=e114]: Closed
+              - generic [ref=e115]:
+                - button "Stop all" [ref=e116]
+                - button "Resume all" [disabled]
+              - button "Manage AI resources" [ref=e118]
+              - heading "Command history" [level=4] [ref=e120]:
+                - button "Command history" [ref=e121]
+            - region "Shared context" [active] [ref=e122]:
+              - generic [ref=e123]:
+                - heading "Shared context" [level=3] [ref=e124]
+                - paragraph [ref=e125]: The current state of this issue, kept up to date by agents across machines and accounts. Participants who can control AI may correct it.
+              - paragraph [ref=e127]: v4 · 47 of 131072 bytes
+              - generic [ref=e128]:
+                - paragraph [ref=e131]: "Decision A: retain the shared handoff document."
+                - button "Show full shared context" [ref=e132]
+              - generic [ref=e133]:
+                - generic [ref=e134]:
+                  - term [ref=e135]: Written by
+                  - definition [ref=e136]: Memory creator
+                - generic [ref=e137]:
+                  - term [ref=e138]: Saved
+                  - definition [ref=e139]:
+                    - time [ref=e140]: 11/2/2026, 8:37:20 AM
+              - paragraph [ref=e141]: Restored from v1
+              - paragraph [ref=e142]: This issue is closed, so its shared context is read-only.
+              - button "Version history" [ref=e144]
+            - region "Knowledge candidates" [ref=e145]:
+              - generic [ref=e146]:
+                - generic [ref=e147]:
+                  - heading "Knowledge candidates" [level=3] [ref=e148]
+                  - paragraph [ref=e149]: Propose a reusable conclusion with sources. Human approval controls where it may be used.
+                - button "Propose knowledge" [ref=e150]
+              - paragraph [ref=e151]: No candidates yet. Propose a conclusion when its sources are ready.
+              - list
+            - region "Activity" [ref=e152]:
+              - heading "Activity" [level=3] [ref=e153]
+              - list [ref=e154]:
+                - listitem [ref=e155]:
+                  - generic [ref=e156]:
+                    - generic [ref=e157]: Issue completed
+                    - generic [ref=e158]: Memory creator
+                    - time [ref=e159]: 11/2/2026, 8:37:20 AM
+                  - generic [ref=e161]:
+                    - term [ref=e162]: Status
+                    - definition [ref=e163]:
+                      - generic [ref=e164]:
+                        - paragraph [ref=e165]: Before
+                        - paragraph [ref=e166]: todo
+                      - generic [ref=e167]:
+                        - paragraph [ref=e168]: After
+                        - paragraph [ref=e169]: done
+                - listitem [ref=e170]:
+                  - generic [ref=e171]:
+                    - generic [ref=e172]: Issue created
+                    - generic [ref=e173]: Memory creator
+                    - time [ref=e174]: 11/2/2026, 8:37:18 AM
+            - generic [ref=e175]:
+              - heading "Comments" [level=3] [ref=e176]
+              - paragraph [ref=e177]: No comments yet.
+              - paragraph [ref=e178]: Loaded 0 of 0 comments
+              - list
+              - form "Comments" [ref=e179]:
+                - generic [ref=e180]: Add comment
+                - textbox "Add comment" [ref=e181]:
+                  - /placeholder: Write a comment...
+                - group "Issue participants and AI targets" [ref=e182]:
+                  - group "People" [ref=e183]:
+                    - paragraph [ref=e184]: People
+                    - generic [ref=e185]:
+                      - button "@all · All participants" [ref=e186]
+                      - button "Memory participant" [ref=e187]
+                      - button "Memory creator" [ref=e188]
+                - group "Attachments" [ref=e189]:
+                  - generic [ref=e190]: Attachments
+                  - paragraph [ref=e191]: Files stay private. Only selected files are shared when you submit.
+                  - generic [ref=e192]: Attach files
+                  - button "Attach files" [ref=e193]
+                - generic [ref=e194]:
+                  - button "Preview delivery" [disabled]
+                  - button "Send comment" [disabled]
+  - region "Notifications alt+T"
+  - alert [ref=e195]
+```

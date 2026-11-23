@@ -1,0 +1,463 @@
+{
+  "recorded_at": "2026-11-12T07:43:20.517391+00:00",
+  "reviewed_head": "e08ab34ce228cf11a39c153ccd33d61626ebd75b",
+  "verdict": "pass_scoped_consumer_delivery",
+  "scope": "ordinary single-issue status-only Web/Desktop/CLI completion-hint consumer; no v1 completion authorization or real Provider acceptance",
+  "files": [
+    {
+      "path": "packages/core/api/client.ts",
+      "sha256": "52270961fcb53e9bc694c7d5515c561d3b25595d23ced32465d08b3090a6126f",
+      "bytes": 332227
+    },
+    {
+      "path": "packages/core/api/schemas.ts",
+      "sha256": "d34a4bc6896a2cc7d562cd218cc218e23c170615a698a0427b87d112c2eac763",
+      "bytes": 146867
+    },
+    {
+      "path": "packages/core/api/delivery-completion-hint.test.ts",
+      "sha256": "ea40ecc988704ea0452811ec35aaea5014fdf6cdef55891ff5d5781f30615176",
+      "bytes": 3881
+    },
+    {
+      "path": "packages/core/types/api.ts",
+      "sha256": "872e6913415700fc86f21a7f94f34ebba50710c72358a10ef2a8d6dd9455c503",
+      "bytes": 20591
+    },
+    {
+      "path": "packages/core/issues/index.ts",
+      "sha256": "c15524a11759bf96f7b7585eb0be011688617c2c82e2853d9447a2e76dff2638",
+      "bytes": 790
+    },
+    {
+      "path": "packages/core/issues/completion-hint.ts",
+      "sha256": "35e507873b39c58b2a7c453520b3f94505b7f9cdef1bd8cac3b229d43be7e8cc",
+      "bytes": 2762
+    },
+    {
+      "path": "packages/core/issues/completion-hint.test.ts",
+      "sha256": "ae0ce45d5cf1f2525d8845799d52c262ebe50b3dab2a89a463aec01a32f1e7ab",
+      "bytes": 3299
+    },
+    {
+      "path": "packages/core/modals/store.ts",
+      "sha256": "0dfacd9933c67507f823752af6c9f9c43a60146417ce1e9c7b8f093325dd8f14",
+      "bytes": 1044
+    },
+    {
+      "path": "packages/core/package.json",
+      "sha256": "fb33e7358a74013bd1f795250c1af691cb40f9f0a0345a25bd786804b814082b",
+      "bytes": 9519
+    },
+    {
+      "path": "packages/views/issues/actions/__tests__/use-issue-actions.test.tsx",
+      "sha256": "8f064486d17cd2b5d3dea9f72183ad7b650a5a76833d6f90eb49a876a7bbc5bb",
+      "bytes": 19326
+    },
+    {
+      "path": "packages/views/issues/actions/use-issue-actions.ts",
+      "sha256": "f57d2157afb6a65db67cae295cd5333bcf8c5bd1e7dd34dd1d8a1b30ae21942c",
+      "bytes": 11649
+    },
+    {
+      "path": "packages/views/issues/actions/completion-hint-gate.ts",
+      "sha256": "c4184690ae1278a70e39d4ece7a8650d842289367df32b3c1e4150baa5e198c0",
+      "bytes": 7917
+    },
+    {
+      "path": "packages/views/issues/actions/completion-hint-gate.test.tsx",
+      "sha256": "7b3418b358d389ff446736ff5c23a65d7f2997e386c04454b51e8289cfc1278a",
+      "bytes": 8832
+    },
+    {
+      "path": "packages/views/issues/components/issue-detail.tsx",
+      "sha256": "435f8fb8038f110b7e921c04797ca04965c4ddf8529e818ea39b28e56e4292a2",
+      "bytes": 170312
+    },
+    {
+      "path": "packages/views/issues/surface/actions-context.tsx",
+      "sha256": "7b6a7df45e61af53598bd454f41435323cdcdd719fc1cf106746789746df2f66",
+      "bytes": 1750
+    },
+    {
+      "path": "packages/views/issues/surface/use-issue-surface-actions.ts",
+      "sha256": "8d2f50e6471a9c59a0689e59bea97500629ab71e8a6a02bc7cc9f1fb874cf67a",
+      "bytes": 7386
+    },
+    {
+      "path": "packages/views/locales/en/issues.json",
+      "sha256": "015a3a76c42abef33770859d1bf019d5a5ed3273ca20d50d2442d9b8d6a2f014",
+      "bytes": 40058
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/issues.json",
+      "sha256": "5dd7854875915f8385ed84fc166990c66c2318371ad18fbcbbe17d8c708fb07c",
+      "bytes": 38105
+    },
+    {
+      "path": "packages/views/modals/registry.tsx",
+      "sha256": "2691dc4c8de10888954b37532f62a775173e09c462e74ee04c0c320ebe6a2e1a",
+      "bytes": 2290
+    },
+    {
+      "path": "packages/views/modals/run-confirm.tsx",
+      "sha256": "f65f352a52629b173baa35d34e277004a55353806c2c0b1e72040c157e3fb08e",
+      "bytes": 14187
+    },
+    {
+      "path": "packages/views/modals/issue-completion-hint.tsx",
+      "sha256": "99fce71ea64ba36a6d7b8c7879270c70a4d9ea306aad758be4c1d0b03e4912e5",
+      "bytes": 3600
+    },
+    {
+      "path": "packages/views/modals/issue-completion-hint.test.tsx",
+      "sha256": "ebefa3f8ac8eb2cb705f1b069241a674a80bcf523beb77a122c512e3351b10fb",
+      "bytes": 945
+    },
+    {
+      "path": "server/cmd/multica/cmd_issue.go",
+      "sha256": "94e254e8673840134b0b312f57ca207abab2b2c217ddc997df20365a797f21ef",
+      "bytes": 115193
+    },
+    {
+      "path": "server/cmd/multica/cmd_issue_test.go",
+      "sha256": "7a307944d1a35780f272f9c49356fa06ab9113738fa00120b3a52fb743dbf70f",
+      "bytes": 167664
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "sha256": "4bf809f0e5c2451b6952e8d5d5fd9dad4ed7e3a60b99b09969c1ba7f8cab004e",
+      "bytes": 28895
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "sha256": "edfc25bb4dfac7a308ab3933717bd2f37f5e6473ccfc9f305962fe4dad3cee3f",
+      "bytes": 55963
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-creating-agents/SKILL.md",
+      "sha256": "f298579f776bbbd0245262e910c3414441cf91e863b469c9341638b6dbe09ec1",
+      "bytes": 31152
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md",
+      "sha256": "ed603e3da1753635ef206f943c3314e1e498dcfb6f479df922089284731a75ed",
+      "bytes": 45152
+    }
+  ],
+  "fixed_findings": [
+    {
+      "id": "HINT-1",
+      "issue": "Core legacy classifier downgraded structured error aliases",
+      "fix": "Preserve structured error_code/resource/permission_code/delivery_code refusal; four red cases now pass."
+    },
+    {
+      "id": "HINT-2",
+      "issue": "Explicit retry reused a stale issue revision",
+      "fix": "Reload current workspace-scoped issue with cancellable GET before retry; close old result before starting replacement read."
+    },
+    {
+      "id": "HINT-3",
+      "issue": "Unmounted owner could still confirm a previously displayed hint",
+      "fix": "Keep controller ownership until completion; aborted owner cannot confirm or retry."
+    },
+    {
+      "id": "HINT-4",
+      "issue": "Repeated confirmation could invoke the mutation twice and pending cleared before real mutation settled",
+      "fix": "Consume confirmation once and return promises completed by actual mutation onSettled in each scoped adapter."
+    },
+    {
+      "id": "HINT-5",
+      "issue": "Collaboration-source actions could be intercepted by ordinary completion hint API",
+      "fix": "Shared gate delegates collaboration source to existing workflow; regression proves no ordinary hint request."
+    }
+  ],
+  "unfixed_in_scope": [],
+  "existing_warnings": {
+    "views_lint": 27,
+    "description": "existing warnings preserved, zero final errors"
+  },
+  "checks": [
+    {
+      "name": "core-typecheck",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "seconds": 10.73
+    },
+    {
+      "name": "core-lint",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "lint"
+      ],
+      "exit_code": 0,
+      "seconds": 6.1
+    },
+    {
+      "name": "views-tests-complete",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "issues/actions/completion-hint-gate.test.tsx",
+        "issues/actions/__tests__/use-issue-actions.test.tsx",
+        "issues/components/issue-detail.test.tsx",
+        "issues/components/table-view-editing.test.tsx",
+        "issues/surface/use-issue-surface-actions.collaboration.test.tsx",
+        "modals/issue-completion-hint.test.tsx"
+      ],
+      "exit_code": 0,
+      "seconds": 13.2
+    },
+    {
+      "name": "views-typecheck-complete",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "seconds": 42.02
+    },
+    {
+      "name": "views-lint-complete",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "lint"
+      ],
+      "exit_code": 0,
+      "seconds": 13.63
+    },
+    {
+      "name": "cli-tests",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/multica",
+        "-count=1"
+      ],
+      "exit_code": 0,
+      "seconds": 5.79
+    },
+    {
+      "name": "cli-vet",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./cmd/multica"
+      ],
+      "exit_code": 0,
+      "seconds": 0.52
+    },
+    {
+      "name": "builtin-contracts",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^(TestBuiltinSkillsConformToTemplate|TestBuiltinSkillsFrontmatterIsStrictYAML|TestWorkingOnIssuesSkillCoversIssueLoopContracts|TestCreatingAgentsSkillCoversAgentCreationContracts)$",
+        "-count=1"
+      ],
+      "exit_code": 0,
+      "seconds": 6.05
+    },
+    {
+      "name": "core-tests",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "issues/completion-hint.test.ts",
+        "api/delivery-completion-hint.test.ts"
+      ],
+      "exit_code": 0,
+      "tests_passed": 22
+    },
+    {
+      "name": "gofmt",
+      "command": [
+        "gofmt",
+        "-l",
+        "server/cmd/multica/cmd_issue.go",
+        "server/cmd/multica/cmd_issue_test.go"
+      ],
+      "exit_code": 0,
+      "unformatted_files": []
+    },
+    {
+      "name": "diff-check",
+      "exit_code": 0
+    },
+    {
+      "name": "translation-key-parity",
+      "exit_code": 0,
+      "key_count": 11
+    }
+  ],
+  "tests": {
+    "core": {
+      "files": 2,
+      "passed": 22
+    },
+    "views": {
+      "files": 6,
+      "passed": 131
+    },
+    "cli": "complete cmd/multica package passed; selected built-in contracts passed"
+  },
+  "historical_evidence_used_as_current": false,
+  "provider_calls": 0,
+  "database_access": "No production DB or real integration tests requested; selected CLI/mock and static builtin tests only.",
+  "failure_logs_preserved": [
+    "core-regression-red.log",
+    "views-regression-red.log",
+    "collaboration-red.log",
+    "views-tests-final.log",
+    "views-lint.log"
+  ],
+  "coordinated_specs_reviewed": [
+    ".trellis/spec/server/delivery-completion-hints.md",
+    ".trellis/spec/server/index.md (completion hints row only)"
+  ],
+  "logs": [
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/builtin-contracts.log",
+      "sha256": "e2cdcd0b05e79ec5a72a49f2e322ff39077a89aecf6fb969b03b443c1494b7e8",
+      "bytes": 66
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/cli-tests.log",
+      "sha256": "3848edbf59813d34eb95dab37e490107a53020c3d7669257f2b851861f13960e",
+      "bytes": 61
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/cli-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/collaboration-red.log",
+      "sha256": "0f93377d27da76ccb46ade94490c21c67bfc5f40dbc24c766c2c40565150aeb9",
+      "bytes": 1532
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/core-lint.log",
+      "sha256": "67092040193c7764cbea721590953f32523229b154e267d9d3faec12f585c1b6",
+      "bytes": 307
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/core-regression-red.log",
+      "sha256": "a70221639ae3d361ffc61bb4ccd0656c959f18f22945c7f0318165dbeb2a3588",
+      "bytes": 1925
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/core-tests.log",
+      "sha256": "6477912805092b2c32ae29a50e7e9d3a2a323b8ef89ec8a58708dca685a48b32",
+      "bytes": 451
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/core-typecheck.log",
+      "sha256": "22458c8f7012d8262e1fd9041a1b33bb5648f5e559dd766fe55261e8a42145d6",
+      "bytes": 316
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/diff-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-lint-complete.log",
+      "sha256": "44653de007246e758d8891c1f502b474da2f4c5a8181cf43fc8da5ecc98be7eb",
+      "bytes": 6011
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-lint-final.log",
+      "sha256": "44653de007246e758d8891c1f502b474da2f4c5a8181cf43fc8da5ecc98be7eb",
+      "bytes": 6011
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-lint.log",
+      "sha256": "ca77147f25fdadc0115fcd3597c60a2f700e1cd5bb15e0c1b54110523d2bb630",
+      "bytes": 6314
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-regression-red.log",
+      "sha256": "5657ed306a8dfde0c3be4790f9e9732c6329abf53b3f5598ff353c7963a34d62",
+      "bytes": 3183
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-tests-complete.log",
+      "sha256": "1144cd3065e164a75be8f2bda93e178f4ede9a59a559cf55faf2f26eba2c2ef1",
+      "bytes": 461
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-tests-final.log",
+      "sha256": "f3360650c0814cb0071a72e8660f0cbbf35bfd5ccecf09eb2ea170257c3dec52",
+      "bytes": 1849
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-tests-green.log",
+      "sha256": "df9a07e452a974977d6470a820003f9ea1c4b30666802b2c51ce4f640a725ee1",
+      "bytes": 463
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-tests.log",
+      "sha256": "b2ee9cf2e34da2bac0fc25467d7b48bee951a823d5a92077f1e80b46c42b0f17",
+      "bytes": 457
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-typecheck-complete.log",
+      "sha256": "8f442ca6112779dcb1cb48919d5aab6d6f53eb53fa39294bf350ffceb6365d85",
+      "bytes": 318
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-typecheck-final.log",
+      "sha256": "8f442ca6112779dcb1cb48919d5aab6d6f53eb53fa39294bf350ffceb6365d85",
+      "bytes": 318
+    },
+    {
+      "path": ".trellis/tasks/11-05-agent-squad-rnd-improvements/research/stage-archive-20261112/views-typecheck.log",
+      "sha256": "8f442ca6112779dcb1cb48919d5aab6d6f53eb53fa39294bf350ffceb6365d85",
+      "bytes": 318
+    }
+  ],
+  "limitations": [
+    "No browser/Electron production-build journey rerun in this review.",
+    "No whole-repository Go/TypeScript suite rerun.",
+    "Does not close M1 remaining UX, M2/M3, real-provider or production acceptance."
+  ],
+  "pre_stage_whitespace_followup": {
+    "reason": "Staging exposed extra blank EOF lines in three previously untracked files; the earlier unstaged diff check did not inspect untracked files.",
+    "files": [
+      "packages/core/api/delivery-completion-hint.test.ts",
+      "packages/views/issues/actions/completion-hint-gate.test.tsx",
+      "packages/views/issues/actions/completion-hint-gate.ts"
+    ],
+    "change": "Remove only redundant EOF newline, retaining exactly one final newline.",
+    "tests_rerun": false,
+    "final_staged_diff_check_owner": "Main session after restaging."
+  }
+}

@@ -5,8 +5,9 @@ import type { AgentTask, Issue } from "@multica/core/types";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enCommon from "../../../locales/en/common.json";
 import enIssues from "../../../locales/en/issues.json";
+import enCollaboration from "../../../locales/en/collaboration.json";
 
-const TEST_RESOURCES = { en: { common: enCommon, issues: enIssues } };
+const TEST_RESOURCES = { en: { common: enCommon, issues: enIssues, collaboration: enCollaboration } };
 
 // ---------------------------------------------------------------------------
 // Mocks — same pattern as the issue-detail test suite.
@@ -88,18 +89,19 @@ vi.mock("@multica/core/paths", async () => {
 
 // Module-level flag toggled per-test: desktop implements `openInNewTab`,
 // web omits it and the menu has to fall back to a real browser tab.
-const { openInNewTabMock, getShareableUrlMock, navState } = vi.hoisted(() => ({
+const { openInNewTabMock, getShareableUrlMock, pushMock, navState } = vi.hoisted(() => ({
   openInNewTabMock: vi.fn(),
+  pushMock: vi.fn(),
   getShareableUrlMock: vi.fn((p: string) => `https://app.example${p}`),
-  navState: { hasOpenInNewTab: true },
+  navState: { hasOpenInNewTab: true, pathname: "/test/issues/issue-1", hash: "" },
 }));
 
 vi.mock("../../../navigation", () => ({
   useNavigation: () => ({
-    push: vi.fn(),
-    pathname: "/test/issues/issue-1",
+    push: pushMock,
+    pathname: navState.pathname,
     searchParams: new URLSearchParams(),
-    hash: "",
+    hash: navState.hash,
     back: vi.fn(),
     replace: vi.fn(),
     ...(navState.hasOpenInNewTab ? { openInNewTab: openInNewTabMock } : {}),
@@ -178,8 +180,11 @@ function wrap(ui: React.ReactNode) {
 beforeEach(() => {
   mockOpenModal.mockReset();
   openInNewTabMock.mockReset();
+  pushMock.mockReset();
   getShareableUrlMock.mockClear();
   navState.hasOpenInNewTab = true;
+  navState.pathname = "/test/issues/issue-1";
+  navState.hash = "";
   copyTextMock.mockReset();
   copyTextMock.mockResolvedValue(true);
   toastSuccessMock.mockReset();
@@ -188,6 +193,35 @@ beforeEach(() => {
 });
 
 describe("IssueActionsDropdown", () => {
+  it("offers account copy and native tab actions for a shared issue without ordinary task or mutation actions", async () => {
+    const id = "00000000-0000-4000-8000-000000000009";
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    const shared = { ...mockIssue, id, collaboration: { creator: account, handler: account, has_external_collaborators: true } };
+    render(wrap(<IssueActionsDropdown issue={shared} trigger={<button data-testid="shared-trigger">Menu</button>} />));
+    fireEvent.click(screen.getByTestId("shared-trigger"));
+    expect(await screen.findByText("Open in collaboration")).toBeInTheDocument();
+    expect(screen.queryByText("Status")).not.toBeInTheDocument();
+    expect(screen.queryByText("Relations")).not.toBeInTheDocument();
+    expect(screen.queryByText("Delete issue")).not.toBeInTheDocument();
+    expect(listTasksByIssueMock).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByText("Copy link"));
+    expect(copyTextMock).toHaveBeenCalledWith(`https://app.example/account?view=participating&issue=${id}`);
+    fireEvent.click(screen.getByTestId("shared-trigger"));
+    fireEvent.click(await screen.findByText("Open in new tab"));
+    expect(openInNewTabMock).toHaveBeenCalledWith(`/account?view=participating&issue=${id}`, shared.identifier, { activate: true });
+  });
+
+  it("keeps the current run when opening the shared workflow from its source menu", async () => {
+    const id = "00000000-0000-4000-8000-000000000009", runId = "00000000-0000-4000-8000-000000000010";
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    const shared = { ...mockIssue, id, collaboration: { creator: account, handler: account, has_external_collaborators: true } };
+    navState.pathname = `/test/issues/${id}`;
+    navState.hash = `#run-${runId}`;
+    render(wrap(<IssueActionsDropdown issue={shared} trigger={<button data-testid="shared-trigger">Menu</button>} />));
+    fireEvent.click(screen.getByTestId("shared-trigger"));
+    fireEvent.click(await screen.findByText("Open in collaboration"));
+    expect(pushMock).toHaveBeenCalledWith(`/account?view=participating&issue=${id}#run-${runId}`);
+  });
   it("renders the top-level items when the trigger is clicked", async () => {
     render(
       wrap(

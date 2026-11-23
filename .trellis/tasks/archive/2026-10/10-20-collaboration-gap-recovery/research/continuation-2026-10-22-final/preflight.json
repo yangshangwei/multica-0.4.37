@@ -1,0 +1,59 @@
+{
+  "at": "2026-10-22T09:30:13.470801+00:00",
+  "head": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "endpoints": {
+    "api": {
+      "url": "http://127.0.0.1:18996/health",
+      "listener_pids": [
+        "22414"
+      ],
+      "status": 200,
+      "body_sha256": "fc6aafc44d2b184ac6c8dae6e781e43c0bcfdae6ae43b8a1ce1bf92286c2abd3",
+      "health": {
+        "status": "ok",
+        "pid": 22414,
+        "commit": "8ecb98883",
+        "started_at": "2026-10-21T23:29:04Z"
+      }
+    },
+    "web": {
+      "url": "http://127.0.0.1:13916",
+      "listener_pids": [
+        "76944"
+      ],
+      "status": 200,
+      "body_sha256": "0749f164d36c18acb16d2386d0c3992d60c2e945854b7cc8af67f1801ac2aafd"
+    },
+    "renderer": {
+      "url": "http://127.0.0.1:6090",
+      "listener_pids": [
+        "36145"
+      ],
+      "status": 200,
+      "body_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c"
+    }
+  },
+  "production_gate_change": false,
+  "real_provider_account_access": false,
+  "product_snapshot_diffs": {
+    "verification-source": [
+      {
+        "file": "server/internal/integrations/wecom/relay_outbound.go",
+        "current_sha256": "c0b2be0d56ddde20435dadc2e6de6e04b8ea998a240a73cb75066b22f6f6f1d6",
+        "snapshot_sha256": "7633bbd80b1ac3200f6cc4cbbfb4511b25b9ac21cf403e3807ebbccdfde4fca8"
+      }
+    ],
+    "verification-admin-source": [
+      {
+        "file": "server/internal/integrations/wecom/relay_outbound.go",
+        "current_sha256": "c0b2be0d56ddde20435dadc2e6de6e04b8ea998a240a73cb75066b22f6f6f1d6",
+        "snapshot_sha256": "7633bbd80b1ac3200f6cc4cbbfb4511b25b9ac21cf403e3807ebbccdfde4fca8"
+      }
+    ]
+  },
+  "application_files": 4748,
+  "verification-source_web_build_id": "SrpeaQzGK_I-BlKn9Vy0e",
+  "verification-source_renderer_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "verification-admin-source_web_build_id": "tP4r55FoDsuyXfi1EylGw",
+  "verification-admin-source_renderer_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c"
+}

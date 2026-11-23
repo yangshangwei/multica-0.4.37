@@ -1,0 +1,21 @@
+{
+  "command": [
+    "go",
+    "vet",
+    "-p",
+    "1",
+    "./internal/service"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6"
+  },
+  "started_at": "2026-10-21T08:06:39.564990+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_command_history.go": "a23ad56dae751bc9cf7f0ef226292f3bea7ff3661cc7ebc6310bde49ef79e526",
+    "server/internal/service/collaboration_command_history_test.go": "869196731ce555206557c1464a4495a1aad6bab3aed22994ba56fcedb16df976"
+  },
+  "finished_at": "2026-10-21T08:06:42.019509+00:00",
+  "elapsed_seconds": 2.455,
+  "returncode": 0
+}

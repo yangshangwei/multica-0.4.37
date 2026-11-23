@@ -1,0 +1,18 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-detail-journey.spec.ts",
+    "--project=chromium",
+    "--workers=1",
+    "--retries=0",
+    "--grep",
+    "Production Web",
+    "--output",
+    "/tmp/multica-detail-verification-20261103/journey-web-run1-artifacts"
+  ],
+  "process_result": 1,
+  "log": "/tmp/multica-detail-verification-20261103/journey-web-run1.log"
+}

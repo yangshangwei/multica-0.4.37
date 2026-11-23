@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-21T23:30:29.485782+00:00",
+  "trigger": "task-owned admin-dev.py up invokes cmd_gc --auto before prerequisite startup",
+  "expired_environment_removed": "gap-recovery-20261021",
+  "removed_database": "multica_gap_api",
+  "reason": "expired at 2026-10-21T22:04:10Z; retained startup GC event",
+  "current_verification_databases": "multica_gap_api_verification/multica_gap_api_admin and service_s5 checked separately",
+  "prevention": "Extend only metadata expiry of two actively used task environments with private backups before any further up",
+  "ttl_changes": [
+    {
+      "environment": "gap-recovery-verification-20261021",
+      "expires_at_before": "2026-10-22T01:50:59Z",
+      "expires_at_after": "2026-10-24T23:30:29Z",
+      "backup": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-gap-resume-20261022-zkx9kfqv/runtime-ttl/gap-recovery-verification-20261021/manifest.env"
+    },
+    {
+      "environment": "gap-recovery-admin-20261021",
+      "expires_at_before": "2026-10-22T01:21:23Z",
+      "expires_at_after": "2026-10-24T23:30:29Z",
+      "backup": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-gap-resume-20261022-zkx9kfqv/runtime-ttl/gap-recovery-admin-20261021/manifest.env"
+    }
+  ],
+  "uncommitted_source_changes_discarded": false,
+  "production_touched": false
+}

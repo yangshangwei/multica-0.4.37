@@ -1,0 +1,594 @@
+{
+  "status": "authoring_review_complete_after_local_fixes_live_not_run",
+  "recorded_at": "2026-11-14T09:31:42.208724+00:00",
+  "source_report": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/joint-e2e-increment-2-results.json",
+    "sha256": "dbb67b4d692b885e67a640c8bf9a4236229d194f0d56e535fb7e1f67d8b945d5"
+  },
+  "reported_head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "snapshot": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/final-source",
+    "files": 5,
+    "hashes_verified": true,
+    "mutated": false
+  },
+  "original_increment1_preserved": true,
+  "findings_fixed": [
+    {
+      "id": "E01",
+      "priority": "P2",
+      "files": [
+        {
+          "path": "e2e/collaboration-stage-approvals.spec.ts",
+          "line": 68
+        },
+        {
+          "path": "e2e/collaboration-stage-approvals.spec.ts",
+          "line": 294
+        }
+      ],
+      "issue": "Scenario evidence recorded full gitInput and the native profile path, exposing absolute executable/bundle/repository/profile locations.",
+      "proof": "Source-extracted checks evaluated those actual evidence expressions against native-path sentinels; both failed before correction.",
+      "fix": "Project only actual commit heads, bundle digest/size/object format, marker and Git executable hashes. Record only the Desktop profile digest. Keep the original path variables, fixture directories and reproduction/storage behavior unchanged."
+    },
+    {
+      "id": "E02",
+      "priority": "P2",
+      "files": [
+        {
+          "path": "e2e/fixtures/collaboration-stage-approvals.ts",
+          "line": 239
+        }
+      ],
+      "issue": "The new pre-trigger runtime-list request used TestApiClient.requestJSON, which supplies no AbortSignal/deadline, despite reusing S5 bounded freshness checks. Failed HTTP/transport reads also needed structured scenario evidence.",
+      "proof": "Extracted beforeTrigger executed only against fake dependencies; it failed the deadline test, then HTTP/transport observability tests before the final correction.",
+      "fix": "Use one explicit current-human GET to the same owner runtime path/execution workspace with the existing S5 10-second constant. Feed the unchanged runtimeAvailability validator on success, record safe HTTP/error facts on failure, throw without retry, and retain the existing outer cleanup. No global/shared-client/poller/provider timeout changed."
+    }
+  ],
+  "findings_not_fixed": [],
+  "review_evidence": [
+    {
+      "topic": "Real Git preparation authoring",
+      "sources": [
+        "e2e/fixtures/collaboration-stage-approvals.ts:176",
+        "e2e/collaboration-stage-approvals.spec.ts:438"
+      ],
+      "result": "Fixture creates two real local commits and a real bundle before adding dirty/untracked controls. Candidate2 names the bundle HEAD; provider marker digest and run preparation commit must match it. These Git operations were inspected, not executed by this reviewer."
+    },
+    {
+      "topic": "Provider compatibility and bounded output",
+      "sources": [
+        "e2e/fixtures/collaboration-host-runtime.ts:238",
+        "e2e/fixtures/collaboration-host-provider.go:27",
+        "e2e/fixtures/collaboration-host-provider.go:112",
+        "e2e/fixtures/collaboration-host-provider_test.go:146"
+      ],
+      "result": "Existing --fixture-kind was present at recorded HEAD. New capability handshake occurs only with testReport:true; optional Git/failure release preserve default success/custom-provider behavior. Buffer is not embedded, so io.Copy cannot promote ReaderFrom around the limit. Dedicated regression and full race suite pass."
+    },
+    {
+      "topic": "Actual CLI/report/role flow",
+      "sources": [
+        "e2e/fixtures/collaboration-host-provider.go:188",
+        "server/cmd/multica/cmd_collaboration_test_report.go:22",
+        "e2e/collaboration-stage-approvals.spec.ts:465",
+        "e2e/collaboration-stage-approvals.spec.ts:522"
+      ],
+      "result": "Authored commands match actual CLI subject/submit/receipt syntax and unchanged UUID/run ACK fields. Bare-host absence remains distinct; failure/new run/keys/reports/binding and retained old failure are asserted. QA uses current real Q after stage reset, with a fresh reviewer signature; source-only null build never implies release execution. No actual CLI/API/report flow ran."
+    },
+    {
+      "topic": "SQL and public account boundaries",
+      "sources": [
+        "e2e/fixtures/collaboration-stage-approvals.ts:284",
+        "e2e/fixtures/collaboration-stage-approvals.ts:343",
+        "server/pkg/db/queries/collaboration.sql:179",
+        "server/pkg/db/queries/collaboration_runtime.sql:137"
+      ],
+      "result": "Counts join command/run session_id to collaboration_session.issue_id, matching actual schema. Email bridge matches exact account+password username and NULL email within verified task DB; it changes no membership/password/role row. Source membership remains public invite/accept/remove/rejoin."
+    },
+    {
+      "topic": "Freshness and teardown",
+      "sources": [
+        "e2e/fixtures/collaboration-stage-approvals.ts:214",
+        "e2e/fixtures/collaboration-stage-approvals.ts:266",
+        "e2e/collaboration-stage-approvals.spec.ts:575",
+        "e2e/fixtures/collaboration-performance.ts:945"
+      ],
+      "result": "Managed runtime heartbeat verifies owner and keeps S5 15-second interval,10-second request bound and sticky errors. Cleanup closes owned daemons before joining heartbeats and restoring recorded gate booleans/monotonic epoch, then native/browser/SQL resources. Unsupported configured dependencies throw rather than silently pass/skip. Existing four portable cleanup tests passed."
+    }
+  ],
+  "final_owned_files": [
+    {
+      "path": "e2e/collaboration-stage-approvals.spec.ts",
+      "input_sha256": "e08ac729902d007fc71a2bfa33017b2b1227f39726bde6389fac9bd946abe608",
+      "final_sha256": "f8f0c32f7622ef4cb521bdfd6aec423906d7f955e3b9be7aea940f73d8883e73",
+      "reviewer_changed": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-approvals.ts",
+      "input_sha256": "104b50119ea53a97a8f688d2f9fba44fd5a46afd097db1adb8ecbab1941dcaea",
+      "final_sha256": "00405f3f5b6d978fe22ae54a35500a9481888a0cd4976aefe29df8a346dd3f27",
+      "reviewer_changed": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-runtime.ts",
+      "input_sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519",
+      "final_sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519",
+      "reviewer_changed": false
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider.go",
+      "input_sha256": "fc1095dc4fea11ad6a3e0a96647d99996687ba10937c00ebda53097f26fcd77f",
+      "final_sha256": "fc1095dc4fea11ad6a3e0a96647d99996687ba10937c00ebda53097f26fcd77f",
+      "reviewer_changed": false
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider_test.go",
+      "input_sha256": "4830a9dd03ea6e9212918418eb0654d62f77b0fbbff6e70df7bdc52d8ad9f4a3",
+      "final_sha256": "4830a9dd03ea6e9212918418eb0654d62f77b0fbbff6e70df7bdc52d8ad9f4a3",
+      "reviewer_changed": false
+    }
+  ],
+  "original_logs_verified": [
+    {
+      "id": "provider-red-1",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-red-1.log",
+      "sha256": "a968231bd24d30195fc726c2dff09282e742b08f24e60ad1cef37d199bb0ddf3",
+      "verified_exit": 1
+    },
+    {
+      "id": "provider-green-1",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-green-1.log",
+      "sha256": "8133995f99704f409f62d5f5131c34638c74c7665c5742e96eb0d0dd07507719",
+      "verified_exit": 0
+    },
+    {
+      "id": "provider-output-red-1",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-output-red-1.log",
+      "sha256": "90e3220df31b11e46faccd23fede9cbe84aa6023f8125cf7c256e33753486631",
+      "verified_exit": 1
+    },
+    {
+      "id": "provider-green-2",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/provider-green-2.log",
+      "sha256": "3da240e41028b1c3b89c0844f68909b52225510edb0a909c8ee2ccd65c1d735d",
+      "verified_exit": 0
+    },
+    {
+      "id": "typecheck-1",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-1.log",
+      "sha256": "8b91af5f1591e795b93adc81e36416fd0af42d5fedc9e4245b08cda1416b5e5d",
+      "verified_exit": 2
+    },
+    {
+      "id": "typecheck-2",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-2.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified_exit": 0
+    },
+    {
+      "id": "typecheck-3",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-3.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified_exit": 0
+    },
+    {
+      "id": "typecheck-4",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/typecheck-4.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified_exit": 0
+    },
+    {
+      "id": "lint-1",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified_exit": 0
+    },
+    {
+      "id": "lint-2",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-2.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified_exit": 0
+    },
+    {
+      "id": "lint-3",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-3.log",
+      "sha256": "54f3e2472ece24d0796eccbd49f8d8a73c30c3efcecba1430d642e19dd74931c",
+      "verified_exit": 1
+    },
+    {
+      "id": "lint-4",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/lint-4.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified_exit": 0
+    },
+    {
+      "id": "host-node-1",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/host-node-1.log",
+      "sha256": "82b7bd12ab4ebfea7c3937db24f0d3c03fa9b1a047130a58052836caa2c7fc63",
+      "verified_exit": 0
+    },
+    {
+      "id": "discovery-1",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/discovery-1.log",
+      "sha256": "4a88e8156edbb526d8c6c26f8f1f2bf4d5fa8379a960b5921499f3344280e307",
+      "verified_exit": 0
+    },
+    {
+      "id": "discovery-2",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/discovery-2.log",
+      "sha256": "4a88e8156edbb526d8c6c26f8f1f2bf4d5fa8379a960b5921499f3344280e307",
+      "verified_exit": 0
+    }
+  ],
+  "verification": [
+    {
+      "id": "fixture-red",
+      "exit_code": 1,
+      "summary": "Three initial failures: Git path dump, Desktop profile path dump, unbounded availability read",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/fixture-red.log",
+      "log_sha256": "4082510f3387f0b8136467597bed3fbf0ebd6b52252d09182ada21bea5634951",
+      "exit_file": null
+    },
+    {
+      "id": "fixture-green",
+      "exit_code": 0,
+      "summary": "Three checks passed after first local corrections",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/fixture-green.log",
+      "log_sha256": "42167139bc5ad3d79bdba45db893059376ffe5fd5598830d1ca47b29f6249009",
+      "exit_file": null
+    },
+    {
+      "id": "fixture-failure-red",
+      "exit_code": 1,
+      "summary": "HTTP and transport failures lacked structured evidence; three controls passed",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/fixture-failure-red.log",
+      "log_sha256": "3e147ebed9511709dc88e66965aa244ba3ba474233c0bf9731b91848ad92f22a",
+      "exit_file": null
+    },
+    {
+      "id": "fixture-final",
+      "exit_code": 0,
+      "summary": "Five projection/bounded-read/failure checks passed",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/fixture-final.log",
+      "log_sha256": "c949212c2b8459cd80233859a862101cde4375cce324d6b7dc4089c6c5aeaef0",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/fixture-final.exit"
+    },
+    {
+      "id": "fixture-final2",
+      "exit_code": 1,
+      "summary": "Six checks passed; one private harness VM-prototype comparison failed, not a fixture regression",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/fixture-final2.log",
+      "log_sha256": "e36b9f51bde4330aa8d76957508df12ebf74d7f35b3526d48074cda13d245b0d",
+      "exit_file": null
+    },
+    {
+      "id": "fixture-final3",
+      "exit_code": 0,
+      "summary": "Seven final source-extracted checks passed, including default/opt-in capability handshake",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/fixture-final3.log",
+      "log_sha256": "2a19ff9b6459f3157eb5b8ac166c6e278be5a9b8e339088f795a9bde12614dd5",
+      "exit_file": null
+    },
+    {
+      "id": "provider-race",
+      "exit_code": 0,
+      "summary": "8 top-level /31 named PASS; zero FAIL/SKIP",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/provider-race.log",
+      "log_sha256": "0b9d799f062704f3432dbd4b2bafff3214338b43378f238109a78adf09c33233",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/provider-race.exit"
+    },
+    {
+      "id": "host-cleanup",
+      "exit_code": 0,
+      "summary": "Four source-extracted cleanup portability tests passed",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/host-cleanup.log",
+      "log_sha256": "23c67cd0cb3108e829c5204c91b9e0ff5fd81b294c312d6deed4f88b124d9e4d",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/host-cleanup.exit"
+    },
+    {
+      "id": "types",
+      "exit_code": 0,
+      "summary": "Targeted strict TypeScript passed",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/types.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/types.exit"
+    },
+    {
+      "id": "lint",
+      "exit_code": 0,
+      "summary": "Targeted ESLint passed, zero findings",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/lint.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/lint.exit"
+    },
+    {
+      "id": "discovery",
+      "exit_code": 0,
+      "summary": "One scenario in one file; no test body executed",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/discovery.log",
+      "log_sha256": "139aed160a350831bf790f2664c5a18b3fb97df2ef31d5a6672b54b15dea5af5",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/discovery.exit"
+    }
+  ],
+  "commands": [
+    {
+      "name": "types",
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--project",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/tsconfig.json",
+        "--pretty",
+        "false"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "lint",
+      "argv": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "--config",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-20261114T075324Z/eslint.config.mjs",
+        "--max-warnings",
+        "0",
+        "--no-cache",
+        "e2e/collaboration-stage-approvals.spec.ts",
+        "e2e/fixtures/collaboration-stage-approvals.ts",
+        "e2e/fixtures/collaboration-host-runtime.ts"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "fixture-final",
+      "argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/bounded-fixture-check.cjs"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "host-cleanup",
+      "argv": [
+        "node",
+        "--test",
+        "e2e/fixtures/collaboration-host-runtime.node-test.mjs"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "discovery",
+      "argv": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-stage-approvals.spec.ts",
+        "--list"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "provider-race",
+      "argv": [
+        "go",
+        "test",
+        "-race",
+        "-json",
+        "-count=1",
+        "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-host-provider.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-host-provider_test.go"
+      ],
+      "exit": 0,
+      "environment": "Allowlisted PATH/platform variables; private HOME/TMP/GOCACHE; GOENV=off,GOTOOLCHAIN=local,GOPROXY=off,GOSUMDB=off; no inherited account/model/database credentials."
+    }
+  ],
+  "fixture_check": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e-increment2-check/bounded-fixture-check.cjs",
+    "sha256": "d939236d61ee7d83617c944f2dea6c4ce68ce0064fa796cb8c9c706981efdc25",
+    "scope": "Actual AST-extracted evidence expressions and beforeTrigger/prefix code run only with fake fs/child-process/fetch/actor dependencies; no scenario body/Git/HTTP/daemon launch."
+  },
+  "provider_test_terminals": [
+    {
+      "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt/none",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt/duplicate_effect",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixtureTestReportUsesPreparedSourceAndOriginalCLIReceipt",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixtureTestSubjectUnavailableIsNotAPassingReport",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePaymentCasesRejectUnboundedOrUnrelatedMarkers",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixtureReleaseFailureKeepsDefaultSuccessSeparate",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixtureCLIOutputLimitAlsoAppliesToPipeCopies",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptAcceptsManagedKnowledgeSuffix",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/no_knowledge",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/whitespace_only",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/valid_empty_array",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/valid_array_trailing_whitespace",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/garbage_suffix",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/second_frozen_value",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/wrong_marker",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/extra_prefix_whitespace",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/malformed_array",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/not_array",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/knowledge_second_value",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/knowledge_garbage_tail",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/hash_mismatch",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/invalid_candidate",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/invalid_source",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/zero_version",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/noncanonical_version",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries/duplicate_identity",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptKeepsStrictFrameAndKnowledgeBoundaries",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs/wrong_issue",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs/missing_inputs",
+      "action": "pass"
+    },
+    {
+      "name": "TestFixturePromptStillRequiresAdmittedIssueAndInputs",
+      "action": "pass"
+    }
+  ],
+  "context_bindings": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "author_sha256": "6b5d4a192263b7543d6d0adac1ad16aba3b5a38251d7b48cf9c7a18029fe4485",
+      "review_sha256": "dabc19c5762e46577468e3ec436998b4837f28e9ba1996731b47b2d9ad3e8c14"
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_test.go",
+      "author_sha256": "6ea88ebb555918c2e75878dca7addbc0af11adc5dadb6604fb8fad230fa70aab",
+      "review_sha256": "6ea88ebb555918c2e75878dca7addbc0af11adc5dadb6604fb8fad230fa70aab"
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_boundary_test.go",
+      "author_sha256": "3ad39578ecca2cbcf57c1237df3bb20f0567a6b9b75d0261ebb706b95a24e61a",
+      "review_sha256": "3ad39578ecca2cbcf57c1237df3bb20f0567a6b9b75d0261ebb706b95a24e61a"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-report-schema.ts",
+      "author_sha256": "5c1592a40abf86a399b074b3c5e7ce3363c3e7d7e1216056c25b22ffc93ce66a",
+      "review_sha256": "5c1592a40abf86a399b074b3c5e7ce3363c3e7d7e1216056c25b22ffc93ce66a"
+    },
+    {
+      "path": "packages/views/collaboration/stage-test-report.tsx",
+      "author_sha256": "a846404b40eb171456a47ec543b8ec3970b4687dcafb8a1eb92c6fc73f38756b",
+      "review_sha256": "a846404b40eb171456a47ec543b8ec3970b4687dcafb8a1eb92c6fc73f38756b"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.tsx",
+      "author_sha256": "e0ceb537d9439f0d3b3686f90f1251591c6bb8978224d109dc88f7635e9f3989",
+      "review_sha256": "e0ceb537d9439f0d3b3686f90f1251591c6bb8978224d109dc88f7635e9f3989"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-forms.tsx",
+      "author_sha256": "634263dad2405ed777148f422a611333394a167690aa85c2d4faf0c510b55600",
+      "review_sha256": "634263dad2405ed777148f422a611333394a167690aa85c2d4faf0c510b55600"
+    },
+    {
+      "path": "packages/views/collaboration/comment-composer.tsx",
+      "author_sha256": "cfce6a82e9bf2e783c32bb96ebd6b80ae676d1348100dad56548b03e33bc154e",
+      "review_sha256": "cfce6a82e9bf2e783c32bb96ebd6b80ae676d1348100dad56548b03e33bc154e"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-performance.ts",
+      "author_sha256": "75d25dc3f531fa80ca807d7f3da95a0bcc746082702bcf966f225f09b9d6471a",
+      "review_sha256": "75d25dc3f531fa80ca807d7f3da95a0bcc746082702bcf966f225f09b9d6471a"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-performance-stats.ts",
+      "author_sha256": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+      "review_sha256": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d"
+    }
+  ],
+  "ready_for_later_configured_execution": true,
+  "acceptance": {
+    "A05": "NOT_RUN",
+    "A01_A12": "NOT_RUN",
+    "S2": "NOT_ACCEPTED",
+    "playwright_test_bodies": 0,
+    "actual_git_fixture_execution": 0,
+    "live_api_calls": 0,
+    "database_connections": 0,
+    "browser_launches": 0,
+    "daemon_launches": 0,
+    "model_calls": 0
+  },
+  "limits": [
+    "Typecheck, lint and discovery are authoring checks only.",
+    "Go provider tests invoke the exact test executable as a fake CLI; no actual test subject/API/preparation is proven.",
+    "Prepared Git materialization, report binding/settlement, real shared UI selectors, current source authority and whole cleanup must still be exercised after2d with source-bound builds.",
+    "Release/rollback/M1/admin/final completion and full A01-A12 remain outside this authored source-only QA subset."
+  ],
+  "git_writes": false,
+  "server_edits": false,
+  "core_views_edits": false,
+  "wire_spec_edits": false,
+  "dependencies_added": false,
+  "retained_snapshots_and_failures": true
+}

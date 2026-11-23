@@ -1,0 +1,102 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "scope": "Compile-only deterministic test fixtures and API CLI; no Provider execution or paid account access",
+  "records": [
+    {
+      "name": "host-provider",
+      "command": [
+        "go",
+        "build",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/host-provider",
+        "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-host-provider.go"
+      ],
+      "started_at": "2026-11-02T00:27:22.522508+00:00",
+      "state": "complete",
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T00:27:23.253169+00:00",
+      "artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/host-provider",
+      "sha256": "40475454b88d49ccb73258e81e14e70c7b0f36310750124c33a3ef1395db9b0f",
+      "bytes": 5496082
+    },
+    {
+      "name": "memory-provider",
+      "command": [
+        "go",
+        "build",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/memory-provider",
+        "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-memory-provider.go"
+      ],
+      "started_at": "2026-11-02T00:27:23.256656+00:00",
+      "state": "complete",
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T00:27:23.625207+00:00",
+      "artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/memory-provider",
+      "sha256": "4c11cdbf8d8b3c86dd072a68674d1c8ee4d6e256a74dfaa8a7f2ee675d78fc00",
+      "bytes": 5087922
+    },
+    {
+      "name": "cross-client-provider",
+      "command": [
+        "go",
+        "build",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/cross-client-provider",
+        "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-provider.go"
+      ],
+      "started_at": "2026-11-02T00:27:23.630073+00:00",
+      "state": "complete",
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T00:27:23.892605+00:00",
+      "artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/cross-client-provider",
+      "sha256": "e3edb12cdaab7238907d61e6af0c1be62182f4680631a73f6439f0fb96ae32a9",
+      "bytes": 4677218
+    },
+    {
+      "name": "host-daemon.test",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/host-daemon.test",
+        "./internal/daemon"
+      ],
+      "started_at": "2026-11-02T00:27:23.896050+00:00",
+      "state": "complete",
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T00:27:33.454081+00:00",
+      "artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/host-daemon.test",
+      "sha256": "54d416cd405955d6ce674c8cc28a28ddb1beb34bb0d8d2aaa103de842a3c15eb",
+      "bytes": 41798130
+    },
+    {
+      "name": "password-server",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/password-server",
+        "-ldflags=-X main.commit=7af9ab990",
+        "./cmd/server"
+      ],
+      "started_at": "2026-11-02T00:27:33.475074+00:00",
+      "state": "complete",
+      "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T00:27:42.063839+00:00",
+      "artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/fixture-bin/password-server",
+      "sha256": "3e659bfeb3cf97520622879af0f0bae5a43d89349b7793ebf3ff799acb941611",
+      "bytes": 101294610
+    }
+  ]
+}

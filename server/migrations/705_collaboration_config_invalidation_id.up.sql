@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS idx_collaboration_config_invalidation_id ON collaboration_config_invalidation(id);

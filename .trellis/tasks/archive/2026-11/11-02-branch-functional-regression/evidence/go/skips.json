@@ -1,0 +1,326 @@
+[
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/migrate",
+    "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "04-cmd_migrate",
+    "evidence": "evidence/go/04-cmd_migrate/stdout.jsonl",
+    "reason_output": "=== RUN   TestCommentContentBigramRequirementMatchesRealPGBigm\n    migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test\n--- SKIP: TestCommentContentBigramRequirementMatchesRealPGBigm (0.08s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl",
+    "reason_output": "=== RUN   TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux\n    collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationPartialResumeRoutesLinux",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl",
+    "reason_output": "=== RUN   TestCollaborationPartialResumeRoutesLinux\n    collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationPartialResumeRoutesLinux (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl",
+    "reason_output": "=== RUN   TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry\n    collaboration_knowledge_realtime_test.go:125: requires isolated REDIS_TEST_URL\n--- SKIP: TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl",
+    "reason_output": "=== RUN   TestCollaborationSingleAgentRuntimeRoutesLinux\n    collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSingleAgentRuntimeRoutesLinux (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl",
+    "reason_output": "=== RUN   TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux\n    collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl",
+    "reason_output": "=== RUN   TestCollaborationRuntimeProofSurvivesOwnerDisableLinux\n    collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationRuntimeProofSurvivesOwnerDisableLinux (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "06-cmd_server",
+    "evidence": "evidence/go/06-cmd_server/stdout.jsonl",
+    "reason_output": "=== RUN   TestCollaborationSquadCapacityOneRoutesLinux\n    collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCapacityOneRoutesLinux (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestCloudPATVerifier_CacheHitSkipsHTTP",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestCloudPATVerifier_CacheHitSkipsHTTP\n    cloud_pat_test.go:290: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_CacheHitSkipsHTTP (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestCloudPATVerifier_NegativesNotCached",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestCloudPATVerifier_NegativesNotCached\n    cloud_pat_test.go:324: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_NegativesNotCached (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestCloudPATVerifier_LookupRejectsUnknownOwner",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestCloudPATVerifier_LookupRejectsUnknownOwner\n    cloud_pat_test.go:356: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_LookupRejectsUnknownOwner (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestCloudPATVerifier_LookupSuccessIsCached",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestCloudPATVerifier_LookupSuccessIsCached\n    cloud_pat_test.go:435: REDIS_TEST_URL not set\n--- SKIP: TestCloudPATVerifier_LookupSuccessIsCached (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestDaemonTokenCache_SetGetInvalidate",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestDaemonTokenCache_SetGetInvalidate\n    daemon_token_cache_test.go:27: REDIS_TEST_URL not set\n--- SKIP: TestDaemonTokenCache_SetGetInvalidate (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestDaemonTokenCache_TTL",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestDaemonTokenCache_TTL\n    daemon_token_cache_test.go:51: REDIS_TEST_URL not set\n--- SKIP: TestDaemonTokenCache_TTL (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestDaemonTokenCache_Set_RespectsClampedTTL",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestDaemonTokenCache_Set_RespectsClampedTTL\n    daemon_token_cache_test.go:69: REDIS_TEST_URL not set\n--- SKIP: TestDaemonTokenCache_Set_RespectsClampedTTL (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestMembershipCache_SetGetInvalidate",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestMembershipCache_SetGetInvalidate\n    membership_cache_test.go:27: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_SetGetInvalidate (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestMembershipCache_TTL",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestMembershipCache_TTL\n    membership_cache_test.go:50: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_TTL (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestMembershipCache_IsolatesKeysByUser",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestMembershipCache_IsolatesKeysByUser\n    membership_cache_test.go:68: REDIS_TEST_URL not set\n--- SKIP: TestMembershipCache_IsolatesKeysByUser (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestPasswordLimiterSharedAtomicAdmission",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestPasswordLimiterSharedAtomicAdmission\n    password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured\n--- SKIP: TestPasswordLimiterSharedAtomicAdmission (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestPATCache_SetGetInvalidate",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestPATCache_SetGetInvalidate\n    pat_cache_test.go:61: REDIS_TEST_URL not set\n--- SKIP: TestPATCache_SetGetInvalidate (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestPATCache_TTL",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestPATCache_TTL\n    pat_cache_test.go:90: REDIS_TEST_URL not set\n--- SKIP: TestPATCache_TTL (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestPATCache_Set_RespectsClampedTTL",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "12-internal_auth",
+    "evidence": "evidence/go/12-internal_auth/stdout.jsonl",
+    "reason_output": "=== RUN   TestPATCache_Set_RespectsClampedTTL\n    pat_cache_test.go:142: REDIS_TEST_URL not set\n--- SKIP: TestPATCache_Set_RespectsClampedTTL (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/cli",
+    "test": "TestCLIConfig_UnknownFieldsArePreserved",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "17-internal_cli",
+    "evidence": "evidence/go/17-internal_cli/stdout.jsonl",
+    "reason_output": "=== RUN   TestCLIConfig_UnknownFieldsArePreserved\n    config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder\n--- SKIP: TestCLIConfig_UnknownFieldsArePreserved (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "20-internal_daemon",
+    "evidence": "evidence/go/20-internal_daemon/stdout.jsonl",
+    "reason_output": "=== RUN   TestCollaborationBatchPollerSlotsAndRunnerLinux\n    collaboration_test.go:189: requires real Linux kernel containment\n--- SKIP: TestCollaborationBatchPollerSlotsAndRunnerLinux (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestIsDriveRoot",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "20-internal_daemon",
+    "evidence": "evidence/go/20-internal_daemon/stdout.jsonl",
+    "reason_output": "=== RUN   TestIsDriveRoot\n    local_directory_test.go:383: windows-only behaviour\n--- SKIP: TestIsDriveRoot (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl",
+    "reason_output": "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500\n    autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant\n--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestIterationI1P95",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl",
+    "reason_output": "=== RUN   TestIterationI1P95\n    iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1P95 (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestIterationI1DisableP95",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl",
+    "reason_output": "=== RUN   TestIterationI1DisableP95\n    iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1DisableP95 (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl",
+    "reason_output": "=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration\n    skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test\n--- SKIP: TestFetchFromSkillsSh_AnthropicPptxIntegration (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestTriageQueueScaleBaseline",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl",
+    "reason_output": "=== RUN   TestTriageQueueScaleBaseline\n    triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending\n--- SKIP: TestTriageQueueScaleBaseline (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestTriageWireFixtures",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl",
+    "reason_output": "=== RUN   TestTriageWireFixtures\n    triage_test.go:566: wire fixture export requested only by cross-package verification\n--- SKIP: TestTriageWireFixtures (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "33-internal_handler",
+    "evidence": "evidence/go/33-internal_handler/stdout.jsonl",
+    "reason_output": "=== RUN   TestMcpMarketPublicHTTPRecipeLifecycle\n    workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes\n--- SKIP: TestMcpMarketPublicHTTPRecipeLifecycle (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "69-pkg_agent",
+    "evidence": "evidence/go/69-pkg_agent/stdout.jsonl",
+    "reason_output": "=== RUN   TestACPManagedTerminalPreservesWindowsUnicodeShellOutput\n    acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows\n--- SKIP: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "69-pkg_agent",
+    "evidence": "evidence/go/69-pkg_agent/stdout.jsonl",
+    "reason_output": "=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped\n    codex_test.go:3198: Linux signal/reap semantics regression\n--- SKIP: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestPiExecuteAttachesStdinPipe",
+    "level": "top_level",
+    "status": "SKIP",
+    "run_id": "69-pkg_agent",
+    "evidence": "evidence/go/69-pkg_agent/stdout.jsonl",
+    "reason_output": "=== RUN   TestPiExecuteAttachesStdinPipe\n=== PAUSE TestPiExecuteAttachesStdinPipe\n=== CONT  TestPiExecuteAttachesStdinPipe\n    pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0\n--- SKIP: TestPiExecuteAttachesStdinPipe (0.00s)\n"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+    "level": "subtest",
+    "status": "SKIP",
+    "run_id": "69-pkg_agent",
+    "evidence": "evidence/go/69-pkg_agent/stdout.jsonl",
+    "reason_output": "=== RUN   TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n    claude_test.go:756: root-only preflight assertion\n--- SKIP: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)\n"
+  }
+]

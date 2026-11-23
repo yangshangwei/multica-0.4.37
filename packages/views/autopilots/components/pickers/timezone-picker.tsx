@@ -107,7 +107,7 @@ export function TimezonePicker({
             "hover:bg-accent/30",
             "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
             "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-            "dark:bg-input/30",
+            "dark:bg-input-fill/30",
             className,
           )}
         />

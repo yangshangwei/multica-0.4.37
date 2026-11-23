@@ -1,0 +1,82 @@
+[
+  {
+    "role": "cmd_red",
+    "database": "multica_inbox_snooze_cmd_red",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "run",
+      "./cmd/migrate",
+      "up"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/migrate-cmd_red-v889.log",
+    "log_sha256": "2ed7b7934c76fa26cc733781bcf20e0fe5442b738e5d43c9bc451b3d4e70a3fb",
+    "migration_ledger": "877|889_inbox_critical_source_identity"
+  },
+  {
+    "role": "cmd_delivery_iter",
+    "database": "multica_inbox_snooze_cmd_delivery_iter",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "run",
+      "./cmd/migrate",
+      "up"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/migrate-cmd_delivery_iter-v889.log",
+    "log_sha256": "00cfb33df92b8eeb82edb32e8888d3eace734c6c9774cc0f16ca6cd13588d924",
+    "migration_ledger": "877|889_inbox_critical_source_identity"
+  },
+  {
+    "role": "service_delivery_iter",
+    "database": "multica_inbox_snooze_service_delivery_iter",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "run",
+      "./cmd/migrate",
+      "up"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/migrate-service_delivery_iter-v889.log",
+    "log_sha256": "72c4445b6414ebccee11adfc1c63623ed53e74f717c2deabbf4e18a669b0dfa4",
+    "migration_ledger": "877|889_inbox_critical_source_identity"
+  },
+  {
+    "role": "handler_delivery_iter",
+    "database": "multica_inbox_snooze_handler_delivery_iter",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "run",
+      "./cmd/migrate",
+      "up"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/migrate-handler_delivery_iter-v889.log",
+    "log_sha256": "1526890ac1348d9f6b1d8500263da582804cd80ee77fc721a7ab802c8808034d",
+    "migration_ledger": "877|889_inbox_critical_source_identity"
+  },
+  {
+    "role": "api",
+    "database": "multica_inbox_snooze_api",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "run",
+      "./cmd/migrate",
+      "up"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/migrate-api-v889.log",
+    "log_sha256": "ae659d17e2b64b726f284e93fb3f062b3b0204bf143415407525b874966ab651",
+    "migration_ledger": "877|889_inbox_critical_source_identity"
+  }
+]

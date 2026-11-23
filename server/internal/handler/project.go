@@ -20,6 +20,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/iteration"
 	"github.com/multica-ai/multica/server/internal/logger"
 	"github.com/multica-ai/multica/server/internal/projecthealth"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -644,7 +645,7 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 	actorType, actorID := h.resolveActor(r, userID, workspaceID)
 	var project db.Project
 	err = h.runProjectTransaction(r.Context(), wsUUID, parseUUID(userID), func(tx pgx.Tx, qtx *db.Queries) error {
-		prevProject, lockErr := qtx.LockProjectForExecutionSquad(r.Context(), db.LockProjectForExecutionSquadParams{ID: idUUID, WorkspaceID: wsUUID})
+		prevProject, lockErr := qtx.LockProjectForUpdate(r.Context(), db.LockProjectForUpdateParams{ID: idUUID, WorkspaceID: wsUUID})
 		if lockErr != nil {
 			if errors.Is(lockErr, pgx.ErrNoRows) {
 				return projectErr(404, "project_not_found", "project not found")
@@ -795,16 +796,17 @@ func (h *Handler) UpdateProject(w http.ResponseWriter, r *http.Request) {
 }
 
 type ProjectDeleteImpact struct {
-	WorkspaceID         string `json:"workspace_id"`
-	ProjectID           string `json:"project_id"`
-	ProjectRevision     int64  `json:"project_revision"`
-	IssueCount          int64  `json:"issue_count"`
-	FormalIssueCount    int64  `json:"formal_issue_count"`
-	ResourceCount       int64  `json:"resource_count"`
-	UpdateCount         int64  `json:"update_count"`
-	AutopilotCount      int64  `json:"autopilot_count"`
-	PreservesIssues     bool   `json:"preserves_issues"`
-	PreservesExecutions bool   `json:"preserves_executions"`
+	BlockingReasons     []string `json:"blocking_reasons,omitempty"`
+	WorkspaceID         string   `json:"workspace_id"`
+	ProjectID           string   `json:"project_id"`
+	ProjectRevision     int64    `json:"project_revision"`
+	IssueCount          int64    `json:"issue_count"`
+	FormalIssueCount    int64    `json:"formal_issue_count"`
+	ResourceCount       int64    `json:"resource_count"`
+	UpdateCount         int64    `json:"update_count"`
+	AutopilotCount      int64    `json:"autopilot_count"`
+	PreservesIssues     bool     `json:"preserves_issues"`
+	PreservesExecutions bool     `json:"preserves_executions"`
 }
 
 func (h *Handler) GetProjectDeleteImpact(w http.ResponseWriter, r *http.Request) {
@@ -822,7 +824,7 @@ func (h *Handler) GetProjectDeleteImpact(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	var out ProjectDeleteImpact
-	err = h.runProjectTransaction(r.Context(), ws, actor, func(_ pgx.Tx, q *db.Queries) error {
+	err = h.runProjectTransaction(r.Context(), ws, actor, func(tx pgx.Tx, q *db.Queries) error {
 		if err := requireProjectAdministrator(r.Context(), q, ws, actor); err != nil {
 			return err
 		}
@@ -837,6 +839,17 @@ func (h *Handler) GetProjectDeleteImpact(w http.ResponseWriter, r *http.Request)
 			return err
 		}
 		out = ProjectDeleteImpact{WorkspaceID: uuidToString(ws), ProjectID: uuidToString(id), ProjectRevision: impact.ProjectRevision, IssueCount: impact.IssueCount, FormalIssueCount: impact.FormalIssueCount, ResourceCount: impact.ResourceCount, UpdateCount: impact.UpdateCount, AutopilotCount: impact.AutopilotCount, PreservesIssues: true, PreservesExecutions: true}
+		project, err := q.GetProjectInWorkspace(r.Context(), db.GetProjectInWorkspaceParams{ID: id, WorkspaceID: ws})
+		if err != nil {
+			return err
+		}
+		if err = service.CheckStageProjectDeleteInTx(r.Context(), tx, project); err != nil {
+			var refusal service.DeliveryCompletionError
+			if !errors.As(err, &refusal) || refusal.Code != "stage_policy_exit_required" {
+				return err
+			}
+			out.BlockingReasons = []string{refusal.Code}
+		}
 		return nil
 	})
 	if err != nil {
@@ -904,6 +917,9 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 			}
 			return err
 		}
+		if err := service.CheckDeliveryProjectDeleteInTx(r.Context(), tx, project); err != nil {
+			return err
+		}
 		if input.ExpectedRevision != nil && *input.ExpectedRevision != project.Revision {
 			return &projectAPIError{Status: 409, Code: "project_revision_conflict", Message: "project changed since deletion preview", Current: projectToResponse(project)}
 		}
@@ -913,6 +929,12 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 		}
 		if foreignReferences {
 			return projectErr(409, "project_association_integrity_conflict", "project associations are inconsistent; deletion is blocked")
+		}
+		if err = service.DeleteKnowledgeTargetsInTx(r.Context(), q, operationID, ws, id); err != nil {
+			return err
+		}
+		if _, err = q.DeleteProjectKnowledgePolicy(r.Context(), db.DeleteProjectKnowledgePolicyParams{ProjectID: id, WorkspaceID: ws}); err != nil {
+			return err
 		}
 
 		// Lock automation parents before triggers, matching every binding writer.
@@ -941,6 +963,23 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 		issues, err := q.LockProjectIssuesForDelete(r.Context(), db.LockProjectIssuesForDeleteParams{ProjectID: id, WorkspaceID: ws})
 		if err != nil {
 			return err
+		}
+		// Clearing project_id on a collaboration issue would change its source
+		// structure outside the collaboration workflow and its record (R49). The
+		// workspace iteration fence held above is also taken by collaboration
+		// structure and creation writers, so none can join this project meanwhile.
+		if len(issues) > 0 {
+			issueIDs := make([]pgtype.UUID, 0, len(issues))
+			for _, issue := range issues {
+				issueIDs = append(issueIDs, issue.ID)
+			}
+			shared, err := q.AnyCollaborationIssuesInWorkspace(r.Context(), db.AnyCollaborationIssuesInWorkspaceParams{WorkspaceID: ws, IssueIds: issueIDs})
+			if err != nil {
+				return err
+			}
+			if shared {
+				return projectErr(409, "project_has_collaboration_issues", "This project has collaboration issues. Move them out of it before deleting.")
+			}
 		}
 
 		records, err := iteration.PrepareIssueRecords(r.Context(), tx, issues, lockedIterations)
@@ -991,6 +1030,9 @@ func (h *Handler) DeleteProject(w http.ResponseWriter, r *http.Request) {
 		return q.DeleteProject(r.Context(), db.DeleteProjectParams{ID: id, WorkspaceID: ws})
 	})
 	if err != nil {
+		if writeIssueDeliveryError(w, err) {
+			return
+		}
 		writeProjectAPIError(w, err)
 		return
 	}

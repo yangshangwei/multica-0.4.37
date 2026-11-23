@@ -48,14 +48,16 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | Contract | Location | Behavior | Safe check |
 |---|---|---|---|
 | Roster of fourteen listed role templates | `builtin_agent_templates_roster.go` `builtinAgentRoleTemplates` | Product-ordered slice; `Listed: false` marks squad-leader definitions, which `AgentRoleTemplates()` filters out of the picker | `curl` / UI: `GET /api/agents/templates` |
-| Progress Reporter defaults | `builtin_agent_templates_roster.go` `progress-reporter`; `builtin_role_skills/multica-progress-report/SKILL.md` | Contributor, concurrency one, one reporting skill; business sources read-only by instruction, only assigned report review closeout permitted after comment delivery | `agent_template_test.go` reporter creation and preserved-copy regressions |
-| Diagnostician defaults | `builtin_agent_templates_roster.go` `diagnostician`; `builtin_agent_templates/diagnostician/INSTRUCTIONS.md`; `builtin_role_skills/multica-debugging/SKILL.md` | Contributor, concurrency one, only `multica-debugging`; confirmed causes include evidence, a minimal reproduction for regression tests and a fix direction for the Implementer; suspected/unresolved conclusions state gaps and next checks. Temporary instrumentation is removed before handoff; no fix submission or issue-status change. These are instruction limits, not an extra API sandbox; defaults apply to new template agents and missing role skills, leaving existing copies unchanged | `builtin_agent_templates_test.go` `TestDiagnostician_EvidenceContract` |
-| Reliability Engineer defaults | `builtin_agent_templates_roster.go` `reliability-engineer`; `builtin_agent_templates/reliability-engineer/INSTRUCTIONS.md`; `builtin_role_skills/multica-reliability-engineering/SKILL.md` | Contributor, concurrency one, one reliability skill; reports SLI/SLO, error-budget, capacity, degradation and recovery evidence; no production operation | `builtin_agent_templates_test.go` roster/autonomy/skill checks |
-| Agent Evaluator defaults | `builtin_agent_templates_roster.go` `agent-evaluator`; `builtin_agent_templates/agent-evaluator/INSTRUCTIONS.md`; `builtin_role_skills/multica-agent-evaluation/SKILL.md` | Observer, concurrency two, one evaluation skill; versioned correctness/safety/cost/latency/drift cases with redacted traces; no production configuration changes | `builtin_agent_templates_test.go` roster/autonomy/skill checks |
-| Experience Validation Engineer defaults | `builtin_agent_templates_roster.go` `experience-validation-engineer`; `builtin_agent_templates/experience-validation-engineer/INSTRUCTIONS.md`; `builtin_role_skills/multica-experience-validation/SKILL.md` | Contributor, concurrency two, browser/client accessibility and outcome-risk evidence; no production data or release actions | `builtin_agent_templates_test.go` evidence contract and `builtin_squad_templates.go` roster checks |
-| Migration Reviewer defaults | `builtin_agent_templates_roster.go` `migration-reviewer`; `builtin_agent_templates/migration-reviewer/INSTRUCTIONS.md`; `builtin_role_skills/multica-migration-review/SKILL.md` | Observer, concurrency two, template v2; compatibility-window, validation, retry and rollback evidence; missing evidence is reported with a proposed issue, owner and acceptance criteria in the current comment, then handed to an authorized creator; no migration execution or issue creation by this role | `TestObserverReviewers_HandEvidenceGapsToAuthorizedOwners`; `TestCreateAgentFromTemplate_ObserverRevisionsPreserveWorkspaceCopies` |
+| Progress Reporter defaults | `builtin_agent_templates_roster.go` `progress-reporter`; `builtin_role_skills/multica-progress-report/SKILL.md` | Template v2, Contributor, concurrency 6 (agent default), reporting skill v5; task capability limits reads to the report issue’s project (only the report issue when unassigned to a project) and writes to its new comments; no status writes or comment-triggered execution. Existing workspace copies remain unchanged | `agent_template_test.go` reporter creation and preserved-copy regressions |
+| Diagnostician defaults | `builtin_agent_templates_roster.go` `diagnostician`; `builtin_agent_templates/diagnostician/INSTRUCTIONS.md`; `builtin_role_skills/multica-debugging/SKILL.md` | Contributor, concurrency 6 (agent default), only `multica-debugging`; confirmed causes include evidence, a minimal reproduction for regression tests and a fix direction for the Implementer; suspected/unresolved conclusions state gaps and next checks. Temporary instrumentation is removed before handoff; no fix submission or issue-status change. These are instruction limits, not an extra API sandbox; defaults apply to new template agents and missing role skills, leaving existing copies unchanged | `builtin_agent_templates_test.go` `TestDiagnostician_EvidenceContract` |
+| Reliability Engineer defaults | `builtin_agent_templates_roster.go` `reliability-engineer`; `builtin_agent_templates/reliability-engineer/INSTRUCTIONS.md`; `builtin_role_skills/multica-reliability-engineering/SKILL.md` | Contributor, concurrency 6 (agent default), one reliability skill; reports SLI/SLO, error-budget, capacity, degradation and recovery evidence; no production operation | `builtin_agent_templates_test.go` roster/autonomy/skill checks |
+| Agent Evaluator defaults | `builtin_agent_templates_roster.go` `agent-evaluator`; `builtin_agent_templates/agent-evaluator/INSTRUCTIONS.md`; `builtin_role_skills/multica-agent-evaluation/SKILL.md` | Observer, concurrency 6 (agent default), one evaluation skill; versioned correctness/safety/cost/latency/drift cases with redacted traces; no production configuration changes | `builtin_agent_templates_test.go` roster/autonomy/skill checks |
+| Experience Validation Engineer defaults | `builtin_agent_templates_roster.go` `experience-validation-engineer`; `builtin_agent_templates/experience-validation-engineer/INSTRUCTIONS.md`; `builtin_role_skills/multica-experience-validation/SKILL.md` | Contributor, concurrency 6 (agent default), browser/client accessibility and outcome-risk evidence; no production data or release actions | `builtin_agent_templates_test.go` evidence contract and `builtin_squad_templates.go` roster checks |
+| Code/Security Reviewer task scope | `builtin_agent_templates_roster.go`; `builtin_agent_templates/{code-reviewer,security-reviewer}/INSTRUCTIONS.md`; `builtin_role_skills/multica-{code,security}-review/SKILL.md` | Template v2 with code skill v2 / security skill v4; current-issue reads and new review comments only, no status writes or automatic leader wake; runtime capability briefing prevails over reused saved skills | `TestReadOnlyRoleTemplates_CapabilityDeliveryContract`; task capability claim/router tests |
+| Migration Reviewer defaults | `builtin_agent_templates_roster.go` `migration-reviewer`; `builtin_agent_templates/migration-reviewer/INSTRUCTIONS.md`; `builtin_role_skills/multica-migration-review/SKILL.md` | Observer, concurrency 6 (agent default), template v3 / skill v2; task capability permits only current-issue reads and new comments; no status writes, comment-triggered execution, migration execution or issue creation. Missing evidence is reported with a proposed issue, owner and acceptance criteria for an authorized creator; existing copies stay intact | `TestObserverReviewers_HandEvidenceGapsToAuthorizedOwners`; `TestCreateAgentFromTemplate_ObserverRevisionsPreserveWorkspaceCopies` |
 | Architect evidence-gap handoff | `builtin_agent_templates_roster.go` `architect`; `builtin_role_skills/multica-architecture-decision-record/SKILL.md` failure example | Observer role v2 with ADR skill v6; missing old-client fallback or compatibility window stays hold, with a proposed repair issue and acceptance criteria in the current comment for an authorized creator; the Architect does not create it | `TestObserverReviewers_HandEvidenceGapsToAuthorizedOwners`; `TestCreateIssue_ObserverAgentCannotCreate` |
 | Role prompt copied, not layered | `builtin_agent_templates.go` `AgentRoleTemplate.Instructions` + `agent_template.go` `CreateAgentFromTemplate` | The embedded INSTRUCTIONS.md text is written into `agent.instructions` at create, so a release never overwrites a workspace's edit (the opposite trade-off from Mika in `builtin_agents.go`) | `multica agent get <id> --output json` — `instructions` holds the full role text |
+| Review Gate leader v3 | `builtin_agent_templates_roster.go` `review-gate-lead`; `builtin_agent_templates/review-gate-lead/INSTRUCTIONS.md` | Coordinator, unchanged concurrency and skills; routes the six existing Review Gate roles for code, security, tests, agent behavior, experience and migration as applicable. Missing specialist evidence remains unknown/hold. Squad template stays v3; saved workspace copies retain their instructions | `TestReviewGateInstructionsCoverEveryRosterRole` checks the leader and squad bodies independently against the actual roster |
 | Default name follows the request language | `agent_template.go` `CreateAgentFromTemplate` + `agentRoleTemplateToResponse` | An omitted `name` falls back to `AgentRoleTemplate.Title(language)`, so `language=zh` stores 产品分析师; `DefaultName` remains the English fallback and the list response's `name` carries the same localized string the create would store | `GET /api/agents/templates?language=zh` then create without `name` |
 | Provenance is server-set | `agent.go` `agentTemplateProvenance` + `CreateAgent` | `template_key`, `template_version`, `autonomy_level` are arguments to the shared create path, not fields of `CreateAgentRequest`; the public create cannot set them | `POST /api/agents` with `template_key` → response has an empty `template_key` |
 | Template create reuses the ordinary create path | `agent.go` `createAgentFromRequest` | Runtime access, thinking/service-tier validation, name-conflict 409 and invocation permission all apply unchanged | read `createAgentFromRequest` |
@@ -85,6 +87,9 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | Execution requires approval AND operator | `agent_approval.go` `RecordAgentApprovalExecution` | `MarkAgentApprovalRequestExecuted` matches only `status='approved'`; the level check rejects a contributor holding an approval | `go test ./internal/handler -run TestRecordExecution` |
 | Identity comes from the token | `agent_approval.go` `CreateAgentApproval` | An agent actor's `agent_id` is taken from the task token, never from the body | `go test ./internal/handler -run TestCreateAgentApproval_AgentIdentityComesFromTheToken` |
 | CLI has no approve command | `cmd_approval.go` | `request`, `list`, `get`, `executed`, `cancel` only — an approve command would fail by design for every caller holding a task token | `multica approval --help` |
+| Controlled package scope is frozen before approval | `handler/agent_artifact.go`, `service/artifact_authority.go`, `internal/artifact/spec.go` | Dedicated typed local-synthetic request creates pending approval and unclaimed execution atomically; human decision requires exact spec digest | `go test ./internal/handler -run TestControlledArtifact` with an isolated migrated database |
+| Controlled side effects are never replayed | `handler/agent_artifact.go`, `internal/artifact/packager.go` | Durable unknown claim precedes one in-process packaging invocation; old self-report refuses bound approvals; failure/unknown never auto-run again | `go test ./internal/artifact`; isolated handler and router controlled-artifact suites |
+| Delivery evidence observation is not an execution grant | `handler/delivery_evidence.go`, `service/delivery_evidence.go`, `service/artifact_authority.go`, `cmd/server/router.go` | Human-only fixed-policy read snapshot checks current lifecycle versions, original producer authority, canonical receipt and observed PR candidate; missing/unknown evidence never passes; no done mutation | Isolated `TestDeliveryEvidence` handler and actual router suites |
 
 ## Copy command — `server/cmd/multica/cmd_agent_copy.go`
 
@@ -189,6 +194,8 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 | Contract | Line | Behavior |
 |---|---|---|
 | `LoadAgentSkills` | 1685 | `ListAgentSkills` + per-skill `ListSkillFiles` → content + supporting files for execution |
+| Shared skill changes invalidate resource consent | `migrations/709_collaboration_skill_content_invalidation.up.sql`; service/handler `collaboration_skill_invalidation_test.go` | Body/files/release or enabled-binding changes advance all affected agent epochs and durable invalidation; disabled bindings and presentation-only changes are excluded |
+| Idempotent bundle/binding replacement | `internal/handler/skill_files.go` `replaceSkillFiles`; `skill.go` `SetAgentSkills` | Preserve unchanged identities; reenable requested disabled bindings; no delete/reinsert consent churn |
 
 ## Built-in skills — `server/internal/service/builtin_skills.go`
 
@@ -213,3 +220,98 @@ go test ./internal/service -run TestBuiltinSkillsConformToTemplate
 deployment refresh and version-conflict contracts linked from `SKILL.md`.
 Both files are embedded by `loadBuiltinSkill`; the entrypoint stays within
 the 500-line L2 budget enforced by `TestBuiltinSkillsConformToTemplate`.
+
+
+## Delivery evidence observation
+
+The human-only evaluation endpoint binds current issue/project revisions, selected
+source/spec/artifact digests, original producer and approval identities, and the
+database-observed linked PR head. No remote HEAD verification is implied. The
+conservative observation horizon ends at artifact admission expiry; historical
+receipts remain retained. Observations never update issue status or trigger a
+new execution. No new UI/CLI flow is provided.
+
+## Versioned project policy and retained evaluations
+
+Human-only `GET/PUT /api/projects/{id}/delivery-policy` reads the virtual revision0/off
+or appends a policy revision. Only current workspace owners/admins may PUT, with
+`expected_policy_revision`, `mode: off|observe`, `policy_version:
+delivery-artifact-observe-v1`, `stage: done` and a nonempty reason. Project lead
+status alone grants no policy-write permission. Every accepted PUT appends; after
+a lost response read the policy before deciding another change. Off stops new
+persistent evaluations and preserves history; it is neither skip nor approval.
+
+`POST /api/issues/{id}/delivery-evidence/evaluations` accepts the original observer
+body plus `expected_policy_revision` and one canonical UUID `Idempotency-Key`.
+It stores one immutable observation for the verified human evaluator's key.
+`GET /api/issues/{id}/delivery-evidence/evaluations/{key}` and same-key POST recover
+that observation only after current resource, credential and artifact authority
+checks. A changed request conflicts; recovery never rewrites the original verdict,
+identity or expiry. Policy/resource/receipt drift and expiry appear separately in
+`applicability`. Original unknown/hold cannot turn into pass by replay, and even
+`current` has `usable_for_completion: false`. A deliberate new evaluation needs a
+new key; clients must never silently generate one after uncertainty. Deleted
+issue/workspace denies public recovery while history remains retained.
+
+Sources: `handler/delivery_policy.go`, `handler/delivery_evaluation.go`,
+`handler/delivery_evidence.go`, `service/delivery_evidence.go`,
+`service/delivery_policy.go`, `service/artifact_authority.go`,
+`pkg/db/queries/delivery_policy.sql`, migrations776–780.
+Tests: owned `TestDeliveryPolicy` / `TestDeliveryEvaluation` handler and real router
+suites, real migrations and static migration contract. The original stateless
+`/evaluate` route stays ledger-free. These policy/evaluation routes do not
+intercept any done writer, implement skip/enforcement, invoke a provider, or
+verify remote HEAD.
+
+## Ordinary completion authorization CLI
+
+`multica issue completion prepare <issue> --status <key>` reads current
+issue-scoped evidence candidates. Adding `--approval <uuid> --operation-file
+<path>` requests a fresh preview and writes a private local intent; it does not
+sign. `authorize --accept --reason --expires-at` is the dedicated human
+decision. `submit` sends only the target status and exact
+authorization/operation/revision binding through the existing issue writer.
+Normal `issue status` and status-only `issue update` keep their non-authorizing
+hint behavior.
+
+`show` reports the retained authorization/receipt separately from the current
+issue. When completion may have been dispatched, `issued/not_checked` remains
+unknown. Repeating authorize/submit/revoke queries the original request key or
+authorization and never resends a possibly committed write. The operation file
+is mode 0600, scoped to its Server/human/workspace, locked while in use, and
+contains neither bearer credentials nor private evaluation keys. `submit` has
+no `--no-start` or mixed-field updates. Implementation and fake-server tests:
+`server/cmd/multica/cmd_issue_completion.go` and
+`server/cmd/multica/cmd_issue_completion_test.go`.
+
+## Explicit completion evidence hints
+
+Human-only `POST /api/issues/{id}/delivery-evidence/completion-hint` accepts
+exactly `expected_issue_revision`, `target_status` and `evaluation_key` (the
+original evaluator's canonical UUID, or explicit null). It resolves the current
+ordinary issue, active target status category and project policy in one bounded
+transaction. Custom done categories have the same hint behavior as built-in
+done. Independent collaboration uses its own acceptance workflow and this
+ordinary endpoint returns `409 unsupported_collaboration_action`.
+
+With observe policy and a done target, missing key returns `attention` with
+`evaluation_required`. A supplied key uses the existing current-authority
+recovery: only original pass/current returns `matching`; stale, expired, hold
+and unknown return `attention`. Missing/other-subject keys, revoked authority,
+lock conflicts and database failures remain errors, not advisory success.
+An included evaluation retains its original observation; `checked_at` is the
+recovery's applicability check time. Off, no project and non-done targets return
+`not_applicable` without looking up the supplied key or exposing its evidence.
+
+Every result has `enforced: false` and `usable_for_completion: false`. Matching
+describes this read snapshot only. No new evaluation, execution, queue entry,
+comment or state change occurs. Web/Desktop and CLI status-only consumers may
+request this read before an ordinary done-category PUT, but they always send
+`evaluation_key: null`, never expose private evaluation data, and never treat
+the result as authorization. Batch, create-done, VCS or independent
+collaboration completion is not intercepted. Off is not skip or an execution
+grant.
+
+Sources: `handler/delivery_completion_hint.go`, existing policy/evaluation and
+status-catalog helpers, `cmd/server/router.go`. Tests: owned
+`TestDeliveryCompletionHint` handler and real authenticated router suites.

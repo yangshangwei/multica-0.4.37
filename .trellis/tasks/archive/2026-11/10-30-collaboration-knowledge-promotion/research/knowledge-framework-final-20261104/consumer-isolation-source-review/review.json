@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T10:32:07.767843+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion",
+  "scope": "Independent current consumer runtime isolation source/static only; no v2 runner inspection",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "source_static_ready": true,
+  "full_normal_race_accepted": false,
+  "frozen_source_refs": {
+    "handoff": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-repair/source-static-handoff.json",
+      "sha256": "88ee344503a5f9b5a1ed8eac402d545c7b37db4e5e3913ed187399d6aef46b66"
+    },
+    "fixture": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/server/cmd/server/rk1k_fixture_test.go",
+      "sha256": "9ad91d89d9f43c63759c69274db18c99108b49de7000e6a74a7a08bbb872e0d8"
+    },
+    "minimal_patch": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-repair/minimal-isolation.patch",
+      "sha256": "1ac68162aee3e04e33c6fda74e0bc5fafadf1715a9b96af3a4f7ee8c31d3bb7d"
+    },
+    "static": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-repair/static-result.json",
+      "sha256": "b3015b6596063af9d8a84961882400f0789c13e04911f3c946b070ef237829fd"
+    }
+  },
+  "causal_corroboration": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-source-review/diagnostic-corroboration.json",
+    "sha256": "b7da41f3e2504399a5aff0edeb768e02e1d5e0df4fa88076458130e7ca9d204a",
+    "reproduction_confirms_R23": true,
+    "specific_original_normal01_blocking_ID_not_invented": true
+  },
+  "source_contract": {
+    "per_consumer_base_copy_before_register": true,
+    "original_base_not_mutated": true,
+    "actual_new_runtime_same_shared_daemon_binding": true,
+    "actual_MDT_capability_POST_config_epoch_digest_request_client": true,
+    "old17_roster_and_grants_read_consumer_base_runtime": true,
+    "shared_approved_source_project_unchanged": true,
+    "no_synthetic_run_or_manual_settlement": true,
+    "no_new_process_or_extra_seed": true,
+    "six_other_five_hashes_unchanged": true,
+    "old17_unchanged": true,
+    "scenario_all8_order_assertions_15plus3_paid0_unchanged": true,
+    "diagnostic_instrumentation_removed_preserving_old_raw": true
+  },
+  "framework": {
+    "HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+    "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "five_trees_equal": {
+      "server": "f245624a344af700d11ebfa3fa15194e2235f6f6",
+      "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+      "packages": "c34c22d60416b9e0786dc23f14fa3c5a00c38e85",
+      "scripts": "602113e862a08b682721b2c2d92169b3d6836e5a",
+      "e2e": "ca80cc15f8275025534950b7bca54ec8c05681e1"
+    },
+    "six_current": {
+      "server/cmd/server/rk1k_fixture_test.go": "9ad91d89d9f43c63759c69274db18c99108b49de7000e6a74a7a08bbb872e0d8",
+      "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+      "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+      "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+      "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+      "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+    },
+    "old17_inventory_in_handoff": true
+  },
+  "static": {
+    "gofmt_compile_vet_statuses": [
+      0,
+      0,
+      0
+    ],
+    "record": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-repair/static-result.json",
+      "sha256": "b3015b6596063af9d8a84961882400f0789c13e04911f3c946b070ef237829fd"
+    },
+    "binary": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/consumer-isolation-static-01/framework-static.test",
+      "sha256": "462661dadb7a86cb8ca9d4d37743794fef8187cdf55ff91edb1b579febd6b7b1",
+      "executed": false
+    },
+    "actual_binary_hash_matches": true,
+    "test_bodies_executed": false,
+    "commands_repeated_here": false
+  },
+  "next": "Root reviews separately frozen v2 path-only runner/resources, then fresh complete7 normal/race and final six-file dynamic binding; no real-model authority inferred.",
+  "operations": {
+    "tests_DB_auditor_model_agents": 0,
+    "source_or_permissions_or_original_hypotheses_mutations": 0,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/consumer-isolation-source-review"
+  },
+  "real_gate": {
+    "budget": 0,
+    "calls": 0,
+    "production_default_enabled": false
+  },
+  "report_md_sha256": "758151f6f87ee84f8d33c6fdb606c7fc26ff541875c9f7e9f34b73cc89466db6"
+}

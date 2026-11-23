@@ -1,0 +1,1814 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-02T21:55:18.895268+00:00",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "verdict_scope": "owned ignored dependency/artifact layout and read-only resolution/integrity/source-preservation probes only",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "candidate_branch": "codex/collaboration-final-owned-20261103",
+  "candidate_status": "",
+  "shared_checkout_sha_before": "952f76bb5ae46a3df45f4d3487ab5b7ac7e3fb1a",
+  "shared_checkout_sha_after": "952f76bb5ae46a3df45f4d3487ab5b7ac7e3fb1a",
+  "source_preservation": {
+    "tracked_file_count": 17182,
+    "tracked_source_fingerprint_before": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "tracked_source_fingerprint_after": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "all_tracked_bytes_and_modes_equal": true,
+    "lock_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+    "auth_proxy_sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+    "captured_protected_donor_artifacts": [
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/pnpm-lock.yaml",
+        "sha256_before": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "sha256_after": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/pnpm-workspace.yaml",
+        "sha256_before": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+        "sha256_after": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.npmrc",
+        "sha256_before": "4b84eb91234d80d48c16b50746106405c4cd6d97581f7464001a7dc84dd9d185",
+        "sha256_after": "4b84eb91234d80d48c16b50746106405c4cd6d97581f7464001a7dc84dd9d185",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/node_modules/.modules.yaml",
+        "sha256_before": "2e0f6c57aad5f8934b0c120d1af4815cee598ebe4af375995e68f6d377b21c44",
+        "sha256_after": "2e0f6c57aad5f8934b0c120d1af4815cee598ebe4af375995e68f6d377b21c44",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/node_modules/.pnpm/lock.yaml",
+        "sha256_before": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "sha256_after": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/auth/index.ts",
+        "sha256_before": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+        "sha256_after": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/platform/core-provider.tsx",
+        "sha256_before": "818397a3999c2e4be0e6236be344e0cbce30a78e326699b86739aff44c1338fb",
+        "sha256_after": "818397a3999c2e4be0e6236be344e0cbce30a78e326699b86739aff44c1338fb",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/components/web-providers.tsx",
+        "sha256_before": "8d5f4964a1b8fb4ee01b15f1dbf5df3bd7ac85281df14f64e5b5f5fcabfe630d",
+        "sha256_after": "8d5f4964a1b8fb4ee01b15f1dbf5df3bd7ac85281df14f64e5b5f5fcabfe630d",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+        "sha256_before": "a691caa6d0168db903bff9abf12d3a393f8949725110710302d4ac42d9034019",
+        "sha256_after": "a691caa6d0168db903bff9abf12d3a393f8949725110710302d4ac42d9034019",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+        "sha256_before": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+        "sha256_after": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/makecheck-playwright-results-v9.json",
+        "sha256_before": "bb72fb895375db673b301c9dcbeda229405143e2f1af2c12659e4cda7d9ed131",
+        "sha256_after": "bb72fb895375db673b301c9dcbeda229405143e2f1af2c12659e4cda7d9ed131",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/.next/server/app/login/page_client-reference-manifest.js",
+        "sha256_before": null,
+        "sha256_after": null,
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/pnpm-lock.yaml",
+        "sha256_before": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "sha256_after": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/pnpm-workspace.yaml",
+        "sha256_before": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+        "sha256_after": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.npmrc",
+        "sha256_before": "4b84eb91234d80d48c16b50746106405c4cd6d97581f7464001a7dc84dd9d185",
+        "sha256_after": "4b84eb91234d80d48c16b50746106405c4cd6d97581f7464001a7dc84dd9d185",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/node_modules/.modules.yaml",
+        "sha256_before": "2e0f6c57aad5f8934b0c120d1af4815cee598ebe4af375995e68f6d377b21c44",
+        "sha256_after": "2e0f6c57aad5f8934b0c120d1af4815cee598ebe4af375995e68f6d377b21c44",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/node_modules/.pnpm/lock.yaml",
+        "sha256_before": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "sha256_after": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/auth/index.ts",
+        "sha256_before": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+        "sha256_after": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/platform/core-provider.tsx",
+        "sha256_before": "818397a3999c2e4be0e6236be344e0cbce30a78e326699b86739aff44c1338fb",
+        "sha256_after": "818397a3999c2e4be0e6236be344e0cbce30a78e326699b86739aff44c1338fb",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/components/web-providers.tsx",
+        "sha256_before": "8d5f4964a1b8fb4ee01b15f1dbf5df3bd7ac85281df14f64e5b5f5fcabfe630d",
+        "sha256_after": "8d5f4964a1b8fb4ee01b15f1dbf5df3bd7ac85281df14f64e5b5f5fcabfe630d",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+        "sha256_before": "75f2bfdfbb4180c2d5b9f065242b8e58a6cc3e17664505c1e75ec7f938e85c0f",
+        "sha256_after": "75f2bfdfbb4180c2d5b9f065242b8e58a6cc3e17664505c1e75ec7f938e85c0f",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.log",
+        "sha256_before": "6e45211aacc9bf32e41a633913ab82cb1ee10106e789fadff9f0907ffa894f6b",
+        "sha256_after": "6e45211aacc9bf32e41a633913ab82cb1ee10106e789fadff9f0907ffa894f6b",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/pnpm-lock.yaml",
+        "sha256_before": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "sha256_after": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/pnpm-workspace.yaml",
+        "sha256_before": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+        "sha256_after": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.npmrc",
+        "sha256_before": "4b84eb91234d80d48c16b50746106405c4cd6d97581f7464001a7dc84dd9d185",
+        "sha256_after": "4b84eb91234d80d48c16b50746106405c4cd6d97581f7464001a7dc84dd9d185",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.modules.yaml",
+        "sha256_before": "2e0f6c57aad5f8934b0c120d1af4815cee598ebe4af375995e68f6d377b21c44",
+        "sha256_after": "2e0f6c57aad5f8934b0c120d1af4815cee598ebe4af375995e68f6d377b21c44",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/lock.yaml",
+        "sha256_before": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "sha256_after": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/auth/index.ts",
+        "sha256_before": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+        "sha256_after": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/platform/core-provider.tsx",
+        "sha256_before": "818397a3999c2e4be0e6236be344e0cbce30a78e326699b86739aff44c1338fb",
+        "sha256_after": "818397a3999c2e4be0e6236be344e0cbce30a78e326699b86739aff44c1338fb",
+        "same_identity": true
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/components/web-providers.tsx",
+        "sha256_before": "8d5f4964a1b8fb4ee01b15f1dbf5df3bd7ac85281df14f64e5b5f5fcabfe630d",
+        "sha256_after": "8d5f4964a1b8fb4ee01b15f1dbf5df3bd7ac85281df14f64e5b5f5fcabfe630d",
+        "same_identity": true
+      }
+    ]
+  },
+  "defect_before": {
+    "root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+    "declared_link_mismatches": 22,
+    "export_resolutions_outside_candidate": 61,
+    "auth_graph": [
+      {
+        "from": "apps/web/components/web-providers.tsx",
+        "specifier": "@multica/core/auth",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/auth/index.ts",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/auth/index.ts",
+          "device": 16777244,
+          "inode": 37886203,
+          "symlink": false,
+          "link": null,
+          "owned": false,
+          "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+        }
+      },
+      {
+        "from": "packages/core/platform/core-provider.tsx",
+        "specifier": "@multica/core/auth",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/auth/index.ts",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/auth/index.ts",
+          "device": 16777244,
+          "inode": 39510538,
+          "symlink": false,
+          "link": null,
+          "owned": true,
+          "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+        }
+      },
+      {
+        "from": "packages/views/auth/password-form.tsx",
+        "specifier": "@multica/core/auth",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/auth/index.ts",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/auth/index.ts",
+          "device": 16777244,
+          "inode": 37886203,
+          "symlink": false,
+          "link": null,
+          "owned": false,
+          "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+        }
+      },
+      {
+        "from": "packages/core/platform/core-provider.tsx",
+        "specifier": "../auth/index.ts",
+        "note": "explicit extension for a Node read-only probe of the bundler's relative ../auth import",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/auth/index.ts",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/auth/index.ts",
+          "device": 16777244,
+          "inode": 39510538,
+          "symlink": false,
+          "link": null,
+          "owned": true,
+          "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+        }
+      }
+    ],
+    "retained_actual_SSR_refusal": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-interruption-request.json",
+    "fresh_SSR_run_performed": false
+  },
+  "fixed_after": {
+    "declared_workspace_edges": 22,
+    "mismatches": 0,
+    "workspace_export_rows": 66,
+    "exports_outside_root": 0,
+    "workspace_links": [
+      {
+        "consumer": "apps/desktop",
+        "name": "@multica/core",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/core",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+          "device": 16777244,
+          "inode": 39590221,
+          "symlink": true,
+          "link": "../../../../packages/core",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/desktop",
+        "name": "@multica/ui",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/ui",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+          "device": 16777244,
+          "inode": 39591111,
+          "symlink": true,
+          "link": "../../../../packages/ui",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/desktop",
+        "name": "@multica/views",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/views",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+          "device": 16777244,
+          "inode": 39591204,
+          "symlink": true,
+          "link": "../../../../packages/views",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/desktop",
+        "name": "@multica/eslint-config",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/eslint-config",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+          "device": 16777244,
+          "inode": 39591095,
+          "symlink": true,
+          "link": "../../../../packages/eslint-config",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/desktop",
+        "name": "@multica/tsconfig",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/@multica/tsconfig",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+          "device": 16777244,
+          "inode": 39591107,
+          "symlink": true,
+          "link": "../../../../packages/tsconfig",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/docs",
+        "name": "@multica/ui",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/@multica/ui",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+          "device": 16777244,
+          "inode": 39591111,
+          "symlink": true,
+          "link": "../../../../packages/ui",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/mobile",
+        "name": "@multica/core",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/@multica/core",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+          "device": 16777244,
+          "inode": 39590221,
+          "symlink": true,
+          "link": "../../../../packages/core",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/web",
+        "name": "@multica/core",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@multica/core",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+          "device": 16777244,
+          "inode": 39590221,
+          "symlink": true,
+          "link": "../../../../packages/core",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/web",
+        "name": "@multica/ui",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@multica/ui",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+          "device": 16777244,
+          "inode": 39591111,
+          "symlink": true,
+          "link": "../../../../packages/ui",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/web",
+        "name": "@multica/views",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@multica/views",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views",
+          "device": 16777244,
+          "inode": 39591204,
+          "symlink": true,
+          "link": "../../../../packages/views",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "apps/web",
+        "name": "@multica/eslint-config",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/@multica/eslint-config",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+          "device": 16777244,
+          "inode": 39591095,
+          "symlink": true,
+          "link": "../../../../packages/eslint-config",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/core",
+        "name": "@multica/eslint-config",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@multica/eslint-config",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+          "device": 16777244,
+          "inode": 39591095,
+          "symlink": true,
+          "link": "../../../eslint-config",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/core",
+        "name": "@multica/tsconfig",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/@multica/tsconfig",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+          "device": 16777244,
+          "inode": 39591107,
+          "symlink": true,
+          "link": "../../../tsconfig",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/plugin-sdk",
+        "name": "@multica/eslint-config",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/node_modules/@multica/eslint-config",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+          "device": 16777244,
+          "inode": 39591095,
+          "symlink": true,
+          "link": "../../../eslint-config",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/plugin-sdk",
+        "name": "@multica/tsconfig",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/node_modules/@multica/tsconfig",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+          "device": 16777244,
+          "inode": 39591107,
+          "symlink": true,
+          "link": "../../../tsconfig",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/ui",
+        "name": "@multica/eslint-config",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@multica/eslint-config",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+          "device": 16777244,
+          "inode": 39591095,
+          "symlink": true,
+          "link": "../../../eslint-config",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/ui",
+        "name": "@multica/tsconfig",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/@multica/tsconfig",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+          "device": 16777244,
+          "inode": 39591107,
+          "symlink": true,
+          "link": "../../../tsconfig",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/views",
+        "name": "@multica/core",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/core",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core",
+          "device": 16777244,
+          "inode": 39590221,
+          "symlink": true,
+          "link": "../../../core",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/views",
+        "name": "@multica/ui",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/ui",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui",
+          "device": 16777244,
+          "inode": 39591111,
+          "symlink": true,
+          "link": "../../../ui",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/views",
+        "name": "@multica/eslint-config",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/eslint-config",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config",
+          "device": 16777244,
+          "inode": 39591095,
+          "symlink": true,
+          "link": "../../../eslint-config",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/views",
+        "name": "@multica/plugin-sdk",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/plugin-sdk",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk",
+          "device": 16777244,
+          "inode": 39591100,
+          "symlink": true,
+          "link": "../../../plugin-sdk",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      },
+      {
+        "consumer": "packages/views",
+        "name": "@multica/tsconfig",
+        "specifier": "workspace:*",
+        "expected_realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+        "link": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/@multica/tsconfig",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig",
+          "device": 16777244,
+          "inode": 39591107,
+          "symlink": true,
+          "link": "../../../tsconfig",
+          "owned": true,
+          "sha256": null
+        },
+        "matches_expected": true
+      }
+    ],
+    "node_modules_directories": [
+      {
+        "consumer": ".",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules",
+        "device": 16777244,
+        "inode": 39709663,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      },
+      {
+        "consumer": "apps/desktop",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules",
+        "device": 16777244,
+        "inode": 39867079,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      },
+      {
+        "consumer": "apps/docs",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules",
+        "device": 16777244,
+        "inode": 39867076,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      },
+      {
+        "consumer": "apps/mobile",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules",
+        "device": 16777244,
+        "inode": 39867104,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      },
+      {
+        "consumer": "apps/web",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules",
+        "device": 16777244,
+        "inode": 39867084,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      },
+      {
+        "consumer": "packages/core",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules",
+        "device": 16777244,
+        "inode": 39867088,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      },
+      {
+        "consumer": "packages/eslint-config",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/eslint-config/node_modules",
+        "device": 16777244,
+        "inode": 39867086,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      },
+      {
+        "consumer": "packages/plugin-sdk",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/plugin-sdk/node_modules",
+        "device": 16777244,
+        "inode": 39867090,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      },
+      {
+        "consumer": "packages/tsconfig",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/tsconfig/node_modules",
+        "absent": true,
+        "error_code": "ENOENT"
+      },
+      {
+        "consumer": "packages/ui",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules",
+        "device": 16777244,
+        "inode": 39867092,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      },
+      {
+        "consumer": "packages/views",
+        "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules",
+        "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules",
+        "device": 16777244,
+        "inode": 39867097,
+        "symlink": false,
+        "link": null,
+        "owned": true,
+        "sha256": null
+      }
+    ],
+    "auth_graph": [
+      {
+        "from": "apps/web/components/web-providers.tsx",
+        "specifier": "@multica/core/auth",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+          "device": 16777244,
+          "inode": 39590398,
+          "symlink": false,
+          "link": null,
+          "owned": true,
+          "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+        }
+      },
+      {
+        "from": "packages/core/platform/core-provider.tsx",
+        "specifier": "@multica/core/auth",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+          "device": 16777244,
+          "inode": 39590398,
+          "symlink": false,
+          "link": null,
+          "owned": true,
+          "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+        }
+      },
+      {
+        "from": "packages/views/auth/password-form.tsx",
+        "specifier": "@multica/core/auth",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+          "device": 16777244,
+          "inode": 39590398,
+          "symlink": false,
+          "link": null,
+          "owned": true,
+          "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+        }
+      },
+      {
+        "from": "packages/core/platform/core-provider.tsx",
+        "specifier": "../auth/index.ts",
+        "note": "explicit extension for a Node read-only probe of the bundler's relative ../auth import",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/auth/index.ts",
+          "device": 16777244,
+          "inode": 39590398,
+          "symlink": false,
+          "link": null,
+          "owned": true,
+          "sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152"
+        }
+      }
+    ]
+  },
+  "installation": {
+    "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-workspace-links/offline-install-v2.json",
+    "exit_code": 0,
+    "scope": "all 11 workspace projects",
+    "resolved_snapshots": 2031,
+    "reused_unique_packages": 1979,
+    "downloaded": 0,
+    "pnpm_version": "10.28.2",
+    "network": "denied by sandbox; --offline",
+    "lifecycle_scripts": "disabled",
+    "side_effects_cache": "disabled",
+    "prior_rejected_invocation": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-workspace-links/offline-install.json",
+    "prior_rejected_invocation_reason": "pnpm10 install CLI does not accept --manage-package-manager-versions or --state-dir; v2 uses environment configuration and retains original log/source"
+  },
+  "tools": {
+    "node": {
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "exists": true,
+      "symlink": false,
+      "realpath": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "device": 16777231,
+      "inode": 105491546,
+      "mode": "0o755",
+      "size": 112937728,
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+    },
+    "node_version": "v22.23.2",
+    "pnpm_executable": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+    "pnpm_bin_sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9",
+    "pnpm_bundle": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/dist/pnpm.cjs",
+    "pnpm_bundle_sha256": "930fe74c335e95a8f9f6786f115f00c37ae82493ba7bdbddaddd9e06de542f43",
+    "copied_pnpm_matches_retained_corepack_bin": true,
+    "copied_pnpm_matches_retained_corepack_bundle": true
+  },
+  "integrity": {
+    "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-workspace-links/layout-integrity.json",
+    "issue_count": 0,
+    "direct_external_dependency_rows": 283,
+    "installed_snapshot_count": 2031,
+    "installed_unique_packages": 1979,
+    "base_files_verified_against_lock_bound_store_SRI": 129513,
+    "base_bytes_verified": 1878542969,
+    "symlinks_verified": 7272,
+    "all_symlink_targets_inside_candidate": true,
+    "platform_optional_skip_set_matches_retained_donor": true,
+    "copy_identity_samples": [
+      {
+        "id": "next@16.2.6",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/next/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/package.json",
+          "device": 16777244,
+          "inode": 39825444,
+          "size": 11243,
+          "mode": 420,
+          "sha256": "1ec03f46fd6a51b9adbc80b023f6e75223f0a7125b1394023d55841ca5ddf625"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/9c/67c415347411e741eb965fe5cf9f5257dbe18436b91538f34319cf2ff4bbf56278915f0be3aa0dcf189a103ad0ac7fd3d929733ebf450b0eb23cedb63c5223",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/9c/67c415347411e741eb965fe5cf9f5257dbe18436b91538f34319cf2ff4bbf56278915f0be3aa0dcf189a103ad0ac7fd3d929733ebf450b0eb23cedb63c5223",
+          "device": 16777244,
+          "inode": 39669884,
+          "size": 11243,
+          "mode": 420,
+          "sha256": "1ec03f46fd6a51b9adbc80b023f6e75223f0a7125b1394023d55841ca5ddf625"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "next@15.5.18",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/next/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/next@15.5.18_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compil_35251342b71a30a2fde77b782f45f89e/node_modules/next/package.json",
+          "device": 16777244,
+          "inode": 39740262,
+          "size": 11322,
+          "mode": 420,
+          "sha256": "cbec4b193495c1fb839d15aac5fa3ca829ea1a8b2cbaf8b420675f52d87cc5c2"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fa/fa41c553566c9a469525906874003fadf1470fb88de69cb8e451c9b48eab5ddf77ee787c751a0f6d625aa74179066da856815d53fef49f89938e429a7408be",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fa/fa41c553566c9a469525906874003fadf1470fb88de69cb8e451c9b48eab5ddf77ee787c751a0f6d625aa74179066da856815d53fef49f89938e429a7408be",
+          "device": 16777244,
+          "inode": 39707653,
+          "size": 11322,
+          "mode": 420,
+          "sha256": "cbec4b193495c1fb839d15aac5fa3ca829ea1a8b2cbaf8b420675f52d87cc5c2"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "react@19.2.3",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.3/node_modules/react/package.json",
+          "device": 16777244,
+          "inode": 39723817,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fd/7162d9295de041aa046ff25046fb869f26557bc405a9d5fc71f3acf04f946fa080fb5a364d1bae7b8d0782d81bb59b9fa308dbb7dfebc7e0d393c937879cd8",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fd/7162d9295de041aa046ff25046fb869f26557bc405a9d5fc71f3acf04f946fa080fb5a364d1bae7b8d0782d81bb59b9fa308dbb7dfebc7e0d393c937879cd8",
+          "device": 16777244,
+          "inode": 39708603,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "react@19.2.3",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/core/node_modules/react/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.3/node_modules/react/package.json",
+          "device": 16777244,
+          "inode": 39723817,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fd/7162d9295de041aa046ff25046fb869f26557bc405a9d5fc71f3acf04f946fa080fb5a364d1bae7b8d0782d81bb59b9fa308dbb7dfebc7e0d393c937879cd8",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fd/7162d9295de041aa046ff25046fb869f26557bc405a9d5fc71f3acf04f946fa080fb5a364d1bae7b8d0782d81bb59b9fa308dbb7dfebc7e0d393c937879cd8",
+          "device": 16777244,
+          "inode": 39708603,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "react@19.2.3",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/views/node_modules/react/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.3/node_modules/react/package.json",
+          "device": 16777244,
+          "inode": 39723817,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fd/7162d9295de041aa046ff25046fb869f26557bc405a9d5fc71f3acf04f946fa080fb5a364d1bae7b8d0782d81bb59b9fa308dbb7dfebc7e0d393c937879cd8",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fd/7162d9295de041aa046ff25046fb869f26557bc405a9d5fc71f3acf04f946fa080fb5a364d1bae7b8d0782d81bb59b9fa308dbb7dfebc7e0d393c937879cd8",
+          "device": 16777244,
+          "inode": 39708603,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "react@19.2.3",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/packages/ui/node_modules/react/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.3/node_modules/react/package.json",
+          "device": 16777244,
+          "inode": 39723817,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fd/7162d9295de041aa046ff25046fb869f26557bc405a9d5fc71f3acf04f946fa080fb5a364d1bae7b8d0782d81bb59b9fa308dbb7dfebc7e0d393c937879cd8",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/fd/7162d9295de041aa046ff25046fb869f26557bc405a9d5fc71f3acf04f946fa080fb5a364d1bae7b8d0782d81bb59b9fa308dbb7dfebc7e0d393c937879cd8",
+          "device": 16777244,
+          "inode": 39708603,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "react@19.2.0",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.0/node_modules/react/package.json",
+          "device": 16777244,
+          "inode": 39814679,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "6029fda5e660da53952cf5ddcd1e8568fc8dc0c6dcb9deaf7667fdc4c7f5a113"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/b4/13db338d467ed55379a69237f63c67867a1bfdf9217678d48ee1c56258410564001985f3bc71adadedc68ed8f3bc70e61441ac6b1000d55f25da93223afd07",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/b4/13db338d467ed55379a69237f63c67867a1bfdf9217678d48ee1c56258410564001985f3bc71adadedc68ed8f3bc70e61441ac6b1000d55f25da93223afd07",
+          "device": 16777244,
+          "inode": 39679300,
+          "size": 1248,
+          "mode": 420,
+          "sha256": "6029fda5e660da53952cf5ddcd1e8568fc8dc0c6dcb9deaf7667fdc4c7f5a113"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "react-dom@19.2.3",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react-dom/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react-dom@19.2.3_react@19.2.3/node_modules/react-dom/package.json",
+          "device": 16777244,
+          "inode": 39727770,
+          "size": 3063,
+          "mode": 420,
+          "sha256": "d926f158e1be15885aaeac259c39567a46f6525fbdd14c380528486c31459996"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/1d/650605ff423999c2f8095a4c9c69ec7baf68a0a7ba65fbcc0f21c380c37d293eceafc642d2e4b80ec72034bd0b07f0ecfb15ff76f96bb9eb1ebb48dfe1b829",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/1d/650605ff423999c2f8095a4c9c69ec7baf68a0a7ba65fbcc0f21c380c37d293eceafc642d2e4b80ec72034bd0b07f0ecfb15ff76f96bb9eb1ebb48dfe1b829",
+          "device": 16777244,
+          "inode": 39618379,
+          "size": 3063,
+          "mode": 420,
+          "sha256": "d926f158e1be15885aaeac259c39567a46f6525fbdd14c380528486c31459996"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "@playwright/test@1.58.2",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@playwright/test/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/package.json",
+          "device": 16777244,
+          "inode": 39728715,
+          "size": 754,
+          "mode": 420,
+          "sha256": "c3633ad1a5096090c15b0a3b414ede7b9628e0b1cafa62e8c0b4321683cc1d90"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/bf/b085eacc43f2005968f698119df02091a864e61f303b7ba7b33637b388561619cfc312abde22672a44b6974cdf84d40af5fea4a3cbf61c105a008decdafdb1",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/bf/b085eacc43f2005968f698119df02091a864e61f303b7ba7b33637b388561619cfc312abde22672a44b6974cdf84d40af5fea4a3cbf61c105a008decdafdb1",
+          "device": 16777244,
+          "inode": 39684030,
+          "size": 754,
+          "mode": 420,
+          "sha256": "c3633ad1a5096090c15b0a3b414ede7b9628e0b1cafa62e8c0b4321683cc1d90"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "playwright@1.58.2",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/package.json",
+          "device": 16777244,
+          "inode": 39729588,
+          "size": 2238,
+          "mode": 420,
+          "sha256": "718c91812946dcfbb4b724cfa0084ee3be205c571df09094f218bc4571f43c2b"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/52/ec848ca59428930196485087778af0076f5afe97fd5dcbeb8255d35d22fd013e4edce5f129801b2211672f99f59bc7adadd8f7ecc50f3f54c78474cab01af2",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/52/ec848ca59428930196485087778af0076f5afe97fd5dcbeb8255d35d22fd013e4edce5f129801b2211672f99f59bc7adadd8f7ecc50f3f54c78474cab01af2",
+          "device": 16777244,
+          "inode": 39640065,
+          "size": 2238,
+          "mode": 420,
+          "sha256": "718c91812946dcfbb4b724cfa0084ee3be205c571df09094f218bc4571f43c2b"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      },
+      {
+        "id": "playwright-core@1.58.2",
+        "owned_package_json": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright-core/package.json",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/package.json",
+          "device": 16777244,
+          "inode": 39731175,
+          "size": 1499,
+          "mode": 420,
+          "sha256": "16a25dbd7368a87af8b58a45c6216b9cec5a91a72cf704533344701997ebde22"
+        },
+        "private_cafs_file": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/5e/e852dfb69838c86fc08112e483cc6997931d3ef207cb906af5ca0c6ef4dc5967a7578a9901cce91e4b4f83ffab9ff7078a09d0143f5d47bd0980c4a33a71b4",
+          "exists": true,
+          "symlink": false,
+          "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-store/v10/files/5e/e852dfb69838c86fc08112e483cc6997931d3ef207cb906af5ca0c6ef4dc5967a7578a9901cce91e4b4f83ffab9ff7078a09d0143f5d47bd0980c4a33a71b4",
+          "device": 16777244,
+          "inode": 39644801,
+          "size": 1499,
+          "mode": 420,
+          "sha256": "16a25dbd7368a87af8b58a45c6216b9cec5a91a72cf704533344701997ebde22"
+        },
+        "same_inode": false,
+        "same_sha256": true
+      }
+    ]
+  },
+  "representative_donor_hashes": [
+    {
+      "consumer": "apps/web",
+      "package": "next",
+      "owned_version": "16.2.6",
+      "donor_version": "16.2.6",
+      "files": [
+        {
+          "relative_file": "package.json",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/next/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/package.json",
+            "device": 16777244,
+            "inode": 39825444,
+            "size": 11243,
+            "mode": 420,
+            "sha256": "1ec03f46fd6a51b9adbc80b023f6e75223f0a7125b1394023d55841ca5ddf625"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules/next/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/package.json",
+            "device": 16777244,
+            "inode": 38060033,
+            "size": 11243,
+            "mode": 420,
+            "sha256": "1ec03f46fd6a51b9adbc80b023f6e75223f0a7125b1394023d55841ca5ddf625"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "dist/bin/next",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/next/dist/bin/next",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/dist/bin/next",
+            "device": 16777244,
+            "inode": 39806379,
+            "size": 17023,
+            "mode": 493,
+            "sha256": "2f50959c48cabb38c18e30354b0f0e3fd01d18181daa95d0650158b36581661c"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules/next/dist/bin/next",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/dist/bin/next",
+            "device": 16777244,
+            "inode": 38051050,
+            "size": 17023,
+            "mode": 493,
+            "sha256": "2f50959c48cabb38c18e30354b0f0e3fd01d18181daa95d0650158b36581661c"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "dist/server/app-render/app-render.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/next/dist/server/app-render/app-render.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/dist/server/app-render/app-render.js",
+            "device": 16777244,
+            "inode": 39807731,
+            "size": 257196,
+            "mode": 420,
+            "sha256": "26755225d9eab6536bf1f8c8796a5b31c4967274721d0185b657c1354ba6cbd1"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules/next/dist/server/app-render/app-render.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/dist/server/app-render/app-render.js",
+            "device": 16777244,
+            "inode": 38051704,
+            "size": 257196,
+            "mode": 420,
+            "sha256": "26755225d9eab6536bf1f8c8796a5b31c4967274721d0185b657c1354ba6cbd1"
+          },
+          "same_sha256": true
+        }
+      ]
+    },
+    {
+      "consumer": "apps/docs",
+      "package": "next",
+      "owned_version": "15.5.18",
+      "donor_version": "15.5.18",
+      "files": [
+        {
+          "relative_file": "package.json",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/next/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/next@15.5.18_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compil_35251342b71a30a2fde77b782f45f89e/node_modules/next/package.json",
+            "device": 16777244,
+            "inode": 39740262,
+            "size": 11322,
+            "mode": 420,
+            "sha256": "cbec4b193495c1fb839d15aac5fa3ca829ea1a8b2cbaf8b420675f52d87cc5c2"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/docs/node_modules/next/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@15.5.18_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compil_35251342b71a30a2fde77b782f45f89e/node_modules/next/package.json",
+            "device": 16777244,
+            "inode": 38015596,
+            "size": 11322,
+            "mode": 420,
+            "sha256": "cbec4b193495c1fb839d15aac5fa3ca829ea1a8b2cbaf8b420675f52d87cc5c2"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "dist/bin/next",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/docs/node_modules/next/dist/bin/next",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/next@15.5.18_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compil_35251342b71a30a2fde77b782f45f89e/node_modules/next/dist/bin/next",
+            "device": 16777244,
+            "inode": 39725819,
+            "size": 13452,
+            "mode": 493,
+            "sha256": "1123d92dda0bb4bcd84fa5e0b9c28bfb988e88385c6a337145406ec984f313e5"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/docs/node_modules/next/dist/bin/next",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@15.5.18_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compil_35251342b71a30a2fde77b782f45f89e/node_modules/next/dist/bin/next",
+            "device": 16777244,
+            "inode": 38001912,
+            "size": 13452,
+            "mode": 493,
+            "sha256": "1123d92dda0bb4bcd84fa5e0b9c28bfb988e88385c6a337145406ec984f313e5"
+          },
+          "same_sha256": true
+        }
+      ]
+    },
+    {
+      "consumer": "apps/web",
+      "package": "react",
+      "owned_version": "19.2.3",
+      "donor_version": "19.2.3",
+      "files": [
+        {
+          "relative_file": "package.json",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.3/node_modules/react/package.json",
+            "device": 16777244,
+            "inode": 39723817,
+            "size": 1248,
+            "mode": 420,
+            "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules/react/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react/package.json",
+            "device": 16777244,
+            "inode": 37914074,
+            "size": 1248,
+            "mode": 420,
+            "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "index.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.3/node_modules/react/index.js",
+            "device": 16777244,
+            "inode": 39723708,
+            "size": 186,
+            "mode": 420,
+            "sha256": "60caffdecbdc5db3bc4ec4e83df9488345ccb271d07533b9210bf5750918d97e"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules/react/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react/index.js",
+            "device": 16777244,
+            "inode": 37913921,
+            "size": 186,
+            "mode": 420,
+            "sha256": "60caffdecbdc5db3bc4ec4e83df9488345ccb271d07533b9210bf5750918d97e"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "cjs/react.production.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react/cjs/react.production.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.3/node_modules/react/cjs/react.production.js",
+            "device": 16777244,
+            "inode": 39723794,
+            "size": 17217,
+            "mode": 420,
+            "sha256": "87723665d096fd57a2974c64b754c63111e2e6f35555794939e308cf252b4ee7"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules/react/cjs/react.production.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react/cjs/react.production.js",
+            "device": 16777244,
+            "inode": 37914066,
+            "size": 17217,
+            "mode": 420,
+            "sha256": "87723665d096fd57a2974c64b754c63111e2e6f35555794939e308cf252b4ee7"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "jsx-runtime.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/web/node_modules/react/jsx-runtime.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.3/node_modules/react/jsx-runtime.js",
+            "device": 16777244,
+            "inode": 39723718,
+            "size": 210,
+            "mode": 420,
+            "sha256": "b392951a77d0a2e6a6bd017e49d768481ae5b63c4109c6c31f622cf7b2433edc"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules/react/jsx-runtime.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react/jsx-runtime.js",
+            "device": 16777244,
+            "inode": 37913941,
+            "size": 210,
+            "mode": 420,
+            "sha256": "b392951a77d0a2e6a6bd017e49d768481ae5b63c4109c6c31f622cf7b2433edc"
+          },
+          "same_sha256": true
+        }
+      ]
+    },
+    {
+      "consumer": "apps/mobile",
+      "package": "react",
+      "owned_version": "19.2.0",
+      "donor_version": "19.2.0",
+      "files": [
+        {
+          "relative_file": "package.json",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.0/node_modules/react/package.json",
+            "device": 16777244,
+            "inode": 39814679,
+            "size": 1248,
+            "mode": 420,
+            "sha256": "6029fda5e660da53952cf5ddcd1e8568fc8dc0c6dcb9deaf7667fdc4c7f5a113"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/mobile/node_modules/react/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.0/node_modules/react/package.json",
+            "device": 16777244,
+            "inode": 37966454,
+            "size": 1248,
+            "mode": 420,
+            "sha256": "6029fda5e660da53952cf5ddcd1e8568fc8dc0c6dcb9deaf7667fdc4c7f5a113"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "index.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/mobile/node_modules/react/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/react@19.2.0/node_modules/react/index.js",
+            "device": 16777244,
+            "inode": 39814595,
+            "size": 186,
+            "mode": 420,
+            "sha256": "60caffdecbdc5db3bc4ec4e83df9488345ccb271d07533b9210bf5750918d97e"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/mobile/node_modules/react/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.0/node_modules/react/index.js",
+            "device": 16777244,
+            "inode": 37966371,
+            "size": 186,
+            "mode": 420,
+            "sha256": "60caffdecbdc5db3bc4ec4e83df9488345ccb271d07533b9210bf5750918d97e"
+          },
+          "same_sha256": true
+        }
+      ]
+    },
+    {
+      "consumer": ".",
+      "package": "@playwright/test",
+      "owned_version": "1.58.2",
+      "donor_version": "1.58.2",
+      "files": [
+        {
+          "relative_file": "package.json",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@playwright/test/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/package.json",
+            "device": 16777244,
+            "inode": 39728715,
+            "size": 754,
+            "mode": 420,
+            "sha256": "c3633ad1a5096090c15b0a3b414ede7b9628e0b1cafa62e8c0b4321683cc1d90"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/@playwright/test/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/package.json",
+            "device": 16777244,
+            "inode": 37950702,
+            "size": 754,
+            "mode": 420,
+            "sha256": "c3633ad1a5096090c15b0a3b414ede7b9628e0b1cafa62e8c0b4321683cc1d90"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "index.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@playwright/test/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/index.js",
+            "device": 16777244,
+            "inode": 39728708,
+            "size": 648,
+            "mode": 420,
+            "sha256": "499da5dd8585212108a1443793de31ebc061ca7db02343f107955f261180cdfc"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/@playwright/test/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/index.js",
+            "device": 16777244,
+            "inode": 37950695,
+            "size": 648,
+            "mode": 420,
+            "sha256": "499da5dd8585212108a1443793de31ebc061ca7db02343f107955f261180cdfc"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "cli.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/@playwright/test/cli.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/cli.js",
+            "device": 16777244,
+            "inode": 39728704,
+            "size": 707,
+            "mode": 493,
+            "sha256": "79e23e6a249176295b8490567daa7717448a75866d6ea6f6b296ff3d23305c69"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/@playwright/test/cli.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/cli.js",
+            "device": 16777244,
+            "inode": 37950692,
+            "size": 707,
+            "mode": 493,
+            "sha256": "79e23e6a249176295b8490567daa7717448a75866d6ea6f6b296ff3d23305c69"
+          },
+          "same_sha256": true
+        }
+      ]
+    },
+    {
+      "consumer": ".",
+      "package": "playwright",
+      "owned_version": "1.58.2",
+      "donor_version": "1.58.2",
+      "files": [
+        {
+          "relative_file": "package.json",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/package.json",
+            "device": 16777244,
+            "inode": 39729588,
+            "size": 2238,
+            "mode": 420,
+            "sha256": "718c91812946dcfbb4b724cfa0084ee3be205c571df09094f218bc4571f43c2b"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/playwright/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/package.json",
+            "device": 16777244,
+            "inode": 37952313,
+            "size": 2238,
+            "mode": 420,
+            "sha256": "718c91812946dcfbb4b724cfa0084ee3be205c571df09094f218bc4571f43c2b"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "index.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/index.js",
+            "device": 16777244,
+            "inode": 39729042,
+            "size": 648,
+            "mode": 420,
+            "sha256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/playwright/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/index.js",
+            "device": 16777244,
+            "inode": 37951873,
+            "size": 648,
+            "mode": 420,
+            "sha256": "4e98f65f0a9d9bcab8cffc0c5cfdd87fd3f5b0be74fc494ff166a466b204cd44"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "cli.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright/cli.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/cli.js",
+            "device": 16777244,
+            "inode": 39728842,
+            "size": 698,
+            "mode": 493,
+            "sha256": "5e79302a6aad7d835d92d5ae6b4244c91cf61b28e94d7917279090e6c231f7a1"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/playwright/cli.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/playwright@1.58.2/node_modules/playwright/cli.js",
+            "device": 16777244,
+            "inode": 37951731,
+            "size": 698,
+            "mode": 493,
+            "sha256": "5e79302a6aad7d835d92d5ae6b4244c91cf61b28e94d7917279090e6c231f7a1"
+          },
+          "same_sha256": true
+        }
+      ]
+    },
+    {
+      "consumer": ".",
+      "package": "playwright-core",
+      "owned_version": "1.58.2",
+      "donor_version": "1.58.2",
+      "files": [
+        {
+          "relative_file": "package.json",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright-core/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/package.json",
+            "device": 16777244,
+            "inode": 39731175,
+            "size": 1499,
+            "mode": 420,
+            "sha256": "16a25dbd7368a87af8b58a45c6216b9cec5a91a72cf704533344701997ebde22"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/playwright-core/package.json",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/package.json",
+            "device": 16777244,
+            "inode": 37953699,
+            "size": 1499,
+            "mode": 420,
+            "sha256": "16a25dbd7368a87af8b58a45c6216b9cec5a91a72cf704533344701997ebde22"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "index.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright-core/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/index.js",
+            "device": 16777244,
+            "inode": 39730550,
+            "size": 1095,
+            "mode": 420,
+            "sha256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/playwright-core/index.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/index.js",
+            "device": 16777244,
+            "inode": 37953038,
+            "size": 1095,
+            "mode": 420,
+            "sha256": "a4f83b5b2915b43bddd5384d963a66d1fd4d978a3db8059969fb78de65bc519a"
+          },
+          "same_sha256": true
+        },
+        {
+          "relative_file": "cli.js",
+          "owned": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/playwright-core/cli.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/cli.js",
+            "device": 16777244,
+            "inode": 39730101,
+            "size": 713,
+            "mode": 493,
+            "sha256": "a0ef30b76aa5d64d49b74f454a15cb5fdb063149f3cc4758446941b724851f38"
+          },
+          "donor": {
+            "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/playwright-core/cli.js",
+            "exists": true,
+            "symlink": false,
+            "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/cli.js",
+            "device": 16777244,
+            "inode": 37952657,
+            "size": 713,
+            "mode": 493,
+            "sha256": "a0ef30b76aa5d64d49b74f454a15cb5fdb063149f3cc4758446941b724851f38"
+          },
+          "same_sha256": true
+        }
+      ]
+    }
+  ],
+  "native_cached_artifact": {
+    "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-workspace-links/electron-cache-restoration.json",
+    "package": "electron@39.8.7",
+    "restored_files": 744,
+    "all_restored_files_match_cache_SRI_and_retained_donor": true,
+    "base_package_files_overwritten": false,
+    "binary": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "device": 16777244,
+      "inode": 39871490,
+      "size": 33968,
+      "sha256": "cf74833a9b0c242e26c177005d7d61819e5bf5ed199acc794fed2eb0cc4f3149",
+      "mode": 493
+    },
+    "donor_binary": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "realpath": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "device": 16777244,
+      "inode": 38074136,
+      "size": 33968,
+      "sha256": "cf74833a9b0c242e26c177005d7d61819e5bf5ed199acc794fed2eb0cc4f3149",
+      "mode": 493
+    },
+    "native_executable_not_run": true
+  },
+  "writes": {
+    "candidate": "ignored root/app/package node_modules and .omx/private/owned-workspace-links only",
+    "shared_checkout": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-workspace-links",
+    "tracked_candidate_source_manifest_lock_configuration_changes": false,
+    "donor_or_retained_v9_v10_mutations": false,
+    "commits": false
+  },
+  "verification": {
+    "resolution": "pass",
+    "external_versions_SRI_and_donor_hashes": "pass",
+    "source_preservation": "pass",
+    "script_syntax": "pass",
+    "lint": "not run; reserved by coordinator",
+    "typecheck": "not run; reserved by coordinator",
+    "repository_tests": "not run; reserved by coordinator",
+    "production_Next_build": "not run; reserved by coordinator",
+    "minimal_SSR_reproduction": "not run; coordinator owns the next window",
+    "api_web_redis_database_provider_actions": false
+  },
+  "remaining_notes": [
+    {
+      "kind": "coordinator_verification",
+      "detail": "The fixed Node/filesystem graph is necessary preflight evidence; it does not establish a passing SSR or full make check. Root freezes and owns those next stages."
+    },
+    {
+      "kind": "skipped_install_hooks",
+      "detail": "Ignore-scripts metadata still lists application/native lifecycle hooks as pending. Electron39.8.7 dist/path.txt were restored from matching cached bytes without executing hooks. No application build output was created."
+    },
+    {
+      "kind": "spec_sync_outside_write_scope",
+      "detail": "Recommend preserving the owned-workspace-link requirement in .trellis/spec/web/frontend/e2e-run-environment.md; source/spec edits belong to root."
+    }
+  ],
+  "application_build_outputs_present": {
+    "apps/web/.next": false,
+    "apps/desktop/out": false
+  }
+}

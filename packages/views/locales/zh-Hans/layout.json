@@ -1,7 +1,10 @@
 {
+  "global_navigation": {
+    "label": "应用导航"
+  },
   "nav": {
     "inbox": "收件箱",
-    "chat": "聊天",
+    "chat": "AI 对话",
     "my_issues": "我的任务",
     "issues": "任务",
     "projects": "项目",
@@ -21,8 +24,44 @@
   },
   "marketplace": {
     "type_label": "能力类型",
-    "mcp": "MCP",
-    "skills": "Skills"
+    "welcome": {
+      "title": "为下一项任务配好能力",
+      "description": "给智能体接上工具，把流程存下来复用，或从模板创建智能体和 AI小队。选一类能力，看看它怎么用。"
+    },
+    "example": {
+      "label": "使用示例",
+      "task": "发布前检查注册流程",
+      "show": "查看使用示例",
+      "docs": "阅读文档"
+    },
+    "mcp": {
+      "label": "MCP",
+      "purpose": "接入工具",
+      "resource": "Playwright",
+      "setup": "配置 Playwright MCP 服务，再把它分配给负责测试的智能体。",
+      "outcome": "智能体可以打开页面，填写注册表单。"
+    },
+    "skills": {
+      "label": "Skills",
+      "purpose": "复用流程",
+      "resource": "注册检查清单",
+      "setup": "把注册检查步骤和结果记录格式存成一个 skill。",
+      "outcome": "下次检查注册流程时，可以直接复用同一套步骤。"
+    },
+    "squad_templates": {
+      "label": "AI小队模板",
+      "purpose": "组建小队",
+      "resource": "发布小队",
+      "setup": "用发布小队模板组队，再把任务交给小队。",
+      "outcome": "队长协调测试和发布准备，再请人确认是否发布。"
+    },
+    "agent_templates": {
+      "label": "智能体模板",
+      "purpose": "创建智能体",
+      "resource": "测试工程师",
+      "setup": "用测试工程师模板创建智能体，再把注册检查交给它。",
+      "outcome": "智能体检查注册流程，并在任务中汇报结果。"
+    }
   },
   "tab": {
     "issue": "任务",
@@ -36,6 +75,7 @@
     "runtime": "运行时",
     "attachment": "附件",
     "create_agent": "创建智能体",
+    "create_squad": "创建AI小队",
     "unknown": "未知页面",
     "iteration": "迭代"
   },
@@ -66,7 +106,20 @@
     "ai_team_group": "AI 团队",
     "resources_group": "资源与连接",
     "workspace_issues": "任务",
-    "unread_overflow": "99+"
+    "unread_overflow": "99+",
+    "chat_unread_other": "{{count}} 条未读消息",
+    "start_work": "开始工作",
+    "start_collaboration": "发起协作",
+    "open_workspace_to_create": "打开工作空间后即可新建任务",
+    "open_workspace_to_chat": "选择工作空间后即可开始 AI 对话",
+    "cross_workspace": "跨工作空间",
+    "collaboration_notifications": "协作通知",
+    "switch_workspace": "切换工作空间",
+    "workspace_settings": "工作空间设置",
+    "retry_workspaces": "重新加载工作空间",
+    "no_workspace_selected": "选择工作空间，查看其中的任务与资源。",
+    "more_navigation": "更多入口",
+    "my_work_group": "我的工作"
   },
   "desktop": {
     "version": {

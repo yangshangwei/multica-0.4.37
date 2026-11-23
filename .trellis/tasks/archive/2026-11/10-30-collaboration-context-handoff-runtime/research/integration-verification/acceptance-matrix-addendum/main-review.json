@@ -1,0 +1,18 @@
+{
+  "reviewed_at": "2026-10-31T19:36:05.091608+00:00",
+  "reviewer": "main independently of implementation agent",
+  "result": "passed",
+  "source_sha256": {
+    "server/internal/service/collaboration_checkpoint_authority_matrix_test.go": "2adea8eadd3d6da5ba12a0b6e296b4c0fc0d92ba6f1a89673b5532681f4bd2e8",
+    "server/internal/service/collaboration_wakeup_boundary_test.go": "073822db3b3e130259b572b53e7b4562c477a057a6e4485937d3a1c08e5d412e"
+  },
+  "reviewed": [
+    "Actual service transactions, commit barriers and pg_blocking_pids establish both orderings without sleeps",
+    "Original accepted prefix, identity and capacity preserved; unauthorized new body rejected while receipt/seal/proof recovery remains distinct",
+    "Two distinct member outcomes plus joined input and late post-claim causes have exact source and reader assertions",
+    "Frozen snapshot and claim replay do not absorb late input; plain discussion does not gain command authority",
+    "No production hooks, shared helper changes or real Provider calls"
+  ],
+  "verification": "verify-inventory.py passed against all selected run/pass events, zero skips and matching source hashes",
+  "limitations": "Synthetic service-level proof fixtures; real model, native OS/installation and other acceptance remain separate"
+}

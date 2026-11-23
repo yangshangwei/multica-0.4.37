@@ -1,0 +1,82 @@
+{
+  "reviewed_at": "2026-11-05T06:26:03.841312+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "H1 three-trial conditional preparation admission; live stages still root-controlled",
+  "verdict": "pass-with-notes",
+  "blocking_findings": 0,
+  "checks": {
+    "protected_source_framework_launcher_Provider_model": true,
+    "full_operator_equals_saved_actual_env": true,
+    "effective_env_hash_independent_reconstruction": true,
+    "private_config_hash": true,
+    "reviewed_helper_hash": true,
+    "paid_allowance_unchanged": true,
+    "H1_registration": true,
+    "fresh_allocated_DB_receipt": true,
+    "matching_window": true,
+    "permits_false_pending_actual_stages": true
+  },
+  "frozen_execution_head_before_activation": "f033051ca",
+  "tested_product_head": "1a32ca36c",
+  "product_source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "product_diff_vs_tested": "empty",
+  "execution_status": "clean before activation sync",
+  "prior_E0a": {
+    "public_sha256": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba",
+    "raw_finished_pass": true,
+    "launcher_exit": 0,
+    "original_stop_triggered": false,
+    "spent": 1,
+    "remaining": 24,
+    "auxiliary_helper_failure_and_unproven_stability": "preserved under explicit root disposition; no replacement"
+  },
+  "window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "granted_by": "01a1a7a6-02dc-7722-a9d6-7d05385edb2d",
+    "scenario": "RK1-H1",
+    "start_trial": 1,
+    "trials": 3,
+    "paid_launches": 3,
+    "outer_timeout_minutes": 26,
+    "recorded_at": "2026-11-05T06:21:00.601697+00:00",
+    "hold": "preparation then actualinvocation up to26minutes; release onexit"
+  },
+  "allocation": {
+    "at": "2026-11-05T06:21:00.601697+00:00",
+    "database": "multica_rk1_20261105_real_h1_a729",
+    "identity": "multica_rk1_20261105_real_h1_a729|764_collaboration_ai_policy",
+    "migration_exit": 0,
+    "initial_issues": 0,
+    "template": "template0",
+    "connections_before": "27|100",
+    "allowed": "originalRK1-H1 trials1-3",
+    "maximum_new_paid_starts": 3,
+    "consumed_before": 1,
+    "remaining_before": 24
+  },
+  "prepared_env": {
+    "env_sha256": "aecaaa4c1979cda4b02931475080cfe1bb453991dd2925134ae305a3d9f1a84c",
+    "config_sha256": "c2b77f29fea90b850768b306ac97f6a71bc046c58a6e861c18f85a146c561af4",
+    "helper_sha256": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+    "operator_fact_receipt_sha256": "1df4b0cbe017d54465a171eccf2d3225c0fc9f2d8404512d45e9c9264190cdbd",
+    "secret_contents_published": false
+  },
+  "allowed_next": "Scoped commit/sync, describe metadata, root-bound build, then check-only. Root may admit only registered H1trial1\u20133 after actual success, exact current binding and agreed modelwindow remain valid.",
+  "conditions": [
+    "Preserve exact original launcher/scoring/order; H1 can consume at most3newpaid calls, fake seeds excluded.",
+    "Use same saved parent environment in all phases; full operator equality before every phase remains strict.",
+    "Fresh per-file before/post manifests and selected private metadata bytes required by reviewed successor.",
+    "Preserve any incomplete/canary/original launcher failure and stop later scenarios; review any operator drift before next invocation.",
+    "Window explicitly includes preparation then actual invocation up to26minutes; release on exit, no automaticH2."
+  ],
+  "registration_sha256": "b185c693ee8bcb1628d609c73485cd68714567425bcee0a36a0a0c66d25913ef",
+  "allocation_sha256": "c73c9b340438138ceafba463c56587a37f8c73e55722d197dd3691d037b84e2f",
+  "window_sha256": "2b69add5fa53c084e29ed411ddcc1d7f68951e856d9615b8fea44dfcb969b644",
+  "operations": {
+    "Go": 0,
+    "DB": 0,
+    "Provider": 0,
+    "plugin_scan": 0,
+    "tests": 0
+  }
+}

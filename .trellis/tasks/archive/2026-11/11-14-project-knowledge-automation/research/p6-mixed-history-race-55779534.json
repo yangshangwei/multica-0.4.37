@@ -1,0 +1,108 @@
+{
+  "run_id": "p6-mixed-history-race-55779534",
+  "database": "mca_knowledge_service_b716d8bbe293",
+  "package": "./internal/service",
+  "test_pattern": "^TestKnowledge(MixedPreparedHistoryCannotHideAutomaticExposure|HumanHistoryVersionSurvivesIncompatibleBinding|LegacyHumanHistoryAllowsFreshV2Binding)$",
+  "run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-mixed-history-race-55779534",
+  "state": "complete",
+  "cluster_before": {
+    "database": "postgres",
+    "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": 100,
+    "connections": 28
+  },
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "source_sha256_before": "917eeab82fccdcad57006f511e3ff09bc33e01b0d1d20263d658ef5699a6a80e",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "created_at": "2026-11-15T06:17:42.300589+00:00",
+  "real_model_credentials_inherited": false,
+  "agent_cli_guard": true,
+  "launcher_sha256": "983a7895b0ce815b0f86344d0b802d15de6805e0aff0bbd57e987aae198b994e",
+  "redis_ownership_before": {
+    "allocation_file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json",
+    "allocation_sha256": "41e5c7a2ab13d5b490f3a242adcb3451bf3ecfbfc8e5f3c13dcbc6facf3e0e64",
+    "immutable_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation-receipt-20261115-1b8185dd6941.json",
+    "immutable_receipt_sha256": "63641eca39a110665f9216c8c367251c9b28966e23212c58c91b6b3ff3a62f5f",
+    "verifier_sha256": "7418bc77eee3c41b20965afc279f5c902bbe5beb9c917efe5baa6cc66d008dd9",
+    "proof": {
+      "status": "verified_owned_running",
+      "run_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "receipt": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-verify-83cebff4b500.receipt.json",
+      "container_id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+      "network_id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e"
+    },
+    "diagnostics": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-mixed-history-race-55779534/redis-ownership-56609abf.log"
+  },
+  "ambient_redis_inherited": false,
+  "ambient_redis_present": false,
+  "migration_exit": 0,
+  "migration_ledger": "853:864_collaboration_stage_submission_ready",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-timeout=15m",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestKnowledge(MixedPreparedHistoryCannotHideAutomaticExposure|HumanHistoryVersionSurvivesIncompatibleBinding|LegacyHumanHistoryAllowsFreshV2Binding)$"
+  ],
+  "test_exit": 0,
+  "tests": {
+    "run": [
+      "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure",
+      "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/server_configuration",
+      "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/client_binding",
+      "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/native_refused",
+      "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding",
+      "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/server_configuration",
+      "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/client_binding",
+      "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding",
+      "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v1_envelope",
+      "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v2_envelope_with_v1_claim"
+    ],
+    "pass": [
+      "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/server_configuration",
+      "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/client_binding",
+      "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure/native_refused",
+      "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure",
+      "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/server_configuration",
+      "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding/client_binding",
+      "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding",
+      "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v1_envelope",
+      "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding/v2_envelope_with_v1_claim",
+      "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "source_sha256_after": "917eeab82fccdcad57006f511e3ff09bc33e01b0d1d20263d658ef5699a6a80e",
+  "connections_after": 0,
+  "finished_at": "2026-11-15T06:18:26.092319+00:00",
+  "source_stable": true,
+  "redis_ownership_after": {
+    "allocation_file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json",
+    "allocation_sha256": "41e5c7a2ab13d5b490f3a242adcb3451bf3ecfbfc8e5f3c13dcbc6facf3e0e64",
+    "immutable_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation-receipt-20261115-1b8185dd6941.json",
+    "immutable_receipt_sha256": "63641eca39a110665f9216c8c367251c9b28966e23212c58c91b6b3ff3a62f5f",
+    "verifier_sha256": "7418bc77eee3c41b20965afc279f5c902bbe5beb9c917efe5baa6cc66d008dd9",
+    "proof": {
+      "status": "verified_owned_running",
+      "run_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "receipt": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-verify-e248df18680f.receipt.json",
+      "container_id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+      "network_id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e"
+    },
+    "diagnostics": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-mixed-history-race-55779534/redis-ownership-cd05f6bb.log"
+  }
+}

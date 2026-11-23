@@ -1,0 +1,56 @@
+Captured 2026-11-03T11:18:25.395389+00:00 from running v13; not final inventory.
+
+  6) [chromium] › e2e/collaboration-preparation-records-web.spec.ts:7:1 › Web reads synthetic frozen preparation without inferring termination across refresh and viewers 
+
+    Error: expect(locator).toBeInViewport() failed
+
+    Locator:  locator('[id="run-0e7487fa-6c40-438d-94d5-098c8d0e741e"]').getByRole('region', { name: 'Run records', exact: true }).getByRole('region', { name: 'Run preparation', exact: true })
+    Expected: in viewport
+    Received: viewport ratio 0
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeInViewport" with timeout 5000ms
+      - waiting for locator('[id="run-0e7487fa-6c40-438d-94d5-098c8d0e741e"]').getByRole('region', { name: 'Run records', exact: true }).getByRole('region', { name: 'Run preparation', exact: true })
+        9 × locator resolved to <section class="min-w-0 space-y-3" aria-label="Run preparation">…</section>
+          - unexpected value "viewport ratio 0"
+
+
+      27 |       });
+      28 |       await current.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+    > 29 |       await expect(focus).toBeInViewport({ ratio: 1 });
+         |                           ^
+      30 |       const geometry = await focus.boundingBox();
+      31 |       expect(geometry).not.toBeNull();
+      32 |       expect(geometry!.x).toBeGreaterThanOrEqual(0);
+        at Object.capture (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preparation-records-web.spec.ts:29:27)
+        at exercisePreparationRecords (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-preparation-records.ts:357:3)
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-preparation-records-web.spec.ts:47:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/collaboration-preparation--d3e76--across-refresh-and-viewers-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:6474) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:6474) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+

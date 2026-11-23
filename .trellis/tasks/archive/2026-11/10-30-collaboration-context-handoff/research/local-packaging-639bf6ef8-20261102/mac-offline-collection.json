@@ -1,0 +1,25 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+    "/opt/homebrew/bin/node",
+    "apps/desktop/scripts/update-artifacts.mjs",
+    "collect",
+    "--source",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3",
+    "--destination",
+    "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-collected",
+    "--allow-prerelease"
+  ],
+  "state": "complete",
+  "exit_code": 71,
+  "source": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3",
+  "destination": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-collected",
+  "local_collection_only": true,
+  "publication": false,
+  "network_denied": true,
+  "log_sha256": "46d3b157ce20c5158e7d179ada860349ef02d0326b862270a894a3869dfd1050",
+  "at": "2026-11-01T20:19:54.389803+00:00"
+}

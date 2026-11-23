@@ -1,0 +1,691 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T02:15:31.792632+00:00",
+  "reviewer": "/root/fixture_final_review",
+  "reviewer_thread": "01a1a3cc-7283-7543-9715-6aa7060d55b9",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "verdict": "pass-for-two-assertion-fixture-protocol",
+  "blocking_findings_open": 0,
+  "mechanism": {
+    "confirmed": true,
+    "confidence": "high",
+    "scope": "Reachable real Base UI/Playwright scheduling mechanism, demonstrated under explicit control.",
+    "historical_v15_attribution_confirmed": false,
+    "historical_confidence": "medium",
+    "exact_production_chunk": {
+      "original_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web/.next/static/chunks/52665-8b5d10f3a8d46d14.js",
+      "runtime_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/apps/web/.next/static/chunks/52665-8b5d10f3a8d46d14.js",
+      "sha256": "7c86ae7e27a3e92c16f59017f03da3478d5d3d02b5a8aea0430263abdc70f066",
+      "callback_source": "()=>e?.focus({preventScroll:n})",
+      "actual_callback_stack_columns": {
+        "enqueueFocus": [
+          19649,
+          19682
+        ],
+        "FloatingFocusManager": 30794
+      },
+      "stack_maps_to_actual_unchanged_production_chunk": true
+    },
+    "pinned_server_input_sha256": "9bab3cbf128c2338d3eee76996ea9cd7044d27cd9b0c6bf7b1786669354e9d1a",
+    "hook_sha256": "cde9e26e312a9a960a484292e72179b9f6333c4e97aa128fa8fbbf8652ac8646",
+    "trusted_event_chains_verified": true
+  },
+  "source_verification": [
+    {
+      "mode": "redirect",
+      "fixture": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/.omx/private/triage-focus-tests/redirect/fixtures/triage-duplicate-picker.ts",
+      "fixture_sha256": "5190bdbf8a4eb3c5d30b631d53dd85cdf7bdadd33bdfcebc4dea8774e61f8d58",
+      "config_sha256": "abc4d3104c41ed24b1637233476b51d9ea0ff18c14f709d3e45599f9f2a93a41",
+      "spec_sha256": "a520f3d39f014e04e9f5a4d5ff8c1490333fc668849f1c0106662b41caf17423",
+      "original_assertions_preserved": 52,
+      "private_fixture_reconstructs_exact_original_or_two_assertion_delta": true
+    },
+    {
+      "mode": "await-initial",
+      "fixture": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/.omx/private/triage-focus-tests/await-initial/fixtures/triage-duplicate-picker.ts",
+      "fixture_sha256": "542be75eb1f2d01d8c9e1cc5fc643329b16670bffc521479cd88318b917b0494",
+      "config_sha256": "5a594514d57918c8c65ea0c80c2ed290f2e1a1ed2fb751e4f0a6c3619c5aa931",
+      "spec_sha256": "356fe257dfa0c72c800fba5a90b11879278da91b4f8de41dcace08dcbabc1aa7",
+      "original_assertions_preserved": 52,
+      "private_fixture_reconstructs_exact_original_or_two_assertion_delta": true
+    }
+  ],
+  "original_fixture_sha256": "ce2ca701dfd62299b63e5bfc65d79eefca306e7816bd0671dd2a74cd0c78192e",
+  "proposed_fixture_sha256": "0cbc13c518022a2af413da1f09b3801e8b0f4a6c7264bbf395544a301a69c029",
+  "allowed_tracked_boundary": [
+    "e2e/fixtures/triage-duplicate-picker.ts"
+  ],
+  "proposed_diff": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-mechanism-review/proposed-minimum.diff",
+    "sha256": "ddf29a2e1b2c82dc4deaa644fd2fbe0aae91e2fe893072c370531d22519e45fb",
+    "original_assertions_preserved": 52,
+    "additional_assertions": 2,
+    "other_source_changes": 0
+  },
+  "fixture_protocol_assessment": "Awaiting the actual initial target focus establishes dialog readiness before an unrelated field fill. Immediate Reason value verification catches incorrect input destination. Neither clears values nor changes product semantics, locators, business values, original assertions, retries or timeouts.",
+  "cases": {
+    "natural": {
+      "result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/natural-result.json",
+      "result_sha256": "3843f59bb575ddb1d7dc764a836bc78d4ef4a1db1cdebbbbd2820cfa1f6a83ac",
+      "exit_code": 0,
+      "report_sha256": "1c6ffbdee49ba89393c9a0d9ab38ae7aa5101977f3f5ffb151000991888115c7",
+      "log_sha256": "afa00659ef1e3efd0aba862d3963c7201c600d6188c7955ed8135da6ba5e8d7d",
+      "terminals": [
+        {
+          "title": "Web duplicate picker browses all formal tasks and confirms the chosen target (en)",
+          "file": "triage-duplicate-picker.spec.ts",
+          "status": "expected",
+          "expected": "passed",
+          "actual": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "title": "Web duplicate picker browses all formal tasks and confirms the chosen target (zh-Hans)",
+          "file": "triage-duplicate-picker.spec.ts",
+          "status": "expected",
+          "expected": "passed",
+          "actual": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "retry_count": 0
+    },
+    "redirect": {
+      "result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/redirect-result.json",
+      "result_sha256": "00329e46fffe240c89e4df12972d0db2654c85bfe2d388a732d0c366e48f8f90",
+      "exit_code": 1,
+      "report_sha256": "4fc0a1c6e16ff188e77c241b3775fa50f736dc431bbc38213b8514378fcd3654",
+      "log_sha256": "a3160cf8cc04de056ef2031b73e3f2edf01cb55ad579d30b9ad158dc0c301df6",
+      "terminals": [
+        {
+          "title": "Mechanism control redirect: Web duplicate picker browses all formal tasks and confirms the chosen target (en)",
+          "file": "triage-duplicate-picker.spec.ts",
+          "status": "unexpected",
+          "expected": "passed",
+          "actual": [
+            {
+              "status": "failed",
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "retry_count": 0
+    },
+    "await-initial": {
+      "result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/await-initial-result.json",
+      "result_sha256": "0e34c71ea4e106025953a1cfd76a4e9897dcfa7fb2c39b03b7add4ad546b1741",
+      "exit_code": 0,
+      "report_sha256": "2449dc2b1e3b234370a5212de94aee3c06a4725d2148245f2ff754fd21fc6800",
+      "log_sha256": "ec4b3ed9580a70b089dc6cf880b6b9fc3657542fb0ead3741558fcae5de6aab7",
+      "terminals": [
+        {
+          "title": "Mechanism control await-initial: Web duplicate picker browses all formal tasks and confirms the chosen target (en)",
+          "file": "triage-duplicate-picker.spec.ts",
+          "status": "expected",
+          "expected": "passed",
+          "actual": [
+            {
+              "status": "passed",
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "retry_count": 0
+    }
+  },
+  "traces": [
+    {
+      "mode": "natural",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/natural-artifacts/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/trace.zip",
+      "sha256": "8e841a069670edc31de21ae945647666dd5a43a3867caa0f7f9279d6c04a5342",
+      "bytes": 2210189,
+      "fill_call": {
+        "callId": "call@16",
+        "start": 3148.04,
+        "end": 3164.777,
+        "selector": "internal:role=dialog[name=\"Mark duplicate\"s] >> internal:role=textbox[name=\"Reason\"s]",
+        "value": "Same upload failure; retain the customer's additional context"
+      },
+      "original_empty_assertion_call": {
+        "callId": "call@20",
+        "start": 3284.396,
+        "end": 3288.735
+      }
+    },
+    {
+      "mode": "natural",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/natural-artifacts/triage-duplicate-picker-We-ae290--the-chosen-target-zh-Hans--chromium/trace.zip",
+      "sha256": "7e9ae6d5a63c953ced32ffa3704f3ee2b223a169824ec440cd3e0253886a979c",
+      "bytes": 2034338,
+      "fill_call": {
+        "callId": "call@217",
+        "start": 7059.125,
+        "end": 7066.644,
+        "selector": "internal:role=dialog[name=\"标记重复\"s] >> internal:role=textbox[name=\"原因\"s]",
+        "value": "同一上传故障，保留客户的补充说明"
+      },
+      "original_empty_assertion_call": {
+        "callId": "call@221",
+        "start": 7199.623,
+        "end": 7202.616
+      }
+    },
+    {
+      "mode": "redirect",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/redirect-artifacts/triage-duplicate-picker-Me-9379b-firms-the-chosen-target-en--chromium/trace.zip",
+      "sha256": "2f7f2d5e25437ab23b0fdaa69ce95d1c208b499389e99ae4df375c1f17d32086",
+      "bytes": 1418105,
+      "fill_call": {
+        "callId": "call@18",
+        "start": 3440.198,
+        "end": 3456.246,
+        "selector": "internal:role=dialog[name=\"Mark duplicate\"s] >> internal:role=textbox[name=\"Reason\"s]",
+        "value": "Same upload failure; retain the customer's additional context"
+      },
+      "original_empty_assertion_call": {
+        "callId": "call@24",
+        "start": 3575.036,
+        "end": 8577.162
+      }
+    },
+    {
+      "mode": "await-initial",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/await-initial-artifacts/triage-duplicate-picker-Me-41613-firms-the-chosen-target-en--chromium/trace.zip",
+      "sha256": "a457560f642d237822796287d810fa576ac537cc11563abd470a017e9313f833",
+      "bytes": 2371480,
+      "fill_call": {
+        "callId": "call@20",
+        "start": 4124.371,
+        "end": 4143.073,
+        "selector": "internal:role=dialog[name=\"Mark duplicate\"s] >> internal:role=textbox[name=\"Reason\"s]",
+        "value": "Same upload failure; retain the customer's additional context"
+      },
+      "original_empty_assertion_call": {
+        "callId": "call@28",
+        "start": 4238.718,
+        "end": 4240.736
+      },
+      "new_initial_focus_assertion": {
+        "start": 4118.766,
+        "end": 4122.274
+      },
+      "new_immediate_reason_assertion": {
+        "start": 4145.111,
+        "end": 4146.832
+      }
+    }
+  ],
+  "controlled_observations": {
+    "redirect": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/redirect-artifacts/triage-duplicate-picker-Me-9379b-firms-the-chosen-target-en--chromium/initial-focus-control.json",
+      "sha256": "bd24602ab75216b5b2b47d6bc4ed320835cb2013683bb745109907474801b381",
+      "early_control": {
+        "mode": "redirect",
+        "captured": 1,
+        "pending": 0,
+        "released": 1,
+        "callbacks": [
+          {
+            "source": "()=>e?.focus({preventScroll:n})",
+            "stack": "Error\n    at window.requestAnimationFrame (eval at evaluate (:290:30), <anonymous>:38:34)\n    at o (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19682)\n    at http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:30794",
+            "queued": 733.8000000119209,
+            "nativeFrame": 730.1,
+            "released": 758.1999999880791,
+            "releasePhase": "server-after-textarea-focus-select-before-keyboard-insertText"
+          }
+        ],
+        "snapshots": [
+          {
+            "phase": "actual-focus-callback-queued",
+            "time": 733.8999999761581,
+            "active": {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "actual-focus-native-frame",
+            "time": 744.8000000119209,
+            "active": {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "server-before-keyboard-insert-before-release",
+            "time": 758.1999999880791,
+            "active": {
+              "tag": "TEXTAREA",
+              "role": null,
+              "label": "Reason"
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "server-before-keyboard-insert-after-release",
+            "time": 759.1999999880791,
+            "active": {
+              "tag": "INPUT",
+              "role": "combobox",
+              "label": "Duplicate target task"
+            },
+            "target": "",
+            "reason": ""
+          }
+        ]
+      },
+      "early_events": [
+        {
+          "stage": "focusin",
+          "time": 757.5,
+          "frame": 16,
+          "active": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusin",
+          "eventTime": 757.5,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at async <anonymous>:316:30"
+          ]
+        },
+        {
+          "stage": "focusout",
+          "time": 758.1999999880791,
+          "frame": 16,
+          "active": {
+            "tag": "BODY",
+            "role": null,
+            "label": null,
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusout",
+          "eventTime": 758.1999999880791,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at u (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19649)",
+            "    at window.__triageReleaseInitialFocus (eval at evaluate (:290:30), <anonymous>:71:7)",
+            "    at eval (eval at evaluate (:290:30), <anonymous>:1:8)",
+            "    at eval (<anonymous>)",
+            "    at UtilityScript.evaluate (<anonymous>:290:30)",
+            "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+          ]
+        },
+        {
+          "stage": "focusin",
+          "time": 758.5999999642372,
+          "frame": 16,
+          "active": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusin",
+          "eventTime": 758.5,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at u (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19649)",
+            "    at window.__triageReleaseInitialFocus (eval at evaluate (:290:30), <anonymous>:71:7)",
+            "    at eval (eval at evaluate (:290:30), <anonymous>:1:8)",
+            "    at eval (<anonymous>)",
+            "    at UtilityScript.evaluate (<anonymous>:290:30)",
+            "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+          ]
+        },
+        {
+          "stage": "beforeinput",
+          "time": 762.0999999642372,
+          "frame": 16,
+          "active": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "target": "",
+          "reason": "",
+          "type": "beforeinput",
+          "eventTime": 762.0999999642372,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": "insertText",
+          "data": "Same upload failure; retain the customer's additional context",
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)"
+          ]
+        },
+        {
+          "stage": "input",
+          "time": 766,
+          "frame": 16,
+          "active": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "target": "Same upload failure; retain the customer's additional context",
+          "reason": "",
+          "type": "input",
+          "eventTime": 765,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": "insertText",
+          "data": "Same upload failure; retain the customer's additional context",
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)"
+          ]
+        }
+      ]
+    },
+    "await-initial": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/await-initial-artifacts/triage-duplicate-picker-Me-41613-firms-the-chosen-target-en--chromium/initial-focus-control.json",
+      "sha256": "33acbc0fc681ad5db4fbb2a8127c073b926fd761a97548d83e83e6c79a2f923e",
+      "early_control": {
+        "mode": "await-initial",
+        "captured": 1,
+        "pending": 0,
+        "released": 1,
+        "callbacks": [
+          {
+            "source": "()=>e?.focus({preventScroll:n})",
+            "stack": "Error\n    at window.requestAnimationFrame (eval at evaluate (:290:30), <anonymous>:38:34)\n    at o (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19682)\n    at http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:30794",
+            "queued": 617.6000000238419,
+            "nativeFrame": 615.4,
+            "released": 631.1999999880791,
+            "releasePhase": "native-frame-before-initial-focus-await"
+          }
+        ],
+        "snapshots": [
+          {
+            "phase": "actual-focus-callback-queued",
+            "time": 617.6000000238419,
+            "active": {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "actual-focus-native-frame",
+            "time": 631.1999999880791,
+            "active": {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "actual-focus-native-frame-after",
+            "time": 631.8000000119209,
+            "active": {
+              "tag": "INPUT",
+              "role": "combobox",
+              "label": "Duplicate target task"
+            },
+            "target": "",
+            "reason": ""
+          },
+          {
+            "phase": "server-after-focus-await-before-keyboard-insertText",
+            "time": 664.1000000238419,
+            "active": {
+              "tag": "TEXTAREA",
+              "role": null,
+              "label": "Reason"
+            },
+            "target": "",
+            "reason": ""
+          }
+        ]
+      },
+      "early_events": [
+        {
+          "stage": "focusin",
+          "time": 631.5,
+          "frame": 11,
+          "active": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusin",
+          "eventTime": 631.5,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at u (http://localhost:13951/_next/static/chunks/52665-8b5d10f3a8d46d14.js:12:19649)",
+            "    at eval (eval at evaluate (:290:30), <anonymous>:52:13)"
+          ]
+        },
+        {
+          "stage": "focusout",
+          "time": 662.1000000238419,
+          "frame": 13,
+          "active": {
+            "tag": "BODY",
+            "role": null,
+            "label": null,
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusout",
+          "eventTime": 662.1000000238419,
+          "targetElement": {
+            "tag": "INPUT",
+            "role": "combobox",
+            "label": "Duplicate target task",
+            "id": "radix-_r_3f_"
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at async <anonymous>:316:30"
+          ]
+        },
+        {
+          "stage": "focusin",
+          "time": 662.6999999880791,
+          "frame": 13,
+          "active": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "focusin",
+          "eventTime": 662.6000000238419,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": null,
+          "data": null,
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)",
+            "    at async <anonymous>:316:30"
+          ]
+        },
+        {
+          "stage": "beforeinput",
+          "time": 664.6999999880791,
+          "frame": 13,
+          "active": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "target": "",
+          "reason": "",
+          "type": "beforeinput",
+          "eventTime": 664.6999999880791,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": "insertText",
+          "data": "Same upload failure; retain the customer's additional context",
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)"
+          ]
+        },
+        {
+          "stage": "input",
+          "time": 665.1000000238419,
+          "frame": 13,
+          "active": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "target": "",
+          "reason": "Same upload failure; retain the customer's additional context",
+          "type": "input",
+          "eventTime": 665,
+          "targetElement": {
+            "tag": "TEXTAREA",
+            "role": null,
+            "label": "Reason",
+            "id": ""
+          },
+          "inputType": "insertText",
+          "data": "Same upload failure; retain the customer's additional context",
+          "isTrusted": true,
+          "stack": [
+            "Error",
+            "    at HTMLDocument.listener (eval at evaluate (:290:30), <anonymous>:56:33)"
+          ]
+        }
+      ]
+    }
+  },
+  "diagnostic_report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/diagnostic-report.json",
+    "sha256": "667a3f5edc46ff0015ba53ec313a06c454f61e325a6d92f469c3345b529b9faa"
+  },
+  "artifact_manifest": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/diagnostic-artifact-manifest.json",
+    "sha256": "4804cbda749952b3fc4bd99f2ff8dc62dd0a18c3f38dd7a14c49d55d2b2e1958",
+    "files_verified": 34
+  },
+  "limits": [
+    "Natural EN/ZH passed once each with passive telemetry, not an uninstrumented original timing reproduction; observer installation/listeners/RAF collection and trace can perturb scheduling.",
+    "Natural ZH has a complete trace and original assertions passing, but its final focus collector is unavailable; no natural ZH focus ownership claim.",
+    "Red holds a real callback until the server insertion boundary; green releases at its native frame and awaits initial focus. These are deliberate scheduling variants, not the same forced schedule with one variable toggled. Green proves the intended readiness protocol; fresh uncontrolled EN/ZH is required for the tracked delta.",
+    "The original V15 has no focus timeline. The confirmed mechanism and identical symptom do not upgrade historical attribution to proven."
+  ],
+  "root_next": "Root may apply exactly the generated two-assertion fixture delta, run fresh original EN/ZH without scheduling hook/observer on the dedicated diagnostic window, preserve all old evidence, independently review exact applied bytes and freeze the new candidate. Complete V16 admission/shared acceptance remain separate.",
+  "operations": {
+    "write_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-mechanism-review",
+    "source_changes": 0,
+    "DB_browser_test_service_mutations": 0,
+    "commits": 0,
+    "models": 0,
+    "knowledge_budget_allocated": 0,
+    "knowledge_calls": 0,
+    "production_knowledge_default": false,
+    "execution_clearance_granted": false
+  }
+}

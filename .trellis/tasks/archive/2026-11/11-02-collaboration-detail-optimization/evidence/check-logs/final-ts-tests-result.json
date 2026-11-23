@@ -1,0 +1,16 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "turbo",
+    "run",
+    "test",
+    "--filter=!@multica/mobile",
+    "--concurrency=1",
+    "--force",
+    "--",
+    "--maxWorkers=2"
+  ],
+  "process_result": 0,
+  "log": "/tmp/multica-detail-verification-20261103/final-ts-tests.log"
+}

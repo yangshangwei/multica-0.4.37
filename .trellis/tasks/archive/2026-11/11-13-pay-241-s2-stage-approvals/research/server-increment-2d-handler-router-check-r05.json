@@ -1,0 +1,453 @@
+{
+  "version": 1,
+  "date": "2026-11-15",
+  "reviewer": "/root/s2_f06_check_r05",
+  "task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "scope": "S2 FINAL combined r03 handler/router independent review",
+  "verdict": "SCOPED_PASS",
+  "handler_router_scoped_pass": true,
+  "full_s2_accepted": false,
+  "full_s2_status": "NOT_ACCEPTABLE",
+  "p2_released": false,
+  "actual_web_desktop_scenarios_executed": 0,
+  "findings": {
+    "fixed": [],
+    "not_fixed": [],
+    "no_handler_router_issue_found": true
+  },
+  "writes": {
+    "repository_files": [
+      "research/server-increment-2d-handler-router-check-r05.md",
+      "research/server-increment-2d-handler-router-check-r05.json"
+    ],
+    "product_files_changed": 0,
+    "tests_changed": 0,
+    "spec_files_changed": 0,
+    "frozen_source_changed": 0,
+    "git_state_changed": false,
+    "simplifications": []
+  },
+  "context": {
+    "prd_design_implement_loaded": true,
+    "check_jsonl_references_loaded": 13,
+    "current_acceptance_matrix_loaded": true,
+    "f06_contract_loaded": true,
+    "exit_writer_continuation_evidence_loaded": true,
+    "spec_sync_required_for_reviewed_behavior": false
+  },
+  "source": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/combined-candidate-r05-r03/source",
+    "file_count": 4965,
+    "manifest_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/combined-candidate-r05-r03/manifest.json",
+    "manifest_format": "object.files",
+    "manifest_sha256": "81cacce71bc781e8c6ca2a6f27fa379ba9befe3671b7187fb81baf71b818720a",
+    "initial_snapshot_sha256": "a376ed51dac9c7a3520e8e3e77bc7b7d9443e7bc679cc8666211627ea80e9296",
+    "canonical_file_list_sha256": "0b06eeefde5cabe88753e9e18c68ae2955051cff0f7f352e7e5257a37ff99e78",
+    "final_snapshot_file": "final-source.json",
+    "final_snapshot_sha256": "1f2681a80fee197aea65db778a4819909622e2eeac19cf4ccdf45cf846b51436",
+    "all_bytes_modes_hashes_match_manifest": true,
+    "all_before_after_match_initial": true,
+    "mismatches": [],
+    "parent": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/frozen-r05-r03/source",
+      "file_count": 4960,
+      "manifest_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/resume-r05/frozen-r05-r03/manifest.json",
+      "manifest_format": "bare_list",
+      "manifest_sha256": "af095ab3de74686e00b837bcc47ed12f29541e23ac39e764f8a86b5ccd57df76",
+      "all_bytes_modes_hashes_match_manifest": true,
+      "changed_or_removed_files": [],
+      "final_snapshot_file": "parent-source-final-r01.json",
+      "final_snapshot_sha256": "a723588f261240c974d9fd786f71f6dbbc2a22ba58c13cddb9bdbff800131ef8"
+    },
+    "only_additions": [
+      {
+        "path": "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+        "sha256": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec"
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage_exit_continuation_test.go",
+        "sha256": "8c14dd6c3bcef49c2e52962ba8ea9f29e9dc19d9f6037bfbaf3b892a13ad4c95"
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage_writer_continuation_test.go",
+        "sha256": "7e9323fe9387e831c112d340d6613ada15a93a4ee53a4247ef409394e99f695b"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_exit_continuation_test.go",
+        "sha256": "d0321fd11ba88c42cc9eb373b015c0c5682dc4f82262a18692821c4688088deb"
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_writer_continuation_test.go",
+        "sha256": "188dad13be50f366bcfc6ed4d94eeca0a0a63c03699ebdf1b34a758281b4168f"
+      }
+    ],
+    "nonproduct_snapshots": {
+      "count": 2,
+      "unchanged": true,
+      "root_product_merge_allowed": false
+    }
+  },
+  "evidence_root": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/handler-router-final-check",
+  "tools": {
+    "go": {
+      "path": "/opt/homebrew/bin/go",
+      "realpath": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+      "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+      "version": "go version go1.27.0 darwin/arm64",
+      "go_126_linux_ci_verified": false
+    },
+    "launcher": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+      "sha256": "4767c307fe18d5f3b9f6c756b75ff3a8c4816b1557de72d77fe2e62ca4dcd87e",
+      "exact_database_identity_verified_before_each_test": true
+    },
+    "package_runner": {
+      "file": "run-package.mjs",
+      "sha256": "4a02c104fe7f34870a6fd923637a0f1fd8d04f6240f51e4006094e88d7c5d820"
+    },
+    "static_runner": {
+      "file": "run-static-r01.mjs",
+      "sha256": "ec81569537aceb07f2d2218c6110e07f679f011178669644bec27a4b7d7ee3a7"
+    }
+  },
+  "selection": {
+    "inventory_file": "selected-inventory-final.json",
+    "inventory_sha256": "0313e44185d2dae4cc714ed14bde9ece2e7d9f577fe4769860b77e3cc81532da",
+    "discovery_exit": 0,
+    "discovery_buildable_test_files": true,
+    "testing_t_parameter_names_not_fixed_to_t": true,
+    "handler": {
+      "selector": "^(TestStage|TestDeliveryCompletion|TestOrdinaryDeliveryBatch|TestDeleteIssueIteration|TestBatchDeleteIssueIteration|TestDeleteIssueByIdentifier|TestBatchDeleteParentAndChild)",
+      "owner_selector_command_sha256": "25f13bac404184dc705925f852931887628e4627271c5317cc84d37a6663fc24",
+      "expected_top_count": 97
+    },
+    "router": {
+      "selector_exact_value_field": "router.selector in selected-inventory-final.json",
+      "selector_explicit_alternation": true,
+      "expected_top_count": 53,
+      "f06_top_count": 10,
+      "excluded_before_execution": [
+        "TestCollaborationStageExecutionHarness",
+        "TestDeliveryCompletionM1BrowserFixture"
+      ],
+      "exclusion_reason": "ROOT-only opt-in actual API/browser fixtures"
+    },
+    "superseded_initial_inventory_used_for_final_commands": false
+  },
+  "test_commands": [
+    {
+      "run": "handler-normal",
+      "package": "./internal/handler",
+      "race": false,
+      "count": 1,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_handler.json",
+      "config_sha256": "6114df215a0b78808c1c4491572b2e835de22ec290321ded304a0a20f33f5225",
+      "config_mode": "0600",
+      "exact_argv_record": "logs/handler-normal-r01.command.json",
+      "command_record_sha256": "ef33ff9e4229aa6d626bca475760fb302cdd5370fa32abcd10b42fa7ea7ef7a1",
+      "result_record": "logs/handler-normal-r01.result.json",
+      "result_record_sha256": "42ef7ab2bdd801e5af6c2f6c9b1de03250d69219888ecd70e51eb2eed26d630c",
+      "raw_stdout": "logs/handler-normal-r01.jsonl",
+      "raw_stdout_sha256": "ecd68a8eecbdfe5969fd0ee2973546a014ef285336180f5bd429acfe96434b70",
+      "raw_stdout_bytes": 385924,
+      "raw_stderr": "logs/handler-normal-r01.stderr",
+      "raw_stderr_bytes": 0,
+      "source_before_sha256": "cbc94989b03367c59d436ff378eaeec9c11f8c8b817c9c73c2d3222065adaba5",
+      "source_after_sha256": "ee25bbbf59dd85fdfb66e256afd7cf668cdcd136cd3fc9dec92ffb17d6469797",
+      "exit_code": 0,
+      "named_pass": 320,
+      "top_pass": 97,
+      "leaf_pass": 270
+    },
+    {
+      "run": "handler-race",
+      "package": "./internal/handler",
+      "race": true,
+      "count": 1,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_handler_race.json",
+      "config_sha256": "4282a36caf89569df326f3d0adfffbec59728edc7322597632bb5b7e7abcde53",
+      "config_mode": "0600",
+      "exact_argv_record": "logs/handler-race-r01.command.json",
+      "command_record_sha256": "3dc6ef7257bd4640f2af2eeab67329733e1050a20f4c8b5602111bc01af3c1d3",
+      "result_record": "logs/handler-race-r01.result.json",
+      "result_record_sha256": "99fcf17e9bf5053b4b53feef0d89811bfb38603930a6a1805b77f6f02f7deabd",
+      "raw_stdout": "logs/handler-race-r01.jsonl",
+      "raw_stdout_sha256": "7c6ca4ffdfd8066878b7fe41a7c6f58e9198c8066c8064d541663fa93b869816",
+      "raw_stdout_bytes": 385924,
+      "raw_stderr": "logs/handler-race-r01.stderr",
+      "raw_stderr_bytes": 0,
+      "source_before_sha256": "9d9053f5dab0a2b864cf363b46586f8759463bd9145ba7c334f099405210ec4a",
+      "source_after_sha256": "95fc8177af254926b560e1de8a5e1fb49251004d148e47cbd5537c9b36ecb664",
+      "exit_code": 0,
+      "named_pass": 320,
+      "top_pass": 97,
+      "leaf_pass": 270
+    },
+    {
+      "run": "router-normal",
+      "package": "./cmd/server",
+      "race": false,
+      "count": 1,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_final_r02.json",
+      "config_sha256": "0ed79ea8ffe5cfe2812ac47ce08141242364fbdb78988495d55fbc8a2dfeb9ad",
+      "config_mode": "0600",
+      "exact_argv_record": "logs/router-normal-r01.command.json",
+      "command_record_sha256": "3827823bd94d0183583c544aa8fada43bec45eb5d1b589123572725499554ff1",
+      "result_record": "logs/router-normal-r01.result.json",
+      "result_record_sha256": "dff81ade7f5c8f2df74febdfdd53dcd601495d9dbcffd28b8250ee0ee7a74ea9",
+      "raw_stdout": "logs/router-normal-r01.jsonl",
+      "raw_stdout_sha256": "d5f87c3330d58d6bf5cdd7850940c8b81982930a40cea060a3a354eec9741c3b",
+      "raw_stdout_bytes": 1602075,
+      "raw_stderr": "logs/router-normal-r01.stderr",
+      "raw_stderr_bytes": 0,
+      "source_before_sha256": "79a7fc668439ecbeadc6c61835bc70f6aabd7077749728b0e9ae10961f56ec4d",
+      "source_after_sha256": "48d25e45dbbd9ce1e71022d4b06320360dd56a6e3fe25a23089321e61f0d6522",
+      "exit_code": 0,
+      "named_pass": 207,
+      "top_pass": 53,
+      "leaf_pass": 173
+    },
+    {
+      "run": "router-race",
+      "package": "./cmd/server",
+      "race": true,
+      "count": 1,
+      "configuration": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/configs/review_router_final_r02_race.json",
+      "config_sha256": "54d8d82f580b0886f1613aae5ea9c577c7def4f5b888a1c2ce35e6ab44710ede",
+      "config_mode": "0600",
+      "exact_argv_record": "logs/router-race-r01.command.json",
+      "command_record_sha256": "0cb6cce07fb87b8d8d6aef3e782b98114cce6076a3d6e71402b465736a3c0706",
+      "result_record": "logs/router-race-r01.result.json",
+      "result_record_sha256": "675b1a7b1d89d9bf5944fc582bf0de7954b1182b546ce653fa3058114c4bd035",
+      "raw_stdout": "logs/router-race-r01.jsonl",
+      "raw_stdout_sha256": "b2764a08dd02d9483d9c98ed2d99e7be87f72e5b6efd67765b4c0dd0d92622f1",
+      "raw_stdout_bytes": 1602635,
+      "raw_stderr": "logs/router-race-r01.stderr",
+      "raw_stderr_bytes": 0,
+      "source_before_sha256": "e1f600b7f1644b30be153a6876cbdca9f0472e6d1e403b173141fef5d666a518",
+      "source_after_sha256": "b56ca50ddf6b83d073099b9074b1ec7aefd82fa0999ab5b83a47c8030a29ba68",
+      "exit_code": 0,
+      "named_pass": 207,
+      "top_pass": 53,
+      "leaf_pass": 173
+    }
+  ],
+  "raw_log_reconciliation": {
+    "file": "independent-log-check-r01.json",
+    "sha256": "642639dab7602aa24e39d5108624eaf8d1524a214ff3ae2d1fb0fcbcf0f8579b",
+    "independently_reparsed_raw_logs": true,
+    "each_run_fail": 0,
+    "each_run_skip": 0,
+    "each_run_duplicates": 0,
+    "each_run_unfinished": 0,
+    "each_run_missing_top": 0,
+    "each_run_extra_top": 0,
+    "each_run_non_json_lines": 0,
+    "each_run_package_pass_terminals": 1,
+    "normal_race_complete_name_sets_equal": true,
+    "handler_names_sha256": "14c2f99f90c6519d35d75a0cf7e77fa877c1e1468c665c96c0e1992df53f7437",
+    "router_names_sha256": "a56b816df55c4830020a6f7a2c47f66faa69b731c12f21eed0bdf696175e24d6",
+    "repeat_modes_counted_as_additional_distinct_cases": false,
+    "named_counts_include_parent_and_intermediate_groups": true,
+    "empty_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "current_source_subsets_each_normal_and_race": {
+    "handler_exit": {
+      "named_pass": 30,
+      "top_pass": 5,
+      "leaf_pass": 22
+    },
+    "handler_writer": {
+      "named_pass": 32,
+      "top_pass": 7,
+      "leaf_pass": 26
+    },
+    "router_f06": {
+      "named_pass": 112,
+      "top_pass": 10,
+      "leaf_pass": 95,
+      "readonly_witnesses": 3,
+      "authority_order_witnesses": 8,
+      "all_11_before_after_sha256_equal": true,
+      "distinct_reader_writer_backends_each_authority_order": true,
+      "authority_shapes": ["list", "empty", "cursor", "preview"],
+      "read_first_status": 200,
+      "revocation_first_status": 404,
+      "source_grants_retained_each_readonly_fixture": 1,
+      "root_grants_each_readonly_fixture": 0,
+      "seeded_attachment_event_operation_rows_can_be_nonzero_and_unchanged": true
+    }
+  },
+  "static_verification": {
+    "lint": "PASS_SCOPED",
+    "typecheck": "PASS_SCOPED_GO_COMPILE",
+    "tests": "PASS_FOUR_ASSIGNED_COMMANDS",
+    "formatting": {
+      "changed_go_file_count": 22,
+      "read_only": true,
+      "exit": 0,
+      "unformatted_changed_files": [],
+      "canonical_stage_test_clean": true,
+      "unchanged_wider_formatting_debt_preserved": true,
+      "record": "owned-gofmt-r01.json",
+      "record_sha256": "a495d731559528e922ccf02a9209b4fd91ffc0d25522244952b3924a4126cde4"
+    },
+    "no_database_configuration": {
+      "file": "nodb-static-config-r01.json",
+      "sha256": "11283afe469cdf7dbdbdeb212ac4b76dc710db48775b00e2440e0eb9de371979",
+      "mode": "0600",
+      "database_variables": 0,
+      "isolated_config_derived_home_tmp_cache_paths": true,
+      "local_toolchain": true,
+      "dependency_network_resolution": "off"
+    },
+    "commands": [
+      {
+        "label": "scoped-vet",
+        "arguments_after_exact_source_C": ["vet", "./internal/handler", "./cmd/server"],
+        "exit": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "result": "logs/scoped-vet-r01.result.json",
+        "result_sha256": "3543e8a1a2305c400d5fd83ff89e45931915bd6136edbebc60fce4f588c4a87b"
+      },
+      {
+        "label": "handler-compile",
+        "arguments_after_exact_source_C": ["test", "-c", "-o", "<evidence_root>/build/handler.test", "./internal/handler"],
+        "exit": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "result": "logs/handler-compile-r01.result.json",
+        "result_sha256": "853768e3b5dd7304cb59ab3bec693e90fc980ab3085ae9b236f1adc9157495a1",
+        "binary": "build/handler.test",
+        "binary_sha256": "9907d1ca16c5f6a7141beb6bb68149a5608b46cb2bfdf66cea7b5544381ae3c1"
+      },
+      {
+        "label": "router-compile",
+        "arguments_after_exact_source_C": ["test", "-c", "-o", "<evidence_root>/build/router.test", "./cmd/server"],
+        "exit": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "result": "logs/router-compile-r01.result.json",
+        "result_sha256": "bba8bc830521b5ac087a74bdbd031cb9639f327eddc61f2fd0cf87eea577bee5",
+        "binary": "build/router.test",
+        "binary_sha256": "2d4d6193a4632ffae71f538bed052ba2d13f8c02dea04a313198e3bb7b310aab"
+      },
+      {
+        "label": "router-build",
+        "arguments_after_exact_source_C": ["build", "-o", "<evidence_root>/build/router-server", "./cmd/server"],
+        "exit": 0,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "result": "logs/router-build-r01.result.json",
+        "result_sha256": "43cfaeeb76486e9206029dd75a0dd9c42974ef2aa6f0184324f2ec8ecda35de8",
+        "binary": "build/router-server",
+        "binary_sha256": "9026dbe923b945d83a8399594f5724bdae165b6938f79f52f09d862f8805698a"
+      }
+    ],
+    "testmain_or_tests_executed_by_static_commands": false,
+    "binary_outputs_under_private_evidence_only": true,
+    "source_before_after_unchanged": true,
+    "summary": "static-checks-r01.json",
+    "summary_sha256": "7e0b94128eaa4d1ac2dd0832dccb7a66d828a7f522b4b82e47c88d3feca6b864"
+  },
+  "database_audit": {
+    "read_only": true,
+    "exact_database_identity_before_after_final": true,
+    "each_ledger_count": 835,
+    "each_ledger_last": "864_collaboration_stage_submission_ready",
+    "ordered_ledger_hash_before_after_equal": true,
+    "submission_check_constraints_before_after_equal": true,
+    "content_digest_constraint_pattern": "^[0-9a-f]{64}$",
+    "each_transient_table_count": 25,
+    "each_transient_row_total_after_and_final": 0,
+    "each_five_stage_fact_row_total_after_and_final": 0,
+    "each_quota_reservation_and_period_row_total_after_and_final": 0,
+    "each_other_connections_after_and_final": 0,
+    "cluster_connections_observed_min": 30,
+    "cluster_connections_observed_max": 32,
+    "cluster_max_connections": 100,
+    "capacity_or_peer_connections_changed": false,
+    "retained_histories": {
+      "handler_each_normal_and_race": {
+        "delivery_evidence_evaluation": 26,
+        "project_delivery_policy": 53,
+        "delivery_completion_authorization": 46,
+        "delivery_completion_terminal": 19
+      },
+      "router_each_normal_and_race": {
+        "delivery_evidence_evaluation": 58,
+        "project_delivery_policy": 135,
+        "delivery_completion_authorization": 50,
+        "delivery_completion_terminal": 22
+      }
+    },
+    "before_record": "before-databases.json",
+    "before_record_sha256": "36eec57cc071a3db1f88f9bfcb2f0338150c7b430da882003d98d04fba59b9a5",
+    "final_record": "final-database-audit-r01.json",
+    "final_record_sha256": "738fb387c19dc6697845e408ab280ac94a5c428b12ccc72664d3f155e8c55440",
+    "histories_match_post_run_at_final": true,
+    "blanket_protected_history_cleanup_performed": false
+  },
+  "isolation_and_integrity": {
+    "configs_hashes_unchanged": true,
+    "all_four_config_modes": "0600",
+    "home_tmp_git_probes_before_and_final_each": 16,
+    "all_git_probes_exit": 128,
+    "all_git_root_stdout_empty": true,
+    "isolation_record": "final-isolation-r01.json",
+    "isolation_record_sha256": "e67a8be17d9debe2dca5735070f8189d1bbdf6ecc342ae0f489b93a12fcbd96b",
+    "final_integrity_record": "final-integrity-r01.json",
+    "final_integrity_record_sha256": "cebcbc419acd5c34ef026fa1bd6fa03bef427cae5841641cb0cda48d96ad2e82",
+    "launcher_runner_go_hashes_rechecked": true,
+    "secrets_or_connection_urls_printed": false
+  },
+  "code_path_evidence": [
+    {
+      "file": "server/internal/handler/collaboration_workflow.go",
+      "line": 370,
+      "observation": "Committed refusal response retains real status/revision/blockers and omits successful confirmations; original operation reads use stored receipt under no-store."
+    },
+    {
+      "file": "server/internal/service/collaboration_workflow.go",
+      "line": 620,
+      "observation": "Final guard refusal rolls back savepoint, restores prior access, clears deliveryConfirmation at636 and records refusal. Dedicated service execution belongs to full-code checker."
+    },
+    {
+      "file": "server/internal/handler/admin_collaboration.go",
+      "line": 224,
+      "observation": "Stage-incomplete lifecycle response is409 with actual blockers and explicit false truncation."
+    },
+    {
+      "file": "server/internal/handler/collaboration_stage_exit_continuation_test.go",
+      "line": 303,
+      "observation": "Actual false preflight followed by separately committed child attach; actual single/batch writer rechecks before cancellation/autopilot effects."
+    },
+    {
+      "file": "server/internal/handler/collaboration_stage_exit_continuation_test.go",
+      "line": 386,
+      "observation": "Required token/autopilot/delete writer failure is reached; fixture state rolls back and no cancellation/deletion event is published."
+    },
+    {
+      "file": "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+      "line": 145,
+      "observation": "Current-source consumed bindings and read-only full-state hash witnesses are exercised in both modes."
+    },
+    {
+      "file": "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+      "line": 765,
+      "observation": "All four protected read shapes use separate reader/writer DB backends for both revocation orders."
+    }
+  ],
+  "limitations_and_handoff": {
+    "full_w01_w18_q01_q12_verdict_owner": "ROOT and /root/s2_final_code_check_r05",
+    "peer_service_race_failures": "Retained under their own source/raw logs; ROOT/product diagnostics pending; no bypass or setup root cause inferred here.",
+    "prior_r01_r02_failures_reclassified": false,
+    "prior_source_writer_or_f06_counts_transferred": false,
+    "api_browser_provider_p2_processes_started": 0,
+    "real_models_money_production_used": false,
+    "go_test_all_packages_run": false,
+    "dependencies_migrations_global_settings_accounts_changed": false,
+    "earlier_f06_s3_reports_changed": false
+  }
+}

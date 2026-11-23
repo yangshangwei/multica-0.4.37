@@ -7,9 +7,19 @@ Use `useSkillPresentation()` from `packages/views/skills/hooks/use-skill-present
 - A name alone does not identify a built-in workspace skill. Require a known canonical name and matching `config.origin.type === "builtin_role_skill"` and `config.origin.name`.
 - Compact `AgentSkillSummary` records omit `config`. Enrich them by UUID from the workspace skill query, or keep their stored text while metadata is unavailable.
 - Only the built-in role-template catalog may call `getBuiltinRoleSkillPresentation(name, t)` without workspace provenance. Do not synthesize origin metadata for arbitrary records.
-- Translate a saved description only when it matches the current Chinese default, its English display copy, or a recognized historical English default. Preserve customized descriptions and renamed skills. The source-sync tests compare the Chinese defaults with the embedded server SKILL.md frontmatter.
+- Translate a saved description only when it matches the current Chinese default, its English display copy, or an explicitly verified shipped historical default. Preserve customized descriptions and renamed skills. The source-sync tests compare the Chinese defaults with the embedded server SKILL.md frontmatter.
 - Workspace copies keep historical defaults after a template update. Retain explicit translations for known shipped descriptions, matched by their full text; neither a version marker nor a matching prefix proves a description is unmodified.
 - Origin metadata is editable product metadata, not an authorization or integrity guarantee.
+
+The progress-report template now limits its default purpose to the current
+project. Keep both current locale descriptions synchronized with that source.
+Its earlier Chinese source and English display descriptions shipped before
+`cd95c8e40`; recognize those exact texts as `description_v1` using the existing
+historical-default path. Translate retained copies according to their stored
+purpose without rewriting their instructions or broadening current execution
+scope. A customized suffix or renamed/unverified record must still remain
+verbatim. Test current source sync, each active locale, both historical languages
+and customized text independently.
 
 ## Language and search
 

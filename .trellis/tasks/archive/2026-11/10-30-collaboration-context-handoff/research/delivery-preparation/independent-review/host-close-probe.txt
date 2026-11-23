@@ -1,0 +1,17 @@
+node:fs:440
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open '/Volumes/artisan/code/e2e/fixtures/collaboration-host-runtime.ts'
+    at readFileSync (node:fs:440:20)
+    at file:///Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/.trellis/tasks/10-30-collaboration-context-handoff/research/delivery-preparation/independent-review/host-close-probe.mjs:6:16
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Volumes/artisan/code/e2e/fixtures/collaboration-host-runtime.ts'
+}
+
+Node.js v22.23.2

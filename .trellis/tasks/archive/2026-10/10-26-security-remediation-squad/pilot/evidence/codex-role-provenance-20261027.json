@@ -1,0 +1,211 @@
+[
+  {
+    "id": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+    "name": "例行维护负责人（安全试点 Codex）",
+    "runtime_id": "89c5d4e5-17e1-472a-b462-49d01d86f801",
+    "template_key": null,
+    "template_version": null,
+    "autonomy_level": "coordinator",
+    "permission_mode": "private",
+    "visibility": "private",
+    "max_concurrent_tasks": 2,
+    "model": "",
+    "creation_kind": "custom",
+    "derived_from": {
+      "source_agent_id": "70f335f0-1f27-47f5-ac3f-4defb309a736",
+      "source_template_key": "maintenance-lead",
+      "source_template_version": 3,
+      "instructions_sha256": "78d50c440ab1ede60646059eca86f610254b95e905e7bae1086e90bb76cb74da"
+    },
+    "skills": []
+  },
+  {
+    "id": "50b4bb2e-d4c4-4c70-8dd8-3d48963b475a",
+    "name": "产品分析师（安全试点 Codex）",
+    "runtime_id": "89c5d4e5-17e1-472a-b462-49d01d86f801",
+    "template_key": "product-analyst",
+    "template_version": 1,
+    "autonomy_level": "observer",
+    "permission_mode": "private",
+    "visibility": "private",
+    "max_concurrent_tasks": 3,
+    "model": "",
+    "creation_kind": "from_template",
+    "derived_from": {
+      "source_agent_id": "c400dd9b-689c-4cf6-8224-682fd8d0cee8",
+      "source_template_key": "product-analyst",
+      "source_template_version": 1,
+      "instructions_sha256": "523277103a12a939219594004ec94026edbc143c91d777f55e9835e04fcbba25"
+    },
+    "skills": [
+      {
+        "id": "196f7c0a-5693-4090-a13e-42db71f31587",
+        "name": "multica-requirement-clarification",
+        "enabled": true,
+        "config_sha256": "37f72ca3d797cad2f4059539b3f04100b287dc4ce4ff4227dec843f0303101a3"
+      }
+    ]
+  },
+  {
+    "id": "ce9b9709-d57c-4ea2-9e9f-7f62fe17a917",
+    "name": "安全审查员（安全试点 Codex）",
+    "runtime_id": "89c5d4e5-17e1-472a-b462-49d01d86f801",
+    "template_key": "security-reviewer",
+    "template_version": 1,
+    "autonomy_level": "observer",
+    "permission_mode": "private",
+    "visibility": "private",
+    "max_concurrent_tasks": 2,
+    "model": "",
+    "creation_kind": "from_template",
+    "derived_from": {
+      "source_agent_id": "aae540c4-6bbe-42b6-a362-c62e2e434318",
+      "source_template_key": "security-reviewer",
+      "source_template_version": 1,
+      "instructions_sha256": "7a1a6a5f10e9c930960b7d7f129a7ef7d6f623e1c09796e8840b28cae627ea6c"
+    },
+    "skills": [
+      {
+        "id": "88a1dd33-7fa2-406d-ba20-90a703764d9c",
+        "name": "multica-security-review",
+        "enabled": true,
+        "config_sha256": "3ab1da42243d4320242d9853ffd80bd4bdd2a0101703e36f9f8fe05cb4a2d0cf"
+      }
+    ]
+  },
+  {
+    "id": "ac023f51-1185-4ee0-8639-80ab4f0e3051",
+    "name": "诊断工程师（安全试点 Codex）",
+    "runtime_id": "89c5d4e5-17e1-472a-b462-49d01d86f801",
+    "template_key": "diagnostician",
+    "template_version": 1,
+    "autonomy_level": "contributor",
+    "permission_mode": "private",
+    "visibility": "private",
+    "max_concurrent_tasks": 1,
+    "model": "",
+    "creation_kind": "from_template",
+    "derived_from": {
+      "source_agent_id": "328e2d0c-338a-46f1-aec9-0f0ff14dccfb",
+      "source_template_key": "diagnostician",
+      "source_template_version": 1,
+      "instructions_sha256": "3c17a3d43f144197514ca3c32f2e3d1edc0f41374c679abc5b055f2a796f5427"
+    },
+    "skills": [
+      {
+        "id": "fdea994f-1973-498c-885f-82a95db5cc2e",
+        "name": "multica-debugging",
+        "enabled": true,
+        "config_sha256": "82763435b04fa2d30cf2c7a7c53cc41c31689a7685c3f6a6f2aef83fb365625b"
+      }
+    ]
+  },
+  {
+    "id": "f7047fd3-7d3e-465a-ae56-77ac0979ab3f",
+    "name": "实现工程师（安全试点 Codex）",
+    "runtime_id": "89c5d4e5-17e1-472a-b462-49d01d86f801",
+    "template_key": "implementer",
+    "template_version": 1,
+    "autonomy_level": "contributor",
+    "permission_mode": "private",
+    "visibility": "private",
+    "max_concurrent_tasks": 1,
+    "model": "",
+    "creation_kind": "from_template",
+    "derived_from": {
+      "source_agent_id": "2e1aa5ca-4b7d-4278-a0bb-e47f7820ebff",
+      "source_template_key": "implementer",
+      "source_template_version": 1,
+      "instructions_sha256": "cc6df5efa6d07daf89b915a8e0f2d4ebb6a87d4a925458a5f51c7070f31ac99c"
+    },
+    "skills": [
+      {
+        "id": "1714f831-3d0a-421d-8746-a7e2471377e0",
+        "name": "multica-test-report",
+        "enabled": true,
+        "config_sha256": "88598baf5926a1af238b7fde479f55c218847a9d3fd77bc4292d28511558a497"
+      }
+    ]
+  },
+  {
+    "id": "d2be88b0-de73-4199-b217-f1e19c6062dd",
+    "name": "测试工程师（安全试点 Codex）",
+    "runtime_id": "89c5d4e5-17e1-472a-b462-49d01d86f801",
+    "template_key": "qa-engineer",
+    "template_version": 1,
+    "autonomy_level": "contributor",
+    "permission_mode": "private",
+    "visibility": "private",
+    "max_concurrent_tasks": 2,
+    "model": "",
+    "creation_kind": "from_template",
+    "derived_from": {
+      "source_agent_id": "da164006-db36-4041-8898-d88f14fb23cf",
+      "source_template_key": "qa-engineer",
+      "source_template_version": 1,
+      "instructions_sha256": "e33cf8349a299d6fd442eff6760b6676c93235a9bcd78c8b08def2207f3194ff"
+    },
+    "skills": [
+      {
+        "id": "1714f831-3d0a-421d-8746-a7e2471377e0",
+        "name": "multica-test-report",
+        "enabled": true,
+        "config_sha256": "88598baf5926a1af238b7fde479f55c218847a9d3fd77bc4292d28511558a497"
+      }
+    ]
+  },
+  {
+    "id": "37e1cafb-fb87-4eff-b621-43c7e031f616",
+    "name": "迁移审查员（安全试点 Codex）",
+    "runtime_id": "89c5d4e5-17e1-472a-b462-49d01d86f801",
+    "template_key": "migration-reviewer",
+    "template_version": 2,
+    "autonomy_level": "observer",
+    "permission_mode": "private",
+    "visibility": "private",
+    "max_concurrent_tasks": 2,
+    "model": "",
+    "creation_kind": "from_template",
+    "derived_from": {
+      "source_agent_id": "08377736-afba-4140-b64c-67705fc5ba46",
+      "source_template_key": "migration-reviewer",
+      "source_template_version": 2,
+      "instructions_sha256": "0bee6b1301abdf7266095fd4b6f6c58fb2642d8f2904a273ee38c25ec7059bad"
+    },
+    "skills": [
+      {
+        "id": "d1537f35-b20e-4a2b-8bb8-9268f3ab9757",
+        "name": "multica-migration-review",
+        "enabled": true,
+        "config_sha256": "170035cfd1fbea2a0f264aeadc03c3a41094fe67593d2187c8239a2abd456c60"
+      }
+    ]
+  },
+  {
+    "id": "80df3eb5-b64c-4e93-afa2-75c2b8526911",
+    "name": "代码审查员（安全试点 Codex）",
+    "runtime_id": "89c5d4e5-17e1-472a-b462-49d01d86f801",
+    "template_key": "code-reviewer",
+    "template_version": 1,
+    "autonomy_level": "observer",
+    "permission_mode": "private",
+    "visibility": "private",
+    "max_concurrent_tasks": 3,
+    "model": "",
+    "creation_kind": "from_template",
+    "derived_from": {
+      "source_agent_id": "0275de41-ff8b-4e4c-965b-d33a3bc2dbae",
+      "source_template_key": "code-reviewer",
+      "source_template_version": 1,
+      "instructions_sha256": "a203c84f38811f49303c74c05d4ed01c51970252494977e4dfb0ed69e87325e3"
+    },
+    "skills": [
+      {
+        "id": "10319edc-7ba6-40d9-bc33-fe895af1f7f1",
+        "name": "multica-code-review",
+        "enabled": true,
+        "config_sha256": "ccef6e61203fec4d90108e9ae4a4b9eca40c31513cd4256a6e608c03c2615e14"
+      }
+    ]
+  }
+]

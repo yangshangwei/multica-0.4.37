@@ -1,0 +1,2486 @@
+{
+  "kind": "independent_actual_current19eb_frontend_named_inventory_and_source_review",
+  "at": "2026-11-16T01:02:35.802076+00:00",
+  "reviewer": "/root/root_knowledge_service_check",
+  "status": "CURRENT19EB_FRONTEND222_TYPECHECK2_LINT41_ACCEPTED_SCOPED",
+  "blocking_findings_open": 0,
+  "source": {
+    "root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source",
+    "source_id": "19ebcb08d38e545e3448c7cfbfe754f46fc44ad8fc4ffa9e0d87a1dce9bcf615",
+    "HEAD": "1a5e537b0531aa51bd7e3eded83bbb801f1c5133",
+    "files": 10407,
+    "workspace_links": 32,
+    "manifest": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/current-reference-full-manifest.json",
+      "sha256": "a8dd53bcf02ce2b4815f6d6cbbaf5f4f4788378df24e1c7a67cda821bc47c1ac",
+      "bytes": 3110125,
+      "mode": 384
+    },
+    "private_index": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/.git/index",
+      "sha256": "70b6b2371f2b30150f81911c3190a42fdeb492bcfd910eeb048001813f40f603",
+      "bytes": 1239616,
+      "mode": 384
+    }
+  },
+  "execution_result": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/result.json",
+    "sha256": "baf565d344e39e78b8d29dcbc93f9a85d8d587f57ca8bb0a9cdeaa82ba2c7ec7",
+    "bytes": 188562,
+    "mode": 384
+  },
+  "execution_plan": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-plan-direct-v2.json",
+    "sha256": "a4d91ab43ec9c91ab0869907342b946ee4a8f366d5516860cf6aebfa459027ce",
+    "bytes": 91664,
+    "mode": 384
+  },
+  "tool_version_probes": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/direct-tooling-entry-probes.json",
+    "sha256": "710e85e33032cfc52c3a907c1f14a568c86f86d05bca4c6ea7244e0f2dba66e2",
+    "bytes": 2162,
+    "mode": 384
+  },
+  "actual_tools": [
+    {
+      "requested_path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+    },
+    {
+      "requested_path": "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+      "path": "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+      "sha256": "ff3224d46b47fbb24a7e9fe15fededef7e00892d07d4e376b6762d4899906bfd"
+    },
+    {
+      "requested_path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/node_modules/vitest/vitest.mjs",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/vitest@4.1.0_@opentelemetry+api@1.9.1_@types+node@25.5.0_jsdom@29.0.1_@noble+hashes@1.8_ff48d36d6bc43d12ce43d4c6cc46616e/node_modules/vitest/vitest.mjs",
+      "sha256": "39db22f579acf5639bbb17a261408debbde03f4692c0c439e77e7f13aeba74d6"
+    },
+    {
+      "requested_path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views/node_modules/vitest/vitest.mjs",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/vitest@4.1.0_@opentelemetry+api@1.9.1_@types+node@25.5.0_jsdom@29.0.1_@noble+hashes@1.8_ff48d36d6bc43d12ce43d4c6cc46616e/node_modules/vitest/vitest.mjs",
+      "sha256": "39db22f579acf5639bbb17a261408debbde03f4692c0c439e77e7f13aeba74d6"
+    },
+    {
+      "requested_path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/node_modules/typescript/bin/tsc",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/bin/tsc",
+      "sha256": "8d5fa5bd883fec0979fc2004f1fe1d99aef40570155d550eadc0b03b55513bf0"
+    },
+    {
+      "requested_path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/node_modules/typescript/lib/typescript.js",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js",
+      "sha256": "3ae902c92cc44dace175c0e69e13a4b0899f6983c6121d76b9ab8dd5795e7675"
+    },
+    {
+      "requested_path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/node_modules/eslint/bin/eslint.js",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/eslint@9.39.4_jiti@2.7.0/node_modules/eslint/bin/eslint.js",
+      "sha256": "6280b95e2a6ab3b04be45cbd3b1627654be518e6a4da163ec0adcbba9cd5fcd8"
+    }
+  ],
+  "actual_versions": {
+    "vitest": "vitest/4.1.0 darwin-arm64 node-v22.23.2",
+    "typescript": "Version 5.9.3",
+    "eslint": "v9.39.4"
+  },
+  "environment": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/environment.json",
+    "sha256": "e6730c45f5177a4e7d4c6355191375ae3905398ca59f31dcbf1e1b52155923e7",
+    "bytes": 2112,
+    "mode": 384
+  },
+  "credential_or_model_or_database_configuration_inherited": false,
+  "actual_entry_equivalence": "existing package scripts vitest run / tsc --noEmit and targeted eslint are expanded through installed pinned Node and installed CLI entries; file selections and flags retained, only private report destinations and explicitly listed lint additions differ",
+  "commands": [
+    {
+      "name": "core-knowledge-tests",
+      "kind": "vitest",
+      "lane": "core",
+      "actual_argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/node_modules/vitest/vitest.mjs",
+        "run",
+        "api/collaboration-knowledge.test.ts",
+        "api/knowledge-automation.test.ts",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-automation-actions.test.ts",
+        "collaboration/knowledge-automation-queries.test.ts",
+        "collaboration/knowledge-automation-schema.test.ts",
+        "collaboration/knowledge-automation-status-schema.test.ts",
+        "collaboration/knowledge-cache.test.ts",
+        "collaboration/knowledge-lease.test.ts",
+        "collaboration/knowledge-schema.test.ts",
+        "collaboration/knowledge-sources.test.ts",
+        "realtime/knowledge-provider.test.tsx",
+        "realtime/knowledge.test.ts",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-tests.vitest.json"
+      ],
+      "original_argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/core",
+        "test",
+        "api/collaboration-knowledge.test.ts",
+        "api/knowledge-automation.test.ts",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-automation-actions.test.ts",
+        "collaboration/knowledge-automation-queries.test.ts",
+        "collaboration/knowledge-automation-schema.test.ts",
+        "collaboration/knowledge-automation-status-schema.test.ts",
+        "collaboration/knowledge-cache.test.ts",
+        "collaboration/knowledge-lease.test.ts",
+        "collaboration/knowledge-schema.test.ts",
+        "collaboration/knowledge-sources.test.ts",
+        "realtime/knowledge-provider.test.tsx",
+        "realtime/knowledge.test.ts",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-tests.vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core",
+      "pid": 50105,
+      "pgid": 50105,
+      "exit": 0,
+      "stdout": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-tests.stdout.log",
+        "sha256": "4540668e6d6ac23aff3f01c29b220af915e9ca944130b2ef4c46da52c61661e1",
+        "bytes": 21418,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-tests.stderr.log",
+        "sha256": "7928692cb127412fa7d1c6fbe9dc50dddd4ae441baac6ee21f1824413df52090",
+        "bytes": 269,
+        "mode": 384
+      },
+      "source_before": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-knowledge-tests-before.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "source_after": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-knowledge-tests-after.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "script_entry_contract": {
+        "package_json": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/package.json",
+        "script": "test",
+        "value": "vitest run"
+      },
+      "added_lint_files": [],
+      "report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-tests.vitest.json",
+        "sha256": "06b5381077f7dfd3a320f368e9b61e10f8d65b4f5de962c986224c6c1bcf07e0",
+        "bytes": 39337,
+        "mode": 384
+      },
+      "actual_named_tests": 107,
+      "counters": {
+        "numTotalTests": 107,
+        "numPassedTests": 107,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "success": true
+      },
+      "raw_named_set_and_expected_plan_equal": true
+    },
+    {
+      "name": "core-comment-threads-tests",
+      "kind": "vitest",
+      "lane": "core",
+      "actual_argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/node_modules/vitest/vitest.mjs",
+        "run",
+        "collaboration/comment-threads.test.ts",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-comment-threads-tests.vitest.json"
+      ],
+      "original_argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/core",
+        "test",
+        "collaboration/comment-threads.test.ts",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-comment-threads-tests.vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core",
+      "pid": 50159,
+      "pgid": 50159,
+      "exit": 0,
+      "stdout": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-comment-threads-tests.stdout.log",
+        "sha256": "e74507eaee2cb3b05d916f17fc50cae16903d277c6e1665cff9d12132a06e78b",
+        "bytes": 3289,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-comment-threads-tests.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "source_before": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-comment-threads-tests-before.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "source_after": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-comment-threads-tests-after.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "script_entry_contract": {
+        "package_json": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/package.json",
+        "script": "test",
+        "value": "vitest run"
+      },
+      "added_lint_files": [],
+      "report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-comment-threads-tests.vitest.json",
+        "sha256": "d3a7a09a456064c3cf540db9d6980f96faf47a344ef6a68d974b7e9dd9c77cbe",
+        "bytes": 5155,
+        "mode": 384
+      },
+      "actual_named_tests": 13,
+      "counters": {
+        "numTotalTests": 13,
+        "numPassedTests": 13,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "success": true
+      },
+      "raw_named_set_and_expected_plan_equal": true
+    },
+    {
+      "name": "core-typecheck",
+      "kind": "typecheck",
+      "lane": "core",
+      "actual_argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "original_argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core",
+      "pid": 50168,
+      "pgid": 50168,
+      "exit": 0,
+      "stdout": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-typecheck.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-typecheck.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "source_before": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-typecheck-before.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "source_after": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-typecheck-after.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "script_entry_contract": {
+        "package_json": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/package.json",
+        "script": "typecheck",
+        "value": "tsc --noEmit"
+      },
+      "added_lint_files": [],
+      "canonical_noEmit": true
+    },
+    {
+      "name": "core-knowledge-lint",
+      "kind": "eslint",
+      "lane": "core",
+      "actual_argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/node_modules/eslint/bin/eslint.js",
+        "api/knowledge-automation.test.ts",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-actions.ts",
+        "collaboration/knowledge-automation-actions.test.ts",
+        "collaboration/knowledge-automation-actions.ts",
+        "collaboration/knowledge-automation-queries.test.ts",
+        "collaboration/knowledge-automation-queries.ts",
+        "collaboration/knowledge-automation-schema.test.ts",
+        "collaboration/knowledge-automation-schema.ts",
+        "collaboration/knowledge-automation-status-schema.test.ts",
+        "collaboration/knowledge-cache.test.ts",
+        "collaboration/knowledge-cache.ts",
+        "collaboration/knowledge-lease.test.ts",
+        "collaboration/knowledge-lease.ts",
+        "collaboration/knowledge-queries.ts",
+        "collaboration/knowledge-recovery.ts",
+        "collaboration/knowledge-schema.test.ts",
+        "collaboration/knowledge-schema.ts",
+        "collaboration/knowledge-sources.test.ts",
+        "collaboration/knowledge-sources.ts",
+        "collaboration/knowledge-test-fixtures.ts",
+        "realtime/knowledge-provider.test.tsx",
+        "realtime/knowledge.test.ts",
+        "realtime/knowledge.ts",
+        "collaboration/stage-schema.ts",
+        "collaboration/stage-schema.test.ts",
+        "collaboration/stage-code-presentation.test.ts",
+        "--format=json",
+        "--output-file=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-lint.eslint.json"
+      ],
+      "original_argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "eslint",
+        "api/knowledge-automation.test.ts",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-actions.ts",
+        "collaboration/knowledge-automation-actions.test.ts",
+        "collaboration/knowledge-automation-actions.ts",
+        "collaboration/knowledge-automation-queries.test.ts",
+        "collaboration/knowledge-automation-queries.ts",
+        "collaboration/knowledge-automation-schema.test.ts",
+        "collaboration/knowledge-automation-schema.ts",
+        "collaboration/knowledge-automation-status-schema.test.ts",
+        "collaboration/knowledge-cache.test.ts",
+        "collaboration/knowledge-cache.ts",
+        "collaboration/knowledge-lease.test.ts",
+        "collaboration/knowledge-lease.ts",
+        "collaboration/knowledge-queries.ts",
+        "collaboration/knowledge-recovery.ts",
+        "collaboration/knowledge-schema.test.ts",
+        "collaboration/knowledge-schema.ts",
+        "collaboration/knowledge-sources.test.ts",
+        "collaboration/knowledge-sources.ts",
+        "collaboration/knowledge-test-fixtures.ts",
+        "realtime/knowledge-provider.test.tsx",
+        "realtime/knowledge.test.ts",
+        "realtime/knowledge.ts",
+        "--format=json",
+        "--output-file=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-frontend-current-source-6d4ef4f18e/core-knowledge-lint.eslint.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core",
+      "pid": 50275,
+      "pgid": 50275,
+      "exit": 0,
+      "stdout": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-lint.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-lint.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "source_before": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-knowledge-lint-before.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "source_after": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-knowledge-lint-after.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "script_entry_contract": {
+        "package_json": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/core/package.json",
+        "script": "lint",
+        "value": "eslint .",
+        "targeted_exec": "eslint"
+      },
+      "added_lint_files": [
+        "collaboration/stage-schema.ts",
+        "collaboration/stage-schema.test.ts",
+        "collaboration/stage-code-presentation.test.ts"
+      ],
+      "report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-lint.eslint.json",
+        "sha256": "de7417537c4f3dfaed9943cff9258f2c1c0634966772210e1edff036d12a879c",
+        "bytes": 9667,
+        "mode": 384
+      },
+      "files": [
+        "packages/core/api/knowledge-automation.test.ts",
+        "packages/core/collaboration/knowledge-actions.test.ts",
+        "packages/core/collaboration/knowledge-actions.ts",
+        "packages/core/collaboration/knowledge-automation-actions.test.ts",
+        "packages/core/collaboration/knowledge-automation-actions.ts",
+        "packages/core/collaboration/knowledge-automation-queries.test.ts",
+        "packages/core/collaboration/knowledge-automation-queries.ts",
+        "packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "packages/core/collaboration/knowledge-automation-schema.ts",
+        "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "packages/core/collaboration/knowledge-cache.test.ts",
+        "packages/core/collaboration/knowledge-cache.ts",
+        "packages/core/collaboration/knowledge-lease.test.ts",
+        "packages/core/collaboration/knowledge-lease.ts",
+        "packages/core/collaboration/knowledge-queries.ts",
+        "packages/core/collaboration/knowledge-recovery.ts",
+        "packages/core/collaboration/knowledge-schema.test.ts",
+        "packages/core/collaboration/knowledge-schema.ts",
+        "packages/core/collaboration/knowledge-sources.test.ts",
+        "packages/core/collaboration/knowledge-sources.ts",
+        "packages/core/collaboration/knowledge-test-fixtures.ts",
+        "packages/core/collaboration/stage-code-presentation.test.ts",
+        "packages/core/collaboration/stage-schema.test.ts",
+        "packages/core/collaboration/stage-schema.ts",
+        "packages/core/realtime/knowledge-provider.test.tsx",
+        "packages/core/realtime/knowledge.test.ts",
+        "packages/core/realtime/knowledge.ts"
+      ],
+      "errorCount": 0,
+      "warningCount": 0
+    },
+    {
+      "name": "views-knowledge-tests",
+      "kind": "vitest",
+      "lane": "views",
+      "actual_argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views/node_modules/vitest/vitest.mjs",
+        "run",
+        "collaboration/knowledge-automation.test.tsx",
+        "collaboration/knowledge-panel.test.tsx",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-tests.vitest.json"
+      ],
+      "original_argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/views",
+        "test",
+        "collaboration/knowledge-automation.test.tsx",
+        "collaboration/knowledge-panel.test.tsx",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-c54-views-aa59f89013/views-knowledge-tests.vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views",
+      "pid": 50107,
+      "pgid": 50107,
+      "exit": 0,
+      "stdout": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-tests.stdout.log",
+        "sha256": "4b35411501608e8e1719c17186a8d08c19eec49f8a71bc163a03f33e81a8d426",
+        "bytes": 8959,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-tests.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "source_before": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-tests-before.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "source_after": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-tests-after.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "script_entry_contract": {
+        "package_json": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views/package.json",
+        "script": "test",
+        "value": "vitest run"
+      },
+      "added_lint_files": [],
+      "report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-tests.vitest.json",
+        "sha256": "d4a56c86b950391bb914664ad9fd652495077b641db8f072315e2547c1fbb09c",
+        "bytes": 15424,
+        "mode": 384
+      },
+      "actual_named_tests": 46,
+      "counters": {
+        "numTotalTests": 46,
+        "numPassedTests": 46,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "success": true
+      },
+      "raw_named_set_and_expected_plan_equal": true
+    },
+    {
+      "name": "views-knowledge-container-tests",
+      "kind": "vitest",
+      "lane": "views",
+      "actual_argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views/node_modules/vitest/vitest.mjs",
+        "run",
+        "collaboration/collaboration-detail.test.tsx",
+        "collaboration/comment-list.test.tsx",
+        "collaboration/detail-auxiliary.test.tsx",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-container-tests.vitest.json"
+      ],
+      "original_argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/views",
+        "test",
+        "collaboration/collaboration-detail.test.tsx",
+        "collaboration/comment-list.test.tsx",
+        "collaboration/detail-auxiliary.test.tsx",
+        "--maxWorkers=2",
+        "--cache=false",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-c54-views-aa59f89013/views-knowledge-container-tests.vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views",
+      "pid": 50238,
+      "pgid": 50238,
+      "exit": 0,
+      "stdout": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-container-tests.stdout.log",
+        "sha256": "57a1d79cd6733a0baf4252871ae8cb29e2971b0c60e81efc11c61afb5bef6a5e",
+        "bytes": 10128,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-container-tests.stderr.log",
+        "sha256": "ea7fa7b9206f7e032a4fb676be866a8602f955dc1161c6872670e2810b27b4fb",
+        "bytes": 1169,
+        "mode": 384
+      },
+      "source_before": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-container-tests-before.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "source_after": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-container-tests-after.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "script_entry_contract": {
+        "package_json": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views/package.json",
+        "script": "test",
+        "value": "vitest run"
+      },
+      "added_lint_files": [],
+      "report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-container-tests.vitest.json",
+        "sha256": "1245bdcfb6a544147ffafbd26f830ac3c3afd2d075957d1a9ee7ae03c3360e2b",
+        "bytes": 17743,
+        "mode": 384
+      },
+      "actual_named_tests": 56,
+      "counters": {
+        "numTotalTests": 56,
+        "numPassedTests": 56,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "success": true
+      },
+      "raw_named_set_and_expected_plan_equal": true
+    },
+    {
+      "name": "views-typecheck",
+      "kind": "typecheck",
+      "lane": "views",
+      "actual_argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views/node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "original_argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views",
+      "pid": 50310,
+      "pgid": 50310,
+      "exit": 0,
+      "stdout": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-typecheck.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-typecheck.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "source_before": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-typecheck-before.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "source_after": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-typecheck-after.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "script_entry_contract": {
+        "package_json": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views/package.json",
+        "script": "typecheck",
+        "value": "tsc --noEmit"
+      },
+      "added_lint_files": [],
+      "canonical_noEmit": true
+    },
+    {
+      "name": "views-knowledge-lint",
+      "kind": "eslint",
+      "lane": "views",
+      "actual_argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/node_modules/eslint/bin/eslint.js",
+        "collaboration/knowledge-automation-recovery.tsx",
+        "collaboration/knowledge-automation-status.tsx",
+        "collaboration/knowledge-automation.test.tsx",
+        "collaboration/knowledge-controls.tsx",
+        "collaboration/knowledge-panel.test.tsx",
+        "collaboration/knowledge-panel.tsx",
+        "collaboration/knowledge-proposal.tsx",
+        "collaboration/knowledge-review.tsx",
+        "collaboration/knowledge-source-picker.tsx",
+        "projects/components/project-knowledge-policy.tsx",
+        "--format=json",
+        "--output-file=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-lint.eslint.json"
+      ],
+      "original_argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "eslint",
+        "collaboration/knowledge-automation-recovery.tsx",
+        "collaboration/knowledge-automation-status.tsx",
+        "collaboration/knowledge-automation.test.tsx",
+        "collaboration/knowledge-controls.tsx",
+        "collaboration/knowledge-panel.test.tsx",
+        "collaboration/knowledge-panel.tsx",
+        "collaboration/knowledge-proposal.tsx",
+        "collaboration/knowledge-review.tsx",
+        "collaboration/knowledge-source-picker.tsx",
+        "projects/components/project-knowledge-policy.tsx",
+        "--format=json",
+        "--output-file=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-c54-views-aa59f89013/views-knowledge-lint.eslint.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views",
+      "pid": 50596,
+      "pgid": 50596,
+      "exit": 0,
+      "stdout": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-lint.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-lint.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "source_before": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-lint-before.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "source_after": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-lint-after.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "script_entry_contract": {
+        "package_json": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views/package.json",
+        "script": "lint",
+        "value": "eslint .",
+        "targeted_exec": "eslint"
+      },
+      "added_lint_files": [],
+      "report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-lint.eslint.json",
+        "sha256": "387ee81b4dde1e5f4496fa11db28219ffe57c80296c501119f972fa2b24ec83a",
+        "bytes": 3612,
+        "mode": 384
+      },
+      "files": [
+        "packages/views/collaboration/knowledge-automation-recovery.tsx",
+        "packages/views/collaboration/knowledge-automation-status.tsx",
+        "packages/views/collaboration/knowledge-automation.test.tsx",
+        "packages/views/collaboration/knowledge-controls.tsx",
+        "packages/views/collaboration/knowledge-panel.test.tsx",
+        "packages/views/collaboration/knowledge-panel.tsx",
+        "packages/views/collaboration/knowledge-proposal.tsx",
+        "packages/views/collaboration/knowledge-review.tsx",
+        "packages/views/collaboration/knowledge-source-picker.tsx",
+        "packages/views/projects/components/project-knowledge-policy.tsx"
+      ],
+      "errorCount": 0,
+      "warningCount": 0
+    },
+    {
+      "name": "views-current-comment-lint",
+      "kind": "eslint",
+      "lane": "views",
+      "actual_argv": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/node_modules/eslint/bin/eslint.js",
+        "collaboration/comment-list.tsx",
+        "collaboration/comment-list.test.tsx",
+        "collaboration/stage-labels.ts",
+        "collaboration/stage-labels.test.ts",
+        "--format=json",
+        "--output-file=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-current-comment-lint.eslint.json"
+      ],
+      "original_argv": [
+        "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "eslint",
+        "collaboration/comment-list.tsx",
+        "collaboration/comment-list.test.tsx",
+        "--format=json",
+        "--output-file=/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-c54-views-aa59f89013/views-current-comment-lint.eslint.json"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views",
+      "pid": 50622,
+      "pgid": 50622,
+      "exit": 0,
+      "stdout": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-current-comment-lint.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-current-comment-lint.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "source_before": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-current-comment-lint-before.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "source_after": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-current-comment-lint-after.json",
+        "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+        "bytes": 3110277,
+        "mode": 384
+      },
+      "script_entry_contract": {
+        "package_json": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/reference-source/packages/views/package.json",
+        "script": "lint",
+        "value": "eslint .",
+        "targeted_exec": "eslint"
+      },
+      "added_lint_files": [
+        "collaboration/stage-labels.ts",
+        "collaboration/stage-labels.test.ts"
+      ],
+      "report": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-current-comment-lint.eslint.json",
+        "sha256": "69edf3446a33b9910130b2dbbc545329e241a219e9e495599840648d7e7bb4a5",
+        "bytes": 1413,
+        "mode": 384
+      },
+      "files": [
+        "packages/views/collaboration/comment-list.test.tsx",
+        "packages/views/collaboration/comment-list.tsx",
+        "packages/views/collaboration/stage-labels.test.ts",
+        "packages/views/collaboration/stage-labels.ts"
+      ],
+      "errorCount": 0,
+      "warningCount": 0
+    }
+  ],
+  "named_tests": [
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "routes every human read with the source-independent scope and exact pagination",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "serializes all writes with the preselected candidate/request and exact revision unchanged",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "uses each original write/recovery version without retrying a v2 write as v1",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "does not misclassify structured access loss or malformed claimed support as an older route",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "rejects mismatched identities, cyclic pages, over-limit pages and foreign operation results",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "fails malformed write intent before transport and preserves HTTP conflicts for explicit reread",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "rejects in-progress recovery, malformed JSON and an approval of a different observed version",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "does not confirm contradictory HTTP status and sealed receipt outcomes",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "redacts project knowledge request/error logs at HTTP 404 without losing workspace headers",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "redacts project knowledge request/error logs at HTTP 500 without losing workspace headers",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "redacts workspace knowledge request/error logs at HTTP 404 without losing workspace headers",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/collaboration-knowledge.test.ts",
+      "name": "redacts workspace knowledge request/error logs at HTTP 500 without losing workspace headers",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/knowledge-automation.test.ts",
+      "name": "uses v2 and explicit project workspace scope while original recovery remains account-scoped",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/knowledge-automation.test.ts",
+      "name": "retains sealed refusals but rejects mismatched identity, revision and HTTP outcome",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/knowledge-automation.test.ts",
+      "name": "keeps policy request and provider errors out of generic logs",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/knowledge-automation.test.ts",
+      "name": "returns the confirmed knowledge_job_revision_conflict retry outcome without another request",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/knowledge-automation.test.ts",
+      "name": "returns the confirmed knowledge_source_changed retry outcome without another request",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/api/knowledge-automation.test.ts",
+      "name": "returns the confirmed knowledge_automation_disabled retry outcome without another request",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "allocates a new request UUID per intent and preselects the recoverable candidate before create",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "preserves selected recovery versions while leaving legacy identity bytes unchanged",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "requires the original operation version when matching a recovered receipt",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "retains an explicitly selected v2 across uncertain retries without changing the default v1",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "does not dispatch an intent whose serialized version differs from its recovery identity",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "can reject an unavailable pending candidate expiring at null using only its exact state revision",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "can reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "does not infer rejection rights from unavailable or restricted rows and keeps expired approval denied",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "pins exact reviewed content/state revisions and refuses inferred or unavailable approval authority",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "retains the same immutable request after uncertain transport and never optimistically approves",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "recovers a content-free original receipt with candidate/request only after losing source access and target role",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "keeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "recovers the same original actor/key after a fresh login while fencing the old live request scope",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "saves only recovery identity before a lost create response and refuses transport if preservation fails",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "retires only a first definitively unused proposal identity so a new explicit intent can be created",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "retains an earlier ambiguous request through later unsealed rejection, missing recovery and storage changes",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "does not discard an overlapping attempt when the first call receives an unsealed rejection",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "dismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-actions.test.ts",
+      "name": "distinguishes failed preservation before POST from failed cleanup after a known receipt",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-actions.test.ts",
+      "name": "retries the frozen policy request and recovers only routing identity after reload",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-actions.test.ts",
+      "name": "does not erase an uncertain request or declare it unused after a later storage failure",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-actions.test.ts",
+      "name": "requires current retry permission and keeps the original job revision on retry",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-queries.test.ts",
+      "name": "routes policy and job metadata through the same leased knowledge erasure",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-queries.test.ts",
+      "name": "does not restore late job metadata after source access is revoked",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol reads a system proposal and decision without inventing a human actor",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol preserves exact accepted-delivery identity in source and target summaries",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol keeps approved history separate from a reopen pause",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol preserves the original automatic approval after a later human withdrawal",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol reads human v2 without treating a null pending decision as an automatic decision",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol keeps unavailable v2 audit metadata while rejecting source material and private reasons",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol keeps v2 restricted rows content-free without inventing a visible source or actor",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol retains each operation receipt's declared version without upgrading v1",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol allows a human v2 proposal to cite an exact delivery without granting system identity",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects new identities or delivery sources falsely labelled as v1",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with a fabricated proposal actor",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with a fabricated approval actor",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with a missing rule identity",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with a human decision without its actor",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with a pending candidate marked active",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with a numeric accepted sequence",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with an absent accepted event",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with a source from another issue",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with an unknown usage state",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+      "name": "knowledge automation v2 protocol rejects malformed v2 with an undeclared material field",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+      "name": "knowledge policy and job protocol preserves system defaults and explicit human disablement without fabricated actors",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+      "name": "knowledge policy and job protocol keeps actual zero usage distinct from unknown and partial counts",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+      "name": "knowledge policy and job protocol rejects private details, foreign jobs, duplicate identities and malformed paging",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+      "name": "knowledge policy and job protocol retains every server-admitted stage attempt and rejects excess history",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+      "name": "knowledge policy and job protocol requires v2 for new surfaces and never treats malformed claimed support as absent",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+      "name": "knowledge policy and job protocol accepts only content-free known original-operation outcomes",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+      "name": "knowledge policy and job protocol selects only the exact acceptance and current project, retaining reopen status",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-cache.test.ts",
+      "name": "doesNotRestoreUnavailableKnowledgeFromLateResponse",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-cache.test.ts",
+      "name": "erases all source/target/detail pages before refetch while preserving content-free recovery and other viewers",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-cache.test.ts",
+      "name": "clears prior body at a failed refresh and never restores it on cancellation rollback",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-cache.test.ts",
+      "name": "expires at the earlier candidate expiry even while no hint or successful refresh arrives",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-cache.test.ts",
+      "name": "cannot restore a private pre-refresh snapshot when the caller cancels with Query's default rollback",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-cache.test.ts",
+      "name": "rejects requests older than 30 seconds and fences viewer replacement",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-cache.test.ts",
+      "name": "keeps paged reads on the first authorization deadline and refuses page requests without their boundary",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-cache.test.ts",
+      "name": "uses one focus/offline responder and disposes it only after the last consumer",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-lease.test.ts",
+      "name": "finite knowledge authorization projections charges response latency to the 30-second monotonic request-start ceiling",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-lease.test.ts",
+      "name": "finite knowledge authorization projections uses a shorter server interval or expiry regardless of the client's wall clock",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-lease.test.ts",
+      "name": "finite knowledge authorization projections does not renew older pages or replayed first-page authorization",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-lease.test.ts",
+      "name": "finite knowledge authorization projections rejects an inconsistent page boundary, late generation and fabricated parent",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-lease.test.ts",
+      "name": "finite knowledge authorization projections only accepts the latest root read and a current server check",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-lease.test.ts",
+      "name": "finite knowledge authorization projections rejects already expired, invalid and backwards-clock responses",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries accepts a content-free rejection grant for unavailable pending material without granting approval or text",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries requires explicit detail history completeness and preserves true/false without inferred defaults",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries bounds detail history at 50 while source pages retain multiple versions of the same lineage",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries distinguishes an older unsupported response from malformed claimed support without logging private material",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries retains exact bigint revisions and human projections for all endpoints",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries keeps missing capabilities unknown and rejects truthy non-booleans",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries allows only content-free restricted control rows and source-unavailable audit rows",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries rejects cross-source, cross-target, duplicate or body-bearing list projections",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries requires exact reviewed fields for approval and state revision plus explanation for narrowing decisions",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries enforces UTF-8 byte budgets, required evidence anchors and strict proposal fields",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries exports the UTF-8 byte limits its schemas enforce",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-schema.test.ts",
+      "name": "knowledge protocol boundaries permits only three content-free target hint fields and content-free operation receipts",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-sources.test.ts",
+      "name": "hashes the selected historical memory version exactly when latest has advanced",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-sources.test.ts",
+      "name": "restores an exact delivery reference from a fresh authorized server projection without guessing its canonical hash",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-sources.test.ts",
+      "name": "uses retained comment revision text, while a tombstone blocks every old revision",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-sources.test.ts",
+      "name": "finds the exact run-record identity across pages without depending on memory",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-sources.test.ts",
+      "name": "refuses purged versions, foreign issue references and late reads after access loss",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/knowledge-sources.test.ts",
+      "name": "bounds stalled source discovery with the existing deadline and does not impose a page-count cutoff",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/realtime/knowledge-provider.test.tsx",
+      "name": "clears a mounted target-only projection on a real WSClient close without waiting for polling or a source subscription",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/realtime/knowledge.test.ts",
+      "name": "clears target-only knowledge with one responder and no source-room subscription",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/realtime/knowledge.test.ts",
+      "name": "ignores private-field target frames and retains the old empty-only workbench contract",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/realtime/knowledge.test.ts",
+      "name": "immediately clears on disconnect and every authorization hint before GET recovery",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/realtime/knowledge.test.ts",
+      "name": "does not let an obsolete socket callback affect a new server/viewer scope",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/realtime/knowledge.test.ts",
+      "name": "keeps replacement connection projections when the old same-scope transport closes",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads returns no threads for an empty page",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads treats a single unresolved comment as one pending thread resolved at its root",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads orders a thread depth-first with siblings ascending and threads by their first comment",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads breaks equal creation times by id",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads marks the whole thread resolved when any member carries the resolution",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads does not count a deleted root without replies as pending",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads does not count a thread whose members are all deleted as pending",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads keeps a deleted root with a surviving reply pending and resolves at the first resolvable member",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads prefers a resolvable root over an earlier-listed resolvable reply",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads keeps a deleted comment that still carries a resolution as the resolved marker",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads groups replies of an unloaded parent under that missing id with a null root",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads keeps separate groups for different unloaded parents",
+      "status": "passed"
+    },
+    {
+      "file": "packages/core/collaboration/comment-threads.test.ts",
+      "name": "deriveCollaborationCommentThreads terminates on cyclic parents and keeps every comment exactly once",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-automation.test.tsx",
+      "name": "shows the default policy and confirms a lost update through its original GET without another PUT",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-automation.test.tsx",
+      "name": "shows paused automatic knowledge and actual zero usage without claiming verified evidence",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-automation.test.tsx",
+      "name": "does not request automatic status or show processing for no-project or manual tasks",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-automation.test.tsx",
+      "name": "sends an authorized retry with the displayed job revision and waits for its receipt",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "shows system adoption and paused usage and reuses the exact delivery source in a human correction",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "recovers after rapid candidate switches overlap authorization refreshes",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "reloads the list and opens a newly submitted candidate for confirmation",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "offers recovery for erased idle queries and restores the list and exact review",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "requires keyboard confirmation of the displayed version and awaits the exact approval receipt",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "resets review confirmation for a changed identity and removes body on source unavailability",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "resets typed decision input when a held refresh returns a different version",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "recovers a lost result through the enclosing auxiliary disclosure after remount with the original key and no second POST",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "announces workspace loading and permits local retry to an empty catalog while preserving the proposal",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "locally retries a failed selected project, retaining proposal fields and requiring an available target before submit",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "does not submit a removed destination after resolving sources or silently retarget it to the workspace",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "lets an external handler propose from comments to the lawful current project without a private catalog",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "Propose correction creates a new immutable proposal without copying old body into the form",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "Propose workspace version creates a new immutable proposal without copying old body into the form",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "allows only content-free target withdrawal and shows a known refusal as a refusal",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "keeps unsupported knowledge separate from the surrounding collaboration and reports truncated history",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "stops interval polling an unavailable knowledge interface until an explicit refresh",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "restarts at the first page when a later page loses its authorization boundary",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "picks an actual recorded run as a source without memory or a raw JSON form",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "pages all candidate versions with the original page authorization boundary",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "keeps a selected source project pinned and requires a new selection if the relationship changes",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "unlocks a definitively rejected first proposal for editing and a new explicit request",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "keeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "shows known success when receipt cleanup fails instead of calling the write uncertain",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "unlocks the human draft after storage fails before POST",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "checking the panel's own lost proposal closes its locked form without another POST",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "recovering an older stored proposal keeps a new draft open while it opens the recovered candidate",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "recovering a request from the same source opens it even when it is outside the loaded list page",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "recovering a request whose candidate belongs to another source does not open it here",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "lets a human remove a stored identity only after a check finds no result, without any request",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "reports a selected source that disappears as source-changed and preserves the draft",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "reports lost authority at intent preparation as proposal-unavailable and preserves the draft",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "submit waits for a refreshing source list instead of reporting a changed source",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "reports local validation failure as invalid input, not as an unavailable source",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "fails closed with a proposal-unavailable notice when the refreshed list withdraws the grant",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "explains an over-byte decision reason instead of the generic invalid message",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "does not repeat approval actor/time as an identical latest decision",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "renders supplied proposer, approval and latest decision facts without a directory lookup",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+      "name": "reports list failures and unresolved writes without inventing candidate totals",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "keeps the main journey visible and task metadata in its resource drawer in en",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "keeps the main journey visible and task metadata in its resource drawer in zh-Hans",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "opens reference files directly from requirements without exposing the other auxiliaries",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "reopens and focuses shared context on each explicit anchor navigation",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "shows the loaded range only beside Load more and keeps an older server's unknown total explicit",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "counts unresolved threads beside the heading and focuses the first one in en",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "counts unresolved threads beside the heading and focuses the first one in zh-Hans",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "hands each explicit comment navigation to the list so a folded thread can open before focus",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "restores an anchored detail on scope resume and refocuses repeated explicit opens",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "opens ordinary children in their returned source workspace and downgrades to references after source access changes",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "distinguishes missing child support from an explicitly empty projected list",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "focuses the selected run and copies its account anchor from the shared detail",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "keeps one comment list and composer across loading, polling and first-comment updates",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "removes an open resource drawer when its protected issue is no longer available",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "name": "C01 mounts only the account recovery surface after issue access is denied",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "distinguishes a named Agent from a same-named person in en without fetching Agent details",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "distinguishes a named Agent from a same-named person in zh-Hans without fetching Agent details",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows one generic Agent label in 'en' when the Agent name is undefined",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows one generic Agent label in 'en' when the Agent name is ''",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows one generic Agent label in 'en' when the Agent name is '   '",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows one generic Agent label in 'zh-Hans' when the Agent name is undefined",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows one generic Agent label in 'zh-Hans' when the Agent name is ''",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows one generic Agent label in 'zh-Hans' when the Agent name is '   '",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "uses the en app locale for comment and history timestamps while preserving ISO values",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "uses the zh-Hans app locale for comment and history timestamps while preserving ISO values",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "loads a placeholder through the human detail route before exposing editing",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "does not restore a different revision into a placeholder editor",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "moves focus into the delete confirmation and back to the Comment actions trigger when it is dismissed",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "focuses the delete confirmation after a menu that keeps focus while it closes",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "prepares a result only after a slowly closing menu has returned focus to its trigger",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "keeps the author's edit after a conflict and requires an explicit new baseline",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "keeps a tombstone on one line and threads its surviving reply beneath it",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "links a reply to its parent only while that parent is outside the loaded comments",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "resolves a thread and removes only the viewer's reaction through dedicated account routes",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "keeps a recovered conflict editor visible when its comment is outside the loaded page",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows byte-limit feedback without losing pasted text or submitting an oversized edit",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "confirms an older oversized refusal before unlocking its preserved input",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows a recent comment's relative time in en and keeps the full time on hover",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows a recent comment's relative time in zh-Hans and keeps the full time on hover",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "moves the author's permission context into the menu in en",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "moves the author's permission context into the menu in zh-Hans",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "keeps one action row and prepares a result only from the explicit menu item",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "marks only an edited comment and opens its history from that marker",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "shows one Resolve control per unresolved thread and keeps the others in their menus",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "folds an already resolved thread into one bar and reopens it after expanding in en",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "folds an already resolved thread into one bar and reopens it after expanding in zh-Hans",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "keeps a thread open when it becomes resolved while the page is open",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "keeps a resolved thread open while one of its requests is unconfirmed",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "hides a folded thread without discarding an unsent edit inside it",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "opens a folded thread for each explicit navigation to one of its comments",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "opens the thread of a navigation target that loads after the intent",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/comment-list.test.tsx",
+      "name": "keeps visible replies open when an older page loads their resolved root",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/detail-auxiliary.test.tsx",
+      "name": "keeps one editor mounted through category switches and close, with inactive content hidden",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/detail-auxiliary.test.tsx",
+      "name": "reports attention without opening a modal and only displays confirmed counts",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/detail-auxiliary.test.tsx",
+      "name": "returns focus to an external opener and waits for the modal to close before main navigation",
+      "status": "passed"
+    },
+    {
+      "file": "packages/views/collaboration/detail-auxiliary.test.tsx",
+      "name": "does not reopen on scope resume and fences editor lifetime by issue identity",
+      "status": "passed"
+    }
+  ],
+  "counts": {
+    "actual_commands": 9,
+    "vitest_commands": 4,
+    "named_test_records": 222,
+    "distinct_named_identities": 222,
+    "distinct_test_files": 19,
+    "failed": 0,
+    "skipped_pending": 0,
+    "todo": 0,
+    "typecheck_commands": 2,
+    "lint_commands": 3,
+    "unique_lint_files": 41,
+    "lint_errors": 0,
+    "lint_warnings": 0
+  },
+  "fully_qualified_named_identity_sha256": "9e21c79350c6fc9514ca87993d86f64e137ecffe4f5f2d3bc5870bc73c412bf8",
+  "complete_command_before_after_snapshots_equal": true,
+  "initial_final_full_raw_source_modes_and_links_equal": true,
+  "reference_COPY19eb_preserved_and_postcopy5_not_relabelled": true,
+  "input_references_checked": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/full-source-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/full-source-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-plan-direct-v2.json",
+      "sha256": "a4d91ab43ec9c91ab0869907342b946ee4a8f366d5516860cf6aebfa459027ce",
+      "bytes": 91664,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "bytes": 112937728,
+      "mode": 493
+    },
+    {
+      "path": "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+      "sha256": "ff3224d46b47fbb24a7e9fe15fededef7e00892d07d4e376b6762d4899906bfd",
+      "bytes": 1464,
+      "mode": 493
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/vitest@4.1.0_@opentelemetry+api@1.9.1_@types+node@25.5.0_jsdom@29.0.1_@noble+hashes@1.8_ff48d36d6bc43d12ce43d4c6cc46616e/node_modules/vitest/vitest.mjs",
+      "sha256": "39db22f579acf5639bbb17a261408debbde03f4692c0c439e77e7f13aeba74d6",
+      "bytes": 43,
+      "mode": 493
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/bin/tsc",
+      "sha256": "8d5fa5bd883fec0979fc2004f1fe1d99aef40570155d550eadc0b03b55513bf0",
+      "bytes": 45,
+      "mode": 493
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/typescript.js",
+      "sha256": "3ae902c92cc44dace175c0e69e13a4b0899f6983c6121d76b9ab8dd5795e7675",
+      "bytes": 9112572,
+      "mode": 420
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/eslint@9.39.4_jiti@2.7.0/node_modules/eslint/bin/eslint.js",
+      "sha256": "6280b95e2a6ab3b04be45cbd3b1627654be518e6a4da163ec0adcbba9cd5fcd8",
+      "bytes": 5610,
+      "mode": 493
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-knowledge-tests-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/environment.json",
+      "sha256": "e6730c45f5177a4e7d4c6355191375ae3905398ca59f31dcbf1e1b52155923e7",
+      "bytes": 2112,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-knowledge-tests-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-tests.stdout.log",
+      "sha256": "4540668e6d6ac23aff3f01c29b220af915e9ca944130b2ef4c46da52c61661e1",
+      "bytes": 21418,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-tests.stderr.log",
+      "sha256": "7928692cb127412fa7d1c6fbe9dc50dddd4ae441baac6ee21f1824413df52090",
+      "bytes": 269,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-tests.vitest.json",
+      "sha256": "06b5381077f7dfd3a320f368e9b61e10f8d65b4f5de962c986224c6c1bcf07e0",
+      "bytes": 39337,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-comment-threads-tests-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-comment-threads-tests-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-comment-threads-tests.stdout.log",
+      "sha256": "e74507eaee2cb3b05d916f17fc50cae16903d277c6e1665cff9d12132a06e78b",
+      "bytes": 3289,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-comment-threads-tests.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-comment-threads-tests.vitest.json",
+      "sha256": "d3a7a09a456064c3cf540db9d6980f96faf47a344ef6a68d974b7e9dd9c77cbe",
+      "bytes": 5155,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-typecheck-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-typecheck-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-typecheck.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-typecheck.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-knowledge-lint-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/core-knowledge-lint-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-lint.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-lint.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/core-knowledge-lint.eslint.json",
+      "sha256": "de7417537c4f3dfaed9943cff9258f2c1c0634966772210e1edff036d12a879c",
+      "bytes": 9667,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-tests-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-tests-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-tests.stdout.log",
+      "sha256": "4b35411501608e8e1719c17186a8d08c19eec49f8a71bc163a03f33e81a8d426",
+      "bytes": 8959,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-tests.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-tests.vitest.json",
+      "sha256": "d4a56c86b950391bb914664ad9fd652495077b641db8f072315e2547c1fbb09c",
+      "bytes": 15424,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-container-tests-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-container-tests-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-container-tests.stdout.log",
+      "sha256": "57a1d79cd6733a0baf4252871ae8cb29e2971b0c60e81efc11c61afb5bef6a5e",
+      "bytes": 10128,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-container-tests.stderr.log",
+      "sha256": "ea7fa7b9206f7e032a4fb676be866a8602f955dc1161c6872670e2810b27b4fb",
+      "bytes": 1169,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-container-tests.vitest.json",
+      "sha256": "1245bdcfb6a544147ffafbd26f830ac3c3afd2d075957d1a9ee7ae03c3360e2b",
+      "bytes": 17743,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-typecheck-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-typecheck-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-typecheck.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-typecheck.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-lint-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-knowledge-lint-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-lint.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-lint.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-lint.eslint.json",
+      "sha256": "387ee81b4dde1e5f4496fa11db28219ffe57c80296c501119f972fa2b24ec83a",
+      "bytes": 3612,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-current-comment-lint-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/before-after/views-current-comment-lint-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-current-comment-lint.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-current-comment-lint.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-current-comment-lint.eslint.json",
+      "sha256": "69edf3446a33b9910130b2dbbc545329e241a219e9e495599840648d7e7bb4a5",
+      "bytes": 1413,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/before-after/core-knowledge-tests-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-plan.json",
+      "sha256": "5169a5c2497e108296591a833f7f0339ed0bcfebbac94a38f6d0fe2a8ba57310",
+      "bytes": 77447,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/environment.json",
+      "sha256": "ef8f04b464c4bd74214d602d187f6a2462b8699adb2160f95b71f29046d4a771",
+      "bytes": 2052,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/before-after/core-knowledge-tests-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/core-knowledge-tests.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/core-knowledge-tests.stderr.log",
+      "sha256": "ab9514f8dc42e2e19819c918ac5bd896cb82f8b4483bcbcf49727d77ff87f54d",
+      "bytes": 305,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/before-after/views-knowledge-tests-before.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/before-after/views-knowledge-tests-after.json",
+      "sha256": "a130943940d6dbfe52b113aae77d0ca5248a339a0404cd475fe27dcfc65dfc70",
+      "bytes": 3110277,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/views-knowledge-tests.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/views-knowledge-tests.stderr.log",
+      "sha256": "ab9514f8dc42e2e19819c918ac5bd896cb82f8b4483bcbcf49727d77ff87f54d",
+      "bytes": 305,
+      "mode": 384
+    }
+  ],
+  "original_failed_attempt": {
+    "failure": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/failed.json",
+      "sha256": "9f2559514f8a53aa58e33cf3c773a4f3e4a0d518e785c97d15053c33e9eba170",
+      "bytes": 201,
+      "mode": 384
+    },
+    "commands": [
+      {
+        "name": "core-knowledge-tests",
+        "result": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/core-knowledge-tests.result.json",
+          "sha256": "64f5b1b24c9314f9d0296b00c25620009a3c2b5ba014e17953678329948fd617",
+          "bytes": 7788,
+          "mode": 384
+        },
+        "stdout": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/core-knowledge-tests.stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "mode": 384
+        },
+        "stderr": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/core-knowledge-tests.stderr.log",
+          "sha256": "ab9514f8dc42e2e19819c918ac5bd896cb82f8b4483bcbcf49727d77ff87f54d",
+          "bytes": 305,
+          "mode": 384
+        },
+        "exit": 1,
+        "named_tests_executed": 0,
+        "report": null,
+        "classification": "pnpm manager bootstrap fetch failed before Vitest started; original failure remains failed"
+      },
+      {
+        "name": "views-knowledge-tests",
+        "result": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/views-knowledge-tests.result.json",
+          "sha256": "214bd5862e2caf751b9c260f414a01e08cb967be1ad9d46ee1a311e5af3a531b",
+          "bytes": 6730,
+          "mode": 384
+        },
+        "stdout": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/views-knowledge-tests.stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "mode": 384
+        },
+        "stderr": {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/logs/views-knowledge-tests.stderr.log",
+          "sha256": "ab9514f8dc42e2e19819c918ac5bd896cb82f8b4483bcbcf49727d77ff87f54d",
+          "bytes": 305,
+          "mode": 384
+        },
+        "exit": 1,
+        "named_tests_executed": 0,
+        "report": null,
+        "classification": "pnpm manager bootstrap fetch failed before Vitest started; original failure remains failed"
+      }
+    ],
+    "never_counted_as_222_pass": true
+  },
+  "owned_command_process_audit": {
+    "recorded_pgids": [
+      50105,
+      50107,
+      50159,
+      50168,
+      50238,
+      50275,
+      50310,
+      50596,
+      50622
+    ],
+    "currently_observed_processes": [],
+    "new_process_or_runtime_started": 0
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "file": "packages/views/collaboration/detail-auxiliary.test.tsx",
+      "severity": "low",
+      "issue": "React emitted an act warning while the external-opener/focus test passed",
+      "evidence": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-container-tests.stderr.log",
+        "sha256": "ea7fa7b9206f7e032a4fb676be866a8602f955dc1161c6872670e2810b27b4fb",
+        "bytes": 1169,
+        "mode": 384
+      },
+      "why_not_fixed": "current review write scope is new independent JSON receipts only; source is immutable and the warning does not change the recorded passing assertion",
+      "recommendation": "a separately owned test-hygiene change can wrap the asynchronous React state transition in act"
+    },
+    {
+      "file": "packages/views/collaboration/detail-auxiliary.test.tsx",
+      "severity": "low",
+      "issue": "React emitted the spread key warning while the scope-resume test passed",
+      "evidence": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-direct-v2-0b53992b51b5/logs/views-knowledge-container-tests.stderr.log",
+        "sha256": "ea7fa7b9206f7e032a4fb676be866a8602f955dc1161c6872670e2810b27b4fb",
+        "bytes": 1169,
+        "mode": 384
+      },
+      "why_not_fixed": "current review write scope is new independent JSON receipts only; preserve the admitted test source and result",
+      "recommendation": "a separately owned test-hygiene change can pass key explicitly instead of spreading it"
+    }
+  ],
+  "scope": {
+    "PAY639_added_to_population": false,
+    "production_or_test_source_changed": false,
+    "Go_or_SQL_or_DB_checks_executed_by_this_reviewer": 0,
+    "tests_or_lint_or_typecheck_rerun_by_this_reviewer": 0,
+    "production_build_API_browser_Electron_provider_or_adoption_executed": 0,
+    "source_ready": false,
+    "final_ROOT_acceptance": false,
+    "actual_same_path_adoption_requires_new_main_permit_and_independent_source_proposal_review": true
+  }
+}

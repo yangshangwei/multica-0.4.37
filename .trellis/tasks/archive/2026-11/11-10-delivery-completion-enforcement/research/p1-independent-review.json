@@ -1,0 +1,691 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-10T18:33:05.037263+00:00",
+  "reviewer": "native trellis-check / check_resume_evidence",
+  "head": "fb0558881a973fa4018897a91c00aa656eab6d5a",
+  "verdict": "REVIEW_FIXES_VERIFIED_FINAL_P1_VALIDATION_PENDING",
+  "scope": "Original P1 ordinary authorization core, 781–788 schema and explicit issuer credential prerequisite; later P3 union not comprehensively reviewed",
+  "original_implementation_manifest_sha256": "78a7fc3a85fc43d001b5e27c3ed999f0da3a1c0c3323eb6c6c60bae5b7a3fee1",
+  "original_30_paths_matched_at_intake": true,
+  "reviewer_modified_source_sha256": {
+    "server/cmd/migrate/delivery_completion_test.go": "1743d2b44ce9b268e80fbed36887ebd7f20742f289315f21eddab70990463bd7",
+    "server/internal/handler/delivery_completion_authorization_test.go": "60b185b7daed4343b1dbee77743bf55f30c7b0f31a8a4333c2d9c362b0347132",
+    "server/internal/migrations/delivery_completion_test.go": "0575fcab8d7d44006530d7b3938ddd6a9a8a1a695700122f50d0ad18a41ab532",
+    "server/internal/service/delivery_completion_types.go": "2af952d8432da909005cd51c47daa35e961109bf89b97156600c2510b759f439",
+    "server/internal/service/delivery_completion_types_test.go": "cba300c5517c8ae0d229ab383f9cad7e7d92c7ade0d2f57aa9ae2d2a2f13043d",
+    "server/migrations/788_delivery_completion_ready.up.sql": "afb2c666ffc5bf5c909ea2c3496307be944bdbdae6c710e90ba2b412ce7ee83b",
+    "server/pkg/db/queries/delivery_completion.sql": "20bd81377347d6acb6486361de232325622cb2b632fdef11f423341ca255e507",
+    "server/pkg/db/generated/delivery_completion.sql.go": "32017cb452003be943c01cea0ac7d702f6b3127f6996f0dc4940105a5ea95b17"
+  },
+  "cross_owner_generated_outputs": {
+    "server/pkg/db/generated/models.go": "14aff8d089b6101380e1547b361af76bcdef097a6e2d506904288427de4336c3",
+    "server/pkg/db/generated/github.sql.go": "985d28184a2833f56840852ef3ef5b85e3fa08f7570fdde3921b3fc35b9bc314",
+    "server/pkg/db/generated/vcs.sql.go": "c4d351c9078116b01a6e4d27e8d023131a3caff932cb8ffbe515341d51890e46"
+  },
+  "cross_owner_generation_note": "Unified sqlc03 includes VCS792/793 and project789–791 sources owned by other agents; these are generated outputs, not reviewer-owned business changes.",
+  "fixed_findings": [
+    {
+      "id": "P1-R1",
+      "finding": "Readiness accepted absent/weakened CHECK definitions, nullable required columns and wrong column types",
+      "fix": "Canonical runtime predicate validates the exact 73+22 column name/type/NOT NULL/default fingerprints, all52+14 named validated PostgreSQL17 CHECK definitions and the existing5 exact index shapes; migration788 embeds identical SQL pinned by static test",
+      "red": "p1-schema-red01",
+      "green": "p1-schema-green01",
+      "red_meaning": "7 failing negative scenarios plus their parent; no runtime product success inferred",
+      "operational_limit": "PostgreSQL catalog rendering changes fail closed; verify a new schema contract/migration and real catalog before updating fingerprints, never disable readiness or delete retained history."
+    },
+    {
+      "id": "P1-R2",
+      "finding": "Typed service requests accepted non-UTC/nanosecond expiry and could create an authorization whose strict recovery digest/time no longer matched PostgreSQL storage",
+      "fix": "Typed Validate requires UTC location and whole microseconds; HTTP keeps existing explicit UTC normalization before Validate",
+      "red": "p1-review-expiry-red01",
+      "green": "p1-review-contract-green03"
+    },
+    {
+      "id": "P1-R3",
+      "finding": "Consumer or grant could expire after final Go check but before terminal INSERT and still be consumed",
+      "fix": "Reviewer conditional INSERT checks live DB clock against authorization/evidence/issuer finite expiry and actual consumer finite expiry; core owner rechecks actual consumer/issuer after observer and derives JWT/task/PAT expiry for SQL. Revocation remains allowed after expiry.",
+      "red": "p1-review-late-expiry-red01",
+      "green": "p1-review-late-expiry-green01",
+      "test_method": "Real controlled-artifact fixture and same actual transaction; wrapper delays only final real INSERT until actual DB time passes exact boundary, no fake successful rows; failure rolls back state and leaves no terminal."
+    }
+  ],
+  "pending_findings": [
+    {
+      "id": "P1-R4",
+      "finding": "Ordinary task consumer requires Operator although original ordinary writer allows Contributor",
+      "disposition": "Main chose existing writer authority intersection; root assigns test-first distinct producer/consumer regression and two consumer check changes to owners. Producer operator policy must remain unchanged.",
+      "status": "pending in this review snapshot"
+    },
+    {
+      "id": "P1-V1",
+      "finding": "Complete managed task signing/consumption positive and binding/absence/revocation race evidence missing",
+      "disposition": "Current locks/static identity checks reviewed; helper issuer regression alone is not full route/writer proof. Root must add/run fresh actual managed-positive tests."
+    },
+    {
+      "id": "P1-V2",
+      "finding": "Final coherent normal/race handler/router/migration and current whole build/vet/static/source freeze still required",
+      "disposition": "Earlier22/7/11 are iterative, and P3 core changed after initial freeze; do not inherit old source evidence as final acceptance."
+    }
+  ],
+  "evidence": [
+    {
+      "run_id": "p1-handler-iter02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-handler-iter02.json",
+      "record_sha256": "be8d5362d39545c15bfea7de6a65e73d01be2ca3e948b150d0136ffb032b826c",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-handler-iter02.log",
+      "log_sha256": "b30f25893b427b5b41dd5ce7ad07c090ecb1cd573451e498e0a454b8fe3e8bd4",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p1_handler_iter02",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^TestDeliveryCompletionAuthorization|^TestDeliveryCompletionExplicitIssuer",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-migrate-iter02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-migrate-iter02.json",
+      "record_sha256": "c198bee6fa75d1ed929597c527c843ab8d0350231aeee1a02c0079b318ed8595",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-migrate-iter02.log",
+      "log_sha256": "a828020373c7afe07b624c9458b43a6b3ee48639d10ff586aab96ddfd9375f98",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p1_migrate_iter02",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/migrate",
+        "-run",
+        "^TestDeliveryCompletionMigrations",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-issuer-red01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-issuer-red01.json",
+      "record_sha256": "08bbf229982e9f6005ee2638f8554ef06f5ff3c6658dedc7760eb7adf208fd17",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-issuer-red01.log",
+      "log_sha256": "043b251dd720baa475bd3d268712bff02db07191f54ec77aec408da10497bfa4",
+      "exit_code": 1,
+      "named_counts": {
+        "pass": 6,
+        "fail": 2,
+        "skip": 0
+      },
+      "database": "enf_p1_issuer_red01",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^TestDeliveryCompletionExplicitIssuerCredentialIsolation$",
+        "-count=1",
+        "-timeout=5m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-issuer-green01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-issuer-green01.json",
+      "record_sha256": "9d64117d43a80c06fba5aec64c23a06d71372f405686f52a76530d97e1aaedaa",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-issuer-green01.log",
+      "log_sha256": "0d540bdf8501b0e783527f97da94a5272cf4145a43a5b1d753175a8c0402e5ba",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p1_issuer_green01",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^TestDeliveryCompletionExplicitIssuerCredentialIsolation$",
+        "-count=1",
+        "-timeout=5m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-router-iter03",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-router-iter03.json",
+      "record_sha256": "47c1feb6d48e55cde61076dd6188f30c30520cf9d1da54d7aae4ac65de7808a7",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-router-iter03.log",
+      "log_sha256": "b9d5cad2ef0373f925cef3a7fe2c683a8703ce183e1724cf2493bff90b562ef0",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p1_router_iter03",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/cmd/server",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-router-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletionAuthorizationRouter",
+        "-test.count=1",
+        "-test.timeout=5m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-review-expiry-red01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-expiry-red01.json",
+      "record_sha256": "36deb97659c33a1ee2343aca955ec38dabf7fbf70791601c0a49b406f7f810ce",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-expiry-red01.log",
+      "log_sha256": "cfb9e0d40962cbe0171a22e69972ed39dfaff34a916c9541b60ca42b99647a8f",
+      "exit_code": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/service",
+        "-run",
+        "^TestDeliveryCompletionTypedRequestRejectsNoncanonicalExpiry$",
+        "-count=1",
+        "-timeout=2m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-schema-red01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-schema-red01.json",
+      "record_sha256": "ed1f0f3419221efbdf440ec99492d752f81ac01be674cba53ec2b427e4ef75f1",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-schema-red01.log",
+      "log_sha256": "e7f17f78a35a06943478528ee24e6304172b8324b4cf225a7f61888822d7653e",
+      "exit_code": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 8,
+        "skip": 0
+      },
+      "database": "enf_p1_schema_red01",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/migrate",
+        "-run",
+        "^TestDeliveryCompletionMigrationsRejectWeakenedSchema$",
+        "-count=1",
+        "-timeout=5m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-review-sqlc01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-sqlc01.json",
+      "record_sha256": "dd34776313832d4f5f09649421ad9eeb9fe1218b4afc3b481ad0616ab8d82539",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-sqlc01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "run",
+        "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+        "generate"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": [
+        "server/pkg/db/generated/delivery_completion.sql.go"
+      ]
+    },
+    {
+      "run_id": "p1-review-build01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-build01.json",
+      "record_sha256": "8e20042563af892e304e214c0f4ba7c95994a573bb9f176e90d24373eb8e00a5",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-build01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": [
+        "server/internal/service/delivery_completion_webhook.go"
+      ]
+    },
+    {
+      "run_id": "p1-review-contract-green01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-contract-green01.json",
+      "record_sha256": "2eabe84bfebc1a14d58dac4da550cd5eca35b2dbbce4c122b5dcdf3e0ad10ebe",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-contract-green01.log",
+      "log_sha256": "c37c76ccf17384e6b1c67dd1e835659e2ff99138ab55f4763ab52379574a545b",
+      "exit_code": 1,
+      "named_counts": {
+        "pass": 22,
+        "fail": 1,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/service",
+        "./internal/migrations",
+        "-run",
+        "^TestDeliveryCompletion",
+        "-count=1",
+        "-timeout=2m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": [
+        "server/internal/service/delivery_completion_webhook.go"
+      ]
+    },
+    {
+      "run_id": "p1-schema-green01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-schema-green01.json",
+      "record_sha256": "37343a1867d1ab079a5aaa65d161a63ee88913717eca81c1439095655c6e75ec",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-schema-green01.log",
+      "log_sha256": "a8ecd3986dbe074bfc88e39a672920cfb6e91f6b1cc217418a3f54b92cc19599",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p1_schema_green01",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/migrate",
+        "-run",
+        "^TestDeliveryCompletionMigrations",
+        "-count=1",
+        "-timeout=5m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-review-contract-green02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-contract-green02.json",
+      "record_sha256": "97f8eddf95d88af0c8cf40743c8c87c6960d3971a41e2f43cd64d3e1b09c0bfb",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-contract-green02.log",
+      "log_sha256": "25294d0dc79be58b46f77a8e0615734f69732e14559f718eb2e61a0c7c2de69e",
+      "exit_code": 1,
+      "named_counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/service",
+        "./internal/migrations",
+        "-run",
+        "^TestDeliveryCompletion",
+        "-count=1",
+        "-timeout=2m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-review-sqlc02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-sqlc02.json",
+      "record_sha256": "c1886fa93612b1ec671b72a4b1826b596d9ebc7d93a2a98e5ebce46ad19cc5ab",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-sqlc02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "run",
+        "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+        "generate"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": [
+        "server/pkg/db/generated/vcs.sql.go",
+        "server/pkg/db/generated/github.sql.go",
+        "server/pkg/db/generated/models.go"
+      ]
+    },
+    {
+      "run_id": "p1-review-late-compile01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-late-compile01.json",
+      "record_sha256": "94ea97d2781a754e250a9786c43029063f486e857e6ecf62a2a57e98500d7f97",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-late-compile01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-review-late-tests",
+        "./internal/handler"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-review-late-expiry-red01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-late-expiry-red01.json",
+      "record_sha256": "a57e80778e5f8b27e03f27b204e47d012c8790cf6e6be7c20d93a1d9bfa73eb1",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-late-expiry-red01.log",
+      "log_sha256": "1b9bdd837c4ef4b9226a52a95524d1794ae4202ac842942e9f26e98f486385d8",
+      "exit_code": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      },
+      "database": "enf_p1_late_expiry_red01",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-review-late-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletionAuthorizationTerminalInsertRechecksExpiry$",
+        "-test.count=1",
+        "-test.timeout=3m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-review-sqlc03",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-sqlc03.json",
+      "record_sha256": "6751cb3882047d177bbfdab66207abbbc3951e2868efc63ffa529b1f550f09c8",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-sqlc03.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "run",
+        "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+        "generate"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": [
+        "server/pkg/db/generated/delivery_completion.sql.go"
+      ]
+    },
+    {
+      "run_id": "p1-review-late-compile02",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-late-compile02.json",
+      "record_sha256": "63950bbe9a14f8646b3224c9b67fec7021a3bca2c911844fbc8f010bd4ad1b94",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-late-compile02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-o",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-review-late-fixed-tests",
+        "./internal/handler"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-review-contract-green03",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-contract-green03.json",
+      "record_sha256": "5a4d1645288badc344a8e5df40d19eccb6dabc1c5afe0fb57b4b226eb568ac9c",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-contract-green03.log",
+      "log_sha256": "9acb911fb20280b43f241c598ad1cdcbfc169a9d935bab4894f11d60a9eaab9f",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": null,
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/service",
+        "./internal/migrations",
+        "-run",
+        "^TestDeliveryCompletion",
+        "-count=1",
+        "-timeout=2m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    },
+    {
+      "run_id": "p1-review-late-expiry-green01",
+      "record_path": ".trellis/tasks/11-10-delivery-completion-enforcement/research/runs/p1-review-late-expiry-green01.json",
+      "record_sha256": "e201c508827c4ab0cbcb3645fee68c7a4a9ef40b7ff06c2e8d6b915071316f1c",
+      "log_path": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p1-review-late-expiry-green01.log",
+      "log_sha256": "2d896ac87c3f885639626799e207073e7c8220e35363138c2ee23cb39ede62c6",
+      "exit_code": 0,
+      "named_counts": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "database": "enf_p1_late_expiry_green01",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/p1-review-late-fixed-tests",
+        "-test.v",
+        "-test.run",
+        "^TestDeliveryCompletionAuthorizationTerminalInsertRechecksExpiry$",
+        "-test.count=1",
+        "-test.timeout=3m"
+      ],
+      "hash_inventory_and_terminals_match": true,
+      "changed_within_run": []
+    }
+  ],
+  "reviewer_verification": {
+    "gofmt": "pass for reviewer-owned Go files",
+    "diff_check": "pass for reviewer-owned files",
+    "build": "p1-review-build01 pass before later P3 changes",
+    "pure_contracts": "p1-review-contract-green03 23 pass,0fail/skip",
+    "actual_schema": "p1-schema-green01 17pass,0fail/skip",
+    "actual_late_expiry": "p1-review-late-expiry-green01 3pass,0fail/skip",
+    "whole_vet": "not rerun amid unrelated active product edits; final coherent run remains root obligation"
+  },
+  "retained_nonbehavior_failures": [
+    {
+      "run": "p1-review-contract-green01",
+      "classification": "Reviewer static test used ResolveDir which found internal/migrations code directory; query read path failed; fixed to existing realMigrationsDir helper without changing assertion",
+      "counts": {
+        "pass": 22,
+        "fail": 1
+      }
+    },
+    {
+      "run": "p1-review-contract-green02",
+      "classification": "Service test compile blocked by concurrently edited handler/github.go unused bytes import; static migration tests2pass; no service tests executed"
+    }
+  ],
+  "runtime_resources": "Only exact root-permitted fresh DBs enf_p1_schema_red01/enf_p1_schema_green01/enf_p1_late_expiry_red01/enf_p1_late_expiry_green01; no DB allocation/drop/historical reuse by reviewer",
+  "real_provider_calls": 0,
+  "reviewer_commits": 0,
+  "full_delivery_gate_complete": false,
+  "full_m1_complete": false
+}

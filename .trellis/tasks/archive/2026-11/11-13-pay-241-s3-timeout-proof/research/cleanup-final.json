@@ -1,0 +1,42 @@
+{
+  "status": "pass",
+  "processes": [
+    {
+      "component": "renderer",
+      "pid": 88665,
+      "pgid": 88665,
+      "cwd": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source",
+      "stopped": true
+    },
+    {
+      "component": "web",
+      "pid": 88666,
+      "pgid": 88666,
+      "cwd": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source/apps/web",
+      "stopped": true
+    },
+    {
+      "component": "api",
+      "pid": 87448,
+      "pgid": 87448,
+      "cwd": "/Users/artisan/.multica/acceptance/pay241-20261113-01/source/server",
+      "stopped": true
+    }
+  ],
+  "ports": {
+    "18990": {
+      "127.0.0.1": false,
+      "::1": false
+    },
+    "13910": {
+      "127.0.0.1": false,
+      "::1": false
+    },
+    "6094": {
+      "127.0.0.1": false,
+      "::1": false
+    }
+  },
+  "database": "retained",
+  "unowned_processes": "untouched"
+}

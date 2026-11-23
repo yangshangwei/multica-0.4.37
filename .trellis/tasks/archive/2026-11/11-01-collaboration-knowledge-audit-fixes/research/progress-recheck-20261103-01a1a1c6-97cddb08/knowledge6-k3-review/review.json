@@ -1,0 +1,760 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-03T14:35:44.806390+00:00",
+  "reviewer": "/root/knowledge6_k3_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion",
+  "scope": "Independent static six-file K3/source/evidence review only. No source edit, test, DB, service, Provider, or paid-account operation.",
+  "verdict": "changes-required-before-dynamic",
+  "ready_for_dynamic": false,
+  "blocking_findings_open": 2,
+  "product_defects_confirmed": 0,
+  "framework_defects_confirmed": 1,
+  "worktree": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+  "worktree_HEAD": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "candidate_target": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "current_six_file_sha256": {
+    "server/cmd/server/rk1k_fixture_test.go": "9e31682c037385888be41579cc489f71c2c4e28797ab7bc7d8b596917578a084",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "borrowed_runtime_17": [
+    {
+      "file": "server/cmd/server/rk1_entry_test.go",
+      "sha256": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_evidence_contract_unit_test.go",
+      "sha256": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_evidence_fault_proof_test.go",
+      "sha256": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_evidence_format_test.go",
+      "sha256": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_evidence_publication_test.go",
+      "sha256": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_fake_helpers_test.go",
+      "sha256": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_fake_test.go",
+      "sha256": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_fixture_test.go",
+      "sha256": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_lifecycle_test.go",
+      "sha256": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_observe_test.go",
+      "sha256": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_provider_test.go",
+      "sha256": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_run_test.go",
+      "sha256": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_scenarios_handoff_test.go",
+      "sha256": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_scenarios_recall_test.go",
+      "sha256": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_trace_barrier_test.go",
+      "sha256": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_trace_test.go",
+      "sha256": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_trial_test.go",
+      "sha256": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5",
+      "baseline_match": true,
+      "candidate_match": true
+    }
+  ],
+  "original_17_unchanged": true,
+  "prior_six_file_static_source_matches": {
+    "server/cmd/server/rk1k_fixture_test.go": false,
+    "server/cmd/server/rk1k_provider_test.go": true,
+    "server/cmd/server/rk1k_scenarios_test.go": false,
+    "server/cmd/server/rk1k_evidence_test.go": true,
+    "server/cmd/server/rk1k_entry_test.go": true,
+    "server/internal/daemon/rk1k_driver_agentintegration.go": true
+  },
+  "source_integration": {
+    "merge_base": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "left_right_commit_counts": "1\t13",
+    "framework_unique_commit": "118fc53ea test(e2e): wait for the dialog state users act on",
+    "can_fast_forward": false,
+    "production_changed_file_count": 127,
+    "server_changed_file_count": 61,
+    "changed_production_paths": [
+      "M\tpackages/core/api/client.ts",
+      "M\tpackages/core/api/collaboration-workflow.test.ts",
+      "A\tpackages/core/collaboration/account-schema.ts",
+      "M\tpackages/core/collaboration/action.ts",
+      "M\tpackages/core/collaboration/control-schema.test.ts",
+      "M\tpackages/core/collaboration/control-schema.ts",
+      "M\tpackages/core/collaboration/control.test.ts",
+      "M\tpackages/core/collaboration/control.ts",
+      "M\tpackages/core/collaboration/creation-schema.ts",
+      "M\tpackages/core/collaboration/creation.ts",
+      "M\tpackages/core/collaboration/delivery-draft.ts",
+      "M\tpackages/core/collaboration/delivery-form.test.tsx",
+      "M\tpackages/core/collaboration/delivery-form.ts",
+      "A\tpackages/core/collaboration/delivery-history.test.ts",
+      "A\tpackages/core/collaboration/delivery-queries.ts",
+      "A\tpackages/core/collaboration/delivery-result.test.ts",
+      "A\tpackages/core/collaboration/delivery-schema.ts",
+      "M\tpackages/core/collaboration/index.ts",
+      "M\tpackages/core/collaboration/lifecycle-schema.test.ts",
+      "M\tpackages/core/collaboration/operation.ts",
+      "A\tpackages/core/collaboration/presentation.test.ts",
+      "A\tpackages/core/collaboration/presentation.ts",
+      "M\tpackages/core/collaboration/resource-schema.test.ts",
+      "M\tpackages/core/collaboration/resource-schema.ts",
+      "M\tpackages/core/collaboration/resource.test.ts",
+      "M\tpackages/core/collaboration/resource.ts",
+      "A\tpackages/core/collaboration/result-operation.test.ts",
+      "M\tpackages/core/collaboration/schema.ts",
+      "M\tpackages/core/collaboration/switch-schema.test.ts",
+      "M\tpackages/core/collaboration/switch-schema.ts",
+      "M\tpackages/core/collaboration/switch.ts",
+      "M\tpackages/views/collaboration/account-picker.test.tsx",
+      "M\tpackages/views/collaboration/account-picker.tsx",
+      "M\tpackages/views/collaboration/attachment-panel.test.tsx",
+      "M\tpackages/views/collaboration/attachment-panel.tsx",
+      "M\tpackages/views/collaboration/attachment-picker.tsx",
+      "M\tpackages/views/collaboration/collaboration-detail.test.tsx",
+      "M\tpackages/views/collaboration/collaboration-detail.tsx",
+      "M\tpackages/views/collaboration/command-history.test.tsx",
+      "M\tpackages/views/collaboration/comment-composer.test.tsx",
+      "M\tpackages/views/collaboration/comment-composer.tsx",
+      "M\tpackages/views/collaboration/comment-list.tsx",
+      "M\tpackages/views/collaboration/creation-form.test.tsx",
+      "M\tpackages/views/collaboration/creation-form.tsx",
+      "A\tpackages/views/collaboration/delivery-panel.test.tsx",
+      "A\tpackages/views/collaboration/delivery-panel.tsx",
+      "M\tpackages/views/collaboration/execution-panel.test.tsx",
+      "M\tpackages/views/collaboration/execution-panel.tsx",
+      "M\tpackages/views/collaboration/field-editing.test.tsx",
+      "A\tpackages/views/collaboration/field-inputs.test.tsx",
+      "M\tpackages/views/collaboration/field-inputs.tsx",
+      "M\tpackages/views/collaboration/field-summary.tsx",
+      "A\tpackages/views/collaboration/form-styles.ts",
+      "M\tpackages/views/collaboration/knowledge-panel.test.tsx",
+      "M\tpackages/views/collaboration/knowledge-panel.tsx",
+      "M\tpackages/views/collaboration/labels.ts",
+      "M\tpackages/views/collaboration/participants.tsx",
+      "M\tpackages/views/collaboration/resource-offers.tsx",
+      "M\tpackages/views/collaboration/resource-panel.tsx",
+      "M\tpackages/views/collaboration/switch-panel.tsx",
+      "M\tpackages/views/collaboration/workflow.test.tsx",
+      "M\tpackages/views/collaboration/workflow.tsx",
+      "M\tpackages/views/issues/components/pickers/property-picker.test.tsx",
+      "M\tpackages/views/issues/components/pickers/property-picker.tsx",
+      "M\tpackages/views/locales/en/collaboration.json",
+      "M\tpackages/views/locales/zh-Hans/collaboration.json",
+      "M\tserver/cmd/server/collaboration_handoff_routes_test.go",
+      "M\tserver/cmd/server/collaboration_lifecycle_routes_test.go",
+      "M\tserver/cmd/server/collaboration_workflow_routes_test.go",
+      "M\tserver/cmd/server/router.go",
+      "M\tserver/internal/collaboration/access.go",
+      "M\tserver/internal/handler/collaboration.go",
+      "A\tserver/internal/handler/collaboration_ai_policy.go",
+      "M\tserver/internal/handler/collaboration_creation.go",
+      "A\tserver/internal/handler/collaboration_delivery_test.go",
+      "M\tserver/internal/handler/collaboration_lifecycle.go",
+      "M\tserver/internal/handler/collaboration_parent_wakeup_test.go",
+      "M\tserver/internal/handler/collaboration_workflow.go",
+      "M\tserver/internal/handler/daemon_test.go",
+      "A\tserver/internal/migrations/collaboration_ai_policy_test.go",
+      "M\tserver/internal/service/admin_collaboration_authority_test.go",
+      "M\tserver/internal/service/admin_collaboration_test.go",
+      "M\tserver/internal/service/admin_collaboration_transaction_test.go",
+      "M\tserver/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "M\tserver/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "M\tserver/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "M\tserver/internal/service/collaboration.go",
+      "A\tserver/internal/service/collaboration_ai_policy.go",
+      "A\tserver/internal/service/collaboration_ai_policy_test.go",
+      "M\tserver/internal/service/collaboration_authority.go",
+      "M\tserver/internal/service/collaboration_batches.go",
+      "M\tserver/internal/service/collaboration_command_history_execution_test.go",
+      "M\tserver/internal/service/collaboration_command_history_test.go",
+      "M\tserver/internal/service/collaboration_control.go",
+      "A\tserver/internal/service/collaboration_delivery.go",
+      "A\tserver/internal/service/collaboration_delivery_projection_test.go",
+      "A\tserver/internal/service/collaboration_delivery_test.go",
+      "M\tserver/internal/service/collaboration_handoff.go",
+      "M\tserver/internal/service/collaboration_handoff_execution_boundary_test.go",
+      "M\tserver/internal/service/collaboration_handoff_test.go",
+      "M\tserver/internal/service/collaboration_host_integration_test.go",
+      "M\tserver/internal/service/collaboration_lifecycle.go",
+      "M\tserver/internal/service/collaboration_lifecycle_test.go",
+      "M\tserver/internal/service/collaboration_memory_test.go",
+      "M\tserver/internal/service/collaboration_mention_admission_states_test.go",
+      "M\tserver/internal/service/collaboration_mentions.go",
+      "M\tserver/internal/service/collaboration_parent_wakeup_test.go",
+      "M\tserver/internal/service/collaboration_queue.go",
+      "M\tserver/internal/service/collaboration_resource_offers_test.go",
+      "M\tserver/internal/service/collaboration_runtime.go",
+      "M\tserver/internal/service/collaboration_source_fields.go",
+      "M\tserver/internal/service/collaboration_source_fields_test.go",
+      "M\tserver/internal/service/collaboration_targets_review_test.go",
+      "M\tserver/internal/service/collaboration_targets_test.go",
+      "M\tserver/internal/service/collaboration_workflow.go",
+      "A\tserver/migrations/764_collaboration_ai_policy.down.sql",
+      "A\tserver/migrations/764_collaboration_ai_policy.up.sql",
+      "M\tserver/pkg/db/generated/collaboration.sql.go",
+      "A\tserver/pkg/db/generated/collaboration_delivery.sql.go",
+      "M\tserver/pkg/db/generated/collaboration_knowledge_service.sql.go",
+      "M\tserver/pkg/db/generated/collaboration_lifecycle.sql.go",
+      "M\tserver/pkg/db/generated/collaboration_reconciliation.sql.go",
+      "M\tserver/pkg/db/generated/collaboration_source_fields.sql.go",
+      "M\tserver/pkg/db/generated/models.go",
+      "M\tserver/pkg/db/queries/collaboration.sql",
+      "A\tserver/pkg/db/queries/collaboration_delivery.sql",
+      "M\tserver/pkg/db/queries/collaboration_source_fields.sql"
+    ],
+    "candidate_has_no_tracked_six_file_or_old_research_path": true,
+    "safe_next_step": "After #7 closure/resource release, root records six-file/private evidence fingerprints and locally merges the accepted final candidate into the framework worktree. Preserve untracked six files and old research; resolve any E2E-only conflict to current accepted candidate. Verify exact server/apps/packages/scripts/Makefile source equality and the original seventeen hashes before compile/dynamic. No reset/clean or old-evidence rewrite.",
+    "AI_policy_and_locks": "Candidate adds task_manual refusal across human/runtime/borrowed admission and source-row revalidation. Migration764 defaults existing/new rows to assisted; do not infer a manual-policy fixture repair. Original knowledge/daemon/CLI implementation files show no direct changed content, but callers/router/handoff/source locks changed, so previous base proof cannot establish candidate coverage."
+  },
+  "findings": [
+    {
+      "id": "KF-NEXT-LIST",
+      "severity": "high",
+      "kind": "confirmed_framework_defect",
+      "blocking": true,
+      "file": "server/cmd/server/rk1k_fixture_test.go:228",
+      "evidence": "normal8 K3 failed before its first root sample: expected one pending run ... got0, at rk1k_scenarios_test.go:615. Only K3 issue/comment/chat/quick_create/autopilot samples exist.",
+      "cause": "nextRunForIssue polls ListCollaborationRuns directly. Actual runtime HTTP List is the dispatch boundary: ListRuntimeRuns first drains wakes/scans waiting targets and calls promoteCollaborationRuntimeBatch. Human CreateComment and ResumeQueue only persist waiting input/control. K1 uses nextRun -> client.List and therefore promotes; K3 uses DB-only helper and never promotes the first squad/root waiting input.",
+      "source_references": [
+        "server/cmd/server/rk1k_fixture_test.go:228",
+        "server/cmd/server/rk1_run_test.go:59",
+        "server/internal/daemon/collaborationrun/client.go:54",
+        "server/internal/service/collaboration_runtime.go:623",
+        "server/internal/service/collaboration_runtime.go:648"
+      ],
+      "recommended_owning_fix": "Change only nextRunForIssue in rk1k_fixture_test.go: every iteration invokes f.client.List with the actual scoped MDT/runtime; select the intersection of returned eligible run IDs and this issue/session, still reject zero after timeout or multiple. Do not create runs or select arbitrary unsettled rows. Keep original17 unchanged.",
+      "last_seed_fix": "The 16:58:48 scenario edit changes continuation seed-member from delegate to knowledge, preventing duplicate delegation in that later role. It is sensible by source inspection but does not reach/fix normal8 first-root failure. Preserve it and validate dynamically.",
+      "verification_needed": "Keep normal8 as red evidence; after actual source sync and focused fixture correction, run whole new-numbered normal and race proofs on distinct freshly migrated task databases."
+    },
+    {
+      "id": "KF-CURRENT-BIND",
+      "severity": "medium",
+      "kind": "acceptance_prerequisite",
+      "blocking": true,
+      "evidence": "Framework HEAD118fc53ea differs from accepted-target candidate d0b132fff in61 server paths and other production roots. Last six-file static hashes are stale for fixture/scenarios, and no complete normal/race summary exists.",
+      "recommendation": "Root integrates current accepted final production source before any new dynamic proof. New run records bind full source, current six files, old17, toolchain, exact CLI build, private env, allocation, raw results and final source after execution. A successful static/old-base run would not close this gate."
+    }
+  ],
+  "coverage": {
+    "finite_schedules": {
+      "E0b_measured": 1,
+      "K1_measured": 4,
+      "K2_measured": 2,
+      "K3_measured": 8,
+      "K3_separate_seed": 3,
+      "summary_expected_measured_including_E0b": 15,
+      "summary_expected_paid": 0,
+      "checks": "hard-coded finite producer/role loops; every required sample must finish/pass with one physical fake launch. Count summary emitted only after all groups pass. K2 frozen refusal is saved separately and starts zero processes."
+    },
+    "actual_producer_paths": {
+      "issue": "Human POST /api/issues then actual task query by issue/agent; claimed through ordinary driver",
+      "comment": "Human explicit mention comment then actual task query by trigger_comment/agent; no fabricated task",
+      "chat": "Human private chat/session/message APIs",
+      "quick_create": "Actual202 task with no prelinked issue; task-token CLI creates exactly one inert backlog issue and completion links it",
+      "autopilot": "Human manual run_only definition/trigger with original idempotency key",
+      "root": "Human collaboration comment to current registered squad; missing real List promotion in helper is blocking",
+      "member": "Actual fake root business delegation and capacity/proof; new member run must be returned by real List",
+      "continuation": "Two separately labelled root/member fake seeds then recorded proof/wake continuation; last seed avoids duplicate delegation"
+    },
+    "entry_wrapper_prompt_native_trace_evidence_tests": [
+      "TestRK1KnowledgeEntryGuard",
+      "TestRK1KnowledgeWrapperGuard",
+      "TestRK1KnowledgePromptData",
+      "TestRK1KnowledgeTraceCredentialLabels",
+      "TestRK1KnowledgeNativeMetadataUsesRawOutput",
+      "TestRK1KnowledgeEvidenceFaults"
+    ],
+    "unexecuted_here": true,
+    "fault_scope": "Seven framework fault cases: wrong, missing_result, missing_native, stdout write/sync/close and launch-record durability. Pure native controls include changed ID/duplicate result/raw defects. Full application noncanonical ACK/stale/unavailable/busy/expiry boundaries are not explicitly new-six-file scenarios; bind existing canonical product tests separately rather than reporting this selected framework as covering them.",
+    "reusable_product_boundaries": [
+      "TestKnowledgePrepareBusyExhaustionRetainsOriginalReceipt",
+      "TestOrdinaryKnowledgeFirstLaunchRefusalIsTerminal",
+      "TestKnowledgeFailuresNeverEnterFreshReplay",
+      "TestKnowledgeLostPreparationRechecksRevokedSource",
+      "TestKnowledgeChangedNativeIDIsObservedButNeverRelabeled",
+      "TestKnowledgeObservationRequiresPositiveAcknowledgement",
+      "TestKnowledgeServerDaemonCompositeSourceParticipationRevoked",
+      "TestKnowledgeInvocationFingerprintRejectsDrift"
+    ],
+    "E0b_scope_note": "Knowledge-off ordinary baseline skips managed authorization/native-ACK/termination criteria intentionally. It proves ordinary stdin/task-token read/completion, not formal real-provider E0 or managed-native behavior; K2 provides managed ordinary lifecycle."
+  },
+  "normal8_retained": {
+    "raw_path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/raw-go.jsonl",
+    "raw_sha256": "78c2e5fb1d2ef440fb49e4489867ce572563a767ecd0d0492a69567da74989ae",
+    "exit_code": 1,
+    "named_terminals": [
+      {
+        "Time": "2026-11-03T16:55:48.83023+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/cmd/server",
+        "Test": "TestRK1KnowledgeFakeProof/E0b",
+        "Elapsed": 2.76
+      },
+      {
+        "Time": "2026-11-03T16:55:55.926851+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/cmd/server",
+        "Test": "TestRK1KnowledgeFakeProof/K1",
+        "Elapsed": 7.1
+      },
+      {
+        "Time": "2026-11-03T16:55:58.763267+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/cmd/server",
+        "Test": "TestRK1KnowledgeFakeProof/K2",
+        "Elapsed": 2.84
+      },
+      {
+        "Time": "2026-11-03T16:56:12.401337+08:00",
+        "Action": "fail",
+        "Package": "github.com/multica-ai/multica/server/cmd/server",
+        "Test": "TestRK1KnowledgeFakeProof/K3",
+        "Elapsed": 13.64
+      },
+      {
+        "Time": "2026-11-03T16:56:12.40135+08:00",
+        "Action": "fail",
+        "Package": "github.com/multica-ai/multica/server/cmd/server",
+        "Test": "TestRK1KnowledgeFakeProof",
+        "Elapsed": 26.34
+      },
+      {
+        "Time": "2026-11-03T16:56:12.426357+08:00",
+        "Action": "fail",
+        "Package": "github.com/multica-ai/multica/server/cmd/server",
+        "Elapsed": 27.494
+      }
+    ],
+    "sample_inventory": [
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/E0b/samples/E0b.json",
+        "sha256": "f4589a4098aea783b626e1fe1eba26e92e26a13100d51f335968c410b7733330",
+        "label": "E0b",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K1/samples/K1-approved.json",
+        "sha256": "5400feab69ec390dd588b3b78d654f040384a629de9a621803597d692272ccdc",
+        "label": "K1-approved",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K1/samples/K1-corrected.json",
+        "sha256": "3e8356f30350749efbea3b3f1eca5c12e4fa11a7113ae7511273b8e7204f1fe7",
+        "label": "K1-corrected",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K1/samples/K1-pending.json",
+        "sha256": "391a0471bfb70eb853ab540d1382110fb9c9e1406d23e065191cee4bf59fd1f3",
+        "label": "K1-pending",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K1/samples/K1-withdrawn.json",
+        "sha256": "1222e8118375fc0265af1eb524727772b44a675cd997948954895b7918668cf0",
+        "label": "K1-withdrawn",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K2/samples/K2-fresh.json",
+        "sha256": "d553f1a73fcaf616133d5e47d60464d72b27997216a000a9be968b92fa7afa7a",
+        "label": "K2-fresh",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K2/samples/K2-frozen-refusal.json",
+        "sha256": "3bebbab993ae56315fabc1853b7333548cba3a17adb5fd26dca9038f09a84349",
+        "label": "K2-frozen-refusal",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": "expected knowledge_context_changed; zero third process",
+        "fake_starts": 0,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K2/samples/K2-resume.json",
+        "sha256": "c7f83cbaf524b85b417c06db86f5a4a83f7b159cd5157eeeb2951aa062226bf6",
+        "label": "K2-resume",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-autopilot.json",
+        "sha256": "544ef62f42013aec9c1eaa91cc7dbc0b33bc01cee959a4095cd97086c2f73582",
+        "label": "K3-autopilot",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-chat.json",
+        "sha256": "ba3ddc90a3cb6194746e1be6adb0c876161cf67f1d27f120843926d610bcfd22",
+        "label": "K3-chat",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-comment.json",
+        "sha256": "4c615b53d3eb2b469cbb900a7c26113c7943e8bdcc5eb3ff1af83bac23450426",
+        "label": "K3-comment",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-issue.json",
+        "sha256": "a178744fafc00a272544b2cb8134ca78f2868b4d671f99e42f14c1a937889422",
+        "label": "K3-issue",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-quick_create.json",
+        "sha256": "91acc5a84583fd99519107b0517c65ac2b4c2cdc0dfd7f3b0abc79b1d9bd06fc",
+        "label": "K3-quick_create",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null,
+        "fake_starts": 1,
+        "paid_starts": 0
+      }
+    ],
+    "measured_fake_starts": 12,
+    "fake_seed_starts": 0,
+    "paid_starts": 0,
+    "whole_summary_present": false,
+    "binding_limit": "Only retained historical terminals/counts are reconstructed. normal8 lacks a current six-file pre/post manifest; subsequent current scenario edit is not dynamically verified."
+  },
+  "dynamic_prerequisites": {
+    "order": "Existing v14 whole-check acceptance and #7 closure first, then root source integration, exact fixture repair review, coordinated fresh normal and separate fresh race resources. Preserve live v14 claim and its databases/services.",
+    "database_policy": "New separately allocated multica_rk1k_<number_mode_date_nonce> for each DB-backed invocation; migration and identity verified with the same explicit URL. No failed-database reuse. Check migration764 on current candidate. DB-backed cmd/server TestMain runs before body skip.",
+    "migration": "Root uses explicit task URL and current pinned migration binary/Go command; record exit0, log hash, current_database|764_collaboration_ai_policy. No implicit default URL.",
+    "normal_command_proposal": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "-C",
+      "server",
+      "test",
+      "-p",
+      "1",
+      "-tags=agentintegration",
+      "./cmd/server",
+      "-run",
+      "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+      "-count=1",
+      "-parallel=1",
+      "-json",
+      "-timeout=10m"
+    ],
+    "race_command_proposal": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-p",
+      "1",
+      "-tags=agentintegration",
+      "./cmd/server",
+      "-run",
+      "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+      "-count=1",
+      "-parallel=1",
+      "-json",
+      "-timeout=10m"
+    ],
+    "race_addition": "Insert -race immediately after test; separately allocated new database and new evidence directory.",
+    "environment_keys": [
+      "DATABASE_URL=<private new task URL>",
+      "RK1K_SOURCE_CLI=<explicit current task-built CLI>",
+      "RK1K_SOURCE_CLI_SHA256=<actual bound binary hash>",
+      "RK1K_FAKE_PROOF_OUT=<new never-reused absolute proof directory>",
+      "MULTICA_RUN_REAL_AGENT_SMOKE=<absent>",
+      "MULTICA_LLM_API_KEY=<absent>",
+      "MULTICA_LLM_BASE_URL=<absent>",
+      "GOMAXPROCS=2",
+      "GOCACHE/GOTMPDIR/GOPATH=<own directories>",
+      "GOMODCACHE=<existing local cache>",
+      "GOPROXY=<reviewed offline local cache policy>"
+    ],
+    "environment_loading": "Parse private env as data; do not source arbitrary dotenv shell. Remove inherited Git config variables/pool overrides in actual test process as specified. Root owns DB creation/migration/window; child permit only exact mode/filter/resources.",
+    "combined_selection_note": "The proposed combined normal/race filter includes all seven framework top-level tests and excludes TestRK1KnowledgeRealModel. The old attempt3 runner/permit selected only FakeProof; a different filter needs an exact reviewed root record. If retaining the old narrow command, guard/fault controls require a separately allocated DB invocation.",
+    "required_results": "Both whole FakeProof normal/race exit0; E0b/K1/K2/K3 named terminals, eight K3 row labels/actual role/parent/wake,15 measured+3seed/0paid, zero third process, summary and all artifacts/hashes. Guards/fault cases have independent named terminals; do not add their diagnostic starts into scheduled counters. Independent six-file review after corrections, final source/CLI/tool/env/DB binding."
+  },
+  "real_gate": {
+    "allocation": 0,
+    "consumed": 0,
+    "paid_source": "",
+    "runnable": false,
+    "production_default": false,
+    "entry": "rk1kRealAdmission always refuses before executable/model/account lookup; fake/standin pass-through only accepts this test binary exact bytes. No quota borrowed."
+  },
+  "context_inventory": [
+    {
+      "file": "CLAUDE.md",
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+      "bytes": 21075
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-foundation.md",
+      "sha256": "f867b6f7cb6ce34c013a3bc1c5266381d2602d756c82aa9bc25a332952f6f099",
+      "bytes": 41981
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-records.md",
+      "sha256": "907ada32717aa7d0eaa4d22bbca48eb232b163e49dbab6f6530d2e3b686c64b2",
+      "bytes": 17059
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-host-execution.md",
+      "sha256": "82994be34edcad69abd4d06d53125cf81aa46243ee38d68da77dfa1020307f8f",
+      "bytes": 38623
+    },
+    {
+      "file": ".trellis/spec/server/security-boundaries.md",
+      "sha256": "eafe18806e77423c13062317ab9168019f0148131107179bfdd162876957e2cf",
+      "bytes": 19809
+    },
+    {
+      "file": ".trellis/spec/server/project-execution-squad.md",
+      "sha256": "67e3cc1e5a9ea10e4481616d16883d36e99a116107a088e0afbc29107882567b",
+      "bytes": 10726
+    },
+    {
+      "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+      "sha256": "2862e90c00fa30bc16893d7627cad10e9f2e01d7bd642b78e524f79d026e5f65",
+      "bytes": 21129
+    },
+    {
+      "file": ".trellis/spec/views/frontend/component-guidelines.md",
+      "sha256": "8370109082fcfbe7b5123f810010c5d6556f57a4a511c25780be170cc9ebaab5",
+      "bytes": 20924
+    },
+    {
+      "file": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/knowledge-promotion-preflight-2026-10-31.md",
+      "sha256": "b40c8374d27aca1cca3fba3f58ec9ccebb5993bcfaaed5e3ed5692e33f4fb0cc",
+      "bytes": 24147
+    },
+    {
+      "file": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/knowledge-plan-review-2026-10-31.md",
+      "sha256": "c6ab707c9e13d0ec7a351db00e6434ef90d5a98f51797a9033deda7821b7d992",
+      "bytes": 24855
+    },
+    {
+      "file": "apps/docs/content/docs/developers/conventions.mdx",
+      "sha256": "64f973498c41786ed750c11918036fa17307353ed639fd6d1dc53c6a5cbc3e5b",
+      "bytes": 17257
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-realtime.md",
+      "sha256": "321cc698a38a5629b9ddd1477fd1caa86288df708e1891201c5c6e5d4417d64b",
+      "bytes": 6341
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-source-editing.md",
+      "sha256": "bfcd88ce2a73588ee0ea33fca59a4c23f84bf629dd637c0998e238ec419d48a9",
+      "bytes": 15625
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-startup-handoff.md",
+      "sha256": "92651b7888d2a506c882c8b8abe00fe7fc8eaff7271a4a1d3c471234fde191e3",
+      "bytes": 9912
+    },
+    {
+      "file": ".trellis/tasks/10-30-collaboration-knowledge-promotion/prd.md",
+      "sha256": "c2654c998a75fca176e7e1634a71ad9cee68e62330b8d94764a385a221889938",
+      "bytes": 4903
+    },
+    {
+      "file": ".trellis/tasks/10-30-collaboration-knowledge-promotion/design.md",
+      "sha256": "e4aeb6ca5e248c8e1d01fc087a80b9620694f61a3da6f99eb9f812573deef1ea",
+      "bytes": 53880
+    },
+    {
+      "file": ".trellis/tasks/10-30-collaboration-knowledge-promotion/implement.md",
+      "sha256": "05462208b682d1d353f43faf6b526853a456f48860a65fc887651748d5847852",
+      "bytes": 32223
+    },
+    {
+      "file": ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/draft-code-seam-review-2026-11-01.md",
+      "sha256": "a0d149ada16eedf7b14764c616ced8ff3d855678af4ebdde586dfd4788d25f33",
+      "bytes": 12115
+    },
+    {
+      "file": ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/contract-revision-2026-11-01.md",
+      "sha256": "f02b609529667e7461b65a1611dde9ad69f231cdff18bdf66b6d17d0bb99c7b6",
+      "bytes": 9473
+    },
+    {
+      "file": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/verification-integration-2026-11-01.md",
+      "sha256": "4b2e726d1edb63974229a483822bec3b7de84351dfdfe7b9c5233e24a551ce2b",
+      "bytes": 7127
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-knowledge.md",
+      "sha256": "4ff0a7158b56c354a43b2681609b820a3b1e285c0807b009b68f6536eaafacf2",
+      "bytes": 15812
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+      "sha256": "98c6852e345edf8c7d2fa2bd81a45106bb7e75fd7d0ed799ec4591aa93ca6499",
+      "bytes": 22393
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-context-experiments.md",
+      "sha256": "4b994e4dcaa6af503829faa60476ff5089352e2c5c521201609e561de62ea709",
+      "bytes": 7215
+    },
+    {
+      "file": ".trellis/spec/server/database-test-isolation.md",
+      "sha256": "5a4a045224976a10eb9644d68faca00fcae6dd1350e46b91e83979065135e996",
+      "bytes": 19860
+    },
+    {
+      "file": ".trellis/tasks/10-30-collaboration-knowledge-promotion/knowledge-framework-plan-2026-11-03.md",
+      "sha256": "fb5ad0171cb44798dac480d9002a6578dbba093ec07793c550c3af2fc85fb097",
+      "bytes": 6787
+    },
+    {
+      "file": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/design.md",
+      "sha256": "d30bba413c97b46565bc1a46bcc9208cd27a7b6b701419208d63bd8120eeedb8",
+      "bytes": 29697
+    },
+    {
+      "file": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/entry-matrix.json",
+      "sha256": "73283c928ae76aa41ce3df5e0b09208f0603c967ea19919bcbafc31d5add8f46",
+      "bytes": 37942
+    }
+  ],
+  "evidence_hashes": {
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/source-baseline.json": "a4c1ba410c836612e7d90fb9c4044731d2ca5587ef90ff8f556df1f4b2258056",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/raw-go.jsonl": "78c2e5fb1d2ef440fb49e4489867ce572563a767ecd0d0492a69567da74989ae",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/exit-code": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/fake.env.json": "e0d783458de543e87ec720e08d1ee8518c302ccb7943861a8919285f1ace1f4d",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/migration.log": "ec29fdb211c30a88d4f62774d7e6999e473afa3700da5fb448b8342a3ad343fc",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal7/raw-go.jsonl": "f2eac5e364899bac2c69c8b1882aca29df43357f69bf960844f8104180dbf6c5",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal7/raw-go-2.jsonl": "56993f45f14499726a91579152e30d56f92a261ad4909a4b8cbe2088df431d10",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/six-file-static-after-normal3-pending-v2/summary.json": "f140c47e9acff7253cec4ee088f390a3cc72010500cbff1eca9c5593b20a3b1a",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-20261103/six-file-review-after-normal3.json": "83c48e9d3a1db0ab48af31e248ec6f389f2d3c9cebf32326360249f4fc5ca3e2",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/session-checkpoint.md": "c12408dc62f28d343b5ad90776a54fc2d1737193f2063ee21f43309e826f6ee7"
+  },
+  "verification": {
+    "lint": "not run; static-only assigned slice",
+    "typecheck": "not applicable to six Go files, not run",
+    "Go_build_vet": "not run; old compile/static record retained, two current file hashes changed",
+    "tests": "not run; only prior raw results parsed",
+    "database_services": "not accessed",
+    "source_written": false,
+    "paid_calls": 0
+  }
+}

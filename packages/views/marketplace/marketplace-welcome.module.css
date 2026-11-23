@@ -1,0 +1,334 @@
+.marketplace {
+  container: marketplace / inline-size;
+}
+
+.welcome {
+  display: grid;
+  flex: none;
+  padding-block: 1.125rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.intro {
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--text-display-sm);
+  font-weight: 650;
+  line-height: var(--text-display-sm--line-height);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.description {
+  max-width: 52ch;
+  margin-block-start: 0.375rem;
+  color: var(--muted-foreground);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  text-wrap: pretty;
+}
+
+.directory {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.375rem;
+  margin-block-start: 0.875rem;
+}
+
+.entry {
+  display: flex;
+  min-width: 0;
+  min-height: 3.25rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  overflow-wrap: anywhere;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, border-color 160ms ease-out;
+}
+
+.entry:hover {
+  background: var(--surface-hover);
+}
+
+.entry[data-active] {
+  border-color: var(--brand);
+  background: color-mix(in oklab, var(--brand) 9%, var(--surface));
+  color: var(--info-foreground);
+}
+
+.entry:focus-visible,
+.summary:focus-visible,
+.docsLink:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.entryIcon {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  color: var(--muted-foreground);
+}
+
+.entry[data-active] .entryIcon {
+  color: currentColor;
+}
+
+.purpose {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+}
+
+.entry[data-active] .purpose {
+  color: currentColor;
+}
+
+.entryArrow {
+  display: none;
+  width: 0.875rem;
+  height: 0.875rem;
+  flex: none;
+  margin-inline-start: auto;
+  visibility: hidden;
+}
+
+.entry[data-active] .entryArrow {
+  visibility: visible;
+}
+
+.wideExample {
+  display: none;
+  min-width: 0;
+}
+
+.ticket {
+  min-width: 0;
+  border: 1px solid var(--surface-border);
+  border-radius: calc(var(--radius) * 1.8);
+  background: var(--surface);
+  overflow-wrap: anywhere;
+}
+
+.ticketHeader {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.exampleLabel {
+  padding: 0.125rem 0.375rem;
+  border-radius: calc(var(--radius) * 0.6);
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+}
+
+.ticketBody {
+  padding: 0.75rem;
+}
+
+.caseDetail {
+  animation: trace-in 180ms cubic-bezier(0.18, 0.8, 0.26, 1) both;
+}
+
+@keyframes trace-in {
+  from { transform: translateY(0.1875rem); }
+  to { transform: translateY(0); }
+}
+
+.capabilityStep,
+.outcome {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding-inline: 0.625rem;
+}
+
+.capabilityStep {
+  padding-block: 0.5rem;
+  border-radius: var(--radius);
+  background: color-mix(in oklab, var(--brand) 9%, var(--surface));
+  color: var(--info-foreground);
+}
+
+.outcome {
+  margin-block-start: 0.625rem;
+  color: var(--muted-foreground);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+}
+
+.ticketFooter {
+  padding-inline: 0.75rem;
+  border-top: 1px solid var(--surface-border);
+}
+
+.docsLink {
+  display: inline-flex;
+  min-height: 2.125rem;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted-foreground);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+  text-underline-offset: 0.2em;
+}
+
+.docsLink:hover {
+  color: var(--foreground);
+  text-decoration: underline;
+}
+
+.compactExample {
+  margin-block-end: 1rem;
+}
+
+.compactExample[open] .ticket {
+  margin-block-start: 0.5rem;
+}
+
+.summary {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  color: var(--foreground);
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: var(--text-body--line-height);
+  list-style: none;
+  cursor: pointer;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover {
+  background: var(--surface-hover);
+}
+
+.chevron {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  color: var(--muted-foreground);
+}
+
+.compactExample[open] .chevron {
+  transform: rotate(180deg);
+}
+
+@container marketplace (min-width: 26rem) {
+  .entry {
+    gap: 0.625rem;
+    padding-inline: 0.75rem;
+  }
+
+  .entryArrow {
+    display: block;
+  }
+}
+
+@media (min-height: 33rem) {
+  @container marketplace (min-width: 47rem) {
+    .welcome {
+      grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr);
+      align-items: center;
+      column-gap: clamp(1.5rem, 4cqw, 3rem);
+      padding-block: 1.75rem;
+    }
+
+    .title {
+      font-size: var(--text-display);
+      line-height: var(--text-display--line-height);
+    }
+
+    .directory {
+      max-width: 38rem;
+      margin-block-start: 1rem;
+    }
+
+    .wideExample {
+      display: block;
+    }
+
+    .ticketHeader,
+    .ticketBody {
+      padding: 1rem;
+    }
+
+    .ticketFooter {
+      padding-inline: 1rem;
+    }
+
+    .compactExample {
+      display: none;
+    }
+  }
+}
+
+@media (max-height: 32rem) {
+  .welcome {
+    padding-block: 0.75rem;
+  }
+
+  .title {
+    font-size: var(--text-title-lg);
+    line-height: var(--text-title-lg--line-height);
+  }
+
+  .description {
+    display: none;
+  }
+
+  .directory {
+    margin-block-start: 0.5rem;
+  }
+
+  .entry {
+    min-height: 2.75rem;
+  }
+}
+
+@media (pointer: coarse) {
+  .docsLink {
+    min-height: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry {
+    transition: none;
+  }
+
+  .caseDetail {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .entry[data-active] {
+    border-color: Highlight;
+    color: Highlight;
+  }
+}

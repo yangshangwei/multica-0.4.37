@@ -1,0 +1,87 @@
+TAP version 13
+# Subtest: Windows Host close delivers EOF and retains the graceful final summary without POSIX signals
+not ok 1 - Windows Host close delivers EOF and retains the graceful final summary without POSIX signals
+  ---
+  duration_ms: 0.515958
+  type: 'test'
+  location: '/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/.omx/private/windows-delivery/wd1-baseline/collaboration-host-runtime.node-test.mjs:43:1'
+  failureType: 'testCodeFailure'
+  error: 'Unknown signal: SIGCONT'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    Object.kill (file:///Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/.omx/private/windows-delivery/wd1-baseline/collaboration-host-runtime.node-test.mjs:19:82)
+    Object.close (<anonymous>:5:40)
+    TestContext.<anonymous> (file:///Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/.omx/private/windows-delivery/wd1-baseline/collaboration-host-runtime.node-test.mjs:45:26)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: POSIX Host close still resumes a suspended daemon before EOF
+ok 2 - POSIX Host close still resumes a suspended daemon before EOF
+  ---
+  duration_ms: 0.356167
+  type: 'test'
+  ...
+# Subtest: Windows fallback remains bounded and an abrupt exit cannot become a graceful pass
+not ok 3 - Windows fallback remains bounded and an abrupt exit cannot become a graceful pass
+  ---
+  duration_ms: 0.505334
+  type: 'test'
+  location: '/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/.omx/private/windows-delivery/wd1-baseline/collaboration-host-runtime.node-test.mjs:65:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + []
+    - [
+    -   'stdin_eof'
+    - ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'stdin_eof'
+  actual:
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/.omx/private/windows-delivery/wd1-baseline/collaboration-host-runtime.node-test.mjs:71:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Windows suspend and resume helpers refuse before sending unsupported signals
+not ok 4 - Windows suspend and resume helpers refuse before sending unsupported signals
+  ---
+  duration_ms: 0.166875
+  type: 'test'
+  location: '/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/.omx/private/windows-delivery/wd1-baseline/collaboration-host-runtime.node-test.mjs:80:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/.omx/private/windows-delivery/wd1-baseline/collaboration-host-runtime.node-test.mjs:87:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 1
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 35.68225

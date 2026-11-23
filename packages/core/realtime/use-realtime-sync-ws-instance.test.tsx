@@ -9,6 +9,7 @@ import type { WSClient } from "../api/ws-client";
 import { defaultStorage } from "../platform/storage";
 import { issueKeys } from "../issues/queries";
 import { chatKeys } from "../chat/queries";
+import { inboxKeys } from "../inbox/queries";
 import { runtimeKeys } from "../runtimes/queries";
 import { workspaceWorkingAgentsKeys } from "../agents/queries";
 import { workspaceKeys } from "../workspace/queries";
@@ -73,6 +74,32 @@ describe("useRealtimeSync — ws instance change", () => {
     invalidateSpy = vi.spyOn(qc, "invalidateQueries");
   });
 
+  it("refreshes each source workspace's snooze state even while another workspace is active", () => {
+    vi.useFakeTimers();
+    try {
+      const ws = createMockWs();
+      renderHook(() => useRealtimeSync(ws, stores), { wrapper: createWrapper(qc) });
+      const onAny = vi.mocked(ws.onAny).mock.calls[0]?.[0];
+      expect(onAny).toBeDefined();
+      invalidateSpy.mockClear();
+      onAny?.({ type: "inbox:updated", payload: { workspace_id: "ws-2" } });
+      onAny?.({ type: "inbox:unread", payload: { workspace_id: "ws-3" } });
+      vi.advanceTimersByTime(100);
+      expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: inboxKeys.all("ws-2") });
+      expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: inboxKeys.all("ws-3") });
+      expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: inboxKeys.unreadSummary() });
+      expect(invalidateSpy).not.toHaveBeenCalledWith({ queryKey: inboxKeys.all("ws-1") });
+    } finally { vi.useRealTimers(); }
+  });
+
+  it("recovers all cached inbox workspaces after a reconnect", () => {
+    const ws = createMockWs();
+    renderHook(() => useRealtimeSync(ws, stores), { wrapper: createWrapper(qc) });
+    invalidateSpy.mockClear();
+    vi.mocked(ws.onReconnect).mock.calls[0]?.[0]();
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: ["inbox"] });
+  });
+
   it("debounces ordinary issue updates into iteration projection invalidation", () => {
     vi.useFakeTimers();
     try {
@@ -99,6 +126,24 @@ describe("useRealtimeSync — ws instance change", () => {
     invalidateSpy.mockClear();
     vi.mocked(ws.onReconnect).mock.calls[0]?.[0]();
     expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: triageKeys.all("ws-1") });
+  });
+
+  it("refreshes a source member's lists on a content-free workspace collaboration tick", () => {
+    vi.useFakeTimers();
+    try {
+      const ws = createMockWs();
+      renderHook(() => useRealtimeSync(ws, stores), { wrapper: createWrapper(qc) });
+      const onAny = vi.mocked(ws.onAny).mock.calls[0]![0];
+      invalidateSpy.mockClear();
+      onAny({ type: "collaboration:workbench_changed", payload: { issue: "private" } });
+      vi.advanceTimersByTime(100);
+      expect(invalidateSpy).not.toHaveBeenCalled();
+      onAny({ type: "collaboration:workbench_changed", payload: {} });
+      vi.advanceTimersByTime(100);
+      expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: issueKeys.all("ws-1") });
+      expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: projectKeys.all("ws-1") });
+      expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: ["iterations", "ws-1"] });
+    } finally { vi.useRealTimers(); }
   });
 
   it.each([

@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-03T09:58:34.995823+00:00",
+  "reviewer": "/root/v13_final_clearance",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Independent pre-run clearance for exactly this frozen v13 launcher/source/config/tools/artifacts; not complete product, CCG or task7 acceptance",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "launcher_sha256": "a6eee46c0181ccec94dc10cd9c440644cddc908e6a3474d28f754f10acfeb205",
+  "source_env_sha256": "353c65725576d2f478f3333bc8324927e26e14fc1336830a8772388977f17709",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "bindings_sha256": "1cfa678161864af3bbd5e1507362dd47b06797d28f23ecf1cc9197f9a9708d65",
+  "resource_ownership_sha256": "e090607f8f01f850d3311efe7522e039af12adb3998ed37d0c58caff1d389a31",
+  "auditor_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/final-state-audit-v13/final_state_audit.py",
+  "auditor_sha256": "03cf1fbebc5582256aa73c77c8bfcfa09cf4bd493680f7fa0c37d5f0b64611ba",
+  "auditor_test_sha256": "e4842ee9ee5da3122e6427596dc7b1df7290021443d8c347c1a25504da9aa14d",
+  "auditor_expected_review_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/independent-review/review.json",
+  "source_identities": {
+    "canonical_product": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+    "development_HEAD_overlay": "c77e3cab13a324e3041cbc9633b4d107e51700d817e7347fd972fe9dca4929fb",
+    "all_tracked_snapshot": "2cbcdbe2da407ce8dbb9faf9ea34d41c1a8c769caf14f11545115bdb9eb1fcfa"
+  },
+  "source_inventory": {
+    "tracked_files": 17536,
+    "canonical_product_files": 7984,
+    "workspace_edges": 22,
+    "actual_exports": 66,
+    "auth_physical_sources": 1,
+    "actual_verify_owned_bindings": "pass",
+    "candidate_dirty_paths": []
+  },
+  "artifact_checks": {
+    "CLI_sha256": "300f276fa11ccaf74f34b23148a0ebe34ed6879f43938068e4c7a3e0ded24b3b",
+    "CLI_version": "v0.6.7-466-g85ef5d205",
+    "desktop_layout_files": {
+      "renderer": {
+        "installed": 493,
+        "staged": 493
+      },
+      "preload": {
+        "installed": 1,
+        "staged": 1
+      },
+      "main": {
+        "installed": 1,
+        "staged": 1
+      }
+    },
+    "all_installed_staged_hashes_verified": true
+  },
+  "guard_rebinding": "v12 guards unchanged; only run label/candidate identity adjusted, exact Go/pnpm bytes retained",
+  "private_verification": {
+    "passed": 66,
+    "failed": 0,
+    "skipped": 0,
+    "cases": [
+      {
+        "name": "launcher",
+        "passed": 45,
+        "exit_code": 0,
+        "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/v13-clearance-review/launcher.json",
+        "record_sha256": "febb59049cd9270557ebdc832177eedaf0f4daf3ce4d9f5ccb2f3426381c4f5f",
+        "log_sha256": "3e1401f80b7222c41611ba7d3d6b3d150a354a7e2171117b10f3bbaefc465667"
+      },
+      {
+        "name": "adapter-env",
+        "passed": 5,
+        "exit_code": 0,
+        "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/v13-clearance-review/adapter-env.json",
+        "record_sha256": "c3bf11485a1677a2617ec5718f11bba1b46028f5e8c055dce5ae0847178625bf",
+        "log_sha256": "24c4ac19db52f0097602d99362b9772ea019d6072f1682b8d9662c53caba2fb8"
+      },
+      {
+        "name": "final-audit",
+        "passed": 16,
+        "exit_code": 0,
+        "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/v13-clearance-review/final-audit.json",
+        "record_sha256": "cf9ed08e2aa3761814d090db7367705889256953ce81f526694fd96899a01f4c",
+        "log_sha256": "e65c55b614cc1bd8549001e35105340d912e5efe267c08b9dd992c8763166cca"
+      }
+    ],
+    "network": "denied by sandbox",
+    "write_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/v13-clearance-review",
+    "fixtures": "TemporaryDirectory relocated into owned review directory; tested entrypoint bytes/assertions unchanged"
+  },
+  "syntax_checks": {
+    "Python_AST": 8,
+    "Node_syntax": 2,
+    "status": "pass"
+  },
+  "sqlc_rebinding": {
+    "record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/sqlc/sqlc-resume-01.json",
+    "sha256": "06e7b68c5b5157a3bc91bf467e9387cd7f463d51f3d3e0b09d3a421ea1f67ae7",
+    "actual_exit": 0,
+    "source_input_files_checked": 1631,
+    "generated_files_checked": 130,
+    "before_after_current_equal": true,
+    "original_failure_preserved": true
+  },
+  "directed_E2E_rebinding": {
+    "review": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/e2e-review/review.json",
+    "review_sha256": "0083508d46fb925b87baa92c95c24e9002ccb803ea59bbec2fdd34ee16a13011",
+    "reviewed_current_E2E_files": 10,
+    "product_contract_files": 7,
+    "results": [
+      {
+        "name": "directed-e2e-pass3",
+        "actual_pass": 3,
+        "skip": 0,
+        "flaky": 0,
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/directed-e2e-pass3.json",
+        "record_sha256": "a8b61bd92afbfc5df17ab34e8ac6708df985e858eb7e47ed715d447ef3c862a8",
+        "result_sha256": "05866d4feed171cbbf333c411759e9ff3aca97858b2f50ea86e03b05139b8be4",
+        "scope": "directed only; Desktop after directed3 is covered by later25 snapshot"
+      },
+      {
+        "name": "disclosure-e2e",
+        "actual_pass": 25,
+        "skip": 0,
+        "flaky": 0,
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/disclosure-e2e.json",
+        "record_sha256": "405c70770f7249930febc6384166244924c5219769d7c603ab46be9bfc362d56",
+        "result_sha256": "e58d2220ab0c62ee1a9be203511c912159da51da729f90c28f95debf94a22c9a",
+        "scope": "directed only; Desktop after directed3 is covered by later25 snapshot"
+      }
+    ],
+    "note": "Do not add these as fullcheck passes; Desktop directed3 bytes are superseded by later25 evidence"
+  },
+  "resource_review": {
+    "proof_timestamp": "2026-11-03T09:51:25.201512+00:00",
+    "root_owner": "01a1a0a5-47d8-7f90-bc95-15d004c13bd9",
+    "renderer_index_hash_matches_installed": true,
+    "Redis53841_transfer_retains_original_container_labels": true,
+    "reviewer_connected_to_API_DB_Redis": false,
+    "root_live_revalidation_required_before_run": true
+  },
+  "default_flags": {
+    "MULTICA_AUTH_MODE": "legacy",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+    "MULTICA_DEVICE_AUTH_ENABLED": "false",
+    "MULTICA_PLATFORM_ADMIN_ENABLED": "false",
+    "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false"
+  },
+  "notes": [
+    "Root must copy this exact review JSON to auditor_expected_review_path and bind its SHA in execution clearance; auditor source need not change.",
+    "CCG1/CCG2 current AI-policy/locking dependency changes are a separate task7 closure gap. This review grants only this complete-check execution, never historical-product source equivalence.",
+    "Static Python/JS checks and private controls passed. Repository lint/typecheck/Go/TS/PW have not been rerun by this reviewer and remain the actual fullcheck job.",
+    "After Make, root requires make_exit==0 AND actual final identity audit pass AND complete named inventory; live API/DB/process identity is a separate root check."
+  ],
+  "final_runtime_clearance": true,
+  "whole_product_acceptance": false,
+  "task7_closed": false,
+  "complete_check_started_by_reviewer": false,
+  "Provider_calls": 0
+}

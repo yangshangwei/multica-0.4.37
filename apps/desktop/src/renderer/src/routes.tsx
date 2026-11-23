@@ -1,3 +1,4 @@
+import { DesktopAccountWorkbenchRoute } from "./platform/account-workbench-route";
 import { IterationsPage } from "@multica/views/iterations";
 import { useEffect } from "react";
 import { createMemoryRouter, Outlet, useMatches, useParams } from "react-router-dom";
@@ -31,7 +32,13 @@ import {
   ManualCreateAgentPage,
   TemplateCreateAgentPage,
 } from "@multica/views/agents";
-import { SquadsPage, SquadDetailPage as SquadDetailPageView } from "@multica/views/squads/components";
+import {
+  ChooseCreateSquadMethodPage,
+  ManualCreateSquadPage,
+  SquadDetailPage as SquadDetailPageView,
+  SquadsPage,
+  TemplateCreateSquadPage,
+} from "@multica/views/squads";
 import { TriagePage } from "@multica/views/triage";
 import { InboxPage } from "@multica/views/inbox";
 import { ChatPage } from "@multica/views/chat";
@@ -91,7 +98,7 @@ function PageShell() {
 /**
  * Route definitions shared by all tabs.
  *
- * Every tab path is workspace-scoped: `/{slug}/{route}/...`. Pre-workspace
+ * Account is a persistent global tab. Workspace session paths are scoped: `/{slug}/{route}/...`. Pre-workspace
  * flows (create workspace, accept invite) are NOT routes — they render as a
  * window-level overlay via `WindowOverlay`, dispatched by the navigation
  * adapter's transition-path interception. The `activeWorkspaceSlug` in the
@@ -111,6 +118,7 @@ export const appRoutes: RouteObject[] = [
     errorElement: <DesktopRouteErrorPage />,
     children: [
       { index: true, element: null },
+      { path: "account", element: <DesktopAccountWorkbenchRoute /> },
       {
         path: ":workspaceSlug",
         element: <WorkspaceRouteLayout />,
@@ -231,6 +239,21 @@ export const appRoutes: RouteObject[] = [
             handle: { title: "Member" },
           },
           { path: "squads", element: <SquadsPage />, handle: { title: "Squads" } },
+          {
+            path: "squads/new",
+            element: <ChooseCreateSquadMethodPage />,
+            handle: { title: "Create Squad" },
+          },
+          {
+            path: "squads/new/manual",
+            element: <ManualCreateSquadPage />,
+            handle: { title: "Create Squad" },
+          },
+          {
+            path: "squads/new/template",
+            element: <TemplateCreateSquadPage />,
+            handle: { title: "Create Squad" },
+          },
           {
             path: "squads/:id",
             element: <SquadDetailPageView />,

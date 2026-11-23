@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS idx_inbox_critical_source_identity;

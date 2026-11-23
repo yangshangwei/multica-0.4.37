@@ -1,0 +1,415 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+    - main [ref=e8]:
+      - generic [ref=e9]:
+        - heading "Collaboration" [level=1] [ref=e10]
+        - navigation "Collaboration" [ref=e11]:
+          - link "Current handling" [ref=e12] [cursor=pointer]:
+            - /url: /account?view=current&issue=01a199ca-c5ba-7791-bac5-30c24add1a9d#memory
+          - link "Participating" [ref=e13] [cursor=pointer]:
+            - /url: /account?view=participating&issue=01a199ca-c5ba-7791-bac5-30c24add1a9d#memory
+        - button "New collaboration issue" [ref=e14]
+        - button "Notifications 1 unread" [ref=e16]:
+          - text: Notifications
+          - generic [ref=e17]: 1 unread
+      - generic [ref=e18]:
+        - region "Collaboration issues" [ref=e19]:
+          - generic [ref=e20]:
+            - textbox "Search loaded issues" [ref=e21]
+            - generic [ref=e22]:
+              - generic [ref=e23]: 2 issues
+              - combobox "Sort" [ref=e24]:
+                - option "Recently updated" [selected]
+                - option "Title"
+          - list [ref=e26]:
+            - listitem [ref=e27]:
+              - link "Host shared execution 2987c9ef8503 Host acceptance source Todo Host collaborator Electron · External collaborator" [ref=e28] [cursor=pointer]:
+                - /url: /account?view=participating&issue=01a199ca-c5ba-7791-bac5-30c24add1a9d
+                - generic [ref=e29]: Host shared execution 2987c9ef8503
+                - generic [ref=e30]:
+                  - generic [ref=e31]: Host acceptance source
+                  - generic [ref=e32]: Todo
+                - generic [ref=e33]:
+                  - text: Host collaborator Electron
+                  - generic [ref=e34]: · External collaborator
+            - listitem [ref=e35]:
+              - link "Host separate execution 2987c9ef8503 Host acceptance source Todo Host collaborator Electron · External collaborator" [ref=e36] [cursor=pointer]:
+                - /url: /account?view=participating&issue=01a199ca-c679-724d-8cdc-2cf6e2ae6977
+                - generic [ref=e37]: Host separate execution 2987c9ef8503
+                - generic [ref=e38]:
+                  - generic [ref=e39]: Host acceptance source
+                  - generic [ref=e40]: Todo
+                - generic [ref=e41]:
+                  - text: Host collaborator Electron
+                  - generic [ref=e42]: · External collaborator
+        - region "Issue detail" [ref=e43]:
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - generic [ref=e46]:
+                - heading "Host shared execution 2987c9ef8503" [level=2] [ref=e47]
+                - button "Copy link" [ref=e48]:
+                  - img
+                  - text: Copy link
+              - generic [ref=e49]:
+                - generic [ref=e50]:
+                  - term [ref=e51]: Status
+                  - definition [ref=e52]: Todo
+                - generic [ref=e53]:
+                  - term [ref=e54]: Handler
+                  - definition [ref=e55]: Host collaborator ElectronExternal collaborator
+                - generic [ref=e56]:
+                  - term [ref=e57]: Creator
+                  - definition [ref=e58]: Host collaborator Web
+                - generic [ref=e59]:
+                  - term [ref=e60]: Source workspace
+                  - definition [ref=e61]: Host acceptance source
+            - region "Issue actions" [ref=e62]:
+              - generic [ref=e63]:
+                - button "Add participant" [ref=e64]
+                - button "Transfer" [ref=e65]
+                - button "Request information" [ref=e66]
+                - button "Change status" [ref=e67]
+                - button "Complete issue" [ref=e68]
+                - button "Cancel issue" [ref=e69]
+                - button "Edit issue" [ref=e70]
+                - button "Edit source fields" [ref=e71]
+                - button "Change iteration" [ref=e72]
+              - button "Participants" [ref=e74]
+            - generic [ref=e75]:
+              - heading "Description" [level=3] [ref=e76]
+              - paragraph [ref=e78]: Test-owned shared context 2987c9ef8503. Ordinary fake Claude with native lifecycle observations.
+            - region "Issue fields" [ref=e79]:
+              - generic [ref=e80]:
+                - generic [ref=e81]:
+                  - term [ref=e82]: Priority
+                  - definition [ref=e83]: No priority
+                - generic [ref=e84]:
+                  - term [ref=e85]: Start date
+                  - definition [ref=e86]: None
+                - generic [ref=e87]:
+                  - term [ref=e88]: Due date
+                  - definition [ref=e89]: None
+                - generic [ref=e90]:
+                  - term [ref=e91]: Labels
+                  - definition [ref=e92]: None
+                - generic [ref=e93]:
+                  - term [ref=e94]: Project
+                  - definition [ref=e95]: None
+                - generic [ref=e96]:
+                  - term [ref=e97]: Parent issue
+                  - definition [ref=e98]: None
+                - generic [ref=e99]:
+                  - term [ref=e100]: Stage under parent
+                  - definition [ref=e101]: None
+                - generic [ref=e102]:
+                  - term [ref=e103]: Iteration
+                  - definition [ref=e104]: None
+            - region "Sub-issues" [ref=e105]:
+              - heading "Sub-issues" [level=3] [ref=e106]
+              - paragraph [ref=e107]: No sub-issues.
+            - region "Issue reactions" [ref=e108]:
+              - group "Thread and reactions" [ref=e110]:
+                - button "Choose a reaction" [ref=e111]:
+                  - img [ref=e112]
+            - region "Attachments" [ref=e115]:
+              - heading "Attachments" [level=3] [ref=e116]
+              - paragraph [ref=e117]: Delivered files remain on this issue when a comment or its file reference is removed.
+              - list [ref=e118]:
+                - listitem [ref=e119]:
+                  - generic [ref=e120]:
+                    - paragraph [ref=e121]: host-input.txt
+                    - paragraph [ref=e122]: 71 bytes
+                  - generic [ref=e123]:
+                    - button "Preview host-input.txt" [ref=e124]: Preview
+                    - button "Download host-input.txt" [ref=e125]: Download
+              - group [ref=e126]:
+                - generic "Attach files" [ref=e127] [cursor=pointer]
+            - region "AI execution" [ref=e128]:
+              - heading "AI execution" [level=3] [ref=e129]
+              - paragraph [ref=e130]: Stopping or resuming a target affects every target in its execution lane.
+              - paragraph [ref=e131]: Stopping prevents further dispatch in the selected scope and requests cancellation of executions already started within that scope. Cleanup follows ordinary task behavior and does not guarantee removal of background processes outside the managed scope.
+              - paragraph [ref=e132]: Active
+              - generic [ref=e133]:
+                - button "Stop all" [ref=e134]
+                - button "Resume all" [ref=e135]
+              - status "Control result" [ref=e136]:
+                - paragraph [ref=e137]: Resumed; the next eligible batch will be processed
+                - paragraph [ref=e138]: 0 targets remain held.
+                - list [ref=e139]:
+                  - listitem [ref=e140]: Execution lane 1 · Resumed; the next eligible batch will be processed
+              - generic [ref=e141]:
+                - button "Manage AI resources" [expanded] [ref=e142]
+                - generic [ref=e143]:
+                  - paragraph [ref=e144]: Each resource owner must already be a participant and authorize their own resources for this issue. Authorization does not resume execution.
+                  - generic [ref=e145]:
+                    - button "Add AI target" [ref=e146]
+                    - button "Refresh resources" [ref=e147]
+                  - list [ref=e148]:
+                    - listitem [ref=e149]:
+                      - heading "Shared host fixture agent" [level=4] [ref=e151]
+                      - list [ref=e152]:
+                        - listitem [ref=e153]:
+                          - paragraph [ref=e154]: Shared host fixture agent · Agent
+                          - generic [ref=e155]:
+                            - generic [ref=e156]:
+                              - term [ref=e157]: "Agent owner:"
+                              - definition [ref=e158]: Host collaborator Web
+                            - generic [ref=e159]:
+                              - term [ref=e160]: "Resource owner:"
+                              - definition [ref=e161]: Host collaborator Web
+                            - generic [ref=e162]:
+                              - term [ref=e163]: "Runtime:"
+                              - definition [ref=e164]: Test-owned host Claude
+                            - generic [ref=e165]:
+                              - term [ref=e166]: "Execution mode:"
+                              - definition [ref=e167]: Standard host execution
+                            - generic [ref=e168]:
+                              - term [ref=e169]: "Provider:"
+                              - definition [ref=e170]: claude fixture-1
+                            - generic [ref=e171]:
+                              - term [ref=e172]: "Provider account source:"
+                              - definition [ref=e173]: Runtime configuration
+                          - paragraph [ref=e174]: Consent granted
+                          - button "Withdraw authorization for Shared host fixture agent" [ref=e176]
+                  - region "Offered resources" [ref=e177]:
+                    - heading "Offered resources" [level=4] [ref=e178]
+                    - paragraph [ref=e179]: Offer a resource you own for this collaboration. The creator or handler can adopt it; each owner then authorizes their resource.
+                    - generic [ref=e180]:
+                      - button "Offer resource" [ref=e181]
+                      - button "Refresh" [ref=e182]
+                    - list [ref=e183]:
+                      - listitem [ref=e184]:
+                        - paragraph [ref=e185]: Shared host fixture agent
+                        - paragraph [ref=e186]: Offered by Host collaborator Web
+                        - paragraph [ref=e187]: Adopted
+              - generic [ref=e188]:
+                - generic [ref=e189]:
+                  - heading "Execution lane 1" [level=4] [ref=e190]
+                  - generic [ref=e191]: Active
+                - list [ref=e192]:
+                  - listitem [ref=e193]:
+                    - generic [ref=e194]:
+                      - generic [ref=e195]: Agent
+                      - generic [ref=e196]: aa86c044-8e15-4b07-b30f-2c388951d59c
+                    - paragraph [ref=e197]: Target released
+                    - generic [ref=e198]:
+                      - button "Stop target" [ref=e199]
+                      - button "Resume target" [ref=e200]
+                    - button "Switch proposals" [ref=e202]
+                - list [ref=e203]:
+                  - listitem [ref=e204]:
+                    - paragraph [ref=e205]: Execution group · Failed
+                    - list [ref=e206]:
+                      - listitem [ref=e207]: Consumed input 1
+                    - list [ref=e208]:
+                      - listitem [ref=e209]:
+                        - generic [ref=e210]:
+                          - generic [ref=e211]: Agent
+                          - generic [ref=e212]: aa86c044-8e15-4b07-b30f-2c388951d59c
+                          - generic [ref=e213]: Standard host execution
+                          - generic [ref=e214]: Ended
+                          - generic [ref=e215]: Managed execution ended
+                          - generic [ref=e216]:
+                            - link "Started from v1" [ref=e217] [cursor=pointer]:
+                              - /url: /account?view=participating&issue=01a199ca-c5ba-7791-bac5-30c24add1a9d#memory-v1
+                            - text: · Shared context not updated
+                          - button "View records for c1ade9cf-5d65-429f-a1e0-6340d65ae433" [ref=e218]: View records
+                        - paragraph [ref=e219]: Cleanup confirmed within the managed scope
+                - list
+              - heading "Command history" [level=4] [ref=e221]:
+                - button "Command history" [ref=e222]
+            - region "Shared context" [ref=e223]:
+              - generic [ref=e224]:
+                - heading "Shared context" [level=3] [ref=e225]
+                - paragraph [ref=e226]: The current state of this issue, kept up to date by agents across machines and accounts. Participants who can control AI may correct it.
+              - generic [ref=e227]:
+                - paragraph [ref=e228]: v1 · 52 of 131072 bytes
+                - button "Edit shared context" [ref=e229]
+              - generic [ref=e230]:
+                - paragraph [ref=e233]: "Queued handoff decision: retain the source findings."
+                - button "Show full shared context" [ref=e234]
+              - generic [ref=e235]:
+                - generic [ref=e236]:
+                  - term [ref=e237]: Written by
+                  - definition [ref=e238]: Host collaborator Web
+                - generic [ref=e239]:
+                  - term [ref=e240]: Saved
+                  - definition [ref=e241]:
+                    - time [ref=e242]: 11/2/2026, 9:06:07 AM
+              - status [ref=e243]: Shared context saved as v1.
+              - button "Version history" [ref=e245]
+            - region "Knowledge candidates" [ref=e246]:
+              - generic [ref=e247]:
+                - generic [ref=e248]:
+                  - heading "Knowledge candidates" [level=3] [ref=e249]
+                  - paragraph [ref=e250]: Propose a reusable conclusion with sources. Human approval controls where it may be used.
+                - button "Propose knowledge" [ref=e251]
+              - paragraph [ref=e252]: No candidates yet. Propose a conclusion when its sources are ready.
+              - list
+            - region "Activity" [ref=e253]:
+              - heading "Activity" [level=3] [ref=e254]
+              - list [ref=e255]:
+                - listitem [ref=e256]:
+                  - generic [ref=e257]:
+                    - generic [ref=e258]: Activity recorded
+                    - generic [ref=e259]: Unavailable author
+                    - time [ref=e260]: 11/2/2026, 9:06:10 AM
+                  - paragraph [ref=e261]: Detailed records are unavailable for this event.
+                - listitem [ref=e262]:
+                  - generic [ref=e263]:
+                    - generic [ref=e264]: Activity recorded
+                    - generic [ref=e265]: Unavailable author
+                    - time [ref=e266]: 11/2/2026, 9:06:10 AM
+                  - paragraph [ref=e267]: Detailed records are unavailable for this event.
+                - listitem [ref=e268]:
+                  - generic [ref=e269]:
+                    - generic [ref=e270]: Activity recorded
+                    - generic [ref=e271]: Unavailable author
+                    - time [ref=e272]: 11/2/2026, 9:06:10 AM
+                  - paragraph [ref=e273]: Detailed records are unavailable for this event.
+                - listitem [ref=e274]:
+                  - generic [ref=e275]:
+                    - generic [ref=e276]: Activity recorded
+                    - generic [ref=e277]: Unavailable author
+                    - time [ref=e278]: 11/2/2026, 9:06:10 AM
+                  - paragraph [ref=e279]: Detailed records are unavailable for this event.
+                - listitem [ref=e280]:
+                  - generic [ref=e281]:
+                    - generic [ref=e282]: Activity recorded
+                    - generic [ref=e283]: Unavailable author
+                    - time [ref=e284]: 11/2/2026, 9:06:10 AM
+                  - paragraph [ref=e285]: Detailed records are unavailable for this event.
+                - listitem [ref=e286]:
+                  - generic [ref=e287]:
+                    - generic [ref=e288]: Activity recorded
+                    - generic [ref=e289]: Unavailable author
+                    - time [ref=e290]: 11/2/2026, 9:06:09 AM
+                  - paragraph [ref=e291]: Detailed records are unavailable for this event.
+                - listitem [ref=e292]:
+                  - generic [ref=e293]:
+                    - generic [ref=e294]: Activity recorded
+                    - generic [ref=e295]: Unavailable author
+                    - time [ref=e296]: 11/2/2026, 9:06:08 AM
+                  - paragraph [ref=e297]: Detailed records are unavailable for this event.
+                - listitem [ref=e298]:
+                  - generic [ref=e299]:
+                    - generic [ref=e300]: Activity recorded
+                    - generic [ref=e301]: Unavailable author
+                    - time [ref=e302]: 11/2/2026, 9:06:08 AM
+                  - paragraph [ref=e303]: Detailed records are unavailable for this event.
+                - listitem [ref=e304]:
+                  - generic [ref=e305]:
+                    - generic [ref=e306]: Activity recorded
+                    - generic [ref=e307]: Unavailable author
+                    - time [ref=e308]: 11/2/2026, 9:06:08 AM
+                  - paragraph [ref=e309]: Detailed records are unavailable for this event.
+                - listitem [ref=e310]:
+                  - generic [ref=e311]:
+                    - generic [ref=e312]: Activity recorded
+                    - generic [ref=e313]: Host collaborator Web
+                    - time [ref=e314]: 11/2/2026, 9:06:07 AM
+                  - paragraph [ref=e315]: Detailed records are unavailable for this event.
+                - listitem [ref=e316]:
+                  - generic [ref=e317]:
+                    - generic [ref=e318]: Comment added
+                    - generic [ref=e319]: Host collaborator Web
+                    - time [ref=e320]: 11/2/2026, 9:06:07 AM
+                  - link "Open comment" [ref=e321] [cursor=pointer]:
+                    - /url: /account?view=participating&issue=01a199ca-c5ba-7791-bac5-30c24add1a9d#comment-5762b88f-c852-4e50-a86e-0095d423b754
+                - listitem [ref=e322]:
+                  - generic [ref=e323]:
+                    - generic [ref=e324]: Activity recorded
+                    - generic [ref=e325]: Host collaborator Web
+                    - time [ref=e326]: 11/2/2026, 9:06:07 AM
+                  - paragraph [ref=e327]: Detailed records are unavailable for this event.
+                - listitem [ref=e328]:
+                  - generic [ref=e329]:
+                    - generic [ref=e330]: Activity recorded
+                    - generic [ref=e331]: Host collaborator Web
+                    - time [ref=e332]: 11/2/2026, 9:06:07 AM
+                  - paragraph [ref=e333]: Detailed records are unavailable for this event.
+                - listitem [ref=e334]:
+                  - generic [ref=e335]:
+                    - generic [ref=e336]: Activity recorded
+                    - generic [ref=e337]: Host collaborator Web
+                    - time [ref=e338]: 11/2/2026, 9:06:07 AM
+                  - paragraph [ref=e339]: Detailed records are unavailable for this event.
+                - listitem [ref=e340]:
+                  - generic [ref=e341]:
+                    - generic [ref=e342]: Activity recorded
+                    - generic [ref=e343]: Host collaborator Web
+                    - time [ref=e344]: 11/2/2026, 9:06:05 AM
+                  - paragraph [ref=e345]: Detailed records are unavailable for this event.
+                - listitem [ref=e346]:
+                  - generic [ref=e347]:
+                    - generic [ref=e348]: Activity recorded
+                    - generic [ref=e349]: Host collaborator Web
+                    - time [ref=e350]: 11/2/2026, 9:06:05 AM
+                  - paragraph [ref=e351]: Detailed records are unavailable for this event.
+                - listitem [ref=e352]:
+                  - generic [ref=e353]:
+                    - generic [ref=e354]: Activity recorded
+                    - generic [ref=e355]: Host collaborator Web
+                    - time [ref=e356]: 11/2/2026, 9:06:05 AM
+                  - paragraph [ref=e357]: Detailed records are unavailable for this event.
+                - listitem [ref=e358]:
+                  - generic [ref=e359]:
+                    - generic [ref=e360]: Issue created
+                    - generic [ref=e361]: Host collaborator Web
+                    - time [ref=e362]: 11/2/2026, 9:06:05 AM
+            - generic [ref=e363]:
+              - heading "Comments" [level=3] [ref=e364]
+              - paragraph [ref=e365]: Loaded 1 of 1 comments
+              - list [ref=e366]:
+                - listitem [ref=e367]:
+                  - generic [ref=e368]:
+                    - generic [ref=e370]: H
+                    - generic [ref=e371]: Host collaborator Web
+                    - generic [ref=e372]: Creator
+                    - generic [ref=e373]: Author can submit AI instructions now
+                    - time [ref=e374]: 11/2/2026, 9:06:07 AM
+                  - paragraph [ref=e376]: Memory runtime A handoff begins after the queued document update @Shared host fixture agent
+                  - generic [ref=e377]:
+                    - button "Reply" [ref=e378]
+                    - button "Edit comment" [ref=e379]
+                    - button "Delete comment" [ref=e380]
+                  - group "Thread and reactions" [ref=e382]:
+                    - button "Resolve thread" [ref=e383]
+                    - button "Choose a reaction" [ref=e384]:
+                      - img [ref=e385]
+                  - button "Comment history" [ref=e389]
+              - form "Comments" [ref=e390]:
+                - generic [ref=e391]: Add comment
+                - textbox "Add comment" [ref=e392]:
+                  - /placeholder: Write a comment...
+                - group "Issue participants and AI targets" [ref=e393]:
+                  - group "People" [ref=e394]:
+                    - paragraph [ref=e395]: People
+                    - generic [ref=e396]:
+                      - button "@all · All participants" [ref=e397]
+                      - button "Host collaborator Web" [ref=e398]
+                      - button "Host collaborator Electron" [ref=e399]
+                  - group "AI targets" [ref=e400]:
+                    - paragraph [ref=e401]: AI targets
+                    - button "Shared host fixture agent" [ref=e403]
+                - group "Attachments" [ref=e404]:
+                  - generic [ref=e405]: Attachments
+                  - paragraph [ref=e406]: Files stay private. Only selected files are shared when you submit.
+                  - generic [ref=e407]: Attach files
+                  - button "Attach files" [ref=e408]
+                - generic [ref=e409]:
+                  - button "Preview delivery" [disabled]
+                  - button "Send comment" [disabled]
+                - status [ref=e410]:
+                  - paragraph [ref=e411]: Comment confirmed.
+                  - paragraph [ref=e412]: Shared host fixture agent · Issue paused; explicit resume required
+  - region "Notifications alt+T"
+  - alert [ref=e413]
+```

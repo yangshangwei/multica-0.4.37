@@ -96,7 +96,7 @@ export function ProjectOverviewPanel({ project, updatesSupported, onRisk, onProt
   }
   return <div className="flex-1 min-h-0 overflow-y-auto"><div className="mx-auto max-w-5xl space-y-8 px-6 pt-6 pb-28 md:px-8 md:pt-8">
     {query.error && <div role="alert" className="space-y-2 text-caption text-warning"><p>{t(($) => $.management.refresh_failed)}</p><Button size="sm" variant="outline" onClick={() => void query.refetch()}>{t(($) => $.management.retry)}</Button></div>}
-    <section className="space-y-4"><div className="flex items-center justify-between gap-4"><h2 className="text-heading font-medium">{t(($) => $.management.overview)}</h2><Button size="sm" variant="outline" onClick={() => void query.refetch()} disabled={query.isFetching}>{t(($) => $.management.refresh)}</Button></div>
+    <section className="space-y-4"><div className="flex items-center justify-between gap-4"><h2 className="text-title-sm font-medium">{t(($) => $.management.overview)}</h2><Button size="sm" variant="outline" onClick={() => void query.refetch()} disabled={query.isFetching}>{t(($) => $.management.refresh)}</Button></div>
       <ProjectStatistics overview={overview} />
       <p className="text-caption text-muted-foreground">{t(($) => $.management.calculated, { time: new Date(statistics.calculated_at).toLocaleString(), date: statistics.reference_date })}</p>
     </section>
@@ -151,7 +151,7 @@ export function ProjectOverviewPanel({ project, updatesSupported, onRisk, onProt
         {statistics.incomplete_reasons.map((reason) => reasons[reason] ?? t(($) => $.management.unavailable)).join(" · ")}
       </p>}
     </section>
-    <section className="space-y-3"><h2 className="text-heading font-medium">{t(($) => $.management.acceptance)}</h2><ProjectAcceptance overview={overview} /></section>
+    <section className="space-y-3"><h2 className="text-title-sm font-medium">{t(($) => $.management.acceptance)}</h2><ProjectAcceptance overview={overview} /></section>
     {updatesSupported && <ProjectProgress project={project} onProtectedError={onProtectedError} targetUpdateId={targetUpdateId} />}
   </div></div>;
 }

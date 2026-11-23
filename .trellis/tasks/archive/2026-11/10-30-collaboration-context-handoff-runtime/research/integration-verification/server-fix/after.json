@@ -1,0 +1,25 @@
+{
+  "root": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "go": "go version go1.27.0 darwin/arm64",
+  "database_environment": "/tmp/multica_runtime_integrate_20261031_f2478725.env (service then handler, exclusive, credentials not recorded)",
+  "files": {
+    "server/internal/service/collaboration_runtime.go": "d517f5531a133010c36bbda89ca0d5432e9d3bcfe0e423e5113104aff6573d8f",
+    "server/internal/service/collaboration_runtime_handoff.go": "b0e6eed3f4a3ce337aea311dab8b2edcfbfc4487b84dc9847bc744d30ce01d22",
+    "server/internal/service/collaboration_handoff_snapshot.go": "72527e5aabae07b66d3bf4c27c8773ffae40ec1c834399aefcc204385fe6c164",
+    "server/internal/service/collaboration_checkpoints.go": "7bd01f667e6bc2fc9e3c4e67a64741c8b4b7df41c8b2f01db4198ec18e3b182f",
+    "server/internal/service/collaboration_runtime_handoff_source_test.go": "0c3fb28b3d8ac1f32f40c47c2d0d846355ecd3fadfdd4a17d5dc7938b8a36ab3",
+    "server/internal/service/collaboration_runtime_handoff_budget_test.go": "077394be4b2c75277fff5eea1b8501ec5b560ff1be1e4ef6171e0d1379ce7ab9",
+    "server/internal/service/collaboration_checkpoints_test.go": "b43ed1879c6c73e5d25b0702228aa75303fa3569a433067e78b19493d1050822",
+    "server/pkg/protocol/collaboration_checkpoint.go": "c73b8eda68fcfb53f0fba1c27f85bdc46b7c979d4ed287ade4b9f2293d681b42",
+    "server/pkg/protocol/collaboration_checkpoint_test.go": "55321df8f47ca6b7950b7e3834e61913d585590cce27089c04f97292720637b6",
+    "server/pkg/protocol/collaboration_handoff.go": "955695d8d8313cb6cc5e1a719062fc36d2b4753bca0175e58c7143a5ad4f6483",
+    "server/pkg/protocol/collaboration_handoff_test.go": "cb9f8936c2343a58e68975034426b0de0019b7356a481fffc412c4446b8b18da",
+    "server/pkg/db/queries/collaboration_handoff.sql": "05d738cdabae133f5c21cf6c894d6db6d2b07f4bf1f6432b34e3bb2dab61f9db",
+    "server/pkg/db/generated/collaboration_handoff.sql.go": "994677c9383694660cbd6d08947b818df9c949a51cb24cf79983b8762d44ba99",
+    "server/pkg/db/generated/collaboration_records.sql.go": "2e3f55b412327f6d8fea245e44c73b4a15b92a24028e282857050455ee2fdd09",
+    "server/internal/handler/collaboration_handoff_budget_test.go": "3e226ad9812867b96c791e03a1133873dea5ef6753a2cb02cbd09ab81835a0dc",
+    "server/internal/daemon/collaborationrun/host_handoff.go": "787dcc86c230e5e5c13dafe88755538f346d8168bc7b3883e0fe0b9b98083718"
+  }
+}

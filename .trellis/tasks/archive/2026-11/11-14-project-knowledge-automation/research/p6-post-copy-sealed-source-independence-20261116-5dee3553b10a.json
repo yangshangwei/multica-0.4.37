@@ -1,0 +1,275 @@
+{
+  "kind": "post_COPY_sealed_private_SOURCE_independence_and_supplemental_overlay_proof",
+  "at": "2026-11-15T17:06:10.668515+00:00",
+  "COPY_result": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/full-source-copy-result.json",
+    "sha256": "10155431b7c57d085c4a892a06fdf53740ba6a0678f1b44224820e81f34b2527"
+  },
+  "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+  "selected_commit": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+  "guard_scope": "Unmodified private controllers source_paths/source_snapshot/workspace_links/provider_keys and fixture reads; reject any Python live ROOT content open. Git commands use private ROOT/index. No actual allocate/build/runtime.",
+  "private_source_proofs": {
+    "frozen": {
+      "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-source",
+      "files": 10408,
+      "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+      "workspace_links": 32,
+      "full_raw_byte_mode_link_manifest_matches_COPY": true,
+      "guarded_private_file_opens": 10597,
+      "live_ROOT_content_reads_attempted": 0,
+      "source_file_symlinks": 0,
+      "provider_definition_keys_count": 26,
+      "synthetic_provider_fixture_sha256": "dfe3c9b20bef884779e5f68d2436c5cebdaf21fa7a72a4da053ce1b5910611b2",
+      "controller_ROOT": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-source",
+      "private_git_HEAD": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+      "root_env_absent": true
+    },
+    "new_mutable": {
+      "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "files": 10408,
+      "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+      "workspace_links": 32,
+      "full_raw_byte_mode_link_manifest_matches_COPY": true,
+      "guarded_private_file_opens": 10597,
+      "live_ROOT_content_reads_attempted": 0,
+      "source_file_symlinks": 0,
+      "provider_definition_keys_count": 26,
+      "synthetic_provider_fixture_sha256": "dfe3c9b20bef884779e5f68d2436c5cebdaf21fa7a72a4da053ce1b5910611b2",
+      "controller_ROOT": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "private_git_HEAD": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+      "root_env_absent": true
+    }
+  },
+  "guard_selftests_refused_before_content_reads": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/CLAUDE.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.env"
+  ],
+  "controller_attempted_live_ROOT_content_reads": 0,
+  "stage_activation_3_after_images_in_both_physical_COPIES": true,
+  "PAY_final5_5_after_images_in_both_physical_COPIES": true,
+  "afterimage_checks": {
+    "frozen": [
+      {
+        "path": "server/cmd/server/collaboration_stage_routes_test.go",
+        "sha256": "a5191e8f690c7ae1395198fe25681bb727f92f077a02aef69218a38e794e8b34",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage.go",
+        "sha256": "38f19a7a11e4f77d5e731bf7f08f89d060fc87667255bf6a4c8dca606a2bff96",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage_test.go",
+        "sha256": "b4988f82295c6792522877ae762faf928d2e0899b99dd1a7c4f28b1c577c0941",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/cmd/migrate/main.go",
+        "sha256": "4ac7cd45011859d07fea952bbacde8f7a48df56b8f6d19e8dfb5ecc222557e6e",
+        "mode": "0o755"
+      },
+      {
+        "path": "server/cmd/server/collaboration_knowledge_runtime_routes_test.go",
+        "sha256": "865d5baa27217d1a3c9c43fa2bdf3aaa9fc6a3d4ad8f654003ca798761e01c55",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/cmd/server/task_knowledge_routes_test.go",
+        "sha256": "702765fed2f3649b983fef4eaafbccce7eae08865b7f6009d3beef779eb9c34a",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/migrations/860_knowledge_automation_execution_policy.up.sql",
+        "sha256": "888169acbb03bfbcbe63840128b484957fcec955042b0a98e445b4b328311aea",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/migrations/860_knowledge_automation_execution_policy.down.sql",
+        "sha256": "29c5b405928fd4f9a52cd99322d8e05dc2f5aeeb0a35898ce4bc41db40a5c907",
+        "mode": "0o644"
+      }
+    ],
+    "new_mutable": [
+      {
+        "path": "server/cmd/server/collaboration_stage_routes_test.go",
+        "sha256": "a5191e8f690c7ae1395198fe25681bb727f92f077a02aef69218a38e794e8b34",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage.go",
+        "sha256": "38f19a7a11e4f77d5e731bf7f08f89d060fc87667255bf6a4c8dca606a2bff96",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage_test.go",
+        "sha256": "b4988f82295c6792522877ae762faf928d2e0899b99dd1a7c4f28b1c577c0941",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/cmd/migrate/main.go",
+        "sha256": "4ac7cd45011859d07fea952bbacde8f7a48df56b8f6d19e8dfb5ecc222557e6e",
+        "mode": "0o755"
+      },
+      {
+        "path": "server/cmd/server/collaboration_knowledge_runtime_routes_test.go",
+        "sha256": "865d5baa27217d1a3c9c43fa2bdf3aaa9fc6a3d4ad8f654003ca798761e01c55",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/cmd/server/task_knowledge_routes_test.go",
+        "sha256": "702765fed2f3649b983fef4eaafbccce7eae08865b7f6009d3beef779eb9c34a",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/migrations/860_knowledge_automation_execution_policy.up.sql",
+        "sha256": "888169acbb03bfbcbe63840128b484957fcec955042b0a98e445b4b328311aea",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/migrations/860_knowledge_automation_execution_policy.down.sql",
+        "sha256": "29c5b405928fd4f9a52cd99322d8e05dc2f5aeeb0a35898ce4bc41db40a5c907",
+        "mode": "0o644"
+      }
+    ]
+  },
+  "supplemental_persistent_raw_refs": {
+    "concurrent_stage_source_delta": {
+      "original": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-branch-integration-elr7n65z/concurrent-stage-source-delta.json",
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/supplemental-overlay-admissions/concurrent_stage_source_delta.json",
+      "sha256": "f05e5960fd981d89a18df07fa6e9e65ee7a04acd0bc8dea5ce1b9e9917943ff0"
+    },
+    "PAY_final5_admission": {
+      "original": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-coordinator-r01/root-five-mechanical-overlay-admission.json",
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/supplemental-overlay-admissions/PAY_final5_admission.json",
+      "sha256": "83d7b88a2ce1a29eded833ffbb473dd40f5f2da16a635c2d08df73941ab278ec"
+    },
+    "PAY_RK3_admission": {
+      "original": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-coordinator-r01/root-rk-three-test-overlay-admission.json",
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/supplemental-overlay-admissions/PAY_RK3_admission.json",
+      "sha256": "cb03465385366015a1727d408b8ca4bcbb36ba904b8cbd2db03a363555d173bc"
+    }
+  },
+  "original_owned_SOURCE_env_parser_offline_proof": {
+    "original_selected_parser": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/run-owned-go.py",
+      "sha256": "983a7895b0ce815b0f86344d0b802d15de6805e0aff0bbd57e987aae198b994e"
+    },
+    "unchanged_fixture_parser": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/post-copy-own-source-parser-fixture/.trellis/tasks/11-14-project-knowledge-automation/research/run-owned-go.py",
+      "sha256": "983a7895b0ce815b0f86344d0b802d15de6805e0aff0bbd57e987aae198b994e"
+    },
+    "parser_ROOT": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/post-copy-own-source-parser-fixture",
+    "own_SOURCE_config": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/post-copy-own-source-parser-fixture/.env",
+      "sha256": "c481c9b6ef4da8c90343e5dd492afc916da9d5fc97978b7d31286a53a8dc219b"
+    },
+    "synthetic_only": true,
+    "query_retained": "sslmode=disable",
+    "wrapper_v2_pg_config_validation_passed": true,
+    "actual_selected_SOURCE_config_written": false,
+    "actual_controller_allocate_calls": 0,
+    "database_connections": 0
+  },
+  "allocation_static_audit": {
+    "controller": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+      "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c"
+    },
+    "ROOT_RESEARCH": "derived from selected private controller __file__; owned_go import comes from same RESEARCH",
+    "parser_read": "run-owned-go.database_url reads its own ROOT/.env as literal data, not shell and not caller ROOT.env",
+    "STATE": "outer hash-pinned wrapper overrides module.STATE to trusted owned0700 Git-external /Users path before action",
+    "allocate_source_lines": [
+      961,
+      1029
+    ],
+    "sql_sequence": [
+      "SELECT current_database and aggregate cluster headroom on PGDATABASE=postgres",
+      "Require database=postgres and at least20 connection headroom",
+      "CREATE DATABASE mca_knowledge_browser_<new12hex>",
+      "SELECT current_database on newly selected PGDATABASE; require allocated name"
+    ],
+    "psql_binding": "PSQL fixed executable; PGHOST parsed literal loopback, PGPORT parsed port/default5432, PGUSER/PGPASSWORD URI-decoded, PGCONNECT_TIMEOUT5; query does not override these allocation psql variables",
+    "allocated_runtime": "new p6-browser-<new8hex>, owned0700 subdirectories home/tmp/bin/logs/results, four unique loopback service ports",
+    "retained_environment": "DATABASE_URL path replaced by allocated database; original query retained, so outer wrapperv2 query allowlist is required; synthetic JWT/password/model URL/key; provider probe keys use missing paths except owned fake Claude",
+    "source_side_record": "writes only selected private RESEARCH/p6-allocation.json, which unchanged source_paths excludes; does not rewrite historical ROOT allocation receipt",
+    "build_start_run_guard": "original --source-ready mandatory; Runtime/assert_build binds private selected source, allocation and source/runtime environment SHA, workspace graph, artifacts and tools",
+    "executed_original_allocate": false,
+    "limits": "Static original allocation action audit plus offline own-SOURCE parser and existing Runtime constructor checks; actual SQL/port allocation and partial-failure cleanup have not been executed"
+  },
+  "PG_only_pin_strategy": {
+    "action_requires_main_explicit_permission": true,
+    "only_config_target": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.env",
+    "create": "exclusive new O_CREAT|O_EXCL owned0600 non-symlink; exactly DATABASE_URL=<literal vetted URI> and one newline; never source shell dotenv or copy ROOT.env wholesale",
+    "URI_validation": "wrapperv2 SHA/hash and file mode plus literal loopback authority; optional ASCII port1..65535; raw query empty or sole sslmode=disable; no fragment/encoded/duplicate query",
+    "hash_binding": "new config SHA in a NEW immutable binding receipt; validate-only wrapper first, same pinned config/controller/wrapper/STATE/SOURCE args for every later actual action",
+    "caller_CWD": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+    "SOURCE_manifest": "private .env and p6-allocation.json excluded by unchanged controller discovery; all copied code/Markdown/BOM stays pinned to saved manifest and selected private HEAD",
+    "allocation_after_action": "record NEW allocation/environment hashes and identity under same persistent STATE; no use of missing old temp allocation"
+  },
+  "metadata_window_release": "Private SOURCE code/Markdown snapshots closed and no future ROOT live code/Markdown reads are required. Main ROOT progress and separately admitted PAY fixture updates must not be automatically imported into these source copies.",
+  "remaining_shared_resources": {
+    "frozen_git_object_alternates": [
+      "/Volumes/artisan/code/2026/multica-0.4.37/.git/objects"
+    ],
+    "mutable_git_object_alternates": [
+      "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-source/.git/objects"
+    ],
+    "dependency_packages": "unchanged stage_sources links shared installed third-party node_modules packages; all32 workspace-source links point inside each private SOURCE. No dependencies installed/copied or root source files read through workspace links.",
+    "meaning": "SOURCE closure is physical code/Markdown/BOM plus full hash and workspace-graph identity; immutable Git object storage and third-party package installations remain shared as declared by the original runtime primitive."
+  },
+  "all_source_manifests": {
+    "ROOT-before.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/ROOT-before.json",
+      "sha256": "0e531a38756bc20f8f02cf0646b793508a221c548818b1b907a9d89f051db060"
+    },
+    "ROOT-after.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/ROOT-after.json",
+      "sha256": "b1a28ebc0f64c28a3d49ba34d5ef1610dbcfcb42b6ff436153e87c7258d1ec86"
+    },
+    "frozen-full-manifest.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-full-manifest.json",
+      "sha256": "7a34a4f4821b323a1e3376fad2115be2b8cadb01139326f2cc921013fab4b1bf"
+    },
+    "mutable-full-manifest.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-full-manifest.json",
+      "sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84"
+    },
+    "full-source-copy-result.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/full-source-copy-result.json",
+      "sha256": "10155431b7c57d085c4a892a06fdf53740ba6a0678f1b44224820e81f34b2527"
+    },
+    "full-source-copy-execution.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/full-source-copy-execution.json",
+      "sha256": "33bd3f25bf8f741b65345305d126a6c6a57e31ac0c4373b8c778dd301794cc0d"
+    },
+    "retained-reference-inputs.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/retained-reference-inputs.json",
+      "sha256": "da87f82d122b7b48a04bafb6661248a677adcb98843b0e1bf3867237b80d7443"
+    },
+    "physical-source-wrapper-v2-bindings.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/physical-source-wrapper-v2-bindings.json",
+      "sha256": "1b50ed41914c880b1bf7ee3c3d8f1a250f6d80f6b0b04639c0d6af19ee691d61"
+    }
+  },
+  "helpers": {
+    "freeze-new-full-source-final5.py": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/freeze-new-full-source-final5.py",
+      "sha256": "2d0c8144f70b2190f20e38e0215111bbb506efab8e193ba55d94550ab3984a51"
+    },
+    "p6-persistent-state-wrapper-v2.py": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+      "sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8"
+    },
+    "p6-persistent-wrapper-v2-fixtures.py": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-wrapper-v2-fixtures.py",
+      "sha256": "e1995fc49091775a66bcce7fff80218bca957c7bb461fcdb0d5cfa80c4746c9e"
+    }
+  },
+  "new_actual_environment_or_DATABASE_or_build_or_runtime_actions": 0,
+  "source_ready": false,
+  "external_proof": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/post-COPY-sealed-source-independence-proof.json",
+    "sha256": "eed035e7701f531f43c33054532adf28008089c4dbf7bac5353d48ccca07dc34"
+  }
+}

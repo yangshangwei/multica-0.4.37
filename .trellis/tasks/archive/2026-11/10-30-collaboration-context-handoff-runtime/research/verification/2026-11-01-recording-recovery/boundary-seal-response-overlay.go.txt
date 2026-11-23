@@ -1,0 +1,37 @@
+package collaborationrun
+
+import (
+    "context"
+    "encoding/json"
+    "net/http"
+    "net/http/httptest"
+    "testing"
+
+    "github.com/google/uuid"
+    "github.com/multica-ai/multica/server/pkg/protocol"
+)
+
+func TestBoundaryReviewSealRejectsInvalidRetention(t *testing.T) {
+    f := newHostRunFixture(t, "success")
+    observed := 1
+    seal := protocol.CollaborationRecordingSeal{Version: 1, Sequence: 1, Identity: f.claim.Identity, AttemptSeq: "1", AttemptNonce: uuid.NewString(), StreamID: uuid.NewString(), ObservedThrough: &observed, Reason: "completed"}
+    if err := protocol.ValidateCollaborationRecordingSeal(seal); err != nil { t.Fatal(err) }
+    for _, tc := range []struct { name string; observed *int; retained int }{
+        {name: "negative observed", observed: new(int), retained: 0},
+        {name: "completed unknown tail", observed: nil, retained: 0},
+        {name: "observed below retained", observed: &observed, retained: 2},
+    } {
+        t.Run(tc.name, func(t *testing.T) {
+            if tc.name == "negative observed" { *tc.observed = -1 }
+            server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+                json.NewEncoder(w).Encode(protocol.CollaborationRecordingRetention{Version: 1, StreamID: seal.StreamID, Sealed: true, Reason: seal.Reason, RetainedThrough: tc.retained, ObservedThrough: tc.observed})
+            }))
+            defer server.Close()
+            client, err := NewClient(server.URL, "mdt_fixture", nil)
+            if err != nil { t.Fatal(err) }
+            if _, err := client.RecordingSeal(context.Background(), seal, f.claim.TerminationToken); err == nil {
+                t.Fatalf("accepted malformed seal receipt: %s", tc.name)
+            }
+        })
+    }
+}

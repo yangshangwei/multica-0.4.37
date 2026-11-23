@@ -1,0 +1,15 @@
+test(collaboration): keep transferred authority and validation distinct from completion
+
+New participants need to use the original per-issue resource grant, and retained
+former handlers need the same submit/Stop/Resume rights without gaining current
+responsibility. Active acceptance, AI success and a human test-pass comment must
+leave whole-issue completion to an explicit authorized lifecycle operation.
+
+Constraint: Preserve the shared dirty implementation and all production rollout gates
+Rejected: Infer authority from role flags or settled test rows | misses actual write and permit barriers
+Confidence: high
+Scope-risk: narrow
+Directive: Claim and Permit belong to the managed daemon; human actors own submit and control
+Tested: Guarded serial service race adjacency 14 top-level/36 total; exact HEAD plus new file 2/5; gofmt and scoped go vet
+Not-tested: Real provider process, kernel termination, new browser journey, installed clients and quota
+Co-authored-by: OmX <omx@oh-my-codex.dev>

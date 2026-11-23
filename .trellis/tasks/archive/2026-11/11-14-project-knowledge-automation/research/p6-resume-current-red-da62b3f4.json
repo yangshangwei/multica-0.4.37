@@ -1,0 +1,65 @@
+{
+  "run_id": "p6-resume-current-red-da62b3f4",
+  "database": "mca_knowledge_service_d0e3d368cb7a",
+  "package": "./internal/service",
+  "test_pattern": "^TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection$",
+  "run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-resume-current-red-da62b3f4",
+  "state": "failed",
+  "cluster_before": {
+    "database": "postgres",
+    "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": 100,
+    "connections": 29
+  },
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "source_sha256_before": "8d28793b26a7cb1831468a64ddd9e511e1583cc126bb4e1e82d522eb1cfb2864",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "created_at": "2026-11-15T05:17:30.887181+00:00",
+  "real_model_credentials_inherited": false,
+  "agent_cli_guard": true,
+  "launcher_sha256": "6f8ae6dcfdabdfd00b6f72d6b275d6f9c5aa63acf48b2c1bd0c65d2eb0e2f67e",
+  "migration_exit": 0,
+  "migration_ledger": "853:864_collaboration_stage_submission_ready",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-timeout=5m",
+    "./internal/service",
+    "-run",
+    "^TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection$"
+  ],
+  "test_exit": 1,
+  "tests": {
+    "run": [
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection",
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection/server_configuration",
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection/client_binding",
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection/native_refused",
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection/v1_after_configuration_change"
+    ],
+    "pass": [],
+    "fail": [
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection/server_configuration",
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection/client_binding",
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection/native_refused",
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection/v1_after_configuration_change",
+      "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection"
+    ],
+    "skip": []
+  },
+  "source_sha256_after": "8d28793b26a7cb1831468a64ddd9e511e1583cc126bb4e1e82d522eb1cfb2864",
+  "connections_after": 0,
+  "finished_at": "2026-11-15T05:18:05.006337+00:00",
+  "source_stable": true
+}

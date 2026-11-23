@@ -1,0 +1,13 @@
+{
+  "finding": "A2-R",
+  "fix": "codexDiagnosticID on both remaining generic c.turnID log fields",
+  "red_failed_controls": 2,
+  "normal": "ok  \tgithub.com/multica-ai/multica/server/pkg/agent\t4.171s",
+  "race": "ok  \tgithub.com/multica-ai/multica/server/pkg/agent\t8.417s",
+  "vet_exit": 0,
+  "diff_check_exit": 0,
+  "source_manifest": "adapter-source.json",
+  "codex_go_sha256": "77423e30b59f7e1fcd2d93532d4c5baa9040e4318b16102cb85e8c320af865f1",
+  "source_mutation_window": "after C normal02 finished and released; before normal3/race",
+  "real_calls": 0
+}

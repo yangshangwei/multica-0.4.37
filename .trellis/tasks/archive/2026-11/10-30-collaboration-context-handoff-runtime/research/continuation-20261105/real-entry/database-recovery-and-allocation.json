@@ -1,0 +1,27 @@
+{
+  "at": "2026-11-05T03:36:06.461469+00:00",
+  "database": "multica_rk1_20261105_real_e0a_a729",
+  "identity": "multica_rk1_20261105_real_e0a_a729|764_collaboration_ai_policy",
+  "initial_issue_count": 0,
+  "server_recovery_probe": "postgres|172.20.0.2|5432|2026-11-05 03:34:33.112545+00\n20|100",
+  "migration_exit": 0,
+  "template": "template0",
+  "prior_environment_incident": "Rosetta exit133 at03:32:23UTC; Docker restarted03:34:12, initiallyDBstarting then pg_isready0at03:35:42",
+  "allowed_package": "./cmd/server",
+  "allowed_test": "TestRK1RealProvider/RK1-E0a trial1",
+  "runtime_cap": 25,
+  "consumed": 0,
+  "window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "granted_by": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+    "scenario": "RK1-E0a",
+    "start_trial": 1,
+    "launches": 1,
+    "outer_timeout_minutes": 12,
+    "expires_at": "2026-11-05T03:46:30+00:00",
+    "recorded_at": "2026-11-05T03:36:06.461469+00:00"
+  },
+  "model_calls": 0,
+  "registration_prepared": true,
+  "helper_permits_still_false": true
+}

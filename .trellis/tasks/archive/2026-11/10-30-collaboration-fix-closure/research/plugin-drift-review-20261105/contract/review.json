@@ -1,0 +1,76 @@
+{
+  "reviewed_at": "2026-11-05T04:17:07.110280+00:00",
+  "verdict": "contract_analysis_complete_no_retrospective_clearance",
+  "inputs": {
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/e0a_entry.py": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/e0a-result-summary.json": "bb749d01f5141c94bf03783b588b62bbd0922e51f1b3022e925653fb16122cbc",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/e0a-independent-review.json": "3f938fbac0f55d4c233545cdc2cac078e2083f3d0d9b1d6ef0784ec65d18c18e",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/e0a-independent-review.md": "83ed8223d2bc821ec61be1c16b26d81e8576be7b886cb2e62ce11f6e48ba83f3"
+  },
+  "retained_result": {
+    "raw_E0a": "finished/pass",
+    "raw_launcher_exit": 0,
+    "original_stop_triggered": false,
+    "helper_exit": 1,
+    "helper_review_ready": false,
+    "runtime_consumed": 1,
+    "runtime_remaining": 24,
+    "independent_behavior_lifecycle_checks": 66
+  },
+  "gate_distinction": {
+    "prelaunch": "original launcher operator_facts equality against registered operator config is a required admission condition; helper also rechecks at stages",
+    "postlaunch": "helper additionally repeats same binding after original launcher; strict equality failure prevents overall helper/evidence acceptance, but is not the original E0a semantic classifier or original launcher stop predicate",
+    "preserve_both": "keep public/launcher pass and helper fail; do not reclassify raw trial or mark full configuration stable"
+  },
+  "prelaunch_verified_scope": "aggregate operator path/kind/content/link fingerprints plus selected env/config facts equal preregistered values at helper/build/check/launcher scans; not an atomic whole-tree snapshot, exact loaded plugin set, per-file baseline or attribution",
+  "missing_baseline": "Older61947-row inventory labels tree b994… but has only path/bytes/mtime/sha, lacking kind/link target/unreadable records. All-regular reconstruction6064f16d…4d2a52 cannot reproduce even its labeledhash; neither proves launch617d… or post91de… contents. mtime cannot establish writer/onlychanges.",
+  "safe_disposition_now": [
+    "retain E0a behavior/lifecycle pass and consumed1; no replay/replacement",
+    "retain configuration-stability evidence gap and strict helperfail; do not label cache harmless",
+    "document changed aggregate and unknown per-file causality; initial and final snapshots cannot prove all intervening states",
+    "prospective evidence improvement may be implemented/tested without consuming Provider quota or changing operatorHOME/settings"
+  ],
+  "minimal_prospective_change": {
+    "locations": [
+      "operator tree collector near run_rk1.py:76, with byte-identical canonical serialization; versioned helper-owned companion if frozen launcher must stay byte-identical",
+      "e0a_entry.py binding():99/113 separate collect/persist facts from assert-equality",
+      "e0a_entry.py run result postprocessing:244-270 collect post inventory+delta before assertion so drift does not suppress unrelated evidence"
+    ],
+    "contract": [
+      "full same-path-set inventory, no dynamic/cache exclusions; relative path/kind/content SHA or symlink target, preserve unreadable records and surrogateescape ordering",
+      "private0600 before manifest + digest; derived aggregate must equal actual prelaunch registered operator fingerprint before a permit/launch is accepted",
+      "bind snapshot manifest SHA/time/helper/registration/env hashes; reject any scan instability; diagnostic stat metadata never substitutes for bytes",
+      "post manifest persisted even on mismatch, classify added/deleted/type/link/content/unreadable changes; strict equality continues to fail on real drift",
+      "preserve immutable old raw evidence; use new run/attempt paths and independently reviewed successor helper; never silently rewrite earlier registration",
+      "record source/artifact reconciliation even if operator equality fails, but overall evidence status remains non-green"
+    ],
+    "minimal_tests": [
+      "temporary credential-free unchanged tree reconstructs current original tree hash exactly",
+      "one content/add/delete/type/symlink change records exact delta and equality refusal; unreadable behavior matches original collector",
+      "changed file between inventory and gate rejected; no fake baseline from post snapshot",
+      "post equality mismatch still durably publishes inventory/delta and raw result references, retains failed status/no retry",
+      "private file permissions/exclusive publication and unchanged operator files/HOME boundary"
+    ],
+    "limitations": "new collection explains future drift but does not eliminate it, whitelist cache, retroactively certify E0a or automatically open H1"
+  },
+  "authority": {
+    "new_budget_required": false,
+    "existing_runtime25": "already authorized independently;1consumed24remaining",
+    "investigation_opens_paid_entry": false,
+    "before_H1": "runtime sole owner must explicitly disposition existing evidence hold and obtain fresh execution window/byte binding; actual strict equality mismatch remains blocker unless an authorized prospective contract decision is made",
+    "no_repeated_E0a": true,
+    "original8": "separate/stillblocked"
+  },
+  "operations": {
+    "tests": 0,
+    "Provider": 0,
+    "services": 0,
+    "database": 0,
+    "operator_edits": 0,
+    "source_registry_permit_edits": 0,
+    "operator_tree_rescans": 0
+  },
+  "inventory_correction": "Initial report incorrectly called b994 a reconstructed hash; corrected from independent inventory evidence.",
+  "subsequent_peer_disposition": "Runtimeowner written E0a behavior/lifecycle acceptance with helperfail/configstabilityunknown retained; prospective helper implementation underway; H1gates remain closed."
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "reviewer": "/root/s3_contract_check",
+  "status": "changes_requested_v1_awaiting_v2",
+  "created_at": "2026-11-14T15:01:36.021928+00:00",
+  "scope": "research_contract_review_only",
+  "v1": {
+    "research": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.json",
+    "sha256": "ebfbde4cc96c6eba7c474aa8dff288a38cd104d7f1d609575075bc08105236b4",
+    "markdown": {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.md",
+      "sha256": "58ec01d7ead8eb3cca7f5d261e71abde62a2190c116b1dcda67355a72582186e",
+      "bytes": 46767
+    },
+    "source_files": 147,
+    "source_manifest_digest": "b84b7fab3b3bbdf748eb020244aa3553d5386c7442fbdfffb3aabb64e78eb7b4",
+    "review_drift": [],
+    "findings": [
+      {
+        "id": "S3P-C01",
+        "severity": "P1",
+        "kind": "planning_blocker",
+        "status": "open_in_v1",
+        "summary": "New complete request repair can still save blocked without a usable complete return parent",
+        "sequences": [
+          "creator_replaces_other_recipient",
+          "recipient_removed_then_new_request",
+          "legacy_blocked_policy_enabled",
+          "complete_nested_under_incomplete_parent",
+          "requester_removed_or_disabled"
+        ],
+        "required": "Explicit authorized, version-bound and auditable real repair out of blocked; preserve actual previous_status and pending delivery identity"
+      },
+      {
+        "id": "S3P-C02",
+        "severity": "P2",
+        "kind": "contract_blocker",
+        "status": "open_in_v1",
+        "summary": "Request presence/time precision/read availability/project options/runtime exposure require one frozen transport contract",
+        "required": "Presence-aware nil/omitempty compatibility; stored microsecond final-clock check; complete vs actionable DTO; selected-project creation context; preserve runtime v1 note/source hashes or explicit negotiated version"
+      }
+    ]
+  },
+  "v2": null,
+  "verification": {
+    "artifact_consistency": "pass_initial",
+    "product_lint": "NOT_RUN",
+    "product_typecheck": "NOT_RUN",
+    "product_tests": "NOT_RUN",
+    "database_calls": 0,
+    "api_calls": 0,
+    "browser_calls": 0,
+    "provider_calls": 0,
+    "git_operations": 0,
+    "full_compiled_graph": false
+  },
+  "scope_compliance": {
+    "product_edits": false,
+    "test_edits": false,
+    "spec_edits": false,
+    "task_state_edits": false,
+    "other_task_edits": false,
+    "subagents_spawned": false,
+    "outputs": [
+      ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-review-20261114.md",
+      ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-review-20261114.json"
+    ]
+  },
+  "markdown": {
+    "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-review-20261114.md",
+    "sha256": "695b556f7763aa7871fc128c052086bdb53e087f68c756e74790c46bbe321190"
+  },
+  "preserved_constraints": [
+    "S2 implementation remains with its owner",
+    "S3 shared writer implementation waits stable accepted S2",
+    "archived timeout proof retains its source/limits",
+    "parent matrix4PARTIAL20NOT_RUN unchanged",
+    "real S4 and final S5 remain outside this review"
+  ]
+}

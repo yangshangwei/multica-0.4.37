@@ -1,0 +1,644 @@
+{
+  "baseline": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+  "worktree": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+  "completed_at": "2026-11-07T07:27:04.453232+00:00",
+  "status": "READY_FOR_INDEPENDENT_REVIEW",
+  "resolved_defects": [
+    "QA-20261107-001",
+    "QA-20261107-003"
+  ],
+  "files": [
+    {
+      "file": "packages/core/diagnostics/diagnostic-context.ts",
+      "before_sha256": "6bb2dd4e46e0300746a669086e85211c782721e3c9ef2798bcead62fc04d8fc8",
+      "after_sha256": "6f4a130597f61732708de0fa6a9b0a775146382a70f39cd6cd125f03e4fcabf5"
+    },
+    {
+      "file": "packages/core/diagnostics/diagnostic-context.test.ts",
+      "before_sha256": "720546fdaa0ca3632a257672a43651ac7ed31603c8debbae3abd90b6610969d4",
+      "after_sha256": "1230f927b7137a1b3f83b6279f0e4c75782a0eff4ece586f7b6480ea90f5975b"
+    },
+    {
+      "file": "packages/views/locales/en/skills.json",
+      "before_sha256": "d7ee6f72624fb1760725f78f1dd5e74efb3d50713343df889def3f71946bcd84",
+      "after_sha256": "4add3757bc24b0aff74724108727bfab32540bfced1e67af51f596898610bd71"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/skills.json",
+      "before_sha256": "ec12f0bf8260bbe5d76ceb6de36634b5c9bbc53aad1b1339fa7ea10f3a24686d",
+      "after_sha256": "02341991cb95f686f9beee099a84ce3371ac27529644545c83dccdffc77f6049"
+    },
+    {
+      "file": "packages/views/skills/lib/skill-presentation.ts",
+      "before_sha256": "84f078a7b6a326e806198dbb94df750d8fa51f2d092276856865d447fa68ddca",
+      "after_sha256": "b325455fabb8e5f92873913b53daf59687d85920315e6808b2d285fe639cb17f"
+    },
+    {
+      "file": "packages/views/skills/lib/skill-presentation.test.ts",
+      "before_sha256": "9730b251253ee35ef986dd8dcdc691bb312449155c5454fa629bfeafbea2ab9a",
+      "after_sha256": "d7cf0a7bd91c24ddef8c1d083460f6890f7bd3573fd588833ad0f9e2990fdc40"
+    }
+  ],
+  "patch_sha256": "2f6cec6b4a9a0ae661e91617c6d912d94272d042aa4223f110c01793b31500ee",
+  "patch_path": ".omx/private/acceptance-repair-20261107/units/unit-repair.patch",
+  "historical_defaults": {
+    "previous_source_commit": "f09cd96b837a32aedd5987022211053c0c89902f",
+    "source_snapshot": ".omx/private/acceptance-repair-20261107/units/historical-progress-source.md",
+    "source_sha256": "8cbc29c8c5fe57e9309d324066199a7b2a2c6ef2db1a477d74e2a581ed7354dc",
+    "contract": "Exact prior embedded Chinese default and its English catalog translation were supported adoption inputs; retain their previous scope wording for existing copies via the existing description_v1 branch. Current locale defaults match current-project embedded scope; customized or unverified descriptions stay verbatim.",
+    "backend_loader": "server/internal/service/builtin_role_skills.go:95 maps frontmatter Description",
+    "localized_adoption": "packages/views/skills/components/template-skill-create-panel.tsx:316 passes selected.presentation.description to onUseTemplate"
+  },
+  "final_validation": {
+    "diagnostic_and_paths": {
+      "pass": 33,
+      "fail": 0,
+      "files": 3
+    },
+    "skill_and_locale_parity": {
+      "pass": 180,
+      "fail": 0,
+      "files": 2
+    },
+    "unique_targeted_tests": 213,
+    "narrow_eslint": "PASS",
+    "core_typecheck": "PASS",
+    "views_typecheck": "PASS",
+    "diff_check": "PASS"
+  },
+  "runs": [
+    {
+      "label": "baseline-diagnostic",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "vitest",
+        "run",
+        "diagnostics/diagnostic-context.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/baseline-diagnostic/results.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:20:26.954349+00:00",
+      "status": "complete",
+      "exit_code": 1,
+      "finished_at": "2026-11-07T07:20:29.269518+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/baseline-diagnostic/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/baseline-diagnostic/results.json",
+          "sha256": "fba054fde818ac78ce9798d7408c1f776e936919f1fb281910c8753b57f83306",
+          "bytes": 6191
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/baseline-diagnostic/run.json",
+          "sha256": "3d44e2b12964d6c2be5e4380a58e16e39f84f941a44ff82fba6c42930b87ea2b",
+          "bytes": 640
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/baseline-diagnostic/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/baseline-diagnostic/stdout.txt",
+          "sha256": "eeb9b4d581dbca3e1812236bbefb6fdb537531b04941300ec1f7f4b2e52b72ce",
+          "bytes": 144
+        }
+      ],
+      "test_counts": {
+        "numTotalTests": 15,
+        "numPassedTests": 14,
+        "numFailedTests": 1
+      },
+      "test_files": [
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/core/diagnostics/diagnostic-context.test.ts"
+      ],
+      "failed_cases": [
+        "route coverage stays in step with paths.ts recognizes every builder — no builder falls back to the mask"
+      ]
+    },
+    {
+      "label": "baseline-skill",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "vitest",
+        "run",
+        "skills/lib/skill-presentation.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/baseline-skill/results.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:20:26.954199+00:00",
+      "status": "complete",
+      "exit_code": 1,
+      "finished_at": "2026-11-07T07:20:29.367652+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/baseline-skill/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/baseline-skill/results.json",
+          "sha256": "d5fe0423189c04f0630134ac572f232a98fa334ad160d6d1fbd7b117b1577a3a",
+          "bytes": 43235
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/baseline-skill/run.json",
+          "sha256": "d17cb7d7a624b4a7d0c75f5c51af842b1c1999fb75a596f886535d9b68499316",
+          "bytes": 630
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/baseline-skill/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/baseline-skill/stdout.txt",
+          "sha256": "c0df06d21ac18eeacba11392df72793c493fbe141dfeb552c7083a4fb0cec3ae",
+          "bytes": 139
+        }
+      ],
+      "test_counts": {
+        "numTotalTests": 109,
+        "numPassedTests": 106,
+        "numFailedTests": 3
+      },
+      "test_files": [
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/skills/lib/skill-presentation.test.ts"
+      ],
+      "failed_cases": [
+        "built-in role skill presentation localizes real source descriptions with only en loaded",
+        "built-in role skill presentation localizes real source descriptions with only zh-Hans loaded",
+        "built-in role skill presentation keeps the default-description comparison current with multica-progress-report"
+      ]
+    },
+    {
+      "label": "core-typecheck",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:24:26.268111+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-07T07:24:40.743219+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/core-typecheck/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/core-typecheck/run.json",
+          "sha256": "8d3a864094fd04474210170dada7a1478ed727fbce5f23525f181dec3ed96e83",
+          "bytes": 383
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/core-typecheck/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/core-typecheck/stdout.txt",
+          "sha256": "ac1ed997577b290452f96f4ad1d52d53bb62432ac8cac06ef75c79130e14b77b",
+          "bytes": 120
+        }
+      ]
+    },
+    {
+      "label": "diagnostic-green",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "vitest",
+        "run",
+        "diagnostics/diagnostic-context.test.ts",
+        "paths/consistency.test.ts",
+        "paths/paths.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/diagnostic-green/results.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:22:21.979400+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-07T07:22:23.808223+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/diagnostic-green/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-green/results.json",
+          "sha256": "7151a90eda2714a0a0709d3baeba1df72f3dad52616d4310f7b4d97e3f7d64e5",
+          "bytes": 10334
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-green/run.json",
+          "sha256": "8affac01bb89297f1d3e0daa35055b928ea5c93d074a705d35044ccf1dada98a",
+          "bytes": 694
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-green/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-green/stdout.txt",
+          "sha256": "8dc30cadbf7f54b25b284280b1a147d30881eada948404234ac0cd9282b3cf96",
+          "bytes": 141
+        }
+      ],
+      "test_counts": {
+        "numTotalTests": 33,
+        "numPassedTests": 33,
+        "numFailedTests": 0
+      },
+      "test_files": [
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/core/diagnostics/diagnostic-context.test.ts",
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/core/paths/consistency.test.ts",
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/core/paths/paths.test.ts"
+      ],
+      "failed_cases": []
+    },
+    {
+      "label": "diagnostic-lint",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "eslint",
+        "diagnostics/diagnostic-context.ts",
+        "diagnostics/diagnostic-context.test.ts"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:22:37.647011+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-07T07:22:39.739655+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/diagnostic-lint/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-lint/run.json",
+          "sha256": "42046f099055c0b76839e23ac635d532f2cca66381620b178954115475b7bfc2",
+          "bytes": 480
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-lint/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-lint/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      ]
+    },
+    {
+      "label": "diagnostic-regression-red",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "vitest",
+        "run",
+        "diagnostics/diagnostic-context.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/diagnostic-regression-red/results.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:21:27.851069+00:00",
+      "status": "complete",
+      "exit_code": 1,
+      "finished_at": "2026-11-07T07:21:29.204023+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/diagnostic-regression-red/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-regression-red/results.json",
+          "sha256": "b69409c6f6f26804c48d41eed1ca7a51bd9eb77a32fc0eca0eef1512a22a2c44",
+          "bytes": 11231
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-regression-red/run.json",
+          "sha256": "e33bc17f35090695892873c31e00e8c8679091f3719bff231afcdd0abfd46831",
+          "bytes": 652
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-regression-red/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/diagnostic-regression-red/stdout.txt",
+          "sha256": "7a81f73a0eb8e50e88120b731cde0d33fea06841fcba8e981a2c73dbd143b4c7",
+          "bytes": 150
+        }
+      ],
+      "test_counts": {
+        "numTotalTests": 18,
+        "numPassedTests": 14,
+        "numFailedTests": 4
+      },
+      "test_files": [
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/core/diagnostics/diagnostic-context.test.ts"
+      ],
+      "failed_cases": [
+        "bucketDiagnosticPath identifies the squad creation screen new without treating it as an id",
+        "bucketDiagnosticPath identifies the squad creation screen new/manual without treating it as an id",
+        "bucketDiagnosticPath identifies the squad creation screen new/template without treating it as an id",
+        "route coverage stays in step with paths.ts recognizes every builder — no builder falls back to the mask"
+      ]
+    },
+    {
+      "label": "locale-parity",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "vitest",
+        "run",
+        "locales/parity.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/locale-parity/results.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:22:37.657761+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-07T07:22:39.333376+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/locale-parity/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/locale-parity/results.json",
+          "sha256": "ea3ef4f9b6db189223e5319a4d8a3898c96cfe76206c94a47f2619b14597532d",
+          "bytes": 17373
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/locale-parity/run.json",
+          "sha256": "35c7a3a04db1c8e5006e377505c843976f5b0d24008ce1adcd0e7d0e938ec8d8",
+          "bytes": 613
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/locale-parity/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/locale-parity/stdout.txt",
+          "sha256": "2a8f3648eb63bb7cc6fb9017da01aa7bb45a77c0998e5ac32965da724a086015",
+          "bytes": 138
+        }
+      ],
+      "test_counts": {
+        "numTotalTests": 66,
+        "numPassedTests": 66,
+        "numFailedTests": 0
+      },
+      "test_files": [
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/locales/parity.test.ts"
+      ],
+      "failed_cases": []
+    },
+    {
+      "label": "skill-green",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "vitest",
+        "run",
+        "skills/lib/skill-presentation.test.ts",
+        "locales/locales.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/skill-green/results.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:22:21.979890+00:00",
+      "status": "complete",
+      "exit_code": 1,
+      "finished_at": "2026-11-07T07:22:23.692871+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/skill-green/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-green/results.json",
+          "sha256": "8e7b69c73f3df69c5a61d1d8299207a30f0f60b06b60315925d8659c9df805c6",
+          "bytes": 41971
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-green/run.json",
+          "sha256": "2e30108efa75cc745d541154ad96f19101f12dc53312dc64c1eebfc94ecd4bbf",
+          "bytes": 655
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-green/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-green/stdout.txt",
+          "sha256": "44b3482c97a2ec93c2799648600ef3adda3a77b40dd8f08cf0e17203baa14225",
+          "bytes": 136
+        }
+      ],
+      "test_counts": {
+        "numTotalTests": 114,
+        "numPassedTests": 113,
+        "numFailedTests": 1
+      },
+      "test_files": [
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/skills/lib/skill-presentation.test.ts"
+      ],
+      "failed_cases": [
+        "built-in role template summaries summarizes only the recognized historical English default for multica-progress-report"
+      ]
+    },
+    {
+      "label": "skill-green-final",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "vitest",
+        "run",
+        "skills/lib/skill-presentation.test.ts",
+        "locales/parity.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/acceptance-repair-20261107/units/skill-green-final/results.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:23:23.192366+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-07T07:23:26.201822+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/skill-green-final/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-green-final/results.json",
+          "sha256": "5be76a82ab4bc8c927baf6e46ee21c92c807b0b51e5710316637ddfeb1d45751",
+          "bytes": 57282
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-green-final/run.json",
+          "sha256": "e4a0ad9337b03c064b817de89e97a45a906351060da65fc67b0d810f0af133d0",
+          "bytes": 666
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-green-final/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-green-final/stdout.txt",
+          "sha256": "29fd3903803d367cb5c77a9a446951eb31cc64e5d93728254b2522df212f0dda",
+          "bytes": 142
+        }
+      ],
+      "test_counts": {
+        "numTotalTests": 180,
+        "numPassedTests": 180,
+        "numFailedTests": 0
+      },
+      "test_files": [
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/locales/parity.test.ts",
+        "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107/packages/views/skills/lib/skill-presentation.test.ts"
+      ],
+      "failed_cases": []
+    },
+    {
+      "label": "skill-lint",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "eslint",
+        "skills/lib/skill-presentation.ts",
+        "skills/lib/skill-presentation.test.ts"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:22:37.645496+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-07T07:22:39.761376+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/skill-lint/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-lint/run.json",
+          "sha256": "b5b9fbfc8ac5df7487f9030f56fd7d697d68eb1b883d4544edf70f854b8aba87",
+          "bytes": 474
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-lint/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-lint/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      ]
+    },
+    {
+      "label": "skill-lint-final",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "eslint",
+        "skills/lib/skill-presentation.ts",
+        "skills/lib/skill-presentation.test.ts"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:24:26.268139+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-07T07:24:28.757889+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/skill-lint-final/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-lint-final/run.json",
+          "sha256": "584ad4a59a76532b47f4ea6bb6f3b7cae58a99d99a6ef22f8fdd3aae691aa6cc",
+          "bytes": 480
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-lint-final/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/skill-lint-final/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        }
+      ]
+    },
+    {
+      "label": "views-typecheck",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-acceptance-repair-20261107",
+      "head": "e54d09be4835e03488a2cde0a90ff451ac266f5b",
+      "started_at": "2026-11-07T07:24:26.268479+00:00",
+      "status": "complete",
+      "exit_code": 0,
+      "finished_at": "2026-11-07T07:25:17.559947+00:00",
+      "record": ".omx/private/acceptance-repair-20261107/units/views-typecheck/run.json",
+      "evidence": [
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/views-typecheck/run.json",
+          "sha256": "46b1b71535f50551515cced5736cd6f26f846046c68e2594dd363f670999d65c",
+          "bytes": 385
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/views-typecheck/stderr.txt",
+          "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+          "bytes": 211
+        },
+        {
+          "path": ".omx/private/acceptance-repair-20261107/units/views-typecheck/stdout.txt",
+          "sha256": "329af9f4b540da98337572e88323a86ba7d000b38894b8d440a46c4991844b5d",
+          "bytes": 122
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Original four failures reproduced before edits: diagnostics14PASS1FAIL and presentation106PASS3FAIL.",
+    "New diagnostic regression red added all3 creation routes:14PASS4FAIL; green18PASS in diagnostic file.",
+    "First skill green113PASS1FAIL exposed newly added progress tuple being reused in an English-only historical-summary matrix. Corrected only test split to preserve original release/ADR behavior and explicitly verify both shipped progress languages; final114presentationPASS.",
+    "Initial skill-green command included a nonexistent locales/locales.test.ts filter; actual only presentation suite ran. Correct parity file ran separately and in final180. No nonexistent suite counted as passing.",
+    "A narrow lint invocation typo referenced absent skill-lint-final.py; no test/tool work ran, then proper recorder command succeeded.",
+    "No product change outside6ownedfiles, dependencies, backend logic, DB/runtime or realProvider access. Parent owns scroll repair, full affected checks, source integration and commits."
+  ]
+}

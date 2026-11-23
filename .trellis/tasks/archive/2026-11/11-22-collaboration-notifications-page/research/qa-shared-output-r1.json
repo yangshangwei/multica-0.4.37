@@ -1,0 +1,19 @@
+{
+  "name": "check-20261122072738-98971",
+  "api_environment": "/Users/artisan/.multica/dev/envs/check-20261122072738-98971/check.env",
+  "api_database": "multica_check_20261122072738_98971_api",
+  "handler_environment": "/Users/artisan/.multica/dev/envs/check-20261122072738-98971/notifications-handler.env",
+  "service_environment": "/Users/artisan/.multica/dev/envs/check-20261122072738-98971/notifications-service.env",
+  "stop_command": "make down ARGS=\"check-20261122072738-98971\"",
+  "components_started": [
+    "api",
+    "desktop-renderer"
+  ],
+  "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "phase": "shared-output-build-refused-before-browser-fixtures",
+  "blocked_by_environment": "check-20261121080024-29520",
+  "go_tests_completed": {
+    "handler": true,
+    "service": true
+  }
+}

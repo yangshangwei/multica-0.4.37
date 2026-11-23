@@ -77,6 +77,8 @@
   },
   "page": {
     "breadcrumb_title": "任务",
+    "tagline": "创建、分配任务，跟踪进度。",
+    "learn_more": "了解更多 →",
     "breadcrumb_workspace_fallback": "工作空间",
     "empty_title": "还没有任务",
     "empty_hint": "创建一个任务开始使用。",
@@ -432,6 +434,19 @@
       "next": "下一个",
       "close": "关闭查找"
     },
+    "completion_hint": {
+      "attention_title": "请检查完成证据",
+      "attention_description": "当前证据需要关注。这次检查只描述当前读取结果，不授予完成任务的权限。",
+      "matching_title": "当前完成观察仍匹配",
+      "matching_description": "当前观察仍然匹配，但这不是完成许可。只有确认要提交状态变更时才继续。",
+      "refusal_title": "完成检查被拒绝",
+      "refusal_description": "完成检查无法批准这次状态变更。请刷新任务后重试。",
+      "unknown_title": "无法确认完成检查",
+      "unknown_description": "无法确认完成检查结果，因此没有发送状态变更。",
+      "continue": "继续",
+      "cancel": "取消",
+      "retry": "重试"
+    },
     "update_failed": "更新任务失败",
     "link_copied": "已复制链接",
     "link_copy_failed": "复制链接失败",
@@ -446,7 +461,61 @@
     "refresh_failed": "无法刷新任务，已保留当前内容。",
     "access_denied": "你已无权访问此任务。",
     "retry": "重试",
-    "retrying": "正在重试..."
+    "retrying": "正在重试...",
+    "completion_authorization": {
+      "title": "授权完成任务",
+      "description": "查看当前交付证据，授权此版本，再提交完成。关闭窗口不会撤销已有授权。",
+      "unavailable": "无法确认当前证据。请刷新任务后重新查看。",
+      "access_denied": "当前账号无法读取这份交付证据。",
+      "read_failed": "无法读取当前交付证据，请重试。",
+      "session_changed": "本次完成流程已失效。请重新打开任务继续。",
+      "storage_failed": "无法保存原操作信息，不能发送新请求。",
+      "close": "关闭",
+      "revision": "版本",
+      "evidence": "选择交付证据",
+      "loading": "正在读取证据...",
+      "no_evidence": "暂无可访问的交付证据。",
+      "evidence_unavailable": "这份证据暂不可用于授权。",
+      "expired": "已过期",
+      "previous": "上一页证据",
+      "next": "下一页证据",
+      "checking": "正在检查所选证据...",
+      "observation": "当前观察",
+      "observation_limit": "这次观察核对已记录的制品及数据库中的 PR head，不代表已核验实时远端版本、整体质量、发布或部署。",
+      "evidence_details": "证据与版本详情",
+      "project_revision": "项目 / 版本 / 策略",
+      "source": "来源版本",
+      "artifact": "制品 SHA-256",
+      "spec": "规范 SHA-256",
+      "checked_at": "检查时间",
+      "evidence_expiry": "证据到期时间",
+      "authorization_limit": "授权最晚到期时间",
+      "reason": "接受理由",
+      "expires_at": "到期时间（UTC）",
+      "expiry_format": "请使用以 Z 结尾的 UTC 时间，不能超过证据与凭据的有效期上限。",
+      "cannot_authorize": "当前观察不能支持授权。请查看原因并刷新证据。",
+      "original_operation": "原操作",
+      "request_key": "创建请求标识",
+      "workspace": "来源工作空间",
+      "authorization": "授权",
+      "result_reason": "结果原因",
+      "recovery_details": "原操作与恢复信息",
+      "consumed": "已记录本次操作的完成结果。",
+      "revoked": "该授权已撤销。",
+      "authorized": "此版本已授权，本操作尚未提交完成。提交时服务端仍会检查当前证据。",
+      "refused": "请求已被拒绝，原操作信息已保留。",
+      "unknown": "尚未确认原操作结果。请查询原操作；授权看似未使用，也不能证明请求没有在途。",
+      "current_status": "任务当前状态",
+      "current_unavailable": "无法读取任务当前状态。历史结果不能代表当前状态。",
+      "revocation_reason": "撤销理由",
+      "refresh": "刷新当前任务",
+      "query": "查询原操作结果",
+      "revoke": "撤销授权",
+      "new_review": "重新查看证据",
+      "submit": "提交完成",
+      "authorize": "授权此版本完成"
+    },
+    "description_label": "任务描述"
   },
   "timeline": {
     "loading": "加载中…"
@@ -544,10 +613,12 @@
       "bar_authors_more_other": "{{names}} 等 {{count}} 人",
       "resolve_failed": "标记已解决失败",
       "unresolve_failed": "重新打开失败"
-    }
+    },
+    "field_label": "评论"
   },
   "reply": {
-    "placeholder": "回复..."
+    "placeholder": "回复...",
+    "field_label": "回复"
   },
   "agent_activity": {
     "hover_header_other": "{{count}} 个智能体工作中",
@@ -728,7 +799,11 @@
       "agents_group": "智能体",
       "squads_group": "AI小队",
       "agent_runtime_required": "请先为该智能体绑定运行时，再分配工作",
-      "squad_runtime_required": "请先为该AI小队的负责人绑定运行时，再分配工作"
+      "squad_runtime_required": "请先为该AI小队的负责人绑定运行时，再分配工作",
+      "loading": "正在加载{{group}}…",
+      "load_failed": "{{group}}加载失败。",
+      "refresh_failed": "{{group}}刷新失败，仍显示上次加载的选项。",
+      "retry": "重试加载{{group}}"
     },
     "start_date": {
       "trigger_label": "开始日期",

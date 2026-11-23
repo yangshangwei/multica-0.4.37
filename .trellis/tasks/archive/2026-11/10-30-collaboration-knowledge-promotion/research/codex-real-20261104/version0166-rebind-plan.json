@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-11-05T04:23:04.801095+00:00",
+  "reason": "Local Codex updated after accepted0.165 fake proof; old exact native binding invalid and expired",
+  "previous_version": "0.165.0",
+  "installed_version": "0.166.0",
+  "native_executable": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex",
+  "native_sha256": "39acf979729dd290f9a24ee38b2914e036c91b65952872e28ae2a6b88a7db7c1",
+  "config_unchanged": true,
+  "model": "gpt-6-astra",
+  "physical_start_cap": 15,
+  "real_starts": 0,
+  "product_behavior_changes": false,
+  "harness_changes": [
+    "Exact0.165.0/0.166.0 allowlist",
+    "Report hash-bound actual registered version during real wrapper metadata probes",
+    "Version binding negative controls"
+  ],
+  "validation_pending": [
+    "Independent static review",
+    "New source-bound compile normal/race",
+    "Fresh isolated DB complete fake normal/race",
+    "New native/config/binary/source/database/expiry registration review"
+  ],
+  "window": "requested bounded5\u201310min fake verification; full model window remains separate"
+}

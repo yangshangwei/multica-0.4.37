@@ -1,0 +1,327 @@
+{
+  "at": "2026-11-02T00:21:24.928884+00:00",
+  "container": "multica-functional-7af9-redis-20261102",
+  "container_id": "e7e6dd37d7d6d4248b1a3e09f2dbb00b7a38e45441229eced5fe073637a581ea",
+  "cached_image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+  "new_image_pulled": false,
+  "command": [
+    "docker",
+    "run",
+    "-d",
+    "--pull=never",
+    "--name",
+    "multica-functional-7af9-redis-20261102",
+    "--label",
+    "multica.qa.task=branch-functional-regression",
+    "-p",
+    "127.0.0.1:16390:6379",
+    "redis:7-alpine",
+    "redis-server",
+    "--save",
+    "",
+    "--appendonly",
+    "no"
+  ],
+  "redis_test_url": "redis://127.0.0.1:16390/1",
+  "health": "PONG",
+  "sole_test_owner": "serial Go package lane",
+  "future_packages_enabled": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemonws",
+      "old_env_sha256": "a8ad4ea9669aea7588f6d652b258957c3f43a8dc93c4ea86ef7aef255200d628",
+      "new_env_sha256": "4082f4edcce75308e1940153721b036deccb16cb496395d1db89007861be14f5"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+      "old_env_sha256": "cb2e1d1a8bdc799a31f86545c9b5e2bd9e72ef6711cd5f0dfb507ca17b11422a",
+      "new_env_sha256": "34cb8bd934c1060930b7ae978132107fce8469e493bddbc96a7b65cd790504a2"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dispatch",
+      "old_env_sha256": "98f9d81f03bf433c9eefcce59ba2431478e6fe57dc324520edb54b6abbb0ab7d",
+      "new_env_sha256": "309ccbcad18d4d4e53bc9b2e770e216ec681cbba8799d75de1e32ab3b073af1b"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/docs",
+      "old_env_sha256": "23ca86b6087be9bdda72a220f7d48920897eea56d1914d75fa7c6aa88889f29a",
+      "new_env_sha256": "4f69a920a9870bba2faf1c11eccc9c03329790ac69599315058e4e8caaf48447"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement",
+      "old_env_sha256": "e1373d558b3af6acde0302f68c1406b79578a8d6339a36fa2a4ecb6ba9f08309",
+      "new_env_sha256": "c4660c3d16f3e91d3ef53ac5c8805a58f4bba027f280f5bbcb4015379d22b009"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "old_env_sha256": "e54f4c4917b7367ec6829ba9810be217af76ad1fa4a631e1632bd4011e265a1e",
+      "new_env_sha256": "f2ae7bf414f87728f6e0bda9239066a09d2ecb2781572f19f3a54f5e64a809e2"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/events",
+      "old_env_sha256": "125505e4034711fc6c5225ae2c4ea22942c79f2b6f1aa182574cded790b0431d",
+      "new_env_sha256": "b4dbf7b5ba00eb61a4ffcc729dee3cb4e304884528421c62d432ee813f57b984"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/featureflags",
+      "old_env_sha256": "87ee2fefda441217a7d06ec3eaeab689589bceac028f3e82529313c1edb5b8d9",
+      "new_env_sha256": "a49e8bff46c103684ee1a1fd93a5a9cd735483c496ed8e7344cda791a1fb2033"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "old_env_sha256": "fe9717b1fec27696851ae0f372f53aa9057c0987d51c1c16128a885edc2c5777",
+      "new_env_sha256": "618c85da03d2475afb5395b7e5d96072778203a59ece893065e17d7990f8a96e"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/installation",
+      "old_env_sha256": "5557a58fcfdae852853556a41dcc79d474f864794b116c224b93d780405baf48",
+      "new_env_sha256": "44aebc86448513d665a46a8d730466865ae69b95f2dcb113fcb45452ac7ac219"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "old_env_sha256": "d878427362e0202659c47d0b6ce4bb45e31dbfc71c708353470a01de9396d07e",
+      "new_env_sha256": "2097375dd492b1d00df57c8be3510e69622d041506b63b8a9f7a86cac76a1b25"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "old_env_sha256": "b53da8b50b4484e384fd8f654332ab0be6e44cc99bcf995b3245e1d3445d2a16",
+      "new_env_sha256": "aef9342abe7a9739699b52fef7ef9fd7d4ad87774042d44a4b9389033a56dd66"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "old_env_sha256": "e6b40a99b0f774fbe616fd0ef392e349575ba703766ba2bd2d5c36b103dc55d6",
+      "new_env_sha256": "417ed948220433eb9de581402ab60f46a74e0779b5e55c171d9d3cd1a4ccab81"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "old_env_sha256": "3efee11ad4a0b770d81891a176a96fd0a0a78993c60cd947840cdc1b1ddc832c",
+      "new_env_sha256": "3e792f4a7b94703c1cc24cc35cce9b3dfed34bdc90971a1abf5eb7c536d2fd3c"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "old_env_sha256": "3367ddb75052632e7cfe1c0b36703ff8434455322cf7ebd9efaaa42e34b7bdd6",
+      "new_env_sha256": "09aee05ec078fb4ff44a7cd586a4736e2c43f1596dbfc7af052eba16d533d1a7"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "old_env_sha256": "a675a851c4fe895befc179c3e59105cde585f6b533b56e7a91d6cd3ff0914a73",
+      "new_env_sha256": "a3705b773982106cdef69ae372e9bd415381f805822906beeeead790c556d81c"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "old_env_sha256": "d2c105f3cc59894c8b753f63add146deefeffb18d61da10f52492f05f67fd562",
+      "new_env_sha256": "cd16496c6a1f7a751da4a44f1027862c82727e8cb4254cb40d04463302f0c4ae"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "old_env_sha256": "dd7dbb261be744002f3914397a128f9a48721d914d43a40ce0097207cfe1c425",
+      "new_env_sha256": "d8e241ccaa74b17041fbea22a3612977d1763dd30a833b396f92ee360d8bf597"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "old_env_sha256": "466b2fc6fcc9ae1aeaa356697c5a0e7844e2a19aa0db7ac7e3c914dbeea49233",
+      "new_env_sha256": "71a2e90a8c7b38c5b3118d317b120ed3ccf7175c83d46ca4cbe83e0b98acea90"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "old_env_sha256": "e231b41143997aca1eabd8fcc707589e8f08ed5068ccec04b1ac7233a216b0d9",
+      "new_env_sha256": "8edc9f8c22a0a875f2df03756ed1d1f0103196c6a7216c92c4d711eaa8338660"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "old_env_sha256": "f8afc2bab8d1114236d4938da41b48b98220fa85b6afd4d12389c3f72d4a7b9c",
+      "new_env_sha256": "7621c3ea7ba1f8fbcde02c061a90a4425bca50b70ade4083351431c0844c0db3"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueguard",
+      "old_env_sha256": "3b9623f49a97a4f4fdc613c61b5926e009a69b7fb52bfacde8d654af43472b63",
+      "new_env_sha256": "81e91056e3aba05cdf092b986a9ca572b66a9d0bec46e2a8891940599cc0a313"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueposition",
+      "old_env_sha256": "15b933019e7b51c738fa3afd2dc75fc5c6214787514e3382228466c11e3d976a",
+      "new_env_sha256": "fab5ff58608d2c9359ec574d21053a8d4e66af8c44985aa6ad512b118a1cc82a"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "old_env_sha256": "905186f1597975eeaeecf90aaf92d9268d8904c73023c9cb4e2305ed2390940c",
+      "new_env_sha256": "f034e1e0c11c41cdea46e5cf883f6d3909853dab3121b68888dc717afc755cac"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/iteration",
+      "old_env_sha256": "cada92b25c80a420f5955c13e2fdad19bf092b759fc674b77a26901d52a49d39",
+      "new_env_sha256": "8c67b1905107685a990579c46405ca1a607082b5f47f36aa8515343a5b7442fd"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/logger",
+      "old_env_sha256": "34e4ba8b759554305f76b6e0367f369c7a7a1605d3cffd91e22a67cf373b3d52",
+      "new_env_sha256": "7667c77584dfc06f19e8f7c9c6266cf7267cf395a0cd3ae5e5a41818acea7909"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "old_env_sha256": "298f974328010324e648e715598d15cbe1bea032e0cb8a660f490d2120f5616f",
+      "new_env_sha256": "a9f4579af4cbf039c302297092898e7ce9a47e5b993fb63c480db278dd67ad66"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "old_env_sha256": "27b9ba5728ceb80b85b1732fee349f12469810cff8a3de2a6054d195c82a7815",
+      "new_env_sha256": "083bcdf93779ae5b276ba9c3e0b8908861ec66d2883ba535d4abbbfbca79569d"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "old_env_sha256": "52f8d7c6d8ca2119c104770773adacb2d5593db78735f9af1b5cdbf2c2fb55ea",
+      "new_env_sha256": "cab02ffcc1e6462e4343e73bba3e6c9f35268ef4ec0c26aa4a4999d9ea2fb61d"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/profiling",
+      "old_env_sha256": "d4f73ad246859f88637c7966afc0a2c3660a8377330680b9686a46c45928518a",
+      "new_env_sha256": "ed20608cead64eebc35843b41530094853a0d2891dd9cd27ae8a0f496a58e2d1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+      "old_env_sha256": "dd16ead23f3f972fcd831e721f7537efad7afabef5c2e25e60d8c802213cf17c",
+      "new_env_sha256": "f171b5f7155fb3b51b091f2e3141910a5aa9818d7888b51de2b619a037279a14"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/realtime",
+      "old_env_sha256": "1e2afb423ab2a666e6ddf4a07fba28d47c99faf899c3780377baf32c426f800f",
+      "new_env_sha256": "6b5862c95c2de393d3f2296ca264293455385694369d8080c506543a2dcb9ced"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+      "old_env_sha256": "fb60d16e256101db9ce8beda5b32237cdb88d2b7fd55319e33f01c66707d923a",
+      "new_env_sha256": "08442cf97e90cb62c1a9ae5bcd121b700427625137be3e06519e306dd8d62147"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/scheduler",
+      "old_env_sha256": "c9bd74c111f4b80dda8c307ac0b38557ff914c9bb047becfd1a908c4c19c50c6",
+      "new_env_sha256": "ed4eee12e6c987799fe640f62e424aeaa76a682ed9a3df48e1fea1666bdcab47"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "old_env_sha256": "2b9dd297a96822ef0e869b22d220f4b24f9025b19df21e9987cdecef06474309",
+      "new_env_sha256": "e0a8749dc2cb396eb168a79eca592f55893b33a56a5c6bf78de4e78362463ce6"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/selfexec",
+      "old_env_sha256": "451e179aaba2f7076105d562232e46fbe1858ecb53aaaef64d0252cd4501625c",
+      "new_env_sha256": "f63679555ff27b83725648bf074b0383cd77af1ea38eb36a7a26ead9eb3e84b0"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "old_env_sha256": "a2cba94fdad479e7d1cb5187d3025f8aeac3aa6d08ec561f2718512743ac3112",
+      "new_env_sha256": "81f8ceeff4e750dec808eae18ae4a00e1c7d1b2fa56c838b5f350b6dabf35c80"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/skill",
+      "old_env_sha256": "fa7a7b663b357572b47b01d84343095f763526a11d9dbbf8f34e63d22a35106e",
+      "new_env_sha256": "76dcb8a5629ea138bf7ee6a522b51b6a91d4c6ba55f40e6daaf1a9a7ff0f0bcb"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/storage",
+      "old_env_sha256": "68790587965a820de98328f344c0f7bdb92673b13c30d05b4ebe093ef42e078c",
+      "new_env_sha256": "474d10d868906943d8be350668611b9c4242889b14b4ceaa873c240d0847292d"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "old_env_sha256": "dfee6d72e5497729d93c70f68c18a0aecfde77b72d9ec409a18cac1661c8aef8",
+      "new_env_sha256": "b6ac998e44c038385707f327ca37b8c68e40368293847c028abbd3e78f220951"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/testutil",
+      "old_env_sha256": "66ff2903cf2c7b52e74f3b5cd1d532cb78db8168b8b71041c883b20edc236316",
+      "new_env_sha256": "40382683844e61a8a988d3c561ac4d2d8a1f3c64ab82bc96f31b8ebfd99e8c29"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+      "old_env_sha256": "3f19899a7d35632728cb852be3e29c5fa46574af0b0d4ec60495f36eda15e13e",
+      "new_env_sha256": "ce50c60481fff23f68edad80a86ad2a6d593eef37d4cc368914197c66ad9f7eb"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util",
+      "old_env_sha256": "aca9aac7cf6a7a0f7314301afe8dbb0498d57b4a99458e75df4743da9df83d52",
+      "new_env_sha256": "cefa22ad0cd2ac165d0d3fa02e53a7263c09f53bbf68364fe563942c17a0e679"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "old_env_sha256": "c3c3cb9f12dd7b878c7ae6942f071cdd5fd7e1b649006505cf0cb7e5db417cea",
+      "new_env_sha256": "ed02fa9e9955d101871c1a306d839c139a354bbee07a858d3570f3cedad133db"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "old_env_sha256": "bb2093f546171d48be257bb28f8b34caf9a2ba3aecb8be66e39e5939b4b1c142",
+      "new_env_sha256": "3152167917f1514b5c03da0e21f7c83e5f4153c38c4b96edd9531fe8c1e07b80"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/composio",
+      "old_env_sha256": "3fa7720e0a5d0973b1eb7fa3cea4c95502d1dcd3a861147921e85ee34baed514",
+      "new_env_sha256": "afa51eec0df5e855b9469c689da5a2ad0bf44b8c39a15f27e1bbd7fc36c6adfc"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+      "old_env_sha256": "fa6324db68e741666a70225313130097847df56bd9a616373a38b8848a8f3d8c",
+      "new_env_sha256": "4dd102f55c891645bfbc775ada64b3799cbc0cebf6ba185dd8f586fa2f54dfe5"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/dbid",
+      "old_env_sha256": "39bf0aeda89226e8413df880e32407748886883671a47952bbd4602263279d85",
+      "new_env_sha256": "2a5d29a12dbcb91c54ec8f4b286fa66e7a5ed270e9f9c6fb335252c894cc3753"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+      "old_env_sha256": "06edf3673cb4b3f8b10d16f930b4610d1acc147cd1be425ef13e692b15072ea3",
+      "new_env_sha256": "12a87ef514af5d2c44a679dc5270a5171f0208d2feeb6261271562cd7b812e45"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/llm",
+      "old_env_sha256": "5f9dbf9683fff3426bdd016145f34e90dddcfada1aa949bf9809a1b57fd3a52f",
+      "new_env_sha256": "5b4dd999583f7ba2b337b77cf052ef2e8ab35f6fe72d2a697988957da1f18e76"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "old_env_sha256": "deca3114bcdc59a37003d40f488df393ba1d3b854ac610991e46aef53e2ce230",
+      "new_env_sha256": "40868d9ac5f5c19d35659470615b3b708b1b5bb90371d8dbf03a2c76f6856227"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/protocol",
+      "old_env_sha256": "aed50e95f54d5aea45012ff93db3f1bd1de31ded2304da5e91f5eaeb38857ca8",
+      "new_env_sha256": "5dbd8d865eaacad93e2361c7fb5095e0bd24bc77dc2568bd266bd1d6b6619dd3"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "old_env_sha256": "4b22e9ab8ae63d1fbcf967a4a4473a13e4f5e1ff4e008403ff33df638d7e066d",
+      "new_env_sha256": "6a0407be74c81230abb6446c17af9be5e6291b318c2499f526eb4b7f1fbe2fa4"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/redact",
+      "old_env_sha256": "a86261b74029f379d2215726025f83788813fd8b73882420d32a58bfa9579c38",
+      "new_env_sha256": "83600c12dd50ed48f3dfb13084a399ac27bc559cdb95fb1bdef30c27194532ef"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "old_env_sha256": "b8024f91806f7447ecf94064552f12ec7ca8bf9e315daad0b88a5b9b9f2e531c",
+      "new_env_sha256": "b2a958e6b66b2206302ef7901d2ba1492df3973c57cc8cacb4c6bcdc5df02ee8"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "old_env_sha256": "a712ee51cbaf46ddadb3ba740353a5ec21a0ffc5d2dd93d29ee1c3356ec6d859",
+      "new_env_sha256": "beecd536cf06c750eb86d4263be41b5f73b0e4bc4055950675a9181e2fb94729"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "old_env_sha256": "e4034270b3cf3bcec52faedc2230a79e98a644bf3e33bb6980adc62862183864",
+      "new_env_sha256": "93ac7998e82effa9f2f49b59e51ca135ecdaf37fe758b132144cdf9494647edc"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+      "old_env_sha256": "062c2edc46188bd28d7165071398df0cbced117896a5ca1568a03e74a4faaeb0",
+      "new_env_sha256": "419f366e437ad99b813083d55abfdd78f3579a3f3312a69e688d0edbbce5e0ea"
+    }
+  ],
+  "already_started_packages_unchanged": true,
+  "requires_later_backfill": [
+    "cmd/server",
+    "internal/auth",
+    "internal/daemon"
+  ],
+  "no_application_redis_used": true
+}

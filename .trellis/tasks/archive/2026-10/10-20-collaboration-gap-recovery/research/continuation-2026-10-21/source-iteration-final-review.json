@@ -1,0 +1,1233 @@
+{
+  "reviewed_at": "2026-10-21T15:01:44.099824+00:00",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "role": "independent trellis-check; no delegation",
+  "scope": "Read-only source/evidence review; only the two named final review artifacts are written.",
+  "verdict": {
+    "slice_ready_for_standalone_lore_commit": true,
+    "product_defects_observed": 0,
+    "mechanical_fixes": [],
+    "AC80": "not_verified_in_this_task",
+    "AC81": "not_verified_in_this_task",
+    "AC85": "not_verified_in_this_task; separate P6 client identity/drag evidence"
+  },
+  "new_source_sha256": {
+    "server/internal/service/collaboration_source_authority_race_test.go": "992d1afb1ee9d71e48daabffe682a6dc034fe593beac97b101ef37dbe9c0f979",
+    "server/internal/handler/collaboration_external_iteration_test.go": "fe5b0bfe6ac6d377238e40c3ec1475f84cb17eb9c83983cfb3d830079b1a98f7"
+  },
+  "source_sha256": {
+    "packages/views/iterations/iteration-operation.tsx": "6cd3a8a34dd1a7e09e3c1c62a5a048c801e0ef5eee9b3d43f3f2b80e542bf472",
+    "packages/views/iterations/iteration-scope-details.tsx": "02db3e92128727a391309c8af789b24f8d3f7f1a04f836a1acd098d2dd806275",
+    "server/internal/collaboration/access.go": "a168ab81a233633fc6cdb5771c52fff2176157e0a30ef58d815370a64635778c",
+    "server/internal/collaboration/access_test.go": "d0863327ec3b27cbffca4c7c0f421d17ce8831887d7043d010a612f47edc1554",
+    "server/internal/handler/collaboration_edit_test.go": "81fed906c2135c117f06d738e422b0dff6f02017a2fbb88e8173a9ee913edbc1",
+    "server/internal/handler/collaboration_external_iteration_test.go": "fe5b0bfe6ac6d377238e40c3ec1475f84cb17eb9c83983cfb3d830079b1a98f7",
+    "server/internal/handler/collaboration_source_fields.go": "1b5d1653bbd2cf7dd22ee997f51bf9e6cb1c4192e651081ac75389fe29d4dbd0",
+    "server/internal/handler/collaboration_source_fields_test.go": "df41f0a7eca1c3987e4787acef72fed098eee30ff8981acb39c55c2840929778",
+    "server/internal/handler/iteration_collaboration_boundary_test.go": "2674b7b73f3f81bd4faf3d5f7c8ef3c365dfcd2f27fd763d688f9df1a1a2715b",
+    "server/internal/handler/iteration_history.go": "a80096ed7b2e4df270441a72d209ce720af27b12c0cb49f61b9b1d5848dd5ddc",
+    "server/internal/handler/iteration_management.go": "03b4bebebec2fc5b161e0ecac95df034f156c8fdd99359cc0fec7e2bdaf8562e",
+    "server/internal/iteration/history_capture.go": "66a18fa7efe3227fc89aa3d7996c935a0cd40a421ec3150490520b6c2561b233",
+    "server/internal/service/collaboration_control_test.go": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+    "server/internal/service/collaboration_creation_result_test.go": "506ee012109a3079e6fee498b23d69909912c7e07bf24ba0376f12fd3f7f43d8",
+    "server/internal/service/collaboration_edit.go": "3839bfff490c58ad0eeb2f0fbdf357cc67f9148357f5b11d8cf542839cfcf1a1",
+    "server/internal/service/collaboration_edit_test.go": "06296f55e29fa5e5304e8ce24bf1b4b212f223b4b9f0ea81a752e75886090b2c",
+    "server/internal/service/collaboration_execution_fixture_test.go": "68ff748d957ac40e6bc40e54c596008e00dac82e24f45355f24de1c5158dde98",
+    "server/internal/service/collaboration_fields_test.go": "0613434d77b017f287d67c7689a3cd59be3a8c68f2c8b486409ec5ba85b4eef8",
+    "server/internal/service/collaboration_iteration.go": "2485b7db6a4e9c50c5823e97e218886df4df5b38c9f9b8406a79fc55c8e73daa",
+    "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+    "server/internal/service/collaboration_recipient_eligibility_test.go": "6b0cee90974986966b8da3df013d5d64631320c5e48b8af40689d765656c53ea",
+    "server/internal/service/collaboration_source_authority_race_test.go": "992d1afb1ee9d71e48daabffe682a6dc034fe593beac97b101ef37dbe9c0f979",
+    "server/internal/service/collaboration_source_fields.go": "794004765369b97bb9f3960f3eb5b7b48ab4bc0a104c12d41265c0ccba03f1a0",
+    "server/internal/service/collaboration_source_fields_test.go": "f5164b80a595fabe18dc727139436f99100faa5873d5ad0afbbb78034c9b3fab",
+    "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+    "server/internal/service/collaboration_workflow_test.go": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+    "server/internal/service/iteration_collaboration_boundary_test.go": "e3fbdf063a644527376c55917af9a6fbb5c8009cd893eb97219f1aea8cab5419",
+    "server/internal/service/iteration_lifecycle_preview.go": "ee377dc88778ffa6f2dc9d5fc77d720f422ba81ee43b1549d736424ad0cbcd25",
+    "server/pkg/db/queries/collaboration.sql": "84a42e64fa3eac60dd2138f515bc5bdd6ab3fc35bc5b7d1c8acf7fdd219fa589",
+    "server/pkg/db/queries/iteration_history.sql": "70eadf50e95d4f90ed669d884b25370a726f62e7d1b314a59fcf1fc148e4dc96"
+  },
+  "protected_sources": {
+    "server/internal/service/collaboration_source_fields.go": {
+      "sha256": "794004765369b97bb9f3960f3eb5b7b48ab4bc0a104c12d41265c0ccba03f1a0",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_iteration.go": {
+      "sha256": "2485b7db6a4e9c50c5823e97e218886df4df5b38c9f9b8406a79fc55c8e73daa",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_workflow.go": {
+      "sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_edit.go": {
+      "sha256": "3839bfff490c58ad0eeb2f0fbdf357cc67f9148357f5b11d8cf542839cfcf1a1",
+      "matches_baseline": true
+    },
+    "server/internal/service/collaboration_source_fields_test.go": {
+      "sha256": "f5164b80a595fabe18dc727139436f99100faa5873d5ad0afbbb78034c9b3fab",
+      "matches_baseline": true
+    },
+    "server/internal/handler/collaboration_source_fields.go": {
+      "sha256": "1b5d1653bbd2cf7dd22ee997f51bf9e6cb1c4192e651081ac75389fe29d4dbd0",
+      "matches_baseline": true
+    },
+    "server/internal/handler/iteration_history.go": {
+      "sha256": "a80096ed7b2e4df270441a72d209ce720af27b12c0cb49f61b9b1d5848dd5ddc",
+      "matches_baseline": true
+    },
+    "server/internal/handler/iteration_management.go": {
+      "sha256": "03b4bebebec2fc5b161e0ecac95df034f156c8fdd99359cc0fec7e2bdaf8562e",
+      "matches_baseline": true
+    }
+  },
+  "executed_runs": [
+    {
+      "run_id": "source-authority-service-focused-first-20261021",
+      "result_artifact": "source-authority-service-focused-first-20261021-result.json",
+      "result_sha256": "f384da02e3341eee33481adb4f7634cac60229e9a284b31701d8cf0ffc984256",
+      "raw_artifact": "source-authority-service-focused-first-20261021.jsonl",
+      "raw_sha256": "0150ccf48559aaeb88ed5530ffa3fba61435dd3588c83cf5cd1930c38a30d9d0",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^(TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler|TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit|TestCollaborationIterationAssignmentSerializesWithTargetRevision)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "returncode": 0,
+      "metadata": {
+        "environment": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "database_alias": "service_s5",
+          "schema_expected_through": 737,
+          "real_provider_access": false
+        },
+        "started_at": "2026-10-21T14:24:28.870519+00:00",
+        "finished_at": "2026-10-21T14:24:40.067063+00:00",
+        "elapsed_seconds": 11.194
+      },
+      "executed_events": [
+        {
+          "line": 7,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.49,
+          "time": "2026-10-21T22:24:35.458739+08:00"
+        },
+        {
+          "line": 11,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/transfer_first",
+          "action": "pass",
+          "elapsed_seconds": 0.39,
+          "time": "2026-10-21T22:24:35.84804+08:00"
+        },
+        {
+          "line": 15,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.4,
+          "time": "2026-10-21T22:24:36.248337+08:00"
+        },
+        {
+          "line": 19,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/transfer_first",
+          "action": "pass",
+          "elapsed_seconds": 0.38,
+          "time": "2026-10-21T22:24:36.626191+08:00"
+        },
+        {
+          "line": 21,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler",
+          "action": "pass",
+          "elapsed_seconds": 1.66,
+          "time": "2026-10-21T22:24:36.626211+08:00"
+        },
+        {
+          "line": 27,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.41,
+          "time": "2026-10-21T22:24:37.039003+08:00"
+        },
+        {
+          "line": 31,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/departure_first",
+          "action": "pass",
+          "elapsed_seconds": 0.37,
+          "time": "2026-10-21T22:24:37.414041+08:00"
+        },
+        {
+          "line": 35,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.39,
+          "time": "2026-10-21T22:24:37.807216+08:00"
+        },
+        {
+          "line": 39,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/departure_first",
+          "action": "pass",
+          "elapsed_seconds": 0.37,
+          "time": "2026-10-21T22:24:38.175759+08:00"
+        },
+        {
+          "line": 41,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit",
+          "action": "pass",
+          "elapsed_seconds": 1.55,
+          "time": "2026-10-21T22:24:38.175781+08:00"
+        },
+        {
+          "line": 47,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentSerializesWithTargetRevision/membership_first",
+          "action": "pass",
+          "elapsed_seconds": 0.48,
+          "time": "2026-10-21T22:24:38.651139+08:00"
+        },
+        {
+          "line": 51,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentSerializesWithTargetRevision/iteration_edit_first",
+          "action": "pass",
+          "elapsed_seconds": 0.35,
+          "time": "2026-10-21T22:24:38.999112+08:00"
+        },
+        {
+          "line": 53,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentSerializesWithTargetRevision",
+          "action": "pass",
+          "elapsed_seconds": 0.82,
+          "time": "2026-10-21T22:24:38.999148+08:00"
+        },
+        {
+          "line": 56,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 6.033,
+          "time": "2026-10-21T22:24:40.012297+08:00"
+        }
+      ]
+    },
+    {
+      "run_id": "source-authority-handler-focused-first-20261021",
+      "result_artifact": "source-authority-handler-focused-first-20261021-result.json",
+      "result_sha256": "41beccf274a1a45f2710d8350fbe13cbd94e2f69d0ba054651b0d8ec19c6dad5",
+      "raw_artifact": "source-authority-handler-focused-first-20261021.jsonl",
+      "raw_sha256": "587655cecb87c592425dcbb31af4f35d9d7a3e83f66a821a459e4e074c2663a7",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/handler",
+        "-run",
+        "^TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "returncode": 0,
+      "metadata": {
+        "environment": {
+          "GOTOOLCHAIN": "go1.26.6",
+          "database_alias": "service_s5",
+          "schema_expected_through": 737,
+          "real_provider_access": false
+        },
+        "started_at": "2026-10-21T14:24:40.068717+00:00",
+        "finished_at": "2026-10-21T14:25:03.284752+00:00",
+        "elapsed_seconds": 23.216
+      },
+      "executed_events": [
+        {
+          "line": 7,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory",
+          "action": "pass",
+          "elapsed_seconds": 0.24,
+          "time": "2026-10-21T22:25:02.193921+08:00"
+        },
+        {
+          "line": 10,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 2.485,
+          "time": "2026-10-21T22:25:03.216166+08:00"
+        }
+      ]
+    },
+    {
+      "run_id": "source-authority-coordinator-adjacent-20261021",
+      "result_artifact": "source-authority-coordinator-adjacent-20261021-result.json",
+      "result_sha256": "fb83044666d40f1264c7572d52e561593418327d2b0b8b094f4ce88f878c5590",
+      "raw_artifact": "source-authority-coordinator-adjacent-20261021.jsonl",
+      "raw_sha256": "03050ea179d9797c20667a01b0d9c96360bfe136451ce48babad974c2c7eb328",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "./internal/handler",
+        "-run",
+        "^(TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler|TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit|TestCollaborationIterationAssignmentSerializesWithTargetRevision|TestCollaborationSourceStructureAuthorityAndAtomicEdit|TestCollaborationSourceStructureRejectsCyclesAndMixedFailure|TestCollaborationIterationAssignmentVersionsReasonsAndReplay|TestCollaborationCreationInitialFieldsAreOneRecoverableIssue|TestCollaborationIterationCompletedJoinRequiresExplicitConfirmation|TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates|TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory|TestCollaborationEditHTTPSourceFields|TestCollaborationSourceFieldsHTTPPreservesNullAndSeparatesStatus)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "returncode": 0,
+      "metadata": {
+        "schema_migration": 737,
+        "database_alias": "service_s5",
+        "start": "2026-10-21T14:39:17.802595+00:00",
+        "end": "2026-10-21T14:39:37.156233+00:00",
+        "elapsed_s": 19.35
+      },
+      "executed_events": [
+        {
+          "line": 7,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.47,
+          "time": "2026-10-21T22:39:24.126522+08:00"
+        },
+        {
+          "line": 11,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/transfer_first",
+          "action": "pass",
+          "elapsed_seconds": 0.37,
+          "time": "2026-10-21T22:39:24.499795+08:00"
+        },
+        {
+          "line": 15,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.4,
+          "time": "2026-10-21T22:39:24.898223+08:00"
+        },
+        {
+          "line": 19,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/transfer_first",
+          "action": "pass",
+          "elapsed_seconds": 0.42,
+          "time": "2026-10-21T22:39:25.322558+08:00"
+        },
+        {
+          "line": 21,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler",
+          "action": "pass",
+          "elapsed_seconds": 1.66,
+          "time": "2026-10-21T22:39:25.322578+08:00"
+        },
+        {
+          "line": 27,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.42,
+          "time": "2026-10-21T22:39:25.740389+08:00"
+        },
+        {
+          "line": 31,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/departure_first",
+          "action": "pass",
+          "elapsed_seconds": 0.36,
+          "time": "2026-10-21T22:39:26.099365+08:00"
+        },
+        {
+          "line": 35,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.43,
+          "time": "2026-10-21T22:39:26.526124+08:00"
+        },
+        {
+          "line": 39,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/departure_first",
+          "action": "pass",
+          "elapsed_seconds": 0.36,
+          "time": "2026-10-21T22:39:26.889972+08:00"
+        },
+        {
+          "line": 41,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit",
+          "action": "pass",
+          "elapsed_seconds": 1.57,
+          "time": "2026-10-21T22:39:26.889991+08:00"
+        },
+        {
+          "line": 47,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentSerializesWithTargetRevision/membership_first",
+          "action": "pass",
+          "elapsed_seconds": 0.38,
+          "time": "2026-10-21T22:39:27.275311+08:00"
+        },
+        {
+          "line": 51,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentSerializesWithTargetRevision/iteration_edit_first",
+          "action": "pass",
+          "elapsed_seconds": 0.38,
+          "time": "2026-10-21T22:39:27.655178+08:00"
+        },
+        {
+          "line": 53,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentSerializesWithTargetRevision",
+          "action": "pass",
+          "elapsed_seconds": 0.77,
+          "time": "2026-10-21T22:39:27.655199+08:00"
+        },
+        {
+          "line": 57,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAuthorityAndAtomicEdit",
+          "action": "pass",
+          "elapsed_seconds": 0.22,
+          "time": "2026-10-21T22:39:27.878891+08:00"
+        },
+        {
+          "line": 61,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureRejectsCyclesAndMixedFailure",
+          "action": "pass",
+          "elapsed_seconds": 0.2,
+          "time": "2026-10-21T22:39:28.080526+08:00"
+        },
+        {
+          "line": 65,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentVersionsReasonsAndReplay",
+          "action": "pass",
+          "elapsed_seconds": 0.31,
+          "time": "2026-10-21T22:39:28.389139+08:00"
+        },
+        {
+          "line": 69,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCreationInitialFieldsAreOneRecoverableIssue",
+          "action": "pass",
+          "elapsed_seconds": 0.17,
+          "time": "2026-10-21T22:39:28.555642+08:00"
+        },
+        {
+          "line": 73,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationCompletedJoinRequiresExplicitConfirmation",
+          "action": "pass",
+          "elapsed_seconds": 0.2,
+          "time": "2026-10-21T22:39:28.752943+08:00"
+        },
+        {
+          "line": 77,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates",
+          "action": "pass",
+          "elapsed_seconds": 0.17,
+          "time": "2026-10-21T22:39:28.924198+08:00"
+        },
+        {
+          "line": 80,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 7.023,
+          "time": "2026-10-21T22:39:29.944762+08:00"
+        },
+        {
+          "line": 87,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestCollaborationEditHTTPSourceFields",
+          "action": "pass",
+          "elapsed_seconds": 0.09,
+          "time": "2026-10-21T22:39:35.846614+08:00"
+        },
+        {
+          "line": 91,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory",
+          "action": "pass",
+          "elapsed_seconds": 0.19,
+          "time": "2026-10-21T22:39:36.037198+08:00"
+        },
+        {
+          "line": 95,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestCollaborationSourceFieldsHTTPPreservesNullAndSeparatesStatus",
+          "action": "pass",
+          "elapsed_seconds": 0.03,
+          "time": "2026-10-21T22:39:36.070548+08:00"
+        },
+        {
+          "line": 98,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 2.597,
+          "time": "2026-10-21T22:39:37.095214+08:00"
+        }
+      ]
+    },
+    {
+      "run_id": "source-authority-isolated-head",
+      "result_artifact": "source-authority-isolated-head-race-result.json",
+      "result_sha256": "dc4d80e14c1428d5782e4e6d00f2376b050f26e3b36cc44d69c4d45bb12d6418",
+      "raw_artifact": "source-authority-isolated-head-race.jsonl",
+      "raw_sha256": "0af7d0a015608acd4569e8b18b9dd0771e89cbe27bbf14ce94e9d630935876bc",
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "./internal/handler",
+        "-run",
+        "^(TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler|TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit|TestCollaborationIterationAssignmentSerializesWithTargetRevision|TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-source-authority-head-1vhzswz3/server",
+      "returncode": 0,
+      "metadata": {
+        "schema_migration": 737,
+        "start": "2026-10-21T14:41:39.340548+00:00",
+        "end": "2026-10-21T14:42:34.453666+00:00",
+        "elapsed_s": 55.113,
+        "head": "5baf8659296a4a04666e6eaaa60e5965ffc70725",
+        "only_added_source": [
+          "server/internal/service/collaboration_source_authority_race_test.go",
+          "server/internal/handler/collaboration_external_iteration_test.go"
+        ]
+      },
+      "executed_events": [
+        {
+          "line": 7,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.5,
+          "time": "2026-10-21T22:41:58.761776+08:00"
+        },
+        {
+          "line": 11,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/transfer_first",
+          "action": "pass",
+          "elapsed_seconds": 0.37,
+          "time": "2026-10-21T22:41:59.130689+08:00"
+        },
+        {
+          "line": 15,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.43,
+          "time": "2026-10-21T22:41:59.559676+08:00"
+        },
+        {
+          "line": 19,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/transfer_first",
+          "action": "pass",
+          "elapsed_seconds": 0.4,
+          "time": "2026-10-21T22:41:59.958789+08:00"
+        },
+        {
+          "line": 21,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler",
+          "action": "pass",
+          "elapsed_seconds": 1.7,
+          "time": "2026-10-21T22:41:59.95881+08:00"
+        },
+        {
+          "line": 27,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.41,
+          "time": "2026-10-21T22:42:00.371801+08:00"
+        },
+        {
+          "line": 31,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/departure_first",
+          "action": "pass",
+          "elapsed_seconds": 0.38,
+          "time": "2026-10-21T22:42:00.75025+08:00"
+        },
+        {
+          "line": 35,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/source_change_first",
+          "action": "pass",
+          "elapsed_seconds": 0.39,
+          "time": "2026-10-21T22:42:01.139016+08:00"
+        },
+        {
+          "line": 39,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/departure_first",
+          "action": "pass",
+          "elapsed_seconds": 0.37,
+          "time": "2026-10-21T22:42:01.513848+08:00"
+        },
+        {
+          "line": 41,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit",
+          "action": "pass",
+          "elapsed_seconds": 1.55,
+          "time": "2026-10-21T22:42:01.513869+08:00"
+        },
+        {
+          "line": 47,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentSerializesWithTargetRevision/membership_first",
+          "action": "pass",
+          "elapsed_seconds": 0.41,
+          "time": "2026-10-21T22:42:01.922685+08:00"
+        },
+        {
+          "line": 51,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentSerializesWithTargetRevision/iteration_edit_first",
+          "action": "pass",
+          "elapsed_seconds": 0.35,
+          "time": "2026-10-21T22:42:02.274518+08:00"
+        },
+        {
+          "line": 53,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentSerializesWithTargetRevision",
+          "action": "pass",
+          "elapsed_seconds": 0.76,
+          "time": "2026-10-21T22:42:02.274528+08:00"
+        },
+        {
+          "line": 56,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 5.997,
+          "time": "2026-10-21T22:42:03.290538+08:00"
+        },
+        {
+          "line": 63,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory",
+          "action": "pass",
+          "elapsed_seconds": 0.23,
+          "time": "2026-10-21T22:42:33.301185+08:00"
+        },
+        {
+          "line": 66,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": null,
+          "action": "pass",
+          "elapsed_seconds": 2.453,
+          "time": "2026-10-21T22:42:34.319897+08:00"
+        }
+      ]
+    }
+  ],
+  "canonical_current_pass_evidence": [
+    {
+      "raw_artifact": "go-service-partition-2.jsonl",
+      "raw_sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d",
+      "executed_events": [
+        {
+          "line": 181,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationActivityRetainsExactHandoffAndEditHistory",
+          "action": "pass",
+          "elapsed_seconds": 0.19,
+          "time": "2026-10-21T13:33:02.876999+08:00"
+        },
+        {
+          "line": 787,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic",
+          "action": "pass",
+          "elapsed_seconds": 1.18,
+          "time": "2026-10-21T13:33:38.368987+08:00"
+        },
+        {
+          "line": 891,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationEditRecordsCurrentActorAndImmutableExecution",
+          "action": "pass",
+          "elapsed_seconds": 0.85,
+          "time": "2026-10-21T13:33:41.49846+08:00"
+        },
+        {
+          "line": 939,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationEditRejectsNonEditors",
+          "action": "pass",
+          "elapsed_seconds": 1.97,
+          "time": "2026-10-21T13:33:43.464969+08:00"
+        },
+        {
+          "line": 1007,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationEditRequiredWritesRollbackTogether",
+          "action": "pass",
+          "elapsed_seconds": 1.54,
+          "time": "2026-10-21T13:33:46.944682+08:00"
+        },
+        {
+          "line": 1015,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationEditUnknownCommitAndRefusedKeysNeverReapply",
+          "action": "pass",
+          "elapsed_seconds": 0.22,
+          "time": "2026-10-21T13:33:47.389595+08:00"
+        },
+        {
+          "line": 1239,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationFieldsTypedValuesAndHistory",
+          "action": "pass",
+          "elapsed_seconds": 0.25,
+          "time": "2026-10-21T13:33:48.429231+08:00"
+        },
+        {
+          "line": 1391,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationFieldOptionsAuthorityAndProjection",
+          "action": "pass",
+          "elapsed_seconds": 0.24,
+          "time": "2026-10-21T13:33:56.068482+08:00"
+        },
+        {
+          "line": 3009,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureAuthorityAndAtomicEdit",
+          "action": "pass",
+          "elapsed_seconds": 0.25,
+          "time": "2026-10-21T13:35:36.765162+08:00"
+        },
+        {
+          "line": 3013,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationSourceStructureRejectsCyclesAndMixedFailure",
+          "action": "pass",
+          "elapsed_seconds": 0.2,
+          "time": "2026-10-21T13:35:36.966785+08:00"
+        },
+        {
+          "line": 3017,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationAssignmentVersionsReasonsAndReplay",
+          "action": "pass",
+          "elapsed_seconds": 0.25,
+          "time": "2026-10-21T13:35:37.214056+08:00"
+        },
+        {
+          "line": 3021,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCreationInitialFieldsAreOneRecoverableIssue",
+          "action": "pass",
+          "elapsed_seconds": 0.19,
+          "time": "2026-10-21T13:35:37.408352+08:00"
+        },
+        {
+          "line": 3025,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationIterationCompletedJoinRequiresExplicitConfirmation",
+          "action": "pass",
+          "elapsed_seconds": 0.23,
+          "time": "2026-10-21T13:35:37.636086+08:00"
+        },
+        {
+          "line": 3029,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates",
+          "action": "pass",
+          "elapsed_seconds": 0.17,
+          "time": "2026-10-21T13:35:37.80771+08:00"
+        },
+        {
+          "line": 3329,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestCollaborationCreateIsAtomicIdempotentAndScoped",
+          "action": "pass",
+          "elapsed_seconds": 0.17,
+          "time": "2026-10-21T13:36:06.374255+08:00"
+        },
+        {
+          "line": 3601,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestIterationMovePreviewRejectsCollaborationForSourceMembers",
+          "action": "pass",
+          "elapsed_seconds": 0.52,
+          "time": "2026-10-21T13:36:20.577562+08:00"
+        },
+        {
+          "line": 3617,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestIterationMoveApplyRechecksCollaborationAndRejectsWholeMixedSet",
+          "action": "pass",
+          "elapsed_seconds": 0.58,
+          "time": "2026-10-21T13:36:21.16063+08:00"
+        },
+        {
+          "line": 3621,
+          "package": "github.com/multica-ai/multica/server/internal/service",
+          "identity": "TestIterationPeriodClosureStillRollsOverCollaboration",
+          "action": "pass",
+          "elapsed_seconds": 0.22,
+          "time": "2026-10-21T13:36:21.384844+08:00"
+        }
+      ],
+      "coverage_rule": "Only the actual assertions apply; generic edit_issue or ordinary iteration move cases do not replace edit_source_structure/change_iteration role matrices."
+    },
+    {
+      "raw_artifact": "go-other-packages.jsonl",
+      "raw_sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8",
+      "executed_events": [
+        {
+          "line": 34792,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestCollaborationEditHTTPSourceFields",
+          "action": "pass",
+          "elapsed_seconds": 0.03,
+          "time": "2026-10-21T13:16:27.839136+08:00"
+        },
+        {
+          "line": 34888,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestCollaborationEditHTTPStrictFieldsAndVersions",
+          "action": "pass",
+          "elapsed_seconds": 0.1,
+          "time": "2026-10-21T13:16:28.042432+08:00"
+        },
+        {
+          "line": 35380,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestCollaborationSourceFieldsHTTPPreservesNullAndSeparatesStatus",
+          "action": "pass",
+          "elapsed_seconds": 0.03,
+          "time": "2026-10-21T13:16:30.346647+08:00"
+        },
+        {
+          "line": 35384,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestCollaborationCreationFieldsHTTPAndInitialIteration",
+          "action": "pass",
+          "elapsed_seconds": 0.03,
+          "time": "2026-10-21T13:16:30.375614+08:00"
+        },
+        {
+          "line": 42564,
+          "package": "github.com/multica-ai/multica/server/internal/handler",
+          "identity": "TestIterationHTTPExplicitCollaborationMoveRequiresDedicatedWorkflow",
+          "action": "pass",
+          "elapsed_seconds": 0.08,
+          "time": "2026-10-21T13:17:10.87732+08:00"
+        }
+      ],
+      "coverage_rule": "Only the actual assertions apply; generic edit_issue or ordinary iteration move cases do not replace edit_source_structure/change_iteration role matrices."
+    },
+    {
+      "raw_artifact": "go-remaining-packages.jsonl",
+      "raw_sha256": "de59266def0bf98ea12d38d50339d84834f043ccc16e5ddf01339ec98f21bdd4",
+      "executed_events": [
+        {
+          "line": 1539,
+          "package": "github.com/multica-ai/multica/server/internal/collaboration",
+          "identity": "TestCreatorKeepsLifecycleAfterLeavingSourceWorkspace",
+          "action": "pass",
+          "elapsed_seconds": 0,
+          "time": "2026-10-21T13:17:17.22115+08:00"
+        },
+        {
+          "line": 1543,
+          "package": "github.com/multica-ai/multica/server/internal/collaboration",
+          "identity": "TestExternalHandlerCannotReopenThroughOrdinaryStatusChange",
+          "action": "pass",
+          "elapsed_seconds": 0,
+          "time": "2026-10-21T13:17:17.221172+08:00"
+        },
+        {
+          "line": 1547,
+          "package": "github.com/multica-ai/multica/server/internal/collaboration",
+          "identity": "TestCollaborationAccessKeepsMembershipAndParticipationIndependent",
+          "action": "pass",
+          "elapsed_seconds": 0,
+          "time": "2026-10-21T13:17:17.221183+08:00"
+        }
+      ],
+      "coverage_rule": "Only the actual assertions apply; generic edit_issue or ordinary iteration move cases do not replace edit_source_structure/change_iteration role matrices."
+    }
+  ],
+  "clauses": [
+    {
+      "clause": "AC80.initial_source_fields",
+      "recommendation": "passed",
+      "description": "Creator/source member sets project and parent during one recoverable creation; no AI command.",
+      "test_identities": [
+        "internal/service::TestCollaborationCreationInitialFieldsAreOneRecoverableIssue"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_fields_test.go:160"
+      ]
+    },
+    {
+      "clause": "AC80.current_source_manager",
+      "recommendation": "passed",
+      "description": "Creator and current noncreator source-member handler can set/clear structure after creation; one domain/revision survives competing transfer.",
+      "test_identities": [
+        "internal/service::TestCollaborationSourceStructureAuthorityAndAtomicEdit",
+        "internal/service::TestCollaborationSourceStructureRejectsCyclesAndMixedFailure",
+        "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/source_change_first",
+        "internal/handler::TestCollaborationSourceFieldsHTTPPreservesNullAndSeparatesStatus"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_fields_test.go:44",
+        "server/internal/service/collaboration_source_authority_race_test.go:61"
+      ]
+    },
+    {
+      "clause": "AC80.source_validation_atomicity",
+      "recommendation": "passed",
+      "description": "Cycle refusal rolls back companion title, valid clear succeeds, and missing project/parent/triage creation refusals retain original outcome with no creation effects.",
+      "test_identities": [
+        "internal/service::TestCollaborationSourceStructureRejectsCyclesAndMixedFailure",
+        "internal/service::TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_fields_test.go:89",
+        "server/internal/service/collaboration_creation_result_test.go:462"
+      ]
+    },
+    {
+      "clause": "AC80.history_and_ai",
+      "recommendation": "passed",
+      "description": "Source edits retain a single committed edit event/replay and exact persisted active-channel/in-flight input/group/run/grant snapshots; source changes do not trigger new AI.",
+      "test_identities": [
+        "internal/service::TestCollaborationSourceStructureAuthorityAndAtomicEdit",
+        "internal/service::TestCollaborationCreationInitialFieldsAreOneRecoverableIssue",
+        "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler",
+        "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_fields_test.go:63",
+        "server/internal/service/collaboration_source_authority_race_test.go:17"
+      ]
+    },
+    {
+      "clause": "AC80.external_departed_catalog_and_write_denial",
+      "recommendation": "passed",
+      "description": "External handler and departed source handler lose source structure writes/catalogs; external handler keeps only bounded references with no parent body.",
+      "test_identities": [
+        "internal/service::TestCollaborationSourceStructureAuthorityAndAtomicEdit",
+        "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit",
+        "internal/handler::TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_authority_race_test.go:135",
+        "server/internal/handler/collaboration_external_iteration_test.go:56"
+      ]
+    },
+    {
+      "clause": "AC80.source_only_other_role_negative",
+      "recommendation": "pending",
+      "description": "Direct edit_source_structure negative matrix and bounded source references/catalog denial for source-only members and other collaborators.",
+      "test_identities": [],
+      "source_anchors": [
+        "server/internal/service/collaboration_edit_test.go:116",
+        "server/internal/service/collaboration_edit.go:34"
+      ],
+      "remaining_evidence": "Existing TestCollaborationEditRejectsNonEditors submits title/labels/properties through edit_issue; it does not exercise project_id/parent_issue_id edit_source_structure. FieldOptions covers source owner and former handler but not every stated ordinary source-member/other-collaborator source-structure case. Add direct requests and exact unchanged-state assertions."
+    },
+    {
+      "clause": "AC80.transfer_departure_races",
+      "recommendation": "passed",
+      "description": "Both commit orderings recheck current manager and source membership before source writes; loser leaves no partial project/parent/title.",
+      "test_identities": [
+        "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/source_change_first",
+        "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/transfer_first",
+        "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/source_change_first",
+        "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/departure_first"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_authority_race_test.go:36",
+        "server/internal/service/collaboration_source_authority_race_test.go:163"
+      ]
+    },
+    {
+      "clause": "AC81.initial_join_switch_remove",
+      "recommendation": "passed",
+      "description": "Source-member creator initial membership and subsequent join/switch/remove use ordinary membership records, target/issue revisions, exact original-key replay and supplied reasons.",
+      "test_identities": [
+        "internal/service::TestCollaborationCreationInitialFieldsAreOneRecoverableIssue",
+        "internal/service::TestCollaborationIterationAssignmentVersionsReasonsAndReplay",
+        "internal/service::TestCollaborationIterationCompletedJoinRequiresExplicitConfirmation",
+        "internal/service::TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_fields_test.go:107",
+        "server/internal/service/collaboration_source_fields_test.go:160"
+      ]
+    },
+    {
+      "clause": "AC81.missing_switch_reason",
+      "recommendation": "passed",
+      "description": "Switch without a reason refuses; later valid switch cannot turn that original refused key into success.",
+      "test_identities": [
+        "internal/service::TestCollaborationIterationAssignmentVersionsReasonsAndReplay"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_fields_test.go:124"
+      ]
+    },
+    {
+      "clause": "AC81.missing_remove_reason",
+      "recommendation": "pending",
+      "description": "Removal must independently refuse a blank/missing reason without changing membership/history.",
+      "test_identities": [],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_fields_test.go:150",
+        "server/internal/service/collaboration_iteration.go:74"
+      ],
+      "remaining_evidence": "Canonical remove uses Reason=\"No longer planned\". Missing-reason refusal is currently exercised for switch only; add direct remove-without-reason and original-key/nonpartial assertions."
+    },
+    {
+      "clause": "AC81.source_only_other_role_negative",
+      "recommendation": "pending",
+      "description": "Direct change_iteration denial and catalog/reference matrix for source-only ordinary members and nonmanager collaborators.",
+      "test_identities": [],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_fields_test.go:111",
+        "server/internal/service/iteration_collaboration_boundary_test.go:32"
+      ],
+      "remaining_evidence": "Ordinary IterationService move refusal is a separate unsupported endpoint. Generic metadata/noneditor tests and capability projections do not execute the dedicated ChangeIteration branch. Add direct role cases without inferring across domains."
+    },
+    {
+      "clause": "AC81.external_departed_minimal_references",
+      "recommendation": "passed",
+      "description": "External and departed current handler cannot mutate source iteration or read source catalogs; detail retains only minimal project/parent/iteration references.",
+      "test_identities": [
+        "internal/service::TestCollaborationIterationAssignmentVersionsReasonsAndReplay",
+        "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/departure_first",
+        "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/transfer_first",
+        "internal/handler::TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_authority_race_test.go:135",
+        "server/internal/handler/collaboration_external_iteration_test.go:56"
+      ]
+    },
+    {
+      "clause": "AC81.external_handler_statistics_preview_history_rollover_privacy",
+      "recommendation": "passed",
+      "description": "Authorized source caller can start/end and read complete counts, history/events and rollover snapshot for external handler with zero source membership; no email/username/private parent body. External actor remains forbidden on source iteration reads/previews.",
+      "test_identities": [
+        "internal/handler::TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory"
+      ],
+      "source_anchors": [
+        "server/internal/handler/collaboration_external_iteration_test.go:45",
+        "server/internal/handler/collaboration_external_iteration_test.go:75",
+        "server/internal/handler/collaboration_external_iteration_test.go:133"
+      ]
+    },
+    {
+      "clause": "AC81.patch_iteration_mixed_rejection",
+      "recommendation": "passed",
+      "description": "Metadata PATCH containing iteration membership is rejected without partial issue/history write.",
+      "test_identities": [
+        "internal/handler::TestCollaborationEditHTTPStrictFieldsAndVersions/iteration"
+      ],
+      "source_anchors": [
+        "server/internal/handler/collaboration_edit_test.go:138"
+      ]
+    },
+    {
+      "clause": "AC81.put_metadata_mixed_rejection",
+      "recommendation": "pending",
+      "description": "Dedicated iteration PUT must reject accompanying title/description/project/etc. metadata atomically.",
+      "test_identities": [],
+      "source_anchors": [
+        "server/internal/handler/collaboration_source_fields.go:43"
+      ],
+      "remaining_evidence": "Strict DTO suggests the contract but no current executed test submits metadata alongside UpdateCollaborationIteration. Separate successful PATCH then PUT in the new journey does not prove rejection of a mixed PUT."
+    },
+    {
+      "clause": "AC81.transfer_departure_target_revision_races",
+      "recommendation": "passed",
+      "description": "Both transfer/source departure orders and both target-iteration rename orders serialize via real PostgreSQL locks, recheck snapshots and preserve refused/accepted membership outcome without partial writes or AI changes.",
+      "test_identities": [
+        "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/source_change_first",
+        "internal/service::TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/transfer_first",
+        "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/source_change_first",
+        "internal/service::TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/departure_first",
+        "internal/service::TestCollaborationIterationAssignmentSerializesWithTargetRevision/membership_first",
+        "internal/service::TestCollaborationIterationAssignmentSerializesWithTargetRevision/iteration_edit_first"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_authority_race_test.go:36",
+        "server/internal/service/collaboration_source_authority_race_test.go:225"
+      ]
+    },
+    {
+      "clause": "AC81.history_ai_nonpartial_outcomes",
+      "recommendation": "passed",
+      "description": "Executed membership/initial-revision/concurrent refusal paths keep membership and collaboration history atomic; synthetic active AI records are exact unchanged, and source rollover creates no collaboration command.",
+      "test_identities": [
+        "internal/service::TestCollaborationIterationAssignmentVersionsReasonsAndReplay",
+        "internal/service::TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates",
+        "internal/service::TestCollaborationIterationAssignmentSerializesWithTargetRevision",
+        "internal/handler::TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory"
+      ],
+      "source_anchors": [
+        "server/internal/service/collaboration_source_fields_test.go:139",
+        "server/internal/service/collaboration_source_authority_race_test.go:265",
+        "server/internal/handler/collaboration_external_iteration_test.go:161"
+      ]
+    }
+  ],
+  "concurrency_review": {
+    "real_commit_barrier": "recipientCommitStarter invokes actual pgx.Tx.Commit only after release; following writer must satisfy waitWorkflowBlocked.",
+    "blocked_observation": "SELECT EXISTS (SELECT 1 FROM pg_stat_activity WHERE $1::int=ANY(pg_blocking_pids(pid))) with exact leading transaction backend PID.",
+    "departure_first": "Actual member FOR UPDATE lock -> following source writer -> blocked assertion -> DELETE member -> real commit -> forbidden.",
+    "source_change_first_departure": "Member FOR KEY SHARE is retained until source commit; the real DELETE waits.",
+    "arbitrary_sleeps": false,
+    "following_writer_pid_exported": false,
+    "wait_observation_limit": "Existing helper observes a waiter blocked by the exact blocker, not an explicitly exported following PID. Runs are serial and task-owned; no arbitrary elapsed delay is used as evidence."
+  },
+  "identity_privacy_scope": {
+    "AC81_assignee_name_null_acceptable": true,
+    "reason": "Source-owned statistics, start/end preview and frozen history remain usable with exact member ID/type but unavailable tenant-scoped display reference. AC81 does not require the AC85 list/board/timeline/comment name/avatar/external-marker UI.",
+    "private_fields_checked": [
+      "email sentinel",
+      "username sentinel",
+      "email/username keys",
+      "PRIVATE_PARENT_BODY"
+    ],
+    "external_actor_source_membership": false,
+    "AC85_not_promoted": true,
+    "known_ui_boundary": "iteration-scope-details.tsx:54-59 maps nil assignee_name to unknownHistory; iteration-operation.tsx:377 maps nil name to none. No display-name/Unknown/marker fix or browser evidence is claimed."
+  },
+  "verification": {
+    "gofmt": {
+      "executed_by_reviewer": true,
+      "command": [
+        "gofmt",
+        "-d",
+        "server/internal/service/collaboration_source_authority_race_test.go",
+        "server/internal/handler/collaboration_external_iteration_test.go"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    "go_vet": {
+      "executed_by_reviewer": false,
+      "artifact": "source-authority-iteration-static-first-20261021-result.json",
+      "sha256": "1bfcb0ab8ee1a50336f1a82fc2d5b7108d2554bf441af3c349dc29a79743d6a6",
+      "exit_code": 0,
+      "source_matches": true
+    },
+    "go_compile_typecheck": "Pass in the actual current-tree and HEAD-only race executions; no independent TypeScript check needed for two Go test files.",
+    "tests": "Passed executed identities only; all four new identities and 12 current adjacency identities have real PASS events, no failures or skips.",
+    "reviewer_db_build_browser_runtime_commands": false
+  },
+  "standalone_commit": {
+    "head": "5baf8659296a4a04666e6eaaa60e5965ffc70725",
+    "only_added_source": [
+      "server/internal/service/collaboration_source_authority_race_test.go",
+      "server/internal/handler/collaboration_external_iteration_test.go"
+    ],
+    "isolated_source_manifest": "source-authority-isolated-head-source.json",
+    "isolated_source_manifest_sha256": "56588c69a71dda37c756d010322c41b33f09fe8118b0c4a9b8d629e12cf67eb5",
+    "no_dirty_product_dependency": true,
+    "environment_dependency": "Task-owned service_s5 schema migration 737; Go 1.26.6 darwin/arm64, guarded synthetic fixtures.",
+    "tracked_helper_dependencies": [
+      "server/internal/service/collaboration_queue_test.go",
+      "server/internal/service/collaboration_source_fields_test.go",
+      "server/internal/service/collaboration_recipient_eligibility_test.go",
+      "server/internal/service/collaboration_workflow_test.go",
+      "server/internal/service/collaboration_execution_fixture_test.go",
+      "server/internal/handler/collaboration_edit_test.go",
+      "server/internal/handler/iteration_management_test.go",
+      "server/internal/handler/iteration_operations_test.go"
+    ],
+    "exclude": "Shared product hunks, unrelated task files, new follow-up tests, gates/provider config and acceptance promotion.",
+    "lore_not_tested": "Direct source-only/other-role negative matrices, missing removal reason and mixed iteration PUT; AC85 client identity/drag; native packaging/provider/other OS."
+  },
+  "spec_sync_recommendation": "Coordinator may append actual commit/waiter/AI-fixture and external tenant-scoped iteration reference contracts to collaboration-source-editing.md, retaining pending clause and AC85 boundaries. Reviewer does not edit specs.",
+  "limits": [
+    "AI snapshots are persisted synthetic active-channel/in-flight-input/group/run fixtures, not an actual permitted provider process. The run helper does not launch and may retain default preparing progress_state.",
+    "Positive/refused membership evidence covers executed cases only; exact negative matrices below remain pending.",
+    "No DB rerun, Playwright, Web/Electron build, paid provider, full Main/installer, other OS or rollout from this review.",
+    "No authoritative ledger/catalog/progress/spec/index/task/archive writes."
+  ]
+}

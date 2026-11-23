@@ -1,0 +1,91 @@
+{
+  "at": "2026-11-02T08:46:15.849367+00:00",
+  "reviewer": "Native implement child self-verification; coordinator and independent review separate",
+  "status": "PASS_PREREQUISITE_AUDIT_REQUIRED_ACCEPTANCE_GATES_OPEN",
+  "command_stream_hashes_match": true,
+  "expected_simctl_unavailable_exit72_retained": true,
+  "four_fixed_artifact_hashes_match": true,
+  "same_candidate_version_and_head": true,
+  "recording_script_ast": "PASS",
+  "no_new_runnable_gate": true,
+  "gates": {
+    "WIN-INSTALL-UPGRADE": {
+      "status": "BLOCKED",
+      "missing": "No provided disposable GitHub-hosted Windows x64 execution environment and no remote execution authorization. Remote pinned business baseline availability was not queried.",
+      "next": "Use remaining-platform-handoff-1.md with explicit candidate_version and remote/run HEAD identity when remote execution is authorized."
+    },
+    "LINUX-NATIVE-DESKTOP": {
+      "status": "BLOCKED",
+      "missing": "Current host is macOS; no provided Linux ARM64 VM/host with real X11/Wayland and window manager. Known DEB bytes do not provide a native desktop session.",
+      "next": "Provide native task session and verify same candidate DEB; current native controller is darwin/win32 only."
+    },
+    "IOS-UI": {
+      "status": "BLOCKED",
+      "missing": "Selected developer directory is CommandLineTools; simctl lookup exits72; bounded app inventory has no full Xcode.",
+      "next": "Use a target with full Xcode via command-local DEVELOPER_DIR, then record device/app/source/API identity before actual UI."
+    },
+    "MAC-AUTH-MIGRATION": {
+      "status": "NOT_RUN",
+      "missing": "No task-approved owned real business account/credential migration journey supplied; saved startup is synthetic and does not authenticate.",
+      "next": "Record approved owned account and stable auth mode for an actual installed old-to-new journey; do not inspect user credential stores."
+    },
+    "MAC-AUTOMATIC-UPDATER": {
+      "status": "NOT_RUN",
+      "missing": "Saved Main used automaticUpdates=false; no actual updater check/download/install/restart evidence. Candidate bytes exist, but manual replacement does not exercise updater.",
+      "next": "Prepare reviewed owned updater feed/profile and exact baseline/candidate artifacts for the real updater path."
+    },
+    "MAC-TRUST": {
+      "status": "BLOCKED",
+      "missing": "Known fixed candidate is ad-hoc signed; current display metadata has no Developer ID/Team identity. No separately supplied signed/notarized exact distribution.",
+      "next": "Validate exact signed distribution and notarization/trust on intended target; no private-key or notarization submission in this batch."
+    },
+    "REAL-PROVIDER": {
+      "status": "BLOCKED",
+      "missing": "No current account/provider/model/call-count/fee-cap authorization supplied; installed account files were not inspected.",
+      "next": "Use explicit current scope and quota limits before genuine account/model quality checks."
+    }
+  },
+  "resource_creations": {
+    "processes_left": 0,
+    "services": 0,
+    "ports": 0,
+    "mounts": 0,
+    "protocol_mutations": 0,
+    "containers": 0,
+    "databases": 0,
+    "database_connections": 0
+  },
+  "artifact_sha256": {
+    "evidence/next-remaining-platform-1/candidate-head.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/candidate-head.stdout": "233ebbcdbbe586452eed069d8c05735937f481f8a2dfab577cf3aadf5442cf3e",
+    "evidence/next-remaining-platform-1/docker-engine.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/docker-engine.stdout": "f83d27460d6dcc1136368a918a30a01c48eeb4546e2e9851085c955f41327fac",
+    "evidence/next-remaining-platform-1/mac-signature-metadata.stderr": "4b28052d44d0c41c3ecd0bc84966e3cdbcdbfa79a9ce571004dc81bbfc20b2ae",
+    "evidence/next-remaining-platform-1/mac-signature-metadata.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/mac-version.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/mac-version.stdout": "14a06c556ac677f94334dd2c86395d46009b9def8685e00741e60d31305a0262",
+    "evidence/next-remaining-platform-1/native-layout-boundary.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/native-layout-boundary.stdout": "b8b2e5a0f288826af68a6c59df9dd4cc892d9c6e2f4c617e85d20fb5d1d322bf",
+    "evidence/next-remaining-platform-1/os.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/os.stdout": "fbcf26fb9058bc45b68007bec15ae5998059197cd9b43dc1850894a44aae6878",
+    "evidence/next-remaining-platform-1/record.py.txt": "a9164e9ef028a3378960ba9cf6b2e13f406ae4e9637cf5803e1ae9d386d21784",
+    "evidence/next-remaining-platform-1/run.json": "ce5f0d6e4d128e1de9efd54822063748882a72cbba1a1cb9d4fcc73660e690bb",
+    "evidence/next-remaining-platform-1/setup-observation.json": "d13c70f9a3a4b6fa6f7ee704e8da9b9552d62ffd9d28e0f8addb8d892ee1509c",
+    "evidence/next-remaining-platform-1/simctl-location.stderr": "99b8da8adc7e70feba56cd931740e16d0f5724d7515e98d84d2c8bf1bb63dec8",
+    "evidence/next-remaining-platform-1/simctl-location.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/windows-disposable-boundary.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/windows-disposable-boundary.stdout": "b6a8b09d48d8dfdd7ca1c302b418a7cfe4b0ef9b5cbdca69fc14e5ab80a0b356",
+    "evidence/next-remaining-platform-1/windows-workflow-inputs.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/windows-workflow-inputs.stdout": "626b3cc09d9a91981b89d00b5ad222c448fbca09a1aec240e4fdf4c22b863552",
+    "evidence/next-remaining-platform-1/xcode-select.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-remaining-platform-1/xcode-select.stdout": "a8044fec385da5d3d686b9c06000917f00d0f27ca72b7db5b47bfc277f748301"
+  },
+  "commercial_calls": 0,
+  "remote_dispatches": 0,
+  "product_test_reruns": 0,
+  "limitations": [
+    "Local discovery is bounded; does not assert absence of all remote hosts or signing/account credentials.",
+    "Saved trust/runtime results remain historical; current artifact hash and signature display are identity/prerequisite observations only.",
+    "No current statistics inspection or cached-plan diagnostic occurred in this slice."
+  ]
+}

@@ -7,9 +7,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 
 import { setApiInstance } from "../api";
-import type { ApiClient } from "../api/client";
-import type { InboxItem } from "../types";
-import { useMarkInboxUnread, useUnarchiveInbox } from "./mutations";
+import { ApiClient, ApiError } from "../api/client";
+import type { InboxItem, InboxSnoozeReceipt } from "../types";
+import {
+  useMarkInboxUnread, useUnarchiveInbox,
+  useSnoozeInboxItem, useUnsnoozeInboxItem, useUndoInboxSnooze,
+} from "./mutations";
 import { inboxKeys } from "./queries";
 
 vi.mock("../hooks", () => ({
@@ -129,6 +132,18 @@ describe("useMarkInboxUnread", () => {
     expect(listCache(queryClient)).toEqual(active);
     expect(archivedCache(queryClient)).toEqual(archived);
   });
+
+  it("also updates a notification viewed from the snoozed cache without cancelling its deadline", async () => {
+    const until = "2027-01-01T09:00:00Z";
+    queryClient.setQueryData<InboxItem[]>(inboxKeys.snoozed(WORKSPACE_ID), [
+      item({ id: "inbox-1", read: true, archived: false, snoozed_until: until }),
+    ]);
+    const { result } = renderHook(() => useMarkInboxUnread(), { wrapper: createWrapper(queryClient) });
+    result.current.mutate("inbox-1");
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(queryClient.getQueryData<InboxItem[]>(inboxKeys.snoozed(WORKSPACE_ID))?.[0])
+      .toMatchObject({ read: false, snoozed_until: until });
+  });
 });
 
 describe("useUnarchiveInbox", () => {
@@ -208,5 +223,82 @@ describe("useUnarchiveInbox", () => {
 
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(archivedCache(queryClient)).toEqual(original);
+  });
+});
+
+describe("personal Inbox snooze mutations", () => {
+  const until = "2027-01-01T09:00:00Z";
+  const receipt: InboxSnoozeReceipt = {
+    workspace_id: WORKSPACE_ID, group_kind: "issue", group_id: "issue-1", revision: 4,
+    snoozed_until: until, reminded_at: null, undo_token: "undo-4",
+  };
+
+  function setup() {
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
+    const client = new ApiClient("https://api.example.test");
+    const snooze = vi.spyOn(client, "snoozeInboxItem").mockResolvedValue(receipt);
+    const unsnooze = vi.spyOn(client, "unsnoozeInboxItem").mockResolvedValue({ ...receipt, snoozed_until: null });
+    const undo = vi.spyOn(client, "undoInboxSnooze").mockResolvedValue({ ...receipt, revision: 5, snoozed_until: null });
+    setApiInstance(client);
+    qc.setQueryData(inboxKeys.list(WORKSPACE_ID), [item({ archived: false })]);
+    qc.setQueryData(inboxKeys.snoozed(WORKSPACE_ID), []);
+    qc.setQueryData(inboxKeys.archived(WORKSPACE_ID), [item()]);
+    qc.setQueryData(inboxKeys.unreadSummary(), [{ workspace_id: WORKSPACE_ID, count: 1 }]);
+    return { qc, snooze, unsnooze, undo };
+  }
+
+  it("keeps the original lists until authoritative success, then invalidates every affected projection", async () => {
+    const { qc, snooze } = setup();
+    let resolve: (value: InboxSnoozeReceipt) => void = () => {};
+    snooze.mockReturnValue(new Promise((done) => { resolve = done; }));
+    const original = listCache(qc);
+    const { result } = renderHook(() => useSnoozeInboxItem(WORKSPACE_ID), { wrapper: createWrapper(qc) });
+    result.current.mutate({ id: "inbox-1", snoozedUntil: until, expectedRevision: 3 });
+    await waitFor(() => expect(snooze).toHaveBeenCalled());
+    expect(listCache(qc)).toEqual(original);
+    expect(qc.getQueryState(inboxKeys.list(WORKSPACE_ID))?.isInvalidated).toBe(false);
+
+    resolve(receipt);
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(snooze).toHaveBeenCalledWith("inbox-1", {
+      snoozed_until: receipt.snoozed_until, expected_revision: 3,
+    }, { workspaceId: WORKSPACE_ID });
+    for (const key of [inboxKeys.list(WORKSPACE_ID), inboxKeys.snoozed(WORKSPACE_ID), inboxKeys.archived(WORKSPACE_ID), inboxKeys.unreadSummary()]) {
+      expect(qc.getQueryState(key)?.isInvalidated).toBe(true);
+    }
+  });
+
+  it("keeps the cached notification and read state when saving fails", async () => {
+    const { qc, snooze } = setup();
+    snooze.mockRejectedValue(new Error("network unavailable"));
+    const original = listCache(qc);
+    const { result } = renderHook(() => useSnoozeInboxItem(WORKSPACE_ID), { wrapper: createWrapper(qc) });
+    result.current.mutate({ id: "inbox-1", snoozedUntil: "2027-01-01T09:00:00Z", expectedRevision: 3 });
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(listCache(qc)).toEqual(original);
+    expect(qc.getQueryData(inboxKeys.snoozed(WORKSPACE_ID))).toEqual([]);
+  });
+
+  it("refreshes a stale undo conflict without rolling back a newer device's deadline", async () => {
+    const { qc, undo } = setup();
+    const latest = [item({ archived: false, snoozed_until: "2027-02-01T09:00:00Z", snooze_revision: 9 })];
+    qc.setQueryData(inboxKeys.snoozed(WORKSPACE_ID), latest);
+    undo.mockRejectedValue(new ApiError("snooze changed", 409, "Conflict"));
+    const { result } = renderHook(() => useUndoInboxSnooze(WORKSPACE_ID), { wrapper: createWrapper(qc) });
+    result.current.mutate({ id: "inbox-1", undoToken: "old-token" });
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(qc.getQueryData(inboxKeys.snoozed(WORKSPACE_ID))).toEqual(latest);
+    expect(qc.getQueryState(inboxKeys.snoozed(WORKSPACE_ID))?.isInvalidated).toBe(true);
+    expect(qc.getQueryState(inboxKeys.unreadSummary())?.isInvalidated).toBe(true);
+  });
+
+  it("passes the original state version for now-reminder and the server token for undo", async () => {
+    const { qc, unsnooze, undo } = setup();
+    const now = renderHook(() => useUnsnoozeInboxItem(WORKSPACE_ID), { wrapper: createWrapper(qc) });
+    const restore = renderHook(() => useUndoInboxSnooze(WORKSPACE_ID), { wrapper: createWrapper(qc) });
+    await now.result.current.mutateAsync({ id: "inbox-1", expectedRevision: 3 });
+    await restore.result.current.mutateAsync({ id: "inbox-1", undoToken: "undo-4" });
+    expect(unsnooze).toHaveBeenCalledWith("inbox-1", { expected_revision: 3 }, { workspaceId: WORKSPACE_ID });
+    expect(undo).toHaveBeenCalledWith("inbox-1", { undo_token: "undo-4" }, { workspaceId: WORKSPACE_ID });
   });
 });

@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-15",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "bounded_preflight_pass_full_s2_not_accepted",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "server": {
+    "manifest": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/server-2d/frozen-green-r03/manifest.json",
+    "manifest_sha256": "3e4bc0270a1e675ebb0a9cae4e479853393c6d796266d049f4e07f1728a3e7b3",
+    "files": 4954,
+    "source_drift": 0,
+    "merged_paths": 44,
+    "shared_hunk_conflicts": 0,
+    "independent_normal_and_race_records": { "canonical": 11, "completion_includes_canonical": 16, "handler": 12, "router": 17, "fail": 0, "skip": 0 },
+    "activation_available": false,
+    "full_2d_accepted": false,
+    "remaining_contract_gaps": ["exact_candidate_submission_locks", "caller_account_participant_operation_result_binding", "final_evidence_current_source_metric_horizons", "all_M1_modes_R38_P_not_equal_E", "full_W01_W18_Q01_Q12_and_F06"]
+  },
+  "ddl": {
+    "conclusion": "six_checked_old_raw_controls_plus_one_separate_fresh_immutable_supplement",
+    "independent_assertions": 39,
+    "independent_file_hashes": 13,
+    "original_seventh_raw_gap_retained": true,
+    "review": "schema-r02-continuation-followup-check-20261115.json"
+  },
+  "frontend": {
+    "results": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/frontend-validation-r02/results.json",
+    "results_sha256": "126117baf23ca4f6639dddf0ccc8c8691ddf84a8784322cd0ae4d53658259d55",
+    "production_binding_sha256": "97aa70bcdd96703177e530ba38f861598bd99fe857b448b95f205a877c4f1967",
+    "production_artifacts_sha256": "bbd76952a816d6724632a85f24ebbff6924b8482b355f92e5102b00bb1e0debf",
+    "bound_source_files": 3127,
+    "bound_dependency_links": 1961,
+    "rebased_workspace_links": 26,
+    "validation_only_tool_symlinks": 3,
+    "installed_dependencies": 0,
+    "validation_commands_pass": 9,
+    "setup_clone_commands": 1,
+    "typecheck_commands": 5,
+    "scoped_lint_commands": 2,
+    "owning_layer_test_runs": { "core": { "files_pass": 108, "tests_pass": 1850 }, "views": { "files_pass": 41, "tests_pass": 404 } },
+    "copy_and_original_source_drift": [0, 0],
+    "original_r01_failure_retained": true,
+    "real_product_acceptance": false
+  },
+  "exit_databases": {
+    "record": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/evidence/database-allocations-exit-r02.json",
+    "original_r01_wrong_policy_table_probe_retained": true,
+    "fresh_migrated_template0": true,
+    "dedicated_allocations": 4,
+    "ledger_rows_each": 835,
+    "last_version": "864_collaboration_stage_submission_ready",
+    "inspected_stage_fact_tables": 5,
+    "stage_fact_rows_each_at_allocation": 0,
+    "other_connections_each_at_allocation": 0,
+    "cluster_connections": 31,
+    "cluster_max_connections": 100
+  },
+  "f06": {
+    "prior_agent_error": "model_resource_stream_disconnected",
+    "prior_source_and_raw_retained": true,
+    "resuming_agent": "01a1dd96-8f86-70b3-be88-b52bc29225b3",
+    "status": "in_progress"
+  },
+  "exit_tests": { "agent": "01a1dd96-9306-7950-87e9-759dda5433dd", "scope": ["W11", "W12", "W13", "Q10_exit_slice"], "status": "in_progress" },
+  "acceptance": { "actual_S2_scenarios_pass": 0, "actual_S2_scenarios_total": 4, "A01_A12_accepted": false, "parent_cases": 24, "parent_PARTIAL": 4, "parent_NOT_RUN": 20, "S4_E01_E07": "NOT_RUN", "S5_r02": "rehearsal_only" },
+  "safety": { "git_commit": false, "branch_or_reset": false, "real_model_account": false, "real_funds": false, "production_action": false }
+}

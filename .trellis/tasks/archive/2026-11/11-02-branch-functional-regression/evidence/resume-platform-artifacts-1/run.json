@@ -1,0 +1,32 @@
+{
+  "at": "2026-11-02T02:23:55.574434+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "artifact_root": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist",
+  "installers": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+      "bytes": 233408426
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-collected-r2/multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+      "bytes": 233408426
+    }
+  ],
+  "images": [
+    {
+      "image": "multica-gap-full-main:20261022",
+      "exit_code": 0,
+      "identity": "sha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4 linux/arm64"
+    },
+    {
+      "image": "multica-collaboration-deb-acceptance:20261026",
+      "exit_code": 0,
+      "identity": "sha256:0d433ecf8ede66777494051568fd760468be288fd99d36d80bc68d022769471c linux/arm64"
+    },
+    {
+      "image": "golang:1.26.6-bookworm",
+      "exit_code": 0,
+      "identity": "sha256:116d58cbd88c1297624acc6e967a060012422bacf9930927e23fb719189c6f36 linux/arm64"
+    }
+  ]
+}

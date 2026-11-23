@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "type": "r27_managed_submission_preview_red_independent_check",
+  "at": "2026-11-17T13:12:51.327154+00:00",
+  "reviewer": "/root/r27_submission_check",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "r27_root": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm",
+  "verdict": "ACCEPTED_R27_SUBMISSION_RED_BOUNDARY",
+  "red_boundary_accepted": true,
+  "green_accepted": false,
+  "full_preview_accepted": false,
+  "full_S2_accepted": false,
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-independent-check-20261117.md",
+    "sha256": "4c91e6a6614dc765b1abf803fc637d5a51c7ef99e354e4a1905a4ebce0ed5525"
+  },
+  "private_support": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/submission-red-independent-check/retained-evidence-reconciliation.json",
+    "sha256": "fd3a4fed92f91617e89bc863b7dc8559eac0a9b5f03b99d035606350379701ec"
+  },
+  "retained_result": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/verification/submission-red-r01/result.json",
+    "sha256": "6d1f4de27202c0674c0bb0273d132d443e06b929c38da12601554b5dff0acd38"
+  },
+  "retained_permit": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/verification/submission-red-permit-r01.json",
+    "sha256": "9e5c3de40bde36f014acf28dd393c18a178eb7c6f408186da06cb530c04125e2"
+  },
+  "retained_implementation_report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-implementation-20261117.json",
+    "sha256": "617ee1595e1238e1ba4ad1d1055083fde4a81424d1b9a52d3945cb6487dd5069"
+  },
+  "checks": {
+    "protected_R26_byte_mode_identity": true,
+    "complete_source_byte_mode_identity": true,
+    "sole_new_test": true,
+    "permit_required_5055_hashes": true,
+    "all_retained_artifact_hashes": true,
+    "profile_identity": true,
+    "exact_permitted_command": true,
+    "real_AST_1_top_5_leaves_6_named": true,
+    "raw_result_and_complete_denominator": true,
+    "expected_RED_only": true,
+    "complete_72_relation_stage_exit_no_write_witnesses": true,
+    "no_durable_M1_grants_terminals_evaluations": true,
+    "no_original_PgError_in_each_leaf": true,
+    "no_no_write_or_adapter_assertion_failure": true,
+    "database_identity_ledger_indexes_retained": true,
+    "compile_evidence_only": true
+  },
+  "source": {
+    "root": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/source-red-r01",
+    "base_manifest_sha256": "89fc38ad0fc432a8fe1430e2eb50dbf002e8762c8ac458af27090744f1d8c2d6",
+    "full_manifest_sha256": "749f0b6133b16cb1a973ff3cc075ed0ea30916f5a49baf759ed797002b41328a",
+    "protected_count": 5048,
+    "full_count": 5049,
+    "actual_count": 5049,
+    "base_manifest_differences": [],
+    "source_byte_mode_mismatches": [],
+    "actual_manifest_missing": [],
+    "actual_manifest_extra": [],
+    "sole_added_paths": [
+      "server/internal/service/collaboration_completion_preview_managed_submission_test.go"
+    ]
+  },
+  "command": {
+    "argv": [
+      "/opt/homebrew/bin/go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=10m",
+      "./internal/service",
+      "-run",
+      "^TestCollaborationCompletionPreviewManagedSubmission$"
+    ],
+    "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/source-red-r01/server",
+    "ambient_environment_inherited": false,
+    "permit_sha256": "9e5c3de40bde36f014acf28dd393c18a178eb7c6f408186da06cb530c04125e2",
+    "permit_argv_matches": true,
+    "permit_cwd_matches": true,
+    "permit_environment_matches": true,
+    "maximum_commands": 1
+  },
+  "profile": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/database/profiles-r01/red-environment.json",
+    "sha256": "ed97bfafe79667d36317fa5035fe25d7248377bf653b452169b93b59a1ac8420",
+    "keys": [
+      "PATH",
+      "GOCACHE",
+      "GOMODCACHE",
+      "GOPATH",
+      "HOME",
+      "TMPDIR",
+      "TMP",
+      "TEMP",
+      "GOTMPDIR",
+      "DATABASE_URL",
+      "TASK_DATABASE_NAME",
+      "GOPROXY",
+      "GOSUMDB",
+      "GOTOOLCHAIN",
+      "GOWORK"
+    ],
+    "hash_matches": true,
+    "allocations": [
+      {
+        "purpose": "red",
+        "database": "multica_pay241_20261117_s2_m1preview_red_r27",
+        "package": "./internal/service",
+        "environment": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/database/profiles-r01/red-environment.json",
+          "sha256": "ed97bfafe79667d36317fa5035fe25d7248377bf653b452169b93b59a1ac8420"
+        },
+        "before_any_R27_Go_suite": true,
+        "test_commands_started": 0
+      },
+      {
+        "purpose": "green",
+        "database": "multica_pay241_20261117_s2_m1preview_green_r27",
+        "package": "./internal/service",
+        "environment": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/database/profiles-r01/green-environment.json",
+          "sha256": "37eaac0bfbf54db8c89f231e22e24a4ff6f47b5def528bada350621db7d0821d"
+        },
+        "before_any_R27_Go_suite": true,
+        "test_commands_started": 0
+      },
+      {
+        "purpose": "race",
+        "database": "multica_pay241_20261117_s2_m1preview_race_r27",
+        "package": "./internal/service",
+        "environment": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/database/profiles-r01/race-environment.json",
+          "sha256": "8db3964933a65d2f138bc0c691aadad3b5c39ad7d9396e8a9298cdd2e5d019a0"
+        },
+        "before_any_R27_Go_suite": true,
+        "test_commands_started": 0
+      }
+    ],
+    "task_database_name": "multica_pay241_20261117_s2_m1preview_red_r27",
+    "database_url_database": "multica_pay241_20261117_s2_m1preview_red_r27"
+  },
+  "inventory": {
+    "top_level": 1,
+    "leaves": 5,
+    "named": 6,
+    "pass": 3,
+    "fail": 3,
+    "skip": 0,
+    "missing": 0,
+    "unexpected": 0,
+    "pending": 0,
+    "parse_errors": 0,
+    "drift": 0,
+    "suite_reran": false
+  },
+  "leaf_results": [
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmission/enforce_authorization_available",
+      "result": "fail",
+      "service_status": 0,
+      "service_code": "",
+      "reason": "stage_incomplete",
+      "stage_blockers": [
+        {
+          "code": "stage_submission_unbound",
+          "stage": "verification"
+        }
+      ],
+      "first_pg_error": null,
+      "no_writes_hash": "49574467c5cbfbe6bc56ceca151e4d0ad7f3a36a2a0f71368012e4b411d0c41a",
+      "snapshot_relation_count": 72
+    },
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmission/policy_off_non_authorizing",
+      "result": "fail",
+      "service_status": 0,
+      "service_code": "",
+      "reason": "stage_incomplete",
+      "stage_blockers": [
+        {
+          "code": "stage_submission_unbound",
+          "stage": "verification"
+        }
+      ],
+      "first_pg_error": null,
+      "no_writes_hash": "82cef997d9d6e3db9ec1faddb572403367bd326c9b9a7d62ff9551f8728b2d46",
+      "snapshot_relation_count": 72
+    },
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmission/stale_target",
+      "result": "pass",
+      "service_status": 409,
+      "service_code": "delivery_completion_conflict",
+      "reason": "",
+      "stage_blockers": null,
+      "first_pg_error": null,
+      "no_writes_hash": "3c8af3bd0d5ab67bf00ef45e5cc2dfd7adbe2e6401b9bb5888b2355efdaa8172",
+      "snapshot_relation_count": 72
+    },
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmission/wrong_actor",
+      "result": "pass",
+      "service_status": 403,
+      "service_code": "delivery_completion_denied",
+      "reason": "",
+      "stage_blockers": null,
+      "first_pg_error": null,
+      "no_writes_hash": "54ea9f7a761bbe8d0dba1eec755a1ca60ec512701114860fa982fee60acfb183",
+      "snapshot_relation_count": 72
+    },
+    {
+      "test": "TestCollaborationCompletionPreviewManagedSubmission/expired_credential",
+      "result": "pass",
+      "service_status": 403,
+      "service_code": "delivery_completion_denied",
+      "reason": "",
+      "stage_blockers": null,
+      "first_pg_error": null,
+      "no_writes_hash": "d74a60cac232d33d8709c88d6e8dff49a40928874d5d890c9b61c5a19718fd85",
+      "snapshot_relation_count": 72
+    }
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "R27-SUB-C01",
+      "severity": "P1",
+      "file": "server/internal/service/collaboration_completion_preview.go",
+      "line": 241,
+      "issue": "Temporary preview stageMutationGuard lacks boundSubmission; unchanged checkSubmission early predicate at collaboration_stage_completion.go:402 refuses before querying the real submission",
+      "evidence": "Both actual submitted positives return stage_incomplete/verification:stage_submission_unbound with nil service error and no original PgError; setup asserts exact persisted SubmitAcceptance binding",
+      "recommendation": "In a separate one-file GREEN dispatch, initialize boundSubmission to the same parsed already-validated target submission ID passed to the unchanged checker",
+      "not_fixed_reason": "Source/product edits outside this reviewer ownership"
+    },
+    {
+      "id": "R27-SUB-G01",
+      "severity": "acceptance_gate",
+      "issue": "Generic submission branch also covers current-submission R38; serial human submission RED does not prove admin binding or full preview read-lock compatibility",
+      "recommendation": "Complete separate genuine R38 binding regression, preview nested locks/read-read/writer/revocation controls, same-source normal/race and appropriate static checks before accepting wider GREEN",
+      "not_fixed_reason": "Separate owner and future verification scope; this review performs no executions"
+    }
+  ],
+  "authorized_next_boundary": {
+    "authorized_by_RED_proof": true,
+    "requires_separate_green_dispatch": true,
+    "maximum_product_files": 1,
+    "file": "server/internal/service/collaboration_completion_preview.go",
+    "change": "Initialize only the temporary guard boundSubmission from the already-validated exact request ID and use the same ID for checkSubmission",
+    "checker_predicates_unchanged": true,
+    "row_operation_receipt_handoff_checks_unchanged": true,
+    "M1_writes_authorized": false,
+    "access_nomination_R38_locks_authorized_to_change": false,
+    "generic_admin_requires_separate_genuine_regression": true,
+    "read_lock_changes_authorized_by_this_slice": false
+  },
+  "actual_path_review": {
+    "fixture": "newStageCompletionFixture -> newStageExecutionFixture -> newStageRuntimeFixture -> existing managed/password setup, registration/claim/permit/report/code/QA/release, controlled deployment -> verification AdvanceStage",
+    "formal_submission": "stageCompletionM1Policy -> real stageCompletionSubmit/SubmitAcceptance -> confirmation/persisted stage submission",
+    "target": "stageCompletionAcceptParams + fresh ResolveIssueAccess -> completionCollaborationTargetFromWorkflow",
+    "read": "beginCompletionCandidatesRead actual pool.Begin -> GetCollaborationCompletionPreviewInTx -> final credential -> commit or rollback",
+    "action_context_seconds": 5,
+    "suite_timeout_minutes": 10,
+    "default_pool_isolation_preserved": true,
+    "setup_outside_preview_transaction": true,
+    "new_fabricated_ready_rows": false,
+    "SQL_seeded_formal_submission": false,
+    "new_M1_authorization": false,
+    "synthetic_external_facts_explicit": true,
+    "actual_S4_external_execution_proven": false
+  },
+  "no_effect_scope": {
+    "relations": 72,
+    "complete_rows_counts_and_stage_exit": true,
+    "all_five_hashes_equal": true,
+    "adapter_calls_target_last_under_mutex": true,
+    "adapter_comparison_has_no_success_log": true,
+    "adapter_assertion_failures": 0,
+    "callbacks_before_fixture_cleanup_including_Fatal": true,
+    "authorization_terminal_evaluation_rows": 0,
+    "all_tables_audited": false,
+    "archive_filesystem_bytes_audited": false,
+    "database_after_fixture_cleanup_metadata": {
+      "before_other_connections": 0,
+      "after_other_connections": 0,
+      "same_database": true,
+      "same_ledger": true,
+      "same_indexes": true,
+      "table_count_changes": {
+        "issue_handoff": {
+          "before": 0,
+          "after": 5
+        },
+        "collaboration_config_invalidation": {
+          "before": 21,
+          "after": 46
+        },
+        "collaboration_knowledge_invalidation": {
+          "before": 18,
+          "after": 33
+        }
+      },
+      "counts_are_after_fixture_cleanup": true,
+      "not_an_all_database_no_effect_audit": true
+    }
+  },
+  "verification": {
+    "lint": "NOT_RUN_EXPLICIT_READ_ONLY_DISPATCH",
+    "typecheck": "NO_NEW_RUN_RETAINED_GO_COMPILE_EXIT_0",
+    "tests": "RETAINED_GENUINE_RED_EXIT_1_3_PASS_3_FAIL_NAMED",
+    "compile_binary_sha256": "67f63f18ddf2fbdeb73f9a28c373dbd181a20117b658524d1ee6e0f719d4b697",
+    "retained_artifact_hash_mismatches": 0,
+    "reviewer_executions": {
+      "product_or_test_binaries": 0,
+      "testmain": 0,
+      "lint": 0,
+      "typecheck": 0,
+      "database": 0,
+      "sql": 0,
+      "api": 0,
+      "browser": 0,
+      "build": 0,
+      "git": 0,
+      "subagents": 0
+    }
+  },
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-independent-check-20261117.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-independent-check-20261117.json",
+    "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/submission-red-independent-check/retained-evidence-reconciliation.json"
+  ],
+  "simplifications_made": [],
+  "historical_R24_R25_holders_proven": false,
+  "historical_results_changed": false,
+  "parent_24_cases": {
+    "pass": 0,
+    "partial": 9,
+    "not_run": 15
+  },
+  "remaining_gates": [
+    "separate R38 current-submission genuine RED/controls",
+    "separate bounded GREEN implementation and normal/race/writer/static verification",
+    "full preview nested read-lock and concurrency acceptance",
+    "matching Web/Desktop original four scenarios and A01-A12",
+    "normal recovery and final independent S2 acceptance",
+    "S3",
+    "real S4 integration acceptance",
+    "final S5 acceptance",
+    "parent 24-case acceptance"
+  ]
+}

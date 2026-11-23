@@ -1,0 +1,25 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_ordinary",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^(TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet|TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry|TestEmptyClaimCache_BumpInvalidatesPriorMark|TestEmptyClaimCache_EmptyRuntimeIDIsNoOp|TestEmptyClaimCache_MarkAndIsEmptyVersionMatched|TestEmptyClaimCache_RuntimeIsolation|TestEmptyClaimCache_StaleMarkRejected|TestEmptyClaimCache_TTL|TestNotifyTaskAvailable_BumpsBeforeWakeup|TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp|TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict|TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup|TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers|TestReclaimCheckCache_CollectionCheckAlignsBackstops|TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder|TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen|TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline|TestReclaimCheckCache_TrackLaterAndForget)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=10m"
+  ],
+  "redis_url": "redis://127.0.0.1:57244",
+  "started_at": "2026-10-21T05:18:04.907453+00:00",
+  "exit_code": 0
+}

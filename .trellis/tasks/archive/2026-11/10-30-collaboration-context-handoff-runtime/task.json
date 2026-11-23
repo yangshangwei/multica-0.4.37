@@ -1,0 +1,752 @@
+{
+  "id": "collaboration-context-handoff-runtime",
+  "name": "collaboration-context-handoff-runtime",
+  "title": "可靠上下文交接与召回",
+  "description": "已交付阶段结项：handoff、checkpoint、权限失效封口、分页来源召回与Web/Desktop展示；本轮续作脚本仅作为默认关闭的准备材料交接。 原范围剩余事项已移交后续待办，完整路线与真实验收未因此完成。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-10-30",
+  "completedAt": "2026-11-12",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "10-30-collaboration-context-handoff",
+  "relatedFiles": [],
+  "notes": "2026-11-12 用户确认“归档已交付阶段”。本任务仅关闭已交付工程阶段；见stage-closure-2026-11-12.md及后续待办。原失败、授权、预算、默认关闭状态保留。",
+  "meta": {
+    "planning_progress": "reviewed_2026-10-31",
+    "research_head": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+    "latest_verification": "research/continuation-20261112/verification/implementation-verification.json",
+    "integration_commit": "0e1ee8e1e",
+    "integration_worktree": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+    "deterministic_acceptance": "current_source_normal02_race03_independently_passed; historical_recording_timeout_not_claimed_fixed",
+    "platform_acceptance": "password7_run03_exact7pass_zero_fail_skip_retry_independent8attachments",
+    "verification_report": "research/continuation-20261105/independent-review/current-deterministic-acceptance.md",
+    "real_model_acceptance": "E0a behavior passed with configuration drift separately reviewed; H1/H2/H2b each 3/3 passed; H3a trial1 passed, trial2 incomplete timeout; later slots stopped",
+    "evidence_commit": "2b861347e",
+    "deterministic_addendum": "passed_0bbc6a77a_84c4c2b3d",
+    "progress_file": "progress.md",
+    "progress_phase": "delivered_stage_closure",
+    "next_action": "Remaining scope transferred to 11-12-collaboration-real-runtime-acceptance; old stage is not an execution target.",
+    "joint_current_addendum": {
+      "commit": "65cd0599b",
+      "source_head": "93afc3cb0",
+      "report": "research/verification/2026-11-01-joint-current/README.md",
+      "joint_race_items": 40,
+      "tagged_fake_items": 80,
+      "strengthened_joint_items": 6,
+      "production_changes": false,
+      "real_provider_executed": false
+    },
+    "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+    "resume_ledger": "../10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
+    "original_series_next": "E5 baseline trial2; remaining8; no automatic continuation",
+    "rk1_runtime_budget": {
+      "approved_cap": 25,
+      "consumed": 12,
+      "includes_H2b": true,
+      "H6_launches_per_trial": 2
+    },
+    "runtime_audit_fixes": "research/verification/2026-11-01-audit-takeover/repair-ledger.json",
+    "runtime_audit_product_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+    "rk1_approved_launch_cap": 25,
+    "rk1_actual_launches": 12,
+    "original_experiment_remaining_cap": 8,
+    "original_experiment_next": "E5 baseline trial2; original canary stop remains active",
+    "runtime_audit_review": "pass-with-notes; RV1 fixed58d486656 and root16/16",
+    "runtime_full_service": "research/verification/2026-11-01-audit-takeover/root-service-final-summary.json",
+    "current_final_candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "current_candidate_record": "research/continuation-20261104/shared-gate-reconciliation.json",
+    "continuation_plan": "continuation-plan-2026-11-02.md",
+    "rki6_independent_result_review": {
+      "report": "research/continuation-20261102/rki6-review/review.json",
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0,
+      "cross_record_checks": 1794,
+      "real_provider_calls": 0
+    },
+    "prepared_continuation_candidate": {
+      "sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "root": "/Volumes/artisan/code/2026/mc-collaboration-final5-20261102",
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "report": "research/continuation-20261102/coordinator/candidate5-preparation.json",
+      "accepted": false,
+      "state": "retained_preparation_only_no_duplicate_execution"
+    },
+    "continuation_updated_at": "2026-11-03T02:02:07.253181+00:00",
+    "selected_v6_cross_review": {
+      "report": "research/continuation-20261102/v6-cross-review/review.json",
+      "verdict": "changes-required",
+      "blocking_findings_open": 1,
+      "blocking_id": "AV6-CROSS-1",
+      "go_sha256": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+      "launcher_sha256": "7e2592d1b6e0a795ce9078f4c97d04255f635d392ff7e16a154309aa87695516",
+      "Go_fake_pass": 14,
+      "launcher_fake_pass": 15,
+      "AV5_1_closed": true,
+      "AV5_N1_closed": true,
+      "AV5_2_closed": false
+    },
+    "selected_final_adapter_freeze": {
+      "go_sha256": "8963ebcc64d89881a6f1966f9ac7a09f1a9121dd32a4f0a9518493ed3b4dd9a9",
+      "pnpm_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "launcher_sha256": "3938151d67aa91346aa1898a7be7c561a94d16e86fb8c8d79ab9cb75c71f3e34",
+      "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+      "implementer_fake_pass": 83,
+      "source_evidence": "../10-30-collaboration-fix-closure/research/continue-20261102/adapter-fix/summary.json",
+      "cross_recheck": "research/continuation-20261102/v6-cross-review/recheck/review.json",
+      "final_acceptance": false
+    },
+    "selected_v6_final_cross_review": {
+      "report": "research/continuation-20261102/v6-cross-review/recheck/review.json",
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0,
+      "review_sha256": "a24b892ba0ba03cefdd15de28350fa5ffe9567f26251961bb1f107066c49bf90",
+      "clearance": "research/continuation-20261102/v6-cross-review/recheck/clearance.json",
+      "clearance_sha256": "aaa5dc7dd60b0adacecdfdd707e4951d6f4cb4b3dd102bbe3358b3d0d3c33e9f",
+      "fake_contract_pass": 83,
+      "adapter_sha256": {
+        "go": "8963ebcc64d89881a6f1966f9ac7a09f1a9121dd32a4f0a9518493ed3b4dd9a9",
+        "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+      },
+      "launcher_sha256": "3938151d67aa91346aa1898a7be7c561a94d16e86fb8c8d79ab9cb75c71f3e34",
+      "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+      "full_candidate_accepted": false
+    },
+    "latest_shared_complete_check": {
+      "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "accepted": true,
+      "make_exit": 0,
+      "record": "research/continuation-20261104/shared-gate-reconciliation.json",
+      "scope": "shared complete V16 only; dedicated runtime and model gates separate"
+    },
+    "shared_v9_run": {
+      "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.log",
+      "state": "complete",
+      "process_id": 20588,
+      "started_at": "2026-11-02T15:36:09.037397+00:00",
+      "go_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "pnpm_sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "launcher_sha256": "68dfc4c48a42e7ea276eee815b7f0985e96cf950ec3e2e623187e8ab583bf475",
+      "actual_full_acceptance": false,
+      "runtime_provider_calls": 0,
+      "exit_code": 2,
+      "finished_at": "2026-11-02T16:59:09.951147+00:00"
+    },
+    "latest_shared_complete_check_v9": {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+      "exit_code": 2,
+      "static_pass": 15,
+      "TS_pass": 13082,
+      "Go_pass": 20852,
+      "Go_fail": 0,
+      "Go_skip": 22,
+      "Go_packages": 82,
+      "browser": {
+        "planned": 439,
+        "pass": 334,
+        "fail": 16,
+        "skip": 89,
+        "retry": 0
+      },
+      "actual_final_acceptance": false,
+      "runtime_provider_calls": 0
+    },
+    "current_final_candidate_basis": "Recorded quiet02 normal and race03 independently passed; historical failures retained; current source changes require binding before future execution",
+    "selected_v10_preparation": {
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "tracked_product_files": 7960,
+      "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+      "framework_files": 17,
+      "record": "research/continuation-20261102/coordinator/v10/binding-preparation.json",
+      "offline_preflight_pass": 32,
+      "accepted": false,
+      "actual_run_started": true,
+      "paid_binding_active": false
+    },
+    "shared_v10_run": {
+      "observed_at": "2026-11-02T19:58:35.161377+00:00",
+      "state": "process-complete-failed; browser-interrupted-scope-incomplete",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+      "record_sha256_at_observation": "b8b7ba7e685530d147413eeae163020ceff4f59addf2d0af213c8e1d252d0f93",
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "started_at": "2026-11-02T19:56:51.936099+00:00",
+      "process_id": 92594,
+      "adapter_sha256": {
+        "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+        "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+      },
+      "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+      "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+      "independent_review": {
+        "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-executable-review.json",
+        "sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
+        "verdict": "pass-with-notes",
+        "blocking_findings_open": 0
+      },
+      "clearance_sha256": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae",
+      "actual_final_acceptance": false,
+      "runtime_real_provider_calls": 0,
+      "initial_not_started_snapshots_preserved": true,
+      "current_phase": "Playwright one-worker zero-retry; final result pending",
+      "passed_stages": {
+        "static": 15,
+        "TS": 13082,
+        "Go_packages": 82,
+        "Go_pass": 20852,
+        "Go_fail": 0,
+        "Go_skip": 22
+      },
+      "Go_stage_observation": "research/continuation-20261102/coordinator/v10/go-stage-observation.json",
+      "Go_stage_observation_sha256": "2776b0ce33db886f51a46b4c497cf8d6d72200f916f0d8d4a2d1845d46e9981e",
+      "known_browser_failures": [
+        "agent-categories.spec.ts:10",
+        "agent-category-grouping.spec.ts:23"
+      ],
+      "first_browser_failure_observation": "research/continuation-20261102/coordinator/v10/first-browser-timeout-observation.json",
+      "observed_browser_failure_headers": 32,
+      "environment_diagnosis": {
+        "state": "direct cause proven; mechanism detail under review",
+        "error": "Auth store not initialised — call registerAuthStore() first",
+        "digest": "3602458576",
+        "v10_registered_module": 99423,
+        "v10_failing_accessor_module": 10100,
+        "module_source_mixed_worktrees": true,
+        "runtime_experiment_model_or_budget_changed": false,
+        "diagnostic_agent": "/root/v10_category_timeout_review",
+        "report": "research/continuation-20261102/coordinator/v10/category-timeouts/20261103-readonly-diagnosis.json",
+        "report_sha256": "2b7be3a02c890f6afe6aec419a76b228e9261801b15e32c02bc791c447af89a5",
+        "direct_cause": "SSR auth facade registrations/accessor resolve to different compiled modules",
+        "upstream_mechanism": "chained borrowed workspace resolver layout remains hypothesis",
+        "exact_pending_await": "unrecorded"
+      },
+      "finished_at": "2026-11-02T21:12:33.404620+00:00",
+      "exit_code": 2,
+      "check_script_exit_code": 130,
+      "browser": {
+        "planned": 439,
+        "passed": 39,
+        "failed": 36,
+        "failed_status": 24,
+        "timed_out_status": 12,
+        "interrupted": 1,
+        "explicit_skipped": 22,
+        "did_not_run": 341,
+        "retries": 0,
+        "flaky": 0
+      },
+      "final_observation": "research/continuation-20261102/coordinator/v10/final-interrupted-observation.json",
+      "owner_stop_corroboration": "research/continuation-20261102/coordinator/v10/owner-stop-corroboration.json",
+      "stop_signal": "SIGINT"
+    },
+    "v10_status_independent_review": {
+      "report": "research/continuation-20261102/coordinator/v10/status-review/review.json",
+      "report_sha256": "0f886ec391d208e516da72191c3d77930adcbea548c25bb824b0965362514998",
+      "verdict": "pass-with-notes",
+      "scope": "status and offline launch prerequisites only; no paid or wholecheck clearance",
+      "JSON_inputs_validated": 8,
+      "status_comparisons_pass": 15,
+      "Provider_calls": 0,
+      "status_blocking_findings_open": 0
+    },
+    "password7_preparation": "research/continuation-20261102/coordinator/v10/password7-recipe.json",
+    "original14_offline_preparation": "research/continuation-20261102/coordinator/v10/original14-preparation.json",
+    "mainline_delta_after_v10_freeze": {
+      "head": "c6da1538a708d9a87763cdbf862df5326918082c",
+      "review": "research/continuation-20261102/coordinator/v10/mainline-impact-review.json",
+      "production_paths": 12,
+      "runtime_implementation_changed": false,
+      "recipient_UI_overlap": true,
+      "v10_evidence_not_relabelled": true,
+      "final_candidate_scope_pending": true
+    },
+    "latest_shared_complete_check_v10": {
+      "observed_at": "2026-11-02T21:18:14.747624+00:00",
+      "state": "process-complete-failed; browser-interrupted-scope-incomplete",
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+      "record_sha256": "a691caa6d0168db903bff9abf12d3a393f8949725110710302d4ac42d9034019",
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+      "log_sha256": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+      "started_at": "2026-11-02T19:56:51.936099+00:00",
+      "finished_at": "2026-11-02T21:12:33.404620+00:00",
+      "make_exit_code": 2,
+      "check_script_exit_code": 130,
+      "browser_exit_context": "line log says Checks FAILED(exit130), one test interrupted; stop source attribution left to sole-owner action receipt",
+      "browser": {
+        "planned": 439,
+        "passed": 39,
+        "failed": 36,
+        "failed_status": 24,
+        "timed_out_status": 12,
+        "interrupted": 1,
+        "explicit_skipped": 22,
+        "did_not_run": 341,
+        "retries": 0,
+        "flaky": 0
+      },
+      "browser_json": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/makecheck-playwright-results-v9.json",
+      "browser_json_sha256": "bb72fb895375db673b301c9dcbeda229405143e2f1af2c12659e4cda7d9ed131",
+      "browser_reporter_skipped_aggregate": 364,
+      "reporter_skip_aggregate_note": "includes 22 explicit skips, 1 interrupted and 341 unrun; do not count these as executed skips or passes",
+      "passed_stages": {
+        "static": 15,
+        "TS": 13082,
+        "Go_packages": 82,
+        "Go_pass": 20852,
+        "Go_fail": 0,
+        "Go_skip": 22
+      },
+      "source_environment_verdict": "compiled Web SSR auth-store module identity split proven; paid/mainline acceptance not granted",
+      "diagnosis": "research/continuation-20261102/coordinator/v10/category-timeouts/20261103-readonly-diagnosis.json",
+      "full_candidate_accepted": false,
+      "runtime_real_provider_calls": 0,
+      "original14_new_launches": 0,
+      "prior_v9_failed_result_preserved": true,
+      "real_entry_runnable": false
+    },
+    "v11_preparation_review": {
+      "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+      "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+      "code_review": "research/continuation-20261102/coordinator/v11/independent-launcher-review/code/review.json",
+      "code_review_sha256": "4c4e45192733c052dd259ae421fc8c5c6008fbf297a2a890bd5557e1421f37b8",
+      "code_blockers": 0,
+      "standard_source_manifest": "research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/direct-source-manifest.json",
+      "canonical_SourceID": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+      "canonical_source_files": 7962,
+      "all_tracked_fingerprint": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+      "tracked_files": 17182,
+      "historical_revision_overlay_identity": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+      "original_label_correction_pending": false,
+      "artifact_observation": "research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/artifact-actual-observation.json",
+      "current_artifact_file_bytes_size_modes_match": true,
+      "workspace_exports_owned": 66,
+      "actual_full_run_or_SSR_or_paid_acceptance": false,
+      "corrected_launcher_sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+      "corrected_bindings_sha256": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+      "code_recheck": {
+        "path": "research/continuation-20261102/coordinator/v11/independent-launcher-review/code/provenance-recheck/review.json",
+        "sha256": "a859c3615b24d7b747afd28edc4f49d6a50783a2d7fd7b9332df028397555f19",
+        "verdict": "pass-with-notes",
+        "blocking_findings_open": 0
+      },
+      "evidence_recheck": {
+        "path": "research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/provenance-recheck/verdict.json",
+        "sha256": "803aa43d3c374a8573abf93fc154258c4c33a919b08f905760c29307a3d3bb56",
+        "verdict": "pass_with_notes_code_and_artifact_source_only",
+        "blocking_static_artifact_source_findings_open": 0
+      }
+    },
+    "shared_v11_run": {
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/make-check-v11.json",
+      "record_sha256_at_observation": "a2fa4ef727e992e1dd478353acc898052a1e1d60850145d037cc3f0f68a8b166",
+      "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+      "state": "running",
+      "started_at": "2026-11-03T01:49:29.326279+00:00",
+      "process_id": 14257,
+      "final_whole_acceptance": false,
+      "Provider_calls_by_this_thread": 0
+    },
+    "continuation_20261104": {
+      "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+      "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+      "worktree": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104",
+      "plan": "research/continuation-20261104/execution-plan.md",
+      "shared_gate": "research/continuation-20261104/shared-gate-reconciliation.json",
+      "normal_review": "research/continuation-20261104/independent-review/normal-review.json",
+      "runtime_budget": 25,
+      "runtime_consumed": 0,
+      "updated_at": "2026-11-04T15:42:18.075813+00:00",
+      "latest_acceptance": {
+        "updated_at": "2026-11-04T15:54:34.567289+00:00",
+        "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+        "source_files": 7990,
+        "shared_gate": "research/continuation-20261104/shared-gate-reconciliation.json",
+        "normal": {
+          "exit": 0,
+          "pass": 62,
+          "fail": 0,
+          "skip": 0,
+          "review": "research/continuation-20261104/independent-review/normal-review.json"
+        },
+        "race": {
+          "exit": 1,
+          "pass": 60,
+          "fail": 2,
+          "skip": 0,
+          "review": "research/continuation-20261104/independent-review/race-review.json",
+          "overlap_observed": true,
+          "overlap_causal_attribution": false
+        },
+        "password_runtime3": {
+          "passed": 3,
+          "review": "research/continuation-20261104/password7/shared-runtime3-review.json",
+          "full7_passed": false
+        },
+        "window_owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+        "window_order": [
+          "shared password7",
+          "original14",
+          "runtime verification after explicit release"
+        ],
+        "runtime_cap": 25,
+        "runtime_consumed": 0,
+        "runnable": false
+      }
+    },
+    "historical_current_aliases_before_20261104": {
+      "current_final_candidate": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "current_candidate_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+      "current_final_candidate_basis": "latest actual fullcheck v10 running; latest completed check remains failed v9",
+      "latest_verification": "verification-integration-2026-11-01.md",
+      "verification_report": "verification-integration-2026-11-01.md",
+      "latest_shared_complete_check": {
+        "observed_at": "2026-11-02T21:18:14.747624+00:00",
+        "state": "process-complete-failed; browser-interrupted-scope-incomplete",
+        "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+        "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+        "record_sha256": "a691caa6d0168db903bff9abf12d3a393f8949725110710302d4ac42d9034019",
+        "log": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+        "log_sha256": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+        "started_at": "2026-11-02T19:56:51.936099+00:00",
+        "finished_at": "2026-11-02T21:12:33.404620+00:00",
+        "make_exit_code": 2,
+        "check_script_exit_code": 130,
+        "browser_exit_context": "line log says Checks FAILED(exit130), one test interrupted; stop source attribution left to sole-owner action receipt",
+        "browser": {
+          "planned": 439,
+          "passed": 39,
+          "failed": 36,
+          "failed_status": 24,
+          "timed_out_status": 12,
+          "interrupted": 1,
+          "explicit_skipped": 22,
+          "did_not_run": 341,
+          "retries": 0,
+          "flaky": 0
+        },
+        "browser_json": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/makecheck-playwright-results-v9.json",
+        "browser_json_sha256": "bb72fb895375db673b301c9dcbeda229405143e2f1af2c12659e4cda7d9ed131",
+        "browser_reporter_skipped_aggregate": 364,
+        "reporter_skip_aggregate_note": "includes 22 explicit skips, 1 interrupted and 341 unrun; do not count these as executed skips or passes",
+        "passed_stages": {
+          "static": 15,
+          "TS": 13082,
+          "Go_packages": 82,
+          "Go_pass": 20852,
+          "Go_fail": 0,
+          "Go_skip": 22
+        },
+        "source_environment_verdict": "compiled Web SSR auth-store module identity split proven; paid/mainline acceptance not granted",
+        "diagnosis": "research/continuation-20261102/coordinator/v10/category-timeouts/20261103-readonly-diagnosis.json",
+        "full_candidate_accepted": false,
+        "runtime_real_provider_calls": 0,
+        "original14_new_launches": 0,
+        "prior_v9_failed_result_preserved": true,
+        "real_entry_runnable": false
+      }
+    },
+    "continuation_20261105": {
+      "plan": "research/continuation-20261105/execution-plan.md",
+      "coordination": "research/continuation-20261105/coordination.json",
+      "cross_series_review": "research/continuation-20261105/independent-review/continuity-review.json",
+      "password7": "independently passed run03; zero fail/skip/retry",
+      "core_owner": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+      "new_fake_pair_started": true,
+      "runtime_calls": 0,
+      "runtime_cap": 25,
+      "original_series": "E5 canary quote failed strictcriterion; originalremaining8 stopped; separate series",
+      "updated_at": "2026-11-04T17:00:25.304678+00:00",
+      "normal": {
+        "pass": 62,
+        "review_checks": 912
+      },
+      "race03": {
+        "pass": 62,
+        "review_checks": 915
+      },
+      "runnable": false,
+      "real_window": "unconfirmed; native task-message gateway502",
+      "model_calls": 0,
+      "evidence_commit": "085c2c4fd",
+      "execution_checkout_head": "a2225552782eb6bcfda4542903d545c41a98677e",
+      "postcommit_source_verified": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea"
+    },
+    "runtime_calls": 12,
+    "runnable": false,
+    "real_entry_helper": "research/continuation-20261105/real-entry/e0a_entry.py",
+    "real_entry_helper_controls": "7pass; noGoDBProvider",
+    "real_entry_helper_commit": "86541bb37",
+    "real_entry_execution_head": "207433cd0262e8cb0961203ff40a97f4681a1fbf",
+    "warp_claude_closed": true,
+    "real_entry_binding_commit": "1854216e0",
+    "real_entry_describe": "research/continuation-20261105/real-entry/describe-result.json",
+    "latest_real_result": "research/continuation-20261105/h3a-entry/result-summary.json",
+    "real_E0a_evidence_commit": "b66d0ef87",
+    "E0a_disposition": "research/continuation-20261105/plugin-drift-resolution/disposition.json",
+    "successor_helper_commit": "725eb1cd9",
+    "successor_helper_execution_head": "f033051ca97b97fd237998c553bbc9a876a1b40b",
+    "successor_controls": 11,
+    "H1_evidence_commit": "c0d4b50b3",
+    "next_registered_scenario": "RK1-H3a",
+    "next_registered_start_trial": 3,
+    "H2_preparation_commit": "189f1b151",
+    "H2_describe": "research/continuation-20261105/h2-entry/describe-result.json",
+    "continuation_proposal": "research/continuation-20261105/continuation-proposal.md",
+    "H3a_failure_evidence_commit": "f1d35b66a",
+    "historical_shared_fullcheck_owner": {
+      "session": "01a19ee4-40e8-7b70-b15c-5b5a13bd050e",
+      "previous_session": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+      "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+      "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+      "source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+      "state": "running; final result pending",
+      "actual_fullcheck_started": true,
+      "handoff_record": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v11-execution-handoff.json",
+      "handoff_sha256": "3491a1fe15dc810ef4ae3119eb960e7038fbba42cb5594d57215cce9374995f9",
+      "owns": [
+        "SSR",
+        "fullcheck",
+        "password7",
+        "original14"
+      ],
+      "runtime_real_provider_calls": 0,
+      "started_at": "2026-11-03T01:49:29.326279+00:00",
+      "run_record": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/make-check-v11.json",
+      "process_id": 14257
+    },
+    "status_reconciliation_2026_11_09": {
+      "source_head": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+      "report": "docs/audits/2026-11-09-active-task-reconciliation.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "meta": {
+          "real_model_acceptance": "E0a rawpass; full postrunbinding notaccepted; H1-H6 notrun",
+          "original_series_next": "E3 after trial 2; then E4 -> E5 -> E6; remaining cap 14; frozen source",
+          "original_experiment_remaining_cap": 14,
+          "original_experiment_next": "E3 after trial 2",
+          "shared_fullcheck_owner": {
+            "session": "01a19ee4-40e8-7b70-b15c-5b5a13bd050e",
+            "previous_session": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+            "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+            "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+            "source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+            "state": "running; final result pending",
+            "actual_fullcheck_started": true,
+            "handoff_record": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v11-execution-handoff.json",
+            "handoff_sha256": "3491a1fe15dc810ef4ae3119eb960e7038fbba42cb5594d57215cce9374995f9",
+            "owns": [
+              "SSR",
+              "fullcheck",
+              "password7",
+              "original14"
+            ],
+            "runtime_real_provider_calls": 0,
+            "started_at": "2026-11-03T01:49:29.326279+00:00",
+            "run_record": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/make-check-v11.json",
+            "process_id": 14257
+          },
+          "current_final_candidate_basis": "Current committed runtime candidate; default production equals accepted sharedEDA plus six tagged knowledge test files; current runtime race acceptance failed.",
+          "next_registered_scenario": "RK1-H2b",
+          "next_registered_start_trial": 1,
+          "current_acceptance_matrix": "../10-30-collaboration-context-handoff/acceptance-2026-11-01.json",
+          "H2_window": "requested_after_core_current_batch; not_granted",
+          "H2b_window": "conditionally granted by core after H2 independent PASS and fresh bindings",
+          "prepared_next_candidate": {
+            "root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+            "head": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+            "state": "source integrated; owned dependency installation/verification pending",
+            "internal_workspace_expectations": "research/continuation-20261102/coordinator/v11/workspace-identity-expectations.json",
+            "source_binding_final": false,
+            "installed_graph_verified": "static-only 22/22 declared +32/32 observed; freeze/SSR/build pending",
+            "wholecheck_accepted": false,
+            "Provider_calls": 0,
+            "static_layout_review": {
+              "path": "research/continuation-20261102/coordinator/v11/independent-workspace-review/verdict.json",
+              "sha256": "2527508cb720a25a053997add95c90c0bf2a1a7115890e894812911d522d621b",
+              "status": "preliminary_static_layout_pass",
+              "build_SSR_wholecheck_paid_clearance": false
+            }
+          }
+        }
+      }
+    },
+    "current_status_report": "docs/audits/2026-11-11-active-task-progress-refresh.zh-CN.md",
+    "progress_audit_2026_11_10": {
+      "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
+      "finding": "H3a t2 timeout cause remains unknown; 12/25 consumed. Eight E5/H3a evidence hashes checked across both series; runtime collector controls freshly passed 11/11 with no Provider/DB."
+    },
+    "real_execution_authorization_2026_11_11": {
+      "record": "research/continuation-20261111/real-execution-authorization.json",
+      "user_message_exact": "批准",
+      "scope": "H3a trial3 onward only, after fresh current source/CLI/config/database/window/provider-gateway binding",
+      "approved_order": "H3a-t3 -> H3b -> H5 -> H6",
+      "approved_remaining_slots": 13,
+      "historical_files_immutable": true,
+      "runnable": false,
+      "allow_build": false,
+      "allow_check": false,
+      "allow_run": false,
+      "blocking_preconditions": [
+        "current source and CLI byte binding",
+        "legitimate provider gateway admission",
+        "separate permit",
+        "exclusive execution window",
+        "fresh evidence registration"
+      ]
+    },
+    "current_runtime_binding_check_2026_11_11": {
+      "record": "research/continuation-20261111/current-runtime-binding-check.json",
+      "source_head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+      "source_id": "7d9b7fa2be856c3a573c14c8dd682045c053034f897997567f2b3e78fce2c4d5",
+      "dirty_product_path_count": 158,
+      "framework_file_count": 19,
+      "framework_sha256": "72c51f98d36aaed382749cfd153340f54f2d91cf266c7627a29ddfc1666754f9",
+      "provider_version": "2.1.322",
+      "provider_executable_sha256": "a9d237949db816a0b7afd88a9a8e1df36b3a597a30f5a41d1c0539eb180a3450",
+      "provider_gateway_admission_confirmed": false,
+      "exclusive_window_confirmed": false,
+      "separate_permit_confirmed": false,
+      "runnable": false
+    },
+    "status_refresh_2026_11_11": {
+      "source_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+      "report": "docs/audits/2026-11-11-active-task-progress-refresh.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "notes": "H3a独立120项证据核验确认t1PASS、t2固定5minProvider超时/exit143且无finalresult，t3/所有后继未启。模型已看到正确码，应用请求/记录proofseal完整；上游为何未完成未知，无产品补丁依据。累计12/25余13，原STOP生效/permitfalse，已形成只运行未执行13个slot的续作提案，须明确解除原停止规则后才可实施续作入口。",
+        "meta": {
+          "current_status_report": "docs/audits/2026-11-09-active-task-reconciliation.zh-CN.md"
+        }
+      }
+    },
+    "status_refresh_2026_11_12": {
+      "record": "status_refresh_2026_11_12",
+      "evidence": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261112/current-binding-readonly-check.json",
+      "head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+      "runnable": false,
+      "allow_build": false,
+      "allow_check": false,
+      "allow_run": false,
+      "consumed": 12,
+      "remaining": 13,
+      "next_action": "Rebind current source/framework/Claude/config/database/window and obtain lawful gateway admission; then run H3a-t3 -> H3b -> H5 -> H6."
+    },
+    "continuation_20261112": {
+      "registration": "research/continuation-20261112/real-execution-registration.json",
+      "registration_sha256": "1dba4041d1ec45ef24a14de055c9ac292e3f3dab78512bb993c1b5b0c0c0fe64",
+      "binding_review": "research/continuation-20261112/binding-review.json",
+      "independent_review": "research/continuation-20261112/independent-review.json",
+      "independent_review_sha256": "dd9c6d99ae88d9759d07d1eb44566db255c53bc4009ee457aa6f6ca344e9729a",
+      "implementation_verification": "research/continuation-20261112/verification/implementation-verification.json",
+      "source_id": "60cad529c638fc3a56fe2cfbd41af1f142677ee23af0350d937b9623ac6ff7db",
+      "framework_sha256": "71f7ca86b99d1e12cc71980d4f5c506e5c6d15b6e56ebab8731ea0d43609bad8",
+      "launcher_sha256": "4b3799485dfbe4103b7f44ab130920e0a0a1ad5607a70573c6d09de671ece54e",
+      "provider_sha256": "a9d237949db816a0b7afd88a9a8e1df36b3a597a30f5a41d1c0539eb180a3450",
+      "dirty_product_path_count": 177,
+      "consumed": 12,
+      "remaining": 13,
+      "provider_calls": 0,
+      "gate": {
+        "runnable": false,
+        "allow_build": false,
+        "allow_check": false,
+        "allow_run": false
+      },
+      "verification_sha256": "bb5665f9d453e77ab37de9476a02cf781352ee550b32e04ffc0c5f6985539e8c"
+    },
+    "status_update_2026_11_12_turn2": {
+      "updated_at": "2026-11-12T05:57:58Z",
+      "status": "in_progress",
+      "implementation": "complete_for_this_turn",
+      "candidate_review": "independent_review_passed_blocked_preparation_only",
+      "real_acceptance": "not_started",
+      "provider_calls": 0,
+      "budget": {
+        "cap": 25,
+        "consumed": 12,
+        "remaining": 13
+      },
+      "gate": {
+        "runnable": false,
+        "allow_build": false,
+        "allow_check": false,
+        "allow_run": false
+      },
+      "next_action": "Rebind every current prerequisite and obtain lawful gateway admission; preserve exact historical stop exception and first-new-failure stop rules."
+    },
+    "delivered_stage_closure_2026_11_12": {
+      "date": "2026-11-12",
+      "kind": "delivered_stage_only",
+      "user_instruction": "归档已交付阶段",
+      "status": "archived_delivered_stage",
+      "delivered_scope": "handoff、checkpoint、权限失效封口、分页来源召回与Web/Desktop展示；本轮续作脚本仅作为默认关闭的准备材料交接。",
+      "remaining_scope": "H3a-t3/H3b/H5/H6尚需真实验收与当前精确绑定；H6双启动续作框架接线缺口先修复，不算已交付能力。",
+      "original_full_scope_complete": false,
+      "successor_tasks": [
+        ".trellis/tasks/11-12-collaboration-real-runtime-acceptance"
+      ],
+      "report": "stage-closure-2026-11-12.md",
+      "historical_failures_reclassified": false,
+      "budgets_reset": false,
+      "new_provider_calls": 0,
+      "execution_enabled_by_archive": false,
+      "previous_state": {
+        "description": "依据收尾证据改善停止撤权保留、成员与队长接力、评论召回和权限边界",
+        "notes": "2026-11-12续作入口与候选冻结已完成：task-local真实续作入口、reservation/actual start/termination/evidence/debit状态机和默认关闭登记已落盘；独立17项绑定审查、控制普通/竞态、fake普通/竞态均通过。当前source/framework/CLI/config/DB/window/permit/gateway未全部证明，真实Provider未启动，gate仍全false；历史12/25借记与13槽位顺序保持不变。",
+        "meta": {
+          "next_action": "Complete reviewed current source/framework/CLI/config/database/exclusive-window/permit/provider-gateway bindings before any real H3a-t3 launch; preserve first-new-failure stop rule.",
+          "progress_phase": "runtime_continuation_entry_implemented_candidate_frozen_real_gate_closed"
+        }
+      },
+      "original_full_real_acceptance_passed": false,
+      "code_commits": [
+        "e08ab34ce228cf11a39c153ccd33d61626ebd75b",
+        "c5c6fd29a74deee2b52726c92d6c05fbfc289748"
+      ],
+      "verification": {
+        "hints": {
+          "commit": "c5c6fd29a74deee2b52726c92d6c05fbfc289748",
+          "core_tests_passed": 22,
+          "views_tests_passed": 131,
+          "cli_tests": "passed",
+          "lint_typecheck_vet_contracts": "passed",
+          "existing_views_lint_warnings": 27,
+          "scope": "ordinary single-issue status-only consumer only"
+        },
+        "runtime_preparation": {
+          "commit": "e08ab34ce228cf11a39c153ccd33d61626ebd75b",
+          "mock_tests_passed": 5,
+          "compile_vet_gofmt": "passed",
+          "current_db_controls_run": false,
+          "real_provider_tests_run": false,
+          "historical_go_framework_and_fake_evidence_hashes": "matched",
+          "H6_real_continuation_delivered": false
+        },
+        "new_provider_calls": 0,
+        "independent_scope_review": "passed"
+      },
+      "archive_ready": true,
+      "historical_paths_preserved_without_rebinding": true,
+      "archived_path": ".trellis/tasks/archive/2026-11/10-30-collaboration-context-handoff-runtime"
+    },
+    "archive_ready": true,
+    "archive_ready_scope": "delivered_stage_only_remaining_scope_transferred"
+  }
+}

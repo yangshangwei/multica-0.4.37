@@ -1,0 +1,26 @@
+[
+  {
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--check",
+      "/dev/null",
+      "server/internal/service/collaboration_checkpoint_authority_matrix_test.go"
+    ],
+    "exit_code": 1,
+    "whitespace_diagnostics": 0
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--check",
+      "/dev/null",
+      "server/internal/service/collaboration_wakeup_boundary_test.go"
+    ],
+    "exit_code": 1,
+    "whitespace_diagnostics": 0
+  }
+]

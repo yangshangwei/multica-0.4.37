@@ -1,0 +1,12 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/deployments/off/source-values.json.template
++++ /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/deployments/off/source-values.json.template
+@@ -31,5 +31,8 @@
+   "MULTICA_APP_URL": "ROOT_BINDS_NEW_WEB_ORIGIN",
+   "COLLABORATION_ELECTRON_RENDERER_URL": "ROOT_BINDS_NEW_CCG_RENDERER_ORIGIN",
+   "REDIS_URL": "ROOT_OWNED_CCG_REDIS_OR_EXPLICIT_EMPTY",
+-  "MULTICA_PASSWORD_LIMITER_MODE": "single"
++  "MULTICA_PASSWORD_LIMITER_MODE": "single",
++  "CORS_ALLOWED_ORIGINS": "ROOT_BINDS_EXACT_WEB_AND_CCG_RENDERER_ORIGINS",
++  "ALLOWED_ORIGINS": "ROOT_BINDS_EXACT_WEB_AND_CCG_RENDERER_ORIGINS",
++  "MULTICA_DSH_PATH": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/missing-test-owned-dsh"
+ }

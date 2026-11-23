@@ -1,0 +1,47 @@
+--- .trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/adapter-fix/v6-before-make-dollar-fix/run-make-check-v6.py
++++ /Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check-v6.py
+@@ -35,7 +35,11 @@
+         except ValueError:
+             raise RuntimeError("Invalid task environment value at line " + str(number)) from None
+         require(len(tokens) <= 1, "Task environment value requires generated quoting")
+-        values[key] = tokens[0] if tokens else ""
++        value = tokens[0] if tokens else ""
++        # Shell quoting does not protect a value from Make's later expansion.
++        require("$" not in value and all(char.isprintable() for char in value),
++                "Task environment normalized values cannot contain dollar signs or control/newline characters")
++        values[key] = value
+     return values
+ 
+ 
+@@ -82,6 +86,9 @@
+     # canonical, shell-quoted copy, never the original unparsed dotenv bytes.
+     values = parse_generated_environment(source_bytes.decode())
+     renderer = renderer_url(values)
++    task_home = out / "full-check-home"
++    values.update(HOME=str(task_home), GOCACHE="/Volumes/artisan/dev-cache/go-build",
++                  GOMODCACHE="/Users/artisan/go/pkg/mod", GOPATH="/Users/artisan/go")
+     env = {**os.environ, **values}
+     for key in list(env):
+         if key.startswith(("MULTICA_TASK_", "GIT_CONFIG_")) or key in (
+@@ -112,6 +119,10 @@
+     require(subprocess.run(["git", "-C", str(task_temp), "rev-parse", "--show-toplevel"], env=env,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode != 0,
+             "Build temporary directory must be outside every Git worktree")
++    require(not task_home.is_symlink(), "Full-check home must not redirect outside task output")
++    task_home.mkdir(mode=0o700, exist_ok=True)
++    require(task_home.stat().st_uid == os.geteuid() and task_home.stat().st_mode & 0o777 == 0o700,
++            "Full-check home must be task-owned mode0700")
+ 
+     safe_bytes = ("".join(key + "=" + shlex.quote(value) + "\n" for key, value in values.items())).encode()
+     descriptor = os.open(safe_source, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+@@ -122,8 +133,10 @@
+         "candidate_sha": head, "candidate_root": str(root), "command": ["make", "check", "ENV_FILE=<canonical private task env>"],
+         "adapter_sha256": adapter_hashes, "launcher_sha256": launcher_hash, "source_env_sha256": source_hash,
+         "effective_env_sha256": sha256(safe_bytes), "environment_loading": "data parsing plus canonical shell-quoted task copy",
++        "environment_value_contract": "normalized values contain no dollar signs or control/newline characters",
+         "database_policy": "a separate newly migrated task clone per Go package; never business default; package databases and failures retained",
+         "api_pool": {"max": 10, "min": 1}, "Go_test_pool_overrides": "removed only in actual test adapter branch",
++        "home": str(task_home), "Go_cache_paths": {key: env[key] for key in ("GOCACHE", "GOMODCACHE", "GOPATH")},
+         "renderer": renderer, "knowledge_default": False, "real_provider_allowed": False,
+         "build_temp_directory": str(task_temp), "build_temp_git_root_absent": True,
+         "state": "running", "started_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),

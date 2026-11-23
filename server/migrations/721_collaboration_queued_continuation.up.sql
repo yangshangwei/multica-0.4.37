@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_collaboration_queued_continuation ON collaboration_run(group_id) WHERE step_kind='continuation' AND progress_state='prepared' AND settled_at IS NULL AND forced_disposition IS NULL;

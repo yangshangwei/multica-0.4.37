@@ -1,0 +1,791 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "changelog-desktop.spec.ts",
+      "file": "changelog-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop Help, tab restoration and updater action use the in-app reader",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3577,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:49:09.978Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1f2d7175777944768fa5-d9afc4176395cbe3a5d6",
+          "file": "changelog-desktop.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "changelog.spec.ts",
+      "file": "changelog.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Help opens this deployment's attributed changelog",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2777,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:49:13.577Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "216befff53a719ccf302-d25394984e73c94249f9",
+          "file": "changelog.spec.ts",
+          "line": 56,
+          "column": 1
+        },
+        {
+          "title": "generated publication reaches an open reader and a fresh client without restart",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 150000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 63681,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:49:17.003Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "live-publication-evidence",
+                      "contentType": "application/json",
+                      "body": "ewogICJvYnNlcnZlZEFmdGVyTXMiOiA2MDAyOCwKICAic2VydmVyUGlkIjogMTgxOTEsCiAgInVuY2hhbmdlZFRpbWVPcmlnaW4iOiAxNzkzNTgwNTU3NDM4LjQsCiAgImdlbmVyYXRlZFZlcnNpb25zIjogWwogICAgInYwLjAuMSIsCiAgICAidjAuMC4yIgogIF0sCiAgImV4dGVybmFsTmV0d29ya0Jsb2NrZWQiOiB0cnVlCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "216befff53a719ccf302-25a5379d6f8c5f8ce37f",
+          "file": "changelog.spec.ts",
+          "line": 99,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "desktop-settings.spec.ts",
+      "file": "desktop-settings.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "desktop Help selects Updates by keyboard and grouped settings show the stopped daemon in Chinese",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3058,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:50:20.701Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "desktop-version-menu",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/desktop-settings-desktop-H-39e6b-e-stopped-daemon-in-Chinese-chromium/attachments/desktop-version-menu-764972510d56a58f5f6643928569b6ac326e045f.png"
+                    },
+                    {
+                      "name": "desktop-daemon-settings",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/desktop-settings-desktop-H-39e6b-e-stopped-daemon-in-Chinese-chromium/attachments/desktop-daemon-settings-0b96a411d1260109d0d324bbe02830ae21cdc60a.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5155c618dfa1d8f5cd16-9b0c2a711deab575d3f3",
+          "file": "desktop-settings.spec.ts",
+          "line": 29,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "mcp-market.spec.ts",
+      "file": "mcp-market.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 32755,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:50:23.779Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "deployment-market",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-deployment-MCP--2b345-vive-updates-and-withdrawal-chromium/attachments/deployment-market-d9b69b22a6b71d12eb5bb5804c3eabfa266543fb.png"
+                    },
+                    {
+                      "name": "deployment-reloaded",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-deployment-MCP--2b345-vive-updates-and-withdrawal-chromium/attachments/deployment-reloaded-281b7a641f67d0bb66eece5ac52bc1b0f8e472f8.png"
+                    },
+                    {
+                      "name": "deployment-saved-after-withdrawal",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-deployment-MCP--2b345-vive-updates-and-withdrawal-chromium/attachments/deployment-saved-after-withdrawal-d1e0c96fd415f4c9a8930942d0263a78549df5e8.png"
+                    },
+                    {
+                      "name": "deployment-stdio",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-deployment-MCP--2b345-vive-updates-and-withdrawal-chromium/attachments/deployment-stdio-ae3348adc6c4676c769dfc1f7e909be15b0c208f.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "468504805e00dc44c356-cfcded60d22f154e60a9",
+          "file": "mcp-market.spec.ts",
+          "line": 71,
+          "column": 1
+        },
+        {
+          "title": "uses the collection canvas and adapts template columns to the available width",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4101,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:50:56.544Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "reference-agents",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/attachments/reference-agents-f7c7f349c0c70461bcebe27fffed3b62ac8a6f2f.png"
+                    },
+                    {
+                      "name": "reference-skills",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/attachments/reference-skills-5775d57165af9d83b6d41f0d8f8e3c0b486313b1.png"
+                    },
+                    {
+                      "name": "collection-dark-1440",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/attachments/collection-dark-1440-b68a2276aeb66b7d37cdf5456f40da9c2b7e821b.png"
+                    },
+                    {
+                      "name": "collection-dark-900",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/attachments/collection-dark-900-f671071f61b03703cc7f99b5e2eb2a63c57fe5ae.png"
+                    },
+                    {
+                      "name": "collection-dark-390",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/attachments/collection-dark-390-08da49c112f0377117624b5bf708163d3c458af9.png"
+                    },
+                    {
+                      "name": "collection-chinese-light-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/attachments/collection-chinese-light-wide-5ec5e7024afdf1129e5cfd4eccd3ca7f7e051376.png"
+                    },
+                    {
+                      "name": "collection-chinese-light-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-uses-the-collec-3aa82-umns-to-the-available-width-chromium/attachments/collection-chinese-light-narrow-0d26ed9446a3d9ff62ecf6e06b375fdc20252fad.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "468504805e00dc44c356-012c0032162579fd4403",
+          "file": "mcp-market.spec.ts",
+          "line": 144,
+          "column": 1
+        },
+        {
+          "title": "creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 360000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 18914,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:51:00.660Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "market-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/market-wide-e54554b14087c31f2c9625e16d1d69e826db6f77.png"
+                    },
+                    {
+                      "name": "browser-filter-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/browser-filter-wide-79bce8215b396f2d6ebded09f79d9c98c27c3469.png"
+                    },
+                    {
+                      "name": "setup-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/setup-wide-bb2d457762b21c489808694a666ac7b6672e0ddd.png"
+                    },
+                    {
+                      "name": "assignment-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/assignment-wide-983ac799cfea1898cc7516827add064526eda98c.png"
+                    },
+                    {
+                      "name": "database-input-masked-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/database-input-masked-wide-1edd5edb5e9f85d83dc9078a633c375737c361a2.png"
+                    },
+                    {
+                      "name": "atlassian-inputs-masked-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/atlassian-inputs-masked-wide-be2b5f8075744fac6b3c4ea997e365ba36398d96.png"
+                    },
+                    {
+                      "name": "clickhouse-inputs-masked-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/clickhouse-inputs-masked-wide-4d9d09458df895b2553428961fc3ecd57fec9039.png"
+                    },
+                    {
+                      "name": "clickhouse-inputs-masked-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/clickhouse-inputs-masked-narrow-51c9d6b4f6d9e065a5d5dc3fb21ea47fd94fb556.png"
+                    },
+                    {
+                      "name": "workspace-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/workspace-wide-6173f0f163d7f62ebae07439281c6950007eb356.png"
+                    },
+                    {
+                      "name": "agent-context-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/agent-context-wide-148fc0df5582df5f4881693c9f4891314c51954e.png"
+                    },
+                    {
+                      "name": "agent-context-long-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/agent-context-long-narrow-c9f7a4684840921193dad86e850a6107af472b9d.png"
+                    },
+                    {
+                      "name": "market-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/market-narrow-4934444f806ef7457c7e42f2fa30667d0295c3d9.png"
+                    },
+                    {
+                      "name": "setup-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/setup-narrow-277e7b64cf08bd8a7dcc5902be3029aba07364d3.png"
+                    },
+                    {
+                      "name": "setup-long-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/setup-long-narrow-f951d15b17b8fc703ae6be13352ddf31a1629a1c.png"
+                    },
+                    {
+                      "name": "market-chinese-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/market-chinese-wide-d52808b406a2081ec7e8bd6120466ae64ff69065.png"
+                    },
+                    {
+                      "name": "database-input-chinese-masked-narrow",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/database-input-chinese-masked-narrow-1542a0e0dc2943039a9b52605cd453ad2a7d98dd.png"
+                    },
+                    {
+                      "name": "browser-filter-chinese-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/browser-filter-chinese-wide-33af934a1ae285c96d028f473a4e02d755947d96.png"
+                    },
+                    {
+                      "name": "workspace-chinese-wide",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/recommendation-native-1/artifacts/mcp-market-creates-and-exp-1a56a-s-an-instance-from-an-agent-chromium/attachments/workspace-chinese-wide-be5ff59c7d75c84b56eba7ce9765f224773cb3b1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "468504805e00dc44c356-efdf757229bdf0c3d334",
+          "file": "mcp-market.spec.ts",
+          "line": 188,
+          "column": 1
+        },
+        {
+          "title": "retries a failed assignment without recreating the saved MCP or repeating successful grants",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1782,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:51:19.603Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "468504805e00dc44c356-af9558a86bee8bb52b89",
+          "file": "mcp-market.spec.ts",
+          "line": 400,
+          "column": 1
+        },
+        {
+          "title": "a member can discover templates and reuse a workspace instance for their agent without creating one",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2179,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:51:21.412Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "468504805e00dc44c356-fab0a34d4596a4b31162",
+          "file": "mcp-market.spec.ts",
+          "line": 433,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "quick-create-actor-picker-phase2.spec.ts",
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "explicit default outranks accepted history and project candidates do not replace it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3648,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:51:40.697Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2e8047e6a79406123d43-917734d962ee445caa3e",
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 56,
+          "column": 1
+        },
+        {
+          "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7374,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:51:44.826Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2e8047e6a79406123d43-48a3237c0b018794c136",
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 78,
+          "column": 1
+        },
+        {
+          "title": "actual Electron renderer adopts suggestions without running a daemon",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2928,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:51:52.208Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2e8047e6a79406123d43-e0779b130c28cbf8e2ea",
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 118,
+          "column": 1
+        },
+        {
+          "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2385,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:51:55.142Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "2e8047e6a79406123d43-34ddf6303236672b6066",
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 134,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "retained-languages-desktop.spec.ts",
+      "file": "retained-languages-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Desktop keeps retained languages after upgrading ja preferences",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8378,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:51:23.614Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "003133b91e9e96893c56-1947c3f3807b5fda184a",
+          "file": "retained-languages-desktop.spec.ts",
+          "line": 9,
+          "column": 3
+        },
+        {
+          "title": "Desktop keeps retained languages after upgrading ko preferences",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8000,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T00:51:31.997Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "003133b91e9e96893c56-cae8f68535b51078a06d",
+          "file": "retained-languages-desktop.spec.ts",
+          "line": 9,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T00:49:09.217Z",
+    "duration": 168361.137,
+    "expected": 15,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

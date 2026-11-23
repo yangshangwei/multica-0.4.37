@@ -130,3 +130,13 @@ UPDATE workspace_iteration_settings SET enabled=true, revision=revision+1
 WHERE workspace_id=sqlc.arg('workspace_id') AND revision=sqlc.arg('expected_revision')
  AND revision<9007199254740991
 RETURNING *;
+
+-- name: CountRunningIterationTasks :many
+-- The issue set was resolved and authorized by the iteration operation.
+SELECT task.issue_id, count(*)::bigint AS running_count
+FROM agent_task_queue task
+JOIN issue ON issue.id = task.issue_id
+WHERE issue.workspace_id = sqlc.arg(workspace_id)::uuid
+  AND issue.id = ANY(sqlc.arg(issue_ids)::uuid[])
+  AND task.status = 'running'
+GROUP BY task.issue_id;

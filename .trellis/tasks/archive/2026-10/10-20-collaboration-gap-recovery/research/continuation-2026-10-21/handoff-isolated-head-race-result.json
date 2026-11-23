@@ -1,0 +1,36 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^(TestCollaborationTransferredHandlersShareExistingGrantAndControls|TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/tmp/multica-gap-recovery-20261021-h6phxwo9/handoff-execution-head-yvnid2bq/server",
+  "head": "5baf8659296a4a04666e6eaaa60e5965ffc70725",
+  "only_added_source": "server/internal/service/collaboration_handoff_execution_boundary_test.go",
+  "elapsed_s": 18.766075874998933,
+  "returncode": 0,
+  "passed": [
+    "TestCollaborationTransferredHandlersShareExistingGrantAndControls/creator",
+    "TestCollaborationTransferredHandlersShareExistingGrantAndControls/current_handler",
+    "TestCollaborationTransferredHandlersShareExistingGrantAndControls/former_handler",
+    "TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+    "TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion"
+  ],
+  "failed": [],
+  "skipped": []
+}

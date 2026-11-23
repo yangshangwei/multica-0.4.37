@@ -1,0 +1,56 @@
+--- before/server/internal/daemon/collaborationrun/host_runner.go
++++ after/server/internal/daemon/collaborationrun/host_runner.go
+@@ -441,7 +441,7 @@
+ 	}
+ }
+ 
+-func (r *Runner) recoverHost(ctx context.Context, local *RunLedger) error {
++func (r *Runner) recoverHost(ctx context.Context, local *RunLedger) (recoveryErr error) {
+ 	// This proof was already sealed after a business-report attempt. Give its
+ 	// receipt priority so an unavailable outcome endpoint cannot starve proof
+ 	// recovery on every shared, bounded recovery round.
+@@ -450,6 +450,17 @@
+ 			return err
+ 		}
+ 	}
++	var recordingCtx context.Context
++	var recordingCancel context.CancelFunc
++	defer func() {
++		if recordingCtx == nil {
++			recordingCtx, recordingCancel = hostRecordingRecoveryContext(ctx)
++		}
++		defer recordingCancel()
++		// Seal only metadata, after the original Stop/termination/proof path.
++		// An exhausted budget still leaves the exact seal staged for recovery.
++		recoveryErr = errors.Join(recoveryErr, r.sealHostRecording(recordingCtx, local))
++	}()
+ 	if local.record.Phase != phaseProof && local.record.Phase != phaseAcknowledged {
+ 		if err := local.stopHost(); err != nil {
+ 			return err
+@@ -474,6 +485,8 @@
+ 			return err
+ 		}
+ 	}
++	recordingCtx, recordingCancel = hostRecordingRecoveryContext(ctx)
++	recordingErr := r.recoverHostRecording(recordingCtx, local)
+ 	var outcomeErr error
+ 	host := local.record.Host
+ 	if hostOutcomePending(host) {
+@@ -492,12 +505,12 @@
+ 		}
+ 	}
+ 	// Business recording cannot hold the original termination receipt hostage.
+-	// After proof ACK, retain only recovery of the same outcome's receipt. The
+-	// server may reject an outcome that was not recorded before settlement.
++	// After proof ACK, only original receipts and metadata remain recoverable.
++	// The server rejects new business content after settlement.
+ 	if local.record.Phase == phaseAcknowledged {
+-		return outcomeErr
+-	}
+-	return errors.Join(outcomeErr, r.finish(ctx, local))
++		return errors.Join(recordingErr, outcomeErr)
++	}
++	return errors.Join(recordingErr, outcomeErr, r.finish(ctx, local))
+ }
+ 
+ func hostBrief(claim protocol.CollaborationRunClaimResponse, continuityLost, memory bool) string {

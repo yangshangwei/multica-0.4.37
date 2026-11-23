@@ -1,0 +1,537 @@
+{
+  "review": "S2 client increment 3a independent check",
+  "status": "changes_required",
+  "checked_at": "2026-11-14T03:40:42.582632+00:00",
+  "reported_head": "0ba7405099ba4f8689878e5d957e9b0b1dc28eca",
+  "contract_sha256": "73a3498c34bf205e0cd78d7226b0ca32e35ed7b438b54213a750141115032c82",
+  "source_manifest": [
+    {
+      "path": "packages/core/api/client.ts",
+      "sha256": "e46abcb3fddae8aecffbca1160c2e796831505b8e855a67df9163ac80eba1ef2",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "sha256": "fed5f2e83af713acfaba751e58273e571ae506172d4b0024f0cf24bea3b84728",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-actions.ts",
+      "sha256": "51b3ce06114f8369e175693008aa0b7deea4a55ab8a253f74f3e2fa39f941f6e",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-actions.test.ts",
+      "sha256": "4e32f613e4bd47317d865de02edb02e03dfc24c60cfa2a3604286bdf06d1e97f",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-api.test.ts",
+      "sha256": "ce5b1c0b9f0c583db82bcf089cd53c8622f542c2f10ed88c54424eefb60cb3b9",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.test.ts",
+      "sha256": "9e826b4a8d4f413ad96893189b6d9ef8927815044259a6e35deb0edc1d31fe36",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.ts",
+      "sha256": "3bda07de8521308040e98dd1b8ba6674b3a71f3b4680a4055d10b88e67c79b9e",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-schema.test.ts",
+      "sha256": "32413efacf677bbcff613c74726c5755a6db5ebc3a0fa9c2a169d2ea5408a4c7",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-intent.ts",
+      "sha256": "e65d214a5b207f89b6f9d1ee64513b43650ebdbf54b5a9cef70a397cc0b1b6e7",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-presentation.ts",
+      "sha256": "753421496d1f4b6a13946aca7c2618de1ff439796e72d616975349dd0bae3e8b",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.test.ts",
+      "sha256": "817db325e3c3deaaf86ac6b4ba876cf2dd31bf736af8c10c180d21c48b27af7e",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.ts",
+      "sha256": "811fdd681d5e9774793d95cd835ae32e6c97e9701f223ae3097d31bf29f982a1",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.test.ts",
+      "sha256": "d7fd073b6854352faaad98805338382033ed4f0b0b4ae61c65e34551fdf954f9",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.ts",
+      "sha256": "84eb285caa3f7dee2af3757c63ddaf5bef37cb493c9e2554e055a70c179ce70c",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-fixtures.ts",
+      "sha256": "d3740570a0cb38f95c4d7d9920b29090acee636ab1e9f7ad5a84f5261021f243",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/collaboration/stage-blockers.tsx",
+      "sha256": "cd4a22d41ec0fc5ebbf42cc9964cb5bddd2c49b025ae1c3f4de2bbfec4dee5a8",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-forms.tsx",
+      "sha256": "b6c5763cc23523cc79f005992bb835a45d35edc7a9c80baf1cd27ab76bda5d5f",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.test.tsx",
+      "sha256": "d84255260efb8d2e10fae4df7c946774001da253e61b5427488df5c7c2f1901e",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.tsx",
+      "sha256": "4bebc2eac21225d8c207bbe11aadbd29393711b3272a30d1d92aa49de1a2c5b4",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/collaboration/stage-forms.tsx",
+      "sha256": "de1a2a07558684e729d788189399283e425e86182173a300a26ac36718354721",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/collaboration/stage-labels.ts",
+      "sha256": "616bedeb7dea0f02121bbfd270d2c8b3b3ed1bbf81771d4db579d15f505b9dcb",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/collaboration/stage-panel.tsx",
+      "sha256": "a9cfc878f4a3b88deb04ddfcaab83bbfdc225d54a90fe4a0f6229defd93bf11c",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "sha256": "24bf2a74390f7d97c8d95fca765f39637dfb21861d123d0ab3bd06a36120650d",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "sha256": "5ddc720f8c6875e8f462f6284de3d4c2ddf3d05b880dbf4ffa399f780fa7e4f9",
+      "matches_report": true
+    }
+  ],
+  "additional_reviewed_source": [
+    {
+      "path": "packages/core/collaboration/draft.ts",
+      "sha256": "591036cf1a5a28d87560d4c8b0fc691ab713dc86d6340b67654ed4e20139eb99"
+    },
+    {
+      "path": "packages/core/collaboration/access.ts",
+      "sha256": "17e87d13d8eafb9329113fe0105b7c67e801e34f6a38491f3d067a7ea9309fe9"
+    },
+    {
+      "path": "packages/core/collaboration/stage-intent.test.ts",
+      "sha256": "bc5d3290cd52fbfd68d1a8b384f90161c0d0850c1e768288d7dffadeb556717e"
+    },
+    {
+      "path": "packages/views/collaboration/collaboration-detail.tsx",
+      "sha256": "6e98d70f6826633ae6130606a9867ec21f66dc98ce24d26a2d03283588abe0b1"
+    },
+    {
+      "path": "packages/views/collaboration/stage-panel.test.tsx",
+      "sha256": "6b47267b9343246673e798dc5911b07e52e69b9b69556b63d7fe425c8bd18461"
+    }
+  ],
+  "log_manifest": [
+    {
+      "name": "schema-red",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-schema-red.log",
+      "sha256": "d814f8969ebd2cfcad5c59fdf597664360ffb89abf27a0f13ce0afba781e1d32",
+      "matches_report": true
+    },
+    {
+      "name": "schema-green1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-schema-green1.log",
+      "sha256": "1971f238187534a77a97538e3e35c99292438524c87d9fd0dfc71492084aa72c",
+      "matches_report": true
+    },
+    {
+      "name": "presentation-red",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-presentation-red.log",
+      "sha256": "dae5fc346d92e61c7fc65770e7327645c43cf6a99fb4372e79ed9fbd8840d859",
+      "matches_report": true
+    },
+    {
+      "name": "presentation-green1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-presentation-green1.log",
+      "sha256": "c57f072ecd8fb2903c41f697145f6976bd96ce2940f7076a4ad7027e13b03eed",
+      "matches_report": true
+    },
+    {
+      "name": "core-types1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-types1.log",
+      "sha256": "d7f3c1c542235df99748ccf37bbf098c8fe8b7dbc9e1a061bb6fd29a084206d1",
+      "matches_report": true
+    },
+    {
+      "name": "actions-red",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-actions-red.log",
+      "sha256": "1246edae8b128e0b7552466b0aa4d28c628e71d33f92408254dde18e8b97ef2a",
+      "matches_report": true
+    },
+    {
+      "name": "freeze2-red",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-freeze2-red.log",
+      "sha256": "5a337c5383e8271ee98ac782d0224ba88e7c53d36eb3e23287f9224e8cc20729",
+      "matches_report": true
+    },
+    {
+      "name": "core-code-green1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-code-green1.log",
+      "sha256": "4eff5c2c043bf7f3c2622b033c4b097a44974248c1badf21269928ff3f0b4580",
+      "matches_report": true
+    },
+    {
+      "name": "views-red",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-red.log",
+      "sha256": "85a3aa024052ae6cf5993322360f08803431be8ecc488a5f8144ed3785e99758",
+      "matches_report": true
+    },
+    {
+      "name": "types2",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-types2.log",
+      "sha256": "422f4da545c57c88cfab32b379a91c86e9e122ac02fee60b5a9e1eb6986c2a6d",
+      "matches_report": true
+    },
+    {
+      "name": "views-green1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-green1.log",
+      "sha256": "5ecf4b72e06fee1151c441242f440ed95ab5cb9fa65e4bfd13878373804c1dcf",
+      "matches_report": true
+    },
+    {
+      "name": "authority-red",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-authority-red.log",
+      "sha256": "501cb6e88ece3fbbef3092f622aebb3312ccde242f68764f568e6a2aca0fa5a8",
+      "matches_report": true
+    },
+    {
+      "name": "views-green2",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-green2.log",
+      "sha256": "0cf070f07dd82c1f1192df645bde8c78078aed62ac82b24473ef7d1bdc0cf8f7",
+      "matches_report": true
+    },
+    {
+      "name": "core-all1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-all1.log",
+      "sha256": "2b645ceae7af29cb90c2be7ecef31553956b34dc8cc08813eca12abc1e6e2b54",
+      "matches_report": true
+    },
+    {
+      "name": "revise-red",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-revise-red.log",
+      "sha256": "c4f1387bcea107eaf4494bc9df64cb1284249796e5cdbbc011b25c9735700cdf",
+      "matches_report": true
+    },
+    {
+      "name": "core-lint1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-lint1.log",
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5",
+      "matches_report": true
+    },
+    {
+      "name": "views-lint1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-lint1.log",
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5",
+      "matches_report": true
+    },
+    {
+      "name": "types3",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-types3.log",
+      "sha256": "422f4da545c57c88cfab32b379a91c86e9e122ac02fee60b5a9e1eb6986c2a6d",
+      "matches_report": true
+    },
+    {
+      "name": "views-green3",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-green3.log",
+      "sha256": "6f623d0d672250ce1aae09cfa7dcc88b44d90c6b6293ccb5cb03f37e09834899",
+      "matches_report": true
+    },
+    {
+      "name": "core-final",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-final.log",
+      "sha256": "d8f6ac847a545c7492023fa42d0b90d944f66cedc217d40e98874c3d7c1c1da1",
+      "matches_report": true
+    },
+    {
+      "name": "views-final",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-final.log",
+      "sha256": "23ba72e1723a94a8a4f8ad00de2d9fc374903ba643197f056d260bf74b0e683f",
+      "matches_report": true
+    },
+    {
+      "name": "types-final",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-types-final.log",
+      "sha256": "422f4da545c57c88cfab32b379a91c86e9e122ac02fee60b5a9e1eb6986c2a6d",
+      "matches_report": true
+    },
+    {
+      "name": "core-lint-final",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-lint-final.log",
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5",
+      "matches_report": true
+    },
+    {
+      "name": "views-lint-final",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-lint-final.log",
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5",
+      "matches_report": true
+    }
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "C01",
+      "priority": "P1",
+      "title": "Issue denial deletes the original recovery identity (D4)",
+      "files": [
+        [
+          "packages/core/collaboration/stage-intent.ts",
+          140
+        ],
+        [
+          "packages/core/collaboration/draft.ts",
+          68
+        ],
+        [
+          "packages/core/collaboration/access.ts",
+          66
+        ],
+        [
+          "packages/views/collaboration/collaboration-detail.tsx",
+          71
+        ]
+      ],
+      "contract": [
+        "wire-contract.md §3.5",
+        "design.md F06"
+      ],
+      "repro": "Send a stage write and lose its response; revoke issue access and receive the structured denial. clearCollaborationAccess calls clearCollaborationDrafts, which removes the entire stage intent. Reload the denied detail: no original key remains and the early return renders no stage recovery control.",
+      "impact": "An operation may have committed, but its original account can no longer inspect the permitted content-free O1 receipt. Retaining the full body would instead retain revoked private content.",
+      "recommendation": "Split the persisted stage record into a sendable intent and a content-free recovery-only identity. On issue denial erase body/prose and retain only actor/server/issue/action/key plus matching IDs/versions/digests/expiry. Recovery-only records must never reach POST/resend. Render a small GET-only recovery surface from the denied CollaborationDetail branch, without an issue DTO. Keep account/logout teardown destructive for both forms. Reuse stage-intent, stage-actions recovery, and the existing account-only guard; do not create another operation endpoint.",
+      "coverage": "stage-intent.test.ts currently asserts full erasure, so the green test encodes D4. Replace it and add denied-detail recovery and account-switch cases.",
+      "status": "not_fixed_semantic; root confirmed proposed boundary"
+    },
+    {
+      "id": "C02",
+      "priority": "P1",
+      "title": "Source denial leaves other candidates’ private cache readable",
+      "files": [
+        [
+          "packages/core/collaboration/stage-queries.ts",
+          127
+        ],
+        [
+          "packages/views/collaboration/stage-code-panel.tsx",
+          25
+        ],
+        [
+          "packages/views/collaboration/stage-code-panel.tsx",
+          53
+        ]
+      ],
+      "contract": [
+        "wire-contract.md §8.6 source-denied variant",
+        "PRD A10"
+      ],
+      "repro": "Read candidates A and B, leaving B cached. Lose source membership, keep issue participation, and obtain A’s exact baseline:null denial. Select B while its refetch is held. B still has available cached R4 data, so its PR/build/decision reasons render until the new response arrives. An earlier B request has no source-denial epoch fence either.",
+      "impact": "Private source details can reappear after this issue has already established that source evidence is withheld. The current selected form cleanup test does not cover sibling caches or late responses.",
+      "recommendation": "Introduce a source-evidence erasure/fence for this issue’s R4 entries on the exact denied projection. Cancel without rollback, remove private baselines/reasons/reports/facts across cached candidates, reject older in-flight responses, and require a current authorized read before restoring evidence. Preserve allowed issue identity and original-key recovery.",
+      "coverage": "Add a two-candidate Query/Views regression and a denied-A/late-B response race.",
+      "status": "not_fixed_semantic"
+    },
+    {
+      "id": "C03",
+      "priority": "P2",
+      "title": "Reason-only return incorrectly requires source evidence",
+      "files": [
+        [
+          "packages/core/collaboration/stage-code-presentation.ts",
+          27
+        ],
+        [
+          "packages/core/collaboration/stage-actions.ts",
+          76
+        ],
+        [
+          "packages/views/collaboration/stage-code-panel.tsx",
+          53
+        ],
+        [
+          "packages/views/collaboration/stage-code-forms.tsx",
+          40
+        ]
+      ],
+      "contract": [
+        "wire-contract.md §8.3",
+        "wire-contract.md §8.6",
+        "wire-contract.md §13.9"
+      ],
+      "repro": "Use an active designated reviewer/QA with current issue participation but no source membership. R1 supplies current roles/stage and R4 supplies the exact current candidate identity with baseline:null. A return with reason, null expiry, all-null evidence and [] dependencies is allowed by the approve-only evidence contract, yet presentation returns an empty action set, preparation rejects missing baseline, and the form exits before a return can be composed.",
+      "impact": "A legitimate human cannot return work solely because they cannot read the source evidence, even though return grants no approval and can carry no evidence.",
+      "recommendation": "Derive reason-only return authority from current role/stage/candidate identity independently of source-read/approval eligibility. Offer a content-free return form; require source authority only for optional evidence/dependencies actually supplied. Keep approve and source rendering blocked.",
+      "coverage": "Add source-denied current-role return positive case and wrong-role/optional-hidden-evidence negative cases.",
+      "status": "not_fixed_semantic"
+    },
+    {
+      "id": "C04",
+      "priority": "P2",
+      "title": "Fresh discovery cannot invalidate stale R4 controls",
+      "files": [
+        [
+          "packages/core/collaboration/stage-code-presentation.ts",
+          29
+        ],
+        [
+          "packages/core/collaboration/stage-actions.ts",
+          107
+        ],
+        [
+          "packages/views/collaboration/stage-code-forms.tsx",
+          121
+        ]
+      ],
+      "contract": [
+        "wire-contract.md §5.1 code_candidates",
+        "PRD S2-R06"
+      ],
+      "repro": "Hold cached R4 A as current, then refresh issue/R1 together so discovery marks A superseded or stale and B current. Candidate identity/lifecycle/role revision in cached R4 A is unchanged. deriveCollaborationStageCodeState ignores the matching discovery entry and still offers approval/advance; preparation can capture the new workflow revision with A’s obsolete current state.",
+      "impact": "The UI knowingly offers an old approval/transition despite a newer authoritative candidate discovery. Server rejection remains the final protection; this is not evidence of a server authorization bypass.",
+      "recommendation": "Require coherent R1 CandidateRef/state and R4 identity/state for authorizing controls, and refetch the selected record after discovery changes. Preserve independent revocation of superseded, unconsumed decisions.",
+      "coverage": "Add a R1-new/R4-old canonical presentation case and an open-form refresh regression.",
+      "status": "not_fixed_semantic"
+    },
+    {
+      "id": "C05",
+      "priority": "P2",
+      "title": "Policy read access is treated as policy write authority (D8)",
+      "files": [
+        [
+          "packages/views/collaboration/stage-panel.tsx",
+          306
+        ],
+        [
+          "packages/views/collaboration/stage-panel.tsx",
+          326
+        ],
+        [
+          "packages/core/collaboration/stage-actions.ts",
+          158
+        ]
+      ],
+      "contract": [
+        "wire-contract.md §4.1–4.2",
+        "PRD confirmed role rules"
+      ],
+      "repro": "A source-workspace member who is not owner/admin opens Project stage policy. P1 legitimately returns enabled:true (or disabled plus activation_available:true). The panel computes disable/enable only from those fields, renders an active form, and prepares PUT without current source administration authority.",
+      "impact": "Ordinary members see an administrative action that is guaranteed to be refused; activation_available describes rollout availability, not that viewer’s permission. The backend still enforces authority.",
+      "recommendation": "Use the existing explicit source-workspace membership/permission query (e.g. useCurrentMember(memberListOptions) with the captured workspace and current successful authority) for policy-write affordances. Keep read-only policy facts visible to allowed readers. Do not use managed-only configure_roles to hide first enablement. The existing useCurrentMember wrapper exposes isLoading but not query errors; do not treat it alone as a reliable current-authority proof after failure. If the underlying source-member query cannot supply reliable current authority in this account scope, request a server-owned P1 can_manage/revise_policy hint; the client must not expand the frozen wire itself.",
+      "coverage": "Add owner/admin/member/unknown/denied UI cases without inventing a new policy wire capability.",
+      "status": "not_fixed_semantic"
+    },
+    {
+      "id": "C06",
+      "priority": "P2",
+      "title": "Failed R1/P1 refreshes leave stale forms writable",
+      "files": [
+        [
+          "packages/views/collaboration/stage-panel.tsx",
+          79
+        ],
+        [
+          "packages/views/collaboration/stage-panel.tsx",
+          94
+        ],
+        [
+          "packages/views/collaboration/stage-panel.tsx",
+          306
+        ],
+        [
+          "packages/views/collaboration/stage-panel.tsx",
+          307
+        ],
+        [
+          "packages/views/collaboration/stage-forms.tsx",
+          278
+        ]
+      ],
+      "contract": [
+        "client-increment-3a-results.md delivered behavior 7",
+        "core/frontend/collaboration-workbench.md current authority boundary"
+      ],
+      "repro": "Load valid R1/P1 and open a form. Make a background R1 or P1 refresh throw a transient network/500 error while the other queries remain cached and successful. TanStack Query retains data; both view/policy and locked ignore query.error, so stage/policy submissions remain enabled. The same issue exists for A4 after R3 failure. R4’s query.isError guard covers only R4.",
+      "impact": "The panel displays an authority-read error while still allowing writes from the failed read’s old state. Form input should survive, but submission should wait for a successful refresh.",
+      "recommendation": "Keep retained inputs and show retry, but propagate required-read error state to each form’s read/prepare lock. Apply consistently to R1, P1 and R3; preserve recovery GET even when content reads fail.",
+      "coverage": "Add a transient-refetch failure with retained data for stage, policy and proposal decision controls, then successful explicit refresh.",
+      "status": "not_fixed_semantic"
+    },
+    {
+      "id": "C07",
+      "priority": "P2",
+      "title": "Contradictory revoked approval is still selected as valid",
+      "files": [
+        [
+          "packages/core/collaboration/stage-schema.ts",
+          179
+        ],
+        [
+          "packages/core/collaboration/stage-code-presentation.ts",
+          45
+        ]
+      ],
+      "contract": [
+        "wire-contract.md §8.4 / §8.6",
+        "PRD S2-R08 strict new responses"
+      ],
+      "repro": "Start with stageCodeReviewDecisionFixture, retain state:\"valid\", and add a well-formed non-null revocation. The R4 schema accepts both, and validDecisions does not inspect revocation; a business owner/reviewer can still get the QA advance or use the decision as a preceding approval.",
+      "impact": "A malformed new response exposes an approval as authorizing even though its same projection explicitly records revocation. This is a response-drift/client boundary issue, not a claim that the server emits that combination.",
+      "recommendation": "Reject the contradictory state/revocation combination in the pure schema and exclude revoked records defensively from validDecisions. Add the small canonical malformed-response regression.",
+      "coverage": "Existing schema tests cover CI shape and unknown states, but not decision terminal-fact contradictions.",
+      "status": "not_fixed_semantic"
+    }
+  ],
+  "verification": {
+    "source_hashes": "24/24 match",
+    "log_hashes": "24/24 match",
+    "recorded_core_tests": "273 passed, logs verified; not rerun by reviewer",
+    "recorded_views_tests": "113 passed, logs verified; not rerun by reviewer",
+    "recorded_typecheck": "core/views pass, logs verified; independent rerun deferred during S5 measurement",
+    "recorded_lint": "pass with zero code warnings, logs verified; independent rerun deferred during S5 measurement",
+    "independent_commands": []
+  },
+  "source_changes": false,
+  "ready_for_joint_integration": false,
+  "deferred_in_3b": [
+    "M1 collaboration completion preview/authorization consumption",
+    "Generic submit/lifecycle/R38 stage_blockers consumers",
+    "Activity/notification projection",
+    "T4 detail/case/log/pagination after server2b freeze"
+  ],
+  "not_run": [
+    "API",
+    "DB",
+    "browser",
+    "platform launch",
+    "models",
+    "builds",
+    "full S2 or parent acceptance"
+  ],
+  "spec_sync": "After fixes, document recovery-only tombstones and source-evidence cache fence in the collaboration specs; current existing specs do not yet capture S2.",
+  "scope_released_to_client_owner": true
+}

@@ -15,14 +15,17 @@ import (
 )
 
 var issueMoveFields = map[string]struct{}{
-	"status":            {},
-	"assignee_type":     {},
-	"assignee_id":       {},
-	"parent_issue_id":   {},
-	"project_id":        {},
-	"before_id":         {},
-	"after_id":          {},
-	"expected_revision": {},
+	"status":                {},
+	"completion":            {},
+	"project_change_reason": {},
+	"skip":                  {},
+	"assignee_type":         {},
+	"assignee_id":           {},
+	"parent_issue_id":       {},
+	"project_id":            {},
+	"before_id":             {},
+	"after_id":              {},
+	"expected_revision":     {},
 }
 
 // MoveIssue accepts relative neighbors instead of a client-authored canonical
@@ -41,6 +44,11 @@ func (h *Handler) MoveIssue(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		writeError(w, http.StatusBadRequest, "failed to read request body")
+		return
+	}
+	var controls UpdateIssueRequest
+	if err := validateIssueDeliveryControls(body, &controls); err != nil {
+		writeDeliveryCompletionError(w, err, false)
 		return
 	}
 	var fields map[string]json.RawMessage

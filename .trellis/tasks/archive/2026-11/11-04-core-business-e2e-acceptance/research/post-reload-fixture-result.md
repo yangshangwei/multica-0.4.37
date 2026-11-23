@@ -1,0 +1,5 @@
+# Post-reload fixture readiness repair
+
+Two narrow readiness fixes were applied to both root and the explicitly authorized frozen harness after the previous browser batch ended. The retained-attachment author reload now uses the existing attachmentsPanel helper before its final preview; bytes/hash/version/revocation assertions are unchanged. The terminal-reopen creator explicitly opens More actions before its positive Reopen assertion. The handler's disclosure is opened when available before retaining the zero-Reopen assertion, so hidden content cannot masquerade as permission denial.
+
+The already-reviewed installed-Main bounded diagnostic patch and Host outer managed-restart assertion were synchronized to the same frozen harness. No product code, timeout or retry policy changed. Node syntax, diff check and Playwright collection of6 cases in4 spec files passed; no browser test body ran here. Exact file hashes and incremental patch SHA are in the accompanying JSON and private detail-proposal/post-reload-and-diagnostic.json. Root must rebind the changed source identity before its next fresh-database E2E execution.

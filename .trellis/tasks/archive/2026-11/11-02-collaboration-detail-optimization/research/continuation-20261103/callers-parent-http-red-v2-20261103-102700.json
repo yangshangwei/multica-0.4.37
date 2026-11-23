@@ -1,0 +1,58 @@
+{
+  "started_at": "2026-11-03T02:27:00.087532+00:00",
+  "database": "multica_detail_20261103_080906_handler",
+  "package": "./internal/handler",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-count=1",
+    "./internal/handler",
+    "-run",
+    "^(TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit|TestCollaborationChildCompletionWakesOrdinaryParentOnce|TestCollaborationChildCompletionPreservesParentGuards|TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup|TestCollaborationChildWakeupRechecksParentBeforePublishing)$"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/callers-parent-http-red-v2-20261103-102700.jsonl",
+  "exit_code": 1,
+  "inventory": {
+    "pass": [
+      "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_rollback",
+      "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/cancel",
+      "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_backlog_parent",
+      "TestCollaborationChildWakeupRechecksParentBeforePublishing/terminal",
+      "TestCollaborationChildWakeupRechecksParentBeforePublishing/human",
+      "TestCollaborationChildWakeupRechecksParentBeforePublishing/shared",
+      "TestCollaborationChildWakeupRechecksParentBeforePublishing"
+    ],
+    "fail": [
+      "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_",
+      "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_unknown_commit",
+      "TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit",
+      "TestCollaborationChildCompletionWakesOrdinaryParentOnce/agent",
+      "TestCollaborationChildCompletionWakesOrdinaryParentOnce/squad",
+      "TestCollaborationChildCompletionWakesOrdinaryParentOnce",
+      "TestCollaborationChildCompletionPreservesParentGuards/same_stage_open",
+      "TestCollaborationChildCompletionPreservesParentGuards/earlier_stage_open",
+      "TestCollaborationChildCompletionPreservesParentGuards/later_stage_parked",
+      "TestCollaborationChildCompletionPreservesParentGuards/unstaged_sibling_open",
+      "TestCollaborationChildCompletionPreservesParentGuards/unstaged_in_staged_set",
+      "TestCollaborationChildCompletionPreservesParentGuards/cancelled_sibling",
+      "TestCollaborationChildCompletionPreservesParentGuards/backlog_parent",
+      "TestCollaborationChildCompletionPreservesParentGuards/terminal_parent",
+      "TestCollaborationChildCompletionPreservesParentGuards/human_parent",
+      "TestCollaborationChildCompletionPreservesParentGuards/shared_parent",
+      "TestCollaborationChildCompletionPreservesParentGuards/shared_parent_legacy_agent",
+      "TestCollaborationChildCompletionPreservesParentGuards",
+      "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_done",
+      "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_terminal_parent",
+      "TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup"
+    ],
+    "skip": []
+  }
+}

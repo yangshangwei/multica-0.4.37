@@ -1,0 +1,61 @@
+{
+  "at": "2026-10-21T23:30:22.902440+00:00",
+  "branch": "codex/cross-workspace-collaboration",
+  "head": "8298157751aa6ca5ed4d9635175cdbf66dc50fa5",
+  "existing_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "behavior_gap": "AC67 typed creation with unchanged control/dispatch and AC75 removal/deletion with current cross-client retained-file bytes and authority",
+  "write_scope": [
+    "e2e/fixtures/collaboration-retained-attachments.ts",
+    "e2e/collaboration-retained-attachment.spec.ts",
+    "research/continuation-2026-10-22/content-*",
+    "e2e/fixtures/collaboration-control-journey.ts (two authorized return-only authentication closures)"
+  ],
+  "implementation_scope": "Reuse existing public TestApiClient/enrollment/consent and production native IPC harness; add dedicated test wiring, strong exact-source assertions and safe evidence. No product changes, task creation/replanning, listener restart, commits or ledger/spec changes.",
+  "preflight_requirement": "Coordinator proves password API18996/current application equality, production Web13916 build/rewrite origin, renderer6090 HTTP200/exact index/preload and native source before native launch.",
+  "baseline": [
+    {
+      "path": "e2e/collaboration-delivery-web.spec.ts",
+      "sha256": "22c6357b5567a6e93c9bd55e5156c89de8834d02bd3cf8a0825b258ab5899f31",
+      "bytes": 21769,
+      "existing_before_lane": true
+    },
+    {
+      "path": "e2e/collaboration-account-desktop.spec.ts",
+      "sha256": "b13c20a84228935c5d37248575a522a933c4e6694eefb4777089c661849b5be3",
+      "bytes": 57791,
+      "existing_before_lane": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "sha256": "8adb5a949d259b74f3af2676ed663b2d541706fdd4076751d6de95e9c0d23b9f",
+      "bytes": 31225,
+      "existing_before_lane": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-control-journey.ts",
+      "sha256": "1e6b3536b6ba030242320635e9892ee4df86dd63e10f5e81fbd84d63c8e4f512",
+      "bytes": 48867,
+      "existing_before_lane": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+      "bytes": 7804,
+      "existing_before_lane": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-account-electron.mjs",
+      "sha256": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+      "bytes": 8687,
+      "existing_before_lane": true
+    },
+    {
+      "path": "e2e/fixtures.ts",
+      "sha256": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+      "bytes": 16085,
+      "existing_before_lane": true
+    }
+  ],
+  "real_provider_account": false,
+  "installed_full_main": false
+}

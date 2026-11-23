@@ -18,7 +18,7 @@
 // Reads PR_BODY from the environment for the exemption escape hatch, and emits
 // GitHub Actions annotations when GITHUB_ACTIONS is set.
 
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { statSync } from "node:fs";
 
 const IMAGE_BUDGET_BYTES = 300 * 1024;
@@ -28,7 +28,7 @@ const EXEMPTION_PATTERN = /^\s*Oversized image exemption:\s*\S/im;
 const baseRef = readBaseRef();
 const offenders = [];
 
-for (const { status, file } of changedFiles(baseRef)) {
+for await (const { status, file } of changedFiles(baseRef)) {
   if (!BITMAP_EXTENSIONS.test(file)) continue;
   const bytes = statSync(file).size;
   if (bytes <= IMAGE_BUDGET_BYTES) continue;
@@ -75,17 +75,44 @@ process.exit(1);
 
 // Added and modified paths between `base` and the working tree. Deletions
 // cannot regress the budget, so the filter drops them.
-function changedFiles(base) {
-  const out = execFileSync("git", ["diff", "--name-status", "--diff-filter=AM", base, "--"], {
-    encoding: "utf8",
+async function* changedFiles(base) {
+  // Stream NUL-delimited fields: neither large diffs nor quoted paths should
+  // stop the budget check before it reaches the bitmaps.
+  const child = spawn("git", ["diff", "--name-status", "--diff-filter=AM", "-z", base, "--"], {
+    stdio: ["ignore", "pipe", "inherit"],
   });
-  return out
-    .split("\n")
-    .filter(Boolean)
-    .map((line) => {
-      const [status, file] = line.split("\t");
-      return { status, file };
+  /** @type {Promise<Error | undefined>} */
+  const closed = new Promise((resolve) => {
+    child.once("error", resolve);
+    child.once("close", (code, signal) => {
+      resolve(code === 0 ? undefined : new Error(`git diff failed (${signal ?? code})`));
     });
+  });
+  child.stdout.setEncoding("utf8");
+  let pending = "";
+  let status;
+  try {
+    for await (const chunk of child.stdout) {
+      pending += chunk;
+      let end;
+      while ((end = pending.indexOf("\0")) !== -1) {
+        const field = pending.slice(0, end);
+        pending = pending.slice(end + 1);
+        if (status === undefined) {
+          status = field;
+        } else {
+          yield { status, file: field };
+          status = undefined;
+        }
+      }
+    }
+    const error = await closed;
+    if (error) throw error;
+    if (pending || status !== undefined) throw new Error("git diff returned an incomplete path record");
+  } finally {
+    if (child.exitCode === null && child.signalCode === null) child.kill();
+    await closed;
+  }
 }
 
 // Byte size of `file` as of `ref`, or 0 when it did not exist there.

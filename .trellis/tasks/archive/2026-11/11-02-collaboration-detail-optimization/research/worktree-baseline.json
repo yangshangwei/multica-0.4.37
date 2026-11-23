@@ -1,0 +1,113 @@
+{
+  "captured_at": "20261102-234232",
+  "backup_dir": "/tmp/multica-detail-baseline-20261102-234232",
+  "branch": "codex/cross-workspace-collaboration",
+  "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "status": [
+    " M .trellis/spec/server/collaboration-preparation.md",
+    " M .trellis/spec/server/database-test-isolation.md",
+    " M .trellis/spec/server/index.md",
+    " M .trellis/spec/web/frontend/e2e-run-environment.md",
+    " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/check.jsonl",
+    " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/implement.jsonl",
+    " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/progress.md",
+    " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/README.md",
+    " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json",
+    " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json",
+    " M .trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json",
+    " M .trellis/tasks/10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
+    " M .trellis/tasks/10-30-collaboration-fix-closure/check.jsonl",
+    " M .trellis/tasks/10-30-collaboration-fix-closure/implement.jsonl",
+    " M .trellis/tasks/10-30-collaboration-fix-closure/implement.md",
+    " M .trellis/tasks/10-30-collaboration-fix-closure/task.json",
+    " M .trellis/tasks/10-30-collaboration-knowledge-promotion/progress.md",
+    " M .trellis/tasks/10-30-collaboration-knowledge-promotion/real-model-acceptance-plan.md",
+    " M .trellis/tasks/10-30-collaboration-knowledge-promotion/task.json",
+    " M .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/check.jsonl",
+    " M .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/implement.jsonl",
+    " M .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/implement.md",
+    " M .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/prd.md",
+    " M .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/progress.md",
+    " M .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/task.json",
+    " M .trellis/workspace/artisan/index.md",
+    " M .trellis/workspace/artisan/journal-2.md",
+    " M apps/web/next-env.d.ts",
+    " M e2e/collaboration-installed-main.spec.ts",
+    " M e2e/collaboration-memory-web.spec.ts",
+    " M e2e/fixtures/collaboration-installed-main.mjs",
+    " M packages/views/collaboration/creation-form.test.tsx",
+    " M packages/views/collaboration/creation-form.tsx",
+    " M packages/views/collaboration/field-editing.test.tsx",
+    " M packages/views/collaboration/field-inputs.tsx",
+    " M packages/views/collaboration/workflow.tsx",
+    " M packages/views/issues/components/pickers/property-picker.tsx",
+    " M packages/views/locales/en/collaboration.json",
+    " M packages/views/locales/zh-Hans/collaboration.json",
+    " M server/internal/handler/daemon_test.go",
+    " M server/internal/service/collaboration_source_fields.go",
+    " M server/internal/service/collaboration_source_fields_test.go",
+    " M server/pkg/db/generated/collaboration_source_fields.sql.go",
+    " M server/pkg/db/queries/collaboration_source_fields.sql",
+    "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/continuation-plan-2026-11-02.md",
+    "?? .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/",
+    "?? .trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/",
+    "?? .trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/",
+    "?? .trellis/tasks/10-30-collaboration-fix-closure/verification-continue-2026-11-02.md",
+    "?? .trellis/tasks/11-01-branch-e2e-acceptance/",
+    "?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/advance-plan-2026-11-02.md",
+    "?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/",
+    "?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/",
+    "?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/",
+    "?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/",
+    "?? .trellis/tasks/11-02-branch-functional-regression/",
+    "?? .trellis/tasks/11-02-collaboration-creation-audit-fixes/",
+    "?? .trellis/tasks/11-02-collaboration-detail-optimization/",
+    "?? .trellis/tasks/11-02-collaboration-source-picker/",
+    "?? docs/plans/2026-11-02-collaboration-detail-optimization.md",
+    "?? docs/plans/2026-11-02-collaboration-fix-closure.md",
+    "?? e2e/fixtures/collaboration-recipient-picker.mjs",
+    "?? packages/views/collaboration/field-inputs.test.tsx"
+  ],
+  "files": {
+    "packages/views/collaboration/workflow.tsx": {
+      "sha256": "f29d5ad2753213d39145a15d67e21933708c187640478825b80b2151733df5e6",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/packages/views/collaboration/workflow.tsx"
+    },
+    "packages/views/collaboration/collaboration-detail.tsx": {
+      "sha256": "748f5b98843bbc942b9dd4f7b52d7419195bc1c4ba365f9f3e19218f3d6a2f10",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/packages/views/collaboration/collaboration-detail.tsx"
+    },
+    "packages/views/collaboration/comment-composer.tsx": {
+      "sha256": "a28889ad7403b02c6ca50333995b413d5c9894fdf7227f2fcd394f6a087995f5",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/packages/views/collaboration/comment-composer.tsx"
+    },
+    "packages/views/locales/en/collaboration.json": {
+      "sha256": "bc8fbb2113d0cbd24a3480a412c2846b8ebb2e392d95cec532616af329181529",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/packages/views/locales/en/collaboration.json"
+    },
+    "packages/views/locales/zh-Hans/collaboration.json": {
+      "sha256": "4a7d26d032bcdebab54b9bb6dcb91cf65445562d263a9b6e07b7587b38faf37a",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/packages/views/locales/zh-Hans/collaboration.json"
+    },
+    "server/internal/service/collaboration_handoff.go": {
+      "sha256": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/server/internal/service/collaboration_handoff.go"
+    },
+    "server/internal/service/collaboration_lifecycle.go": {
+      "sha256": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/server/internal/service/collaboration_lifecycle.go"
+    },
+    "server/internal/service/collaboration_workflow.go": {
+      "sha256": "88a0751c04e0087e2636c85dd87ff844bae0b6473bddf947e32ac7c101ed69a2",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/server/internal/service/collaboration_workflow.go"
+    },
+    "packages/core/collaboration/action.ts": {
+      "sha256": "b1e1732bde848e2b37d724989fe35ea0a06d4535db25e869aacd444f1af3526d",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/packages/core/collaboration/action.ts"
+    },
+    "packages/core/collaboration/schema.ts": {
+      "sha256": "dbafd1ebc586005ccc990a4de0450656864b0b4888637b190336849eaa0ea76d",
+      "backup": "/tmp/multica-detail-baseline-20261102-234232/packages/core/collaboration/schema.ts"
+    }
+  }
+}

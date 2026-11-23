@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS report_snapshot_control_identity_key;

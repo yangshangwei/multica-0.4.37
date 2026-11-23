@@ -1,0 +1,24 @@
+{
+  "source_sha": "3110295d0eca364937f08c97102ca74f08a7e235",
+  "working_diff_sha256": "18c13b3541dce9b5b39313a679ba6f09968033d7c5d4ebc6099ac49b726e872d",
+  "database": "kfix_claim_svc_green_20261101",
+  "database_identity": "kfix_claim_svc_green_20261101|763_collaboration_knowledge_delivery_history",
+  "command": [
+    "/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "./internal/service",
+    "-run",
+    "^TestKnowledge(ResumeReadsCompleteLongSessionHistory|ResumeDeepExposureStillGoverns|ResumeCorruptRowAnywhereRefuses|RuntimeHistoryReadsCompleteNamespace|RuntimeHistoryIsIndexDriven)$",
+    "-count=1",
+    "-json"
+  ],
+  "started_at": "2026-11-01T15:17:35.831397+00:00",
+  "exit_code": 0,
+  "finished_at": "2026-11-01T15:18:02.375299+00:00",
+  "sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+  "test_events": {
+    "pass": 8
+  },
+  "failures": []
+}

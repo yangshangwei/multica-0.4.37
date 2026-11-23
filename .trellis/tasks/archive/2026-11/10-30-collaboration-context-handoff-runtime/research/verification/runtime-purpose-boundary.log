@@ -1,0 +1,6 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/10/31 23:01:44 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes
+--- PASS: TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	1.032s

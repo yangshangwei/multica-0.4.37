@@ -1,0 +1,395 @@
+{
+  "pages": [
+    {
+      "slug": "index",
+      "checked": "概览入口、文档链接、任务与执行的基础分工",
+      "area": "介绍与开发",
+      "codePaths": [
+        "packages/views/layout/app-sidebar.tsx",
+        "server/internal/service/task.go"
+      ]
+    },
+    {
+      "slug": "concepts",
+      "checked": "Issue/task、运行时、小队、项目、自动化的核心关系",
+      "area": "介绍与开发",
+      "codePaths": [
+        "packages/core/types/issue.ts",
+        "server/internal/service/issue_trigger.go"
+      ]
+    },
+    {
+      "slug": "how-multica-works",
+      "checked": "API/daemon 分工、排队、结果返回、task 与 Issue 状态分离",
+      "area": "介绍与开发",
+      "codePaths": [
+        "server/internal/daemon/daemon.go",
+        "server/internal/service/task.go"
+      ]
+    },
+    {
+      "slug": "tutorial",
+      "checked": "创建流程默认模式、仓库、浮动聊天、运行时与技能入口、小队和自动化",
+      "area": "介绍与开发",
+      "codePaths": [
+        "packages/core/issues/stores/create-mode-store.ts",
+        "packages/views/chat/floating-chat.tsx",
+        "packages/views/layout/app-sidebar.tsx"
+      ]
+    },
+    {
+      "slug": "self-host-quickstart",
+      "checked": "Compose 初始化、默认登录、健康探针、反向代理、模板挂载、升级命令",
+      "area": "部署与安全",
+      "codePaths": [
+        "docker-compose.selfhost.yml",
+        "Makefile",
+        "server/internal/handler/auth_device.go",
+        "server/cmd/server/router.go"
+      ]
+    },
+    {
+      "slug": "workspaces",
+      "checked": "创建与设置权限、离开/移除的运行时和任务清理、数据范围",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/workspace.go",
+        "server/internal/handler/workspace_revoke.go"
+      ]
+    },
+    {
+      "slug": "members-roles",
+      "checked": "角色管理、最后一名 owner 限制、邮箱邀请、分享邀请入口",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/workspace.go",
+        "server/internal/handler/share_link.go",
+        "packages/views/settings/components/members-tab.tsx"
+      ]
+    },
+    {
+      "slug": "issues",
+      "checked": "状态分类与触发、权限、task 生命周期、项目/迭代关系、删除",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/service/issue_trigger.go",
+        "server/internal/handler/issue.go",
+        "server/internal/issuestatus/issuestatus.go"
+      ]
+    },
+    {
+      "slug": "triage",
+      "checked": "默认开关、人类审核、正式接纳门禁、稍后处理、CSV、接纳与执行分离",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/triage.go",
+        "server/internal/handler/triage_actions.go",
+        "server/internal/handler/triage_import.go"
+      ]
+    },
+    {
+      "slug": "projects",
+      "checked": "状态、正式任务统计、健康指标、描述修订、验收、删除与小队关联",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/project.go",
+        "server/internal/projecthealth/counts.go",
+        "server/internal/projecthealth/snapshot.go",
+        "server/internal/handler/project_update.go"
+      ]
+    },
+    {
+      "slug": "project-resources",
+      "checked": "Git 与本地目录、Desktop 文件选择、in_place/worktree、能力门禁与回放限额",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/project_resource.go",
+        "packages/views/projects/components/project-resources-section.tsx",
+        "server/internal/daemon/execenv/local_worktree.go"
+      ]
+    },
+    {
+      "slug": "iterations",
+      "checked": "手动生命周期、权限、任务加入限制、统计、关闭快照和操作限额",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/iteration_management.go",
+        "server/internal/service/iteration_lifecycle_preview.go",
+        "server/internal/iteration/stats.go",
+        "server/internal/iteration/history_snapshot.go"
+      ]
+    },
+    {
+      "slug": "agents",
+      "checked": "Access 与管理权限、自治等级、归档、运行状态与执行的区别",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/internal/handler/agent.go",
+        "server/internal/handler/agent_env.go",
+        "server/internal/handler/agent_autonomy.go"
+      ]
+    },
+    {
+      "slug": "agents-create",
+      "checked": "创建与模板、配置、并发、环境变量和 MCP 权限",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/internal/handler/agent.go",
+        "server/internal/handler/agent_env.go",
+        "server/internal/service/builtin_agent_templates.go"
+      ]
+    },
+    {
+      "slug": "skills",
+      "checked": "五类创建入口、内网来源、导入、refresh、模板副本和运行时同步",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/internal/handler/skill.go",
+        "server/internal/handler/skill_refresh.go",
+        "packages/views/skills/components/create-skill-dialog.tsx"
+      ]
+    },
+    {
+      "slug": "squads",
+      "checked": "模板、小队成员/leader 权限、显式路由与兜底、归档转交",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/squad.go",
+        "server/internal/handler/squad_template.go",
+        "server/internal/handler/comment.go"
+      ]
+    },
+    {
+      "slug": "triggering-agents",
+      "checked": "四种触发、Access、静默评论与 backlog 边界",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/internal/service/issue_trigger.go",
+        "server/internal/handler/comment.go"
+      ]
+    },
+    {
+      "slug": "assigning-issues",
+      "checked": "分配确认、不启动选项、backlog 状态变更、Access、小队 leader",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/internal/service/issue_trigger.go",
+        "server/cmd/multica/cmd_issue.go"
+      ]
+    },
+    {
+      "slug": "comments",
+      "checked": "编辑/删除权限、触发重算、旧执行取消、@all 与显式提及",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/comment.go",
+        "server/pkg/db/queries/agent.sql"
+      ]
+    },
+    {
+      "slug": "mentioning-agents",
+      "checked": "显式和隐式路由、5 分钟延迟兜底、合并、/note、@all 和 Access",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/comment.go",
+        "server/internal/handler/comment_trigger_preview_test.go"
+      ]
+    },
+    {
+      "slug": "chat",
+      "checked": "私聊所有者读取门禁、发送时重新校验 Access、离线排队、归档和删除",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/chat.go",
+        "server/internal/service/task.go"
+      ]
+    },
+    {
+      "slug": "inbox",
+      "checked": "通知类别和偏好、已读/未读、归档、站内通知与执行的区别",
+      "area": "业务协作",
+      "codePaths": [
+        "server/internal/handler/inbox.go",
+        "server/internal/handler/notification_preference.go",
+        "server/cmd/server/notification_listeners.go"
+      ]
+    },
+    {
+      "slug": "tasks",
+      "checked": "任务状态、排队、重试、断线宽限、准备租约、执行与 Issue 状态分离",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/internal/service/task.go",
+        "server/cmd/server/runtime_sweeper.go",
+        "server/pkg/db/queries/agent.sql"
+      ]
+    },
+    {
+      "slug": "daemon-runtimes",
+      "checked": "心跳、排队和离线、并发、运行时共享、profile 配置",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/cmd/server/runtime_sweeper.go",
+        "server/internal/daemon/config.go",
+        "server/cmd/multica/cmd_runtime_profile.go"
+      ]
+    },
+    {
+      "slug": "install-agent-runtime",
+      "checked": "内置检测命令、路径覆盖、支持版本与外部账号前提",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/internal/daemon/agents_probe.go",
+        "server/pkg/agent/version.go"
+      ]
+    },
+    {
+      "slug": "providers",
+      "checked": "模型选择、OMP MCP、ZeroClaw、工具相关的能力声明",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/pkg/agent/models.go",
+        "packages/core/agents/mcp-support.ts",
+        "server/internal/daemon/execenv/omp_mcp.go"
+      ]
+    },
+    {
+      "slug": "autopilots",
+      "checked": "日报/周报计划、两种输出模式、Webhook JSON/幂等/事件推断、失败暂停阈值",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/internal/service/builtin_autopilot_templates_roster.go",
+        "server/internal/handler/autopilot_webhook.go",
+        "server/cmd/server/autopilot_failure_monitor.go"
+      ]
+    },
+    {
+      "slug": "vcs-integration",
+      "checked": "提供方、Webhook 签名、PR/MR 状态和关闭意图、代码凭据范围",
+      "area": "部署与安全",
+      "codePaths": [
+        "server/internal/handler/vcs.go",
+        "server/internal/integrations/vcs/forgejo.go",
+        "server/internal/integrations/vcs/gitlab.go"
+      ]
+    },
+    {
+      "slug": "desktop-app",
+      "checked": "登录方式、独立 profile、正式连接配置、更新 URL、HTTP/HTTPS 连接前提",
+      "area": "部署与安全",
+      "codePaths": [
+        "apps/desktop/src/shared/runtime-config.ts",
+        "apps/desktop/src/main/server-switch.ts",
+        "apps/desktop/src/main/daemon-profile.ts"
+      ]
+    },
+    {
+      "slug": "security-model",
+      "checked": "OS 权限与沙箱说明、task token、工作目录与原地执行的例外",
+      "area": "部署与安全",
+      "codePaths": [
+        "server/internal/daemon/execenv/execenv.go",
+        "server/internal/handler/project_resource.go",
+        "server/internal/handler/daemon.go"
+      ]
+    },
+    {
+      "slug": "environment-variables",
+      "checked": "认证/Redis 分支、连接池、重连宽限、Compose 传递、daemon 配置和模板目录",
+      "area": "部署与安全",
+      "codePaths": [
+        "server/internal/auth/password_limiter.go",
+        "server/cmd/server/dbstats.go",
+        "docker-compose.selfhost.yml",
+        "server/internal/daemon/config.go"
+      ]
+    },
+    {
+      "slug": "auth-setup",
+      "checked": "三种认证入口、密码配置和限制、设备身份、注册规则、TTL/Compose 生效步骤",
+      "area": "部署与安全",
+      "codePaths": [
+        "server/internal/auth/password_config.go",
+        "server/internal/handler/auth_device.go",
+        "server/internal/handler/auth_password.go",
+        "server/internal/auth/cookie.go"
+      ]
+    },
+    {
+      "slug": "platform-administration",
+      "checked": "密码会话门禁、首次管理员、凭据文件、保留天数与显式恢复入口",
+      "area": "部署与安全",
+      "codePaths": [
+        "server/internal/handler/admin_auth.go",
+        "server/cmd/server/platform_admin_initialization.go",
+        "scripts/initialize-platform-admin.sh",
+        "server/cmd/server/password_recovery.go"
+      ]
+    },
+    {
+      "slug": "troubleshooting",
+      "checked": "排队/目录等待、并发、健康/WS、日志命令、数据库回填入口",
+      "area": "部署与安全",
+      "codePaths": [
+        "server/cmd/server/router.go",
+        "server/internal/daemon/config.go",
+        "server/cmd/multica/cmd_daemon.go",
+        "server/cmd/backfill_task_usage_hourly/main.go"
+      ]
+    },
+    {
+      "slug": "cli",
+      "checked": "全局入口、issue/agent/skill/autopilot 操作、凭据权限、approval 完整目录",
+      "area": "智能体与执行",
+      "codePaths": [
+        "server/cmd/multica/main.go",
+        "server/cmd/multica/cmd_agent.go",
+        "server/cmd/multica/cmd_skill.go",
+        "server/cmd/multica/cmd_approval.go"
+      ]
+    },
+    {
+      "slug": "auth-tokens",
+      "checked": "cookie/PAT/task token、30/90 天时限、7 天续期阈值、退出与吊销区别",
+      "area": "部署与安全",
+      "codePaths": [
+        "server/internal/auth/cookie.go",
+        "server/internal/handler/personal_access_token.go",
+        "server/internal/handler/daemon.go",
+        "server/internal/handler/auth.go"
+      ]
+    },
+    {
+      "slug": "developers/contributing",
+      "checked": "版本要求、Make 命令、传统 worktree 路径分配、验证流程与数据库限制",
+      "area": "介绍与开发",
+      "codePaths": [
+        "package.json",
+        "server/go.mod",
+        "Makefile",
+        "scripts/init-worktree-env.sh",
+        "scripts/check.sh"
+      ]
+    },
+    {
+      "slug": "developers/architecture",
+      "checked": "包分层、路由适配、Query/Zustand、API 兼容与 task 链路",
+      "area": "介绍与开发",
+      "codePaths": [
+        "CLAUDE.md",
+        "packages/core/api/schema.ts",
+        "packages/views/settings/components/workspace-tab.tsx"
+      ]
+    },
+    {
+      "slug": "developers/conventions",
+      "checked": "API 字段形状、Query key、角色/状态本地化和规范边界",
+      "area": "介绍与开发",
+      "codePaths": [
+        "packages/core/types/issue.ts",
+        "packages/core/issues/queries.ts",
+        "packages/views/issues/utils/status-label.ts"
+      ]
+    }
+  ]
+}

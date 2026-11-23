@@ -1,0 +1,32 @@
+{
+  "id": "collaboration-create-polish",
+  "name": "collaboration-create-polish",
+  "title": "Reduce visual noise in collaboration task creation",
+  "description": "Refine the approved option C composer using the user screenshot: reduce empty-space and repeated chrome, keep advanced fields discoverable, preserve full identities and recovery accessibility.",
+  "status": "completed",
+  "dev_type": "frontend",
+  "scope": "collaboration",
+  "package": "views",
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-07",
+  "completedAt": "2026-11-07",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "6afd432b7a7d1ffa71a232d2fb429ea11ba7f91a",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/collaboration/creation-form.tsx",
+    "packages/views/collaboration/account-picker.tsx",
+    "packages/views/collaboration/attachment-picker.tsx",
+    ".trellis/spec/views/frontend/collaboration-creation.md",
+    "packages/views/collaboration/creation-form.test.tsx"
+  ],
+  "notes": "Completed Impeccable refinement with user-approved guarded focus integration.349full regression tests+25final affected-file tests, typecheck/lint/detector and40browser+8header+7focus cases passed. See verification.md for incremental provenance.",
+  "meta": {}
+}

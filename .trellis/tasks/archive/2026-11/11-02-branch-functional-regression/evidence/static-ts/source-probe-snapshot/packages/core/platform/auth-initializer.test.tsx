@@ -1,0 +1,1108 @@
+/**
+ * @vitest-environment jsdom
+ */
+import { act, render, waitFor } from "@testing-library/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { setApiInstance } from "../api";
+import { ApiClient, ApiError } from "../api/client";
+import {
+  createAuthStore,
+  registerAuthStore,
+  useAuthStore,
+} from "../auth";
+import type { StorageAdapter, User, Workspace } from "../types";
+import { workspaceKeys } from "../workspace/queries";
+import {
+  registerDraftCleanup,
+  __clearDraftCleanupRegistryForTest,
+} from "../drafts/cleanup-registry";
+import { AuthInitializer } from "./auth-initializer";
+import { configStore } from "../config";
+
+const logger = vi.hoisted(() => ({
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
+}));
+
+vi.mock("../logger", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../logger")>();
+  return { ...actual, createLogger: () => logger };
+});
+
+vi.mock("../analytics", () => ({
+  captureSignupSource: vi.fn(),
+  identify: vi.fn(),
+  initAnalytics: vi.fn(),
+  resetAnalytics: vi.fn(),
+}));
+
+const fakeUser = {
+  id: "user-1",
+  name: "Alice",
+  email: "alice@example.com",
+  avatar_url: null,
+} as User;
+
+const fakeWorkspaces = [{ id: "ws-1", slug: "acme" }] as Workspace[];
+
+function makeStorage(initial: Record<string, string> = {}): StorageAdapter & {
+  snapshot: () => Record<string, string>;
+} {
+  const values = { ...initial };
+  return {
+    getItem: (key) => values[key] ?? null,
+    setItem: (key, value) => {
+      values[key] = value;
+    },
+    removeItem: (key) => {
+      delete values[key];
+    },
+    keys: () => Object.keys(values),
+    snapshot: () => ({ ...values }),
+  };
+}
+
+function makeApi(overrides: Partial<ApiClient> = {}): ApiClient {
+  return {
+    getConfig: vi.fn().mockResolvedValue({}),
+    getMe: vi.fn().mockResolvedValue(fakeUser),
+    listWorkspaces: vi.fn().mockResolvedValue(fakeWorkspaces),
+    setToken: vi.fn(),
+    ...overrides,
+  } as unknown as ApiClient;
+}
+
+function renderInitializer({
+  api,
+  storage = makeStorage({ multica_token: "token-1" }),
+  cookieAuth = false,
+  platform = "desktop",
+  deviceAuth,
+  strictMode = false,
+}: {
+  api: ApiClient;
+  storage?: StorageAdapter;
+  cookieAuth?: boolean;
+  platform?: "desktop" | "web";
+  deviceAuth?: { deviceId: string; deviceName?: string };
+  strictMode?: boolean;
+}) {
+  const onLogin = vi.fn();
+  const onLogout = vi.fn();
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false, gcTime: Infinity } },
+  });
+  setApiInstance(api);
+  registerAuthStore(
+    createAuthStore({ api, storage, cookieAuth, onLogin, onLogout }),
+  );
+
+  const result = render(
+    <QueryClientProvider client={queryClient}>
+      <AuthInitializer
+        cookieAuth={cookieAuth}
+        identity={{ platform }}
+        onLogin={onLogin}
+        storage={storage}
+        deviceAuth={deviceAuth}
+      >
+        <div>child</div>
+      </AuthInitializer>
+    </QueryClientProvider>,
+    { reactStrictMode: strictMode },
+  );
+
+  return { ...result, onLogin, onLogout, queryClient };
+}
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  __clearDraftCleanupRegistryForTest();
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
+});
+
+describe("remembered Desktop password login", () => {
+  it("restores a saved login on a fresh boot and forgets it after explicit logout", async () => {
+    const storage = makeStorage({});
+    const passwordLogin = vi.fn().mockResolvedValue({ token: "remembered-session", user: fakeUser });
+    const first = renderInitializer({ api: makeApi({ passwordLogin }), storage });
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("unauthenticated"));
+    await act(async () => { await useAuthStore.getState().loginWithPassword("11052", "abc123"); });
+    expect(storage.getItem("multica_token")).toBe("remembered-session");
+    expect(Object.values(storage.snapshot())).not.toContain("abc123");
+    first.unmount();
+
+    const getMe = vi.fn().mockResolvedValue(fakeUser);
+    const restoredApi = makeApi({ getMe, passwordLogin });
+    const second = renderInitializer({ api: restoredApi, storage });
+    const signedOut = vi.fn();
+    const unsubscribe = useAuthStore.subscribe((state) => {
+      if (state.status === "unauthenticated") signedOut();
+    });
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("authenticated"));
+    expect(restoredApi.setToken).toHaveBeenCalledWith("remembered-session");
+    expect(getMe).toHaveBeenCalledOnce();
+    expect(passwordLogin).toHaveBeenCalledOnce();
+    expect(signedOut).not.toHaveBeenCalled();
+    expect(useAuthStore.getState().user?.id).toBe(fakeUser.id);
+    unsubscribe();
+
+    act(() => useAuthStore.getState().logout());
+    expect(storage.getItem("multica_token")).toBeNull();
+    second.unmount();
+    const loggedOutApi = makeApi({ passwordLogin });
+    const third = renderInitializer({ api: loggedOutApi, storage });
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("unauthenticated"));
+    expect(loggedOutApi.getMe).not.toHaveBeenCalled();
+    expect(passwordLogin).toHaveBeenCalledOnce();
+    third.unmount();
+  });
+});
+
+describe("AuthInitializer daemon setup config", () => {
+  it("loads platform install commands and clears them on a later older-server boot", async () => {
+    const commands = { windows: "windows installer", macos: "macos installer", linux: "linux installer" };
+    const first = renderInitializer({
+      api: makeApi({ getConfig: vi.fn().mockResolvedValue({
+        daemon_server_url: "https://api.internal",
+        daemon_app_url: "https://app.internal",
+        cli_install_command: "legacy installer",
+        cli_install_commands: commands,
+      }) }),
+    });
+    await waitFor(() => expect(configStore.getState()).toMatchObject({
+      daemonServerUrl: "https://api.internal",
+      daemonAppUrl: "https://app.internal",
+      cliInstallCommand: "legacy installer",
+      cliInstallCommands: commands,
+    }));
+    first.unmount();
+    const second = renderInitializer({ api: makeApi() });
+    await waitFor(() => expect(configStore.getState()).toMatchObject({
+      daemonServerUrl: "",
+      daemonAppUrl: "",
+      cliInstallCommand: "",
+      cliInstallCommands: {},
+    }));
+    expect(Object.keys(configStore.getState().cliInstallCommands)).toHaveLength(0);
+    second.unmount();
+  });
+});
+
+describe("AuthInitializer desktop download URL", () => {
+  it("loads the download page and clears it on a later older-server boot", async () => {
+    const first = renderInitializer({
+      api: makeApi({ getConfig: vi.fn().mockResolvedValue({
+        desktop_download_url: "http://10.10.10.20:18080/desktop/",
+      }) }),
+    });
+    await waitFor(() => expect(configStore.getState().desktopDownloadUrl).toBe("http://10.10.10.20:18080/desktop/"));
+    first.unmount();
+    const second = renderInitializer({ api: makeApi() });
+    await waitFor(() => expect(configStore.getState().desktopDownloadUrl).toBe(""));
+    second.unmount();
+  });
+});
+
+describe("AuthInitializer messaging deployment policy", () => {
+  it.each([
+    ["network failure", new TypeError("fetch failed")],
+    ["invalid JSON", new SyntaxError("Unexpected token")],
+    ["unavailable API", new ApiError("unavailable", 503, "Unavailable")],
+  ])("keeps messaging unavailable when startup config fails: %s", async (_label, error) => {
+    configStore.setState(configStore.getInitialState());
+    const api = makeApi({ getConfig: vi.fn().mockRejectedValue(error) });
+    const { unmount } = renderInitializer({ api });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().user).toEqual(fakeUser);
+    });
+    expect(configStore.getState().messagingIntegrationsEnabled).toBe(false);
+    unmount();
+  });
+
+  it("loads disabled messaging independently from enabled self-hosted Git", async () => {
+    const api = makeApi({
+      getConfig: vi.fn().mockResolvedValue({
+        allow_signup: true,
+        messaging_integrations_enabled: false,
+        vcs_integration_available: true,
+      }),
+    });
+    renderInitializer({ api });
+
+    await waitFor(() => {
+      expect(configStore.getState().messagingIntegrationsEnabled).toBe(false);
+      expect(configStore.getState().vcsIntegrationAvailable).toBe(true);
+    });
+  });
+
+  it("restores historical messaging availability when connecting to an older server", async () => {
+    configStore.getState().setAuthConfig({
+      allowSignup: true,
+      messagingIntegrationsEnabled: false,
+    });
+    renderInitializer({ api: makeApi() });
+
+    await waitFor(() => {
+      expect(configStore.getState().messagingIntegrationsEnabled).toBe(true);
+    });
+  });
+});
+
+describe("AuthInitializer recovery", () => {
+  it("reaches actionable timeout recovery on a hanging boot and resumes after the server returns", async () => {
+    vi.useFakeTimers();
+    let available = false;
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (!available) return new Promise<Response>(() => {});
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+      if (url.endsWith("/api/me")) return Promise.resolve(Response.json(fakeUser));
+      if (url.endsWith("/api/workspaces")) return Promise.resolve(Response.json([]));
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage({ multica_token: "saved-secret" });
+    const api = new ApiClient("https://api.example.test");
+    const { onLogout, unmount } = renderInitializer({ api, storage });
+    await act(async () => { await vi.advanceTimersByTimeAsync(10_000); });
+    expect(useAuthStore.getState()).toMatchObject({
+      status: "recovering",
+      recovery: { isRetrying: false, nextRetryAt: Date.now() + 1_000, failure: { kind: "timeout", occurredAt: Date.now() } },
+    });
+    expect(storage.getItem("multica_token")).toBe("saved-secret");
+    expect(onLogout).not.toHaveBeenCalled();
+    available = true;
+    await act(async () => { await vi.advanceTimersByTimeAsync(1_000); });
+    expect(useAuthStore.getState().status).toBe("authenticated");
+    expect(useAuthStore.getState().recovery).toBeNull();
+    unmount();
+  });
+
+  it("retains the recovery surface and last failure during a manual retry without overlap", async () => {
+    let finish!: (user: User) => void;
+    const getMe = vi.fn().mockRejectedValueOnce(new ApiError("fixture-secret", 503, "Unavailable"))
+      .mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    const { unmount } = renderInitializer({ api: makeApi({ getMe }) });
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("recovering"));
+    const failure = useAuthStore.getState().recovery?.failure;
+    expect(failure).toMatchObject({ kind: "server", status: 503 });
+    expect(JSON.stringify(useAuthStore.getState().recovery)).not.toContain("fixture-secret");
+    act(() => {
+      useAuthStore.getState().retryAuthentication();
+      useAuthStore.getState().retryAuthentication();
+    });
+    expect(getMe).toHaveBeenCalledTimes(2);
+    expect(useAuthStore.getState()).toMatchObject({ status: "recovering", recovery: { isRetrying: true, nextRetryAt: null, failure } });
+    act(() => useAuthStore.getState().retryAuthentication());
+    expect(getMe).toHaveBeenCalledTimes(2);
+    await act(async () => { finish(fakeUser); });
+    expect(useAuthStore.getState().recovery).toBeNull();
+    unmount();
+  });
+
+  it("keeps a newer login when an old successful identity response arrives", async () => {
+    let finish!: (response: Response) => void;
+    const currentUser = { ...fakeUser, id: "new-user" };
+    const request = vi.fn((url: string, _init?: RequestInit) => {
+      if (url.endsWith("/api/me")) return new Promise<Response>(resolve => { finish = resolve; });
+      if (url.endsWith("/auth/verify-code")) return Promise.resolve(Response.json({ token: "new-token", user: currentUser }));
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+      if (url.endsWith("/api/workspaces")) return Promise.resolve(Response.json([]));
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", request);
+    const api = new ApiClient("https://api.example.test");
+    const getMe = vi.spyOn(api, "getMe");
+    const { unmount } = renderInitializer({ api });
+    await act(async () => { await useAuthStore.getState().verifyCode("new@example.test", "123456"); });
+    await act(async () => {
+      finish(Response.json(fakeUser));
+      await getMe.mock.results[0]!.value.catch(() => {});
+    });
+    expect(useAuthStore.getState().user).toEqual(currentUser);
+    const identityCall = request.mock.calls.find(([url]) => url.endsWith("/api/me"));
+    expect((identityCall?.[1] as RequestInit | undefined)?.signal?.aborted).toBe(true);
+    unmount();
+  });
+
+  it("cancels device body parsing on disposal before persisting a session", async () => {
+    let finish!: (body: unknown) => void;
+    const response = Response.json({});
+    const parsing = vi.spyOn(response, "json").mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({ device_auth_available: true }));
+      if (url.endsWith("/auth/device")) return Promise.resolve(response);
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage();
+    const api = new ApiClient("https://api.example.test");
+    const deviceLogin = vi.spyOn(api, "deviceLogin");
+    const { unmount, onLogin } = renderInitializer({ api, storage, deviceAuth: { deviceId: "isolated-device" } });
+    await waitFor(() => expect(parsing).toHaveBeenCalledOnce());
+    unmount();
+    await act(async () => {
+      finish({ token: "late-secret", user: fakeUser });
+      await deviceLogin.mock.results[0]!.value.catch(() => {});
+    });
+    expect(storage.getItem("multica_token")).toBeNull();
+    expect(useAuthStore.getState().user).toBeNull();
+    expect(onLogin).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { mode: "bearer", cookieAuth: false, status: 401 },
+    { mode: "bearer", cookieAuth: false, status: 404 },
+    { mode: "cookie", cookieAuth: true, status: 401 },
+    { mode: "cookie", cookieAuth: true, status: 404 },
+  ])(
+    "keeps a newer $mode login when the startup identity request returns $status",
+    async ({ cookieAuth, status }) => {
+      let release!: (response: Response) => void;
+      const pendingIdentity = new Promise<Response>((resolve) => {
+        release = resolve;
+      });
+      const currentUser = { ...fakeUser, id: "user-2", email: "new@example.com" };
+      vi.stubGlobal("fetch", vi.fn((url: string) => {
+        if (url.endsWith("/api/me")) return pendingIdentity;
+        if (url.endsWith("/auth/verify-code")) {
+          return Promise.resolve(Response.json({ token: "new-token", user: currentUser }));
+        }
+        if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+        if (url.endsWith("/api/workspaces")) return Promise.resolve(Response.json([]));
+        throw new Error(`Unexpected request: ${url}`);
+      }));
+      const storage = makeStorage(cookieAuth ? {} : { multica_token: "old-token" });
+      const onUnauthorized = vi.fn(() => useAuthStore.getState().sessionExpired());
+      const api = new ApiClient("https://api.example.test", { onUnauthorized });
+      const getMe = vi.spyOn(api, "getMe");
+      const { onLogout } = renderInitializer({ api, storage, cookieAuth });
+
+      await waitFor(() => expect(getMe).toHaveBeenCalledOnce());
+      await act(async () => {
+        await useAuthStore.getState().verifyCode(currentUser.email, "123456");
+      });
+      expect(useAuthStore.getState().user).toEqual(currentUser);
+
+      await act(async () => {
+        release(Response.json({ error: "user not found" }, { status }));
+        await getMe.mock.results[0]!.value.catch(() => {});
+      });
+
+      // The ApiClient epoch guard alone is insufficient if initializer's
+      // catch tears down the newer session after receiving the stale error.
+      expect(onUnauthorized).not.toHaveBeenCalled();
+      expect(onLogout).not.toHaveBeenCalled();
+      expect(useAuthStore.getState()).toMatchObject({
+        user: currentUser,
+        status: "authenticated",
+        expired: false,
+      });
+      expect(storage.getItem("multica_token")).toBe(cookieAuth ? null : "new-token");
+    },
+  );
+
+  it("keeps a newer login when an already rejected identity response finishes reading its body", async () => {
+    let releaseBody!: (body: { error: string }) => void;
+    const rejectedIdentity = new Response(null, { status: 401 });
+    vi.spyOn(rejectedIdentity, "json").mockImplementation(() => new Promise((resolve) => {
+      releaseBody = resolve;
+    }));
+    const currentUser = { ...fakeUser, id: "user-2", email: "new@example.com" };
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (url.endsWith("/api/me")) return Promise.resolve(rejectedIdentity);
+      if (url.endsWith("/auth/verify-code")) {
+        return Promise.resolve(Response.json({ token: "new-token", user: currentUser }));
+      }
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage({ multica_token: "old-token" });
+    const onUnauthorized = vi.fn(() => useAuthStore.getState().sessionExpired());
+    const api = new ApiClient("https://api.example.test", { onUnauthorized });
+    const getMe = vi.spyOn(api, "getMe");
+    const { onLogout } = renderInitializer({ api, storage });
+
+    await waitFor(() => expect(onUnauthorized).toHaveBeenCalledOnce());
+    expect(onLogout).toHaveBeenCalledOnce();
+    expect(useAuthStore.getState().status).toBe("unauthenticated");
+    await act(async () => {
+      await useAuthStore.getState().verifyCode(currentUser.email, "123456");
+    });
+    expect(useAuthStore.getState().user).toEqual(currentUser);
+
+    await act(async () => {
+      releaseBody({ error: "user not found" });
+      await getMe.mock.results[0]!.value.catch(() => {});
+    });
+
+    expect(onUnauthorized).toHaveBeenCalledOnce();
+    expect(onLogout).toHaveBeenCalledOnce();
+    expect(useAuthStore.getState()).toMatchObject({
+      user: currentUser,
+      status: "authenticated",
+      expired: false,
+    });
+    expect(storage.getItem("multica_token")).toBe("new-token");
+  });
+
+  it("keeps a newer login when the previous workspace bootstrap returns 401", async () => {
+    let releaseWorkspaces!: (response: Response) => void;
+    const pendingWorkspaces = new Promise<Response>((resolve) => {
+      releaseWorkspaces = resolve;
+    });
+    const currentUser = { ...fakeUser, id: "user-2", email: "new@example.com" };
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (url.endsWith("/api/me")) return Promise.resolve(Response.json(fakeUser));
+      if (url.endsWith("/api/workspaces")) return pendingWorkspaces;
+      if (url.endsWith("/auth/verify-code")) {
+        return Promise.resolve(Response.json({ token: "new-token", user: currentUser }));
+      }
+      if (url.endsWith("/api/config")) return Promise.resolve(Response.json({}));
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage({ multica_token: "old-token" });
+    const onUnauthorized = vi.fn(() => useAuthStore.getState().sessionExpired());
+    const api = new ApiClient("https://api.example.test", { onUnauthorized });
+    const listWorkspaces = vi.spyOn(api, "listWorkspaces");
+    const { onLogout } = renderInitializer({ api, storage });
+
+    await waitFor(() => expect(listWorkspaces).toHaveBeenCalledOnce());
+    expect(useAuthStore.getState().user).toMatchObject(fakeUser);
+    await act(async () => {
+      await useAuthStore.getState().verifyCode(currentUser.email, "123456");
+    });
+    expect(useAuthStore.getState().user).toEqual(currentUser);
+
+    await act(async () => {
+      releaseWorkspaces(Response.json({ error: "unauthorized" }, { status: 401 }));
+      await listWorkspaces.mock.results[0]!.value.catch(() => {});
+    });
+
+    expect(onUnauthorized).not.toHaveBeenCalled();
+    expect(onLogout).not.toHaveBeenCalled();
+    expect(useAuthStore.getState()).toMatchObject({
+      user: currentUser,
+      status: "authenticated",
+      expired: false,
+    });
+    expect(storage.getItem("multica_token")).toBe("new-token");
+  });
+
+  it("keeps the token and recovers on the online event after a network failure", async () => {
+    const storage = makeStorage({ multica_token: "token-1" });
+    const getMe = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError("fetch failed"))
+      .mockResolvedValue(fakeUser);
+    const api = makeApi({ getMe });
+    const { onLogout } = renderInitializer({ api, storage });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("recovering");
+    });
+    expect(storage.snapshot().multica_token).toBe("token-1");
+    expect(onLogout).not.toHaveBeenCalled();
+
+    act(() => window.dispatchEvent(new Event("online")));
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().user).toEqual(fakeUser);
+    });
+    expect(getMe).toHaveBeenCalledTimes(2);
+    expect(onLogout).not.toHaveBeenCalled();
+  });
+
+  it("lets a manual retry restart a recoverable auth attempt", async () => {
+    const getMe = vi
+      .fn()
+      .mockRejectedValueOnce(new ApiError("unavailable", 503, "Unavailable"))
+      .mockResolvedValue(fakeUser);
+    const api = makeApi({ getMe });
+    const { onLogout } = renderInitializer({ api });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("recovering");
+    });
+    act(() => useAuthStore.getState().retryAuthentication());
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+    });
+    expect(getMe).toHaveBeenCalledTimes(2);
+    expect(onLogout).not.toHaveBeenCalled();
+  });
+
+  it("continues automatic retries at the capped backoff interval", async () => {
+    vi.useFakeTimers();
+    const getMe = vi.fn().mockRejectedValue(new TypeError("still offline"));
+    const api = makeApi({ getMe });
+    const { onLogout } = renderInitializer({ api });
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(useAuthStore.getState().status).toBe("recovering");
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(31_000);
+    });
+    expect(getMe).toHaveBeenCalledTimes(6);
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(30_000);
+    });
+    expect(getMe).toHaveBeenCalledTimes(7);
+    expect(logger.error).toHaveBeenCalledTimes(1);
+    expect(onLogout).not.toHaveBeenCalled();
+  });
+
+  it("does not invalidate a verified desktop session when workspace loading fails", async () => {
+    const listWorkspaces = vi
+      .fn()
+      .mockRejectedValue(new TypeError("network unavailable"));
+    const api = makeApi({ listWorkspaces });
+    const { onLogout, queryClient } = renderInitializer({ api });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+      expect(
+        queryClient.getQueryState(workspaceKeys.list())?.status,
+      ).toBe("error");
+    });
+    expect(useAuthStore.getState().user).toEqual(fakeUser);
+    expect(onLogout).not.toHaveBeenCalled();
+  });
+
+  it("publishes web auth independently when workspace loading fails", async () => {
+    const listWorkspaces = vi
+      .fn()
+      .mockRejectedValue(new TypeError("backend restarting"));
+    const api = makeApi({ listWorkspaces });
+    const { onLogout, queryClient } = renderInitializer({
+      api,
+      cookieAuth: true,
+      platform: "web",
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+      expect(queryClient.getQueryState(workspaceKeys.list())?.status).toBe(
+        "error",
+      );
+    });
+    expect(useAuthStore.getState().user).toEqual(fakeUser);
+    expect(onLogout).not.toHaveBeenCalled();
+  });
+
+  it("reloads app config after auth recovers from a transient failure", async () => {
+    const getConfig = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError("network unavailable"))
+      .mockResolvedValue({ feature_flags: { recovered: true } });
+    const getMe = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError("network unavailable"))
+      .mockResolvedValue(fakeUser);
+    const api = makeApi({ getConfig, getMe });
+    renderInitializer({ api });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("recovering");
+    });
+    act(() => useAuthStore.getState().retryAuthentication());
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+      expect(getConfig).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("keeps retrying app config until it loads", async () => {
+    vi.useFakeTimers();
+    const getConfig = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError("network unavailable"))
+      .mockRejectedValueOnce(new TypeError("still unavailable"))
+      .mockResolvedValue({ feature_flags: { recovered: true } });
+    const api = makeApi({ getConfig });
+    renderInitializer({ api });
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(getConfig).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3_000);
+    });
+    expect(getConfig).toHaveBeenCalledTimes(3);
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(60_000);
+    });
+    expect(getConfig).toHaveBeenCalledTimes(3);
+  });
+
+  // A → 401 → B, where B shares a workspace with A so the post-login stale-tab
+  // validator prunes nothing. B must find none of A's client state. What
+  // exactly gets cleared is pinned in platform/session-cleanup.test.ts; this
+  // asserts the 401 is wired to it at all.
+  it("erases the previous user's client state when a live session is rejected", async () => {
+    const shared = "acme";
+    const storage = makeStorage({
+      multica_token: "token-1",
+      "multica_comment_drafts:acme": '{"issue-1":"A private draft"}',
+      multica_tabs: '[{"path":"/acme/issues/secret"}]',
+    });
+    const resetInMemory = vi.fn();
+    registerDraftCleanup({
+      storageKey: "multica_comment_drafts",
+      workspaceScoped: true,
+      resetInMemory,
+    });
+    const api = makeApi({
+      listWorkspaces: vi
+        .fn()
+        .mockResolvedValue([{ id: "ws-1", slug: shared }] as Workspace[]),
+    });
+    const { queryClient } = renderInitializer({ api, storage });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+    });
+    await waitFor(() => {
+      expect(queryClient.getQueryData(workspaceKeys.list())).toHaveLength(1);
+    });
+    queryClient.setQueryData(["issues", "ws-1"], [{ id: "i-1" }]);
+
+    act(() => {
+      useAuthStore.getState().sessionExpired();
+    });
+
+    await waitFor(() => {
+      expect(queryClient.getQueryData(["issues", "ws-1"])).toBeUndefined();
+    });
+    expect(storage.snapshot()).toEqual({});
+    expect(resetInMemory).toHaveBeenCalled();
+    expect(useAuthStore.getState().expired).toBe(true);
+  });
+
+  // Elon's cold-start repro: A closes the app, the token expires while it is
+  // shut, and the next launch is rejected at the identity probe. This never
+  // passes through `authenticated`, and there is no workspace list to
+  // enumerate slugs from — so both the trigger and the sweep have to work
+  // without either.
+  // The failure mode that must never happen: a laptop with no connectivity
+  // gets signed out and asked for credentials it cannot verify. Only a 401
+  // ends a session — everything else waits.
+  it.each([
+    ["offline", new TypeError("fetch failed")],
+    ["server error", new ApiError("boom", 500, "Internal Server Error")],
+    ["gateway timeout", new ApiError("slow", 504, "Gateway Timeout")],
+  ])("keeps the session and every draft when getMe fails: %s", async (_label, error) => {
+    const before = {
+      multica_token: "token-1",
+      "multica_comment_drafts:acme": '{"issue-1":"unsent work"}',
+      multica_tabs: '[{"path":"/acme/issues/1"}]',
+    };
+    const storage = makeStorage(before);
+    const resetInMemory = vi.fn();
+    registerDraftCleanup({
+      storageKey: "multica_comment_drafts",
+      workspaceScoped: true,
+      resetInMemory,
+    });
+    const api = makeApi({ getMe: vi.fn().mockRejectedValue(error) });
+    renderInitializer({ api, storage });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("recovering");
+    });
+
+    expect(useAuthStore.getState().status).not.toBe("unauthenticated");
+    expect(storage.snapshot()).toEqual(before);
+    expect(resetInMemory).not.toHaveBeenCalled();
+  });
+
+  it("erases the previous session on a cold start with a stale token", async () => {
+    const storage = makeStorage({
+      multica_token: "stale-token",
+      "multica_comment_drafts:acme": '{"issue-1":"A private draft"}',
+      "multica:chat:activeSessionId:acme": "session-1",
+      multica_tabs: '[{"path":"/acme/issues/secret"}]',
+      multica_locale: "zh-Hans",
+    });
+    registerDraftCleanup({
+      storageKey: "multica_comment_drafts",
+      workspaceScoped: true,
+      resetInMemory: vi.fn(),
+    });
+    const api = makeApi({
+      getMe: vi
+        .fn()
+        .mockRejectedValue(new ApiError("unauthorized", 401, "Unauthorized")),
+    });
+    const { queryClient } = renderInitializer({ api, storage });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    await waitFor(() => {
+      // Only the device preference survives.
+      expect(storage.snapshot()).toEqual({ multica_locale: "zh-Hans" });
+    });
+    expect(queryClient.getQueryData(workspaceKeys.list())).toBeUndefined();
+  });
+
+  it("publishes a definitive logout for a genuine 401", async () => {
+    const storage = makeStorage({ multica_token: "token-1" });
+    const getMe = vi.fn().mockImplementation(() => {
+      storage.removeItem("multica_token");
+      return Promise.reject(new ApiError("unauthorized", 401, "Unauthorized"));
+    });
+    const api = makeApi({ getMe });
+    const { onLogout } = renderInitializer({ api, storage });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    expect(storage.snapshot().multica_token).toBeUndefined();
+    expect(onLogout).toHaveBeenCalledOnce();
+  });
+});
+
+describe("AuthInitializer device auth", () => {
+  const deviceAuth = { deviceId: "a".repeat(32), deviceName: "artisan@mac-mini" };
+
+  beforeEach(() => {
+    // configStore is a module singleton, and a test whose config load fails
+    // would otherwise inherit the previous test's capability.
+    configStore.setState({ deviceAuthAvailable: false });
+  });
+
+  it("signs in from the device identity when the server declares it", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi
+      .fn()
+      .mockResolvedValue({ token: "device-jwt", user: fakeUser });
+    const api = makeApi({
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    const { onLogin } = renderInitializer({ api, storage, deviceAuth });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+    });
+    expect(deviceLogin).toHaveBeenCalledWith(deviceAuth.deviceId, deviceAuth.deviceName, { signal: expect.anything(), timeoutMs: 10_000 });
+    expect(storage.snapshot().multica_token).toBe("device-jwt");
+    expect(useAuthStore.getState().user).toEqual(fakeUser);
+    expect(onLogin).toHaveBeenCalled();
+    // The workspace list is warmed the same way the token path warms it, so the
+    // shell has a definitive answer on its first render.
+    await waitFor(() => {
+      expect(api.listWorkspaces).toHaveBeenCalled();
+    });
+  });
+
+  it("shows the login page when the server does not declare device auth", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi.fn();
+    const api = makeApi({
+      getConfig: vi.fn().mockResolvedValue({}),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    const { onLogout } = renderInitializer({ api, storage, deviceAuth });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    // Absent means 403 — probing it would only trade a usable login page for a
+    // failed request.
+    expect(deviceLogin).not.toHaveBeenCalled();
+    expect(onLogout).toHaveBeenCalled();
+  });
+
+  it("keeps retrying while the server is unreachable instead of dropping to the login page", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi
+      .fn()
+      .mockResolvedValue({ token: "device-jwt", user: fakeUser });
+    const getConfig = vi
+      .fn()
+      .mockRejectedValueOnce(new TypeError("fetch failed"))
+      .mockResolvedValue({ device_auth_available: true });
+    const api = makeApi({ getConfig, deviceLogin } as Partial<ApiClient>);
+    renderInitializer({ api, storage, deviceAuth });
+
+    // A config request that failed says nothing about the capability. On an
+    // intranet it usually means the server is not up yet, and settling for the
+    // login page there would strand a client that cannot log in any other way.
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("recovering");
+    });
+    expect(deviceLogin).not.toHaveBeenCalled();
+
+    act(() => window.dispatchEvent(new Event("online")));
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+    });
+    expect(deviceLogin).toHaveBeenCalledTimes(1);
+  });
+
+  it("stops at the login page when the server rejects the device id", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi
+      .fn()
+      .mockRejectedValue(new ApiError("device auth is not enabled", 403, "Forbidden"));
+    const api = makeApi({
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    const { onLogout } = renderInitializer({ api, storage, deviceAuth });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    // A 4xx is an answer, not a blip: retrying cannot change it.
+    expect(deviceLogin).toHaveBeenCalledTimes(1);
+    expect(onLogout).toHaveBeenCalled();
+  });
+
+  it("leaves a stored session alone instead of re-identifying the client as its host", async () => {
+    const storage = makeStorage({ multica_token: "token-1" });
+    const deviceLogin = vi.fn();
+    const api = makeApi({
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    renderInitializer({ api, storage, deviceAuth });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().user).toEqual(fakeUser);
+    });
+    expect(api.getMe).toHaveBeenCalled();
+    expect(deviceLogin).not.toHaveBeenCalled();
+    expect(storage.snapshot().multica_token).toBe("token-1");
+  });
+});
+
+// The web app's session lives in an HttpOnly cookie it cannot read, so it has
+// no "signed out" branch to take before asking the server. Its only signal is a
+// 401 from getMe, which is where the device path has to be reachable from.
+describe("AuthInitializer device auth in cookie mode", () => {
+  const deviceAuth = { deviceId: "b".repeat(32), deviceName: "web-macos-bbbbbbbb" };
+  const unauthorized = () =>
+    new ApiError("unauthorized", 401, "Unauthorized");
+
+  beforeEach(() => {
+    configStore.setState({ deviceAuthAvailable: false });
+  });
+
+  it("restores device login when StrictMode's canceled identity request returns a late rejection first", async () => {
+    const releaseIdentity: Array<(response: Response) => void> = [];
+    vi.stubGlobal("fetch", vi.fn((url: string) => {
+      if (url.endsWith("/api/me")) {
+        return new Promise<Response>((resolve) => releaseIdentity.push(resolve));
+      }
+      if (url.endsWith("/api/config")) {
+        return Promise.resolve(Response.json({ device_auth_available: true }));
+      }
+      if (url.endsWith("/auth/device")) {
+        return Promise.resolve(Response.json({ token: "device-token", user: fakeUser }));
+      }
+      if (url.endsWith("/api/workspaces")) return Promise.resolve(Response.json([]));
+      throw new Error(`Unexpected request: ${url}`);
+    }));
+    const storage = makeStorage();
+    const onUnauthorized = vi.fn(() => useAuthStore.getState().sessionExpired());
+    const api = new ApiClient("https://api.example.test", { onUnauthorized });
+    const getMe = vi.spyOn(api, "getMe");
+    const deviceLogin = vi.spyOn(api, "deviceLogin");
+    renderInitializer({
+      api,
+      storage,
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+      strictMode: true,
+    });
+
+    await waitFor(() => expect(getMe).toHaveBeenCalledTimes(2));
+    await act(async () => {
+      releaseIdentity[0]!(Response.json({ error: "unauthorized" }, { status: 401 }));
+      await getMe.mock.results[0]!.value.catch(() => {});
+    });
+    expect(onUnauthorized).not.toHaveBeenCalled();
+    expect(deviceLogin).not.toHaveBeenCalled();
+
+    await act(async () => {
+      releaseIdentity[1]!(Response.json({ error: "unauthorized" }, { status: 401 }));
+      await getMe.mock.results[1]!.value.catch(() => {});
+    });
+
+    await waitFor(() => expect(deviceLogin).toHaveBeenCalledOnce());
+    await waitFor(() => expect(useAuthStore.getState().status).toBe("authenticated"));
+    expect(deviceLogin).toHaveBeenCalledWith(deviceAuth.deviceId, deviceAuth.deviceName, { signal: expect.anything(), timeoutMs: 10_000 });
+    expect(useAuthStore.getState().user).toMatchObject(fakeUser);
+    expect(storage.getItem("multica_token")).toBeNull();
+  });
+
+  it("signs in from the device identity after the cookie session comes back 401", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi
+      .fn()
+      .mockResolvedValue({ token: "device-jwt", user: fakeUser });
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    const { onLogin } = renderInitializer({
+      api,
+      storage,
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+    });
+    expect(deviceLogin).toHaveBeenCalledWith(
+      deviceAuth.deviceId,
+      deviceAuth.deviceName,
+      { signal: expect.anything(), timeoutMs: 10_000 },
+    );
+    expect(useAuthStore.getState().user).toEqual(fakeUser);
+    expect(onLogin).toHaveBeenCalled();
+    // Cookie mode: /auth/device set the HttpOnly cookies. Mirroring the bearer
+    // token into localStorage is the exact exposure the cookie migration
+    // exists to remove.
+    expect(storage.snapshot().multica_token).toBeUndefined();
+  });
+
+  it("settles logged out on a 401 when the client has no device identity", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi.fn();
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    const { onLogout } = renderInitializer({
+      api,
+      storage,
+      cookieAuth: true,
+      platform: "web",
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    expect(onLogout).toHaveBeenCalled();
+    // The deployment offers device auth; this client has nothing to present, so
+    // the login page is still the right answer. Regression guard for every
+    // platform that passes no identity.
+    expect(deviceLogin).not.toHaveBeenCalled();
+  });
+
+  it("settles logged out on a 401 when the deployment does not offer device auth", async () => {
+    const storage = makeStorage();
+    const deviceLogin = vi.fn();
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({}),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    const { onLogout } = renderInitializer({
+      api,
+      storage,
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    expect(deviceLogin).not.toHaveBeenCalled();
+    expect(onLogout).toHaveBeenCalled();
+  });
+
+  it("leaves a live cookie session alone", async () => {
+    const deviceLogin = vi.fn();
+    const api = makeApi({
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    renderInitializer({
+      api,
+      storage: makeStorage(),
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().user).toEqual(fakeUser);
+    });
+    expect(deviceLogin).not.toHaveBeenCalled();
+  });
+
+  it("does not mint a second identity when the warmed workspace list 401s", async () => {
+    const deviceLogin = vi
+      .fn()
+      .mockResolvedValue({ token: "device-jwt", user: fakeUser });
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+      listWorkspaces: vi.fn().mockRejectedValue(unauthorized()),
+    } as Partial<ApiClient>);
+    renderInitializer({
+      api,
+      storage: makeStorage(),
+      cookieAuth: true,
+      platform: "web",
+      deviceAuth,
+    });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("unauthenticated");
+    });
+    // A session that cannot read its own workspace list is broken in a way
+    // another identity would not fix — and each attempt would leave one more
+    // member row behind.
+    expect(deviceLogin).toHaveBeenCalledTimes(1);
+  });
+
+  it("re-mints a desktop session whose stored token has expired", async () => {
+    const storage = makeStorage({ multica_token: "stale-token" });
+    const deviceLogin = vi
+      .fn()
+      .mockResolvedValue({ token: "fresh-jwt", user: fakeUser });
+    const api = makeApi({
+      getMe: vi.fn().mockRejectedValue(unauthorized()),
+      getConfig: vi.fn().mockResolvedValue({ device_auth_available: true }),
+      deviceLogin,
+    } as Partial<ApiClient>);
+    renderInitializer({ api, storage, deviceAuth });
+
+    await waitFor(() => {
+      expect(useAuthStore.getState().status).toBe("authenticated");
+    });
+    // Token mode keeps persisting: the desktop app has no cookie jar to fall
+    // back on, and the expired token must not outlive the session it named.
+    expect(storage.snapshot().multica_token).toBe("fresh-jwt");
+    expect(deviceLogin).toHaveBeenCalledTimes(1);
+  });
+});

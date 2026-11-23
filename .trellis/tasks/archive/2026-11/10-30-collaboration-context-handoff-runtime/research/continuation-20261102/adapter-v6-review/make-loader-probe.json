@@ -1,0 +1,31 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-p",
+    "(version 1) (allow default) (deny network*)",
+    "/usr/bin/make",
+    "-rR",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6-review/make-loader-probe/Makefile",
+    "owned_probe",
+    "ENV_FILE=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6-review/make-loader-probe/canonical.env"
+  ],
+  "exit_code": 0,
+  "stdout": "owned make loader executed\n",
+  "stderr": "",
+  "marker_created_by_make": true,
+  "marker_contents": "task_review_make_expanded",
+  "original_literal": "$(shell printf task_review_make_expanded > /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6-review/make-loader-probe/marker)",
+  "canonical_file_sha256": "446dc63f62521d3103e94e0484c6be63bf21f1728782f871631d331066029e71",
+  "owned_makefile_sha256": "716ceb3d1c9cd62eba191dc9f5068dff777db3c01a35b8efd76a79eb3df22bc6",
+  "real_Makefile_matching_loaders": [
+    "include $(ENV_FILE)",
+    "export"
+  ],
+  "network_denied": true,
+  "database_connections": 0,
+  "services_started": 0,
+  "real_provider_calls": 0,
+  "fullcheck_started": false,
+  "actual_private_env_executed": false
+}

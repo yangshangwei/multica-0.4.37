@@ -4,7 +4,7 @@ import type { InboxItem } from "@multica/core/types";
 import { RowActionsMenu } from "../../common/row-actions-menu";
 import { useT } from "../../i18n";
 import { useInboxRowActions } from "./inbox-context-menu";
-import { useInboxItemActions } from "./inbox-item-actions";
+import { INBOX_MENU_CONTENT_CLASS, useInboxItemActions } from "./inbox-item-actions";
 import type { InboxView } from "./inbox-view";
 
 /**
@@ -27,5 +27,6 @@ export function InboxRowMenu({
   const groups = useInboxItemActions(item, view, actions);
   if (!actions) return null;
 
-  return <RowActionsMenu label={t(($) => $.list.actions_aria)} groups={groups} />;
+  return <RowActionsMenu label={t(($) => $.list.actions_aria)} groups={groups}
+    triggerClassName="[@media(pointer:coarse)]:size-11" contentClassName={INBOX_MENU_CONTENT_CLASS} />;
 }

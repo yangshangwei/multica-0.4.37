@@ -1,0 +1,386 @@
+[
+  {
+    "command": "go -C server test ./internal/service -run '^TestCollaborationRuntimeHandoff(TracksActiveInformationRequest|SourceRejectsFalseAttribution)$' -count=1 -timeout=10m -json",
+    "log": "source-red.jsonl",
+    "exit_code": 1,
+    "started": "2026-11-01T00:26:04.036688+08:00",
+    "ended": "2026-11-01T00:26:06.187345+08:00",
+    "tests": [
+      {
+        "name": "TestCollaborationRuntimeHandoffTracksActiveInformationRequest",
+        "action": "fail",
+        "elapsed": 0.52
+      },
+      {
+        "name": "TestCollaborationRuntimeHandoffSourceRejectsFalseAttribution",
+        "action": "fail",
+        "elapsed": 0.46
+      }
+    ],
+    "count": {
+      "pass": 0,
+      "fail": 2,
+      "skip": 0
+    }
+  },
+  {
+    "command": "go -C server test ./pkg/protocol -run '^TestCollaborationHandoff(PreservesEscapedAdmittedAssignment|RejectsOversizedRawJSON)$' -count=1 -json",
+    "log": "budget-red.jsonl",
+    "exit_code": 1,
+    "started": "2026-11-01T00:28:38.326904+08:00",
+    "ended": "2026-11-01T00:28:38.783785+08:00",
+    "tests": [
+      {
+        "name": "TestCollaborationHandoffPreservesEscapedAdmittedAssignment",
+        "action": "fail",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationHandoffRejectsOversizedRawJSON",
+        "action": "fail",
+        "elapsed": 0.01
+      }
+    ],
+    "count": {
+      "pass": 0,
+      "fail": 2,
+      "skip": 0
+    }
+  },
+  {
+    "command": "go -C server test ./internal/service -run '^TestCollaborationRuntimeHandoff(TracksActiveInformationRequest|SourceRejectsFalseAttribution)$' -count=1 -timeout=10m -json",
+    "log": "source-green-initial.jsonl",
+    "exit_code": 0,
+    "started": "2026-11-01T00:31:50.991431+08:00",
+    "ended": "2026-11-01T00:31:52.855053+08:00",
+    "tests": [
+      {
+        "name": "TestCollaborationRuntimeHandoffTracksActiveInformationRequest",
+        "action": "pass",
+        "elapsed": 0.71
+      },
+      {
+        "name": "TestCollaborationRuntimeHandoffSourceRejectsFalseAttribution",
+        "action": "pass",
+        "elapsed": 0.49
+      }
+    ],
+    "count": {
+      "pass": 2,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  {
+    "command": "go -C server test ./internal/service -run '^TestCollaboration(Handoff|RuntimeHandoff|Checkpoint|RecordingSeal)' -count=1 -timeout=15m -json",
+    "log": "service-focused.jsonl",
+    "exit_code": 0,
+    "started": "2026-11-01T00:34:01.987922+08:00",
+    "ended": "2026-11-01T00:34:18.105483+08:00",
+    "tests": [
+      {
+        "name": "TestCollaborationRecordingSealRetainsMaximumCheckpointHistory",
+        "action": "pass",
+        "elapsed": 6.91
+      },
+      {
+        "name": "TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK",
+        "action": "pass",
+        "elapsed": 0.47
+      },
+      {
+        "name": "TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable",
+        "action": "pass",
+        "elapsed": 0.51
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/html",
+        "action": "pass",
+        "elapsed": 0.82
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/ampersand",
+        "action": "pass",
+        "elapsed": 0.82
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/control",
+        "action": "pass",
+        "elapsed": 0.81
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment/multibyte",
+        "action": "pass",
+        "elapsed": 0.77
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotPreservesMaximumAssignment",
+        "action": "pass",
+        "elapsed": 3.22
+      },
+      {
+        "name": "TestCollaborationHandoffBudgetKeepsAssignmentAndSourceReferences",
+        "action": "pass",
+        "elapsed": 0.22
+      },
+      {
+        "name": "TestCollaborationRuntimeHandoffTracksActiveInformationRequest",
+        "action": "pass",
+        "elapsed": 0.75
+      },
+      {
+        "name": "TestCollaborationRuntimeHandoffSourceRejectsFalseAttribution",
+        "action": "pass",
+        "elapsed": 0.6
+      },
+      {
+        "name": "TestCollaborationHandoffFrozenAssignmentAndSnapshot",
+        "action": "pass",
+        "elapsed": 0.94
+      },
+      {
+        "name": "TestCollaborationHandoffPreservesEveryMergedWakeCause",
+        "action": "pass",
+        "elapsed": 1.05
+      },
+      {
+        "name": "TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory",
+        "action": "pass",
+        "elapsed": 0.65
+      }
+    ],
+    "count": {
+      "pass": 14,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  {
+    "command": "go -C server test ./internal/handler -run '^TestCollaboration(RecordingSeal|HandoffHTTP|RuntimeNarrowHandlers|RuntimeRecordingHTTP|RecallHTTP|ClaimRejectsInvalidExtension)' -count=1 -timeout=10m -json",
+    "log": "handler-focused.jsonl",
+    "exit_code": 0,
+    "started": "2026-11-01T00:35:22.652877+08:00",
+    "ended": "2026-11-01T00:35:23.732726+08:00",
+    "tests": [
+      {
+        "name": "TestCollaborationRecordingSealRejectsBodyAndWrongCredential",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecallHTTPRejectsAmbientCredentials",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecallHTTPBudgetAndLegacyFullComment",
+        "action": "pass",
+        "elapsed": 0.05
+      },
+      {
+        "name": "TestCollaborationHandoffHTTPUsesDeclaredWireBudget",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/handoff_version=2",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/recording_version=0",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/handoff_version=1&handoff_version=1",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationClaimRejectsInvalidExtensionBeforeMutation/recording_version=1",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationClaimRejectsInvalidExtensionBeforeMutation",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRuntimeRecordingHTTPRejectsMalformedPrivateTelemetry",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes",
+        "action": "pass",
+        "elapsed": 0
+      }
+    ],
+    "count": {
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  {
+    "command": "go -C server test ./pkg/protocol -run '^TestCollaboration(Handoff|Checkpoint|RecordingSeal)' -count=1 -json",
+    "log": "protocol-focused.jsonl",
+    "exit_code": 0,
+    "started": "2026-11-01T00:35:12.084276+08:00",
+    "ended": "2026-11-01T00:35:12.728673+08:00",
+    "tests": [
+      {
+        "name": "TestCollaborationCheckpointBoundsAndKinds/empty",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationCheckpointBoundsAndKinds/body",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationCheckpointBoundsAndKinds/aggregate",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationCheckpointBoundsAndKinds/tool_shape",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationCheckpointBoundsAndKinds/version",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationCheckpointBoundsAndKinds/stream",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationCheckpointBoundsAndKinds/sequence",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationCheckpointBoundsAndKinds/offset",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationCheckpointBoundsAndKinds",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationCheckpointRecordVersionCompatibility",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealHasOnlyBoundedMetadata",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_decreases",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge/reason_changes",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge/stream_changes",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge/ack_decreases",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge/observed_becomes_unknown",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge/run_changes",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge/past_limit",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge/same_key",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge/gap",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationRecordingSealAdvancesBoundedKnowledge",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffPreservesEscapedAdmittedAssignment",
+        "action": "pass",
+        "elapsed": 0.02
+      },
+      {
+        "name": "TestCollaborationHandoffRejectsOversizedRawJSON",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffMaterialBudgetIncludesMetadata",
+        "action": "pass",
+        "elapsed": 0.01
+      },
+      {
+        "name": "TestCollaborationHandoffRejectsFalseCompletenessAndUnknownVersion",
+        "action": "pass",
+        "elapsed": 0
+      },
+      {
+        "name": "TestCollaborationHandoffWireRejectsUnrecognizedAuthority",
+        "action": "pass",
+        "elapsed": 0
+      }
+    ],
+    "count": {
+      "pass": 26,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  {
+    "command": "make sqlc",
+    "log": "sqlc.log",
+    "exit_code": 0,
+    "sqlc_version": "1.31.1",
+    "generated_changes": [
+      "collaboration_handoff.sql.go: GetCollaborationInformationRequestEventSequence",
+      "collaboration_records.sql.go: stale LIMIT 258 updated to source LIMIT 290"
+    ]
+  },
+  {
+    "command": "go -C server vet ./pkg/protocol ./internal/service ./internal/handler",
+    "log": "vet.log",
+    "exit_code": 0
+  }
+]

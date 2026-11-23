@@ -1,0 +1,26 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-overlay",
+    "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-seal-response-review-20261101-4rfl1isn/overlay.json",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestBoundaryReviewSealRejectsInvalidRetention$",
+    "-count=1",
+    "-v"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101",
+  "exit_code": 1,
+  "temporary_test_only": true,
+  "product_files_written": false,
+  "failure_cases": [
+    "negative_observed",
+    "completed_unknown_tail",
+    "observed_below_retained"
+  ],
+  "log": "boundary-seal-response-red.log",
+  "temporary_overlay": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-seal-response-review-20261101-4rfl1isn/overlay.json"
+}

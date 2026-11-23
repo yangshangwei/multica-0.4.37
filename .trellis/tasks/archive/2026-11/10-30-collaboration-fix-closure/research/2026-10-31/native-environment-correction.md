@@ -1,0 +1,1 @@
+Initial Electron acceptance omitted its http://localhost:14911 renderer from the task API WebSocket origin allowlist. API logs recorded repeated `/ws` 403. Added this loopback origin to task-only ALLOWED_ORIGINS and CORS_ALLOWED_ORIGINS, then restarted only the owned API. Existing Web and user environment files were preserved. Earlier native failures remain recorded separately.

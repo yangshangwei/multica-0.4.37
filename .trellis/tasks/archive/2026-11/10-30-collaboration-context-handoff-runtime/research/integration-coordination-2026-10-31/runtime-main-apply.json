@@ -1,0 +1,590 @@
+{
+  "applied_at": "2026-10-31T18:55:23.684072+00:00",
+  "base_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "source_worktree": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "target_worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "files": [
+    {
+      "path": ".trellis/spec/server/collaboration-host-execution.md",
+      "main_before": "947ae0f6c13a6a77e2582b023c7042d3ff87a9df58492123472dfd7310bb3ea2",
+      "applied_sha256": "06b653cce5dc44980a993457ec8b29ce539b36c0fcc79186872366390caad560"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-records.md",
+      "main_before": "2cb3180a2c765ba6349c0c66f1cd188c26a55fa4c60ccb5c7326d5667c3381d6",
+      "applied_sha256": "97e48019ac5451da9fd075ed96de7b8c645d05ec8834bd6566e739cbc5bedee7"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-runtime-recovery.md",
+      "main_before": "d800a51b44d59f66dde468d121d7cc3b0b170b9363d99654fa83685e705928e1",
+      "applied_sha256": "67825976495752c06ae3263e1d9cb25790479e64d93d80cd6bf7367c960205e6"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-startup-handoff.md",
+      "main_before": null,
+      "applied_sha256": "ee3d9ff1e281778e28c204b43c5ab175da882e26432e1955739aa2594545d659"
+    },
+    {
+      "path": ".trellis/spec/server/index.md",
+      "main_before": "96a123b329290d61c45bffdca799d6b6a1a7923922789c3432c85fd502c64ac3",
+      "applied_sha256": "c345547a42f58f55067a027b66bb0804603eeea026bc7b1187cf0b2cbbde8a49"
+    },
+    {
+      "path": "apps/web/platform/navigation.test.tsx",
+      "main_before": "ed3dc3fba6a7e274979d634577b2b689ed0c0e050332e7d4b6c8ae255f694416",
+      "applied_sha256": "cdde94c86dbd4872b09d023de9580d7e424d21b39e78dc56fefe6fddca926b5e"
+    },
+    {
+      "path": "apps/web/platform/navigation.tsx",
+      "main_before": "8e1fe12133fa3d3fa2ca417f9431b186b130eeb6d5cd73588596ca8d3294d75d",
+      "applied_sha256": "725295f47abbbb945c760a213f4d790856dbd03900f3c9a6b8be72a80452f615"
+    },
+    {
+      "path": "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+      "main_before": null,
+      "applied_sha256": "b5abfdaaa9d973760f93dd8c0f735cebddacb18551ff07386135c771b48048dc"
+    },
+    {
+      "path": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "main_before": null,
+      "applied_sha256": "9d645399fb83d92d926070838c30cb253798e846c9539cc4f80b4c8f52d4f1ef"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-runtime-handoff.ts",
+      "main_before": null,
+      "applied_sha256": "b2426de829ee36103624437103966ba2664cab7755c89b2fdb895d1c1b9c5574"
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "main_before": "16c42a920f8b64b3ddb1894405fb09ce7c5accefdf8b54c4cfe3ff14172cf8a7",
+      "applied_sha256": "bea9b58078278af59f42b98a49a1bd2d77f895d9af2c81e16f0efb882ee6b82d"
+    },
+    {
+      "path": "packages/core/api/collaboration-content.test.ts",
+      "main_before": "acf5e14e0d7d0243a7ed53b504d54b1706b6f076d2e3fdbe8f6b432e980fa857",
+      "applied_sha256": "acf5e14e0d7d0243a7ed53b504d54b1706b6f076d2e3fdbe8f6b432e980fa857"
+    },
+    {
+      "path": "packages/core/collaboration/comment-recall-queries.test.ts",
+      "main_before": "6ecff02826f51bc7d6ec8023ac4235bfa9bd7253eb0bfa6c30813d69476f0f67",
+      "applied_sha256": "6ecff02826f51bc7d6ec8023ac4235bfa9bd7253eb0bfa6c30813d69476f0f67"
+    },
+    {
+      "path": "packages/core/collaboration/content-queries.ts",
+      "main_before": "13970e519b1cc266772931b825cf44b2fb42fae0e4a5dc83f67b6475a414938b",
+      "applied_sha256": "13970e519b1cc266772931b825cf44b2fb42fae0e4a5dc83f67b6475a414938b"
+    },
+    {
+      "path": "packages/core/collaboration/content-schema.test.ts",
+      "main_before": "372ad4ed42c85f6ff5e8732f486f15050a15ff6e43e1b84bba06c99d97d9bdf6",
+      "applied_sha256": "372ad4ed42c85f6ff5e8732f486f15050a15ff6e43e1b84bba06c99d97d9bdf6"
+    },
+    {
+      "path": "packages/core/collaboration/content-schema.ts",
+      "main_before": "f5387d901cd9480a3a9696b6409279c0a0cfb98c7caf942deefa6c54bcdebacc",
+      "applied_sha256": "f5387d901cd9480a3a9696b6409279c0a0cfb98c7caf942deefa6c54bcdebacc"
+    },
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "main_before": "71181c50ad96e3bfd9cefa41fd3e6c690b81da82549223f8ac3db6c905b4ca97",
+      "applied_sha256": "71181c50ad96e3bfd9cefa41fd3e6c690b81da82549223f8ac3db6c905b4ca97"
+    },
+    {
+      "path": "packages/core/collaboration/run-handoff-queries.test.ts",
+      "main_before": null,
+      "applied_sha256": "4405e962a970bbf34f8aa61f2e69cb43bcd9a469e0f710b37a6e23306a235929"
+    },
+    {
+      "path": "packages/core/collaboration/run-handoff-queries.ts",
+      "main_before": "54f49bd0147dadbd984cafa75fe9bc95d221acb61911d0962c6c6415a48a025c",
+      "applied_sha256": "893c1bf49c162a87bde7a2852d9cebd70a1d2e494e5997760dd6635c3672396d"
+    },
+    {
+      "path": "packages/core/collaboration/run-handoff-schema.test.ts",
+      "main_before": "b5bd60f5743e58d009a636fb09c51a6f64a9063302f0f45cedd8dfe04e77c1ff",
+      "applied_sha256": "16b56f39286680b75c9a6c191b0d9145a0ae7bb1efb7331af64be9f3460a6545"
+    },
+    {
+      "path": "packages/core/collaboration/run-handoff-schema.ts",
+      "main_before": "3c8e1ea3f05b3823d123d4ef84fa3d97cb6fe7286826de2ef7de7716bc091bcc",
+      "applied_sha256": "9094c9395e1b6ba41541d03f310c24c79af8ec082a59d47c9d0fcc5642ff8ff8"
+    },
+    {
+      "path": "packages/core/collaboration/run-records-queries.test.ts",
+      "main_before": "4a81ae8f28619b3b2bdb29091a49aa440ce9453671fc97c5ced9e04019f2bdb6",
+      "applied_sha256": "4a81ae8f28619b3b2bdb29091a49aa440ce9453671fc97c5ced9e04019f2bdb6"
+    },
+    {
+      "path": "packages/core/collaboration/run-records-queries.ts",
+      "main_before": "7ca14c9df7c8cded759017d5e476c2d967c7badcfc7f64fc6e1501656e4efba6",
+      "applied_sha256": "7ca14c9df7c8cded759017d5e476c2d967c7badcfc7f64fc6e1501656e4efba6"
+    },
+    {
+      "path": "packages/core/collaboration/run-records-schema.test.ts",
+      "main_before": "484a4d3d42ab16e0ecbb8712baab7809c90bdd0cd0d55927ee35b97169aa4402",
+      "applied_sha256": "484a4d3d42ab16e0ecbb8712baab7809c90bdd0cd0d55927ee35b97169aa4402"
+    },
+    {
+      "path": "packages/core/collaboration/run-records-schema.ts",
+      "main_before": "08cd19d4e7c12ea0af057f6dfc96aaf82daebc0477f07d5a548f260bac3d3152",
+      "applied_sha256": "08cd19d4e7c12ea0af057f6dfc96aaf82daebc0477f07d5a548f260bac3d3152"
+    },
+    {
+      "path": "packages/views/collaboration/collaboration-detail.test.tsx",
+      "main_before": "3df63d1d85d2c984289c4e2b093d035d8b914e61ac8508f5fe4569e5ee9a57c4",
+      "applied_sha256": "3df63d1d85d2c984289c4e2b093d035d8b914e61ac8508f5fe4569e5ee9a57c4"
+    },
+    {
+      "path": "packages/views/collaboration/collaboration-detail.tsx",
+      "main_before": "818409ec844d91060a6db912287e9854ad8cd88aca759263f62deaeca3ceeebc",
+      "applied_sha256": "818409ec844d91060a6db912287e9854ad8cd88aca759263f62deaeca3ceeebc"
+    },
+    {
+      "path": "packages/views/collaboration/comment-list.test.tsx",
+      "main_before": "76dc793cefee97d5312e2bcac2887b11eecb7f620bd4dbec98298bfd9d11260f",
+      "applied_sha256": "76dc793cefee97d5312e2bcac2887b11eecb7f620bd4dbec98298bfd9d11260f"
+    },
+    {
+      "path": "packages/views/collaboration/comment-list.tsx",
+      "main_before": "cdc246ba2dde50b687b63cb11afd0af93cf588e520d8bda5e822039d5c02beb5",
+      "applied_sha256": "cdc246ba2dde50b687b63cb11afd0af93cf588e520d8bda5e822039d5c02beb5"
+    },
+    {
+      "path": "packages/views/collaboration/execution-panel.test.tsx",
+      "main_before": "e1f50b3a9c2a0b41ca3c0a1a22e82fae260827f8a45a1f332558647158ff9ff2",
+      "applied_sha256": "fec822bde7cc4fc87288cbf5335e9ed0f7b4529251f157d5e1a984cb85831459"
+    },
+    {
+      "path": "packages/views/collaboration/labels.ts",
+      "main_before": "57d5c6e2144b0ca1d13d91d4bee5d2774925a5645cd4e8119984751daffafc10",
+      "applied_sha256": "57d5c6e2144b0ca1d13d91d4bee5d2774925a5645cd4e8119984751daffafc10"
+    },
+    {
+      "path": "packages/views/collaboration/run-handoff.test.tsx",
+      "main_before": "83d706822ce64895d5fb0bdb314c10e25f6d3a3e7ba75a5d265b7668e51a6e98",
+      "applied_sha256": "e11ea123eaac050ebbb5dff1cacee85cbabb19ea29d1a661824cb3c3b90648f5"
+    },
+    {
+      "path": "packages/views/collaboration/run-handoff.tsx",
+      "main_before": "44b85a67279caa12115970fe2c6847f8f72121f35bec271ebb1b12dbe47802df",
+      "applied_sha256": "91e048116b8aa6f8fc35d9748c72665bed12c0e7ab8cc88b8ef060785fa2e0db"
+    },
+    {
+      "path": "packages/views/collaboration/run-records.tsx",
+      "main_before": "6e2eee920fed3be62314d624e52fa709f3938b4c0287ef72f248c96d2dd3a54b",
+      "applied_sha256": "8453df243b24c976b84a075a11c7a0fff08b3f84e0b99d8bf79c8293333d5ce8"
+    },
+    {
+      "path": "packages/views/collaboration/workflow.tsx",
+      "main_before": "14d624ae3e5472042566b82d4c1faa93e764fa6090bb20b4b60a02344e0de7ef",
+      "applied_sha256": "14d624ae3e5472042566b82d4c1faa93e764fa6090bb20b4b60a02344e0de7ef"
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "main_before": "46e1919404d35994cf9e958fcd6efe501c84ee826abe503bc790e845ebc3dfac",
+      "applied_sha256": "46e1919404d35994cf9e958fcd6efe501c84ee826abe503bc790e845ebc3dfac"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "main_before": "4bd31a2a46c9303fbac1fd5dcea379bfe92cd2303f293b2ba6bdbb3a0b02d095",
+      "applied_sha256": "4bd31a2a46c9303fbac1fd5dcea379bfe92cd2303f293b2ba6bdbb3a0b02d095"
+    },
+    {
+      "path": "server/cmd/multica/cmd_collaboration.go",
+      "main_before": "b750c0a0a9fe68c626af529de2ee22d4770b84418fc332d3a22531b4be64cd5a",
+      "applied_sha256": "b750c0a0a9fe68c626af529de2ee22d4770b84418fc332d3a22531b4be64cd5a"
+    },
+    {
+      "path": "server/cmd/multica/cmd_collaboration_recall.go",
+      "main_before": "2a8b670372425bb4269e1f0820356e97e2e8aea7e7e7f71143ab35458dcb5e85",
+      "applied_sha256": "2a8b670372425bb4269e1f0820356e97e2e8aea7e7e7f71143ab35458dcb5e85"
+    },
+    {
+      "path": "server/cmd/multica/cmd_collaboration_recall_test.go",
+      "main_before": "cd8e237cfded39fee4ffce8bba7a0c9504fd8aefb62f219dcd154a847c953085",
+      "applied_sha256": "cd8e237cfded39fee4ffce8bba7a0c9504fd8aefb62f219dcd154a847c953085"
+    },
+    {
+      "path": "server/cmd/multica/cmd_issue.go",
+      "main_before": "8c67d2ed035225205d1b1c4a01f0e340965af2737667e14830ece9c5d06a1122",
+      "applied_sha256": "8c67d2ed035225205d1b1c4a01f0e340965af2737667e14830ece9c5d06a1122"
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "main_before": "a9d168989f441a753abbaa47ae45f239ba2f68fa775273f21f12f5934fbd5b25",
+      "applied_sha256": "a9d168989f441a753abbaa47ae45f239ba2f68fa775273f21f12f5934fbd5b25"
+    },
+    {
+      "path": "server/internal/cli/collaboration_recall.go",
+      "main_before": "4274ae1045865cbbca3ff11299a9680c1cce4d7d204da6364b4b8419f8f10805",
+      "applied_sha256": "4274ae1045865cbbca3ff11299a9680c1cce4d7d204da6364b4b8419f8f10805"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client.go",
+      "main_before": "b2228ebcd180c4b8bfa51a744c2aa7793fe23ad7cd567cfd670900e17f3fd6ea",
+      "applied_sha256": "b2228ebcd180c4b8bfa51a744c2aa7793fe23ad7cd567cfd670900e17f3fd6ea"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_context_extensions_test.go",
+      "main_before": "651307abc5c50b4a993141b6fa9fcaf8a00ad8bf7370c9bebfbd0bb1defb42cf",
+      "applied_sha256": "651307abc5c50b4a993141b6fa9fcaf8a00ad8bf7370c9bebfbd0bb1defb42cf"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_host.go",
+      "main_before": "ed35be47f91eb3b20620780dee425ec5ab8b57a9cfbe73eaedbb295d80ec64b1",
+      "applied_sha256": "43f3bc3383917b772f3ec4df3160491c9ec8078ffaa164aeb1f7391ffdd24f7b"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_recording_ack_test.go",
+      "main_before": "b29319b5899e9ae2305cb0e8025152bc1e77967325ef08ce496a128b15086d1b",
+      "applied_sha256": "6ac5490055c3c49cb548b9d89b02461c667245a8f64bf3ff97a7dc82a0515dd1"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go",
+      "main_before": "f158ceaee24a874dbb36e50d00db8933481eb0aa7c8fe967c24b2f44dbf8cb3e",
+      "applied_sha256": "43cfadd19330a96310c7f6d4990d4183798e3e82017c24af6f30537b4284eecc"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_agentintegration_test.go",
+      "main_before": "5545ed436e131e5c09f5cd5e0c69dfdc886936e16eca87cf5ebaa925ab36f473",
+      "applied_sha256": "cf3e07252dd44fef36f5d151891e27cda2440f52aca282baee1e876270c142cc"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoint_gap_test.go",
+      "main_before": null,
+      "applied_sha256": "8166927d5dae4c5156660fd4078ae6d2722a7c556d6e7da223f6004bd9fb2463"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go",
+      "main_before": "450b1f9dc70e308aba2c4a52bc65b1d0a7c922712c306e5f6d6c6db51d39afda",
+      "applied_sha256": "c4ccd849443bed50027485f5ce24c2932ebcff09c2ffb8fcb81f263a75c43774"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoints.go",
+      "main_before": "3b4557a1c6fc001064b428e77ece703862142be8d825c9d73c0854e2d974cace",
+      "applied_sha256": "c620882037887fd67d0a6323b8155718de0c3a4d885d5bd6506914301d3d8eec"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoints_test.go",
+      "main_before": "9d948ef3194f519b2354c6bd6bee2d972003e9ff70b98cb91af7ac543a00f886",
+      "applied_sha256": "9d948ef3194f519b2354c6bd6bee2d972003e9ff70b98cb91af7ac543a00f886"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff.go",
+      "main_before": "62a9f2c0ac15ced88b0274e17a3f27753caf5a92d89b7bfbeeb3053aadbbf811",
+      "applied_sha256": "787dcc86c230e5e5c13dafe88755538f346d8168bc7b3883e0fe0b9b98083718"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_budget_test.go",
+      "main_before": null,
+      "applied_sha256": "3740d24bf0956f4ab23fb2a0218f051cf7627e2f2716a9103728cf282aa6cbea"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_checkpoint_lifecycle_test.go",
+      "main_before": null,
+      "applied_sha256": "bdcfd02210d871918a3e16537b6605bbca9c93381b9067effe40a466857830c9"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_checkpoint_test.go",
+      "main_before": null,
+      "applied_sha256": "717c992a0e4b11ba5e6d3c2d9b667e663e325070043bd150bdd0096714b88455"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_codex_launch_test.go",
+      "main_before": null,
+      "applied_sha256": "1684ca013c6e1739efada2161851f0679c94ce88a031303f2740ae0c70e00a5c"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_launch_test.go",
+      "main_before": null,
+      "applied_sha256": "16d9f62c8515de5468240bc85e8ddeddb0b186f3f99b62b1d23c2617f66b3336"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_wire_test.go",
+      "main_before": null,
+      "applied_sha256": "a57504bd74c50740aeccf3c2b5ffffe58e6641f7fda56a12df0f6b37c3b0095a"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_ledger.go",
+      "main_before": "ab3b8379622d9c80080080136c79e540e237b456bf2a454bcf6673cd003ea9fe",
+      "applied_sha256": "ab3b8379622d9c80080080136c79e540e237b456bf2a454bcf6673cd003ea9fe"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_recording.go",
+      "main_before": "176f066148acc7662d951556a7436ddfd15278a55d91ab33ce0d800fda322a86",
+      "applied_sha256": "176f066148acc7662d951556a7436ddfd15278a55d91ab33ce0d800fda322a86"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_recording_recovery_test.go",
+      "main_before": "4cfa31dd86fb9b4b0cae9910ac4b5793f7e3578c1ce87ea8b1df05ab00253d95",
+      "applied_sha256": "d3603e09b71aa8b988ed36ced0623d90a5a6b58f735ed55acb153d09c0239f82"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_runner.go",
+      "main_before": "3945cbbfeaf7ed2b700109b2cfcd118d632bd3ff0d4fdebb2a48c5ca5943cef0",
+      "applied_sha256": "9178d09fbf6f7ac10eb93a4c65a5b468e5e408e0c13fce52bb1c8d772b550b1a"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/ledger.go",
+      "main_before": "69b3e6fef876cd802c5690558de874c71d153f16552164b74bffc15090524b33",
+      "applied_sha256": "69b3e6fef876cd802c5690558de874c71d153f16552164b74bffc15090524b33"
+    },
+    {
+      "path": "server/internal/handler/collaboration_checkpoints.go",
+      "main_before": "d2ba96d0f51091d9c6cf0d695b9088d118c5bad869f1035b438936951f89d969",
+      "applied_sha256": "d2ba96d0f51091d9c6cf0d695b9088d118c5bad869f1035b438936951f89d969"
+    },
+    {
+      "path": "server/internal/handler/collaboration_checkpoints_test.go",
+      "main_before": "42f61c51dd771282c23beea498460255d2b990403f7d3e872b75bcaff904a68d",
+      "applied_sha256": "42f61c51dd771282c23beea498460255d2b990403f7d3e872b75bcaff904a68d"
+    },
+    {
+      "path": "server/internal/handler/collaboration_comments.go",
+      "main_before": "86b78fa84e0214a5d10eeb9f2f91fff1fb429d46578699edb6fba506e275365c",
+      "applied_sha256": "86b78fa84e0214a5d10eeb9f2f91fff1fb429d46578699edb6fba506e275365c"
+    },
+    {
+      "path": "server/internal/handler/collaboration_comments_recall.go",
+      "main_before": "5cfcddf4a6b561e5b9cee54595f4468e338d4d3e467bfb2e10cb04d55f963a3a",
+      "applied_sha256": "5cfcddf4a6b561e5b9cee54595f4468e338d4d3e467bfb2e10cb04d55f963a3a"
+    },
+    {
+      "path": "server/internal/handler/collaboration_comments_recall_test.go",
+      "main_before": "0a8b953a5fe15262629b8599afa4ec9f0486aeab68cb4b6fd5140f6c04f2dcde",
+      "applied_sha256": "0a8b953a5fe15262629b8599afa4ec9f0486aeab68cb4b6fd5140f6c04f2dcde"
+    },
+    {
+      "path": "server/internal/handler/collaboration_handoff_budget_test.go",
+      "main_before": null,
+      "applied_sha256": "3e226ad9812867b96c791e03a1133873dea5ef6753a2cb02cbd09ab81835a0dc"
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime.go",
+      "main_before": "2555493c23b2a06faabc65e757662fef5770a89b220002b6e7604a0b80681afc",
+      "applied_sha256": "2555493c23b2a06faabc65e757662fef5770a89b220002b6e7604a0b80681afc"
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime_extensions_test.go",
+      "main_before": "596f2a9ae3aeda189342077604f4dd4cdf6e45ea3511aae4b6f9661641f6c8c0",
+      "applied_sha256": "596f2a9ae3aeda189342077604f4dd4cdf6e45ea3511aae4b6f9661641f6c8c0"
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime_handoff.go",
+      "main_before": "f7bda75af6a374ad3ffc7763947159cdf8c255c40181f8fbadf86a36bd0bac85",
+      "applied_sha256": "f7bda75af6a374ad3ffc7763947159cdf8c255c40181f8fbadf86a36bd0bac85"
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime_test.go",
+      "main_before": "c09843f6fb8d93e6208865a1093d55483fe8e1028f0c4580d0a4c0b6b1420c43",
+      "applied_sha256": "c09843f6fb8d93e6208865a1093d55483fe8e1028f0c4580d0a4c0b6b1420c43"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "main_before": "644fb571f177930d3ca4e50396f18665e96ad32d997d7c9252c0a1405fe21048",
+      "applied_sha256": "644fb571f177930d3ca4e50396f18665e96ad32d997d7c9252c0a1405fe21048"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "main_before": "fc7efcd5058a9e7bcfc75495d251faf2325b43affbffa3f2eb6ac6e1ddf089ac",
+      "applied_sha256": "fc7efcd5058a9e7bcfc75495d251faf2325b43affbffa3f2eb6ac6e1ddf089ac"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "main_before": "f7326c36a9aff63a0000461a11cd754375f3698ce03e8c4e43a760db4a3b6460",
+      "applied_sha256": "f7326c36a9aff63a0000461a11cd754375f3698ce03e8c4e43a760db4a3b6460"
+    },
+    {
+      "path": "server/internal/service/collaboration_checkpoints.go",
+      "main_before": "40d53f53c1f242018b7b10ae9db52ce01ab9e513ab5b123bad7191f834636717",
+      "applied_sha256": "7bd01f667e6bc2fc9e3c4e67a64741c8b4b7df41c8b2f01db4198ec18e3b182f"
+    },
+    {
+      "path": "server/internal/service/collaboration_checkpoints_test.go",
+      "main_before": "4cd4b6637128580fb58ac00d5725a6141a1c78c539fb5cda519d1f7b29bbe7b1",
+      "applied_sha256": "b43ed1879c6c73e5d25b0702228aa75303fa3569a433067e78b19493d1050822"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_recall.go",
+      "main_before": "773fd1dc4916b2909434bbc2f1f867ac3aa9f4a79c439a84b2974188a7ac0ba3",
+      "applied_sha256": "773fd1dc4916b2909434bbc2f1f867ac3aa9f4a79c439a84b2974188a7ac0ba3"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_recall_test.go",
+      "main_before": "f9ee94f311809f7d673ce88e3787a04f0171d55f5a1e7583e2f5c6524c6465f4",
+      "applied_sha256": "f9ee94f311809f7d673ce88e3787a04f0171d55f5a1e7583e2f5c6524c6465f4"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_view.go",
+      "main_before": "897c76577401a8ca576222f06a471928cd5aede1c71d6e2e17e9fb4115008c30",
+      "applied_sha256": "897c76577401a8ca576222f06a471928cd5aede1c71d6e2e17e9fb4115008c30"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_cursor_test.go",
+      "main_before": null,
+      "applied_sha256": "cfb04eb947049a40cfc757331a7d43cfdc3dae739779cc1fd470c1aec9caf394"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_snapshot.go",
+      "main_before": "b0968d48aee1596ab759747c0d6174f2621660a9706ce69602fae9311311c4e7",
+      "applied_sha256": "72527e5aabae07b66d3bf4c27c8773ffae40ec1c834399aefcc204385fe6c164"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_wakeup.go",
+      "main_before": "2d8f6261246708c5cc5df95c4b956d6be883cb8745bd26f98d16091d893855a1",
+      "applied_sha256": "2d8f6261246708c5cc5df95c4b956d6be883cb8745bd26f98d16091d893855a1"
+    },
+    {
+      "path": "server/internal/service/collaboration_records.go",
+      "main_before": "943c7a80c9cbc66e97da9b42fc6a7ca03590e59bf0dacf476ea64b4cac9c5e10",
+      "applied_sha256": "943c7a80c9cbc66e97da9b42fc6a7ca03590e59bf0dacf476ea64b4cac9c5e10"
+    },
+    {
+      "path": "server/internal/service/collaboration_records_test.go",
+      "main_before": "1db8526fdc0dedff17a719fefe93c4e5c145d308c9f4651abc18dfda2d5fbe50",
+      "applied_sha256": "df2b8cc44105a963c73c34f32ef2b8ef1d4d6b54eee79aea9d0c4c403b7eb713"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "main_before": "eaed10f96dafc5f1a9a6501b939c069ad6698f93bd70035db4ed0d353a8c9884",
+      "applied_sha256": "d517f5531a133010c36bbda89ca0d5432e9d3bcfe0e423e5113104aff6573d8f"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "main_before": "057c06a9ff71e576c0bdb246849ccd5fcf0f3af896204bda8b142527dbaf3b73",
+      "applied_sha256": "057c06a9ff71e576c0bdb246849ccd5fcf0f3af896204bda8b142527dbaf3b73"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "main_before": "a0c06e6125c571655865885129513d95011893d6361fc4edc1e06d1b22c791f4",
+      "applied_sha256": "92496541c57e8067efe1d26b07e686af58982d8383df2993faee93053171f544"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff_budget_test.go",
+      "main_before": null,
+      "applied_sha256": "077394be4b2c75277fff5eea1b8501ec5b560ff1be1e4ef6171e0d1379ce7ab9"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff_source_test.go",
+      "main_before": null,
+      "applied_sha256": "0c3fb28b3d8ac1f32f40c47c2d0d846355ecd3fadfdd4a17d5dc7938b8a36ab3"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff_test.go",
+      "main_before": "159b8282970619dfbb7a11cbc77600c9bf380c701e6184767c098bdac60d07d5",
+      "applied_sha256": "159b8282970619dfbb7a11cbc77600c9bf380c701e6184767c098bdac60d07d5"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_preparation_derived_test.go",
+      "main_before": "f9fd74116001187fda00a3f62e2c65df0060f7249e16bb370ef57b377583f5fe",
+      "applied_sha256": "43b3bb41594d05768d690dd855ae5b30ee2857dbebc5a102a927de07205cb37c"
+    },
+    {
+      "path": "server/internal/service/collaboration_squad.go",
+      "main_before": "ddbd86dfd594d3c28ff64746a74343704dfd9ab4eceb1d81b52e66b46696a583",
+      "applied_sha256": "ddbd86dfd594d3c28ff64746a74343704dfd9ab4eceb1d81b52e66b46696a583"
+    },
+    {
+      "path": "server/internal/service/collaboration_squad_join.go",
+      "main_before": "54c48f8905633aa6060bb7c0a6ceca54e9c42a59e46f033610cd416572fb28af",
+      "applied_sha256": "54c48f8905633aa6060bb7c0a6ceca54e9c42a59e46f033610cd416572fb28af"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_handoff.sql.go",
+      "main_before": "2bd650b205faf918607ac08be19a063877043fa148b6d9c5541123de99ece262",
+      "applied_sha256": "994677c9383694660cbd6d08947b818df9c949a51cb24cf79983b8762d44ba99"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_preparation.sql.go",
+      "main_before": "473827c9846cf33772c65e958843c84e1319613ca62efecbd95f75d9729777e7",
+      "applied_sha256": "cdaac78e1bb31b7a0536001364824b290181266a298381abab95385f14f11817"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_recall.sql.go",
+      "main_before": "cdea44fb16e1d5ee3a5d7617da9b7cf59d8b750534f541b6cea475b6e552af85",
+      "applied_sha256": "cdea44fb16e1d5ee3a5d7617da9b7cf59d8b750534f541b6cea475b6e552af85"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_records.sql.go",
+      "main_before": "ca2ee2319d9aa3906a7871f167fc17a45658c1a969f7506db4d291d5305d41b5",
+      "applied_sha256": "2e3f55b412327f6d8fea245e44c73b4a15b92a24028e282857050455ee2fdd09"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_handoff.sql",
+      "main_before": "35a7172bf64ab5e93b0e6fcb37b7c9ab524edf6f04115c2761c18f3ea8c16038",
+      "applied_sha256": "05d738cdabae133f5c21cf6c894d6db6d2b07f4bf1f6432b34e3bb2dab61f9db"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_preparation.sql",
+      "main_before": "7ffc17484cf4cc96324fbf098463cb53057445a6e5a5032e5eded57cf05bf132",
+      "applied_sha256": "8bac5b784f04c45a71b5d85c55e95fee42980f5f548816a845c9c49fcaaf96d8"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_recall.sql",
+      "main_before": "4dc4d6f6aade8397b6efc709b6ab39b20facfd8aafdf5a3afe4ce0165eccb6d2",
+      "applied_sha256": "4dc4d6f6aade8397b6efc709b6ab39b20facfd8aafdf5a3afe4ce0165eccb6d2"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_records.sql",
+      "main_before": "752d4f83244bc3ebf310ee966548cfbedcf504bf23295428f217a2377d69b096",
+      "applied_sha256": "752d4f83244bc3ebf310ee966548cfbedcf504bf23295428f217a2377d69b096"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration.go",
+      "main_before": "b5f274a62d0891024eaca29cc871ef2b4ca6a548de66981d9d55e47c6ae5d8c8",
+      "applied_sha256": "b5f274a62d0891024eaca29cc871ef2b4ca6a548de66981d9d55e47c6ae5d8c8"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_checkpoint.go",
+      "main_before": "eb87a6d54b8e352797209d8e7258df4eba07d8641dfc4c2661201220793a8f5d",
+      "applied_sha256": "2e7ea3a09d209b7e081c90c05f72d5b3acd4c9f13c46af97dbf0854d1f657c61"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_checkpoint_test.go",
+      "main_before": "476ea12de145f1cc0257485341a3df8c4f7e14375256ab33e35a1a7709080e54",
+      "applied_sha256": "55321df8f47ca6b7950b7e3834e61913d585590cce27089c04f97292720637b6"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_handoff.go",
+      "main_before": "2e6372b0b40b4c095de7ef126c1e5400cef961bacbd7a7b74e12b5079f3880a9",
+      "applied_sha256": "e06248a86f7f343d799bf618d644b2927f98a6cdfdfd12e022e3a9fe4a615401"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_handoff_decode_test.go",
+      "main_before": null,
+      "applied_sha256": "c7ef601b462231d9f18fc240e5a257d93638fbba3adeed0227ee07ca60fa5b54"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_handoff_test.go",
+      "main_before": "dfced80cf29a3684c049aa46cc78d3847c9489a3c40dd6e45621cd461e3b1b36",
+      "applied_sha256": "cb9f8936c2343a58e68975034426b0de0019b7356a481fffc412c4446b8b18da"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_host.go",
+      "main_before": "b90cbc66ec86c493d6307a659d0ebd3f819b42c444e8ea3de7cf7519c72a641d",
+      "applied_sha256": "e1ea570679355b0d87c02faf2f421565efc6fcb6c9692690d9693020eb37e43f"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_recall.go",
+      "main_before": "e9373ef926637fb506e16946f2aa4fa083c08634486fe2e482cf221e9a574e99",
+      "applied_sha256": "e9373ef926637fb506e16946f2aa4fa083c08634486fe2e482cf221e9a574e99"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_recall_test.go",
+      "main_before": "4f9a0971bfa6053d77a23423de066198b95e96bc3b87bed1ac519f8ffe0d18b2",
+      "applied_sha256": "4f9a0971bfa6053d77a23423de066198b95e96bc3b87bed1ac519f8ffe0d18b2"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_record.go",
+      "main_before": "0c2acdd407516d3200e16ce54eeaa00995baef945af107226146b53388538d7e",
+      "applied_sha256": "0c2acdd407516d3200e16ce54eeaa00995baef945af107226146b53388538d7e"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_recording_retention_test.go",
+      "main_before": null,
+      "applied_sha256": "6cb8d84fd13cfbee6e4c1d988e5caa4775852bdba348288f3ca5506fbc703674"
+    }
+  ],
+  "backup": "main-before-runtime-apply.tar.gz",
+  "unrelated_paths_touched": false
+}

@@ -1,0 +1,1647 @@
+{
+  "schema_version": 1,
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check: bounded independent KNOWLEDGE frontend verification",
+  "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "created_at": "2026-11-15T13:03:48.861Z",
+  "receipt_path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-frontend-verification-jOgYVN-c1c27d4b.json",
+  "private_run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN",
+  "scope": {
+    "canonical_test_selection": {
+      "core": [
+        "packages/core/api/collaboration-knowledge.test.ts",
+        "packages/core/api/knowledge-automation.test.ts",
+        "packages/core/collaboration/knowledge-actions.test.ts",
+        "packages/core/collaboration/knowledge-automation-actions.test.ts",
+        "packages/core/collaboration/knowledge-automation-queries.test.ts",
+        "packages/core/collaboration/knowledge-automation-schema.test.ts",
+        "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+        "packages/core/collaboration/knowledge-cache.test.ts",
+        "packages/core/collaboration/knowledge-lease.test.ts",
+        "packages/core/collaboration/knowledge-schema.test.ts",
+        "packages/core/collaboration/knowledge-sources.test.ts",
+        "packages/core/realtime/knowledge-provider.test.tsx",
+        "packages/core/realtime/knowledge.test.ts"
+      ],
+      "views": [
+        "packages/views/collaboration/knowledge-automation.test.tsx",
+        "packages/views/collaboration/knowledge-panel.test.tsx"
+      ],
+      "selection": "Current Core/Views knowledge guides plus existing P4 captured test paths; all existing knowledge-named canonical files, excludes account-route test, component mount/composition suites, locale parity suite and all stage-approvals/client3d matrices."
+    },
+    "selection_basis": [
+      "Current Core/Views frontend collaboration-knowledge guides",
+      "Existing task P4 test receipts, reconciled against every current knowledge-named Core/Views test file"
+    ],
+    "excluded_execution": [
+      "PAY S2 Go work and races",
+      "stage-approvals/client3d scenario matrices",
+      "account-route helper test",
+      "component mount/composition suites and locale parity suite",
+      "whole repository 14112 suite",
+      "API/DB/model/account or application process lifecycle operations"
+    ],
+    "source_config_edits": false,
+    "new_tests": false,
+    "new_dependencies": false,
+    "installed_dependencies_only": true,
+    "max_vitest_workers": 2,
+    "simultaneous_vitest_runs": 1,
+    "typecheck_commands": [
+      "pnpm --filter @multica/core typecheck",
+      "pnpm --filter @multica/views typecheck"
+    ],
+    "existing_typecheck_script": "tsc --noEmit",
+    "added_or_overridden_typecheck_flags": [],
+    "lint_scope": "Existing installed ESLint/configurations, 24 Core and 10 Views knowledge source/test files only",
+    "cache_handling": "Supported Vitest --cache=false prevents result-cache writes; no cache deleted or pruned."
+  },
+  "source_input_binding": {
+    "definition": "Complete non-output repository source/config/assets in the transitive Core/Views workspace dependency closure, all workspace package manifests and root TS/Vitest/ESLint/pnpm/workspace configs/lockfiles, every input file read by the unchanged Core/Views TypeScript compiler programs, installed direct dependency manifests/links and local command shims, installed node/pnpm/tsc executables. Private manifests retain every path, full SHA-256, filesystem mode, symlink target, bytes and timestamps.",
+    "workspace_closure": [
+      {
+        "name": "@multica/core",
+        "directory": "packages/core",
+        "scripts": {
+          "typecheck": "tsc --noEmit",
+          "lint": "eslint .",
+          "test": "vitest run"
+        }
+      },
+      {
+        "name": "@multica/eslint-config",
+        "directory": "packages/eslint-config",
+        "scripts": {}
+      },
+      {
+        "name": "@multica/plugin-sdk",
+        "directory": "packages/plugin-sdk",
+        "scripts": {
+          "typecheck": "tsc --noEmit",
+          "lint": "eslint ."
+        }
+      },
+      {
+        "name": "@multica/tsconfig",
+        "directory": "packages/tsconfig",
+        "scripts": {}
+      },
+      {
+        "name": "@multica/ui",
+        "directory": "packages/ui",
+        "scripts": {
+          "typecheck": "tsc --noEmit",
+          "lint": "eslint ."
+        }
+      },
+      {
+        "name": "@multica/views",
+        "directory": "packages/views",
+        "scripts": {
+          "typecheck": "tsc --noEmit",
+          "lint": "eslint .",
+          "test": "vitest run"
+        }
+      }
+    ],
+    "workspace_dependency_graph": [
+      {
+        "from": "@multica/core",
+        "to": "@multica/eslint-config",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/core",
+        "to": "@multica/tsconfig",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/plugin-sdk",
+        "to": "@multica/eslint-config",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/plugin-sdk",
+        "to": "@multica/tsconfig",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/ui",
+        "to": "@multica/eslint-config",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/ui",
+        "to": "@multica/tsconfig",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/core",
+        "group": "dependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/eslint-config",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/plugin-sdk",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/tsconfig",
+        "group": "devDependencies",
+        "version": "workspace:*"
+      },
+      {
+        "from": "@multica/views",
+        "to": "@multica/ui",
+        "group": "dependencies",
+        "version": "workspace:*"
+      }
+    ],
+    "manifest_entries": 6265,
+    "regular_files": 6113,
+    "compiler_programs": [
+      {
+        "package": "@multica/core",
+        "existing_script": "tsc --noEmit",
+        "config": "packages/core/tsconfig.json",
+        "root_names": 871,
+        "program_source_files": 1492
+      },
+      {
+        "package": "@multica/views",
+        "existing_script": "tsc --noEmit",
+        "config": "packages/views/tsconfig.json",
+        "root_names": 1483,
+        "program_source_files": 4685
+      }
+    ],
+    "before": {
+      "label": "session-before",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/001-session-before-input.json",
+      "startedAt": "2026-11-15T12:55:26.742Z",
+      "finishedAt": "2026-11-15T12:55:27.094Z",
+      "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+      "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+      "entryCount": 6265,
+      "regularFileCount": 6113,
+      "enumerationStable": true,
+      "stableReads": true
+    },
+    "after": {
+      "label": "session-after",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/026-session-after-input.json",
+      "startedAt": "2026-11-15T12:57:15.884Z",
+      "finishedAt": "2026-11-15T12:57:16.120Z",
+      "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+      "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+      "entryCount": 6265,
+      "regularFileCount": 6113,
+      "enumerationStable": true,
+      "stableReads": true
+    },
+    "before_manifest": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/001-session-before-input.json",
+      "mode": "0600",
+      "bytes": 2334445,
+      "sha256": "18ce9424e5bc966ebc0f53e5b0ed22477ec890b2eca27d0d88ce4a0e648d484c"
+    },
+    "after_manifest": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/026-session-after-input.json",
+      "mode": "0600",
+      "bytes": 2334444,
+      "sha256": "80420464fb3ceec3f8e491ec8b663db6c2f9c4e17d145752d6ee93a3c8594466"
+    },
+    "compiler_input_discovery_before": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/compiler-input-discovery-before.json",
+      "mode": "0600",
+      "bytes": 2374147,
+      "sha256": "8944cf8ed4fcfecdce0f47fb1442541f0185125842cb99d1db31cfff1f60a5d8"
+    },
+    "compiler_input_discovery_after": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/compiler-input-discovery-after.json",
+      "mode": "0600",
+      "bytes": 2374147,
+      "sha256": "8944cf8ed4fcfecdce0f47fb1442541f0185125842cb99d1db31cfff1f60a5d8"
+    },
+    "sample_count": 26,
+    "sample_interval_milliseconds": 5000,
+    "all_complete_content_mode_hashes_match": true,
+    "all_timestamp_hashes_match": true,
+    "all_enumerations_stable": true,
+    "all_reads_stable": true,
+    "compiler_input_discovery_byte_identical": true,
+    "observed_input_changed": false,
+    "observed_input_stable": true,
+    "binding_status": "OBSERVED_STABLE_AFTER_BOM_RECONCILIATION",
+    "raw_harness_source_stable_flag": false,
+    "raw_harness_discrepancies": [
+      {
+        "label": "compiler-discovery-before",
+        "changes": [
+          {
+            "path": "node_modules/.pnpm/@types+json5@0.0.29/node_modules/@types/json5/index.d.ts",
+            "change": "compiler-read/disk-mismatch"
+          }
+        ]
+      },
+      {
+        "label": "compiler-discovery-after",
+        "changes": [
+          {
+            "path": "node_modules/.pnpm/@types+json5@0.0.29/node_modules/@types/json5/index.d.ts",
+            "change": "compiler-read/disk-mismatch"
+          }
+        ]
+      }
+    ],
+    "normalization_reconciliation": {
+      "path": "node_modules/.pnpm/@types+json5@0.0.29/node_modules/@types/json5/index.d.ts",
+      "explanation": "TypeScript strips the installed declaration’s existing leading UTF-8 BOM. Before/after raw bytes, mode and timestamps each match; before/after compiler text hashes each match; stripping only EF BB BF exactly reproduces both compiler text hashes. No source mutation was observed.",
+      "raw_file_sha256": "c5a14bdeb170e0e67fb4200c54e0e02fd0ec94aca894c212c9d43c2916891542",
+      "before_compiler_text_sha256": "96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538",
+      "after_compiler_text_sha256": "96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538",
+      "bom_stripped_text_sha256": "96d14f21b7652903852eef49379d04dbda28c16ed36468f8c9fa08f7c14c9538",
+      "reconciliation_receipt": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/input-stability-reconciliation.json",
+        "mode": "0600",
+        "bytes": 3325,
+        "sha256": "efd6f3c4f9b80cbcd99930c09b86030d8370a4b45f721b6970973a81ba8c9212"
+      },
+      "original_raw_results_modified": false
+    }
+  },
+  "tools": {
+    "node_version": "v22.23.2",
+    "node_executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "pnpm_version": "10.28.2",
+    "pnpm_entrypoint": "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+    "typescript_version": "5.9.3",
+    "vitest_version": "4.1.0",
+    "environment": "Explicit ordinary runtime environment allowlist; no API/DB/model/account credentials passed to checks.",
+    "package_manager_warning": "Original stderr retains pnpm warning that root package.json pnpm.onlyBuiltDependencies/pnpm.overrides keys are ignored. No config edited."
+  },
+  "checks": [
+    {
+      "name": "core-knowledge-tests",
+      "kind": "vitest",
+      "result": "PASS",
+      "exit_code": 0,
+      "signal": null,
+      "command": {
+        "executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+          "--filter",
+          "@multica/core",
+          "test",
+          "api/collaboration-knowledge.test.ts",
+          "api/knowledge-automation.test.ts",
+          "collaboration/knowledge-actions.test.ts",
+          "collaboration/knowledge-automation-actions.test.ts",
+          "collaboration/knowledge-automation-queries.test.ts",
+          "collaboration/knowledge-automation-schema.test.ts",
+          "collaboration/knowledge-automation-status-schema.test.ts",
+          "collaboration/knowledge-cache.test.ts",
+          "collaboration/knowledge-lease.test.ts",
+          "collaboration/knowledge-schema.test.ts",
+          "collaboration/knowledge-sources.test.ts",
+          "realtime/knowledge-provider.test.tsx",
+          "realtime/knowledge.test.ts",
+          "--maxWorkers=2",
+          "--cache=false",
+          "--reporter=verbose",
+          "--reporter=json",
+          "--outputFile=/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-tests.vitest.json"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37"
+      },
+      "started_at": "2026-11-15T12:55:52.979Z",
+      "finished_at": "2026-11-15T12:55:57.303Z",
+      "input_before": {
+        "label": "core-knowledge-tests-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/002-core-knowledge-tests-before-input.json",
+        "startedAt": "2026-11-15T12:55:52.288Z",
+        "finishedAt": "2026-11-15T12:55:52.915Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "input_after": {
+        "label": "core-knowledge-tests-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/003-core-knowledge-tests-after-input.json",
+        "startedAt": "2026-11-15T12:55:57.304Z",
+        "finishedAt": "2026-11-15T12:55:57.642Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "observed_input_stable": true,
+      "raw_command": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-tests.command.json",
+        "mode": "0600",
+        "bytes": 3648,
+        "sha256": "532258e0a29deb5bc6590394c91a05b046dcff7c37bfe61a5406a9f1644d04b3"
+      },
+      "raw_stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-tests.stdout.log",
+        "mode": "0600",
+        "bytes": 17537,
+        "sha256": "b796dd2d8519ba86984bc2b0e4bf7d0bf3486dc7773a9b2c1899670c62bd1d91"
+      },
+      "raw_stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-tests.stderr.log",
+        "mode": "0600",
+        "bytes": 449,
+        "sha256": "cd823585877ca16495fe15c0ec902f6690f541a8122afe3d1f417022aeb404d1"
+      },
+      "raw_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-tests.result.json",
+        "mode": "0600",
+        "bytes": 4842,
+        "sha256": "f1afe60579cd3381183259af664e8667c07701ef99acd0a8e8878899367d6324"
+      },
+      "tests": {
+        "files": [
+          {
+            "path": "packages/core/api/collaboration-knowledge.test.ts",
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "routes every human read with the source-independent scope and exact pagination",
+              "serializes all writes with the preselected candidate/request and exact revision unchanged",
+              "uses each original write/recovery version without retrying a v2 write as v1",
+              "does not misclassify structured access loss or malformed claimed support as an older route",
+              "rejects mismatched identities, cyclic pages, over-limit pages and foreign operation results",
+              "fails malformed write intent before transport and preserves HTTP conflicts for explicit reread",
+              "rejects in-progress recovery, malformed JSON and an approval of a different observed version",
+              "does not confirm contradictory HTTP status and sealed receipt outcomes",
+              "redacts project knowledge request/error logs at HTTP 404 without losing workspace headers",
+              "redacts project knowledge request/error logs at HTTP 500 without losing workspace headers",
+              "redacts workspace knowledge request/error logs at HTTP 404 without losing workspace headers",
+              "redacts workspace knowledge request/error logs at HTTP 500 without losing workspace headers"
+            ]
+          },
+          {
+            "path": "packages/core/api/knowledge-automation.test.ts",
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "uses v2 and explicit project workspace scope while original recovery remains account-scoped",
+              "retains sealed refusals but rejects mismatched identity, revision and HTTP outcome",
+              "keeps policy request and provider errors out of generic logs",
+              "returns the confirmed knowledge_job_revision_conflict retry outcome without another request",
+              "returns the confirmed knowledge_source_changed retry outcome without another request",
+              "returns the confirmed knowledge_automation_disabled retry outcome without another request"
+            ]
+          },
+          {
+            "path": "packages/core/collaboration/knowledge-actions.test.ts",
+            "total": 19,
+            "passed": 19,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "allocates a new request UUID per intent and preselects the recoverable candidate before create",
+              "preserves selected recovery versions while leaving legacy identity bytes unchanged",
+              "requires the original operation version when matching a recovered receipt",
+              "retains an explicitly selected v2 across uncertain retries without changing the default v1",
+              "does not dispatch an intent whose serialized version differs from its recovery identity",
+              "can reject an unavailable pending candidate expiring at null using only its exact state revision",
+              "can reject an unavailable pending candidate expiring at 2020-01-01T00:00:00Z using only its exact state revision",
+              "does not infer rejection rights from unavailable or restricted rows and keeps expired approval denied",
+              "pins exact reviewed content/state revisions and refuses inferred or unavailable approval authority",
+              "retains the same immutable request after uncertain transport and never optimistically approves",
+              "recovers a content-free original receipt with candidate/request only after losing source access and target role",
+              "keeps unknown/mismatched receipts uncertain and clears private projections for explicit conflict reread",
+              "recovers the same original actor/key after a fresh login while fencing the old live request scope",
+              "saves only recovery identity before a lost create response and refuses transport if preservation fails",
+              "retires only a first definitively unused proposal identity so a new explicit intent can be created",
+              "retains an earlier ambiguous request through later unsealed rejection, missing recovery and storage changes",
+              "does not discard an overlapping attempt when the first call receives an unsealed rejection",
+              "dismisses only the exact stored identity, sends nothing and keeps the prior attempt uncertain",
+              "distinguishes failed preservation before POST from failed cleanup after a known receipt"
+            ]
+          },
+          {
+            "path": "packages/core/collaboration/knowledge-automation-actions.test.ts",
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "retries the frozen policy request and recovers only routing identity after reload",
+              "does not erase an uncertain request or declare it unused after a later storage failure",
+              "requires current retry permission and keeps the original job revision on retry"
+            ]
+          },
+          {
+            "path": "packages/core/collaboration/knowledge-automation-queries.test.ts",
+            "total": 2,
+            "passed": 2,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "routes policy and job metadata through the same leased knowledge erasure",
+              "does not restore late job metadata after source access is revoked"
+            ]
+          },
+          {
+            "path": "packages/core/collaboration/knowledge-automation-schema.test.ts",
+            "total": 20,
+            "passed": 20,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "knowledge automation v2 protocol reads a system proposal and decision without inventing a human actor",
+              "knowledge automation v2 protocol preserves exact accepted-delivery identity in source and target summaries",
+              "knowledge automation v2 protocol keeps approved history separate from a reopen pause",
+              "knowledge automation v2 protocol preserves the original automatic approval after a later human withdrawal",
+              "knowledge automation v2 protocol reads human v2 without treating a null pending decision as an automatic decision",
+              "knowledge automation v2 protocol keeps unavailable v2 audit metadata while rejecting source material and private reasons",
+              "knowledge automation v2 protocol keeps v2 restricted rows content-free without inventing a visible source or actor",
+              "knowledge automation v2 protocol retains each operation receipt's declared version without upgrading v1",
+              "knowledge automation v2 protocol allows a human v2 proposal to cite an exact delivery without granting system identity",
+              "knowledge automation v2 protocol rejects new identities or delivery sources falsely labelled as v1",
+              "knowledge automation v2 protocol rejects malformed v2 with a fabricated proposal actor",
+              "knowledge automation v2 protocol rejects malformed v2 with a fabricated approval actor",
+              "knowledge automation v2 protocol rejects malformed v2 with a missing rule identity",
+              "knowledge automation v2 protocol rejects malformed v2 with a human decision without its actor",
+              "knowledge automation v2 protocol rejects malformed v2 with a pending candidate marked active",
+              "knowledge automation v2 protocol rejects malformed v2 with a numeric accepted sequence",
+              "knowledge automation v2 protocol rejects malformed v2 with an absent accepted event",
+              "knowledge automation v2 protocol rejects malformed v2 with a source from another issue",
+              "knowledge automation v2 protocol rejects malformed v2 with an unknown usage state",
+              "knowledge automation v2 protocol rejects malformed v2 with an undeclared material field"
+            ]
+          },
+          {
+            "path": "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "knowledge policy and job protocol preserves system defaults and explicit human disablement without fabricated actors",
+              "knowledge policy and job protocol keeps actual zero usage distinct from unknown and partial counts",
+              "knowledge policy and job protocol rejects private details, foreign jobs, duplicate identities and malformed paging",
+              "knowledge policy and job protocol retains every server-admitted stage attempt and rejects excess history",
+              "knowledge policy and job protocol requires v2 for new surfaces and never treats malformed claimed support as absent",
+              "knowledge policy and job protocol accepts only content-free known original-operation outcomes",
+              "knowledge policy and job protocol selects only the exact acceptance and current project, retaining reopen status"
+            ]
+          },
+          {
+            "path": "packages/core/collaboration/knowledge-cache.test.ts",
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "doesNotRestoreUnavailableKnowledgeFromLateResponse",
+              "erases all source/target/detail pages before refetch while preserving content-free recovery and other viewers",
+              "clears prior body at a failed refresh and never restores it on cancellation rollback",
+              "expires at the earlier candidate expiry even while no hint or successful refresh arrives",
+              "cannot restore a private pre-refresh snapshot when the caller cancels with Query's default rollback",
+              "rejects requests older than 30 seconds and fences viewer replacement",
+              "keeps paged reads on the first authorization deadline and refuses page requests without their boundary",
+              "uses one focus/offline responder and disposes it only after the last consumer"
+            ]
+          },
+          {
+            "path": "packages/core/collaboration/knowledge-lease.test.ts",
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "finite knowledge authorization projections charges response latency to the 30-second monotonic request-start ceiling",
+              "finite knowledge authorization projections uses a shorter server interval or expiry regardless of the client's wall clock",
+              "finite knowledge authorization projections does not renew older pages or replayed first-page authorization",
+              "finite knowledge authorization projections rejects an inconsistent page boundary, late generation and fabricated parent",
+              "finite knowledge authorization projections only accepts the latest root read and a current server check",
+              "finite knowledge authorization projections rejects already expired, invalid and backwards-clock responses"
+            ]
+          },
+          {
+            "path": "packages/core/collaboration/knowledge-schema.test.ts",
+            "total": 12,
+            "passed": 12,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "knowledge protocol boundaries accepts a content-free rejection grant for unavailable pending material without granting approval or text",
+              "knowledge protocol boundaries requires explicit detail history completeness and preserves true/false without inferred defaults",
+              "knowledge protocol boundaries bounds detail history at 50 while source pages retain multiple versions of the same lineage",
+              "knowledge protocol boundaries distinguishes an older unsupported response from malformed claimed support without logging private material",
+              "knowledge protocol boundaries retains exact bigint revisions and human projections for all endpoints",
+              "knowledge protocol boundaries keeps missing capabilities unknown and rejects truthy non-booleans",
+              "knowledge protocol boundaries allows only content-free restricted control rows and source-unavailable audit rows",
+              "knowledge protocol boundaries rejects cross-source, cross-target, duplicate or body-bearing list projections",
+              "knowledge protocol boundaries requires exact reviewed fields for approval and state revision plus explanation for narrowing decisions",
+              "knowledge protocol boundaries enforces UTF-8 byte budgets, required evidence anchors and strict proposal fields",
+              "knowledge protocol boundaries exports the UTF-8 byte limits its schemas enforce",
+              "knowledge protocol boundaries permits only three content-free target hint fields and content-free operation receipts"
+            ]
+          },
+          {
+            "path": "packages/core/collaboration/knowledge-sources.test.ts",
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "hashes the selected historical memory version exactly when latest has advanced",
+              "restores an exact delivery reference from a fresh authorized server projection without guessing its canonical hash",
+              "uses retained comment revision text, while a tombstone blocks every old revision",
+              "finds the exact run-record identity across pages without depending on memory",
+              "refuses purged versions, foreign issue references and late reads after access loss",
+              "bounds stalled source discovery with the existing deadline and does not impose a page-count cutoff"
+            ]
+          },
+          {
+            "path": "packages/core/realtime/knowledge-provider.test.tsx",
+            "total": 1,
+            "passed": 1,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "clears a mounted target-only projection on a real WSClient close without waiting for polling or a source subscription"
+            ]
+          },
+          {
+            "path": "packages/core/realtime/knowledge.test.ts",
+            "total": 5,
+            "passed": 5,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "clears target-only knowledge with one responder and no source-room subscription",
+              "ignores private-field target frames and retains the old empty-only workbench contract",
+              "immediately clears on disconnect and every authorization hint before GET recovery",
+              "does not let an obsolete socket callback affect a new server/viewer scope",
+              "keeps replacement connection projections when the old same-scope transport closes"
+            ]
+          }
+        ],
+        "total": 107,
+        "passed": 107,
+        "failed": 0,
+        "pending": 0,
+        "todo": 0,
+        "report_counters": {
+          "numTotalTestSuites": 17,
+          "numPassedTestSuites": 17,
+          "numFailedTestSuites": 0,
+          "numPendingTestSuites": 0,
+          "numTotalTests": 107,
+          "numPassedTests": 107,
+          "numFailedTests": 0,
+          "numPendingTests": 0,
+          "numTodoTests": 0
+        },
+        "denominator_matches_report": true,
+        "missing_files": [],
+        "unexpected_files": [],
+        "duplicate_files": [],
+        "duplicate_names": []
+      },
+      "raw_test_report": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-tests.vitest.json",
+        "mode": "0600",
+        "bytes": 38211,
+        "sha256": "f7973cfc2931c6edff3cd17212dcf66a1f9669381c5654e03ead41f0d02c8913"
+      },
+      "raw_named_inventory": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-tests.named-inventory.json",
+        "mode": "0600",
+        "bytes": 25142,
+        "sha256": "e50558e02309c9842c0701d2e6d8ded8cedf1c6bd57d3d324be8621060c9cc7d"
+      }
+    },
+    {
+      "name": "views-knowledge-tests",
+      "kind": "vitest",
+      "result": "PASS",
+      "exit_code": 0,
+      "signal": null,
+      "command": {
+        "executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+          "--filter",
+          "@multica/views",
+          "test",
+          "collaboration/knowledge-automation.test.tsx",
+          "collaboration/knowledge-panel.test.tsx",
+          "--maxWorkers=2",
+          "--cache=false",
+          "--reporter=verbose",
+          "--reporter=json",
+          "--outputFile=/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-tests.vitest.json"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37"
+      },
+      "started_at": "2026-11-15T12:55:57.965Z",
+      "finished_at": "2026-11-15T12:56:08.113Z",
+      "input_before": {
+        "label": "views-knowledge-tests-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/004-views-knowledge-tests-before-input.json",
+        "startedAt": "2026-11-15T12:55:57.680Z",
+        "finishedAt": "2026-11-15T12:55:57.941Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "input_after": {
+        "label": "views-knowledge-tests-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/007-views-knowledge-tests-after-input.json",
+        "startedAt": "2026-11-15T12:56:08.250Z",
+        "finishedAt": "2026-11-15T12:56:08.467Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "observed_input_stable": true,
+      "raw_command": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-tests.command.json",
+        "mode": "0600",
+        "bytes": 3119,
+        "sha256": "b843cff99facf918248dfccdd97a4be7907e8dc011400632cf27562d8c915ae6"
+      },
+      "raw_stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-tests.stdout.log",
+        "mode": "0600",
+        "bytes": 7381,
+        "sha256": "57f85d627e47fcc59fc5e40fa05c5ab45b8a2d34792b71bb706198b15c96799f"
+      },
+      "raw_stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-tests.stderr.log",
+        "mode": "0600",
+        "bytes": 211,
+        "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+      },
+      "raw_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-tests.result.json",
+        "mode": "0600",
+        "bytes": 3638,
+        "sha256": "00e9d2b2b67d4867c61e4458243d29a4dc7e2919c1569fec5f1407272aadd5e4"
+      },
+      "tests": {
+        "files": [
+          {
+            "path": "packages/views/collaboration/knowledge-automation.test.tsx",
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "shows the default policy and confirms a lost update through its original GET without another PUT",
+              "shows paused automatic knowledge and actual zero usage without claiming verified evidence",
+              "does not request automatic status or show processing for no-project or manual tasks",
+              "sends an authorized retry with the displayed job revision and waits for its receipt"
+            ]
+          },
+          {
+            "path": "packages/views/collaboration/knowledge-panel.test.tsx",
+            "total": 42,
+            "passed": 42,
+            "failed": 0,
+            "pending": 0,
+            "todo": 0,
+            "exact_test_names": [
+              "shows system adoption and paused usage and reuses the exact delivery source in a human correction",
+              "recovers after rapid candidate switches overlap authorization refreshes",
+              "reloads the list and opens a newly submitted candidate for confirmation",
+              "offers recovery for erased idle queries and restores the list and exact review",
+              "requires keyboard confirmation of the displayed version and awaits the exact approval receipt",
+              "resets review confirmation for a changed identity and removes body on source unavailability",
+              "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+              "resets typed decision input when a held refresh returns a different version",
+              "recovers a lost result through the enclosing auxiliary disclosure after remount with the original key and no second POST",
+              "announces workspace loading and permits local retry to an empty catalog while preserving the proposal",
+              "locally retries a failed selected project, retaining proposal fields and requiring an available target before submit",
+              "does not submit a removed destination after resolving sources or silently retarget it to the workspace",
+              "lets an external handler propose from comments to the lawful current project without a private catalog",
+              "Propose correction creates a new immutable proposal without copying old body into the form",
+              "Propose workspace version creates a new immutable proposal without copying old body into the form",
+              "allows only content-free target withdrawal and shows a known refusal as a refusal",
+              "keeps unsupported knowledge separate from the surrounding collaboration and reports truncated history",
+              "stops interval polling an unavailable knowledge interface until an explicit refresh",
+              "restarts at the first page when a later page loses its authorization boundary",
+              "picks an actual recorded run as a source without memory or a raw JSON form",
+              "pages all candidate versions with the original page authorization boundary",
+              "keeps a selected source project pinned and requires a new selection if the relationship changes",
+              "unlocks a definitively rejected first proposal for editing and a new explicit request",
+              "keeps a prior lost proposal locked to its original identity after a later rejection and not-found recovery",
+              "shows known success when receipt cleanup fails instead of calling the write uncertain",
+              "unlocks the human draft after storage fails before POST",
+              "checking the panel's own lost proposal closes its locked form without another POST",
+              "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+              "recovering an older stored proposal keeps a new draft open while it opens the recovered candidate",
+              "recovering a request from the same source opens it even when it is outside the loaded list page",
+              "recovering a request whose candidate belongs to another source does not open it here",
+              "lets a human remove a stored identity only after a check finds no result, without any request",
+              "reports a selected source that disappears as source-changed and preserves the draft",
+              "reports lost authority at intent preparation as proposal-unavailable and preserves the draft",
+              "submit waits for a refreshing source list instead of reporting a changed source",
+              "reports local validation failure as invalid input, not as an unavailable source",
+              "fails closed with a proposal-unavailable notice when the refreshed list withdraws the grant",
+              "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+              "explains an over-byte decision reason instead of the generic invalid message",
+              "does not repeat approval actor/time as an identical latest decision",
+              "renders supplied proposer, approval and latest decision facts without a directory lookup",
+              "reports list failures and unresolved writes without inventing candidate totals"
+            ]
+          }
+        ],
+        "total": 46,
+        "passed": 46,
+        "failed": 0,
+        "pending": 0,
+        "todo": 0,
+        "report_counters": {
+          "numTotalTestSuites": 2,
+          "numPassedTestSuites": 2,
+          "numFailedTestSuites": 0,
+          "numPendingTestSuites": 0,
+          "numTotalTests": 46,
+          "numPassedTests": 46,
+          "numFailedTests": 0,
+          "numPendingTests": 0,
+          "numTodoTests": 0
+        },
+        "denominator_matches_report": true,
+        "missing_files": [],
+        "unexpected_files": [],
+        "duplicate_files": [],
+        "duplicate_names": []
+      },
+      "raw_test_report": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-tests.vitest.json",
+        "mode": "0600",
+        "bytes": 15269,
+        "sha256": "9e67e1ddcaf7140fef62ddd25367495e6a9daf4a7f009ce9b6971c025177a9a4"
+      },
+      "raw_named_inventory": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-tests.named-inventory.json",
+        "mode": "0600",
+        "bytes": 9861,
+        "sha256": "ab41f33cdb433c55c865ac9d9cbb5aaf336f3e56afd93c38ff36e323927d1b6b"
+      }
+    },
+    {
+      "name": "core-typecheck",
+      "kind": "typecheck",
+      "result": "PASS",
+      "exit_code": 0,
+      "signal": null,
+      "command": {
+        "executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+          "--filter",
+          "@multica/core",
+          "typecheck"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37"
+      },
+      "started_at": "2026-11-15T12:56:08.770Z",
+      "finished_at": "2026-11-15T12:56:18.684Z",
+      "input_before": {
+        "label": "core-typecheck-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/008-core-typecheck-before-input.json",
+        "startedAt": "2026-11-15T12:56:08.502Z",
+        "finishedAt": "2026-11-15T12:56:08.745Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "input_after": {
+        "label": "core-typecheck-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/010-core-typecheck-after-input.json",
+        "startedAt": "2026-11-15T12:56:18.685Z",
+        "finishedAt": "2026-11-15T12:56:19.061Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "observed_input_stable": true,
+      "raw_command": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-typecheck.command.json",
+        "mode": "0600",
+        "bytes": 2738,
+        "sha256": "0cd7569cefad44930ae070ab569f5539a47edd158891da4748410780abe3926a"
+      },
+      "raw_stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-typecheck.stdout.log",
+        "mode": "0600",
+        "bytes": 105,
+        "sha256": "41eafb751c9c87a38ea6be98fd0e0c8b8fb54cf61462e89c22c143245b5a1e4d"
+      },
+      "raw_stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-typecheck.stderr.log",
+        "mode": "0600",
+        "bytes": 211,
+        "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+      },
+      "raw_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-typecheck.result.json",
+        "mode": "0600",
+        "bytes": 2915,
+        "sha256": "c8075021e2eeff333c5463af69a9e1964c7fc6e27c4427f7be6b4c906732675d"
+      },
+      "existing_package_script": "tsc --noEmit",
+      "added_or_overridden_typecheck_flags": [],
+      "diagnostics_count": 0,
+      "diagnostics": []
+    },
+    {
+      "name": "views-typecheck",
+      "kind": "typecheck",
+      "result": "PASS",
+      "exit_code": 0,
+      "signal": null,
+      "command": {
+        "executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+          "--filter",
+          "@multica/views",
+          "typecheck"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37"
+      },
+      "started_at": "2026-11-15T12:56:19.403Z",
+      "finished_at": "2026-11-15T12:57:08.036Z",
+      "input_before": {
+        "label": "views-typecheck-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/011-views-typecheck-before-input.json",
+        "startedAt": "2026-11-15T12:56:19.099Z",
+        "finishedAt": "2026-11-15T12:56:19.378Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "input_after": {
+        "label": "views-typecheck-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/021-views-typecheck-after-input.json",
+        "startedAt": "2026-11-15T12:57:08.037Z",
+        "finishedAt": "2026-11-15T12:57:08.297Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "observed_input_stable": true,
+      "raw_command": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-typecheck.command.json",
+        "mode": "0600",
+        "bytes": 2739,
+        "sha256": "c729b708f300866e78f50370a6423d2b66afdfa893b91cc9fd76ebe576b55fb7"
+      },
+      "raw_stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-typecheck.stdout.log",
+        "mode": "0600",
+        "bytes": 107,
+        "sha256": "0c5d35363c4356368b055cc2eb1a3e38a232268bd6c4c29052707821e835c32b"
+      },
+      "raw_stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-typecheck.stderr.log",
+        "mode": "0600",
+        "bytes": 211,
+        "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+      },
+      "raw_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-typecheck.result.json",
+        "mode": "0600",
+        "bytes": 2924,
+        "sha256": "e13e274c93a7efb62f80a0de1d3c89339d284f304cd8591b6998c2dcaf3326d5"
+      },
+      "existing_package_script": "tsc --noEmit",
+      "added_or_overridden_typecheck_flags": [],
+      "diagnostics_count": 0,
+      "diagnostics": []
+    },
+    {
+      "name": "core-knowledge-lint",
+      "kind": "eslint",
+      "result": "PASS",
+      "exit_code": 0,
+      "signal": null,
+      "command": {
+        "executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+          "--filter",
+          "@multica/core",
+          "exec",
+          "eslint",
+          "api/knowledge-automation.test.ts",
+          "collaboration/knowledge-actions.test.ts",
+          "collaboration/knowledge-actions.ts",
+          "collaboration/knowledge-automation-actions.test.ts",
+          "collaboration/knowledge-automation-actions.ts",
+          "collaboration/knowledge-automation-queries.test.ts",
+          "collaboration/knowledge-automation-queries.ts",
+          "collaboration/knowledge-automation-schema.test.ts",
+          "collaboration/knowledge-automation-schema.ts",
+          "collaboration/knowledge-automation-status-schema.test.ts",
+          "collaboration/knowledge-cache.test.ts",
+          "collaboration/knowledge-cache.ts",
+          "collaboration/knowledge-lease.test.ts",
+          "collaboration/knowledge-lease.ts",
+          "collaboration/knowledge-queries.ts",
+          "collaboration/knowledge-recovery.ts",
+          "collaboration/knowledge-schema.test.ts",
+          "collaboration/knowledge-schema.ts",
+          "collaboration/knowledge-sources.test.ts",
+          "collaboration/knowledge-sources.ts",
+          "collaboration/knowledge-test-fixtures.ts",
+          "realtime/knowledge-provider.test.tsx",
+          "realtime/knowledge.test.ts",
+          "realtime/knowledge.ts",
+          "--format=json",
+          "--output-file=/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-lint.eslint.json"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37"
+      },
+      "started_at": "2026-11-15T12:57:08.592Z",
+      "finished_at": "2026-11-15T12:57:10.938Z",
+      "input_before": {
+        "label": "core-knowledge-lint-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/022-core-knowledge-lint-before-input.json",
+        "startedAt": "2026-11-15T12:57:08.335Z",
+        "finishedAt": "2026-11-15T12:57:08.567Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "input_after": {
+        "label": "core-knowledge-lint-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/023-core-knowledge-lint-after-input.json",
+        "startedAt": "2026-11-15T12:57:10.938Z",
+        "finishedAt": "2026-11-15T12:57:11.186Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "observed_input_stable": true,
+      "raw_command": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-lint.command.json",
+        "mode": "0600",
+        "bytes": 4073,
+        "sha256": "948ee15deea78a550a63457dd983d1fdc59d2a6158cb4db14257b6e109349d62"
+      },
+      "raw_stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-lint.stdout.log",
+        "mode": "0600",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "raw_stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-lint.stderr.log",
+        "mode": "0600",
+        "bytes": 211,
+        "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+      },
+      "raw_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-lint.result.json",
+        "mode": "0600",
+        "bytes": 5890,
+        "sha256": "5a35dd9f23e50c89e422c4a1eb1e63bf7f0dbc4dfd0473ca8ef396485bbea77d"
+      },
+      "lint": {
+        "file_count": 24,
+        "error_count": 0,
+        "warning_count": 0,
+        "selected_files": [
+          "packages/core/api/knowledge-automation.test.ts",
+          "packages/core/collaboration/knowledge-actions.test.ts",
+          "packages/core/collaboration/knowledge-actions.ts",
+          "packages/core/collaboration/knowledge-automation-actions.test.ts",
+          "packages/core/collaboration/knowledge-automation-actions.ts",
+          "packages/core/collaboration/knowledge-automation-queries.test.ts",
+          "packages/core/collaboration/knowledge-automation-queries.ts",
+          "packages/core/collaboration/knowledge-automation-schema.test.ts",
+          "packages/core/collaboration/knowledge-automation-schema.ts",
+          "packages/core/collaboration/knowledge-automation-status-schema.test.ts",
+          "packages/core/collaboration/knowledge-cache.test.ts",
+          "packages/core/collaboration/knowledge-cache.ts",
+          "packages/core/collaboration/knowledge-lease.test.ts",
+          "packages/core/collaboration/knowledge-lease.ts",
+          "packages/core/collaboration/knowledge-queries.ts",
+          "packages/core/collaboration/knowledge-recovery.ts",
+          "packages/core/collaboration/knowledge-schema.test.ts",
+          "packages/core/collaboration/knowledge-schema.ts",
+          "packages/core/collaboration/knowledge-sources.test.ts",
+          "packages/core/collaboration/knowledge-sources.ts",
+          "packages/core/collaboration/knowledge-test-fixtures.ts",
+          "packages/core/realtime/knowledge-provider.test.tsx",
+          "packages/core/realtime/knowledge.test.ts",
+          "packages/core/realtime/knowledge.ts"
+        ],
+        "messages": []
+      },
+      "raw_lint_report": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/core-knowledge-lint.eslint.json",
+        "mode": "0600",
+        "bytes": 6511,
+        "sha256": "370bb2a4e1f858ee0c9790d8a604f6b0143f123a620c9ba976fcce6e669308e1"
+      }
+    },
+    {
+      "name": "views-knowledge-lint",
+      "kind": "eslint",
+      "result": "PASS",
+      "exit_code": 0,
+      "signal": null,
+      "command": {
+        "executable": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "argv": [
+          "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+          "--filter",
+          "@multica/views",
+          "exec",
+          "eslint",
+          "collaboration/knowledge-automation-recovery.tsx",
+          "collaboration/knowledge-automation-status.tsx",
+          "collaboration/knowledge-automation.test.tsx",
+          "collaboration/knowledge-controls.tsx",
+          "collaboration/knowledge-panel.test.tsx",
+          "collaboration/knowledge-panel.tsx",
+          "collaboration/knowledge-proposal.tsx",
+          "collaboration/knowledge-review.tsx",
+          "collaboration/knowledge-source-picker.tsx",
+          "projects/components/project-knowledge-policy.tsx",
+          "--format=json",
+          "--output-file=/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-lint.eslint.json"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37"
+      },
+      "started_at": "2026-11-15T12:57:11.481Z",
+      "finished_at": "2026-11-15T12:57:12.623Z",
+      "input_before": {
+        "label": "views-knowledge-lint-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/024-views-knowledge-lint-before-input.json",
+        "startedAt": "2026-11-15T12:57:11.220Z",
+        "finishedAt": "2026-11-15T12:57:11.455Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "input_after": {
+        "label": "views-knowledge-lint-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/025-views-knowledge-lint-after-input.json",
+        "startedAt": "2026-11-15T12:57:12.624Z",
+        "finishedAt": "2026-11-15T12:57:12.973Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      "observed_input_stable": true,
+      "raw_command": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-lint.command.json",
+        "mode": "0600",
+        "bytes": 3446,
+        "sha256": "987f30bc4b1d2baaa69a54b6e195fc694dcbf57879a3438eaf83b65ef3227b23"
+      },
+      "raw_stdout": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-lint.stdout.log",
+        "mode": "0600",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "raw_stderr": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-lint.stderr.log",
+        "mode": "0600",
+        "bytes": 211,
+        "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+      },
+      "raw_result": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-lint.result.json",
+        "mode": "0600",
+        "bytes": 4457,
+        "sha256": "a42f3e63810aa48e969eb66c0c1bf9b7f58e7aed42c9debc160196781ef920cb"
+      },
+      "lint": {
+        "file_count": 10,
+        "error_count": 0,
+        "warning_count": 0,
+        "selected_files": [
+          "packages/views/collaboration/knowledge-automation-recovery.tsx",
+          "packages/views/collaboration/knowledge-automation-status.tsx",
+          "packages/views/collaboration/knowledge-automation.test.tsx",
+          "packages/views/collaboration/knowledge-controls.tsx",
+          "packages/views/collaboration/knowledge-panel.test.tsx",
+          "packages/views/collaboration/knowledge-panel.tsx",
+          "packages/views/collaboration/knowledge-proposal.tsx",
+          "packages/views/collaboration/knowledge-review.tsx",
+          "packages/views/collaboration/knowledge-source-picker.tsx",
+          "packages/views/projects/components/project-knowledge-policy.tsx"
+        ],
+        "messages": []
+      },
+      "raw_lint_report": {
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/views-knowledge-lint.eslint.json",
+        "mode": "0600",
+        "bytes": 2742,
+        "sha256": "810917ae08d1d1c203114099bd9f8605539265a6115d63666e3b2c1f8bb7c6d7"
+      }
+    }
+  ],
+  "verification": {
+    "tests": {
+      "files": 15,
+      "total": 153,
+      "passed": 153,
+      "failed": 0,
+      "pending": 0,
+      "todo": 0,
+      "missingFiles": [],
+      "unexpectedFiles": [],
+      "duplicateFiles": [],
+      "duplicateNames": []
+    },
+    "typechecks": {
+      "passed": 2,
+      "failed": 0,
+      "commands_are_actual_existing_package_scripts": true,
+      "flags_changed": false
+    },
+    "lint": {
+      "passed": true,
+      "files": 34,
+      "error_count": 0,
+      "warning_count": 0,
+      "scope": "knowledge-only; package-wide lint not run"
+    },
+    "observed_knowledge_checks_passed": true,
+    "observed_source_input_stable": true,
+    "full_root_accepted": false,
+    "final_acceptance_verified": false,
+    "product_acceptance": false,
+    "final_source_readiness": false,
+    "source_freeze_permit": false
+  },
+  "findings": {
+    "fixed": [],
+    "not_fixed": [],
+    "statement": "No source-local failure was observed in the selected knowledge tests, canonical package typechecks or scoped knowledge lint. No source/config code was changed. The raw harness BOM discrepancy is explained by a supplementary receipt without changing its original result."
+  },
+  "peer_preservation": {
+    "head_before": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "head_after": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "status_entry_count_before": 2560,
+    "status_entry_count_after": 2560,
+    "git_status_bytes_unchanged_during_checks": true,
+    "status_delta_during_checks": {
+      "added": [],
+      "removed": []
+    },
+    "existing_tracked_changes": 369,
+    "existing_untracked_files": 2191,
+    "source_edits_by_this_lane": [],
+    "config_edits_by_this_lane": [],
+    "authorized_public_changed_paths": [
+      ".trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-frontend-verification-jOgYVN-c1c27d4b.json"
+    ]
+  },
+  "retained_evidence": {
+    "directory_mode": "0700",
+    "raw_file_mode": "0600",
+    "permission_audit": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/private-permissions-audit.json",
+      "mode": "0600",
+      "bytes": 25951,
+      "sha256": "1746e94fab72640e2096bbc1df38e2f7d0b94154b70efd9c90e653b9e0a9346f"
+    },
+    "raw_inventory_index": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/raw-receipt-inventory.json",
+      "mode": "0600",
+      "bytes": 34935,
+      "sha256": "94fe5008101d2ac88412758d5eb75365721a80144a4fa4fa009835ca9bc28f39"
+    },
+    "raw_summary": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/verification-summary.json",
+      "mode": "0600",
+      "bytes": 50428,
+      "sha256": "ca60003a954893974ab29acdd177dd36364480476aeaf412bcf3a66799c08026"
+    },
+    "snapshots": [
+      {
+        "label": "session-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/001-session-before-input.json",
+        "startedAt": "2026-11-15T12:55:26.742Z",
+        "finishedAt": "2026-11-15T12:55:27.094Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "core-knowledge-tests-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/002-core-knowledge-tests-before-input.json",
+        "startedAt": "2026-11-15T12:55:52.288Z",
+        "finishedAt": "2026-11-15T12:55:52.915Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "core-knowledge-tests-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/003-core-knowledge-tests-after-input.json",
+        "startedAt": "2026-11-15T12:55:57.304Z",
+        "finishedAt": "2026-11-15T12:55:57.642Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-knowledge-tests-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/004-views-knowledge-tests-before-input.json",
+        "startedAt": "2026-11-15T12:55:57.680Z",
+        "finishedAt": "2026-11-15T12:55:57.941Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-knowledge-tests-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/005-views-knowledge-tests-during-input.json",
+        "startedAt": "2026-11-15T12:56:02.967Z",
+        "finishedAt": "2026-11-15T12:56:03.350Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-knowledge-tests-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/006-views-knowledge-tests-during-input.json",
+        "startedAt": "2026-11-15T12:56:07.968Z",
+        "finishedAt": "2026-11-15T12:56:08.228Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-knowledge-tests-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/007-views-knowledge-tests-after-input.json",
+        "startedAt": "2026-11-15T12:56:08.250Z",
+        "finishedAt": "2026-11-15T12:56:08.467Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "core-typecheck-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/008-core-typecheck-before-input.json",
+        "startedAt": "2026-11-15T12:56:08.502Z",
+        "finishedAt": "2026-11-15T12:56:08.745Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "core-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/009-core-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:56:13.771Z",
+        "finishedAt": "2026-11-15T12:56:14.207Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "core-typecheck-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/010-core-typecheck-after-input.json",
+        "startedAt": "2026-11-15T12:56:18.685Z",
+        "finishedAt": "2026-11-15T12:56:19.061Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/011-views-typecheck-before-input.json",
+        "startedAt": "2026-11-15T12:56:19.099Z",
+        "finishedAt": "2026-11-15T12:56:19.378Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/012-views-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:56:24.405Z",
+        "finishedAt": "2026-11-15T12:56:24.982Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/013-views-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:56:29.405Z",
+        "finishedAt": "2026-11-15T12:56:29.772Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/014-views-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:56:34.406Z",
+        "finishedAt": "2026-11-15T12:56:34.876Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/015-views-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:56:39.409Z",
+        "finishedAt": "2026-11-15T12:56:39.788Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/016-views-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:56:44.410Z",
+        "finishedAt": "2026-11-15T12:56:44.868Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/017-views-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:56:49.412Z",
+        "finishedAt": "2026-11-15T12:56:49.914Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/018-views-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:56:54.414Z",
+        "finishedAt": "2026-11-15T12:56:55.029Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/019-views-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:56:59.415Z",
+        "finishedAt": "2026-11-15T12:56:59.800Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-during",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/020-views-typecheck-during-input.json",
+        "startedAt": "2026-11-15T12:57:04.416Z",
+        "finishedAt": "2026-11-15T12:57:04.984Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-typecheck-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/021-views-typecheck-after-input.json",
+        "startedAt": "2026-11-15T12:57:08.037Z",
+        "finishedAt": "2026-11-15T12:57:08.297Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "core-knowledge-lint-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/022-core-knowledge-lint-before-input.json",
+        "startedAt": "2026-11-15T12:57:08.335Z",
+        "finishedAt": "2026-11-15T12:57:08.567Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "core-knowledge-lint-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/023-core-knowledge-lint-after-input.json",
+        "startedAt": "2026-11-15T12:57:10.938Z",
+        "finishedAt": "2026-11-15T12:57:11.186Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-knowledge-lint-before",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/024-views-knowledge-lint-before-input.json",
+        "startedAt": "2026-11-15T12:57:11.220Z",
+        "finishedAt": "2026-11-15T12:57:11.455Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "views-knowledge-lint-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/025-views-knowledge-lint-after-input.json",
+        "startedAt": "2026-11-15T12:57:12.624Z",
+        "finishedAt": "2026-11-15T12:57:12.973Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      },
+      {
+        "label": "session-after",
+        "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/026-session-after-input.json",
+        "startedAt": "2026-11-15T12:57:15.884Z",
+        "finishedAt": "2026-11-15T12:57:16.120Z",
+        "aggregateSha256": "2b4533edeb90c3cccf77f5ce5b83d18ca51df714cad5756f1579aeaf044ffba1",
+        "temporalSha256": "9a67f77d93587ed32e1db26c2a56776f47da763d598f573ea2ab989174b09f62",
+        "entryCount": 6265,
+        "regularFileCount": 6113,
+        "enumerationStable": true,
+        "stableReads": true
+      }
+    ],
+    "loaded_context_files": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/context-files.json",
+      "mode": "0600",
+      "bytes": 2975,
+      "sha256": "e884c080ace6d95ea9f1c99c60e21eec6f7b71bcfbaf6ca4a8f382ddde509c7e"
+    },
+    "additional_context_files": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-root-knowledge-frontend-verification-jOgYVN/additional-context-files.json",
+      "mode": "0600",
+      "bytes": 2813,
+      "sha256": "f1595d4120439ede9dd65c0c9a643e4d0c22cd4e0bf0475817926daec4ed72f4"
+    },
+    "commands_and_stdout_stderr": "Each actual check has a .command.json, separate unmodified .stdout.log/.stderr.log, raw exit result and input-bound result in the unique private directory."
+  },
+  "historical_evidence": {
+    "earlier_full_frontend_14112_pass_applies_only_to_stored_input": true,
+    "prior_root_frontend_failure_receipt": {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-frontend-current-936d7457.json",
+      "sha256": "94a3c49548a26879663db78a35d7d18e991a79a1474ec8fc7904d74b2bc6d9cf",
+      "mode": "0600",
+      "bytes": 6632238
+    },
+    "prior_root_failure_reasons": [
+      "typecheck_failed_in_partial_comment_history_wiring",
+      "global_source_changed_during_checks"
+    ],
+    "prior_root_source_stable": false,
+    "prior_root_quality_accepted": false,
+    "prior_raw_results_changed": false,
+    "previous_failure_reclassified_as_green": false
+  },
+  "handoff": {
+    "implementation_handoff_needed": false,
+    "reason": "All assigned frontend commands pass without code changes. Main session owns complete ROOT integration and AC/product acceptance. This receipt grants no source readiness/freeze and does not validate PAY S2, runtime, E2E or product scenarios."
+  }
+}

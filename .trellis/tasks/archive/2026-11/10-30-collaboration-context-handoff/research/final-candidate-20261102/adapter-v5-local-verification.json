@@ -1,0 +1,107 @@
+{
+  "at": "2026-11-01T22:37:41.958201+00:00",
+  "scope": "private verification adapter and unchanged sealer Web/Desktop replay",
+  "adapter_version": "v5",
+  "go_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+  "pnpm_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+  "isolation_contracts": {
+    "passed": 11,
+    "failed": 0,
+    "exit_code": 0,
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      ".omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py"
+    ],
+    "raw_log_sha256": "69cb25fba26287a4f99293ceb930c6927bec9ad9595823a239dd7305de322b49"
+  },
+  "stripped_environment_forward": {
+    "command": [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+      "version"
+    ],
+    "exit_code": 0,
+    "env_key_names": [
+      "GOTOOLCHAIN",
+      "HOME",
+      "PATH",
+      "TMPDIR"
+    ],
+    "private_isolation_keys_absent": true,
+    "database_env_absent": true,
+    "network_denied": true,
+    "stdout": "go version go1.26.6 darwin/arm64",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "wrapper_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "at": "2026-11-01T22:33:27.294864+00:00"
+  },
+  "preparation_actual_result": {
+    "selected_provider_binary": "host-provider",
+    "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+    "deployed_expectation": null,
+    "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "verification_harness_head": "8ed2575b33844b5795f3ecaf24fae8955abf14e5",
+    "verification_harness_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lane": "legacy",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-preparation-records-web.spec.ts",
+      "e2e/collaboration-preparation-records-desktop.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/preparation-records-closed-isolation-v5-2/artifacts"
+    ],
+    "database": "collab_joint_legacy_diag_20261102_2120",
+    "health": {
+      "status": "ok",
+      "pid": 26485,
+      "commit": "639bf6ef8",
+      "started_at": "2026-11-01T21:34:56Z"
+    },
+    "source_env_sha256": "1e4338ce392567848096f73b5e320998926fc8f5c664a24dd78725b38cff35ff",
+    "production_Web_build_id": "34DL-1w4TjLPqCrcjSSqj",
+    "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+    "test_source_sha256": {
+      "e2e/collaboration-preparation-records-web.spec.ts": "12d92bc59a2ca10a42441157332aa6c8dd00699af4be0737e2d612e17b652da3",
+      "e2e/collaboration-preparation-records-desktop.spec.ts": "9aa833ddc18e7c5be8d1703b0911536f335f53b6c839e6fbfc7c446cd62d13b2"
+    },
+    "controlled_binary_sha256": {
+      "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+      "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+      "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+      "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+    },
+    "package_pin": null,
+    "actual_real_Provider_calls": 0,
+    "state": "complete",
+    "started_at": "2026-11-01T22:05:28.014824+00:00",
+    "exit_code": 0,
+    "finished_at": "2026-11-01T22:05:41.171028+00:00",
+    "log_sha256": "c2b0c1b3cdcf0fd440087d848c2f7b7ff27ec9c26fea7b0bf4059ef940201153",
+    "stats": {
+      "startTime": "2026-11-01T22:05:29.678Z",
+      "duration": 11460.674,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "results_sha256": "2c339738c485761b3d84cf90040f98ef7b2454e90537797216a653196f8e20be",
+    "gate_exit_code": 0
+  },
+  "selected_tests_changed": false,
+  "versioned_reuse": "Preparation replay uses the v5 non-test Go forwarding path; later allocation-record guard affects go test only. Latest source also has a fresh stripped-env network-denied go version proof. No claim of a later full make check.",
+  "independent_review": "pending; two native-agent attempts returned429 before review completion",
+  "original_v4_review": "changes-required AV4-1 preserved in adapter-v4-independent-review.md/json",
+  "real_Provider_calls": 0,
+  "final_complete_check_pass": false
+}

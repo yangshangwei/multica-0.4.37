@@ -1,0 +1,53 @@
+{
+  "name": "router-race02",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "test",
+    "-race",
+    "-p",
+    "1",
+    "-json",
+    "./cmd/server",
+    "-run",
+    "^TestDurableDelegation",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T04:15:59.248725+00:00",
+  "finished_at": "2026-11-10T04:16:33.213125+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_router_race01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/router-race02.log",
+  "log_sha256": "14dcae56df24be854c3f267b0d5cba3004f5e3022c392913e484b34643ab9320",
+  "counts": {
+    "pass": 16,
+    "fail": 1,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDurableDelegationRouterJWTAndPATRecoverOriginalReceipt",
+      "TestDurableDelegationRouterConcurrentRetryDispatchesOnce",
+      "TestDurableDelegationRouterQueuedMergeAndDeferredHaveRealTask",
+      "TestDurableDelegationRouterTaskRestartKeepsActorAndOriginator",
+      "TestDurableDelegationRouterSquadReplacementDoesNotRewriteTarget",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/unbound",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable/private",
+      "TestDurableDelegationRouterRejectedTargetsRemainTraceable",
+      "TestDurableDelegationRouterReadsRequireCurrentMembershipAndScope",
+      "TestDurableDelegationRouterUnknownNeverReplaysAndLegacyWritesWork",
+      "TestDurableDelegationRouterRejectsMalformedKeyWithoutEffects",
+      "TestDurableDelegationRouterCanceledRequestDoesNotCreateReceipt",
+      "TestDurableDelegationRouterRejectsAttachmentsBeforeCreatingComment",
+      "TestDurableDelegationRouterRevocationAfterAuthentication/membership",
+      "TestDurableDelegationRouterRevocationAfterAuthentication/pat",
+      "TestDurableDelegationRouterRevocationAfterAuthentication"
+    ],
+    "fail": [
+      "TestDurableDelegationRouterHumanHeadersCannotImpersonateAgent"
+    ],
+    "skip": []
+  }
+}

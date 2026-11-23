@@ -1,0 +1,879 @@
+{
+  "status": "review_complete_after_b01_fix",
+  "completed_at": "2026-11-14T07:48:02.553607+00:00",
+  "scope": "Independent privacy + client3b2 review; bounded source repair authorized by root",
+  "reported_head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "wire_sha256": "a71d71570cf1f337d0f8c299e77e307e6d37516dd516eaa6e0882548c5669520",
+  "input_snapshot": {
+    "directory": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b2-20261114T071911Z",
+    "manifest": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b2-20261114T071911Z/source-manifest.json",
+    "sha256": "c2b43cfcce4d69939e9d17c32c57686d48548c4d30afec8e444fb0cf942cf8fc",
+    "file_count": 496,
+    "verified_files": 496,
+    "mutated": false
+  },
+  "original_report_sha256": "1193e43a2102288a634548793a9d1431ea667433f8dd24cc711e425044e87b1f",
+  "verified_original_changes": 31,
+  "verified_original_logs": 24,
+  "findings_fixed": [
+    {
+      "id": "B01",
+      "priority": "P1",
+      "issue": "A fresh authoritative R1 child source denial did not clear cached R4/T4 or prevent C1 from trusting the previous readable candidate. Private logs remained rendered until a secondary read refreshed.",
+      "reproduction": "Read a valid current QA candidate/review and a T4 report. Refresh only R1 with child can_open:false/content_digest:null while R4/T4 refreshes remain pending. Old code returns C1 eligible/readable and leaves the log visible.",
+      "fix": "R1 joins the existing source generation using the real issue.source_workspace.id. It erases/cancels private secondary projections before publishing a denial. Shared presentation treats explicit R1 source denial as unreadable/non-writable; C1 and QA inherit that guard. Empty child lists do not imply denial; missing source identity rejects the read. Current positive R1/R4 reads restore availability, while old responses stay fenced. Public IDs/titles and original typed-comment keys/subjects remain intact.",
+      "code_locations": [
+        [
+          "packages/core/collaboration/stage-queries.ts",
+          31
+        ],
+        [
+          "packages/core/collaboration/stage-queries.ts",
+          37
+        ],
+        [
+          "packages/core/collaboration/stage-code-presentation.ts",
+          24
+        ],
+        [
+          "packages/core/collaboration/stage-presentation.ts",
+          10
+        ],
+        [
+          "packages/views/collaboration/comment-composer.tsx",
+          43
+        ]
+      ],
+      "regression_locations": [
+        [
+          "packages/core/collaboration/stage-test-presentation.test.ts",
+          29
+        ],
+        [
+          "packages/core/collaboration/stage-queries.test.ts",
+          52
+        ],
+        [
+          "packages/core/collaboration/stage-queries.test.ts",
+          92
+        ],
+        [
+          "packages/views/collaboration/stage-test-flow.test.tsx",
+          79
+        ]
+      ],
+      "authorization": "Root explicitly expanded stage-queries/necessary focused tests and approved the internal helper source-workspace argument; no new wire/authorization model."
+    }
+  ],
+  "findings_not_fixed": [],
+  "review_evidence": [
+    {
+      "topic": "R1 child confidentiality and A5/A6",
+      "files": [
+        "stage-schema.ts:95",
+        "stage-actions.ts:129",
+        "stage-presentation.ts:85"
+      ],
+      "result": "Source-unreadable child requires explicit null digest; current nonempty A5/A6 reject retained old readable selections. Empty A5 remains valid. B01 adds the missing shared source-fence propagation."
+    },
+    {
+      "topic": "T4 parser and bytes",
+      "files": [
+        "stage-test-report-schema.ts:13",
+        "stage-test-report-schema.ts:32",
+        "stage-test-report-schema.ts:46",
+        "api/client.ts:1709"
+      ],
+      "result": "Bounded cases/logs, exact counts/outcomes/log indices, UTF-8 limits, strict inline/record identity, source-only null artifact and SHA-256 of returned log bodies are validated. Endpoint methods correlate issue/run/report and keep structured errors distinct. Plain-text renderer never executes text or turns paths/URLs into fetches."
+    },
+    {
+      "topic": "T4 cache and authority",
+      "files": [
+        "stage-test-report-queries.ts:15",
+        "stage-source-cache.ts:15"
+      ],
+      "result": "R4/T4 share the source workspace generation. Ambiguous report404 erases private source data and rereads issue authority; it does not itself revoke independent issue rights. Late errors/success and other workspaces are covered. Cursor chains reject repeats/mismatches/loops."
+    },
+    {
+      "topic": "C1 reachable typed-comment path",
+      "files": [
+        "stage-test-presentation.ts:10",
+        "comment-composer.tsx:42",
+        "comment-composer.tsx:90",
+        "comment.ts:18",
+        "content-schema.ts:140"
+      ],
+      "result": "Existing protected mention-targets.can_submit_commands enables the path with read/comment, v6, assisted/current QA and valid review/source. Global submit_command remains false. Preparation updates the existing comment draft, preserves its text/files, requires target preview/explicit confirmation, and does not send or rewrite an existing subject. Subject changes invalidate preflight identity. Original-key recovery preserves original subject; receipt does not claim execution or test success."
+    },
+    {
+      "topic": "QA exact full report",
+      "files": [
+        "stage-test-presentation.ts:24",
+        "stage-code-forms.tsx:116"
+      ],
+      "result": "The human selects a report; approval waits for matching full T4 issue/run/attempt/candidate/source/artifact and usable passed evidence. Runtime-reported outcome remains distinct from execution applicability and human approval. Failed/unsettled evidence can be returned, including reason-only return with withheld source."
+    }
+  ],
+  "expanded_ownership": [
+    "packages/core/collaboration/stage-queries.ts",
+    "packages/core/collaboration/stage-queries.test.ts",
+    "packages/core/collaboration/stage-code-presentation.ts"
+  ],
+  "reviewer_changed_files": [
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.ts",
+      "snapshot_sha256": "b3ded1dc4b36c32412fea06327672248ffc4b53f105584f3b554bc94d916e9f0",
+      "final_sha256": "f7bca16382ef8a311becb17b02e8e683696d8e9d954cf139f3b6d38ddf4443f3"
+    },
+    {
+      "path": "packages/core/collaboration/stage-presentation.ts",
+      "snapshot_sha256": "cf32a8dfc6f219c7f4917eae110ff5adedd63aeacd88470b5dc4559ae1d6111f",
+      "final_sha256": "f2769da3900f9fa5f5a657ae68444e2c013479dba2509aec4d8ec3dd016f2685"
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.test.ts",
+      "snapshot_sha256": "a62fb1a29400cd4eda0033847cec183e2e08d79bea23dae513bef93766a749ca",
+      "final_sha256": "a1609214b42bcf72f2d9b9f20a86ad6a4906f8584a26f705b6cd220f763156c8"
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.ts",
+      "snapshot_sha256": "0de8a66fca4d9416b290f959a3ca837be56be3f683a3a55f5d628f4bcda4de17",
+      "final_sha256": "d59a3583b030b641f640e781ba30690a50907028c007f1b4beef7ec084890d8b"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-presentation.test.ts",
+      "snapshot_sha256": "511e02b0d31745fff72b0c5b1f0c4bc1f82660fbffed91fb74a17d41a9b36115",
+      "final_sha256": "c189c2874235ac15d02afcb654a4dfd830f02957e1b9692579c057f25c87021e"
+    },
+    {
+      "path": "packages/views/collaboration/comment-composer.tsx",
+      "snapshot_sha256": "640c8189efbb8148883585a4d4a8be1cb1deee7e4f7794670a58bc6f8742a0e8",
+      "final_sha256": "cfce6a82e9bf2e783c32bb96ebd6b80ae676d1348100dad56548b03e33bc154e"
+    },
+    {
+      "path": "packages/views/collaboration/stage-test-flow.test.tsx",
+      "snapshot_sha256": "840fe0f0c31d3a99353b70af34b88f5943c76e5541373ec14e1dde1622ed5dea",
+      "final_sha256": "e6048b370de187727977e8c017864a3e272a6dac228869014e0c60c885a803ac"
+    }
+  ],
+  "final_scope_manifest": [
+    {
+      "path": "packages/core/api/client.ts",
+      "snapshot_sha256": "4f4c077ce5d097bfd5c414b81acc34b61f313b9630f86e09e9f50154f57baf27",
+      "final_sha256": "4f4c077ce5d097bfd5c414b81acc34b61f313b9630f86e09e9f50154f57baf27"
+    },
+    {
+      "path": "packages/core/collaboration/comment.test.ts",
+      "snapshot_sha256": "56379f291fc45abac1269262ac91adf3568a21402b43694fd78f1f5dc12ec10b",
+      "final_sha256": "56379f291fc45abac1269262ac91adf3568a21402b43694fd78f1f5dc12ec10b"
+    },
+    {
+      "path": "packages/core/collaboration/comment.ts",
+      "snapshot_sha256": "f530c11df27efeb4b5ee37ad8f2f545ddbacee0935a8611ef726ca2e1bb6e96e",
+      "final_sha256": "f530c11df27efeb4b5ee37ad8f2f545ddbacee0935a8611ef726ca2e1bb6e96e"
+    },
+    {
+      "path": "packages/core/collaboration/content-schema.ts",
+      "snapshot_sha256": "7f83b682b18066c66171aa188b4d1590d66894d2a4a213d8adc0590e7fc04dcb",
+      "final_sha256": "7f83b682b18066c66171aa188b4d1590d66894d2a4a213d8adc0590e7fc04dcb"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-draft.ts",
+      "snapshot_sha256": "392256627466acb18df55b03b82ad248696993499bc8a643d0746e8e5ab0aab2",
+      "final_sha256": "392256627466acb18df55b03b82ad248696993499bc8a643d0746e8e5ab0aab2"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-form.test.tsx",
+      "snapshot_sha256": "f368f64ea7046902f6435e3f6d42a7c2abd4785065c68a9e9067ca2a665d22eb",
+      "final_sha256": "f368f64ea7046902f6435e3f6d42a7c2abd4785065c68a9e9067ca2a665d22eb"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-form.ts",
+      "snapshot_sha256": "7312fc6649bdc773726123c70f5be93cd8f78ab1ae2acc13067fa796549b7926",
+      "final_sha256": "7312fc6649bdc773726123c70f5be93cd8f78ab1ae2acc13067fa796549b7926"
+    },
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "snapshot_sha256": "9f21f9b43432113d16b950b253044d8894f0c4aa08af02929e0fa6e15a4bb912",
+      "final_sha256": "9f21f9b43432113d16b950b253044d8894f0c4aa08af02929e0fa6e15a4bb912"
+    },
+    {
+      "path": "packages/core/collaboration/stage-actions.ts",
+      "snapshot_sha256": "e69dd033382e3b03e9aef8021ff11bfe1475eea026aa193db154d0bdd596a029",
+      "final_sha256": "e69dd033382e3b03e9aef8021ff11bfe1475eea026aa193db154d0bdd596a029"
+    },
+    {
+      "path": "packages/core/collaboration/stage-child-privacy.test.ts",
+      "snapshot_sha256": "d56e410eedfa2ed34cf5fc49d60548d642807043519ddc3a8c31b73e1e4089b4",
+      "final_sha256": "d56e410eedfa2ed34cf5fc49d60548d642807043519ddc3a8c31b73e1e4089b4"
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.ts",
+      "snapshot_sha256": "b3ded1dc4b36c32412fea06327672248ffc4b53f105584f3b554bc94d916e9f0",
+      "final_sha256": "f7bca16382ef8a311becb17b02e8e683696d8e9d954cf139f3b6d38ddf4443f3"
+    },
+    {
+      "path": "packages/core/collaboration/stage-presentation.ts",
+      "snapshot_sha256": "cf32a8dfc6f219c7f4917eae110ff5adedd63aeacd88470b5dc4559ae1d6111f",
+      "final_sha256": "f2769da3900f9fa5f5a657ae68444e2c013479dba2509aec4d8ec3dd016f2685"
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.test.ts",
+      "snapshot_sha256": "a62fb1a29400cd4eda0033847cec183e2e08d79bea23dae513bef93766a749ca",
+      "final_sha256": "a1609214b42bcf72f2d9b9f20a86ad6a4906f8584a26f705b6cd220f763156c8"
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.ts",
+      "snapshot_sha256": "0de8a66fca4d9416b290f959a3ca837be56be3f683a3a55f5d628f4bcda4de17",
+      "final_sha256": "d59a3583b030b641f640e781ba30690a50907028c007f1b4beef7ec084890d8b"
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.ts",
+      "snapshot_sha256": "87c944735e41e4394f471a505182794e271607e34335ca9b69abb350c468203f",
+      "final_sha256": "87c944735e41e4394f471a505182794e271607e34335ca9b69abb350c468203f"
+    },
+    {
+      "path": "packages/core/collaboration/stage-source-cache.ts",
+      "snapshot_sha256": "794b9d3502a9a075512ea49d14cea863b2898e327b023071b3b8cffcd501cfed",
+      "final_sha256": "794b9d3502a9a075512ea49d14cea863b2898e327b023071b3b8cffcd501cfed"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-comment.test.ts",
+      "snapshot_sha256": "b4b9f500db16eedce80c7e162c185f13475466a9a5e2ccfed33381cc993e7d36",
+      "final_sha256": "b4b9f500db16eedce80c7e162c185f13475466a9a5e2ccfed33381cc993e7d36"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-presentation.test.ts",
+      "snapshot_sha256": "511e02b0d31745fff72b0c5b1f0c4bc1f82660fbffed91fb74a17d41a9b36115",
+      "final_sha256": "c189c2874235ac15d02afcb654a4dfd830f02957e1b9692579c057f25c87021e"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-presentation.ts",
+      "snapshot_sha256": "0401a52b597fa65d38ca1503d2869add9b52990c379fbd70550737b58808f269",
+      "final_sha256": "0401a52b597fa65d38ca1503d2869add9b52990c379fbd70550737b58808f269"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-report-api.test.ts",
+      "snapshot_sha256": "0854ff5a0b38c11ff5a8a84ea91107acc03ae2cbf05931f9d77f66e377ed9dea",
+      "final_sha256": "0854ff5a0b38c11ff5a8a84ea91107acc03ae2cbf05931f9d77f66e377ed9dea"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-report-fixtures.ts",
+      "snapshot_sha256": "2a7431bcfd4d9c7da2d960f37267327731d3e80999753d62827c11601a0aa572",
+      "final_sha256": "2a7431bcfd4d9c7da2d960f37267327731d3e80999753d62827c11601a0aa572"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-report-queries.test.ts",
+      "snapshot_sha256": "b294333a6caaa151636a8082dda2c2e2dd3624d6fcdf504f8b77b1a0b18e95fc",
+      "final_sha256": "b294333a6caaa151636a8082dda2c2e2dd3624d6fcdf504f8b77b1a0b18e95fc"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-report-queries.ts",
+      "snapshot_sha256": "9ac9d397e77d0d451dc42a48c2044e7874dc7a3fe76c9c3232a5ace4eb8372b5",
+      "final_sha256": "9ac9d397e77d0d451dc42a48c2044e7874dc7a3fe76c9c3232a5ace4eb8372b5"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-report-schema.test.ts",
+      "snapshot_sha256": "6babdb673dcd8e4e4e295dd4e5a46e0d3cf084514cb8955e9689dbfcce790c90",
+      "final_sha256": "6babdb673dcd8e4e4e295dd4e5a46e0d3cf084514cb8955e9689dbfcce790c90"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-report-schema.ts",
+      "snapshot_sha256": "5c1592a40abf86a399b074b3c5e7ce3363c3e7d7e1216056c25b22ffc93ce66a",
+      "final_sha256": "5c1592a40abf86a399b074b3c5e7ce3363c3e7d7e1216056c25b22ffc93ce66a"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-subject-schema.ts",
+      "snapshot_sha256": "06545dc53c3cffc172922a9146adc4846f625b26541f1013503c4b466e35d0d5",
+      "final_sha256": "06545dc53c3cffc172922a9146adc4846f625b26541f1013503c4b466e35d0d5"
+    },
+    {
+      "path": "packages/core/collaboration/test-fixtures.ts",
+      "snapshot_sha256": "64501a891952599b0a807597011c4f20037e533ece2c6736e6a147ae354cb363",
+      "final_sha256": "64501a891952599b0a807597011c4f20037e533ece2c6736e6a147ae354cb363"
+    },
+    {
+      "path": "packages/views/collaboration/comment-composer.tsx",
+      "snapshot_sha256": "640c8189efbb8148883585a4d4a8be1cb1deee7e4f7794670a58bc6f8742a0e8",
+      "final_sha256": "cfce6a82e9bf2e783c32bb96ebd6b80ae676d1348100dad56548b03e33bc154e"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-forms.tsx",
+      "snapshot_sha256": "634263dad2405ed777148f422a611333394a167690aa85c2d4faf0c510b55600",
+      "final_sha256": "634263dad2405ed777148f422a611333394a167690aa85c2d4faf0c510b55600"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.tsx",
+      "snapshot_sha256": "e0ceb537d9439f0d3b3686f90f1251591c6bb8978224d109dc88f7635e9f3989",
+      "final_sha256": "e0ceb537d9439f0d3b3686f90f1251591c6bb8978224d109dc88f7635e9f3989"
+    },
+    {
+      "path": "packages/views/collaboration/stage-test-flow.test.tsx",
+      "snapshot_sha256": "840fe0f0c31d3a99353b70af34b88f5943c76e5541373ec14e1dde1622ed5dea",
+      "final_sha256": "e6048b370de187727977e8c017864a3e272a6dac228869014e0c60c885a803ac"
+    },
+    {
+      "path": "packages/views/collaboration/stage-test-report.tsx",
+      "snapshot_sha256": "a846404b40eb171456a47ec543b8ec3970b4687dcafb8a1eb92c6fc73f38756b",
+      "final_sha256": "a846404b40eb171456a47ec543b8ec3970b4687dcafb8a1eb92c6fc73f38756b"
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "snapshot_sha256": "b420fdc93bf13b5e9b9f9091da97d7efe6f98fda041ad643fb1789dc98d8dba5",
+      "final_sha256": "b420fdc93bf13b5e9b9f9091da97d7efe6f98fda041ad643fb1789dc98d8dba5"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "snapshot_sha256": "c1acfbc573cfd76c58416d0ce8fd98a2d299be8a1493b8eb54f123d5f93fac25",
+      "final_sha256": "c1acfbc573cfd76c58416d0ce8fd98a2d299be8a1493b8eb54f123d5f93fac25"
+    }
+  ],
+  "protected_files": {
+    "packages/core/collaboration/action.ts": "ff45c1808a94d6068e4c40695a2085c880a266a3d011da6c82dc8f350e6aca55",
+    "packages/views/collaboration/stage-panel.tsx": "ec5fdd08215302d934ce07f8444ea8e7671f58d7aa5fde31d2e6342f6c151985",
+    "packages/views/collaboration/stage-panel.test.tsx": "e1e0ccea21370ae245fabc0b94e89e317e3ba3d8aa42c697a3aeae76b37a94e0",
+    "packages/views/collaboration/stage-recovery.test.tsx": "7895d2390c6129df65c7bdace7e3d15e102780ac031f6c86533e0a9948877c1e",
+    "packages/core/collaboration/schema.ts": "a4af82f7b8ebd82001cab485a4e8e5b29efb42eebd8cde8027550bccd5e0bbc6"
+  },
+  "historical_verification": {
+    "core": "477 / 22 suites; recorded source/log verified, not summed with later runs",
+    "views": "63 / 5 suites; recorded source/log verified",
+    "logs": [
+      {
+        "name": "comment-red",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-test-comment.test.ts collaboration/delivery-form.test.tsx",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-comment-red.log",
+        "sha256": "f03c05863eb408f2c4136b30f1a4e160f489e0f6a9c4203f15292d756065afd8",
+        "exit_code": 1,
+        "test_summary": "10 failed | 3 passed (13)",
+        "hash_verified": true,
+        "embedded_exit": 1
+      },
+      {
+        "name": "core-final1",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-actions.test.ts collaboration/stage-api.test.ts collaboration/stage-child-privacy.test.ts collaboration/stage-code-actions.test.ts collaboration/stage-code-api.test.ts collaboration/stage-code-presentation.test.ts collaboration/stage-code-schema.test.ts collaboration/stage-generic-refusal.test.ts collaboration/stage-intent.test.ts collaboration/stage-presentation.test.ts collaboration/stage-queries.test.ts collaboration/stage-schema.test.ts collaboration/stage-source-cache.test.ts collaboration/stage-test-comment.test.ts collaboration/stage-test-presentation.test.ts collaboration/stage-test-report-api.test.ts collaboration/stage-test-report-queries.test.ts collaboration/stage-test-report-schema.test.ts collaboration/comment.test.ts collaboration/content-schema.test.ts collaboration/delivery-form.test.tsx collaboration/schema.test.ts collaboration/delivery.test.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-core-final1.log",
+        "sha256": "c8aa17fb24fa5c305903b598064c99aca21204648a458ec75c8dd4d0bc8ee917",
+        "exit_code": 0,
+        "test_summary": "500 passed (500)",
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "core-final2",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-actions.test.ts collaboration/stage-api.test.ts collaboration/stage-child-privacy.test.ts collaboration/stage-code-actions.test.ts collaboration/stage-code-api.test.ts collaboration/stage-code-presentation.test.ts collaboration/stage-code-schema.test.ts collaboration/stage-generic-refusal.test.ts collaboration/stage-intent.test.ts collaboration/stage-presentation.test.ts collaboration/stage-queries.test.ts collaboration/stage-schema.test.ts collaboration/stage-source-cache.test.ts collaboration/stage-test-comment.test.ts collaboration/stage-test-presentation.test.ts collaboration/stage-test-report-api.test.ts collaboration/stage-test-report-queries.test.ts collaboration/stage-test-report-schema.test.ts collaboration/comment.test.ts collaboration/content-schema.test.ts collaboration/delivery-form.test.tsx collaboration/schema.test.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-core-final2.log",
+        "sha256": "a53d78707ba5f2351f62f45ff97cf298bf99ff2e49e30f268671eb523ef01e6d",
+        "exit_code": 0,
+        "test_summary": "477 passed (477)",
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "core-green1",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-test-report-api.test.ts collaboration/stage-test-comment.test.ts collaboration/delivery-form.test.tsx collaboration/comment.test.ts collaboration/stage-source-cache.test.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-core-green1.log",
+        "sha256": "97015cde367c368fb6c3a94e3f64dabe65d713452d379c4012a04b333b3265af",
+        "exit_code": 0,
+        "test_summary": "44 passed (44)",
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "core-green2",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-test-presentation.test.ts collaboration/stage-test-report-queries.test.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-core-green2.log",
+        "sha256": "d3d0c2e750fdbe3c60019bcfdba7d2cccb8975c776c6f6512096e1a1b768fa76",
+        "exit_code": 1,
+        "test_summary": "1 failed | 10 passed (11)",
+        "hash_verified": true,
+        "embedded_exit": 1
+      },
+      {
+        "name": "core-lint1",
+        "command": "pnpm --filter @multica/core exec eslint api/client.ts collaboration/comment.test.ts collaboration/comment.ts collaboration/content-schema.ts collaboration/delivery-draft.ts collaboration/delivery-form.test.tsx collaboration/delivery-form.ts collaboration/index.ts collaboration/stage-actions.ts collaboration/stage-child-privacy.test.ts collaboration/stage-presentation.ts collaboration/stage-schema.ts collaboration/stage-source-cache.ts collaboration/stage-test-comment.test.ts collaboration/stage-test-presentation.test.ts collaboration/stage-test-presentation.ts collaboration/stage-test-report-api.test.ts collaboration/stage-test-report-fixtures.ts collaboration/stage-test-report-queries.test.ts collaboration/stage-test-report-queries.ts collaboration/stage-test-report-schema.test.ts collaboration/stage-test-report-schema.ts collaboration/stage-test-subject-schema.ts collaboration/test-fixtures.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-core-lint1.log",
+        "sha256": "0e92c244fe36184175af87c53d6fe1955b6876696c6cc6d2d15a880fc0656745",
+        "exit_code": 0,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "core-typecheck1",
+        "command": "pnpm --filter @multica/core typecheck",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-core-typecheck1.log",
+        "sha256": "1cf6f4438b9f0eb1663b6e832f9f6a2692759c076f0752149d99ad622fc12755",
+        "exit_code": 0,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "core-typecheck2",
+        "command": "pnpm --filter @multica/core typecheck",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-core-typecheck2.log",
+        "sha256": "1cf6f4438b9f0eb1663b6e832f9f6a2692759c076f0752149d99ad622fc12755",
+        "exit_code": 0,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "core-typecheck3",
+        "command": "pnpm --filter @multica/core typecheck",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-core-typecheck3.log",
+        "sha256": "f6a35eb3cf9d994f800ab79b86d152ce982b32d2cc899f69d4da28ee7d6da272",
+        "exit_code": 0,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "privacy-green1",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-child-privacy.test.ts collaboration/stage-presentation.test.ts collaboration/stage-actions.test.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-privacy-green1.log",
+        "sha256": "3628ebdd94bfa44d2ffb819dbc95a859cea6c28e87a644d54316d1b7d795f5c8",
+        "exit_code": 0,
+        "test_summary": "69 passed (69)",
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "privacy-red",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-child-privacy.test.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-privacy-red.log",
+        "sha256": "eafd0831151f0148d93cceab81e7f772e2ea3c7f04866aba6eafe4db7d14a342",
+        "exit_code": 1,
+        "test_summary": "2 failed | 3 passed (5)",
+        "hash_verified": true,
+        "embedded_exit": 1
+      },
+      {
+        "name": "report-api-red",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-test-report-api.test.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-report-api-red.log",
+        "sha256": "d7d137cef1a373afe424068b11e412264c4d3b5ab5185f9dd10d802d5c27993e",
+        "exit_code": 1,
+        "test_summary": "10 failed (10)",
+        "hash_verified": true,
+        "embedded_exit": 1
+      },
+      {
+        "name": "report-schema-green1",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-test-report-schema.test.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-report-schema-green1.log",
+        "sha256": "4d45fd7359101d73af10e5356adb5c1a221f8e7f75126c0c747e37126620b126",
+        "exit_code": 0,
+        "test_summary": "17 passed (17)",
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "report-schema-red",
+        "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-test-report-schema.test.ts",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-report-schema-red.log",
+        "sha256": "4e2b616dd24ec375f8b4c90de3565636dfed1ddfa722949cafb3e921d3bd33ff",
+        "exit_code": 1,
+        "test_summary": "no tests",
+        "hash_verified": true,
+        "embedded_exit": 1
+      },
+      {
+        "name": "static",
+        "command": "git diff --check -- <31 recorded files>; Python comparison of trailing whitespace, new locale keys and protected pre-increment hashes",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-static.log",
+        "sha256": "3fda8cc3efce10b38de7e3c380ce63ebc628a51ca6489cc307b011a5e663fd7d",
+        "exit_code": 0,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "views-final1",
+        "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-test-flow.test.tsx collaboration/stage-code-panel.test.tsx collaboration/stage-panel.test.tsx collaboration/stage-recovery.test.tsx collaboration/comment-composer.test.tsx",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-views-final1.log",
+        "sha256": "2409d9c529d237a57fdf833cc493c91591358d67e0d1b7f8157dd9e27ba1d41e",
+        "exit_code": 0,
+        "test_summary": "63 passed (63)",
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "views-final2",
+        "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-test-flow.test.tsx collaboration/stage-code-panel.test.tsx collaboration/stage-panel.test.tsx collaboration/stage-recovery.test.tsx collaboration/comment-composer.test.tsx",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-views-final2.log",
+        "sha256": "45fb1c53a50c3a4291786696e05284b59d1dca9896a9cb32931e2da5ec44aa3b",
+        "exit_code": 0,
+        "test_summary": "63 passed (63)",
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "views-first",
+        "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-test-flow.test.tsx collaboration/stage-code-panel.test.tsx collaboration/comment-composer.test.tsx",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-views-first.log",
+        "sha256": "c9347c5fcb9eed2afec8a2a8a68cbd6372b7070a86bf177a35eeeb589a098453",
+        "exit_code": 1,
+        "test_summary": "3 failed | 29 passed (32)",
+        "hash_verified": true,
+        "embedded_exit": 1
+      },
+      {
+        "name": "views-green1",
+        "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-test-flow.test.tsx collaboration/stage-code-panel.test.tsx collaboration/comment-composer.test.tsx",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-views-green1.log",
+        "sha256": "99c7daec8d765426f42469ab66c6fc1113d9aa8176c9bd72eb3f0f83ba903ebc",
+        "exit_code": 0,
+        "test_summary": "32 passed (32)",
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "views-lint1",
+        "command": "pnpm --filter @multica/views exec eslint collaboration/comment-composer.tsx collaboration/stage-code-forms.tsx collaboration/stage-code-panel.tsx collaboration/stage-test-flow.test.tsx collaboration/stage-test-report.tsx",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-views-lint1.log",
+        "sha256": "c212390296d0590eb19a5416330c4d46d1fa7caed940bcbe25e63cbc0d9f488b",
+        "exit_code": 1,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 1
+      },
+      {
+        "name": "views-lint2",
+        "command": "pnpm --filter @multica/views exec eslint collaboration/comment-composer.tsx collaboration/stage-code-forms.tsx collaboration/stage-code-panel.tsx collaboration/stage-test-flow.test.tsx collaboration/stage-test-report.tsx",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-views-lint2.log",
+        "sha256": "f92a2120594649d56d402bdca8af1cd3879a481a78004492c49a5850e85d5888",
+        "exit_code": 0,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "views-typecheck1",
+        "command": "pnpm --filter @multica/views typecheck",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-views-typecheck1.log",
+        "sha256": "0bdd921912c92f4d314ec78e0239f6d4094843305e3c55a655b181a047526ddf",
+        "exit_code": 0,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 0
+      },
+      {
+        "name": "views-typecheck2",
+        "command": "pnpm --filter @multica/views typecheck",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-views-typecheck2.log",
+        "sha256": "bdf0a64d77516368e4e15d99ef2eb59fd272b4a6b0eca42fee9b0d888094927e",
+        "exit_code": 2,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 2
+      },
+      {
+        "name": "views-typecheck3",
+        "command": "pnpm --filter @multica/views typecheck",
+        "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b2-views-typecheck3.log",
+        "sha256": "1e2e8fc0de9823d8690fe685ae4b4529d7f076ad9aacb94b3da21dd9bdc11c05",
+        "exit_code": 0,
+        "test_summary": null,
+        "hash_verified": true,
+        "embedded_exit": 0
+      }
+    ]
+  },
+  "independent_verification": [
+    {
+      "name": "snapshot-counterexamples",
+      "command": "node <bound vitest>/vitest.mjs run --root <private client3b2-check> --config <private vitest.config.mjs>",
+      "summary": "Frozen snapshot: 20 existing tests passed; 2 B01 counterexamples failed",
+      "exit_code": 1,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/snapshot-counterexamples.log",
+      "sha256": "30699bbb3b9ef6a9e70b618086df249d5666f469fad13c5b3bff696795de2a3b"
+    },
+    {
+      "name": "current-focused-core",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-child-privacy.test.ts collaboration/stage-test-comment.test.ts collaboration/stage-test-report-api.test.ts collaboration/stage-test-report-queries.test.ts collaboration/comment.test.ts collaboration/delivery-form.test.tsx",
+      "summary": "Before repair: 6 suites / 56 passed",
+      "exit_code": 0,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/current-focused-core.log",
+      "sha256": "9507eb661bdd9e91cca5e094799de0ad2967083f64e79ce128fd6a1ff5941f4c"
+    },
+    {
+      "name": "current-focused-views",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-test-flow.test.tsx collaboration/comment-composer.test.tsx",
+      "summary": "Before repair: 2 suites / 19 passed",
+      "exit_code": 0,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/current-focused-views.log",
+      "sha256": "74b564452913a64f9927b28674f43f263ee193f21cd4b2f35e637ac3e79fe27b"
+    },
+    {
+      "name": "b01-core-red",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-test-presentation.test.ts collaboration/stage-queries.test.ts -t B01",
+      "summary": "3 failed / 13 deliberately filtered; source display/C1/fence/missing-workspace regressions",
+      "exit_code": 1,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/b01-core-red.log",
+      "sha256": "e29185b4be0dd04e6871eef78479b1ebc4c1375123a15f54261ac793f079f08d"
+    },
+    {
+      "name": "b01-views-red",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-test-flow.test.tsx -t B01",
+      "summary": "1 failed / 6 deliberately filtered; private log remained visible",
+      "exit_code": 1,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/b01-views-red.log",
+      "sha256": "e5b5976028448ed283e25852fe76a12bcc862111c2b9a3c4d701a89e3e5c0227"
+    },
+    {
+      "name": "b01-core-green1",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-test-presentation.test.ts collaboration/stage-queries.test.ts collaboration/stage-source-cache.test.ts collaboration/stage-code-presentation.test.ts collaboration/stage-child-privacy.test.ts collaboration/stage-test-report-queries.test.ts collaboration/stage-test-comment.test.ts collaboration/comment.test.ts",
+      "summary": "Final: 8 suites / 70 passed / no failures or skips",
+      "exit_code": 0,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/b01-core-green1.log",
+      "sha256": "feb38276ce3f18ff5b798172cf93e328b8864701aa83fdd63ade92ffeb1133ba"
+    },
+    {
+      "name": "b01-views-green1",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-test-flow.test.tsx collaboration/comment-composer.test.tsx collaboration/stage-code-panel.test.tsx collaboration/stage-panel.test.tsx collaboration/stage-recovery.test.tsx",
+      "summary": "Final: 5 suites / 64 passed / no failures or skips",
+      "exit_code": 0,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/b01-views-green1.log",
+      "sha256": "502447e0ec990daecbcc61c9f4471165a67b5e021ff72af56f046fc5a807bc16"
+    },
+    {
+      "name": "b01-types1",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "summary": "Final Core/Views pass",
+      "exit_code": 0,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/b01-types1.log",
+      "sha256": "28baed49eaac6990b023b3da99e5f129a44c3b6595bd00466bd54338eee72a42"
+    },
+    {
+      "name": "b01-core-lint1",
+      "command": "pnpm exec eslint <all original Core3b2 TS files plus stage-queries.ts/test and stage-code-presentation.ts> (cwd packages/core)",
+      "summary": "Final pass / zero findings",
+      "exit_code": 0,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/b01-core-lint1.log",
+      "sha256": "4e34acfccad80f6bb5a2fad20a2b60ae434cdb31bb4e6c3939a884299fa47751"
+    },
+    {
+      "name": "b01-views-lint1",
+      "command": "pnpm exec eslint <all original Views3b2 TSX files> (cwd packages/views)",
+      "summary": "Final pass / zero findings",
+      "exit_code": 0,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/b01-views-lint1.log",
+      "sha256": "4e34acfccad80f6bb5a2fad20a2b60ae434cdb31bb4e6c3939a884299fa47751"
+    }
+  ],
+  "frozen_counterexample_binding": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/dependency-binding.json",
+    "sha256": "394647c576f6c85e92f97af77c3d0ea136ed21fd7bf010cc33a9872b00431100",
+    "details": {
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b2-20261114T071911Z",
+      "manifest_sha256": "c2b43cfcce4d69939e9d17c32c57686d48548c4d30afec8e444fb0cf942cf8fc",
+      "supplement_head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+      "loaded_sources": [
+        {
+          "path": "diagnostics/r1-source-denial.test.ts",
+          "source": "reviewer_counterexample",
+          "sha256": "19482cf0bd8ec671d998fea5f7a1ed6ca992e234f341fe79a711c9ed275de5e4",
+          "current_bytes_match": false
+        },
+        {
+          "path": "packages/core/api/schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "bcb94812fd7c38e3bd4ac018afc875db52f52f049020cba624e584ba4f4400f4",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/account-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "2d0343d1467fad4c62b29ee562c2c343945b17686931ecd420daadaaae03a88c",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/attachment-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "5bf13062dcc770dda0cc8691f3e8728802968b8c714c206df4b4bd6ca451db64",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/command-history-test-fixtures.ts",
+          "source": "frozen_snapshot",
+          "sha256": "69fcc8df4b17caebb2066ab48bc4a8166526ae1024b34f658ca1201acba2c294",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/delivery-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "ebdcd5409168fefd2212627cce519a78935243a1a63d61b09b1962a4a781a965",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/execution-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "bfb3eeeb6090020d7a6eb547b43a25f9d5ffa454ffc6d6740ef03640e7a3f7ba",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/knowledge-test-fixtures.ts",
+          "source": "frozen_snapshot",
+          "sha256": "6ac3425dedbb4e2f5e64b80a2c2a2973649eec7c490df09a9aa2e9309dfb7d0c",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "a4af82f7b8ebd82001cab485a4e8e5b29efb42eebd8cde8027550bccd5e0bbc6",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-code-presentation.ts",
+          "source": "frozen_snapshot",
+          "sha256": "b3ded1dc4b36c32412fea06327672248ffc4b53f105584f3b554bc94d916e9f0",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-presentation.ts",
+          "source": "frozen_snapshot",
+          "sha256": "cf32a8dfc6f219c7f4917eae110ff5adedd63aeacd88470b5dc4559ae1d6111f",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "87c944735e41e4394f471a505182794e271607e34335ca9b69abb350c468203f",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-test-fixtures.ts",
+          "source": "frozen_snapshot",
+          "sha256": "d3740570a0cb38f95c4d7d9920b29090acee636ab1e9f7ad5a84f5261021f243",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-test-presentation.test.ts",
+          "source": "frozen_snapshot",
+          "sha256": "511e02b0d31745fff72b0c5b1f0c4bc1f82660fbffed91fb74a17d41a9b36115",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-test-presentation.ts",
+          "source": "frozen_snapshot",
+          "sha256": "0401a52b597fa65d38ca1503d2869add9b52990c379fbd70550737b58808f269",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-test-report-fixtures.ts",
+          "source": "frozen_snapshot",
+          "sha256": "2a7431bcfd4d9c7da2d960f37267327731d3e80999753d62827c11601a0aa572",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-test-report-schema.test.ts",
+          "source": "frozen_snapshot",
+          "sha256": "6babdb673dcd8e4e4e295dd4e5a46e0d3cf084514cb8955e9689dbfcce790c90",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-test-report-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "5c1592a40abf86a399b074b3c5e7ce3363c3e7d7e1216056c25b22ffc93ce66a",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-test-subject-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "06545dc53c3cffc172922a9146adc4846f625b26541f1013503c4b466e35d0d5",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/test-fixtures.ts",
+          "source": "frozen_snapshot",
+          "sha256": "64501a891952599b0a807597011c4f20037e533ece2c6736e6a147ae354cb363",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/text-limits.ts",
+          "source": "frozen_snapshot",
+          "sha256": "c5af04568fc1e70abbbb408b8223adc538c19bb009f0dc5f0a312e05738dfb56",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/version.ts",
+          "source": "frozen_snapshot",
+          "sha256": "ff55efa4562191af9afea21c07cf1a5e5fb1865508e28e0dbcf015e8e6c0099f",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/logger.ts",
+          "source": "git_head_supplement",
+          "sha256": "1d96c1dda7723e07d8e241677729d9c115468a5a39f779df5803b94acd96435f",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/paths/reserved-slugs.ts",
+          "source": "git_head_supplement",
+          "sha256": "e432b5b2dca47c9eb7cc14f9d2be86079d2e2a9d450b4494d2cba987fa21b20f",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/types/property.ts",
+          "source": "git_head_supplement",
+          "sha256": "f9a75d7b947089e0850ae4ac5733f21cd19a04a9c9c11fa80b52f52a559f5ff6",
+          "current_bytes_match": true
+        }
+      ],
+      "external_packages": {
+        "vitest": {
+          "version": "4.1.0",
+          "package_json_sha256": "dfb7e8c1ec00a9ce602253f05ac0ed49702bccf4f50f8c8ae41e62df44cbbec5",
+          "real_path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/vitest@4.1.0_@opentelemetry+api@1.9.1_@types+node@25.5.0_jsdom@29.0.1_@noble+hashes@1.8_ff48d36d6bc43d12ce43d4c6cc46616e/node_modules/vitest"
+        },
+        "zod": {
+          "version": "4.3.6",
+          "package_json_sha256": "1a316ad36e36c6c500bce6e9a6dcbec8efda1083f49a72185226b35573b543ba",
+          "real_path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/zod@4.3.6/node_modules/zod"
+        },
+        "esbuild": {
+          "version": "0.25.12",
+          "package_json_sha256": "cb7d5b1fe478f8cbaae566a86031b6fdf5f7d444354f35d1cb3cba9adf6d2935",
+          "real_path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild"
+        }
+      },
+      "lock_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+      "head_lock_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+      "lock_matches_head": true,
+      "generated_tests": [
+        {
+          "path": "r1-source-denial.snapshot.test.mjs",
+          "sha256": "034de49ce0cb7c671ac10ad51f36440ccd376c5d8e1fcc67c71e15bd28c01172"
+        },
+        {
+          "path": "stage-test-presentation.snapshot.test.mjs",
+          "sha256": "d4cc29dca9c8987f4324973063969743d77c502cf70b50305681baef0079acf2"
+        },
+        {
+          "path": "stage-test-report-schema.snapshot.test.mjs",
+          "sha256": "2d4e8b7b730000e4d1c73a5451143c531822a3286e3b1c9de752ca49f73976ce"
+        }
+      ]
+    },
+    "prepare_script": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b2-check/prepare.cjs",
+    "prepare_script_sha256": "f2aada026d85110d7b5b5e4c814651f23aca086b6907410521bea11104204c72"
+  },
+  "ready_for_client3b2_integration": true,
+  "whole_s2_accepted": false,
+  "parent_accepted": false,
+  "remaining": [
+    "M1/activity after frozen server2d interface",
+    "Actual API/DB and production Web/matching Desktop integration",
+    "A01-A12 and full joint E2E acceptance",
+    "Root-owned spec synchronization"
+  ],
+  "git_writes": false,
+  "spec_edits": false,
+  "server_edits": false,
+  "contract_edits": false,
+  "dependencies_added": false,
+  "runtime_services_started": false,
+  "no_log_content_executed": true
+}

@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "type": "r27_managed_submission_preview_red_implementation",
+  "result": "SOURCE_READY_FOR_MAIN_RED",
+  "at": "2026-11-17T12:47:40.844121+00:00",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "r27_root": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm",
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-implementation-20261117.md",
+    "sha256": "5e45385678a039cc5e82e93492c3d2dfafb248344f9e842e2b99f42a4b4a49cc"
+  },
+  "owned_new_source": {
+    "path": "server/internal/service/collaboration_completion_preview_managed_submission_test.go",
+    "sha256": "f1aa77c0749504ee1826942c1511e5ad751a2254c8385ac69c2b0514ebc865e7",
+    "mode": "0o644"
+  },
+  "test_lines": 224,
+  "protected_files_compared": 5048,
+  "protected_byte_mode_mismatches": 0,
+  "complete_source_files": 5049,
+  "sole_source_extra_path": "server/internal/service/collaboration_completion_preview_managed_submission_test.go",
+  "inventory": {
+    "TestCollaborationCompletionPreviewManagedSubmission": [
+      "enforce_authorization_available",
+      "policy_off_non_authorizing",
+      "stale_target",
+      "wrong_actor",
+      "expired_credential"
+    ]
+  },
+  "top_level": 1,
+  "leaf": 5,
+  "named": 6,
+  "selector": "^TestCollaborationCompletionPreviewManagedSubmission$",
+  "setup": [
+    "newStageCompletionFixture with real managed registration/claim/report/QA/release, controlled deployment and verification AdvanceStage",
+    "stageCompletionM1Policy",
+    "stageCompletionSubmit real SubmitAcceptance confirmation",
+    "stageCompletionAcceptParams plus fresh ResolveIssueAccess and completionCollaborationTargetFromWorkflow"
+  ],
+  "expected_results": {
+    "enforce_authorization_available": {
+      "error": null,
+      "reason": "authorization_available",
+      "stage_blockers": [],
+      "binding": "exact root/submission/child/approval/project/consumer",
+      "expiry": "exact saved release/evidence/current-credential minimum",
+      "enforced": false,
+      "usable_for_completion": false
+    },
+    "policy_off_non_authorizing": {
+      "error": null,
+      "reason": "policy_off",
+      "stage_blockers": [],
+      "observation": null,
+      "authorization_binding": null,
+      "max_expires_at": null,
+      "enforced": false,
+      "usable_for_completion": false
+    },
+    "stale_target": {
+      "status": 409,
+      "code": "delivery_completion_conflict",
+      "private_result": false
+    },
+    "wrong_actor": {
+      "status": 403,
+      "code": "delivery_completion_denied",
+      "actor": "current participating external handler lacking source membership",
+      "private_result": false
+    },
+    "expired_credential": {
+      "status": 403,
+      "code": "delivery_completion_denied",
+      "actor": "real creator JWT principal with only its expiry changed; real password session preserved",
+      "private_result": false
+    }
+  },
+  "transaction": {
+    "actual_pool_begin": true,
+    "caller_transaction_borrowed": true,
+    "action_context_seconds": 5,
+    "suite_budget_minutes": 10,
+    "default_pool_isolation_preserved": true,
+    "final_credential_and_commit_or_rollback": true,
+    "setup_before_preview_transaction": true
+  },
+  "no_effect_checks": {
+    "durable_authorization_terminal_evaluation_empty_baseline": true,
+    "existing_complete_table_snapshot_count": 72,
+    "existing_stage_exit_snapshot": true,
+    "controlled_adapter_call_target_invocation_state_under_mutex": true,
+    "cleanup_runs_after_refusal": true,
+    "all_database_tables_audited": false,
+    "filesystem_archive_bytes_audited": false
+  },
+  "compile": {
+    "exit_code": 0,
+    "timed_out": false,
+    "command": [
+      "/opt/homebrew/bin/go",
+      "test",
+      "-c",
+      "-o",
+      "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/service-submission-red.test",
+      "./internal/service"
+    ],
+    "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/source-red-r01/server",
+    "environment_sha256": "ed97bfafe79667d36317fa5035fe25d7248377bf653b452169b93b59a1ac8420",
+    "environment_inherited": false,
+    "binary": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/service-submission-red.test",
+      "sha256": "67f63f18ddf2fbdeb73f9a28c373dbd181a20117b658524d1ee6e0f719d4b697",
+      "bytes": 86049314,
+      "mode": "0o755"
+    },
+    "stdout": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-compile-r01.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "stderr": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-compile-r01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  },
+  "postcompile_source_unchanged": true,
+  "executions": {
+    "gofmt": 1,
+    "real_go_ast_inventory": 1,
+    "product_test_compile": 1,
+    "test_binary": 0,
+    "testmain": 0,
+    "database": 0,
+    "sql": 0,
+    "api": 0,
+    "browser": 0,
+    "spawned_subagents": 0
+  },
+  "product_fixture_sql_generated_existing_test_edits": 0,
+  "dependencies_added": 0,
+  "actual_red_result": "NOT_RUN_BY_IMPLEMENTER",
+  "static_candidate_diagnosis": "temporary preview stageMutationGuard does not initialize boundSubmission; genuine RED remains main-owned",
+  "remaining_gates": [
+    "main frozen-source/compile review and one genuine RED selection",
+    "separate bounded GREEN authorization based on actual RED",
+    "additional preview read-lock/concurrency controls",
+    "full S2 and independent acceptance; historical R24/R25 holders remain unproved"
+  ],
+  "private_evidence": {
+    "submission-preview-ast-r01.go": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-ast-r01.go",
+      "sha256": "65d033f1176b99fd0d5d706c86e5d85953c60a8cb98115a3ab77c987b928c97b",
+      "bytes": 2898
+    },
+    "submission-preview-ast-r01.stderr.log": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-ast-r01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "submission-preview-ast-r01.stdout.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-ast-r01.stdout.json",
+      "sha256": "7cd60d72be4431906b6629bab88762bc5b02f7a351e27126c9f5401afd3452d4",
+      "bytes": 785
+    },
+    "submission-preview-compile-r01.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-compile-r01.json",
+      "sha256": "5e2417a24cbd2491f6a028ac49326169d253d1b2404318fc880ed3dd40d981e4",
+      "bytes": 2079
+    },
+    "submission-preview-compile-r01.stderr.log": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-compile-r01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "submission-preview-compile-r01.stdout.log": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-compile-r01.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "submission-preview-freeze-r01.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-freeze-r01.json",
+      "sha256": "69a930b2dc44ccae45760e8055bc2afc4a1b55107eba7e1831adc9bb5cb1c0ff",
+      "bytes": 2865
+    },
+    "submission-preview-gofmt-r01.stderr.log": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-gofmt-r01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "submission-preview-gofmt-r01.stdout.log": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-gofmt-r01.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "submission-preview-plan-r01.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-plan-r01.json",
+      "sha256": "fd286ab5b92789de6a660add16309bb3acea42b1fbefce8a58ad47910f9fffc5",
+      "bytes": 566
+    },
+    "submission-preview-postcompile-r01.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-postcompile-r01.json",
+      "sha256": "c6d3572418dc7f1648bdc0c6589ab28e8be1b15918154ec34b456f7c89ffc300",
+      "bytes": 3280
+    },
+    "submission-preview-source-after-r01.json": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/submission-preview-source-after-r01.json",
+      "sha256": "749f0b6133b16cb1a973ff3cc075ed0ea30916f5a49baf759ed797002b41328a",
+      "bytes": 907930
+    }
+  }
+}

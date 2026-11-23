@@ -1,0 +1,32 @@
+# CCG16 preparation readiness review — 2026-11-04
+
+**Pass with notes for static readiness; 0 prepared-file blockers.** Execution remains closed. At this review, the actual shared V16 record is `running`, with null exit code and no completed final audit. The browser-stage live witness has a live-identity scope; its `status=pass` does not establish whole-check acceptance. The four CCG16 permission templates remain false, and no actual permission exists.
+
+## Current bytes and provenance
+
+Candidate `eda0d68fb07852b714f3092aa02ca0523d3ad312` differs from `d41573e3…` only by two added assertions in `e2e/fixtures/triage-duplicate-picker.ts`. All 11 selected CCG sources and four tools retain their hashes. All 13 CCG15 donor files match the protected donor snapshot.
+
+The initial CCG16 manifest is historical. Current bytes are correctly reconciled using that thirteen-file inventory plus `review-hash-binding/binding.json`: five changed files have their new review/input hashes, while eight files remain unchanged. All current file hashes and 0600 modes match. The two executable runners and the nonoperational admission text have only candidate/version/private/temp constant changes; inverse normalization reproduces donor bytes exactly.
+
+Current source input SHA is `97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf`. It binds the actual immutable prelaunch review `d2766b57bc41f72a08651f5028258f881f2763dc9036dd94526aebb685b9ee52`, auditor `2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318`, and parser/launcher `52c2f0a40fab9dcaabbc20267c106cdffc503d126853e9a3290da280350deaca`. These actual file hashes match. The review's prelaunch scope and current complete-run requirement remain separate.
+
+The existing ten finite early-refusal controls retain actual exit 0 and matching source/profile/log/evidence hashes. They cover the four false templates, invalid labels, foreign permits, and symlink permits without subprocess/network/runtime writes. Their runner bytes did not change during the later review-hash rebind; the changed downstream inputs are not reached by those refusals. No control was rerun. Current Python AST and JSON parsing passed.
+
+The current V16 CLI is hash-verified as `f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac`, including its flat build record, exit 0 and log hash. The migration tool is `060c3a17ba03e9837092884a6fc789c067830629692d4ddec6f309c40f26a379`; its record uses the flat `build_exit`, `migration_exit`, and `migrate_binary_sha256` fields, all matching its current build/seed evidence. Neither binary was executed by this reviewer. CCG's copied CLI, fake binaries, and fresh databases remain pending.
+
+Root live witness `f88b6c7d3ac89b9ebad1daa4aa47550bc9a57c82249d801dd33e254dd4c05a70` was hash-verified. Its nested API/Web/database/renderer/Redis identities refer to the current browser-stage environment, with `make_exit_known=false`; it supplies no resource release or CCG deployment proof.
+
+## Later materialization checklist for the shared executor
+
+1. Finish the single shared V16 and retain actual make exit 0, final registered filesystem audit, complete TS/Go/browser named and individual-skip inventories, and independently observed live ownership. Record release of its owned window before CCG allocation/execution. Static 15, TS 13,244 and Go 82-package/20,963-pass/22-skip stage progress does not complete this gate; the root whole-suite grader remains separate.
+2. Recheck the current candidate, review/auditor/parser/source/tool hashes and retain the four false templates. New actual permissions need exact runner/source-input hashes, root release/named-inventory/fresh-DB fields, a root permission record, unique labels, reviewed caches, and owner-owned Git-free 0700 `/private/tmp/multica-ccg-v16-*` temp.
+3. Allocate separate migrated CCG1 normal and race databases. Both require the unchanged literal `multica_knowledge_host_composite_20261101_` prefix and same-URL database/764 identity. Keep the exact one-test `knowledgeintegration` selection and preserved physical-input/correction/withdrawal assertions. Require 1 run/1 pass/0 fail/0 skip and the two-launch/zero-third-launch fact in each actual result.
+4. Build the current fake daemon/provider into CCG16-owned `binaries/`, then copy/hash the audited V16 CLI. Preserve the exact two-source fake-binary inventory and record successful builds, executable hashes and copied CLI provenance. The current migration tool can migrate new CCG databases after resource release; its earlier seed migration proves no new database is fresh.
+5. Allocate OFF and ON independently: each gets its own database, canonical nonzero deployment UUID, private JWT, ports, registry/profile/workspaces, production Web/API and renderer. Materialize env as data with password/managed admission, `MULTICA_PASSWORD_LIMITER_MODE=single`, exact matching `CORS_ALLOWED_ORIGINS`/`ALLOWED_ORIGINS`, the CCG16-owned missing DSH path, and empty real model settings. The current missing DSH path is absent. Bind actual env/deployment/binary hashes, process/startup flags, health commit/PID, rendered API/WS configuration, live CORS, and same-source renderer bytes. Exclude both loopback spellings of shared renderer ports 55132, 61276 and 58268.
+6. Give each lane a new actual permission only after independent final binding review. Execute normal, race, OFF and ON serially. OFF/ON retain one worker, zero retries, exact deployed input/contribution/persistence/event/native-proof assertions and zero real Provider calls. Independently review all four raw results and final source before #7 closure.
+
+The shared Turbo JSON contract stays unchanged: only the exact canonical five-package test argv receives `--reporter=json`; actual leaf results remain per-package-prefixed output in the complete raw log. An argv/reporting record is not a test result. CCG2's separate pinned-pnpm Playwright invocation does not change that reporting scope.
+
+## Limits
+
+Only this new review directory was written. No source/prepared-input/permission change, runtime/DB/build/browser/product test, model operation or commit occurred. Knowledge budget/calls remain **0/0**, production injection remains default false, and #6 implementation still waits for #7 closure. Actual full completion, CCG fresh resources/binaries/deployments, final execution binding review and all four dynamic CCG results remain open.

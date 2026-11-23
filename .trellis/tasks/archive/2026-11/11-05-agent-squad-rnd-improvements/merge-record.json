@@ -1,0 +1,26 @@
+{
+  "target_branch": "codex/cross-workspace-collaboration",
+  "before": "f1d35b66af1013b6147c0e167500cacae203b7a8",
+  "integrated_source": "48aa997452cbc912e4052e44794386eafd023a25",
+  "method": "fast-forward",
+  "product_conflicts": 0,
+  "preserved_unrelated_dirty_files": 15,
+  "reconciled_dirty_paths": [
+    ".trellis/spec/server/database-test-isolation.md",
+    ".trellis/spec/server/index.md",
+    ".trellis/workspace/artisan/index.md",
+    ".trellis/workspace/artisan/journal-3.md"
+  ],
+  "identical_existing_task_artifacts": 91,
+  "journal_session": 130,
+  "backup_manifest": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-agent-rnd-merge-274hwrzq/manifest.json",
+  "remote_push": false,
+  "deployed": false,
+  "post_merge_checks": {
+    "redact_named_pass": 77,
+    "workflow_pass": 5,
+    "wrapper": "pass",
+    "reviewed_source_hashes": "match",
+    "product_working_tree": "matches HEAD"
+  }
+}

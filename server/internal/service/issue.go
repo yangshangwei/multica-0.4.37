@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -78,7 +79,10 @@ type IssueCreateParams struct {
 	DueDate       pgtype.Date
 	OriginType    pgtype.Text
 	OriginID      pgtype.UUID
-	AttachmentIDs []pgtype.UUID
+	// VerifiedTaskID comes only from a server-verified task credential. It is
+	// independent of client-supplied origin fields and is never a JSON input.
+	VerifiedTaskID pgtype.UUID
+	AttachmentIDs  []pgtype.UUID
 	// LabelIDs are the issue-scoped labels to attach to the new issue. They
 	// are validated and written inside the create transaction (see Create),
 	// so the issue is never committed with a partial or wrong label set. An
@@ -93,6 +97,12 @@ type IssueCreateParams struct {
 	// Its immutable snapshot and cloned attachment rows commit in the same
 	// transaction as the new issue.
 	SourceContext *SourceContextCapture
+	// stagePermit is set only by an accepted stage proposal's materialization
+	// inside its own transaction. It is unexported on purpose: no transport or
+	// request field can claim that a machine-driven child was approved.
+	stagePermit *stageMaterializationPermit
+	// Set only by CollaborationService for a new root, never by transport.
+	collaborationRoot bool
 }
 
 // IssueCreateOpts groups optional knobs for IssueService.Create. Most
@@ -441,13 +451,18 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 	// WorkspaceID — there is no path from this service to a row in a
 	// foreign workspace.
 	projectID := p.ProjectID
+	var parent db.Issue
 	if p.ParentIssueID.Valid {
-		parent, err := qtx.GetIssueInWorkspace(ctx, db.GetIssueInWorkspaceParams{
+		var err error
+		parent, err = qtx.GetIssueInWorkspace(ctx, db.GetIssueInWorkspaceParams{
 			ID:          p.ParentIssueID,
 			WorkspaceID: p.WorkspaceID,
 		})
-		if err != nil || !parent.ID.Valid {
+		if errors.Is(err, pgx.ErrNoRows) || err == nil && !parent.ID.Valid {
 			return IssueCreateResult{}, ErrParentIssueNotFound
+		}
+		if err != nil {
+			return IssueCreateResult{}, fmt.Errorf("read parent issue: %w", err)
 		}
 		if !admission.Formal(parent.AdmissionStatus) {
 			return IssueCreateResult{}, &admission.Blocked{IssueID: parent.ID}
@@ -469,6 +484,31 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 			}
 			return IssueCreateResult{}, fmt.Errorf("lock project association: %w", err)
 		}
+	}
+	if p.collaborationRoot {
+		policy, err := informationPolicyFor(ctx, qtx, db.Issue{WorkspaceID: p.WorkspaceID, ProjectID: projectID}, false)
+		if err != nil {
+			return IssueCreateResult{}, err
+		}
+		if policy.Managed {
+			status, err := issuestatus.Resolve(ctx, qtx, p.WorkspaceID, p.Status)
+			if err != nil {
+				return IssueCreateResult{}, err
+			}
+			if status.Category == "blocked" {
+				return IssueCreateResult{}, collaborationError(http.StatusConflict, "status_unavailable")
+			}
+		}
+	}
+
+	// A machine-driven child of a stage-managed collaboration root exists only
+	// through an accepted proposal. Read after the project fence above.
+	if err := checkStageChildCreate(ctx, qtx, p, parent); err != nil {
+		return IssueCreateResult{}, err
+	}
+
+	if err := CheckDeliveryCreateInTx(ctx, tx, p.WorkspaceID, projectID, p.Status); err != nil {
+		return IssueCreateResult{}, err
 	}
 
 	// Validate labels before we increment the issue counter so a stale or
@@ -554,6 +594,11 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 	}
 	if err != nil {
 		return IssueCreateResult{}, fmt.Errorf("create issue: %w", err)
+	}
+	// A child of a budget member joins the same root in this transaction;
+	// under a parent outside every root this is one index lookup.
+	if err := BindIssueBudgetOnCreate(ctx, qtx, issue, p.VerifiedTaskID); err != nil {
+		return IssueCreateResult{}, err
 	}
 
 	if p.SourceContext != nil {
@@ -720,6 +765,7 @@ func (s *IssueService) publishIssueCreated(issue db.Issue, attachments []db.Atta
 	if s.Bus == nil {
 		return
 	}
+	s.PublishCollaborationChildrenChanged(context.Background(), issue.ParentIssueID)
 	var payload map[string]any
 	if opts.BroadcastPayload != nil {
 		payload = opts.BroadcastPayload(issue, attachments, labels)

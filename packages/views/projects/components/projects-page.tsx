@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import {
   projectListOptions,
   useProjectAccessStore,
@@ -105,6 +106,7 @@ import {
 } from "../../layout/collection-page";
 import { useProjectPropertyEditor } from "./project-property-recovery";
 import { ProjectIcon } from "./project-icon";
+import { ProjectWelcome } from "./project-welcome";
 import { useT } from "../../i18n";
 import { matchesPinyin } from "../../editor/extensions/pinyin-match";
 import { useFormatRelativeDate } from "./labels";
@@ -949,6 +951,7 @@ export function ProjectsPage() {
 
   const loadFailed = projectQuery.isError && projectQuery.data === undefined;
   const showEmpty = !isLoading && !loadFailed && projects.length === 0;
+  const showWelcome = projectQuery.isSuccess && !projectQuery.isPlaceholderData && projects.length === 0;
   const countBadge = (n: number) => (
     <span className="ml-auto pl-3 text-caption text-muted-foreground">{n}</span>
   );
@@ -960,13 +963,18 @@ export function ProjectsPage() {
         icon={FolderKanban}
         title={t(($) => $.page.title)}
         count={projects.length}
-        actions={
+        description={t(($) => $.page.tagline)}
+        learnMore={{
+          href: wsPaths.docsPage(DOCS_SLUGS.projects),
+          label: t(($) => $.page.learn_more),
+        }}
+        actions={showWelcome ? undefined : (
           <CollectionPageHeaderAction
             icon={Plus}
             label={t(($) => $.page.new_project)}
             onClick={openCreateProject}
           />
-        }
+        )}
       />
 
       {projectQuery.isError && !loadFailed && (
@@ -989,16 +997,16 @@ export function ProjectsPage() {
             </Button>
           }
         />
+      ) : showWelcome ? (
+        <ProjectWelcome
+          docsHref={wsPaths.docsPage(DOCS_SLUGS.projects)}
+          onCreate={openCreateProject}
+        />
       ) : showEmpty ? (
         <CollectionPageState
           icon={FolderKanban}
           title={t(($) => $.page.empty)}
           description={t(($) => $.page.empty_hint)}
-          actions={
-            <Button size="sm" onClick={openCreateProject}>
-              {t(($) => $.page.create_first)}
-            </Button>
-          }
         />
       ) : (
         <>
@@ -1043,12 +1051,12 @@ export function ProjectsPage() {
                 <DropdownMenuTrigger
                   render={
                     <Button
-                      variant={hasActiveFilters ? "default" : "outline"}
+                      variant={hasActiveFilters ? "brand" : "outline"}
                       size="sm"
                       aria-label={hasActiveFilters ? t(($) => $.toolbar.filter_active_count, { count: activeFilterCount }) : t(($) => $.toolbar.filter_label)}
                       className={
                         hasActiveFilters
-                          ? "h-8 w-8 gap-1 bg-brand px-0 text-white hover:bg-brand/90 md:w-auto md:px-2.5"
+                          ? "h-8 w-8 gap-1 px-0 md:w-auto md:px-2.5"
                           : "h-8 w-8 gap-1 px-0 text-muted-foreground md:w-auto md:px-2.5"
                       }
                     >

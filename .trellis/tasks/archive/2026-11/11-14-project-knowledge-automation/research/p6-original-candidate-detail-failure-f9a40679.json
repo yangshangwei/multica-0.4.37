@@ -1,0 +1,255 @@
+{
+  "recorded_at": "2026-11-15T09:14:59.183548+00:00",
+  "state": "original_candidate_list_assertion_failure_preserved",
+  "run": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-03dc4af5e8d4",
+  "result_file": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-03dc4af5e8d4/result.json",
+  "result_sha256": "57b63ed2a0b5778f44512efc6dfe0d0d6e10a9792c420105da58a2d63b38228f",
+  "report_file": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-03dc4af5e8d4/playwright-report.json",
+  "report_sha256": "3884288d6966facf34c1b15125816fe9e38f01a3efa001e4bb0d34e7a31b5ef8",
+  "source_id": "2ac0b36939db68ff2e767f2f86f50a06586506cb70e17a34a49af22cbb622198",
+  "source_stable": true,
+  "inventory": [
+    {
+      "title": "project-knowledge-automation.spec.ts / web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "expected_status": "passed",
+      "results": [
+        "failed"
+      ]
+    },
+    {
+      "title": "project-knowledge-automation.spec.ts / desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "expected_status": "passed",
+      "results": [
+        "failed"
+      ]
+    }
+  ],
+  "failed": 2,
+  "passed": 0,
+  "skipped": 0,
+  "retries": 0,
+  "journeys": [
+    {
+      "platform": "desktop",
+      "marker": "P6-desktop-2fedf387",
+      "file": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-03dc4af5e8d4/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/journey-evidence.json",
+      "sha256": "ce4f4f607ce1c2733f410c1cc9a00a546db075a94dd0e63adfcd6fb4fff50c68",
+      "first_acceptance_committed": true,
+      "candidate_detail_not_reached": true
+    },
+    {
+      "platform": "web",
+      "marker": "P6-web-ca4c8c64",
+      "file": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-03dc4af5e8d4/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/journey-evidence.json",
+      "sha256": "d6e362cd89685d3d774e04c39ccda24b4c5be59f2bff24fb2b5c4d491eb18e7e",
+      "first_acceptance_committed": true,
+      "candidate_detail_not_reached": true
+    }
+  ],
+  "owned_database_after_cleanup": {
+    "database": "mca_knowledge_browser_073bb20e614e",
+    "other_connections": 0,
+    "candidates": [
+      {
+        "id": "33e64278-b987-5257-9580-c34bc2d33d26",
+        "source_issue_id": "01a1de75-d649-7670-89f2-1c69f6d912ba",
+        "state": "approved",
+        "version": 1,
+        "proposal_origin": "automation",
+        "approval_origin": "automation",
+        "decision_origin": "automation",
+        "proposed_by_user_id": null,
+        "approved_by_user_id": null,
+        "evidence": [],
+        "sources": [
+          {
+            "kind": "delivery",
+            "sha256": "b5ca85be70c2ae14f8aa696211948f434c46f4c92a274b44b0d69d6dc44abe4a",
+            "issue_id": "01a1de75-d649-7670-89f2-1c69f6d912ba",
+            "submission_id": "a8d4a640-efb1-404a-a40e-465e1ac7d6b5",
+            "accepted_event_seq": "3",
+            "delivery_event_seq": "2"
+          }
+        ],
+        "automation_rule_version": "project-knowledge-v1"
+      },
+      {
+        "id": "17121610-6202-5dac-ad08-2331ecf25927",
+        "source_issue_id": "01a1de76-209e-72bb-93dd-426aee78f85a",
+        "state": "approved",
+        "version": 1,
+        "proposal_origin": "automation",
+        "approval_origin": "automation",
+        "decision_origin": "automation",
+        "proposed_by_user_id": null,
+        "approved_by_user_id": null,
+        "evidence": [],
+        "sources": [
+          {
+            "kind": "delivery",
+            "sha256": "e7ead4570602ef7c47ecc8a5ae49ac94d9c9b7fe3c0d29c6761da01dbc0634c8",
+            "issue_id": "01a1de76-209e-72bb-93dd-426aee78f85a",
+            "submission_id": "156bc1de-14e7-4ee0-a359-496c54708c43",
+            "accepted_event_seq": "3",
+            "delivery_event_seq": "2"
+          }
+        ],
+        "automation_rule_version": "project-knowledge-v1"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "779f4828-7a89-43da-b518-972a3c0d93fc",
+        "source_issue_id": "01a1de75-d649-7670-89f2-1c69f6d912ba",
+        "phase": "completed",
+        "submission_id": "a8d4a640-efb1-404a-a40e-465e1ac7d6b5",
+        "accepted_event_seq": 3,
+        "result": {}
+      },
+      {
+        "id": "1f40859e-1397-4a2b-846e-5f27355f47e3",
+        "source_issue_id": "01a1de76-209e-72bb-93dd-426aee78f85a",
+        "phase": "completed",
+        "submission_id": "156bc1de-14e7-4ee0-a359-496c54708c43",
+        "accepted_event_seq": 3,
+        "result": {}
+      }
+    ]
+  },
+  "runtime_cleanup": {
+    "task": ".trellis/tasks/11-14-project-knowledge-automation",
+    "directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-129500f03db4",
+    "build_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee",
+    "source_id": "2ac0b36939db68ff2e767f2f86f50a06586506cb70e17a34a49af22cbb622198",
+    "allocation_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+    "environment_sha256": "2be64051f8685326f96e4faf6ef46e93d2b357e2c200c129354a5cac4844d68a",
+    "state": "stopped",
+    "runtime_permitted": false,
+    "processes": {
+      "model": {
+        "pid": 83111,
+        "pgid": 83111,
+        "birth": "Sun Nov 15 17:05:58 2026",
+        "command": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/e2e/fixtures/project-knowledge-model.mjs",
+        "argv": [
+          "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/e2e/fixtures/project-knowledge-model.mjs"
+        ],
+        "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-129500f03db4/model.log",
+        "members": {
+          "83111": {
+            "pid": 83111,
+            "ppid": 1,
+            "pgid": 83111,
+            "birth": "Sun Nov 15 17:05:58 2026"
+          }
+        },
+        "remaining_owned_pids": [],
+        "unproven_group_pids": []
+      },
+      "api": {
+        "pid": 83113,
+        "pgid": 83113,
+        "birth": "Sun Nov 15 17:05:58 2026",
+        "command": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/bin/server",
+        "argv": [
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/bin/server"
+        ],
+        "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-129500f03db4/api.log",
+        "members": {
+          "83113": {
+            "pid": 83113,
+            "ppid": 1,
+            "pgid": 83113,
+            "birth": "Sun Nov 15 17:05:58 2026"
+          }
+        },
+        "remaining_owned_pids": [],
+        "unproven_group_pids": []
+      },
+      "web": {
+        "pid": 83115,
+        "pgid": 83115,
+        "birth": "Sun Nov 15 17:05:58 2026",
+        "command": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/apps/web/node_modules/next/dist/bin/next start /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/apps/web --hostname 127.0.0.1 --port 61991",
+        "argv": [
+          "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/apps/web/node_modules/next/dist/bin/next",
+          "start",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/apps/web",
+          "--hostname",
+          "127.0.0.1",
+          "--port",
+          "61991"
+        ],
+        "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/apps/web",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-129500f03db4/web.log",
+        "members": {
+          "83115": {
+            "pid": 83115,
+            "ppid": 1,
+            "pgid": 83115,
+            "birth": "Sun Nov 15 17:05:58 2026"
+          },
+          "83140": {
+            "pid": 83140,
+            "ppid": 83115,
+            "pgid": 83115,
+            "birth": "Sun Nov 15 17:05:58 2026"
+          }
+        },
+        "remaining_owned_pids": [],
+        "unproven_group_pids": []
+      },
+      "renderer": {
+        "pid": 83117,
+        "pgid": 83117,
+        "birth": "Sun Nov 15 17:05:58 2026",
+        "command": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/scripts/check-desktop-renderer.mjs /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/apps/desktop/out/renderer 61992 /private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-129500f03db4/renderer-serving.json",
+        "argv": [
+          "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/scripts/check-desktop-renderer.mjs",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source/apps/desktop/out/renderer",
+          "61992",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-129500f03db4/renderer-serving.json"
+        ],
+        "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-0a922271b1ee/source",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-129500f03db4/renderer.log",
+        "members": {
+          "83117": {
+            "pid": 83117,
+            "ppid": 1,
+            "pgid": 83117,
+            "birth": "Sun Nov 15 17:05:58 2026"
+          }
+        },
+        "remaining_owned_pids": [],
+        "unproven_group_pids": []
+      }
+    },
+    "renderer_proof_file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-129500f03db4/renderer-serving.json",
+    "database_before": {
+      "database": "mca_knowledge_browser_073bb20e614e",
+      "connections": 30,
+      "max_connections": 100
+    },
+    "migration_ledger": {
+      "database": "mca_knowledge_browser_073bb20e614e",
+      "count": 853,
+      "latest": "865_knowledge_automation_origin",
+      "gates": [
+        {
+          "creation_enabled": true,
+          "enabled": false,
+          "host_execution_enabled": false
+        }
+      ]
+    },
+    "ready_at": "2026-11-15T09:06:09.487670+00:00"
+  },
+  "cause": "The fixture expected Server AI in a closed list row; the current shared contract displays system/model audit facts in opened candidate detail. Acceptance and automatic adoption actually completed for both owned source issues; daemon/reopen/reacceptance/negative steps were not reached.",
+  "current_root_acceptance_verified": false,
+  "final_acceptance_verified": false
+}

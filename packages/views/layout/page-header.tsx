@@ -27,9 +27,9 @@ export const PAGE_TOOLBAR = cn(
 
 /**
  * The way back to the nav wherever it is not a permanent column: a sheet below
- * the compact breakpoint, auto-collapsed from there up to `xl`.
+ * the compact breakpoint. Large screens retain a toggle in the icon rail.
  *
- * Every surface below `xl` needs one of these — unless the shell around it
+ * Every surface below `lg` needs one of these — unless the shell around it
  * already keeps one on screen. `PageHeader` supplies it for free, so this is
  * exported for the pages that build their own chrome instead; without it a
  * touch user has no way to reopen the nav at all.
@@ -44,7 +44,7 @@ export const PAGE_TOOLBAR = cn(
 export function CollapsedNavTrigger() {
   const sidebar = useSidebarSafe();
   if (!sidebar || sidebar.hasExternalTrigger) return null;
-  return <SidebarTrigger className="xl:hidden" />;
+  return <SidebarTrigger className="lg:hidden" />;
 }
 
 interface PageHeaderProps {

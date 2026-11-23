@@ -138,7 +138,7 @@ export function RuntimePicker({
     );
     if (variant === "field") {
       const control = (
-        <div className={`flex min-h-10 items-center gap-2 rounded-lg border border-input bg-input/50 px-3 text-body text-muted-foreground ${compact ? "py-2" : ""}`}>
+        <div className={`flex min-h-10 items-center gap-2 rounded-lg border border-input-fill bg-input-fill/50 px-3 text-body text-muted-foreground ${compact ? "py-2" : ""}`}>
           {icon}
           {compact ? fieldLabel : <span className="min-w-0 flex-1 truncate">{combinedLabel}</span>}
           {selected ? (

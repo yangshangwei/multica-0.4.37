@@ -16,7 +16,6 @@ for (const copy of [
   },
 ]) {
   test(`workspace planning timezone has one editor (${copy.locale})`, async ({ page }, info) => {
-    test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires an isolated iteration API");
     const { api, workspace } = await p1Session(page, copy.locale);
     const base = `/api/workspaces/${workspace.id}`;
     try {
@@ -62,7 +61,6 @@ for (const copy of [
 }
 
 test("workspace iteration settings survive lost closure responses and update another client", async ({ page, context }, info) => {
-  test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires an isolated iteration API");
   test.setTimeout(180_000);
   const { api, workspace } = await p1Session(page);
   const base = `/api/workspaces/${workspace.id}`;
@@ -145,7 +143,6 @@ test("workspace iteration settings survive lost closure responses and update ano
 });
 
 test("workspace iteration settings report normal closure without remounting", async ({ page }, info) => {
-  test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires an isolated iteration API");
   const { api, workspace } = await p1Session(page);
   try {
     await iterationOptOut(api, workspace);

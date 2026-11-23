@@ -376,6 +376,7 @@ type TaskIssueStatusData struct {
 }
 
 type AgentTaskResponse struct {
+	taskCapability       []byte                              // Server-only expected scope; checked again by claim finalization.
 	ExecutionFence       *service.AdminCancellationWireFence `json:"execution_fence,omitempty"`
 	ID                   string                              `json:"id"`
 	AgentID              string                              `json:"agent_id"`
@@ -412,32 +413,33 @@ type AgentTaskResponse struct {
 	// IssueStatusesOmitted is how many active custom statuses were dropped by
 	// the cap, so the brief can say the list is incomplete instead of
 	// presenting a truncated catalog as the whole one.
-	IssueStatusesOmitted int                    `json:"issue_statuses_omitted,omitempty"`
-	ActiveSiblingRuns    []ActiveSiblingRunData `json:"active_sibling_runs,omitempty"`
-	ThreadName           string                 `json:"thread_name,omitempty"` // semantic title for provider-native session/thread history
-	Status               string                 `json:"status"`
-	Priority             int32                  `json:"priority"`
-	DispatchedAt         *string                `json:"dispatched_at"`
-	StartedAt            *string                `json:"started_at"`
-	CompletedAt          *string                `json:"completed_at"`
-	Result               any                    `json:"result"`
-	Error                *string                `json:"error"`
-	FailureReason        string                 `json:"failure_reason,omitempty"` // see TaskService.MaybeRetryFailedTask
-	Attempt              int32                  `json:"attempt"`
-	MaxAttempts          int32                  `json:"max_attempts"`
-	ParentTaskID         *string                `json:"parent_task_id,omitempty"`
-	IsLeaderTask         bool                   `json:"is_leader_task,omitempty"`
-	LeaderRoleResolved   bool                   `json:"leader_role_resolved,omitempty"` // claim-only capability, always true here: IsLeaderTask/SquadID authoritatively answer "is this a leader run", so the daemon must not infer the role from briefing text. Servers predating it make no such promise — before #4951 they sent no is_leader_task at all, after it they sent the flag without guaranteeing a briefing — so a daemon seeing no capability keeps the legacy inference. Never rendered into a prompt; see daemon.taskIsSquadLeader (MUL-5811). Mirror field: internal/daemon/types.go, same JSON name
-	Agent                *TaskAgentData         `json:"agent,omitempty"`
-	ConnectedApps        []ConnectedAppData     `json:"connected_apps,omitempty"` // daemon-claim only: per-run app capabilities mounted through runtime MCP overlays
-	Repos                []RepoData             `json:"repos,omitempty"`
-	ProjectID            string                 `json:"project_id,omitempty"`          // issue's project, when present
-	ProjectTitle         string                 `json:"project_title,omitempty"`       // for surfacing in agent context
-	ProjectDescription   string                 `json:"project_description,omitempty"` // durable project-level context injected into the brief
-	ProjectResources     []ProjectResourceData  `json:"project_resources,omitempty"`   // resources attached to the project
-	CreatedAt            string                 `json:"created_at"`
-	PriorSessionID       string                 `json:"prior_session_id,omitempty"` // session ID from a previous task on same issue
-	PriorWorkDir         string                 `json:"prior_work_dir,omitempty"`   // work_dir from a previous task on same issue
+	IssueStatusesOmitted int                                    `json:"issue_statuses_omitted,omitempty"`
+	ActiveSiblingRuns    []ActiveSiblingRunData                 `json:"active_sibling_runs,omitempty"`
+	ThreadName           string                                 `json:"thread_name,omitempty"` // semantic title for provider-native session/thread history
+	Status               string                                 `json:"status"`
+	Priority             int32                                  `json:"priority"`
+	DispatchedAt         *string                                `json:"dispatched_at"`
+	StartedAt            *string                                `json:"started_at"`
+	CompletedAt          *string                                `json:"completed_at"`
+	Result               any                                    `json:"result"`
+	Error                *string                                `json:"error"`
+	FailureReason        string                                 `json:"failure_reason,omitempty"` // see TaskService.MaybeRetryFailedTask
+	Attempt              int32                                  `json:"attempt"`
+	MaxAttempts          int32                                  `json:"max_attempts"`
+	ParentTaskID         *string                                `json:"parent_task_id,omitempty"`
+	IsLeaderTask         bool                                   `json:"is_leader_task,omitempty"`
+	LeaderRoleResolved   bool                                   `json:"leader_role_resolved,omitempty"` // claim-only capability, always true here: IsLeaderTask/SquadID authoritatively answer "is this a leader run", so the daemon must not infer the role from briefing text. Servers predating it make no such promise — before #4951 they sent no is_leader_task at all, after it they sent the flag without guaranteeing a briefing — so a daemon seeing no capability keeps the legacy inference. Never rendered into a prompt; see daemon.taskIsSquadLeader (MUL-5811). Mirror field: internal/daemon/types.go, same JSON name
+	Agent                *TaskAgentData                         `json:"agent,omitempty"`
+	ConnectedApps        []ConnectedAppData                     `json:"connected_apps,omitempty"` // daemon-claim only: per-run app capabilities mounted through runtime MCP overlays
+	Repos                []RepoData                             `json:"repos,omitempty"`
+	ProjectID            string                                 `json:"project_id,omitempty"`          // issue's project, when present
+	ProjectTitle         string                                 `json:"project_title,omitempty"`       // for surfacing in agent context
+	ProjectDescription   string                                 `json:"project_description,omitempty"` // durable project-level context injected into the brief
+	ProjectResources     []ProjectResourceData                  `json:"project_resources,omitempty"`   // resources attached to the project
+	CreatedAt            string                                 `json:"created_at"`
+	PriorSessionID       string                                 `json:"prior_session_id,omitempty"` // session ID from a previous task on same issue
+	KnowledgeContext     *protocol.TaskKnowledgeClaimDescriptor `json:"knowledge_context,omitempty"`
+	PriorWorkDir         string                                 `json:"prior_work_dir,omitempty"` // work_dir from a previous task on same issue
 	// PriorSessionResumeUnavailable is set when a more recent Codex session was
 	// withheld because its rollout was missing (MUL-5305); PriorSessionID (if
 	// any) is then an older fallback. The daemon surfaces the continuity gap in
@@ -557,6 +559,12 @@ type AgentTaskResponse struct {
 	// owning user; the daemon must not fall back to its own credential. See
 	// MUL-3292.
 	AuthToken string `json:"auth_token,omitempty"`
+	// BudgetAttemptID is the budget attempt the server opened for this claim,
+	// set once the claim has committed and only for a task whose issue belongs
+	// to a budget root. A daemon that speaks the budget usage protocol reports
+	// the usage of the execution against it; any other daemon ignores the
+	// field. Absent means the claim got no attempt.
+	BudgetAttemptID string `json:"budget_attempt_id,omitempty"`
 }
 
 // TaskAttribution is the wire shape of a run's accountable-human provenance
@@ -2232,7 +2240,39 @@ func (h *Handler) UpdateAgent(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	updated, err := h.Queries.UpdateAgent(r.Context(), params)
+	// Row fields, nullable clears, invocation membership and their durable
+	// configuration invalidations must become visible together. A source may
+	// never authorize an intermediate allow-list during a multi-field update.
+	var updated db.Agent
+	err = service.WithRuntimeResourceTransaction(r.Context(), h.TxStarter, h.Queries, func(q *db.Queries) error {
+		var err error
+		updated, err = q.UpdateAgent(r.Context(), params)
+		if err != nil {
+			return err
+		}
+		// COALESCE cannot clear nullable overrides; keep these writes inside
+		// the same parent lock and transaction as the main row update.
+		for _, clear := range []struct {
+			requested bool
+			apply     func(context.Context, pgtype.UUID) (db.Agent, error)
+		}{
+			{shouldClearMcpConfig, q.ClearAgentMcpConfig},
+			{shouldClearThinkingLevel, q.ClearAgentThinkingLevel},
+			{shouldClearServiceTier, q.ClearAgentServiceTier},
+			{shouldClearComposioAllowlist, q.ClearAgentComposioToolkitAllowlist},
+		} {
+			if clear.requested {
+				updated, err = clear.apply(r.Context(), updated.ID)
+				if err != nil {
+					return err
+				}
+			}
+		}
+		if replacePermissionTargets {
+			return replaceInvocationTargetsWithQueries(r.Context(), q, updated.ID, parseUUID(requestUserID(r)), resolvedPerm.targets)
+		}
+		return nil
+	})
 	if err != nil {
 		if expectedUpdatedAt.Valid && errors.Is(err, pgx.ErrNoRows) {
 			writeError(w, http.StatusConflict, "agent changed since it was read; reload before updating instructions")
@@ -2253,56 +2293,13 @@ func (h *Handler) UpdateAgent(w http.ResponseWriter, r *http.Request) {
 			writeError(w, http.StatusConflict, fmt.Sprintf("an agent named %q already exists in this workspace", name))
 			return
 		}
+		if service.IsRuntimeResourceBusy(err) {
+			writeError(w, http.StatusServiceUnavailable, "agent configuration is busy; retry the update")
+			return
+		}
 		slog.Warn("update agent failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
 		writeError(w, http.StatusInternalServerError, "failed to update agent: "+err.Error())
 		return
-	}
-
-	// Nullable runtime overrides: null/empty in the request means explicitly
-	// clear the field. COALESCE in UpdateAgent cannot set a column to NULL, so
-	// mcp_config, thinking_level, and service_tier use dedicated clear queries.
-	if shouldClearMcpConfig {
-		updated, err = h.Queries.ClearAgentMcpConfig(r.Context(), updated.ID)
-		if err != nil {
-			slog.Warn("clear agent mcp_config failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to clear mcp_config: "+err.Error())
-			return
-		}
-	}
-	if shouldClearThinkingLevel {
-		updated, err = h.Queries.ClearAgentThinkingLevel(r.Context(), updated.ID)
-		if err != nil {
-			slog.Warn("clear agent thinking_level failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to clear thinking_level: "+err.Error())
-			return
-		}
-	}
-	if shouldClearServiceTier {
-		updated, err = h.Queries.ClearAgentServiceTier(r.Context(), updated.ID)
-		if err != nil {
-			slog.Warn("clear agent service_tier failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to clear service_tier: "+err.Error())
-			return
-		}
-	}
-	if shouldClearComposioAllowlist {
-		updated, err = h.Queries.ClearAgentComposioToolkitAllowlist(r.Context(), updated.ID)
-		if err != nil {
-			slog.Warn("clear agent composio_toolkit_allowlist failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to clear composio_toolkit_allowlist: "+err.Error())
-			return
-		}
-	}
-
-	// Invocation targets (MUL-3963): replace wholesale when the owner touched
-	// permission. Done after the row update so a permission_mode flip and its
-	// targets land together.
-	if replacePermissionTargets {
-		if err := h.replaceInvocationTargets(r.Context(), updated.ID, parseUUID(requestUserID(r)), resolvedPerm.targets); err != nil {
-			slog.Warn("update agent: persist invocation targets failed", append(logger.RequestAttrs(r), "error", err, "agent_id", id)...)
-			writeError(w, http.StatusInternalServerError, "failed to update invocation targets: "+err.Error())
-			return
-		}
 	}
 
 	resp := h.agentToResponse(updated)

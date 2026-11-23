@@ -1,0 +1,29 @@
+
+Running 3 tests using 1 worker
+
+[1A[2K[1/3] [chromium] › e2e/collaboration-retained-attachment.spec.ts:141:3 › Web typed human and owned AI creation stays atomic and idle from its first private upload through restart
+[1A[2K[2/3] [chromium] › e2e/collaboration-retained-attachment.spec.ts:141:3 › Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart
+[1A[2K[3/3] [chromium] › e2e/collaboration-retained-attachment.spec.ts:156:1 › Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart
+[1A[2K  1) [chromium] › e2e/collaboration-retained-attachment.spec.ts:156:1 › Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart 
+
+    Error: password registration failed: 429
+
+       at fixtures.ts:77
+
+      75 |       body: JSON.stringify({ username, password, name }),
+      76 |     });
+    > 77 |     if (!response.ok) throw new Error(`password registration failed: ${response.status}`);
+         |                             ^
+      78 |     const data = await response.json();
+      79 |     if (typeof data.token !== "string" || !data.token || typeof data.user?.id !== "string") {
+      80 |       throw new Error("Password registration returned an unusable test session");
+        at TestApiClient.registerPassword (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts:77:29)
+        at createActor (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:139:21)
+        at seedCollaborationControlJourney (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:151:19)
+        at seedRetainedAttachments (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-retained-attachments.ts:37:19)
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-retained-attachment.spec.ts:161:21
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-retained-attachment.spec.ts:156:1 › Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart 
+  2 passed (12.2s)

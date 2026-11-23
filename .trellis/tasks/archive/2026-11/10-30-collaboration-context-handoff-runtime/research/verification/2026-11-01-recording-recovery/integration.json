@@ -1,0 +1,53 @@
+{
+  "integrated_at": "2026-10-31T17:56:53.270340+00:00",
+  "source_worktree": "/Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101",
+  "target_worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "target_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "patch_sha256": "4f67cabee80d53bd893e586a431493019d01f031bba0ccb74a352bf27dd3a76b",
+  "all_owned_files_match_verified_bytes": true,
+  "other_inherited_source_changes": [],
+  "files": {
+    "server/internal/daemon/collaborationrun/host_runner.go": {
+      "before_sha256": "78f3dd65e3bb7837652c9968b028c9bb492e1023dc61e434f8315e57b6dec66e",
+      "after_sha256": "3945cbbfeaf7ed2b700109b2cfcd118d632bd3ff0d4fdebb2a48c5ca5943cef0"
+    },
+    "server/internal/daemon/collaborationrun/host_checkpoints.go": {
+      "before_sha256": "31bcd65fe643133bb7bfcbcc710be71dd481f793cf8f874abe215c7b7b0cc701",
+      "after_sha256": "3b4557a1c6fc001064b428e77ece703862142be8d825c9d73c0854e2d974cace"
+    },
+    "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go": {
+      "before_sha256": "b5ea014022d6e513dc85d90f783d3e99292c2a5fcfd547c4f1bd44354f0a3888",
+      "after_sha256": "450b1f9dc70e308aba2c4a52bc65b1d0a7c922712c306e5f6d6c6db51d39afda"
+    },
+    "server/internal/daemon/collaborationrun/client_host.go": {
+      "before_sha256": "43f3bc3383917b772f3ec4df3160491c9ec8078ffaa164aeb1f7391ffdd24f7b",
+      "after_sha256": "ed35be47f91eb3b20620780dee425ec5ab8b57a9cfbe73eaedbb295d80ec64b1"
+    },
+    "server/internal/daemon/collaborationrun/host_recording_recovery_test.go": {
+      "before_sha256": null,
+      "after_sha256": "4cfa31dd86fb9b4b0cae9910ac4b5793f7e3578c1ce87ea8b1df05ab00253d95"
+    },
+    "server/internal/daemon/collaborationrun/client_recording_ack_test.go": {
+      "before_sha256": null,
+      "after_sha256": "b29319b5899e9ae2305cb0e8025152bc1e77967325ef08ce496a128b15086d1b"
+    },
+    "packages/views/collaboration/execution-panel.test.tsx": {
+      "before_sha256": "ba7d07159a584e4d19811291746e723520a8c462606bd64401755df2d56a68b1",
+      "after_sha256": "e1f50b3a9c2a0b41ca3c0a1a22e82fae260827f8a45a1f332558647158ff9ff2"
+    },
+    ".trellis/spec/server/collaboration-runtime-recovery.md": {
+      "before_sha256": "b6d03214cb63bb40b71b37909129fd64205ceec5e6d629c83f1d3136ed6e4191",
+      "after_sha256": "d800a51b44d59f66dde468d121d7cc3b0b170b9363d99654fa83685e705928e1"
+    },
+    ".trellis/spec/server/index.md": {
+      "before_sha256": "b2e4ed2c85c26df80cd565dc5e11fd8bcdd9c9958e11bd69fe25c272954cdd91",
+      "after_sha256": "96a123b329290d61c45bffdca799d6b6a1a7923922789c3432c85fd502c64ac3"
+    },
+    ".trellis/spec/core/frontend/collaboration-workbench.md": {
+      "before_sha256": "377a43811795942c4e0950d36de9c75d3fd428e7241eab967c18e460343c5095",
+      "after_sha256": "0f8e277ce7a753a87dd4f2db4381f9562e25751fc1191d44efc4900be4918c1b"
+    }
+  },
+  "independent_final_review": "not completed: model rate limit / unavailable reviewer routes",
+  "task_status": "in_progress; scoped continuation is not full product acceptance"
+}

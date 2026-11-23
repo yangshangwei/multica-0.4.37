@@ -1,0 +1,29 @@
+
+> @multica/mobile@0.1.0 lint /Volumes/artisan/code/2026/multica-0.4.37/apps/mobile
+> expo lint
+
+
+/Volumes/artisan/code/2026/multica-0.4.37/apps/mobile/app/(app)/[workspace]/more/issues.tsx
+  97:9  warning  The 'allIssues' logical expression could make the dependencies of useMemo Hook (at line 111) change on every render. Move it inside the useMemo callback. Alternatively, wrap the initialization of 'allIssues' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+/Volumes/artisan/code/2026/multica-0.4.37/apps/mobile/app/(app)/[workspace]/more/settings.tsx
+  35:22  warning  Array type using 'Array<T>' is forbidden. Use 'T[]' instead  @typescript-eslint/array-type
+
+/Volumes/artisan/code/2026/multica-0.4.37/apps/mobile/app/(app)/[workspace]/more/settings/notifications.tsx
+  23:21  warning  Array type using 'Array<T>' is forbidden. Use 'T[]' instead  @typescript-eslint/array-type
+
+/Volumes/artisan/code/2026/multica-0.4.37/apps/mobile/components/chat/chat-composer.tsx
+  32:10  warning  'Ionicons' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Volumes/artisan/code/2026/multica-0.4.37/apps/mobile/components/issue/comment-card.tsx
+  421:9  warning  The 'reactions' logical expression could make the dependencies of useCallback Hook (at line 433) change on every render. To fix this, wrap the initialization of 'reactions' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+/Volumes/artisan/code/2026/multica-0.4.37/apps/mobile/components/issue/comment-context-menu.tsx
+  192:6  warning  React Hook useCallback has a missing dependency: 'getName'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Volumes/artisan/code/2026/multica-0.4.37/apps/mobile/components/issue/issue-reaction-row.tsx
+  20:9  warning  The 'reactions' logical expression could make the dependencies of useCallback Hook (at line 33) change on every render. To fix this, wrap the initialization of 'reactions' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+✖ 7 problems (0 errors, 7 warnings)
+  0 errors and 2 warnings potentially fixable with the `--fix` option.
+

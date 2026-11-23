@@ -1,0 +1,268 @@
+.welcome {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  container-type: inline-size;
+}
+
+.layout {
+  display: grid;
+  align-content: center;
+  gap: 2.5rem;
+  min-height: 100%;
+  max-width: 100rem;
+  margin-inline: auto;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+.intro {
+  width: 100%;
+  max-width: 34rem;
+  margin-inline: auto;
+}
+
+.checklist {
+  max-width: 30rem;
+  margin-top: 2.5rem;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-radius: calc(var(--radius) * 1.4);
+  background: var(--surface);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 3.5rem;
+  padding: 0.375rem 1rem;
+  font-size: var(--text-body-lg);
+  line-height: var(--text-body-lg--line-height);
+}
+
+.step + .step {
+  border-top: 1px solid var(--surface-border);
+}
+
+.stepLink {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: 0.5rem;
+  border-radius: calc(var(--radius) * 0.8);
+  font-size: var(--text-body);
+  font-weight: 500;
+  text-decoration: none;
+  outline: none;
+}
+
+.stepLink:hover {
+  background: var(--muted);
+}
+
+.stepLink:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.showcase {
+  min-width: 0;
+}
+
+.viewport {
+  overflow: hidden;
+  padding: 1rem 0 1.5rem;
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: 1.5rem;
+  width: min(100%, 28rem);
+  margin-inline: auto;
+  transform: translateX(calc(var(--slide) * -1 * (100% + 1.5rem)));
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-radius: calc(var(--radius) * 1.8);
+  background: var(--surface);
+  box-shadow: var(--menu-shadow);
+  opacity: 0.35;
+  transition: opacity 240ms ease;
+}
+
+.card[data-active="true"] {
+  opacity: 1;
+}
+
+.scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 20rem;
+  padding: 2.75rem 1.5rem 2rem;
+  border-bottom: 1px solid var(--surface-border);
+  background-color: color-mix(in oklab, var(--brand) 5%, var(--surface));
+  background-image: radial-gradient(color-mix(in oklab, var(--brand) 15%, transparent) 0.75px, transparent 0.75px);
+  background-size: 1.25rem 1.25rem;
+}
+
+.exampleLabel {
+  position: absolute;
+  top: 0.875rem;
+  right: 1.5rem;
+  color: var(--muted-foreground);
+  font-size: var(--text-micro);
+  line-height: var(--text-micro--line-height);
+}
+
+.prompt,
+.issue,
+.assigneeMenu,
+.delivery {
+  border: 1px solid var(--surface-border);
+  border-radius: calc(var(--radius) * 1.4);
+  background: var(--surface);
+  box-shadow: var(--surface-shadow);
+}
+
+.prompt {
+  width: 100%;
+  padding: 1rem;
+}
+
+.promptText {
+  min-height: 4.75rem;
+  margin-block: 0.75rem;
+  padding: 0.625rem;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+}
+
+.caret {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 0.25rem;
+  background: var(--brand);
+  vertical-align: text-bottom;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  color: var(--muted-foreground);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+}
+
+.chips > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: calc(var(--radius) * 0.6);
+  background: var(--muted);
+}
+
+.assignment {
+  width: 100%;
+}
+
+.issue {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.875rem;
+}
+
+.assigneeMenu {
+  position: relative;
+  width: 75%;
+  margin-top: -0.25rem;
+  margin-left: auto;
+  overflow: hidden;
+}
+
+.delivery {
+  width: 100%;
+  overflow: hidden;
+}
+
+.avatar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  color: var(--success-foreground);
+  background: color-mix(in oklab, var(--success) 9%, var(--surface));
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 28rem);
+  margin-inline: auto;
+}
+
+@container (min-width: 60rem) {
+  .layout {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+    align-items: center;
+    gap: 3.5rem;
+    padding: 3rem 0 3rem 6cqw;
+  }
+
+  .intro {
+    margin-inline: 0;
+    padding-bottom: 2.75rem;
+  }
+
+  .track,
+  .controls {
+    margin-inline: 0;
+  }
+}
+
+@container (max-width: 24rem) {
+  .layout {
+    padding-inline: 1rem;
+  }
+
+  .scene {
+    padding-inline: 0.875rem;
+  }
+
+  .prompt {
+    padding: 0.75rem;
+  }
+
+  .step {
+    gap: 0.625rem;
+    padding-inline: 0.75rem;
+  }
+
+  .assigneeMenu {
+    width: 85%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .card {
+    transition: none;
+  }
+}

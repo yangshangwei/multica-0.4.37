@@ -1,0 +1,119 @@
+{
+  "phase": "candidate",
+  "locale": "en",
+  "services": {
+    "health": {
+      "status": "ok",
+      "pid": 28253,
+      "commit": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "started_at": "2026-11-02T15:44:42Z"
+    },
+    "base_commit": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "api_binary_sha256": "06439cee6c7a2b1aa6741f54815ef0e6f170999ee3f7b957aa19231b9999e069"
+  },
+  "workspace_id": "13d00129-65b1-4e43-9af2-abf50b01a954",
+  "fixtures": [
+    {
+      "admission_status": "not_required",
+      "id": "01a19cf1-e021-7eb9-8907-c48f4e82517f",
+      "workspace_id": "13d00129-65b1-4e43-9af2-abf50b01a954",
+      "number": 1,
+      "identifier": "SOUR-1",
+      "title": "Alpha source planning 7f80ed3b",
+      "description": null,
+      "status": "todo",
+      "status_category": "todo",
+      "status_name": "",
+      "priority": "none",
+      "assignee_type": null,
+      "assignee_id": null,
+      "creator_type": "member",
+      "creator_id": "0d019c69-0e89-40ee-b6f8-b5231482d02c",
+      "parent_issue_id": null,
+      "project_id": null,
+      "position": -1,
+      "stage": null,
+      "start_date": null,
+      "due_date": null,
+      "created_at": "2026-11-02T23:47:39+08:00",
+      "updated_at": "2026-11-02T23:47:39+08:00",
+      "revision": 1,
+      "last_activity_at": "2026-11-02T23:47:39.667638+08:00",
+      "metadata": {},
+      "properties": {},
+      "labels": [],
+      "current_iteration_id": null,
+      "iteration_rollover_count": 0
+    },
+    {
+      "admission_status": "not_required",
+      "id": "01a19cf1-e032-7251-8a16-5c8a9b809508",
+      "workspace_id": "13d00129-65b1-4e43-9af2-abf50b01a954",
+      "number": 2,
+      "identifier": "SOUR-2",
+      "title": "Beta source task 7f80ed3b — 这是一项用于检查长标题换行的来源任务，包含较长的说明和可辨识的任务内容。Beta source task 7f80ed3b — 这是一项用于检查长标题换行的来源任务，包含较长的说明和可辨识的任务内容。",
+      "description": null,
+      "status": "todo",
+      "status_category": "todo",
+      "status_name": "",
+      "priority": "none",
+      "assignee_type": null,
+      "assignee_id": null,
+      "creator_type": "member",
+      "creator_id": "0d019c69-0e89-40ee-b6f8-b5231482d02c",
+      "parent_issue_id": null,
+      "project_id": null,
+      "position": -2,
+      "stage": null,
+      "start_date": null,
+      "due_date": null,
+      "created_at": "2026-11-02T23:47:39+08:00",
+      "updated_at": "2026-11-02T23:47:39+08:00",
+      "revision": 1,
+      "last_activity_at": "2026-11-02T23:47:39.694005+08:00",
+      "metadata": {},
+      "properties": {},
+      "labels": [],
+      "current_iteration_id": null,
+      "iteration_rollover_count": 0
+    }
+  ],
+  "created_issue_id": "01a19cf1-ee69-7298-94ea-e0f1714d1d42",
+  "saved_parent_issue_id": "01a19cf1-e021-7eb9-8907-c48f4e82517f",
+  "screenshots": [
+    {
+      "filename": "candidate-en-wide.png",
+      "width": 1280,
+      "height": 950,
+      "scrollWidth": 1280
+    },
+    {
+      "filename": "candidate-en-narrow.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    }
+  ],
+  "creation_posts": 1,
+  "page_errors": [],
+  "injected_transient_search_failure": true,
+  "coverage": [
+    "empty click browsing",
+    "title search",
+    "bare number search",
+    "complete case-insensitive identifier",
+    "no matches",
+    "clear/reopen",
+    "keyboard selection",
+    "clear parent",
+    "nested Escape/focus",
+    "transient error/retry",
+    "preserved draft",
+    "explicit create and saved parent UUID"
+  ],
+  "limitations": [
+    "Chromium Web only; no physical touch or native Electron session",
+    "delayed-obsolete result matrix stays in canonical shared component tests",
+    "fixture rows retained in the task-owned browser database for evidence"
+  ]
+}

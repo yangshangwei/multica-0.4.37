@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS report_snapshot_withdrawal_request_key;

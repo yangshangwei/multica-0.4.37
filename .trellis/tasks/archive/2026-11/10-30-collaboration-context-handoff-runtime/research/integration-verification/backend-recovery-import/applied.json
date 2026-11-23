@@ -1,0 +1,129 @@
+{
+  "captured_at": "2026-10-31T16:16:41.837055+00:00",
+  "source_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "base_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "scope": "latest backend after failed owner workers, preserving isolated launch delta and new tests",
+  "conflicts": [],
+  "updates": [
+    {
+      "path": "server/internal/handler/collaboration_runtime_test.go",
+      "method": "incoming_only",
+      "base": "e718ce270774f75809826ef458f8b294697000ae6c0039fa9ca3d7f54a18b243",
+      "before": "e718ce270774f75809826ef458f8b294697000ae6c0039fa9ca3d7f54a18b243",
+      "incoming": "c09843f6fb8d93e6208865a1093d55483fe8e1028f0c4580d0a4c0b6b1420c43",
+      "after": "c09843f6fb8d93e6208865a1093d55483fe8e1028f0c4580d0a4c0b6b1420c43"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_records.sql",
+      "method": "incoming_only",
+      "base": "e7fad1e9374ec84409b79f8c44c240f49df3bef6d8c9e0228ff9b65567119080",
+      "before": "e7fad1e9374ec84409b79f8c44c240f49df3bef6d8c9e0228ff9b65567119080",
+      "incoming": "752d4f83244bc3ebf310ee966548cfbedcf504bf23295428f217a2377d69b096",
+      "after": "752d4f83244bc3ebf310ee966548cfbedcf504bf23295428f217a2377d69b096"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go",
+      "method": "incoming_only",
+      "base": "e3db1ac44dde190fae20abdd208e9dafdd648f80a540b5e069a71d21338c39cf",
+      "before": "e3db1ac44dde190fae20abdd208e9dafdd648f80a540b5e069a71d21338c39cf",
+      "incoming": "b5ea014022d6e513dc85d90f783d3e99292c2a5fcfd547c4f1bd44354f0a3888",
+      "after": "b5ea014022d6e513dc85d90f783d3e99292c2a5fcfd547c4f1bd44354f0a3888"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoints.go",
+      "method": "incoming_only",
+      "base": "b70f1ddd0078c09c35dcea1407e5f7348f0e374b5f8fababe1a7794fd0fc79a1",
+      "before": "b70f1ddd0078c09c35dcea1407e5f7348f0e374b5f8fababe1a7794fd0fc79a1",
+      "incoming": "31bcd65fe643133bb7bfcbcc710be71dd481f793cf8f874abe215c7b7b0cc701",
+      "after": "31bcd65fe643133bb7bfcbcc710be71dd481f793cf8f874abe215c7b7b0cc701"
+    },
+    {
+      "path": "server/internal/handler/collaboration_checkpoints_test.go",
+      "method": "incoming_only",
+      "base": null,
+      "before": null,
+      "incoming": "42f61c51dd771282c23beea498460255d2b990403f7d3e872b75bcaff904a68d",
+      "after": "42f61c51dd771282c23beea498460255d2b990403f7d3e872b75bcaff904a68d"
+    },
+    {
+      "path": "server/internal/handler/collaboration_comments_recall_test.go",
+      "method": "incoming_only",
+      "base": "12a5bbe30d9b1852918eef30ff18d82a6b1a6eac266e321fa082323430b256b5",
+      "before": "12a5bbe30d9b1852918eef30ff18d82a6b1a6eac266e321fa082323430b256b5",
+      "incoming": "0a8b953a5fe15262629b8599afa4ec9f0486aeab68cb4b6fd5140f6c04f2dcde",
+      "after": "0a8b953a5fe15262629b8599afa4ec9f0486aeab68cb4b6fd5140f6c04f2dcde"
+    },
+    {
+      "path": "server/internal/service/collaboration_checkpoints.go",
+      "method": "incoming_only",
+      "base": "520a03d8d115210b11fb7d757a2b04d61218a378980b755c84353164d386897d",
+      "before": "520a03d8d115210b11fb7d757a2b04d61218a378980b755c84353164d386897d",
+      "incoming": "40d53f53c1f242018b7b10ae9db52ce01ab9e513ab5b123bad7191f834636717",
+      "after": "40d53f53c1f242018b7b10ae9db52ce01ab9e513ab5b123bad7191f834636717"
+    },
+    {
+      "path": "server/internal/service/collaboration_checkpoints_test.go",
+      "method": "incoming_only",
+      "base": "0e0803a25fcfdeaf0e35bf91c78c31f294129dc5089189942edd7ba19abf32b3",
+      "before": "0e0803a25fcfdeaf0e35bf91c78c31f294129dc5089189942edd7ba19abf32b3",
+      "incoming": "4cd4b6637128580fb58ac00d5725a6141a1c78c539fb5cda519d1f7b29bbe7b1",
+      "after": "4cd4b6637128580fb58ac00d5725a6141a1c78c539fb5cda519d1f7b29bbe7b1"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "method": "incoming_only",
+      "base": "d2bab094096b29b163f30171eb1782addb83ae2a01e3ea3f714106442b0009ed",
+      "before": "d2bab094096b29b163f30171eb1782addb83ae2a01e3ea3f714106442b0009ed",
+      "incoming": "a0c06e6125c571655865885129513d95011893d6361fc4edc1e06d1b22c791f4",
+      "after": "a0c06e6125c571655865885129513d95011893d6361fc4edc1e06d1b22c791f4"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff_test.go",
+      "method": "incoming_only",
+      "base": "4e9841ef3770e6a681d2f7e43b0484be63ae4ecb5e433743e3575afd22551a79",
+      "before": "4e9841ef3770e6a681d2f7e43b0484be63ae4ecb5e433743e3575afd22551a79",
+      "incoming": "159b8282970619dfbb7a11cbc77600c9bf380c701e6184767c098bdac60d07d5",
+      "after": "159b8282970619dfbb7a11cbc77600c9bf380c701e6184767c098bdac60d07d5"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_checkpoint.go",
+      "method": "incoming_only",
+      "base": "bd1d0a8c80b057fb1dc33ff84511ae164f00da4ad302813b5cac2d409adc83eb",
+      "before": "bd1d0a8c80b057fb1dc33ff84511ae164f00da4ad302813b5cac2d409adc83eb",
+      "incoming": "eb87a6d54b8e352797209d8e7258df4eba07d8641dfc4c2661201220793a8f5d",
+      "after": "eb87a6d54b8e352797209d8e7258df4eba07d8641dfc4c2661201220793a8f5d"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_checkpoint_test.go",
+      "method": "incoming_only",
+      "base": "d505aaf3bf73e9e666d554c2d8b91d631fa62f9ea59abac3e427b037eb9672a4",
+      "before": "d505aaf3bf73e9e666d554c2d8b91d631fa62f9ea59abac3e427b037eb9672a4",
+      "incoming": "476ea12de145f1cc0257485341a3df8c4f7e14375256ab33e35a1a7709080e54",
+      "after": "476ea12de145f1cc0257485341a3df8c4f7e14375256ab33e35a1a7709080e54"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_handoff.go",
+      "method": "incoming_only",
+      "base": "49deb3e768e76383bf8b5609308fd4054e0f0855b66fbb85588714d355dcb326",
+      "before": "49deb3e768e76383bf8b5609308fd4054e0f0855b66fbb85588714d355dcb326",
+      "incoming": "2e6372b0b40b4c095de7ef126c1e5400cef961bacbd7a7b74e12b5079f3880a9",
+      "after": "2e6372b0b40b4c095de7ef126c1e5400cef961bacbd7a7b74e12b5079f3880a9"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_recall.go",
+      "method": "incoming_only",
+      "base": "1260152541fb00abb28dd1eb2f6db6fb145155b66b5dfa84243b07c61c81c3cd",
+      "before": "1260152541fb00abb28dd1eb2f6db6fb145155b66b5dfa84243b07c61c81c3cd",
+      "incoming": "e9373ef926637fb506e16946f2aa4fa083c08634486fe2e482cf221e9a574e99",
+      "after": "e9373ef926637fb506e16946f2aa4fa083c08634486fe2e482cf221e9a574e99"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_recall_test.go",
+      "method": "incoming_only",
+      "base": null,
+      "before": null,
+      "incoming": "4f9a0971bfa6053d77a23423de066198b95e96bc3b87bed1ac519f8ffe0d18b2",
+      "after": "4f9a0971bfa6053d77a23423de066198b95e96bc3b87bed1ac519f8ffe0d18b2"
+    }
+  ]
+}

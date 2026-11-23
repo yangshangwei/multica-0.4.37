@@ -87,38 +87,6 @@ func TestTriageIterationAuthorizationHeldThroughCommit(t *testing.T) {
 	}
 }
 
-type triageGrantObservationStarter struct {
-	inner txStarter
-	after func()
-	once  *sync.Once
-}
-
-func (s triageGrantObservationStarter) Begin(ctx context.Context) (pgx.Tx, error) {
-	tx, err := s.inner.Begin(ctx)
-	if err != nil {
-		return nil, err
-	}
-	return triageGrantObservationTx{Tx: tx, owner: s}, nil
-}
-
-type triageGrantObservationTx struct {
-	pgx.Tx
-	owner triageGrantObservationStarter
-}
-
-func (tx triageGrantObservationTx) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
-	rows, err := tx.Tx.Query(ctx, sql, args...)
-	if !strings.Contains(sql, "-- name: LockProjectUpdateEvidenceTargets ") && !strings.Contains(sql, "-- name: ListAgentInvocationTargets ") {
-		return rows, err
-	}
-	after := func() { tx.owner.once.Do(tx.owner.after) }
-	if err != nil {
-		after()
-		return rows, err
-	}
-	return &issueGrantReadRows{Rows: rows, after: after}, nil
-}
-
 func TestTriageIterationAuthorizationRejectsPrestartedGrantRemoval(t *testing.T) {
 	for _, kind := range []string{"agent", "squad"} {
 		t.Run(kind, func(t *testing.T) {
@@ -130,23 +98,36 @@ func TestTriageIterationAuthorizationRejectsPrestartedGrantRemoval(t *testing.T)
 				t.Fatal(err)
 			}
 			defer holder.Rollback(context.Background())
-			// UpdateAgent replaces targets after its agent-row update. At this point
-			// a grant replacement can already be running without an agent row lock.
+			// Grant deletion also owns the agent configuration row. Acceptance
+			// must retry its earlier agent lock before reading the revoked grant.
 			if err = db.New(holder).DeleteAgentInvocationTargets(ctx, parseUUID(agent)); err != nil {
 				t.Fatal(err)
 			}
 			observed := false
-			h.TxStarter = triageGrantObservationStarter{inner: h.TxStarter, once: &sync.Once{}, after: func() {
-				observed = true
-				if e := holder.Commit(ctx); e != nil {
-					t.Error(e)
-				}
+			attempts := 0
+			var once sync.Once
+			h.TxStarter = progressTxStarter{base: h.TxStarter, wrap: func(tx pgx.Tx) pgx.Tx {
+				attempts++
+				return progressHookTx{Tx: tx, afterRow: func(sql string, readErr error) {
+					if strings.Contains(sql, "-- name: LockLifecycleAgent ") {
+						once.Do(func() {
+							observed = true
+							var busy *pgconn.PgError
+							if !errors.As(readErr, &busy) || busy.Code != "55P03" {
+								t.Errorf("revocation did not block the agent locking read: %v", readErr)
+							}
+							if e := holder.Commit(ctx); e != nil {
+								t.Error(e)
+							}
+						})
+					}
+				}}
 			}}
 			requestID := uuid.NewString()
 			request := withURLParam(newRequest("POST", "/api/triage/items/actions", triageIterationAcceptBody(item, target, "accept", requestID)).WithContext(ctx), "id", item.Issue.ID)
 			testutil.Call(t, h.ActOnTriageItem, request).Want(http.StatusForbidden)
-			if !observed {
-				t.Fatal("grant read barrier did not run")
+			if !observed || attempts < 2 {
+				t.Fatalf("acceptance did not retry the current agent authority: observed=%t attempts=%d", observed, attempts)
 			}
 			if dbfx.Count(t, "SELECT count(*) FROM issue WHERE id=$1 AND admission_status='pending' AND current_iteration_id IS NULL", item.Issue.ID) != 1 || dbfx.Count(t, "SELECT count(*) FROM triage_action WHERE request_id=$1", requestID) != 0 || dbfx.Count(t, "SELECT count(*) FROM iteration_event WHERE issue_id=$1", item.Issue.ID) != 0 {
 				t.Fatal("revoked grant left partial acceptance/history")
@@ -158,21 +139,33 @@ func TestTriageIterationAuthorizationRejectsPrestartedGrantRemoval(t *testing.T)
 func TestTriageIterationAuthorizationIgnoresGrantInsertedAfterLockedRead(t *testing.T) {
 	h, item, target, agent, _ := triageAuthorizationFixture(t, "agent")
 	dbfx.Exec(t, "DELETE FROM agent_invocation_target WHERE agent_id=$1", agent)
-	inserted := false
+	attempted := false
 	h.TxStarter = issueGrantReadStarter{base: h.TxStarter, after: func() {
-		if inserted {
+		if attempted {
 			return
 		}
-		inserted = true
-		dbfx.Exec(t, "INSERT INTO agent_invocation_target(agent_id,target_type,target_id) VALUES($1,'member',$2)", agent, testUserID)
+		attempted = true
+		_, err := testPool.Exec(t.Context(), "INSERT INTO agent_invocation_target(agent_id,target_type,target_id) VALUES($1,'member',$2)", agent, testUserID)
+		var busy *pgconn.PgError
+		if !errors.As(err, &busy) || busy.Code != "55P03" {
+			t.Errorf("late grant insert bypassed the held agent configuration lock: %v", err)
+		}
 	}}
 	requestID := uuid.NewString()
 	testutil.Call(t, h.ActOnTriageItem, withURLParam(newRequest("POST", "/api/triage/items/actions", triageIterationAcceptBody(item, target, "accept", requestID)), "id", item.Issue.ID)).Want(http.StatusForbidden)
-	if !inserted {
+	if !attempted {
 		t.Fatal("authorization never captured locked grant rows")
 	}
-	if dbfx.Count(t, "SELECT count(*) FROM issue WHERE id=$1 AND admission_status='pending' AND current_iteration_id IS NULL", item.Issue.ID) != 1 || dbfx.Count(t, "SELECT count(*) FROM triage_action WHERE request_id=$1", requestID) != 0 {
+	if dbfx.Count(t, "SELECT count(*) FROM issue WHERE id=$1 AND admission_status='pending' AND current_iteration_id IS NULL", item.Issue.ID) != 1 || dbfx.Count(t, "SELECT count(*) FROM triage_action WHERE request_id=$1", requestID) != 0 ||
+		dbfx.Count(t, "SELECT count(*) FROM agent_invocation_target WHERE agent_id=$1", agent) != 0 || dbfx.Count(t, "SELECT count(*) FROM iteration_event WHERE issue_id=$1", item.Issue.ID) != 0 {
 		t.Fatal("unlocked inserted grant authorized acceptance")
+	}
+	dbfx.Exec(t, "INSERT INTO agent_invocation_target(agent_id,target_type,target_id) VALUES($1,'member',$2)", agent, testUserID)
+	freshID := uuid.NewString()
+	testutil.Call(t, h.ActOnTriageItem, withURLParam(newRequest("POST", "/api/triage/items/actions", triageIterationAcceptBody(item, target, "accept", freshID)), "id", item.Issue.ID)).Want(http.StatusOK)
+	if dbfx.Count(t, "SELECT count(*) FROM issue WHERE id=$1 AND admission_status='accepted' AND current_iteration_id=$2", item.Issue.ID, target) != 1 ||
+		dbfx.Count(t, "SELECT count(*) FROM triage_action WHERE request_id=$1", freshID) != 1 || dbfx.Count(t, "SELECT count(*) FROM agent_task_queue WHERE issue_id=$1", item.Issue.ID) != 0 {
+		t.Fatal("freshly granted plain acceptance lost its membership, action or no-dispatch contract")
 	}
 }
 

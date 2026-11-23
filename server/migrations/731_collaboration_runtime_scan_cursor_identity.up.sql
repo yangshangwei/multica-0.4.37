@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_collaboration_runtime_scan_cursor_identity ON collaboration_runtime_scan_cursor (runtime_id, binding_id, scan_kind);

@@ -1,0 +1,175 @@
+{
+  "at": "2026-11-04T16:27:24.143781+00:00",
+  "phase": "preparation_not_admitted",
+  "runner_sha256": "bd0b4e65fce6a4fd7e4ca42b0a1102773b4585196c00b54c34699748f0e66aee",
+  "historical_runner_sha256": "c2729c9988db8d2089446848f421e60a8b146a33d566c3399e1c6316500a2184",
+  "changes": [
+    "private output root",
+    "public output root",
+    "normal prerequisite result.json"
+  ],
+  "processes": [
+    {
+      "pid": 979,
+      "ppid": 1,
+      "elapsed": "02:17:55",
+      "comm": "/Applications/Typeless.app/Contents/Frameworks/Electron Framework.framework/Helpers/chrome_crashpad_handler"
+    },
+    {
+      "pid": 18268,
+      "ppid": 77672,
+      "elapsed": "02:06",
+      "comm": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node"
+    },
+    {
+      "pid": 18275,
+      "ppid": 18268,
+      "elapsed": "02:05",
+      "comm": "/Users/artisan/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell"
+    },
+    {
+      "pid": 18282,
+      "ppid": 18275,
+      "elapsed": "02:04",
+      "comm": "/Users/artisan/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell"
+    },
+    {
+      "pid": 18283,
+      "ppid": 18275,
+      "elapsed": "02:04",
+      "comm": "/Users/artisan/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell"
+    },
+    {
+      "pid": 19936,
+      "ppid": 18275,
+      "elapsed": "00:02",
+      "comm": "/Users/artisan/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell"
+    },
+    {
+      "pid": 19937,
+      "ppid": 18275,
+      "elapsed": "00:02",
+      "comm": "/Users/artisan/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell"
+    },
+    {
+      "pid": 21769,
+      "ppid": 21742,
+      "elapsed": "01:27:38",
+      "comm": "/Volumes/artisan/dev-cache/go-build/40/4034708ebec668a97fc66ad6f1669d6370add5c8b2d9b3dbfcc1d582db26912e-d/server"
+    },
+    {
+      "pid": 22122,
+      "ppid": 1,
+      "elapsed": "01:27:13",
+      "comm": "/Library/Developer/CommandLineTools/usr/bin/make"
+    },
+    {
+      "pid": 22186,
+      "ppid": 22180,
+      "elapsed": "01:27:13",
+      "comm": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@turbo+darwin-arm64@2.9.5/node_modules/@turbo/darwin-arm64/bin/turbo"
+    },
+    {
+      "pid": 22338,
+      "ppid": 22327,
+      "elapsed": "01:27:07",
+      "comm": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/@esbuild+darwin-arm64@0.25.12/node_modules/@esbuild/darwin-arm64/bin/esbuild"
+    },
+    {
+      "pid": 22345,
+      "ppid": 22327,
+      "elapsed": "01:27:07",
+      "comm": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron"
+    },
+    {
+      "pid": 23106,
+      "ppid": 22345,
+      "elapsed": "01:27:02",
+      "comm": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Helper (GPU).app/Contents/MacOS/Electron Helper (GPU)"
+    },
+    {
+      "pid": 23107,
+      "ppid": 22345,
+      "elapsed": "01:27:02",
+      "comm": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Helper.app/Contents/MacOS/Electron Helper"
+    },
+    {
+      "pid": 23120,
+      "ppid": 22345,
+      "elapsed": "01:27:00",
+      "comm": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/electron@39.8.7/node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Helper (Renderer).app/Contents/MacOS/Electron Helper (Renderer)"
+    },
+    {
+      "pid": 23937,
+      "ppid": 1,
+      "elapsed": "01:26:54",
+      "comm": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/resources/bin/multica"
+    },
+    {
+      "pid": 25849,
+      "ppid": 1,
+      "elapsed": "01:19:59",
+      "comm": "/Applications/ZCode.app/Contents/Frameworks/Electron Framework.framework/Helpers/chrome_crashpad_handler"
+    },
+    {
+      "pid": 74562,
+      "ppid": 74550,
+      "elapsed": "25:53",
+      "comm": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/node_modules/.pnpm/@esbuild+darwin-arm64@0.25.12/node_modules/@esbuild/darwin-arm64/bin/esbuild"
+    },
+    {
+      "pid": 74630,
+      "ppid": 71883,
+      "elapsed": "25:50",
+      "comm": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/backend/normal-race-1/01/tmp/go-build3813988124/b001/service.test"
+    },
+    {
+      "pid": 76205,
+      "ppid": 76167,
+      "elapsed": "24:35",
+      "comm": "/Volumes/artisan/dev-cache/go-build/53/53da99d681a83b92a90463a60c40e1138e31659c918a4af66164151cbdbe3b71-d/server"
+    },
+    {
+      "pid": 33653,
+      "ppid": 33652,
+      "elapsed": "01:04:10",
+      "comm": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex"
+    },
+    {
+      "pid": 42603,
+      "ppid": 42602,
+      "elapsed": "53:51",
+      "comm": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex"
+    },
+    {
+      "pid": 34809,
+      "ppid": 34808,
+      "elapsed": "01:02:42",
+      "comm": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex"
+    },
+    {
+      "pid": 37494,
+      "ppid": 37493,
+      "elapsed": "58:39",
+      "comm": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex"
+    },
+    {
+      "pid": 72074,
+      "ppid": 72073,
+      "elapsed": "27:20",
+      "comm": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex"
+    },
+    {
+      "pid": 17145,
+      "ppid": 17140,
+      "elapsed": "02:56",
+      "comm": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex"
+    }
+  ],
+  "observed_heavy_tasks": [
+    "service.test74630",
+    "Playwright18275"
+  ],
+  "execution_started": false,
+  "real_provider_allowed": false
+}

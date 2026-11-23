@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"os"
 	"strings"
 	"testing"
@@ -46,6 +47,21 @@ func TestAutonomyAtLeast_Ordering(t *testing.T) {
 		if got := AutonomyAtLeast(tc.have, tc.want); got != tc.ok {
 			t.Errorf("AutonomyAtLeast(%q, %q) = %v, want %v", tc.have, tc.want, got, tc.ok)
 		}
+	}
+}
+
+// Quick-create's whole run is one `multica issue create`, so it must refuse
+// exactly the levels CreateIssue refuses, and keep undeclared agents working.
+func TestCheckQuickCreateAutonomy(t *testing.T) {
+	for _, level := range []string{"", "supervisor", "contributor", "coordinator", "operator"} {
+		if err := CheckQuickCreateAutonomy(level); err != nil {
+			t.Errorf("CheckQuickCreateAutonomy(%q) = %v, want nil", level, err)
+		}
+	}
+	err := CheckQuickCreateAutonomy("observer")
+	var autonomyErr *QuickCreateAutonomyError
+	if !errors.As(err, &autonomyErr) || autonomyErr.Level != "observer" {
+		t.Fatalf("CheckQuickCreateAutonomy(observer) = %v, want a QuickCreateAutonomyError for observer", err)
 	}
 }
 
@@ -178,6 +194,7 @@ func TestSquadTemplates_RosterIsCoherent(t *testing.T) {
 	wantKeys := []string{
 		"feature-delivery", "bug-fix",
 		"review-gate", "discovery", "docs", "maintenance",
+		"security-remediation",
 		"release", "incident",
 	}
 	if len(templates) != len(wantKeys) {
@@ -232,9 +249,10 @@ func TestSquadTemplates_RosterIsCoherent(t *testing.T) {
 
 func TestSquadTemplates_DiagnosticianPlacementMatchesFailureWorkflows(t *testing.T) {
 	want := map[string][]string{
-		"bug-fix":     {"原因未知", "诊断工程师", "实现工程师"},
-		"maintenance": {"原因未知", "诊断工程师", "不稳定测试"},
-		"incident":    {"独立后续任务", "诊断工程师", "不等待"},
+		"bug-fix":              {"原因未知", "诊断工程师", "实现工程师"},
+		"maintenance":          {"原因未知", "诊断工程师", "不稳定测试"},
+		"security-remediation": {"原因未知", "诊断工程师", "实现工程师"},
+		"incident":             {"独立后续任务", "诊断工程师", "不等待"},
 	}
 
 	for _, squad := range SquadTemplates() {
@@ -262,10 +280,11 @@ func TestSquadTemplates_DiagnosticianPlacementMatchesFailureWorkflows(t *testing
 
 func TestSquadTemplates_LifecycleEvidenceRouting(t *testing.T) {
 	want := map[string][]string{
-		"review-gate": {"agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
-		"release":     {"reliability-engineer", "agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
-		"maintenance": {"migration-reviewer"},
-		"incident":    {"reliability-engineer"},
+		"review-gate":          {"agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
+		"release":              {"reliability-engineer", "agent-evaluator", "experience-validation-engineer", "migration-reviewer"},
+		"maintenance":          {"migration-reviewer"},
+		"security-remediation": {"migration-reviewer"},
+		"incident":             {"reliability-engineer"},
 	}
 	for _, squad := range SquadTemplates() {
 		seen := map[string]bool{}
@@ -288,6 +307,64 @@ func TestSquadTemplates_LifecycleEvidenceRouting(t *testing.T) {
 	incident, _ := SquadTemplateByKey("incident")
 	if !strings.Contains(incident.Instructions(), "复盘") || !strings.Contains(incident.Instructions(), "预防") {
 		t.Error("incident routing policy must route recovery evidence into learning and prevention")
+	}
+}
+
+// Inspect each independently delivered instruction body. Combining them would
+// hide a stale leader policy behind the newer squad policy injected after it.
+func TestReviewGateInstructionsCoverEveryRosterRole(t *testing.T) {
+	squad, ok := SquadTemplateByKey("review-gate")
+	if !ok {
+		t.Fatal("review-gate squad is missing")
+	}
+	leader, ok := AgentRoleTemplateByKey(squad.LeaderTemplateKey)
+	if !ok {
+		t.Fatal("review-gate leader is missing")
+	}
+	if leader.Version != 3 || squad.Version != 3 {
+		t.Errorf("leader/squad versions = %d/%d, want 3/3 after correcting the leader policy", leader.Version, squad.Version)
+	}
+	checks := map[string]string{
+		"code-reviewer":                  "差异",
+		"security-reviewer":              "数据暴露",
+		"qa-engineer":                    "变更有效",
+		"agent-evaluator":                "Agent/Skill/MCP",
+		"experience-validation-engineer": "可访问性",
+		"migration-reviewer":             "schema/API/客户端",
+	}
+	if len(squad.Members) != len(checks) {
+		t.Fatalf("review-gate has %d specialist seats, want %d", len(squad.Members), len(checks))
+	}
+	for name, body := range map[string]string{"leader": leader.Instructions(), "squad": squad.Instructions()} {
+		t.Run(name, func(t *testing.T) {
+			for _, member := range squad.Members {
+				condition, exists := checks[member.TemplateKey]
+				if !exists {
+					t.Errorf("unexpected review-gate role %q", member.TemplateKey)
+					continue
+				}
+				role, exists := AgentRoleTemplateByKey(member.TemplateKey)
+				if !exists {
+					t.Errorf("missing role template %q", member.TemplateKey)
+					continue
+				}
+				found := false
+				for _, line := range strings.Split(body, "\n") {
+					if strings.HasPrefix(line, "|") && strings.Contains(line, role.Title("zh")) && strings.Contains(line, condition) {
+						found = true
+						break
+					}
+				}
+				if !found {
+					t.Errorf("%s policy has no %q routing row for %s", name, condition, member.TemplateKey)
+				}
+			}
+			for _, contract := range []string{"unknown", "hold", "作者", "每轮只交给一位"} {
+				if !strings.Contains(body, contract) {
+					t.Errorf("%s policy is missing review boundary %q", name, contract)
+				}
+			}
+		})
 	}
 }
 
@@ -364,9 +441,10 @@ func TestReleaseGateGovernanceDrill_Contract(t *testing.T) {
 
 func TestSquadLeads_ExplainDiagnosticianHandoff(t *testing.T) {
 	want := map[string][]string{
-		"bug-fix-lead":     {"诊断工程师", "原因未知"},
-		"maintenance-lead": {"诊断工程师", "不稳定测试"},
-		"incident-lead":    {"诊断工程师", "独立后续任务", "不等待"},
+		"bug-fix-lead":              {"诊断工程师", "原因未知"},
+		"maintenance-lead":          {"诊断工程师", "不稳定测试"},
+		"security-remediation-lead": {"诊断工程师", "原因未知"},
+		"incident-lead":             {"诊断工程师", "独立后续任务", "不等待"},
 	}
 
 	for key, contracts := range want {
@@ -433,12 +511,13 @@ func TestSquadTemplates_LeadersAreOneToOne(t *testing.T) {
 // staff it — a permission change that must be a deliberate edit here.
 func TestSquadTemplates_MaxAutonomyMatchesRoster(t *testing.T) {
 	want := map[string]AutonomyLevel{
-		"feature-delivery": AutonomyCoordinator,
-		"bug-fix":          AutonomyCoordinator,
-		"review-gate":      AutonomyCoordinator,
-		"discovery":        AutonomyCoordinator,
-		"docs":             AutonomyCoordinator,
-		"maintenance":      AutonomyCoordinator,
+		"feature-delivery":     AutonomyCoordinator,
+		"bug-fix":              AutonomyCoordinator,
+		"review-gate":          AutonomyCoordinator,
+		"discovery":            AutonomyCoordinator,
+		"docs":                 AutonomyCoordinator,
+		"maintenance":          AutonomyCoordinator,
+		"security-remediation": AutonomyCoordinator,
 		// The two rosters that seat the Release Engineer. Staffing either one mints an
 		// Operator, so only a caller allowed to grant Operator may do it.
 		"release":  AutonomyOperator,

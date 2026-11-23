@@ -1,0 +1,341 @@
+{
+  "recorded_at": "2026-11-01T21:47:38.675908+00:00",
+  "product_source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "harness_base": "56ae50d613831a905293fa29834e5a5be4167c03",
+  "current_source_sha256": {
+    "e2e/collaboration-workbench-web.spec.ts": "767ae9c4d8331184a41d640fa89ded564a7d37e0023932021e27f288f29f2a73",
+    "e2e/collaboration-account-desktop.spec.ts": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c"
+  },
+  "runs": [
+    {
+      "label": "focus-original-isolated",
+      "execution": {
+        "selected_provider_binary": "host-provider",
+        "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+        "deployed_expectation": null,
+        "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "verification_harness_head": "56ae50d613831a905293fa29834e5a5be4167c03",
+        "verification_harness_diff_sha256": "bb6471ccb2d63729ecae57ec3588ff1d5a97a850e8b4bd301a6fbff6f19eff6b",
+        "lane": "legacy",
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/bin/pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/collaboration-account-desktop.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/focus-original-isolated/artifacts",
+          "--grep",
+          "Desktop child links, recorded pages and result notifications survive popouts and restart$"
+        ],
+        "database": "collab_joint_legacy_diag_20261102_2120",
+        "health": {
+          "status": "ok",
+          "pid": 26485,
+          "commit": "639bf6ef8",
+          "started_at": "2026-11-01T21:34:56Z"
+        },
+        "source_env_sha256": "1e4338ce392567848096f73b5e320998926fc8f5c664a24dd78725b38cff35ff",
+        "production_Web_build_id": "34DL-1w4TjLPqCrcjSSqj",
+        "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+        "test_source_sha256": {
+          "e2e/collaboration-account-desktop.spec.ts": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c"
+        },
+        "controlled_binary_sha256": {
+          "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+          "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+          "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+          "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+        },
+        "package_pin": null,
+        "actual_real_Provider_calls": 0,
+        "state": "complete",
+        "started_at": "2026-11-01T21:39:47.622461+00:00",
+        "exit_code": 1,
+        "finished_at": "2026-11-01T21:40:00.080058+00:00",
+        "log_sha256": "5f4b136a2aa84a56516b92af63898923f8fc5c0c21a38f04cc08578c8b0ad450",
+        "stats": {
+          "startTime": "2026-11-01T21:39:48.652Z",
+          "duration": 11407.216,
+          "expected": 0,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "results_sha256": "42e4f0217b46b37b94f37efdf8e80a47c94e8496c00ed79190ff1977188f63e9",
+        "gate_exit_code": 1
+      },
+      "raw_execution_sha256": "71333c53f4a9115c0ff4f8d28cc559800fee57ec46f1c9cb8f20776e21bfbf60",
+      "raw_private_directory": "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/focus-original-isolated"
+    },
+    {
+      "label": "focus-native-state-diagnostic",
+      "execution": {
+        "selected_provider_binary": "host-provider",
+        "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+        "deployed_expectation": null,
+        "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "verification_harness_head": "56ae50d613831a905293fa29834e5a5be4167c03",
+        "verification_harness_diff_sha256": "40281ae9b058efdbb5541b87e8a28ee9877c0f972fee88980073336415cabb3b",
+        "lane": "legacy",
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/bin/pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/collaboration-account-desktop.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/focus-native-state-diagnostic/artifacts",
+          "--grep",
+          "Desktop child links, recorded pages and result notifications survive popouts and restart$"
+        ],
+        "database": "collab_joint_legacy_diag_20261102_2120",
+        "health": {
+          "status": "ok",
+          "pid": 26485,
+          "commit": "639bf6ef8",
+          "started_at": "2026-11-01T21:34:56Z"
+        },
+        "source_env_sha256": "1e4338ce392567848096f73b5e320998926fc8f5c664a24dd78725b38cff35ff",
+        "production_Web_build_id": "34DL-1w4TjLPqCrcjSSqj",
+        "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+        "test_source_sha256": {
+          "e2e/collaboration-account-desktop.spec.ts": "57a03d3bb8030b32594d24cf65d228f71b70bef83823e9c172f256b7e1415ee7"
+        },
+        "controlled_binary_sha256": {
+          "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+          "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+          "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+          "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+        },
+        "package_pin": null,
+        "actual_real_Provider_calls": 0,
+        "state": "complete",
+        "started_at": "2026-11-01T21:42:36.314426+00:00",
+        "exit_code": 1,
+        "finished_at": "2026-11-01T21:42:47.703306+00:00",
+        "log_sha256": "a56c1041ed942bf7a27093972c8ad60ad720c7fe4d468f3ffaaeef3fbb386c06",
+        "stats": {
+          "startTime": "2026-11-01T21:42:37.080Z",
+          "duration": 10606.09,
+          "expected": 0,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "results_sha256": "92631756358964444921454cbf34472fbce967e97da89cf4fcb6eba3cb3eebc9",
+        "gate_exit_code": 1
+      },
+      "raw_execution_sha256": "8733f06f6c0e23fc724733d6d6f28c51d40eee1123bab9937f1b919b5901b674",
+      "raw_private_directory": "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/focus-native-state-diagnostic",
+      "safe_focus_observation": {
+        "attachment_sha256": "5b59ed1cf47869e3abdbb6c183bcd31829bdccce422439e3b4a2830f9da9283f",
+        "private_path": null,
+        "states": [
+          {
+            "stage": "before-activation",
+            "elapsed_ms": 2,
+            "application": {
+              "hidden": false,
+              "dockVisible": true,
+              "focusedWindowId": null,
+              "windows": [
+                {
+                  "id": 1,
+                  "visible": true,
+                  "minimized": false,
+                  "focusable": true,
+                  "native": false,
+                  "contents": false,
+                  "opacity": 1
+                }
+              ]
+            },
+            "target": {
+              "id": 1,
+              "visible": true,
+              "minimized": false,
+              "focusable": true,
+              "native": false,
+              "contents": false,
+              "opacity": 1
+            },
+            "document": true
+          },
+          {
+            "stage": "after-app-focus",
+            "elapsed_ms": 8,
+            "application": {
+              "hidden": false,
+              "dockVisible": true,
+              "focusedWindowId": null,
+              "windows": [
+                {
+                  "id": 1,
+                  "visible": true,
+                  "minimized": false,
+                  "focusable": true,
+                  "native": false,
+                  "contents": false,
+                  "opacity": 1
+                }
+              ]
+            },
+            "target": {
+              "id": 1,
+              "visible": true,
+              "minimized": false,
+              "focusable": true,
+              "native": false,
+              "contents": false,
+              "opacity": 1
+            },
+            "document": true
+          },
+          {
+            "stage": "after-window-focus",
+            "elapsed_ms": 15,
+            "application": {
+              "hidden": false,
+              "dockVisible": true,
+              "focusedWindowId": null,
+              "windows": [
+                {
+                  "id": 1,
+                  "visible": true,
+                  "minimized": false,
+                  "focusable": true,
+                  "native": false,
+                  "contents": false,
+                  "opacity": 1
+                }
+              ]
+            },
+            "target": {
+              "id": 1,
+              "visible": true,
+              "minimized": false,
+              "focusable": true,
+              "native": false,
+              "contents": false,
+              "opacity": 1
+            },
+            "document": true
+          },
+          {
+            "stage": "settled-or-failed",
+            "elapsed_ms": 4937,
+            "application": {
+              "hidden": false,
+              "dockVisible": true,
+              "focusedWindowId": null,
+              "windows": [
+                {
+                  "id": 1,
+                  "visible": true,
+                  "minimized": false,
+                  "focusable": true,
+                  "native": false,
+                  "contents": false,
+                  "opacity": 1
+                }
+              ]
+            },
+            "target": {
+              "id": 1,
+              "visible": true,
+              "minimized": false,
+              "focusable": true,
+              "native": false,
+              "contents": false,
+              "opacity": 1
+            },
+            "document": true
+          }
+        ],
+        "body_URL_title_credential_fields_captured": false
+      }
+    },
+    {
+      "label": "transfer-current-picker-2",
+      "execution": {
+        "selected_provider_binary": "host-provider",
+        "selected_provider_sha256": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+        "deployed_expectation": null,
+        "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+        "verification_harness_head": "56ae50d613831a905293fa29834e5a5be4167c03",
+        "verification_harness_diff_sha256": "40281ae9b058efdbb5541b87e8a28ee9877c0f972fee88980073336415cabb3b",
+        "lane": "legacy",
+        "command": [
+          "bash",
+          "scripts/go-test-with-agent-cli-guard.sh",
+          "--",
+          "/opt/homebrew/bin/pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/collaboration-workbench-web.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--reporter=line,json",
+          "--output=/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/transfer-current-picker-2/artifacts",
+          "--grep",
+          "(Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation|Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry)$"
+        ],
+        "database": "collab_joint_legacy_diag_20261102_2120",
+        "health": {
+          "status": "ok",
+          "pid": 26485,
+          "commit": "639bf6ef8",
+          "started_at": "2026-11-01T21:34:56Z"
+        },
+        "source_env_sha256": "1e4338ce392567848096f73b5e320998926fc8f5c664a24dd78725b38cff35ff",
+        "production_Web_build_id": "34DL-1w4TjLPqCrcjSSqj",
+        "native_renderer_sha256": "ebe7542ed22c4e5529d20b9f3e50292a8eb2514241582df0365396e5de8d10ef",
+        "test_source_sha256": {
+          "e2e/collaboration-workbench-web.spec.ts": "767ae9c4d8331184a41d640fa89ded564a7d37e0023932021e27f288f29f2a73"
+        },
+        "controlled_binary_sha256": {
+          "host-daemon.test": "85bddcc98f0b7fe5967c9d07cf1cc5aa23706e70e833671db295ab825e24cde4",
+          "host-provider": "ffc7f9bead582a8c11c69cd71e1a8348d6a1fdbd988bd2308cba31a8986df54d",
+          "memory-provider": "81a758a1062568d5a709156e3344b5df1e5b87e55660c1761c12cf55c94adcf1",
+          "multica": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19"
+        },
+        "package_pin": null,
+        "actual_real_Provider_calls": 0,
+        "state": "complete",
+        "started_at": "2026-11-01T21:45:41.308295+00:00",
+        "exit_code": 0,
+        "finished_at": "2026-11-01T21:45:51.034425+00:00",
+        "log_sha256": "37bccecffa61f4ffd4557d18c24c9cf9321366de9cca0a23a54bfe4a1811ff4a",
+        "stats": {
+          "startTime": "2026-11-01T21:45:42.066Z",
+          "duration": 8946.714,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "results_sha256": "6b6c795217223a4d6e4900cdd340b9e80ec94152f1a42f668f0e1be3662ae6a3",
+        "gate_exit_code": 0
+      },
+      "raw_execution_sha256": "d9f1375516edd9bc669a44f669725887b5199f74ca80624eb40f671e046b06de",
+      "raw_private_directory": "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/transfer-current-picker-2"
+    }
+  ],
+  "current_transfer_status": "2_actual_pass_0_skip",
+  "current_native_focus_status": "BLOCKED_GUI_LOCKED; originalconditionsandoriginalsourcerestored; awaitunlockedrerun",
+  "historical_main_focus_cause": "unresolved; no retroactive platform proof",
+  "real_Provider_calls": 0,
+  "final_parent_acceptance": false
+}

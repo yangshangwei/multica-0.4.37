@@ -1,0 +1,3 @@
+e2e/collaboration-source-surface.spec.ts(6,47): error TS6133: 'columnFor' is declared but its value is never read.
+e2e/fixtures/collaboration-source-surface.ts(152,174): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ MULTICA_TASK_CONFIG_ROOT: string; MULTICA_SERVER_URL: string; MULTICA_WORKSPACE_ID: string; MULTICA_TOKEN: string; }'.
+  No index signature with a parameter of type 'string' was found on type '{ MULTICA_TASK_CONFIG_ROOT: string; MULTICA_SERVER_URL: string; MULTICA_WORKSPACE_ID: string; MULTICA_TOKEN: string; }'.

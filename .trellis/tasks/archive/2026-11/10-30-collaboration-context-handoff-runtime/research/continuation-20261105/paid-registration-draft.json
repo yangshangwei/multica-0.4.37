@@ -1,0 +1,191 @@
+{
+  "series": "RK1",
+  "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
+  "registered_by_session": "claude multica-0-4-37-35",
+  "runnable": false,
+  "not_runnable_reasons": [
+    "quiet race-only verification and independent review pending",
+    "final committed registration/current operator facts and explicit single-scenario model window pending"
+  ],
+  "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
+  "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+  "hash_method": "framework: sha256 over sorted rk1_*_test.go basenames, each as name NUL length NUL content; launcher: sha256 of run_rk1.py",
+  "provider_executable": "/Users/artisan/.local/bin/claude",
+  "requested_model": "claude-opus-5-5",
+  "thinking": "provider_default",
+  "source_binding": {
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "method": "source_manifest.py; canonical product bytes verified on1a32",
+    "head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "file_count": 7990
+  },
+  "addendum_corrections_requested": [
+    "applied in runtime-addendum.json on this branch: H2b budget, order and product_fix.measured_by"
+  ],
+  "fake_proof": "fake-proof/summary.json",
+  "maintained_by": "Codex root coordinator; current fake evidence recorded; paid gate remains closed",
+  "launcher_regression_sha256": "ace9ef93297921fcf0ea49f1e1e7703f298700c58fefe912a3057e3a3e0e3b17",
+  "fake_proof_current_status": "Current1a32 normal62pass/0fail/skip independently reviewed; race60pass2fail/0skip with retained incomplete recording. Historical639 normal/race passes remain historical; paid gate stays closed.",
+  "implemented_review_fixes": {
+    "RKI1_RKI2": "62bd98eb9",
+    "RKI3_RKI4": "4229e2d18",
+    "evidence": "ff3532ee1; RKI1-RKI2-verification.json; RKI3-RKI4-verification.json",
+    "RKI5": "current hashes refreshed; launcher37 and exact-format/evidence contracts verified; independent recheck pass-with-notes closes RKI1-5"
+  },
+  "independent_review": {
+    "original": "independent-review/review.json; changes-required preserved",
+    "recheck": "independent-review/recheck-review.json; pass-with-notes; RKI1-5 closed",
+    "remaining": "selected v10 exact launcher clearance and full candidate check; password7; final source/CLI/config/artifact paid binding; exclusive authorized serial runtime window",
+    "current_result_review": {
+      "report": "../continuation-20261102/rki6-review/review.json",
+      "report_sha256": "41b99b24d9cecd457b5a2b192af0666e356be509d270c2ccca6f50e5cc8e7672",
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0,
+      "checks_passed": 1794,
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+      "real_provider_calls": 0,
+      "scope": "current final639 same-product normal/race fake evidence only"
+    }
+  },
+  "fake_proof_current": "fake-proof/final639-quiet-normal-race-summary.json",
+  "current_fake_execution": {
+    "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+    "normal_pass": 62,
+    "race_pass": 62,
+    "fail": 0,
+    "skip": 0,
+    "real_Provider_calls": 0,
+    "evidence": "fake-proof/final639-quiet-normal-race-summary.json",
+    "framework_changed": false
+  },
+  "current_fake_independent_result_review": {
+    "report": "../continuation-20261102/rki6-review/review.json",
+    "report_sha256": "41b99b24d9cecd457b5a2b192af0666e356be509d270c2ccca6f50e5cc8e7672",
+    "verdict": "pass-with-notes",
+    "blocking_findings_open": 0,
+    "checks_passed": 1794,
+    "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "real_provider_calls": 0,
+    "scope": "current final639 same-product normal/race fake evidence only"
+  },
+  "pre_result_review_reasons": [
+    "local integration completed; latest whole make check failed and final combined validation remains open",
+    "final clean candidate source/CLI/configuration/artifact fingerprints remain unregistered",
+    "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
+    "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
+  ],
+  "maintained_at": "2026-11-04T15:54:34.567289+00:00",
+  "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
+  "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json",
+  "historical_gate_reasons_before_20261104": [
+    "latest actual wholecheck v9 failed; selected v10 wholecheck and same-candidate password7 remain unaccepted",
+    "final clean candidate source/CLI/configuration/artifact paid binding remains unregistered",
+    "runtime25 budget is already approved; exclusive serial gateway/service window remains unestablished; external push/CI/deployment/publication remain unauthorized"
+  ],
+  "current_acceptance_20261104": {
+    "updated_at": "2026-11-04T15:54:34.567289+00:00",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "source_files": 7990,
+    "shared_gate": "../continuation-20261104/shared-gate-reconciliation.json",
+    "normal": {
+      "exit": 0,
+      "pass": 62,
+      "fail": 0,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/normal-review.json"
+    },
+    "race": {
+      "exit": 1,
+      "pass": 60,
+      "fail": 2,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/race-review.json",
+      "overlap_observed": true,
+      "overlap_causal_attribution": false
+    },
+    "password_runtime3": {
+      "passed": 3,
+      "review": "../continuation-20261104/password7/shared-runtime3-review.json",
+      "full7_passed": false
+    },
+    "window_owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+    "window_order": [
+      "shared password7",
+      "original14",
+      "runtime verification after explicit release"
+    ],
+    "runtime_cap": 25,
+    "runtime_consumed": 0,
+    "runnable": false
+  },
+  "provider_executable_sha256": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d",
+  "operator_configuration": {
+    "~/.claude/settings.json": "f778fbd569ab4aa918ee55446c94037f23cb9a9556bebce275941851eee99afc",
+    "~/.claude/settings.local.json": null,
+    "~/.claude/CLAUDE.md": "7cd2f85f979b138c2557af3cd736a4911c323e03ac2e6ace45f85070fd5feca7",
+    "~/.claude/hooks/": "094bb0d044f311ec46bed8880c1fe8d8804f00531b7bd8566f33a3d99111e0da",
+    "~/.claude/skills/": "0d7e2e273437697ef11e22d168f70fd0e7b7523e9411f1c2167b26e413919789",
+    "~/.claude/plugins/": "69c9fe69dda456f8ba04dbdc50df54b3069f314e279e876f0cda1e913ccf2b49",
+    "~/.claude/agents/": "e418e8871a56f58d80832c9a89e0430c37b12efd70d775539f9df512bf026bba",
+    "~/.claude/commands/": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "managed:/Library/Application Support/ClaudeCode/": null,
+    "configuration_environment_sha256": {
+      "CLAUDE_CONFIG_DIR": null,
+      "ANTHROPIC_BASE_URL": null,
+      "ANTHROPIC_MODEL": null,
+      "ANTHROPIC_DEFAULT_HAIKU_MODEL": null,
+      "ANTHROPIC_DEFAULT_SONNET_MODEL": null,
+      "ANTHROPIC_DEFAULT_OPUS_MODEL": null,
+      "CLAUDE_CODE_USE_BEDROCK": null,
+      "CLAUDE_CODE_USE_VERTEX": null,
+      "CLAUDE_CODE_USE_FOUNDRY": null,
+      "CLAUDE_CODE_SUBAGENT_MODEL": null,
+      "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": null,
+      "AWS_PROFILE": null,
+      "AWS_REGION": null,
+      "AWS_DEFAULT_REGION": null,
+      "AWS_CONFIG_FILE": null,
+      "AWS_SHARED_CREDENTIALS_FILE": null,
+      "GOOGLE_CLOUD_PROJECT": null,
+      "CLOUD_ML_REGION": null,
+      "GOOGLE_APPLICATION_CREDENTIALS": null,
+      "AZURE_CONFIG_DIR": null,
+      "ANTHROPIC_FOUNDRY_RESOURCE": null,
+      "ANTHROPIC_FOUNDRY_BASE_URL": null,
+      "HTTP_PROXY": null,
+      "HTTPS_PROXY": null,
+      "ALL_PROXY": null,
+      "NO_PROXY": null,
+      "http_proxy": null,
+      "https_proxy": null,
+      "all_proxy": null,
+      "no_proxy": null,
+      "SSL_CERT_FILE": null,
+      "SSL_CERT_DIR": null,
+      "NODE_EXTRA_CA_CERTS": null,
+      "BASH_MAX_OUTPUT_LENGTH": null
+    },
+    "selected_configuration_tree_sha256": null,
+    "selected_profile_files_sha256": {
+      "AWS_CONFIG_FILE": null,
+      "AWS_SHARED_CREDENTIALS_FILE": null,
+      "GOOGLE_APPLICATION_CREDENTIALS": null
+    },
+    "output_cap_overridden": false
+  },
+  "draft_only": true,
+  "candidate_toolchain": {
+    "go": "1.26.6",
+    "go_sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412"
+  },
+  "continuity_review": "../continuation-20261105/independent-review/continuity-review.json",
+  "source_of_operator_facts": "Fingerprint-only preparation; MUST recheck before actual entry, not a claim of current account readiness.",
+  "reference_base": "../real-model-rk1/; embedded historical relative references originate there, not in this draft directory",
+  "superseded_by": "../real-model-rk1/framework-registration.json",
+  "executable_registration": false
+}

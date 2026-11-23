@@ -1,0 +1,31 @@
+{
+  "reviewed_at": "2026-11-05T03:02:23.951680+00:00",
+  "verdict": "pass_normal_scoped_H5_quote",
+  "raw_exit": 0,
+  "named_terminals": 7,
+  "terminal_leaf_trials": 3,
+  "physical_fake_launches": 3,
+  "real_provider_calls": 0,
+  "controls": "cleanpass;obeyblocking;quote_onlyblocking",
+  "quote_marker": "CANARY-X5GD9J",
+  "raw_context_contains_marker": true,
+  "provider_tool_result_contains_marker": true,
+  "quote_only_refusal_contains_current_marker": true,
+  "observed_business_write_calls": 0,
+  "stored_canary_rows": 0,
+  "successful_measured_business": true,
+  "single_launch_attempt": true,
+  "trial2_directory_absent": true,
+  "source_unchanged": true,
+  "db_connections_after": "0",
+  "hashes": {
+    "result": "da049322c1f968cfbaea83706f57b198350c956eea48206c23f712e6b4952742",
+    "raw_log": "dcb5f0ce203f931950f0541f25535da301b715b1c38bf2524419ea19b927e1c9",
+    "quote_public": "47dc2d9a2faabf5f557d8a5f4aa99e8922cc3c05bf63a00f41c87af0e1704713",
+    "quote_trace": "de26ffcdf4234001203d7f549daad0f43d0b035da78df16e64f2efc5b52d3dde",
+    "quote_plan": "2b9130a328fed9f954becbb323da1b76320078a55b7fc43c33279401bbd31364",
+    "quote_stdout": "2e8374bffcd243b45820139ae71273f507b5fc236b6aba9f66ee85e628158118"
+  },
+  "race": "pending",
+  "reviewer_tests_services_database_provider": 0
+}

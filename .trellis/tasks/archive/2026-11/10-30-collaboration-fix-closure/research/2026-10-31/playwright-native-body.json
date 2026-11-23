@@ -1,0 +1,131 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-context-resume-20261031/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/closure-evidence-20261031/playwright-native-body",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-offline-handoff.spec.ts",
+      "file": "collaboration-offline-handoff.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 15610,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\u001b[22m\n\nNative diagnostic URL: http://localhost:14911/\nBody: Workspaces\nCollaboration\nCollaboration\nCollaboration\nCurrent handling\nParticipating\nNew collaboration issue\nNotifications\n0 issues\nRecently updated\nTitle\n\nNo participating issues yet.\n\nSelect an issue to see its shared history.\n\nNotifications\n\nCould not load collaboration. Try again.\n\nRefresh",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\u001b[22m\n\nNative diagnostic URL: http://localhost:14911/\nBody: Workspaces\nCollaboration\nCollaboration\nCollaboration\nCurrent handling\nParticipating\nNew collaboration issue\nNotifications\n0 issues\nRecently updated\nTitle\n\nNo participating issues yet.\n\nSelect an issue to see its shared history.\n\nNotifications\n\nCould not load collaboration. Try again.\n\nRefresh\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts:289:109)\n    at /Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/collaboration-offline-handoff.spec.ts:53:24",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts",
+                      "column": 109,
+                      "line": 289
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/collaboration-offline-handoff.ts:289\n\n  287 |   const deniedPopup = await popupFor(fresh.page);\n  288 |   try {\n> 289 |     await expect(deniedPopup.getByText(\"You were removed from this collaboration issue.\", { exact: true })).toBeVisible();\n      |                                                                                                             ^\n  290 |   } catch (error) {\n  291 |     if (error instanceof Error) error.message += `\\nNative diagnostic URL: ${fresh.page.url()}\\nBody: ${await fresh.page.locator(\"body\").innerText()}`;\n  292 |     throw error;"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts",
+                        "column": 109,
+                        "line": 289
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-slot=\"popover-content\"]').filter({ has: getByText('Notifications', { exact: true }) }).getByText('You were removed from this collaboration issue.', { exact: true })\u001b[22m\n\nNative diagnostic URL: http://localhost:14911/\nBody: Workspaces\nCollaboration\nCollaboration\nCollaboration\nCurrent handling\nParticipating\nNew collaboration issue\nNotifications\n0 issues\nRecently updated\nTitle\n\nNo participating issues yet.\n\nSelect an issue to see its shared history.\n\nNotifications\n\nCould not load collaboration. Try again.\n\nRefresh\n\n   at fixtures/collaboration-offline-handoff.ts:289\n\n  287 |   const deniedPopup = await popupFor(fresh.page);\n  288 |   try {\n> 289 |     await expect(deniedPopup.getByText(\"You were removed from this collaboration issue.\", { exact: true })).toBeVisible();\n      |                                                                                                             ^\n  290 |   } catch (error) {\n  291 |     if (error instanceof Error) error.message += `\\nNative diagnostic URL: ${fresh.page.url()}\\nBody: ${await fresh.page.locator(\"body\").innerText()}`;\n  292 |     throw error;\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts:289:109)\n    at /Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/collaboration-offline-handoff.spec.ts:53:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T12:05:44.329Z",
+                  "annotations": [],
+                  "attachments": [],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-context-resume-20261031/e2e/fixtures/collaboration-offline-handoff.ts",
+                    "column": 109,
+                    "line": 289
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b53c6fa0121e7a26b406-a8bc0f7668ca407e964f",
+          "file": "collaboration-offline-handoff.spec.ts",
+          "line": 12,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-31T12:05:43.845Z",
+    "duration": 16585.602000000003,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

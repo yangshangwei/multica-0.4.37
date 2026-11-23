@@ -1,8 +1,82 @@
+import { hasBatchIssueMutation, isBatchUpdateComplete, parseBatchUpdateOutcome, validBatchCompletionOptions } from "./issue-batch-update";
 import { parseIteration, IterationCapabilitiesSchema, IterationSettingsSchema, IterationListSchema, IterationDetailSchema, IterationIssuesSchema, IterationEventsSchema, IterationPreviewSchema, IterationWriteResultSchema, type IterationCreateInput, type IterationDraft, type IterationWriteInput } from "./iteration-schemas";
 import { z } from "zod";
+import {
+  CompletionAuthorizationSchema, CompletionAuthorizationRequestSchema, CompletionBindingSchema,
+  CompletionCandidatesSchema, CompletionPreviewInputSchema, CompletionPreviewSchema, CompletionReceiptSchema,
+  completionUUID, completionRevision, completionReason, matchesCompletionAuthorization, matchesCompletionReceipt,
+  type CompletionAuthorization, type CompletionAuthorizationRequest, type CompletionCandidates, type CompletionPreview,
+  type CompletionPreviewInput, type CompletionWriteResult,
+} from "../issues/completion-schema";
+import { parseCollaborationActivity } from "../collaboration/activity-schema";
+import { CollaborationCompletionCandidatesSchema, AdminCollaborationCompletionCandidatesSchema, CollaborationCompletionPreviewInputSchema, CollaborationCompletionPreviewSchema,
+  type CollaborationCompletionCandidates, type CollaborationCompletionPreviewInput, type CollaborationCompletionPreview, type CollaborationCompletionRead } from "../collaboration/completion-schema";
+import { collaborationDeliveryRefusalStatus, parseCollaborationDeliveryHistory } from "../collaboration/delivery-schema";
+import { CollaborationInformationCursorSchema, CollaborationInformationMetadataSchema, CollaborationInformationRepairSelectionSchema,
+  CollaborationInformationTextSchema, parseCollaborationInformationHistory, parseCollaborationInformationDetail,
+  parseCollaborationInformationAffected, type CollaborationInformationRepairSelection } from "../collaboration/information-schema";
+import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
+import { COLLABORATION_HANDOFF_MAX_JSON_BYTES, parseCollaborationRunHandoff } from "../collaboration/run-handoff-schema";
+import {
+  CollaborationKnowledgeApproveRequestSchema, CollaborationKnowledgeDecisionRequestSchema, CollaborationKnowledgeProposalSchema,
+  CollaborationKnowledgeProtocolError, CollaborationKnowledgeTargetSchema, knowledgePageQuery, knowledgeTargetsEqual, knowledgeReceiptRefusalStatus,
+  parseCollaborationKnowledgeCandidates, parseCollaborationKnowledgeDetail, parseCollaborationKnowledgeReceipt, parseCollaborationKnowledgeTargetList,
+  type CollaborationKnowledgeApproveRequest, type CollaborationKnowledgeDecisionRequest, type CollaborationKnowledgePageParams,
+  type CollaborationKnowledgeProposal, type CollaborationKnowledgeReceipt, type CollaborationKnowledgeTarget,
+} from "../collaboration/knowledge-schema";
+import { ProjectKnowledgePolicyRequestSchema, KnowledgeAutomationRetryRequestSchema, parseProjectKnowledgePolicy,
+  parseProjectKnowledgePolicyReceipt, parseKnowledgeAutomationJobs, parseKnowledgeAutomationRetryReceipt,
+  type ProjectKnowledgePolicyRequest, type KnowledgeAutomationRetryRequest, type KnowledgeAutomationReceipt } from "../collaboration/knowledge-automation-schema";
+import { parseCollaborationMemory, parseCollaborationMemoryReceipt, parseCollaborationMemoryVersion, parseCollaborationMemoryVersions,
+  type CollaborationMemoryActionName, type CollaborationMemoryReceipt } from "../collaboration/memory-schema";
+import { positiveVersion } from "../collaboration/version";
+import { COLLABORATION_EXECUTION_VIEW_VERSION } from "../collaboration/execution-schema";
+import { parseCollaborationParticipants } from "../collaboration/participant-schema";
+import { CollaborationDiscussionSelectionSchema, parseCollaborationDiscussionReceipt, parseCollaborationIssueReactions, type CollaborationDiscussionSelection } from "../collaboration/discussion-schema";
+import { CollaborationCreationInputSchema, parseCollaborationCreationOptions, parseCollaborationCreationResult, type CollaborationCreationInput } from "../collaboration/creation-schema";
+import { COLLABORATION_ATTACHMENT_MAX_BYTES, CollaborationAttachmentUploadInputSchema, CollaborationAttachmentSelectionSchema,
+  parseCollaborationAttachment, parseCollaborationAttachments, parseCollaborationDraftAttachments,
+  parseCollaborationAttachmentDeliveryReceipt, parseCollaborationAttachmentCapability,
+  type CollaborationAttachmentUploadInput, type CollaborationAttachmentSelection } from "../collaboration/attachment-schema";
+import { CollaborationCommandCancelInputSchema, parseCollaborationCommandCancelReceipt, matchesCollaborationCommandCancelReceipt, type CollaborationCommandCancelInput } from "../collaboration/command-schema";
 import { PersonalAccessTokenListSchema, CreatePersonalAccessTokenResponseSchema } from "./personal-access-token-schemas";
-import { withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
+import { IssueBudgetSchema, type IssueBudget } from "./issue-budget-schemas";
+import {
+  parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions, parseCollaborationRecipient, parseCollaborationRecipientSearch, parseCollaborationFieldOptions,
+  type CollaborationWriteInput, type CollaborationParticipantInput, type CollaborationHandoffInput,
+  type CollaborationInformationReturnInput, type CollaborationAcceptanceInput, type CollaborationAcceptanceReturnInput, type CollaborationAIPolicyInput, type CollaborationEditInput, type CollaborationIterationInput, type CollaborationRecipientInput, type CollaborationRecipientSearchInput,
+  type CollaborationStatusAction, type CollaborationLifecycleAction, type CollaborationStatusInput, type CollaborationLifecycleInput,
+} from "../collaboration/schema";
+import {
+  parseCollaborationComments, parseCollaborationComment, parseCollaborationCommentHistory, parseCollaborationMentionTargets,
+  parseCollaborationTriggerPreview, parseCollaborationCommentReceipt, parseCollaborationNotifications,
+  matchesCollaborationCommentAttachments,
+  parseCollaborationNotificationReceipt, type CollaborationCommentInput, type CollaborationPreviewInput,
+} from "../collaboration/content-schema";
+import { isCollaborationNotificationView, type CollaborationNotificationView } from "../collaboration/notification-view";
+import { CollaborationControlInputSchema, parseCollaborationControlReceipt, matchesCollaborationControlReceipt, type CollaborationControlInput } from "../collaboration/control-schema";
+import {
+  CollaborationSwitchInputSchema, collaborationSwitchRequest, matchesCollaborationSwitchReceipt,
+  parseCollaborationSwitchReceipt, parseCollaborationSwitchProposal, parseCollaborationSwitchProposals, type CollaborationSwitchInput,
+} from "../collaboration/switch-schema";
+import { RECOVERY_REQUEST_TIMEOUT_MS, withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
+import { CollaborationResourceInputSchema, collaborationResourceRequest, matchesCollaborationResourceReceipt,
+  parseCollaborationResources, parseCollaborationResourceOptions, parseCollaborationResourceIdentity, parseCollaborationResourceReceipt,
+  type CollaborationResourceInput } from "../collaboration/resource-schema";
+import { parseCollaborationResourceOffer, parseCollaborationResourceOffersPage } from "../collaboration/resource-offer-schema";
+import { parseCollaborationCommandHistory } from "../collaboration/command-history-schema";
+import {
+  classifyCollaborationStageError, classifyCollaborationStageResponse, collaborationStageErrorCode, hasCollaborationStageRefusalData, isCollaborationStageAccessAnswer,
+  parseCollaborationStageCodeCandidate, parseCollaborationStagePolicy, parseCollaborationStageProposalDetail, parseCollaborationStageProposalPage, parseCollaborationStageView,
+  COLLABORATION_STAGE_LIMITS,
+  type CollaborationStageIssueAction, type CollaborationStagePolicy, type CollaborationStageProposalDetail, type CollaborationStageProposalPage,
+  type CollaborationStageRead, type CollaborationStageSettledResult, type CollaborationStageTransportMode, type CollaborationStageTransportTarget,
+  type CollaborationStageView, type CollaborationStageWriteResult, type CollaborationStageCodeCandidate,
+} from "../collaboration/stage-schema";
+import { parseCollaborationTestReport, parseCollaborationTestReports, verifyCollaborationTestReportLogs,
+  type CollaborationTestReportRead, type CollaborationTestReport, type CollaborationTestReports } from "../collaboration/stage-test-report-schema";
 export type { ApiRequestOptions } from "./request-lifecycle";
+export type CompletionRequestOptions = ApiRequestOptions & { workspaceId: string };
 import type { ProjectUpdateDraft, ProjectUpdateWriteInput, ProjectRiskSignal } from "../types/project-p1";
 import { parseProjectP1, ProjectCapabilitiesSchema, ProjectPlanningTimezoneSchema, ProjectOverviewSchema,
   ProjectRiskPageSchema, ProjectUpdatesPageSchema, ProjectUpdateRevisionsPageSchema, ProjectUpdatePreviewSchema,
@@ -26,8 +100,13 @@ import { parseAdminInstallationList, parseAdminInstallationDetail, parseAdminUna
 import { parseAdminExecutionList, parseAdminExecution, parseAdminIssueList } from "../admin/execution-schemas";
 import { parseAdminUsers, parseAdminUserDetail, parseAdminUserOperation, parseAdminUserOperations, type AdminUserFilters, type AdminAccountAction, type AdminAccountChange, type AdminRoleChange } from "../admin/user-schema";
 import { parseAdminMe } from "../admin/schema";
+import { AdminCollaborationChangeSchema, parseAdminCollaborationIssueList, parseAdminCollaborationDetail,
+  parseAdminCollaborationCandidates, parseAdminCollaborationResult, matchesAdminCollaborationResult,
+  AdminCollaborationMemoryPurgeSchema, parseAdminCollaborationMemoryVersions, parseAdminCollaborationMemoryResult, matchesAdminCollaborationMemoryResult,
+  type AdminCollaborationChange, type AdminCollaborationMemoryPurge } from "../admin/collaboration-schema";
 import { parseAdminOperation, parseAdminAdmissionResult, parseAdminCancellationResult } from "../admin/operation-schema";
-import type { AdminAdmissionChange, AdminExecutionCancellation } from "../admin/control-schema";
+import type { AdminAdmissionChange, AdminCollaborationGateChange, AdminExecutionCancellation } from "../admin/control-schema";
+import { parseAdminCollaborationGate, parseAdminCollaborationGateResult } from "../admin/collaboration-gate-schema";
 import { parseAdminOverview, parseAdminHealth, parseAdminSettings, parseAdminWorkspaces, parseAdminAudit } from "../admin/observability-schema";
 import { parseAdminAlert, parseAdminAlerts, parseAdminAlertResult, type AdminAlertChange } from "../admin/alert-schema";
 import { configStore } from "../config";
@@ -40,6 +119,11 @@ import type {
   CreateIssueRequest,
   MoveIssueRequest,
   UpdateIssueRequest,
+  DeliveryCompletionHintRequest,
+  DeliveryCompletionBinding,
+  DeliveryCompletionHintResponse,
+  BatchUpdateIssuesOptions,
+  BatchUpdateIssuesResponse,
   GroupedIssuesResponse,
   ListIssuesResponse,
   SearchIssuesResponse,
@@ -76,6 +160,7 @@ import type {
   CreateRuntimeProfileRequest,
   UpdateRuntimeProfileRequest,
   InboxItem,
+  InboxSnoozeReceipt,
   InboxWorkspaceUnread,
   IssueSubscriber,
   Comment,
@@ -376,6 +461,8 @@ import {
   IssueTableRowsResponseSchema,
   ListAutopilotsResponseSchema,
   EMPTY_LIST_AUTOPILOTS_RESPONSE,
+  AutopilotSchema,
+  EMPTY_AUTOPILOT,
   AutopilotRunSchema,
   AutopilotQuotaUsageSchema,
   AutopilotTemplateListResponseSchema,
@@ -387,6 +474,7 @@ import {
   UNREADABLE_CRON_PREVIEW_RESPONSE,
   ListIssuesResponseSchema,
   CreateIssueResponseSchema,
+  DeliveryCompletionHintResponseSchema,
   IssueSchema,
   AgentTaskSchema,
   SourceContextPreviewSchema,
@@ -462,6 +550,7 @@ import {
   InboxUnreadSummarySchema,
   EMPTY_INBOX_UNREAD_SUMMARY,
   InboxItemListSchema,
+  InboxSnoozeReceiptSchema,
   EMPTY_INBOX_ITEMS,
   NotificationPreferenceResponseSchema,
   EMPTY_NOTIFICATION_PREFERENCE_RESPONSE,
@@ -617,6 +706,22 @@ export class ApiError extends Error {
   }
 }
 
+/** A batch can commit a prefix even when the request returns an error. */
+export class BatchUpdateError extends ApiError {
+  readonly outcomeUnknown: boolean;
+
+  constructor(
+    message: string,
+    readonly outcome?: BatchUpdateIssuesResponse,
+    source?: ApiError,
+  ) {
+    super(message, source?.status ?? 0, source?.statusText ?? "Unconfirmed batch update",
+      source?.body, source ? () => !source.isStaleAuthResponse : undefined, source?.retryAfterSeconds);
+    this.name = "BatchUpdateError";
+    this.outcomeUnknown = outcome?.results === undefined || outcome.results.some((item) => item.state === "unknown");
+  }
+}
+
 /** A successful write may have committed, but its response cannot identify it. */
 export class SkillCreationUnconfirmedError extends Error {
   constructor() {
@@ -635,6 +740,10 @@ function workspaceRequestInit(options?: { workspaceId?: string; signal?: AbortSi
       "X-Workspace-Slug": "",
     },
   };
+}
+
+function collaborationExecutionReadPath(path: string): string {
+  return `${path}${path.includes("?") ? "&" : "?"}execution_view_version=${COLLABORATION_EXECUTION_VIEW_VERSION}`;
 }
 
 function sameResourceIdentity(actual: string, expected: string): boolean {
@@ -869,9 +978,1474 @@ export class ApiClient {
     return `${this.endpointEpoch}:${this.credentialEpoch}`;
   }
 
+  private async fetchCollaborationVersionedRead<T>(path: string, options: RequestInit | undefined, read: (path: string) => Promise<T>): Promise<T> {
+    const scope = this.getSessionScope();
+    const authEpoch = this.authEpoch;
+    try { return await read(path); }
+    catch (error) {
+      const queryStart = path.indexOf("?");
+      const query = new URLSearchParams(queryStart < 0 ? "" : path.slice(queryStart + 1));
+      if ((options?.method ?? "GET").toUpperCase() !== "GET" || query.getAll("execution_view_version").length !== 1 ||
+        query.get("execution_view_version") !== String(COLLABORATION_EXECUTION_VIEW_VERSION) || !(error instanceof ApiError) || error.status !== 400 ||
+        !z.object({ code: z.enum(["invalid_records_query", "invalid_resource_scope", "invalid_resource_offer_query"]) }).safeParse(error.body).success) throw error;
+      if (scope !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Collaboration request superseded", "AbortError");
+      options?.signal?.throwIfAborted();
+      // Installed pre-v6 servers reject this extra query parameter. Retry one
+      // read with its original scope; writes and malformed responses never retry.
+      query.delete("execution_view_version");
+      return read(`${path.slice(0, queryStart)}${query.size ? `?${query}` : ""}`);
+    }
+  }
+
+  private async fetchCollaboration(path: string, options?: RequestInit, expectedStatus?: number, maxJSONBytes?: number): Promise<unknown> {
+    const scope = this.getSessionScope();
+    const authEpoch = this.authEpoch;
+    try {
+      let data: unknown;
+      if (maxJSONBytes !== undefined) data = await this.fetchCollaborationVersionedRead(path, options, async (candidate) => {
+        const response = await this.fetchRaw(candidate, { ...options, extraHeaders: { "Content-Type": "application/json" } });
+        const bytes = await response.arrayBuffer();
+        return bytes.byteLength <= maxJSONBytes ? JSON.parse(new TextDecoder().decode(bytes)) : undefined;
+      });
+      else if (expectedStatus === undefined) data = await this.fetchCollaborationVersionedRead(path, options, (candidate) => this.fetch<unknown>(candidate, options));
+      else {
+        const response = await this.fetchRaw(path, { ...options, extraHeaders: { "Content-Type": "application/json" } });
+        data = response.status === expectedStatus ? await response.json() : undefined;
+      }
+      if (scope !== this.getSessionScope() || authEpoch !== this.authEpoch) {
+        throw new DOMException("Collaboration request superseded", "AbortError");
+      }
+      options?.signal?.throwIfAborted();
+      return data;
+    } catch (error) {
+      if (scope !== this.getSessionScope()) {
+        throw new DOMException("Collaboration request superseded", "AbortError");
+      }
+      options?.signal?.throwIfAborted();
+      // JSON parser errors can contain response text. Let the schema produce
+      // a redacted unavailable result without exposing that private content.
+      if (error instanceof SyntaxError) return undefined;
+      throw error;
+    }
+  }
+
+  private async fetchCollaborationOptionalHistory(path: string, options?: RequestInit, maxJSONBytes?: number): Promise<unknown> {
+    try { return await this.fetchCollaboration(path, options, undefined, maxJSONBytes); }
+    catch (error) {
+      // Older servers may have no history route. Only the object's structured
+      // not_found response establishes access loss; an absent route is unavailable.
+      if (error instanceof ApiError && error.status === 404 && !z.object({ code: z.literal("not_found") }).safeParse(error.body).success) return undefined;
+      throw error;
+    }
+  }
+
+  async getCollaborationIssue(id: string, options?: ApiRequestOptions) {
+    const raw = await withRequestDeadline(
+      { ...options, timeoutMs: options?.timeoutMs ?? RECOVERY_REQUEST_TIMEOUT_MS },
+      this.endpointController.signal,
+      (signal) => this.fetchCollaboration(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}`), { signal }),
+    );
+    const issue = parseCollaborationIssue(raw);
+    return issue && sameResourceIdentity(issue.id, id) ? issue : null;
+  }
+
+  async getCollaborationCreation(sourceWorkspaceId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const query = new URLSearchParams({ source_workspace_id: sourceWorkspaceId });
+    const raw = await this.fetchCollaborationRecovery(collaborationExecutionReadPath(`/api/collaboration/creations/${encodeURIComponent(requestId)}?${query}`), options);
+    const issue = parseCollaborationIssue(raw);
+    return issue && sameResourceIdentity(issue.source_workspace.id, sourceWorkspaceId) ? issue : null;
+  }
+
+  async getCollaborationCreationResult(sourceWorkspaceId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const query = new URLSearchParams({ source_workspace_id: sourceWorkspaceId });
+    const scope = this.getSessionScope();
+    const authEpoch = this.authEpoch;
+    let raw: unknown;
+    try {
+      const response = await this.fetchRaw(`/api/collaboration/creations/${encodeURIComponent(requestId)}/result?${query}`, { signal: options?.signal });
+      // Only the completed-result contract proves rejection. An accepted or
+      // otherwise unexpected successful response cannot retire a request.
+      raw = response.status === 200 ? await response.json() : undefined;
+    } catch (error) {
+      if (scope !== this.getSessionScope()) throw new DOMException("Collaboration result superseded", "AbortError");
+      options?.signal?.throwIfAborted();
+      if (!(error instanceof SyntaxError) && !(error instanceof ApiError && error.status === 404)) throw error;
+    }
+    if (scope !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Collaboration result superseded", "AbortError");
+    options?.signal?.throwIfAborted();
+    const result = parseCollaborationCreationResult(raw);
+    return result && result.request_id === requestId && sameResourceIdentity(result.source_workspace_id, sourceWorkspaceId) ? result : null;
+  }
+
+  private async fetchCollaborationRecovery(path: string, options?: { signal?: AbortSignal }): Promise<unknown> {
+    try { return await this.fetchCollaborationOptionalHistory(path, { signal: options?.signal }); }
+    catch (error) {
+      // No receipt proves neither failure nor access loss. Keep the original intent.
+      if (error instanceof ApiError && error.status === 404 &&
+        z.object({ code: z.enum(["not_found", "operation_not_found"]) }).safeParse(error.body).success) return null;
+      throw error;
+    }
+  }
+
+  async getCollaborationCreationOptions(sourceWorkspaceId?: string, options?: { signal?: AbortSignal; parentSearch?: string; projectId?: string }) {
+    const query = new URLSearchParams();
+    if (sourceWorkspaceId) query.set("source_workspace_id", sourceWorkspaceId);
+    if (sourceWorkspaceId && options?.parentSearch) query.set("parent_search", options.parentSearch);
+    if (options?.projectId !== undefined) {
+      if (!sourceWorkspaceId) throw new TypeError("A selected project requires its source workspace");
+      z.uuid().parse(options.projectId);
+      query.set("project_id", options.projectId);
+    }
+    const suffix = query.size ? `?${query}` : "";
+    const result = parseCollaborationCreationOptions(await this.fetchCollaboration(`/api/collaboration/creation-options${suffix}`, { signal: options?.signal }));
+    const observation = result?.stage_policy_observation;
+    return result && (sourceWorkspaceId ? result.source !== null && sameResourceIdentity(result.source.id, sourceWorkspaceId) : result.source === null) &&
+      (observation === undefined || (observation.source_workspace_id === null ? !sourceWorkspaceId : sameResourceIdentity(observation.source_workspace_id, sourceWorkspaceId ?? "")) &&
+        (options?.projectId ? observation.state === "known" && sameResourceIdentity(observation.project_id, options.projectId) : observation.state === "not_selected")) ? result : null;
+  }
+
+  async createCollaborationIssue(requestId: string, input: CollaborationCreationInput, options?: { signal?: AbortSignal }) {
+    const body = CollaborationCreationInputSchema.parse(input);
+    const result = parseCollaborationIssue(await this.fetchCollaboration("/api/collaboration/issues", {
+      method: "POST", body: JSON.stringify(body), headers: { "Idempotency-Key": requestId }, signal: options?.signal,
+    }));
+    return result && sameResourceIdentity(result.source_workspace.id, body.source_workspace_id) ? result : null;
+  }
+
+  async uploadCollaborationAttachment(input: CollaborationAttachmentUploadInput, requestId: string, file: File, options?: { signal?: AbortSignal }) {
+    const context = CollaborationAttachmentUploadInputSchema.parse(input);
+    if (file.size > COLLABORATION_ATTACHMENT_MAX_BYTES) throw new TypeError("Collaboration attachment is too large");
+    const body = new FormData();
+    for (const [key, value] of Object.entries(context)) body.set(key, value);
+    body.set("file", file);
+    const scope = this.getSessionScope();
+    let raw: unknown;
+    try {
+      const response = await this.fetchRaw("/api/collaboration/attachments/drafts", {
+        method: "POST", body, headers: { "Idempotency-Key": requestId }, signal: options?.signal,
+      });
+      raw = await response.json();
+    } catch (error) {
+      if (scope !== this.getSessionScope()) throw new DOMException("Collaboration upload superseded", "AbortError");
+      options?.signal?.throwIfAborted();
+      if (error instanceof ApiError && error.status === 404 && !z.object({ code: z.string() }).safeParse(error.body).success) return null;
+      if (!(error instanceof SyntaxError)) throw error;
+    }
+    if (scope !== this.getSessionScope()) throw new DOMException("Collaboration upload superseded", "AbortError");
+    options?.signal?.throwIfAborted();
+    const result = parseCollaborationAttachment(raw);
+    return result && result.draft_id === context.draft_id &&
+      (!("source_workspace_id" in context) || result.source_workspace_id === context.source_workspace_id && result.intended_issue_id === null) &&
+      (!("issue_id" in context) || result.intended_issue_id === context.issue_id && (result.issue_id === null || result.issue_id === context.issue_id)) ? result : null;
+  }
+
+  async getCollaborationAttachmentUpload(draftId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationAttachment(await this.fetchCollaborationRecovery(`/api/collaboration/attachments/drafts/${encodeURIComponent(draftId)}/operations/${encodeURIComponent(requestId)}`, options));
+    return result && result.draft_id !== null && sameResourceIdentity(result.draft_id, draftId) ? result : null;
+  }
+
+  async getCollaborationDraftAttachments(draftId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationDraftAttachments(await this.fetchCollaborationOptionalHistory(`/api/collaboration/attachments/drafts/${encodeURIComponent(draftId)}`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.draft_id, draftId) ? result : null;
+  }
+
+  async getCollaborationAttachments(issueId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationAttachments(await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(issueId)}/attachments`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, issueId) ? result : null;
+  }
+
+  async getCollaborationAttachment(issueId: string, attachmentId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationAttachment(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(issueId)}/attachments/${encodeURIComponent(attachmentId)}`, { signal: options?.signal }));
+    return result && result.issue_id !== null && sameResourceIdentity(result.issue_id, issueId) && sameResourceIdentity(result.id, attachmentId) ? result : null;
+  }
+
+  async getCollaborationAttachmentBytes(issueId: string, attachmentId: string, intent: "content" | "download" = "content", options?: { signal?: AbortSignal }) {
+    const scope = this.getSessionScope();
+    try {
+      const response = await this.fetchRaw(`/api/collaboration/issues/${encodeURIComponent(issueId)}/attachments/${encodeURIComponent(attachmentId)}/${intent}`, { signal: options?.signal });
+      const length = response.headers.get("content-length");
+      if (length && (!/^\d+$/.test(length) || Number(length) > COLLABORATION_ATTACHMENT_MAX_BYTES)) return null;
+      const value = await response.blob();
+      if (scope !== this.getSessionScope()) throw new DOMException("Collaboration content superseded", "AbortError");
+      options?.signal?.throwIfAborted();
+      return value.size <= COLLABORATION_ATTACHMENT_MAX_BYTES ? value : null;
+    } catch (error) {
+      if (scope !== this.getSessionScope()) throw new DOMException("Collaboration content superseded", "AbortError");
+      options?.signal?.throwIfAborted();
+      throw error;
+    }
+  }
+
+  async getCollaborationAttachmentCapability(issueId: string, attachmentId: string, version: string, intent: "content" | "download", options?: { signal?: AbortSignal }) {
+    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(issueId)}/attachments/${encodeURIComponent(attachmentId)}/capabilities`, {
+      method: "POST", body: JSON.stringify({ intent }), signal: options?.signal,
+    });
+    return parseCollaborationAttachmentCapability(raw, this.baseUrl || (typeof window !== "undefined" ? window.location.origin : ""), issueId, attachmentId, version);
+  }
+
+  async deliverCollaborationAttachments(issueId: string, requestId: string, input: CollaborationAttachmentSelection, options?: { signal?: AbortSignal }) {
+    const body = CollaborationAttachmentSelectionSchema.parse(input);
+    const result = parseCollaborationAttachmentDeliveryReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(issueId)}/attachments/deliver`, {
+      method: "POST", body: JSON.stringify(body), headers: { "Idempotency-Key": requestId }, signal: options?.signal,
+    }));
+    return result && sameResourceIdentity(result.issue_id, issueId) && result.attachment_ids.length === body.attachment_ids.length &&
+      result.attachment_ids.every((id) => body.attachment_ids.includes(id)) ? result : null;
+  }
+
+  async getCollaborationAttachmentDeliveryOperation(issueId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationAttachmentDeliveryReceipt(await this.fetchCollaborationRecovery(`/api/collaboration/issues/${encodeURIComponent(issueId)}/attachments/operations/${encodeURIComponent(requestId)}`, options));
+    return result && sameResourceIdentity(result.issue_id, issueId) ? result : null;
+  }
+
+  async resolveCollaborationRecipient(input: CollaborationRecipientInput, options?: { signal?: AbortSignal }) {
+    const { issueId, sourceWorkspaceId, kind, value } = input;
+    if (!((typeof issueId === "string" && sourceWorkspaceId === undefined) ||
+      (typeof sourceWorkspaceId === "string" && issueId === undefined))) {
+      throw new TypeError("Recipient lookup requires exactly one context");
+    }
+    const raw = await this.fetchCollaboration("/api/collaboration/recipients/resolve", {
+      method: "POST",
+      signal: options?.signal,
+      body: JSON.stringify({ kind, value, issue_id: issueId, source_workspace_id: sourceWorkspaceId }),
+    });
+    const result = parseCollaborationRecipient(raw);
+    if (!result) return null;
+    if (kind === "user_id" && !sameResourceIdentity(result.recipient.user_id, value.trim())) return null;
+    const matchesScope = issueId !== undefined
+      ? result.issue_id !== null && sameResourceIdentity(result.issue_id, issueId)
+      : sourceWorkspaceId !== undefined && result.issue_id === null && sameResourceIdentity(result.source_workspace_id, sourceWorkspaceId);
+    return matchesScope ? result : null;
+  }
+
+  async searchCollaborationRecipients(input: CollaborationRecipientSearchInput, options?: { signal?: AbortSignal }) {
+    const { issueId, sourceWorkspaceId, cursor } = input;
+    const q = (input.q ?? "").trim();
+    const limit = input.limit ?? 30;
+    const membersOnly = input.membersOnly === true;
+    if (!((typeof issueId === "string" && sourceWorkspaceId === undefined) ||
+      (typeof sourceWorkspaceId === "string" && issueId === undefined))) {
+      throw new TypeError("Recipient search requires exactly one context");
+    }
+    if (!Number.isInteger(limit) || limit < 1 || limit > 50 || (cursor !== undefined && (typeof cursor !== "string" || cursor === ""))) {
+      throw new TypeError("Invalid collaboration recipient search");
+    }
+    // An older server has no search route; only a structured not_found is access loss.
+    const result = parseCollaborationRecipientSearch(await this.fetchCollaborationOptionalHistory("/api/collaboration/recipients/search", {
+      method: "POST",
+      signal: options?.signal,
+      body: JSON.stringify({ issue_id: issueId, source_workspace_id: sourceWorkspaceId, q, cursor, limit, members_only: membersOnly }),
+    }));
+    if (!result) return null;
+    const matchesScope = issueId !== undefined
+      ? result.issue_id !== null && sameResourceIdentity(result.issue_id, issueId)
+      : sourceWorkspaceId !== undefined && result.issue_id === null && sameResourceIdentity(result.source_workspace_id, sourceWorkspaceId);
+    if (!matchesScope || result.recipients.length > limit || (cursor !== undefined && result.next_cursor === cursor)) return null;
+    if (!membersOnly) return q === "" && cursor === undefined ? result : { ...result, recent: [] };
+    // Members-only lists never offer an external or undisclosed account.
+    const member = (account: { external: boolean | null }) => account.external === false;
+    return { ...result, recent: q === "" && cursor === undefined ? result.recent.filter(member) : [], recipients: result.recipients.filter(member),
+      next_cursor: result.source_member ? result.next_cursor : null };
+  }
+
+  async getCollaborationWorkbench(params: { view?: "current" | "participating"; cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+    const query = new URLSearchParams({ view: params.view ?? "current" });
+    if (params.limit !== undefined) query.set("limit", String(params.limit));
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    const raw = await this.fetchCollaboration(`/api/me/workbench?${query}`, { signal: options?.signal });
+    return parseCollaborationWorkbench(raw);
+  }
+
+  async getCollaborationComments(id: string, params: { cursor?: string; limit?: number; maxBytes?: number } = {}, options?: { signal?: AbortSignal }) {
+    const query = new URLSearchParams({ limit: String(params.limit ?? 100) });
+    if (params.cursor) query.set("cursor", params.cursor);
+    if (params.maxBytes !== undefined) query.set("max_bytes", String(params.maxBytes));
+    const result = parseCollaborationComments(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments?${query}`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) && (result.protocol_version === undefined ||
+      result.max_bytes === params.maxBytes && result.returned! <= (params.limit ?? 100) && result.next_cursor !== params.cursor) ? result : null;
+  }
+
+  async getCollaborationActivity(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+    const query = new URLSearchParams({ limit: String(params.limit ?? 50) });
+    if (params.cursor) query.set("cursor", params.cursor);
+    const result = parseCollaborationActivity(await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/activity?${query}`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async getCollaborationRunRecords(id: string, runId: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+    const limit = params.limit ?? 50;
+    if (![id, runId].every((value) => z.uuid().safeParse(value).success) || !Number.isInteger(limit) || limit < 1 || limit > 100 ||
+      (params.cursor !== undefined && !z.string().min(1).max(1024).safeParse(params.cursor).success)) {
+      throw new TypeError("Invalid collaboration records query");
+    }
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    const result = parseCollaborationRunRecords(await this.fetchCollaborationOptionalHistory(
+      collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/runs/${encodeURIComponent(runId)}/records?${query}`),
+      { signal: options?.signal, cache: "no-store" },
+    ));
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.run.id, runId) &&
+      result.items.length <= limit && result.next_cursor !== params.cursor ? result : null;
+  }
+
+  async getCollaborationRunHandoff(id: string, runId: string, options?: { signal?: AbortSignal }) {
+    if (![id, runId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration handoff query");
+    const result = parseCollaborationRunHandoff(await this.fetchCollaborationOptionalHistory(
+      collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/runs/${encodeURIComponent(runId)}/handoff`),
+      { signal: options?.signal, cache: "no-store" },
+      COLLABORATION_HANDOFF_MAX_JSON_BYTES,
+    ));
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.run_id, runId) ? result : null;
+  }
+
+  async getCollaborationCommandHistory(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+    const limit = params.limit ?? 50;
+    if (!z.uuid().safeParse(id).success || !Number.isInteger(limit) || limit < 1 || limit > 100 ||
+      (params.cursor !== undefined && !z.string().min(1).max(1024).safeParse(params.cursor).success)) {
+      throw new TypeError("Invalid collaboration command history query");
+    }
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    const result = parseCollaborationCommandHistory(await this.fetchCollaborationOptionalHistory(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/commands?${query}`, { signal: options?.signal, cache: "no-store" },
+    ));
+    return result && sameResourceIdentity(result.issue_id, id) && result.items.length <= limit && result.next_cursor !== params.cursor ? result : null;
+  }
+
+  async getCollaborationComment(id: string, commentId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationComment(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.id, commentId) ? result : null;
+  }
+
+  async getCollaborationCommentHistory(id: string, commentId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationCommentHistory(await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}/history`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.comment_id, commentId) ? result : null;
+  }
+
+  async getCollaborationCommentOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
+    try {
+      const result = parseCollaborationCommentReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/operations/${encodeURIComponent(requestId)}`, { signal: options?.signal }, 200));
+      return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+    } catch (error) {
+      // This actor/key lookup runs before object access checks. A missing
+      // receipt is uncertainty about this write, not revocation of the issue.
+      if (error instanceof ApiError && error.status === 404 &&
+        z.object({ code: z.enum(["not_found", "operation_not_found"]) }).safeParse(error.body).success) return null;
+      throw error;
+    }
+  }
+
+  async getCollaborationMentionTargets(id: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationMentionTargets(await this.fetchCollaboration(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/mention-targets`), { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async previewCollaborationComment(id: string, input: CollaborationPreviewInput, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationTriggerPreview(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/trigger-preview`, {
+      method: "POST", signal: options?.signal, body: JSON.stringify(input),
+    }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async createCollaborationComment(id: string, requestId: string, input: CollaborationCommentInput, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationCommentReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/comments`, {
+      method: "POST", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify(input),
+    }));
+    return result && sameResourceIdentity(result.issue_id, id) && matchesCollaborationCommentAttachments(result, input.attachment_ids) ? result : null;
+  }
+
+  async editCollaborationComment(id: string, commentId: string, requestId: string, input: { content: string; expected_comment_revision: string; draft_id?: string; attachment_ids?: string[] }, options?: { signal?: AbortSignal }) {
+    const result = await this.writeCollaborationCommentChange(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, {
+      method: "PATCH", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify(input),
+    });
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.comment_id, commentId) && (result.status >= 400 || matchesCollaborationCommentAttachments(result, input.attachment_ids)) ? result : null;
+  }
+
+  async deleteCollaborationComment(id: string, commentId: string, requestId: string, revision: string, options?: { signal?: AbortSignal }) {
+    const result = await this.writeCollaborationCommentChange(`/api/collaboration/issues/${encodeURIComponent(id)}/comments/${encodeURIComponent(commentId)}`, {
+      method: "DELETE", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify({ expected_comment_revision: revision }),
+    });
+    return result && sameResourceIdentity(result.issue_id, id) && sameResourceIdentity(result.comment_id, commentId) ? result : null;
+  }
+
+  private async writeCollaborationCommentChange(path: string, options: RequestInit) {
+    try { return parseCollaborationCommentReceipt(await this.fetchCollaboration(path, options, 200)); }
+    catch (error) {
+      // A persisted author/version refusal does not revoke the caller's read access.
+      if (error instanceof ApiError && error.status >= 400 && error.status < 500) {
+        const result = parseCollaborationCommentReceipt(error.body);
+        if (result && result.status === error.status) return result;
+      }
+      throw error;
+    }
+  }
+
+  async getCollaborationIssueReactions(id: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationIssueReactions(await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/reactions`, { signal: options?.signal }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async changeCollaborationDiscussion(id: string, requestId: string, input: CollaborationDiscussionSelection, options?: { signal?: AbortSignal }) {
+    const selection = CollaborationDiscussionSelectionSchema.parse(input);
+    const target = selection.commentId === null ? "" : `/comments/${encodeURIComponent(selection.commentId)}`;
+    const action = "emoji" in selection ? `/reactions/${encodeURIComponent(selection.emoji)}` : `/${selection.action}`;
+    let result;
+    try {
+      result = parseCollaborationDiscussionReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}${target}${action}`, {
+        method: selection.action === "remove_reaction" ? "DELETE" : "POST", signal: options?.signal, headers: { "Idempotency-Key": requestId },
+      }, 200));
+    } catch (error) {
+      if (!(error instanceof ApiError)) throw error;
+      result = parseCollaborationDiscussionReceipt(error.body);
+      if (!result || result.status !== error.status) throw error;
+    }
+    return result && sameResourceIdentity(result.issue_id, id) && result.request_id === requestId && result.comment_id === selection.commentId && result.action === selection.action && result.emoji === ("emoji" in selection ? selection.emoji : null) ? result : null;
+  }
+
+  async getCollaborationDiscussionOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
+    try {
+      const result = parseCollaborationDiscussionReceipt(await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/discussion/operations/${encodeURIComponent(requestId)}`, { signal: options?.signal }, 200));
+      return result && sameResourceIdentity(result.issue_id, id) && result.request_id === requestId ? result : null;
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 404 && z.object({ code: z.enum(["operation_not_found", "not_found"]) }).safeParse(error.body).success) return null;
+      throw error;
+    }
+  }
+
+  /** Knowledge uses optional routes, but a structured denial is never unsupported. */
+  private async fetchCollaborationKnowledge(path: string, options: RequestInit = {}, recovery = false, protocolVersion: 1 | 2 = 2): Promise<unknown> {
+    const session = this.getSessionScope(), authEpoch = this.authEpoch;
+    return withRequestDeadline({ signal: options.signal ?? undefined, timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS }, this.endpointController.signal, async (signal) => {
+      try {
+        const response = await this.fetchRaw(path, { ...options, signal, cache: "no-store",
+          extraHeaders: { "Content-Type": "application/json", "X-Multica-Knowledge-Version": String(protocolVersion) } });
+        const raw: unknown = await response.json();
+        if (session !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Knowledge request superseded", "AbortError");
+        signal.throwIfAborted();
+        if (response.status !== 200 && !(options.method === "POST" && path.endsWith("/knowledge-candidates") && response.status === 201)) throw new CollaborationKnowledgeProtocolError();
+        return raw;
+      }
+      catch (error) {
+        if (session !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Knowledge request superseded", "AbortError");
+        signal.throwIfAborted();
+        if (error instanceof SyntaxError) throw new CollaborationKnowledgeProtocolError();
+        if (error instanceof ApiError && error.status === 404) {
+          if (recovery && z.object({ code: z.literal("operation_not_found") }).safeParse(error.body).success) return undefined;
+          if (!z.object({ code: z.string() }).safeParse(error.body).success) return undefined;
+        }
+        throw error;
+      }
+    });
+  }
+
+  async getCollaborationKnowledgeCandidates(issueId: string, params: CollaborationKnowledgePageParams = {}, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(issueId).toLowerCase();
+    const result = parseCollaborationKnowledgeCandidates(await this.fetchCollaborationKnowledge(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/knowledge-candidates?${knowledgePageQuery(params)}`, options));
+    if (result && (result.issue_id !== id || result.items.length > (params.limit ?? 20) ||
+      result.next_cursor !== null && (result.next_cursor === params.cursor || result.items.length === 0))) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getCollaborationKnowledgeCandidate(candidateId: string, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(candidateId).toLowerCase();
+    const result = parseCollaborationKnowledgeDetail(await this.fetchCollaborationKnowledge(`/api/collaboration/knowledge-candidates/${id}`, options));
+    if (result && result.candidate.candidate_id !== id) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getCollaborationKnowledgeTarget(target: CollaborationKnowledgeTarget, params: CollaborationKnowledgePageParams = {}, options?: { signal?: AbortSignal }) {
+    const input = CollaborationKnowledgeTargetSchema.parse(target);
+    const path = input.kind === "project" ? `/api/projects/${input.project_id}/knowledge` : `/api/workspaces/${input.workspace_id}/knowledge`;
+    const result = parseCollaborationKnowledgeTargetList(await this.fetchCollaborationKnowledge(`${path}?${knowledgePageQuery(params)}`,
+      workspaceRequestInit({ workspaceId: input.workspace_id, signal: options?.signal })));
+    if (result && (!knowledgeTargetsEqual(result.target, input) || result.items.length > (params.limit ?? 20) ||
+      result.next_cursor !== null && (result.next_cursor === params.cursor || result.items.length === 0))) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async proposeCollaborationKnowledge(issueId: string, request: CollaborationKnowledgeProposal, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(issueId).toLowerCase();
+    const input = CollaborationKnowledgeProposalSchema.parse(request);
+    if (!input.sources.every((source) => source.issue_id === id)) throw new TypeError("Knowledge sources must belong to the source issue");
+    return this.writeCollaborationKnowledge(`/api/collaboration/issues/${id}/knowledge-candidates`, input.candidate_id, "propose", input, options);
+  }
+
+  async approveCollaborationKnowledge(candidateId: string, request: CollaborationKnowledgeApproveRequest, options?: { signal?: AbortSignal }) {
+    return this.decideCollaborationKnowledge(candidateId, "approve", CollaborationKnowledgeApproveRequestSchema.parse(request), options);
+  }
+
+  async rejectCollaborationKnowledge(candidateId: string, request: CollaborationKnowledgeDecisionRequest, options?: { signal?: AbortSignal }) {
+    return this.decideCollaborationKnowledge(candidateId, "reject", CollaborationKnowledgeDecisionRequestSchema.parse(request), options);
+  }
+
+  async withdrawCollaborationKnowledge(candidateId: string, request: CollaborationKnowledgeDecisionRequest, options?: { signal?: AbortSignal }) {
+    return this.decideCollaborationKnowledge(candidateId, "withdraw", CollaborationKnowledgeDecisionRequestSchema.parse(request), options);
+  }
+
+  /** Candidate-only recovery is deliberately independent of current source/target membership. */
+  async getCollaborationKnowledgeOperation(candidateId: string, requestId: string, options?: { signal?: AbortSignal; protocolVersion?: 1 | 2 }) {
+    const id = z.uuid().parse(candidateId).toLowerCase();
+    const key = z.uuid().parse(requestId).toLowerCase();
+    const result = parseCollaborationKnowledgeReceipt(await this.fetchCollaborationKnowledge(
+      `/api/collaboration/knowledge-candidates/${id}/operations/${key}`, { signal: options?.signal }, true, options?.protocolVersion ?? 2));
+    if (result && (result.candidate_id !== id || result.request_id !== key)) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  private decideCollaborationKnowledge(candidateId: string, action: "approve" | "reject" | "withdraw",
+    input: CollaborationKnowledgeApproveRequest | CollaborationKnowledgeDecisionRequest, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(candidateId).toLowerCase();
+    return this.writeCollaborationKnowledge(`/api/collaboration/knowledge-candidates/${id}/${action}`, id, action, input, options);
+  }
+
+  private async writeCollaborationKnowledge(path: string, candidateId: string, action: CollaborationKnowledgeReceipt["action"],
+    input: CollaborationKnowledgeProposal | CollaborationKnowledgeApproveRequest | CollaborationKnowledgeDecisionRequest,
+    options?: { signal?: AbortSignal }): Promise<CollaborationKnowledgeReceipt | null> {
+    let result: CollaborationKnowledgeReceipt | null;
+    let refusalStatus: number | undefined;
+    try {
+      result = parseCollaborationKnowledgeReceipt(await this.fetchCollaborationKnowledge(path, {
+        method: "POST", body: JSON.stringify(input), headers: { "Idempotency-Key": input.request_id }, signal: options?.signal,
+      }, false, input.protocol_version));
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.status < 400 || error.status >= 500 ||
+        !z.object({ protocol_version: z.union([z.literal(1), z.literal(2)]), candidate_id: z.string() }).safeParse(error.body).success) throw error;
+      result = parseCollaborationKnowledgeReceipt(error.body);
+      refusalStatus = error.status;
+    }
+    if (result && (result.protocol_version !== input.protocol_version || result.candidate_id !== candidateId || result.request_id !== input.request_id || result.action !== action)) throw new CollaborationKnowledgeProtocolError();
+    if (result && knowledgeReceiptRefusalStatus(result.code) !== refusalStatus) throw new CollaborationKnowledgeProtocolError();
+    if (result?.code === `knowledge_${action === "propose" ? "proposed" : action === "approve" ? "approved" : action === "reject" ? "rejected" : "withdrawn"}`) {
+      if ("expected_state_revision" in input && result.state_revision !== String(BigInt(input.expected_state_revision) + 1n)) throw new CollaborationKnowledgeProtocolError();
+      if (action === "approve" && "expected_version" in input && (result.version !== input.expected_version ||
+        result.target_knowledge_revision === undefined || result.target_knowledge_revision === "0")) throw new CollaborationKnowledgeProtocolError();
+    }
+    return result;
+  }
+
+  async getProjectKnowledgePolicy(workspaceId: string, projectId: string, options?: { signal?: AbortSignal }) {
+    const ws = z.uuid().parse(workspaceId).toLowerCase(), id = z.uuid().parse(projectId).toLowerCase();
+    const result = parseProjectKnowledgePolicy(await this.fetchCollaborationKnowledge(`/api/projects/${id}/knowledge-policy`,
+      workspaceRequestInit({ workspaceId: ws, signal: options?.signal })));
+    if (result && (result.project_id !== id || result.workspace_id !== ws)) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async updateProjectKnowledgePolicy(workspaceId: string, projectId: string, request: ProjectKnowledgePolicyRequest, options?: { signal?: AbortSignal }) {
+    const ws = z.uuid().parse(workspaceId).toLowerCase(), id = z.uuid().parse(projectId).toLowerCase();
+    const input = ProjectKnowledgePolicyRequestSchema.parse(request);
+    const result = await this.writeKnowledgeAutomation(`/api/projects/${id}/knowledge-policy`,
+      { ...workspaceRequestInit({ workspaceId: ws, signal: options?.signal }), method: "PUT", body: JSON.stringify(input) }, parseProjectKnowledgePolicyReceipt);
+    if (result && (result.project_id !== id || result.request_id !== input.request_id ||
+      result.code === "knowledge_policy_updated" && result.revision !== String(BigInt(input.expected_revision) + 1n))) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getProjectKnowledgePolicyOperation(projectId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(projectId).toLowerCase(), request = z.uuid().parse(requestId).toLowerCase();
+    const result = parseProjectKnowledgePolicyReceipt(await this.fetchCollaborationKnowledge(`/api/projects/${id}/knowledge-policy/operations/${request}`, options, true));
+    if (result && (result.project_id !== id || result.request_id !== request)) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getCollaborationKnowledgeJobs(issueId: string, options?: { signal?: AbortSignal }) {
+    const id = z.uuid().parse(issueId).toLowerCase();
+    const result = parseKnowledgeAutomationJobs(await this.fetchCollaborationKnowledge(`/api/collaboration/issues/${id}/knowledge-jobs`, options));
+    if (result && result.issue_id !== id) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async retryCollaborationKnowledgeJob(issueId: string, jobId: string, request: KnowledgeAutomationRetryRequest, options?: { signal?: AbortSignal }) {
+    const issue = z.uuid().parse(issueId).toLowerCase(), job = z.uuid().parse(jobId).toLowerCase();
+    const input = KnowledgeAutomationRetryRequestSchema.parse(request);
+    const result = await this.writeKnowledgeAutomation(`/api/collaboration/issues/${issue}/knowledge-jobs/${job}/retry`,
+      { method: "POST", body: JSON.stringify(input), signal: options?.signal }, parseKnowledgeAutomationRetryReceipt);
+    if (result && (result.issue_id !== issue || result.job_id !== job || result.request_id !== input.request_id ||
+      result.code === "knowledge_job_retried" && result.revision !== String(BigInt(input.expected_revision) + 1n))) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  async getCollaborationKnowledgeJobOperation(issueId: string, jobId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const issue = z.uuid().parse(issueId).toLowerCase(), job = z.uuid().parse(jobId).toLowerCase(), request = z.uuid().parse(requestId).toLowerCase();
+    const result = parseKnowledgeAutomationRetryReceipt(await this.fetchCollaborationKnowledge(
+      `/api/collaboration/issues/${issue}/knowledge-jobs/${job}/operations/${request}`, options, true));
+    if (result && (result.issue_id !== issue || result.job_id !== job || result.request_id !== request)) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  private async writeKnowledgeAutomation<T extends KnowledgeAutomationReceipt>(path: string, init: RequestInit, parse: (value: unknown) => T | null): Promise<T | null> {
+    let result: T | null;
+    let status = 200;
+    try { result = parse(await this.fetchCollaborationKnowledge(path, init)); }
+    catch (error) {
+      if (!(error instanceof ApiError) || error.status !== 409 || !z.object({ protocol_version: z.literal(2) }).safeParse(error.body).success) throw error;
+      result = parse(error.body); status = error.status;
+    }
+    if (result && status !== (result.code === "knowledge_policy_updated" || result.code === "knowledge_job_retried" ? 200 : 409)) throw new CollaborationKnowledgeProtocolError();
+    return result;
+  }
+
+  // Shared context ("memory") reads use the optional-route path: an older server
+  // without the route is unavailable, and only a structured denial clears access.
+  async getCollaborationMemory(id: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationMemory(await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/memory`, { signal: options?.signal, cache: "no-store" }));
+    return result && sameResourceIdentity(result.issue_id, id) ? result : null;
+  }
+
+  async getCollaborationMemoryVersions(id: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }) {
+    const limit = params.limit ?? 50;
+    if (!z.uuid().safeParse(id).success || !Number.isInteger(limit) || limit < 1 || limit > 100 ||
+      (params.cursor !== undefined && !positiveVersion.safeParse(params.cursor).success)) throw new TypeError("Invalid shared-context history query");
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    const result = parseCollaborationMemoryVersions(await this.fetchCollaborationOptionalHistory(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/memory/versions?${query}`, { signal: options?.signal, cache: "no-store" }));
+    // A page continues strictly below its cursor; anything else is a forged or cyclic page.
+    return result && sameResourceIdentity(result.issue_id, id) && result.items.length <= limit &&
+      (params.cursor === undefined || result.items.every((item) => BigInt(item.version) < BigInt(params.cursor!))) ? result : null;
+  }
+
+  async getCollaborationMemoryVersion(id: string, version: string, options?: { signal?: AbortSignal }) {
+    if (!positiveVersion.safeParse(version).success) throw new TypeError("Invalid shared-context version");
+    // A missing version is a structured memory_version_not_found, which this
+    // optional-route reader treats as unavailable rather than issue denial.
+    const result = parseCollaborationMemoryVersion(await this.fetchCollaborationOptionalHistory(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/memory/versions/${encodeURIComponent(version)}`, { signal: options?.signal, cache: "no-store" }));
+    return result && sameResourceIdentity(result.issue_id, id) && result.version === version ? result : null;
+  }
+
+  async updateCollaborationMemory(id: string, requestId: string, input: { expected_version: string; content: string }, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationMemory(id, requestId, "memory_update", `/api/collaboration/issues/${encodeURIComponent(id)}/memory`,
+      { method: "PUT", body: JSON.stringify({ expected_version: input.expected_version, content: input.content }), signal: options?.signal });
+  }
+
+  async restoreCollaborationMemoryVersion(id: string, requestId: string, version: string, input: { expected_version: string }, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationMemory(id, requestId, "memory_restore", `/api/collaboration/issues/${encodeURIComponent(id)}/memory/versions/${encodeURIComponent(version)}/restore`,
+      { method: "POST", body: JSON.stringify({ expected_version: input.expected_version }), signal: options?.signal });
+  }
+
+  async purgeCollaborationMemoryVersion(id: string, requestId: string, version: string, input: { reason: string }, options?: { signal?: AbortSignal }) {
+    const result = await this.writeCollaborationMemory(id, requestId, "memory_purge", `/api/collaboration/issues/${encodeURIComponent(id)}/memory/versions/${encodeURIComponent(version)}/purge`,
+      { method: "POST", body: JSON.stringify({ reason: input.reason }), signal: options?.signal });
+    return result && (result.version === null || result.version === version) ? result : null;
+  }
+
+  /** The original-key result is content-free and readable after access loss. */
+  async getCollaborationMemoryOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationMemoryReceipt(await this.fetchCollaborationRecovery(
+      `/api/collaboration/issues/${encodeURIComponent(id)}/memory/operations/${encodeURIComponent(requestId)}`, options));
+    return result && sameResourceIdentity(result.issue_id, id) && result.request_id === requestId ? result : null;
+  }
+
+  private async writeCollaborationMemory(id: string, requestId: string, action: CollaborationMemoryActionName, path: string, init: RequestInit): Promise<CollaborationMemoryReceipt | null> {
+    let result: CollaborationMemoryReceipt | null;
+    try {
+      result = parseCollaborationMemoryReceipt(await this.fetchCollaboration(path, { ...init, headers: { "Idempotency-Key": requestId } }, 200));
+      if (result?.status !== 200) return null;
+    } catch (error) {
+      if (!(error instanceof ApiError)) throw error;
+      // Sealed refusals keep HTTP status equal to the receipt status. They do not
+      // revoke the caller's read access; a plain role/access error still does.
+      const receipt = error.status >= 400 && error.status < 500 ? parseCollaborationMemoryReceipt(error.body) : null;
+      if (!receipt || receipt.status !== error.status) {
+        // A bodyless 404 is an absent route on an older server, not issue denial.
+        if (error.status === 404 && !z.object({ code: z.string() }).safeParse(error.body).success) return null;
+        throw error;
+      }
+      result = receipt;
+    }
+    return result && sameResourceIdentity(result.issue_id, id) && result.request_id === requestId && result.action === action ? result : null;
+  }
+
+  async getCollaborationNotifications(params: { cursor?: string; view?: CollaborationNotificationView; includeArchived?: boolean } = {}, options?: { signal?: AbortSignal }) {
+    if (params.view !== undefined && (!isCollaborationNotificationView(params.view) || params.includeArchived !== undefined)) {
+      throw new TypeError("Invalid collaboration notification view");
+    }
+    const query = new URLSearchParams({ limit: "50" });
+    if (params.cursor) query.set("cursor", params.cursor);
+    if (params.view !== undefined) query.set("view", params.view);
+    if (params.includeArchived === true) query.set("include_archived", "true");
+    const view = params.view ?? (params.includeArchived === true ? undefined : "all");
+    return parseCollaborationNotifications(await this.fetchCollaboration(`/api/me/collaboration-notifications?${query}`, { signal: options?.signal }), view);
+  }
+
+  async updateCollaborationNotification(id: string, action: "read" | "archive", options?: { signal?: AbortSignal }) {
+    const result = parseCollaborationNotificationReceipt(await this.fetchCollaboration(`/api/me/collaboration-notifications/${encodeURIComponent(id)}/${action}`, { method: "POST", signal: options?.signal }));
+    return result && sameResourceIdentity(result.id, id) ? result : null;
+  }
+
+  private async writeCollaborationOperation(
+    path: string,
+    input: CollaborationWriteInput,
+    fields: {
+      target_user_id?: string; purpose?: string; note?: string; information_request_id?: string; expected_status?: string;
+      basis?: string; submission_id?: string; draft_id?: string; attachment_ids?: string[]; source_comment_id?: string;
+      ai_policy?: CollaborationAIPolicyInput["aiPolicy"];
+      action?: CollaborationLifecycleAction; status?: string; status_options_version?: string;
+      title?: string; description?: string; start_date?: string | null; due_date?: string | null;
+      priority?: CollaborationEditInput["priority"]; label_ids?: CollaborationEditInput["labelIds"]; properties?: CollaborationEditInput["properties"];
+      project_id?: string | null; parent_issue_id?: string | null; stage?: number | null;
+      current_iteration_id?: string | null; expected_revision?: string; expected_iteration_revision?: string; iteration_reason?: string; allow_completed?: boolean;
+      completion?: DeliveryCompletionBinding;
+      unblock_condition?: string; estimated_resolution_at?: string; information_repair?: CollaborationInformationRepairSelection;
+    },
+    options?: { signal?: AbortSignal },
+    method: "POST" | "PATCH" | "PUT" = "POST",
+  ) {
+    const raw = await this.fetchCollaborationWorkflow(path, {
+      method,
+      signal: options?.signal,
+      headers: { "Idempotency-Key": input.requestId },
+      body: JSON.stringify({
+        expected_collaboration_revision: input.expectedCollaborationRevision,
+        expected_lifecycle_epoch: input.expectedLifecycleEpoch,
+        expected_participant_epoch: input.expectedParticipantEpoch,
+        expected_account_epoch: input.expectedAccountEpoch,
+        ...fields,
+      }),
+    });
+    return parseCollaborationOperation(raw);
+  }
+
+  async addCollaborationParticipant(id: string, input: CollaborationParticipantInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/participants`, input, {
+      target_user_id: input.targetUserId,
+    }, options);
+  }
+
+  async createCollaborationHandoff(id: string, input: CollaborationHandoffInput, options?: { signal?: AbortSignal }) {
+    if (input.purpose === "transfer" && ("expectedStatus" in input || "statusOptionsVersion" in input)) {
+      throw new TypeError("Transfer does not accept status confirmation fields");
+    }
+    if (input.purpose === "transfer" && ("unblockCondition" in input || "estimatedResolutionAt" in input || "informationRepair" in input)) {
+      throw new TypeError("Transfer does not accept information metadata");
+    }
+    if (input.purpose !== "information_repair" && "informationRepair" in input ||
+      input.purpose === "information_repair" && ("unblockCondition" in input || "estimatedResolutionAt" in input)) {
+      throw new TypeError("Information repair and block metadata are separate request kinds");
+    }
+    const metadata = input.purpose === "information" && (input.unblockCondition !== undefined || input.estimatedResolutionAt !== undefined)
+      ? CollaborationInformationMetadataSchema.parse({ unblock_condition: input.unblockCondition, estimated_resolution_at: input.estimatedResolutionAt }) : {};
+    if (Object.keys(metadata).length > 0 || input.purpose === "information_repair") CollaborationInformationTextSchema.parse(input.note);
+    const repair = input.purpose === "information_repair" ? CollaborationInformationRepairSelectionSchema.parse(input.informationRepair) : undefined;
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/handoffs`, input, {
+      target_user_id: input.targetUserId,
+      purpose: input.purpose,
+      note: input.note,
+      ...(input.purpose !== "transfer" ? { expected_status: input.expectedStatus, status_options_version: input.statusOptionsVersion } : {}),
+      ...metadata,
+      ...(repair ? { information_repair: repair } : {}),
+    }, options);
+  }
+
+  private informationHistoryQuery(params: { limit?: number; cursor?: string }) {
+    const limit = params.limit ?? 50;
+    if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw new TypeError("Information history limit must be from 1 to 50");
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", CollaborationInformationCursorSchema.parse(params.cursor));
+    return { query, limit };
+  }
+
+  private fetchCollaborationInformationHistory(path: string, options?: { signal?: AbortSignal }) {
+    return withRequestDeadline({ ...options, timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS }, this.endpointController.signal,
+      (signal) => this.fetchCollaborationOptionalHistory(path, { signal, cache: "no-store" }, 65_536));
+  }
+
+  async getCollaborationInformationHistory(id: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    const { query, limit } = this.informationHistoryQuery(params);
+    const page = parseCollaborationInformationHistory(await this.fetchCollaborationInformationHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/handoffs?${query}`, options));
+    return page && sameResourceIdentity(page.issue_id, id) && page.items.length <= limit ? page : null;
+  }
+
+  async getCollaborationInformationHandoff(id: string, handoffId: string, options?: { signal?: AbortSignal }) {
+    const detail = parseCollaborationInformationDetail(await this.fetchCollaborationInformationHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/handoffs/${encodeURIComponent(handoffId)}`, options));
+    return detail && sameResourceIdentity(detail.issue_id, id) && sameResourceIdentity(detail.item.handoff_id, handoffId) ? detail : null;
+  }
+
+  async getCollaborationInformationRepairAffected(id: string, repairId: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    const { query, limit } = this.informationHistoryQuery(params);
+    const page = parseCollaborationInformationAffected(await this.fetchCollaborationInformationHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/handoffs/${encodeURIComponent(repairId)}/superseded-requests?${query}`, options));
+    return page && sameResourceIdentity(page.issue_id, id) && sameResourceIdentity(page.repair_handoff_id, repairId) && page.items.length <= limit ? page : null;
+  }
+
+  /** The recipient comes from the request on the server, never from the client. */
+  async returnCollaborationInformation(id: string, input: CollaborationInformationReturnInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/information-returns`, input, {
+      information_request_id: input.informationRequestId,
+      expected_status: input.expectedStatus,
+      status_options_version: input.statusOptionsVersion,
+      note: input.note,
+    }, options);
+  }
+
+  async returnCollaborationAcceptance(id: string, input: CollaborationAcceptanceReturnInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/acceptance-returns`, input, {
+      submission_id: input.submissionId, target_user_id: input.targetUserId, note: input.note,
+      expected_status: input.expectedStatus, status_options_version: input.statusOptionsVersion,
+    }, options);
+  }
+
+  async changeCollaborationAIPolicy(id: string, input: CollaborationAIPolicyInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/ai-policy`, input, { ai_policy: input.aiPolicy }, options);
+  }
+
+  async getCollaborationDeliveryHistory(id: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    const query = z.strictObject({ limit: z.number().int().min(1).max(100).optional(), cursor: z.string().min(1).max(512).optional() }).parse(params);
+    const search = new URLSearchParams();
+    if (query.limit !== undefined) search.set("limit", String(query.limit));
+    if (query.cursor !== undefined) search.set("cursor", query.cursor);
+    const raw = await this.fetchCollaborationOptionalHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/acceptance-submissions${search.size ? `?${search}` : ""}`, { signal: options?.signal });
+    const page = parseCollaborationDeliveryHistory(raw);
+    return page && sameResourceIdentity(page.issue_id, id) && page.items.length <= (query.limit ?? 50) && page.next_cursor !== query.cursor ? page : null;
+  }
+
+  /** Hands the stage result to the creator. It never completes the issue. */
+  async submitCollaborationAcceptance(id: string, input: CollaborationAcceptanceInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/acceptance-submissions`, input, {
+      expected_status: input.expectedStatus,
+      status_options_version: input.statusOptionsVersion,
+      note: input.note,
+      basis: input.basis,
+      draft_id: input.draftId,
+      attachment_ids: input.attachmentIds,
+      source_comment_id: input.sourceCommentId,
+    }, options);
+  }
+
+  async removeCollaborationParticipant(id: string, userId: string, input: CollaborationWriteInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/participants/${encodeURIComponent(userId)}/remove`, input, {}, options);
+  }
+
+  async leaveCollaborationIssue(id: string, input: CollaborationWriteInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/leave`, input, {}, options);
+  }
+
+  async getCollaborationOperation(id: string, requestId: string, options?: { signal?: AbortSignal }) {
+    const raw = await this.fetchCollaborationWorkflow(`/api/collaboration/issues/${encodeURIComponent(id)}/operations/${encodeURIComponent(requestId)}`, { signal: options?.signal });
+    const result = parseCollaborationOperation(raw);
+    if (!result && hasCollaborationStageRefusalData(raw)) throw new Error("Collaboration stage refusal is unavailable");
+    return result;
+  }
+
+  // --- PAY-241 S2 stage gates (contract `collaboration-stage-v1`) ---------
+  // Stage reads answer with a state instead of null: an absent route, an
+  // unready schema and a malformed body are all "unavailable", never "passed".
+  // Only the structured object denial of the account group is thrown, so the
+  // ordinary collaboration cleanup keeps its single meaning.
+
+  private collaborationStageFailure(error: ApiError): ApiError {
+    // Never forward the HTTP body: it may quote private stage content.
+    return new ApiError("Collaboration stage request failed", error.status, error.statusText, undefined, () => !error.isStaleAuthResponse, error.retryAfterSeconds);
+  }
+
+  private async readCollaborationTestReport<T>(path: string, options: { signal?: AbortSignal } | undefined, parse: (raw: unknown) => T | null): Promise<CollaborationTestReportRead<T>> {
+    try {
+      const value = parse(await this.fetchCollaboration(path, { signal: options?.signal, cache: "no-store" }));
+      return value === null ? { state: "unavailable", reason: "malformed" } : { state: "available", value };
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.isStaleAuthResponse) throw error;
+      const code = collaborationStageErrorCode(error.body);
+      if (error.status === 404 && code === "not_found") return { state: "not_found" };
+      if ((error.status === 404 || error.status === 405) && code === null) return { state: "unsupported" };
+      if (error.status === 404 || error.status === 405 || error.status === 410 || error.status === 403 && code !== "forbidden") return { state: "unavailable", reason: "malformed" };
+      if (error.status === 409 && code === "test_report_log_not_retained") return { state: "unavailable", reason: "log_not_retained" };
+      if (error.status === 503 && code === "test_report_unavailable") return { state: "unavailable", reason: "storage" };
+      throw this.collaborationStageFailure(error);
+    }
+  }
+
+  private collaborationTestReportPath(issueId: string, runId: string): string {
+    if (![issueId, runId].every((id) => z.uuid().safeParse(id).success)) throw new TypeError("Invalid collaboration test report identity");
+    return `/api/collaboration/issues/${issueId.toLowerCase()}/runs/${runId.toLowerCase()}/test-reports`;
+  }
+
+  async getCollaborationTestReports(issueId: string, runId: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }): Promise<CollaborationTestReportRead<CollaborationTestReports>> {
+    const limit = params.limit ?? 20;
+    if (!Number.isInteger(limit) || limit < 1 || limit > 50 || params.cursor !== undefined && !params.cursor.length) throw new TypeError("Invalid collaboration test report query");
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    return this.readCollaborationTestReport(`${this.collaborationTestReportPath(issueId, runId)}?${query}`, options, (raw) => {
+      const page = parseCollaborationTestReports(raw);
+      return page && page.issue_id === issueId.toLowerCase() && page.run_id === runId.toLowerCase() && page.items.length <= limit &&
+        (page.next_cursor === null || page.next_cursor !== params.cursor) ? page : null;
+    });
+  }
+
+  async getCollaborationTestReport(issueId: string, runId: string, reportId: string, options?: { signal?: AbortSignal }): Promise<CollaborationTestReportRead<CollaborationTestReport>> {
+    if (!z.uuid().safeParse(reportId).success) throw new TypeError("Invalid collaboration test report");
+    const session = this.getSessionScope();
+    const result = await this.readCollaborationTestReport(`${this.collaborationTestReportPath(issueId, runId)}/${reportId.toLowerCase()}`, options, (raw) => {
+      const report = parseCollaborationTestReport(raw);
+      return report && report.issue_id === issueId.toLowerCase() && report.run_id === runId.toLowerCase() && report.report_id === reportId.toLowerCase() ? report : null;
+    });
+    if (result.state !== "available") return result;
+    const valid = await verifyCollaborationTestReportLogs(result.value, options?.signal);
+    if (session !== this.getSessionScope()) throw new DOMException("Collaboration request superseded", "AbortError");
+    options?.signal?.throwIfAborted();
+    return valid ? result : { state: "unavailable", reason: "malformed" };
+  }
+
+  private async readCollaborationStage<T>(
+    path: string, init: RequestInit, parse: (raw: unknown) => T | null,
+    codes: { notFound?: string; busy?: string; workspaceScoped?: boolean } = {},
+  ): Promise<CollaborationStageRead<T>> {
+    let raw: unknown;
+    try { raw = await this.fetchCollaboration(path, init); }
+    catch (error) {
+      if (!(error instanceof ApiError) || error.isStaleAuthResponse) throw error;
+      const code = collaborationStageErrorCode(error.body);
+      if (error.status === 503 && code === "stage_schema_unavailable") return { state: "unavailable", reason: "schema" };
+      if (code !== null && code === codes.busy) return { state: "unavailable", reason: "busy" };
+      if (error.status === 404 && code !== null && code === codes.notFound) return { state: "not_found" };
+      if ((error.status === 404 || error.status === 405) && code === null) return { state: "unsupported" };
+      if (codes.workspaceScoped === true) {
+        // Source membership is independent of collaboration access: a member
+        // refusal here says nothing about the issue the panel belongs to.
+        if (error.status === 403 || error.status === 404) return { state: "denied" };
+        if (error.status === 410) return { state: "unavailable", reason: "malformed" };
+      } else if ([403, 404].includes(error.status) && !isCollaborationStageAccessAnswer(error.status, code)) {
+        return { state: "unavailable", reason: "malformed" };
+      }
+      throw this.collaborationStageFailure(error);
+    }
+    const value = parse(raw);
+    return value === null ? { state: "unavailable", reason: "malformed" } : { state: "available", value };
+  }
+
+  private async writeCollaborationStage(
+    path: string, init: RequestInit, mode: CollaborationStageTransportMode, target: CollaborationStageTransportTarget,
+  ): Promise<CollaborationStageSettledResult> {
+    let result: CollaborationStageWriteResult;
+    try { result = classifyCollaborationStageResponse(200, await this.fetchCollaboration(path, init, 200), mode, target); }
+    catch (error) {
+      if (!(error instanceof ApiError) || error.isStaleAuthResponse) throw error;
+      result = classifyCollaborationStageError(error.status, error.body, mode, target);
+      if (result.type === "denied") throw this.collaborationStageFailure(error);
+    }
+    if (result.type === "denied") throw new ApiError("Collaboration stage request failed", 403, "Forbidden");
+    return result;
+  }
+
+  private collaborationStagePath(issueId: string, suffix = ""): string {
+    if (!z.uuid().safeParse(issueId).success) throw new TypeError("Invalid collaboration stage issue");
+    return `/api/collaboration/issues/${issueId.toLowerCase()}/stage${suffix}`;
+  }
+
+  /** R1. */
+  async getCollaborationStage(issueId: string, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStageView>> {
+    const id = issueId.toLowerCase();
+    return this.readCollaborationStage(this.collaborationStagePath(issueId), { signal: options?.signal, cache: "no-store" }, (raw) => {
+      const view = parseCollaborationStageView(raw);
+      return view && view.issue_id === id ? view : null;
+    });
+  }
+
+  /** R2. A page that repeats its own cursor would never end and is refused. */
+  async getCollaborationStageProposals(issueId: string, params: { cursor?: string; limit?: number } = {}, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStageProposalPage>> {
+    const limit = params.limit ?? 20;
+    if (!Number.isInteger(limit) || limit < 1 || limit > COLLABORATION_STAGE_LIMITS.proposalPage ||
+      params.cursor !== undefined && (params.cursor.length < 1 || params.cursor.length > 1024)) throw new TypeError("Invalid collaboration stage proposal query");
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", params.cursor);
+    const id = issueId.toLowerCase();
+    return this.readCollaborationStage(this.collaborationStagePath(issueId, `/proposals?${query}`), { signal: options?.signal, cache: "no-store" }, (raw) => {
+      const page = parseCollaborationStageProposalPage(raw);
+      return page && page.issue_id === id && page.items.length <= limit && (page.next_cursor === null || page.next_cursor !== params.cursor) ? page : null;
+    });
+  }
+
+  /** R3. A missing proposal is not a statement about access to the issue. */
+  async getCollaborationStageProposal(issueId: string, proposalId: string, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStageProposalDetail>> {
+    if (!z.uuid().safeParse(proposalId).success) throw new TypeError("Invalid collaboration stage proposal");
+    const id = issueId.toLowerCase(), proposal = proposalId.toLowerCase();
+    return this.readCollaborationStage(this.collaborationStagePath(issueId, `/proposals/${proposal}`), { signal: options?.signal, cache: "no-store" }, (raw) => {
+      const detail = parseCollaborationStageProposalDetail(raw);
+      return detail && detail.issue_id === id && detail.proposal_id === proposal ? detail : null;
+    }, { notFound: "stage_proposal_not_found" });
+  }
+
+  /** R4. Candidate identity and protected source evidence are never inferred from a missing route. */
+  async getCollaborationStageCodeCandidate(issueId: string, candidateId: string, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStageCodeCandidate>> {
+    if (!z.uuid().safeParse(candidateId).success) throw new TypeError("Invalid collaboration stage candidate");
+    const id = issueId.toLowerCase(), candidate = candidateId.toLowerCase();
+    return this.readCollaborationStage(this.collaborationStagePath(issueId, `/code-candidates/${candidate}`), { signal: options?.signal, cache: "no-store" }, (raw) => {
+      const detail = parseCollaborationStageCodeCandidate(raw);
+      return detail && detail.issue_id === id && detail.candidate.candidate_id === candidate ? detail : null;
+    }, { notFound: "stage_candidate_not_found" });
+  }
+
+  /** A1-A9. Sends the frozen key and the exact frozen body; the caller owns the intent. */
+  async sendCollaborationStageRequest(
+    request: { action: CollaborationStageIssueAction; issueId: string; proposalId?: string; decisionId?: string; requestId: string; bodyJSON: string },
+    options?: { signal?: AbortSignal },
+  ) {
+    const needsProposal = request.action === "revise_proposal" || request.action === "decide_proposal";
+    if (needsProposal !== (request.proposalId !== undefined) || request.proposalId !== undefined && !z.uuid().safeParse(request.proposalId).success ||
+      (request.action === "revoke_decision") !== (request.decisionId !== undefined) || request.decisionId !== undefined && !z.uuid().safeParse(request.decisionId).success ||
+      request.requestId.length < 1 || request.requestId.length > 128) throw new TypeError("Invalid collaboration stage request");
+    const proposal = request.proposalId?.toLowerCase();
+    let suffix: string;
+    switch (request.action) {
+      case "configure_roles": suffix = "/roles"; break;
+      case "create_proposal": suffix = "/proposals"; break;
+      case "revise_proposal": suffix = `/proposals/${proposal}/versions`; break;
+      case "decide_proposal": suffix = `/proposals/${proposal}/decisions`; break;
+      case "confirm_scope": suffix = "/scope-confirmations"; break;
+      case "create_code_candidate": suffix = "/code-candidates"; break;
+      case "decide_stage": suffix = "/decisions"; break;
+      case "revoke_decision": suffix = `/decisions/${request.decisionId!.toLowerCase()}/revocations`; break;
+      case "advance_stage": suffix = "/advance"; break;
+      default: throw new TypeError("Invalid collaboration stage request");
+    }
+    return this.writeCollaborationStage(this.collaborationStagePath(request.issueId, suffix),
+      { method: "POST", signal: options?.signal, headers: { "Idempotency-Key": request.requestId }, body: request.bodyJSON }, "write", "issue");
+  }
+
+  /** O1. GET only: a missing receipt is an unknown result, never a reason to write. */
+  async getCollaborationStageOperation(issueId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    if (!z.uuid().safeParse(issueId).success || requestId.length < 1 || requestId.length > 128) throw new TypeError("Invalid collaboration stage operation");
+    return this.writeCollaborationStage(`/api/collaboration/issues/${issueId.toLowerCase()}/operations/${encodeURIComponent(requestId)}`,
+      { signal: options?.signal, cache: "no-store" }, "recovery", "issue");
+  }
+
+  private projectStagePolicyPath(workspaceId: string, projectId: string, suffix = ""): string {
+    if (![workspaceId, projectId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid project stage policy");
+    return `/api/projects/${projectId.toLowerCase()}/stage-policy${suffix}`;
+  }
+
+  /** P1. Workspace-scoped: the captured source workspace is named explicitly. */
+  async getProjectStagePolicy(workspaceId: string, projectId: string, options?: { signal?: AbortSignal }): Promise<CollaborationStageRead<CollaborationStagePolicy>> {
+    const project = projectId.toLowerCase();
+    return this.readCollaborationStage(this.projectStagePolicyPath(workspaceId, projectId), { ...workspaceRequestInit({ workspaceId, signal: options?.signal }), cache: "no-store" }, (raw) => {
+      const policy = parseCollaborationStagePolicy(raw);
+      return policy && policy.project_id === project ? policy : null;
+    }, { notFound: "stage_policy_project_not_found", busy: "stage_policy_busy", workspaceScoped: true });
+  }
+
+  /** P2. */
+  async reviseProjectStagePolicy(request: { workspaceId: string; projectId: string; requestId: string; bodyJSON: string }, options?: { signal?: AbortSignal }) {
+    if (request.requestId.length < 1 || request.requestId.length > 128) throw new TypeError("Invalid project stage policy request");
+    const init = workspaceRequestInit({ workspaceId: request.workspaceId, signal: options?.signal });
+    return this.writeCollaborationStage(this.projectStagePolicyPath(request.workspaceId, request.projectId),
+      { ...init, method: "PUT", headers: { ...(init.headers as Record<string, string>), "Idempotency-Key": request.requestId }, body: request.bodyJSON }, "write", "policy");
+  }
+
+  /** P3. The original success body, or an unknown result that is never inferred from the current policy. */
+  async getProjectStagePolicyOperation(workspaceId: string, projectId: string, requestId: string, options?: { signal?: AbortSignal }) {
+    if (requestId.length < 1 || requestId.length > 128) throw new TypeError("Invalid project stage policy operation");
+    return this.writeCollaborationStage(this.projectStagePolicyPath(workspaceId, projectId, `/operations/${encodeURIComponent(requestId)}`),
+      { ...workspaceRequestInit({ workspaceId, signal: options?.signal }), cache: "no-store" }, "recovery", "policy");
+  }
+
+  private async requestCollaborationCommandCancel(id: string, commandId: string, requestId: string, input: CollaborationCommandCancelInput, recovery: boolean) {
+    const parsed = CollaborationCommandCancelInputSchema.safeParse(input);
+    if (!parsed.success || ![id, commandId].every((value) => z.uuid().safeParse(value).success) || !z.uuid().safeParse(requestId).success) throw new TypeError("Invalid collaboration command cancellation");
+    const path = `/api/collaboration/issues/${encodeURIComponent(id)}/commands`;
+    const response = await this.fetchCollaborationSwitch(recovery ? `${path}/operations/${encodeURIComponent(requestId)}` : `${path}/${encodeURIComponent(commandId)}/cancel`, recovery ? "recovery" : "mutation",
+      recovery ? undefined : { method: "POST", headers: { "Idempotency-Key": requestId }, body: JSON.stringify(parsed.data) });
+    const receipt = parseCollaborationCommandCancelReceipt(response.body);
+    return receipt && (recovery || receipt.redacted !== true && receipt.status === response.status) && matchesCollaborationCommandCancelReceipt(receipt, id, requestId, commandId, parsed.data) ? receipt : null;
+  }
+  async cancelCollaborationWaitingCommand(id: string, commandId: string, requestId: string, input: CollaborationCommandCancelInput) {
+    return this.requestCollaborationCommandCancel(id, commandId, requestId, input, false);
+  }
+  async getCollaborationCommandCancelOperation(id: string, requestId: string, commandId: string, input: CollaborationCommandCancelInput) {
+    return this.requestCollaborationCommandCancel(id, commandId, requestId, input, true);
+  }
+
+  private async fetchCollaborationWorkflow(path: string, options?: RequestInit): Promise<unknown> {
+    try { return await this.fetchCollaboration(path, options); }
+    catch (error) {
+      if (!(error instanceof ApiError)) throw error;
+      if (options?.method === "POST" && !error.isStaleAuthResponse && [403, 404].includes(error.status) &&
+        typeof error.body === "object" && error.body !== null && Object.hasOwn(error.body, "status") && Object.hasOwn(error.body, "collaboration_revision")) {
+        const receipt = parseCollaborationOperation(error.body);
+        // A committed role/file refusal carries its own status and revision.
+        // It does not establish loss of the caller's independent issue access.
+        if (receipt?.status === error.status && receipt.delivery_confirmation === undefined &&
+          collaborationDeliveryRefusalStatus(receipt.code) === error.status) return receipt;
+        // A malformed declared receipt proves neither the outcome nor access loss.
+        return undefined;
+      }
+      if (![401, 403, 404, 410].includes(error.status)) {
+        const receipt = parseCollaborationOperation(error.body);
+        if (receipt?.status === error.status) return receipt;
+        // Older workflow writers omit status. Preserve only the validated
+        // receipt for their error contract, never the raw private HTTP body.
+        if (receipt) throw new ApiError("Collaboration workflow request failed", error.status, error.statusText, receipt, () => !error.isStaleAuthResponse, error.retryAfterSeconds);
+      }
+      throw new ApiError("Collaboration workflow request failed", error.status, error.statusText, undefined, () => !error.isStaleAuthResponse, error.retryAfterSeconds);
+    }
+  }
+
+  private async fetchCollaborationControl(
+    id: string, requestId: string, input: CollaborationControlInput, recovery: boolean, options?: { signal?: AbortSignal },
+  ) {
+    const parsed = CollaborationControlInputSchema.safeParse(input);
+    if (!parsed.success || !z.uuid().safeParse(id).success || !z.string().min(1).max(128).regex(/^[^\r\n]+$/).safeParse(requestId).success) {
+      throw new TypeError("Invalid collaboration control intent");
+    }
+    const path = `/api/collaboration/issues/${encodeURIComponent(id)}/control`;
+    let raw: unknown;
+    let status = 200;
+    try {
+      raw = await this.fetchCollaboration(recovery ? `${path}/operations/${encodeURIComponent(requestId)}` : path, recovery
+        ? { signal: options?.signal }
+        : { method: "POST", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify(parsed.data) });
+    } catch (error) {
+      if (!(error instanceof ApiError)) throw error;
+      if (recovery && error.status === 404 && z.object({ code: z.literal("operation_not_found") }).safeParse(error.body).success) return null;
+      if (!recovery && ![401, 403, 404, 410].includes(error.status)) {
+        raw = error.body;
+        status = error.status;
+      } else {
+        // Raw HTTP errors may contain private content; retain only transport
+        // status and the live auth fence for downstream access revocation.
+        throw new ApiError("Collaboration control request failed", error.status, error.statusText, undefined, () => !error.isStaleAuthResponse, error.retryAfterSeconds);
+      }
+    }
+    const result = parseCollaborationControlReceipt(raw);
+    return result && (recovery || result.status === status) && matchesCollaborationControlReceipt(result, id, requestId, parsed.data) ? result : null;
+  }
+
+  async controlCollaborationIssue(id: string, requestId: string, input: CollaborationControlInput, options?: { signal?: AbortSignal }) {
+    return this.fetchCollaborationControl(id, requestId, input, false, options);
+  }
+
+  /** Read the stored control outcome; never reinterpret it using current facts. */
+  async getCollaborationControlOperation(id: string, requestId: string, input: CollaborationControlInput, options?: { signal?: AbortSignal }) {
+    return this.fetchCollaborationControl(id, requestId, input, true, options);
+  }
+
+  /** Switch writes return 200/201 or a durable refusal; retain the HTTP status
+   * while applying the same account fence and private error boundary as reads. */
+  private async fetchCollaborationSwitch(
+    path: string, kind: "read" | "mutation" | "recovery", options?: RequestInit, optionalResourceRead = false,
+  ): Promise<{ body: unknown; status: number }> {
+    const scope = this.getSessionScope();
+    const authEpoch = this.authEpoch;
+    try {
+      const response = await this.fetchCollaborationVersionedRead(path, options,
+        (candidate) => this.fetchRaw(candidate, { ...options, extraHeaders: { "Content-Type": "application/json" } }));
+      const body: unknown = await response.json();
+      if (scope !== this.getSessionScope() || authEpoch !== this.authEpoch) {
+        throw new DOMException("Collaboration request superseded", "AbortError");
+      }
+      options?.signal?.throwIfAborted();
+      return { body, status: response.status };
+    } catch (error) {
+      if (scope !== this.getSessionScope()) throw new DOMException("Collaboration request superseded", "AbortError");
+      options?.signal?.throwIfAborted();
+      // Syntax errors may embed private response text; never expose it.
+      if (error instanceof SyntaxError) return { body: undefined, status: 0 };
+      if (!(error instanceof ApiError)) throw error;
+      // Optional resource scope can be absent without losing the issue's read
+      // basis. Only an explicit object denial clears the protected issue cache.
+      if (optionalResourceRead && error.status === 404 && !z.object({ code: z.literal("not_found") }).safeParse(error.body).success) {
+        return { body: undefined, status: error.status };
+      }
+      if (kind === "recovery" && error.status === 404 && z.object({ code: z.literal("operation_not_found") }).safeParse(error.body).success) {
+        return { body: undefined, status: error.status };
+      }
+      if (kind === "mutation" && (![401, 403, 404, 410].includes(error.status) ||
+        error.status !== 401 && error.status !== 410 && z.object({ protocol_version: z.literal(2), issue_id: z.uuid(), request_id: z.string(), action: z.string(), status: z.literal(error.status) }).safeParse(error.body).success)) {
+        return { body: error.body, status: error.status };
+      }
+      throw new ApiError("Collaboration Switch request failed", error.status, error.statusText, undefined, () => !error.isStaleAuthResponse, error.retryAfterSeconds);
+    }
+  }
+
+  async getCollaborationResources(id: string, options?: { signal?: AbortSignal }) {
+    if (!z.uuid().safeParse(id).success) throw new TypeError("Invalid collaboration issue");
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources`), "read", { signal: options?.signal }, true);
+    const result = parseCollaborationResources(raw.body);
+    return result?.issue_id === id.toLowerCase() ? result : null;
+  }
+
+  async getCollaborationParticipants(id: string, options?: { signal?: AbortSignal }) {
+    if (!z.uuid().safeParse(id).success) throw new TypeError("Invalid collaboration issue");
+    const raw = await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/participants`, "read", { signal: options?.signal }, true);
+    const result = parseCollaborationParticipants(raw.body);
+    return result?.issue_id === id.toLowerCase() ? result : null;
+  }
+
+  async getCollaborationResourceOptions(id: string, workspaceId: string, options?: { signal?: AbortSignal }) {
+    if (![id, workspaceId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource scope");
+    const query = new URLSearchParams({ execution_workspace_id: workspaceId });
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/options?${query}`), "read", { signal: options?.signal }, true);
+    const result = parseCollaborationResourceOptions(raw.body);
+    return result?.issue_id === id.toLowerCase() && result.execution_workspace_id === workspaceId.toLowerCase() ? result : null;
+  }
+
+  async getCollaborationResourceOfferOptions(id: string, workspaceId: string, options?: { signal?: AbortSignal }) {
+    if (![id, workspaceId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource scope");
+    const query = new URLSearchParams({ execution_workspace_id: workspaceId });
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers/options?${query}`), "read", { signal: options?.signal }, true);
+    const result = parseCollaborationResourceOptions(raw.body);
+    return result?.issue_id === id.toLowerCase() && result.execution_workspace_id === workspaceId.toLowerCase() ? result : null;
+  }
+
+  async listCollaborationResourceOffers(id: string, cursor: string | null = null, options?: { signal?: AbortSignal }) {
+    if (!z.uuid().safeParse(id).success || cursor !== null && !z.string().min(1).max(512).regex(/^[A-Za-z0-9_-]+$/).safeParse(cursor).success) {
+      throw new TypeError("Invalid collaboration resource offer scope");
+    }
+    const query = new URLSearchParams({ limit: "50" });
+    if (cursor !== null) query.set("cursor", cursor);
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers?${query}`), "read", { signal: options?.signal }, true);
+    const result = parseCollaborationResourceOffersPage(raw.body);
+    return result?.issue_id === id.toLowerCase() && (cursor === null || result.next_cursor !== cursor) ? result : null;
+  }
+
+  async getCollaborationResourceOffer(id: string, offerId: string, options?: { signal?: AbortSignal }) {
+    if (![id, offerId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource offer identity");
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/offers/${encodeURIComponent(offerId)}`), "read", { signal: options?.signal }, true);
+    const result = parseCollaborationResourceOffer(raw.body);
+    return result?.issue_id === id.toLowerCase() && result.offer_id === offerId.toLowerCase() ? result : null;
+  }
+
+  async getCollaborationResourceIdentity(id: string, targetId: string, agentId: string, proposalId: string | null, options?: { signal?: AbortSignal }) {
+    if (![id, targetId, agentId, ...(proposalId ? [proposalId] : [])].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration resource identity");
+    const query = new URLSearchParams({ target_id: targetId, agent_id: agentId });
+    if (proposalId !== null) query.set("proposal_id", proposalId);
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/identity?${query}`), "read", { signal: options?.signal }, true);
+    const result = parseCollaborationResourceIdentity(raw.body);
+    return result?.issue_id === id.toLowerCase() && result.target_id === targetId.toLowerCase() && result.agent_id === agentId.toLowerCase() && result.proposal_id === (proposalId?.toLowerCase() ?? null) ? result : null;
+  }
+
+  async writeCollaborationResource(id: string, requestId: string, input: CollaborationResourceInput, recovery = false, options?: { signal?: AbortSignal }) {
+    const parsed = CollaborationResourceInputSchema.safeParse(input);
+    if (!parsed.success || !z.uuid().safeParse(id).success || !z.uuid().safeParse(requestId).success) throw new TypeError("Invalid collaboration resource intent");
+    const request = collaborationResourceRequest(id, parsed.data);
+    const raw = recovery
+      ? await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/resources/operations/${encodeURIComponent(requestId)}`, "recovery", { signal: options?.signal })
+      : await this.fetchCollaborationSwitch(request.path, "mutation", { method: "POST", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify(request.body) });
+    const result = parseCollaborationResourceReceipt(raw.body);
+    return result && (recovery || result.redacted !== true && result.status === raw.status) && matchesCollaborationResourceReceipt(result, id, requestId, parsed.data) ? result : null;
+  }
+
+  async listCollaborationTargetSwitchProposals(id: string, targetId: string, options?: { signal?: AbortSignal }) {
+    if (![id, targetId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration Switch identity");
+    const path = `/api/collaboration/issues/${encodeURIComponent(id)}/targets/${encodeURIComponent(targetId)}/switch-proposals`;
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(path), "read", { signal: options?.signal });
+    const result = parseCollaborationSwitchProposals(raw.body);
+    return result?.every((proposal) => sameResourceIdentity(proposal.target_id, targetId)) ? result : null;
+  }
+
+  async getCollaborationTargetSwitchProposal(id: string, targetId: string, proposalId: string, options?: { signal?: AbortSignal }) {
+    if (![id, targetId, proposalId].every((value) => z.uuid().safeParse(value).success)) throw new TypeError("Invalid collaboration Switch identity");
+    const path = `/api/collaboration/issues/${encodeURIComponent(id)}/targets/${encodeURIComponent(targetId)}/switch-proposals/${encodeURIComponent(proposalId)}`;
+    const raw = await this.fetchCollaborationSwitch(collaborationExecutionReadPath(path), "read", { signal: options?.signal });
+    const result = parseCollaborationSwitchProposal(raw.body);
+    return result && sameResourceIdentity(result.target_id, targetId) && sameResourceIdentity(result.proposal_id, proposalId) ? result : null;
+  }
+
+  private async requestCollaborationSwitch(
+    id: string, requestId: string, input: CollaborationSwitchInput, recovery: boolean, options?: { signal?: AbortSignal },
+  ) {
+    const parsed = CollaborationSwitchInputSchema.safeParse(input);
+    if (!parsed.success || !z.uuid().safeParse(id).success || !z.string().min(1).max(128).regex(/^[^\r\n]+$/).safeParse(requestId).success) {
+      throw new TypeError("Invalid collaboration Switch intent");
+    }
+    const request = collaborationSwitchRequest(id, parsed.data);
+    const raw = recovery
+      ? await this.fetchCollaborationSwitch(`/api/collaboration/issues/${encodeURIComponent(id)}/switch/operations/${encodeURIComponent(requestId)}`, "recovery", { signal: options?.signal })
+      : await this.fetchCollaborationSwitch(request.path, "mutation", {
+        method: "POST", signal: options?.signal, headers: { "Idempotency-Key": requestId }, body: JSON.stringify(request.body),
+      });
+    const result = parseCollaborationSwitchReceipt(raw.body);
+    return result && (recovery || (result.redacted !== true && result.status === raw.status)) && matchesCollaborationSwitchReceipt(result, id, requestId, parsed.data) ? result : null;
+  }
+
+  async switchCollaborationTarget(id: string, requestId: string, input: CollaborationSwitchInput, options?: { signal?: AbortSignal }) {
+    return this.requestCollaborationSwitch(id, requestId, input, false, options);
+  }
+
+  /** Lookup is independent from live proposal readiness and never sends POST. */
+  async getCollaborationSwitchOperation(id: string, requestId: string, input: CollaborationSwitchInput, options?: { signal?: AbortSignal }) {
+    return this.requestCollaborationSwitch(id, requestId, input, true, options);
+  }
+
+  async getCollaborationStatusOptions(id: string, action: CollaborationStatusAction, options?: { signal?: AbortSignal }) {
+    const query = new URLSearchParams({ action });
+    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/status-options?${query}`, { signal: options?.signal });
+    const statusOptions = parseCollaborationStatusOptions(raw);
+    return statusOptions?.action === action ? statusOptions : null;
+  }
+
+  async getCollaborationFieldOptions(id: string, options?: { signal?: AbortSignal; parentSearch?: string }) {
+    const suffix = options?.parentSearch ? `?${new URLSearchParams({ parent_search: options.parentSearch })}` : "";
+    const raw = await this.fetchCollaboration(`/api/collaboration/issues/${encodeURIComponent(id)}/field-options${suffix}`, { signal: options?.signal });
+    const fieldOptions = parseCollaborationFieldOptions(raw);
+    return fieldOptions && sameResourceIdentity(fieldOptions.issue_id, id) ? fieldOptions : null;
+  }
+
+  async changeCollaborationStatus(id: string, input: CollaborationStatusInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}`, input, {
+      status: input.status,
+      status_options_version: input.statusOptionsVersion,
+    }, options, "PATCH");
+  }
+
+  async editCollaborationIssue(id: string, input: CollaborationEditInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}`, input, {
+      title: input.title,
+      description: input.description,
+      start_date: input.startDate,
+      due_date: input.dueDate,
+      priority: input.priority,
+      label_ids: input.labelIds,
+      properties: input.properties,
+      project_id: input.projectId,
+      parent_issue_id: input.parentIssueId,
+      stage: input.stage,
+    }, options, "PATCH");
+  }
+
+  async changeCollaborationIteration(id: string, input: CollaborationIterationInput, options?: { signal?: AbortSignal }) {
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/iteration`, input, {
+      current_iteration_id: input.iterationId, expected_revision: input.expectedIssueRevision,
+      expected_iteration_revision: input.expectedIterationRevision, iteration_reason: input.iterationReason,
+      allow_completed: input.allowCompleted,
+    }, options, "PUT");
+  }
+
+  async changeCollaborationLifecycle(id: string, input: CollaborationLifecycleInput, options?: { signal?: AbortSignal }) {
+    const completion = input.completion === undefined ? undefined : CompletionBindingSchema.parse(input.completion);
+    if (completion && (input.action !== "complete" || completion.operation_id !== input.requestId)) throw new Error("Completion operation identity mismatch");
+    return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/lifecycle`, input, {
+      action: input.action,
+      status: input.status,
+      status_options_version: input.statusOptionsVersion,
+      submission_id: input.submissionId,
+      note: input.note,
+      basis: input.basis,
+      draft_id: input.draftId,
+      attachment_ids: input.attachmentIds,
+      source_comment_id: input.sourceCommentId,
+      completion,
+    }, options);
+  }
+
+  private async readCollaborationCompletion<T>(path: string, schema: z.ZodType<T>, init: RequestInit): Promise<CollaborationCompletionRead<T>> {
+    try {
+      const value = parseWithFallback<T | null>(await this.fetchCollaboration(path, { ...init, cache: "no-store" }), schema, null, { endpoint: path.split("?", 1)[0]!, redact: true });
+      return value === null ? { state: "unavailable", code: null } : { state: "available", value };
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.isStaleAuthResponse) throw error;
+      const code = collaborationStageErrorCode(error.body);
+      if ((error.status === 404 || error.status === 405) && code === null) return { state: "unavailable", code: null };
+      if (error.status === 403 || error.status === 404) return { state: "denied" };
+      if ([400, 405, 409, 503].includes(error.status)) return { state: "unavailable", code };
+      throw error;
+    }
+  }
+
+  async listCollaborationCompletionCandidates(issueId: string, sourceIssueId: string, params: { limit?: number; cursor?: string } = {}, options: { admin?: boolean; signal?: AbortSignal } = {}): Promise<CollaborationCompletionRead<CollaborationCompletionCandidates>> {
+    completionUUID.parse(issueId); completionUUID.parse(sourceIssueId);
+    const page = z.strictObject({ limit: z.number().int().min(1).max(50).optional(), cursor: z.string().min(1).max(2048).optional() }).parse(params);
+    const query = new URLSearchParams({ source_issue_id: sourceIssueId, limit: String(page.limit ?? 20) });
+    if (page.cursor) query.set("cursor", page.cursor);
+    const result = await this.readCollaborationCompletion(`/api/${options.admin ? "admin/" : ""}collaboration/issues/${issueId}/delivery-evidence/candidates?${query}`,
+      options.admin ? AdminCollaborationCompletionCandidatesSchema : CollaborationCompletionCandidatesSchema, { signal: options.signal });
+    if (result.state !== "available") return result;
+    const value = result.value;
+    return value.issue_id === issueId && value.source_issue_id === sourceIssueId && value.items.length <= (page.limit ?? 20) &&
+      (value.next_cursor === null || value.next_cursor !== page.cursor) ? result : { state: "unavailable", code: null };
+  }
+
+  async previewCollaborationCompletion(issueId: string, input: CollaborationCompletionPreviewInput, options: { admin?: boolean; signal?: AbortSignal } = {}): Promise<CollaborationCompletionRead<CollaborationCompletionPreview>> {
+    completionUUID.parse(issueId);
+    const body = CollaborationCompletionPreviewInputSchema.parse(input);
+    if (body.target.issue_id !== issueId || (body.target.kind === "collaboration_admin") !== (options.admin === true)) throw new Error("Completion target scope mismatch");
+    const result = await this.readCollaborationCompletion(`/api/${options.admin ? "admin/" : ""}collaboration/issues/${issueId}/delivery-evidence/completion-preview`, CollaborationCompletionPreviewSchema,
+      { method: "POST", signal: options.signal, body: JSON.stringify(body) });
+    if (result.state !== "available") return result;
+    const value = result.value;
+    return value.issue_id === issueId && value.issue_revision === body.target.expected_issue_revision && value.source_issue_id === body.source_issue_id && value.target_status === body.target.target_status &&
+      (value.observation === null || value.observation.approval_id === body.approval_id) &&
+      (value.authorization_binding === null || JSON.stringify(value.authorization_binding.target) === JSON.stringify(body.target)) ? result : { state: "unavailable", code: null };
+  }
+
   async getAdminMe(options?: { signal?: AbortSignal }) {
     const raw = await this.fetch<unknown>("/api/admin/me", { signal: options?.signal });
     return parseAdminMe(raw);
+  }
+
+  private adminCollaborationPageQuery(params: { limit?: number; cursor?: string } = {}) {
+    const query = z.strictObject({ limit: z.number().int().min(1).max(100).optional(), cursor: z.uuid().optional() }).parse(params);
+    const search = new URLSearchParams();
+    if (query.limit !== undefined) search.set("limit", String(query.limit));
+    if (query.cursor) search.set("cursor", query.cursor);
+    return search.size ? `?${search}` : "";
+  }
+
+  async getAdminCollaborationIssues(params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    return parseAdminCollaborationIssueList(await this.fetch<unknown>(`/api/admin/collaboration/issues${this.adminCollaborationPageQuery(params)}`, { signal: options?.signal }));
+  }
+
+  async getAdminCollaborationIssue(id: string, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    const result = parseAdminCollaborationDetail(await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}`, { signal: options?.signal }));
+    return result?.issueId === id.toLowerCase() ? result : null;
+  }
+
+  async getAdminCollaborationCandidates(id: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    const result = parseAdminCollaborationCandidates(await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}/reopen-candidates${this.adminCollaborationPageQuery(params)}`, { signal: options?.signal }));
+    return result?.issueId === id.toLowerCase() ? result : null;
+  }
+
+  async changeAdminCollaborationLifecycle(id: string, body: AdminCollaborationChange, key: string) {
+    z.uuid().parse(id);
+    z.uuid().parse(key);
+    const input = AdminCollaborationChangeSchema.parse(body);
+    if (input.completion && input.completion.operation_id !== key) throw new Error("Completion operation identity mismatch");
+    const raw = await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}/lifecycle`, {
+      method: "POST", headers: { "Idempotency-Key": key }, body: JSON.stringify({ action: input.action,
+        expected_collaboration_revision: input.expectedCollaborationRevision, expected_status: input.expectedStatus,
+        target_status: input.targetStatus, status_options_version: input.statusOptionsVersion, reason: input.reason,
+        successor_user_id: input.successorUserId, completion: input.completion }),
+    });
+    const result = parseAdminCollaborationResult(raw);
+    return result && matchesAdminCollaborationResult(result, id, key, input) ? result : null;
+  }
+
+  async getAdminCollaborationMemoryVersions(id: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    const query = z.strictObject({ limit: z.number().int().min(1).max(100).optional(), cursor: positiveVersion.optional() }).parse(params);
+    const search = new URLSearchParams();
+    if (query.limit !== undefined) search.set("limit", String(query.limit));
+    if (query.cursor) search.set("cursor", query.cursor);
+    const result = parseAdminCollaborationMemoryVersions(await this.fetch<unknown>(
+      `/api/admin/collaboration/issues/${encodeURIComponent(id)}/memory/versions${search.size ? `?${search}` : ""}`, { signal: options?.signal }));
+    return result?.issueId === id.toLowerCase() ? result : null;
+  }
+
+  async purgeAdminCollaborationMemoryVersion(id: string, body: AdminCollaborationMemoryPurge, key: string) {
+    z.uuid().parse(id);
+    z.uuid().parse(key);
+    const input = AdminCollaborationMemoryPurgeSchema.parse(body);
+    const result = parseAdminCollaborationMemoryResult(await this.fetch<unknown>(
+      `/api/admin/collaboration/issues/${encodeURIComponent(id)}/memory/versions/${encodeURIComponent(input.version)}/purge`, {
+        method: "POST", headers: { "Idempotency-Key": key }, body: JSON.stringify({ reason: input.reason }),
+      }));
+    return result && matchesAdminCollaborationMemoryResult(result, id, key, input) ? result : null;
+  }
+
+  /** The shared administration operation GET returns the purge-specific result shape. */
+  async getAdminCollaborationMemoryOperation(id: string, key: string, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    z.uuid().parse(key);
+    const result = parseAdminCollaborationMemoryResult(await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}/operations/${encodeURIComponent(key)}`, { signal: options?.signal }));
+    return result && matchesAdminCollaborationMemoryResult(result, id, key) ? result : null;
+  }
+
+  async getAdminCollaborationOperation(id: string, key: string, options?: { signal?: AbortSignal }) {
+    z.uuid().parse(id);
+    z.uuid().parse(key);
+    const result = parseAdminCollaborationResult(await this.fetch<unknown>(`/api/admin/collaboration/issues/${encodeURIComponent(id)}/operations/${encodeURIComponent(key)}`, { signal: options?.signal }));
+    return result && matchesAdminCollaborationResult(result, id, key) ? result : null;
   }
 
   async getAdminResources(kind: AdminResourceKind, options?: { signal?: AbortSignal }) {
@@ -997,6 +2571,18 @@ export class ApiClient {
 
   async getAdminSettings(options?: { signal?: AbortSignal }) {
     return parseAdminSettings(await this.fetch<unknown>("/api/admin/settings", { signal: options?.signal }));
+  }
+
+  async getAdminCollaborationGate(options?: { signal?: AbortSignal }) {
+    return parseAdminCollaborationGate(await this.fetch<unknown>("/api/admin/collaboration/gate", { signal: options?.signal }));
+  }
+
+  async changeAdminCollaborationGate(body: AdminCollaborationGateChange, key: string) {
+    return parseAdminCollaborationGateResult(await this.fetch<unknown>("/api/admin/collaboration/gate", {
+      method: "POST", headers: { "Idempotency-Key": key },
+      body: JSON.stringify({ action: body.action, reason: body.reason,
+        ...(body.action === "open_execution" ? { expected_execution_epoch: body.expectedExecutionEpoch } : {}) }),
+    }));
   }
 
   async changeAdminAdmission(id: string, body: AdminAdmissionChange, key: string) {
@@ -1128,6 +2714,13 @@ export class ApiClient {
     const rid = createRequestId();
     const start = Date.now();
     const method = init?.method ?? "GET";
+    const collaborationRequest = path.startsWith("/api/collaboration/") || /^\/api\/me\/(?:workbench|collaboration-notifications)(?:[/?]|$)/.test(path);
+    const sourceIssueRequest = /^\/api\/(?:issues|delivery-completion-authorizations|admin\/collaboration\/issues\/[^/?]+\/delivery-evidence)(?:[/?]|$)/.test(path);
+    // Target knowledge stays workspace-scoped for headers, but its cursor and
+    // server error text need the same private logging boundary as source reads.
+    const targetKnowledgeRequest = /^\/api\/(?:projects|workspaces)\/[^/?]+\/knowledge(?:-policy)?(?:[/?]|$)/.test(path);
+    const issueBudgetRequest = /^\/api\/issue-budgets(?:[/?]|$)/.test(path);
+    const logPath = collaborationRequest || sourceIssueRequest || targetKnowledgeRequest ? path.split("?", 1)[0] : path;
 
     // Captured where the headers are built: this is the credential the
     // request speaks for, and the 401 handler below compares it against the
@@ -1141,7 +2734,7 @@ export class ApiClient {
       ...((init?.headers as Record<string, string>) ?? {}),
     };
 
-    if (path.startsWith("/api/admin/")) {
+    if (path.startsWith("/api/admin/") || collaborationRequest || /^\/api\/projects\/[^/?]+\/knowledge-policy\/operations\//.test(path)) {
       for (const name of Object.keys(headers)) {
         if (["x-workspace-id", "x-workspace-slug"].includes(name.toLowerCase())) delete headers[name];
       }
@@ -1154,7 +2747,7 @@ export class ApiClient {
       headers["X-Installation-Proof"] = metadata.proof;
     }
 
-    this.logger.info(`→ ${method} ${path}`, { rid });
+    this.logger.info(`→ ${method} ${logPath}`, { rid });
 
     const signal = init?.signal ? AbortSignal.any([init.signal, this.endpointController.signal]) : this.endpointController.signal;
     signal.throwIfAborted();
@@ -1186,7 +2779,7 @@ export class ApiClient {
       // Session rejection has a recovery path; console.error would open the
       // development error overlay while the application returns to sign-in.
       const logLevel = status === 401 || status === 404 ? "warn" : "error";
-      this.logger[logLevel](`← ${status} ${path}`, { rid, duration: `${Date.now() - start}ms`, error: path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
+      this.logger[logLevel](`← ${status} ${logPath}`, { rid, duration: `${Date.now() - start}ms`, error: issueBudgetRequest ? "Budget request failed" : collaborationRequest ? "Collaboration request failed" : sourceIssueRequest ? "Issue request failed" : targetKnowledgeRequest ? "Knowledge request failed" : path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
       throw new ApiError(
         message,
         status,
@@ -1199,7 +2792,7 @@ export class ApiClient {
       );
     }
 
-    this.logger.info(`← ${res.status} ${path}`, { rid, duration: `${Date.now() - start}ms` });
+    this.logger.info(`← ${res.status} ${logPath}`, { rid, duration: `${Date.now() - start}ms` });
     return res;
   }
 
@@ -1213,7 +2806,16 @@ export class ApiClient {
     if (res.status === 204) {
       return undefined as T;
     }
-    const data = await res.json();
+    let data: unknown;
+    try {
+      data = await res.json();
+    } catch (error) {
+      // JSON syntax errors can quote source issue bodies before schema redaction.
+      if (/^\/api\/(?:issues|delivery-completion-authorizations|admin\/collaboration\/issues\/[^/?]+\/delivery-evidence)(?:[/?]|$)/.test(path) && error instanceof SyntaxError) {
+        throw new Error("Issue response could not be decoded");
+      }
+      throw error;
+    }
     if (endpointEpoch !== this.endpointEpoch) throw new Error("Server session changed");
     init?.signal?.throwIfAborted();
     return data as T;
@@ -1334,19 +2936,6 @@ export class ApiClient {
     });
   }
 
-  async joinCloudWaitlist(payload: {
-    email: string;
-    reason?: string;
-  }): Promise<User> {
-    const raw = await this.fetch<unknown>("/api/me/onboarding/cloud-waitlist", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
-    return parseWithFallback(raw, UserSchema, EMPTY_USER, {
-      endpoint: "POST /api/me/onboarding/cloud-waitlist",
-    });
-  }
-
   async patchOnboarding(payload: {
     questionnaire?: Record<string, unknown>;
   }): Promise<User> {
@@ -1387,6 +2976,7 @@ export class ApiClient {
     if (params?.assignee_id) search.set("assignee_id", params.assignee_id);
     if (params?.assignee_ids?.length) search.set("assignee_ids", params.assignee_ids.join(","));
     if (params?.assignee_types?.length) search.set("assignee_types", params.assignee_types.join(","));
+    if (params?.external_collaborators === true) search.set("external_collaborators", "true");
     if (params?.creator_id) search.set("creator_id", params.creator_id);
     if (params?.project_id) search.set("project_id", params.project_id);
     if (params?.assignee_filters?.length) {
@@ -1429,13 +3019,13 @@ export class ApiClient {
         body: JSON.stringify(Object.fromEntries(search)),
       });
       return parseWithFallback(raw, ListIssuesResponseSchema, EMPTY_LIST_ISSUES_RESPONSE, {
-        endpoint: "POST /api/issues/query",
+        endpoint: "POST /api/issues/query", redact: true,
       });
     }
     const path = `/api/issues?${search}`;
     const raw = await this.fetch<unknown>(path);
     return parseWithFallback(raw, ListIssuesResponseSchema, EMPTY_LIST_ISSUES_RESPONSE, {
-      endpoint: "GET /api/issues",
+      endpoint: "GET /api/issues", redact: true,
     });
   }
 
@@ -1447,6 +3037,7 @@ export class ApiClient {
     if (params.statuses?.length) search.set("statuses", params.statuses.join(","));
     if (params.priorities?.length) search.set("priorities", params.priorities.join(","));
     if (params.assignee_types?.length) search.set("assignee_types", params.assignee_types.join(","));
+    if (params.external_collaborators === true) search.set("external_collaborators", "true");
     if (params.assignee_id) search.set("assignee_id", params.assignee_id);
     if (params.assignee_ids?.length) search.set("assignee_ids", params.assignee_ids.join(","));
     if (params.creator_id) search.set("creator_id", params.creator_id);
@@ -1477,7 +3068,7 @@ export class ApiClient {
     if (params.sort_direction) search.set("direction", params.sort_direction);
     const raw = await this.fetch<unknown>(`/api/issues/grouped?${search}`);
     return parseWithFallback(raw, GroupedIssuesResponseSchema, EMPTY_GROUPED_ISSUES_RESPONSE, {
-      endpoint: "GET /api/issues/grouped",
+      endpoint: "GET /api/issues/grouped", redact: true,
     });
   }
 
@@ -1490,7 +3081,7 @@ export class ApiClient {
       raw,
       IssueTableGroupsResponseSchema,
       EMPTY_ISSUE_TABLE_GROUPS_RESPONSE,
-      { endpoint: "POST /api/issues/table/groups" },
+      { endpoint: "POST /api/issues/table/groups", redact: true },
     );
   }
 
@@ -1503,7 +3094,7 @@ export class ApiClient {
       raw,
       IssueTableRowsResponseSchema,
       EMPTY_ISSUE_TABLE_ROWS_RESPONSE,
-      { endpoint: "POST /api/issues/table/rows" },
+      { endpoint: "POST /api/issues/table/rows", redact: true },
     );
   }
 
@@ -1516,7 +3107,7 @@ export class ApiClient {
       raw,
       IssueTableFacetsResponseSchema,
       EMPTY_ISSUE_TABLE_FACETS_RESPONSE,
-      { endpoint: "POST /api/issues/table/facets" },
+      { endpoint: "POST /api/issues/table/facets", redact: true },
     );
   }
 
@@ -1530,7 +3121,7 @@ export class ApiClient {
       params.signal ? { signal: params.signal } : undefined,
     );
     return parseWithFallback(raw, SearchIssuesResponseSchema, EMPTY_SEARCH_ISSUES_RESPONSE, {
-      endpoint: "GET /api/issues/search",
+      endpoint: "GET /api/issues/search", redact: true,
     });
   }
 
@@ -1721,13 +3312,41 @@ export class ApiClient {
       workspaceRequestInit(options),
     );
     const issue = parseWithFallback<Issue | null>(raw, IssueSchema, null, {
-      endpoint: "GET /api/issues/:id",
+      endpoint: "GET /api/issues/:id", redact: true,
     });
     if (!issue) {
-      // parseWithFallback already logged the zod issues + raw payload.
+      // The schema warning identifies the endpoint without logging issue data.
       throw new Error("GET /api/issues/:id returned a malformed issue");
     }
     return issue;
+  }
+
+  /**
+   * The budget of a root issue, as `GET /api/issue-budgets/{rootId}` answers.
+   *
+   * `null` means the server answered 2xx with something that is not a budget:
+   * a missing or mistyped field, a body that is not JSON, or no body. There
+   * is no safe-empty budget to degrade to: an object of zeros would read as
+   * "nothing spent", and a guessed state as one the server gave. A refusal
+   * (403 `budget_forbidden`, 404 `not_found`) is not `null`; it stays an
+   * ApiError with its status and body.
+   */
+  async getIssueBudget(rootId: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<IssueBudget | null> {
+    let raw: unknown;
+    try {
+      raw = await this.fetch<unknown>(
+        `/api/issue-budgets/${encodeURIComponent(rootId)}`,
+        workspaceRequestInit(options),
+      );
+    } catch (error) {
+      // A 2xx body that is not JSON is a malformed answer like any other. The
+      // syntax error is dropped: its message can quote the answer.
+      if (!(error instanceof SyntaxError)) throw error;
+      raw = undefined;
+    }
+    return parseWithFallback<IssueBudget | null>(raw, IssueBudgetSchema, null, {
+      endpoint: "GET /api/issue-budgets/:id", redact: true,
+    });
   }
 
   async recommendIssueCreators(
@@ -1907,6 +3526,138 @@ export class ApiClient {
     });
   }
 
+  private async completionRequest<T>(path: string, schema: z.ZodType, init: RequestInit, options: CompletionRequestOptions): Promise<T> {
+    completionUUID.parse(options.workspaceId);
+    const session = this.getSessionScope(), authEpoch = this.authEpoch;
+    const workspace = workspaceRequestInit(options);
+    const raw = await this.fetchBounded<unknown>(path, {
+      ...init, cache: "no-store", headers: { ...workspace.headers, ...init.headers },
+    }, { timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS, ...options });
+    if (session !== this.getSessionScope() || authEpoch !== this.authEpoch) throw new DOMException("Completion session changed", "AbortError");
+    const value = parseWithFallback<T | null>(raw, schema, null, { endpoint: path.split("?", 1)[0]!, redact: true });
+    if (value === null) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  private invalidCompletionResponse(): ApiError {
+    return new ApiError("Completion response could not be verified", 502, "Bad Gateway", { code: "invalid_delivery_completion_response" });
+  }
+
+  async listDeliveryCompletionCandidates(issueId: string, params: { limit?: number; cursor?: string } = {}, options: CompletionRequestOptions): Promise<CompletionCandidates> {
+    completionUUID.parse(issueId);
+    const parsed = z.strictObject({ limit: z.number().int().min(1).max(50).optional(), cursor: z.string().min(1).optional() }).parse(params);
+    const query = new URLSearchParams();
+    if (parsed.limit !== undefined) query.set("limit", String(parsed.limit));
+    if (parsed.cursor !== undefined) query.set("cursor", parsed.cursor);
+    const value = await this.completionRequest<CompletionCandidates>(`/api/issues/${issueId}/delivery-evidence/candidates${query.size ? `?${query}` : ""}`, CompletionCandidatesSchema, {}, options);
+    if (value.issue_id !== issueId) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async previewDeliveryCompletion(issueId: string, input: CompletionPreviewInput, options: CompletionRequestOptions): Promise<CompletionPreview> {
+    completionUUID.parse(issueId);
+    const body = CompletionPreviewInputSchema.parse(input);
+    const value = await this.completionRequest<CompletionPreview>(`/api/issues/${issueId}/delivery-evidence/completion-preview`, CompletionPreviewSchema, { method: "POST", body: JSON.stringify(body) }, options);
+    if (value.issue_id !== issueId || value.issue_revision !== body.expected_issue_revision || value.target_status !== body.target_status ||
+      (value.observation && value.observation.approval_id !== body.approval_id) ||
+      (value.authorization_binding && value.authorization_binding.source_workspace_id !== options.workspaceId)) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async createDeliveryCompletionAuthorization(requestKey: string, input: CompletionAuthorizationRequest, options: CompletionRequestOptions): Promise<CompletionAuthorization> {
+    completionUUID.parse(requestKey);
+    const body = CompletionAuthorizationRequestSchema.parse(input);
+    if (body.source_workspace_id !== options.workspaceId) throw new Error("Completion workspace mismatch");
+    const value = await this.completionRequest<CompletionAuthorization>("/api/delivery-completion-authorizations", CompletionAuthorizationSchema,
+      { method: "POST", headers: { "Idempotency-Key": requestKey }, body: JSON.stringify(body) }, options);
+    if (!matchesCompletionAuthorization(value, body)) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async getDeliveryCompletionAuthorization(authorizationId: string, options: CompletionRequestOptions): Promise<CompletionAuthorization> {
+    completionUUID.parse(authorizationId);
+    const value = await this.completionRequest<CompletionAuthorization>(`/api/delivery-completion-authorizations/${authorizationId}`, CompletionAuthorizationSchema, {}, options);
+    if (value.authorization_id !== authorizationId) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async getDeliveryCompletionAuthorizationByKey(requestKey: string, options: CompletionRequestOptions): Promise<CompletionAuthorization> {
+    completionUUID.parse(requestKey);
+    const query = new URLSearchParams({ workspace_id: completionUUID.parse(options.workspaceId) });
+    return this.completionRequest(`/api/delivery-completion-authorizations/by-request-key/${requestKey}?${query}`, CompletionAuthorizationSchema, {}, options);
+  }
+
+  async revokeDeliveryCompletionAuthorization(authorizationId: string, requestKey: string, reason: string, options: CompletionRequestOptions): Promise<CompletionAuthorization> {
+    completionUUID.parse(authorizationId); completionUUID.parse(requestKey);
+    const value = await this.completionRequest<CompletionAuthorization>(`/api/delivery-completion-authorizations/${authorizationId}/revocations`, CompletionAuthorizationSchema,
+      { method: "POST", headers: { "Idempotency-Key": requestKey }, body: JSON.stringify({ reason: completionReason.parse(reason) }) }, options);
+    if (value.authorization_id !== authorizationId) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async getDeliveryCompletionIssue(issueId: string, options: CompletionRequestOptions): Promise<Issue> {
+    completionUUID.parse(issueId);
+    const value = await this.completionRequest<Issue>(`/api/issues/${issueId}`, IssueSchema.extend({ id: completionUUID, workspace_id: completionUUID, revision: completionRevision }).strip(), {}, options);
+    if (value.id !== issueId || value.workspace_id !== options.workspaceId) throw this.invalidCompletionResponse();
+    return value;
+  }
+
+  async submitDeliveryCompletion(issueId: string, input: { status: string; completion: DeliveryCompletionBinding }, options: CompletionRequestOptions): Promise<CompletionWriteResult> {
+    completionUUID.parse(issueId);
+    const body = z.strictObject({ status: z.string().min(1), completion: CompletionBindingSchema }).parse(input);
+    const schema = IssueSchema.extend({ id: completionUUID, workspace_id: completionUUID, revision: completionRevision, completion_receipt: CompletionReceiptSchema }).strip();
+    const value = await this.completionRequest<Issue & { completion_receipt: z.infer<typeof CompletionReceiptSchema> }>(`/api/issues/${issueId}`, schema,
+      { method: "PUT", body: JSON.stringify(body) }, options);
+    if (value.id !== issueId || value.workspace_id !== options.workspaceId || !matchesCompletionReceipt(value.completion_receipt, issueId, body.status, body.completion) ||
+      value.revision === undefined || value.revision < value.completion_receipt.completed_revision) throw this.invalidCompletionResponse();
+    const { completion_receipt, ...issue } = value;
+    return { issue, receipt: completion_receipt };
+  }
+
+  /**
+   * Read the current, non-authorizing completion hint for one issue. The
+   * response is deliberately parsed into public facts only; a private
+   * evaluation object from a newer server is stripped by the schema.
+   */
+  async getDeliveryCompletionHint(
+    issueId: string,
+    input: DeliveryCompletionHintRequest,
+    options?: ApiRequestOptions & { workspaceId?: string },
+  ): Promise<DeliveryCompletionHintResponse> {
+    // Construct the wire shape explicitly so a JavaScript caller cannot add
+    // fields or smuggle a private evaluation key through an object cast.
+    const body: DeliveryCompletionHintRequest = {
+      expected_issue_revision: input.expected_issue_revision,
+      target_status: input.target_status,
+      evaluation_key: null,
+    };
+    const raw = await this.fetchBounded<unknown>(
+      `/api/issues/${encodeURIComponent(issueId)}/delivery-evidence/completion-hint`,
+      {
+        ...workspaceRequestInit(options),
+        method: "POST",
+        body: JSON.stringify(body),
+        cache: "no-store",
+      },
+      options,
+    );
+    const parsed = parseWithFallback<DeliveryCompletionHintResponse | null>(
+      raw,
+      DeliveryCompletionHintResponseSchema,
+      null,
+      { endpoint: "POST /api/issues/:id/delivery-evidence/completion-hint", redact: true },
+    );
+    if (!parsed) {
+      throw new ApiError(
+        "Invalid completion hint response",
+        502,
+        "Bad Gateway",
+        { code: "invalid_delivery_completion_hint_response" },
+      );
+    }
+    return parsed;
+  }
+
   async moveIssue(id: string, data: MoveIssueRequest): Promise<Issue> {
     return this.fetch(`/api/issues/${id}/move`, {
       method: "POST",
@@ -1917,7 +3668,7 @@ export class ApiClient {
   async listChildIssues(id: string): Promise<{ issues: Issue[] }> {
     const raw = await this.fetch<unknown>(`/api/issues/${id}/children`);
     return parseWithFallback(raw, ChildIssuesResponseSchema, { issues: [] }, {
-      endpoint: "GET /api/issues/:id/children",
+      endpoint: "GET /api/issues/:id/children", redact: true,
     });
   }
 
@@ -1930,7 +3681,7 @@ export class ApiClient {
       `/api/issues/children?parent_ids=${parentIds.join(",")}`,
     );
     return parseWithFallback(raw, ChildIssuesResponseSchema, { issues: [] }, {
-      endpoint: "GET /api/issues/children",
+      endpoint: "GET /api/issues/children", redact: true,
     });
   }
 
@@ -1961,11 +3712,30 @@ export class ApiClient {
     await this.fetch(`/api/issues/${id}`, { method: "DELETE" });
   }
 
-  async batchUpdateIssues(issueIds: string[], updates: UpdateIssueRequest): Promise<{ updated: number }> {
-    return this.fetch("/api/issues/batch-update", {
-      method: "POST",
-      body: JSON.stringify({ issue_ids: issueIds, updates }),
-    });
+  async batchUpdateIssues(issueIds: string[], updates: UpdateIssueRequest, options?: BatchUpdateIssuesOptions): Promise<BatchUpdateIssuesResponse> {
+    if (!validBatchCompletionOptions(issueIds, updates, options)) {
+      throw new ApiError("Invalid per-issue completion bindings", 400, "Bad Request", { code: "invalid_batch_update_request" });
+    }
+    const requestedIds = [...issueIds];
+    const hasMutation = hasBatchIssueMutation(updates);
+    let raw: unknown;
+    try {
+      raw = await this.fetch<unknown>("/api/issues/batch-update", {
+        method: "POST",
+        redirect: "error",
+        body: JSON.stringify({ issue_ids: requestedIds, updates, ...options }),
+      });
+    } catch (error) {
+      const source = error instanceof ApiError ? error : undefined;
+      const outcome = source ? parseBatchUpdateOutcome(source.body, requestedIds, hasMutation) : undefined;
+      throw new BatchUpdateError(source?.message ?? "Batch update could not be confirmed. Refresh before continuing.", outcome, source);
+    }
+    const outcome = parseBatchUpdateOutcome(raw, requestedIds, hasMutation);
+    if (outcome === undefined) throw new BatchUpdateError("Batch update could not be confirmed. Refresh before continuing.");
+    if (!isBatchUpdateComplete(outcome, requestedIds.length, hasMutation)) {
+      throw new BatchUpdateError("Batch update was incomplete. Refresh before continuing.", outcome);
+    }
+    return outcome;
   }
 
   async batchDeleteIssues(issueIds: string[]): Promise<{ deleted: number }> {
@@ -3276,8 +5046,8 @@ export class ApiClient {
   }
 
   // Inbox
-  async listInbox(): Promise<InboxItem[]> {
-    const raw = await this.fetch<unknown>("/api/inbox");
+  async listInbox(options?: { workspaceId?: string }): Promise<InboxItem[]> {
+    const raw = await this.fetch<unknown>("/api/inbox", workspaceRequestInit(options));
     return parseWithFallback(raw, InboxItemListSchema, EMPTY_INBOX_ITEMS, {
       endpoint: "GET /api/inbox",
     });
@@ -3298,8 +5068,8 @@ export class ApiClient {
   // Archived notifications, backing the inbox's "Archived" sub-view. Capped
   // server-side (no pagination in v1). Schema-guarded so a contract drift
   // renders an empty archive instead of taking the inbox down with it.
-  async listArchivedInbox(): Promise<InboxItem[]> {
-    const raw = await this.fetch<unknown>("/api/inbox/archived");
+  async listArchivedInbox(options?: { workspaceId?: string }): Promise<InboxItem[]> {
+    const raw = await this.fetch<unknown>("/api/inbox/archived", workspaceRequestInit(options));
     return parseWithFallback(raw, InboxItemListSchema, EMPTY_INBOX_ITEMS, {
       endpoint: "GET /api/inbox/archived",
     });
@@ -3307,6 +5077,81 @@ export class ApiClient {
 
   async unarchiveInbox(id: string): Promise<InboxItem> {
     return this.fetch(`/api/inbox/${id}/unarchive`, { method: "POST" });
+  }
+
+  async listSnoozedInbox(options?: { workspaceId?: string }): Promise<InboxItem[]> {
+    const raw = await this.fetch<unknown>("/api/inbox/snoozed", workspaceRequestInit(options));
+    const items = parseWithFallback<InboxItem[] | null>(raw, InboxItemListSchema, null, {
+      endpoint: "GET /api/inbox/snoozed",
+      redact: true,
+    });
+    if (!items) throw new Error("Invalid snoozed inbox response");
+    return items;
+  }
+
+  async snoozeInboxItem(
+    id: string,
+    data: { snoozed_until: string; expected_revision: number },
+    options?: { workspaceId?: string },
+  ): Promise<InboxSnoozeReceipt> {
+    return this.writeInboxSnooze(id, "snooze", data, options);
+  }
+
+  async unsnoozeInboxItem(
+    id: string,
+    data: { expected_revision: number },
+    options?: { workspaceId?: string },
+  ): Promise<InboxSnoozeReceipt> {
+    return this.writeInboxSnooze(id, "unsnooze", data, options);
+  }
+
+  async undoInboxSnooze(
+    id: string,
+    data: { undo_token: string },
+    options?: { workspaceId?: string },
+  ): Promise<InboxSnoozeReceipt> {
+    return this.writeInboxSnooze(id, "snooze/undo", data, options);
+  }
+
+  private async writeInboxSnooze(
+    id: string,
+    action: "snooze" | "unsnooze" | "snooze/undo",
+    data: Record<string, string | number>,
+    options?: { workspaceId?: string },
+  ): Promise<InboxSnoozeReceipt> {
+    const raw = await this.fetch<unknown>(`/api/inbox/${encodeURIComponent(id)}/${action}`, {
+      ...workspaceRequestInit(options),
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const receipt = parseWithFallback<InboxSnoozeReceipt | null>(raw, InboxSnoozeReceiptSchema, null, {
+      endpoint: `POST /api/inbox/:id/${action}`,
+      redact: true,
+    });
+    if (!receipt || receipt.revision <= 0 || (options?.workspaceId !== undefined && receipt.workspace_id !== options.workspaceId)) {
+      throw new Error("Invalid inbox snooze response");
+    }
+    if (action !== "snooze/undo" && (
+      typeof data.expected_revision !== "number" || !(receipt.revision > data.expected_revision)
+    )) {
+      throw new Error("Invalid inbox snooze response");
+    }
+    if (action === "snooze") {
+      const requestedUntil = data.snoozed_until;
+      const returnedUntil = receipt.snoozed_until;
+      // Date keeps milliseconds; normalized fractions also preserve the
+      // exact RFC3339 instant when a response contains finer precision.
+      const fraction = (value: string) => value.match(/\.(\d+)(?:Z|[+-]\d{2}:\d{2})$/)?.[1]?.replace(/0+$/, "") ?? "";
+      if (typeof requestedUntil !== "string" || returnedUntil === null ||
+        Date.parse(returnedUntil) !== Date.parse(requestedUntil) || fraction(returnedUntil) !== fraction(requestedUntil)) {
+        throw new Error("Invalid inbox snooze response");
+      }
+    } else if (action === "unsnooze" && (
+      receipt.snoozed_until !== null || receipt.reminded_at === null || !Number.isFinite(Date.parse(receipt.reminded_at))
+    )) {
+      throw new Error("Invalid inbox snooze response");
+    }
+    return receipt;
   }
 
   async getUnreadInboxCount(): Promise<{ count: number }> {
@@ -5256,9 +7101,12 @@ export class ApiClient {
   }
 
   async createAutopilot(data: CreateAutopilotRequest): Promise<Autopilot> {
-    return this.fetch("/api/autopilots", {
+    const raw = await this.fetch<unknown>("/api/autopilots", {
       method: "POST",
       body: JSON.stringify(data),
+    });
+    return parseWithFallback(raw, AutopilotSchema, EMPTY_AUTOPILOT, {
+      endpoint: "POST /api/autopilots",
     });
   }
 

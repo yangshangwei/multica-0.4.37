@@ -1,0 +1,47 @@
+{
+  "code_commit": "5bd1ecf13a77bc94334452910b0c1adf08f02f08",
+  "state": "framework_ready_pending_independent_review_and_root_deployed_execution",
+  "sources": {
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+    "e2e/fixtures/collaboration-host-provider_test.go": "10af5c9122d610dd966fd78ea8eed48ec6fe93ba263025cb17cbee9c0853a600",
+    "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+    "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241"
+  },
+  "parser_red": {
+    "exit": 1,
+    "run": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "parser_normal": {
+    "exit": 0,
+    "run": 24,
+    "pass": 24,
+    "fail": 0,
+    "skip": 0
+  },
+  "parser_race": {
+    "exit": 0,
+    "run": 24,
+    "pass": 24,
+    "fail": 0,
+    "skip": 0
+  },
+  "static_checks_pass": true,
+  "static_top_tests": 1,
+  "actual_browser_tests": 0,
+  "deployed_OFF": "NOT_RUN",
+  "deployed_ON": "NOT_RUN",
+  "Provider_calls": 0,
+  "database_operations": 0,
+  "production_changes": false,
+  "dependencies_added": false,
+  "remaining": [
+    "independent review",
+    "root service/DB/binary READY permit",
+    "actual OFF and ON runs with non-skipped results",
+    "final source binding and integrated acceptance"
+  ],
+  "at": "2026-11-01T19:47:57.222603+00:00"
+}

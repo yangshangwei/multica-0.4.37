@@ -1,0 +1,38 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=180s",
+    "./cmd/server",
+    "-run",
+    "^TestTaskCapability"
+  ],
+  "database": "rnd_m1_router_review01",
+  "exit": 0,
+  "counts": {
+    "pass": 10,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestTaskCapabilityReviewProductionRouter/GET/api/issues/b159a1e4-b5d1-42a1-854e-449376f65f08",
+      "TestTaskCapabilityReviewProductionRouter/GET/api/issues/b159a1e4-b5d1-42a1-854e-449376f65f08/comments",
+      "TestTaskCapabilityReviewProductionRouter/GET/api/issues/b159a1e4-b5d1-42a1-854e-449376f65f08/timeline",
+      "TestTaskCapabilityReviewProductionRouter/POST/api/issues/b159a1e4-b5d1-42a1-854e-449376f65f08/comments",
+      "TestTaskCapabilityReviewProductionRouter/GET/api/issues/f74fd1e2-0419-4308-9e50-9e95744c81db",
+      "TestTaskCapabilityReviewProductionRouter/PUT/api/issues/b159a1e4-b5d1-42a1-854e-449376f65f08",
+      "TestTaskCapabilityReviewProductionRouter/POST/api/cli-token",
+      "TestTaskCapabilityReviewProductionRouter/GET/api/plugin-bridge/v1/installations",
+      "TestTaskCapabilityReviewProductionRouter",
+      "TestTaskCapabilityReviewerCannotRewriteIssue"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "59c98ce56846c9b36dd21ec1e18b2dddb2efebea915689f368d3a5f9f6d133d2"
+}

@@ -1,0 +1,8 @@
+
+Running 4 tests using 1 worker
+
+[1A[2K[1/4] [chromium] › e2e/collaboration-host-runtime.spec.ts:15:1 › host Web and actual Electron share one ordinary Agent, preserve authors, and explicitly resume after scoped Stop
+[1A[2K[2/4] [chromium] › e2e/collaboration-host-squad.spec.ts:13:1 › a capacity-one host squad merges @A with @S, delegates to its member, joins a later instruction and queues another squad
+[1A[2K[3/4] [chromium] › e2e/collaboration-host-switch.spec.ts:14:1 › switching a squad to another native runtime waits for confirmed Stop and owner consent, then resumes there without moving local files
+[1A[2K[4/4] [chromium] › e2e/collaboration-knowledge-deployed.spec.ts:15:1 › deployed knowledge startup flag controls one actual Host input and its authorization events
+[1A[2K  4 passed (1.1m)

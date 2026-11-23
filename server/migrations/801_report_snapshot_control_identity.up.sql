@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY report_snapshot_control_identity_key ON report_snapshot_control (workspace_id, report_issue_id);

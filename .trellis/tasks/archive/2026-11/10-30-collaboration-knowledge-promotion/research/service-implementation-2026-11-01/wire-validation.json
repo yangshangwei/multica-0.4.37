@@ -1,0 +1,12 @@
+{
+  "fixtures": {
+    "receipt": "CollaborationKnowledgeReceiptSchema",
+    "available-detail": "CollaborationKnowledgeDetailSchema",
+    "source-list": "CollaborationKnowledgeCandidatesSchema",
+    "available-target": "CollaborationKnowledgeTargetListSchema",
+    "unavailable-detail": "CollaborationKnowledgeDetailSchema",
+    "unavailable-target": "CollaborationKnowledgeTargetListSchema"
+  },
+  "exit_code": 0,
+  "method": "actual Go HTTP payloads checked by current Core Zod schemas; temporary esbuild harness, no frontend source edit"
+}

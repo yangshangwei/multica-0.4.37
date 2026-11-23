@@ -1,0 +1,320 @@
+{
+  "label": "handler-green-1",
+  "package": "./internal/handler",
+  "database": "m1s1_handler_green_1_c96aada4",
+  "private_environment": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1s1-rb4ri2aw/environment.json",
+  "state": "complete",
+  "cluster_before": "postgres|17.11 (Debian 17.11-1.pgdg12+2)|100|24",
+  "source_head": "ade2298e24c3e99aa1982f9c6ddcbb1dc3bd29d3",
+  "runner_sha256": "5837d5d6746e42198f0137aad2db5562010dac4b3cb984f75034bc7ceb2a26a1",
+  "created_at": "2026-11-12T09:57:42.765334+00:00",
+  "migration_exit": 0,
+  "schema_migrations_count": "781",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/handler",
+    "-count=1",
+    "-json",
+    "-timeout=15m",
+    "-run",
+    "TestDeliveryCompletion(Preview|Candidates)|TestDeliveryEvidence"
+  ],
+  "exit_code": 1,
+  "named_test_results": [
+    {
+      "test": "TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/custom_done",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/custom_archived",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/already_done",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/non_done",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/off",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/observe",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/no_project",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/stale",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/missing_head",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/different_head",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/authority",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/credential",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/other_issue",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewCredentialHorizon",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionCandidatesPaginationAndAuthority",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceActualPackageSnapshot",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/old_candidate",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/advanced_head",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/missing_head",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/ambiguous_head",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/artifact",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/spec",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/receipt_tamper",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/row_tamper",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/issue_revision",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/generation",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/autonomy",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/originator_revoked",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/missing_receipt",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/unknown",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/failed",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/expired",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/issue",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/project",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/pr",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/link",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/agent",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/task",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/member",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/approval",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/receipt",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/issue",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/project",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/pr",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/link",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/member",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/phantom_github",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/phantom_vcs",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceProjectBinding",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/originator",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/runtime_owner",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/initiator",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/approver",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/claimant",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/invoke_originator",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceVCSSelection",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/actor_id",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/spec_digest",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/declared_revision",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/output_bytes",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/extra",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceCommitFailure/before",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceCommitFailure/after",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceCommitFailure",
+      "action": "fail"
+    }
+  ],
+  "log_sha256": "38750d1d4f4eafe7061c82b793549f1bbf23ae5fe0aa580f7f91fedcc19bdcec"
+}

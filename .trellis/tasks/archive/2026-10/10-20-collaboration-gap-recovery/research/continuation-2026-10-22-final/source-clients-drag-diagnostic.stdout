@@ -1,0 +1,147 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-clients-drag-diagnostic",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-source-surface.spec.ts",
+      "file": "collaboration-source-surface.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 27055,
+                  "error": {
+                    "message": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"",
+                    "stack": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:159:37)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:195:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                      "column": 37,
+                      "line": 159
+                    },
+                    "snippet": "  157 |     const ordinaryKey = ordinaryStatus === \"In Progress\" ? \"in_progress\" : \"backlog\";\n  158 |     const ordinaryColumns = await cardColumns(current, fixture.control.title);\n> 159 |     const ordinaryApplied = current.waitForResponse((response) => new URL(response.url()).pathname === `/api/issues/${fixture.control.id}` && response.request().method() === \"PUT\");\n      |                                     ^\n  160 |     await dragBoard(current, boardCard(current, fixture.control.title), statusColumn(current, ordinaryStatus), async () => {\n  161 |       const card = await boardCard(current, fixture.control.title).boundingBox();\n  162 |       const target = await statusColumn(current, ordinaryStatus).boundingBox();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                        "column": 37,
+                        "line": 159
+                      },
+                      "message": "TimeoutError: page.waitForResponse: Timeout 15000ms exceeded while waiting for event \"response\"\n\n  157 |     const ordinaryKey = ordinaryStatus === \"In Progress\" ? \"in_progress\" : \"backlog\";\n  158 |     const ordinaryColumns = await cardColumns(current, fixture.control.title);\n> 159 |     const ordinaryApplied = current.waitForResponse((response) => new URL(response.url()).pathname === `/api/issues/${fixture.control.id}` && response.request().method() === \"PUT\");\n      |                                     ^\n  160 |     await dragBoard(current, boardCard(current, fixture.control.title), statusColumn(current, ordinaryStatus), async () => {\n  161 |       const card = await boardCard(current, fixture.control.title).boundingBox();\n  162 |       const target = await statusColumn(current, ordinaryStatus).boundingBox();\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:159:37)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:195:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-22T10:29:29.690Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "web-board-layout-request",
+                      "contentType": "application/json",
+                      "body": "ewogICJiZWZvcmUiOiAwLAogICJhZnRlciI6IDIwMSwKICAicmVxdWVzdCI6IHsKICAgICJwb3NpdGlvbiI6IDIwMSwKICAgICJleHBlY3RlZF9yZXZpc2lvbiI6IDMKICB9LAogICJ3b3JrZmxvd191bmNoYW5nZWQiOiB0cnVlCn0="
+                    },
+                    {
+                      "name": "web-ordinary-drag-over",
+                      "contentType": "application/json",
+                      "body": "ewogICJiZWZvcmUiOiBbCiAgICAiYm9hcmQ6c3RhdHVzOmJhY2tsb2ciCiAgXSwKICAiY29sdW1ucyI6IFsKICAgICJib2FyZDpzdGF0dXM6aW5fcHJvZ3Jlc3MiCiAgXSwKICAiY2FyZCI6IHsKICAgICJ4IjogODY4LAogICAgInkiOiAxNjAsCiAgICAid2lkdGgiOiAyNTYsCiAgICAiaGVpZ2h0IjogMTQ2LjI1CiAgfSwKICAidGFyZ2V0IjogewogICAgIngiOiA4NjQsCiAgICAieSI6IDE1NiwKICAgICJ3aWR0aCI6IDI2NCwKICAgICJoZWlnaHQiOiA1NDAKICB9LAogICJsaXZlIjogWwogICAgIiIsCiAgICAiIiwKICAgICJEcmFnZ2FibGUgaXRlbSAwMWExNjMyOC1hNzRhLTc2ZWQtOTE5NS1mNTk2ZWFkOWExYzAgd2FzIG1vdmVkIG92ZXIgZHJvcHBhYmxlIGFyZWEgMDFhMTYzMjgtYTc0YS03NmVkLTkxOTUtZjU5NmVhZDlhMWMwLiIKICBdCn0="
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-clients-drag-diagnostic/collaboration-source-surfa-1d694-ity-and-scoped-layout-order-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                    "column": 37,
+                    "line": 159
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fd76911901244b93c23f-3e206b9269e8f7353c12",
+          "file": "collaboration-source-surface.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-22T10:29:29.139Z",
+    "duration": 28334.343,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

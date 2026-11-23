@@ -1,0 +1,117 @@
+{
+  "at": "2026-10-22T00:19:11.448132+00:00",
+  "stats": {
+    "startTime": "2026-10-22T00:13:36.329Z",
+    "duration": 91705.189,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "retry": 0,
+          "duration_ms": 9890,
+          "errors": [
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-lifecycle-controls.ts",
+                "column": 29,
+                "line": 193
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m409\u001b[39m\n\n   at fixtures/collaboration-lifecycle-controls.ts:193\n\n  191 |   await button.click();\n  192 |   const response = await responsePromise;\n> 193 |   expect(response.status()).toBe(status);\n      |                             ^\n  194 |   const receipt: CollaborationControlReceipt = await response.json();\n  195 |   const requestId = response.request().headers()[\"idempotency-key\"];\n  196 |   if (!requestId) throw new Error(\"Actual lifecycle UI control omitted its immutable request ID\");\n    at lifecycleControl (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-lifecycle-controls.ts:193:29)\n    at exerciseSameLaneControls (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-lane-close-controls.ts:181:20)\n    at laneCloseClients (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-lane-close-controls.spec.ts:66:18)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-lane-close-controls.spec.ts:97:5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 15791,
+          "errors": [],
+          "identities": "lane-close-first-web-complete-identities.json",
+          "run_ids": [
+            "818c946b-bf63-43e3-9e36-5a1636c9ca29",
+            "0f5dce35-5739-4ed5-a0a3-0a1afea131d5"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 16625,
+          "errors": [],
+          "identities": "lane-close-first-web-cancel-identities.json",
+          "run_ids": [
+            "b9b0d780-1613-4315-a55d-4f8593bc97ed",
+            "0514f2a4-f772-4871-90fa-c23a47c6f361"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 13407,
+          "errors": [],
+          "identities": "lane-close-first-electron-same-lane-identities.json",
+          "run_ids": []
+        }
+      ]
+    },
+    {
+      "title": "Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 17864,
+          "errors": [],
+          "identities": "lane-close-first-electron-complete-identities.json",
+          "run_ids": [
+            "e94ca4cc-020c-4016-bfb5-28ba59f3c308",
+            "94b913f2-6d08-4122-9a81-70eb071435a6"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 16072,
+          "errors": [],
+          "identities": "lane-close-first-electron-cancel-identities.json",
+          "run_ids": [
+            "cffc6e13-cc79-4f78-a40e-3a8c24fd7284",
+            "d00a599c-5422-42d9-aebc-dc49924b48f3"
+          ]
+        }
+      ]
+    }
+  ],
+  "full_acceptance": false
+}

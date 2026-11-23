@@ -242,6 +242,22 @@ func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, 
 		if err = s.AuthorizeIssues(ctx, tx, p.issues); err != nil {
 			return p, err
 		}
+		if draft.Operation == "move" {
+			// Preview and apply share this owner. Explicit collaboration moves
+			// require the dedicated role/version workflow; whole-period closure
+			// and server rollover retain their existing membership semantics.
+			selected := make([]pgtype.UUID, len(p.issues))
+			for i, issue := range p.issues {
+				selected[i] = issue.ID
+			}
+			shared, err := q.AnyCollaborationIssuesInWorkspace(ctx, db.AnyCollaborationIssuesInWorkspaceParams{WorkspaceID: ws, IssueIds: selected})
+			if err != nil {
+				return p, err
+			}
+			if shared {
+				return p, iterationFailure(409, "unsupported_collaboration_action", "Use the collaboration workflow to change a collaboration issue's iteration")
+			}
+		}
 	}
 	references, err := iteration.CaptureIssueReferences(ctx, tx, ws, p.issues, lock)
 	if err != nil {
@@ -271,23 +287,27 @@ func (s *IterationService) prepareLifecycle(ctx context.Context, tx pgx.Tx, ws, 
 			}
 		}
 	}
+	resolvedIssueIDs := make([]pgtype.UUID, len(p.issues))
+	for i, issue := range p.issues {
+		resolvedIssueIDs[i] = issue.ID
+	}
+	runningCounts := map[pgtype.UUID]int64{}
+	if len(resolvedIssueIDs) > 0 {
+		counts, err := q.CountRunningIterationTasks(ctx, db.CountRunningIterationTasksParams{WorkspaceID: ws, IssueIds: resolvedIssueIDs})
+		if err != nil {
+			return p, err
+		}
+		for _, count := range counts {
+			runningCounts[count.IssueID] = count.RunningCount
+		}
+	}
 	for i, issue := range p.issues {
 		id := util.UUIDToString(issue.ID)
 		found[id] = issue
 		historical := p.historical[i]
 		facts[id] = historical
-		running := int64(0)
-		tasks, e := q.ListActiveTasksByIssue(ctx, issue.ID)
-		if e != nil {
-			return p, e
-		}
-		for _, task := range tasks {
-			if task.Status == "running" {
-				running++
-			}
-		}
 		projectType := "project"
-		out.Issues = append(out.Issues, iteration.PreviewIssue{IssueID: id, Identifier: historical.Identifier, Revision: issue.Revision, SourceID: iterationString(issue.CurrentIterationID), Title: issue.Title, StatusCategory: historical.StatusCategory, Project: iteration.PreviewReference{ID: historical.ProjectID, Name: historical.ProjectName, Type: &projectType, Available: references[i].ProjectAvailable}, Assignee: iteration.PreviewReference{ID: historical.AssigneeID, Name: historical.AssigneeName, Type: historical.AssigneeType, Available: references[i].AssigneeAvailable}, RunningExecutionCount: running, RolloverCount: issue.IterationRolloverCount})
+		out.Issues = append(out.Issues, iteration.PreviewIssue{IssueID: id, Identifier: historical.Identifier, Revision: issue.Revision, SourceID: iterationString(issue.CurrentIterationID), Title: issue.Title, StatusCategory: historical.StatusCategory, Project: iteration.PreviewReference{ID: historical.ProjectID, Name: historical.ProjectName, Type: &projectType, Available: references[i].ProjectAvailable}, Assignee: iteration.PreviewReference{ID: historical.AssigneeID, Name: historical.AssigneeName, Type: historical.AssigneeType, Available: references[i].AssigneeAvailable}, RunningExecutionCount: runningCounts[issue.ID], RolloverCount: issue.IterationRolloverCount})
 		if historical.AssigneeType != nil && *historical.AssigneeType == "member" && historical.AssigneeID != nil && historical.AssigneeName != nil {
 			recipients[*historical.AssigneeID] = true
 		}

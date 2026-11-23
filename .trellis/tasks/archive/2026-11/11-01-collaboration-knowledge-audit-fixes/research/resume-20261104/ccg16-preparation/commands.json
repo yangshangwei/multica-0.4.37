@@ -1,0 +1,205 @@
+{
+  "recorded_at": "2026-11-04T02:46:22.715008+00:00",
+  "state": "future_commands_only_not_executed",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "source_inputs_sha256": "089935913d6c0bccca30cdde842fc6a64293244e71be2f33ff1e8cf73caa99fb",
+  "command_donor": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg-preparation/review-hash-binding/commands.json",
+    "sha256": "d36fa75b35a88cd499593a7333af38a9b2b711431bf6e5fe8be41716adada155",
+    "scope": "Existing source-backed command shapes only; old runtime/artifact facts are historical"
+  },
+  "proposed_binary_commands": [
+    {
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "argv": [
+        "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-p=1",
+        "-mod=readonly",
+        "-o",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/host-daemon.test",
+        "./internal/daemon"
+      ],
+      "kind": "compile-only; no test body or account execution"
+    },
+    {
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "argv": [
+        "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "build",
+        "-p=1",
+        "-mod=readonly",
+        "-o",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/host-provider",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-host-provider.go"
+      ],
+      "kind": "explicit stdlib fake fixture build"
+    }
+  ],
+  "proposed_deployment_argv": {
+    "off": [
+      "bash",
+      "scripts/dev-env.sh",
+      "up",
+      "--components",
+      "api,web",
+      "--name",
+      "ROOT_UNIQUE_OFF_NAME",
+      "--ttl",
+      "0",
+      "--web-mode",
+      "production"
+    ],
+    "on": [
+      "bash",
+      "scripts/dev-env.sh",
+      "up",
+      "--components",
+      "api,web",
+      "--name",
+      "ROOT_UNIQUE_ON_NAME",
+      "--ttl",
+      "0",
+      "--web-mode",
+      "production"
+    ],
+    "down": [
+      "bash",
+      "scripts/dev-env.sh",
+      "down",
+      "ROOT_ACTUAL_NAME",
+      "--components",
+      "api,web"
+    ],
+    "renderer": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "-u",
+      "-m",
+      "http.server",
+      "ROOT_FREE_CCG_RENDERER_PORT",
+      "--bind",
+      "127.0.0.1",
+      "--directory",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer"
+    ]
+  },
+  "deployment_environment_required_keys": [
+    "ENV_FILE",
+    "HOME",
+    "PATH",
+    "MULTICA_DEV_HOME",
+    "MULTICA_DEV_PROFILES_HOME",
+    "MULTICA_DEV_WORKSPACES_PARENT",
+    "MULTICA_DEV_TMPDIR",
+    "GOCACHE",
+    "GOMODCACHE",
+    "GOPATH",
+    "GOROOT",
+    "GOTOOLCHAIN",
+    "GOENV",
+    "GOWORK",
+    "GOPROXY",
+    "GOSUMDB"
+  ],
+  "source_values_additional_required_nonsecret_keys": [
+    "CORS_ALLOWED_ORIGINS",
+    "ALLOWED_ORIGINS",
+    "MULTICA_DSH_PATH"
+  ],
+  "allocation": {
+    "api_port": "18080+offset",
+    "web_port": "13000+offset",
+    "reserved_renderer_port": "5174+offset; 6000 becomes6174",
+    "CCG_renderer": "separate recorded free port excluded from current/retained full renderers",
+    "CCG1_database_prefix": "multica_knowledge_host_composite_20261101_",
+    "CCG_temp_prefix": "/private/tmp/multica-ccg-v16-",
+    "CCG_temp_mode": "0700 and Git-free",
+    "database_identity": "exact database name plus max migration version starts764_",
+    "retention": "new per invocation; preserve all DBs/evidence; --ttl0 avoids automatic expiry"
+  },
+  "current_CLI_to_copy": {
+    "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/multica",
+    "sha256": null,
+    "future_destination": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/multica",
+    "actual_audited_current_build_required": true
+  },
+  "current_migrator": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/migrate",
+    "sha256": null,
+    "requires_actual_current_build_and_new_database_proof": true
+  },
+  "binary_binding_required": {
+    "candidate_sha": "exact current candidate",
+    "exit_code": 0,
+    "source_sha256": [
+      "server/internal/daemon/collaboration_host_router_test.go",
+      "e2e/fixtures/collaboration-host-provider.go"
+    ],
+    "binaries": [
+      "COLLABORATION_HOST_DAEMON",
+      "COLLABORATION_HOST_PROVIDER",
+      "COLLABORATION_HOST_CLI"
+    ],
+    "per_binary": [
+      "absolute owned path",
+      "sha256",
+      "actual build/copy record"
+    ]
+  },
+  "deployment_proof_required": [
+    "candidate_sha",
+    "database",
+    "source_environment_sha256",
+    "distinct_from_complete_check_resources",
+    "registry.path/environment_name/manifest/manifest_sha256",
+    "api.origin/pid/actual_startup_knowledge_flag/flag_observed_from_owned_process",
+    "web.origin/mode/build_id/rendered_api_base_url/rendered_ws_url/rendered_runtime_config_verified",
+    "renderer.origin/pid/index_sha256/ownership_verified",
+    "actual_database_freshness_proof"
+  ],
+  "actual_permission_fields_remaining": [
+    "root_released_complete_check_resources",
+    "root_verified_complete_named_inventory",
+    "root_verified_fresh_database",
+    "database",
+    "DATABASE_URL",
+    "identity_verified",
+    "temp_directory",
+    "root_permission_record",
+    "source_environment/source_environment_sha256",
+    "deployment_proof/deployment_proof_sha256",
+    "binary_binding/binary_binding_sha256"
+  ],
+  "order": [
+    "shared_actual_complete_acceptance_and_window_release",
+    "CCG1 fresh normal",
+    "CCG1 different fresh race",
+    "current fake binary builds and audited CLI copy",
+    "CCG2 fresh OFF deployment/proof/permit/probe",
+    "release owned OFF processes preserving data/build provenance",
+    "CCG2 distinct fresh ON deployment/proof/permit/probe",
+    "release owned ON and independently reconcile all four results before task7 closure"
+  ],
+  "helper_source_references": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/scripts/dev-env.sh": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/scripts/go-test-with-agent-cli-guard.sh": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/daemon/collaboration_host_router_test.go": "1939ea098c47210f62512a138b35d944add6f3b4f02b5f2e0fd9a5dabaab130f",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/allocate-fresh-db-redis.py": "b399ea9a162791c177796a4cf011613fbcc77657be429be95a7320e5e7b50e35",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/start-renderer.py": "af86ecc45142e3944e787e03a751d86be2eeda8e15b5bae8bbfd6da74db741fc",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/live-proof/witness.py": "1636c070240e15af29d7c7636caec250229c6ced313960b23c30eac4da908088"
+  },
+  "no_old_CLI_or_migrator_hash_invented_for_V16": true,
+  "static_binding_only": true,
+  "actual_fullcheck_accepted": false,
+  "permissions_all_false": true,
+  "commands_executed_by_this_lane": 0,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false
+}

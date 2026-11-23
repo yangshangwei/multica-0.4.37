@@ -1,0 +1,296 @@
+[
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-tags=knowledgeintegration",
+      "-c",
+      "-o",
+      "/tmp/multica-knowledge-composite-daemon.test",
+      "./internal/daemon"
+    ],
+    "log": "compile-first.log",
+    "purpose": "compile-only fixture diagnostic",
+    "exit_code": 1
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "run",
+      "./cmd/migrate",
+      "up"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "migrate.log",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonCompositeHappyPath$",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "happy-first.jsonl",
+    "exit_code": 1,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonCompositeHappyPath$",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "happy-second.jsonl",
+    "exit_code": 1,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonCompositeHappyPath$",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "happy-third.jsonl",
+    "exit_code": 0,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonComposite",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "matrix-first.jsonl",
+    "exit_code": 1,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonComposite",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "matrix-second.jsonl",
+    "exit_code": 1,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonComposite",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "matrix-third.jsonl",
+    "exit_code": 1,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonComposite(RefusesChangedSourceBeforeLaunch|SourceParticipationRevoked)$",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "source-loss.jsonl",
+    "exit_code": 1,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonCompositeSourceParticipationRevoked$",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "source-acl.jsonl",
+    "exit_code": 0,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonComposite",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "ordinary-race-first.jsonl",
+    "exit_code": 0,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonComposite",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "ordinary-prior-final.jsonl",
+    "exit_code": 0,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonComposite",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "ordinary-strengthened.jsonl",
+    "exit_code": 0,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonComposite",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "ordinary-cleanup-check.jsonl",
+    "exit_code": 0,
+    "purpose": "retained intermediate evidence"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-tags=knowledgeintegration",
+      "./internal/daemon",
+      "-run",
+      "^TestKnowledgeServerDaemonComposite",
+      "-count=1",
+      "-json"
+    ],
+    "env_file": "/tmp/multica_knowledge_composite_20261101_c825abaf.env",
+    "log": "ordinary-final.jsonl",
+    "exit_code": 0,
+    "purpose": "acceptance"
+  }
+]

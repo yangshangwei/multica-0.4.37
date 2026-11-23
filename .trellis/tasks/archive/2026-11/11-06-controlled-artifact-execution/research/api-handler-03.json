@@ -1,0 +1,55 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^TestControlledArtifact",
+    "-count=1"
+  ],
+  "environment": "handler",
+  "database": "multica_artifact_20261110_handler",
+  "exit_code": 0,
+  "seconds": 15.079,
+  "finished_at": "2026-11-10T07:52:04.965072+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/api-handler-03.log",
+  "log_sha256": "27c45f5d279eaa439f55296821a79e099e3499428de7a326b92c9d5a66c276fc",
+  "named_test_counts": {
+    "pass": 23,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactDisabled",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactLifecycle",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/unapproved",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/digest",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/cancel",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/expiry",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/role",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/task",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/tokenless_agent",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/unknown_body",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/duplicate_body",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/changed_key",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/changed_actor",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections/changed_approver",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactRejections",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactOnePhysicalInvocation",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactUnknownNeverRetries",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactAuthorityLocks/workspace",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactAuthorityLocks/member",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactAuthorityLocks/user",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactAuthorityLocks/task",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactAuthorityLocks/agent",
+      "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactAuthorityLocks"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

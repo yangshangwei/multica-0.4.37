@@ -1,0 +1,155 @@
+{
+  "service": {
+    "expected_tests": [
+      "TestKnowledgePendingChangesDoNotSignalTarget",
+      "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks",
+      "TestKnowledgeFanoutNeverWaitsOnSourceWriter",
+      "TestKnowledgeSourceDeletionRetainsInvalidationRouting",
+      "TestKnowledgeDeletedTargetIsNotRecreatedByPendingFanout",
+      "TestKnowledgeFanoutCrashAndReplayPreserveCursorAndRevision",
+      "TestKnowledgeTargetHintRelayFailureRetainsStableID",
+      "TestKnowledgeTargetHintHasOnlyPublicTargetFields",
+      "TestKnowledgeAuthorityChangesFanOutWithoutCurrentMembershipJoin",
+      "TestKnowledgeMissingCounterDoesNotReportEmptySuccess",
+      "TestKnowledgeWorkspaceAuthorizationRequiresCurrentMembership",
+      "TestKnowledgeBusyTargetYieldsToOtherScans",
+      "TestKnowledgeScanBoundaryAndConcurrentApprovalHaveIndependentHints",
+      "TestKnowledgeSourceMutationRollsBackWhenScanAppendFails",
+      "TestKnowledgeCommentEditRetainsSourceUntilDelete",
+      "TestKnowledgeInvalidationRunSchedulesScannerAndDrainer",
+      "TestKnowledgeAdministrativeDisableAppendsBeforeReconciliation"
+    ],
+    "source_sha256": "5c017023fc8b5183d787355c57e44f3a080063bf418f54040704add1207c8851",
+    "rounds": {
+      "service-final-focused": {
+        "passed_tests": [
+          "TestKnowledgePendingChangesDoNotSignalTarget",
+          "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/human",
+          "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin",
+          "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks",
+          "TestKnowledgeFanoutNeverWaitsOnSourceWriter",
+          "TestKnowledgeSourceDeletionRetainsInvalidationRouting",
+          "TestKnowledgeDeletedTargetIsNotRecreatedByPendingFanout",
+          "TestKnowledgeFanoutCrashAndReplayPreserveCursorAndRevision",
+          "TestKnowledgeTargetHintRelayFailureRetainsStableID/rollback",
+          "TestKnowledgeTargetHintRelayFailureRetainsStableID/lost_ack",
+          "TestKnowledgeTargetHintRelayFailureRetainsStableID",
+          "TestKnowledgeTargetHintHasOnlyPublicTargetFields",
+          "TestKnowledgeAuthorityChangesFanOutWithoutCurrentMembershipJoin",
+          "TestKnowledgeMissingCounterDoesNotReportEmptySuccess",
+          "TestKnowledgeWorkspaceAuthorizationRequiresCurrentMembership",
+          "TestKnowledgeBusyTargetYieldsToOtherScans",
+          "TestKnowledgeScanBoundaryAndConcurrentApprovalHaveIndependentHints",
+          "TestKnowledgeSourceMutationRollsBackWhenScanAppendFails",
+          "TestKnowledgeCommentEditRetainsSourceUntilDelete",
+          "TestKnowledgeInvalidationRunSchedulesScannerAndDrainer",
+          "TestKnowledgeAdministrativeDisableAppendsBeforeReconciliation"
+        ],
+        "missing_expected_tests": [],
+        "failures": [],
+        "skips": []
+      },
+      "service-race": {
+        "passed_tests": [
+          "TestKnowledgePendingChangesDoNotSignalTarget",
+          "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/human",
+          "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks/admin",
+          "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks",
+          "TestKnowledgeFanoutNeverWaitsOnSourceWriter",
+          "TestKnowledgeSourceDeletionRetainsInvalidationRouting",
+          "TestKnowledgeDeletedTargetIsNotRecreatedByPendingFanout",
+          "TestKnowledgeFanoutCrashAndReplayPreserveCursorAndRevision",
+          "TestKnowledgeTargetHintRelayFailureRetainsStableID/rollback",
+          "TestKnowledgeTargetHintRelayFailureRetainsStableID/lost_ack",
+          "TestKnowledgeTargetHintRelayFailureRetainsStableID",
+          "TestKnowledgeTargetHintHasOnlyPublicTargetFields",
+          "TestKnowledgeAuthorityChangesFanOutWithoutCurrentMembershipJoin",
+          "TestKnowledgeMissingCounterDoesNotReportEmptySuccess",
+          "TestKnowledgeWorkspaceAuthorizationRequiresCurrentMembership",
+          "TestKnowledgeBusyTargetYieldsToOtherScans",
+          "TestKnowledgeScanBoundaryAndConcurrentApprovalHaveIndependentHints",
+          "TestKnowledgeSourceMutationRollsBackWhenScanAppendFails",
+          "TestKnowledgeCommentEditRetainsSourceUntilDelete",
+          "TestKnowledgeInvalidationRunSchedulesScannerAndDrainer",
+          "TestKnowledgeAdministrativeDisableAppendsBeforeReconciliation"
+        ],
+        "missing_expected_tests": [],
+        "failures": [],
+        "skips": []
+      }
+    }
+  },
+  "handler": {
+    "expected_tests": [
+      "TestKnowledgeMemberRoleAndRemovalAppendInAuthoritativeTransaction",
+      "TestKnowledgePATRevocationRetainsOriginalCauseAndRollsBackOnAppendFailure",
+      "TestKnowledgeProjectDeletionRetainsFinalHintAndPendingRouting",
+      "TestKnowledgeWorkspaceDeletionRetainsEveryTargetHint",
+      "TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource",
+      "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership",
+      "TestKnowledgeDeviceJoinInvalidatesExistingWorkspaceOnly"
+    ],
+    "source_sha256": "964390ba25f0d52f03abbd5a4aa942fde25a1bf625fe78f9e062266d5aee4ff1",
+    "rounds": {
+      "handler-final-focused": {
+        "passed_tests": [
+          "TestKnowledgeMemberRoleAndRemovalAppendInAuthoritativeTransaction",
+          "TestKnowledgePATRevocationRetainsOriginalCauseAndRollsBackOnAppendFailure",
+          "TestKnowledgeProjectDeletionRetainsFinalHintAndPendingRouting",
+          "TestKnowledgeWorkspaceDeletionRetainsEveryTargetHint",
+          "TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource",
+          "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership/invitation",
+          "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership/share_link",
+          "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership",
+          "TestKnowledgeDeviceJoinInvalidatesExistingWorkspaceOnly"
+        ],
+        "missing_expected_tests": [],
+        "failures": [],
+        "skips": []
+      },
+      "handler-race": {
+        "passed_tests": [
+          "TestKnowledgeMemberRoleAndRemovalAppendInAuthoritativeTransaction",
+          "TestKnowledgePATRevocationRetainsOriginalCauseAndRollsBackOnAppendFailure",
+          "TestKnowledgeProjectDeletionRetainsFinalHintAndPendingRouting",
+          "TestKnowledgeWorkspaceDeletionRetainsEveryTargetHint",
+          "TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource",
+          "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership/invitation",
+          "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership/share_link",
+          "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership",
+          "TestKnowledgeDeviceJoinInvalidatesExistingWorkspaceOnly"
+        ],
+        "missing_expected_tests": [],
+        "failures": [],
+        "skips": []
+      }
+    }
+  },
+  "realtime": {
+    "expected_tests": [
+      "TestKnowledgeQueuedTargetHintReauthorizesAtPhysicalSend",
+      "TestKnowledgeOutboundPredicateRejectsPrivateFieldsAndWrongRoom"
+    ],
+    "source_sha256": "559b3bd80c53d0a2218402970be232f272956cb624ac9cad8e88e46508f34ba9",
+    "rounds": {
+      "realtime-final-focused": {
+        "passed_tests": [
+          "TestKnowledgeQueuedTargetHintReauthorizesAtPhysicalSend",
+          "TestKnowledgeOutboundPredicateRejectsPrivateFieldsAndWrongRoom"
+        ],
+        "missing_expected_tests": [],
+        "failures": [],
+        "skips": []
+      },
+      "realtime-race": {
+        "passed_tests": [
+          "TestKnowledgeQueuedTargetHintReauthorizesAtPhysicalSend",
+          "TestKnowledgeOutboundPredicateRejectsPrivateFieldsAndWrongRoom"
+        ],
+        "missing_expected_tests": [],
+        "failures": [],
+        "skips": []
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-11-01T15:18:25.906500+00:00",
+  "base_sha": "3351c4c131247393fd319cde1c3dcf69ef0aa48f",
+  "tested_files_sha256": {
+    "server/internal/daemon/knowledge_context_claim_test.go": "38951e241b67c21500a0324c82b7ac0046a3bd9055ed1e1693d75d4c103274a1",
+    "server/pkg/agent/knowledge_launch_test.go": "57a8abad55cb49b34fc3465253d4fafb4f9786a93a9e9cbda6661cf4bf3907ff"
+  },
+  "command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test [optional -race] ./pkg/agent ./internal/daemon -run '^TestKnowledge(ClaudeStartedCallbackFailureStillReportsTerminated|StartedObservationRefusalStillConfirmsProcessExit)$' -count=1 -json",
+  "exit_codes": [
+    0,
+    0
+  ],
+  "database": "none; local fake process fixtures",
+  "real_provider_calls": 0,
+  "results": [
+    {
+      "file": "L7-takeover-green.jsonl",
+      "sha256": "54ecd106a30226d8a208e56e7afa132649dab15da3353c10a359b9bf4235126c",
+      "test_passes": [
+        "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+        "TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit"
+      ],
+      "failures": [],
+      "skips": []
+    },
+    {
+      "file": "L7-takeover-race.jsonl",
+      "sha256": "4a2711e2bf330c208c12d4131aa0ece5b30605f97a35bc3995c2cce7bc3cdb12",
+      "test_passes": [
+        "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+        "TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit"
+      ],
+      "failures": [],
+      "skips": []
+    }
+  ],
+  "classification": "L7 suspected defect not reproduced; tests protect existing termination behavior; no product change and no fabricated red run",
+  "remaining": "full lane verification, H2 acceptance-check followups and independent review pending"
+}

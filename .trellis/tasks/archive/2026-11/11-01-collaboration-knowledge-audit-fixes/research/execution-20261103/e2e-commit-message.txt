@@ -1,0 +1,13 @@
+test(e2e): keep acceptance aligned with visible collaboration actions
+
+The completed detail view uses explicit disclosure controls and current
+comment and resource actions. Preserve the existing business assertions
+while exercising the controls users now see.
+
+Constraint: Preserve all failed full-run evidence and other sessions source changes
+Confidence: high
+Scope-risk: narrow
+Directive: Do not count these directed results as complete candidate acceptance
+Tested: Independent exact-diff review with zero blockers; retained 25-case production Web and native Electron run, no skip or retry
+Tested: Retained three-case repair evidence within the reviewed per-file source scope; offline SQLC generation of 130 files with zero drift
+Not-tested: New frozen candidate full make check and final identity audit remain pending

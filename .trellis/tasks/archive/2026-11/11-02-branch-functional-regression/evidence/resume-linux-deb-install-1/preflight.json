@@ -1,0 +1,24 @@
+{
+  "started_at": "2026-11-02T02:37:29.544614+00:00",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--name",
+    "multica-func7af9-deb-preflight-1",
+    "--label",
+    "multica.acceptance=branch-functional-regression-deb-install-1",
+    "--network",
+    "none",
+    "--entrypoint",
+    "/bin/sh",
+    "sha256:0d433ecf8ede66777494051568fd760468be288fd99d36d80bc68d022769471c",
+    "-c",
+    "command -v python3; command -v dpkg; command -v dpkg-deb; uname -m; cat /etc/os-release; df -h /; dpkg-query -W -f='${Status}|${Version}\\n' multica"
+  ],
+  "finished_at": "2026-11-02T02:37:29.961667+00:00",
+  "exit_code": 1,
+  "stdout": "/usr/bin/python3\n/usr/bin/dpkg\n/usr/bin/dpkg-deb\naarch64\nPRETTY_NAME=\"Debian GNU/Linux 12 (bookworm)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"12\"\nVERSION=\"12 (bookworm)\"\nVERSION_CODENAME=bookworm\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\nFilesystem      Size  Used Avail Use% Mounted on\noverlay         204G  114G   80G  59% /\n",
+  "stderr": "dpkg-query: no packages found matching multica\n"
+}

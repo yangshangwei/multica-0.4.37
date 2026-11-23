@@ -29,6 +29,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/daemon/repocache"
 	"github.com/multica-ai/multica/server/internal/selfexec"
 	"github.com/multica-ai/multica/server/pkg/agent"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 	"github.com/multica-ai/multica/server/pkg/redact"
 	"github.com/multica-ai/multica/server/pkg/skillbundle"
 	"github.com/multica-ai/multica/server/pkg/taskfailure"
@@ -212,6 +213,7 @@ const (
 // reportTerminalTask gives the durable outbox one insertion point without
 // revisiting every task exit when it is added.
 type terminalTaskReport struct {
+	knowledgeFence *protocol.TaskKnowledgeFence
 	kind           terminalTaskReportKind
 	taskID         string
 	output         string
@@ -367,12 +369,13 @@ type repoCacheBackend interface {
 
 // Daemon is the local agent runtime that polls for and executes tasks.
 type Daemon struct {
-	cfg        Config
-	managed    *managedDaemonLifecycle
-	client     *Client
-	repoCache  repoCacheBackend
-	skillCache *SkillBundleCache
-	logger     *slog.Logger
+	cfg           Config
+	collaboration *collaborationPoller
+	managed       *managedDaemonLifecycle
+	client        *Client
+	repoCache     repoCacheBackend
+	skillCache    *SkillBundleCache
+	logger        *slog.Logger
 
 	mu           sync.Mutex
 	workspaces   map[string]*workspaceState
@@ -520,6 +523,11 @@ type Daemon struct {
 	pendingWorkMu       sync.Mutex
 	pendingWorkInflight map[string]struct{}  // runtime_id -> hint-driven heartbeat in flight
 	pendingWorkLastRun  map[string]time.Time // runtime_id -> when the last hint-driven heartbeat started
+
+	// budgetUsage is the journal of usage report records (budget usage
+	// protocol v1). It is nil until this process has proven that it can keep
+	// records; until then a task runs without the protocol.
+	budgetUsage *budgetUsageJournal
 
 	cancelReceipts *cancellationOutbox
 	cancelFunc     context.CancelFunc // set by Run(); called by triggerRestart
@@ -678,6 +686,7 @@ func New(cfg Config, logger *slog.Logger) *Daemon {
 		initialAgents[name] = entry
 	}
 	d.agentsAvailable.Store(&initialAgents)
+	client.knowledgeInvocation = d.knowledgeInvocation
 	d.executionEnvironmentCommand = defaultExecutionEnvironmentCommand
 	d.runner = taskRunnerFunc(d.runTask)
 	d.runUpdateFn = d.runUpdate
@@ -2037,6 +2046,12 @@ func (d *Daemon) Run(ctx context.Context) error {
 		}
 	}
 
+	// Budget usage protocol v1: the journal is opened once the health port is
+	// bound, which makes this process the only daemon of its profile, and
+	// before the first request that can claim a task. Without a usable journal
+	// the daemon does not declare the protocol.
+	d.initializeBudgetUsage()
+
 	// Renew the PAT before the first API call, then do the initial
 	// workspace sync. Both steps live in preflightAuth so the ordering
 	// invariant (renew first) is enforced at one site instead of
@@ -2065,6 +2080,7 @@ func (d *Daemon) Run(ctx context.Context) error {
 	go d.tokenRenewalLoop(ctx)
 	go d.managedCredentialRenewalLoop(ctx)
 	go d.cancellationReceiptLoop(ctx)
+	go d.budgetUsageLoop(ctx, budgetUsageResendInterval)
 
 	// Preflight succeeded and the background loops are up: the daemon has
 	// registered its runtimes and can now claim and run tasks. Flip /health
@@ -4762,6 +4778,13 @@ func (d *Daemon) restartTargetBinary() (string, error) {
 // server-side batch claim is index-backed + short.
 func (d *Daemon) pollLoop(ctx context.Context, taskWakeups <-chan taskWakeup) error {
 	sem := newTaskSlotSemaphore(d.cfg.MaxConcurrentTasks)
+	collaboration, reserved, err := d.initializeCollaborationPoller(ctx)
+	if err != nil {
+		return err
+	}
+	d.collaboration = collaboration
+	reserveCollaborationSlots(sem, reserved)
+	d.activeTasks.Add(int64(reserved))
 	var taskWG sync.WaitGroup // tracks in-flight handleTask goroutines
 
 	runtimeSetCh, unsub := d.runtimeSet.Subscribe()
@@ -4829,6 +4852,12 @@ func (d *Daemon) runBatchPoller(pollerCtx, parentCtx context.Context, sem chan i
 		if pollerCtx.Err() != nil {
 			return
 		}
+		if d.collaboration != nil {
+			if err := d.collaboration.recoverProofs(pollerCtx); err != nil {
+				d.logger.Error("collaboration ledger unavailable; refusing further machine claims")
+				return
+			}
+		}
 
 		runtimeIDs := d.allRuntimeIDs()
 		if len(runtimeIDs) == 0 {
@@ -4865,6 +4894,13 @@ func (d *Daemon) runBatchPoller(pollerCtx, parentCtx context.Context, sem chan i
 			continue
 		}
 
+		if d.collaboration != nil && d.collaboration.dispatch(pollerCtx, parentCtx, slots[0], sem, wakeup, taskWG) {
+			slots = slots[1:]
+		}
+		if len(slots) == 0 {
+			d.exitClaim()
+			continue
+		}
 		tasks, err := d.ClaimTasksWSFirst(pollerCtx, d.cfg.DaemonID, runtimeIDs, len(slots))
 		if err != nil {
 			d.exitClaim()
@@ -5096,6 +5132,7 @@ func (d *Daemon) watchTaskCancellation(ctx context.Context, taskID string, pollI
 }
 
 func (d *Daemon) handleTask(ctx context.Context, task Task, slot int) {
+	ctx = context.WithValue(ctx, knowledgeFenceContextKey{}, taskKnowledgeFence(task))
 	ctx = d.withCancellationExecution(ctx, task)
 	d.mu.Lock()
 	rt, tracked := d.runtimeIndex[task.RuntimeID]
@@ -5222,7 +5259,12 @@ func (d *Daemon) handleTask(ctx context.Context, task Task, slot int) {
 		}
 	}()
 
-	result, err := d.runner.run(runCtx, task, provider, slot, taskLog)
+	// Budget usage protocol v1: the record of the attempt exists before the
+	// run and is sealed as soon as the run is over. budgetAttempt is nil for a
+	// task without the protocol, and everything below is the legacy path.
+	budgetAttempt := d.beginBudgetUsageAttempt(task, provider, taskLog)
+	result, err := d.runner.run(withBudgetUsageAttempt(runCtx, budgetAttempt), task, provider, slot, taskLog)
+	d.finishBudgetUsageAttempt(ctx, budgetAttempt)
 
 	// Report usage before any early return — the agent accumulates tokens
 	// whether the task completes, errors, or is cancelled mid-run by the poll
@@ -5358,6 +5400,9 @@ func (e *worktreePreservedError) Error() string { return e.err.Error() }
 func (e *worktreePreservedError) Unwrap() error { return e.err }
 
 func taskRunFailureReason(err error) string {
+	if reason := knowledgeErrorReason(err); reason != "" {
+		return reason
+	}
 	if errors.Is(err, errInvalidTaskIdentity) {
 		return taskfailure.ReasonInvalidTaskIdentity.String()
 	}
@@ -5594,6 +5639,9 @@ func (d *Daemon) acquireLocalDirectoryLockIfNeeded(ctx context.Context, task Tas
 // the next chat turn to resume there rather than start over and "forget"
 // the conversation.
 func (d *Daemon) reportTaskResult(ctx context.Context, taskID string, result TaskResult, taskLog *slog.Logger) {
+	if result.KnowledgeFence != nil {
+		ctx = context.WithValue(ctx, knowledgeFenceContextKey{}, result.KnowledgeFence)
+	}
 	switch result.Status {
 	case "completed":
 		taskLog.Info("task completed", "status", result.Status)
@@ -5636,6 +5684,9 @@ func (d *Daemon) reportTaskResult(ctx context.Context, taskID string, result Tas
 		// which is the canonical replacement for the legacy
 		// "agent_error" coarse bucket.
 		fallbackErrMsg := fmt.Sprintf("complete task failed: %s", err.Error())
+		if reason := knowledgeErrorReason(err); reason != "" {
+			fallbackErrMsg = reason
+		}
 		if failErr := d.reportTerminalTask(ctx, terminalTaskReport{
 			kind:         terminalTaskReportFail,
 			taskID:       taskID,
@@ -5700,14 +5751,17 @@ func (d *Daemon) reportTaskResult(ctx context.Context, taskID string, result Tas
 // 30-second drain, but terminal callbacks must still use that remaining window.
 // The explicit timeout keeps this detached work bounded during normal runs.
 func (d *Daemon) reportTerminalTask(parentCtx context.Context, report terminalTaskReport) error {
+	if report.knowledgeFence == nil {
+		report.knowledgeFence, _ = parentCtx.Value(knowledgeFenceContextKey{}).(*protocol.TaskKnowledgeFence)
+	}
 	ctx, cancel := context.WithTimeout(context.WithoutCancel(parentCtx), terminalTaskReportTimeout)
 	defer cancel()
 
 	switch report.kind {
 	case terminalTaskReportComplete:
-		return d.client.CompleteTask(ctx, report.taskID, report.output, report.branchName, report.sessionID, report.workDir, report.sessionRolloutMissing, report.retiredSessionID, report.durableWorkDir)
+		return d.client.CompleteTask(ctx, report.taskID, report.output, report.branchName, report.sessionID, report.workDir, report.sessionRolloutMissing, report.retiredSessionID, report.durableWorkDir, report.knowledgeFence)
 	case terminalTaskReportFail:
-		return d.client.FailTask(ctx, report.taskID, report.errorMessage, report.sessionID, report.workDir, report.branchName, report.failureReason, report.sessionRolloutMissing, report.retiredSessionID, report.durableWorkDir)
+		return d.client.FailTask(ctx, report.taskID, report.errorMessage, report.sessionID, report.workDir, report.branchName, report.failureReason, report.sessionRolloutMissing, report.retiredSessionID, report.durableWorkDir, report.knowledgeFence)
 	default:
 		return fmt.Errorf("unsupported terminal task report kind %d", report.kind)
 	}
@@ -5888,6 +5942,7 @@ func gateResumeToReachableSession(task *Task, taskCtx *execenv.TaskContextForEnv
 			"workdir", envWorkDir,
 			"session_home_reachable", sessionHomeReachable,
 		)
+		task.droppedPriorSessionID = task.PriorSessionID
 		task.PriorSessionID = ""
 		taskCtx.PriorSessionResumed = false
 		// The user expected this run to continue the prior conversation; surface
@@ -6051,6 +6106,7 @@ func gateCodexResumeToRolloutPresence(task *Task, taskCtx *execenv.TaskContextFo
 	}
 	taskLog.Warn("dropping prior codex session: rollout not present in task CODEX_HOME; starting a fresh thread",
 		"session_id", task.PriorSessionID, "codex_home", codexHome)
+	task.droppedPriorSessionID = task.PriorSessionID
 	task.PriorSessionID = ""
 	taskCtx.PriorSessionResumed = false
 	// The user expected this run to continue the prior conversation; surface the
@@ -6815,6 +6871,7 @@ func qualifyTaskModel(
 }
 
 func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot int, taskLog *slog.Logger) (taskResult TaskResult, returnErr error) {
+	defer func() { taskResult.KnowledgeFence = taskKnowledgeFence(task) }()
 	markCancellationRunner(ctx)
 	// A claim carries the task-row agent id both at the top level and inside
 	// the expanded agent configuration. The top-level id is authoritative
@@ -7545,7 +7602,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	// taskfailure.Classify path records the failure with the same
 	// "start task failed: <…>" string and the same failure_reason
 	// taxonomy as before — see MUL-2946 for the classifier contract.
-	if err := d.client.StartTask(prepareCtx, task.ID); err != nil {
+	if err := d.client.StartTask(prepareCtx, task.ID, taskKnowledgeFence(task)); err != nil {
 		stopPrepareLease()
 		return TaskResult{}, fmt.Errorf("start task failed: %w", err)
 	}
@@ -7584,7 +7641,6 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	if env.LocalWorktree != nil && len(env.LocalWorktree.ReplayConflicts) > 0 {
 		promptOptions = append(promptOptions, WithWorktreeReplayConflicts(env.LocalWorktree.ReplayConflicts))
 	}
-	prompt := BuildPrompt(task, provider, promptOptions...)
 
 	// Pass task-scoped auth credentials and context so the spawned agent CLI
 	// can call the Multica API and the local daemon (e.g. `multica repo checkout`).
@@ -7715,21 +7771,26 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	// families go through New. This is the single production boundary — the
 	// daemon never calls agent.New or agent.NewRuntime directly, so the two
 	// factories stay meaning exactly one thing each.
-	backend, err := agent.ResolveBackend(provider, agent.Config{
+	backendConfig := agent.Config{
 		ExecutablePath: entry.Path,
 		LaunchPrefix:   profileFixedArgs,
 		CLIVersion:     resolvedVersion,
 		Env:            agentEnv,
 		Logger:         d.logger,
+		PrivateInput:   task.KnowledgeContext != nil,
 		TaskID:         task.ID,
 		RuntimeID:      task.RuntimeID,
 		DaemonVersion:  d.cfg.CLIVersion,
 		CodexVersion:   codexVersion,
 		BuiltinRuntime: !usesCustomProfileCommand,
-	})
+	}
+	backend, err := agent.ResolveBackend(provider, backendConfig)
 	if err != nil {
 		return TaskResult{}, fmt.Errorf("create agent backend: %w", err)
 	}
+	// The usage report of the attempt names the adapter and the CLI version
+	// this run launches. A task without a record carries a nil attempt.
+	budgetUsageAttemptFrom(ctx).describeLaunch(provider, usesCustomProfileCommand, backendConfig.CLIVersion)
 
 	// Two-tier model resolution: an explicit agent.model wins,
 	// then the daemon-wide MULTICA_<PROVIDER>_MODEL env var. If
@@ -7869,6 +7930,11 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 		)
 		return TaskResult{Status: "completed", Comment: "", WorkDir: env.WorkDir, EnvRoot: env.RootDir}, nil
 	}
+	prompt, err := d.prepareKnowledgePrompt(ctx, task, provider, backendConfig, &execOpts, promptOptions)
+	if err != nil {
+		return TaskResult{Status: "blocked", Comment: agent.KnowledgeFailureReason(err),
+			FailureReason: agent.KnowledgeFailureReason(err), WorkDir: env.WorkDir, EnvRoot: env.RootDir}, nil
+	}
 
 	// Authenticate the localhost repo-checkout endpoint with the same
 	// task-scoped token the child receives. The endpoint derives identity and
@@ -7900,7 +7966,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	// Shared across the resume-retry below so the retry's transcript rows
 	// keep ascending seq values for the same task.
 	var msgSeq atomic.Int32
-	result, tools, err := d.executeAndDrain(ctx, backend, prompt, execOpts, taskLog, task.ID, env.CodexHome, &msgSeq)
+	result, tools, err := d.executeAndDrainRecorded(ctx, backend, prompt, execOpts, taskLog, task.ID, env.CodexHome, &msgSeq)
 	if err != nil {
 		return TaskResult{}, err
 	}
@@ -7914,7 +7980,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	var retiredSessionID string
 	defer func() { taskResult.RetiredSessionID = retiredSessionID }()
 
-	if shouldRetryWithFreshSession(result, task.PriorSessionID, tools, provider) {
+	if execOpts.Knowledge == nil && shouldRetryWithFreshSession(result, task.PriorSessionID, tools, provider) {
 		firstResult := result
 		firstUsage := result.Usage
 		firstTools := tools
@@ -7956,7 +8022,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 		}
 		freshPrompt := BuildPrompt(task, provider, promptOptions...)
 
-		retryResult, retryTools, retryErr := d.executeAndDrain(ctx, backend, freshPrompt, execOpts, taskLog, task.ID, env.CodexHome, &msgSeq)
+		retryResult, retryTools, retryErr := d.executeAndDrainRecorded(ctx, backend, freshPrompt, execOpts, taskLog, task.ID, env.CodexHome, &msgSeq)
 		if retryErr != nil {
 			taskLog.Error("fresh session also failed to start; keeping the original poisoned result", "error", retryErr)
 		} else if retryResult.Status != "completed" && retryResult.SessionID == "" {
@@ -7980,12 +8046,16 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 		"duration", elapsed.String(),
 		"tools", tools,
 	)
+	loggedError := result.Error
+	if execOpts.Knowledge != nil {
+		loggedError = result.KnowledgeFailure
+	}
 	taskLog.Debug("agent result detail",
 		"status", result.Status,
 		"output_bytes", len(result.Output),
 		"session_id", result.SessionID,
 		"models_with_usage", len(result.Usage),
-		"agent_error", result.Error,
+		"agent_error", loggedError,
 	)
 
 	// Convert agent usage map to task usage entries.
@@ -8026,6 +8096,10 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	// returns (SessionID is already blanked above); reportTaskResult forwards it
 	// as session_rollout_missing on the terminal callback (MUL-5305).
 	defer func() { taskResult.SessionRolloutMissing = sessionRolloutMissing }()
+	if result.KnowledgeFailure != "" {
+		return TaskResult{Status: "blocked", Comment: result.KnowledgeFailure, FailureReason: result.KnowledgeFailure,
+			SessionID: result.SessionID, WorkDir: env.WorkDir, EnvRoot: env.RootDir, Usage: usageEntries}, nil
+	}
 
 	switch result.Status {
 	case "completed":
@@ -8254,6 +8328,9 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 //     attempts, so a retry after real work re-plans on top of its own
 //     half-finished commits.
 func shouldRetryWithFreshSession(result agent.Result, priorSessionID string, tools int32, provider string) bool {
+	if result.KnowledgeFailure != "" || knowledgeFailureCode(result.Error) {
+		return false
+	}
 	if result.Status != "failed" || priorSessionID == "" || tools > 0 {
 		return false
 	}
@@ -8356,6 +8433,19 @@ func shouldRetryWithFreshSession(result agent.Result, priorSessionID string, too
 //
 // Usage is merged across both attempts in every branch so billing is complete.
 func reconcileFreshRetryResult(first agent.Result, firstUsage map[string]agent.TokenUsage, firstTools int32, retry agent.Result, retryTools int32, retryErr error) (agent.Result, int32) {
+	if first.KnowledgeFailure != "" {
+		return first, firstTools
+	}
+	if reason := agent.KnowledgeFailureReason(retryErr); reason != "" {
+		retry.KnowledgeFailure = reason
+	}
+	if retry.KnowledgeFailure != "" {
+		retry.Status, retry.Error = "failed", retry.KnowledgeFailure
+		retry.KnowledgeOutput = first.Output + first.KnowledgeOutput + retry.KnowledgeOutput + retry.Output
+		retry.Output = ""
+		retry.Usage = mergeUsage(firstUsage, retry.Usage)
+		return retry, firstTools + retryTools
+	}
 	switch {
 	case retryErr != nil:
 		first.Usage = firstUsage
@@ -8385,6 +8475,9 @@ func reconcileFreshRetryResult(first agent.Result, firstUsage map[string]agent.T
 // parse — since none of them reports one explicitly. Context overflow is also
 // allowed through, as starting over genuinely can clear it.
 func freshSessionMayHelp(errText string) bool {
+	if knowledgeFailureCode(errText) {
+		return false
+	}
 	switch taskfailure.Classify(errText) {
 	case taskfailure.ReasonAgentProviderNetwork,
 		taskfailure.ReasonAgentProviderCapacityOrRateLimit,
@@ -8419,9 +8512,18 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 	agentCtx, agentCancel := context.WithCancel(ctx)
 	defer agentCancel()
 
-	finishProcess := beginCancellationProcess(ctx)
+	finishProcess := func(bool) {}
+	if opts.Knowledge == nil {
+		finishProcess = beginCancellationProcess(ctx)
+	}
+	// Negotiated execution records actual processes in its synchronous launch
+	// callbacks. An authorization refusal is not a process with unknown exit.
 	session, err := backend.Execute(agentCtx, prompt, opts)
 	if err != nil {
+		markBudgetUsageStartFailed(ctx)
+		if reason := agent.KnowledgeFailureReason(err); reason != "" {
+			return agent.Result{Status: "failed", Error: reason, KnowledgeFailure: reason}, 0, nil
+		}
 		// One provider-agnostic boundary for launches: every backend's
 		// cmd.Start() failure arrives here, so diagnosing ENOEXEC at this point
 		// covers claude, opencode and any CLI added later without a wrap in
@@ -8481,14 +8583,27 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 	}
 	var idleWatchdogThreshold atomic.Int64
 	idleWatchdogThreshold.Store(int64(idleWindow))
+	stopIdleWatchdog := func() {}
 	if idleWindow > 0 {
-		go d.runIdleWatchdog(agentCtx, idleWindow, d.cfg.AgentToolWatchdog, &lastActivityAt, &inFlightTools, &idleWatchdogFired, &idleWatchdogThreshold, agentCancel, session.Messages, taskLog, taskID)
+		watchdogCtx, watchdogCancel := context.WithCancel(agentCtx)
+		watchdogDone := make(chan struct{})
+		go func() {
+			defer close(watchdogDone)
+			d.runIdleWatchdog(watchdogCtx, idleWindow, d.cfg.AgentToolWatchdog, &lastActivityAt, &inFlightTools, &idleWatchdogFired, &idleWatchdogThreshold, agentCancel, session.Messages, taskLog, taskID)
+		}()
+		stopIdleWatchdog = func() {
+			watchdogCancel()
+			<-watchdogDone
+		}
 	}
+	defer stopIdleWatchdog()
 
 	// drainFinished closes after the drain goroutine has flushed the last
 	// message batch, so the result hand-off below can wait for the transcript
 	// tail to be persisted.
 	drainFinished := make(chan struct{})
+	var knowledgeTextMu sync.Mutex
+	var recordedKnowledgeText strings.Builder
 	go func() {
 		defer close(drainFinished)
 		var mu sync.Mutex
@@ -8524,8 +8639,21 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 			if len(toSend) > 0 {
 				sendCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 				if err := d.client.ReportTaskMessages(sendCtx, taskID, toSend); err != nil {
-					taskLog.Debug("failed to report task messages", "error", err)
+					if opts.Knowledge == nil {
+						taskLog.Debug("failed to report task messages", "error", err)
+					} else {
+						taskLog.Debug("failed to report knowledge task messages")
+					}
 				} else {
+					if opts.Knowledge != nil {
+						knowledgeTextMu.Lock()
+						for _, message := range toSend {
+							if message.Type == "text" {
+								recordedKnowledgeText.WriteString(message.Content)
+							}
+						}
+						knowledgeTextMu.Unlock()
+					}
 					taskLog.Debug("reported task messages", "count", len(toSend), "last_seq", toSend[len(toSend)-1].Seq)
 				}
 				cancel()
@@ -8580,7 +8708,7 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 					// preserved), while a session whose rollout never lands is never
 					// pinned. The terminal report is the authoritative writer.
 					// Non-Codex providers (codexHome == "") pin immediately.
-					if msg.SessionID != "" && !sessionPinned.Swap(true) {
+					if opts.Knowledge == nil && msg.SessionID != "" && !sessionPinned.Swap(true) {
 						sid := msg.SessionID
 						wd := opts.Cwd
 						go func() {
@@ -8599,7 +8727,11 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 				case agent.MessageToolUse:
 					n := toolCount.Add(1)
 					inFlightTools.Add(1)
-					taskLog.Info(fmt.Sprintf("tool #%d: %s", n, msg.Tool))
+					if opts.Knowledge == nil {
+						taskLog.Info(fmt.Sprintf("tool #%d: %s", n, msg.Tool))
+					} else {
+						taskLog.Info("knowledge task tool observed", "number", n)
+					}
 					if msg.CallID != "" {
 						mu.Lock()
 						callIDToTool[msg.CallID] = msg.Tool
@@ -8639,14 +8771,20 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 						}
 					}
 					s := msgSeq.Add(1)
-					output := toolOutputPreview(msg.Output)
+					// Redact the complete result before truncation can split a
+					// credential, JSON value or private-key block.
+					output := toolOutputPreview(redact.Text(msg.Output))
 					toolName := msg.Tool
 					if toolName == "" && msg.CallID != "" {
 						mu.Lock()
 						toolName = callIDToTool[msg.CallID]
 						mu.Unlock()
 					}
-					taskLog.Info("tool_result observed", "seq", s, "tool", toolName, "call_id", msg.CallID)
+					if opts.Knowledge == nil {
+						taskLog.Info("tool_result observed", "seq", s, "tool", toolName, "call_id", msg.CallID)
+					} else {
+						taskLog.Info("knowledge task tool result observed", "seq", s)
+					}
 					mu.Lock()
 					batch = append(batch, TaskMessageData{
 						Seq:    int(s),
@@ -8663,13 +8801,17 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 					}
 				case agent.MessageText:
 					if msg.Content != "" {
-						taskLog.Debug("agent", "text", truncateLog(msg.Content, 200))
+						if opts.Knowledge == nil {
+							taskLog.Debug("agent", "text", truncateLog(msg.Content, 200))
+						}
 						mu.Lock()
 						pendingText.WriteString(msg.Content)
 						mu.Unlock()
 					}
 				case agent.MessageError:
-					taskLog.Error("agent error", "content", msg.Content)
+					if opts.Knowledge == nil {
+						taskLog.Error("agent error", "content", msg.Content)
+					}
 					s := msgSeq.Add(1)
 					mu.Lock()
 					batch = append(batch, TaskMessageData{
@@ -8714,12 +8856,51 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 			}
 		}
 	}
+	settleKnowledge := func(result agent.Result) agent.Result {
+		if opts.Knowledge == nil {
+			return result
+		}
+		if err := opts.Lifecycle.Seal(); err != nil {
+			reason := agent.KnowledgeFailureReason(err)
+			if reason == "" {
+				reason = agent.KnowledgeUnavailable
+			}
+			result.KnowledgeFailure = reason
+		}
+		if result.KnowledgeFailure != "" {
+			result.Status, result.Error = "failed", result.KnowledgeFailure
+			if result.KnowledgeOutput == "" {
+				result.KnowledgeOutput = result.Output
+			}
+			result.Output = ""
+			knowledgeTextMu.Lock()
+			recorded := recordedKnowledgeText.String()
+			knowledgeTextMu.Unlock()
+			evidence := result.KnowledgeOutput
+			if evidence != "" && !strings.Contains(recorded, evidence) {
+				// Stream text is often a prefix of the final result. Preserve only
+				// the missing tail; it remains transcript evidence on a failed task.
+				evidence = strings.TrimPrefix(evidence, recorded)
+				evidenceCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), knowledgeRequestTimeout)
+				if err := d.client.ReportTaskMessages(evidenceCtx, taskID, []TaskMessageData{{Seq: int(msgSeq.Add(1)), Type: "text", Content: evidence}}); err != nil {
+					taskLog.Warn("knowledge failure evidence delivery failed")
+				}
+				cancel()
+			}
+		}
+		return result
+	}
 
 	select {
 	case result, ok := <-session.Result:
+		markBudgetUsageBackendResult(ctx, ok)
+		// Provider inactivity ends with its result. Final transcript delivery
+		// may be slow, but must neither trigger the watchdog nor be cancelled
+		// with it. Join before reading fired so an earlier timeout stays final.
+		stopIdleWatchdog()
 		finishProcess(ok && result.ProcessExited)
 		waitForDrain()
-		if idleWatchdogFired.Load() {
+		if idleWatchdogFired.Load() && result.KnowledgeFailure == "" {
 			// The backend's wait goroutine (e.g. claude.go) translates the
 			// SIGKILL we delivered via agentCancel into Status="aborted".
 			// Re-tag it as "idle_watchdog" so runTask routes the
@@ -8730,8 +8911,23 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 				result.Error = idleWatchdogReason(time.Duration(idleWatchdogThreshold.Load()))
 			}
 		}
-		return result, toolCount.Load(), nil
+		return settleKnowledge(result), toolCount.Load(), nil
 	case <-drainCtx.Done():
+		stopIdleWatchdog()
+		if opts.Knowledge != nil {
+			opts.Lifecycle.Stop()
+			select {
+			case result, ok := <-session.Result:
+				markBudgetUsageBackendResult(ctx, ok)
+				finishProcess(ok && result.ProcessExited)
+				waitForDrain()
+				return settleKnowledge(result), toolCount.Load(), nil
+			case <-time.After(10 * time.Second):
+				finishProcess(false)
+				waitForDrain()
+				return settleKnowledge(agent.Result{Status: "failed", KnowledgeFailure: agent.KnowledgeUnavailable}), toolCount.Load(), nil
+			}
+		}
 		awaitCancellationProcessResult(ctx, session.Result, 10*time.Second, finishProcess)
 		// The drain loop is exiting on this same Done signal; wait for its
 		// final flush so the timeout/watchdog/cancel terminals below cannot
@@ -8826,6 +9022,9 @@ func (d *Daemon) runIdleWatchdog(agentCtx context.Context, window, toolWindow ti
 		case <-agentCtx.Done():
 			return
 		case <-ticker.C:
+			if agentCtx.Err() != nil {
+				return
+			}
 			// Pick the silence budget. A tool in flight is expected to be
 			// silent (a long build/install/test emits nothing between
 			// tool_use and tool_result), so it gets the larger toolWindow;

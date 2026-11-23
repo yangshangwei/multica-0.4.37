@@ -1,0 +1,36 @@
+{
+  "source_sha": "231a08063162acde63ebcabe2ef6a353f7a62bca",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "server",
+    "test",
+    "./internal/daemon/execenv",
+    "-race",
+    "-count=1",
+    "-parallel=2",
+    "-json",
+    "-timeout=40m"
+  ],
+  "TMPDIR": "/private/tmp/multica-execenv-check-rtialr8a",
+  "git_root_absent_at_temp": true,
+  "scope": "complete execenv race after five-case single-variable proof; no code changes",
+  "state": "complete",
+  "started_at": "2026-11-01T19:41:36.468825+00:00",
+  "Provider_calls": 0,
+  "DB_used": false,
+  "exit_code": 0,
+  "counts": {
+    "run": 1345,
+    "pass": 1345,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": [],
+  "log_sha256": "d7031e4c8613d30538d0e6fe9711babcf180e8bebb0c4ffedf03d17345b9c733",
+  "finished_at": "2026-11-01T19:42:35.641950+00:00",
+  "raw_private_log": "/Volumes/artisan/code/2026/mc-execenv-temp-diagnostic-20261102/.omx/private/execenv-temp-diagnostic/full-race.jsonl"
+}

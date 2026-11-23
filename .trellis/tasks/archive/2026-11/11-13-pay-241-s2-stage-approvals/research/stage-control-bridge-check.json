@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "status": "pass_private_transport_only",
+  "reviewer": "/root/s2_check_resume",
+  "at": "2026-11-14T11:09:34.482661+00:00",
+  "scope": "private stage-control-bridge tool and pure tests",
+  "files_changed": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/bridge.mjs",
+      "sha256": "1f0663a8c16c77414929ce39949e7130c2d2424a63c9d772c145db744b4e9b40",
+      "frozen": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final/bridge.mjs",
+      "frozen_sha256": "1f0663a8c16c77414929ce39949e7130c2d2424a63c9d772c145db744b4e9b40"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/bridge.test.mjs",
+      "sha256": "f5414173eb0a1e95e0d5422bd95091d9333614df44c669f05c671e92a39d5d76",
+      "frozen": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final/bridge.test.mjs",
+      "frozen_sha256": "f5414173eb0a1e95e0d5422bd95091d9333614df44c669f05c671e92a39d5d76"
+    }
+  ],
+  "product_files_changed": [],
+  "db_or_actual_harness_executed": false,
+  "git_writes": false,
+  "findings_fixed": [
+    {
+      "id": "SCB-01",
+      "severity": "P1",
+      "issue": "Rejected-frame continuation and UTF-8 byte replacement",
+      "proof": [
+        "red-1",
+        "red-2",
+        "tests-final"
+      ]
+    },
+    {
+      "id": "SCB-02",
+      "severity": "P2",
+      "issue": "Partial FD leak and uncaught asynchronous startup failures",
+      "proof": [
+        "red-1",
+        "red-2",
+        "tests-final"
+      ]
+    },
+    {
+      "id": "SCB-03",
+      "severity": "P1",
+      "issue": "Unbounded/cancelled startup and stubborn child/repeated-signal cleanup",
+      "proof": [
+        "red-1",
+        "red-2",
+        "red-3",
+        "tests-final"
+      ]
+    },
+    {
+      "id": "SCB-04",
+      "severity": "P1",
+      "issue": "Unix auto-unlink deletes an unowned replacement path",
+      "proof": [
+        "red-1",
+        "red-2",
+        "hard-link-probe.json",
+        "tests-final"
+      ]
+    },
+    {
+      "id": "SCB-05",
+      "severity": "P2",
+      "issue": "Unbounded pending transports and hidden unsolicited reply correlation",
+      "proof": [
+        "source inspection",
+        "tests-final"
+      ]
+    }
+  ],
+  "open_blocking_findings": [],
+  "verification": [
+    {
+      "id": "tests-final",
+      "started_at": "2026-11-14T11:05:09.392038+00:00",
+      "command": [
+        "node",
+        "--test",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final/bridge.test.mjs"
+      ],
+      "cwd": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/tests-final.log",
+      "log_sha256": "c84b3815e0b3c7622dc72d4f25a4672c7fd1d5cc5cc3d73aed61ba2179204167",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/tests-final.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "syntax-bridge",
+      "started_at": "2026-11-14T11:05:10.695621+00:00",
+      "command": [
+        "node",
+        "--check",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final/bridge.mjs"
+      ],
+      "cwd": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/syntax-bridge.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/syntax-bridge.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "syntax-tests",
+      "started_at": "2026-11-14T11:05:10.736631+00:00",
+      "command": [
+        "node",
+        "--check",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final/bridge.test.mjs"
+      ],
+      "cwd": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/syntax-tests.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/syntax-tests.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "eslint",
+      "started_at": "2026-11-14T11:05:10.776289+00:00",
+      "command": [
+        "node",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/eslint/bin/eslint.js",
+        "--no-config-lookup",
+        "--rule",
+        "no-unused-vars: error",
+        "--rule",
+        "no-unreachable: error",
+        "--rule",
+        "valid-typeof: error",
+        "bridge.mjs",
+        "bridge.test.mjs"
+      ],
+      "cwd": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/eslint.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/eslint.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "runs": [
+    {
+      "id": "red-1",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/red-1.log",
+      "log_sha256": "06b400194a45023811fdbad021f87b7fe6ee5b04ff45c0cc179199aed70362db",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "test_summary": {
+        "tests": 16,
+        "pass": 8,
+        "fail": 8,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "red-2",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/red-2.log",
+      "log_sha256": "d56142ad3f2034cf7ca2a0b5856f2b59229c417f941b8dd6936bbdf239015e14",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/red-2.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "test_summary": {
+        "tests": 8,
+        "pass": 0,
+        "fail": 8,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "green-1",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/green-1.log",
+      "log_sha256": "278308bf3562684af3108cb7a8932db58d091b1ae5e069550cd8dea8e4b9b99a",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/green-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "test_summary": {
+        "tests": 16,
+        "pass": 15,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "green-2",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/green-2.log",
+      "log_sha256": "b95513f0cc63b7d8b29654d06b694ffd867db4f274bad8ec290d2a96035a3ff8",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/green-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "test_summary": {
+        "tests": 26,
+        "pass": 26,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "red-3",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/red-3.log",
+      "log_sha256": "6c2c68e9503d4e95e1799c1f9740e6920637f07ec3268a81bd50c28c609b8ff2",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/red-3.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "test_summary": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "tests-final",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/tests-final.log",
+      "log_sha256": "c84b3815e0b3c7622dc72d4f25a4672c7fd1d5cc5cc3d73aed61ba2179204167",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/tests-final.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "test_summary": {
+        "tests": 26,
+        "pass": 26,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "id": "syntax-bridge",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/syntax-bridge.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/syntax-bridge.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "test_summary": {}
+    },
+    {
+      "id": "syntax-tests",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/syntax-tests.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/syntax-tests.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "test_summary": {}
+    },
+    {
+      "id": "eslint",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/eslint.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/eslint.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "test_summary": {}
+    }
+  ],
+  "runtime": {
+    "platform": "darwin",
+    "node": "v22.23.2",
+    "private_home": "/private/tmp/p241bc-if2r0zho/home",
+    "private_tmp": "/private/tmp/p241bc-if2r0zho/tmp",
+    "inherited_env_keys": [
+      "PATH"
+    ],
+    "fixture_kind": "explicit Node subprocesses and real local Unix sockets; no HTTP API or Go harness"
+  },
+  "limits": {
+    "frame_bytes": 65536,
+    "pending_requests": 64,
+    "active_sockets": 64,
+    "reply_buffer_bytes": 131072,
+    "per_log_bytes": 67108864,
+    "socket_idle_ms": 30000,
+    "ready_ms": 30000,
+    "shutdown_ms": 5000,
+    "term_to_kill_ms": 1000,
+    "unix_socket_path_bytes": 103
+  },
+  "source_ownership": {
+    "parent": "canonical private directory",
+    "bind_directory": "exclusive0700 directory with device/inode identity",
+    "socket": "0600 actual socket, atomic hard-link publication, matching device/inode cleanup",
+    "signals": "direct child handle only"
+  },
+  "resource_audit": {
+    "at": "2026-11-14T11:09:34.471508+00:00",
+    "owned_fixture_node_processes": [],
+    "owned_binding_directories": [],
+    "source_matches": true
+  },
+  "not_run": [
+    "actual Go test harness and router/auth/background startup",
+    "actual execution/metric/source actions",
+    "E2E bridge consumer",
+    "production Web/matching Desktop",
+    "database identity/migrations",
+    "external providers/models/accounts"
+  ],
+  "references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/before.json",
+      "sha256": "2e1b8b72abe52031cdea9919b65f362dbdc8fdd9170051dd6c3a0af6981b553c"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/red-2-source.json",
+      "sha256": "a55b1221fbdc47d77aedb63e55c337fd3bcf2983ebde01cb231aa0f015e93026"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/red-3-source.json",
+      "sha256": "5d957357e06fc64cd454d409c6a9f7d868dde50d5858136e44f3711c41e9728b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/green-2-source.json",
+      "sha256": "c9f84da3e1f178e52b0ec2f730634d739a8123d3a1987d47ced44178071f4aaa"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/hard-link-probe.json",
+      "sha256": "b55361d356a61547288396be20e038009bbce95c1336f711c30be268f8ceb85e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/resource-audit.json",
+      "sha256": "e2a11ec229f10f4135b529940330f8d1ecc737c4e367ca0ef8d62709ec3c3182"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/stage-control-bridge/review/final-manifest.json",
+      "sha256": "e3a41cf4ada8d59b4924e301dc9aa1df9c10e67ece9b9ac0073d0263e2c391b5"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-control-transport.md",
+      "sha256": "b76b5f13c8c0311e39b838a2e2fb39169cad357e8814c9b48771850a13960deb"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-control-contract.md",
+      "sha256": "ca3ee225e4a970fba2d70e389049f23f03f9967a01eb1882a812728bf2c6d1a4"
+    }
+  ],
+  "report_markdown_sha256": "374bde3966e83da70849c6be1b93648ef21d7df484fa67ffcc442d327b4afebf"
+}

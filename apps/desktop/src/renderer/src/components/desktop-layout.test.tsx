@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
-import { useSidebar } from "@multica/ui/components/ui/sidebar";
+import { Sidebar, useSidebar } from "@multica/ui/components/ui/sidebar";
 import { RESOURCES } from "@multica/views/locales";
 
 // The shell resolves the mocked `getCurrentSlug()` against the workspace list
@@ -13,14 +13,17 @@ import { RESOURCES } from "@multica/views/locales";
 const WORKSPACES = [{ id: "ws-1", slug: "acme" }];
 
 let reducedMotion = false;
+let viewportWidth = 1440;
 let mediaEvents = new EventTarget();
 
 beforeEach(() => {
   reducedMotion = false;
+  viewportWidth = 1440;
+  vi.stubGlobal("innerWidth", viewportWidth);
   mediaEvents = new EventTarget();
   vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
     media: query,
-    get matches() { return query === "(prefers-reduced-motion: reduce)" && reducedMotion; },
+    get matches() { return query === "(prefers-reduced-motion: reduce)" ? reducedMotion : query === "(max-width: 1023px)" && viewportWidth < 1024; },
     onchange: null,
     addEventListener: mediaEvents.addEventListener.bind(mediaEvents),
     removeEventListener: mediaEvents.removeEventListener.bind(mediaEvents),
@@ -30,7 +33,7 @@ beforeEach(() => {
   }));
 });
 
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 // The shell is the only thing under test here, so everything it mounts around
 // the sidebar is stubbed out. What survives is the pair that has to agree:
@@ -51,6 +54,7 @@ vi.mock("@/platform/navigation", () => ({
     <>{children}</>
   ),
   routeContentLinkPath: vi.fn(),
+  resumeDesktopScope: vi.fn(),
 }));
 
 vi.mock("@multica/core/paths", () => ({
@@ -82,7 +86,9 @@ vi.mock("@multica/views/platform", () => ({
 }));
 
 vi.mock("@multica/views/layout", () => ({
-  AppSidebar: () => null,
+  AppSidebar: ({ topSlot }: { topSlot?: ReactNode }) => (
+    <Sidebar variant="inset" collapsible="icon">{topSlot}</Sidebar>
+  ),
   GlobalShortcuts: () => null,
   NavigationProgress: () => null,
 }));
@@ -148,6 +154,32 @@ describe("DesktopShell sidebar trigger", () => {
     );
   });
 
+  it("keeps the sidebar titlebar drag region clear of the window controls", () => {
+    const { container } = renderShell();
+    const spacer = container.querySelector("[data-slot='sidebar-inner'] > :first-child")!;
+
+    // Native drag hit testing ignores the toolbar's visual z-index. JSDOM
+    // guards the exclusion geometry; actual mouse input is verified in Electron.
+    expect(spacer).toHaveStyle({ marginLeft: "200px" });
+  });
+
+  it("collapses and reopens the sidebar from the window toolbar", () => {
+    const { container } = renderShell();
+    const sidebar = container.querySelector("[data-slot='sidebar']")!;
+    const trigger = container.querySelector("[data-slot='window-toolbar'] [data-slot='sidebar-trigger']")!;
+
+    expect(sidebar).toHaveAttribute("data-state", "expanded");
+    fireEvent.click(trigger);
+    expect(sidebar).toHaveAttribute("data-state", "collapsed");
+    expect(sidebar).toHaveAttribute("data-collapsible", "icon");
+    expect(trigger).toBeInTheDocument();
+    const spacer = container.querySelector("[data-slot='sidebar-inner'] > :first-child")!;
+    expect(spacer).toHaveStyle({ marginLeft: "0px" });
+    fireEvent.click(trigger);
+    expect(sidebar).toHaveAttribute("data-state", "expanded");
+    expect(spacer).toHaveStyle({ marginLeft: "200px" });
+  });
+
   it.each(["at launch", "while running"])("applies final geometry when reduced motion is enabled %s", async (when) => {
     reducedMotion = when === "at launch";
     const { container, getByTestId } = renderShell();
@@ -163,7 +195,7 @@ describe("DesktopShell sidebar trigger", () => {
       });
     }
 
-    for (const [padding, margin] of [[184, 8], [0, 2]]) {
+    for (const [padding, margin] of [[136, 2], [0, 2]]) {
       fireEvent.click(trigger);
       for (let frame = 0; frame < 5; frame++) {
         await act(async () => {
@@ -193,16 +225,16 @@ describe("DesktopShell sidebar trigger", () => {
       await nextFrame();
     }
     expect(Number.parseFloat(header.style.paddingLeft)).toBeGreaterThan(0);
-    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(184);
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(136);
 
     act(() => {
       reducedMotion = true;
       mediaEvents.dispatchEvent(new Event("change"));
     });
     await nextFrame();
-    expect(header.style.paddingLeft).toBe("184px");
-    expect(dragRegion.style.left).toBe("184px");
-    expect(canvas.style.marginLeft).toBe("8px");
+    expect(header.style.paddingLeft).toBe("136px");
+    expect(dragRegion.style.left).toBe("136px");
+    expect(canvas.style.marginLeft).toBe("2px");
 
     act(() => {
       reducedMotion = false;
@@ -211,6 +243,28 @@ describe("DesktopShell sidebar trigger", () => {
     fireEvent.click(trigger);
     await nextFrame();
     expect(Number.parseFloat(header.style.paddingLeft)).toBeGreaterThan(0);
-    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(184);
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(136);
+  });
+
+  it("reserves the entire native toolbar when navigation becomes a compact sheet", async () => {
+    reducedMotion = true;
+    const { container, getByTestId } = renderShell();
+    const header = container.querySelector("header")!;
+    const dragRegion = header.firstElementChild as HTMLElement;
+    const canvas = getByTestId("page-content").parentElement!;
+
+    act(() => {
+      viewportWidth = 900;
+      vi.stubGlobal("innerWidth", viewportWidth);
+      mediaEvents.dispatchEvent(new Event("change"));
+    });
+    await act(async () => {
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    });
+
+    expect(container.querySelector("[data-slot='sidebar-container']")).toBeNull();
+    expect(header.style.paddingLeft).toBe("200px");
+    expect(dragRegion.style.left).toBe("200px");
+    expect(canvas.style.marginLeft).toBe("8px");
   });
 });

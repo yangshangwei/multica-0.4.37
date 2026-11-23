@@ -1,0 +1,16 @@
+test(triage): keep reason input bound to the intended focused field
+
+Wait for the duplicate target popup to complete its initial focus before
+filling Reason, then assert the Reason value immediately. The existing
+empty target query, pagination, keyboard, API and history checks remain.
+
+Constraint: Preserve the failed v15 run and its original source evidence
+Rejected: Clear the duplicate query after filling | hides misdirected user input
+Confidence: high
+Scope-risk: narrow
+Directive: Await popup initial focus before filling a different control
+Tested: Real BaseUI delayed-focus mechanism control red and bounded protocol green
+Tested: Four original uncontrolled Web/native EN/ZH cases, zero retry or skip
+Tested: Strict noEmit checking of the fixture and actual import tree
+Not-tested: Original v15 focus event timing was unavailable
+Not-tested: New complete v16 verification remains pending

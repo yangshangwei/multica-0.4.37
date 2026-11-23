@@ -1,0 +1,27 @@
+{
+  "decided_at": "2026-11-05T04:21:53.782448+00:00",
+  "decision_owner": "root",
+  "basis": "criteria-review.json and original unchanged run_rk1.py admission/scoring; E0a independent66checks",
+  "E0a_registered_result": "accepted_finished_pass_for_original_behavior_and_lifecycle",
+  "E0a_postrun_operator_stability": "NOT_PROVEN; no retroactive stableconfiguration claim",
+  "original_helper_result": "exit1/review_readyfalse preserved; never overwritten",
+  "consumed": 1,
+  "remaining": 24,
+  "retry_E0a": false,
+  "source_model_prompt_score_budget_changes": false,
+  "interpretation": "The additional helper post-run global plugin equality failed. Original launcher admission passed and its runtime/public/canary checks completed, so this is not reclassified as an original incomplete trial. No claim that plugin drift was harmless or limited to cached metadata.",
+  "resolution_conditions": [
+    "prospective per-file inventory and postrun drift reporting independently verified",
+    "every new invocation still matches full current registered operatorfacts before execution",
+    "new source/helper/CLI records reviewed and committed; shared windowexplicit",
+    "no automatic scenario progression or changedconfigrebaseline; review any drift after each invocation",
+    "actual launcher/runtime/environment/incomplete/canary failure stops asoriginallyregistered"
+  ],
+  "H1_runnable_now": false,
+  "H1_blockers": [
+    "successor helper verification",
+    "current full operator binding and actual CLI provenance",
+    "explicit shared model window"
+  ],
+  "original_invocation_and_public_files_unchanged": true
+}

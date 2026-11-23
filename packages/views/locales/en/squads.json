@@ -1,9 +1,10 @@
 {
   "page": {
     "title": "Squads",
+    "tagline": "Give work to a squad and let the leader coordinate each role.",
+    "learn_more": "Learn more →",
     "new_button": "New Squad",
     "template_button": "Create from template",
-    "empty_no_squads": "No squads yet. Create one to get started.",
     "empty_no_match": "No squads match your filters.",
     "table": {
       "name": "Squad",
@@ -16,18 +17,62 @@
     "row_menu": "Squad actions",
     "archive_action": "Archive",
     "list_error": "Could not load squads.",
-    "tabs": {
-      "workspace": "Workspace",
-      "templates": "Templates"
-    },
     "custom_button": "Create custom squad",
     "sort_name": "Name"
   },
+  "welcome": {
+    "badge": "Squads",
+    "title_start": "Let your agents",
+    "title_end": "work as a team.",
+    "description": "Give your squad an issue. The leader understands the goal, delegates by role, and follows each step. You have one place to work with the whole team.",
+    "docs": "Read the docs",
+    "templates": "Browse templates",
+    "examples": "How squads work",
+    "example": "Example",
+    "previous": "Previous example",
+    "next": "Next example",
+    "show_example": "Show example {{number}}: {{title}}",
+    "position": "Example {{number}} of {{total}}: {{title}}",
+    "people": {
+      "leader": "Ada",
+      "builder": "Turing",
+      "reviewer": "Kepler",
+      "human": "Mia"
+    },
+    "issue_id": "MUL-128",
+    "issue_title": "Add a dark mode setting",
+    "assignee": "Assignee",
+    "squad_name": "Frontend squad",
+    "delegation": {
+      "title": "One entry point. The right next step.",
+      "description": "The leader reads the issue and @mentions the right member. Only the members called on start working.",
+      "routing": "Choosing the next member by role..."
+    },
+    "roles": {
+      "title": "A role for every member",
+      "description": "Describe what each member does so the leader knows who to call on. Agents and people can work in the same squad.",
+      "leader": "Coordinates the next step",
+      "builder": "Builds the feature",
+      "reviewer": "Reviews and tests",
+      "human": "Confirms the result"
+    },
+    "handoff": {
+      "title": "Every result moves work forward",
+      "description": "Members report back in the issue. The leader uses their results to coordinate the next step, with the conversation in one place.",
+      "thread": "Issue conversation",
+      "result": "Dark mode is ready. Tests passed.",
+      "next_step": "@Kepler, please review the change.",
+      "context": "Results and context stay with the issue"
+    }
+  },
   "create_chooser": {
+    "title": "How would you like to start?",
+    "step": "Choose a starting point",
+    "back": "Go back",
     "description": "Choose how to create your squad.",
     "template_description": "Start with a ready-made team and role assignments.",
     "custom_description": "Choose a leader and members to build your own squad.",
-    "close": "Close"
+    "continue": "Continue"
   },
   "inspector": {
     "details_section": "Details",
@@ -141,7 +186,8 @@
     "description": "Squad instructions are injected into the leader agent's prompt whenever it works on an issue assigned to this squad. Use them to give the leader squad-wide guidance, working agreements, or context the leader should follow on every task.",
     "unsaved_changes": "Unsaved changes",
     "save_button": "Save",
-    "placeholder": "e.g. Always start by writing a failing test. Prefer small, atomic commits."
+    "placeholder": "e.g. Always start by writing a failing test. Prefer small, atomic commits.",
+    "remote_changed": "Instructions changed elsewhere. Your unsaved draft is preserved; saving will replace the latest instructions."
   },
   "scope": {
     "mine": "Created by me",
@@ -169,6 +215,8 @@
     "description": "Choose a workflow and apply it to a new or existing project.",
     "loading": "Loading squad templates...",
     "error": "Could not load squad templates.",
+    "squads_loading": "Loading saved squads...",
+    "squads_error": "Could not load saved squads.",
     "empty": "No squad templates are available.",
     "retry": "Retry",
     "use_for_project": "Apply to project",
@@ -176,10 +224,11 @@
     "summaries": {
       "feature_delivery": "Take a feature from requirements through implementation and review.",
       "bug_fix": "Reproduce a bug, find its cause, and verify the fix with regression tests.",
-      "review_gate": "Review a finished change for correctness, security, and test coverage.",
+      "review_gate": "Review code, security and tests, plus agent behavior, experience and migration when applicable.",
       "discovery": "Clarify a request and assess feasibility before committing to implementation.",
       "docs": "Keep release notes, API docs, and runbooks aligned with shipped code.",
       "maintenance": "Upgrade dependencies and resolve security advisories or flaky tests.",
+      "security_remediation": "Triage security risks, reproduce code vulnerabilities before repairing outside production, verify with independent review, and have a security owner confirm key decisions.",
       "release": "Verify a release and prepare its notes and rollback before human approval.",
       "incident": "Restore service, verify recovery, then investigate the root cause."
     }
@@ -205,5 +254,22 @@
     "applying": "Preparing squad...",
     "cancel": "Cancel",
     "failed": "Could not update the project's squad. Try again."
+  },
+  "recovery": {
+    "loading": "Loading...",
+    "agents_loading": "Loading agents...",
+    "agents_error": "Could not load agents.",
+    "members_loading": "Loading squad members...",
+    "members_error": "Could not load squad members.",
+    "workspace_members_loading": "Loading workspace members...",
+    "workspace_members_error": "Could not load workspace members.",
+    "runtimes_loading": "Loading runtimes...",
+    "runtimes_error": "Could not load runtimes.",
+    "detail_error": "Could not load this squad.",
+    "detail_refresh_error": "Could not refresh this squad. Your current work is preserved.",
+    "not_found": "Squad not found.",
+    "access_denied": "You no longer have access to this squad.",
+    "unknown_count": "Not loaded",
+    "retry": "Retry"
   }
 }

@@ -1,0 +1,28 @@
+{
+  "name": "simulator-inventory",
+  "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "command": [
+    "xcrun",
+    "simctl",
+    "list",
+    "devices",
+    "available",
+    "--json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-11-02T00:01:30.463417+00:00",
+  "state": "complete",
+  "environment_overrides": {
+    "CI": "1",
+    "EXPO_OFFLINE": "1",
+    "EXPO_NO_TELEMETRY": "1",
+    "EXPO_NO_DOTENV": "1"
+  },
+  "finished_at": "2026-11-02T00:01:30.475769+00:00",
+  "exit_code": 72,
+  "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "stdout": "simulator-inventory.stdout.txt",
+  "stderr": "simulator-inventory.stderr.txt",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "99b8da8adc7e70feba56cd931740e16d0f5724d7515e98d84d2c8bf1bb63dec8"
+}

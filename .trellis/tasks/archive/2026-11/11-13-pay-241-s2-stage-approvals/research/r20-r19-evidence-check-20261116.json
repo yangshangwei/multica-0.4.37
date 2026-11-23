@@ -1,0 +1,163 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "review_date": "2026-11-16",
+  "status": "INDEPENDENT_RETAINED_R19_EVIDENCE_ACCEPTED_SHARED_UI_FIX_REQUIRED",
+  "scope": "retained-file identities, recorded-row classification and static tracer/client review",
+  "full_s2_accepted": false,
+  "A01_A12_or_parent_matrix_updated": false,
+  "original_four": {
+    "PASS": 0,
+    "FAIL": 1,
+    "NOT_RUN": 3,
+    "retry": 0,
+    "first_failure": "collaboration-stage-approvals.spec.ts:351 source-denial banner missing within original5000ms"
+  },
+  "file_only_verification": {
+    "required_live_binding_references": 169,
+    "frontend_test_files": 3359,
+    "frontend_test_links": 1961,
+    "production_frontend_files": 3358,
+    "production_frontend_links": 1961,
+    "server_declared_files": 5045,
+    "ROOT_production_dependency_files": 1458,
+    "historical_filesystem_entries": 101,
+    "new_unused_generations": 8,
+    "artifact_tars_with_member_verification": 8,
+    "runtime_output_files": 14,
+    "unique_file_paths_hashed": 13428,
+    "mismatches": [],
+    "additional_recursive_reference_objects": 105,
+    "additional_distinct_file_hash_bindings": 85,
+    "additional_reference_mismatches": [],
+    "full_ROOT_equivalence_claimed": false,
+    "undiscovered_source_path_set_equivalence_claimed": false
+  },
+  "diagnostic_counts": {
+    "records": 874,
+    "http_responses": 293,
+    "http200": 255,
+    "http503": 37,
+    "http404": 1,
+    "failed_queries": 39,
+    "errors_errorString": 29,
+    "pgconn_connLockError": 9,
+    "PgError_55P03": 1,
+    "all_nine_connLockErrors_are_rollback_after_prior_request_error": true,
+    "connLockError_status_or_prior_error_message_captured": false
+  },
+  "denial_response_order": [
+    {
+      "raw_line": 805,
+      "trace": 270,
+      "at": "2026-11-16T12:01:26.005911Z",
+      "fact": "LockArtifactMembers FOR SHARE NOWAIT returns55P03"
+    },
+    {
+      "raw_line": 820,
+      "trace": 275,
+      "at": "2026-11-16T12:01:26.109018Z",
+      "fact": "R1HTTP200 with both children can_openfalse/content_digestnull"
+    },
+    {
+      "raw_line": 825,
+      "trace": 276,
+      "at": "2026-11-16T12:01:26.146042Z",
+      "fact": "R4HTTP200 baseline null/blocked_evidence1/private evidence arrays empty/four non-signable blocker entries"
+    },
+    {
+      "raw_line": 859,
+      "trace": 290,
+      "at": "2026-11-16T12:01:26.739337Z",
+      "fact": "R1HTTP200 repeats denial"
+    },
+    {
+      "raw_line": 868,
+      "trace": 293,
+      "at": "2026-11-16T12:01:26.783603Z",
+      "fact": "R1HTTP200 repeats denial"
+    }
+  ],
+  "static_findings": [
+    {
+      "id": "R20_SHARED_PANEL_DENIAL_REQUIRES_R4_RECORD",
+      "fixed": false,
+      "file": "packages/views/collaboration/stage-code-panel.tsx",
+      "line": 62,
+      "fact": "Source-denial banner is nested under record&&; authoritative current R1 denial scrubs/cancels R4 and can leave recordnull.",
+      "recommended_handoff": "Existing source-denial helper and shared component regression; preserve private-cache scrub and all SQL fences.",
+      "browser_cache_interleaving_directly_captured": false
+    }
+  ],
+  "tracer_review": {
+    "actual_source": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r18-stage-execution-read-lock-fix-r01/runtime/build-source-r01/server/cmd/server/pay241_read_diagnostics_test.go",
+    "pgx_version": "v5.9.2",
+    "interface": "pgx.QueryTracer",
+    "Rows_Scan_or_DBTX_wrapper": false,
+    "extra_SQL_or_explicit_cancellation_or_result_mutation_found": false,
+    "PgConn_PID_is_field_read": true,
+    "synchronous_file_recording_scheduling_overhead_measured": false,
+    "specific_connLockError_or_errorString_root_cause_claimed": false,
+    "production_or_tracer_repair_recommended": false
+  },
+  "recorded_after_stop": {
+    "database": "multica_pay241_20261116_s2_runtime_r11",
+    "other_connections": 0,
+    "queue_rows": 11,
+    "queue_status_counts": {
+      "failed": 9,
+      "deferred": 1,
+      "running": 1
+    },
+    "leased_or_bound": 0,
+    "host_runs": 19,
+    "unsettled": 0,
+    "unreleased": 0,
+    "artifacts": 8,
+    "incomplete_artifacts": 0,
+    "unresolved_stage_intents": 1,
+    "rollback_metrics": 0,
+    "gate": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "20"
+    },
+    "recorded_API34208_and_bridge34204_absent": true,
+    "recorded_API64922_listener_absent": true,
+    "peer_Web39744_renderer39748_not_signaled": true,
+    "fresh_live_process_or_DB_observation_performed": false,
+    "history_rows_permanently_inert_claimed": false
+  },
+  "evidence": {
+    "actual_result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r19-metric-freshness-fixture-r01/runtime/four-scenarios-r01/result.json",
+      "sha256": "c522677bce9e06475afe4043a6f9149608c26888f1496c0934084868d6b4ba6f"
+    },
+    "raw_read_diagnostics": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r19-metric-freshness-fixture-r01/evidence/four-scenarios-read-diagnostics-r01.jsonl",
+      "sha256": "63b4ce4a12107de7cbcec9ae9f555c8f57ce4c7a1f8a8a3c121b165c5a8c9e21"
+    },
+    "actual_after": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r19-metric-freshness-fixture-r01/runtime/after-four-files-history-r01.json",
+      "sha256": "f578e661490a5780f6a953f6a13c595e620b5c083df4507065b9275bb3318e54"
+    },
+    "stop_receipt": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r19-metric-freshness-fixture-r01/runtime/stop-owned-api-after-four-r01.json",
+      "sha256": "5733eef6db016866183e77351fd5988f84fe1e1335a3a837c82e95873d1c9f35"
+    },
+    "recorded_after_stop_database": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r19-metric-freshness-fixture-r01/runtime/database-after-stop-r01.json",
+      "sha256": "32ee527231da4c28cb505f3b1d0f299844194f16c7ac4afbcec7c36e6f478ae7"
+    }
+  },
+  "commands_outside_file_only_scope": {
+    "lint": "NOT_RUN_READ_ONLY_ASSIGNMENT",
+    "typecheck": "NOT_RUN_READ_ONLY_ASSIGNMENT",
+    "Go_or_browser_tests": "NOT_RUN_READ_ONLY_ASSIGNMENT",
+    "DB_API_build_or_process_signals": 0
+  },
+  "changed_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-r19-evidence-check-20261116.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-r19-evidence-check-20261116.json"
+  ]
+}

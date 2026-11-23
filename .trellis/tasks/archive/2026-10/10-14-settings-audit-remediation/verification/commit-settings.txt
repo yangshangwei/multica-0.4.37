@@ -1,0 +1,16 @@
+fix(settings): preserve edits and make failed actions recoverable
+
+Keep authorized settings drafts and failed confirmation targets reachable
+through read failures and overlapping writes. Share query feedback, await
+repository removal, protect token dismissal, and retain provider pagination
+state. Fit catalog actions and long property dialogs within their content
+width, name the audited controls, and preserve native updater focus.
+
+Constraint: Preserve the existing settings navigation, package boundaries and visual system
+Rejected: Restore updater focus after settlement | it can steal a deliberate user focus change
+Confidence: high
+Scope-risk: moderate
+Directive: Keep recovery feedback outside retained editor identity and gate each independent protected read
+Tested: 907 tests across 74 files; five TypeScript targets; scoped ESLint; 27 UI detector targets; Electron F01-F17 acceptance and 18 menu geometry combinations
+Not-tested: Live service writes, native Windows/Linux, spoken screen-reader output or production performance
+Co-authored-by: OmX <omx@oh-my-codex.dev>

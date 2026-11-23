@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/multica-ai/multica/server/internal/runtimeapps"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 	"github.com/multica-ai/multica/server/pkg/remotemcp"
 )
 
@@ -98,15 +99,16 @@ type TaskStatus struct {
 }
 
 type Task struct {
-	ExecutionFence       *ExecutionFence        `json:"execution_fence,omitempty"`
-	ID                   string                 `json:"id"`
-	AgentID              string                 `json:"agent_id"`
-	RuntimeID            string                 `json:"runtime_id"`
-	IssueID              string                 `json:"issue_id"`
-	WorkspaceID          string                 `json:"workspace_id"`
-	WorkspaceSlug        string                 `json:"workspace_slug,omitempty"`
-	IssueIdentifier      string                 `json:"issue_identifier,omitempty"`
-	RemoteMCPConnections []remotemcp.Connection `json:"remote_mcp_connections,omitempty"`
+	KnowledgeContext     *protocol.TaskKnowledgeClaimDescriptor `json:"knowledge_context,omitempty"`
+	ExecutionFence       *ExecutionFence                        `json:"execution_fence,omitempty"`
+	ID                   string                                 `json:"id"`
+	AgentID              string                                 `json:"agent_id"`
+	RuntimeID            string                                 `json:"runtime_id"`
+	IssueID              string                                 `json:"issue_id"`
+	WorkspaceID          string                                 `json:"workspace_id"`
+	WorkspaceSlug        string                                 `json:"workspace_slug,omitempty"`
+	IssueIdentifier      string                                 `json:"issue_identifier,omitempty"`
+	RemoteMCPConnections []remotemcp.Connection                 `json:"remote_mcp_connections,omitempty"`
 	// RemoteMCPDaemonToken stays inside the daemon and authenticates the local
 	// broker's credential-resolution calls. It must never enter agent env/config.
 	RemoteMCPDaemonToken string `json:"remote_mcp_daemon_token,omitempty"`
@@ -205,6 +207,71 @@ type Task struct {
 	// Empty or non-task-scoped values are fatal for writable agent tasks; the
 	// daemon must not fall back to its own token. See MUL-3292.
 	AuthToken string `json:"auth_token,omitempty"`
+	// BudgetAttemptID names the budget attempt the server opened for this
+	// claim (budget usage protocol v1). The daemon reports what the provider
+	// invocations of this execution used as one batch under this id. Empty
+	// means the claim carries no attempt and nothing is reported for it.
+	BudgetAttemptID string `json:"budget_attempt_id,omitempty"`
+
+	// droppedPriorSessionID records that this daemon's own reachability gate
+	// cleared PriorSessionID. Unexported, so no claim response can set it; the
+	// knowledge path reports it to the server as resume_unavailable.
+	droppedPriorSessionID string
+
+	// knowledgeRejected marks a claim whose knowledge_context descriptor did not
+	// decode strictly. KnowledgeContext stays nil and the task is refused before
+	// any prompt or process; recoveredKnowledgeFence is its original claim fence
+	// when the exact fence keys could be read back. Both are unexported, so no
+	// claim response can set them directly.
+	knowledgeRejected       bool
+	recoveredKnowledgeFence *protocol.TaskKnowledgeFence
+}
+
+// UnmarshalJSON decodes knowledge_context apart from the rest of the task, so
+// one descriptor this daemon cannot decode strictly refuses only its own task
+// instead of failing a claim response the server has already committed. The
+// descriptor and its session stay strictly decoded; errors in any other task
+// field still fail the whole decode.
+func (t *Task) UnmarshalJSON(raw []byte) error {
+	type taskWire Task
+	var wire struct {
+		*taskWire
+		KnowledgeContext json.RawMessage `json:"knowledge_context,omitempty"`
+	}
+	wire.taskWire = (*taskWire)(t)
+	if err := json.Unmarshal(raw, &wire); err != nil {
+		return err
+	}
+	t.KnowledgeContext, t.knowledgeRejected, t.recoveredKnowledgeFence = nil, false, nil
+	if len(wire.KnowledgeContext) == 0 || string(wire.KnowledgeContext) == "null" {
+		return nil
+	}
+	var descriptor protocol.TaskKnowledgeClaimDescriptor
+	if err := json.Unmarshal(wire.KnowledgeContext, &descriptor); err != nil {
+		t.knowledgeRejected = true
+		t.recoveredKnowledgeFence = recoverKnowledgeFence(t.ID, wire.KnowledgeContext)
+		return nil
+	}
+	t.KnowledgeContext = &descriptor
+	return nil
+}
+
+// recoverKnowledgeFence reads the claim fence of a rejected descriptor from its
+// exact claim_generation and dispatched_at keys only, and keeps it only when it
+// is a valid fence for this task. The server checks the fence again regardless.
+func recoverKnowledgeFence(taskID string, raw json.RawMessage) *protocol.TaskKnowledgeFence {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil {
+		return nil
+	}
+	var fence protocol.TaskKnowledgeFence
+	if json.Unmarshal(fields["claim_generation"], &fence.ClaimGeneration) != nil || json.Unmarshal(fields["dispatched_at"], &fence.DispatchedAt) != nil {
+		return nil
+	}
+	if protocol.ValidateTaskKnowledgeRequest(protocol.TaskKnowledgeVersion, taskID, fence.ClaimGeneration, fence.DispatchedAt) != nil {
+		return nil
+	}
+	return &fence
 }
 
 // ChatAttachmentMeta is the structured attachment metadata the daemon
@@ -317,12 +384,13 @@ type TaskUsageEntry struct {
 
 // TaskResult is the outcome of executing a task.
 type TaskResult struct {
-	Status     string `json:"status"`
-	Comment    string `json:"comment"`
-	BranchName string `json:"branch_name,omitempty"`
-	EnvType    string `json:"env_type,omitempty"`
-	SessionID  string `json:"session_id,omitempty"` // Claude session ID for future resumption
-	WorkDir    string `json:"work_dir,omitempty"`   // working directory used during execution
+	KnowledgeFence *protocol.TaskKnowledgeFence `json:"-"`
+	Status         string                       `json:"status"`
+	Comment        string                       `json:"comment"`
+	BranchName     string                       `json:"branch_name,omitempty"`
+	EnvType        string                       `json:"env_type,omitempty"`
+	SessionID      string                       `json:"session_id,omitempty"` // Claude session ID for future resumption
+	WorkDir        string                       `json:"work_dir,omitempty"`   // working directory used during execution
 	// DurableWorkDir replaces WorkDir only after a disposable local worktree
 	// was finalized and its removal was confirmed. Empty keeps WorkDir authoritative.
 	DurableWorkDir string `json:"durable_work_dir,omitempty"`

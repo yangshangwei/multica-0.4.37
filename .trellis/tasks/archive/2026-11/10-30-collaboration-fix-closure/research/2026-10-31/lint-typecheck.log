@@ -1,0 +1,170 @@
+{"source_head": "4c833e737efb6c997e5cb56c74c43e9237c91956", "command": ["pnpm", "exec", "turbo", "run", "lint", "typecheck", "--filter=!@multica/mobile", "--concurrency=1", "--force"], "cwd": "/Volumes/artisan/code/2026/multica-0.4.37", "started_at": "2026-10-31T11:51:18.631140+00:00"}
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+• turbo 2.9.5
+
+   • Packages in scope: @multica/core, @multica/desktop, @multica/docs, @multica/eslint-config, @multica/plugin-sdk, @multica/tsconfig, @multica/ui, @multica/views, @multica/web
+   • Running lint, typecheck in 9 packages
+   • Remote caching disabled
+
+@multica/core:lint: cache bypass, force executing d5b500200e6aa8b6
+@multica/core:lint: 
+@multica/core:lint: > @multica/core@0.0.0 lint /Volumes/artisan/code/2026/multica-0.4.37/packages/core
+@multica/core:lint: > eslint .
+@multica/core:lint: 
+@multica/plugin-sdk:lint: cache bypass, force executing 14bdd13970e1c31f
+@multica/plugin-sdk:lint: 
+@multica/plugin-sdk:lint: > @multica/plugin-sdk@0.1.0 lint /Volumes/artisan/code/2026/multica-0.4.37/packages/plugin-sdk
+@multica/plugin-sdk:lint: > eslint .
+@multica/plugin-sdk:lint: 
+@multica/desktop:lint: cache bypass, force executing 9466636723fc64e3
+@multica/desktop:lint: 
+@multica/desktop:lint: > @multica/desktop@0.1.0 lint /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop
+@multica/desktop:lint: > eslint .
+@multica/desktop:lint: 
+@multica/desktop:lint: 
+@multica/desktop:lint: /Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/src/renderer/src/components/tab-content.tsx
+@multica/desktop:lint:   54:6  warning  React Hook useEffect has a missing dependency: 'group'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/desktop:lint: 
+@multica/desktop:lint: ✖ 1 problem (0 errors, 1 warning)
+@multica/desktop:lint: 
+@multica/docs:mdx: cache bypass, force executing 54077e929f36adb0
+@multica/docs:mdx: 
+@multica/docs:mdx: > @multica/docs@0.2.0 mdx /Volumes/artisan/code/2026/multica-0.4.37/apps/docs
+@multica/docs:mdx: > fumadocs-mdx
+@multica/docs:mdx: 
+@multica/docs:mdx: [MDX] types generated
+@multica/web:mdx: cache bypass, force executing 18fccae07e8160d1
+@multica/web:mdx: 
+@multica/web:mdx: > @multica/web@0.4.40 mdx /Volumes/artisan/code/2026/multica-0.4.37/apps/web
+@multica/web:mdx: > fumadocs-mdx
+@multica/web:mdx: 
+@multica/web:mdx: [MDX] types generated
+@multica/ui:lint: cache bypass, force executing 5680410bcf5d3d58
+@multica/ui:lint: 
+@multica/ui:lint: > @multica/ui@0.0.0 lint /Volumes/artisan/code/2026/multica-0.4.37/packages/ui
+@multica/ui:lint: > eslint .
+@multica/ui:lint: 
+@multica/ui:lint: 
+@multica/ui:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/ui/components/ui/stepper.tsx
+@multica/ui:lint:   144:5  warning  React Hook useMemo has missing dependencies: 'focusFirst', 'focusLast', 'focusNext', 'focusPrev', and 'indicators'. Either include them or remove the dependency array                                                                      react-hooks/exhaustive-deps
+@multica/ui:lint:   249:6  warning  React Hook useEffect has a missing dependency: 'registerTrigger'. Either include it or remove the dependency array. Mutable values like 'btnRef.current' aren't valid dependencies because mutating them doesn't re-render the component    react-hooks/exhaustive-deps
+@multica/ui:lint:   255:5  warning  React Hook useMemo has an unnecessary dependency: 'btnRef.current'. Either exclude it or remove the dependency array. Mutable values like 'btnRef.current' aren't valid dependencies because mutating them doesn't re-render the component  react-hooks/exhaustive-deps
+@multica/ui:lint: 
+@multica/ui:lint: ✖ 3 problems (0 errors, 3 warnings)
+@multica/ui:lint: 
+@multica/views:lint: cache bypass, force executing 14b1f80fc8f81f82
+@multica/views:lint: 
+@multica/views:lint: > @multica/views@0.0.0 lint /Volumes/artisan/code/2026/multica-0.4.37/packages/views
+@multica/views:lint: > eslint .
+@multica/views:lint: 
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/agents/agents-i18n-parity.test.ts
+@multica/views:lint:   150:9  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+@multica/views:lint:   166:9  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/agents/components/tabs/mcp-config-tab.tsx
+@multica/views:lint:   112:9  warning  The 'assignedServers' logical expression could make the dependencies of useMemo Hook (at line 115) change on every render. To fix this, wrap the initialization of 'assignedServers' in its own useMemo() Hook  react-hooks/exhaustive-deps
+@multica/views:lint:   112:9  warning  The 'assignedServers' logical expression could make the dependencies of useMemo Hook (at line 132) change on every render. To fix this, wrap the initialization of 'assignedServers' in its own useMemo() Hook  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/attachments/use-html-preview-scroll-restore.ts
+@multica/views:lint:   211:5  warning  React Hook useCallback has an unnecessary dependency: 'sendRequestSync'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/common/single-row-fit.ts
+@multica/views:lint:   64:3  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/editor/zoom-canvas.tsx
+@multica/views:lint:   161:5  warning  React Hook useCallback has a missing dependency: 'canvas'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/execution-log-section.tsx
+@multica/views:lint:   250:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/issue-usage-dialog.tsx
+@multica/views:lint:    72:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint:    85:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint:   231:6  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/swimlane-view.tsx
+@multica/views:lint:   964:6  warning  React Hook useMemo has a missing dependency: 'categoryOf'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/components/table-view.tsx
+@multica/views:lint:   1848:5  warning  React Hook useCallback has a missing dependency: 'resolveStatusLabel'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/issues/surface/use-issue-group-branches.ts
+@multica/views:lint:   331:6  warning  React Hook useMemo has a missing dependency: 'secondaryIsCategory'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/onboarding/onboarding-flow.tsx
+@multica/views:lint:   235:6  warning  React Hook useCallback has a missing dependency: 't'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/projects/components/project-detail.tsx
+@multica/views:lint:   152:6  warning  React Hook useEffect has a missing dependency: 'project'. Either include it or remove the dependency array          react-hooks/exhaustive-deps
+@multica/views:lint:   260:5  warning  React Hook useCallback has a missing dependency: 'updateProject'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/components/charts/activity-heatmap.tsx
+@multica/views:lint:   204:6  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/components/usage-section.tsx
+@multica/views:lint:   373:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint:   383:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint:   699:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint:   703:5  warning  React Hook useMemo has an unnecessary dependency: 'pricings'. Either exclude it or remove the dependency array  react-hooks/exhaustive-deps
+@multica/views:lint: 
+@multica/views:lint: /Volumes/artisan/code/2026/multica-0.4.37/packages/views/runtimes/utils.test.ts
+@multica/views:lint:   1079:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+@multica/views:lint:   1089:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+@multica/views:lint:   1101:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+@multica/views:lint:   1123:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+@multica/views:lint:   1133:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+@multica/views:lint: 
+@multica/views:lint: ✖ 27 problems (0 errors, 27 warnings)
+@multica/views:lint:   0 errors and 8 warnings potentially fixable with the `--fix` option.
+@multica/views:lint: 
+@multica/web:lint: cache bypass, force executing e732f5d9c6d0fedc
+@multica/web:lint: 
+@multica/web:lint: > @multica/web@0.4.40 lint /Volumes/artisan/code/2026/multica-0.4.37/apps/web
+@multica/web:lint: > eslint .
+@multica/web:lint: 
+@multica/ui:typecheck: cache bypass, force executing 7e45b187510daf23
+@multica/ui:typecheck: 
+@multica/ui:typecheck: > @multica/ui@0.0.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/ui
+@multica/ui:typecheck: > tsc --noEmit
+@multica/ui:typecheck: 
+@multica/core:typecheck: cache bypass, force executing 9e4fb2483b02dc76
+@multica/core:typecheck: 
+@multica/core:typecheck: > @multica/core@0.0.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/core
+@multica/core:typecheck: > tsc --noEmit
+@multica/core:typecheck: 
+@multica/plugin-sdk:typecheck: cache bypass, force executing e1c4c06fe757cff9
+@multica/plugin-sdk:typecheck: 
+@multica/plugin-sdk:typecheck: > @multica/plugin-sdk@0.1.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/plugin-sdk
+@multica/plugin-sdk:typecheck: > tsc --noEmit
+@multica/plugin-sdk:typecheck: 
+@multica/docs:typecheck: cache bypass, force executing 6c77a913661ceb1d
+@multica/docs:typecheck: 
+@multica/docs:typecheck: > @multica/docs@0.2.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/apps/docs
+@multica/docs:typecheck: > tsc --noEmit
+@multica/docs:typecheck: 
+@multica/views:typecheck: cache bypass, force executing 31b8cc2d5233b21d
+@multica/views:typecheck: 
+@multica/views:typecheck: > @multica/views@0.0.0 typecheck /Volumes/artisan/code/2026/multica-0.4.37/packages/views
+@multica/views:typecheck: > tsc --noEmit
+@multica/views:typecheck: 
+@multica/web:typecheck: cache bypass, force executing c97c79af4865148e
+@multica/web:typecheck: 
+@multica/web:typecheck: > @multica/web@0.4.40 typecheck /Volumes/artisan/code/2026/multica-0.4.37/apps/web
+@multica/web:typecheck: > tsc --noEmit
+@multica/web:typecheck: 
+@multica/web:typecheck: .next/types/app/(landing)/download/page.ts(2,24): error TS2307: Cannot find module '../../../../../app/(landing)/download/page.js' or its corresponding type declarations.
+@multica/web:typecheck: .next/types/app/(landing)/download/page.ts(7,29): error TS2307: Cannot find module '../../../../../app/(landing)/download/page.js' or its corresponding type declarations.
+@multica/web:typecheck: .next/types/validator.ts(125,39): error TS2307: Cannot find module '../../app/(landing)/download/page.js' or its corresponding type declarations.
+@multica/web:typecheck:  ELIFECYCLE  Command failed with exit code 2.
+@multica/desktop:typecheck: cache bypass, force executing b1f7f02e3c5f2ae6
+ ERROR  @multica/web#typecheck: command (/Volumes/artisan/code/2026/multica-0.4.37/apps/web) /Users/artisan/Library/pnpm/store/v11/links/@/pnpm/10.28.2/4107b7fdb6a6eec95e194ae0c35ca87833d5d698fe6b074c4952a3ef6f590957/bin/pnpm run typecheck exited (2)
+
+ Tasks:    13 successful, 15 total
+Cached:    0 cached, 15 total
+  Time:    1m30.867s 
+Failed:    @multica/web#typecheck
+
+ ERROR  run failed: command  exited (2)
+
+exit_code=2

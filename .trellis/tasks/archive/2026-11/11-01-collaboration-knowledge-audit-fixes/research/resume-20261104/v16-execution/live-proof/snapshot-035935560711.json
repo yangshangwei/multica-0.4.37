@@ -1,0 +1,465 @@
+{
+  "observation_started_at": "2026-11-04T03:59:34.942085+00:00",
+  "reviewer": "/root/shared_executor",
+  "stage": 6,
+  "run_state": "running",
+  "make_pid": 8959,
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "retained_execution_claim": {
+    "claimed_at": "2026-11-04T03:08:17.878056+00:00",
+    "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+    "executor": "/root/shared_executor",
+    "wrapper_pid": 8937,
+    "wrapper_sha256": "018dc698d7aa3ffed4a314a833084c7e571abf005297db44ba6e905dad13f012",
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "clearance_sha256": "82f5b3219251e65f81c73540d28ece2a2f99b9c3ae87833df09948472da12143",
+    "launcher_sha256": "52c2f0a40fab9dcaabbc20267c106cdffc503d126853e9a3290da280350deaca",
+    "mode": "single_detached_complete_execution_no_rerun",
+    "Provider_calls": 0
+  },
+  "manifest": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/dev-registry-v16/envs/check-20261104030822-8966/manifest.env",
+    "sha256": "8003de59056c7d7dec4a5f1c32aba9397c12b1a9ead5f8788bb20ab2e419bddf",
+    "declared": {
+      "NAME": "check-20261104030822-8966",
+      "DIR": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "OWNER": "agent",
+      "WEB_MODE": "production",
+      "BACKEND_PORT": "18974",
+      "FRONTEND_PORT": "13894",
+      "DB_NAME": "multica_check_20261104030822_8966_api",
+      "ENV_FILE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/dev-registry-v16/envs/check-20261104030822-8966/check.env",
+      "CREATED_AT": "2026-11-04T03:08:22Z"
+    }
+  },
+  "task_environment": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/dev-registry-v16/envs/check-20261104030822-8966/check.env",
+    "sha256": "09295d055cfd2d244f82199c3479c5b19a6109ba4e6dcca25e1bf4bc9d948b04",
+    "declared_nonsecret": {
+      "APP_ENV": "development",
+      "PORT": "18974",
+      "FRONTEND_PORT": "13894",
+      "MULTICA_DEPLOYMENT_ID": "8c8cbecd-3098-4e1b-a5a5-ecf9e6cdd0db",
+      "MULTICA_AUTH_MODE": "legacy",
+      "MULTICA_DEVICE_AUTH_ENABLED": "false",
+      "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+      "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false",
+      "NEXT_PUBLIC_API_URL": "http://localhost:18974",
+      "NEXT_PUBLIC_WS_URL": "ws://localhost:18974/ws",
+      "FRONTEND_ORIGIN": "http://localhost:13894",
+      "PLAYWRIGHT_BASE_URL": "http://localhost:13894",
+      "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:58268/"
+    }
+  },
+  "pinned_psql": {
+    "path": "/opt/homebrew/opt/libpq/bin/psql",
+    "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+    "actual_sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+    "matches": true
+  },
+  "source": {
+    "actual_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "head_query_exit": 0,
+    "actual_head": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "expected_head_matches": true,
+    "status_query_exit": 0,
+    "dirty_paths": [
+      " M apps/web/next-env.d.ts"
+    ],
+    "selected_current_file_hashes": {
+      "server/cmd/server/main.go": "561c399b22265548f56f3d383a2b4ec18ddca1efa5a4662005ca99199210d0f1",
+      "apps/web/app/layout.tsx": "3908ad22d78acbca99c00665a953e4250fc908db1f7d1098e57b19b3d9c4f341",
+      "scripts/dev-env.sh": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+      "scripts/check.sh": "c6d544402060c0e76fafc73e98fece92e063a971bc3cc4e85b36f8d5b8058ae6",
+      "apps/desktop/out/renderer/index.html": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847"
+    },
+    "canonical_product_source_id_declared_in_run": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+    "full_source_binding_limit": "Selected files/HEAD are observed here; registered detached final auditor owns all-file/tool/workspace/CLI/Desktop final verification."
+  },
+  "api": {
+    "url": "http://127.0.0.1:18974",
+    "http": {
+      "reachable": true,
+      "status": 200,
+      "final_url": "http://127.0.0.1:18974/health"
+    },
+    "actual_health_nonsecret": {
+      "status": "ok",
+      "pid": 33694,
+      "commit": "eda0d68fb",
+      "started_at": "2026-11-04T03:52:59Z"
+    },
+    "listener": {
+      "port": 18974,
+      "query_exit": 0,
+      "pids": [
+        33694
+      ],
+      "observation": "p33694\ncserver\nf22\nn*:18974"
+    },
+    "actual_process_ancestry": [
+      {
+        "pid": 33694,
+        "parent_pid": 33628,
+        "process_group": 33628,
+        "present": true,
+        "timing_and_command": "Wed Nov  4 11:52:58 2026     06:37 /private/tmp/multica-final-check-v16-gpuoybuq/go-build1447386199/b001/exe/server",
+        "actual_cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+        "cwd_query_exit": 0,
+        "observed_process_env_nonsecret": {
+          "APP_ENV": "development",
+          "PORT": "18974",
+          "FRONTEND_PORT": "13894",
+          "MULTICA_DEPLOYMENT_ID": "8c8cbecd-3098-4e1b-a5a5-ecf9e6cdd0db",
+          "MULTICA_AUTH_MODE": "legacy",
+          "MULTICA_DEVICE_AUTH_ENABLED": "false",
+          "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+          "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false",
+          "NEXT_PUBLIC_API_URL": "http://localhost:18974",
+          "NEXT_PUBLIC_WS_URL": "ws://localhost:18974/ws",
+          "FRONTEND_ORIGIN": "http://localhost:13894",
+          "PLAYWRIGHT_BASE_URL": "http://localhost:13894",
+          "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:58268/"
+        }
+      },
+      {
+        "pid": 33628,
+        "parent_pid": 1,
+        "process_group": 33628,
+        "present": true,
+        "timing_and_command": "Wed Nov  4 11:52:52 2026     06:43 /Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go run -ldflags -X main.commit=eda0d68fb ./cmd/server",
+        "actual_cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+        "cwd_query_exit": 0,
+        "observed_process_env_nonsecret": {
+          "APP_ENV": "development",
+          "PORT": "18974",
+          "FRONTEND_PORT": "13894",
+          "MULTICA_DEPLOYMENT_ID": "8c8cbecd-3098-4e1b-a5a5-ecf9e6cdd0db",
+          "MULTICA_AUTH_MODE": "legacy",
+          "MULTICA_DEVICE_AUTH_ENABLED": "false",
+          "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+          "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false",
+          "NEXT_PUBLIC_API_URL": "http://localhost:18974",
+          "NEXT_PUBLIC_WS_URL": "ws://localhost:18974/ws",
+          "FRONTEND_ORIGIN": "http://localhost:13894",
+          "PLAYWRIGHT_BASE_URL": "http://localhost:13894",
+          "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:58268/"
+        }
+      }
+    ],
+    "health_pid_is_actual_listener": true,
+    "recorded_provenance": {
+      "component": "api",
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=eda0d68fb' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server)",
+      "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+      "configuration_id": "5bb45ae6aa2945bf157ff50e64dd292e025e97db737de9a961d589286024985b",
+      "commit": "eda0d68fb",
+      "launcher_pid": 33628,
+      "started_at": "2026-11-04T03:52:52Z",
+      "listener_pid": 33694
+    },
+    "public_config_http": {
+      "reachable": true,
+      "status": 200,
+      "final_url": "http://127.0.0.1:18974/api/config"
+    },
+    "public_config_nonsecret": {
+      "deployment_id": "8c8cbecd-3098-4e1b-a5a5-ecf9e6cdd0db",
+      "auth_mode": "legacy",
+      "managed_installations_enabled": null,
+      "device_auth_enabled": null
+    },
+    "actual_database_url_matches_registered": true,
+    "actual_deployment_uuid_matches_registered": true,
+    "actual_config_http": {
+      "reachable": true,
+      "status": 200,
+      "final_url": "http://127.0.0.1:18974/api/config"
+    },
+    "actual_config_nonsecret": {
+      "managed_installation_supported": false,
+      "deployment_id": "8c8cbecd-3098-4e1b-a5a5-ecf9e6cdd0db",
+      "platform_admin_available": false,
+      "auth_mode": "legacy",
+      "account_binding_available": false,
+      "cdn_domain": "localhost",
+      "allow_signup": true,
+      "daemon_server_url": "http://localhost:18974",
+      "daemon_app_url": "http://localhost:13894",
+      "messaging_integrations_enabled": true,
+      "posthog_key": "",
+      "posthog_host": "",
+      "analytics_environment": "dev",
+      "feature_flags": {
+        "agents_agent_builder": true,
+        "agents_skill_toggles": true,
+        "billing_workspace_subscriptions": false,
+        "composio_mcp_apps": false,
+        "plugins_v1": false,
+        "settings_resource_labels": true
+      },
+      "local_worktree_supported": true,
+      "agent_conversation_starters_supported": true
+    },
+    "owned_tcp_connections": {
+      "query_exit": 0,
+      "observation": "p33694\nf6\nn[::1]:18974->[::1]:64928\nf7\nn[::1]:18974->[::1]:50565\nf8\nn127.0.0.1:62514->127.0.0.1:58269\nf9\nn127.0.0.1:62515->127.0.0.1:58269\nf10\nn127.0.0.1:62516->127.0.0.1:58269\nf11\nn127.0.0.1:62517->127.0.0.1:58269\nf12\nn127.0.0.1:62518->127.0.0.1:58269\nf13\nn127.0.0.1:62519->127.0.0.1:58269\nf14\nn127.0.0.1:62520->127.0.0.1:58269\nf15\nn127.0.0.1:62521->127.0.0.1:58269\nf16\nn127.0.0.1:62522->127.0.0.1:58269\nf17\nn127.0.0.1:62523->127.0.0.1:58269\nf18\nn127.0.0.1:50392->127.0.0.1:5432\nf19\nn127.0.0.1:50332->127.0.0.1:5432\nf20\nn127.0.0.1:50393->127.0.0.1:5432\nf21\nn127.0.0.1:50414->127.0.0.1:5432\nf22\nn*:18974\nf23\nn127.0.0.1:50394->127.0.0.1:5432\nf24\nn127.0.0.1:50220->127.0.0.1:5432\nf25\nn127.0.0.1:50413->127.0.0.1:5432\nf26\nn[::1]:18974->[::1]:50613\nf27\nn[::1]:18974->[::1]:50568\nf28\nn127.0.0.1:62766->127.0.0.1:58269\nf29\nn[::1]:18974->[::1]:50569\nf30\nn[::1]:18974->[::1]:50570\nf31\nn[::1]:18974->[::1]:50571\nf33\nn[::1]:18974->[::1]:50630\nf34\nn127.0.0.1:50445->127.0.0.1:5432\nf35\nn127.0.0.1:50446->127.0.0.1:5432\nf36\nn[::1]:18974->[::1]:50631\nf37\nn[::1]:18974->[::1]:50632\nf38\nn[::1]:18974->[::1]:50633\nf39\nn127.0.0.1:50347->127.0.0.1:5432\nf40\nn[::1]:18974->[::1]:50649\nf42\nn[::1]:18974->[::1]:63782"
+    }
+  },
+  "web": {
+    "url": "http://127.0.0.1:13894",
+    "listener": {
+      "port": 13894,
+      "query_exit": 0,
+      "pids": [
+        34873
+      ],
+      "observation": "p34873\ncnode\nf12\nn*:13894"
+    },
+    "recorded_provenance": {
+      "component": "web",
+      "mode": "production",
+      "build_id": "wJb8_oXVm-RQLLW3V6hi3",
+      "command": "pnpm --filter @multica/web exec next start --port 13894",
+      "source_id": "080e49210a53a763213651be5d76b343186613d1673cafdfc6519645c4690364",
+      "configuration_id": "1d0be98969ce00322461c1c6a201152bf7db074e431bd983f767061f8557aba6",
+      "commit": "eda0d68fb",
+      "launcher_pid": 34854,
+      "started_at": "2026-11-04T03:53:56Z",
+      "listener_pid": 34873
+    },
+    "http": {
+      "reachable": true,
+      "status": 200,
+      "final_url": "http://127.0.0.1:13894/"
+    },
+    "html_sha256": "e5940ad1d217c01957e0afa5746b45c127672bfa4f2936122a049ff68e9f1615",
+    "html_bytes": 626068,
+    "actual_rendered_public_configuration": {
+      "apiBaseUrl": "http://localhost:18974",
+      "wsUrl": "ws://localhost:18974/ws"
+    },
+    "rendered_API_WS_match_declared": true,
+    "actual_process_ancestry": [
+      {
+        "pid": 34873,
+        "parent_pid": 34854,
+        "process_group": 34854,
+        "present": true,
+        "timing_and_command": "Wed Nov  4 11:53:56 2026     05:39 next-server (v16.2.6)",
+        "actual_cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/web",
+        "cwd_query_exit": 0,
+        "observed_process_env_nonsecret": {}
+      },
+      {
+        "pid": 34854,
+        "parent_pid": 1,
+        "process_group": 34854,
+        "present": true,
+        "timing_and_command": "Wed Nov  4 11:53:56 2026     05:39 node /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs --dir /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103 --filter @multica/web exec next start --port 13894",
+        "actual_cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+        "cwd_query_exit": 0,
+        "observed_process_env_nonsecret": {
+          "APP_ENV": "development",
+          "PORT": "18974",
+          "FRONTEND_PORT": "13894",
+          "MULTICA_DEPLOYMENT_ID": "8c8cbecd-3098-4e1b-a5a5-ecf9e6cdd0db",
+          "MULTICA_AUTH_MODE": "legacy",
+          "MULTICA_DEVICE_AUTH_ENABLED": "false",
+          "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+          "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false",
+          "NEXT_PUBLIC_API_URL": "http://localhost:18974",
+          "NEXT_PUBLIC_WS_URL": "ws://localhost:18974/ws",
+          "FRONTEND_ORIGIN": "http://localhost:13894",
+          "PLAYWRIGHT_BASE_URL": "http://localhost:13894",
+          "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:58268/"
+        }
+      }
+    ],
+    "actual_build_id": "wJb8_oXVm-RQLLW3V6hi3",
+    "actual_build_log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/dev-registry-v16/envs/check-20261104030822-8966/logs/web-build.log",
+      "sha256": "ff48239995e3e522eaf6bbc02b36b358bfb04f9da2a6112a80a73bf03e3655d7",
+      "bytes": 3275
+    },
+    "unauthenticated_public_HTML_artifact": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/live-proof/web-public-035935433665.html"
+  },
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_knowledge_default": false,
+  "commands_started": "Read-only ps/lsof/git/HTTP/explicit own-DB psql and optional own-Redis docker inspect only; no tests/build/service/DB write/Provider commands.",
+  "database": {
+    "query_exit": 0,
+    "host": "127.0.0.1",
+    "port": 5432,
+    "registered_database": "multica_check_20261104030822_8966_api",
+    "read_only": true,
+    "actual": {
+      "database": "multica_check_20261104030822_8966_api",
+      "user": "multica",
+      "schema_migrations_present": true,
+      "server_address": "172.20.0.2/32",
+      "server_port": 5432,
+      "postmaster_started_at": "2026-10-31T11:39:48.31817+00:00"
+    },
+    "migrated_query_exit": 0,
+    "migrated_actual": {
+      "latest_migration": "764_collaboration_ai_policy",
+      "connections": [
+        {
+          "pid": 56117,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 58038,
+          "state": "idle"
+        },
+        {
+          "pid": 56252,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 61412,
+          "state": "idle"
+        },
+        {
+          "pid": 56251,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 61398,
+          "state": "idle"
+        },
+        {
+          "pid": 56293,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 61458,
+          "state": "idle"
+        },
+        {
+          "pid": 56265,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 61432,
+          "state": "idle"
+        },
+        {
+          "pid": 56253,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 61392,
+          "state": "idle"
+        },
+        {
+          "pid": 56294,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 61464,
+          "state": "idle"
+        },
+        {
+          "pid": 56266,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 61448,
+          "state": "idle"
+        },
+        {
+          "pid": 56203,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 58206,
+          "state": "idle"
+        },
+        {
+          "pid": 56200,
+          "application_name": "",
+          "client_addr": "172.20.0.1/32",
+          "client_port": 58194,
+          "state": "idle"
+        }
+      ]
+    }
+  },
+  "renderer": {
+    "registered": {
+      "ownership_verified": true,
+      "url": "http://127.0.0.1:58268/",
+      "pid": 5896,
+      "process_group": 5896,
+      "index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+      "process": "5896     1  5896 Wed Nov  4 10:48:17 2026     /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u -m http.server 58268 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "cwd": "p5896\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103\n",
+      "ready_record_sha256": "010eca795a9a3ac9122a2ccfad3e3ffa60db1ac05e924b1cbc49eaeef8c75a52"
+    },
+    "http": {
+      "reachable": true,
+      "status": 200,
+      "final_url": "http://127.0.0.1:58268/"
+    },
+    "actual_index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+    "current_artifact_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+    "listener": {
+      "port": 58268,
+      "query_exit": 0,
+      "pids": [
+        5896
+      ],
+      "observation": "p5896\ncPython\nf3\nn127.0.0.1:58268"
+    },
+    "actual_process_ancestry": [
+      {
+        "pid": 5896,
+        "parent_pid": 1,
+        "process_group": 5896,
+        "present": true,
+        "timing_and_command": "Wed Nov  4 10:48:17 2026     01:11:18 /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u -m http.server 58268 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+        "actual_cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+        "cwd_query_exit": 0,
+        "observed_process_env_nonsecret": {}
+      }
+    ],
+    "registered_pid_is_actual_listener": true,
+    "HTTP_bytes_match_current_and_registered": true
+  },
+  "redis": {
+    "registered": {
+      "ownership_verified": true,
+      "port": 58269,
+      "container_id": "b619c546fcc72eb3180512d1568a6b39388fc1fead041e8ca9d484a0853f54be",
+      "image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "labels": {
+        "multica.candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+        "multica.task.owner": "01a1a3c9-2459-7de1-8244-55640c5f6143"
+      },
+      "port_binding": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "58269"
+        }
+      ],
+      "ping": "PONG"
+    },
+    "inspection_available": true,
+    "inspect_exit": 0,
+    "actual": {
+      "id": "b619c546fcc72eb3180512d1568a6b39388fc1fead041e8ca9d484a0853f54be",
+      "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "running": true,
+      "labels": {
+        "multica.candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+        "multica.task.owner": "01a1a3c9-2459-7de1-8244-55640c5f6143"
+      },
+      "ports": {
+        "6379/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "58269"
+          }
+        ]
+      }
+    },
+    "container_image_labels_match": true
+  },
+  "observation_finished_at": "2026-11-04T03:59:35.560639+00:00"
+}

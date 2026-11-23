@@ -1,0 +1,166 @@
+{
+ "findings": [
+  "H3 exact-session bound confirmed. ListTaskKnowledgeHistory (server/pkg/db/queries/task_knowledge.sql:3-12) uses LIMIT 129, and taskKnowledgeExposure refuses when len(rows) > 128 (server/internal/service/task_knowledge.go:472-478). The query's scope is broader than one session: it covers every negotiated row of the agent's issue_id, chat_session_id or delivery scope_id, across all generations and sessions, plus legacy rows where session_id = native. Every supported claim adds a claimed row (finalizeTaskKnowledgeClaim :602-607, called from task.go:3805), and history is never pruned. So from the 129th negotiated turn on, every later resume in that scope fails with knowledge_context_changed.",
+  "The prepare and authorize paths have no bound of their own. They inherit this one through taskKnowledgeExposure in three places: the taskKnowledgeTransaction pre-read (task_knowledge_prepare.go:137), the in-transaction re-read (:330), and the fresh-preparation union (:426). Prepare and Authorize both run through taskKnowledgeTransaction. The bound only applies when Session.NativeSessionID != \"\", because exposure returns early at task_knowledge.go:457. ObserveTaskKnowledgeLaunch does not read history. The other 32-limits (manifest union :538 and prepare.go:93, claims per row :580, attempts per claim) cap one row's content or one union's size, not history length, so they are out of scope.",
+  "H3 runtime bound confirmed. ListTaskKnowledgeRuntimeHistory (task_knowledge.sql:54-65) uses LIMIT 129, and taskKnowledgeRuntimeExposure refuses when len(rows) > 128 (task_knowledge.go:409-416). Its only caller is the unsupported branch of BuildTaskKnowledgeClaim (:366-381), which runs for every claim when the gate is off or the invocation is unsupported. The owner+provider arm spans workspaces; that is deliberate, because the native session store belongs to the daemon's OS user.",
+  "Claimed-only rows never change the result except by failing to decode. decodeTaskKnowledge forces Prepared == nil and no attempts for phase 'claimed' (:88). taskKnowledgeExposure therefore skips such a claim at :510 or :513, and runtime exposure returns true only for Prepared with entries (:429). The 128 cap is the only reason ordinary growth refuses.",
+  "Fail-closed detection has to cover the whole scope set. The repo's own corrupt-history tests (TestKnowledgeLegacyNoneDiffersFromCorruptNegotiatedHistory, and the 'corrupt' subtest of TestKnowledgeRuntimeHistoryRefusesCorruptOrTruncatedProof) corrupt rows into shapes that no longer carry a native ID or prepared marker ('{}', or prepared stripped). Any SQL that narrows the read to rows carrying such markers would stop selecting those rows and turn them into an allow.",
+  "Legacy rows contribute nothing, so the session_id = native arm can go. CHECK agent_task_knowledge_metadata (migration 747:88-92) makes a NULL version imply NULL delivery, and decodeTaskKnowledge returns nil (skip) for such rows. The arm only uses up sentinel budget and keeps the planner off a partial index.",
+  "M3 confirmed. The runtime WHERE clause ORs a correlated `agent_id IN (SELECT ... FROM agent)` with three jsonb @> arms that have no index (747 adds none). An IN-subquery inside an OR becomes a hashed SubPlan filter, so the disjunction has no index path and the query seq-scans agent_task_queue on every unsupported claim, including under the default config. idx_agent_task_queue_runtime_id (273) and admin_task_runtime_page_idx (491) are full indexes, so using them for the runtime arm would still visit every legacy task on the heap just to test knowledge_context_version.",
+  "The exact-session query can only use idx_agent_task_queue_agent (agent_id, status) or idx_agent_task_queue_agent_id_keyset (agent_id, id). Either way it visits every task the agent ever had, legacy rows included, and then sorts.",
+  "Migration tooling constraints. Every new CONCURRENTLY build must be registered in concurrentIndexCleanups (server/cmd/migrate/main.go:122-135), or TestEveryConcurrentUpBuildHasCleanup and TestConcurrentIndexCleanupsMatchTheirMigrations fail. Each file holds one statement. The down files for 748-760 are exactly `SELECT collaboration_assert_knowledge_empty(); DROP INDEX IF EXISTS <name>;`. The spec (collaboration-knowledge.md:26-28) says 'Migrations 747–760 ... Each of the 13 indexes', and docs/collaboration-knowledge-runtime.md:30 says 'through 760'.",
+  "The existing 'truncated' subtest of TestKnowledgeRuntimeHistoryRefusesCorruptOrTruncatedProof (task_knowledge_invocation_test.go:124-134) asserts the defect. Its 129 rows are valid claimed-only rows (a claimed finalize with TaskID rewritten to each row's id), so it must be replaced rather than kept.",
+  "No code path ever sets knowledge_context_version back to NULL (a grep of queries and service code found none), and created_at is never rewritten. In practice the history set only grows, which is what makes a multi-statement paged read safe."
+ ],
+ "root_cause": "Both history readers cap a set that grows without bound under normal use at a fixed LIMIT 129, and treat reaching the cap as 'history incomplete', so the server refuses. Every supported claim persists a 'claimed' row, nothing prunes history, and each scope is wider than one session: the exact-session reader covers all negotiated rows in the agent's issue/chat/scope, and the runtime reader covers the whole runtime, agent, daemon/provider and cross-workspace owner/provider namespace. The sentinel treats 'large' the same as 'corrupt'. M3 has a separate cause: the runtime predicate ORs a correlated IN-subquery with unindexed jsonb containment, so no index path exists, and no partial index limits either reader to negotiated rows.",
+ "alternatives": [
+  {
+   "name": "(a) Complete read: keyset pagination plus fail-closed decoding of every row",
+   "summary": "Exact session: keyset pages of 128 rows (created_at DESC, id DESC) over a new partial index on negotiated rows, with the same per-row loop and no cap. Runtime namespace: one UNION query returns (id, created_at) keys from three index-driven arms, then rows are fetched by id in 128-row batches and decoded fail-closed, stopping at the first exposure.",
+   "pros": "Keeps every current semantic: a corrupt row at any depth refuses, the union covers all turns, NULL-native and reclaimed rows are included, and the rewritten scope/profile/owner arms stay unchanged. Adds no state that can drift from the document and no write-path change. Under the default config all three partial indexes are empty, so cost is O(1). Memory per page is bounded. The diff is small.",
+   "cons": "Per-claim cost is O(negotiated rows in scope), so a long chat costs O(N^2) over its lifetime. For resumed sessions the in-transaction re-read (prepare.go:330) runs while NOWAIT locks are held. Pages are separate READ COMMITTED statements."
+  },
+  {
+   "name": "(b) Narrow the SQL to rows that can carry exposure, plus pagination",
+   "summary": "Select only rows whose delivery references the native ID (descriptor.session.native_session_id, attempts[].bound_session_id, observations[].native_session_id, or the session_id column), or rows with a non-empty prepared manifest for the namespace.",
+   "pros": "Cost scales with rows that actually carry exposure. The jsonb predicates can be indexed with GIN.",
+   "cons": "Does not fix Scenario A: every turn of a resumed chat references the same native ID, so the selected set still grows by one row per turn. A row corrupted into a shape without the marker ('{}', or prepared stripped, exactly as the existing corrupt tests do) is no longer selected, so corrupt history becomes an allow, which breaks fail closed. It also copies the Go exposure grammar into SQL, where any future format change silently narrows the read."
+  },
+  {
+   "name": "(c) Maintained derived column or marker written with the delivery",
+   "summary": "Add for example knowledge_exposed boolean, exposure_native_ids text[] or namespace_keys text[], set in the same UPDATE as SetTaskKnowledgeDelivery (optionally enforced by a CHECK or trigger). Readers select marker=true or exposure rows only.",
+   "pros": "Cost per claim scales with exposed rows only. A namespace_keys column would also keep a row in its namespace after its delivery is corrupted.",
+   "cons": "The marker can drift from the document. Out-of-band writes, which are what 'corrupt anywhere refuses' defends against, bypass the Go writer. No CHECK can express decodeTaskKnowledge, and a trigger would copy the decoder into plpgsql. Skipping marker=false rows lets '{}' corruption through unless a constraint rejects it, which would turn the existing corrupt tests into write failures. It needs a hot-table column, a backfill and a NOT VALID/VALIDATE migration chain, and has the widest blast radius."
+  },
+  {
+   "name": "(d) Rotate to a fresh session instead of refusing above 128",
+   "summary": "When exact-session history overflows, return managed=true with no binding so the claim starts a fresh generation.",
+   "pros": "Tiny diff; restores liveness for chats.",
+   "cons": "The overflow is per scope, not per session, so after 128 negotiated rows every later turn is forced fresh and long chats lose continuity for good. It offers nothing on the runtime path, where the only outcomes are refuse or allow."
+  },
+  {
+   "name": "(e) One unbounded statement: drop LIMIT and the check",
+   "summary": "Keep both queries as they are, remove LIMIT 129 and the len > 128 checks.",
+   "pros": "Smallest diff; reads one snapshot.",
+   "cons": "sqlc :many materializes the whole slice, so memory is O(N x delivery size), up to 64KiB per row; the runtime namespace could mean tens of MB per claim. It cannot stop early at the first exposure, and it does not fix M3 by itself."
+  }
+ ],
+ "chosen": "(a) Complete read with no row cap. The exact-session reader pages through history by keyset. The runtime reader makes one UNION key pass, then fetches rows by id in batches. Migrations 761-763 add three partial indexes over negotiated rows.",
+ "rationale": "The spec requires that a corrupt row anywhere in scope refuses, and only decoding every row in scope can deliver that. Corruption can delete exactly the markers that (b) and (c) would select on, and the repo's own corrupt tests build that case. That makes O(rows in scope) the cost floor unless we add maintained state, and the state in (c) cannot be as strict as the Go decoder without moving the decoder into the database. Option (a) removes the one wrong behavior (size alone causes refusal) and keeps everything else, including the order-sensitive early returns, because the loop body does not change. Partial indexes make the cost proportional to negotiated rows only, which is zero when the gate was never on. The O(N)-per-claim cost for long sessions is what the spec already asks for ('Resume unions every exposure in that exact session'). At 128 rows per page, a 1000-turn chat is about 8 index-ordered pages. The runtime path splits keys from rows because the GIN arms cannot return rows in cursor order, so per-page keyset paging there would re-run the bitmap and its jsonb recheck on every page, costing O(M^2). One key pass followed by primary-key batches costs O(M) and stops at the first exposure. A per-scope aggregate (c) remains a possible later optimization, but it would need its own fail-closed review.",
+ "changes": [
+  {
+   "file": "server/pkg/db/queries/task_knowledge.sql",
+   "change": "Replace ListTaskKnowledgeHistory with ListTaskKnowledgeHistoryPage :many: SELECT id, agent_id, runtime_id, issue_id, chat_session_id, session_id, claim_generation, knowledge_context_version, knowledge_delivery, created_at FROM agent_task_queue WHERE agent_id = sqlc.arg(agent_id)::uuid AND knowledge_context_version IS NOT NULL AND (issue_id = sqlc.narg(issue_id)::uuid OR chat_session_id = sqlc.narg(chat_session_id)::uuid OR knowledge_delivery->>'scope_id' = sqlc.arg(scope_id)::text) AND (created_at, id) < (sqlc.arg(before_created_at)::timestamptz, sqlc.arg(before_id)::uuid) ORDER BY created_at DESC, id DESC LIMIT sqlc.arg(page_size)::int. This drops the `session_id = native` arm and the native_session_id parameter, which are dead because of the 747 CHECK."
+  },
+  {
+   "file": "server/pkg/db/queries/task_knowledge.sql",
+   "change": "Replace ListTaskKnowledgeRuntimeHistory with two queries. (1) ListTaskKnowledgeRuntimeHistoryKeys :many: SELECT k.id, k.created_at FROM (SELECT t.id, t.created_at FROM agent_task_queue t WHERE t.knowledge_context_version IS NOT NULL AND t.runtime_id = sqlc.arg(runtime_id)::uuid UNION SELECT t.id, t.created_at FROM agent a JOIN agent_task_queue t ON t.agent_id = a.id WHERE a.runtime_id = sqlc.arg(runtime_id)::uuid AND t.knowledge_context_version IS NOT NULL UNION SELECT t.id, t.created_at FROM agent_task_queue t WHERE t.knowledge_context_version IS NOT NULL AND (t.knowledge_delivery @> <runtime arm> OR t.knowledge_delivery @> <daemon+provider arm> OR t.knowledge_delivery @> <owner+provider arm>)) k ORDER BY k.created_at DESC, k.id DESC. Copy the three jsonb_build_object expressions byte-for-byte from today's lines 61-63. (2) GetTaskKnowledgeHistoryRows :many: SELECT id, agent_id, runtime_id, knowledge_context_version, knowledge_delivery FROM agent_task_queue WHERE id = ANY(sqlc.arg(ids)::uuid[]). Rewrite both header comments to say the read is complete, has no cap and is fail-closed."
+  },
+  {
+   "file": "server/pkg/db/generated/task_knowledge.sql.go",
+   "change": "Regenerate with `make sqlc`. The old ListTaskKnowledgeHistory and ListTaskKnowledgeRuntimeHistory methods disappear; their only callers are task_knowledge.go:410 and :472."
+  },
+  {
+   "file": "server/internal/service/task_knowledge.go",
+   "change": "Add const taskKnowledgeHistoryPage = 128. In taskKnowledgeExposure, replace the single call and the `len(rows) > 128` refusal (:472-478) with a keyset loop. The first cursor is (pgtype.Timestamptz{InfinityModifier: pgtype.Infinity, Valid: true}, ffffffff-ffff-ffff-ffff-ffffffffffff); do not use a nullable cursor with `narg IS NULL OR ...`, because that defeats the index condition. Run the existing per-row body for each page with all its early returns; binding, managed and manifest accumulate across pages. Advance the cursor to the last row's (created_at, id) and stop when a page returns fewer than taskKnowledgeHistoryPage rows. There is no row cap. The final sort of manifest entries is unchanged."
+  },
+  {
+   "file": "server/internal/service/task_knowledge.go",
+   "change": "In taskKnowledgeRuntimeExposure (:409-435), call ListTaskKnowledgeRuntimeHistoryKeys once, then walk the keys in chunks of 128. For each chunk, call GetTaskKnowledgeHistoryRows and index the result by id. Iterate the chunk newest-first. A missing row, or a row whose KnowledgeContextVersion is no longer Valid, returns knowledgeFailure(409, \"knowledge_context_changed\") because recorded metadata vanished. Otherwise run the unchanged decode, task/agent identity and non-empty-manifest checks, and return true at the first exposure. Remove the `len(rows) > 128` refusal."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_prepare.go",
+   "change": "No code change. Its three history reads (:137, :330, :426) go through taskKnowledgeExposure. The reflect.DeepEqual(history, actualHistory) check at :334 still holds because the manifest is sorted after the loop."
+  },
+  {
+   "file": "server/migrations/761_collaboration_knowledge_agent_history.{up,down}.sql, 762_collaboration_knowledge_runtime_history.{up,down}.sql, 763_collaboration_knowledge_delivery_history.{up,down}.sql",
+   "change": "Three single-statement concurrent partial index migrations, plus down files in the 748-760 shape. The exact SQL is under migrations."
+  },
+  {
+   "file": "server/cmd/migrate/main.go",
+   "change": "Add to concurrentIndexCleanups: \"761_collaboration_knowledge_agent_history\": \"collaboration_knowledge_agent_history_idx\", \"762_collaboration_knowledge_runtime_history\": \"collaboration_knowledge_runtime_history_idx\", \"763_collaboration_knowledge_delivery_history\": \"collaboration_knowledge_delivery_history_idx\". TestEveryConcurrentUpBuildHasCleanup requires these entries."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_history_test.go",
+   "change": "Add the helper (f *taskKnowledgeFixture) insertClaimedHistory(t, template pgtype.UUID, n int). It decodes the template row, keeps claim[0] with Phase \"claimed\", Prepared nil and Attempts empty, and gives it a fresh Session.Generation and an empty NativeSessionID. It then inserts n completed copies through f.fx.Task (same agent, runtime and issue; unique id; Descriptor.TaskID = id; knowledge_context_version 1; knowledge_delivery from encodeTaskKnowledge). Completed status avoids idx_one_pending_task_per_issue_agent. Also add the tests T1-T3 and T5."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_invocation_test.go",
+   "change": "Replace TestKnowledgeRuntimeHistoryRefusesCorruptOrTruncatedProof with TestKnowledgeRuntimeHistoryReadsCompleteNamespace (T4). Keep its shallow 'corrupt' subtest unchanged and delete the 'truncated' subtest, which asserts the defect."
+  }
+ ],
+ "tests": [
+  {
+   "file": "server/internal/service/task_knowledge_history_test.go",
+   "name": "TestKnowledgeResumeReadsCompleteLongSessionHistory",
+   "setup_and_assertion": "f := newTaskKnowledgeFixture(t); first := f.recordSession(t, \"long-native\"); CompleteTask(..., \"long-native\", ...). Backdate that row so it is deterministically the oldest: f.fx.Exec(`UPDATE agent_task_queue SET created_at = created_at - interval '1 day' WHERE id=$1`, f.task.ID). Then f.insertClaimedHistory(t, f.task.ID, 129) and f.nextTurn(t). Assert d := f.finalize(t, \"long-native\") (the fixture fatals if the claim errors or retires the session) and d.Session.Generation == first.Session.Generation && d.Session.NativeSessionID == \"long-native\". Then StartTask, and assert PrepareTaskKnowledge(f.prepareRequest(d)) returns nil. That call exercises prepare.go :137, :330 and :426 against a history longer than 128 rows.",
+   "why_it_fails_now": "The issue scope holds 130 negotiated rows, so ListTaskKnowledgeHistory returns 129 and taskKnowledgeExposure (task_knowledge.go:476) returns knowledge_context_changed. BuildTaskKnowledgeClaim fails and finalize calls t.Fatal."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_history_test.go",
+   "name": "TestKnowledgeResumeDeepExposureStillGoverns",
+   "setup_and_assertion": "Same setup as T1 with native \"deep-native\": record, complete, backdate, insert 129 claimed copies. Then f.withdraw(t, f.candidate.CandidateID) and f.nextTurn(t). claim, prior, err := BuildTaskKnowledgeClaim(ctx, f.task, &f.inv, \"deep-native\"). Assert err == nil && prior == \"\" && claim != nil && claim.Session.NativeSessionID == \"\" && claim.Session.Generation != first.Session.Generation. The exposure 130 rows deep still forces a fresh session after its knowledge is withdrawn.",
+   "why_it_fails_now": "The 128-row sentinel returns knowledge_context_changed, so err != nil. The test also rejects a truncating fix: reading only the newest 128 rows misses the exposure row and resumes \"deep-native\" (prior == \"deep-native\"), which fails the prior == \"\" assertion."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_history_test.go",
+   "name": "TestKnowledgeResumeCorruptRowAnywhereRefuses",
+   "setup_and_assertion": "Same setup as T1 with native \"corrupt-native\" (oldest exposure row id kept as old). Step A, the control: BuildTaskKnowledgeClaim(..., \"corrupt-native\") must return err == nil, prior == \"corrupt-native\" and the inherited first.Session.Generation. Step B: f.fx.Exec(`UPDATE agent_task_queue SET knowledge_delivery='{}'::jsonb WHERE id=$1`, old). BuildTaskKnowledgeClaim(..., \"corrupt-native\") must now return collaborationErrorCode(err, \"knowledge_context_changed\") && prior == \"\".",
+   "why_it_fails_now": "Step A fails today with knowledge_context_changed from the sentinel, because 130 rows exceed 128. The test also rejects alternative fixes. A truncating fix fails Step A because it never sees the exposure row and so mints a new generation. A marker-narrowing fix (b) fails Step B because the '{}' row has no marker, is not selected, and the claim is allowed."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_invocation_test.go",
+   "name": "TestKnowledgeRuntimeHistoryReadsCompleteNamespace",
+   "setup_and_assertion": "Every subtest ends by creating a new agent on the same runtime, an unrelated issue and a dispatched task, then calls BuildTaskKnowledgeClaim(ctx, task, nil, \"\"). Subtest 'claimed_only_growth': f.finalize(t, \"\") plus 129 claimed copies; assert err == nil && d == nil && prior == \"\". Subtest 'deep_exposure': f.recordSession(t, \"runtime-deep\") (a non-empty manifest), complete, backdate, plus 129 claimed copies; assert collaborationErrorCode(err, \"knowledge_invocation_unsupported\"). Subtest 'deep_corrupt': f.finalize(t, \"\"), backdate, plus 129 copies; the control call must succeed; then set the oldest row's knowledge_delivery to '{}'::jsonb and assert knowledge_context_changed. Subtest 'corrupt' is kept from the current test.",
+   "why_it_fails_now": "With 130 negotiated rows in the runtime namespace, ListTaskKnowledgeRuntimeHistory returns 129 and task_knowledge.go:414 returns knowledge_context_changed. claimed_only_growth then gets an error instead of an allow, deep_exposure gets knowledge_context_changed instead of knowledge_invocation_unsupported, and the deep_corrupt control step fails. A truncating fix would allow deep_exposure and the corrupted deep_corrupt case, so both would fail."
+  },
+  {
+   "file": "server/internal/service/task_knowledge_history_test.go",
+   "name": "TestKnowledgeRuntimeHistoryIsIndexDriven",
+   "setup_and_assertion": "f.finalize(t, \"\") creates one negotiated row. Begin a transaction on f.pool and run SET LOCAL enable_seqscan = off. Build tasks := NewTaskService(f.svc.Queries.WithTx(tx), f.pool, nil, events.New()) and fetch r := GetAgentRuntime(task.RuntimeID). Read seq_scan for agent_task_queue from pg_stat_xact_user_tables, call tasks.taskKnowledgeRuntimeExposure(ctx, r), and read seq_scan again. Assert the value is unchanged and the result is (false, nil). This guards M3; the user still runs EXPLAIN on realistic data.",
+   "why_it_fails_now": "Today's predicate (an OR of a hashed IN SubPlan and unindexed @> arms) has no index path, so even with enable_seqscan=off the planner must choose a Seq Scan on agent_task_queue and seq_scan increments."
+  }
+ ],
+ "spec_and_doc_updates": [
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Lines 78-80: replace 'The 129-row sentinel detects history beyond the 128-row bound; incomplete/corrupt history is refused, never truncated.' with 'History has no row cap: the server reads every negotiated row in scope newest-first in 128-row keyset pages (created_at DESC, id DESC) and decodes each fail-closed. Length alone never refuses; a corrupt row at any depth, or a row whose negotiated metadata disappears during the read, is refused, never skipped or truncated. Legacy NULL-metadata rows carry no exposure (the metadata CHECK forbids delivery without a version) and are not read.' Keep the sentence 'Valid claimed-only/empty history differs from actual private exposure and from legacy NULL metadata.'"
+  },
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+   "change": "Line 90: after 'base execution requires a complete relevant history proving no private exposure.' add 'Complete means every negotiated row in that namespace: one index-driven key pass, then rows fetched by id in 128-row batches. Namespace size never refuses; the first exposure refuses without reading further.'"
+  },
+  {
+   "file": ".trellis/spec/server/collaboration-knowledge.md",
+   "change": "Lines 26-28: change 'Migrations 747–760' to 'Migrations 747–763' and 'Each of the 13 indexes' to 'Each of the 16 indexes'. Add: '761–763 add partial history indexes over negotiated task rows (knowledge_context_version IS NOT NULL): agent and runtime keyset btrees and a jsonb_path_ops GIN over the immutable runtime/daemon/owner claim snapshots.'"
+  },
+  {
+   "file": "docs/collaboration-knowledge-runtime.md",
+   "change": "Line 30: 'Install migrations through 760' becomes 'Install migrations through 763'."
+  },
+  {
+   "file": "server/pkg/db/queries/task_knowledge.sql",
+   "change": "Rewrite the header comments of both history queries. They should say the reads are complete and keyset/batched, have no LIMIT sentinel, and that every selected row is decoded fail-closed in Go."
+  }
+ ],
+ "migrations": [
+  "761_collaboration_knowledge_agent_history.up.sql: CREATE INDEX CONCURRENTLY IF NOT EXISTS collaboration_knowledge_agent_history_idx ON agent_task_queue (agent_id, created_at DESC, id DESC) WHERE knowledge_context_version IS NOT NULL;",
+  "761_collaboration_knowledge_agent_history.down.sql: SELECT collaboration_assert_knowledge_empty();\nDROP INDEX IF EXISTS collaboration_knowledge_agent_history_idx;",
+  "762_collaboration_knowledge_runtime_history.up.sql: CREATE INDEX CONCURRENTLY IF NOT EXISTS collaboration_knowledge_runtime_history_idx ON agent_task_queue (runtime_id, created_at DESC, id DESC) WHERE knowledge_context_version IS NOT NULL;",
+  "762_collaboration_knowledge_runtime_history.down.sql: SELECT collaboration_assert_knowledge_empty();\nDROP INDEX IF EXISTS collaboration_knowledge_runtime_history_idx;",
+  "763_collaboration_knowledge_delivery_history.up.sql: CREATE INDEX CONCURRENTLY IF NOT EXISTS collaboration_knowledge_delivery_history_idx ON agent_task_queue USING gin (knowledge_delivery jsonb_path_ops) WHERE knowledge_context_version IS NOT NULL;",
+  "763_collaboration_knowledge_delivery_history.down.sql: SELECT collaboration_assert_knowledge_empty();\nDROP INDEX IF EXISTS collaboration_knowledge_delivery_history_idx;",
+  "Expected plan, exact-session page: Limit -> Index Scan using collaboration_knowledge_agent_history_idx; Index Cond: (agent_id = $1) AND (ROW(created_at, id) < ROW($5, $6)); Filter: (issue_id = $2 OR chat_session_id = $3 OR (knowledge_delivery ->> 'scope_id') = $4). There is no Sort node. Across all pages each of the agent's negotiated rows is visited once, and legacy rows are never visited.",
+  "Expected plan, runtime keys: Sort (created_at DESC, id DESC) <- HashAggregate/Unique <- Append of three arms. Arm 1 is an Index Only Scan on collaboration_knowledge_runtime_history_idx (runtime_id = $1). Arm 2 is a Nested Loop: the agent(runtime_id) index from migration 309 drives an Index Only Scan on collaboration_knowledge_agent_history_idx (agent_id = a.id). Arm 3 is a Bitmap Heap Scan whose Recheck Cond is the three @> clauses, over a BitmapOr of three Bitmap Index Scans on collaboration_knowledge_delivery_history_idx. jsonb_path_ops is lossy, so the recheck reads delivery. For the daemon+provider arm, GIN intersects the selective daemon_id hash with the broad provider hash. No Seq Scan on agent_task_queue. When nothing was ever negotiated (the default config), every arm returns nothing immediately because all three partial indexes are empty.",
+  "Expected plan, batch fetch: Index Scan using agent_task_queue_pkey; Index Cond: (id = ANY($1)).",
+  "Ordering: the 748-760 down files put collaboration_assert_knowledge_empty() before DROP INDEX, and these follow that shape. If 747 down is reached, dropping its columns also removes the partial indexes. No backfill; no data migration."
+ ],
+ "compatibility_and_risks": "No API, wire, JSON-format, daemon or client change, so installed desktop builds are unaffected. Intended behavior change: a scope or namespace with more than 128 negotiated rows now resumes, allows or refuses based on what the rows contain instead of always refusing. Only the replaced 'truncated' subtest depended on the old behavior. Tie order changes from id ASC to id DESC when created_at is equal; that only changes which early return fires first among same-timestamp rows, and every early return is a non-resume (fresh, context_changed or unsupported). Consistency: pages are separate READ COMMITTED statements. Rows are append-only in practice (created_at is never rewritten and no code clears the version), so a multi-page read sees the same set as one snapshot, except for a task deleted mid-read; that task's exposure is gone for every later reader anyway. Runtime phase 2 refuses on a missing or NULL-version row. Cost: O(negotiated rows in scope) per claim and O(N^2) over a long chat's life; with 128-row index-ordered pages, a 1000-turn chat is about 8 pages. For resumed sessions the in-transaction re-read (prepare.go:330) runs while user, workspace, source and task NOWAIT locks are held, so very long sessions hold those locks longer and concurrent writers may see more knowledge_busy. Memory: keys cost about 24 bytes per row; each batch is at most 128 rows of up to 64KiB. Write amplification: the GIN partial index makes every SetTaskKnowledgeDelivery write on a negotiated row (claim, prepare, authorize, each observation) update GIN entries, and those updates are no longer HOT-eligible; rows that were never negotiated are untouched. All three builds use CONCURRENTLY on a hot table and are registered in concurrentIndexCleanups. Rollback refuses while any negotiated row exists, as in 748-760. The owner+provider arm stays cross-workspace by design. The new tests need a reachable DATABASE_URL; otherwise service DB tests skip silently.",
+ "open_questions": [
+  "In runtime phase 2, a key whose row disappeared between the key pass and the batch fetch (task deleted mid-read): refuse (the chosen fail-closed design) or skip (equivalent to reading a later snapshot)? knowledge_context_changed is terminal for that claim and excluded from auto fallback, so even a rare spurious refusal is visible to the user.",
+  "Is O(N) per claim acceptable for the largest expected chat or issue scope with one agent? If thousands of turns are normal, plan a per-scope maintained exposure aggregate (option c) as a follow-up with its own fail-closed review.",
+  "One private disclosure anywhere in an owner's claude namespace refuses that owner's unsupported claims in every workspace, permanently, because the owner arm is cross-workspace and history never shrinks. This fix keeps that behavior because the spec requires it; please confirm it is intended.",
+  "Should the multi-page read run inside a REPEATABLE READ transaction for a single snapshot? I chose not to, because rows are append-only; it would add a transaction to BuildTaskKnowledgeClaim's unsupported branch.",
+  "The EXPLAIN plans above are reasoned from the predicates. Please verify them on a realistic dataset, in particular that the planner picks the BitmapOr over the GIN partial index rather than the full idx_agent_task_queue_runtime_id for arm 1."
+ ]
+}

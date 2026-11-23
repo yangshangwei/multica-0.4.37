@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -11,6 +12,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -39,6 +41,18 @@ type claudeBackend struct {
 }
 
 func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	if opts.Knowledge != nil {
+		intent := *opts.Knowledge
+		opts.Knowledge = &intent
+		opts.ExtraArgs = slices.Clone(opts.ExtraArgs)
+		opts.CustomArgs = slices.Clone(opts.CustomArgs)
+		opts.McpConfig = slices.Clone(opts.McpConfig)
+	}
+	var lifecycleErr error
+	ctx, lifecycleErr = withKnowledgeClaudeLifecycle(ctx, b.cfg, opts)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "claude"
@@ -75,6 +89,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 	}()
 
 	cmd := b.cfg.commandAt(execPath).exec(runCtx, args...)
+	knowledgeLaunch := knowledgeCommandLaunch(cmd)
 	hideAgentWindow(cmd)
 	// Take over context cancellation: the default kills the whole group the
 	// instant runCtx is done. We instead drive a graceful group-wide
@@ -105,12 +120,16 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 	}
 	var closeStdinOnce sync.Once
 	closeStdin := func() { closeStdinOnce.Do(func() { _ = stdin.Close() }) }
-	// Capture stderr into both the daemon log (as before) and a bounded tail
-	// buffer so we can include the last few KB in Result.Error when claude
+	// Capture stderr into a bounded tail, also forwarding to the daemon log
+	// for non-private inputs. Include the last few KB in Result.Error when claude
 	// exits unexpectedly. Without the tail, an exit-code-only failure looks
 	// like "claude exited with error: exit status 3" — which is useless for
 	// root-causing V8 aborts, Bun panics, or any other CLI-side crash.
-	stderrBuf := newStderrTail(newLogWriter(b.cfg.Logger, "[claude:stderr] "), agentStderrTailBytes)
+	var stderrLog io.Writer = io.Discard
+	if !b.cfg.PrivateInput {
+		stderrLog = newLogWriter(b.cfg.Logger, "[claude:stderr] ")
+	}
+	stderrBuf := newStderrTail(stderrLog, agentStderrTailBytes)
 	cmd.Stderr = stderrBuf
 
 	if err := startOwnedProcessTree(cmd, b.cfg.Logger); err != nil {
@@ -127,7 +146,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 	msgCh := make(chan Message, 256)
 	resCh := make(chan Result, 1)
 
-	// procDone closes once cmd.Wait() returns, letting the cancellation handler
+	// procDone closes once waitOwnedProcessTree(cmd) returns, letting the cancellation handler
 	// skip a process that already exited and avoid signalling a dead/reused pid.
 	procDone := make(chan struct{})
 
@@ -176,6 +195,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 		assistantEventCount := 0
 		toolUseCount := 0
 		unreadableAssistantCount := 0
+		var nativeSessionErr error
 
 		// On cancellation / timeout, terminate claude (and every MCP server and
 		// tool subprocess it spawned) BEFORE unblocking the scanner. EOF stdin
@@ -196,7 +216,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 				signalProcessGroup(cmd, syscall.SIGTERM)
 				// Escalate to a group SIGKILL unless the WHOLE process group has
 				// exited within the grace window. This must key off the process
-				// group, not procDone: procDone only means cmd.Wait() returned
+				// group, not procDone: procDone only means waitOwnedProcessTree(cmd) returned
 				// for the leader, so a SIGTERM-ignoring descendant that does not
 				// hold claude's stdout would let the leader exit, close procDone,
 				// and skip the SIGKILL — leaking exactly the orphan this fix
@@ -211,6 +231,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 
 		scanner := newAgentStreamScanner(stdout)
 
+	stream:
 		for scanner.Scan() {
 			line := strings.TrimSpace(scanner.Text())
 			if line == "" {
@@ -238,6 +259,11 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 					sawAsyncLaunch = true
 				}
 			case "system":
+				if knowledgeLaunch != nil {
+					if nativeSessionErr = knowledgeLaunch.observeNativeSession(msg.SessionID, "system"); nativeSessionErr != nil {
+						break stream
+					}
+				}
 				if msg.SessionID != "" {
 					sessionID = msg.SessionID
 				}
@@ -247,10 +273,15 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 				finalResultText = msg.ResultText
 				resultIsError = msg.IsError
 				terminalReasonError = claudeTerminalReasonFailure(msg.TerminalReason, msg.ResultText)
-				sessionID = msg.SessionID
 				if resultUsage := claudeResultUsage(msg, opts.Model); len(resultUsage) > 0 {
 					usage = resultUsage
 				}
+				if knowledgeLaunch != nil {
+					if nativeSessionErr = knowledgeLaunch.observeNativeSession(msg.SessionID, "result"); nativeSessionErr != nil {
+						break stream
+					}
+				}
+				sessionID = msg.SessionID
 				closeStdin()
 			case "log":
 				if msg.Log != nil {
@@ -265,7 +296,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 			}
 		}
 		scanErr := scanner.Err()
-		if scanErr != nil {
+		if scanErr != nil || nativeSessionErr != nil {
 			// Scanner stopped consuming stdout. Close the pipe before Wait so a
 			// child still writing a malformed/oversized event cannot deadlock on
 			// the full OS pipe; the scanner error remains the primary failure.
@@ -275,7 +306,7 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 		closeStdin()
 
 		// Wait for process exit, then release the cancellation handler.
-		exitErr := cmd.Wait()
+		exitErr := waitOwnedProcessTree(cmd)
 		close(procDone)
 		// The leader is reaped; drop ownership. On Windows that closes the Job
 		// Object, which kills anything still inside it — precisely what should
@@ -309,12 +340,15 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 			completionGuardError,
 		)
 
-		// cmd.Wait() has returned — os/exec's stderr copy goroutine has
+		// waitOwnedProcessTree(cmd) has returned — os/exec's stderr copy goroutine has
 		// observed every byte claude wrote to stderr before exiting, so
 		// stderrBuf.Tail() is safe to sample now. Attach the tail to any
 		// non-empty failure message; callers upstream surface this as the
 		// task's error field, which is the only place users see it.
 		stderrTail := stderrBuf.Tail()
+		if b.cfg.PrivateInput {
+			stderrTail = sanitizeAgentDiagnostic(stderrTail)
+		}
 		if finalError != "" {
 			finalError = withAgentStderr(finalError, "claude", stderrTail)
 		}
@@ -348,16 +382,46 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 				"emitted_session", sessionID,
 			)
 		}
+		knowledgeReason := ""
+		knowledgeOutput := ""
+		if knowledgeLaunch != nil {
+			// Requested IDs and resolveSessionID's legacy error fallbacks are
+			// not native observations. A missing raw ID remains non-reusable.
+			reportedSessionID = knowledgeLaunch.nativeSessionID
+			knowledgeReason = KnowledgeFailureReason(knowledgeLaunch.lifecycle.Err())
+			if knowledgeReason != "" {
+				// Retain observed work separately from the final-answer channel.
+				// Whether Stop wins a race with natural exit must not decide if
+				// a failed execution publishes text as a completed answer.
+				knowledgeOutput = lastAssistantText
+				if sawResult {
+					knowledgeOutput = finalResultText
+				}
+				// The terminal Error stays content-free. Preserve the bounded
+				// stderr diagnostic through the existing failed-evidence channel,
+				// including when a termination callback rejects a completed result.
+				if stderrTail != "" {
+					if knowledgeOutput == "" {
+						knowledgeOutput = knowledgeReason
+					}
+					knowledgeOutput = withAgentStderr(knowledgeOutput, "claude", sanitizeAgentDiagnostic(stderrTail))
+				}
+				finalStatus, finalOutput, finalError = "failed", "", knowledgeReason
+				resumeRejected = false
+			}
+		}
 
 		resCh <- Result{
-			ProcessExited:  cmd.ProcessState != nil,
-			Status:         finalStatus,
-			Output:         finalOutput,
-			Error:          finalError,
-			DurationMs:     duration.Milliseconds(),
-			SessionID:      reportedSessionID,
-			Usage:          usage,
-			ResumeRejected: resumeRejected,
+			ProcessExited:    cmd.ProcessState != nil,
+			Status:           finalStatus,
+			Output:           finalOutput,
+			Error:            finalError,
+			KnowledgeFailure: knowledgeReason,
+			KnowledgeOutput:  knowledgeOutput,
+			DurationMs:       duration.Milliseconds(),
+			SessionID:        reportedSessionID,
+			Usage:            usage,
+			ResumeRejected:   resumeRejected,
 		}
 	}()
 
@@ -365,6 +429,10 @@ func (b *claudeBackend) Execute(ctx context.Context, prompt string, opts ExecOpt
 }
 
 func (b *claudeBackend) handleAssistant(msg claudeSDKMessage, ch chan<- Message, usage map[string]TokenUsage) assistantTurn {
+	return handleClaudeAssistant(msg, ch, usage)
+}
+
+func handleClaudeAssistant(msg claudeSDKMessage, ch chan<- Message, usage map[string]TokenUsage) assistantTurn {
 	var content claudeMessageContent
 	if err := json.Unmarshal(msg.Message, &content); err != nil {
 		// Unreadable body: understood stays false so the caller drops any
@@ -400,7 +468,9 @@ func (b *claudeBackend) handleAssistant(msg claudeSDKMessage, ch chan<- Message,
 			toolUseCount++
 			var input map[string]any
 			if block.Input != nil {
-				_ = json.Unmarshal(block.Input, &input)
+				decoder := json.NewDecoder(bytes.NewReader(block.Input))
+				decoder.UseNumber()
+				_ = decoder.Decode(&input)
 			}
 			trySend(ch, Message{
 				Type:   MessageToolUse,
@@ -449,24 +519,35 @@ func (b *claudeBackend) handleUser(msg claudeSDKMessage, ch chan<- Message) bool
 
 func (b *claudeBackend) handleControlRequest(msg claudeSDKMessage, stdin interface{ Write([]byte) (int, error) }) {
 	// Auto-approve all tool uses in autonomous/daemon mode.
+	data, forced, toolName, err := buildClaudeControlResponse(msg)
+	if err != nil {
+		b.cfg.Logger.Warn("claude: failed to marshal control response", "error", err)
+		return
+	}
+	if forced {
+		b.cfg.Logger.Info("claude: forced foreground tool execution", "request_id", msg.RequestID, "tool", toolName)
+	}
+	if _, err := stdin.Write(data); err != nil {
+		b.cfg.Logger.Warn("claude: failed to write control response", "error", err)
+	}
+}
+
+func buildClaudeControlResponse(msg claudeSDKMessage) ([]byte, bool, string, error) {
 	var req claudeControlRequestPayload
 	if err := json.Unmarshal(msg.Request, &req); err != nil {
-		return
+		return nil, false, "", err
 	}
 
 	var inputMap map[string]any
 	if req.Input != nil {
-		_ = json.Unmarshal(req.Input, &inputMap)
+		decoder := json.NewDecoder(bytes.NewReader(req.Input))
+		decoder.UseNumber()
+		_ = decoder.Decode(&inputMap)
 	}
 	if inputMap == nil {
 		inputMap = map[string]any{}
 	}
-	if forceClaudeToolInputForeground(inputMap) {
-		b.cfg.Logger.Info("claude: forced foreground tool execution",
-			"request_id", msg.RequestID,
-			"tool", req.ToolName,
-		)
-	}
+	forced := forceClaudeToolInputForeground(inputMap)
 
 	response := map[string]any{
 		"type": "control_response",
@@ -482,13 +563,9 @@ func (b *claudeBackend) handleControlRequest(msg claudeSDKMessage, stdin interfa
 
 	data, err := json.Marshal(response)
 	if err != nil {
-		b.cfg.Logger.Warn("claude: failed to marshal control response", "error", err)
-		return
+		return nil, false, req.ToolName, err
 	}
-	data = append(data, '\n')
-	if _, err := stdin.Write(data); err != nil {
-		b.cfg.Logger.Warn("claude: failed to write control response", "error", err)
-	}
+	return append(data, '\n'), forced, req.ToolName, nil
 }
 
 func forceClaudeToolInputForeground(input map[string]any) bool {
@@ -622,6 +699,7 @@ func claudeTerminalReasonFailure(terminalReason, resultText string) string {
 	return msg
 }
 
+// A change to how usage is derived here must raise UsageNormalizerVersion("claude").
 func claudeResultUsage(msg claudeSDKMessage, fallbackModel string) map[string]TokenUsage {
 	if len(msg.ModelUsage) > 0 {
 		usage := make(map[string]TokenUsage, len(msg.ModelUsage))
@@ -757,18 +835,17 @@ func buildClaudeArgs(opts ExecOptions, logger *slog.Logger) []string {
 	if opts.ClaudeSettingsPath != "" {
 		// The daemon-owned --settings file is the enforcement layer for disabled
 		// inherited skills. Drop competing per-agent/default flags only while that
-		// policy is active, then append the managed file last.
+		// policy is active. Place it before configured options so a trailing
+		// required-value option cannot consume the managed flag or its path.
 		blockedArgs = make(map[string]blockedArgMode, len(claudeBlockedArgs)+1)
 		for key, mode := range claudeBlockedArgs {
 			blockedArgs[key] = mode
 		}
 		blockedArgs["--settings"] = blockedWithValue
+		args = append(args, "--settings", opts.ClaudeSettingsPath)
 	}
 	args = append(args, filterCustomArgs(opts.ExtraArgs, blockedArgs, logger)...)
 	args = append(args, filterCustomArgs(opts.CustomArgs, blockedArgs, logger)...)
-	if opts.ClaudeSettingsPath != "" {
-		args = append(args, "--settings", opts.ClaudeSettingsPath)
-	}
 	return args
 }
 

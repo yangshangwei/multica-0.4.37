@@ -1,0 +1,156 @@
+{
+  "at": "2026-10-14T12:26:50.782599+00:00",
+  "status": "pass",
+  "findings": [
+    {
+      "id": "F01",
+      "status": "pass",
+      "evidence": [
+        "probe-status-loop-response500.json"
+      ]
+    },
+    {
+      "id": "F02",
+      "status": "pass",
+      "evidence": [
+        "probe-query-recovery-results.json",
+        "state-mcp.json",
+        "../research/continuation-review.md"
+      ]
+    },
+    {
+      "id": "F03",
+      "status": "pass",
+      "evidence": [
+        "layout-menu-acceptance.json",
+        "visual-verdict-catalogs.json"
+      ]
+    },
+    {
+      "id": "F04",
+      "status": "pass",
+      "evidence": [
+        "probe-configuration-results.json",
+        "visual-verdict-dialog.json"
+      ]
+    },
+    {
+      "id": "F05",
+      "status": "pass",
+      "evidence": [
+        "probe-configuration-results.json",
+        "desktop-semantics-results.json"
+      ]
+    },
+    {
+      "id": "F06",
+      "status": "pass",
+      "evidence": [
+        "probe-configuration-results.json"
+      ]
+    },
+    {
+      "id": "F07",
+      "status": "pass",
+      "evidence": [
+        "probe-configuration-results.json",
+        "probe-integrations-results.json"
+      ]
+    },
+    {
+      "id": "F08",
+      "status": "pass",
+      "evidence": [
+        "state-mcp.json",
+        "state-triage.json",
+        "../research/continuation-review.md"
+      ]
+    },
+    {
+      "id": "F09",
+      "status": "pass",
+      "evidence": [
+        "probe-personal-results.json",
+        "../research/accounts-result.md"
+      ]
+    },
+    {
+      "id": "F10",
+      "status": "pass",
+      "evidence": [
+        "state-profile.json",
+        "probe-personal-results.json",
+        "../research/accounts-result.md"
+      ]
+    },
+    {
+      "id": "F11",
+      "status": "pass",
+      "evidence": [
+        "probe-personal-results.json",
+        "state-token.json",
+        "../research/accounts-result.md"
+      ]
+    },
+    {
+      "id": "F12",
+      "status": "pass",
+      "evidence": [
+        "state-token.json",
+        "probe-integrations-results.json"
+      ]
+    },
+    {
+      "id": "F13",
+      "status": "pass",
+      "evidence": [
+        "probe-integrations-results.json"
+      ]
+    },
+    {
+      "id": "F14",
+      "status": "pass",
+      "evidence": [
+        "state-repository.json"
+      ]
+    },
+    {
+      "id": "F15",
+      "status": "pass",
+      "evidence": [
+        "state-timezone.json"
+      ]
+    },
+    {
+      "id": "F16",
+      "status": "pass",
+      "evidence": [
+        "probe-token-schema-results.json",
+        "../research/token-desktop-result.md"
+      ]
+    },
+    {
+      "id": "F17",
+      "status": "pass",
+      "evidence": [
+        "desktop-semantics-results.json",
+        "update-focus-diagnostic.json"
+      ]
+    }
+  ],
+  "runtime": "runtime-final.json",
+  "cleanup": "cleanup-final.json",
+  "limits": [
+    "Memory-only writes and response fixtures; no real backend persistence proved.",
+    "macOS Electron 39.8.7 with Windows preference IPC fixtures; not native Windows/Linux.",
+    "AX/DOM and keyboard checks; no spoken VoiceOver/NVDA session.",
+    "No production performance, physical touch or gated plugin/billing acceptance."
+  ],
+  "probeCorrections": [
+    "Seeded catalog/MCP rows instead of relying on removed old fixture names.",
+    "Awaited closing modal transitions and queried retained background nodes with includeHidden.",
+    "Cleared token Query cache before malformed-response injection.",
+    "Used current profile_description request field and pending revoke label.",
+    "Root resumed a disposable harness after child tool lifecycle failures."
+  ]
+}

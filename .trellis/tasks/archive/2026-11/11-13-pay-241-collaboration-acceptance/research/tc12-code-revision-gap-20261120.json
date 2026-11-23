@@ -1,0 +1,99 @@
+{
+  "topic": "tc12-code-revision-gap",
+  "date": "2026-11-20",
+  "task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "verdict": "FEASIBLE_SERVICE_ONLY_SYNTHETIC_CODE_REVISION_SUPPLEMENT",
+  "research_only": true,
+  "product_changes": false,
+  "tests_run": false,
+  "database_connected": false,
+  "git_operations": false,
+  "current_parent_counts": {
+    "PASS": 9,
+    "PARTIAL": 11,
+    "NOT_RUN": 4
+  },
+  "tc12_current": "PARTIAL",
+  "tc12_after_local_synthetic_pass": "PARTIAL",
+  "recommended_file": "server/internal/service/collaboration_code_revision_regression_test.go",
+  "suggested_test_name": "TestStageCodeRevisionRegressionRetainsFailedHistory",
+  "denominator": {
+    "top_level_tests_per_mode": 1,
+    "modes": [
+      "normal",
+      "race"
+    ],
+    "unique_named_tests": 1,
+    "executions": 2,
+    "local_commits_per_mode": 2,
+    "local_program_executions_per_mode": 2,
+    "platform_runs_per_mode": 2,
+    "reports_per_mode": 2
+  },
+  "required_chain": [
+    "actual_local_A_failure",
+    "typed_command_claim_permit_subject_A",
+    "runtime_report_A",
+    "settled_failure",
+    "exact_human_QA_return_A",
+    "advance_development",
+    "actual_business_code_patch_commit_B_parent_A",
+    "superseding_candidate_B",
+    "fresh_human_code_review_B",
+    "advance_QA",
+    "explicit_B_preparation_registration_and_consent",
+    "new_command_run_subject_B",
+    "same_runner_input_actual_B_success",
+    "runtime_report_B",
+    "settled_success",
+    "exact_human_QA_approval_B",
+    "original_A_history_and_key_recovery"
+  ],
+  "constant_controls": [
+    "runner_bytes",
+    "input_bytes",
+    "argv",
+    "test_assertions",
+    "timeout"
+  ],
+  "changed_sources": [
+    "business_implementation_blob",
+    "git_commit",
+    "git_tree",
+    "git_bundle",
+    "candidate",
+    "binding",
+    "run",
+    "report"
+  ],
+  "implementation_traps": [
+    "newStageRuntimeFixture git=true retains fixed b*40 local head despite setup callback",
+    "reload runtime after capability registration before next expected epoch",
+    "failed target may need explicit target-scoped resume",
+    "historical report applicability becomes stale although immutable payload stays exact",
+    "fixture Cleanup removes transient rows; distinguish raw snapshots from retained SQL rows"
+  ],
+  "exclusions": [
+    "real_payment_fix",
+    "remote_ci",
+    "actual_daemon_checkout",
+    "namespace_execution",
+    "new_http_router_proof",
+    "new_password_login",
+    "new_web_or_desktop_proof",
+    "real_model",
+    "deployment",
+    "performance",
+    "business_signoff"
+  ],
+  "markdown": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc12-code-revision-gap-20261120.md",
+  "markdown_sha256": "0b215fb333781d7fb6ee5e62ca80e5f05da153de3514cbc237f2afac683caec6",
+  "implementation_supplement": {
+    "markdown_sha256": "0b215fb333781d7fb6ee5e62ca80e5f05da153de3514cbc237f2afac683caec6",
+    "scope": "production report/stage owners; fixture managed preparation/consent/settlement; no production Switch",
+    "retained_failures": [
+      "normal-r01 issue Resume ordering before A execution",
+      "normal-r02 target pause required for B preparation after A execution"
+    ]
+  }
+}

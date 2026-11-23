@@ -1,0 +1,64 @@
+{
+  "run_id": "p6-source-policy-contract-red-f0c66d10",
+  "database": "mca_knowledge_service_571db1f6607d",
+  "package": "./internal/service",
+  "test_pattern": "^TestKnowledgeSourceProjectEditRespectsStagePolicy$",
+  "run_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-source-policy-contract-red-f0c66d10",
+  "state": "failed",
+  "cluster_before": {
+    "database": "postgres",
+    "version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "max_connections": 100,
+    "connections": 23
+  },
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "source_sha256_before": "03260ae6408b5c9f0d1c544ca7b5e92ef0f7c72559bf1f75bb992904e5fd3cb5",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "created_at": "2026-11-15T04:24:41.374584+00:00",
+  "real_model_credentials_inherited": false,
+  "agent_cli_guard": true,
+  "launcher_sha256": "8b0c310e77af0f694d187306332e208a2910da1e3e95cbb045d4ee4f5ae68446",
+  "migration_exit": 0,
+  "migration_ledger": "853:864_collaboration_stage_submission_ready",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-timeout=2m",
+    "./internal/service",
+    "-run",
+    "^TestKnowledgeSourceProjectEditRespectsStagePolicy$"
+  ],
+  "test_exit": 1,
+  "tests": {
+    "run": [
+      "TestKnowledgeSourceProjectEditRespectsStagePolicy",
+      "TestKnowledgeSourceProjectEditRespectsStagePolicy/absent",
+      "TestKnowledgeSourceProjectEditRespectsStagePolicy/explicit_disabled",
+      "TestKnowledgeSourceProjectEditRespectsStagePolicy/enabled"
+    ],
+    "pass": [
+      "TestKnowledgeSourceProjectEditRespectsStagePolicy/explicit_disabled",
+      "TestKnowledgeSourceProjectEditRespectsStagePolicy/enabled"
+    ],
+    "fail": [
+      "TestKnowledgeSourceProjectEditRespectsStagePolicy/absent",
+      "TestKnowledgeSourceProjectEditRespectsStagePolicy"
+    ],
+    "skip": []
+  },
+  "source_sha256_after": "03260ae6408b5c9f0d1c544ca7b5e92ef0f7c72559bf1f75bb992904e5fd3cb5",
+  "connections_after": 0,
+  "finished_at": "2026-11-15T04:25:09.135283+00:00",
+  "source_stable": true
+}

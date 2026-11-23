@@ -1,0 +1,1924 @@
+{
+  "provenance": {
+    "image": "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+    "binary": "/app/multica",
+    "version": {
+      "arch": "amd64",
+      "commit": "9caea35808afc8d05fb6135bfc74d4bfb0b45cf1",
+      "date": "2026-10-17T05:56:15Z",
+      "go": "go1.26.9",
+      "os": "linux",
+      "version": "v0.6.7"
+    },
+    "command": [
+      "run",
+      "--rm",
+      "--pull",
+      "never",
+      "--read-only",
+      "--network",
+      "none",
+      "--platform",
+      "linux/amd64",
+      "--entrypoint",
+      "/app/multica",
+      "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+      "version",
+      "--output",
+      "json"
+    ],
+    "scope": "Existing local offline OCI package bytes; not publisher signature or installed Desktop"
+  },
+  "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+  "paused_input": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+  "pending_permit": {
+    "commandId": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+    "batchId": "cfbeb967-9522-4275-ae42-316833cc85ae",
+    "groupId": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+    "runId": "d7b3b2da-25ac-451a-a38f-077d4cf2d20c"
+  },
+  "paused": {
+    "issue": {
+      "id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "creator": {
+        "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+        "name": "Control creator",
+        "avatar_url": "",
+        "external": false
+      },
+      "handler": {
+        "user_id": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+        "name": "Control handler",
+        "avatar_url": "",
+        "external": true
+      },
+      "collaboration_revision": "2",
+      "lifecycle_epoch": "1",
+      "status": "todo",
+      "status_category": "todo",
+      "session": {
+        "id": "4021e464-90a3-4b8a-913a-90994751729b",
+        "queue_state": "paused",
+        "control_version": "1"
+      },
+      "execution": {
+        "protocol_version": 5,
+        "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+        "session_id": "4021e464-90a3-4b8a-913a-90994751729b",
+        "availability": "unavailable",
+        "unavailable_reason": "shared_runtime_unavailable",
+        "target_set_version": "4",
+        "control": {
+          "scope": "issue",
+          "queue_state": "paused",
+          "control_version": "1"
+        },
+        "execution_gate": {
+          "enabled": true,
+          "epoch": "3"
+        },
+        "channels": [
+          {
+            "id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "queue_state": "paused",
+            "control_version": "1",
+            "group_generation": "0",
+            "next_command_seq": "1",
+            "active_group_id": null,
+            "pause_reason": "new_channel"
+          },
+          {
+            "id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "queue_state": "paused",
+            "control_version": "1",
+            "group_generation": "0",
+            "next_command_seq": "2",
+            "active_group_id": null,
+            "pause_reason": "new_channel"
+          },
+          {
+            "id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "queue_state": "paused",
+            "control_version": "1",
+            "group_generation": "0",
+            "next_command_seq": "1",
+            "active_group_id": null,
+            "pause_reason": "new_channel"
+          }
+        ],
+        "targets": [
+          {
+            "id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "kind": "agent",
+            "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": "initial",
+            "hold_version": "2",
+            "control": {
+              "scope": "target",
+              "queue_state": "paused",
+              "control_version": "1"
+            },
+            "group_generation": "0",
+            "active_group_id": null,
+            "pause_reason": "new_channel",
+            "revoked_at": null
+          },
+          {
+            "id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+            "channel_id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "kind": "agent",
+            "resource_id": "43462248-0654-4bc9-9ad5-2ebb26019ec9",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": "initial",
+            "hold_version": "2",
+            "control": {
+              "scope": "target",
+              "queue_state": "paused",
+              "control_version": "1"
+            },
+            "group_generation": "0",
+            "active_group_id": null,
+            "pause_reason": "new_channel",
+            "revoked_at": null
+          },
+          {
+            "id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+            "channel_id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "kind": "squad",
+            "resource_id": "2ba86a6a-2d1c-4582-a318-7bcd7faea335",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": "initial",
+            "hold_version": "3",
+            "control": {
+              "scope": "target",
+              "queue_state": "paused",
+              "control_version": "1"
+            },
+            "group_generation": "0",
+            "active_group_id": null,
+            "pause_reason": "new_channel",
+            "revoked_at": null
+          }
+        ],
+        "commands": [
+          {
+            "id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+            "group_id": null,
+            "input_event_id": "3b377afb-aac9-40f3-904c-f0d2ccdb12ef",
+            "sequence": "1",
+            "author_user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+            "state": "waiting"
+          }
+        ],
+        "groups": [],
+        "runs": []
+      }
+    },
+    "history": {
+      "protocol_version": 1,
+      "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "items": [
+        {
+          "id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+          "session_id": "4021e464-90a3-4b8a-913a-90994751729b",
+          "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+          "target": {
+            "kind": "agent",
+            "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0"
+          },
+          "input_event_id": "3b377afb-aac9-40f3-904c-f0d2ccdb12ef",
+          "input_event_seq": "16",
+          "comment_id": "d59a9c05-1c72-46eb-a8fd-30f538c8d60f",
+          "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+          "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+          "group_id": null,
+          "seq": "1",
+          "author_user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+          "author": {
+            "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+            "name": "Control creator",
+            "avatar_url": "",
+            "external": false
+          },
+          "content": "[@A](mention://agent/ec235931-7aed-4cd5-8f97-8cda4830ffd0) Paused queue original input",
+          "attachment_ids": [],
+          "state": "waiting",
+          "reason": null,
+          "created_at": "2026-10-22T22:18:17.274256+08:00",
+          "cancellation": null
+        }
+      ],
+      "next_cursor": null
+    },
+    "participants": {
+      "protocol_version": 1,
+      "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "collaboration_revision": "2",
+      "participants": [
+        {
+          "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+          "name": "Control creator",
+          "avatar_url": "",
+          "external": false,
+          "account_active": true
+        },
+        {
+          "user_id": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+          "name": "Control handler",
+          "avatar_url": "",
+          "external": true,
+          "account_active": true
+        },
+        {
+          "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+          "name": "Control owner",
+          "avatar_url": "",
+          "external": true,
+          "account_active": true
+        }
+      ]
+    },
+    "resources": {
+      "protocol_version": 1,
+      "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "lifecycle_epoch": "1",
+      "target_set_version": "4",
+      "can_organize": true,
+      "targets": [
+        {
+          "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+          "kind": "agent",
+          "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+          "name": "Independent control agent A",
+          "target_epoch": "1",
+          "config_version": "1",
+          "authorized": true,
+          "reason": "",
+          "resources": [
+            {
+              "role": "agent",
+              "agent_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Independent control agent A",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            }
+          ]
+        },
+        {
+          "target_id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+          "kind": "agent",
+          "resource_id": "43462248-0654-4bc9-9ad5-2ebb26019ec9",
+          "name": "Independent control agent B",
+          "target_epoch": "1",
+          "config_version": "1",
+          "authorized": true,
+          "reason": "",
+          "resources": [
+            {
+              "role": "agent",
+              "agent_id": "43462248-0654-4bc9-9ad5-2ebb26019ec9",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Independent control agent B",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            }
+          ]
+        },
+        {
+          "target_id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+          "kind": "squad",
+          "resource_id": "2ba86a6a-2d1c-4582-a318-7bcd7faea335",
+          "name": "Independent control squad S",
+          "target_epoch": "1",
+          "config_version": "1",
+          "authorized": true,
+          "reason": "",
+          "resources": [
+            {
+              "role": "leader",
+              "agent_id": "31efd325-c1c8-4e6f-bc13-f71cd2d05334",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Control squad S leader",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            },
+            {
+              "role": "member",
+              "agent_id": "96a4a982-46cd-4f68-82f5-bf6d0705f043",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Control squad S member",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            }
+          ]
+        }
+      ]
+    },
+    "ordinary_dispatches": 0
+  },
+  "unconfirmed": {
+    "issue": {
+      "id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "creator": {
+        "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+        "name": "Control creator",
+        "avatar_url": "",
+        "external": false
+      },
+      "handler": {
+        "user_id": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+        "name": "Control handler",
+        "avatar_url": "",
+        "external": true
+      },
+      "collaboration_revision": "2",
+      "lifecycle_epoch": "1",
+      "status": "todo",
+      "status_category": "todo",
+      "session": {
+        "id": "4021e464-90a3-4b8a-913a-90994751729b",
+        "queue_state": "paused",
+        "control_version": "3"
+      },
+      "execution": {
+        "protocol_version": 5,
+        "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+        "session_id": "4021e464-90a3-4b8a-913a-90994751729b",
+        "availability": "unavailable",
+        "unavailable_reason": "shared_runtime_unavailable",
+        "target_set_version": "4",
+        "control": {
+          "scope": "issue",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "execution_gate": {
+          "enabled": true,
+          "epoch": "3"
+        },
+        "channels": [
+          {
+            "id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "next_command_seq": "1",
+            "active_group_id": null,
+            "pause_reason": "participant_stop"
+          },
+          {
+            "id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "1",
+            "next_command_seq": "2",
+            "active_group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "pause_reason": "participant_stop"
+          },
+          {
+            "id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "next_command_seq": "1",
+            "active_group_id": null,
+            "pause_reason": "participant_stop"
+          }
+        ],
+        "targets": [
+          {
+            "id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "kind": "agent",
+            "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "control": {
+              "scope": "target",
+              "queue_state": "paused",
+              "control_version": "3"
+            },
+            "group_generation": "1",
+            "active_group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "pause_reason": "participant_stop",
+            "revoked_at": null
+          },
+          {
+            "id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+            "channel_id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "kind": "agent",
+            "resource_id": "43462248-0654-4bc9-9ad5-2ebb26019ec9",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "control": {
+              "scope": "target",
+              "queue_state": "paused",
+              "control_version": "3"
+            },
+            "group_generation": "0",
+            "active_group_id": null,
+            "pause_reason": "participant_stop",
+            "revoked_at": null
+          },
+          {
+            "id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+            "channel_id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "kind": "squad",
+            "resource_id": "2ba86a6a-2d1c-4582-a318-7bcd7faea335",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "4",
+            "control": {
+              "scope": "target",
+              "queue_state": "paused",
+              "control_version": "3"
+            },
+            "group_generation": "0",
+            "active_group_id": null,
+            "pause_reason": "participant_stop",
+            "revoked_at": null
+          }
+        ],
+        "commands": [
+          {
+            "id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+            "group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "input_event_id": "3b377afb-aac9-40f3-904c-f0d2ccdb12ef",
+            "sequence": "1",
+            "author_user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+            "state": "in_flight"
+          }
+        ],
+        "groups": [
+          {
+            "id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "command_id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+            "generation": "1",
+            "target_epoch": "1",
+            "config_version": "1",
+            "state": "ending",
+            "expansion_sealed_at": "2026-10-22T22:18:20+08:00",
+            "forced_disposition": "stopped",
+            "settled_at": null,
+            "inputs": [
+              {
+                "command_id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+                "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+                "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+                "sequence": "1",
+                "consuming_run_id": "d7b3b2da-25ac-451a-a38f-077d4cf2d20c",
+                "reader_run_ids": [
+                  "d7b3b2da-25ac-451a-a38f-077d4cf2d20c"
+                ]
+              }
+            ],
+            "unread_inputs": [],
+            "queued_continuation_run_id": null
+          }
+        ],
+        "runs": [
+          {
+            "id": "d7b3b2da-25ac-451a-a38f-077d4cf2d20c",
+            "command_id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+            "parent_run_id": null,
+            "step_key": "root",
+            "step_kind": "agent",
+            "agent_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+            "target_epoch": "1",
+            "config_version": "1",
+            "progress_state": "ending",
+            "proof_state": "unknown",
+            "business_outcome": null,
+            "forced_disposition": "stopped",
+            "recording_incomplete": false,
+            "settled_at": null
+          }
+        ]
+      }
+    },
+    "history": {
+      "protocol_version": 1,
+      "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "items": [
+        {
+          "id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+          "session_id": "4021e464-90a3-4b8a-913a-90994751729b",
+          "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+          "target": {
+            "kind": "agent",
+            "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0"
+          },
+          "input_event_id": "3b377afb-aac9-40f3-904c-f0d2ccdb12ef",
+          "input_event_seq": "16",
+          "comment_id": "d59a9c05-1c72-46eb-a8fd-30f538c8d60f",
+          "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+          "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+          "group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+          "seq": "1",
+          "author_user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+          "author": {
+            "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+            "name": "Control creator",
+            "avatar_url": "",
+            "external": false
+          },
+          "content": "[@A](mention://agent/ec235931-7aed-4cd5-8f97-8cda4830ffd0) Paused queue original input",
+          "attachment_ids": [],
+          "state": "in_flight",
+          "reason": null,
+          "created_at": "2026-10-22T22:18:17.274256+08:00",
+          "cancellation": null
+        }
+      ],
+      "next_cursor": null
+    },
+    "participants": {
+      "protocol_version": 1,
+      "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "collaboration_revision": "2",
+      "participants": [
+        {
+          "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+          "name": "Control creator",
+          "avatar_url": "",
+          "external": false,
+          "account_active": true
+        },
+        {
+          "user_id": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+          "name": "Control handler",
+          "avatar_url": "",
+          "external": true,
+          "account_active": true
+        },
+        {
+          "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+          "name": "Control owner",
+          "avatar_url": "",
+          "external": true,
+          "account_active": true
+        }
+      ]
+    },
+    "resources": {
+      "protocol_version": 1,
+      "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "lifecycle_epoch": "1",
+      "target_set_version": "4",
+      "can_organize": true,
+      "targets": [
+        {
+          "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+          "kind": "agent",
+          "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+          "name": "Independent control agent A",
+          "target_epoch": "1",
+          "config_version": "1",
+          "authorized": true,
+          "reason": "",
+          "resources": [
+            {
+              "role": "agent",
+              "agent_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Independent control agent A",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            }
+          ]
+        },
+        {
+          "target_id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+          "kind": "agent",
+          "resource_id": "43462248-0654-4bc9-9ad5-2ebb26019ec9",
+          "name": "Independent control agent B",
+          "target_epoch": "1",
+          "config_version": "1",
+          "authorized": true,
+          "reason": "",
+          "resources": [
+            {
+              "role": "agent",
+              "agent_id": "43462248-0654-4bc9-9ad5-2ebb26019ec9",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Independent control agent B",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            }
+          ]
+        },
+        {
+          "target_id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+          "kind": "squad",
+          "resource_id": "2ba86a6a-2d1c-4582-a318-7bcd7faea335",
+          "name": "Independent control squad S",
+          "target_epoch": "1",
+          "config_version": "1",
+          "authorized": true,
+          "reason": "",
+          "resources": [
+            {
+              "role": "leader",
+              "agent_id": "31efd325-c1c8-4e6f-bc13-f71cd2d05334",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Control squad S leader",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            },
+            {
+              "role": "member",
+              "agent_id": "96a4a982-46cd-4f68-82f5-bf6d0705f043",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Control squad S member",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            }
+          ]
+        }
+      ]
+    },
+    "ordinary_dispatches": 0
+  },
+  "removed": {
+    "issue": {
+      "id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "creator": {
+        "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+        "name": "Control creator",
+        "avatar_url": "",
+        "external": false
+      },
+      "handler": {
+        "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+        "name": "Control creator",
+        "avatar_url": "",
+        "external": false
+      },
+      "collaboration_revision": "3",
+      "lifecycle_epoch": "1",
+      "status": "todo",
+      "status_category": "todo",
+      "session": {
+        "id": "4021e464-90a3-4b8a-913a-90994751729b",
+        "queue_state": "paused",
+        "control_version": "3"
+      },
+      "execution": {
+        "protocol_version": 5,
+        "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+        "session_id": "4021e464-90a3-4b8a-913a-90994751729b",
+        "availability": "unavailable",
+        "unavailable_reason": "shared_runtime_unavailable",
+        "target_set_version": "4",
+        "control": {
+          "scope": "issue",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "execution_gate": {
+          "enabled": true,
+          "epoch": "3"
+        },
+        "channels": [
+          {
+            "id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "next_command_seq": "1",
+            "active_group_id": null,
+            "pause_reason": "participant_stop"
+          },
+          {
+            "id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "1",
+            "next_command_seq": "3",
+            "active_group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "pause_reason": "participant_stop"
+          },
+          {
+            "id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "next_command_seq": "1",
+            "active_group_id": null,
+            "pause_reason": "participant_stop"
+          }
+        ],
+        "targets": [
+          {
+            "id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "kind": "agent",
+            "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "control": {
+              "scope": "target",
+              "queue_state": "paused",
+              "control_version": "3"
+            },
+            "group_generation": "1",
+            "active_group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "pause_reason": "participant_stop",
+            "revoked_at": null
+          },
+          {
+            "id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+            "channel_id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "kind": "agent",
+            "resource_id": "43462248-0654-4bc9-9ad5-2ebb26019ec9",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "control": {
+              "scope": "target",
+              "queue_state": "paused",
+              "control_version": "3"
+            },
+            "group_generation": "0",
+            "active_group_id": null,
+            "pause_reason": "participant_stop",
+            "revoked_at": null
+          },
+          {
+            "id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+            "channel_id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "kind": "squad",
+            "resource_id": "2ba86a6a-2d1c-4582-a318-7bcd7faea335",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "4",
+            "control": {
+              "scope": "target",
+              "queue_state": "paused",
+              "control_version": "3"
+            },
+            "group_generation": "0",
+            "active_group_id": null,
+            "pause_reason": "participant_stop",
+            "revoked_at": null
+          }
+        ],
+        "commands": [
+          {
+            "id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+            "group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "input_event_id": "3b377afb-aac9-40f3-904c-f0d2ccdb12ef",
+            "sequence": "1",
+            "author_user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+            "state": "in_flight"
+          },
+          {
+            "id": "8260566f-9328-4ebc-8757-e5f6e0592529",
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "batch_id": "9fb6b5f7-3123-49cd-96e3-0ba66f18763a",
+            "group_id": null,
+            "input_event_id": "0d7670ab-791e-4094-b965-074c743a5468",
+            "sequence": "2",
+            "author_user_id": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+            "state": "cancelled"
+          }
+        ],
+        "groups": [
+          {
+            "id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "command_id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+            "generation": "1",
+            "target_epoch": "1",
+            "config_version": "1",
+            "state": "ending",
+            "expansion_sealed_at": "2026-10-22T22:18:20+08:00",
+            "forced_disposition": "stopped",
+            "settled_at": null,
+            "inputs": [
+              {
+                "command_id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+                "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+                "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+                "sequence": "1",
+                "consuming_run_id": "d7b3b2da-25ac-451a-a38f-077d4cf2d20c",
+                "reader_run_ids": [
+                  "d7b3b2da-25ac-451a-a38f-077d4cf2d20c"
+                ]
+              }
+            ],
+            "unread_inputs": [],
+            "queued_continuation_run_id": null
+          }
+        ],
+        "runs": [
+          {
+            "id": "d7b3b2da-25ac-451a-a38f-077d4cf2d20c",
+            "command_id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+            "parent_run_id": null,
+            "step_key": "root",
+            "step_kind": "agent",
+            "agent_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+            "target_epoch": "1",
+            "config_version": "1",
+            "progress_state": "ending",
+            "proof_state": "unknown",
+            "business_outcome": null,
+            "forced_disposition": "stopped",
+            "recording_incomplete": false,
+            "settled_at": null
+          }
+        ]
+      }
+    },
+    "history": {
+      "protocol_version": 1,
+      "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "items": [
+        {
+          "id": "8260566f-9328-4ebc-8757-e5f6e0592529",
+          "session_id": "4021e464-90a3-4b8a-913a-90994751729b",
+          "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+          "target": {
+            "kind": "agent",
+            "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0"
+          },
+          "input_event_id": "0d7670ab-791e-4094-b965-074c743a5468",
+          "input_event_seq": "22",
+          "comment_id": "3aea8f8b-de28-4bd2-a1b0-8231bbaa8b42",
+          "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+          "batch_id": "9fb6b5f7-3123-49cd-96e3-0ba66f18763a",
+          "group_id": null,
+          "seq": "2",
+          "author_user_id": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+          "author": {
+            "user_id": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+            "name": "Control handler",
+            "avatar_url": "",
+            "external": false
+          },
+          "content": "[@A](mention://agent/ec235931-7aed-4cd5-8f97-8cda4830ffd0) Removed author's unconsumed original input",
+          "attachment_ids": [],
+          "state": "cancelled",
+          "reason": "participant_removed",
+          "created_at": "2026-10-22T22:18:22.78942+08:00",
+          "cancellation": {
+            "event_id": "1cd3339e-aa3a-40ec-ad72-beb17f6648b3",
+            "event_seq": "23",
+            "actor_user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+            "actor": {
+              "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+              "name": "Control creator",
+              "avatar_url": "",
+              "external": false
+            },
+            "created_at": "2026-10-22T22:18:22.859231+08:00",
+            "kind": "automatic"
+          }
+        },
+        {
+          "id": "f15c96b1-af0b-4d17-93f3-16d6be3d5bfb",
+          "session_id": "4021e464-90a3-4b8a-913a-90994751729b",
+          "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+          "target": {
+            "kind": "agent",
+            "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0"
+          },
+          "input_event_id": "3b377afb-aac9-40f3-904c-f0d2ccdb12ef",
+          "input_event_seq": "16",
+          "comment_id": "d59a9c05-1c72-46eb-a8fd-30f538c8d60f",
+          "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+          "batch_id": "cfbeb967-9522-4275-ae42-316833cc85ae",
+          "group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+          "seq": "1",
+          "author_user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+          "author": {
+            "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+            "name": "Control creator",
+            "avatar_url": "",
+            "external": false
+          },
+          "content": "[@A](mention://agent/ec235931-7aed-4cd5-8f97-8cda4830ffd0) Paused queue original input",
+          "attachment_ids": [],
+          "state": "in_flight",
+          "reason": null,
+          "created_at": "2026-10-22T22:18:17.274256+08:00",
+          "cancellation": null
+        }
+      ],
+      "next_cursor": null
+    },
+    "participants": {
+      "protocol_version": 1,
+      "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "collaboration_revision": "3",
+      "participants": [
+        {
+          "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+          "name": "Control creator",
+          "avatar_url": "",
+          "external": false,
+          "account_active": true
+        },
+        {
+          "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+          "name": "Control owner",
+          "avatar_url": "",
+          "external": true,
+          "account_active": true
+        }
+      ]
+    },
+    "resources": {
+      "protocol_version": 1,
+      "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+      "lifecycle_epoch": "1",
+      "target_set_version": "4",
+      "can_organize": true,
+      "targets": [
+        {
+          "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+          "kind": "agent",
+          "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+          "name": "Independent control agent A",
+          "target_epoch": "1",
+          "config_version": "1",
+          "authorized": true,
+          "reason": "",
+          "resources": [
+            {
+              "role": "agent",
+              "agent_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Independent control agent A",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            }
+          ]
+        },
+        {
+          "target_id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+          "kind": "agent",
+          "resource_id": "43462248-0654-4bc9-9ad5-2ebb26019ec9",
+          "name": "Independent control agent B",
+          "target_epoch": "1",
+          "config_version": "1",
+          "authorized": true,
+          "reason": "",
+          "resources": [
+            {
+              "role": "agent",
+              "agent_id": "43462248-0654-4bc9-9ad5-2ebb26019ec9",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Independent control agent B",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            }
+          ]
+        },
+        {
+          "target_id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+          "kind": "squad",
+          "resource_id": "2ba86a6a-2d1c-4582-a318-7bcd7faea335",
+          "name": "Independent control squad S",
+          "target_epoch": "1",
+          "config_version": "1",
+          "authorized": true,
+          "reason": "",
+          "resources": [
+            {
+              "role": "leader",
+              "agent_id": "31efd325-c1c8-4e6f-bc13-f71cd2d05334",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Control squad S leader",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            },
+            {
+              "role": "member",
+              "agent_id": "96a4a982-46cd-4f68-82f5-bf6d0705f043",
+              "runtime_id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+              "execution_workspace_id": "155c39a3-f3b0-4105-912c-a0ab2b5c4e1b",
+              "owner_user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+              "agent_name": "Control squad S member",
+              "runtime": {
+                "id": "a3be3cc5-cb80-4014-88ba-bef2a0e11c3c",
+                "name": "Synthetic control runtime; no executable",
+                "custom_name": null,
+                "provider": "codex"
+              },
+              "owner": {
+                "user_id": "20aa9814-5050-4e88-a16c-b3ecb19c790d",
+                "name": "Control owner",
+                "avatar_url": "",
+                "external": true
+              },
+              "consented": true,
+              "grant_id": null,
+              "grant_epoch": null,
+              "can_consent": false,
+              "can_revoke": false
+            }
+          ]
+        }
+      ]
+    },
+    "ordinary_dispatches": 0
+  },
+  "cancelled_original": {
+    "id": "8260566f-9328-4ebc-8757-e5f6e0592529",
+    "session_id": "4021e464-90a3-4b8a-913a-90994751729b",
+    "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+    "target": {
+      "kind": "agent",
+      "resource_id": "ec235931-7aed-4cd5-8f97-8cda4830ffd0"
+    },
+    "input_event_id": "0d7670ab-791e-4094-b965-074c743a5468",
+    "input_event_seq": "22",
+    "comment_id": "3aea8f8b-de28-4bd2-a1b0-8231bbaa8b42",
+    "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+    "batch_id": "9fb6b5f7-3123-49cd-96e3-0ba66f18763a",
+    "group_id": null,
+    "seq": "2",
+    "author_user_id": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+    "author": {
+      "user_id": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+      "name": "Control handler",
+      "avatar_url": "",
+      "external": false
+    },
+    "content": "[@A](mention://agent/ec235931-7aed-4cd5-8f97-8cda4830ffd0) Removed author's unconsumed original input",
+    "attachment_ids": [],
+    "state": "cancelled",
+    "reason": "participant_removed",
+    "created_at": "2026-10-22T22:18:22.78942+08:00",
+    "cancellation": {
+      "event_id": "1cd3339e-aa3a-40ec-ad72-beb17f6648b3",
+      "event_seq": "23",
+      "actor_user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+      "actor": {
+        "user_id": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+        "name": "Control creator",
+        "avatar_url": "",
+        "external": false
+      },
+      "created_at": "2026-10-22T22:18:22.859231+08:00",
+      "kind": "automatic"
+    }
+  },
+  "executions": [
+    {
+      "stage": "ordinary-positive",
+      "actor": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+      "evidence": {
+        "args": [
+          "issue",
+          "update",
+          "01a163fa-165e-704e-aef2-5181985d8474",
+          "--status",
+          "done",
+          "--output",
+          "json"
+        ],
+        "exit_code": 0,
+        "requests": [
+          {
+            "method": "PUT",
+            "path": "/api/issues/01a163fa-165e-704e-aef2-5181985d8474",
+            "status": 200,
+            "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "4f510f1e76950a701e41875a2a9381064d724f6abb034057d0b836f5a267c3fe",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    },
+    {
+      "stage": "paused",
+      "actor": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+      "evidence": {
+        "args": [
+          "issue",
+          "update",
+          "01a163fa-12c3-72d2-b372-863865e18770",
+          "--status",
+          "done",
+          "--output",
+          "json"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "method": "PUT",
+            "path": "/api/issues/01a163fa-12c3-72d2-b372-863865e18770",
+            "status": 409,
+            "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d16ff44dd7fe6d61997a9c6d7e7d0f9ceaafc94c7d2758d4f29a55393e5add2a",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    },
+    {
+      "stage": "paused",
+      "actor": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+      "evidence": {
+        "args": [
+          "issue",
+          "comment",
+          "add",
+          "01a163fa-12c3-72d2-b372-863865e18770",
+          "--content",
+          "old CLI paused must remain inert",
+          "--output",
+          "json"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/api/issues/01a163fa-12c3-72d2-b372-863865e18770/comments",
+            "status": 409,
+            "body_sha256": "e08c44d6df111e508947c4bbbec88beb37d23e39f5cc6fe9426d605b9c7ba70c",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d16ff44dd7fe6d61997a9c6d7e7d0f9ceaafc94c7d2758d4f29a55393e5add2a",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    },
+    {
+      "stage": "paused",
+      "actor": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+      "evidence": {
+        "args": [
+          "issue",
+          "rerun",
+          "01a163fa-12c3-72d2-b372-863865e18770",
+          "--output",
+          "json"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/api/issues/01a163fa-12c3-72d2-b372-863865e18770/rerun",
+            "status": 409,
+            "body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d16ff44dd7fe6d61997a9c6d7e7d0f9ceaafc94c7d2758d4f29a55393e5add2a",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    },
+    {
+      "stage": "stop-unconfirmed",
+      "actor": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+      "evidence": {
+        "args": [
+          "issue",
+          "update",
+          "01a163fa-12c3-72d2-b372-863865e18770",
+          "--status",
+          "done",
+          "--output",
+          "json"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "method": "PUT",
+            "path": "/api/issues/01a163fa-12c3-72d2-b372-863865e18770",
+            "status": 409,
+            "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d16ff44dd7fe6d61997a9c6d7e7d0f9ceaafc94c7d2758d4f29a55393e5add2a",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    },
+    {
+      "stage": "stop-unconfirmed",
+      "actor": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+      "evidence": {
+        "args": [
+          "issue",
+          "comment",
+          "add",
+          "01a163fa-12c3-72d2-b372-863865e18770",
+          "--content",
+          "old CLI stop-unconfirmed must remain inert",
+          "--output",
+          "json"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/api/issues/01a163fa-12c3-72d2-b372-863865e18770/comments",
+            "status": 409,
+            "body_sha256": "f06f2f55a736a255098f8e9e078e395d1cb746ad84180de0149f87ed9d23d2f2",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d16ff44dd7fe6d61997a9c6d7e7d0f9ceaafc94c7d2758d4f29a55393e5add2a",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    },
+    {
+      "stage": "stop-unconfirmed",
+      "actor": "1fb7e677-c8b4-43db-8adb-d4d7599e081b",
+      "evidence": {
+        "args": [
+          "issue",
+          "rerun",
+          "01a163fa-12c3-72d2-b372-863865e18770",
+          "--output",
+          "json"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/api/issues/01a163fa-12c3-72d2-b372-863865e18770/rerun",
+            "status": 409,
+            "body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d16ff44dd7fe6d61997a9c6d7e7d0f9ceaafc94c7d2758d4f29a55393e5add2a",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    },
+    {
+      "stage": "participant-removed",
+      "actor": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+      "evidence": {
+        "args": [
+          "issue",
+          "update",
+          "01a163fa-12c3-72d2-b372-863865e18770",
+          "--status",
+          "done",
+          "--output",
+          "json"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "method": "PUT",
+            "path": "/api/issues/01a163fa-12c3-72d2-b372-863865e18770",
+            "status": 409,
+            "body_sha256": "e378058155516106ec27571a247c0a3985759e505d4ab2351d638a9ac6ce7c25",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d16ff44dd7fe6d61997a9c6d7e7d0f9ceaafc94c7d2758d4f29a55393e5add2a",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    },
+    {
+      "stage": "participant-removed",
+      "actor": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+      "evidence": {
+        "args": [
+          "issue",
+          "comment",
+          "add",
+          "01a163fa-12c3-72d2-b372-863865e18770",
+          "--content",
+          "old CLI participant-removed must remain inert",
+          "--output",
+          "json"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/api/issues/01a163fa-12c3-72d2-b372-863865e18770/comments",
+            "status": 409,
+            "body_sha256": "de383aa8854852c9e0b91adf7ab20fcf704c4ad44b1cda4d6d6cf70cd77cbabe",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d16ff44dd7fe6d61997a9c6d7e7d0f9ceaafc94c7d2758d4f29a55393e5add2a",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    },
+    {
+      "stage": "participant-removed",
+      "actor": "5d724d5c-863f-453f-a467-7f6c9c80fe53",
+      "evidence": {
+        "args": [
+          "issue",
+          "rerun",
+          "01a163fa-12c3-72d2-b372-863865e18770",
+          "--output",
+          "json"
+        ],
+        "exit_code": 1,
+        "requests": [
+          {
+            "method": "POST",
+            "path": "/api/issues/01a163fa-12c3-72d2-b372-863865e18770/rerun",
+            "status": 409,
+            "body_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "client_version": "v0.6.7",
+            "client_platform": "cli",
+            "client_os": "linux"
+          }
+        ],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d16ff44dd7fe6d61997a9c6d7e7d0f9ceaafc94c7d2758d4f29a55393e5add2a",
+        "container_network": "none",
+        "config_root": "ephemeral task-only /tmp Multica root",
+        "home_override": false,
+        "provider_or_daemon_started": false
+      }
+    }
+  ],
+  "controls": [
+    {
+      "requestId": "c576edf4-e1c0-45fc-8df1-6ddd56300e98",
+      "input": {
+        "expected_lifecycle_epoch": "1",
+        "expected_participant_epoch": "1",
+        "expected_account_epoch": "1",
+        "scope": "issue",
+        "expected_control_version": "1",
+        "expected_target_set_version": "4",
+        "action": "resume",
+        "expected_execution_epoch": "3",
+        "targets": [
+          {
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "expected_target_epoch": "1",
+            "expected_config_version": "1",
+            "expected_control_version": "1",
+            "observed_group_id": null,
+            "observed_group_generation": "0",
+            "expected_hold_version": "2"
+          },
+          {
+            "target_id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+            "expected_target_epoch": "1",
+            "expected_config_version": "1",
+            "expected_control_version": "1",
+            "observed_group_id": null,
+            "observed_group_generation": "0",
+            "expected_hold_version": "2"
+          },
+          {
+            "target_id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+            "expected_target_epoch": "1",
+            "expected_config_version": "1",
+            "expected_control_version": "1",
+            "observed_group_id": null,
+            "observed_group_generation": "0",
+            "expected_hold_version": "3"
+          }
+        ]
+      },
+      "receipt": {
+        "status": 200,
+        "code": "resumed",
+        "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+        "request_id": "c576edf4-e1c0-45fc-8df1-6ddd56300e98",
+        "action": "resume",
+        "protocol_version": 2,
+        "scope": "issue",
+        "target_id": null,
+        "grant_id": null,
+        "proposal_id": null,
+        "channel_id": null,
+        "batch_id": null,
+        "command_id": null,
+        "queue_state": "active",
+        "control_version": "2",
+        "target_set_version": "4",
+        "group_id": null,
+        "group_settled": false,
+        "targets": [
+          {
+            "target_id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+            "channel_id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "2",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          },
+          {
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "2",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          },
+          {
+            "target_id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+            "channel_id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "2",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "channels": [
+          {
+            "channel_id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "2",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          },
+          {
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "2",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          },
+          {
+            "channel_id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "code": "resumed",
+            "queue_state": "active",
+            "control_version": "2",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "target_holds": [
+          {
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "code": "hold_released",
+            "hold_reason": null,
+            "hold_version": "3"
+          },
+          {
+            "target_id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+            "channel_id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "code": "hold_released",
+            "hold_reason": null,
+            "hold_version": "3"
+          },
+          {
+            "target_id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+            "channel_id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "code": "hold_released",
+            "hold_reason": null,
+            "hold_version": "4"
+          }
+        ],
+        "run_id": null,
+        "run_settled": false
+      }
+    },
+    {
+      "requestId": "40079e4a-a199-40f1-80f2-dcc4e44aa588",
+      "input": {
+        "expected_lifecycle_epoch": "1",
+        "expected_participant_epoch": "1",
+        "expected_account_epoch": "1",
+        "scope": "issue",
+        "expected_control_version": "2",
+        "expected_target_set_version": "4",
+        "action": "stop",
+        "targets": [
+          {
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "expected_target_epoch": "1",
+            "expected_config_version": "1",
+            "expected_control_version": "2",
+            "observed_group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "observed_group_generation": "1"
+          },
+          {
+            "target_id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+            "expected_target_epoch": "1",
+            "expected_config_version": "1",
+            "expected_control_version": "2",
+            "observed_group_id": null,
+            "observed_group_generation": "0"
+          },
+          {
+            "target_id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+            "expected_target_epoch": "1",
+            "expected_config_version": "1",
+            "expected_control_version": "2",
+            "observed_group_id": null,
+            "observed_group_generation": "0"
+          }
+        ]
+      },
+      "receipt": {
+        "status": 200,
+        "code": "stop_requested",
+        "issue_id": "01a163fa-12c3-72d2-b372-863865e18770",
+        "request_id": "40079e4a-a199-40f1-80f2-dcc4e44aa588",
+        "action": "stop",
+        "protocol_version": 2,
+        "scope": "issue",
+        "target_id": null,
+        "grant_id": null,
+        "proposal_id": null,
+        "channel_id": null,
+        "batch_id": null,
+        "command_id": null,
+        "queue_state": "paused",
+        "control_version": "3",
+        "target_set_version": "4",
+        "group_id": null,
+        "group_settled": false,
+        "targets": [
+          {
+            "target_id": "7fe06978-ad06-4268-93ed-c89e6a5c03de",
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "code": "stop_requested",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "1",
+            "group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "group_settled": false,
+            "stopped_runs": 1,
+            "unsettled_runs": 1
+          },
+          {
+            "target_id": "88d535f3-6ab1-4f3d-8877-66a5d028b16e",
+            "channel_id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "code": "already_ended",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          },
+          {
+            "target_id": "c69bdad4-0b9c-44bf-b7aa-8588c74978cd",
+            "channel_id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "code": "already_ended",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "channels": [
+          {
+            "channel_id": "75e2f0b1-4a6d-4cf1-ad4c-26857be4d575",
+            "code": "already_ended",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          },
+          {
+            "channel_id": "7c0a8249-cc5a-4112-9bfa-1e629ce4bd2e",
+            "code": "stop_requested",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "1",
+            "group_id": "95fdc26d-62b3-40ae-acb8-6907b7c85725",
+            "group_settled": false,
+            "stopped_runs": 1,
+            "unsettled_runs": 1
+          },
+          {
+            "channel_id": "c8a3dcf2-4422-4095-8332-b79d9c92a1ce",
+            "code": "already_ended",
+            "queue_state": "paused",
+            "control_version": "3",
+            "group_generation": "0",
+            "group_id": null,
+            "group_settled": false,
+            "stopped_runs": 0,
+            "unsettled_runs": 0
+          }
+        ],
+        "target_holds": [],
+        "run_id": null,
+        "run_settled": false
+      }
+    }
+  ],
+  "removal_request_id": "a27d940b-94b0-4648-a2e2-9ae6bcf4770d",
+  "scope": "Actual cached old CLI HTTP writes; synthetic public Claim/Permit with proof withheld; no daemon/provider process",
+  "full_installed_desktop_or_daemon_matrix": false,
+  "production_gate_change": false,
+  "provider_account_access": false
+}

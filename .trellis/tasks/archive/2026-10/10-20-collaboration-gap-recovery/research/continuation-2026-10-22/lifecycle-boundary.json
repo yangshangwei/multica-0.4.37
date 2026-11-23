@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-21T23:34:25.062730+00:00",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "scope": "Existing AC09/20/21/22 lifecycle Web/Electron journey only; direct assigned implementation",
+  "owned_sources": {
+    "e2e/collaboration-lifecycle-controls.spec.ts": "0c2ab2d98c6f7197501c25342f64e86988f508d96c35834a4a45b512a950bd84",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "8118f026123e95d762a3282c0c0ddc7d26410dbc10cf0d240c528f79a64516eb"
+  },
+  "preserve": "Existing run/input/owner/peer/proof assertions and all prior dirty work",
+  "allowed_evidence_prefix": "research/continuation-2026-10-22/lifecycle-*",
+  "product_repair": "Escalate to root; no source/gates/environment/build/ledger/spec/progress/commit writes",
+  "initial_findings": [
+    "Server collaborationCommentTargetPreview uses waiting for every admissible target, including active idle target; initial waiting state is supported by source and must be confirmed at runtime rather than changed by assumption.",
+    "Actual command history route is /commands, not /commands/history.",
+    "Native harness setBlocked currently blocks createIssueWindow; renderer API uses fetch. Chromium offline and native window blocking are distinct boundaries.",
+    "Runtime transport records original proof body SHA; cancellation/proof and pause assertions must survive disconnect/reconnect after resubmission as well."
+  ],
+  "last_updated_at": "2026-10-21T23:46:07.688301+00:00",
+  "AC20_extension": "Preserve active A author/removal scenario; add an input to already-paused B before removal. Both exact cancellations remain terminal across rejoin/network+daemon reconnect, reconsent and explicit B Resume. A same-content resubmission retains a fresh request/comment/event/sequence and runs only after explicit A Resume.",
+  "current_source_sha256": {
+    "e2e/collaboration-lifecycle-controls.spec.ts": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d"
+  }
+}

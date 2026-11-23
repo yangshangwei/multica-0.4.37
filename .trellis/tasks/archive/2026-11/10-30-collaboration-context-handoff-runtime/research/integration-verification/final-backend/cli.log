@@ -1,0 +1,539 @@
+=== RUN   TestPostJSON
+=== RUN   TestPostJSON/success
+--- PASS: TestPostJSON/success (0.00s)
+=== RUN   TestPostJSON/error_status
+--- PASS: TestPostJSON/error_status (0.00s)
+=== RUN   TestPostJSON/nil_output
+--- PASS: TestPostJSON/nil_output (0.00s)
+=== RUN   TestPostJSON/workspace_and_agent_context_headers
+--- PASS: TestPostJSON/workspace_and_agent_context_headers (0.00s)
+=== RUN   TestPostJSON/client_identity_headers
+--- PASS: TestPostJSON/client_identity_headers (0.00s)
+=== RUN   TestPostJSON/client_identity_headers_fall_back_to_package_defaults
+--- PASS: TestPostJSON/client_identity_headers_fall_back_to_package_defaults (0.00s)
+--- PASS: TestPostJSON (0.01s)
+=== RUN   TestDeleteJSONResponse
+=== RUN   TestDeleteJSONResponse/success_decodes_response
+--- PASS: TestDeleteJSONResponse/success_decodes_response (0.00s)
+=== RUN   TestDeleteJSONResponse/error_status
+--- PASS: TestDeleteJSONResponse/error_status (0.00s)
+--- PASS: TestDeleteJSONResponse (0.00s)
+=== RUN   TestDownloadFile
+=== RUN   TestDownloadFile/relative_URL_is_resolved_against_BaseURL_and_sent_with_auth
+--- PASS: TestDownloadFile/relative_URL_is_resolved_against_BaseURL_and_sent_with_auth (0.00s)
+=== RUN   TestDownloadFile/absolute_URL_is_used_as-is_without_auth_headers
+--- PASS: TestDownloadFile/absolute_URL_is_used_as-is_without_auth_headers (0.00s)
+=== RUN   TestDownloadFile/relative_URL_with_empty_BaseURL_returns_a_helpful_error
+--- PASS: TestDownloadFile/relative_URL_with_empty_BaseURL_returns_a_helpful_error (0.00s)
+=== RUN   TestDownloadFile/non-2xx_status_returns_an_error_with_the_response_body
+--- PASS: TestDownloadFile/non-2xx_status_returns_an_error_with_the_response_body (0.00s)
+--- PASS: TestDownloadFile (0.00s)
+=== RUN   TestUploadFileWithURL
+=== RUN   TestUploadFileWithURL/success
+--- PASS: TestUploadFileWithURL/success (0.00s)
+=== RUN   TestUploadFileWithURL/error_status
+--- PASS: TestUploadFileWithURL/error_status (0.00s)
+=== RUN   TestUploadFileWithURL/missing_id_in_response_succeeds_(fallback_path)
+--- PASS: TestUploadFileWithURL/missing_id_in_response_succeeds_(fallback_path) (0.00s)
+=== RUN   TestUploadFileWithURL/workspace_header_sent
+--- PASS: TestUploadFileWithURL/workspace_header_sent (0.00s)
+=== RUN   TestUploadFileWithURL/missing_url_in_response
+--- PASS: TestUploadFileWithURL/missing_url_in_response (0.00s)
+--- PASS: TestUploadFileWithURL (0.00s)
+=== RUN   TestUploadPrivatePlugin
+--- PASS: TestUploadPrivatePlugin (0.00s)
+=== RUN   TestNormalizeGOOS
+--- PASS: TestNormalizeGOOS (0.00s)
+=== RUN   TestSetHeaders_AdvertisesStableAttachmentURLs
+=== RUN   TestSetHeaders_AdvertisesStableAttachmentURLs/GET
+--- PASS: TestSetHeaders_AdvertisesStableAttachmentURLs/GET (0.00s)
+=== RUN   TestSetHeaders_AdvertisesStableAttachmentURLs/GET_with_headers
+--- PASS: TestSetHeaders_AdvertisesStableAttachmentURLs/GET_with_headers (0.00s)
+=== RUN   TestSetHeaders_AdvertisesStableAttachmentURLs/POST
+--- PASS: TestSetHeaders_AdvertisesStableAttachmentURLs/POST (0.00s)
+=== RUN   TestSetHeaders_AdvertisesStableAttachmentURLs/without_a_token
+--- PASS: TestSetHeaders_AdvertisesStableAttachmentURLs/without_a_token (0.00s)
+--- PASS: TestSetHeaders_AdvertisesStableAttachmentURLs (0.00s)
+=== RUN   TestHTTPErrorTaskScopedFollowsTheRequestNotTheClient
+=== RUN   TestHTTPErrorTaskScopedFollowsTheRequestNotTheClient/api_call_sends_the_task_token
+--- PASS: TestHTTPErrorTaskScopedFollowsTheRequestNotTheClient/api_call_sends_the_task_token (0.00s)
+=== RUN   TestHTTPErrorTaskScopedFollowsTheRequestNotTheClient/signed_absolute_URL_sends_no_credential_at_all
+--- PASS: TestHTTPErrorTaskScopedFollowsTheRequestNotTheClient/signed_absolute_URL_sends_no_credential_at_all (0.00s)
+=== RUN   TestHTTPErrorTaskScopedFollowsTheRequestNotTheClient/member_token_is_never_task-scoped
+--- PASS: TestHTTPErrorTaskScopedFollowsTheRequestNotTheClient/member_token_is_never_task-scoped (0.00s)
+--- PASS: TestHTTPErrorTaskScopedFollowsTheRequestNotTheClient (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_TOKEN
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_TOKEN (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_SERVER
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_SERVER (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_CONTEXT
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_CONTEXT (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_ISSUE_ID
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_ISSUE_ID (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_RUN_ID
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/MULTICA_COLLABORATION_RUN_ID (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/other_run
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/other_run (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/other_issue
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/other_issue (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/zero_version
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/zero_version (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/rounded_version
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/rounded_version (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/duplicate_field
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/duplicate_field (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/unknown_field
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/unknown_field (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/server_credentials
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/server_credentials (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/server_query
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/server_query (0.00s)
+=== RUN   TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/ordinary_token
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity/ordinary_token (0.00s)
+--- PASS: TestCollaborationEnvironmentRequiresCompleteMatchingIdentity (0.01s)
+=== RUN   TestCollaborationHostConfigurationDoesNotSelectProviderIdentity
+--- PASS: TestCollaborationHostConfigurationDoesNotSelectProviderIdentity (0.00s)
+=== RUN   TestCollaborationHostContextUsesOnlyItsVersionedIssueIdentity
+--- PASS: TestCollaborationHostContextUsesOnlyItsVersionedIssueIdentity (0.00s)
+=== RUN   TestCLIConfig_BackwardCompat_OldFileLoadsWithNilBackends
+--- PASS: TestCLIConfig_BackwardCompat_OldFileLoadsWithNilBackends (0.00s)
+=== RUN   TestCLIConfig_BackwardCompat_NilBackendsOmittedFromJSON
+--- PASS: TestCLIConfig_BackwardCompat_NilBackendsOmittedFromJSON (0.00s)
+=== RUN   TestCLIConfig_OpenClawOverride_RoundTrip
+--- PASS: TestCLIConfig_OpenClawOverride_RoundTrip (0.00s)
+=== RUN   TestCLIConfig_OpenClawOverride_PartialFieldsOmitted
+--- PASS: TestCLIConfig_OpenClawOverride_PartialFieldsOmitted (0.00s)
+=== RUN   TestCLIConfig_ProfileCommandOverrides_RoundTrip
+--- PASS: TestCLIConfig_ProfileCommandOverrides_RoundTrip (0.00s)
+=== RUN   TestCLIConfig_ProfileCommandOverrides_OmittedWhenEmpty
+--- PASS: TestCLIConfig_ProfileCommandOverrides_OmittedWhenEmpty (0.00s)
+=== RUN   TestCLIConfig_UnknownFieldsArePreserved
+    config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder
+--- SKIP: TestCLIConfig_UnknownFieldsArePreserved (0.00s)
+=== RUN   TestCLIConfig_DaemonKnobs_RoundTrip
+--- PASS: TestCLIConfig_DaemonKnobs_RoundTrip (0.00s)
+=== RUN   TestCLIConfig_TaskRootOverridesOwnerHome
+--- PASS: TestCLIConfig_TaskRootOverridesOwnerHome (0.00s)
+=== RUN   TestCLIConfig_NoTaskRootKeepsInteractiveHomeResolution
+--- PASS: TestCLIConfig_NoTaskRootKeepsInteractiveHomeResolution (0.00s)
+=== RUN   TestCLIConfig_TaskRootRejectsProfilePathTraversal
+--- PASS: TestCLIConfig_TaskRootRejectsProfilePathTraversal (0.00s)
+=== RUN   TestCLIConfig_TaskRootMustBeAbsolute
+--- PASS: TestCLIConfig_TaskRootMustBeAbsolute (0.00s)
+=== RUN   TestCLIConfig_OpenClawCLITimeout_RoundTrip
+--- PASS: TestCLIConfig_OpenClawCLITimeout_RoundTrip (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/GetJSON_(issue_get)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/GetJSON_(issue_get) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/GetJSONWithHeaders_(comment_list)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/GetJSONWithHeaders_(comment_list) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/PostJSON_(issue_create)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/PostJSON_(issue_create) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/PutJSON_(issue_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/PutJSON_(issue_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/PatchJSON_(agent_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/PatchJSON_(agent_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/DeleteJSON_(project_delete)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/DeleteJSON_(project_delete) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/DeleteJSONWithBody_(squad_member_remove)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/DeleteJSONWithBody_(squad_member_remove) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/UploadFile_(issue_attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/UploadFile_(issue_attachment) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/UploadFileWithURL_(avatar)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/UploadFileWithURL_(avatar) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unauthorized/DownloadFile_(attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Unauthorized/DownloadFile_(attachment) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/GetJSON_(issue_get)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/GetJSON_(issue_get) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/GetJSONWithHeaders_(comment_list)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/GetJSONWithHeaders_(comment_list) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/PostJSON_(issue_create)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/PostJSON_(issue_create) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/PutJSON_(issue_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/PutJSON_(issue_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/PatchJSON_(agent_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/PatchJSON_(agent_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/DeleteJSON_(project_delete)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/DeleteJSON_(project_delete) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/DeleteJSONWithBody_(squad_member_remove)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/DeleteJSONWithBody_(squad_member_remove) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/UploadFile_(issue_attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/UploadFile_(issue_attachment) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/UploadFileWithURL_(avatar)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/UploadFileWithURL_(avatar) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Forbidden/DownloadFile_(attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Forbidden/DownloadFile_(attachment) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/GetJSON_(issue_get)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/GetJSON_(issue_get) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/GetJSONWithHeaders_(comment_list)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/GetJSONWithHeaders_(comment_list) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/PostJSON_(issue_create)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/PostJSON_(issue_create) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/PutJSON_(issue_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/PutJSON_(issue_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/PatchJSON_(agent_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/PatchJSON_(agent_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/DeleteJSON_(project_delete)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/DeleteJSON_(project_delete) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/DeleteJSONWithBody_(squad_member_remove)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/DeleteJSONWithBody_(squad_member_remove) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/UploadFile_(issue_attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/UploadFile_(issue_attachment) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/UploadFileWithURL_(avatar)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/UploadFileWithURL_(avatar) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Not_Found/DownloadFile_(attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Not_Found/DownloadFile_(attachment) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/GetJSON_(issue_get)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/GetJSON_(issue_get) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/GetJSONWithHeaders_(comment_list)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/GetJSONWithHeaders_(comment_list) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/PostJSON_(issue_create)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/PostJSON_(issue_create) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/PutJSON_(issue_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/PutJSON_(issue_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/PatchJSON_(agent_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/PatchJSON_(agent_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/DeleteJSON_(project_delete)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/DeleteJSON_(project_delete) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/DeleteJSONWithBody_(squad_member_remove)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/DeleteJSONWithBody_(squad_member_remove) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/UploadFile_(issue_attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/UploadFile_(issue_attachment) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/UploadFileWithURL_(avatar)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/UploadFileWithURL_(avatar) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Unprocessable_Entity/DownloadFile_(attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Unprocessable_Entity/DownloadFile_(attachment) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/GetJSON_(issue_get)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/GetJSON_(issue_get) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/GetJSONWithHeaders_(comment_list)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/GetJSONWithHeaders_(comment_list) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/PostJSON_(issue_create)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/PostJSON_(issue_create) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/PutJSON_(issue_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/PutJSON_(issue_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/PatchJSON_(agent_update)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/PatchJSON_(agent_update) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/DeleteJSON_(project_delete)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/DeleteJSON_(project_delete) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/DeleteJSONWithBody_(squad_member_remove)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/DeleteJSONWithBody_(squad_member_remove) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/UploadFile_(issue_attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/UploadFile_(issue_attachment) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/UploadFileWithURL_(avatar)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/UploadFileWithURL_(avatar) (0.00s)
+=== RUN   TestHelperStatusErrorsAreClassified/Internal_Server_Error/DownloadFile_(attachment)
+--- PASS: TestHelperStatusErrorsAreClassified/Internal_Server_Error/DownloadFile_(attachment) (0.00s)
+--- PASS: TestHelperStatusErrorsAreClassified (0.01s)
+=== RUN   TestCommandContextNotTruncatedBelowHTTPTimeout
+=== RUN   TestCommandContextNotTruncatedBelowHTTPTimeout/request_within_transport_budget_completes_(context_does_not_fire_first)
+--- PASS: TestCommandContextNotTruncatedBelowHTTPTimeout/request_within_transport_budget_completes_(context_does_not_fire_first) (0.12s)
+=== RUN   TestCommandContextNotTruncatedBelowHTTPTimeout/transport_timeout_governs_and_yields_a_friendly_timeout_error
+--- PASS: TestCommandContextNotTruncatedBelowHTTPTimeout/transport_timeout_governs_and_yields_a_friendly_timeout_error (0.90s)
+--- PASS: TestCommandContextNotTruncatedBelowHTTPTimeout (1.03s)
+=== RUN   TestAPITimeoutRespectsEnv
+=== RUN   TestAPITimeoutRespectsEnv/default
+--- PASS: TestAPITimeoutRespectsEnv/default (0.00s)
+=== RUN   TestAPITimeoutRespectsEnv/env_override_raises_both_transport_and_command_budget
+--- PASS: TestAPITimeoutRespectsEnv/env_override_raises_both_transport_and_command_budget (0.00s)
+=== RUN   TestAPITimeoutRespectsEnv/AtLeast_floor_wins_when_larger
+--- PASS: TestAPITimeoutRespectsEnv/AtLeast_floor_wins_when_larger (0.00s)
+=== RUN   TestAPITimeoutRespectsEnv/AtLeast_budget_wins_when_larger_than_floor
+--- PASS: TestAPITimeoutRespectsEnv/AtLeast_budget_wins_when_larger_than_floor (0.00s)
+=== RUN   TestAPITimeoutRespectsEnv/login_poll_10s_floor_honors_env_override
+--- PASS: TestAPITimeoutRespectsEnv/login_poll_10s_floor_honors_env_override (0.00s)
+--- PASS: TestAPITimeoutRespectsEnv (0.00s)
+=== RUN   TestClassifyNetworkError
+=== RUN   TestClassifyNetworkError/context_deadline
+--- PASS: TestClassifyNetworkError/context_deadline (0.00s)
+=== RUN   TestClassifyNetworkError/wrapped_deadline
+--- PASS: TestClassifyNetworkError/wrapped_deadline (0.00s)
+=== RUN   TestClassifyNetworkError/net_timeout
+--- PASS: TestClassifyNetworkError/net_timeout (0.00s)
+=== RUN   TestClassifyNetworkError/dns
+--- PASS: TestClassifyNetworkError/dns (0.00s)
+=== RUN   TestClassifyNetworkError/connection_refused
+--- PASS: TestClassifyNetworkError/connection_refused (0.00s)
+=== RUN   TestClassifyNetworkError/x509_unknown_authority
+--- PASS: TestClassifyNetworkError/x509_unknown_authority (0.00s)
+=== RUN   TestClassifyNetworkError/x509_hostname
+--- PASS: TestClassifyNetworkError/x509_hostname (0.00s)
+=== RUN   TestClassifyNetworkError/timeout_string_fallback
+--- PASS: TestClassifyNetworkError/timeout_string_fallback (0.00s)
+=== RUN   TestClassifyNetworkError/dns_string_fallback
+--- PASS: TestClassifyNetworkError/dns_string_fallback (0.00s)
+=== RUN   TestClassifyNetworkError/refused_string_fallback
+--- PASS: TestClassifyNetworkError/refused_string_fallback (0.00s)
+=== RUN   TestClassifyNetworkError/tls_string_fallback
+--- PASS: TestClassifyNetworkError/tls_string_fallback (0.00s)
+=== RUN   TestClassifyNetworkError/offline_catch-all
+--- PASS: TestClassifyNetworkError/offline_catch-all (0.00s)
+=== RUN   TestClassifyNetworkError/nil
+--- PASS: TestClassifyNetworkError/nil (0.00s)
+--- PASS: TestClassifyNetworkError (0.00s)
+=== RUN   TestHTTPErrorKind
+=== RUN   TestHTTPErrorKind/status_401
+--- PASS: TestHTTPErrorKind/status_401 (0.00s)
+=== RUN   TestHTTPErrorKind/status_403
+--- PASS: TestHTTPErrorKind/status_403 (0.00s)
+=== RUN   TestHTTPErrorKind/status_404
+--- PASS: TestHTTPErrorKind/status_404 (0.00s)
+=== RUN   TestHTTPErrorKind/status_409
+--- PASS: TestHTTPErrorKind/status_409 (0.00s)
+=== RUN   TestHTTPErrorKind/status_400
+--- PASS: TestHTTPErrorKind/status_400 (0.00s)
+=== RUN   TestHTTPErrorKind/status_422
+--- PASS: TestHTTPErrorKind/status_422 (0.00s)
+=== RUN   TestHTTPErrorKind/status_429
+--- PASS: TestHTTPErrorKind/status_429 (0.00s)
+=== RUN   TestHTTPErrorKind/status_500
+--- PASS: TestHTTPErrorKind/status_500 (0.00s)
+=== RUN   TestHTTPErrorKind/status_502
+--- PASS: TestHTTPErrorKind/status_502 (0.00s)
+=== RUN   TestHTTPErrorKind/status_418
+--- PASS: TestHTTPErrorKind/status_418 (0.00s)
+--- PASS: TestHTTPErrorKind (0.00s)
+=== RUN   TestFormatErrorAllKinds
+--- PASS: TestFormatErrorAllKinds (0.00s)
+=== RUN   TestFormatErrorNetwork
+--- PASS: TestFormatErrorNetwork (0.00s)
+=== RUN   TestFormatErrorChineseLocale
+--- PASS: TestFormatErrorChineseLocale (0.00s)
+=== RUN   TestFormatErrorValidationUsesServerMessage
+--- PASS: TestFormatErrorValidationUsesServerMessage (0.00s)
+=== RUN   TestFormatErrorConflictUsesServerMessage
+--- PASS: TestFormatErrorConflictUsesServerMessage (0.00s)
+=== RUN   TestFormatErrorConflictChineseLocale
+--- PASS: TestFormatErrorConflictChineseLocale (0.00s)
+=== RUN   TestFormatErrorConflictFallsBackToGenericTemplate
+--- PASS: TestFormatErrorConflictFallsBackToGenericTemplate (0.00s)
+=== RUN   TestFormatErrorForbiddenUsesServerMessage
+--- PASS: TestFormatErrorForbiddenUsesServerMessage (0.00s)
+=== RUN   TestFormatErrorForbiddenChineseLocale
+--- PASS: TestFormatErrorForbiddenChineseLocale (0.00s)
+=== RUN   TestFormatErrorForbiddenFallsBackToGenericTemplate
+--- PASS: TestFormatErrorForbiddenFallsBackToGenericTemplate (0.00s)
+=== RUN   TestExtractServerMessagePrefersProseOverMachineCode
+--- PASS: TestExtractServerMessagePrefersProseOverMachineCode (0.00s)
+=== RUN   TestFormatErrorValidationPrefersProseOverMachineCode
+--- PASS: TestFormatErrorValidationPrefersProseOverMachineCode (0.00s)
+=== RUN   TestFormatErrorDebugIncludesRawChain
+--- PASS: TestFormatErrorDebugIncludesRawChain (0.00s)
+=== RUN   TestFormatErrorPlainError
+--- PASS: TestFormatErrorPlainError (0.00s)
+=== RUN   TestExitCodeFor
+=== RUN   TestExitCodeFor/nil
+--- PASS: TestExitCodeFor/nil (0.00s)
+=== RUN   TestExitCodeFor/network
+--- PASS: TestExitCodeFor/network (0.00s)
+=== RUN   TestExitCodeFor/wrapped_network
+--- PASS: TestExitCodeFor/wrapped_network (0.00s)
+=== RUN   TestExitCodeFor/auth_401
+--- PASS: TestExitCodeFor/auth_401 (0.00s)
+=== RUN   TestExitCodeFor/forbidden_403
+--- PASS: TestExitCodeFor/forbidden_403 (0.00s)
+=== RUN   TestExitCodeFor/not_found_404
+--- PASS: TestExitCodeFor/not_found_404 (0.00s)
+=== RUN   TestExitCodeFor/validation_400
+--- PASS: TestExitCodeFor/validation_400 (0.00s)
+=== RUN   TestExitCodeFor/validation_422
+--- PASS: TestExitCodeFor/validation_422 (0.00s)
+=== RUN   TestExitCodeFor/conflict_409
+--- PASS: TestExitCodeFor/conflict_409 (0.00s)
+=== RUN   TestExitCodeFor/rate_limited_429
+--- PASS: TestExitCodeFor/rate_limited_429 (0.00s)
+=== RUN   TestExitCodeFor/server_500
+--- PASS: TestExitCodeFor/server_500 (0.00s)
+=== RUN   TestExitCodeFor/plain
+--- PASS: TestExitCodeFor/plain (0.00s)
+--- PASS: TestExitCodeFor (0.00s)
+=== RUN   TestDetectLanguage
+=== RUN   TestDetectLanguage/default_english
+--- PASS: TestDetectLanguage/default_english (0.00s)
+=== RUN   TestDetectLanguage/lang_zh
+--- PASS: TestDetectLanguage/lang_zh (0.00s)
+=== RUN   TestDetectLanguage/lang_en
+--- PASS: TestDetectLanguage/lang_en (0.00s)
+=== RUN   TestDetectLanguage/lc_all_wins_over_lang
+--- PASS: TestDetectLanguage/lc_all_wins_over_lang (0.00s)
+=== RUN   TestDetectLanguage/lc_all_zh
+--- PASS: TestDetectLanguage/lc_all_zh (0.00s)
+=== RUN   TestDetectLanguage/lc_messages_zh
+--- PASS: TestDetectLanguage/lc_messages_zh (0.00s)
+--- PASS: TestDetectLanguage (0.00s)
+=== RUN   TestExtractServerMessage
+=== RUN   TestExtractServerMessage/{"error":"title_is_required"}
+--- PASS: TestExtractServerMessage/{"error":"title_is_required"} (0.00s)
+=== RUN   TestExtractServerMessage/{"message":"invalid_priority"}
+--- PASS: TestExtractServerMessage/{"message":"invalid_priority"} (0.00s)
+=== RUN   TestExtractServerMessage/{"detail":"bad_due_date"}
+--- PASS: TestExtractServerMessage/{"detail":"bad_due_date"} (0.00s)
+=== RUN   TestExtractServerMessage/not_json
+--- PASS: TestExtractServerMessage/not_json (0.00s)
+=== RUN   TestExtractServerMessage/{}
+--- PASS: TestExtractServerMessage/{} (0.00s)
+=== RUN   TestExtractServerMessage/#00
+--- PASS: TestExtractServerMessage/#00 (0.00s)
+=== RUN   TestExtractServerMessage/{"error":""}
+--- PASS: TestExtractServerMessage/{"error":""} (0.00s)
+--- PASS: TestExtractServerMessage (0.00s)
+=== RUN   TestHTTPTimeout
+=== RUN   TestHTTPTimeout/unset
+--- PASS: TestHTTPTimeout/unset (0.00s)
+=== RUN   TestHTTPTimeout/duration
+--- PASS: TestHTTPTimeout/duration (0.00s)
+=== RUN   TestHTTPTimeout/minutes
+--- PASS: TestHTTPTimeout/minutes (0.00s)
+=== RUN   TestHTTPTimeout/plain_seconds
+--- PASS: TestHTTPTimeout/plain_seconds (0.00s)
+=== RUN   TestHTTPTimeout/invalid_falls_back
+--- PASS: TestHTTPTimeout/invalid_falls_back (0.00s)
+=== RUN   TestHTTPTimeout/zero_falls_back
+--- PASS: TestHTTPTimeout/zero_falls_back (0.00s)
+=== RUN   TestHTTPTimeout/negative_falls_back
+--- PASS: TestHTTPTimeout/negative_falls_back (0.00s)
+--- PASS: TestHTTPTimeout (0.00s)
+=== RUN   TestErrorKindString
+--- PASS: TestErrorKindString (0.00s)
+=== RUN   TestFormatErrorRejectedTaskTokenDoesNotSuggestAnotherCredential
+--- PASS: TestFormatErrorRejectedTaskTokenDoesNotSuggestAnotherCredential (0.00s)
+=== RUN   TestFormatErrorActionableHints
+--- PASS: TestFormatErrorActionableHints (0.00s)
+=== RUN   TestUserMessageError
+=== RUN   TestUserMessageError/wrapped_HTTPError_(invalid_token_->_401)
+--- PASS: TestUserMessageError/wrapped_HTTPError_(invalid_token_->_401) (0.00s)
+=== RUN   TestUserMessageError/wrapped_NetworkError_classifies_as_network
+--- PASS: TestUserMessageError/wrapped_NetworkError_classifies_as_network (0.00s)
+=== RUN   TestUserMessageError/nil_error_returns_nil
+--- PASS: TestUserMessageError/nil_error_returns_nil (0.00s)
+--- PASS: TestUserMessageError (0.00s)
+=== RUN   TestStallAwareClientCompletesSlowButSteadyTransfer
+=== RUN   TestStallAwareClientCompletesSlowButSteadyTransfer/total-elapsed_deadline_kills_a_healthy_transfer
+--- PASS: TestStallAwareClientCompletesSlowButSteadyTransfer/total-elapsed_deadline_kills_a_healthy_transfer (0.50s)
+=== RUN   TestStallAwareClientCompletesSlowButSteadyTransfer/stall_detection_lets_it_finish
+--- PASS: TestStallAwareClientCompletesSlowButSteadyTransfer/stall_detection_lets_it_finish (0.50s)
+--- PASS: TestStallAwareClientCompletesSlowButSteadyTransfer (1.01s)
+=== RUN   TestStallAwareClientFailsOnStalledBody
+--- PASS: TestStallAwareClientFailsOnStalledBody (0.19s)
+=== RUN   TestStalledTransferIsClassifiedAsNetworkError
+--- PASS: TestStalledTransferIsClassifiedAsNetworkError (0.19s)
+=== RUN   TestMalformedJSONIsNotReportedAsNetworkFailure
+--- PASS: TestMalformedJSONIsNotReportedAsNetworkFailure (0.00s)
+=== RUN   TestStallTimeoutEnvPrecedence
+=== RUN   TestStallTimeoutEnvPrecedence/default_when_nothing_is_set
+--- PASS: TestStallTimeoutEnvPrecedence/default_when_nothing_is_set (0.00s)
+=== RUN   TestStallTimeoutEnvPrecedence/legacy_timeout_var_still_has_effect
+--- PASS: TestStallTimeoutEnvPrecedence/legacy_timeout_var_still_has_effect (0.00s)
+=== RUN   TestStallTimeoutEnvPrecedence/dedicated_var_wins
+--- PASS: TestStallTimeoutEnvPrecedence/dedicated_var_wins (0.00s)
+=== RUN   TestStallTimeoutEnvPrecedence/bare_seconds_and_invalid_values
+--- PASS: TestStallTimeoutEnvPrecedence/bare_seconds_and_invalid_values (0.00s)
+--- PASS: TestStallTimeoutEnvPrecedence (0.00s)
+=== RUN   TestTransferCeilingStaysAboveStallBudget
+--- PASS: TestTransferCeilingStaysAboveStallBudget (0.00s)
+=== RUN   TestStallAwareContextLeavesTransportDeadlineFirst
+--- PASS: TestStallAwareContextLeavesTransportDeadlineFirst (0.00s)
+=== RUN   TestStallGuardBodyCloseReleasesGuard
+--- PASS: TestStallGuardBodyCloseReleasesGuard (0.05s)
+=== RUN   TestTruncatedBodyIsReportedAsNetworkFailure
+--- PASS: TestTruncatedBodyIsReportedAsNetworkFailure (0.00s)
+=== RUN   TestReleaseAssetCandidates
+=== RUN   TestReleaseAssetCandidates/darwin_prefers_versioned_then_legacy_candidate
+--- PASS: TestReleaseAssetCandidates/darwin_prefers_versioned_then_legacy_candidate (0.00s)
+=== RUN   TestReleaseAssetCandidates/linux_normalizes_missing_v_in_versioned_candidate
+--- PASS: TestReleaseAssetCandidates/linux_normalizes_missing_v_in_versioned_candidate (0.00s)
+=== RUN   TestReleaseAssetCandidates/windows_uses_zip_assets
+--- PASS: TestReleaseAssetCandidates/windows_uses_zip_assets (0.00s)
+--- PASS: TestReleaseAssetCandidates (0.00s)
+=== RUN   TestFindReleaseAsset
+=== RUN   TestFindReleaseAsset/prefers_versioned_asset_when_both_names_exist
+--- PASS: TestFindReleaseAsset/prefers_versioned_asset_when_both_names_exist (0.00s)
+=== RUN   TestFindReleaseAsset/falls_back_to_legacy_asset_when_versioned_is_absent
+--- PASS: TestFindReleaseAsset/falls_back_to_legacy_asset_when_versioned_is_absent (0.00s)
+=== RUN   TestFindReleaseAsset/returns_error_when_no_candidate_matches
+--- PASS: TestFindReleaseAsset/returns_error_when_no_candidate_matches (0.00s)
+--- PASS: TestFindReleaseAsset (0.00s)
+=== RUN   TestIsReleaseVersion
+=== RUN   TestIsReleaseVersion/bare_release
+--- PASS: TestIsReleaseVersion/bare_release (0.00s)
+=== RUN   TestIsReleaseVersion/v-prefixed_release
+--- PASS: TestIsReleaseVersion/v-prefixed_release (0.00s)
+=== RUN   TestIsReleaseVersion/surrounding_whitespace
+--- PASS: TestIsReleaseVersion/surrounding_whitespace (0.00s)
+=== RUN   TestIsReleaseVersion/dev_describe
+--- PASS: TestIsReleaseVersion/dev_describe (0.00s)
+=== RUN   TestIsReleaseVersion/dirty_dev_describe
+--- PASS: TestIsReleaseVersion/dirty_dev_describe (0.00s)
+=== RUN   TestIsReleaseVersion/empty
+--- PASS: TestIsReleaseVersion/empty (0.00s)
+=== RUN   TestIsReleaseVersion/two_components
+--- PASS: TestIsReleaseVersion/two_components (0.00s)
+=== RUN   TestIsReleaseVersion/four_components
+--- PASS: TestIsReleaseVersion/four_components (0.00s)
+=== RUN   TestIsReleaseVersion/non-numeric
+--- PASS: TestIsReleaseVersion/non-numeric (0.00s)
+--- PASS: TestIsReleaseVersion (0.00s)
+=== RUN   TestIsNewerVersion
+=== RUN   TestIsNewerVersion/patch_bump
+--- PASS: TestIsNewerVersion/patch_bump (0.00s)
+=== RUN   TestIsNewerVersion/minor_bump
+--- PASS: TestIsNewerVersion/minor_bump (0.00s)
+=== RUN   TestIsNewerVersion/major_bump
+--- PASS: TestIsNewerVersion/major_bump (0.00s)
+=== RUN   TestIsNewerVersion/same_version
+--- PASS: TestIsNewerVersion/same_version (0.00s)
+=== RUN   TestIsNewerVersion/older_latest
+--- PASS: TestIsNewerVersion/older_latest (0.00s)
+=== RUN   TestIsNewerVersion/mixed_v_prefix
+--- PASS: TestIsNewerVersion/mixed_v_prefix (0.00s)
+=== RUN   TestIsNewerVersion/current_is_dev_describe_→_unparseable_→_false
+--- PASS: TestIsNewerVersion/current_is_dev_describe_→_unparseable_→_false (0.00s)
+=== RUN   TestIsNewerVersion/latest_is_dev_describe_→_unparseable_→_false
+--- PASS: TestIsNewerVersion/latest_is_dev_describe_→_unparseable_→_false (0.00s)
+=== RUN   TestIsNewerVersion/latest_unparseable_→_false
+--- PASS: TestIsNewerVersion/latest_unparseable_→_false (0.00s)
+=== RUN   TestIsNewerVersion/current_unparseable_→_false
+--- PASS: TestIsNewerVersion/current_unparseable_→_false (0.00s)
+=== RUN   TestIsNewerVersion/empty_latest
+--- PASS: TestIsNewerVersion/empty_latest (0.00s)
+=== RUN   TestIsNewerVersion/empty_current
+--- PASS: TestIsNewerVersion/empty_current (0.00s)
+--- PASS: TestIsNewerVersion (0.00s)
+=== RUN   TestFindChecksumManifestAsset
+=== RUN   TestFindChecksumManifestAsset/finds_checksums.txt_among_assets
+--- PASS: TestFindChecksumManifestAsset/finds_checksums.txt_among_assets (0.00s)
+=== RUN   TestFindChecksumManifestAsset/returns_error_when_manifest_missing
+--- PASS: TestFindChecksumManifestAsset/returns_error_when_manifest_missing (0.00s)
+--- PASS: TestFindChecksumManifestAsset (0.00s)
+=== RUN   TestParseChecksumManifest
+=== RUN   TestParseChecksumManifest/returns_lowercase_sha_for_matched_entry
+--- PASS: TestParseChecksumManifest/returns_lowercase_sha_for_matched_entry (0.00s)
+=== RUN   TestParseChecksumManifest/matches_a_tab-separated_entry
+--- PASS: TestParseChecksumManifest/matches_a_tab-separated_entry (0.00s)
+=== RUN   TestParseChecksumManifest/downcases_an_uppercase_entry
+--- PASS: TestParseChecksumManifest/downcases_an_uppercase_entry (0.00s)
+=== RUN   TestParseChecksumManifest/returns_error_when_asset_is_absent
+--- PASS: TestParseChecksumManifest/returns_error_when_asset_is_absent (0.00s)
+=== RUN   TestParseChecksumManifest/skips_blank_lines_and_comments
+--- PASS: TestParseChecksumManifest/skips_blank_lines_and_comments (0.00s)
+--- PASS: TestParseChecksumManifest (0.00s)
+=== RUN   TestVerifyAssetSHA256
+=== RUN   TestVerifyAssetSHA256/accepts_matching_sha
+--- PASS: TestVerifyAssetSHA256/accepts_matching_sha (0.00s)
+=== RUN   TestVerifyAssetSHA256/accepts_uppercase_expected_hex
+--- PASS: TestVerifyAssetSHA256/accepts_uppercase_expected_hex (0.00s)
+=== RUN   TestVerifyAssetSHA256/rejects_mismatched_sha
+--- PASS: TestVerifyAssetSHA256/rejects_mismatched_sha (0.00s)
+=== RUN   TestVerifyAssetSHA256/rejects_empty_expected
+--- PASS: TestVerifyAssetSHA256/rejects_empty_expected (0.00s)
+--- PASS: TestVerifyAssetSHA256 (0.00s)
+=== RUN   TestUpdateDownloadTimeoutOrDefault
+=== RUN   TestUpdateDownloadTimeoutOrDefault/uses_default_for_zero
+--- PASS: TestUpdateDownloadTimeoutOrDefault/uses_default_for_zero (0.00s)
+=== RUN   TestUpdateDownloadTimeoutOrDefault/uses_default_for_negative
+--- PASS: TestUpdateDownloadTimeoutOrDefault/uses_default_for_negative (0.00s)
+=== RUN   TestUpdateDownloadTimeoutOrDefault/keeps_explicit_timeout
+--- PASS: TestUpdateDownloadTimeoutOrDefault/keeps_explicit_timeout (0.00s)
+--- PASS: TestUpdateDownloadTimeoutOrDefault (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/cli	4.026s

@@ -1,0 +1,52 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-retained-attachment.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=json",
+    "--output",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/content-retained-second-artifacts",
+    "--grep",
+    "Web and Electron retain exact"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-21T23:40:17.644147+00:00",
+  "environment_scope": "task-owned password/admin API18996/production Web13916/renderer6090",
+  "preflight": "content-admin-preflight.json",
+  "real_provider_account_access": false,
+  "installed_full_main": false,
+  "returncode": 0,
+  "end": "2026-10-21T23:40:34.852819+00:00",
+  "raw_sha256": "0bd1dd3e9398e8bde3be0d085b9b04f7653dcf8f949dd9f8f9a9ec8baf7f4947",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+  "stats": {
+    "startTime": "2026-10-21T23:40:18.567Z",
+    "duration": 16247.835,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 156,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 14966,
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

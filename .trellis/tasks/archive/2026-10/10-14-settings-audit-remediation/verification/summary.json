@@ -1,0 +1,48 @@
+{
+  "status": "pass",
+  "tests": [
+    {
+      "package": "views",
+      "testFiles": 58,
+      "passed": 783,
+      "exitCode": 0,
+      "log": "views-tests-final.log"
+    },
+    {
+      "package": "core",
+      "testFiles": 13,
+      "passed": 105,
+      "exitCode": 0,
+      "log": "core-tests-final.log"
+    },
+    {
+      "package": "desktop",
+      "testFiles": 3,
+      "passed": 19,
+      "exitCode": 0,
+      "log": "desktop-tests-final.log"
+    }
+  ],
+  "totalTests": 907,
+  "typechecks": [
+    "core",
+    "views",
+    "desktop:node",
+    "desktop:web",
+    "web"
+  ],
+  "lint": "lint-runs.json",
+  "uiDetector": "detector-final.json",
+  "packageBoundaries": "package-boundaries.json",
+  "nativeAcceptance": "../native-verification/acceptance-final.json",
+  "workCommits": [
+    "f3e1161a46fab6cab448a4fb44575c5464a2f37c",
+    "6ccd5e643485bafb2408c343d3bca289f319e0f4"
+  ],
+  "workingTreeSourceManifest": "source.json",
+  "partiallyStagedFile": "packages/core/api/client.ts",
+  "taskCodeFullyCommitted": true,
+  "taskStatus": "completed",
+  "journalSession": 71,
+  "commandEvidence": "check-runs.json"
+}

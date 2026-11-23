@@ -1,0 +1,23 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "eslint",
+    "--config",
+    "packages/core/eslint.config.mjs",
+    "--rule",
+    "import-x/no-extraneous-dependencies: [error, {devDependencies: true, includeTypes: false}]",
+    "e2e/collaboration-lifecycle-controls.spec.ts",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-10-21T23:39:23.229603+00:00",
+  "source_sha256": {
+    "e2e/collaboration-lifecycle-controls.spec.ts": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "b0ff073e0593a2aaa0672ebba23e31ce5465531b06e25e11171f1d5c31ec4783"
+  },
+  "exit_code": 0,
+  "finished_at": "2026-10-21T23:39:25.045218+00:00",
+  "stdout_bytes": 0,
+  "stderr_bytes": 211
+}

@@ -1,0 +1,112 @@
+[
+  {
+    "metadata": "L1-nonexpiry-verification.json",
+    "metadata_sha256": "81c00e5559a7dc4d27e842dba555c5d31313e4e9355dff0fe34222db5b6db874",
+    "summary": {
+      "database": "kfix_write_no_rows_20261102_0010"
+    },
+    "log_checks": [
+      {
+        "file": "L1-nonexpiry-red.jsonl",
+        "hash_matches": true
+      },
+      {
+        "file": "L1-nonexpiry-red-r2.jsonl",
+        "hash_matches": true
+      },
+      {
+        "file": "L1-nonexpiry-green.jsonl",
+        "hash_matches": true
+      },
+      {
+        "file": "L1-nonexpiry-green-r2.jsonl",
+        "hash_matches": true
+      }
+    ]
+  },
+  {
+    "metadata": "L5-takeover-verification.json",
+    "metadata_sha256": "f4eae7dac9d74bde83b8640b537b80e185c867804bff6e0bd5020b565c5e9289",
+    "summary": {},
+    "log_checks": [
+      {
+        "file": "L5-red.txt",
+        "hash_matches": true
+      },
+      {
+        "file": "L5-takeover-green.jsonl",
+        "hash_matches": true
+      },
+      {
+        "file": "L5-takeover-race.jsonl",
+        "hash_matches": true
+      }
+    ]
+  },
+  {
+    "metadata": "write-full-service-summary.json",
+    "metadata_sha256": "4d505261b9d1720e316af872ce6d240ff1c82c7c83eb96e0956d7cf49c429cff",
+    "summary": {
+      "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+      "database": "kfix_write_full_root_20261102_0013",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 3280,
+        "pass": 3262,
+        "fail": 0,
+        "skip": 18
+      }
+    },
+    "log_checks": [
+      {
+        "file": "write-full-service.jsonl",
+        "hash_matches": true
+      }
+    ]
+  },
+  {
+    "metadata": "write-targeted-race-root.json",
+    "metadata_sha256": "9101e0a0ddac188f4e5098b93c5e38c3a42f9c4b937cceaf4a94f4215af92a59",
+    "summary": {
+      "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+      "database": "kfix_write_race_root_20261102_0025",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 16,
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "log_checks": [
+      {
+        "file": "write-targeted-race-root.jsonl",
+        "hash_matches": true
+      }
+    ]
+  },
+  {
+    "metadata": "write-migrations-full-root.json",
+    "metadata_sha256": "7500a8b06d2714411ced18823a30be62e6745f05dfb0cd25ca8f4a3014ebced2",
+    "summary": {
+      "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+      "database": "kfix_write_migrations_root_20261102_0037",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 536,
+        "pass": 536,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "log_checks": [
+      {
+        "file": "write-migrations-full-root.jsonl",
+        "hash_matches": true
+      }
+    ]
+  }
+]

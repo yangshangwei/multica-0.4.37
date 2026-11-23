@@ -1,0 +1,45 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-runtime-integration-20261031/packages/core
+
+ ❯ collaboration/run-handoff-queries.test.ts (17 tests | 1 failed) 437ms
+   × normalizes run identity and keeps handoff caches separate from other runs 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  collaboration/run-handoff-queries.test.ts > normalizes run identity and keeps handoff caches separate from other runs
+AssertionError: expected [ 'collaboration', …(7) ] to deeply equal [ 'collaboration', …(7) ]
+
+- Expected
++ Received
+
+@@ -3,8 +3,8 @@
+    "[\"https://handoff.example\",1,\"0:0\"]",
+    "00000000-0000-4000-8000-000000000001",
+    "issue",
+    "00000000-0000-4000-8000-000000000001",
+    "run",
+-   "00000000-0000-4000-8000-0000000000AB",
++   "00000000-0000-4000-8000-0000000000ab",
+    "handoff",
+  ]
+
+ ❯ collaboration/run-handoff-queries.test.ts:45:30
+     43| it("normalizes run identity and keeps handoff caches separate from oth…
+     44|   const f = setup();
+     45|   expect(f.options.queryKey).toEqual(collaborationRunHandoffOptions(f.…
+       |                              ^
+     46|   expect(f.options.queryKey).not.toEqual(collaborationRunHandoffOption…
+     47| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  00:53:57
+   Duration  969ms (transform 327ms, setup 0ms, import 473ms, tests 437ms, environment 0ms)
+
+undefined
+/Volumes/artisan/code/2026/mc-runtime-integration-20261031/packages/core:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/run-handoff-queries.test.ts

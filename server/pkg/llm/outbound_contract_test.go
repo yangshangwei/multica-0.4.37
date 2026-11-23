@@ -85,6 +85,10 @@ func TestUnconfiguredClientMakesZeroUpstreamRequests(t *testing.T) {
 				_, err := c.GenerateJSON(ctx, "", "system JSON", "private chat content", 0.3, 2048)
 				return err
 			}},
+			{"GenerateJSONResult", func() error {
+				_, err := c.GenerateJSONResult(ctx, "", "system JSON", "private chat content", 0.3, 2048)
+				return err
+			}},
 			{"GenerateJSONStream", func() error {
 				_, err := c.GenerateJSONStream(ctx, "", "system JSON", "private chat content", 0.3, 2048, nil)
 				return err
@@ -128,10 +132,11 @@ const openAISDKImportPrefix = "github.com/openai/openai-go"
 // operators: these files, and only these, ask this layer to send something
 // upstream. The value is the summary each one is documented with.
 var documentedConsumers = map[string]string{
-	"internal/handler/issue_creator_recommendation.go": "creator recommendations: submitted task text and bounded saved responsibility excerpts",
-	"internal/handler/chat_title.go":                   "chat auto-titling: the first user message of a new chat session",
-	"internal/service/chat_quick_actions_generate.go":  "chat follow-up questions: the tail of the conversation",
-	"internal/handler/issue_description_assist.go":     "issue description optimization: submitted description, optional title and creation mode",
+	"internal/service/collaboration_knowledge_automation_model.go": "project knowledge automation: accepted source text, exact predecessors and complete authorized comparison text through two bounded stages",
+	"internal/handler/issue_creator_recommendation.go":             "creator recommendations: submitted task text and bounded saved responsibility excerpts",
+	"internal/handler/chat_title.go":                               "chat auto-titling: the first user message of a new chat session",
+	"internal/service/chat_quick_actions_generate.go":              "chat follow-up questions: the tail of the conversation",
+	"internal/handler/issue_description_assist.go":                 "issue description optimization: submitted description, optional title and creation mode",
 }
 
 // clientCallSurface is every method on Client that can produce an upstream
@@ -142,6 +147,7 @@ var clientCallSurface = map[string]bool{
 	"ChatStream":         true,
 	"GenerateText":       true,
 	"GenerateJSON":       true,
+	"GenerateJSONResult": true,
 	"GenerateJSONStream": true,
 }
 

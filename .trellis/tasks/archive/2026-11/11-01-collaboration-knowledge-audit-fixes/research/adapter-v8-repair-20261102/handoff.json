@@ -1,0 +1,89 @@
+{
+  "owner": "/root/adapter_v6_fix",
+  "implementation": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102",
+  "frozen": true,
+  "independent_review": "pending coordinator",
+  "commit_or_clearance_created": false,
+  "go_sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+  "pnpm_sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+  "red_v7": {
+    "methods": 8,
+    "failures": 246,
+    "errors": 0,
+    "wrapper_sha256": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+    "exit_code": 1
+  },
+  "full_green_v8": {
+    "methods": 38,
+    "failures": 0,
+    "errors": 0,
+    "observations": 658,
+    "exit_code": 0
+  },
+  "inherited_v8": {
+    "methods": 14,
+    "exit_code": 0
+  },
+  "unchanged_pnpm_proof": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7.json",
+    "tests_run": 5,
+    "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "distinct_passed_named_methods_including_reused_pnpm": 57,
+  "registry": {
+    "value_flags": 70,
+    "boolean_flags": 26,
+    "forwarded_aliases": 29
+  },
+  "oracle": {
+    "actual_plain_go_list_calls": 2,
+    "results": [
+      [
+        "default",
+        0,
+        "example/first"
+      ],
+      [
+        "alternate-modfile",
+        0,
+        "alternate/first"
+      ]
+    ],
+    "source_bytes_unchanged": true
+  },
+  "preservation": {
+    "incoming_v7_sources_unchanged": 6,
+    "prior_evidence_files_unchanged": 59
+  },
+  "actual_go_tests_or_testmain": 0,
+  "actual_sql_or_database_operations": 0,
+  "actual_provider_account_services_installed_agent_cli_calls": 0,
+  "source_manifest": "source-manifest.json",
+  "patches": [
+    {
+      "path": "adapter-v7-to-v8.diff",
+      "sha256": "679c1f6d9615545b3efb5c10136c92f7960081e597742cef31dd738e6b2df17f"
+    },
+    {
+      "path": "adapter-v6-to-v8.diff",
+      "sha256": "8ce4430ae6aa1788c2ca9f709f1ab52c55edd19b51a33d453b30e010136fc210"
+    },
+    {
+      "path": "v7-to-v8-go.patch",
+      "sha256": "c3d61fa1785a61b4d78daebe336c4f8e99ca4b77f1ff10a5efe3b2c5ffa7baf5",
+      "lines": 89
+    },
+    {
+      "path": "incoming-v6-to-v8-go.patch",
+      "sha256": "a1d3f34093940ba07ac6f4808ca76ac398bff5f48a5bdcf6f8c1b0ccea4210c8",
+      "lines": 118
+    }
+  ],
+  "known_limits": [
+    "The private gate uses a source-backed pinned Go1.27 flag registry; unsupported options before test-binary boundaries refuse and must be reviewed before adding.",
+    "Mode0 deliberately refuses actual -modfile/-overlay options; values and binary arguments with those names remain valid, and genuine compile-only helpers remain exempt.",
+    "Mode1 argument splitter is unchanged and remains scoped to the repository check selection.",
+    "The oracle proves Go package metadata only; no real Go tests/TestMain, SQL/DB, services, providers/accounts or product acceptance were run.",
+    "Coordinator owns independent pass, integration, final source/launcher binding and the sole full check; no clearance/commit is produced by this implementer."
+  ]
+}

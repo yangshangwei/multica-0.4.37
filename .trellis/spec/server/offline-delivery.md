@@ -27,6 +27,14 @@ accept ordered, repeated overlays. Relative paths resolve from `DIR`.
   system when any internal source exists. Keep the source and embedded docs in
   sync; the full contract lives in
   [Add a computer](../views/frontend/connect-remote-computer.md).
+- `MULTICA_DESKTOP_DOWNLOAD_URL` is the only source of Web's desktop download
+  links (login, onboarding, landing). Forward it through Compose and Helm; it
+  is public via `/api/config` and must be an absolute http(s) URL without
+  credentials, otherwise every link is hidden. The server check (IP literal or
+  ASCII host, numeric last label must be valid IPv4, port <= 65535) must stay
+  a subset of what the web client's `new URL` accepts, so anything the server
+  emits is rendered and anything it drops is warned about at startup. Web has
+  no `/download` page.
 - Compose defaults match backend semantics: `FF_PROJECTS_P1=true`, platform
   administration and managed installations off. Iterations have no deployment
   gate; workspace owners/admins manage their setting. Missing settings default
@@ -183,6 +191,15 @@ Check the final distributed archive against the actual rehearsal directory,
 including inner image and outer archive checksums and both source-guide copies.
 For a multi-platform local database tag, assert the saved and running target
 variants rather than weakening architecture checks after a host-default mismatch.
+
+For `go -C server test -json ./cmd/server -run '^TestPlatformAdmin'`, verify
+database readiness before starting and require named test `run`/`pass` events
+in the JSON output. Current `TestMain` fails with a sanitized nonzero result when
+PostgreSQL is unreachable; older candidates may print `Skipping integration tests:`
+and exit zero without executing tests. A package-level `pass` alone is never
+acceptance evidence. Retain the failed/skipped attempt, restore database readiness,
+and rerun the same selection; report actual executed, passed, failed and skipped
+counts. See database-test-isolation.md for mandatory versus optional DB entry points.
 
 ## Wrong versus correct
 

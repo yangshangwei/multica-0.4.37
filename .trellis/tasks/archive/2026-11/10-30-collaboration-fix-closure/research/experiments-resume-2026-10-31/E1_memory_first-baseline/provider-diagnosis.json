@@ -1,0 +1,145 @@
+{
+  "captured_at": "2026-10-31T13:24:20.502080+00:00",
+  "observations": [
+    {
+      "trial": "2",
+      "run_id": "26b51bb8-786a-4001-9297-043bb2130362",
+      "test_owned_session_file": "/Users/artisan/.claude/projects/-private-var-folders-3n-gbt3p39s5pdc4l55js62gxnm0000gn-T-TestHostContextExperimentE1-memory-first2385944422-002-workspaces-b48859600ac259e157458e84b42912910e091a10738933cf078aa325aac7d671-work/46b4ac85-1928-4fef-89ad-9b76942b4d48.jsonl",
+      "ownership_basis": "Unique test-namespaced session whose first timestamp falls inside this durable trial interval",
+      "first_timestamp_epoch": 1793452461.528,
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "api_errors": [
+        {
+          "at": "2026-10-31T13:15:24.675Z",
+          "retry_attempt": 1,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T13:15:56.276Z",
+          "retry_attempt": 2,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T13:16:28.171Z",
+          "retry_attempt": 3,
+          "status": 429
+        }
+      ],
+      "error_counts": {
+        "429": 3
+      },
+      "source_sha256": "70a5f9ad34c805c92ad53cea0dcb47e602e9a7bf8f06c92559c6eaba27fa438c",
+      "source_bytes": 218452
+    },
+    {
+      "trial": "3",
+      "run_id": "d0470e80-a96f-464f-a436-faeecc5d4502",
+      "test_owned_session_file": "/Users/artisan/.claude/projects/-private-var-folders-3n-gbt3p39s5pdc4l55js62gxnm0000gn-T-TestHostContextExperimentE1-memory-first2385944422-004-workspaces-cdce39cc25caa573a2878ecadd009df4d0af96d8a4562f555004cf603ce77495-work/b130176c-cbc5-4321-bb09-fff3df1d7f42.jsonl",
+      "ownership_basis": "Unique test-namespaced session whose first timestamp falls inside this durable trial interval",
+      "first_timestamp_epoch": 1793452677.919,
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "api_errors": [
+        {
+          "at": "2026-10-31T13:19:02.036Z",
+          "retry_attempt": 1,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T13:19:33.408Z",
+          "retry_attempt": 2,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T13:20:05.659Z",
+          "retry_attempt": 3,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T13:20:39.107Z",
+          "retry_attempt": 4,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T13:22:10.657Z",
+          "retry_attempt": 1,
+          "status": 429
+        },
+        {
+          "at": "2026-10-31T13:22:42.464Z",
+          "retry_attempt": 2,
+          "status": 429
+        }
+      ],
+      "error_counts": {
+        "429": 6
+      },
+      "source_sha256": "e029823a666f91cf65d1c1a7672ea99d2171418d51a39492fec47c4ad6d481ff",
+      "source_bytes": 220314
+    }
+  ],
+  "trials": [
+    {
+      "scenario": "E1_memory_first",
+      "trial": "2",
+      "run_id": "26b51bb8-786a-4001-9297-043bb2130362",
+      "runtime_status": "finished",
+      "raw_harness_verdict": "manual_review_required",
+      "valid_behavior_sample": true,
+      "classification": "valid_behavior_sample_after_transient_rate_limit",
+      "fact_answer_correct": true,
+      "memory_write_observed": false,
+      "context_reads": 1,
+      "memory_reads": 1,
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "api_error_counts": {
+        "429": 3
+      },
+      "criterion_evidence": "The rehearsal must use **pg-blue-17**; **pg-green-15** was rejected because it lacks the pgvector 0.8 extension the migration needs. (Source: collaboration memory v3. The issue has no comments.)",
+      "lifecycle": {
+        "complete": true,
+        "prompt_coverage_complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permits": 1,
+        "terminations": 1,
+        "proofs": 1
+      },
+      "local_events": "E1_memory_first-baseline/records.jsonl.trials/26b51bb8-786a-4001-9297-043bb2130362/events.jsonl"
+    },
+    {
+      "scenario": "E1_memory_first",
+      "trial": "3",
+      "run_id": "d0470e80-a96f-464f-a436-faeecc5d4502",
+      "runtime_status": "incomplete",
+      "raw_harness_verdict": "provider_failure_unclassified",
+      "valid_behavior_sample": false,
+      "classification": "environment_provider_rate_limit_timeout",
+      "fact_answer_correct": null,
+      "memory_write_observed": null,
+      "context_reads": 1,
+      "memory_reads": 0,
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "api_error_counts": {
+        "429": 6
+      },
+      "criterion_evidence": "No final answer; Host reported claude timed out after 5m0s",
+      "lifecycle": {
+        "complete": true,
+        "prompt_coverage_complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permits": 1,
+        "terminations": 1,
+        "proofs": 1
+      },
+      "local_events": "E1_memory_first-baseline/records.jsonl.trials/d0470e80-a96f-464f-a436-faeecc5d4502/events.jsonl"
+    }
+  ],
+  "scope": "Only test-owned session metadata and API statuses retained; private provider transcripts not copied."
+}

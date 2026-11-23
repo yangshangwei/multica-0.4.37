@@ -1,0 +1,51 @@
+{
+  "reviewed_at": "2026-11-05T03:01:34.292644+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Small disabled-registration update against saved intended subprocess facts; no fresh plugin tree scan or execution",
+  "verdict": "pass-with-notes",
+  "blocking_save_findings": [],
+  "checks": {
+    "operator_matches_saved_intended_env": true,
+    "only_plugin_fingerprint_changed": true,
+    "config_hash_matches": true,
+    "environment_fingerprint_reference": true,
+    "database_name_only": true,
+    "external_owned_private_temp": true,
+    "provider_hash_matches": true,
+    "helper_hash_copy_matches": true,
+    "private_config_owned_mode": true,
+    "runnable_false": true,
+    "all_permits_false": true,
+    "protected_registration_fields": true,
+    "budget_25_consumed0": true,
+    "execution_clean": true,
+    "tested_product_unchanged": true
+  },
+  "operator_plugin_fingerprint": "617d9c5d6b208b7b1b44aa4ac5bff262a738b926b70886f16dda143873050d8c",
+  "operator_status": "PREPARED_IN_ACTUAL_ENV; saved facts equal registration, live equality must still be rechecked by unchanged helper/launcher",
+  "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+  "registration_sha256": "0d7fc917d3ae35261ff8e6657c971e5d0652153d9317625b010d3cc34541da8a",
+  "intended_facts_sha256": "596f7cbb4dff74d604c23a3c73a76d98d35c3a6b5d06231a09630f4c11c29947",
+  "config_sha256": "2c16a4f70fe4db6ae59ca544d6e893f63a541de9d8b9a727d3a605438b898d50",
+  "environment_sha256": "082f454ff70aac7e4f4feb6b870f00724b9ea9d1870c6f489f8ea9d2b8c8cb55",
+  "execution_head": "f18d3a445",
+  "tested_product_head": "1a32ca36c",
+  "current_prerequisites": {
+    "Warp_closed": "Root reports user confirmation and live absence; not inferred by reviewer",
+    "core_window": "still unavailable pending explicit boundary release",
+    "database": "named only, not created or migrated",
+    "build_check_run_permits": "all false",
+    "runnable": false,
+    "real_calls": 0
+  },
+  "allowed_next_scope": "Root may scoped-commit/sync this disabled binding and use helper describe for metadata-only equality. No Go/DB/Provider admission before actual window and permits.",
+  "privacy": "config contents/credentials not copied; fingerprints and non-sensitive status only",
+  "operations": {
+    "Go": 0,
+    "DB": 0,
+    "Provider": 0,
+    "tests": 0,
+    "user_config_edits": 0,
+    "new_plugin_scans": 0
+  }
+}

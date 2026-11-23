@@ -1,0 +1,87 @@
+{
+  "case": "real_missing_token_returns404",
+  "started_at": "2026-11-02T10:08:17.545624Z",
+  "finished_at": "2026-11-02T10:08:17.602213Z",
+  "database": "multica_func7af9_next_webhook_lookup_1",
+  "owned_backend_pid": 47393,
+  "owned_search_path": "\"$user\", public",
+  "owned_pool_closed": true,
+  "http_status": 404,
+  "response_body": "{\"error\":\"webhook not found\"}\n",
+  "retry_after": "",
+  "body_read_calls": 0,
+  "lookup_calls": 1,
+  "scan_calls": 1,
+  "scan_destination_types": [
+    "*pgtype.UUID",
+    "*pgtype.UUID",
+    "*string",
+    "*bool",
+    "*pgtype.Text",
+    "*pgtype.Text",
+    "*pgtype.Timestamptz",
+    "*pgtype.Text",
+    "*pgtype.Text",
+    "*pgtype.Timestamptz",
+    "*pgtype.Timestamptz",
+    "*pgtype.Timestamptz",
+    "*string",
+    "*pgtype.Text",
+    "*[]uint8",
+    "*pgtype.Text",
+    "*pgtype.UUID",
+    "*pgtype.Text",
+    "*pgtype.UUID",
+    "*pgtype.UUID"
+  ],
+  "exec_calls": 0,
+  "query_calls": 0,
+  "batch_calls": 0,
+  "canonical_sql": "-- name: GetWebhookTriggerByToken :one\nSELECT t.id, t.autopilot_id, t.kind, t.enabled, t.cron_expression, t.timezone, t.next_run_at, t.webhook_token, t.label, t.last_fired_at, t.created_at, t.updated_at, t.provider, t.signing_secret, t.event_filters, t.published_by_type, t.published_by_id, t.created_by_type, t.created_by_id, a.workspace_id AS autopilot_workspace_id\nFROM autopilot_trigger t\nJOIN autopilot a ON a.id = t.autopilot_id\nWHERE t.kind = 'webhook'\n  AND t.webhook_token = $1\n",
+  "canonical_sql_sha256": "4007048c71c8c2f3568d9ed4774d5c2f87c1da22795f1f413edca329bebb6865",
+  "argument_type": "pgtype.Text",
+  "argument_valid": true,
+  "argument_bytes": 47,
+  "argument_sha256": "af84b2fe5565fbd5a2a228d2240e3802b449a9acf0db972ccc5d31c23607a4bb",
+  "argument_matches_synthetic_path": true,
+  "scan_error_type": "*pgx.proxyError",
+  "scan_error_message": "no rows in result set",
+  "sqlstate": "",
+  "is_no_rows": true,
+  "bad_debt_before_allowed": true,
+  "bad_debt_after_allowed": false,
+  "absolute_precharged": false,
+  "persistence_before": {
+    "agent_task_queue": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "autopilot_run": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "webhook_delivery": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "persistence_after": {
+    "agent_task_queue": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "autopilot_run": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "webhook_delivery": {
+      "count": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "persistence_unchanged": true,
+  "shared_pool_ping_after": true,
+  "shared_search_path_before": "\"$user\", public",
+  "shared_search_path_after": "\"$user\", public",
+  "test_failed": false
+}

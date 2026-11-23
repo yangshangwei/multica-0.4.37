@@ -1,0 +1,9 @@
+{"Time":"2026-10-21T13:18:59.634019+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/service"}
+{"Time":"2026-10-21T13:19:00.340946+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationPromoteHoldUnknownCommitIsNotRetried"}
+{"Time":"2026-10-21T13:19:00.341026+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationPromoteHoldUnknownCommitIsNotRetried","Output":"=== RUN   TestCollaborationPromoteHoldUnknownCommitIsNotRetried\n"}
+{"Time":"2026-10-21T13:19:00.696761+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationPromoteHoldUnknownCommitIsNotRetried","Output":"    collaboration_hold_test.go:450: uncertain hold commit recovery repeated mutation or launched input: {RunIDs:[]} \u003cnil\u003e\n"}
+{"Time":"2026-10-21T13:19:00.741158+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationPromoteHoldUnknownCommitIsNotRetried","Output":"--- FAIL: TestCollaborationPromoteHoldUnknownCommitIsNotRetried (0.40s)\n"}
+{"Time":"2026-10-21T13:19:00.741195+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Test":"TestCollaborationPromoteHoldUnknownCommitIsNotRetried","Elapsed":0.4}
+{"Time":"2026-10-21T13:19:00.741776+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\n"}
+{"Time":"2026-10-21T13:19:00.743183+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/service","Output":"FAIL\tgithub.com/multica-ai/multica/server/internal/service\t1.109s\n"}
+{"Time":"2026-10-21T13:19:00.743198+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/service","Elapsed":1.109}

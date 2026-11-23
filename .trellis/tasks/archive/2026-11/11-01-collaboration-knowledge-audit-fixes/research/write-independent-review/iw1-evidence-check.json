@@ -1,0 +1,70 @@
+{
+  "verification_manifest_sha256": "cc866a855d314d17671888c214bd813ac42828ed2dffe9b185b19a8d23ab23d3",
+  "source_hashes_match": true,
+  "records": [
+    {
+      "metadata": "IW1-budget-red.json",
+      "metadata_sha256": "bfa8acbb9b56179e799ca1252e35f26ba030a8ded4c9136f62f65770c321bf44",
+      "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+      "working_diff_sha256": "a13ae0db9f7dc2712e7ddd170e8ebe6084dd94d3ff342275ba07a494a4ab54f9",
+      "database": "kfix_write_budget_root_20261102_0053",
+      "exit_code": 1,
+      "counts": {
+        "run": 0,
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e1437df11337c9a904bdd1e5c0369715f011aee10a834e979ab16a87429c89b7",
+      "log_hash_matches": true
+    },
+    {
+      "metadata": "IW1-budget-red-r2.json",
+      "metadata_sha256": "421766dc3991966c4090be0465ec2b4343800a52df9cc84caed14eed07c21ab7",
+      "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+      "working_diff_sha256": "b2b1bfaae8d87d04b7950c260fb92dfcbf93c3d54e0689fa36b808b7230af46f",
+      "database": "kfix_write_budget_root_20261102_0053",
+      "exit_code": 1,
+      "counts": {
+        "run": 1,
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "8465824225ed1c0b96247d4b812082c39ed01163238024ae823ba7978ee19358",
+      "log_hash_matches": true
+    },
+    {
+      "metadata": "IW1-budget-green.json",
+      "metadata_sha256": "bafa63da9ba2902019e1d36f53eedffcc52f49c72d1e762e112a6ed7af359ce6",
+      "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+      "working_diff_sha256": "60203b9d9d5b92ca68dd0a8af7e2d27ca4c654900080cc0c401d8f65734d0c81",
+      "database": "kfix_write_budget_root_20261102_0053",
+      "exit_code": 0,
+      "counts": {
+        "run": 7,
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "ccdc6b3180c31a47af3951876aa590f7bede70e00394cf1a55f84998df043ea6",
+      "log_hash_matches": true
+    },
+    {
+      "metadata": "IW1-budget-race.json",
+      "metadata_sha256": "eeb4e6b3d2d109b336296629183cea7f0099c902916c80a5e27cb2ef70d015d8",
+      "source_sha": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+      "working_diff_sha256": "60203b9d9d5b92ca68dd0a8af7e2d27ca4c654900080cc0c401d8f65734d0c81",
+      "database": "kfix_write_budget_root_20261102_0053",
+      "exit_code": 0,
+      "counts": {
+        "run": 7,
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "a299883918adc6f23df86d357e7ffaa7594de01cd41e2de68c1c1cbb6e0ee3f7",
+      "log_hash_matches": true
+    }
+  ]
+}

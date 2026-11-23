@@ -1,0 +1,234 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+	"strings"
+
+	"github.com/google/uuid"
+	"github.com/multica-ai/multica/server/internal/cli"
+	"github.com/multica-ai/multica/server/pkg/protocol"
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
+)
+
+func collaborationCommandAllowed(operation string) bool {
+	switch operation {
+	case "issue get", "issue comment list", "issue comment content", "issue comment add", "squad activity",
+		"collaboration memory show", "collaboration memory update", "collaboration handoff show", "collaboration handoff source",
+		"collaboration test-report subject", "collaboration test-report submit", "collaboration test-report receipt":
+		return true
+	default:
+		return false
+	}
+}
+
+func guardCollaborationCommand(cmd *cobra.Command, args []string) error {
+	run, err := cli.ReadCollaborationContext()
+	if err != nil || run == nil {
+		return err
+	}
+	operation := strings.TrimPrefix(cmd.CommandPath(), cmd.Root().Name()+" ")
+	return validateCollaborationCLI(run, cmd, operation, args)
+}
+
+func validateCollaborationCLI(run *cli.CollaborationContext, cmd *cobra.Command, operation string, args []string) error {
+	if !collaborationCommandAllowed(operation) {
+		return errors.New("command is unavailable inside a collaboration run")
+	}
+	if len(args) == 0 || args[0] != run.Identity.IssueID {
+		return errors.New("collaboration commands require the admitted issue UUID")
+	}
+	allowed := map[string]bool{"output": true, "debug": true}
+	if operation == "issue comment list" {
+		allowed["cursor"], allowed["limit"], allowed["max-bytes"] = true, true, true
+	}
+	if operation == "issue comment content" {
+		allowed["cursor"], allowed["revision"], allowed["max-bytes"] = true, true, true
+	}
+	if operation == "issue comment add" {
+		allowed["content"], allowed["content-stdin"], allowed["parent"], allowed["request-id"] = true, true, true, true
+		allowed["attachment"] = true
+	}
+	if operation == "squad activity" {
+		allowed["reason"], allowed["request-id"] = true, true
+	}
+	if operation == "collaboration memory update" {
+		allowed["base-version"], allowed["request-id"], allowed["content-stdin"], allowed["content-file"] = true, true, true, true
+	}
+	if operation == "collaboration handoff show" {
+		allowed["cursor"] = true
+	}
+	if operation == "collaboration handoff source" {
+		allowed["kind"], allowed["source-run-id"], allowed["version"], allowed["sha256"], allowed["offset"] = true, true, true, true, true
+	}
+	if operation == "collaboration test-report submit" {
+		allowed["request-id"], allowed["report-stdin"] = true, true
+	}
+	if operation == "collaboration test-report receipt" {
+		allowed["request-id"] = true
+	}
+	var unsupported string
+	cmd.Flags().Visit(func(flag *pflag.Flag) {
+		if !allowed[flag.Name] && unsupported == "" {
+			unsupported = flag.Name
+		}
+	})
+	if unsupported != "" {
+		return fmt.Errorf("--%s is unavailable inside a collaboration run", unsupported)
+	}
+	if operation == "issue comment add" && cmd.Flags().Changed("attachment") {
+		attachments, err := cmd.Flags().GetStringSlice("attachment")
+		if err != nil || len(attachments) != 1 || attachments[0] == "" {
+			return errors.New("collaboration comments accept exactly one explicit --attachment file")
+		}
+	}
+	if operation == "issue comment add" || operation == "squad activity" || operation == "collaboration memory update" || operation == "collaboration test-report submit" || operation == "collaboration test-report receipt" {
+		request, _ := cmd.Flags().GetString("request-id")
+		id, err := uuid.Parse(request)
+		if err != nil || id == uuid.Nil || id.String() != request {
+			return errors.New("collaboration writes require --request-id <UUID>; reuse it with the unchanged command after an uncertain result")
+		}
+	}
+	return nil
+}
+
+func runCollaborationCLI(cmd *cobra.Command, args []string, operation string) (bool, error) {
+	run, err := cli.ReadCollaborationContext()
+	if err != nil {
+		return true, err
+	}
+	if run == nil {
+		return false, nil
+	}
+	if err = validateCollaborationCLI(run, cmd, operation, args); err != nil {
+		return true, err
+	}
+	requestID, _ := cmd.Flags().GetString("request-id")
+	var body any
+	var attachment *cli.CollaborationOutputFile
+	switch operation {
+	case "issue comment add":
+		content, present, err := resolveTextFlag(cmd, "content")
+		if err != nil {
+			return true, err
+		}
+		if !present || strings.TrimSpace(content) == "" {
+			return true, errors.New("--content or --content-stdin is required")
+		}
+		// A collaboration run carries no MULTICA_AGENT_ID/TASK_ID, so the gated
+		// guardLocalPathLinks would skip every runtime comment.
+		if err := rejectLocalPathLinks(content, "comment body", "Deliver the file with --attachment <path> inside the current working directory."); err != nil {
+			return true, err
+		}
+		payload := map[string]any{"comment_id": requestID, "content": content}
+		if parent, _ := cmd.Flags().GetString("parent"); parent != "" {
+			id, err := uuid.Parse(parent)
+			if err != nil || id == uuid.Nil || id.String() != parent {
+				return true, errors.New("--parent must be a comment UUID")
+			}
+			payload["parent_id"] = parent
+		}
+		body = payload
+		if cmd.Flags().Changed("attachment") {
+			paths, _ := cmd.Flags().GetStringSlice("attachment")
+			file, err := cli.ReadCollaborationOutputFile(paths[0])
+			if err != nil {
+				return true, err
+			}
+			attachment = &file
+		}
+	case "squad activity":
+		if len(args) != 2 || (args[1] != "action" && args[1] != "no_action" && args[1] != "failed") {
+			return true, errors.New("squad outcome must be action, no_action, or failed")
+		}
+		reason, _ := cmd.Flags().GetString("reason")
+		body = map[string]string{"event_id": requestID, "outcome": args[1], "reason": reason}
+	}
+	ctx, cancel := cli.APIContext(cmd.Context())
+	defer cancel()
+	client := run.Client()
+	if operation == "issue comment content" {
+		if len(args) != 2 {
+			return true, errors.New("comment content requires the issue UUID and comment UUID")
+		}
+		revision, _ := cmd.Flags().GetString("revision")
+		cursor, _ := cmd.Flags().GetString("cursor")
+		maxBytes, _ := cmd.Flags().GetInt("max-bytes")
+		page, err := run.ReadCommentContent(ctx, client, args[1], revision, cursor, maxBytes)
+		if err != nil {
+			return true, err
+		}
+		return true, cli.PrintJSON(cmd.OutOrStdout(), page)
+	}
+	if operation == "issue comment list" && (cmd.Flags().Changed("cursor") || cmd.Flags().Changed("limit") || cmd.Flags().Changed("max-bytes")) {
+		limit, maxBytes := protocol.CollaborationRecallDefaultLimit, protocol.CollaborationRecallDefaultBytes
+		if cmd.Flags().Changed("limit") {
+			limit, _ = cmd.Flags().GetInt("limit")
+		}
+		if cmd.Flags().Changed("max-bytes") {
+			maxBytes, _ = cmd.Flags().GetInt("max-bytes")
+		}
+		cursor, _ := cmd.Flags().GetString("cursor")
+		page, err := run.ReadComments(ctx, client, limit, maxBytes, cursor)
+		if err != nil {
+			return true, err
+		}
+		return true, cli.PrintJSON(cmd.OutOrStdout(), page)
+	}
+	view, err := run.Read(ctx, client)
+	if err != nil {
+		return true, err
+	}
+	output, _ := cmd.Flags().GetString("output")
+	if attachment != nil {
+		payload := body.(map[string]any)
+		parent, _ := payload["parent_id"].(string)
+		content := payload["content"].(string)
+		result, err := run.CreateCommentAttachment(ctx, client, requestID, parent, content, view.AgentID, *attachment)
+		if err != nil {
+			return true, err
+		}
+		if output == "table" {
+			fmt.Fprintf(cmd.ErrOrStderr(), "Collaboration output recorded: %s\n", requestID)
+			return true, nil
+		}
+		return true, cli.PrintJSON(cmd.OutOrStdout(), result)
+	}
+	switch operation {
+	case "issue get":
+		if output == "table" {
+			cli.PrintTable(cmd.OutOrStdout(), []string{"ID", "TITLE", "DESCRIPTION", "RUN", "ROLE"}, [][]string{{view.IssueID, view.Title, view.Description, view.Identity.RunID, view.StepKind}})
+			return true, nil
+		}
+		return true, cli.PrintJSON(cmd.OutOrStdout(), view)
+	case "issue comment list":
+		if output == "table" {
+			rows := make([][]string, 0, len(view.Comments))
+			for _, comment := range view.Comments {
+				rows = append(rows, []string{comment.ID, comment.AuthorType, comment.AuthorID, comment.Content, comment.CreatedAt})
+			}
+			cli.PrintTable(cmd.OutOrStdout(), []string{"ID", "TYPE", "AUTHOR", "CONTENT", "CREATED"}, rows)
+			return true, nil
+		}
+		return true, cli.PrintJSON(cmd.OutOrStdout(), view.Comments)
+	case "issue comment add", "squad activity":
+		path := "/comments"
+		if operation == "squad activity" {
+			path = "/squad-activity"
+		}
+		var result map[string]any
+		if err = client.PostJSON(ctx, run.Path(path), body, &result); err != nil {
+			return true, cli.CollaborationError(err, requestID)
+		}
+		if operation == "issue comment add" && result["comment_id"] != requestID || operation == "squad activity" && result["code"] != "squad_activity_recorded" {
+			return true, cli.CollaborationError(errors.New("invalid collaboration write receipt"), requestID)
+		}
+		if output == "table" {
+			fmt.Fprintf(cmd.ErrOrStderr(), "Collaboration operation recorded: %s\n", requestID)
+			return true, nil
+		}
+		return true, cli.PrintJSON(cmd.OutOrStdout(), result)
+	}
+	return true, errors.New("command is unavailable inside a collaboration run")
+}

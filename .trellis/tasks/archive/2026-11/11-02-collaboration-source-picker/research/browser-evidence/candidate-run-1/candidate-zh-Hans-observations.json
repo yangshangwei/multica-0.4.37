@@ -1,0 +1,119 @@
+{
+  "phase": "candidate",
+  "locale": "zh-Hans",
+  "services": {
+    "health": {
+      "status": "ok",
+      "pid": 28253,
+      "commit": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "started_at": "2026-11-02T15:44:42Z"
+    },
+    "base_commit": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "api_binary_sha256": "06439cee6c7a2b1aa6741f54815ef0e6f170999ee3f7b957aa19231b9999e069"
+  },
+  "workspace_id": "fe6b4234-ae7f-4b42-a954-09072698b013",
+  "fixtures": [
+    {
+      "admission_status": "not_required",
+      "id": "01a19cf1-f083-7cb5-a403-432a1189af2b",
+      "workspace_id": "fe6b4234-ae7f-4b42-a954-09072698b013",
+      "number": 1,
+      "identifier": "SOUR-1",
+      "title": "Alpha source planning 981ce519",
+      "description": null,
+      "status": "todo",
+      "status_category": "todo",
+      "status_name": "",
+      "priority": "none",
+      "assignee_type": null,
+      "assignee_id": null,
+      "creator_type": "member",
+      "creator_id": "16d863fe-501f-4576-aac4-8a4497a89fcb",
+      "parent_issue_id": null,
+      "project_id": null,
+      "position": -1,
+      "stage": null,
+      "start_date": null,
+      "due_date": null,
+      "created_at": "2026-11-02T23:47:43+08:00",
+      "updated_at": "2026-11-02T23:47:43+08:00",
+      "revision": 1,
+      "last_activity_at": "2026-11-02T23:47:43.864199+08:00",
+      "metadata": {},
+      "properties": {},
+      "labels": [],
+      "current_iteration_id": null,
+      "iteration_rollover_count": 0
+    },
+    {
+      "admission_status": "not_required",
+      "id": "01a19cf1-f08f-77bc-9fca-5d408db5c2c2",
+      "workspace_id": "fe6b4234-ae7f-4b42-a954-09072698b013",
+      "number": 2,
+      "identifier": "SOUR-2",
+      "title": "Beta source task 981ce519 — 这是一项用于检查长标题换行的来源任务，包含较长的说明和可辨识的任务内容。Beta source task 981ce519 — 这是一项用于检查长标题换行的来源任务，包含较长的说明和可辨识的任务内容。",
+      "description": null,
+      "status": "todo",
+      "status_category": "todo",
+      "status_name": "",
+      "priority": "none",
+      "assignee_type": null,
+      "assignee_id": null,
+      "creator_type": "member",
+      "creator_id": "16d863fe-501f-4576-aac4-8a4497a89fcb",
+      "parent_issue_id": null,
+      "project_id": null,
+      "position": -2,
+      "stage": null,
+      "start_date": null,
+      "due_date": null,
+      "created_at": "2026-11-02T23:47:43+08:00",
+      "updated_at": "2026-11-02T23:47:43+08:00",
+      "revision": 1,
+      "last_activity_at": "2026-11-02T23:47:43.88309+08:00",
+      "metadata": {},
+      "properties": {},
+      "labels": [],
+      "current_iteration_id": null,
+      "iteration_rollover_count": 0
+    }
+  ],
+  "created_issue_id": "01a19cf1-fdab-77f3-a7d1-a9fd1601fb17",
+  "saved_parent_issue_id": "01a19cf1-f083-7cb5-a403-432a1189af2b",
+  "screenshots": [
+    {
+      "filename": "candidate-zh-Hans-wide.png",
+      "width": 1280,
+      "height": 950,
+      "scrollWidth": 1280
+    },
+    {
+      "filename": "candidate-zh-Hans-narrow.png",
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    }
+  ],
+  "creation_posts": 1,
+  "page_errors": [],
+  "injected_transient_search_failure": true,
+  "coverage": [
+    "empty click browsing",
+    "title search",
+    "bare number search",
+    "complete case-insensitive identifier",
+    "no matches",
+    "clear/reopen",
+    "keyboard selection",
+    "clear parent",
+    "nested Escape/focus",
+    "transient error/retry",
+    "preserved draft",
+    "explicit create and saved parent UUID"
+  ],
+  "limitations": [
+    "Chromium Web only; no physical touch or native Electron session",
+    "delayed-obsolete result matrix stays in canonical shared component tests",
+    "fixture rows retained in the task-owned browser database for evidence"
+  ]
+}

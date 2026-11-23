@@ -1,0 +1,528 @@
+{
+  "schema_version": 1,
+  "reviewer": {
+    "identity": "/root/adapter_v5_review",
+    "role": "trellis-check",
+    "parent": "/root",
+    "reviewed_at": "2026-11-02T13:18:28.482904+00:00"
+  },
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Independent review of exact private adapter-v5, its bounded fake isolation contracts and referenced retained evidence; report-only ownership.",
+  "verdict": "changes-required",
+  "blocking_findings_open": 2,
+  "launcher_clearance": false,
+  "whole_candidate_acceptance": false,
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "AV5-1",
+      "severity": "high",
+      "status": "open",
+      "blocking": true,
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+      "line": 60,
+      "related_lines": [
+        73,
+        75
+      ],
+      "source_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+      "title": "Recursive test mode does not bind the selected packages to the clone allocation",
+      "issue": "Mode0 validates a clone-shaped URL and the allocation database/template/state, then execs the original Go arguments without reading allocation.package or resolving the effective package selection. A different package, several packages, or ./... can therefore execute on the owner package clone. Missing package identity and completed records are also accepted.",
+      "actual_reproduction": {
+        "driver": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-selector-repro.py",
+        "raw_log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-selector-repro.log",
+        "raw_log_sha256": "006f464918dc69b767f6c4cf97bd0173bbd9de404ea07368aee58a9589bfcaec",
+        "allocation_package": "example/first",
+        "unsafe_selector_forward_count": 6,
+        "selectors": [
+          "go test from valid example/second cwd",
+          "go -C <valid second package> test",
+          "go -C=<valid second package> test",
+          "go -C ../second test",
+          "go test ./...",
+          "go test example/first example/second"
+        ],
+        "observed": "Every unsafe selection reached the mocked execv with the same clone; no package-list or fresh-clone call occurred.",
+        "real_Go_tests": 0,
+        "real_SQL_connections": 0
+      },
+      "coverage_gap": {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py",
+        "line": 99,
+        "detail": "The positive recursive contract writes no package identity and checks only that the chosen database URL is forwarded. It cannot detect package-scope reuse."
+      },
+      "requested_fix": "In a new version, require a nonblank canonical allocation.package and bind ordinary recursive selectors to it. Resolve selectors using the explicit pinned Go executable and identical global -C arguments; the no-selector default is dot under the effective Go directory. Accept only the exact single permitted package, or route other/multiple selections through fresh per-package allocation. Reject before test execution when binding cannot be proven. Preserve the current normal allocation and compile/non-test behavior.",
+      "why_not_fixed": "The dispatched reviewer owns only report files and private review output; the coordinator owns adapter repair and new-version integration."
+    },
+    {
+      "id": "AV5-2",
+      "severity": "medium",
+      "status": "open",
+      "blocking": true,
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+      "line": 14,
+      "related_lines": [
+        59,
+        76,
+        86,
+        102,
+        120,
+        147
+      ],
+      "source_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+      "title": "Mode1 ordinary tests still accept missing explicit REAL_GO context",
+      "issue": "When mode1, the local template, evidence directory and PSQL are present but MULTICA_TASK_REAL_GO is absent, the line14 non-test fallback is still used for package listing and test Popen. The ordinary test path does not reject the incomplete executable context before SQL or Go calls.",
+      "actual_reproduction": {
+        "test": "GoContracts.test_missing_real_go_refuses_before_all_subprocesses",
+        "raw_log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/independent-contracts.log",
+        "raw_log_sha256": "030f5c23cd6ce4dbc3d492bfa4dc56d7412e517d837629bf3ce74165fe20a38a",
+        "missing_key": "MULTICA_TASK_REAL_GO",
+        "present_keys": [
+          "MULTICA_TASK_PACKAGE_DB_MODE=1",
+          "DATABASE_URL with permitted local check template",
+          "MULTICA_TASK_PACKAGE_DB_EVIDENCE",
+          "MULTICA_TASK_PSQL"
+        ],
+        "observed": "Mocked SELECT template -> fallback /opt/homebrew/bin/go list -> CREATE clone -> SELECT clone -> fallback Go test Popen; driver result exit0 rather than refusal.",
+        "real_Go_tests": 0,
+        "real_SQL_connections": 0
+      },
+      "impact_boundary": "The reproduced path still allocates a database clone; this finding concerns incomplete explicit context and executable/toolchain binding, not demonstrated writes to the default database.",
+      "requested_fix": "Validate all required nonblank ordinary-test isolation settings, especially explicit MULTICA_TASK_REAL_GO, before SQL/list/test. Keep the hard-coded missing-REAL_GO fallback only for non-test and genuine compile-only calls. Extend the missing-key matrix to mode1 with REAL_GO absent/empty, asserting exit2 and zero subprocess/SQL calls.",
+      "why_not_fixed": "Outside the reviewer write scope; hand off with AV5-1 for a new adapter version and independent recheck."
+    }
+  ],
+  "previous_AV4_1_disposition": "The exact mode-absent stripped ordinary-test path is closed in v5 and independently refuses exit2 without Go/SQL. This does not close AV5-1 or AV5-2, and the v4 changes-required record remains preserved.",
+  "verification": {
+    "lint": {
+      "status": "not-run",
+      "reason": "This private Python-only review has no configured repository Python lint command; no product files were changed. In-memory syntax/AST checks passed for all three reviewed Python sources. No project lint success is claimed."
+    },
+    "typecheck": {
+      "status": "not-applicable",
+      "reason": "No TypeScript/Go implementation changes in this bounded Python adapter review; no project typecheck success is claimed."
+    },
+    "syntax": {
+      "status": "pass",
+      "in_memory_only": true,
+      "files": [
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/pnpm",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py"
+      ]
+    },
+    "tests": {
+      "status": "fail",
+      "existing_v5_fake_contracts": {
+        "methods": 11,
+        "pass": 11,
+        "fail": 0,
+        "exit_code": 0
+      },
+      "independent_fake_contracts": {
+        "methods_run": 20,
+        "passing_methods": 15,
+        "failing_methods": 5,
+        "failure_assertion_entries": 8,
+        "errors": 0,
+        "exit_code": 1,
+        "failing_method_ids": [
+          "__main__.GoContracts.test_missing_real_go_refuses_before_all_subprocesses",
+          "__main__.GoContracts.test_recursive_allocation_without_package_identity_must_refuse",
+          "__main__.GoContracts.test_recursive_different_package_must_not_use_owner_clone",
+          "__main__.GoContracts.test_recursive_multiple_packages_must_not_share_owner_clone",
+          "__main__.GoContracts.test_recursive_no_selector_and_C_require_resolved_package_check"
+        ]
+      },
+      "recursive_selector_probe": {
+        "driver_exit_code": 0,
+        "meaning": "Observational probe, not a passing safety gate",
+        "unsafe_selections_forwarded": 6
+      },
+      "repository_guard_with_fake_pnpm": {
+        "exit_code": 0,
+        "real_repository_guard": true,
+        "test_created_pnpm_only": true,
+        "real_agent_CLIs": 0
+      },
+      "stripped_cached_go_version": {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+          "version"
+        ],
+        "exit_code": 0,
+        "stdout": "go version go1.27.0 darwin/arm64",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "wrapper_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+        "raw_log_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+        "environment_keys": [
+          "GOTOOLCHAIN",
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "private_isolation_keys_absent": true,
+        "database_env_absent": true,
+        "network_denied": true,
+        "GOTOOLCHAIN": "local",
+        "real_Go_tests": 0,
+        "DB_or_Provider": 0
+      }
+    },
+    "commands": [
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py"
+        ],
+        "exit_code": 0,
+        "script_sha256": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+        "raw_log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/existing-v5-contracts.log",
+        "raw_log_sha256": "4b9e2fa6f246c1bb2bdac7d179500e3acd4671eced2f866c25835fac5e8e6da5",
+        "network_denied": true,
+        "environment_keys": [
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "real_database_or_Provider_called": false,
+        "label": "existing-v5-contracts"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/independent-contracts.py"
+        ],
+        "exit_code": 1,
+        "script_sha256": "bbc0d80f3f7edf10c76de8ff979f07fbe8b4dc3d437a4f4e6495ec7ac350e5da",
+        "raw_log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/independent-contracts.log",
+        "raw_log_sha256": "030f5c23cd6ce4dbc3d492bfa4dc56d7412e517d837629bf3ce74165fe20a38a",
+        "network_denied": true,
+        "environment_keys": [
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "real_database_or_Provider_called": false,
+        "label": "independent-contracts"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-repro.py"
+        ],
+        "exit_code": 0,
+        "raw_log": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-repro.log",
+        "raw_log_sha256": "87add1326eee758491d9fd2db07413a84a818e2a7d135ec0e9ba9eb68b632891",
+        "network_denied": true,
+        "environment_keys": [
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "test_method": "Only in-process mocked Go and SQL calls",
+        "label": "recursive-repro"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/deny-network.sb",
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-B",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-selector-repro.py"
+        ],
+        "exit_code": 0,
+        "script_sha256": "2801ec8b5b5e4799e6f6f54004c9ed761f7cd52c2f0f1d1549d18fc11d4f27cc",
+        "raw_log_sha256": "006f464918dc69b767f6c4cf97bd0173bbd9de404ea07368aee58a9589bfcaec",
+        "network_denied": true,
+        "environment_keys": [
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "method": "Only mocked Go/SQL; valid fixture cwd and relative/absolute Go -C arguments",
+        "label": "recursive-selector-repro"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+          "version"
+        ],
+        "exit_code": 0,
+        "stdout": "go version go1.27.0 darwin/arm64",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "wrapper_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+        "raw_log_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+        "environment_keys": [
+          "GOTOOLCHAIN",
+          "HOME",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "private_isolation_keys_absent": true,
+        "database_env_absent": true,
+        "network_denied": true,
+        "GOTOOLCHAIN": "local",
+        "real_Go_tests": 0,
+        "DB_or_Provider": 0,
+        "label": "stripped-go-version"
+      },
+      {
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/pnpm",
+          "exec",
+          "playwright",
+          "test",
+          "e2e/fixture-only.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--timeout=32000"
+        ],
+        "exit_code": 0,
+        "raw_log_sha256": "08d5f64940ee6666e902ab1228e7c8c3f32cd2c3d016557518ff83f726e85b10",
+        "fake_pnpm_sha256": "f4107f7888b8f57d344d073d5afd530ee62259df840e25d3f9a214b6dd211b50",
+        "repository_guard_sha256": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+        "agent_names_sha256": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0",
+        "network_denied": true,
+        "environment_keys": [
+          "DATABASE_URL",
+          "HOME",
+          "MULTICA_TASK_CANDIDATE_ROOT",
+          "MULTICA_TASK_PACKAGE_DB_EVIDENCE",
+          "MULTICA_TASK_REAL_PNPM",
+          "MULTICA_TASK_RENDERER_URL",
+          "NEXT_PUBLIC_API_URL",
+          "PATH",
+          "PYTHONDONTWRITEBYTECODE",
+          "TMPDIR"
+        ],
+        "actual_real_Go_tests": 0,
+        "DB": 0,
+        "browsers": 0,
+        "real_agent_CLIs": 0,
+        "Provider": 0,
+        "real_pnpm": 0,
+        "label": "repository-guard-fake-pnpm"
+      }
+    ]
+  },
+  "positive_contracts_verified": [
+    "Unmarked ordinary go test, including -C forms, false compile flags and -c after -args/-- or as a flag value, refuses before Go/SQL.",
+    "Genuine compile-only calls and non-test forwarding preserve argv without database execution; actual cached go version works under network denial.",
+    "Mode1 normal multi-package selection obtains distinct clone names, checks actual template and clone database identities and records per-package named JSON events.",
+    "Normal -C, original race/timeout/package-worker/test-worker/count/run arguments and failing process exit are preserved for the exercised repository command subset.",
+    "Missing/wrong recursive allocation database, unavailable record, invalid template and non-running/non-complete state refuse before forwarding.",
+    "pnpm preserves selected tests, grep, project, workers, retries, timeout and output flags; adds line,json only when reporter was not explicit and preserves both explicit reporter forms.",
+    "pnpm forwards through the candidate repository Agent CLI guard; a real guard wrapped a test-created fake pnpm with sentinel PATH/marker installed and no agent discovery/execution."
+  ],
+  "adapter_sha256": {
+    "go": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "preparation_and_retained_hash_checks": {
+    "adapter_hashes_match_preparation": true,
+    "adapter_hashes_match_local_record": true,
+    "local_contract_raw_hash_matches": true,
+    "historical_v4_contract_hash_matches": true,
+    "replay_output_hash_matches": true,
+    "replay_results_hash_matches": true,
+    "replay_stats_match": true,
+    "replay_has_two_actual_passes": true,
+    "replay_test_source_hashes_match": true,
+    "sealer_helper_hash_matches_v4_record": true,
+    "candidate_HEAD_matches_preparation": true,
+    "candidate_product_git_trees_match_preparation": true
+  },
+  "source_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/CLAUDE.md": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/check.jsonl": "c0bd7db5492b3f9b227110db5cd2f2b1b8790c93c7898f73e3253c1eefd27bb3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/prd.md": "b5f748cb96abe97c06fa4f29e384865ace283771ec0a2b9d774dfc2b2d8000a4",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/design.md": "341bdd3148907b0879e918330b07819e40041850fd16e5a0497c40b071638112",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/implement.md": "3c5a3dbbf3e03242e105d7b33817fedd22f650f9669c7eb325759f265395bc5e",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/advance-plan-2026-11-02.md": "9f031fb666775b89523266ba45e80bd9d532693aff73c7e566ddbe56f6c4ab0a",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/database-test-isolation.md": "5a4a045224976a10eb9644d68faca00fcae6dd1350e46b91e83979065135e996",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-preparation.md": "5a5c20c8c74a0484eac9be8102df26e7923cb0aff3d496db9019bcd2d48974cf",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-context-experiments.md": "4b994e4dcaa6af503829faa60476ff5089352e2c5c521201609e561de62ea709",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/e2e-run-environment.md": "23325552ca9131cb4ab87cfd44b2c78657863c076bbd8f1fca0cf47aa8635e43",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test-initial.py": "996183ddcfd139ad5a6a28dfaf657c6f4e4947aafbb3f68b9139581fed2506c1",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-repro.py": "7564385a9d305a66316d53067b41fbeafede6329a971ffa067177e744ba792a4",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-selector-repro.py": "2801ec8b5b5e4799e6f6f54004c9ed761f7cd52c2f0f1d1549d18fc11d4f27cc",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/independent-contracts.py": "bbc0d80f3f7edf10c76de8ff979f07fbe8b4dc3d437a4f4e6495ec7ac350e5da",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/bin/fake-pnpm": "f4107f7888b8f57d344d073d5afd530ee62259df840e25d3f9a214b6dd211b50",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/agent-cli-command-names.txt": "47e806ce17e2383abb42e3e06c5d6cf19f74cc0c65357852eb199dc16a3499c0",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/check.sh": "c6d544402060c0e76fafc73e98fece92e063a971bc3cc4e85b36f8d5b8058ae6",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/fixtures/collaboration-preparation-records.ts": "da962e1bef8d935d2b7c393ba6403324daea2c689729fa14ff28710da6321f8b",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/collaboration-preparation-records-web.spec.ts": "12d92bc59a2ca10a42441157332aa6c8dd00699af4be0737e2d612e17b652da3",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/e2e/collaboration-preparation-records-desktop.spec.ts": "9aa833ddc18e7c5be8d1703b0911536f335f53b6c839e6fbfc7c446cd62d13b2"
+  },
+  "artifact_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/adapter-v4-independent-review.json": "2fde82087fda91af52f4dea48b84c9edb0b5f67c41b5c3ac0aa8879bae180a97",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/adapter-v5-local-verification.json": "9cf6065323d176de52d6ca5b4add8dacccaa0ee56ca1e16fc8b4522263ad945f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/next-complete-check-preparation.json": "7481113418dba5c00eb027e45590b915a84eb3466a01b40290ec33b9d60a8131",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/contracts.json": "f448d35994803fce97f08cd83291dab457f442c0e081ee3dead7c3be0825d2af",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/contracts-ownership.json": "2723a4459ef9ac95b75de1c3a5f8f3b390b6b651ddc6376ef43785b39b6eaa55",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/initial-contract-failure.json": "1a71e6085045b74eea6e40b4a904bfbeada61427b5dced0bc7b341a329eb76a3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/fake-compile-fixture-correction.json": "6bc4fa077399f61505e421708446ef4914cc316993f3eb53eae6c9376ea3090d",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/stripped-Go-forward-ownership-final.json": "8980976c29d84bb542339ac14a6b276de60388199dc206175d995211de1ef416",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/stripped-Go-forward-v5.json": "90d77266b104bee65ba534c1fcc636bb881a30042503d34cddd308b7f65bceed",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-repro.json": "029d9a88e63b728ff0e8c95fe41028c9dfbdfe836fe496666584b4d9c2913d27",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-selector-repro.json": "2ca3d733e4cdc5918bef80188bf29e4b3b5fbaf5cca18a6f5db72d1e0dca217d",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/independent-contracts.json": "16bebd95c660bdbb9c83202c38c0761e81468d50a999eeebaefc34565b0f8ce3",
+    "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/preparation-records-closed-isolation-v5-2/execution.json": "3e423923b9885aab606cc234ffd788e877b0a4c60d6ca25033768063d795a2e5",
+    "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/preparation-records-closed-isolation-v5-2/results.json": "2c339738c485761b3d84cf90040f98ef7b2454e90537797216a653196f8e20be"
+  },
+  "raw_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/contracts.log": "c8e07902949b51aaf2a1bd127650d3975253c009f42b847603df3eb0cb153df7",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/contracts-ownership.log": "69cb25fba26287a4f99293ceb930c6927bec9ad9595823a239dd7305de322b49",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/initial-contracts.log": "f7a8a43404ffa273683e8fce99afd6fa60ee4ebc60b67bf35b97e1d86191e741",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/historical-v4-contract-final.log": "87488c484d559d60a4fb4f0ddb2c0001fe84d9484c8f7de36ceb57227ba5e8b4",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/existing-v5-contracts.log": "4b9e2fa6f246c1bb2bdac7d179500e3acd4671eced2f866c25835fac5e8e6da5",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/independent-contracts.log": "030f5c23cd6ce4dbc3d492bfa4dc56d7412e517d837629bf3ce74165fe20a38a",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-repro.log": "87add1326eee758491d9fd2db07413a84a818e2a7d135ec0e9ba9eb68b632891",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/recursive-selector-repro.log": "006f464918dc69b767f6c4cf97bd0173bbd9de404ea07368aee58a9589bfcaec",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/stripped-go-version.log": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/repository-guard-fake-pnpm.log": "08d5f64940ee6666e902ab1228e7c8c3f32cd2c3d016557518ff83f726e85b10",
+    "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/preparation-records-closed-isolation-v5-2/output.log": "c2b0c1b3cdcf0fd440087d848c2f7b7ff27ec9c26fea7b0bf4059ef940201153"
+  },
+  "binding_artifact": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5-independent-review-20261102/review-binding.json",
+    "sha256": "443db4ce64f419f109993f7bcfc431b7aa40b82a3d30f5737232f9a15965b7c6"
+  },
+  "candidate_git_identity": {
+    "command": [
+      "/usr/bin/git",
+      "-C",
+      "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102",
+      "rev-parse",
+      "HEAD",
+      "HEAD:server",
+      "HEAD:apps",
+      "HEAD:packages"
+    ],
+    "exit_code": 0,
+    "values": [
+      "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+      "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+      "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+      "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+    ],
+    "working_tree_cleanliness_not_certified_here": true
+  },
+  "retained_preparation_replay": {
+    "directory": "/Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102/.omx/private/contract-focus-runs/preparation-records-closed-isolation-v5-2",
+    "stats": {
+      "startTime": "2026-11-01T22:05:29.678Z",
+      "duration": 11460.674,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "named_results": [
+      {
+        "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+        "file": "collaboration-preparation-records-desktop.spec.ts",
+        "project": "chromium",
+        "expected_status": "passed",
+        "result_statuses": [
+          "passed"
+        ],
+        "retries": [
+          0
+        ]
+      },
+      {
+        "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+        "file": "collaboration-preparation-records-web.spec.ts",
+        "project": "chromium",
+        "expected_status": "passed",
+        "result_statuses": [
+          "passed"
+        ],
+        "retries": [
+          0
+        ]
+      }
+    ],
+    "rerun_by_reviewer": false
+  },
+  "historical_failures": {
+    "AV4_1_verdict": "changes-required",
+    "initial_v5_contract_exit": 1,
+    "original_third_complete_check": {
+      "exit_code": 2,
+      "browser_pass": 296,
+      "browser_fail": 47,
+      "browser_skip": 89,
+      "browser_not_run": 7
+    }
+  },
+  "spec_sync": {
+    "change_needed_in_this_review": false,
+    "reason": "Existing isolation specs already require explicit identity and a fresh per-package database. The needed correction is to the private adapter and its regression contracts; task evidence and launcher source/hash binding must then be updated by the coordinator."
+  },
+  "limitations": [
+    "Fake SQL and fake Go streams prove launcher behavior only; no PostgreSQL allocation/migration/TestMain integration or pool/resource assertion was executed.",
+    "All unsafe paths were intercepted, never executed against Go test or a real database. Recursive -C/default selection identities in the extra probe come from valid private fixture directories, not a real Go list invocation.",
+    "The actual Go command was only cached local go version with network denied and no database or private isolation settings; it is not sealer/go-run or ordinary-test execution evidence.",
+    "The two preparation Web/Desktop results were independently read and hash-verified as retained 2pass/0fail/0skip/0retry; no browser/fixture replay occurred in this review.",
+    "This review does not certify live candidate cleanliness, the startup source seed, renderer availability, listener/registry ownership, complete make check, RKI6, native installation, account acceptance or release readiness.",
+    "The third complete run remains exit2 with browser296pass47fail89skip7notrun; targeted and fake passes are not combined into a complete pass.",
+    "The coordinator must repair in a new adapter version, independently recheck it and rebind preparation/launcher hashes before clearance; no clearance or task-state update was written."
+  ],
+  "reviewer_operations": {
+    "real_Go_test_processes": 0,
+    "real_DB_connections": 0,
+    "real_migrations": 0,
+    "services_started": 0,
+    "browsers_started": 0,
+    "real_pnpm": 0,
+    "real_agent_CLI_invocations": 0,
+    "Provider_calls": 0,
+    "downloads": 0,
+    "global_environment_changes": 0,
+    "product_or_adapter_edits": 0,
+    "git_mutations_or_commits": 0,
+    "spawned_agents": 0,
+    "cached_go_version_invocations": 1,
+    "candidate_repository_guard_with_fake_pnpm": 1
+  },
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/adapter-v5-review.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/adapter-v5-review.json"
+  ],
+  "simplifications_made": "None; independent review only.",
+  "markdown_sha256": "17a74f72d74c86b748b2fb0ef09990769ee7b3bd726bd66063abc9197e38239b"
+}

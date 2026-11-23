@@ -1,0 +1,3372 @@
+{
+  "status": "ACCEPTED_BOUNDED_ORDINARY_SUBSCRIPTION_R05",
+  "reviewer": "/root/notification_runtime_check",
+  "checked_at": "2026-11-19T02:48:39.032271+00:00",
+  "reviewer_body_service_execution": 0,
+  "prior_failure_reports_unchanged": true,
+  "full_S3_accepted": false,
+  "source": "source/client-harness-subscription-r06",
+  "fixture_sha256": "11992b524fb3fa7c524b611654ecac0ddc9eafdad4ac5881c825962943d4ee58",
+  "cases": {
+    "Desktop": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r05/results/collaboration-recovery-sub-06392-nect-reload-and-unsubscribe-chromium/desktop-ordinary-subscriptions.json",
+      "sha256": "6b4540ff253e5c9ac784f1a7af02c4b0b48a159c2a85da81125f88175ff5a574",
+      "attachment_sha256": "1ffc5b968085a45c64b4d66d63fbdd6e8e395864289eacb61ba70bc6c74b3988",
+      "status": "PASSED",
+      "result": {
+        "platform": "Desktop",
+        "parent_issue_id": "01a1f198-e7f9-7835-b568-ffec4c8234d3",
+        "child_issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+        "original_comment_id": "01a1f198-fab5-72f5-8786-89033e27b6b0",
+        "second_comment_id": "01a1f199-0a9c-7572-a1e3-6ed43c9f8637",
+        "inbox_id": "eeb4a43d-8592-5370-a4f5-e40357128521",
+        "first_recipients": [
+          "f9dbdd13-8f43-4709-98be-f3fa0b054846"
+        ],
+        "second_recipients": [],
+        "manual_subscribe_UI_writes": 1,
+        "manual_unsubscribe_UI_writes": 1,
+        "original_notice_read_UI_writes": 1,
+        "ordinary_composer_comments": 2,
+        "genuine_offline_reconnects": 1,
+        "actual_reloads": 1,
+        "literal_event_replay": "SEPARATE_GO_LISTENER_ACCEPTANCE",
+        "API_key_replay": "NOT_RUN",
+        "no_dispatch": true,
+        "retained_business_rows": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 2,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        }
+      },
+      "actors": {
+        "commenter": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+        "watcher": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+        "nonwatcher": "9536d0d9-4631-439f-a098-bddf7e04db92",
+        "optout": "1d780531-b830-4433-95ad-6dc83b8f0b7d"
+      },
+      "source_workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+      "checks": {
+        "all7snapshots17relations": true,
+        "SQL_hashes_match": true,
+        "SQL_bindings_match": true,
+        "SQL_row_bounds": true,
+        "one_first_watcher_notice": true,
+        "read_changes_only_read": true,
+        "reconnect_all_sets_unchanged": true,
+        "final_old_notice_unchanged": true,
+        "both_original_comments_present_once": true,
+        "second_comment_no_notice": true,
+        "parent_private_sets_unchanged": true,
+        "no_AI_upload_or_receipt_effects": true,
+        "watcher_exact_mutation_sequence": true,
+        "attachment_common_values_equal": true,
+        "all_client_cleanup_success": true
+      },
+      "phase_row_hashes": {
+        "seeded_complete_rows": "4f464ddab5cb6c4327834179dbde6e647d9b4a0e3ecc8a1b653b4c426e306ca3",
+        "manual_subscription_rows": "21ea93cfeb34bd2bcb58374df500fb8180a6f2a684ce7479a5e7ea22f54ce617",
+        "first_comment_all_persisted_recipients": "f5592b1a24bd28353199a75223434d5d23eee8317df63cd0ff14870f79c5832e",
+        "original_notice_read_state": "4b8d8cfddc0c4dc251fe2e2b58bdd612e14357782d6b01204e412615508af4de",
+        "genuine_reconnect_reload_complete_rows": "4b8d8cfddc0c4dc251fe2e2b58bdd612e14357782d6b01204e412615508af4de",
+        "manual_subscription_tombstone": "c99413a3af704f96fab58671717f8b96a6843599f004833d24d3b76c8addcdf9",
+        "unsubscribe_distinct_second_comment_complete_rows": "c32bde69e15c59b595375021529d47d8e3a30dbee96bdaf3be7ec936f97961ec"
+      },
+      "phase_counts": {
+        "seeded_complete_rows": {
+          "issues": 2,
+          "subscribers": 2,
+          "inbox": 0,
+          "comments": 0,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "manual_subscription_rows": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 0,
+          "comments": 0,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "first_comment_all_persisted_recipients": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 1,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "original_notice_read_state": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 1,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "genuine_reconnect_reload_complete_rows": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 1,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "manual_subscription_tombstone": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 1,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "unsubscribe_distinct_second_comment_complete_rows": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 2,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        }
+      },
+      "before_subscribers": [
+        {
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "user_type": "member",
+          "user_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "reason": "creator",
+          "created_at": "2026-11-19 02:18:12.383058+00",
+          "unsubscribed_at": null,
+          "opt_out_scope": null,
+          "member_id": "5889cb5a-ed75-4b2a-9616-75623ee7055b"
+        },
+        {
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "user_type": "member",
+          "user_id": "1d780531-b830-4433-95ad-6dc83b8f0b7d",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:12.388903+00",
+          "unsubscribed_at": "2026-11-19 02:18:12.391461+00",
+          "opt_out_scope": "issue",
+          "member_id": "96c6292e-e1df-48ef-b51f-94cb4b91db15"
+        }
+      ],
+      "manual_subscribers": [
+        {
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "user_type": "member",
+          "user_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "reason": "creator",
+          "created_at": "2026-11-19 02:18:12.383058+00",
+          "unsubscribed_at": null,
+          "opt_out_scope": null,
+          "member_id": "5889cb5a-ed75-4b2a-9616-75623ee7055b"
+        },
+        {
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "user_type": "member",
+          "user_id": "1d780531-b830-4433-95ad-6dc83b8f0b7d",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:12.388903+00",
+          "unsubscribed_at": "2026-11-19 02:18:12.391461+00",
+          "opt_out_scope": "issue",
+          "member_id": "96c6292e-e1df-48ef-b51f-94cb4b91db15"
+        },
+        {
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "user_type": "member",
+          "user_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:16.69414+00",
+          "unsubscribed_at": null,
+          "opt_out_scope": null,
+          "member_id": "9ef1420c-52a0-4f81-8b99-a5e13bff46fe"
+        }
+      ],
+      "final_subscribers": [
+        {
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "user_type": "member",
+          "user_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "reason": "creator",
+          "created_at": "2026-11-19 02:18:12.383058+00",
+          "unsubscribed_at": null,
+          "opt_out_scope": null,
+          "member_id": "5889cb5a-ed75-4b2a-9616-75623ee7055b"
+        },
+        {
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "user_type": "member",
+          "user_id": "1d780531-b830-4433-95ad-6dc83b8f0b7d",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:12.388903+00",
+          "unsubscribed_at": "2026-11-19 02:18:12.391461+00",
+          "opt_out_scope": "issue",
+          "member_id": "96c6292e-e1df-48ef-b51f-94cb4b91db15"
+        },
+        {
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "user_type": "member",
+          "user_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:16.69414+00",
+          "unsubscribed_at": "2026-11-19 02:18:20.849457+00",
+          "opt_out_scope": "issue",
+          "member_id": "9ef1420c-52a0-4f81-8b99-a5e13bff46fe"
+        }
+      ],
+      "final_comments": [
+        {
+          "id": "01a1f198-fab5-72f5-8786-89033e27b6b0",
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "author_type": "member",
+          "author_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "type": "comment",
+          "revision": "1",
+          "parent_id": null,
+          "source_task_id": null,
+          "quick_action_id": null,
+          "content_sha256": "0dd7c960d95476545a626303836af584ac1f280573dce0e9a7c81aa30350547d",
+          "created_at": "2026-11-19 02:18:17.141493+00",
+          "updated_at": "2026-11-19 02:18:17.141493+00",
+          "deleted_at": null
+        },
+        {
+          "id": "01a1f199-0a9c-7572-a1e3-6ed43c9f8637",
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "author_type": "member",
+          "author_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "type": "comment",
+          "revision": "1",
+          "parent_id": null,
+          "source_task_id": null,
+          "quick_action_id": null,
+          "content_sha256": "9e0537b4a1143b22c68c433152a5b3c1989257b8314567ccf6fab33a712f20a5",
+          "created_at": "2026-11-19 02:18:21.21368+00",
+          "updated_at": "2026-11-19 02:18:21.21368+00",
+          "deleted_at": null
+        }
+      ],
+      "final_inbox": [
+        {
+          "id": "eeb4a43d-8592-5370-a4f5-e40357128521",
+          "workspace_id": "f52b7444-9249-4b1c-97ee-74760f76029e",
+          "recipient_type": "member",
+          "recipient_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+          "type": "new_comment",
+          "severity": "info",
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "actor_type": "member",
+          "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "comment_id": "01a1f198-fab5-72f5-8786-89033e27b6b0",
+          "title_sha256": "517a0a9ff502844f0a89e736f779f142396f41288ab761cc74f389d058320ff2",
+          "body_sha256": "0dd7c960d95476545a626303836af584ac1f280573dce0e9a7c81aa30350547d",
+          "details_sha256": "540ed72c4b9f8bed5a04f95f5e57246edb51eef38335b83ee5a651ecc70b329e",
+          "read": true,
+          "archived": false,
+          "created_at": "2026-11-19 02:18:17.157975+00"
+        }
+      ],
+      "ancestor_observations": [
+        {
+          "at": "2026-11-19T02:18:16.953Z",
+          "stage": "first_comment_main_editor_ancestors_before_fill",
+          "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "editor_connected": true,
+          "editor_tag": "div",
+          "editor_classes": "tiptap ProseMirror flex-1 rich-text-editor text-body outline-none ProseMirror-focused",
+          "editor_role": "textbox",
+          "placeholder_node_count": 1,
+          "ancestors": [
+            {
+              "depth": 0,
+              "tag": "div",
+              "classes": "flex flex-1 flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 1,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-full flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 2,
+              "tag": "div",
+              "classes": "flex-1 min-h-0 overflow-y-auto px-3 py-2 max-h-[40vh]",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 3,
+              "tag": "div",
+              "classes": "relative flex flex-col rounded-lg bg-card pb-8 ring-1 ring-border",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 4,
+              "tag": "div",
+              "classes": "mt-4 sticky bottom-0 z-10 -mb-4 bg-background pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-4 before:bg-gradient-to-t before:from-background before:to-transparent",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 5,
+              "tag": "div",
+              "classes": "w-full max-w-4xl max-md:pb-chat-launcher mx-auto px-3 py-6 md:px-8 md:py-8",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 6,
+              "tag": "div",
+              "classes": "relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 7,
+              "tag": "div",
+              "classes": "relative flex h-full min-w-0 flex-1 flex-col",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 8,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 9,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 10,
+              "tag": "div",
+              "classes": "flex h-full w-full aria-[orientation=vertical]:flex-col [&:has([data-separator=active])_*]:cursor-col-resize [&:has([data-separator=active])]:cursor-col-resize aria-[orientation=vertical]:[&:has([data-separator=active])_*]:cursor-row-resize aria-[orientati",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 11,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 12,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-0 flex-col overflow-hidden mr-2 mb-2 rounded-xl bg-page-canvas ring-1 ring-surface-border shadow-[var(--surface-shadow)]",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 13,
+              "tag": "div",
+              "classes": "flex flex-1 min-w-0 flex-col",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 14,
+              "tag": "div",
+              "classes": "group/sidebar-wrapper flex w-full has-data-[variant=inset]:bg-sidebar has-data-[variant=inset]:[--sidebar-wrapper-fill:var(--sidebar)] min-h-0 flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)] [&_[data-slot=sidebar-container]]:top-12 [&_[data-s",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 15,
+              "tag": "div",
+              "classes": "flex h-screen min-h-0 flex-col bg-app-shell",
+              "role": null,
+              "send_count": 1
+            }
+          ],
+          "ancestor_limit": 16,
+          "class_max_chars": 256,
+          "role_max_chars": 64,
+          "ancestors_truncated": true
+        },
+        {
+          "at": "2026-11-19T02:18:16.977Z",
+          "stage": "first_comment_main_editor_ancestors_after_fill",
+          "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "editor_connected": true,
+          "editor_tag": "div",
+          "editor_classes": "tiptap ProseMirror flex-1 rich-text-editor text-body outline-none ProseMirror-focused",
+          "editor_role": "textbox",
+          "placeholder_node_count": 0,
+          "ancestors": [
+            {
+              "depth": 0,
+              "tag": "div",
+              "classes": "flex flex-1 flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 1,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-full flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 2,
+              "tag": "div",
+              "classes": "flex-1 min-h-0 overflow-y-auto px-3 py-2 max-h-[40vh]",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 3,
+              "tag": "div",
+              "classes": "relative flex flex-col rounded-lg bg-card pb-8 ring-1 ring-border",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 4,
+              "tag": "div",
+              "classes": "mt-4 sticky bottom-0 z-10 -mb-4 bg-background pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-4 before:bg-gradient-to-t before:from-background before:to-transparent",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 5,
+              "tag": "div",
+              "classes": "w-full max-w-4xl max-md:pb-chat-launcher mx-auto px-3 py-6 md:px-8 md:py-8",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 6,
+              "tag": "div",
+              "classes": "relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 7,
+              "tag": "div",
+              "classes": "relative flex h-full min-w-0 flex-1 flex-col",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 8,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 9,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 10,
+              "tag": "div",
+              "classes": "flex h-full w-full aria-[orientation=vertical]:flex-col [&:has([data-separator=active])_*]:cursor-col-resize [&:has([data-separator=active])]:cursor-col-resize aria-[orientation=vertical]:[&:has([data-separator=active])_*]:cursor-row-resize aria-[orientati",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 11,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 12,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-0 flex-col overflow-hidden mr-2 mb-2 rounded-xl bg-page-canvas ring-1 ring-surface-border shadow-[var(--surface-shadow)]",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 13,
+              "tag": "div",
+              "classes": "flex flex-1 min-w-0 flex-col",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 14,
+              "tag": "div",
+              "classes": "group/sidebar-wrapper flex w-full has-data-[variant=inset]:bg-sidebar has-data-[variant=inset]:[--sidebar-wrapper-fill:var(--sidebar)] min-h-0 flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)] [&_[data-slot=sidebar-container]]:top-12 [&_[data-s",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 15,
+              "tag": "div",
+              "classes": "flex h-screen min-h-0 flex-col bg-app-shell",
+              "role": null,
+              "send_count": 1
+            }
+          ],
+          "ancestor_limit": 16,
+          "class_max_chars": 256,
+          "role_max_chars": 64,
+          "ancestors_truncated": true
+        },
+        {
+          "at": "2026-11-19T02:18:21.023Z",
+          "stage": "second_comment_after_unsubscribe_main_editor_ancestors_before_fill",
+          "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "editor_connected": true,
+          "editor_tag": "div",
+          "editor_classes": "tiptap ProseMirror flex-1 rich-text-editor text-body outline-none",
+          "editor_role": "textbox",
+          "placeholder_node_count": 1,
+          "ancestors": [
+            {
+              "depth": 0,
+              "tag": "div",
+              "classes": "flex flex-1 flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 1,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-full flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 2,
+              "tag": "div",
+              "classes": "flex-1 min-h-0 overflow-y-auto px-3 py-2 max-h-[40vh]",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 3,
+              "tag": "div",
+              "classes": "relative flex flex-col rounded-lg bg-card pb-8 ring-1 ring-border",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 4,
+              "tag": "div",
+              "classes": "mt-4 sticky bottom-0 z-10 -mb-4 bg-background pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-4 before:bg-gradient-to-t before:from-background before:to-transparent",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 5,
+              "tag": "div",
+              "classes": "w-full max-w-4xl max-md:pb-chat-launcher mx-auto px-3 py-6 md:px-8 md:py-8",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 6,
+              "tag": "div",
+              "classes": "relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 7,
+              "tag": "div",
+              "classes": "relative flex h-full min-w-0 flex-1 flex-col",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 8,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 9,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 10,
+              "tag": "div",
+              "classes": "flex h-full w-full aria-[orientation=vertical]:flex-col [&:has([data-separator=active])_*]:cursor-col-resize [&:has([data-separator=active])]:cursor-col-resize aria-[orientation=vertical]:[&:has([data-separator=active])_*]:cursor-row-resize aria-[orientati",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 11,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 12,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-0 flex-col overflow-hidden mr-2 mb-2 rounded-xl bg-page-canvas ring-1 ring-surface-border shadow-[var(--surface-shadow)]",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 13,
+              "tag": "div",
+              "classes": "flex flex-1 min-w-0 flex-col",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 14,
+              "tag": "div",
+              "classes": "group/sidebar-wrapper flex w-full has-data-[variant=inset]:bg-sidebar has-data-[variant=inset]:[--sidebar-wrapper-fill:var(--sidebar)] min-h-0 flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)] [&_[data-slot=sidebar-container]]:top-12 [&_[data-s",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 15,
+              "tag": "div",
+              "classes": "flex h-screen min-h-0 flex-col bg-app-shell",
+              "role": null,
+              "send_count": 2
+            }
+          ],
+          "ancestor_limit": 16,
+          "class_max_chars": 256,
+          "role_max_chars": 64,
+          "ancestors_truncated": true
+        },
+        {
+          "at": "2026-11-19T02:18:21.043Z",
+          "stage": "second_comment_after_unsubscribe_main_editor_ancestors_after_fill",
+          "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "issue_id": "01a1f198-e81d-7e29-83bc-ee82f39a0a77",
+          "editor_connected": true,
+          "editor_tag": "div",
+          "editor_classes": "tiptap ProseMirror flex-1 rich-text-editor text-body outline-none ProseMirror-focused",
+          "editor_role": "textbox",
+          "placeholder_node_count": 0,
+          "ancestors": [
+            {
+              "depth": 0,
+              "tag": "div",
+              "classes": "flex flex-1 flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 1,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-full flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 2,
+              "tag": "div",
+              "classes": "flex-1 min-h-0 overflow-y-auto px-3 py-2 max-h-[40vh]",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 3,
+              "tag": "div",
+              "classes": "relative flex flex-col rounded-lg bg-card pb-8 ring-1 ring-border",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 4,
+              "tag": "div",
+              "classes": "mt-4 sticky bottom-0 z-10 -mb-4 bg-background pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-4 before:bg-gradient-to-t before:from-background before:to-transparent",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 5,
+              "tag": "div",
+              "classes": "w-full max-w-4xl max-md:pb-chat-launcher mx-auto px-3 py-6 md:px-8 md:py-8",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 6,
+              "tag": "div",
+              "classes": "relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 7,
+              "tag": "div",
+              "classes": "relative flex h-full min-w-0 flex-1 flex-col",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 8,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 9,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 10,
+              "tag": "div",
+              "classes": "flex h-full w-full aria-[orientation=vertical]:flex-col [&:has([data-separator=active])_*]:cursor-col-resize [&:has([data-separator=active])]:cursor-col-resize aria-[orientation=vertical]:[&:has([data-separator=active])_*]:cursor-row-resize aria-[orientati",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 11,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 12,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-0 flex-col overflow-hidden mr-2 mb-2 rounded-xl bg-page-canvas ring-1 ring-surface-border shadow-[var(--surface-shadow)]",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 13,
+              "tag": "div",
+              "classes": "flex flex-1 min-w-0 flex-col",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 14,
+              "tag": "div",
+              "classes": "group/sidebar-wrapper flex w-full has-data-[variant=inset]:bg-sidebar has-data-[variant=inset]:[--sidebar-wrapper-fill:var(--sidebar)] min-h-0 flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)] [&_[data-slot=sidebar-container]]:top-12 [&_[data-s",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 15,
+              "tag": "div",
+              "classes": "flex h-screen min-h-0 flex-col bg-app-shell",
+              "role": null,
+              "send_count": 2
+            }
+          ],
+          "ancestor_limit": 16,
+          "class_max_chars": 256,
+          "role_max_chars": 64,
+          "ancestors_truncated": true
+        }
+      ],
+      "UI_requests": [
+        {
+          "at": "2026-11-19T02:18:16.716Z",
+          "stage": "actual_Subscribe_control",
+          "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+          "path": "/api/issues/01a1f198-e81d-7e29-83bc-ee82f39a0a77/subscribe",
+          "method": "POST",
+          "status": 200,
+          "request_id": null,
+          "payload_sha256": "e1505a924b7c445c685d477fd4d3203288f009238ecef542dcec32d3fcc9c153",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+          "authentication": {
+            "cookie": false,
+            "csrf": false,
+            "bearer": true
+          }
+        },
+        {
+          "at": "2026-11-19T02:18:17.183Z",
+          "stage": "first_comment",
+          "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "path": "/api/issues/01a1f198-e81d-7e29-83bc-ee82f39a0a77/comments",
+          "method": "POST",
+          "status": 201,
+          "request_id": null,
+          "payload_sha256": "d53696421c9c21b5f885fa6b0d8f683885fc939173ca210a00ecc95abd220bcb",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+          "authentication": {
+            "cookie": false,
+            "csrf": false,
+            "bearer": true
+          }
+        },
+        {
+          "at": "2026-11-19T02:18:17.930Z",
+          "stage": "actual_original_inbox_selection",
+          "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+          "path": "/api/inbox/eeb4a43d-8592-5370-a4f5-e40357128521/read",
+          "method": "POST",
+          "status": 200,
+          "request_id": null,
+          "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+          "authentication": {
+            "cookie": false,
+            "csrf": false,
+            "bearer": true
+          }
+        },
+        {
+          "at": "2026-11-19T02:18:20.875Z",
+          "stage": "actual_Unsubscribe_control",
+          "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+          "path": "/api/issues/01a1f198-e81d-7e29-83bc-ee82f39a0a77/unsubscribe",
+          "method": "POST",
+          "status": 200,
+          "request_id": null,
+          "payload_sha256": "e1505a924b7c445c685d477fd4d3203288f009238ecef542dcec32d3fcc9c153",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+          "authentication": {
+            "cookie": false,
+            "csrf": false,
+            "bearer": true
+          }
+        },
+        {
+          "at": "2026-11-19T02:18:21.406Z",
+          "stage": "second_comment_after_unsubscribe",
+          "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "path": "/api/issues/01a1f198-e81d-7e29-83bc-ee82f39a0a77/comments",
+          "method": "POST",
+          "status": 201,
+          "request_id": null,
+          "payload_sha256": "20202b7c87465d9cf052cf3f033ff0a1e4788f2befb161f22cec7fe61f4b3180",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+          "authentication": {
+            "cookie": false,
+            "csrf": false,
+            "bearer": true
+          }
+        }
+      ],
+      "transport": [
+        {
+          "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "writes": [
+            {
+              "at": "2026-11-19T02:18:17.180Z",
+              "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+              "method": "POST",
+              "path": "/api/issues/01a1f198-e81d-7e29-83bc-ee82f39a0a77/comments",
+              "payload_sha256": "d53696421c9c21b5f885fa6b0d8f683885fc939173ca210a00ecc95abd220bcb",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:21.402Z",
+              "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+              "method": "POST",
+              "path": "/api/issues/01a1f198-e81d-7e29-83bc-ee82f39a0a77/comments",
+              "payload_sha256": "20202b7c87465d9cf052cf3f033ff0a1e4788f2befb161f22cec7fe61f4b3180",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            }
+          ],
+          "query_read_facts": [],
+          "socket_bindings": [
+            {
+              "id": "68860.154",
+              "at": "2026-11-19T02:18:15.816Z",
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "scope": null
+            }
+          ]
+        },
+        {
+          "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+          "writes": [
+            {
+              "at": "2026-11-19T02:18:16.714Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/01a1f198-e81d-7e29-83bc-ee82f39a0a77/subscribe",
+              "payload_sha256": "e1505a924b7c445c685d477fd4d3203288f009238ecef542dcec32d3fcc9c153",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.765Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/facets",
+              "payload_sha256": "73b159ccdcf1fa6c46183cc5b6552171f21db79eb2c2b5ebf7da512296fc0e34",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.765Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/facets",
+              "payload_sha256": "c04b8958e7cdf18cd3ff61402304f0f67c8a9e7cb62ce5c012c20e65747b9e74",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.766Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "1835d9ae4242adcd721988d1e9486e0ab00189b7478eb65c77a66d923a9325db",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.766Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "0d8ef67e1d345c0b82a3681b58e30476271d2fa0b782a1749a2df7de6dc56c5d",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.767Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "9cc747ac7cade0d030a09166b3d26a35212111c4fe0739e94e1b472988255e8a",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.767Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "17a61da83f2ac3247c96f6c19a321e616531c3a59f621b01c43614d3df3c7e27",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.767Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "7551afa8b9bd8db518c9144e92b5e864862e75ab00cefdd086e22c4587d52195",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.767Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "d1338d5db52087eae068fc002c026e9286059cc5bc729220d043f99b4ec79021",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.768Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "7415c516a95c09be920873667888c04a298d9f9bf388f53d4b13da775d22b178",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.929Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/inbox/eeb4a43d-8592-5370-a4f5-e40357128521/read",
+              "payload_sha256": null,
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:20.873Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/01a1f198-e81d-7e29-83bc-ee82f39a0a77/unsubscribe",
+              "payload_sha256": "e1505a924b7c445c685d477fd4d3203288f009238ecef542dcec32d3fcc9c153",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            }
+          ],
+          "query_read_facts": [
+            {
+              "at": "2026-11-19T02:18:17.765Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/facets",
+              "payload_sha256": "73b159ccdcf1fa6c46183cc5b6552171f21db79eb2c2b5ebf7da512296fc0e34",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.765Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/facets",
+              "payload_sha256": "c04b8958e7cdf18cd3ff61402304f0f67c8a9e7cb62ce5c012c20e65747b9e74",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.766Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "1835d9ae4242adcd721988d1e9486e0ab00189b7478eb65c77a66d923a9325db",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.766Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "0d8ef67e1d345c0b82a3681b58e30476271d2fa0b782a1749a2df7de6dc56c5d",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.767Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "9cc747ac7cade0d030a09166b3d26a35212111c4fe0739e94e1b472988255e8a",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.767Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "17a61da83f2ac3247c96f6c19a321e616531c3a59f621b01c43614d3df3c7e27",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.767Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "7551afa8b9bd8db518c9144e92b5e864862e75ab00cefdd086e22c4587d52195",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.767Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "d1338d5db52087eae068fc002c026e9286059cc5bc729220d043f99b4ec79021",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:17.768Z",
+              "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+              "method": "POST",
+              "path": "/api/issues/table/rows",
+              "payload_sha256": "7415c516a95c09be920873667888c04a298d9f9bf388f53d4b13da775d22b178",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "authentication": {
+                "cookie": false,
+                "csrf": false,
+                "bearer": true
+              }
+            }
+          ],
+          "socket_bindings": [
+            {
+              "id": "68881.154",
+              "at": "2026-11-19T02:18:16.396Z",
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "scope": null
+            },
+            {
+              "id": "68881.218",
+              "at": "2026-11-19T02:18:19.341Z",
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "scope": null
+            },
+            {
+              "id": "68881.378",
+              "at": "2026-11-19T02:18:20.440Z",
+              "workspace_slug": null,
+              "scope": "account"
+            },
+            {
+              "id": "68881.395",
+              "at": "2026-11-19T02:18:20.490Z",
+              "workspace_slug": "s3-subscriptions-desktop-mwmx7su01c36",
+              "scope": null
+            }
+          ]
+        }
+      ],
+      "reconnect": [
+        {
+          "at": "2026-11-19T02:18:20.794Z",
+          "stage": "genuine_reconnect_reload_kept_original_notice",
+          "comment_id": "01a1f198-fab5-72f5-8786-89033e27b6b0",
+          "inbox_id": "eeb4a43d-8592-5370-a4f5-e40357128521",
+          "read": true,
+          "archived": false,
+          "original_socket_id": "68881.154",
+          "reconnect_socket_id": "68881.218",
+          "reload_socket_id": "68881.395",
+          "all_observed_socket_ids": [
+            "68881.121",
+            "68881.154",
+            "68881.218",
+            "68881.378",
+            "68881.395"
+          ],
+          "additional_business_writes": 0,
+          "workspace_handshake": true,
+          "literal_event_replay_claimed": false
+        }
+      ],
+      "sessions": [
+        {
+          "actor_id": "167da3b6-17f0-4256-a24f-9657e4a7dd61",
+          "lifecycle": {
+            "profile": "/Users/artisan/.multica/acceptance/pay241-s3-continuation-20261119-uwkcehly/subscriptions-r05/profiles/pay241-s3-client-5e7TKP",
+            "native_pid": 68856,
+            "page_closed_at": "2026-11-19T02:18:21.758Z",
+            "context_closed_at": "2026-11-19T02:18:21.857Z",
+            "native_exit": {
+              "at": "2026-11-19T02:18:21.857Z",
+              "code": 0,
+              "signal": null
+            },
+            "close_started_at": "2026-11-19T02:18:21.638Z",
+            "close_ended_at": "2026-11-19T02:18:21.867Z"
+          },
+          "page_errors": [],
+          "cleanup_errors": [],
+          "sockets": [
+            {
+              "id": "68860.121",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:13.528Z",
+              "closed_at": "2026-11-19T02:18:15.831Z",
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:13.533Z",
+                  "direction": "sent",
+                  "type": "auth"
+                },
+                {
+                  "at": "2026-11-19T02:18:13.545Z",
+                  "direction": "received",
+                  "type": "auth_ack"
+                },
+                {
+                  "at": "2026-11-19T02:18:13.545Z",
+                  "direction": "sent",
+                  "type": "subscribe",
+                  "scope": "issue",
+                  "id": "01a1f198-e7f9-7835-b568-ffec4c8234d3"
+                },
+                {
+                  "at": "2026-11-19T02:18:13.579Z",
+                  "direction": "received",
+                  "type": "subscribe_ack",
+                  "scope": "issue",
+                  "id": "01a1f198-e7f9-7835-b568-ffec4c8234d3"
+                },
+                {
+                  "at": "2026-11-19T02:18:15.810Z",
+                  "direction": "sent",
+                  "type": "unsubscribe"
+                },
+                {
+                  "at": "2026-11-19T02:18:15.817Z",
+                  "direction": "received",
+                  "type": "unsubscribe_ack"
+                }
+              ]
+            },
+            {
+              "id": "68860.154",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:15.816Z",
+              "closed_at": null,
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:15.835Z",
+                  "direction": "sent",
+                  "type": "auth"
+                },
+                {
+                  "at": "2026-11-19T02:18:15.952Z",
+                  "direction": "received",
+                  "type": "auth_ack"
+                },
+                {
+                  "at": "2026-11-19T02:18:16.707Z",
+                  "direction": "received",
+                  "type": "subscriber:added"
+                },
+                {
+                  "at": "2026-11-19T02:18:17.175Z",
+                  "direction": "received",
+                  "type": "comment:created"
+                },
+                {
+                  "at": "2026-11-19T02:18:20.856Z",
+                  "direction": "received",
+                  "type": "subscriber:removed"
+                },
+                {
+                  "at": "2026-11-19T02:18:21.382Z",
+                  "direction": "received",
+                  "type": "comment:created"
+                }
+              ]
+            }
+          ],
+          "handshakes": [
+            {
+              "request_id": "68860.121",
+              "at": "2026-11-19T02:18:13.533Z",
+              "status": 101
+            },
+            {
+              "request_id": "68860.154",
+              "at": "2026-11-19T02:18:15.835Z",
+              "status": 101
+            }
+          ]
+        },
+        {
+          "actor_id": "f9dbdd13-8f43-4709-98be-f3fa0b054846",
+          "lifecycle": {
+            "profile": "/Users/artisan/.multica/acceptance/pay241-s3-continuation-20261119-uwkcehly/subscriptions-r05/profiles/pay241-s3-client-n41IUI",
+            "native_pid": 68872,
+            "page_closed_at": "2026-11-19T02:18:21.765Z",
+            "context_closed_at": "2026-11-19T02:18:21.845Z",
+            "native_exit": {
+              "at": "2026-11-19T02:18:21.845Z",
+              "code": 0,
+              "signal": null
+            },
+            "close_started_at": "2026-11-19T02:18:21.638Z",
+            "close_ended_at": "2026-11-19T02:18:21.853Z"
+          },
+          "page_errors": [],
+          "cleanup_errors": [],
+          "sockets": [
+            {
+              "id": "68881.121",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:15.001Z",
+              "closed_at": "2026-11-19T02:18:16.403Z",
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:15.038Z",
+                  "direction": "sent",
+                  "type": "auth"
+                },
+                {
+                  "at": "2026-11-19T02:18:15.084Z",
+                  "direction": "received",
+                  "type": "auth_ack"
+                },
+                {
+                  "at": "2026-11-19T02:18:15.085Z",
+                  "direction": "sent",
+                  "type": "subscribe",
+                  "scope": "issue",
+                  "id": "01a1f198-e7f9-7835-b568-ffec4c8234d3"
+                },
+                {
+                  "at": "2026-11-19T02:18:15.178Z",
+                  "direction": "received",
+                  "type": "subscribe_ack",
+                  "scope": "issue",
+                  "id": "01a1f198-e7f9-7835-b568-ffec4c8234d3"
+                },
+                {
+                  "at": "2026-11-19T02:18:16.380Z",
+                  "direction": "sent",
+                  "type": "unsubscribe"
+                },
+                {
+                  "at": "2026-11-19T02:18:16.397Z",
+                  "direction": "received",
+                  "type": "unsubscribe_ack"
+                }
+              ]
+            },
+            {
+              "id": "68881.154",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:16.395Z",
+              "closed_at": "2026-11-19T02:18:18.146Z",
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:16.407Z",
+                  "direction": "sent",
+                  "type": "auth"
+                },
+                {
+                  "at": "2026-11-19T02:18:16.498Z",
+                  "direction": "received",
+                  "type": "auth_ack"
+                },
+                {
+                  "at": "2026-11-19T02:18:16.720Z",
+                  "direction": "received",
+                  "type": "subscriber:added"
+                },
+                {
+                  "at": "2026-11-19T02:18:17.164Z",
+                  "direction": "received",
+                  "type": "inbox:new"
+                },
+                {
+                  "at": "2026-11-19T02:18:17.178Z",
+                  "direction": "received",
+                  "type": "comment:created"
+                },
+                {
+                  "at": "2026-11-19T02:18:17.931Z",
+                  "direction": "received",
+                  "type": "inbox:read"
+                }
+              ]
+            },
+            {
+              "id": "68881.218",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:19.341Z",
+              "closed_at": "2026-11-19T02:18:20.184Z",
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:19.342Z",
+                  "direction": "sent",
+                  "type": "auth"
+                },
+                {
+                  "at": "2026-11-19T02:18:19.366Z",
+                  "direction": "received",
+                  "type": "auth_ack"
+                }
+              ]
+            },
+            {
+              "id": "68881.378",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:20.440Z",
+              "closed_at": "2026-11-19T02:18:20.497Z",
+              "frames": []
+            },
+            {
+              "id": "68881.395",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:20.490Z",
+              "closed_at": null,
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:20.515Z",
+                  "direction": "sent",
+                  "type": "auth"
+                },
+                {
+                  "at": "2026-11-19T02:18:20.578Z",
+                  "direction": "received",
+                  "type": "auth_ack"
+                },
+                {
+                  "at": "2026-11-19T02:18:20.878Z",
+                  "direction": "received",
+                  "type": "subscriber:removed"
+                },
+                {
+                  "at": "2026-11-19T02:18:21.378Z",
+                  "direction": "received",
+                  "type": "comment:created"
+                }
+              ]
+            }
+          ],
+          "handshakes": [
+            {
+              "request_id": "68881.121",
+              "at": "2026-11-19T02:18:15.029Z",
+              "status": 101
+            },
+            {
+              "request_id": "68881.154",
+              "at": "2026-11-19T02:18:16.407Z",
+              "status": 101
+            },
+            {
+              "request_id": "68881.218",
+              "at": "2026-11-19T02:18:19.342Z",
+              "status": 101
+            },
+            {
+              "request_id": "68881.395",
+              "at": "2026-11-19T02:18:20.515Z",
+              "status": 101
+            }
+          ]
+        }
+      ],
+      "all_sessions_cleanup": [
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        }
+      ]
+    },
+    "Web": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r05/results/collaboration-recovery-sub-5e032-nect-reload-and-unsubscribe-chromium/web-ordinary-subscriptions.json",
+      "sha256": "a26cef6f301e47da09566e033df1c8077d053e9912c5e4a024e54dea10c42dcd",
+      "attachment_sha256": "9e0ed38d765806f9d59f3d49c4e25eb1aa63aa1c9d3ad3117264004ede4d7073",
+      "status": "PASSED",
+      "result": {
+        "platform": "Web",
+        "parent_issue_id": "01a1f198-ca51-736b-aeea-a35b93268309",
+        "child_issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+        "original_comment_id": "01a1f198-d66d-7b2f-aa14-ecd889ac6a18",
+        "second_comment_id": "01a1f198-e5a9-78d9-8515-5e492aa4b771",
+        "inbox_id": "08503eb2-06f1-55c0-ad8c-48851bc0e5d7",
+        "first_recipients": [
+          "b705eab3-54df-4f51-a593-3adcabef9e8b"
+        ],
+        "second_recipients": [],
+        "manual_subscribe_UI_writes": 1,
+        "manual_unsubscribe_UI_writes": 1,
+        "original_notice_read_UI_writes": 1,
+        "ordinary_composer_comments": 2,
+        "genuine_offline_reconnects": 1,
+        "actual_reloads": 1,
+        "literal_event_replay": "SEPARATE_GO_LISTENER_ACCEPTANCE",
+        "API_key_replay": "NOT_RUN",
+        "no_dispatch": true,
+        "retained_business_rows": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 2,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        }
+      },
+      "actors": {
+        "commenter": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+        "watcher": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+        "nonwatcher": "9f7827e5-67a0-4673-8ab6-8e05702432ab",
+        "optout": "4bc92510-d575-4282-b424-fd41e74a0739"
+      },
+      "source_workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+      "checks": {
+        "all7snapshots17relations": true,
+        "SQL_hashes_match": true,
+        "SQL_bindings_match": true,
+        "SQL_row_bounds": true,
+        "one_first_watcher_notice": true,
+        "read_changes_only_read": true,
+        "reconnect_all_sets_unchanged": true,
+        "final_old_notice_unchanged": true,
+        "both_original_comments_present_once": true,
+        "second_comment_no_notice": true,
+        "parent_private_sets_unchanged": true,
+        "no_AI_upload_or_receipt_effects": true,
+        "watcher_exact_mutation_sequence": true,
+        "attachment_common_values_equal": true,
+        "all_client_cleanup_success": true
+      },
+      "phase_row_hashes": {
+        "seeded_complete_rows": "a8dff20023e61d61166d98db32cfca1a8587925b045f1a07114a03d974b4e71c",
+        "manual_subscription_rows": "11edc31f95e3be56d9deb80c16ed12e8b3eae5151a45718fcf0940ffe22c4ce1",
+        "first_comment_all_persisted_recipients": "ac87e0853251c57184b255959bc76945aeecc03da45b692bf4bb279af17f15f8",
+        "original_notice_read_state": "82f346db3717ffd12435d1a0929110df4152518964984ef868e08a9869aa8b10",
+        "genuine_reconnect_reload_complete_rows": "82f346db3717ffd12435d1a0929110df4152518964984ef868e08a9869aa8b10",
+        "manual_subscription_tombstone": "4a175fcbf0b9ae3b72c737e44a49f347063b83d1bbd8c6848409080deddc0067",
+        "unsubscribe_distinct_second_comment_complete_rows": "2a9540607ba0faea2b10d98d9943bac990ed530cf660b48a5b49a180ae10b8d1"
+      },
+      "phase_counts": {
+        "seeded_complete_rows": {
+          "issues": 2,
+          "subscribers": 2,
+          "inbox": 0,
+          "comments": 0,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "manual_subscription_rows": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 0,
+          "comments": 0,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "first_comment_all_persisted_recipients": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 1,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "original_notice_read_state": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 1,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "genuine_reconnect_reload_complete_rows": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 1,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "manual_subscription_tombstone": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 1,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        },
+        "unsubscribe_distinct_second_comment_complete_rows": {
+          "issues": 2,
+          "subscribers": 3,
+          "inbox": 1,
+          "comments": 2,
+          "activities": 1,
+          "collaboration": 1,
+          "sessions": 1,
+          "events": 1,
+          "operations": 0,
+          "notifications": 0,
+          "commands": 0,
+          "groups": 0,
+          "runs": 0,
+          "dispatches": 0,
+          "attachments": 0,
+          "collaboration_attachments": 0,
+          "delegation_receipts": 0
+        }
+      },
+      "before_subscribers": [
+        {
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "user_type": "member",
+          "user_id": "4bc92510-d575-4282-b424-fd41e74a0739",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:04.814789+00",
+          "unsubscribed_at": "2026-11-19 02:18:04.818264+00",
+          "opt_out_scope": "issue",
+          "member_id": "a759c77d-43bd-47da-b150-2d56d0cf133a"
+        },
+        {
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "user_type": "member",
+          "user_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "reason": "creator",
+          "created_at": "2026-11-19 02:18:04.806377+00",
+          "unsubscribed_at": null,
+          "opt_out_scope": null,
+          "member_id": "78002b85-b955-4d74-a860-6cff22920c72"
+        }
+      ],
+      "manual_subscribers": [
+        {
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "user_type": "member",
+          "user_id": "4bc92510-d575-4282-b424-fd41e74a0739",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:04.814789+00",
+          "unsubscribed_at": "2026-11-19 02:18:04.818264+00",
+          "opt_out_scope": "issue",
+          "member_id": "a759c77d-43bd-47da-b150-2d56d0cf133a"
+        },
+        {
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "user_type": "member",
+          "user_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "reason": "creator",
+          "created_at": "2026-11-19 02:18:04.806377+00",
+          "unsubscribed_at": null,
+          "opt_out_scope": null,
+          "member_id": "78002b85-b955-4d74-a860-6cff22920c72"
+        },
+        {
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "user_type": "member",
+          "user_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:07.486984+00",
+          "unsubscribed_at": null,
+          "opt_out_scope": null,
+          "member_id": "e402d3eb-e959-430d-8aa4-4012acca70b5"
+        }
+      ],
+      "final_subscribers": [
+        {
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "user_type": "member",
+          "user_id": "4bc92510-d575-4282-b424-fd41e74a0739",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:04.814789+00",
+          "unsubscribed_at": "2026-11-19 02:18:04.818264+00",
+          "opt_out_scope": "issue",
+          "member_id": "a759c77d-43bd-47da-b150-2d56d0cf133a"
+        },
+        {
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "user_type": "member",
+          "user_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "reason": "creator",
+          "created_at": "2026-11-19 02:18:04.806377+00",
+          "unsubscribed_at": null,
+          "opt_out_scope": null,
+          "member_id": "78002b85-b955-4d74-a860-6cff22920c72"
+        },
+        {
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "user_type": "member",
+          "user_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+          "reason": "manual",
+          "created_at": "2026-11-19 02:18:07.486984+00",
+          "unsubscribed_at": "2026-11-19 02:18:11.435051+00",
+          "opt_out_scope": "issue",
+          "member_id": "e402d3eb-e959-430d-8aa4-4012acca70b5"
+        }
+      ],
+      "final_comments": [
+        {
+          "id": "01a1f198-d66d-7b2f-aa14-ecd889ac6a18",
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "author_type": "member",
+          "author_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "type": "comment",
+          "revision": "1",
+          "parent_id": null,
+          "source_task_id": null,
+          "quick_action_id": null,
+          "content_sha256": "58eb711a0499d5bf68e51b019f5417be60649639b8eb1d8595fe510125dd0553",
+          "created_at": "2026-11-19 02:18:07.854014+00",
+          "updated_at": "2026-11-19 02:18:07.854014+00",
+          "deleted_at": null
+        },
+        {
+          "id": "01a1f198-e5a9-78d9-8515-5e492aa4b771",
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "author_type": "member",
+          "author_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "type": "comment",
+          "revision": "1",
+          "parent_id": null,
+          "source_task_id": null,
+          "quick_action_id": null,
+          "content_sha256": "63637c944145294b9c67cbe6e0ef454bd753872017f52721de7ead98a5852280",
+          "created_at": "2026-11-19 02:18:11.754231+00",
+          "updated_at": "2026-11-19 02:18:11.754231+00",
+          "deleted_at": null
+        }
+      ],
+      "final_inbox": [
+        {
+          "id": "08503eb2-06f1-55c0-ad8c-48851bc0e5d7",
+          "workspace_id": "1cd25f87-804b-47f8-b5a8-f6c8380df426",
+          "recipient_type": "member",
+          "recipient_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+          "type": "new_comment",
+          "severity": "info",
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "actor_type": "member",
+          "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "comment_id": "01a1f198-d66d-7b2f-aa14-ecd889ac6a18",
+          "title_sha256": "82f71c6c62b2a9479022b70376684bea0a57dc2c9658bfddb6a80175153e9af4",
+          "body_sha256": "58eb711a0499d5bf68e51b019f5417be60649639b8eb1d8595fe510125dd0553",
+          "details_sha256": "2a597e8de10f8228b8ea2e3c343c66a992af2c241b710640388cb6eb1411addc",
+          "read": true,
+          "archived": false,
+          "created_at": "2026-11-19 02:18:07.891551+00"
+        }
+      ],
+      "ancestor_observations": [
+        {
+          "at": "2026-11-19T02:18:07.681Z",
+          "stage": "first_comment_main_editor_ancestors_before_fill",
+          "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "editor_connected": true,
+          "editor_tag": "div",
+          "editor_classes": "tiptap ProseMirror flex-1 rich-text-editor text-body outline-none ProseMirror-focused",
+          "editor_role": "textbox",
+          "placeholder_node_count": 1,
+          "ancestors": [
+            {
+              "depth": 0,
+              "tag": "div",
+              "classes": "flex flex-1 flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 1,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-full flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 2,
+              "tag": "div",
+              "classes": "flex-1 min-h-0 overflow-y-auto px-3 py-2 max-h-[40vh]",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 3,
+              "tag": "div",
+              "classes": "relative flex flex-col rounded-lg bg-card pb-8 ring-1 ring-border",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 4,
+              "tag": "div",
+              "classes": "mt-4 sticky bottom-0 z-10 -mb-4 bg-background pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-4 before:bg-gradient-to-t before:from-background before:to-transparent",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 5,
+              "tag": "div",
+              "classes": "w-full max-w-4xl max-md:pb-chat-launcher mx-auto px-3 py-6 md:px-8 md:py-8",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 6,
+              "tag": "div",
+              "classes": "relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 7,
+              "tag": "div",
+              "classes": "relative flex h-full min-w-0 flex-1 flex-col",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 8,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 9,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 10,
+              "tag": "div",
+              "classes": "flex h-full w-full aria-[orientation=vertical]:flex-col [&:has([data-separator=active])_*]:cursor-col-resize [&:has([data-separator=active])]:cursor-col-resize aria-[orientation=vertical]:[&:has([data-separator=active])_*]:cursor-row-resize aria-[orientati",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 11,
+              "tag": "main",
+              "classes": "flex w-full flex-1 flex-col bg-page-canvas lg:peer-data-[variant=inset]:m-2 lg:peer-data-[variant=inset]:ml-0 lg:peer-data-[variant=inset]:rounded-xl lg:peer-data-[variant=inset]:ring-1 lg:peer-data-[variant=inset]:ring-surface-border lg:peer-data-[variant",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 12,
+              "tag": "div",
+              "classes": "group/sidebar-wrapper flex w-full has-data-[variant=inset]:bg-sidebar has-data-[variant=inset]:[--sidebar-wrapper-fill:var(--sidebar)] h-full min-h-0 bg-app-shell",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 13,
+              "tag": "div",
+              "classes": "min-h-0 flex-1",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 14,
+              "tag": "div",
+              "classes": "flex h-svh min-h-0 flex-col overflow-hidden bg-app-shell [&_[data-slot=sidebar-container]]:top-12 [&_[data-slot=sidebar-container]]:h-[calc(100svh-3rem)]",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 15,
+              "tag": "body",
+              "classes": "h-full overflow-hidden",
+              "role": null,
+              "send_count": 1
+            }
+          ],
+          "ancestor_limit": 16,
+          "class_max_chars": 256,
+          "role_max_chars": 64,
+          "ancestors_truncated": true
+        },
+        {
+          "at": "2026-11-19T02:18:07.700Z",
+          "stage": "first_comment_main_editor_ancestors_after_fill",
+          "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "editor_connected": true,
+          "editor_tag": "div",
+          "editor_classes": "tiptap ProseMirror flex-1 rich-text-editor text-body outline-none ProseMirror-focused",
+          "editor_role": "textbox",
+          "placeholder_node_count": 0,
+          "ancestors": [
+            {
+              "depth": 0,
+              "tag": "div",
+              "classes": "flex flex-1 flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 1,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-full flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 2,
+              "tag": "div",
+              "classes": "flex-1 min-h-0 overflow-y-auto px-3 py-2 max-h-[40vh]",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 3,
+              "tag": "div",
+              "classes": "relative flex flex-col rounded-lg bg-card pb-8 ring-1 ring-border",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 4,
+              "tag": "div",
+              "classes": "mt-4 sticky bottom-0 z-10 -mb-4 bg-background pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-4 before:bg-gradient-to-t before:from-background before:to-transparent",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 5,
+              "tag": "div",
+              "classes": "w-full max-w-4xl max-md:pb-chat-launcher mx-auto px-3 py-6 md:px-8 md:py-8",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 6,
+              "tag": "div",
+              "classes": "relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 7,
+              "tag": "div",
+              "classes": "relative flex h-full min-w-0 flex-1 flex-col",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 8,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 9,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 10,
+              "tag": "div",
+              "classes": "flex h-full w-full aria-[orientation=vertical]:flex-col [&:has([data-separator=active])_*]:cursor-col-resize [&:has([data-separator=active])]:cursor-col-resize aria-[orientation=vertical]:[&:has([data-separator=active])_*]:cursor-row-resize aria-[orientati",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 11,
+              "tag": "main",
+              "classes": "flex w-full flex-1 flex-col bg-page-canvas lg:peer-data-[variant=inset]:m-2 lg:peer-data-[variant=inset]:ml-0 lg:peer-data-[variant=inset]:rounded-xl lg:peer-data-[variant=inset]:ring-1 lg:peer-data-[variant=inset]:ring-surface-border lg:peer-data-[variant",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 12,
+              "tag": "div",
+              "classes": "group/sidebar-wrapper flex w-full has-data-[variant=inset]:bg-sidebar has-data-[variant=inset]:[--sidebar-wrapper-fill:var(--sidebar)] h-full min-h-0 bg-app-shell",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 13,
+              "tag": "div",
+              "classes": "min-h-0 flex-1",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 14,
+              "tag": "div",
+              "classes": "flex h-svh min-h-0 flex-col overflow-hidden bg-app-shell [&_[data-slot=sidebar-container]]:top-12 [&_[data-slot=sidebar-container]]:h-[calc(100svh-3rem)]",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 15,
+              "tag": "body",
+              "classes": "h-full overflow-hidden",
+              "role": null,
+              "send_count": 1
+            }
+          ],
+          "ancestor_limit": 16,
+          "class_max_chars": 256,
+          "role_max_chars": 64,
+          "ancestors_truncated": true
+        },
+        {
+          "at": "2026-11-19T02:18:11.582Z",
+          "stage": "second_comment_after_unsubscribe_main_editor_ancestors_before_fill",
+          "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "editor_connected": true,
+          "editor_tag": "div",
+          "editor_classes": "tiptap ProseMirror flex-1 rich-text-editor text-body outline-none",
+          "editor_role": "textbox",
+          "placeholder_node_count": 1,
+          "ancestors": [
+            {
+              "depth": 0,
+              "tag": "div",
+              "classes": "flex flex-1 flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 1,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-full flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 2,
+              "tag": "div",
+              "classes": "flex-1 min-h-0 overflow-y-auto px-3 py-2 max-h-[40vh]",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 3,
+              "tag": "div",
+              "classes": "relative flex flex-col rounded-lg bg-card pb-8 ring-1 ring-border",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 4,
+              "tag": "div",
+              "classes": "mt-4 sticky bottom-0 z-10 -mb-4 bg-background pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-4 before:bg-gradient-to-t before:from-background before:to-transparent",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 5,
+              "tag": "div",
+              "classes": "w-full max-w-4xl max-md:pb-chat-launcher mx-auto px-3 py-6 md:px-8 md:py-8",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 6,
+              "tag": "div",
+              "classes": "relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 7,
+              "tag": "div",
+              "classes": "relative flex h-full min-w-0 flex-1 flex-col",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 8,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 9,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 10,
+              "tag": "div",
+              "classes": "flex h-full w-full aria-[orientation=vertical]:flex-col [&:has([data-separator=active])_*]:cursor-col-resize [&:has([data-separator=active])]:cursor-col-resize aria-[orientation=vertical]:[&:has([data-separator=active])_*]:cursor-row-resize aria-[orientati",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 11,
+              "tag": "main",
+              "classes": "flex w-full flex-1 flex-col bg-page-canvas lg:peer-data-[variant=inset]:m-2 lg:peer-data-[variant=inset]:ml-0 lg:peer-data-[variant=inset]:rounded-xl lg:peer-data-[variant=inset]:ring-1 lg:peer-data-[variant=inset]:ring-surface-border lg:peer-data-[variant",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 12,
+              "tag": "div",
+              "classes": "group/sidebar-wrapper flex w-full has-data-[variant=inset]:bg-sidebar has-data-[variant=inset]:[--sidebar-wrapper-fill:var(--sidebar)] h-full min-h-0 bg-app-shell",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 13,
+              "tag": "div",
+              "classes": "min-h-0 flex-1",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 14,
+              "tag": "div",
+              "classes": "flex h-svh min-h-0 flex-col overflow-hidden bg-app-shell [&_[data-slot=sidebar-container]]:top-12 [&_[data-slot=sidebar-container]]:h-[calc(100svh-3rem)]",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 15,
+              "tag": "body",
+              "classes": "h-full overflow-hidden",
+              "role": null,
+              "send_count": 2
+            }
+          ],
+          "ancestor_limit": 16,
+          "class_max_chars": 256,
+          "role_max_chars": 64,
+          "ancestors_truncated": true
+        },
+        {
+          "at": "2026-11-19T02:18:11.598Z",
+          "stage": "second_comment_after_unsubscribe_main_editor_ancestors_after_fill",
+          "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "issue_id": "01a1f198-ca85-706d-b600-6098f5051837",
+          "editor_connected": true,
+          "editor_tag": "div",
+          "editor_classes": "tiptap ProseMirror flex-1 rich-text-editor text-body outline-none ProseMirror-focused",
+          "editor_role": "textbox",
+          "placeholder_node_count": 0,
+          "ancestors": [
+            {
+              "depth": 0,
+              "tag": "div",
+              "classes": "flex flex-1 flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 1,
+              "tag": "div",
+              "classes": "relative flex flex-1 min-h-full flex-col",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 2,
+              "tag": "div",
+              "classes": "flex-1 min-h-0 overflow-y-auto px-3 py-2 max-h-[40vh]",
+              "role": null,
+              "send_count": 0
+            },
+            {
+              "depth": 3,
+              "tag": "div",
+              "classes": "relative flex flex-col rounded-lg bg-card pb-8 ring-1 ring-border",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 4,
+              "tag": "div",
+              "classes": "mt-4 sticky bottom-0 z-10 -mb-4 bg-background pb-4 before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-4 before:bg-gradient-to-t before:from-background before:to-transparent",
+              "role": null,
+              "send_count": 1
+            },
+            {
+              "depth": 5,
+              "tag": "div",
+              "classes": "w-full max-w-4xl max-md:pb-chat-launcher mx-auto px-3 py-6 md:px-8 md:py-8",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 6,
+              "tag": "div",
+              "classes": "relative flex-1 overflow-y-auto [scrollbar-gutter:stable_both-edges]",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 7,
+              "tag": "div",
+              "classes": "relative flex h-full min-w-0 flex-1 flex-col",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 8,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 9,
+              "tag": "div",
+              "classes": "",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 10,
+              "tag": "div",
+              "classes": "flex h-full w-full aria-[orientation=vertical]:flex-col [&:has([data-separator=active])_*]:cursor-col-resize [&:has([data-separator=active])]:cursor-col-resize aria-[orientation=vertical]:[&:has([data-separator=active])_*]:cursor-row-resize aria-[orientati",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 11,
+              "tag": "main",
+              "classes": "flex w-full flex-1 flex-col bg-page-canvas lg:peer-data-[variant=inset]:m-2 lg:peer-data-[variant=inset]:ml-0 lg:peer-data-[variant=inset]:rounded-xl lg:peer-data-[variant=inset]:ring-1 lg:peer-data-[variant=inset]:ring-surface-border lg:peer-data-[variant",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 12,
+              "tag": "div",
+              "classes": "group/sidebar-wrapper flex w-full has-data-[variant=inset]:bg-sidebar has-data-[variant=inset]:[--sidebar-wrapper-fill:var(--sidebar)] h-full min-h-0 bg-app-shell",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 13,
+              "tag": "div",
+              "classes": "min-h-0 flex-1",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 14,
+              "tag": "div",
+              "classes": "flex h-svh min-h-0 flex-col overflow-hidden bg-app-shell [&_[data-slot=sidebar-container]]:top-12 [&_[data-slot=sidebar-container]]:h-[calc(100svh-3rem)]",
+              "role": null,
+              "send_count": 2
+            },
+            {
+              "depth": 15,
+              "tag": "body",
+              "classes": "h-full overflow-hidden",
+              "role": null,
+              "send_count": 2
+            }
+          ],
+          "ancestor_limit": 16,
+          "class_max_chars": 256,
+          "role_max_chars": 64,
+          "ancestors_truncated": true
+        }
+      ],
+      "UI_requests": [
+        {
+          "at": "2026-11-19T02:18:07.507Z",
+          "stage": "actual_Subscribe_control",
+          "actor_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+          "path": "/api/issues/01a1f198-ca85-706d-b600-6098f5051837/subscribe",
+          "method": "POST",
+          "status": 200,
+          "request_id": null,
+          "payload_sha256": "67f278977b6c8b71f9a67eb4cf735f4bf9d6e81039db14c1db2e30c70f448471",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+          "authentication": {
+            "cookie": true,
+            "csrf": true,
+            "bearer": false
+          }
+        },
+        {
+          "at": "2026-11-19T02:18:07.943Z",
+          "stage": "first_comment",
+          "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "path": "/api/issues/01a1f198-ca85-706d-b600-6098f5051837/comments",
+          "method": "POST",
+          "status": 201,
+          "request_id": null,
+          "payload_sha256": "e7b8b325becf43b83bb614a1a932505af37a9e59840e0aac28d6ee04b2bc6803",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+          "authentication": {
+            "cookie": true,
+            "csrf": true,
+            "bearer": false
+          }
+        },
+        {
+          "at": "2026-11-19T02:18:08.617Z",
+          "stage": "actual_original_inbox_selection",
+          "actor_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+          "path": "/api/inbox/08503eb2-06f1-55c0-ad8c-48851bc0e5d7/read",
+          "method": "POST",
+          "status": 200,
+          "request_id": null,
+          "payload_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+          "authentication": {
+            "cookie": true,
+            "csrf": true,
+            "bearer": false
+          }
+        },
+        {
+          "at": "2026-11-19T02:18:11.456Z",
+          "stage": "actual_Unsubscribe_control",
+          "actor_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+          "path": "/api/issues/01a1f198-ca85-706d-b600-6098f5051837/unsubscribe",
+          "method": "POST",
+          "status": 200,
+          "request_id": null,
+          "payload_sha256": "67f278977b6c8b71f9a67eb4cf735f4bf9d6e81039db14c1db2e30c70f448471",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+          "authentication": {
+            "cookie": true,
+            "csrf": true,
+            "bearer": false
+          }
+        },
+        {
+          "at": "2026-11-19T02:18:11.804Z",
+          "stage": "second_comment_after_unsubscribe",
+          "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "path": "/api/issues/01a1f198-ca85-706d-b600-6098f5051837/comments",
+          "method": "POST",
+          "status": 201,
+          "request_id": null,
+          "payload_sha256": "dc10a6872f5b1f1687adaf7a9eae55ab3252654a34fc129d9baf4b3836265e64",
+          "workspace_id": null,
+          "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+          "authentication": {
+            "cookie": true,
+            "csrf": true,
+            "bearer": false
+          }
+        }
+      ],
+      "transport": [
+        {
+          "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "writes": [
+            {
+              "at": "2026-11-19T02:18:07.941Z",
+              "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+              "method": "POST",
+              "path": "/api/issues/01a1f198-ca85-706d-b600-6098f5051837/comments",
+              "payload_sha256": "e7b8b325becf43b83bb614a1a932505af37a9e59840e0aac28d6ee04b2bc6803",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+              "authentication": {
+                "cookie": true,
+                "csrf": true,
+                "bearer": false
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:11.803Z",
+              "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+              "method": "POST",
+              "path": "/api/issues/01a1f198-ca85-706d-b600-6098f5051837/comments",
+              "payload_sha256": "dc10a6872f5b1f1687adaf7a9eae55ab3252654a34fc129d9baf4b3836265e64",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+              "authentication": {
+                "cookie": true,
+                "csrf": true,
+                "bearer": false
+              }
+            }
+          ],
+          "query_read_facts": [],
+          "socket_bindings": [
+            {
+              "id": "68841.297",
+              "at": "2026-11-19T02:18:06.644Z",
+              "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+              "scope": null
+            }
+          ]
+        },
+        {
+          "actor_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+          "writes": [
+            {
+              "at": "2026-11-19T02:18:07.505Z",
+              "actor_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+              "method": "POST",
+              "path": "/api/issues/01a1f198-ca85-706d-b600-6098f5051837/subscribe",
+              "payload_sha256": "67f278977b6c8b71f9a67eb4cf735f4bf9d6e81039db14c1db2e30c70f448471",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+              "authentication": {
+                "cookie": true,
+                "csrf": true,
+                "bearer": false
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:08.616Z",
+              "actor_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+              "method": "POST",
+              "path": "/api/inbox/08503eb2-06f1-55c0-ad8c-48851bc0e5d7/read",
+              "payload_sha256": null,
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+              "authentication": {
+                "cookie": true,
+                "csrf": true,
+                "bearer": false
+              }
+            },
+            {
+              "at": "2026-11-19T02:18:11.454Z",
+              "actor_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+              "method": "POST",
+              "path": "/api/issues/01a1f198-ca85-706d-b600-6098f5051837/unsubscribe",
+              "payload_sha256": "67f278977b6c8b71f9a67eb4cf735f4bf9d6e81039db14c1db2e30c70f448471",
+              "request_id": null,
+              "workspace_id": null,
+              "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+              "authentication": {
+                "cookie": true,
+                "csrf": true,
+                "bearer": false
+              }
+            }
+          ],
+          "query_read_facts": [],
+          "socket_bindings": [
+            {
+              "id": "68842.301",
+              "at": "2026-11-19T02:18:07.107Z",
+              "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+              "scope": null
+            },
+            {
+              "id": "68842.388",
+              "at": "2026-11-19T02:18:09.914Z",
+              "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+              "scope": null
+            },
+            {
+              "id": "68842.702",
+              "at": "2026-11-19T02:18:10.989Z",
+              "workspace_slug": null,
+              "scope": "account"
+            },
+            {
+              "id": "68842.719",
+              "at": "2026-11-19T02:18:11.034Z",
+              "workspace_slug": "s3-subscriptions-web-mwmx7mw8f252",
+              "scope": null
+            }
+          ]
+        }
+      ],
+      "reconnect": [
+        {
+          "at": "2026-11-19T02:18:11.389Z",
+          "stage": "genuine_reconnect_reload_kept_original_notice",
+          "comment_id": "01a1f198-d66d-7b2f-aa14-ecd889ac6a18",
+          "inbox_id": "08503eb2-06f1-55c0-ad8c-48851bc0e5d7",
+          "read": true,
+          "archived": false,
+          "original_socket_id": "68842.301",
+          "reconnect_socket_id": "68842.388",
+          "reload_socket_id": "68842.719",
+          "all_observed_socket_ids": [
+            "68842.274",
+            "68842.301",
+            "68842.388",
+            "68842.702",
+            "68842.719"
+          ],
+          "additional_business_writes": 0,
+          "workspace_handshake": true,
+          "literal_event_replay_claimed": false
+        }
+      ],
+      "sessions": [
+        {
+          "actor_id": "6fc1a3d2-146f-42ca-b326-87591f40f90e",
+          "lifecycle": {
+            "profile": null,
+            "native_pid": null,
+            "page_closed_at": "2026-11-19T02:18:12.002Z",
+            "context_closed_at": "2026-11-19T02:18:12.009Z",
+            "native_exit": null,
+            "close_started_at": "2026-11-19T02:18:11.994Z",
+            "close_ended_at": "2026-11-19T02:18:12.009Z"
+          },
+          "page_errors": [],
+          "cleanup_errors": [],
+          "sockets": [
+            {
+              "id": "68841.274",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:05.637Z",
+              "closed_at": "2026-11-19T02:18:06.645Z",
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:05.662Z",
+                  "direction": "sent",
+                  "type": "subscribe",
+                  "scope": "issue",
+                  "id": "01a1f198-ca51-736b-aeea-a35b93268309"
+                },
+                {
+                  "at": "2026-11-19T02:18:05.682Z",
+                  "direction": "received",
+                  "type": "subscribe_ack",
+                  "scope": "issue",
+                  "id": "01a1f198-ca51-736b-aeea-a35b93268309"
+                }
+              ]
+            },
+            {
+              "id": "68841.297",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:06.643Z",
+              "closed_at": null,
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:06.658Z",
+                  "direction": "sent",
+                  "type": "subscribe",
+                  "scope": "issue",
+                  "id": "01a1f198-ca51-736b-aeea-a35b93268309"
+                },
+                {
+                  "at": "2026-11-19T02:18:06.672Z",
+                  "direction": "received",
+                  "type": "subscribe_ack",
+                  "scope": "issue",
+                  "id": "01a1f198-ca51-736b-aeea-a35b93268309"
+                },
+                {
+                  "at": "2026-11-19T02:18:06.710Z",
+                  "direction": "sent",
+                  "type": "unsubscribe"
+                },
+                {
+                  "at": "2026-11-19T02:18:06.718Z",
+                  "direction": "received",
+                  "type": "unsubscribe_ack"
+                },
+                {
+                  "at": "2026-11-19T02:18:07.501Z",
+                  "direction": "received",
+                  "type": "subscriber:added"
+                },
+                {
+                  "at": "2026-11-19T02:18:07.919Z",
+                  "direction": "received",
+                  "type": "comment:created"
+                },
+                {
+                  "at": "2026-11-19T02:18:11.442Z",
+                  "direction": "received",
+                  "type": "subscriber:removed"
+                },
+                {
+                  "at": "2026-11-19T02:18:11.782Z",
+                  "direction": "received",
+                  "type": "comment:created"
+                }
+              ]
+            }
+          ],
+          "handshakes": [
+            {
+              "request_id": "68841.274",
+              "at": "2026-11-19T02:18:05.662Z",
+              "status": 101
+            },
+            {
+              "request_id": "68841.297",
+              "at": "2026-11-19T02:18:06.658Z",
+              "status": 101
+            }
+          ]
+        },
+        {
+          "actor_id": "b705eab3-54df-4f51-a593-3adcabef9e8b",
+          "lifecycle": {
+            "profile": null,
+            "native_pid": null,
+            "page_closed_at": "2026-11-19T02:18:12.010Z",
+            "context_closed_at": "2026-11-19T02:18:12.011Z",
+            "native_exit": null,
+            "close_started_at": "2026-11-19T02:18:11.994Z",
+            "close_ended_at": "2026-11-19T02:18:12.011Z"
+          },
+          "page_errors": [],
+          "cleanup_errors": [],
+          "sockets": [
+            {
+              "id": "68842.274",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:06.222Z",
+              "closed_at": "2026-11-19T02:18:07.110Z",
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:06.232Z",
+                  "direction": "sent",
+                  "type": "subscribe",
+                  "scope": "issue",
+                  "id": "01a1f198-ca51-736b-aeea-a35b93268309"
+                },
+                {
+                  "at": "2026-11-19T02:18:06.329Z",
+                  "direction": "received",
+                  "type": "subscribe_ack",
+                  "scope": "issue",
+                  "id": "01a1f198-ca51-736b-aeea-a35b93268309"
+                }
+              ]
+            },
+            {
+              "id": "68842.301",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:07.107Z",
+              "closed_at": "2026-11-19T02:18:08.814Z",
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:07.123Z",
+                  "direction": "sent",
+                  "type": "subscribe",
+                  "scope": "issue",
+                  "id": "01a1f198-ca51-736b-aeea-a35b93268309"
+                },
+                {
+                  "at": "2026-11-19T02:18:07.181Z",
+                  "direction": "sent",
+                  "type": "unsubscribe"
+                },
+                {
+                  "at": "2026-11-19T02:18:07.185Z",
+                  "direction": "received",
+                  "type": "subscribe_ack",
+                  "scope": "issue",
+                  "id": "01a1f198-ca51-736b-aeea-a35b93268309"
+                },
+                {
+                  "at": "2026-11-19T02:18:07.190Z",
+                  "direction": "received",
+                  "type": "unsubscribe_ack"
+                },
+                {
+                  "at": "2026-11-19T02:18:07.510Z",
+                  "direction": "received",
+                  "type": "subscriber:added"
+                },
+                {
+                  "at": "2026-11-19T02:18:07.921Z",
+                  "direction": "received",
+                  "type": "inbox:new"
+                },
+                {
+                  "at": "2026-11-19T02:18:07.932Z",
+                  "direction": "received",
+                  "type": "comment:created"
+                },
+                {
+                  "at": "2026-11-19T02:18:08.618Z",
+                  "direction": "received",
+                  "type": "inbox:read"
+                }
+              ]
+            },
+            {
+              "id": "68842.388",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:09.914Z",
+              "closed_at": "2026-11-19T02:18:10.826Z",
+              "frames": []
+            },
+            {
+              "id": "68842.702",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:10.989Z",
+              "closed_at": "2026-11-19T02:18:11.040Z",
+              "frames": []
+            },
+            {
+              "id": "68842.719",
+              "url": "ws://127.0.0.1:64940/ws",
+              "created_at": "2026-11-19T02:18:11.033Z",
+              "closed_at": null,
+              "frames": [
+                {
+                  "at": "2026-11-19T02:18:11.458Z",
+                  "direction": "received",
+                  "type": "subscriber:removed"
+                },
+                {
+                  "at": "2026-11-19T02:18:11.781Z",
+                  "direction": "received",
+                  "type": "comment:created"
+                }
+              ]
+            }
+          ],
+          "handshakes": [
+            {
+              "request_id": "68842.274",
+              "at": "2026-11-19T02:18:06.232Z",
+              "status": 101
+            },
+            {
+              "request_id": "68842.301",
+              "at": "2026-11-19T02:18:07.123Z",
+              "status": 101
+            },
+            {
+              "request_id": "68842.388",
+              "at": "2026-11-19T02:18:09.931Z",
+              "status": 101
+            },
+            {
+              "request_id": "68842.702",
+              "at": "2026-11-19T02:18:11.034Z",
+              "status": 101
+            },
+            {
+              "request_id": "68842.719",
+              "at": "2026-11-19T02:18:11.065Z",
+              "status": 101
+            }
+          ]
+        }
+      ],
+      "all_sessions_cleanup": [
+        {
+          "status": "fulfilled"
+        },
+        {
+          "status": "fulfilled"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "subscription-typecheck-r08": {
+      "result_sha256": "6929a3a04c918d3ad1e99cae599abd6c419a5f3964489894901377b2267697d9",
+      "exit": 0,
+      "before_after_equal": true,
+      "source_entries": 257,
+      "current_drift": [],
+      "config_drift": false,
+      "tool_drift": [],
+      "stdout_sha256": "0063e4cf90c5d3a3ed30f0ab206f9d5e6ee8872671c928a6e730de249b58ec75",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "subscription-eslint-r08": {
+      "result_sha256": "a8161138149111b3008c086b5da38878a389fb8babdc1c9acb8dea4e536e7b85",
+      "exit": 0,
+      "before_after_equal": true,
+      "source_entries": 257,
+      "current_drift": [],
+      "config_drift": false,
+      "tool_drift": [],
+      "stdout_sha256": "392f79c6962ca5ba52554c317403fddc17aee12cfb248ec9a2f52cf34fdd49fe",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "subscription-list-r08": {
+      "result_sha256": "d704b3052813aa1c67e070b74fdcb0b5e749275abf35bd5e67ba4220bc470517",
+      "exit": 0,
+      "before_after_equal": true,
+      "source_entries": 257,
+      "current_drift": [],
+      "config_drift": false,
+      "tool_drift": [],
+      "stdout_sha256": "63824575c5a30193d34b6f9d99ac0fbeeb90d7e1ee544768c4085f13b7029933",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "subscriptions-runtime-r05": {
+      "result_sha256": "9a1a6273be045b6fb7f25a6cac815e6497cd5b25f3655e5836a8851c0b14e381",
+      "exit": 0,
+      "before_after_equal": true,
+      "source_entries": 257,
+      "current_drift": [],
+      "config_drift": false,
+      "tool_drift": [],
+      "stdout_sha256": "cb0b9f25691f8e24362fd1f420f337a4cbfdd62c25f3953acfb78565a5b1cb56",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "catalog": {
+    "before_sha256": "5e85c22f11cae136c7a6484c6ced3722b0843944766c4065519230da42160b03",
+    "after_sha256": "0a7c05071a90973031212df57eeff086fe741b9c05596b5338a0ad3d30e138ba",
+    "database": "multica_pay241_s3n_20261119_uwkcehly_subscriptions_r06",
+    "gate_equal": true,
+    "gate": {
+      "id": 1,
+      "epoch": 2,
+      "enabled": false,
+      "freeze_progress": null,
+      "creation_enabled": true,
+      "freeze_operation_id": null,
+      "host_execution_enabled": false
+    },
+    "ledger_count": 855,
+    "ledger_equal": true,
+    "index_count": 663,
+    "indexes_equal": true,
+    "all_indexes_ready_valid": true,
+    "table_counts": {
+      "user": 8,
+      "agent": 0,
+      "issue": 4,
+      "skill": 0,
+      "squad": 0,
+      "member": 8,
+      "comment": 4,
+      "project": 0,
+      "feedback": 0,
+      "autopilot": 0,
+      "iteration": 0,
+      "workspace": 2,
+      "attachment": 0,
+      "inbox_item": 2,
+      "issue_view": 0,
+      "skill_file": 0,
+      "task_token": 0,
+      "task_usage": 0,
+      "admin_alert": 0,
+      "agent_skill": 0,
+      "issue_label": 0,
+      "pinned_item": 0,
+      "activity_log": 2,
+      "chat_message": 0,
+      "chat_session": 0,
+      "daemon_token": 0,
+      "issue_status": 14,
+      "issue_triage": 0,
+      "organization": 1,
+      "quick_action": 0,
+      "squad_member": 0,
+      "task_message": 0,
+      "agent_runtime": 0,
+      "autopilot_run": 0,
+      "issue_handoff": 0,
+      "plugin_secret": 0,
+      "triage_action": 0,
+      "agent_to_label": 0,
+      "issue_property": 0,
+      "issue_reaction": 0,
+      "issue_to_label": 0,
+      "plugin_package": 0,
+      "plugin_storage": 0,
+      "project_update": 0,
+      "skill_to_label": 0,
+      "vcs_connection": 0,
+      "admin_operation": 0,
+      "iteration_event": 0,
+      "report_snapshot": 0,
+      "runtime_profile": 0,
+      "agent_mcp_server": 0,
+      "agent_task_queue": 0,
+      "comment_reaction": 0,
+      "issue_dependency": 0,
+      "issue_subscriber": 6,
+      "project_resource": 0,
+      "vcs_pull_request": 0,
+      "webhook_delivery": 0,
+      "admin_audit_event": 0,
+      "autopilot_trigger": 0,
+      "chat_pinned_agent": 0,
+      "collaboration_run": 0,
+      "daemon_connection": 0,
+      "installation_user": 0,
+      "issue_participant": 2,
+      "lark_installation": 0,
+      "lark_user_binding": 0,
+      "plugin_invocation": 0,
+      "schema_migrations": 855,
+      "task_usage_hourly": 0,
+      "triage_import_row": 0,
+      "vcs_commit_status": 0,
+      "verification_code": 0,
+      "chat_draft_restore": 0,
+      "client_usage_daily": 2,
+      "issue_pull_request": 0,
+      "iteration_snapshot": 0,
+      "lark_binding_token": 0,
+      "lark_inbound_audit": 0,
+      "agent_builder_draft": 0,
+      "collaboration_batch": 0,
+      "collaboration_event": 2,
+      "collaboration_grant": 0,
+      "github_installation": 0,
+      "github_pull_request": 0,
+      "issue_collaboration": 2,
+      "iteration_operation": 0,
+      "plugin_installation": 0,
+      "plugin_package_file": 0,
+      "sys_cron_executions": 1,
+      "triage_import_batch": 0,
+      "triage_notification": 0,
+      "autopilot_subscriber": 0,
+      "channel_installation": 0,
+      "channel_user_binding": 0,
+      "collaboration_target": 0,
+      "dingtalk_group_route": 0,
+      "issue_source_context": 0,
+      "managed_installation": 0,
+      "plugin_hook_schedule": 0,
+      "project_stage_policy": 0,
+      "project_state_change": 0,
+      "seat_capacity_outbox": 0,
+      "workspace_invitation": 0,
+      "workspace_mcp_server": 0,
+      "workspace_share_link": 2,
+      "channel_binding_token": 0,
+      "channel_inbound_audit": 0,
+      "channel_task_delivery": 0,
+      "collaboration_attempt": 0,
+      "collaboration_channel": 0,
+      "collaboration_command": 0,
+      "collaboration_session": 2,
+      "contact_sales_inquiry": 0,
+      "dingtalk_bot_identity": 0,
+      "issue_view_preference": 0,
+      "personal_access_token": 0,
+      "platform_role_binding": 0,
+      "triage_intake_request": 0,
+      "agent_approval_request": 0,
+      "autopilot_collaborator": 0,
+      "autopilot_quota_period": 0,
+      "autopilot_rule_version": 0,
+      "installation_challenge": 0,
+      "issue_vcs_pull_request": 0,
+      "iteration_notification": 0,
+      "organization_workspace": 2,
+      "plugin_package_version": 0,
+      "project_update_request": 0,
+      "agent_invocation_target": 0,
+      "collaboration_operation": 2,
+      "collaboration_run_event": 0,
+      "delivery_project_change": 0,
+      "dingtalk_group_presence": 0,
+      "iteration_participation": 0,
+      "notification_preference": 0,
+      "project_delivery_policy": 0,
+      "project_update_revision": 0,
+      "report_snapshot_control": 0,
+      "task_usage_hourly_dirty": 0,
+      "agent_artifact_execution": 0,
+      "channel_outbound_message": 0,
+      "collaboration_attachment": 0,
+      "collaboration_delegation": 0,
+      "collaboration_stage_role": 0,
+      "collaboration_stage_task": 0,
+      "project_knowledge_policy": 0,
+      "user_composio_connection": 0,
+      "user_password_credential": 8,
+      "collaboration_group_input": 0,
+      "collaboration_stage_child": 0,
+      "collaboration_termination": 0,
+      "lark_chat_session_binding": 0,
+      "workspace_triage_settings": 0,
+      "admin_alert_detector_state": 0,
+      "collaboration_notification": 0,
+      "collaboration_test_subject": 0,
+      "comment_delegation_receipt": 0,
+      "github_pending_check_suite": 0,
+      "installation_report_cursor": 0,
+      "lark_inbound_message_dedup": 0,
+      "lark_outbound_card_message": 0,
+      "autopilot_quota_reservation": 0,
+      "collaboration_account_fence": 2,
+      "collaboration_knowledge_job": 0,
+      "github_pending_installation": 0,
+      "installation_daemon_binding": 0,
+      "project_update_notification": 0,
+      "channel_chat_session_binding": 0,
+      "channel_media_pending_object": 0,
+      "collaboration_execution_gate": 1,
+      "collaboration_memory_version": 0,
+      "collaboration_resource_offer": 0,
+      "collaboration_stage_decision": 0,
+      "collaboration_switch_consent": 0,
+      "delivery_completion_terminal": 0,
+      "delivery_evidence_evaluation": 0,
+      "workspace_iteration_settings": 0,
+      "channel_inbound_message_dedup": 0,
+      "channel_outbound_card_message": 0,
+      "collaboration_execution_group": 0,
+      "collaboration_knowledge_batch": 0,
+      "collaboration_stage_candidate": 0,
+      "collaboration_switch_proposal": 0,
+      "github_pull_request_check_run": 0,
+      "platform_admin_initialization": 0,
+      "collaboration_group_dependency": 0,
+      "collaboration_knowledge_target": 0,
+      "collaboration_stage_revocation": 0,
+      "collaboration_stage_submission": 0,
+      "task_usage_hourly_rollup_state": 1,
+      "channel_chat_context_generation": 0,
+      "collaboration_knowledge_attempt": 0,
+      "collaboration_runtime_challenge": 0,
+      "github_pull_request_check_suite": 0,
+      "collaboration_knowledge_validity": 0,
+      "collaboration_runtime_enrollment": 0,
+      "collaboration_business_capability": 0,
+      "collaboration_config_invalidation": 0,
+      "collaboration_knowledge_candidate": 0,
+      "collaboration_runtime_reservation": 0,
+      "collaboration_runtime_scan_cursor": 0,
+      "delivery_completion_authorization": 0,
+      "collaboration_account_invalidation": 0,
+      "collaboration_attachment_reference": 0,
+      "collaboration_knowledge_evaluation": 0,
+      "issue_source_context_object_intent": 0,
+      "collaboration_knowledge_invalidation": 6,
+      "collaboration_stage_execution_intent": 0,
+      "collaboration_stage_rollback_observation": 0,
+      "collaboration_stage_execution_observation": 0
+    },
+    "other_connections": 0
+  },
+  "API_stop": {
+    "sha256": "beab0e83e5bd0bb426814d0de5d670457e17027b44a4ff389d1dd4f95eb402c9",
+    "value": {
+      "at": "2026-11-19T02:19:43.865821+00:00",
+      "pid": 68414,
+      "pgid": 68414,
+      "signal": "SIGTERM",
+      "listener_absent": true,
+      "config_sha256": "5d4e3dc4686ccc1685b66b0d1087be2d6b4433da3a60c021aa82164d80d93a14"
+    }
+  },
+  "raw_stats": {
+    "startTime": "2026-11-19T02:18:01.430Z",
+    "duration": 20507.52,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "limits": [
+    "ordinary requests unkeyed; API original-key replay not run",
+    "literal bus-event replay belongs to accepted Go listener increment",
+    "generic event/mixed-writer/full-S3 guarantees not inferred"
+  ],
+  "markdown_sha256": "f250ed59ad7df1a9c0127bdfabc2ac5ad99a25ea24eb9e3aeff5e2432005b5e3"
+}

@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T07:44:37.375003+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Independent minimum browser-bound entry repair/OFF02 readiness; no acceptance execution",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "pre_execution_conditions_verified": true,
+  "ready_to_execute": false,
+  "OFF02_probe_executed": false,
+  "CCG2_OFF_accepted": false,
+  "task7_closed": false,
+  "handoff": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/browser-cache-repair/handoff.json",
+    "sha256": "be8c89d589765782952657f735a3466469579b04613d25ebe80814ba8a69b5da"
+  },
+  "three_new_operative_inputs": {
+    "new_runner": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/run-ccg2-browser-bound.py",
+      "sha256": "95206bf27c50b16acd2a087fcbbb925671a1b1ee55ad3952a000b4c400789b79",
+      "mode": 384,
+      "matches": true
+    },
+    "browser_binding": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+      "sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13",
+      "mode": 384,
+      "matches": true
+    },
+    "new_OFF_false_permit": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off-v16-02.json",
+      "sha256": "bb546f9ffe3c497373cea272372f83402723d40bf2d587e0d77a4f767908a69b",
+      "mode": 384,
+      "matches": true
+    }
+  },
+  "minimum_change": {
+    "six_common_functions_AST_equal": {
+      "require": true,
+      "digest": true,
+      "write_json": true,
+      "admission": true,
+      "checked_file": true,
+      "loopback_origin": true
+    },
+    "only_removed_for_full_module_equality": [
+      "bind_browser_cache assignment",
+      "browser_binding_sha256",
+      "PLAYWRIGHT_BROWSERS_PATH"
+    ],
+    "full_module_AST_equal": true,
+    "behavior": "Hash-check current browser data and set PLAYWRIGHT_BROWSERS_PATH only in actual fresh child environment; add two journal fields",
+    "download_fallback_ambient_HOME_user_profile_or_service_env_change": false
+  },
+  "limitations": [
+    "Current executable hashes are newly observed, not invented historical V16 browser evidence",
+    "Recorder controls establish child argv/env only and stub upstream API/DB",
+    "Actual browser launch and OFF02 input/event/native proof require Root-signed single probe",
+    "ON still requires separate later preparation/review/permission"
+  ],
+  "Root_next": "Issue new sole OFF02 permission binding this review/browser data and unchanged actual OFF proofs; set ready with new hash and run unique OFF02 once; preserve OFF01/control failures; no browser download/fallback/model calls.",
+  "operations": {
+    "controls_or_tests_rerun": 0,
+    "browser_API_DB_build_auditor_model_acceptance": 0,
+    "source_runner_binding_cache_env_permit_resource_mutations": 0,
+    "read_only_process_checks": 1,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-browser-bound-admission-review"
+  },
+  "real_gate": {
+    "knowledge_allocated": 0,
+    "knowledge_calls": 0,
+    "production_default_enabled": false,
+    "real_Provider_allowed": false,
+    "other_ledger_transfer": false
+  },
+  "protected_inputs": {
+    "count": 10,
+    "all_current_hashes_match": true,
+    "inventory_reference": "handoff.json protected_originals",
+    "handoff_sha256": "be8c89d589765782952657f735a3466469579b04613d25ebe80814ba8a69b5da"
+  },
+  "current_browser": {
+    "binding_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+    "binding_sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13",
+    "Playwright": "1.58.2",
+    "revision": "1208",
+    "browser_version": "145.0.7632.6",
+    "platform": "darwin",
+    "arch": "arm64",
+    "directories_verified": 3,
+    "two_current_executables": {
+      "chromium": {
+        "path": "/Users/artisan/Library/Caches/ms-playwright/chromium-1208/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+        "sha256": "d999cf00c6244a84279785c48eb78f97764a8a13ea3a1a7cc5030bf2f4ca481e",
+        "bytes": 52064,
+        "uid": 501,
+        "mode": 493
+      },
+      "chromium-headless-shell": {
+        "path": "/Users/artisan/Library/Caches/ms-playwright/chromium_headless_shell-1208/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+        "sha256": "a46b3b1e63163fa2d2437fb6ae967cb5a73b50050bca32f1964e6129b6228244",
+        "bytes": 154876784,
+        "uid": 501,
+        "mode": 493
+      }
+    },
+    "verified_inventory_counts": {
+      "executables": 2,
+      "resources": 11,
+      "markers": 4,
+      "tool_config_sources": 6
+    },
+    "all_declared_files_uid_mode_size_hash_path_verified": true,
+    "inventory_reference": "browser-cache-binding-v16.json",
+    "historical_V16_executable_hash_observed": false,
+    "cache_or_profile_changed": false
+  },
+  "controls": {
+    "valid_regression_red": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/browser-cache-repair/control-red-02.json",
+      "sha256": "4aca3e07110774b74f2de819939d52682a56b18dfa19366a760ba976ed88af90",
+      "exit": 1,
+      "actual_original_child_cache_missing": true,
+      "log_sha256": "b312642ca67b4f301e74a5424024e69c7f0e4dde5bb2d6fe670559a414584390"
+    },
+    "green": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/browser-cache-repair/control-green.json",
+      "sha256": "94b778da3597f1fea00ab43e363bdbe80dcc111144eed93ff67571083b9ee413",
+      "exit": 0,
+      "named": 3,
+      "negative_cases": 6,
+      "log_sha256": "948bca7be940b7b10c22da049f3addd5572b1ed39a836097eeb878739161f811"
+    },
+    "initial_control_setup_error_retained": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/browser-cache-repair/control-red.json",
+      "sha256": "c98378ec4912a5305099561930a769c926f276ad6f84ea18b62bc040699661d9",
+      "expected_missing_env_assertion": false
+    },
+    "credential_free_recorder_capture": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-env-control-oh45bmh1/child-env.json",
+      "sha256": "f4e3ee43fb65a11df55a141f460ee1ef1bc5f9a89d8367ffef65ee7b49829df3",
+      "actual_browser_path": "/Users/artisan/Library/Caches/ms-playwright",
+      "HOME_TMP_private": true,
+      "no_model_credentials": true
+    },
+    "upstream_API_DB_admission_stubbed": true,
+    "reruns": 0,
+    "real_browser_API_DB_provider_launches": 0
+  },
+  "original_failed_OFF01": {
+    "result_sha256": "1e198c8177e4650e620af16a959ba53924b7356dda969ffa318558e950d7a5a2",
+    "report_sha256": "64746297003c500ff61272acdb6328cc5c33410bb985ca8aaa9ef190f72cd80f",
+    "started_sha256": "90ae9483322e8374e52eeec29553309c1c18b597099c223e9b22d4502b1ede99",
+    "output_sha256": "3c6ea7eb61ddc1282adc5a9cc740cca13b19fa064fdc2ed53d80a27c68ca20c1",
+    "exit": 1,
+    "accepted": false,
+    "stats": {
+      "startTime": "2026-11-04T06:15:52.798Z",
+      "duration": 918.865,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "cause": "Missing revision1208 executable under private HOME before browser fixture/test body",
+    "no_knowledge_attachment_or_semantic_grade": true
+  },
+  "actual_OFF02": {
+    "permit_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/permissions/ccg2-off-v16-02.json",
+    "false_permit_sha256": "bb546f9ffe3c497373cea272372f83402723d40bf2d587e0d77a4f767908a69b",
+    "intended_label": "ccg2-off-v16-02",
+    "Root_signature_pending": true,
+    "database": "multica_ccg2_v16_off_a3c9",
+    "identity": "multica_ccg2_v16_off_a3c9|764_collaboration_ai_policy",
+    "temp": "/private/tmp/multica-ccg-v16-off-twbq7og6",
+    "browser_binding": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/browser-cache-binding-v16.json",
+      "sha256": "d63a5a379f3d2f4ab0687da4d617897f832179af88d9e257a20e1fdcff2aea13"
+    },
+    "unchanged_source_env_sha256": "e0a6a47cc30e26b36c2b3e7dbf2a219481401362c73a1e0323ecbabc17ba15a1",
+    "unchanged_deployment_proof_sha256": "3fc506a0c4275afe6037626e8da96cec5c33f1547e020115bd692ee0c1ef193a",
+    "unchanged_fake_binary_binding_sha256": "bc3863a5bfec55b1a2955c65643b03717fb6ec339458c6e90ed90abdd8612f60",
+    "prior_actual_OFF_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-off-admission-review/review.json",
+      "sha256": "ed4848442b6bf9b339e7ad99449dc4e9911582ad7996fa90aeed50b6ac3b40f6"
+    },
+    "Root_live_witness": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/root-off-live-confirmation.json",
+      "sha256": "0e343ba15857b0425f6286ba1c1b3a461e259df9d10b323f4544fcdfc77e0efe"
+    },
+    "three_current_processes": [
+      "51638 51602 51602 /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/go-build-cache/e2/e2ded241a09cabe58a03855af76bedfaa95f70879c266b36b83480798177651f-d/server",
+      "51848     1 51848 /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B -m http.server 60377 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+      "51913 51891 51891 next-server (v16.2.6)    "
+    ],
+    "original_full_prerequisites": {
+      "final_audit": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/post-make-v16.json",
+        "sha256": "73c198b8f21f92235f5d20f54031e486ce0de23fcdb4521712daaf03e0194baf",
+        "matches": true
+      },
+      "complete_inventory": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v16-actual-01/independent-shared-readiness-review.json",
+        "sha256": "b84ae87408a08e3e2536dfef08935c92b1ec23deddfc8e8a5c88b00d343734a2",
+        "matches": true
+      },
+      "resource_release": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/root-v16-resource-release.json",
+        "sha256": "ffd84568037732e3642d3a0c661fbd90a34596150086e26460bdc1f034bf9200",
+        "matches": true
+      }
+    }
+  },
+  "source": {
+    "head": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "status": " M apps/web/next-env.d.ts\n",
+    "only_registered_Next_variant": true,
+    "original_runner_sha256": "a6d070263badb138855b1caaaa45d8ea22cfdaebf66e33c09f1e2378748fab3e",
+    "new_runner_sha256": "95206bf27c50b16acd2a087fcbbb925671a1b1ee55ad3952a000b4c400789b79",
+    "source_input_sha256": "97bc4ea95f4b5ab628881268c5d7a5f80c1ae9d0a8bcd4eb8ebc7db3a07f3ecf",
+    "all_11_source_hashes_match": true,
+    "all_4_tools_match": true,
+    "inventory_reference": "unchanged source-inputs.json"
+  },
+  "report_md_sha256": "a5820fa51623291c7fc7ca738aeca2701a74152cfea407d4c62848e5ece1f449"
+}

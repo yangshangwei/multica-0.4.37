@@ -186,7 +186,7 @@ func (c *hermesClient) acpTerminalCreate(params json.RawMessage) (map[string]any
 
 	go func() {
 		defer releaseProcessGroup(cmd)
-		err := cmd.Wait()
+		err := waitOwnedProcessTree(cmd)
 		status := &acpTerminalExitStatus{}
 		if err == nil {
 			code := uint32(0)

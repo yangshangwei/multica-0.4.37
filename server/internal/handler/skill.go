@@ -681,7 +681,7 @@ func (h *Handler) UpdateSkill(w http.ResponseWriter, r *http.Request) {
 	qtx := h.Queries.WithTx(tx)
 
 	params := db.UpdateSkillParams{
-		ID: parseUUID(id),
+		ID: skill.ID,
 	}
 	if req.Name != nil {
 		params.Name = pgtype.Text{String: sanitizeNullBytes(*req.Name), Valid: true}
@@ -710,26 +710,18 @@ func (h *Handler) UpdateSkill(w http.ResponseWriter, r *http.Request) {
 	// If files are provided, replace all files.
 	var fileResps []SkillFileResponse
 	if req.Files != nil {
-		if err := qtx.DeleteSkillFilesBySkill(r.Context(), skill.ID); err != nil {
-			writeError(w, http.StatusInternalServerError, "failed to delete old skill files")
-			return
-		}
-		fileResps = make([]SkillFileResponse, 0, len(req.Files))
+		files := make([]CreateSkillFileRequest, 0, len(req.Files))
 		for _, f := range req.Files {
 			// SKILL.md is reserved for the primary skill content (skill.Content).
 			if skillpkg.IsReservedContentPath(f.Path) {
 				continue
 			}
-			sf, err := qtx.UpsertSkillFile(r.Context(), db.UpsertSkillFileParams{
-				SkillID: skill.ID,
-				Path:    sanitizeNullBytes(f.Path),
-				Content: sanitizeNullBytes(f.Content),
-			})
-			if err != nil {
-				writeError(w, http.StatusInternalServerError, "failed to upsert skill file: "+err.Error())
-				return
-			}
-			fileResps = append(fileResps, skillFileToResponse(sf))
+			files = append(files, f)
+		}
+		fileResps, err = replaceSkillFiles(r.Context(), qtx, skill.ID, files)
+		if err != nil {
+			writeError(w, http.StatusInternalServerError, "failed to replace skill files")
+			return
 		}
 	} else {
 		files, _ := qtx.ListSkillFiles(r.Context(), skill.ID)
@@ -1188,6 +1180,9 @@ func fetchFromClawHub(ctx context.Context, httpClient *http.Client, rawURL strin
 			"source_url": rawURL,
 			"slug":       slug,
 		},
+	}
+	if latestVersion != "" {
+		result.origin["version"] = latestVersion
 	}
 	if result.name == "" {
 		result.name = slug
@@ -2705,9 +2700,31 @@ func (h *Handler) SetAgentSkills(w http.ResponseWriter, r *http.Request) {
 
 	qtx := h.Queries.WithTx(tx)
 
-	if err := qtx.RemoveAllAgentSkills(r.Context(), agent.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to clear agent skills")
+	if _, err := qtx.GetAgentForUpdate(r.Context(), agent.ID); err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to lock agent skills")
 		return
+	}
+	existing, err := qtx.ListAgentSkillSummaries(r.Context(), agent.ID)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to list agent skills")
+		return
+	}
+	wanted := make(map[pgtype.UUID]bool, len(skillUUIDs))
+	for _, id := range skillUUIDs {
+		wanted[id] = true
+	}
+	for _, skill := range existing {
+		if !wanted[skill.ID] {
+			if err := qtx.RemoveAgentSkill(r.Context(), db.RemoveAgentSkillParams{AgentID: agent.ID, SkillID: skill.ID}); err != nil {
+				writeError(w, http.StatusInternalServerError, "failed to remove agent skill")
+				return
+			}
+		} else if !skill.Enabled {
+			if _, err := qtx.SetAgentSkillEnabled(r.Context(), db.SetAgentSkillEnabledParams{AgentID: agent.ID, SkillID: skill.ID, Enabled: true}); err != nil {
+				writeError(w, http.StatusInternalServerError, "failed to enable agent skill")
+				return
+			}
+		}
 	}
 
 	for _, skillID := range skillUUIDs {

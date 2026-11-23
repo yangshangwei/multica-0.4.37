@@ -1,0 +1,116 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-06-password-server-switch-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "password-server-switch.spec.ts",
+      "file": "password-server-switch.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Electron server switch clears same-host credentials and closes issue windows",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 495,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:03:43.815Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "server-switch-evidence",
+                      "contentType": "application/json",
+                      "body": "ewogICJvcmlnaW5zIjogWwogICAgImh0dHA6Ly8xMjcuMC4wLjE6NTYxMzEiLAogICAgImh0dHA6Ly8xMjcuMC4wLjE6NTYxMzIiCiAgXSwKICAiYmVmb3JlQ29va2llQ291bnQiOiA1LAogICJhZnRlciI6IHsKICAgICJjb29raWVzIjogWwogICAgICB7CiAgICAgICAgIm5hbWUiOiAibXVsdGljYV9hdXRoIiwKICAgICAgICAidmFsdWUiOiAidW5yZWxhdGVkLWNvb2tpZSIsCiAgICAgICAgImRvbWFpbiI6ICJ1bnJlbGF0ZWQuaW52YWxpZCIsCiAgICAgICAgImhvc3RPbmx5IjogdHJ1ZSwKICAgICAgICAicGF0aCI6ICIvIiwKICAgICAgICAic2VjdXJlIjogZmFsc2UsCiAgICAgICAgImh0dHBPbmx5IjogdHJ1ZSwKICAgICAgICAic2Vzc2lvbiI6IHRydWUsCiAgICAgICAgInNhbWVTaXRlIjogImxheCIKICAgICAgfQogICAgXSwKICAgICJ3aW5kb3dzIjogMSwKICAgICJpc3N1ZURlc3Ryb3llZCI6IHRydWUsCiAgICAiZGFlbW9uQ2xlYXJzIjogMSwKICAgICJkYWVtb25TdG9wcyI6IDEsCiAgICAic3RvcmVkVG9rZW4iOiBudWxsLAogICAgInNhdmVkIjogewogICAgICAiYXBpVXJsIjogImh0dHA6Ly8xMjcuMC4wLjE6NTYxMzIiCiAgICB9CiAgfSwKICAic2VydmVyQlJlcXVlc3RzIjogWwogICAgewogICAgICAicGF0aCI6ICIvaGVhbHRoIiwKICAgICAgImhlYWRlcnMiOiB7CiAgICAgICAgImhvc3QiOiAiMTI3LjAuMC4xOjU2MTMyIiwKICAgICAgICAiY29ubmVjdGlvbiI6ICJrZWVwLWFsaXZlIiwKICAgICAgICAiYWNjZXB0IjogImFwcGxpY2F0aW9uL2pzb24iLAogICAgICAgICJhY2NlcHQtbGFuZ3VhZ2UiOiAiKiIsCiAgICAgICAgInNlYy1mZXRjaC1tb2RlIjogImNvcnMiLAogICAgICAgICJ1c2VyLWFnZW50IjogIm5vZGUiLAogICAgICAgICJhY2NlcHQtZW5jb2RpbmciOiAiZ3ppcCwgZGVmbGF0ZSIKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgInBhdGgiOiAiL2FwaS9jb25maWciLAogICAgICAiaGVhZGVycyI6IHsKICAgICAgICAiaG9zdCI6ICIxMjcuMC4wLjE6NTYxMzIiLAogICAgICAgICJjb25uZWN0aW9uIjogImtlZXAtYWxpdmUiLAogICAgICAgICJhY2NlcHQiOiAiYXBwbGljYXRpb24vanNvbiIsCiAgICAgICAgImFjY2VwdC1sYW5ndWFnZSI6ICIqIiwKICAgICAgICAic2VjLWZldGNoLW1vZGUiOiAiY29ycyIsCiAgICAgICAgInVzZXItYWdlbnQiOiAibm9kZSIsCiAgICAgICAgImFjY2VwdC1lbmNvZGluZyI6ICJnemlwLCBkZWZsYXRlIgogICAgICB9CiAgICB9LAogICAgewogICAgICAicGF0aCI6ICIvYXBpL3ByaXZhdGUvYWZ0ZXIiLAogICAgICAiaGVhZGVycyI6IHsKICAgICAgICAiaG9zdCI6ICIxMjcuMC4wLjE6NTYxMzIiLAogICAgICAgICJjb25uZWN0aW9uIjogImtlZXAtYWxpdmUiLAogICAgICAgICJzZWMtY2gtdWEtcGxhdGZvcm0iOiAiXCJtYWNPU1wiIiwKICAgICAgICAidXNlci1hZ2VudCI6ICJNb3ppbGxhLzUuMCAoTWFjaW50b3NoOyBJbnRlbCBNYWMgT1MgWCAxMF8xNV83KSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBNdWx0aWNhUGFzc3dvcmRTd2l0Y2hBY2NlcHRhbmNlLzM5LjguNyBDaHJvbWUvMTQyLjAuNzQ0NC4yNjUgRWxlY3Ryb24vMzkuOC43IFNhZmFyaS81MzcuMzYiLAogICAgICAgICJzZWMtY2gtdWEiOiAiXCJOb3RfQSBCcmFuZFwiO3Y9XCI5OVwiLCBcIkNocm9taXVtXCI7dj1cIjE0MlwiIiwKICAgICAgICAic2VjLWNoLXVhLW1vYmlsZSI6ICI/MCIsCiAgICAgICAgImFjY2VwdCI6ICIqLyoiLAogICAgICAgICJvcmlnaW4iOiAiaHR0cDovLzEyNy4wLjAuMTo1NjEzMSIsCiAgICAgICAgInNlYy1mZXRjaC1zaXRlIjogInNhbWUtc2l0ZSIsCiAgICAgICAgInNlYy1mZXRjaC1tb2RlIjogImNvcnMiLAogICAgICAgICJzZWMtZmV0Y2gtZGVzdCI6ICJlbXB0eSIsCiAgICAgICAgInJlZmVyZXIiOiAiaHR0cDovLzEyNy4wLjAuMTo1NjEzMS8iLAogICAgICAgICJhY2NlcHQtZW5jb2RpbmciOiAiZ3ppcCwgZGVmbGF0ZSwgYnIsIHpzdGQiLAogICAgICAgICJhY2NlcHQtbGFuZ3VhZ2UiOiAiemgtQ04iCiAgICAgIH0KICAgIH0KICBdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "707169faded7e17d9857-47afb6c555486dc7f218",
+          "file": "password-server-switch.spec.ts",
+          "line": 16,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:03:42.937Z",
+    "duration": 1396.473,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

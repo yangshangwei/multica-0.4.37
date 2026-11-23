@@ -1,6 +1,8 @@
 {
   "page": {
     "title": "Projects",
+    "tagline": "Group issues by goal and track progress.",
+    "learn_more": "Learn more →",
     "new_project": "New project",
     "empty": "No projects yet",
     "load_error": "Could not load projects",
@@ -20,7 +22,36 @@
     "selected_one": "{{count}} selected",
     "selected_other": "{{count}} selected",
     "clear_selection": "Clear selection",
-    "empty_hint": "Choose a repository and an execution squad to get your first issue moving."
+    "empty_hint": "Create a project to group related issues and assign them to members, individual agents or AI squads."
+  },
+  "welcome": {
+    "title": "Bring <term>issues</term>, <term>agents</term> and <term>AI squads</term> together around a shared goal",
+    "description": "Keep related issues, context and progress in one project. Assign each issue to a member, an individual agent or an AI squad, and link a repository when the work needs one.",
+    "docs": "Learn about projects",
+    "steps": {
+      "goal": "Share the goal and context",
+      "goal_description": "Define the scope and requirements so every issue starts with the same background.",
+      "assign": "Choose who takes each issue",
+      "assign_description": "Use an individual agent for focused work or an AI squad for collaborative delivery.",
+      "track": "Follow progress through delivery",
+      "track_description": "See issue status and delivery results together as the project moves forward."
+    },
+    "example_label": "Example project",
+    "example_title": "Registration and activation",
+    "example_goal": "Let new users register, activate their email and sign in.",
+    "progress": "Issue progress",
+    "progress_value": "{{completed}} of {{total}} completed",
+    "tasks": {
+      "flow": "Define the registration and activation flow",
+      "implementation": "Build the registration API and activation email",
+      "validation": "Test expired links and duplicate registrations"
+    },
+    "assignees": {
+      "product_agent": "Product agent",
+      "delivery_squad": "Delivery AI squad",
+      "qa_agent": "QA agent"
+    },
+    "example_caption": "Illustrative issues and assignees. Each issue has its own owner and status."
   },
   "table": {
     "select_project": "Select {{name}}",
@@ -166,7 +197,8 @@
     "batch_failed_one": "{{count}} project could not be deleted and remains selected. Try again.",
     "batch_failed_other": "{{count}} projects could not be deleted and remain selected. Try again.",
     "batch_partial_one": "{{deleted}} deleted. {{count}} could not be deleted and remains selected. Try again.",
-    "batch_partial_other": "{{deleted}} deleted. {{count}} could not be deleted and remain selected. Try again."
+    "batch_partial_other": "{{deleted}} deleted. {{count}} could not be deleted and remain selected. Try again.",
+    "stage_policy_exit_required": "Disable stage gates before deleting this project."
   },
   "picker": {
     "no_project": "No project",
@@ -315,7 +347,7 @@
     "none": "None",
     "calculated": "Calculated {{time}} · Reference date {{date}}",
     "save": "Save",
-    "lead_invalid": "The project lead is unavailable. Choose a current member or agent in Properties.",
+    "lead_invalid": "The project lead is missing or unavailable. Choose a current member or agent in Properties.",
     "environment": "Some assigned execution environments are unavailable. Review the project resources and squads.",
     "project_overdue": "The project is past its due date.",
     "date_invalid": "Start date is after due date. Correct the project dates.",
@@ -407,7 +439,7 @@
       "project_overdue": "The project is overdue.",
       "unassigned_issues": "Some issues need a valid assignee.",
       "in_review_issues": "Some issues await review.",
-      "invalid_project_lead": "The project lead is unavailable.",
+      "invalid_project_lead": "The project lead is missing or unavailable.",
       "stale_progress": "No progress has been published for seven planning days.",
       "ended_project_open_issues": "This ended project still has open issues.",
       "execution_environment_unavailable": "An assigned execution environment is unavailable.",
@@ -437,6 +469,7 @@
     "savedRefresh": "Changes saved. Refresh the iteration before editing again.",
     "retryRefresh": "Retry refresh",
     "title": "Iterations",
+    "tagline": "Plan work in cycles and track progress.",
     "unsupported": "Iterations are unavailable on this server.",
     "loading": "Loading…",
     "retry": "Retry",
@@ -462,6 +495,31 @@
     "next": "Next page",
     "back": "Back to iterations",
     "empty": "No iterations",
+    "welcome": {
+      "title": "Give each iteration a shared goal",
+      "description": "Plan a focused slice of work, keep the team aligned while it moves, and make a clear call on unfinished tasks at the end.",
+      "create": "Create iteration",
+      "example": "Example",
+      "example_name": "Product polish",
+      "example_dates": "Nov 4 – Nov 17",
+      "example_progress": "2 of 4 tasks completed",
+      "tasks": {
+        "first": "Tighten the mobile layout",
+        "second": "Review the onboarding copy",
+        "third": "Ship the accessibility fixes",
+        "fourth": "Share the release notes"
+      },
+      "done": "Done",
+      "in_progress": "In progress",
+      "planned": "Planned",
+      "handoff": "At the end, decide where unfinished work goes next.",
+      "steps": {
+        "label": "How iterations work",
+        "plan": "Set a time box and choose the work",
+        "track": "Keep progress visible as the team works",
+        "handoff": "Review the outcome and plan what is next"
+      }
+    },
     "settings": "Iteration settings",
     "disable": "Disable all iterations",
     "start": "Start iteration",

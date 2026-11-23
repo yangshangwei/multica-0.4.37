@@ -1,0 +1,28 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "created_at": "2026-11-15T11:27:46.272271+00:00",
+  "allocation_file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json",
+  "allocation_sha256": "41e5c7a2ab13d5b490f3a242adcb3451bf3ecfbfc8e5f3c13dcbc6facf3e0e64",
+  "ownership_verify_receipt": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-verify-a092d6fd1aab.receipt.json",
+  "ownership_verify_sha256": "2458350b5cce62d7894e4a3c317d98fdcd620c5c146a466fd57121b95bb8ae56",
+  "verify_status": "verified_owned_running",
+  "actual_p6_limiter_mode": "single",
+  "actual_p6_redis_test_url_absent": true,
+  "existing_go_consumers": "completed before this continuation; retained service/handler/router evidence unchanged",
+  "c3_redis_unused_receipt": "research/p6-c3-direct-replay-20261115-0f943220c767.json",
+  "established_tcp_connections": 0,
+  "consumer_connection_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-consumer-lsof.log",
+  "state": "teardown_complete",
+  "postgres_databases_retained": true,
+  "image_logs_credentials_evidence_retained": true,
+  "command_exit_code": 0,
+  "execution_receipt": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-execute-f09190fa432e.receipt.json",
+  "execution_receipt_sha256": "63e7ebbe0a4ad1f74dd4056df3c60e69b72e769bb98b46a449195c0a3bc8805f",
+  "removed_resources": {
+    "container_id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+    "image_removed": false,
+    "network_id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e",
+    "owned_resources_removed": true
+  },
+  "allocation_unchanged": true
+}

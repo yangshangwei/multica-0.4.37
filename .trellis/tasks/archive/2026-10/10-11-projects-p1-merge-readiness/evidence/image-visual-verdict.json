@@ -1,0 +1,10 @@
+{
+  "score": 99,
+  "verdict": "pass",
+  "category_match": true,
+  "differences": [
+    "Nine PNGs use 256-color palettes, producing very small color quantization differences without visible loss of screenshot readability."
+  ],
+  "suggestions": [],
+  "reasoning": "Native-resolution before/after comparisons preserve Chinese and Latin text, timestamps, UUIDs, icons, card borders and light/dark contrast. The other four PNGs retain identical decoded pixels, and all 13 retain original dimensions."
+}

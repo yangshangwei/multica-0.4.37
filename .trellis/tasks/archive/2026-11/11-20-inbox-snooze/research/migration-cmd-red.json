@@ -1,0 +1,15 @@
+{
+  "database": "multica_inbox_snooze_cmd_red",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "exit_code": 0,
+  "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/migrate-cmd-red.log",
+  "log_sha256": "19c00c158f86a235a083cc66fd17a8b034b97fb941fb7354aa4dfd024e406dc0",
+  "migration_ledger": "873|885_issue_budget_ready"
+}

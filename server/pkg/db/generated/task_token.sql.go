@@ -12,9 +12,9 @@ import (
 )
 
 const createTaskToken = `-- name: CreateTaskToken :one
-INSERT INTO task_token (token_hash, task_id, agent_id, workspace_id, user_id, expires_at, id, auth_version, installation_binding_id, installation_binding_epoch)
-VALUES ($1, $2, $3, $4, $5, $6, COALESCE($7::uuid, gen_random_uuid()), $8, $9::uuid, $10::bigint)
-RETURNING id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version, installation_binding_id, installation_binding_epoch
+INSERT INTO task_token (token_hash, task_id, agent_id, workspace_id, user_id, expires_at, id, auth_version, installation_binding_id, installation_binding_epoch, api_capability)
+VALUES ($1, $2, $3, $4, $5, $6, COALESCE($7::uuid, gen_random_uuid()), $8, $9::uuid, $10::bigint, $11::jsonb)
+RETURNING id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version, installation_binding_id, installation_binding_epoch, api_capability
 `
 
 type CreateTaskTokenParams struct {
@@ -28,6 +28,7 @@ type CreateTaskTokenParams struct {
 	AuthVersion              int64              `json:"auth_version"`
 	InstallationBindingID    pgtype.UUID        `json:"installation_binding_id"`
 	InstallationBindingEpoch pgtype.Int8        `json:"installation_binding_epoch"`
+	ApiCapability            []byte             `json:"api_capability"`
 }
 
 func (q *Queries) CreateTaskToken(ctx context.Context, arg CreateTaskTokenParams) (TaskToken, error) {
@@ -42,6 +43,7 @@ func (q *Queries) CreateTaskToken(ctx context.Context, arg CreateTaskTokenParams
 		arg.AuthVersion,
 		arg.InstallationBindingID,
 		arg.InstallationBindingEpoch,
+		arg.ApiCapability,
 	)
 	var i TaskToken
 	err := row.Scan(
@@ -56,6 +58,7 @@ func (q *Queries) CreateTaskToken(ctx context.Context, arg CreateTaskTokenParams
 		&i.AuthVersion,
 		&i.InstallationBindingID,
 		&i.InstallationBindingEpoch,
+		&i.ApiCapability,
 	)
 	return i, err
 }
@@ -79,7 +82,7 @@ func (q *Queries) DeleteTaskTokensByTask(ctx context.Context, taskID pgtype.UUID
 }
 
 const getTaskTokenByHash = `-- name: GetTaskTokenByHash :one
-SELECT id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version, installation_binding_id, installation_binding_epoch FROM task_token
+SELECT id, token_hash, task_id, agent_id, workspace_id, user_id, expires_at, created_at, auth_version, installation_binding_id, installation_binding_epoch, api_capability FROM task_token
 WHERE token_hash = $1 AND expires_at > now()
 `
 
@@ -98,6 +101,72 @@ func (q *Queries) GetTaskTokenByHash(ctx context.Context, tokenHash string) (Tas
 		&i.AuthVersion,
 		&i.InstallationBindingID,
 		&i.InstallationBindingEpoch,
+		&i.ApiCapability,
 	)
 	return i, err
+}
+
+const lockTaskCapabilityInvocationTargets = `-- name: LockTaskCapabilityInvocationTargets :many
+SELECT id, agent_id, target_type, target_id, created_by, created_at FROM agent_invocation_target WHERE agent_id=$1 FOR SHARE NOWAIT
+`
+
+func (q *Queries) LockTaskCapabilityInvocationTargets(ctx context.Context, agentID pgtype.UUID) ([]AgentInvocationTarget, error) {
+	rows, err := q.db.Query(ctx, lockTaskCapabilityInvocationTargets, agentID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []AgentInvocationTarget{}
+	for rows.Next() {
+		var i AgentInvocationTarget
+		if err := rows.Scan(
+			&i.ID,
+			&i.AgentID,
+			&i.TargetType,
+			&i.TargetID,
+			&i.CreatedBy,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const lockTaskCapabilityPrincipals = `-- name: LockTaskCapabilityPrincipals :one
+SELECT t.id FROM agent_task_queue t
+JOIN agent a ON a.id=t.agent_id
+JOIN agent_runtime r ON r.id=t.runtime_id
+JOIN issue i ON i.id=t.issue_id
+JOIN member origin_member ON origin_member.user_id=t.originator_user_id AND origin_member.workspace_id=i.workspace_id
+JOIN member owner_member ON owner_member.user_id=r.owner_id AND owner_member.workspace_id=i.workspace_id
+JOIN "user" origin_user ON origin_user.id=origin_member.user_id
+JOIN "user" owner_user ON owner_user.id=owner_member.user_id
+WHERE t.id=$1
+FOR NO KEY UPDATE OF i NOWAIT
+FOR SHARE OF t,a,r,origin_member,owner_member,origin_user,owner_user NOWAIT
+`
+
+// NOWAIT avoids introducing a lock-order wait into existing task/issue paths.
+// The same transaction performs the authority check and comment/token write.
+func (q *Queries) LockTaskCapabilityPrincipals(ctx context.Context, id pgtype.UUID) (pgtype.UUID, error) {
+	row := q.db.QueryRow(ctx, lockTaskCapabilityPrincipals, id)
+	var id_2 pgtype.UUID
+	err := row.Scan(&id_2)
+	return id_2, err
+}
+
+const lockTaskCapabilityToken = `-- name: LockTaskCapabilityToken :one
+SELECT id FROM task_token WHERE id=$1 AND expires_at>now() FOR SHARE NOWAIT
+`
+
+func (q *Queries) LockTaskCapabilityToken(ctx context.Context, id pgtype.UUID) (pgtype.UUID, error) {
+	row := q.db.QueryRow(ctx, lockTaskCapabilityToken, id)
+	var id_2 pgtype.UUID
+	err := row.Scan(&id_2)
+	return id_2, err
 }

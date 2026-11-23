@@ -1,0 +1,309 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "created_at": "2026-11-15T12:12:14.385434+00:00",
+  "audit_id": "569cc14c",
+  "state": "passed_readonly_owned_final_resource_audit",
+  "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+  "final_journey_receipt": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-final-bound-journeys-and-cleanup-fc83cb34.json",
+    "sha256": "750448f7cea7010c255b6e29e5551efdca9a9cefe3879066d8bdb6cc2cb496bd"
+  },
+  "status": {
+    "task": ".trellis/tasks/11-14-project-knowledge-automation",
+    "allocation": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json",
+    "run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156",
+    "database": "mca_knowledge_browser_073bb20e614e",
+    "state": "stopped",
+    "runtime_permitted": false,
+    "services": {
+      "model": {
+        "pid": 52831,
+        "owned_process_alive": false,
+        "origin": "http://127.0.0.1:61993",
+        "listener_pid": null,
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-eaaff8bb0f95/model.log"
+      },
+      "api": {
+        "pid": 52833,
+        "owned_process_alive": false,
+        "origin": "http://127.0.0.1:61990",
+        "listener_pid": null,
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-eaaff8bb0f95/api.log"
+      },
+      "web": {
+        "pid": 52835,
+        "owned_process_alive": false,
+        "origin": "http://127.0.0.1:61991",
+        "listener_pid": null,
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-eaaff8bb0f95/web.log"
+      },
+      "renderer": {
+        "pid": 52837,
+        "owned_process_alive": false,
+        "origin": "http://127.0.0.1:61992",
+        "listener_pid": null,
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-eaaff8bb0f95/renderer.log"
+      }
+    },
+    "source_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/source",
+    "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+    "build": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/build.json"
+  },
+  "status_command_exit_code": 0,
+  "status_artifact": {
+    "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/final-resource-audit-569cc14c/status.stdout.json",
+    "sha256": "1f026a4e1962e3e45190eca4ba477dc043a87508428c55c9b7de4cf8a101779f"
+  },
+  "recorded_process_identity_audit": [
+    {
+      "kind": "model",
+      "pid": 52831,
+      "present": false,
+      "same_birth_and_group": false
+    },
+    {
+      "kind": "api",
+      "pid": 52833,
+      "present": false,
+      "same_birth_and_group": false
+    },
+    {
+      "kind": "web",
+      "pid": 52835,
+      "present": false,
+      "same_birth_and_group": false
+    },
+    {
+      "kind": "web",
+      "pid": 52845,
+      "present": false,
+      "same_birth_and_group": false
+    },
+    {
+      "kind": "renderer",
+      "pid": 52837,
+      "present": false,
+      "same_birth_and_group": false
+    },
+    {
+      "kind": "desktop daemon_or_provider",
+      "pid": 54408,
+      "present": false
+    },
+    {
+      "kind": "desktop daemon_or_provider",
+      "pid": 54417,
+      "present": false
+    },
+    {
+      "kind": "desktop daemon_or_provider",
+      "pid": 54492,
+      "present": false
+    },
+    {
+      "kind": "web daemon_or_provider",
+      "pid": 54142,
+      "present": false
+    },
+    {
+      "kind": "web daemon_or_provider",
+      "pid": 54158,
+      "present": false
+    },
+    {
+      "kind": "web daemon_or_provider",
+      "pid": 54242,
+      "present": false
+    }
+  ],
+  "owned_private_runtime_processes_remaining": [],
+  "process_audit": {
+    "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/final-resource-audit-569cc14c/owned-process-audit.json",
+    "sha256": "a945c61acbd5ed305a11d205b455f58942986c76348841178c3bfb5c1518b835"
+  },
+  "ports": [
+    {
+      "port": 19618,
+      "listener_count": 0,
+      "command_exit_code": 1,
+      "raw": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/final-resource-audit-569cc14c/port-19618.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "port": 20088,
+      "listener_count": 0,
+      "command_exit_code": 1,
+      "raw": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/final-resource-audit-569cc14c/port-20088.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "port": 61990,
+      "listener_count": 0,
+      "command_exit_code": 1,
+      "raw": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/final-resource-audit-569cc14c/port-61990.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "port": 61991,
+      "listener_count": 0,
+      "command_exit_code": 1,
+      "raw": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/final-resource-audit-569cc14c/port-61991.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "port": 61992,
+      "listener_count": 0,
+      "command_exit_code": 1,
+      "raw": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/final-resource-audit-569cc14c/port-61992.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "port": 61993,
+      "listener_count": 0,
+      "command_exit_code": 1,
+      "raw": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/final-resource-audit-569cc14c/port-61993.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "journeys": [
+    {
+      "platform": "desktop",
+      "evidence": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/journey-evidence.json",
+        "sha256": "889389b43116dcbe40a52660d847da9f6bf1970d1ed201f63ee2e96200d1805e"
+      },
+      "daemon_log": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/daemon-homes/e47253b3-802e-4760-8708-d70928a331db/.multica/profiles/p6-desktop-6dd0f025/daemon.log",
+        "sha256": "3ca6287067e8ca9b4a269cfbe153ed4a5ee77e6e570580b1407d163c16a88660"
+      },
+      "retained_pid_file": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/daemon-homes/e47253b3-802e-4760-8708-d70928a331db/.multica/profiles/p6-desktop-6dd0f025/daemon.pid",
+        "sha256": "5db578b7a301100939dde119c88955230fe666fed2ac2ddc9a5cec4c857d582b"
+      },
+      "daemon_pid": 54408,
+      "provider_pids": [
+        54417,
+        54492
+      ],
+      "health_port": 20088,
+      "owned_profile_marker": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/daemon-homes/e47253b3-802e-4760-8708-d70928a331db/.multica/profiles/p6-desktop-6dd0f025/.desktop-user-id",
+        "sha256": "13b5b86456d24dda47f6ac60d47d73b60acfa14f9fc412f83b617bb6c680af83",
+        "mode": "0o600"
+      },
+      "screenshots": [
+        {
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-accepted-processing.png",
+          "sha256": "51735570d903aec9eb9ea9bd2ae1b234d9e45260e5a652450a33f8fe415cb737"
+        },
+        {
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-automatically-saved.png",
+          "sha256": "37fa338bc63b1a55c9a22bbe34929a72c97ea6a188dc66eea078d8fc0fd139f6"
+        },
+        {
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-reopened-paused.png",
+          "sha256": "e549d0999da3f8684ec4d96f54454a6db314fbac6bf656608a2f6ca46af41257"
+        },
+        {
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-reaccepted-restored.png",
+          "sha256": "cc51f8c717165489439a7d80e46a9f49bb320d4de899c5beaccd479cc0f187dd"
+        }
+      ]
+    },
+    {
+      "platform": "web",
+      "evidence": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/journey-evidence.json",
+        "sha256": "78b8bf66a450f28a92c12c6609c787a1537e5805b011852434b4aeb427ea562e"
+      },
+      "daemon_log": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/daemon-homes/e654217e-f8e2-4851-b69b-64a231f0675f/.multica/profiles/p6-web-05e9e898/daemon.log",
+        "sha256": "818969ad0068f1c9310adfbd82f39cfa31a0b4813ebc4b37cdbbcd625971d857"
+      },
+      "retained_pid_file": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/daemon-homes/e654217e-f8e2-4851-b69b-64a231f0675f/.multica/profiles/p6-web-05e9e898/daemon.pid",
+        "sha256": "cbe189c57762bce656fa23897f4e06ec54ce533b951c0ad5fab573b977cecd62"
+      },
+      "daemon_pid": 54142,
+      "provider_pids": [
+        54158,
+        54242
+      ],
+      "health_port": 19618,
+      "owned_profile_marker": {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/daemon-homes/e654217e-f8e2-4851-b69b-64a231f0675f/.multica/profiles/p6-web-05e9e898/.desktop-user-id",
+        "sha256": "ac9182090a814b5cef6479512601293755eed83d806fbab25f3f3ff9df10223f",
+        "mode": "0o600"
+      },
+      "screenshots": [
+        {
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-accepted-processing.png",
+          "sha256": "c5d27e0af087504f61a81b8794a6f478263dd6c84fd76e9714d9b915fa803450"
+        },
+        {
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-automatically-saved.png",
+          "sha256": "2a9718596316a8c74c86eb0ea4a07d1daa55d57000866dc5ee3f02c8dc6fa11f"
+        },
+        {
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-reopened-paused.png",
+          "sha256": "e758fb5a431b834f05f0d34d4272fcb9a4aea85cac961bc290855bdfb49e376c"
+        },
+        {
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-0440e9486493/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-reaccepted-restored.png",
+          "sha256": "d75e46cc3418a9e60bb9dcaad1845399dd9a1e44ea953a20540ce5c91ee86b98"
+        }
+      ]
+    }
+  ],
+  "postgres": {
+    "connection_database": "postgres",
+    "server_port": 5432,
+    "max_connections": 100,
+    "cluster_connections": 25,
+    "retained_databases": [
+      {
+        "name": "mca_knowledge_browser_073bb20e614e",
+        "oid": "16193034",
+        "connections": 0
+      },
+      {
+        "name": "mca_knowledge_c3_0f943220c767_ffc69717",
+        "oid": "16201324",
+        "connections": 0
+      }
+    ]
+  },
+  "postgres_artifact": {
+    "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/final-resource-audit-569cc14c/postgres-retention.stdout.json",
+    "sha256": "94976d6136cd8b83e419f4385ffdb32d7ed7cdc4c053f94806d6a0f56dcd0d94"
+  },
+  "redis_teardown": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-owned-final-teardown-fca701ac.json",
+    "sha256": "e5925d7eac27265a47f1ea74ff3968b9b42fd3819461d09562dabf17ba0bee36",
+    "state": "teardown_complete",
+    "repeat_teardown_executed": false,
+    "allocation_unchanged": true
+  },
+  "original_result_report_log_browser_binding_unchanged": true,
+  "immutable_before_stop_snapshots_unchanged": true,
+  "disk_free_bytes": 5844008960,
+  "disk_free_gib": 5.44,
+  "resource_mutations": [],
+  "databases_dropped": [],
+  "connections_terminated": [],
+  "shared_pay_resources_changed": false,
+  "root_source_or_final_ac_acceptance_claimed": false,
+  "blocking_resource_findings": []
+}

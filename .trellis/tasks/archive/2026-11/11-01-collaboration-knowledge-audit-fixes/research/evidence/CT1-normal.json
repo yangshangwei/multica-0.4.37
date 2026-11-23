@@ -1,0 +1,33 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-run",
+    "^TestKnowledgeResumeEqualTimestampHistoryStillChecksLaterIDs$",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=5m"
+  ],
+  "database": "kfix_claim_tuple_root_20261102_0033",
+  "identity": "kfix_claim_tuple_root_20261102_0033|763_collaboration_knowledge_delivery_history",
+  "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "test_sha256": "7d3929652f255e8cfe4b34e0dce214266142997753ccbe5df9ec90964f60d8f9",
+  "started_at": "2026-11-01T16:40:28.374653+00:00",
+  "exit_code": 0,
+  "finished_at": "2026-11-01T16:40:45.205357+00:00",
+  "log_sha256": "da013ff96aabd85a2f098964ae6ef973c7b522c06ede08411d9faae674c3a393",
+  "counts": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "failures": []
+}

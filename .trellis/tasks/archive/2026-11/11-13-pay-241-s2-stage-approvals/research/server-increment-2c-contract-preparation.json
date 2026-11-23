@@ -1,0 +1,384 @@
+{
+  "schema_version": 1,
+  "topic": "S2 increment2c execution and rollback evidence contract",
+  "owner": "/root/s2_execution_contract",
+  "recorded_at": "2026-11-14T08:20:21.446577+00:00",
+  "status": "recommendation_not_frozen_not_implemented",
+  "scope": "internal_read_only_research",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "head_from_coordinator_context": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "head_independently_queried": false,
+  "coordinator_directions": [
+    "Preserve current-valid A9 approvals. Late facts do not renew approvals, re-execute, or auto-advance.",
+    "No optional existing-deployment endorsement semantics in2c.",
+    "Rollback stage mapping is unserved2c work, not a served2a defect.",
+    "Target digest is justified; no new target-management UI or generic integration framework.",
+    "Provide actual router/UI synthetic positive proof without a production simulation flag."
+  ],
+  "recommended_storage": [
+    "collaboration_stage_execution_intent",
+    "collaboration_stage_execution_observation",
+    "collaboration_stage_rollback_observation"
+  ],
+  "proposed_internal_methods": [
+    "PrepareStageExecution",
+    "RecordStageExecutionObservation",
+    "StageExecutionReceipt",
+    "RecordStageRollbackObservation"
+  ],
+  "proposed_public_changes": {
+    "A7_release": "build.target_digest required; server resolves and retains private source/target snapshot",
+    "A7_rollback": "rollback_observation:{observation_id,observation_digest} required; deployment_id is a server deployment fact UUID",
+    "R4": [
+      "execution_targets bounded50",
+      "rollback_observations bounded50",
+      "execution_operations bounded50; confirmed execution_facts remains separate"
+    ],
+    "source_denied": "one anonymous withheld group; all new private arrays empty; blocked_evidence=1",
+    "rollback_stage": "verification",
+    "A9_late_facts": "retained but cannot bypass expired or otherwise invalid current approval"
+  },
+  "operation_states": [
+    "pending",
+    "unknown",
+    "not_started",
+    "succeeded",
+    "failed"
+  ],
+  "fact_results": [
+    "succeeded",
+    "failed"
+  ],
+  "proposed_errors": [
+    "stage_execution_unavailable",
+    "stage_execution_target_changed",
+    "stage_execution_pending",
+    "stage_execution_conflict",
+    "stage_rollback_observation_unavailable",
+    "stage_rollback_observation_changed"
+  ],
+  "positive_proof_comparison": [
+    {
+      "approach": "production_shaped_seeded_rows_plus_production_API",
+      "accepted_scope": "consumer/projection-only",
+      "selected_as_complete_proof": false
+    },
+    {
+      "approach": "test_only_actual_router_harness_with_controlled_verifier_and_private_pipe",
+      "accepted_scope": "actual UI/auth/human decisions/internal producer/synthetic invocation and history",
+      "selected_as_complete_proof": true
+    }
+  ],
+  "harness_source_seams": [
+    "cmd/server.NewRouterWithOptions returns actualHandler",
+    "handler.stageService constructs per-request service",
+    "new narrow trusted Handler dependency; defaultnil/unavailable",
+    "test-only file supplies controlled source/verifier before serving",
+    "private pipe invokes production internal methods; no public fixture writer",
+    "own fresh router-harness/API DB, actual needed background/outbox services, production Web and source-matched Desktop",
+    "Full browser positive waits for legitimate2dactivation; same dependency must reach actual2dcompletionconsumers"
+  ],
+  "production_default_without_adapter": "unavailable; no GitHub/VCS PR-trust inference and no simulation flag",
+  "test_matrix": [
+    "public-proof rejection",
+    "target/config/trust binding",
+    "role/dependency enforcement",
+    "metric current identity/freshness",
+    "metric source ordering",
+    "final clock/source revocation races",
+    "single concurrent admission",
+    "ambiguous commit zero invocation",
+    "unknown original-operation recovery",
+    "terminal duplicate/conflict handling",
+    "late-result history vs current approval",
+    "post-admission revocation behavior",
+    "remote target CAS requirement",
+    "R4/cache source privacy",
+    "actual isolated router/UI producer journey",
+    "migration retention/readiness/retry/race"
+  ],
+  "execution": {
+    "tests_run": false,
+    "databases_accessed": false,
+    "network_calls": false,
+    "accounts_accessed": false,
+    "git_operations": false,
+    "product_changes": false,
+    "wire_changes": false,
+    "spec_changes": false
+  },
+  "related_specs": [
+    ".trellis/spec/server/security-boundaries.md",
+    ".trellis/spec/server/controlled-artifact-execution.md",
+    ".trellis/spec/server/delivery-completion-enforcement.md"
+  ],
+  "source_bindings": [
+    {
+      "path": ".trellis/workflow.md",
+      "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+      "bytes": 39348
+    },
+    {
+      "path": ".trellis/spec/server/security-boundaries.md",
+      "sha256": "eafe18806e77423c13062317ab9168019f0148131107179bfdd162876957e2cf",
+      "bytes": 19809
+    },
+    {
+      "path": ".trellis/spec/server/controlled-artifact-execution.md",
+      "sha256": "c2bcaeed50eb4ff5619b6dce64b90c8973304d24fda3166e934af8e79042f0db",
+      "bytes": 10427
+    },
+    {
+      "path": ".trellis/spec/server/delivery-completion-enforcement.md",
+      "sha256": "95d593960e679098649757f727c33153c5564bb666446eed2c6bb14f70b9cd9b",
+      "bytes": 16158
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/design.md",
+      "sha256": "a377e9011ef7d3f4dc2e77a4dbc10d331bdf32247761782d8ee233c7b131493a",
+      "bytes": 24227
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2-brief.md",
+      "sha256": "f67a6fe24e109f3201307ba90149b4d739a981dfb01944a93b7bc2cc84fa9db0",
+      "bytes": 4710
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "a71d71570cf1f337d0f8c299e77e307e6d37516dd516eaa6e0882548c5669520",
+      "bytes": 74061
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness.md",
+      "sha256": "6e67a6e8d107fb97de5a2723e9e4645f78440e3a5794b972b6943880c09e76b7",
+      "bytes": 30675
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness.json",
+      "sha256": "c68389515d4c61c2ee2e961ac7db240b130f81116ee28af36967c721b6ad3613",
+      "bytes": 21853
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review_types.go",
+      "sha256": "4e10961e17cfd3f53b5ce6478c01e1063d47c9a55384340da0ba1f3cc5246526",
+      "bytes": 8450
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "sha256": "b5b3d8fa48bb2fb5cd1056314dcc18f4b2af6157d12a6cbdfb0bb37391bd5d8b",
+      "bytes": 28645
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review_view.go",
+      "sha256": "159f0be9305a83550c46b4d8d567357f3dd60d2f7536dbf061348e6254aa9a24",
+      "bytes": 13508
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_signer.go",
+      "sha256": "8fb56b403a4cc881eafd73bc70b9e30c6adc98029e18a1ef4fdf53a784a5762a",
+      "bytes": 10605
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_evidence.go",
+      "sha256": "5d4b8e07d1338841dae6ac18214f3908bcd017dcc9df011c9018f13240dd0127",
+      "bytes": 12000
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "a2334a92b62c6eb1a3a231587c77a9e4fc59383005f770066f3e854522f08568",
+      "bytes": 31644
+    },
+    {
+      "path": "server/internal/service/delivery_completion_webhook.go",
+      "sha256": "ab39ace3439f5332cbaa2a789608cf5766ff828ff7cec5a5fe4afec0f47a573b",
+      "bytes": 14588
+    },
+    {
+      "path": "server/internal/handler/agent_artifact.go",
+      "sha256": "8a153b06bb7e462da2639cee19cb4af5862973f7fb7eb76f422d81089b874d5e",
+      "bytes": 22668
+    },
+    {
+      "path": "server/pkg/db/queries/agent_artifact_execution.sql",
+      "sha256": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+      "bytes": 5556
+    },
+    {
+      "path": "server/migrations/766_agent_artifact_execution.up.sql",
+      "sha256": "242f2c35ca6f918c59662ed6988622d071dd85bb7c9a5e79a3eacb45ea4446c4",
+      "bytes": 3660
+    },
+    {
+      "path": "server/internal/service/admin_operation.go",
+      "sha256": "ebb3a08b6d866692790470c3d634523f147547ff353da4cea39e81d6d663779b",
+      "bytes": 22098
+    },
+    {
+      "path": "server/pkg/db/queries/admin_operation.sql",
+      "sha256": "070a2d906638fcf577c0a632f2a94872903cecb8b49579df136607a53a2fc9eb",
+      "bytes": 8077
+    },
+    {
+      "path": "server/internal/service/admin_alert.go",
+      "sha256": "bc76df13c92a3a6b0f7f57b4607b4b3ca40edaf1d465a038289f58ac98269f1d",
+      "bytes": 25455
+    },
+    {
+      "path": "server/internal/handler/admin_health.go",
+      "sha256": "6d964e3d7c3cb61d4c11b0e18d7237a2e6e4485863b18b6ee3f591d82f003d9b",
+      "bytes": 2876
+    },
+    {
+      "path": "server/internal/service/platform_admin.go",
+      "sha256": "f82c1f9a462a6f996133d9d5950c72f476fae143eec04169214af31c1aba5c3f",
+      "bytes": 26020
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_stage_review.sql",
+      "sha256": "ee9ad53f3fe61d0797115909eb5c83e4aaf0753cd3bf019db535f63fa2091ec4",
+      "bytes": 3745
+    },
+    {
+      "path": "server/migrations/821_collaboration_stage_reviews.up.sql",
+      "sha256": "0a779c62b6bc7348b83a4fdff0be2be4fd63079c210a7f7a50e356366fb7851c",
+      "bytes": 3104
+    },
+    {
+      "path": "server/migrations/825_collaboration_stage_reviews_ready.up.sql",
+      "sha256": "aad09b6d3c9cee4ba324f2a1d0ea67eb10560270fcc46e98f23f6fd68d7fdb64",
+      "bytes": 726
+    },
+    {
+      "path": "server/migrations/825_collaboration_stage_reviews_ready.down.sql",
+      "sha256": "99ddbae22d191c4bd8ed005b590f6e87657e7d7c5af813bb04c321eb5d0c1df7",
+      "bytes": 525
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "657e364e202f2fe5441cb6e841cf9eb4c52faf5d888cb10fef4a5e3a182f487a",
+      "bytes": 150297
+    },
+    {
+      "path": "server/cmd/server/integration_test.go",
+      "sha256": "25f1acc56ce6802909feae8d1e5dca1204cd94428171ccc686de9875ee2adcb1",
+      "bytes": 52633
+    },
+    {
+      "path": "server/internal/handler/handler.go",
+      "sha256": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+      "bytes": 59687
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage.go",
+      "sha256": "1689734f18c3055c4c079b48dcd4d205bd373dc62fdd6a9b4b8f4ee9de0fa7a8",
+      "bytes": 18474
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_review.go",
+      "sha256": "134d56f576a38be7528bed1cd92f508db840a95eab1d81781cfabf563f08cff0",
+      "bytes": 9730
+    },
+    {
+      "path": "server/cmd/server/agent_artifact_integration_test.go",
+      "sha256": "0b26d4afc5a3e44ecb8004572d0fd89a208271719c0b7b90072239e967af0085",
+      "bytes": 24392
+    },
+    {
+      "path": "server/cmd/server/delivery_completion_collaboration_integration_test.go",
+      "sha256": "1b37f836ac441fb1c81a3d535810a7dc866d9dd555795cf254d1efc745ddc6ad",
+      "bytes": 31387
+    },
+    {
+      "path": "server/go.mod",
+      "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+      "bytes": 3586
+    }
+  ],
+  "symbol_locations": [
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "symbol": "type stageReviewPayload",
+      "line": 174
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "symbol": "func (s *CollaborationService) DecideStage",
+      "line": 199
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "symbol": "func (s *CollaborationService) RevokeStageDecision",
+      "line": 347
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "symbol": "func (s *CollaborationService) AdvanceStage",
+      "line": 399
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_signer.go",
+      "symbol": "func stageSignerCurrent",
+      "line": 99
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_signer.go",
+      "symbol": "func checkStageFinalAuthority",
+      "line": 208
+    },
+    {
+      "path": "server/internal/service/delivery_completion_webhook.go",
+      "symbol": "type DeliveryWebhookProof",
+      "line": 21
+    },
+    {
+      "path": "server/internal/service/delivery_completion_webhook.go",
+      "symbol": "func lockDeliveryWebhookTrust",
+      "line": 61
+    },
+    {
+      "path": "server/internal/service/delivery_completion_webhook.go",
+      "symbol": "func checkDeliveryWebhookProofInTx",
+      "line": 187
+    },
+    {
+      "path": "server/internal/handler/agent_artifact.go",
+      "symbol": "func (h *Handler) ExecuteArtifactPackage",
+      "line": 343
+    },
+    {
+      "path": "server/internal/handler/agent_artifact.go",
+      "symbol": "func (h *Handler) finalizeArtifact",
+      "line": 484
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "symbol": "func NewRouterWithOptions",
+      "line": 403
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage.go",
+      "symbol": "func (h *Handler) stageService",
+      "line": 161
+    },
+    {
+      "path": "server/cmd/server/integration_test.go",
+      "symbol": "func TestMain",
+      "line": 43
+    },
+    {
+      "path": "server/cmd/server/integration_test.go",
+      "symbol": "func cleanupIntegrationTestFixture",
+      "line": 161
+    }
+  ],
+  "report_markdown_sha256": "928a19132401b4d63ac711fcfd7933f56096c99ecf49153a9cfeadd38033fca3",
+  "limits": [
+    "Actual provider, target configuration, native query/idempotency/CAS contract and business metrics remain unknown; S4 must validate first-party API docs.",
+    "Source files were active2b working bytes; bindings are a research capture, not an executable frozen candidate.",
+    "No producer, harness, table, public amendment or migration number is implemented/frozen by this report.",
+    "Conservative expiry can leave a historical successful deployment blocked; no renewal is added.",
+    "Rollback artifact selection policy must be explicit; arbitrary historical targets are not implied.",
+    "Verification stage name is not external health or payment success.",
+    "Test-only API harness is actual router/service/UI proof with synthetic adapter, not proof of production-main lifecycle or a configured production deployment provider."
+  ]
+}

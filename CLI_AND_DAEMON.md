@@ -937,10 +937,12 @@ layer.) The underlying detail is still available on demand (see `--debug`).
   429/5xx) are each rendered as one clear sentence with a next step — for
   example a timeout suggests checking the network or raising
   `MULTICA_HTTP_TIMEOUT`, and a 401 tells you to run `multica login`.
-- **Server-provided validation messages are preserved.** For a 400/422 that
-  carries a message from the server, that message is shown verbatim
-  (`Invalid request: <server message>`); only when there is none do you get the
-  generic "check your values / run with --help" hint.
+- **Server-provided messages are preserved for 400/422, 409 and 403.** When
+  the response carries a message from the server, that message is shown
+  verbatim (`Invalid request: <server message>`, `Request conflict: <server
+  message>`, `Permission denied: <server message>`); only when there is none do
+  you get the generic hint for that status. A 403 from an agent's autonomy
+  check, for example, names the agent's level and the level the action needs.
 - **No leaked internals by default.** Raw URLs, status lines, JSON bodies, and
   the internal verb chain are hidden unless you ask for them.
 

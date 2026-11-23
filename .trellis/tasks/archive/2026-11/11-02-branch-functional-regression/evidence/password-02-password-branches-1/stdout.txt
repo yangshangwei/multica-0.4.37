@@ -1,0 +1,16 @@
+
+Running 12 tests using 1 worker
+
+[1A[2K[1/12] [chromium] › e2e/password-branches.spec.ts:49:3 › password authentication branch recovery › invalid username preserves registration fields and can be corrected without restarting
+[1A[2K[2/12] [chromium] › e2e/password-branches.spec.ts:75:3 › password authentication branch recovery › five-character password error can be corrected to the supported six-character minimum
+[1A[2K[3/12] [chromium] › e2e/password-branches.spec.ts:98:3 › password authentication branch recovery › overlong pasted password is rejected and accepts the corrected 128-character boundary
+[1A[2K[4/12] [chromium] › e2e/password-branches.spec.ts:123:3 › password authentication branch recovery › whitespace-only display name reaches server validation and keeps credentials for correction
+[1A[2K[5/12] [chromium] › e2e/password-branches.spec.ts:146:3 › password authentication branch recovery › duplicate username after normalization leaves the original identity and password intact
+[1A[2K[6/12] [chromium] › e2e/password-branches.spec.ts:172:3 › password authentication branch recovery › incorrect password preserves the login form and a corrected retry restores the same identity
+[1A[2K[7/12] [chromium] › e2e/password-branches.spec.ts:196:3 › password authentication branch recovery › unknown account gives a generic error and can sign in after the account is created
+[1A[2K[8/12] [chromium] › e2e/password-branches.spec.ts:218:3 › password authentication branch recovery › lost registration response offers sign-in recovery for the account the server already created
+[1A[2K[9/12] [chromium] › e2e/password-branches.spec.ts:254:3 › password authentication branch recovery › network failure during login keeps credentials and succeeds after connection recovery
+[1A[2K[10/12] [chromium] › e2e/password-branches.spec.ts:284:3 › password authentication branch recovery › temporary authentication service failure preserves the form and permits a real retry
+[1A[2K[11/12] [chromium] › e2e/password-branches.spec.ts:314:3 › password authentication branch recovery › Retry-After disables login submissions until cooldown ends without discarding credentials
+[1A[2K[12/12] [chromium] › e2e/password-branches.spec.ts:358:3 › password authentication branch recovery › pending registration locks the form and ignores repeated native submissions
+[1A[2K  12 passed (13.7s)

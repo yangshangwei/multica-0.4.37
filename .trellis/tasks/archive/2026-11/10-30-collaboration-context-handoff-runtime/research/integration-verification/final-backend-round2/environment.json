@@ -1,0 +1,42 @@
+{
+  "captured_at": "2026-10-31T18:11:51.649096+00:00",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "go_version": "go version go1.27.0 darwin/arm64",
+  "go_env": {
+    "CGO_ENABLED": "1",
+    "GOARCH": "arm64",
+    "GOFLAGS": "",
+    "GOMOD": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/server/go.mod",
+    "GOOS": "darwin",
+    "GOVERSION": "go1.27.0",
+    "GOWORK": ""
+  },
+  "database": {
+    "database": "multica_runtime_final2_858f011e",
+    "postgres_version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "migration_count": 734
+  },
+  "database_env_file": "/tmp/multica_runtime_final2_858f011e.env",
+  "gated_real_agent_variables_removed": [],
+  "real_agent_gate_present": false,
+  "resource_bounds": {
+    "GOMAXPROCS": "2",
+    "go_package_parallelism": 1,
+    "test_parallelism": 2
+  },
+  "source": {
+    "captured_at": "2026-10-31T18:11:51.564330+00:00",
+    "candidate": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/final-candidate/source-round3.json",
+    "candidate_sha256": "a4d8c21598ddcd353d09143cf9a53d4d0bc3a557e7a042a229f64936277d35fb",
+    "candidate_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+    "candidate_source_tree_sha256": "5b0262606d143ca44fc2ab19247eece7025087cda2541372f67afc218b76245b",
+    "actual_head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+    "server_file_count": 4317,
+    "observed_nonignored_server_file_count": 4317,
+    "scope_parity": true,
+    "mismatches": [],
+    "extra_nonignored_server_files": [],
+    "matches": true
+  },
+  "launch_command": "set -a; source /tmp/multica_runtime_final2_858f011e.env; set +a; python3 /Volumes/artisan/code/2026/mc-runtime-integration-20261031/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/final-backend-round2/run_gate.py"
+}

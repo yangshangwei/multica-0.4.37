@@ -23,7 +23,7 @@ function renderHeader(
   return within(container).getByRole("banner");
 }
 
-// Below `xl` the collapsed-nav trigger renders as a third flex item, so the
+// Below `lg` the collapsed-nav trigger renders as a third flex item, so the
 // title stays left only while nothing distributes the free space: the content
 // group grows and the header never uses `justify-between`.
 function expectTitleLeftOfFreeSpace(header: HTMLElement) {
@@ -75,7 +75,7 @@ describe("PageHeader base chrome", () => {
     );
 
     const trigger = header.querySelector("[data-slot='sidebar-trigger']")!;
-    expect(trigger).toHaveClass("xl:hidden");
+    expect(trigger).toHaveClass("lg:hidden");
     expect(trigger.className).not.toMatch(/(^|\s)-?m[rsxe]?-/);
     expect(header).toHaveClass("gap-2", PAGE_GUTTER);
   });

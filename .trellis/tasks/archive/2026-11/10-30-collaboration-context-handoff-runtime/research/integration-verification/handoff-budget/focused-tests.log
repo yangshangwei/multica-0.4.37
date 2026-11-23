@@ -1,0 +1,37 @@
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_less_than
+    host_handoff_budget_test.go:64: assignment_bytes=65536 material_bytes=68855 wire_bytes=396232 provider_starts=1 exact_assignment=true prompt_hash_matches=true
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_ampersand
+    host_handoff_budget_test.go:64: assignment_bytes=65536 material_bytes=68855 wire_bytes=396232 provider_starts=1 exact_assignment=true prompt_hash_matches=true
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/control_character
+    host_handoff_budget_test.go:64: assignment_bytes=65536 material_bytes=68855 wire_bytes=396232 provider_starts=1 exact_assignment=true prompt_hash_matches=true
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/multibyte_and_escapes
+    host_handoff_budget_test.go:64: assignment_bytes=65536 material_bytes=68855 wire_bytes=275617 provider_starts=1 exact_assignment=true prompt_hash_matches=true
+--- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact (0.91s)
+    --- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_less_than (0.27s)
+    --- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_ampersand (0.22s)
+    --- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/control_character (0.21s)
+    --- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/multibyte_and_escapes (0.21s)
+=== RUN   TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch
+=== RUN   TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/exact_wire_cap
+    host_handoff_budget_test.go:118: raw_http_bytes=2097152 protocol_rejected=false provider_starts=1
+=== RUN   TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/one_byte_over_wire_cap
+    host_handoff_budget_test.go:118: raw_http_bytes=2097153 protocol_rejected=true provider_starts=0
+--- PASS: TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch (0.38s)
+    --- PASS: TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/exact_wire_cap (0.21s)
+    --- PASS: TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/one_byte_over_wire_cap (0.17s)
+=== RUN   TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch
+=== RUN   TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/decoded_content_plus_metadata
+    host_handoff_budget_test.go:162: material_bytes=265294 wire_bytes=265294 protocol_rejected=true provider_starts=0
+=== RUN   TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/metadata_budget
+    host_handoff_budget_test.go:162: material_bytes=265407 wire_bytes=265407 protocol_rejected=true provider_starts=0
+=== RUN   TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/malformed_source
+    host_handoff_budget_test.go:162: material_bytes=3262 wire_bytes=3262 protocol_rejected=true provider_starts=0
+--- PASS: TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch (0.45s)
+    --- PASS: TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/decoded_content_plus_metadata (0.16s)
+    --- PASS: TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/metadata_budget (0.15s)
+    --- PASS: TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/malformed_source (0.15s)
+=== RUN   TestHostHandoffLaunchKeepsMaximumAdmittedInputsBeyondMetadataPage
+--- PASS: TestHostHandoffLaunchKeepsMaximumAdmittedInputsBeyondMetadataPage (0.28s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	2.642s

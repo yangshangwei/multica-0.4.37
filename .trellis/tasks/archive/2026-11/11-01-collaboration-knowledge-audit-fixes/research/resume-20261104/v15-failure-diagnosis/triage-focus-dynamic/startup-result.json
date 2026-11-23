@@ -1,0 +1,28 @@
+{
+  "started_at": "2026-11-04T01:48:04.611722+00:00",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/scripts/dev-env.sh",
+    "up",
+    "--name",
+    "triage-focus-v15-01a1a3c9",
+    "--components",
+    "api,web",
+    "--web-mode",
+    "production",
+    "--ephemeral"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime",
+  "env_file_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/source.env",
+  "env_file_sha256": "80f0cdde1446c1913785748c78805743c0525dd1a7a90c027b6975202a9190ac",
+  "private_registry": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/registry",
+  "database_expected": "multica_triage_focus_v15_01a1a3c9",
+  "knowledge_calls": 0,
+  "real_provider_allowed": false,
+  "scope": "task-only diagnostic startup; no tests or models",
+  "finished_at": "2026-11-04T01:48:04.761422+00:00",
+  "exit_code": 127,
+  "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-failure-diagnosis/triage-focus-dynamic/startup.log",
+  "log_sha256": "fa3e783676e9e19a4e1c9bf1153ab79b7398ce7fe4ba6e13b4c9125307890458",
+  "runtime_status": ""
+}

@@ -1,0 +1,120 @@
+{
+  "at": "2026-11-02T02:39:56.621553+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "historical_summary": "research/go-current-summary.json",
+  "historical_summary_sha256": "e11aa8295ba8c44c261451e831e47c21fced56c0e8297691d03e81e22ac6e9be",
+  "historical_82_package_success_retained": true,
+  "scope": "Latest per-test conditional view; not a full-package rerun or a single successful command",
+  "supplemental_top_level": {
+    "fail": 1,
+    "pass": 11
+  },
+  "top_level": {
+    "pass": 10376,
+    "skip": 6,
+    "fail": 1
+  },
+  "subtests": {
+    "pass": 10491
+  },
+  "replaced_skip_identities": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestIterationI1P95",
+      "status": "fail",
+      "run": "evidence/resume-handler-perf-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestIterationI1DisableP95",
+      "status": "pass",
+      "run": "evidence/resume-handler-perf-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestTriageQueueScaleBaseline",
+      "status": "pass",
+      "run": "evidence/resume-handler-perf-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+      "status": "pass",
+      "run": "evidence/resume-handler-wire-live-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestTriageWireFixtures",
+      "status": "pass",
+      "run": "evidence/resume-handler-wire-live-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+      "status": "pass",
+      "run": "evidence/resume-linux-conditional-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+      "status": "pass",
+      "run": "evidence/resume-linux-conditional-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationPartialResumeRoutesLinux",
+      "status": "pass",
+      "run": "evidence/resume-linux-conditional-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "status": "pass",
+      "run": "evidence/resume-linux-conditional-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+      "status": "pass",
+      "run": "evidence/resume-linux-conditional-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+      "status": "pass",
+      "run": "evidence/resume-linux-conditional-1"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+      "status": "pass",
+      "run": "evidence/resume-linux-conditional-1"
+    }
+  ],
+  "current_skips": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCommentContentBigramRequirementMatchesRealPGBigm"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "test": "TestCLIConfig_UnknownFieldsArePreserved"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestIsDriveRoot"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestMcpMarketPublicHTTPRecipeLifecycle"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput"
+    }
+  ]
+}

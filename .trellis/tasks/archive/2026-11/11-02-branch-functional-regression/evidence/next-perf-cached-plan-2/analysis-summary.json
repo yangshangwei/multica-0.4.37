@@ -1,0 +1,2411 @@
+{
+  "at": "2026-11-02T08:08:15.171743+00:00",
+  "status": "PASS_DIAGNOSTIC_ONLY",
+  "scope": "Actual canonical protocol-prepared plans, identical original args, same backend; task-only transaction rollback and ANALYZE comparison",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "database": "multica_func7af9_next_cached_diag_2",
+  "backend_pid": 7356,
+  "prepared_reset": {
+    "after": {
+      "pid": 7356,
+      "stats": [],
+      "counts": {
+        "issue": 1000,
+        "iteration_event": 2003,
+        "agent_task_queue": 0,
+        "iteration_participation": 1000
+      },
+      "tables": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1097728,
+          "n_dead_tup": 3000,
+          "n_live_tup": 463,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 5193728,
+          "n_dead_tup": 4002,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 2998272,
+          "n_dead_tup": 4997,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "indexes": [
+        {
+          "live": true,
+          "name": "admin_alert_failure_scan_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_alert_failure_scan_idx ON public.agent_task_queue USING btree (completed_at, id) WHERE ((status = 'failed'::text) AND (completed_at IS NOT NULL))"
+        },
+        {
+          "live": true,
+          "name": "admin_alert_inflight_installation_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_alert_inflight_installation_idx ON public.agent_task_queue USING btree (execution_installation_id, id) WHERE ((status = ANY (ARRAY['dispatched'::text, 'running'::text, 'waiting_local_directory'::text])) AND (execution_installation_id IS NOT NULL))"
+        },
+        {
+          "live": true,
+          "name": "admin_alert_queue_scan_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_alert_queue_scan_idx ON public.agent_task_queue USING btree (queued_at, id) WHERE (status = 'queued'::text)"
+        },
+        {
+          "live": true,
+          "name": "admin_execution_finished_page_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_execution_finished_page_idx ON public.agent_task_queue USING btree (completed_at DESC, id DESC) WHERE (completed_at IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "admin_task_page_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_task_page_idx ON public.agent_task_queue USING btree (created_at DESC, id DESC)"
+        },
+        {
+          "live": true,
+          "name": "admin_task_runtime_page_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_task_runtime_page_idx ON public.agent_task_queue USING btree (runtime_id, created_at DESC, id DESC)"
+        },
+        {
+          "live": true,
+          "name": "agent_task_queue_originator_user_id_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX agent_task_queue_originator_user_id_idx ON public.agent_task_queue USING btree (originator_user_id) WHERE (originator_user_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "agent_task_queue_pkey",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_task_queue_pkey ON public.agent_task_queue USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "agent_task_queue_squad_id_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX agent_task_queue_squad_id_idx ON public.agent_task_queue USING btree (squad_id) WHERE (squad_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "collaboration_knowledge_agent_history_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX collaboration_knowledge_agent_history_idx ON public.agent_task_queue USING btree (agent_id, created_at DESC, id DESC) WHERE (knowledge_context_version IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "collaboration_knowledge_delivery_history_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX collaboration_knowledge_delivery_history_idx ON public.agent_task_queue USING gin (knowledge_delivery jsonb_path_ops) WHERE (knowledge_context_version IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "collaboration_knowledge_runtime_history_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX collaboration_knowledge_runtime_history_idx ON public.agent_task_queue USING btree (runtime_id, created_at DESC, id DESC) WHERE (knowledge_context_version IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_agent",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_agent ON public.agent_task_queue USING btree (agent_id, status)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_agent_id_keyset",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_agent_id_keyset ON public.agent_task_queue USING btree (agent_id, id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_agent_terminal_latest",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_agent_terminal_latest ON public.agent_task_queue USING btree (agent_id, completed_at DESC NULLS LAST, created_at DESC, id DESC) WHERE (status = ANY (ARRAY['completed'::text, 'failed'::text]))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_chat_pending_v3",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_chat_pending_v3 ON public.agent_task_queue USING btree (chat_session_id, created_at DESC) WHERE ((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['queued'::text, 'dispatched'::text, 'running'::text, 'waiting_local_directory'::text, 'deferred'::text])))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_chat_retired_session",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_chat_retired_session ON public.agent_task_queue USING btree (chat_session_id, retired_session_id) WHERE ((chat_session_id IS NOT NULL) AND (retired_session_id IS NOT NULL))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_chat_terminal_resume",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_chat_terminal_resume ON public.agent_task_queue USING btree (chat_session_id, session_id, completed_at DESC) WHERE ((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text])))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_claim_candidates",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_claim_candidates ON public.agent_task_queue USING btree (runtime_id, priority DESC, created_at) WHERE (status = 'queued'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_deferred_fire",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_deferred_fire ON public.agent_task_queue USING btree (runtime_id, fire_at) WHERE (status = 'deferred'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_dispatched_reclaim_v2",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_dispatched_reclaim_v2 ON public.agent_task_queue USING btree (runtime_id, dispatched_at, priority DESC) WHERE ((status = 'dispatched'::text) AND (started_at IS NULL))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_escalation_for",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_escalation_for ON public.agent_task_queue USING btree (escalation_for_task_id) WHERE (escalation_for_task_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_issue_id",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_issue_id ON public.agent_task_queue USING btree (issue_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_issue_id_keyset",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_issue_id_keyset ON public.agent_task_queue USING btree (issue_id, id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_parent",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_parent ON public.agent_task_queue USING btree (parent_task_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_pending",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_pending ON public.agent_task_queue USING btree (agent_id, priority DESC, created_at) WHERE (status = ANY (ARRAY['queued'::text, 'dispatched'::text]))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_queued_created_at",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_queued_created_at ON public.agent_task_queue USING btree (created_at) WHERE (status = 'queued'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_running_started_at",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_running_started_at ON public.agent_task_queue USING btree (started_at) WHERE (status = 'running'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_runtime_id",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_runtime_id ON public.agent_task_queue USING btree (runtime_id, id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_runtime_pending",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_runtime_pending ON public.agent_task_queue USING btree (runtime_id, priority DESC, created_at) WHERE (status = ANY (ARRAY['queued'::text, 'dispatched'::text]))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_terminal_completed_at_v2",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_terminal_completed_at_v2 ON public.agent_task_queue USING btree (completed_at) WHERE (status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text]))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_trigger_comment_id",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_trigger_comment_id ON public.agent_task_queue USING btree (trigger_comment_id) WHERE (trigger_comment_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_one_pending_task_per_issue_agent_v2",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX idx_one_pending_task_per_issue_agent_v2 ON public.agent_task_queue USING btree (issue_id, agent_id) WHERE ((status = ANY (ARRAY['queued'::text, 'dispatched'::text])) OR ((status = 'deferred'::text) AND ((context ->> 'channel_issue_media_pending'::text) = 'true'::text)))"
+        },
+        {
+          "live": true,
+          "name": "idx_task_chat_finalize_deferred",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_task_chat_finalize_deferred ON public.agent_task_queue USING btree (chat_finalize_deferred_at) WHERE (chat_finalize_deferred_at IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "admin_issue_page_idx",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_issue_page_idx ON public.issue USING btree (created_at DESC, id DESC)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_assignee",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_assignee ON public.issue USING btree (assignee_type, assignee_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_description_trgm",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_description_trgm ON public.issue USING gin (lower(COALESCE(description, ''::text)) gin_trgm_ops)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_first_executed_at",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_first_executed_at ON public.issue USING btree (workspace_id, first_executed_at) WHERE (first_executed_at IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_metadata_gin",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_metadata_gin ON public.issue USING gin (metadata jsonb_path_ops)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_origin",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_origin ON public.issue USING btree (origin_type, origin_id) WHERE (origin_type IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_parent",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_parent ON public.issue USING btree (parent_issue_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_project",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_project ON public.issue USING btree (project_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_project_status",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_project_status ON public.issue USING btree (project_id, workspace_id, status)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_properties_gin",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_properties_gin ON public.issue USING gin (properties jsonb_path_ops)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_status",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_status ON public.issue USING btree (workspace_id, status)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_title_trgm",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_title_trgm ON public.issue USING gin (lower(title) gin_trgm_ops)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace ON public.issue USING btree (workspace_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_assignee",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_assignee ON public.issue USING btree (workspace_id, assignee_type, assignee_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_id_keyset",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_id_keyset ON public.issue USING btree (workspace_id, id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_parent",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_parent ON public.issue USING btree (workspace_id, parent_issue_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_position",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_position ON public.issue USING btree (workspace_id, \"position\", created_at DESC, id DESC)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_status_position",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_status_position ON public.issue USING btree (workspace_id, status, \"position\")"
+        },
+        {
+          "live": true,
+          "name": "issue_admission_workspace",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX issue_admission_workspace ON public.issue USING btree (workspace_id, admission_status)"
+        },
+        {
+          "live": true,
+          "name": "issue_pkey",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX issue_pkey ON public.issue USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "iteration_issue_current",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX iteration_issue_current ON public.issue USING btree (workspace_id, current_iteration_id) WHERE (current_iteration_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "uq_issue_workspace_number",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX uq_issue_workspace_number ON public.issue USING btree (workspace_id, number)"
+        },
+        {
+          "live": true,
+          "name": "iteration_event_id",
+          "ready": true,
+          "table": "iteration_event",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX iteration_event_id ON public.iteration_event USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "iteration_event_sequence",
+          "ready": true,
+          "table": "iteration_event",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX iteration_event_sequence ON public.iteration_event USING btree (iteration_id, sequence)"
+        },
+        {
+          "live": true,
+          "name": "iteration_participation_identity",
+          "ready": true,
+          "table": "iteration_participation",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX iteration_participation_identity ON public.iteration_participation USING btree (workspace_id, iteration_id, issue_id)"
+        },
+        {
+          "live": true,
+          "name": "iteration_participation_issue",
+          "ready": true,
+          "table": "iteration_participation",
+          "valid": true,
+          "definition": "CREATE INDEX iteration_participation_issue ON public.iteration_participation USING btree (workspace_id, issue_id, iteration_id)"
+        }
+      ],
+      "database": "multica_func7af9_next_cached_diag_2",
+      "prepared": [],
+      "settings": {
+        "enable_seqscan": "on",
+        "enable_indexscan": "on",
+        "enable_bitmapscan": "on",
+        "auto_explain.log_wal": "on",
+        "auto_explain.log_level": "notice",
+        "auto_explain.log_timing": "on",
+        "auto_explain.log_analyze": "on",
+        "auto_explain.log_buffers": "on",
+        "auto_explain.log_min_duration": "-1"
+      },
+      "plan_cache_mode": "auto",
+      "transaction_isolation": "read committed"
+    },
+    "at": "2026-11-02T08:07:46.830189Z",
+    "before": {
+      "pid": 7356,
+      "stats": [],
+      "counts": {
+        "issue": 1000,
+        "iteration_event": 2003,
+        "agent_task_queue": 0,
+        "iteration_participation": 1000
+      },
+      "tables": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1097728,
+          "n_dead_tup": 3000,
+          "n_live_tup": 463,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 5193728,
+          "n_dead_tup": 4002,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 2998272,
+          "n_dead_tup": 4997,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "indexes": [
+        {
+          "live": true,
+          "name": "admin_alert_failure_scan_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_alert_failure_scan_idx ON public.agent_task_queue USING btree (completed_at, id) WHERE ((status = 'failed'::text) AND (completed_at IS NOT NULL))"
+        },
+        {
+          "live": true,
+          "name": "admin_alert_inflight_installation_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_alert_inflight_installation_idx ON public.agent_task_queue USING btree (execution_installation_id, id) WHERE ((status = ANY (ARRAY['dispatched'::text, 'running'::text, 'waiting_local_directory'::text])) AND (execution_installation_id IS NOT NULL))"
+        },
+        {
+          "live": true,
+          "name": "admin_alert_queue_scan_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_alert_queue_scan_idx ON public.agent_task_queue USING btree (queued_at, id) WHERE (status = 'queued'::text)"
+        },
+        {
+          "live": true,
+          "name": "admin_execution_finished_page_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_execution_finished_page_idx ON public.agent_task_queue USING btree (completed_at DESC, id DESC) WHERE (completed_at IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "admin_task_page_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_task_page_idx ON public.agent_task_queue USING btree (created_at DESC, id DESC)"
+        },
+        {
+          "live": true,
+          "name": "admin_task_runtime_page_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_task_runtime_page_idx ON public.agent_task_queue USING btree (runtime_id, created_at DESC, id DESC)"
+        },
+        {
+          "live": true,
+          "name": "agent_task_queue_originator_user_id_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX agent_task_queue_originator_user_id_idx ON public.agent_task_queue USING btree (originator_user_id) WHERE (originator_user_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "agent_task_queue_pkey",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_task_queue_pkey ON public.agent_task_queue USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "agent_task_queue_squad_id_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX agent_task_queue_squad_id_idx ON public.agent_task_queue USING btree (squad_id) WHERE (squad_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "collaboration_knowledge_agent_history_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX collaboration_knowledge_agent_history_idx ON public.agent_task_queue USING btree (agent_id, created_at DESC, id DESC) WHERE (knowledge_context_version IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "collaboration_knowledge_delivery_history_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX collaboration_knowledge_delivery_history_idx ON public.agent_task_queue USING gin (knowledge_delivery jsonb_path_ops) WHERE (knowledge_context_version IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "collaboration_knowledge_runtime_history_idx",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX collaboration_knowledge_runtime_history_idx ON public.agent_task_queue USING btree (runtime_id, created_at DESC, id DESC) WHERE (knowledge_context_version IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_agent",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_agent ON public.agent_task_queue USING btree (agent_id, status)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_agent_id_keyset",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_agent_id_keyset ON public.agent_task_queue USING btree (agent_id, id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_agent_terminal_latest",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_agent_terminal_latest ON public.agent_task_queue USING btree (agent_id, completed_at DESC NULLS LAST, created_at DESC, id DESC) WHERE (status = ANY (ARRAY['completed'::text, 'failed'::text]))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_chat_pending_v3",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_chat_pending_v3 ON public.agent_task_queue USING btree (chat_session_id, created_at DESC) WHERE ((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['queued'::text, 'dispatched'::text, 'running'::text, 'waiting_local_directory'::text, 'deferred'::text])))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_chat_retired_session",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_chat_retired_session ON public.agent_task_queue USING btree (chat_session_id, retired_session_id) WHERE ((chat_session_id IS NOT NULL) AND (retired_session_id IS NOT NULL))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_chat_terminal_resume",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_chat_terminal_resume ON public.agent_task_queue USING btree (chat_session_id, session_id, completed_at DESC) WHERE ((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text])))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_claim_candidates",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_claim_candidates ON public.agent_task_queue USING btree (runtime_id, priority DESC, created_at) WHERE (status = 'queued'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_deferred_fire",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_deferred_fire ON public.agent_task_queue USING btree (runtime_id, fire_at) WHERE (status = 'deferred'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_dispatched_reclaim_v2",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_dispatched_reclaim_v2 ON public.agent_task_queue USING btree (runtime_id, dispatched_at, priority DESC) WHERE ((status = 'dispatched'::text) AND (started_at IS NULL))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_escalation_for",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_escalation_for ON public.agent_task_queue USING btree (escalation_for_task_id) WHERE (escalation_for_task_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_issue_id",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_issue_id ON public.agent_task_queue USING btree (issue_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_issue_id_keyset",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_issue_id_keyset ON public.agent_task_queue USING btree (issue_id, id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_parent",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_parent ON public.agent_task_queue USING btree (parent_task_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_pending",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_pending ON public.agent_task_queue USING btree (agent_id, priority DESC, created_at) WHERE (status = ANY (ARRAY['queued'::text, 'dispatched'::text]))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_queued_created_at",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_queued_created_at ON public.agent_task_queue USING btree (created_at) WHERE (status = 'queued'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_running_started_at",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_running_started_at ON public.agent_task_queue USING btree (started_at) WHERE (status = 'running'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_runtime_id",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_runtime_id ON public.agent_task_queue USING btree (runtime_id, id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_runtime_pending",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_runtime_pending ON public.agent_task_queue USING btree (runtime_id, priority DESC, created_at) WHERE (status = ANY (ARRAY['queued'::text, 'dispatched'::text]))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_terminal_completed_at_v2",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_terminal_completed_at_v2 ON public.agent_task_queue USING btree (completed_at) WHERE (status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text]))"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_task_queue_trigger_comment_id",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_task_queue_trigger_comment_id ON public.agent_task_queue USING btree (trigger_comment_id) WHERE (trigger_comment_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_one_pending_task_per_issue_agent_v2",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX idx_one_pending_task_per_issue_agent_v2 ON public.agent_task_queue USING btree (issue_id, agent_id) WHERE ((status = ANY (ARRAY['queued'::text, 'dispatched'::text])) OR ((status = 'deferred'::text) AND ((context ->> 'channel_issue_media_pending'::text) = 'true'::text)))"
+        },
+        {
+          "live": true,
+          "name": "idx_task_chat_finalize_deferred",
+          "ready": true,
+          "table": "agent_task_queue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_task_chat_finalize_deferred ON public.agent_task_queue USING btree (chat_finalize_deferred_at) WHERE (chat_finalize_deferred_at IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "admin_issue_page_idx",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX admin_issue_page_idx ON public.issue USING btree (created_at DESC, id DESC)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_assignee",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_assignee ON public.issue USING btree (assignee_type, assignee_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_description_trgm",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_description_trgm ON public.issue USING gin (lower(COALESCE(description, ''::text)) gin_trgm_ops)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_first_executed_at",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_first_executed_at ON public.issue USING btree (workspace_id, first_executed_at) WHERE (first_executed_at IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_metadata_gin",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_metadata_gin ON public.issue USING gin (metadata jsonb_path_ops)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_origin",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_origin ON public.issue USING btree (origin_type, origin_id) WHERE (origin_type IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_parent",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_parent ON public.issue USING btree (parent_issue_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_project",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_project ON public.issue USING btree (project_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_project_status",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_project_status ON public.issue USING btree (project_id, workspace_id, status)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_properties_gin",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_properties_gin ON public.issue USING gin (properties jsonb_path_ops)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_status",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_status ON public.issue USING btree (workspace_id, status)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_title_trgm",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_title_trgm ON public.issue USING gin (lower(title) gin_trgm_ops)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace ON public.issue USING btree (workspace_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_assignee",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_assignee ON public.issue USING btree (workspace_id, assignee_type, assignee_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_id_keyset",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_id_keyset ON public.issue USING btree (workspace_id, id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_parent",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_parent ON public.issue USING btree (workspace_id, parent_issue_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_position",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_position ON public.issue USING btree (workspace_id, \"position\", created_at DESC, id DESC)"
+        },
+        {
+          "live": true,
+          "name": "idx_issue_workspace_status_position",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX idx_issue_workspace_status_position ON public.issue USING btree (workspace_id, status, \"position\")"
+        },
+        {
+          "live": true,
+          "name": "issue_admission_workspace",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX issue_admission_workspace ON public.issue USING btree (workspace_id, admission_status)"
+        },
+        {
+          "live": true,
+          "name": "issue_pkey",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX issue_pkey ON public.issue USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "iteration_issue_current",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE INDEX iteration_issue_current ON public.issue USING btree (workspace_id, current_iteration_id) WHERE (current_iteration_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "uq_issue_workspace_number",
+          "ready": true,
+          "table": "issue",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX uq_issue_workspace_number ON public.issue USING btree (workspace_id, number)"
+        },
+        {
+          "live": true,
+          "name": "iteration_event_id",
+          "ready": true,
+          "table": "iteration_event",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX iteration_event_id ON public.iteration_event USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "iteration_event_sequence",
+          "ready": true,
+          "table": "iteration_event",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX iteration_event_sequence ON public.iteration_event USING btree (iteration_id, sequence)"
+        },
+        {
+          "live": true,
+          "name": "iteration_participation_identity",
+          "ready": true,
+          "table": "iteration_participation",
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX iteration_participation_identity ON public.iteration_participation USING btree (workspace_id, iteration_id, issue_id)"
+        },
+        {
+          "live": true,
+          "name": "iteration_participation_issue",
+          "ready": true,
+          "table": "iteration_participation",
+          "valid": true,
+          "definition": "CREATE INDEX iteration_participation_issue ON public.iteration_participation USING btree (workspace_id, issue_id, iteration_id)"
+        }
+      ],
+      "database": "multica_func7af9_next_cached_diag_2",
+      "prepared": [
+        {
+          "sql": "-- name: JoinIterationParticipationBatch :batchexec\nINSERT INTO iteration_participation (workspace_id,iteration_id,issue_id,\n first_joined_at,current_joined_at,has_started_current_participation)\nSELECT $1,$2,$3,\n GREATEST($4::timestamptz,last_event.occurred_at),\n GREATEST($4::timestamptz,last_event.occurred_at),$5\nFROM (SELECT 1) seed LEFT JOIN LATERAL (\n SELECT occurred_at FROM iteration_event\n WHERE workspace_id=$1 AND iteration_id=$2\n ORDER BY sequence DESC LIMIT 1\n) last_event ON true\nON CONFLICT (workspace_id,iteration_id,issue_id)\nDO UPDATE SET current_joined_at=EXCLUDED.current_joined_at,\n has_started_current_participation=EXCLUDED.has_started_current_participation\n",
+          "name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+          "from_sql": false,
+          "custom_plans": 5,
+          "prepare_time": "2026-11-02T08:07:38.881343+00:00",
+          "generic_plans": 2995,
+          "parameter_types": "{uuid,uuid,uuid,\"timestamp with time zone\",boolean}"
+        },
+        {
+          "sql": "-- name: LeaveDeletedIssueIterationParticipationBatch :batchone\nUPDATE iteration_participation p SET current_joined_at=NULL,\n has_started_current_participation=false,\n last_left_at=GREATEST($1::timestamptz,\n  (SELECT e.occurred_at FROM iteration_event e\n   WHERE e.workspace_id=$2 AND e.iteration_id=$3\n   ORDER BY e.sequence DESC LIMIT 1))\nWHERE p.workspace_id=$2 AND p.iteration_id=$3\n AND p.issue_id=$4 AND p.current_joined_at IS NOT NULL RETURNING issue_id\n",
+          "name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+          "from_sql": false,
+          "custom_plans": 5,
+          "prepare_time": "2026-11-02T08:07:42.7741+00:00",
+          "generic_plans": 1995,
+          "parameter_types": "{\"timestamp with time zone\",uuid,uuid,uuid}"
+        }
+      ],
+      "settings": {
+        "enable_seqscan": "on",
+        "enable_indexscan": "on",
+        "enable_bitmapscan": "on",
+        "auto_explain.log_wal": "on",
+        "auto_explain.log_level": "notice",
+        "auto_explain.log_timing": "on",
+        "auto_explain.log_analyze": "on",
+        "auto_explain.log_buffers": "on",
+        "auto_explain.log_min_duration": "-1"
+      },
+      "plan_cache_mode": "auto",
+      "transaction_isolation": "read committed"
+    },
+    "method": "pgx.Conn.DeallocateAll",
+    "outside_business_transaction": true
+  },
+  "phases": [
+    {
+      "mode": "original",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 7356,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": true,
+      "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+      "prepared_prepare_time": "2026-11-02T08:07:42.7741+00:00",
+      "generic_plans_delta": 995,
+      "custom_plans_delta": 5,
+      "prepared_before_counts": {
+        "generic_plans": 0,
+        "custom_plans": 0
+      },
+      "prepared_after_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 710.095,
+      "root_actual_total_ms_sum": 709.697,
+      "client_batch_ms": 771.312083,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000,
+        "Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 3003000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 3003,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = '710519f8-0415-45d6-a792-f7b802b94688'::uuid)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4023,
+        "WAL FPI": 0,
+        "WAL Bytes": 1191614,
+        "Shared Hit Blocks": 363657,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 111,
+        "Shared Written Blocks": 111
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 540672,
+          "n_dead_tup": 1000,
+          "n_live_tup": 463,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 2736128,
+          "n_dead_tup": 0,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1024000,
+          "n_dead_tup": 1000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-original-LeaveDeletedIssueIterationParticipationBatch.json"
+    },
+    {
+      "mode": "original",
+      "phase": "JoinIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 7356,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": true,
+      "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+      "prepared_prepare_time": "2026-11-02T08:07:38.881343+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 1995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 234.867,
+      "root_actual_total_ms_sum": 234.686,
+      "client_batch_ms": 290.392417,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Nested Loop": 1000,
+        "Result": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 1001000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 1001,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = $1)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4041,
+        "WAL FPI": 0,
+        "WAL Bytes": 429839,
+        "Shared Hit Blocks": 117501,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 24,
+        "Shared Written Blocks": 24
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 540672,
+          "n_dead_tup": 1000,
+          "n_live_tup": 463,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 3555328,
+          "n_dead_tup": 0,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1933312,
+          "n_dead_tup": 1000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-original-JoinIterationParticipationBatch.json"
+    },
+    {
+      "mode": "cache_control",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 7356,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+      "prepared_prepare_time": "2026-11-02T08:07:42.7741+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 1995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 690.996,
+      "root_actual_total_ms_sum": 690.609,
+      "client_batch_ms": 743.257667,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000,
+        "Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 3003000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 3003,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = $2)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4018,
+        "WAL FPI": 0,
+        "WAL Bytes": 1186865,
+        "Shared Hit Blocks": 365535,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 111,
+        "Shared Written Blocks": 111
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 819200,
+          "n_dead_tup": 2000,
+          "n_live_tup": 463,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 4374528,
+          "n_dead_tup": 2001,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1998848,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-cache_control-LeaveDeletedIssueIterationParticipationBatch.json"
+    },
+    {
+      "mode": "cache_control",
+      "phase": "JoinIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 7356,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+      "prepared_prepare_time": "2026-11-02T08:07:38.881343+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 1995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 2995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 244.794,
+      "root_actual_total_ms_sum": 244.601,
+      "client_batch_ms": 300.877042,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Nested Loop": 1000,
+        "Result": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 1001000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 1001,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = $1)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4024,
+        "WAL FPI": 0,
+        "WAL Bytes": 390763,
+        "Shared Hit Blocks": 116570,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 11,
+        "Shared Written Blocks": 11
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 819200,
+          "n_dead_tup": 2000,
+          "n_live_tup": 463,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 5193728,
+          "n_dead_tup": 2001,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 2908160,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-cache_control-JoinIterationParticipationBatch.json"
+    },
+    {
+      "mode": "reprepare_control",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 7356,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+      "prepared_prepare_time": "2026-11-02T08:07:48.335758+00:00",
+      "generic_plans_delta": 995,
+      "custom_plans_delta": 5,
+      "prepared_before_counts": {
+        "generic_plans": 0,
+        "custom_plans": 0
+      },
+      "prepared_after_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 667.284,
+      "root_actual_total_ms_sum": 666.928,
+      "client_batch_ms": 721.723875,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000,
+        "Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 3003000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 3003,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = '710519f8-0415-45d6-a792-f7b802b94688'::uuid)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4033,
+        "WAL FPI": 0,
+        "WAL Bytes": 1188171,
+        "Shared Hit Blocks": 365251,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 111,
+        "Shared Written Blocks": 111
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1097728,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 6012928,
+          "n_dead_tup": 4002,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 2998272,
+          "n_dead_tup": 4997,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-reprepare_control-LeaveDeletedIssueIterationParticipationBatch.json"
+    },
+    {
+      "mode": "reprepare_control",
+      "phase": "JoinIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 7356,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+      "prepared_prepare_time": "2026-11-02T08:07:49.2317+00:00",
+      "generic_plans_delta": 995,
+      "custom_plans_delta": 5,
+      "prepared_before_counts": {
+        "generic_plans": 0,
+        "custom_plans": 0
+      },
+      "prepared_after_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 236.153,
+      "root_actual_total_ms_sum": 235.943,
+      "client_batch_ms": 292.152625,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Nested Loop": 1000,
+        "Result": 1000,
+        "Limit": 1000,
+        "Sort": 1000,
+        "Bitmap Heap Scan": 1000,
+        "Bitmap Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 1001000,
+      "event_scan_first": {
+        "Node Type": "Bitmap Heap Scan",
+        "Plan Rows": 1,
+        "Actual Rows": 1001,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Filter": "(workspace_id = '710519f8-0415-45d6-a792-f7b802b94688'::uuid)"
+      },
+      "event_scan_shapes": {
+        "Bitmap Heap Scan ": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4018,
+        "WAL FPI": 0,
+        "WAL Bytes": 389777,
+        "Shared Hit Blocks": 116386,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 11,
+        "Shared Written Blocks": 11
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1097728,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 6832128,
+          "n_dead_tup": 4002,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 3907584,
+          "n_dead_tup": 4997,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 0,
+      "artifact": "plans-reprepare_control-JoinIterationParticipationBatch.json"
+    },
+    {
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 7356,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+      "prepared_prepare_time": "2026-11-02T08:07:48.335758+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 1995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 16.908,
+      "root_actual_total_ms_sum": 16.534,
+      "client_batch_ms": 58.518667,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Limit": 1000,
+        "Index Scan": 2000
+      },
+      "iteration_event_rows_visited": 1000,
+      "event_scan_first": {
+        "Node Type": "Index Scan",
+        "Index Name": "iteration_event_sequence",
+        "Scan Direction": "Backward",
+        "Plan Rows": 1502,
+        "Actual Rows": 1,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Index Cond": "(iteration_id = $3)",
+        "Filter": "(workspace_id = $2)"
+      },
+      "event_scan_shapes": {
+        "Index Scan Backward": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4024,
+        "WAL FPI": 0,
+        "WAL Bytes": 1185972,
+        "Shared Hit Blocks": 18830,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 110,
+        "Shared Written Blocks": 110
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": 0,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 168,
+          "reltuples": 1000,
+          "heap_bytes": 1376256,
+          "n_dead_tup": 4000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 934,
+          "reltuples": 3004,
+          "heap_bytes": 7651328,
+          "n_dead_tup": 6003,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 488,
+          "reltuples": 1000,
+          "heap_bytes": 3997696,
+          "n_dead_tup": 6990,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 53,
+      "artifact": "plans-after_analyze-LeaveDeletedIssueIterationParticipationBatch.json"
+    },
+    {
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "count": 1000,
+      "backend_pid": 7356,
+      "actual_auto_explain_parameters_verified": true,
+      "original_typed_production_consumer": false,
+      "prepared_name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+      "prepared_prepare_time": "2026-11-02T08:07:49.2317+00:00",
+      "generic_plans_delta": 1000,
+      "custom_plans_delta": 0,
+      "prepared_before_counts": {
+        "generic_plans": 995,
+        "custom_plans": 5
+      },
+      "prepared_after_counts": {
+        "generic_plans": 1995,
+        "custom_plans": 5
+      },
+      "notice_duration_ms_sum": 11.184,
+      "root_actual_total_ms_sum": 11.081,
+      "client_batch_ms": 54.127875,
+      "node_counts": {
+        "ModifyTable": 1000,
+        "Nested Loop": 1000,
+        "Result": 1000,
+        "Limit": 1000,
+        "Index Scan": 1000
+      },
+      "iteration_event_rows_visited": 1000,
+      "event_scan_first": {
+        "Node Type": "Index Scan",
+        "Index Name": "iteration_event_sequence",
+        "Scan Direction": "Backward",
+        "Plan Rows": 2002,
+        "Actual Rows": 1,
+        "Actual Loops": 1,
+        "Rows Removed by Filter": 0,
+        "Index Cond": "(iteration_id = $2)",
+        "Filter": "(workspace_id = $1)"
+      },
+      "event_scan_shapes": {
+        "Index Scan Backward": 1000
+      },
+      "root_buffer_wal_totals": {
+        "WAL Records": 4030,
+        "WAL FPI": 0,
+        "WAL Bytes": 407409,
+        "Shared Hit Blocks": 11474,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 16,
+        "Shared Written Blocks": 16
+      },
+      "pre_batch_table_statistics": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": 0,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 168,
+          "reltuples": 1000,
+          "heap_bytes": 1376256,
+          "n_dead_tup": 4000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 1034,
+          "reltuples": 4004,
+          "heap_bytes": 8470528,
+          "n_dead_tup": 6003,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 598,
+          "reltuples": 1000,
+          "heap_bytes": 4898816,
+          "n_dead_tup": 6990,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "pre_batch_column_statistics_rows": 53,
+      "artifact": "plans-after_analyze-JoinIterationParticipationBatch.json"
+    }
+  ],
+  "explicit_analyze_commands": [
+    {
+      "at": "2026-11-02T08:07:51.059485Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "sql": "ANALYZE public.iteration_event"
+    },
+    {
+      "at": "2026-11-02T08:07:51.063463Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "sql": "ANALYZE public.iteration_participation"
+    },
+    {
+      "at": "2026-11-02T08:07:51.070913Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "sql": "ANALYZE public.issue"
+    },
+    {
+      "at": "2026-11-02T08:07:51.071595Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "LeaveDeletedIssueIterationParticipationBatch",
+      "sql": "ANALYZE public.agent_task_queue"
+    },
+    {
+      "at": "2026-11-02T08:07:51.234398Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "sql": "ANALYZE public.iteration_event"
+    },
+    {
+      "at": "2026-11-02T08:07:51.239274Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "sql": "ANALYZE public.iteration_participation"
+    },
+    {
+      "at": "2026-11-02T08:07:51.246754Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "sql": "ANALYZE public.issue"
+    },
+    {
+      "at": "2026-11-02T08:07:51.247154Z",
+      "kind": "task_analyze",
+      "mode": "after_analyze",
+      "phase": "JoinIterationParticipationBatch",
+      "sql": "ANALYZE public.agent_task_queue"
+    }
+  ],
+  "ordered_canonical_commands": 3058,
+  "command_kinds": {
+    "exec": 9,
+    "queryrow": 2022,
+    "query": 1020,
+    "batch": 7
+  },
+  "membership_batches": [
+    {
+      "name": "AppendIterationLifecycleEventBatch",
+      "statements": 1000
+    },
+    {
+      "name": "LeaveDeletedIssueIterationParticipationBatch",
+      "statements": 1000
+    },
+    {
+      "name": "AdvanceIterationScopeRevisionBatch",
+      "statements": 1000
+    },
+    {
+      "name": "AppendIterationLifecycleEventBatch",
+      "statements": 1000
+    },
+    {
+      "name": "JoinIterationParticipationBatch",
+      "statements": 1000
+    },
+    {
+      "name": "AdvanceIterationScopeRevisionBatch",
+      "statements": 1000
+    },
+    {
+      "name": "SetIssueCurrentIterationBatch",
+      "statements": 1000
+    }
+  ],
+  "full_transaction_rollback": [
+    {
+      "mode": "original",
+      "equal": true,
+      "fingerprint": "7a9633d99145efd3737d6b87cd8bd2b0",
+      "column_statistics_rows_after_rollback": 0,
+      "tables_after_rollback": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 819200,
+          "n_dead_tup": 2000,
+          "n_live_tup": 463,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 3555328,
+          "n_dead_tup": 2001,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1998848,
+          "n_dead_tup": 3000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "actual_counts_after_rollback": {
+        "issue": 1000,
+        "iteration_event": 2003,
+        "agent_task_queue": 0,
+        "iteration_participation": 1000
+      }
+    },
+    {
+      "mode": "cache_control",
+      "equal": true,
+      "fingerprint": "7a9633d99145efd3737d6b87cd8bd2b0",
+      "column_statistics_rows_after_rollback": 0,
+      "tables_after_rollback": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1097728,
+          "n_dead_tup": 3000,
+          "n_live_tup": 463,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 5193728,
+          "n_dead_tup": 4002,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 2998272,
+          "n_dead_tup": 4997,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "actual_counts_after_rollback": {
+        "issue": 1000,
+        "iteration_event": 2003,
+        "agent_task_queue": 0,
+        "iteration_participation": 1000
+      }
+    },
+    {
+      "mode": "reprepare_control",
+      "equal": true,
+      "fingerprint": "7a9633d99145efd3737d6b87cd8bd2b0",
+      "column_statistics_rows_after_rollback": 0,
+      "tables_after_rollback": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 1376256,
+          "n_dead_tup": 4000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 6832128,
+          "n_dead_tup": 6003,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 0,
+          "reltuples": -1,
+          "heap_bytes": 3997696,
+          "n_dead_tup": 6990,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": null,
+          "analyze_count": 0,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "actual_counts_after_rollback": {
+        "issue": 1000,
+        "iteration_event": 2003,
+        "agent_task_queue": 0,
+        "iteration_participation": 1000
+      }
+    },
+    {
+      "mode": "after_analyze",
+      "equal": true,
+      "fingerprint": "7a9633d99145efd3737d6b87cd8bd2b0",
+      "column_statistics_rows_after_rollback": 0,
+      "tables_after_rollback": [
+        {
+          "table": "agent_task_queue",
+          "relpages": 0,
+          "reltuples": 0,
+          "heap_bytes": 0,
+          "n_dead_tup": 0,
+          "n_live_tup": 0,
+          "reloptions": null,
+          "last_analyze": "2026-11-02T08:07:51.246728+00:00",
+          "analyze_count": 2,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "issue",
+          "relpages": 168,
+          "reltuples": 1000,
+          "heap_bytes": 1654784,
+          "n_dead_tup": 5000,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": "2026-11-02T08:07:51.246244+00:00",
+          "analyze_count": 2,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_event",
+          "relpages": 1034,
+          "reltuples": 4004,
+          "heap_bytes": 8470528,
+          "n_dead_tup": 8004,
+          "n_live_tup": 2003,
+          "reloptions": null,
+          "last_analyze": "2026-11-02T08:07:51.233861+00:00",
+          "analyze_count": 2,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        },
+        {
+          "table": "iteration_participation",
+          "relpages": 598,
+          "reltuples": 1000,
+          "heap_bytes": 4997120,
+          "n_dead_tup": 8983,
+          "n_live_tup": 1000,
+          "reloptions": null,
+          "last_analyze": "2026-11-02T08:07:51.238772+00:00",
+          "analyze_count": 2,
+          "last_autoanalyze": null,
+          "autoanalyze_count": 0
+        }
+      ],
+      "actual_counts_after_rollback": {
+        "issue": 1000,
+        "iteration_event": 2003,
+        "agent_task_queue": 0,
+        "iteration_participation": 1000
+      }
+    }
+  ],
+  "original_gate": {
+    "p95_ms": 2171,
+    "threshold_ms": 2000,
+    "status": "FAIL",
+    "rerun": false
+  },
+  "findings": [
+    "All three no-statistics phases retain bitmap scans and sorts, including after safe client/server cache reset and fresh preparation. Stale prepared cache alone is insufficient in this fixture.",
+    "After ANALYZE both 1000-statement phases retain reprepare-control identities and use existing sequence index backward with one event row each; counters/actual paths recorded without forced generic/custom mode.",
+    "Full business rollback preserves six-table logical fingerprints, but does not undo WAL/cache/dead versions or reltuples/relpages/cumulative ANALYZE tracking; pg_stats rows revert to empty after rollback."
+  ],
+  "limits": [
+    "No original tail sample plan or shared-host load reconstructed; original P95 remains FAIL.",
+    "auto_explain node timing and notice transport add overhead; instrumented timings are not uninstrumented endpoint savings.",
+    "First pass is the original typed production mutation flow but its task-only Commit rolls back rather than commits; no commit/durable HTTP acceptance claim.",
+    "Replays execute all canonical SQL/args and lock order but consume generic Rows.Values, not the full production authorization/typed-scan/error branch logic; no product optimization equivalence claimed.",
+    "One backend deliberately retained prepared cache; actual production pool backend assignment and original P95 cache/statistics history unknown.",
+    "ANALYZE runs within the new diagnostic transaction at each selected phase; target no-statistics baselines both completed before any task ANALYZE; after-statistics target receives a second explicit refresh after target events exist.",
+    "ANALYZE changes all four relevant tables at each phase; this discriminates statistics versus unchanged cache-only paths but does not isolate the marginal effect of any single column statistic.",
+    "Rollback fingerprints cover issues, participation, events, iterations, snapshots and operations; notification rollback follows transaction semantics but is not included in that fingerprint.",
+    "Snapshot assertion checks 1000 scope entries with three labels and nonnull priority, not exact IDs/values.",
+    "No-statistics DeallocateAll/reprepare control exists and retains scan/sort; ANALYZE changes four tables and invalidates plans, so no single-column causal estimate or original-tail attribution is established.",
+    "Replayed clock_timestamp reads produce new values that are consumed generically, while the following writes deliberately reuse the original captured business-time arguments; this is not a second full service decision flow.",
+    "No cold-cache reset, no VACUUM and no first-lock/concurrency/new result-path optimization proof."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_collab",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/integrations/lark",
+    "./internal/integrations/dingtalk",
+    "./internal/integrations/telegram",
+    "./internal/integrations/wecom",
+    "-run",
+    "^TestCollaborationOutbound(Lark|DingTalk|Telegram|Wecom)",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "started_at": "2026-10-22T00:27:21.785663+00:00",
+  "source_sha256": {
+    "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": "8f6bd2c8e35d32306c384a63f05bbc3a04a799ab810258ad2294869e1302ca82",
+    "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": "14d95959f005e4bf256c51fa63e96bbd0713ba5717f6980a015c4d72ea97ed66",
+    "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": "586fa2463d86c4a055b0bb13fe97e0a5b3ff20f5044445d0f7845e5105a76ee1",
+    "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go": "2eb6350b7b77bd8e5f2c9f83b57e15dc6aece9845071333f9d6f8f13ab42b294",
+    "server/internal/integrations/lark/outbound.go": "5d922e8aa483a19cc64aed59b00f7c5f7a67fa5090d303719e87de8865eb2139",
+    "server/internal/integrations/dingtalk/outbound.go": "872f838638bc44186fd198c465e93d796d0c5e7679d6752a1711876ca4def257",
+    "server/internal/integrations/telegram/outbound.go": "758e6cdb3153ddfa677c5d179ea3f140f9e06b61ddbc9064287c1651144d95de",
+    "server/internal/integrations/wecom/outbound.go": "e5e668f1852be24936b72e504d1c866c2a5a8dc37a86a869c314a17c72026b63",
+    "server/internal/integrations/wecom/relay_outbound.go": "7633bbd80b1ac3200f6cc4cbbfb4511b25b9ac21cf403e3807ebbccdfde4fca8",
+    "server/internal/integrations/wecom/outbound_media.go": "9e56d19f4baec903cb30e9e503dc43ae3da93987625397f33e58f369c76c5e60"
+  },
+  "database_alias": "service_s6_collab",
+  "schema_migration": 737,
+  "external_im_send": false
+}

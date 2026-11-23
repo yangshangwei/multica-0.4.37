@@ -1,0 +1,849 @@
+{
+  "schema_version": 1,
+  "kind": "independent_offline_persistent_wrapper_v2_URI_and_Runtime_guard_closure",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check",
+  "at": "2026-11-15T17:07:46.986597+00:00",
+  "verdict": "WRAPPER_V2_ACCEPTED_FOR_FRESH_RUNTIME_PREPARATION",
+  "blocking_count": 0,
+  "blocking_findings": [],
+  "PW_PG1": "closed",
+  "preparation": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-persistent-wrapper-v2-preparation-20261116-f114c7f27fee.json",
+    "sha256": "bc831d01df4b22f02c6cb415f72ee076f0acaf56c334c1aa64dbbcd2bdd0d209"
+  },
+  "wrapper": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+    "sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8"
+  },
+  "plan": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fresh-runtime-plan-v2.json",
+    "sha256": "382bb57268d9dd8bb091131895601fd63dc223bbc8755fc2551a4a06a9647b7f"
+  },
+  "initial_review": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-persistent-wrapper-initial-review-20261116-aeaba48eee42.json",
+    "sha256": "787f7291f0127169bdd864ed151ae5b81936d39287c48ee2d7fcc2cfb42c1a30",
+    "unchanged": true
+  },
+  "checks": {
+    "expected_wrapper_SHA": true,
+    "expected_preparation_SHA": true,
+    "expected_plan_SHA": true,
+    "actual_49_URI_replays_passed": true,
+    "v1_RED_v2_GREEN_same_host_dbname_inputs": true,
+    "all_six_default_actions_no_execution_and_same_SOURCE_ROOT": true,
+    "wrong_controller_SHA_rejected": true,
+    "extra_key_nonloopback_rejected_at_actual_PG_guard": true,
+    "all_three_original_Runtime_ctor_guards_passed": true,
+    "only_pg_config_changed": true,
+    "only_module_STATE_overridden": true,
+    "reported_58_original7_URI49_preservation2_match": true,
+    "all_evidence_references_match": true,
+    "v1_initial_review_and_originals_preserved": true,
+    "existing_fixture_STATE_and_config_unchanged": true,
+    "durable_STATE_private_trusted_chain": true,
+    "actual_controller_main_execute_DB_actions_all_zero": true
+  },
+  "same_input_v1_RED_v2_GREEN": [
+    {
+      "case": "uri_host_override",
+      "same_input_sha256": "249a6944302b2aa9329a5b0f9836debbfb8ef9c3e3ce2a0dc210d83dbcdd406b",
+      "v1_accepts": true,
+      "v2_rejects": true
+    },
+    {
+      "case": "uri_dbname_override",
+      "same_input_sha256": "bf0590ffd160d03f9a810a7571217dba3437fd612248fe1fcf40d4e84e11a3cc",
+      "v1_accepts": true,
+      "v2_rejects": true
+    }
+  ],
+  "actual_URI_replays": [
+    {
+      "case": "uri_host_override",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-host_override/.env",
+      "config_sha256": "249a6944302b2aa9329a5b0f9836debbfb8ef9c3e3ce2a0dc210d83dbcdd406b",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_dbname_override",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-dbname_override/.env",
+      "config_sha256": "bf0590ffd160d03f9a810a7571217dba3437fd612248fe1fcf40d4e84e11a3cc",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_empty_query",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-empty_query/.env",
+      "config_sha256": "781d7d7acb391943284379a7521330965abf5004adcb2489c87a80088999fa0a",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_empty_query_delimiter",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-empty_query_delimiter/.env",
+      "config_sha256": "8d216e69dd82b69f23618e1e712eb9ea1b1d07b1b7f8f8c0b9ab3d9609cf045a",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_single_sslmode_disable",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-single_sslmode_disable/.env",
+      "config_sha256": "c481c9b6ef4da8c90343e5dd492afc916da9d5fc97978b7d31286a53a8dc219b",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_postgresql_scheme",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-postgresql_scheme/.env",
+      "config_sha256": "39bb2077eba7c9c38a769d9b2de73c9d000d34a586a2aef5156066f9370d8eda",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_localhost",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-localhost/.env",
+      "config_sha256": "21e1f2b420e9eca3a9f2b3125780a932a5084e572ffc5b85942266d65bcec4da",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_ipv6_loopback",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-ipv6_loopback/.env",
+      "config_sha256": "bbfb52036271fcdf0548a4fd351524c6a125f2b9423d4bed3a912803b07131ca",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_ipv6_loopback_sslmode_disable",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-ipv6_loopback_sslmode_disable/.env",
+      "config_sha256": "50f4ad012d70ef955012e312a2ec6c4ecb5ee9a3ea5f142804e4f7ef3a78d517",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_ipv6_without_port",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-ipv6_without_port/.env",
+      "config_sha256": "4361889f0867c82730384afce904f7a456c624b780c7fa36fe434c44b0b4babc",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_default_port",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-default_port/.env",
+      "config_sha256": "05102ab1b289365a74150e771cde3aeb1c58677f7a206203829b63f5d9eb3657",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_port_minimum",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-port_minimum/.env",
+      "config_sha256": "55cdf4a02b0c4e72dd5dbb1b7a6290ab331ea34670690cf0095cc2ac32ae33ec",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_port_maximum",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-port_maximum/.env",
+      "config_sha256": "70feb7688e00ecde0e658a05a026551074078f4022e01a5dc8d244d6944d96f9",
+      "expected": "accept",
+      "actual": "accepted",
+      "matched": true,
+      "message": null
+    },
+    {
+      "case": "uri_encoded_host_query_key",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-encoded_host_query_key/.env",
+      "config_sha256": "5f63a6350979a54610d8fffc70da6554a88cf48aa8ca1e3e56b5529dad3cd0c8",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_encoded_dbname_query_key",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-encoded_dbname_query_key/.env",
+      "config_sha256": "469099f3acc3d70db5340ec6fd41782bbfce896f411526a8f71e1bb1ccb7a3cc",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_encoded_sslmode_query_key",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-encoded_sslmode_query_key/.env",
+      "config_sha256": "b266af008033ca02695d45d93221b16c9277b59adbe7f131083c4d41b8808cab",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_encoded_sslmode_query_value",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-encoded_sslmode_query_value/.env",
+      "config_sha256": "5053e9fa2227e2c804f7ece3e1a58c2784b8fa7d7dd085745444dbf553d209c9",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_double_encoded_host_query_key",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-double_encoded_host_query_key/.env",
+      "config_sha256": "0dc4892f8e0dcd641ce85c43a11302a10817af540d441f26f6440fdfe338662a",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_duplicate_host_query",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-duplicate_host_query/.env",
+      "config_sha256": "d935163be345af1d0c3a85904055e43857339024cf49b8c20ee09b9d5761baab",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_duplicate_sslmode_query",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-duplicate_sslmode_query/.env",
+      "config_sha256": "e3d78f0fab80edf1f3e361eb9c8b6bcb141a93a48c098330148ef850e641e8f9",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_sslmode_then_host_query",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-sslmode_then_host_query/.env",
+      "config_sha256": "f7818ce936ce638a5db909747e4fb00f54446a42939c02fda7881922ec0ab202",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_sslmode_then_dbname_query",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-sslmode_then_dbname_query/.env",
+      "config_sha256": "6410577eabf49cfbf8d90d71375df0e2e09d765f6a5cd356435a5f500eacd050",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_empty_query_item",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-empty_query_item/.env",
+      "config_sha256": "54b9a8a4f8d178339fddd615abf522060bf84c055c0be838fc75dd5f6d19a3a4",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_semicolon_query_item",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-semicolon_query_item/.env",
+      "config_sha256": "1a2d3ff189b62735980c3033983f250590e5a73b6bede1727e9c0bcf6bbd7562",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_unknown_query_key",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-unknown_query_key/.env",
+      "config_sha256": "4b9e1e3e44a9aa0023625cf02211e6fa41e4867e1d84a1bb61b310734752c870",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_service_query_target",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-service_query_target/.env",
+      "config_sha256": "890f64a2fd4c7fdcc4eec8f7003aef6cb2d8de6f84347d309d6a8c93031b6021",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_database_query_target",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-database_query_target/.env",
+      "config_sha256": "dca75d3aa09f50771f4b836ee019b1d264f52454af614ac5a50355c178beb141",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_uppercase_query_key",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-uppercase_query_key/.env",
+      "config_sha256": "563cf534c9e1d5d32afe55cf82fa30db358a140086834e7bee3b7043a38fef0f",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_unsupported_sslmode",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-unsupported_sslmode/.env",
+      "config_sha256": "b7e97669ebd143f2bb0af1e64b518e2f05f82eb1cfc91afd39822de251efdaed",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_blank_sslmode_value",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-blank_sslmode_value/.env",
+      "config_sha256": "e5ed45e9484c487fa4f631dec752b6f6418047fae82447b233407cbaee8ed896",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_encoded_query_separator",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-encoded_query_separator/.env",
+      "config_sha256": "75844ce64bc99056632da4e3f39da9579bcc05a9d625559ef11b381724c820e3",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_fragment",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-fragment/.env",
+      "config_sha256": "8193668cc80b4c182bbc3b546220853d82ffe4d64777c454c8f1dab10df5f525",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_empty_fragment_marker",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-empty_fragment_marker/.env",
+      "config_sha256": "b55df768a6f0a3fa7006d8d3389dd7b65bf23292e27a5cb9bf3be2472cd35e29",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_sslmode_with_fragment",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-sslmode_with_fragment/.env",
+      "config_sha256": "5bceeadd1b70feea84b85016fbb7f81fa197df624681c800f95e1ad2e087a305",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL URI permits only an empty query or sslmode=disable and no fragment"
+    },
+    {
+      "case": "uri_port_nonnumeric",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-port_nonnumeric/.env",
+      "config_sha256": "d0aa51a5a8b9524448beceb75880ec6440be827f7de32bfb7b21335b32855d51",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_port_zero",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-port_zero/.env",
+      "config_sha256": "be7da365b9e3313f74dd26c4e980bcedbf599bfe1fde0ae7ecb1714077b84d80",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_port_overflow",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-port_overflow/.env",
+      "config_sha256": "eb6f4bb455a79ec801fc6cf80413f1f2dfaf17bce10fda1fa74dfca4795bd771",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_port_negative",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-port_negative/.env",
+      "config_sha256": "98c44dbc3a7cb15e2ccfe2b59b3f981e88e9fd4a5fe0a335dd294e0cdf122143",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_port_empty",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-port_empty/.env",
+      "config_sha256": "98578d5f329754e67a21f8145c58699ac98d5ab870717f6fcbd2ca786dd09c08",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_port_encoded",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-port_encoded/.env",
+      "config_sha256": "51e931937b0fbc12f7fa2c579223c9d468104e71a0d4f60eceb18ee8f5865a92",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_port_unicode_digits",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-port_unicode_digits/.env",
+      "config_sha256": "36fce70afbabb8ffbbb259f49f917dc945358a0bcea96aa8726ab089d1436b8c",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_ipv6_port_zero",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-ipv6_port_zero/.env",
+      "config_sha256": "0211d5add329d29a6447868adeb959a894ff29d2b37d3ff891a52246bac2412a",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_ipv6_port_empty",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-ipv6_port_empty/.env",
+      "config_sha256": "dfdd35d1fb59fa4c75797c7f4a6dd7fbe22844c86c5209a872c922e2734af321",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_ipv6_unclosed_bracket",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-ipv6_unclosed_bracket/.env",
+      "config_sha256": "c4b4c99011b1639431a16c11bedd4802df4c9c77105a21172dae1d6009b402e8",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_ipv6_bracket_suffix",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-ipv6_bracket_suffix/.env",
+      "config_sha256": "b1806eb0f2d51e8642bd8fd2f8b0904b6e5be54d5505d585603ed0613a54e1fb",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint or port is invalid"
+    },
+    {
+      "case": "uri_encoded_hostname",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-encoded_hostname/.env",
+      "config_sha256": "96bc367b14091ba45bb939410eae21c1ca8bb19bf18da802fa433f993711cd76",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint must be literal loopback"
+    },
+    {
+      "case": "uri_non_loopback_ipv6",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-non_loopback_ipv6/.env",
+      "config_sha256": "9a0fef92e177d322c0c12afb3c18aafd85999f498cfbc102b97361b265e07ea3",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint must be literal loopback"
+    },
+    {
+      "case": "uri_control_character",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-control_character/.env",
+      "config_sha256": "53788e0cd26c63bc487e9a4b74662e3db8286a2817f697e30b53717b59fdd323",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint must be literal loopback"
+    },
+    {
+      "case": "uri_shell_expansion",
+      "config_file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/uri-shell_expansion/.env",
+      "config_sha256": "d30d3cca05d8ba596f256614fa67efdcdbe156e73118ff5fa0804f2facbfdadb",
+      "expected": "reject",
+      "actual": "rejected",
+      "matched": true,
+      "message": "Private PostgreSQL endpoint must be literal loopback"
+    }
+  ],
+  "original_58_fixture_evidence": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-v2-fixtures.json",
+    "sha256": "d978a7fb2161de91db9a69d93ef3397ad4a9514ff6f04b229f4bc59c97285dcc"
+  },
+  "independent_original7": {
+    "six_validate_only_actions": [
+      {
+        "action": "allocate",
+        "exit": 0,
+        "passed": true,
+        "output": {
+          "validated": true,
+          "original_controller_unchanged": true,
+          "controller": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+          "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+          "source_root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source",
+          "STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/state",
+          "pg_config_sha256": "781d7d7acb391943284379a7521330965abf5004adcb2489c87a80088999fa0a",
+          "configuration_keys": [
+            "DATABASE_URL"
+          ],
+          "wrapper_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+          "action_executed": false,
+          "source_ready": false
+        },
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "action": "build",
+        "exit": 0,
+        "passed": true,
+        "output": {
+          "validated": true,
+          "original_controller_unchanged": true,
+          "controller": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+          "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+          "source_root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source",
+          "STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/state",
+          "pg_config_sha256": "781d7d7acb391943284379a7521330965abf5004adcb2489c87a80088999fa0a",
+          "configuration_keys": [
+            "DATABASE_URL"
+          ],
+          "wrapper_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+          "action_executed": false,
+          "source_ready": false
+        },
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "action": "start",
+        "exit": 0,
+        "passed": true,
+        "output": {
+          "validated": true,
+          "original_controller_unchanged": true,
+          "controller": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+          "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+          "source_root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source",
+          "STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/state",
+          "pg_config_sha256": "781d7d7acb391943284379a7521330965abf5004adcb2489c87a80088999fa0a",
+          "configuration_keys": [
+            "DATABASE_URL"
+          ],
+          "wrapper_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+          "action_executed": false,
+          "source_ready": false
+        },
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "action": "status",
+        "exit": 0,
+        "passed": true,
+        "output": {
+          "validated": true,
+          "original_controller_unchanged": true,
+          "controller": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+          "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+          "source_root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source",
+          "STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/state",
+          "pg_config_sha256": "781d7d7acb391943284379a7521330965abf5004adcb2489c87a80088999fa0a",
+          "configuration_keys": [
+            "DATABASE_URL"
+          ],
+          "wrapper_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+          "action_executed": false,
+          "source_ready": false
+        },
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "action": "stop",
+        "exit": 0,
+        "passed": true,
+        "output": {
+          "validated": true,
+          "original_controller_unchanged": true,
+          "controller": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+          "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+          "source_root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source",
+          "STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/state",
+          "pg_config_sha256": "781d7d7acb391943284379a7521330965abf5004adcb2489c87a80088999fa0a",
+          "configuration_keys": [
+            "DATABASE_URL"
+          ],
+          "wrapper_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+          "action_executed": false,
+          "source_ready": false
+        },
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "action": "run",
+        "exit": 0,
+        "passed": true,
+        "output": {
+          "validated": true,
+          "original_controller_unchanged": true,
+          "controller": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+          "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+          "source_root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/source",
+          "STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/state",
+          "pg_config_sha256": "781d7d7acb391943284379a7521330965abf5004adcb2489c87a80088999fa0a",
+          "configuration_keys": [
+            "DATABASE_URL"
+          ],
+          "wrapper_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+          "action_executed": false,
+          "source_ready": false
+        },
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "wrong_controller_rejected": true,
+    "actual_PG_key_host_guards": [
+      {
+        "case": "PG_config_rejects_any_extra_key",
+        "passed": true,
+        "actual_rejection_message": "Private configuration may contain DATABASE_URL only"
+      },
+      {
+        "case": "PG_config_rejects_non_loopback",
+        "passed": true,
+        "actual_rejection_message": "Private PostgreSQL endpoint must be literal loopback"
+      }
+    ],
+    "original_Runtime_STATE_ctor_guards": [
+      {
+        "case": "default_TEMP",
+        "accepted": false,
+        "passed": true,
+        "error": "Allocation is not an external P6 runtime",
+        "real_actions": 0
+      },
+      {
+        "case": "correct_persistent",
+        "accepted": true,
+        "passed": true,
+        "error": null,
+        "real_actions": 0
+      },
+      {
+        "case": "wrong_STATE",
+        "accepted": false,
+        "passed": true,
+        "error": "Allocation is not an external P6 runtime",
+        "real_actions": 0
+      }
+    ]
+  },
+  "AST_preservation": {
+    "unchanged_functions": [
+      "sha",
+      "trusted_state",
+      "load_controller",
+      "main"
+    ],
+    "module_attributes_overridden": [
+      "STATE"
+    ],
+    "original_Runtime_code_SHA": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+    "no_original_controller_main_invoked": true
+  },
+  "current_STATE": {
+    "root": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6",
+    "trusted_ancestors": [
+      {
+        "path": "/",
+        "uid": 0,
+        "mode": "0o755",
+        "trusted": true
+      },
+      {
+        "path": "/Users",
+        "uid": 0,
+        "mode": "0o755",
+        "trusted": true
+      },
+      {
+        "path": "/Users/artisan",
+        "uid": 501,
+        "mode": "0o750",
+        "trusted": true
+      },
+      {
+        "path": "/Users/artisan/.multica",
+        "uid": 501,
+        "mode": "0o755",
+        "trusted": true
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance",
+        "uid": 501,
+        "mode": "0o700",
+        "trusted": true
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6",
+        "uid": 501,
+        "mode": "0o700",
+        "trusted": true
+      }
+    ],
+    "Git_external_verified_by_actual_default_CLI": true
+  },
+  "evidence_hash_checks": {
+    "count": 14,
+    "matched": 14,
+    "checks": [
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+        "expected_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+        "actual_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+        "matched": true,
+        "reference": "plan.wrapper"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper.py",
+        "expected_sha256": "7597bdfab9ab9ca891610a0ef4c73e24417cc991b0f0e5c80b474b7fba5f9772",
+        "actual_sha256": "7597bdfab9ab9ca891610a0ef4c73e24417cc991b0f0e5c80b474b7fba5f9772",
+        "matched": true,
+        "reference": "prep.v1_wrapper"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v1-preserved-before-query-guard/preserved-inputs.json",
+        "expected_sha256": "ef9a05833ba94acf65a29fa0db0f7922785e29bb2a52a7be9e4e51ce597ef1f2",
+        "actual_sha256": "ef9a05833ba94acf65a29fa0db0f7922785e29bb2a52a7be9e4e51ce597ef1f2",
+        "matched": true,
+        "reference": "plan.v1_preservation"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-fixtures.json",
+        "expected_sha256": "e7dce8d4c554bdc70d021c882845f6e1ba333faf1789d75893ff6668448c952e",
+        "actual_sha256": "e7dce8d4c554bdc70d021c882845f6e1ba333faf1789d75893ff6668448c952e",
+        "matched": true,
+        "reference": "prep.v1_original_fixture_results"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v1-query-override-red/v1-query-override-red.json",
+        "expected_sha256": "8d6be9ab199562270cd6b29103ad87290b97e43082a430dee5dd9d66be4ed640",
+        "actual_sha256": "8d6be9ab199562270cd6b29103ad87290b97e43082a430dee5dd9d66be4ed640",
+        "matched": true,
+        "reference": "plan.red_counterexamples"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-v1-to-v2.patch",
+        "expected_sha256": "f396e0395f59ebf984a604fd47eccc0a7c0c4ade5e75244d395e699421db406a",
+        "actual_sha256": "f396e0395f59ebf984a604fd47eccc0a7c0c4ade5e75244d395e699421db406a",
+        "matched": true,
+        "reference": "plan.wrapper_v1_to_v2_patch"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-v2-fixtures.json",
+        "expected_sha256": "d978a7fb2161de91db9a69d93ef3397ad4a9514ff6f04b229f4bc59c97285dcc",
+        "actual_sha256": "d978a7fb2161de91db9a69d93ef3397ad4a9514ff6f04b229f4bc59c97285dcc",
+        "matched": true,
+        "reference": "plan.fixtures"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-wrapper-v2-fixtures.py",
+        "expected_sha256": "e1995fc49091775a66bcce7fff80218bca957c7bb461fcdb0d5cfa80c4746c9e",
+        "actual_sha256": "e1995fc49091775a66bcce7fff80218bca957c7bb461fcdb0d5cfa80c4746c9e",
+        "matched": true,
+        "reference": "fixtures.fixture_script"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fresh-runtime-plan-v2.json",
+        "expected_sha256": "382bb57268d9dd8bb091131895601fd63dc223bbc8755fc2551a4a06a9647b7f",
+        "actual_sha256": "382bb57268d9dd8bb091131895601fd63dc223bbc8755fc2551a4a06a9647b7f",
+        "matched": true,
+        "reference": "prep.plan"
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+        "expected_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "actual_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "matched": true,
+        "reference": "prep.original_controller"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/state/p6-browser-22222222/allocation.json",
+        "expected_sha256": "f0f8f47cbce6e4062b5b68a6c5afda86aa46b1d320aff09cb1909e712f51e4b1",
+        "actual_sha256": "f0f8f47cbce6e4062b5b68a6c5afda86aa46b1d320aff09cb1909e712f51e4b1",
+        "matched": true,
+        "reference": "fixtures.cases[5].allocation"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v2-offline-fixtures/state/p6-browser-22222222/environment.json",
+        "expected_sha256": "34c724e10ca7bbab7aa302f263c98897f68059a93ff718e026e0991c6ec32d17",
+        "actual_sha256": "34c724e10ca7bbab7aa302f263c98897f68059a93ff718e026e0991c6ec32d17",
+        "matched": true,
+        "reference": "fixtures.cases[5].synthetic_environment"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/recovery-search-and-state-preparation.json",
+        "expected_sha256": "ed816cd53e2aab16f5766df978ad56c25ddda89141b3f8445183bd2a447fba21",
+        "actual_sha256": "ed816cd53e2aab16f5766df978ad56c25ddda89141b3f8445183bd2a447fba21",
+        "matched": true,
+        "reference": "plan.original_assets.recovery_report"
+      },
+      {
+        "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fresh-runtime-plan.json",
+        "expected_sha256": "a4ce9427b81318547b842407a61d3c121fb234ff85bad0e2875d5200c87917f5",
+        "actual_sha256": "a4ce9427b81318547b842407a61d3c121fb234ff85bad0e2875d5200c87917f5",
+        "matched": true,
+        "reference": "plan.previous_v1_plan"
+      }
+    ]
+  },
+  "full_SOURCE_review": "Separate receipt uses captured ROOT-before/after and immutable physical-source bindings; this wrapper acceptance does not depend on later ROOT peer edits.",
+  "ownership": {
+    "new_JSON_only": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-persistent-wrapper-v2-independent-closure-20261116-74cbae139a17.json",
+    "source_or_proof_or_v1_v2_or_MD_modifications": 0,
+    "real_DB_SQL_network_runtime_Go_repo_tests_controller_main_or_execute_actions": 0,
+    "offline_validator_and_original_ctor_only": true,
+    "descendants": 0
+  },
+  "acceptance_limits": {
+    "wrapper_component_accepted": true,
+    "source_ready": false,
+    "actual_NEW_allocation_permission": false,
+    "P2": false,
+    "LIVE": false,
+    "final_knowledge": false
+  }
+}

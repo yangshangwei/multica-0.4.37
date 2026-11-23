@@ -1,0 +1,303 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-p",
+    "1",
+    "./internal/service",
+    "./internal/migrations",
+    "./internal/metrics",
+    "./internal/issuestatus",
+    "-run",
+    "^Test(BuiltinSkillsConformToTemplate|BuiltinSkillsFrontmatterIsStrictYAML|CreatingAgentsSkillCoversAgentCreationContracts|DeliveryPolicyMigrationContract|NoDirectGetAgentRuntimeCalls|ValidateKey|Resolve|Effective)",
+    "-count=1"
+  ],
+  "database": null,
+  "started_at": "2026-11-10T09:28:56.571581+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-delivery-completion-hints-20261110",
+  "exit_code": 0,
+  "finished_at": "2026-11-10T09:29:14.882849+00:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-contracts01.log",
+  "log_sha256": "e3c4dcb221143275ae4eb186aefd9c58aba68354f4f220c246d9aa8ea00ef973",
+  "counts": {
+    "pass": 50,
+    "fail": 0,
+    "skip": 0
+  },
+  "inventory": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveAutopilotTriggerPrincipal_FailsClosed/resolves_the_trigger_creator",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveAutopilotTriggerPrincipal_FailsClosed/legacy_trigger_with_no_creator_resolves_nobody",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveAutopilotTriggerPrincipal_FailsClosed/trigger_belonging_to_another_autopilot_resolves_nobody",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveAutopilotTriggerPrincipal_FailsClosed/autopilot_in_another_workspace_resolves_nobody",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveAutopilotTriggerPrincipal_FailsClosed/creator_removed_from_the_workspace_resolves_nobody",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveAutopilotTriggerPrincipal_FailsClosed",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveAutopilotLeaderSentinels",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-autopilots",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-creating-agents",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-mentioning",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-onboarding",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-projects-and-resources",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-runtimes-and-repos",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-skill-importing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-squads",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-autopilots",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-creating-agents",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-mentioning",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-onboarding",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-projects-and-resources",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-runtimes-and-repos",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-skill-importing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-squads",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-working-on-issues",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCreatingAgentsSkillCoversAgentCreationContracts",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveIssueCountPolicyUsesOnlyCloudInstruction",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolvePublishVersion",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveStorageScope",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveOriginatorFromTriggerComment_MemberAuthored",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveOriginatorFromTriggerComment_AgentAuthoredInheritsFromParent",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveOriginatorForIssueTask_MemberCreatedNoComment",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveOriginatorForIssueTask_QuickCreateIssueInheritsParentTask",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveOriginatorForIssueTask_AgentCreateIssueInheritsParentTask",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestResolveOriginatorFromTriggerComment_InvalidCommentID",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestDeliveryPolicyMigrationContract",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "test": "TestNoDirectGetAgentRuntimeCalls",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestEffectiveIsIdentityOnBuiltInsWithoutQuerying",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestEffectiveMapsCustomStatusToItsCategory",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestEffectiveFailsSafeOnUnknownAndBrokenCatalog/absent_from_catalog",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestEffectiveFailsSafeOnUnknownAndBrokenCatalog/database_error",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestEffectiveFailsSafeOnUnknownAndBrokenCatalog/corrupt_category",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestEffectiveFailsSafeOnUnknownAndBrokenCatalog",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestResolveAcceptsBuiltInsWithoutACatalogRow",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestResolveRejectsUnknownAndArchived",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestValidateKeyRejectsReservedAndMalformed",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestResolverAmortizesTheCatalogRead",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "test": "TestResolverFailsSafeWhenTheCatalogReadFails",
+      "action": "pass"
+    }
+  ],
+  "packages": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "action": "pass"
+    }
+  ]
+}

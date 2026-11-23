@@ -1,0 +1,821 @@
+=== RUN   TestClientHostContextExtensionsAreExplicitAndVersioned
+=== RUN   TestClientHostContextExtensionsAreExplicitAndVersioned/older_server
+=== RUN   TestClientHostContextExtensionsAreExplicitAndVersioned/supported
+=== RUN   TestClientHostContextExtensionsAreExplicitAndVersioned/handoff_only
+=== RUN   TestClientHostContextExtensionsAreExplicitAndVersioned/recording_only
+=== RUN   TestClientHostContextExtensionsAreExplicitAndVersioned/unknown_handoff
+=== RUN   TestClientHostContextExtensionsAreExplicitAndVersioned/unknown_recording
+=== RUN   TestClientHostContextExtensionsAreExplicitAndVersioned/negative_version
+--- PASS: TestClientHostContextExtensionsAreExplicitAndVersioned (0.01s)
+    --- PASS: TestClientHostContextExtensionsAreExplicitAndVersioned/older_server (0.00s)
+    --- PASS: TestClientHostContextExtensionsAreExplicitAndVersioned/supported (0.00s)
+    --- PASS: TestClientHostContextExtensionsAreExplicitAndVersioned/handoff_only (0.00s)
+    --- PASS: TestClientHostContextExtensionsAreExplicitAndVersioned/recording_only (0.00s)
+    --- PASS: TestClientHostContextExtensionsAreExplicitAndVersioned/unknown_handoff (0.00s)
+    --- PASS: TestClientHostContextExtensionsAreExplicitAndVersioned/unknown_recording (0.00s)
+    --- PASS: TestClientHostContextExtensionsAreExplicitAndVersioned/negative_version (0.00s)
+=== RUN   TestClientNamespaceCannotAcquireHostContextExtensions
+--- PASS: TestClientNamespaceCannotAcquireHostContextExtensions (0.00s)
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/valid
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/missing
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/unrequested
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/digest
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/command
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/resource
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/bundle
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/legacy_files
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/missing_invocation
+=== RUN   TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/null_invocation
+--- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/valid (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/missing (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/unrequested (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/digest (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/command (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/resource (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/bundle (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/legacy_files (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/missing_invocation (0.00s)
+    --- PASS: TestClientPreparationClaimRejectsMissingOrMismatchedSnapshot/null_invocation (0.00s)
+=== RUN   TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration
+=== RUN   TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/created
+=== RUN   TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/lost
+=== RUN   TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/different_limits
+=== RUN   TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/changed_epoch
+=== RUN   TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/wrong_binding
+=== RUN   TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/already_current
+--- PASS: TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration (0.00s)
+    --- PASS: TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/created (0.00s)
+    --- PASS: TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/lost (0.00s)
+    --- PASS: TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/different_limits (0.00s)
+    --- PASS: TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/changed_epoch (0.00s)
+    --- PASS: TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/wrong_binding (0.00s)
+    --- PASS: TestClientPreparationCapabilitiesRecoverOnlyExactCurrentRegistration/already_current (0.00s)
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds/valid
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds/short
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds/oversized
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds/wrong_run
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds/wrong_version
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds/redirect
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds/partial
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds/encoded
+=== RUN   TestClientPreparationAttachmentUsesExactVersionAndBounds/term_token
+--- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds (0.00s)
+    --- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds/valid (0.00s)
+    --- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds/short (0.00s)
+    --- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds/oversized (0.00s)
+    --- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds/wrong_run (0.00s)
+    --- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds/wrong_version (0.00s)
+    --- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds/redirect (0.00s)
+    --- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds/partial (0.00s)
+    --- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds/encoded (0.00s)
+    --- PASS: TestClientPreparationAttachmentUsesExactVersionAndBounds/term_token (0.00s)
+=== RUN   TestClientCheckpointACKMatchesOriginalRequestBound
+=== RUN   TestClientCheckpointACKMatchesOriginalRequestBound/0
+=== RUN   TestClientCheckpointACKMatchesOriginalRequestBound/1
+=== RUN   TestClientCheckpointACKMatchesOriginalRequestBound/2
+--- PASS: TestClientCheckpointACKMatchesOriginalRequestBound (0.00s)
+    --- PASS: TestClientCheckpointACKMatchesOriginalRequestBound/0 (0.00s)
+    --- PASS: TestClientCheckpointACKMatchesOriginalRequestBound/1 (0.00s)
+    --- PASS: TestClientCheckpointACKMatchesOriginalRequestBound/2 (0.00s)
+=== RUN   TestClientRecordingSealRejectsInvalidACK
+=== RUN   TestClientRecordingSealRejectsInvalidACK/other_reason
+=== RUN   TestClientRecordingSealRejectsInvalidACK/unsealed
+=== RUN   TestClientRecordingSealRejectsInvalidACK/negative_observed
+=== RUN   TestClientRecordingSealRejectsInvalidACK/missing_observed
+=== RUN   TestClientRecordingSealRejectsInvalidACK/null_retained
+=== RUN   TestClientRecordingSealRejectsInvalidACK/other_stream
+--- PASS: TestClientRecordingSealRejectsInvalidACK (0.00s)
+    --- PASS: TestClientRecordingSealRejectsInvalidACK/other_reason (0.00s)
+    --- PASS: TestClientRecordingSealRejectsInvalidACK/unsealed (0.00s)
+    --- PASS: TestClientRecordingSealRejectsInvalidACK/negative_observed (0.00s)
+    --- PASS: TestClientRecordingSealRejectsInvalidACK/missing_observed (0.00s)
+    --- PASS: TestClientRecordingSealRejectsInvalidACK/null_retained (0.00s)
+    --- PASS: TestClientRecordingSealRejectsInvalidACK/other_stream (0.00s)
+=== RUN   TestClientRecordingSealAcceptsTruthfulRetention
+=== RUN   TestClientRecordingSealAcceptsTruthfulRetention/empty_complete_recording
+=== RUN   TestClientRecordingSealAcceptsTruthfulRetention/completed_observation_with_missing_retained_tail
+=== RUN   TestClientRecordingSealAcceptsTruthfulRetention/old_completed_seal_ACK_retains_later_known_prefix
+=== RUN   TestClientRecordingSealAcceptsTruthfulRetention/stopped_unknown_tail
+--- PASS: TestClientRecordingSealAcceptsTruthfulRetention (0.00s)
+    --- PASS: TestClientRecordingSealAcceptsTruthfulRetention/empty_complete_recording (0.00s)
+    --- PASS: TestClientRecordingSealAcceptsTruthfulRetention/completed_observation_with_missing_retained_tail (0.00s)
+    --- PASS: TestClientRecordingSealAcceptsTruthfulRetention/old_completed_seal_ACK_retains_later_known_prefix (0.00s)
+    --- PASS: TestClientRecordingSealAcceptsTruthfulRetention/stopped_unknown_tail (0.00s)
+=== RUN   TestClientPreservesAllInputAuthorsAndNarrowCredentials
+--- PASS: TestClientPreservesAllInputAuthorsAndNarrowCredentials (0.00s)
+=== RUN   TestClientRejectsBadSecondAuthorAndDuplicateIdentityField
+--- PASS: TestClientRejectsBadSecondAuthorAndDuplicateIdentityField (0.00s)
+=== RUN   TestClientNeverForwardsTokensAcrossRedirects
+--- PASS: TestClientNeverForwardsTokensAcrossRedirects (0.00s)
+=== RUN   TestClientMissingStopIntentIsNotPermissionToContinue
+--- PASS: TestClientMissingStopIntentIsNotPermissionToContinue (0.00s)
+=== RUN   TestClientBusinessOutcomesUseWireValues
+=== RUN   TestClientBusinessOutcomesUseWireValues/success
+=== RUN   TestClientBusinessOutcomesUseWireValues/failure
+=== RUN   TestClientBusinessOutcomesUseWireValues/succeeded
+=== RUN   TestClientBusinessOutcomesUseWireValues/failed
+--- PASS: TestClientBusinessOutcomesUseWireValues (0.00s)
+    --- PASS: TestClientBusinessOutcomesUseWireValues/success (0.00s)
+    --- PASS: TestClientBusinessOutcomesUseWireValues/failure (0.00s)
+    --- PASS: TestClientBusinessOutcomesUseWireValues/succeeded (0.00s)
+    --- PASS: TestClientBusinessOutcomesUseWireValues/failed (0.00s)
+=== RUN   TestUnsupportedPlatformNeverAdvertisesContainment
+--- PASS: TestUnsupportedPlatformNeverAdvertisesContainment (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesSharedContextBase
+--- PASS: TestHostProviderAccountSmokeAuthorizesSharedContextBase (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/legacy
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/both
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/handoff_only
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/with_knowledge
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_knowledge
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate_knowledge
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/unknown
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_version
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_method
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced_knowledge
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/knowledge_wrong_method
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_token
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries (0.01s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/legacy (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/both (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/handoff_only (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/with_knowledge (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_knowledge (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate_knowledge (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/unknown (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_version (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_method (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced_knowledge (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/knowledge_wrong_method (0.00s)
+    --- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_token (0.00s)
+=== RUN   TestHostProviderAccountSmoke
+    host_agentintegration_test.go:35: set MULTICA_RUN_REAL_AGENT_SMOKE=1 only after explicit account/quota approval
+--- SKIP: TestHostProviderAccountSmoke (0.00s)
+=== RUN   TestHostCheckpointTransientFailureRetriesDuringRun
+--- PASS: TestHostCheckpointTransientFailureRetriesDuringRun (0.12s)
+=== RUN   TestHostOutcomeCarriesUndeliveredTail
+=== RUN   TestHostOutcomeCarriesUndeliveredTail/replay_before_outcome
+=== RUN   TestHostOutcomeCarriesUndeliveredTail/outcome_committed_before_replay
+--- PASS: TestHostOutcomeCarriesUndeliveredTail (0.31s)
+    --- PASS: TestHostOutcomeCarriesUndeliveredTail/replay_before_outcome (0.18s)
+    --- PASS: TestHostOutcomeCarriesUndeliveredTail/outcome_committed_before_replay (0.13s)
+=== RUN   TestHostCheckpointUncommittedChunkRebindsToFallbackAttempt
+--- PASS: TestHostCheckpointUncommittedChunkRebindsToFallbackAttempt (0.14s)
+=== RUN   TestHostCheckpointRefusalNamesSealReason
+=== RUN   TestHostCheckpointRefusalNamesSealReason/execution_stopped
+=== RUN   TestHostCheckpointRefusalNamesSealReason/business_capability_required
+=== RUN   TestHostCheckpointRefusalNamesSealReason/issue_paused
+=== RUN   TestHostCheckpointRefusalNamesSealReason/checkpoint_conflict
+=== RUN   TestHostCheckpointRefusalNamesSealReason/checkpoint_out_of_order
+=== RUN   TestHostCheckpointRefusalNamesSealReason/invalid_recording_checkpoint
+--- PASS: TestHostCheckpointRefusalNamesSealReason (0.60s)
+    --- PASS: TestHostCheckpointRefusalNamesSealReason/execution_stopped (0.11s)
+    --- PASS: TestHostCheckpointRefusalNamesSealReason/business_capability_required (0.10s)
+    --- PASS: TestHostCheckpointRefusalNamesSealReason/issue_paused (0.10s)
+    --- PASS: TestHostCheckpointRefusalNamesSealReason/checkpoint_conflict (0.10s)
+    --- PASS: TestHostCheckpointRefusalNamesSealReason/checkpoint_out_of_order (0.10s)
+    --- PASS: TestHostCheckpointRefusalNamesSealReason/invalid_recording_checkpoint (0.10s)
+=== RUN   TestHostOutcomeTailFitsRecordAndLedgerBounds
+--- PASS: TestHostOutcomeTailFitsRecordAndLedgerBounds (0.26s)
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/invalid_first_batch
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/accepted_prefix_invalid_middle
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_invalid_middle
+=== RUN   TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_valid_suffix
+--- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages (0.55s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/invalid_first_batch (0.12s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/accepted_prefix_invalid_middle (0.16s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_invalid_middle (0.11s)
+    --- PASS: TestHostCheckpointLocalFailureCannotRebaseQueuedMessages/uncertain_prefix_valid_suffix (0.17s)
+=== RUN   TestHostCheckpointsKeepOriginalPayloadAcrossLostACK
+--- PASS: TestHostCheckpointsKeepOriginalPayloadAcrossLostACK (0.06s)
+=== RUN   TestHostCheckpointBackpressureDoesNotBlockMessageDrain
+--- PASS: TestHostCheckpointBackpressureDoesNotBlockMessageDrain (0.07s)
+=== RUN   TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim
+--- PASS: TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim (0.17s)
+=== RUN   TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors
+=== RUN   TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/ordinary_budget
+=== RUN   TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/ignored_protocol_override
+=== RUN   TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/private_session
+=== RUN   TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/compact_resume
+=== RUN   TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/latest_conversation
+=== RUN   TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/private_directory
+=== RUN   TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/ignored_opencode_extra
+--- PASS: TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors (0.00s)
+    --- PASS: TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/ordinary_budget (0.00s)
+    --- PASS: TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/ignored_protocol_override (0.00s)
+    --- PASS: TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/private_session (0.00s)
+    --- PASS: TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/compact_resume (0.00s)
+    --- PASS: TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/latest_conversation (0.00s)
+    --- PASS: TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/private_directory (0.00s)
+    --- PASS: TestHostConfigurationRejectsIgnoredArgumentsAndPrivateSessionSelectors/ignored_opencode_extra (0.00s)
+=== RUN   TestHostExecutorRefusesUnfrozenExecutionOptions
+=== RUN   TestHostExecutorRefusesUnfrozenExecutionOptions/MCP
+=== RUN   TestHostExecutorRefusesUnfrozenExecutionOptions/model
+=== RUN   TestHostExecutorRefusesUnfrozenExecutionOptions/private_session
+=== RUN   TestHostExecutorRefusesUnfrozenExecutionOptions/max_turns
+=== RUN   TestHostExecutorRefusesUnfrozenExecutionOptions/gateway
+--- PASS: TestHostExecutorRefusesUnfrozenExecutionOptions (0.00s)
+    --- PASS: TestHostExecutorRefusesUnfrozenExecutionOptions/MCP (0.00s)
+    --- PASS: TestHostExecutorRefusesUnfrozenExecutionOptions/model (0.00s)
+    --- PASS: TestHostExecutorRefusesUnfrozenExecutionOptions/private_session (0.00s)
+    --- PASS: TestHostExecutorRefusesUnfrozenExecutionOptions/max_turns (0.00s)
+    --- PASS: TestHostExecutorRefusesUnfrozenExecutionOptions/gateway (0.00s)
+=== RUN   TestContextExperimentPersistsActualFakePromptAndCompleteHTTP
+    host_context_experiment_fixture_test.go:126: E2a_window_fact_newest trial 1: outcome=success verdict=pass context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentPersistsActualFakePromptAndCompleteHTTP (0.47s)
+=== RUN   TestContextExperimentKeepsProviderRecordPartial
+    host_context_experiment_fixture_test.go:219: E2a_window_fact_newest trial 1: outcome=success verdict=pass context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentKeepsProviderRecordPartial (0.49s)
+=== RUN   TestContextExperimentNeverPassesMissingOrFailedOutcome
+=== RUN   TestContextExperimentNeverPassesMissingOrFailedOutcome/missing
+    host_context_experiment_fixture_test.go:231: E2a_window_fact_newest trial 1: outcome=failure verdict=provider_failure_unclassified context_reads=0 puts=0 0s
+=== RUN   TestContextExperimentNeverPassesMissingOrFailedOutcome/failure
+    host_context_experiment_fixture_test.go:231: E2a_window_fact_newest trial 1: outcome=failure verdict=provider_failure_unclassified context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentNeverPassesMissingOrFailedOutcome (0.75s)
+    --- PASS: TestContextExperimentNeverPassesMissingOrFailedOutcome/missing (0.31s)
+    --- PASS: TestContextExperimentNeverPassesMissingOrFailedOutcome/failure (0.44s)
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/invalid_total
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/changed_total
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/empty_start
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/malformed_start
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/zero_start
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/negative_start
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/past_end
+--- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe (0.13s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/invalid_total (0.01s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/changed_total (0.01s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/empty_start (0.01s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/malformed_start (0.01s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/zero_start (0.01s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/negative_start (0.01s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/past_end (0.01s)
+=== RUN   TestContextExperimentRequiresSemanticReviewAndRejectsPublicEvidence
+--- PASS: TestContextExperimentRequiresSemanticReviewAndRejectsPublicEvidence (0.00s)
+=== RUN   TestContextExperimentCannotPassAnUnexposedInjection
+--- PASS: TestContextExperimentCannotPassAnUnexposedInjection (0.00s)
+=== RUN   TestContextExperimentMemberScoreUsesPreregisteredScope
+--- PASS: TestContextExperimentMemberScoreUsesPreregisteredScope (0.00s)
+=== RUN   TestContextExperimentSourceCommitCoversModuleFromPackageDirectory
+=== RUN   TestContextExperimentSourceCommitCoversModuleFromPackageDirectory/framework_overlay
+=== RUN   TestContextExperimentSourceCommitCoversModuleFromPackageDirectory/dirty_sibling
+--- PASS: TestContextExperimentSourceCommitCoversModuleFromPackageDirectory (0.07s)
+    --- PASS: TestContextExperimentSourceCommitCoversModuleFromPackageDirectory/framework_overlay (0.01s)
+    --- PASS: TestContextExperimentSourceCommitCoversModuleFromPackageDirectory/dirty_sibling (0.01s)
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E2a_window_fact_newest/start=
+    host_context_experiment_fixture_test.go:409: E2a_window_fact_newest trial 1: outcome=success verdict=pass context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E2a_window_fact_newest trial 2: outcome=success verdict=pass context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E2a_window_fact_newest trial 3: outcome=success verdict=pass context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E6_relay/start=
+    host_context_experiment_fixture_test.go:409: E6_relay trial 1/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 1/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E6_relay trial 2/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 2/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E6_relay trial 3/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 3/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E1_memory_first/start=2
+    host_context_experiment_fixture_test.go:409: E1_memory_first trial 2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E1_memory_first trial 3: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E1_memory_first/start=3
+    host_context_experiment_fixture_test.go:409: E1_memory_first trial 3: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E6_relay/start=2
+    host_context_experiment_fixture_test.go:409: E6_relay trial 2/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 2/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E6_relay trial 3/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 3/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence (6.23s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E2a_window_fact_newest/start= (1.50s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E6_relay/start= (1.97s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E1_memory_first/start=2 (0.65s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E1_memory_first/start=3 (0.47s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E6_relay/start=2 (1.65s)
+=== RUN   TestContextExperimentResumedSeriesStopsOnIncompleteTrial
+=== RUN   TestContextExperimentResumedSeriesStopsOnIncompleteTrial/E1_memory_first
+    host_context_experiment_fixture_test.go:450: E1_memory_first trial 2: outcome=failure verdict=provider_failure_unclassified context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentResumedSeriesStopsOnIncompleteTrial/E6_relay
+    host_context_experiment_fixture_test.go:450: E6_relay trial 2/hop1: outcome=failure verdict=provider_failure_unclassified context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentResumedSeriesStopsOnIncompleteTrial (0.70s)
+    --- PASS: TestContextExperimentResumedSeriesStopsOnIncompleteTrial/E1_memory_first (0.37s)
+    --- PASS: TestContextExperimentResumedSeriesStopsOnIncompleteTrial/E6_relay (0.33s)
+=== RUN   TestHostContextExperiment
+    host_context_experiment_test.go:122: real-model context experiments need MULTICA_RUN_REAL_AGENT_SMOKE=1 and MULTICA_CONTEXT_EXPERIMENT_OUT
+--- SKIP: TestHostContextExperiment (0.00s)
+=== RUN   TestHostGitPreparationRegistersEachHelperAndOnlyDeliversSelectedCommit
+=== RUN   TestHostGitPreparationRegistersEachHelperAndOnlyDeliversSelectedCommit/fixed_commit
+=== RUN   TestHostGitPreparationRegistersEachHelperAndOnlyDeliversSelectedCommit/unsupported_attributes
+--- PASS: TestHostGitPreparationRegistersEachHelperAndOnlyDeliversSelectedCommit (1.14s)
+    --- PASS: TestHostGitPreparationRegistersEachHelperAndOnlyDeliversSelectedCommit/fixed_commit (0.58s)
+    --- PASS: TestHostGitPreparationRegistersEachHelperAndOnlyDeliversSelectedCommit/unsupported_attributes (0.56s)
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_less_than
+    host_handoff_budget_test.go:64: assignment_bytes=65536 material_bytes=68855 wire_bytes=396232 provider_starts=1 exact_assignment=true prompt_hash_matches=true
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_ampersand
+    host_handoff_budget_test.go:64: assignment_bytes=65536 material_bytes=68855 wire_bytes=396232 provider_starts=1 exact_assignment=true prompt_hash_matches=true
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/control_character
+    host_handoff_budget_test.go:64: assignment_bytes=65536 material_bytes=68855 wire_bytes=396232 provider_starts=1 exact_assignment=true prompt_hash_matches=true
+=== RUN   TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/multibyte_and_escapes
+    host_handoff_budget_test.go:64: assignment_bytes=65536 material_bytes=68855 wire_bytes=275617 provider_starts=1 exact_assignment=true prompt_hash_matches=true
+--- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact (0.90s)
+    --- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_less_than (0.21s)
+    --- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/html_ampersand (0.20s)
+    --- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/control_character (0.26s)
+    --- PASS: TestHostHandoffBudgetEscapedAssignmentReachesProviderIntact/multibyte_and_escapes (0.22s)
+=== RUN   TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch
+=== RUN   TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/exact_wire_cap
+    host_handoff_budget_test.go:118: raw_http_bytes=2097152 protocol_rejected=false provider_starts=1
+=== RUN   TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/one_byte_over_wire_cap
+    host_handoff_budget_test.go:118: raw_http_bytes=2097153 protocol_rejected=true provider_starts=0
+--- PASS: TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch (0.42s)
+    --- PASS: TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/exact_wire_cap (0.28s)
+    --- PASS: TestHostHandoffBudgetEnforcesRawHTTPBoundaryBeforeLaunch/one_byte_over_wire_cap (0.14s)
+=== RUN   TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch
+=== RUN   TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/decoded_content_plus_metadata
+    host_handoff_budget_test.go:162: material_bytes=265294 wire_bytes=265294 protocol_rejected=true provider_starts=0
+=== RUN   TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/metadata_budget
+    host_handoff_budget_test.go:162: material_bytes=265407 wire_bytes=265407 protocol_rejected=true provider_starts=0
+=== RUN   TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/malformed_source
+    host_handoff_budget_test.go:162: material_bytes=3262 wire_bytes=3262 protocol_rejected=true provider_starts=0
+--- PASS: TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch (0.51s)
+    --- PASS: TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/decoded_content_plus_metadata (0.20s)
+    --- PASS: TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/metadata_budget (0.17s)
+    --- PASS: TestHostHandoffBudgetRejectsInvalidMaterialBeforeLaunch/malformed_source (0.14s)
+=== RUN   TestHostHandoffCheckpointBlockedRecordingCannotHoldProof
+--- PASS: TestHostHandoffCheckpointBlockedRecordingCannotHoldProof (2.22s)
+=== RUN   TestHostHandoffCheckpointRestartRecoversWithoutExecution
+--- PASS: TestHostHandoffCheckpointRestartRecoversWithoutExecution (0.24s)
+=== RUN   TestHostHandoffCheckpointFailureCleanup
+=== RUN   TestHostHandoffCheckpointFailureCleanup/snapshot_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/binding_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift
+--- PASS: TestHostHandoffCheckpointFailureCleanup (0.59s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/snapshot_refused (0.13s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/binding_refused (0.16s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift (0.29s)
+=== RUN   TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback
+=== RUN   TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/resume_rejected
+=== RUN   TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/catalog_retry
+--- PASS: TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback (1.07s)
+    --- PASS: TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/resume_rejected (0.23s)
+    --- PASS: TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback/catalog_retry (0.84s)
+=== RUN   TestHostHandoffLaunchInjectsAndBindsTheActualFirstInput
+--- PASS: TestHostHandoffLaunchInjectsAndBindsTheActualFirstInput (0.18s)
+=== RUN   TestHostHandoffLaunchKeepsMaximumAdmittedInputsBeyondMetadataPage
+--- PASS: TestHostHandoffLaunchKeepsMaximumAdmittedInputsBeyondMetadataPage (0.24s)
+=== RUN   TestHostHandoffLaunchFreshFallbackKeepsSnapshotAndBindsNewInput
+--- PASS: TestHostHandoffLaunchFreshFallbackKeepsSnapshotAndBindsNewInput (0.29s)
+=== RUN   TestHostHandoffLaunchRejectsAssignmentThatDiffersFromClaim
+--- PASS: TestHostHandoffLaunchRejectsAssignmentThatDiffersFromClaim (0.16s)
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_issue
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_run
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_snapshot
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unknown_version
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/live_instead_of_snapshot
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_step
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_parent
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/missing_delegation
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/extra_executable_delegation
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/incomplete_delegation
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_memory_hash
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/memory_marked_unsupported
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/refused
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/declared_but_unsupported
+=== RUN   TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unavailable
+--- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider (2.30s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_issue (0.16s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_run (0.14s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_snapshot (0.12s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unknown_version (0.13s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/live_instead_of_snapshot (0.16s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_step (0.18s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_parent (0.21s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/missing_delegation (0.19s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/extra_executable_delegation (0.18s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/incomplete_delegation (0.15s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/wrong_memory_hash (0.14s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/memory_marked_unsupported (0.14s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/refused (0.14s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/declared_but_unsupported (0.13s)
+    --- PASS: TestHostHandoffLaunchSnapshotFailuresNeverStartTheProvider/unavailable (0.12s)
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_issue
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_run
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_snapshot
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_hash
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_nonce
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_sequence
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/not_accepted
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unknown_version
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/revoked
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/purged
+=== RUN   TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unavailable
+--- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider (1.89s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_issue (0.16s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_run (0.19s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_snapshot (0.17s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_hash (0.17s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_nonce (0.18s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/wrong_sequence (0.15s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/not_accepted (0.14s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unknown_version (0.17s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/revoked (0.16s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/purged (0.22s)
+    --- PASS: TestHostHandoffLaunchBindingFailuresNeverStartTheProvider/unavailable (0.18s)
+=== RUN   TestHostHandoffLaunchLostRepliesReplayExactRequests
+--- PASS: TestHostHandoffLaunchLostRepliesReplayExactRequests (0.19s)
+=== RUN   TestHostHandoffLaunchUnsupportedClaimKeepsLegacyPath
+--- PASS: TestHostHandoffLaunchUnsupportedClaimKeepsLegacyPath (0.19s)
+=== RUN   TestHostHandoffLaunchAcceptsRedactedSourceWithOriginalHash
+--- PASS: TestHostHandoffLaunchAcceptsRedactedSourceWithOriginalHash (0.18s)
+=== RUN   TestHostHandoffLaunchFreshFallbackRejectsSnapshotDrift
+--- PASS: TestHostHandoffLaunchFreshFallbackRejectsSnapshotDrift (0.20s)
+=== RUN   TestHostHandoffLaunchKeepsUnsupportedAndEmptyMemoryDistinct
+=== RUN   TestHostHandoffLaunchKeepsUnsupportedAndEmptyMemoryDistinct/unsupported
+=== RUN   TestHostHandoffLaunchKeepsUnsupportedAndEmptyMemoryDistinct/absent
+--- PASS: TestHostHandoffLaunchKeepsUnsupportedAndEmptyMemoryDistinct (0.34s)
+    --- PASS: TestHostHandoffLaunchKeepsUnsupportedAndEmptyMemoryDistinct/unsupported (0.18s)
+    --- PASS: TestHostHandoffLaunchKeepsUnsupportedAndEmptyMemoryDistinct/absent (0.16s)
+=== RUN   TestHostHandoffLaunchFreshMemoryReanchorCannotRemintSnapshot
+--- PASS: TestHostHandoffLaunchFreshMemoryReanchorCannotRemintSnapshot (0.19s)
+=== RUN   TestHostHandoffLaunchGitHelpersDoNotBindProviderInput
+--- PASS: TestHostHandoffLaunchGitHelpersDoNotBindProviderInput (0.64s)
+=== RUN   TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof
+=== RUN   TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/missing_delegation_truncated
+=== RUN   TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/null_delegation_truncated
+=== RUN   TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/invalid_recording
+=== RUN   TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/case_alias
+=== RUN   TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/escaped_case_alias
+=== RUN   TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/escaped_duplicate
+--- PASS: TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof (0.82s)
+    --- PASS: TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/missing_delegation_truncated (0.14s)
+    --- PASS: TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/null_delegation_truncated (0.15s)
+    --- PASS: TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/invalid_recording (0.14s)
+    --- PASS: TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/case_alias (0.13s)
+    --- PASS: TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/escaped_case_alias (0.13s)
+    --- PASS: TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof/escaped_duplicate (0.13s)
+=== RUN   TestHostKnowledgeStderrRemainsPrivateAndRetainsFailureEvidence
+=== RUN   TestHostKnowledgeStderrRemainsPrivateAndRetainsFailureEvidence/success
+=== RUN   TestHostKnowledgeStderrRemainsPrivateAndRetainsFailureEvidence/provider_failure
+--- PASS: TestHostKnowledgeStderrRemainsPrivateAndRetainsFailureEvidence (0.38s)
+    --- PASS: TestHostKnowledgeStderrRemainsPrivateAndRetainsFailureEvidence/success (0.18s)
+    --- PASS: TestHostKnowledgeStderrRemainsPrivateAndRetainsFailureEvidence/provider_failure (0.20s)
+=== RUN   TestHostKnowledgeActualInputPreservesHandoffAndFreshNamespace
+--- PASS: TestHostKnowledgeActualInputPreservesHandoffAndFreshNamespace (0.23s)
+=== RUN   TestHostKnowledgeLostRepliesKeepOriginalManifestAndAttempt
+--- PASS: TestHostKnowledgeLostRepliesKeepOriginalManifestAndAttempt (0.23s)
+=== RUN   TestHostKnowledgeFirstRefusalPreservesNeverLaunchedProof
+--- PASS: TestHostKnowledgeFirstRefusalPreservesNeverLaunchedProof (0.17s)
+=== RUN   TestHostKnowledgeLaterPhysicalLaunchRefusalKeepsFirstTermination
+--- PASS: TestHostKnowledgeLaterPhysicalLaunchRefusalKeepsFirstTermination (0.27s)
+=== RUN   TestHostKnowledgeUnsupportedAndDowngradeCannotSelectNamespace
+--- PASS: TestHostKnowledgeUnsupportedAndDowngradeCannotSelectNamespace (0.01s)
+=== RUN   TestHostKnowledgeRetainedRunRejectsOptionOverridesBeforeDisclosure
+--- PASS: TestHostKnowledgeRetainedRunRejectsOptionOverridesBeforeDisclosure (0.01s)
+=== RUN   TestHostKnowledgeEmptyAdmissionStillUsesFreshNamespace
+--- PASS: TestHostKnowledgeEmptyAdmissionStillUsesFreshNamespace (0.19s)
+=== RUN   TestHostKnowledgeOldServerStrictClaimBodyRemainsCompatible
+--- PASS: TestHostKnowledgeOldServerStrictClaimBodyRemainsCompatible (0.19s)
+=== RUN   TestHostKnowledgeRecordingOutagePreservesProofAndRecovery
+--- PASS: TestHostKnowledgeRecordingOutagePreservesProofAndRecovery (0.25s)
+=== RUN   TestHostKnowledgeOlderCLIOptionRefusalNeverDowngradesOrReplays
+--- PASS: TestHostKnowledgeOlderCLIOptionRefusalNeverDowngradesOrReplays (0.19s)
+=== RUN   TestHostKnowledgePersistenceIsMandatoryInExactInvocationFingerprint
+--- PASS: TestHostKnowledgePersistenceIsMandatoryInExactInvocationFingerprint (0.01s)
+=== RUN   TestHostLedgerRetryNeedsAcceptedPriorWaitAndStopSealsEveryAttempt
+--- PASS: TestHostLedgerRetryNeedsAcceptedPriorWaitAndStopSealsEveryAttempt (0.12s)
+=== RUN   TestHostLedgerUnissuedPermitTombstoneDoesNotInventAnAuthorizedLaunch
+--- PASS: TestHostLedgerUnissuedPermitTombstoneDoesNotInventAnAuthorizedLaunch (0.06s)
+=== RUN   TestHostLedgerRetainsUnknownLaunchWithoutReinterpretingLinuxProof
+--- PASS: TestHostLedgerRetainsUnknownLaunchWithoutReinterpretingLinuxProof (0.01s)
+=== RUN   TestHostRunnerInjectsSharedContextOnlyIntoThePrompt
+--- PASS: TestHostRunnerInjectsSharedContextOnlyIntoThePrompt (0.23s)
+=== RUN   TestHostRunnerRunsWithoutSharedContextWhenTheRunIsUnsupported
+--- PASS: TestHostRunnerRunsWithoutSharedContextWhenTheRunIsUnsupported (0.23s)
+=== RUN   TestHostRunnerSharedContextFailureLeavesTheProviderUnlaunched
+=== RUN   TestHostRunnerSharedContextFailureLeavesTheProviderUnlaunched/refused
+=== RUN   TestHostRunnerSharedContextFailureLeavesTheProviderUnlaunched/exhausted
+=== RUN   TestHostRunnerSharedContextFailureLeavesTheProviderUnlaunched/transient
+--- PASS: TestHostRunnerSharedContextFailureLeavesTheProviderUnlaunched (0.47s)
+    --- PASS: TestHostRunnerSharedContextFailureLeavesTheProviderUnlaunched/refused (0.14s)
+    --- PASS: TestHostRunnerSharedContextFailureLeavesTheProviderUnlaunched/exhausted (0.16s)
+    --- PASS: TestHostRunnerSharedContextFailureLeavesTheProviderUnlaunched/transient (0.17s)
+=== RUN   TestHostRunnerFreshRetryRereadsTheSharedContextBase
+--- PASS: TestHostRunnerFreshRetryRereadsTheSharedContextBase (0.26s)
+=== RUN   TestHostRunnerFreshRetryWithoutSharedContextNeverStarts
+--- PASS: TestHostRunnerFreshRetryWithoutSharedContextNeverStarts (0.22s)
+=== RUN   TestClientRejectsMalformedSharedContextBase
+=== RUN   TestClientRejectsMalformedSharedContextBase/other_run
+=== RUN   TestClientRejectsMalformedSharedContextBase/other_issue
+=== RUN   TestClientRejectsMalformedSharedContextBase/noncanonical_version
+=== RUN   TestClientRejectsMalformedSharedContextBase/empty_version_with_text
+=== RUN   TestClientRejectsMalformedSharedContextBase/byte_count
+=== RUN   TestClientRejectsMalformedSharedContextBase/nul
+--- PASS: TestClientRejectsMalformedSharedContextBase (0.00s)
+    --- PASS: TestClientRejectsMalformedSharedContextBase/other_run (0.00s)
+    --- PASS: TestClientRejectsMalformedSharedContextBase/other_issue (0.00s)
+    --- PASS: TestClientRejectsMalformedSharedContextBase/noncanonical_version (0.00s)
+    --- PASS: TestClientRejectsMalformedSharedContextBase/empty_version_with_text (0.00s)
+    --- PASS: TestClientRejectsMalformedSharedContextBase/byte_count (0.00s)
+    --- PASS: TestClientRejectsMalformedSharedContextBase/nul (0.00s)
+=== RUN   TestHostPromptTellsAMemberRunItsRoleAndStep
+--- PASS: TestHostPromptTellsAMemberRunItsRoleAndStep (0.00s)
+=== RUN   TestHostBriefInjectsRecallGuidanceWithNegotiatedHandoff
+--- PASS: TestHostBriefInjectsRecallGuidanceWithNegotiatedHandoff (0.17s)
+=== RUN   TestHostBriefOmitsRecallGuidanceWithoutNegotiatedHandoff
+--- PASS: TestHostBriefOmitsRecallGuidanceWithoutNegotiatedHandoff (0.18s)
+=== RUN   TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof
+--- PASS: TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof (1.31s)
+=== RUN   TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement
+--- PASS: TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement (0.12s)
+=== RUN   TestHostRecordingRecoveredUnflushedTailRemainsUnknown
+--- PASS: TestHostRecordingRecoveredUnflushedTailRemainsUnknown (0.11s)
+=== RUN   TestHostRecordingLedgerRejectsSealWithUnissuedNonce
+--- PASS: TestHostRecordingLedgerRejectsSealWithUnissuedNonce (0.19s)
+=== RUN   TestHostRecordingRecoveryCancelledBacklogKeepsUnresolvedPayloads
+--- PASS: TestHostRecordingRecoveryCancelledBacklogKeepsUnresolvedPayloads (0.14s)
+=== RUN   TestHostRecordingRecoveryBlockedUploadCannotPreventStopAndProof
+--- PASS: TestHostRecordingRecoveryBlockedUploadCannotPreventStopAndProof (6.26s)
+=== RUN   TestHostRecordingRecoveryMalformedSealACKKeepsOriginalPending
+--- PASS: TestHostRecordingRecoveryMalformedSealACKKeepsOriginalPending (0.11s)
+=== RUN   TestHostRunnerOpenCodeEmptyExitDoesNotInventBusinessOutcome
+=== RUN   TestHostRunnerOpenCodeEmptyExitDoesNotInventBusinessOutcome/empty_result
+=== RUN   TestHostRunnerOpenCodeEmptyExitDoesNotInventBusinessOutcome/opencode_error
+--- PASS: TestHostRunnerOpenCodeEmptyExitDoesNotInventBusinessOutcome (0.34s)
+    --- PASS: TestHostRunnerOpenCodeEmptyExitDoesNotInventBusinessOutcome/empty_result (0.16s)
+    --- PASS: TestHostRunnerOpenCodeEmptyExitDoesNotInventBusinessOutcome/opencode_error (0.19s)
+=== RUN   TestHostRunnerUsesSelectedCLIUnderCanonicalCommandName
+--- PASS: TestHostRunnerUsesSelectedCLIUnderCanonicalCommandName (1.29s)
+=== RUN   TestHostRecordingRedactsCollaborationCapabilities
+--- PASS: TestHostRecordingRedactsCollaborationCapabilities (0.00s)
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/missing_preparation
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/missing_context
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_session
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_capability
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_configuration
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/missing_author_epoch
+=== RUN   TestHostLedgerRejectsCorruptRetainedClaim/different_agent_owner
+--- PASS: TestHostLedgerRejectsCorruptRetainedClaim (0.15s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/missing_preparation (0.04s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/missing_context (0.02s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_session (0.02s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_capability (0.02s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_configuration (0.02s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/missing_author_epoch (0.02s)
+    --- PASS: TestHostLedgerRejectsCorruptRetainedClaim/different_agent_owner (0.02s)
+=== RUN   TestHostRunnerPreparationFactsDoNotGateTermination
+=== RUN   TestHostRunnerPreparationFactsDoNotGateTermination/prepared
+=== RUN   TestHostRunnerPreparationFactsDoNotGateTermination/failed
+--- PASS: TestHostRunnerPreparationFactsDoNotGateTermination (0.31s)
+    --- PASS: TestHostRunnerPreparationFactsDoNotGateTermination/prepared (0.18s)
+    --- PASS: TestHostRunnerPreparationFactsDoNotGateTermination/failed (0.13s)
+=== RUN   TestClientInterruptedStopResponseIsTransportUncertainty
+--- PASS: TestClientInterruptedStopResponseIsTransportUncertainty (0.00s)
+=== RUN   TestHostRunnerInterruptedStopResponseKeepsExistingExecution
+--- PASS: TestHostRunnerInterruptedStopResponseKeepsExistingExecution (0.22s)
+=== RUN   TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement
+=== RUN   TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/missing_outcome_remains_incomplete
+=== RUN   TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/recorded_outcome_recovers_acknowledgement
+--- PASS: TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement (0.32s)
+    --- PASS: TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/missing_outcome_remains_incomplete (0.16s)
+    --- PASS: TestHostRunnerPendingOutcomeSurvivesProofAcknowledgement/recorded_outcome_recovers_acknowledgement (0.16s)
+=== RUN   TestHostRunnerPendingProofHasPriorityOverBlockedOutcome
+--- PASS: TestHostRunnerPendingProofHasPriorityOverBlockedOutcome (0.29s)
+=== RUN   TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun
+=== RUN   TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_start_observation
+=== RUN   TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_terminal_observation
+--- PASS: TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun (0.20s)
+    --- PASS: TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_start_observation (0.10s)
+    --- PASS: TestHostSupervisorLateCallbackCannotChangeClosedUnknownRun/late_terminal_observation (0.10s)
+=== RUN   TestHostRunnerReusesOrdinaryProviderAndOriginalPermitAndProof
+--- PASS: TestHostRunnerReusesOrdinaryProviderAndOriginalPermitAndProof (0.16s)
+=== RUN   TestHostRunnerEOFDoesNotEndExecutionBeforeRealWait
+--- PASS: TestHostRunnerEOFDoesNotEndExecutionBeforeRealWait (0.39s)
+=== RUN   TestHostRunnerOfflineKeepsRunningAndOnlyReplaysReceipts
+--- PASS: TestHostRunnerOfflineKeepsRunningAndOnlyReplaysReceipts (0.27s)
+=== RUN   TestHostRunnerFreshRetryGetsNewTokenAndStopForbidsFallback
+=== RUN   TestHostRunnerFreshRetryGetsNewTokenAndStopForbidsFallback/false
+=== RUN   TestHostRunnerFreshRetryGetsNewTokenAndStopForbidsFallback/true
+--- PASS: TestHostRunnerFreshRetryGetsNewTokenAndStopForbidsFallback (0.42s)
+    --- PASS: TestHostRunnerFreshRetryGetsNewTokenAndStopForbidsFallback/false (0.23s)
+    --- PASS: TestHostRunnerFreshRetryGetsNewTokenAndStopForbidsFallback/true (0.19s)
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/issue
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/agent_owner
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/runtime
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/generation
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/deployment
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/resource_owner
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/agent
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/channel
+=== RUN   TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/role
+--- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations (0.00s)
+    --- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/issue (0.00s)
+    --- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/agent_owner (0.00s)
+    --- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/runtime (0.00s)
+    --- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/generation (0.00s)
+    --- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/deployment (0.00s)
+    --- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/resource_owner (0.00s)
+    --- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/agent (0.00s)
+    --- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/channel (0.00s)
+    --- PASS: TestHostSessionKeySeparatesOwnersDeploymentsIssuesRolesAndGenerations/role (0.00s)
+=== RUN   TestHostSessionLockKeepsUnknownOwnershipAfterSupervisorRestart
+--- PASS: TestHostSessionLockKeepsUnknownOwnershipAfterSupervisorRestart (0.04s)
+=== RUN   TestNonceBurnSurvivesRestartAndCannotLaunchAgain
+--- PASS: TestNonceBurnSurvivesRestartAndCannotLaunchAgain (0.03s)
+=== RUN   TestSealAndProofSurviveRestartAndRefuseLateAttempt
+--- PASS: TestSealAndProofSurviveRestartAndRefuseLateAttempt (0.07s)
+=== RUN   TestLedgerLockExcludesAnotherProcess
+--- PASS: TestLedgerLockExcludesAnotherProcess (0.02s)
+=== RUN   TestLedgerCorruptionNeverCreatesFreshRun
+--- PASS: TestLedgerCorruptionNeverCreatesFreshRun (0.01s)
+=== RUN   TestLedgerRejectsSharedPermissionsAndSymlinks
+--- PASS: TestLedgerRejectsSharedPermissionsAndSymlinks (0.00s)
+=== RUN   TestUncertainPermitCannotBecomeExitProof
+--- PASS: TestUncertainPermitCannotBecomeExitProof (0.02s)
+=== RUN   TestRetainedInventoryPreservesCapacityAndProofRecovery
+--- PASS: TestRetainedInventoryPreservesCapacityAndProofRecovery (0.04s)
+=== RUN   TestUnrequestedRegistrationSealsAttemptZeroTombstone
+--- PASS: TestUnrequestedRegistrationSealsAttemptZeroTombstone (0.04s)
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/valid
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/git_commit_header
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/wrong_commit_header
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/global_path_header
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/absolute
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/parent
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/symlink
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/hardlink
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/device
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/duplicate
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/object_mismatch
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/export_ignore
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/lfs_pointer
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/file_limit
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/entry_limit
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/size_limit
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/git_directory
+=== RUN   TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/attachment_collision
+--- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits (0.01s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/valid (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/git_commit_header (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/wrong_commit_header (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/global_path_header (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/absolute (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/parent (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/symlink (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/hardlink (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/device (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/duplicate (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/object_mismatch (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/export_ignore (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/lfs_pointer (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/file_limit (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/entry_limit (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/size_limit (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/git_directory (0.00s)
+    --- PASS: TestPreparationGitArchiveRejectsEscapesLinksObjectDriftAndLimits/attachment_collision (0.00s)
+=== RUN   TestPreparationGitTreeRequiresFullRegularBlobInventory
+=== RUN   TestPreparationGitTreeRequiresFullRegularBlobInventory/valid
+=== RUN   TestPreparationGitTreeRequiresFullRegularBlobInventory/submodule
+=== RUN   TestPreparationGitTreeRequiresFullRegularBlobInventory/symlink
+=== RUN   TestPreparationGitTreeRequiresFullRegularBlobInventory/short_oid
+=== RUN   TestPreparationGitTreeRequiresFullRegularBlobInventory/duplicate
+=== RUN   TestPreparationGitTreeRequiresFullRegularBlobInventory/unknown_mode
+=== RUN   TestPreparationGitTreeRequiresFullRegularBlobInventory/missing_size
+=== RUN   TestPreparationGitTreeRequiresFullRegularBlobInventory/escape
+--- PASS: TestPreparationGitTreeRequiresFullRegularBlobInventory (0.00s)
+    --- PASS: TestPreparationGitTreeRequiresFullRegularBlobInventory/valid (0.00s)
+    --- PASS: TestPreparationGitTreeRequiresFullRegularBlobInventory/submodule (0.00s)
+    --- PASS: TestPreparationGitTreeRequiresFullRegularBlobInventory/symlink (0.00s)
+    --- PASS: TestPreparationGitTreeRequiresFullRegularBlobInventory/short_oid (0.00s)
+    --- PASS: TestPreparationGitTreeRequiresFullRegularBlobInventory/duplicate (0.00s)
+    --- PASS: TestPreparationGitTreeRequiresFullRegularBlobInventory/unknown_mode (0.00s)
+    --- PASS: TestPreparationGitTreeRequiresFullRegularBlobInventory/missing_size (0.00s)
+    --- PASS: TestPreparationGitTreeRequiresFullRegularBlobInventory/escape (0.00s)
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/valid
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/relative_source
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/escaping_destination
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/work_override
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/supervisor_override
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/duplicate
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/prefix_collision
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/zero_limits
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/provider
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/family
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/adapter
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/claude_args
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/ambient_credential
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/unknown_credential
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/missing_account
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/unknown_device
+=== RUN   TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/duplicate_device
+--- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials (0.01s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/valid (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/relative_source (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/escaping_destination (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/work_override (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/supervisor_override (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/duplicate (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/prefix_collision (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/zero_limits (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/provider (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/family (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/adapter (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/claude_args (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/ambient_credential (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/unknown_credential (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/missing_account (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/unknown_device (0.00s)
+    --- PASS: TestProviderBundleRejectsImplicitPathsOptionsAndCredentials/duplicate_device (0.00s)
+=== RUN   TestProviderBundleDigestUsesFrozenFilesAndConfigurationWithoutSecrets
+--- PASS: TestProviderBundleDigestUsesFrozenFilesAndConfigurationWithoutSecrets (0.00s)
+=== RUN   TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles
+=== RUN   TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/valid
+=== RUN   TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/symlink
+=== RUN   TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/parent_symlink
+=== RUN   TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/changed
+=== RUN   TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/oversized
+=== RUN   TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/directory
+=== RUN   TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/shared_writable
+--- PASS: TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles (0.01s)
+    --- PASS: TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/valid (0.00s)
+    --- PASS: TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/symlink (0.00s)
+    --- PASS: TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/parent_symlink (0.00s)
+    --- PASS: TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/changed (0.01s)
+    --- PASS: TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/oversized (0.00s)
+    --- PASS: TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/directory (0.00s)
+    --- PASS: TestProviderBundleSnapshotRejectsSymlinksMutationAndNonregularFiles/shared_writable (0.00s)
+=== RUN   TestProviderBundleAccountSnapshotOnlyReadsExplicitProviderKey
+--- PASS: TestProviderBundleAccountSnapshotOnlyReadsExplicitProviderKey (0.00s)
+=== RUN   TestProofRecoveryCursorPersistsBeforeRequestAndWrapsAfterAcknowledgement
+--- PASS: TestProofRecoveryCursorPersistsBeforeRequestAndWrapsAfterAcknowledgement (0.19s)
+=== RUN   TestProofRecoveryCursorLockExcludesAnotherProcess
+--- PASS: TestProofRecoveryCursorLockExcludesAnotherProcess (0.03s)
+=== RUN   TestProofRecoveryCursorDamageFailsClosed
+=== RUN   TestProofRecoveryCursorDamageFailsClosed/invalid_JSON
+=== RUN   TestProofRecoveryCursorDamageFailsClosed/duplicate_field
+=== RUN   TestProofRecoveryCursorDamageFailsClosed/future_version
+=== RUN   TestProofRecoveryCursorDamageFailsClosed/invalid_key
+=== RUN   TestProofRecoveryCursorDamageFailsClosed/oversized
+=== RUN   TestProofRecoveryCursorDamageFailsClosed/permissions
+=== RUN   TestProofRecoveryCursorDamageFailsClosed/symlink
+=== RUN   TestProofRecoveryCursorDamageFailsClosed/hardlink
+--- PASS: TestProofRecoveryCursorDamageFailsClosed (0.16s)
+    --- PASS: TestProofRecoveryCursorDamageFailsClosed/invalid_JSON (0.02s)
+    --- PASS: TestProofRecoveryCursorDamageFailsClosed/duplicate_field (0.02s)
+    --- PASS: TestProofRecoveryCursorDamageFailsClosed/future_version (0.02s)
+    --- PASS: TestProofRecoveryCursorDamageFailsClosed/invalid_key (0.02s)
+    --- PASS: TestProofRecoveryCursorDamageFailsClosed/oversized (0.02s)
+    --- PASS: TestProofRecoveryCursorDamageFailsClosed/permissions (0.02s)
+    --- PASS: TestProofRecoveryCursorDamageFailsClosed/symlink (0.02s)
+    --- PASS: TestProofRecoveryCursorDamageFailsClosed/hardlink (0.02s)
+=== RUN   TestProofRecoveryCursorWriteFailurePreventsAttempt
+--- PASS: TestProofRecoveryCursorWriteFailurePreventsAttempt (0.02s)
+=== RUN   TestProofRecoveryBusyCursorDoesNotHideCorruptInventory
+--- PASS: TestProofRecoveryBusyCursorDoesNotHideCorruptInventory (0.01s)
+=== RUN   TestRunnerExplicitPermitRefusalProvesNeverLaunched
+--- PASS: TestRunnerExplicitPermitRefusalProvesNeverLaunched (0.05s)
+=== RUN   TestRunnerReplaysLostPermitWithSameAttempt
+--- PASS: TestRunnerReplaysLostPermitWithSameAttempt (0.06s)
+=== RUN   TestRunnerExhaustedPermitReplayProvesNeverLaunched
+--- PASS: TestRunnerExhaustedPermitReplayProvesNeverLaunched (0.06s)
+=== RUN   TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary
+=== RUN   TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary/preparation_error
+=== RUN   TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary/epoch_changed
+=== RUN   TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary/revalidation_error
+=== RUN   TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary/unknown_start
+--- PASS: TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary (0.21s)
+    --- PASS: TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary/preparation_error (0.06s)
+    --- PASS: TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary/epoch_changed (0.06s)
+    --- PASS: TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary/revalidation_error (0.06s)
+    --- PASS: TestRunnerPreparationFailureKeepsNonceProofAndBurnBoundary/unknown_start (0.03s)
+=== RUN   TestRunnerRestartConvergesPreBurnRecordsToNeverLaunched
+=== RUN   TestRunnerRestartConvergesPreBurnRecordsToNeverLaunched/registered
+=== RUN   TestRunnerRestartConvergesPreBurnRecordsToNeverLaunched/permit_pending
+=== RUN   TestRunnerRestartConvergesPreBurnRecordsToNeverLaunched/launch_authorized
+--- PASS: TestRunnerRestartConvergesPreBurnRecordsToNeverLaunched (0.14s)
+    --- PASS: TestRunnerRestartConvergesPreBurnRecordsToNeverLaunched/registered (0.04s)
+    --- PASS: TestRunnerRestartConvergesPreBurnRecordsToNeverLaunched/permit_pending (0.05s)
+    --- PASS: TestRunnerRestartConvergesPreBurnRecordsToNeverLaunched/launch_authorized (0.06s)
+=== RUN   TestRunnerRestartNeverRepeatsUncertainPermitOrFork
+=== RUN   TestRunnerRestartNeverRepeatsUncertainPermitOrFork/attempt_nonce_burned
+=== RUN   TestRunnerRestartNeverRepeatsUncertainPermitOrFork/process_identity_recorded
+--- PASS: TestRunnerRestartNeverRepeatsUncertainPermitOrFork (0.08s)
+    --- PASS: TestRunnerRestartNeverRepeatsUncertainPermitOrFork/attempt_nonce_burned (0.03s)
+    --- PASS: TestRunnerRestartNeverRepeatsUncertainPermitOrFork/process_identity_recorded (0.05s)
+=== RUN   TestRunnerReplaysSameSealedProofAfterLostHTTPResponse
+--- PASS: TestRunnerReplaysSameSealedProofAfterLostHTTPResponse (0.06s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	44.622s

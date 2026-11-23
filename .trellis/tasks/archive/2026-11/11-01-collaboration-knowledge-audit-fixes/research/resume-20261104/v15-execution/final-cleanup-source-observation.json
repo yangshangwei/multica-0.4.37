@@ -1,0 +1,164 @@
+{
+  "recorded_at": "2026-11-04T01:30:30.342567+00:00",
+  "scope": "read-only cleanup/source observation after the sole complete run and registered auditor",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "source_status": " M apps/web/next-env.d.ts\n",
+  "processes": [
+    {
+      "pid": 54333,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 54337,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 54354,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 84962,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 85018,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 85468,
+      "present": false,
+      "process": ""
+    },
+    {
+      "pid": 85487,
+      "present": false,
+      "process": ""
+    }
+  ],
+  "ports": [
+    {
+      "port": 18974,
+      "listener_present": false,
+      "output": ""
+    },
+    {
+      "port": 13894,
+      "listener_present": false,
+      "output": ""
+    }
+  ],
+  "owned_API_and_Web_released": true,
+  "database_observation": {
+    "database": "postgres",
+    "existing_requested_databases": [
+      "ccheck_20261104002616544766_bb940f8eb38e",
+      "ccheck_20261104002653503057_07eb79fa72b8",
+      "ccheck_20261104002657001662_f47ea76e9369",
+      "ccheck_20261104002657523105_f9a6f66e94fe",
+      "ccheck_20261104002716864651_b0ca13f2a1d5",
+      "ccheck_20261104002749713827_6f87875654d8",
+      "ccheck_20261104002943110767_7427887f8751",
+      "ccheck_20261104002943979259_e243b33d7b90",
+      "ccheck_20261104002944231596_a33d11aa74fd",
+      "ccheck_20261104003002060453_8ec97853df30",
+      "ccheck_20261104003004889508_d642fc7111ff",
+      "ccheck_20261104003008039862_d4b8dc307441",
+      "ccheck_20261104003014883391_cc1252fad4dc",
+      "ccheck_20261104003017073705_4b76585c3aa4",
+      "ccheck_20261104003018973573_b8d431c478e1",
+      "ccheck_20261104003019466616_f26ab7ece539",
+      "ccheck_20261104003019690798_248934fbfb73",
+      "ccheck_20261104003024818616_cffe407cfbfc",
+      "ccheck_20261104003026814455_472bb8236d85",
+      "ccheck_20261104003029707001_7a21f045e560",
+      "ccheck_20261104003137227523_e304ab6e77ff",
+      "ccheck_20261104003317441692_443be4706fd4",
+      "ccheck_20261104003423137964_abe022601f40",
+      "ccheck_20261104003426098699_9ae551c14945",
+      "ccheck_20261104003433808362_a2993220b42d",
+      "ccheck_20261104003439268754_2ec21eaa1b3e",
+      "ccheck_20261104003442543173_2c99ee2c73c6",
+      "ccheck_20261104003442799451_0fb816f659c3",
+      "ccheck_20261104003445313652_103bcb57d099",
+      "ccheck_20261104003447512423_2f5af1a52539",
+      "ccheck_20261104003449544366_c824a98f5f50",
+      "ccheck_20261104003451406742_5baa8458c611",
+      "ccheck_20261104003453306177_199d57419d78",
+      "ccheck_20261104003951931576_f98f1babe5ae",
+      "ccheck_20261104003954654689_bbd7303d32a6",
+      "ccheck_20261104003956659711_d01cb786d08e",
+      "ccheck_20261104004007277342_e133f82ee548",
+      "ccheck_20261104004009706871_33991a652421",
+      "ccheck_20261104004019001287_a384d9e70280",
+      "ccheck_20261104004023099195_36f5a604ea4d",
+      "ccheck_20261104004031392420_a57e8d23d980",
+      "ccheck_20261104004036485986_72398aa1f6d0",
+      "ccheck_20261104004047299142_b565f47a53d0",
+      "ccheck_20261104004049372030_549757f027eb",
+      "ccheck_20261104004152145664_6bdd179505c2",
+      "ccheck_20261104004155588462_3202a0f12174",
+      "ccheck_20261104004157768949_7a51ef9d7409",
+      "ccheck_20261104004158085619_3df108fbf701",
+      "ccheck_20261104004200110833_fb52e0df1f83",
+      "ccheck_20261104004202837229_b3616ef0c58b",
+      "ccheck_20261104004205882807_734f4abb7b12",
+      "ccheck_20261104004212273596_919b30f55bea",
+      "ccheck_20261104004215999763_33c023a139ab",
+      "ccheck_20261104004251293176_9f2c7589a33e",
+      "ccheck_20261104004251871201_402988e4441d",
+      "ccheck_20261104004254664947_08997a7fa7fe",
+      "ccheck_20261104004259767194_6d7856d79665",
+      "ccheck_20261104004300051899_b41f457af4f5",
+      "ccheck_20261104004305845752_2f225990571e",
+      "ccheck_20261104004308191910_0ee13f0d2884",
+      "ccheck_20261104004310111329_986dfe9cbf73",
+      "ccheck_20261104010112217849_c0b56fe05d44",
+      "ccheck_20261104010115126745_85091a8daf2c",
+      "ccheck_20261104010118635497_0548817c3f9d",
+      "ccheck_20261104010122917718_8c57f41cf87d",
+      "ccheck_20261104010125303602_c02d86db4237",
+      "ccheck_20261104010127160579_d763dfcd7176",
+      "ccheck_20261104010129262174_f8cc8b7af4e6",
+      "ccheck_20261104010131147738_3b4cd4ae0d09",
+      "ccheck_20261104010133310043_fb47920ce532",
+      "ccheck_20261104010138054442_bd354a329a15",
+      "ccheck_20261104010142294246_d7ecdfa3f812",
+      "ccheck_20261104010144355189_e859efa47f08",
+      "ccheck_20261104010154268505_2801bc792e83",
+      "ccheck_20261104010158569732_b2f76499e952",
+      "ccheck_20261104010202319199_4fc98d5f8acf",
+      "ccheck_20261104010204718198_4f0dde5e8035",
+      "ccheck_20261104010206645227_b541162c7d6d",
+      "ccheck_20261104010208695336_e6acddbc5503",
+      "ccheck_20261104010210788090_2405237448a4",
+      "ccheck_20261104010212616096_d8de8e43c096",
+      "ccheck_20261104010214880221_56802910400e",
+      "multica_check_20261104001655_54361_api",
+      "multica_closure_v15_seed_01a1a3c9"
+    ],
+    "task_api_connections": 0,
+    "cluster_connections": 29,
+    "max_connections": "100"
+  },
+  "package_record_count": 82,
+  "package_databases_retained": true,
+  "test_artifacts": {
+    "test-results": {
+      "original": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results",
+      "retained": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/retained-test-artifacts/test-results",
+      "file_count": 872,
+      "bytes": 129397468,
+      "manifest_sha256": "5ef7f7bbb18fd04caa19ff429ed33a4e8a47bbf83359ea6b30fe3f04b42a8b40"
+    }
+  },
+  "registered_final_auditor_invocations": 1,
+  "additional_tests_or_diagnostics_or_model_commands": 0,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "default_knowledge_enabled": false
+}

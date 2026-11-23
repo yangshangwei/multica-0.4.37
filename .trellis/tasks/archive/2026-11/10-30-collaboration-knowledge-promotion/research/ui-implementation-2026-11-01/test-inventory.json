@@ -1,0 +1,764 @@
+[
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-sources.test.ts",
+    "name": "hashes the selected historical memory version exactly when latest has advanced",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-sources.test.ts",
+    "name": "uses retained comment revision text, while a tombstone blocks every old revision",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-sources.test.ts",
+    "name": "finds the exact run-record identity across pages without depending on memory",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-sources.test.ts",
+    "name": "refuses purged versions, foreign issue references and late reads after access loss",
+    "status": "passed"
+  },
+  {
+    "package": "core",
+    "file": "packages/core/collaboration/knowledge-sources.test.ts",
+    "name": "bounds stalled source discovery with the existing deadline and does not impose a page-count cutoff",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+    "name": "shows the loaded range and keeps an older server's unknown total explicit",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+    "name": "restores an anchored detail on scope resume and refocuses repeated explicit opens",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+    "name": "opens ordinary children in their returned source workspace and downgrades to references after source access changes",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+    "name": "distinguishes missing child support from an explicitly empty projected list",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+    "name": "focuses the selected run and copies its account anchor from the shared detail",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/collaboration-detail.test.tsx",
+    "name": "keeps one comment list and composer across loading, polling and first-comment updates",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "requires keyboard confirmation of the displayed version and awaits the exact approval receipt",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "resets review confirmation for a changed identity and removes body on source unavailability",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "recovers a lost result after remount with the original key and no second POST",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "lets an external handler propose from comments to the lawful current project without a private catalog",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "Propose correction creates a new immutable proposal without copying old body into the form",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "Propose workspace version creates a new immutable proposal without copying old body into the form",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "allows only content-free target withdrawal and shows a known refusal as a refusal",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "keeps unsupported knowledge separate from the surrounding collaboration and reports truncated history",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "picks an actual recorded run as a source without memory or a raw JSON form",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "pages all candidate versions with the original page authorization boundary",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/collaboration/knowledge-panel.test.tsx",
+    "name": "keeps a selected source project pinned and requires a new selection if the relationship changes",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity registers every JSON file in RESOURCES (EN)",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity declares the same namespaces in EN and zh-Hans",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity registers every JSON file in RESOURCES (zh-Hans)",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity collaboration: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity collaboration: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity common: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity common: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity auth: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity auth: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity admin: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity admin: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity settings: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity settings: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity issues: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity issues: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity agents: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity agents: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity editor: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity editor: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity onboarding: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity onboarding: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity invite: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity invite: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity labels: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity labels: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity members: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity members: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity my-issues: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity my-issues: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity search: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity search: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity inbox: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity inbox: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity triage: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity triage: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity workspace: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity workspace: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity projects: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity projects: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity autopilots: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity autopilots: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity skills: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity skills: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity chat: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity chat: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity modals: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity modals: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity runtimes: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity runtimes: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity layout: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity layout: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity usage: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity usage: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity ui: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity ui: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity squads: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity squads: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity billing: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity billing: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity docs: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity docs: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity changelog: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity changelog: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity desktop: zh-Hans covers every EN key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "locale bundle parity desktop: EN covers every zh-Hans key",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/locales/parity.test.ts",
+    "name": "dead plural-key guard zh-Hans ships no dead _one keys (plural categories: other)",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail task workspace focuses an empty project on its first issue and one create action",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail task workspace provides a single toolbar creation action for a populated project",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail task workspace links only an unassigned-project issue without changing its owner or status",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail task workspace keeps a failed association retryable without reporting success",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sharing names its icon-only project and sidebar actions",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sharing supplies its configured invocable squad to ordinary project issue creation",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sharing does not prefill a missing squad default",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sharing does not prefill a archived squad default",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sharing does not prefill a private squad default",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sharing does not prefill a not-configured squad default",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sharing places execution above issues and project automation entry below resources",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sharing copies the platform shareable URL instead of the renderer URL",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail project deletion requires confirmation and navigates only after deletion succeeds",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail project deletion does not offer project deletion to regular members",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sidebar accessibility exposes stable disclosure state for Properties",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sidebar accessibility exposes stable disclosure state for Scope closure",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sidebar accessibility exposes stable disclosure state for Description",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sidebar accessibility keeps the description editor and pending input when collapsed",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sidebar accessibility names the compact properties Sheet in en",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail sidebar accessibility names the compact properties Sheet in zh-Hans",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail query recovery retries an initial service failure without presenting the project as missing",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail query recovery keeps a genuine 404 response distinct from a retryable failure",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail query recovery keeps a genuine 403 response distinct from a retryable failure",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "ProjectDetail query recovery keeps the mounted progress editor and its draft through a cached failure and retry",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/projects/components/project-detail.test.tsx",
+    "name": "isolates cached same-tab overview navigation and flushes outgoing text under its own project",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.recovery.test.tsx",
+    "name": "WorkspaceTab permissions and save recovery keeps unknown membership neutral and blocks leave until a successful read",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.recovery.test.tsx",
+    "name": "WorkspaceTab permissions and save recovery does not authorize leave or management for an unrecognized membership role",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.recovery.test.tsx",
+    "name": "WorkspaceTab permissions and save recovery retains an authorized form on transient refresh but removes management after access denial",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.recovery.test.tsx",
+    "name": "WorkspaceTab permissions and save recovery keeps description and context drafts while a required name is corrected",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.recovery.test.tsx",
+    "name": "WorkspaceTab permissions and save recovery keeps a failed prefix confirmation open and rejects duplicate pending confirmations",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.recovery.test.tsx",
+    "name": "WorkspaceTab permissions and save recovery keeps the crop workflow open when the workspace logo write fails",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.test.tsx",
+    "name": "WorkspaceTab \u2014 automatic updates renders the current prefix in the shared input control",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.test.tsx",
+    "name": "WorkspaceTab \u2014 automatic updates renders the workspace slug in the shared read-only input control",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.test.tsx",
+    "name": "WorkspaceTab \u2014 automatic updates uppercases and strips non-alphanumeric prefix input",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.test.tsx",
+    "name": "WorkspaceTab \u2014 automatic updates auto-saves ordinary workspace fields without invalidating issue caches",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.test.tsx",
+    "name": "WorkspaceTab \u2014 automatic updates asks for confirmation on prefix blur and persists only after confirmation",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.test.tsx",
+    "name": "WorkspaceTab \u2014 automatic updates does not persist a prefix when the confirmation is cancelled",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.test.tsx",
+    "name": "WorkspaceTab \u2014 automatic updates marks an empty prefix invalid and does not persist it",
+    "status": "passed"
+  },
+  {
+    "package": "views",
+    "file": "packages/views/settings/components/workspace-tab.test.tsx",
+    "name": "WorkspaceTab \u2014 automatic updates disables editable workspace controls for regular members",
+    "status": "passed"
+  }
+]

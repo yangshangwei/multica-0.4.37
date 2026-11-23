@@ -78,3 +78,13 @@ describe("parseMainRendererChannelState", () => {
     ).toBeNull();
   });
 });
+
+it("queues account deep links until their own listener is ready", () => {
+  const queue = new MainRendererMessageQueue();
+  const send = vi.fn();
+  queue.enqueue("account:open", "/account?view=current", send);
+  queue.setReady("invite:open", true, send);
+  expect(send).not.toHaveBeenCalled();
+  queue.setReady("account:open", true, send);
+  expect(send).toHaveBeenCalledWith("account:open", "/account?view=current");
+});

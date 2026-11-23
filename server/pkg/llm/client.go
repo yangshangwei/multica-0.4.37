@@ -61,6 +61,17 @@
 //     instructions, credentials or attachment contents are sent. The serialized
 //     payload is capped at 128 KiB. Suggestions never dispatch work.
 //
+//   - Project knowledge automation —
+//     server/internal/service/collaboration_knowledge_automation_model.go.
+//     After formal acceptance of an eligible project collaboration, generation
+//     receives up to eight complete source texts (128 KiB) and exact same-source
+//     predecessors. A separate check also receives all authorized project
+//     comparison texts (up to sixteen/128 KiB) and the frozen candidates. Only
+//     temporary references are supplied, never database IDs or credentials.
+//     Each stage has a 288 KiB decoded / 2 MiB wire budget and 60-second limit.
+//     Attachments and links are not fetched. No-project/manual tasks skip this
+//     consumer; unavailable configuration never blocks business acceptance.
+//
 // These consumers send private content, which is why an unconfigured
 // deployment making zero upstream requests is a contract rather than a side
 // effect: New with no API key and no base URL returns a disabled client whose
@@ -231,10 +242,11 @@ type RetryBudget struct {
 // Client is a configured, reusable LLM caller. It is safe for concurrent use;
 // the underlying SDK client holds no per-request state.
 type Client struct {
-	sdk          openai.Client
-	defaultModel string
-	enabled      bool
-	retry        RetryBudget
+	sdk                      openai.Client
+	defaultModel             string
+	enabled                  bool
+	retry                    RetryBudget
+	configurationFingerprint string
 }
 
 // New builds a Client from cfg. It never returns an error: an unconfigured
@@ -278,8 +290,9 @@ func New(cfg Config) *Client {
 		defaultModel: defaultModel,
 		// A deployment is "configured" if it gave us either a key or a base
 		// URL. A bare base URL (no key) is valid for keyless local gateways.
-		enabled: strings.TrimSpace(cfg.APIKey) != "" || strings.TrimSpace(cfg.BaseURL) != "",
-		retry:   retry,
+		enabled:                  strings.TrimSpace(cfg.APIKey) != "" || strings.TrimSpace(cfg.BaseURL) != "",
+		retry:                    retry,
+		configurationFingerprint: fingerprintConfiguration(cfg, defaultModel, retry),
 	}
 }
 
@@ -391,8 +404,14 @@ func (c *Client) GenerateText(ctx context.Context, model, systemPrompt, userProm
 // maxCompletionTokens apply only when positive; zero leaves the corresponding
 // upstream default in place. Model empty -> the configured default.
 func (c *Client) GenerateJSON(ctx context.Context, model, systemPrompt, userPrompt string, temperature float64, maxCompletionTokens int64) (string, error) {
+	result, err := c.generateJSONResult(ctx, model, systemPrompt, userPrompt, temperature, maxCompletionTokens)
+	return result.Text, err
+}
+
+func (c *Client) generateJSONResult(ctx context.Context, model, systemPrompt, userPrompt string, temperature float64, maxCompletionTokens int64) (JSONResult, error) {
+	result := JSONResult{Usage: JSONUsage{Status: UsageUnknown}}
 	if !c.Enabled() {
-		return "", ErrNotConfigured
+		return result, ErrNotConfigured
 	}
 
 	params := c.jsonCompletionParams(model, systemPrompt, userPrompt, temperature, maxCompletionTokens)
@@ -421,24 +440,29 @@ func (c *Client) GenerateJSON(ctx context.Context, model, systemPrompt, userProm
 			break
 		}
 		if compatibilityRetries >= 2 {
-			return "", err
+			return result, err
 		}
 
 		if !negotiateJSONParameters(&params, err) {
-			return "", err
+			return result, err
 		}
 	}
+	result.Usage = jsonUsage(completion)
+	if completion.JSON.Model.Valid() {
+		result.Model = strings.TrimSpace(completion.Model)
+	}
 	if len(completion.Choices) == 0 {
-		return "", errors.New("llm: upstream returned no choices")
+		return result, errors.New("llm: upstream returned no choices")
 	}
 	choice := completion.Choices[0]
 	if choice.FinishReason == "length" {
-		return "", errors.New("llm: upstream reached the max completion token limit before producing complete JSON")
+		return result, errors.New("llm: upstream reached the max completion token limit before producing complete JSON")
 	}
 	if strings.TrimSpace(choice.Message.Content) == "" {
-		return "", errors.New("llm: upstream returned empty JSON content")
+		return result, errors.New("llm: upstream returned empty JSON content")
 	}
-	return choice.Message.Content, nil
+	result.Text = choice.Message.Content
+	return result, nil
 }
 
 // jsonCompletionParams keeps one-shot and streaming structured generation on

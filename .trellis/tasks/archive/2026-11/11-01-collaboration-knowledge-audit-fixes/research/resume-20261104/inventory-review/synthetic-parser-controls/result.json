@@ -1,0 +1,36 @@
+{
+  "scope": "Synthetic parser-only controls. No product tests, packages, services, databases or Provider invoked. No result here is real acceptance.",
+  "collector_sha256": "5595c455da1bdde3510073ff5335bfe01031a3b0be90ac4c0c5fd01a1c3be42b",
+  "controls": [
+    {
+      "name": "five full JSON reports preserve named skips/todos and distinguish files from nested suites",
+      "pass": true
+    },
+    {
+      "name": "canonical command transformation markers never become leaf reports",
+      "pass": true
+    },
+    {
+      "name": "truncated JSON cannot become a complete report",
+      "pass": true
+    },
+    {
+      "name": "identical log repeats retain occurrences without double-counting one logical report",
+      "pass": true
+    },
+    {
+      "name": "aggregate counts must equal actual assertionResults",
+      "pass": true
+    },
+    {
+      "name": "running/queued leaves remain incomplete even with matching aggregate counts",
+      "pass": true
+    },
+    {
+      "name": "missing one of five package reporters blocks complete inventory",
+      "pass": true
+    }
+  ],
+  "count": 7,
+  "all_passed": true
+}

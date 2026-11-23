@@ -1,0 +1,11 @@
+# RR2 residual server logging audit
+
+The correction changes only two generic records: the successful `TaskService.failTask` warning and the successful daemon `/fail` handler info record. Both use the actual task returned by persistence. A present knowledge version or any retained delivery bytes omits raw diagnostic fields; ordinary tasks without those columns keep legacy diagnostics. Both records now use the persisted failure reason, including when the request omitted it.
+
+The task error write, redacted chat/comment evidence, quick-create outcome inbox, task-failed event payload and authorized HTTP response are unchanged. `captureTaskFailed` emits duration/status/failure-reason metrics only. Other adjacent failure logs carry operation/DB errors, identity, current status or retry metadata rather than the submitted diagnostic. The task event publisher itself does not log the payload; ordinary realtime hub diagnostics do not print task payload bodies in the inspected route.
+
+The inspected collaboration runtime handler and knowledge runtime service have no raw outcome/error diagnostic log call. The collaboration runtime service's wake/promotion diagnostics contain group/target IDs and refusal codes. `host_runner.go` passes its scoped logger to the already-corrected private backend; RR1's per-backend stderr policy remains unchanged. No C4 or realtime source was edited. This is an audit of the concrete normal failure path, not a claim about arbitrary future panic text or unrelated logging routes.
+
+The retained red test reaches real preparation and persistence, then fails all five private prepared/retained/refusal log assertions. Legacy logging and stale-fence refusal pass. The green and race runs each pass eight scenarios plus the parent test with zero skips. The child probe's success receipt is content-free and confirms exact stored failure evidence; the parent captures the child's default logger without replacing any process-global logger or stream.
+
+An initial fixture compile/issue-counter setup error was corrected before the retained privacy red run; it is not counted as privacy evidence. The final test additionally asserts canonical reason on each emitted failure record. No C2 historical evidence or review verdict was overwritten. `verification.json` records correction readiness; RR2 closure belongs to main/reviewer.

@@ -1,0 +1,28 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+◇ injected env (1) from .env.worktree // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+Running 2 tests using 1 worker
+
+[1A[2K(node:57952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:57952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K◇ injected env (0) from .env.worktree // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[1A[2K[1/2] [chromium] › e2e/collaboration-runtime-handoff-desktop.spec.ts:14:1 › Electron deep link opens retained handoff context and honestly marks an unknown recording tail
+[1A[2K(node:57958) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:57958) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K◇ injected env (0) from .env.worktree // tip: ⌁ auth for agents [www.vestauth.com]
+
+[1A[2K[2/2] [chromium] › e2e/collaboration-runtime-handoff-web.spec.ts:6:1 › Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal
+[1A[2K  2 passed (6.7s)

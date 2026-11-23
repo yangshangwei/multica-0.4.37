@@ -1,0 +1,6 @@
+[
+  {
+    "test": "TestCLIConfig_UnknownFieldsArePreserved",
+    "output": "=== RUN   TestCLIConfig_UnknownFieldsArePreserved\n    config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder\n--- SKIP: TestCLIConfig_UnknownFieldsArePreserved (0.00s)\n"
+  }
+]

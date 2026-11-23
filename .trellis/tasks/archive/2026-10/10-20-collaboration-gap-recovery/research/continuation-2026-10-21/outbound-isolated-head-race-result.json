@@ -1,0 +1,62 @@
+{
+  "at": "2026-10-21T16:18:28.983379+00:00",
+  "head": "7794f57d969fb583ddf02c830f6d1ab72186595d",
+  "snapshot": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-outbound-boundary-head-b_t_f8td",
+  "only_added_sources": [
+    "server/internal/service/collaboration_outbound_boundary_test.go",
+    "server/internal/integrations/slack/collaboration_outbound_boundary_test.go"
+  ],
+  "source_sha256": {
+    "server/internal/service/collaboration_outbound_boundary_test.go": "f565b46b2631214ccfc7a335683b2d16411f8872b59205ffe49fb63adde75786",
+    "server/internal/integrations/slack/collaboration_outbound_boundary_test.go": "41ee89285877f88ec2e43d755ea0def87b7084d02da6f1feb6060c8e67e9c9ab"
+  },
+  "archive_sha256": "bb70831936bf724b89adc1b5db02ec35077069991a5f60f42ac5a97daad85fcc",
+  "no_shared_dirty_source": true,
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_collab",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "./internal/integrations/slack",
+    "-run",
+    "^TestCollaborationOutbound",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-outbound-boundary-head-b_t_f8td/server",
+  "start": "2026-10-21T16:18:28.996583+00:00",
+  "database_alias": "service_s6_collab",
+  "schema_migration": 737,
+  "returncode": 1,
+  "end": "2026-10-21T16:18:52.262617+00:00",
+  "elapsed_s": 23.266,
+  "passed": [
+    "TestCollaborationOutboundPublicWritesStayOffOrdinaryEventBus",
+    "TestCollaborationOutboundManagedResultStaysOffOrdinaryChatEvents",
+    "TestCollaborationOutboundSlackRejectsSharedAndChildWithoutChannelDelivery/shared_run",
+    "TestCollaborationOutboundSlackRejectsSharedAndChildWithoutChannelDelivery/ordinary_child_without_delivery",
+    "TestCollaborationOutboundSlackRejectsSharedAndChildWithoutChannelDelivery"
+  ],
+  "top_level_passes": 3,
+  "failed": [
+    "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/issue.created",
+    "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/issue.updated",
+    "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/comment.created",
+    "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/task.completed",
+    "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents/task.failed",
+    "TestCollaborationOutboundPluginDispatcherWithholdsPrivateEvents",
+    "github.com/multica-ai/multica/server/internal/service"
+  ],
+  "skipped": [],
+  "raw_sha256": "1af7507ba20b4481b18c513e0caed412bfe0252cc864d8cce359f1015f179fad"
+}

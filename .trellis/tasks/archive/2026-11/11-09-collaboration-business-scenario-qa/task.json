@@ -1,0 +1,51 @@
+{
+  "id": "collaboration-business-scenario-qa",
+  "name": "collaboration-business-scenario-qa",
+  "title": "多账号多 Agent 跨空间协作业务场景闭环测试",
+  "description": "在新的隔离环境用多账号与模拟 Agent 跑通外包交付、客服工单、异常治理三个未覆盖业务场景的跨空间协作闭环，并独立复现 Codex 主线，输出中文测试报告。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-09",
+  "completedAt": "2026-11-10",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "b6cf86433",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "2026-11-10：S1/B6、S2/B5、S3/B3最终3/3通过，历史复现4/4单列；12次受控运行和12份退出证明，四次失败保留。独立证据复核通过，代码及证据提交b6cf86433，规划进度提交30a3ba341。仅归档模拟业务QA，六项父业务及真实模型验收不随之关闭。",
+  "meta": {
+    "progress_phase": "completed_archived",
+    "implementation_status": "verified",
+    "reproduction_evidence_root": "artifacts/qa/collaboration-business-scenarios-20261109",
+    "next_action": "No pending work within this synthetic QA scope; continue controlled artifact implementation and real-provider gates in their owning tasks.",
+    "status_reconciliation_2026_11_09": {
+      "source_head": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+      "report": "docs/audits/2026-11-09-active-task-reconciliation.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "notes": "",
+        "meta": {}
+      }
+    },
+    "progress_audit_2026_11_10": {
+      "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
+      "finding": "S1/S2/S3 selected final3/3 pass with12visits/12exit proofs; original4failed attempts retained; source audit and owned cleanup passed; no product edits or real-provider calls."
+    },
+    "business_execution_status": "verified_selected_final_runs",
+    "business_evidence": "artifacts/qa/collaboration-business-scenarios-20261109/results.json",
+    "independent_evidence_review": "artifacts/qa/collaboration-business-scenarios-20261109/final-evidence-review-20261110.json",
+    "work_commits": [
+      "b6cf86433",
+      "30a3ba341"
+    ]
+  }
+}

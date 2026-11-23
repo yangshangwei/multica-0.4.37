@@ -1,0 +1,1169 @@
+{
+  "source": "http://localhost:13493",
+  "api": "http://localhost:18573",
+  "engine": "Playwright Chromium",
+  "harnessCorsShim": false,
+  "realTestOwnedApiData": true,
+  "productionBuild": true,
+  "nativeElectron": false,
+  "physicalTouch": false,
+  "checks": [
+    {
+      "variant": "wide-en-light",
+      "workflowOpenFocus": true,
+      "commentPreparationNoWrite": true,
+      "commentCancelReturnsFocus": true
+    },
+    {
+      "variant": "wide-en-light",
+      "injectedMemoryFailureRetry": true
+    },
+    {
+      "variant": "wide-en-light",
+      "sourceWorkspaceSharedDetail": true,
+      "enlargedText": "200% root font size, not browser zoom"
+    },
+    {
+      "variant": "narrow-zh-dark",
+      "workflowOpenFocus": true,
+      "commentPreparationNoWrite": true,
+      "commentCancelReturnsFocus": true
+    },
+    {
+      "variant": "narrow-zh-dark",
+      "knowledgeSummaryTouchHeight": 44
+    },
+    {
+      "variant": "narrow-zh-dark",
+      "injectedMemoryFailureRetry": true
+    },
+    {
+      "variant": "compact-en-light",
+      "workflowOpenFocus": true,
+      "commentPreparationNoWrite": true,
+      "commentCancelReturnsFocus": true
+    },
+    {
+      "variant": "compact-en-light",
+      "knowledgeSummaryTouchHeight": 44
+    },
+    {
+      "variant": "compact-en-light",
+      "injectedMemoryFailureRetry": true
+    },
+    {
+      "variant": "medium-en-dark",
+      "workflowOpenFocus": true,
+      "commentPreparationNoWrite": true,
+      "commentCancelReturnsFocus": true
+    },
+    {
+      "variant": "medium-en-dark",
+      "injectedMemoryFailureRetry": true
+    }
+  ],
+  "captures": [
+    {
+      "name": "wide-en-light-list.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-detail.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-edit-form.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-prepared-result.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-discussion.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-context-editor.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-knowledge-proposal.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-attachments.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-execution-resources.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-activity.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-notifications.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          },
+          {
+            "name": "dialog",
+            "width": 384,
+            "scrollWidth": 384
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-creation.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          },
+          {
+            "name": "dialog",
+            "width": 384,
+            "scrollWidth": 384
+          },
+          {
+            "name": "dialog",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-context-read-failure.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 1088,
+            "scrollWidth": 1088
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-source-workspace-detail.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 1176,
+            "scrollWidth": 1176
+          },
+          {
+            "name": "dialog",
+            "width": 380,
+            "scrollWidth": 380
+          }
+        ]
+      }
+    },
+    {
+      "name": "wide-en-light-source-enlarged-text.png",
+      "geometry": {
+        "width": 1440,
+        "height": 1000,
+        "documentWidth": 1440,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 1168,
+            "scrollWidth": 1168
+          },
+          {
+            "name": "dialog",
+            "width": 380,
+            "scrollWidth": 380
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-list.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 389,
+            "scrollWidth": 389
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-detail.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-edit-form.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-prepared-result.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-discussion.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-context-editor.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-knowledge-proposal.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-attachments.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-execution-resources.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-activity.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-notifications.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          },
+          {
+            "name": "dialog",
+            "width": 358,
+            "scrollWidth": 358
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-creation.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          },
+          {
+            "name": "dialog",
+            "width": 358,
+            "scrollWidth": 358
+          }
+        ]
+      }
+    },
+    {
+      "name": "narrow-zh-dark-context-read-failure.png",
+      "geometry": {
+        "width": 390,
+        "height": 740,
+        "documentWidth": 390,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 390,
+            "scrollWidth": 390
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-list.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 319,
+            "scrollWidth": 319
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-detail.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-edit-form.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-prepared-result.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-discussion.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-context-editor.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-knowledge-proposal.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-attachments.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-execution-resources.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-activity.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-notifications.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          },
+          {
+            "name": "dialog",
+            "width": 288,
+            "scrollWidth": 288
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-creation.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          },
+          {
+            "name": "dialog",
+            "width": 288,
+            "scrollWidth": 288
+          }
+        ]
+      }
+    },
+    {
+      "name": "compact-en-light-context-read-failure.png",
+      "geometry": {
+        "width": 320,
+        "height": 568,
+        "documentWidth": 320,
+        "headerHeight": 120,
+        "coarse": true,
+        "roots": [
+          {
+            "name": "account-detail",
+            "width": 320,
+            "scrollWidth": 320
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-list.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-detail.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-edit-form.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-prepared-result.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-discussion.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-context-editor.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-knowledge-proposal.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-attachments.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-execution-resources.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-activity.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-notifications.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          },
+          {
+            "name": "dialog",
+            "width": 384,
+            "scrollWidth": 384
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-creation.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          },
+          {
+            "name": "dialog",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    },
+    {
+      "name": "medium-en-dark-context-read-failure.png",
+      "geometry": {
+        "width": 1024,
+        "height": 768,
+        "documentWidth": 1024,
+        "headerHeight": 68,
+        "coarse": false,
+        "roots": [
+          {
+            "name": "account-list",
+            "width": 351,
+            "scrollWidth": 351
+          },
+          {
+            "name": "account-detail",
+            "width": 672,
+            "scrollWidth": 672
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

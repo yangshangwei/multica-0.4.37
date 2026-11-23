@@ -44,7 +44,8 @@
     },
     "multica-progress-report": {
       "name": "multica-progress-report",
-      "description": "Use for daily or weekly workspace or project reports: verify issues and status history, then publish traceable progress, counts and data gaps on the current report issue without changing source issues.",
+      "description_v1": "Use for daily or weekly workspace or project reports: verify issues and status history, then publish traceable progress, counts and data gaps on the current report issue without changing source issues.",
+      "description": "Use for daily or weekly reports on the current project: verify issues and status history, then publish traceable progress, counts and data gaps on the current report issue without changing source issues.",
       "summary": "Verify task progress and publish traceable periodic reports."
     },
     "multica-reliability-engineering": {
@@ -76,6 +77,45 @@
       "name": "multica-rollout-and-canary-verification",
       "description": "Use after an approved rollout to verify one immutable artifact against its baseline over a fixed observation window, recording signals, thresholds and rollback outcome.",
       "summary": "Compare a rollout with its baseline and record recovery outcomes."
+    }
+  },
+  "welcome": {
+    "title": "Turn your team’s know-how into a skill",
+    "description": "A skill is a reusable set of instructions in SKILL.md. Add it to your workspace once, then assign it to the agents that need it.",
+    "docs": "Read the docs",
+    "examples": "How skills work",
+    "example": "Example",
+    "previous": "Previous example",
+    "next": "Next example",
+    "show_example": "Show example {{number}}: {{title}}",
+    "position": "Example {{number}} of {{total}}: {{title}}",
+    "add": {
+      "title": "Five ways to add a skill",
+      "description": "Start with a blank SKILL.md or a template, or import from a local folder, URL or connected runtime."
+    },
+    "assignment": {
+      "title": "Assign it to your agents",
+      "description": "One skill can be used by several agents. Choose which agents use it in the skill or agent settings.",
+      "skill_name": "pr-review",
+      "agent_name": "Kepler",
+      "other_agent_name": "Turing",
+      "instruction": "Run the tests, then review accessibility and performance.",
+      "used_by": "Used by",
+      "reviewer": "Reviewer",
+      "engineer": "Full-stack",
+      "add": "Assign to an agent"
+    },
+    "reuse": {
+      "title": "Keep one source for future work",
+      "description": "Edit the workspace skill once. Assigned agents use the updated instructions on future runs; work already running stays unchanged.",
+      "filename": "SKILL.md",
+      "saved": "Saved",
+      "checklist": "Review checklist",
+      "tests": "Run the relevant tests",
+      "accessibility": "Check accessibility",
+      "performance": "Record performance risks",
+      "next_run": "Updated instructions on the next run",
+      "snapshot": "Copies from a runtime are snapshots, not a live sync."
     }
   },
   "page": {

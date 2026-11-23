@@ -1,0 +1,73 @@
+{
+  "scope": "0.166 exact registration and version binding continuation; fake execution only",
+  "runs": [
+    {
+      "mode": "normal",
+      "accepted": true,
+      "exit": 0,
+      "source_stable": true,
+      "named_pass": 53,
+      "invalid_json_lines": 0,
+      "measured_fake_starts": 15,
+      "fake_seed_starts": 3,
+      "paid_starts": 0,
+      "start": "2026-11-05T13:36:09.343953+08:00",
+      "end": "2026-11-05T13:36:39.596094+08:00",
+      "artifacts": [
+        {
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261105/codex-v166-normal-compile.json",
+          "sha256": "7eba481d7997816d5de13096a553862da2ddbac701d078b82c586b1c292fa9b0"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261105/v166-normal-run/result.json",
+          "sha256": "9dd49989cb97c25320565b8701464cce3c191aec648f5e516ba2964554cc9d18"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261105/v166-normal-run/tests.jsonl",
+          "sha256": "ceaf3c4b7856cce36a1020a218b80c411ffc41e0299fdaf3b18278a231879b23"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261105/v166-normal-run/proof/summary.json",
+          "sha256": "689c1a393a030bc4500e5878c8997374be11e25136df4c95280771b1341ed23e"
+        }
+      ]
+    },
+    {
+      "mode": "race",
+      "accepted": true,
+      "exit": 0,
+      "source_stable": true,
+      "named_pass": 53,
+      "invalid_json_lines": 0,
+      "measured_fake_starts": 15,
+      "fake_seed_starts": 3,
+      "paid_starts": 0,
+      "start": "2026-11-05T13:37:14.617169+08:00",
+      "end": "2026-11-05T13:38:18.860863+08:00",
+      "artifacts": [
+        {
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261105/codex-v166-race-compile.json",
+          "sha256": "3f3dbcb9bed762e612a41e135047a6464e7cc4aa010307a9d3161d836db489a7"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261105/v166-race-run/result.json",
+          "sha256": "56d5fe08710f3aa22d599e3ca9331a646520e7ef874441d38f557cd284d78b76"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261105/v166-race-run/tests.jsonl",
+          "sha256": "07245fa9736e07b36f969b6fa4f7322bae22c86b574a0e267ccb55e2befdb016"
+        },
+        {
+          "path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261105/v166-race-run/proof/summary.json",
+          "sha256": "bdc4cafe534de54fd61bce2fa6bea9d437cf4cb671d5e816f55f4927d7e8355d"
+        }
+      ]
+    }
+  ],
+  "tagged_cmd_server_vet_exit": 0,
+  "real_calls": 0,
+  "owned_test_processes_after": 0,
+  "release_observed_at": "2026-11-05T05:38:31.642850+00:00",
+  "independent_final_review": "pending main/reviewer",
+  "source_frozen": true
+}

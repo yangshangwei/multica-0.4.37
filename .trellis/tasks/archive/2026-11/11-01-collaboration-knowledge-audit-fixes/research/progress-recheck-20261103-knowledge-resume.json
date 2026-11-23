@@ -1,0 +1,419 @@
+{
+  "recorded_at": "2026-11-03T09:19:33.057905+00:00",
+  "review_mode": "read_only_progress_and_acceptance_plan; no_tests_or_product_edits",
+  "coordinator_thread": "01a1a0a5-47d8-7f90-bc95-15d004c13bd9",
+  "native_review_agents": [
+    "/root/v11_evidence_audit",
+    "/root/knowledge_framework_audit",
+    "/root/acceptance_plan_review"
+  ],
+  "integration_head": "084ea3c987fa4ab8418a2ae5b3b7a20c096c36d8",
+  "merged_knowledge_product": "96cedf4850319a06c98fdda3d67d82595f01b6b2",
+  "merged_knowledge_audit": "6cb9fcb36dde68b553365bd96698e0792a466f30",
+  "v11": {
+    "candidate": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+    "state": "complete_failed",
+    "started_at": "2026-11-03T01:49:29.326279+00:00",
+    "finished_at": "2026-11-03T03:01:58+00:00",
+    "make_exit": 2,
+    "static_pass": 15,
+    "ts_pass": 13109,
+    "go_named": {
+      "pass": 20894,
+      "fail": 0,
+      "skip": 22
+    },
+    "go_package_terminals": {
+      "pass": 73,
+      "no_test_files": 9
+    },
+    "browser": {
+      "total": 439,
+      "pass": 347,
+      "fail": 3,
+      "skip": 89,
+      "workers": 1,
+      "retries": 0
+    },
+    "knowledge_browser": {
+      "web_pass": 7,
+      "native_desktop_pass": 1,
+      "deployed_off_on": "skipped_this_run; historical_scope_requires_rebinding"
+    },
+    "final_audit": "failed_unregistered_final_source_changes",
+    "launcher_pid_14220": "not_running_at_audit",
+    "make_pid_14257": "not_running_at_audit",
+    "renderer_pid_75467": "running_retained_untouched",
+    "execution_owner": "01a19ee4-40e8-7b70-b15c-5b5a13bd050e"
+  },
+  "successor": {
+    "root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "base_head": "b6c74033f1913e46418ec1b119da33236dcba805",
+    "state": "preparation_dirty_not_final_frozen",
+    "registered_owner": "01a19ff3-faaf-71c1-b068-8571f0e940f1",
+    "full_run_found": false,
+    "execution_claim_found": false,
+    "final_clearance_found": false,
+    "private_checks_pass": 66,
+    "directed3": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "retries": 0
+    },
+    "directed25": {
+      "pass": 25,
+      "fail": 0,
+      "skip": 0,
+      "retries": 0
+    },
+    "sqlc": {
+      "latest_exit": 2,
+      "reason": "module lookup disabled by GOPROXY=off",
+      "successful_successor_found": false
+    }
+  },
+  "knowledge_framework": {
+    "root": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+    "base_head": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+    "six_files_uncommitted": true,
+    "original_17_files_unchanged": true,
+    "current_six_file_sha256": {
+      "server/cmd/server/rk1k_fixture_test.go": "9e31682c037385888be41579cc489f71c2c4e28797ab7bc7d8b596917578a084",
+      "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+      "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+      "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+      "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+      "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+    },
+    "latest_dynamic": "normal8",
+    "normal8_exit": 1,
+    "normal8_finished_at": "2026-11-03T08:56:12+00:00",
+    "normal8_scenarios": {
+      "E0b": "pass",
+      "K1": "pass",
+      "K2": "pass",
+      "K3": "fail_expected_one_pending_run_got_zero"
+    },
+    "normal8_samples": 13,
+    "normal8_fake_starts": 12,
+    "normal8_paid_starts": 0,
+    "complete_proof_summary_present": false,
+    "subsequent_edit": "continuation seed member Behavior delegate -> knowledge at 2026-11-03T08:58:48Z",
+    "post_edit_compile": {
+      "exit": 0,
+      "finished_at": "2026-11-03T09:00:24Z",
+      "evidence_kind": "prior_native_agent_CommandExecution_event_and_binary",
+      "agent_thread": "01a1a00c-9654-70c0-9f9f-dec8087a7284"
+    },
+    "post_edit_dynamic_found": false,
+    "post_edit_vet_found": false,
+    "framework_race_result_found": false,
+    "full_independent_review_complete": false,
+    "old_review_two_source_hashes_stale": true,
+    "active_rk1k_test_process_found": false,
+    "registered_prior_owner": "01a19fee-7a54-7a01-8b22-3cf1969444b0"
+  },
+  "coordination": {
+    "messages_sent_to": [
+      "01a19ff3-faaf-71c1-b068-8571f0e940f1",
+      "01a19fee-7a54-7a01-8b22-3cf1969444b0"
+    ],
+    "valid_reply_received": false,
+    "read_thread_status": "both systemError after coordination delivery; encrypted response content could not be verified",
+    "ownership_transfer_executed": false,
+    "old_workflow_resumed": false,
+    "duplicate_complete_check_started": false
+  },
+  "knowledge_budget": {
+    "allocated": 0,
+    "consumed": 0,
+    "real_runnable": false,
+    "production_default_enabled": false,
+    "other_ledgers_transfer_authorized": false
+  },
+  "closure": {
+    "task7_status": "in_progress",
+    "task6_status": "in_progress",
+    "task7_waits_for_task6_real_or_release": false,
+    "required_shared_gate": "make_exit==0 AND final_audit_pass AND inventory_complete; live_resource_identity_separately_verified"
+  },
+  "artifacts": {
+    "v11_result": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/make-check-v11.json",
+      "sha256": "6f38a452ffc087db343f1945e582db83297bfa30fe73f3de5a3f7748f8e6b626",
+      "size_bytes": 259801
+    },
+    "v11_log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/make-check-v11.log",
+      "sha256": "02d1f307edca1c06e701dd636116bcf1b85569a88317f5889826f3e45b8d16cb",
+      "size_bytes": 26936997
+    },
+    "v11_browser": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/makecheck-playwright-results-v9.json",
+      "sha256": "8ce622b327167a0a4e443c2d5beb40f1a9a950e27f9aa7a1883f499b7557ef97",
+      "size_bytes": 3206119
+    },
+    "v11_final_audit": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/post-make-v11-current-session.json",
+      "sha256": "f9e945118e0695b35ebcb601cbd797e936257d22f2347fe5e4b1dfc46266ce8b",
+      "size_bytes": 394
+    },
+    "directed3": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/directed-repair-verification.json",
+      "sha256": "30593b5bb08c4aae37cb03afac8d43665c42489ab191d6c1237eef6dee12b1cb",
+      "size_bytes": 2525
+    },
+    "directed25": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/disclosure-e2e.json",
+      "sha256": "405c70770f7249930febc6384166244924c5219769d7c603ab46be9bfc362d56",
+      "size_bytes": 1574
+    },
+    "directed25_browser": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/disclosure-e2e-results.json",
+      "sha256": "e58d2220ab0c62ee1a9be203511c912159da51da729f90c28f95debf94a22c9a",
+      "size_bytes": 310133
+    },
+    "directed25_inputs": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/disclosure-replay-input.json",
+      "sha256": "c3577aa80ca0ec0f4d6d497b56e4b71931afe8d7aa25130d3491797753d140a0",
+      "size_bytes": 2064
+    },
+    "sqlc_failed": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/sqlc-check.json",
+      "sha256": "ca0666f6cbe297d07f0f1a323065243705b5560952050dd37f0110d05b0ae526",
+      "size_bytes": 372
+    },
+    "framework_normal8": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/raw-go.jsonl",
+      "sha256": "78c2e5fb1d2ef440fb49e4489867ce572563a767ecd0d0492a69567da74989ae",
+      "size_bytes": 205589
+    },
+    "framework_normal8_exit": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/exit-code",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "size_bytes": 2
+    },
+    "framework_old_review": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-20261103/six-file-review-after-normal3.json",
+      "sha256": "83c48e9d3a1db0ab48af31e248ec6f389f2d3c9cebf32326360249f4fc5ca3e2",
+      "size_bytes": 4207
+    },
+    "audit_21_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261102/knowledge-closure-readiness.md",
+      "sha256": "e17b15e68ec0c770ff969121573dda72d4bcd82753af6b6e8578197df47f6426",
+      "size_bytes": 26987
+    }
+  },
+  "superseded_task_snapshots_before_this_update": {
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/task.json": {
+      "id": "collaboration-knowledge-promotion",
+      "name": "collaboration-knowledge-promotion",
+      "title": "知识候选逐层沉淀",
+      "description": "设计并实施协作结论到经人确认的项目或工作空间知识候选链路，技能层暂不自动沉淀",
+      "status": "in_progress",
+      "dev_type": null,
+      "scope": null,
+      "package": null,
+      "priority": "P2",
+      "creator": "artisan",
+      "assignee": "artisan",
+      "createdAt": "2026-10-30",
+      "completedAt": null,
+      "branch": "codex/collaboration-knowledge-promotion-20261101",
+      "base_branch": "codex/cross-workspace-collaboration",
+      "worktree_path": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "commit": "96cedf4850319a06c98fdda3d67d82595f01b6b2",
+      "pr_url": null,
+      "subtasks": [],
+      "children": [
+        "11-01-collaboration-knowledge-audit-fixes"
+      ],
+      "parent": "10-30-collaboration-context-handoff",
+      "relatedFiles": [],
+      "notes": "v10实际make2/check130中断，static15/TS13082/Go82包20852pass0fail22skip；PW439=39pass36fail1interrupted22explicitSkip341unrun。已证明混合工作树模块身份，保留原日志/失败并停止ownedAPI/Web；未冒充完整通过。下一候选须自有workspace links并合当前主线12变化及118fc两E2E修复后重新冻结。知识六文件编译通过、四基础文件独立复核0阻塞；整套fake normal/race未完成，预算0/0、默认false。",
+      "meta": {
+        "permission_decision": "approved",
+        "approval_session": "01a18a36-e482-7840-9900-3ff8174b4ce7",
+        "depends_on": "10-30-collaboration-context-handoff-runtime",
+        "planning_review": "K1_K5_and_F1_F4_passed_for_implementation",
+        "planning_artifacts": "approved_complete",
+        "execution_gate": "authorized_implementation; G2_final_acceptance_before_enablement",
+        "design_review": "../10-30-collaboration-context-handoff-runtime/research/knowledge-plan-review-2026-10-31.md",
+        "late_review": "research/draft-code-seam-review-2026-11-01.md",
+        "contract_revision": "research/contract-revision-2026-11-01.md",
+        "runtime_product_commit": "0e1ee8e1e957b46a5bbd5d91a84772d69dd4d64b",
+        "runtime_evidence_commit": "2b861347e62573ca765157ebf14629712793e7df",
+        "G0": "frozen_deterministic_source_version_purge_availability",
+        "G1": "frozen_deterministic_handoff_and_application_input_binding",
+        "G2": "passed_deterministic; production_default_false; real_model_gate_separate",
+        "G3": "complete_owners_worktree_databases_assigned",
+        "product_implementation": "A1_A2_B1_B2_F3_C1_C2_C3_C4_complete",
+        "real_model_acceptance": "open_separate_runtime_scope; upstream_502_window_closed_no_provider_calls",
+        "main_contract_review": "research/main-contract-review-2026-11-01.json",
+        "execution_stage": "post_merge_audit_repair; historical_deterministic_evidence_retained",
+        "migration_sqlc_owner": "main_final_generator",
+        "implementation_base": "765ab186a",
+        "execution_authorization": "existing approved parent scope; user six-step execution; no repeat approval",
+        "production_enablement": "default_false; real_model_and_release_acceptance_separate",
+        "implementation_database": "multica_knowledge_20261101_b3c35f9c",
+        "execution_ownership": "research/execution-ownership-2026-11-01.json",
+        "schema_commit": "71379546c",
+        "foundation_review": "A1_and_corrected_B1_passed; C1_main_review_passed",
+        "core_commit": "b6b761708",
+        "launch_leaf_commit": "bc9c3f10b",
+        "c2_database": "multica_knowledge_c2_20261101_7d95f46f",
+        "invalidation_database": "multica_knowledge_invalidation_20261101_849a1c21",
+        "ui_commit": "53a166258",
+        "test_db_guard_commit": "bbbfc731d",
+        "test_db_guard_main_commit": "8ea4ef7b2",
+        "a2_review": "passed_including_final_concurrency_matrix",
+        "invalidation_review": "P1_P2_fixed_and_independently_rechecked",
+        "runtime_review": "RR1_RR2_resolved_independently",
+        "frontend_final": "1063_files_13060_tests; lint_typecheck_passed; source_stable",
+        "squad_knowledge": "real_service_root_member_continuation_pass; synthetic_process_observations_explicit",
+        "final_database": "multica_knowledge_final_clean_20261101_80a134db",
+        "retained_diagnostic_database": "multica_knowledge_final_20261101_e7059940",
+        "deterministic_report": "verification-integration-2026-11-01.md",
+        "final_go": "82_packages_10284_top_level_passes_21_explicit_skips",
+        "final_ui": "7_web_1_native_macOS_passed; layered_runtime_proof",
+        "real_model_plan": "real-model-acceptance-plan.md",
+        "product_commit": "96cedf4850319a06c98fdda3d67d82595f01b6b2",
+        "final_review": "research/final-acceptance-review-2026-11-01.md",
+        "main_merge_commit": "8cb04e3295474073b4b991bc4883ef3901c14f01",
+        "evidence_commit": "93093d2e95e1affafbb40ddcd944ac5d58fc451c",
+        "progress_file": "progress.md",
+        "progress_phase": "v10_invalid_workspace_module_identity; six_file_fake_framework_compile_and_local_review",
+        "progress_baseline": "ba6f3cd50",
+        "next_action": "repair_isolated_workspace_links_and_freeze_current_candidate; meaningful_RK1K_fake_DB_proof; complete_gate_still_open",
+        "post_merge_supplements": {
+          "joint_fault_commit": "65cd0599b",
+          "joint_report": "../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-current/README.md",
+          "joint_peer_review": "pass_with_notes_2026_11_01; ../10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-joint-review/README.md",
+          "ui_test_timing_commit": "629f0a079",
+          "ui_repeat_evidence": "17_tests_per_run; 3_serial_and_4_parallel_runs_passed; no_proof_of_permanent_flake_elimination",
+          "runtime_ledger_commit": "ba6f3cd50",
+          "production_logic_changed": false,
+          "real_provider_executed": false,
+          "rk1_registration_commit": "d2fe54ab0"
+        },
+        "new_series_registration": "RK1 runtime cap 25 approved and unconsumed; K1-K3/E0b unbudgeted; framework pending review, merged-source rebinding and exclusive window",
+        "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+        "resume_ledger": "../10-30-collaboration-context-handoff/execution-resume-2026-11-01.json",
+        "original_series_next": "E3 after trial 2; then E4 -> E5 -> E6; remaining cap 14; frozen source",
+        "rk1_runtime_budget": {
+          "approved_cap": 25,
+          "consumed": 0,
+          "includes_H2b": true,
+          "H6_launches_per_trial": 2
+        },
+        "audit_repair_main_merge": "6cb9fcb36dde68b553365bd96698e0792a466f30",
+        "current_final_candidate": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+        "current_candidate_record": "../10-30-collaboration-context-handoff/research/final-candidate-20261102/next-complete-check-preparation.json",
+        "continuation_plan": "../11-01-collaboration-knowledge-audit-fixes/advance-plan-2026-11-02.md",
+        "continuation_coordinator": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+        "shared_complete_check_owner": "01a19ee4-40e8-7b70-b15c-5b5a13bd050e",
+        "shared_complete_check_task": "10-30-collaboration-fix-closure",
+        "rki6_result_review": "../10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/rki6-review.json",
+        "rki6_result_review_verdict": "pass-with-notes; zero blocking findings; retained fake evidence only",
+        "adapter_v5_review": "changes-required AV5-1/AV5-2; additional compile-only value/alias bypass reproduced during v7 repair",
+        "adapter_repair": "private adapter-v8-knowledge-advance-20261102; frozen Go0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+        "continuation_updated_at": "2026-11-02T19:57:56.960314+00:00",
+        "adapter_repair_evidence": "../11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/handoff.json",
+        "shared_adapter_integration_condition": "global -- command-dispatch gap on basev8; selected owner handles microfix and exact integrated review",
+        "knowledge_real_preregistration": "../11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/design.md",
+        "shared_complete_check_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+        "shared_complete_check_binding": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/shared-check-v10-start.json",
+        "shared_integrated_go_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+        "shared_complete_check_started_at": "2026-11-02T19:56:51.936099+00:00",
+        "shared_complete_check_result": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/shared-check-v10-result.json",
+        "shared_complete_check_exit_code": 2,
+        "shared_complete_check_finished_at": "2026-11-02T21:12:33.404620+00:00",
+        "previous_shared_complete_check_result": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/shared-check-v9-result.json",
+        "shared_v10_preparation": "../10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/preparation.json",
+        "shared_v10_candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+        "shared_v10_state": "interrupted_not_accepted",
+        "knowledge_framework_worktree": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+        "knowledge_framework_base_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+        "knowledge_framework_status": "root solo implementation after two Azure agent errors and executor model503; baseline compile pass; no scenario proof yet",
+        "knowledge_framework_plan": "knowledge-framework-plan-2026-11-03.md",
+        "shared_v10_recovery": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-execution-recovery.json",
+        "shared_complete_check_owner_recovery_from": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+        "shared_complete_check_result_sha256": "d8ae8b5dd1071744cd47d2db4adc649e6124b9dea5ff644877e5b21b3b1542ff",
+        "shared_complete_check_log_sha256": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+        "shared_v11_handoff": "../11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v11-execution-handoff.json",
+        "shared_v11_state": "prepared_provenance_corrected; new_single_owner_SSR_full_pending"
+      }
+    },
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/task.json": {
+      "id": "collaboration-knowledge-audit-fixes",
+      "name": "collaboration-knowledge-audit-fixes",
+      "title": "知识交付审计缺陷修复",
+      "description": "处置2026-11-01知识交付审计的21条结果（3高、5中、13低），修复已复现的任务启动、知识写入/推送和前端评审/恢复缺陷；L7按未复现且已有正确行为的测试证据处置",
+      "status": "in_progress",
+      "dev_type": null,
+      "scope": null,
+      "package": null,
+      "priority": "P1",
+      "creator": "artisan",
+      "assignee": "artisan",
+      "createdAt": "2026-11-01",
+      "completedAt": null,
+      "branch": "codex/collaboration-knowledge-fixes-20261101",
+      "base_branch": "codex/cross-workspace-collaboration",
+      "worktree_path": null,
+      "commit": null,
+      "pr_url": null,
+      "subtasks": [],
+      "children": [],
+      "parent": "10-30-collaboration-knowledge-promotion",
+      "relatedFiles": [],
+      "notes": "v10实际make2/check130中断，static15/TS13082/Go82包20852pass0fail22skip；PW439=39pass36fail1interrupted22explicitSkip341unrun。已证明混合工作树模块身份，保留原日志/失败并停止ownedAPI/Web；未冒充完整通过。下一候选须自有workspace links并合当前主线12变化及118fc两E2E修复后重新冻结。知识六文件编译通过、四基础文件独立复核0阻塞；整套fake normal/race未完成，预算0/0、默认false。",
+      "meta": {
+        "coordinator_session": "01a1979f-c71b-7ea2-8734-185ab2bdc8f8",
+        "integration_source": "45efa093c",
+        "next_action": "repair_isolated_workspace_links_and_freeze_current_candidate; meaningful_RK1K_fake_DB_proof; complete_gate_still_open",
+        "workflow_resume": "not_resumed_cross_session; native_and_root_takeover",
+        "parent_complete": false,
+        "integration_readiness": "research/combined-ready-for-main-integration.json",
+        "progress_phase": "v10_invalid_workspace_module_identity; six_file_fake_framework_compile_and_local_review",
+        "audit_repair_main_merge": "6cb9fcb36dde68b553365bd96698e0792a466f30",
+        "current_final_candidate": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+        "current_candidate_record": "../10-30-collaboration-context-handoff/research/final-candidate-20261102/next-complete-check-preparation.json",
+        "continuation_plan": "../11-01-collaboration-knowledge-audit-fixes/advance-plan-2026-11-02.md",
+        "continuation_coordinator": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+        "shared_complete_check_owner": "01a19ee4-40e8-7b70-b15c-5b5a13bd050e",
+        "shared_complete_check_task": "10-30-collaboration-fix-closure",
+        "rki6_result_review": "../10-30-collaboration-context-handoff/research/final-candidate-20261102/continuation-20261102/rki6-review.json",
+        "rki6_result_review_verdict": "pass-with-notes; zero blocking findings; retained fake evidence only",
+        "adapter_v5_review": "changes-required AV5-1/AV5-2; additional compile-only value/alias bypass reproduced during v7 repair",
+        "adapter_repair": "private adapter-v8-knowledge-advance-20261102; frozen Go0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+        "continuation_updated_at": "2026-11-02T19:57:56.960314+00:00",
+        "adapter_repair_evidence": "../11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/handoff.json",
+        "shared_adapter_integration_condition": "global -- command-dispatch gap on basev8; selected owner handles microfix and exact integrated review",
+        "knowledge_real_preregistration": "../11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/design.md",
+        "shared_complete_check_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+        "shared_complete_check_binding": "research/continuation-20261103/shared-check-v10-start.json",
+        "shared_integrated_go_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+        "shared_complete_check_started_at": "2026-11-02T19:56:51.936099+00:00",
+        "shared_complete_check_result": "research/continuation-20261103/shared-check-v10-result.json",
+        "shared_complete_check_exit_code": 2,
+        "shared_complete_check_finished_at": "2026-11-02T21:12:33.404620+00:00",
+        "previous_shared_complete_check_result": "research/continuation-20261103/shared-check-v9-result.json",
+        "shared_v10_preparation": "../10-30-collaboration-fix-closure/research/continue-20261102/final-v10-preparation/preparation.json",
+        "shared_v10_candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+        "shared_v10_state": "interrupted_not_accepted",
+        "knowledge_framework_worktree": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+        "knowledge_framework_base_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+        "knowledge_framework_status": "root solo implementation after two Azure agent errors and executor model503; baseline compile pass; no scenario proof yet",
+        "knowledge_framework_plan": "../10-30-collaboration-knowledge-promotion/knowledge-framework-plan-2026-11-03.md",
+        "shared_v10_recovery": "research/continuation-20261103/v10-execution-recovery.json",
+        "shared_complete_check_owner_recovery_from": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+        "shared_complete_check_result_sha256": "d8ae8b5dd1071744cd47d2db4adc649e6124b9dea5ff644877e5b21b3b1542ff",
+        "shared_complete_check_log_sha256": "b513d00d2c14838557e3bebf0190f4cd935240b19983532889736ef435fb2f64",
+        "shared_v11_handoff": "research/continuation-20261103/v11-execution-handoff.json",
+        "shared_v11_state": "prepared_provenance_corrected; new_single_owner_SSR_full_pending"
+      }
+    }
+  }
+}

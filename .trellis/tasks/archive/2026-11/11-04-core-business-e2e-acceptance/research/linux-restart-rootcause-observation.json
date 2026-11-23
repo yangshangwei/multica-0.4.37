@@ -1,0 +1,95 @@
+{
+  "observed_during": "r7 restart.close started; no restart.launch, before natural timeout",
+  "container": "multica-collaboration-main-6ffb421f-891",
+  "capture": "Transcribed exactly from successful read-only docker top and /proc tool outputs in this child conversation. A later automatic snapshot attempt found container already removed and is retained separately.",
+  "processes": [
+    {
+      "pid": 1,
+      "ppid": 0,
+      "comm": "docker-init"
+    },
+    {
+      "pid": 7,
+      "ppid": 1,
+      "comm": "xvfb-run"
+    },
+    {
+      "pid": 18,
+      "ppid": 7,
+      "comm": "Xvfb"
+    },
+    {
+      "pid": 21,
+      "ppid": 7,
+      "comm": "node"
+    },
+    {
+      "pid": 225,
+      "ppid": 1,
+      "comm": "multica"
+    }
+  ],
+  "electron_main_and_renderers_present": false,
+  "controller_fds": {
+    "23": {
+      "target": "socket:[765998]",
+      "flags": "02004002"
+    },
+    "25": {
+      "target": "socket:[766000]",
+      "flags": "02004002"
+    }
+  },
+  "daemon_fds": {
+    "0": {
+      "target": "pipe:[766098]",
+      "flags": "00"
+    },
+    "1": {
+      "target_basename": "daemon.err.log"
+    },
+    "2": {
+      "target_basename": "daemon.err.log"
+    },
+    "3": {
+      "target": "socket:[765999]",
+      "flags": "02"
+    },
+    "4": {
+      "target": "socket:[766001]",
+      "flags": "02"
+    },
+    "5": {
+      "target_basename": "icudtl.dat",
+      "flags": "0400000"
+    },
+    "6": {
+      "target_basename": "v8_context_snapshot.bin",
+      "flags": "0400000"
+    },
+    "44": {
+      "target_basename": "app.asar"
+    },
+    "51": {
+      "target_basename": "chrome_100_percent.pak"
+    },
+    "52": {
+      "target_basename": "chrome_200_percent.pak"
+    },
+    "53": {
+      "target_basename": "en-US.pak"
+    },
+    "54": {
+      "target_basename": "resources.pak"
+    },
+    "62": {
+      "target_basename": "LOCK"
+    },
+    "86": {
+      "target_basename": "LOCK"
+    }
+  },
+  "socket_peer_identity": "Adjacent inode values and inherited fd positions are consistent with endpoint pairs, but peer relation was not independently queried before container cleanup; do not claim a proven peer mapping.",
+  "no_file_contents_or_argv_collected": true,
+  "process_actions": "Read-only inspection; no signals, FD closure or forced quit"
+}

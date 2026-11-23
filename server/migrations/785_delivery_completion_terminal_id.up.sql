@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY delivery_completion_terminal_id_idx ON delivery_completion_terminal (authorization_id);

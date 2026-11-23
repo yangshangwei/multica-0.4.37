@@ -1,0 +1,35 @@
+{
+  "owned_components": [
+    {
+      "component": "api",
+      "pid": 73526,
+      "pgid": 73526,
+      "requested_stop": true
+    },
+    {
+      "component": "web",
+      "pid": 69870,
+      "pgid": 69870,
+      "requested_stop": true
+    },
+    {
+      "component": "renderer",
+      "pid": 69871,
+      "pgid": 69871,
+      "requested_stop": true
+    },
+    {
+      "component": "postgres",
+      "container": "multica-inbox-snooze-20261121-000941",
+      "stopped": true,
+      "data_retained": true
+    }
+  ],
+  "runtime_ports_closed": [
+    61718,
+    61719,
+    61720
+  ],
+  "private_evidence_retained": "/private/tmp/multica-inbox-snooze-n9cwnxds",
+  "unowned_components_changed": false
+}

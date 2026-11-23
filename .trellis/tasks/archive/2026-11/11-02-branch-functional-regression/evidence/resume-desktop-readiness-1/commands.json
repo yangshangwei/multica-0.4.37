@@ -1,0 +1,238 @@
+[
+  {
+    "label": "head",
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "started_at": "2026-11-02T02:20:23.728519+00:00",
+    "finished_at": "2026-11-02T02:20:23.741615+00:00",
+    "exit_code": 0,
+    "stdout": "7af9ab9905c98c77bb091223ebe687c639475bb4\n",
+    "stderr": ""
+  },
+  {
+    "label": "os",
+    "command": [
+      "uname",
+      "-sm"
+    ],
+    "started_at": "2026-11-02T02:20:23.745196+00:00",
+    "finished_at": "2026-11-02T02:20:23.748847+00:00",
+    "exit_code": 0,
+    "stdout": "Darwin arm64\n",
+    "stderr": ""
+  },
+  {
+    "label": "macos",
+    "command": [
+      "sw_vers"
+    ],
+    "started_at": "2026-11-02T02:20:23.749429+00:00",
+    "finished_at": "2026-11-02T02:20:23.758327+00:00",
+    "exit_code": 0,
+    "stdout": "ProductName:\t\tmacOS\nProductVersion:\t\t26.2\nBuildVersion:\t\t25C56\n",
+    "stderr": ""
+  },
+  {
+    "label": "worktrees",
+    "command": [
+      "git",
+      "worktree",
+      "list",
+      "--porcelain"
+    ],
+    "started_at": "2026-11-02T02:20:23.758836+00:00",
+    "finished_at": "2026-11-02T02:20:23.864860+00:00",
+    "exit_code": 0,
+    "stdout": "worktree /Volumes/artisan/code/2026/multica-0.4.37\nHEAD 7af9ab9905c98c77bb091223ebe687c639475bb4\nbranch refs/heads/codex/cross-workspace-collaboration\n\nworktree /Volumes/artisan/code/2026/mc-branch-e2e-822c15785-20261101\nHEAD 5696ee916a8675292e48a83b18e1d559d689bb52\nbranch refs/heads/codex/acceptance-evidence-822c15785-f417\n\nworktree /Volumes/artisan/code/2026/mc-branch-e2e-password-822c15785-20261101\nHEAD 822c15785449b6c1cef699f6fd4d8e1f5483bd5e\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-check-20261026\nHEAD 77e3f2b1cdcf69de7abd04fdc4c56c1c63d3c27f\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-check-fixture-origins-20261102\nHEAD 25a38745cac19581f4774c3d29843c0230a935e2\nbranch refs/heads/codex/check-fixture-origins-20261102\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-candidate-c3db64b24-20261102\nHEAD c3db64b24fea7116622d106ce2231853e1be72f9\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-delivery-20261101\nHEAD 8d2640254f8f0ffd3341f1817488bfe863c1390d\nbranch refs/heads/codex/collaboration-delivery-20261101\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-final-20261102\nHEAD 7f8ca87252b53f16041485ac867e501962377802\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-final-knowledge-on-20261102\nHEAD 639bf6ef85ad894553b244873c2ed8d9f9dd29b2\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-final-password-20261102\nHEAD 639bf6ef85ad894553b244873c2ed8d9f9dd29b2\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-final2-20261102\nHEAD 231a08063162acde63ebcabe2ef6a353f7a62bca\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-final2-20261102/.omx/private/final-candidate/tmp/TestPrepareLocalWorktreeRejectsNonGitDirectory855863911/002/worktree\nHEAD c90bc965a44e4e83a7c67e1d8f9ba04ab41ea238\nbranch refs/heads/agent/agent/task1\nprunable gitdir file points to non-existent location\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-final3-20261102\nHEAD 639bf6ef85ad894553b244873c2ed8d9f9dd29b2\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-final4-20261102\nHEAD 64a9994ec549e8dff73ab14456dc9a9f4b63f7c7\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102\nHEAD 639bf6ef85ad894553b244873c2ed8d9f9dd29b2\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-collaboration-password-c3db64b24-20261102\nHEAD c3db64b24fea7116622d106ce2231853e1be72f9\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-context-audit\nHEAD 5bcc4d84b80d6244fcf0b42ec31e4406d2d95fae\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-context-baseline-20261031\nHEAD c58f79874cfe2e6318e3dce067d7b6bac24e943f\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-context-exp\nHEAD c58f79874cfe2e6318e3dce067d7b6bac24e943f\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-context-exp-plan-20261030\nHEAD 32b741d0a498408b53b68b183c18e46d8187dbea\nbranch refs/heads/codex/collaboration-context-experiments\n\nworktree /Volumes/artisan/code/2026/mc-context-plan-20261030\nHEAD 6221494ee405bb6e560be05ef821fc5407baae6b\nbranch refs/heads/codex/collab-context-plan\n\nworktree /Volumes/artisan/code/2026/mc-context-resume-20261031\nHEAD 835e7b046c6841e0945a59326bc4ddcbae4a0df7\nbranch refs/heads/codex/collaboration-context-resume-20261031\n\nworktree /Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102\nHEAD 96140af72998cb3ced9826494ee8b8892264a236\nbranch refs/heads/codex/e2e-contract-maintenance-20261102\n\nworktree /Volumes/artisan/code/2026/mc-execenv-temp-diagnostic-20261102\nHEAD 231a08063162acde63ebcabe2ef6a353f7a62bca\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-final-legacy-diagnostic-20261102\nHEAD 639bf6ef85ad894553b244873c2ed8d9f9dd29b2\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-final-transfer-focus-contracts-20261102\nHEAD e98ee95696da34e7d396107bda163015bacd3acd\nbranch refs/heads/codex/final-transfer-focus-contracts-20261102\n\nworktree /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102\nHEAD 7af9ab9905c98c77bb091223ebe687c639475bb4\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102\nHEAD 7af9ab9905c98c77bb091223ebe687c639475bb4\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-handoff-cursor-20261101\nHEAD e3620721efacb820b89709c8db9d326d9cf2b00b\nbranch refs/heads/codex/collaboration-handoff-cursor-20261101\n\nworktree /Volumes/artisan/code/2026/mc-handoff-launch-20261031\nHEAD 4d0d1a76ddcbbf2ab985550d694a38263aaff25f\nbranch refs/heads/codex/collaboration-handoff-launch-20261031\n\nworktree /Volumes/artisan/code/2026/mc-kfix-lane-claim\nHEAD 5033fdd9d398b09e46e60db15ec517640b39a582\nbranch refs/heads/codex/kfix-lane-claim-20261101\n\nworktree /Volumes/artisan/code/2026/mc-kfix-lane-launch\nHEAD f00c94962dd932039d56e8acca31a67474c92887\nbranch refs/heads/codex/kfix-lane-launch-20261101\n\nworktree /Volumes/artisan/code/2026/mc-kfix-lane-web\nHEAD 6e4d7e177217403da376c25ad03a372367ce3707\nbranch refs/heads/codex/kfix-lane-web-20261101\n\nworktree /Volumes/artisan/code/2026/mc-kfix-lane-write\nHEAD be7ea867d7a38e0eb221c8214c86fddd97a37810\nbranch refs/heads/codex/kfix-lane-write-20261101\n\nworktree /Volumes/artisan/code/2026/mc-knowledge-crosschain-correction-20261102\nHEAD 1a9c4a46f9eecdc59658a878d02887947d9732aa\nbranch refs/heads/codex/knowledge-crosschain-correction-20261102\n\nworktree /Volumes/artisan/code/2026/mc-knowledge-deployed-probe-20261102\nHEAD 27d675f0eeff9b6ca154eb26ec9ddf3aceefd80c\nbranch refs/heads/codex/knowledge-deployed-probe-20261102\n\nworktree /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101\nHEAD 1278d1266c0768981c04800f00eeb3a17cfae8f9\nbranch refs/heads/codex/collaboration-knowledge-fixes-20261101\n\nworktree /Volumes/artisan/code/2026/mc-knowledge-promotion-20261101\nHEAD 93afc3cb0eedb4936e5d62b9f4e4841dc99309d5\nbranch refs/heads/codex/collaboration-knowledge-promotion-20261101\n\nworktree /Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101\nHEAD 53a1662586555d14ea04efb3b951744a4993fa60\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-memory-gate-green-env-20261102\nHEAD 639bf6ef85ad894553b244873c2ed8d9f9dd29b2\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-memory-gate-red-env-20261102\nHEAD 639bf6ef85ad894553b244873c2ed8d9f9dd29b2\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102\nHEAD ffb391d8de0c881c4b0659787cc5b15a43dd78c6\nbranch refs/heads/codex/memory-runtime-gate-closure-20261102\n\nworktree /Volumes/artisan/code/2026/mc-provider-bundle-check-fix-20261102\nHEAD 944d2201a5b709f74b86f5bd3a4c965e95e6434a\nbranch refs/heads/codex/provider-bundle-check-fix-20261102\n\nworktree /Volumes/artisan/code/2026/mc-push-check-20261026\nHEAD 1bfd169dca196dfd22bc1429a2933204d7f9e05b\ndetached\n\nworktree /Volumes/artisan/code/2026/mc-recipient-integration-20261030-072838-a3fe\nHEAD 2612465a016aa606cc7a2538e7890f1f4b76d995\nbranch refs/heads/codex/integrate-recipient-readiness-20261030-072838-a3fe\n\nworktree /Volumes/artisan/code/2026/mc-recipient-picker-integration-20261030\nHEAD d6a70ed299d0e4d3ab3a2a9b714e68d4f6798c49\nbranch refs/heads/codex/collab-recipient-picker-integration-20261030\n\nworktree /Volumes/artisan/code/2026/mc-remove-cloud-waitlist\nHEAD a20559e0c31020af42830b15c0979f089d302a7d\nbranch refs/heads/refactor/remove-cloud-waitlist\n\nworktree /Volumes/artisan/code/2026/mc-rk1-framework-20261101\nHEAD c2bf376cf894e0869c94eee1c337dbe93b0a6687\nbranch refs/heads/codex/rk1-framework-20261101\n\nworktree /Volumes/artisan/code/2026/mc-runtime-audit-fixes-20261101\nHEAD 5b9f6629273dd80d72fbea557debade3f57d7b75\nbranch refs/heads/codex/runtime-audit-fixes-20261101\n\nworktree /Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101\nHEAD 229beb11b6cca26cd4af73fc3de0703d73297fc5\nbranch refs/heads/codex/runtime-audit-fixes-27-20261101\n\nworktree /Volumes/artisan/code/2026/mc-runtime-integration-20261031\nHEAD c2b23576ee3ea75f4033f4d096f9ada13270826f\nbranch refs/heads/codex/collaboration-runtime-integration-20261031\n\nworktree /Volumes/artisan/code/2026/mc-runtime-recall-20261101\nHEAD 547760ea83bacd1f5e18316303f93e45aa0ebc96\nbranch refs/heads/codex/runtime-recall-surface-20261101\n\nworktree /Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101\nHEAD e3620721efacb820b89709c8db9d326d9cf2b00b\nbranch refs/heads/codex/runtime-recording-recovery-20261101\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-acceptance-current-20261026/collaboration-package-source\nHEAD 1bfd169dca196dfd22bc1429a2933204d7f9e05b\ndetached\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/collaboration-acceptance-current-20261026/collaboration-source\nHEAD 1bfd169dca196dfd22bc1429a2933204d7f9e05b\ndetached\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source\nHEAD 8f80b87002c7ccf386847a8f1627a95dc897df24\ndetached\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source-password\nHEAD 8f80b87002c7ccf386847a8f1627a95dc897df24\ndetached\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/baseline-a8e374bb9\nHEAD 7c60d3a511176bd0b4f2339e9944e9e1b30ea34e\ndetached\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source\nHEAD f0ad59ea6ece77514db81870fc61624913af7b77\ndetached\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source-password\nHEAD f0ad59ea6ece77514db81870fc61624913af7b77\ndetached\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source-supplemental\nHEAD f0ad59ea6ece77514db81870fc61624913af7b77\ndetached\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source\nHEAD a8e374bb99c5f3c407f76c2d607e623ce15d6552\ndetached\n\nworktree /Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/password-source\nHEAD a8e374bb99c5f3c407f76c2d607e623ce15d6552\ndetached\n\n",
+    "stderr": ""
+  },
+  {
+    "label": "docker-context",
+    "command": [
+      "docker",
+      "context",
+      "show"
+    ],
+    "started_at": "2026-11-02T02:20:23.868191+00:00",
+    "finished_at": "2026-11-02T02:20:23.954631+00:00",
+    "exit_code": 0,
+    "stdout": "desktop-linux\n",
+    "stderr": ""
+  },
+  {
+    "label": "docker-images",
+    "command": [
+      "docker",
+      "image",
+      "ls",
+      "--format",
+      "{{.Repository}}:{{.Tag}} {{.ID}} {{.Size}}"
+    ],
+    "started_at": "2026-11-02T02:20:23.955446+00:00",
+    "finished_at": "2026-11-02T02:20:24.359404+00:00",
+    "exit_code": 0,
+    "stdout": "multica-security-scripted-sim:20261027 181509625ed4 1.67GB\nmultica-security-codex-pilot:20261027 f3ba3b59ec5b 2.57GB\nmultica-security-pilot:20261027 054c28f9ae6c 2.3GB\nmultica-collaboration-deb-acceptance:20261026 0d433ecf8ede 2.04GB\nmultica-gap-full-main:20261022 db164dd5195d 2GB\nmultica-web:v0.6.7 692825989330 391MB\nmultica-backend:v0.6.7 8d5ede4df2fa 188MB\nmultica-web:v0.6.6 dc5348a77b35 391MB\nmultica-backend:v0.6.6 841dabc839f7 188MB\nmultica-web:v0.6.5 c543885840cc 390MB\nmultica-backend:v0.6.5 837b33814636 188MB\nghcr.io/xiaocqaq/octopus:latest 13ec6c195126 87.2MB\nmultica-web:v0.6.1 caca36c28400 390MB\nmultica-backend:v0.6.1 3fd4fed32b5a 187MB\nmultica-web:v0.6.0 5eb609dbe217 390MB\nmultica-backend:v0.6.0 3543304d5b84 187MB\nmultica-v060-upgrade-helper:latest bb5181254120 240MB\nnode:22-bookworm 0e5f90657369 3.29GB\nplane-source-api-tests:latest b88be5259287 3.19GB\nmultica-web:v0.5.5 85027beda8ed 388MB\nmultica-backend:v0.5.5 f62d288c12fe 183MB\npgvector/pgvector:pg17 cd4ccfdaf62c 637MB\npgvector/pgvector:<none> 215ae4d47393 656MB\nmultica-web:v0.5.2 002ca32b67e5 384MB\nmultica-backend:v0.5.2 2ff5c2ba18d7 180MB\nmultica-web:v0.5.1 968b46a75185 384MB\nmultica-backend:v0.5.1 366fd861d513 179MB\nmultica-web:v0.5.0 dfaaa301d932 90.1MB\nmultica-backend:v0.5.0 35286ff01828 179MB\nmultica-desktop-nginx:985220252f38-amd64 8f84ed99befc 92.8MB\nmultica-desktop-nginx:985220252f38-arm64 3abad30db61d 92MB\nnginx:stable-alpine 985220252f38 187MB\npython:3.13-slim 9d2e5553305c 215MB\nregistry-1.docker.io/makeplane/plane-space:v1.4.2 ddc5528d16bd 1.43GB\nregistry-1.docker.io/makeplane/plane-frontend:v1.4.2 fb382e3a4861 147MB\nregistry-1.docker.io/makeplane/plane-live:v1.4.2 1695d0851f1f 1.64GB\nregistry-1.docker.io/makeplane/plane-admin:v1.4.2 f36abad72d72 106MB\nregistry-1.docker.io/makeplane/plane-backend:v1.4.2 502aae3f87fc 506MB\nregistry-1.docker.io/makeplane/plane-proxy:v1.4.2 b6997371ecff 182MB\ngolang:1.26.6-bookworm 116d58cbd88c 1.23GB\npostgres:17-alpine 18cfe3ef5e68 415MB\npostgres:18-alpine 54451ecb8ab3 403MB\nredis:7-alpine 7aec734b2bb2 61.9MB\npostgres:15 c635fa3e3b74 654MB\nregistry-1.docker.io/valkey/valkey:7.2.11-alpine e9f0f60c54a9 59.7MB\nvalkey/valkey:7.2.11-alpine 10328d00120d 59.7MB\nmysql:latest 569c4128dfa6 1.29GB\nredis:latest 4521b581dbdd 222MB\nquay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z 9966a92a734f 228MB\ndocker.elastic.co/elasticsearch/elasticsearch:7.17.28 f2ce8a4c644a 1.03GB\nregistry-1.docker.io/library/postgres:15.7-alpine a9870e090dbb 354MB\npostgres:15.7-alpine 468d34fefd63 355MB\nregistry-1.docker.io/library/rabbitmq:3.13.6-management-alpine bb599f8b8e4c 280MB\nrabbitmq:3.13.6-management-alpine 611107e29cce 282MB\napache/kafka:3.7.0 41c20d65b0a2 578MB\nminio/minio:RELEASE.2023-03-20T20-16-18Z 6d770d7f255c 374MB\nmaven:3.8-openjdk-17 3a9c30b3af62 1.3GB\ndocker:29-cli b1805116a6a8 237MB\n",
+    "stderr": ""
+  },
+  {
+    "label": "docker-containers",
+    "command": [
+      "docker",
+      "ps",
+      "-a",
+      "--format",
+      "{{.ID}} {{.Image}} {{.Names}} {{.State}}"
+    ],
+    "started_at": "2026-11-02T02:20:24.364038+00:00",
+    "finished_at": "2026-11-02T02:20:24.479566+00:00",
+    "exit_code": 0,
+    "stdout": "643df92c9d1a 116d58cbd88c multica-final639-linux-namespace-daemon-1 exited\na87183c956ae 116d58cbd88c multica-final639-linux-namespace-server-1 exited\n90ba60aed07d 0d433ecf8ede multica-collaboration-main-e3a80b1b-b9e exited\nf2de331654e8 116d58cbd88c multica-final639-linux-host-matrix-2 exited\n41cb034561d4 116d58cbd88c multica-final639-linux-host-preflight-20261102 exited\n6a9b82c7470d 18cfe3ef5e68 multica-bundle-file-check-20261102-1915 exited\nb96eed35feaa redis:7-alpine multica-final-c3db-redis-a8b82ed1 running\n185e97dc6433 redis:7-alpine multica-acceptance-822c-redis-20261101 exited\n08a7d39c8dde redis:7-alpine multica-knowledge-final-e7059940 exited\n135ab2ecd507 pgvector/pgvector:pg17 mc-context-audit-pg exited\ne1677df66bd6 multica-security-pilot:20261027 multica-security-pilot-20261027 exited\nf06e055b60eb pgvector/pgvector:pg17 multica-postgres-1 running\n2d79adac90b2 redis:7-alpine multica-collab-acceptance-20261026-redis-test exited\nd966b4da405b redis:7-alpine multica-collab-acceptance-20261026-redis-api exited\n104e6044ae7b pgvector/pgvector:pg17 multica-collab-acceptance-20261026-pg exited\n085cebf646cd node:22-bookworm multica-gap-recovery-route-tests exited\n0cc9fc8c5208 node:22-bookworm multica-gap-recovery-native-full exited\n181193cad467 node:22-bookworm multica-gap-recovery-native exited\n09b7e7b35c22 node:22-bookworm multica-gap-recovery-linux-v1-aa exited\na2eb096526fb node:22-bookworm multica-gap-recovery-linux-v1 exited\n4b538071676c redis:7-alpine multica-gap-recovery-20261021-h6phxwo9-redis exited\n7432e3f3f03f pgvector/pgvector:pg17 multica-gap-recovery-20261021-h6phxwo9-pg exited\n94576366b092 redis:7-alpine multica-cwc-r51-r52-20261019t110745z-service-b-redis exited\na777564bed85 redis:7-alpine multica-cwc-r51-r52-20261019t110745z-service-a-redis exited\n05dc3a09db30 redis:7-alpine multica-cwc-r51-r52-20261019t110745z-redis-full exited\n83bf6de4f2c0 redis:7-alpine multica-cwc-r51-r52-20261019t110745z-redis-test exited\n1576ac23e3e2 redis:7-alpine multica-cwc-r51-r52-20261019t110745z-redis-api exited\n6c99afd62145 pgvector/pgvector:pg17 multica-cwc-r51-r52-20261019t110745z-pg exited\n47d8e956eb73 redis:7-alpine multica-cwc-qa-20261019t082840z-redis-test exited\nabb46d37c4cc redis:7-alpine multica-cwc-qa-20261019t082840z-redis-api exited\n1deb46030d02 pgvector/pgvector:pg17 multica-cwc-qa-20261019t082840z-pg exited\na5429457436c redis:7-alpine multica-cwc-edit-571944c3-redis-test exited\nb82dd8a85a48 redis:7-alpine multica-cwc-edit-571944c3-redis-api exited\na614d56a42d1 pgvector/pgvector:pg17 multica-cwc-edit-571944c3-pg exited\ne63a89cf499a postgres:18-alpine multica-cwc-completion-a5d1394e39-linux exited\nc02d1e9df2d1 pgvector/pgvector:pg17 multica-cwc-completion-a5d1394e39 exited\nb43123167478 ghcr.io/xiaocqaq/octopus:latest octopus exited\n16cad9f22615 215ae4d47393 s07-20261001212929-d12b32-pg-shm256 exited\n908978f6ec1c 215ae4d47393 s07-20261001212929-d12b32-pg-native exited\n5d4f958af57c redis:7-alpine s07-20261001212929-d12b32-redis exited\n7f3d6fe70aab dca0d688bbb3 s07-20261001212929-d12b32-pg exited\n777740dc5e79 nginx:stable-alpine multica-desktop-updates-desktop-updates-1 exited\nd414b2a1a580 registry-1.docker.io/library/postgres:15.7-alpine plane-source-infra-plane-db-1 exited\n0382adb0a7a2 quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z plane-source-infra-plane-minio-1 exited\nba704b769e5b registry-1.docker.io/valkey/valkey:7.2.11-alpine plane-source-infra-plane-redis-1 exited\n0513da1cc123 registry-1.docker.io/library/rabbitmq:3.13.6-management-alpine plane-source-infra-plane-mq-1 exited\neb49d0620a0f registry-1.docker.io/makeplane/plane-proxy:v1.4.2 plane-proxy-1 exited\nddbb495c8163 registry-1.docker.io/makeplane/plane-space:v1.4.2 plane-space-1 exited\nfaeecf0bbf37 registry-1.docker.io/makeplane/plane-live:v1.4.2 plane-live-1 exited\n7bde10ff372a registry-1.docker.io/makeplane/plane-admin:v1.4.2 plane-admin-1 exited\n1b2f5e9dd15f registry-1.docker.io/makeplane/plane-frontend:v1.4.2 plane-web-1 exited\nceed027fdb6f registry-1.docker.io/makeplane/plane-backend:v1.4.2 plane-worker-1 exited\n5957fd8dab7f registry-1.docker.io/makeplane/plane-backend:v1.4.2 plane-beat-worker-1 exited\ncc809b405685 registry-1.docker.io/makeplane/plane-backend:v1.4.2 plane-migrator-1 exited\n7b35c67fb5d1 registry-1.docker.io/makeplane/plane-backend:v1.4.2 plane-api-1 exited\nf2625071dc73 quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z plane-plane-minio-1 exited\nfd60b95e351f registry-1.docker.io/valkey/valkey:7.2.11-alpine plane-plane-redis-1 exited\n6a78064ecfb8 registry-1.docker.io/library/rabbitmq:3.13.6-management-alpine plane-plane-mq-1 exited\nc317147a7d49 registry-1.docker.io/library/postgres:15.7-alpine plane-plane-db-1 exited\nbb86e4298609 redis:7-alpine redis-cluster-3m3s exited\n012d7a5a3c32 docker.elastic.co/elasticsearch/elasticsearch:7.17.28 elastic exited\nd4dc7694c318 mysql:latest mysql exited\n875e916f1f5c apache/kafka:3.7.0 kafka exited\n175bfa214034 redis:latest redis exited\n",
+    "stderr": ""
+  },
+  {
+    "label": "trees-server",
+    "command": [
+      "git",
+      "rev-parse",
+      "7af9ab9905c98c77bb091223ebe687c639475bb4:server",
+      "639bf6ef85ad894553b244873c2ed8d9f9dd29b2:server"
+    ],
+    "started_at": "2026-11-02T02:20:57.344320+00:00",
+    "finished_at": "2026-11-02T02:20:57.357160+00:00",
+    "exit_code": 0,
+    "stdout": "a1b81d7a86630ac1d1b87c7712c17e30765fd449\na1b81d7a86630ac1d1b87c7712c17e30765fd449\n",
+    "stderr": ""
+  },
+  {
+    "label": "trees-apps",
+    "command": [
+      "git",
+      "rev-parse",
+      "7af9ab9905c98c77bb091223ebe687c639475bb4:apps",
+      "639bf6ef85ad894553b244873c2ed8d9f9dd29b2:apps"
+    ],
+    "started_at": "2026-11-02T02:20:57.358273+00:00",
+    "finished_at": "2026-11-02T02:20:57.364823+00:00",
+    "exit_code": 0,
+    "stdout": "ba60665b581dc6569d0beb2fb98ad975173dadb7\nba60665b581dc6569d0beb2fb98ad975173dadb7\n",
+    "stderr": ""
+  },
+  {
+    "label": "trees-packages",
+    "command": [
+      "git",
+      "rev-parse",
+      "7af9ab9905c98c77bb091223ebe687c639475bb4:packages",
+      "639bf6ef85ad894553b244873c2ed8d9f9dd29b2:packages"
+    ],
+    "started_at": "2026-11-02T02:20:57.365737+00:00",
+    "finished_at": "2026-11-02T02:20:57.371698+00:00",
+    "exit_code": 0,
+    "stdout": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292\neaf403eac173f6dd8e9d49fbe90ae7ad9444a292\n",
+    "stderr": ""
+  },
+  {
+    "label": "mac-signature-display",
+    "command": [
+      "codesign",
+      "--display",
+      "--verbose=4",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app"
+    ],
+    "started_at": "2026-11-02T02:20:58.683238+00:00",
+    "finished_at": "2026-11-02T02:20:58.692062+00:00",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "Executable=/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/MacOS/Multica\nIdentifier=ai.multica.desktop\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20500 size=435 flags=0x10002(adhoc,runtime) hashes=3+7 location=embedded\nVersionPlatform=1\nVersionMin=786432\nVersionSDK=1703936\nHash type=sha256 size=32\nCandidateCDHash sha256=2349223b42e4b13ed506e4bbd7ed7a7b3c1c2054\nCandidateCDHashFull sha256=2349223b42e4b13ed506e4bbd7ed7a7b3c1c20543776a8882de625acf2bf5889\nHash choices=sha256\nCMSDigest=2349223b42e4b13ed506e4bbd7ed7a7b3c1c20543776a8882de625acf2bf5889\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=16384\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=2349223b42e4b13ed506e4bbd7ed7a7b3c1c2054\nSignature=adhoc\nInfo.plist entries=33\nTeamIdentifier=not set\nRuntime Version=26.0.0\nSealed Resources version=2 rules=13 files=16\nInternal requirements count=0 size=12\n"
+  },
+  {
+    "label": "mac-signature-verify",
+    "command": [
+      "codesign",
+      "--verify",
+      "--deep",
+      "--strict",
+      "--verbose=2",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app"
+    ],
+    "started_at": "2026-11-02T02:20:58.692615+00:00",
+    "finished_at": "2026-11-02T02:21:00.435834+00:00",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "--prepared:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Multica Helper.app\n--prepared:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Multica Helper (GPU).app\n--prepared:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.\n--validated:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Multica Helper (GPU).app\n--validated:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Multica Helper.app\n--validated:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.\n--prepared:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.\n--validated:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.\n--prepared:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Mantle.framework/Versions/Current/.\n--prepared:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Multica Helper (Plugin).app\n--prepared:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Multica Helper (Renderer).app\n--validated:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Mantle.framework/Versions/Current/.\n--validated:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Multica Helper (Plugin).app\n--validated:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Multica Helper (Renderer).app\n--prepared:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.\n--prepared:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler\n--validated:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler\n--validated:/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.\n/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app: valid on disk\n/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app: satisfies its Designated Requirement\n"
+  },
+  {
+    "label": "stapler-discovery",
+    "command": [
+      "xcrun",
+      "--find",
+      "stapler"
+    ],
+    "started_at": "2026-11-02T02:21:00.436360+00:00",
+    "finished_at": "2026-11-02T02:21:00.448419+00:00",
+    "exit_code": 0,
+    "stdout": "/Library/Developer/CommandLineTools/usr/bin/stapler\n",
+    "stderr": ""
+  },
+  {
+    "label": "docker-image-platforms",
+    "command": [
+      "docker",
+      "image",
+      "inspect",
+      "multica-collaboration-deb-acceptance:20261026",
+      "multica-gap-full-main:20261022",
+      "--format",
+      "{{.Id}} {{.Os}}/{{.Architecture}}"
+    ],
+    "started_at": "2026-11-02T02:21:00.449236+00:00",
+    "finished_at": "2026-11-02T02:21:00.642219+00:00",
+    "exit_code": 0,
+    "stdout": "sha256:0d433ecf8ede66777494051568fd760468be288fd99d36d80bc68d022769471c linux/arm64\nsha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4 linux/arm64\n",
+    "stderr": ""
+  },
+  {
+    "label": "vm-process-names",
+    "command": [
+      "ps",
+      "-axo",
+      "pid=,comm="
+    ],
+    "started_at": "2026-11-02T02:21:00.645990+00:00",
+    "finished_at": "2026-11-02T02:21:00.708422+00:00",
+    "exit_code": 0,
+    "stdout": "\n",
+    "stderr": "",
+    "filter": "VM-related executable names only; arguments excluded"
+  },
+  {
+    "label": "mac-stapled-ticket",
+    "command": [
+      "xcrun",
+      "stapler",
+      "validate",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app"
+    ],
+    "started_at": "2026-11-02T02:21:40.340020+00:00",
+    "finished_at": "2026-11-02T02:21:40.386290+00:00",
+    "exit_code": 65,
+    "stdout": "Processing: /Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app\nMultica.app does not have a ticket stapled to it.\n",
+    "stderr": ""
+  },
+  {
+    "label": "mac-dmg-verify",
+    "command": [
+      "hdiutil",
+      "verify",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg"
+    ],
+    "started_at": "2026-11-02T02:21:41.733106+00:00",
+    "finished_at": "2026-11-02T02:21:45.005261+00:00",
+    "exit_code": 0,
+    "stdout": "\u6b63\u5728\u68c0\u67e5\u201cProtective Master Boot Record\uff08MBR\uff1a0\uff09\u201d\u7684\u6821\u9a8c\u548c\u2026\nProtective Master Boot Record\uff08MBR\uff1a0\uff09\uff1a\u5df2\u9a8c\u8bc1CRC32 $BC6E1CF6\n\u6b63\u5728\u68c0\u67e5\u201cGPT Header\uff08Primary GPT Header\uff1a1\uff09\u201d\u7684\u6821\u9a8c\u548c\u2026\n    GPT Header\uff08Primary GPT Header\uff1a1\uff09\uff1a\u5df2\u9a8c\u8bc1CRC32 $21588934\n\u6b63\u5728\u68c0\u67e5\u201cGPT Partition Data\uff08Primary GPT Table\uff1a2\uff09\u201d\u7684\u6821\u9a8c\u548c\u2026\nGPT Partition Data\uff08Primary GPT Table\uff1a\u5df2\u9a8c\u8bc1CRC32 $B83D4257\n\u6b63\u5728\u68c0\u67e5\u201c\uff08Apple_Free\uff1a3\uff09\u201d\u7684\u6821\u9a8c\u548c\u2026\n                      \uff08Apple_Free\uff1a3\uff09\uff1a\u5df2\u9a8c\u8bc1CRC32 $00000000\n\u6b63\u5728\u68c0\u67e5\u201cdisk image\uff08Apple_HFS\uff1a4\uff09\u201d\u7684\u6821\u9a8c\u548c\u2026\n             disk image\uff08Apple_HFS\uff1a4\uff09\uff1a\u5df2\u9a8c\u8bc1CRC32 $E3006607\n\u6b63\u5728\u68c0\u67e5\u201c\uff08Apple_Free\uff1a5\uff09\u201d\u7684\u6821\u9a8c\u548c\u2026\n                      \uff08Apple_Free\uff1a5\uff09\uff1a\u5df2\u9a8c\u8bc1CRC32 $00000000\n\u6b63\u5728\u68c0\u67e5\u201cGPT Partition Data\uff08Backup GPT Table\uff1a6\uff09\u201d\u7684\u6821\u9a8c\u548c\u2026\nGPT Partition Data\uff08Backup GPT Table\uff1a\uff1a\u5df2\u9a8c\u8bc1CRC32 $B83D4257\n\u6b63\u5728\u68c0\u67e5\u201cGPT Header\uff08Backup GPT Header\uff1a7\uff09\u201d\u7684\u6821\u9a8c\u548c\u2026\n     GPT Header\uff08Backup GPT Header\uff1a7\uff09\uff1a\u5df2\u9a8c\u8bc1CRC32 $55561EF0\n\u5df2\u9a8c\u8bc1CRC32 $0E10D5FD\n",
+    "stderr": "hdiutil: verify: checksum of \"/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg\" is VALID\n"
+  }
+]

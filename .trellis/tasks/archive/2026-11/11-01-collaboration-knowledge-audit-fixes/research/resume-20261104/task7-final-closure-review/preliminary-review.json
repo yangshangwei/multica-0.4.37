@@ -1,0 +1,874 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T08:03:35.085511+00:00",
+  "reviewer": "/root/task7_contract_review",
+  "scope": "Preliminary full #7 closure contract/source/integration/spec and archive review. No repeat collector/tests/auditor.",
+  "verdict": "conditional_ready_pending_CCG2_OFF02_ON_and_final_handoff",
+  "task7_closable_now": false,
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "dispositions": [
+    {
+      "id": "H1",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/service/task_knowledge_invocation_test.go",
+      "source_sha256": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim",
+        "action": "pass",
+        "time": "2026-11-04T11:47:31.529741+08:00",
+        "elapsed": 0.72,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104033124895402_986dfe9cbf73.jsonl",
+        "raw_sha256": "8dbf26a915b30969d901c9f98ed607d9176600167535f2544712967295d85cf4",
+        "raw_line": 14335
+      }
+    },
+    {
+      "id": "H2",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/daemon/knowledge_context_claim_test.go",
+      "source_sha256": "38951e241b67c21500a0324c82b7ac0046a3bd9055ed1e1693d75d4c103274a1",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "test": "TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration",
+        "action": "pass",
+        "time": "2026-11-04T11:20:35.600312+08:00",
+        "elapsed": 0.21,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104031957378708_7a21f045e560.jsonl",
+        "raw_sha256": "e502e9b468c562a336af1b62e533cfe09c1a3e3a384cf4e981069958eee16301",
+        "raw_line": 2423
+      }
+    },
+    {
+      "id": "H3",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/service/task_knowledge_history_growth_test.go",
+      "source_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestKnowledgeResumeReadsCompleteLongSessionHistory",
+        "action": "pass",
+        "time": "2026-11-04T11:47:19.791102+08:00",
+        "elapsed": 1.04,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104033124895402_986dfe9cbf73.jsonl",
+        "raw_sha256": "8dbf26a915b30969d901c9f98ed607d9176600167535f2544712967295d85cf4",
+        "raw_line": 14181
+      }
+    },
+    {
+      "id": "M1",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/handler/daemon_knowledge_test.go",
+      "source_sha256": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestKnowledgeClaimTransientHistoryErrorRequeuesTask",
+        "action": "pass",
+        "time": "2026-11-04T11:26:43.313707+08:00",
+        "elapsed": 0.35,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104032405883174_199d57419d78.jsonl",
+        "raw_sha256": "2b0fd742a5e7f77b53480557a735f51e66794169a6a44db12e3bf1c1abc3ef3f",
+        "raw_line": 7990
+      }
+    },
+    {
+      "id": "M2",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/service/task_knowledge_concurrency_test.go",
+      "source_sha256": "bad900ed90cd982539e1f25fbc9e7ea62baecda2d40bf10721aeaa18b3851ba8",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestKnowledgePreparationWaitsOutSiblingNamespaceHolder",
+        "action": "pass",
+        "time": "2026-11-04T11:47:14.963298+08:00",
+        "elapsed": 1.4,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104033124895402_986dfe9cbf73.jsonl",
+        "raw_sha256": "8dbf26a915b30969d901c9f98ed607d9176600167535f2544712967295d85cf4",
+        "raw_line": 14129
+      }
+    },
+    {
+      "id": "M3",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/service/task_knowledge_history_growth_test.go",
+      "source_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestKnowledgeRuntimeHistoryIsIndexDriven",
+        "action": "pass",
+        "time": "2026-11-04T11:47:25.134299+08:00",
+        "elapsed": 0.26,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104033124895402_986dfe9cbf73.jsonl",
+        "raw_sha256": "8dbf26a915b30969d901c9f98ed607d9176600167535f2544712967295d85cf4",
+        "raw_line": 14224
+      }
+    },
+    {
+      "id": "M4",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+      "source_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+      "actual_terminal": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 2,
+        "ancestorTitles": [],
+        "fullName": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+        "status": "passed",
+        "title": "keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision",
+        "duration": 127.59424999999999,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 277,
+        "raw_report_sha256": "569f085430a1b18d1fc6d31ff45894717ed3ac0ee46a681747a942724e7c8b85"
+      }
+    },
+    {
+      "id": "M5",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+      "source_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+      "actual_terminal": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 20,
+        "ancestorTitles": [],
+        "fullName": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+        "status": "passed",
+        "title": "a review decision leaves an open proposal draft intact and only the panel's own proposal closes it",
+        "duration": 257.66383300000007,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 277,
+        "raw_report_sha256": "569f085430a1b18d1fc6d31ff45894717ed3ac0ee46a681747a942724e7c8b85"
+      }
+    },
+    {
+      "id": "L1",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/service/collaboration_knowledge_concurrency_test.go",
+      "source_sha256": "e498a4f8e26faddab1738ba602bf6e38615ae29ff9a419121953c4dc037736e7",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock",
+        "action": "pass",
+        "time": "2026-11-04T11:38:37.087187+08:00",
+        "elapsed": 1.78,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104033124895402_986dfe9cbf73.jsonl",
+        "raw_sha256": "8dbf26a915b30969d901c9f98ed607d9176600167535f2544712967295d85cf4",
+        "raw_line": 5167
+      }
+    },
+    {
+      "id": "L2",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/service/collaboration_knowledge_authority_test.go",
+      "source_sha256": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest",
+        "action": "pass",
+        "time": "2026-11-04T11:38:32.694138+08:00",
+        "elapsed": 0.19,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104033124895402_986dfe9cbf73.jsonl",
+        "raw_sha256": "8dbf26a915b30969d901c9f98ed607d9176600167535f2544712967295d85cf4",
+        "raw_line": 5111
+      }
+    },
+    {
+      "id": "L3",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/realtime/collaboration_knowledge_test.go",
+      "source_sha256": "77f2b39121630c3bd849bef6fc99f496e6ea938cd3b13245b813841119157a31",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/realtime",
+        "test": "TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget",
+        "action": "pass",
+        "time": "2026-11-04T11:31:15.01398+08:00",
+        "elapsed": 0.6,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104033111758186_08997a7fa7fe.jsonl",
+        "raw_sha256": "65a2b8ca8a701e68068e01bb194db9b9114c3cc6e2ad1d343ca310ce8aa725be",
+        "raw_line": 87
+      }
+    },
+    {
+      "id": "L4",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/service/collaboration_knowledge_invalidation_test.go",
+      "source_sha256": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestKnowledgeTimedOutHintDoesNotBlockLaterHints",
+        "action": "pass",
+        "time": "2026-11-04T11:39:03.182339+08:00",
+        "elapsed": 0.83,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104033124895402_986dfe9cbf73.jsonl",
+        "raw_sha256": "8dbf26a915b30969d901c9f98ed607d9176600167535f2544712967295d85cf4",
+        "raw_line": 5447
+      }
+    },
+    {
+      "id": "L5",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/service/collaboration_knowledge_credentials_test.go",
+      "source_sha256": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "test": "TestKnowledgePATWriteWaitsOutLastUsedUpdate",
+        "action": "pass",
+        "time": "2026-11-04T11:38:40.723351+08:00",
+        "elapsed": 0.31,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104033124895402_986dfe9cbf73.jsonl",
+        "raw_sha256": "8dbf26a915b30969d901c9f98ed607d9176600167535f2544712967295d85cf4",
+        "raw_line": 5215
+      }
+    },
+    {
+      "id": "L6",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/internal/daemon/knowledge_context_claim_test.go",
+      "source_sha256": "38951e241b67c21500a0324c82b7ac0046a3bd9055ed1e1693d75d4c103274a1",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "test": "TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask",
+        "action": "pass",
+        "time": "2026-11-04T11:20:38.147364+08:00",
+        "elapsed": 0.04,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104031957378708_7a21f045e560.jsonl",
+        "raw_sha256": "e502e9b468c562a336af1b62e533cfe09c1a3e3a384cf4e981069958eee16301",
+        "raw_line": 2515
+      }
+    },
+    {
+      "id": "L7",
+      "disposition": "not_reproduced_test_covered",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server/pkg/agent/knowledge_launch_test.go",
+      "source_sha256": "b890b56259806b63670176331f607773c343053ad9fa45569246393238be6f3d",
+      "actual_terminal": {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "test": "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+        "action": "pass",
+        "time": "2026-11-04T11:50:28.061225+08:00",
+        "elapsed": 0,
+        "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16/ccheck_20261104034850239675_56802910400e.jsonl",
+        "raw_sha256": "5be512e0e05e5a79dcdf7e47f5be0d8fcdc77ff293aa2b2bf19bd8cb9c78c485",
+        "raw_line": 3857
+      }
+    },
+    {
+      "id": "L8",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+      "source_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+      "actual_terminal": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 27,
+        "ancestorTitles": [],
+        "fullName": "submit waits for a refreshing source list instead of reporting a changed source",
+        "status": "passed",
+        "title": "submit waits for a refreshing source list instead of reporting a changed source",
+        "duration": 228.65337499999987,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 277,
+        "raw_report_sha256": "569f085430a1b18d1fc6d31ff45894717ed3ac0ee46a681747a942724e7c8b85"
+      }
+    },
+    {
+      "id": "L9",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+      "source_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+      "actual_terminal": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 30,
+        "ancestorTitles": [],
+        "fullName": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+        "status": "passed",
+        "title": "attributes over-byte summary, conclusion and evidence to the field instead of a source failure",
+        "duration": 284.23829099999966,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 277,
+        "raw_report_sha256": "569f085430a1b18d1fc6d31ff45894717ed3ac0ee46a681747a942724e7c8b85"
+      }
+    },
+    {
+      "id": "L10",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+      "source_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+      "actual_terminal": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 11,
+        "ancestorTitles": [],
+        "fullName": "restarts at the first page when a later page loses its authorization boundary",
+        "status": "passed",
+        "title": "restarts at the first page when a later page loses its authorization boundary",
+        "duration": 26.413750000000164,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 277,
+        "raw_report_sha256": "569f085430a1b18d1fc6d31ff45894717ed3ac0ee46a681747a942724e7c8b85"
+      }
+    },
+    {
+      "id": "L11",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+      "source_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+      "actual_terminal": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 10,
+        "ancestorTitles": [],
+        "fullName": "stops interval polling an unavailable knowledge interface until an explicit refresh",
+        "status": "passed",
+        "title": "stops interval polling an unavailable knowledge interface until an explicit refresh",
+        "duration": 11.008166999999958,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 277,
+        "raw_report_sha256": "569f085430a1b18d1fc6d31ff45894717ed3ac0ee46a681747a942724e7c8b85"
+      }
+    },
+    {
+      "id": "L12",
+      "disposition": "repaired",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+      "source_sha256": "d252bcf1e49515cba3108b1528f49ba4bf92ab9f3eccdba30540b2849d2eb6dd",
+      "actual_terminal": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/knowledge-panel.test.tsx",
+        "file_index": 32,
+        "assertion_index": 24,
+        "ancestorTitles": [],
+        "fullName": "lets a human remove a stored identity only after a check finds no result, without any request",
+        "status": "passed",
+        "title": "lets a human remove a stored identity only after a check finds no result, without any request",
+        "duration": 114.65533400000004,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 277,
+        "raw_report_sha256": "569f085430a1b18d1fc6d31ff45894717ed3ac0ee46a681747a942724e7c8b85"
+      }
+    },
+    {
+      "id": "L13",
+      "disposition": "terminology_repair",
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/locales/parity.test.ts",
+      "source_sha256": "aa963486b84539b8ec61945cd435866fde0c5244d9a3dc3ef7114377ddd78420",
+      "actual_terminal": {
+        "package": "@multica/views",
+        "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/locales/parity.test.ts",
+        "file_index": 114,
+        "assertion_index": 3,
+        "ancestorTitles": [
+          "locale bundle parity"
+        ],
+        "fullName": "locale bundle parity collaboration: zh-Hans covers every EN key",
+        "status": "passed",
+        "title": "collaboration: zh-Hans covers every EN key",
+        "duration": 0.7181250000000148,
+        "failureMessages": [],
+        "meta": {},
+        "tags": [],
+        "raw_log_line": 277,
+        "raw_report_sha256": "569f085430a1b18d1fc6d31ff45894717ed3ac0ee46a681747a942724e7c8b85"
+      }
+    }
+  ],
+  "disposition_count": 21,
+  "baseline_19_red_and_L7_L13_exception_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/audit7-review/review.json",
+    "sha256": "142cfe4bef55f5478c9450ce704eb564de5d3452ae513d7c6835ea517c99df26"
+  },
+  "AC1_AC9": [
+    {
+      "id": "AC1",
+      "state": "verified_in_disposition_scope",
+      "evidence": "19 reproduced IDs have actual named baseline failures; L12 primary mapping points to same red/green deletion regression, with ownership regression retained separately. L7 and L13 use explicit accepted exceptions. Baseline 6aed33aad and 4e3b61500 product source match.",
+      "remaining": "CCG2 OFF02/ON actual current deployment evidence and independent review; Root final integration/archive handoff.",
+      "current_source_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "current_state": "verified_stated_contract_and_current_shared_scope"
+    },
+    {
+      "id": "AC2",
+      "state": "verified_in_disposition_scope",
+      "evidence": "Current H1 safe-OFF/nil descriptor and unsafe-selector canonical source unchanged; actual v13 named -race pass.",
+      "remaining": "CCG2 OFF02/ON actual current deployment evidence and independent review; Root final integration/archive handoff.",
+      "current_source_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "current_state": "verified_stated_contract_and_current_shared_scope"
+    },
+    {
+      "id": "AC3",
+      "state": "verified_in_disposition_scope",
+      "evidence": "Long histories, deep exposure/corruption, complete namespace and CT1 controls retain exact bytes and actual v13 named passes.",
+      "remaining": "CCG2 OFF02/ON actual current deployment evidence and independent review; Root final integration/archive handoff.",
+      "current_source_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "current_state": "verified_stated_contract_and_current_shared_scope"
+    },
+    {
+      "id": "AC4",
+      "state": "verified_in_disposition_scope",
+      "evidence": "M1 immediate requeue and M2 bounded retry tests actually pass; accepted 1.5s budget and terminal exhaustion remain.",
+      "remaining": "CCG2 OFF02/ON actual current deployment evidence and independent review; Root final integration/archive handoff.",
+      "current_source_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "current_state": "verified_stated_contract_and_current_shared_scope"
+    },
+    {
+      "id": "AC5",
+      "state": "verified_in_disposition_scope",
+      "evidence": "H2 actual daemon/HTTP rebinding plus stale/refusal controls pass in v13, preserving exposed generations and original requests.",
+      "remaining": "CCG2 OFF02/ON actual current deployment evidence and independent review; Root final integration/archive handoff.",
+      "current_source_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "current_state": "verified_stated_contract_and_current_shared_scope"
+    },
+    {
+      "id": "AC6",
+      "state": "verified_in_current_TS_scope",
+      "evidence": "Current 34-test knowledge panel / 66-test locale parity v13 pass; actual v13 product source equals d0b132fff. Current source recovery disclosure increment preserved. Root now records complete v14 TS pass.",
+      "remaining": "CCG2 OFF02/ON actual current deployment evidence and independent review; Root final integration/archive handoff.",
+      "current_source_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "current_state": "verified_stated_contract_and_current_shared_scope"
+    },
+    {
+      "id": "AC7",
+      "state": "verified_current_source",
+      "evidence": "SQLC actual exit0, all 1631 current input hashes and 130 generated hashes match before/after success; 761–763 concurrent single-statement up/no FK/down guard and cleanup registration verified.",
+      "remaining": "CCG2 OFF02/ON actual current deployment evidence and independent review; Root final integration/archive handoff.",
+      "current_source_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "current_state": "verified_stated_contract_and_current_shared_scope"
+    },
+    {
+      "id": "AC8",
+      "state": "open_fullcheck_gate",
+      "evidence": "Independently reconstructed 82 v13 -race package raw/metadata hashes: 20963 pass / 0 fail / 22 skip, 9 compile-only; all 82 unique DBs. v13 static15 and core4455/views7165 pass on current product bytes. This run still exited2.",
+      "remaining": "CCG2 OFF02/ON actual current deployment evidence and independent review; Root final integration/archive handoff.",
+      "current_source_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "current_state": "verified_stated_contract_and_current_shared_scope",
+      "current_evidence": "Actual V16 make0/static15/TS five full reports and all82 -race packages/current DB clones; CCG1 normal/race now independently accepted."
+    },
+    {
+      "id": "AC9",
+      "state": "verified_contract_sync_in_stated_scope",
+      "evidence": "Server/core/views knowledge specs and runtime upgrade documentation retain current contracts; built-in issue skill/source map remains current after delivered policy/detail updates; independent sync/followup reports retain hashes.",
+      "remaining": "CCG2 OFF02/ON actual current deployment evidence and independent review; Root final integration/archive handoff.",
+      "current_source_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+      "current_state": "verified_stated_contract_and_current_shared_scope"
+    }
+  ],
+  "current_source_comparisons": [
+    {
+      "path": "server/internal/service/task_knowledge.go",
+      "sha256": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b"
+    },
+    {
+      "path": "server/internal/service/task_knowledge_prepare.go",
+      "sha256": "756823abb5b2a55d6cba2ae037cbfd87bde741ee6da1493972d86c90b1d301ed"
+    },
+    {
+      "path": "server/internal/service/task_knowledge_observe.go",
+      "sha256": "3b7c77ec4823ccd30a73189c0d9fbf1b1c2ba7b2c19b49ed6bc6e5630460ebf4"
+    },
+    {
+      "path": "server/internal/service/task.go",
+      "sha256": "933bf52d6f637c1203650952c9d6be07a69399b54ea883c5dca5f00ce815fa8d"
+    },
+    {
+      "path": "server/internal/handler/daemon.go",
+      "sha256": "f3dabdca68069b967dd8b4b460804c4dfaed1d967369156e9425944f050b0593"
+    },
+    {
+      "path": "server/internal/daemon/daemon.go",
+      "sha256": "c1f51b2ab7b26f6f560db9e0dd5061407496f234c34c85922cda4f4d8fd65d97"
+    },
+    {
+      "path": "server/internal/daemon/knowledge_context.go",
+      "sha256": "b01525aaa6ea2a60253e61eaac8ba62ecc34467cb7a6c9cae7733936999725fc"
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle.go",
+      "sha256": "15431e2e4329ba12a4f3da09114c1d892862fe4e798b124391bf21a25fb326be"
+    },
+    {
+      "path": "server/pkg/agent/knowledge_launch_test.go",
+      "sha256": "b890b56259806b63670176331f607773c343053ad9fa45569246393238be6f3d"
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle_test.go",
+      "sha256": "5ee5ea93c430e101e07447ae750765ba1526f7c55f24ff1ce2274d371b01eb69"
+    },
+    {
+      "path": "server/pkg/protocol/task_knowledge.go",
+      "sha256": "b53ad04e93185cdf6bb35b8f8a9efc09dd8b21936a3c7bc21a7ed706db67b424"
+    },
+    {
+      "path": "server/internal/realtime/hub.go",
+      "sha256": "0dc30f465fd4a3a83e8dc230bfd2230c6538a2b96843ea6250a8e06372cb72dc"
+    },
+    {
+      "path": "server/internal/realtime/collaboration.go",
+      "sha256": "01cff978aff5a1cd61bcadc95736ec786038bcebdeb8f6dafbedf6e73a6d8bf5"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge.go",
+      "sha256": "a8b9766d340ccd0ed17f1c2f30a3f527597541c3a065f4344250ef5b63e914b6"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_credentials.go",
+      "sha256": "7bd97758175b4e411a156cd7c29591ec9a5f04874c45eb614ea6e6f20aaf273f"
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_invalidation.go",
+      "sha256": "75502bea9e4c30a015930fda350e45f9869719d83cbebe52376209a76c445cd9"
+    },
+    {
+      "path": "server/pkg/db/queries/task_knowledge.sql",
+      "sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_knowledge_service.sql",
+      "sha256": "c85605952b6b6202b55aaf04b3c00137dbd25ba4626fd8d072da240eed5c29cb"
+    },
+    {
+      "path": "server/pkg/db/generated/task_knowledge.sql.go",
+      "sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17"
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-cache.ts",
+      "sha256": "2eeeb421a7cbffeccfbfa54b5773f6b2c6316064b68fba407a1915529f75263b"
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-lease.ts",
+      "sha256": "67a78d8880e120b52c253707b4fd7953be7b9d1d1127625d337eff50cec51730"
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-actions.ts",
+      "sha256": "3e5e92fbd51c218e34dd87f10f0a645354dc7b97bbd22b5337bcd7dd6250bb23"
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-recovery.ts",
+      "sha256": "dca107ab6ba525f25e56e9c113a5353eaf5d8f061154a8e48282f3762c806d89"
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-queries.ts",
+      "sha256": "12d090cbc5209fb4ce1d510a9fc2414bd70727e579245cf2ba27707fb9fd41e9"
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-panel.tsx",
+      "sha256": "ae493596d090ec1ffc7134b9247e2b58dabf2c8aa9e8c4028164795e9e5be735"
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-review.tsx",
+      "sha256": "7925ae0462fc003efa3ce31a7ddb3b24f4d0657eea6e21930a4be047b7f51b94"
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-proposal.tsx",
+      "sha256": "c593f1be704cfe383bd99feb418e133f4b5bd413cb4bf685ba1e7d86ee9a98e8"
+    },
+    {
+      "path": "server/cmd/server/collaboration_knowledge_correction_composite_test.go",
+      "sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41"
+    },
+    {
+      "path": "server/cmd/server/collaboration_knowledge_host_composite_test.go",
+      "sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6"
+    },
+    {
+      "path": "server/internal/daemon/knowledge_server_integration_test.go",
+      "sha256": "0e74b9e4fe420c7780ef800d022e66f1c187871f2ac8d25eb8c0261db10656f2"
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "57f90b8fdcb2cc83a4a26c131092629ac402d72e6e93241a05f5d09b1bf09bc8"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b"
+    },
+    {
+      "path": "server/internal/service/collaboration_authority.go",
+      "sha256": "e067d0f593f6a9482423c641413b08f6eed66bb552dc94020d94800f1f89c52e"
+    },
+    {
+      "path": "server/internal/service/collaboration_queue.go",
+      "sha256": "6fd21ce5d824e0a41951cfa3de83ba2fb2db46cc4366cdea74b45c2931ccd34b"
+    },
+    {
+      "path": "server/internal/service/collaboration_batches.go",
+      "sha256": "098ee6f0a6ff05dd778ead3e3545077133c0e184503943b6f35448339aacdfd7"
+    },
+    {
+      "path": "server/internal/service/collaboration_control.go",
+      "sha256": "b2006df16d203429136e74a8f024feb5fcd489fe438f37d8affcd5528c698e2a"
+    },
+    {
+      "path": "server/internal/service/collaboration_mentions.go",
+      "sha256": "a20b671c1541c93f808881950e387302c5af1e33269c7f98b034fb5d93c2add1"
+    },
+    {
+      "path": "server/internal/collaboration/access.go",
+      "sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_knowledge_service.sql.go",
+      "sha256": "ca38da913fad927991cfc7f791aa30e0390697b82384fbb657a0513aa8960c6d"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "sha256": "d9ed068b308783b0b5cd9375b86a1e1c592b9abcbd3dd260a5ecf79ae2b9fbfe"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "sha256": "851d009653677ec358af379e38df156f0d0e9bd5768d9af773b02a29f4a0d5cb"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-knowledge.md",
+      "sha256": "4ff0a7158b56c354a43b2681609b820a3b1e285c0807b009b68f6536eaafacf2"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-knowledge-execution.md",
+      "sha256": "98c6852e345edf8c7d2fa2bd81a45106bb7e75fd7d0ed799ec4591aa93ca6499"
+    },
+    {
+      "path": ".trellis/spec/views/frontend/collaboration-knowledge.md",
+      "sha256": "21ff3e8d3ee6ba6d594223268b8a420d6efd8f8aa83831406323f872cd8dc8c6"
+    },
+    {
+      "path": "server/migrations/761_collaboration_knowledge_agent_history.down.sql",
+      "sha256": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53"
+    },
+    {
+      "path": "server/migrations/761_collaboration_knowledge_agent_history.up.sql",
+      "sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551"
+    },
+    {
+      "path": "server/migrations/762_collaboration_knowledge_runtime_history.down.sql",
+      "sha256": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25"
+    },
+    {
+      "path": "server/migrations/762_collaboration_knowledge_runtime_history.up.sql",
+      "sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021"
+    },
+    {
+      "path": "server/migrations/763_collaboration_knowledge_delivery_history.down.sql",
+      "sha256": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f"
+    },
+    {
+      "path": "server/migrations/763_collaboration_knowledge_delivery_history.up.sql",
+      "sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429"
+    }
+  ],
+  "prior_independent_and_followup_reviews": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-independent-review/review.json",
+      "sha256": "1392c85dd4921e24e0113a6b7d12ce967b2635d23b2653b4a926530ed71f2979"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-security-review/review.json",
+      "sha256": "37b800389b5cff7d6eb2a7fc73eff0f65d7fc208957dffb49108efaccb3a0d03"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/claim-test-review/review.json",
+      "sha256": "8f157d51ce5fff3290c9cd37314d55de805aed4c21d804e067f470a7ca782b19"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/launch-independent-review/review.json",
+      "sha256": "d23065aba2ad593687d74928c49d09d9799765e3b80f4aaee659a7f63ae1c798"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/review.json",
+      "sha256": "21bc41f87450ec9cf9a39383991a4e198ef09c3be1618e0061336ee13513f020"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/web-independent-review/review.json",
+      "sha256": "94c42344cf20a4e85b27f2e31bb0efa68af0d62c50d0e16991faf2538912bc92"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/review.json",
+      "sha256": "79de55a3f3725cf1fb15f18dd6822127da16bfd1238613b0f6b7e67b6f768e99"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/CT1-root-recheck-r2.json",
+      "sha256": "389c6202e76ae7e9c001716dd150e92a768c94dca5494390581a68b96087c3b7"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/write-independent-review/iw1-recheck.json",
+      "sha256": "e8bcf2c988e0efd80c8a054bffea042dcc1785ca49f0f25a39cd0153b0b95807"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/migration-fixture-recheck.json",
+      "sha256": "806aed5823a40af1a6e5d0c801cced85e685608b9b434b12c7e81723746715e1"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/skill-entry-recheck.json",
+      "sha256": "142bf9af42b94ec3fc4648df5be6786e96f4842de472376cf412bd538eae113a"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-independent-review/plan-recheck.json",
+      "sha256": "2a086e9804ffa5702c10c4b0da8d4dd1a6ba5f25b0afe7d11ef103417f1307d5"
+    }
+  ],
+  "actual_shared_V16_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v16-actual-01/independent-shared-readiness-review.json",
+    "sha256": "b84ae87408a08e3e2536dfef08935c92b1ec23deddfc8e8a5c88b00d343734a2"
+  },
+  "current_integration_race": {
+    "all_82_final_commands_race": true,
+    "shared_summary": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v16-actual-01/summary.json",
+      "sha256": "2b01e61d31a5b9f7057b6d1e9c59c95b22647ed110e692b5cff9f73e024cbed8"
+    },
+    "historical_distinct_integration_races": [
+      {
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/realtime-host-full-race.json",
+          "sha256": "77551bd87381f1bf37b1b2641fe3b5e8c0860fd6df8cad3e8eae517185247d4f"
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/realtime-host-full-race.jsonl",
+          "sha256": "a05642e6281629361116f8215d12d5d8b189902d030ea90d9159549f22099503"
+        },
+        "source_sha": "45efa093c",
+        "counts": {
+          "run": 434,
+          "pass": 434,
+          "fail": 0,
+          "skip": 0
+        },
+        "scope": "Historical independently scoped integration race; current final V16 all82 race is the current-source completion proof."
+      },
+      {
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-history-race.json",
+          "sha256": "4d3a3f152302c0ad82d085516a14a27305a0b281b7248728493a63f58038a38a"
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-history-race.jsonl",
+          "sha256": "55351eeea8f8e9bf9231fc4955c37f7b0921b27fa33ec35d2f2cff614d76084e"
+        },
+        "source_sha": "0702d5039b235adc88dbd3d7d949a1a8f165d247",
+        "counts": {
+          "run": 9,
+          "pass": 9,
+          "fail": 0,
+          "skip": 0
+        },
+        "scope": "Historical independently scoped integration race; current final V16 all82 race is the current-source completion proof."
+      },
+      {
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-race.json",
+          "sha256": "722c0a0f3361aa5c1f8e862b309d9c58d30d5db0c2366149660e675981150f8d"
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-race.jsonl",
+          "sha256": "e09467759a6ebd867a6afaab0a4347dd2782fbd0139285d428dbde11b5c0718b"
+        },
+        "source_sha": "0702d5039b235adc88dbd3d7d949a1a8f165d247",
+        "counts": {
+          "run": 9,
+          "pass": 9,
+          "fail": 0,
+          "skip": 0
+        },
+        "scope": "Historical independently scoped integration race; current final V16 all82 race is the current-source completion proof."
+      }
+    ]
+  },
+  "CCG1": {
+    "review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg1-result-review/review.json",
+      "sha256": "fcaba0f89bad4ad584cdddd8cd474fb681d3e09c28d0f9aa4f8f1d80c88b3583"
+    },
+    "verdict": "pass-with-notes",
+    "normal_then_race": true,
+    "results": [
+      {
+        "mode": "normal",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-normal-v16-01/result.json",
+          "sha256": "3c2129cef77ef6914d665938c137e01db7c17cbbe440dd8b821acaf99b9ddc22"
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-normal-v16-01/tests.jsonl",
+          "sha256": "5dd39b9ec6ed4cb4990337ba35d1194259c78f48a7042ef859b41dcb05f6e8e8"
+        },
+        "actual_exit": 0,
+        "named_pass": 1,
+        "named_fail": 0,
+        "named_skip": 0,
+        "source_bound_physical_fact": "physical_launches=2 corrected_version=2 superseded_stdin_absent=true third_authorization_refused=true third_physical_launches=0 original_exposure_and_receipts_retained=true",
+        "independent_verdict": "pass"
+      },
+      {
+        "mode": "race",
+        "result": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-race-v16-01/result.json",
+          "sha256": "85078914fd957ef4836c17a1954cff329e4e083bdd1a46801aea07c47d0ab0cf"
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-race-v16-01/tests.jsonl",
+          "sha256": "ef7daca07c64a46d3455e52c96abaa918a3634744983a4402f8498f4353da65d"
+        },
+        "actual_exit": 0,
+        "named_pass": 1,
+        "named_fail": 0,
+        "named_skip": 0,
+        "source_bound_physical_fact": "physical_launches=2 corrected_version=2 superseded_stdin_absent=true third_authorization_refused=true third_physical_launches=0 original_exposure_and_receipts_retained=true",
+        "independent_verdict": "pass"
+      }
+    ]
+  },
+  "CCG2": {
+    "OFF01": "failed browser launch; retained history, not accepted",
+    "OFF02_actual_result": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/result.json",
+      "reported_by_root_sha256": "7ce251ea2e611178d356aa54358360b693fa779fcc3317b200f388590e19775a",
+      "root_reported_exit0_accepted": true,
+      "independent_result_review": "pending delivery to this reviewer"
+    },
+    "ON": "not run at latest Root message; actual result and independent review pending"
+  },
+  "spec_builtin_mapping": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/spec-builtin-mapping.json",
+    "sha256": "7f7961d46cd1442ee1e745699ee3752b6c46b0f382bb78a9c227efde718556c4"
+  },
+  "main_five_overlap_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/main-five-overlap-review.json",
+    "sha256": "45d2dc196120b93e4eebbfff2b9a75d28055584d4dceabd6aadd3476106a02c1"
+  },
+  "main_overlap_new_assertion_loss_blockers": 0,
+  "archive_reference_plan": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/archive-reference-plan.json",
+    "sha256": "808cf13ac5504ac1022504861f4f61fd8a01951acf1fd9f567fdb2d952055580"
+  },
+  "closure_blockers": [
+    "CCG2 OFF02 independent result review",
+    "CCG2 ON actual accepted result and independent result review",
+    "Root scoped integration/source binding and #6 operational archive reference handoff"
+  ],
+  "no_new_confirmed_product_blocker": true,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false,
+  "task_status_source_permissions_commit_or_archive_operations": 0,
+  "repeat_collector_tests_auditor_runtime_or_model_operations": 0
+}

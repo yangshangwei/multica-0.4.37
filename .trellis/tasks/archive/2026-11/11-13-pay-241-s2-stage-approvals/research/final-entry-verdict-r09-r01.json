@@ -1,0 +1,179 @@
+{
+  "at": "2026-11-15T23:36:04.722613+00:00",
+  "verdict": "CURRENT_E4_HANDLER_ROUTER_ENTRY_SCOPE_ACCEPTED_NORMAL_AND_RACE",
+  "reviewer": "/root/p2_r07_check",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "source": {
+    "files": 5038,
+    "manifest": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/server-current-r09-r01/manifest.json",
+      "sha256": "e4dbc77ea04f770daad31b65496d181f1a5e5923f0fcdb6baace8eadf6504229"
+    },
+    "drift": []
+  },
+  "permit": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/execution-permit.json",
+    "sha256": "4b7bc72afd6e6889a2f24da9ad3eef2882ffaf5253456ab118facf183485377f",
+    "bytes": 71179
+  },
+  "admission": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/admission.json",
+    "sha256": "b3239edf6731a025b110f7e1debde39ab30e39f964ac6ca410803ec46cbdcb5f",
+    "bytes": 12166
+  },
+  "actual_Go_test_commands": 4,
+  "command_order": [
+    "handler_normal",
+    "handler_race",
+    "router_normal",
+    "router_race"
+  ],
+  "automatic_test_retries": 0,
+  "maximum_parallel_PAY_suites": 1,
+  "profiles": [
+    {
+      "label": "handler_normal",
+      "status": "PASS",
+      "tops": 99,
+      "named": 326,
+      "leaves": 275,
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_normal/result.json",
+        "sha256": "dff56bf802a5aded49d040665fcf0ff8e55bf5177f23296f96d9aaecc192947e",
+        "bytes": 53914
+      },
+      "database": "multica_pay241_20261116_entry_handler_normal",
+      "final_other_connections": 0,
+      "final_catalog_sha256": "27e3b4d8bf4d8477b77bf7cb31aecb8ba525fd242bc1a1a5f284d3cea06064b9",
+      "final_db_audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_normal-final-db.json",
+        "sha256": "9ad42f5078489876666392f5ebc16cc755d0f8284fc81ac2b52581598937da0f",
+        "bytes": 892836
+      },
+      "retained_nonzero_deltas": {
+        "organization": 1,
+        "vcs_pull_request": 3,
+        "issue_vcs_pull_request": 3,
+        "agent_invocation_target": 2,
+        "delivery_project_change": 2,
+        "project_delivery_policy": 53,
+        "collaboration_knowledge_job": 3,
+        "delivery_completion_terminal": 19,
+        "delivery_evidence_evaluation": 26,
+        "collaboration_config_invalidation": 324,
+        "delivery_completion_authorization": 46,
+        "collaboration_knowledge_invalidation": 49
+      }
+    },
+    {
+      "label": "handler_race",
+      "status": "PASS",
+      "tops": 99,
+      "named": 326,
+      "leaves": 275,
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_race/result.json",
+        "sha256": "36ee60daabd92cfd315c87043a66c4320b74a2076ca957323546c3ebc75ef2b2",
+        "bytes": 53894
+      },
+      "database": "multica_pay241_20261116_entry_handler_race",
+      "final_other_connections": 0,
+      "final_catalog_sha256": "27e3b4d8bf4d8477b77bf7cb31aecb8ba525fd242bc1a1a5f284d3cea06064b9",
+      "final_db_audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_race-final-db.json",
+        "sha256": "88115deed0b3d90cbada7ccfc2ed011d773874d9c507a0f1faa62f192d7b887e",
+        "bytes": 892830
+      },
+      "retained_nonzero_deltas": {
+        "organization": 1,
+        "vcs_pull_request": 3,
+        "issue_vcs_pull_request": 3,
+        "agent_invocation_target": 2,
+        "delivery_project_change": 2,
+        "project_delivery_policy": 53,
+        "collaboration_knowledge_job": 3,
+        "delivery_completion_terminal": 19,
+        "delivery_evidence_evaluation": 26,
+        "collaboration_config_invalidation": 324,
+        "delivery_completion_authorization": 46,
+        "collaboration_knowledge_invalidation": 49
+      }
+    },
+    {
+      "label": "router_normal",
+      "status": "PASS",
+      "tops": 54,
+      "named": 208,
+      "leaves": 174,
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_normal/result.json",
+        "sha256": "c31bfb7ccb80db68e5447454041de9d962681387150b6fc955fe609abfabc38e",
+        "bytes": 39537
+      },
+      "database": "multica_pay241_20261116_entry_router_normal",
+      "final_other_connections": 0,
+      "final_catalog_sha256": "27e3b4d8bf4d8477b77bf7cb31aecb8ba525fd242bc1a1a5f284d3cea06064b9",
+      "final_db_audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_normal-final-db.json",
+        "sha256": "f913b022c2f064317d3ebca9fb1cf85de25e8c184ec1a17c3acca6c711d606f9",
+        "bytes": 892833
+      },
+      "retained_nonzero_deltas": {
+        "organization": 1,
+        "project_delivery_policy": 137,
+        "collaboration_knowledge_job": 6,
+        "delivery_completion_terminal": 23,
+        "delivery_evidence_evaluation": 59,
+        "collaboration_config_invalidation": 237,
+        "delivery_completion_authorization": 52,
+        "collaboration_knowledge_invalidation": 1
+      }
+    },
+    {
+      "label": "router_race",
+      "status": "PASS",
+      "tops": 54,
+      "named": 208,
+      "leaves": 174,
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_race/result.json",
+        "sha256": "026106d4ba9426183508c7d0d3a85a816c2d6699af6b5de50b2958d1d0c8f3f1",
+        "bytes": 39517
+      },
+      "database": "multica_pay241_20261116_entry_router_race",
+      "final_other_connections": 0,
+      "final_catalog_sha256": "27e3b4d8bf4d8477b77bf7cb31aecb8ba525fd242bc1a1a5f284d3cea06064b9",
+      "final_db_audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_race-final-db.json",
+        "sha256": "12f33fbf2e0bd8bf633c4a45a639cefd312cb9568a276eda2faa435c3cc085ad",
+        "bytes": 892827
+      },
+      "retained_nonzero_deltas": {
+        "organization": 1,
+        "project_delivery_policy": 137,
+        "collaboration_knowledge_job": 6,
+        "delivery_completion_terminal": 23,
+        "delivery_evidence_evaluation": 59,
+        "collaboration_config_invalidation": 237,
+        "delivery_completion_authorization": 52,
+        "collaboration_knowledge_invalidation": 1
+      }
+    }
+  ],
+  "normal_race_top_named_leaf_sets_equal": true,
+  "final_all_other_DB_connections": 0,
+  "final_owned_PID_or_group_remaining": [],
+  "final_source_config_catalog_ledger_drift": 0,
+  "static_compile_proof": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/build-r01/final-compile-evidence.json",
+    "sha256": "4ebe0302f9b4f743ef348696309dc95d7009719c1797aa85cfdaad12d282d577"
+  },
+  "service116_not_repeated": true,
+  "tests_configs_timeouts_pool_deadlines_and_assertions_unchanged": true,
+  "no_test_data_or_retained_history_cleaned_by_reviewer": true,
+  "ROOT_frozen_source_prior_reports_or_CSV_edits": 0,
+  "r11_reuse": "Not yet accepted; awaiting source dependency closure proof for separately frozen0a10 current server graph",
+  "actual_four_E2E_business_scenario_acceptance_granted": false,
+  "A11": "OPEN",
+  "A12": "OPEN"
+}

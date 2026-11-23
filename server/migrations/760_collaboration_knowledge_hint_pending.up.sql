@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY IF NOT EXISTS collaboration_knowledge_hint_pending_idx ON collaboration_knowledge_invalidation (COALESCE(last_attempted_at, created_at), id) WHERE kind = 'target_hint' AND state = 'pending';

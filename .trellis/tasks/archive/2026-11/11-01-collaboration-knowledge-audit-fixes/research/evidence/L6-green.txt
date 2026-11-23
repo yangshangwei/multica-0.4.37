@@ -1,0 +1,128 @@
+L6 green run (fixed daemon decode)
+Fix: Task.UnmarshalJSON decodes knowledge_context apart from the rest of the task, still strictly through
+protocol.TaskKnowledgeClaimDescriptor (nested strict session decoder unchanged). On failure the task gets
+KnowledgeContext=nil, knowledgeRejected=true and a fence recovered only from the exact claim_generation and
+dispatched_at keys when ValidateTaskKnowledgeRequest accepts them. taskKnowledgeFence returns that fence for
+start/complete/fail, and prepareKnowledgePrompt refuses a rejected task with knowledge_context_changed before
+any base prompt or process. Other tasks in the same response decode as before. No wire change.
+
+Base: 680ad868fc9ce5e2b9ba665c20a626d3c6bbb0ab; uncommitted files at the time of this run:
+ M .trellis/spec/server/collaboration-knowledge-execution.md
+ M docs/collaboration-knowledge-runtime.md
+ M server/internal/daemon/knowledge_context.go
+ M server/internal/daemon/knowledge_context_claim_test.go
+ M server/internal/daemon/knowledge_context_test.go
+ M server/internal/daemon/types.go
+ M server/internal/service/collaboration_knowledge_runtime.go
+ M server/internal/service/collaboration_knowledge_runtime_test.go
+ M server/internal/service/task_knowledge_concurrency_test.go
+ M server/internal/service/task_knowledge_prepare.go
+?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L6-green.txt
+?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/L6-red.txt
+?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M2-green.txt
+?? .trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/M2-red.txt
+
+Database: none
+
+Classification
+BEHAVIORAL (failed in L6-red.txt, pass here):
+  TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/{future_session_field,session_case_alias,malformed_session_generation,unreadable_fence}
+  TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/{http_single,http_batch,ws_batch,http_legacy_fallback,managed_single,managed_http,managed_ws}
+REGRESSION GUARD:
+  TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities
+
+=== Run 1: go test ./internal/daemon/ -run '<names above>' -count=1 -v   (exit 0)
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_single
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_batch
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/ws_batch
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_legacy_fallback
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_single
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_http
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_ws
+--- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities (1.30s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_single (0.41s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_batch (0.15s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/ws_batch (0.15s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_legacy_fallback (0.15s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_single (0.14s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_http (0.15s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_ws (0.16s)
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/future_session_field
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/session_case_alias
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/malformed_session_generation
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/unreadable_fence
+--- PASS: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask (0.04s)
+    --- PASS: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/future_session_field (0.01s)
+    --- PASS: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/session_case_alias (0.01s)
+    --- PASS: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/malformed_session_generation (0.01s)
+    --- PASS: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/unreadable_fence (0.01s)
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_single
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_batch
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/ws_batch
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_legacy_fallback
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_single
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_http
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_ws
+--- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor (0.01s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_single (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_batch (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/ws_batch (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_legacy_fallback (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_single (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_http (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_ws (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon	1.935s
+
+=== Mutation checks (go test -overlay; worktree files untouched). Each must FAIL.
+--- M-a: remove the knowledgeRejected refusal from prepareKnowledgePrompt (fail-open into a base prompt)   (exit 1)
+    knowledge_context_claim_test.go:757: rejected descriptor was not refused: status=completed reason=
+    knowledge_context_claim_test.go:757: rejected descriptor was not refused: status=completed reason=
+    knowledge_context_claim_test.go:757: rejected descriptor was not refused: status=completed reason=
+    knowledge_context_claim_test.go:757: rejected descriptor was not refused: status=completed reason=
+--- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask (0.64s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/future_session_field (0.17s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/session_case_alias (0.15s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/malformed_session_generation (0.17s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/unreadable_fence (0.15s)
+--- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor (0.01s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_single (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_batch (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/ws_batch (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_legacy_fallback (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_single (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_http (0.00s)
+    --- PASS: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_ws (0.00s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon	1.222s
+FAIL
+--- M-b: taskKnowledgeFence ignores the recovered fence   (exit 1)
+    knowledge_context_claim_test.go:752: recovered fence = <nil>, want original=true
+    knowledge_context_claim_test.go:752: recovered fence = <nil>, want original=true
+    knowledge_context_claim_test.go:752: recovered fence = <nil>, want original=true
+--- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask (0.02s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/future_session_field (0.00s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/session_case_alias (0.00s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/malformed_session_generation (0.00s)
+    --- PASS: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/unreadable_fence (0.02s)
+    knowledge_context_claim_test.go:832: rejected task lost its original fence: <nil>
+    knowledge_context_claim_test.go:832: rejected task lost its original fence: <nil>
+    knowledge_context_claim_test.go:832: rejected task lost its original fence: <nil>
+    knowledge_context_claim_test.go:832: rejected task lost its original fence: <nil>
+    knowledge_context_claim_test.go:832: rejected task lost its original fence: <nil>
+    knowledge_context_claim_test.go:832: rejected task lost its original fence: <nil>
+    knowledge_context_claim_test.go:832: rejected task lost its original fence: <nil>
+--- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor (0.01s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_single (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_batch (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/ws_batch (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_legacy_fallback (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_single (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_http (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_ws (0.00s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon	0.639s
+FAIL

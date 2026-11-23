@@ -1,0 +1,59 @@
+{
+  "id": "f3-parent-budget-root",
+  "name": "f3-parent-budget-root",
+  "title": "F3 单一父任务预算根（观察首包）",
+  "description": "一个普通父任务终身一个预算根，覆盖已绑定子任务的执行与所有重试；actual/estimated/reserved/unknown 分开，整数计量与冻结价格版本可追溯。首包只观察不拦截，仅 API 与 issue budget CLI，含 quick-create 执行。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": "F3-S1 observe-only delivered and verified on local feature and shared branches; no S2/F4/real-provider scope",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-16",
+  "completedAt": "2026-11-20",
+  "branch": "codex/f3-completion-20261120",
+  "base_branch": "codex/cross-workspace-collaboration",
+  "worktree_path": "/Volumes/artisan/code/2026/mc-f3-completion-20261120",
+  "commit": "8126073f638a6db2636dc1c10575836e1bff46fc",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-12-agent-squad-followup-roadmap",
+  "relatedFiles": [],
+  "notes": "\n2026-11-20: original sessions stopped/frozen; full original-tree reconciliation, final integrated normal/race, durable evidence, local commits and shared fast-forward complete. Archive this child only.",
+  "meta": {
+    "implementation_authorization": "2026-11-16 user: D2–D6 按建议接受，授权 F3，拆成子任务. Scope: F3-S1 observe-only first slice incl. quick-create (D6). Not authorized: real Provider, POLA-1, shared project policy, push/PR/deploy, F3-S2 enforce, F4.",
+    "decisions": "D1 long-lived root per parent (2026-11-13); D2 same-root close/reopen + minimal economic tombstone; D3 API + issue budget CLI, owner/admin only; D4 USD integer ticks, actual/estimated/unknown split, post-activation only; D5 observe first, enforce separately authorized; D6 quick-create included",
+    "original_worktree": "/Volumes/artisan/code/2026/mc-f3-budget-root-20261116 (branch codex/f3-budget-root-20261116, base 86fea651c)",
+    "takeover_20261120": {
+      "session": "01a1f915-42b9-7422-a8d8-aa97e9af8724",
+      "previous_codex": "01a1f8c0-12c2-7d10-b5ca-765fc6076b9b",
+      "previous_claude": "17dc0746-4be8-4d81-b308-f56ad271c352",
+      "source_manifest_files": 213,
+      "feature_commit": "584846f95d30f70041b583e5b11eb12a859aa6df",
+      "integration_parent": "f2ea7d50d0e2ae412e1ee7961c47247390f20478",
+      "views_r4": {
+        "exit": 0,
+        "files": 608,
+        "tests": 7441
+      },
+      "integration_verification": "passed"
+    },
+    "delivery": {
+      "feature_commit": "584846f95d30f70041b583e5b11eb12a859aa6df",
+      "integration_commit": "8126073f638a6db2636dc1c10575836e1bff46fc",
+      "shared_branch": "codex/cross-workspace-collaboration",
+      "source_tree": "695a4a84fc50a9223f56cda07fbfb2cf89936452",
+      "source_files": 7916,
+      "matrix_rows": 62,
+      "canonical_b54": 91,
+      "core_tests": 5355,
+      "views_tests": 7610,
+      "report": "research/codex-final-delivery-20261120.md",
+      "evidence": "research/codex-evidence-20261120/README.md",
+      "real_provider_calls": 0
+    },
+    "archive_path": ".trellis/tasks/archive/2026-11/11-16-f3-parent-budget-root"
+  }
+}

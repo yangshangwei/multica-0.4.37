@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-03T10:25:57.946572+00:00",
+  "reviewer": "/root/v11_evidence_audit",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "Independent source/template and credential-free admission review only. Running v13 inputs/results and all services are outside writable scope.",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "reviewed_preparation": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/ccg-current-source-preparation/preparation.json",
+    "sha256": "ce7bfad4bf5381dc92d2a9f2ec0d70affb6098dd8eb79a3f53713cb8f51283eb",
+    "notes": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/ccg-current-source-preparation/PREPARATION.md",
+      "sha256": "205e6b6a9eaefdfec364e0281210cca661cc04c4ae21a58b85efa3130b6eb4c8"
+    }
+  },
+  "reviewed_files": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/binary-binding.json.template": {
+      "sha256": "17ccee4eb46eae2b0d37ebfa1c10704d2429d7e37590b4fbc3b557752da4cc64",
+      "bytes": 1108
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/ccg-admission-template.py.txt": {
+      "sha256": "8a80ad4827b7fc0081747dfc84f1519f5e6588dffe033c727a4c7e8bc799c5d8",
+      "bytes": 5913
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/deployment-proof.json.template": {
+      "sha256": "d2fc16a239036c5598f5beecd0830826b9b02b11e142379280b682c59a01bb0f",
+      "bytes": 982
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/source-values.json.template": {
+      "sha256": "f42ed2ecc8f454499b0bfb7e55eb6ad550f12bc61718dbd76a1143e0020723b3",
+      "bytes": 1467
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/deployment-proof.json.template": {
+      "sha256": "4626edf623c460f202139e41de4d8224b3a15258d3e9d814fbbae4af42184cb7",
+      "bytes": 979
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/source-values.json.template": {
+      "sha256": "4b0c1ab9d8b29fea4987de8464759220548177ceccb39b80f1e8633f494ef087",
+      "bytes": 1466
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-normal.json.template": {
+      "sha256": "24421fc6cd9fc8b6fb233bd9b9a26e95e05077c5e9949763bdeb5b0feaa8a558",
+      "bytes": 947
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-race.json.template": {
+      "sha256": "5fa9be9e9ea8c7f6f64d8b435c3f584a68fd310e6a88935e015f2f084dd8df5f",
+      "bytes": 945
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-off.json.template": {
+      "sha256": "f7cca624250bcc634fa6015b7c85b94d8ce5e946bba651d3c1d2012ed723b439",
+      "bytes": 1133
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-on.json.template": {
+      "sha256": "ca340f0dbecd68bbca1ca14d0dd1906499d0cfc1be74ab51f2ab9b6dea5c3753",
+      "bytes": 1132
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg1.py": {
+      "sha256": "2dc49a29c3d8d5274eea8875a98c797e8225b8e06a9f8e231551ec43b5fefb6b",
+      "bytes": 9523
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg2.py": {
+      "sha256": "041ce1d42d7d783842bdc0518e9ab37c4b4f0776b4fd88413f838c79a0beba62",
+      "bytes": 16494
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/source-inputs.json": {
+      "sha256": "e0971829e126ca6513a932e5cecee5dd44517f479e1e1a302c41dc425fe23aaa",
+      "bytes": 3516
+    }
+  },
+  "original_runner_hashes_preserved": {
+    "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/run-gate.py": "00f1dde9057e6496566c495290fb362b31d591b5a67e1f1aefc5070260f00031",
+    "/Volumes/artisan/code/2026/mc-knowledge-deployed-probe-20261102/.omx/private/run-deployed-probe.py": "fe87b66ac8283afa1c964c5407c97ea8a9e7c8b99044c2d6d6642726af2d0e45"
+  },
+  "source_and_tool_inputs_verified": {
+    "source_files": 10,
+    "tool_auditor_parser_items": 7,
+    "hash_mismatches": []
+  },
+  "verification": {
+    "python_AST": "pass; both runners",
+    "json_templates": "pass; all prepared JSON/templates read",
+    "actual_unready_template_refusals": 4,
+    "offline_early_admission_refusals": 16,
+    "offline_verification": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/ccg-current-source-review/offline-verification.json",
+    "offline_verification_sha256": "b2039885ccb7274669019ddddfd7cb384582bec64ee86f2835c5327c539296ef",
+    "Go_Playwright_DB_API_Web_Provider_invocations": 0,
+    "candidate_or_preparation_or_active_v13_files_written": 0,
+    "candidate_run_output_directories_created": 0
+  },
+  "CCG1": {
+    "selected_test": "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch",
+    "normal_and_race_preserved": true,
+    "tag": "knowledgeintegration",
+    "selection": "^exact test$; ./cmd/server; -p=1 -parallel=2 -count=1 -json -timeout=5m; race adds -race",
+    "acceptance": "process exit0, exactly1 run/pass and0 fail/skip, exact physical-input/withdrawal fact emitted by unchanged test",
+    "test_assertions_reviewed": [
+      "First approved content reaches one physical process",
+      "Separately human-approved v2 replaces prior contribution and binds actual stdin to real preparation/authorization",
+      "Second process uses separate workdir, no --resume, no-session-persistence and scoped business credential",
+      "Third real authorize returns409 after withdrawal before any third physical start",
+      "First two settled successful histories and original preparation/operation receipts remain immutable"
+    ],
+    "database_gate": "root fresh-allocation attestation plus loopback URL database equality/migration764, then required multica_knowledge_host_composite_20261101_ prefix before Go"
+  },
+  "CCG2": {
+    "selected_spec": "e2e/collaboration-knowledge-deployed.spec.ts",
+    "OFF_ON_separate": true,
+    "selection": "exact one spec;1 worker;0 retries; original timeout and assertions unchanged",
+    "acceptance": "process exit0,1 expected/0 unexpected/flaky/skipped, no top-level errors, exactly1 retained deployed-knowledge evidence attachment and matching expected flag/input/event counts",
+    "test_assertions_reviewed": [
+      "Fresh synthetic password actors and managed installation challenge preserve actual deployment/user/installation/runtime identity",
+      "Public proposal and exact approval bind candidate, version, source issue and content hash",
+      "Observed fake stdin has exact contribution and no-session-persistence only ON; OFF omits contributions",
+      "Exactly one actual visit and settled run; knowledge claim/preparation/authorization counts are1 ON and0 OFF",
+      "Daemon exits0 with no errors/stderr, one sealed proof_acknowledged ledger and authorized observed reaped attempt"
+    ],
+    "environment_gate": "reviewed parser reads environment as data, fake-only whitelist child environment, explicit binaries inside new private root, root-bound API PID/commit/config and actual renderer bytes/CORS checks"
+  },
+  "borrowed_runner_comparison": [
+    "Preserved original Go tag/mode/count/parallel/timeout/JSON and Agent CLI guard; narrowed CCG1 to the exact now-required correction composite rather than rerunning unrelated family tests.",
+    "Replaced ambient environment copying with a reviewed whitelist, pinned Go/tool hashes and task-owned HOME/cache/temp paths.",
+    "Replaced old shell sourcing of deployed environment with the already-reviewed v13 data parser; no new parser implementation.",
+    "Preserved actual OFF/ON source probe and added explicit root permits, successful wholecheck/final source audit, create-exclusive per-run outputs and stricter named/attachment accounting.",
+    "Old runner files and historical evidence hashes remain unchanged."
+  ],
+  "root_execution_conditions": [
+    "Finish successful v13 make check, required final identity audit and named/skip inventory before issuing any ready permit; release its services/window. All current templates remain false.",
+    "Root must use two separate private OFF/ON registries/profiles/workspaces, not only two --name values in one registry. Source dev-env.sh:1383-1398 reuses checkout matches. After port allocation, compare actual manifest/database because fallback:1414-1416 rewrites DB name.",
+    "Root must provide actual fresh database allocation and migration764 evidence for all four invocations and preserve each previous database; a database URL alone or copied ready boolean is not freshness evidence.",
+    "Root must populate and independently check deployment registry manifest/hash, actual DB freshness record, API process startup flag, actual production Web build/API/WS proof and renderer ownership. Some of these are deliberate root attestations; the runner does not itself parse registry.manifest or fetch Web HTML. Do not describe these preparation templates as live-resource proof.",
+    "Root must compile current fake daemon/provider, retain build commands/source/tool identity and successful exit, and bind the copied current CLI to its audited original build. binary build_record fields are root evidence, not independently dereferenced by the runner.",
+    "Read actual resulting raw tests/attachments after each execution. In particular final contribution identity, scoped user/deployment/run, one launch and sealed/reaped proof are asserted by the pinned test and must remain in final independent result review.",
+    "Any change to candidate, runner, source-inputs, pinned verifier, templates that affect execution or actual selected bindings requires updated hashes/review; no execution or task closure is granted here."
+  ],
+  "production_knowledge_enabled": false,
+  "real_model_budget_or_calls_changed": false,
+  "final_runtime_clearance": false,
+  "whole_product_or_task_acceptance": false
+}

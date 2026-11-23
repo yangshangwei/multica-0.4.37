@@ -1,0 +1,252 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e7]:
+      - navigation "Application navigation" [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]: Multica
+          - list [ref=e11]:
+            - listitem [ref=e12]:
+              - button "Search..." [ref=e13]:
+                - img [ref=e14]
+                - generic [ref=e17]: Search...
+                - generic:
+                  - generic:
+                    - img
+                  - generic: K
+          - list [ref=e18]:
+            - listitem [ref=e19]:
+              - button "New" [ref=e20]:
+                - img [ref=e21]
+                - generic [ref=e22]: New
+                - img [ref=e23]
+        - generic [ref=e25]:
+          - generic [ref=e28]:
+            - button "Collaboration" [ref=e29]:
+              - generic [ref=e30]: Collaboration
+              - generic [ref=e31]: Beta
+            - status "Collaboration notifications 60 unread" [ref=e32]:
+              - generic "60" [ref=e33]:
+                - generic [ref=e36]:
+                  - generic [ref=e38]: "6"
+                  - generic [ref=e40]: "0"
+            - button "Expand collaboration navigation" [ref=e41]:
+              - img [ref=e42]
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - generic [ref=e46]: Workspaces
+              - generic [ref=e47]:
+                - button "Notification return workspace" [ref=e48]:
+                  - generic [ref=e50]: "N"
+                  - generic [ref=e51]: Notification return workspace
+                - button "Switch workspace" [ref=e52]:
+                  - img [ref=e53]
+            - list [ref=e57]:
+              - listitem [ref=e58]:
+                - link "Inbox" [ref=e59] [cursor=pointer]:
+                  - /url: /notification-return-f5177383/inbox
+                  - img [ref=e60]
+                  - generic [ref=e63]: Inbox
+              - listitem [ref=e64]:
+                - link "My Issues" [ref=e65] [cursor=pointer]:
+                  - /url: /notification-return-f5177383/my-issues
+                  - img [ref=e66]
+                  - generic [ref=e70]: My Issues
+              - listitem [ref=e71]:
+                - link "Chat" [ref=e72] [cursor=pointer]:
+                  - /url: /notification-return-f5177383/chat
+                  - img [ref=e73]
+                  - generic [ref=e75]: Chat
+            - generic [ref=e77]:
+              - button "Work" [expanded] [ref=e78] [cursor=pointer]:
+                - generic [ref=e79]: Work
+                - img [ref=e80]
+              - list [ref=e84]:
+                - listitem [ref=e85]:
+                  - link "Workspace issues" [ref=e86] [cursor=pointer]:
+                    - /url: /notification-return-f5177383/issues
+                    - img [ref=e87]
+                    - generic [ref=e90]: Workspace issues
+                - listitem [ref=e91]:
+                  - link "Projects" [ref=e92] [cursor=pointer]:
+                    - /url: /notification-return-f5177383/projects
+                    - img [ref=e93]
+                    - generic [ref=e95]: Projects
+                - listitem [ref=e96]:
+                  - link "Iterations" [ref=e97] [cursor=pointer]:
+                    - /url: /notification-return-f5177383/iterations
+                    - img [ref=e98]
+                    - generic [ref=e100]: Iterations
+                - listitem [ref=e101]:
+                  - link "Triage 0" [ref=e102] [cursor=pointer]:
+                    - /url: /notification-return-f5177383/triage
+                    - img [ref=e103]
+                    - generic [ref=e106]: Triage
+                    - generic "0" [ref=e108]:
+                      - generic [ref=e113]: "0"
+            - button "AI Team" [ref=e116] [cursor=pointer]:
+              - generic [ref=e117]: AI Team
+              - img [ref=e118]
+            - button "Resources & connections" [ref=e122] [cursor=pointer]:
+              - generic [ref=e123]: Resources & connections
+              - img [ref=e124]
+        - generic [ref=e126]:
+          - list [ref=e127]:
+            - listitem [ref=e128]:
+              - link "Analytics" [ref=e129] [cursor=pointer]:
+                - /url: /notification-return-f5177383/usage
+                - img [ref=e130]
+                - generic [ref=e132]: Analytics
+            - listitem [ref=e133]:
+              - link "Workspace settings" [ref=e134] [cursor=pointer]:
+                - /url: /notification-return-f5177383/settings
+                - img [ref=e135]
+                - generic [ref=e138]: Workspace settings
+          - generic [ref=e139]:
+            - button "Help" [ref=e140] [cursor=pointer]:
+              - img [ref=e141]
+            - button "Outside record viewer" [ref=e144]:
+              - generic [ref=e146]: O
+              - generic [ref=e147]: Outside record viewer
+              - img [ref=e148]
+      - button "Toggle left sidebar" [ref=e150]
+    - main [ref=e151]:
+      - generic [ref=e152]:
+        - generic [ref=e155]:
+          - generic [ref=e156]:
+            - link "NOTI-1 Return to workspace f5177383" [ref=e158] [cursor=pointer]:
+              - /url: /notification-return-f5177383/issues/01a2023c-3ba8-73c8-8691-b8c4379035d4
+              - generic [ref=e159]: NOTI-1 Return to workspace f5177383
+            - generic [ref=e160]:
+              - button "Pin to sidebar" [ref=e161]:
+                - img
+              - button "Issue actions" [ref=e163]:
+                - img
+              - button "Toggle right sidebar" [expanded] [ref=e164]:
+                - img
+          - generic [ref=e166]:
+            - button "Return to workspace f5177383" [ref=e167]
+            - generic [ref=e168]:
+              - textbox "Issue description" [ref=e171]:
+                - paragraph [ref=e172]: Add description...
+              - generic [ref=e173]:
+                - button [ref=e175]:
+                  - img [ref=e176]
+                - button "Attach file" [ref=e179]:
+                  - img
+            - button "Add sub-issues" [ref=e181]:
+              - img [ref=e182]
+              - generic [ref=e183]: Add sub-issues
+            - generic [ref=e185]:
+              - generic [ref=e186]:
+                - heading "Activity" [level=2] [ref=e188]
+                - generic [ref=e189]:
+                  - button "Unsubscribe" [ref=e190]
+                  - button "OR" [ref=e191] [cursor=pointer]:
+                    - link "OR" [ref=e194]:
+                      - generic [ref=e195]: OR
+              - generic [ref=e201]:
+                - button "1 activity" [expanded] [ref=e202]:
+                  - img [ref=e203]
+                  - generic [ref=e205]: 1 activity
+                - generic [ref=e207]:
+                  - link "OR" [ref=e209] [cursor=pointer]:
+                    - generic [ref=e210]: OR
+                  - generic [ref=e211]:
+                    - generic [ref=e212]: Outside record viewer
+                    - generic [ref=e213]: created this issue
+                    - generic [ref=e214]: just now
+            - generic [ref=e216]:
+              - button "Leave a comment..." [ref=e217]:
+                - paragraph [ref=e219]: Leave a comment...
+              - generic [ref=e220]:
+                - button "Attach file" [ref=e221]:
+                  - img
+                - button "Send" [disabled]:
+                  - img
+        - separator
+        - generic [ref=e226]:
+          - generic [ref=e227]:
+            - button "Properties" [expanded] [ref=e228]:
+              - text: Properties
+              - img [ref=e229]
+            - generic [ref=e231]:
+              - generic [ref=e232]:
+                - generic [ref=e233]: Status
+                - button "Todo" [ref=e235] [cursor=pointer]:
+                  - img [ref=e236]
+                  - generic [ref=e238]: Todo
+              - generic [ref=e239]:
+                - generic [ref=e240]: Assignee
+                - button "Unassigned" [ref=e242] [cursor=pointer]:
+                  - generic [ref=e243]: Unassigned
+              - generic [ref=e244]:
+                - generic [ref=e245]: Project
+                - button "No project" [ref=e248] [cursor=pointer]:
+                  - img [ref=e249]
+                  - generic [ref=e251]: No project
+              - generic [ref=e252]:
+                - generic [ref=e253]:
+                  - generic [ref=e254]: Current iteration
+                  - generic [ref=e256]:
+                    - img [ref=e257]
+                    - generic "No current iteration" [ref=e259]
+                - generic [ref=e260]:
+                  - button "Carry-over count" [ref=e262]
+                  - generic [ref=e264]: "0"
+                - group [ref=e265]:
+                  - generic "Assign to iteration" [ref=e266] [cursor=pointer]:
+                    - generic [ref=e267]: Assign to iteration
+                    - img [ref=e268]
+                - group [ref=e270]:
+                  - generic "Iteration history" [ref=e271] [cursor=pointer]:
+                    - generic [ref=e272]: Iteration history
+                    - img [ref=e273]
+              - button "Add property" [ref=e276]:
+                - img [ref=e277]
+                - generic [ref=e278]: Add property
+          - generic [ref=e279]:
+            - button "Pull requests" [expanded] [ref=e280]:
+              - text: Pull requests
+              - img [ref=e281]
+            - paragraph [ref=e284]: No linked pull requests yet. Reference this issue's identifier in a PR's branch name, title, or body to auto-link it.
+          - generic [ref=e285]:
+            - button "Details" [expanded] [ref=e286]:
+              - text: Details
+              - img [ref=e287]
+            - generic [ref=e289]:
+              - generic [ref=e290]:
+                - generic [ref=e291]: Created by
+                - generic [ref=e292]:
+                  - link "OR" [ref=e294] [cursor=pointer]:
+                    - generic [ref=e295]: OR
+                  - generic [ref=e296] [cursor=pointer]: Outside record viewer
+              - generic [ref=e297]:
+                - generic [ref=e298]: Created
+                - generic [ref=e300]: Nov 22
+              - generic [ref=e301]:
+                - generic [ref=e302]: Updated
+                - generic [ref=e304]: Nov 22
+      - dialog:
+        - generic:
+          - generic:
+            - heading [level=3]: Chat with your agents
+            - paragraph: Ask for a summary, plan your day, or hand off a quick task.
+        - generic:
+          - generic:
+            - img
+            - generic: You need an agent to start chatting.
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - textbox [disabled]:
+                    - paragraph: Create an agent to start chatting
+      - button "Ask Multica" [ref=e305]:
+        - img [ref=e306]
+  - region "Notifications alt+T"
+  - alert [ref=e308]: "NOTI-1: Return to workspace f5177383 | Multica"
+```

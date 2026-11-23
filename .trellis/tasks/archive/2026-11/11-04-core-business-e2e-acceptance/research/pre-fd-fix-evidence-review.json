@@ -1,0 +1,342 @@
+{
+  "verdict": "EVIDENCE_REVIEW_PASS_WITH_LIMITS",
+  "reviewed_at": "2026-11-05T05:35:59.781768+00:00",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "scope": "Independent evidence/code review of current candidate; execution complete enough to report current failures, not complete product acceptance",
+  "input_hashes": {
+    "research/backend-result.json": "512b81c58e9bb75fddc2c953d6b852803dd64ef537004e10010c41679a8ff09d",
+    "research/frontend-result.json": "4f42e7bf9ab0dc474ec495baabeed2843a941b34fe749f2fc5f57fc234c4d285",
+    "research/conditional-execution-result.json": "e54858ade9fc6d3d43c601217b825537a3be399651d1c979ba5bf7fe50c19545",
+    "research/performance-result.json": "5324a80b43f128ac5456e19364cd4eda9ccc9d3783b173c03f03898017edcf6d",
+    "research/linux-package-result.json": "6f6a602b4d59917238b6fc56297fd98391720a6b18f5ae0ce2ec3d5e6cdefb95",
+    "evidence/inventory/cases.json": "297ebd59714904266ba00ad31dccf21e3c9919688307fe85af5b0550408ea15b",
+    "evidence/legacy-full-1/results.json": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+    "evidence/source-manifest.json": "a1f414b4c461ec299606826a557dee592dfc5c6f1ca945e94ee83a38a92598e2"
+  },
+  "verified": {
+    "go_default": {
+      "packages": 82,
+      "named_packages": 73,
+      "no_named_packages": 9,
+      "pass": 10393,
+      "fail": 0,
+      "skip": 20,
+      "raw_package_summary_mismatches": 0,
+      "vet_exit": 0,
+      "single_complete_run": false,
+      "supplemental_latest_view": {
+        "pass": 10405,
+        "fail": 1,
+        "skip": 7,
+        "scope": "Original10393pass plus12 newly passing exact skipped identities, performance1 fail,7remaining skips; no complete rerun",
+        "remaining_skips": [
+          "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+          "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+          "TestMcpMarketPublicHTTPRecipeLifecycle",
+          "TestIsDriveRoot",
+          "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+          "TestCommentContentBigramRequirementMatchesRealPGBigm",
+          "TestCLIConfig_UnknownFieldsArePreserved"
+        ]
+      }
+    },
+    "typescript": {
+      "unique_cases": 13244,
+      "unique_files": 1069,
+      "first_package_pass": 13243,
+      "first_package_fail": 1,
+      "full_file_replay": 11,
+      "root_cause_unknown": true,
+      "static_tasks": 15,
+      "lint_warnings": 31
+    },
+    "mobile": {
+      "pass": 196,
+      "files": 28,
+      "wrapper_groups": 3,
+      "lint_warnings": 7,
+      "native_UI": false
+    },
+    "knowledge": {
+      "unique": 23,
+      "normal_race_executions": 46,
+      "raw_package_pass_events": true,
+      "first_three_git_contained_home_tmp": true,
+      "ordinary_race_controller_exit_missing": true
+    },
+    "wire": {
+      "Go": 1,
+      "TypeScript": 7
+    },
+    "linux_test_binaries": {
+      "top_pass": 10,
+      "subtest_pass": 3,
+      "skip": 0,
+      "not_native_desktop": true
+    },
+    "performance": {
+      "pass": 2,
+      "fail": 1,
+      "closure_p95_ms_recomputed": 2155.025,
+      "frozen_limit_ms": 2000,
+      "warmup": 5,
+      "measured": 30,
+      "command_exit": 1
+    },
+    "source_snapshot": {
+      "files": 8203,
+      "product_mismatches": 0,
+      "changed_e2e_files": 15,
+      "workspace_links": 32,
+      "workspace_link_mismatches": 0,
+      "checked_at": "2026-11-05T04:57:21.025146+00:00",
+      "changed_e2e_paths": [
+        "e2e/collaboration-handoff-chain-web.spec.ts",
+        "e2e/collaboration-host-installed.spec.ts",
+        "e2e/collaboration-installed-main.spec.ts",
+        "e2e/collaboration-leave-web.spec.ts",
+        "e2e/collaboration-terminal-reopen-web.spec.ts",
+        "e2e/fixtures/collaboration-control-gaps.ts",
+        "e2e/fixtures/collaboration-detail-journey.ts",
+        "e2e/fixtures/collaboration-handoff-chain.ts",
+        "e2e/fixtures/collaboration-installed-main.mjs",
+        "e2e/fixtures/collaboration-installed-main.node-test.mjs",
+        "e2e/fixtures/collaboration-installed-main.ts",
+        "e2e/fixtures/collaboration-lane-close-controls.ts",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/collaboration-offline-result-notifications.ts",
+        "e2e/fixtures/collaboration-retained-attachments.ts"
+      ]
+    },
+    "browser_snapshot": {
+      "unique_cases": 441,
+      "run_files": 71,
+      "status_counts": {
+        "PASS": 440,
+        "FAIL": 1
+      },
+      "framework_status_counts": {
+        "PASS": 440,
+        "FAIL": 1
+      },
+      "acceptance_status_counts": {
+        "PASS": 440,
+        "FAIL": 1
+      },
+      "framework_pass_without_complete_audit": [],
+      "unmapped": [],
+      "canonical_fallback_mappings": [],
+      "first_failure_identities": 23
+    },
+    "detail_business": {
+      "cases": 2,
+      "framework": "PASS",
+      "post_audit": "PASS",
+      "evidence": [
+        ".omx/private/core-e2e-20261104/runtime/runs/detail-final-1/results.json",
+        ".omx/private/core-e2e-20261104/runtime/runs/detail-final-1/results.json"
+      ]
+    },
+    "AC33_replay": {
+      "status": "PASS",
+      "evidence": ".omx/private/core-e2e-20261104/runtime/runs/ac33-audit-replay-1/ac33-audit-r2/results.json"
+    },
+    "final_cleanup": {
+      "state": "complete",
+      "services_exit": 0,
+      "ports": {
+        "18784": "",
+        "13704": "",
+        "5878": "",
+        "60284": ""
+      },
+      "remaining_possible_test_containers": [],
+      "database_action": "none; retained for reproduction; separate readonly connection audit",
+      "finished_at": "2026-11-05T05:33:00.417131+00:00"
+    },
+    "final_database_cleanup": {
+      "observed_at": "2026-11-05T05:33:13.136Z",
+      "allocated_databases": 161,
+      "retained_databases": 161,
+      "connections": [],
+      "all_owned_connections_zero": true,
+      "scope": "read-only aggregate; database names from exact task allocations; no SQL text/credentials"
+    },
+    "final_source_audit": {
+      "source_files_checked": 8203,
+      "changed": [
+        "e2e/collaboration-handoff-chain-web.spec.ts",
+        "e2e/collaboration-host-installed.spec.ts",
+        "e2e/collaboration-installed-main.spec.ts",
+        "e2e/collaboration-leave-web.spec.ts",
+        "e2e/collaboration-terminal-reopen-web.spec.ts",
+        "e2e/fixtures/collaboration-control-gaps.ts",
+        "e2e/fixtures/collaboration-detail-journey.ts",
+        "e2e/fixtures/collaboration-handoff-chain.ts",
+        "e2e/fixtures/collaboration-installed-main.mjs",
+        "e2e/fixtures/collaboration-installed-main.node-test.mjs",
+        "e2e/fixtures/collaboration-installed-main.ts",
+        "e2e/fixtures/collaboration-lane-close-controls.ts",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/collaboration-offline-result-notifications.ts",
+        "e2e/fixtures/collaboration-retained-attachments.ts"
+      ],
+      "product_unchanged": true
+    },
+    "final_artifact_audit": {
+      "mac-package-proof.json": {
+        "executable": true,
+        "asar": true,
+        "cli": true
+      },
+      "linux": {
+        "asar": true,
+        "executable": true,
+        "cli": true,
+        "deb": true
+      }
+    },
+    "deb_lifecycle": {
+      "assertions": 95,
+      "actual_raw_records": 127,
+      "commands": 27,
+      "result": "PASS",
+      "scope": "fresh-install/remove/reinstall/purge; noGUI/native desktop or oldversionupgrade",
+      "evidence": "research/deb-install-result.json"
+    },
+    "sidecar_final_sha256": "fb40aae928dc3a6ec111763e3d52cd76ce83c03dd78c792d7285ccb21eb7a606"
+  },
+  "fixed_findings": [
+    {
+      "id": "EV-01",
+      "file": ".omx/private/core-e2e-20261104/reconcile.py",
+      "issue": "Framework pass was treated as acceptance pass even after controller post-run audit interruption",
+      "fix": "Retained legacy framework status and added separate audit_status/acceptance_status; interrupted receipt blocks acceptance"
+    },
+    {
+      "id": "EV-02",
+      "file": ".omx/private/core-e2e-20261104/reconcile.py",
+      "issue": "Detail runner writes a shallower results.json that the previous glob omitted",
+      "fix": "Include one-level and two-level runtime results; deduplicate paths"
+    },
+    {
+      "id": "EV-03",
+      "file": ".omx/private/core-e2e-20261104/reconcile.py",
+      "issue": "No safe explicit fallback for changed test identifiers",
+      "fix": "Use unambiguous normalized file/full describe-title/project mapping only when raw ID is unknown; keep original inventory identity and record fallback"
+    }
+  ],
+  "open_findings": [
+    {
+      "id": "PERF-001",
+      "severity": "required-gate-failure",
+      "finding": "Iteration closure P95 exceeds2000ms",
+      "evidence": "research/performance-result.json"
+    },
+    {
+      "id": "LINUX-MAIN",
+      "severity": "unresolved-current-run-failure",
+      "finding": "Latest delivery-contract replay ends with Installed Main close30000ms timeout. A finally/cleanup failure may mask an earlier command failure; first cause is under root investigation. Whole case remains FAIL until original business assertions and close both complete.",
+      "evidence": ".omx/private/core-e2e-20261104/runtime/runs/linux-delivery-replay-1/linux-delivery-r6/results.json"
+    }
+  ],
+  "incident_limits": [
+    "Original execenv655PASS/5FAIL is preserved; Git-external fresh replay660PASS did not prove prior root sidecar absence. Original .cursor/mcp.json remains untracked with observed hashfb40aae928dc3a6ec111763e3d52cd76ce83c03dd78c792d7285ccb21eb7a606.",
+    "Rosetta/Postgres crash caused503 and interrupted UI audit. Post-restart schema/gate observation is not proof of pre-crash atomicity.",
+    "Original full Playwright354PASS/3FAIL/84SKIP exit1 remains the original full run; later passes are per-identity replays.",
+    "Model calls by other concurrent task threads do not belong to this task. This user explicitly deferred commercial model acceptance; own scope remains0 calls/NOT_RUN."
+  ],
+  "platform_limits": [
+    "iOS native UI blocked by missing fullXcode/simctl",
+    "Windows native installer/UI and actual Linux desktop session unavailable locally",
+    "macOS ad-hoc package proof is not DeveloperID/notarization/automatic-updater/upgrade proof",
+    "Linux directory+DEB packaging/static inspection is not successful install/upgrade/Main business acceptance",
+    "External enabled SMTP/GitHub/VCS/message-provider transport is not established by local fake/HTTP tests"
+  ],
+  "detail_runner_review": {
+    "verdict": "PASS_STATIC",
+    "runner": "runtime/run-detail-final.py",
+    "sha256": "d65162e8da3c462c39e67a80e07b97b3d3a7ca728665212aba4ab302dd1779b9",
+    "no_execution_by_reviewer": true,
+    "checks": [
+      "Exactrootprivatepermit/source/spec/sharedcontroller/builder/DBledger hashes",
+      "OwnedcurrentAPI/Web/rendererPID/source/config before switch",
+      "FreshlocalallocateddetailDB752empty/manualgate, noDDL",
+      "Private0700/0600rawreceipts; no credentials in command output",
+      "Finalexacttwo cases/no skip/source/client/API/gate audit",
+      "Exception cleanup only after exactregistry/APIownership reproof"
+    ]
+  },
+  "reviewer_verification": {
+    "heavy_commands_run": false,
+    "product_lint_typecheck_rerun": false,
+    "reason": "Evidence-only review; parent prohibited heavy tools; frontend existing evidence verified",
+    "private_python_AST": "PASS",
+    "pure_parser_checks": 5,
+    "raw_results_changed": false,
+    "coverage_csv_written_by_reviewer": false,
+    "reconciler_sha256": "a819d97475e96e0d70554abdd7c927214775abc71e10fe7e984900e1d3cf0726",
+    "raw_browser_retry_events": 0,
+    "nonstandard_expected_browser_statuses": 0
+  },
+  "machine_identity_fixture_review": {
+    "verdict": "PASS_STATIC",
+    "reviewed_at": "2026-11-05T04:43:32.118513+00:00",
+    "file_hashes": {
+      "e2e/fixtures/collaboration-installed-main.ts": "5f5419a253d075ff25fb9d4a8d61c7cd993edb3e343fe4d291297611c48e9789",
+      "e2e/fixtures/collaboration-installed-main.node-test.mjs": "118c1b4a3272372bd75210b2a767fe298df693b001ba5f74e5304d644371cead"
+    },
+    "patch_sha256": "4ec89bbb3e70fcdc4f25ddafbf77886a5bf95c78f14b74ae1e8c84982cfdc006",
+    "checks": [
+      "Synthetic randomUUID32hex per disposablecontainer, no host identity read",
+      "Unique private mkdtemp directory, wx444 file, explicit /etc/machine-id:ro mount",
+      "Cleanup deletes only closure-owned directory; inspectstopped/no-container confirmation or retainunknown",
+      "Only UUID-generated own container stopped; native path unchanged"
+    ],
+    "verification_scope": "read-only diff/code review; writer actual-node/image evidence reported separately; live installedMain retest pending"
+  },
+  "discovery_only_fixture_review": {
+    "verdict": "PASS_STATIC",
+    "reviewed_at": "2026-11-05T04:55:33.308619+00:00",
+    "patch_sha256": "c88127ab1d45fb6962e10d7d9e79d408123098f68d96094c038af7368a88ce27",
+    "file_hashes": {
+      "e2e/fixtures/collaboration-installed-main.ts": "8f27855ec75b0117f70c0ee8f6e4784889c3ff0f97bc5390a0f1f99e0b71756e",
+      "e2e/fixtures/collaboration-installed-main.mjs": "5500107e0c8fd8bce3c51500626a4616fad3cd3d0d7cd1174c3d25fb536ffabb",
+      "e2e/fixtures/collaboration-installed-main.node-test.mjs": "49edb4de5ed70224ff3aaca2608c7f6a8a47b7da72a9bbbaea4d325ea4f5e9c0"
+    },
+    "checks": [
+      "Only exactly --version succeeds; all task/execution calls return97 and write a fixed marker without arguments",
+      "Explicit readonly per-container fixture; no host agent discovery/account use introduced",
+      "Electron subprocess PATH and MULTICA_CLAUDE_PATH only in container mode",
+      "init/metadata/close require no unexpected-execution marker; actual running/owned-daemon and pause/Resume assertions remain",
+      "Native mode unchanged; proof remains fullMain+controlled discovery+protocol simulation, never model execution evidence"
+    ],
+    "actual_E2E_replay": "Advanced past managed enrollment/strict daemon state; later Web Transfer action failed, entire case remains FAIL"
+  },
+  "pending_result_return_review": {
+    "verdict": "PASS_STATIC",
+    "reviewed_at": "2026-11-05T05:01:21.768738+00:00",
+    "patch_sha256": "9f9f016364880ea40cc4f83e075ee17a47e08fe285bcab59b0b3905068314ef4",
+    "after_sha256": "cc312cf8a7f6e50c7d36691e775f1a8e501b9fa7903e7ae0cc0a227b1ffeb004",
+    "contract": "Frozen delivery capabilities disable Transfer while exact submission awaits review; Return for revision is the explicit current operation",
+    "assertions_preserved": [
+      "six original directed writes and unique request IDs",
+      "exact submission/recipient/reason/status_options/current authority observations",
+      "immutable latest submission result/basis/decision",
+      "execution/session unchanged by return",
+      "subsequent explicit control and unconfirmed Resume guards"
+    ],
+    "actual_replay": "pending"
+  },
+  "acceptance_verdict": "FAIL",
+  "final_inputs": {
+    "evidence/final-cleanup/summary.json": "7ad711255fb6ea5c0806d56848d8b83578cb8c4058c7894ada7e72f442ffe144",
+    "evidence/final-cleanup/databases.json": "9d70c3185363b8abf387c7716231703580add1d7a0884831e8090e792eff2997",
+    "evidence/final-source-audit.json": "ec6d57757b9ffdf3593a64dc44c25c080be7f8075c0e358a5ddc9ffe72ef5d83",
+    "evidence/artifact-current-audit.json": "2243604106d272551027b9abf2d539e0c055b4de2276630c630bc9e334c9a217",
+    "research/deb-install-result.json": "d5de441f7df3feea1ae1fff319693ae34709e79d57573f7a8a51845c91512ee4",
+    "report.md": "b285d356d8904c9f3f739ed3d4bb20864f3c18e0c4c6af2cd4082595c07ba940",
+    "research/linux-final-failure-analysis.json": "0c65bfbe1b351a05e463d8ec6a20c31c15dd351f3ce87504067475a51fea90ad"
+  },
+  "report_consistency": "Current report corrects historical-state contradictions and distinguishes evidence from restart inference"
+}

@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-13",
+  "scope": "collaboration foundation, not full feature acceptance",
+  "head": "58c3ccb445e42bba9595b98ff147ef7e142fdb57",
+  "test_log_directory": "/tmp/multica-collaboration.Qp1TA6",
+  "go": {
+    "verification-migrations.log": {
+      "top_level_pass": 1,
+      "subtest_pass": 0,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "97745b11167b943e403a195d8a2a85e27efd874cd8bcdc0ca846919423f4f114"
+    },
+    "verification-principal.log": {
+      "top_level_pass": 6,
+      "subtest_pass": 0,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "cee45338df77a886b23bfba1d8c93faf1006863d8e4d3f729676ee07eafd7103"
+    },
+    "verification-service-final.log": {
+      "top_level_pass": 19,
+      "subtest_pass": 29,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "3a6f34509226a4917dd1380b3b5745386b993d44016e0241235782aa9be6a112"
+    },
+    "verification-handler-final.log": {
+      "top_level_pass": 74,
+      "subtest_pass": 29,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "f4ba03860183f32bac38a925b3c6d31fb75cafb63534b4e18c38aebf107daa29"
+    },
+    "verification-router.log": {
+      "top_level_pass": 1,
+      "subtest_pass": 0,
+      "failed": 0,
+      "skipped": 0,
+      "sha256": "3c3907a44515ecfd8c39ff69ebc553cdb73e0ba9c7bb0e74df56ae81226b6466"
+    }
+  },
+  "go_total_top_level": 101,
+  "go_total_subtests": 58,
+  "core": {
+    "tests": 855,
+    "files": 35,
+    "collaboration_tests": 44,
+    "lint": "passed",
+    "typecheck": "passed",
+    "report": "research/verification-compatibility-2026-10-13.md"
+  },
+  "workspace_typecheck": {
+    "successful": 9,
+    "cached": 5,
+    "log": "typecheck-workspace.log"
+  },
+  "go_vet": "passed",
+  "gofmt": "passed",
+  "sqlc_regeneration": "identical",
+  "requirements": 58,
+  "acceptance_criteria": 89,
+  "complete_end_to_end_criteria": 0,
+  "creation_route_registered": false,
+  "native_termination_verified": false,
+  "positive_resume_implemented": false
+}

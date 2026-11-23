@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-10-21T09:51:58.056695+00:00",
+  "helper_moved_byte_for_byte": true,
+  "history_rest_reconstructs_original": true,
+  "complete_history_regression_unchanged": true,
+  "ac63_handler_test_unchanged": true,
+  "red_returncode": 1,
+  "red_expected_failures": [
+    "TestCollaborationCommandHistoryReasonPreservesNullableValues/valid_empty",
+    "TestCollaborationCommandHistoryReasonPreservesNullableValues",
+    "TestCollaborationCommandHistoryReasonFromSucceededManagedCommand"
+  ],
+  "red_skips": [],
+  "green_returncode": 0,
+  "green_top_level_pass_count": 15,
+  "green_total_pass_events": 47,
+  "green_skips": [],
+  "source_unchanged_during_runs": true,
+  "vet_returncode": 0,
+  "gofmt": {
+    "command": [
+      "gofmt",
+      "-d",
+      "server/internal/service/collaboration_command_history.go",
+      "server/internal/service/collaboration_command_history_reason.go",
+      "server/internal/service/collaboration_command_history_reason_test.go"
+    ],
+    "returncode": 0,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "trailing_whitespace": [],
+  "source_sha256": {
+    "server/internal/service/collaboration_command_history.go": "6ddc3e26ef0d06a449140e6638731cb9693660b38b1d78ccd83d3c0c860ff2be",
+    "server/internal/service/collaboration_command_history_reason.go": "b015d70086ff0646cd3ca16ad4012e2d48b2dea15d9138a78754c46c8e0f5a1b",
+    "server/internal/service/collaboration_command_history_reason_test.go": "3152071d3350f18099e924cd978067763b98dfbaa3e07c17ceb70523f17935ec"
+  },
+  "overlay_path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/history-projection-legacy-pgkv3av0/overlay.json",
+  "standalone_dependencies": "tracked managed fixture, testutil, pgtype, protocol only; no History DTO/query/cancellation type"
+}

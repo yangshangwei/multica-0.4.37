@@ -1,0 +1,138 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+    - main [ref=e9]:
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - button "Toggle left sidebar" [ref=e15]:
+            - img
+            - generic [ref=e16]: Toggle left sidebar
+          - generic [ref=e17]:
+            - link "Projects" [ref=e18] [cursor=pointer]:
+              - /url: /knowledge-04acfbaa-c/projects
+            - img [ref=e19]
+            - generic [ref=e21]: Knowledge project 04acfbaa-c
+          - generic [ref=e22]:
+            - button "Pin to sidebar" [ref=e23]:
+              - img
+            - button "Project actions" [ref=e24]:
+              - img
+            - button "Toggle right sidebar" [ref=e25]:
+              - img
+        - group [ref=e26]:
+          - generic "Iterations" [ref=e27] [cursor=pointer]
+        - region "Execution squads" [ref=e28]:
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - generic [ref=e31]:
+                - img [ref=e32]
+                - heading "AI squads" [level=2] [ref=e37]
+                - generic [ref=e38]: 0 selected
+                - status
+              - paragraph [ref=e39]: No squads linked
+            - button "Manage squads" [ref=e40]
+        - generic [ref=e41]:
+          - button "Overview" [ref=e42]
+          - button "Issues" [ref=e43]
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - generic [ref=e47]:
+              - heading "Overview" [level=2] [ref=e48]
+              - button "Refresh" [ref=e49]
+            - generic [ref=e50]:
+              - generic [ref=e51]:
+                - term [ref=e52]: Formal issues
+                - definition [ref=e53]: "1"
+              - generic [ref=e54]:
+                - term [ref=e55]: Completed
+                - definition [ref=e56]: "0"
+              - generic [ref=e57]:
+                - term [ref=e58]: Cancelled
+                - definition [ref=e59]: "0"
+              - generic [ref=e60]:
+                - term [ref=e61]: Open
+                - definition [ref=e62]: "1"
+              - generic [ref=e63]:
+                - term [ref=e64]: Scope closed
+                - definition [ref=e65]: 0%
+            - paragraph [ref=e66]: Calculated 11/1/2026, 7:16:03 AM · Reference date 2026-11-01
+          - generic [ref=e67]:
+            - generic [ref=e68]:
+              - heading "System health" [level=2] [ref=e69]:
+                - img [ref=e70]
+                - text: System health
+              - generic [ref=e72]:
+                - img [ref=e73]
+                - text: Needs attention
+            - generic [ref=e75]:
+              - button "Blocked 0" [ref=e76]:
+                - generic [ref=e77]:
+                  - img
+                  - text: Blocked
+                - generic [ref=e78]: "0"
+              - button "Overdue 0" [ref=e79]:
+                - generic [ref=e80]:
+                  - img
+                  - text: Overdue
+                - generic [ref=e81]: "0"
+              - button "Unassigned 1" [ref=e82]:
+                - generic [ref=e83]:
+                  - img
+                  - text: Unassigned
+                - generic [ref=e84]: "1"
+              - button "Awaiting review 0" [ref=e85]:
+                - generic [ref=e86]:
+                  - img
+                  - text: Awaiting review
+                - generic [ref=e87]: "0"
+            - list [ref=e88]:
+              - listitem [ref=e89]:
+                - img [ref=e90]
+                - generic [ref=e92]: The project lead is missing or unavailable. Choose a current member or agent in Properties.
+            - group [ref=e93]:
+              - generic "View assessment details" [ref=e94] [cursor=pointer]:
+                - text: View assessment details
+                - img [ref=e95]
+          - generic [ref=e97]:
+            - heading "Acceptance" [level=2] [ref=e98]
+            - generic [ref=e99]:
+              - generic [ref=e100]:
+                - generic [ref=e101]: "Current description acceptance:"
+                - text: No acceptance recorded
+              - generic [ref=e102]:
+                - generic [ref=e103]: "Latest acceptance:"
+                - text: No acceptance recorded
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - heading "Progress updates" [level=2] [ref=e106]
+              - generic [ref=e107]:
+                - button "Write progress" [ref=e108]
+                - button "Record acceptance" [ref=e109]
+            - paragraph [ref=e110]: No progress updates yet
+      - dialog:
+        - generic:
+          - generic:
+            - heading [level=3]: Chat with your agents
+            - paragraph: Ask for a summary, plan your day, or hand off a quick task.
+        - generic:
+          - generic:
+            - img
+            - generic: You need an agent to start chatting.
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - textbox [disabled]:
+                    - paragraph: Create an agent to start chatting
+      - button "Ask Multica" [ref=e111]:
+        - img [ref=e112]
+  - region "Notifications alt+T"
+  - alert [ref=e114]
+```

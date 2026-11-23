@@ -81,30 +81,62 @@ function resolveCssColor(
 const FALLBACK_BACKGROUND = "rgb(255, 255, 255)";
 
 function getMermaidThemeVariables(host: HTMLElement | null) {
-  if (!host) {
-    return {
-      primaryColor: "rgb(245, 245, 245)",
-      primaryBorderColor: "rgb(59, 130, 246)",
-      primaryTextColor: "rgb(17, 24, 39)",
-      lineColor: "rgb(107, 114, 128)",
-      fontFamily: "inherit",
-    };
-  }
+  const color = (name: string, fallback: string) =>
+    host ? resolveCssColor(host, name, fallback) : fallback;
+  const background = color("--background", "rgb(255, 255, 255)");
+  const muted = color("--muted", "rgb(245, 245, 245)");
+  const foreground = color("--foreground", "rgb(17, 24, 39)");
+  // Nodes and groups carry meaning, so their outlines need more contrast than
+  // decorative surface borders. Keep them in the existing neutral palette.
+  const line = color("--muted-foreground", "rgb(107, 114, 128)");
+  const border = line;
 
+  // Sequence actors, clusters and notes have their own Mermaid defaults. Set
+  // them explicitly so diagrams remain readable when the host theme is dark.
   return {
-    primaryColor: resolveCssColor(host, "--muted", "rgb(245, 245, 245)"),
-    primaryBorderColor: resolveCssColor(host, "--primary", "rgb(59, 130, 246)"),
-    primaryTextColor: resolveCssColor(host, "--foreground", "rgb(17, 24, 39)"),
-    lineColor: resolveCssColor(host, "--muted-foreground", "rgb(107, 114, 128)"),
-    fontFamily: "inherit",
+    background,
+    mainBkg: background,
+    primaryColor: muted,
+    primaryBorderColor: border,
+    primaryTextColor: foreground,
+    secondaryColor: muted,
+    secondaryBorderColor: border,
+    secondaryTextColor: foreground,
+    tertiaryColor: background,
+    tertiaryBorderColor: border,
+    tertiaryTextColor: foreground,
+    lineColor: line,
+    textColor: foreground,
+    titleColor: foreground,
+    edgeLabelBackground: background,
+    clusterBkg: muted,
+    clusterBorder: border,
+    noteBkgColor: muted,
+    noteBorderColor: border,
+    noteTextColor: foreground,
+    actorBkg: muted,
+    actorBorder: border,
+    actorTextColor: foreground,
+    actorLineColor: line,
+    signalColor: foreground,
+    signalTextColor: foreground,
+    labelBoxBkgColor: background,
+    labelBoxBorderColor: border,
+    labelTextColor: foreground,
+    loopTextColor: foreground,
+    fontFamily: host ? getComputedStyle(host).fontFamily : "sans-serif",
   };
 }
 
-function getSandboxCssVariables(host: HTMLElement | null): string {
+function getSandboxRootStyles(host: HTMLElement | null): string {
   const styles = host ? getComputedStyle(host) : null;
-  return ["--muted", "--primary", "--foreground", "--muted-foreground"]
+  const variables = ["--muted", "--primary", "--foreground", "--muted-foreground"]
     .map((name) => `${name}: ${styles?.getPropertyValue(name).trim() || "initial"};`)
     .join(" ");
+  // Chromium gives a transparent iframe an opaque canvas when its color
+  // scheme differs from its host. Carry the scheme into both sandbox docs,
+  // while keeping their backgrounds transparent and their sandbox empty.
+  return `color-scheme: ${styles?.colorScheme || "normal"}; ${variables}`;
 }
 
 /**
@@ -215,7 +247,7 @@ function writeCachedLayout(chart: string, layout: Size | null): void {
 }
 
 function buildSandboxedMermaidDocument(svg: string, host: HTMLElement | null): string {
-  const cssVariables = getSandboxCssVariables(host);
+  const cssVariables = getSandboxRootStyles(host);
 
   return `<!doctype html><html><head><style>:root { ${cssVariables} } body { margin: 0; display: flex; justify-content: center; background: transparent; } svg { max-width: 100%; height: auto; }</style></head><body>${svg}</body></html>`;
 }
@@ -231,7 +263,7 @@ function buildViewerMermaidDocument(
   host: HTMLElement | null,
   layout: Size,
 ): string {
-  const cssVariables = getSandboxCssVariables(host);
+  const cssVariables = getSandboxRootStyles(host);
 
   return `<!doctype html><html><head><style>:root { ${cssVariables} } html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: transparent; } svg { display: block; width: ${layout.width}px; height: ${layout.height}px; max-width: none; }</style></head><body>${svg}</body></html>`;
 }

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/daemon",
+    "-count=1",
+    "-timeout=180s"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 75.663,
+  "database_packages_executed": false,
+  "installed_provider_cli_allowed": false
+}

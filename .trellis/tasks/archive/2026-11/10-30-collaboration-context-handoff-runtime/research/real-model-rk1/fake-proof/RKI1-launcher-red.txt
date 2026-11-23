@@ -1,0 +1,33 @@
+OK  go_table_matches_addendum: go=[('RK1-E0a', (1, 1)), ('RK1-H1', (3, 3)), ('RK1-H2', (3, 3)), ('RK1-H2b', (3, 3)), ('RK1-H3a', (3, 3)), ('RK1-H3b', (3, 3)), ('RK1-H5', (3, 3)), ('RK1-H6', (3, 6))] addendum=[('RK1-E0a', (1, 1)), ('RK1-H1', (3, 3)), ('RK1-H2', (3, 3)), ('RK1-H2b', (3, 3)), ('RK1-H3a', (3, 3)), ('RK1-H3b', (3, 3)), ('RK1-H5', (3, 3)), ('RK1-H6', (3, 6))]
+OK  not_runnable: REFUSED: framework-registration.json is not runnable: runtime audit fixes must finish, pass independent review, and merge into codex/cross-workspace-collaboration first; knowledge audit fixes must finish, pass independent review, and merge before RK1; source_binding.source_id stays empty until regenerated on the final merged clean candidate; coordinator independent review of this framework is pending; author fake verification does not satisfy that gate; an exclusive serial window on the shared inference gateway is required
+OK  unbudgeted_K1: REFUSED: RK1-K1 has no runtime budget in runtime-addendum.json
+OK  H2b_waits_for_H2: REFUSED: order: RK1-H2 has 0 of 3 trials on record
+OK  order: REFUSED: order: RK1-E0a has 0 of 1 trials on record
+OK  incomplete_on_record: REFUSED: stop rule: incomplete or blocking_review trial on record: RK1-E0a-t1
+OK  blocking_review_stops: REFUSED: stop rule: incomplete or blocking_review trial on record: RK1-H1-t1
+OK  unrecorded_trial_stops: REFUSED: stop rule: trial evidence without a public record: RK1-H1-t1
+OK  cursor_skip: REFUSED: start_trial must be the next unattempted trial (1)
+OK  cursor_replay: REFUSED: start_trial must be the next unattempted trial (2)
+OK  cap_public: REFUSED: cap: 23 consumed + 3 needed > 25
+OK  cap_private_launch_records: REFUSED: cap: 23 consumed + 3 needed > 25
+OK  fake_record_refused: REFUSED: invalid trial record: RK1-E0a-t1
+OK  mismatched_filename_refused: REFUSED: invalid trial record: RK1-E0a-t9
+OK  missing_trial_refused: REFUSED: non-contiguous trials: RK1-H1
+OK  negative_launch_count_refused: REFUSED: invalid launch count: RK1-E0a-t1
+OK  unfinished_invocation_refused: REFUSED: stop rule: incomplete or failed invocation on record: invocation-started.json
+OK  failed_invocation_refused: REFUSED: stop rule: incomplete or failed invocation on record: invocation-failed.json
+OK  unreadable_invocation_refused: REFUSED: stop rule: unreadable invocation on record
+OK  not_a_git_checkout: REFUSED: git status failed for a/b/c/d/e
+OK  inputs_modified: REFUSED: launcher inputs differ from HEAD:  M a/b/c/d/e/runtime-addendum.json
+OK  inputs_untracked: REFUSED: launcher inputs differ from HEAD: ?? a/b/c/d/e/extra-scenarios.json
+OK  source_id_mismatch: REFUSED: source_id 6347ce7ba2fec6490c13f4b03c43751fa08ca57c9c9eaeb4233219d90d510c37 is not the registered binding
+OK  provider_fingerprint_mismatch: REFUSED: Provider executable SHA-256 differs from the registration
+OK  operator_fingerprint_mismatch: REFUSED: operator configuration fingerprints differ from the registration
+OK  framework_mismatch: REFUSED: framework or launcher SHA-256 differs from the registration
+OK  preflight_H1_resume: PREFLIGHT OK: RK1-H1 start=2 trials=2 launches=2 consumed=2 cap=25 timeout=19m head=b27e549d3a89e5c1a5e369ea638c6073002b764c
+OK  preflight_full_set_reaches_H6: PREFLIGHT OK: RK1-H6 start=1 trials=3 launches=6 consumed=19 cap=25 timeout=47m head=439ba1ad5920217129e929dd7358d4dd4324156f
+OK  execution_accounting: FINISHED RK1-E0a exit_code=0 consumed=2 remaining=23 stopped=False; public records in /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-launch-m2iuvptm/a/b/c/d/e/results
+OK  execution_missing_public_stops: FINISHED RK1-E0a exit_code=7 consumed=2 remaining=23 stopped=True; public records in /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-launch-lpwh22a_/a/b/c/d/e/results
+OK  execution_canary_stops: FINISHED RK1-E0a exit_code=1 consumed=2 remaining=23 stopped=True; public records in /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-launch-u17q0s6u/a/b/c/d/e/results
+BAD execution_zero_trials_stops: FINISHED RK1-E0a exit_code=0 consumed=0 remaining=25 stopped=False; public records in /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-launch-2yz5ox19/a/b/c/d/e/results
+BAD execution_partial_success_stops: FINISHED RK1-H1 exit_code=0 consumed=3 remaining=22 stopped=False; public records in /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/rk1-launch-7ozdahyj/a/b/c/d/e/results

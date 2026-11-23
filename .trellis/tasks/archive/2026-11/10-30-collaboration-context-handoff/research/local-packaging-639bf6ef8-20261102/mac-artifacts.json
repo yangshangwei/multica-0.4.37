@@ -1,0 +1,78 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "at": "2026-11-01T20:18:26.004471+00:00",
+  "artifacts": [
+    {
+      "name": "builder-debug.yml",
+      "size": 889,
+      "sha256": "14cf8407a9c2cece16bcbb6a735826add48245b1dd2bb307cbb5ed9f3daf6c01",
+      "sha512_hex": "fadbc098d51175243c20c186636f8e5dd17e34d2d92a9b11d9a0c1f62129b864c37f3802afbb47fc1a6a381941d7e2864bd39207ac327b60c739760290aefd74"
+    },
+    {
+      "name": "latest-mac.yml",
+      "size": 581,
+      "sha256": "addb8b0e3a3d31888bed89db52b02315d9b7c129da55296290f6643a79c59dbf",
+      "sha512_hex": "1185f1fa13d2ce2a28c88851e8fdbab834e97916187b50182fca7dcfb3fec55afa66fa2c31e5812b5b15ef863434d38f540ecbacee16545905abeccec7f36b64"
+    },
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+      "size": 233408426,
+      "sha256": "bd82fe6ddc6b65fce891f078d64326d91742d951f310b67589eb654bdaceabf6",
+      "sha512_hex": "3fb91b754f19e5f5bf4bc792598d47cd59982b120096ded140f4a66635fc95241598f28070cf1aac35bb2be1bc070b91cd2fdacf87af41f622302c5d9e56946c"
+    },
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg.blockmap",
+      "size": 242248,
+      "sha256": "a4fd2024019699c31568daa41b38f1801011c4cad4c3c536a9d39a38ac1bc5c7",
+      "sha512_hex": "a2f872e726a8f77ed6c67c4cae763ef387a857458c6ab24e93866ff494e6226e7b70e4899f4c402c46592ed4fe63d696f0ca646768317a6d17f156a018c34e9f"
+    },
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+      "size": 223524090,
+      "sha256": "b50a00fa6fc44ca612a834aa8fd1c638f91431b87d5b6bb47abbd479433183d9",
+      "sha512_hex": "2560d29d4b8d4260ca25019af4f9e160f6788f682a0e19463e3316510f72992f6afd027819ed1bff0561d2b65f47d06b2bd1a14948695c9f0892edf53a07d369"
+    },
+    {
+      "name": "multica-desktop-0.6.8-rc.20261102-mac-arm64.zip.blockmap",
+      "size": 234398,
+      "sha256": "8d7c47b036732c679d30288d02cb308d0cca9179207fc754a76ba4878a0be880",
+      "sha512_hex": "a32e61b6b696bb485efdec0b0ad09df0c21aca20422ad9a5bd3620ab103784ef5c53e8cc15bff83f9feadab52698323d1a628c53d7fcb1f2aeca877ac1e7f273"
+    }
+  ],
+  "mac_app": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+    "tree_sha256": "665f8088e3e3ddc2539ace0e526caa72f373b1a454ad2695498ea60773240880",
+    "tree_hash_method": "sha256 of sorted compactJSON entries(path,mode,kind,size/fileSHAorlinktarget); directoriesincluded; xattrsoutsidehash",
+    "manifest_entries": 553,
+    "file_count": 273,
+    "symlink_count": 14,
+    "Info_plist": {
+      "CFBundleExecutable": "Multica",
+      "CFBundleIdentifier": "ai.multica.desktop",
+      "CFBundleShortVersionString": "0.6.8-rc.20261102",
+      "CFBundleVersion": "0.6.8-rc.20261102"
+    },
+    "main_executable_type": "Mach-O 64-bit executable arm64"
+  },
+  "zip_integrity": {
+    "checked": true,
+    "corrupt_entry": null,
+    "entry_count": 554,
+    "safe_relative_paths": true
+  },
+  "DMG_integrity": {
+    "command": [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+      "/usr/bin/hdiutil",
+      "verify",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg"
+    ],
+    "exit_code": 0,
+    "log_sha256": "f7716a8ec402fd00144aa070e149eb136318fa021b15bfe2a31648f574f200b8"
+  },
+  "signature": "ad-hoc, verified deep/strict; no DeveloperID or notarization claim",
+  "GUI_install_upgrade_account": "NOT_RUN",
+  "real_Provider_calls": 0
+}

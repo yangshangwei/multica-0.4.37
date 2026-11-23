@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 import { Compass, Loader2, Plus, Server } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -16,6 +16,7 @@ import {
 } from "@multica/ui/components/ui/alert-dialog";
 import { Badge } from "@multica/ui/components/ui/badge";
 import { Button } from "@multica/ui/components/ui/button";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
 import { cn } from "@multica/ui/lib/utils";
 import { useAuthStore } from "@multica/core/auth";
@@ -37,6 +38,7 @@ import {
 } from "../../layout/collection-page";
 import { useNavigation } from "../../navigation";
 import { McpSetupDialog } from "../../mcp/mcp-setup-dialog";
+import { McpWelcome } from "../../mcp/mcp-welcome";
 import { SettingsCard, SettingsSection, SettingsTab } from "./settings-layout";
 import { getSettingsQueryState, SettingsQueryFeedback } from "./settings-query-feedback";
 
@@ -69,6 +71,7 @@ function McpWorkspaceLayout({ presentation, action, children }: {
   children: ReactNode;
 }) {
   const { t } = useT("settings");
+  const paths = useWorkspacePaths();
   if (presentation === "settings") {
     return (
       <SettingsTab title={t(($) => $.mcp.title)} description={t(($) => $.mcp.description)}>
@@ -82,6 +85,10 @@ function McpWorkspaceLayout({ presentation, action, children }: {
         icon={Server}
         title={t(($) => $.mcp.title)}
         description={t(($) => $.mcp.description)}
+        learnMore={{
+          href: paths.docsPage(DOCS_SLUGS.mcp),
+          label: t(($) => $.mcp.learn_more),
+        }}
         actions={action}
       />
       {children}
@@ -114,6 +121,11 @@ function McpWorkspaceTab({ wsId, presentation }: {
   const deleteServer = useDeleteWorkspaceMcpServer(wsId);
 
   const servers = useMemo(() => serversQuery.data ?? [], [serversQuery.data]);
+  const showWelcome = presentation === "page" && !!currentMember &&
+    membersQuery.isSuccess && serversQuery.isSuccess &&
+    serversQuery.data !== undefined && !memberState.failed && !serversState.failed &&
+    servers.length === 0;
+  const customActionRef = useRef<HTMLButtonElement>(null);
   const existingNames = useMemo(
     () => new Set(servers.map((server) => server.name)),
     [servers],
@@ -256,13 +268,14 @@ function McpWorkspaceTab({ wsId, presentation }: {
   };
   const customAction = !canManage ? null : presentation === "page" ? (
     <CollectionPageHeaderAction
+      ref={customActionRef}
       icon={Plus}
       label={t(($) => $.mcp.add_server)}
       disabled={renamePending}
       onClick={openCustomEditor}
     />
   ) : (
-    <Button size="sm" variant="outline" disabled={renamePending} onClick={openCustomEditor}>
+    <Button ref={customActionRef} size="sm" variant="outline" disabled={renamePending} onClick={openCustomEditor}>
       <Plus aria-hidden className="size-4" />
       {t(($) => $.mcp.add_server)}
     </Button>
@@ -314,14 +327,23 @@ function McpWorkspaceTab({ wsId, presentation }: {
   }
 
   return (
-    <McpWorkspaceLayout presentation={presentation} action={actions}>
+    <McpWorkspaceLayout presentation={presentation} action={showWelcome ? null : actions}>
       <div className={cn(
         "min-w-0 space-y-5 pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11",
-        presentation === "page" && "min-h-0 flex-1 overflow-y-auto px-4 pb-12 pt-4 @2xl/mcp-library:px-6",
+        presentation === "page" && "min-h-0 flex-1",
+        presentation === "page" && (showWelcome
+          ? "flex flex-col overflow-hidden"
+          : "overflow-y-auto px-4 pb-12 pt-4 @2xl/mcp-library:px-6"),
       )}>
         {presentation === "settings" ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
         {feedback}
-        <SettingsSection
+        {showWelcome ? (
+          <McpWelcome
+            onBrowse={() => push(paths.marketplaceTab("mcp"))}
+            onCreate={canManage ? openCustomEditor : undefined}
+            createButtonRef={customActionRef}
+          />
+        ) : <SettingsSection
           title={t(($) => $.mcp.servers_title)}
           description={t(($) => $.mcp.write_only_note)}
         >
@@ -434,7 +456,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
               {t(($) => $.mcp.admin_only_note)}
             </p>
           ) : null}
-        </SettingsSection>
+        </SettingsSection>}
       </div>
 
       {assigningServer && canManage ? (
@@ -448,6 +470,7 @@ function McpWorkspaceTab({ wsId, presentation }: {
         />
       ) : null}
       <McpServerDialog
+        finalFocus={editingServer === null ? () => customActionRef.current : undefined}
         open={editorOpen && canManage}
         server={dialogServer}
         existingNames={existingNames}

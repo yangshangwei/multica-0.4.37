@@ -1,0 +1,340 @@
+diff --git a/e2e/collaboration-delivery-web.spec.ts b/e2e/collaboration-delivery-web.spec.ts
+index 782f00ac7..cd1d5008c 100644
+--- a/e2e/collaboration-delivery-web.spec.ts
++++ b/e2e/collaboration-delivery-web.spec.ts
+@@ -237,7 +237,7 @@ test("Web explicitly resubmits rejected creation input without losing files or r
+     const rejectedInput: unknown = refusal.request().postDataJSON();
+     expect(await (await resultResponse).json()).toEqual({ request_id: createKeys[0], source_workspace_id: workspace.id,
+       actor_user_id: actor.id, outcome: "rejected", code: "account_unavailable" });
+-    const message = "The issue was not created. Your draft and files are preserved; you can submit again.";
++    const message = "The issue was not created. Your draft and files are preserved.";
+     await expect(dialog.getByText(message, { exact: true })).toBeVisible();
+     await expect(dialog.getByLabel("Title", { exact: true })).toBeEnabled();
+     await expect(dialog.getByRole("checkbox", { name: "Include correction-note.txt", exact: true })).toBeChecked();
+diff --git a/e2e/collaboration-installed-main.spec.ts b/e2e/collaboration-installed-main.spec.ts
+index cfe72aa9d..78af971ca 100644
+--- a/e2e/collaboration-installed-main.spec.ts
++++ b/e2e/collaboration-installed-main.spec.ts
+@@ -5,6 +5,7 @@ import type { CollaborationCommentInput, CollaborationCommentReceipt, Collaborat
+ import { TestApiClient } from "./fixtures";
+ import { authenticateControlWeb, controlAccountPath, seedCollaborationControlJourney } from "./fixtures/collaboration-control-journey";
+ import { dockerTaskURL, InstalledMainClient, type InstalledMainMetadata, type InstalledMainWrite } from "./fixtures/collaboration-installed-main";
++import { selectCollaborationRecipient } from "./fixtures/collaboration-offline-handoff";
+ 
+ // The local runner handles secrets outside Playwright tracing. This actual
+ // installed Main evidence supplements the canonical service/renderer journeys;
+@@ -53,8 +54,7 @@ async function webOperation(page: Page, issueId: string, action: "invite" | "tra
+   const label = action === "invite" ? "Add participant" : "Transfer";
+   await page.getByRole("button", { name: label, exact: true }).click();
+   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
+-  await form.getByLabel("Exact recipient", { exact: true }).fill(userId);
+-  await form.getByRole("button", { name: "Find account", exact: true }).click();
++  await selectCollaborationRecipient(page, form, { id: userId, name });
+   await expect(form.getByText(`Selected account: ${name}`, { exact: true })).toBeVisible();
+   if (action === "transfer") await form.getByLabel("Note", { exact: true }).fill(note);
+   const endpoint = `/api/collaboration/issues/${issueId}/${action === "invite" ? "participants" : "handoffs"}`;
+@@ -111,8 +111,7 @@ async function webInformationForm(page: Page, issueId: string, action: DirectedA
+   expect(options.options).toHaveLength(1);
+   if (action === "request_information") {
+     if (!recipient) throw new Error("Request information needs the exact participant recipient");
+-    await form.getByLabel("Exact recipient", { exact: true }).fill(recipient.id);
+-    await form.getByRole("button", { name: "Find account", exact: true }).click();
++    await selectCollaborationRecipient(page, form, recipient);
+     await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
+   }
+   const select = form.getByLabel("Status", { exact: true });
+diff --git a/e2e/collaboration-memory-web.spec.ts b/e2e/collaboration-memory-web.spec.ts
+index b8eab43cb..ffbf3ae92 100644
+--- a/e2e/collaboration-memory-web.spec.ts
++++ b/e2e/collaboration-memory-web.spec.ts
+@@ -81,6 +81,8 @@ test("shared context keeps concurrent edits, restores versions, and permits hist
+     await expect(panel.getByRole("button", { name: "Edit shared context", exact: true })).toHaveCount(0);
+     await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
+     await expect(panel).toContainText("This issue is closed, so its shared context is read-only.");
++    await panel.getByRole("button", { name: "Version history", exact: true }).click();
++    await expect(panel.getByRole("button", { name: /^Restore v/ })).toHaveCount(0);
+     await panel.getByRole("button", { name: "Purge v2", exact: true }).click();
+     const purge = page.getByRole("alertdialog", { name: "Purge the text of v2?", exact: true });
+     await expect(purge).toBeVisible();
+diff --git a/e2e/fixtures/collaboration-editing.ts b/e2e/fixtures/collaboration-editing.ts
+index 981de5f64..86af5824a 100644
+--- a/e2e/fixtures/collaboration-editing.ts
++++ b/e2e/fixtures/collaboration-editing.ts
+@@ -17,7 +17,7 @@ export interface CollaborationEditingFixture {
+   labels: [Reference, Reference];
+   property: Reference;
+   project: { id: string; title: string };
+-  parent: { id: string; title: string };
++  parent: { id: string; identifier: string; title: string };
+   ordinary: { id: string; title: string };
+   iterations: [IterationReference, IterationReference];
+ }
+@@ -110,8 +110,11 @@ export async function createCollaborationWithInitialFields(page: Page, fixture:
+   await toggleLabel(page, dialog, fixture.labels[0].name);
+   await setTextProperty(page, dialog, fixture.property.name, "Initial delivery context");
+   await dialog.getByLabel("Project", { exact: true }).selectOption(fixture.project.id);
+-  await dialog.getByLabel("Parent issue", { exact: true }).selectOption(fixture.parent.id);
+-  await dialog.getByLabel("Stage under parent", { exact: true }).fill("2");
++  await dialog.getByRole("button", { name: "Parent issue", exact: true }).click();
++  const parentOption = page.getByRole("button", { name: `${fixture.parent.identifier} ${fixture.parent.title}`, exact: true });
++  await expect(parentOption).toBeVisible();
++  await parentOption.click();
++  await dialog.getByLabel("Subtask stage number (optional)", { exact: true }).fill("2");
+   await dialog.getByLabel("Iteration", { exact: true }).selectOption(fixture.iterations[0].id);
+   const created = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/issues" && response.request().method() === "POST");
+   await dialog.getByRole("button", { name: "Create collaboration issue", exact: true }).click();
+@@ -144,7 +147,7 @@ export async function exerciseCollaborationFields(page: Page, fixture: Collabora
+ 
+   await page.getByRole("button", { name: "Edit source fields", exact: true }).click();
+   form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit source fields", exact: true }) });
+-  await form.getByLabel("Stage under parent", { exact: true }).fill("3");
++  await form.getByLabel("Subtask stage number (optional)", { exact: true }).fill("3");
+   await form.getByRole("button", { name: "Confirm", exact: true }).click();
+   await expect(form).toHaveCount(0);
+   expect(await fixture.source.requestJSON(`/api/collaboration/issues/${issueId}`)).toMatchObject({ source_structure: { stage: 3 } });
+diff --git a/e2e/fixtures/collaboration-installed-main.mjs b/e2e/fixtures/collaboration-installed-main.mjs
+index 28491eaf1..a58ec9fc5 100644
+--- a/e2e/fixtures/collaboration-installed-main.mjs
++++ b/e2e/fixtures/collaboration-installed-main.mjs
+@@ -8,6 +8,7 @@ import process from "node:process";
+ import { createInterface } from "node:readline";
+ import { _electron as electron, expect } from "@playwright/test";
+ import { nativeAcceptanceHome, nativeInstalledLayout } from "./collaboration-installed-layout.mjs";
++import { selectCollaborationRecipient } from "./collaboration-recipient-picker.mjs";
+ 
+ // This process controls the packaged executable. It never imports an alternate
+ // Main, replaces IPC handlers, injects auth, or changes the OS home directory.
+@@ -442,9 +443,7 @@ async function dispatch(message) {
+       const baseline = await refreshIssue(message.issueId);
+       await page.getByRole("button", { name: "Transfer", exact: true }).click();
+       const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Transfer", exact: true }) });
+-      await form.getByLabel("Exact recipient", { exact: true }).fill(message.recipientId);
+-      await form.getByRole("button", { name: "Find account", exact: true }).click();
+-      await expect(form.getByText(`Selected account: ${message.recipientName}`, { exact: true })).toBeVisible();
++      await selectCollaborationRecipient(page, form, { id: message.recipientId, name: message.recipientName });
+       await form.getByLabel("Note", { exact: true }).fill(message.note);
+       const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/collaboration/issues/${message.issueId}/handoffs`
+         && response.request().method() === "POST");
+@@ -470,9 +469,7 @@ async function dispatch(message) {
+       assert.equal(options.action, message.action);
+       assert.equal(options.options.length, 1);
+       if (message.action === "request_information") {
+-        await form.getByLabel("Exact recipient", { exact: true }).fill(message.recipientId);
+-        await form.getByRole("button", { name: "Find account", exact: true }).click();
+-        await expect(form.getByText(`Selected account: ${message.recipientName}`, { exact: true })).toBeVisible();
++        await selectCollaborationRecipient(page, form, { id: message.recipientId, name: message.recipientName });
+       }
+       const select = form.getByLabel("Status", { exact: true });
+       await expect(select.locator("option")).toHaveCount(1);
+diff --git a/e2e/fixtures/collaboration-recipient-picker.mjs b/e2e/fixtures/collaboration-recipient-picker.mjs
+new file mode 100644
+index 000000000..bf1447694
+--- /dev/null
++++ b/e2e/fixtures/collaboration-recipient-picker.mjs
+@@ -0,0 +1,16 @@
++import { expect } from "@playwright/test";
++
++// Packaged Main's Node controller cannot import the TypeScript fixture helper.
++export async function selectCollaborationRecipient(page, form, recipient) {
++  await form.getByRole("button", { name: "Recipient", exact: true }).click();
++  const list = page.getByRole("listbox", { name: "Recipient", exact: true });
++  const popup = page.locator('[data-slot="popover-content"]').filter({ has: list });
++  await popup.getByRole("textbox", { name: "Filter options", exact: true }).fill(recipient.id);
++  const lookupLabel = "Find by full username, email, or account ID";
++  await popup.getByRole("button", { name: lookupLabel, exact: true }).click();
++  await popup.getByLabel(lookupLabel, { exact: true }).fill(recipient.id);
++  await popup.getByRole("button", { name: "Find account", exact: true }).click();
++  await expect(popup.getByText(recipient.name, { exact: true })).toBeVisible();
++  await popup.getByRole("button", { name: "Use this account", exact: true }).click();
++  await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
++}
+diff --git a/packages/views/collaboration/field-editing.test.tsx b/packages/views/collaboration/field-editing.test.tsx
+index fadc73118..f49b3aa1a 100644
+--- a/packages/views/collaboration/field-editing.test.tsx
++++ b/packages/views/collaboration/field-editing.test.tsx
+@@ -78,7 +78,7 @@ it("submits source structure and iteration through their separate versioned acti
+   await user.selectOptions(await screen.findByLabelText("Project", { exact: true }), projectId);
+   await user.click(screen.getByRole("button", { name: "Parent issue" }));
+   await user.click(await screen.findByRole("button", { name: "SRC-2 Source parent" }));
+-  fireEvent.change(screen.getByLabelText("Stage under parent"), { target: { value: "2" } });
++  fireEvent.change(screen.getByLabelText("Subtask stage number (optional)"), { target: { value: "2" } });
+   await user.click(screen.getByRole("button", { name: "Confirm" }));
+   await screen.findByText("Action confirmed.");
+   expect(JSON.parse(String(fetch.mock.calls.find(([, init]) => init?.method === "PATCH")?.[1]?.body))).toMatchObject({ project_id: projectId, parent_issue_id: parentId, stage: 2 });
+diff --git a/packages/views/collaboration/field-inputs.test.tsx b/packages/views/collaboration/field-inputs.test.tsx
+index ce8ec0c0d..21fa661d5 100644
+--- a/packages/views/collaboration/field-inputs.test.tsx
++++ b/packages/views/collaboration/field-inputs.test.tsx
+@@ -15,12 +15,12 @@ const options: CollaborationSourceOptions = { projects: [], parents: [parent, ot
+ // exercises the actual shared picker primitives and their observable behavior.
+ function Harness({ pending = false, error, onRetry = vi.fn(), onChange = vi.fn(), onSubmit = vi.fn(), sourceOptions = options }: {
+   pending?: boolean; error?: unknown; onRetry?: () => void; onChange?: (value: CollaborationSourceSelection) => void;
+-  onSubmit?: () => void; sourceOptions?: CollaborationSourceOptions;
++  onSubmit?: (value: CollaborationSourceSelection) => void; sourceOptions?: CollaborationSourceOptions;
+ }) {
+   const [search, setSearch] = useState("");
+   const [selection, setSelection] = useState<CollaborationSourceSelection>({ projectId: null, parentIssueId: null, stage: null });
+   const displayed = { ...sourceOptions, parents: sourceOptions.parents.filter((item) => `${item.identifier} ${item.name}`.toLowerCase().includes(search.toLowerCase())) };
+-  return <form onSubmit={(event) => { event.preventDefault(); onSubmit(); }}>
++  return <form onSubmit={(event) => { event.preventDefault(); onSubmit(selection); }}>
+     <label>Draft title<input defaultValue="Keep this title" /></label>
+     <CollaborationSourceInputs options={displayed} value={selection} onChange={(value) => { setSelection(value); onChange(value); }}
+       parentSearch={search} onParentSearch={setSearch} parentsPending={pending} parentsError={error} onRetryParents={onRetry} disabled={false} />
+@@ -64,6 +64,28 @@ it("shows search results inline, restores browsing on reopen, and can clear the
+   expect(trigger).toHaveTextContent("Choose a parent issue (optional)");
+ });
+ 
++it("shows an optional stage only for a parent and clears it when the parent is removed", async () => {
++  const user = userEvent.setup();
++  const onSubmit = vi.fn();
++  renderWithI18n(<Harness onSubmit={onSubmit} />);
++  expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument();
++  const trigger = screen.getByRole("button", { name: "Parent issue" });
++  await user.click(trigger);
++  await user.click(await screen.findByRole("button", { name: "SRC-12 Prepare the release" }));
++  const stage = screen.getByRole("spinbutton", { name: "Subtask stage number (optional)" });
++  expect(stage).not.toBeRequired();
++  expect(stage).toHaveValue(null);
++  expect(stage).toHaveAccessibleDescription(/Leave blank if no batches are needed/);
++  await user.click(screen.getByRole("button", { name: "Submit" }));
++  expect(onSubmit).toHaveBeenLastCalledWith({ projectId: null, parentIssueId: parent.id, stage: null });
++  await user.type(stage, "2");
++  await user.click(trigger);
++  await user.click(await screen.findByRole("button", { name: "No parent issue" }));
++  expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument();
++  await user.click(screen.getByRole("button", { name: "Submit" }));
++  expect(onSubmit).toHaveBeenLastCalledWith({ projectId: null, parentIssueId: null, stage: null });
++});
++
+ it("keeps pending or failed search rows unselectable and retries without losing other input", async () => {
+   const user = userEvent.setup();
+   const onRetry = vi.fn(), onChange = vi.fn();
+@@ -124,10 +146,15 @@ it("uses arrow/Enter selection, keeps composing Enter untouched, and dismisses o
+   expect(onDialogChange).not.toHaveBeenCalledWith(false, expect.anything());
+ });
+ 
+-it("explains the optional parent relationship in Chinese", () => {
++it("explains the optional parent relationship and stage in Chinese", async () => {
++  const user = userEvent.setup();
+   renderWithI18n(<Harness />, { locale: "zh-Hans" });
+-  expect(screen.getByRole("button", { name: "父任务" })).toHaveTextContent("选择父任务（可选）");
++  const trigger = screen.getByRole("button", { name: "父任务" });
++  expect(trigger).toHaveTextContent("选择父任务（可选）");
+   expect(screen.getByText("可选。选择后，这项协作任务会成为它的子任务。")).toBeVisible();
++  await user.click(trigger);
++  await user.click(await screen.findByRole("button", { name: "SRC-12 Prepare the release" }));
++  expect(screen.getByRole("spinbutton", { name: "子任务阶段编号（可选）" })).toHaveAccessibleDescription(/没有分批计划可留空/);
+ });
+ 
+ it("keeps the restored selected name when filtered out and tolerates an older response without an identifier", () => {
+diff --git a/packages/views/collaboration/field-inputs.tsx b/packages/views/collaboration/field-inputs.tsx
+index 8fd5deee5..301e18318 100644
+--- a/packages/views/collaboration/field-inputs.tsx
++++ b/packages/views/collaboration/field-inputs.tsx
+@@ -108,7 +108,7 @@ export function CollaborationSourceInputs({ options, value, onChange, current, p
+     : t(($) => $.fields.chooseParent);
+   const chooseParent = (parent: CollaborationSourceOptions["parents"][number] | null) => {
+     setChosenParent(parent);
+-    onChange({ ...value, parentIssueId: parent?.id ?? null });
++    onChange({ ...value, parentIssueId: parent?.id ?? null, stage: parent ? value.stage : null });
+     setParentOpen(false);
+   };
+   const parentsReady = !parentsPending && !parentsError;
+@@ -142,9 +142,10 @@ export function CollaborationSourceInputs({ options, value, onChange, current, p
+       </PropertyPicker>
+       <p className="text-caption text-muted-foreground">{t(($) => $.fields.parentHint)}</p>
+     </div>
+-    <div className="space-y-2"><label htmlFor={`${id}-stage`} className="text-body">{t(($) => $.fields.stage)}</label>
+-      <Input id={`${id}-stage`} className="pointer-coarse:min-h-11" type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
+-    </div>
++    {value.parentIssueId && <div className="space-y-2"><label htmlFor={`${id}-stage`} className="text-body">{t(($) => $.fields.stageInputLabel)}</label>
++      <Input id={`${id}-stage`} aria-describedby={`${id}-stage-hint`} className="pointer-coarse:min-h-11" type="number" min={1} max={2147483647} step={1} value={value.stage ?? ""} onChange={(event) => onChange({ ...value, stage: event.target.value === "" ? null : event.target.valueAsNumber })} />
++      <p id={`${id}-stage-hint`} className="text-caption text-muted-foreground">{t(($) => $.fields.stageHint)}</p>
++    </div>}
+   </fieldset>;
+ }
+ 
+diff --git a/packages/views/locales/en/collaboration.json b/packages/views/locales/en/collaboration.json
+index c95232daa..821bea096 100644
+--- a/packages/views/locales/en/collaboration.json
++++ b/packages/views/locales/en/collaboration.json
+@@ -155,6 +155,8 @@
+     "noMatchingParents": "No matching tasks.",
+     "refineParents": "Showing the latest 200 matches. Refine the search to find another issue.",
+     "stage": "Stage under parent",
++    "stageInputLabel": "Subtask stage number (optional)",
++    "stageHint": "Use positive whole numbers (1, 2, 3) to group the parent's subtasks into batches. Matching numbers share a batch. Leave blank if no batches are needed.",
+     "iteration": "Iteration",
+     "allowCompleted": "Include this completed issue in the active iteration",
+     "iterationsDisabled": "Iterations are disabled in the source workspace.",
+diff --git a/packages/views/locales/zh-Hans/collaboration.json b/packages/views/locales/zh-Hans/collaboration.json
+index 681b672ab..af3d7a4d3 100644
+--- a/packages/views/locales/zh-Hans/collaboration.json
++++ b/packages/views/locales/zh-Hans/collaboration.json
+@@ -155,6 +155,8 @@
+     "noMatchingParents": "没有匹配的任务。",
+     "refineParents": "当前显示最近 200 个结果，请缩小搜索范围查找其他任务。",
+     "stage": "父任务下的阶段",
++    "stageInputLabel": "子任务阶段编号（可选）",
++    "stageHint": "填写 1、2、3 等正整数，为父任务的子任务分批。相同编号属于同一批；没有分批计划可留空。",
+     "iteration": "迭代",
+     "allowCompleted": "将这项已完成任务加入当前进行中的迭代",
+     "iterationsDisabled": "来源工作空间已停用迭代。",
+diff --git a/server/internal/handler/daemon_test.go b/server/internal/handler/daemon_test.go
+index 94c3ac4e9..fe8c4edc6 100755
+--- a/server/internal/handler/daemon_test.go
++++ b/server/internal/handler/daemon_test.go
+@@ -2013,6 +2013,13 @@ func TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos(t *testing.T) {
+ 		testWorkspaceID,
+ 	).Scan(&agentID, &runtimeID)
+ 
++	var heartbeatAgeSeconds float64
++	dbfx.QueryRow(t, `SELECT extract(epoch FROM now() - COALESCE(last_seen_at, updated_at))::float8 FROM agent_runtime WHERE id = $1`, runtimeID).Scan(&heartbeatAgeSeconds)
++	t.Logf("shared runtime heartbeat age before payload claim: %.3fs", heartbeatAgeSeconds)
++
++	// This shared fixture must still satisfy the production heartbeat fence.
++	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, runtimeID)
++
+ 	issueID := dbfx.Issue(t, "project repo override", testutil.Cols{
+ 		"project_id": projectID,
+ 		"priority":   "medium",
+@@ -2079,6 +2086,9 @@ func TestClaimTask_ProjectDescriptionInjected(t *testing.T) {
+ 		testWorkspaceID,
+ 	).Scan(&agentID, &runtimeID)
+ 
++	// This shared fixture must still satisfy the production heartbeat fence.
++	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, runtimeID)
++
+ 	issueID := dbfx.Issue(t, "project description", testutil.Cols{
+ 		"project_id": projectID,
+ 		"priority":   "medium",
+@@ -2168,6 +2178,9 @@ func TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos(t *testing.T) {
+ 		testWorkspaceID,
+ 	).Scan(&agentID, &runtimeID)
+ 
++	// This shared fixture must still satisfy the production heartbeat fence.
++	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, runtimeID)
++
+ 	issueID := dbfx.Issue(t, "no project repos", testutil.Cols{
+ 		"project_id": projectID,
+ 		"priority":   "medium",
+@@ -2213,6 +2226,9 @@ func TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext(t *testi
+ 		SELECT a.id, a.runtime_id FROM agent a WHERE a.workspace_id = $1 LIMIT 1
+ 	`, testWorkspaceID).Scan(&agentID, &runtimeID)
+ 
++	// This shared fixture must still satisfy the production heartbeat fence.
++	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, runtimeID)
++
+ 	const projectDescription = "Use only the bound project resources."
+ 	projectID := dbfx.Project(t, "Run-only autopilot project", testutil.Cols{
+ 		"description": projectDescription,
+@@ -2355,6 +2371,9 @@ func TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects(t *testing.T
+ 		testWorkspaceID,
+ 	).Scan(&localAgentID, &localRuntimeID)
+ 
++	// This shared fixture must still satisfy the production heartbeat fence.
++	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, localRuntimeID)
++
+ 	// Foreign workspace with its own issue — what the misrouted task will
+ 	// resolve to.
+ 	foreignWorkspaceID := dbfx.Insert(t, "workspace", testutil.Cols{

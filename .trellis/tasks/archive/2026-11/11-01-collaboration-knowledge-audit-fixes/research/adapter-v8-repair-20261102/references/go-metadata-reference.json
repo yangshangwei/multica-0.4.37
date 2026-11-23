@@ -1,0 +1,210 @@
+{
+  "reviewer": "/root/adapter_v5_review",
+  "commands": [
+    {
+      "label": "version",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+        "version"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+      "exit_code": 0,
+      "stdout": "go version go1.27.0 darwin/arm64\n",
+      "stderr": "",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-version.log",
+      "raw_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+      "network_denied": true,
+      "actual_Go_tests": 0,
+      "actual_SQL": 0
+    },
+    {
+      "label": "help-build",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+        "help",
+        "build"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+      "exit_code": 0,
+      "stdout": null,
+      "stderr": "",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-help-build.log",
+      "raw_sha256": "0ee58285e7ff14a2cb62c1a0b926caa3af8fa46ff7ac9f3a7898ac8d11e50cb9",
+      "network_denied": true,
+      "actual_Go_tests": 0,
+      "actual_SQL": 0
+    },
+    {
+      "label": "help-testflag",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+        "help",
+        "testflag"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+      "exit_code": 0,
+      "stdout": null,
+      "stderr": "",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-help-testflag.log",
+      "raw_sha256": "88dd79603f31a6033422757103889ce759736cdc0434f9b38aacdd10a35c2d4f",
+      "network_denied": true,
+      "actual_Go_tests": 0,
+      "actual_SQL": 0
+    },
+    {
+      "label": "list-installsuffix-value",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+        "list",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-installsuffix",
+        "-c",
+        "."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+      "exit_code": 0,
+      "stdout": "example/first\n",
+      "stderr": "",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-installsuffix-value.log",
+      "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "network_denied": true,
+      "actual_Go_tests": 0,
+      "actual_SQL": 0
+    },
+    {
+      "label": "list-gccgoflags-value",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+        "list",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "-gccgoflags",
+        "-c",
+        "."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+      "exit_code": 0,
+      "stdout": "example/first\n",
+      "stderr": "",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-gccgoflags-value.log",
+      "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "network_denied": true,
+      "actual_Go_tests": 0,
+      "actual_SQL": 0
+    },
+    {
+      "label": "list-C-absolute",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/second",
+        "list",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+      "exit_code": 0,
+      "stdout": "example/second\n",
+      "stderr": "",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-C-absolute.log",
+      "raw_sha256": "931efd342e89e6de1822a0c10eb8f9736cb00743b5ece4c263ae70ea1fcfa321",
+      "network_denied": true,
+      "actual_Go_tests": 0,
+      "actual_SQL": 0
+    },
+    {
+      "label": "list-C-equals-relative",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+        "-C=../second",
+        "list",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "."
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/first",
+      "exit_code": 0,
+      "stdout": "example/second\n",
+      "stderr": "",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-C-equals-relative.log",
+      "raw_sha256": "931efd342e89e6de1822a0c10eb8f9736cb00743b5ece4c263ae70ea1fcfa321",
+      "network_denied": true,
+      "actual_Go_tests": 0,
+      "actual_SQL": 0
+    },
+    {
+      "label": "list-C-selector",
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/deny-network.sb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module",
+        "list",
+        "-mod=readonly",
+        "-buildvcs=false",
+        "./first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/minimal-module/second",
+      "exit_code": 0,
+      "stdout": "example/first\n",
+      "stderr": "",
+      "raw": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-independent-review-20261102/go-metadata-list-C-selector.log",
+      "raw_sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "network_denied": true,
+      "actual_Go_tests": 0,
+      "actual_SQL": 0
+    }
+  ],
+  "environment_keys": [
+    "CGO_ENABLED",
+    "GOCACHE",
+    "GOMODCACHE",
+    "GOPATH",
+    "GOPROXY",
+    "GOSUMDB",
+    "GOTOOLCHAIN",
+    "GOVCS",
+    "HOME",
+    "PATH",
+    "PYTHONDONTWRITEBYTECODE",
+    "TMPDIR"
+  ],
+  "database_or_private_isolation_keys_present": false,
+  "wrapper_sha256": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+  "go_binary_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+  "fixture_source_sha256": {
+    "go.mod": "b0ff564525e2fb1be145f38bdab8363601cac0115c6b62c8eb4b88ee2e18bb2b",
+    "first/fixture.go": "809203a578e804492e135e319a40160153034ecfc8a19022ec7c22dea72cddfd",
+    "second/fixture.go": "f5b1c803675842c32bc96f5c56e482f8e3f6418ee99f01599a301f148c043fea"
+  },
+  "cached_Go_source_sha256": {
+    "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/work/build.go": "42ee70dc662499a36dc527b7590ae4df2e55bdc43c3a6ecea6cf06f3e838a353",
+    "/opt/homebrew/opt/go/libexec/src/cmd/go/internal/test/testflag.go": "5fdf7f4c3b57158231bd3b8fea988e6a21c716fa56032848a7a181f28379b50d"
+  },
+  "scope": "Only network-denied cached Go version/help/list; no TestMain, tests, DB, services or Providers"
+}

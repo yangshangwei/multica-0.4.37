@@ -1,0 +1,91 @@
+{
+  "scope": "test-only preapproved preparation/isolation/final-boundary matrix",
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "environment": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+  "provider_calls": false,
+  "production_edits_by_this_lane": false,
+  "commits": false,
+  "source_freeze": true,
+  "source_hashes": "source-hashes.json",
+  "dependency_hashes": "dependency-hashes.json",
+  "test_inventory": "test-inventory.json",
+  "runs": [
+    {
+      "log": "handler-normal.jsonl",
+      "sha256": "7252ce62832f97fee85e13437f88a40332bb8478a38f75522035c354a652331c",
+      "exit_code": 0,
+      "top_level": 4,
+      "pass_events": 12,
+      "leaf_cases": 9,
+      "containers": [
+        "TestKnowledgeOrdinaryCoalescedCommentsCheckEveryCurrentAuthor",
+        "TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters",
+        "TestKnowledgePreparationWhileRealOrdinaryWriterIsUncommitted"
+      ],
+      "failed": [],
+      "skipped": [],
+      "missing": []
+    },
+    {
+      "log": "handler-race.jsonl",
+      "sha256": "831bc884ab7b1c46cca8e9d0de253adc243a640689ace6a1a37b3dca03fa03dd",
+      "exit_code": 0,
+      "top_level": 4,
+      "pass_events": 12,
+      "leaf_cases": 9,
+      "containers": [
+        "TestKnowledgeOrdinaryCoalescedCommentsCheckEveryCurrentAuthor",
+        "TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters",
+        "TestKnowledgePreparationWhileRealOrdinaryWriterIsUncommitted"
+      ],
+      "failed": [],
+      "skipped": [],
+      "missing": []
+    },
+    {
+      "log": "source-boundaries-first.jsonl",
+      "sha256": "8a2ea2205034bb4caac69ce46212e0bff8147fbbda3784a5cecf48fd6c4a94e8",
+      "exit_code": 0,
+      "top_level": 2,
+      "pass_events": 4,
+      "leaf_cases": 3,
+      "containers": [
+        "TestKnowledgePreparationSourceRevocationBothCommitOrders"
+      ],
+      "failed": [],
+      "skipped": [],
+      "missing": []
+    },
+    {
+      "log": "service-race.jsonl",
+      "sha256": "1eb025565999486f3dd1212957ff1b9980adfd1cc322627b7cd11cc79900d12d",
+      "exit_code": 0,
+      "top_level": 2,
+      "pass_events": 4,
+      "leaf_cases": 3,
+      "containers": [
+        "TestKnowledgePreparationSourceRevocationBothCommitOrders"
+      ],
+      "failed": [],
+      "skipped": [],
+      "missing": []
+    }
+  ],
+  "static": {
+    "vet_service_handler_exit": 0,
+    "gofmt_exit": 0,
+    "diff_check_exit": 0
+  },
+  "regression": {
+    "red_log": "ordinary-writers-red.jsonl",
+    "actual_failure": "Real metadata description writer FOR UPDATE unnecessarily blocked PrepareTaskKnowledge",
+    "fix_owner": "main",
+    "correction": "UpdateProject metadata writer uses LockProjectForUpdate / FOR NO KEY UPDATE; exclusive squad/resource/delete paths retained",
+    "subsequent_green": "ordinary-approval-writers-first.jsonl and final handler normal/race"
+  },
+  "acceptance_limits": [
+    "12 distinct leaf cases; normal/race reruns not additive.",
+    "A2 separately owns approval authority/state/delete/correction/negative recovery matrix.",
+    "Full integrated source/Go/Redis and G2/task status remain main-owned."
+  ]
+}

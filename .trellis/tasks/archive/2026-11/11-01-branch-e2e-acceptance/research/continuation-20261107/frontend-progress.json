@@ -1,0 +1,136 @@
+{
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "runs": {
+    "static-first": {
+      "label": "static-first",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "lint",
+        "typecheck",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force"
+      ],
+      "start": "2026-11-07T05:03:33.086798+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished": "2026-11-07T05:06:40.659286+00:00"
+    },
+    "ui-exports": {
+      "label": "ui-exports",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "check:ui-exports"
+      ],
+      "start": "2026-11-07T05:05:10.521833+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished": "2026-11-07T05:05:14.529459+00:00"
+    },
+    "verification-scripts": {
+      "label": "verification-scripts",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "node",
+        "--test",
+        "scripts/agent-critical-path.test.mjs",
+        "scripts/check-agent-critical-path.test.mjs",
+        "scripts/agent-critical-path-workflow.test.mjs",
+        "scripts/go-test-database-preconditions.test.mjs",
+        "e2e/fixtures/collaboration-installed-main.node-test.mjs"
+      ],
+      "start": "2026-11-07T05:11:11.319334+00:00",
+      "state": "complete",
+      "exit_code": 0,
+      "finished": "2026-11-07T05:12:00.833628+00:00"
+    },
+    "units-first": {
+      "label": "units-first",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2",
+        "--reporter=json",
+        "--outputFile=vitest-acceptance.json"
+      ],
+      "start": "2026-11-07T05:05:38.826268+00:00",
+      "state": "complete",
+      "exit_code": 1,
+      "finished": "2026-11-07T05:06:47.423590+00:00"
+    },
+    "units-reconfigured": {
+      "label": "units-reconfigured",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "exec",
+        "turbo",
+        "run",
+        "test",
+        "--filter=!@multica/mobile",
+        "--concurrency=1",
+        "--force",
+        "--",
+        "--maxWorkers=2"
+      ],
+      "start": "2026-11-07T05:06:57.733946+00:00",
+      "state": "complete",
+      "exit_code": 1,
+      "finished": "2026-11-07T05:07:47.834233+00:00"
+    },
+    "diagnostic-route-reproduction": {
+      "label": "diagnostic-route-reproduction",
+      "source_head": "4c817dee9397a42ac903f419af7804b11d2d863e",
+      "cwd": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+      "command": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "vitest",
+        "run",
+        "diagnostics/diagnostic-context.test.ts",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-e2e-20261107/frontend/diagnostic-route-reproduction/results.json"
+      ],
+      "start": "2026-11-07T05:08:30.713857+00:00",
+      "state": "complete",
+      "exit_code": 1,
+      "finished": "2026-11-07T05:08:31.980476+00:00"
+    }
+  },
+  "static_tasks": 15,
+  "lint_warnings": 30,
+  "script_tests_passed": 96,
+  "core_tests": {
+    "pass": 4460,
+    "fail": 1
+  },
+  "reproduction": {
+    "pass": 14,
+    "fail": 1
+  },
+  "notes": [
+    "All remaining package units still running; do not infer full frontend pass",
+    "units-first manually interrupted before any output report touched source; retained separately"
+  ]
+}

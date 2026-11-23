@@ -1,0 +1,115 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-old-cli-second",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-installed-clients.spec.ts",
+      "file": "collaboration-installed-clients.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6005,
+                  "error": {
+                    "message": "Error: Command failed: docker cp /private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay multica-installed-cli-02d525d8-1700-4a69-ac9c-8b5a4107f525:/fixture-relay\ntime=\"2026-10-22T21:14:10+08:00\" level=error msg=\"Can't add file /private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay to tar: io: read/write on closed pipe\"\ntime=\"2026-10-22T21:14:10+08:00\" level=error msg=\"Can't close tar writer: io: read/write on closed pipe\"\nError response from daemon: container rootfs is marked read-only\n",
+                    "stack": "Error: Command failed: docker cp /private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay multica-installed-cli-02d525d8-1700-4a69-ac9c-8b5a4107f525:/fixture-relay\ntime=\"2026-10-22T21:14:10+08:00\" level=error msg=\"Can't add file /private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay to tar: io: read/write on closed pipe\"\ntime=\"2026-10-22T21:14:10+08:00\" level=error msg=\"Can't close tar writer: io: read/write on closed pipe\"\nError response from daemon: container rootfs is marked read-only\n"
+                  },
+                  "errors": [
+                    {
+                      "message": "Error: Command failed: docker cp /private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay multica-installed-cli-02d525d8-1700-4a69-ac9c-8b5a4107f525:/fixture-relay\ntime=\"2026-10-22T21:14:10+08:00\" level=error msg=\"Can't add file /private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay to tar: io: read/write on closed pipe\"\ntime=\"2026-10-22T21:14:10+08:00\" level=error msg=\"Can't close tar writer: io: read/write on closed pipe\"\nError response from daemon: container rootfs is marked read-only\n"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-22T13:14:04.372Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d",
+          "file": "collaboration-installed-clients.spec.ts",
+          "line": 29,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-22T13:14:03.719Z",
+    "duration": 6716.074,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

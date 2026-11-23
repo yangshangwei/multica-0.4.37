@@ -1,0 +1,46 @@
+{
+  "id": "controlled-artifact-execution",
+  "name": "controlled-artifact-execution",
+  "title": "M1 受控发布候选制品执行",
+  "description": "实现发布候选制品打包的受控高风险执行器：审批绑定 actor/resource/action/commit/artifact/environment/argv digest/expiry，一次性领取和执行回执，未知结果不得自动重跑；本地 synthetic adapter 验收。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-06",
+  "completedAt": "2026-11-10",
+  "branch": "codex/controlled-artifact-20261110",
+  "base_branch": "codex/cross-workspace-collaboration",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "commit": "f5b51d7be",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-05-agent-squad-rnd-improvements",
+  "relatedFiles": [],
+  "notes": "2026-11-10：受控制品实现独立PASS，提交f5b51d7be已快进合入codex/cross-workspace-collaboration；handler普通/race各84、router各23、纯包各78通过。专属容器停止，数据库日志保留，真实模型0。归档本子任务，父M1证据门禁/持久化回执及M2/M3仍开放。",
+  "meta": {
+    "implementation_status": "verified_integrated",
+    "planning_status": "contracts_reviewed_ready_implementation_pending",
+    "reconciled_from_worktree": "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105/",
+    "planning_source_head": "01becb2b0abf2508a6f5a4886cbae58560c9ec1c",
+    "next_action": "Archive verified child; continue remaining M1 evidence gates and durable delegation receipts in parent roadmap.",
+    "status_reconciliation_2026_11_09": {
+      "source_head": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+      "report": "docs/audits/2026-11-09-active-task-reconciliation.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "status": "in_progress",
+        "notes": "",
+        "meta": {}
+      }
+    },
+    "plan_recheck": "plan-recheck-2026-11-10.md",
+    "verification": "verification-2026-11-10.json",
+    "independent_review": "research/independent-review.json",
+    "integration_commit": "f5b51d7be"
+  }
+}

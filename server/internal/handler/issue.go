@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -14,12 +15,15 @@ import (
 	"strings"
 	"time"
 	"unicode"
+	"unicode/utf8"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/admission"
+	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/channelmedia"
 	"github.com/multica-ai/multica/server/internal/dispatch"
 	"github.com/multica-ai/multica/server/internal/issueguard"
@@ -37,14 +41,16 @@ import (
 
 // IssueResponse is the JSON response for an issue.
 type IssueResponse struct {
-	AdmissionStatus string  `json:"admission_status"`
-	ID              string  `json:"id"`
-	WorkspaceID     string  `json:"workspace_id"`
-	Number          int32   `json:"number"`
-	Identifier      string  `json:"identifier"`
-	Title           string  `json:"title"`
-	Description     *string `json:"description"`
-	Status          string  `json:"status"`
+	CompletionReceipt *service.DeliveryCompletionReceipt `json:"completion_receipt,omitempty"`
+	Collaboration     *sourceIssueCollaboration          `json:"collaboration,omitempty"`
+	AdmissionStatus   string                             `json:"admission_status"`
+	ID                string                             `json:"id"`
+	WorkspaceID       string                             `json:"workspace_id"`
+	Number            int32                              `json:"number"`
+	Identifier        string                             `json:"identifier"`
+	Title             string                             `json:"title"`
+	Description       *string                            `json:"description"`
+	Status            string                             `json:"status"`
 	// StatusCategory is the canonical status whose platform behavior Status
 	// carries — identical to Status for the 7 built-ins, and the inherited
 	// category for a custom status. Omitted when the endpoint does not resolve
@@ -628,17 +634,28 @@ func parseQueryNumber(q string) (int, bool) {
 
 // searchResult holds a raw row from the dynamic search query.
 type searchResult struct {
-	issue                 db.Issue
-	totalCount            int64
-	matchSource           string
-	matchedCommentContent string
+	issue                  db.Issue
+	totalCount             int64
+	matchSource            string
+	matchedCommentContent  string
+	collaborationReference bool
 }
 
 // buildSearchQuery builds a dynamic SQL query for issue search.
 // It uses LOWER(column) LIKE for case-insensitive matching compatible with pg_bigm 1.2 GIN indexes.
 // Search patterns are lowercased in Go to avoid redundant LOWER() on the pattern side in SQL.
 // LIKE patterns are pre-built in Go (e.g. "%html%") so pg_bigm can extract bigrams from a single parameter value.
-func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, includeClosed bool, terminalStatusKeys []string) (string, []any) {
+func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, includeClosed bool, terminalStatusKeys []string, machine bool) (string, []any) {
+	descriptionColumn := "i.description"
+	commentAccess := ""
+	referenceColumn := "false"
+	updatedColumn := "i.updated_at"
+	if machine {
+		referenceColumn = collaborationReferencePredicate
+		descriptionColumn = "CASE WHEN " + referenceColumn + " THEN NULL ELSE i.description END"
+		commentAccess = " AND NOT (" + referenceColumn + ")"
+		updatedColumn = "CASE WHEN " + referenceColumn + " THEN NULL ELSE i.updated_at END"
+	}
 	// Lowercase in Go so SQL only needs LOWER() on the column side.
 	phrase = strings.ToLower(phrase)
 	for i, t := range terms {
@@ -692,7 +709,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 	// this workspace's comments and the plan uses the supporting
 	// idx_comment_workspace (migration 135). See MUL-4059 EXPLAIN reports.
 	phraseMatch := fmt.Sprintf(
-		"(LOWER(i.title) LIKE %s OR LOWER(COALESCE(i.description, '')) LIKE %s OR EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id AND c.workspace_id = %s AND LOWER(c.content) LIKE %s))",
+		"(LOWER(i.title) LIKE %s OR LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s OR EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id"+commentAccess+" AND c.workspace_id = %s AND LOWER(c.content) LIKE %s))",
 		phraseContainsParam, phraseContainsParam, wsParam, phraseContainsParam,
 	)
 	whereParts = append(whereParts, phraseMatch)
@@ -703,7 +720,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		var termConditions []string
 		for _, tp := range termContainsParams {
 			termConditions = append(termConditions, fmt.Sprintf(
-				"(LOWER(i.title) LIKE %s OR LOWER(COALESCE(i.description, '')) LIKE %s OR EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id AND c.workspace_id = %s AND LOWER(c.content) LIKE %s))",
+				"(LOWER(i.title) LIKE %s OR LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s OR EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id"+commentAccess+" AND c.workspace_id = %s AND LOWER(c.content) LIKE %s))",
 				tp, tp, wsParam, tp,
 			))
 		}
@@ -723,7 +740,11 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		// Negate only known terminal keys so an unknown legacy key remains
 		// searchable instead of disappearing from the default result set.
 		terminalStatusesParam := nextArg(terminalStatusKeys)
-		whereClause += fmt.Sprintf(" AND NOT (i.status = ANY(%s::text[]))", terminalStatusesParam)
+		if machine {
+			whereClause += fmt.Sprintf(" AND (%s OR NOT (i.status = ANY(%s::text[])))", referenceColumn, terminalStatusesParam)
+		} else {
+			whereClause += fmt.Sprintf(" AND NOT (i.status = ANY(%s::text[]))", terminalStatusesParam)
+		}
 	}
 
 	// --- ORDER BY clause ---
@@ -754,20 +775,20 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 	}
 
 	// Tier 5: Description contains phrase
-	rankCases = append(rankCases, fmt.Sprintf("WHEN LOWER(COALESCE(i.description, '')) LIKE %s THEN 5", phraseContainsParam))
+	rankCases = append(rankCases, fmt.Sprintf("WHEN LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s THEN 5", phraseContainsParam))
 
 	// Tier 6: Description matches all words (multi-word only)
 	if len(termContainsParams) > 1 {
 		var descTerms []string
 		for _, tp := range termContainsParams {
-			descTerms = append(descTerms, fmt.Sprintf("LOWER(COALESCE(i.description, '')) LIKE %s", tp))
+			descTerms = append(descTerms, fmt.Sprintf("LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s", tp))
 		}
 		rankCases = append(rankCases, fmt.Sprintf("WHEN (%s) THEN 6", strings.Join(descTerms, " AND ")))
 	}
 
 	// Tier 7: Comment contains phrase. Same workspace_id-in-subquery
 	// contract as the WHERE clause; see the phraseMatch comment above.
-	rankCases = append(rankCases, fmt.Sprintf("WHEN EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id AND c.workspace_id = %s AND LOWER(c.content) LIKE %s) THEN 7", wsParam, phraseContainsParam))
+	rankCases = append(rankCases, fmt.Sprintf("WHEN EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id"+commentAccess+" AND c.workspace_id = %s AND LOWER(c.content) LIKE %s) THEN 7", wsParam, phraseContainsParam))
 
 	// Tier 8: Comment matches all words (multi-word only)
 	if len(termContainsParams) > 1 {
@@ -775,7 +796,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		for _, tp := range termContainsParams {
 			commentTerms = append(commentTerms, fmt.Sprintf("LOWER(c.content) LIKE %s", tp))
 		}
-		rankCases = append(rankCases, fmt.Sprintf("WHEN EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id AND c.workspace_id = %s AND (%s)) THEN 8", wsParam, strings.Join(commentTerms, " AND ")))
+		rankCases = append(rankCases, fmt.Sprintf("WHEN EXISTS (SELECT 1 FROM comment c WHERE c.issue_id = i.id"+commentAccess+" AND c.workspace_id = %s AND (%s)) THEN 8", wsParam, strings.Join(commentTerms, " AND ")))
 	}
 
 	rankExpr := "CASE " + strings.Join(rankCases, " ") + " ELSE 9 END"
@@ -818,10 +839,15 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		strings.Join(directHitParts, " OR "),
 	)
 
+	if machine {
+		cancelledRank = "CASE WHEN " + referenceColumn + " THEN 0 ELSE (" + cancelledRank + ") END"
+		statusRank = "CASE WHEN " + referenceColumn + " THEN 0 ELSE (" + statusRank + ") END"
+	}
+
 	// --- match_source expression ---
 	matchSourceExpr := fmt.Sprintf(`CASE
 		WHEN LOWER(i.title) LIKE %s THEN 'title'
-		WHEN LOWER(COALESCE(i.description, '')) LIKE %s THEN 'description'
+		WHEN LOWER(COALESCE(`+descriptionColumn+`, '')) LIKE %s THEN 'description'
 		ELSE 'comment'
 	END`, phraseContainsParam, phraseContainsParam)
 
@@ -831,12 +857,12 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		var descTerms []string
 		for _, tp := range termContainsParams {
 			titleTerms = append(titleTerms, fmt.Sprintf("LOWER(i.title) LIKE %s", tp))
-			descTerms = append(descTerms, fmt.Sprintf("LOWER(COALESCE(i.description, '')) LIKE %s", tp))
+			descTerms = append(descTerms, fmt.Sprintf("LOWER(COALESCE("+descriptionColumn+", '')) LIKE %s", tp))
 		}
 		matchSourceExpr = fmt.Sprintf(`CASE
 			WHEN LOWER(i.title) LIKE %s THEN 'title'
 			WHEN (%s) THEN 'title'
-			WHEN LOWER(COALESCE(i.description, '')) LIKE %s THEN 'description'
+			WHEN LOWER(COALESCE(`+descriptionColumn+`, '')) LIKE %s THEN 'description'
 			WHEN (%s) THEN 'description'
 			ELSE 'comment'
 		END`,
@@ -853,7 +879,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 	// scoping.
 	commentSubquery := fmt.Sprintf(`COALESCE(
 		(SELECT c.content FROM comment c
-		 WHERE c.issue_id = i.id AND c.workspace_id = %s AND LOWER(c.content) LIKE %s
+		 WHERE c.issue_id = i.id`+commentAccess+` AND c.workspace_id = %s AND LOWER(c.content) LIKE %s
 		 ORDER BY c.created_at DESC LIMIT 1),
 		''
 	)`, wsParam, phraseContainsParam)
@@ -865,7 +891,7 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 		}
 		commentSubquery = fmt.Sprintf(`COALESCE(
 			(SELECT c.content FROM comment c
-			 WHERE c.issue_id = i.id AND c.workspace_id = %s AND (LOWER(c.content) LIKE %s OR (%s))
+			 WHERE c.issue_id = i.id`+commentAccess+` AND c.workspace_id = %s AND (LOWER(c.content) LIKE %s OR (%s))
 			 ORDER BY c.created_at DESC LIMIT 1),
 			''
 		)`, wsParam, phraseContainsParam, strings.Join(commentTerms, " AND "))
@@ -874,17 +900,18 @@ func buildSearchQuery(phrase string, terms []string, queryNum int, hasNum bool, 
 	limitParam := nextArg(nil)  // placeholder
 	offsetParam := nextArg(nil) // placeholder
 
-	query := fmt.Sprintf(`SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
+	query := fmt.Sprintf(`SELECT i.id, i.workspace_id, i.title, `+descriptionColumn+`, i.status, i.priority,
 		i.assignee_type, i.assignee_id, i.creator_type, i.creator_id,
 		i.parent_issue_id, i.acceptance_criteria, i.context_refs, i.position,
 		i.start_date, i.due_date, i.created_at, i.updated_at, i.last_activity_at, i.number, i.project_id,
 		i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count,
+		`+referenceColumn+` AS collaboration_reference,
 		COUNT(*) OVER() AS total_count,
 		%s AS match_source,
 		%s AS matched_comment_content
 	FROM issue i
 	WHERE i.workspace_id = %s AND %s
-	ORDER BY %s, %s, %s, i.updated_at DESC
+	ORDER BY %s, %s, %s, `+updatedColumn+` DESC, i.id
 	LIMIT %s OFFSET %s`,
 		matchSourceExpr,
 		commentSubquery,
@@ -945,7 +972,7 @@ func (h *Handler) SearchIssues(w http.ResponseWriter, r *http.Request) {
 		terminalStatusKeys = resolvedKeys
 	}
 
-	sqlQuery, args := buildSearchQuery(q, terms, queryNum, hasNum, includeClosed, terminalStatusKeys)
+	sqlQuery, args := buildSearchQuery(q, terms, queryNum, hasNum, includeClosed, terminalStatusKeys, collaborationMachineRequest(r))
 	// Fill placeholder args: $4 = workspace_id, last two = limit, offset
 	args[3] = wsUUID
 	args[len(args)-2] = limit
@@ -979,6 +1006,7 @@ func (h *Handler) SearchIssues(w http.ResponseWriter, r *http.Request) {
 				&sr.issue.ProjectID,
 				&sr.issue.Revision, &sr.issue.AdmissionStatus,
 				&sr.issue.CurrentIterationID, &sr.issue.IterationRolloverCount,
+				&sr.collaborationReference,
 				&sr.totalCount,
 				&sr.matchSource,
 				&sr.matchedCommentContent,
@@ -1015,13 +1043,28 @@ func (h *Handler) SearchIssues(w http.ResponseWriter, r *http.Request) {
 
 	prefix := h.getIssuePrefix(ctx, wsUUID)
 	fillSearch := h.newStatusCategoryFiller(ctx, wsUUID)
-	resp := make([]SearchIssueResponse, len(results))
+	ids := make([]pgtype.UUID, 0, len(results))
+	for _, sr := range results {
+		if !sr.collaborationReference {
+			ids = append(ids, sr.issue.ID)
+		}
+	}
+	collaborations, ok := h.sourceIssueCollaborations(w, r, wsUUID, ids)
+	if !ok {
+		return
+	}
+	resp := make([]any, len(results))
 	for i, sr := range results {
+		if sr.collaborationReference {
+			resp[i] = collaborationReferenceResponse(sr.issue.ID, sr.issue.WorkspaceID, sr.issue.Number, sr.issue.Title, prefix)
+			continue
+		}
 		sir := SearchIssueResponse{
 			IssueResponse: issueToResponse(sr.issue, prefix),
 			MatchSource:   sr.matchSource,
 		}
 		fillSearch(&sir.IssueResponse)
+		sir.Collaboration = collaborations[sir.ID]
 		// Always populate comment snippet when a matching comment exists
 		if sr.matchedCommentContent != "" {
 			snippet := extractSnippet(sr.matchedCommentContent, q)
@@ -1069,7 +1112,15 @@ func (h *Handler) QueryIssues(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
+	if h.taskCapabilityRead(w, r, (*Handler).ListIssues) {
+		return
+	}
 	ctx := r.Context()
+	machine := collaborationMachineRequest(r)
+	referenceColumn := "false"
+	if machine {
+		referenceColumn = collaborationReferencePredicate
+	}
 
 	workspaceID := h.resolveWorkspaceID(r)
 	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace_id")
@@ -1166,16 +1217,18 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		issues, err := h.Queries.ListOpenIssues(ctx, db.ListOpenIssuesParams{
-			WorkspaceID:        wsUUID,
-			TerminalStatusKeys: terminalStatusKeys,
-			Priority:           priorityFilter,
-			AssigneeID:         assigneeFilter,
-			AssigneeIds:        assigneeIdsFilter,
-			CreatorID:          creatorFilter,
-			ProjectID:          projectFilter,
-			InvolvesUserID:     involvesUserFilter,
-			MetadataFilter:     metadataFilter,
-			PropertiesFilter:   openPropertiesFilter,
+			WorkspaceID:           wsUUID,
+			MachinePrincipal:      machine,
+			ExternalCollaborators: r.URL.Query().Get("external_collaborators") == "true",
+			TerminalStatusKeys:    terminalStatusKeys,
+			Priority:              priorityFilter,
+			AssigneeID:            assigneeFilter,
+			AssigneeIds:           assigneeIdsFilter,
+			CreatorID:             creatorFilter,
+			ProjectID:             projectFilter,
+			InvolvesUserID:        involvesUserFilter,
+			MetadataFilter:        metadataFilter,
+			PropertiesFilter:      openPropertiesFilter,
 		})
 		if err != nil {
 			writeError(w, http.StatusInternalServerError, "failed to list issues")
@@ -1183,21 +1236,33 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 		}
 
 		prefix := h.getIssuePrefix(ctx, wsUUID)
-		ids := make([]pgtype.UUID, len(issues))
-		for i, issue := range issues {
-			ids[i] = issue.ID
+		ids := make([]pgtype.UUID, 0, len(issues))
+		for _, issue := range issues {
+			if !issue.CollaborationReference {
+				ids = append(ids, issue.ID)
+			}
 		}
 		labelsMap := h.labelsByIssue(ctx, wsUUID, ids)
+		collaborations, ok := h.sourceIssueCollaborations(w, r, wsUUID, ids)
+		if !ok {
+			return
+		}
 		fillOpen := h.newStatusCategoryFiller(ctx, wsUUID)
-		resp := make([]IssueResponse, len(issues))
+		resp := make([]any, len(issues))
 		for i, issue := range issues {
-			resp[i] = openIssueRowToResponse(issue, prefix)
-			fillOpen(&resp[i])
-			labels := labelsMap[resp[i].ID]
+			if issue.CollaborationReference {
+				resp[i] = collaborationReferenceResponse(issue.ID, issue.WorkspaceID, issue.Number, issue.Title, prefix)
+				continue
+			}
+			item := openIssueRowToResponse(issue, prefix)
+			item.Collaboration = collaborations[item.ID]
+			fillOpen(&item)
+			labels := labelsMap[item.ID]
 			if labels == nil {
 				labels = []LabelResponse{}
 			}
-			resp[i].Labels = &labels
+			item.Labels = &labels
+			resp[i] = item
 		}
 
 		writeJSON(w, http.StatusOK, map[string]any{
@@ -1324,6 +1389,12 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 
 	// Build dynamic SQL — same approach as ListGroupedIssues.
 	where := []string{"i.workspace_id = $1", "i.admission_status IN ('not_required', 'accepted')"}
+	if r.URL.Query().Get("external_collaborators") == "true" {
+		where = append(where, externalCollaboratorsPredicate)
+	}
+	if machine && !collaborationReferenceFiltersAllowed(r) {
+		where = append(where, "NOT ("+collaborationReferencePredicate+")")
+	}
 	args := []any{wsUUID}
 	addArg := func(v any) string {
 		args = append(args, v)
@@ -1507,6 +1578,9 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 	if !sortIsExpr {
 		orderBy = "i." + sortCol
 	}
+	if machine && sortCol != "title" {
+		orderBy = "CASE WHEN " + collaborationReferencePredicate + " THEN NULL ELSE (" + orderBy + ") END"
+	}
 	orderBy += " " + sortDir
 	if sortCol == "start_date" || sortCol == "due_date" || sortCol == "last_activity_at" || sortIsProperty {
 		// Property values are sparse: issues without one sort last in both
@@ -1519,7 +1593,11 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 	if sortCol == "last_activity_at" {
 		orderBy += ", i.id DESC"
 	} else {
-		orderBy += ", i.created_at DESC, i.id DESC"
+		if machine {
+			orderBy += ", CASE WHEN " + collaborationReferencePredicate + " THEN NULL ELSE i.created_at END DESC, i.id DESC"
+		} else {
+			orderBy += ", i.created_at DESC, i.id DESC"
+		}
 	}
 
 	offsetRef := addArg(int64(offset))
@@ -1528,7 +1606,8 @@ func (h *Handler) ListIssues(w http.ResponseWriter, r *http.Request) {
 	query := fmt.Sprintf(`SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
        i.assignee_type, i.assignee_id, i.creator_type, i.creator_id,
        i.parent_issue_id, i.position, i.start_date, i.due_date, i.created_at, i.updated_at, i.last_activity_at, i.number, i.project_id, i.metadata, i.stage, i.properties,
-	   i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count
+	   i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count,
+       `+referenceColumn+` AS collaboration_reference
 FROM issue i
 WHERE %s
 ORDER BY %s
@@ -1543,8 +1622,10 @@ LIMIT %s OFFSET %s`, whereSql, orderBy, limitRef, offsetRef)
 	defer rows.Close()
 
 	var issues []db.ListIssuesRow
+	var references []bool
 	for rows.Next() {
 		var row db.ListIssuesRow
+		var reference bool
 		if err := rows.Scan(
 			&row.ID,
 			&row.WorkspaceID,
@@ -1570,12 +1651,14 @@ LIMIT %s OFFSET %s`, whereSql, orderBy, limitRef, offsetRef)
 			&row.Properties,
 			&row.Revision, &row.AdmissionStatus,
 			&row.CurrentIterationID, &row.IterationRolloverCount,
+			&reference,
 		); err != nil {
 			slog.Warn("ListIssues scan failed", "error", err)
 			writeError(w, http.StatusInternalServerError, "failed to list issues")
 			return
 		}
 		issues = append(issues, row)
+		references = append(references, reference)
 	}
 	if err := rows.Err(); err != nil {
 		slog.Warn("ListIssues rows failed", "error", err)
@@ -1593,21 +1676,34 @@ LIMIT %s OFFSET %s`, whereSql, orderBy, limitRef, offsetRef)
 	}
 
 	prefix := h.getIssuePrefix(ctx, wsUUID)
-	ids := make([]pgtype.UUID, len(issues))
+	ids := make([]pgtype.UUID, 0, len(issues))
 	for i, issue := range issues {
-		ids[i] = issue.ID
+		if !references[i] {
+			ids = append(ids, issue.ID)
+		}
 	}
 	labelsMap := h.labelsByIssue(ctx, wsUUID, ids)
-	resp := make([]IssueResponse, len(issues))
+	collaborations, ok := h.sourceIssueCollaborations(w, r, wsUUID, ids)
+	if !ok {
+		return
+	}
+	resp := make([]any, len(issues))
+	fill := h.newStatusCategoryFiller(ctx, wsUUID)
 	for i, issue := range issues {
-		resp[i] = issueListRowToResponse(issue, prefix)
-		labels := labelsMap[resp[i].ID]
+		if references[i] {
+			resp[i] = collaborationReferenceResponse(issue.ID, issue.WorkspaceID, issue.Number, issue.Title, prefix)
+			continue
+		}
+		item := issueListRowToResponse(issue, prefix)
+		item.Collaboration = collaborations[item.ID]
+		fill(&item)
+		labels := labelsMap[item.ID]
 		if labels == nil {
 			labels = []LabelResponse{}
 		}
-		resp[i].Labels = &labels
+		item.Labels = &labels
+		resp[i] = item
 	}
-	h.fillStatusCategories(ctx, wsUUID, resp)
 
 	writeJSON(w, http.StatusOK, map[string]any{
 		"issues": resp,
@@ -1809,6 +1905,13 @@ func (h *Handler) ListGroupedIssues(w http.ResponseWriter, r *http.Request) {
 	}
 
 	where := []string{"i.workspace_id = $1", "i.admission_status IN ('not_required', 'accepted')"}
+	if r.URL.Query().Get("external_collaborators") == "true" {
+		where = append(where, externalCollaboratorsPredicate)
+	}
+	if collaborationMachineRequest(r) {
+		// Group dimensions and totals are private to the collaboration.
+		where = append(where, "NOT ("+collaborationReferencePredicate+")")
+	}
 	args := []any{wsUUID}
 	addArg := func(v any) string {
 		args = append(args, v)
@@ -2204,6 +2307,10 @@ ORDER BY
 		ids[i] = row.ID
 	}
 	labelsMap := h.labelsByIssue(ctx, wsUUID, ids)
+	collaborations, ok := h.sourceIssueCollaborations(w, r, wsUUID, ids)
+	if !ok {
+		return
+	}
 	prefix := h.getIssuePrefix(ctx, wsUUID)
 	// One Resolver for the whole page — a per-row filler would query the
 	// catalog once per custom-status row. (MUL-6243)
@@ -2227,6 +2334,7 @@ ORDER BY
 		}
 
 		issue := issueListRowToResponse(row.ListIssuesRow, prefix)
+		issue.Collaboration = collaborations[issue.ID]
 		fillGrouped(&issue)
 		labels := labelsMap[issue.ID]
 		if labels == nil {
@@ -2240,6 +2348,9 @@ ORDER BY
 }
 
 func (h *Handler) GetIssue(w http.ResponseWriter, r *http.Request) {
+	if h.taskCapabilityRead(w, r, (*Handler).GetIssue) {
+		return
+	}
 	id := chi.URLParam(r, "id")
 	issue, ok := h.loadIssueForUser(w, r, id)
 	if !ok {
@@ -2247,6 +2358,9 @@ func (h *Handler) GetIssue(w http.ResponseWriter, r *http.Request) {
 	}
 	prefix := h.getIssuePrefix(r.Context(), issue.WorkspaceID)
 	resp := issueToResponse(issue, prefix)
+	if !h.fillSourceIssueCollaboration(w, r, &resp) {
+		return
+	}
 	h.fillStatusCategory(r.Context(), issue.WorkspaceID, &resp)
 	detailLabels := h.labelsByIssue(r.Context(), issue.WorkspaceID, []pgtype.UUID{issue.ID})[uuidToString(issue.ID)]
 	if detailLabels == nil {
@@ -2323,8 +2437,12 @@ func (h *Handler) ListChildIssues(w http.ResponseWriter, r *http.Request) {
 		}
 		resp[i].Labels = &labels
 	}
+	projected, ok := h.projectSourceChildIssues(w, r, issue.WorkspaceID, resp)
+	if !ok {
+		return
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
-		"issues": resp,
+		"issues": projected,
 	})
 }
 
@@ -2409,8 +2527,12 @@ func (h *Handler) ListChildrenByParents(w http.ResponseWriter, r *http.Request) 
 		}
 		resp[i].Labels = &labels
 	}
+	projected, ok := h.projectSourceChildIssues(w, r, wsUUID, resp)
+	if !ok {
+		return
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
-		"issues": resp,
+		"issues": projected,
 	})
 }
 
@@ -2603,6 +2725,11 @@ func (h *Handler) QuickCreateIssue(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, "agent not found")
 		return
 	}
+	// Checked before readiness: a runtime can come back online, a level cannot,
+	// so this is the refusal worth reporting first.
+	if writeQuickCreateAutonomyError(w, service.CheckQuickCreateAutonomy(agent.AutonomyLevel)) {
+		return
+	}
 	// Quick-create needs the agent to run NOW, so any non-ready verdict refuses
 	// — but with the verdict's own code, so "CLI cannot run" no longer arrives
 	// as "runtime is offline" and sends the user to reconnect a machine that is
@@ -2691,6 +2818,9 @@ func (h *Handler) QuickCreateIssue(w http.ResponseWriter, r *http.Request) {
 		if writeIssueLimitReached(w, err) {
 			return
 		}
+		if writeQuickCreateAutonomyError(w, err) {
+			return
+		}
 		slog.Warn("quick-create enqueue failed", append(logger.RequestAttrs(r), "error", err)...)
 		writeError(w, http.StatusInternalServerError, "failed to enqueue quick-create task")
 		return
@@ -2713,6 +2843,34 @@ func writeAgentUnavailable(w http.ResponseWriter, reason string, reasonCode disp
 		"reason":      reason,
 		"reason_code": reasonCode,
 	})
+}
+
+// writeQuickCreateAutonomyError answers a quick-create whose executing agent
+// cannot create issues, and reports whether err was that refusal. 422 with a
+// stable code, like agent_unavailable: the request is well-formed and the user
+// is allowed to make it; the chosen agent is the wrong one for this flow.
+//
+//	422 {
+//	  "code":              "agent_autonomy_insufficient",
+//	  "autonomy_level":    "observer",
+//	  "required_autonomy": "contributor",
+//	  "error":             "<sentence for clients that predate the code>"
+//	}
+func writeQuickCreateAutonomyError(w http.ResponseWriter, err error) bool {
+	var autonomyErr *service.QuickCreateAutonomyError
+	if !errors.As(err, &autonomyErr) {
+		return false
+	}
+	required := string(service.QuickCreateMinAutonomy)
+	writeJSON(w, http.StatusUnprocessableEntity, map[string]any{
+		"code":              "agent_autonomy_insufficient",
+		"autonomy_level":    autonomyErr.Level,
+		"required_autonomy": required,
+		"error": "The agent that would create this issue has autonomy level " + autonomyErr.Level +
+			": it can read, analyse and comment, but cannot create issues. Create the issue manually and assign it to this agent, or pick an agent at " +
+			required + " or above.",
+	})
+	return true
 }
 
 // isRuntimeOnline returns true when the given runtime is currently
@@ -3054,6 +3212,7 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		DueDate:        dueDate,
 		OriginType:     originType,
 		OriginID:       originID,
+		VerifiedTaskID: verifiedIssueCreationTaskID(r.Context(), wsUUID),
 		Stage:          ptrToInt4(req.Stage),
 		AttachmentIDs:  attachmentIDs,
 		LabelIDs:       labelIDs,
@@ -3091,6 +3250,9 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		},
 	})
 
+	if writeIssueDeliveryError(w, err) {
+		return
+	}
 	if writeIssueIterationOperationError(w, err) {
 		return
 	}
@@ -3157,6 +3319,15 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 	labelResponses := labelsToResponse(res.Labels)
 	resp.Labels = &labelResponses
 	writeJSON(w, http.StatusCreated, resp)
+}
+
+// Budget attribution trusts the credential binding, never actor headers or
+// caller-provided origin fields.
+func verifiedIssueCreationTaskID(ctx context.Context, workspaceID pgtype.UUID) pgtype.UUID {
+	if token, ok := auth.VerifiedTaskTokenFromContext(ctx); ok && token.WorkspaceID == workspaceID {
+		return token.TaskID
+	}
+	return pgtype.UUID{}
 }
 
 // The service already holds workspace/member/catalog/I1 fences. Reference locks
@@ -3256,6 +3427,8 @@ func (h *Handler) prepareIssueCreationInTx(r *http.Request, tx pgx.Tx, params *s
 }
 
 type UpdateIssueRequest struct {
+	Completion          *service.DeliveryCompletionBinding `json:"completion,omitempty"`
+	ProjectChangeReason *string                            `json:"project_change_reason,omitempty"`
 	// Explicit iteration writes require the confirmed operation protocol.
 	CurrentIterationID     json.RawMessage `json:"current_iteration_id,omitempty"`
 	IterationRolloverCount json.RawMessage `json:"iteration_rollover_count,omitempty"`
@@ -3298,6 +3471,145 @@ type UpdateIssueRequest struct {
 	// MUL-3375). Only consumed when a run actually starts: SuppressRun=true or
 	// a parked/non-triggering write drops it. Never fabricates a comment.
 	HandoffNote string `json:"handoff_note,omitempty"`
+}
+
+// New delivery controls are strict even though legacy issue fields retain their
+// established decoding behavior. Only these controls are checked for duplicates
+// here; old batch update objects still merge as before.
+func issueDeliveryControlFields(raw []byte, controls map[string]json.RawMessage) error {
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	token, err := decoder.Token()
+	if err != nil || token != json.Delim('{') {
+		return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+	}
+	for decoder.More() {
+		keyToken, err := decoder.Token()
+		if err != nil {
+			return err
+		}
+		key, ok := keyToken.(string)
+		if !ok {
+			return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+		var value json.RawMessage
+		if err = decoder.Decode(&value); err != nil {
+			return err
+		}
+		lower := strings.ToLower(key)
+		if lower != "completion" && lower != "project_change_reason" && lower != "skip" {
+			continue
+		}
+		if key != lower {
+			return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+		if _, seen := controls[key]; seen {
+			return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+		controls[key] = value
+	}
+	if _, err = decoder.Token(); err != nil {
+		return err
+	}
+	if _, err = decoder.Token(); err != io.EOF {
+		return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+	}
+	return nil
+}
+func parseIssueDeliveryControls(fields map[string]json.RawMessage) (*service.DeliveryCompletionBinding, string, error) {
+	if _, ok := fields["skip"]; ok {
+		return nil, "", service.DeliveryCompletionError{Status: 409, Code: "delivery_skip_not_supported"}
+	}
+	var completion *service.DeliveryCompletionBinding
+	if raw, ok := fields["completion"]; ok {
+		binding, err := service.ParseDeliveryCompletionBinding(raw)
+		if err != nil {
+			return nil, "", err
+		}
+		completion = &binding
+	}
+	reason := ""
+	if raw, ok := fields["project_change_reason"]; ok {
+		if bytes.Equal(bytes.TrimSpace(raw), []byte("null")) || json.Unmarshal(raw, &reason) != nil {
+			return nil, "", service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+		reason = strings.TrimSpace(reason)
+		if reason == "" || !utf8.ValidString(reason) || strings.ContainsRune(reason, 0) || utf8.RuneCountInString(reason) > 1000 {
+			return nil, "", service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+		}
+	}
+	return completion, reason, nil
+}
+func validateIssueDeliveryControls(raw []byte, req *UpdateIssueRequest) error {
+	fields := map[string]json.RawMessage{}
+	if err := issueDeliveryControlFields(raw, fields); err != nil {
+		return err
+	}
+	completion, reason, err := parseIssueDeliveryControls(fields)
+	if err != nil {
+		return err
+	}
+	if completion != nil && req.ExpectedRevision != nil && *req.ExpectedRevision != completion.ExpectedIssueRevision {
+		return service.DeliveryCompletionError{Status: 400, Code: "invalid_issue_update"}
+	}
+	req.Completion = completion
+	if _, ok := fields["project_change_reason"]; ok {
+		req.ProjectChangeReason = &reason
+	}
+	return nil
+}
+
+type issueUpdateOutcome struct {
+	AttachmentsChanged bool
+	CompletionReceipt  *service.DeliveryCompletionReceipt
+	Replayed           bool
+}
+
+// A commit error is deliberately not unwrapped into the old safe lock retry.
+// The caller must retain uncertainty instead of trying another write.
+type issueUpdateCommitUnknown struct{ cause error }
+
+func (e *issueUpdateCommitUnknown) Error() string { return "issue update commit outcome is unknown" }
+func writeIssueDeliveryError(w http.ResponseWriter, err error) bool {
+	var failure service.DeliveryCompletionError
+	var unknown *issueUpdateCommitUnknown
+	if errors.As(err, &unknown) {
+		writeDeliveryCompletionError(w, err, true)
+		return true
+	}
+	if errors.As(err, &failure) {
+		writeDeliveryCompletionError(w, err, false)
+		return true
+	}
+	return false
+}
+func deliveryCredentialForIssueRequest(r *http.Request) service.ArtifactCredentialSnapshot {
+	p, _ := auth.AuthenticatedPrincipalFromContext(r.Context())
+	if p.Kind != auth.CredentialTask && (r.Header.Get("X-Agent-ID") != "" || r.Header.Get("X-Task-ID") != "") {
+		p.AgentActor = true
+	}
+	return artifactCredentialSnapshot(r.Context(), p)
+}
+func issueDeliveryCandidate(before db.Issue, params db.UpdateIssueParams) db.Issue {
+	after := before
+	if params.Title.Valid {
+		after.Title = params.Title.String
+	}
+	if params.Description.Valid {
+		after.Description = params.Description
+	}
+	if params.Status.Valid {
+		after.Status = params.Status.String
+	}
+	if params.Priority.Valid {
+		after.Priority = params.Priority.String
+	}
+	if params.Position.Valid {
+		after.Position = params.Position.Float64
+	}
+	after.AssigneeType, after.AssigneeID = params.AssigneeType, params.AssigneeID
+	after.StartDate, after.DueDate = params.StartDate, params.DueDate
+	after.ParentIssueID, after.ProjectID, after.Stage = params.ParentIssueID, params.ProjectID, params.Stage
+	return after
 }
 
 func mergeIssueChannelMediaDescription(current, incoming string, base *string, attachments []db.Attachment) string {
@@ -3347,6 +3659,15 @@ func mergeIssueChannelMediaDescription(current, incoming string, base *string, a
 		}
 	}
 	return merged
+}
+
+// assigneeFieldsTouched reports whether a request body named either assignee
+// field. An explicit null decodes to a nil pointer, so the decoded request
+// alone cannot tell "clear the assignee" apart from "leave it alone".
+func assigneeFieldsTouched(rawFields map[string]json.RawMessage) bool {
+	_, typeTouched := rawFields["assignee_type"]
+	_, idTouched := rawFields["assignee_id"]
+	return typeTouched || idTouched
 }
 
 func refreshUntouchedNullableIssueParams(params *db.UpdateIssueParams, current db.Issue, rawFields map[string]json.RawMessage) {
@@ -3406,18 +3727,29 @@ func writeIssueProjectAssociationError(w http.ResponseWriter, err error) bool {
 	return false
 }
 
-func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string) (db.Issue, db.Issue, bool, error) {
+func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string) (db.Issue, db.Issue, issueUpdateOutcome, error) {
 	ctx := r.Context()
+	completion, reason, err := parseIssueDeliveryControls(rawFields)
+	if err != nil {
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
+	}
+	credential := deliveryCredentialForIssueRequest(r)
 	actorType, actorID := h.resolveActor(r, requestUserID(r), uuidToString(workspaceID))
 	actor, err := json.Marshal(map[string]string{"type": actorType, "id": actorID, "user_id": requestUserID(r)})
 	if err != nil {
-		return db.Issue{}, db.Issue{}, false, err
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 	}
 	userID, err := util.ParseUUID(requestUserID(r))
 	if err != nil {
-		return db.Issue{}, db.Issue{}, false, err
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 	}
 	operationID := pgtype.UUID{Bytes: uuid.New(), Valid: true}
+	if completion != nil {
+		operationID, err = util.ParseUUID(completion.OperationID)
+		if err != nil {
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
+		}
+	}
 	authorize := func(tx pgx.Tx, params db.UpdateIssueParams) error {
 		scoped := *h
 		scoped.Queries = h.Queries.WithTx(tx)
@@ -3516,12 +3848,17 @@ func (h *Handler) updateIssueAtomically(r *http.Request, workspaceID pgtype.UUID
 	}
 
 	var issue, current db.Issue
-	var attachmentsChanged bool
-	err = service.RetryProjectAssociationTransaction(ctx, func() error {
-		issue, current, attachmentsChanged, err = h.updateIssueAtomicallyOnce(ctx, workspaceID, params, rawFields, titleBase, descriptionBase, attachmentIDs, statusKey, userID, actor, operationID, authorize)
+	var outcome issueUpdateOutcome
+	attempt := func() error {
+		issue, current, outcome, err = h.updateIssueAtomicallyOnce(ctx, workspaceID, params, rawFields, titleBase, descriptionBase, attachmentIDs, statusKey, userID, actor, operationID, authorize, completion, credential, reason)
 		return err
-	})
-	return issue, current, attachmentsChanged, err
+	}
+	if completion != nil {
+		err = attempt()
+	} else {
+		err = service.RetryProjectAssociationTransaction(ctx, attempt)
+	}
+	return issue, current, outcome, err
 }
 
 // The five statements are pipelined, not merged: PostgreSQL executes them in
@@ -3606,69 +3943,72 @@ func lockIssueReadRows(ctx context.Context, tx pgx.Tx, workspaceID, issueID pgty
 	return lockedIteration, current, nil
 }
 
-func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string, userID pgtype.UUID, actor json.RawMessage, operationID pgtype.UUID, authorize func(pgx.Tx, db.UpdateIssueParams) error) (db.Issue, db.Issue, bool, error) {
+func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgtype.UUID, params db.UpdateIssueParams, rawFields map[string]json.RawMessage, titleBase, descriptionBase *string, attachmentIDs []pgtype.UUID, statusKey string, userID pgtype.UUID, actor json.RawMessage, operationID pgtype.UUID, authorize func(pgx.Tx, db.UpdateIssueParams) error, completion *service.DeliveryCompletionBinding, credential service.ArtifactCredentialSnapshot, projectReason string) (db.Issue, db.Issue, issueUpdateOutcome, error) {
 	if h.TxStarter == nil {
-		return db.Issue{}, db.Issue{}, false, errors.New("atomic issue update requires transaction starter")
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, errors.New("atomic issue update requires transaction starter")
 	}
 	tx, err := h.TxStarter.Begin(ctx)
 	if err != nil {
-		return db.Issue{}, db.Issue{}, false, fmt.Errorf("begin atomic issue update: %w", err)
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, fmt.Errorf("begin atomic issue update: %w", err)
 	}
 	defer tx.Rollback(ctx)
 
 	qtx := h.Queries.WithTx(tx)
 	if err := lockIssueWriteFences(ctx, tx, workspaceID, userID); err != nil {
-		return db.Issue{}, db.Issue{}, false, err
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 	}
 	if len(rawFields["current_iteration_id"]) > 0 {
 		issue, current, err := h.updateIssueIterationInTx(ctx, tx, workspaceID, params, rawFields, actor, operationID, authorize)
 		if err != nil {
-			return db.Issue{}, current, false, err
+			return db.Issue{}, current, issueUpdateOutcome{}, err
 		}
 		if err = tx.Commit(ctx); err != nil {
-			return db.Issue{}, current, false, err
+			return db.Issue{}, current, issueUpdateOutcome{}, &issueUpdateCommitUnknown{cause: err}
 		}
-		return issue, current, false, nil
+		return issue, current, issueUpdateOutcome{}, nil
 	}
 
 	// This path opens its own transaction, so it carries the archive-race guard
 	// itself rather than going through runWithIssueStatusGuard. The catalog lock
 	// must precede both attachment and issue row locks everywhere. (MUL-6243)
 	if err := assertIssueStatusStillActive(ctx, qtx, workspaceID, statusKey); err != nil {
-		return db.Issue{}, db.Issue{}, false, err
+		return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 	}
 	var lockedIteration db.Iteration
 	var current db.Issue
+	auxiliaryChanges := false
 	if len(attachmentIDs) == 0 {
 		lockedIteration, current, err = lockIssueReadRows(ctx, tx, workspaceID, params.ID)
 		if err != nil {
-			return db.Issue{}, db.Issue{}, false, err
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 		}
 	} else {
 		lockedIteration, err = iteration.LockIssueIteration(ctx, tx, workspaceID, params.ID)
 		if err != nil {
-			return db.Issue{}, db.Issue{}, false, err
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, err
 		}
-		if _, err := qtx.LockAttachmentsForIssueLink(ctx, db.LockAttachmentsForIssueLinkParams{
+		if eligible, err := qtx.LockAttachmentsForIssueLink(ctx, db.LockAttachmentsForIssueLinkParams{
 			WorkspaceID:   workspaceID,
 			AttachmentIds: attachmentIDs,
 		}); err != nil {
-			return db.Issue{}, db.Issue{}, false, fmt.Errorf("lock issue attachments: %w", err)
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, fmt.Errorf("lock issue attachments: %w", err)
+		} else {
+			auxiliaryChanges = len(eligible) > 0
 		}
 		current, err = qtx.LockIssueForDescriptionUpdate(ctx, db.LockIssueForDescriptionUpdateParams{
 			ID:          params.ID,
 			WorkspaceID: workspaceID,
 		})
 		if err != nil {
-			return db.Issue{}, db.Issue{}, false, fmt.Errorf("lock issue for update: %w", err)
+			return db.Issue{}, db.Issue{}, issueUpdateOutcome{}, fmt.Errorf("lock issue for update: %w", err)
 		}
 	}
 
 	if err := issueAdmissionMutation(current, rawFields); err != nil {
-		return db.Issue{}, current, false, err
+		return db.Issue{}, current, issueUpdateOutcome{}, err
 	}
 	if params.Title.Valid && titleBase != nil && current.Title != *titleBase && current.Title != params.Title.String {
-		return db.Issue{}, current, false, errIssueFieldConflict
+		return db.Issue{}, current, issueUpdateOutcome{}, errIssueFieldConflict
 	}
 
 	if params.Description.Valid {
@@ -3677,7 +4017,7 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 			WorkspaceID: current.WorkspaceID,
 		})
 		if listErr != nil {
-			return db.Issue{}, current, false, fmt.Errorf("list issue attachments for description merge: %w", listErr)
+			return db.Issue{}, current, issueUpdateOutcome{}, fmt.Errorf("list issue attachments for description merge: %w", listErr)
 		}
 		currentDescription := ""
 		if current.Description.Valid {
@@ -3687,7 +4027,7 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 		if descriptionBase != nil && currentDescription != *descriptionBase && currentDescription != incomingDescription {
 			baseWithLateMedia := mergeIssueChannelMediaDescription(currentDescription, *descriptionBase, descriptionBase, attachments)
 			if currentDescription != baseWithLateMedia {
-				return db.Issue{}, current, false, errIssueFieldConflict
+				return db.Issue{}, current, issueUpdateOutcome{}, errIssueFieldConflict
 			}
 		}
 		params.Description = pgtype.Text{
@@ -3701,28 +4041,94 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 	if params.ProjectID.Valid {
 		if _, err := qtx.LockProjectForAssociationNowait(ctx, db.LockProjectForAssociationNowaitParams{ID: params.ProjectID, WorkspaceID: workspaceID}); err != nil {
 			if errors.Is(err, pgx.ErrNoRows) {
-				return db.Issue{}, current, false, service.ErrProjectNotFound
+				return db.Issue{}, current, issueUpdateOutcome{}, service.ErrProjectNotFound
 			}
-			return db.Issue{}, current, false, err
+			return db.Issue{}, current, issueUpdateOutcome{}, err
 		}
 	}
 	if params.ParentIssueID.Valid && params.ParentIssueID != current.ParentIssueID {
 		if err := admission.Check(ctx, qtx, params.ParentIssueID); err != nil {
-			return db.Issue{}, current, false, err
+			return db.Issue{}, current, issueUpdateOutcome{}, err
 		}
 	}
 
 	if err := authorize(tx, params); err != nil {
-		return db.Issue{}, current, false, err
+		return db.Issue{}, current, issueUpdateOutcome{}, err
+	}
+	candidate := issueDeliveryCandidate(current, params)
+	// Stage child admission is decided here, in the actual write transaction
+	// shared by Update, Move and Batch, from the verified actor of this request.
+	var stageActor struct {
+		Type string `json:"type"`
+	}
+	if err = json.Unmarshal(actor, &stageActor); err != nil {
+		return db.Issue{}, current, issueUpdateOutcome{}, err
+	}
+	if err = service.CheckStageChildUpdateInTx(ctx, tx, current, candidate, stageActor.Type == "agent" || credential.Principal.AgentActor); err != nil {
+		return db.Issue{}, current, issueUpdateOutcome{}, err
+	}
+	if completion == nil {
+		if err = service.CheckDeliveryProjectChangeInTx(ctx, tx, current, candidate, credential, projectReason, operationID); err != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, err
+		}
+	}
+	var prepared service.DeliveryPrepareResult
+	if completion != nil || (params.Status.Valid && params.Status.String != current.Status) {
+		var position *float64
+		if params.Position.Valid {
+			value := params.Position.Float64
+			position = &value
+		}
+		prepared, err = service.PrepareDeliveryMutationInTx(ctx, tx, service.DeliveryMutationIntent{Before: current, Candidate: candidate, Completion: completion, Credential: credential, RequestedPosition: position, AuxiliaryChanges: auxiliaryChanges, Metrics: h.Metrics, StageExecutionSources: h.StageExecutionSources})
+		if err != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, err
+		}
+		switch prepared.State {
+		case service.DeliveryNotApplicable:
+			if completion != nil {
+				return db.Issue{}, current, issueUpdateOutcome{}, service.DeliveryCompletionError{Status: 503, Code: "delivery_completion_unavailable"}
+			}
+		case service.DeliveryPrepared:
+			if prepared.Prepared == nil {
+				return db.Issue{}, current, issueUpdateOutcome{}, service.DeliveryCompletionError{Status: 503, Code: "delivery_completion_unavailable"}
+			}
+		case service.DeliveryReplayed:
+			if prepared.Receipt == nil {
+				return db.Issue{}, current, issueUpdateOutcome{}, service.DeliveryCompletionError{Status: 503, Code: "delivery_completion_unavailable"}
+			}
+		default:
+			return db.Issue{}, current, issueUpdateOutcome{}, service.DeliveryCompletionError{Status: 503, Code: "delivery_completion_unavailable"}
+		}
+		if prepared.State == service.DeliveryReplayed {
+			if err = tx.Commit(ctx); err != nil {
+				return db.Issue{}, current, issueUpdateOutcome{}, &issueUpdateCommitUnknown{cause: err}
+			}
+			return current, current, issueUpdateOutcome{Replayed: true, CompletionReceipt: prepared.Receipt}, nil
+		}
+	}
+	if completion != nil {
+		if err = service.CheckDeliveryProjectChangeInTx(ctx, tx, current, candidate, credential, projectReason, operationID); err != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, err
+		}
+	}
+	if completion != nil {
+		params.ExpectedRevision = pgtype.Int8{Int64: completion.ExpectedIssueRevision, Valid: true}
 	}
 	record, err := iteration.PrepareIssueRecord(ctx, tx, current, lockedIteration)
 	if err != nil {
-		return db.Issue{}, current, false, err
+		return db.Issue{}, current, issueUpdateOutcome{}, err
 	}
 
 	issue, err := qtx.UpdateIssue(ctx, params)
 	if err != nil {
-		return db.Issue{}, current, false, fmt.Errorf("update locked issue: %w", err)
+		return db.Issue{}, current, issueUpdateOutcome{}, fmt.Errorf("update locked issue: %w", err)
+	}
+	if issue.ParentIssueID != current.ParentIssueID {
+		// Budget membership follows the move in the same transaction. It
+		// records what a later budget gate would refuse; it never refuses.
+		if err = service.BindIssueBudgetOnReparent(ctx, qtx, issue); err != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, err
+		}
 	}
 
 	attachmentsChanged := false
@@ -3734,7 +4140,7 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 			BumpRevision:  issue.Revision == current.Revision,
 		})
 		if linkErr != nil {
-			return db.Issue{}, current, false, fmt.Errorf("link issue attachments: %w", linkErr)
+			return db.Issue{}, current, issueUpdateOutcome{}, fmt.Errorf("link issue attachments: %w", linkErr)
 		}
 		attachmentsChanged = linked.LinkedCount > 0
 		if linked.IssueRevision > 0 {
@@ -3743,23 +4149,37 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 				WorkspaceID: issue.WorkspaceID,
 			})
 			if err != nil {
-				return db.Issue{}, current, false, fmt.Errorf("reload issue after attachment link: %w", err)
+				return db.Issue{}, current, issueUpdateOutcome{}, fmt.Errorf("reload issue after attachment link: %w", err)
 			}
 		}
 	}
 	if err := iteration.RecordIssueChange(ctx, tx, record, issue, actor, operationID); err != nil {
-		return db.Issue{}, current, false, err
+		return db.Issue{}, current, issueUpdateOutcome{}, err
 	}
 
-	if err := tx.Commit(ctx); err != nil {
-		return db.Issue{}, current, false, fmt.Errorf("commit atomic issue update: %w", err)
+	outcome := issueUpdateOutcome{AttachmentsChanged: attachmentsChanged}
+	if prepared.State == service.DeliveryPrepared {
+		receipt, e := service.FinishDeliveryMutationInTx(ctx, tx, prepared.Prepared, issue, service.DeliveryWriterResult{})
+		if e != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, e
+		}
+		outcome.CompletionReceipt = &receipt
 	}
-	return issue, current, attachmentsChanged, nil
+	if err := service.FinishStageMutationInTx(ctx, tx, prepared, issue, service.DeliveryWriterResult{}); err != nil {
+		return db.Issue{}, current, issueUpdateOutcome{}, err
+	}
+	if err := tx.Commit(ctx); err != nil {
+		return db.Issue{}, current, issueUpdateOutcome{}, &issueUpdateCommitUnknown{cause: err}
+	}
+	if issue.ParentIssueID != current.ParentIssueID || issue.Title != current.Title || issue.AdmissionStatus != current.AdmissionStatus {
+		h.IssueService.PublishCollaborationChildrenChanged(ctx, current.ParentIssueID, issue.ParentIssueID)
+	}
+	return issue, current, outcome, nil
 }
 
 func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	prevIssue, ok := h.loadIssueForUser(w, r, id)
+	prevIssue, ok := h.loadIssueForUserWithCollaborationUpdate(w, r, id, true)
 	if !ok {
 		return
 	}
@@ -3776,6 +4196,13 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	var req UpdateIssueRequest
 	if err := json.Unmarshal(bodyBytes, &req); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
+		return
+	}
+	if err := validateIssueDeliveryControls(bodyBytes, &req); err != nil {
+		writeDeliveryCompletionError(w, err, false)
+		return
+	}
+	if h.handleLegacyCollaborationUpdate(w, r, prevIssue, bodyBytes, req) {
 		return
 	}
 
@@ -3824,7 +4251,7 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 			writeError(w, http.StatusBadRequest, "expected_revision must be a positive integer")
 			return
 		}
-		if prevIssue.Revision != *req.ExpectedRevision {
+		if req.Completion == nil && prevIssue.Revision != *req.ExpectedRevision {
 			writeRevisionConflict(w, "issue", prevIssue.ID, *req.ExpectedRevision, prevIssue.Revision)
 			return
 		}
@@ -4001,14 +4428,17 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var issue db.Issue
-	attachmentsChanged := false
+	var outcome issueUpdateOutcome
 	var lockedPrev db.Issue
-	issue, lockedPrev, attachmentsChanged, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, rawFields, req.TitleBase, req.DescriptionBase, attachmentIDs, statusKeyForGuard)
+	issue, lockedPrev, outcome, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, rawFields, req.TitleBase, req.DescriptionBase, attachmentIDs, statusKeyForGuard)
 	if lockedPrev.ID.Valid {
 		prevIssue = lockedPrev
 	}
 
 	if err != nil {
+		if writeIssueDeliveryError(w, err) {
+			return
+		}
 		if writeIssueUpdateAccessError(w, err) || writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
 			return
 		}
@@ -4036,10 +4466,16 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 
 	prefix := h.getIssuePrefix(r.Context(), issue.WorkspaceID)
 	resp := issueToResponse(issue, prefix)
+	resp.CompletionReceipt = outcome.CompletionReceipt
+	if outcome.Replayed {
+		h.fillStatusCategory(r.Context(), issue.WorkspaceID, &resp)
+		writeJSON(w, http.StatusOK, resp)
+		return
+	}
 	slog.Info("issue updated", append(logger.RequestAttrs(r), "issue_id", id, "workspace_id", workspaceID)...)
 
 	h.fillStatusCategory(r.Context(), issue.WorkspaceID, &resp)
-	assigneeChanged := (req.AssigneeType != nil || req.AssigneeID != nil) &&
+	assigneeChanged := (req.AssigneeType != nil || req.AssigneeID != nil || assigneeFieldsTouched(rawFields)) &&
 		(prevIssue.AssigneeType.String != issue.AssigneeType.String || uuidToString(prevIssue.AssigneeID) != uuidToString(issue.AssigneeID))
 	statusChanged := req.Status != nil && prevIssue.Status != issue.Status
 	priorityChanged := req.Priority != nil && prevIssue.Priority != issue.Priority
@@ -4079,7 +4515,7 @@ func (h *Handler) UpdateIssue(w http.ResponseWriter, r *http.Request) {
 		"creator_type":        prevIssue.CreatorType,
 		"creator_id":          uuidToString(prevIssue.CreatorID),
 	})
-	if attachmentsChanged {
+	if outcome.AttachmentsChanged {
 		// The full owner snapshot must be admitted before an auxiliary event at
 		// the same revision. Otherwise clients advance only the revision here and
 		// reject issue:updated as non-increasing, stranding the old issue fields.
@@ -4333,13 +4769,40 @@ func (h *Handler) isAgentAssigneeReady(ctx context.Context, issue db.Issue) bool
 	return false
 }
 
+// errIssueHasCollaborationChildren refuses an ordinary delete that would detach
+// a collaboration issue, rewriting its parent/stage outside the collaboration
+// workflow, without its record or version (R49).
+var errIssueHasCollaborationChildren = errors.New("issue has collaboration sub-issues")
+
+func writeIssueHasCollaborationChildren(w http.ResponseWriter) {
+	writeJSON(w, http.StatusConflict, map[string]string{"error": "This issue has collaboration sub-issues. Remove them from it before deleting.", "code": "issue_has_collaboration_children"})
+}
+
+// rejectCollaborationChildDelete runs before any delete side effect (task
+// cancellation, autopilot failure), so a refused delete changes nothing. The
+// delete transaction repeats the check under its write fences.
+func (h *Handler) rejectCollaborationChildDelete(w http.ResponseWriter, r *http.Request, workspaceID pgtype.UUID, parentIDs []pgtype.UUID) bool {
+	if len(parentIDs) == 0 {
+		return false
+	}
+	shared, err := h.Queries.AnyCollaborationChildIssues(r.Context(), db.AnyCollaborationChildIssuesParams{WorkspaceID: workspaceID, ParentIds: parentIDs})
+	if err != nil {
+		writeError(w, http.StatusServiceUnavailable, "collaboration access unavailable")
+		return true
+	}
+	if shared {
+		writeIssueHasCollaborationChildren(w)
+		return true
+	}
+	return false
+}
+
 func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	issue, ok := h.loadIssueForUser(w, r, id)
 	if !ok {
 		return
 	}
-
 	// Deleting work is at least as much a decision about direction as moving it,
 	// and an Observer is told it may not do either. Contributor rather than
 	// Operator: an issue is workspace data, and the Operator level is reserved for
@@ -4347,13 +4810,16 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 	if !h.requireAgentAutonomy(w, r, uuidToString(issue.WorkspaceID), service.AutonomyContributor, "delete issues") {
 		return
 	}
-
-	h.TaskService.CancelTasksForIssue(r.Context(), issue.ID)
-	// Fail any linked autopilot runs before delete (ON DELETE SET NULL clears issue_id).
-	_ = h.AutopilotService.FailAutopilotRunsByIssue(r.Context(), issue.ID)
+	if h.rejectCollaborationChildDelete(w, r, issue.WorkspaceID, []pgtype.UUID{issue.ID}) {
+		return
+	}
 
 	deleteResult, err := h.deleteIssueAndCollectAttachmentURLs(r, issue, nil)
 	if err != nil {
+		if errors.Is(err, errIssueHasCollaborationChildren) {
+			writeIssueHasCollaborationChildren(w)
+			return
+		}
 		if writeIssueUpdateAccessError(w, err) {
 			return
 		}
@@ -4361,6 +4827,7 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	h.TaskService.PublishIssueDeletionTaskCancellations(r.Context(), issue.WorkspaceID, deleteResult.CancelledTasks)
 	h.deleteS3Objects(r.Context(), deleteResult.AttachmentURLs)
 	actorType, actorID := deleteResult.ActorType, deleteResult.ActorID
 	// Always emit the resolved UUID — frontend caches key by UUID, so an
@@ -4381,6 +4848,7 @@ func (h *Handler) DeleteIssue(w http.ResponseWriter, r *http.Request) {
 type issueDeleteResult struct {
 	AttachmentURLs   []string
 	DetachedChildren []db.Issue
+	CancelledTasks   []db.AgentTaskQueue
 	ActorType        string
 	ActorID          string
 }
@@ -4453,13 +4921,63 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(r *http.Request, issues [
 	if err = h.authorizeIssueDeletion(r, tx, workspaceID, actorType, actorID); err != nil {
 		return issueDeleteResult{}, err
 	}
+	// Authoritative repeat of rejectCollaborationChildDelete. The workspace
+	// iteration fence taken by lockIssueWriteFences is the one collaboration
+	// structure and creation writers also take, so no collaboration child can be
+	// attached to these parents until this transaction ends.
+	children := make([]pgtype.UUID, 0, len(lockedIssues))
+	for _, locked := range lockedIssues {
+		if !selected[locked.ID] {
+			children = append(children, locked.ID)
+		}
+	}
+	if len(children) > 0 {
+		shared, err := qtx.AnyCollaborationIssuesInWorkspace(ctx, db.AnyCollaborationIssuesInWorkspaceParams{WorkspaceID: workspaceID, IssueIds: children})
+		if err != nil {
+			return issueDeleteResult{}, err
+		}
+		if shared {
+			return issueDeleteResult{}, errIssueHasCollaborationChildren
+		}
+	}
 	records, err := iteration.PrepareIssueRecords(ctx, tx, issues, lockedIterations)
 	if err != nil {
+		return issueDeleteResult{}, err
+	}
+	// Completion, credential minting and quota writers may hold their rows
+	// before an issue row. Never wait on those intersections while retaining
+	// the deletion's issue locks. A refused/contended delete cancels nothing.
+	if err = qtx.LockIssueDeleteTasks(ctx, db.LockIssueDeleteTasksParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
+		return issueDeleteResult{}, err
+	}
+	if err = qtx.LockIssueDeleteTaskTokens(ctx, db.LockIssueDeleteTaskTokensParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
+		return issueDeleteResult{}, err
+	}
+	if err = qtx.LockIssueDeleteAutopilotRuns(ctx, db.LockIssueDeleteAutopilotRunsParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
+		return issueDeleteResult{}, err
+	}
+	if err = qtx.LockIssueDeleteAutopilotQuotaReservations(ctx, db.LockIssueDeleteAutopilotQuotaReservationsParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
+		return issueDeleteResult{}, err
+	}
+	if err = qtx.LockIssueDeleteAutopilotQuotaPeriods(ctx, db.LockIssueDeleteAutopilotQuotaPeriodsParams{WorkspaceID: workspaceID, IssueIds: issueIDs}); err != nil {
 		return issueDeleteResult{}, err
 	}
 
 	result := issueDeleteResult{ActorType: actorType, ActorID: actorID}
 	for i, issue := range issues {
+		cancelled, err := qtx.CancelAgentTasksByIssue(ctx, issue.ID)
+		if err != nil {
+			return issueDeleteResult{}, fmt.Errorf("cancel deleted issue tasks: %w", err)
+		}
+		result.CancelledTasks = append(result.CancelledTasks, cancelled...)
+		for _, task := range cancelled {
+			if err = qtx.DeleteTaskTokensByTask(ctx, task.ID); err != nil {
+				return issueDeleteResult{}, fmt.Errorf("revoke deleted issue task credentials: %w", err)
+			}
+		}
+		if _, err = qtx.FailAutopilotRunsByIssue(ctx, issue.ID); err != nil {
+			return issueDeleteResult{}, fmt.Errorf("fail deleted issue autopilot runs: %w", err)
+		}
 		detached, err := qtx.DetachDirectChildIssues(ctx, db.DetachDirectChildIssuesParams{
 			WorkspaceID: issue.WorkspaceID, ParentIssueID: issue.ID, ExcludedIssueIds: excludedIssueIDs,
 		})
@@ -4512,6 +5030,11 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(r *http.Request, issues [
 		if err = iteration.RecordIssueDeletion(ctx, tx, records[i], actor, operationID); err != nil {
 			return issueDeleteResult{}, err
 		}
+		// The issue's budget member row outlives it, marked; its root and
+		// everything recorded under them stay as they are.
+		if err = service.TombstoneIssueBudgetMember(ctx, qtx, issue.WorkspaceID, issue.ID); err != nil {
+			return issueDeleteResult{}, err
+		}
 		if err := qtx.DeleteIssue(ctx, db.DeleteIssueParams{ID: issue.ID, WorkspaceID: issue.WorkspaceID}); err != nil {
 			return issueDeleteResult{}, fmt.Errorf("delete issue: %w", err)
 		}
@@ -4519,6 +5042,11 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(r *http.Request, issues [
 	if err := tx.Commit(ctx); err != nil {
 		return issueDeleteResult{}, fmt.Errorf("commit issue delete: %w", err)
 	}
+	parents := make([]pgtype.UUID, 0, len(issues))
+	for _, issue := range issues {
+		parents = append(parents, issue.ParentIssueID)
+	}
+	h.IssueService.PublishCollaborationChildrenChanged(ctx, parents...)
 	return result, nil
 }
 
@@ -4583,8 +5111,192 @@ func (h *Handler) publishDetachedChildren(ctx context.Context, children []db.Iss
 // ---------------------------------------------------------------------------
 
 type BatchUpdateIssuesRequest struct {
-	IssueIDs []string           `json:"issue_ids"`
-	Updates  UpdateIssueRequest `json:"updates"`
+	IssueIDs           []string                         `json:"issue_ids"`
+	Updates            UpdateIssueRequest               `json:"updates"`
+	CompletionBindings []BatchDeliveryCompletionBinding `json:"completion_bindings,omitempty"`
+}
+type BatchDeliveryCompletionBinding struct {
+	IssueID string `json:"issue_id"`
+	service.DeliveryCompletionBinding
+}
+type BatchUpdateIssueResult struct {
+	Index    int    `json:"index"`
+	IssueID  string `json:"issue_id"`
+	State    string `json:"state"`
+	Code     string `json:"code"`
+	Revision *int64 `json:"revision,omitempty"`
+}
+type BatchUpdateIssuesResponse struct {
+	Updated   int                      `json:"updated"`
+	Results   []BatchUpdateIssueResult `json:"results"`
+	Code      string                   `json:"code,omitempty"`
+	CauseCode string                   `json:"cause_code,omitempty"`
+	Error     string                   `json:"error,omitempty"`
+	Message   string                   `json:"message,omitempty"`
+}
+
+func batchDeliveryResults(ids []string, code string) []BatchUpdateIssueResult {
+	results := make([]BatchUpdateIssueResult, len(ids))
+	for i, id := range ids {
+		results[i] = BatchUpdateIssueResult{Index: i, IssueID: id, State: "not_attempted", Code: code}
+	}
+	return results
+}
+func batchDeliveryFailure(err error) (int, string, bool) {
+	var unknown *issueUpdateCommitUnknown
+	var delivery service.DeliveryCompletionError
+	var access *issueUpdateAccessError
+	var blocked *admission.Blocked
+	var postgres *pgconn.PgError
+	switch {
+	case errors.As(err, &unknown):
+		return 503, "commit_unknown", true
+	case errors.As(err, &delivery):
+		switch delivery.Code {
+		case "stage_proposal_required", "stage_ancestry_unresolved":
+			return delivery.Status, delivery.Code, false
+		case "delivery_completion_authorization_required", "delivery_project_change_denied", "delivery_project_change_reason_required", "delivery_project_change_conflict", "delivery_skip_not_supported":
+			return delivery.Status, delivery.Code, false
+		}
+		if delivery.Status == 403 || delivery.Status == 404 {
+			return delivery.Status, "delivery_completion_denied", false
+		}
+		if delivery.Status == 400 {
+			return 400, "invalid_issue_update", false
+		}
+		if delivery.Status == 409 || delivery.Status == 410 {
+			return 409, "delivery_completion_conflict", false
+		}
+		return 503, "dependency_unavailable", false
+	case errors.As(err, &access):
+		if access.status == 400 {
+			return 400, "invalid_issue_update", false
+		}
+		return 403, "access_denied", false
+	case errors.As(err, &blocked):
+		return 409, "triage_review_required", false
+	case errors.Is(err, errIssueStatusArchivedRace):
+		return 409, "status_conflict", false
+	case errors.Is(err, errIssueFieldConflict), errors.Is(err, pgx.ErrNoRows):
+		return 409, "revision_conflict", false
+	case errors.Is(err, service.ErrProjectNotFound):
+		return 409, "project_conflict", false
+	case errors.As(err, &postgres) && (postgres.Code == "55P03" || postgres.Code == "40P01" || postgres.Code == "40001"):
+		return 409, "project_conflict", false
+	default:
+		return 503, "dependency_unavailable", false
+	}
+}
+func validateBatchDeliveryControls(body []byte, req *BatchUpdateIssuesRequest) (map[string]service.DeliveryCompletionBinding, error) {
+	invalid := func() error {
+		return service.DeliveryCompletionError{Status: 400, Code: "invalid_batch_update_request"}
+	}
+	decoder := json.NewDecoder(bytes.NewReader(body))
+	token, err := decoder.Token()
+	if err != nil || token != json.Delim('{') {
+		return nil, invalid()
+	}
+	controls := map[string]json.RawMessage{}
+	var bindingsRaw json.RawMessage
+	seenBindings := false
+	for decoder.More() {
+		rawKey, err := decoder.Token()
+		if err != nil {
+			return nil, invalid()
+		}
+		key, ok := rawKey.(string)
+		if !ok {
+			return nil, invalid()
+		}
+		var raw json.RawMessage
+		if decoder.Decode(&raw) != nil {
+			return nil, invalid()
+		}
+		switch strings.ToLower(key) {
+		case "updates":
+			if !rawJSONNull(raw) {
+				if err = issueDeliveryControlFields(raw, controls); err != nil {
+					return nil, err
+				}
+			}
+		case "completion_bindings":
+			if key != "completion_bindings" || seenBindings || rawJSONNull(raw) {
+				return nil, invalid()
+			}
+			bindingsRaw = raw
+			seenBindings = true
+		case "completion":
+			return nil, invalid()
+		case "skip":
+			return nil, service.DeliveryCompletionError{Status: 409, Code: "delivery_skip_not_supported"}
+		}
+	}
+	if _, err = decoder.Token(); err != nil {
+		return nil, invalid()
+	}
+	if _, err = decoder.Token(); err != io.EOF {
+		return nil, invalid()
+	}
+	if _, present := controls["completion"]; present {
+		return nil, invalid()
+	}
+	_, reason, err := parseIssueDeliveryControls(controls)
+	if err != nil {
+		return nil, err
+	}
+	if _, present := controls["project_change_reason"]; present {
+		req.Updates.ProjectChangeReason = &reason
+	}
+	bindings := map[string]service.DeliveryCompletionBinding{}
+	if !seenBindings {
+		return bindings, nil
+	}
+	var entries []json.RawMessage
+	if json.Unmarshal(bindingsRaw, &entries) != nil {
+		return nil, invalid()
+	}
+	requested := map[string]int{}
+	for _, id := range req.IssueIDs {
+		requested[id]++
+	}
+	authorizations := map[string]bool{}
+	operations := map[string]bool{}
+	for _, raw := range entries {
+		if err = iteration.ValidateObjectJSON(raw); err != nil {
+			return nil, invalid()
+		}
+		var fields map[string]json.RawMessage
+		if json.Unmarshal(raw, &fields) != nil || len(fields) != 4 {
+			return nil, invalid()
+		}
+		var id string
+		if json.Unmarshal(fields["issue_id"], &id) != nil {
+			return nil, invalid()
+		}
+		parsed, e := delegationKey(id)
+		if e != nil || uuidToString(parsed) != id || requested[id] != 1 {
+			return nil, invalid()
+		}
+		if _, duplicate := bindings[id]; duplicate {
+			return nil, invalid()
+		}
+		delete(fields, "issue_id")
+		encoded, _ := json.Marshal(fields)
+		binding, e := service.ParseDeliveryCompletionBinding(encoded)
+		if e != nil {
+			return nil, invalid()
+		}
+		if authorizations[binding.AuthorizationID] || operations[binding.OperationID] {
+			return nil, invalid()
+		}
+		if req.Updates.ExpectedRevision != nil && *req.Updates.ExpectedRevision != binding.ExpectedIssueRevision {
+			return nil, invalid()
+		}
+		authorizations[binding.AuthorizationID] = true
+		operations[binding.OperationID] = true
+		bindings[id] = binding
+	}
+	return bindings, nil
 }
 
 // batchIssueUpdateFields merges repeated objects the same way the Updates struct
@@ -4612,6 +5324,11 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	bindings, err := validateBatchDeliveryControls(bodyBytes, &req)
+	if err != nil {
+		writeDeliveryCompletionError(w, err, false)
+		return
+	}
 	if rejectUnconfirmedIterationWrite(w, req.Updates.CurrentIterationID, req.Updates.IterationRolloverCount) {
 		return
 	}
@@ -4660,7 +5377,15 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if !hasMutation {
-		writeJSON(w, http.StatusOK, map[string]any{"updated": 0})
+		writeJSON(w, http.StatusOK, BatchUpdateIssuesResponse{Results: batchDeliveryResults(req.IssueIDs, "no_changes")})
+		return
+	}
+	if req.Updates.ExpectedRevision != nil && *req.Updates.ExpectedRevision < 1 {
+		writeDeliveryCompletionError(w, service.DeliveryCompletionError{Status: 400, Code: "invalid_batch_update_request"}, false)
+		return
+	}
+	if len(req.Updates.AttachmentIDs) > 0 {
+		writeDeliveryCompletionError(w, service.DeliveryCompletionError{Status: 400, Code: "invalid_batch_update_request"}, false)
 		return
 	}
 	if req.Updates.Priority != nil {
@@ -4683,6 +5408,9 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	}
 	wsUUID, ok := parseUUIDOrBadRequest(w, workspaceID, "workspace_id")
 	if !ok {
+		return
+	}
+	if h.rejectLegacyCollaborationBatch(w, r, wsUUID, req.IssueIDs) {
 		return
 	}
 	// Status is validated against this workspace's catalog, so it has to wait
@@ -4721,7 +5449,19 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		batchProjectID = projectUUID
 	}
 
-	updated := 0
+	response := BatchUpdateIssuesResponse{Results: batchDeliveryResults(req.IssueIDs, "previous_item_failed")}
+	responseStatus := http.StatusOK
+	reject := func(index, status int, code string, unknown bool) {
+		state, top := "rejected", "batch_update_incomplete"
+		if unknown {
+			state, top = "unknown", "batch_update_outcome_unknown"
+		}
+		response.Results[index].State, response.Results[index].Code = state, code
+		responseStatus = status
+		response.Code, response.CauseCode = top, code
+		response.Error = fmt.Sprintf("%d items committed; batch stopped. Refresh before continuing.", response.Updated)
+		response.Message = response.Error
+	}
 	// One Resolver for the whole batch — a per-issue filler would query the
 	// catalog once per custom-status row. (MUL-6243)
 	fillBatch := h.newStatusCategoryFiller(r.Context(), wsUUID)
@@ -4729,17 +5469,24 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	// the parent/stage notification is evaluated once against the final state
 	// after the loop (MUL-4155) rather than per-child mid-batch.
 	var childDoneCompleted []db.Issue
-	for _, issueID := range req.IssueIDs {
+itemLoop:
+	for index, issueID := range req.IssueIDs {
 		issueUUID, err := util.ParseUUID(issueID)
 		if err != nil {
-			continue
+			reject(index, 400, "invalid_issue_id", false)
+			break itemLoop
 		}
 		prevIssue, err := h.Queries.GetIssueInWorkspace(r.Context(), db.GetIssueInWorkspaceParams{
 			ID:          issueUUID,
 			WorkspaceID: wsUUID,
 		})
 		if err != nil {
-			continue
+			if errors.Is(err, pgx.ErrNoRows) {
+				reject(index, 404, "issue_not_found", false)
+			} else {
+				reject(index, 503, "dependency_unavailable", false)
+			}
+			break itemLoop
 		}
 
 		params := db.UpdateIssueParams{
@@ -4779,7 +5526,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			if req.Updates.AssigneeID != nil {
 				assigneeUUID, err := util.ParseUUID(*req.Updates.AssigneeID)
 				if err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.AssigneeID = assigneeUUID
 			} else {
@@ -4790,7 +5538,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			if req.Updates.StartDate != nil && *req.Updates.StartDate != "" {
 				d, err := util.ParseCalendarDate(*req.Updates.StartDate)
 				if err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.StartDate = d
 			} else {
@@ -4801,7 +5550,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			if req.Updates.DueDate != nil && *req.Updates.DueDate != "" {
 				d, err := util.ParseCalendarDate(*req.Updates.DueDate)
 				if err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.DueDate = d
 			} else {
@@ -4813,25 +5563,32 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			if req.Updates.ParentIssueID != nil {
 				newParentID, err := util.ParseUUID(*req.Updates.ParentIssueID)
 				if err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				// Cannot set self as parent.
 				if newParentID == prevIssue.ID {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				// Validate parent exists in the same workspace.
 				if _, err := h.Queries.GetIssueInWorkspace(r.Context(), db.GetIssueInWorkspaceParams{
 					ID:          newParentID,
 					WorkspaceID: prevIssue.WorkspaceID,
 				}); err != nil {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				// Cycle detection: walk up from the new parent to ensure we don't reach this issue.
 				cycleDetected := false
 				cursor := newParentID
 				for depth := 0; depth < 10; depth++ {
 					ancestor, err := h.Queries.GetIssue(r.Context(), cursor)
-					if err != nil || !ancestor.ParentIssueID.Valid {
+					if err != nil {
+						reject(index, 503, "dependency_unavailable", false)
+						break itemLoop
+					}
+					if !ancestor.ParentIssueID.Valid {
 						break
 					}
 					if ancestor.ParentIssueID == prevIssue.ID {
@@ -4841,7 +5598,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 					cursor = ancestor.ParentIssueID
 				}
 				if cycleDetected {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.ParentIssueID = newParentID
 			} else {
@@ -4855,7 +5613,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		if _, ok := rawUpdates["stage"]; ok {
 			if req.Updates.Stage != nil {
 				if *req.Updates.Stage < 1 {
-					continue
+					reject(index, 400, "invalid_issue_update", false)
+					break itemLoop
 				}
 				params.Stage = pgtype.Int4{Int32: *req.Updates.Stage, Valid: true}
 			} else {
@@ -4864,11 +5623,11 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Validate the resulting assignee pair when this batch update touches
-		// either assignee field. Skip the issue silently on failure.
+		// either assignee field. Refuse this item and preserve the committed prefix.
 		//
 		// Scoped PER ISSUE (prevIssue is this iteration's row), so one bound
 		// issue in the batch can never lend its authority to the others: an
-		// unbound entry simply fails the check and is skipped. This IS a real
+		// unbound entry fails the check and stops the batch. This IS a real
 		// agent-reachable authorization point — a task token authenticates as its
 		// bound workspace member, so requireUserID above is satisfied and
 		// resolveActor still classifies the caller as an agent (MUL-6691).
@@ -4876,33 +5635,52 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		_, batchTouchedID := rawUpdates["assignee_id"]
 		if batchTouchedType || batchTouchedID {
 			if status, _ := h.validateAssigneePair(r.Context(), r, workspaceID, params.AssigneeType, params.AssigneeID); status != 0 {
-				continue
+				code := "invalid_issue_update"
+				if status == 403 {
+					code = "access_denied"
+				}
+				reject(index, status, code, false)
+				break itemLoop
 			}
 		}
 
-		if writeIssueAdmissionError(w, issueAdmissionMutation(prevIssue, rawUpdates)) {
-			return
+		if err := issueAdmissionMutation(prevIssue, rawUpdates); err != nil {
+			status, code, unknown := batchDeliveryFailure(err)
+			reject(index, status, code, unknown)
+			break itemLoop
 		}
 		// Re-read every untouched nullable field while holding the issue lock.
 		// A content-only batch may have loaded its snapshot before acceptance.
 		var issue, lockedPrev db.Issue
-		issue, lockedPrev, _, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, rawUpdates, nil, nil, nil, batchStatusKey)
+		itemFields := make(map[string]json.RawMessage, len(rawUpdates)+1)
+		for key, raw := range rawUpdates {
+			itemFields[key] = raw
+		}
+		if binding, ok := bindings[issueID]; ok {
+			itemFields["completion"], _ = json.Marshal(binding)
+		}
+		if req.Updates.ExpectedRevision != nil {
+			params.ExpectedRevision = pgtype.Int8{Int64: *req.Updates.ExpectedRevision, Valid: true}
+		}
+		var outcome issueUpdateOutcome
+		issue, lockedPrev, outcome, err = h.updateIssueAtomically(r, prevIssue.WorkspaceID, params, itemFields, req.Updates.TitleBase, req.Updates.DescriptionBase, nil, batchStatusKey)
 		if err == nil {
 			prevIssue = lockedPrev
 		}
 
 		if err != nil {
-			if writeIssueUpdateAccessError(w, err) || writeIssueAdmissionError(w, err) || writeIssueProjectAssociationError(w, err) {
-				return
-			}
-			// The archive race is a property of the batch's shared target
-			// status, not of one issue, so every remaining item would fail the
-			// same way. Abort with 409 instead of reporting a partial update.
-			if writeIssueStatusRaceError(w, err) {
-				return
-			}
-			slog.Warn("batch update issue failed", "issue_id", issueID, "error", err)
-			continue
+			status, code, unknown := batchDeliveryFailure(err)
+			reject(index, status, code, unknown)
+			break itemLoop
+		}
+		revision := issue.Revision
+		if outcome.Replayed && outcome.CompletionReceipt != nil {
+			revision = outcome.CompletionReceipt.CompletedRevision
+		}
+		response.Results[index] = BatchUpdateIssueResult{Index: index, IssueID: issueID, State: "committed", Code: "updated", Revision: &revision}
+		response.Updated++
+		if outcome.Replayed {
+			continue itemLoop
 		}
 
 		prefix := h.getIssuePrefix(r.Context(), issue.WorkspaceID)
@@ -4910,7 +5688,7 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 		actorType, actorID := h.resolveActor(r, userID, workspaceID)
 
 		fillBatch(&resp)
-		assigneeChanged := (req.Updates.AssigneeType != nil || req.Updates.AssigneeID != nil) &&
+		assigneeChanged := (req.Updates.AssigneeType != nil || req.Updates.AssigneeID != nil || assigneeFieldsTouched(rawUpdates)) &&
 			(prevIssue.AssigneeType.String != issue.AssigneeType.String || uuidToString(prevIssue.AssigneeID) != uuidToString(issue.AssigneeID))
 		statusChanged := req.Updates.Status != nil && prevIssue.Status != issue.Status
 		priorityChanged := req.Updates.Priority != nil && prevIssue.Priority != issue.Priority
@@ -4923,6 +5701,10 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			"status_changed":     statusChanged,
 			"priority_changed":   priorityChanged,
 			"project_changed":    projectChanged,
+			// The listeners address the "unassigned" notice and the activity's
+			// from-side with these, as they do for UpdateIssue.
+			"prev_assignee_type": textToPtr(prevIssue.AssigneeType),
+			"prev_assignee_id":   uuidToPtr(prevIssue.AssigneeID),
 		})
 
 		// Reassignment does not cancel existing tasks (#4963 / MUL-4113) —
@@ -4969,7 +5751,6 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		updated++
 	}
 
 	// Aggregate parent/stage notification over the whole batch's final state so
@@ -4978,8 +5759,8 @@ func (h *Handler) BatchUpdateIssues(w http.ResponseWriter, r *http.Request) {
 	// batch. Single-issue UpdateIssue is unchanged and still notifies inline.
 	h.notifyParentsOfBatchChildDone(r.Context(), childDoneCompleted)
 
-	slog.Info("batch update issues", append(logger.RequestAttrs(r), "count", updated)...)
-	writeJSON(w, http.StatusOK, map[string]any{"updated": updated})
+	slog.Info("batch update issues", append(logger.RequestAttrs(r), "count", response.Updated)...)
+	writeJSON(w, responseStatus, response)
 }
 
 type BatchDeleteIssuesRequest struct {
@@ -5012,6 +5793,18 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	if h.rejectLegacyCollaborationBatch(w, r, wsUUID, req.IssueIDs) {
+		return
+	}
+	parentIDs := make([]pgtype.UUID, 0, len(req.IssueIDs))
+	for _, issueID := range req.IssueIDs {
+		if parsed, err := util.ParseUUID(issueID); err == nil {
+			parentIDs = append(parentIDs, parsed)
+		}
+	}
+	if h.rejectCollaborationChildDelete(w, r, wsUUID, parentIDs) {
+		return
+	}
 	issues := make([]db.Issue, 0, len(req.IssueIDs))
 	excludedIDs := make([]pgtype.UUID, 0, len(req.IssueIDs))
 	seenIssueIDs := make(map[pgtype.UUID]struct{}, len(req.IssueIDs))
@@ -5034,18 +5827,21 @@ func (h *Handler) BatchDeleteIssues(w http.ResponseWriter, r *http.Request) {
 		seenIssueIDs[issueUUID] = struct{}{}
 		issues = append(issues, issue)
 		excludedIDs = append(excludedIDs, issue.ID)
-		h.TaskService.CancelTasksForIssue(r.Context(), issue.ID)
-		_ = h.AutopilotService.FailAutopilotRunsByIssue(r.Context(), issue.ID)
 	}
 	deleteResult, err := h.deleteIssuesAndCollectAttachmentURLs(r, issues, excludedIDs)
 	if err != nil {
 		slog.Warn("batch delete issues failed", "error", err)
+		if errors.Is(err, errIssueHasCollaborationChildren) {
+			writeIssueHasCollaborationChildren(w)
+			return
+		}
 		if writeIssueUpdateAccessError(w, err) {
 			return
 		}
 		writeError(w, http.StatusInternalServerError, "failed to delete issues")
 		return
 	}
+	h.TaskService.PublishIssueDeletionTaskCancellations(r.Context(), wsUUID, deleteResult.CancelledTasks)
 	h.deleteS3Objects(r.Context(), deleteResult.AttachmentURLs)
 	actorType, actorID := deleteResult.ActorType, deleteResult.ActorID
 	for _, issue := range issues {

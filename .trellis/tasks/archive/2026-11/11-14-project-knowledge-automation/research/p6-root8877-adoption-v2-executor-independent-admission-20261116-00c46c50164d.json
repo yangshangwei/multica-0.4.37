@@ -1,0 +1,148 @@
+{
+  "kind": "independent_v2_exact26_path_adoption_git_clean_index_fix_admission",
+  "at": "2026-11-16T03:22:53.586436+00:00",
+  "reviewer": "/root/p6_source_check",
+  "status": "SOURCE8877_ADOPTION_V2_EXECUTOR_ACCEPTED_FOR_FRESH_MAIN_GRANT",
+  "accepted": true,
+  "blocking_findings_open": 0,
+  "source_id": "8877eb98b7e60add8a4b4e3d94dfad976dc51f3c49b7cce7b9e620891dc1d0d7",
+  "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/candidate-source",
+  "HEAD": "1a5e537b0531aa51bd7e3eded83bbb801f1c5133",
+  "executor": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/execute-reviewed-adoption-v2.py",
+    "sha256": "9af42ca2a29296b6699781241c46b9a2636654d7b5c7265825318e1592299568",
+    "bytes": 21594,
+    "mode": 384
+  },
+  "old_executor_preserved": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/execute-reviewed-adoption.py",
+    "sha256": "1bc25d9db9a137284acfa270a6fc6562f57b9dd0a6c43fe5435888f412f46837",
+    "bytes": 21006,
+    "mode": 420
+  },
+  "fixture": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/adoption-executor-v2-fixtures.py",
+    "sha256": "c9c2365d9ec713f4bc113a72fad529a64468ef72cfcca78acc3130a67358905d",
+    "bytes": 9594,
+    "mode": 384
+  },
+  "original_failed_operation": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/reports/failed-adoption-9b0291c83697.json",
+    "sha256": "fc2427ea45c8321371400e1b34af8f09d2b527b63b9f6cb43677157bc0a0f232",
+    "bytes": 586,
+    "mode": 384
+  },
+  "rollback_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-failed-adoption9b-rollback-independent-review-20261116-8deb2f1de8da.json",
+    "sha256": "4782a513bfb1da40a3665434f144aef6114b647b566a74e3414cc982e4ea737b",
+    "bytes": 5072,
+    "mode": 384
+  },
+  "source_preparation_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root8877-source-adoption-preparation-independent-review-20261116-ff3f7ac2a613.json",
+    "sha256": "be53aa63fc5298dd0774d9fbb8d35e812003b9b3ef8296cc8b754ed9f209aa42",
+    "bytes": 7310,
+    "mode": 384
+  },
+  "first_executor_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root8877-adoption-executor-independent-admission-20261116-4ba6b7785f75.json",
+    "sha256": "c5e48ba2e8d0e6eb03516f83328bffcad15fc057cd081ecd80eca91c934e8b44",
+    "bytes": 5724,
+    "mode": 384
+  },
+  "red_author_result": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/reports/executor-v2-red-82209feefc52/result.json",
+    "sha256": "bc996de00efaa35e29b5bb6764cb08e8d65353add5848a1956ab9f26930720ba",
+    "bytes": 4414,
+    "mode": 384
+  },
+  "green_author_result": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/reports/executor-v2-green-527e240d97b8/result.json",
+    "sha256": "d44190e24a072e668950020fa82a5ce9328b7e2c695c219dd44e2ac19f7e283d",
+    "bytes": 4523,
+    "mode": 384
+  },
+  "original_red_7PASS_1FAIL_preserved": true,
+  "independent_actual_fixture_counts": {
+    "pass": 8,
+    "fail": 0,
+    "skip": 0
+  },
+  "actual_validate_only": {
+    "validated": true,
+    "action_executed": false,
+    "old_source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+    "candidate_source_id": "8877eb98b7e60add8a4b4e3d94dfad976dc51f3c49b7cce7b9e620891dc1d0d7",
+    "proposal_sha256": "d6e337ef6136bf7cd615cd35d97c2f3895fb770ba8be143d5e8f41dbd782f1b7",
+    "executor_sha256": "9af42ca2a29296b6699781241c46b9a2636654d7b5c7265825318e1592299568"
+  },
+  "independent_commands": [
+    {
+      "argv": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/adoption-executor-v2-fixtures.py"
+      ],
+      "exit": 0,
+      "stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/independent-v2-executor-review-6606d3a61618/fixtures.stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/independent-v2-executor-review-6606d3a61618/fixtures.stderr.log",
+        "sha256": "cdc63f636ec0ed9de0400b0abf481d4bb77e74c43a7b2d2fa932a0c134c7b9df",
+        "bytes": 1352,
+        "mode": 384
+      }
+    },
+    {
+      "argv": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "-B",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/execute-reviewed-adoption-v2.py"
+      ],
+      "exit": 0,
+      "stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/independent-v2-executor-review-6606d3a61618/actual-validate-only.stdout.log",
+        "sha256": "0f1f40d4a03e753afa4bfef8b03a6f8020e0ac1b6d0cc709cb55c6629310d2fa",
+        "bytes": 396,
+        "mode": 384
+      },
+      "stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/independent-v2-executor-review-6606d3a61618/actual-validate-only.stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "mode": 384
+      }
+    }
+  ],
+  "Python_parse": "PASS",
+  "findings_fixed": [
+    {
+      "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/execute-reviewed-adoption-v2.py",
+      "issue": "Manual SHA1(raw worktree) rejected a correct Git index LF-clean blob for the existing CRLF .bat",
+      "fix": "Keep every exact raw SHA/mode/set check, then use pinned Git hash-object --stdin --path only for raw-OID mismatch and require exact repository-clean OID plus original mode; record cleaned paths",
+      "new_regressions": [
+        "test_crlf_bat_keeps_raw_source_and_uses_repository_clean_index_blob",
+        "test_crlf_source_drift_is_refused_before_clean_blob_acceptance"
+      ]
+    }
+  ],
+  "findings_not_fixed": [],
+  "preservation": {
+    "working_tree_raw_byte_bindings_unchanged": true,
+    "Git_attributes_or_product_files_changed": false,
+    "exact10407_NUL_and_source_discovery_guards_unchanged": true,
+    "same_device_staging_backup_quarantine_and_guarded_rollback_unchanged": true,
+    "old_failure_or_old_grant_reinterpreted_or_replayed": false,
+    "actual_original_source_adoption_by_reviewer": false
+  },
+  "fresh_MAIN_grant_required": true,
+  "actual_adoption": false,
+  "source_ready": false,
+  "production_build": false,
+  "final_ROOT_acceptance": false,
+  "next_gate": "MAIN signs a NEW exact v2 adoption command once; independent full post-adoption source/Git raw+clean/config/allocation audit must pass before production build/start/Web/native journeys."
+}

@@ -1,0 +1,24 @@
+{
+  "created_at": "2026-10-31T13:28:57.747983+00:00",
+  "host": "localhost",
+  "port": 5432,
+  "lanes": {
+    "root": {
+      "database": "multica_handoff_4d82a74dea",
+      "env_file": "/tmp/multica_handoff_4d82a74dea.env"
+    },
+    "checkpoint": {
+      "database": "multica_handoff_4d82a74dea_checkpoint",
+      "env_file": "/tmp/multica_handoff_4d82a74dea_checkpoint.env"
+    },
+    "handoff": {
+      "database": "multica_handoff_4d82a74dea_handoff",
+      "env_file": "/tmp/multica_handoff_4d82a74dea_handoff.env"
+    },
+    "recall": {
+      "database": "multica_handoff_4d82a74dea_recall",
+      "env_file": "/tmp/multica_handoff_4d82a74dea_recall.env"
+    }
+  },
+  "ownership": "this runtime task only"
+}

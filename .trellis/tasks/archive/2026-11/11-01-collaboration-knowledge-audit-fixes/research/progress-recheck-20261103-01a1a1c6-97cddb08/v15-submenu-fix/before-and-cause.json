@@ -1,0 +1,26 @@
+{
+  "recorded_at": "2026-11-03T15:45:18.885161+00:00",
+  "candidate_head": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "source_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-records.ts",
+  "before_sha256": "4823d1b63b6422a767c1e162e3657b7e72fdb1067982c56dc5706208fc94c0e8",
+  "red_evidence": {
+    "original_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/collaboration-account-desk-fcee6-survive-popouts-and-restart-chromium/desktop-account-failure.png",
+    "preserved_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-submenu-fix/v14-desktop-records-failure.png",
+    "sha256": "6979f970b3365b227b39660a0f208aa21e4eb14a410bb883dabeedd22dcc8e05",
+    "failure": "v14 Desktop child links, recorded pages and result notifications survive popouts/restart: Remove parent issue menuitem never appeared",
+    "capture_observation": "Expected ordinary child and existing parent are visible; Relations submenu is closed"
+  },
+  "source_confirmed_mechanism": {
+    "base_ui_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/ui/node_modules/@base-ui/react/menu/submenu-trigger/MenuSubmenuTrigger.js",
+    "sha256": "e0229de3c52b7418b1d0c673fa746a6b10df730e59ecf3263303f56cbdc4c043",
+    "openOnHover": true,
+    "delay_ms": 100,
+    "useClick_ignoreMouse": true,
+    "useClick_toggle": false,
+    "wrapper": "DropdownMenuSubTrigger forwards defaults without an openOnHover override"
+  },
+  "change_boundary": "Only the two Relations gestures in existing record fixture functions; hover and require original action visibility, then click same action. No source/API/DB/label/assertion bypass, sleeps, timeout extensions or product changes.",
+  "dynamic_execution": "not authorized/not run; root will assign new directed window",
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0
+}

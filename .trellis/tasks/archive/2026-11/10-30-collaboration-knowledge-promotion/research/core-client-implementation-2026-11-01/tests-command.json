@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "pnpm",
+    "--dir",
+    "packages/core",
+    "exec",
+    "vitest",
+    "run",
+    "collaboration/knowledge-schema.test.ts",
+    "collaboration/knowledge-lease.test.ts",
+    "collaboration/knowledge-cache.test.ts",
+    "collaboration/knowledge-actions.test.ts",
+    "api/collaboration-knowledge.test.ts",
+    "realtime/knowledge.test.ts",
+    "realtime/knowledge-provider.test.tsx",
+    "api/ws-client-account.test.ts",
+    "api/ws-client.test.ts",
+    "realtime/collaboration.test.ts",
+    "collaboration/access.test.ts",
+    "api/client.test.ts",
+    "api/collaboration-content.test.ts",
+    "--reporter=verbose",
+    "--reporter=json",
+    "--outputFile.json=/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/core-client-implementation-2026-11-01/vitest.json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "exit_code": 0,
+  "elapsed_seconds": 2.465
+}

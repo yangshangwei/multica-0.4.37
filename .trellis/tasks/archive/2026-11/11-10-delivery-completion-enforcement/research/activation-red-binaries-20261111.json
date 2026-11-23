@@ -1,0 +1,37 @@
+{
+  "kind": "pre_activation_behavioral_red_binaries",
+  "bindings": [
+    {
+      "compile_record": "runs/activation-handler-compile-red01.json",
+      "compile_exit": 0,
+      "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/activation-handler-red.test",
+      "binary_sha256": "bb81a955d2fba770c4012743b90e0c4799c993fd8d14c7c31717d04f31bdc14e",
+      "execution_record": "runs/activation-handler-red01.json",
+      "execution_exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 7,
+        "skip": 0
+      },
+      "log_sha256": "1e6e3a528af7c894dc2583122fca2d8c551595578f6e373fe348f95088ab3c06",
+      "source_identity": "compile record source_before/source_after; runtime record is not used to relabel a previously compiled binary"
+    },
+    {
+      "compile_record": "runs/activation-router-compile-red02.json",
+      "compile_exit": 0,
+      "binary": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/activation-router-red.test",
+      "binary_sha256": "0bb9ed1aac6d3c6f33359bbcdb3b5840a3ea03247f3f1b5cd07b588d13b6e97b",
+      "execution_record": "runs/activation-router-red01.json",
+      "execution_exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      },
+      "log_sha256": "7e777e90a410033597428b15e6577ad44328bc312fb59cc31d95cde0d1c679c4",
+      "source_identity": "compile record source_before/source_after; runtime record is not used to relabel a previously compiled binary"
+    }
+  ],
+  "mode_enum_opened": false,
+  "provider_calls": 0
+}

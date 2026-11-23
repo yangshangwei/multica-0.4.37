@@ -1,0 +1,1 @@
+DROP INDEX CONCURRENTLY IF EXISTS delivery_completion_terminal_id_idx;

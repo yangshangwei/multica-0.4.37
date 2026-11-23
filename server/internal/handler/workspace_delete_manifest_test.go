@@ -4,6 +4,13 @@ import (
 	"context"
 	"sort"
 	"testing"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/service"
+	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
+	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 type workspaceDeleteAction string
@@ -13,12 +20,99 @@ const (
 	workspaceDeleteDetach workspaceDeleteAction = "detach"
 	workspaceDeleteKeep   workspaceDeleteAction = "keep"
 	workspaceDeleteSettle workspaceDeleteAction = "settle"
+	workspaceRetainAudit  workspaceDeleteAction = "retain_audit"
 )
 
 // workspaceDeletionManifest is the schema coverage contract for workspace
 // teardown. Adding a table requires an explicit ownership decision here; the
 // handler deletion graph must then implement that decision before CI passes.
 var workspaceDeletionManifest = map[string]workspaceDeleteAction{
+	// These workspace-owned audit facts survive teardown. Public reads still
+	// require a live workspace and current authority; retention grants no access.
+	"agent_artifact_execution":          workspaceRetainAudit,
+	"comment_delegation_receipt":        workspaceRetainAudit,
+	"project_delivery_policy":           workspaceRetainAudit,
+	"delivery_evidence_evaluation":      workspaceRetainAudit,
+	"delivery_completion_authorization": workspaceRetainAudit,
+	"delivery_completion_terminal":      workspaceRetainAudit,
+	"delivery_project_change":           workspaceRetainAudit,
+	// Stage policy revisions, role revisions, candidates, decisions and the
+	// approval mapping are retained decisions. A source workspace with
+	// collaboration records cannot be deleted at all; nothing here is torn down.
+	"project_stage_policy":                      workspaceRetainAudit,
+	"collaboration_stage_task":                  workspaceRetainAudit,
+	"collaboration_stage_role":                  workspaceRetainAudit,
+	"collaboration_stage_candidate":             workspaceRetainAudit,
+	"collaboration_stage_decision":              workspaceRetainAudit,
+	"collaboration_stage_revocation":            workspaceRetainAudit,
+	"collaboration_stage_execution_intent":      workspaceRetainAudit,
+	"collaboration_stage_execution_observation": workspaceRetainAudit,
+	"collaboration_stage_rollback_observation":  workspaceRetainAudit,
+	"collaboration_test_subject":                workspaceRetainAudit,
+	"collaboration_stage_child":                 workspaceRetainAudit,
+	"collaboration_stage_submission":            workspaceRetainAudit,
+	// Parent-task budget records hold ID copies and no foreign key. Teardown
+	// neither writes nor locks them: unresolved spend stays on record after the
+	// workspace is gone, and public reads still require a live workspace.
+	"issue_budget_root":        workspaceRetainAudit,
+	"issue_budget_member":      workspaceRetainAudit,
+	"issue_budget_attempt":     workspaceRetainAudit,
+	"issue_budget_entry":       workspaceRetainAudit,
+	"issue_budget_operation":   workspaceRetainAudit,
+	"issue_budget_observation": workspaceRetainAudit,
+	// Collaboration identity, rollout and invalidation state belong to the
+	// deployment/accounts, rather than to the workspace being deleted.
+	"collaboration_account_fence":        workspaceDeleteKeep,
+	"collaboration_account_invalidation": workspaceDeleteKeep,
+	"collaboration_config_invalidation":  workspaceDeleteKeep,
+	"collaboration_execution_gate":       workspaceDeleteKeep,
+	// Scan positions belong to the runtime being deleted, not retained history.
+	"collaboration_runtime_scan_cursor": workspaceDelete,
+	// WorkspaceHasCollaborationRecords refuses source-workspace deletion,
+	// including ended issues. Execution-workspace teardown cannot erase this
+	// independently retained source history or its unfinished proof ledger.
+	"issue_collaboration":                workspaceDeleteKeep,
+	"issue_handoff":                      workspaceDeleteKeep,
+	"issue_participant":                  workspaceDeleteKeep,
+	"collaboration_attachment":           workspaceDeleteKeep,
+	"collaboration_attachment_reference": workspaceDeleteKeep,
+	"collaboration_attempt":              workspaceDeleteKeep,
+	"collaboration_batch":                workspaceDeleteKeep,
+	"collaboration_business_capability":  workspaceDeleteKeep,
+	"collaboration_channel":              workspaceDeleteKeep,
+	"collaboration_command":              workspaceDeleteKeep,
+	"collaboration_delegation":           workspaceDeleteKeep,
+	"collaboration_event":                workspaceDeleteKeep,
+	"collaboration_execution_group":      workspaceDeleteKeep,
+	"collaboration_grant":                workspaceDeleteKeep,
+	"collaboration_group_dependency":     workspaceDeleteKeep,
+	"collaboration_group_input":          workspaceDeleteKeep,
+	"collaboration_memory_version":       workspaceDeleteKeep,
+	"collaboration_notification":         workspaceDeleteKeep,
+	"collaboration_operation":            workspaceDeleteKeep,
+	"collaboration_resource_offer":       workspaceDeleteKeep,
+	"collaboration_run":                  workspaceDeleteKeep,
+	"collaboration_run_event":            workspaceDeleteKeep,
+	"collaboration_runtime_challenge":    workspaceDeleteKeep,
+	"collaboration_runtime_enrollment":   workspaceDeleteKeep,
+	"collaboration_runtime_reservation":  workspaceDeleteKeep,
+	"collaboration_session":              workspaceDeleteKeep,
+	"collaboration_switch_consent":       workspaceDeleteKeep,
+	"collaboration_switch_proposal":      workspaceDeleteKeep,
+	"collaboration_target":               workspaceDeleteKeep,
+	"collaboration_termination":          workspaceDeleteKeep,
+	// Candidate versions and invalidation routing/history outlive target
+	// deletion. Only the target-owned counters are removed, after final hints
+	// are retained by DeleteKnowledgeTargetsInTx in the deletion transaction.
+	"collaboration_knowledge_candidate":    workspaceDeleteKeep,
+	"collaboration_knowledge_invalidation": workspaceDeleteKeep,
+	"collaboration_knowledge_target":       workspaceDelete,
+	"project_knowledge_policy":             workspaceDelete,
+	"collaboration_knowledge_job":          workspaceDeleteKeep,
+	"collaboration_knowledge_batch":        workspaceDeleteKeep,
+	"collaboration_knowledge_attempt":      workspaceDeleteKeep,
+	"collaboration_knowledge_evaluation":   workspaceDeleteKeep,
+	"collaboration_knowledge_validity":     workspaceDeleteKeep,
 	// Workspace teardown purges I1 history/outbox through
 	// DeleteWorkspaceIterationData in the existing owner transaction.
 	"workspace_iteration_settings": workspaceDelete,
@@ -100,6 +194,8 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"github_pull_request_check_run":      workspaceDelete,
 	"github_pull_request_check_suite":    workspaceDelete,
 	"inbox_item":                         workspaceDelete,
+	"inbox_snooze":                       workspaceDelete,
+	"inbox_critical_source":              workspaceDelete,
 	"issue":                              workspaceDelete,
 	"issue_view":                         workspaceDelete,
 	"issue_view_preference":              workspaceDelete,
@@ -144,6 +240,8 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"project_update_request":             workspaceDelete,
 	"project_update_notification":        workspaceDelete,
 	"quick_action":                       workspaceDelete,
+	"report_snapshot":                    workspaceDelete,
+	"report_snapshot_control":            workspaceDelete,
 	"runtime_profile":                    workspaceDelete,
 	"schema_migrations":                  workspaceDeleteKeep,
 	"seat_capacity_outbox":               workspaceDeleteSettle,
@@ -169,6 +267,142 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"workspace":                          workspaceDelete,
 	"workspace_invitation":               workspaceDelete,
 	"workspace_share_link":               workspaceDelete,
+}
+
+func TestWorkspaceDeletionManifestPreservesKnowledgeHistory(t *testing.T) {
+	t.Setenv("MULTICA_AUTH_MODE", "legacy")
+	source := knowledgeHookWorkspace(t)
+	target := knowledgeHookWorkspace(t)
+	issue := collaborationBoundaryIssue(t, source)
+	dbfx.Cleanup(t, `DELETE FROM collaboration_memory_version WHERE issue_id=$1`, issue)
+	dbfx.Cleanup(t, `DELETE FROM collaboration_event WHERE issue_id=$1`, issue)
+	dbfx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, issue)
+	ctx := knowledgeHTTPRequest("GET", "/", testUserID, nil).Context()
+	svc := service.NewCollaborationService(testHandler.Queries, testPool, testHandler.IssueService)
+	if _, err := svc.UpdateMemory(ctx, service.CollaborationMemoryUpdateParams{IssueID: parseUUID(issue), RequestID: uuid.NewString(), Content: "retained knowledge source"}); err != nil {
+		t.Fatal(err)
+	}
+	p := protocol.CollaborationKnowledgeProposal{ProtocolVersion: 1, CandidateID: uuid.NewString(), RequestID: uuid.NewString(), Target: protocol.CollaborationKnowledgeTarget{Kind: "workspace", WorkspaceID: target}, Summary: "retained summary", Content: "retained candidate body", Sources: []protocol.CollaborationKnowledgeSource{{Kind: "memory", IssueID: issue, Version: "1", SHA256: protocol.CollaborationKnowledgeHash("retained knowledge source")}}, Evidence: []protocol.CollaborationKnowledgeEvidence{}, Applicability: protocol.CollaborationKnowledgeApplicability{Surfaces: []string{"issue"}}}
+	if _, err := svc.ProposeKnowledge(ctx, parseUUID(issue), p); err != nil {
+		t.Fatal(err)
+	}
+	approval := protocol.CollaborationKnowledgeApproveRequest{ProtocolVersion: 1, RequestID: uuid.NewString(), ExpectedStateRevision: "1", ExpectedVersion: "1", ExpectedContentSHA256: protocol.CollaborationKnowledgeHash(p.Content)}
+	if _, err := svc.ApproveKnowledge(ctx, parseUUID(p.CandidateID), approval); err != nil {
+		t.Fatal(err)
+	}
+	op, err := testHandler.Queries.GetCollaborationOperation(ctx, db.GetCollaborationOperationParams{ScopeKind: "issue", ScopeID: parseUUID(issue), ActorUserID: parseUUID(testUserID), RequestID: approval.RequestID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	hint, err := testHandler.Queries.GetKnowledgeTargetHintForCause(ctx, db.GetKnowledgeTargetHintForCauseParams{CauseID: op.ID, TargetKind: pgtype.Text{String: "workspace", Valid: true}, TargetID: parseUUID(target)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err = testHandler.Queries.MarkKnowledgeTargetHintDelivered(ctx, hint.ID); err != nil {
+		t.Fatal(err)
+	}
+	cause := pgtype.UUID{Bytes: uuid.New(), Valid: true}
+	if err = service.EnqueueKnowledgeSourceInvalidation(ctx, testHandler.Queries, cause, "source_issue", parseUUID(issue)); err != nil {
+		t.Fatal(err)
+	}
+	snapshot := func() string {
+		var value string
+		dbfx.QueryRow(t, `SELECT jsonb_build_object('candidate',(SELECT to_jsonb(c) FROM collaboration_knowledge_candidate c WHERE id=$1),'retained_jobs',(SELECT jsonb_agg(to_jsonb(j) ORDER BY j.id) FROM collaboration_knowledge_invalidation j WHERE j.id=$2 OR j.cause_id=$3))::text`, p.CandidateID, hint.ID, cause).Scan(&value)
+		return value
+	}
+	before := snapshot()
+	r := newRequest("DELETE", "/api/workspaces/"+target, nil)
+	r.Header.Set("X-Workspace-ID", target)
+	testutil.Call(t, testHandler.DeleteWorkspace, withURLParam(r, "id", target)).Want(204)
+	if snapshot() != before {
+		t.Fatal("target deletion changed retained candidate or pending/delivered invalidation history")
+	}
+	if dbfx.Count(t, `SELECT count(*) FROM collaboration_knowledge_target WHERE workspace_id=$1`, target) != 0 || dbfx.Count(t, `SELECT count(*) FROM workspace WHERE id=$1`, target) != 0 {
+		t.Fatal("target deletion retained target-owned counters or parent")
+	}
+	if dbfx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation WHERE target_workspace_id=$1 AND kind='target_hint' AND state='pending' AND knowledge_revision=2`, target) != 1 {
+		t.Fatal("target deletion did not preserve its final hint before removing the counter")
+	}
+	r = newRequest("DELETE", "/api/workspaces/"+source, nil)
+	r.Header.Set("X-Workspace-ID", source)
+	response := testutil.Call(t, testHandler.DeleteWorkspace, withURLParam(r, "id", source)).Want(409)
+	if response.Map()["code"] != "workspace_has_collaboration_records" || snapshot() != before {
+		t.Fatal("source history deletion guard or retained knowledge changed")
+	}
+}
+
+func TestProjectDeletionPreservesKnowledgeAutomationHistory(t *testing.T) {
+	t.Setenv("MULTICA_AUTH_MODE", "legacy")
+	workspace := knowledgeHookWorkspace(t)
+	project := dbfx.Project(t, "Automation retention", testutil.Cols{"workspace_id": workspace})
+	issue := collaborationBoundaryIssue(t, workspace)
+	dbfx.Exec(t, `UPDATE issue SET project_id=$1 WHERE id=$2`, project, issue)
+	ctx := context.Background()
+	if _, err := testHandler.Queries.CreateProjectKnowledgePolicy(ctx, db.CreateProjectKnowledgePolicyParams{ProjectID: parseUUID(project),
+		WorkspaceID: parseUUID(workspace), IsEnabled: false, MaxCandidates: 2, BuiltinRuleVersion: "2026-11-14-v1", ChangedByUserID: parseUUID(testUserID)}); err != nil {
+		t.Fatal(err)
+	}
+	job, err := testHandler.Queries.CreateKnowledgeAutomationJob(ctx, db.CreateKnowledgeAutomationJobParams{ID: parseUUID(uuid.NewString()),
+		SourceWorkspaceID: parseUUID(workspace), SourceIssueID: parseUUID(issue), ProjectID: parseUUID(project), SubmissionID: parseUUID(uuid.NewString()),
+		DeliveryEventSeq: 3, AcceptedEventSeq: 4, ValidatedCloseEpoch: 2, SourceReaderUserID: parseUUID(testUserID), PolicyRevision: 1,
+		BuiltinRuleVersion: "2026-11-14-v1", MaxCandidates: 2})
+	if err != nil {
+		t.Fatal(err)
+	}
+	// This fixture tests parent deletion/retention, not model or acceptance
+	// orchestration. The retained evaluation is seeded through the DB fixture.
+	hash := protocol.CollaborationKnowledgeHash("retained evaluation fixture")
+	evaluation := dbfx.Insert(t, "collaboration_knowledge_evaluation", testutil.Cols{
+		"job_id": job.ID, "batch_id": uuid.NewString(), "generation_attempt_id": uuid.NewString(), "check_attempt_id": uuid.NewString(),
+		"candidate_id": uuid.NewString(), "candidate_version": 1, "candidate_content_sha256": hash, "intent": "create",
+		"source_workspace_id": workspace, "source_issue_id": issue, "project_id": project, "submission_id": job.SubmissionID,
+		"accepted_event_seq": 4, "validated_close_epoch": 2, "policy_revision": 1, "builtin_rule_version": "2026-11-14-v1", "target_revision": 0,
+		"source_snapshot_sha256": hash, "target_snapshot_sha256": hash, "verdict": "review_pending", "reason_code": "comparison_unavailable",
+		"input_source_closure": `[]`, "support_dependencies": `[]`, "model_result": `{}`, "usage": `{"status":"unknown"}`,
+	})
+	snapshot := func() string {
+		var value string
+		dbfx.QueryRow(t, `SELECT jsonb_build_object('job',(SELECT to_jsonb(j) FROM collaboration_knowledge_job j WHERE id=$1),
+			'evaluation',(SELECT to_jsonb(e) FROM collaboration_knowledge_evaluation e WHERE id=$2))::text`, job.ID, evaluation).Scan(&value)
+		return value
+	}
+	before := snapshot()
+	r := newRequest("DELETE", "/api/projects/"+project, nil)
+	r.Header.Set("X-Workspace-ID", workspace)
+	refused := testutil.Call(t, testHandler.DeleteProject, withURLParam(r, "id", project)).Want(409)
+	if refused.Map()["code"] != "project_has_collaboration_issues" || snapshot() != before ||
+		dbfx.Count(t, `SELECT count(*) FROM project_knowledge_policy WHERE project_id=$1`, project) != 1 {
+		t.Fatal("refused deletion failed to roll back policy cleanup or changed retained history")
+	}
+	// Move the live association out in the fixture. Retained automation keeps
+	// its original target identity and must survive the now-permitted deletion.
+	dbfx.Exec(t, `UPDATE issue SET project_id=NULL WHERE id=$1`, issue)
+	r = newRequest("DELETE", "/api/projects/"+project, nil)
+	r.Header.Set("X-Workspace-ID", workspace)
+	testutil.Call(t, testHandler.DeleteProject, withURLParam(r, "id", project)).Want(204)
+	if snapshot() != before {
+		t.Fatal("project deletion changed retained automation job or evaluation")
+	}
+	if dbfx.Count(t, `SELECT count(*) FROM project_knowledge_policy WHERE project_id=$1`, project) != 0 || dbfx.Count(t, `SELECT count(*) FROM project WHERE id=$1`, project) != 0 {
+		t.Fatal("project deletion retained target-owned policy or project")
+	}
+}
+
+func TestWorkspaceDeletionRemovesKnowledgePolicy(t *testing.T) {
+	t.Setenv("MULTICA_AUTH_MODE", "legacy")
+	workspace := knowledgeHookWorkspace(t)
+	project := dbfx.Project(t, "Workspace policy cleanup", testutil.Cols{"workspace_id": workspace})
+	if _, err := testHandler.Queries.CreateProjectKnowledgePolicy(context.Background(), db.CreateProjectKnowledgePolicyParams{
+		ProjectID: parseUUID(project), WorkspaceID: parseUUID(workspace), IsEnabled: false, MaxCandidates: 1,
+		BuiltinRuleVersion: "2026-11-14-v1", ChangedByUserID: parseUUID(testUserID)}); err != nil {
+		t.Fatal(err)
+	}
+	r := newRequest("DELETE", "/api/workspaces/"+workspace, nil)
+	r.Header.Set("X-Workspace-ID", workspace)
+	testutil.Call(t, testHandler.DeleteWorkspace, withURLParam(r, "id", workspace)).Want(204)
+	if dbfx.Count(t, `SELECT count(*) FROM project_knowledge_policy WHERE workspace_id=$1`, workspace) != 0 {
+		t.Fatal("workspace deletion retained project knowledge policy")
+	}
 }
 
 func TestWorkspaceDeletionManifestCoversPublicSchema(t *testing.T) {
@@ -241,12 +475,24 @@ WHERE table_schema = 'public'
 
 	for table, action := range workspaceDeletionManifest {
 		_, hasWorkspaceID := withWorkspaceID[table]
+		// Completion terminal facts retain scope through their immutable
+		// authorization, rather than duplicating its workspace column.
+		if table == "delivery_completion_terminal" && action == workspaceRetainAudit {
+			var exactRelation bool
+			if err := testPool.QueryRow(context.Background(), `SELECT
+			 EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='delivery_completion_terminal' AND column_name='authorization_id' AND data_type='uuid' AND is_nullable='NO')
+			 AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='delivery_completion_authorization' AND column_name='id' AND data_type='uuid' AND is_nullable='NO')
+			 AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='delivery_completion_authorization' AND column_name='workspace_id' AND data_type='uuid' AND is_nullable='NO')`).Scan(&exactRelation); err != nil || !exactRelation {
+				t.Errorf("retained completion terminal lost its authorization scope: %v", err)
+			}
+			continue
+		}
 		switch action {
 		case workspaceDeleteKeep:
 			if hasWorkspaceID {
 				t.Errorf("KEEP table %s gained workspace_id; classify its teardown behavior", table)
 			}
-		case workspaceDeleteDetach, workspaceDeleteSettle:
+		case workspaceDeleteDetach, workspaceDeleteSettle, workspaceRetainAudit:
 			if !hasWorkspaceID {
 				t.Errorf("%s table %s lost workspace_id; update its teardown selector", action, table)
 			}

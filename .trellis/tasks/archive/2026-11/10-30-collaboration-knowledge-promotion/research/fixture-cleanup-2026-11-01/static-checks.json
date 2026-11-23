@@ -1,0 +1,43 @@
+[
+  {
+    "command": [
+      "gofmt",
+      "-l",
+      "server/internal/service/task_knowledge_preparation_boundary_test.go",
+      "server/internal/service/task_knowledge_logging_test.go"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+    "started_at": "2026-11-01T01:40:45.859361+00:00",
+    "finished_at": "2026-11-01T01:40:45.870415+00:00",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "server/internal/service/task_knowledge_preparation_boundary_test.go",
+      "server/internal/service/task_knowledge_logging_test.go"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+    "started_at": "2026-11-01T01:40:45.870431+00:00",
+    "finished_at": "2026-11-01T01:40:45.898380+00:00",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "go",
+      "vet",
+      "./internal/service"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

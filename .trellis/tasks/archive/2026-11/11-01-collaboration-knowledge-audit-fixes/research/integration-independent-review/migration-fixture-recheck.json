@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-01T17:17:57.267473+00:00",
+  "reviewer": "/root/knowledge_web_review",
+  "verdict": "pass",
+  "scope": "migration test fixture delta only",
+  "head_at_review": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "fixture_path": "server/internal/migrations/collaboration_knowledge_test.go",
+  "fixture_sha256": "4aaa3b3e1038ed8ee4efe478d09f8450e375916eafab11d1493fa8aa50d6526e",
+  "uncommitted_delta_sha256": "1e3cbad068b6907bda99e085bf49a5fa071304f1c64933a6dc8f5547df51381c",
+  "production_source_paths_changed": [],
+  "new_dependencies": false,
+  "new_foreign_keys_or_cascades": false,
+  "legacy_column_sources": {
+    "agent_id": "001_init.up.sql CREATE TABLE agent_task_queue; UUID",
+    "created_at": "001_init.up.sql CREATE TABLE agent_task_queue; TIMESTAMPTZ NOT NULL DEFAULT now()",
+    "runtime_id": "004_agent_runtime_loop.up.sql ALTER TABLE agent_task_queue ADD COLUMN runtime_id UUID"
+  },
+  "new_assertion_scope": "pg_indexes with schemaname=current_schema() and each expected history index name; existing invalid-index check retained",
+  "index_sql_sha256": {
+    "server/migrations/761_collaboration_knowledge_agent_history.up.sql": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+    "server/migrations/762_collaboration_knowledge_runtime_history.up.sql": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+    "server/migrations/763_collaboration_knowledge_delivery_history.up.sql": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429"
+  },
+  "error_provenance": "12 named leaf missing-agent_id outputs plus parent aggregate=13 named failures;761 is first new history index in the existing migration glob",
+  "independent_compile": {
+    "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+    "fixture_sha256": "4aaa3b3e1038ed8ee4efe478d09f8450e375916eafab11d1493fa8aa50d6526e",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-c",
+      "-o",
+      "/dev/null",
+      "./internal/migrations"
+    ],
+    "started_at": "2026-11-01T17:17:02.983300+00:00",
+    "compile_only": true,
+    "database_env_removed": true,
+    "exit_code": 0,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "coordinator_database_results": [
+    {
+      "metadata": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/migrations-full.json",
+      "metadata_sha256": "154f6bab36a357fbde473d8ed38e9a71d1aa1e7b888730aefa182b4c0bda3d42",
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "working_diff_sha256": "551eba8057f1fadbe5a13977901fded3b980eed0d46e48482598e14373af679c",
+      "database": "kfix_joint_migrations_20261102_0125",
+      "exit_code": 1,
+      "counts": {
+        "run": 536,
+        "pass": 523,
+        "fail": 13,
+        "skip": 0
+      },
+      "log_sha256": "ed5b1b0026537b1ded380360e0b5e92cca8ea29f69c9e491f115cebb3c2e3b17",
+      "log_hash_matches": true
+    },
+    {
+      "metadata": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/migrations-full-r2.json",
+      "metadata_sha256": "1a99752d6990ae907c3346f26a327dced8c2d7f697e2c3dfe7f3cef756d45a39",
+      "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+      "working_diff_sha256": "e8131f3a05c8a6848eba4232191f9230e1f563f6934b5c55c17287dd2dd8b0c6",
+      "database": "kfix_joint_migrations_r2_20261102_0140",
+      "exit_code": 0,
+      "counts": {
+        "run": 536,
+        "pass": 536,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "5ec9e786c390ef3503b92f881e422940a69527256288f5d54f39e886ba0d2b21",
+      "log_hash_matches": true
+    }
+  ],
+  "blocking_findings": [],
+  "database_commands": false,
+  "migration_commands": false,
+  "provider_calls": 0,
+  "product_edits": false,
+  "limitations": [
+    "Index-name assertion proves missing-index presence; exact key/predicate correctness remains established by unchanged reviewed migration SQL, not by the name check alone.",
+    "The fixture intentionally remains a minimal table without old production FK/NOT NULL constraints irrelevant to these indexes; no new FK/cascade is introduced.",
+    "Later commit must preserve this reviewed fixture SHA; final make check remains open."
+  ]
+}

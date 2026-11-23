@@ -1,0 +1,40 @@
+{
+  "created_at": "2026-11-15T06:38:46.428292+00:00",
+  "original_red_report": "research/p6-handler-final-race-e330871f.json",
+  "original_red_counts": {
+    "pass": 5907,
+    "fail": 5,
+    "skip": 7
+  },
+  "private_before_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-handler-red-repair-1gsopt14",
+  "production_changed": false,
+  "files": {
+    "server/internal/handler/config_test.go": {
+      "before_sha256": "427b0ce155fc4561bcb166dddc471d10be8e733a2332abdc080ee3805d62007d",
+      "preserved_before": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-handler-red-repair-1gsopt14/config_test.go",
+      "after_sha256": "aeb94618e9c599e8828278d3e67dcb7613f7e0ba06a8485dddaacdbf41de2329"
+    },
+    "server/internal/handler/issue_autopilot_assignment_authority_test.go": {
+      "before_sha256": "9fcebcd42a02fd821cb69fb5330bbeb94e8b5916834c36c65bdf8df89f329c50",
+      "preserved_before": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-handler-red-repair-1gsopt14/issue_autopilot_assignment_authority_test.go",
+      "after_sha256": "8d2011ee7f20925ed9f4c045e385dd0c83a39eefcf7c9d68e8517c8b5ec8203a"
+    },
+    "server/internal/handler/workspace_delete_manifest_test.go": {
+      "before_sha256": "ec257908cfde065ae94ae361e26040acb0c178cb944e17a9eec0b843dcd2b9de",
+      "preserved_before": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-handler-red-repair-1gsopt14/workspace_delete_manifest_test.go",
+      "after_sha256": "7de1513b341b327d2e6c6747575158640e91acbb3f5de1b6c68727ffa1584adc"
+    }
+  },
+  "verification": "focused_race_pass",
+  "rationale": {
+    "config": "Explicit synthetic analytics config read; retain global privacy setting and assertions.",
+    "batch": "Documented sequential ordered non-2xx refusal; retain no assignment and assert zero dispatch.",
+    "manifest": "New immutable submission retained under existing source-workspace deletion refusal; no teardown writer change."
+  },
+  "focused_report": "research/p6-handler-contract-repair-race-fde5ad46.json",
+  "focused_named_pass": 50,
+  "focused_named_fail": 0,
+  "focused_named_skip": 0,
+  "focused_source_stable": true,
+  "focused_connections_after": 0
+}

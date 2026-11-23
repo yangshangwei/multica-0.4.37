@@ -1,0 +1,88 @@
+{
+  "at": "2026-11-01T21:01:30.658337+00:00",
+  "checks": [
+    {
+      "kind": "strict_TS",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "tsc",
+        "--project",
+        "/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/.omx/private/memory-gate-closure/tsconfig.json"
+      ],
+      "exit_code": 0,
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "kind": "base_ESLint",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/.omx/private/memory-gate-closure/eslint.config.mjs",
+        "--format",
+        "json",
+        "e2e/collaboration-memory-runtime.spec.ts"
+      ],
+      "exit_code": 0,
+      "log_sha256": "cd7cbefbf898764233775bf81a8e6e9ec43e3e1edbf9d487c8e818e7f7f240d6",
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "kind": "Playwright_collection_ONLY",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-memory-runtime.spec.ts",
+        "--list"
+      ],
+      "exit_code": 0,
+      "log_sha256": "0bed42a725730ec0cd521cf295bc1918d721a1d8739ea9fe1a1bec45a442e310",
+      "actual_browser_executions": 0,
+      "DB_operations": 0
+    }
+  ],
+  "source_sha256": "e6743766c0e49488a928638a62026b5a383517bca7cede1253d5604625dddee9",
+  "browser_DB_operations": false,
+  "cleanup_order": "firstthen second intentionallyretainedforred",
+  "compiler_config": {
+    "extends": "/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/packages/tsconfig/base.json",
+    "compilerOptions": {
+      "noEmit": true,
+      "declaration": false,
+      "declarationMap": false,
+      "jsx": "react-jsx",
+      "baseUrl": "/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102",
+      "paths": {
+        "@multica/core": [
+          "packages/core/index.ts"
+        ],
+        "@multica/core/*": [
+          "packages/core/*"
+        ]
+      }
+    },
+    "files": [
+      "/Volumes/artisan/code/2026/mc-memory-runtime-gate-closure-20261102/e2e/collaboration-memory-runtime.spec.ts"
+    ],
+    "include": []
+  },
+  "ESLint_config_source": "import base from \"../../../packages/eslint-config/base.js\";\nexport default base;\n",
+  "dependency_install": {
+    "command": [
+      "/opt/homebrew/bin/pnpm",
+      "install",
+      "--offline",
+      "--frozen-lockfile",
+      "--ignore-scripts"
+    ],
+    "exit_code": 0,
+    "network_downloads_allowed": false,
+    "new_dependencies": false,
+    "log_sha256": "64a15dd82a302affd6af5c89874b7c910b721f9988bec4199ec1a05ae2296ae2"
+  }
+}

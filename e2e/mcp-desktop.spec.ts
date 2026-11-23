@@ -76,7 +76,7 @@ const recipeInputs: Record<string, { label: string; value: string; secret: boole
   ],
 };
 
-test("native desktop MCP preserves collection, settings and agent discovery flows", async ({}, info) => {
+test("native desktop MCP preserves collection, settings and agent discovery flows", async ({ browserName: _browserName }, info) => {
   test.skip(process.env.E2E_PASSWORD_AUTH !== "1", "Requires a local password-mode API and freshly built desktop renderer/preload");
   test.setTimeout(360_000);
   const apiBase = process.env.NEXT_PUBLIC_API_URL!;
@@ -166,6 +166,9 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
       localStorage.setItem("theme", "dark");
     }, api.getToken());
     await page.reload();
+    const resources = page.getByRole("navigation", { name: "Application navigation", exact: true })
+      .getByRole("button", { name: "Resources & connections", exact: true });
+    if (await resources.getAttribute("aria-expanded") !== "true") await resources.click();
     await page.getByRole("link", { name: "MCP", exact: true }).click();
     await expect(page.getByRole("heading", { name: "MCP", exact: true })).toHaveCount(1);
     await expect(page.getByTestId("mcp-market")).toHaveCount(0);
@@ -330,7 +333,8 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
     await expect(page.getByText("native-browser", { exact: true })).toBeVisible();
     await capture("native-shared-configurations");
 
-    await page.getByRole("link", { name: "Settings", exact: true }).click();
+    await page.getByRole("navigation", { name: "Application navigation", exact: true })
+      .getByRole("link", { name: "Settings", exact: true }).click();
     await page.getByRole("tab", { name: "MCP", exact: true }).click();
     await expect(page.getByRole("heading", { name: "MCP", exact: true })).toHaveCount(1);
     await expect(page.getByText("native-browser", { exact: true })).toBeVisible();

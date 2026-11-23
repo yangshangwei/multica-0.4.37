@@ -1,0 +1,79 @@
+{
+  "simulation_id": "security-squad-sim-20261027",
+  "daemon_id": "2196bccf-e89a-4ef8-a393-2b4530f4e4d4",
+  "container": "multica-security-scripted-sim-20261027",
+  "gateway": "multica-security-sim-api-20261027",
+  "internal_network": "multica-security-sim-internal-20261027",
+  "egress_network": "multica-security-sim-egress-20261027",
+  "profile": "security-simulation",
+  "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+  "roles": {
+    "maintenance-lead": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+    "product-analyst": "50b4bb2e-d4c4-4c70-8dd8-3d48963b475a",
+    "security-reviewer": "ce9b9709-d57c-4ea2-9e9f-7f62fe17a917",
+    "diagnostician": "ac023f51-1185-4ee0-8639-80ab4f0e3051",
+    "implementer": "f7047fd3-7d3e-465a-ae56-77ac0979ab3f",
+    "qa-engineer": "d2be88b0-de73-4199-b217-f1e19c6062dd",
+    "migration-reviewer": "37e1cafb-fb87-4eff-b621-43c7e031f616",
+    "code-reviewer": "80df3eb5-b64c-4e93-afa2-75c2b8526911"
+  },
+  "mode": "scripted_simulation",
+  "real_model_calls": 0,
+  "project_id": "6d369c93-b6af-4a83-8fba-93b1489e0789",
+  "squad_id": "26156f72-d413-42be-a075-e46f2b9184ea",
+  "cases": {
+    "01a17c62-9456-731c-bea9-459411b9a123": {
+      "key": "other-supply-chain"
+    },
+    "01a17c62-946f-74f1-a9d8-99ce5e23709e": {
+      "key": "dependency-advisory"
+    },
+    "01a17c62-9479-7d84-b2e0-17d039c05b81": {
+      "key": "code-authorization"
+    },
+    "01a17c62-9483-798d-b65b-f6d0e44208b3": {
+      "key": "production-escalation"
+    }
+  },
+  "case_ids": {
+    "other-supply-chain": {
+      "id": "01a17c62-9456-731c-bea9-459411b9a123",
+      "identifier": "POLA-19"
+    },
+    "dependency-advisory": {
+      "id": "01a17c62-946f-74f1-a9d8-99ce5e23709e",
+      "identifier": "POLA-20"
+    },
+    "code-authorization": {
+      "id": "01a17c62-9479-7d84-b2e0-17d039c05b81",
+      "identifier": "POLA-21"
+    },
+    "production-escalation": {
+      "id": "01a17c62-9483-798d-b65b-f6d0e44208b3",
+      "identifier": "POLA-22"
+    }
+  },
+  "gateway_ip": "172.25.0.2",
+  "api_url": "http://172.25.0.2:8080",
+  "baseline_ref": "6c4e32e688a2f71509055aae4de32c4531e08fec",
+  "provider_sha256": "1504358f951eece57fff4ddedd4d2086bbe7ad88b2e6b2812186df0d71bc5a5b",
+  "runtime_id": "191dac8a-0b3f-4c2d-90a4-51da68ecfd6a",
+  "daemon_started": false,
+  "resource_id": "82303e2c-5bd4-4fb3-a2a9-4749da867919",
+  "acknowledged_failures": {
+    "01a17c66-5204-7261-b347-8fa6c44cdcdd": {
+      "case": "other-supply-chain",
+      "error": "SCRIPTED SIMULATION — NO MODEL: Multica CLI rejected simulation operation: --content-file path \"/tmp/multica-task-3033026163/tmpm8l1k7zj.md\" resolves outside the current working directory; write agent temp files inside the task workdir (e.g. ./content.md) rather than machine-shared paths like /tmp, where another run's stale file can be read by mistake. Pass --allow-external-file to override.\n",
+      "recovery": "The simulator used /tmp for --content-file; changed to the actual task cwd and added a failing-then-passing regression."
+    },
+    "01a17c6c-669c-7599-9af8-b0f7ff25f3b8": {
+      "case": "dependency-advisory",
+      "error": "SCRIPTED SIMULATION — NO MODEL: Command '['/usr/local/bin/multica', 'issue', 'comment', 'add', '01a17c62-946f-74f1-a9d8-99ce5e23709e', '--parent', '01a17c6c-6692-71e0-bfcd-e273c23233a5', '--content-file', '/work/lab/.simulation-comment-h15er4me.md', '--output', 'json']' timed out after 30 seconds",
+      "recovery": "A report POST timed out with no persisted result. Unreachable IPv6 was observed at the gateway; IPv4 resolution and CLI deadline grace were corrected, then a fresh squad trigger resumed the missing stage. The exact latency cause was not proven."
+    }
+  },
+  "phase": "phase1_scripted_simulation_verified",
+  "runtime_session": "removed_after_verified_simulation",
+  "temporary_credentials_removed": true,
+  "real_model_gate_passed": false
+}

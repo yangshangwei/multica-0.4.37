@@ -131,11 +131,14 @@ func (h *Handler) ResolvePluginMCPCredential(w http.ResponseWriter, r *http.Requ
 	if !h.requirePluginsV1(w, r) {
 		return
 	}
-	_, workspaceID, ok := h.requireDaemonTaskAccessWithWorkspace(w, r, chi.URLParam(r, "id"))
+	task, workspaceID, ok := h.requireDaemonTaskAccessWithWorkspace(w, r, chi.URLParam(r, "id"))
 	if !ok {
 		return
 	}
 
+	if !h.requireTaskCapabilityTools(w, r, task) {
+		return
+	}
 	installationID, hookKey, ok := splitPluginContributionID(chi.URLParam(r, "contributionId"))
 	if !ok {
 		writeError(w, http.StatusBadRequest, "malformed contribution id")

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@multica/core/api";
+import { api, ApiError } from "@multica/core/api";
 import { useAuthStore } from "@multica/core/auth";
 import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
 import { useWorkspaceId } from "@multica/core/hooks";
@@ -10,7 +10,7 @@ import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { isImeComposing } from "@multica/core/utils";
 import { getShortcut, shortcutMatchesEvent } from "@multica/core/shortcuts";
 import { useTimeAgo } from "../../i18n";
-import { agentListOptions, memberListOptions, squadMemberStatusOptions, workspaceKeys } from "@multica/core/workspace/queries";
+import { agentListOptions, memberListOptions, squadDetailOptions, squadMembersOptions, squadMemberStatusOptions, workspaceKeys } from "@multica/core/workspace/queries";
 import { useNavigation } from "../../navigation";
 import { AppLink } from "../../navigation";
 import { BreadcrumbHeader } from "../../layout/breadcrumb-header";
@@ -20,6 +20,7 @@ import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { Label } from "@multica/ui/components/ui/label";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@multica/ui/components/ui/tabs";
 import {
   Popover,
   PopoverContent,
@@ -51,7 +52,9 @@ import {
 import { SquadAvatar } from "../../common/squad-avatar";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { AvatarUploadControl } from "../../common/avatar-upload-control";
-import { ContentEditor } from "../../editor/content-editor";
+import { ContentEditor, type ContentEditorRef } from "../../editor/content-editor";
+import { ReadonlyContent } from "../../editor/readonly-content";
+import { getSquadQueryState, SquadQueryFeedback } from "./squad-query-feedback";
 import {
   PickerItem,
   PickerSection,
@@ -72,17 +75,21 @@ export function SquadDetailPage() {
   const queryClient = useQueryClient();
   const squadId = pathname.split("/").pop() ?? "";
 
-  const { data: squad, refetch: refetchSquad } = useQuery<Squad>({
-    queryKey: [...workspaceKeys.squads(wsId), squadId],
-    queryFn: () => api.getSquad(squadId),
+  const squadQuery = useQuery({
+    ...squadDetailOptions(wsId, squadId),
     enabled: !!workspace?.id && !!squadId,
   });
+  const squadState = getSquadQueryState(squadQuery);
+  const { refetch: refetchSquad } = squadQuery;
+  const squad = squadState.hasData ? squadQuery.data : undefined;
 
-  const { data: members = [], refetch: refetchMembers } = useQuery<SquadMember[]>({
-    queryKey: [...workspaceKeys.squads(wsId), squadId, "members"],
-    queryFn: () => api.listSquadMembers(squadId),
+  const membersQuery = useQuery({
+    ...squadMembersOptions(wsId, squadId),
     enabled: !!workspace?.id && !!squadId,
   });
+  const membersState = getSquadQueryState(membersQuery);
+  const { refetch: refetchMembers } = membersQuery;
+  const members = membersState.hasData ? membersQuery.data ?? [] : [];
 
   // Per-squad working/idle/offline + active-issue snapshot. WS task / agent /
   // daemon events invalidate this via use-realtime-sync; the staleTime is a
@@ -98,14 +105,15 @@ export function SquadDetailPage() {
     return map;
   }, [memberStatusResp]);
 
-  const { data: agents = [] } = useQuery(agentListOptions(wsId));
-  const { data: wsMembers = [] } = useQuery(memberListOptions(wsId));
+  const agentsQuery = useQuery(agentListOptions(wsId));
+  const workspaceMembersQuery = useQuery(memberListOptions(wsId));
+  const agentsState = getSquadQueryState(agentsQuery);
+  const workspaceMembersState = getSquadQueryState(workspaceMembersQuery);
+  const agents = agentsState.hasData ? agentsQuery.data ?? [] : [];
+  const wsMembers = workspaceMembersState.hasData ? workspaceMembersQuery.data ?? [] : [];
 
   const currentUser = useAuthStore((s) => s.user);
-  const myRole = useMemo(() => {
-    if (!currentUser) return null;
-    return wsMembers.find((m) => m.user_id === currentUser.id)?.role ?? null;
-  }, [wsMembers, currentUser]);
+  const myRole = currentUser ? wsMembers.find((member) => member.user_id === currentUser.id)?.role ?? null : null;
   const isWorkspaceAdmin = myRole === "owner" || myRole === "admin";
   // Per-squad management gate: workspace owner/admin manage every squad; the
   // creator manages the squads they created. Mirrors canManageSquad in
@@ -113,14 +121,23 @@ export function SquadDetailPage() {
   // the API will accept the write, and everyone else gets a read-only view
   // instead of controls that 403 (MUL-4223).
   const canManage =
-    isWorkspaceAdmin || (!!currentUser && squad?.creator_id === currentUser.id);
+    workspaceMembersState.hasData &&
+    (isWorkspaceAdmin || (!!currentUser && squad?.creator_id === currentUser.id));
 
   const [showAddMember, setShowAddMember] = useState(false);
   const [confirmArchive, setConfirmArchive] = useState(false);
 
+  useEffect(() => {
+    if (canManage) return;
+    // Permission recovery must not revive an old mutating confirmation.
+    setShowAddMember(false);
+    setConfirmArchive(false);
+  }, [canManage]);
+
   const updateSquadMut = useMutation({
     mutationFn: (data: { name?: string; description?: string; instructions?: string; avatar_url?: string; leader_id?: string }) => api.updateSquad(squadId, data),
-    onSuccess: () => {
+    onSuccess: (updated) => {
+      queryClient.setQueryData(squadDetailOptions(updated.workspace_id, updated.id).queryKey, updated);
       refetchSquad();
       refetchMembers();
       queryClient.invalidateQueries({ queryKey: workspaceKeys.squads(wsId) });
@@ -182,6 +199,17 @@ export function SquadDetailPage() {
     return wsMembers.find((m) => m.user_id === id)?.name ?? id.slice(0, 8);
   };
 
+  if (!squad && squadState.failed) {
+    const message = squadQuery.error instanceof ApiError && !squadQuery.error.isStaleAuthResponse
+      ? squadQuery.error.status === 404 ? t(($) => $.recovery.not_found)
+        : [401, 403].includes(squadQuery.error.status) ? t(($) => $.recovery.access_denied)
+          : t(($) => $.recovery.detail_error)
+      : t(($) => $.recovery.detail_error);
+    return <div className="flex min-h-0 flex-1 flex-col">
+      <BreadcrumbHeader segments={[{ href: p.squads(), label: t(($) => $.page.title) }]} leaf={t(($) => $.profile_card.unavailable)} />
+      <div className="p-6"><SquadQueryFeedback query={squadQuery} loadingMessage={t(($) => $.recovery.loading)} errorMessage={message} /></div>
+    </div>;
+  }
   if (!squad) {
     return <SquadDetailSkeleton />;
   }
@@ -219,13 +247,16 @@ export function SquadDetailPage() {
         }
       />
 
+      {squadState.failed && <div className="px-6 py-3"><SquadQueryFeedback query={squadQuery} loadingMessage={t(($) => $.recovery.loading)} errorMessage={t(($) => $.recovery.detail_error)} refreshMessage={t(($) => $.recovery.detail_refresh_error)} /></div>}
+      {(!workspaceMembersState.hasData || workspaceMembersState.failed) && <div className="px-6 py-3"><SquadQueryFeedback query={workspaceMembersQuery} loadingMessage={t(($) => $.recovery.workspace_members_loading)} errorMessage={t(($) => $.recovery.workspace_members_error)} /></div>}
+
       {/* Two-column grid mirrors agent-detail-page: left inspector (identity +
           properties + leader), right pane with tabs (Members | Instructions).
           Mobile collapses to stacked single column. */}
       <div className="flex flex-1 min-h-0 flex-col gap-3 overflow-y-auto p-3 md:grid md:grid-cols-[280px_minmax(0,1fr)] md:gap-4 md:overflow-hidden md:p-6 lg:grid-cols-[320px_minmax(0,1fr)]">
         <SquadDetailInspector
           squad={squad}
-          memberCount={members.length}
+          memberCount={membersState.hasData ? members.length : null}
           leaderName={getEntityName("agent", squad.leader_id)}
           creatorName={getEntityName("member", squad.creator_id)}
           canManage={canManage}
@@ -235,8 +266,11 @@ export function SquadDetailPage() {
         />
 
         <SquadOverviewPane
+          key={squad.id}
           squad={squad}
           members={members}
+          membersReady={membersState.hasData}
+          membersFeedback={<SquadQueryFeedback query={membersQuery} loadingMessage={t(($) => $.recovery.members_loading)} errorMessage={t(($) => $.recovery.members_error)} />}
           memberStatusById={memberStatusById}
           canManage={canManage}
           isLeader={isLeader}
@@ -247,21 +281,34 @@ export function SquadDetailPage() {
           onSetLeader={(id) => setLeaderMut.mutate(id)}
           onRemoveMember={(m) => removeMemberMut.mutate(m)}
           onUpdateRole={async (m, role) => { await updateRoleMut.mutateAsync({ member: m, role }); }}
-          onSaveInstructions={async (next) => { await updateSquadMut.mutateAsync({ instructions: next }); toast.success(t(($) => $.toasts.instructions_saved)); }}
+          onSaveInstructions={async (next) => {
+            try {
+              await updateSquadMut.mutateAsync({ instructions: next });
+              toast.success(t(($) => $.toasts.instructions_saved));
+            } catch (error) {
+              toast.error(error instanceof Error && error.message ? error.message : t(($) => $.name_editor.save_failed));
+              throw error;
+            }
+          }}
           setLeaderPending={setLeaderMut.isPending}
         />
       </div>
 
-      {showAddMember && (
+      {showAddMember && membersState.hasData && canManage && (
         <AddMemberDialog
           availableMembers={availableMembers}
           availableAgents={availableAgents}
+          candidatesReady={agentsState.hasData && workspaceMembersState.hasData}
+          feedback={<>
+            <SquadQueryFeedback query={agentsQuery} loadingMessage={t(($) => $.recovery.agents_loading)} errorMessage={t(($) => $.recovery.agents_error)} />
+            <SquadQueryFeedback query={workspaceMembersQuery} loadingMessage={t(($) => $.recovery.workspace_members_loading)} errorMessage={t(($) => $.recovery.workspace_members_error)} />
+          </>}
           onClose={() => setShowAddMember(false)}
           onSubmit={async (input) => { await addMemberMut.mutateAsync(input); }}
         />
       )}
 
-      {confirmArchive && (
+      {confirmArchive && canManage && (
         <AlertDialog
           open
           onOpenChange={(v) => { if (!v && !deleteMut.isPending) setConfirmArchive(false); }}
@@ -474,11 +521,15 @@ function InlineEditPopover({
 function AddMemberDialog({
   availableMembers,
   availableAgents,
+  candidatesReady,
+  feedback,
   onClose,
   onSubmit,
 }: {
   availableMembers: MemberWithUser[];
   availableAgents: Agent[];
+  candidatesReady: boolean;
+  feedback: ReactNode;
   onClose: () => void;
   onSubmit: (input: { type: "agent" | "member"; id: string; role?: string }) => Promise<void>;
 }) {
@@ -493,10 +544,10 @@ function AddMemberDialog({
   const filteredMembers = availableMembers.filter((m) => m.name.toLowerCase().includes(query) || matchesPinyin(m.name, query));
   const filteredAgents = availableAgents.filter((a) => a.name.toLowerCase().includes(query) || matchesPinyin(a.name, query));
 
-  const canSubmit = !!target && !submitting;
+  const canSubmit = !!target && !submitting && candidatesReady;
 
   const handleSubmit = async () => {
-    if (!target) return;
+    if (!target || !canSubmit) return;
     setSubmitting(true);
     try {
       await onSubmit({ type: target.type, id: target.id, role });
@@ -515,6 +566,7 @@ function AddMemberDialog({
         </DialogHeader>
 
         <div className="space-y-4 min-w-0">
+          {feedback}
           <div>
             <Label className="text-caption text-muted-foreground">{t(($) => $.add_member_dialog.label_member)}</Label>
             <Popover open={pickerOpen} onOpenChange={(v) => { setPickerOpen(v); if (!v) setPickerFilter(""); }}>
@@ -584,7 +636,7 @@ function AddMemberDialog({
                       ))}
                     </PickerSection>
                   )}
-                  {filteredMembers.length === 0 && filteredAgents.length === 0 && <PickerEmpty />}
+                  {candidatesReady && filteredMembers.length === 0 && filteredAgents.length === 0 && <PickerEmpty />}
                 </div>
               </PopoverContent>
             </Popover>
@@ -692,7 +744,7 @@ function SquadDetailInspector({
   onUpdateDescription,
 }: {
   squad: Squad;
-  memberCount: number;
+  memberCount: number | null;
   leaderName: string;
   creatorName: string;
   // When false the identity block renders as static text (no avatar upload,
@@ -766,7 +818,7 @@ function SquadDetailInspector({
             </span>
           </InspectorRow>
           <InspectorRow label={t(($) => $.details.members)}>
-            <span className="text-muted-foreground tabular-nums">{memberCount}</span>
+            <span className="text-muted-foreground tabular-nums">{memberCount ?? t(($) => $.recovery.unknown_count)}</span>
           </InspectorRow>
           <InspectorRow label={t(($) => $.details.created_by)}>
             <span className="flex min-w-0 items-center gap-1.5">
@@ -915,6 +967,8 @@ const squadDetailTabs: { id: SquadDetailTab; icon: typeof FileText }[] = [
 function SquadOverviewPane({
   squad,
   members,
+  membersReady,
+  membersFeedback,
   memberStatusById,
   canManage,
   isLeader,
@@ -930,6 +984,8 @@ function SquadOverviewPane({
 }: {
   squad: Squad;
   members: SquadMember[];
+  membersReady: boolean;
+  membersFeedback: ReactNode;
   memberStatusById: Map<string, SquadMemberStatus>;
   // Gates every mutating control in the Members and Instructions tabs. When
   // false the tabs render read-only (no add/remove/leader/role edits, no
@@ -969,29 +1025,28 @@ function SquadOverviewPane({
   };
 
   return (
-    <div className="flex min-h-[60vh] flex-col overflow-hidden rounded-lg border bg-background md:h-full md:min-h-0">
-      <div className="flex shrink-0 items-center gap-0 overflow-x-auto border-b px-2 md:px-4">
+    <Tabs value={activeTab} onValueChange={(value) => {
+      if (value === "members" || value === "instructions") requestTabChange(value);
+    }} className="flex min-h-[60vh] flex-col gap-0 overflow-hidden rounded-lg border bg-background md:h-full md:min-h-0">
+      <div className="shrink-0 overflow-x-auto border-b px-2 md:px-4">
+        <TabsList variant="line" activateOnFocus={false} aria-label={squad.name} className="w-full justify-start gap-0 p-0 data-[orientation=horizontal]:h-auto">
         {squadDetailTabs.map((tab) => (
-          <button
+          <TabsTrigger
             key={tab.id}
-            type="button"
-            onClick={() => requestTabChange(tab.id)}
-            className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2.5 text-caption font-medium transition-colors ${
-              activeTab === tab.id
-                ? "border-foreground text-foreground"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
+            value={tab.id}
+            className="h-auto flex-none rounded-none border-0 px-3 py-2.5 text-caption data-[orientation=horizontal]:after:bottom-0"
           >
             <tab.icon className="h-3.5 w-3.5" />
             {t(($) => $.detail_tabs[tab.id])}
-          </button>
+          </TabsTrigger>
         ))}
+        </TabsList>
       </div>
 
       <div className="flex-1 min-h-0 overflow-y-auto">
-        {activeTab === "members" && (
-          <div className="flex h-full flex-col p-4 md:p-6">
-            <SquadMembersTab
+          <TabsContent value="members" className="flex h-full flex-col gap-3 p-4 md:p-6">
+            {membersFeedback}
+            {membersReady && <SquadMembersTab
               members={members}
               memberStatusById={memberStatusById}
               canManage={canManage}
@@ -1004,19 +1059,16 @@ function SquadOverviewPane({
               onRemoveMember={onRemoveMember}
               onUpdateRole={onUpdateRole}
               setLeaderPending={setLeaderPending}
-            />
-          </div>
-        )}
-        {activeTab === "instructions" && (
-          <div className="flex h-full flex-col p-4 md:p-6">
+            />}
+          </TabsContent>
+          <TabsContent value="instructions" className="flex h-full flex-col p-4 md:p-6">
             <SquadInstructionsTab
               squad={squad}
               canManage={canManage}
               onSave={onSaveInstructions}
               onDirtyChange={setActiveDirty}
             />
-          </div>
-        )}
+          </TabsContent>
       </div>
 
       {pendingTab !== null && (
@@ -1037,7 +1089,7 @@ function SquadOverviewPane({
           </AlertDialogContent>
         </AlertDialog>
       )}
-    </div>
+    </Tabs>
   );
 }
 
@@ -1293,12 +1345,32 @@ function SquadInstructionsTab({
 }) {
   const { t } = useT("squads");
   const [value, setValue] = useState(squad.instructions ?? "");
+  const [baseline, setBaseline] = useState(squad.instructions ?? "");
+  const [remoteChanged, setRemoteChanged] = useState(false);
   const [saving, setSaving] = useState(false);
-  const isDirty = value !== (squad.instructions ?? "");
+  const savingRef = useRef(false);
+  const editorRef = useRef<ContentEditorRef>(null);
+  const persistedRef = useRef({ id: squad.id, instructions: squad.instructions ?? "" });
+  const localRef = useRef(value);
+  localRef.current = value;
+  const isDirty = value !== baseline;
 
   useEffect(() => {
-    setValue(squad.instructions ?? "");
-  }, [squad.id, squad.instructions]);
+    const previous = persistedRef.current;
+    const switchingSquads = previous.id !== squad.id;
+    if (!switchingSquads && saving) return;
+    const next = squad.instructions ?? "";
+    const changed = previous.instructions !== next;
+    const wasDirty = localRef.current !== previous.instructions;
+    persistedRef.current = { id: squad.id, instructions: next };
+    setBaseline(next);
+    if (switchingSquads || (!wasDirty && changed)) {
+      setValue(next);
+      setRemoteChanged(false);
+    } else if (changed) {
+      setRemoteChanged(wasDirty && localRef.current !== next);
+    }
+  }, [squad.id, squad.instructions, saving]);
 
   useEffect(() => {
     // A read-only viewer never has unsaved changes to guard on tab-switch.
@@ -1306,12 +1378,20 @@ function SquadInstructionsTab({
   }, [canManage, isDirty, onDirtyChange]);
 
   const handleSave = async () => {
+    if (savingRef.current || !canManage) return;
+    const submitted = editorRef.current?.getMarkdown() ?? localRef.current;
+    savingRef.current = true;
+    setValue(submitted);
     setSaving(true);
     try {
-      await onSave(value);
+      await onSave(submitted);
+      persistedRef.current = { id: squad.id, instructions: submitted };
+      setBaseline(submitted);
+      setRemoteChanged(false);
     } catch {
       // toast handled by parent
     } finally {
+      savingRef.current = false;
       setSaving(false);
     }
   };
@@ -1322,29 +1402,23 @@ function SquadInstructionsTab({
         {t(($) => $.instructions_tab.description)}
       </p>
 
-      {/* When the viewer can't manage the squad, the editor is wrapped in a
-          pointer-events-none / aria-disabled shell — ContentEditor reads
-          `editable` at mount and can't be toggled, so this is the documented
-          way to present it read-only (see editor/content-editor.tsx). */}
+      {canManage && remoteChanged && isDirty && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.instructions_tab.remote_changed)}</p>}
       <div
-        aria-disabled={!canManage}
         className={`flex-1 min-h-0 overflow-y-auto rounded-md border bg-background px-4 py-3 transition-colors ${
-          canManage ? "focus-within:border-input" : "pointer-events-none"
+          canManage ? "focus-within:border-input" : ""
         }`}
       >
-        <ContentEditor
+        {canManage ? <ContentEditor
           key={squad.id}
+          ref={editorRef}
           value={value}
-          onUpdate={canManage ? setValue : () => {}}
-          placeholder={
-            canManage
-              ? t(($) => $.instructions_tab.placeholder)
-              : ""
-          }
+          onUpdate={setValue}
+          aria-label={t(($) => $.detail_tabs.instructions)}
+          placeholder={t(($) => $.instructions_tab.placeholder)}
           debounceMs={150}
           disableMentions
           className="min-h-full"
-        />
+        /> : <ReadonlyContent content={squad.instructions ?? ""} className="min-h-full" />}
       </div>
 
       {canManage && (

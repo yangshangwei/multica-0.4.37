@@ -1,0 +1,94 @@
+{
+  "status": "passed_with_declared_limits",
+  "reviewed_at": "2026-10-13T11:42:02.675546+00:00",
+  "source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+  "delivered_files": 22,
+  "checksum_entries": 21,
+  "checksum_manifest_sha256": "16bb956f47141d967534f8575b65beed5e667abaf144cc2bd3e1aee95fcfec9d",
+  "all_delivery_sha256": {
+    ".env.example": "d36aef0040f4d20e70cbb5952baeae07f31e3be1d049d02182e1aef6b96d7b3f",
+    "CHANGELOG-v0.6.6.md": "301345647563f3e7fc49520eaa3b1f07f20384df79afc62ffffc16ec8edacce9",
+    "ENV-CHANGES-v0.6.6.zh-CN.md": "cad6be0e64d7619b644a05dd6b435344009a68185f84a532c4403045b9294c90",
+    "README-v0.6.6.zh-CN.md": "3d372305dd7c986d3c8d296a5ea052ec256d28f42180fe322ce996c06b8b0273",
+    "VERIFICATION-v0.6.6.zh-CN.md": "3016c99eaded97811e4a839f6754e1ce28ee9746ce2a26d06ae66fedbd4cd53e",
+    "admin-resource-publishing.zh-CN.md": "e0585804ca33917a30c52f0eb574159105ba8fc961dca927db7515bb338ef2bc",
+    "changelog.json": "80ae9124ab424ace0ae5779bad5536833de2d7a2180af413c5534104caf0e9ee",
+    "desktop-intranet-update-runbook.zh-CN.md": "5b4796f7b1f87650c9acbaf496e9f811fd738c9a0e87e6b97855cf87c234276c",
+    "latest.yml": "82730d53541067d4b8c35f7f4a43a737dc21d2d28f41d6f91b8e1580c2c1bbf3",
+    "mcp-catalog-publishing.md": "cb99aed8524045a3568204cd6239b8c144e297132becd2b8384370a9d1243029",
+    "mcp-intranet-setup.md": "0bddc7064401bebef9cd610e827267df18a2e986d08ed13a9ed7b9c168c766f7",
+    "multica-desktop-0.6.6-windows-x64.exe": "e3fe9227158b60ce089415ec86ed79cd2804895fd15bfea5c33c4995d07f483b",
+    "multica-desktop-0.6.6-windows-x64.exe.blockmap": "dc3af843abdca1d0fbedea52de8d45f02300828dcbd0cc7c997faabab4d9ad05",
+    "multica-desktop-0.6.6-windows-x64.exe.sha256": "9b9a0581da735b26f11f8dba8e99a0ed1668383b32db22fb71d2bb03153bbe27",
+    "multica-server-upgrade-v0.6.6-linux-amd64.tar.gz": "80b43b34eb06f1e0db4b673f365f1e70f907caac9969cec9fecaa382b1f881da",
+    "multica-server-upgrade-v0.6.6-linux-amd64.tar.gz.sha256": "d1167abb1c303e049ca374095f000fd799a67d197640745a9150e4dc4df1a4c6",
+    "multica-v0.6.6-upgrade-docs.zip": "dfa5b6eb27f3caaa1a663664f65092a0b9e511ee503d061a29a13cb0febd30a9",
+    "multica-v0.6.6-upgrade-docs.zip.sha256": "538029df1b25154203e35c3befff1bcaf5e1429d7d4269c91d36166eb17a16fc",
+    "offline-upgrade.zh-CN.md": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a",
+    "verification-v0.6.6.json": "54dafdc41fb844232c18cde0d03a4123ee1ae695809e7b90aeac99d4a1b137d7",
+    "windows-verification.json": "c7144fee6b7aa29be2123056db1507939b0afe515dac9a2ac85a5f5ad49b6b2f"
+  },
+  "docs_zip": {
+    "members": [
+      ".env.example",
+      "CHANGELOG-v0.6.6.md",
+      "ENV-CHANGES-v0.6.6.zh-CN.md",
+      "README-v0.6.6.zh-CN.md",
+      "VERIFICATION-v0.6.6.zh-CN.md",
+      "admin-resource-publishing.zh-CN.md",
+      "changelog.json",
+      "desktop-intranet-update-runbook.zh-CN.md",
+      "mcp-catalog-publishing.md",
+      "mcp-intranet-setup.md",
+      "offline-upgrade.zh-CN.md",
+      "verification-v0.6.6.json",
+      "windows-verification.json"
+    ],
+    "safe_regular_files": true,
+    "exact_delivery_bytes": true
+  },
+  "artifact_bytes_unchanged_from_independent_audit": true,
+  "reports_consistent_with_original_evidence": true,
+  "log_hashes_verified": 26,
+  "lint": {
+    "errors": 0,
+    "warnings": 31,
+    "by_package": {
+      "ui": 3,
+      "desktop": 1,
+      "views": 27
+    }
+  },
+  "go_named_events": {
+    "go-auth-changelog-config": {
+      "run": 218,
+      "pass": 218,
+      "top_level": 102
+    },
+    "go-integration": {
+      "run": 174,
+      "pass": 174,
+      "top_level": 91
+    },
+    "go-cmd-server-rerun": {
+      "run": 63,
+      "pass": 63,
+      "top_level": 25
+    }
+  },
+  "vitest": {
+    "core-delta": 134,
+    "desktop-delta-rerun": 86,
+    "views-delta-rerun": 158
+  },
+  "desktop_packaging_tests": 136,
+  "earlier_failures_and_separate_successful_recovery_preserved": true,
+  "recovery_historical_command_and_exact_harness_reviewed": true,
+  "private_fixture_value_scan": {
+    "known_values_checked": 13,
+    "leaks": 0,
+    "scope": "all delivered docs/reports/env/feed and all non-image server archive files; binary identities independently match pre-fixture immutable builds"
+  },
+  "parent_document_and_spec_review": "passed; guides match approved prepared bytes and named-Go-test contract matches frozen TestMain",
+  "native_windows_and_production_limits_explicit": true
+}

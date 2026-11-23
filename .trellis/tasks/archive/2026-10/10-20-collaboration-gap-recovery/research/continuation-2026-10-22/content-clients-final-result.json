@@ -1,0 +1,78 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-retained-attachment.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=json",
+    "--output",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/content-clients-final-artifacts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-21T23:41:14.113448+00:00",
+  "environment_scope": "task-owned password/admin API18996/production Web13916/renderer6090",
+  "preflight": "content-admin-preflight.json",
+  "real_provider_account_access": false,
+  "installed_full_main": false,
+  "returncode": 0,
+  "end": "2026-10-21T23:41:42.960932+00:00",
+  "raw_sha256": "1ac8d0378d2e375860b5a43537fc9c1dc98a68a1528527c38abdba66c73b4180",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+  "stats": {
+    "startTime": "2026-10-21T23:41:14.870Z",
+    "duration": 28064.248,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 141,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 5683,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 141,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 6409,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 156,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 14745,
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/20 11:12:04 INFO S3_BUCKET not set, cloud upload disabled
+2026/11/20 11:12:04 INFO local storage initialized dir=./data/uploads baseURL=""
+2026/11/20 11:12:04 INFO CLOUDFRONT_KEY_PAIR_ID not set, signed cookies disabled
+2026/11/20 11:12:04 WARN collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account fix="set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false"
+2026/11/20 11:12:04 WARN device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace
+2026/11/20 11:12:04 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+2026/11/20 11:12:04 INFO channel engine: lease backend configured backend=postgres ttl=3m0s renew_interval=1m0s poll_interval=30s
+2026/11/20 11:12:04 INFO lark integration disabled (MULTICA_LARK_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO slack integration disabled (MULTICA_SLACK_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO dingtalk integration disabled (MULTICA_DINGTALK_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO wecom integration disabled (MULTICA_WECOM_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO telegram integration disabled (MULTICA_TELEGRAM_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO composio integration disabled (COMPOSIO_API_KEY not set)
+2026/11/20 11:12:04 INFO vcs integration disabled (MULTICA_VCS_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO Plugin secrets disabled (MULTICA_PLUGIN_SECRET_KEY not set)
+2026/11/20 11:12:04 WARN plugins: MULTICA_PLUGIN_API_URL and MULTICA_PUBLIC_URL are not set; hook callbacks will carry no callback_url
+2026/11/20 11:12:04 WARN auth rate limiting disabled: REDIS_URL not configured
+=== RUN   TestSecurityRemediationP1Fake
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/20 11:12:04 INFO S3_BUCKET not set, cloud upload disabled
+2026/11/20 11:12:04 INFO local storage initialized dir=./data/uploads baseURL=""
+2026/11/20 11:12:04 INFO CLOUDFRONT_KEY_PAIR_ID not set, signed cookies disabled
+2026/11/20 11:12:04 WARN collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account fix="set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false"
+2026/11/20 11:12:04 WARN device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace
+2026/11/20 11:12:04 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+2026/11/20 11:12:04 INFO channel engine: lease backend configured backend=postgres ttl=3m0s renew_interval=1m0s poll_interval=30s
+2026/11/20 11:12:04 INFO lark integration disabled (MULTICA_LARK_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO slack integration disabled (MULTICA_SLACK_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO dingtalk integration disabled (MULTICA_DINGTALK_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO wecom integration disabled (MULTICA_WECOM_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO telegram integration disabled (MULTICA_TELEGRAM_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO composio integration disabled (COMPOSIO_API_KEY not set)
+2026/11/20 11:12:04 INFO vcs integration disabled (MULTICA_VCS_SECRET_KEY not set)
+2026/11/20 11:12:04 INFO Plugin secrets disabled (MULTICA_PLUGIN_SECRET_KEY not set)
+2026/11/20 11:12:04 WARN plugins: MULTICA_PLUGIN_API_URL and MULTICA_PUBLIC_URL are not set; hook callbacks will carry no callback_url
+2026/11/20 11:12:04 WARN auth rate limiting disabled: REDIS_URL not configured
+2026/11/20 11:12:04 INFO http request method=POST path=/api/squads/from-template status=201 duration=50.313ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000001 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO agent updated request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000002 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 agent_id=110ca0b2-9d6f-445e-8da3-c06c46e9c273 workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:04 INFO http request method=PUT path=/api/agents/110ca0b2-9d6f-445e-8da3-c06c46e9c273 status=200 duration=4.907ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000002 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO agent updated request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000003 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 agent_id=66fe8b0f-4b04-4f2f-a938-2b4202ad7446 workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:04 INFO http request method=PUT path=/api/agents/66fe8b0f-4b04-4f2f-a938-2b4202ad7446 status=200 duration=3.085ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000003 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO agent updated request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000004 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 agent_id=c80d3f4a-0bec-464f-80ec-5968a9bc42b9 workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:04 INFO http request method=PUT path=/api/agents/c80d3f4a-0bec-464f-80ec-5968a9bc42b9 status=200 duration=7.218ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000004 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO agent updated request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000005 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 agent_id=3efce787-43db-4362-b059-077f5e8f9904 workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:04 INFO http request method=PUT path=/api/agents/3efce787-43db-4362-b059-077f5e8f9904 status=200 duration=2.878ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000005 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO agent updated request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000006 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 agent_id=61c02efd-5fc2-46aa-a888-1719daacee89 workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:04 INFO http request method=PUT path=/api/agents/61c02efd-5fc2-46aa-a888-1719daacee89 status=200 duration=2.758ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000006 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO agent updated request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000007 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 agent_id=9e951da0-12cf-428b-b82d-d8c4cb8415bb workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:04 INFO http request method=PUT path=/api/agents/9e951da0-12cf-428b-b82d-d8c4cb8415bb status=200 duration=2.58ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000007 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO agent updated request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000008 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 agent_id=8646bc50-7cb2-4c32-b61d-6041d7aff628 workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:04 INFO http request method=PUT path=/api/agents/8646bc50-7cb2-4c32-b61d-6041d7aff628 status=200 duration=2.33ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000008 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO agent updated request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000009 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 agent_id=fbe03b30-c633-454e-b2c6-e18b4ef82be6 workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:04 INFO http request method=PUT path=/api/agents/fbe03b30-c633-454e-b2c6-e18b4ef82be6 status=200 duration=2.592ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000009 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO http request method=POST path=/api/squads/badceec3-ef9c-4b6f-8b92-3f1a2c9e029e/members status=201 duration=2.663ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000010 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO mention task enqueued task_id=01a1f6f0-9534-7032-b945-9b7166fd9804 issue_id=01a1f6f0-9527-76ed-a2ef-b377baf8c00b agent_id=110ca0b2-9d6f-445e-8da3-c06c46e9c273 is_leader_task=true
+2026/11/20 11:12:04 INFO issue created request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000011 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 issue_id=01a1f6f0-9527-76ed-a2ef-b377baf8c00b title=合成演练：当前生产风险升级 status=todo workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:04 INFO http request method=POST path=/api/issues status=201 duration=38.591ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000011 user_id=badfdc40-87a2-4045-bef3-2129104d34b4
+2026/11/20 11:12:04 INFO task claimed task_id=01a1f6f0-9534-7032-b945-9b7166fd9804 agent_id=110ca0b2-9d6f-445e-8da3-c06c46e9c273
+2026/11/20 11:12:04 INFO task claimed by runtime task_id=01a1f6f0-9534-7032-b945-9b7166fd9804 runtime_id=449c0b39-bb71-45d5-9cc8-ed2a72649a5a agent_id=110ca0b2-9d6f-445e-8da3-c06c46e9c273 prior_session=""
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/runtimes/449c0b39-bb71-45d5-9cc8-ed2a72649a5a/tasks/claim status=200 duration=42.333ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000012 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/runtimes/449c0b39-bb71-45d5-9cc8-ed2a72649a5a/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/skill-bundles/resolve status=200 duration=4.698ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000013 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/runtimes/449c0b39-bb71-45d5-9cc8-ed2a72649a5a/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/skill-bundles/resolve status=200 duration=5.409ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000014 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/runtimes/449c0b39-bb71-45d5-9cc8-ed2a72649a5a/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/skill-bundles/resolve status=200 duration=3.418ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000015 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/runtimes/449c0b39-bb71-45d5-9cc8-ed2a72649a5a/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/skill-bundles/resolve status=200 duration=3.165ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000016 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/runtimes/449c0b39-bb71-45d5-9cc8-ed2a72649a5a/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/skill-bundles/resolve status=200 duration=2.856ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000017 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/runtimes/449c0b39-bb71-45d5-9cc8-ed2a72649a5a/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/skill-bundles/resolve status=200 duration=2.167ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000018 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/runtimes/449c0b39-bb71-45d5-9cc8-ed2a72649a5a/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/skill-bundles/resolve status=200 duration=2.124ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000019 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/runtimes/449c0b39-bb71-45d5-9cc8-ed2a72649a5a/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/skill-bundles/resolve status=200 duration=2.408ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000020 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO task started task_id=01a1f6f0-9534-7032-b945-9b7166fd9804 issue_id=01a1f6f0-9527-76ed-a2ef-b377baf8c00b
+2026/11/20 11:12:04 INFO task started task_id=01a1f6f0-9534-7032-b945-9b7166fd9804 agent_id=110ca0b2-9d6f-445e-8da3-c06c46e9c273
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/start status=200 duration=12.895ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000021 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/daemon/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/progress status=200 duration=1.546ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000022 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:04 INFO http request method=GET path=/api/issues/01a1f6f0-9527-76ed-a2ef-b377baf8c00b status=200 duration=15.611ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000023 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 client_platform=cli client_version=dev client_os=macos
+2026/11/20 11:12:04 INFO comment created request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000024 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 client_platform=cli client_version=dev client_os=macos comment_id=01a1f6f0-970f-79f2-adde-2a1fb47bfcca issue_id=01a1f6f0-9527-76ed-a2ef-b377baf8c00b
+2026/11/20 11:12:04 INFO http request method=POST path=/api/issues/01a1f6f0-9527-76ed-a2ef-b377baf8c00b/comments status=201 duration=46.131ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000024 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 client_platform=cli client_version=dev client_os=macos
+2026/11/20 11:12:04 INFO http request method=POST path=/api/issues/01a1f6f0-9527-76ed-a2ef-b377baf8c00b/squad-evaluated status=201 duration=7.786ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000025 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 client_platform=cli client_version=dev client_os=macos
+2026/11/20 11:12:05 INFO issue updated request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000026 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 client_platform=cli client_version=dev client_os=macos issue_id=01a1f6f0-9527-76ed-a2ef-b377baf8c00b workspace_id=236f30f3-0cf2-4987-a1c6-371c2a8ced83
+2026/11/20 11:12:05 INFO http request method=PUT path=/api/issues/01a1f6f0-9527-76ed-a2ef-b377baf8c00b status=200 duration=36.917ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000026 user_id=badfdc40-87a2-4045-bef3-2129104d34b4 client_platform=cli client_version=dev client_os=macos
+2026/11/20 11:12:05 INFO http request method=POST path=/api/daemon/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/messages status=200 duration=5.801ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000027 client_platform=daemon client_version=0.4.37 client_os=macos
+2026/11/20 11:12:07 INFO task completed task_id=01a1f6f0-9534-7032-b945-9b7166fd9804 issue_id=01a1f6f0-9527-76ed-a2ef-b377baf8c00b
+2026/11/20 11:12:07 INFO task completed task_id=01a1f6f0-9534-7032-b945-9b7166fd9804 agent_id=110ca0b2-9d6f-445e-8da3-c06c46e9c273
+2026/11/20 11:12:07 INFO http request method=POST path=/api/daemon/tasks/01a1f6f0-9534-7032-b945-9b7166fd9804/complete status=200 duration=34.27ms request_id=yangshangweideMac-mini.local/2QFJPnEfsc-000028 client_platform=daemon client_version=0.4.37 client_os=macos
+--- PASS: TestSecurityRemediationP1Fake (3.16s)
+PASS

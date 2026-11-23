@@ -12,15 +12,23 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
-	"sync"
+	"sync/atomic"
 	"time"
+
+	"golang.org/x/sync/singleflight"
 )
 
 type managementProcessInfo struct{ hostID, bootID string }
 
-var managementProcessOnce sync.Once
-var managementProcessValue managementProcessInfo
-var managementProcessError error
+var managementProcessValue atomic.Pointer[managementProcessInfo]
+var managementProcessGroup singleflight.Group
+
+// Endpoint security hooks injected into powershell.exe can append their own
+// lines to stdout, so the identity is read only from the marked line.
+const windowsIdentityMarker = "MULTICA_IDENTITY:"
+
+// apps/desktop/src/main/managed-process.ts runs the same command; both sides must parse the same output.
+const windowsIdentityCommand = `$o=Get-CimInstance Win32_OperatingSystem;$h=(Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Cryptography').MachineGuid;'` + windowsIdentityMarker + `'+(@{host=$h;boot=$o.LastBootUpTime.ToUniversalTime().ToString('o')}|ConvertTo-Json -Compress)`
 
 func processIdentityHash(value string) string {
 	digest := sha256.Sum256([]byte(value))
@@ -35,9 +43,42 @@ func processIdentityCommand(path string, args ...string) (string, error) {
 	}
 	return strings.TrimSpace(string(raw)), nil
 }
+
+// Only a success is cached: one slow PowerShell start must not disable managed
+// locking for the rest of the process. Concurrent callers share one attempt.
 func managementProcessIdentity() (managementProcessInfo, error) {
-	managementProcessOnce.Do(func() { managementProcessValue, managementProcessError = readManagementProcessIdentity() })
-	return managementProcessValue, managementProcessError
+	if value := managementProcessValue.Load(); value != nil {
+		return *value, nil
+	}
+	value, err, _ := managementProcessGroup.Do("identity", func() (any, error) {
+		value, err := readManagementProcessIdentity()
+		if err == nil {
+			managementProcessValue.Store(&value)
+		}
+		return value, err
+	})
+	if err != nil {
+		return managementProcessInfo{}, err
+	}
+	return value.(managementProcessInfo), nil
+}
+
+// parseWindowsProcessIdentity's errors never echo stdout.
+func parseWindowsProcessIdentity(raw string) (managementProcessInfo, error) {
+	var marked []string
+	for _, line := range strings.Split(raw, "\n") {
+		if line = strings.TrimSpace(line); strings.HasPrefix(line, windowsIdentityMarker) {
+			marked = append(marked, strings.TrimPrefix(line, windowsIdentityMarker))
+		}
+	}
+	var value struct {
+		Host string `json:"host"`
+		Boot string `json:"boot"`
+	}
+	if len(marked) != 1 || json.Unmarshal([]byte(marked[0]), &value) != nil || value.Host == "" || value.Boot == "" {
+		return managementProcessInfo{}, errors.New("OS boot identity unavailable")
+	}
+	return managementProcessInfo{processIdentityHash("windows-host:" + strings.ToLower(value.Host)), processIdentityHash("windows-boot:" + value.Boot)}, nil
 }
 func readManagementProcessIdentity() (managementProcessInfo, error) {
 	switch runtime.GOOS {
@@ -74,19 +115,11 @@ func readManagementProcessIdentity() (managementProcessInfo, error) {
 		if root == "" {
 			root = `C:\Windows`
 		}
-		command := `$o=Get-CimInstance Win32_OperatingSystem;$h=(Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Cryptography').MachineGuid;@{host=$h;boot=$o.LastBootUpTime.ToUniversalTime().ToString('o')}|ConvertTo-Json -Compress`
-		raw, err := processIdentityCommand(filepath.Join(root, "System32", "WindowsPowerShell", "v1.0", "powershell.exe"), "-NoProfile", "-NonInteractive", "-Command", command)
+		raw, err := processIdentityCommand(filepath.Join(root, "System32", "WindowsPowerShell", "v1.0", "powershell.exe"), "-NoProfile", "-NonInteractive", "-Command", windowsIdentityCommand)
 		if err != nil {
 			return managementProcessInfo{}, err
 		}
-		var value struct {
-			Host string `json:"host"`
-			Boot string `json:"boot"`
-		}
-		if err = json.Unmarshal([]byte(raw), &value); err != nil || value.Host == "" || value.Boot == "" {
-			return managementProcessInfo{}, errors.New("OS boot identity unavailable")
-		}
-		return managementProcessInfo{processIdentityHash("windows-host:" + strings.ToLower(value.Host)), processIdentityHash("windows-boot:" + value.Boot)}, nil
+		return parseWindowsProcessIdentity(raw)
 	default:
 		return managementProcessInfo{}, errors.New("managed locking is unavailable on this OS")
 	}

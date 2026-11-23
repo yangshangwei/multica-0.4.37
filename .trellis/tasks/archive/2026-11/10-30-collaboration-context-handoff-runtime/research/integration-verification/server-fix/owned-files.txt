@@ -1,0 +1,16 @@
+server/internal/service/collaboration_runtime.go
+server/internal/service/collaboration_runtime_handoff.go
+server/internal/service/collaboration_handoff_snapshot.go
+server/internal/service/collaboration_checkpoints.go
+server/internal/service/collaboration_runtime_handoff_source_test.go
+server/internal/service/collaboration_runtime_handoff_budget_test.go
+server/internal/service/collaboration_checkpoints_test.go
+server/pkg/protocol/collaboration_checkpoint.go
+server/pkg/protocol/collaboration_checkpoint_test.go
+server/pkg/protocol/collaboration_handoff.go
+server/pkg/protocol/collaboration_handoff_test.go
+server/pkg/db/queries/collaboration_handoff.sql
+server/pkg/db/generated/collaboration_handoff.sql.go
+server/pkg/db/generated/collaboration_records.sql.go
+server/internal/handler/collaboration_handoff_budget_test.go
+server/internal/daemon/collaborationrun/host_handoff.go

@@ -1,0 +1,65 @@
+{
+  "started_at": "2026-11-02T09:48:49.075458+00:00",
+  "scope": "Read-only actual task DB/template/headroom preflight for new Webhook500 diagnostic only; no cached/statistics probe",
+  "state": "complete",
+  "steps": [
+    {
+      "name": "owned-cluster",
+      "database": "multica_func7af9_next_sql_diag_1",
+      "sql": "SELECT jsonb_build_object('database',current_database(),'backend_pid',pg_backend_pid(),'server_version',current_setting('server_version'),'read_only',current_setting('default_transaction_read_only'),'max_connections',current_setting('max_connections')::int,'used_connections',(SELECT count(*) FROM pg_stat_activity))",
+      "started_at": "2026-11-02T09:48:49.086801+00:00",
+      "finished_at": "2026-11-02T09:48:49.232762+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "d5062e46aa7bacb448608926cbec15ba65edc4f01c7477076dd51ca896a1e12c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "template-identity",
+      "database": "multica_func7af9_template_20261102",
+      "sql": "SELECT jsonb_build_object('database',current_database(),'read_only',current_setting('default_transaction_read_only'),'other_connections',(SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()))",
+      "started_at": "2026-11-02T09:48:49.233018+00:00",
+      "finished_at": "2026-11-02T09:48:49.301951+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "67595d771266a299cde915ca2c3e4954aff98415b28bd11f2d9dce195d344717",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "template-empty",
+      "database": "multica_func7af9_template_20261102",
+      "sql": "SELECT jsonb_build_object('users',(SELECT count(*) FROM \"user\"),'workspaces',(SELECT count(*) FROM workspace),'issues',(SELECT count(*) FROM issue),'migrations',(SELECT count(*) FROM schema_migrations))",
+      "started_at": "2026-11-02T09:48:49.302165+00:00",
+      "finished_at": "2026-11-02T09:48:49.354873+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "2afc627a01fb37dae66af2c2402a3ef24e22e2810fd98fdb2e488231ff877604",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "database_creations": 0,
+  "tests_executed": 0,
+  "finished_at": "2026-11-02T09:48:49.355078+00:00",
+  "cluster": {
+    "database": "multica_func7af9_next_sql_diag_1",
+    "read_only": "on",
+    "backend_pid": 40902,
+    "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+    "max_connections": 100,
+    "used_connections": 40
+  },
+  "template": "multica_func7af9_template_20261102",
+  "template_identity": {
+    "database": "multica_func7af9_template_20261102",
+    "read_only": "on",
+    "other_connections": 0
+  },
+  "template_rows": {
+    "users": 0,
+    "issues": 0,
+    "migrations": 751,
+    "workspaces": 0
+  },
+  "connection_headroom": 60,
+  "headroom_sufficient": true,
+  "original_p95_rerun": false,
+  "commercial_calls": 0,
+  "remote_dispatches": 0
+}

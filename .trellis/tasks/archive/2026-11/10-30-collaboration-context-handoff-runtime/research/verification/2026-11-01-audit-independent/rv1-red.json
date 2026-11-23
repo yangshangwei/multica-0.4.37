@@ -1,0 +1,24 @@
+{
+  "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/core",
+    "exec",
+    "vitest",
+    "run",
+    "collaboration/run-handoff-schema.test.ts",
+    "-t",
+    "preserves frozen snapshots"
+  ],
+  "started_at": "2026-11-01T15:40:18.673273+00:00",
+  "finished_at": "2026-11-01T15:40:22.274899+00:00",
+  "exit_code": 1,
+  "log_sha256": "d96276734e86c08f1aabcf4ade827222f3a1a353e9f6e53b2ed4fefecd0d2e19",
+  "tested_file_sha256": {
+    "packages/core/collaboration/run-handoff-schema.ts": "da3daa8f4a011d4f5aab873f64e3de2ef1a312182a72b82efc8353397b64adaf",
+    "packages/core/collaboration/run-handoff-schema.test.ts": "b7e165476d8e613cb8edcfb280f404ea72cdc0964e61aae4ef80475c83313a84"
+  },
+  "database_access": false,
+  "real_provider_calls": 0
+}

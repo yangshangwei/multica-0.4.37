@@ -1,0 +1,241 @@
+{
+  "date": "2026-10-21",
+  "status": "planning_review_complete_implementation_approved",
+  "task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "task_status": "planning",
+  "task_creation_and_planning_approved": true,
+  "final_plan_implementation_approval": true,
+  "authorization_source": {
+    "session": "01a159a7-3e26-72a1-b08f-8c1821c8ddfa",
+    "user_turn": 3,
+    "instruction": "创建子任务并规划",
+    "latest_summary": "planning-summary.md"
+  },
+  "product_code_edited": false,
+  "full_parent_acceptance_complete": false,
+  "planning_criteria_passed": [
+    "AC-G01",
+    "AC-G02",
+    "AC-G03",
+    "AC-G04",
+    "AC-G05"
+  ],
+  "independent_review": {
+    "file": "research/planning-final-review-2026-10-21.md",
+    "role": "trellis-research",
+    "status": "passed",
+    "findings": {
+      "F1": "closed",
+      "F2": "closed"
+    },
+    "unresolved_plan_blockers": [],
+    "scope": "F1/F2 contract and source consistency; focused S2-S6 consistency. No product tests or implementation."
+  },
+  "checks": {
+    "trellis_validate": {
+      "command": "python3 .trellis/scripts/task.py validate .trellis/tasks/10-20-collaboration-gap-recovery",
+      "exit_code": 0,
+      "implement_entries": 15,
+      "check_entries": 16
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "scope": "All tracked working-tree differences; task untracked Markdown whitespace also covered by structure check."
+    },
+    "structure": {
+      "command": "python3 /tmp/multica-gap-recovery-20261021-h6phxwo9/verify_plan.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "json_files": 3,
+        "acceptance_criteria": 97,
+        "primary_owners": {
+          "P1": 16,
+          "P2": 23,
+          "P3": 10,
+          "P4": 13,
+          "P5": 25,
+          "P6": 5,
+          "P7": 4,
+          "P8": 1
+        },
+        "markdown_links_checked": 2,
+        "context_limits": {
+          "max_file_bytes": 65536,
+          "max_artifact_bytes": 65536,
+          "max_total_bytes": 262144
+        },
+        "native_context": {
+          "implement": {
+            "rendered_bytes": 213933,
+            "entries": 15
+          },
+          "check": {
+            "rendered_bytes": 228973,
+            "entries": 16
+          }
+        },
+        "baseline_dir": "/tmp/multica-gap-recovery-20261021-h6phxwo9",
+        "non_task_baseline_unchanged": true,
+        "errors": []
+      },
+      "scope": "Exact AC IDs, requirement text, source lines, primary ownership, slice names, JSON/JSONL, actual native context rendering, complete file contents, Markdown links/whitespace, unchanged non-task baseline and index."
+    }
+  },
+  "verification_attempts": [
+    {
+      "check": "planning structure",
+      "result": "failed",
+      "product_failure": false,
+      "reason": "The initial ad hoc link validator incorrectly treated mention://all/all as a local relative path.",
+      "evidence": "/tmp/multica-gap-recovery-20261021-h6phxwo9/planning-structure-check-1.json"
+    },
+    {
+      "check": "planning structure",
+      "result": "passed",
+      "correction": "Recognize URI schemes before filesystem-link checks; retain exact source/owner/context/baseline checks.",
+      "evidence": "/tmp/multica-gap-recovery-20261021-h6phxwo9/planning-structure-check.json"
+    }
+  ],
+  "baseline": {
+    "directory": "/tmp/multica-gap-recovery-20261021-h6phxwo9",
+    "head": "8ecb98883504443a6ec1a5fb4a4c6295a985ae04",
+    "status_entries": 40,
+    "expanded_files": 57,
+    "non_task_files_and_index_unchanged": true,
+    "contains": [
+      "file copies",
+      "SHA-256/mode manifest",
+      "HEAD and branch",
+      "working-tree binary diff",
+      "index binary diff",
+      "combined HEAD binary diff"
+    ]
+  },
+  "fresh_tests": [],
+  "test_counting": "No product tests ran during 2026-10-21 planning closure. The 24 tests in the 2026-10-20 record remain historical; they do not prove failed-prefix recovery or complete acceptance.",
+  "not_run": [
+    "New failed-prefix starvation regressions",
+    "Service database scheduling tests",
+    "Linux namespace/provider execution",
+    "Production Web or native Desktop in this task",
+    "General/real provider smoke",
+    "Packaged Main startup and other OSes",
+    "Full repository lint/typecheck/race/static analysis",
+    "All 97 parent acceptance criteria"
+  ],
+  "remaining_work": [
+    "Implement and independently check S1 through S6; new failed-prefix tests must first demonstrate the defects.",
+    "Real provider smoke and rollout retain their separate authorization gates."
+  ],
+  "artifacts": [
+    "prd.md",
+    "design.md",
+    "implement.md",
+    "implement.jsonl",
+    "check.jsonl",
+    "acceptance-matrix.json",
+    "research/runtime-recovery.md",
+    "research/product-gaps.md",
+    "research/runtime-admin-acceptance.md",
+    "planning-summary.md",
+    "research/planning-review.md",
+    "research/planning-final-review-2026-10-21.md"
+  ],
+  "previous_planning_verification": {
+    "date": "2026-10-20",
+    "status": "planning_review_pending",
+    "task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+    "task_status": "planning",
+    "task_creation_and_planning_approved": true,
+    "final_plan_implementation_approval": false,
+    "product_code_edited": false,
+    "full_parent_acceptance_complete": false,
+    "checks": {
+      "trellis_validate": {
+        "command": "python3 .trellis/scripts/task.py validate .trellis/tasks/10-20-collaboration-gap-recovery",
+        "exit_code": 0,
+        "implement_entries": 15,
+        "check_entries": 16
+      },
+      "diff_check": {
+        "command": "git diff --check -- .trellis/tasks/10-20-collaboration-gap-recovery .trellis/tasks/10-10-cross-workspace-collaboration/task.json",
+        "exit_code": 0
+      },
+      "structure": {
+        "artifact_sizes": {
+          "prd.md": 9240,
+          "design.md": 10953,
+          "implement.md": 10096
+        },
+        "acceptance_unique_ids": 97,
+        "all_primary_owners_valid": true,
+        "context_budget_bytes": 262144,
+        "implement_context_bytes": 210672,
+        "check_context_bytes": 225651,
+        "status_preserved": "planning"
+      }
+    },
+    "fresh_tests": [
+      {
+        "command": "GOTOOLCHAIN=go1.26.6 bash ../scripts/go-test-with-agent-cli-guard.sh go test ./internal/daemon/collaborationrun -run '^(TestRunner.*|TestNonce.*|TestSeal.*|TestLedger.*|TestUncertain.*|TestRetained.*|TestUnrequested.*|TestClient.*|TestUnsupportedPlatformNeverAdvertisesContainment)$' -count=1 -v",
+        "workdir": "server",
+        "toolchain": "go1.26.6",
+        "host": "darwin/arm64",
+        "exit_code": 0,
+        "top_level_passed": 20,
+        "failed": 0,
+        "skipped": 0,
+        "package_seconds": 1.49,
+        "scope": "Existing client/nonce/ledger/restart/permit/proof safety tests; no provider launch and no failed-prefix regression."
+      },
+      {
+        "command": "GOTOOLCHAIN=go1.26.6 bash ../scripts/go-test-with-agent-cli-guard.sh go test ./internal/daemon -run '^Test(CollaborationRunnerConfigRequiresExplicitLocalPaths|CollaborationRestartReservesUnknownMachineCapacity|ManagedCollaborationProfilesShareOneLedgerDirectory|CollaborationManagedPollerRequiresRegisteredRuntime)$' -count=1 -v",
+        "workdir": "server",
+        "toolchain": "go1.26.6",
+        "host": "darwin/arm64",
+        "exit_code": 0,
+        "top_level_passed": 4,
+        "failed": 0,
+        "skipped": 0,
+        "package_seconds": 0.736,
+        "scope": "Existing explicit config, unknown restart capacity, shared managed ledger and registered runtime tests."
+      }
+    ],
+    "test_counting": "24 unique top-level tests from main-session runs; research worker subset reruns are not added again.",
+    "not_run": [
+      "New failed-prefix starvation regressions",
+      "Service database scheduling tests",
+      "Linux namespace/provider execution",
+      "Production Web or native Desktop in this task",
+      "General/real provider smoke",
+      "Packaged Main startup and other OSes",
+      "Full repository lint/typecheck/race/static analysis",
+      "All 97 parent acceptance criteria"
+    ],
+    "risks": [
+      "Failed-prefix fairness conditions identified by source inspection; not yet fixed or reproduced by a new test.",
+      "General provider/OS implementation remains a later capability-specific slice.",
+      "Private resource supply and administration need new protected APIs.",
+      "Pre-existing 38 dirty paths remain separate."
+    ],
+    "artifacts": [
+      "prd.md",
+      "design.md",
+      "implement.md",
+      "implement.jsonl",
+      "check.jsonl",
+      "acceptance-matrix.json",
+      "research/runtime-recovery.md",
+      "research/product-gaps.md",
+      "research/runtime-admin-acceptance.md"
+    ]
+  },
+  "implementation_approval": {
+    "date": "2026-10-21",
+    "instruction": "按计划开始实施",
+    "scope": "Start with S1 and progress through later slices according to the reviewed dependency order.",
+    "summary": "planning-summary.md"
+  }
+}

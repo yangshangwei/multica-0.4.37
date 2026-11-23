@@ -1,0 +1,13 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/apps/desktop/scripts/windows-collaboration-workflow.node-test.mjs
+  13:32  error  Spaces are hard to count. Use {6}  no-regex-spaces
+  20:26  error  Spaces are hard to count. Use {8}  no-regex-spaces
+  21:26  error  Spaces are hard to count. Use {8}  no-regex-spaces
+
+✖ 3 problems (3 errors, 0 warnings)
+  3 errors and 0 warnings potentially fixable with the `--fix` option.
+
+undefined
+/Volumes/artisan/code/2026/mc-collaboration-delivery-20261101/apps/desktop:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: eslint scripts/windows-collaboration.mjs scripts/windows-collaboration-config.mjs scripts/windows-collaboration-config.node-test.mjs scripts/windows-collaboration-workflow.node-test.mjs

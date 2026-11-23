@@ -1,0 +1,344 @@
+{
+  "status": "client_increment_3a_unit_complete",
+  "completed_at": "2026-11-14T03:25:59.165168+00:00",
+  "head": "0ba7405099ba4f8689878e5d957e9b0b1dc28eca",
+  "contract_at_start": "ced0cd66c729093c96259f42adee8a788868dde12851679a990266bd8dba1b4c",
+  "contract_final_sha256": "73a3498c34bf205e0cd78d7226b0ca32e35ed7b438b54213a750141115032c82",
+  "contract_clarifications": "Section 13 items 8–10, server-owned 2a freeze; no client-authored wire changes",
+  "files": [
+    {
+      "path": "packages/core/api/client.ts",
+      "before_sha256": "7c6ee01bc70041091a73ffe8da0295d3f065115108d0af72eab4b746feeb69c9",
+      "sha256": "e46abcb3fddae8aecffbca1160c2e796831505b8e855a67df9163ac80eba1ef2"
+    },
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "before_sha256": "5cbfbefe617144265851160f2917777ac0fa35c6990ad4622df011b36f6b3768",
+      "sha256": "fed5f2e83af713acfaba751e58273e571ae506172d4b0024f0cf24bea3b84728"
+    },
+    {
+      "path": "packages/core/collaboration/stage-actions.ts",
+      "before_sha256": "8c7830e646193938ee0db2f6987d4e10a74d07b2d85c100b6efce77a8b608e07",
+      "sha256": "51b3ce06114f8369e175693008aa0b7deea4a55ab8a253f74f3e2fa39f941f6e"
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-actions.test.ts",
+      "before_sha256": null,
+      "sha256": "4e32f613e4bd47317d865de02edb02e03dfc24c60cfa2a3604286bdf06d1e97f"
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-api.test.ts",
+      "before_sha256": null,
+      "sha256": "ce5b1c0b9f0c583db82bcf089cd53c8622f542c2f10ed88c54424eefb60cb3b9"
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.test.ts",
+      "before_sha256": null,
+      "sha256": "9e826b4a8d4f413ad96893189b6d9ef8927815044259a6e35deb0edc1d31fe36"
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.ts",
+      "before_sha256": null,
+      "sha256": "3bda07de8521308040e98dd1b8ba6674b3a71f3b4680a4055d10b88e67c79b9e"
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-schema.test.ts",
+      "before_sha256": null,
+      "sha256": "32413efacf677bbcff613c74726c5755a6db5ebc3a0fa9c2a169d2ea5408a4c7"
+    },
+    {
+      "path": "packages/core/collaboration/stage-intent.ts",
+      "before_sha256": "56b1a28e2f4722c76848a9fb6673932db53cca4d3179576eedcabb81e1d15139",
+      "sha256": "e65d214a5b207f89b6f9d1ee64513b43650ebdbf54b5a9cef70a397cc0b1b6e7"
+    },
+    {
+      "path": "packages/core/collaboration/stage-presentation.ts",
+      "before_sha256": "c8155318a4f0bf3ad1fb1580e8bb25a5d0be32f3bb1f365c7388cb2d9384ff98",
+      "sha256": "753421496d1f4b6a13946aca7c2618de1ff439796e72d616975349dd0bae3e8b"
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.test.ts",
+      "before_sha256": "bbdf3007d30d7e59d5f4fefc8e46f15328a0343d15a5a73c803a23ed6bbb54bf",
+      "sha256": "817db325e3c3deaaf86ac6b4ba876cf2dd31bf736af8c10c180d21c48b27af7e"
+    },
+    {
+      "path": "packages/core/collaboration/stage-queries.ts",
+      "before_sha256": "7b33cf9d96311f323986de1f48b15a446b91558c81549395de55470caf3b5e0d",
+      "sha256": "811fdd681d5e9774793d95cd835ae32e6c97e9701f223ae3097d31bf29f982a1"
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.test.ts",
+      "before_sha256": "0e1e46d2064b3effbe476c7e0e7e3f689a82b9d7ecdd1b2cff91186f2a1abbf8",
+      "sha256": "d7fd073b6854352faaad98805338382033ed4f0b0b4ae61c65e34551fdf954f9"
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.ts",
+      "before_sha256": "79c499e65f9eb7a2dee5907845dc9a70a854de7db745f0c4ec0221bd3a28586f",
+      "sha256": "84eb285caa3f7dee2af3757c63ddaf5bef37cb493c9e2554e055a70c179ce70c"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-fixtures.ts",
+      "before_sha256": "808ffcd4aabb489ea12059d2c983a7b2ee2f84f25ea42ef79d84ebad3ce5fb47",
+      "sha256": "d3740570a0cb38f95c4d7d9920b29090acee636ab1e9f7ad5a84f5261021f243"
+    },
+    {
+      "path": "packages/views/collaboration/stage-blockers.tsx",
+      "before_sha256": null,
+      "sha256": "cd4a22d41ec0fc5ebbf42cc9964cb5bddd2c49b025ae1c3f4de2bbfec4dee5a8"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-forms.tsx",
+      "before_sha256": null,
+      "sha256": "b6c5763cc23523cc79f005992bb835a45d35edc7a9c80baf1cd27ab76bda5d5f"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.test.tsx",
+      "before_sha256": null,
+      "sha256": "d84255260efb8d2e10fae4df7c946774001da253e61b5427488df5c7c2f1901e"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.tsx",
+      "before_sha256": null,
+      "sha256": "4bebc2eac21225d8c207bbe11aadbd29393711b3272a30d1d92aa49de1a2c5b4"
+    },
+    {
+      "path": "packages/views/collaboration/stage-forms.tsx",
+      "before_sha256": "b02e6a9bcefcbbe8c160c7c7a5555afbf07aab08ac6763b4287455cd5fafc610",
+      "sha256": "de1a2a07558684e729d788189399283e425e86182173a300a26ac36718354721"
+    },
+    {
+      "path": "packages/views/collaboration/stage-labels.ts",
+      "before_sha256": "a38161de3e04fe8f370310a41496e0a0a2ac95c41e09744b3ac950cf3eb0a4f3",
+      "sha256": "616bedeb7dea0f02121bbfd270d2c8b3b3ed1bbf81771d4db579d15f505b9dcb"
+    },
+    {
+      "path": "packages/views/collaboration/stage-panel.tsx",
+      "before_sha256": "7a4b7b5ab4f1c47ba91000389e01015818be098423b6ef05d42f4df6112a8ea6",
+      "sha256": "a9cfc878f4a3b88deb04ddfcaab83bbfdc225d54a90fe4a0f6229defd93bf11c"
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "before_sha256": "32d4a8b9897ee9e23cc0267d305238725be0e0be5ce5431dc7a58253f15a0f7f",
+      "sha256": "24bf2a74390f7d97c8d95fca765f39637dfb21861d123d0ab3bd06a36120650d"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "before_sha256": "5cbfc6c8c3f5bd398204f653578fb70dd48d0a7dda467fff4d100609608695b8",
+      "sha256": "5ddc720f8c6875e8f462f6284de3d4c2ddf3d05b880dbf4ffa399f780fa7e4f9"
+    }
+  ],
+  "evidence": [
+    {
+      "name": "schema-red",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-code-schema.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-schema-red.log",
+      "exit_code": 1,
+      "sha256": "d814f8969ebd2cfcad5c59fdf597664360ffb89abf27a0f13ce0afba781e1d32",
+      "test_summary": "19 failed (19)"
+    },
+    {
+      "name": "schema-green1",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-code-schema.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-schema-green1.log",
+      "exit_code": 0,
+      "sha256": "1971f238187534a77a97538e3e35c99292438524c87d9fd0dfc71492084aa72c",
+      "test_summary": "19 passed (19)"
+    },
+    {
+      "name": "presentation-red",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-code-presentation.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-presentation-red.log",
+      "exit_code": 1,
+      "sha256": "dae5fc346d92e61c7fc65770e7327645c43cf6a99fb4372e79ed9fbd8840d859",
+      "test_summary": "no tests"
+    },
+    {
+      "name": "presentation-green1",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-code-presentation.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-presentation-green1.log",
+      "exit_code": 0,
+      "sha256": "c57f072ecd8fb2903c41f697145f6976bd96ce2940f7076a4ad7027e13b03eed",
+      "test_summary": "3 passed (3)"
+    },
+    {
+      "name": "core-types1",
+      "command": "pnpm --filter @multica/core exec tsc --noEmit",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-types1.log",
+      "exit_code": 1,
+      "sha256": "d7f3c1c542235df99748ccf37bbf098c8fe8b7dbc9e1a061bb6fd29a084206d1"
+    },
+    {
+      "name": "actions-red",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-code-actions.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-actions-red.log",
+      "exit_code": 1,
+      "sha256": "1246edae8b128e0b7552466b0aa4d28c628e71d33f92408254dde18e8b97ef2a",
+      "test_summary": "2 failed | 1 passed (3)"
+    },
+    {
+      "name": "freeze2-red",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-code-schema.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-freeze2-red.log",
+      "exit_code": 1,
+      "sha256": "5a337c5383e8271ee98ac782d0224ba88e7c53d36eb3e23287f9224e8cc20729",
+      "test_summary": "3 failed | 18 passed (21)"
+    },
+    {
+      "name": "core-code-green1",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-code-schema.test.ts collaboration/stage-code-actions.test.ts collaboration/stage-code-api.test.ts collaboration/stage-code-presentation.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-code-green1.log",
+      "exit_code": 0,
+      "sha256": "4eff5c2c043bf7f3c2622b033c4b097a44974248c1badf21269928ff3f0b4580",
+      "test_summary": "34 passed (34)"
+    },
+    {
+      "name": "views-red",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-code-panel.test.tsx",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-red.log",
+      "exit_code": 1,
+      "sha256": "85a3aa024052ae6cf5993322360f08803431be8ecc488a5f8144ed3785e99758",
+      "test_summary": "4 failed (4)"
+    },
+    {
+      "name": "types2",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-types2.log",
+      "exit_code": 0,
+      "sha256": "422f4da545c57c88cfab32b379a91c86e9e122ac02fee60b5a9e1eb6986c2a6d"
+    },
+    {
+      "name": "views-green1",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-code-panel.test.tsx collaboration/stage-panel.test.tsx",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-green1.log",
+      "exit_code": 1,
+      "sha256": "5ecf4b72e06fee1151c441242f440ed95ab5cb9fa65e4bfd13878373804c1dcf",
+      "test_summary": "1 failed | 22 passed (23)"
+    },
+    {
+      "name": "authority-red",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-code-presentation.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-authority-red.log",
+      "exit_code": 1,
+      "sha256": "501cb6e88ece3fbbef3092f622aebb3312ccde242f68764f568e6a2aca0fa5a8",
+      "test_summary": "1 failed | 6 passed (7)"
+    },
+    {
+      "name": "views-green2",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-code-panel.test.tsx collaboration/stage-panel.test.tsx",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-green2.log",
+      "exit_code": 1,
+      "sha256": "0cf070f07dd82c1f1192df645bde8c78078aed62ac82b24473ef7d1bdc0cf8f7",
+      "test_summary": "1 failed | 26 passed (27)"
+    },
+    {
+      "name": "core-all1",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-schema.test.ts collaboration/stage-presentation.test.ts collaboration/stage-actions.test.ts collaboration/stage-intent.test.ts collaboration/stage-api.test.ts collaboration/stage-queries.test.ts collaboration/stage-code-schema.test.ts collaboration/stage-code-presentation.test.ts collaboration/stage-code-actions.test.ts collaboration/stage-code-api.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-all1.log",
+      "exit_code": 0,
+      "sha256": "2b645ceae7af29cb90c2be7ecef31553956b34dc8cc08813eca12abc1e6e2b54",
+      "test_summary": "270 passed (270)"
+    },
+    {
+      "name": "revise-red",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-code-actions.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-revise-red.log",
+      "exit_code": 1,
+      "sha256": "c4f1387bcea107eaf4494bc9df64cb1284249796e5cdbbc011b25c9735700cdf",
+      "test_summary": "1 failed | 3 passed (4)"
+    },
+    {
+      "name": "core-lint1",
+      "command": "(cwd packages/core) pnpm exec eslint collaboration/stage-*.ts api/client.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-lint1.log",
+      "exit_code": 0,
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5"
+    },
+    {
+      "name": "views-lint1",
+      "command": "(cwd packages/views) pnpm exec eslint collaboration/stage-*.tsx collaboration/stage-labels.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-lint1.log",
+      "exit_code": 0,
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5"
+    },
+    {
+      "name": "types3",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-types3.log",
+      "exit_code": 0,
+      "sha256": "422f4da545c57c88cfab32b379a91c86e9e122ac02fee60b5a9e1eb6986c2a6d"
+    },
+    {
+      "name": "views-green3",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-code-panel.test.tsx collaboration/stage-panel.test.tsx collaboration/collaboration-detail.test.tsx locales",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-green3.log",
+      "exit_code": 0,
+      "sha256": "6f623d0d672250ce1aae09cfa7dcc88b44d90c6b6293ccb5cb03f37e09834899",
+      "test_summary": "113 passed (113)"
+    },
+    {
+      "name": "core-final",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-schema.test.ts collaboration/stage-presentation.test.ts collaboration/stage-actions.test.ts collaboration/stage-intent.test.ts collaboration/stage-api.test.ts collaboration/stage-queries.test.ts collaboration/stage-code-schema.test.ts collaboration/stage-code-presentation.test.ts collaboration/stage-code-actions.test.ts collaboration/stage-code-api.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-final.log",
+      "exit_code": 0,
+      "sha256": "d8f6ac847a545c7492023fa42d0b90d944f66cedc217d40e98874c3d7c1c1da1",
+      "test_summary": "273 passed (273)"
+    },
+    {
+      "name": "views-final",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-code-panel.test.tsx collaboration/stage-panel.test.tsx collaboration/collaboration-detail.test.tsx locales",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-final.log",
+      "exit_code": 0,
+      "sha256": "23ba72e1723a94a8a4f8ad00de2d9fc374903ba643197f056d260bf74b0e683f",
+      "test_summary": "113 passed (113)"
+    },
+    {
+      "name": "types-final",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-types-final.log",
+      "exit_code": 0,
+      "sha256": "422f4da545c57c88cfab32b379a91c86e9e122ac02fee60b5a9e1eb6986c2a6d"
+    },
+    {
+      "name": "core-lint-final",
+      "command": "(cwd packages/core) pnpm exec eslint collaboration/stage-*.ts collaboration/index.ts api/client.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-core-lint-final.log",
+      "exit_code": 0,
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5"
+    },
+    {
+      "name": "views-lint-final",
+      "command": "(cwd packages/views) pnpm exec eslint collaboration/stage-*.tsx collaboration/stage-labels.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-views-lint-final.log",
+      "exit_code": 0,
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5"
+    }
+  ],
+  "baseline_manifest": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc3a-before.json",
+  "verification": {
+    "core": {
+      "files": 10,
+      "passed": 273,
+      "failed": 0,
+      "skipped": 0
+    },
+    "views": {
+      "files": 5,
+      "passed": 113,
+      "failed": 0,
+      "skipped": 0
+    },
+    "typecheck": [
+      "core",
+      "views"
+    ],
+    "eslint_warnings": 0
+  },
+  "remaining": [
+    "T4 detail/case/log/pagination DTO pending server2b; only R4 summaries implemented",
+    "Generic collaboration submit/lifecycle/R38 stage_blocker consumers and M1 completion preview/authorization consumption assigned to client3b",
+    "Activity safe projection and notification kind rendering assigned to client3b",
+    "Actual API/DB, production Web/Electron and A01–A12 joint verification not run"
+  ],
+  "git_writes": false,
+  "new_dependencies": false
+}

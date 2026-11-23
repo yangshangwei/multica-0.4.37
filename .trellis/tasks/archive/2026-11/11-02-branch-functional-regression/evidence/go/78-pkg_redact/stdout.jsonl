@@ -1,0 +1,260 @@
+{"Time":"2026-11-02T09:01:48.189478+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/pkg/redact"}
+{"Time":"2026-11-02T09:01:48.643802+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSAccessKey"}
+{"Time":"2026-11-02T09:01:48.643912+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSAccessKey","Output":"=== RUN   TestRedactAWSAccessKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.643974+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSAccessKey","Output":"=== PAUSE TestRedactAWSAccessKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.643984+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSAccessKey"}
+{"Time":"2026-11-02T09:01:48.643992+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSSecretKey"}
+{"Time":"2026-11-02T09:01:48.643998+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSSecretKey","Output":"=== RUN   TestRedactAWSSecretKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644004+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSSecretKey","Output":"=== PAUSE TestRedactAWSSecretKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.64401+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSSecretKey"}
+{"Time":"2026-11-02T09:01:48.644016+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPrivateKey"}
+{"Time":"2026-11-02T09:01:48.644022+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPrivateKey","Output":"=== RUN   TestRedactPrivateKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644029+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPrivateKey","Output":"=== PAUSE TestRedactPrivateKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644034+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPrivateKey"}
+{"Time":"2026-11-02T09:01:48.644039+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubToken"}
+{"Time":"2026-11-02T09:01:48.644044+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubToken","Output":"=== RUN   TestRedactGitHubToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644057+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubToken","Output":"=== PAUSE TestRedactGitHubToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644063+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubToken"}
+{"Time":"2026-11-02T09:01:48.644069+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactCollaborationCapabilities"}
+{"Time":"2026-11-02T09:01:48.644078+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactCollaborationCapabilities","Output":"=== RUN   TestRedactCollaborationCapabilities\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644085+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactCollaborationCapabilities","Output":"=== PAUSE TestRedactCollaborationCapabilities\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644091+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactCollaborationCapabilities"}
+{"Time":"2026-11-02T09:01:48.644097+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubFineGrainedToken"}
+{"Time":"2026-11-02T09:01:48.644106+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubFineGrainedToken","Output":"=== RUN   TestRedactGitHubFineGrainedToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.64415+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubFineGrainedToken","Output":"=== PAUSE TestRedactGitHubFineGrainedToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644157+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubFineGrainedToken"}
+{"Time":"2026-11-02T09:01:48.644162+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKeyEndingWithDash"}
+{"Time":"2026-11-02T09:01:48.644167+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKeyEndingWithDash","Output":"=== RUN   TestRedactGoogleAPIKeyEndingWithDash\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644178+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKeyEndingWithDash","Output":"=== PAUSE TestRedactGoogleAPIKeyEndingWithDash\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644182+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKeyEndingWithDash"}
+{"Time":"2026-11-02T09:01:48.644187+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactOpenAIKey"}
+{"Time":"2026-11-02T09:01:48.644191+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactOpenAIKey","Output":"=== RUN   TestRedactOpenAIKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644202+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactOpenAIKey","Output":"=== PAUSE TestRedactOpenAIKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644206+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactOpenAIKey"}
+{"Time":"2026-11-02T09:01:48.64421+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackToken"}
+{"Time":"2026-11-02T09:01:48.644214+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackToken","Output":"=== RUN   TestRedactSlackToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.64422+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackToken","Output":"=== PAUSE TestRedactSlackToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644224+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackToken"}
+{"Time":"2026-11-02T09:01:48.644229+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackAppAndConfigTokens"}
+{"Time":"2026-11-02T09:01:48.644233+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackAppAndConfigTokens","Output":"=== RUN   TestRedactSlackAppAndConfigTokens\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644253+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackAppAndConfigTokens","Output":"=== PAUSE TestRedactSlackAppAndConfigTokens\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.64426+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackAppAndConfigTokens"}
+{"Time":"2026-11-02T09:01:48.644269+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKey"}
+{"Time":"2026-11-02T09:01:48.644274+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKey","Output":"=== RUN   TestRedactGoogleAPIKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644291+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKey","Output":"=== PAUSE TestRedactGoogleAPIKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644304+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKey"}
+{"Time":"2026-11-02T09:01:48.644309+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactStripeLiveKey"}
+{"Time":"2026-11-02T09:01:48.644314+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactStripeLiveKey","Output":"=== RUN   TestRedactStripeLiveKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644332+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactStripeLiveKey","Output":"=== PAUSE TestRedactStripeLiveKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644338+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactStripeLiveKey"}
+{"Time":"2026-11-02T09:01:48.644344+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerToken"}
+{"Time":"2026-11-02T09:01:48.644348+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerToken","Output":"=== RUN   TestRedactBearerToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644369+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerToken","Output":"=== PAUSE TestRedactBearerToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644375+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerToken"}
+{"Time":"2026-11-02T09:01:48.644395+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerMCPToken"}
+{"Time":"2026-11-02T09:01:48.6444+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerMCPToken","Output":"=== RUN   TestRedactBearerMCPToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644425+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerMCPToken","Output":"=== PAUSE TestRedactBearerMCPToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644452+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerMCPToken"}
+{"Time":"2026-11-02T09:01:48.644464+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials"}
+{"Time":"2026-11-02T09:01:48.64447+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials","Output":"=== RUN   TestRedactGenericCredentials\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644477+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials","Output":"=== PAUSE TestRedactGenericCredentials\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644482+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials"}
+{"Time":"2026-11-02T09:01:48.644489+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestNoFalsePositivesOnNormalText"}
+{"Time":"2026-11-02T09:01:48.644494+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestNoFalsePositivesOnNormalText","Output":"=== RUN   TestNoFalsePositivesOnNormalText\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644501+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestNoFalsePositivesOnNormalText","Output":"=== PAUSE TestNoFalsePositivesOnNormalText\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644506+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestNoFalsePositivesOnNormalText"}
+{"Time":"2026-11-02T09:01:48.644522+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitLabToken"}
+{"Time":"2026-11-02T09:01:48.644526+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitLabToken","Output":"=== RUN   TestRedactGitLabToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644533+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitLabToken","Output":"=== PAUSE TestRedactGitLabToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644537+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitLabToken"}
+{"Time":"2026-11-02T09:01:48.644578+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactJWT"}
+{"Time":"2026-11-02T09:01:48.644593+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactJWT","Output":"=== RUN   TestRedactJWT\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.64461+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactJWT","Output":"=== PAUSE TestRedactJWT\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644617+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactJWT"}
+{"Time":"2026-11-02T09:01:48.644628+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactConnectionString"}
+{"Time":"2026-11-02T09:01:48.644634+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactConnectionString","Output":"=== RUN   TestRedactConnectionString\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644641+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactConnectionString","Output":"=== PAUSE TestRedactConnectionString\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644646+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactConnectionString"}
+{"Time":"2026-11-02T09:01:48.644651+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar"}
+{"Time":"2026-11-02T09:01:48.644655+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar","Output":"=== RUN   TestRedactPasswordEnvVar\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644665+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar","Output":"=== PAUSE TestRedactPasswordEnvVar\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.64467+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar"}
+{"Time":"2026-11-02T09:01:48.64469+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMap"}
+{"Time":"2026-11-02T09:01:48.644699+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMap","Output":"=== RUN   TestInputMap\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644707+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMap","Output":"=== PAUSE TestInputMap\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644712+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMap"}
+{"Time":"2026-11-02T09:01:48.644721+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapNil"}
+{"Time":"2026-11-02T09:01:48.644725+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapNil","Output":"=== RUN   TestInputMapNil\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.64474+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapNil","Output":"=== PAUSE TestInputMapNil\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644745+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapNil"}
+{"Time":"2026-11-02T09:01:48.644766+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsNestedSliceOfMaps"}
+{"Time":"2026-11-02T09:01:48.644772+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsNestedSliceOfMaps","Output":"=== RUN   TestInputMapRedactsNestedSliceOfMaps\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644781+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsNestedSliceOfMaps","Output":"=== PAUSE TestInputMapRedactsNestedSliceOfMaps\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644785+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsNestedSliceOfMaps"}
+{"Time":"2026-11-02T09:01:48.644804+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsDeeplyNestedMaps"}
+{"Time":"2026-11-02T09:01:48.644809+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsDeeplyNestedMaps","Output":"=== RUN   TestInputMapRedactsDeeplyNestedMaps\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644832+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsDeeplyNestedMaps","Output":"=== PAUSE TestInputMapRedactsDeeplyNestedMaps\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644839+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsDeeplyNestedMaps"}
+{"Time":"2026-11-02T09:01:48.644845+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestTextLeavesHomePathIntact"}
+{"Time":"2026-11-02T09:01:48.644849+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestTextLeavesHomePathIntact","Output":"=== RUN   TestTextLeavesHomePathIntact\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644863+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestTextLeavesHomePathIntact","Output":"=== PAUSE TestTextLeavesHomePathIntact\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644869+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestTextLeavesHomePathIntact"}
+{"Time":"2026-11-02T09:01:48.644883+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsStringSliceAndStringMap"}
+{"Time":"2026-11-02T09:01:48.644889+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsStringSliceAndStringMap","Output":"=== RUN   TestInputMapRedactsStringSliceAndStringMap\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644902+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsStringSliceAndStringMap","Output":"=== PAUSE TestInputMapRedactsStringSliceAndStringMap\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644906+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsStringSliceAndStringMap"}
+{"Time":"2026-11-02T09:01:48.644924+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapDoesNotMutateInput"}
+{"Time":"2026-11-02T09:01:48.644932+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapDoesNotMutateInput","Output":"=== RUN   TestInputMapDoesNotMutateInput\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644939+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapDoesNotMutateInput","Output":"=== PAUSE TestInputMapDoesNotMutateInput\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644949+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapDoesNotMutateInput"}
+{"Time":"2026-11-02T09:01:48.644963+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapBoundsRecursionDepth"}
+{"Time":"2026-11-02T09:01:48.644968+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapBoundsRecursionDepth","Output":"=== RUN   TestInputMapBoundsRecursionDepth\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644992+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapBoundsRecursionDepth","Output":"=== PAUSE TestInputMapBoundsRecursionDepth\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.644997+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapBoundsRecursionDepth"}
+{"Time":"2026-11-02T09:01:48.645003+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactMultipleSecrets"}
+{"Time":"2026-11-02T09:01:48.645009+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactMultipleSecrets","Output":"=== RUN   TestRedactMultipleSecrets\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.64503+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactMultipleSecrets","Output":"=== PAUSE TestRedactMultipleSecrets\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.645035+08:00","Action":"pause","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactMultipleSecrets"}
+{"Time":"2026-11-02T09:01:48.645068+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPrivateKey"}
+{"Time":"2026-11-02T09:01:48.645077+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPrivateKey","Output":"=== CONT  TestRedactPrivateKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.645335+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestNoFalsePositivesOnNormalText"}
+{"Time":"2026-11-02T09:01:48.645342+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestNoFalsePositivesOnNormalText","Output":"=== CONT  TestNoFalsePositivesOnNormalText\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.646336+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPrivateKey","Output":"--- PASS: TestRedactPrivateKey (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.646361+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPrivateKey","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.646373+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsNestedSliceOfMaps"}
+{"Time":"2026-11-02T09:01:48.646379+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsNestedSliceOfMaps","Output":"=== CONT  TestInputMapRedactsNestedSliceOfMaps\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.647619+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapBoundsRecursionDepth"}
+{"Time":"2026-11-02T09:01:48.647636+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapBoundsRecursionDepth","Output":"=== CONT  TestInputMapBoundsRecursionDepth\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.647656+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsNestedSliceOfMaps","Output":"--- PASS: TestInputMapRedactsNestedSliceOfMaps (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.649422+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsNestedSliceOfMaps","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.649467+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactMultipleSecrets"}
+{"Time":"2026-11-02T09:01:48.649476+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactMultipleSecrets","Output":"=== CONT  TestRedactMultipleSecrets\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.64949+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestNoFalsePositivesOnNormalText","Output":"--- PASS: TestNoFalsePositivesOnNormalText (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.650673+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestNoFalsePositivesOnNormalText","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.650691+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapBoundsRecursionDepth","Output":"--- PASS: TestInputMapBoundsRecursionDepth (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.650702+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapBoundsRecursionDepth","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.650707+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsStringSliceAndStringMap"}
+{"Time":"2026-11-02T09:01:48.650712+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsStringSliceAndStringMap","Output":"=== CONT  TestInputMapRedactsStringSliceAndStringMap\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.650818+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapDoesNotMutateInput"}
+{"Time":"2026-11-02T09:01:48.650825+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapDoesNotMutateInput","Output":"=== CONT  TestInputMapDoesNotMutateInput\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.650883+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactMultipleSecrets","Output":"--- PASS: TestRedactMultipleSecrets (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.651191+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactMultipleSecrets","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.6512+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapDoesNotMutateInput","Output":"--- PASS: TestInputMapDoesNotMutateInput (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.651206+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapDoesNotMutateInput","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.65121+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestTextLeavesHomePathIntact"}
+{"Time":"2026-11-02T09:01:48.651221+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestTextLeavesHomePathIntact","Output":"=== CONT  TestTextLeavesHomePathIntact\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.651504+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsStringSliceAndStringMap","Output":"--- PASS: TestInputMapRedactsStringSliceAndStringMap (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.651523+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsStringSliceAndStringMap","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.651527+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsDeeplyNestedMaps"}
+{"Time":"2026-11-02T09:01:48.651542+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsDeeplyNestedMaps","Output":"=== CONT  TestInputMapRedactsDeeplyNestedMaps\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.651941+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsDeeplyNestedMaps","Output":"--- PASS: TestInputMapRedactsDeeplyNestedMaps (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.651951+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapRedactsDeeplyNestedMaps","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.65196+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactConnectionString"}
+{"Time":"2026-11-02T09:01:48.651965+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactConnectionString","Output":"=== CONT  TestRedactConnectionString\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.652973+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactConnectionString","Output":"--- PASS: TestRedactConnectionString (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.652981+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactConnectionString","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.652986+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapNil"}
+{"Time":"2026-11-02T09:01:48.65299+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapNil","Output":"=== CONT  TestInputMapNil\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.653025+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar"}
+{"Time":"2026-11-02T09:01:48.653039+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar","Output":"=== CONT  TestRedactPasswordEnvVar\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.653065+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapNil","Output":"--- PASS: TestInputMapNil (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.653081+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMapNil","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.653089+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/PASSWORD"}
+{"Time":"2026-11-02T09:01:48.653093+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/PASSWORD","Output":"=== RUN   TestRedactPasswordEnvVar/PASSWORD\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.65329+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/PASSWORD","Output":"--- PASS: TestRedactPasswordEnvVar/PASSWORD (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.6533+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/PASSWORD","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.653322+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/SECRET"}
+{"Time":"2026-11-02T09:01:48.653327+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/SECRET","Output":"=== RUN   TestRedactPasswordEnvVar/SECRET\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.653849+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/SECRET","Output":"--- PASS: TestRedactPasswordEnvVar/SECRET (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.653857+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/SECRET","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.653871+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/TOKEN"}
+{"Time":"2026-11-02T09:01:48.653875+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/TOKEN","Output":"=== RUN   TestRedactPasswordEnvVar/TOKEN\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.654031+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/TOKEN","Output":"--- PASS: TestRedactPasswordEnvVar/TOKEN (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.654038+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar/TOKEN","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.654074+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar","Output":"--- PASS: TestRedactPasswordEnvVar (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.654082+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactPasswordEnvVar","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.654086+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactOpenAIKey"}
+{"Time":"2026-11-02T09:01:48.654089+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactOpenAIKey","Output":"=== CONT  TestRedactOpenAIKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.65451+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactOpenAIKey","Output":"--- PASS: TestRedactOpenAIKey (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.654516+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactOpenAIKey","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.65452+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerMCPToken"}
+{"Time":"2026-11-02T09:01:48.654523+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerMCPToken","Output":"=== CONT  TestRedactBearerMCPToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.655051+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestTextLeavesHomePathIntact","Output":"--- PASS: TestTextLeavesHomePathIntact (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.655073+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestTextLeavesHomePathIntact","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.655084+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials"}
+{"Time":"2026-11-02T09:01:48.655087+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials","Output":"=== CONT  TestRedactGenericCredentials\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.655091+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/API_KEY"}
+{"Time":"2026-11-02T09:01:48.655107+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/API_KEY","Output":"=== RUN   TestRedactGenericCredentials/API_KEY\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.655336+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerMCPToken","Output":"--- PASS: TestRedactBearerMCPToken (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.655356+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerMCPToken","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.655366+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerToken"}
+{"Time":"2026-11-02T09:01:48.655369+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerToken","Output":"=== CONT  TestRedactBearerToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.655411+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/API_KEY","Output":"--- PASS: TestRedactGenericCredentials/API_KEY (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.655418+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/API_KEY","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.655423+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/DATABASE_URL"}
+{"Time":"2026-11-02T09:01:48.655426+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/DATABASE_URL","Output":"=== RUN   TestRedactGenericCredentials/DATABASE_URL\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.655915+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/DATABASE_URL","Output":"--- PASS: TestRedactGenericCredentials/DATABASE_URL (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.655924+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/DATABASE_URL","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.655936+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/DB_PASSWORD"}
+{"Time":"2026-11-02T09:01:48.655941+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/DB_PASSWORD","Output":"=== RUN   TestRedactGenericCredentials/DB_PASSWORD\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.656108+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/DB_PASSWORD","Output":"--- PASS: TestRedactGenericCredentials/DB_PASSWORD (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.656115+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials/DB_PASSWORD","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.656155+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials","Output":"--- PASS: TestRedactGenericCredentials (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.656162+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGenericCredentials","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.656165+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactStripeLiveKey"}
+{"Time":"2026-11-02T09:01:48.656168+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactStripeLiveKey","Output":"=== CONT  TestRedactStripeLiveKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.656173+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerToken","Output":"--- PASS: TestRedactBearerToken (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.656177+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactBearerToken","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.65618+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKey"}
+{"Time":"2026-11-02T09:01:48.656183+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKey","Output":"=== CONT  TestRedactGoogleAPIKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.656884+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKey","Output":"--- PASS: TestRedactGoogleAPIKey (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.656898+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKey","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.656902+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackAppAndConfigTokens"}
+{"Time":"2026-11-02T09:01:48.656905+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackAppAndConfigTokens","Output":"=== CONT  TestRedactSlackAppAndConfigTokens\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.657357+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactStripeLiveKey","Output":"--- PASS: TestRedactStripeLiveKey (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.657375+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactStripeLiveKey","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.657388+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubFineGrainedToken"}
+{"Time":"2026-11-02T09:01:48.657391+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubFineGrainedToken","Output":"=== CONT  TestRedactGitHubFineGrainedToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.658064+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackToken"}
+{"Time":"2026-11-02T09:01:48.658069+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackToken","Output":"=== CONT  TestRedactSlackToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.658075+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackAppAndConfigTokens","Output":"--- PASS: TestRedactSlackAppAndConfigTokens (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.658143+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackAppAndConfigTokens","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.658148+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubFineGrainedToken","Output":"--- PASS: TestRedactGitHubFineGrainedToken (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.658153+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubFineGrainedToken","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.658156+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKeyEndingWithDash"}
+{"Time":"2026-11-02T09:01:48.658159+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKeyEndingWithDash","Output":"=== CONT  TestRedactGoogleAPIKeyEndingWithDash\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.65842+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactCollaborationCapabilities"}
+{"Time":"2026-11-02T09:01:48.658425+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactCollaborationCapabilities","Output":"=== CONT  TestRedactCollaborationCapabilities\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.658437+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackToken","Output":"--- PASS: TestRedactSlackToken (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.658977+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactSlackToken","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.658984+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKeyEndingWithDash","Output":"--- PASS: TestRedactGoogleAPIKeyEndingWithDash (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.659+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGoogleAPIKeyEndingWithDash","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.659003+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSSecretKey"}
+{"Time":"2026-11-02T09:01:48.659006+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSSecretKey","Output":"=== CONT  TestRedactAWSSecretKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.659258+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubToken"}
+{"Time":"2026-11-02T09:01:48.65927+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubToken","Output":"=== CONT  TestRedactGitHubToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.659278+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSSecretKey","Output":"--- PASS: TestRedactAWSSecretKey (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.659847+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSSecretKey","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.659854+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubToken","Output":"--- PASS: TestRedactGitHubToken (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.65986+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitHubToken","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.659863+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMap"}
+{"Time":"2026-11-02T09:01:48.659867+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMap","Output":"=== CONT  TestInputMap\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.66056+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMap","Output":"--- PASS: TestInputMap (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.660566+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestInputMap","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.660569+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactJWT"}
+{"Time":"2026-11-02T09:01:48.660572+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactJWT","Output":"=== CONT  TestRedactJWT\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.661255+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactJWT","Output":"--- PASS: TestRedactJWT (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.66126+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactJWT","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.661263+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSAccessKey"}
+{"Time":"2026-11-02T09:01:48.661265+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSAccessKey","Output":"=== CONT  TestRedactAWSAccessKey\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.661688+08:00","Action":"cont","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitLabToken"}
+{"Time":"2026-11-02T09:01:48.661692+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitLabToken","Output":"=== CONT  TestRedactGitLabToken\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.661709+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSAccessKey","Output":"--- PASS: TestRedactAWSAccessKey (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.662078+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactAWSAccessKey","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.662083+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitLabToken","Output":"--- PASS: TestRedactGitLabToken (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.665754+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactGitLabToken","Elapsed":0}
+{"Time":"2026-11-02T09:01:48.665759+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactCollaborationCapabilities","Output":"--- PASS: TestRedactCollaborationCapabilities (0.01s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:48.665776+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Test":"TestRedactCollaborationCapabilities","Elapsed":0.01}
+{"Time":"2026-11-02T09:01:48.665783+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-02T09:01:49.680655+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/pkg/redact","Output":"ok  \tgithub.com/multica-ai/multica/server/pkg/redact\t1.491s\n"}
+{"Time":"2026-11-02T09:01:49.680755+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/pkg/redact","Elapsed":1.491}

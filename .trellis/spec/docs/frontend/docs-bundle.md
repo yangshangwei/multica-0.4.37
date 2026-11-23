@@ -117,6 +117,11 @@ keep its prerequisites in the prose:
 | Offline display versus task recovery, preparation leases, and daemon restart | `server/cmd/server/runtime_sweeper.go`, `server/pkg/db/queries/runtime.sql`, `agent.sql` |
 | Device, password, and legacy authentication; limiter failure behavior | `server/internal/handler/auth_device.go`, `server/internal/auth/password_config.go`, `password_limiter.go`, `server/cmd/server/router.go` |
 | Managed workdirs versus `local_directory/in_place`; chat directory-lock exemption | `server/internal/daemon/execenv/execenv.go`, `server/internal/daemon/local_directory.go` |
+| Account collaboration versus source-workspace membership; resource consent and resume | `server/internal/collaboration/access.go`, `packages/views/collaboration/resource-panel.tsx`, `execution-panel.tsx` |
+| Comment saved versus each target admitted versus work delivered | `server/internal/handler/squad_briefing.go`, `server/cmd/multica/cmd_comment_trigger_outcomes.go` |
+| Workspace MCP write-only configuration versus agent MCP and audited env reads | `server/internal/handler/workspace_mcp_api.go`, `agent.go`, `agent_env.go` |
+| Approval decision versus execution report; knowledge confirmation versus runtime use | `server/internal/handler/agent_approval.go`, `server/internal/service/collaboration_knowledge_runtime.go` |
+| Usage task/runtime counts versus failure-rate populations | `server/pkg/db/queries/task_usage.sql`, `packages/views/dashboard/components/dashboard-page.tsx` |
 
 Update directly linked pages that repeat the same claim. For example, changing
 the security page's directory-isolation description also requires checking the
@@ -124,6 +129,22 @@ project-resources page. Identify old screenshots explicitly and describe the
 current entry point; an old screenshot's four choices must not override the
 five choices in the current skill creation UI. Keep English and Chinese
 `developers/conventions` aligned when correcting their shared contracts.
+
+### Feature coverage audits
+
+Inventory both workspace navigation (`app-sidebar.tsx`) and account-level
+collaboration (`global-scope-navigation.tsx`), plus settings entries and gated
+features. Record source evidence and the destination guide for each surface;
+`feature-overview.zh.mdx` is the user-facing map, while audit evidence belongs
+under `docs/audits/`. Verify visible labels against the locale files, not file
+names: Chat selects a single agent even when the picker receives squad metadata.
+
+A current-working-tree audit can include uncommitted implementation. Record that
+baseline explicitly and never present it as proof that an installed desktop or
+server already ships the feature. The Help menu's desktop version is independent
+of the server-provided docs manifest version. Keep planned-only features out of
+usage instructions. The example audit is
+`docs/audits/2026-11-07-user-docs-coverage.zh-CN.md`.
 
 ## 6. Good/Base/Bad Cases
 
@@ -153,8 +174,9 @@ five choices in the current skill creation UI. Keep English and Chinese
   `lint` script.
 - Handler docs tests require the package's migrated database fixture even though
   the endpoints themselves only read the bundle. Use an isolated clone and
-  verify named tests actually ran: an unreachable database makes the package's
-  `TestMain` print `Skipping tests` and exit successfully.
+  verify named tests actually ran. Current `TestMain` fails nonzero for an
+  unreachable database; older candidates may print `Skipping tests` and exit
+  successfully. A package exit status never substitutes for named-test evidence.
 
 ## Wrong vs Correct
 
@@ -174,3 +196,37 @@ run node scripts/generate-docs-bundle.mjs
 commit source + meta + regenerated server/internal/docs/content/ together
 grep remaining .zh.mdx + bundle for "<slug>" → 0 hits
 ```
+
+
+## 8. Mermaid diagrams in user guides
+
+Author diagrams as ordinary fenced `mermaid` blocks, with `accTitle` and
+`accDescr` plus adjacent prose that explains the decision or boundary. Keep
+language exactly `mermaid`; lookalikes are code. Do not add JSX Mermaid imports
+or expand the generator's closed JSX whitelist: the bundle preserves fences,
+while the public MDX compiler uses `remarkMdxMermaid` from the existing
+`fumadocs-core/mdx-plugins` and binds `Mermaid` at both page entry points.
+
+The application reader dispatches fences through `DocsDiagram`, reusing the
+near-viewport `LazyRichBlock`, editor `MermaidDiagram` and its viewer. Style only
+the diagram wrapper; never attach editor prose styles to the whole article.
+Preserve strict rendering and the empty iframe sandbox. The iframe document
+must inherit the host's computed `color-scheme` in both inline and viewer
+modes: Chromium otherwise paints a white canvas under transparent SVGs when
+the parent is dark. Include `min-w-0` at the reader's outer flex boundary so
+natural SVG widths scroll inside the diagram instead of widening the page.
+
+Diagram shapes convey meaning. Use neutral theme tokens with readable node,
+decision and cluster outlines; keep the outer card border quiet. Do not hardcode
+colors or Mermaid init directives in content. Preserve real font stacks in SVG
+and avoid shrinking a wide diagram until labels are illegible. Application
+viewers retain zoom, source, export, Escape and focus return.
+
+Validation must include Mermaid parsing and source preservation, both compiled
+public routes and the real in-app renderer, light/dark and narrow layouts,
+error/source fallback, and viewer keyboard/zoom behavior. Wait for the iframe's
+SVG and fonts to paint before screenshots; `srcdoc` containing SVG is not proof
+that pixels have appeared. Tall-diagram captures must fit inside their scrolling
+ancestor or be captured in sections. The canonical wiring tests are
+`docs-content.test.tsx` and `mermaid-fences.test.ts`; renderer/viewer behavior
+stays in their existing suites.

@@ -31,8 +31,9 @@ vi.mock("../i18n", async () => {
   const chat = (await import("../locales/en/chat.json")).default;
   return {
     useT: (ns?: string) => ({
-      t: (select: (bundle: Record<string, unknown>) => string) =>
-        select((ns === "chat" ? chat : editor) as Record<string, unknown>),
+      t: (select: (bundle: Record<string, unknown>) => string, values?: Record<string, string>) =>
+        select((ns === "chat" ? chat : editor) as Record<string, unknown>)
+          .replace(/\{\{(\w+)\}\}/g, (match, key: string) => values?.[key] ?? match),
     }),
     useTimeAgo: () => "just now",
   };
@@ -126,6 +127,7 @@ Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
 });
 
 import { ReadonlyContent } from "../editor/readonly-content";
+import { RichContent } from "./rich-content";
 import { ChatMessageList } from "../chat/components/chat-message-list";
 import { taskMessagesOptions } from "@multica/core/chat/queries";
 
@@ -191,6 +193,35 @@ beforeEach(() => {
     svg: '<svg viewBox="0 0 123 45"><g><text>diagram</text></g></svg>',
   });
   resolveIssueIdentifierMock.mockReturnValue(null);
+});
+
+it("renders private collaboration content without workspace lookups or public file links", () => {
+  const { container } = render(<RichContent resourcePolicy="restricted" content={[
+    "# Shared instructions", "Read MUL-123 and [another issue](mention://issue/MUL-456).",
+    "![PRIVATE_FILE](https://cdn.example.test/uploads/private.png)",
+    "[PRIVATE_DOWNLOAD](https://cdn.example.test/uploads/private.txt)",
+    '```html\n<img src="https://cdn.example.test/PRIVATE_REMOTE_IMAGE">\n```',
+  ].join("\n\n")} />);
+  expect(screen.getByRole("heading", { name: "Shared instructions" })).toBeInTheDocument();
+  expect(resolveIssueIdentifierMock).not.toHaveBeenCalled();
+  expect(container.querySelector("img")).toBeNull();
+  expect(container.querySelector("iframe")).toBeNull();
+  expect(container.querySelector('a[href*="uploads"]')).toBeNull();
+  expect(container.querySelector('a[href*="cdn.example.test"]')).toBeNull();
+  // Withheld resources stay visible as placeholders, so readers know something is missing.
+  expect(screen.getByText("Image hidden: PRIVATE_FILE")).toBeInTheDocument();
+  expect(screen.getByText("PRIVATE_DOWNLOAD", { exact: false })).toHaveTextContent("PRIVATE_DOWNLOAD Link hidden");
+});
+
+it("keeps unnamed restricted image and file resources visible without fetching them", () => {
+  const { container } = render(<RichContent resourcePolicy="restricted" content={[
+    "![](https://cdn.example.test/uploads/private.png)",
+    '<div data-type="fileCard" data-href="https://cdn.example.test/uploads/private.txt" data-filename=""></div>',
+  ].join("\n\n")} />);
+  expect(screen.getByText("Image hidden", { exact: true })).toBeInTheDocument();
+  expect(screen.getByText("File hidden", { exact: true })).toBeInTheDocument();
+  expect(container.querySelector("img, iframe, a")).toBeNull();
+  expect(resolveIssueIdentifierMock).not.toHaveBeenCalled();
 });
 
 /**

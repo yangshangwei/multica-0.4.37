@@ -1,0 +1,264 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+    - main [ref=e8]:
+      - generic [ref=e9]:
+        - heading "Collaboration" [level=1] [ref=e10]
+        - navigation "Collaboration" [ref=e11]:
+          - link "Current handling" [ref=e12] [cursor=pointer]:
+            - /url: /account?view=current&issue=01a199ca-f2d7-7d5d-9408-733b8b99236a
+          - link "Participating" [ref=e13] [cursor=pointer]:
+            - /url: /account?view=participating&issue=01a199ca-f2d7-7d5d-9408-733b8b99236a
+        - button "New collaboration issue" [ref=e14]
+        - button "Notifications 0 unread" [ref=e16]:
+          - text: Notifications
+          - generic [ref=e17]: 0 unread
+      - generic [ref=e18]:
+        - region "Collaboration issues" [ref=e19]:
+          - generic [ref=e20]:
+            - textbox "Search loaded issues" [ref=e21]
+            - generic [ref=e22]:
+              - generic [ref=e23]: 1 issues
+              - combobox "Sort" [ref=e24]:
+                - option "Recently updated" [selected]
+                - option "Title"
+          - list [ref=e26]:
+            - listitem [ref=e27]:
+              - link "AC33 actual cross-client execution f57d9c404b2846 Cross-client source Todo Cross-client collaborator B · External collaborator" [ref=e28] [cursor=pointer]:
+                - /url: /account?view=participating&issue=01a199ca-f2d7-7d5d-9408-733b8b99236a
+                - generic [ref=e29]: AC33 actual cross-client execution f57d9c404b2846
+                - generic [ref=e30]:
+                  - generic [ref=e31]: Cross-client source
+                  - generic [ref=e32]: Todo
+                - generic [ref=e33]:
+                  - text: Cross-client collaborator B
+                  - generic [ref=e34]: · External collaborator
+        - region "Issue detail" [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e37]:
+              - generic [ref=e38]:
+                - heading "AC33 actual cross-client execution f57d9c404b2846" [level=2] [ref=e39]
+                - button "Copy link" [ref=e40]:
+                  - img
+                  - text: Copy link
+              - generic [ref=e41]:
+                - generic [ref=e42]:
+                  - term [ref=e43]: Status
+                  - definition [ref=e44]: Todo
+                - generic [ref=e45]:
+                  - term [ref=e46]: Handler
+                  - definition [ref=e47]: Cross-client collaborator BExternal collaborator
+                - generic [ref=e48]:
+                  - term [ref=e49]: Creator
+                  - definition [ref=e50]: Cross-client collaborator A
+                - generic [ref=e51]:
+                  - term [ref=e52]: Source workspace
+                  - definition [ref=e53]: Cross-client source
+            - region "Issue actions" [ref=e54]:
+              - generic [ref=e55]:
+                - button "Add participant" [ref=e56]
+                - button "Transfer" [ref=e57]
+                - button "Request information" [ref=e58]
+                - button "Change status" [ref=e59]
+                - button "Complete issue" [ref=e60]
+                - button "Cancel issue" [ref=e61]
+                - button "Edit issue" [ref=e62]
+                - button "Edit source fields" [ref=e63]
+                - button "Change iteration" [ref=e64]
+              - button "Participants" [ref=e66]
+            - generic [ref=e67]:
+              - heading "Description" [level=3] [ref=e68]
+              - paragraph [ref=e70]: Two independent test-owned Linux namespaces and two actual human collaborators. Synthetic stdlib provider only.
+            - region "Issue fields" [ref=e71]:
+              - generic [ref=e72]:
+                - generic [ref=e73]:
+                  - term [ref=e74]: Priority
+                  - definition [ref=e75]: No priority
+                - generic [ref=e76]:
+                  - term [ref=e77]: Start date
+                  - definition [ref=e78]: None
+                - generic [ref=e79]:
+                  - term [ref=e80]: Due date
+                  - definition [ref=e81]: None
+                - generic [ref=e82]:
+                  - term [ref=e83]: Labels
+                  - definition [ref=e84]: None
+                - generic [ref=e85]:
+                  - term [ref=e86]: Project
+                  - definition [ref=e87]: None
+                - generic [ref=e88]:
+                  - term [ref=e89]: Parent issue
+                  - definition [ref=e90]: None
+                - generic [ref=e91]:
+                  - term [ref=e92]: Stage under parent
+                  - definition [ref=e93]: None
+                - generic [ref=e94]:
+                  - term [ref=e95]: Iteration
+                  - definition [ref=e96]: None
+            - region "Sub-issues" [ref=e97]:
+              - heading "Sub-issues" [level=3] [ref=e98]
+              - paragraph [ref=e99]: No sub-issues.
+            - region "Issue reactions" [ref=e100]:
+              - group "Thread and reactions" [ref=e102]:
+                - button "Choose a reaction" [ref=e103]:
+                  - img [ref=e104]
+            - region "Attachments" [ref=e107]:
+              - heading "Attachments" [level=3] [ref=e108]
+              - paragraph [ref=e109]: Delivered files remain on this issue when a comment or its file reference is removed.
+              - paragraph [ref=e110]: No files delivered yet.
+              - group [ref=e111]:
+                - generic "Attach files" [ref=e112] [cursor=pointer]
+            - region "AI execution" [ref=e113]:
+              - heading "AI execution" [level=3] [ref=e114]
+              - paragraph [ref=e115]: New AI execution is disabled.
+              - paragraph [ref=e116]: Stopping or resuming a target affects every target in its execution lane.
+              - paragraph [ref=e117]: Paused
+              - generic [ref=e118]:
+                - button "Stop all" [ref=e119]
+                - button "Resume all" [ref=e120]
+              - button "Manage AI resources" [ref=e122]
+              - generic [ref=e123]:
+                - generic [ref=e124]:
+                  - heading "Execution lane 1" [level=4] [ref=e125]
+                  - generic [ref=e126]: Paused
+                - list [ref=e127]:
+                  - listitem [ref=e128]:
+                    - generic [ref=e129]:
+                      - generic [ref=e130]: Agent
+                      - generic [ref=e131]: 3bc514f9-d8b9-4529-9d02-82a210d8b0e4
+                    - paragraph [ref=e132]: Awaiting initial authorization
+                    - generic [ref=e133]:
+                      - button "Stop target" [ref=e134]
+                      - button "Resume target" [ref=e135]
+                    - button "Switch proposals" [ref=e137]
+                - list
+                - list
+              - generic [ref=e138]:
+                - generic [ref=e139]:
+                  - heading "Execution lane 2" [level=4] [ref=e140]
+                  - generic [ref=e141]: Paused
+                - list [ref=e142]:
+                  - listitem [ref=e143]:
+                    - generic [ref=e144]:
+                      - generic [ref=e145]: Agent
+                      - generic [ref=e146]: 20e3416a-b9a2-4927-bbb3-7da82c5ad576
+                    - paragraph [ref=e147]: Awaiting initial authorization
+                    - generic [ref=e148]:
+                      - button "Stop target" [ref=e149]
+                      - button "Resume target" [ref=e150]
+                    - button "Switch proposals" [ref=e152]
+                - list
+                - list
+              - heading "Command history" [level=4] [ref=e154]:
+                - button "Command history" [ref=e155]
+            - region "Shared context" [ref=e156]:
+              - generic [ref=e157]:
+                - heading "Shared context" [level=3] [ref=e158]
+                - paragraph [ref=e159]: The current state of this issue, kept up to date by agents across machines and accounts. Participants who can control AI may correct it.
+              - generic [ref=e160]:
+                - paragraph [ref=e161]: v0 · 0 of 131072 bytes
+                - button "Edit shared context" [ref=e162]
+              - paragraph [ref=e163]: No shared context yet. Agents add findings, decisions and next steps here as they work.
+              - button "Version history" [ref=e165]
+            - region "Knowledge candidates" [ref=e166]:
+              - generic [ref=e167]:
+                - generic [ref=e168]:
+                  - heading "Knowledge candidates" [level=3] [ref=e169]
+                  - paragraph [ref=e170]: Propose a reusable conclusion with sources. Human approval controls where it may be used.
+                - button "Propose knowledge" [ref=e171]
+              - paragraph [ref=e172]: No candidates yet. Propose a conclusion when its sources are ready.
+              - list
+            - region "Activity" [ref=e173]:
+              - heading "Activity" [level=3] [ref=e174]
+              - list [ref=e175]:
+                - listitem [ref=e176]:
+                  - generic [ref=e177]:
+                    - generic [ref=e178]: Activity recorded
+                    - generic [ref=e179]: Cross-client collaborator B
+                    - time [ref=e180]: 11/2/2026, 9:06:17 AM
+                  - paragraph [ref=e181]: Detailed records are unavailable for this event.
+                - listitem [ref=e182]:
+                  - generic [ref=e183]:
+                    - generic [ref=e184]: Activity recorded
+                    - generic [ref=e185]: Cross-client collaborator A
+                    - time [ref=e186]: 11/2/2026, 9:06:17 AM
+                  - paragraph [ref=e187]: Detailed records are unavailable for this event.
+                - listitem [ref=e188]:
+                  - generic [ref=e189]:
+                    - generic [ref=e190]: Activity recorded
+                    - generic [ref=e191]: Cross-client collaborator A
+                    - time [ref=e192]: 11/2/2026, 9:06:17 AM
+                  - paragraph [ref=e193]: Detailed records are unavailable for this event.
+                - listitem [ref=e194]:
+                  - generic [ref=e195]:
+                    - generic [ref=e196]: Activity recorded
+                    - generic [ref=e197]: Cross-client collaborator B
+                    - time [ref=e198]: 11/2/2026, 9:06:17 AM
+                  - paragraph [ref=e199]: Detailed records are unavailable for this event.
+                - listitem [ref=e200]:
+                  - generic [ref=e201]:
+                    - generic [ref=e202]: Activity recorded
+                    - generic [ref=e203]: Cross-client collaborator A
+                    - time [ref=e204]: 11/2/2026, 9:06:17 AM
+                  - paragraph [ref=e205]: Detailed records are unavailable for this event.
+                - listitem [ref=e206]:
+                  - generic [ref=e207]:
+                    - generic [ref=e208]: Activity recorded
+                    - generic [ref=e209]: Cross-client collaborator A
+                    - time [ref=e210]: 11/2/2026, 9:06:17 AM
+                  - paragraph [ref=e211]: Detailed records are unavailable for this event.
+                - listitem [ref=e212]:
+                  - generic [ref=e213]:
+                    - generic [ref=e214]: Activity recorded
+                    - generic [ref=e215]: Cross-client collaborator A
+                    - time [ref=e216]: 11/2/2026, 9:06:17 AM
+                  - paragraph [ref=e217]: Detailed records are unavailable for this event.
+                - listitem [ref=e218]:
+                  - generic [ref=e219]:
+                    - generic [ref=e220]: Activity recorded
+                    - generic [ref=e221]: Cross-client collaborator A
+                    - time [ref=e222]: 11/2/2026, 9:06:17 AM
+                  - paragraph [ref=e223]: Detailed records are unavailable for this event.
+                - listitem [ref=e224]:
+                  - generic [ref=e225]:
+                    - generic [ref=e226]: Issue created
+                    - generic [ref=e227]: Cross-client collaborator A
+                    - time [ref=e228]: 11/2/2026, 9:06:16 AM
+            - generic [ref=e229]:
+              - heading "Comments" [level=3] [ref=e230]
+              - paragraph [ref=e231]: No comments yet.
+              - paragraph [ref=e232]: Loaded 0 of 0 comments
+              - list
+              - form "Comments" [ref=e233]:
+                - generic [ref=e234]: Add comment
+                - textbox "Add comment" [ref=e235]:
+                  - /placeholder: Write a comment...
+                - group "Issue participants and AI targets" [ref=e236]:
+                  - group "People" [ref=e237]:
+                    - paragraph [ref=e238]: People
+                    - generic [ref=e239]:
+                      - button "@all · All participants" [ref=e240]
+                      - button "Cross-client collaborator B" [ref=e241]
+                      - button "Cross-client collaborator A" [ref=e242]
+                  - group "AI targets" [ref=e243]:
+                    - paragraph [ref=e244]: AI targets
+                    - generic [ref=e245]:
+                      - button "Independent execution agent B" [ref=e246]
+                      - button "Independent execution agent A" [ref=e247]
+                - group "Attachments" [ref=e248]:
+                  - generic [ref=e249]: Attachments
+                  - paragraph [ref=e250]: Files stay private. Only selected files are shared when you submit.
+                  - generic [ref=e251]: Attach files
+                  - button "Attach files" [ref=e252]
+                - generic [ref=e253]:
+                  - button "Preview delivery" [disabled]
+                  - button "Send comment" [disabled]
+  - region "Notifications alt+T"
+  - alert [ref=e254]
+```

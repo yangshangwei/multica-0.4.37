@@ -3,11 +3,16 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"log/slog"
+	"strconv"
 
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/handler"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -215,54 +220,87 @@ var terminalStatusForTaskFailedDismiss = map[string]bool{
 func archiveStaleTaskFailedInbox(
 	ctx context.Context,
 	queries *db.Queries,
+	starter inboxstate.TxStarter,
 	bus *events.Bus,
 	workspaceID string,
 	issueID string,
 ) {
-	rows, err := queries.ArchiveInboxByIssueAndType(ctx, db.ArchiveInboxByIssueAndTypeParams{
-		WorkspaceID: parseUUID(workspaceID),
-		IssueID:     parseUUID(issueID),
-		Type:        "task_failed",
-	})
+	// Discovery is lock-free; each recipient then follows the same parent and
+	// group fences as snooze, delivery and membership cleanup.
+	discovery, err := starter.Begin(ctx)
 	if err != nil {
-		slog.Error("auto-archive task_failed inbox: query failed",
-			"workspace_id", workspaceID, "issue_id", issueID, "error", err)
+		slog.Error("auto-archive task_failed inbox: begin discovery failed", "error", err)
 		return
 	}
-	if len(rows) == 0 {
+	rows, err := discovery.Query(ctx, `SELECT DISTINCT recipient_type,recipient_id FROM inbox_item WHERE workspace_id=$1 AND issue_id=$2 AND type='task_failed' AND archived=false ORDER BY recipient_type,recipient_id`, parseUUID(workspaceID), parseUUID(issueID))
+	if err != nil {
+		_ = discovery.Rollback(ctx)
+		slog.Error("auto-archive task_failed inbox: query failed", "workspace_id", workspaceID, "issue_id", issueID, "error", err)
 		return
 	}
-
-	// Dedupe recipients: the listener creates one row per failure event per
-	// subscriber, so a long-running issue can yield several rows for the
-	// same recipient.
-	counts := map[string]int{}
-	for _, row := range rows {
-		// Inbox rows for task_failed only target member recipients today
-		// (notifySubscribers skips agent subscribers), but defend the WS
-		// layer against future widening — only members get a personal feed.
-		if row.RecipientType != "member" {
+	var recipients []inboxstate.Group
+	for rows.Next() {
+		g := inboxstate.Group{WorkspaceID: parseUUID(workspaceID), Kind: "issue", ID: parseUUID(issueID)}
+		if err = rows.Scan(&g.RecipientType, &g.RecipientID); err != nil {
+			break
+		}
+		recipients = append(recipients, g)
+	}
+	if err == nil {
+		err = rows.Err()
+	}
+	rows.Close()
+	_ = discovery.Rollback(ctx)
+	if err != nil {
+		slog.Error("auto-archive task_failed inbox: recipient scan failed", "error", err)
+		return
+	}
+	for _, g := range recipients {
+		count, state, err := archiveFailedRecipient(ctx, starter, g)
+		if errors.Is(err, pgx.ErrNoRows) {
 			continue
 		}
-		counts[util.UUIDToString(row.RecipientID)]++
+		if err != nil {
+			slog.Error("auto-archive task_failed inbox: recipient update failed", "recipient_id", util.UUIDToString(g.RecipientID), "error", err)
+			continue
+		}
+		if count == 0 || g.RecipientType != "member" {
+			continue
+		}
+		bus.Publish(events.Event{Type: protocol.EventInboxBatchArchived, WorkspaceID: workspaceID, Payload: map[string]any{
+			"workspace_id": workspaceID, "recipient_id": util.UUIDToString(g.RecipientID), "count": count, "issue_id": issueID, "reason": "issue_status_terminal",
+		}})
+		bus.Publish(events.Event{Type: protocol.EventInboxUpdated, WorkspaceID: workspaceID, Payload: inboxstate.Payload(state)})
 	}
+}
 
-	for recipientID, count := range counts {
-		bus.Publish(events.Event{
-			Type:        protocol.EventInboxBatchArchived,
-			WorkspaceID: workspaceID,
-			Payload: map[string]any{
-				"recipient_id": recipientID,
-				"count":        int64(count),
-				"issue_id":     issueID,
-				"reason":       "issue_status_terminal",
-			},
-		})
+func archiveFailedRecipient(ctx context.Context, starter inboxstate.TxStarter, g inboxstate.Group) (int64, inboxstate.State, error) {
+	tx, err := starter.Begin(ctx)
+	if err != nil {
+		return 0, inboxstate.State{}, err
 	}
-
-	slog.Info("auto-archive task_failed inbox: archived stale rows",
-		"workspace_id", workspaceID, "issue_id", issueID,
-		"row_count", len(rows), "recipient_count", len(counts))
+	defer tx.Rollback(ctx)
+	state, err := inboxstate.Lock(ctx, tx, g)
+	if err != nil {
+		return 0, state, err
+	}
+	updated, err := tx.Exec(ctx, `UPDATE inbox_item SET archived=true WHERE workspace_id=$1 AND recipient_type=$2 AND recipient_id=$3 AND issue_id=$4 AND type='task_failed' AND archived=false`, g.WorkspaceID, g.RecipientType, g.RecipientID, g.ID)
+	if err != nil {
+		return 0, state, err
+	}
+	active, err := inboxstate.Active(ctx, tx, g)
+	if err != nil {
+		return 0, state, err
+	}
+	if !active {
+		inboxstate.Clear(&state)
+	} else if updated.RowsAffected() > 0 {
+		inboxstate.InvalidateUndo(&state)
+	}
+	if err = inboxstate.Save(ctx, tx, state); err != nil {
+		return 0, state, err
+	}
+	return updated.RowsAffected(), state, tx.Commit(ctx)
 }
 
 // notifySubscribers queries the subscriber table for an issue, excludes the
@@ -274,6 +312,7 @@ func archiveStaleTaskFailedInbox(
 func notifySubscribers(
 	ctx context.Context,
 	queries *db.Queries,
+	starter inboxstate.TxStarter,
 	bus *events.Bus,
 	issueID string,
 	issueStatus string,
@@ -286,7 +325,7 @@ func notifySubscribers(
 	body string,
 	details []byte,
 ) {
-	notified, tierSuppressed := notifyIssueSubscribers(ctx, queries, bus,
+	notified, tierSuppressed := notifyIssueSubscribers(ctx, queries, starter, bus,
 		issueID, issueID, issueStatus, workspaceID, e, exclude,
 		notifType, severity, title, body, details)
 
@@ -328,7 +367,7 @@ func notifySubscribers(
 	// Query subscribers from the parent issue, but the inbox item still
 	// points to the sub-issue so the user navigates to the actual change.
 	parentID := util.UUIDToString(issue.ParentIssueID)
-	notifyIssueSubscribers(ctx, queries, bus,
+	notifyIssueSubscribers(ctx, queries, starter, bus,
 		parentID, issueID, issueStatus, workspaceID, e, parentExclude,
 		notifType, severity, title, body, details)
 }
@@ -345,6 +384,7 @@ func notifySubscribers(
 func notifyIssueSubscribers(
 	ctx context.Context,
 	queries *db.Queries,
+	starter inboxstate.TxStarter,
 	bus *events.Bus,
 	subscriberIssueID string,
 	targetIssueID string,
@@ -372,6 +412,21 @@ func notifyIssueSubscribers(
 		slog.Error("failed to list subscribers for notification",
 			"issue_id", subscriberIssueID, "error", err)
 		return notified, tierSuppressed
+	}
+
+	// Only saved, nonzero comment identities have a durable replay key. Legacy
+	// synthetic events and other producers retain the ordinary random-v7 writer.
+	var originalComment pgtype.UUID
+	if notifType == "new_comment" {
+		var commentDetails struct {
+			CommentID string `json:"comment_id"`
+		}
+		if json.Unmarshal(details, &commentDetails) == nil {
+			id, parseErr := util.ParseUUID(commentDetails.CommentID)
+			if parseErr == nil && id.Bytes != [16]byte{} {
+				originalComment = id
+			}
+		}
 	}
 
 	// Batch-load notification preferences for all member subscribers.
@@ -413,19 +468,15 @@ func notifyIssueSubscribers(
 			continue
 		}
 
-		item, err := queries.CreateInboxItem(ctx, db.CreateInboxItemParams{
-			ID:            dbid.NewV7(),
-			WorkspaceID:   parseUUID(workspaceID),
-			RecipientType: "member",
-			RecipientID:   sub.UserID,
-			Type:          notifType,
-			Severity:      severity,
-			IssueID:       parseUUID(targetIssueID),
-			Title:         title,
-			Body:          util.StrToText(body),
-			ActorType:     util.StrToText(e.ActorType),
-			ActorID:       optionalUUID(e.ActorID),
-			Details:       details,
+		id := dbid.NewV7()
+		if originalComment.Valid {
+			workspaceUUID, issueUUID := parseUUID(workspaceID), parseUUID(targetIssueID)
+			id = commentInboxDeliveryID(originalComment, workspaceUUID, issueUUID, sub.UserID)
+		}
+		delivery, err := inboxstate.Deliver(ctx, starter, db.CreateInboxItemParams{
+			ID: id, WorkspaceID: parseUUID(workspaceID), RecipientType: "member", RecipientID: sub.UserID,
+			Type: notifType, Severity: severity, IssueID: parseUUID(targetIssueID), Title: title,
+			Body: util.StrToText(body), ActorType: util.StrToText(e.ActorType), ActorID: optionalUUID(e.ActorID), Details: details,
 		})
 		if err != nil {
 			slog.Error("subscriber notification creation failed",
@@ -433,19 +484,24 @@ func notifyIssueSubscribers(
 			continue
 		}
 
-		notified[subID] = true
-		resp := inboxItemToResponse(item)
-		resp["issue_status"] = issueStatus
-		bus.Publish(events.Event{
-			Type:        protocol.EventInboxNew,
-			WorkspaceID: workspaceID,
-			ActorType:   e.ActorType,
-			ActorID:     e.ActorID,
-			Payload:     map[string]any{"item": resp},
-		})
+		if delivery.Created {
+			notified[subID] = true
+		}
+		publishInboxDelivery(bus, e, delivery, issueStatus)
 	}
 
 	return notified, tierSuppressed
+}
+
+// The original comment UUID is the namespace; the domain and fixed-width UUID
+// tuple bind source workspace, issue, member recipient and new_comment type.
+// Keep this v1 identity stable so replay across buses/processes finds one ID.
+func commentInboxDeliveryID(commentID, workspaceID, issueID, recipientID pgtype.UUID) pgtype.UUID {
+	identity := []byte("multica:ordinary-comment-inbox:v1:member:new_comment:")
+	identity = append(identity, workspaceID.Bytes[:]...)
+	identity = append(identity, issueID.Bytes[:]...)
+	identity = append(identity, recipientID.Bytes[:]...)
+	return pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(commentID.Bytes), identity), Valid: true}
 }
 
 // notifyDirect creates an inbox item for a specific recipient. Skips if the
@@ -453,6 +509,7 @@ func notifyIssueSubscribers(
 func notifyDirect(
 	ctx context.Context,
 	queries *db.Queries,
+	starter inboxstate.TxStarter,
 	bus *events.Bus,
 	recipientType string,
 	recipientID string,
@@ -479,7 +536,7 @@ func notifyDirect(
 		}
 	}
 
-	item, err := queries.CreateInboxItem(ctx, db.CreateInboxItemParams{
+	delivery, err := inboxstate.Deliver(ctx, starter, db.CreateInboxItemParams{
 		ID:            dbid.NewV7(),
 		WorkspaceID:   parseUUID(workspaceID),
 		RecipientType: recipientType,
@@ -499,15 +556,7 @@ func notifyDirect(
 		return
 	}
 
-	resp := inboxItemToResponse(item)
-	resp["issue_status"] = issueStatus
-	bus.Publish(events.Event{
-		Type:        protocol.EventInboxNew,
-		WorkspaceID: workspaceID,
-		ActorType:   e.ActorType,
-		ActorID:     e.ActorID,
-		Payload:     map[string]any{"item": resp},
-	})
+	publishInboxDelivery(bus, e, delivery, issueStatus)
 }
 
 // notifyMentionedMembers creates inbox items for each @mentioned member,
@@ -516,6 +565,7 @@ func notifyDirect(
 func notifyMentionedMembers(
 	bus *events.Bus,
 	queries *db.Queries,
+	starter inboxstate.TxStarter,
 	e events.Event,
 	mentions []mention,
 	issueID string,
@@ -526,7 +576,7 @@ func notifyMentionedMembers(
 	details []byte,
 ) {
 	// Collect the set of member IDs to notify.
-	recipientIDs := map[string]bool{}
+	recipientIDs := map[string]string{}
 
 	hasAll := false
 	var squadIDs []string
@@ -536,7 +586,7 @@ func notifyMentionedMembers(
 			continue
 		}
 		if m.Type == "member" {
-			recipientIDs[m.ID] = true
+			recipientIDs[m.ID] = "member"
 		}
 		if m.Type == "squad" {
 			squadIDs = append(squadIDs, m.ID)
@@ -558,7 +608,10 @@ func notifyMentionedMembers(
 		}
 		for _, sm := range members {
 			if sm.MemberType == "member" {
-				recipientIDs[util.UUIDToString(sm.MemberID)] = true
+				id := util.UUIDToString(sm.MemberID)
+				if recipientIDs[id] != "member" {
+					recipientIDs[id] = "squad"
+				}
 			}
 		}
 	}
@@ -570,7 +623,10 @@ func notifyMentionedMembers(
 			slog.Error("failed to list members for @all mention", "workspace_id", e.WorkspaceID, "error", err)
 		} else {
 			for _, m := range members {
-				recipientIDs[util.UUIDToString(m.UserID)] = true
+				id := util.UUIDToString(m.UserID)
+				if recipientIDs[id] == "" {
+					recipientIDs[id] = "all"
+				}
 			}
 		}
 	}
@@ -584,7 +640,7 @@ func notifyMentionedMembers(
 	}
 	mentionPrefs := loadUserPrefs(context.Background(), queries, e.WorkspaceID, mentionUserIDs)
 
-	for id := range recipientIDs {
+	for id, scope := range recipientIDs {
 		if id == e.ActorID || skip[id] {
 			continue
 		}
@@ -594,7 +650,18 @@ func notifyMentionedMembers(
 		if p, ok := mentionPrefs[id]; ok && isNotifMuted(p, "mentioned") {
 			continue
 		}
-		item, err := queries.CreateInboxItem(context.Background(), db.CreateInboxItemParams{
+		memberDetails := map[string]string{}
+		if err := json.Unmarshal(details, &memberDetails); err != nil {
+			slog.Error("mention inbox details invalid", "mentioned_id", id, "error", err)
+			continue
+		}
+		memberDetails["mention_scope"] = scope
+		raw, err := json.Marshal(memberDetails)
+		if err != nil {
+			slog.Error("mention inbox details encode failed", "mentioned_id", id, "error", err)
+			continue
+		}
+		delivery, err := inboxstate.Deliver(context.Background(), starter, db.CreateInboxItemParams{
 			ID:            dbid.NewV7(),
 			WorkspaceID:   parseUUID(e.WorkspaceID),
 			RecipientType: "member",
@@ -605,22 +672,32 @@ func notifyMentionedMembers(
 			Title:         title,
 			ActorType:     util.StrToText(e.ActorType),
 			ActorID:       optionalUUID(e.ActorID),
-			Details:       details,
+			Details:       raw,
 		})
 		if err != nil {
 			slog.Error("mention inbox creation failed", "mentioned_id", id, "error", err)
 			continue
 		}
-		resp := inboxItemToResponse(item)
-		resp["issue_status"] = issueStatus
-		bus.Publish(events.Event{
-			Type:        protocol.EventInboxNew,
-			WorkspaceID: e.WorkspaceID,
-			ActorType:   e.ActorType,
-			ActorID:     e.ActorID,
-			Payload:     map[string]any{"item": resp},
-		})
+		publishInboxDelivery(bus, e, delivery, issueStatus)
 	}
+}
+
+func publishInboxDelivery(bus *events.Bus, actor events.Event, delivery inboxstate.Delivery, issueStatus string) {
+	if !delivery.Created {
+		return
+	}
+	workspaceID := util.UUIDToString(delivery.State.WorkspaceID)
+	if delivery.Suppressed {
+		bus.Publish(events.Event{Type: protocol.EventInboxUpdated, WorkspaceID: workspaceID, ActorType: actor.ActorType, ActorID: actor.ActorID, Payload: inboxstate.Payload(delivery.State)})
+		return
+	}
+	resp := inboxItemToResponse(delivery.Item)
+	resp["issue_status"] = issueStatus
+	resp["snooze_revision"] = delivery.State.Revision
+	resp["snoozed_until"] = util.TimestampToPtr(delivery.State.SnoozedUntil)
+	resp["reminded_at"] = util.TimestampToPtr(delivery.State.RemindedAt)
+	resp["reminder_reason"] = util.TextToPtr(delivery.State.ReminderReason)
+	bus.Publish(events.Event{Type: protocol.EventInboxNew, WorkspaceID: workspaceID, ActorType: actor.ActorType, ActorID: actor.ActorID, Payload: map[string]any{"item": resp}})
 }
 
 // registerNotificationListeners wires up event bus listeners that create inbox
@@ -630,7 +707,7 @@ func notifyMentionedMembers(
 // NOTE: uses context.Background() because the event bus dispatches synchronously
 // within the HTTP request goroutine. Adding per-handler timeouts is a bus-level
 // concern — see events.Bus for future improvements.
-func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
+func registerNotificationListeners(bus *events.Bus, queries *db.Queries, starter inboxstate.TxStarter) {
 	ctx := context.Background()
 
 	// issue:created — Direct notification to assignee if assignee != actor
@@ -650,21 +727,23 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 		// Direct notification to assignees that own an inbox.
 		if issue.AssigneeType != nil && issue.AssigneeID != nil && isAssignmentRecipientType(*issue.AssigneeType) {
 			skip[*issue.AssigneeID] = true
-			notifyDirect(ctx, queries, bus,
+			assignmentDetails, _ := json.Marshal(map[string]string{"source_revision": strconv.FormatInt(issue.Revision, 10)})
+			notifyDirect(ctx, queries, starter, bus,
 				*issue.AssigneeType, *issue.AssigneeID,
 				issue.WorkspaceID, e, issue.ID, issue.Status,
 				"issue_assigned", "action_required",
 				issue.Title,
 				"",
-				emptyDetails,
+				assignmentDetails,
 			)
 		}
 
 		// Notify @mentions in description
 		if issue.Description != nil && *issue.Description != "" {
 			mentions := parseMentions(*issue.Description)
-			notifyMentionedMembers(bus, queries, e, mentions, issue.ID, issue.Title, issue.Status,
-				issue.Title, skip, emptyDetails)
+			descriptionDetails, _ := json.Marshal(map[string]string{"source_kind": "issue_description_mention", "source_revision": strconv.FormatInt(issue.Revision, 10)})
+			notifyMentionedMembers(bus, queries, starter, e, mentions, issue.ID, issue.Title, issue.Status,
+				issue.Title, skip, descriptionDetails)
 		}
 	})
 
@@ -695,7 +774,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 			// convention a reviewer had to notice; the concrete type makes it a
 			// compile error. This is the only details map in this file that was
 			// not already string-typed.
-			detailsMap := map[string]string{}
+			detailsMap := map[string]string{"source_revision": strconv.FormatInt(issue.Revision, 10)}
 			if prevAssigneeType != nil {
 				detailsMap["prev_assignee_type"] = *prevAssigneeType
 			}
@@ -712,7 +791,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 
 			// Direct: notify new assignee about assignment when it owns an inbox.
 			if issue.AssigneeType != nil && issue.AssigneeID != nil && isAssignmentRecipientType(*issue.AssigneeType) {
-				notifyDirect(ctx, queries, bus,
+				notifyDirect(ctx, queries, starter, bus,
 					*issue.AssigneeType, *issue.AssigneeID,
 					e.WorkspaceID, e, issue.ID, issue.Status,
 					"issue_assigned", "action_required",
@@ -726,7 +805,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 			// This is intentionally narrower than isAssignmentRecipientType: agents
 			// do not receive unassigned notifications.
 			if prevAssigneeType != nil && prevAssigneeID != nil && *prevAssigneeType == "member" {
-				notifyDirect(ctx, queries, bus,
+				notifyDirect(ctx, queries, starter, bus,
 					"member", *prevAssigneeID,
 					e.WorkspaceID, e, issue.ID, issue.Status,
 					"unassigned", "info",
@@ -745,7 +824,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 			if issue.AssigneeID != nil {
 				exclude[*issue.AssigneeID] = true
 			}
-			notifySubscribers(ctx, queries, bus, issue.ID, issue.Status, e.WorkspaceID, e,
+			notifySubscribers(ctx, queries, starter, bus, issue.ID, issue.Status, e.WorkspaceID, e,
 				exclude, "assignee_changed", "info",
 				issue.Title, "",
 				assigneeDetails)
@@ -757,7 +836,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 				"from": prevStatus,
 				"to":   issue.Status,
 			})
-			notifySubscribers(ctx, queries, bus, issue.ID, issue.Status, e.WorkspaceID, e,
+			notifySubscribers(ctx, queries, starter, bus, issue.ID, issue.Status, e.WorkspaceID, e,
 				nil, "status_changed", "info",
 				issue.Title, "",
 				statusDetails)
@@ -769,7 +848,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 			if terminalStatusForTaskFailedDismiss[issuestatus.Effective(
 				ctx, queries, parseUUID(e.WorkspaceID), issue.Status,
 			)] {
-				archiveStaleTaskFailedInbox(ctx, queries, bus, e.WorkspaceID, issue.ID)
+				archiveStaleTaskFailedInbox(ctx, queries, starter, bus, e.WorkspaceID, issue.ID)
 			}
 		}
 
@@ -779,7 +858,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 				"from": prevPriority,
 				"to":   issue.Priority,
 			})
-			notifySubscribers(ctx, queries, bus, issue.ID, issue.Status, e.WorkspaceID, e,
+			notifySubscribers(ctx, queries, starter, bus, issue.ID, issue.Status, e.WorkspaceID, e,
 				nil, "priority_changed", "info",
 				issue.Title, "",
 				priorityDetails)
@@ -798,7 +877,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 				"from": prevStartDateStr,
 				"to":   newStartDateStr,
 			})
-			notifySubscribers(ctx, queries, bus, issue.ID, issue.Status, e.WorkspaceID, e,
+			notifySubscribers(ctx, queries, starter, bus, issue.ID, issue.Status, e.WorkspaceID, e,
 				nil, "start_date_changed", "info",
 				issue.Title, "",
 				startDateDetails)
@@ -817,7 +896,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 				"from": prevDueDateStr,
 				"to":   newDueDateStr,
 			})
-			notifySubscribers(ctx, queries, bus, issue.ID, issue.Status, e.WorkspaceID, e,
+			notifySubscribers(ctx, queries, starter, bus, issue.ID, issue.Status, e.WorkspaceID, e,
 				nil, "due_date_changed", "info",
 				issue.Title, "",
 				dueDateDetails)
@@ -840,8 +919,9 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 					}
 				}
 				skip := map[string]bool{e.ActorID: true}
-				notifyMentionedMembers(bus, queries, e, added, issue.ID, issue.Title, issue.Status,
-					issue.Title, skip, emptyDetails)
+				descriptionDetails, _ := json.Marshal(map[string]string{"source_kind": "issue_description_mention", "source_revision": strconv.FormatInt(issue.Revision, 10)})
+				notifyMentionedMembers(bus, queries, starter, e, added, issue.ID, issue.Title, issue.Status,
+					issue.Title, skip, descriptionDetails)
 			}
 		}
 	})
@@ -894,7 +974,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 			})
 		}
 
-		notifySubscribers(ctx, queries, bus, issueID, issueStatus, e.WorkspaceID, e,
+		notifySubscribers(ctx, queries, starter, bus, issueID, issueStatus, e.WorkspaceID, e,
 			nil, "new_comment", "info",
 			issueTitle, commentContent,
 			commentDetails)
@@ -903,7 +983,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 		mentions := parseMentions(commentContent)
 		if len(mentions) > 0 {
 			skip := map[string]bool{e.ActorID: true}
-			notifyMentionedMembers(bus, queries, e, mentions, issueID, issueTitle, issueStatus,
+			notifyMentionedMembers(bus, queries, starter, e, mentions, issueID, issueTitle, issueStatus,
 				issueTitle, skip, commentDetails)
 		}
 	})
@@ -934,7 +1014,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 			"emoji": reaction.Emoji,
 		})
 
-		notifyDirect(ctx, queries, bus,
+		notifyDirect(ctx, queries, starter, bus,
 			creatorType, creatorID,
 			e.WorkspaceID, e, issueID, issueStatus,
 			"reaction_added", "info",
@@ -974,7 +1054,7 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 		}
 		details, _ := json.Marshal(detailsMap)
 
-		notifyDirect(ctx, queries, bus,
+		notifyDirect(ctx, queries, starter, bus,
 			commentAuthorType, commentAuthorID,
 			e.WorkspaceID, e, issueID, issueStatus,
 			"reaction_added", "info",
@@ -993,6 +1073,10 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 		}
 		agentID, _ := payload["agent_id"].(string)
 		issueID, _ := payload["issue_id"].(string)
+		taskID, _ := payload["task_id"].(string)
+		if taskID == "" {
+			taskID = e.TaskID
+		}
 		if issueID == "" {
 			return
 		}
@@ -1007,17 +1091,19 @@ func registerNotificationListeners(bus *events.Bus, queries *db.Queries) {
 		if agentID != "" {
 			exclude[agentID] = true
 		}
+		failureDetails, _ := json.Marshal(map[string]string{"task_id": taskID})
 
-		notifySubscribers(ctx, queries, bus, issueID, issue.Status, e.WorkspaceID,
+		notifySubscribers(ctx, queries, starter, bus, issueID, issue.Status, e.WorkspaceID,
 			events.Event{
 				Type:        e.Type,
 				WorkspaceID: e.WorkspaceID,
 				ActorType:   "agent",
 				ActorID:     agentID,
+				TaskID:      taskID,
 			},
 			exclude, "task_failed", "action_required",
 			issue.Title, "",
-			emptyDetails)
+			failureDetails)
 	})
 }
 

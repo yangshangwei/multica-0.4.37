@@ -1,0 +1,32 @@
+=== RUN   TestCollaborationCheckpointBoundsAndKinds
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/tool_shape
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/version
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/stream
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/sequence
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/offset
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/empty
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/body
+=== RUN   TestCollaborationCheckpointBoundsAndKinds/aggregate
+--- PASS: TestCollaborationCheckpointBoundsAndKinds (0.00s)
+    --- PASS: TestCollaborationCheckpointBoundsAndKinds/tool_shape (0.00s)
+    --- PASS: TestCollaborationCheckpointBoundsAndKinds/version (0.00s)
+    --- PASS: TestCollaborationCheckpointBoundsAndKinds/stream (0.00s)
+    --- PASS: TestCollaborationCheckpointBoundsAndKinds/sequence (0.00s)
+    --- PASS: TestCollaborationCheckpointBoundsAndKinds/offset (0.00s)
+    --- PASS: TestCollaborationCheckpointBoundsAndKinds/empty (0.00s)
+    --- PASS: TestCollaborationCheckpointBoundsAndKinds/body (0.00s)
+    --- PASS: TestCollaborationCheckpointBoundsAndKinds/aggregate (0.00s)
+=== RUN   TestCollaborationCheckpointRecordVersionCompatibility
+--- PASS: TestCollaborationCheckpointRecordVersionCompatibility (0.00s)
+=== RUN   TestCollaborationRecordingSealHasOnlyBoundedMetadata
+--- PASS: TestCollaborationRecordingSealHasOnlyBoundedMetadata (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/protocol	0.459s
+=== RUN   TestHostCheckpointsKeepOriginalPayloadAcrossLostACK
+--- PASS: TestHostCheckpointsKeepOriginalPayloadAcrossLostACK (0.08s)
+=== RUN   TestHostCheckpointBackpressureDoesNotBlockMessageDrain
+--- PASS: TestHostCheckpointBackpressureDoesNotBlockMessageDrain (0.09s)
+=== RUN   TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim
+--- PASS: TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim (0.20s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.820s

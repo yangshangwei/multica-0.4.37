@@ -1,0 +1,52 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/final-state-audit/final_state_audit_test.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/final-state-audit-v12/final_state_audit_test.py
+@@ -10,7 +10,7 @@
+ 
+ 
+ HERE = Path(__file__).resolve().parent
+-REGISTERED = Path("/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11")
++REGISTERED = Path("/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12")
+ NEXT_PATH = "apps/web/next-env.d.ts"
+ NEXT_BEFORE = b'/// <reference types="next" />\nimport "./.next/dev/types/routes.d.ts";\n// generated declaration\n'
+ NEXT_AFTER = NEXT_BEFORE.replace(b'"./.next/dev/types/routes.d.ts"', b'"./.next/types/routes.d.ts"')
+@@ -30,8 +30,8 @@
+ class FinalStateTests(unittest.TestCase):
+     def setUp(self):
+         self.auditor_path = HERE / "final_state_audit.py"
+-        with patch.dict(os.environ, {"CHECK_LAUNCHER_SOURCE": str(REGISTERED / "run-make-check-v11-provenance.py")}):
+-            fixture_module = load(REGISTERED / "fake-preflight-v11-provenance.py")
++        with patch.dict(os.environ, {"CHECK_LAUNCHER_SOURCE": str(REGISTERED / "run-make-check-v12-provenance.py")}):
++            fixture_module = load(REGISTERED / "fake-preflight-v12-provenance.py")
+         self.fixture = fixture_module.LauncherEntryTests(methodName="runTest")
+         self.fixture.setUp()
+         self.addCleanup(self.fixture.doCleanups)
+@@ -56,9 +56,9 @@
+         self.fixture.binding_file.write_text(json.dumps(binding))
+         self.fixture.write_clearance()
+         self.review = {**json.loads(self.fixture.clearance.read_text()), "candidate_root": str(self.root)}
+-        self.safe_env = self.out / "check-source-v11.safe.env"
++        self.safe_env = self.out / "check-source-v12.safe.env"
+         self.safe_env.write_bytes(self.fixture.source_env.read_bytes())
+-        log = self.out / "make-check-v11.log"
++        log = self.out / "make-check-v12.log"
+         log.write_text("Synthetic completion; no repository command executed.\n")
+         self.run = {
+             "state": "complete", "exit_code": 0, "candidate_root": str(self.root),
+@@ -72,7 +72,7 @@
+             "canonical_product_file_count": len(rows), "tracked_snapshot_fingerprint": binding["source"]["tracked_fingerprint"],
+             "cli_sha256": binding["cli"]["sha256"],
+         }
+-        self.run_file = self.out / "make-check-v11.json"
++        self.run_file = self.out / "make-check-v12.json"
+         self.run_file.write_text(json.dumps(self.run))
+ 
+     def audit(self):
+@@ -185,7 +185,7 @@
+             self.audit()
+ 
+     def test_completed_run_log_mutation_is_rejected(self):
+-        (self.out / "make-check-v11.log").write_text("changed after Make\n")
++        (self.out / "make-check-v12.log").write_text("changed after Make\n")
+         with self.assertRaisesRegex(RuntimeError, "Complete run log changed"):
+             self.audit()
+ 

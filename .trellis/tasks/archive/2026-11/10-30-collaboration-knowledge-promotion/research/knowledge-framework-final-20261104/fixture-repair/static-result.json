@@ -1,0 +1,73 @@
+{
+  "state": "static_pass",
+  "started_at": "2026-11-04T08:58:36.462482+00:00",
+  "framework_HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "fixture_sha256": "f7072ce7b11dad29ba0b5dd3cf7e84e0eab87f1d8fb8fd0b702075385bb57b6f",
+  "minimum_diff_sha256": "5a57befb45ea10fc7f39b51890c044acb8ad06516d7d2f4634fd14145770eb6e",
+  "environment_sha256": "bdc3184b29e1ad138a1318e15f03b5383e82dbf547f933da30f4d485831e3bd7",
+  "test_bodies_executed": false,
+  "DATABASE_URL_forwarded": false,
+  "real_Provider_calls": 0,
+  "checks": [
+    {
+      "label": "gofmt",
+      "command": [
+        "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/gofmt",
+        "-d",
+        "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/server/cmd/server/rk1k_fixture_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+      "exit_status": 0,
+      "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/gofmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "no_format_delta": true
+    },
+    {
+      "label": "tagged_compile",
+      "command": [
+        "/bin/bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-tags=agentintegration",
+        "-p=1",
+        "-mod=readonly",
+        "-o",
+        "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/fixture-repair-static-01/knowledge-framework-static.test",
+        "./cmd/server"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+      "exit_status": 0,
+      "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/tagged_compile.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "tagged_vet",
+      "command": [
+        "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "-C",
+        "server",
+        "vet",
+        "-tags=agentintegration",
+        "-p=1",
+        "./cmd/server",
+        "./internal/daemon"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+      "exit_status": 0,
+      "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/fixture-repair/tagged_vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "finished_at": "2026-11-04T08:59:15.390592+00:00",
+  "compiled_binary": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/fixture-repair-static-01/knowledge-framework-static.test",
+    "sha256": "f438c0e773b5f02bfcf4bfd335b9aefcdc6e0b878b6c3aeae832e3a83ff622ab",
+    "bytes": 113826498,
+    "executed": false
+  }
+}

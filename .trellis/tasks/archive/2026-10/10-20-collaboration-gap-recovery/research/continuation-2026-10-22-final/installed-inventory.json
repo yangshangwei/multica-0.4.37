@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-22T12:57:56.178976+00:00",
+  "source_head": "63c0beeb5d62496baccdebc670a9485d84e4ca60",
+  "source_sha256": {
+    "apps/desktop/src/main/index.ts": "2765bc28a321d3f9770a4e7f43170ae0fc0abfd9cffa039ff890d7aaf6fc802c",
+    "apps/desktop/src/main/runtime-config-loader.ts": "ef290261cb679f3eb006f918d6a9880214ba51cc9fbe5f0d9ac55d3344c0f151",
+    "apps/desktop/src/main/daemon-manager.ts": "3100e64ebe3c2d0e68c7f4d40df6e405d243cfb5287eea2692fd2c6395ca1888",
+    "apps/desktop/src/main/daemon-profile.ts": "bba842a681b0217cf5f1370315aea9f180e3f5740fba48ccb7ab189b282a06b0",
+    "apps/desktop/src/main/updater-preferences.ts": "c13d4606d76963d29db0f5f5f82c04bed7799b103e8e6ad3ea7d735a48e0366c",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+    "e2e/fixtures/collaboration-account-electron.mjs": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+    "server/internal/cli/config.go": "b73c435388ef0f0feb3052e9bebd0ffe18f95ec0b420186cd69c25fb34afad31",
+    "server/cmd/multica/cmd_auth.go": "b781af19168e6e7551ba9acae6ef1007942bfe46d87dcaae7723a973689057ab",
+    "server/internal/handler/collaboration_boundary_test.go": "6d5f6b6b7b111009d653b974a619b17c7315487bbaf0d143ba9daffadea15ebd"
+  },
+  "artifact_sha256": {
+    "/Applications/Multica.app/Contents/Info.plist": "ed41064f4af324e6744eed1f1f3a6e6abe6540d68d811fcea32f966c9a8a3be8",
+    "/Applications/Multica.app/Contents/Resources/app.asar": "3f22b8a1d068a8c48c5ffc8c9482ea669176d4b0eed92cfebfce6acb610e30bd",
+    "dist/release/v0.5.3/multica-desktop-0.5.3-linux-x86_64.AppImage": "4d68573198c36346e9777573231485b27f85fbd4588e5a290e24336cef44aa74",
+    "dist/release/v0.5.3/verification-v0.5.3.json": "489ad8e6453e1cd2cd4e3cb8a6f7054f4a1db9df67c214cd8c9f89ed4c2d2ee5",
+    "dist/release/0.6.7/verification-v0.6.7.json": "0cc921ee0747dfab042ce8d0fe853bbd4c748886fbfd38bd94ef5819ecb26a3a",
+    "dist/release/0.6.7/windows-verification.json": "d94b271ad95270e333c797214fa594ac12975786d3464dd1525f62e2ecbc5aa8",
+    ".omx/qa/release-0.6.7/saved-images.json": "80486abac76fa67f17669e31ada39dbdcc6fad34c130bb824705e5a12e9ec558",
+    "dist/release/0.6.7/multica-desktop-0.6.7-windows-x64.exe": "80570e094ce60eda7ba79689fec82909990b70a0e32181f62777136ce1749859"
+  },
+  "actual_mac_installation": {
+    "version": "0.5.2-86-g711569e04-dirty",
+    "app_id": "ai.multica.desktop",
+    "signature": "adhoc; no TeamIdentifier",
+    "released_client_proven": false,
+    "launched": false
+  },
+  "old_cli_package": {
+    "image_digest": "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+    "architecture": "linux/amd64",
+    "binary": "/app/multica",
+    "version_command": [
+      "docker",
+      "run",
+      "--rm",
+      "--read-only",
+      "--network",
+      "none",
+      "--platform",
+      "linux/amd64",
+      "--entrypoint",
+      "/app/multica",
+      "sha256:8d5ede4df2fa4b66d499803b95428b729fcb6ba753b3800e9b931b968ee16104",
+      "version",
+      "--output",
+      "json"
+    ],
+    "version": {
+      "arch": "amd64",
+      "commit": "9caea35808afc8d05fb6135bfc74d4bfb0b45cf1",
+      "date": "2026-10-17T05:56:15Z",
+      "go": "go1.26.9",
+      "os": "linux",
+      "version": "v0.6.7"
+    },
+    "provenance_type": "existing locally delivered offline OCI artifact, exact saved image digest matched",
+    "delivery": "local offline artifacts",
+    "github_release_published_by_origin_task": false,
+    "tag_pushed_by_origin_task": false,
+    "published_registry_trust_proven": false
+  },
+  "linux_full_main_prerequisites": {
+    "cached_appimage": "dist/release/v0.5.3/multica-desktop-0.5.3-linux-x86_64.AppImage",
+    "cached_appimage_origin": "locally built source+patch, not released",
+    "cached_node_image": "node:22-bookworm linux/arm64",
+    "xvfb_in_cached_node_image": false,
+    "linux_arm64_electron_cached": false,
+    "existing_wine": "4.0.1 mac x64; version only probed"
+  },
+  "constraints": {
+    "no_home_or_codex_home_override": true,
+    "no_user_config_or_preferences_modified": true,
+    "no_user_app_or_daemon_launched_or_changed": true,
+    "no_new_dependencies": true,
+    "production_gates_changed": false,
+    "provider_account_or_quota_accessed": false,
+    "full_AC31_or_AC32_claimed": false
+  }
+}

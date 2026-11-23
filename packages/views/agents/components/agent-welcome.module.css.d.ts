@@ -1,0 +1,25 @@
+declare const styles: {
+  readonly welcome: string;
+  readonly layout: string;
+  readonly intro: string;
+  readonly checklist: string;
+  readonly step: string;
+  readonly stepLink: string;
+  readonly showcase: string;
+  readonly viewport: string;
+  readonly track: string;
+  readonly card: string;
+  readonly scene: string;
+  readonly exampleLabel: string;
+  readonly prompt: string;
+  readonly promptText: string;
+  readonly caret: string;
+  readonly chips: string;
+  readonly assignment: string;
+  readonly issue: string;
+  readonly assigneeMenu: string;
+  readonly delivery: string;
+  readonly avatar: string;
+  readonly controls: string;
+};
+export default styles;

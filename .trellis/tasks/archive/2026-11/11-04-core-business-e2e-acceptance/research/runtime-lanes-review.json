@@ -1,0 +1,81 @@
+{
+  "verdict": "PASS",
+  "blocking_findings_open": 0,
+  "reviewed_at": "2026-11-04T16:39:57.632931+00:00",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "source_root": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+  "controller_sha256": "0a7b435357482a6cbfcf95ee42ce781d16000e9848db9d433687e5cd4d2073f5",
+  "allocation_request_sha256": "ac7c140720ce6954b2895dcf124c480f4ddcdb2b133188e8d52113e549b72bee",
+  "allocated_databases_sha256": "a12c6dc82fc7ab01fe7af9701738195126f157fe79210bdd14e6de094b9bd40a",
+  "runtime_manifest_sha256": "6ad02fb66afac1a0b0195d16d5f078f97fa6a72605d5bb4c1bc24e9bc8737fa2",
+  "lane_rows": 43,
+  "unique_specs": 42,
+  "review_mode": "Independent static code/manifest/fixture-contract review only; no controller/service/database execution",
+  "fixed_by_author_during_review": [
+    {
+      "finding": "Raw framework trace could expose password request bodies/session cookies in ordinary task evidence",
+      "resolution": "Framework JSON/stdout/stderr/trace/artifacts stay under task-private runtime/runs with0700 parents/umask077; ordinary evidence contains safe counters/statuses only"
+    },
+    {
+      "finding": "Controller exceptions after API swap lacked interrupted state and owned cleanup",
+      "resolution": "Interrupt records preserve original lane/phase; stop only after exact registry DB/env and API listener/PGID/source are re-proven, otherwise preserve uncertain resources for root"
+    },
+    {
+      "finding": "Installed legacy CLI and installed full Linux Main need namespace execution gate enabled",
+      "resolution": "pw14/pw15 requested enabled=true, host=false; root allocation ledger now agrees"
+    }
+  ],
+  "verified_controls": [
+    "Root permit hashes bind controller, request, allocated DB ledger, root allocation, base config, test env, renderer proof and runtime manifest",
+    "Before any registry/API mutation, previous execution record must be complete and unchanged; active Playwright records in both public and private evidence block entry",
+    "43 unique local database allocations; fresh migration/user/issue/admin/role read-only probe and exact prepared gate verification",
+    "Existing private registry checkout/ports/env checked; stop requires live API ownership proof; start uses existing manifest/load_env/save_manifest/start_api only, never up/ensure/migrate",
+    "Production Web PID/build/source, renderer PGID/artifact bytes/served index and rendered API/WS destinations checked before fixtures and after execution",
+    "Fresh per-spec configuration, isolated catalogs and unique synthetic admin; signup/bootstrap/login capability verified without recording passwords/tokens",
+    "Password browser sessions remain established by existing actual-login fixtures and cookies; controller setup uses bearer API identity checks appropriately",
+    "Per-spec API restart isolates registration budgets while preserving account/within-spec limiter behavior",
+    "Explicit controlled native/namespace/memory-provider binaries and current bundled CLI bound to manifest hashes; no commercial-model calls introduced",
+    "Zero retries, exclusive per-run directories, framework fail/flaky/skip prevent acceptance_pass; first run remains retained"
+  ],
+  "scope_notes": [
+    "PASS approves reviewed execution preparation only. Root must issue an exact permit after legacy-full-1 completes; current review did not inspect or mutate live service state.",
+    "Run initialization errors before ownership is proven preserve unknown resources. Ordinary exceptions after swap stop only an ownership-proven API; signal/process termination supervision and other native subprocess/container cleanup remain root responsibilities.",
+    "Successful last API remains alive for root inspection/final cleanup. No restoration to the previous legacy database is implicit.",
+    "Controller counters are per-spec provisional evidence. Root must reconcile exact441 inventory identities, ON/OFF configuration repetitions, package/native conditions and skipped reasons, then run final source/artifact/endpoint audit.",
+    "Runtime binary hashes are checked at admission; final full artifact/hash audit remains root-owned.",
+    "Packaged pw10/pw15 require independently proven current package artifacts and explicit readiness in permit; exclude them until ready. Real commercial model is user-deferred NOT_RUN.",
+    "Some existing specs write fixed ignored .omx/reports directories in the task checkout. Preserve/snapshot those per-run auxiliary artifacts before reruns; do not publish private authentication cache files.",
+    "Native macOS extra env pins declared package hashes, but the existing macOS journey does not assert all supplied hash fields itself (Windows does). Root must compare actual executable/ASAR/bundled CLI bytes with the pinned current package before and after this lane; this controller HOME extension does not establish package provenance by itself."
+  ],
+  "verification": {
+    "static_ast": "PASS",
+    "allocation_unique_and_gate_alignment": "PASS",
+    "reviewed_sha_alignment": "PASS",
+    "author_helper_checks_inspected": 17,
+    "controller_executed": false,
+    "database_access": false,
+    "services_changed": false,
+    "tests_executed": false,
+    "lint": "not applicable to static private-controller review",
+    "typecheck": "not applicable to static private-controller review"
+  },
+  "review_revision": 2,
+  "supersedes": "research/runtime-lanes-review.v1.json",
+  "mac_extra_env_sha256": "5b7fc9e9da2c9ac252154de4fbb81bb68aa71b27139d3a5338f1f2be04c33fc3",
+  "delta_review": {
+    "verdict": "PASS",
+    "changed_block": "lane-control.py:340-360",
+    "checks": [
+      "Extra env file must resolve under private task control directory, be mode0600 and match root-permitted SHA",
+      "Duplicate keys across inline/file extra env rejected",
+      "HOME exception applies only to exact collaboration-host-installed.spec.ts plus explicit native executable on macOS",
+      "Packaged HOME resolves inside task control directory and already exists; DSH path resolves inside task control directory and must not exist",
+      "Node HOME and Electron packaged acceptance home receive the same task-owned path",
+      "Browser cache explicitly uses existing macOS cache before HOME replacement; no cache download/start performed by review",
+      "All remaining extra fields must be strings with allowed prefixes and cannot override already-bound environment fields"
+    ],
+    "code_or_controller_execution": false,
+    "tests_or_builds": false,
+    "live_service_or_database_access": false
+  }
+}

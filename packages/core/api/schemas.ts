@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CollaborationAccountSummarySchema } from "../collaboration/schema";
 import type {
   Agent,
   AgentBuilderRuntimeSwitch,
@@ -91,6 +92,7 @@ import type {
   User,
   WebhookDelivery,
   WorkspaceMcpServer,
+  DeliveryCompletionHintResponse,
 } from "../types";
 import type { ListVCSConnectionsResponse, VCSProvider } from "../types/vcs";
 import type {
@@ -770,6 +772,9 @@ export interface AppConfigResponse {
   cli_install_command?: string;
   /** Explicit platform commands take priority over the legacy Unix command. */
   cli_install_commands?: CliInstallCommands;
+  /** Operator's desktop download page. Absent, empty, or not an absolute
+   * http(s) URL means no download entry point is shown. */
+  desktop_download_url?: string;
   workspace_creation_disabled?: boolean;
   /** Whether this deployment offers the self-hosted Git provider integration
    * (self-host only; off on the managed cloud). Absent/false hides the whole
@@ -970,6 +975,21 @@ const CliInstallCommandsSchema = z.object({
   linux: OptionalStringSchema,
 }).catch({});
 
+// Rendered as a link for anonymous visitors, so only an absolute http(s) URL
+// without credentials survives. `new URL("javascript:...")` parses, so the
+// scheme is checked explicitly; anything else reads as "not configured".
+const DesktopDownloadURLSchema = z.preprocess((value) => {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  try {
+    const url = new URL(trimmed);
+    const httpScheme = url.protocol === "http:" || url.protocol === "https:";
+    return httpScheme && url.hostname && !url.username && !url.password ? trimmed : undefined;
+  } catch {
+    return undefined;
+  }
+}, z.string().optional());
+
 const BooleanWithDefaultSchema = (fallback: boolean) =>
   z.preprocess(
     (value) => (typeof value === "boolean" ? value : undefined),
@@ -1003,6 +1023,7 @@ export const AppConfigSchema = z.object({
   daemon_app_url: OptionalStringSchema,
   cli_install_command: OptionalStringSchema,
   cli_install_commands: CliInstallCommandsSchema,
+  desktop_download_url: DesktopDownloadURLSchema,
   workspace_creation_disabled: BooleanWithDefaultSchema(false).optional(),
   vcs_integration_available: BooleanWithDefaultSchema(false).optional(),
   // Omission means an older server; malformed supplied values fail closed.
@@ -1024,6 +1045,7 @@ export const EMPTY_APP_CONFIG: AppConfigResponse = {
   daemon_app_url: "",
   cli_install_command: "",
   cli_install_commands: {},
+  desktop_download_url: "",
   workspace_creation_disabled: false,
   vcs_integration_available: false,
   messaging_integrations_enabled: false,
@@ -1272,6 +1294,12 @@ export const CommentSubIssueTaskResponseSchema = z.object({
 }).loose();
 
 export const IssueSchema = z.object({
+  // Authority-critical. A present malformed marker must never become ordinary.
+  collaboration: z.object({
+    creator: CollaborationAccountSummarySchema,
+    handler: CollaborationAccountSummarySchema,
+    has_external_collaborators: z.boolean(),
+  }).nullish(),
   admission_status: z.string().default("not_required"),
   id: z.string(),
   workspace_id: z.string(),
@@ -1329,6 +1357,29 @@ export const IssueSchema = z.object({
   // erase an otherwise usable issue returned by a mixed-version server.
   source_context: IssueSourceContextSchema.optional().catch(undefined),
 }).loose();
+
+/**
+ * Public fields returned by the human-only completion-hint read.
+ *
+ * Keep this schema intentionally strict about identity, revisions and the two
+ * non-authorizing flags. The server may include a private `evaluation` object
+ * when a caller supplies a key, but this client contract strips unknown fields
+ * so UI/CLI consumers cannot read or print evaluator material accidentally.
+ */
+export const DeliveryCompletionHintResponseSchema = z.object({
+  issue_id: z.string().min(1),
+  issue_revision: z.number().int().nonnegative(),
+  target_status: z.string().min(1),
+  target_category: z.string().min(1),
+  project_id: z.string().nullable(),
+  policy_revision: z.number().int().nonnegative(),
+  policy_mode: z.string().min(1),
+  hint: z.string().min(1),
+  reason: z.string().min(1),
+  checked_at: z.string().min(1),
+  enforced: z.literal(false),
+  usable_for_completion: z.literal(false),
+}) satisfies z.ZodType<DeliveryCompletionHintResponse>;
 
 export const ListIssuesResponseSchema = z.object({
   issues: z.array(IssueSchema).default([]),
@@ -1520,6 +1571,7 @@ const IssueTableGroupValueSchema = z.discriminatedUnion("kind", [
   z.object({
     kind: z.literal("assignee"),
     actor: IssueTableActorRefSchema.nullable(),
+    account: CollaborationAccountSummarySchema.optional(),
   }).loose(),
   z.object({
     kind: z.literal("project"),
@@ -2839,6 +2891,10 @@ export const InboxItemListSchema = z.array(
       body: z.string().nullish(),
       issue_status: z.string().nullish(),
       issue_priority: z.string().nullish(),
+      snoozed_until: z.string().datetime({ offset: true }).nullish(),
+      snooze_revision: z.number().int().nonnegative().optional(),
+      reminded_at: z.string().datetime({ offset: true }).nullish(),
+      reminder_reason: z.string().nullish(),
       read: z.boolean(),
       archived: z.boolean(),
       created_at: z.string(),
@@ -2847,6 +2903,17 @@ export const InboxItemListSchema = z.array(
 );
 
 export const EMPTY_INBOX_ITEMS: InboxItem[] = [];
+
+export const InboxSnoozeReceiptSchema = z.object({
+  workspace_id: z.string().uuid(),
+  group_kind: z.enum(["issue", "item"]),
+  group_id: z.string().uuid(),
+  revision: z.number().int().nonnegative(),
+  snoozed_until: z.string().datetime({ offset: true }).nullable(),
+  reminded_at: z.string().datetime({ offset: true }).nullable(),
+  reminder_reason: z.string().nullish(),
+  undo_token: z.string().min(1).nullish(),
+}).loose();
 
 // ---------------------------------------------------------------------------
 // Billing schemas (cloud-billing proxy surface)

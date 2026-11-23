@@ -1,0 +1,9 @@
+{
+  "finding": "LD-1",
+  "resolution": "runtime task deterministic_acceptance now explicitly records merged audit repairs and pending final joint candidate revalidation",
+  "file": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json",
+  "before": "historical_scope_passed; post_merge_audit_reopened_pending_fixes_and_joint_revalidation",
+  "after": "historical_scope_passed; audit_repairs_locally_merged; final_joint_candidate_revalidation_pending",
+  "product_changes": false,
+  "check": "JSON parsed and git diff --check exit0"
+}

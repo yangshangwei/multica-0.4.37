@@ -1,0 +1,80 @@
+{
+  "started_at": "2026-10-31T17:33:50.971733+00:00",
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "argv": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-count=1",
+    "-p",
+    "1",
+    "-parallel",
+    "2",
+    "-timeout",
+    "40m",
+    "-json",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostProviderAccountSmokeAuthorizes(SharedContextBase|OnlyNegotiatedClaimQueries)$"
+  ],
+  "command": "bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test -race -count=1 -p 1 -parallel 2 -timeout 40m -json -tags=agentintegration ./internal/daemon/collaborationrun -run '^TestHostProviderAccountSmokeAuthorizes(SharedContextBase|OnlyNegotiatedClaimQueries)$'",
+  "environment_file": "/tmp/multica_runtime_full_20261101_2392cdc0.env",
+  "environment_overrides": {
+    "GOMAXPROCS": "2",
+    "GOFLAGS": "",
+    "PGAPPNAME": "multica-runtime-final-backend"
+  },
+  "environment_unset": [],
+  "real_agent_gate_present": false,
+  "database": "multica_runtime_full_20261101_2392cdc0",
+  "candidate_source_tree_sha256": "e18295d0c892811870fb2f8d42572751288e26061f311ec157942553e4b6736b",
+  "finished_at": "2026-10-31T17:33:53.937494+00:00",
+  "elapsed_seconds": 2.966,
+  "exit_code": 0,
+  "counts": {
+    "top_level": {
+      "pass": 2
+    },
+    "subcase": {
+      "pass": 9
+    }
+  },
+  "started_top_level_count": 2,
+  "expected_top_level_count": 2,
+  "missing_expected_tests": [],
+  "outcomes": {
+    "pass": [
+      "TestHostProviderAccountSmokeAuthorizesSharedContextBase",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/legacy",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/both",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/handoff_only",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/unknown",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_version",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_method",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_token",
+      "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries"
+    ],
+    "skip": [],
+    "fail": []
+  },
+  "package_outcomes": [
+    {
+      "Time": "2026-11-01T01:33:53.899535+08:00",
+      "Action": "pass",
+      "Package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "Elapsed": 1.571
+    }
+  ],
+  "non_json_lines": [],
+  "skips": [],
+  "failures": [],
+  "successful_gate": true
+}

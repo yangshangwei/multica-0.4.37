@@ -1,0 +1,146 @@
+Red regression: explicitly empty start cursor
+Command: ['go', 'test', '-tags=agentintegration', './internal/daemon/collaborationrun', '-run', '^TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe$/empty_start$', '-count=1', '-v']
+Cwd: /Volumes/artisan/code/2026/mc-context-resume-20261031/server
+Exit code: 1
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/empty_start
+    host_context_experiment_fixture_test.go:283: invalid trial configuration was not rejected: err=exit status 1 output==== RUN   TestHostContextExperiment
+            host_context_experiment_test.go:166: provider version probe failed
+        --- FAIL: TestHostContextExperiment (0.02s)
+        FAIL
+    host_context_experiment_fixture_test.go:286: invalid trial configuration reached the provider version probe
+--- FAIL: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe (0.09s)
+    --- FAIL: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/empty_start (0.03s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.695s
+FAIL
+
+Green verification
+Command: ['gofmt', '-l', 'internal/daemon/collaborationrun/host_context_experiment_test.go', 'internal/daemon/collaborationrun/host_context_experiment_fixture_test.go']
+Exit code: 0
+
+Green verification
+Command: ['go', 'test', '-tags=agentintegration', './internal/daemon/collaborationrun', '-run', '^TestContextExperiment', '-count=1', '-v']
+Exit code: 0
+=== RUN   TestContextExperimentPersistsActualFakePromptAndCompleteHTTP
+    host_context_experiment_fixture_test.go:126: E2a_window_fact_newest trial 1: outcome=success verdict=pass context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentPersistsActualFakePromptAndCompleteHTTP (0.50s)
+=== RUN   TestContextExperimentKeepsProviderRecordPartial
+    host_context_experiment_fixture_test.go:219: E2a_window_fact_newest trial 1: outcome=success verdict=pass context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentKeepsProviderRecordPartial (0.41s)
+=== RUN   TestContextExperimentNeverPassesMissingOrFailedOutcome
+=== RUN   TestContextExperimentNeverPassesMissingOrFailedOutcome/missing
+    host_context_experiment_fixture_test.go:231: E2a_window_fact_newest trial 1: outcome=failure verdict=provider_failure_unclassified context_reads=0 puts=0 0s
+=== RUN   TestContextExperimentNeverPassesMissingOrFailedOutcome/failure
+    host_context_experiment_fixture_test.go:231: E2a_window_fact_newest trial 1: outcome=failure verdict=provider_failure_unclassified context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentNeverPassesMissingOrFailedOutcome (0.84s)
+    --- PASS: TestContextExperimentNeverPassesMissingOrFailedOutcome/missing (0.34s)
+    --- PASS: TestContextExperimentNeverPassesMissingOrFailedOutcome/failure (0.50s)
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/invalid_total
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/changed_total
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/empty_start
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/malformed_start
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/zero_start
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/negative_start
+=== RUN   TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/past_end
+--- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe (0.07s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/invalid_total (0.00s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/changed_total (0.00s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/empty_start (0.01s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/malformed_start (0.01s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/zero_start (0.00s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/negative_start (0.00s)
+    --- PASS: TestContextExperimentRejectsTrialConfigurationBeforeProviderProbe/past_end (0.01s)
+=== RUN   TestContextExperimentRequiresSemanticReviewAndRejectsPublicEvidence
+--- PASS: TestContextExperimentRequiresSemanticReviewAndRejectsPublicEvidence (0.00s)
+=== RUN   TestContextExperimentCannotPassAnUnexposedInjection
+--- PASS: TestContextExperimentCannotPassAnUnexposedInjection (0.00s)
+=== RUN   TestContextExperimentMemberScoreUsesPreregisteredScope
+--- PASS: TestContextExperimentMemberScoreUsesPreregisteredScope (0.00s)
+=== RUN   TestContextExperimentSourceCommitCoversModuleFromPackageDirectory
+=== RUN   TestContextExperimentSourceCommitCoversModuleFromPackageDirectory/framework_overlay
+=== RUN   TestContextExperimentSourceCommitCoversModuleFromPackageDirectory/dirty_sibling
+--- PASS: TestContextExperimentSourceCommitCoversModuleFromPackageDirectory (0.05s)
+    --- PASS: TestContextExperimentSourceCommitCoversModuleFromPackageDirectory/framework_overlay (0.01s)
+    --- PASS: TestContextExperimentSourceCommitCoversModuleFromPackageDirectory/dirty_sibling (0.00s)
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E2a_window_fact_newest/start=
+    host_context_experiment_fixture_test.go:409: E2a_window_fact_newest trial 1: outcome=success verdict=pass context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E2a_window_fact_newest trial 2: outcome=success verdict=pass context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E2a_window_fact_newest trial 3: outcome=success verdict=pass context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E6_relay/start=
+    host_context_experiment_fixture_test.go:409: E6_relay trial 1/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 1/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E6_relay trial 2/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 2/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E6_relay trial 3/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 3/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E1_memory_first/start=2
+    host_context_experiment_fixture_test.go:409: E1_memory_first trial 2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E1_memory_first trial 3: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E1_memory_first/start=3
+    host_context_experiment_fixture_test.go:409: E1_memory_first trial 3: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E6_relay/start=2
+    host_context_experiment_fixture_test.go:409: E6_relay trial 2/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 2/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_fixture_test.go:409: E6_relay trial 3/hop1: outcome=success verdict=manual_review_required context_reads=1 puts=1 0s
+    host_context_experiment_fixture_test.go:409: E6_relay_hop2 trial 3/hop2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence (6.60s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E2a_window_fact_newest/start= (1.33s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E6_relay/start= (2.47s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E1_memory_first/start=2 (0.74s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E1_memory_first/start=3 (0.41s)
+    --- PASS: TestContextExperimentThreeTrialsAndRelayHaveIndependentEvidence/E6_relay/start=2 (1.65s)
+=== RUN   TestContextExperimentResumedSeriesStopsOnIncompleteTrial
+=== RUN   TestContextExperimentResumedSeriesStopsOnIncompleteTrial/E1_memory_first
+    host_context_experiment_fixture_test.go:450: E1_memory_first trial 2: outcome=failure verdict=provider_failure_unclassified context_reads=1 puts=0 0s
+=== RUN   TestContextExperimentResumedSeriesStopsOnIncompleteTrial/E6_relay
+    host_context_experiment_fixture_test.go:450: E6_relay trial 2/hop1: outcome=failure verdict=provider_failure_unclassified context_reads=1 puts=0 0s
+--- PASS: TestContextExperimentResumedSeriesStopsOnIncompleteTrial (0.87s)
+    --- PASS: TestContextExperimentResumedSeriesStopsOnIncompleteTrial/E1_memory_first (0.42s)
+    --- PASS: TestContextExperimentResumedSeriesStopsOnIncompleteTrial/E6_relay (0.45s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	9.810s
+
+Green verification
+Command: ['go', 'test', '-tags=agentintegration', './internal/daemon/collaborationrun', '-run', '^TestHostContextExperiment$', '-count=1', '-v']
+Exit code: 0
+=== RUN   TestHostContextExperiment
+    host_context_experiment_test.go:122: real-model context experiments need MULTICA_RUN_REAL_AGENT_SMOKE=1 and MULTICA_CONTEXT_EXPERIMENT_OUT
+--- SKIP: TestHostContextExperiment (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.243s
+
+Green verification
+Command: ['go', 'vet', '-tags=agentintegration', './internal/daemon/collaborationrun']
+Exit code: 0
+
+Green verification
+Command: ['git', 'diff', '--check']
+Exit code: 0
+
+Full-entrypoint compile
+Command: ['go', 'test', '-c', '-tags=agentintegration', '-o', '/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/experiment-resume-review-entrypoint-pb04zx89/context.test', './internal/daemon/collaborationrun']
+Exit code: 0
+
+Full-entrypoint fake case
+{"case": "unset", "explicit_start": null, "labels": ["1", "2", "3"], "provider_calls": 3, "exit_code": 0, "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd"}
+=== RUN   TestHostContextExperiment
+=== RUN   TestHostContextExperiment/E1_memory_first
+    host_context_experiment_test.go:180: E1_memory_first trial 1: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_test.go:180: E1_memory_first trial 2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_test.go:180: E1_memory_first trial 3: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+--- PASS: TestHostContextExperiment (4.40s)
+    --- PASS: TestHostContextExperiment/E1_memory_first (1.20s)
+PASS
+
+Full-entrypoint fake case
+{"case": "resume", "explicit_start": "2", "labels": ["2", "3"], "provider_calls": 2, "exit_code": 0, "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd"}
+=== RUN   TestHostContextExperiment
+=== RUN   TestHostContextExperiment/E1_memory_first
+    host_context_experiment_test.go:180: E1_memory_first trial 2: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+    host_context_experiment_test.go:180: E1_memory_first trial 3: outcome=success verdict=manual_review_required context_reads=1 puts=0 0s
+--- PASS: TestHostContextExperiment (2.41s)
+    --- PASS: TestHostContextExperiment/E1_memory_first (0.80s)
+PASS

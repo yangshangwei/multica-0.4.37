@@ -1,0 +1,48 @@
+{
+  "label": "router-green-4",
+  "package": "./cmd/server",
+  "database": "m1s1_router_green_4_4432cb1f",
+  "private_environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1s1-uov5kzj5/environment.json",
+  "state": "complete",
+  "cluster_before": "postgres|17.11 (Debian 17.11-1.pgdg12+2)|100|24",
+  "source_head": "ade2298e24c3e99aa1982f9c6ddcbb1dc3bd29d3",
+  "runner_sha256": "d0db8a172cde5b8238ab662be362cd55acf2fe6d4a47281ae43e78ea0403d9e8",
+  "created_at": "2026-11-12T15:07:26.169922+00:00",
+  "migration_exit": 0,
+  "schema_migrations_count": "781",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./cmd/server",
+    "-count=1",
+    "-json",
+    "-timeout=15m",
+    "-run",
+    "TestDeliveryCompletionPreview"
+  ],
+  "exit_code": 0,
+  "named_test_results": [
+    {
+      "test": "TestDeliveryCompletionPreviewRouterAuthorizeCompleteRecover/legacy",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewRouterAuthorizeCompleteRecover/password",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewRouterAuthorizeCompleteRecover",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewRouterHumanAndWorkspaceBoundaries",
+      "action": "pass"
+    }
+  ],
+  "log_sha256": "9e401037ae151ed1667ef363be8eefb87f1af55c1f2699199f453cad279ba477"
+}

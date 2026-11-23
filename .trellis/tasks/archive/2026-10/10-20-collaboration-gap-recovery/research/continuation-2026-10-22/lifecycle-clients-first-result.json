@@ -1,0 +1,78 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "env",
+    "COLLABORATION_CROSS_CLIENT_DAEMON=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/daemon.test",
+    "COLLABORATION_CROSS_CLIENT_PROVIDER=/tmp/multica-gap-recovery-20261021-h6phxwo9/continuation-linux/cross-client-provider",
+    "COLLABORATION_CROSS_CLIENT_HOST_IPV4=192.168.65.254",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-lifecycle-controls.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--project=chromium",
+    "--reporter=json",
+    "--output=/tmp/multica-gap-recovery-20261021-h6phxwo9/lifecycle-clients-first"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-10-21T23:46:53.991824+00:00",
+  "preflight": "content-admin-preflight.json",
+  "scope": "Actual task-owned password/admin Web/Electron+contained Linux synthetic provider; no real provider account",
+  "source_sha256": {
+    "e2e/collaboration-lifecycle-controls.spec.ts": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+    "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+    "e2e/fixtures/collaboration-account-electron.mjs": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+    "e2e/fixtures/collaboration-cross-client-provider.go": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+  },
+  "binary_sha256": {
+    "daemon.test": "57f9aa8c2306992964aa714eef324fb5435e8218f143bb28702378adbe67d358",
+    "cross-client-provider": "80c3225030ff105764e3b65309d9b3e599c223a8914def1cb37ab6f3217a9f94"
+  },
+  "exit_code": 0,
+  "finished_at": "2026-10-21T23:47:54.610425+00:00",
+  "raw_sha256": "64b1212ca0017cec9d0e0ff39bad7b9a992490aad27e3380863a07b50ac11cda",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+  "stats": {
+    "startTime": "2026-10-21T23:46:55.059Z",
+    "duration": 59500.801,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "line": 14,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 32675,
+          "errors": [],
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "line": 14,
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "duration": 25286,
+          "errors": [],
+          "retry": 0
+        }
+      ]
+    }
+  ]
+}

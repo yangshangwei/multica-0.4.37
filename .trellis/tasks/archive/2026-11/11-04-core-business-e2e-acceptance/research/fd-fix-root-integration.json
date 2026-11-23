@@ -1,0 +1,12 @@
+{
+  "variant": "base1a32+FDfix",
+  "source_files": {
+    "server/cmd/multica/cmd_daemon.go": "7b0edfb4dea604c6383b05e799b90541f1ac0663a52bffa594a50acfef5d9833",
+    "server/cmd/multica/daemon_fd_linux.go": "6c3321981381b34a135a98566a2ec0a6b9607a9a9010cbb5c511846a768bc2d4",
+    "server/cmd/multica/daemon_fd_other.go": "82716ee1bf0756274b1700ee4f3ee7ed182f2b1a4180a77c69a6f6c6c3c0943c",
+    "server/cmd/multica/daemon_fd_linux_test.go": "3b01449bbe6c2c2776f6d7f6fb0631c11052d4fcc06752b69420112de3d81e6c"
+  },
+  "full_main": "PASS47.268s",
+  "restart_close_ms": 52.386916,
+  "old_candidate_result": "FAIL retained"
+}

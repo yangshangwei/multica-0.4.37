@@ -1,0 +1,205 @@
+{
+  "recorded_at": "2026-11-19T23:06:23.509449+00:00",
+  "head": "efdb597d6b80f930b5956de30bc8e4780e4023c7",
+  "source_edits": [],
+  "static": {
+    "supported_packages": "pass",
+    "forced_tasks": 15,
+    "cached_tasks": 0,
+    "lint_errors": 0,
+    "lint_warnings": 31,
+    "mobile_typecheck": "pass",
+    "mobile_lint_errors": 0,
+    "mobile_lint_warnings": 7
+  },
+  "vitest": [
+    {
+      "package": "core",
+      "files": 372,
+      "passed": 5251,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0,
+      "success": true,
+      "json": "artifacts/qa/full-e2e-20261120/static/unit-core.json",
+      "sha256": "befd50dc68a394027b79d0951ac498e685f50cd130ae272cfb6396fc34a9b10b"
+    },
+    {
+      "package": "views",
+      "files": 619,
+      "passed": 7606,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0,
+      "success": true,
+      "json": "artifacts/qa/full-e2e-20261120/static/unit-views.json",
+      "sha256": "095b631737433cd89f7a54eadb1e86348916c900aee7da42a38f3ca76feee231"
+    },
+    {
+      "package": "web",
+      "files": 34,
+      "passed": 298,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0,
+      "success": true,
+      "json": "artifacts/qa/full-e2e-20261120/static/unit-web.json",
+      "sha256": "5bfe62c1038de141e5aa184cb1633072e9060b5a4d7213d99f793d6f34b66d4a"
+    },
+    {
+      "package": "desktop",
+      "files": 103,
+      "passed": 1294,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0,
+      "success": true,
+      "json": "artifacts/qa/full-e2e-20261120/static/unit-desktop.json",
+      "sha256": "9ee421286255b7c12dfb9a6b73625d4c325f1d439f7715f85149cc67d321763d"
+    },
+    {
+      "package": "docs",
+      "files": 10,
+      "passed": 64,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0,
+      "success": true,
+      "json": "artifacts/qa/full-e2e-20261120/static/unit-docs.json",
+      "sha256": "2f3d031354827b168919d60643a118f4eadf1d485f34c2a7a005c8f9d3870262"
+    },
+    {
+      "package": "mobile",
+      "files": 28,
+      "passed": 196,
+      "failed": 0,
+      "skipped": 0,
+      "todo": 0,
+      "success": true,
+      "json": "artifacts/qa/full-e2e-20261120/static/unit-mobile.json",
+      "sha256": "af1408a136c7ea482c50adb9d4cccb954a18e0d379cc7391ae7c0424ad1fc279"
+    }
+  ],
+  "vitest_total": {
+    "files": 1166,
+    "passed": 14709,
+    "failed": 0,
+    "skipped": 0
+  },
+  "node_runs": [
+    {
+      "name": "node-scripts",
+      "log": "artifacts/qa/full-e2e-20261120/static/node-scripts.log",
+      "counts": {
+        "tests": 212,
+        "pass": 207,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 5,
+        "todo": 0
+      },
+      "skips": [
+        "ok 137 - real Compose preserves every literal path character after installation and reinstallation # SKIP",
+        "ok 166 - actual loaded frontend image installs with UID permissions and durable Compose dotenv escaping # SKIP",
+        "ok 167 - real shell entry rejects CR/LF directory values before mkdir or any bind mount # SKIP",
+        "ok 168 - real shell entry preserves quotes and commas in every Docker bind source # SKIP",
+        "ok 179 - PostgreSQL fixture isolation, idempotency and reset guards # SKIP"
+      ],
+      "failures": []
+    },
+    {
+      "name": "compose-changelog-smoke",
+      "log": "artifacts/qa/full-e2e-20261120/static/compose-changelog-smoke.log",
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "skips": [],
+      "failures": []
+    },
+    {
+      "name": "offline-real-image",
+      "log": "artifacts/qa/full-e2e-20261120/static/offline-real-image.log",
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "skips": [],
+      "failures": []
+    },
+    {
+      "name": "native-fixture-node",
+      "log": "artifacts/qa/full-e2e-20261120/static/native-fixture-node.log",
+      "counts": {
+        "tests": 119,
+        "pass": 118,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "skips": [],
+      "failures": [
+        "not ok 98 - stage execution registers the original 120-second metric horizon through its real private control"
+      ]
+    },
+    {
+      "name": "stage-control-replay",
+      "log": "artifacts/qa/full-e2e-20261120/static/stage-control-replay.log",
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "skips": [],
+      "failures": []
+    }
+  ],
+  "supplemental": {
+    "ui_wildcard_exports": "pass; 63 guarded files",
+    "ui_wildcard_regression": "pass; isolated copy to avoid shared source mutation",
+    "entrypoint": "pass",
+    "installer": "pass",
+    "makefile_build_naming": "pass",
+    "selfhost_config": "pass",
+    "python_localization": {
+      "passed": 17,
+      "failed": 0
+    },
+    "helm_config": "pass; official task-local Helm 3.19.0 checksum verified and removed",
+    "mobile_ios_runner": "pass"
+  },
+  "resolved_environment_failure": {
+    "test": "stage execution registers the original 120-second metric horizon through its real private control",
+    "initial": "Missing PAY241_R19_CAPTURE_DIR/PAY241_R19_COMMAND_PATH",
+    "replay": "Passed unchanged test after owned 0700 directory and SHA-bound command setup; retained real socket request/ack and 120-second horizon",
+    "source_change": false
+  },
+  "limitations": [
+    "Mobile checks cover static and headless helpers/data only, not real iOS/Android rendering.",
+    "Node fixture tests prove fixture behavior, not complete native runtime acceptance.",
+    "Loaded Docker image serves only Node runtime for mounted current scripts; does not verify current Web image.",
+    "PowerShell installer suite not run: pwsh unavailable and Windows-specific environment not present.",
+    "31 main and 7 mobile existing lint warnings remain; no errors or product change justified by this lane."
+  ],
+  "seed_integration_handoff": {
+    "status": "pass",
+    "owner": "/root/backend_checks",
+    "tests": 13,
+    "failed": 0,
+    "skipped": 0,
+    "evidence": "artifacts/qa/full-e2e-20261120/backend/seed-integration.log",
+    "note": "Fresh native ARM64 disposable clone with synthetic owner; cleanup verified by owning lane"
+  }
+}

@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import test from "node:test";
 import { scripts } from "./changelog-test-helpers.mjs";
 
@@ -10,6 +12,66 @@ const workflow = readFileSync(resolve(scripts, "../.github/workflows/release.yml
 const jobs = new Map();
 for (const match of workflow.matchAll(/^ {2}([a-z][a-z0-9-]*):\n([\s\S]*?)(?=^ {2}[a-z][a-z0-9-]*:|$(?![\s\S]))/gm)) jobs.set(match[1], match[2]);
 const needs = (name) => (/^ {4}needs: (.+)$/m.exec(jobs.get(name) ?? "")?.[1] ?? "").replace(/[[\]]/g, "").split(/[,\s]+/).filter(Boolean);
+
+test("release verification prepares its declared database before running required tests", () => {
+  const body = jobs.get("verify");
+  assert.match(body, /image: pgvector\/pgvector:pg17/);
+  const database = /^ {10}POSTGRES_DB: (\S+)$/m.exec(body)?.[1];
+  assert.equal(database, "multica_release_test");
+  const databaseURL = /^ {6}DATABASE_URL: (\S+)$/m.exec(body)?.[1];
+  assert.ok(databaseURL, "release verification requires an explicit DATABASE_URL");
+  assert.equal(new URL(databaseURL).pathname, `/${database}`);
+  assert.ok(body.includes(`pg_isready -U multica -d ${database}`));
+  assert.match(body, /image: redis:7-alpine/);
+  assert.match(body, /REDIS_TEST_URL: redis:\/\/localhost:6379\/1/);
+  const identityCheck = body.indexOf("SELECT current_database()");
+  const migration = body.indexOf("go -C server run ./cmd/migrate up");
+  const tests = body.indexOf("bash scripts/test-go.sh --race");
+  assert.ok(identityCheck > 0 && identityCheck < migration && migration < tests,
+    "the selected database must be verified and migrated before Go tests");
+  assert.match(body, /TASK_DATABASE_NAME: multica_release_test/);
+});
+
+test("backend CI runs the offline database and release regressions when their inputs change", () => {
+  const ci = readFileSync(resolve(scripts, "../.github/workflows/ci.yml"), "utf8");
+  const filters = / {12}backend:\n([\s\S]*?) {12}sqlc:/.exec(ci)?.[1] ?? "";
+  for (const path of [".github/workflows/release.yml", "scripts/changelog-workflow.test.mjs", "scripts/changelog-test-helpers.mjs", "scripts/go-test-database-preconditions.test.mjs"]) {
+    assert.ok(filters.includes(`'${path}'`), `${path} must trigger backend verification`);
+  }
+  const backend = /^ {2}backend-tests:\n([\s\S]*?)(?=^ {2}[a-z][a-z0-9-]*:)/m.exec(ci)?.[1] ?? "";
+  assert.match(backend, /actions\/setup-node@\S+[\s\S]*?node-version: 22/);
+  assert.match(backend, /node --test scripts\/changelog-workflow\.test\.mjs scripts\/go-test-database-preconditions\.test\.mjs/);
+});
+
+test("CI and release initialize a fresh private history signing key before Go tests", (t) => {
+  const ci = readFileSync(resolve(scripts, "../.github/workflows/ci.yml"), "utf8");
+  const backend = /^ {2}backend-tests:\n([\s\S]*?)(?=^ {2}[a-z][a-z0-9-]*:)/m.exec(ci)?.[1] ?? "";
+  const directory = mkdtempSync(join(tmpdir(), "multica-ci-signing-"));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const keys = new Set();
+  for (const [name, body] of [["ci", backend], ["release", jobs.get("verify")]]) {
+    const setup = body.indexOf("- name: Initialize test-only signing key");
+    const tests = body.indexOf("bash scripts/go-test-with-agent-cli-guard.sh");
+    assert.ok(setup >= 0 && setup < tests, `${name}: initialize before any Go test process can cache the default key`);
+    const step = body.slice(setup).split(/\n {6}- name:/, 1)[0];
+    const run = /\n {8}run: \|\n([\s\S]*)/.exec(step)?.[1];
+    assert.ok(run, `${name}: missing signing-key initializer`);
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const envFile = join(directory, `${name}-${attempt}.env`);
+      const result = spawnSync("bash", ["-e", "-c", run.replace(/^ {10}/gm, "")], {
+        env: { ...process.env, GITHUB_ENV: envFile }, encoding: "utf8",
+      });
+      assert.equal(result.status, 0, result.stderr);
+      const setting = readFileSync(envFile, "utf8");
+      assert.match(setting, /^JWT_SECRET=[a-f0-9]{64}\n$/);
+      const key = setting.slice("JWT_SECRET=".length).trimEnd();
+      assert.equal(result.stdout, `::add-mask::${key}\n`, "register only the runner masking command before later step environment logging");
+      assert.equal(result.stderr, "");
+      assert.equal(keys.has(setting), false, "each test job needs its own generated key");
+      keys.add(setting);
+    }
+  }
+});
 
 test("repository-wide serialization starts before discovery and never cancels an active release", () => {
   assert.match(workflow.split("\njobs:")[0], /concurrency:\n {2}group: changelog-release-\$\{\{ github.repository \}\}\n {2}cancel-in-progress: false/);

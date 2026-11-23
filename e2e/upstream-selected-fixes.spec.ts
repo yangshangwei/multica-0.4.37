@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test, expect, type Locator, type Page, type Response } from "@playwright/test";
 import pg from "pg";
@@ -312,14 +313,14 @@ test.describe("selectively merged upstream regressions", () => {
 
         await authenticateBrowser(page, member, "agent");
         await page.goto("/" + scenario.workspace.slug + "/issues", { waitUntil: "domcontentloaded" });
-        await page.getByRole("button", { name: "New Issue", exact: true }).click();
+        await openNewIssue(page);
         const dialog = page.getByRole("dialog", { name: "Quick create issue", exact: true });
         await expect(dialog).toBeVisible({ timeout: 30_000 });
-        await dialog.getByRole("button", { name: /Send to/ }).click();
+        await dialog.getByRole("button", { name: /^Send to (?!agent$)/ }).click();
         await page.locator("button[data-picker-item]").filter({ hasText: agent.name }).click();
         await expect(dialog.getByText(/doesn't report a CLI version/)).toHaveCount(0);
         await dialog.locator('.ProseMirror[contenteditable="true"]').fill("Create a fixture issue without running a real CLI.");
-        const create = dialog.getByRole("button", { name: "Create", exact: true });
+        const create = dialog.getByRole("button", { name: "Send to agent", exact: true });
         await expect(create).toBeEnabled();
         const submitted = page.waitForResponse((response) =>
           isApiResponse(response, "/api/issues/quick-create", "POST"));

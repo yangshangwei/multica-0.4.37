@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-22T00:12:27.083586+00:00",
+  "task": "10-20-collaboration-gap-recovery",
+  "acceptance": [
+    "AC34",
+    "AC57"
+  ],
+  "ownership": [
+    "e2e/collaboration-lane-close-controls.spec.ts",
+    "e2e/fixtures/collaboration-lane-close-controls.ts"
+  ],
+  "gap": "Current same-lane visible Stop/Resume and complete/cancel during genuine pending natural termination proof",
+  "reuse": [
+    "collaboration-lifecycle-controls.ts",
+    "collaboration-cross-client-execution.ts",
+    "collaboration-native.ts"
+  ],
+  "product_changes": false,
+  "runtime_gate_changes": false,
+  "real_provider_accounts": false,
+  "excluded": [
+    "schema/router/shared fixture edits",
+    "matrix/progress/spec/commit coordination",
+    "installed Main and non-Linux execution"
+  ]
+}

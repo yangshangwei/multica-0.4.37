@@ -1,0 +1,534 @@
+{
+  "at": "2026-10-21T16:23:13.404553+00:00",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "scope": "Canonical AC84 correlation, not automatic acceptance",
+  "records": [
+    {
+      "artifact": "go-service-partition-1.jsonl",
+      "artifact_sha256": "908053a239dfee9f6957b2bd947049b837ff42322563cafa8476e5e03a1dd4e7",
+      "line": 1121,
+      "identity": "internal/service::TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions",
+      "event": {
+        "Time": "2026-10-21T13:06:07.48508+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions",
+        "Elapsed": 0.61
+      },
+      "source": {
+        "path": "server/internal/service/collaboration_runtime_preparation_test.go",
+        "line": 145,
+        "sha256": "5fdb09fa47c4f3e8df0078af9a9eae9324e9544364534afaa1fd79439f46b385",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-1.jsonl",
+      "artifact_sha256": "908053a239dfee9f6957b2bd947049b837ff42322563cafa8476e5e03a1dd4e7",
+      "line": 1146,
+      "identity": "internal/service::TestCollaborationRuntimePreparationScopeAndRevocation",
+      "event": {
+        "Time": "2026-10-21T13:06:08.131419+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationRuntimePreparationScopeAndRevocation",
+        "Elapsed": 0.65
+      },
+      "source": {
+        "path": "server/internal/service/collaboration_runtime_preparation_test.go",
+        "line": 203,
+        "sha256": "5fdb09fa47c4f3e8df0078af9a9eae9324e9544364534afaa1fd79439f46b385",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-1.jsonl",
+      "artifact_sha256": "908053a239dfee9f6957b2bd947049b837ff42322563cafa8476e5e03a1dd4e7",
+      "line": 1208,
+      "identity": "internal/service::TestCollaborationRuntimePreparationRejectsAnotherLiveRunAndIssueFile",
+      "event": {
+        "Time": "2026-10-21T13:06:11.944451+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationRuntimePreparationRejectsAnotherLiveRunAndIssueFile",
+        "Elapsed": 1.04
+      },
+      "source": {
+        "path": "server/internal/service/collaboration_runtime_preparation_test.go",
+        "line": 439,
+        "sha256": "5fdb09fa47c4f3e8df0078af9a9eae9324e9544364534afaa1fd79439f46b385",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-1.jsonl",
+      "artifact_sha256": "908053a239dfee9f6957b2bd947049b837ff42322563cafa8476e5e03a1dd4e7",
+      "line": 1579,
+      "identity": "internal/service::TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+      "event": {
+        "Time": "2026-10-21T13:06:50.432489+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+        "Elapsed": 4.71
+      },
+      "source": {
+        "path": "server/internal/service/legacy_execution_boundary_test.go",
+        "line": 139,
+        "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-1.jsonl",
+      "artifact_sha256": "908053a239dfee9f6957b2bd947049b837ff42322563cafa8476e5e03a1dd4e7",
+      "line": 1643,
+      "identity": "internal/service::TestLegacyExecutionCannotInheritCollaborationComments",
+      "event": {
+        "Time": "2026-10-21T13:06:52.307824+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestLegacyExecutionCannotInheritCollaborationComments",
+        "Elapsed": 0.65
+      },
+      "source": {
+        "path": "server/internal/service/legacy_execution_boundary_test.go",
+        "line": 315,
+        "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-2.jsonl",
+      "artifact_sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d",
+      "line": 3041,
+      "identity": "internal/service::TestCollaborationSquadContinuationContextKeepsLatestMemberReply",
+      "event": {
+        "Time": "2026-10-21T13:35:41.142778+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationSquadContinuationContextKeepsLatestMemberReply",
+        "Elapsed": 1.23
+      },
+      "source": {
+        "path": "server/internal/service/collaboration_squad_boundary_test.go",
+        "line": 168,
+        "sha256": "3f3b6acaff664f5437f79e872068f30f6d5cb232cb9cfcf3db9252b1609a0730",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-2.jsonl",
+      "artifact_sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d",
+      "line": 3053,
+      "identity": "internal/service::TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary",
+      "event": {
+        "Time": "2026-10-21T13:35:44.162481+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary",
+        "Elapsed": 0.58
+      },
+      "source": {
+        "path": "server/internal/service/collaboration_squad_test.go",
+        "line": 136,
+        "sha256": "9846be39515723e29e6d2a3f5f97ad3f2bfb12d3fdd9ef7d7ca2f6e57f573326",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-2.jsonl",
+      "artifact_sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d",
+      "line": 3345,
+      "identity": "internal/service::TestCollaborationCreateRejectsUntrustedPrincipalBeforeDependencies",
+      "event": {
+        "Time": "2026-10-21T13:36:06.900348+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationCreateRejectsUntrustedPrincipalBeforeDependencies",
+        "Elapsed": 0
+      },
+      "source": {
+        "path": "server/internal/service/collaboration_test.go",
+        "line": 227,
+        "sha256": "3c8b9ef3be8809966946e03b0927f336b3f0611392fe563fb1dd6edabd321c52",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-2.jsonl",
+      "artifact_sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d",
+      "line": 3441,
+      "identity": "internal/service::TestCollaborationWorkflowNotificationsAndWorkbench",
+      "event": {
+        "Time": "2026-10-21T13:36:11.803083+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationWorkflowNotificationsAndWorkbench",
+        "Elapsed": 0.22
+      },
+      "source": {
+        "path": "server/internal/service/collaboration_workflow_test.go",
+        "line": 308,
+        "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-2.jsonl",
+      "artifact_sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d",
+      "line": 3637,
+      "identity": "internal/service::TestSourceContextCollaborationBuildersDenyBeforeProjection",
+      "event": {
+        "Time": "2026-10-21T13:36:21.627493+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestSourceContextCollaborationBuildersDenyBeforeProjection",
+        "Elapsed": 0.23
+      },
+      "source": {
+        "path": "server/internal/service/source_context_collaboration_test.go",
+        "line": 81,
+        "sha256": "a146e35b0a06c04f03445215c4a459bfa02cbea2449b9dde2f314261b30adf65",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-2.jsonl",
+      "artifact_sha256": "1a1edb5507cf4a6b4259194d2d8abfe5c1d2ebb9f56672f52353d999ef07d99d",
+      "line": 3649,
+      "identity": "internal/service::TestSourceContextCollaborationDirectWritersCannotUsePrebuiltCapture",
+      "event": {
+        "Time": "2026-10-21T13:36:21.913929+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestSourceContextCollaborationDirectWritersCannotUsePrebuiltCapture",
+        "Elapsed": 0.29
+      },
+      "source": {
+        "path": "server/internal/service/source_context_collaboration_test.go",
+        "line": 127,
+        "sha256": "a146e35b0a06c04f03445215c4a459bfa02cbea2449b9dde2f314261b30adf65",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-service-partition-3.jsonl",
+      "artifact_sha256": "876f6ca2aea52576b2d3da19c3da33abe7de67e30969af1d99af13987270623d",
+      "line": 5621,
+      "identity": "internal/service::TestSourceContextOrdinaryChildRetainsOwnCaptureAndWorkspaceScope",
+      "event": {
+        "Time": "2026-10-21T13:13:13.001534+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestSourceContextOrdinaryChildRetainsOwnCaptureAndWorkspaceScope",
+        "Elapsed": 0.13
+      },
+      "source": {
+        "path": "server/internal/service/source_context_collaboration_test.go",
+        "line": 107,
+        "sha256": "a146e35b0a06c04f03445215c4a459bfa02cbea2449b9dde2f314261b30adf65",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-other-packages.jsonl",
+      "artifact_sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8",
+      "line": 34576,
+      "identity": "internal/handler::TestLegacyIssueDetailDoesNotExposeCollaborationToMachine",
+      "event": {
+        "Time": "2026-10-21T13:16:22.98014+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/handler",
+        "Test": "TestLegacyIssueDetailDoesNotExposeCollaborationToMachine",
+        "Elapsed": 0.01
+      },
+      "source": {
+        "path": "server/internal/handler/collaboration_boundary_test.go",
+        "line": 311,
+        "sha256": "6d5f6b6b7b111009d653b974a619b17c7315487bbaf0d143ba9daffadea15ebd",
+        "matches_initial_file_manifest": false,
+        "current_function_matches_retained_snapshot": true,
+        "current_function_sha256": "afb30d3b3fae2763a911b1b62ef1a42613ce34d7bd082dcded45233d3c7dda7d"
+      }
+    },
+    {
+      "artifact": "go-other-packages.jsonl",
+      "artifact_sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8",
+      "line": 34600,
+      "identity": "internal/handler::TestCollaborationMachineSearchAndListKeepOnlyReferences",
+      "event": {
+        "Time": "2026-10-21T13:16:23.117333+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/handler",
+        "Test": "TestCollaborationMachineSearchAndListKeepOnlyReferences",
+        "Elapsed": 0.14
+      },
+      "source": {
+        "path": "server/internal/handler/collaboration_boundary_test.go",
+        "line": 321,
+        "sha256": "6d5f6b6b7b111009d653b974a619b17c7315487bbaf0d143ba9daffadea15ebd",
+        "matches_initial_file_manifest": false,
+        "current_function_matches_retained_snapshot": true,
+        "current_function_sha256": "288bdb90d949172fa8674ac7bec66711e1a39c3ea7f04df47eb32695684e897a"
+      }
+    },
+    {
+      "artifact": "go-other-packages.jsonl",
+      "artifact_sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8",
+      "line": 34604,
+      "identity": "internal/handler::TestCollaborationMachineReferencesDoNotRevealStatusOrPrivateOrdering",
+      "event": {
+        "Time": "2026-10-21T13:16:23.141118+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/handler",
+        "Test": "TestCollaborationMachineReferencesDoNotRevealStatusOrPrivateOrdering",
+        "Elapsed": 0.02
+      },
+      "source": {
+        "path": "server/internal/handler/collaboration_boundary_test.go",
+        "line": 425,
+        "sha256": "6d5f6b6b7b111009d653b974a619b17c7315487bbaf0d143ba9daffadea15ebd",
+        "matches_initial_file_manifest": false,
+        "current_function_matches_retained_snapshot": true,
+        "current_function_sha256": "a88b0578436eebe650d85c78ebb1e68c105a1c7bb212b1394280c241239efb3c"
+      }
+    },
+    {
+      "artifact": "go-other-packages.jsonl",
+      "artifact_sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8",
+      "line": 35312,
+      "identity": "internal/handler::TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials",
+      "event": {
+        "Time": "2026-10-21T13:16:29.879078+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/handler",
+        "Test": "TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials",
+        "Elapsed": 0
+      },
+      "source": {
+        "path": "server/internal/handler/collaboration_runtime_test.go",
+        "line": 16,
+        "sha256": "e718ce270774f75809826ef458f8b294697000ae6c0039fa9ca3d7f54a18b243",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-other-packages.jsonl",
+      "artifact_sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8",
+      "line": 35324,
+      "identity": "internal/handler::TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes",
+      "event": {
+        "Time": "2026-10-21T13:16:29.947897+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/handler",
+        "Test": "TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes",
+        "Elapsed": 0
+      },
+      "source": {
+        "path": "server/internal/handler/collaboration_runtime_test.go",
+        "line": 73,
+        "sha256": "e718ce270774f75809826ef458f8b294697000ae6c0039fa9ca3d7f54a18b243",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-other-packages.jsonl",
+      "artifact_sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8",
+      "line": 35392,
+      "identity": "internal/handler::TestSourceCollaborationTableAndChildMachineBoundary",
+      "event": {
+        "Time": "2026-10-21T13:16:30.445244+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/handler",
+        "Test": "TestSourceCollaborationTableAndChildMachineBoundary",
+        "Elapsed": 0.03
+      },
+      "source": {
+        "path": "server/internal/handler/collaboration_source_test.go",
+        "line": 105,
+        "sha256": "4afa5217dc17e91f3462376d47e89c02c103318dd2bb63e0f1aed35fea54a655",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-other-packages.jsonl",
+      "artifact_sha256": "1e71354c2c8743c79c02081dba8450981af0e2b91c699afa1ded78cb470e37f8",
+      "line": 44136,
+      "identity": "internal/handler::TestPluginActionCannotReachACollaborationIssue",
+      "event": {
+        "Time": "2026-10-21T13:18:01.294951+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/handler",
+        "Test": "TestPluginActionCannotReachACollaborationIssue",
+        "Elapsed": 0.03
+      },
+      "source": {
+        "path": "server/internal/handler/plugin_action_test.go",
+        "line": 386,
+        "sha256": "24dbd91910da651907dab49a29b54739341ad1e20cfd7064f80bf5d9f60d2d8e",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "outbound-boundary-adjacent-first.jsonl",
+      "artifact_sha256": "47273d184bb3ab79f41ce77be045d2dd3880b2ffc6d57b95e3b04a2a76ea529e",
+      "line": 43,
+      "identity": "internal/service::TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary",
+      "event": {
+        "Time": "2026-10-22T00:12:46.058657+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary",
+        "Elapsed": 1.18
+      },
+      "source": {
+        "path": "server/internal/service/collaboration_squad_test.go",
+        "line": 136,
+        "sha256": "9846be39515723e29e6d2a3f5f97ad3f2bfb12d3fdd9ef7d7ca2f6e57f573326",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "outbound-boundary-adjacent-first.jsonl",
+      "artifact_sha256": "47273d184bb3ab79f41ce77be045d2dd3880b2ffc6d57b95e3b04a2a76ea529e",
+      "line": 187,
+      "identity": "internal/service::TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+      "event": {
+        "Time": "2026-10-22T00:12:50.801398+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+        "Elapsed": 4.74
+      },
+      "source": {
+        "path": "server/internal/service/legacy_execution_boundary_test.go",
+        "line": 139,
+        "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "outbound-boundary-adjacent-first.jsonl",
+      "artifact_sha256": "47273d184bb3ab79f41ce77be045d2dd3880b2ffc6d57b95e3b04a2a76ea529e",
+      "line": 211,
+      "identity": "internal/service::TestLegacyExecutionCannotInheritCollaborationComments",
+      "event": {
+        "Time": "2026-10-22T00:12:51.456586+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestLegacyExecutionCannotInheritCollaborationComments",
+        "Elapsed": 0.66
+      },
+      "source": {
+        "path": "server/internal/service/legacy_execution_boundary_test.go",
+        "line": 315,
+        "sha256": "8488f844a6525deed9540ac9fc1de3ac4636cd84000268a0aa540ba58a6c7e28",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-remaining-packages.jsonl",
+      "artifact_sha256": "de59266def0bf98ea12d38d50339d84834f043ccc16e5ddf01339ec98f21bdd4",
+      "line": 3947,
+      "identity": "internal/integrations/dingtalk::TestOutboundFailsClosedWithoutTaskDeliverySnapshot",
+      "event": {
+        "Time": "2026-10-21T13:17:50.930174+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+        "Test": "TestOutboundFailsClosedWithoutTaskDeliverySnapshot",
+        "Elapsed": 0
+      },
+      "source": {
+        "path": "server/internal/integrations/dingtalk/outbound_test.go",
+        "line": 29,
+        "sha256": "f4f26e321a0cdac9a7df722498821a1c904d72d92bcbda6e0f1923801b5cc72d",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-remaining-packages.jsonl",
+      "artifact_sha256": "de59266def0bf98ea12d38d50339d84834f043ccc16e5ddf01339ec98f21bdd4",
+      "line": 5121,
+      "identity": "internal/integrations/lark::TestPatcherSkipsDirectChatTaskOnBoundSession",
+      "event": {
+        "Time": "2026-10-21T13:18:00.507557+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+        "Test": "TestPatcherSkipsDirectChatTaskOnBoundSession",
+        "Elapsed": 0
+      },
+      "source": {
+        "path": "server/internal/integrations/lark/outbound_test.go",
+        "line": 407,
+        "sha256": "a20edd08f4911a7f619215a5128d31d07bd19ac8b2461fa5560a365350fa9012",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-remaining-packages.jsonl",
+      "artifact_sha256": "de59266def0bf98ea12d38d50339d84834f043ccc16e5ddf01339ec98f21bdd4",
+      "line": 7334,
+      "identity": "internal/integrations/telegram::TestResolveTargetFailsClosedWhenDeliveryLookupFails",
+      "event": {
+        "Time": "2026-10-21T13:18:07.513222+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+        "Test": "TestResolveTargetFailsClosedWhenDeliveryLookupFails",
+        "Elapsed": 0
+      },
+      "source": {
+        "path": "server/internal/integrations/telegram/outbound_test.go",
+        "line": 130,
+        "sha256": "8973ac8268ac0e4f5ba805d8a90ece99b1cbe4424187eca2e0bc45cb24b60b7a",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-remaining-packages.jsonl",
+      "artifact_sha256": "de59266def0bf98ea12d38d50339d84834f043ccc16e5ddf01339ec98f21bdd4",
+      "line": 10736,
+      "identity": "internal/integrations/wecom::TestProcessEvent_DoesNotPushAWebUIAnswerIntoTheRoom",
+      "event": {
+        "Time": "2026-10-21T13:19:36.058867+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+        "Test": "TestProcessEvent_DoesNotPushAWebUIAnswerIntoTheRoom",
+        "Elapsed": 0
+      },
+      "source": {
+        "path": "server/internal/integrations/wecom/outbound_test.go",
+        "line": 366,
+        "sha256": "33533aad78847b3d77dda765b419c814a96257bc8a06ce18ef6591daa7c295e5",
+        "matches_initial_file_manifest": true
+      }
+    },
+    {
+      "artifact": "go-remaining-packages.jsonl",
+      "artifact_sha256": "de59266def0bf98ea12d38d50339d84834f043ccc16e5ddf01339ec98f21bdd4",
+      "line": 10907,
+      "identity": "internal/integrations/wecom::TestProcessEvent_FailsClosedWhenTheTaskIdIsMissing",
+      "event": {
+        "Time": "2026-10-21T13:19:36.245647+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+        "Test": "TestProcessEvent_FailsClosedWhenTheTaskIdIsMissing",
+        "Elapsed": 0
+      },
+      "source": {
+        "path": "server/internal/integrations/wecom/outbound_test.go",
+        "line": 398,
+        "sha256": "33533aad78847b3d77dda765b419c814a96257bc8a06ce18ef6591daa7c295e5",
+        "matches_initial_file_manifest": true
+      }
+    }
+  ],
+  "missing_current_end_events": [],
+  "source_manifest": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/source-environment-manifest.json",
+  "acceptance_recommendation": "partial evidence assembled; coordinator/independent review owns exact full AC84 promotion and AC96 derived matrix",
+  "limits": [
+    "Only Slack has new collaboration-specific executable IM consumer/durable-message proof. Other adapter common gates and current general tests are correlated, not relabeled as collaboration-specific integration execution.",
+    "No external IM traffic or installed provider execution.",
+    "Malformed legacy plugin event payload can erase extracted issue identity; no actual producer emits the first fixture conflicting comment:string shape, so it remains a noted follow-up rather than current production regression proof."
+  ]
+}

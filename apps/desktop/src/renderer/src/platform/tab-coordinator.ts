@@ -9,7 +9,7 @@ import { createAppRouter } from "@/routes";
 import {
   useTabStore,
   getActiveTab,
-  splitTabUrl,
+  restorationKeyForUrl,
   scrollMementoKey,
 } from "@/stores/tab-store";
 
@@ -130,7 +130,7 @@ export function createScrollRestorationAdapter(
     const state = useTabStore.getState();
     const active = getActiveTab(state);
     if (!active || active.id !== tabId) return null;
-    return splitTabUrl(active.url).pathname;
+    return restorationKeyForUrl(active.url);
   };
   return {
     get(containerKey) {
@@ -246,7 +246,7 @@ function handleStoreChange(): void {
     lastActiveTabId = active?.id ?? null;
     lastActiveUrl = activeUrl;
     if (outgoingTabId && outgoingUrl) {
-      const routeKey = splitTabUrl(outgoingUrl).pathname;
+      const routeKey = restorationKeyForUrl(outgoingUrl);
       // Always commit — REPLACE semantics clear entries for containers that
       // scrolled back to 0; the store skips the write when nothing changed.
       useTabStore

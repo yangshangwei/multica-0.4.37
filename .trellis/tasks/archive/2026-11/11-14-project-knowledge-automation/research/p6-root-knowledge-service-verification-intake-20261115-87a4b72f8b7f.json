@@ -1,0 +1,87 @@
+{
+  "kind": "current_ROOT_knowledge_service_preflight_intake",
+  "id": "87a4b72f8b7f",
+  "at": "2026-11-15T14:04:16.249833+00:00",
+  "state": "resumed_in_new_exclusive_directory",
+  "prior_intake": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-service-verification-intake-20261115-292e45b21e81.json",
+    "sha256": "fc1dc0b45652fb3e0c407de183f9f5077f2b0358a22b6768d2374382c415c3fb"
+  },
+  "original_helpers": [
+    {
+      "name": "setup.cjs",
+      "original_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/setup.cjs",
+      "sha256": "4592cc04a546851a23db7db81e6e34af6bcdd6f89b4b6329138a06d073d3efe9",
+      "new_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/setup.cjs",
+      "same_bytes": true
+    },
+    {
+      "name": "support.cjs",
+      "original_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/support.cjs",
+      "sha256": "6ea722dfa8af6f6fd7b9a099dc931cde5e3db414d6cffc9f4d79af14ff1f7fa8",
+      "new_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/support.cjs",
+      "same_bytes": true
+    },
+    {
+      "name": "go-bridge.cjs",
+      "original_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/go-bridge.cjs",
+      "sha256": "8ee860bf876b4faf359d5047ba16da7aeed1ab265fe9395fcd7180dd95fef32a",
+      "new_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/go-bridge.cjs",
+      "same_bytes": true
+    },
+    {
+      "name": "inventory.go",
+      "original_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/inventory.go",
+      "sha256": "f7cf0a8f0c3ff94821dbdccfed919436bb536d4b52cbef5d3f82992343dfcece",
+      "new_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/inventory.go",
+      "same_bytes": true
+    },
+    {
+      "name": "inventory-parser.cjs",
+      "original_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/inventory-parser.cjs",
+      "sha256": "1c3d0927529ecbf5e7ac249c5224583d6ace6d6f4a86ebb53e946a5bf2c74ced",
+      "new_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/inventory-parser.cjs",
+      "same_bytes": true
+    },
+    {
+      "name": "controller.cjs",
+      "original_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-292e45b21e81/controller.cjs",
+      "sha256": "9589815b8d60550de7b088292799b354d72337d2bb8ba2f76cd47cd0a7c40b62",
+      "new_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f/controller.cjs",
+      "same_bytes": true
+    }
+  ],
+  "static_receipt": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-root-knowledge-go-static-verification-20261115-7a3e544be95f.json",
+    "sha256": "3e8f56aaa12b113ad5d2ca958a2ecc8b80e98b10992c9bd2ae4295a11b325b79"
+  },
+  "scope": {
+    "package": "./internal/service",
+    "pattern": "^Test(Knowledge|TaskKnowledge|CollaborationKnowledge)",
+    "modes": [
+      "normal",
+      "race"
+    ],
+    "maximum_own_active_DB_suites": 1,
+    "maximum_shared_DB_suites": 2,
+    "ROOT_final": false,
+    "P2_final": false,
+    "product_final": false
+  },
+  "coordinator_activity": {
+    "at": "2026-11-15T14:04:16.249418+00:00",
+    "PAY_active_DB_suites": 1,
+    "knowledge_active_DB_suites": 0,
+    "overall_active_DB_suites": 1,
+    "PAY_database": "p2_r07_01_h_n",
+    "PAY_lane": "actualfalse/503 RED",
+    "maximum_shared_DB_suites": 2,
+    "maximum_own_knowledge_DB_suites": 1,
+    "parallel_knowledge_lane_authorized": true,
+    "source": "prior coordinator permit plus fresh task-owned PG/process observation"
+  },
+  "raw_path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-root-knowledge-service-20261115-87a4b72f8b7f",
+  "cache_path": "/Volumes/artisan/multica-p6-root-knowledge-service-cache-20261115-87a4b72f8b7f",
+  "repo_source_edits": 0,
+  "DBs_created": 0
+}

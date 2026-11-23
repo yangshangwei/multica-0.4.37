@@ -1,0 +1,283 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+    - main [ref=e8]:
+      - generic [ref=e9]:
+        - heading "Collaboration" [level=1] [ref=e10]
+        - navigation "Collaboration" [ref=e11]:
+          - link "Current handling" [ref=e12] [cursor=pointer]:
+            - /url: /account?view=current&issue=01a1c100-04fe-77f7-985b-16791673eeee
+          - link "Participating" [ref=e13] [cursor=pointer]:
+            - /url: /account?view=participating&issue=01a1c100-04fe-77f7-985b-16791673eeee
+        - generic [ref=e14]:
+          - button "New collaboration issue" [ref=e15]
+          - button "Notifications 5 unread" [ref=e17]:
+            - generic [ref=e18]: Notifications
+            - generic [ref=e19]: 5 unread
+      - generic [ref=e20]:
+        - region "Collaboration issues" [ref=e21]:
+          - generic [ref=e22]:
+            - textbox "Search loaded issues" [ref=e24]
+            - generic [ref=e25]:
+              - status [ref=e26]:
+                - paragraph [ref=e27]: 1 issues
+              - combobox "Sort" [ref=e28]:
+                - option "Recently updated" [selected]
+                - option "Title"
+          - list [ref=e30]:
+            - listitem [ref=e31]:
+              - link "Partner integration governance 6be80a2ef0 Program office Todo Partner O1 · External collaborator" [ref=e32] [cursor=pointer]:
+                - /url: /account?view=participating&issue=01a1c100-04fe-77f7-985b-16791673eeee
+                - generic [ref=e33]: Partner integration governance 6be80a2ef0
+                - generic [ref=e34]:
+                  - generic [ref=e35]: Program office
+                  - generic [ref=e36]: Todo
+                - generic [ref=e37]:
+                  - text: Partner O1
+                  - generic [ref=e38]: · External collaborator
+        - region "Issue detail" [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e41]:
+              - generic [ref=e42]:
+                - heading "Partner integration governance 6be80a2ef0" [level=2] [ref=e43]
+                - button "Copy link" [ref=e44]:
+                  - img
+                  - text: Copy link
+              - generic [ref=e45]:
+                - generic [ref=e46]:
+                  - term [ref=e47]: Status
+                  - definition [ref=e48]: Todo
+                - generic [ref=e49]:
+                  - term [ref=e50]: Handler
+                  - definition [ref=e51]: Partner O1External collaborator
+              - region "Issue actions" [ref=e52]:
+                - generic [ref=e53]:
+                  - button "Comments" [ref=e54]
+                  - button "Leave issue" [ref=e55]
+                - generic [ref=e57]:
+                  - button "Participants" [ref=e58]
+                  - generic [ref=e59]: Participant
+              - group "Issue resources" [ref=e60]:
+                - generic [ref=e61]:
+                  - button "Issue details" [ref=e62]:
+                    - img
+                    - generic [ref=e63]: Issue details
+                  - button "Attachments 0" [ref=e64]:
+                    - img
+                    - generic [ref=e65]: Attachments
+                    - generic [ref=e66]: "0"
+                  - button "Shared context" [ref=e67]:
+                    - img
+                    - generic [ref=e68]: Shared context
+                  - button "Knowledge candidates" [ref=e69]:
+                    - img
+                    - generic [ref=e70]: Knowledge candidates
+                  - button "Sub-issues 0" [ref=e71]:
+                    - img
+                    - generic [ref=e72]: Sub-issues
+                    - generic [ref=e73]: "0"
+                  - button "Activity" [ref=e74]:
+                    - img
+                    - generic [ref=e75]: Activity
+            - generic [ref=e76]:
+              - generic [ref=e77]:
+                - heading "Requirements" [level=3] [ref=e78]
+                - paragraph [ref=e81]: "Synthetic program: two partners contribute agents; the lead keeps control of access and lifecycle."
+                - button "Files and reference material" [ref=e82]
+              - region "Delivered result" [ref=e83]:
+                - heading "Delivered result" [level=3] [ref=e84]
+                - paragraph [ref=e85]: No result has been submitted yet.
+              - region "Issue reactions" [ref=e86]:
+                - group "Thread and reactions" [ref=e88]:
+                  - button "Choose a reaction" [ref=e89]:
+                    - img [ref=e90]
+              - generic [ref=e93]:
+                - heading "Comments" [level=3] [ref=e94]
+                - paragraph [ref=e95]: Loaded 3 of 3 comments
+                - list [ref=e96]:
+                  - listitem [ref=e97]:
+                    - generic [ref=e98]:
+                      - generic [ref=e100]: P
+                      - generic [ref=e101]: Partner O1
+                      - generic [ref=e102]: External collaborator
+                      - time [ref=e103]: 11/9/2026, 11:49:31 PM
+                    - group [ref=e104]:
+                      - generic "Current permissions" [ref=e105] [cursor=pointer]
+                    - paragraph [ref=e107]:
+                      - text: Integrate the partner one payment adapter (synthetic).
+                      - generic [ref=e108]:
+                        - text: "@Partner one agent 6be80a2ef0"
+                        - generic [ref=e109]:
+                          - img [ref=e110]
+                          - text: Link hidden
+                    - button "Reply" [ref=e114]
+                    - group "Thread and reactions" [ref=e116]:
+                      - button "Resolve thread" [ref=e117]
+                      - button "Choose a reaction" [ref=e118]:
+                        - img [ref=e119]
+                    - button "Comment history" [ref=e123]
+                  - listitem [ref=e124]:
+                    - generic [ref=e125]:
+                      - generic [ref=e127]: P
+                      - generic [ref=e128]: Partner O1
+                      - generic [ref=e129]: External collaborator
+                      - time [ref=e130]: 11/9/2026, 11:49:33 PM
+                    - group [ref=e131]:
+                      - generic "Current permissions" [ref=e132] [cursor=pointer]
+                    - paragraph [ref=e134]:
+                      - text: Then add retry metrics for the adapter.
+                      - generic [ref=e135]:
+                        - text: "@Partner one agent 6be80a2ef0"
+                        - generic [ref=e136]:
+                          - img [ref=e137]
+                          - text: Link hidden
+                    - button "Reply" [ref=e141]
+                    - group "Thread and reactions" [ref=e143]:
+                      - button "Resolve thread" [ref=e144]
+                      - button "Choose a reaction" [ref=e145]:
+                        - img [ref=e146]
+                    - button "Comment history" [ref=e150]
+                  - listitem [ref=e151]:
+                    - generic [ref=e152]:
+                      - generic [ref=e154]: P
+                      - generic [ref=e155]: Partner O2
+                      - generic [ref=e156]: External collaborator
+                      - time [ref=e157]: 11/9/2026, 11:49:34 PM
+                    - group [ref=e158]:
+                      - generic "Current permissions" [ref=e159] [cursor=pointer]
+                    - paragraph [ref=e161]:
+                      - text: "Partner two: validate the shared schema (synthetic)."
+                      - generic [ref=e162]:
+                        - text: "@Partner two agent 6be80a2ef0"
+                        - generic [ref=e163]:
+                          - img [ref=e164]
+                          - text: Link hidden
+                    - generic [ref=e167]:
+                      - button "Reply" [ref=e168]
+                      - button "Edit comment" [ref=e169]
+                      - button "Delete comment" [ref=e170]
+                    - group "Thread and reactions" [ref=e172]:
+                      - button "Resolve thread" [ref=e173]
+                      - button "Choose a reaction" [ref=e174]:
+                        - img [ref=e175]
+                    - button "Comment history" [ref=e179]
+                - form "Comments" [ref=e180]:
+                  - generic [ref=e181]: Add comment
+                  - textbox "Add comment" [ref=e182]:
+                    - /placeholder: Write a comment...
+                  - group "Issue participants and AI targets" [ref=e184]:
+                    - group "People" [ref=e185]:
+                      - paragraph [ref=e186]: People
+                      - generic [ref=e187]:
+                        - button "@all · All participants" [ref=e188]
+                        - button "Partner O2" [ref=e189]
+                        - button "Program lead L" [ref=e190]
+                        - button "Partner O1" [ref=e191]
+                    - group "AI targets" [ref=e192]:
+                      - paragraph [ref=e193]: AI targets
+                      - generic [ref=e194]:
+                        - button "Partner two agent 6be80a2ef0" [ref=e195]
+                        - button "Partner one agent 6be80a2ef0" [ref=e196]
+                  - generic [ref=e197]:
+                    - generic [ref=e198]:
+                      - button "Mention" [expanded] [ref=e199]:
+                        - img
+                        - text: Mention
+                      - button "Attachments" [ref=e200]:
+                        - img
+                        - text: Attachments
+                    - generic [ref=e201]:
+                      - button "Preview delivery" [disabled]
+                      - button "Send comment" [disabled]
+                  - status [ref=e202]:
+                    - paragraph [ref=e203]: Comment confirmed.
+                    - paragraph [ref=e204]: Partner two agent 6be80a2ef0 · Shared AI execution is unavailable.
+              - group [ref=e205]:
+                - generic "AI execution" [ref=e206] [cursor=pointer]
+                - region "AI execution" [ref=e207]:
+                  - heading "AI execution" [level=3] [ref=e208]
+                  - paragraph [ref=e209]: Stopping or resuming a target affects every target in its execution lane.
+                  - paragraph [ref=e210]: Stopping prevents further dispatch in the selected scope and requests cancellation of executions already started within that scope. Cleanup follows ordinary task behavior and does not guarantee removal of background processes outside the managed scope.
+                  - paragraph [ref=e211]: Active
+                  - generic [ref=e212]:
+                    - button "Stop all" [ref=e213]
+                    - button "Resume all" [ref=e214]
+                  - button "Manage AI resources" [ref=e216]
+                  - generic [ref=e217]:
+                    - generic [ref=e218]:
+                      - heading "Execution lane 1" [level=4] [ref=e219]
+                      - generic [ref=e220]: Active
+                    - list [ref=e221]:
+                      - listitem [ref=e222]:
+                        - generic [ref=e223]:
+                          - generic [ref=e224]: Agent
+                          - generic [ref=e225]: cd7057fc-280b-4f05-ab3c-63f4e5ecf9ec
+                        - paragraph [ref=e226]: Target released
+                        - generic [ref=e227]:
+                          - button "Stop target" [ref=e228]
+                          - button "Resume target" [ref=e229]
+                        - button "Switch proposals" [ref=e231]
+                    - list [ref=e232]:
+                      - listitem [ref=e233]:
+                        - paragraph [ref=e234]: Execution group · Succeeded
+                        - list [ref=e235]:
+                          - listitem [ref=e236]: Consumed input 1
+                        - list [ref=e237]:
+                          - listitem [ref=e238]:
+                            - generic [ref=e239]:
+                              - generic [ref=e240]: Agent
+                              - generic [ref=e241]: cd7057fc-280b-4f05-ab3c-63f4e5ecf9ec
+                              - generic [ref=e242]: Standard host execution
+                              - generic [ref=e243]: Ended
+                              - generic [ref=e244]: Managed execution ended
+                              - generic [ref=e245]: Started from an empty document · Shared context not updated
+                              - button "View records for 22147c99-066d-4bc1-9c3d-697f01d30e40" [ref=e246]: View records
+                            - paragraph [ref=e247]: Cleanup confirmed within the managed scope
+                    - list
+                  - generic [ref=e248]:
+                    - generic [ref=e249]:
+                      - heading "Execution lane 2" [level=4] [ref=e250]
+                      - generic [ref=e251]: Active
+                    - list [ref=e252]:
+                      - listitem [ref=e253]:
+                        - generic [ref=e254]:
+                          - generic [ref=e255]: Agent
+                          - generic [ref=e256]: c908c4de-5bac-4277-881e-d495e739f581
+                        - paragraph [ref=e257]: Resource authorization required
+                        - generic [ref=e258]:
+                          - button "Stop target" [ref=e259]
+                          - button "Resume target" [ref=e260]
+                        - button "Switch proposals" [ref=e262]
+                    - list [ref=e263]:
+                      - listitem [ref=e264]:
+                        - paragraph [ref=e265]: Execution group · Stopped
+                        - list [ref=e266]:
+                          - listitem [ref=e267]: Consumed input 1
+                        - list [ref=e268]:
+                          - listitem [ref=e269]:
+                            - generic [ref=e270]:
+                              - generic [ref=e271]: Agent
+                              - generic [ref=e272]: c908c4de-5bac-4277-881e-d495e739f581
+                              - generic [ref=e273]: Standard host execution
+                              - generic [ref=e274]: Ended
+                              - generic [ref=e275]: Managed execution stopped
+                              - generic [ref=e276]: Execution ended; result record incomplete
+                              - generic [ref=e277]: Started from an empty document · Shared context not updated
+                              - button "View records for b6678a49-2d28-4a30-aa54-e22687e39dc5" [ref=e278]: View records
+                            - paragraph [ref=e279]: Cleanup confirmed within the managed scope
+                    - list [ref=e280]:
+                      - listitem [ref=e281]:
+                        - paragraph [ref=e282]: Input 2 · Waiting
+                        - paragraph [ref=e283]: Agent c908c4de-5bac-4277-881e-d495e739f581
+                        - paragraph [ref=e284]: "Author: fad15aa9-c392-4eb1-a4e4-0e46c16f627c"
+                  - heading "Command history" [level=4] [ref=e286]:
+                    - button "Command history" [ref=e287]
+  - region "Notifications alt+T"
+  - alert [ref=e288]
+```

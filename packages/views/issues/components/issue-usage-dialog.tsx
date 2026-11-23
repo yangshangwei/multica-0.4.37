@@ -308,7 +308,7 @@ function RunTable({ tasks, total }: { tasks: AgentTask[]; total: TaskUsageSummar
           ))}
         </tbody>
         <tfoot>
-          <tr className="text-caption font-medium tabular-nums [&>td]:whitespace-nowrap [&>td]:border-t [&>td]:border-input [&>td]:px-2 [&>td]:py-2 [&>td]:text-right">
+          <tr className="text-caption font-medium tabular-nums [&>td]:whitespace-nowrap [&>td]:border-t [&>td]:border-input-fill [&>td]:px-2 [&>td]:py-2 [&>td]:text-right">
             <td className="!pl-0 !text-left">{t(($) => $.usage_detail.total)}</td>
             <td colSpan={2} />
             <td>{formatTokens(total.input)}</td>

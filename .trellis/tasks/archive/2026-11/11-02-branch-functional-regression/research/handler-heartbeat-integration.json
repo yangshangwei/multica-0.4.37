@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-02T01:24:16.289611+00:00",
+  "root_integrated_test_only_fix": "server/internal/handler/daemon_test.go",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "verified_harness_patch_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "full_handler_race": {
+    "top_pass": 2863,
+    "top_fail": 0,
+    "top_skip": 7,
+    "exit_code": 0
+  },
+  "review": "research/handler-heartbeat-review.md: PASS WITH NOTES",
+  "original_failure_retained": true,
+  "heartbeat_diagnostics": [
+    "daemon_test.go:2018: shared runtime heartbeat age before payload claim: 107.824s"
+  ],
+  "historical_cause_qualification": "New run records a fresh107.824s precondition; it does not by itself reconstruct the exact original failed runtime row, which TestMain cleaned up. Do not infer heartbeat age from command start because compilation is included.",
+  "production_freshness_seconds_unchanged": 150
+}

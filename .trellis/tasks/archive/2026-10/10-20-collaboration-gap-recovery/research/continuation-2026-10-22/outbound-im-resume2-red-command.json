@@ -1,0 +1,43 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_other",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/integrations/lark",
+    "./internal/integrations/dingtalk",
+    "./internal/integrations/telegram",
+    "./internal/integrations/wecom",
+    "-run",
+    "^TestCollaborationOutbound(Lark|DingTalk|Telegram|Wecom)",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "started_at": "2026-10-22T03:50:11.532204+00:00",
+  "source_head": "238d4bb3974094ce55ab911c99cf2eedb845d278",
+  "source_sha256": {
+    "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": "1ad4f5a7f56bdfab10f7ee1f5b318c20a0e4f3c11be2ce48519179d6df2e1bf7",
+    "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": "9079b5c2fda9657b384b4c888da320484f049be35cf0d8b24e66ba56bda7d8d6",
+    "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": "a2b2c233e00324243daac55ef9551a6ef86ed63a83418e60af6bb4d862fc5c9f",
+    "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go": "cbfeb9d085b04526103ab347c2649a61a538af673bad81b09e35f5525d28929a",
+    "server/internal/integrations/lark/outbound.go": "5d922e8aa483a19cc64aed59b00f7c5f7a67fa5090d303719e87de8865eb2139",
+    "server/internal/integrations/dingtalk/outbound.go": "872f838638bc44186fd198c465e93d796d0c5e7679d6752a1711876ca4def257",
+    "server/internal/integrations/telegram/outbound.go": "758e6cdb3153ddfa677c5d179ea3f140f9e06b61ddbc9064287c1651144d95de",
+    "server/internal/integrations/wecom/outbound.go": "e5e668f1852be24936b72e504d1c866c2a5a8dc37a86a869c314a17c72026b63",
+    "server/internal/integrations/wecom/relay_outbound.go": "7633bbd80b1ac3200f6cc4cbbfb4511b25b9ac21cf403e3807ebbccdfde4fca8",
+    "server/internal/integrations/wecom/outbound_media.go": "9e56d19f4baec903cb30e9e503dc43ae3da93987625397f33e58f369c76c5e60"
+  },
+  "database_alias": "service_s6_other",
+  "external_im_send": false,
+  "agent_cli_guard": true
+}

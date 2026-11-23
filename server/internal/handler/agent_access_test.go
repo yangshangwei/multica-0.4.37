@@ -413,6 +413,7 @@ func TestCreateIssue_AssignToPrivateAgentForbidsPlainMember(t *testing.T) {
 	}
 
 	agentID, ownerID, memberID := privateAgentTestFixture(t)
+	dbfx.Cleanup(t, `DELETE FROM issue WHERE workspace_id=$1 AND assignee_type='agent' AND assignee_id=$2`, testWorkspaceID, agentID)
 
 	body := func(actorID string) map[string]any {
 		return map[string]any{

@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { parseTabSubject } from "./tab-subject";
 import {
@@ -14,8 +15,8 @@ function present(url: string, data: TabEntityData = {}) {
 }
 
 describe("resolveTabPresentation — pages", () => {
-  it("keeps both capability catalogs under the localized market tab title", () => {
-    for (const type of ["mcp", "skills"]) {
+  it("keeps every capability catalog under the localized market tab title", () => {
+    for (const type of ["mcp", "skills", "squad-templates"]) {
       expect(present(`/acme/marketplace?type=${type}`)).toEqual({
         visual: { kind: "icon", icon: "Store" },
         title: { kind: "nav", navKey: "marketplace" },
@@ -185,6 +186,18 @@ describe("resolveTabPresentation — containers keep their icon, title tracks se
     });
   });
 
+  it("uses the existing Inbox localization key for an unselected Snoozed tab", () => {
+    expect(present("/acme/inbox?view=snoozed")).toEqual({
+      visual: { kind: "icon", icon: "Inbox" },
+      title: { kind: "inbox", inboxKey: "snoozed_title" },
+    });
+    expect(present("/acme/inbox?view=archived").title).toEqual({ kind: "nav", navKey: "inbox" });
+    expect(present("/acme/inbox").title).toEqual({ kind: "nav", navKey: "inbox" });
+    expect(present("/acme/inbox?view=snoozed&issue=MUL-9", {
+      inboxSelection: { kind: "issue", identifier: "MUL-9", title: "Saved task" },
+    }).title).toEqual({ kind: "text", text: "MUL-9: Saved task" });
+  });
+
   it("chat: icon is always MessageSquare; title is the session or Chat", () => {
     expect(present("/acme/chat")).toEqual({
       visual: { kind: "icon", icon: "MessageSquare" },
@@ -214,6 +227,13 @@ describe("resolveTabPresentation — flow and unknown", () => {
     expect(present("/acme/agents/new")).toEqual({
       visual: { kind: "icon", icon: "Bot" },
       title: { kind: "tab", tabKey: "create_agent" },
+    });
+  });
+
+  it("squad creation uses its flow label rather than a pending squad identity", () => {
+    expect(present("/acme/squads/new/manual", { actorName: "Unrelated squad" })).toEqual({
+      visual: { kind: "icon", icon: "Users" },
+      title: { kind: "tab", tabKey: "create_squad" },
     });
   });
 

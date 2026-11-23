@@ -1,0 +1,62 @@
+{
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "executed_once": true,
+  "command_exit_code": 1,
+  "top": {
+    "pass": 2,
+    "fail": 1,
+    "skip": 0
+  },
+  "tests": {
+    "TestIterationI1P95": "fail",
+    "TestIterationI1DisableP95": "pass",
+    "TestTriageQueueScaleBaseline": "pass"
+  },
+  "p95_ms": {
+    "closure": 2155.025,
+    "detail": 78.28,
+    "preview": 396.391,
+    "disable_preview": 862.301,
+    "disable_apply": 2110.446,
+    "triage_action": 110.369,
+    "triage_filter": 459.553,
+    "triage_list": 451.003
+  },
+  "source_matches": true,
+  "binary_sha256": "4d7cf20d5bec628e22adc313badf7064a91512419495f0938c1b0721a92ed22c",
+  "samples_verified": {
+    "iteration": {
+      "warmup": 5,
+      "measured": 30,
+      "tasks": 1000
+    },
+    "disable": {
+      "warmup": 5,
+      "measured": 30,
+      "plans": 51,
+      "members": 1530
+    },
+    "triage": {
+      "formal": 10000,
+      "pending": 2000,
+      "per_operation": 10
+    }
+  },
+  "database_initial_final_audit": {
+    "database": "multica_core1a32_20261104_performance",
+    "max_connections": "100",
+    "cluster_connections": 29,
+    "other_owned_connections": 1
+  },
+  "database_followup_audit": {
+    "at": "2026-11-05T03:26:16.558Z",
+    "database": "multica_core1a32_20261104_performance",
+    "connections": []
+  },
+  "runner_stopped": true,
+  "thresholds_unchanged": true,
+  "no_product_fix": true,
+  "overall": "FAIL: frozen iteration closure P95 exceeded",
+  "private_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/performance-run-1",
+  "generated_at": "2026-11-05T03:26:55.610117+00:00"
+}

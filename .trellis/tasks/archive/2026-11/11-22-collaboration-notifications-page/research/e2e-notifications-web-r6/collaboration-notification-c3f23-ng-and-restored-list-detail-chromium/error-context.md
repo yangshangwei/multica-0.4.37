@@ -1,0 +1,160 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e7]:
+      - navigation "Application navigation" [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]: Multica
+          - list [ref=e11]:
+            - listitem [ref=e12]:
+              - button "New" [ref=e13]:
+                - img [ref=e14]
+                - generic [ref=e15]: New
+                - img [ref=e16]
+        - generic [ref=e18]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - button "Collaboration" [ref=e22]:
+                - generic [ref=e23]: Collaboration
+                - generic [ref=e24]: Beta
+              - button "Collapse collaboration navigation" [expanded] [ref=e25]:
+                - img [ref=e26]
+            - list [ref=e30]:
+              - listitem [ref=e31]:
+                - link "Current handling" [ref=e32] [cursor=pointer]:
+                  - /url: /account?view=current
+                  - img [ref=e33]
+                  - generic [ref=e36]: Current handling
+              - listitem [ref=e37]:
+                - link "Participating" [ref=e38] [cursor=pointer]:
+                  - /url: /account?view=participating
+                  - img [ref=e39]
+                  - generic [ref=e43]: Participating
+              - listitem [ref=e44]:
+                - link "Collaboration notifications" [ref=e45] [cursor=pointer]:
+                  - /url: /account?view=notifications&filter=unread
+                  - img [ref=e46]
+                  - generic [ref=e49]: Collaboration notifications
+                  - generic "60" [ref=e50]:
+                    - generic [ref=e53]:
+                      - generic [ref=e55]: "6"
+                      - generic [ref=e57]: "0"
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: Workspaces
+              - generic [ref=e61]:
+                - button "Notification return workspace" [ref=e62]:
+                  - generic [ref=e64]: "N"
+                  - generic [ref=e65]: Notification return workspace
+                - button "Switch workspace" [ref=e66]:
+                  - img [ref=e67]
+            - list [ref=e71]:
+              - listitem [ref=e72]:
+                - link "Inbox" [ref=e73] [cursor=pointer]:
+                  - /url: /notification-return-ea53d3b7/inbox
+                  - img [ref=e74]
+                  - generic [ref=e77]: Inbox
+              - listitem [ref=e78]:
+                - link "My Issues" [ref=e79] [cursor=pointer]:
+                  - /url: /notification-return-ea53d3b7/my-issues
+                  - img [ref=e80]
+                  - generic [ref=e84]: My Issues
+              - listitem [ref=e85]:
+                - link "Chat" [ref=e86] [cursor=pointer]:
+                  - /url: /notification-return-ea53d3b7/chat
+                  - img [ref=e87]
+                  - generic [ref=e89]: Chat
+            - generic [ref=e91]:
+              - button "Work" [expanded] [ref=e92] [cursor=pointer]:
+                - generic [ref=e93]: Work
+                - img [ref=e94]
+              - list [ref=e98]:
+                - listitem [ref=e99]:
+                  - link "Workspace issues" [ref=e100] [cursor=pointer]:
+                    - /url: /notification-return-ea53d3b7/issues
+                    - img [ref=e101]
+                    - generic [ref=e104]: Workspace issues
+                - listitem [ref=e105]:
+                  - link "Projects" [ref=e106] [cursor=pointer]:
+                    - /url: /notification-return-ea53d3b7/projects
+                    - img [ref=e107]
+                    - generic [ref=e109]: Projects
+                - listitem [ref=e110]:
+                  - link "Iterations" [ref=e111] [cursor=pointer]:
+                    - /url: /notification-return-ea53d3b7/iterations
+                    - img [ref=e112]
+                    - generic [ref=e114]: Iterations
+                - listitem [ref=e115]:
+                  - link "Triage" [ref=e116] [cursor=pointer]:
+                    - /url: /notification-return-ea53d3b7/triage
+                    - img [ref=e117]
+                    - generic [ref=e120]: Triage
+            - button "AI Team" [ref=e123] [cursor=pointer]:
+              - generic [ref=e124]: AI Team
+              - img [ref=e125]
+            - button "Resources & connections" [ref=e129] [cursor=pointer]:
+              - generic [ref=e130]: Resources & connections
+              - img [ref=e131]
+        - generic [ref=e133]:
+          - list [ref=e134]:
+            - listitem [ref=e135]:
+              - link "Analytics" [ref=e136] [cursor=pointer]:
+                - /url: /notification-return-ea53d3b7/usage
+                - img [ref=e137]
+                - generic [ref=e139]: Analytics
+            - listitem [ref=e140]:
+              - link "Workspace settings" [ref=e141] [cursor=pointer]:
+                - /url: /notification-return-ea53d3b7/settings
+                - img [ref=e142]
+                - generic [ref=e145]: Workspace settings
+          - generic [ref=e146]:
+            - button "Help" [ref=e147] [cursor=pointer]:
+              - img [ref=e148]
+            - button "Outside record viewer" [ref=e151]:
+              - generic [ref=e153]: O
+              - generic [ref=e154]: Outside record viewer
+              - img [ref=e155]
+      - button "Toggle left sidebar" [ref=e157]
+    - main [ref=e158]:
+      - main [ref=e160]:
+        - generic [ref=e161]:
+          - heading "Current handling" [level=1] [ref=e162]
+          - paragraph [ref=e163]: For cross-workspace collaboration. This feature is in Beta, and some functionality is still being developed.
+        - generic [ref=e164]:
+          - region "Collaboration issues" [ref=e165]:
+            - generic [ref=e166]:
+              - textbox "Search loaded issues" [ref=e168]
+              - generic [ref=e169]:
+                - status [ref=e170]:
+                  - paragraph [ref=e171]: 2 issues
+                - combobox "Sort" [ref=e172]:
+                  - option "Recently updated" [selected]
+                  - option "Title"
+            - list [ref=e174]:
+              - listitem [ref=e175]:
+                - 'link "Notification review ea53d3b7: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_ Record source workspace Todo Outside record viewer · External collaborator" [ref=e176] [cursor=pointer]':
+                  - /url: /account?view=current&issue=01a20262-bc2e-755f-8227-46f28697f70d
+                  - generic [ref=e177]: "Notification review ea53d3b7: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_"
+                  - generic [ref=e178]:
+                    - generic [ref=e179]: Record source workspace
+                    - generic [ref=e180]: Todo
+                  - generic [ref=e181]:
+                    - text: Outside record viewer
+                    - generic [ref=e182]: · External collaborator
+              - listitem [ref=e183]:
+                - link "Recorded collaboration d93c80fc-2 Record source workspace Todo Outside record viewer · External collaborator" [ref=e184] [cursor=pointer]:
+                  - /url: /account?view=current&issue=01a20262-bb64-72ca-8c12-a6009a134f53
+                  - generic [ref=e185]: Recorded collaboration d93c80fc-2
+                  - generic [ref=e186]:
+                    - generic [ref=e187]: Record source workspace
+                    - generic [ref=e188]: Todo
+                  - generic [ref=e189]:
+                    - text: Outside record viewer
+                    - generic [ref=e190]: · External collaborator
+          - region "Issue detail" [ref=e191]:
+            - paragraph [ref=e192]: Select an issue to see its shared history.
+  - region "Notifications alt+T"
+  - alert [ref=e193]: Collaboration | Multica
+```

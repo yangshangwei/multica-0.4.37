@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "review": "S2 server increment2a independent check",
+  "owner": "/root/s2_server_check",
+  "recorded_at": "2026-11-14T06:09:30.279392+00:00",
+  "verdict": "changes_requested",
+  "scope": "Frozen2a only; no wholeS2 or A01–A12 acceptance",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "product_edits": false,
+  "database_commands_by_reviewer": false,
+  "runtime_launches": false,
+  "git_writes": false,
+  "files": [
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "17503481139cfe9c6107950db61f00a8fbe53d5d1751f13b75c58999371f1cca",
+      "actual_sha256": "17503481139cfe9c6107950db61f00a8fbe53d5d1751f13b75c58999371f1cca"
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_review.go",
+      "sha256": "134d56f576a38be7528bed1cd92f508db840a95eab1d81781cfabf563f08cff0",
+      "actual_sha256": "134d56f576a38be7528bed1cd92f508db840a95eab1d81781cfabf563f08cff0"
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_review_test.go",
+      "sha256": "3dc8a212881d1db0ffe3e1a437a417b06530ce08e2ecdb16caa1fafc4f1752a2",
+      "actual_sha256": "3dc8a212881d1db0ffe3e1a437a417b06530ce08e2ecdb16caa1fafc4f1752a2"
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_test.go",
+      "sha256": "aca6ef05cec405c272b9c0ca7b235d3c91c13d7671550dbb5505bbbf7647b809",
+      "actual_sha256": "aca6ef05cec405c272b9c0ca7b235d3c91c13d7671550dbb5505bbbf7647b809"
+    },
+    {
+      "path": "server/internal/handler/github.go",
+      "sha256": "3abad345b04c7f292adfacb92ee72063a22cf7775de8e6723376bf9816205540",
+      "actual_sha256": "3abad345b04c7f292adfacb92ee72063a22cf7775de8e6723376bf9816205540"
+    },
+    {
+      "path": "server/internal/handler/github_stage_evidence_test.go",
+      "sha256": "9a3b16a80fe60e3d50a944d4826a5e2dae116372b8196c06e2124d609c2a7d5b",
+      "actual_sha256": "9a3b16a80fe60e3d50a944d4826a5e2dae116372b8196c06e2124d609c2a7d5b"
+    },
+    {
+      "path": "server/internal/handler/github_test.go",
+      "sha256": "5cb737729fbe16a37fdd48fcacf8a2e4bd7748e067669452f1a6f110a2a61f3b",
+      "actual_sha256": "5cb737729fbe16a37fdd48fcacf8a2e4bd7748e067669452f1a6f110a2a61f3b"
+    },
+    {
+      "path": "server/internal/handler/workspace_delete_manifest_test.go",
+      "sha256": "f816a21745bb2cbbafa1f7bdb5f9cf99d2f12d34c28ff797f317dbad0166744f",
+      "actual_sha256": "f816a21745bb2cbbafa1f7bdb5f9cf99d2f12d34c28ff797f317dbad0166744f"
+    },
+    {
+      "path": "server/internal/integrations/ghsnapshot/refresh.go",
+      "sha256": "f2c68759a3ed33871acfd89013a8457cb0bb7b13a09afa78d4b2c15d093d2d13",
+      "actual_sha256": "f2c68759a3ed33871acfd89013a8457cb0bb7b13a09afa78d4b2c15d093d2d13"
+    },
+    {
+      "path": "server/internal/integrations/ghsnapshot/refresh_db_test.go",
+      "sha256": "1f4f8fc40440ff49468bb9e5b478da915b60b442a1e6158a895e77c954402a94",
+      "actual_sha256": "1f4f8fc40440ff49468bb9e5b478da915b60b442a1e6158a895e77c954402a94"
+    },
+    {
+      "path": "server/internal/integrations/ghsnapshot/snapshot.go",
+      "sha256": "d3f587e4a64239d744af9f8f223d882d116398505a99117584e53d20baa7c495",
+      "actual_sha256": "d3f587e4a64239d744af9f8f223d882d116398505a99117584e53d20baa7c495"
+    },
+    {
+      "path": "server/internal/integrations/ghsnapshot/snapshot_test.go",
+      "sha256": "db4a1fe671917b9bdcc8ad42e0e66a37865388eab6b1aa6b43ff545bbcfdedf3",
+      "actual_sha256": "db4a1fe671917b9bdcc8ad42e0e66a37865388eab6b1aa6b43ff545bbcfdedf3"
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "sha256": "3dbabdf7fd7917ae83d38f42f5ebd9162eb8998248701dd686a8d23645c257fc",
+      "actual_sha256": "3dbabdf7fd7917ae83d38f42f5ebd9162eb8998248701dd686a8d23645c257fc"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage.go",
+      "sha256": "b6f1c501243529556123497061d539c6c7954c08f2afe8445cfd08c59b9a14dd",
+      "actual_sha256": "b6f1c501243529556123497061d539c6c7954c08f2afe8445cfd08c59b9a14dd"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_actions.go",
+      "sha256": "5023803c2e3c9b658f5cfe14d496a361f0817b7e4c4c0d71fd2e350799df1f83",
+      "actual_sha256": "5023803c2e3c9b658f5cfe14d496a361f0817b7e4c4c0d71fd2e350799df1f83"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_evidence.go",
+      "sha256": "5d4b8e07d1338841dae6ac18214f3908bcd017dcc9df011c9018f13240dd0127",
+      "actual_sha256": "5d4b8e07d1338841dae6ac18214f3908bcd017dcc9df011c9018f13240dd0127"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "sha256": "0917cde35f24e070751f55b08daabc154608e5cb167630f1d270a06b8598a128",
+      "actual_sha256": "0917cde35f24e070751f55b08daabc154608e5cb167630f1d270a06b8598a128"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review_test.go",
+      "sha256": "e586744d4cd7b4ee962d6c8278200f9b52a593efafd200ef8fb4f874a5594f13",
+      "actual_sha256": "e586744d4cd7b4ee962d6c8278200f9b52a593efafd200ef8fb4f874a5594f13"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review_types.go",
+      "sha256": "4e10961e17cfd3f53b5ce6478c01e1063d47c9a55384340da0ba1f3cc5246526",
+      "actual_sha256": "4e10961e17cfd3f53b5ce6478c01e1063d47c9a55384340da0ba1f3cc5246526"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review_view.go",
+      "sha256": "8fd973fd485845f97657d8d1c7bf0884c36166455fb4f24ea41c594e65c80a91",
+      "actual_sha256": "8fd973fd485845f97657d8d1c7bf0884c36166455fb4f24ea41c594e65c80a91"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_scope_code_test.go",
+      "sha256": "0a878d95c46f8ec1c315ce91b9ca77260a80615df2cff61f0ebb357ea07da722",
+      "actual_sha256": "0a878d95c46f8ec1c315ce91b9ca77260a80615df2cff61f0ebb357ea07da722"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_signer.go",
+      "sha256": "dbbd4cf87ffd0b7fb7dd394ff6aa59d6a68c6b89dc60213edfb19f2f3d93f122",
+      "actual_sha256": "dbbd4cf87ffd0b7fb7dd394ff6aa59d6a68c6b89dc60213edfb19f2f3d93f122"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_test.go",
+      "sha256": "b87ac68039d97f2b4a415ddcf36ed20523215f35f75788f4f5019d43c768dc02",
+      "actual_sha256": "b87ac68039d97f2b4a415ddcf36ed20523215f35f75788f4f5019d43c768dc02"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_view.go",
+      "sha256": "b6c06bb4c300a9b9fddcb18d7018535e40b03db738e3818f9cfae95391c573e1",
+      "actual_sha256": "b6c06bb4c300a9b9fddcb18d7018535e40b03db738e3818f9cfae95391c573e1"
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "a2334a92b62c6eb1a3a231587c77a9e4fc59383005f770066f3e854522f08568",
+      "actual_sha256": "a2334a92b62c6eb1a3a231587c77a9e4fc59383005f770066f3e854522f08568"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_stage.sql.go",
+      "sha256": "6ae2f9695bbb9fa681be3a5fa085179581fccc814c1de9363619ce47be94f98d",
+      "actual_sha256": "6ae2f9695bbb9fa681be3a5fa085179581fccc814c1de9363619ce47be94f98d"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_stage_review.sql.go",
+      "sha256": "a4c7d6dfc5ad47399ce099cd0e8dab811487af896f92c15be5651335e46fa9cd",
+      "actual_sha256": "a4c7d6dfc5ad47399ce099cd0e8dab811487af896f92c15be5651335e46fa9cd"
+    },
+    {
+      "path": "server/pkg/db/generated/github.sql.go",
+      "sha256": "3d33ffbeb69d7c850bef6e69cad10725451dd763ee56dfcf53b0f18829571646",
+      "actual_sha256": "3d33ffbeb69d7c850bef6e69cad10725451dd763ee56dfcf53b0f18829571646"
+    },
+    {
+      "path": "server/pkg/db/generated/github_snapshot.sql.go",
+      "sha256": "e338e0b05b2a2b4c4124d4cc749f7e052350bd013c0d261c581d41a98fefe291",
+      "actual_sha256": "e338e0b05b2a2b4c4124d4cc749f7e052350bd013c0d261c581d41a98fefe291"
+    },
+    {
+      "path": "server/pkg/db/generated/models.go",
+      "sha256": "c83a36b0675fe7119a469bbd32fe92eca5a39fe2c5c00faa17fde36d82da703b",
+      "actual_sha256": "c83a36b0675fe7119a469bbd32fe92eca5a39fe2c5c00faa17fde36d82da703b"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_stage_review.sql",
+      "sha256": "ee9ad53f3fe61d0797115909eb5c83e4aaf0753cd3bf019db535f63fa2091ec4",
+      "actual_sha256": "ee9ad53f3fe61d0797115909eb5c83e4aaf0753cd3bf019db535f63fa2091ec4"
+    },
+    {
+      "path": "server/pkg/db/queries/github.sql",
+      "sha256": "054f2ca7348d42bf9af4262c23c08846eb84dbdf7832fe65cd7ee89e35adfba5",
+      "actual_sha256": "054f2ca7348d42bf9af4262c23c08846eb84dbdf7832fe65cd7ee89e35adfba5"
+    },
+    {
+      "path": "server/pkg/db/queries/github_snapshot.sql",
+      "sha256": "d20fb1ce63b78c65a5a4b9a6ec1a1e40afbcc70128ffcaac96586a4a8a556e2d",
+      "actual_sha256": "d20fb1ce63b78c65a5a4b9a6ec1a1e40afbcc70128ffcaac96586a4a8a556e2d"
+    },
+    {
+      "path": "server/sqlc.yaml",
+      "sha256": "ea3d005d8e5f77fdd7c25589ff5da28fd8fbf1e12c4e27bbce1789a4e81c1306",
+      "actual_sha256": "ea3d005d8e5f77fdd7c25589ff5da28fd8fbf1e12c4e27bbce1789a4e81c1306"
+    },
+    {
+      "path": "server/migrations/821_collaboration_stage_reviews.down.sql",
+      "sha256": "44964ebe79b680ccc88911a08f3652d4537f67a8b41db89ac20a378fea4ea0f7",
+      "actual_sha256": "44964ebe79b680ccc88911a08f3652d4537f67a8b41db89ac20a378fea4ea0f7"
+    },
+    {
+      "path": "server/migrations/821_collaboration_stage_reviews.up.sql",
+      "sha256": "0a779c62b6bc7348b83a4fdff0be2be4fd63079c210a7f7a50e356366fb7851c",
+      "actual_sha256": "0a779c62b6bc7348b83a4fdff0be2be4fd63079c210a7f7a50e356366fb7851c"
+    },
+    {
+      "path": "server/migrations/822_collaboration_stage_code_version.down.sql",
+      "sha256": "c777c0b3f747e15052775e665d92cd2b904cd4147d27cd2745cc573d978b657f",
+      "actual_sha256": "c777c0b3f747e15052775e665d92cd2b904cd4147d27cd2745cc573d978b657f"
+    },
+    {
+      "path": "server/migrations/822_collaboration_stage_code_version.up.sql",
+      "sha256": "159603c42d194872becafb5773d5552cdbfb5e4770589154bed35ceac9931aa4",
+      "actual_sha256": "159603c42d194872becafb5773d5552cdbfb5e4770589154bed35ceac9931aa4"
+    },
+    {
+      "path": "server/migrations/823_collaboration_stage_revocation_decision.down.sql",
+      "sha256": "09d672235f2c21f0bb649ff3edb0b4d05ae744a2dcd0e5d69b4fa01f933dc5d9",
+      "actual_sha256": "09d672235f2c21f0bb649ff3edb0b4d05ae744a2dcd0e5d69b4fa01f933dc5d9"
+    },
+    {
+      "path": "server/migrations/823_collaboration_stage_revocation_decision.up.sql",
+      "sha256": "685b9c56884a4150e8f86efe14354048952e57cdbf2d3da1cd406da760bc3db4",
+      "actual_sha256": "685b9c56884a4150e8f86efe14354048952e57cdbf2d3da1cd406da760bc3db4"
+    },
+    {
+      "path": "server/migrations/824_collaboration_stage_revocation_id.down.sql",
+      "sha256": "b831a0e0ba16fa2355bab1a6ac474c7e445fc52aea9f7dfd4afc3d47561e4006",
+      "actual_sha256": "b831a0e0ba16fa2355bab1a6ac474c7e445fc52aea9f7dfd4afc3d47561e4006"
+    },
+    {
+      "path": "server/migrations/824_collaboration_stage_revocation_id.up.sql",
+      "sha256": "16460a234b1bc2788e97821c2a560b6ace86aea31ac9c957690dbcd7c73682c4",
+      "actual_sha256": "16460a234b1bc2788e97821c2a560b6ace86aea31ac9c957690dbcd7c73682c4"
+    },
+    {
+      "path": "server/migrations/825_collaboration_stage_reviews_ready.down.sql",
+      "sha256": "99ddbae22d191c4bd8ed005b590f6e87657e7d7c5af813bb04c321eb5d0c1df7",
+      "actual_sha256": "99ddbae22d191c4bd8ed005b590f6e87657e7d7c5af813bb04c321eb5d0c1df7"
+    },
+    {
+      "path": "server/migrations/825_collaboration_stage_reviews_ready.up.sql",
+      "sha256": "aad09b6d3c9cee4ba324f2a1d0ea67eb10560270fcc46e98f23f6fd68d7fdb64",
+      "actual_sha256": "aad09b6d3c9cee4ba324f2a1d0ea67eb10560270fcc46e98f23f6fd68d7fdb64"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "ecd9ca49c34b25bf71815e3a7edf95b1ccfa7cfe327b25a24d9f6e6f8134d129",
+      "actual_sha256": "ecd9ca49c34b25bf71815e3a7edf95b1ccfa7cfe327b25a24d9f6e6f8134d129"
+    }
+  ],
+  "source_hashes_matched": 45,
+  "static_checks": [
+    {
+      "id": "gofmt",
+      "argv": [
+        "gofmt",
+        "-l",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/cmd/server/router.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/handler/collaboration_stage_review.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/handler/collaboration_stage_review_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/handler/collaboration_stage_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/handler/github.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/handler/github_stage_evidence_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/handler/github_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/handler/workspace_delete_manifest_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/integrations/ghsnapshot/refresh.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/integrations/ghsnapshot/refresh_db_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/integrations/ghsnapshot/snapshot.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/integrations/ghsnapshot/snapshot_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_lifecycle.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_actions.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_evidence.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_review.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_review_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_review_types.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_review_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_scope_code_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_signer.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_stage_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/internal/service/collaboration_workflow.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/pkg/db/generated/collaboration_stage.sql.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/pkg/db/generated/collaboration_stage_review.sql.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/pkg/db/generated/github.sql.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/pkg/db/generated/github_snapshot.sql.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server/pkg/db/generated/models.go"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-check/gofmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    },
+    {
+      "id": "vet",
+      "argv": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source/server",
+        "vet",
+        "./internal/service",
+        "./internal/handler",
+        "./internal/integrations/ghsnapshot",
+        "./cmd/server"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-check/vet.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    }
+  ],
+  "migration_registration_test": {
+    "argv": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/migrate",
+      "-run",
+      "^TestEveryConcurrentUpBuildHasCleanup$",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 1,
+    "input_hashes": {
+      "server/cmd/migrate/main.go": "861ab04dd87914de2e09d42caccda5171c19072e366f46e59e77ebfc9d7ff7bd",
+      "server/cmd/migrate/migrate_mul5999_index_retry_test.go": "2a1be533209a9096c4e693d34cf9b2a15c83319f426b438c8a61adb183f4b267"
+    },
+    "input_hashes_after": {
+      "server/cmd/migrate/main.go": "861ab04dd87914de2e09d42caccda5171c19072e366f46e59e77ebfc9d7ff7bd",
+      "server/cmd/migrate/migrate_mul5999_index_retry_test.go": "2a1be533209a9096c4e693d34cf9b2a15c83319f426b438c8a61adb183f4b267"
+    },
+    "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-check/migration-map.log",
+    "log_sha256": "731a51cf6d351494a00ee3ddd64ace478c349837afa075ad16ac17512ac22e69",
+    "named_pass": 0,
+    "named_fail": 1,
+    "named_skip": 0,
+    "s2_missing_count": 16,
+    "unrelated_missing_count": 8,
+    "diagnostics": [
+      "migrate_mul5999_index_retry_test.go:85: 795_report_snapshot_id: builds \"report_snapshot_id_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 796_report_snapshot_request: builds \"report_snapshot_request_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 797_report_snapshot_sequence: builds \"report_snapshot_sequence_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 798_report_snapshot_cycle: builds \"report_snapshot_cycle_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 799_report_snapshot_correction: builds \"report_snapshot_correction_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 801_report_snapshot_control_identity: builds \"report_snapshot_control_identity_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 802_report_snapshot_withdrawal_request: builds \"report_snapshot_withdrawal_request_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 803_report_snapshot_withdrawal_identity: builds \"report_snapshot_withdrawal_identity_key\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 806_project_stage_policy_revision: builds \"project_stage_policy_revision_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 807_project_stage_policy_request: builds \"project_stage_policy_request_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 808_collaboration_stage_task_issue: builds \"collaboration_stage_task_issue_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 809_collaboration_stage_role_revision: builds \"collaboration_stage_role_revision_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 810_collaboration_stage_candidate_id: builds \"collaboration_stage_candidate_id_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 811_collaboration_stage_candidate_version: builds \"collaboration_stage_candidate_version_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 812_collaboration_stage_decision_id: builds \"collaboration_stage_decision_id_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 813_collaboration_stage_decision_issue: builds \"collaboration_stage_decision_issue_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 814_collaboration_stage_decision_candidate: builds \"collaboration_stage_decision_candidate_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 815_collaboration_stage_decision_accept: builds \"collaboration_stage_decision_accept_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 816_collaboration_stage_child_issue: builds \"collaboration_stage_child_issue_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 817_collaboration_stage_child_root: builds \"collaboration_stage_child_root_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 818_collaboration_stage_child_materialization: builds \"collaboration_stage_child_materialization_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 822_collaboration_stage_code_version: builds \"collaboration_stage_code_version_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 823_collaboration_stage_revocation_decision: builds \"collaboration_stage_revocation_decision_idx\" concurrently on up but has no up cleanup",
+      "migrate_mul5999_index_retry_test.go:85: 824_collaboration_stage_revocation_id: builds \"collaboration_stage_revocation_id_idx\" concurrently on up but has no up cleanup"
+    ]
+  },
+  "findings": [
+    {
+      "id": "S2A-C01",
+      "priority": "P1",
+      "status": "open_routed",
+      "title": "S2 concurrent indexes lack established invalid-build retry hooks",
+      "files": [
+        "server/cmd/migrate/main.go",
+        "server/migrations/806_project_stage_policy_revision.up.sql",
+        "server/migrations/822_collaboration_stage_code_version.up.sql",
+        "server/migrations/823_collaboration_stage_revocation_decision.up.sql",
+        "server/migrations/824_collaboration_stage_revocation_id.up.sql"
+      ],
+      "affected_s2_migrations": [
+        806,
+        807,
+        808,
+        809,
+        810,
+        811,
+        812,
+        813,
+        814,
+        815,
+        816,
+        817,
+        818,
+        822,
+        823,
+        824
+      ],
+      "assigned_owner": "/root/s2_server",
+      "proof": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-check/migration-map.json"
+    },
+    {
+      "id": "S2A-C02",
+      "priority": "P2",
+      "status": "open_routed_contract_resolution_selected",
+      "title": "R1 source-denied child digest reveals low-entropy private descriptions",
+      "file": "server/internal/service/collaboration_stage_view.go",
+      "line": 352,
+      "proof": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-check/privacy-dictionary-proof.json",
+      "coordinator_resolution": "Dated wire amendment: child.content_digest explicit null for source-denied/can_open=false; keep hex64 for source-readable; disable unsupported freshA5 selection; preserve existing title/id/history",
+      "assigned_owner": "/root/s2_server and /root/s2_client"
+    }
+  ],
+  "verification_requests": [
+    {
+      "id": "V01",
+      "status": "unproven_routed",
+      "file": "server/internal/service/collaboration_stage_review.go",
+      "lines": [
+        553,
+        557,
+        564,
+        571,
+        579,
+        582
+      ],
+      "question": "Can original decision/credential expire after intermediate dependency check but before final stage mutation?",
+      "needed_proof": "Deterministic DBTX delay after dependency expiry check; final caller and CI remain valid. No DB experiment performed by reviewer."
+    }
+  ],
+  "coordinator_evidence": {
+    "ghsnapshot_race_named_counts": {
+      "pass": 42,
+      "fail": 0,
+      "skip": 0
+    },
+    "migration_roundtrip_status": "pass",
+    "retained_history_refusal": true
+  },
+  "evidence_references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-coordinator-hash-check.json",
+      "sha256": "76edf2f66b270f9e2a07230e9706c74be1d0e47122e4f6f91866b90659218aaf"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-verification-source.json",
+      "sha256": "702a6fcfb19ca8ed4d210f45e0c11fb866b80a0869489579bf0c33e5db07f73b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-ghsnapshot-race-r01.log",
+      "sha256": "da4d674d639907e77388474461f35d24ff87e20dc21d9fabc068df2ac6d1af0b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-migration-roundtrip-r01/results.json",
+      "sha256": "bd5daf758d7a390462811635d0631b1585a78ddee4a4d5e3a956fc30e2b82bdd"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-check/privacy-dictionary-proof.json",
+      "sha256": "39360896926bec8e6a43a5a5333383543b45e3f00aa6e722f8954a4bc660f705"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-check/static-checks.json",
+      "sha256": "72baabfdc515cd068a73ad3ff7ae2948c835a34202961450527bf2b26e758a2b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-check/migration-map.json",
+      "sha256": "303448522ce0cf4755e1917aa7199a6f51a3771741ca8ea3501e187394bc2981"
+    }
+  ],
+  "limitations": [
+    "No independent service/handler DB runs or database writes.",
+    "No fullS2, router/password, selected-artifact positive journey, Web/Desktop or real external acceptance.",
+    "Later2b changes do not retroactively close frozen2a findings.",
+    "TemporalV01 has no deterministic reproduction in this review."
+  ],
+  "report_markdown_sha256": "e0acf960518aaa34d21d63a69995a84235d413d79f0bae8cc935503d36ed0fbe"
+}

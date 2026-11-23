@@ -1,0 +1,162 @@
+{
+  "candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "exit_code": 1,
+  "accepted": false,
+  "stats": {
+    "startTime": "2026-11-04T15:55:22.522Z",
+    "duration": 143556.871,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  },
+  "exact_inventory_matched": true,
+  "cases": [
+    {
+      "file": "collaboration-handoff-chain-desktop.spec.ts",
+      "title": "Electron information return shows the original requester and note before restoring responsibility",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 15301,
+          "errors": [],
+          "attachments": [
+            "native-information-return-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-handoff-chain-web.spec.ts",
+      "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 31332,
+          "errors": [],
+          "attachments": [
+            "handoff-chain-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        {
+          "status": "failed",
+          "retry": 0,
+          "duration": 22922,
+          "errors": [
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts",
+                "column": 111,
+                "line": 130
+              },
+              "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Transfer', exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-offline-handoff.ts:130\n\n  128 |   const page = session.page;\n  129 |   if (action === \"invite\") await revealCollaborationDisclosure(page, \"More actions\");\n> 130 |   await page.getByRole(\"button\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }).click();\n      |                                                                                                               ^\n  131 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }) });\n  132 |   await selectHandoffRecipient(page, form, target);\n  133 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);\n    at uiWorkflow (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts:130:111)\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts:252:30)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-handoff.spec.ts:53:24"
+            }
+          ],
+          "attachments": []
+        }
+      ]
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "project": "chromium",
+      "status": "unexpected",
+      "attempts": [
+        {
+          "status": "failed",
+          "retry": 0,
+          "duration": 41946,
+          "errors": [
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts",
+                "column": 111,
+                "line": 130
+              },
+              "message": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Transfer', exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-offline-handoff.ts:130\n\n  128 |   const page = session.page;\n  129 |   if (action === \"invite\") await revealCollaborationDisclosure(page, \"More actions\");\n> 130 |   await page.getByRole(\"button\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }).click();\n      |                                                                                                               ^\n  131 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }) });\n  132 |   await selectHandoffRecipient(page, form, target);\n  133 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);\n    at uiWorkflow (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts:130:111)\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-offline-handoff.ts:252:30)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-handoff.spec.ts:53:24"
+            }
+          ],
+          "attachments": []
+        }
+      ]
+    },
+    {
+      "file": "collaboration-runtime-handoff-desktop.spec.ts",
+      "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 7781,
+          "errors": [],
+          "attachments": [
+            "desktop-runtime-handoff",
+            "runtime-handoff-native-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 3181,
+          "errors": [],
+          "attachments": [
+            "ENV-1-startup-and-latest-context"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "project": "chromium",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 7582,
+          "errors": [],
+          "attachments": [
+            "web-runtime-handoff",
+            "source-run-navigation",
+            "source-run-navigation-screen",
+            "runtime-handoff-web-evidence"
+          ]
+        }
+      ]
+    }
+  ],
+  "top_level_errors": [],
+  "source_changed": [],
+  "native_changed": [],
+  "raw_report": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/run-02/results.json",
+  "raw_report_sha256": "d8805ea9feef3de333044911545ce8be4ed9b1fd5d414e8478f9fc2b3cc27255",
+  "log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/run-02/output.log",
+  "log_sha256": "081cea0866edd041e7f04d952eccdea228bc5d446f5f4a6cc3636784fe3d86a5",
+  "finished_at": "2026-11-04T15:57:51.910661+00:00",
+  "provider_calls": 0
+}

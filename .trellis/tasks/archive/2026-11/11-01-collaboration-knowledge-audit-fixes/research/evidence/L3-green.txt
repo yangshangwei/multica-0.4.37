@@ -1,0 +1,110 @@
+# L3 green: authorization finishes before the write deadline; every write sets its own deadline
+#
+# Code under test: the red tree plus the fix in server/internal/realtime/hub.go (writePump sets
+# the deadline after authorized()/outboundScopeCurrent()/outboundKnowledgeFrame(), immediately
+# before WriteMessage; the close frame and ping keep their own) and
+# server/internal/realtime/collaboration.go (outboundScopeCurrent sets a fresh deadline before
+# its direct collaboration:access_changed write).
+# Database: none for internal/realtime; cmd/server used kfix_write_cmd.
+#
+# 1) Targeted, same command as L3-red.txt. Exit code: 0
+#    Both BEHAVIORAL tests pass: the frame arrives after a 600ms authorization with a 200ms
+#    write budget, and a following ping is still answered.
+=== RUN   TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget
+2026/11/01 19:09:16 INFO websocket connected user_id=test-user workspace_id=b736820a-476b-4e30-bbbf-e8f046c54562 client_platform="" client_version="" client_os=""
+2026/11/01 19:09:16 INFO ws client connected workspace_id=b736820a-476b-4e30-bbbf-e8f046c54562 user_id=test-user total_clients=1
+2026/11/01 19:09:17 INFO ws client disconnected workspace_id=b736820a-476b-4e30-bbbf-e8f046c54562 user_id=test-user total_clients=0
+--- PASS: TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget (0.60s)
+=== RUN   TestCollaborationSlowRevocationCheckStillSendsAccessHint
+2026/11/01 19:09:17 INFO websocket connected user_id=test-user workspace_id="" client_platform="" client_version="" client_os=""
+2026/11/01 19:09:17 INFO ws client connected workspace_id="" user_id=test-user total_clients=1
+--- PASS: TestCollaborationSlowRevocationCheckStillSendsAccessHint (0.60s)
+2026/11/01 19:09:18 INFO ws client disconnected workspace_id="" user_id=test-user total_clients=0
+PASS
+ok  	github.com/multica-ai/multica/server/internal/realtime	1.798s
+
+# 2) Mutation: drop only the new SetWriteDeadline in outboundScopeCurrent (writePump fix kept).
+#    Exit code: 1. The access-hint test fails, so it pins that half of the fix on its own.
+--- PASS: TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget (0.60s)
+    collaboration_test.go:266: access hint lost behind a revocation check slower than the 200ms write budget: websocket: close 1006 (abnormal closure): unexpected EOF
+--- FAIL: TestCollaborationSlowRevocationCheckStillSendsAccessHint (0.60s)
+
+# 3) Full package: env -u GIT_CONFIG_* go test ./internal/realtime -count=1 -v
+#    Exit code: 0. 56 top-level tests passed, 0 skipped, 0 failed. Existing realtime tests
+#    (including TestKnowledgeQueuedTargetHintReauthorizesAtPhysicalSend and
+#    TestCollaborationWebSocketRevocationBeforeSend) unchanged and green.
+--- PASS: TestKnowledgeEnvelopeRejectsEveryAmbiguousOrPrivateOuterField (0.00s)
+--- PASS: TestKnowledgeEnvelopeCanonicalizesWithoutMutatingSharedBytes (0.00s)
+--- PASS: TestKnowledgeOriginalCredentialValidationFailsClosed (0.00s)
+--- PASS: TestKnowledgeMissingFreshnessCapabilityDropsOnlyKnowledge (0.00s)
+--- PASS: TestKnowledgeQueuedTargetHintReauthorizesAtPhysicalSend (0.00s)
+--- PASS: TestKnowledgeOutboundPredicateRejectsPrivateFieldsAndWrongRoom (0.00s)
+--- PASS: TestKnowledgeSlowFinalSendAuthorizationDoesNotSpendWriteBudget (0.60s)
+--- PASS: TestAccountWebSocketDoesNotJoinWorkspaceRooms (0.00s)
+--- PASS: TestCollaborationWebSocketRevocationBeforeSend (0.00s)
+--- PASS: TestAccountWebSocketRequiresAnAuthorizer (0.00s)
+--- PASS: TestAccountWebSocketUnknownFrameDoesNotLogPrivateInput (0.00s)
+--- PASS: TestCollaborationSlowRevocationCheckStillSendsAccessHint (0.60s)
+--- PASS: TestAuthenticateTokenRejectsTemporarilyDisabledJWTUser (0.00s)
+--- PASS: TestAuthenticateTokenRejectsTemporarilyDisabledPATUser (0.00s)
+--- PASS: TestClientHandleSubscribeReportsLookupFailure (0.00s)
+--- PASS: TestHub_ClientRegistration (0.05s)
+--- PASS: TestHub_Broadcast (0.05s)
+--- PASS: TestHub_ClientDisconnect (0.16s)
+--- PASS: TestHub_BroadcastToMultipleClients (0.05s)
+--- PASS: TestHub_MultipleBroadcasts (0.05s)
+--- PASS: TestHandleWebSocket_ClientIdentityFromQuery (0.00s)
+--- PASS: TestWriteWSAuthFrameLogsWriteErrors (0.00s)
+--- PASS: TestCheckOrigin (0.00s)
+--- PASS: TestHandleWebSocket_RejectsOversizedFrameBeforeAuth (0.00s)
+--- PASS: TestReadPump_RejectsOversizedFrameAfterAuth (0.01s)
+--- PASS: TestReadPump_AcceptsFrameUnderReadLimit (0.00s)
+--- PASS: TestMetrics_RecordEvent (0.00s)
+--- PASS: TestMetrics_RecordEvent_Concurrent (0.00s)
+--- PASS: TestMetrics_Snapshot_IncludesCounters (0.00s)
+--- PASS: TestMetricsAggregatesStreamsWithoutTTLAcrossRelayModes (0.00s)
+--- PASS: TestHubImplementsBroadcaster (0.00s)
+--- PASS: TestNewRedisRelayWithClientsSeparatesBlockingReadPool (0.00s)
+--- PASS: TestRedisRelayStopPreventsNewConsumers (0.00s)
+--- PASS: TestRedisRelaySweepUsesExactTimeTrimAndRepairsTTL (0.00s)
+--- PASS: TestRedisRelaySweepRepairsInactiveLegacyStreamsIncrementally (0.00s)
+--- PASS: TestRedisRelayCountsTTLRepairFailure (0.00s)
+--- PASS: TestRedisRelayCompleteScanPrunesMissingTTLForDeletedStreams (0.00s)
+--- PASS: TestRedisRelayEnsureConsumerGroupIgnoresBusyGroup (0.00s)
+--- PASS: TestDualWriteBroadcasterFansOutLocallyBeforePublishing (0.02s)
+--- PASS: TestMirroredRelayPublishesSameEventIDToBothBackends (0.00s)
+--- PASS: TestMirroredRelayRecordsDivergenceWhenOneBackendFails (0.00s)
+--- PASS: TestMirroredRelayDoesNotMirrorDaemonRuntimeEvents (0.00s)
+--- PASS: TestShardedStreamRelayConfigDefaults (0.00s)
+--- PASS: TestShardedStreamRelayConfigNormalizesRetentionInvariants (0.00s)
+--- PASS: TestShardedStreamRelayShardForScopeIsStableAndBounded (0.00s)
+--- PASS: TestShardedStreamRelayDeliverMessageUsesEnvelopeScope (0.02s)
+--- PASS: TestShardedStreamRelayReplayStartIDIsBounded (0.00s)
+--- PASS: TestShardedStreamRelayReadShardOnceReplaysRetainedMessages (0.00s)
+--- PASS: TestShardedStreamRelayMaintenanceTrimsExactlyAndRepairsTTL (0.00s)
+--- PASS: TestShardedStreamRelayMaintenanceCountsTTLRepairFailure (0.00s)
+--- PASS: TestShardedStreamRelayMissingTransitionResetsGenerationOnce (0.00s)
+--- PASS: TestStreamTTLRefresherRateLimitsPublishPath (0.00s)
+--- PASS: TestStreamTTLRefresherRetriesAfterFailure (0.00s)
+--- PASS: TestStreamTTLRefresherRepairsOnlyMissingTTL (0.00s)
+--- PASS: TestStreamTTLRefresherDisabledPersistsStreamForSafeRollback (0.00s)
+--- PASS: TestRedisInfoInt64 (0.00s)
+ok  	github.com/multica-ai/multica/server/internal/realtime	1.868s
+
+# 4) go test -race ./internal/realtime -count=1 -v: exit 0, 56 passed, no DATA RACE.
+#    go test -race -count=5 on the two new tests plus the two existing final-send tests: exit 0.
+ok  	github.com/multica-ai/multica/server/internal/realtime	7.598s
+
+# 5) DATABASE_URL=postgres://multica:multica@127.0.0.1:5432/kfix_write_cmd?sslmode=disable
+#    env -u GIT_CONFIG_* go test ./cmd/server -count=1 -v: exit 0, 366 passed, 7 skipped
+#    (6 Linux namespace gates; TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry
+#    needs REDIS_TEST_URL, which this machine does not have).
+--- SKIP: TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry (0.00s)
+--- PASS: TestKnowledgeSocketPreservesCurrentJWTAndPasswordGates (0.04s)
+--- PASS: TestKnowledgeSocketRejectsPrivateOrAmbiguousOuterEnvelope (0.01s)
+--- PASS: TestKnowledgeProductionRoutesPreserveAccountAndTargetScopes (0.11s)
+--- PASS: TestCollaborationRealtimeHTTPAndWebSocketShareCurrentAuthorization (0.07s)
+--- PASS: TestWebSocketIntegration (0.12s)
+--- PASS: TestPlatformAccountRouterDisconnectsTargetWebSocketOnly (0.32s)
+--- PASS: TestKnowledgeContextRequiresExplicitStartupOptIn (0.02s)
+ok  	github.com/multica-ai/multica/server/cmd/server	28.761s

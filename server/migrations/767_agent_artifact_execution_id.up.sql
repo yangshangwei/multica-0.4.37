@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY agent_artifact_execution_id_idx ON agent_artifact_execution (execution_id);

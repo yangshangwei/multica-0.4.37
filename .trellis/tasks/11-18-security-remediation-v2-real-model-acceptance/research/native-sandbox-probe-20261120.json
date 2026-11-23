@@ -1,0 +1,23 @@
+{
+  "evidence_type": "offline-native-sandbox-probe-no-model",
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--network=none",
+    "--read-only",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--tmpfs=/tmp:rw,nosuid,size=32m",
+    "--tmpfs=/root/.codex:rw,nosuid,size=32m",
+    "--entrypoint",
+    "sh",
+    "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+    "-c",
+    "codex sandbox -c sandbox_mode=\"workspace-write\" -c approval_policy=\"never\" -c sandbox_workspace_write.network_access=false -- sh -c \"cat /proc/net/route; echo sandbox-child-ran\""
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "bwrap: No permissions to create a new namespace, likely because the kernel does not allow non-privileged user namespaces. On e.g. debian this can be enabled with 'sysctl kernel.unprivileged_userns_clone=1'.\n"
+}

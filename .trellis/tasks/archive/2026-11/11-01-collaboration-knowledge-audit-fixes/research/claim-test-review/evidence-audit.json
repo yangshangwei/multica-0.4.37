@@ -1,0 +1,283 @@
+{
+  "head": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "manifests": [
+    {
+      "manifest": "H3-M3-green.json",
+      "manifest_sha256": "119de8b18951adeebb6c9c5681c0d744d662d2ec9bf5fc5a2f6182b2619d3fdf",
+      "log": "H3-M3-green.txt",
+      "declared_sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+      "actual_sha256": "0b7757a35a0e174c09cedcbe4b29c9743177f8320be4850f7622e150535b3f06",
+      "matches": true,
+      "exit_code": 0,
+      "test_events": {
+        "pass": 8
+      },
+      "database": "kfix_claim_svc_green_20261101",
+      "command": [
+        "/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestKnowledge(ResumeReadsCompleteLongSessionHistory|ResumeDeepExposureStillGoverns|ResumeCorruptRowAnywhereRefuses|RuntimeHistoryReadsCompleteNamespace|RuntimeHistoryIsIndexDriven)$",
+        "-count=1",
+        "-json"
+      ]
+    },
+    {
+      "manifest": "H3-M3-boundary-green.json",
+      "manifest_sha256": "2853eb7299cd04ddc238ce100bf522e75c3e5f62793904831af0c2d679862676",
+      "log": "H3-M3-boundary-green.txt",
+      "declared_sha256": "395b54f5e88a35f96b237f7c59fcb2f0f19910002843b2206a60b01bd5ed8985",
+      "actual_sha256": "395b54f5e88a35f96b237f7c59fcb2f0f19910002843b2206a60b01bd5ed8985",
+      "matches": true,
+      "exit_code": 0,
+      "test_events": {
+        "pass": 11
+      },
+      "database": "kfix_claim_svc_green_20261101",
+      "command": [
+        "/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestKnowledge(ResumeReadsCompleteLongSessionHistory|ResumeDeepExposureStillGoverns|ResumeCorruptRowAnywhereRefuses|RuntimeHistoryReadsCompleteNamespace|RuntimeHistoryIsIndexDriven|RuntimeHistoryLostMetadataRefuses)$",
+        "-count=1",
+        "-json"
+      ]
+    },
+    {
+      "manifest": "claim-service-full.json",
+      "manifest_sha256": "749d21cd7a08d02c6a250fe285a694ba11598c79852a03863767c78129bb5945",
+      "log": "claim-service-full.txt",
+      "declared_sha256": "7e693ad456ecde205060cb25a5f69953151cb1e44fe5ebaf91fd28777f8e6637",
+      "actual_sha256": "7e693ad456ecde205060cb25a5f69953151cb1e44fe5ebaf91fd28777f8e6637",
+      "matches": true,
+      "exit_code": 1,
+      "test_events": {
+        "pass": 2024
+      },
+      "database": "kfix_claim_svc_full_20261101",
+      "command": [
+        "/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "./internal/service",
+        "-count=1",
+        "-json"
+      ]
+    },
+    {
+      "manifest": "claim-service-full-r2.json",
+      "manifest_sha256": "0fb0ca27dad83e1ad144cccc8279ad6d3c0e05a69e55e456a6dea71ed7e9d63f",
+      "log": "claim-service-full-r2.txt",
+      "declared_sha256": "928435d2f810bc386ceaabae5be25e271b333bc53b3d18c5ac638caa0db06338",
+      "actual_sha256": "928435d2f810bc386ceaabae5be25e271b333bc53b3d18c5ac638caa0db06338",
+      "matches": true,
+      "exit_code": 0,
+      "test_events": {
+        "pass": 3281,
+        "skip": 18
+      },
+      "database": "kfix_claim_full_r2_20261101_2338",
+      "command": [
+        "/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "./internal/service",
+        "-count=1",
+        "-json",
+        "-timeout=40m"
+      ]
+    },
+    {
+      "manifest": "managed-args-verification.json",
+      "log": "managed-args-red.jsonl",
+      "declared_sha256": "0f10c4084e69a32ca72d45bb7dc37fd48ef6923ecb32c86525c9539a74b72faa",
+      "actual_sha256": "0f10c4084e69a32ca72d45bb7dc37fd48ef6923ecb32c86525c9539a74b72faa",
+      "matches": true,
+      "declared_counts": {
+        "run": 8,
+        "pass": 0,
+        "fail": 8,
+        "skip": 0
+      }
+    },
+    {
+      "manifest": "managed-args-verification.json",
+      "log": "managed-args-green.jsonl",
+      "declared_sha256": "e5842cd671f4505aabddaf21e42d22abf17095fae773a4571275dd9db351526a",
+      "actual_sha256": "e5842cd671f4505aabddaf21e42d22abf17095fae773a4571275dd9db351526a",
+      "matches": true,
+      "declared_counts": {
+        "run": 9,
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "manifest": "managed-args-verification.json",
+      "log": "managed-args-race.jsonl",
+      "declared_sha256": "b907c263926baf5ccd4c97e6365ea118e6e191a22b358b7e42d1db60c7839b5b",
+      "actual_sha256": "b907c263926baf5ccd4c97e6365ea118e6e191a22b358b7e42d1db60c7839b5b",
+      "matches": true,
+      "declared_counts": {
+        "run": 18,
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "manifest": "managed-args-verification.json",
+      "log": "managed-args-package.jsonl",
+      "declared_sha256": "10920b624cf64408f26f64be612085e19f7d54788822f64529c176780dca9fd2",
+      "actual_sha256": "10920b624cf64408f26f64be612085e19f7d54788822f64529c176780dca9fd2",
+      "matches": true,
+      "declared_counts": {
+        "run": 1954,
+        "pass": 1941,
+        "fail": 9,
+        "skip": 4
+      }
+    },
+    {
+      "manifest": "managed-args-verification.json",
+      "log": "managed-args-package-r2.jsonl",
+      "declared_sha256": "4d01f7415172f8a96d277e1b4ead7185aef00734721e3eb91607d33cd243ebda",
+      "actual_sha256": "4d01f7415172f8a96d277e1b4ead7185aef00734721e3eb91607d33cd243ebda",
+      "matches": true,
+      "declared_counts": {
+        "run": 1954,
+        "pass": 1950,
+        "fail": 0,
+        "skip": 4
+      }
+    }
+  ],
+  "H3_source_binding": [
+    {
+      "file": "server/internal/service/task_knowledge_history_growth_test.go",
+      "declared_sha256": "b92abe66dbe3a1ef2cfedabd1dfc3bddfff3250fe74fe7e6bd35855e9f8cfd20",
+      "at_H3_commit_sha256": "b92abe66dbe3a1ef2cfedabd1dfc3bddfff3250fe74fe7e6bd35855e9f8cfd20",
+      "current_sha256": "b92abe66dbe3a1ef2cfedabd1dfc3bddfff3250fe74fe7e6bd35855e9f8cfd20",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "server/migrations/761_collaboration_knowledge_agent_history.down.sql",
+      "declared_sha256": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53",
+      "at_H3_commit_sha256": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53",
+      "current_sha256": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "server/migrations/761_collaboration_knowledge_agent_history.up.sql",
+      "declared_sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+      "at_H3_commit_sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+      "current_sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "server/migrations/762_collaboration_knowledge_runtime_history.down.sql",
+      "declared_sha256": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25",
+      "at_H3_commit_sha256": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25",
+      "current_sha256": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "server/migrations/762_collaboration_knowledge_runtime_history.up.sql",
+      "declared_sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+      "at_H3_commit_sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+      "current_sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "server/migrations/763_collaboration_knowledge_delivery_history.down.sql",
+      "declared_sha256": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f",
+      "at_H3_commit_sha256": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f",
+      "current_sha256": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "server/migrations/763_collaboration_knowledge_delivery_history.up.sql",
+      "declared_sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+      "at_H3_commit_sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+      "current_sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-knowledge-execution.md",
+      "declared_sha256": "39798f60b0143685ffffb52f79cc848b5ac1e0d61205d3b9ec0d6fe8d8c9a030",
+      "at_H3_commit_sha256": "39798f60b0143685ffffb52f79cc848b5ac1e0d61205d3b9ec0d6fe8d8c9a030",
+      "current_sha256": "fbac23a6c6b43e34599b7552ee1cc759df509594ce9db12842daa5a5ee98e3c5",
+      "matches_H3_commit": true,
+      "matches_current": false
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-knowledge.md",
+      "declared_sha256": "9557f0da04f4304e33fc9785d5fd7aeb988a35eb342e392bd5ce51fd9c45151b",
+      "at_H3_commit_sha256": "9557f0da04f4304e33fc9785d5fd7aeb988a35eb342e392bd5ce51fd9c45151b",
+      "current_sha256": "9557f0da04f4304e33fc9785d5fd7aeb988a35eb342e392bd5ce51fd9c45151b",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "docs/collaboration-knowledge-runtime.md",
+      "declared_sha256": "c9d77889fdd3f5fb9445df45e321f852a2bc6a878424a2d0bdff2fd46f4c3001",
+      "at_H3_commit_sha256": "c9d77889fdd3f5fb9445df45e321f852a2bc6a878424a2d0bdff2fd46f4c3001",
+      "current_sha256": "fa8c97d4f38249296b1eb4cfe01a3c1d93ec829000902b4ed45f1b48b7acd314",
+      "matches_H3_commit": true,
+      "matches_current": false
+    },
+    {
+      "file": "server/cmd/migrate/main.go",
+      "declared_sha256": "9847e2e3ccae53093999117c6f254e01ba24f976c220819755902be9c6d023af",
+      "at_H3_commit_sha256": "9847e2e3ccae53093999117c6f254e01ba24f976c220819755902be9c6d023af",
+      "current_sha256": "9847e2e3ccae53093999117c6f254e01ba24f976c220819755902be9c6d023af",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "server/internal/service/task_knowledge.go",
+      "declared_sha256": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+      "at_H3_commit_sha256": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+      "current_sha256": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "server/internal/service/task_knowledge_invocation_test.go",
+      "declared_sha256": "d4cb3099bf575f4526fafa8bbff1c8df56854c7add1c1cbac99b99adfb589ff5",
+      "at_H3_commit_sha256": "d4cb3099bf575f4526fafa8bbff1c8df56854c7add1c1cbac99b99adfb589ff5",
+      "current_sha256": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+      "matches_H3_commit": true,
+      "matches_current": false
+    },
+    {
+      "file": "server/pkg/db/generated/task_knowledge.sql.go",
+      "declared_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+      "at_H3_commit_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+      "current_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+      "matches_H3_commit": true,
+      "matches_current": true
+    },
+    {
+      "file": "server/pkg/db/queries/task_knowledge.sql",
+      "declared_sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+      "at_H3_commit_sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+      "current_sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+      "matches_H3_commit": true,
+      "matches_current": true
+    }
+  ],
+  "source_mapping_notes": "Later managed-argv commit intentionally changes execution spec/operator doc and one service test comment; H3 production reader/query/generated/migration hashes should remain exact."
+}

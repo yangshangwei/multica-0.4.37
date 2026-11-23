@@ -1,0 +1,49 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/allocate-fresh-db-redis.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/allocate-fresh-db-redis.py.in
+@@ -11,8 +11,8 @@
+ 
+ HERE = Path(__file__).resolve().parent
+ ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+-OUT = ROOT / '.omx/private/final-check-v15'
+-EXPECTED = 'd41573e3a4eb3bd6c36feed3f0d542a0e066ee0f'
++OUT = ROOT / '.omx/private/final-check-v16'
++EXPECTED = 'PENDING_ROOT_FINAL_SHA'
+ OWNER = '01a1a3c9-2459-7de1-8244-55640c5f6143'
+ PSQL = '/opt/homebrew/opt/libpq/bin/psql'
+ 
+@@ -32,13 +32,13 @@
+ assert run(['git', 'rev-parse', 'HEAD'], cwd=ROOT).stdout.strip() == EXPECTED
+ assert not run(['git', 'status', '--porcelain'], cwd=ROOT).stdout.strip()
+ values = {}
+-for line in (OUT / 'check-source-v15.env').read_text().splitlines():
++for line in (OUT / 'check-source-v16.env').read_text().splitlines():
+     if line and not line.startswith('#'):
+         key, raw = line.split('=', 1)
+         tokens = shlex.split(raw)
+         values[key] = tokens[0] if tokens else ''
+ url = urlsplit(values['DATABASE_URL'])
+-database = 'multica_closure_v15_seed_01a1a3c9'
++database = 'multica_closure_v16_seed_01a1a3c9'
+ assert url.path == '/' + database and values['POSTGRES_DB'] == database
+ sql_env = {'PATH': '/usr/bin:/bin', 'HOME': str(OUT / 'metadata-home-not-created'),
+            'PGHOST': url.hostname, 'PGPORT': str(url.port), 'PGUSER': unquote(url.username),
+@@ -53,14 +53,14 @@
+     with socket.socket() as sock:
+         sock.bind(('127.0.0.1', port))
+ record = {'recorded_at': datetime.now(timezone.utc).isoformat(), 'coordinator': OWNER, 'candidate_sha': EXPECTED,
+-          'candidate_root': str(ROOT), 'source_env_path': str(OUT / 'check-source-v15.env'),
+-          'source_env_sha256': digest(OUT / 'check-source-v15.env'), 'database': database,
++          'candidate_root': str(ROOT), 'source_env_path': str(OUT / 'check-source-v16.env'),
++          'source_env_sha256': digest(OUT / 'check-source-v16.env'), 'database': database,
+           'postgres_endpoint': {'host': url.hostname, 'port': url.port}, 'postgres_identity': identity,
+           'database_state': 'allocation_ready_not_created', 'redis_port': redis_port, 'renderer_port': renderer_port,
+-          'redis_name': 'multica-v15-01a1a3c9-redis', 'redis_image': 'redis:7-alpine',
++          'redis_name': 'multica-v16-01a1a3c9-redis', 'redis_image': 'redis:7-alpine',
+           'renderer_url': values['COLLABORATION_ELECTRON_RENDERER_URL'], 'renderer_started': False,
+-          'future_registry': str(OUT / 'dev-registry-v15'), 'registry_created': False,
+-          'allocation': json.loads((OUT / 'build-temp-allocation-v15.json').read_text()),
++          'future_registry': str(OUT / 'dev-registry-v16'), 'registry_created': False,
++          'allocation': json.loads((OUT / 'build-temp-allocation-v16.json').read_text()),
+           'script_sha256': digest(__file__), 'real_provider_allowed': False, 'knowledge_default': False}
+ save('resource-allocation-before.json', record)
+ result = run(sql_cmd + ['CREATE DATABASE "' + database + '" WITH TEMPLATE template0 OWNER "multica"'], env=sql_env)

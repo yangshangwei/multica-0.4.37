@@ -1,7 +1,10 @@
 {
+  "global_navigation": {
+    "label": "Application navigation"
+  },
   "nav": {
     "inbox": "Inbox",
-    "chat": "Chat",
+    "chat": "AI Chat",
     "my_issues": "My Issues",
     "issues": "Issues",
     "projects": "Projects",
@@ -21,8 +24,44 @@
   },
   "marketplace": {
     "type_label": "Capability type",
-    "mcp": "MCP",
-    "skills": "Skills"
+    "welcome": {
+      "title": "Equip your team for the next task",
+      "description": "Connect a tool, reuse a workflow, or start with a template for an agent or squad. Pick a category to see how it helps."
+    },
+    "example": {
+      "label": "Usage example",
+      "task": "Check sign-up before release",
+      "show": "See how it’s used",
+      "docs": "Read the docs"
+    },
+    "mcp": {
+      "label": "MCP",
+      "purpose": "Connect tools",
+      "resource": "Playwright",
+      "setup": "Configure the Playwright MCP server and assign it to your test agent.",
+      "outcome": "The agent can open the page and fill in the sign-up form."
+    },
+    "skills": {
+      "label": "Skills",
+      "purpose": "Reuse workflows",
+      "resource": "Sign-up checklist",
+      "setup": "Save the sign-up checks and how to record results as a skill.",
+      "outcome": "Reuse the same steps each time you test sign-up."
+    },
+    "squad_templates": {
+      "label": "Squad templates",
+      "purpose": "Build a squad",
+      "resource": "Release Squad",
+      "setup": "Start with the Release Squad template and give the squad this task.",
+      "outcome": "The lead coordinates testing and release prep, then asks a person to approve the release."
+    },
+    "agent_templates": {
+      "label": "Agent templates",
+      "purpose": "Create an agent",
+      "resource": "QA Engineer",
+      "setup": "Create an agent from the QA Engineer template, then assign the sign-up check.",
+      "outcome": "The agent checks the flow and reports the results in the task."
+    }
   },
   "tab": {
     "issue": "Issue",
@@ -36,6 +75,7 @@
     "runtime": "Runtime",
     "attachment": "Attachment",
     "create_agent": "Create Agent",
+    "create_squad": "Create Squad",
     "unknown": "Unknown page",
     "iteration": "Iteration"
   },
@@ -66,7 +106,21 @@
     "ai_team_group": "AI Team",
     "resources_group": "Resources & connections",
     "workspace_issues": "Workspace issues",
-    "unread_overflow": "99+"
+    "unread_overflow": "99+",
+    "chat_unread_one": "{{count}} unread message",
+    "chat_unread_other": "{{count}} unread messages",
+    "start_work": "Start work",
+    "start_collaboration": "Start collaboration",
+    "open_workspace_to_create": "Open a workspace to create an issue",
+    "open_workspace_to_chat": "Choose a workspace to start AI Chat",
+    "cross_workspace": "Cross-workspace",
+    "collaboration_notifications": "Collaboration notifications",
+    "switch_workspace": "Switch workspace",
+    "workspace_settings": "Workspace settings",
+    "retry_workspaces": "Retry loading workspaces",
+    "no_workspace_selected": "Choose a workspace to access its issues and resources.",
+    "more_navigation": "More navigation",
+    "my_work_group": "My work"
   },
   "desktop": {
     "version": {

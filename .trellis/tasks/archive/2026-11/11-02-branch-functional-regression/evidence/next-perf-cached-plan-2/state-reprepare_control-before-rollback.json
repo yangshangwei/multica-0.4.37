@@ -1,0 +1,580 @@
+{
+  "pid": 7356,
+  "stats": [],
+  "counts": {
+    "issue": 1000,
+    "iteration_event": 4004,
+    "agent_task_queue": 0,
+    "iteration_participation": 2000
+  },
+  "tables": [
+    {
+      "table": "agent_task_queue",
+      "relpages": 0,
+      "reltuples": -1,
+      "heap_bytes": 0,
+      "n_dead_tup": 0,
+      "n_live_tup": 0,
+      "reloptions": null,
+      "last_analyze": null,
+      "analyze_count": 0,
+      "last_autoanalyze": null,
+      "autoanalyze_count": 0
+    },
+    {
+      "table": "issue",
+      "relpages": 0,
+      "reltuples": -1,
+      "heap_bytes": 1376256,
+      "n_dead_tup": 3000,
+      "n_live_tup": 1000,
+      "reloptions": null,
+      "last_analyze": null,
+      "analyze_count": 0,
+      "last_autoanalyze": null,
+      "autoanalyze_count": 0
+    },
+    {
+      "table": "iteration_event",
+      "relpages": 0,
+      "reltuples": -1,
+      "heap_bytes": 6832128,
+      "n_dead_tup": 4002,
+      "n_live_tup": 2003,
+      "reloptions": null,
+      "last_analyze": null,
+      "analyze_count": 0,
+      "last_autoanalyze": null,
+      "autoanalyze_count": 0
+    },
+    {
+      "table": "iteration_participation",
+      "relpages": 0,
+      "reltuples": -1,
+      "heap_bytes": 3997696,
+      "n_dead_tup": 4997,
+      "n_live_tup": 1000,
+      "reloptions": null,
+      "last_analyze": null,
+      "analyze_count": 0,
+      "last_autoanalyze": null,
+      "autoanalyze_count": 0
+    }
+  ],
+  "indexes": [
+    {
+      "live": true,
+      "name": "admin_alert_failure_scan_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX admin_alert_failure_scan_idx ON public.agent_task_queue USING btree (completed_at, id) WHERE ((status = 'failed'::text) AND (completed_at IS NOT NULL))"
+    },
+    {
+      "live": true,
+      "name": "admin_alert_inflight_installation_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX admin_alert_inflight_installation_idx ON public.agent_task_queue USING btree (execution_installation_id, id) WHERE ((status = ANY (ARRAY['dispatched'::text, 'running'::text, 'waiting_local_directory'::text])) AND (execution_installation_id IS NOT NULL))"
+    },
+    {
+      "live": true,
+      "name": "admin_alert_queue_scan_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX admin_alert_queue_scan_idx ON public.agent_task_queue USING btree (queued_at, id) WHERE (status = 'queued'::text)"
+    },
+    {
+      "live": true,
+      "name": "admin_execution_finished_page_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX admin_execution_finished_page_idx ON public.agent_task_queue USING btree (completed_at DESC, id DESC) WHERE (completed_at IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "admin_task_page_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX admin_task_page_idx ON public.agent_task_queue USING btree (created_at DESC, id DESC)"
+    },
+    {
+      "live": true,
+      "name": "admin_task_runtime_page_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX admin_task_runtime_page_idx ON public.agent_task_queue USING btree (runtime_id, created_at DESC, id DESC)"
+    },
+    {
+      "live": true,
+      "name": "agent_task_queue_originator_user_id_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX agent_task_queue_originator_user_id_idx ON public.agent_task_queue USING btree (originator_user_id) WHERE (originator_user_id IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "agent_task_queue_pkey",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX agent_task_queue_pkey ON public.agent_task_queue USING btree (id)"
+    },
+    {
+      "live": true,
+      "name": "agent_task_queue_squad_id_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX agent_task_queue_squad_id_idx ON public.agent_task_queue USING btree (squad_id) WHERE (squad_id IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "collaboration_knowledge_agent_history_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX collaboration_knowledge_agent_history_idx ON public.agent_task_queue USING btree (agent_id, created_at DESC, id DESC) WHERE (knowledge_context_version IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "collaboration_knowledge_delivery_history_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX collaboration_knowledge_delivery_history_idx ON public.agent_task_queue USING gin (knowledge_delivery jsonb_path_ops) WHERE (knowledge_context_version IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "collaboration_knowledge_runtime_history_idx",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX collaboration_knowledge_runtime_history_idx ON public.agent_task_queue USING btree (runtime_id, created_at DESC, id DESC) WHERE (knowledge_context_version IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_agent",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_agent ON public.agent_task_queue USING btree (agent_id, status)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_agent_id_keyset",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_agent_id_keyset ON public.agent_task_queue USING btree (agent_id, id)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_agent_terminal_latest",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_agent_terminal_latest ON public.agent_task_queue USING btree (agent_id, completed_at DESC NULLS LAST, created_at DESC, id DESC) WHERE (status = ANY (ARRAY['completed'::text, 'failed'::text]))"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_chat_pending_v3",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_chat_pending_v3 ON public.agent_task_queue USING btree (chat_session_id, created_at DESC) WHERE ((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['queued'::text, 'dispatched'::text, 'running'::text, 'waiting_local_directory'::text, 'deferred'::text])))"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_chat_retired_session",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_chat_retired_session ON public.agent_task_queue USING btree (chat_session_id, retired_session_id) WHERE ((chat_session_id IS NOT NULL) AND (retired_session_id IS NOT NULL))"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_chat_terminal_resume",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_chat_terminal_resume ON public.agent_task_queue USING btree (chat_session_id, session_id, completed_at DESC) WHERE ((chat_session_id IS NOT NULL) AND (status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text])))"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_claim_candidates",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_claim_candidates ON public.agent_task_queue USING btree (runtime_id, priority DESC, created_at) WHERE (status = 'queued'::text)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_deferred_fire",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_deferred_fire ON public.agent_task_queue USING btree (runtime_id, fire_at) WHERE (status = 'deferred'::text)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_dispatched_reclaim_v2",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_dispatched_reclaim_v2 ON public.agent_task_queue USING btree (runtime_id, dispatched_at, priority DESC) WHERE ((status = 'dispatched'::text) AND (started_at IS NULL))"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_escalation_for",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_escalation_for ON public.agent_task_queue USING btree (escalation_for_task_id) WHERE (escalation_for_task_id IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_issue_id",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_issue_id ON public.agent_task_queue USING btree (issue_id)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_issue_id_keyset",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_issue_id_keyset ON public.agent_task_queue USING btree (issue_id, id)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_parent",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_parent ON public.agent_task_queue USING btree (parent_task_id)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_pending",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_pending ON public.agent_task_queue USING btree (agent_id, priority DESC, created_at) WHERE (status = ANY (ARRAY['queued'::text, 'dispatched'::text]))"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_queued_created_at",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_queued_created_at ON public.agent_task_queue USING btree (created_at) WHERE (status = 'queued'::text)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_running_started_at",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_running_started_at ON public.agent_task_queue USING btree (started_at) WHERE (status = 'running'::text)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_runtime_id",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_runtime_id ON public.agent_task_queue USING btree (runtime_id, id)"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_runtime_pending",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_runtime_pending ON public.agent_task_queue USING btree (runtime_id, priority DESC, created_at) WHERE (status = ANY (ARRAY['queued'::text, 'dispatched'::text]))"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_terminal_completed_at_v2",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_terminal_completed_at_v2 ON public.agent_task_queue USING btree (completed_at) WHERE (status = ANY (ARRAY['completed'::text, 'failed'::text, 'cancelled'::text]))"
+    },
+    {
+      "live": true,
+      "name": "idx_agent_task_queue_trigger_comment_id",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_agent_task_queue_trigger_comment_id ON public.agent_task_queue USING btree (trigger_comment_id) WHERE (trigger_comment_id IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "idx_one_pending_task_per_issue_agent_v2",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX idx_one_pending_task_per_issue_agent_v2 ON public.agent_task_queue USING btree (issue_id, agent_id) WHERE ((status = ANY (ARRAY['queued'::text, 'dispatched'::text])) OR ((status = 'deferred'::text) AND ((context -\u003e\u003e 'channel_issue_media_pending'::text) = 'true'::text)))"
+    },
+    {
+      "live": true,
+      "name": "idx_task_chat_finalize_deferred",
+      "ready": true,
+      "table": "agent_task_queue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_task_chat_finalize_deferred ON public.agent_task_queue USING btree (chat_finalize_deferred_at) WHERE (chat_finalize_deferred_at IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "admin_issue_page_idx",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX admin_issue_page_idx ON public.issue USING btree (created_at DESC, id DESC)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_assignee",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_assignee ON public.issue USING btree (assignee_type, assignee_id)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_description_trgm",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_description_trgm ON public.issue USING gin (lower(COALESCE(description, ''::text)) gin_trgm_ops)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_first_executed_at",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_first_executed_at ON public.issue USING btree (workspace_id, first_executed_at) WHERE (first_executed_at IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_metadata_gin",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_metadata_gin ON public.issue USING gin (metadata jsonb_path_ops)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_origin",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_origin ON public.issue USING btree (origin_type, origin_id) WHERE (origin_type IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_parent",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_parent ON public.issue USING btree (parent_issue_id)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_project",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_project ON public.issue USING btree (project_id)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_project_status",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_project_status ON public.issue USING btree (project_id, workspace_id, status)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_properties_gin",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_properties_gin ON public.issue USING gin (properties jsonb_path_ops)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_status",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_status ON public.issue USING btree (workspace_id, status)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_title_trgm",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_title_trgm ON public.issue USING gin (lower(title) gin_trgm_ops)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_workspace",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_workspace ON public.issue USING btree (workspace_id)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_workspace_assignee",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_workspace_assignee ON public.issue USING btree (workspace_id, assignee_type, assignee_id)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_workspace_id_keyset",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_workspace_id_keyset ON public.issue USING btree (workspace_id, id)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_workspace_parent",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_workspace_parent ON public.issue USING btree (workspace_id, parent_issue_id)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_workspace_position",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_workspace_position ON public.issue USING btree (workspace_id, \"position\", created_at DESC, id DESC)"
+    },
+    {
+      "live": true,
+      "name": "idx_issue_workspace_status_position",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX idx_issue_workspace_status_position ON public.issue USING btree (workspace_id, status, \"position\")"
+    },
+    {
+      "live": true,
+      "name": "issue_admission_workspace",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX issue_admission_workspace ON public.issue USING btree (workspace_id, admission_status)"
+    },
+    {
+      "live": true,
+      "name": "issue_pkey",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX issue_pkey ON public.issue USING btree (id)"
+    },
+    {
+      "live": true,
+      "name": "iteration_issue_current",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE INDEX iteration_issue_current ON public.issue USING btree (workspace_id, current_iteration_id) WHERE (current_iteration_id IS NOT NULL)"
+    },
+    {
+      "live": true,
+      "name": "uq_issue_workspace_number",
+      "ready": true,
+      "table": "issue",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX uq_issue_workspace_number ON public.issue USING btree (workspace_id, number)"
+    },
+    {
+      "live": true,
+      "name": "iteration_event_id",
+      "ready": true,
+      "table": "iteration_event",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX iteration_event_id ON public.iteration_event USING btree (id)"
+    },
+    {
+      "live": true,
+      "name": "iteration_event_sequence",
+      "ready": true,
+      "table": "iteration_event",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX iteration_event_sequence ON public.iteration_event USING btree (iteration_id, sequence)"
+    },
+    {
+      "live": true,
+      "name": "iteration_participation_identity",
+      "ready": true,
+      "table": "iteration_participation",
+      "valid": true,
+      "definition": "CREATE UNIQUE INDEX iteration_participation_identity ON public.iteration_participation USING btree (workspace_id, iteration_id, issue_id)"
+    },
+    {
+      "live": true,
+      "name": "iteration_participation_issue",
+      "ready": true,
+      "table": "iteration_participation",
+      "valid": true,
+      "definition": "CREATE INDEX iteration_participation_issue ON public.iteration_participation USING btree (workspace_id, issue_id, iteration_id)"
+    }
+  ],
+  "database": "multica_func7af9_next_cached_diag_2",
+  "prepared": [
+    {
+      "sql": "-- name: JoinIterationParticipationBatch :batchexec\nINSERT INTO iteration_participation (workspace_id,iteration_id,issue_id,\n first_joined_at,current_joined_at,has_started_current_participation)\nSELECT $1,$2,$3,\n GREATEST($4::timestamptz,last_event.occurred_at),\n GREATEST($4::timestamptz,last_event.occurred_at),$5\nFROM (SELECT 1) seed LEFT JOIN LATERAL (\n SELECT occurred_at FROM iteration_event\n WHERE workspace_id=$1 AND iteration_id=$2\n ORDER BY sequence DESC LIMIT 1\n) last_event ON true\nON CONFLICT (workspace_id,iteration_id,issue_id)\nDO UPDATE SET current_joined_at=EXCLUDED.current_joined_at,\n has_started_current_participation=EXCLUDED.has_started_current_participation\n",
+      "name": "stmtcache_84dba38cba0b1c2162d0567112bfd1c1d6b70152a433555e",
+      "from_sql": false,
+      "custom_plans": 5,
+      "prepare_time": "2026-11-02T08:07:49.2317+00:00",
+      "generic_plans": 995,
+      "parameter_types": "{uuid,uuid,uuid,\"timestamp with time zone\",boolean}"
+    },
+    {
+      "sql": "-- name: LeaveDeletedIssueIterationParticipationBatch :batchone\nUPDATE iteration_participation p SET current_joined_at=NULL,\n has_started_current_participation=false,\n last_left_at=GREATEST($1::timestamptz,\n  (SELECT e.occurred_at FROM iteration_event e\n   WHERE e.workspace_id=$2 AND e.iteration_id=$3\n   ORDER BY e.sequence DESC LIMIT 1))\nWHERE p.workspace_id=$2 AND p.iteration_id=$3\n AND p.issue_id=$4 AND p.current_joined_at IS NOT NULL RETURNING issue_id\n",
+      "name": "stmtcache_fd8c64203557ce94f2f5c79ba22b6be31c05cdb9f50faaf9",
+      "from_sql": false,
+      "custom_plans": 5,
+      "prepare_time": "2026-11-02T08:07:48.335758+00:00",
+      "generic_plans": 995,
+      "parameter_types": "{\"timestamp with time zone\",uuid,uuid,uuid}"
+    }
+  ],
+  "settings": {
+    "enable_seqscan": "on",
+    "enable_indexscan": "on",
+    "enable_bitmapscan": "on",
+    "auto_explain.log_wal": "on",
+    "auto_explain.log_level": "notice",
+    "auto_explain.log_timing": "on",
+    "auto_explain.log_analyze": "on",
+    "auto_explain.log_buffers": "on",
+    "auto_explain.log_min_duration": "-1"
+  },
+  "plan_cache_mode": "auto",
+  "transaction_isolation": "read committed"
+}

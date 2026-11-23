@@ -1,0 +1,170 @@
+{
+  "recorded_at": "2026-11-03T16:00:42.389764+00:00",
+  "scope": "One actual named directed run on the root-authorized new database, no complete check or CCG",
+  "selection": [
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+      "id": "d830fff7a787071ac252-cce5cce322a1d9534728"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "id": "d830fff7a787071ac252-2802bec50cf95487730b"
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+      "id": "d830fff7a787071ac252-eac673a2b556e5572224"
+    },
+    {
+      "file": "collaboration-boundaries-web.spec.ts",
+      "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+      "id": "6e126002765c26c65f32-f3f66911ac00e604b913"
+    },
+    {
+      "file": "collaboration-command-history-web.spec.ts",
+      "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+      "id": "dc6e451f347c4093ecd2-a28eb97dd4e993efe152"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "id": "e1244c64bf212413b472-21e1aed1c8d6c522f803"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "id": "e1244c64bf212413b472-40cb2a40180050917361"
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "id": "e1244c64bf212413b472-f56f261bd296c36c7784"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "id": "a2c6b754d21b70f11df3-e4beab049273f7979057"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "id": "a2c6b754d21b70f11df3-64a32e62b06c28657aa8"
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+      "id": "a2c6b754d21b70f11df3-24073f543fb2f4024711"
+    },
+    {
+      "file": "collaboration-preparation-records-desktop.spec.ts",
+      "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+      "id": "cde037303ed86892b546-c487173c2ca4fe36791b"
+    },
+    {
+      "file": "collaboration-preparation-records-web.spec.ts",
+      "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+      "id": "a51aed25ed03c8fdf991-8eebfabe4531dc636537"
+    },
+    {
+      "file": "collaboration-preview-web.spec.ts",
+      "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+      "id": "6a3286d9ccab8513fbec-e93b6369b5b4939e29a8"
+    },
+    {
+      "file": "collaboration-resource-offers-web.spec.ts",
+      "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+      "id": "c78071dd87551f1b6349-e8466e8ab1e2b5c666b4"
+    },
+    {
+      "file": "collaboration-resources-web.spec.ts",
+      "title": "resource owners register, authorize, withdraw and switch while participant management preserves authority",
+      "id": "217ddf7a66d97257e3f4-2fc69945ab2d775c7b1e"
+    },
+    {
+      "file": "collaboration-records-web.spec.ts",
+      "title": "Web shares ordinary child references and retained run records through account notification links",
+      "id": null
+    }
+  ],
+  "files": [
+    "e2e/collaboration-account-desktop.spec.ts",
+    "e2e/collaboration-boundaries-web.spec.ts",
+    "e2e/collaboration-command-history-web.spec.ts",
+    "e2e/collaboration-mention-journeys-desktop.spec.ts",
+    "e2e/collaboration-mention-journeys-web.spec.ts",
+    "e2e/collaboration-preparation-records-desktop.spec.ts",
+    "e2e/collaboration-preparation-records-web.spec.ts",
+    "e2e/collaboration-preview-web.spec.ts",
+    "e2e/collaboration-records-web.spec.ts",
+    "e2e/collaboration-resource-offers-web.spec.ts",
+    "e2e/collaboration-resources-web.spec.ts"
+  ],
+  "count": 17,
+  "command_base": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+    "--dir",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-account-desktop.spec.ts",
+    "e2e/collaboration-boundaries-web.spec.ts",
+    "e2e/collaboration-command-history-web.spec.ts",
+    "e2e/collaboration-mention-journeys-desktop.spec.ts",
+    "e2e/collaboration-mention-journeys-web.spec.ts",
+    "e2e/collaboration-preparation-records-desktop.spec.ts",
+    "e2e/collaboration-preparation-records-web.spec.ts",
+    "e2e/collaboration-preview-web.spec.ts",
+    "e2e/collaboration-records-web.spec.ts",
+    "e2e/collaboration-resource-offers-web.spec.ts",
+    "e2e/collaboration-resources-web.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--grep",
+    "(?:^| )(Desktop\\ offers\\ private\\ resources,\\ sends\\ all\\ plus\\ AI\\ mentions\\ and\\ preserves\\ cancelled\\ command\\ history|Desktop\\ child\\ links,\\ recorded\\ pages\\ and\\ result\\ notifications\\ survive\\ popouts\\ and\\ restart|Desktop\\ resource\\ owners\\ authorize,\\ withdraw\\ and\\ commit\\ a\\ held\\ configuration\\ switch|Gap\\ 7:\\ hidden\\ manager\\ actions\\ POSTed\\ by\\ the\\ wrong\\ role\\ are\\ refused\\ and\\ change\\ nothing;\\ a\\ non\\-participant's\\ @agent\\ never\\ queues|cancelled\\ waiting\\ commands\\ retain\\ original\\ content\\ after\\ comment\\ changes,\\ refresh\\ and\\ another\\ account\\ reads|Desktop\\ mixed\\ H\\+A\\+B\\+S\\ mentions\\ retain\\ one\\ comment\\ and\\ exact\\ queued\\ target\\ associations|Desktop\\ owner\\ revocation\\ after\\ preview\\ refuses\\ only\\ A\\ and\\ original\\-key\\ replay\\ stays\\ deduplicated|Desktop\\ offline\\ mentions\\ survive\\ a\\ fresh\\ profile\\ and\\ edits\\ notify\\ only\\ newly\\ added\\ people|Web\\ mixed\\ H\\+A\\+B\\+S\\ mentions\\ retain\\ one\\ comment\\ and\\ exact\\ queued\\ target\\ associations|Web\\ owner\\ revocation\\ after\\ preview\\ refuses\\ only\\ A\\ and\\ original\\-key\\ replay\\ stays\\ deduplicated|Web\\ offline\\ mentions\\ survive\\ a\\ fresh\\ context\\ and\\ edits\\ notify\\ only\\ newly\\ added\\ people|Desktop\\ reads\\ synthetic\\ preparation\\ with\\ native\\ 200\\ percent\\ captures\\ and\\ unchanged\\ proof|Web\\ reads\\ synthetic\\ frozen\\ preparation\\ without\\ inferring\\ termination\\ across\\ refresh\\ and\\ viewers|trigger\\ preview\\ explains\\ shared\\ and\\ later\\ batches\\ before\\ a\\ suppressed\\ target\\ is\\ sent|a\\ private\\ owner\\ offers\\ a\\ resource\\ to\\ an\\ external\\ organizer\\ and\\ independently\\ authorizes\\ it|resource\\ owners\\ register,\\ authorize,\\ withdraw\\ and\\ switch\\ while\\ participant\\ management\\ preserves\\ authority|Web\\ shares\\ ordinary\\ child\\ references\\ and\\ retained\\ run\\ records\\ through\\ account\\ notification\\ links)$",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17"
+  ],
+  "candidate_head": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "source_before_sha256": "d1d5decbf5fecf784f0ebc8cf5c3f0c7db00a19ebf196eae78d5b28eef0fecd0",
+  "original_v14_raw_sha256": "dc6603b3ef78ef81c597f061b12fb0f02f9b035a3dc891e7fb8b415e1fad04da",
+  "source_env_sha256": "8ef470563a3c222380a41ada836c1c71e9337b1606109c46a48bcf3483a3e444",
+  "root_clearance_sha256": "f46d3c3afee8405180b2ce26c38f19f3b1c96d873415855f5c5044cd50bec74d",
+  "nonsecret_env": {
+    "PATH": "/Users/artisan/.nvm/versions/node/v22.23.2/bin:/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin:/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin:/opt/homebrew/opt/libpq/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/home",
+    "TMPDIR": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/tmp/",
+    "GOCACHE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/go-cache",
+    "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+    "GOPATH": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/go-path",
+    "GOTOOLCHAIN": "local",
+    "GOPROXY": "file:///Users/artisan/go/pkg/mod/cache/download",
+    "GOSUMDB": "off",
+    "COLLABORATION_E2E_API_URL": "http://localhost:18810",
+    "COLLABORATION_ELECTRON_SOURCE_ROOT": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "COLLABORATION_ELECTRON_RENDERER_URL": "http://127.0.0.1:55132",
+    "NEXT_PUBLIC_API_URL": "http://localhost:18810",
+    "PLAYWRIGHT_BASE_URL": "http://localhost:13730",
+    "PLAYWRIGHT_BROWSERS_PATH": "/Users/artisan/Library/Caches/ms-playwright",
+    "MULTICA_DEPLOYMENT_ID": "0b17a66c-9d84-469e-9c33-db19caefcf32",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false"
+  },
+  "node_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+  "pnpm_sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9",
+  "agent_cli_guard_sha256": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a",
+  "model_account_keys_empty": true,
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "health": {
+    "status": "ok",
+    "pid": 92391,
+    "commit": "d0b132fff",
+    "started_at": "2026-11-03T15:49:39Z"
+  }
+}

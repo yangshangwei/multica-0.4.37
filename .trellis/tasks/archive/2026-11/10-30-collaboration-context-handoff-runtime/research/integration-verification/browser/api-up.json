@@ -1,0 +1,14 @@
+{
+  "command": [
+    "make",
+    "up",
+    "C=api",
+    "ARGS=--name runtime-integration --ephemeral --ttl 24 --web-mode production"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "env_file": ".env.worktree",
+  "dev_home": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/.omx/runtime-dev",
+  "exit_code": 0,
+  "elapsed_seconds": 9.966,
+  "finished_at": "2026-10-31T14:56:04.563518+00:00"
+}

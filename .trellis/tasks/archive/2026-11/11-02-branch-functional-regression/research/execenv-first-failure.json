@@ -1,0 +1,50 @@
+[
+  {
+    "test": "TestHermesMemoryStorePathLayout",
+    "output": "=== RUN   TestHermesMemoryStorePathLayout"
+  },
+  {
+    "test": "TestHermesMemoryStorePathLayout",
+    "output": "hermes_memory_test.go:63: store path = \"/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-config/hermes-state/11111111-2222-3333-4444-555555555555/research\", want \"/private/tmp/multica-functional-build-vycst5oo/TestHermesMemoryStorePathLayout3847638192/001/.multica/hermes-state/11111111-2222-3333-4444-555555555555/research\""
+  },
+  {
+    "test": "TestHermesMemoryStorePathLayout",
+    "output": "--- FAIL: TestHermesMemoryStorePathLayout (0.00s)"
+  },
+  {
+    "test": "TestPruneHermesMemoryStores",
+    "output": "=== RUN   TestPruneHermesMemoryStores"
+  },
+  {
+    "test": "TestPruneHermesMemoryStores",
+    "output": "hermes_memory_test.go:578: removed = 0, want 1"
+  },
+  {
+    "test": "TestPruneHermesMemoryStores",
+    "output": "--- FAIL: TestPruneHermesMemoryStores (0.00s)"
+  },
+  {
+    "test": "TestHermesSessionStorePathLayout",
+    "output": "=== RUN   TestHermesSessionStorePathLayout"
+  },
+  {
+    "test": "TestHermesSessionStorePathLayout",
+    "output": "hermes_sessions_test.go:27: store path = \"/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-config/hermes-sessions/11111111-2222-3333-4444-555555555555/research/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee\", want \"/private/tmp/multica-functional-build-vycst5oo/TestHermesSessionStorePathLayout3582905413/001/.multica/hermes-sessions/11111111-2222-3333-4444-555555555555/research/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee\""
+  },
+  {
+    "test": "TestHermesSessionStorePathLayout",
+    "output": "--- FAIL: TestHermesSessionStorePathLayout (0.00s)"
+  },
+  {
+    "test": "TestPruneHermesSessionStores",
+    "output": "=== RUN   TestPruneHermesSessionStores"
+  },
+  {
+    "test": "TestPruneHermesSessionStores",
+    "output": "hermes_sessions_test.go:293: removed = 0, want 1"
+  },
+  {
+    "test": "TestPruneHermesSessionStores",
+    "output": "--- FAIL: TestPruneHermesSessionStores (0.00s)"
+  }
+]

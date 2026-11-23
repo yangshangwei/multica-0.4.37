@@ -5,7 +5,9 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()],
+    // Shared account-path validators ship as TypeScript and must be compiled
+    // into the native bundle rather than required from the installed app.
+    plugins: [externalizeDepsPlugin({ exclude: ["@multica/core"] })],
   },
   preload: {
     // `@electron-toolkit/preload` must be bundled INTO the preload script:
@@ -14,7 +16,7 @@ export default defineConfig({
     // externalized `require("@electron-toolkit/preload")` would throw and
     // every contextBridge API would vanish. electron-vite emits preload as a
     // single CJS bundle, which is exactly what the sandbox requires.
-    plugins: [externalizeDepsPlugin({ exclude: ["@electron-toolkit/preload"] })],
+    plugins: [externalizeDepsPlugin({ exclude: ["@electron-toolkit/preload", "@multica/core"] })],
   },
   renderer: {
     server: {

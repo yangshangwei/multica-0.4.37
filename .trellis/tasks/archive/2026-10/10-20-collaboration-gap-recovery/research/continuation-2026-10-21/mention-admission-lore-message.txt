@@ -1,0 +1,15 @@
+test(collaboration): make every mention state honor the same execution barriers
+
+A successful comment is not proof its AI target started. Exercise real typed
+comment admission in idle, busy, paused, unconfirmed Stop, revoked-resource,
+removed-author and terminal states, preserving frozen inputs and explicit Resume.
+Ordinary comments, replies and edits must retain the human-only path.
+
+Constraint: Preserve source-owned proofs, existing waiting inputs and production gates
+Rejected: Test SubmitCommand and control primitives separately | misses the actual mention dispatch entry
+Confidence: high
+Scope-risk: narrow
+Directive: A busy poll may return its original recoverable run; it cannot admit the new waiting batch
+Tested: Seven direct states; serial race adjacency8/23; exact HEAD plus single file1/8; independent P5 clause review; gofmt/vet
+Not-tested: Natural provider process or kernel proof, new client UI, installed or old clients and quota
+Co-authored-by: OmX <omx@oh-my-codex.dev>

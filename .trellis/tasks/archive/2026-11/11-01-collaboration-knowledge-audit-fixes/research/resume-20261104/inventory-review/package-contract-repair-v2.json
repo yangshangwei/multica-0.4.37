@@ -1,0 +1,160 @@
+{
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "scope": "Read-only frozen script/config investigation; no product tests or services.",
+  "root_test_script": "turbo test --filter=!@multica/mobile",
+  "workspace_globs": [
+    "apps/*",
+    "packages/*"
+  ],
+  "turbo_test_dependency": [
+    "^cache-inputs"
+  ],
+  "workspace_scripts": [
+    {
+      "path": "apps/desktop/package.json",
+      "sha256": "3f330b6bd215f95694b94d65c9f39ca3f168bf3d2a6511de7074d02bc46ddb09",
+      "package": "@multica/desktop",
+      "test_script": "vitest run",
+      "selected": true,
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "apps/docs/package.json",
+      "sha256": "93268768696633ee668d217452f98ba38f5e56f82ea69c7d481a3b5179cb4145",
+      "package": "@multica/docs",
+      "test_script": "vitest run",
+      "selected": true,
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "apps/mobile/package.json",
+      "sha256": "e58a8fcc8c72b82615fd64345bb111b4b52d963ed730bfb404f2fc9b1bc2bc91",
+      "package": "@multica/mobile",
+      "test_script": "vitest run && bash scripts/ios-run.test.sh",
+      "selected": false,
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "apps/web/package.json",
+      "sha256": "5b639bf5af713948958d66329dfc3e66cea0df0ca77d219ab431a00125f74844",
+      "package": "@multica/web",
+      "test_script": "vitest run",
+      "selected": true,
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "packages/core/package.json",
+      "sha256": "5a0b36d3568210d00a99b517b5f5bedcb15d9e2f268e73b4fb4134b147e37833",
+      "package": "@multica/core",
+      "test_script": "vitest run",
+      "selected": true,
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "packages/eslint-config/package.json",
+      "sha256": "010d48f8f03c93610c1fa4bc6ac25678f8003e52fae332b8d77905a2aff9056f",
+      "package": "@multica/eslint-config",
+      "test_script": null,
+      "selected": false,
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "packages/plugin-sdk/package.json",
+      "sha256": "36ac72b4011a83aa8b1a8c9d6b3a61949f2d9320a4b73d72637bcc9fd9cc68d8",
+      "package": "@multica/plugin-sdk",
+      "test_script": null,
+      "selected": false,
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "packages/tsconfig/package.json",
+      "sha256": "58d7a428babe4ae14d78517267522498800d16276d9ada5f9eaac484390a23ab",
+      "package": "@multica/tsconfig",
+      "test_script": null,
+      "selected": false,
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "packages/ui/package.json",
+      "sha256": "802fdda869808955b9b68b52514044e96123432c3f36a3b0706c530b4f13fadb",
+      "package": "@multica/ui",
+      "test_script": null,
+      "selected": false,
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "packages/views/package.json",
+      "sha256": "f0ac73d012680db778fd6088ee3c1f1d19fc95a935312836abbb731a387bda07",
+      "package": "@multica/views",
+      "test_script": "vitest run",
+      "selected": true,
+      "working_bytes_match_frozen": true
+    }
+  ],
+  "config_sources": [
+    {
+      "path": "package.json",
+      "sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "turbo.json",
+      "sha256": "34eebc15eb95ab5fe4addefef3ac0e97f746a6524373c8da41e47c2ed54ef6ef",
+      "working_bytes_match_frozen": true
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+      "working_bytes_match_frozen": true
+    }
+  ],
+  "exact_expected_package_set": [
+    "@multica/core",
+    "@multica/desktop",
+    "@multica/docs",
+    "@multica/views",
+    "@multica/web"
+  ],
+  "UI_has_test_script": false,
+  "preserved_v1_collector": {
+    "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/versions/v1-777610239767e016/collect.py",
+    "sha256": "777610239767e01627273fa9b92e7fdb6fd7c51b4ff2a285066a8fdf48cce756"
+  },
+  "preserved_prior_report_refs": [
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/synthetic-parser-controls/result.json",
+      "sha256": "21ab01508e310d3c130d8c3c7ec5c9ca72ae7c9b29d2a1fea0c56c538002a999"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/synthetic-parser-controls-final/result.json",
+      "sha256": "a38ed3749836afb8646ad975dd7e8d7bbd992370d4d7be56ac73251c2e650a37"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/synthetic-parser-controls-v2/result.json",
+      "sha256": "734d6a5d86fcd144142b850d21f1d3adcfb179318e900efc87afa55a61ae900a"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/synthetic-parser-controls-v3/result.json",
+      "sha256": "b7f74df1c23bfe3038cda002edacb4510d4b12972c293eef77b201505766d39b"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control/summary.json",
+      "sha256": "079f79e45c8b74cdf3a027bbe36f7136ba8acf3ec84873b53e3663416f02e2cd"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-final/summary.json",
+      "sha256": "6fc439475d5e93c089c3b8fc1d51fdcf722913fabf85a63262cc917b8489951e"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v2/summary.json",
+      "sha256": "6c7758da2dd0acb592ac1b0f8e8e9ac6a1da99577189e1033ae9c97fa3f57b25"
+    },
+    {
+      "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/summary.json",
+      "sha256": "ccba4f496dd6c5af6d42264223982cc567c5a60ee8e9e221fc34437eee356996"
+    }
+  ],
+  "current_collector_sha256": "6acef959f12c095776aa9f8f8812c5d12273a2c22f01db404eee9f6f986b62aa",
+  "knowledge_budget_allocated": 0,
+  "real_calls": 0
+}

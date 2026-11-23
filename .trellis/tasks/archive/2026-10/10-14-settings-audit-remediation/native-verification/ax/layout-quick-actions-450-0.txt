@@ -1,0 +1,23 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 快捷操作"': 设置目录 快捷操作
+- tabpanel "快捷操作":
+  - banner:
+    - heading "快捷操作" [level=2]
+    - paragraph: 预先配置好执行的智能体和提示词，之后在任意任务侧边栏一键触发。
+  - textbox "搜索快捷操作"
+  - button "新建快捷操作"
+  - text: Native acceptance action Fixture reviewer 团队 从未使用 2026/10/14
+  - button "打开\"Native acceptance action\"的操作菜单" [expanded]
+  - menu "打开\"Native acceptance action\"的操作菜单":
+    - menuitem "编辑"
+    - menuitem "归档"
+    - menuitem "删除"
+- button "1 条未读对话"
+- region "Notifications alt+T"

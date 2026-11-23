@@ -1,0 +1,56 @@
+{
+  "recorded_at": "2026-11-04T07:54:10.042972+00:00",
+  "reviewer": "/root",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "state": "OFF02_actual_root_rechecked; independent_raw_review_pending",
+  "named_terminal": [
+    "deployed knowledge startup flag controls one actual Host input and its authorization events"
+  ],
+  "one_attempt_zero_skip_fail_flaky": true,
+  "input_section_absent": true,
+  "knowledge_events": {
+    "knowledge_claim": 0,
+    "knowledge_preparation": 0,
+    "knowledge_authorization": 0
+  },
+  "run": {
+    "id": "d8e1b112-2917-4429-acf3-2b03dd283360",
+    "progress_state": "settled",
+    "proof_state": "host_exit_observed",
+    "business_outcome": "success",
+    "launch_count": "1"
+  },
+  "real_provider_calls": 0,
+  "knowledge_budget": 0,
+  "source_and_binary_sha256": {
+    "source": {
+      "e2e/collaboration-knowledge-deployed.spec.ts": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+      "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a",
+      "e2e/fixtures/collaboration-host-runtime.ts": "39eda502db4a4edeeb18b5a1e99dfb8a1fa162919cf9e13d4adef9d13aa4458e"
+    },
+    "binary": {
+      "COLLABORATION_HOST_DAEMON": "2b36f0de335919fbc1d36247d9573b13b776e8a1e85e78c0e7117e8e05ed7847",
+      "COLLABORATION_HOST_PROVIDER": "133c116fddf461e69b6f154c1d83123055d59934981e69deb85a45b9fe942061",
+      "COLLABORATION_HOST_CLI": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac"
+    }
+  },
+  "evidence": {
+    "started.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/started.json",
+      "sha256": "ae05447d23df220699f25edd88205cb287ae098136a5d9d5efba480d35cedb4f"
+    },
+    "result.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/result.json",
+      "sha256": "7ce251ea2e611178d356aa54358360b693fa779fcc3317b200f388590e19775a"
+    },
+    "results.json": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/results.json",
+      "sha256": "366d9811c75a86bee31981bdbaed90eec00a24fe1eeeea6ed7d319ad2190339c"
+    },
+    "output.log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/output.log",
+      "sha256": "40bf07f657ba835431190a463a55dfd5798642f403be81efce5d9e351f1820d3"
+    }
+  },
+  "next": "Release owned OFF services, then distinct ON preparation false permit; no repeat OFF"
+}

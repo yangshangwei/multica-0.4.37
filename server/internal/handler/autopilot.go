@@ -343,6 +343,9 @@ type CreateAutopilotRequest struct {
 	ExecutionMode      string            `json:"execution_mode"`
 	IssueTitleTemplate *string           `json:"issue_title_template"`
 	Subscribers        []SubscriberInput `json:"subscribers"`
+	// Status is optional and defaults to "active". "paused" lets a caller add
+	// triggers before the automation can run; "archived" is not a create state.
+	Status *string `json:"status"`
 }
 
 type UpdateAutopilotRequest struct {
@@ -721,6 +724,11 @@ func (h *Handler) CreateAutopilot(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "execution_mode must be create_issue or run_only")
 		return
 	}
+	if req.Status != nil && *req.Status != "active" && *req.Status != "paused" {
+		writeError(w, http.StatusBadRequest, "status must be active or paused")
+		return
+	}
+	paused := req.Status != nil && *req.Status == "paused"
 	if req.IssueTitleTemplate != nil {
 		if err := service.ValidateIssueTitleTemplate(*req.IssueTitleTemplate); err != nil {
 			writeError(w, http.StatusBadRequest, err.Error())
@@ -786,8 +794,9 @@ func (h *Handler) CreateAutopilot(w http.ResponseWriter, r *http.Request) {
 
 	// Keep save-time readiness validation in the same transaction as the
 	// insert. The assignment lock serializes this path with Runtime teardown,
-	// so an active Autopilot cannot slip in after teardown's pause sweep.
-	if !h.validateAutopilotAssigneeForSave(w, r, qtx, assigneeType, assigneeUUID, wsUUID, true) {
+	// so an active Autopilot cannot slip in after teardown's pause sweep. A
+	// paused create needs no Runtime yet, matching a paused update.
+	if !h.validateAutopilotAssigneeForSave(w, r, qtx, assigneeType, assigneeUUID, wsUUID, !paused) {
 		return
 	}
 
@@ -796,6 +805,7 @@ func (h *Handler) CreateAutopilot(w http.ResponseWriter, r *http.Request) {
 		Title:              req.Title,
 		AssigneeType:       assigneeType,
 		AssigneeID:         assigneeUUID,
+		Paused:             paused,
 		ExecutionMode:      req.ExecutionMode,
 		CreatedByID:        parseUUID(userID),
 		Description:        ptrToText(req.Description),
@@ -840,14 +850,16 @@ type autopilotSubscriberCandidate struct {
 }
 
 // createAutopilotInTxInput carries everything the in-transaction create body
-// needs. status and created_by_type are not fields: every caller creates an
-// active member-owned autopilot, so leaving them as literals inside keeps a
-// caller from inventing a state the rest of the autopilot code does not expect.
+// needs. created_by_type is not a field and status is only a Paused flag:
+// every caller creates a member-owned autopilot that is active or paused, so
+// keeping the literals inside stops a caller from inventing a state the rest
+// of the autopilot code does not expect.
 type createAutopilotInTxInput struct {
 	WorkspaceID        pgtype.UUID
 	Title              string
 	AssigneeType       string
 	AssigneeID         pgtype.UUID
+	Paused             bool
 	ExecutionMode      string
 	CreatedByID        pgtype.UUID
 	Description        pgtype.Text
@@ -891,12 +903,16 @@ func (h *Handler) createAutopilotInTx(ctx context.Context, qtx *db.Queries, in c
 		return db.Autopilot{}, err
 	}
 
+	status := "active"
+	if in.Paused {
+		status = "paused"
+	}
 	autopilot, err := qtx.CreateAutopilot(ctx, db.CreateAutopilotParams{
 		WorkspaceID:        in.WorkspaceID,
 		Title:              in.Title,
 		AssigneeType:       in.AssigneeType,
 		AssigneeID:         in.AssigneeID,
-		Status:             "active",
+		Status:             status,
 		ExecutionMode:      in.ExecutionMode,
 		CreatedByType:      "member",
 		CreatedByID:        in.CreatedByID,

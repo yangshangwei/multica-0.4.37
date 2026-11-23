@@ -45,11 +45,25 @@ func seedAutopilot(t *testing.T, queries *db.Queries, title, creatorType string,
 		t.Fatalf("CreateAutopilot: %v", err)
 	}
 	t.Cleanup(func() {
-		// inbox_item has no FK to autopilot, so clean both up explicitly.
-		testPool.Exec(context.Background(),
+		cleanupCtx := context.Background()
+		for _, table := range []string{"inbox_critical_source", "inbox_snooze"} {
+			if _, err := testPool.Exec(cleanupCtx, "DELETE FROM "+table+` s USING inbox_item i
+				WHERE s.workspace_id=i.workspace_id AND s.recipient_type=i.recipient_type
+				AND s.recipient_id=i.recipient_id AND s.group_kind='item' AND s.group_id=i.id
+				AND i.workspace_id=$1 AND i.details->>'autopilot_id'=$2`,
+				testWorkspaceID, util.UUIDToString(ap.ID)); err != nil {
+				t.Errorf("clean up failure monitor %s: %v", table, err)
+			}
+		}
+		// Preserve the original inbox identities until their group cleanup finishes.
+		if _, err := testPool.Exec(cleanupCtx,
 			`DELETE FROM inbox_item WHERE workspace_id = $1 AND details->>'autopilot_id' = $2`,
-			testWorkspaceID, util.UUIDToString(ap.ID))
-		testPool.Exec(context.Background(), `DELETE FROM autopilot WHERE id = $1`, ap.ID)
+			testWorkspaceID, util.UUIDToString(ap.ID)); err != nil {
+			t.Errorf("clean up failure monitor inbox: %v", err)
+		}
+		if _, err := testPool.Exec(cleanupCtx, `DELETE FROM autopilot WHERE id = $1`, ap.ID); err != nil {
+			t.Errorf("clean up failure monitor autopilot: %v", err)
+		}
 	})
 	return ap
 }
@@ -116,7 +130,7 @@ func TestAutopilotFailureMonitor_PausesOffenderAndNotifiesCreator(t *testing.T) 
 		updateEvents = append(updateEvents, e)
 	})
 
-	tickAutopilotFailureMonitor(context.Background(), queries, bus, cfg)
+	tickAutopilotFailureMonitor(context.Background(), queries, testPool, bus, cfg)
 
 	if got := reloadAutopilotStatus(t, queries, offender.ID); got != "paused" {
 		t.Fatalf("expected offender to be paused, got %q", got)
@@ -185,7 +199,7 @@ func TestAutopilotFailureMonitor_LeavesAlreadyPausedAlone(t *testing.T) {
 		inboxEvents = append(inboxEvents, e)
 	})
 
-	tickAutopilotFailureMonitor(context.Background(), queries, bus, cfg)
+	tickAutopilotFailureMonitor(context.Background(), queries, testPool, bus, cfg)
 
 	if len(inboxEvents) != 0 {
 		t.Fatalf("paused autopilots must not generate notifications, got %d", len(inboxEvents))
@@ -212,7 +226,7 @@ func TestAutopilotFailureMonitor_AgentCreatorRoutesToOwner(t *testing.T) {
 		inboxEvents = append(inboxEvents, e)
 	})
 
-	tickAutopilotFailureMonitor(context.Background(), queries, bus, cfg)
+	tickAutopilotFailureMonitor(context.Background(), queries, testPool, bus, cfg)
 
 	if got := reloadAutopilotStatus(t, queries, ap.ID); got != "paused" {
 		t.Fatalf("expected paused, got %q", got)
@@ -249,7 +263,7 @@ func TestAutopilotFailureMonitor_BelowThresholdNoOp(t *testing.T) {
 		inboxEvents = append(inboxEvents, e)
 	})
 
-	tickAutopilotFailureMonitor(context.Background(), queries, bus, cfg)
+	tickAutopilotFailureMonitor(context.Background(), queries, testPool, bus, cfg)
 
 	if got := reloadAutopilotStatus(t, queries, ap.ID); got != "active" {
 		t.Fatalf("expected active, got %q", got)

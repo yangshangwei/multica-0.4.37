@@ -1,0 +1,605 @@
+{
+  "owner": "/root/s3_block_e2e_implement",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "AUTHOR_STATIC_PASS_RUNTIME_NOT_RUN",
+  "recorded_at": "2026-11-18T12:17:53.820987+00:00",
+  "markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/information-recovery-client-implementation-20261118.md",
+    "sha256": "5481ca2bf1c8f53c5ccc6f2a055443fb774bf3ac1012c78df480287d4ac1a0f2",
+    "bytes": 7523,
+    "mode": "0o644"
+  },
+  "intake": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/information-recovery-client-intake-20261118.md",
+      "sha256": "f8b0dea97b893c2d61ab50f82ad45b478f1e526239e235b18a7dee4f74a08a30",
+      "bytes": 7094,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/information-recovery-client-intake-20261118.json",
+      "sha256": "9d3fdd8a43f1d9fde095f623554bfc54ffd11e2253ef230713bd71cbdcf1597d",
+      "bytes": 7051,
+      "mode": "0o644"
+    }
+  ],
+  "owned_code_files": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-information-recovery.spec.ts",
+      "sha256": "a059f1d499f65cb6a1d71cbd97938a399a630d8d8006226aa9b3d859ea293cbb",
+      "bytes": 2540,
+      "lines": 44,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-information-recovery.ts",
+      "sha256": "a4af851672a77b785ad47ec8592cb04035575e7aa0fca08a75f4ca0a95e43b28",
+      "bytes": 50523,
+      "lines": 624,
+      "mode": "0o644"
+    }
+  ],
+  "author_seal": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/author-seal.json",
+    "sha256": "eddb14932dc70081e63b1845a55af88349aede73cb13d1e105a3138a42e4ab3f",
+    "bytes": 2405,
+    "mode": "0o644"
+  },
+  "final_checks": [
+    {
+      "mode": "tsc",
+      "exit_code": 0,
+      "result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/tsc-result.json",
+      "result_sha256": "1ad9cabd4ad0fbf3b6a8c5a8cbe0c9108177048497d6712b6ab6d22e809bb125"
+    },
+    {
+      "mode": "eslint",
+      "exit_code": 0,
+      "result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/eslint-result.json",
+      "result_sha256": "8709de4e6e26a639d717e601641ef3e2416cf9ea5585567ec7dfe26968850b08"
+    },
+    {
+      "mode": "list",
+      "exit_code": 0,
+      "result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/list-result.json",
+      "result_sha256": "2c1e76003d5dc3227e5690477e94a2de02b8c7eb5641bcdc6d9b5fb00e3424c6"
+    }
+  ],
+  "strict_compiler_options": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "graph": {
+    "logical_entries": 413,
+    "canonical_files": 273,
+    "complete_before_after_binding": true,
+    "old_ROOT_Core_imports": 0,
+    "source_drift": 0,
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/tsc-resolved-source-graph.json",
+    "binding": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/tsc-resolved-source-graph.json",
+      "sha256": "f56d50432a680b7efc8d19c7d020d761b6b89a062009df2580de49d962d66b0d",
+      "bytes": 188428,
+      "mode": "0o644"
+    }
+  },
+  "source_actor_order_audit": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/actor-open-source-audit.json",
+    "sha256": "6d1e6c3ad11c3c7f79411f9ee3bccb77e17c159d3d2639073682b2ba980fb8d8",
+    "bytes": 1200,
+    "mode": "0o644"
+  },
+  "e2e_source_copy_before": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/root-harness-byte-equivalence-before.json",
+    "sha256": "e853eb1a36238972dbcdb2da1a670fd18f973df9bc1bc58b9a2bde1dc20a1075",
+    "bytes": 103599,
+    "mode": "0o644"
+  },
+  "e2e_source_copy_after": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/root-harness-byte-equivalence-after.json",
+    "sha256": "79cd79b35d00302f2429841f090ad64ae9c82835b5feedc6735d59491948adda",
+    "bytes": 144347,
+    "mode": "0o644"
+  },
+  "profiles": [
+    {
+      "profile": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01",
+      "checks": [
+        {
+          "mode": "tsc",
+          "exit_code": 2,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/tsc-result.json",
+            "sha256": "291ce2c79b8c79f5e4faa2c1e94076ead31607c34268e3287e0c7c0175b17377",
+            "bytes": 4281,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/tsc-command.json",
+            "sha256": "be3bba98cbfd41538ae8ab92320be8fcd698a8fbf6c2ff4ee5bb8caff93cde94",
+            "bytes": 4058,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/tsc.stdout.log",
+            "sha256": "0724983e001fbd9f452e20bc38e3dd8291cd4ce9477385620f374e43fccc08f6",
+            "bytes": 97852,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/tsc.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "eslint",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/eslint-result.json",
+            "sha256": "f15124118a63d0af67795801589b51509f8f7dec8c044d52173075829807083e",
+            "bytes": 2159,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/eslint-command.json",
+            "sha256": "a7f001de5295e4bca65e26ebed28c5ac47d93a256ad9a03a372556dd484eba7b",
+            "bytes": 4232,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/eslint.stdout.log",
+            "sha256": "379ed978d2b4438c0a8104f3ad956f768c132a06e8ecdaa89e1451f6416ac4b8",
+            "bytes": 536,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/eslint.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "list",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/list-result.json",
+            "sha256": "adcbba4850a6dc62f9d5f2f51777475fd45a0db7ba3b0ece255d3effd566c7d7",
+            "bytes": 2219,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/list-command.json",
+            "sha256": "c06e0284072552a9c4e0caf3d5f91d1a7fa883f82ea6801a95ad0d7fe15dfe74",
+            "bytes": 4065,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/list.stdout.log",
+            "sha256": "33a36e87a2b1a647b3b16ae9a78670d3be249ed6e4e0865c15205fd302c7a74a",
+            "bytes": 408,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r01/list.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        }
+      ]
+    },
+    {
+      "profile": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02",
+      "checks": [
+        {
+          "mode": "tsc",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/tsc-result.json",
+            "sha256": "3c76402fb03faf94419e866c4f02286692d77b10cb0a75daf365a56583bf71a5",
+            "bytes": 1815,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/tsc-command.json",
+            "sha256": "d403252870b83d5a720a724c358289f5f619453a6cb02151dba6d3d46d3c9443",
+            "bytes": 4058,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/tsc.stdout.log",
+            "sha256": "3fdb7de46f18914c158470ae501da12b76abab6786cd4f775b3e0c6ea433d689",
+            "bytes": 95423,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/tsc.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "eslint",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/eslint-result.json",
+            "sha256": "ace138544ec9e44409f1b8001651b095304c6480f50b4b2dad1a570ac5796cbc",
+            "bytes": 2159,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/eslint-command.json",
+            "sha256": "d04c0478d760c785a0519571701c834217c6863e4c82231252709707c5bf5b4e",
+            "bytes": 4232,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/eslint.stdout.log",
+            "sha256": "379ed978d2b4438c0a8104f3ad956f768c132a06e8ecdaa89e1451f6416ac4b8",
+            "bytes": 536,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/eslint.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "list",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/list-result.json",
+            "sha256": "8383e254270ef31f87b1101d63d130fb5e7924f54fbca421b59f1bea11497890",
+            "bytes": 2219,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/list-command.json",
+            "sha256": "70394bf7171db65cdd57f329132c34c5858739fd10e3fa1cf1cfa5ad06c945d4",
+            "bytes": 4065,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/list.stdout.log",
+            "sha256": "33a36e87a2b1a647b3b16ae9a78670d3be249ed6e4e0865c15205fd302c7a74a",
+            "bytes": 408,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r02/list.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        }
+      ]
+    },
+    {
+      "profile": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03",
+      "checks": [
+        {
+          "mode": "tsc",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/tsc-result.json",
+            "sha256": "e4a74d855e1af6b662af7b3c263c75398c327f88eb696238445e2aba65a637f8",
+            "bytes": 1816,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/tsc-command.json",
+            "sha256": "be8f06d8f3c31ae9ea7da592fb54213941dea17e43ec1202980d7e677eb7fb63",
+            "bytes": 4066,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/tsc.stdout.log",
+            "sha256": "6fe8f648d6b47212855deb25ddcb1271d8d29c98dda032bda8f194fe371fa374",
+            "bytes": 106990,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/tsc.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "eslint",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/eslint-result.json",
+            "sha256": "0154e91adb03d1c2f2287e1e6122aa16e2fe0a3ce7d0f863824e906b2b8ea764",
+            "bytes": 2159,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/eslint-command.json",
+            "sha256": "fe8bc63311f4bfb6c3949486e1fc0665ab1b6d434b4f49c688810dd8d6a466b3",
+            "bytes": 4232,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/eslint.stdout.log",
+            "sha256": "379ed978d2b4438c0a8104f3ad956f768c132a06e8ecdaa89e1451f6416ac4b8",
+            "bytes": 536,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/eslint.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "list",
+          "exit_code": 1,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/list-result.json",
+            "sha256": "197a5deb9b844cb8fdbb296a69b3f8155a140e780fc4a7cbbd00e19c7caeff72",
+            "bytes": 1834,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/list-command.json",
+            "sha256": "e6d62a7a04f136306dcd836e76ab0e6c110bca43e7cd0dc3118ad076387f1a45",
+            "bytes": 4073,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/list.stdout.log",
+            "sha256": "4f5b1bb7df1808d911ebe868d2fd384e0f1fedd73e2ec2b10f7babd43948c5f0",
+            "bytes": 41,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r03/list.stderr.log",
+            "sha256": "46e1f0d1ec2f071c1539de8d5a88dbc1926a1b074b132576658a3d007a790066",
+            "bytes": 1039,
+            "mode": "0o644"
+          }
+        }
+      ]
+    },
+    {
+      "profile": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04",
+      "checks": [
+        {
+          "mode": "tsc",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/tsc-result.json",
+            "sha256": "169bc0e878010636405a66f20ffd7f35e3cf89deb0a784ade36489f2d185cf2d",
+            "bytes": 1816,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/tsc-command.json",
+            "sha256": "40b343d8733099080eb67993c429eb31caab8ec423a796fac815d5c58818e06b",
+            "bytes": 4066,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/tsc.stdout.log",
+            "sha256": "75ce1deca086934374bdfe22178bf29d5cb1f334c4589a18537c392f3aae269a",
+            "bytes": 106990,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/tsc.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "eslint",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/eslint-result.json",
+            "sha256": "567819848a7d56fa0d25d325bb476ba220e965cb59844f040323ae30fa88f91f",
+            "bytes": 2159,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/eslint-command.json",
+            "sha256": "009828c61f9d6e1b936eed13e1c0d668c260fe18bcd7fd2162193e3887f5b166",
+            "bytes": 4232,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/eslint.stdout.log",
+            "sha256": "379ed978d2b4438c0a8104f3ad956f768c132a06e8ecdaa89e1451f6416ac4b8",
+            "bytes": 536,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/eslint.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "list",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/list-result.json",
+            "sha256": "ba4a4dd5664cd5e3c44a18c02de023804de0a1a09e1992e2fd76390e8d30dff7",
+            "bytes": 2219,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/list-command.json",
+            "sha256": "8c64be23f29ba79dddd62c94ea09d36f3060d98ce1c73909465c66072ddc6707",
+            "bytes": 4073,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/list.stdout.log",
+            "sha256": "33a36e87a2b1a647b3b16ae9a78670d3be249ed6e4e0865c15205fd302c7a74a",
+            "bytes": 408,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r04/list.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        }
+      ]
+    },
+    {
+      "profile": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05",
+      "checks": [
+        {
+          "mode": "tsc",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/tsc-result.json",
+            "sha256": "1ad9cabd4ad0fbf3b6a8c5a8cbe0c9108177048497d6712b6ab6d22e809bb125",
+            "bytes": 1816,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/tsc-command.json",
+            "sha256": "f7b3fd4c3b9550dd8c3621227ff444e2af5c45e9737701c49d1b408ef855f9f4",
+            "bytes": 4066,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/tsc.stdout.log",
+            "sha256": "a1b33b5f74e0ced48de3223b8815d30352192aac54b7e077d2d60a4745a8cd94",
+            "bytes": 106990,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/tsc.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "eslint",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/eslint-result.json",
+            "sha256": "8709de4e6e26a639d717e601641ef3e2416cf9ea5585567ec7dfe26968850b08",
+            "bytes": 2159,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/eslint-command.json",
+            "sha256": "412db39699e5af757724fbbeca9d25add19e481c345dfefdea7e9093bfda8a88",
+            "bytes": 4232,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/eslint.stdout.log",
+            "sha256": "379ed978d2b4438c0a8104f3ad956f768c132a06e8ecdaa89e1451f6416ac4b8",
+            "bytes": 536,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/eslint.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        },
+        {
+          "mode": "list",
+          "exit_code": 0,
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/list-result.json",
+            "sha256": "2c1e76003d5dc3227e5690477e94a2de02b8c7eb5641bcdc6d9b5fb00e3424c6",
+            "bytes": 2219,
+            "mode": "0o644"
+          },
+          "command": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/list-command.json",
+            "sha256": "f1d5ce69187c0a31b1bea1f6718ef40f8b46b1e377d83113780d38ae2a7a2eb6",
+            "bytes": 4073,
+            "mode": "0o644"
+          },
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/list.stdout.log",
+            "sha256": "33a36e87a2b1a647b3b16ae9a78670d3be249ed6e4e0865c15205fd302c7a74a",
+            "bytes": 408,
+            "mode": "0o644"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/information-author-r05/list.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o644"
+          }
+        }
+      ]
+    }
+  ],
+  "retained_findings": {
+    "R01": "Five current DTO fields were unavailable; use same-ID strict history record. Original source SHA befb1591af83f140b05440c1460f06df22784cd4bce89e17615e5062c8fccadd retained.",
+    "R02": "All static commands passed, but existing relative helper import brought old ROOT Core into the graph. Not the final coherent author graph.",
+    "R03": "Coherent TS/lint passed; list failed without original root ESM package scope. Zero bodies.",
+    "R04": "Static pass retained; source review then found E/F QA opened before public enrollment. Not current runnable source.",
+    "R05": "QA opening deferred until exact public information request committed. All three checks pass in coherent copied harness."
+  },
+  "planned_tops": 2,
+  "planned_subcases": 12,
+  "platforms": [
+    "Web",
+    "Desktop"
+  ],
+  "cases": [
+    "A",
+    "B",
+    "C",
+    "E",
+    "F",
+    "G"
+  ],
+  "planned_workflow_operation_counts_per_platform": {
+    "A": 5,
+    "B": 6,
+    "C": 6,
+    "E": 6,
+    "F": 4,
+    "G": 8,
+    "scope": "Authored calls, not runtime counts; C also has a separate rejected creation key."
+  },
+  "runtime_by_author": {
+    "database": 0,
+    "api": 0,
+    "browser_bodies": 0,
+    "build": 0,
+    "provider": 0,
+    "git_mutations": 0
+  },
+  "requires_main": [
+    "Final integrated source/config/API/Web/Desktop/DB identity",
+    "Current source type/build rebind after any later client projection fixes",
+    "Fresh two-platform complete execution with original failures retained",
+    "Actual relation/gate/process/native cleanup and independent check"
+  ],
+  "limits": [
+    "G is genuine old unmanaged pending submission to managed transition, not a new full S2 verification-stage submission",
+    "Disabled-account/R38 not exercised",
+    "Short client history does not prove 51-plus UI denominator",
+    "Inherited generic field GET-handoffs operation diagnostic is separately classified by strict information reader",
+    "No installed Main/Provider/runtime output upload/S4/S5/full S3 acceptance"
+  ]
+}

@@ -1,0 +1,325 @@
+{
+  "schema_version": 1,
+  "review_id": "p6-independent-managed-profile-owner-admission-20261115-d9da0e34",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "reviewed_at": "2026-11-15T11:48:48.096Z",
+  "reviewer_role": "independent_trellis_check_subagent",
+  "approved_implementation_revision": "existing2026-11-14-v1",
+  "review_mode": "bounded_read_only_managed_profile_owner_fixture_admission",
+  "state": "interim_ready_for_new_complete_build_not_final_ac",
+  "verdict": "zero_confirmed_admission_blockers",
+  "blocking_findings": [],
+  "blocking_findings_open": 0,
+  "ready_for_next_new_complete_source_bound_build": true,
+  "final_ac_or_p6_acceptance_verified": false,
+  "current_root_frontend_accepted": false,
+  "source_ready_or_runtime_permit_issued_by_reviewer": false,
+  "ownership": {
+    "only_new_public_file": "research/p6-independent-managed-profile-owner-admission-20261115-d9da0e34.json",
+    "source_spec_plan_markdown_task_json_or_old_evidence_edits": 0,
+    "guards_mutated": 0,
+    "tests_lint_typecheck_list_builds_db_suites_or_product_journeys_run": 0,
+    "services_or_native_apps_started_or_stopped": 0,
+    "provider_or_account_calls": 0,
+    "descendants_spawned": 0,
+    "read_only_verification": "Read actual production contracts and retained artifacts, recompute current private source identity and bindings, invert the two fixture hunks in memory, and hash bounded evidence files.",
+    "root_current_full_mapping_and_checks_owner": "Descartes"
+  },
+  "source": {
+    "candidate_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+    "before": "93c78b9a7824715d0bc9fd982d291c4b3e5d4a825b530afd6894421463710836",
+    "after": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+    "file_count": 11017,
+    "path_sets_equal": true,
+    "changed_paths": [
+      {
+        "path": "e2e/fixtures/project-knowledge-automation.ts",
+        "before": {
+          "sha256": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+          "normalized_sha256": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+          "mode": 420,
+          "link": null
+        },
+        "after": {
+          "sha256": "e4f3831c51bc40a1c83fd11aecd35f01cd4baedb06a6c9d48e308c1fa260440b",
+          "normalized_sha256": "e4f3831c51bc40a1c83fd11aecd35f01cd4baedb06a6c9d48e308c1fa260440b",
+          "mode": 420,
+          "link": null
+        }
+      }
+    ],
+    "inverse_source_id": "93c78b9a7824715d0bc9fd982d291c4b3e5d4a825b530afd6894421463710836",
+    "inverse_all_11017_rows_equal_93": true,
+    "workspace_binding_count": 32,
+    "workspace_bindings_unchanged": true,
+    "private_git_index_sha256": "d4c7194a00eb3176dd4b6d4146749a86b35a2c323e674cf69de673eab2115e7b",
+    "private_git_index_unchanged": true,
+    "commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "commit_unchanged": true,
+    "source_links": 0,
+    "go_sql_product_ui_module_docs_compiler_dependency_or_controller_delta": false,
+    "current_identity_matches_leader_source_receipt": true,
+    "common_patch": {
+      "root_private_current_bytes_equal": true,
+      "inverse_exact_93_fixture_bytes": true,
+      "inverse_sha256": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+      "both_before_hashes_match": true,
+      "both_after_hashes_match": true,
+      "all_outside_two_delta_hunks_bytes_unchanged": true
+    },
+    "root_scope": "Only this ROOT/private automation fixture was compared. Exact before/after hashes and inverse bytes show the common patch; ROOT-only detail/comment-menu changes are outside this comparison and remain preserved. No current full ROOT comparison/tests or ROOT acceptance claim."
+  },
+  "profile_owner_contract": {
+    "path": "<unique task-owned HOME>/.multica/profiles/<named profile>/.desktop-user-id",
+    "contracts": [
+      {
+        "file": "server/internal/daemon/managed_lifecycle.go",
+        "line": 26,
+        "sha256": "ac1eddd3d7118534d1dae352e2282a25d660d52fbea7131f104ef45695786004",
+        "behavior": "Named profile rejects empty, dot, dot-dot and path separators; managedProfileUser reads the marker and requires a UUID."
+      },
+      {
+        "file": "server/internal/daemon/managed_lifecycle.go",
+        "line": 78,
+        "sha256": "ac1eddd3d7118534d1dae352e2282a25d660d52fbea7131f104ef45695786004",
+        "behavior": "Managed startup additionally checks installation-derived daemon ID, live password/deployment identity, /api/me principal and account flags, handoff principal/validation and credential installation identity. Marker presence alone does not satisfy authentication."
+      },
+      {
+        "file": "apps/desktop/src/main/daemon-profile.ts",
+        "line": 50,
+        "sha256": "bba842a681b0217cf5f1370315aea9f180e3f5740fba48ccb7ab189b282a06b0",
+        "behavior": "profileDir and profileUserIdPath use homedir()/.multica/profiles/<profile>/.desktop-user-id."
+      },
+      {
+        "file": "apps/desktop/src/main/daemon-manager.ts",
+        "line": 277,
+        "sha256": "34ac918bdcac380e4dba12dc9dc2f02a57ca73a948a2e5e06b8f6f13602a7b7e",
+        "behavior": "Private writeProfileUserId writes the current real user ID; syncToken invokes it at line 958 before managed registration. No Main export/API was expanded for E2E."
+      },
+      {
+        "file": "server/internal/daemon/managed_lifecycle_test.go",
+        "line": 67,
+        "sha256": "2ce9138c574fbb29d9f06c7a92e1b498173ac6d366380224ecff7aa3a10b6541",
+        "behavior": "Existing production lifecycle fixture writes handoff.UserID to the same profile marker at 0600. Read only; this suite was not run or modified."
+      }
+    ],
+    "all_contract_bytes_match_retained_93_build": true,
+    "fixture": {
+      "file": "e2e/fixtures/project-knowledge-automation.ts",
+      "line": 148,
+      "marker_value": "managed.userId from unchanged real prepareManagedInstallationSession; read-back must equal fixture.creator.id",
+      "write_mode": "0600",
+      "write_flag": "wx",
+      "parent_home_mode": "0700",
+      "parent_profile_mode": "0700",
+      "home_scope": "P6_RUN_DIRECTORY/daemon-homes/<fresh random UUID>",
+      "default_user_home_or_existing_profiles_touched": false,
+      "overwrite_or_existing_marker_fallback": false,
+      "read_back_before_daemon_spawn": true,
+      "child_HOME_matches_marker_home": true,
+      "spawn_profile_matches_marker_profile": true,
+      "no_raw_token_or_handoff_added_to_evidence": true,
+      "identity_evidence_fields_added": [
+        "profile_owner_file",
+        "profile_owner_sha256"
+      ],
+      "identity_hash_boundary": "Hash is computed from the managed UUID string. The exact UTF-8 read-back assertion establishes matching file content at creation; final runtime review must read the actual marker bytes/permissions against its receipt.",
+      "new_marker_actual_runtime_execution_proven": false
+    },
+    "authentication_flow_unchanged": [
+      "Real creator PAT minting and authenticated production managed-session helper",
+      "Real enrollment, installation key/challenges and signing",
+      "One-shot managed handoff through stdin",
+      "Existing managed daemon ID, live principal, deployment, handoff and MDT validation",
+      "Online runtime registration, exact consumer input/result, continuation and resume assertions",
+      "Default legacy detail fixture behavior"
+    ],
+    "no_auth_policy_relaxation_new_dependency_suppression_or_type_bypass": true
+  },
+  "nonblocking_findings": [
+    {
+      "id": "PROFILE-COMMENT-1",
+      "severity": "low",
+      "status": "preexisting_nonblocking_followup",
+      "file": "apps/desktop/src/main/daemon-profile.ts",
+      "line": 68,
+      "finding": "The existing comment says the Go CLI/daemon never reads this file. The current managed lifecycle does read it; the executable Go/Main contracts agree and admission does not depend on that stale comment.",
+      "recommended_owner_action": "Update this comment in a separately owned change; do not edit production bytes during this candidate freeze.",
+      "proposed_patch": "@@\n-// was minted for. The Go CLI/daemon never read or write this file, so it\n+// was minted for. The managed Go daemon reads it to verify its principal; it\n",
+      "required_for_this_admission": false
+    }
+  ],
+  "guards_and_new_build": {
+    "allocation_file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json",
+    "allocation_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+    "allocation_bytes_unchanged": true,
+    "original_source_environment_file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/environment.json",
+    "original_source_environment_sha256": "bc1f96e026f7dc801bcad1d1c3344b10105a8aa05dc0a809d578d641aae2166b",
+    "original_source_environment_bytes_unchanged": true,
+    "controller_file": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+    "controller_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+    "controller_bytes_unchanged": true,
+    "unchanged_guard_scope": [
+      "Complete built receipt with matching task/allocation/source-environment hashes",
+      "Current candidate and staged source identity, detached commit and all 32 workspace bindings",
+      "Owned run containment, artifact hashes and pinned execution-tool hashes",
+      "Bound runtime environment hash and exact password/managed/deployment configuration",
+      "Controlled provider executable identity and denial of other real provider probes",
+      "Live listener/commit/source/build/deployment proof and owned migration/manual-only business gates"
+    ],
+    "previous_complete_build": {
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-2be05ca0fbdb/build.json",
+      "sha256": "c45f651b340e590aff8c838ef261e24956cf87983d3ba920257dcf2c55eea7a7",
+      "state": "built",
+      "source_id": "93c78b9a7824715d0bc9fd982d291c4b3e5d4a825b530afd6894421463710836",
+      "build_id": "MXZDkioq5lUDH8IkFqBqC",
+      "reusable_for_current_source": false
+    },
+    "next_step": "Generate a new complete 4e0f7cbe source-bound build with unchanged private controller/allocation, then start and run the original two journeys under fresh live/source/artifact/tool guards.",
+    "reviewer_claims_new_build_or_live_tool_resource_checks": false
+  },
+  "static_evidence": {
+    "focused_noemit": {
+      "receipt": {
+        "path": "research/p6-profile-owner-types-b6564417.json",
+        "sha256": "a727a8b036dbef8fbeeb52591395d67ddbb95d468e072c7b692d95a78db7998c"
+      },
+      "typescript_version": "5.9.3",
+      "production_compiler_options_unchanged": true,
+      "scope": "Focused fixture/spec entry points and imports, noEmit=true / declaration=false / declarationMap=false; not all-ROOT frontend quality.",
+      "results": [
+        {
+          "source_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+          "errors": 0,
+          "source_file_count": 649,
+          "source_files_stable": true,
+          "passed": true
+        },
+        {
+          "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "errors": 0,
+          "source_file_count": 651,
+          "source_files_stable": true,
+          "passed": true
+        }
+      ]
+    },
+    "listing_whitespace": {
+      "receipt": {
+        "path": "research/p6-profile-owner-source-list-8609ff5f.json",
+        "sha256": "967d27f8840f2c49bd3c4ce3384b847ba337efe7b7201da777481340f713efd6"
+      },
+      "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+      "named_web_desktop_tests": 2,
+      "listing_exit_code": 0,
+      "whitespace_exit_code": 0,
+      "listing_log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/profile-owner-source-list-8609ff5f/playwright-list.log",
+      "listing_log_sha256": "a98bd52dde6f751d2e6e7fb8602ce7f2a64b0eacf7903e5b5de5b67662665f57",
+      "listing_hash_verified": true,
+      "actual_execution": false
+    },
+    "standalone_lint": {
+      "receipt": {
+        "path": "research/p6-profile-owner-lint-bee03f06.json",
+        "sha256": "5484fef34beb694e87897ce9062a6f0c76671f42d24ddbef0f29b5596bbd9f77"
+      },
+      "results": [
+        {
+          "source_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+          "target_actually_linted": true,
+          "original_messages": 5,
+          "current_messages": 5,
+          "exit_codes": [
+            1,
+            1
+          ],
+          "new_diagnostics": 0,
+          "same_rule_severity_messages": true,
+          "source_stable": true,
+          "standalone_lint_passed": false
+        },
+        {
+          "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "target_actually_linted": true,
+          "original_messages": 5,
+          "current_messages": 5,
+          "exit_codes": [
+            1,
+            1
+          ],
+          "new_diagnostics": 0,
+          "same_rule_severity_messages": true,
+          "source_stable": true,
+          "standalone_lint_passed": false
+        }
+      ],
+      "raw_before_current_outputs_read": true,
+      "ignored_targets": 0,
+      "standalone_lint_passed": false
+    }
+  },
+  "preserved_actual_failure": {
+    "receipt": {
+      "path": "research/p6-original-after-password-fixture-failure-1a428255.json",
+      "sha256": "afbbcc32709bce1155b3acdf7b4748682727a7735470216a465bdf6855e5a0b5"
+    },
+    "repair_receipt": {
+      "path": "research/p6-managed-profile-user-marker-repair-f872168e.json",
+      "sha256": "5027a9a9677496488ad3321dc3827d63fae506e0e0c911230006b3c8bf9f181a"
+    },
+    "source_id": "93c78b9a7824715d0bc9fd982d291c4b3e5d4a825b530afd6894421463710836",
+    "result_file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-d5cef38ca229/result.json",
+    "result_sha256": "6b3b869a8e57ee4857c4e253d6f8a7316eae2df11b56503f6f37ba45b5832473",
+    "result_state": "failed",
+    "result_passed": false,
+    "inventory": [
+      {
+        "title": "project-knowledge-automation.spec.ts / web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+        "expected_status": "passed",
+        "results": [
+          "failed"
+        ]
+      },
+      {
+        "title": "project-knowledge-automation.spec.ts / desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+        "expected_status": "passed",
+        "results": [
+          "failed"
+        ]
+      }
+    ],
+    "source_stable": true,
+    "all_four_original_result_report_log_binding_hashes_verified": true,
+    "both_terminal_logs_hash_verified": true,
+    "terminal_error": "managed profile has no user identity",
+    "original_failures_reclassified_as_pass": false,
+    "old_run_cleanup": {
+      "stop_exit_code": 0,
+      "reported_cleanup_failures": 0,
+      "recorded_runtime_state": "stopped",
+      "recorded_runtime_permitted": false,
+      "runtime_sha256": "88d01529106e1364fc610c126d98e91334d16a13e35935c21a0aabfcd79b9a71",
+      "runtime_hash_matches_cleanup_receipt": true,
+      "reviewer_live_process_or_db_queries": false,
+      "scope": "These cleanup facts apply only to the failed 93 run; final new-run resources remain pending."
+    },
+    "progress_limit": "The old build is complete and the recorded original tests reached daemon startup, where both failed. The full managed consumer/result/resume journeys remain pending; partial earlier UI progress does not establish final P6."
+  },
+  "reused_review": {
+    "path": "research/p6-independent-password-fixture-admission-20261115-3a021490.json",
+    "sha256": "193c2027436377cd9559762345f770c786730b09700fc0bfea65a1851af42734",
+    "scope": "Prior password actor/source admission and earlier full AC context; not restarted."
+  },
+  "remaining_final_gates": {
+    "actual_candidate": "New complete source-bound build, start/live proof, two real named Web/Desktop PASS journeys, and owned cleanup/resource audit.",
+    "owner_marker": "Bind actual newly created owner marker path/content/hash/permissions to creator, managed installation/daemon and runtime receipt.",
+    "C3": "Still unexecuted direct original prepare/authorize replay after proof replacement; separate final-review handoff required. Comment continuation does not close it. C1/C2 remain closed by Dewey.",
+    "ROOT": "Separate current ROOT integration and quality/source mapping by Descartes; no ROOT green claim.",
+    "provider_semantics": "Controlled server model does not prove real-provider quality.",
+    "desktop_scope": "Renderer/preload/routes and matching CLI/managed helper do not prove installed Main, installer or other platforms.",
+    "PAY_parent24": "Unchanged: 4 PARTIAL / 20 NOT_RUN; knowledge acceptance does not close the parent matrix.",
+    "PAY_S2": "Independent owner remains 0/4 scenarios."
+  },
+  "recommended_blocking_patches": [],
+  "reviewer_fix_required": false
+}

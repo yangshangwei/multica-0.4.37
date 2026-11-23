@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY collaboration_stage_execution_candidate_idx ON collaboration_stage_execution_intent (issue_id, candidate_id, admitted_at, intent_id);

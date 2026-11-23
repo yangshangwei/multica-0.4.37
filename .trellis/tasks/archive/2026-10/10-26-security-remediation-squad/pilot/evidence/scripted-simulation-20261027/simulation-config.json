@@ -1,0 +1,32 @@
+{
+  "simulation_id": "security-squad-sim-20261027",
+  "workspace_id": "d6eaf4b9-07bc-4aa4-b3ee-5a4bc733949c",
+  "squad_id": "26156f72-d413-42be-a075-e46f2b9184ea",
+  "roles": {
+    "maintenance-lead": "f7c3064f-9da8-46fa-b994-83a3116bcd09",
+    "product-analyst": "50b4bb2e-d4c4-4c70-8dd8-3d48963b475a",
+    "security-reviewer": "ce9b9709-d57c-4ea2-9e9f-7f62fe17a917",
+    "diagnostician": "ac023f51-1185-4ee0-8639-80ab4f0e3051",
+    "implementer": "f7047fd3-7d3e-465a-ae56-77ac0979ab3f",
+    "qa-engineer": "d2be88b0-de73-4199-b217-f1e19c6062dd",
+    "migration-reviewer": "37e1cafb-fb87-4eff-b621-43c7e031f616",
+    "code-reviewer": "80df3eb5-b64c-4e93-afa2-75c2b8526911"
+  },
+  "cases": {
+    "01a17c62-9456-731c-bea9-459411b9a123": {
+      "key": "other-supply-chain"
+    },
+    "01a17c62-946f-74f1-a9d8-99ce5e23709e": {
+      "key": "dependency-advisory"
+    },
+    "01a17c62-9479-7d84-b2e0-17d039c05b81": {
+      "key": "code-authorization"
+    },
+    "01a17c62-9483-798d-b65b-f6d0e44208b3": {
+      "key": "production-escalation"
+    }
+  },
+  "api_url": "http://172.25.0.2:8080",
+  "lab_path": "/work/lab",
+  "patch_path": "/work/simulation/lab-diff.patch"
+}

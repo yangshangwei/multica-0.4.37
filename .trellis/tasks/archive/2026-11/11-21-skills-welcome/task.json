@@ -1,0 +1,34 @@
+{
+  "id": "skills-welcome",
+  "name": "skills-welcome",
+  "title": "Skills 首次使用欢迎页",
+  "description": "参考提供的 UI，以 impeccable 设计 Skills 欢迎页，帮助用户理解、添加并分配可复用的 skill。",
+  "status": "completed",
+  "dev_type": "frontend",
+  "scope": "skills-welcome",
+  "package": "views",
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-21",
+  "completedAt": "2026-11-21",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "86b910dfa0fd7e5593739fc5defee2bf99831c35",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/skills/components/skills-page.tsx",
+    "packages/views/skills/components/skills-page.test.tsx",
+    "packages/views/skills/components/create-skill-dialog.tsx",
+    "packages/views/locales/en/skills.json",
+    "packages/views/locales/zh-Hans/skills.json"
+  ],
+  "notes": "Skills welcome implemented and accepted on Web and the built Electron renderer. Fresh checks before the scoped commit: 474 Skills and locale tests, scoped ESLint, Views/Web/Desktop typechecks. Visual review: ship, 94/100. See evidence.md.",
+  "meta": {
+    "delivery_state": "accepted_and_committed"
+  }
+}

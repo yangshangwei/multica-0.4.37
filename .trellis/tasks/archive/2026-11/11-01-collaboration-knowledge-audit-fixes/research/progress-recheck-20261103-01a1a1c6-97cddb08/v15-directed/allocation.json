@@ -1,0 +1,38 @@
+{
+  "allocated_at": "2026-11-03T15:49:09.689918+00:00",
+  "coordinator": "01a1a1c6-9f9b-7521-8341-f57c97cddb08",
+  "purpose": "Owned narrow reproduction/repair verification only; no complete check or CCG permission",
+  "candidate": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "head": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "database": "multica_check_v15_dir_01a1a1c6_c18959",
+  "absence_exit": 0,
+  "absence_output": "",
+  "create_exit": 0,
+  "create_output": "CREATE DATABASE\n",
+  "new_deployment_uuid": "0b17a66c-9d84-469e-9c33-db19caefcf32",
+  "old_label_preserved_in_v14": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "api_port": 18810,
+  "web_port": 13730,
+  "source_environment": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/source.env",
+  "source_environment_sha256": "8ef470563a3c222380a41ada836c1c71e9337b1606109c46a48bcf3483a3e444",
+  "registry": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/registry",
+  "HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/home",
+  "TMPDIR": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/tmp/",
+  "command": [
+    "make",
+    "up",
+    "C=api,web",
+    "ENV_FILE=/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/source.env",
+    "ARGS=--web-mode production --name v15-directed-01a1a1c6 --ephemeral"
+  ],
+  "renderer": {
+    "url": "http://127.0.0.1:55132",
+    "purpose": "Transferred retired v14 static bytes only for directed verification; no CCG reuse",
+    "pid": 35776
+  },
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "real_provider_allowed": false,
+  "production_default": false,
+  "server_env_contract": "Retained v14 legacy/managedfalse/knowledgefalse; changed only owned allocation/JWT/UUID/origins/empty Redis for one API"
+}

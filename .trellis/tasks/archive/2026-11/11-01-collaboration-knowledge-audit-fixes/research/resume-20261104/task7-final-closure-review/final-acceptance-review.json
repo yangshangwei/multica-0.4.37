@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-04T08:28:59.216988+00:00",
+  "reviewer": "/root/task7_contract_review",
+  "scope": "Final full-scope #7 frozen-candidate product acceptance; Root execution/integration/archive follows separately",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "verdict": "pass",
+  "blocking_findings_open": 0,
+  "confirmed_product_blockers": [],
+  "AC1_AC9": [
+    {
+      "id": "AC1",
+      "accepted": true,
+      "evidence": "19 reproduced IDs have actual named baseline failures; L12 primary mapping points to same red/green deletion regression, with ownership regression retained separately. L7 and L13 use explicit accepted exceptions. Baseline 6aed33aad and 4e3b61500 product source match."
+    },
+    {
+      "id": "AC2",
+      "accepted": true,
+      "evidence": "Current H1 safe-OFF/nil descriptor and unsafe-selector canonical source unchanged; actual v13 named -race pass."
+    },
+    {
+      "id": "AC3",
+      "accepted": true,
+      "evidence": "Long histories, deep exposure/corruption, complete namespace and CT1 controls retain exact bytes and actual v13 named passes."
+    },
+    {
+      "id": "AC4",
+      "accepted": true,
+      "evidence": "M1 immediate requeue and M2 bounded retry tests actually pass; accepted 1.5s budget and terminal exhaustion remain."
+    },
+    {
+      "id": "AC5",
+      "accepted": true,
+      "evidence": "H2 actual daemon/HTTP rebinding plus stale/refusal controls pass in v13, preserving exposed generations and original requests."
+    },
+    {
+      "id": "AC6",
+      "accepted": true,
+      "evidence": "Current 34-test knowledge panel / 66-test locale parity v13 pass; actual v13 product source equals d0b132fff. Current source recovery disclosure increment preserved. Root now records complete v14 TS pass."
+    },
+    {
+      "id": "AC7",
+      "accepted": true,
+      "evidence": "SQLC actual exit0, all 1631 current input hashes and 130 generated hashes match before/after success; 761–763 concurrent single-statement up/no FK/down guard and cleanup registration verified."
+    },
+    {
+      "id": "AC8",
+      "accepted": true,
+      "evidence": "Actual V16 make0/static15/TS five full reports and all82 -race packages/current DB clones; CCG1 normal/race now independently accepted."
+    },
+    {
+      "id": "AC9",
+      "accepted": true,
+      "evidence": "Server/core/views knowledge specs and runtime upgrade documentation retain current contracts; built-in issue skill/source map remains current after delivered policy/detail updates; independent sync/followup reports retain hashes."
+    }
+  ],
+  "all_21_dispositions_accepted": true,
+  "disposition_ids": [
+    "H1",
+    "H2",
+    "H3",
+    "M1",
+    "M2",
+    "M3",
+    "M4",
+    "M5",
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5",
+    "L6",
+    "L7",
+    "L8",
+    "L9",
+    "L10",
+    "L11",
+    "L12",
+    "L13"
+  ],
+  "reproduced_baseline_red_count": 19,
+  "accepted_exceptions": {
+    "L7": "not reproduced; actual exactly-once termination regressions retained",
+    "L13": "terminology and locale parity exception"
+  },
+  "current_source_50_hashes_match": true,
+  "full_scope_dossiers": {
+    "AC_21_red_current_source_integration_race": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/preliminary-review.json",
+      "sha256": "8e381c17ac2b9607d523714334566ab10b1620204bd82b0ab51493e41dce03ef"
+    },
+    "spec_builtin_mapping": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/spec-builtin-mapping.json",
+      "sha256": "7f7961d46cd1442ee1e745699ee3752b6c46b0f382bb78a9c227efde718556c4"
+    },
+    "main_five_original_assertion_preservation": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/main-five-overlap-review.json",
+      "sha256": "45d2dc196120b93e4eebbfff2b9a75d28055584d4dceabd6aadd3476106a02c1"
+    },
+    "archive_reference_plan": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/archive-reference-plan.json",
+      "sha256": "808cf13ac5504ac1022504861f4f61fd8a01951acf1fd9f567fdb2d952055580"
+    },
+    "supplemental_cache_contract_and_OFF02": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/preliminary-supplement-off02.json",
+      "sha256": "07b9fd9cb34a8f5b59ad72e5e4aa00caaaf947deaffb2e0cdd7cfcd563e43a5c"
+    }
+  },
+  "shared_V16": {
+    "review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/final-v16-actual-01/independent-shared-readiness-review.json",
+      "sha256": "b84ae87408a08e3e2536dfef08935c92b1ec23deddfc8e8a5c88b00d343734a2"
+    },
+    "make_exit": 0,
+    "static_pass": 15,
+    "TS_files": 1069,
+    "TS_named_pass": 13244,
+    "Go_packages": 82,
+    "Go_named_pass": 20963,
+    "Go_named_fail": 0,
+    "Go_named_skip": 22,
+    "all_82_commands_race": true,
+    "browser_total": 441,
+    "browser_pass": 350,
+    "browser_fail": 0,
+    "browser_skip": 91,
+    "retry_flaky_unrun": 0,
+    "all_113_independent_skip_dispositions_accepted": true,
+    "original_final_auditor_invocations": 1,
+    "identity_and_wholecheck_passed": true
+  },
+  "CCG16": {
+    "all_four_current_fake_gates_accepted": true,
+    "CCG1_normal_race_independent": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg1-result-review/review.json",
+      "sha256": "fcaba0f89bad4ad584cdddd8cd474fb681d3e09c28d0f9aa4f8f1d80c88b3583"
+    },
+    "CCG2_OFF02_independent": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg2-off02-result-review/review.json",
+      "sha256": "2bfc55ec3ca4c11a8f416e3da3bd96fca4fc595144da7958467825bf3124d77e"
+    },
+    "CCG2_ON01_four_gate_independent": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg2-on01-result-review/review.json",
+      "sha256": "68fcbc4331392e8d5cc5c02f8f78e98009c754b03c5a9e1aee899b79d2a64978"
+    },
+    "actual_results": [
+      {
+        "gate": "CCG1-normal",
+        "result_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-normal-v16-01/result.json",
+        "sha256": "3c2129cef77ef6914d665938c137e01db7c17cbbe440dd8b821acaf99b9ddc22",
+        "accepted": true,
+        "scope": "current fake correction/withdrawal composite"
+      },
+      {
+        "gate": "CCG1-race",
+        "result_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg1-race-v16-01/result.json",
+        "sha256": "85078914fd957ef4836c17a1954cff329e4e083bdd1a46801aea07c47d0ab0cf",
+        "accepted": true,
+        "scope": "current fake correction/withdrawal composite"
+      },
+      {
+        "gate": "CCG2-OFF02",
+        "result_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-off-v16-02/result.json",
+        "sha256": "7ce251ea2e611178d356aa54358360b693fa779fcc3317b200f388590e19775a",
+        "accepted": true,
+        "scope": "current fake deployed OFF input/events"
+      },
+      {
+        "gate": "CCG2-ON01",
+        "result_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/runs/ccg2-on-v16-01/result.json",
+        "sha256": "6aa58a5fe4829f2023661cb6767e42abbfbbbd6573fc0ea9076628df6cf33a37",
+        "accepted": true,
+        "scope": "current fake deployed ON input/events"
+      }
+    ],
+    "ON_exact_approved_contribution_and_one_process_one_each_event": true,
+    "OFF_no_knowledge_section_contributions_persistence_events": true,
+    "ON_executor_release": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/on-release-result.json",
+      "sha256": "41773d599cae15ff72339041a57c5bb342175da4327376d5258264715bb23e4a"
+    },
+    "ON_Root_release_witness": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/root-on-release-confirmation.json",
+      "sha256": "dcd65ce4eb71cf949e72b77ea8191978d37b69c30a7a24adc28894c1ad152022"
+    }
+  },
+  "product_acceptance_complete": true,
+  "task7_may_close_after_Root_execution_steps": true,
+  "closure_independent_of_task6_real_models_and_release": true,
+  "Root_pending_operations": {
+    "integration_plan": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-integration-preservation-plan.json",
+      "sha256": "07a6f3f7a4a66c4274c0ce83a6a9c052da94fad8cee8e0327ac4f55a7a8b74c7"
+    },
+    "exact_scoped_overlap_count": 24,
+    "preserve_original_five_and19_exact_paths": true,
+    "fast_forward_to_accepted_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "verify_integrated_source_equality_before_actual_close": true,
+    "stable_task6_handoff_and_operational_archive_ref_rewrite": true,
+    "archive_no_commit_then_Root_scoped_Lore_commit": true
+  },
+  "task_status_changed_by_reviewer": false,
+  "notes": [
+    "Acceptance is current-source product/fake plumbing and human UI scope, not real model understanding or universal Provider/platform/release certification.",
+    "Root owns exact 24-path preservation and fast-forward, integrated source equality verification, stable #6 handoff and archive operational reference rewrite before actual task close/archive.",
+    "OFF01 setup failure and V15/V14 failures remain unchanged; later separate passing runs do not rewrite them.",
+    "Private ON deployment opt-in is isolated acceptance; production knowledge default remains false and paid knowledge allowance/calls remain 0/0."
+  ],
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "real_entry_runnable": false,
+  "production_default_enabled": false,
+  "other_budget_transfer": false,
+  "source_task_permissions_commit_archive_tests_auditor_or_model_operations_by_reviewer": 0
+}

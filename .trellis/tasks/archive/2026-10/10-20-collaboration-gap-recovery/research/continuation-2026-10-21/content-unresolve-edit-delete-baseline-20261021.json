@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-10-21T10:16:47.966791+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_discussion.go": "e957eeda4c4cb01a0a572230a980f9f81953b5cd4c63dfdf29b2304f3a7e11e2",
+    "server/internal/service/collaboration_comments.go": "8bf74c1438f2c7f9446e747317bd1fc212c4fc0af83154074a8017b30898a085",
+    "server/internal/service/collaboration_comments_edit.go": "216af6a930362643b1c3d9da12f65194c3b6946c5fbefe2a762653ac8f016970",
+    "server/internal/service/collaboration_comments_test.go": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+    "server/internal/service/collaboration_discussion_test.go": "e8b8b35d30f9b58f2e1eb8c2a92c1cca7199a836e9c3a4537b8cf80ee1a39e59",
+    "server/internal/service/collaboration_attachments_test.go": "6231ea4376e93e0efd6e05672a2ab02816755e008b107f9a7020b97da1fe021f",
+    "server/internal/service/collaboration_recipient_eligibility_test.go": "6b0cee90974986966b8da3df013d5d64631320c5e48b8af40689d765656c53ea",
+    "server/internal/service/collaboration_fifo_test.go": "0b15cafe54deab9448eb69716988bacae14e6df0ca3fc0e603af7075a3453f70"
+  },
+  "ownership": "new discussion resume test and new comment edit/delete race test only; existing source/helpers read-only"
+}

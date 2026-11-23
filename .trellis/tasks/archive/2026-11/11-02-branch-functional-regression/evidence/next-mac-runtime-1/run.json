@@ -1,0 +1,332 @@
+{
+  "started_at": "2026-11-02T03:35:07.486Z",
+  "state": "complete",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_changes": false,
+  "commercial_provider_calls": 0,
+  "automatic_retries": 0,
+  "steps": [
+    {
+      "name": "protocol-before",
+      "executable": "osascript",
+      "args": [
+        "-l",
+        "JavaScript",
+        "-e",
+        "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+      ],
+      "started_at": "2026-11-02T03:35:09.054Z",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T03:35:09.171Z"
+    },
+    {
+      "name": "baseline-install",
+      "executable": "ditto",
+      "args": [
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/baseline-extracted/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app"
+      ],
+      "started_at": "2026-11-02T03:35:09.175Z",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T03:35:10.538Z"
+    },
+    {
+      "name": "baseline-handler",
+      "executable": "osascript",
+      "args": [
+        "-l",
+        "JavaScript",
+        "-e",
+        "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+      ],
+      "started_at": "2026-11-02T03:35:21.374Z",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T03:35:21.525Z"
+    },
+    {
+      "name": "candidate-upgrade",
+      "executable": "ditto",
+      "args": [
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-upgrade-1/candidate-extracted/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app"
+      ],
+      "started_at": "2026-11-02T03:35:21.876Z",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T03:35:23.942Z"
+    },
+    {
+      "name": "candidate-handler",
+      "executable": "osascript",
+      "args": [
+        "-l",
+        "JavaScript",
+        "-e",
+        "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+      ],
+      "started_at": "2026-11-02T03:35:31.647Z",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T03:35:31.788Z"
+    },
+    {
+      "name": "protocol-after-runtime",
+      "executable": "osascript",
+      "args": [
+        "-l",
+        "JavaScript",
+        "-e",
+        "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+      ],
+      "started_at": "2026-11-02T03:35:31.950Z",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T03:35:32.031Z"
+    },
+    {
+      "name": "unregister-owned-0",
+      "executable": "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
+      "args": [
+        "-u",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app"
+      ],
+      "started_at": "2026-11-02T03:35:32.032Z",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T03:35:32.041Z"
+    },
+    {
+      "name": "protocol-after-cleanup",
+      "executable": "osascript",
+      "args": [
+        "-l",
+        "JavaScript",
+        "-e",
+        "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+      ],
+      "started_at": "2026-11-02T03:35:32.041Z",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T03:35:32.101Z"
+    },
+    {
+      "name": "protocol-final",
+      "executable": "osascript",
+      "args": [
+        "-l",
+        "JavaScript",
+        "-e",
+        "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+      ],
+      "started_at": "2026-11-02T03:35:32.101Z",
+      "exit_code": 0,
+      "finished_at": "2026-11-02T03:35:32.161Z"
+    }
+  ],
+  "runtime": [
+    {
+      "stage": "baseline",
+      "main": {
+        "version": "0.6.5-185-g61ff581d2-dirty",
+        "appPath": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app/Contents/Resources/app.asar",
+        "home": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/home",
+        "userData": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/home/.config/Multica",
+        "packaged": true,
+        "executable": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app/Contents/MacOS/Multica",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "native": {
+        "appInfo": {
+          "version": "0.6.5-185-g61ff581d2-dirty",
+          "os": "macos"
+        },
+        "config": {
+          "ok": true,
+          "source": "configured",
+          "config": {
+            "schemaVersion": 1,
+            "apiUrl": "http://127.0.0.1:58786",
+            "wsUrl": "ws://127.0.0.1:58786/ws",
+            "appUrl": "http://127.0.0.1:58786",
+            "updateUrl": "http://127.0.0.1:58786/desktop"
+          }
+        },
+        "daemonPrefs": {
+          "autoStart": false,
+          "autoStop": false
+        },
+        "updatePrefs": {
+          "automaticUpdates": false
+        },
+        "daemonStatus": {
+          "state": "stopped"
+        }
+      },
+      "screenshot": "baseline.png",
+      "asar_sha256": "da566a4d55d35948fdf8150251e5980bbfcc6ffd0845f659f8f02737fe4201c6",
+      "executable_sha256": "ed3bc83cc76ab5297348d24b8a8d4c558993c88fae49339dc56c7e961434bed9",
+      "retained_storage_checked": false,
+      "handler_after_launch": {
+        "defaultApplicationPath": "/Applications/Multica.app",
+        "registeredApplications": [
+          "/Applications/Multica.app",
+          "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app"
+        ]
+      }
+    },
+    {
+      "stage": "candidate",
+      "main": {
+        "version": "0.6.8-rc.20261102",
+        "appPath": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app/Contents/Resources/app.asar",
+        "home": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/home",
+        "userData": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/home/.config/Multica",
+        "packaged": true,
+        "executable": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app/Contents/MacOS/Multica",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "native": {
+        "appInfo": {
+          "version": "0.6.8-rc.20261102",
+          "os": "macos"
+        },
+        "config": {
+          "ok": true,
+          "source": "configured",
+          "config": {
+            "schemaVersion": 1,
+            "apiUrl": "http://127.0.0.1:58786",
+            "wsUrl": "ws://127.0.0.1:58786/ws",
+            "appUrl": "http://127.0.0.1:58786",
+            "updateUrl": "http://127.0.0.1:58786/desktop"
+          }
+        },
+        "daemonPrefs": {
+          "autoStart": false,
+          "autoStop": false
+        },
+        "updatePrefs": {
+          "automaticUpdates": false
+        },
+        "daemonStatus": {
+          "state": "stopped"
+        }
+      },
+      "screenshot": "candidate.png",
+      "asar_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+      "executable_sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "retained_storage_checked": true,
+      "handler_after_launch": {
+        "defaultApplicationPath": "/Applications/Multica.app",
+        "registeredApplications": [
+          "/Applications/Multica.app",
+          "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app",
+          "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app"
+        ]
+      }
+    }
+  ],
+  "authentication_scope": "Synthetic local startup endpoint; no business login or real credential migration",
+  "protocol_before": {
+    "defaultApplicationPath": "/Applications/Multica.app",
+    "registeredApplications": [
+      "/Applications/Multica.app",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app"
+    ]
+  },
+  "synthetic_origin": "http://127.0.0.1:58786",
+  "profile_before_sha256": "b7476cd328f6bfa4854d533fdf52d457ab7a84347e8a156c3b000ba32d64f799",
+  "runner_sha256": "03ab7b02687c4df4f796ab1af8224a79c57c4769b42d36ac6266e840d6dd1a6d",
+  "status": "PASS",
+  "filesystem_config_retained": true,
+  "actual_main_versions": [
+    "0.6.5-185-g61ff581d2-dirty",
+    "0.6.8-rc.20261102"
+  ],
+  "protocol_after_cleanup": {
+    "defaultApplicationPath": "/Applications/Multica.app",
+    "registeredApplications": [
+      "/Applications/Multica.app",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app"
+    ]
+  },
+  "task_registrations_unregistered": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-mac-runtime-1/installed/Multica.app"
+  ],
+  "protocol_final": {
+    "defaultApplicationPath": "/Applications/Multica.app",
+    "registeredApplications": [
+      "/Applications/Multica.app",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app",
+      "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app"
+    ]
+  },
+  "protocol_restored": true,
+  "native_http_requests": [
+    {
+      "stage": "baseline",
+      "origin": "http://127.0.0.1:58786",
+      "path": "/api/config"
+    },
+    {
+      "stage": "candidate",
+      "origin": "http://127.0.0.1:58786",
+      "path": "/api/config"
+    }
+  ],
+  "synthetic_server_requests": [
+    {
+      "method": "GET",
+      "path": "/api/config"
+    },
+    {
+      "method": "GET",
+      "path": "/health"
+    },
+    {
+      "method": "GET",
+      "path": "/api/config"
+    },
+    {
+      "method": "GET",
+      "path": "/api/config"
+    },
+    {
+      "method": "GET",
+      "path": "/health"
+    },
+    {
+      "method": "GET",
+      "path": "/api/config"
+    }
+  ],
+  "finished_at": "2026-11-02T03:35:32.161Z",
+  "remaining_scope": [
+    "real business login/credential migration",
+    "automatic updater",
+    "Developer ID/notarization",
+    "non-macOS native acceptance"
+  ]
+}

@@ -1,0 +1,366 @@
+{
+  "started_at": "2026-11-02T10:00:46.231882+00:00",
+  "state": "complete",
+  "scope": "Native implement child new Webhook lookup-error diagnostic; coordinator/final review separate",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "version": "0.6.8-rc.20261102",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+  "source_diff_sha256_before": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+  "frozen_test_sha256_before": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "source_watched_sha256_before": {
+    "server/internal/cli/config_test.go": "4f3f6bb72fa4d6eb2888ddbd379f7d13a16adc2fee3f8375fb011060eb93f266",
+    "server/internal/handler/autopilot_webhook_handler_test.go": "dea4ec7e88200e4be3b0b69867d8779104a49948b9b75a5272877eabce42e67d",
+    "server/internal/handler/autopilot_webhook.go": "09ac6d45c195091b2d758f85258dfcbbe4f5043a5efe70b864d514e0a4d1529b",
+    "server/pkg/db/generated/autopilot.sql.go": "37481bc2826ec17a25b77b5b508f200834c32456bd82a8eaf9d555ab98ce1e47",
+    "server/pkg/db/generated/db.go": "b795d118ae65ff39cfa847999234c683cebb6d8e7664ab35a122e44d8b33dd76",
+    "server/internal/handler/handler_test.go": "66b4ea1c269b4e431a0118cfe88eb14fc707979a2aab70a626d07167e02ae12b",
+    "server/internal/handler/webhook_rate_limiter.go": "53ddddaa1049f9e262969aae79f0a0778935b043c5c6fabd7e9f872050f3f1e2",
+    "server/internal/testutil/http.go": "7ce527a76f5055230ae98cf886edeb7fc8f9b7d53cc5da807671aa949deb885e",
+    "server/go.mod": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+    "server/go.sum": "7bb6e5e0576e89cb9f7b13c81a0fcd4b39acb2fae75ef9b6499066915b4e281d"
+  },
+  "virtual_overlay_target": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102/server/internal/handler/zz_task_private_webhook_lookup_test.go",
+  "overlay_target_absent_before": true,
+  "task_database": "multica_func7af9_next_webhook_lookup_1",
+  "automatic_retries": 0,
+  "test_execution_attempts": 1,
+  "race_enabled": true,
+  "agent_cli_guard": true,
+  "steps": [
+    {
+      "name": "database-identity",
+      "command": [
+        "/opt/homebrew/opt/libpq/bin/psql",
+        "-X",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT current_database()"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:07:49.836163+00:00",
+      "private_test_sha256": "3c7230fff641ed586c03bb50072e0382e8b743aab6f36b7c2997536baec91721",
+      "pid": 25956,
+      "process_group": 25956,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:07:50.014924+00:00",
+      "stdout_sha256": "c29c262263c446ba0f5ebb1c20d39ffbfc15d8906d2f4244ccde59474e3a28f4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "database-fresh",
+      "command": [
+        "/opt/homebrew/opt/libpq/bin/psql",
+        "-X",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT (SELECT count(*) FROM \"user\"),(SELECT count(*) FROM workspace),(SELECT count(*) FROM issue),(SELECT count(*) FROM schema_migrations)"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:07:50.018604+00:00",
+      "private_test_sha256": "3c7230fff641ed586c03bb50072e0382e8b743aab6f36b7c2997536baec91721",
+      "pid": 25960,
+      "process_group": 25960,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:07:50.100874+00:00",
+      "stdout_sha256": "f68bfc711c1cb743fa52d3d34c2cd66ed8de1b6ed1f36c5f4f14f0cee055a1bd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "database-connections-before",
+      "command": [
+        "/opt/homebrew/opt/libpq/bin/psql",
+        "-X",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:07:50.104611+00:00",
+      "private_test_sha256": "3c7230fff641ed586c03bb50072e0382e8b743aab6f36b7c2997536baec91721",
+      "pid": 25961,
+      "process_group": 25961,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:07:50.191734+00:00",
+      "stdout_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "database-headroom",
+      "command": [
+        "/opt/homebrew/opt/libpq/bin/psql",
+        "-X",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT current_setting('max_connections'),count(*) FROM pg_stat_activity"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:07:50.195439+00:00",
+      "private_test_sha256": "3c7230fff641ed586c03bb50072e0382e8b743aab6f36b7c2997536baec91721",
+      "pid": 25963,
+      "process_group": 25963,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:07:50.280143+00:00",
+      "stdout_sha256": "43e44132a716a3e6cbf3188b8a289c6a0ff73358849bb1f9b9dcf63ded7b8e5d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "format-v1",
+      "command": [
+        "gofmt",
+        "-w",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/diagnostic_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:07:50.285358+00:00",
+      "private_test_sha256": "3c7230fff641ed586c03bb50072e0382e8b743aab6f36b7c2997536baec91721",
+      "pid": 25964,
+      "process_group": 25964,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:07:50.333046+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "go-version",
+      "command": [
+        "go",
+        "version"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:07:50.334245+00:00",
+      "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+      "pid": 25965,
+      "process_group": 25965,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:07:50.414087+00:00",
+      "stdout_sha256": "c4a5200d52279a5227d4b3bced622c76081c45d24dba750db29903f9b14641c3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "host-os",
+      "command": [
+        "uname",
+        "-srm"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:07:50.414493+00:00",
+      "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+      "pid": 25970,
+      "process_group": 25970,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:07:50.418195+00:00",
+      "stdout_sha256": "fbcf26fb9058bc45b68007bec15ae5998059197cd9b43dc1850894a44aae6878",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "pgx-version",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "list",
+        "-m",
+        "github.com/jackc/pgx/v5"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:07:50.418404+00:00",
+      "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+      "pid": 25971,
+      "process_group": 25971,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:07:50.439182+00:00",
+      "stdout_sha256": "b9f148a631aa6552cfcf902bf85a6bcbc69421c131881bdcfbce45c10e9072d0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "compile-v1",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-c",
+        "-race",
+        "-p",
+        "2",
+        "-overlay",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/overlay.json",
+        "-o",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/handler-webhook-lookup.test",
+        "./internal/handler"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:07:50.439442+00:00",
+      "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+      "pid": 25972,
+      "process_group": 25972,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:08:15.621065+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "diagnostic",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "tool",
+        "test2json",
+        "-t",
+        "-p",
+        "github.com/multica-ai/multica/server/internal/handler",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/handler-webhook-lookup.test",
+        "-test.v",
+        "-test.run",
+        "^TestTaskPrivateWebhookTokenLookupErrorDiagnostic$",
+        "-test.count=1",
+        "-test.parallel=1",
+        "-test.timeout=5m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:08:15.675685+00:00",
+      "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+      "pid": 26121,
+      "process_group": 26121,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:08:18.683298+00:00",
+      "stdout_sha256": "2acb3d23b05051e66578f9540a2b21c5e29d5e2888d5802735310ca573a24dc1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "database-connections-after",
+      "command": [
+        "/opt/homebrew/opt/libpq/bin/psql",
+        "-X",
+        "-At",
+        "-v",
+        "ON_ERROR_STOP=1",
+        "-c",
+        "SELECT count(*) FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid()"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:08:18.685464+00:00",
+      "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+      "pid": 26199,
+      "process_group": 26199,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:08:18.827764+00:00",
+      "stdout_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "git-diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:08:18.899913+00:00",
+      "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+      "pid": 26202,
+      "process_group": 26202,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:08:18.925758+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "format-check",
+      "command": [
+        "gofmt",
+        "-l",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/diagnostic_test.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "started_at": "2026-11-02T10:08:18.926140+00:00",
+      "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+      "pid": 26203,
+      "process_group": 26203,
+      "exit_code": 0,
+      "finished_at": "2026-11-02T10:08:18.946533+00:00",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "commercial_calls": 0,
+  "account_actions": 0,
+  "remote_dispatches": 0,
+  "p95_executed": false,
+  "prior_skips_reclassified": false,
+  "context_hook_sha256": "25399cd85467ac5392d8544eae3475fcaba2e6a4e52867a2d03e20ae607682fc",
+  "headroom_before": {
+    "maximum": 100,
+    "used": 45,
+    "available": 55
+  },
+  "canonical_sql_sha256": "4007048c71c8c2f3568d9ed4774d5c2f87c1da22795f1f413edca329bebb6865",
+  "private_environment_sha256": "a2c1637268f93eaf6b3dc3ef7444e301cc3ae498596f013460794cb78f607252",
+  "private_test_sha256": "70c3bb36b87541eae99ddd2e83b11f8d63d058fd252f177518a5be5f5971a925",
+  "overlay_sha256": "97ac3f537969e1d9b15ee22065441e1830b7be2b2e9ca69f49afd103a0d2e92d",
+  "compile_attempts": 1,
+  "binary_sha256": "0f394032d437fc459639febd38eef29b2e7ebb4dd499f2e43beb10783b67d885",
+  "exit_code": 0,
+  "outcomes": {
+    "TestTaskPrivateWebhookTokenLookupErrorDiagnostic/server_lookup_error_returns500": "pass",
+    "TestTaskPrivateWebhookTokenLookupErrorDiagnostic/closed_owned_pool_returns500": "pass",
+    "TestTaskPrivateWebhookTokenLookupErrorDiagnostic/real_missing_token_returns404": "pass",
+    "TestTaskPrivateWebhookTokenLookupErrorDiagnostic/absolute_limit_preempts_lookup": "pass",
+    "TestTaskPrivateWebhookTokenLookupErrorDiagnostic": "pass"
+  },
+  "top_counts": {
+    "pass": 1
+  },
+  "sub_counts": {
+    "pass": 4
+  },
+  "finished_at": "2026-11-02T10:08:18.685433+00:00",
+  "connections_after": 0,
+  "source_diff_unchanged": true,
+  "source_watched_sha256_after": {
+    "server/internal/cli/config_test.go": "4f3f6bb72fa4d6eb2888ddbd379f7d13a16adc2fee3f8375fb011060eb93f266",
+    "server/internal/handler/autopilot_webhook_handler_test.go": "dea4ec7e88200e4be3b0b69867d8779104a49948b9b75a5272877eabce42e67d",
+    "server/internal/handler/autopilot_webhook.go": "09ac6d45c195091b2d758f85258dfcbbe4f5043a5efe70b864d514e0a4d1529b",
+    "server/pkg/db/generated/autopilot.sql.go": "37481bc2826ec17a25b77b5b508f200834c32456bd82a8eaf9d555ab98ce1e47",
+    "server/pkg/db/generated/db.go": "b795d118ae65ff39cfa847999234c683cebb6d8e7664ab35a122e44d8b33dd76",
+    "server/internal/handler/handler_test.go": "66b4ea1c269b4e431a0118cfe88eb14fc707979a2aab70a626d07167e02ae12b",
+    "server/internal/handler/webhook_rate_limiter.go": "53ddddaa1049f9e262969aae79f0a0778935b043c5c6fabd7e9f872050f3f1e2",
+    "server/internal/testutil/http.go": "7ce527a76f5055230ae98cf886edeb7fc8f9b7d53cc5da807671aa949deb885e",
+    "server/go.mod": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+    "server/go.sum": "7bb6e5e0576e89cb9f7b13c81a0fcd4b39acb2fae75ef9b6499066915b4e281d"
+  },
+  "watched_sources_unchanged": true,
+  "frozen_test_sha256_after": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef",
+  "frozen_test_unchanged": true,
+  "overlay_target_absent_after": true,
+  "owned_processes_remaining": [],
+  "process_audit": {
+    "at": "2026-11-02T10:08:18.897825+00:00",
+    "command": [
+      "ps",
+      "-axo",
+      "pid=,pgid=,command="
+    ],
+    "exit_code": 0,
+    "selected_owned_groups": [
+      25972,
+      26121
+    ],
+    "stdout_filtered_to_owned_groups": true,
+    "owned_output_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "cleanup_checked_at": "2026-11-02T10:08:18.897895+00:00"
+}

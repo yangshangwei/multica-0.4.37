@@ -26,6 +26,10 @@ type MembershipChange struct {
 }
 
 func PrepareMembershipChange(ctx context.Context, tx pgx.Tx, before db.Issue, source, target db.Iteration, allowCompleted bool) (*MembershipChange, error) {
+	return prepareMembershipChange(ctx, tx, before, source, target, allowCompleted, db.New(tx).LockIssueIterationParticipation)
+}
+
+func prepareMembershipChange(ctx context.Context, tx pgx.Tx, before db.Issue, source, target db.Iteration, allowCompleted bool, lockParticipation func(context.Context, db.LockIssueIterationParticipationParams) (db.IterationParticipation, error)) (*MembershipChange, error) {
 	if before.AdmissionStatus != "not_required" && before.AdmissionStatus != "accepted" {
 		return nil, &OperationError{Status: 409, Code: "triage_review_required", Message: "Issue requires triage acceptance"}
 	}
@@ -51,7 +55,7 @@ func PrepareMembershipChange(ctx context.Context, tx pgx.Tx, before db.Issue, so
 		return nil, &OperationError{Status: 422, Code: "iteration_validation_failed", Message: "Terminal issue cannot join this iteration without confirmation"}
 	}
 	if source.ID.Valid {
-		p, err := q.LockIssueIterationParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: before.WorkspaceID, IterationID: source.ID, IssueID: before.ID})
+		p, err := lockParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: before.WorkspaceID, IterationID: source.ID, IssueID: before.ID})
 		if err != nil {
 			return nil, err
 		}
@@ -61,7 +65,7 @@ func PrepareMembershipChange(ctx context.Context, tx pgx.Tx, before db.Issue, so
 		change.sourceFacts.HasStarted = p.HasStartedCurrentParticipation
 	}
 	if target.ID.Valid {
-		p, err := q.LockIssueIterationParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: before.WorkspaceID, IterationID: target.ID, IssueID: before.ID})
+		p, err := lockParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: before.WorkspaceID, IterationID: target.ID, IssueID: before.ID})
 		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 			return nil, err
 		}

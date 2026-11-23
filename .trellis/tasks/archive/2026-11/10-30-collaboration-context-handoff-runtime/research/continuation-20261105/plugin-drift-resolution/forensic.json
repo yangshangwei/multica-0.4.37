@@ -1,0 +1,62 @@
+{
+  "at": "2026-11-05T04:23:22.011065+00:00",
+  "scope": "bounded read-only local reconstruction; no operator edits or model execution",
+  "initial_inventory_regular_entries": 61947,
+  "current_symlink_entries": 195,
+  "initial_b994_reconstructed_exact": true,
+  "new_regular_paths_observed": 0,
+  "initial_inventory_omitted_symlink_paths": 186,
+  "metadata_changed_regular_paths": 5,
+  "removed_initial_regular_paths": 1,
+  "bounded_old_current_leaf_combinations": 64,
+  "prelaunch_617_reconstructed": false,
+  "postrun_91de_reconstructed_exact": true,
+  "backups_search": "No old copies of the three during-trial files found in bounded ~/.claude/plugins and ~/.claude/backups filename search; only historical installed_plugins backups, not a prelaunch plugin snapshot.",
+  "debug_log_search": "No debug files with mtime in03:41\u201303:49UTC window; absence is not proof no logs existed.",
+  "evidence_hashes": {
+    "debug-candidates.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "inventory-reconstruction.json": "bca3d5ce4432e188141c25dd5cacf478147a72b4b30677db17c4eb80e09b4c6d",
+    "bounded-reconstruction-matches.json": "3742aa9882d1b0c56d1fceff3e6dc2e587c09a9276df465e2b994a435f67bfbc"
+  },
+  "known_file_schema_roles": [
+    {
+      "path_category": "marketplace registry",
+      "keys": [
+        "source",
+        "installLocation",
+        "lastUpdated"
+      ],
+      "role_evidence": "Current JSON stores source and install location as well as update metadata. Installed Provider binary includes diagnostics describing in-place loading and background reconciliation through this registry. It cannot be excluded as purely timestamp-only without the before bytes."
+    },
+    {
+      "path_category": "directory cache",
+      "keys": [
+        "schemaVersion",
+        "fetchedAt",
+        "listings",
+        "entryNames",
+        "entryNameClaims"
+      ],
+      "listing_keys": [
+        "id",
+        "name",
+        "summary",
+        "release",
+        "links",
+        "surfaces",
+        "source",
+        "checks"
+      ],
+      "role_evidence": "Contains catalog descriptions, sources and exposed surfaces as well as timestamp; no exact prelaunch bytes or traced consumer were recovered. Filename alone does not establish behavior neutrality."
+    },
+    {
+      "path_category": "built-in agents-md plugin store",
+      "keys": [
+        "usage-rows-queued"
+      ],
+      "value_type": "opaque string, not JSON",
+      "role_evidence": "Installed binary contains this key and plugin identifier; no consumer implementation or exact old bytes recovered. It might represent accounting, but that is unproven and not an exclusion."
+    }
+  ],
+  "conclusion": "Cannot reconstruct exact prelaunch617 plugin tree from available bounded retained sources. Do not infer that only three files changed or identify writer frommtime. Original raw E0a pass/helperfailure remain unchanged; prospective per-file manifests fix observability without retroactively proving equality."
+}

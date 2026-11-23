@@ -800,6 +800,29 @@ describe("ApiClient schema fallback", () => {
       expect((await new ApiClient("https://api.example.test").getConfig()).cli_install_commands).toEqual(commands);
     });
 
+    it("keeps an absolute http(s) desktop download URL", async () => {
+      stubFetchJson({ desktop_download_url: " http://10.10.10.20:18080/desktop/ " });
+      const config = await new ApiClient("https://api.example.test").getConfig();
+      expect(config.desktop_download_url).toBe("http://10.10.10.20:18080/desktop/");
+    });
+
+    it.each([
+      undefined,
+      null,
+      123,
+      { url: "http://10.10.10.20:18080/desktop/" },
+      "",
+      "/desktop/",
+      "javascript:alert(1)",
+      "file:///etc/passwd",
+      "http://admin:secret@10.10.10.20:18080/desktop/",
+    ])("treats a missing or unsafe desktop download URL as unset: %j", async (value) => {
+      stubFetchJson({ desktop_download_url: value, daemon_server_url: "https://api.internal" });
+      const config = await new ApiClient("https://api.example.test").getConfig();
+      expect(config.desktop_download_url).toBeUndefined();
+      expect(config.daemon_server_url).toBe("https://api.internal");
+    });
+
     it("drops malformed daemon setup URLs instead of throwing", async () => {
       stubFetchJson({
         cdn_domain: "cdn.example.com",

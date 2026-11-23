@@ -1,0 +1,2184 @@
+{
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "packages": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "database": "multica_core_1a32_20261104_go_01",
+      "evidence": "evidence/backend/normal-race-1/01-internal_service",
+      "named": true,
+      "top": {
+        "pass": 1442,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 3430,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": null,
+      "receipt": "Go package PASS terminal plus independent observation; interrupted parent did not capture exit code",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "database": "multica_core_1a32_20261104_go_02",
+      "evidence": "evidence/backend/normal-race-2/02-internal_handler",
+      "named": true,
+      "top": {
+        "pass": 2870,
+        "fail": 0,
+        "skip": 7
+      },
+      "all": {
+        "pass": 5342,
+        "fail": 0,
+        "skip": 7
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "database": "multica_core_1a32_20261104_go_03",
+      "evidence": "evidence/backend/normal-race-2/03-cmd_server",
+      "named": true,
+      "top": {
+        "pass": 367,
+        "fail": 0,
+        "skip": 6
+      },
+      "all": {
+        "pass": 735,
+        "fail": 0,
+        "skip": 6
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "database": "multica_core_1a32_20261104_go_04",
+      "evidence": "evidence/backend/normal-race-2/04-internal_daemon",
+      "named": true,
+      "top": {
+        "pass": 897,
+        "fail": 0,
+        "skip": 2
+      },
+      "all": {
+        "pass": 1714,
+        "fail": 0,
+        "skip": 2
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "database": "multica_core_1a32_20261104_go_05",
+      "evidence": "evidence/backend/normal-race-2/05-pkg_agent",
+      "named": true,
+      "top": {
+        "pass": 1221,
+        "fail": 0,
+        "skip": 3
+      },
+      "all": {
+        "pass": 1951,
+        "fail": 0,
+        "skip": 4
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "database": "multica_core_1a32_20261104_go_06",
+      "evidence": "evidence/backend/normal-race-3/06-cmd_backfill_codex_usage_cache",
+      "named": true,
+      "top": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "database": "multica_core_1a32_20261104_go_07",
+      "evidence": "evidence/backend/normal-race-3/07-cmd_backfill_issue_last_activity",
+      "named": true,
+      "top": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "database": "multica_core_1a32_20261104_go_08",
+      "evidence": "evidence/backend/normal-race-3/08-cmd_backfill_task_usage_hourly",
+      "named": false,
+      "top": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "skip"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "database": "multica_core_1a32_20261104_go_09",
+      "evidence": "evidence/backend/normal-race-3/09-cmd_migrate",
+      "named": true,
+      "top": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 1
+      },
+      "all": {
+        "pass": 70,
+        "fail": 0,
+        "skip": 1
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "database": "multica_core_1a32_20261104_go_10",
+      "evidence": "evidence/backend/normal-race-3/10-cmd_multica",
+      "named": true,
+      "top": {
+        "pass": 439,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 1074,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/admission",
+      "database": "multica_core_1a32_20261104_go_11",
+      "evidence": "evidence/backend/normal-race-3/11-internal_admission",
+      "named": false,
+      "top": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "skip"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+      "database": "multica_core_1a32_20261104_go_12",
+      "evidence": "evidence/backend/normal-race-3/12-internal_agentconfig",
+      "named": false,
+      "top": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "skip"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/analytics",
+      "database": "multica_core_1a32_20261104_go_13",
+      "evidence": "evidence/backend/normal-race-3/13-internal_analytics",
+      "named": true,
+      "top": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attribution",
+      "database": "multica_core_1a32_20261104_go_14",
+      "evidence": "evidence/backend/normal-race-3/14-internal_attribution",
+      "named": true,
+      "top": {
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "database": "multica_core_1a32_20261104_go_15",
+      "evidence": "evidence/backend/normal-race-3/15-internal_attributionbackfill",
+      "named": true,
+      "top": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "database": "multica_core_1a32_20261104_go_16",
+      "evidence": "evidence/backend/normal-race-3/16-internal_auth",
+      "named": true,
+      "top": {
+        "pass": 51,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 113,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/changelog",
+      "database": "multica_core_1a32_20261104_go_17",
+      "evidence": "evidence/backend/normal-race-3/17-internal_changelog",
+      "named": true,
+      "top": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+      "database": "multica_core_1a32_20261104_go_18",
+      "evidence": "evidence/backend/normal-race-3/18-internal_channelmedia",
+      "named": true,
+      "top": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "database": "multica_core_1a32_20261104_go_19",
+      "evidence": "evidence/backend/normal-race-3/19-internal_chatoriginbackfill",
+      "named": false,
+      "top": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "skip"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chattitle",
+      "database": "multica_core_1a32_20261104_go_20",
+      "evidence": "evidence/backend/normal-race-3/20-internal_chattitle",
+      "named": false,
+      "top": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "skip"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "database": "multica_core_1a32_20261104_go_21",
+      "evidence": "evidence/backend/normal-race-3/21-internal_cli",
+      "named": true,
+      "top": {
+        "pass": 75,
+        "fail": 0,
+        "skip": 1
+      },
+      "all": {
+        "pass": 325,
+        "fail": 0,
+        "skip": 1
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "database": "multica_core_1a32_20261104_go_22",
+      "evidence": "evidence/backend/normal-race-3/22-internal_cloudruntime",
+      "named": true,
+      "top": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "database": "multica_core_1a32_20261104_go_23",
+      "evidence": "evidence/backend/normal-race-3/23-internal_collaboration",
+      "named": true,
+      "top": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "database": "multica_core_1a32_20261104_go_24",
+      "evidence": "evidence/backend/normal-race-3/24-internal_daemon_collaborationrun",
+      "named": true,
+      "top": {
+        "pass": 120,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 348,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "database": "multica_core_1a32_20261105_execenv_r2",
+      "evidence": "evidence/backend/normal-race-4/25-internal_daemon_execenv",
+      "named": true,
+      "top": {
+        "pass": 660,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 1345,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+      "database": "multica_core_1a32_20261104_go_26",
+      "evidence": "evidence/backend/normal-race-3/26-internal_daemon_processtree",
+      "named": true,
+      "top": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+      "database": "multica_core_1a32_20261104_go_27",
+      "evidence": "evidence/backend/normal-race-3/27-internal_daemon_repocache",
+      "named": true,
+      "top": {
+        "pass": 58,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 61,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemonws",
+      "database": "multica_core_1a32_20261104_go_28",
+      "evidence": "evidence/backend/normal-race-3/28-internal_daemonws",
+      "named": true,
+      "top": {
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 30,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+      "database": "multica_core_1a32_20261104_go_29",
+      "evidence": "evidence/backend/normal-race-3/29-internal_dbstartup",
+      "named": true,
+      "top": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dispatch",
+      "database": "multica_core_1a32_20261104_go_30",
+      "evidence": "evidence/backend/normal-race-3/30-internal_dispatch",
+      "named": false,
+      "top": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "skip"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/docs",
+      "database": "multica_core_1a32_20261104_go_31",
+      "evidence": "evidence/backend/normal-race-3/31-internal_docs",
+      "named": true,
+      "top": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 16,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement",
+      "database": "multica_core_1a32_20261104_go_32",
+      "evidence": "evidence/backend/normal-race-3/32-internal_entitlement",
+      "named": true,
+      "top": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "database": "multica_core_1a32_20261104_go_33",
+      "evidence": "evidence/backend/normal-race-3/33-internal_entitlement_entitlementtest",
+      "named": true,
+      "top": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/events",
+      "database": "multica_core_1a32_20261104_go_34",
+      "evidence": "evidence/backend/normal-race-3/34-internal_events",
+      "named": true,
+      "top": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/featureflags",
+      "database": "multica_core_1a32_20261104_go_35",
+      "evidence": "evidence/backend/normal-race-3/35-internal_featureflags",
+      "named": true,
+      "top": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/installation",
+      "database": "multica_core_1a32_20261104_go_36",
+      "evidence": "evidence/backend/normal-race-3/36-internal_installation",
+      "named": true,
+      "top": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "database": "multica_core_1a32_20261104_go_37",
+      "evidence": "evidence/backend/normal-race-3/37-internal_integrations_channel",
+      "named": true,
+      "top": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "database": "multica_core_1a32_20261104_go_38",
+      "evidence": "evidence/backend/normal-race-3/38-internal_integrations_channel_engine",
+      "named": true,
+      "top": {
+        "pass": 170,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 211,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "database": "multica_core_1a32_20261104_go_39",
+      "evidence": "evidence/backend/normal-race-3/39-internal_integrations_composio",
+      "named": true,
+      "top": {
+        "pass": 37,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 42,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "database": "multica_core_1a32_20261104_go_40",
+      "evidence": "evidence/backend/normal-race-3/40-internal_integrations_dingtalk",
+      "named": true,
+      "top": {
+        "pass": 154,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 212,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "database": "multica_core_1a32_20261104_go_41",
+      "evidence": "evidence/backend/normal-race-3/41-internal_integrations_ghsnapshot",
+      "named": true,
+      "top": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 36,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "database": "multica_core_1a32_20261104_go_42",
+      "evidence": "evidence/backend/normal-race-3/42-internal_integrations_lark",
+      "named": true,
+      "top": {
+        "pass": 307,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 426,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "database": "multica_core_1a32_20261104_go_43",
+      "evidence": "evidence/backend/normal-race-3/43-internal_integrations_slack",
+      "named": true,
+      "top": {
+        "pass": 121,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 188,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": null,
+      "receipt": "Go package PASS terminal plus independent observation; interrupted parent did not capture exit code",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "database": "multica_core_1a32_20261104_go_44",
+      "evidence": "evidence/backend/normal-race-4/44-internal_integrations_telegram",
+      "named": true,
+      "top": {
+        "pass": 85,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 114,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "database": "multica_core_1a32_20261104_go_45",
+      "evidence": "evidence/backend/normal-race-4/45-internal_integrations_vcs",
+      "named": true,
+      "top": {
+        "pass": 13,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "database": "multica_core_1a32_20261104_go_46",
+      "evidence": "evidence/backend/normal-race-4/46-internal_integrations_wecom",
+      "named": true,
+      "top": {
+        "pass": 335,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 616,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "database": "multica_core_1a32_20261104_go_47",
+      "evidence": "evidence/backend/normal-race-4/47-internal_issueactivitybackfill",
+      "named": true,
+      "top": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueguard",
+      "database": "multica_core_1a32_20261104_go_48",
+      "evidence": "evidence/backend/normal-race-4/48-internal_issueguard",
+      "named": true,
+      "top": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueposition",
+      "database": "multica_core_1a32_20261104_go_49",
+      "evidence": "evidence/backend/normal-race-4/49-internal_issueposition",
+      "named": false,
+      "top": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "skip"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "database": "multica_core_1a32_20261104_go_50",
+      "evidence": "evidence/backend/normal-race-4/50-internal_issuestatus",
+      "named": true,
+      "top": {
+        "pass": 20,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/iteration",
+      "database": "multica_core_1a32_20261104_go_51",
+      "evidence": "evidence/backend/normal-race-4/51-internal_iteration",
+      "named": true,
+      "top": {
+        "pass": 38,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 122,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/logger",
+      "database": "multica_core_1a32_20261104_go_52",
+      "evidence": "evidence/backend/normal-race-4/52-internal_logger",
+      "named": true,
+      "top": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "database": "multica_core_1a32_20261104_go_53",
+      "evidence": "evidence/backend/normal-race-4/53-internal_metrics",
+      "named": true,
+      "top": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 87,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "database": "multica_core_1a32_20261104_go_54",
+      "evidence": "evidence/backend/normal-race-4/54-internal_middleware",
+      "named": true,
+      "top": {
+        "pass": 78,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 119,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "database": "multica_core_1a32_20261104_go_55",
+      "evidence": "evidence/backend/normal-race-4/55-internal_migrations",
+      "named": true,
+      "top": {
+        "pass": 86,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 540,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/profiling",
+      "database": "multica_core_1a32_20261104_go_56",
+      "evidence": "evidence/backend/normal-race-4/56-internal_profiling",
+      "named": false,
+      "top": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "skip"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+      "database": "multica_core_1a32_20261104_go_57",
+      "evidence": "evidence/backend/normal-race-4/57-internal_projecthealth",
+      "named": true,
+      "top": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/realtime",
+      "database": "multica_core_1a32_20261104_go_58",
+      "evidence": "evidence/backend/normal-race-4/58-internal_realtime",
+      "named": true,
+      "top": {
+        "pass": 56,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 87,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+      "database": "multica_core_1a32_20261104_go_59",
+      "evidence": "evidence/backend/normal-race-4/59-internal_runtimeapps",
+      "named": false,
+      "top": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "skip"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/scheduler",
+      "database": "multica_core_1a32_20261104_go_60",
+      "evidence": "evidence/backend/normal-race-4/60-internal_scheduler",
+      "named": true,
+      "top": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 31,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "database": "multica_core_1a32_20261104_go_61",
+      "evidence": "evidence/backend/normal-race-4/61-internal_seatcapacity",
+      "named": true,
+      "top": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/selfexec",
+      "database": "multica_core_1a32_20261104_go_62",
+      "evidence": "evidence/backend/normal-race-4/62-internal_selfexec",
+      "named": true,
+      "top": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/skill",
+      "database": "multica_core_1a32_20261104_go_63",
+      "evidence": "evidence/backend/normal-race-4/63-internal_skill",
+      "named": true,
+      "top": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 66,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/storage",
+      "database": "multica_core_1a32_20261104_go_64",
+      "evidence": "evidence/backend/normal-race-4/64-internal_storage",
+      "named": true,
+      "top": {
+        "pass": 48,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 99,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "database": "multica_core_1a32_20261104_go_65",
+      "evidence": "evidence/backend/normal-race-4/65-internal_taskusagebackfill",
+      "named": true,
+      "top": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/testutil",
+      "database": "multica_core_1a32_20261104_go_66",
+      "evidence": "evidence/backend/normal-race-4/66-internal_testutil",
+      "named": true,
+      "top": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+      "database": "multica_core_1a32_20261104_go_67",
+      "evidence": "evidence/backend/normal-race-4/67-internal_triagecsv",
+      "named": true,
+      "top": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util",
+      "database": "multica_core_1a32_20261104_go_68",
+      "evidence": "evidence/backend/normal-race-4/68-internal_util",
+      "named": true,
+      "top": {
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 115,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "database": "multica_core_1a32_20261104_go_69",
+      "evidence": "evidence/backend/normal-race-4/69-internal_util_secretbox",
+      "named": true,
+      "top": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/composio",
+      "database": "multica_core_1a32_20261104_go_70",
+      "evidence": "evidence/backend/normal-race-4/70-pkg_composio",
+      "named": true,
+      "top": {
+        "pass": 39,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 39,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+      "database": "multica_core_1a32_20261104_go_71",
+      "evidence": "evidence/backend/normal-race-4/71-pkg_db_generated",
+      "named": true,
+      "top": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/dbid",
+      "database": "multica_core_1a32_20261104_go_72",
+      "evidence": "evidence/backend/normal-race-4/72-pkg_dbid",
+      "named": true,
+      "top": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+      "database": "multica_core_1a32_20261104_go_73",
+      "evidence": "evidence/backend/normal-race-4/73-pkg_featureflag",
+      "named": true,
+      "top": {
+        "pass": 46,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 51,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/llm",
+      "database": "multica_core_1a32_20261104_go_74",
+      "evidence": "evidence/backend/normal-race-4/74-pkg_llm",
+      "named": true,
+      "top": {
+        "pass": 24,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "database": "multica_core_1a32_20261104_go_75",
+      "evidence": "evidence/backend/normal-race-4/75-pkg_plugincontract",
+      "named": true,
+      "top": {
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 99,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/protocol",
+      "database": "multica_core_1a32_20261104_go_76",
+      "evidence": "evidence/backend/normal-race-4/76-pkg_protocol",
+      "named": true,
+      "top": {
+        "pass": 49,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 390,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "database": "multica_core_1a32_20261104_go_77",
+      "evidence": "evidence/backend/normal-race-4/77-pkg_publicapi_v1",
+      "named": true,
+      "top": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/redact",
+      "database": "multica_core_1a32_20261104_go_78",
+      "evidence": "evidence/backend/normal-race-4/78-pkg_redact",
+      "named": true,
+      "top": {
+        "pass": 29,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 35,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "database": "multica_core_1a32_20261104_go_79",
+      "evidence": "evidence/backend/normal-race-4/79-pkg_remotemcp",
+      "named": true,
+      "top": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "database": "multica_core_1a32_20261104_go_80",
+      "evidence": "evidence/backend/normal-race-4/80-pkg_remotemcp_remotemcptest",
+      "named": true,
+      "top": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "database": "multica_core_1a32_20261104_go_81",
+      "evidence": "evidence/backend/normal-race-4/81-pkg_skillbundle",
+      "named": true,
+      "top": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+      "database": "multica_core_1a32_20261104_go_82",
+      "evidence": "evidence/backend/normal-race-4/82-pkg_taskfailure",
+      "named": true,
+      "top": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 222,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "missing_names": [],
+      "foreign_packages": [],
+      "source_matches": true,
+      "process_exit": 0,
+      "receipt": "complete runner command receipt",
+      "accepted": true
+    }
+  ],
+  "total_packages": 82,
+  "named_packages": 73,
+  "no_named_test_packages": 9,
+  "top": {
+    "pass": 10393,
+    "fail": 0,
+    "skip": 20
+  },
+  "including_subcases": {
+    "pass": 20964,
+    "fail": 0,
+    "skip": 21
+  },
+  "failures": [],
+  "skip_top_count": 20,
+  "skip_subcase_count": 1,
+  "vet_exit": 0,
+  "source_after": {
+    "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "files": 4564,
+    "tools": {
+      "go": {
+        "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+      },
+      "node": {
+        "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+      },
+      "bash": {
+        "path": "/bin/bash",
+        "sha256": "07ad8525844ce61471e08e8c515b76bf063bac482394152bad814026cd577f69"
+      }
+    },
+    "sha256": "252147577459a20f4deba1ddb88551d3d0013db2a6cbe9b9d3f670923e4456bb"
+  },
+  "source_matches": true,
+  "all_selected_package_evidence_accepted": true,
+  "single_full_run": false,
+  "limit": "Four recorded execution segments; original parent orchestration interruptions and execenv environment-contamination first failure retained. Conditions skipped or platform-specific are not acceptance passes.",
+  "original_execenv_failure": {
+    "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+    "database": "multica_core_1a32_20261104_go_25",
+    "command": [
+      "bash",
+      "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-race",
+      "-p",
+      "1",
+      "-parallel",
+      "2",
+      "-timeout=40m",
+      "./internal/daemon/execenv"
+    ],
+    "started_at": "2026-11-05T03:02:18.861907+00:00",
+    "state": "complete",
+    "source_sha256": "252147577459a20f4deba1ddb88551d3d0013db2a6cbe9b9d3f670923e4456bb",
+    "permit_sha256": "6efee97fc4e6c2d848726c452f793fff6dd2393fd0e1f102543b0c3cf1ea84d1",
+    "environment_keys": [
+      "DATABASE_URL",
+      "GOCACHE",
+      "GOMAXPROCS",
+      "GOMODCACHE",
+      "GOPATH",
+      "GOTOOLCHAIN",
+      "HOME",
+      "LANG",
+      "LOGNAME",
+      "MULTICA_TEST_REDIS_URL",
+      "PATH",
+      "REDIS_TEST_URL",
+      "SHELL",
+      "TEMP",
+      "TMP",
+      "TMPDIR",
+      "USER"
+    ],
+    "home": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/backend/normal-race-3/25/home",
+    "finished_at": "2026-11-05T03:04:16.701850+00:00",
+    "exit_code": 1,
+    "top": {
+      "pass": 655,
+      "fail": 5,
+      "skip": 0
+    },
+    "all": {
+      "pass": 1340,
+      "fail": 5,
+      "skip": 0
+    },
+    "failures": [
+      "TestPrepareLocalWorktreeRejectsNonGitDirectory",
+      "TestPrepareRollsBackSidecarsWhenPrepareFailsInPlace",
+      "TestPrepareCursorMcpConfigManagedEmptySet",
+      "TestPrepareCursorMcpConfigSeedsExplicitAuthSource",
+      "TestPrepareCursorMcpConfigWritesProjectConfigAndApprovals"
+    ],
+    "source_after": {
+      "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+      "files": 4564,
+      "tools": {
+        "go": {
+          "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+          "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "node": {
+          "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+          "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+        },
+        "bash": {
+          "path": "/bin/bash",
+          "sha256": "07ad8525844ce61471e08e8c515b76bf063bac482394152bad814026cd577f69"
+        }
+      },
+      "sha256": "252147577459a20f4deba1ddb88551d3d0013db2a6cbe9b9d3f670923e4456bb"
+    },
+    "missing_expected_names": [],
+    "expected_top_names": 660,
+    "package_terminal_valid": false,
+    "foreign_packages": [],
+    "source_matches": true
+  },
+  "cursor_sidecar_sha256": "fb40aae928dc3a6ec111763e3d52cd76ce83c03dd78c792d7285ccb21eb7a606",
+  "cursor_sidecar_unchanged_after_v4": true
+}

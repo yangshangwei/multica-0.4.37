@@ -1,0 +1,684 @@
+{
+  "schema_version": 1,
+  "kind": "read_only_resume_provenance_not_product_acceptance",
+  "captured_at": "2026-11-10T14:56:48.224588+00:00",
+  "session_id": "01a1c5f0-d933-7aa3-9da4-f05b8ccf8ed1",
+  "previous_session_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+  "branches": {
+    "/Volumes/artisan/code/2026/multica-0.4.37": {
+      "head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+      "branch": "codex/cross-workspace-collaboration",
+      "commits_after_previous": []
+    },
+    "/Volumes/artisan/code/2026/mc-delivery-completion-enforcement-20261110": {
+      "head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+      "branch": "codex/delivery-completion-enforcement-20261110",
+      "commits_after_previous": []
+    }
+  },
+  "prior_commits_ancestry": {
+    "f5b51d7be": true,
+    "3400107b7": true,
+    "a3b722a47": true,
+    "45af89016": true,
+    "9ef6b8f15": true,
+    "38d07b6ed": true,
+    "f4782b863": true,
+    "da380717e": true,
+    "aa574d5d0": true,
+    "c3bc9abd1": true,
+    "4ec66e93c": true,
+    "3ae2f0495": true,
+    "53a7a25c3": true,
+    "05de761de": true,
+    "ca0c8efd3": true,
+    "d3b0b17db": true,
+    "609219ed3": true,
+    "a37bee7cd": true
+  },
+  "source_checks": {
+    "completion_source": {
+      "files": [
+        {
+          "path": "server/internal/collaboration/access.go",
+          "expected": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+          "main_head": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+          "main_worktree": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+          "isolated_head": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+          "isolated_worktree": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/agent_artifact.go",
+          "expected": "fcbaf09de47f8a30a22a3790897e4947e991f1136eb0d2c44f439445e08c7027",
+          "main_head": "fcbaf09de47f8a30a22a3790897e4947e991f1136eb0d2c44f439445e08c7027",
+          "main_worktree": "fcbaf09de47f8a30a22a3790897e4947e991f1136eb0d2c44f439445e08c7027",
+          "isolated_head": "fcbaf09de47f8a30a22a3790897e4947e991f1136eb0d2c44f439445e08c7027",
+          "isolated_worktree": "fcbaf09de47f8a30a22a3790897e4947e991f1136eb0d2c44f439445e08c7027",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/collaboration_boundary.go",
+          "expected": "9aa7d2496ea97f533b90a3887409c8d21f4f4835fafb03e6cdcac357d752ae89",
+          "main_head": "9aa7d2496ea97f533b90a3887409c8d21f4f4835fafb03e6cdcac357d752ae89",
+          "main_worktree": "9aa7d2496ea97f533b90a3887409c8d21f4f4835fafb03e6cdcac357d752ae89",
+          "isolated_head": "9aa7d2496ea97f533b90a3887409c8d21f4f4835fafb03e6cdcac357d752ae89",
+          "isolated_worktree": "9aa7d2496ea97f533b90a3887409c8d21f4f4835fafb03e6cdcac357d752ae89",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/delivery_completion_hint.go",
+          "expected": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "main_head": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "main_worktree": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "isolated_head": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "isolated_worktree": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/delivery_evaluation.go",
+          "expected": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "main_head": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "main_worktree": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "isolated_head": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "isolated_worktree": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/delivery_evidence.go",
+          "expected": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "main_head": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "main_worktree": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "isolated_head": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "isolated_worktree": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/delivery_policy.go",
+          "expected": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "main_head": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "main_worktree": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "isolated_head": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "isolated_worktree": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/github.go",
+          "expected": "02425688903d3b2699caede2d43d8719e7d3f0d9e8a218f65f738b9cf4acc179",
+          "main_head": "02425688903d3b2699caede2d43d8719e7d3f0d9e8a218f65f738b9cf4acc179",
+          "main_worktree": "02425688903d3b2699caede2d43d8719e7d3f0d9e8a218f65f738b9cf4acc179",
+          "isolated_head": "02425688903d3b2699caede2d43d8719e7d3f0d9e8a218f65f738b9cf4acc179",
+          "isolated_worktree": "02425688903d3b2699caede2d43d8719e7d3f0d9e8a218f65f738b9cf4acc179",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/handler.go",
+          "expected": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+          "main_head": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+          "main_worktree": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+          "isolated_head": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+          "isolated_worktree": "d32dafc0efc4b8aa696dd8bbb443c68ef735b574d908763ee2d4379fc2779eec",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/issue.go",
+          "expected": "1ce6f00555db89ce8ec9d0f02e4aade1870a7a030562351de61872e9da95feb8",
+          "main_head": "1ce6f00555db89ce8ec9d0f02e4aade1870a7a030562351de61872e9da95feb8",
+          "main_worktree": "1ce6f00555db89ce8ec9d0f02e4aade1870a7a030562351de61872e9da95feb8",
+          "isolated_head": "1ce6f00555db89ce8ec9d0f02e4aade1870a7a030562351de61872e9da95feb8",
+          "isolated_worktree": "1ce6f00555db89ce8ec9d0f02e4aade1870a7a030562351de61872e9da95feb8",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/issue_child_done.go",
+          "expected": "9a6d26509dd65d1ed7e33929ef67a2d006ef7af9000d867b338d09a7a6afe84f",
+          "main_head": "9a6d26509dd65d1ed7e33929ef67a2d006ef7af9000d867b338d09a7a6afe84f",
+          "main_worktree": "9a6d26509dd65d1ed7e33929ef67a2d006ef7af9000d867b338d09a7a6afe84f",
+          "isolated_head": "9a6d26509dd65d1ed7e33929ef67a2d006ef7af9000d867b338d09a7a6afe84f",
+          "isolated_worktree": "9a6d26509dd65d1ed7e33929ef67a2d006ef7af9000d867b338d09a7a6afe84f",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/issue_iteration_assignment.go",
+          "expected": "53837a125473857a1a0b71a57504a03d83cc5ec6ddf5acb157927c93474630b0",
+          "main_head": "53837a125473857a1a0b71a57504a03d83cc5ec6ddf5acb157927c93474630b0",
+          "main_worktree": "53837a125473857a1a0b71a57504a03d83cc5ec6ddf5acb157927c93474630b0",
+          "isolated_head": "53837a125473857a1a0b71a57504a03d83cc5ec6ddf5acb157927c93474630b0",
+          "isolated_worktree": "53837a125473857a1a0b71a57504a03d83cc5ec6ddf5acb157927c93474630b0",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/issue_move.go",
+          "expected": "4da362f166f4a32fe1d784e5aa5103f75ee4e9819601d323599ee7000337f5b5",
+          "main_head": "4da362f166f4a32fe1d784e5aa5103f75ee4e9819601d323599ee7000337f5b5",
+          "main_worktree": "4da362f166f4a32fe1d784e5aa5103f75ee4e9819601d323599ee7000337f5b5",
+          "isolated_head": "4da362f166f4a32fe1d784e5aa5103f75ee4e9819601d323599ee7000337f5b5",
+          "isolated_worktree": "4da362f166f4a32fe1d784e5aa5103f75ee4e9819601d323599ee7000337f5b5",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/issue_status.go",
+          "expected": "625fd1e613ba891523ae5b74db6d64a90d9a8012a21576d852cb57b3e75da441",
+          "main_head": "625fd1e613ba891523ae5b74db6d64a90d9a8012a21576d852cb57b3e75da441",
+          "main_worktree": "625fd1e613ba891523ae5b74db6d64a90d9a8012a21576d852cb57b3e75da441",
+          "isolated_head": "625fd1e613ba891523ae5b74db6d64a90d9a8012a21576d852cb57b3e75da441",
+          "isolated_worktree": "625fd1e613ba891523ae5b74db6d64a90d9a8012a21576d852cb57b3e75da441",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/lifecycle_handoff_transaction.go",
+          "expected": "198e72d122fc50602b475f9ce6d86d663d860103231a2b042c9fee86219b645f",
+          "main_head": "198e72d122fc50602b475f9ce6d86d663d860103231a2b042c9fee86219b645f",
+          "main_worktree": "198e72d122fc50602b475f9ce6d86d663d860103231a2b042c9fee86219b645f",
+          "isolated_head": "198e72d122fc50602b475f9ce6d86d663d860103231a2b042c9fee86219b645f",
+          "isolated_worktree": "198e72d122fc50602b475f9ce6d86d663d860103231a2b042c9fee86219b645f",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/onboarding_shim.go",
+          "expected": "2f5e52752096b9bb2ffa76027cf60f0703346c2bccfb7493e43cab12febc0304",
+          "main_head": "2f5e52752096b9bb2ffa76027cf60f0703346c2bccfb7493e43cab12febc0304",
+          "main_worktree": "2f5e52752096b9bb2ffa76027cf60f0703346c2bccfb7493e43cab12febc0304",
+          "isolated_head": "2f5e52752096b9bb2ffa76027cf60f0703346c2bccfb7493e43cab12febc0304",
+          "isolated_worktree": "2f5e52752096b9bb2ffa76027cf60f0703346c2bccfb7493e43cab12febc0304",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/project.go",
+          "expected": "9dc839e6ae2942d3df4e5b8f6660ecd193524281f7433535c480040e38abc6a7",
+          "main_head": "9dc839e6ae2942d3df4e5b8f6660ecd193524281f7433535c480040e38abc6a7",
+          "main_worktree": "9dc839e6ae2942d3df4e5b8f6660ecd193524281f7433535c480040e38abc6a7",
+          "isolated_head": "9dc839e6ae2942d3df4e5b8f6660ecd193524281f7433535c480040e38abc6a7",
+          "isolated_worktree": "9dc839e6ae2942d3df4e5b8f6660ecd193524281f7433535c480040e38abc6a7",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/source_context.go",
+          "expected": "5dd8a4b04f3c3f10533bbf92d2f9f0015992fde74ba4d5f87b3c027740596bb2",
+          "main_head": "5dd8a4b04f3c3f10533bbf92d2f9f0015992fde74ba4d5f87b3c027740596bb2",
+          "main_worktree": "5dd8a4b04f3c3f10533bbf92d2f9f0015992fde74ba4d5f87b3c027740596bb2",
+          "isolated_head": "5dd8a4b04f3c3f10533bbf92d2f9f0015992fde74ba4d5f87b3c027740596bb2",
+          "isolated_worktree": "5dd8a4b04f3c3f10533bbf92d2f9f0015992fde74ba4d5f87b3c027740596bb2",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/triage.go",
+          "expected": "f1fa2a5f19ec9c9d7d5058e7393bd70425378e4449801b860369eb24e09a441e",
+          "main_head": "f1fa2a5f19ec9c9d7d5058e7393bd70425378e4449801b860369eb24e09a441e",
+          "main_worktree": "f1fa2a5f19ec9c9d7d5058e7393bd70425378e4449801b860369eb24e09a441e",
+          "isolated_head": "f1fa2a5f19ec9c9d7d5058e7393bd70425378e4449801b860369eb24e09a441e",
+          "isolated_worktree": "f1fa2a5f19ec9c9d7d5058e7393bd70425378e4449801b860369eb24e09a441e",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/triage_actions.go",
+          "expected": "9480b874a3090017647e1b059de83c5a56062f1d32db78f8d4b780125bb4ffec",
+          "main_head": "9480b874a3090017647e1b059de83c5a56062f1d32db78f8d4b780125bb4ffec",
+          "main_worktree": "9480b874a3090017647e1b059de83c5a56062f1d32db78f8d4b780125bb4ffec",
+          "isolated_head": "9480b874a3090017647e1b059de83c5a56062f1d32db78f8d4b780125bb4ffec",
+          "isolated_worktree": "9480b874a3090017647e1b059de83c5a56062f1d32db78f8d4b780125bb4ffec",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/vcs_webhook.go",
+          "expected": "d3986f7690690739b262c3e70abb8b137fd1f36497c77ff87ddb8bdfef6eea21",
+          "main_head": "d3986f7690690739b262c3e70abb8b137fd1f36497c77ff87ddb8bdfef6eea21",
+          "main_worktree": "d3986f7690690739b262c3e70abb8b137fd1f36497c77ff87ddb8bdfef6eea21",
+          "isolated_head": "d3986f7690690739b262c3e70abb8b137fd1f36497c77ff87ddb8bdfef6eea21",
+          "isolated_worktree": "d3986f7690690739b262c3e70abb8b137fd1f36497c77ff87ddb8bdfef6eea21",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/integrations/channel/engine/router.go",
+          "expected": "2a7b979c602bcfbc555347b723c6f68af6e8bd54a147a1e4faff147b52aac01f",
+          "main_head": "2a7b979c602bcfbc555347b723c6f68af6e8bd54a147a1e4faff147b52aac01f",
+          "main_worktree": "2a7b979c602bcfbc555347b723c6f68af6e8bd54a147a1e4faff147b52aac01f",
+          "isolated_head": "2a7b979c602bcfbc555347b723c6f68af6e8bd54a147a1e4faff147b52aac01f",
+          "isolated_worktree": "2a7b979c602bcfbc555347b723c6f68af6e8bd54a147a1e4faff147b52aac01f",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/issuestatus/issuestatus.go",
+          "expected": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "main_head": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "main_worktree": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "isolated_head": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "isolated_worktree": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/admin_collaboration.go",
+          "expected": "cdec52032de891a84ad5dd7ac1256d90ac8e3c54e70a1e048d5df88530a7cc0c",
+          "main_head": "cdec52032de891a84ad5dd7ac1256d90ac8e3c54e70a1e048d5df88530a7cc0c",
+          "main_worktree": "cdec52032de891a84ad5dd7ac1256d90ac8e3c54e70a1e048d5df88530a7cc0c",
+          "isolated_head": "cdec52032de891a84ad5dd7ac1256d90ac8e3c54e70a1e048d5df88530a7cc0c",
+          "isolated_worktree": "cdec52032de891a84ad5dd7ac1256d90ac8e3c54e70a1e048d5df88530a7cc0c",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/autopilot.go",
+          "expected": "1701c3e887bc8a4f687d6e6d2cccc2e5f4ad2affd1784fdaf50e365414ebf1fd",
+          "main_head": "1701c3e887bc8a4f687d6e6d2cccc2e5f4ad2affd1784fdaf50e365414ebf1fd",
+          "main_worktree": "1701c3e887bc8a4f687d6e6d2cccc2e5f4ad2affd1784fdaf50e365414ebf1fd",
+          "isolated_head": "1701c3e887bc8a4f687d6e6d2cccc2e5f4ad2affd1784fdaf50e365414ebf1fd",
+          "isolated_worktree": "1701c3e887bc8a4f687d6e6d2cccc2e5f4ad2affd1784fdaf50e365414ebf1fd",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration.go",
+          "expected": "3ad137953cd0e2e2e8c491a1c80eeb5b97318233059649efbd90a9e00bdccf19",
+          "main_head": "3ad137953cd0e2e2e8c491a1c80eeb5b97318233059649efbd90a9e00bdccf19",
+          "main_worktree": "3ad137953cd0e2e2e8c491a1c80eeb5b97318233059649efbd90a9e00bdccf19",
+          "isolated_head": "3ad137953cd0e2e2e8c491a1c80eeb5b97318233059649efbd90a9e00bdccf19",
+          "isolated_worktree": "3ad137953cd0e2e2e8c491a1c80eeb5b97318233059649efbd90a9e00bdccf19",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_creation_fields.go",
+          "expected": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+          "main_head": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+          "main_worktree": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+          "isolated_head": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+          "isolated_worktree": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_edit.go",
+          "expected": "3839bfff490c58ad0eeb2f0fbdf357cc67f9148357f5b11d8cf542839cfcf1a1",
+          "main_head": "3839bfff490c58ad0eeb2f0fbdf357cc67f9148357f5b11d8cf542839cfcf1a1",
+          "main_worktree": "3839bfff490c58ad0eeb2f0fbdf357cc67f9148357f5b11d8cf542839cfcf1a1",
+          "isolated_head": "3839bfff490c58ad0eeb2f0fbdf357cc67f9148357f5b11d8cf542839cfcf1a1",
+          "isolated_worktree": "3839bfff490c58ad0eeb2f0fbdf357cc67f9148357f5b11d8cf542839cfcf1a1",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_handoff.go",
+          "expected": "09f93f41c49d38342be52e1a82019dc47f0d964185a9d184c34f7c6ef82d7aaa",
+          "main_head": "09f93f41c49d38342be52e1a82019dc47f0d964185a9d184c34f7c6ef82d7aaa",
+          "main_worktree": "09f93f41c49d38342be52e1a82019dc47f0d964185a9d184c34f7c6ef82d7aaa",
+          "isolated_head": "09f93f41c49d38342be52e1a82019dc47f0d964185a9d184c34f7c6ef82d7aaa",
+          "isolated_worktree": "09f93f41c49d38342be52e1a82019dc47f0d964185a9d184c34f7c6ef82d7aaa",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_lifecycle.go",
+          "expected": "5d98c9d83a1a4033098263957e1d070412e788d45f00e68584575d0eb67712d7",
+          "main_head": "5d98c9d83a1a4033098263957e1d070412e788d45f00e68584575d0eb67712d7",
+          "main_worktree": "5d98c9d83a1a4033098263957e1d070412e788d45f00e68584575d0eb67712d7",
+          "isolated_head": "5d98c9d83a1a4033098263957e1d070412e788d45f00e68584575d0eb67712d7",
+          "isolated_worktree": "5d98c9d83a1a4033098263957e1d070412e788d45f00e68584575d0eb67712d7",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_source_fields.go",
+          "expected": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade",
+          "main_head": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade",
+          "main_worktree": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade",
+          "isolated_head": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade",
+          "isolated_worktree": "cfd744c16d41b9084c72547a58ad97020a5b9b154f0f15f18dad51cd4d54cade",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_workflow.go",
+          "expected": "1ef46765e1567a1c762f4647d1553f69b9c8dfd31d1fcc168d77d8795dc28724",
+          "main_head": "1ef46765e1567a1c762f4647d1553f69b9c8dfd31d1fcc168d77d8795dc28724",
+          "main_worktree": "1ef46765e1567a1c762f4647d1553f69b9c8dfd31d1fcc168d77d8795dc28724",
+          "isolated_head": "1ef46765e1567a1c762f4647d1553f69b9c8dfd31d1fcc168d77d8795dc28724",
+          "isolated_worktree": "1ef46765e1567a1c762f4647d1553f69b9c8dfd31d1fcc168d77d8795dc28724",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/issue.go",
+          "expected": "0b68fe9296d2d72dd7b38769bd2af447b3aa81570eecac364befa04aa1d94a9f",
+          "main_head": "0b68fe9296d2d72dd7b38769bd2af447b3aa81570eecac364befa04aa1d94a9f",
+          "main_worktree": "0b68fe9296d2d72dd7b38769bd2af447b3aa81570eecac364befa04aa1d94a9f",
+          "isolated_head": "0b68fe9296d2d72dd7b38769bd2af447b3aa81570eecac364befa04aa1d94a9f",
+          "isolated_worktree": "0b68fe9296d2d72dd7b38769bd2af447b3aa81570eecac364befa04aa1d94a9f",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/issue_status_write.go",
+          "expected": "5e73e80845c091a17681c136a6eb4e4f601fa8ff1776b15a44beb5621744601a",
+          "main_head": "5e73e80845c091a17681c136a6eb4e4f601fa8ff1776b15a44beb5621744601a",
+          "main_worktree": "5e73e80845c091a17681c136a6eb4e4f601fa8ff1776b15a44beb5621744601a",
+          "isolated_head": "5e73e80845c091a17681c136a6eb4e4f601fa8ff1776b15a44beb5621744601a",
+          "isolated_worktree": "5e73e80845c091a17681c136a6eb4e4f601fa8ff1776b15a44beb5621744601a",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/task.go",
+          "expected": "88ff121c5cc48f216df43ef56e59393dd22435b50874028a5ac39c987039ff71",
+          "main_head": "88ff121c5cc48f216df43ef56e59393dd22435b50874028a5ac39c987039ff71",
+          "main_worktree": "88ff121c5cc48f216df43ef56e59393dd22435b50874028a5ac39c987039ff71",
+          "isolated_head": "88ff121c5cc48f216df43ef56e59393dd22435b50874028a5ac39c987039ff71",
+          "isolated_worktree": "88ff121c5cc48f216df43ef56e59393dd22435b50874028a5ac39c987039ff71",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/migrations/776_delivery_policy_evaluation.up.sql",
+          "expected": "27d2ebfde2fb590c497a486dcddcc88a63c6a86e18cb2a52c6c60f1e35c2e051",
+          "main_head": "27d2ebfde2fb590c497a486dcddcc88a63c6a86e18cb2a52c6c60f1e35c2e051",
+          "main_worktree": "27d2ebfde2fb590c497a486dcddcc88a63c6a86e18cb2a52c6c60f1e35c2e051",
+          "isolated_head": "27d2ebfde2fb590c497a486dcddcc88a63c6a86e18cb2a52c6c60f1e35c2e051",
+          "isolated_worktree": "27d2ebfde2fb590c497a486dcddcc88a63c6a86e18cb2a52c6c60f1e35c2e051",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/pkg/db/queries/agent_artifact_execution.sql",
+          "expected": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+          "main_head": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+          "main_worktree": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+          "isolated_head": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+          "isolated_worktree": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/pkg/db/queries/collaboration.sql",
+          "expected": "52c5d0e1db3ea4456fb98dee9ef88b808c0330edba7cd49bddf9deb1c10d0589",
+          "main_head": "52c5d0e1db3ea4456fb98dee9ef88b808c0330edba7cd49bddf9deb1c10d0589",
+          "main_worktree": "52c5d0e1db3ea4456fb98dee9ef88b808c0330edba7cd49bddf9deb1c10d0589",
+          "isolated_head": "52c5d0e1db3ea4456fb98dee9ef88b808c0330edba7cd49bddf9deb1c10d0589",
+          "isolated_worktree": "52c5d0e1db3ea4456fb98dee9ef88b808c0330edba7cd49bddf9deb1c10d0589",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/pkg/db/queries/collaboration_source_fields.sql",
+          "expected": "54fa328e25e57a0a5f0ae1f716e2009bb44f55805b3e7b62067f6b6c96671df0",
+          "main_head": "54fa328e25e57a0a5f0ae1f716e2009bb44f55805b3e7b62067f6b6c96671df0",
+          "main_worktree": "54fa328e25e57a0a5f0ae1f716e2009bb44f55805b3e7b62067f6b6c96671df0",
+          "isolated_head": "54fa328e25e57a0a5f0ae1f716e2009bb44f55805b3e7b62067f6b6c96671df0",
+          "isolated_worktree": "54fa328e25e57a0a5f0ae1f716e2009bb44f55805b3e7b62067f6b6c96671df0",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/pkg/db/queries/delivery_policy.sql",
+          "expected": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8",
+          "main_head": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8",
+          "main_worktree": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8",
+          "isolated_head": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8",
+          "isolated_worktree": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/pkg/db/queries/issue.sql",
+          "expected": "e34a3cae0dadc3ee2e725a137008cced6ea115e290ed4f9f54a8ec49e24d575e",
+          "main_head": "e34a3cae0dadc3ee2e725a137008cced6ea115e290ed4f9f54a8ec49e24d575e",
+          "main_worktree": "e34a3cae0dadc3ee2e725a137008cced6ea115e290ed4f9f54a8ec49e24d575e",
+          "isolated_head": "e34a3cae0dadc3ee2e725a137008cced6ea115e290ed4f9f54a8ec49e24d575e",
+          "isolated_worktree": "e34a3cae0dadc3ee2e725a137008cced6ea115e290ed4f9f54a8ec49e24d575e",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/pkg/db/queries/issue_status.sql",
+          "expected": "05a61ad6a7863a04e5e21f36bb4a6befa6abac516532933991d584f0da6ca608",
+          "main_head": "05a61ad6a7863a04e5e21f36bb4a6befa6abac516532933991d584f0da6ca608",
+          "main_worktree": "05a61ad6a7863a04e5e21f36bb4a6befa6abac516532933991d584f0da6ca608",
+          "isolated_head": "05a61ad6a7863a04e5e21f36bb4a6befa6abac516532933991d584f0da6ca608",
+          "isolated_worktree": "05a61ad6a7863a04e5e21f36bb4a6befa6abac516532933991d584f0da6ca608",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/pkg/db/queries/lifecycle.sql",
+          "expected": "69326a3266ac006b4a35e64bcfd0a93ff86d45e962dcc2c65b332d78f494fcfc",
+          "main_head": "69326a3266ac006b4a35e64bcfd0a93ff86d45e962dcc2c65b332d78f494fcfc",
+          "main_worktree": "69326a3266ac006b4a35e64bcfd0a93ff86d45e962dcc2c65b332d78f494fcfc",
+          "isolated_head": "69326a3266ac006b4a35e64bcfd0a93ff86d45e962dcc2c65b332d78f494fcfc",
+          "isolated_worktree": "69326a3266ac006b4a35e64bcfd0a93ff86d45e962dcc2c65b332d78f494fcfc",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/pkg/db/queries/project.sql",
+          "expected": "dcfed9ecaec29b307f6ebdc038eae3711d4514f346002aedba42051f9fb9758d",
+          "main_head": "dcfed9ecaec29b307f6ebdc038eae3711d4514f346002aedba42051f9fb9758d",
+          "main_worktree": "dcfed9ecaec29b307f6ebdc038eae3711d4514f346002aedba42051f9fb9758d",
+          "isolated_head": "dcfed9ecaec29b307f6ebdc038eae3711d4514f346002aedba42051f9fb9758d",
+          "isolated_worktree": "dcfed9ecaec29b307f6ebdc038eae3711d4514f346002aedba42051f9fb9758d",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/pkg/db/queries/task_token.sql",
+          "expected": "7ce1e5654ded18ec5e2734b776f49a5d4fb2f9539abf97e3c24c5f1f4102b0aa",
+          "main_head": "7ce1e5654ded18ec5e2734b776f49a5d4fb2f9539abf97e3c24c5f1f4102b0aa",
+          "main_worktree": "7ce1e5654ded18ec5e2734b776f49a5d4fb2f9539abf97e3c24c5f1f4102b0aa",
+          "isolated_head": "7ce1e5654ded18ec5e2734b776f49a5d4fb2f9539abf97e3c24c5f1f4102b0aa",
+          "isolated_worktree": "7ce1e5654ded18ec5e2734b776f49a5d4fb2f9539abf97e3c24c5f1f4102b0aa",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        }
+      ],
+      "head_matches": 45,
+      "isolated_worktree_matches": 45,
+      "main_local_overlay_paths": []
+    },
+    "prior_hint": {
+      "files": [
+        {
+          "path": ".trellis/spec/server/delivery-completion-hints.md",
+          "expected": "d515d42fe7aff7413599d8e645e152ec619fa310d83b0db0821ac12bc5d83322",
+          "main_head": "d515d42fe7aff7413599d8e645e152ec619fa310d83b0db0821ac12bc5d83322",
+          "main_worktree": "d515d42fe7aff7413599d8e645e152ec619fa310d83b0db0821ac12bc5d83322",
+          "isolated_head": "d515d42fe7aff7413599d8e645e152ec619fa310d83b0db0821ac12bc5d83322",
+          "isolated_worktree": "d515d42fe7aff7413599d8e645e152ec619fa310d83b0db0821ac12bc5d83322",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": ".trellis/spec/server/delivery-policy-evaluations.md",
+          "expected": "025872a5e5e802cf72bfff0cb20b6f23c05ba002d80cd04471650fc793f6d18e",
+          "main_head": "025872a5e5e802cf72bfff0cb20b6f23c05ba002d80cd04471650fc793f6d18e",
+          "main_worktree": "025872a5e5e802cf72bfff0cb20b6f23c05ba002d80cd04471650fc793f6d18e",
+          "isolated_head": "025872a5e5e802cf72bfff0cb20b6f23c05ba002d80cd04471650fc793f6d18e",
+          "isolated_worktree": "025872a5e5e802cf72bfff0cb20b6f23c05ba002d80cd04471650fc793f6d18e",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": ".trellis/spec/server/index.md",
+          "expected": "18cd5d611811587a9c5266e9308eaaf64a6215fbf70fa4cb214eb86f058828b3",
+          "main_head": "18cd5d611811587a9c5266e9308eaaf64a6215fbf70fa4cb214eb86f058828b3",
+          "main_worktree": "e6f1859cb7d6153439966571803bab87eebb495047a2b3140fe2259def7feae7",
+          "isolated_head": "18cd5d611811587a9c5266e9308eaaf64a6215fbf70fa4cb214eb86f058828b3",
+          "isolated_worktree": "18cd5d611811587a9c5266e9308eaaf64a6215fbf70fa4cb214eb86f058828b3",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/cmd/server/delivery_completion_hint_integration_test.go",
+          "expected": "24404371a1631657f57f1d5ba888d39a50b7ea006289cf57b0edbd6c579e1016",
+          "main_head": "24404371a1631657f57f1d5ba888d39a50b7ea006289cf57b0edbd6c579e1016",
+          "main_worktree": "24404371a1631657f57f1d5ba888d39a50b7ea006289cf57b0edbd6c579e1016",
+          "isolated_head": "24404371a1631657f57f1d5ba888d39a50b7ea006289cf57b0edbd6c579e1016",
+          "isolated_worktree": "24404371a1631657f57f1d5ba888d39a50b7ea006289cf57b0edbd6c579e1016",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/cmd/server/router.go",
+          "expected": "a7132fb04144ea966e38a328f268bcb4a9253dbe4b1d95483259f79f2cb8574d",
+          "main_head": "a7132fb04144ea966e38a328f268bcb4a9253dbe4b1d95483259f79f2cb8574d",
+          "main_worktree": "a7132fb04144ea966e38a328f268bcb4a9253dbe4b1d95483259f79f2cb8574d",
+          "isolated_head": "a7132fb04144ea966e38a328f268bcb4a9253dbe4b1d95483259f79f2cb8574d",
+          "isolated_worktree": "a7132fb04144ea966e38a328f268bcb4a9253dbe4b1d95483259f79f2cb8574d",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/delivery_completion_hint.go",
+          "expected": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "main_head": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "main_worktree": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "isolated_head": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "isolated_worktree": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/delivery_completion_hint_test.go",
+          "expected": "db393602f169171646d90cc9476ecedf6beda09a6e2087642b31f6d81091c58d",
+          "main_head": "db393602f169171646d90cc9476ecedf6beda09a6e2087642b31f6d81091c58d",
+          "main_worktree": "db393602f169171646d90cc9476ecedf6beda09a6e2087642b31f6d81091c58d",
+          "isolated_head": "db393602f169171646d90cc9476ecedf6beda09a6e2087642b31f6d81091c58d",
+          "isolated_worktree": "db393602f169171646d90cc9476ecedf6beda09a6e2087642b31f6d81091c58d",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/builtin_skills/multica-creating-agents/SKILL.md",
+          "expected": "d5495772b5b8125c5e15c512977bb7ea2f2401b9f8190966a379f22fcffff3cb",
+          "main_head": "d5495772b5b8125c5e15c512977bb7ea2f2401b9f8190966a379f22fcffff3cb",
+          "main_worktree": "d5495772b5b8125c5e15c512977bb7ea2f2401b9f8190966a379f22fcffff3cb",
+          "isolated_head": "d5495772b5b8125c5e15c512977bb7ea2f2401b9f8190966a379f22fcffff3cb",
+          "isolated_worktree": "d5495772b5b8125c5e15c512977bb7ea2f2401b9f8190966a379f22fcffff3cb",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md",
+          "expected": "1ceb5747acdb318661c7ce49a4ce1fb2de0b144255a3b32ad5dce022f35550a6",
+          "main_head": "1ceb5747acdb318661c7ce49a4ce1fb2de0b144255a3b32ad5dce022f35550a6",
+          "main_worktree": "1ceb5747acdb318661c7ce49a4ce1fb2de0b144255a3b32ad5dce022f35550a6",
+          "isolated_head": "1ceb5747acdb318661c7ce49a4ce1fb2de0b144255a3b32ad5dce022f35550a6",
+          "isolated_worktree": "1ceb5747acdb318661c7ce49a4ce1fb2de0b144255a3b32ad5dce022f35550a6",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/delivery_evaluation.go",
+          "expected": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "main_head": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "main_worktree": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "isolated_head": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "isolated_worktree": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/delivery_evidence.go",
+          "expected": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "main_head": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "main_worktree": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "isolated_head": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "isolated_worktree": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/handler/delivery_policy.go",
+          "expected": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "main_head": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "main_worktree": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "isolated_head": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "isolated_worktree": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        },
+        {
+          "path": "server/internal/issuestatus/issuestatus.go",
+          "expected": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "main_head": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "main_worktree": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "isolated_head": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "isolated_worktree": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8",
+          "head_matches": true,
+          "isolated_worktree_matches": true
+        }
+      ],
+      "head_matches": 13,
+      "isolated_worktree_matches": 13,
+      "main_local_overlay_paths": [
+        ".trellis/spec/server/index.md"
+      ]
+    }
+  },
+  "main_worktree": {
+    "expanded_dirty_paths": 1052,
+    "index_empty": true,
+    "private_snapshot": "/Volumes/artisan/code/2026/mc-delivery-completion-enforcement-20261110/.omx/private/enforcement-resume-01a1c5f0-d933-7aa3-9da4-f05b8ccf8ed1/main-workspace-before.json",
+    "snapshot_entries_preserved": 1052,
+    "changed_since_snapshot": []
+  },
+  "task_status": "planning",
+  "implementation_ready": false,
+  "product_implementation_started": false,
+  "full_delivery_gate_complete": false,
+  "full_m1_complete": false,
+  "new_product_tests": 0,
+  "database_actions": 0,
+  "provider_calls": 0,
+  "remote_fetch_push_deploy": false,
+  "read_failures": [
+    {
+      "classification": "read_only_path_lookup_failure_not_product_red",
+      "attempted_missing_path": "server/internal/service/collaboration_administration.go",
+      "tool_result": "command/setup failure; complete command output not returned",
+      "recovery": "rg --files found actual server/internal/service/admin_collaboration.go; source reread succeeded"
+    },
+    {
+      "classification": "read_only_runtime_path_lookup_failure_not_product_red",
+      "attempted_missing_path": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/oh-my-codex/dist/cli/cancel.js",
+      "tool_result": "command/setup failure; complete command output not returned",
+      "recovery": "rg --files located the cancelModes implementation in dist/cli/index.js; source read succeeded"
+    }
+  ],
+  "runtime_keyword_marker": {
+    "kind": "historical_cancel_keyword_false_activation",
+    "exact_current_session_id": "01a1c5f0-d933-7aa3-9da4-f05b8ccf8ed1",
+    "official_command": "OMX_SESSION_ID=01a1c5f0-d933-7aa3-9da4-f05b8ccf8ed1 omx cancel",
+    "command_exit": 0,
+    "output": "No active modes to cancel.",
+    "marker_active_after": false,
+    "marker_phase_after": "cancelled",
+    "trellis_task_status": "planning"
+  },
+  "supplemental_source": {
+    "path": "server/internal/service/issue_public.go",
+    "sha256": "aff7e1ac31fcb4576f111b40128aafd3e1cf5f96e12b249e82973c2d792d423a",
+    "bytes": 4320,
+    "head_matches": true,
+    "original_45_manifest_unchanged": true
+  }
+}

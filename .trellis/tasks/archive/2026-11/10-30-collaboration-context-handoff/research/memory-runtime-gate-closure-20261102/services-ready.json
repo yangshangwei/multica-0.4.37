@@ -1,0 +1,52 @@
+{
+  "recorded_at": "2026-11-01T21:15:05.978378+00:00",
+  "state": "READY_BOTH",
+  "product_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "modes": [
+    {
+      "mode": "red",
+      "API": "http://localhost:19075",
+      "productionWeb": "http://localhost:13995",
+      "health": {
+        "status": "ok",
+        "pid": 21159,
+        "commit": "639bf6ef8",
+        "started_at": "2026-11-01T21:12:26Z"
+      },
+      "database": "collab_joint_gate_red_20261102_2055",
+      "gate_flags_before": {
+        "enabled": true,
+        "creation_enabled": true,
+        "host_execution_enabled": false
+      },
+      "source_env_sha256": "87279e2ac8fecadb8cc00788507d15dc788c8024121d8bd89cd950c0f6384a54",
+      "API_pool_max": 5,
+      "API_pool_min": 1,
+      "Web_build_id": "b4Tmt4WkjtlgyCk6CMPvB"
+    },
+    {
+      "mode": "green",
+      "API": "http://localhost:19065",
+      "productionWeb": "http://localhost:13985",
+      "health": {
+        "status": "ok",
+        "pid": 21550,
+        "commit": "639bf6ef8",
+        "started_at": "2026-11-01T21:13:31Z"
+      },
+      "database": "collab_joint_gate_green_20261102_2055",
+      "gate_flags_before": {
+        "enabled": true,
+        "creation_enabled": true,
+        "host_execution_enabled": false
+      },
+      "source_env_sha256": "bfbb87d1c27689da34b5c8308bb79c7e1403f94016899d8283190094a8993f72",
+      "API_pool_max": 5,
+      "API_pool_min": 1,
+      "Web_build_id": "lKQL5kHzmI0nj19TdJ0lz"
+    }
+  ],
+  "runner_sha256": "70b9ec7287175b638141e29103ad417ba7bbc010bdd330719fa90a8c36b670fa",
+  "real_Provider_calls": 0,
+  "old_failed_OFF_DB_untouched": true
+}

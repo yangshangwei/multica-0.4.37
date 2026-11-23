@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-04T09:56:13.567241+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion",
+  "scope": "Read-only actual normal01 diagnosis only; no additional audit or experiment",
+  "verdict": "strongly_supported_fixture_interference_hypothesis; causal_RunID_observation_pending",
+  "original_failure": {
+    "result": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/result.json",
+      "sha256": "a1c125f17305bd4f7f6786fa54262a022232c742f4e8171dd88c3b7dd227e0b1"
+    },
+    "raw": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/tests.jsonl",
+      "sha256": "98e01f3ab910e9900cb2308069f24bf08148fc6fdb0496f8fac1cc88c23f0bac"
+    },
+    "exit_status": 1,
+    "accepted": false,
+    "six_other_top_tests_pass": true,
+    "skip_invalid": 0,
+    "source_after_pass": true,
+    "failure_line": "rk1k_scenarios_test.go:597: expected one pending run for issue 01a1a5ea-0d3d-7854-bbdf-d28fbb1240cd, got 0 ()",
+    "failing_issue": "01a1a5ea-0d3d-7854-bbdf-d28fbb1240cd",
+    "summary_absent": true,
+    "finite_proof_partial": {
+      "samples": 16,
+      "measured": 14,
+      "seed": 1,
+      "paid": 0
+    }
+  },
+  "executed_K3_evidence": [
+    {
+      "label": "K3-root",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-root.json",
+      "sha256": "06398b52aff70eba621643788d0b453441525aefa4bf9917eb8377d5139395e7",
+      "issue": "01a1a5e9-fd61-7de6-bd79-a06db474fafa",
+      "run": "3a54b6f4-2fe5-4bbf-83b2-3460551b586a",
+      "group": "64a838c4-20da-44fb-b351-cb774c4703e6",
+      "runtime": "3dfb1601-28b9-4216-a4c9-d1a090fbf602",
+      "role": "leader",
+      "proof_time": "2026-11-04T09:35:39.263251Z",
+      "proof_accepted": true,
+      "physical_starts": 1,
+      "seed": false
+    },
+    {
+      "label": "K3-member-seed-root",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-member-seed-root.json",
+      "sha256": "85b2326d104e91c752c123bd9293d135fe5c4ed59ca1c30663e40ff2c0c8bd34",
+      "issue": "01a1a5ea-035c-72f9-acd5-2567d5e842fe",
+      "run": "8643d3fd-fe40-431f-bea4-e8d50c43e593",
+      "group": "ff3c107e-0756-4584-aca8-297baeda3f3b",
+      "runtime": "3dfb1601-28b9-4216-a4c9-d1a090fbf602",
+      "role": "leader",
+      "proof_time": "2026-11-04T09:35:40.634717Z",
+      "proof_accepted": true,
+      "physical_starts": 1,
+      "seed": true
+    },
+    {
+      "label": "K3-member",
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/proof/K3/samples/K3-member.json",
+      "sha256": "6404a8c6341a0ba77d93f2f6990ee6e0d0321dfefa36d1934245c94f991282ab",
+      "issue": "01a1a5ea-035c-72f9-acd5-2567d5e842fe",
+      "run": "c889950b-1a2b-4203-8ae9-41a7b95bfa38",
+      "group": "ff3c107e-0756-4584-aca8-297baeda3f3b",
+      "runtime": "3dfb1601-28b9-4216-a4c9-d1a090fbf602",
+      "role": "member",
+      "proof_time": "2026-11-04T09:35:41.789171Z",
+      "proof_accepted": true,
+      "physical_starts": 1,
+      "seed": false
+    }
+  ],
+  "new_consumer_producer_evidence": {
+    "comment_201_raw_line": "2026/11/04 17:35:41 INFO http request method=POST path=/api/collaboration/issues/01a1a5ea-0d3d-7854-bbdf-d28fbb1240cd/comments status=201 duration=42.139ms request_id=yangshangweideMac-mini.local/qFFvaWvvwX-000394 user_id=9b879826-0238-414a-b15f-42c5771c7142",
+    "issue_GET200_and_create201_observed": true,
+    "queue_resume_returned_without_fixture_fatal": true,
+    "same_shallow_copied_runtime_client_by_source": true
+  },
+  "source_contract": {
+    "member_completion": "completeProvenRuntimeRun, collaboration_runtime_capabilities.go:744: unsealed member records proof wake and schedules leader wake; releases reservation",
+    "wake_list": "ListRuntimeRuns, collaboration_runtime.go:637 drains wake before waiting-target promotions",
+    "continuation_creation": "queueContinuation, collaboration_squad.go:379 creates real leader continuation, drainSquadWakeup:439 assigns wake causes",
+    "promotion_barrier": "promoteCollaborationRuntimeBatch, collaboration_runtime.go:807 HasCollaborationRuntimePendingDerivedRun then derived_run_pending",
+    "predicate": "collaboration_runtime.sql:74 runtime/binding scoped eligible unsettled unreserved work; excludes revoked/held/forced/settled/reserved",
+    "working_regression": "TestCollaborationPendingDerivedRunDefersOtherLaneRoot, collaboration_runtime_admission_test.go:104: member then continuation before other root",
+    "working_old17": "rk1Squad, rk1_scenarios_handoff_test.go:98-110 consumes real seed leader, seed member and measured continuation in one fixture",
+    "hashes": {
+      "server/internal/service/collaboration_runtime.go": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "server/internal/service/collaboration_squad.go": "a2f790d7afcf6c678292832ebe9ff15d8db2a5759455c1fedc2288a31b880c71",
+      "server/internal/service/collaboration_runtime_capabilities.go": "223785a0d0917ce9d28016938c838f7199755dc49829c094af477e253170c639",
+      "server/pkg/db/queries/collaboration_runtime.sql": "aee098d8467f7883735de014729c1de9d007a6353e7419298f32f887c488b7e6",
+      "server/internal/service/collaboration_runtime_admission_test.go": "0d767308812728aa871caa03e460c80b7cd781e8080d3e76e9f6d8d3d0ccb83b",
+      "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a"
+    }
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "Earlier member-only consumer leaves wake/leader continuation on shared runtime; runtime-wide pending-candidate priority blocks the next consumer root while session filter excludes prior run",
+      "support": "same runtime/group chain with positive member proof; canonical service behavior/regression exactly matches consumer sequence",
+      "confidence": "high",
+      "episode_blocking_continuation_ID_or_pending_predicate_directly_observed": false
+    },
+    {
+      "id": "H2",
+      "claim": "Physical occupied namespace/capacity rather than pending-derived priority",
+      "support": "Less supported: accepted termination/proof releases reservation; source has separate unreserved fairness barrier",
+      "confidence": "low_without_live_predicate_record"
+    },
+    {
+      "id": "H3",
+      "claim": "Knowledge flag/source-binding drift",
+      "support": "Less supported: source_after=true and earlier member seed succeeds with same false flag; List/pending-candidate predicates do not read TaskService knowledge flag",
+      "confidence": "low; not a substituted runtime observation"
+    },
+    {
+      "id": "H4",
+      "claim": "New producer/comment/resume mistake",
+      "support": "Less supported: issue/create/read and comment201 seen; Resume helper succeeded; same factory previously works",
+      "confidence": "low; actual waiting/grant rows still unrecorded"
+    }
+  ],
+  "evidence_boundary": {
+    "failed_List_RunIDs_not_saved": true,
+    "executed_sample_calls_filter_run_paths": true,
+    "fixture_schema_may_be_cleaned_by_TestMain": true,
+    "no_live_or_lost_DB_state_invented": true,
+    "specific_blocking_ID_claimed": false
+  },
+  "recommended_Root_diagnostic": [
+    "On fresh Root-authorized k3diag01 only, retain last actual List IDs before fatal",
+    "Read current and prior session run IDs/step/parent/settled/forced/reservation identities and group wake state before fixture cleanup",
+    "Record HasPendingDerivedRun versus NamespaceOccupied, runtime/binding and current issue/session",
+    "No synthetic runs/manual settlement/new seed/timeout change; K3-only run remains diagnostic because parent15+3 assertion is unchanged"
+  ],
+  "conditional_minimum_correction": {
+    "condition": "Observed last List/pending predicate attributes offered continuation to earlier member consumer",
+    "action": "Isolate real runtime identity per K3 role consumer during metadata setup; copy base rather than mutate shared fixture and pair runtime/request/capabilities/frozen leader-member grants using existing MDT registration",
+    "preserve": [
+      "common approved source/project",
+      "actual HTTP List/session eligible intersection",
+      "registered producer/role order",
+      "15 measured+3 seed/0 paid",
+      "all original assertions and old17"
+    ],
+    "prohibited": [
+      "manually settle/delete old run",
+      "disable fairness or broaden eligible selection",
+      "extra fourth seed/process to drain old continuation",
+      "reorder roles",
+      "timeout inflation"
+    ],
+    "not_implemented_here": true
+  },
+  "race": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/permissions/rk1k-race-v16-01.json",
+    "ready_to_execute": false,
+    "no_race_started": true
+  },
+  "operations": {
+    "tests_or_probes_or_DB_or_source_mutations": 0,
+    "models_or_auditors_or_agents": 0,
+    "written_scope": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/normal01-failure-review"
+  },
+  "real_gate": {
+    "budget": 0,
+    "calls": 0,
+    "production_default_enabled": false
+  },
+  "report_md_sha256": "0735a3a06d9870a57d218e235adf87dfd1363a075b582340254d9e1a847cdff7"
+}

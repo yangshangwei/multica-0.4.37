@@ -1,0 +1,5334 @@
+[
+  {
+    "kind": "register-popstate",
+    "ms": 82,
+    "path": "/notification-return-599f9c1b/issues/01a202e1-88b0-7320-a8cd-5b5ca4c085f8",
+    "target": null,
+    "windowTop": 0,
+    "navigationState": [],
+    "registration": {
+      "capture": true,
+      "callback": "() => emit('popstate-capture')",
+      "stack": [
+        "    at window.addEventListener (<anonymous>:76:39)",
+        "    at <anonymous>:140:16",
+        "    at <anonymous>:144:9",
+        "    at <anonymous>:145:7"
+      ]
+    }
+  },
+  {
+    "kind": "register-popstate",
+    "ms": 87,
+    "path": "/notification-return-599f9c1b/issues/01a202e1-88b0-7320-a8cd-5b5ca4c085f8",
+    "target": null,
+    "windowTop": 0,
+    "navigationState": [],
+    "registration": {
+      "capture": false,
+      "callback": "() => emit('popstate-bubble')",
+      "stack": [
+        "    at window.addEventListener (<anonymous>:76:39)",
+        "    at <anonymous>:141:16",
+        "    at <anonymous>:144:9",
+        "    at <anonymous>:145:7"
+      ]
+    }
+  },
+  {
+    "kind": "register-popstate",
+    "ms": 404,
+    "path": "/notification-return-599f9c1b/issues/01a202e1-88b0-7320-a8cd-5b5ca4c085f8",
+    "target": null,
+    "windowTop": 0,
+    "navigationState": [],
+    "registration": {
+      "capture": true,
+      "callback": "()=>{let e=window.location.pathname+window.location.search+window.location.hash;l(),(0,s.flushSync)(()=>n(t=>({path:e,resume:!1,history:!0,key:t.key+1})))}",
+      "stack": [
+        "    at window.addEventListener (<anonymous>:76:39)",
+        "    at http://localhost:13337/_next/static/chunks/app/layout-2f1ee8ea8c41fe99.js:1:5605",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102896)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)"
+      ]
+    }
+  },
+  {
+    "kind": "register-popstate",
+    "ms": 414,
+    "path": "/notification-return-599f9c1b/issues/01a202e1-88b0-7320-a8cd-5b5ca4c085f8",
+    "target": null,
+    "windowTop": 0,
+    "navigationState": [],
+    "registration": {
+      "capture": false,
+      "callback": "e=>{if(e.state){if(!e.state.__NA)return void window.location.reload();(0,i.startTransition)(()=>{(0,P.dispatchTraverseAction)(window.location.href,e.state.__PRIVATE_NEXTJS_INTERNALS_TREE)})}}",
+      "stack": [
+        "    at window.addEventListener (<anonymous>:76:39)",
+        "    at http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:191940",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)",
+        "    at uh (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116381)"
+      ]
+    }
+  },
+  {
+    "kind": "register-popstate",
+    "ms": 425,
+    "path": "/notification-return-599f9c1b/issues/01a202e1-88b0-7320-a8cd-5b5ca4c085f8",
+    "target": null,
+    "windowTop": 0,
+    "navigationState": [],
+    "registration": {
+      "capture": false,
+      "callback": "function(){aB(n)&&aj(e)}",
+      "stack": [
+        "    at window.addEventListener (<anonymous>:76:39)",
+        "    at p (http://localhost:13337/_next/static/chunks/app/layout-2f1ee8ea8c41fe99.js:1:2301)",
+        "    at a$ (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:57992)",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at e (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:117842)"
+      ]
+    }
+  },
+  {
+    "kind": "memento-get",
+    "ms": 1520,
+    "path": "/account?view=notifications&filter=unread",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 1
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 1
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 1
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 1
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at adapter.get (<anonymous>:120:19)",
+      "    at http://localhost:13337/_next/static/chunks/app/account/page-a68bd249340e52ca.js:1:17267",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)",
+      "    at uh (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116381)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116764)"
+    ],
+    "memento": {
+      "key": "account-notifications-list"
+    }
+  },
+  {
+    "kind": "scroll",
+    "ms": 1639,
+    "path": "/account?view=notifications&filter=unread",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      }
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 1644,
+    "path": "/account?view=notifications&filter=unread",
+    "target": {
+      "tag": "BUTTON",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at sE (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:145067)",
+      "    at http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143608",
+      "    at sk (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143624)",
+      "    at sl (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:126770)",
+      "    at sr (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:125006)"
+    ]
+  },
+  {
+    "kind": "memento-get",
+    "ms": 1717,
+    "path": "/account?view=notifications&filter=all",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=unread",
+          "resume": false,
+          "history": false,
+          "key": 2
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at adapter.get (<anonymous>:120:19)",
+      "    at http://localhost:13337/_next/static/chunks/app/account/page-a68bd249340e52ca.js:1:17267",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)",
+      "    at uh (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116381)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116764)"
+    ],
+    "memento": {
+      "key": "account-notifications-list"
+    }
+  },
+  {
+    "kind": "scroll",
+    "ms": 1888,
+    "path": "/account?view=notifications&filter=all",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      }
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 1892,
+    "path": "/account?view=notifications&filter=all",
+    "target": {
+      "tag": "BUTTON",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 3
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at sE (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:145067)",
+      "    at http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143608",
+      "    at sk (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143624)",
+      "    at sl (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:126770)",
+      "    at sr (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:125006)"
+    ]
+  },
+  {
+    "kind": "memento-get",
+    "ms": 1978,
+    "path": "/account?view=notifications&filter=archived",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at adapter.get (<anonymous>:120:19)",
+      "    at http://localhost:13337/_next/static/chunks/app/account/page-a68bd249340e52ca.js:1:17267",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)",
+      "    at uh (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116381)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116764)"
+    ],
+    "memento": {
+      "key": "account-notifications-list"
+    }
+  },
+  {
+    "kind": "scroll",
+    "ms": 2068,
+    "path": "/account?view=notifications&filter=archived",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      }
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 2072,
+    "path": "/account?view=notifications&filter=archived",
+    "target": {
+      "tag": "BUTTON",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at sE (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:145067)",
+      "    at http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143608",
+      "    at sk (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143624)",
+      "    at sl (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:126770)",
+      "    at sr (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:125006)"
+    ]
+  },
+  {
+    "kind": "memento-get",
+    "ms": 2128,
+    "path": "/account?view=notifications&filter=all",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 5
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 5
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at adapter.get (<anonymous>:120:19)",
+      "    at http://localhost:13337/_next/static/chunks/app/account/page-a68bd249340e52ca.js:1:17267",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)",
+      "    at uh (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116381)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116764)"
+    ],
+    "memento": {
+      "key": "account-notifications-list",
+      "top": 13300,
+      "height": 14108
+    }
+  },
+  {
+    "kind": "scroll",
+    "ms": 2137,
+    "path": "/account?view=notifications&filter=all",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 5
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 5
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=archived",
+          "resume": false,
+          "history": false,
+          "key": 4
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 2238,
+    "path": "/account?view=notifications&filter=all",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 5
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 5
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 5
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all",
+          "resume": false,
+          "history": false,
+          "key": 5
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=1545.75",
+    "ms": 2315,
+    "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 2316,
+    "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+    "target": {
+      "tag": "LI",
+      "id": "run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 963,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 2328,
+    "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 963,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 2469,
+    "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 963,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=7294b5b8-749c-4ccc-afc9-d0adda8e4646&issue=01a202e1-87d0-732c-9d37-214ab7cb788b#run-32c139db-4848-4fde-8ad6-8494ae1267f8",
+          "resume": false,
+          "history": false,
+          "key": 6
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=4567.5",
+    "ms": 2554,
+    "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 2554,
+    "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+    "target": {
+      "tag": "LI",
+      "id": "comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 4134,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 2555,
+    "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 4134,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 2588,
+    "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 4134,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=e0a3ba24-5061-4903-a87d-9c5d25b9d315&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#comment-3024ef32-8d4c-4672-83fe-22abaf6343c1",
+          "resume": false,
+          "history": false,
+          "key": 7
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 2687,
+    "path": "/account?view=notifications&filter=all&notification=10678712-f96c-492b-b72c-e58bcf33da55",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=10678712-f96c-492b-b72c-e58bcf33da55",
+          "resume": false,
+          "history": false,
+          "key": 8
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=10678712-f96c-492b-b72c-e58bcf33da55",
+          "resume": false,
+          "history": false,
+          "key": 8
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=10678712-f96c-492b-b72c-e58bcf33da55",
+          "resume": false,
+          "history": false,
+          "key": 8
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=10678712-f96c-492b-b72c-e58bcf33da55",
+          "resume": false,
+          "history": false,
+          "key": 8
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=565",
+    "ms": 2756,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 9
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=10678712-f96c-492b-b72c-e58bcf33da55",
+          "resume": false,
+          "history": false,
+          "key": 8
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 9
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=10678712-f96c-492b-b72c-e58bcf33da55",
+          "resume": false,
+          "history": false,
+          "key": 8
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 2756,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "description",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 9
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=10678712-f96c-492b-b72c-e58bcf33da55",
+          "resume": false,
+          "history": false,
+          "key": 8
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 9
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=10678712-f96c-492b-b72c-e58bcf33da55",
+          "resume": false,
+          "history": false,
+          "key": 8
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 2770,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 9
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 9
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 9
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 9
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=565",
+    "ms": 2989,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 10
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 10
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 2989,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "description",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 10
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 10
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "scrollTop=0",
+    "ms": 3089,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at eval (eval at evaluate (:290:30), <anonymous>:2:29)",
+      "    at UtilityScript.evaluate (<anonymous>:292:16)",
+      "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3089,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3176,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 4134,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=0",
+    "ms": 3194,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 4134,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at eval (eval at evaluate (:290:30), <anonymous>:2:31)",
+      "    at UtilityScript.evaluate (<anonymous>:292:16)",
+      "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3199,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3199,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      }
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 3215,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "A",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 11
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at eval (eval at evaluate (:290:30), <anonymous>:1:20)",
+      "    at UtilityScript.evaluate (<anonymous>:292:16)",
+      "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3346,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=620",
+    "ms": 3349,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at eval (eval at evaluate (:290:30), <anonymous>:2:31)",
+      "    at UtilityScript.evaluate (<anonymous>:292:16)",
+      "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3351,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-capture-",
+    "ms": 3373,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "() => emit('popstate-capture')"
+    }
+  },
+  {
+    "kind": "popstate-capture",
+    "ms": 3373,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-end-capture-",
+    "ms": 3373,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-bubble-",
+    "ms": 3373,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "() => emit('popstate-bubble')"
+    }
+  },
+  {
+    "kind": "popstate-bubble",
+    "ms": 3373,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-end-bubble-",
+    "ms": 3373,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-capture-",
+    "ms": 3373,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "()=>{let e=window.location.pathname+window.location.search+window.location.hash;l(),(0,s.flushSync)(()=>n(t=>({path:e,resume:!1,history:!0,key:t.key+1})))}"
+    }
+  },
+  {
+    "kind": "listener-end-capture-",
+    "ms": 3373,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-bubble-n",
+    "ms": 3374,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "e=>{if(e.state){if(!e.state.__NA)return void window.location.reload();(0,i.startTransition)(()=>{(0,P.dispatchTraverseAction)(window.location.href,e.state.__PRIVATE_NEXTJS_INTERNALS_TREE)})}}"
+    }
+  },
+  {
+    "kind": "listener-end-bubble-n",
+    "ms": 3374,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=0",
+    "ms": 3383,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at r (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:207835)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:207916",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "listener-start-bubble-",
+    "ms": 3383,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "function(){aB(n)&&aj(e)}"
+    }
+  },
+  {
+    "kind": "listener-end-bubble-",
+    "ms": 3383,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": false,
+          "key": 12
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3390,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3390,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-capture-",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "() => emit('popstate-capture')"
+    }
+  },
+  {
+    "kind": "popstate-capture",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-end-capture-",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-bubble-",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "() => emit('popstate-bubble')"
+    }
+  },
+  {
+    "kind": "popstate-bubble",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-end-bubble-",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-capture-",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "()=>{let e=window.location.pathname+window.location.search+window.location.hash;l(),(0,s.flushSync)(()=>n(t=>({path:e,resume:!1,history:!0,key:t.key+1})))}"
+    }
+  },
+  {
+    "kind": "listener-end-capture-",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-bubble-n",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "e=>{if(e.state){if(!e.state.__NA)return void window.location.reload();(0,i.startTransition)(()=>{(0,P.dispatchTraverseAction)(window.location.href,e.state.__PRIVATE_NEXTJS_INTERNALS_TREE)})}}"
+    }
+  },
+  {
+    "kind": "listener-end-bubble-n",
+    "ms": 3447,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=620",
+    "ms": 3456,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at r (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:207835)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:207916",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "listener-start-bubble-",
+    "ms": 3456,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "function(){aB(n)&&aj(e)}"
+    }
+  },
+  {
+    "kind": "listener-end-bubble-",
+    "ms": 3456,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3457,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3457,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 13
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      }
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 3515,
+    "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+    "target": {
+      "tag": "A",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at eval (eval at evaluate (:290:30), <anonymous>:1:20)",
+      "    at UtilityScript.evaluate (<anonymous>:292:16)",
+      "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    ]
+  },
+  {
+    "kind": "scrollTop=565",
+    "ms": 3532,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 3532,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "description",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=a4699c4e-944e-4160-9d4e-97e12b96848e&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72",
+          "resume": false,
+          "history": true,
+          "key": 14
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3539,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=620",
+    "ms": 3625,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at eval (eval at evaluate (:290:30), <anonymous>:2:31)",
+      "    at UtilityScript.evaluate (<anonymous>:292:16)",
+      "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3625,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      }
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 3641,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "A",
+      "id": "",
+      "scrollRoot": "account-notifications-list"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at eval (eval at evaluate (:290:30), <anonymous>:1:20)",
+      "    at UtilityScript.evaluate (<anonymous>:292:16)",
+      "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    ]
+  },
+  {
+    "kind": "scrollTop=565",
+    "ms": 3658,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 3658,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "description",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 15
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3659,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 565,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3779,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 3962,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=0",
+    "ms": 3782,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 3962,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at eval (eval at evaluate (:290:30), <anonymous>:2:31)",
+      "    at UtilityScript.evaluate (<anonymous>:292:16)",
+      "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3789,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=620",
+    "ms": 3804,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at eval (eval at evaluate (:290:30), <anonymous>:2:29)",
+      "    at UtilityScript.evaluate (<anonymous>:292:16)",
+      "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 3809,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      }
+    ]
+  },
+  {
+    "kind": "focus",
+    "ms": 3866,
+    "path": "/account?view=participating",
+    "target": {
+      "tag": "MAIN",
+      "id": ""
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": false,
+          "key": 16
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.focus (<anonymous>:92:11)",
+      "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+      "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+      "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+      "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+      "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+    ]
+  },
+  {
+    "kind": "memento-get",
+    "ms": 3896,
+    "path": "/account?view=participating",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at adapter.get (<anonymous>:120:19)",
+      "    at http://localhost:13337/_next/static/chunks/app/%5BworkspaceSlug%5D/layout-a24519356450babe.js:1:8745",
+      "    at http://localhost:13337/_next/static/chunks/app/account/page-a68bd249340e52ca.js:1:25514",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)",
+      "    at uh (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116381)"
+    ],
+    "memento": {
+      "key": "account-list"
+    }
+  },
+  {
+    "kind": "listener-start-capture-",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "() => emit('popstate-capture')"
+    }
+  },
+  {
+    "kind": "popstate-capture",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-end-capture-",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-bubble-",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "() => emit('popstate-bubble')"
+    }
+  },
+  {
+    "kind": "popstate-bubble",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-end-bubble-",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-capture-",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "()=>{let e=window.location.pathname+window.location.search+window.location.hash;l(),(0,s.flushSync)(()=>n(t=>({path:e,resume:!1,history:!0,key:t.key+1})))}"
+    }
+  },
+  {
+    "kind": "listener-end-capture-",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ]
+  },
+  {
+    "kind": "listener-start-bubble-n",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "e=>{if(e.state){if(!e.state.__NA)return void window.location.reload();(0,i.startTransition)(()=>{(0,P.dispatchTraverseAction)(window.location.href,e.state.__PRIVATE_NEXTJS_INTERNALS_TREE)})}}"
+    }
+  },
+  {
+    "kind": "listener-end-bubble-n",
+    "ms": 3955,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 57,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 57,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scrollTop=620",
+    "ms": 3986,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 0,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=participating",
+          "resume": false,
+          "history": false,
+          "key": 17
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      }
+    ],
+    "stack": [
+      "    at emit (<anonymous>:49:139)",
+      "    at HTMLElement.set [as scrollTop] (<anonymous>:100:74)",
+      "    at r (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:207835)",
+      "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+      "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:207916",
+      "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+      "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+    ]
+  },
+  {
+    "kind": "listener-start-bubble-",
+    "ms": 4002,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      }
+    ],
+    "event": {
+      "type": "popstate",
+      "trusted": true,
+      "phase": 2,
+      "callback": "function(){aB(n)&&aj(e)}"
+    }
+  },
+  {
+    "kind": "listener-end-bubble-",
+    "ms": 4002,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": null,
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      }
+    ]
+  },
+  {
+    "kind": "scroll",
+    "ms": 4003,
+    "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+    "target": {
+      "tag": "SECTION",
+      "id": "",
+      "scrollRoot": "account-detail"
+    },
+    "detailTop": 620,
+    "windowTop": 0,
+    "navigationState": [
+      {
+        "depth": 56,
+        "alternate": false,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 56,
+        "alternate": true,
+        "state": {
+          "location": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": false,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      },
+      {
+        "depth": 59,
+        "alternate": true,
+        "state": {
+          "path": "/account?view=notifications&filter=all&notification=092ee25f-a389-4ba7-8dce-2aeaaf1b9a90&issue=01a202e1-88b7-7c0a-87c6-f72da11e3f72#description",
+          "resume": false,
+          "history": true,
+          "key": 18
+        }
+      }
+    ]
+  }
+]

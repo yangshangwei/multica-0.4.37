@@ -222,6 +222,7 @@ function CommentInput({ issueId, onSubmit, onAccepted, executionAllowed = true }
           defaultValue={initialDraft}
           onReady={lazy.onReady}
           placeholder={t(($) => $.comment.leave_comment_placeholder)}
+          aria-label={t(($) => $.comment.field_label)}
           onUpdate={(md) => {
             setContent(md);
             setIsEmpty(!md.trim());

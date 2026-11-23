@@ -1,0 +1,1156 @@
+{"source_head": "4c833e737efb6c997e5cb56c74c43e9237c91956", "started_at": "2026-10-31T11:51:13.860537+00:00", "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/closure-evidence-20261031/stage745", "command": ["/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/closure-evidence-20261031/migrate", "up"], "database": "multica_closure_20261031_b953445095"}
+  up  001_init
+  up  002_agent_config
+  up  003_task_context
+  up  004_agent_runtime_loop
+  up  005_daemon_pairing
+  up  006_workspace_context
+19:51:14.499 INF migration notice severity=NOTICE message="column \"repository\" of relation \"issue\" does not exist, skipping"
+  up  007_drop_issue_repository
+  up  008_structured_skills
+  up  009_verification_code
+  up  010_verification_code_attempts
+  up  011_personal_access_tokens
+  up  012_inbox_actor
+  up  013_runtime_usage
+  up  014_workspace_repos
+  up  015_issue_subscriber
+  up  016_backfill_subscribers
+  up  017_comment_parent_id
+  up  018_comment_parent_cascade
+  up  019_inbox_details
+  up  020_issue_number
+  up  020_task_session
+  up  021_agent_instructions
+  up  022_task_lifecycle_guards
+  up  023_agent_concurrency_default
+  up  024_backfill_empty_issue_prefix
+  up  025_comment_workspace_id
+  up  026_comment_reactions
+  up  026_task_messages
+  up  027_issue_reactions
+  up  028_task_trigger_comment
+  up  029_attachment
+  up  029_daemon_token
+  up  029_drop_daemon_pairing
+  up  030_agent_default_private
+  up  031_agent_archive
+  up  032_drop_agent_triggers
+19:51:14.582 INF migration notice severity=NOTICE message="pg_bigm not available, skipping bigram indexes"
+19:51:14.582 INF migration notice severity=NOTICE message="skipping bigram indexes (pg_bigm not installed)"
+  up  032_issue_search_index
+  up  032_runtime_owner
+  up  032_task_usage
+  up  033_chat
+19:51:14.596 INF migration notice severity=NOTICE message="skipping bigram index on comment (pg_bigm not installed)"
+  up  033_comment_search_index
+  up  034_projects
+  up  035_project_priority
+19:51:14.601 INF running pre-migration hook version=035_task_queue_issue_id_index direction=up
+  up  035_task_queue_issue_id_index
+19:51:14.657 INF migration notice severity=NOTICE message="index \"idx_issue_title_bigm\" does not exist, skipping"
+19:51:14.657 INF migration notice severity=NOTICE message="index \"idx_issue_description_bigm\" does not exist, skipping"
+19:51:14.657 INF migration notice severity=NOTICE message="index \"idx_comment_content_bigm\" does not exist, skipping"
+19:51:14.657 INF migration notice severity=NOTICE message="skipping bigram indexes on issue (pg_bigm not installed)"
+19:51:14.657 INF migration notice severity=NOTICE message="skipping bigram index on comment (pg_bigm not installed)"
+  up  036_search_index_lower
+  up  037_fix_pending_task_unique_index
+  up  038_pinned_items
+19:51:14.664 INF migration notice severity=NOTICE message="skipping bigram indexes on project (pg_bigm not installed)"
+  up  039_project_search_index
+  up  040_agent_custom_env
+  up  040_chat_unread_since
+  up  041_agent_custom_args
+  up  041_workspace_invitation
+  up  042_autopilot
+  up  043_audit_reserved_slugs
+  up  043_fix_orphaned_autopilot_runs
+  up  044_fix_workspace_fallback_slug
+  up  045_audit_dashboard_route_slugs
+  up  046_agent_mcp_config
+  up  046_agent_unique_name
+  up  046_drop_runtime_usage
+  up  047_audit_extended_reserved_slugs
+  up  048_runtime_daemon_uuid
+  up  049_audit_legacy_reserved_slugs
+  up  050_add_onboarded_at_to_users
+  up  050_agent_model
+  up  050_issue_first_executed_at
+  up  051_add_onboarding_state_to_users
+  up  052_add_cloud_waitlist_to_users
+19:51:14.708 INF migration notice severity=NOTICE message="column \"onboarding_current_step\" of relation \"user\" does not exist, skipping"
+  up  053_drop_orphan_onboarding_current_step
+  up  054_add_starter_content_state_to_users
+  up  055_task_lease_and_retry
+  up  056_audit_newly_reserved_slugs
+  up  057_feedback
+  up  058_drop_autopilot_priority_and_project_id
+  up  059_label_timestamps
+  up  060_add_user_language
+  up  060_agent_description_length
+  up  060_chat_session_runtime_id
+  up  060_issue_origin_quick_create
+  up  061_task_trigger_summary
+  up  062_chat_message_failure_reason
+  up  063_chat_message_elapsed
+  up  064_notification_preference
+  up  065_backfill_onboarded_at
+  up  065_project_resources
+  up  066_force_fresh_session
+19:51:14.743 INF running pre-migration hook version=067_task_queue_claim_candidate_index direction=up
+  up  067_task_queue_claim_candidate_index
+  up  068_timeline_keyset_index
+  up  069_comment_resolved_at
+  up  069_drop_task_last_heartbeat
+  up  072_task_usage_updated_at
+  up  073_task_usage_daily_rollup
+19:51:14.760 INF running pre-migration hook version=074_task_usage_updated_at_index direction=up
+  up  074_task_usage_updated_at_index
+19:51:14.762 INF running pre-migration hook version=075_task_usage_created_at_index direction=up
+  up  075_task_usage_created_at_index
+19:51:14.765 INF migration notice severity=NOTICE message="pg_cron extension not available; skipping. Schedule rollup_task_usage_daily() via your platform's scheduling primitive (Kubernetes CronJob, etc.)."
+  up  076_task_usage_pgcron_extension
+  up  077_task_usage_daily_invalidation
+19:51:14.771 INF running pre-migration hook version=078_task_usage_created_at_legacy_index direction=up
+  up  078_task_usage_created_at_legacy_index
+  up  079_autopilot_run_skipped_status
+  up  079_backfill_api_invalid_request
+  up  079_github_integration
+19:51:14.782 INF running pre-migration hook version=080_agent_task_queue_queued_index direction=up
+  up  080_agent_task_queue_queued_index
+  up  081_runtime_timezone
+  up  082_rollup_runtime_timezone
+  up  083_attachment_chat_columns
+  up  083_runtime_visibility
+  up  084_squad
+  up  084_task_usage_dashboard_rollup
+  up  085_squad_archive
+  up  086_squad_avatar
+  up  087_squad_name_not_unique
+  up  088_squad_instructions
+  up  089_squad_no_action_activity_index
+  up  090_task_is_leader
+  up  091_autopilot_webhook_triggers
+  up  091_issue_start_date
+  up  091_pr_ci_conflict
+  up  092_pr_stats
+  up  093_webhook_deliveries
+  up  094_onboarding_questionnaire_v2
+  up  095_agent_thinking_level
+  up  095_backfill_starter_content_state
+  up  096_autopilot_squad_assignee
+  up  096_pending_check_suite
+  up  096_user_profile_description
+  up  097_autopilot_project_id
+  up  098_contact_sales_inquiries
+19:51:14.837 INF migration notice severity=NOTICE message="constraint \"user_onboarding_runtime_choice_check\" of relation \"user\" does not exist, skipping"
+19:51:14.838 INF migration notice severity=NOTICE message="column \"onboarding_runtime_skipped\" of relation \"user\" does not exist, skipping"
+19:51:14.838 INF migration notice severity=NOTICE message="column \"onboarding_runtime_id\" of relation \"user\" does not exist, skipping"
+  up  098_user_onboarding_runtime_choice
+  up  100_user_timezone
+  up  101_task_usage_hourly_schema
+  up  102_task_usage_hourly_pipeline
+19:51:14.847 INF running pre-migration hook version=103_drop_legacy_daily_rollups direction=up
+19:51:14.870 INF task_usage hourly rollup hook: task_usage empty, watermark stamped from db now()
+19:51:14.870 INF task_usage hourly rollup hook: skipped reason=task_usage_empty watermark_stamped=true
+  up  103_drop_legacy_daily_rollups
+  up  104_drop_runtime_timezone
+  up  105_issue_metadata
+19:51:14.880 INF running pre-migration hook version=106_member_user_workspace_index direction=up
+  up  106_member_user_workspace_index
+  up  107_comment_system_author
+  up  108_task_token
+  up  109_agent_task_waiting_local_directory
+19:51:14.888 INF migration notice severity=NOTICE message="column \"skills_local\" of relation \"agent\" does not exist, skipping"
+  up  109_drop_agent_skills_local
+  up  109_issue_pull_request_close_intent
+  up  109_lark_integration
+  up  110_autopilot_trigger_event_filters
+  up  111_issue_origin_lark_chat
+  up  111_workspace_avatar
+  up  112_issue_dates_to_date
+  up  112_lark_installation_bot_union_id
+  up  113_lark_inbound_dedup_per_installation
+  up  113_sys_cron_executions
+19:51:14.920 INF running pre-migration hook version=114_agent_task_queue_running_started_at_index direction=up
+  up  114_agent_task_queue_running_started_at_index
+19:51:14.922 INF running pre-migration hook version=115_agent_runtime_last_seen_at_index direction=up
+  up  115_agent_runtime_last_seen_at_index
+  up  116_lark_installation_region
+  up  117_agent_task_queue_initiator_user_id
+19:51:14.928 INF migration notice severity=NOTICE message="constraint \"agent_task_queue_initiator_user_id_fkey\" of relation \"agent_task_queue\" does not exist, skipping"
+  up  118_agent_task_queue_initiator_user_id_drop_fk
+19:51:14.930 INF running pre-migration hook version=119_user_created_at_index direction=up
+  up  119_user_created_at_index
+  up  120_autopilot_subscriber
+  up  120_comment_source_task_id
+  up  120_github_pending_installation
+  up  120_runtime_profile
+  up  121_agent_runtime_provider_partial_unique
+  up  122_lark_chat_session_binding_thread_reply
+  up  122_task_handoff_note
+  up  123_issue_stage
+  up  124_autopilot_run_planned_at
+  up  124_channel_generalization
+  up  124_task_prepare_lease
+19:51:14.961 INF running pre-migration hook version=125_agent_task_queue_dispatched_prepare_index direction=up
+  up  125_agent_task_queue_dispatched_prepare_index
+  up  126_runtime_profile_drop_gemini
+  up  127_issue_pull_request_reference_only
+  up  127_task_squad_id
+  up  127_user_composio_connection
+19:51:14.970 INF migration notice severity=NOTICE message="trigger \"trg_clear_runtime_mcp_overlay\" for relation \"agent_task_queue\" does not exist, skipping"
+  up  128_agent_task_queue_runtime_mcp_overlay
+  up  128_autopilot_collaborator
+  up  128_comment_routing_escalation
+  up  129_agent_composio_allowlist_and_task_originator
+  up  130_agent_invocation_permission
+  up  131_issue_origin_slack_chat
+  up  132_agent_task_queue_runtime_connected_apps
+  up  133_github_installation_multi_workspace
+  up  134_runtime_profile_add_qoder
+19:51:14.986 INF running pre-migration hook version=135_comment_workspace_index direction=up
+  up  135_comment_workspace_index
+  up  136_runtime_profile_add_traecli
+  up  137_search_index_pg_trgm_extension
+19:51:15.000 INF running pre-migration hook version=138_issue_title_trgm_index direction=up
+  up  138_issue_title_trgm_index
+19:51:15.003 INF running pre-migration hook version=139_issue_description_trgm_index direction=up
+  up  139_issue_description_trgm_index
+19:51:15.006 INF running pre-migration hook version=140_comment_content_trgm_index direction=up
+  up  140_comment_content_trgm_index
+19:51:15.011 INF running pre-migration hook version=141_project_title_trgm_index direction=up
+  up  141_project_title_trgm_index
+19:51:15.013 INF running pre-migration hook version=142_project_description_trgm_index direction=up
+  up  142_project_description_trgm_index
+19:51:15.015 INF running pre-migration hook version=143_agent_task_queue_chat_pending_v2 direction=up
+  up  143_agent_task_queue_chat_pending_v2
+  up  144_drop_agent_task_queue_chat_pending_v1
+  up  145_agent_runtime_custom_name
+  up  149_issue_origin_agent_create
+  up  150_agent_task_coalesced_comments
+19:51:15.023 INF migration notice severity=NOTICE message="column \"unread_since\" of relation \"chat_session\" already exists, skipping"
+  up  151_chat_read_cursor
+19:51:15.025 INF migration notice severity=NOTICE message="constraint \"chat_pinned_agent_workspace_id_fkey\" of relation \"chat_pinned_agent\" does not exist, skipping"
+19:51:15.025 INF migration notice severity=NOTICE message="constraint \"chat_pinned_agent_user_id_fkey\" of relation \"chat_pinned_agent\" does not exist, skipping"
+19:51:15.025 INF migration notice severity=NOTICE message="constraint \"chat_pinned_agent_agent_id_fkey\" of relation \"chat_pinned_agent\" does not exist, skipping"
+  up  152_chat_pinned_agent
+19:51:15.026 INF running pre-migration hook version=153_chat_pinned_agent_user_ws_index direction=up
+  up  153_chat_pinned_agent_user_ws_index
+  up  154_chat_agent_intro
+  up  155_chat_session_pinned
+19:51:15.031 INF running pre-migration hook version=156_chat_session_pinned_index direction=up
+  up  156_chat_session_pinned_index
+  up  157_agent_task_delivered_comments
+  up  158_agent_task_queue_chat_input_task_id
+  up  159_chat_message_message_kind
+19:51:15.037 INF running pre-migration hook version=160_chat_message_input_owner_index direction=up
+  up  160_chat_message_input_owner_index
+  up  161_agent_skill_enabled
+  up  162_resource_labels
+  up  163_agent_builder
+  up  164_attachment_task_id
+19:51:15.046 INF running pre-migration hook version=165_attachment_task_id_index direction=up
+  up  165_attachment_task_id_index
+  up  166_project_dates
+19:51:15.049 INF running pre-migration hook version=167_resource_label_namespace_index direction=up
+  up  167_resource_label_namespace_index
+19:51:15.051 INF running pre-migration hook version=168_resource_label_type_index direction=up
+  up  168_resource_label_type_index
+19:51:15.052 INF running pre-migration hook version=169_agent_label_lookup_index direction=up
+  up  169_agent_label_lookup_index
+19:51:15.055 INF running pre-migration hook version=170_skill_label_lookup_index direction=up
+  up  170_skill_label_lookup_index
+  up  171_drop_legacy_label_namespace_index
+19:51:15.059 INF running pre-migration hook version=172_agent_system_identity_index direction=up
+  up  172_agent_system_identity_index
+19:51:15.061 INF migration notice severity=NOTICE message="constraint \"agent_to_label_agent_id_fkey\" of relation \"agent_to_label\" does not exist, skipping"
+19:51:15.061 INF migration notice severity=NOTICE message="constraint \"agent_to_label_label_id_fkey\" of relation \"agent_to_label\" does not exist, skipping"
+19:51:15.061 INF migration notice severity=NOTICE message="constraint \"skill_to_label_skill_id_fkey\" of relation \"skill_to_label\" does not exist, skipping"
+19:51:15.061 INF migration notice severity=NOTICE message="constraint \"skill_to_label_label_id_fkey\" of relation \"skill_to_label\" does not exist, skipping"
+  up  173_remove_resource_label_foreign_keys
+  up  174_legacy_label_index_rollback_prep
+  up  175_runtime_profile_add_deveco
+  up  176_webhook_delivery_worker
+19:51:15.065 INF running pre-migration hook version=177_autopilot_run_webhook_delivery_index direction=up
+  up  177_autopilot_run_webhook_delivery_index
+19:51:15.068 INF running pre-migration hook version=178_webhook_delivery_queue_index direction=up
+  up  178_webhook_delivery_queue_index
+  up  179_runtime_profile_add_grok
+  up  180_task_chat_finalize_deferred
+19:51:15.072 INF running pre-migration hook version=181_task_chat_finalize_deferred_index direction=up
+  up  181_task_chat_finalize_deferred_index
+  up  182_chat_draft_restore
+19:51:15.076 INF running pre-migration hook version=183_chat_draft_restore_index direction=up
+  up  183_chat_draft_restore_index
+  up  184_agent_task_attribution
+  up  185_agent_task_accountable_user
+19:51:15.081 INF migration notice severity=NOTICE message="constraint \"autopilot_rule_version_autopilot_id_fkey\" of relation \"autopilot_rule_version\" does not exist, skipping"
+19:51:15.081 INF migration notice severity=NOTICE message="constraint \"autopilot_rule_version_workspace_id_fkey\" of relation \"autopilot_rule_version\" does not exist, skipping"
+19:51:15.081 INF migration notice severity=NOTICE message="constraint \"autopilot_rule_version_published_by_id_fkey\" of relation \"autopilot_rule_version\" does not exist, skipping"
+  up  186_autopilot_rule_version
+19:51:15.082 INF running pre-migration hook version=187_autopilot_rule_version_index direction=up
+  up  187_autopilot_rule_version_index
+  up  188_workspace_attribution_fail_closed
+  up  189_autopilot_trigger_publisher
+  up  190_agent_task_attribution_invariant_check
+  up  191_issue_properties
+19:51:15.091 INF running pre-migration hook version=192_issue_properties_gin_index direction=up
+  up  192_issue_properties_gin_index
+19:51:15.094 INF migration notice severity=NOTICE message="constraint \"issue_property_workspace_id_fkey\" of relation \"issue_property\" does not exist, skipping"
+  up  193_issue_property_drop_workspace_fk
+19:51:15.095 INF running pre-migration hook version=194_issue_property_workspace_name_index direction=up
+  up  194_issue_property_workspace_name_index
+19:51:15.097 INF running pre-migration hook version=195_issue_property_workspace_index direction=up
+  up  195_issue_property_workspace_index
+  up  196_issue_property_icon
+  up  197_agent_task_attribution_strict_constraint
+19:51:15.102 INF running pre-migration hook version=198_agent_task_attribution_strict_constraint_validate direction=up
+19:51:15.108 INF attribution backfill: no rows needed reconciliation before migration 198
+19:51:15.108 INF attribution backfill hook: complete rows_backfilled=0 batches=0 mismatch_normalized=0
+  up  198_agent_task_attribution_strict_constraint_validate
+  up  199_agent_task_attribution_legacy_exemption_remove
+19:51:15.111 INF running pre-migration hook version=200_inbox_archived_listing_index direction=up
+  up  200_inbox_archived_listing_index
+19:51:15.114 INF running pre-migration hook version=201_inbox_active_by_issue_index direction=up
+  up  201_inbox_active_by_issue_index
+  up  202_runtime_profile_add_qwen
+19:51:15.118 INF running pre-migration hook version=203_issue_workspace_assignee_index direction=up
+  up  203_issue_workspace_assignee_index
+19:51:15.120 INF running pre-migration hook version=204_issue_workspace_parent_index direction=up
+  up  204_issue_workspace_parent_index
+19:51:15.123 INF running pre-migration hook version=205_issue_workspace_position_index direction=up
+  up  205_issue_workspace_position_index
+  up  206_agent_disabled_runtime_skills
+  up  207_client_usage_daily
+19:51:15.130 INF running pre-migration hook version=208_client_usage_daily_unique_index direction=up
+  up  208_client_usage_daily_unique_index
+19:51:15.133 INF migration notice severity=NOTICE message="ALTER TABLE / ADD CONSTRAINT USING INDEX will rename index \"client_usage_daily_identity_date_uidx\" to \"client_usage_daily_pkey\""
+  up  209_client_usage_daily_primary_key
+19:51:15.134 INF running pre-migration hook version=210_client_usage_daily_query_index direction=up
+  up  210_client_usage_daily_query_index
+19:51:15.136 INF running pre-migration hook version=211_client_usage_daily_workspace_index direction=up
+  up  211_client_usage_daily_workspace_index
+  up  212_agent_service_tier
+  up  213_task_usage_authoritative_cost
+  up  214_chat_session_project
+19:51:15.144 INF running pre-migration hook version=215_chat_session_project_index direction=up
+  up  215_chat_session_project_index
+  up  216_vcs_integration
+19:51:15.152 INF running pre-migration hook version=217_vcs_connection_workspace_index direction=up
+  up  217_vcs_connection_workspace_index
+19:51:15.154 INF running pre-migration hook version=218_vcs_pull_request_workspace_index direction=up
+  up  218_vcs_pull_request_workspace_index
+19:51:15.156 INF running pre-migration hook version=219_vcs_pull_request_connection_index direction=up
+  up  219_vcs_pull_request_connection_index
+19:51:15.158 INF running pre-migration hook version=220_issue_vcs_pull_request_pr_index direction=up
+  up  220_issue_vcs_pull_request_pr_index
+19:51:15.160 INF running pre-migration hook version=221_vcs_commit_status_lookup_index direction=up
+  up  221_vcs_commit_status_lookup_index
+  up  222_github_pr_api_snapshot
+19:51:15.164 INF running pre-migration hook version=223_github_pr_check_run_pr_ordinal_index direction=up
+  up  223_github_pr_check_run_pr_ordinal_index
+  up  224_agent_task_session_rollout_missing
+  up  225_chat_message_channel_media_pending
+  up  226_chat_message_channel_ingested
+  up  227_channel_media_pending_object
+19:51:15.172 INF running pre-migration hook version=228_channel_media_pending_object_key_index direction=up
+  up  228_channel_media_pending_object_key_index
+19:51:15.176 INF migration notice severity=NOTICE message="ALTER TABLE / ADD CONSTRAINT USING INDEX will rename index \"channel_media_pending_object_storage_key_uidx\" to \"channel_media_pending_object_pkey\""
+  up  229_channel_media_pending_object_primary_key
+19:51:15.177 INF running pre-migration hook version=230_channel_media_pending_object_claim_index direction=up
+  up  230_channel_media_pending_object_claim_index
+19:51:15.180 INF running pre-migration hook version=231_agent_task_queue_terminal_completed_at_index direction=up
+  up  231_agent_task_queue_terminal_completed_at_index
+19:51:15.182 INF running pre-migration hook version=232_channel_media_pending_object_due_index direction=up
+  up  232_channel_media_pending_object_due_index
+19:51:15.184 INF running pre-migration hook version=233_agent_task_queue_agent_terminal_latest_index direction=up
+  up  233_agent_task_queue_agent_terminal_latest_index
+  up  234_agent_task_queue_retired_session_id
+  up  235_chat_message_quick_actions
+  up  236_agent_task_quick_actions_disabled
+  up  237_quick_action
+19:51:15.194 INF running pre-migration hook version=238_quick_action_workspace_index direction=up
+  up  238_quick_action_workspace_index
+  up  239_comment_quick_action
+  up  240_agent_task_regenerate_quick_actions
+19:51:15.200 INF running pre-migration hook version=241_comment_parent_lookup_index direction=up
+  up  241_comment_parent_lookup_index
+  up  242_runtime_profile_add_qoderclicn
+  up  243_workspace_teardown_dirty_trigger_guard
+19:51:15.205 INF running pre-migration hook version=244_issue_dependency_issue_index direction=up
+  up  244_issue_dependency_issue_index
+19:51:15.207 INF running pre-migration hook version=245_issue_dependency_depends_on_index direction=up
+  up  245_issue_dependency_depends_on_index
+19:51:15.209 INF running pre-migration hook version=246_inbox_item_issue_index direction=up
+  up  246_inbox_item_issue_index
+19:51:15.211 INF running pre-migration hook version=247_comment_parent_index direction=up
+  up  247_comment_parent_index
+19:51:15.214 INF running pre-migration hook version=248_agent_task_trigger_comment_index direction=up
+  up  248_agent_task_trigger_comment_index
+  up  249_issue_subscriber_delegated
+  up  250_issue_subscriber_opt_out_scope
+  up  251_agent_runtime_unbind
+  up  252_agent_builder_draft
+  up  253_runtime_profile_add_qwenpaw
+  up  254_runtime_profile_add_reasonix
+19:51:15.225 INF running pre-migration hook version=255_agent_task_queue_chat_pending_deferred_v3 direction=up
+  up  255_agent_task_queue_chat_pending_deferred_v3
+  up  256_drop_agent_task_queue_chat_pending_v2
+19:51:15.230 INF running pre-migration hook version=257_agent_task_queue_channel_media_pending_unique_v2 direction=up
+  up  257_agent_task_queue_channel_media_pending_unique_v2
+  up  258_drop_pending_issue_agent_v1
+  up  259_issue_origin_dingtalk_chat
+  up  260_issue_origin_dingtalk_chat_validate
+19:51:15.237 INF running pre-migration hook version=261_agent_task_queue_terminal_completed_at_v2 direction=up
+  up  261_agent_task_queue_terminal_completed_at_v2
+  up  262_drop_agent_task_queue_terminal_completed_at_v1
+  up  263_issue_origin_wecom_chat
+  up  264_issue_origin_wecom_chat_validate
+  up  265_issue_view
+19:51:15.246 INF running pre-migration hook version=266_issue_view_owner_index direction=up
+  up  266_issue_view_owner_index
+19:51:15.248 INF running pre-migration hook version=267_issue_view_shared_index direction=up
+  up  267_issue_view_shared_index
+  up  268_issue_view_preference
+  up  269_issue_view_workspace_variant
+  up  270_pinned_item_view
+  up  271_channel_chat_pending_fresh
+  up  272_rollup_task_usage_hourly_xact_lock
+19:51:15.259 INF running pre-migration hook version=273_agent_task_queue_runtime_id_index direction=up
+  up  273_agent_task_queue_runtime_id_index
+19:51:15.261 INF running pre-migration hook version=274_task_token_workspace_id_index direction=up
+  up  274_task_token_workspace_id_index
+19:51:15.263 INF running pre-migration hook version=275_task_token_agent_id_index direction=up
+  up  275_task_token_agent_id_index
+19:51:15.266 INF running pre-migration hook version=276_chat_draft_restore_task_id_index direction=up
+  up  276_chat_draft_restore_task_id_index
+19:51:15.268 INF running pre-migration hook version=277_autopilot_run_task_id_index direction=up
+  up  277_autopilot_run_task_id_index
+19:51:15.270 INF running pre-migration hook version=278_agent_task_queue_agent_id_keyset_index direction=up
+  up  278_agent_task_queue_agent_id_keyset_index
+19:51:15.272 INF running pre-migration hook version=279_agent_task_queue_issue_id_keyset_index direction=up
+  up  279_agent_task_queue_issue_id_keyset_index
+19:51:15.274 INF running pre-migration hook version=281_agent_workspace_id_keyset_index direction=up
+  up  281_agent_workspace_id_keyset_index
+19:51:15.277 INF running pre-migration hook version=282_issue_workspace_id_keyset_index direction=up
+  up  282_issue_workspace_id_keyset_index
+19:51:15.279 INF running pre-migration hook version=283_agent_runtime_workspace_id_keyset_index direction=up
+  up  283_agent_runtime_workspace_id_keyset_index
+  up  284_task_owner_row_fence
+  up  285_plugin_lifecycle_v1
+19:51:15.292 INF running pre-migration hook version=286_plugin_identity_key_index direction=up
+  up  286_plugin_identity_key_index
+19:51:15.294 INF running pre-migration hook version=287_plugin_release_version_index direction=up
+  up  287_plugin_release_version_index
+19:51:15.300 INF running pre-migration hook version=288_plugin_installation_workspace_plugin_index direction=up
+  up  288_plugin_installation_workspace_plugin_index
+19:51:15.302 INF running pre-migration hook version=289_plugin_contribution_key_index direction=up
+  up  289_plugin_contribution_key_index
+19:51:15.304 INF running pre-migration hook version=290_plugin_contribution_ordinal_index direction=up
+  up  290_plugin_contribution_ordinal_index
+19:51:15.307 INF running pre-migration hook version=291_plugin_grant_revision_index direction=up
+  up  291_plugin_grant_revision_index
+19:51:15.309 INF running pre-migration hook version=292_plugin_binding_revision_index direction=up
+  up  292_plugin_binding_revision_index
+19:51:15.311 INF running pre-migration hook version=293_plugin_installation_workspace_index direction=up
+  up  293_plugin_installation_workspace_index
+  up  294_plugin_snapshot_execution_v1
+19:51:15.321 INF running pre-migration hook version=295_plugin_artifact_file_index direction=up
+  up  295_plugin_artifact_file_index
+19:51:15.324 INF running pre-migration hook version=296_plugin_snapshot_revision_index direction=up
+  up  296_plugin_snapshot_revision_index
+19:51:15.326 INF running pre-migration hook version=297_plugin_execution_task_index direction=up
+  up  297_plugin_execution_task_index
+19:51:15.328 INF running pre-migration hook version=298_plugin_health_index direction=up
+  up  298_plugin_health_index
+19:51:15.330 INF running pre-migration hook version=299_agent_task_plugin_manifest_index direction=up
+  up  299_agent_task_plugin_manifest_index
+  up  300_drop_redundant_issue_workspace_number_index
+  up  301_drop_redundant_sys_cron_job_plan_index
+  up  302_drop_redundant_channel_chat_session_binding_index
+  up  303_drop_redundant_lark_chat_session_binding_index
+  up  304_dingtalk_group_route
+19:51:15.342 INF running pre-migration hook version=305_dingtalk_group_route_installation_conversation_unique direction=up
+  up  305_dingtalk_group_route_installation_conversation_unique
+19:51:15.344 INF running pre-migration hook version=306_dingtalk_group_route_workspace_index direction=up
+  up  306_dingtalk_group_route_workspace_index
+19:51:15.346 INF running pre-migration hook version=307_dingtalk_group_route_id_unique direction=up
+  up  307_dingtalk_group_route_id_unique
+  up  308_agent_task_branch_name
+19:51:15.350 INF running pre-migration hook version=309_agent_runtime_id_index direction=up
+  up  309_agent_runtime_id_index
+  up  310_workspace_private_plugin_identity
+19:51:15.354 INF running pre-migration hook version=311_plugin_identity_scoped_key_index direction=up
+  up  311_plugin_identity_scoped_key_index
+  up  312_drop_global_plugin_identity_key_index
+  up  313_runtime_profile_add_dsh
+  up  314_workspace_mcp_config
+  up  315_workspace_mcp_server
+19:51:15.362 INF running pre-migration hook version=316_workspace_mcp_server_name_unique direction=up
+  up  316_workspace_mcp_server_name_unique
+19:51:15.365 INF running pre-migration hook version=317_agent_mcp_server_server_index direction=up
+  up  317_agent_mcp_server_server_index
+  up  318_drop_workspace_mcp_config
+  up  319_remote_mcp_plugin_v1
+19:51:15.376 INF running pre-migration hook version=320_plugin_installation_config_revision_index direction=up
+  up  320_plugin_installation_config_revision_index
+19:51:15.378 INF running pre-migration hook version=321_plugin_installation_config_workspace_index direction=up
+  up  321_plugin_installation_config_workspace_index
+19:51:15.381 INF running pre-migration hook version=322_plugin_remote_mcp_secret_revision_index direction=up
+  up  322_plugin_remote_mcp_secret_revision_index
+19:51:15.383 INF running pre-migration hook version=323_plugin_remote_mcp_secret_workspace_index direction=up
+  up  323_plugin_remote_mcp_secret_workspace_index
+19:51:15.386 INF running pre-migration hook version=324_plugin_remote_mcp_one_active_secret_index direction=up
+  up  324_plugin_remote_mcp_one_active_secret_index
+  up  325_plugin_remote_mcp_oauth
+19:51:15.393 INF running pre-migration hook version=326_plugin_remote_mcp_oauth_state_expiry_index direction=up
+  up  326_plugin_remote_mcp_oauth_state_expiry_index
+  up  327_workspace_share_link
+19:51:15.397 INF running pre-migration hook version=328_workspace_share_link_id_uidx direction=up
+  up  328_workspace_share_link_id_uidx
+19:51:15.399 INF migration notice severity=NOTICE message="ALTER TABLE / ADD CONSTRAINT USING INDEX will rename index \"workspace_share_link_pkey_uidx\" to \"workspace_share_link_pkey\""
+  up  329_workspace_share_link_primary_key
+19:51:15.400 INF running pre-migration hook version=330_workspace_share_link_active_ws_uidx direction=up
+  up  330_workspace_share_link_active_ws_uidx
+19:51:15.402 INF running pre-migration hook version=331_workspace_share_link_code_uidx direction=up
+  up  331_workspace_share_link_code_uidx
+  up  332_issue_status
+19:51:15.407 INF running pre-migration hook version=333_issue_status_pkey_index direction=up
+  up  333_issue_status_pkey_index
+19:51:15.410 INF migration notice severity=NOTICE message="ALTER TABLE / ADD CONSTRAINT USING INDEX will rename index \"issue_status_pkey_uidx\" to \"issue_status_pkey\""
+  up  334_issue_status_primary_key
+19:51:15.411 INF running pre-migration hook version=335_issue_status_workspace_key_index direction=up
+  up  335_issue_status_workspace_key_index
+19:51:15.413 INF running pre-migration hook version=336_issue_status_workspace_name_index direction=up
+  up  336_issue_status_workspace_name_index
+  up  337_issue_status_open_check
+  up  338_issue_status_validate_format
+  up  339_seed_issue_status_catalog
+  up  340_issue_effective_status_fn
+  up  341_issue_property_actor_types
+  up  342_runtime_profile_add_mcode
+19:51:15.424 INF running pre-migration hook version=343_comment_delegated_failure_pending_index direction=up
+  up  343_comment_delegated_failure_pending_index
+  up  344_plugin_v2_reset
+19:51:15.439 INF running pre-migration hook version=345_plugin_installation_workspace_key_index direction=up
+  up  345_plugin_installation_workspace_key_index
+19:51:15.442 INF running pre-migration hook version=346_plugin_storage_scope_key_index direction=up
+  up  346_plugin_storage_scope_key_index
+19:51:15.444 INF running pre-migration hook version=347_plugin_secret_installation_key_index direction=up
+  up  347_plugin_secret_installation_key_index
+  up  348_plugin_via_attribution
+19:51:15.447 INF running pre-migration hook version=349_agent_task_queue_chat_terminal_resume_index direction=up
+  up  349_agent_task_queue_chat_terminal_resume_index
+19:51:15.450 INF running pre-migration hook version=350_agent_task_queue_chat_retired_session_index direction=up
+  up  350_agent_task_queue_chat_retired_session_index
+  up  351_issue_comment_revision
+  up  352_autopilot_quota_execution
+19:51:15.456 INF running pre-migration hook version=353_autopilot_quota_period_scope_index direction=up
+  up  353_autopilot_quota_period_scope_index
+19:51:15.458 INF running pre-migration hook version=354_autopilot_quota_reservation_id_index direction=up
+  up  354_autopilot_quota_reservation_id_index
+19:51:15.460 INF running pre-migration hook version=355_autopilot_quota_reservation_key_index direction=up
+  up  355_autopilot_quota_reservation_key_index
+19:51:15.463 INF running pre-migration hook version=356_autopilot_run_quota_reservation_index direction=up
+  up  356_autopilot_run_quota_reservation_index
+19:51:15.465 INF running pre-migration hook version=357_webhook_delivery_replay_idempotency_index direction=up
+  up  357_webhook_delivery_replay_idempotency_index
+19:51:15.467 INF running pre-migration hook version=358_autopilot_quota_reservation_state_index direction=up
+  up  358_autopilot_quota_reservation_state_index
+19:51:15.470 INF migration notice severity=NOTICE message="ALTER TABLE / ADD CONSTRAINT USING INDEX will rename index \"uq_autopilot_quota_period_scope\" to \"autopilot_quota_period_pkey\""
+19:51:15.470 INF migration notice severity=NOTICE message="ALTER TABLE / ADD CONSTRAINT USING INDEX will rename index \"autopilot_quota_reservation_pkey_uidx\" to \"autopilot_quota_reservation_pkey\""
+  up  359_autopilot_quota_primary_keys
+  up  360_issue_last_activity_at
+19:51:15.472 INF running pre-migration hook version=361_issue_last_activity_index direction=up
+  up  361_issue_last_activity_index
+  up  362_plugin_hook_engine
+19:51:15.477 INF running pre-migration hook version=363_plugin_invocation_installation_index direction=up
+  up  363_plugin_invocation_installation_index
+19:51:15.479 INF running pre-migration hook version=364_plugin_invocation_created_at_index direction=up
+  up  364_plugin_invocation_created_at_index
+  up  365_plugin_comment_author_type_validate
+  up  366_issue_origin_telegram_chat
+  up  367_issue_origin_telegram_chat_validate
+  up  368_skill_plugin_ownership
+  up  369_plugin_mcp_approvals
+  up  370_runtime_profile_add_dim
+  up  371_comment_content_search_index_strategy (SQL skipped: preferred index public.idx_comment_content_bigm is unavailable or unusable)
+  up  375_drop_issue_last_activity_index
+  up  376_agent_task_durable_work_dir
+  up  377_channel_chat_context_generation
+19:51:15.496 INF running pre-migration hook version=378_channel_chat_context_generation_key direction=up
+  up  378_channel_chat_context_generation_key
+  up  379_channel_context_mixed_version_guard
+  up  382_remove_dingtalk_group_routing_bindings
+  up  383_create_dingtalk_group_presence
+19:51:15.505 INF running pre-migration hook version=384_create_dingtalk_group_presence_identity_index direction=up
+  up  384_create_dingtalk_group_presence_identity_index
+19:51:15.508 INF running pre-migration hook version=385_create_dingtalk_group_presence_activity_index direction=up
+  up  385_create_dingtalk_group_presence_activity_index
+  up  386_backfill_dingtalk_group_presence
+  up  387_create_dingtalk_bot_identity
+19:51:15.515 INF running pre-migration hook version=388_create_dingtalk_bot_identity_installation_index direction=up
+  up  388_create_dingtalk_bot_identity_installation_index
+  up  389_backfill_dingtalk_bot_identity
+19:51:15.519 INF running pre-migration hook version=390_agent_task_queue_dispatched_reclaim_v2_index direction=up
+  up  390_agent_task_queue_dispatched_reclaim_v2_index
+  up  391_drop_agent_task_queue_dispatched_prepare_index
+  up  392_plugin_package_publishing
+19:51:15.528 INF running pre-migration hook version=393_plugin_package_workspace_key_index direction=up
+  up  393_plugin_package_workspace_key_index
+19:51:15.530 INF running pre-migration hook version=394_plugin_package_version_unique_index direction=up
+  up  394_plugin_package_version_unique_index
+19:51:15.532 INF running pre-migration hook version=395_plugin_package_version_package_index direction=up
+  up  395_plugin_package_version_package_index
+19:51:15.535 INF running pre-migration hook version=396_plugin_package_file_path_index direction=up
+  up  396_plugin_package_file_path_index
+19:51:15.537 INF running pre-migration hook version=397_plugin_installation_package_version_index direction=up
+  up  397_plugin_installation_package_version_index
+19:51:15.539 INF running pre-migration hook version=398_issue_workspace_status_position_index direction=up
+  up  398_issue_workspace_status_position_index
+  up  399_plugin_hook_schedule
+19:51:15.544 INF running pre-migration hook version=400_plugin_hook_schedule_installation_key_index direction=up
+  up  400_plugin_hook_schedule_installation_key_index
+19:51:15.546 INF running pre-migration hook version=401_plugin_hook_schedule_enabled_index direction=up
+  up  401_plugin_hook_schedule_enabled_index
+  up  402_plugin_invocation_schedule_trigger_validate
+  up  403_runtime_profile_add_zeroclaw
+  up  404_agent_starter_prompts
+  up  407_issue_source_context
+19:51:15.555 INF running pre-migration hook version=408_issue_source_context_id_index direction=up
+  up  408_issue_source_context_id_index
+19:51:15.557 INF running pre-migration hook version=409_issue_source_context_issue_index direction=up
+  up  409_issue_source_context_issue_index
+19:51:15.560 INF running pre-migration hook version=410_issue_source_context_origin_task_index direction=up
+  up  410_issue_source_context_origin_task_index
+19:51:15.562 INF running pre-migration hook version=411_attachment_source_context_index direction=up
+  up  411_attachment_source_context_index
+19:51:15.564 INF running pre-migration hook version=412_issue_source_context_object_intent_key_index direction=up
+  up  412_issue_source_context_object_intent_key_index
+19:51:15.566 INF running pre-migration hook version=413_issue_source_context_object_intent_due_index direction=up
+  up  413_issue_source_context_object_intent_due_index
+19:51:15.569 INF running pre-migration hook version=414_issue_source_context_object_intent_context_index direction=up
+  up  414_issue_source_context_object_intent_context_index
+  up  415_seat_capacity_outbox
+19:51:15.572 INF running pre-migration hook version=416_seat_capacity_operation_token_index direction=up
+  up  416_seat_capacity_operation_token_index
+19:51:15.575 INF migration notice severity=NOTICE message="ALTER TABLE / ADD CONSTRAINT USING INDEX will rename index \"idx_seat_capacity_outbox_operation_token\" to \"seat_capacity_outbox_pkey\""
+  up  417_seat_capacity_primary_key
+19:51:15.576 INF running pre-migration hook version=418_seat_capacity_due_index direction=up
+  up  418_seat_capacity_due_index
+19:51:15.578 INF running pre-migration hook version=419_seat_capacity_share_join_index direction=up
+  up  419_seat_capacity_share_join_index
+  up  420_channel_chat_route_generation
+19:51:15.583 INF running pre-migration hook version=421_channel_chat_active_route_index direction=up
+  up  421_channel_chat_active_route_index
+19:51:15.585 INF migration notice severity=NOTICE message="index \"channel_chat_session_binding_installation_id_channel_chat_i_key\" does not exist, skipping"
+  up  422_channel_chat_route_history
+19:51:15.586 INF running pre-migration hook version=423_channel_task_delivery_pkey_index direction=up
+  up  423_channel_task_delivery_pkey_index
+  up  424_channel_task_delivery_primary_key
+  up  425_channel_outbound_message
+19:51:15.591 INF running pre-migration hook version=426_channel_outbound_message_id_index direction=up
+  up  426_channel_outbound_message_id_index
+  up  427_channel_task_delivery_backfill
+19:51:15.595 INF running pre-migration hook version=428_channel_task_delivery_binding_index direction=up
+  up  428_channel_task_delivery_binding_index
+19:51:15.597 INF running pre-migration hook version=429_channel_task_delivery_installation_index direction=up
+  up  429_channel_task_delivery_installation_index
+19:51:15.599 INF running pre-migration hook version=430_channel_outbound_message_binding_index direction=up
+  up  430_channel_outbound_message_binding_index
+19:51:15.601 INF running pre-migration hook version=431_chat_explicit_origin_backfill direction=up
+19:51:15.606 INF Chat origin backfill: complete visited=0 backfilled=0 pages=0
+  up  431_chat_explicit_origin_backfill
+  up  432_agent_conversation_starters_rename
+  up  437_drop_agent_runtime_last_seen_at_index
+19:51:15.610 INF running pre-migration hook version=438_agent_runtime_online_last_seen_index direction=up
+  up  438_agent_runtime_online_last_seen_index
+19:51:15.613 INF running pre-migration hook version=439_agent_runtime_offline_last_seen_index direction=up
+  up  439_agent_runtime_offline_last_seen_index
+19:51:15.615 INF running pre-migration hook version=440_github_pr_head_sha_index direction=up
+  up  440_github_pr_head_sha_index
+  up  441_runtime_profile_add_codearts
+19:51:15.619 INF migration notice severity=NOTICE message="column \"reference_only\" of relation \"issue_vcs_pull_request\" already exists, skipping"
+  up  442_vcs_reference_only_repair
+19:51:15.620 INF running pre-migration hook version=443_issue_project_status_index direction=up
+  up  443_issue_project_status_index
+  up  449_autopilot_trigger_created_by
+  up  450_agent_role_template
+  up  451_squad_role_template
+  up  452_agent_approval_request
+19:51:15.631 INF running pre-migration hook version=453_agent_approval_request_workspace_index direction=up
+  up  453_agent_approval_request_workspace_index
+19:51:15.633 INF running pre-migration hook version=454_agent_approval_request_agent_index direction=up
+  up  454_agent_approval_request_agent_index
+  up  455_autopilot_template
+  up  456_project_execution_squad
+  up  457_builtin_agent_display_name
+  up  458_builtin_onboarding_display_name
+  up  459_builtin_agent_avatar
+  up  460_workspace_mcp_template_source
+  up  461_agent_category
+  up  462_password_credentials
+19:51:15.649 INF running pre-migration hook version=463_password_user_unique direction=up
+  up  463_password_user_unique
+19:51:15.651 INF running pre-migration hook version=464_password_username_unique direction=up
+  up  464_password_username_unique
+  up  465_platform_admin
+19:51:15.658 INF running pre-migration hook version=466_organization_id_unique direction=up
+  up  466_organization_id_unique
+19:51:15.660 INF running pre-migration hook version=467_organization_internal_unique direction=up
+  up  467_organization_internal_unique
+19:51:15.662 INF running pre-migration hook version=468_organization_workspace_unique direction=up
+  up  468_organization_workspace_unique
+19:51:15.664 INF running pre-migration hook version=469_platform_role_user_unique direction=up
+  up  469_platform_role_user_unique
+19:51:15.666 INF running pre-migration hook version=470_admin_operation_id_unique direction=up
+  up  470_admin_operation_id_unique
+19:51:15.669 INF running pre-migration hook version=471_admin_operation_actor_key_unique direction=up
+  up  471_admin_operation_actor_key_unique
+19:51:15.671 INF running pre-migration hook version=472_admin_audit_id_unique direction=up
+  up  472_admin_audit_id_unique
+19:51:15.673 INF running pre-migration hook version=473_admin_audit_scope_time direction=up
+  up  473_admin_audit_scope_time
+19:51:15.675 INF running pre-migration hook version=474_organization_workspace_scope direction=up
+  up  474_organization_workspace_scope
+  up  475_legacy_password_revocation
+  up  476_execution_installation_snapshots
+  up  477_managed_installations
+19:51:15.684 INF running pre-migration hook version=478_installation_id_unique direction=up
+  up  478_installation_id_unique
+19:51:15.687 INF running pre-migration hook version=479_installation_key_unique direction=up
+  up  479_installation_key_unique
+19:51:15.689 INF running pre-migration hook version=480_installation_scope_page direction=up
+  up  480_installation_scope_page
+19:51:15.691 INF running pre-migration hook version=481_installation_user_unique direction=up
+  up  481_installation_user_unique
+19:51:15.693 INF running pre-migration hook version=482_installation_binding_id_unique direction=up
+  up  482_installation_binding_id_unique
+19:51:15.695 INF running pre-migration hook version=483_installation_binding_active_unique direction=up
+  up  483_installation_binding_active_unique
+19:51:15.697 INF running pre-migration hook version=484_installation_binding_scope direction=up
+  up  484_installation_binding_scope
+19:51:15.699 INF running pre-migration hook version=485_installation_challenge_id_unique direction=up
+  up  485_installation_challenge_id_unique
+19:51:15.701 INF running pre-migration hook version=486_installation_challenge_nonce_unique direction=up
+  up  486_installation_challenge_nonce_unique
+19:51:15.703 INF running pre-migration hook version=487_installation_challenge_expiry direction=up
+  up  487_installation_challenge_expiry
+19:51:15.705 INF running pre-migration hook version=488_installation_report_unique direction=up
+  up  488_installation_report_unique
+19:51:15.707 INF running pre-migration hook version=489_admin_task_page direction=up
+  up  489_admin_task_page
+19:51:15.709 INF running pre-migration hook version=490_admin_issue_page direction=up
+  up  490_admin_issue_page
+19:51:15.713 INF running pre-migration hook version=491_admin_task_runtime_page direction=up
+  up  491_admin_task_runtime_page
+19:51:15.716 INF running pre-migration hook version=492_admin_audit_operation_phase direction=up
+  up  492_admin_audit_operation_phase
+  up  493_task_token_installation_binding
+  up  494_admin_execution_controls
+19:51:15.723 INF running pre-migration hook version=495_admin_cancel_root_lookup direction=up
+  up  495_admin_cancel_root_lookup
+19:51:15.725 INF running pre-migration hook version=496_admin_operation_followers direction=up
+  up  496_admin_operation_followers
+19:51:15.727 INF running pre-migration hook version=497_admin_operation_due direction=up
+  up  497_admin_operation_due
+19:51:15.730 INF running pre-migration hook version=498_admin_operation_installation_time direction=up
+  up  498_admin_operation_installation_time
+  up  499_task_claim_generation
+  up  500_admin_observability
+19:51:15.738 INF running pre-migration hook version=501_admin_alert_id_unique direction=up
+  up  501_admin_alert_id_unique
+19:51:15.741 INF running pre-migration hook version=502_admin_alert_active_fingerprint direction=up
+  up  502_admin_alert_active_fingerprint
+19:51:15.743 INF running pre-migration hook version=503_admin_alert_status_page direction=up
+  up  503_admin_alert_status_page
+19:51:15.745 INF running pre-migration hook version=504_admin_alert_condition_recovery direction=up
+  up  504_admin_alert_condition_recovery
+19:51:15.747 INF running pre-migration hook version=505_admin_alert_detector_scope direction=up
+  up  505_admin_alert_detector_scope
+19:51:15.749 INF running pre-migration hook version=506_admin_alert_failure_scan direction=up
+  up  506_admin_alert_failure_scan
+19:51:15.751 INF running pre-migration hook version=507_admin_alert_queue_scan direction=up
+  up  507_admin_alert_queue_scan
+19:51:15.754 INF running pre-migration hook version=508_admin_alert_inflight_installation direction=up
+  up  508_admin_alert_inflight_installation
+  up  509_admin_alert_cycle_unknown
+19:51:15.758 INF running pre-migration hook version=510_admin_execution_finished_page direction=up
+  up  510_admin_execution_finished_page
+19:51:15.760 INF running pre-migration hook version=511_admin_alert_latest_episode direction=up
+  up  511_admin_alert_latest_episode
+  up  512_workspace_mcp_template_source
+  up  513_triage_tables
+19:51:15.770 INF running pre-migration hook version=514_triage_settings_workspace direction=up
+  up  514_triage_settings_workspace
+19:51:15.774 INF running pre-migration hook version=515_issue_triage_issue direction=up
+  up  515_issue_triage_issue
+19:51:15.776 INF running pre-migration hook version=516_triage_intake_identity direction=up
+  up  516_triage_intake_identity
+19:51:15.778 INF running pre-migration hook version=517_triage_action_id direction=up
+  up  517_triage_action_id
+19:51:15.780 INF running pre-migration hook version=518_triage_action_request direction=up
+  up  518_triage_action_request
+19:51:15.783 INF running pre-migration hook version=519_triage_import_batch_id direction=up
+  up  519_triage_import_batch_id
+19:51:15.785 INF running pre-migration hook version=520_triage_import_batch_request direction=up
+  up  520_triage_import_batch_request
+19:51:15.788 INF running pre-migration hook version=521_triage_import_row_identity direction=up
+  up  521_triage_import_row_identity
+19:51:15.790 INF running pre-migration hook version=522_triage_notification_id direction=up
+  up  522_triage_notification_id
+19:51:15.792 INF running pre-migration hook version=523_triage_notification_event direction=up
+  up  523_triage_notification_event
+19:51:15.795 INF running pre-migration hook version=524_issue_admission_workspace direction=up
+  up  524_issue_admission_workspace
+19:51:15.797 INF running pre-migration hook version=525_issue_triage_queue direction=up
+  up  525_issue_triage_queue
+19:51:15.799 INF running pre-migration hook version=526_issue_triage_snooze direction=up
+  up  526_issue_triage_snooze
+19:51:15.801 INF running pre-migration hook version=527_triage_action_history direction=up
+  up  527_triage_action_history
+19:51:15.803 INF running pre-migration hook version=528_triage_action_issue direction=up
+  up  528_triage_action_issue
+19:51:15.806 INF running pre-migration hook version=529_triage_import_external direction=up
+  up  529_triage_import_external
+19:51:15.808 INF running pre-migration hook version=530_triage_notification_due direction=up
+  up  530_triage_notification_due
+19:51:15.810 INF running pre-migration hook version=531_triage_import_batch_workspace direction=up
+  up  531_triage_import_batch_workspace
+19:51:15.812 INF running pre-migration hook version=532_triage_import_row_workspace direction=up
+  up  532_triage_import_row_workspace
+19:51:15.815 INF running pre-migration hook version=533_triage_intake_issue direction=up
+  up  533_triage_intake_issue
+19:51:15.817 INF running pre-migration hook version=534_triage_notification_workspace direction=up
+  up  534_triage_notification_workspace
+  up  535_triage_execution_fence
+  up  536_project_p1_tables
+19:51:15.828 INF running pre-migration hook version=537_project_state_change_id direction=up
+  up  537_project_state_change_id
+19:51:15.831 INF running pre-migration hook version=538_project_state_change_revision direction=up
+  up  538_project_state_change_revision
+19:51:15.833 INF running pre-migration hook version=539_project_update_id direction=up
+  up  539_project_update_id
+19:51:15.835 INF running pre-migration hook version=540_project_update_timeline direction=up
+  up  540_project_update_timeline
+19:51:15.838 INF running pre-migration hook version=541_project_update_revision_id direction=up
+  up  541_project_update_revision_id
+19:51:15.840 INF running pre-migration hook version=542_project_update_revision_version direction=up
+  up  542_project_update_revision_version
+19:51:15.844 INF running pre-migration hook version=543_project_update_request_identity direction=up
+  up  543_project_update_request_identity
+19:51:15.846 INF running pre-migration hook version=544_project_update_notification_id direction=up
+  up  544_project_update_notification_id
+19:51:15.849 INF running pre-migration hook version=545_project_update_notification_recipient direction=up
+  up  545_project_update_notification_recipient
+19:51:15.851 INF running pre-migration hook version=546_project_update_notification_pending direction=up
+  up  546_project_update_notification_pending
+19:51:15.855 INF running pre-migration hook version=547_project_update_request_project direction=up
+  up  547_project_update_request_project
+19:51:15.857 INF running pre-migration hook version=548_project_update_revision_project direction=up
+  up  548_project_update_revision_project
+19:51:15.859 INF running pre-migration hook version=549_project_update_notification_project direction=up
+  up  549_project_update_notification_project
+  up  550_iteration_tables
+19:51:15.869 INF running pre-migration hook version=551_iteration_settings_workspace direction=up
+  up  551_iteration_settings_workspace
+19:51:15.872 INF running pre-migration hook version=552_iteration_id direction=up
+  up  552_iteration_id
+19:51:15.875 INF running pre-migration hook version=553_iteration_single_active direction=up
+  up  553_iteration_single_active
+19:51:15.877 INF running pre-migration hook version=554_iteration_workspace_status_date direction=up
+  up  554_iteration_workspace_status_date
+19:51:15.879 INF running pre-migration hook version=555_iteration_issue_current direction=up
+  up  555_iteration_issue_current
+19:51:15.882 INF running pre-migration hook version=556_iteration_participation_identity direction=up
+  up  556_iteration_participation_identity
+19:51:15.884 INF running pre-migration hook version=557_iteration_participation_issue direction=up
+  up  557_iteration_participation_issue
+19:51:15.886 INF running pre-migration hook version=558_iteration_event_id direction=up
+  up  558_iteration_event_id
+19:51:15.889 INF running pre-migration hook version=559_iteration_event_sequence direction=up
+  up  559_iteration_event_sequence
+19:51:15.891 INF running pre-migration hook version=560_iteration_snapshot_identity direction=up
+  up  560_iteration_snapshot_identity
+19:51:15.893 INF running pre-migration hook version=561_iteration_operation_id direction=up
+  up  561_iteration_operation_id
+19:51:15.895 INF running pre-migration hook version=562_iteration_operation_request direction=up
+  up  562_iteration_operation_request
+19:51:15.897 INF running pre-migration hook version=563_iteration_notification_id direction=up
+  up  563_iteration_notification_id
+19:51:15.899 INF running pre-migration hook version=564_iteration_notification_operation direction=up
+  up  564_iteration_notification_operation
+19:51:15.903 INF running pre-migration hook version=565_iteration_notification_due direction=up
+  up  565_iteration_notification_due
+19:51:15.905 INF running pre-migration hook version=566_iteration_notification_day direction=up
+  up  566_iteration_notification_day
+  up  567_workspace_feature_defaults
+  up  568_platform_admin_initialization
+19:51:15.911 INF running pre-migration hook version=569_platform_admin_initialization_org direction=up
+  up  569_platform_admin_initialization_org
+19:51:15.914 INF running pre-migration hook version=570_platform_admin_initialization_singleton direction=up
+  up  570_platform_admin_initialization_singleton
+  up  571_collaboration_schema
+19:51:15.940 INF running pre-migration hook version=572_issue_handoff_id direction=up
+  up  572_issue_handoff_id
+19:51:15.942 INF running pre-migration hook version=573_collaboration_session_id direction=up
+  up  573_collaboration_session_id
+19:51:15.944 INF running pre-migration hook version=574_collaboration_grant_id direction=up
+  up  574_collaboration_grant_id
+19:51:15.946 INF running pre-migration hook version=575_collaboration_command_id direction=up
+  up  575_collaboration_command_id
+19:51:15.949 INF running pre-migration hook version=576_collaboration_run_id direction=up
+  up  576_collaboration_run_id
+19:51:15.951 INF running pre-migration hook version=577_collaboration_run_event_id direction=up
+  up  577_collaboration_run_event_id
+19:51:15.954 INF running pre-migration hook version=578_collaboration_operation_id direction=up
+  up  578_collaboration_operation_id
+19:51:15.956 INF running pre-migration hook version=579_collaboration_event_id direction=up
+  up  579_collaboration_event_id
+19:51:15.958 INF running pre-migration hook version=580_collaboration_notification_id direction=up
+  up  580_collaboration_notification_id
+19:51:15.961 INF running pre-migration hook version=581_collaboration_attachment_id direction=up
+  up  581_collaboration_attachment_id
+19:51:15.963 INF running pre-migration hook version=582_collaboration_termination_id direction=up
+  up  582_collaboration_termination_id
+19:51:15.964 INF running pre-migration hook version=583_collaboration_runtime_enrollment_id direction=up
+  up  583_collaboration_runtime_enrollment_id
+19:51:15.967 INF running pre-migration hook version=584_collaboration_runtime_challenge_id direction=up
+  up  584_collaboration_runtime_challenge_id
+19:51:15.969 INF running pre-migration hook version=585_collaboration_execution_gate_id direction=up
+  up  585_collaboration_execution_gate_id
+19:51:15.971 INF running pre-migration hook version=586_issue_collaboration_issue direction=up
+  up  586_issue_collaboration_issue
+19:51:15.974 INF running pre-migration hook version=587_issue_participant_identity direction=up
+  up  587_issue_participant_identity
+19:51:15.976 INF running pre-migration hook version=588_issue_participant_viewer direction=up
+  up  588_issue_participant_viewer
+19:51:15.979 INF running pre-migration hook version=589_issue_handoff_history direction=up
+  up  589_issue_handoff_history
+19:51:15.981 INF running pre-migration hook version=590_collaboration_session_issue direction=up
+  up  590_collaboration_session_issue
+19:51:15.983 INF running pre-migration hook version=591_collaboration_command_sequence direction=up
+  up  591_collaboration_command_sequence
+19:51:15.985 INF running pre-migration hook version=592_collaboration_command_waiting direction=up
+  up  592_collaboration_command_waiting
+19:51:15.987 INF running pre-migration hook version=593_collaboration_run_command direction=up
+  up  593_collaboration_run_command
+19:51:15.989 INF running pre-migration hook version=594_collaboration_run_task direction=up
+  up  594_collaboration_run_task
+19:51:15.992 INF running pre-migration hook version=595_collaboration_run_unsettled direction=up
+  up  595_collaboration_run_unsettled
+19:51:15.994 INF running pre-migration hook version=596_collaboration_run_event_producer direction=up
+  up  596_collaboration_run_event_producer
+19:51:15.996 INF running pre-migration hook version=597_collaboration_run_event_sequence direction=up
+  up  597_collaboration_run_event_sequence
+19:51:15.998 INF running pre-migration hook version=598_collaboration_operation_request direction=up
+  up  598_collaboration_operation_request
+19:51:16.002 INF running pre-migration hook version=599_collaboration_event_sequence direction=up
+  up  599_collaboration_event_sequence
+19:51:16.004 INF running pre-migration hook version=600_collaboration_event_outbox direction=up
+  up  600_collaboration_event_outbox
+19:51:16.006 INF running pre-migration hook version=601_collaboration_notification_recipient_event direction=up
+  up  601_collaboration_notification_recipient_event
+19:51:16.008 INF running pre-migration hook version=602_collaboration_notification_inbox direction=up
+  up  602_collaboration_notification_inbox
+19:51:16.010 INF running pre-migration hook version=603_collaboration_attachment_object direction=up
+  up  603_collaboration_attachment_object
+19:51:16.013 INF running pre-migration hook version=604_collaboration_attachment_issue direction=up
+  up  604_collaboration_attachment_issue
+19:51:16.015 INF running pre-migration hook version=605_collaboration_attachment_draft direction=up
+  up  605_collaboration_attachment_draft
+19:51:16.018 INF running pre-migration hook version=606_collaboration_attachment_reference_identity direction=up
+  up  606_collaboration_attachment_reference_identity
+19:51:16.021 INF running pre-migration hook version=607_collaboration_attachment_reference_target direction=up
+  up  607_collaboration_attachment_reference_target
+19:51:16.023 INF running pre-migration hook version=608_collaboration_termination_run direction=up
+  up  608_collaboration_termination_run
+19:51:16.025 INF running pre-migration hook version=609_collaboration_termination_token direction=up
+  up  609_collaboration_termination_token
+19:51:16.027 INF running pre-migration hook version=610_collaboration_account_fence_user direction=up
+  up  610_collaboration_account_fence_user
+19:51:16.029 INF running pre-migration hook version=611_collaboration_runtime_enrollment_active_runtime direction=up
+  up  611_collaboration_runtime_enrollment_active_runtime
+  up  612_collaboration_default_gate
+  up  613_collaboration_account_invalidation
+19:51:16.036 INF running pre-migration hook version=614_collaboration_account_invalidation_credential direction=up
+  up  614_collaboration_account_invalidation_credential
+19:51:16.039 INF running pre-migration hook version=615_collaboration_account_invalidation_epoch direction=up
+  up  615_collaboration_account_invalidation_epoch
+19:51:16.041 INF running pre-migration hook version=616_collaboration_account_invalidation_pending direction=up
+  up  616_collaboration_account_invalidation_pending
+  up  617_collaboration_account_invalidation_progress
+  up  618_collaboration_account_invalidation_attempt
+19:51:16.046 INF running pre-migration hook version=619_collaboration_account_invalidation_poll direction=up
+  up  619_collaboration_account_invalidation_poll
+  up  620_collaboration_targets
+19:51:16.061 INF running pre-migration hook version=621_collaboration_target_id direction=up
+  up  621_collaboration_target_id
+19:51:16.063 INF running pre-migration hook version=622_collaboration_target_identity direction=up
+  up  622_collaboration_target_identity
+19:51:16.065 INF running pre-migration hook version=623_collaboration_group_id direction=up
+  up  623_collaboration_group_id
+19:51:16.067 INF running pre-migration hook version=624_collaboration_group_command direction=up
+  up  624_collaboration_group_command
+19:51:16.071 INF running pre-migration hook version=625_collaboration_group_generation direction=up
+  up  625_collaboration_group_generation
+19:51:16.073 INF running pre-migration hook version=626_collaboration_group_unsettled direction=up
+  up  626_collaboration_group_unsettled
+19:51:16.075 INF running pre-migration hook version=627_collaboration_group_session direction=up
+  up  627_collaboration_group_session
+19:51:16.077 INF running pre-migration hook version=628_collaboration_command_target_sequence direction=up
+  up  628_collaboration_command_target_sequence
+19:51:16.080 INF running pre-migration hook version=629_collaboration_command_input_target direction=up
+  up  629_collaboration_command_input_target
+19:51:16.082 INF running pre-migration hook version=630_collaboration_command_target_waiting direction=up
+  up  630_collaboration_command_target_waiting
+19:51:16.084 INF running pre-migration hook version=631_collaboration_grant_target_config direction=up
+  up  631_collaboration_grant_target_config
+19:51:16.086 INF running pre-migration hook version=632_collaboration_grant_target_resource direction=up
+  up  632_collaboration_grant_target_resource
+19:51:16.089 INF running pre-migration hook version=633_collaboration_run_group_step direction=up
+  up  633_collaboration_run_group_step
+19:51:16.091 INF running pre-migration hook version=634_collaboration_run_group_settled direction=up
+  up  634_collaboration_run_group_settled
+19:51:16.093 INF running pre-migration hook version=635_collaboration_run_parent direction=up
+  up  635_collaboration_run_parent
+19:51:16.096 INF running pre-migration hook version=636_collaboration_run_session direction=up
+  up  636_collaboration_run_session
+19:51:16.098 INF running pre-migration hook version=637_collaboration_delegation_id direction=up
+  up  637_collaboration_delegation_id
+19:51:16.101 INF running pre-migration hook version=638_collaboration_delegation_request direction=up
+  up  638_collaboration_delegation_request
+19:51:16.103 INF running pre-migration hook version=639_collaboration_delegation_group direction=up
+  up  639_collaboration_delegation_group
+19:51:16.105 INF running pre-migration hook version=640_collaboration_command_session direction=up
+  up  640_collaboration_command_session
+19:51:16.108 INF running pre-migration hook version=641_collaboration_run_command direction=up
+  up  641_collaboration_run_command
+19:51:16.110 INF running pre-migration hook version=642_collaboration_grant_runtime_target direction=up
+  up  642_collaboration_grant_runtime_target
+  up  650_collaboration_legacy_execution_fence
+  up  651_collaboration_notification_sources
+19:51:16.115 INF running pre-migration hook version=652_collaboration_notification_page direction=up
+  up  652_collaboration_notification_page
+  up  660_collaboration_resource_consent
+  up  680_collaboration_remove_legacy_execution
+  up  681_collaboration_channels_batches
+19:51:16.139 INF running pre-migration hook version=682_collaboration_channel_id direction=up
+  up  682_collaboration_channel_id
+19:51:16.142 INF running pre-migration hook version=683_collaboration_channel_root direction=up
+  up  683_collaboration_channel_root
+19:51:16.144 INF running pre-migration hook version=684_collaboration_batch_id direction=up
+  up  684_collaboration_batch_id
+19:51:16.147 INF running pre-migration hook version=685_collaboration_batch_sequence direction=up
+  up  685_collaboration_batch_sequence
+19:51:16.149 INF running pre-migration hook version=686_collaboration_batch_waiting_target direction=up
+  up  686_collaboration_batch_waiting_target
+19:51:16.151 INF running pre-migration hook version=687_collaboration_command_batch direction=up
+  up  687_collaboration_command_batch
+19:51:16.153 INF running pre-migration hook version=688_collaboration_group_batch direction=up
+  up  688_collaboration_group_batch
+19:51:16.155 INF running pre-migration hook version=689_collaboration_run_batch direction=up
+  up  689_collaboration_run_batch
+19:51:16.158 INF running pre-migration hook version=690_collaboration_reservation_run direction=up
+  up  690_collaboration_reservation_run
+19:51:16.160 INF running pre-migration hook version=691_collaboration_reservation_agent direction=up
+  up  691_collaboration_reservation_agent
+19:51:16.162 INF running pre-migration hook version=692_collaboration_reservation_daemon direction=up
+  up  692_collaboration_reservation_daemon
+19:51:16.165 INF running pre-migration hook version=693_collaboration_batch_waiting direction=up
+  up  693_collaboration_batch_waiting
+19:51:16.167 INF running pre-migration hook version=694_collaboration_attempt_identity direction=up
+  up  694_collaboration_attempt_identity
+19:51:16.170 INF running pre-migration hook version=695_collaboration_business_token direction=up
+  up  695_collaboration_business_token
+19:51:16.172 INF running pre-migration hook version=696_collaboration_business_attempt direction=up
+  up  696_collaboration_business_attempt
+  up  697_collaboration_runtime_capability_results
+  up  698_collaboration_target_holds
+19:51:16.193 INF migration notice severity=NOTICE message="trigger \"collaboration_group_input_identity\" for relation \"collaboration_group_input\" does not exist, skipping"
+  up  699_collaboration_channel_inputs
+19:51:16.194 INF running pre-migration hook version=700_collaboration_command_channel_sequence direction=up
+  up  700_collaboration_command_channel_sequence
+19:51:16.197 INF running pre-migration hook version=701_collaboration_command_channel_waiting direction=up
+  up  701_collaboration_command_channel_waiting
+19:51:16.199 INF running pre-migration hook version=702_collaboration_group_input_identity direction=up
+  up  702_collaboration_group_input_identity
+19:51:16.201 INF running pre-migration hook version=703_collaboration_group_input_command direction=up
+  up  703_collaboration_group_input_command
+19:51:16.205 INF migration notice severity=NOTICE message="trigger \"collaboration_agent_config_intent\" for relation \"agent\" does not exist, skipping"
+19:51:16.205 INF migration notice severity=NOTICE message="trigger \"collaboration_runtime_config_intent\" for relation \"agent_runtime\" does not exist, skipping"
+19:51:16.205 INF migration notice severity=NOTICE message="trigger \"collaboration_squad_config_intent\" for relation \"squad\" does not exist, skipping"
+19:51:16.205 INF migration notice severity=NOTICE message="trigger \"collaboration_invocation_config\" for relation \"agent_invocation_target\" does not exist, skipping"
+19:51:16.205 INF migration notice severity=NOTICE message="trigger \"collaboration_membership_config\" for relation \"squad_member\" does not exist, skipping"
+19:51:16.205 INF migration notice severity=NOTICE message="trigger \"collaboration_agent_skill_config\" for relation \"agent_skill\" does not exist, skipping"
+  up  704_collaboration_config_invalidation
+19:51:16.221 INF running pre-migration hook version=705_collaboration_config_invalidation_id direction=up
+  up  705_collaboration_config_invalidation_id
+19:51:16.223 INF running pre-migration hook version=706_collaboration_config_invalidation_resource direction=up
+  up  706_collaboration_config_invalidation_resource
+19:51:16.225 INF running pre-migration hook version=707_collaboration_config_invalidation_poll direction=up
+  up  707_collaboration_config_invalidation_poll
+19:51:16.228 INF running pre-migration hook version=708_collaboration_group_command_history direction=up
+  up  708_collaboration_group_command_history
+19:51:16.231 INF migration notice severity=NOTICE message="trigger \"collaboration_skill_content_config\" for relation \"skill\" does not exist, skipping"
+19:51:16.231 INF migration notice severity=NOTICE message="trigger \"collaboration_skill_delete_config\" for relation \"skill\" does not exist, skipping"
+19:51:16.231 INF migration notice severity=NOTICE message="trigger \"collaboration_skill_file_fence\" for relation \"skill_file\" does not exist, skipping"
+19:51:16.231 INF migration notice severity=NOTICE message="trigger \"collaboration_skill_binding_fence\" for relation \"agent_skill\" does not exist, skipping"
+19:51:16.231 INF migration notice severity=NOTICE message="trigger \"collaboration_skill_file_config\" for relation \"skill_file\" does not exist, skipping"
+19:51:16.231 INF migration notice severity=NOTICE message="trigger \"collaboration_plugin_skill_version_config\" for relation \"plugin_installation\" does not exist, skipping"
+  up  709_collaboration_skill_content_invalidation
+  up  713_collaboration_switch_proposals
+19:51:16.235 INF running pre-migration hook version=714_collaboration_switch_proposal_id direction=up
+  up  714_collaboration_switch_proposal_id
+19:51:16.237 INF running pre-migration hook version=715_collaboration_switch_consent_resource direction=up
+  up  715_collaboration_switch_consent_resource
+19:51:16.239 INF running pre-migration hook version=716_collaboration_switch_proposal_target direction=up
+  up  716_collaboration_switch_proposal_target
+  up  717_collaboration_group_dependencies
+19:51:16.244 INF running pre-migration hook version=718_collaboration_group_dependency_input direction=up
+  up  718_collaboration_group_dependency_input
+  up  719_collaboration_comment_delegation
+19:51:16.248 INF running pre-migration hook version=720_collaboration_comment_delegation_identity direction=up
+  up  720_collaboration_comment_delegation_identity
+19:51:16.250 INF running pre-migration hook version=721_collaboration_queued_continuation direction=up
+  up  721_collaboration_queued_continuation
+  up  722_collaboration_squad_wakeup
+  up  723_collaboration_unread_join
+  up  724_collaboration_input_readers
+  up  725_collaboration_leader_turn
+19:51:16.262 INF running pre-migration hook version=726_collaboration_leader_turn_identity direction=up
+  up  726_collaboration_leader_turn_identity
+  up  727_collaboration_attachment_delivery
+19:51:16.267 INF running pre-migration hook version=728_collaboration_attachment_upload_request direction=up
+  up  728_collaboration_attachment_upload_request
+  up  729_collaboration_result_notification
+  up  730_collaboration_runtime_scan_cursor
+19:51:16.272 INF running pre-migration hook version=731_collaboration_runtime_scan_cursor_identity direction=up
+  up  731_collaboration_runtime_scan_cursor_identity
+  up  732_collaboration_resource_offers
+19:51:16.276 INF running pre-migration hook version=733_collaboration_resource_offer_id direction=up
+  up  733_collaboration_resource_offer_id
+19:51:16.278 INF running pre-migration hook version=734_collaboration_resource_offer_issue_history direction=up
+  up  734_collaboration_resource_offer_issue_history
+19:51:16.281 INF migration notice severity=NOTICE message="trigger \"collaboration_command_cancellation_identity\" for relation \"collaboration_command\" does not exist, skipping"
+19:51:16.281 INF migration notice severity=NOTICE message="trigger \"collaboration_cancellation_event_identity\" for relation \"collaboration_event\" does not exist, skipping"
+  up  735_collaboration_command_cancellation
+19:51:16.282 INF running pre-migration hook version=736_collaboration_command_history direction=up
+  up  736_collaboration_command_history
+  up  737_collaboration_runtime_preparation
+  up  738_collaboration_host_execution
+19:51:16.290 INF migration notice severity=NOTICE message="trigger \"collaboration_memory_version_identity\" for relation \"collaboration_memory_version\" does not exist, skipping"
+  up  739_collaboration_memory_version
+19:51:16.291 INF running pre-migration hook version=740_collaboration_memory_version_id direction=up
+  up  740_collaboration_memory_version_id
+19:51:16.293 INF running pre-migration hook version=741_collaboration_memory_version_issue direction=up
+  up  741_collaboration_memory_version_issue
+19:51:16.295 INF running pre-migration hook version=742_collaboration_memory_version_run_request direction=up
+  up  742_collaboration_memory_version_run_request
+  up  743_collaboration_run_memory
+  up  744_collaboration_creation_default
+  up  745_drop_user_cloud_waitlist
+Done.
+
+exit_code=0

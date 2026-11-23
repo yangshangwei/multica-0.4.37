@@ -1,0 +1,34 @@
+{
+  "argv": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-11-01T02:43:53.007107+00:00",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "head": "93afc3cb0eedb4936e5d62b9f4e4841dc99309d5",
+  "server_source_id": "f8b47ee964aba898123ee2239ac7396f33a0504cdc02e31ab5a8fdfc279fd469",
+  "tracked_dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "real_agent_gate_enabled": false,
+  "scope": "synthetic HTTP, persisted ledger and fake executable only; no DB or authenticated Provider",
+  "exit_code": 0,
+  "elapsed_seconds": 0.548,
+  "finished_at": "2026-11-01T02:43:53.555329+00:00",
+  "head_after": "93afc3cb0eedb4936e5d62b9f4e4841dc99309d5",
+  "tests": [],
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "top_level_passes": 0,
+  "server_source_id_after": "f8b47ee964aba898123ee2239ac7396f33a0504cdc02e31ab5a8fdfc279fd469",
+  "source_changes": []
+}

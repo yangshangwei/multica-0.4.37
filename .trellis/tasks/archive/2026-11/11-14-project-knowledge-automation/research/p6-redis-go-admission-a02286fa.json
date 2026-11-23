@@ -1,0 +1,48 @@
+{
+  "state": "pass",
+  "tests": [
+    {
+      "name": "owned_immutable_allocation_and_live_authentication",
+      "result": "pass",
+      "proof": {
+        "allocation_file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json",
+        "allocation_sha256": "41e5c7a2ab13d5b490f3a242adcb3451bf3ecfbfc8e5f3c13dcbc6facf3e0e64",
+        "immutable_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation-receipt-20261115-1b8185dd6941.json",
+        "immutable_receipt_sha256": "63641eca39a110665f9216c8c367251c9b28966e23212c58c91b6b3ff3a62f5f",
+        "verifier_sha256": "7418bc77eee3c41b20965afc279f5c902bbe5beb9c917efe5baa6cc66d008dd9",
+        "proof": {
+          "status": "verified_owned_running",
+          "run_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+          "receipt": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-verify-729fef50a4f6.receipt.json",
+          "container_id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+          "network_id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e"
+        },
+        "diagnostics": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-admission-ao9j6fg7/redis-ownership-66a50d63.log"
+      }
+    },
+    {
+      "name": "foreign_pointer_refused_before_process_or_database",
+      "result": "pass",
+      "error": "Redis requires this task's explicit allocation pointer"
+    },
+    {
+      "name": "wrong_allocation_hash_refused_before_docker",
+      "result": "pass",
+      "proof": {
+        "status": "failed",
+        "run_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+        "receipt": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-verify-25bd265834ac.receipt.json",
+        "container_id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "network_id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e"
+      }
+    }
+  ],
+  "pass": 3,
+  "fail": 0,
+  "launcher_sha256": "838878711054dfa2970036f5b6fb85340dd02210a5bcdecda0b345e59b694833",
+  "allocation_sha256": "41e5c7a2ab13d5b490f3a242adcb3451bf3ecfbfc8e5f3c13dcbc6facf3e0e64",
+  "run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-admission-ao9j6fg7",
+  "created_at": "2026-11-15T05:41:39.241587+00:00",
+  "database_or_go_tests_executed": false,
+  "secrets_printed": false
+}

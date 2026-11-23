@@ -1,0 +1,15 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestContextExperiment",
+    "-count=1",
+    "-v"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-context-baseline-20261031/server",
+  "exit_code": 0,
+  "elapsed_seconds": 11.302
+}

@@ -1,0 +1,62 @@
+import { test, expect } from '@playwright/test';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { openDesktop, nativeScreenshot, deepLink } from '../../../e2e/fixtures/collaboration-native';
+const out=resolve('artifacts/qa/collaboration-drawer-20261107');
+const token=JSON.parse(readFileSync('/Users/artisan/.multica/profiles/desktop-localhost-18572/config.json','utf8')).token;
+const issue=JSON.parse(readFileSync(resolve('artifacts/qa/collaboration-20261106/ui-created.json'),'utf8'));
+
+test('Native auxiliary drawer: geometry, retained edits, tabs, nested preview, anchors and narrow layout',async()=>{
+  mkdirSync(out,{recursive:true});
+  const native=await openDesktop(resolve(out,'native-profile'),{token,deepLink:`multica://account?view=participating&issue=${issue.id}`});
+  const {page,app}=native;const checks:string[]=[];
+  const settle=async()=>page.evaluate(async()=>{await document.fonts.ready;await Promise.all(document.getAnimations().filter(a=>a.effect?.getComputedTiming().iterations!==Infinity).map(a=>a.finished.catch(()=>{})));await new Promise<void>(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r())));});
+  const shot=async(name:string)=>{await settle();await nativeScreenshot(app,page,resolve(out,name));};
+  try{
+    await native.start();const title=page.getByRole('heading',{name:issue.title,exact:true});await expect(title).toBeVisible({timeout:45000});
+    const win=await app.browserWindow(page);await win.evaluate(w=>w.setContentSize(1380,960));
+    const info=page.getByRole('group',{name:'任务资料',exact:true}).getByRole('button',{name:'任务信息',exact:true});await info.scrollIntoViewIfNeeded();await settle();
+    const metrics=()=>page.locator('[data-tab-scroll-root="account-detail"]').evaluate(el=>({height:el.scrollHeight,top:el.scrollTop,descriptionY:document.getElementById('description')!.getBoundingClientRect().y}));
+    await page.waitForLoadState('networkidle');await shot('01-toolbar-wide.png');const before=await metrics();await info.click();
+    const drawer=page.getByRole('dialog').filter({has:page.getByRole('group',{name:'切换任务资料',exact:true})});await expect(drawer).toBeVisible();await settle();expect(await metrics()).toEqual(before);
+    await expect(drawer.getByText('来源工作空间',{exact:true})).toBeVisible();await shot('02-task-information-wide.png');
+    await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);await expect(info).toBeFocused();
+    checks.push('Toolbar opens right drawer without shifting main content; Escape returns to trigger');
+    await page.getByRole('button',{name:'协作上下文',exact:true}).click();
+    await drawer.getByRole('button',{name:'编辑协作上下文',exact:true}).click();
+    const edit=drawer.getByRole('textbox',{name:'协作上下文（Markdown）',exact:true});const original=await edit.inputValue();
+    const text='抽屉交互验证：关闭及切换后保留草稿，不提交。';await edit.fill(text);await shot('03-context-draft.png');
+    await drawer.getByRole('button',{name:/^附件(?: \d+)?$/}).click();
+    await drawer.getByRole('button',{name:'协作上下文',exact:true}).click();await expect(edit).toHaveValue(text);
+    await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);await page.getByRole('group',{name:'任务资料',exact:true}).getByRole('button',{name:'协作上下文',exact:true}).click();await expect(edit).toHaveValue(text);
+    await edit.fill(original);await drawer.getByRole('button',{name:'取消',exact:true}).click();
+    checks.push('Shared-context editor survives category switch and drawer dismissal; no write performed');
+    await drawer.getByRole('button',{name:/^附件(?: \d+)?$/}).click();
+    const preview=drawer.getByRole('button',{name:'预览 协作测试说明.txt',exact:true});await preview.click();
+    await expect(page.getByRole('dialog',{name:'协作测试说明.txt',exact:true})).toBeVisible();await page.keyboard.press('Escape');await expect(drawer).toBeVisible();
+    checks.push('Nested private attachment preview dismisses independently of drawer');
+    await preview.click();await expect(page.getByRole('dialog',{name:'协作测试说明.txt',exact:true})).toBeVisible();
+    await deepLink(app,`/account?view=participating&issue=${issue.id}#description`);await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.locator('#description')).toBeFocused();
+    checks.push('Main navigation closes both drawer and nested file preview');
+    await page.getByRole('button',{name:'文件与参考材料',exact:true}).click();await expect(drawer).toBeVisible();
+    await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);await page.getByRole('button',{name:'文件与参考材料',exact:true}).click();await expect(drawer).toBeVisible();
+    await page.keyboard.press('Escape');
+    await deepLink(app,`/account?view=participating&issue=${issue.id}#memory`);await expect(page.getByRole('dialog',{name:'协作上下文',exact:true})).toBeVisible();
+    await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);await deepLink(app,`/account?view=participating&issue=${issue.id}#memory`);await expect(page.getByRole('dialog',{name:'协作上下文',exact:true})).toBeVisible();
+    checks.push('Reference-files entry and repeated memory anchors open the correct drawer');
+    await deepLink(app,`/account?view=participating&issue=${issue.id}#description`);await expect(page.getByRole('dialog')).toHaveCount(0);await expect(page.locator('#description')).toBeFocused();
+    checks.push('Main requirement anchor closes drawer and restores main focus');
+    await win.evaluate(w=>w.setContentSize(760,960));await info.click();await shot('04-drawer-narrow.png');
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+    expect(await drawer.evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBe(true);
+    for(let i=0;i<12;i++){await page.keyboard.press('Tab');await expect.poll(()=>drawer.evaluate(el=>el.contains(document.activeElement))).toBe(true);}
+    await page.evaluate(()=>document.documentElement.style.fontSize='24px');await settle();expect(await drawer.evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBe(true);await page.keyboard.press('Escape');
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+    checks.push('Narrow drawer, keyboard containment and 150% text preserve navigation and avoid overflow');
+    await page.evaluate(()=>document.documentElement.style.fontSize='');await win.evaluate(w=>w.setContentSize(420,844));
+    await info.click();await shot('05-drawer-compact.png');
+    expect(await drawer.evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBe(true);
+    await page.keyboard.press('Escape');
+    expect(native.errors).toEqual([]);writeFileSync(resolve(out,'checks.json'),JSON.stringify({checks,errors:native.errors,api:'http://localhost:18572',renderer:'http://localhost:5666',mutations:'No server writes; local memory draft cancelled'},null,2));
+  }finally{await app.close();}
+});

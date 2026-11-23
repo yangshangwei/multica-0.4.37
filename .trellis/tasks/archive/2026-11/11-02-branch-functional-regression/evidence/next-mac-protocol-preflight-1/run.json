@@ -1,0 +1,30 @@
+{
+  "at": "2026-11-02T03:29:36.944299+00:00",
+  "scope": "read-only protocol query; no registration, launching or default changes",
+  "command": [
+    "osascript",
+    "-l",
+    "JavaScript",
+    "-e",
+    "ObjC.import(\"AppKit\");\nconst url = $.NSURL.URLWithString(\"multica://branch-functional-regression\");\nconst current = $.NSWorkspace.sharedWorkspace.URLForApplicationToOpenURL(url);\nlet path = null;\nlet bundle = null;\ntry { path = ObjC.unwrap(current.path) || null; } catch (e) {}\nif (path) bundle = ObjC.unwrap($.NSBundle.bundleWithPath(path).bundleIdentifier) || null;\nJSON.stringify({ scheme: \"multica\", defaultApplicationPath: path, defaultBundleIdentifier: bundle });\n"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"scheme\":\"multica\",\"defaultApplicationPath\":\"/Applications/Multica.app\",\"defaultBundleIdentifier\":\"ai.multica.desktop\"}\n",
+  "stderr": "",
+  "observed": {
+    "scheme": "multica",
+    "defaultApplicationPath": "/Applications/Multica.app",
+    "defaultBundleIdentifier": "ai.multica.desktop"
+  },
+  "sdk_header_sha256": "be46224f91d11b7d0e25a0ed80dda5c1a9e52c404038a5a7ebfc25794befff30",
+  "sdk_restore_contract": [
+    {
+      "line": 128,
+      "text": "/* Sets the default handler for URLs with the same scheme as the one specified. Some URL schemes require user consent before you can change their handlers. If a change requires user consent, the system will ask the user asynchronously before invoking the completion handler. */"
+    },
+    {
+      "line": 129,
+      "text": "- (void)setDefaultApplicationAtURL:(NSURL *)applicationURL toOpenURLsWithScheme:(NSString *)urlScheme completionHandler:(void (^_Nullable)(NSError *_Nullable error))completionHandler API_AVAILABLE(macos(12.0));"
+    }
+  ]
+}

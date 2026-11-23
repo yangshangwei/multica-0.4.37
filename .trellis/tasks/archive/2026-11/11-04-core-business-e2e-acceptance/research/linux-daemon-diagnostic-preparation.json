@@ -1,0 +1,58 @@
+{
+  "at": "2026-11-05T03:40:05.233220+00:00",
+  "patch": {
+    "before_sha256": "aa0f1ff6375dc9ca462a1361e5c3324fde58835c1d75b952c39e33eda2b2e749",
+    "after_sha256": "8bd7f89c3381cc99f6e51877b017ad6d8b1bdb8882cdeeaade99e1575721a363",
+    "patch_sha256": "4681777163391fc340de705fc371d6ed4361636f9d8175008882a408b3b16a35",
+    "prepared_only": true,
+    "subject_not_executed": true,
+    "frozen_unchanged": true
+  },
+  "static_cli": {
+    "sha256": "7cd6e1b4364842c98760983f5e248e4e2de8dcbe49701846907b3f5c120ad648",
+    "expected_sha256": "7cd6e1b4364842c98760983f5e248e4e2de8dcbe49701846907b3f5c120ad648",
+    "mode": "0o755",
+    "uid_on_host": 501,
+    "elf_machine": 183,
+    "elf_class": 64,
+    "program_header_types": [
+      6,
+      4,
+      1,
+      1,
+      1,
+      1685382481
+    ],
+    "has_dynamic_interpreter": false,
+    "has_dynamic_segment": false
+  },
+  "image": {
+    "id": "sha256:db164dd5195d37ded1e6732eec4cc6b87decac66825be15fae9c7b87b2bac6c4",
+    "os": "linux",
+    "arch": "arm64",
+    "configured_user": "",
+    "workdir": "/work",
+    "env_keys": [
+      "PATH",
+      "NODE_VERSION",
+      "YARN_VERSION"
+    ],
+    "note": "Read-only image metadata, no container started. Empty configured user defaults to root; runtime filesystem permissions remain unobserved."
+  },
+  "container_contract": {
+    "fixture_workdir": "/workspace",
+    "source_bind": "read-only",
+    "package_bind": "read-only",
+    "container_rootfs": "not marked read-only by fixture",
+    "container_home": "/root",
+    "actual_tmp_access": "unknown until new diagnostic; no probe writes performed"
+  },
+  "strict_verdict_preserved": true,
+  "capture_budget": {
+    "after_assertion_timeout_ms": 3000,
+    "main_stderr_chunk_max_bytes": 8192,
+    "retained_main_codes": 20,
+    "profile_log_tail_bytes": 65536
+  },
+  "evidence_boundary": "No tests, builds, browser, live service, container or database writes performed. Node syntax/test checks deferred until coordinator releases quiet window."
+}

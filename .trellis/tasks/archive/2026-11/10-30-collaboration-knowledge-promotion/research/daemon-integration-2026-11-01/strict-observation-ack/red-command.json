@@ -1,0 +1,20 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/daemon",
+    "-run",
+    "^TestKnowledgeObservationRejectsNoncanonicalAcknowledgement$",
+    "-count=1",
+    "-json",
+    "-timeout=120s"
+  ],
+  "started_at": "2026-10-31T23:05:35.487580+00:00",
+  "exit_code": 1,
+  "scope": "test-owned executables; no DB or installed CLI"
+}

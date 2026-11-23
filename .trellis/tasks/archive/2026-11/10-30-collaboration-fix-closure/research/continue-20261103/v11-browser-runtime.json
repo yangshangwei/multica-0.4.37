@@ -1,0 +1,64 @@
+{
+  "recorded_at": "2026-11-03T02:43:35.994717+00:00",
+  "source": "actual v11 environment/provenance/runtime read-only check during browser stage",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "health": {
+    "status": "ok",
+    "pid": 46890,
+    "commit": "304f74dd3",
+    "started_at": "2026-11-03T02:41:31Z"
+  },
+  "api": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=304f74dd3' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/server)",
+    "source_id": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "configuration_id": "081439643529c8e4a642aeb236cdb68033e10b5eeb495906ba6c0c76c04838ad",
+    "commit": "304f74dd3",
+    "launcher_pid": 46864,
+    "started_at": "2026-11-03T02:41:29Z",
+    "listener_pid": 46890
+  },
+  "web": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "q7FTQSwrhbDb2yPdr9cYU",
+    "command": "pnpm --filter @multica/web exec next start --port 13958",
+    "source_id": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "configuration_id": "8e3061ea9005cbc3adfa1ba4d26fdcdc57eeb6169eba0156440e9170275a7505",
+    "commit": "304f74dd3",
+    "launcher_pid": 47283,
+    "started_at": "2026-11-03T02:42:38Z",
+    "listener_pid": 47302
+  },
+  "wire": {
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json"
+    ],
+    "candidate": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+    "api_url": "http://localhost:19038",
+    "web_url": "http://localhost:13958",
+    "renderer_url": "http://127.0.0.1:19846/",
+    "database_name": "multica_check_20261103014929_14264_api",
+    "provider_accounts": false,
+    "fixture_wiring_only": true
+  },
+  "actual_database": "multica_check_20261103014929_14264_api",
+  "actual_rendered_config": {
+    "apiBaseUrl": [
+      "http://localhost:19038"
+    ],
+    "wsUrl": [
+      "ws://localhost:19038/ws"
+    ]
+  },
+  "api_db_web_wiring_verified": true,
+  "Provider_calls": 0
+}

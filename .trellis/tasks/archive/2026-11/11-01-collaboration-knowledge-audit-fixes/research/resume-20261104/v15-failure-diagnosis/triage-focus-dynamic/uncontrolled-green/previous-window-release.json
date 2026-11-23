@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-11-04T02:22:31.667732+00:00",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/scripts/dev-env.sh",
+    "down",
+    "triage-focus-v15-01a1a3c9",
+    "--components",
+    "api,web"
+  ],
+  "exit": 0,
+  "before": {
+    "api": {
+      "component": "api",
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=d41573e3a' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/server)",
+      "source_id": "32abb413f4e23b6031ff7d22aa9637bb6756eca28b832c01f812d3d3f0c3029a",
+      "configuration_id": "55b2d4489664e5b1c68b1cc87df14486480930ffe33b32564611647393a1a653",
+      "commit": "d41573e3a",
+      "launcher_pid": 95329,
+      "started_at": "2026-11-04T01:51:10Z",
+      "listener_pid": 95486
+    },
+    "web": {
+      "component": "web",
+      "mode": "production",
+      "build_id": "dy7TchAcyEEd1S2BGilpR",
+      "command": "pnpm --filter @multica/web exec next start --port 13951",
+      "source_id": "32abb413f4e23b6031ff7d22aa9637bb6756eca28b832c01f812d3d3f0c3029a",
+      "configuration_id": "2aae495905c8d98bbd6699d7dc90cb4e758c28f38bd656487d4d7944900cd545",
+      "commit": "d41573e3a",
+      "launcher_pid": 95861,
+      "started_at": "2026-11-04T01:53:21Z",
+      "listener_pid": 95880
+    }
+  },
+  "after_processes": [
+    {
+      "pid": 95329,
+      "present": false
+    },
+    {
+      "pid": 95861,
+      "present": false
+    },
+    {
+      "pid": 95486,
+      "present": false
+    },
+    {
+      "pid": 95880,
+      "present": false
+    }
+  ],
+  "previous_data_and_history_retained": true,
+  "log_sha256": "6fd06af68300e0f8fd0433fdc24d91299acde48bfd6cc73bdd6938875599368c"
+}

@@ -1,0 +1,13 @@
+{"file": ".trellis/tasks/10-26-collaboration-memory/design.md", "reason": "Storage, write semantics, human/runtime/CLI contracts, client layout and rollout for collaboration memory."}
+{"file": ".trellis/tasks/10-26-collaboration-memory/research/server-patterns.md", "reason": "Access, R38 delegation, content-mutation idempotency, realtime outbox, side-effect channels, migration and env conventions with file:line."}
+{"file": ".trellis/tasks/10-26-collaboration-memory/research/runtime-cli-patterns.md", "reason": "Host claim/permit/prompt flow, runtime gating, capability negotiation, CLI allowlist and docs that list collaboration commands."}
+{"file": ".trellis/tasks/10-26-collaboration-memory/research/client-patterns.md", "reason": "core/views collaboration module patterns, conflict handling, run-records layout and admin settings. Its mobile section is background only: Mobile is out of scope (C25)."}
+{"file": ".trellis/spec/server/collaboration-host-execution.md", "reason": "Host-mode contract the memory injection and runtime routes must preserve (permits, receipts, legacy compatibility)."}
+{"file": ".trellis/spec/server/collaboration-runtime-cli.md", "reason": "Narrow runtime CLI credentials and allowlist that memory show/update extend."}
+{"file": ".trellis/spec/server/collaboration-records.md", "reason": "Run-record projection rules: optional fields over new item kinds, private/no-store records."}
+{"file": ".trellis/spec/server/collaboration-realtime.md", "reason": "Content-free frames, owning-transaction events, invalidate-never-mirror."}
+{"file": ".trellis/spec/server/collaboration-content.md", "reason": "Concurrent index registration, refused rollback and content replay semantics."}
+{"file": ".trellis/spec/server/collaboration-administration.md", "reason": "R38 delegated actions: real admin actor, reason bounds, two ledgers, original-key recovery."}
+{"file": ".trellis/spec/server/collaboration-foundation.md", "reason": "Authority model, no-FK rule, machine projection and workflow receipts every collaboration resource follows."}
+{"file": ".trellis/spec/core/frontend/collaboration-workbench.md", "reason": "Account-scoped collaboration keys, reads, drafts and recovery in packages/core."}
+{"file": ".trellis/spec/views/frontend/component-guidelines.md", "reason": "Shared view component conventions for the memory panel."}

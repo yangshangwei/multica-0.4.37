@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "state": "static_review_complete_execution_gate_open",
+  "verdict": "not_final; awaiting stable source and full target evidence",
+  "base_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "source_snapshot": "static-source-snapshot.json",
+  "reviewed_at": "2026-11-01T18:36:42.467516+00:00",
+  "static_blocking_code_findings": [],
+  "scope": [
+    "11 changed E2E/helperfiles only",
+    "9 recipient interactions,3 evaluated_at comparisons,2 record paging region expectations",
+    "ENV1 positive real API/persisted base/liveDTO/UI regression",
+    "2 root-authorized password lane guards"
+  ],
+  "canonical_red_v2": {
+    "stats": {
+      "startTime": "2026-11-01T18:22:43.259Z",
+      "duration": 257134.162,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 3,
+      "flaky": 0
+    },
+    "classification": "THREE_TARGET_CONTRACT_FAILURES_REPRODUCED",
+    "selected_base_blob_checks": [
+      {
+        "path": "e2e/collaboration-editing-web.spec.ts",
+        "recorded_sha256": "3107232598be85c17368e409647d159eabae8976ccc7518267003395445cbd78",
+        "matches_base_blob": true
+      },
+      {
+        "path": "e2e/fixtures/collaboration-editing.ts",
+        "recorded_sha256": "e798a47b4dfcdd1647e0046e7ac9848c5dbce745ab1843598a4d132201b4cce4",
+        "matches_base_blob": true
+      },
+      {
+        "path": "e2e/collaboration-mention-journeys-web.spec.ts",
+        "recorded_sha256": "67a6cdd7da37d5840dbaca0f0b3396c7f22671e74c4a388554536d40b7d63d47",
+        "matches_base_blob": true
+      },
+      {
+        "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+        "recorded_sha256": "aa256fb98809c7fcf55944557bbda44e16b551416db38e32bdf075d6eb76d2c7",
+        "matches_base_blob": true
+      },
+      {
+        "path": "e2e/collaboration-records-web.spec.ts",
+        "recorded_sha256": "7128e45665c4ef455ecb18d4ef9d71995cee2caec001dadfc6b7fb78584853fb",
+        "matches_base_blob": true
+      },
+      {
+        "path": "e2e/fixtures/collaboration-records.ts",
+        "recorded_sha256": "0168b804af50679dfc0514cd98453e10190796ee0eeccbc7efc8862c177a39e3",
+        "matches_base_blob": true
+      },
+      {
+        "path": "playwright.config.ts",
+        "recorded_sha256": "de9a385def3e04d929d514b3d5eca092a78c6b1ea2895429e863e06f1ad285fd",
+        "matches_base_blob": true
+      }
+    ],
+    "private_hash_checks": [
+      {
+        "expected_field": "output_sha256",
+        "matching_private_files": [
+          "output.log"
+        ]
+      },
+      {
+        "expected_field": "results_sha256",
+        "matching_private_files": [
+          "results.json"
+        ]
+      }
+    ],
+    "early_CORS_setup_failure_preserved": true
+  },
+  "assertion_audit": {
+    "authority_and_byte_assertions_retained": true,
+    "request_identity_idempotency_dedup_retained": true,
+    "timestamp_exclusion": "only exact author_authority.evaluated_at; validity checked separately; remaining fullstate equality kept",
+    "record_scope": "li[data-record-id] plus actual cursor-response and ordered pageIDs/body assertions; independenthandoffdata excluded",
+    "recipient_interaction": "existing accessible production Recipient picker exactresolver reused; percaller Assigned/Selected confirmations retained",
+    "ENV1": "seeded retainedbase0; real memoryPUTv1; persistedbase0/liveDTObase0latest1; positiveempty-start/latestv1link plus nofalseStartedv1; noingestionclaim",
+    "timeouts_retries": "existing deadlines preserved; only newENV1has own120s; executionrunner1worker/0retries"
+  },
+  "open_gates": [
+    "Finalstable file/diffhashes and review-ready.md",
+    "All14 historical target cases actual post-assertion pass with password-onlyLeave accounted for",
+    "ENV1 and both runtimeWeb/nativeElectron positive cases execute non-skipped on verifiedpasswordservices",
+    "Firstpassword5 two prereq failures resolved without weakening source or auth requirements",
+    "Finalaffected strictcheck scope honest:51 baseline nullability diagnostics not declared allgreen",
+    "Finalsamecandidate acceptance remains rootwork, C3maintenance evidence alone insufficient"
+  ],
+  "current_results_snapshot": {
+    "legacy_repaired": "9pass/1Leave-skip per rootauthorisedreport; not14pass",
+    "password_first": {
+      "startTime": "2026-11-01T18:33:03.772Z",
+      "duration": 32716.305000000004,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    }
+  },
+  "reviewer_product_edits": false,
+  "browser_or_test_commands": false,
+  "database_or_service_commands": false,
+  "provider_calls": 0,
+  "installed_cli_calls": 0,
+  "children_spawned": 0
+}

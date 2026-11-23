@@ -1,0 +1,40 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=180s",
+    "./internal/handler",
+    "-run",
+    "^Test(SquadOperatingProtocol|BuildSquadLeaderBriefing)"
+  ],
+  "database": "rnd_m1_receipts_green01",
+  "exit": 0,
+  "counts": {
+    "pass": 10,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestSquadOperatingProtocolChecksDelegationReceipts",
+      "TestSquadOperatingProtocolRecordsAgainstTheTurnsIssue",
+      "TestSquadOperatingProtocolOwnsParentStatus",
+      "TestSquadOperatingProtocolScopesParentStatusOwnership",
+      "TestSquadOperatingProtocolWarnsAgainstDualTrigger",
+      "TestBuildSquadLeaderBriefing_FullSquad",
+      "TestBuildSquadLeaderBriefing_MemberSkillsInRoster",
+      "TestBuildSquadLeaderBriefing_OnlyLeader",
+      "TestBuildSquadLeaderBriefing_SkipsArchivedAgent",
+      "TestBuildSquadLeaderBriefing_MentionsRoundTrip"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "log_sha256": "2bd6ec4c5a01b1b893b47f1c7eb39a1156cea0fc1092dda2300217de7855c535",
+  "classification": "superseded_pass_before_readback_clarification",
+  "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-handler-green-02.jsonl"
+}

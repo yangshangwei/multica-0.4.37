@@ -1,0 +1,230 @@
+{
+  "baseline": "38d07b6ed",
+  "scope": "opt-in attachment-free explicit agent/squad delegation create + durable recovery; not all comment writers or model execution",
+  "accepted": true,
+  "source_manifest": "research/final-source-manifest.json",
+  "final_checks": {
+    "final-handler-normal03": {
+      "record": "research/runs/final-handler-normal03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 342,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "1384229802620f8d82e63281dc9533fdf1c59357c3cc8fce13ad32ba8167b9bf"
+    },
+    "final-handler-race03": {
+      "record": "research/runs/final-handler-race03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 342,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "919855d9d81c092cf7a4a024c04a77db661ff1282478a8d5ea2b1ef613d1d803"
+    },
+    "final-router-normal03": {
+      "record": "research/runs/final-router-normal03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 20,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "1465c120402587e2cfcd258be7883bf7d7e228f4401114c5ec58f08c9c0f0043"
+    },
+    "final-router-race03": {
+      "record": "research/runs/final-router-race03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 20,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "c849423a39b0e9bf81a60412168bbf5ee74cca33bd618196db136381bf72c732"
+    },
+    "final-migrations03": {
+      "record": "research/runs/final-migrations03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "b0d4916ea137a83faec6397304bcd8a38fc480212713b7e654bd0a0594c3b3ad"
+    },
+    "final-migrations-race03": {
+      "record": "research/runs/final-migrations-race03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "b64bd626aa087f6b722bbc6a9a61c55a7e37001811c9c66c58b71c2f8b0abd3a"
+    },
+    "final-build03": {
+      "record": "research/runs/final-build03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-vet03": {
+      "record": "research/runs/final-vet03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-sqlc03": {
+      "record": "research/runs/final-sqlc03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-cli03": {
+      "record": "research/runs/final-cli03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 98,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "3f6211d1245b2bed7d61388cccf7af23916aa36d350466a6633573b620a535ec"
+    },
+    "final-guidance03": {
+      "record": "research/runs/final-guidance03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 33,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "97b3e9ef00b73d2e88d643bc90639ea70b6308655bfc6bc30e3dc3e7404de835"
+    },
+    "final-migration-contract03": {
+      "record": "research/runs/final-migration-contract03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "b494f77b4c804614c442de5e701e69c88c67f71fd38c5636f03b559e47646a6e"
+    },
+    "final-runtime-scan03": {
+      "record": "research/runs/final-runtime-scan03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "619cd11fcbcfa5d9fd216db7ed9c917b1ba743bc9d4ec3054e5d540cb4c133a5"
+    }
+  },
+  "preserved_failures": {
+    "backend-covering-squad-red01": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "backend-handler01": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    },
+    "backend-handler02": {
+      "pass": 5,
+      "fail": 1,
+      "skip": 0
+    },
+    "backend-handler03": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    },
+    "backend-reconcile-red01": {
+      "pass": 0,
+      "fail": 3,
+      "skip": 0
+    },
+    "backend-replay-green01": {
+      "pass": 37,
+      "fail": 4,
+      "skip": 0
+    },
+    "backend-reporter-scope-red01": {
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    },
+    "cli-guidance01": {
+      "pass": 31,
+      "fail": 2,
+      "skip": 0
+    },
+    "cli-red02": {
+      "pass": 1,
+      "fail": 15,
+      "skip": 0
+    },
+    "final-migrations": {
+      "pass": 4,
+      "fail": 1,
+      "skip": 0
+    },
+    "router-green01": {
+      "pass": 12,
+      "fail": 4,
+      "skip": 0
+    },
+    "router-offline01": {
+      "pass": 4,
+      "fail": 1,
+      "skip": 0
+    },
+    "router-race01": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    },
+    "router-race02": {
+      "pass": 16,
+      "fail": 1,
+      "skip": 0
+    },
+    "router-red01": {
+      "pass": 1,
+      "fail": 11,
+      "skip": 0
+    }
+  },
+  "counts_note": "Named terminal counts include subtests, each run separate, not summed as unique coverage; 205 handler top-level selected.",
+  "sqlc": "regenerated,36file frozen hash drift0",
+  "frontend": "no frontend change; Go build supplies typecheck; no TS/browser/fullrepo claim",
+  "real_model_calls": 0,
+  "limitations": [
+    "unknown never automatically retries, manual investigation required",
+    "explicit targets only; no implicit followup guarantee for keyed no-mention comments",
+    "keyed attachments refused; no-key/edit/quick-action remain immediate legacy",
+    "offline observation is sample from actual task runtime after admission, not continuous liveness",
+    "shared existing engine semantics; actual provider execution not accepted",
+    "AC43/E5/H3a/knowledge stops/budgets unchanged"
+  ],
+  "private_evidence_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub",
+  "independent_review": "research/independent-review.json",
+  "cleanup": "research/cleanup.json"
+}

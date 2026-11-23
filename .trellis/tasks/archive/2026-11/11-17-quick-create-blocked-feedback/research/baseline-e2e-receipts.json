@@ -1,0 +1,563 @@
+{
+  "note": "Previously executed source-bound E2E receipts, inspected on 2026-11-20. These are baseline evidence, not this task closeout fresh executions.",
+  "reports": [
+    {
+      "path": "artifacts/qa/full-e2e-20261120-r2/core.json",
+      "sha256": "c0834b3084ac34ea9522b19464fb37dc8216765961b17df207a9266a40f6f087",
+      "started_at": "2026-11-20T04:48:00.258Z",
+      "cases": [
+        {
+          "file": "chat-actor-picker.spec.ts",
+          "line": 139,
+          "title": "new chat reuses responsibility discovery, categories and keyboard selection at wide and narrow widths (en)",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3282
+            }
+          ]
+        },
+        {
+          "file": "chat-actor-picker.spec.ts",
+          "line": 139,
+          "title": "new chat reuses responsibility discovery, categories and keyboard selection at wide and narrow widths (zh-Hans)",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 2482
+            }
+          ]
+        },
+        {
+          "file": "chat-actor-picker.spec.ts",
+          "line": 201,
+          "title": "floating chat avatar uses the same agent discovery and restores focus on Escape",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 2218
+            }
+          ]
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "line": 96,
+          "title": "G5 a chat message runs on the daemon and its reply, then its failure, appear without reload",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3556
+            }
+          ]
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "line": 174,
+          "title": "G6 a plain comment re-engages the assignee, an @mention engages another agent and /note engages none",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 6615
+            }
+          ]
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "line": 274,
+          "title": "G7 an agent-mode quick create files the issue and notifies the requester; a run that files nothing reports why",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 5182
+            }
+          ]
+        },
+        {
+          "file": "core-business-agent-loops.spec.ts",
+          "line": 350,
+          "title": "G8 a running task streams its transcript, leaves the issue status alone and stays stopped after a late completion",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 4843
+            }
+          ]
+        },
+        {
+          "file": "issue-assist-flow.spec.ts",
+          "line": 58,
+          "title": "refines a vague feature, preserves folded answers, merges and undoes, then persists exactly once",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3510
+            }
+          ]
+        },
+        {
+          "file": "issue-assist-flow.spec.ts",
+          "line": 101,
+          "title": "handles 0 dynamic clarification questions and undo",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3230
+            }
+          ]
+        },
+        {
+          "file": "issue-assist-flow.spec.ts",
+          "line": 101,
+          "title": "handles 1 dynamic clarification questions and undo",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 2970
+            }
+          ]
+        },
+        {
+          "file": "issue-assist-flow.spec.ts",
+          "line": 116,
+          "title": "preserves edits during generation, supports cancellation and real provider failure",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 6200
+            }
+          ]
+        },
+        {
+          "file": "issue-assist-flow.spec.ts",
+          "line": 143,
+          "title": "creates the unchanged manual draft after a refinement failure",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 4020
+            }
+          ]
+        },
+        {
+          "file": "issue-assist-flow.spec.ts",
+          "line": 175,
+          "title": "manual keeps creation reachable at desktop and phone widths with long content",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3978
+            }
+          ]
+        },
+        {
+          "file": "issue-assist-flow.spec.ts",
+          "line": 175,
+          "title": "agent keeps creation reachable at desktop and phone widths with long content",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 6555
+            }
+          ]
+        },
+        {
+          "file": "issue-assist-flow.spec.ts",
+          "line": 198,
+          "title": "agent creation queues the refined prompt through the real API without executing a daemon",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3950
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker.spec.ts",
+          "line": 93,
+          "title": "manual assignment reuses discovery and preserves the draft (en)",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3071
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker.spec.ts",
+          "line": 170,
+          "title": "category tabs expose Mika and squad leaders at wide and narrow widths (en)",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3095
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker.spec.ts",
+          "line": 93,
+          "title": "manual assignment reuses discovery and preserves the draft (zh-Hans)",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3940
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker.spec.ts",
+          "line": 170,
+          "title": "category tabs expose Mika and squad leaders at wide and narrow widths (zh-Hans)",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3625
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker.spec.ts",
+          "line": 218,
+          "title": "real API actors keep favorites and accepted recents local to their workspace",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 7279
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker.spec.ts",
+          "line": 300,
+          "title": "550 route-mocked actors remain searchable and pageable with browser render samples",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 7238
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker.spec.ts",
+          "line": 369,
+          "title": "keyboard actions preserve draft and reset stale choices in a narrow viewport",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 2944
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker.spec.ts",
+          "line": 428,
+          "title": "desktop renderer supports picker search and pinning without starting a daemon",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 5616
+            }
+          ]
+        },
+        {
+          "file": "quick-create-autonomy.spec.ts",
+          "line": 52,
+          "title": "the creator picker lists Observer-level creators disabled with the reason and seeds a Contributor",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 3094
+            }
+          ]
+        },
+        {
+          "file": "quick-create-autonomy.spec.ts",
+          "line": 96,
+          "title": "an explicitly requested Observer explains the refusal and hands off to manual creation assigned to it",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 2924
+            }
+          ]
+        },
+        {
+          "file": "quick-create-autonomy.spec.ts",
+          "line": 139,
+          "title": "the API refuses an Observer or an Observer-led squad before enqueueing and accepts Contributors",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 656
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "artifacts/qa/full-e2e-20261120-r2/specialized/recommendation-cli.json",
+      "sha256": "9da4d696408e62b100b464ce4dc60fa745b90cd3ce15cccfcbdced9d3ba5ecc8",
+      "started_at": "2026-11-20T05:55:10.634Z",
+      "cases": [
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 56,
+          "title": "explicit default outranks accepted history and project candidates do not replace it",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 22373
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 78,
+          "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 20259
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 118,
+          "title": "actual Electron renderer adopts suggestions without running a daemon",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 9068
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 134,
+          "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 8603
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "artifacts/qa/full-e2e-20261120-r2/broad.json",
+      "sha256": "8954e5835334bacd915ba7e0d6a2083ec62c0e9ce4763680527337e1d194c08a",
+      "started_at": "2026-11-20T04:54:10.584Z",
+      "cases": [
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 56,
+          "title": "explicit default outranks accepted history and project candidates do not replace it",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 5899
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 78,
+          "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+          "status": "skipped",
+          "results": [
+            {
+              "status": "skipped",
+              "retry": 0,
+              "duration_ms": 77
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 118,
+          "title": "actual Electron renderer adopts suggestions without running a daemon",
+          "status": "skipped",
+          "results": [
+            {
+              "status": "skipped",
+              "retry": 0,
+              "duration_ms": 0
+            }
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "line": 134,
+          "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+          "status": "skipped",
+          "results": [
+            {
+              "status": "skipped",
+              "retry": 0,
+              "duration_ms": 97
+            }
+          ]
+        },
+        {
+          "file": "settings-preferences.spec.ts",
+          "line": 58,
+          "title": "grouped settings remain reachable from the sidebar and floating chat survives navigation and reload",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 6263
+            }
+          ]
+        },
+        {
+          "file": "settings-preferences.spec.ts",
+          "line": 107,
+          "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 9034
+            }
+          ]
+        },
+        {
+          "file": "upstream-selected-fixes.spec.ts",
+          "line": 128,
+          "title": "keeps the full Chinese and emoji comment behind active and archived Inbox previews",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 6326
+            }
+          ]
+        },
+        {
+          "file": "upstream-selected-fixes.spec.ts",
+          "line": 197,
+          "title": "keeps one usable Inbox sidebar toggle in split view and a way back at compact widths",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 4521
+            }
+          ]
+        },
+        {
+          "file": "upstream-selected-fixes.spec.ts",
+          "line": 243,
+          "title": "edits a bullet inside a checkbox and persists the selected list level after reopening",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 10154
+            }
+          ]
+        },
+        {
+          "file": "upstream-selected-fixes.spec.ts",
+          "line": 293,
+          "title": "defers hidden private runtime version 0.4.40 to the server's quick-create gate",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 6355
+            }
+          ]
+        },
+        {
+          "file": "upstream-selected-fixes.spec.ts",
+          "line": 293,
+          "title": "defers hidden private runtime version 0.0.1 to the server's quick-create gate",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration_ms": 4972
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "source_manifest": {
+    "path": "artifacts/qa/full-e2e-20261120-r2/candidate-source-sha256.json",
+    "sha256": "4dfe34e56307ed780b582db2dd6f2852ef4a1b067ccc1722d0d302da9edbf177"
+  }
+}

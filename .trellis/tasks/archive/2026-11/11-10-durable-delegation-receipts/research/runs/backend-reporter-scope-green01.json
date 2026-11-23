@@ -1,0 +1,45 @@
+{
+  "name": "backend-reporter-scope-green01",
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^TestDurableDelegation",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T05:32:20.245489+00:00",
+  "finished_at": "2026-11-10T05:32:45.560488+00:00",
+  "exit_code": 0,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_handler_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-reporter-scope-green01.log",
+  "log_sha256": "2ebbcceb55c2c765d5f15a2dcaccb05dc5a63cdaf1ba9098ee71b213883069cb",
+  "counts": {
+    "pass": 14,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "TestDurableDelegationActualQueueMergeDeferredAndRestart",
+      "TestDurableDelegationRejectionsAndFrozenTargets",
+      "TestDurableDelegationUnknownDoesNotRedispatch/claim_commit_after",
+      "TestDurableDelegationUnknownDoesNotRedispatch/finalization",
+      "TestDurableDelegationUnknownDoesNotRedispatch",
+      "TestDurableDelegationRejectsInvalidKeyAndAttachmentsBeforeWrite",
+      "TestDurableDelegationUnknownCannotReconcileOnCompletion/claim_commit_after",
+      "TestDurableDelegationUnknownCannotReconcileOnCompletion/finalization",
+      "TestDurableDelegationUnknownCannotReconcileOnCompletion",
+      "TestDurableDelegationUnknownSurvivorIsNotRequeued",
+      "TestDurableDelegationReplayCannotAdoptReplacementLeader",
+      "TestDurableDelegationReplayCannotAdoptPreviouslyRefusedSquad",
+      "TestDurableDelegationDirectAgentDeferredOnSquadTaskKeepsFollowup",
+      "TestDurableDelegationReporterLocksTargetBeforeScopeRead"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

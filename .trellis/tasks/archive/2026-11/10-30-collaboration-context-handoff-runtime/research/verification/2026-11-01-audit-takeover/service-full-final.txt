@@ -1,0 +1,797 @@
+=== RUN   TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase
+=== RUN   TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/pat
+=== RUN   TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/task
+=== RUN   TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/cloud
+=== RUN   TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/setup
+=== RUN   TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/change
+=== RUN   TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/wrong_user
+--- PASS: TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase (0.00s)
+    --- PASS: TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/pat (0.00s)
+    --- PASS: TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/task (0.00s)
+    --- PASS: TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/cloud (0.00s)
+    --- PASS: TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/setup (0.00s)
+    --- PASS: TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/change (0.00s)
+    --- PASS: TestAdminCollaborationRejectsMachineAndIncompleteSessionsBeforeDatabase/wrong_user (0.00s)
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/enabled_creator
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/departed_creator
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/observer
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/workspace_owner
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/disabled_admin
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/stale_session
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/restricted_admin
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/disabled_feature
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/legacy_mode
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/wrong_organization
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/missing_source_scope
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/inactive_organization
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/no_reason
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/long_reason
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/invalid_action
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/stale_revision
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/stale_status
+=== RUN   TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/stale_catalog
+--- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator (14.65s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/enabled_creator (0.40s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/departed_creator (0.38s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/observer (0.39s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/workspace_owner (0.41s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/disabled_admin (0.39s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/stale_session (0.61s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/restricted_admin (0.56s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/disabled_feature (0.96s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/legacy_mode (0.97s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/wrong_organization (0.83s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/missing_source_scope (1.09s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/inactive_organization (0.78s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/no_reason (1.23s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/long_reason (0.94s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/invalid_action (0.85s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/stale_revision (1.38s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/stale_status (1.19s)
+    --- PASS: TestAdminCollaborationRequiresCurrentAdministrationAndDisabledCreator/stale_catalog (1.27s)
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/missing
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/not_participating
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/revoked
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/disabled
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/password_change_required
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/password_missing
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/handler_active
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/complete
+=== RUN   TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/cancel
+--- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible (7.19s)
+    --- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/missing (0.95s)
+    --- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/not_participating (0.64s)
+    --- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/revoked (0.69s)
+    --- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/disabled (0.59s)
+    --- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/password_change_required (0.73s)
+    --- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/password_missing (0.90s)
+    --- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/handler_active (1.13s)
+    --- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/complete (0.82s)
+    --- PASS: TestAdminCollaborationSuccessorIsConditionalAndCurrentlyEligible/cancel (0.74s)
+=== RUN   TestAdminCollaborationReadScopeAndCandidateProjection
+--- PASS: TestAdminCollaborationReadScopeAndCandidateProjection (1.18s)
+=== RUN   TestAdminCollaborationCandidatesPaginateEligibleParticipants
+=== RUN   TestAdminCollaborationCandidatesPaginateEligibleParticipants/denied_prefix
+=== RUN   TestAdminCollaborationCandidatesPaginateEligibleParticipants/denied_page_boundary
+=== RUN   TestAdminCollaborationCandidatesPaginateEligibleParticipants/denied_tail
+=== RUN   TestAdminCollaborationCandidatesPaginateEligibleParticipants/all_denied
+--- PASS: TestAdminCollaborationCandidatesPaginateEligibleParticipants (2.61s)
+    --- PASS: TestAdminCollaborationCandidatesPaginateEligibleParticipants/denied_prefix (0.80s)
+    --- PASS: TestAdminCollaborationCandidatesPaginateEligibleParticipants/denied_page_boundary (0.55s)
+    --- PASS: TestAdminCollaborationCandidatesPaginateEligibleParticipants/denied_tail (0.69s)
+    --- PASS: TestAdminCollaborationCandidatesPaginateEligibleParticipants/all_denied (0.57s)
+=== RUN   TestAdminCollaborationTemporaryDisableMatchesAccountAvailability
+=== RUN   TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_creator_complete
+=== RUN   TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_creator_cancel
+=== RUN   TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_creator_healthy_handler_reopen
+=== RUN   TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_handler_requires_successor
+=== RUN   TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_creator_disabled_handler
+=== RUN   TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/both_temporarily_disabled
+--- PASS: TestAdminCollaborationTemporaryDisableMatchesAccountAvailability (4.67s)
+    --- PASS: TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_creator_complete (0.48s)
+    --- PASS: TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_creator_cancel (0.60s)
+    --- PASS: TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_creator_healthy_handler_reopen (0.62s)
+    --- PASS: TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_handler_requires_successor (0.89s)
+    --- PASS: TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/temporary_creator_disabled_handler (0.85s)
+    --- PASS: TestAdminCollaborationTemporaryDisableMatchesAccountAvailability/both_temporarily_disabled (1.22s)
+=== RUN   TestAdminCollaborationPasswordRestrictionsDoNotEnableAdministration
+=== RUN   TestAdminCollaborationPasswordRestrictionsDoNotEnableAdministration/password_missing
+=== RUN   TestAdminCollaborationPasswordRestrictionsDoNotEnableAdministration/password_change_required
+--- PASS: TestAdminCollaborationPasswordRestrictionsDoNotEnableAdministration (1.66s)
+    --- PASS: TestAdminCollaborationPasswordRestrictionsDoNotEnableAdministration/password_missing (0.92s)
+    --- PASS: TestAdminCollaborationPasswordRestrictionsDoNotEnableAdministration/password_change_required (0.73s)
+=== RUN   TestAdminCollaborationIssueListFiltersDisabledCreatorsBeforeLimit
+--- PASS: TestAdminCollaborationIssueListFiltersDisabledCreatorsBeforeLimit (0.69s)
+=== RUN   TestAdminCollaborationReopenRetainsHealthyHandlerAndDoesNotGrantOrdinaryRights
+--- PASS: TestAdminCollaborationReopenRetainsHealthyHandlerAndDoesNotGrantOrdinaryRights (0.62s)
+=== RUN   TestAdminCollaborationRecoveryPreservesOriginalKeyAndSuccessor
+--- PASS: TestAdminCollaborationRecoveryPreservesOriginalKeyAndSuccessor (0.73s)
+=== RUN   TestAdminCollaborationSameDisabledCreatorAndHandler
+--- PASS: TestAdminCollaborationSameDisabledCreatorAndHandler (0.48s)
+=== RUN   TestAdminCollaborationRejectsUncorrelatedStoredResult
+--- PASS: TestAdminCollaborationRejectsUncorrelatedStoredResult (1.01s)
+=== RUN   TestAdminCollaborationOperationKinds
+=== RUN   TestAdminCollaborationOperationKinds/collaboration.complete
+=== RUN   TestAdminCollaborationOperationKinds/collaboration.cancel
+=== RUN   TestAdminCollaborationOperationKinds/collaboration.reopen
+--- PASS: TestAdminCollaborationOperationKinds (0.65s)
+    --- PASS: TestAdminCollaborationOperationKinds/collaboration.complete (0.04s)
+    --- PASS: TestAdminCollaborationOperationKinds/collaboration.cancel (0.01s)
+    --- PASS: TestAdminCollaborationOperationKinds/collaboration.reopen (0.01s)
+=== RUN   TestAdminCollaborationLifecyclePreservesCreatorAndRealActor
+=== RUN   TestAdminCollaborationLifecyclePreservesCreatorAndRealActor/complete
+=== RUN   TestAdminCollaborationLifecyclePreservesCreatorAndRealActor/cancel
+--- PASS: TestAdminCollaborationLifecyclePreservesCreatorAndRealActor (1.26s)
+    --- PASS: TestAdminCollaborationLifecyclePreservesCreatorAndRealActor/complete (0.67s)
+    --- PASS: TestAdminCollaborationLifecyclePreservesCreatorAndRealActor/cancel (0.59s)
+=== RUN   TestAdminCollaborationReopenAssignsExistingParticipantAtomically
+--- PASS: TestAdminCollaborationReopenAssignsExistingParticipantAtomically (0.77s)
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/admin_role
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/admin_password_version
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/admin_disabled
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/creator_restored
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/candidate_disabled
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/candidate_left
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/candidate_password_restricted
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/handler_changed
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/source_scope_removed
+=== RUN   TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/organization_inactive
+--- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait (8.21s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/admin_role (0.77s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/admin_password_version (1.06s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/admin_disabled (0.79s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/creator_restored (0.76s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/candidate_disabled (0.90s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/candidate_left (0.65s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/candidate_password_restricted (0.63s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/handler_changed (1.08s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/source_scope_removed (0.95s)
+    --- PASS: TestAdminCollaborationRechecksAuthorityAndResponsibilityAfterLockWait/organization_inactive (0.62s)
+=== RUN   TestAdminCollaborationAuthorityFencesRemainUntilCommit
+=== RUN   TestAdminCollaborationAuthorityFencesRemainUntilCommit/role
+=== RUN   TestAdminCollaborationAuthorityFencesRemainUntilCommit/password
+=== RUN   TestAdminCollaborationAuthorityFencesRemainUntilCommit/source_scope
+=== RUN   TestAdminCollaborationAuthorityFencesRemainUntilCommit/organization
+=== RUN   TestAdminCollaborationAuthorityFencesRemainUntilCommit/successor_account
+=== RUN   TestAdminCollaborationAuthorityFencesRemainUntilCommit/successor_participation
+--- PASS: TestAdminCollaborationAuthorityFencesRemainUntilCommit (5.70s)
+    --- PASS: TestAdminCollaborationAuthorityFencesRemainUntilCommit/role (1.06s)
+    --- PASS: TestAdminCollaborationAuthorityFencesRemainUntilCommit/password (1.22s)
+    --- PASS: TestAdminCollaborationAuthorityFencesRemainUntilCommit/source_scope (0.88s)
+    --- PASS: TestAdminCollaborationAuthorityFencesRemainUntilCommit/organization (0.83s)
+    --- PASS: TestAdminCollaborationAuthorityFencesRemainUntilCommit/successor_account (0.69s)
+    --- PASS: TestAdminCollaborationAuthorityFencesRemainUntilCommit/successor_participation (1.02s)
+=== RUN   TestAdminCollaborationCloseReopenPreservesProofAndCancellationHistory
+--- PASS: TestAdminCollaborationCloseReopenPreservesProofAndCancellationHistory (0.77s)
+=== RUN   TestAdminCollaborationIterationFailureRollsBackSuccessorAndReopen
+--- PASS: TestAdminCollaborationIterationFailureRollsBackSuccessorAndReopen (0.52s)
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/INSERT_INTO_admin_operation
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/INSERT_INTO_collaboration_operation
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_session_SET_queue_state
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_issue_AS_i_SET
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_issue_handoff_SET_resolution
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_issue_collaboration_SET_active_information_request_id
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_issue_collaboration_SET_revision
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/INSERT_INTO_collaboration_event
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/INSERT_INTO_admin_audit_event
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_operation
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_command_SET_state
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_run
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_termination_SET
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_admin_operation
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_collaboration_operation
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_collaboration_session_SET_queue_state
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_AS_i_SET
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_handoff_SET_resolution
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_collaboration_SET_active_information_request_id
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_collaboration_SET_revision
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_collaboration_event
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_admin_audit_event
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_collaboration_operation
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_SET_assignee_type
+=== RUN   TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_issue_handoff
+--- PASS: TestAdminCollaborationRequiredWritesRollbackEverything (16.37s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/INSERT_INTO_admin_operation (0.59s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/INSERT_INTO_collaboration_operation (0.56s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_session_SET_queue_state (0.50s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_issue_AS_i_SET (0.73s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_issue_handoff_SET_resolution (0.74s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_issue_collaboration_SET_active_information_request_id (0.72s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_issue_collaboration_SET_revision (0.69s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/INSERT_INTO_collaboration_event (0.64s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/INSERT_INTO_admin_audit_event (0.74s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_operation (0.75s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_command_SET_state (0.61s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_run (0.67s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/complete/UPDATE_collaboration_termination_SET (0.61s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_admin_operation (0.55s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_collaboration_operation (0.72s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_collaboration_session_SET_queue_state (0.71s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_AS_i_SET (0.57s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_handoff_SET_resolution (0.72s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_collaboration_SET_active_information_request_id (0.68s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_collaboration_SET_revision (0.67s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_collaboration_event (0.52s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_admin_audit_event (0.52s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_collaboration_operation (0.88s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/UPDATE_issue_SET_assignee_type (0.65s)
+    --- PASS: TestAdminCollaborationRequiredWritesRollbackEverything/reopen/INSERT_INTO_issue_handoff (0.65s)
+=== RUN   TestAdminCollaborationCommitFailureAndOriginalKeyRecovery
+=== RUN   TestAdminCollaborationCommitFailureAndOriginalKeyRecovery/rollback
+=== RUN   TestAdminCollaborationCommitFailureAndOriginalKeyRecovery/lost_commit_reply
+--- PASS: TestAdminCollaborationCommitFailureAndOriginalKeyRecovery (1.17s)
+    --- PASS: TestAdminCollaborationCommitFailureAndOriginalKeyRecovery/rollback (0.48s)
+    --- PASS: TestAdminCollaborationCommitFailureAndOriginalKeyRecovery/lost_commit_reply (0.69s)
+=== RUN   TestAdminCollaborationConcurrentOriginalKeyHasOneHandoff
+--- PASS: TestAdminCollaborationConcurrentOriginalKeyHasOneHandoff (0.85s)
+=== RUN   TestCollaborationAccountInvalidationDisableRestoreRejectsOldIntent
+--- PASS: TestCollaborationAccountInvalidationDisableRestoreRejectsOldIntent (1.26s)
+=== RUN   TestCollaborationAccountInvalidationLegacyAccount
+--- PASS: TestCollaborationAccountInvalidationLegacyAccount (0.73s)
+=== RUN   TestCollaborationAccountInvalidationFailuresRollBackSecurityChange
+=== RUN   TestCollaborationAccountInvalidationFailuresRollBackSecurityChange/outbox
+=== RUN   TestCollaborationAccountInvalidationFailuresRollBackSecurityChange/audit
+=== RUN   TestCollaborationAccountInvalidationFailuresRollBackSecurityChange/epoch_exhausted
+--- PASS: TestCollaborationAccountInvalidationFailuresRollBackSecurityChange (1.38s)
+    --- PASS: TestCollaborationAccountInvalidationFailuresRollBackSecurityChange/outbox (0.54s)
+    --- PASS: TestCollaborationAccountInvalidationFailuresRollBackSecurityChange/audit (0.43s)
+    --- PASS: TestCollaborationAccountInvalidationFailuresRollBackSecurityChange/epoch_exhausted (0.42s)
+=== RUN   TestCollaborationAccountInvalidationDoesNotCreateOrdinaryAccountFence
+--- PASS: TestCollaborationAccountInvalidationDoesNotCreateOrdinaryAccountFence (0.50s)
+=== RUN   TestCollaborationAccountInvalidationDoesNotWaitForSourceIssue
+--- PASS: TestCollaborationAccountInvalidationDoesNotWaitForSourceIssue (0.92s)
+=== RUN   TestCollaborationAccountInvalidationAdministrativeCredentialWriters
+=== RUN   TestCollaborationAccountInvalidationAdministrativeCredentialWriters/role_elevation
+=== RUN   TestCollaborationAccountInvalidationAdministrativeCredentialWriters/bootstrap
+=== RUN   TestCollaborationAccountInvalidationAdministrativeCredentialWriters/deployment_recovery
+--- PASS: TestCollaborationAccountInvalidationAdministrativeCredentialWriters (1.67s)
+    --- PASS: TestCollaborationAccountInvalidationAdministrativeCredentialWriters/role_elevation (0.61s)
+    --- PASS: TestCollaborationAccountInvalidationAdministrativeCredentialWriters/bootstrap (0.41s)
+    --- PASS: TestCollaborationAccountInvalidationAdministrativeCredentialWriters/deployment_recovery (0.65s)
+=== RUN   TestCollaborationAccountInvalidationBorrowedTransactionReplay
+--- PASS: TestCollaborationAccountInvalidationBorrowedTransactionReplay (0.41s)
+=== RUN   TestCollaborationAccountInvalidationWaitsForFirstParticipationUserFence
+--- PASS: TestCollaborationAccountInvalidationWaitsForFirstParticipationUserFence (0.54s)
+=== RUN   TestCollaborationAccountReconciliationRotationSurvivesWorkerRestart
+--- PASS: TestCollaborationAccountReconciliationRotationSurvivesWorkerRestart (1.39s)
+=== RUN   TestCollaborationAccountReconciliationReportsSchedulingFailure
+--- PASS: TestCollaborationAccountReconciliationReportsSchedulingFailure (0.94s)
+=== RUN   TestCollaborationAccountReconciliationMakesProgressBeyondFailedPass
+--- PASS: TestCollaborationAccountReconciliationMakesProgressBeyondFailedPass (2.19s)
+=== RUN   TestCollaborationAccountReconciliationDisableRestore
+--- PASS: TestCollaborationAccountReconciliationDisableRestore (2.37s)
+=== RUN   TestCollaborationOldInvalidationPreservesFreshGrantOnSameTypedTarget
+--- PASS: TestCollaborationOldInvalidationPreservesFreshGrantOnSameTypedTarget (1.72s)
+=== RUN   TestCollaborationAccountReconciliationStopEvidence
+=== RUN   TestCollaborationAccountReconciliationStopEvidence/never_launched_author
+=== RUN   TestCollaborationAccountReconciliationStopEvidence/never_launched_owner
+=== RUN   TestCollaborationAccountReconciliationStopEvidence/success_without_permit
+=== RUN   TestCollaborationAccountReconciliationStopEvidence/started_without_permit
+=== RUN   TestCollaborationAccountReconciliationStopEvidence/first_forced_root
+=== RUN   TestCollaborationAccountReconciliationStopEvidence/closed
+--- PASS: TestCollaborationAccountReconciliationStopEvidence (9.76s)
+    --- PASS: TestCollaborationAccountReconciliationStopEvidence/never_launched_author (1.25s)
+    --- PASS: TestCollaborationAccountReconciliationStopEvidence/never_launched_owner (1.30s)
+    --- PASS: TestCollaborationAccountReconciliationStopEvidence/success_without_permit (1.36s)
+    --- PASS: TestCollaborationAccountReconciliationStopEvidence/started_without_permit (1.66s)
+    --- PASS: TestCollaborationAccountReconciliationStopEvidence/first_forced_root (1.96s)
+    --- PASS: TestCollaborationAccountReconciliationStopEvidence/closed (2.23s)
+=== RUN   TestCollaborationAccountReconciliationBusySourceKeepsCursor
+=== RUN   TestCollaborationAccountReconciliationBusySourceKeepsCursor/workspace
+=== RUN   TestCollaborationAccountReconciliationBusySourceKeepsCursor/issue
+=== RUN   TestCollaborationAccountReconciliationBusySourceKeepsCursor/session
+--- PASS: TestCollaborationAccountReconciliationBusySourceKeepsCursor (5.98s)
+    --- PASS: TestCollaborationAccountReconciliationBusySourceKeepsCursor/workspace (2.36s)
+    --- PASS: TestCollaborationAccountReconciliationBusySourceKeepsCursor/issue (1.87s)
+    --- PASS: TestCollaborationAccountReconciliationBusySourceKeepsCursor/session (1.76s)
+=== RUN   TestCollaborationAccountReconciliationMultipleConsumers
+--- PASS: TestCollaborationAccountReconciliationMultipleConsumers (2.42s)
+=== RUN   TestCollaborationAccountReconciliationIndependentAccountAfterFailure
+=== RUN   TestCollaborationAccountReconciliationIndependentAccountAfterFailure/busy
+=== RUN   TestCollaborationAccountReconciliationIndependentAccountAfterFailure/missing_source
+--- PASS: TestCollaborationAccountReconciliationIndependentAccountAfterFailure (4.59s)
+    --- PASS: TestCollaborationAccountReconciliationIndependentAccountAfterFailure/busy (2.81s)
+    --- PASS: TestCollaborationAccountReconciliationIndependentAccountAfterFailure/missing_source (1.78s)
+=== RUN   TestCollaborationAccountReconciliationAtomicFailures
+=== RUN   TestCollaborationAccountReconciliationAtomicFailures/event
+=== RUN   TestCollaborationAccountReconciliationAtomicFailures/cursor
+=== RUN   TestCollaborationAccountReconciliationAtomicFailures/commit
+=== RUN   TestCollaborationAccountReconciliationAtomicFailures/unknown_commit
+--- PASS: TestCollaborationAccountReconciliationAtomicFailures (5.05s)
+    --- PASS: TestCollaborationAccountReconciliationAtomicFailures/event (1.19s)
+    --- PASS: TestCollaborationAccountReconciliationAtomicFailures/cursor (1.48s)
+    --- PASS: TestCollaborationAccountReconciliationAtomicFailures/commit (1.25s)
+    --- PASS: TestCollaborationAccountReconciliationAtomicFailures/unknown_commit (1.14s)
+=== RUN   TestCollaborationAccountReconciliationStartupAndShutdown
+--- PASS: TestCollaborationAccountReconciliationStartupAndShutdown (1.74s)
+=== RUN   TestCollaborationAccountReconciliationProgressRollbackGuard
+=== RUN   TestCollaborationAccountReconciliationProgressRollbackGuard/617_collaboration_account_invalidation_progress
+=== RUN   TestCollaborationAccountReconciliationProgressRollbackGuard/618_collaboration_account_invalidation_attempt
+=== RUN   TestCollaborationAccountReconciliationProgressRollbackGuard/619_collaboration_account_invalidation_poll
+--- PASS: TestCollaborationAccountReconciliationProgressRollbackGuard (1.53s)
+    --- PASS: TestCollaborationAccountReconciliationProgressRollbackGuard/617_collaboration_account_invalidation_progress (0.44s)
+    --- PASS: TestCollaborationAccountReconciliationProgressRollbackGuard/618_collaboration_account_invalidation_attempt (0.47s)
+    --- PASS: TestCollaborationAccountReconciliationProgressRollbackGuard/619_collaboration_account_invalidation_poll (0.62s)
+=== RUN   TestCollaborationActivityRetainsExactHandoffAndEditHistory
+--- PASS: TestCollaborationActivityRetainsExactHandoffAndEditHistory (0.37s)
+=== RUN   TestCollaborationActivityRejectsLostAuthorityAndRedactsUnknownPayloads
+--- PASS: TestCollaborationActivityRejectsLostAuthorityAndRedactsUnknownPayloads (0.31s)
+=== RUN   TestCollaborationAttachmentDraftCanCreateOnlyOneIssue
+2026/11/01 23:21:01 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentDraftCanCreateOnlyOneIssue2135357773/001 baseURL=""
+--- PASS: TestCollaborationAttachmentDraftCanCreateOnlyOneIssue (0.41s)
+=== RUN   TestCollaborationAttachmentDraftConcurrentCreationsChooseOneIssue
+2026/11/01 23:21:01 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentDraftConcurrentCreationsChooseOneIssu1816204315/001 baseURL=""
+--- PASS: TestCollaborationAttachmentDraftConcurrentCreationsChooseOneIssue (0.41s)
+=== RUN   TestCollaborationAttachmentDraftConsumptionWinsAgainstPreparedUpload
+2026/11/01 23:21:02 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentDraftConsumptionWinsAgainstPreparedUp1685800326/001 baseURL=""
+--- PASS: TestCollaborationAttachmentDraftConsumptionWinsAgainstPreparedUpload (0.27s)
+=== RUN   TestCollaborationAttachmentDraftContextSurvivesDiscard
+2026/11/01 23:21:02 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentDraftContextSurvivesDiscard3161556904/001 baseURL=""
+--- PASS: TestCollaborationAttachmentDraftContextSurvivesDiscard (0.40s)
+=== RUN   TestCollaborationAttachmentDraftMetadataIncludesIntendedIssue
+2026/11/01 23:21:02 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentDraftMetadataIncludesIntendedIssue3223356143/001 baseURL=""
+--- PASS: TestCollaborationAttachmentDraftMetadataIncludesIntendedIssue (0.29s)
+=== RUN   TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites
+2026/11/01 23:21:03 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentCreationBindingRollsBackWithRequiredW2530791627/001 baseURL=""
+--- PASS: TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites (0.36s)
+=== RUN   TestCollaborationAttachmentScopeCiphertextAndLiveAccess
+2026/11/01 23:21:03 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentScopeCiphertextAndLiveAccess1497848236/001 baseURL=""
+--- PASS: TestCollaborationAttachmentScopeCiphertextAndLiveAccess (0.27s)
+=== RUN   TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes
+2026/11/01 23:21:03 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes1147151692/001 baseURL=""
+--- PASS: TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes (0.22s)
+=== RUN   TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner
+2026/11/01 23:21:04 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner2498424088/001 baseURL=""
+--- PASS: TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner (0.51s)
+=== RUN   TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage
+2026/11/01 23:21:04 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage519699546/001 baseURL=""
+--- PASS: TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage (0.22s)
+=== RUN   TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion
+2026/11/01 23:21:04 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletio3558504594/001 baseURL=""
+--- PASS: TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion (0.78s)
+=== RUN   TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity
+2026/11/01 23:21:05 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipI3997265813/001 baseURL=""
+--- PASS: TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity (0.35s)
+=== RUN   TestCollaborationRegistrationChecksActualResourceOwner
+--- PASS: TestCollaborationRegistrationChecksActualResourceOwner (0.31s)
+=== RUN   TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent
+--- PASS: TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent (0.40s)
+=== RUN   TestCollaborationConsentUsesCompleteSquadRoster
+--- PASS: TestCollaborationConsentUsesCompleteSquadRoster (0.49s)
+=== RUN   TestCollaborationPresenceAndNamesDoNotInvalidateConsent
+--- PASS: TestCollaborationPresenceAndNamesDoNotInvalidateConsent (0.40s)
+=== RUN   TestCollaborationConsentCurrentAuthority
+=== RUN   TestCollaborationConsentCurrentAuthority/participant_epoch
+=== RUN   TestCollaborationConsentCurrentAuthority/account_epoch
+=== RUN   TestCollaborationConsentCurrentAuthority/binding_epoch
+=== RUN   TestCollaborationConsentCurrentAuthority/deployment
+=== RUN   TestCollaborationConsentCurrentAuthority/namespace
+=== RUN   TestCollaborationConsentCurrentAuthority/old_grant
+--- PASS: TestCollaborationConsentCurrentAuthority (3.18s)
+    --- PASS: TestCollaborationConsentCurrentAuthority/participant_epoch (0.95s)
+    --- PASS: TestCollaborationConsentCurrentAuthority/account_epoch (0.54s)
+    --- PASS: TestCollaborationConsentCurrentAuthority/binding_epoch (0.46s)
+    --- PASS: TestCollaborationConsentCurrentAuthority/deployment (0.50s)
+    --- PASS: TestCollaborationConsentCurrentAuthority/namespace (0.36s)
+    --- PASS: TestCollaborationConsentCurrentAuthority/old_grant (0.37s)
+=== RUN   TestCollaborationReconfigureRequiresNewOwnerConsent
+--- PASS: TestCollaborationReconfigureRequiresNewOwnerConsent (0.49s)
+=== RUN   TestCollaborationPermissionRestoreCannotReviveConsent
+--- PASS: TestCollaborationPermissionRestoreCannotReviveConsent (0.63s)
+=== RUN   TestCollaborationDirectBatchClaimKeepsEnqueueOrderAcrossTransactions
+--- PASS: TestCollaborationDirectBatchClaimKeepsEnqueueOrderAcrossTransactions (1.32s)
+=== RUN   TestCollaborationMixedBatchUsesChannelInputOrder
+--- PASS: TestCollaborationMixedBatchUsesChannelInputOrder (0.69s)
+=== RUN   TestCollaborationWaitingInputsShareOnePendingBatch
+--- PASS: TestCollaborationWaitingInputsShareOnePendingBatch (0.39s)
+=== RUN   TestCollaborationBatchCoalescesDirectAgentAndOneSquad
+--- PASS: TestCollaborationBatchCoalescesDirectAgentAndOneSquad (0.44s)
+=== RUN   TestCollaborationBatchKeepsOneFollowupBehindRunningWork
+--- PASS: TestCollaborationBatchKeepsOneFollowupBehindRunningWork (0.43s)
+=== RUN   TestCollaborationCatalogueAuthorityMatrix
+    collaboration_catalogue_matrix_test.go:445: AC96 service matrix: current organization, complete three-owner consent, new participant reuse, paused/offline/busy waiting, derived provenance/recheck, owner-wide withdrawal, history/Stop/proof and ordinary/machine boundaries verified
+--- PASS: TestCollaborationCatalogueAuthorityMatrix (5.30s)
+=== RUN   TestCollaborationCheckpointAuthorityTransactionOrder
+=== RUN   TestCollaborationCheckpointAuthorityTransactionOrder/stop/checkpoint_first
+=== RUN   TestCollaborationCheckpointAuthorityTransactionOrder/stop/authority_first
+=== RUN   TestCollaborationCheckpointAuthorityTransactionOrder/revoke_grant/checkpoint_first
+=== RUN   TestCollaborationCheckpointAuthorityTransactionOrder/revoke_grant/authority_first
+=== RUN   TestCollaborationCheckpointAuthorityTransactionOrder/author_leave/checkpoint_first
+=== RUN   TestCollaborationCheckpointAuthorityTransactionOrder/author_leave/authority_first
+--- PASS: TestCollaborationCheckpointAuthorityTransactionOrder (9.34s)
+    --- PASS: TestCollaborationCheckpointAuthorityTransactionOrder/stop/checkpoint_first (1.58s)
+    --- PASS: TestCollaborationCheckpointAuthorityTransactionOrder/stop/authority_first (1.38s)
+    --- PASS: TestCollaborationCheckpointAuthorityTransactionOrder/revoke_grant/checkpoint_first (1.46s)
+    --- PASS: TestCollaborationCheckpointAuthorityTransactionOrder/revoke_grant/authority_first (1.26s)
+    --- PASS: TestCollaborationCheckpointAuthorityTransactionOrder/author_leave/checkpoint_first (1.88s)
+    --- PASS: TestCollaborationCheckpointAuthorityTransactionOrder/author_leave/authority_first (1.78s)
+=== RUN   TestCollaborationRecordingSealRetainsMaximumCheckpointHistory
+--- PASS: TestCollaborationRecordingSealRetainsMaximumCheckpointHistory (25.50s)
+=== RUN   TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK
+--- PASS: TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK (1.38s)
+=== RUN   TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable
+--- PASS: TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable (1.37s)
+=== RUN   TestCollaborationCommandCancellationBackgroundAttribution
+=== RUN   TestCollaborationCommandCancellationBackgroundAttribution/account_invalidation
+=== RUN   TestCollaborationCommandCancellationBackgroundAttribution/promotion_stale_author
+=== RUN   TestCollaborationCommandCancellationBackgroundAttribution/proven_nonlaunch_return
+--- PASS: TestCollaborationCommandCancellationBackgroundAttribution (3.46s)
+    --- PASS: TestCollaborationCommandCancellationBackgroundAttribution/account_invalidation (1.06s)
+    --- PASS: TestCollaborationCommandCancellationBackgroundAttribution/promotion_stale_author (1.02s)
+    --- PASS: TestCollaborationCommandCancellationBackgroundAttribution/proven_nonlaunch_return (1.38s)
+=== RUN   TestCollaborationCommandHistoryM11CancelClaimRace
+=== RUN   TestCollaborationCommandHistoryM11CancelClaimRace/cancel_first
+=== RUN   TestCollaborationCommandHistoryM11CancelClaimRace/claim_first
+--- PASS: TestCollaborationCommandHistoryM11CancelClaimRace (4.73s)
+    --- PASS: TestCollaborationCommandHistoryM11CancelClaimRace/cancel_first (2.78s)
+    --- PASS: TestCollaborationCommandHistoryM11CancelClaimRace/claim_first (1.95s)
+=== RUN   TestCollaborationCommandHistoryAutomaticM11Detach
+=== RUN   TestCollaborationCommandHistoryAutomaticM11Detach/remove
+=== RUN   TestCollaborationCommandHistoryAutomaticM11Detach/complete
+--- PASS: TestCollaborationCommandHistoryAutomaticM11Detach (2.56s)
+    --- PASS: TestCollaborationCommandHistoryAutomaticM11Detach/remove (1.25s)
+    --- PASS: TestCollaborationCommandHistoryAutomaticM11Detach/complete (1.31s)
+=== RUN   TestCollaborationCommandHistorySwitchThenCancelPreservesHistoricalPlacement
+--- PASS: TestCollaborationCommandHistorySwitchThenCancelPreservesHistoricalPlacement (0.60s)
+=== RUN   TestCollaborationCommandHistoryReasonPreservesNullableValues
+=== RUN   TestCollaborationCommandHistoryReasonPreservesNullableValues/sql_null
+=== RUN   TestCollaborationCommandHistoryReasonPreservesNullableValues/sql_null_with_stale_value
+=== RUN   TestCollaborationCommandHistoryReasonPreservesNullableValues/valid_empty
+=== RUN   TestCollaborationCommandHistoryReasonPreservesNullableValues/cancellation
+=== RUN   TestCollaborationCommandHistoryReasonPreservesNullableValues/failure
+=== RUN   TestCollaborationCommandHistoryReasonPreservesNullableValues/whitespace
+--- PASS: TestCollaborationCommandHistoryReasonPreservesNullableValues (0.00s)
+    --- PASS: TestCollaborationCommandHistoryReasonPreservesNullableValues/sql_null (0.00s)
+    --- PASS: TestCollaborationCommandHistoryReasonPreservesNullableValues/sql_null_with_stale_value (0.00s)
+    --- PASS: TestCollaborationCommandHistoryReasonPreservesNullableValues/valid_empty (0.00s)
+    --- PASS: TestCollaborationCommandHistoryReasonPreservesNullableValues/cancellation (0.00s)
+    --- PASS: TestCollaborationCommandHistoryReasonPreservesNullableValues/failure (0.00s)
+    --- PASS: TestCollaborationCommandHistoryReasonPreservesNullableValues/whitespace (0.00s)
+=== RUN   TestCollaborationCommandHistoryReasonFromSucceededManagedCommand
+--- PASS: TestCollaborationCommandHistoryReasonFromSucceededManagedCommand (0.98s)
+=== RUN   TestCollaborationCommandCancellationExactProvenance
+=== RUN   TestCollaborationCommandCancellationExactProvenance/manual
+=== RUN   TestCollaborationCommandCancellationExactProvenance/remove
+=== RUN   TestCollaborationCommandCancellationExactProvenance/leave
+=== RUN   TestCollaborationCommandCancellationExactProvenance/complete
+=== RUN   TestCollaborationCommandCancellationExactProvenance/cancel
+--- PASS: TestCollaborationCommandCancellationExactProvenance (1.82s)
+    --- PASS: TestCollaborationCommandCancellationExactProvenance/manual (0.51s)
+    --- PASS: TestCollaborationCommandCancellationExactProvenance/remove (0.31s)
+    --- PASS: TestCollaborationCommandCancellationExactProvenance/leave (0.30s)
+    --- PASS: TestCollaborationCommandCancellationExactProvenance/complete (0.32s)
+    --- PASS: TestCollaborationCommandCancellationExactProvenance/cancel (0.39s)
+=== RUN   TestCollaborationCommandHistoryOutlivesCommentAndAttachmentDisplay
+2026/11/01 23:22:12 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCommandHistoryOutlivesCommentAndAttachmentDispl3367116874/001 baseURL=""
+--- PASS: TestCollaborationCommandHistoryOutlivesCommentAndAttachmentDisplay (0.68s)
+=== RUN   TestCollaborationCommandHistoryPagingAndCurrentAuthority
+--- PASS: TestCollaborationCommandHistoryPagingAndCurrentAuthority (1.10s)
+=== RUN   TestCollaborationCommandHistoryKeepsUnprovenLegacyCancellationUnknown
+--- PASS: TestCollaborationCommandHistoryKeepsUnprovenLegacyCancellationUnknown (0.57s)
+=== RUN   TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull
+--- PASS: TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull (1.42s)
+=== RUN   TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence
+=== RUN   TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/legacy_manual
+=== RUN   TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/foreign_event
+=== RUN   TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/wrong_command
+=== RUN   TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/missing_actor
+=== RUN   TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/wrong_reason
+=== RUN   TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/missing_event
+--- PASS: TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence (2.04s)
+    --- PASS: TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/legacy_manual (0.31s)
+    --- PASS: TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/foreign_event (0.31s)
+    --- PASS: TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/wrong_command (0.32s)
+    --- PASS: TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/missing_actor (0.37s)
+    --- PASS: TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/wrong_reason (0.39s)
+    --- PASS: TestCollaborationCommandHistoryLegacyManualAndBrokenEvidence/missing_event (0.35s)
+=== RUN   TestCollaborationCommandCancellationRollsBackEventAndState
+=== RUN   TestCollaborationCommandCancellationRollsBackEventAndState/manual/CreateCollaborationEvent
+=== RUN   TestCollaborationCommandCancellationRollsBackEventAndState/manual/LinkCollaborationCommandCancellation
+=== RUN   TestCollaborationCommandCancellationRollsBackEventAndState/manual/CompleteCollaborationOperation
+=== RUN   TestCollaborationCommandCancellationRollsBackEventAndState/complete/CreateCollaborationEvent
+=== RUN   TestCollaborationCommandCancellationRollsBackEventAndState/complete/LinkCollaborationCommandCancellation
+=== RUN   TestCollaborationCommandCancellationRollsBackEventAndState/complete/CompleteCollaborationOperation
+--- PASS: TestCollaborationCommandCancellationRollsBackEventAndState (2.19s)
+    --- PASS: TestCollaborationCommandCancellationRollsBackEventAndState/manual/CreateCollaborationEvent (0.31s)
+    --- PASS: TestCollaborationCommandCancellationRollsBackEventAndState/manual/LinkCollaborationCommandCancellation (0.34s)
+    --- PASS: TestCollaborationCommandCancellationRollsBackEventAndState/manual/CompleteCollaborationOperation (0.36s)
+    --- PASS: TestCollaborationCommandCancellationRollsBackEventAndState/complete/CreateCollaborationEvent (0.38s)
+    --- PASS: TestCollaborationCommandCancellationRollsBackEventAndState/complete/LinkCollaborationCommandCancellation (0.40s)
+    --- PASS: TestCollaborationCommandCancellationRollsBackEventAndState/complete/CompleteCollaborationOperation (0.40s)
+=== RUN   TestCollaborationCommandCancellationUnknownCommitKeepsOneEvent
+--- PASS: TestCollaborationCommandCancellationUnknownCommitKeepsOneEvent (0.80s)
+=== RUN   TestCollaborationCommandOperationRecoveryAndDepartureRedaction
+--- PASS: TestCollaborationCommandOperationRecoveryAndDepartureRedaction (0.94s)
+=== RUN   TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory
+=== RUN   TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory/edit_first
+2026/11/01 23:22:22 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory289957564/001 baseURL=""
+=== RUN   TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory/delete_first
+2026/11/01 23:22:23 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory2401598268/001 baseURL=""
+--- PASS: TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory (2.05s)
+    --- PASS: TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory/edit_first (1.13s)
+    --- PASS: TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory/delete_first (0.92s)
+=== RUN   TestCollaborationCommentOversizedOriginalGetsDurableRefusal
+--- PASS: TestCollaborationCommentOversizedOriginalGetsDurableRefusal (0.31s)
+=== RUN   TestCollaborationRecallBudgetCountsEscapingEnvelopeAndAdvances
+--- PASS: TestCollaborationRecallBudgetCountsEscapingEnvelopeAndAdvances (0.00s)
+=== RUN   TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding
+--- PASS: TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding (0.03s)
+=== RUN   TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority
+--- PASS: TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority (4.67s)
+=== RUN   TestCollaborationRuntimeCommentsCarryMemberDisplayNames
+--- PASS: TestCollaborationRuntimeCommentsCarryMemberDisplayNames (1.35s)
+=== RUN   TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked
+--- PASS: TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked (0.49s)
+=== RUN   TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing
+--- PASS: TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing (0.43s)
+=== RUN   TestCollaborationCommentCommitFailureRollsBackEveryEffect
+=== RUN   TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationComment
+=== RUN   TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationCommand
+=== RUN   TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationContentEvent
+=== RUN   TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationContentNotification
+=== RUN   TestCollaborationCommentCommitFailureRollsBackEveryEffect/CompleteCollaborationOperation
+--- PASS: TestCollaborationCommentCommitFailureRollsBackEveryEffect (1.91s)
+    --- PASS: TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationComment (0.42s)
+    --- PASS: TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationCommand (0.47s)
+    --- PASS: TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationContentEvent (0.35s)
+    --- PASS: TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationContentNotification (0.34s)
+    --- PASS: TestCollaborationCommentCommitFailureRollsBackEveryEffect/CompleteCollaborationOperation (0.34s)
+=== RUN   TestCollaborationCommentAuthorEditRetainsHistoryAndDeletedReplyAnchor
+--- PASS: TestCollaborationCommentAuthorEditRetainsHistoryAndDeletedReplyAnchor (0.40s)
+=== RUN   TestCollaborationCommentEditsSerializeAndUnknownCommitDoesNotRepeat
+--- PASS: TestCollaborationCommentEditsSerializeAndUnknownCommitDoesNotRepeat (0.44s)
+=== RUN   TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification
+=== RUN   TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/EditCollaborationComment
+=== RUN   TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/CreateCollaborationContentEvent
+=== RUN   TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/CreateCollaborationContentNotification
+=== RUN   TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/CompleteCollaborationOperation
+--- PASS: TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification (0.98s)
+    --- PASS: TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/EditCollaborationComment (0.24s)
+    --- PASS: TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/CreateCollaborationContentEvent (0.25s)
+    --- PASS: TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/CreateCollaborationContentNotification (0.25s)
+    --- PASS: TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/CompleteCollaborationOperation (0.24s)
+=== RUN   TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly
+--- PASS: TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly (0.31s)
+=== RUN   TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants
+--- PASS: TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants (0.31s)
+=== RUN   TestCollaborationConfigurationFixtureDoesNotDependOnPublicOutbox
+--- PASS: TestCollaborationConfigurationFixtureDoesNotDependOnPublicOutbox (0.46s)
+=== RUN   TestCollaborationConfigurationWritersStopOnlyDependentWork
+=== RUN   TestCollaborationConfigurationWritersStopOnlyDependentWork/agent_instructions
+=== RUN   TestCollaborationConfigurationWritersStopOnlyDependentWork/runtime_visibility
+=== RUN   TestCollaborationConfigurationWritersStopOnlyDependentWork/invoke_membership
+=== RUN   TestCollaborationConfigurationWritersStopOnlyDependentWork/skill_binding
+--- PASS: TestCollaborationConfigurationWritersStopOnlyDependentWork (5.33s)
+    --- PASS: TestCollaborationConfigurationWritersStopOnlyDependentWork/agent_instructions (1.24s)
+    --- PASS: TestCollaborationConfigurationWritersStopOnlyDependentWork/runtime_visibility (1.25s)
+    --- PASS: TestCollaborationConfigurationWritersStopOnlyDependentWork/invoke_membership (1.50s)
+    --- PASS: TestCollaborationConfigurationWritersStopOnlyDependentWork/skill_binding (1.34s)
+=== RUN   TestCollaborationConfigurationOldIntentPreservesNewConsentAndRunningGroup
+--- PASS: TestCollaborationConfigurationOldIntentPreservesNewConsentAndRunningGroup (0.96s)
+=== RUN   TestCollaborationSquadConfigurationHoldsOnlyItsAlias
+=== RUN   TestCollaborationSquadConfigurationHoldsOnlyItsAlias/leader
+=== RUN   TestCollaborationSquadConfigurationHoldsOnlyItsAlias/add_member
+=== RUN   TestCollaborationSquadConfigurationHoldsOnlyItsAlias/remove_member
+=== RUN   TestCollaborationSquadConfigurationHoldsOnlyItsAlias/member_role
+--- PASS: TestCollaborationSquadConfigurationHoldsOnlyItsAlias (4.85s)
+    --- PASS: TestCollaborationSquadConfigurationHoldsOnlyItsAlias/leader (1.13s)
+    --- PASS: TestCollaborationSquadConfigurationHoldsOnlyItsAlias/add_member (1.10s)
+    --- PASS: TestCollaborationSquadConfigurationHoldsOnlyItsAlias/remove_member (1.19s)
+    --- PASS: TestCollaborationSquadConfigurationHoldsOnlyItsAlias/member_role (1.43s)
+=== RUN   TestCollaborationConfigurationWriterCommitsWhileSourceBusyAndConsumerRetries
+--- PASS: TestCollaborationConfigurationWriterCommitsWhileSourceBusyAndConsumerRetries (0.72s)
+=== RUN   TestCollaborationConfigurationAtomicFailureAndUnknownCommit
+=== RUN   TestCollaborationConfigurationAtomicFailureAndUnknownCommit/event
+=== RUN   TestCollaborationConfigurationAtomicFailureAndUnknownCommit/cursor
+=== RUN   TestCollaborationConfigurationAtomicFailureAndUnknownCommit/commit
+=== RUN   TestCollaborationConfigurationAtomicFailureAndUnknownCommit/unknown_commit
+--- PASS: TestCollaborationConfigurationAtomicFailureAndUnknownCommit (4.73s)
+    --- PASS: TestCollaborationConfigurationAtomicFailureAndUnknownCommit/event (1.25s)
+    --- PASS: TestCollaborationConfigurationAtomicFailureAndUnknownCommit/cursor (1.07s)
+    --- PASS: TestCollaborationConfigurationAtomicFailureAndUnknownCommit/commit (1.13s)
+    --- PASS: TestCollaborationConfigurationAtomicFailureAndUnknownCommit/unknown_commit (1.28s)
+=== RUN   TestCollaborationConfigurationBackgroundConsumerRunsWithGateDisabled
+--- PASS: TestCollaborationConfigurationBackgroundConsumerRunsWithGateDisabled (0.74s)
+=== RUN   TestCollaborationConfigurationDeletedResourceWithoutGrantRetainsProof
+--- PASS: TestCollaborationConfigurationDeletedResourceWithoutGrantRetainsProof (1.08s)
+=== RUN   TestCollaborationConfigurationAttemptFairnessSurvivesRestart
+--- PASS: TestCollaborationConfigurationAttemptFairnessSurvivesRestart (1.39s)
+=== RUN   TestCollaborationConfigurationConcurrentConsumersCommitOneEffect
+--- PASS: TestCollaborationConfigurationConcurrentConsumersCommitOneEffect (0.56s)
+=== RUN   TestCollaborationConfigurationChildWriterRollbackIsAtomic
+--- PASS: TestCollaborationConfigurationChildWriterRollbackIsAtomic (0.55s)
+=== RUN   TestCollaborationResumeAllSettlesChannelsIndependently
+--- PASS: TestCollaborationResumeAllSettlesChannelsIndependently (1.10s)
+=== RUN   TestCollaborationResumeAllowsOfflineAuthorizedWaiting
+--- PASS: TestCollaborationResumeAllowsOfflineAuthorizedWaiting (1.09s)
+=== RUN   TestCollaborationResumeAliasesKeepIndependentHolds
+=== RUN   TestCollaborationResumeAliasesKeepIndependentHolds/unused_revoked_squad
+=== RUN   TestCollaborationResumeAliasesKeepIndependentHolds/squad_head
+=== RUN   TestCollaborationResumeAliasesKeepIndependentHolds/revoked_input_target
+--- PASS: TestCollaborationResumeAliasesKeepIndependentHolds (1.97s)
+    --- PASS: TestCollaborationResumeAliasesKeepIndependentHolds/unused_revoked_squad (0.60s)
+    --- PASS: TestCollaborationResumeAliasesKeepIndependentHolds/squad_head (0.72s)
+    --- PASS: TestCollaborationResumeAliasesKeepIndependentHolds/revoked_input_target (0.65s)
+=== RUN   TestCollaborationResumePreservesHealthyActiveExecution
+--- PASS: TestCollaborationResumePreservesHealthyActiveExecution (0.44s)
+=== RUN   TestCollaborationTargetResumeForcedActiveGroupRefusesWithoutWrites
+--- PASS: TestCollaborationTargetResumeForcedActiveGroupRefusesWithoutWrites (0.50s)
+=== RUN   TestCollaborationResumeRollbackAndOriginalCommitRecovery
+--- PASS: TestCollaborationResumeRollbackAndOriginalCommitRecovery (0.45s)
+=== RUN   TestCollaborationResumeChannelVersionsRemainExact
+--- PASS: TestCollaborationResumeChannelVersionsRemainExact (0.48s)
+=== RUN   TestCollaborationStopReturnsNeverLaunchedBatchInputs
+--- PASS: TestCollaborationStopReturnsNeverLaunchedBatchInputs (1.14s)
+=== RUN   TestCollaborationProvenSettlementRejectsOrphanDelegation
+--- PASS: TestCollaborationProvenSettlementRejectsOrphanDelegation (0.34s)
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/closed
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/terminal
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/admission
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/scope
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/session_control
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/channel_control
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/group_generation
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/target_epoch
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/config_version
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/gate_epoch
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/gate_disabled
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/lifecycle
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/participant
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/account
+=== RUN   TestCollaborationResumeAllGlobalGuardsPreserveState/requester
+--- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState (4.46s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/closed (0.25s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/terminal (0.24s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/admission (0.29s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/scope (0.37s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/session_control (0.69s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/channel_control (0.41s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/group_generation (0.31s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/target_epoch (0.26s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/config_version (0.23s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/gate_epoch (0.23s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/gate_disabled (0.24s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/lifecycle (0.21s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/participant (0.22s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/account (0.32s)
+    --- PASS: TestCollaborationResumeAllGlobalGuardsPreserveState/requester (0.21s)
+=== RUN   TestCollaborationResumeAllRetainsRemovedChannelReservation
+--- PASS: TestCollaborationResumeAllRetainsRemovedChannelReservation (0.29s)
+=== RUN   TestCollaborationResumeAndFreezeSerializeThroughCommit
+=== RUN   TestCollaborationResumeAndFreezeSerializeThroughCommit/resume_first
+=== RUN   TestCollaborationResumeAndFreezeSerializeThroughCommit/freeze_first
+--- PASS: TestCollaborationResumeAndFreezeSerializeThroughCommit (0.61s)
+    --- PASS: TestCollaborationResumeAndFreezeSerializeThroughCommit/resume_first (0.33s)
+    --- PASS: TestCollaborationResumeAndFreezeSerializeThroughCommit/freeze_first (0.28s)
+=== RUN   TestCollaborationStopAliasIncludesEveryGroupDescendant
+--- PASS: TestCollaborationStopAliasIncludesEveryGroupDescendant (0.34s)
+=== RUN   TestCollaborationResumeAllEmptyScopeReleasesGlobalPause
+--- PASS: TestCollaborationResumeAllEmptyScopeReleasesGlobalPause (0.36s)
+=== RUN   TestCollaborationCreationRejectionRemainsSealed
+=== RUN   TestCollaborationCreationRejectionRemainsSealed/recipient
+=== RUN   TestCollaborationCreationRejectionRemainsSealed/gate
+--- PASS: TestCollaborationCreationRejectionRemainsSealed (0.35s)
+    --- PASS: TestCollaborationCreationRejectionRemainsSealed/recipient (0.19s)
+    --- PASS: TestCollaborationCreationRejectionRemainsSealed/gate (0.16s)
+=== RUN   TestCollaborationCreationRejectionUnknownCommitMustBeRead
+=== RUN   TestCollaborationCreationRejectionUnknownCommitMustBeRead/rolled_back
+=== RUN   TestCollaborationCreationRejectionUnknownCommitMustBeRead/committed_ack_lost
+--- PASS: TestCollaborationCreationRejectionUnknownCommitMustBeRead (0.26s)
+    --- PASS: TestCollaborationCreationRejectionUnknownCommitMustBeRead/rolled_back (0.16s)
+    --- PASS: TestCollaborationCreationRejectionUnknownCommitMustBeRead/committed_ack_lost (0.11s)
+=== RUN   TestCollaborationCreationRejectionCorrectedIntentConsumesDraftOnce
+2026/11/01 23:23:11 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionCorrectedIntentConsumesDraftOn2276502668/001 baseURL=""
+--- PASS: TestCollaborationCreationRejectionCorrectedIntentConsumesDraftOnce (0.18s)
+=== RUN   TestCollaborationCreationRejectionConcurrentOldAndCorrectedRequests
+--- PASS: TestCollaborationCreationRejectionConcurrentOldAndCorrectedRequests (0.39s)
+=== RUN   TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit
+=== RUN   TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/recipient
+=== RUN   TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/source
+=== RUN   TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/workspace
+=== RUN   TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/gate
+=== RUN   TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/result_reader
+--- PASS: TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit (1.45s)
+    --- PASS: TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/recipient (0.27s)
+    --- PASS: TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/source (0.23s)
+    --- PASS: TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/workspace (0.38s)
+    --- PASS: TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/gate (0.33s)
+    --- PASS: TestCollaborationCreationRejectionKeepsAdmissionFencesUntilCommit/result_reader (0.25s)
+=== RUN   TestCollaborationCreationRejectionBorrowedTransactionCanRollback
+=== RUN   TestCollaborationCreationRejectionBorrowedTransactionCanRollback/recipient
+2026/11/01 23:23:13 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionBorrowedTransactionCanRollback3461081923/001 baseURL=""
+=== RUN   TestCollaborationCreationRejectionBorrowedTransactionCanRollback/attachment
+2026/11/01 23:23:13 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionBorrowedTransactionCanRollback81976088/001 baseURL=""
+--- PASS: TestCollaborationCreationRejectionBorrowedTransactionCanRollback (0.85s)
+    --- PASS: TestCollaborationCreationRejectionBorrowedTransactionCanRollback/recipient (0.28s)
+    --- PASS: TestCollaborationCreationRejectionBorrowedTransactionCanRollback/attachment (0.57s)
+=== RUN   TestCollaborationCreationResultRequiresOwnCurrentActor
+--- PASS: TestCollaborationCreationResultRequiresOwnCurrentActor (0.14s)
+=== RUN   TestCollaborationCreationResultCreatedDoesNotGrantContentAccess
+--- PASS: TestCollaborationCreationResultCreatedDoesNotGrantContentAccess (0.26s)
+=== RUN   TestCollaborationCreationResultAndReplayRevalidatePasswordActor
+=== RUN   TestCollaborationCreationResultAndReplayRevalidatePasswordActor/created
+=== RUN   TestCollaborationCreationResultAndReplayRevalidatePasswordActor/rejected
+--- PASS: TestCollaborationCreationResultAndReplayRevalidatePasswordActor (0.39s)
+    --- PASS: TestCollaborationCreationResultAndReplayRevalidatePasswordActor/created (0.21s)
+    --- PASS: TestCollaborationCreationResultAndReplayRevalidatePasswordActor/rejected (0.18s)
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/machine
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/unclassified
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/agent_actor
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/missing_actor
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/disabled_actor
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/non_member
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/non_member_closed_gate
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/missing_source
+=== RUN   TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/stale_password
+--- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects (1.05s)
+    --- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/machine (0.13s)
+    --- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/unclassified (0.11s)
+    --- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/agent_actor (0.10s)
+    --- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/missing_actor (0.11s)
+    --- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/disabled_actor (0.12s)
+    --- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/non_member (0.13s)
+    --- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/non_member_closed_gate (0.12s)
+    --- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/missing_source (0.11s)
+    --- PASS: TestCollaborationCreationRejectionAuthorizationHasNoSideEffects/stale_password (0.11s)
+=== RUN   TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic
+=== RUN   TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/invalid_selection
+2026/11/01 23:23:15 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionSelectionAndSourceFailuresAreA2016888185/001 baseURL=""
+=== RUN   TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/missing_attachment
+2026/11/01 23:23:15 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionSelectionAndSourceFailuresAreA1474376293/001 baseURL=""
+=== RUN   TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/wrong_draft
+2026/11/01 23:23:16 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionSelectionAndSourceFailuresAreA813233010/001 baseURL=""
+=== RUN   TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/missing_parent
+2026/11/01 23:23:16 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionSelectionAndSourceFailuresAreA33463899/001 baseURL=""
+=== RUN   TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/missing_project
+2026/11/01 23:23:16 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionSelectionAndSourceFailuresAreA3299990528/001 baseURL=""
+=== RUN   TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/parent_triage
+2026/11/01 23:23:16 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionSelectionAndSourceFailuresAreA2706162246/001 baseURL=""
+=== RUN   TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/capacity
+2026/11/01 23:23:16 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCreationRejectionSelectionAndSourceFailuresAreA1173962284/001 baseURL=""
+--- PASS: TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic (1.17s)
+    --- PASS: TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/invalid_selection (0.16s)
+    --- PASS: TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/missing_attachment (0.17s)
+    --- PASS: TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/wrong_draft (0.19s)
+    --- PASS: TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/missing_parent (0.20s)
+    --- PASS: TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/missing_project (0.15s)
+    --- PASS: TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/parent_triage (0.16s)
+    --- PASS: TestCollaborationCreationRejectionSelectionAndSourceFailuresAreAtomic/capacity (0.15s)
+=== RUN   TestCollaborationCreationResultInvalidOrUnknownIsNotSettled
+=== RUN   TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/request
+=== RUN   TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/source
+=== RUN   TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/actor
+=== RUN   TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/outcome
+=== RUN   TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/code
+=== RUN   TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/null_result
+=== RUN   TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/resolved_issue
+=== RUN   TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/unfinished
+--- PASS: TestCollaborationCreationResultInvalidOrUnknownIsNotSettled (0.12s)
+    --- PASS: TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/request (0.00s)
+    --- PASS: TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/source (0.00s)
+    --- PASS: TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/actor (0.00s)
+    --- PASS: TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/outcome (0.00s)
+    --- PASS: TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/code (0.00s)
+    --- PASS: TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/null_result (0.00s)
+    --- PASS: TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/resolved_issue (0.00s)
+    --- PASS: TestCollaborationCreationResultInvalidOrUnknownIsNotSettled/unfinished (0.00s)
+=== RUN   TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown
+=== RUN   TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/parent_query
+=== RUN   TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/rejection_write
+=== RUN   TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/savepoint
+=== RUN   TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/rollback
+=== RUN   TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/release
+--- PASS: TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown (0.66s)
+    --- PASS: TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/parent_query (0.13s)
+    --- PASS: TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/rejection_write (0.12s)
+    --- PASS: TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/savepoint (0.12s)
+    --- PASS: TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/rollback (0.13s)
+    --- PASS: TestCollaborationCreationRejectionPersistenceFailureRemainsUnknown/release (0.16s)
+=== RUN   TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis
+=== RUN   TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis/participant
+=== RUN   TestCollaborationDiscussionResolveUnresolveUsesCurrentReadBasis/source_member

@@ -1,0 +1,427 @@
+"use client";
+
+import { useId, useState } from "react";
+import { ArrowRight, Download, Loader2 } from "lucide-react";
+import { statusCategoryOfKey } from "@multica/core/issues";
+import { STATUS_CONFIG } from "@multica/core/issues/config";
+import type { IssueStatus } from "@multica/core/types";
+import { useConfigStore } from "@multica/core/config";
+import { StatusIcon } from "../../issues/components/status-icon";
+import { Button, buttonVariants } from "@multica/ui/components/ui/button";
+import { MulticaIcon } from "@multica/ui/components/common/multica-icon";
+import { cn } from "@multica/ui/lib/utils";
+import { DragStrip } from "@multica/views/platform";
+import { ProviderLogo } from "../../runtimes/components/provider-logo";
+import { useT } from "../../i18n";
+
+/**
+ * Step 0 — the one-shot product intro shown on every onboarding
+ * entry, including new-workspace creation (the current step is not persisted).
+ * New-workspace creation supplies onCancel instead of the existing-workspace
+ * skip action so users can leave without completing onboarding.
+ *
+ * Layout: two-column editorial hero on lg+, single column below.
+ * Left = wordmark + serif headline + lede + CTA; right = a stack of
+ * mock issue cards that show what human/agent collaboration looks
+ * like on the board — the thing the user is about to create. The
+ * right column is an illustrative activity feed, hidden below lg. Its
+ * collaboration summary remains visible on narrow viewports.
+ *
+ * `onSkip`, when provided, renders a secondary ghost CTA that marks
+ * onboarding complete server-side and sends the user straight to
+ * their existing workspace. OnboardingFlow only passes it when the
+ * user has ≥ 1 workspace — without that, skipping lands in limbo.
+ *
+ * `isWeb` flips two things when true: the subheading acknowledges
+ * that web users have an extra runtime step (so "3 minutes" stops
+ * being a lie), and a "Download Desktop" CTA surfaces before the user
+ * has invested in questionnaire / workspace. It links to the operator's
+ * download page (`desktop_download_url`) and is omitted when none is
+ * configured, leaving "Continue on web" as the primary action. Desktop
+ * bundles a daemon, so the same prompt would be noise there.
+ */
+export function StepWelcome({
+  onNext,
+  onSkip,
+  onCancel,
+  isWeb = false,
+}: {
+  onNext: () => void | Promise<void>;
+  onSkip?: () => void | Promise<void>;
+  onCancel?: () => void;
+  isWeb?: boolean;
+}) {
+  const { t } = useT("onboarding");
+  const downloadUrl = useConfigStore((s) => s.desktopDownloadUrl);
+  const illustrationTitleId = useId();
+  // Tracks which button is mid-flight so we can show a per-button
+  // spinner and disable both while one is in progress.
+  const [pending, setPending] = useState<"next" | "skip" | null>(null);
+
+  const handleNext = async () => {
+    if (pending) return;
+    setPending("next");
+    try {
+      await onNext();
+    } finally {
+      setPending(null);
+    }
+  };
+
+  const handleSkip = async () => {
+    if (pending || !onSkip) return;
+    setPending("skip");
+    try {
+      await onSkip();
+    } finally {
+      setPending(null);
+    }
+  };
+
+  return (
+    <div className="animate-onboarding-enter flex min-h-svh shrink-0 flex-col lg:flex-row">
+      {/* Intrinsic height keeps short windows scrollable; the example cannot push the CTA down. */}
+      <div className="flex min-h-svh min-w-0 flex-col lg:sticky lg:top-0 lg:flex-1 lg:self-start">
+        <DragStrip />
+        <div className="flex flex-1 flex-col justify-center px-6 pb-12 pt-6 sm:px-10 xl:px-16 2xl:px-20">
+          <div className="@container mx-auto flex w-full max-w-[560px] flex-col gap-7">
+            <div className="flex items-center gap-2.5">
+              <MulticaIcon className="size-5 text-foreground" noSpin />
+              <span className="font-serif text-title-lg font-medium tracking-tight">
+                {t(($) => $.welcome.wordmark)}
+              </span>
+            </div>
+
+            <h1 className="text-balance font-serif text-[clamp(1.75rem,10cqi,3.75rem)] font-medium leading-[1.08] tracking-tight">
+              {t(($) => $.welcome.headline_line1)}
+              <br />
+              {t(($) => $.welcome.headline_line2)}{" "}
+              <em className="inline-block max-w-full align-bottom italic text-brand">
+                {t(($) => $.welcome.headline_emphasis)}
+              </em>
+            </h1>
+
+            <div className="flex flex-col gap-4">
+              <p className="text-title leading-relaxed text-foreground">
+                {t(($) => $.welcome.lede)}
+              </p>
+              <p className="text-body leading-relaxed text-muted-foreground">
+                {!isWeb
+                  ? t(($) => $.welcome.lede_desktop)
+                  : downloadUrl
+                    ? t(($) => $.welcome.lede_web)
+                    : t(($) => $.welcome.lede_web_no_desktop)}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {isWeb ? (
+                <>
+                  {/* `<a>` rather than `<Button onClick={window.open}>`
+                      so middle-click / cmd-click / "Copy link" all
+                      behave and screen readers announce it as a link
+                      (it navigates; `Continue on web` is the button
+                      that mutates flow state). New tab preserves this
+                      onboarding tab in case the desktop install
+                      stalls and the user falls back here. */}
+                  {downloadUrl && (
+                    <a
+                      href={downloadUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={buttonVariants({ size: "lg", className: "h-11 px-4" })}
+                    >
+                      <Download className="h-4 w-4" />
+                      {t(($) => $.welcome.download_desktop)}
+                    </a>
+                  )}
+                  <Button
+                    size="lg"
+                    className="h-11 px-4"
+                    variant={downloadUrl ? "outline" : "default"}
+                    onClick={handleNext}
+                    disabled={pending !== null}
+                  >
+                    {pending === "next" && (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    )}
+                    {t(($) => $.welcome.continue_on_web)}
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  size="lg"
+                  className="h-11 px-4"
+                  onClick={handleNext}
+                  disabled={pending !== null}
+                >
+                  {pending === "next" && (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  )}
+                  {t(($) => $.welcome.start_exploring)}
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              )}
+              {onCancel && (
+                <Button
+                  size="lg"
+                  className="h-11 px-4"
+                  variant="ghost"
+                  onClick={onCancel}
+                  disabled={pending !== null}
+                >
+                  {t(($) => $.common.cancel)}
+                </Button>
+              )}
+              {onSkip && (
+                <Button
+                  size="lg"
+                  className="h-11 px-4"
+                  variant="ghost"
+                  onClick={handleSkip}
+                  disabled={pending !== null}
+                >
+                  {pending === "skip" && (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  )}
+                  {t(($) => $.welcome.skip_existing)}
+                </Button>
+              )}
+            </div>
+            <p className="text-body-lg leading-relaxed text-muted-foreground lg:hidden">
+              {t(($) => $.welcome.illustration_caption)}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* The example may grow beyond the viewport without moving the left CTA. */}
+      <section
+        aria-labelledby={illustrationTitleId}
+        className="hidden min-w-0 border-l bg-muted/40 lg:flex lg:flex-1 lg:flex-col lg:overflow-hidden"
+      >
+        <DragStrip />
+        <div className="flex flex-1 flex-col items-center justify-center gap-7 px-10 py-8">
+          <h2
+            id={illustrationTitleId}
+            className="max-w-[440px] text-balance text-center font-serif text-body-lg font-normal italic leading-snug text-muted-foreground"
+          >
+            {t(($) => $.welcome.illustration_caption)}
+          </h2>
+          <WelcomeIllustration />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+
+/**
+ * Software development across a shared multi-agent workspace. Five activity cards
+ * woven through 3 shared issues (MCA-42 appears 3×) so the reader can
+ * *see* agents referencing each other's work — the product's
+ * "one workspace, shared context" thesis rendered concretely.
+ *
+ * Cards use slight rotations + indents to feel like a hand-stacked
+ * pile rather than a neat feed, which matches the editorial-hero
+ * aesthetic of the left column.
+ */
+function WelcomeIllustration() {
+  const { t } = useT("onboarding");
+  return (
+    <ul role="list" className="flex w-full max-w-[460px] flex-col gap-3">
+      <MockActivityCard
+        actor={{
+          kind: "user",
+          name: t(($) => $.welcome.illustration.card1_actor_name),
+          initial: t(($) => $.welcome.illustration.card1_actor_initial),
+        }}
+        issueId="MCA-42"
+        content={
+          <>
+            <Mention>{t(($) => $.welcome.illustration.card1_mention_assignee)}</Mention>
+            {t(($) => $.welcome.illustration.card1_body_prefix)}
+            <Mention>{t(($) => $.welcome.illustration.card1_mention_source)}</Mention>
+            {t(($) => $.welcome.illustration.card1_body_suffix)}
+          </>
+        }
+      />
+      <MockActivityCard
+        className="-translate-x-5 -rotate-[1.2deg]"
+        actor={{
+          kind: "agent",
+          name: t(($) => $.welcome.illustration.card2_actor_name),
+          provider: "codex",
+        }}
+        issueId="MCA-42"
+        content={t(($) => $.welcome.illustration.card2_body)}
+        status="in_progress"
+      />
+      <MockActivityCard
+        className="translate-x-8 rotate-[1.6deg]"
+        actor={{
+          kind: "agent",
+          name: t(($) => $.welcome.illustration.card3_actor_name),
+          provider: "hermes",
+        }}
+        issueId="MCA-38"
+        content={t(($) => $.welcome.illustration.card3_body)}
+        status="done"
+        timestamp={t(($) => $.welcome.illustration.card3_timestamp)}
+      />
+      <MockActivityCard
+        className="-translate-x-6 -rotate-[0.8deg]"
+        actor={{
+          kind: "agent",
+          name: t(($) => $.welcome.illustration.card4_actor_name),
+          provider: "openclaw",
+        }}
+        issueId="MCA-42"
+        content={t(($) => $.welcome.illustration.card4_body)}
+        status="in_review"
+      />
+      <MockActivityCard
+        className="translate-x-6 rotate-[1deg]"
+        actor={{
+          kind: "agent",
+          name: t(($) => $.welcome.illustration.card5_actor_name),
+          provider: "claude",
+        }}
+        issueId="MCA-35"
+        content={
+          <>
+            {t(($) => $.welcome.illustration.card5_body_prefix)}
+            <Mention>{t(($) => $.welcome.illustration.card5_mention_you)}</Mention>
+            {t(($) => $.welcome.illustration.card5_body_suffix)}
+          </>
+        }
+        status="done"
+        timestamp={t(($) => $.welcome.illustration.card5_timestamp)}
+      />
+    </ul>
+  );
+}
+
+type ProviderName =
+  | "claude"
+  | "codex"
+  | "opencode"
+  | "openclaw"
+  | "hermes"
+  | "kimi"
+  | "kiro"
+  | "qoder"
+  | "pi"
+  | "copilot"
+  | "cursor";
+
+type ActivityActor =
+  | { kind: "user"; name: string; initial: string }
+  | { kind: "agent"; name: string; provider: ProviderName };
+
+function MockActivityCard({
+  actor,
+  issueId,
+  content,
+  status,
+  timestamp,
+  className,
+}: {
+  actor: ActivityActor;
+  issueId: string;
+  content: React.ReactNode;
+  status?: Extract<IssueStatus, "in_progress" | "done" | "in_review">;
+  timestamp?: string;
+  className?: string;
+}) {
+  return (
+    <li
+      className={cn(
+        "rounded-lg border bg-card px-4 py-3.5 shadow-sm",
+        className,
+      )}
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <MockAvatar actor={actor} />
+          <span className="truncate text-body font-medium text-foreground">
+            {actor.name}
+          </span>
+        </div>
+        <span className="shrink-0 font-mono text-micro text-muted-foreground">
+          {issueId}
+        </span>
+      </div>
+
+      <p className="mt-2.5 text-body leading-snug text-foreground">
+        {content}
+      </p>
+
+      {status && <StatusFooter status={status} timestamp={timestamp} />}
+    </li>
+  );
+}
+
+function MockAvatar({ actor }: { actor: ActivityActor }) {
+  if (actor.kind === "user") {
+    return (
+      <div
+        aria-hidden
+        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-foreground text-micro font-semibold text-background"
+      >
+        {actor.initial}
+      </div>
+    );
+  }
+  return (
+    <div
+      aria-hidden
+      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-muted/40 text-foreground"
+    >
+      <ProviderLogo provider={actor.provider} className="h-3.5 w-3.5" />
+    </div>
+  );
+}
+
+function StatusFooter({
+  status,
+  timestamp,
+}: {
+  status: IssueStatus;
+  timestamp?: string;
+}) {
+  // The illustration's statuses are hard-coded BUILT-IN keys, so the label
+  // resolves from i18n exactly the way `useStatusLabel` does for real issues
+  // (MUL-6243) — `STATUS_CONFIG` still owns the icon color, but its `.label`
+  // is the server's English seed and must never reach the screen.
+  const { t } = useT("issues");
+  const category = statusCategoryOfKey(status);
+  const cfg = STATUS_CONFIG[category];
+  return (
+    <div className="mt-3 flex items-center gap-2 text-caption">
+      <span
+        className={cn("flex items-center gap-1.5 font-medium", cfg.iconColor)}
+      >
+        <StatusIcon
+          status={status}
+          className={cn(
+            "h-3.5 w-3.5",
+            status === "in_progress" && "animate-pulse",
+          )}
+        />
+        {t(($) => $.status[category])}
+      </span>
+      {timestamp && (
+        <>
+          <span className="text-muted-foreground">·</span>
+          <span className="text-muted-foreground">{timestamp}</span>
+        </>
+      )}
+    </div>
+  );
+}
+
+function Mention({ children }: { children: React.ReactNode }) {
+  return <span className="font-medium text-brand">{children}</span>;
+}

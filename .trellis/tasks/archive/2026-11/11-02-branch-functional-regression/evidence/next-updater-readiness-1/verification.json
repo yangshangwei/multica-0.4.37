@@ -1,0 +1,91 @@
+{
+  "at": "2026-11-02T09:58:41.228200+00:00",
+  "reviewer": "Native implement child self-verification; coordinator and independent review separate",
+  "status": "PASS_OFFLINE_READINESS_ONLY_REQUIRED_ACCEPTANCE_GATES_OPEN",
+  "run": "evidence/next-updater-readiness-1/run.json",
+  "commands_recorded": 5,
+  "command_stream_hash_mismatches": [],
+  "generated_feed_exact_bytes": true,
+  "actual_electron_updater_parser_version": "6.8.3",
+  "exact_file_SHA512_and_size_bound": true,
+  "actual_channel_and_zip_selection": "latest-mac.yml / pinned Mac ARM64 ZIP",
+  "RC_requires_explicit_offline_opt_in": true,
+  "real_bundle_versions_and_IPC_present": [
+    {
+      "role": "baseline",
+      "version": "0.6.5-185-g61ff581d2-dirty",
+      "main": "./out/main/index.js",
+      "main_sha256": "39bde0d10b61642148d78ec8ae3067c8b2d94794ad8ee8b99c5b7609b04695a5",
+      "bundled_updater_version": "6.8.3",
+      "packaged_acceptance_and_real_updater_ipc_present": true
+    },
+    {
+      "role": "candidate",
+      "version": "0.6.8-rc.20261102",
+      "main": "./out/main/index.js",
+      "main_sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+      "bundled_updater_version": "6.8.3",
+      "packaged_acceptance_and_real_updater_ipc_present": true
+    }
+  ],
+  "source_frozen_unchanged": true,
+  "private_recorder_AST": "PASS",
+  "validator_Node_syntax": "PASS from completed separate node --check invocation; main offline run also imported/executed it successfully",
+  "all_new_JSON_parsed": true,
+  "source_faithful_cache_and_native_proxy_boundaries_documented": true,
+  "unresolved_profile_template_not_runnable": true,
+  "new_actual_updater_gate_runnable": false,
+  "current_gates": {
+    "MAC-AUTOMATIC-UPDATER": "NOT_RUN",
+    "MAC-TRUST": "BLOCKED",
+    "MAC-AUTH-MIGRATION": "NOT_RUN"
+  },
+  "full_lint_typecheck_tests": "NOT_RERUN: private task preparation/evidence only; no product/dependency change; passed gates preserved",
+  "git_diff_check": "PASS in recorded command",
+  "resources": {
+    "application_launches": 0,
+    "updater_runs": 0,
+    "network_calls": 0,
+    "services_started": 0,
+    "ports_created": 0,
+    "containers_started": 0,
+    "mounts_created": 0,
+    "protocol_mutations": 0,
+    "database_connections": 0,
+    "account_accesses": 0,
+    "commercial_calls": 0,
+    "remote_dispatches": 0
+  },
+  "product_changes": 0,
+  "dependency_changes": 0,
+  "original_frozen_performance": "2171ms>2000ms FAIL retained; not rerun",
+  "artifact_sha256": {
+    "evidence/next-updater-readiness-1/artifact-fingerprints.json": "875e8c0013ce4afb7aa8ce5dd72e415700ca6594115fae73d7b7441c69077567",
+    "evidence/next-updater-readiness-1/baseline-app-update.yml": "e349ad31d2573f1a5fffa2565f98eb8ca0e2e489ed70452114a90dd6ca55cfd7",
+    "evidence/next-updater-readiness-1/candidate-app-update.yml": "e349ad31d2573f1a5fffa2565f98eb8ca0e2e489ed70452114a90dd6ca55cfd7",
+    "evidence/next-updater-readiness-1/candidate-head.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-updater-readiness-1/candidate-head.stdout": "233ebbcdbbe586452eed069d8c05735937f481f8a2dfab577cf3aadf5442cf3e",
+    "evidence/next-updater-readiness-1/future-run.recipe.json": "f2d84206f53b29c2d0e1fea91a619a8bca39d2ce9ca27d502f1a56bec768e78f",
+    "evidence/next-updater-readiness-1/git-diff-check.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-updater-readiness-1/git-diff-check.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-updater-readiness-1/latest-mac.yml": "addb8b0e3a3d31888bed89db52b02315d9b7c129da55296290f6643a79c59dbf",
+    "evidence/next-updater-readiness-1/node-version.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-updater-readiness-1/node-version.stdout": "c42fcf0db5a550bda2f566fcdc21955df3e5a8ec3aeb90ac533f3776e7fce32a",
+    "evidence/next-updater-readiness-1/offline-validation.json": "491da7cf2fb8bc43f942960fe48f3db684fed61affd1364dbc25997ae139c638",
+    "evidence/next-updater-readiness-1/offline-validation.stderr": "673a1c70551728ba0b900de07956ecbff20b206b1708e9850cbf148b008d4ac6",
+    "evidence/next-updater-readiness-1/offline-validation.stdout": "491da7cf2fb8bc43f942960fe48f3db684fed61affd1364dbc25997ae139c638",
+    "evidence/next-updater-readiness-1/readiness-manifest.json": "bd3b67aeed28806651c929fd8531f2f11ff05349abe90cc0a6a07e714218fe8b",
+    "evidence/next-updater-readiness-1/record.py.txt": "d5b313433cb606b4157179e3cfd218a7bb52eba1a28ab74aa85b73cc37cd3815",
+    "evidence/next-updater-readiness-1/run.json": "b8f3c91d8cc24c8379a97a715e8128c9cdba65237a7fe0d556315cf819205a09",
+    "evidence/next-updater-readiness-1/runtime-config.template.json": "54fb7722cd62a752d668d357fb8de39c8f32fb69f164e5d76f988276a50f6de1",
+    "evidence/next-updater-readiness-1/source-diff.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "evidence/next-updater-readiness-1/source-diff.stdout": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+    "evidence/next-updater-readiness-1/updater-preferences.template.json": "cab3b0909eb1bfb8433a7488e1120d7fae9b340cd21158fafc76bc5f359b8cff",
+    "evidence/next-updater-readiness-1/validate.mjs.txt": "3f10c089ba2219c29a1a3679fd0394f32f273f36790c26587492cccf5d50dd13"
+  },
+  "research_sha256": {
+    "research/mac-updater-readiness-1.md": "c8712d8fe91f7f88b5615b01c83a0f50303385ee9c9d3790353abd0309570a19",
+    "research/mac-updater-readiness-1.json": "bd3b67aeed28806651c929fd8531f2f11ff05349abe90cc0a6a07e714218fe8b"
+  },
+  "no_product_refactor_or_simplification": true
+}

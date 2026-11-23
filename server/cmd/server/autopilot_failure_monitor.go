@@ -14,6 +14,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/events"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -70,7 +71,7 @@ func envFailureMonitorConfig() failureMonitorConfig {
 // learns that auto-pause happened.
 //
 // Disable with `AUTOPILOT_FAIL_MONITOR_INTERVAL=0`.
-func runAutopilotFailureMonitor(ctx context.Context, queries *db.Queries, bus *events.Bus, cfg failureMonitorConfig) {
+func runAutopilotFailureMonitor(ctx context.Context, queries *db.Queries, starter inboxstate.TxStarter, bus *events.Bus, cfg failureMonitorConfig) {
 	if cfg.Interval <= 0 {
 		slog.Info("autopilot failure monitor: disabled (interval <= 0)")
 		return
@@ -96,7 +97,7 @@ func runAutopilotFailureMonitor(ctx context.Context, queries *db.Queries, bus *e
 
 	// Run once immediately after the startup delay so a freshly-deployed node
 	// catches existing offenders without waiting a full interval.
-	tickAutopilotFailureMonitor(ctx, queries, bus, cfg)
+	tickAutopilotFailureMonitor(ctx, queries, starter, bus, cfg)
 
 	ticker := time.NewTicker(cfg.Interval)
 	defer ticker.Stop()
@@ -106,14 +107,14 @@ func runAutopilotFailureMonitor(ctx context.Context, queries *db.Queries, bus *e
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			tickAutopilotFailureMonitor(ctx, queries, bus, cfg)
+			tickAutopilotFailureMonitor(ctx, queries, starter, bus, cfg)
 		}
 	}
 }
 
 // tickAutopilotFailureMonitor performs a single sweep: query candidates,
 // attempt to pause each, and emit notifications + WS events on success.
-func tickAutopilotFailureMonitor(ctx context.Context, queries *db.Queries, bus *events.Bus, cfg failureMonitorConfig) {
+func tickAutopilotFailureMonitor(ctx context.Context, queries *db.Queries, starter inboxstate.TxStarter, bus *events.Bus, cfg failureMonitorConfig) {
 	since := time.Now().Add(-cfg.Lookback)
 	candidates, err := queries.SelectAutopilotsExceedingFailureThreshold(
 		ctx,
@@ -175,7 +176,7 @@ func tickAutopilotFailureMonitor(ctx context.Context, queries *db.Queries, bus *
 			"fail_pct", failPct,
 		)
 
-		emitAutopilotPausedNotifications(ctx, queries, bus, paused, c, cfg, failPct)
+		emitAutopilotPausedNotifications(ctx, queries, starter, bus, paused, c, cfg, failPct)
 
 		// Fan out the status change so any open UI updates the autopilot row.
 		workspaceID := util.UUIDToString(paused.WorkspaceID)
@@ -206,6 +207,7 @@ func tickAutopilotFailureMonitor(ctx context.Context, queries *db.Queries, bus *
 func emitAutopilotPausedNotifications(
 	ctx context.Context,
 	queries *db.Queries,
+	starter inboxstate.TxStarter,
 	bus *events.Bus,
 	autopilot db.Autopilot,
 	candidate db.SelectAutopilotsExceedingFailureThresholdRow,
@@ -245,7 +247,7 @@ func emitAutopilotPausedNotifications(
 		}
 		emitted[key] = true
 
-		item, err := queries.CreateInboxItem(ctx, db.CreateInboxItemParams{
+		delivery, err := inboxstate.Deliver(ctx, starter, db.CreateInboxItemParams{
 			ID:            dbid.NewV7(),
 			WorkspaceID:   autopilot.WorkspaceID,
 			RecipientType: r.Type,
@@ -269,13 +271,7 @@ func emitAutopilotPausedNotifications(
 			continue
 		}
 
-		bus.Publish(events.Event{
-			Type:        protocol.EventInboxNew,
-			WorkspaceID: workspaceID,
-			ActorType:   "system",
-			ActorID:     "",
-			Payload:     map[string]any{"item": inboxItemToResponse(item)},
-		})
+		publishInboxDelivery(bus, events.Event{WorkspaceID: workspaceID, ActorType: "system"}, delivery, "")
 	}
 }
 

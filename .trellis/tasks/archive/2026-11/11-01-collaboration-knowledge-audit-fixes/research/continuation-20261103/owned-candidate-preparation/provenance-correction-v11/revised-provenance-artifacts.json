@@ -1,0 +1,47 @@
+{
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "original_binding_sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+  "revised_binding_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/owned-bindings-v11-provenance.json",
+  "revised_binding_sha256": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+  "original_launcher_sha256": "b2d17a742c45134640a070e980937b9f0ce4f724611c7e5c0fb6f2f0a333ffd2",
+  "revised_launcher_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+  "revised_launcher_sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+  "source_env_unchanged_sha256": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f",
+  "canonical_product": {
+    "purpose": "canonical RK1/product source identity",
+    "source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "file_count": 7962,
+    "roots": [
+      "server",
+      "apps",
+      "packages",
+      "scripts",
+      "Makefile",
+      "package.json",
+      "pnpm-lock.yaml",
+      "pnpm-workspace.yaml"
+    ],
+    "algorithm": "sha256 over sorted path NUL sha256 LF lines of tracked regular files under roots",
+    "selection": "git ls-files tracked regular files under ROOTS; skip symlink/nonfile; HEAD and evidence paths are metadata, not digest inputs",
+    "manifest_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/canonical-product-source-manifest-v11-provenance.json",
+    "manifest_sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+    "standard_script_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source_manifest.py",
+    "standard_script_sha256": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3"
+  },
+  "development_environment_source_id": {
+    "value": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "purpose": "development environment HEAD/overlay/normalized-next-env identity only",
+    "helper_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/checkout-source-id-v11.cjs",
+    "helper_sha256": "817348f249009f05e0e05a4a08d0f76581cda60fac9f9ce88b18255fd4e85bc8",
+    "algorithm": "SHA256(HEAD bytes, binary HEAD diff excluding next-env, next-env normalized path/symlink/execute bits/content JSON, then sorted untracked product path/bytes)",
+    "canonical_product_source": false
+  },
+  "tracked_snapshot": {
+    "value": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "file_count": 17182,
+    "purpose": "all-tracked path/sha/mode JSON snapshot"
+  },
+  "unchanged_non_source_binding_fields": true,
+  "unchanged_parser_and_core_guard_AST": true,
+  "no_actual_clearance_safe_env_run_created": true
+}

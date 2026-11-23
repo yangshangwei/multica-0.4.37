@@ -1,0 +1,18 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-tags=agentintegration",
+    "-c",
+    "-o",
+    "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-merge-guard-tests-i61h574j/cmd-server.test",
+    "./cmd/server"
+  ],
+  "exit_code": 0,
+  "seconds": 19.20900011062622,
+  "real_agent_gate": "unset",
+  "database": "unset",
+  "compile_only": true
+}

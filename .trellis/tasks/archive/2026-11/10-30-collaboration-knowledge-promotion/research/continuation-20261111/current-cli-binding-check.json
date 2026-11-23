@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-11T14:56:59Z",
+  "scope": "Read-only current Knowledge CLI binding check",
+  "execution": {
+    "cli_invoked": false,
+    "model_calls": 0,
+    "gateway_calls": 0,
+    "permit_used": false
+  },
+  "historical_registrations": [
+    {
+      "version": "0.165.0",
+      "native_sha256": "a45099154d7fb4a5ed8a56f40966a95deb938e508bab23e6985035c709e9a85a",
+      "wrapper_sha256": "61b0194f3bb6534439c8d26a3ed57d0805f84b884588b761795323eeb92fcf70"
+    },
+    {
+      "version": "0.166.0",
+      "native_sha256": "39acf979729dd290f9a24ee38b2914e036c91b65952872e28ae2a6b88a7db7c1"
+    }
+  ],
+  "current_installation": {
+    "package_version": "0.167.0",
+    "native_path": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/bin/codex",
+    "native_sha256": "030316ecfbb41f4e7946e584b0063ef333b7a36cd312ba349f2f6869e39b62cc",
+    "wrapper_path": "/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/bin/codex.js",
+    "wrapper_sha256": "e14fc83739c13c1074b12bd1acce4010c893c7f6fbfc1593b4a31d74cabb57af",
+    "private_config_sha256": "2d8fa41539c89927342ccf16cdf3af13a322fe646615917dc0c7688f3dbad52a",
+    "private_config_matches_registered_0_165": true
+  },
+  "result": {
+    "exact_registered_cli_binding": false,
+    "requires_reviewed_version_migration_or_exact_restore": true,
+    "gateway_admission_confirmed": false,
+    "runnable": false
+  }
+}

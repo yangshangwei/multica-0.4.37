@@ -1,0 +1,211 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "at": "2026-11-01T20:05:20.391091+00:00",
+  "scope": "same-candidate actual HTTP/WS/daemon/Runner/fake input and authority composites; programmatic service flags distinct from deployed flag probe",
+  "runs": [
+    {
+      "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "family": "ordinary",
+      "mode": "normal",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestKnowledgeServerDaemonComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m"
+      ],
+      "database": "multica_knowledge_composite_20261101_f3_1102_normal",
+      "database_identity": "multica_knowledge_composite_20261101_f3_1102_normal|763_collaboration_knowledge_delivery_history",
+      "build_temp_git_root_absent": true,
+      "state": "complete",
+      "started_at": "2026-11-01T20:00:13.028908+00:00",
+      "real_Provider_calls": 0,
+      "exit_code": 0,
+      "counts": {
+        "run": 27,
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": [],
+      "log_sha256": "d05906999e45f71faf99062efcd3a4daaa2ba4e0802b913128fceb5222c34339",
+      "finished_at": "2026-11-01T20:00:36.824854+00:00",
+      "raw_private_log": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/ordinary-normal/tests.jsonl"
+    },
+    {
+      "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "family": "ordinary",
+      "mode": "race",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestKnowledgeServerDaemonComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "-race"
+      ],
+      "database": "multica_knowledge_composite_20261101_f3_1102_race",
+      "database_identity": "multica_knowledge_composite_20261101_f3_1102_race|763_collaboration_knowledge_delivery_history",
+      "build_temp_git_root_absent": true,
+      "state": "complete",
+      "started_at": "2026-11-01T20:00:36.929551+00:00",
+      "real_Provider_calls": 0,
+      "exit_code": 0,
+      "counts": {
+        "run": 27,
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": [],
+      "log_sha256": "5bf31de93999e755bb396b527bb9f4a2014a85675a6b60dd55d64c679f821db9",
+      "finished_at": "2026-11-01T20:01:29.157616+00:00",
+      "raw_private_log": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/ordinary-race/tests.jsonl"
+    },
+    {
+      "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "family": "host",
+      "mode": "normal",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m"
+      ],
+      "database": "multica_knowledge_host_composite_20261101_f3_1102_normal",
+      "database_identity": "multica_knowledge_host_composite_20261101_f3_1102_normal|763_collaboration_knowledge_delivery_history",
+      "build_temp_git_root_absent": true,
+      "state": "complete",
+      "started_at": "2026-11-01T20:01:29.297080+00:00",
+      "real_Provider_calls": 0,
+      "exit_code": 0,
+      "counts": {
+        "run": 17,
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": [],
+      "log_sha256": "168d794726e0c442992fcb7b99e0c71ed4f1856d02275d09593eece4867708f0",
+      "finished_at": "2026-11-01T20:02:24.209635+00:00",
+      "raw_private_log": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/host-normal/tests.jsonl"
+    },
+    {
+      "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "family": "host",
+      "mode": "race",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite",
+        "-p=1",
+        "-parallel=2",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "-race"
+      ],
+      "database": "multica_knowledge_host_composite_20261101_f3_1102_race",
+      "database_identity": "multica_knowledge_host_composite_20261101_f3_1102_race|763_collaboration_knowledge_delivery_history",
+      "build_temp_git_root_absent": true,
+      "state": "complete",
+      "started_at": "2026-11-01T20:02:24.327993+00:00",
+      "real_Provider_calls": 0,
+      "exit_code": 0,
+      "counts": {
+        "run": 17,
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": [],
+      "log_sha256": "3ed04a5fd0de45360d3b3f55c1f29247c765228426c5265a06ff64dec9969e97",
+      "finished_at": "2026-11-01T20:03:58.769274+00:00",
+      "raw_private_log": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/host-race/tests.jsonl"
+    }
+  ],
+  "named_pass_events": 88,
+  "named_fail_events": 0,
+  "named_skip_events": 0,
+  "all_database_names_unique": true,
+  "databases_retained": true,
+  "allocation": [
+    {
+      "family": "ordinary",
+      "mode": "normal",
+      "database": "multica_knowledge_composite_20261101_f3_1102_normal",
+      "identity_verified": "multica_knowledge_composite_20261101_f3_1102_normal|763_collaboration_knowledge_delivery_history",
+      "migration_sha256": "94172bbac71b90bb02845374c867ab7b05674b8323f10188b6069eb9fdd144b9"
+    },
+    {
+      "family": "ordinary",
+      "mode": "race",
+      "database": "multica_knowledge_composite_20261101_f3_1102_race",
+      "identity_verified": "multica_knowledge_composite_20261101_f3_1102_race|763_collaboration_knowledge_delivery_history",
+      "migration_sha256": "3d37ef28e2bbbd9f1c1febc7d0f77cc3edaa22237fb1275e53979fbc43bf56cf"
+    },
+    {
+      "family": "host",
+      "mode": "normal",
+      "database": "multica_knowledge_host_composite_20261101_f3_1102_normal",
+      "identity_verified": "multica_knowledge_host_composite_20261101_f3_1102_normal|763_collaboration_knowledge_delivery_history",
+      "migration_sha256": "02121108ddff222bd849924c7934a60317237658dbc46d41a9ecf4cbe209ecc7"
+    },
+    {
+      "family": "host",
+      "mode": "race",
+      "database": "multica_knowledge_host_composite_20261101_f3_1102_race",
+      "identity_verified": "multica_knowledge_host_composite_20261101_f3_1102_race|763_collaboration_knowledge_delivery_history",
+      "migration_sha256": "ba729c4dcaa448b619984b31914d7beb4d8d77fe70733d3bd0c1a6b5bff2a063"
+    }
+  ],
+  "real_provider_consumed": 0,
+  "overall_full_make_check": "stillrunning, not acceptance pass",
+  "does_not_prove": [
+    "realmodelunderstanding",
+    "finaldeployedAPIon/off journey",
+    "nativeinstaller/accounts"
+  ]
+}

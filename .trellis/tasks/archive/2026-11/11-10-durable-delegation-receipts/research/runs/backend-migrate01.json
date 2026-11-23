@@ -1,0 +1,25 @@
+{
+  "name": "backend-migrate01",
+  "command": [
+    "go",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "started_at": "2026-11-10T04:05:50.856552+00:00",
+  "finished_at": "2026-11-10T04:05:59.637426+00:00",
+  "exit_code": 0,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_handler_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-migrate01.log",
+  "log_sha256": "8560afd0414558bd552e7acf703efbdfd3ade243662a45bf1272111354dc56fb",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "server_tree": "a806fbe6aa17d0dca6777596ed382c8f17eba1ce",
+  "working_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "database": "kfix_claim_handler_root_20261102_0022",
+  "identity": "kfix_claim_handler_root_20261102_0022|763_collaboration_knowledge_delivery_history",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/handler",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=40m"
+  ],
+  "state": "complete",
+  "started_at": "2026-11-01T16:24:21.101696+00:00",
+  "real_provider_allowed": false,
+  "exit_code": 0,
+  "finished_at": "2026-11-01T16:29:27.824819+00:00",
+  "counts": {
+    "run": 5324,
+    "pass": 5271,
+    "fail": 0,
+    "skip": 53
+  },
+  "failures": [],
+  "log_sha256": "8c5404fce02a6e3e168b272107234c515e47ceb21e2681048925b25b4e16716b"
+}

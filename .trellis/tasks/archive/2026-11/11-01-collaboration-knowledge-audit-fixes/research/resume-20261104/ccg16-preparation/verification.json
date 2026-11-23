@@ -1,0 +1,104 @@
+{
+  "recorded_at": "2026-11-04T02:43:41.285195+00:00",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "manifest_sha256": "1f5115505a1319e81c137b5047b68df4a442b87f7c0ba1498c6c508b397bb362",
+  "source_inputs_sha256": "089935913d6c0bccca30cdde842fc6a64293244e71be2f33ff1e8cf73caa99fb",
+  "compiled_python": [
+    "ccg-admission-template.py.txt",
+    "run-ccg1.py",
+    "run-ccg2.py"
+  ],
+  "parsed_JSON": [
+    "binary-binding.json.template",
+    "deployments/off/deployment-proof.json.template",
+    "deployments/off/source-values.json.template",
+    "deployments/on/deployment-proof.json.template",
+    "deployments/on/source-values.json.template",
+    "permissions/ccg1-normal.json.template",
+    "permissions/ccg1-race.json.template",
+    "permissions/ccg2-off.json.template",
+    "permissions/ccg2-on.json.template",
+    "source-inputs.json"
+  ],
+  "protected_CCG15_count": 13,
+  "unchanged_sources": 11,
+  "pinned_tools": 4,
+  "false_permission_templates": 4,
+  "early_refusal_controls": [
+    {
+      "runner": "run-ccg1.py",
+      "case": "ccg1-normal.json.template",
+      "expected": "Later root execution permission is required",
+      "observed": "Later root execution permission is required",
+      "subprocess_network_runtime_writes": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "case": "ccg1-race.json.template",
+      "expected": "Later root execution permission is required",
+      "observed": "Later root execution permission is required",
+      "subprocess_network_runtime_writes": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "case": "invalid label",
+      "expected": "Invalid private result label",
+      "observed": "Invalid private result label",
+      "subprocess_network_runtime_writes": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "case": "foreign permit",
+      "expected": "Permit outside owned directory",
+      "observed": "Permit outside owned directory",
+      "subprocess_network_runtime_writes": 0
+    },
+    {
+      "runner": "run-ccg1.py",
+      "case": "redirected permit",
+      "expected": "Permit must not be redirected",
+      "observed": "Permit must not be redirected",
+      "subprocess_network_runtime_writes": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "case": "ccg2-off.json.template",
+      "expected": "Later root execution permission is required",
+      "observed": "Later root execution permission is required",
+      "subprocess_network_runtime_writes": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "case": "ccg2-on.json.template",
+      "expected": "Later root execution permission is required",
+      "observed": "Later root execution permission is required",
+      "subprocess_network_runtime_writes": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "case": "invalid label",
+      "expected": "Invalid private result label",
+      "observed": "Invalid private result label",
+      "subprocess_network_runtime_writes": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "case": "foreign permit",
+      "expected": "Permit outside owned directory",
+      "observed": "Permit outside owned directory",
+      "subprocess_network_runtime_writes": 0
+    },
+    {
+      "runner": "run-ccg2.py",
+      "case": "redirected permit",
+      "expected": "Permit must not be redirected",
+      "observed": "Permit must not be redirected",
+      "subprocess_network_runtime_writes": 0
+    }
+  ],
+  "early_refusal_controls_passed": 10,
+  "DB_TestMain_build_service_browser_Provider_operations": 0,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false
+}

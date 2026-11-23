@@ -1,0 +1,88 @@
+{
+  "base_sha": "94e790d2d",
+  "recorded_at": "2026-11-01T16:01:49.935962+00:00",
+  "checks": [
+    {
+      "file": "managed-args-red.jsonl",
+      "sha256": "0f10c4084e69a32ca72d45bb7dc37fd48ef6923ecb32c86525c9539a74b72faa",
+      "counts": {
+        "run": 8,
+        "pass": 0,
+        "fail": 8,
+        "skip": 0
+      },
+      "package_end": [
+        "fail"
+      ]
+    },
+    {
+      "file": "managed-args-green.jsonl",
+      "sha256": "e5842cd671f4505aabddaf21e42d22abf17095fae773a4571275dd9db351526a",
+      "counts": {
+        "run": 9,
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_end": [
+        "pass"
+      ]
+    },
+    {
+      "file": "managed-args-race.jsonl",
+      "sha256": "b907c263926baf5ccd4c97e6365ea118e6e191a22b358b7e42d1db60c7839b5b",
+      "counts": {
+        "run": 18,
+        "pass": 18,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_end": [
+        "pass"
+      ]
+    },
+    {
+      "file": "managed-args-package.jsonl",
+      "sha256": "10920b624cf64408f26f64be612085e19f7d54788822f64529c176780dca9fd2",
+      "counts": {
+        "run": 1954,
+        "pass": 1941,
+        "fail": 9,
+        "skip": 4
+      },
+      "package_end": [
+        "fail"
+      ]
+    },
+    {
+      "file": "managed-args-package-r2.jsonl",
+      "sha256": "4d01f7415172f8a96d277e1b4ead7185aef00734721e3eb91607d33cd243ebda",
+      "counts": {
+        "run": 1954,
+        "pass": 1950,
+        "fail": 0,
+        "skip": 4
+      },
+      "package_end": [
+        "pass"
+      ]
+    }
+  ],
+  "normal_r2_command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test ./pkg/agent -parallel=2 -count=1 -json -timeout=15m",
+  "normal_r2_exit": 0,
+  "race_targeted_exit": 0,
+  "build_and_vet_author_observed_exit": 0,
+  "first_full_attempt": "9 timeout/handshake failures under high parallel load, retained; rerun with bounded parallelism; no test/provider timeout changed",
+  "production_files_sha256": {
+    ".trellis/spec/server/collaboration-knowledge-execution.md": "fbac23a6c6b43e34599b7552ee1cc759df509594ce9db12842daa5a5ee98e3c5",
+    "docs/collaboration-knowledge-runtime.md": "fa8c97d4f38249296b1eb4cfe01a3c1d93ec829000902b4ed45f1b48b7acd314",
+    "server/internal/service/task_knowledge_invocation_test.go": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+    "server/pkg/agent/claude.go": "027200a87a76dcb2c2c67a3543bb1591cd169b35609af2e3eeec2a31bd65dec3",
+    "server/pkg/agent/claude_test.go": "58394d73138c089d364e23cbbab2d3d04c4b74b115f307360bbfbc351d2e5dc7",
+    "server/pkg/agent/knowledge_launch.go": "585e946c5f6f288daf42b8d6086f323fabecf1b70c04daf75484e01d5f6875ff",
+    "server/pkg/agent/knowledge_launch_test.go": "862575cc7a21ac74f10a172beebf9ba6d17d800bbf1b32325a6500c183494230"
+  },
+  "real_provider_calls": 0,
+  "database_access": false,
+  "independent_review": "pending"
+}

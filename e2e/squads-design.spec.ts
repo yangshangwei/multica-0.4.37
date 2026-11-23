@@ -33,9 +33,9 @@ test("squad discovery keeps keyboard navigation, saved choices and project setup
 
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto(`/${workspace.slug}/squads`);
-    const workspaceTab = page.getByRole("tab", { name: "Workspace" });
-    const templateTab = page.getByRole("tab", { name: "Templates" });
-    await expect(workspaceTab).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("heading", { name: "Squads", exact: true })).toBeVisible();
+    await expect(page.getByRole("tab", { name: "Workspace" })).toHaveCount(0);
+    await expect(page.getByRole("tab", { name: "Templates" })).toHaveCount(0);
     await expect(page.getByRole("link", { name: squad.name, exact: true })).toBeVisible();
     await expect(page.getByText(description, { exact: true })).toBeVisible();
     await page.screenshot({ path: info.outputPath("workspace-wide.png"), animations: "disabled" });
@@ -56,19 +56,15 @@ test("squad discovery keeps keyboard navigation, saved choices and project setup
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(new RegExp(`/squads/${squad.id}$`));
     await page.goBack();
-    await expect(workspaceTab).toHaveAttribute("aria-selected", "true");
+    await expect(squadLink).toBeVisible();
     await page.getByRole("button", { name: "Squad actions" }).first().click();
     await expect(page.getByRole("menuitem", { name: "Archive", exact: true })).toBeVisible();
     await expect(page).toHaveURL(new RegExp(`/${workspace.slug}/squads$`));
     await page.keyboard.press("Escape");
     await expect(page.getByRole("menu")).toHaveCount(0);
 
-    await workspaceTab.press("ArrowRight");
-    await expect(templateTab).toBeFocused();
-    await templateTab.press("Enter");
-    await expect(templateTab).toHaveAttribute("aria-selected", "true");
-    await expect(page).toHaveURL(/\?view=templates$/);
-    await page.reload();
+    await page.goto(`/${workspace.slug}/marketplace?type=squad-templates`);
+    const templateTab = page.getByRole("tab", { name: "Squad templates", exact: true });
     await expect(templateTab).toHaveAttribute("aria-selected", "true");
     const template = page.getByRole("listitem", { name: "Feature Delivery Squad", exact: true });
     await expect(template.getByRole("link", { name: squad.name })).toBeVisible();
@@ -87,22 +83,26 @@ test("squad discovery keeps keyboard navigation, saved choices and project setup
       await page.setViewportSize({ width, height: 900 });
       await page.screenshot({ path: info.outputPath(`templates-${width}.png`), animations: "disabled" });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      await workspaceTab.click();
-      await expect(workspaceTab).toHaveAttribute("aria-selected", "true");
+      await page.goto(`/${workspace.slug}/squads`);
       await expect(page.getByRole("link", { name: squad.name, exact: true })).toBeVisible();
       await page.screenshot({ path: info.outputPath(`workspace-${width}.png`), animations: "disabled" });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      await templateTab.click();
-      await expect(templateTab).toHaveAttribute("aria-selected", "true");
+      await page.goto(`/${workspace.slug}/marketplace?type=squad-templates`);
+      await expect(page.getByRole("tab", { name: "Squad templates", exact: true })).toHaveAttribute("aria-selected", "true");
     }
-    await page.getByRole("button", { name: "New Squad", exact: true }).click();
-    await expect(page.getByRole("button", { name: /Create from template/ })).toBeVisible();
-    await expect(page.getByRole("button", { name: /Create custom squad/ })).toBeVisible();
-    await page.keyboard.press("Escape");
-    for (const [locale, label] of [["zh-Hans", "模板"], ["en", "Templates"]]) {
+    await page.goto(`/${workspace.slug}/squads`);
+    await page.getByRole("link", { name: "New Squad", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/squads/new`);
+    await expect(page.getByRole("link", { name: /Create from template/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Create custom squad/ })).toBeVisible();
+    await page.getByRole("button", { name: "Go back", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/squads`);
+    for (const [locale, label] of [["zh-Hans", "AI小队模板"], ["en", "Squad templates"]]) {
       await api.requestJSON("/api/me", { method: "PATCH", body: { language: locale } });
       await page.context().addCookies([{ name: "multica-locale", value: locale, url: new URL(page.url()).origin }]);
-      await page.goto(`/${workspace.slug}/squads?view=templates`);
+      await page.setViewportSize({ width: 390, height: 900 });
+      await page.goto(`/${workspace.slug}/squads?view=templates&from=bookmark#catalog`);
+      await expect(page).toHaveURL(`/${workspace.slug}/marketplace?from=bookmark&type=squad-templates#catalog`);
       await expect(page.getByRole("tab", { name: label })).toHaveAttribute("aria-selected", "true");
       const tabBounds = await page.getByRole("tab", { name: label }).boundingBox();
       expect(tabBounds).not.toBeNull();

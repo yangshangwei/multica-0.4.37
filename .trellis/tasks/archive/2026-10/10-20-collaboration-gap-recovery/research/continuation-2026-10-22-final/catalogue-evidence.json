@@ -1,0 +1,117 @@
+{
+  "generated_at": "2026-10-22T10:54:06.651390+00:00",
+  "criterion_id": "AC96",
+  "criterion_sha256": "946f3b0e36c359a615e56745d752fd2563ffdb83aa68c342c6e75b66c834df2f",
+  "primary_owner": "P4",
+  "authoritative_matrix_mutated": false,
+  "coverage": "combined_current_service_regression; root decides full criterion after HTTP/browser scope correlation",
+  "run": {
+    "test_identity": "internal/service::TestCollaborationCatalogueAuthorityMatrix",
+    "command": "catalogue-race-final-command.json",
+    "result": "catalogue-race-final-result.json",
+    "raw": "catalogue-race-final.jsonl",
+    "stderr": "catalogue-race-final.stderr",
+    "passed": true,
+    "pass_events": [
+      {
+        "Time": "2026-10-22T18:44:20.03612+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Test": "TestCollaborationCatalogueAuthorityMatrix",
+        "Elapsed": 2.75
+      },
+      {
+        "Time": "2026-10-22T18:44:21.039794+08:00",
+        "Action": "pass",
+        "Package": "github.com/multica-ai/multica/server/internal/service",
+        "Elapsed": 4.72
+      }
+    ],
+    "source_unchanged_for_recorded_hashes": true
+  },
+  "source": {
+    "path": "server/internal/service/collaboration_catalogue_matrix_test.go",
+    "sha256": "13f89645cc13574d43328d0f08b6aa236daa09ba8b43c9a130960881510112c3",
+    "lines": 446
+  },
+  "clauses": [
+    {
+      "clause": "organizer_current_role",
+      "source_line": 71
+    },
+    {
+      "clause": "all_actual_owner_and_environment_consent",
+      "source_line": 96
+    },
+    {
+      "clause": "new_participant_reuses_original_grants",
+      "source_line": 145
+    },
+    {
+      "clause": "paused_offline_occupied_runtime_target_waiting",
+      "source_line": 166
+    },
+    {
+      "clause": "actual_frozen_grants_per_input",
+      "source_line": 218
+    },
+    {
+      "clause": "derived_owner_and_binding_provenance",
+      "source_line": 264
+    },
+    {
+      "clause": "leader_cannot_claim_or_read_member",
+      "source_line": 273
+    },
+    {
+      "clause": "configuration_and_old_binding_rechecks",
+      "source_line": 293
+    },
+    {
+      "clause": "all_owned_grants_retract_on_departure",
+      "source_line": 335
+    },
+    {
+      "clause": "readable_history_stop_and_exact_original_proof",
+      "source_line": 356
+    },
+    {
+      "clause": "ordinary_child_and_machine_minimal_boundaries",
+      "source_line": 412
+    }
+  ],
+  "quality_receipts": [
+    "catalogue-vet-final-result.json",
+    "catalogue-format-final-result.json",
+    "catalogue-whitespace-final-result.json",
+    "catalogue-isolated-compile-result.json"
+  ],
+  "retained_prior_attempts": [
+    "catalogue-race-first-result.json",
+    "catalogue-race-second-result.json",
+    "catalogue-race-third-result.json",
+    "catalogue-isolated-head-result.json"
+  ],
+  "independent_root_DB_isolation": {
+    "command": "catalogue-isolated-final-command.json",
+    "result": "catalogue-isolated-final-result.json",
+    "raw": "catalogue-isolated-final.stdout",
+    "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-catalogue-isolated-20261022-jl473qfi/server",
+    "base_HEAD": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+    "only_added_file": "server/internal/service/collaboration_catalogue_matrix_test.go",
+    "test_sha256": "13f89645cc13574d43328d0f08b6aa236daa09ba8b43c9a130960881510112c3",
+    "passes": 1,
+    "failures": 0,
+    "skips": 0,
+    "source_changed_during_run": [],
+    "wall_seconds": 19.467
+  },
+  "provider_accounts_used": false,
+  "synthetic_proof_only": true,
+  "limits": [
+    "No full all-owner Web/Electron UI rerun in this lane",
+    "Machine HTTP title/ID minimal-reference projection remains root canonical evidence",
+    "No kernel/provider/quota/installed-client/other-OS proof",
+    "No acceptance/spec/commit/archive writes"
+  ]
+}

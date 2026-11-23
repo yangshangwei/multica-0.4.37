@@ -122,7 +122,7 @@ func (s *TaskService) CancelTaskInTx(ctx context.Context, q *db.Queries, taskID 
 		if err != nil {
 			return nil, fmt.Errorf("cancel task: %w", err)
 		}
-		if task.ChatSessionID.Valid {
+		if task.ChatSessionID.Valid && taskKnowledgePointerAllowed(task, task.SessionID.String) {
 			if err = q.AdvanceCancelledChatSessionPointer(ctx, task.ID); err != nil {
 				return nil, err
 			}

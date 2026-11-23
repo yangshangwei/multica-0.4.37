@@ -1,0 +1,36 @@
+{
+  "tag": "nodb-vet",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-f3-completion-20261120/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "vet",
+    "-p=1",
+    "./..."
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-f3-completion-20261120/server",
+  "env": {
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/tmp/f3-takeover-20261120/nodb-private-home",
+    "TMPDIR": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T",
+    "GOMAXPROCS": "2",
+    "GOPATH": "/Users/artisan/go",
+    "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+    "GOCACHE": "/Volumes/artisan/dev-cache/go-build",
+    "GOTOOLCHAIN": "local",
+    "GOPROXY": "off",
+    "GOSUMDB": "off",
+    "GOFLAGS": "-mod=readonly",
+    "CGO_ENABLED": "1",
+    "DATABASE_URL": "postgres://invalid:invalid@127.0.0.1:1/f3_no_database?sslmode=disable"
+  },
+  "started_at": "2026-11-20T13:28:49.140284+00:00",
+  "finished_at": "2026-11-20T13:29:04.943302+00:00",
+  "exit": 0,
+  "log": "nodb-vet.txt",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "bytes": 0,
+  "agent_cli_guard_violations": [],
+  "valid": true
+}

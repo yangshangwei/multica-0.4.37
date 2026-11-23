@@ -1,0 +1,163 @@
+{
+  "at": "2026-11-15T15:00:54.728Z",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "owner": "/root/p2_k06_repair",
+  "status": "TEST_ONLY_CORRECTION_PREPARED_RUNTIME_VERIFICATION_PENDING",
+  "root_cause": "Internal service receipt Status200 was asserted after decoding public success workflow GET; the real HTTP response has intentional omitted status, so the internal Go zero value caused the combined assertion failure.",
+  "diagnosis_evidence_kind": "Original real HTTP200/terminal evidence plus explicit same-source public DTO/handler contract; original success body was not captured",
+  "original_failure": {
+    "test": "TestCollaborationStagePolicyActivationPreservesConsumedCompletionHistory",
+    "database": "multica_pay241_20261115_p2_r07_18_r_n",
+    "top_pass": 0,
+    "top_fail": 1,
+    "skip": 0,
+    "first_failure_line": 250,
+    "P2_cycle_not_reached": true,
+    "preserved": true
+  },
+  "write_scope": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02",
+  "changed_existing_source_paths": [
+    "server/cmd/server/collaboration_stage_routes_test.go"
+  ],
+  "source": {
+    "root": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/source",
+    "files": 4968,
+    "manifest_sha256": "a3261a9d92d3e51b01c3d41d933a6005f885624197a6297595df188b0d375414",
+    "parent_manifest_sha256": "18b3f4bdf484a6ae6174c6087ba4616bb90f570f2747fb22ec38eae2a96518bb",
+    "protected_paths": 4967,
+    "protected_byte_mode_drift": 0,
+    "product_SQL_modes_or_other_tests_changed": false
+  },
+  "changes": [
+    "Capture successful workflow GET as publicMap under unchanged realHTTP200 assertion",
+    "Assert omitted status, no-store, original completed code/revision/confirmation and exact terminal submission ID",
+    "Compare historical workflow GET recovery against the same original publicMap",
+    "Add passive real-body log to the next run; preserve refusal status409 and all P2/reopen/M1 identity/effect/rawkey assertions"
+  ],
+  "checks": {
+    "gofmt_exit": 0,
+    "actual_go_list_exit": 0,
+    "stdlib_AST_exit": 0,
+    "metadata_configuration_sha256": "9855ff817a2087563d4ffe9090c252e6e5c307b6873baf999d49d919358efa92",
+    "service_handler_router_actual_top_counts": [
+      1577,
+      3061,
+      484
+    ],
+    "canonical_top_count": 1,
+    "canonical_top_line": 213,
+    "final_source_files_rechecked": 4968,
+    "source_metadata_drift": 0,
+    "new_Go_test_SQL_API_executions": 0,
+    "new_dependencies": 0,
+    "LIVE_modified": false
+  },
+  "bindings": [
+    {
+      "name": "original_failure_raw",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-independent-check-r01/p2_router_consumed_history_normal_r01/raw.jsonl",
+      "sha256": "7adaeadb1a7c7d6da4ee38951699d792a35cf5f60c2748f5dd89d6311f10484d",
+      "bytes": 23881
+    },
+    {
+      "name": "retained_identity",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-independent-check-r01/k06-retained-identity-r01.json",
+      "sha256": "de09003d3dbb5bb5a5042fb099938ae00aa4c97e08a2309924df0cbd4f300248",
+      "bytes": 3612
+    },
+    {
+      "name": "parent_green_manifest",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-implementation-r07-r01/frozen-green-r01/manifest.json",
+      "sha256": "18b3f4bdf484a6ae6174c6087ba4616bb90f570f2747fb22ec38eae2a96518bb",
+      "bytes": 961316
+    },
+    {
+      "name": "source_contract",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-implementation-r07-r01/frozen-green-r01/source/server/internal/handler/collaboration_workflow.go",
+      "sha256": "2633c9b19f43ac914286b11f03390d251de39e35d45c8632f20f4514b136dc68",
+      "bytes": 16615
+    },
+    {
+      "name": "new_manifest",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/manifest.json",
+      "sha256": "a3261a9d92d3e51b01c3d41d933a6005f885624197a6297595df188b0d375414",
+      "bytes": 961316
+    },
+    {
+      "name": "new_ownership",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/ownership.json",
+      "sha256": "48ae25657eeda802adfda6b471bf4778901508e4cb6d5b089b1a079d9c93bc8b",
+      "bytes": 2177
+    },
+    {
+      "name": "new_selected_inventory",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/selected-inventory.json",
+      "sha256": "4574c25d108f327a4fbaa27938d96bc7e02f10fe40bb8e0ac15da1a74c4e0692",
+      "bytes": 23008
+    },
+    {
+      "name": "new_source_after_audit",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/source-after-metadata.json",
+      "sha256": "0dbc69eca1fb200f68549d240f383fed5dee757c96c4cbe41b024dcbfc5f1e0e",
+      "bytes": 4522
+    },
+    {
+      "name": "new_patch",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/k06-public-workflow-receipt.patch",
+      "sha256": "578f0c27bd41333fa5d3557697fa6faef90ed8123e1a4eff1ef24a0838b0740f",
+      "bytes": 5316
+    },
+    {
+      "name": "new_diagnosis",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/diagnosis.json",
+      "sha256": "459a92ad26ac62ece2b7300164357bea8f22fef0fddd73abe0c7bcf8660a693c",
+      "bytes": 1913
+    },
+    {
+      "name": "format",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/format.json",
+      "sha256": "a06e2ea024320d434992c584477b2b7e59381ec09b7c38ddf5833666acc383a9",
+      "bytes": 716
+    },
+    {
+      "name": "go_list_command",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/metadata-tools/go-list.command.json",
+      "sha256": "400dc2618ec36454cfc3be1304ca91dcefbe57ee65b88e286ce4df4375549ed7",
+      "bytes": 1444
+    },
+    {
+      "name": "ast_command",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/metadata-tools/ast.command.json",
+      "sha256": "ac40fc81285bbca8b2f5a6d8f1194c11343b73f1371e274c40b1e5162f51a5a4",
+      "bytes": 1539
+    },
+    {
+      "name": "actual_ast",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/metadata-tools/actual-test-inventory.json",
+      "sha256": "a98df47e807872fe751fbca6a18b12e0117481acc32ce35738c423971fce360d",
+      "bytes": 1476402
+    },
+    {
+      "name": "exploratory_helper_error",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-k06-repair-current-r02/exploratory-helper-error.json",
+      "sha256": "3e805d6f8453359e131826fa40baf6c2e51ef5f4997c7307d34b926d738f4553",
+      "bytes": 421
+    },
+    {
+      "name": "markdown",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/p2-k06-r07-repair-20261115.md",
+      "sha256": "8257fb2ca16c4d76faa64f06bcdd7cceba1b15c642746cf5b625c70439536013",
+      "bytes": 4895
+    }
+  ],
+  "next": {
+    "fresh_canonical_profile_numbers": [
+      20,
+      21
+    ],
+    "source_specific_command_binding": "ROOT owns execution permits",
+    "behavior_verdict": "NOT_RUN",
+    "full_S2_or_P2_runtime_accepted": false,
+    "spec_recommendation": "HTTP fixtures must consume the public transport DTO/shape; internal receipt status and successful public omitted status are different representations."
+  }
+}

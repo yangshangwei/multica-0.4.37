@@ -1,0 +1,30 @@
+{
+  "reviewed_at": "2026-10-31T19:48:35.837662+00:00",
+  "reviewer": "main independently of implementation agent",
+  "result": "passed",
+  "evidence_hashes_verified": true,
+  "source_hashes_verified": true,
+  "inventory": {
+    "service-final": {
+      "top_level": 2,
+      "subtests": 12,
+      "no_missing_or_duplicate_passes": true,
+      "no_skips_or_failures": true
+    },
+    "review-handler-final": {
+      "top_level": 1,
+      "subtests": 56,
+      "no_missing_or_duplicate_passes": true,
+      "no_skips_or_failures": true
+    }
+  },
+  "reviewed": [
+    "Actual three-runtime whole-roster and per-member preparation/attachment behavior, four independent limits",
+    "Two concurrent human memory writers followed by read/explicit new-intent merge, immutable history and receipt replay",
+    "Genuine task/plugin-install/plugin-callback/IM-binding credentials plus wrong-purpose capabilities, private sentinel and write invariance, valid positive controls",
+    "Original termination token remains metadata-only after revocation and cannot replace proof",
+    "Subtest snapshot helper now receives current testing.T; affected handler and vet rerun after correction"
+  ],
+  "scope": "Actual handlers mounted on local Chi, not a full cmd/server router or real Provider/platform test",
+  "production_code_changes": false
+}

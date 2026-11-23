@@ -1,0 +1,47 @@
+{
+  "created_at": "2026-11-15T07:13:53.917648+00:00",
+  "state": "source_ready_for_private_build",
+  "source_ready": true,
+  "source_id": "fa86e9dd1f5b2e10cc323b15311b587c2d4d003f8b6adfdfe63a447ff0047d75",
+  "source_files": 11017,
+  "workspace_bindings": 32,
+  "go_sql_source_sha256": "d9fe7fcb1b35657cf930a4c1c60b03b0c093bbfbbb192a927636475dd705531c",
+  "frozen_manifest": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-source-ready-7skci1mr/frozen-inputs.json",
+  "frozen_manifest_sha256": "3e960d2421653094dd67e353142a556d1fc62cd4a46d4f02199176fb2fd4db8c",
+  "allocation": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-allocation.json",
+  "allocation_sha256": "dee9da1339a7e6ffe4f8e09b3054c26ca9ee07b2c4000dc18b82b886d7f23ae9",
+  "database_probe": {
+    "database": "mca_knowledge_browser_23c46529b6e3",
+    "other_database_connections": 0,
+    "cluster_connections": 23,
+    "max_connections": 100
+  },
+  "ports": {
+    "api": {
+      "port": 55749,
+      "listener_pid": null
+    },
+    "web": {
+      "port": 55750,
+      "listener_pid": null
+    },
+    "renderer": {
+      "port": 55751,
+      "listener_pid": null
+    },
+    "model": {
+      "port": 55752,
+      "listener_pid": null
+    }
+  },
+  "independent_ac_review": "running_readonly_final_completion_gate",
+  "runtime_acceptance": "not_run",
+  "final_acceptance_verified": false,
+  "basis": [
+    "backend source-stable terminal receipts and owned connections0",
+    "current knowledge428/migrations569/testutil18 on sameGoSQLinput",
+    "current fullGo build/vet andsqlc141zero drift",
+    "source/spec/generatedhelp/taskMarkdown and tools frozen",
+    "no source-writing peer; reviewerowns onlyevidenceJSON"
+  ]
+}

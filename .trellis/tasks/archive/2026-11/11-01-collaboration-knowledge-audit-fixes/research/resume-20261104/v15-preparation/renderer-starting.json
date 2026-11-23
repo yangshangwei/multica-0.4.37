@@ -1,0 +1,28 @@
+{
+  "recorded_at": "2026-11-04T00:02:30.441644+00:00",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "coordinator": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "pid": 51108,
+  "process_group": 51108,
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-u",
+    "-m",
+    "http.server",
+    "61276",
+    "--bind",
+    "127.0.0.1",
+    "--directory",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "url": "http://127.0.0.1:61276/",
+  "renderer_directory": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+  "index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+  "install_record_sha256": "3c4d213cd6940db89feb86184ba2c1bc26c98bd96e5adb6ef5e7ed96307e5102",
+  "allocation_sha256": "019c544d56af133e63db689667f34973969265ec1e2d096ba595dc5c11894fc5",
+  "script_sha256": "af86ecc45142e3944e787e03a751d86be2eeda8e15b5bae8bbfd6da74db741fc",
+  "model_or_database_environment_forwarded": false,
+  "state": "starting"
+}

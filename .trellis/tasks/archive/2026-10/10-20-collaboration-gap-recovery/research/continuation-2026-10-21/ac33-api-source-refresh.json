@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-21T07:59:51.380151+00:00",
+  "current_head": "7c77bf157c3e78786abef97034c6c60108211e7a",
+  "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "test_snapshot": "/tmp/multica-gap-recovery-20261021-h6phxwo9/verification-admin-source",
+  "application_file_count": 7554,
+  "application_content_sha256": "06c41e350fbff62c326746054ac1a222a60954aa79ad75cfa64b03777be7729c",
+  "snapshot_changes": [
+    {
+      "path": "server/internal/service/collaboration_command_history.go",
+      "current_sha256": "a23ad56dae751bc9cf7f0ef226292f3bea7ff3661cc7ebc6310bde49ef79e526",
+      "snapshot_sha256": "cbc59830447e9c8cb0cd5750189f85ee8e93ed750234127970d4469c578f36e9",
+      "test_only": false
+    },
+    {
+      "path": "server/internal/service/collaboration_command_history_test.go",
+      "current_sha256": "869196731ce555206557c1464a4495a1aad6bab3aed22994ba56fcedb16df976",
+      "snapshot_sha256": "5f0ab13b0b1c0b9780fd0800fbbd231bdddd8b292cf8e5efb8c31f20256b1d3f",
+      "test_only": true
+    },
+    {
+      "path": "server/internal/service/collaboration_hold_test.go",
+      "current_sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+      "snapshot_sha256": "0589d3d5029071d1b60e371fe4127f66854ce539b4aa2fd8b5c3e2a29c36f029",
+      "test_only": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_fault_test.go",
+      "current_sha256": "e91e3a6eac2c8ea95684e4a1270eddacf3b7dab31ebd022a0288e77d4a8bd6a9",
+      "snapshot_sha256": null,
+      "test_only": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_scan_test.go",
+      "current_sha256": "33a62235826dd4329a86b37b0c4835ca75a82ee860ddbe2619a00c182e6e4e61",
+      "snapshot_sha256": "17c7676071346f71522436592a997721b4e79b2f43c853e11fb40b21ca0728ce",
+      "test_only": true
+    }
+  ],
+  "backup": "/tmp/multica-gap-recovery-20261021-h6phxwo9/status-resume-snapshot-before-history",
+  "product_change": "Command-history absent/empty reason projected as null; frontend unchanged",
+  "production_gates_changed": false
+}

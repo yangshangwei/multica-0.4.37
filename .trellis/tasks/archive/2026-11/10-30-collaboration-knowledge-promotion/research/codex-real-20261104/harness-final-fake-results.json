@@ -1,0 +1,40 @@
+{
+  "runs": [
+    {
+      "mode": "normal-03-run",
+      "result_path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261104/normal-03-run/result.json",
+      "result_sha256": "5466b51e7529dd62ff5eee9cb81257acafca04e7b4c685c0a198b04e5ae1eb07",
+      "raw_sha256": "8ca372e1cf492418f0aaad1e3574dd0296c735fd3795e171dee5c2f7eee6883b",
+      "summary_sha256": "61fb0b3801245657d29a6909945f8b97c64bcfadd140a8d7b8ac039b4a3aa385",
+      "accepted": true,
+      "source_stable": true,
+      "named_pass": 45,
+      "invalid_json_lines": 0,
+      "measured_fake_starts": 15,
+      "fake_seed_starts": 3,
+      "paid_starts": 0,
+      "first_event": "2026-11-05T00:45:28.526316+08:00",
+      "last_event": "2026-11-05T00:46:18.058309+08:00"
+    },
+    {
+      "mode": "race-01-run",
+      "result_path": "/Volumes/artisan/code/2026/mc-knowledge-codex-20261104/.omx/private/knowledge-codex-20261104/race-01-run/result.json",
+      "result_sha256": "d7ac627fef0dda429a2aa305f705e0b5ffe66493538d9c46bd9a2e57842bb1a3",
+      "raw_sha256": "9480e78736aa6995e071aa137f52aa8c3f61364c39deee1bc78a8856aff318a2",
+      "summary_sha256": "f995eb64a77203c101a5fb47aaeb6b996f2681101f0e46b0b53bc3cabdb5a598",
+      "accepted": true,
+      "source_stable": true,
+      "named_pass": 45,
+      "invalid_json_lines": 0,
+      "measured_fake_starts": 15,
+      "fake_seed_starts": 3,
+      "paid_starts": 0,
+      "first_event": "2026-11-05T00:47:55.393461+08:00",
+      "last_event": "2026-11-05T00:50:32.55192+08:00"
+    }
+  ],
+  "concurrency_note": "Normal03 and race01 overlapped another task registered quiet window, discovered after race had started; original run preserved, no claim of uncontended execution. Root coordinating release and follow-up. Both full suites passed without changed assertions/timeouts.",
+  "owned_test_processes_after": 0,
+  "release_observed_at": "2026-11-04T16:50:57.248057+00:00",
+  "real_calls": 0
+}

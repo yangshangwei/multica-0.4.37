@@ -1,0 +1,54 @@
+[
+  {
+    "check": "gofmt",
+    "command": [
+      "gofmt",
+      "-l",
+      "server/internal/daemon/knowledge_server_integration_test.go"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "note": ""
+  },
+  {
+    "check": "whitespace",
+    "command": [
+      "git",
+      "diff",
+      "--no-index",
+      "--check",
+      "/dev/null",
+      "server/internal/daemon/knowledge_server_integration_test.go"
+    ],
+    "exit_code": 1,
+    "passed": true,
+    "note": "Exit 1 records the new untracked file diff; empty output means no whitespace errors."
+  },
+  {
+    "check": "build",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./internal/daemon"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "note": ""
+  },
+  {
+    "check": "vet",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "-tags=knowledgeintegration",
+      "./internal/daemon"
+    ],
+    "exit_code": 0,
+    "passed": true,
+    "output_file": "ordinary-vet.log"
+  }
+]

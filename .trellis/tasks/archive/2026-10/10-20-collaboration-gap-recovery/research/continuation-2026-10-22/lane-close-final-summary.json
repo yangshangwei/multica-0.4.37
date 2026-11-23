@@ -1,0 +1,119 @@
+{
+  "at": "2026-10-22T00:34:47.524554+00:00",
+  "stats": {
+    "startTime": "2026-10-22T00:32:29.341Z",
+    "duration": 107534.009,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 21191,
+          "errors": [],
+          "identities": "lane-close-final-web-same-lane-identities.json",
+          "run_ids": []
+        }
+      ]
+    },
+    {
+      "title": "Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 16534,
+          "errors": [],
+          "identities": "lane-close-final-web-complete-identities.json",
+          "run_ids": [
+            "b5fa2c56-cf3c-4b77-920e-b728bef17ae6",
+            "d6ffa9fa-4980-4577-b15e-06ce6e3d45c4"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 16231,
+          "errors": [],
+          "identities": "lane-close-final-web-cancel-identities.json",
+          "run_ids": [
+            "1bbd0333-bd61-4f2c-9c58-60bf87722b7e",
+            "fcd71013-6672-4260-9516-6924b6b2438b"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 18856,
+          "errors": [],
+          "identities": "lane-close-final-electron-same-lane-identities.json",
+          "run_ids": []
+        }
+      ]
+    },
+    {
+      "title": "Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 16370,
+          "errors": [],
+          "identities": "lane-close-final-electron-complete-identities.json",
+          "run_ids": [
+            "eda5bdca-7f66-454a-87e1-8f4ddab5cf59",
+            "84969d54-94ec-41b9-ad7a-0cb09dd5d62e"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration_ms": 17026,
+          "errors": [],
+          "identities": "lane-close-final-electron-cancel-identities.json",
+          "run_ids": [
+            "47729607-23e4-4acc-a517-b9d6568de2cd",
+            "b47a602c-6c08-4c10-9f57-342b17432c32"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_sha256": {
+    "e2e/collaboration-lane-close-controls.spec.ts": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+    "e2e/fixtures/collaboration-lane-close-controls.ts": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+    "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+    "e2e/fixtures/collaboration-cross-client-provider.go": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+  },
+  "raw_sha256": "3bbcab7c52cb54937c6350bc4051234513ca966476258cf8d921b7a814356558",
+  "decoded_raw_attachment_redaction_violations": []
+}

@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/google/uuid"
 	"github.com/multica-ai/multica/server/internal/events"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 	"testing"
@@ -13,7 +14,7 @@ func TestIterationInboxEventPreservesRecipientRouting(t *testing.T) {
 	item := db.InboxItem{ID: parseUUID(uuid.NewString()), WorkspaceID: parseUUID(uuid.NewString()), RecipientType: "member", RecipientID: parseUUID(uuid.NewString()), Type: "iteration", Severity: "info", Title: "Iteration", Details: []byte(`{"iteration_id":"period-id","kind":"end"}`)}
 	var captured []events.Event
 	h.Bus.SubscribeAll(func(event events.Event) { captured = append(captured, event) })
-	h.PublishIterationInbox(item)
+	h.PublishIterationInbox(inboxstate.Delivery{Item: item, Created: true})
 	if len(captured) != 1 || captured[0].Type != protocol.EventInboxNew || captured[0].ActorType != "system" || captured[0].WorkspaceID != uuidToString(item.WorkspaceID) {
 		t.Fatalf("unexpected event: %+v", captured)
 	}

@@ -1,0 +1,494 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-directed/playwright-directed17",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-account-desktop.spec.ts",
+      "file": "collaboration-account-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d830fff7a787071ac252-cce5cce322a1d9534728",
+          "file": "collaboration-account-desktop.spec.ts",
+          "line": 277,
+          "column": 1
+        },
+        {
+          "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d830fff7a787071ac252-2802bec50cf95487730b",
+          "file": "collaboration-account-desktop.spec.ts",
+          "line": 402,
+          "column": 1
+        },
+        {
+          "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "d830fff7a787071ac252-eac673a2b556e5572224",
+          "file": "collaboration-account-desktop.spec.ts",
+          "line": 583,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-boundaries-web.spec.ts",
+      "file": "collaboration-boundaries-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+          "ok": true,
+          "tags": [
+            "agent"
+          ],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6e126002765c26c65f32-f3f66911ac00e604b913",
+          "file": "collaboration-boundaries-web.spec.ts",
+          "line": 291,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-command-history-web.spec.ts",
+      "file": "collaboration-command-history-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "dc6e451f347c4093ecd2-a28eb97dd4e993efe152",
+          "file": "collaboration-command-history-web.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-mention-journeys-desktop.spec.ts",
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "e1244c64bf212413b472-21e1aed1c8d6c522f803",
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "line": 97,
+          "column": 1
+        },
+        {
+          "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "e1244c64bf212413b472-40cb2a40180050917361",
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "line": 102,
+          "column": 1
+        },
+        {
+          "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "e1244c64bf212413b472-f56f261bd296c36c7784",
+          "file": "collaboration-mention-journeys-desktop.spec.ts",
+          "line": 107,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-mention-journeys-web.spec.ts",
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a2c6b754d21b70f11df3-e4beab049273f7979057",
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "line": 46,
+          "column": 3
+        },
+        {
+          "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a2c6b754d21b70f11df3-64a32e62b06c28657aa8",
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "line": 46,
+          "column": 3
+        },
+        {
+          "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a2c6b754d21b70f11df3-24073f543fb2f4024711",
+          "file": "collaboration-mention-journeys-web.spec.ts",
+          "line": 65,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-preparation-records-desktop.spec.ts",
+      "file": "collaboration-preparation-records-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "cde037303ed86892b546-c487173c2ca4fe36791b",
+          "file": "collaboration-preparation-records-desktop.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-preparation-records-web.spec.ts",
+      "file": "collaboration-preparation-records-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "a51aed25ed03c8fdf991-8eebfabe4531dc636537",
+          "file": "collaboration-preparation-records-web.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-preview-web.spec.ts",
+      "file": "collaboration-preview-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "6a3286d9ccab8513fbec-e93b6369b5b4939e29a8",
+          "file": "collaboration-preview-web.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-records-web.spec.ts",
+      "file": "collaboration-records-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "0bfd230843f79e727b28-dc35d5e24b961c6b892f",
+          "file": "collaboration-records-web.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-resource-offers-web.spec.ts",
+      "file": "collaboration-resource-offers-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "c78071dd87551f1b6349-e8466e8ab1e2b5c666b4",
+          "file": "collaboration-resource-offers-web.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-resources-web.spec.ts",
+      "file": "collaboration-resources-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "resource owners register, authorize, withdraw and switch while participant management preserves authority",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [],
+              "status": "skipped"
+            }
+          ],
+          "id": "217ddf7a66d97257e3f4-2fc69945ab2d775c7b1e",
+          "file": "collaboration-resources-web.spec.ts",
+          "line": 7,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-03T16:00:43.356Z",
+    "duration": 538.129,
+    "expected": 0,
+    "skipped": 17,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

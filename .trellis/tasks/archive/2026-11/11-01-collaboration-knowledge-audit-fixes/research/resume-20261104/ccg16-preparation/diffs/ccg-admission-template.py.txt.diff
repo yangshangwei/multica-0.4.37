@@ -1,0 +1,22 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/ccg-admission-template.py.txt
++++ /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/ccg-admission-template.py.txt
+@@ -10,8 +10,8 @@
+ from urllib.parse import urlsplit
+ 
+ ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+-PRIVATE = ROOT / '.omx/private/knowledge-final-gates-v15'
+-EXPECTED = 'd41573e3a4eb3bd6c36feed3f0d542a0e066ee0f'
++PRIVATE = ROOT / '.omx/private/knowledge-final-gates-v16'
++EXPECTED = 'eda0d68fb07852b714f3092aa02ca0523d3ad312'
+ 
+ def require(condition, message):
+     if not condition:
+@@ -53,7 +53,7 @@
+     audited = module.audit(ROOT, json.loads(Path(review_spec['path']).read_text()))
+     require(audited['status'] == 'pass' and audited['wholecheck_passed'] is True, 'Actual successful complete check and final source identities are required')
+     temp = Path(permission['temp_directory']).resolve()
+-    require(str(temp).startswith('/private/tmp/multica-ccg-v15-') and temp.is_dir() and not temp.is_symlink()
++    require(str(temp).startswith('/private/tmp/multica-ccg-v16-') and temp.is_dir() and not temp.is_symlink()
+             and temp.stat().st_uid == os.geteuid() and temp.stat().st_mode & 0o777 == 0o700, 'Missing root-allocated isolated build temp')
+     require(subprocess.run(['git', '-C', str(temp), 'rev-parse', '--show-toplevel'], stdout=subprocess.PIPE, stderr=subprocess.PIPE).returncode != 0,
+             'CCG build temp must be outside every Git checkout')

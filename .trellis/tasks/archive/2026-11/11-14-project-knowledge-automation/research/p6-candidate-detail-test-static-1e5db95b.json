@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-11-15T09:19:11.198434+00:00",
+  "source_file": "e2e/project-knowledge-automation.spec.ts",
+  "source_file_sha256": "6635894c5de46cc7349bb8871f425780dbb1bdd9854f6f5062b30f81727663b7",
+  "source_id": "32f271d5bd4a8dd6954f847e430291998b5ed5db6d7e800b10b6c50dbd098268",
+  "source_file_stable": true,
+  "results": [
+    {
+      "name": "eslint",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "eslint",
+        "e2e/project-knowledge-automation.spec.ts"
+      ],
+      "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+      "exit": 2,
+      "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/assertion-check-1e5db95b/eslint.log",
+      "log_sha256": "4141924ff5ca9ba8217a075e45ea5f62a6531df7bfd31c6db51de440e293e377",
+      "output": "[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n\nOops! Something went wrong! :(\n\nESLint: 9.39.4\n\nESLint couldn't find an eslint.config.(js|mjs|cjs) file.\n\nFrom ESLint v9.0.0, the default configuration file is now eslint.config.js.\nIf you are using a .eslintrc.* file, please follow the migration guide\nto update your configuration file to the new format:\n\nhttps://eslint.org/docs/latest/use/configure/migration-guide\n\nIf you still have problems after following the migration guide, please stop by\nhttps://eslint.org/chat/help to chat with the team.\n\n"
+    },
+    {
+      "name": "playwright-list",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/project-knowledge-automation.spec.ts",
+        "--list",
+        "--workers=1",
+        "--retries=0"
+      ],
+      "cwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+      "exit": 0,
+      "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/assertion-check-1e5db95b/playwright-list.log",
+      "log_sha256": "b3df76a8de95fc9ff616b67a188b15d6e69ad5f020be98e56b2c624f976b1734",
+      "output": "◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]\nListing tests:\n  [chromium] › project-knowledge-automation.spec.ts:34:3 › web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof\n  [chromium] › project-knowledge-automation.spec.ts:34:3 › desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof\nTotal: 2 tests in 1 file\n[WARN] The \"pnpm\" field in package.json is no longer read by pnpm. The following keys were ignored: \"pnpm.onlyBuiltDependencies\", \"pnpm.overrides\". See https://pnpm.io/settings for the new home of each setting.\n"
+    }
+  ],
+  "runtime_acceptance": false,
+  "full_frontend_validation_carry": "research/p6-isolated-frontend-0f91ae3c.json; frontend product and unit-test source unchanged by this E2E-only repair"
+}

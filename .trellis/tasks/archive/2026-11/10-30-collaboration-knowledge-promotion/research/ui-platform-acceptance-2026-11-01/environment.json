@@ -1,0 +1,44 @@
+{
+  "checked_at": "2026-10-31T23:03:30.220133+00:00",
+  "qa_checkout": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101",
+  "base_commit": "53a1662586555d14ea04efb3b951744a4993fa60",
+  "platform": "Darwin arm64",
+  "database_name": "multica_mc_knowledge_ui_qa_20261101_244",
+  "private_env_file": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/.env",
+  "registry": "/tmp/multica-knowledge-ui-dev-20261101",
+  "api_port": 18324,
+  "production_web_port": 13244,
+  "renderer_port": 5418,
+  "web_mode": "production",
+  "versions": {
+    "node": "v22.23.2",
+    "pnpm": "10.28.2",
+    "go": "go version go1.27.0 darwin/arm64"
+  },
+  "artifacts": [
+    {
+      "path": "apps/web/.next/BUILD_ID",
+      "sha256": "885e4f90d62d3f3bfb6785d0875e270faf4b3644419ed638556dcc8dae0dc135"
+    },
+    {
+      "path": "apps/web/.next/routes-manifest.json",
+      "sha256": "4952607fdd42b5f0a9698a0e45ef4aa3d0500c745c262c65c082aa86f99c53b5"
+    },
+    {
+      "path": "apps/desktop/out/renderer/index.html",
+      "sha256": "cffe02d38f25e0bae6a67eb689218e16e0133a3aa7e3570e554d2daeccc7a546"
+    },
+    {
+      "path": "apps/desktop/out/preload/index.js",
+      "sha256": "d0d1f996c20067570db5e331597db5072b48198de71b547c5655da582b8926f4"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-account-electron.mjs",
+      "sha256": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2"
+    }
+  ],
+  "provider_calls": false,
+  "daemon_discovery": false,
+  "knowledge_execution_gate": false,
+  "renderer_response_matches_index": true
+}

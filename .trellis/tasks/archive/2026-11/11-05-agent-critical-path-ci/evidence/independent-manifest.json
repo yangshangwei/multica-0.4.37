@@ -1,0 +1,45 @@
+{
+  "status": "cleared_for_owned_local_smoke_after_staging_and_source_freeze",
+  "base_head": "cd95c8e40f767826e7ed300519eb76e20489604a",
+  "source_files": {
+    ".github/workflows/agent-critical-path.yml": "26e5fbf9020827d9e557656ea86b262e2bf77dffa3ea5e24c730cdb91db11478",
+    "playwright.agent-critical-path.config.mjs": "89f7baf06d7c5b4c251b7a50a80115ccde08194d7b25590a422bb977412a2b37",
+    "scripts/agent-critical-path.mjs": "2b583ad46dce7d5b03e7e15328d9e09a42393932c7898119e5ac359f755fcaf8",
+    "scripts/agent-critical-path.sh": "e23eb583971092dbff2cf0e64458c9301e5ee78b7353fb743094d1e8aa8309c9",
+    "scripts/agent-critical-path.test.mjs": "9519ea521b0acd4c2b3f97e2b74e11c9e7824b05d11992f28fb5213677a316d0",
+    "scripts/agent-critical-path-workflow.test.mjs": "e7eaa9011f3fdf3b931340ba300100819efaaec208a069c54fa4fa95db04700c",
+    "scripts/check-agent-critical-path.mjs": "ac74735ace622fcb20498ae7c4fdf956c18d5d5b2410e5b2c9ca35a615141cfe",
+    "scripts/check-agent-critical-path.test.mjs": "62987fc7a43a93ccfa50c1d317ae28c2a7acd241505daac840e3f0bc9fe6e145"
+  },
+  "evidence": {
+    "/tmp/multica-critical-path-independent-contracts01.log": "c3922e3b0c3f883fa32b094ec767e58a8d3339eabf033ae36b240df4126d3172",
+    "/tmp/multica-critical-path-independent-red01.log": "2983b138372fd0e21ad4aa48b444590fe7bc4d85b5320cf1a7e46c38653e9783",
+    "/tmp/multica-critical-path-independent-green01.log": "a91236fa4b534c853aab2e65132f28c0566f096eaec0c072e3c89e73a32062c3"
+  },
+  "tests": {
+    "initial_contracts": {
+      "pass": 71,
+      "fail": 0,
+      "skip": 0
+    },
+    "identity_red": {
+      "pass": 32,
+      "fail": 1,
+      "skip": 0,
+      "expected_exit": 43,
+      "observed_exit": 0
+    },
+    "final_contracts": {
+      "pass": 72,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "required_before_launch": [
+    "Stage new root Playwright config so git diff HEAD includes it in checkout_source_id",
+    "Freeze source and tracked task/spec docs",
+    "Use recorded private smoke-config01.json only; root checks current_database before migration",
+    "Run browser prerequisite with explicit supplied cache, no download fallback"
+  ],
+  "actual_product_smoke": "not_run_by_reviewer"
+}

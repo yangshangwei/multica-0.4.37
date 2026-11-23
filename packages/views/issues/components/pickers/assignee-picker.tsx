@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import { Lock, UserMinus } from "lucide-react";
 import type { Agent, IssueAssigneeType, UpdateIssueRequest } from "@multica/core/types";
 import { useQuery } from "@tanstack/react-query";
@@ -22,6 +22,7 @@ import {
 } from "./property-picker";
 import { useT } from "../../../i18n";
 import { matchesPinyin } from "../../../editor/extensions/pinyin-match";
+import { getSettingsQueryState } from "../../../settings/components/settings-query-feedback";
 
 /**
  * Legacy boolean shape kept around for callers (e.g. `use-issue-actions.ts`)
@@ -104,15 +105,23 @@ function AssigneePickerImpl({
   align,
 }: AssigneePickerProps) {
   const { t } = useT("issues");
+  const listboxId = useId();
+  const searchRef = useRef<HTMLInputElement>(null);
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen ?? internalOpen;
   const setOpen = controlledOnOpenChange ?? setInternalOpen;
   const [filter, setFilter] = useState("");
   const user = useAuthStore((s) => s.user);
   const wsId = useWorkspaceId();
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
-  const { data: agents = [] } = useQuery(agentListOptions(wsId));
-  const { data: squads = [] } = useQuery(squadListOptions(wsId));
+  const memberQuery = useQuery(memberListOptions(wsId));
+  const agentQuery = useQuery(agentListOptions(wsId));
+  const squadQuery = useQuery(squadListOptions(wsId));
+  const memberState = getSettingsQueryState(memberQuery);
+  const agentState = getSettingsQueryState(agentQuery);
+  const squadState = getSettingsQueryState(squadQuery);
+  const members = memberState.hasData ? memberQuery.data ?? [] : [];
+  const agents = agentState.hasData ? agentQuery.data ?? [] : [];
+  const squads = squadState.hasData ? squadQuery.data ?? [] : [];
   const { data: frequency = [] } = useQuery(assigneeFrequencyOptions(wsId));
   const { getActorName } = useActorName();
 
@@ -153,6 +162,12 @@ function AssigneePickerImpl({
     assigneeType && assigneeId
       ? getActorName(assigneeType, assigneeId)
       : t(($) => $.pickers.assignee.trigger_unassigned);
+  const groups = [
+    { key: "members", label: t(($) => $.pickers.assignee.members_group), query: memberQuery, state: memberState },
+    { key: "agents", label: t(($) => $.pickers.assignee.agents_group), query: agentQuery, state: agentState },
+    { key: "squads", label: t(($) => $.pickers.assignee.squads_group), query: squadQuery, state: squadState },
+  ];
+  const candidatesComplete = groups.every(({ state }) => state.hasData && !state.failed);
 
   return (
     <PropertyPicker
@@ -168,6 +183,29 @@ function AssigneePickerImpl({
       searchable
       searchPlaceholder={t(($) => $.pickers.assignee.search_placeholder)}
       onSearchChange={setFilter}
+      searchInputRef={searchRef}
+      listboxId={listboxId}
+      listboxLabel={t(($) => $.actions.assignee)}
+      header={groups.some(({ state }) => state.failed || !state.hasData) ? <>
+        {groups.map(({ key, label, query: groupQuery, state }) => state.failed ? (
+          <div key={key} role="alert" className="px-2 py-2 text-caption text-muted-foreground">
+            <p>{state.hasData
+              ? t(($) => $.pickers.assignee.refresh_failed, { group: label })
+              : t(($) => $.pickers.assignee.load_failed, { group: label })}</p>
+            <button type="button" disabled={groupQuery.isFetching}
+              onClick={() => {
+                if (groupQuery.isFetching) return;
+                searchRef.current?.focus();
+                void groupQuery.refetch({ cancelRefetch: false });
+              }}
+              className="mt-1 rounded px-1 py-1 text-foreground underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11 disabled:opacity-50">
+              {t(($) => $.pickers.assignee.retry, { group: label })}
+            </button>
+          </div>
+        ) : !state.hasData ? (
+          <p key={key} role="status" className="px-2 py-2 text-caption text-muted-foreground">{t(($) => $.pickers.assignee.loading, { group: label })}</p>
+        ) : null)}
+      </> : undefined}
       triggerRender={triggerRender}
       trigger={
         customTrigger ? customTrigger : assigneeType && assigneeId ? (
@@ -185,6 +223,7 @@ function AssigneePickerImpl({
           never moves. */}
       <PickerItem
         emptyValue
+        optionId={`${listboxId}-unassigned`}
         selected={!mixed && !assigneeType && !assigneeId}
         onClick={() => {
           onUpdate({ assignee_type: null, assignee_id: null });
@@ -201,6 +240,7 @@ function AssigneePickerImpl({
           {filteredMembers.map((m) => (
             <PickerItem
               key={m.user_id}
+              optionId={`${listboxId}-member-${m.user_id}`}
               selected={isSelected("member", m.user_id)}
               onClick={() => {
                 onUpdate({
@@ -210,7 +250,7 @@ function AssigneePickerImpl({
                 setOpen(false);
               }}
             >
-              <ActorAvatar actorType="member" actorId={m.user_id} size="sm" />
+              <ActorAvatar actorType="member" actorId={m.user_id} size="sm" profileLink={false} />
               <span className="min-w-0 flex-1"><span className="block truncate">{m.name}</span><span className="block truncate text-caption text-muted-foreground">{m.username || m.email}</span></span>
             </PickerItem>
           ))}
@@ -235,6 +275,7 @@ function AssigneePickerImpl({
             return (
               <PickerItem
                 key={a.id}
+                optionId={`${listboxId}-agent-${a.id}`}
                 selected={isSelected("agent", a.id)}
                 disabled={!allowed}
                 tooltip={
@@ -253,7 +294,7 @@ function AssigneePickerImpl({
                   setOpen(false);
                 }}
               >
-                <ActorAvatar actorType="agent" actorId={a.id} size="sm" showStatusDot />
+                <ActorAvatar actorType="agent" actorId={a.id} size="sm" showStatusDot profileLink={false} />
                 <span className={`truncate ${allowed ? "" : "text-muted-foreground"}`}>{a.name}</span>
                 {a.visibility === "private" && (
                   <Lock className="ml-auto h-3 w-3 text-muted-foreground" />
@@ -273,6 +314,7 @@ function AssigneePickerImpl({
             return (
               <PickerItem
                 key={s.id}
+                optionId={`${listboxId}-squad-${s.id}`}
                 selected={isSelected("squad", s.id)}
                 disabled={!runtimeBound}
                 tooltip={
@@ -289,7 +331,7 @@ function AssigneePickerImpl({
                   setOpen(false);
                 }}
               >
-                <ActorAvatar actorType="squad" actorId={s.id} size="sm" />
+                <ActorAvatar actorType="squad" actorId={s.id} size="sm" profileLink={false} />
                 <span className="truncate">{s.name}</span>
               </PickerItem>
             );
@@ -300,6 +342,7 @@ function AssigneePickerImpl({
       {filteredMembers.length === 0 &&
         filteredAgents.length === 0 &&
         filteredSquads.length === 0 &&
+        candidatesComplete &&
         filter && <PickerEmpty />}
     </PropertyPicker>
   );

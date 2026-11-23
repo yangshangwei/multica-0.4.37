@@ -1,0 +1,349 @@
+{
+  "audited_at": "2026-11-01T00:27:38.295703+00:00",
+  "checkout": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "head": "53a1662586555d14ea04efb3b951744a4993fa60",
+  "verdict": "required_acceptance_evidence_gaps_and_main_gates_open",
+  "new_product_defects": [],
+  "scope": "read-only retained evidence + current relevant test semantics; no tests/database/provider/source mutations",
+  "acceptance_criteria": {
+    "AC1": "supported_for_stated_deterministic_scope",
+    "AC2": "supported_with_required_matrix_gap",
+    "AC3": "supported_with_required_matrix_gap",
+    "AC4": "supported_with_required_matrix_gap",
+    "AC5": "supported_with_required_matrix_gap",
+    "AC6": "supported_for_stated_deterministic_scope",
+    "AC7": "supported_with_pending_main_gate",
+    "AC8": "supported_with_required_matrix_gap",
+    "AC9": "supported_with_pending_main_gate",
+    "AC10": "supported_with_pending_main_gate",
+    "AC11": "supported_with_required_matrix_gap"
+  },
+  "required_evidence_gaps": [
+    {
+      "id": "A",
+      "ac": [
+        "AC2",
+        "AC3",
+        "AC11"
+      ],
+      "contract": "implement section2 concurrency matrix and F1/F2",
+      "detail": "Actual preparation vs ordinary writer; held approval vs unrelated ordinary writers; both-order authority/source/state/deletion races and concurrent correction allocation not exercised by current tests."
+    },
+    {
+      "id": "B",
+      "ac": [
+        "AC4"
+      ],
+      "contract": "F4/K5 recovery negative tests",
+      "detail": "Valid wrong candidate and memory/command kind receipt lookups are not exercised; wrong actor is covered."
+    },
+    {
+      "id": "C",
+      "ac": [
+        "AC5",
+        "AC8"
+      ],
+      "contract": "K2/K4 named boundary scenarios",
+      "detail": "Named preparation/source-revoke test contains only withdrawal; no authority mutation between claim build/finalize; deletion helper covered but human detail/history only tests purge."
+    }
+  ],
+  "scope_reconciliation": [
+    {
+      "id": "D",
+      "detail": "UI runtime next-input journey, native target-only admin, negotiated squad roles and multi-comment coalescing are not new combined proof; document layer decomposition or add direct scenario before claiming those checklist rows."
+    }
+  ],
+  "counts": [
+    {
+      "path": "research/composite-acceptance-2026-11-01/ordinary-final.jsonl",
+      "top_level_passes": 14,
+      "pass_events": 27,
+      "container_count": 4,
+      "leaf_cases": 23,
+      "container_tests": [
+        "TestKnowledgeServerDaemonCompositeDatabaseGuard",
+        "TestKnowledgeServerDaemonCompositeLostCommittedResponses",
+        "TestKnowledgeServerDaemonCompositeOrdinarySurfaces",
+        "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch"
+      ],
+      "leaf_tests": [
+        "TestKnowledgeServerDaemonCompositeAccountabilityIsNotOriginator",
+        "TestKnowledgeServerDaemonCompositeDatabaseGuard/absent",
+        "TestKnowledgeServerDaemonCompositeDatabaseGuard/unowned",
+        "TestKnowledgeServerDaemonCompositeExactResumeThenFreshReplacement",
+        "TestKnowledgeServerDaemonCompositeGateClosureKeepsObservationCleanup",
+        "TestKnowledgeServerDaemonCompositeHappyPath",
+        "TestKnowledgeServerDaemonCompositeLaterLaunchRefusal",
+        "TestKnowledgeServerDaemonCompositeLegacyCannotReuseExposure",
+        "TestKnowledgeServerDaemonCompositeLiveWebSocketClaim",
+        "TestKnowledgeServerDaemonCompositeLostCommittedResponses/authorize",
+        "TestKnowledgeServerDaemonCompositeLostCommittedResponses/observations",
+        "TestKnowledgeServerDaemonCompositeLostCommittedResponses/prepare",
+        "TestKnowledgeServerDaemonCompositeLostDisclosureThenWithdrawal",
+        "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/autopilot",
+        "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/chat",
+        "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/comment",
+        "TestKnowledgeServerDaemonCompositeOrdinarySurfaces/quick_create",
+        "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/expiry",
+        "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/gate",
+        "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/purge",
+        "TestKnowledgeServerDaemonCompositeRefusesChangedSourceBeforeLaunch/withdraw",
+        "TestKnowledgeServerDaemonCompositeSourceParticipationRevoked",
+        "TestKnowledgeServerDaemonCompositeZeroNativeStaleFence"
+      ],
+      "failures": [],
+      "skips": []
+    },
+    {
+      "path": "research/host-composite-acceptance-2026-11-01/final.jsonl",
+      "top_level_passes": 8,
+      "pass_events": 16,
+      "container_count": 3,
+      "leaf_cases": 13,
+      "container_tests": [
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose"
+      ],
+      "leaf_tests": [
+        "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+        "TestCollaborationKnowledgeHostCompositeHappyPath",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/expiry",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/purge",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/source_access",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/withdraw",
+        "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+        "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/authorize",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/prepare",
+        "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/downgrade",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/unnegotiated"
+      ],
+      "failures": [],
+      "skips": []
+    },
+    {
+      "path": "research/host-composite-acceptance-2026-11-01/race.jsonl",
+      "top_level_passes": 8,
+      "pass_events": 16,
+      "container_count": 3,
+      "leaf_cases": 13,
+      "container_tests": [
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose"
+      ],
+      "leaf_tests": [
+        "TestCollaborationKnowledgeHostCompositeFreshRunsUseDifferentNativeNamespaces",
+        "TestCollaborationKnowledgeHostCompositeHappyPath",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/expiry",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/purge",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/source_access",
+        "TestCollaborationKnowledgeHostCompositeInvalidationBeforeLaterRunLaunch/withdraw",
+        "TestCollaborationKnowledgeHostCompositeLostMarkerCannotEnterTestMain",
+        "TestCollaborationKnowledgeHostCompositeLostResponseRechecksWithdrawnSource",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/authorize",
+        "TestCollaborationKnowledgeHostCompositeLostResponsesKeepOriginalIdentity/prepare",
+        "TestCollaborationKnowledgeHostCompositePrivateStderrKeepsOnlyBoundedRunEvidence",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/downgrade",
+        "TestCollaborationKnowledgeHostCompositeUnnegotiatedAndDowngradedClaimsCannotDisclose/unnegotiated"
+      ],
+      "failures": [],
+      "skips": []
+    },
+    {
+      "path": "research/server-execution-2026-11-01/service-race-complete.jsonl",
+      "top_level_passes": 37,
+      "pass_events": 60,
+      "container_count": 8,
+      "leaf_cases": 52,
+      "container_tests": [
+        "TestKnowledgeFailureNeverCreatesAutomaticRetry",
+        "TestKnowledgeOldClaimZeroSessionReportsCannotMutateReclaimedTask",
+        "TestKnowledgeOrdinaryNoSessionPersistenceRemainsUnsupported",
+        "TestKnowledgePreparationVersusWithdrawAndSourceRevoke",
+        "TestKnowledgeRuntimeHistoryRefusesCorruptOrTruncatedProof",
+        "TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback",
+        "TestKnowledgeUnsupportedBackendCannotResumeManagedSessionAcrossScopes",
+        "TestKnowledgeValidEmptyAndClaimedHistoryPreserveLegacyWork"
+      ],
+      "leaf_tests": [
+        "TestKnowledgeAuthorityChangeBetweenDisclosureAndLaunch",
+        "TestKnowledgeAuthorizeLostResponseRechecksCurrentEligibility",
+        "TestKnowledgeClaimDoesNotNegotiateAfterProviderChanges",
+        "TestKnowledgeClaimFinalizationDisclosesNoPrivateFields",
+        "TestKnowledgeDisabledGatePreservesOriginalObservationCleanup",
+        "TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_authorization_denied",
+        "TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_busy",
+        "TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_context_changed",
+        "TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_invocation_unsupported",
+        "TestKnowledgeFailureNeverCreatesAutomaticRetry/knowledge_unavailable",
+        "TestKnowledgeLaunchRequiresPreparedInvocationAndPrompt",
+        "TestKnowledgeLegacyClientCannotResumeManagedSession",
+        "TestKnowledgeLegacyNoneDiffersFromCorruptNegotiatedHistory",
+        "TestKnowledgeManagedClaimKeepsOriginalRuntimeBinding",
+        "TestKnowledgeMetadataDoesNotSerializeThroughOrdinaryTask",
+        "TestKnowledgeMissingOriginatorDoesNotUseAccountableIdentity",
+        "TestKnowledgeNativeObservationReplayKeepsOriginalReceipt",
+        "TestKnowledgeOldClaimZeroSessionReportsCannotMutateReclaimedTask/downgraded",
+        "TestKnowledgeOldClaimZeroSessionReportsCannotMutateReclaimedTask/gate_closed",
+        "TestKnowledgeOldClaimZeroSessionReportsCannotMutateReclaimedTask/negotiated",
+        "TestKnowledgeOldClaimZeroSessionReportsCannotMutateReclaimedTask/no_current_metadata",
+        "TestKnowledgeOrdinaryNoSessionPersistenceRemainsUnsupported/custom",
+        "TestKnowledgeOrdinaryNoSessionPersistenceRemainsUnsupported/defaults",
+        "TestKnowledgePreparationCompleteEnvelopeBudgetRollsBackDisclosure",
+        "TestKnowledgePreparationFinalizerContentionUsesNowait",
+        "TestKnowledgePreparationHoldsConsumerProjectIdentity",
+        "TestKnowledgePreparationLostResponseReauthorizes",
+        "TestKnowledgePreparationMultiTargetReplayKeepsExactOrder",
+        "TestKnowledgePreparationRejectsOldClaimGeneration",
+        "TestKnowledgePreparationVersusWithdrawAndSourceRevoke/prepare",
+        "TestKnowledgePreparationVersusWithdrawAndSourceRevoke/withdraw",
+        "TestKnowledgePreparationWorkspaceDeleteLockOrder",
+        "TestKnowledgePrepareBeforeFinalizedClaimRefused",
+        "TestKnowledgeProvenLegacySessionRemainsResumable",
+        "TestKnowledgeReclaimedTaskRetainsPriorDisclosureBindings",
+        "TestKnowledgeResumeCancelledTaskRetainsExposure",
+        "TestKnowledgeResumeChangedServerConfigurationStartsFresh",
+        "TestKnowledgeResumeSameSessionUnionsAllTurns",
+        "TestKnowledgeRuntimeHistoryRefusesCorruptOrTruncatedProof/corrupt",
+        "TestKnowledgeRuntimeHistoryRefusesCorruptOrTruncatedProof/truncated",
+        "TestKnowledgeRuntimeMergeDoesNotRelabelExposureAsLegacy",
+        "TestKnowledgeSessionPointerAndExposureBindAtomically",
+        "TestKnowledgeTrustedServerFailureCanSettleRetainedTask",
+        "TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback/custom",
+        "TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback/defaults",
+        "TestKnowledgeUnsupportedBackendCannotResumeManagedSessionAcrossScopes/deleted_runtime",
+        "TestKnowledgeUnsupportedBackendCannotResumeManagedSessionAcrossScopes/same_daemon_new_runtime",
+        "TestKnowledgeUnsupportedBackendCannotResumeManagedSessionAcrossScopes/same_owner_new_daemon",
+        "TestKnowledgeUnsupportedBackendCannotResumeManagedSessionAcrossScopes/same_runtime",
+        "TestKnowledgeValidEmptyAndClaimedHistoryPreserveLegacyWork/claimed",
+        "TestKnowledgeValidEmptyAndClaimedHistoryPreserveLegacyWork/empty_disclosure",
+        "TestKnowledgeWithdrawnOnlyInOlderTurnForcesFresh"
+      ],
+      "failures": [],
+      "skips": []
+    },
+    {
+      "path": "research/server-execution-2026-11-01/handler-race-final.jsonl",
+      "top_level_passes": 6,
+      "pass_events": 21,
+      "container_count": 1,
+      "leaf_cases": 20,
+      "container_tests": [
+        "TestKnowledgeAllFirstPartyClaimSurfaces"
+      ],
+      "leaf_tests": [
+        "TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/autopilot/ws",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/chat/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/chat/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/chat/ws",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/comment/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/comment/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/comment/ws",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/issue/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/issue/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/issue/ws",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/batch",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/single",
+        "TestKnowledgeAllFirstPartyClaimSurfaces/quick_create/ws",
+        "TestKnowledgeExplicitRerunUsesSourceSessionExposure",
+        "TestKnowledgeHTTPNegotiationDoesNotEnableClosedGate",
+        "TestKnowledgeHTTPRejectsHumanCredentialFallback",
+        "TestKnowledgeResumeDirectChatPointerUsesExactExposure",
+        "TestKnowledgeResumeOlderSessionFallbackUsesChosenKey"
+      ],
+      "failures": [],
+      "skips": []
+    },
+    {
+      "path": "research/integration-verification-2026-11-01/startup-gate/green.jsonl",
+      "top_level_passes": 1,
+      "pass_events": 5,
+      "container_count": 1,
+      "leaf_cases": 4,
+      "container_tests": [
+        "TestKnowledgeContextRequiresExplicitStartupOptIn"
+      ],
+      "leaf_tests": [
+        "TestKnowledgeContextRequiresExplicitStartupOptIn/default",
+        "TestKnowledgeContextRequiresExplicitStartupOptIn/disabled",
+        "TestKnowledgeContextRequiresExplicitStartupOptIn/enabled",
+        "TestKnowledgeContextRequiresExplicitStartupOptIn/noncanonical"
+      ],
+      "failures": [],
+      "skips": []
+    }
+  ],
+  "ui": {
+    "independent_cases": 8,
+    "web_cases": 7,
+    "native_cases": 1,
+    "recaptured_existing_journeys": 2,
+    "final_images": 30,
+    "visual_groups": 18,
+    "independent_visual_verdict": "ship_within_frozen_ui_scope",
+    "combined_source_reconciliation": "pending_main"
+  },
+  "frontend": {
+    "tests": 13060,
+    "files": 1063,
+    "packages": 5,
+    "cache_hits": 0,
+    "typecheck_exit": 0,
+    "lint_exit": 0,
+    "test_exit": 0,
+    "source_changes": []
+  },
+  "main_gates": [
+    "RR2 current server logging correction",
+    "full integrated Go/Redis/SQLc/vet/build and source hashes",
+    "UI frozen-snapshot reconciliation",
+    "docs/spec and final checklist/status reconciliation"
+  ],
+  "excluded": [
+    "real provider/model comprehension",
+    "Windows",
+    "packaged installers/full Main bootstrap",
+    "multi-account quota",
+    "old E-series; next E2a trial3 cap22 after upstream502"
+  ],
+  "evidence_sha256": {
+    "prd.md": "5ae5ef4e13cada7d2d3c2c4d4c156ebc853471f7c1b30a0516600fa878579e15",
+    "design.md": "85b1a0ffc67d4970db205d2b15c8a146b3cc7c5b2facfd3e5600f07f18c66b06",
+    "implement.md": "8ef261d08b5bdca485d79ee177a2215efeaa6c9f1aaacc3bd54904591be4fb2d",
+    "research/service-review-2026-11-01.md": "46c88ee109b7683697726f2bb38be33459a81a7253af6d1b404ba7e385c5a56f",
+    "research/foundation-review-recheck-2026-11-01.json": "39f266da9d96402c34fd3169ee745e99b4bcb9bb25919eb5ed4802bd48f23560",
+    "research/invalidation-review-recheck-2026-11-01.md": "13696d5f20f9585876dca28b7835df1ac2c3648c02cb5be703f475a932be92e6",
+    "research/runtime-review-recheck-2026-11-01.md": "47f47560b8dd7ddfbf354a1d36c8d6a7004e0a4568f06772a885a417c89848e8",
+    "research/ui-implementation-2026-11-01/main-recheck.json": "cb383a6d8df3cc0cdd9af041dbaea24c43634f0dfa6ab99237458a3caae8cf18",
+    "research/ui-platform-acceptance-2026-11-01/visual-review-final.md": "2f101c1dc38cdce022a4315a0d1d2cecb59cec84e9b0ad98865fbc45e85c119f",
+    "research/ui-platform-acceptance-2026-11-01/verification.json": "007714560b0c72f42787b008c7a05cf5fcddcfb092c433ee12fc22adf716754f",
+    "research/integration-verification-2026-11-01/frontend-final/round2/summary.json": "525bddb269773a7cca974b4360b7cb9bfa2d73e41c11796055ec48b88e2cf5ba",
+    "research/composite-acceptance-2026-11-01/ordinary-final.jsonl": "e929b91570b18df7552d0efd38d29efa2c2605c2b6b6f1b6e3c1c80c011f7c07",
+    "research/host-composite-acceptance-2026-11-01/final.jsonl": "cef1e338142d26281e4c5884e4673c1e7956b7305aa9fb9892c2f2f6658493a4",
+    "research/host-composite-acceptance-2026-11-01/race.jsonl": "630f33340ebf39aca3827946ffcb6886f61c961fb32f25d3c56058389aaaf5f2",
+    "research/server-execution-2026-11-01/service-race-complete.jsonl": "8e4c71ae24c9fc2bc5d91ce43be2a8c26a51a55e03c99a8330cb50f56414b288",
+    "research/server-execution-2026-11-01/handler-race-final.jsonl": "2bf9a948c87900c82e610f11aead5abaf4f52bd5c9f7a6d85f667c1ff246415e",
+    "research/integration-verification-2026-11-01/startup-gate/green.jsonl": "f2635c70ef61b740cabc07cf6991ea3e9654fac60938c4e09c0e0e7cd176271a"
+  },
+  "inspected_test_sha256": {
+    "server/internal/migrations/collaboration_knowledge_queries_test.go": "4c667bb0ae75ad3c70bb5abf37ab4e0588d04f5ceec49d504b1ca620417a0168",
+    "server/internal/service/collaboration_knowledge_concurrency_test.go": "8c8b274914f761ea2da1892a8a9530c0d73ef0a634731ea14353f6a1928feada",
+    "server/internal/service/collaboration_knowledge_authority_test.go": "205e6d3a9b53e20c8ac602e837a92d89021b6f4a83f0348c4880b2611693b12a",
+    "server/internal/service/collaboration_knowledge_view_test.go": "4610c809d2471aad466a3c8c01a76ee6af1ae499e7054336cc54abdaa674d119",
+    "server/internal/service/task_knowledge_concurrency_test.go": "a8dc87ef549678bf310025c422f1f6e2c9825e644d342fc5d4218c3489104e34",
+    "server/internal/service/task_knowledge_test.go": "a48b8ca165a8e5d865efc280e244d690e99b3f0010f48ddae671ca461fbcbe0d",
+    "server/internal/service/task_knowledge_history_test.go": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+    "server/internal/service/collaboration_knowledge_runtime_test.go": "4d3aecca7a7575ccefdef48a1c267028cc5a82f9f8c06964db178c6c247f1bcc",
+    "server/internal/daemon/knowledge_server_integration_test.go": "0e74b9e4fe420c7780ef800d022e66f1c187871f2ac8d25eb8c0261db10656f2",
+    "server/internal/daemon/collaborationrun/host_knowledge_test.go": "e15aef9d6aa1b1283a9b48a3b64eb80142e950e3ec4fd4f8931f01d82a586e28",
+    "server/internal/daemon/collaborationrun/host_handoff_launch_test.go": "16d9f62c8515de5468240bc85e8ddeddb0b186f3f99b62b1d23c2617f66b3336",
+    "server/internal/service/collaboration_host_runtime_test.go": "54a64654c04224f094a4ef3d31816b3062ff0914120c22deb2cd04846988fe24",
+    "server/cmd/server/collaboration_knowledge_host_composite_test.go": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+    "e2e/collaboration-knowledge.spec.ts": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015"
+  }
+}

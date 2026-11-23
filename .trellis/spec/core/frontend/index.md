@@ -17,10 +17,22 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
 | [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | To fill |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
-| [State Management](./state-management.md) | Local state, global state, server state | To fill |
+| [State Management](./state-management.md) | Ordinary issue UI revision observations, optimistic reads and scoped administrative drafts | Active contracts; general guide pending |
+| [Global scope navigation](./global-scope-navigation.md) | Shared sidebar, account-safe previews, disclosure preferences, identity-owned resume and explicit focus | Active |
+| [Collaboration notifications](./collaboration-notifications.md) | Account page, complete recipient filters, compatible view markers and retained list/detail returns | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
+| [Confirmed cookie logout](./cookie-logout.md) | Awaited HttpOnly-cookie clearing, preserved failed logout drafts and session-fenced teardown | Active |
 | [ApiClient authEpoch](./api-client-auth-epoch.md) | Isolating a stale 401 from the current session | Active |
+| [Batch issue outcomes](./issue-batch-outcomes.md) | Ordered partial commits, strict parsing, optimistic ownership and shared counts | Client contract implemented; backend acceptance separate |
+| [Personal Inbox snooze](../../server/inbox-snooze.md) | Strict receipts, captured workspace headers, group counts, calendar helpers and recovery | Shared contract; evidence in task |
+| [Collaboration execution protocol](../../server/collaboration-targets.md) | v5 channel/input/reader history, exact hold/control receipts, original-key/access-epoch recovery and gated execution | Direct/squad foundation; full product pending |
+| [Collaboration recorded runs](../../server/collaboration-records.md) | Private record paging, exact usage, page-chain integrity, child hints and compatible run anchors | Current R51/R52 increment |
+| [Collaboration trigger previews](../../server/collaboration-preview-wakeup.md) | Additive grouping facts, strict peer validation and current-draft preview identity | Focused preview increment |
+| [Collaboration workbench](./collaboration-workbench.md) | Account reads, scoped creation/files, resource forms, schema boundaries and original-key recovery | Gated Web/Desktop workflow; full product pending |
+| [Collaboration stage authority](../../server/collaboration-stage-approvals.md) | Current source denial, private R4/T4 fencing, exact scope and original approval consumption | Shared boundary checks; full stage acceptance separate |
+| [Collaboration results and manual policy](../../server/collaboration-delivery.md) | Exact result/decision schema, protected bounded history, confirmation and task-owned admission | Human workflow verified; general execution evidence separate |
+| [Collaboration knowledge](./collaboration-knowledge.md) | Strict v1/v2 origins/status/policies, monotonic leases, exact sources and sealed original-intent recovery | Implemented client contract; integrated execution acceptance separate |
 | [Settings Recovery](../../views/frontend/settings-recovery.md) | Exact-Query denial and cancellation rollback, PAT parsing and one-time secret ownership | Active |
 | [Connection Recovery](../../desktop/frontend/connection-recovery.md) | Recovery request deadlines/cancellation, transient auth metadata and workspace query errors | Active |
 | [Iteration Operations](./iteration-operations.md) | Complete previews/activity, frozen progress and scope semantics, recovery, permission epochs and routing | Active |

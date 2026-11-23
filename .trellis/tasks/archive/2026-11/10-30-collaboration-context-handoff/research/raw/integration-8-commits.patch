@@ -1,0 +1,2681 @@
+diff --git a/.trellis/spec/server/collaboration-host-execution.md b/.trellis/spec/server/collaboration-host-execution.md
+index 693c94014..97ada75a1 100644
+--- a/.trellis/spec/server/collaboration-host-execution.md
++++ b/.trellis/spec/server/collaboration-host-execution.md
+@@ -71,12 +71,14 @@ Fingerprint the managed invocation, account-source identity and declared tool pe
+ 
+ Stable session identity includes collaboration, deployment, resource owner, agent, issue session, channel, provider runtime, role and session generation. Member execution adds group/member identity. Per-run temporary identity adds run/launch.
+ 
+-Never resolve session pointers by display name or most-recent session. Runtime/provider/account identity or incompatible role/config changes create a new session generation. Human handoff alone does not.
++Never resolve session pointers by display name or most-recent session. Runtime/provider/account identity or incompatible role/config changes create a new session generation. Owner re-consent of an instructions/model/thinking edit advances `config_version`, so it also starts a new generation. Human handoff alone does not.
+ 
+ An unverifiable or rejected session pointer may lead to an explicitly recorded fresh session using authorized issue context; it cannot silently attach to private chat or a normal issue session.
+ 
+ Server-origin input authors are retained individually across batching. Agent owner, runtime/resource owner, initiating human and parent execution are distinct. A daemon identity authenticates delivery; it does not replace the human author. Provider text cannot mint or change those identities.
+ 
++The host prompt JSON carries `issue_id` first (fixtures locate it by that key), then `agent_id`, `agent_owner_user_id`, `resource_owner_user_id`, `role`, `step_key`, `parent_run_id`, `inputs`, `attachments` and the optional `git` and `memory`. A `member` run receives its group's root human inputs, so its prompt text also says that its task is the leader's delegation, shown as `dispatch_comment` in `multica issue get`, not the whole original request.
++
+ Only one managed execution may own a stable session/work-directory identity at a time. Reuse scheduling/environment locks and persist that ownership with the launch ledger; an OS lock released by a daemon crash does not settle an unknown logical owner. Two otherwise valid runs sharing a member/session identity must serialize. Do not hold a scarce machine slot while waiting in a way that prevents the current owner from finishing. Release ownership only after reliable managed termination.
+ 
+ Use shared files only through the frozen attachment/Git preparation contract. Keep path validation, size limits and original request identity even though host filesystem isolation is no longer promised.
+diff --git a/.trellis/spec/server/collaboration-preparation.md b/.trellis/spec/server/collaboration-preparation.md
+index 37e7bde4d..c2e36a952 100644
+--- a/.trellis/spec/server/collaboration-preparation.md
++++ b/.trellis/spec/server/collaboration-preparation.md
+@@ -22,6 +22,15 @@ commit, provider adapter and limits. Invocation instructions/model/thinking
+ come from the locked agent. Never re-read live configuration to rebuild an old
+ claim, replace a nonce or invent a new attempt after a lost response.
+ 
++Attachment selection is one rule for promotion, claim freeze and never-launched
++refusal settlement. The manifest holds every delivered file that the prepared
++inputs reference. The remaining capacity up to 32 goes to the issue's other
++delivered files, newest first (`delivered_at DESC`, then `id`). An issue's
++delivered files are permanent and can outnumber the bound, so only a referenced
++set above 32 refuses with `runtime_preparation_limits`; a referenced file that
++is no longer delivered refuses with `runtime_preparation_unavailable`. A claimed
++run keeps its frozen selection, and later deliveries never widen it.
++
+ The initial prepared adapters are `static_json_v1` and
+ `claude_stream_json_v1`. Nonempty unsupported agent overrides, MCP/Composio,
+ skills, service tier, autonomy or squad instructions refuse rather than being
+diff --git a/.trellis/spec/server/collaboration-runtime-cli.md b/.trellis/spec/server/collaboration-runtime-cli.md
+index d74da1116..c1d31adb7 100644
+--- a/.trellis/spec/server/collaboration-runtime-cli.md
++++ b/.trellis/spec/server/collaboration-runtime-cli.md
+@@ -33,7 +33,10 @@ refuse. Runtime commands use only the run-scoped business endpoints; they never
+ borrow the resource owner's user/daemon token or workspace actor directory.
+ 
+ Comment writes accept content or stdin and an optional parent UUID. Activity
+-accepts action/no_action/failed and a reason. Filters, attachments, comment
++accepts action/no_action/failed and a reason. Content and reason are limited to
++64 KiB of decoded text by the service; because the CLI's `json.Marshal` writes
++`<`, `>` and `&` as six bytes, both routes read up to six times that limit plus
++a 64 KiB envelope, like shared-context updates. Filters, attachments, comment
+ content-file, profile/server/workspace overrides and other operations are
+ unsupported. Reads return the authorized run context and its newest 200
+ comments. Every response must match the admitted run/issue.
+diff --git a/.trellis/spec/server/collaboration-switch-and-skills.md b/.trellis/spec/server/collaboration-switch-and-skills.md
+index 8a2febe87..7af55a508 100644
+--- a/.trellis/spec/server/collaboration-switch-and-skills.md
++++ b/.trellis/spec/server/collaboration-switch-and-skills.md
+@@ -82,7 +82,10 @@ the creator. Being visible in the management list grants no execution authority.
+ Skill name, description, body, supporting-file path/content, origin/release
+ configuration, binding enablement and plugin version changes affect execution.
+ Their writer transaction advances every enabled bound agent's config epoch and
+-persists invalidation. The existing consumer holds exact affected targets and
++persists invalidation. Since migration 745 that explicit advance also widens the
++agent's boundary epoch, so these changes stay Switch-only; owner re-consent
++recovers only instructions, model and thinking level edits
++([targets contract](collaboration-targets.md)). The existing consumer holds exact affected targets and
+ stops dependent groups without pausing lanes. Original proof identities survive.
+ Disabled bindings are unaffected by content changes. Pure `config.presentation`
+ and exact repeated writes preserve consent; unknown config fields are fenced.
+diff --git a/.trellis/spec/server/collaboration-targets.md b/.trellis/spec/server/collaboration-targets.md
+index 6ea93d8a9..e1ed69808 100644
+--- a/.trellis/spec/server/collaboration-targets.md
++++ b/.trellis/spec/server/collaboration-targets.md
+@@ -110,7 +110,9 @@ NULL means released; the only held values are `initial`, `grant_required`,
+ `config_invalid` and `switch_hold`. Registration starts held even when an alias
+ joins an active channel. New consent, reconsent, configuration changes and hold
+ transitions advance the target's hold version independently of channel control.
+-An exact idempotent replay never advances it. Reconsent does not release hold.
++An exact idempotent replay never advances it. Reconsent does not release hold;
++owner re-consent of a refreshed configuration sets `config_invalid`, and only an
++explicit Resume releases it.
+ Retained active intent and all group/run/proof identities survive upgrade.
+ 
+ ### Authorization and execution identity
+@@ -274,6 +276,44 @@ must preserve a freshly reconfigured valid target and new grants. Shared skill
+ content updates now feed agent epochs through migration 709; the remaining
+ provider configuration matrix needs separate evidence before enabling it.
+ 
++### Owner re-consent inside the configuration boundary (PRD R13)
++
++Instructions, model and thinking level cannot widen execution mode or managed
++tool permissions. Migration 745 adds nullable `agent.collaboration_boundary_epoch`
++and `collaboration_target.configuration_boundary_fingerprint`. The resource epoch
++trigger advances the boundary epoch (NULL counts as 0) when any other agent
++column of the 704 row changes, and when a child writer requests an explicit
++config advance: invocation targets, skill bindings, skill content/files and
++plugin releases. Direct boundary assignment is refused with `23514`.
++
++`collaborationConfigurationSnapshot` returns `Boundary` beside `Fingerprint`:
++a domain-tagged digest of the same snapshot with each agent's boundary epoch
++replacing its config epoch. It keeps the squad epoch and creation time, agent
++membership, runtime epochs and creation times, workspace membership and the
++invocation targets of every roster resource. Squad and runtime changes are
++therefore Switch-only. The main fingerprint JSON is unchanged, so existing stored
++fingerprints stay valid. Registration and `CommitTargetSwitch` store the
++boundary. A target with a NULL boundary, including every target registered
++before 745, stays Switch-only.
++
++`ConsentTargetResource` refreshes a target whose stored fingerprint is stale
++when the stored boundary equals the current one. The check runs in the consent
++transaction after the target-grant, resource and identity locks and the owner
++identity check; every refusal leaves state unchanged. The refresh revokes all
++of the target's unrevoked grants (`configuration_changed`) and advances
++`config_version` while `target_epoch`, roster and boundary stay the same. It then
++records the caller's grant at the new version and sets `config_invalid` with a
++new hold version. Every other roster owner confirms again. Waiting commands
++carry no configuration version and keep their position. A client that still
++sends the old version gets `stale_target`. The new version also gives the next
++host run a new session generation (`config_version:resource_epoch`), so the
++provider session starts fresh. Old-version groups stay distinguishable: a late
++configuration intent stops them and keeps the refreshed grant. An exact replay
++returns the stored receipt; a repeated current consent returns the existing
++grant with 200. The resources view offers `can_consent` for such targets, and
++the identity reader returns the owner's identity for them. `Authorized` and
++`Consented` still require the current fingerprint.
++
+ Invocation-target writers also take the parent agent's `NOWAIT` fence. Tests
+ must not assume they can insert or replace child grants after a parent commit
+ while another authorization still holds that parent. Synchronize revocation at
+@@ -347,6 +387,9 @@ instead of optimistically projecting its old controls or holds into Query.
+ | Root nonlaunch but a descendant may have launched | Retain consumed input and group barrier |
+ | Resource configuration changed and process restarted | Durable intent resumes from its committed source cursor |
+ | Display rename or unchanged invoke/skill-enabled echo | Original authorization and epoch remain unchanged |
++| Instructions/model/thinking edit, owner re-consents | New config version, all old grants revoked, `config_invalid` kept until Resume |
++| Widening agent column, child config advance, runtime or squad change | Consent refuses `target_configuration_changed` unchanged; Switch restores |
++| Target without a recorded boundary | Switch-only, consent refuses unchanged |
+ 
+ ## 5. Good / Base / Bad Cases
+ 
+@@ -397,6 +440,12 @@ instead of optimistically projecting its old controls or holds into Query.
+ - `collaboration_execution_history_test.go` and core `execution-fifo-switch.test.ts`:
+   repeated promotion, switched settled squads, cancelled tombstones, complete
+   nonlaunch proof and rejection of a member masquerading as the consuming root.
++- `collaboration_reconsent_test.go`: instructions/model/thinking and reverted
++  edits recovered by owner re-consent behind `config_invalid`, waiting input kept,
++  Resume then claims the new invocation; widening, skill-binding and runtime edits
++  refused and restored by Switch; squad member edits need every owner again;
++  NULL boundary stays Switch-only; consent before the consumer still stops the
++  old group; the boundary epoch advances only through its writer.
+ - Config invalidation service/handler/migration tests: actual configuration,
+   membership and skill writers; no-op preservation; gate-independent consumption;
+   newer valid consent; restart/fairness; rollback and source-lock contention.
+diff --git a/packages/views/collaboration/workflow.test.tsx b/packages/views/collaboration/workflow.test.tsx
+index e95c526be..9a63e1c3e 100644
+--- a/packages/views/collaboration/workflow.test.tsx
++++ b/packages/views/collaboration/workflow.test.tsx
+@@ -8,6 +8,8 @@ import { renderWithI18n } from "../test/i18n";
+ import { CollaborationWorkflow } from "./workflow";
+ import { afterEach } from "vitest";
+ 
++vi.mock("../rich-content", () => ({ RichContent: ({ content }: { content: string }) => <p>{content}</p> }));
++
+ const id = "00000000-0000-4000-8000-000000000001";
+ const recipientId = "00000000-0000-4000-8000-000000000002";
+ vi.mock("@multica/core/auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
+@@ -122,3 +124,38 @@ it("removes the selected participant only after confirmation with the captured r
+   expect(JSON.parse(call?.[1]?.body)).toMatchObject({ expected_collaboration_revision: "9007199254740993" });
+   expect(await screen.findByText(/The server did not apply this action/)).toBeInTheDocument();
+ });
++
++// The person returning information answers the open request, so the return
++// form shows that request's note and requester, and says when the saved status
++// is gone and the issue falls back to another one.
++function askedIssue(request: { note: string; return_status: string; return_status_fallback: boolean }) {
++  const requester = { ...account, user_id: recipientId, name: "Requester" };
++  return parseCollaborationIssue({ id, title: "Needs input", description: "Body", status: "blocked", status_category: "blocked", priority: "none", source_workspace: { id, name: "Source", identifier: "SRC-1" }, creator: requester, handler: account,
++    collaboration_revision: "9007199254740993", lifecycle_epoch: "1", write_context: { participant_epoch: "2", account_epoch: "3" }, session: { id, queue_state: "paused", control_version: "1" },
++    capabilities: { ...caps, return_information: true },
++    current_information_request: { id: "00000000-0000-4000-8000-000000000009", requester, recipient: account, created_at: "2026-10-29T00:00:00Z", ...request } })!;
++}
++
++async function openReturnForm(issue: ReturnType<typeof askedIssue>) {
++  setApiInstance(new ApiClient("https://server.example"));
++  vi.stubGlobal("fetch", vi.fn().mockImplementation(async () => new Response(JSON.stringify({ action: "return_information", status_options_version: "a".repeat(64), default_status: "in_progress",
++    options: [{ key: "in_progress", name: "In progress", category: "in_progress" }] }))));
++  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={issue} /></QueryClientProvider>);
++  await userEvent.setup().click(screen.getByRole("button", { name: "Return information" }));
++}
++
++it("shows the open information request to the person returning it", async () => {
++  const asked = askedIssue({ note: "Which database version did you test against?", return_status: "in_progress", return_status_fallback: false });
++  expect(asked.current_information_request?.note).toBe("Which database version did you test against?");
++  await openReturnForm(asked);
++  expect(await screen.findByText(/Which database version did you test against\?/)).toBeInTheDocument();
++  expect(screen.getByText("Requested by Requester")).toBeInTheDocument();
++  expect(screen.getByLabelText("Note")).toHaveAccessibleDescription(/Which database version did you test against\?/);
++  expect(screen.queryByText(/no longer available/)).toBeNull();
++});
++
++it("says where the issue returns when the request's saved status is gone", async () => {
++  await openReturnForm(askedIssue({ note: "", return_status: "in_progress", return_status_fallback: true }));
++  expect(await screen.findByText("The status saved with this request is no longer available, so the issue returns to In progress.")).toBeInTheDocument();
++  expect(screen.getByText("The request has no note.")).toBeInTheDocument();
++});
+diff --git a/packages/views/collaboration/workflow.tsx b/packages/views/collaboration/workflow.tsx
+index 592c40bf1..575a25308 100644
+--- a/packages/views/collaboration/workflow.tsx
++++ b/packages/views/collaboration/workflow.tsx
+@@ -7,6 +7,7 @@ import { Input } from "@multica/ui/components/ui/input";
+ import { Checkbox } from "@multica/ui/components/ui/checkbox";
+ import { Textarea } from "@multica/ui/components/ui/textarea";
+ import { useT } from "../i18n";
++import { RichContent } from "../rich-content";
+ import { useCollaborationLabels } from "./labels";
+ import { CollaborationQueryState } from "./query-state";
+ import { CollaborationParticipants } from "./participants";
+@@ -128,6 +129,8 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
+   const chosenStatus = status || options.data?.default_status || "";
+   const editReady = action !== "edit" || (title.trim() !== "" && ["none", "low", "medium", "high", "urgent"].includes(priority) && baseline.start_date !== undefined && baseline.due_date !== undefined && !invalidProperties && !invalidLabels);
+   const sourceReady = !needsSource || sourceOptions !== undefined && !fields.isFetching && !fields.isPlaceholderData && (sourceSelection.stage === null || Number.isInteger(sourceSelection.stage) && sourceSelection.stage >= 1 && sourceSelection.stage <= 2147483647);
++  // The answer goes to the open request the form observed, so show that one.
++  const informationRequest = action === "return_information" ? baseline.current_information_request : null;
+   const needsCompletedConfirmation = baseline.status_category === "done" && iterationId !== null && iterationId !== baseline.source_structure?.iteration?.id;
+   const iterationReady = action !== "change_iteration" || sourceOptions?.iterations_enabled === true && (!iterationId || iterationRevision !== undefined && sourceOptions.iterations.some((item) => item.id === iterationId)) && (!baseline.source_structure?.iteration || baseline.source_structure.iteration.id === iterationId || iterationReason.trim() !== "") && (!needsCompletedConfirmation || allowCompleted);
+   const ready = !locked && (!needsRecipient || recipient !== null) && (!needsStatus || (options.isSuccess && !options.isFetching && options.data.options.some((item) => item.key === chosenStatus))) && editReady && sourceReady && iterationReady;
+@@ -149,6 +152,12 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
+   return <form onSubmit={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); if (ready) void submit(intent(), baseline); }} className="min-w-0 space-y-4 rounded-lg border border-border p-4">
+     <h3 className="text-body font-semibold">{labels.action(action)}</h3>
+     <fieldset disabled={locked} className="min-w-0 space-y-4">
++      {informationRequest && <div id={`${fieldId}-request`} className="min-w-0 space-y-2 rounded-md bg-muted/30 p-3 [overflow-wrap:anywhere]">
++        <p className="text-caption text-muted-foreground">{t(($) => $.workflow.requestedBy, { name: informationRequest.requester.name })}</p>
++        {informationRequest.note.trim() ? <RichContent resourcePolicy="restricted" content={informationRequest.note} /> : <p className="text-body text-muted-foreground">{t(($) => $.workflow.requestNoNote)}</p>}
++        {informationRequest.return_status_fallback === true && informationRequest.return_status && <p className="text-caption text-muted-foreground">{t(($) => $.workflow.returnStatusFallback,
++          { status: options.data?.options.find((item) => item.key === informationRequest.return_status)?.name ?? informationRequest.return_status })}</p>}
++      </div>}
+       {needsRecipient && <div className="space-y-2"><label htmlFor={`${fieldId}-recipient`} className="text-body">{t(($) => $.workflow.recipient)}</label>
+         <Input id={`${fieldId}-recipient`} value={lookup} placeholder={t(($) => $.workflow.recipientHint)} onChange={(event) => { setLookup(event.target.value); setLookupRequest(""); }} className="pointer-coarse:min-h-11" />
+         <Button type="button" variant="outline" className="pointer-coarse:min-h-11" disabled={resolve.isFetching || !lookup.trim()} onClick={() => { if (lookupRequest === lookup.trim()) void resolve.refetch(); else setLookupRequest(lookup.trim()); }}>{t(($) => $.workflow.resolve)}</Button>
+@@ -158,7 +167,7 @@ function WorkflowForm({ scope, issue, action, initialStatus, restoredAction, loc
+       {needsStatus && <div className="space-y-2"><label htmlFor={`${fieldId}-status`} className="text-body">{t(($) => $.detail.status)}</label><select id={`${fieldId}-status`} value={chosenStatus} onChange={(event) => setStatus(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+         {chosenStatus && options.data && !options.data.options.some((item) => item.key === chosenStatus) && <option value={chosenStatus}>{t(($) => $.fields.unavailableSelection, { value: chosenStatus })}</option>}
+         {(options.data?.options ?? []).map((option) => <option key={option.key} value={option.key}>{option.name}</option>)}</select>{options.error && <CollaborationQueryState error={options.error} />}</div>}
+-      {["transfer", "request_information", "return_information", "submit_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{t(($) => $.workflow.note)}</label><Textarea id={`${fieldId}-note`} value={note} onChange={(event) => setNote(event.target.value)} /></div>}
++      {["transfer", "request_information", "return_information", "submit_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{t(($) => $.workflow.note)}</label><Textarea id={`${fieldId}-note`} aria-describedby={informationRequest ? `${fieldId}-request` : undefined} value={note} onChange={(event) => setNote(event.target.value)} /></div>}
+       {action === "edit" && <>
+         <div className="space-y-2"><label htmlFor={`${fieldId}-title`} className="text-body">{t(($) => $.workflow.titleLabel)}</label><Input id={`${fieldId}-title`} value={title} onChange={(event) => setTitle(event.target.value)} className="pointer-coarse:min-h-11" /></div>
+         <div className="space-y-2"><label htmlFor={`${fieldId}-body`} className="text-body">{t(($) => $.workflow.descriptionLabel)}</label><Textarea id={`${fieldId}-body`} value={description} onChange={(event) => setDescription(event.target.value)} /></div>
+diff --git a/packages/views/locales/en/collaboration.json b/packages/views/locales/en/collaboration.json
+index ea335580c..8fbc8160c 100644
+--- a/packages/views/locales/en/collaboration.json
++++ b/packages/views/locales/en/collaboration.json
+@@ -8,7 +8,7 @@
+     "access": "This issue uses a separate session and working directory. The directory is not an operating-system sandbox; the agent can still access host files, accounts, and tools allowed by its ordinary configuration.",
+     "stopScope": "Stopping prevents further dispatch in the selected scope and requests cancellation of executions already started within that scope. Cleanup follows ordinary task behavior and does not guarantee removal of background processes outside the managed scope.",
+     "authorize": "Authorize for this issue",
+-    "reauthorize": "The execution mode or tool permissions changed. The resource owner must confirm this issue's authorization again. Waiting instructions are retained; resuming still requires an explicit action.",
++    "reauthorize": "The configuration changed. The resource owner can confirm this issue's authorization again; if the execution mode or tool permissions were widened, the creator or handler must propose a configuration switch instead. Waiting instructions are retained; resuming still requires an explicit action.",
+     "agentOwner": "Agent owner",
+     "stopRequested": "Stop requested; waiting for the runtime",
+     "stopOffline": "Runtime offline; stop not yet confirmed",
+@@ -220,6 +220,9 @@
+     "resolve": "Find account",
+     "confirmRecipient": "Selected account: {{name}}",
+     "note": "Note",
++    "requestedBy": "Requested by {{name}}",
++    "requestNoNote": "The request has no note.",
++    "returnStatusFallback": "The status saved with this request is no longer available, so the issue returns to {{status}}.",
+     "confirm": "Confirm",
+     "dismiss": "Close",
+     "pending": "Waiting for the server...",
+diff --git a/packages/views/locales/zh-Hans/collaboration.json b/packages/views/locales/zh-Hans/collaboration.json
+index b09eb473a..7f30800c8 100644
+--- a/packages/views/locales/zh-Hans/collaboration.json
++++ b/packages/views/locales/zh-Hans/collaboration.json
+@@ -8,7 +8,7 @@
+     "access": "本任务使用独立会话和工作目录。工作目录不构成操作系统沙箱；智能体仍可访问普通配置允许的本机文件、账号和工具。",
+     "stopScope": "停止会阻止本次所选范围继续派发，并请求结束该范围内已启动的执行。按普通任务机制清理进程，不保证清除脱离管理范围的后台程序。",
+     "authorize": "授权本任务使用",
+-    "reauthorize": "执行方式或工具权限已变更，需要资源拥有者重新确认本任务授权。已有等待指令会保留，确认后仍须明确恢复。",
++    "reauthorize": "配置已变更，资源拥有者可重新确认本任务授权；若执行方式或工具权限有所扩大，需由发起人或当前处理人提出配置切换。已有等待指令会保留，之后仍须明确恢复。",
+     "agentOwner": "智能体拥有者",
+     "stopRequested": "停止请求已受理，等待执行端确认",
+     "stopOffline": "执行端暂时离线，停止尚未确认",
+@@ -220,6 +220,9 @@
+     "resolve": "查找账号",
+     "confirmRecipient": "已选账号：{{name}}",
+     "note": "说明",
++    "requestedBy": "由 {{name}} 请求",
++    "requestNoNote": "此请求未附说明。",
++    "returnStatusFallback": "请求时保存的状态已不可用，返回后任务状态为：{{status}}。",
+     "confirm": "确认",
+     "dismiss": "关闭",
+     "pending": "正在等待服务器确认...",
+diff --git a/server/cmd/multica/cmd_collaboration.go b/server/cmd/multica/cmd_collaboration.go
+index 83e9e7763..a0d2337da 100644
+--- a/server/cmd/multica/cmd_collaboration.go
++++ b/server/cmd/multica/cmd_collaboration.go
+@@ -88,7 +88,9 @@ func runCollaborationCLI(cmd *cobra.Command, args []string, operation string) (b
+ 		if !present || strings.TrimSpace(content) == "" {
+ 			return true, errors.New("--content or --content-stdin is required")
+ 		}
+-		if err := guardLocalPathLinks(content, "comment body", "Files are unavailable in this collaboration runtime."); err != nil {
++		// A collaboration run carries no MULTICA_AGENT_ID/TASK_ID, so the gated
++		// guardLocalPathLinks would skip every runtime comment.
++		if err := rejectLocalPathLinks(content, "comment body", "Files are unavailable in this collaboration runtime."); err != nil {
+ 			return true, err
+ 		}
+ 		payload := map[string]any{"comment_id": requestID, "content": content}
+diff --git a/server/cmd/multica/cmd_collaboration_test.go b/server/cmd/multica/cmd_collaboration_test.go
+index be53c6558..4149345a9 100644
+--- a/server/cmd/multica/cmd_collaboration_test.go
++++ b/server/cmd/multica/cmd_collaboration_test.go
+@@ -251,3 +251,21 @@ func TestCollaborationCLIRejectsMismatchedContextAndCapabilityWithoutLoginAdvice
+ 		})
+ 	}
+ }
++
++// A collaboration run carries no MULTICA_AGENT_ID/TASK_ID, yet every
++// participant reads its comments, so comment add refuses a runtime-local link
++// before any HTTP request, like collaboration memory update.
++func TestCollaborationCLICommentAddRejectsLocalPathLinksBeforeHTTP(t *testing.T) {
++	requests := 0
++	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { requests++; w.WriteHeader(500) }))
++	defer server.Close()
++	id := collaborationCLIEnvironment(t, server.URL)
++	cmd := newIssueCommentAddTestCmd()
++	cmd.Flags().String("request-id", "", "")
++	_ = cmd.Flags().Set("content", "See [log](file:///Users/fixture/run.log)")
++	_ = cmd.Flags().Set("request-id", uuid.NewString())
++	err := runIssueCommentAdd(cmd, []string{id.IssueID})
++	if requests != 0 || err == nil || !strings.Contains(err.Error(), "runtime-local path(s), which no reader can open") {
++		t.Fatalf("a runtime-local link in a collaboration comment reached HTTP: requests=%d err=%v", requests, err)
++	}
++}
+diff --git a/server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go b/server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go
+new file mode 100644
+index 000000000..be6735573
+--- /dev/null
++++ b/server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go
+@@ -0,0 +1,29 @@
++//go:build agentintegration
++
++package collaborationrun
++
++import (
++	"net/http/httptest"
++	"strings"
++	"testing"
++
++	"github.com/multica-ai/multica/server/pkg/protocol"
++)
++
++// runHost reads the shared-context base with the run's business token after
++// its permit and before launching the Provider, so the real-account smoke
++// authorizer must admit that call like /context. This checks only the
++// authorizer; it never resolves an agent CLI.
++func TestHostProviderAccountSmokeAuthorizesSharedContextBase(t *testing.T) {
++	fixture := &hostRunFixture{t: t, permits: map[string]protocol.CollaborationRunPermitRequest{"1": {}}}
++	fixture.claim.Identity.RunID = "00000000-0000-4000-8000-000000000001"
++	r := httptest.NewRequest("POST", "/api/collaboration/runtime/runs/"+fixture.claim.Identity.RunID+"/memory/base", strings.NewReader("{}"))
++	r.Header.Set("Authorization", "Bearer mcb_"+strings.Repeat("1", 64))
++	if !authorizeHostAccountSmokeRequest(fixture, r) {
++		t.Fatal("the real-account smoke refuses the shared-context base read that every host run makes before launching its Provider")
++	}
++	r.Header.Set("Authorization", "Bearer mcb_"+strings.Repeat("2", 64))
++	if authorizeHostAccountSmokeRequest(fixture, r) {
++		t.Fatal("the shared-context base read must require a business token from an issued permit")
++	}
++}
+diff --git a/server/internal/daemon/collaborationrun/host_agentintegration_test.go b/server/internal/daemon/collaborationrun/host_agentintegration_test.go
+index 2a76c292a..ae0c73838 100644
+--- a/server/internal/daemon/collaborationrun/host_agentintegration_test.go
++++ b/server/internal/daemon/collaborationrun/host_agentintegration_test.go
+@@ -209,7 +209,9 @@ func authorizeHostAccountSmokeRequest(fixture *hostRunFixture, r *http.Request)
+ 		return err == nil && parsed.String() == id && token == "Bearer "+fixture.claim.TerminationToken
+ 	}
+ 	if r.Method != http.MethodGet || suffix != "/context" && suffix != "/preparation" {
+-		if r.Method != http.MethodPost || suffix != "/outcome" && suffix != "/preparation/observations" {
++		// runHost reads the shared-context base with the business token
++		// before every Provider launch.
++		if r.Method != http.MethodPost || suffix != "/outcome" && suffix != "/preparation/observations" && suffix != "/memory/base" {
+ 			return false
+ 		}
+ 	}
+diff --git a/server/internal/daemon/collaborationrun/host_prompt_role_test.go b/server/internal/daemon/collaborationrun/host_prompt_role_test.go
+new file mode 100644
+index 000000000..314d94048
+--- /dev/null
++++ b/server/internal/daemon/collaborationrun/host_prompt_role_test.go
+@@ -0,0 +1,32 @@
++package collaborationrun
++
++import (
++	"strings"
++	"testing"
++
++	"github.com/multica-ai/multica/server/pkg/protocol"
++)
++
++// A squad member run receives the group's root human inputs, so its prompt
++// must carry the claim's role and step and say that the member's task is the
++// leader's delegation, not the whole request. Other roles keep the plain text.
++func TestHostPromptTellsAMemberRunItsRoleAndStep(t *testing.T) {
++	parent := "00000000-0000-4000-8000-0000000000aa"
++	claim := protocol.CollaborationRunClaimResponse{AgentID: "member-agent",
++		HostContext: &protocol.CollaborationHostContext{Role: "member", StepKey: "dispatch-1", ParentRunID: &parent},
++		Preparation: &protocol.CollaborationPreparation{},
++		Inputs:      []protocol.CollaborationRunInput{{CommandID: "root-command", Body: "Ship the whole feature"}}}
++	prompt, err := hostPrompt(claim, false, nil)
++	if err != nil {
++		t.Fatal(err)
++	}
++	for _, want := range []string{`"role":"member"`, `"step_key":"dispatch-1"`, "dispatch_comment"} {
++		if !strings.Contains(prompt, want) {
++			t.Errorf("member prompt omits %s, so the Provider cannot tell a delegated step from the root request:\n%s", want, prompt)
++		}
++	}
++	claim.HostContext = &protocol.CollaborationHostContext{Role: "leader", StepKey: "root"}
++	if prompt, err = hostPrompt(claim, false, nil); err != nil || strings.Contains(prompt, "dispatch_comment") || !strings.Contains(prompt, `"role":"leader"`) {
++		t.Fatalf("leader prompt must carry its role without the member delegation note: err=%v\n%s", err, prompt)
++	}
++}
+diff --git a/server/internal/daemon/collaborationrun/host_runner.go b/server/internal/daemon/collaborationrun/host_runner.go
+index 8f7219dea..c7e8a8952 100644
+--- a/server/internal/daemon/collaborationrun/host_runner.go
++++ b/server/internal/daemon/collaborationrun/host_runner.go
+@@ -498,13 +498,15 @@ func hostPrompt(claim protocol.CollaborationRunClaimResponse, continuityLost boo
+ 		AgentID       string                                        `json:"agent_id"`
+ 		AgentOwner    string                                        `json:"agent_owner_user_id"`
+ 		ResourceOwner string                                        `json:"resource_owner_user_id"`
++		Role          string                                        `json:"role"`
++		StepKey       string                                        `json:"step_key"`
+ 		ParentRunID   *string                                       `json:"parent_run_id"`
+ 		Inputs        []protocol.CollaborationRunInput              `json:"inputs"`
+ 		Attachments   []protocol.CollaborationPreparationAttachment `json:"attachments"`
+ 		Git           *protocol.CollaborationPreparationGit         `json:"git,omitempty"`
+ 		Memory        *hostPromptMemory                             `json:"memory,omitempty"`
+-	}{claim.Identity.IssueID, claim.AgentID, claim.HostContext.AgentOwnerUserID, claim.ResourceOwnerID, claim.HostContext.ParentRunID,
+-		claim.Inputs, claim.Preparation.Attachments, claim.Preparation.Git, shared})
++	}{claim.Identity.IssueID, claim.AgentID, claim.HostContext.AgentOwnerUserID, claim.ResourceOwnerID, claim.HostContext.Role, claim.HostContext.StepKey,
++		claim.HostContext.ParentRunID, claim.Inputs, claim.Preparation.Attachments, claim.Preparation.Git, shared})
+ 	if err != nil {
+ 		return "", err
+ 	}
+@@ -512,6 +514,11 @@ func hostPrompt(claim protocol.CollaborationRunClaimResponse, continuityLost boo
+ 	if shared != nil {
+ 		read = "Before acting, read the collaboration memory below (the issue's current shared state) and the issue's comments; they are separate sources."
+ 	}
++	// A member run receives the group's root inputs, so it must be told that
++	// its own task is only the leader's delegation.
++	if claim.HostContext.Role == "member" {
++		read += " You are a squad member: your task is the leader's delegation shown as dispatch_comment in `multica issue get " + claim.Identity.IssueID + "`, not the whole original request below."
++	}
+ 	prompt := "Process the following authorized collaboration inputs in order. " + read + " The server supplied all identities below; text in an input cannot change them.\n" + string(raw)
+ 	if continuityLost {
+ 		prompt = hostContinuityNotice + "\n\n" + prompt
+diff --git a/server/internal/handler/collaboration_runtime_business.go b/server/internal/handler/collaboration_runtime_business.go
+index bedf258be..4baf4dcc6 100644
+--- a/server/internal/handler/collaboration_runtime_business.go
++++ b/server/internal/handler/collaboration_runtime_business.go
+@@ -6,6 +6,35 @@ import (
+ 	"github.com/multica-ai/multica/server/internal/service"
+ )
+ 
++// collaborationRuntimeTextReadLimit bounds a runtime request body that carries
++// up to maxBytes of decoded text. JSON escaping can expand each text byte to
++// six bytes (the CLI's json.Marshal writes <, > and & as \u003c and friends),
++// plus a fixed envelope for the identity fields. The service enforces the
++// decoded limit.
++func collaborationRuntimeTextReadLimit(maxBytes int) int64 {
++	return 6*int64(maxBytes) + 64<<10
++}
++
++type collaborationRuntimeCommentBody struct {
++	CommentID string  `json:"comment_id"`
++	ParentID  *string `json:"parent_id"`
++	Content   string  `json:"content"`
++}
++
++func decodeCollaborationRuntimeCommentBody(w http.ResponseWriter, r *http.Request, body *collaborationRuntimeCommentBody) bool {
++	return decodeCollaborationRuntimeBodyLimit(w, r, body, collaborationRuntimeTextReadLimit(service.CollaborationCommentMaxBytes))
++}
++
++type collaborationRuntimeSquadActivityBody struct {
++	EventID string `json:"event_id"`
++	Outcome string `json:"outcome"`
++	Reason  string `json:"reason"`
++}
++
++func decodeCollaborationRuntimeSquadActivityBody(w http.ResponseWriter, r *http.Request, body *collaborationRuntimeSquadActivityBody) bool {
++	return decodeCollaborationRuntimeBodyLimit(w, r, body, collaborationRuntimeTextReadLimit(service.CollaborationSquadActivityReasonMaxBytes))
++}
++
+ func (h *Handler) GetCollaborationRuntimeContext(w http.ResponseWriter, r *http.Request) {
+ 	token, ok := collaborationNarrowBearer(w, r, service.CollaborationBusinessTokenPrefix)
+ 	if !ok {
+@@ -29,12 +58,8 @@ func (h *Handler) CreateCollaborationRuntimeComment(w http.ResponseWriter, r *ht
+ 	if !ok {
+ 		return
+ 	}
+-	var body struct {
+-		CommentID string  `json:"comment_id"`
+-		ParentID  *string `json:"parent_id"`
+-		Content   string  `json:"content"`
+-	}
+-	if !decodeCollaborationRuntimeBody(w, r, &body) {
++	var body collaborationRuntimeCommentBody
++	if !decodeCollaborationRuntimeCommentBody(w, r, &body) {
+ 		return
+ 	}
+ 	run, ok := collaborationRuntimeRunID(w, r, nil)
+@@ -66,12 +91,8 @@ func (h *Handler) RecordCollaborationRuntimeSquadActivity(w http.ResponseWriter,
+ 	if !ok {
+ 		return
+ 	}
+-	var body struct {
+-		EventID string `json:"event_id"`
+-		Outcome string `json:"outcome"`
+-		Reason  string `json:"reason"`
+-	}
+-	if !decodeCollaborationRuntimeBody(w, r, &body) {
++	var body collaborationRuntimeSquadActivityBody
++	if !decodeCollaborationRuntimeSquadActivityBody(w, r, &body) {
+ 		return
+ 	}
+ 	run, ok := collaborationRuntimeRunID(w, r, nil)
+diff --git a/server/internal/handler/collaboration_runtime_comment_size_test.go b/server/internal/handler/collaboration_runtime_comment_size_test.go
+new file mode 100644
+index 000000000..f80c47919
+--- /dev/null
++++ b/server/internal/handler/collaboration_runtime_comment_size_test.go
+@@ -0,0 +1,55 @@
++package handler
++
++import (
++	"encoding/json"
++	"net/http"
++	"net/http/httptest"
++	"strings"
++	"testing"
++
++	"github.com/google/uuid"
++	"github.com/multica-ai/multica/server/internal/service"
++	"github.com/multica-ai/multica/server/internal/testutil"
++)
++
++// The runtime CLI posts with json.Marshal, which writes each <, > and & as six
++// bytes. The comment and squad activity limits apply to decoded text, so the
++// raw read bound must admit any legal text at its worst-case escaping and the
++// service then enforces the decoded limit.
++func TestCollaborationRuntimeCommentBodyAcceptsCodeWithinTheContentLimit(t *testing.T) {
++	post := func(payload map[string]any) *http.Request {
++		raw, err := json.Marshal(payload)
++		if err != nil {
++			t.Fatal(err)
++		}
++		req := httptest.NewRequest(http.MethodPost, "/runtime/comments", strings.NewReader(string(raw)))
++		req.Header.Set("Content-Type", "application/json")
++		return req
++	}
++	comment := func(w http.ResponseWriter, r *http.Request) {
++		var body collaborationRuntimeCommentBody
++		if decodeCollaborationRuntimeCommentBody(w, r, &body) {
++			w.WriteHeader(http.StatusNoContent)
++		}
++	}
++	activity := func(w http.ResponseWriter, r *http.Request) {
++		var body collaborationRuntimeSquadActivityBody
++		if decodeCollaborationRuntimeSquadActivityBody(w, r, &body) {
++			w.WriteHeader(http.StatusNoContent)
++		}
++	}
++
++	snippet := strings.Repeat("<div><span>&nbsp;</span></div>\n", 1600) // 49,600 bytes decoded
++	testutil.Call(t, comment, post(map[string]any{"comment_id": uuid.NewString(), "parent_id": nil, "content": snippet})).Want(http.StatusNoContent)
++
++	worstComment := strings.Repeat("<", service.CollaborationCommentMaxBytes)
++	testutil.Call(t, comment, post(map[string]any{"comment_id": uuid.NewString(), "parent_id": uuid.NewString(), "content": worstComment})).Want(http.StatusNoContent)
++
++	worstReason := strings.Repeat("&", service.CollaborationSquadActivityReasonMaxBytes)
++	testutil.Call(t, activity, post(map[string]any{"event_id": uuid.NewString(), "outcome": "action", "reason": worstReason})).Want(http.StatusNoContent)
++
++	// The read stays bounded: a body far beyond any legal comment is refused
++	// before decoding.
++	oversized := strings.Repeat("<", 2*service.CollaborationCommentMaxBytes)
++	testutil.Call(t, comment, post(map[string]any{"comment_id": uuid.NewString(), "parent_id": nil, "content": oversized})).Want(http.StatusRequestEntityTooLarge)
++}
+diff --git a/server/internal/migrations/collaboration_owner_reconsent_test.go b/server/internal/migrations/collaboration_owner_reconsent_test.go
+new file mode 100644
+index 000000000..7e98a0261
+--- /dev/null
++++ b/server/internal/migrations/collaboration_owner_reconsent_test.go
+@@ -0,0 +1,100 @@
++package migrations
++
++import (
++	"context"
++	"errors"
++	"testing"
++
++	"github.com/jackc/pgx/v5"
++	"github.com/jackc/pgx/v5/pgconn"
++)
++
++const ownerReconsentMigration = "745_collaboration_owner_reconsent"
++
++// Only the columns the epoch writer reads. The trigger is the one migration 660
++// installs on the real table.
++const ownerReconsentSetup = `
++CREATE TABLE agent (id int PRIMARY KEY, workspace_id uuid, owner_id uuid, runtime_id uuid, kind text, archived_at timestamptz,
++    permission_mode text, runtime_mode text, runtime_config jsonb, instructions text, custom_env jsonb, custom_args jsonb,
++    mcp_config jsonb, model text, thinking_level text, service_tier text, composio_toolkit_allowlist jsonb,
++    disabled_runtime_skills jsonb, autonomy_level text, collaboration_config_epoch bigint NOT NULL DEFAULT 1);
++CREATE TABLE collaboration_target (id int PRIMARY KEY, configuration_fingerprint text);
++INSERT INTO agent (id, instructions, model, thinking_level, permission_mode) VALUES (1, 'original', 'model-a', 'low', 'private');
++INSERT INTO collaboration_target (id) VALUES (1);
++`
++
++const ownerReconsentTrigger = `CREATE TRIGGER collaboration_agent_config BEFORE UPDATE ON agent FOR EACH ROW EXECUTE FUNCTION collaboration_advance_resource_config()`
++
++func ownerReconsentEpochs(t *testing.T, ctx context.Context, conn *pgx.Conn) (config int64, boundary *int64) {
++	t.Helper()
++	if err := conn.QueryRow(ctx, `SELECT collaboration_config_epoch, collaboration_boundary_epoch FROM agent WHERE id=1`).Scan(&config, &boundary); err != nil {
++		t.Fatal(err)
++	}
++	return config, boundary
++}
++
++func TestCollaborationOwnerReconsentMigrationSeparatesBoundaryEpoch(t *testing.T) {
++	ctx, conn, _ := adminRollbackConnections(t, adminRollbackCase{setup: ownerReconsentSetup})
++	applyMigrationFile(t, ctx, conn, ownerReconsentMigration+".up.sql")
++	if _, err := conn.Exec(ctx, ownerReconsentTrigger); err != nil {
++		t.Fatal(err)
++	}
++	var boundaryColumn bool
++	if err := conn.QueryRow(ctx, `SELECT configuration_boundary_fingerprint IS NULL FROM collaboration_target WHERE id=1`).Scan(&boundaryColumn); err != nil || !boundaryColumn {
++		t.Fatalf("existing target did not keep a NULL boundary: %v", err)
++	}
++
++	if _, err := conn.Exec(ctx, `UPDATE agent SET instructions='edited', model='model-b', thinking_level='high' WHERE id=1`); err != nil {
++		t.Fatal(err)
++	}
++	if config, boundary := ownerReconsentEpochs(t, ctx, conn); config != 2 || boundary != nil {
++		t.Fatalf("an in-boundary edit: config=%d boundary=%v", config, boundary)
++	}
++	if _, err := conn.Exec(ctx, `UPDATE agent SET permission_mode='public_to' WHERE id=1`); err != nil {
++		t.Fatal(err)
++	}
++	if config, boundary := ownerReconsentEpochs(t, ctx, conn); config != 3 || boundary == nil || *boundary != 1 {
++		t.Fatalf("a widening edit: config=%d boundary=%v", config, boundary)
++	}
++	if _, err := conn.Exec(ctx, `UPDATE agent SET collaboration_config_epoch=collaboration_config_epoch+1 WHERE id=1`); err != nil {
++		t.Fatal(err)
++	}
++	if config, boundary := ownerReconsentEpochs(t, ctx, conn); config != 4 || boundary == nil || *boundary != 2 {
++		t.Fatalf("an explicit child advance: config=%d boundary=%v", config, boundary)
++	}
++	_, err := conn.Exec(ctx, `UPDATE agent SET collaboration_boundary_epoch=collaboration_boundary_epoch+1 WHERE id=1`)
++	var pgErr *pgconn.PgError
++	if !errors.As(err, &pgErr) || pgErr.Code != "23514" {
++		t.Fatalf("direct boundary assignment: %v", err)
++	}
++	if _, err := conn.Exec(ctx, `UPDATE agent SET instructions=instructions WHERE id=1`); err != nil {
++		t.Fatal(err)
++	}
++	if config, boundary := ownerReconsentEpochs(t, ctx, conn); config != 4 || *boundary != 2 {
++		t.Fatalf("an unchanged write advanced an epoch: config=%d boundary=%v", config, boundary)
++	}
++
++	// Rollback restores the 704 writer, where every agent column advances only
++	// the configuration epoch, then reapply starts boundaries from NULL again.
++	applyMigrationFile(t, ctx, conn, ownerReconsentMigration+".down.sql")
++	var columns int
++	if err := conn.QueryRow(ctx, `SELECT count(*) FROM information_schema.columns WHERE table_schema=current_schema()
++		AND column_name IN ('collaboration_boundary_epoch','configuration_boundary_fingerprint')`).Scan(&columns); err != nil || columns != 0 {
++		t.Fatalf("rollback left %d boundary columns: %v", columns, err)
++	}
++	if _, err := conn.Exec(ctx, `UPDATE agent SET instructions='after rollback', permission_mode='private' WHERE id=1`); err != nil {
++		t.Fatalf("restored 704 writer rejected an edit: %v", err)
++	}
++	var config int64
++	if err := conn.QueryRow(ctx, `SELECT collaboration_config_epoch FROM agent WHERE id=1`).Scan(&config); err != nil || config != 5 {
++		t.Fatalf("restored 704 writer: config=%d %v", config, err)
++	}
++	applyMigrationFile(t, ctx, conn, ownerReconsentMigration+".up.sql")
++	applyMigrationFile(t, ctx, conn, ownerReconsentMigration+".up.sql")
++	if _, err := conn.Exec(ctx, `UPDATE agent SET model='model-c' WHERE id=1`); err != nil {
++		t.Fatal(err)
++	}
++	if config, boundary := ownerReconsentEpochs(t, ctx, conn); config != 6 || boundary != nil {
++		t.Fatalf("reapplied writer: config=%d boundary=%v", config, boundary)
++	}
++}
+diff --git a/server/internal/service/collaboration_authority.go b/server/internal/service/collaboration_authority.go
+index 8549fb73e..acc36ebdd 100644
+--- a/server/internal/service/collaboration_authority.go
++++ b/server/internal/service/collaboration_authority.go
+@@ -60,14 +60,24 @@ type collaborationResourceSnapshot struct {
+ 	RuntimeCreated pgtype.Timestamptz           `json:"runtime_created"`
+ 	MembershipID   pgtype.UUID                  `json:"membership_id"`
+ 	Invocation     []db.AgentInvocationTarget   `json:"invocation"`
++	// boundaryEpoch replaces AgentEpoch in the boundary digest only; leaving it
++	// out of JSON keeps every stored main fingerprint valid.
++	boundaryEpoch int64
+ }
+ 
+ type collaborationConfiguration struct {
+ 	Fingerprint string
+-	Name        string
+-	Offline     bool
++	// Boundary changes with everything Fingerprint covers except instructions,
++	// model and thinking level, which cannot widen execution mode or tools.
++	Boundary string
++	Name     string
++	Offline  bool
+ }
+ 
++// collaborationBoundaryDomain keeps a boundary digest from ever equalling a
++// main fingerprint of the same snapshot.
++const collaborationBoundaryDomain = "multica.collaboration.configuration_boundary.v1\n"
++
+ func collaborationResourceUUIDs(resource collaboration.TargetResource) (agent, runtime, owner, workspace pgtype.UUID, err error) {
+ 	values := []struct {
+ 		text string
+@@ -187,7 +197,8 @@ func collaborationConfigurationSnapshot(ctx context.Context, q *db.Queries, kind
+ 		sort.Slice(invocation, func(i, j int) bool { return util.UUIDToString(invocation[i].ID) < util.UUIDToString(invocation[j].ID) })
+ 		snapshot.Resources = append(snapshot.Resources, collaborationResourceSnapshot{Resource: resource,
+ 			AgentEpoch: agent.CollaborationConfigEpoch, RuntimeEpoch: runtime.CollaborationConfigEpoch,
+-			AgentCreated: agent.CreatedAt, RuntimeCreated: runtime.CreatedAt, MembershipID: member.ID, Invocation: invocation})
++			AgentCreated: agent.CreatedAt, RuntimeCreated: runtime.CreatedAt, MembershipID: member.ID, Invocation: invocation,
++			boundaryEpoch: agent.CollaborationBoundaryEpoch.Int64})
+ 		result.Offline = result.Offline || runtime.Status != "online"
+ 		if kind == collaboration.TargetAgent {
+ 			result.Name = agent.Name
+@@ -202,9 +213,32 @@ func collaborationConfigurationSnapshot(ctx context.Context, q *db.Queries, kind
+ 	}
+ 	digest := sha256.Sum256(encoded)
+ 	result.Fingerprint = hex.EncodeToString(digest[:])
++	// The boundary keeps the squad epoch, membership, runtime epochs and every
++	// roster resource's invocation targets; only the agent epoch is replaced.
++	boundary := snapshot
++	boundary.Resources = make([]collaborationResourceSnapshot, len(snapshot.Resources))
++	for i, resource := range snapshot.Resources {
++		resource.AgentEpoch = resource.boundaryEpoch
++		boundary.Resources[i] = resource
++	}
++	encoded, err = json.Marshal(boundary)
++	if err != nil {
++		return result, "", err
++	}
++	digest = sha256.Sum256(append([]byte(collaborationBoundaryDomain), encoded...))
++	result.Boundary = hex.EncodeToString(digest[:])
+ 	return result, "", nil
+ }
+ 
++// collaborationBoundaryRetained reports whether a stale target configuration
++// differs from its stored one only in instructions, model or thinking level.
++// Targets without a recorded boundary stay Switch-only.
++func collaborationBoundaryRetained(target db.CollaborationTarget, configuration collaborationConfiguration) bool {
++	return !target.RevokedAt.Valid && target.ConfigurationFingerprint.Valid && target.ConfigurationBoundaryFingerprint.Valid &&
++		configuration.Fingerprint != target.ConfigurationFingerprint.String &&
++		configuration.Boundary == target.ConfigurationBoundaryFingerprint.String
++}
++
+ func validCollaborationResourceIdentity(identity CollaborationResourceIdentity) bool {
+ 	return (identity.Kind == "managed" || identity.Kind == "enrolled") && identity.InstallationID.Valid && identity.BindingID.Valid && identity.BindingEpoch > 0
+ }
+@@ -540,7 +574,8 @@ func (s *CollaborationService) ConsentTargetResource(ctx context.Context, p Coll
+ 		if code != "" {
+ 			return deny(code, http.StatusConflict)
+ 		}
+-		if !target.ConfigurationFingerprint.Valid || target.ConfigurationFingerprint.String != configuration.Fingerprint {
++		refresh := collaborationBoundaryRetained(target, configuration)
++		if !refresh && (!target.ConfigurationFingerprint.Valid || target.ConfigurationFingerprint.String != configuration.Fingerprint) {
+ 			return deny("target_configuration_changed", http.StatusConflict)
+ 		}
+ 		current, err := collaborationIdentityCurrent(ctx, t.q, selected, p.Identity)
+@@ -550,6 +585,24 @@ func (s *CollaborationService) ConsentTargetResource(ctx context.Context, p Coll
+ 		if !current {
+ 			return deny("runtime_registration_required", http.StatusConflict)
+ 		}
++		if refresh {
++			// The owner re-confirms an edit inside the recorded boundary. Every
++			// refusal above left state unchanged. The new configuration version
++			// retires the old configuration's grants of every roster resource, so
++			// each owner confirms again and old groups stay distinguishable for
++			// the configuration consumer. Waiting inputs keep their position.
++			if err = t.q.RevokeCollaborationTargetConsents(ctx, db.RevokeCollaborationTargetConsentsParams{TargetID: target.ID, Reason: "configuration_changed"}); err != nil {
++				return CollaborationQueueReceipt{}, err
++			}
++			target, err = t.q.RefreshCollaborationTargetConfiguration(ctx, db.RefreshCollaborationTargetConfigurationParams{
++				TargetID: target.ID, SessionID: t.session.ID, ExpectedConfigVersion: target.ConfigVersion,
++				ConfigurationFingerprint: configuration.Fingerprint, ConfigurationBoundaryFingerprint: configuration.Boundary})
++			if err != nil {
++				return CollaborationQueueReceipt{}, err
++			}
++			t.replaceTarget(target)
++			grants = nil
++		}
+ 		for _, prior := range grants {
+ 			if prior.RevokedAt.Valid || prior.ConfigVersion.Int64 != target.ConfigVersion || !collaborationResourceMatchesGrant(selected, prior) {
+ 				continue
+@@ -577,7 +630,11 @@ func (s *CollaborationService) ConsentTargetResource(ctx context.Context, p Coll
+ 			return CollaborationQueueReceipt{}, err
+ 		}
+ 		hold := collaboration.TargetHoldReason(target.HoldReason.String)
+-		if !target.HoldReason.Valid {
++		switch {
++		case refresh:
++			// A refreshed configuration is still a changed one; only Resume releases it.
++			hold = collaboration.HoldConfigInvalid
++		case !target.HoldReason.Valid:
+ 			hold = collaboration.HoldGrantRequired
+ 		}
+ 		target, err = t.setTargetHold(ctx, target, hold, true)
+diff --git a/server/internal/service/collaboration_mentions.go b/server/internal/service/collaboration_mentions.go
+index cc83dbfad..1aa352ef3 100644
+--- a/server/internal/service/collaboration_mentions.go
++++ b/server/internal/service/collaboration_mentions.go
+@@ -115,8 +115,11 @@ func (s *CollaborationService) MentionTargets(ctx context.Context, issueID pgtyp
+ 	return out, err
+ }
+ 
++// CollaborationCommentMaxBytes bounds a comment's decoded content.
++const CollaborationCommentMaxBytes = 64 << 10
++
+ func validateCollaborationCommentInput(p CollaborationCommentInput) error {
+-	if (strings.TrimSpace(util.SanitizeTextForPostgres(p.Content)) == "" && len(p.AttachmentIDs) == 0) || len(p.Content) > 64<<10 || len(p.SuppressedTargetIDs) > 256 {
++	if (strings.TrimSpace(util.SanitizeTextForPostgres(p.Content)) == "" && len(p.AttachmentIDs) == 0) || len(p.Content) > CollaborationCommentMaxBytes || len(p.SuppressedTargetIDs) > 256 {
+ 		return collaborationError(http.StatusBadRequest, "invalid_comment_request")
+ 	}
+ 	if err := validateCollaborationAttachmentIDs(p.AttachmentIDs); err != nil {
+diff --git a/server/internal/service/collaboration_pending_configuration_fixture_test.go b/server/internal/service/collaboration_pending_configuration_fixture_test.go
+index be9c6b7bc..32633e1c8 100644
+--- a/server/internal/service/collaboration_pending_configuration_fixture_test.go
++++ b/server/internal/service/collaboration_pending_configuration_fixture_test.go
+@@ -84,7 +84,7 @@ func (s *CollaborationService) ReconfigureTarget(ctx context.Context, p Collabor
+ 		if err = t.q.RevokeCollaborationTargetConsents(ctx, db.RevokeCollaborationTargetConsentsParams{TargetID: target.ID, Reason: "configuration_changed"}); err != nil {
+ 			return CollaborationQueueReceipt{}, err
+ 		}
+-		target, err = t.q.ReconfigureCollaborationTarget(ctx, db.ReconfigureCollaborationTargetParams{TargetID: target.ID, SessionID: t.session.ID, Roster: encoded, ConfigurationFingerprint: configuration.Fingerprint})
++		target, err = t.q.ReconfigureCollaborationTarget(ctx, db.ReconfigureCollaborationTargetParams{TargetID: target.ID, SessionID: t.session.ID, Roster: encoded, ConfigurationFingerprint: configuration.Fingerprint, ConfigurationBoundaryFingerprint: configuration.Boundary})
+ 		if err != nil {
+ 			return CollaborationQueueReceipt{}, err
+ 		}
+diff --git a/server/internal/service/collaboration_reconsent_test.go b/server/internal/service/collaboration_reconsent_test.go
+new file mode 100644
+index 000000000..ce1448808
+--- /dev/null
++++ b/server/internal/service/collaboration_reconsent_test.go
+@@ -0,0 +1,360 @@
++package service
++
++import (
++	"net/http"
++	"reflect"
++	"testing"
++
++	"github.com/google/uuid"
++	"github.com/jackc/pgx/v5/pgtype"
++	"github.com/multica-ai/multica/server/internal/collaboration"
++	"github.com/multica-ai/multica/server/internal/testutil"
++	"github.com/multica-ai/multica/server/internal/util"
++	db "github.com/multica-ai/multica/server/pkg/db/generated"
++	"github.com/multica-ai/multica/server/pkg/protocol"
++)
++
++// Owner re-consent recovers only configuration edits that keep the execution
++// boundary: instructions, model and thinking level. Everything else that the
++// configuration epoch fences still needs a staged Switch.
++func preparedReconsentFixture(t *testing.T) *configInvalidationFixture {
++	t.Helper()
++	f := newConfigInvalidationFixture(t)
++	switchCleanup(t, f.collaborationQueueFixture)
++	registerPreparationFixture(t, f.managedCollaborationFixture)
++	refreshPreparationConsent(t, f.managedCollaborationFixture)
++	f.drain(t)
++	return f
++}
++
++func reconsentParams(f *configInvalidationFixture, target db.CollaborationTarget, agent pgtype.UUID) CollaborationConsentParams {
++	return CollaborationConsentParams{CollaborationQueueRequest: f.request(), TargetID: target.ID, AgentID: agent,
++		ExpectedTargetEpoch: target.TargetEpoch, ExpectedConfigVersion: target.ConfigVersion,
++		Identity: CollaborationResourceIdentity{Kind: "managed", InstallationID: f.installation.ID, BindingID: f.binding.ID, BindingEpoch: f.binding.BindingEpoch}}
++}
++
++func reconsentResource(t *testing.T, f *configInvalidationFixture, target pgtype.UUID, agent pgtype.UUID) CollaborationTargetResources {
++	t.Helper()
++	view, err := f.svc.Resources(f.ctx, f.issue.Issue.ID)
++	if err != nil {
++		t.Fatal(err)
++	}
++	for _, item := range view.Targets {
++		if item.TargetID != target {
++			continue
++		}
++		for _, resource := range item.Resources {
++			if resource.AgentID == util.UUIDToString(agent) {
++				item.Resources = []CollaborationResourceView{resource}
++				return item
++			}
++		}
++	}
++	t.Fatal("resources view omitted the retained target resource")
++	return CollaborationTargetResources{}
++}
++
++func activeTargetGrants(t *testing.T, f *configInvalidationFixture, target pgtype.UUID, configVersion int64) int {
++	t.Helper()
++	return f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE target_id=$1 AND revoked_at IS NULL AND config_version=$2`, target, configVersion)
++}
++
++func TestCollaborationConfigurationReconsentRecoversNonWideningAgentEdits(t *testing.T) {
++	for name, edit := range map[string]struct {
++		statements []string
++		want       protocol.CollaborationPreparationInvocation
++	}{
++		"instructions": {[]string{`UPDATE agent SET instructions='Reconsented execution instructions' WHERE id=$1`},
++			protocol.CollaborationPreparationInvocation{Instructions: "Reconsented execution instructions"}},
++		"model": {[]string{`UPDATE agent SET model='reconsented-model' WHERE id=$1`},
++			protocol.CollaborationPreparationInvocation{Model: "reconsented-model"}},
++		"thinking_level": {[]string{`UPDATE agent SET thinking_level='high' WHERE id=$1`},
++			protocol.CollaborationPreparationInvocation{ThinkingLevel: "high"}},
++		"reverted_instructions": {[]string{`UPDATE agent SET instructions=instructions||' temporarily' WHERE id=$1`,
++			`UPDATE agent SET instructions=left(instructions, length(instructions)-length(' temporarily')) WHERE id=$1`},
++			protocol.CollaborationPreparationInvocation{}},
++	} {
++		t.Run(name, func(t *testing.T) {
++			f := preparedReconsentFixture(t)
++			waiting := f.submitManaged(t, f.creator, "waiting input survives owner re-consent")
++			before := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++			for _, statement := range edit.statements {
++				f.fx.Exec(t, statement, f.grant.AgentID)
++			}
++			f.drain(t)
++			held := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++			if held.HoldReason.String != "config_invalid" || held.ConfigVersion != before.ConfigVersion || activeTargetGrants(t, f, held.ID, held.ConfigVersion) != 0 {
++				t.Fatalf("configuration edit did not hold the target and retire its consent: %+v", held)
++			}
++			view := reconsentResource(t, f, held.ID, f.grant.AgentID)
++			if !view.Resources[0].CanConsent {
++				t.Fatalf("owner was not offered re-consent for a non-widening edit: %+v", view)
++			}
++			identity, err := f.svc.ResourceIdentity(f.ctx, f.issue.Issue.ID, held.ID, f.grant.AgentID, pgtype.UUID{})
++			if err != nil || identity.Reason != "" || identity.Identity == nil {
++				t.Fatalf("owner identity reader refused a non-widening edit: %+v %v", identity, err)
++			}
++
++			p := reconsentParams(f, held, f.grant.AgentID)
++			r, err := f.svc.ConsentTargetResource(f.ctx, p)
++			if err != nil || r.Code != "resource_consented" || r.Status != http.StatusCreated {
++				t.Fatalf("owner re-consent of a non-widening edit failed: %+v %v", r, err)
++			}
++			after := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++			if after.ConfigVersion != held.ConfigVersion+1 || after.TargetEpoch != held.TargetEpoch || after.HoldReason.String != "config_invalid" ||
++				after.HoldVersion != held.HoldVersion+1 || after.QueueState != held.QueueState || after.ControlVersion != held.ControlVersion {
++				t.Fatalf("re-consent did not refresh exactly one configuration version, or released the hold: %+v", after)
++			}
++			if _, code, err := authorizeCollaborationTargetInput(f.ctx, f.svc.Queries, f.issue.Issue.ID, after); err != nil || code != "" {
++				t.Fatalf("re-consented target is not authorized: %s %v", code, err)
++			}
++			if activeTargetGrants(t, f, after.ID, after.ConfigVersion) != 1 || f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE target_id=$1 AND revoked_at IS NULL`, after.ID) != 1 {
++				t.Fatal("re-consent did not leave exactly one current grant")
++			}
++			grants := switchGrants(t, f.collaborationQueueFixture, after.ID)
++			replay, err := f.svc.ConsentTargetResource(f.ctx, p)
++			if err != nil || !reflect.DeepEqual(replay, r) || !reflect.DeepEqual(after, queueTarget(t, f.collaborationQueueFixture, f.targetID)) ||
++				!reflect.DeepEqual(grants, switchGrants(t, f.collaborationQueueFixture, after.ID)) {
++				t.Fatalf("exact re-consent replay advanced state: %+v %v", replay, err)
++			}
++			repeated, err := f.svc.ConsentTargetResource(f.ctx, reconsentParams(f, after, f.grant.AgentID))
++			if err != nil || repeated.Code != "resource_consented" || repeated.Status != http.StatusOK || repeated.GrantID != r.GrantID ||
++				!reflect.DeepEqual(after, queueTarget(t, f.collaborationQueueFixture, f.targetID)) {
++				t.Fatalf("repeated current consent advanced state: %+v %v", repeated, err)
++			}
++			// The background consumer may observe the old intent after the refresh.
++			f.drain(t)
++			if !reflect.DeepEqual(after, queueTarget(t, f.collaborationQueueFixture, f.targetID)) || activeTargetGrants(t, f, after.ID, after.ConfigVersion) != 1 {
++				t.Fatal("a late configuration intent revoked the re-consented authority")
++			}
++
++			list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
++			if err != nil || len(list.RunIDs) != 0 {
++				t.Fatalf("consent without Resume released the hold: %+v %v", list, err)
++			}
++			if f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE id=$1 AND state='waiting'`, waiting.CommandID) != 1 {
++				t.Fatal("re-consent discarded the retained waiting input")
++			}
++			if _, err = f.svc.SubmitCommand(f.ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID,
++				InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: held.TargetEpoch, ExpectedConfigVersion: held.ConfigVersion,
++				Content: "stale configuration view"}); !collaborationErrorCode(err, "stale_target") {
++				t.Fatalf("input bound to the old configuration version was accepted: %v", err)
++			}
++			f.resumeManaged(t)
++			if released := queueTarget(t, f.collaborationQueueFixture, f.targetID); released.HoldReason.Valid {
++				t.Fatalf("explicit Resume did not release the re-consented hold: %+v", released)
++			}
++			runID := util.MustParseUUID(func() string {
++				list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
++				if err != nil || len(list.RunIDs) != 1 {
++					t.Fatalf("one admitted candidate after Resume: %+v %v", list, err)
++				}
++				return list.RunIDs[0]
++			}())
++			_, claim := claimPreparedCandidate(t, f.managedCollaborationFixture, runID)
++			if claim.Preparation.Invocation != edit.want || len(claim.Inputs) != 1 {
++				t.Fatalf("claim after re-consent did not carry the current configuration: %+v", claim.Preparation.Invocation)
++			}
++		})
++	}
++}
++
++func TestCollaborationConfigurationReconsentRefusesWideningAndIdentityEdits(t *testing.T) {
++	for _, change := range []string{"permission_mode", "custom_args", "skill_binding", "runtime_visibility"} {
++		t.Run(change, func(t *testing.T) {
++			f := preparedReconsentFixture(t)
++			switch change {
++			case "permission_mode":
++				f.fx.Exec(t, `UPDATE agent SET permission_mode='public_to' WHERE id=$1`, f.grant.AgentID)
++			case "custom_args":
++				f.fx.Exec(t, `UPDATE agent SET custom_args='["--widened"]' WHERE id=$1`, f.grant.AgentID)
++			case "skill_binding":
++				skill := f.fx.Insert(t, "skill", testutil.Cols{"workspace_id": f.workspace, "name": "Reconsent widening skill " + uuid.NewString(), "content": "test-owned skill", "created_by": f.creator})
++				if err := f.svc.Queries.AddAgentSkill(f.ctx, db.AddAgentSkillParams{AgentID: f.grant.AgentID, SkillID: util.MustParseUUID(skill)}); err != nil {
++					t.Fatal(err)
++				}
++				f.fx.Cleanup(t, `DELETE FROM agent_skill WHERE agent_id=$1`, f.grant.AgentID)
++			case "runtime_visibility":
++				if _, err := f.svc.Queries.UpdateAgentRuntimeVisibility(f.ctx, db.UpdateAgentRuntimeVisibilityParams{ID: f.runtime.ID, Visibility: "public"}); err != nil {
++					t.Fatal(err)
++				}
++			}
++			f.drain(t)
++			held := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++			grants := switchGrants(t, f.collaborationQueueFixture, held.ID)
++			if held.HoldReason.String != "config_invalid" {
++				t.Fatalf("widening edit did not hold the target: %+v", held)
++			}
++			if view := reconsentResource(t, f, held.ID, f.grant.AgentID); view.Resources[0].CanConsent {
++				t.Fatal("owner was offered re-consent for a widening edit")
++			}
++			if _, err := f.svc.ConsentTargetResource(f.ctx, reconsentParams(f, held, f.grant.AgentID)); !collaborationErrorCode(err, "target_configuration_changed") ||
++				!reflect.DeepEqual(held, queueTarget(t, f.collaborationQueueFixture, f.targetID)) || !reflect.DeepEqual(grants, switchGrants(t, f.collaborationQueueFixture, held.ID)) {
++				t.Fatalf("owner re-consent recovered a widening edit or its refusal changed state: %v", err)
++			}
++
++			// The creator or handler still restores it through a staged Switch.
++			proposal, _ := proposeSwitch(t, f.collaborationQueueFixture, held, switchRoster(t, held))
++			consent := CollaborationSwitchConsentParams{CollaborationQueueRequest: f.request(), TargetID: held.ID, ProposalID: proposal.ProposalID, AgentID: f.grant.AgentID,
++				Identity: CollaborationResourceIdentity{Kind: "managed", InstallationID: f.installation.ID, BindingID: f.binding.ID, BindingEpoch: f.binding.BindingEpoch}}
++			if _, err := f.svc.ConsentTargetSwitchResource(f.ctx, consent); err != nil {
++				t.Fatal(err)
++			}
++			committed, err := f.svc.CommitTargetSwitch(f.ctx, CollaborationCommitSwitchParams{CollaborationQueueRequest: f.request(), ProposalID: proposal.ProposalID,
++				Control: targetControl(queueTarget(t, f.collaborationQueueFixture, held.ID))})
++			if err != nil || committed.Code != "target_switched" {
++				t.Fatalf("Switch did not restore a widening edit: %+v %v", committed, err)
++			}
++			switched := queueTarget(t, f.collaborationQueueFixture, held.ID)
++			if switched.HoldReason.String != "switch_hold" || switched.ConfigVersion != held.ConfigVersion+1 || switched.TargetEpoch != held.TargetEpoch+1 {
++				t.Fatalf("Switch did not install a new configuration behind an explicit hold: %+v", switched)
++			}
++			if _, code, err := authorizeCollaborationTargetInput(f.ctx, f.svc.Queries, f.issue.Issue.ID, switched); err != nil || code != "" {
++				t.Fatalf("switched target is not authorized: %s %v", code, err)
++			}
++			// Switch records the new boundary, so a later non-widening edit of the
++			// switched configuration is again recoverable by its owner.
++			f.fx.Exec(t, `UPDATE agent SET instructions='after Switch' WHERE id=$1`, f.grant.AgentID)
++			f.drain(t)
++			if _, err = f.svc.ConsentTargetResource(f.ctx, reconsentParams(f, queueTarget(t, f.collaborationQueueFixture, held.ID), f.grant.AgentID)); err != nil {
++				t.Fatalf("Switch did not record the boundary of its new configuration: %v", err)
++			}
++		})
++	}
++}
++
++func TestCollaborationConfigurationReconsentRecoversSquadMemberInstructions(t *testing.T) {
++	f := preparedReconsentFixture(t)
++	member := util.MustParseUUID(f.fx.Agent(t, "Reconsent squad member "+uuid.NewString(), util.UUIDToString(f.runtime.ID), testutil.Cols{"owner_id": f.creator, "permission_mode": "private"}))
++	squad := util.MustParseUUID(f.fx.Squad(t, "Reconsent squad "+uuid.NewString(), util.UUIDToString(f.grant.AgentID)))
++	f.fx.SquadMember(t, util.UUIDToString(squad), "agent", util.UUIDToString(member))
++	f.owned = append(f.owned, member, squad)
++	f.drain(t)
++	session, err := f.svc.Queries.GetCollaborationSession(f.ctx, f.issue.Issue.ID)
++	if err != nil {
++		t.Fatal(err)
++	}
++	resource := func(role string, agent pgtype.UUID) collaboration.TargetResource {
++		return collaboration.TargetResource{Role: role, AgentID: util.UUIDToString(agent), RuntimeID: util.UUIDToString(f.runtime.ID), ExecutionWorkspaceID: f.workspace, OwnerUserID: f.creator}
++	}
++	registered, err := f.svc.RegisterTarget(f.ctx, CollaborationRegisterTargetParams{CollaborationQueueRequest: f.request(), Kind: collaboration.TargetSquad, ResourceID: squad,
++		ExpectedTargetSetVersion: session.TargetSetVersion, Roster: []collaboration.TargetResource{resource("leader", f.grant.AgentID), resource("member", member)}})
++	if err != nil {
++		t.Fatal(err)
++	}
++	for _, agent := range []pgtype.UUID{f.grant.AgentID, member} {
++		if _, err = f.svc.ConsentTargetResource(f.ctx, reconsentParams(f, queueTarget(t, f.collaborationQueueFixture, registered.TargetID), agent)); err != nil {
++			t.Fatal(err)
++		}
++	}
++	direct := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++
++	f.fx.Exec(t, `UPDATE agent SET instructions='Reconsented member instructions' WHERE id=$1`, member)
++	f.drain(t)
++	held := queueTarget(t, f.collaborationQueueFixture, registered.TargetID)
++	if held.HoldReason.String != "config_invalid" || activeTargetGrants(t, f, held.ID, held.ConfigVersion) != 0 {
++		t.Fatalf("member edit did not hold the squad and retire its consents: %+v", held)
++	}
++	if _, err = f.svc.ConsentTargetResource(f.ctx, reconsentParams(f, held, member)); err != nil {
++		t.Fatalf("member owner could not re-consent a non-widening member edit: %v", err)
++	}
++	refreshed := queueTarget(t, f.collaborationQueueFixture, held.ID)
++	if refreshed.ConfigVersion != held.ConfigVersion+1 || refreshed.TargetEpoch != held.TargetEpoch || refreshed.HoldReason.String != "config_invalid" {
++		t.Fatalf("squad re-consent did not refresh one configuration version behind its hold: %+v", refreshed)
++	}
++	// Every roster resource is consented again for the refreshed configuration.
++	if _, code, err := authorizeCollaborationTargetInput(f.ctx, f.svc.Queries, f.issue.Issue.ID, refreshed); err != nil || code != "grant_required" {
++		t.Fatalf("one member's re-consent authorized the whole squad: %s %v", code, err)
++	}
++	if _, err = f.svc.ConsentTargetResource(f.ctx, reconsentParams(f, refreshed, f.grant.AgentID)); err != nil {
++		t.Fatal(err)
++	}
++	final := queueTarget(t, f.collaborationQueueFixture, held.ID)
++	if final.ConfigVersion != refreshed.ConfigVersion || activeTargetGrants(t, f, final.ID, final.ConfigVersion) != 2 {
++		t.Fatalf("leader consent of the refreshed squad advanced it again or lost a grant: %+v", final)
++	}
++	if _, code, err := authorizeCollaborationTargetInput(f.ctx, f.svc.Queries, f.issue.Issue.ID, final); err != nil || code != "" {
++		t.Fatalf("fully re-consented squad is not authorized: %s %v", code, err)
++	}
++	if !reflect.DeepEqual(direct, queueTarget(t, f.collaborationQueueFixture, f.targetID)) {
++		t.Fatal("squad member edit changed the leader's direct-agent target")
++	}
++}
++
++func TestCollaborationConfigurationReconsentKeepsSwitchOnlyForTargetsWithoutBoundary(t *testing.T) {
++	f := preparedReconsentFixture(t)
++	// Targets created before the boundary was recorded keep Switch-only recovery.
++	f.fx.Exec(t, `UPDATE collaboration_target SET configuration_boundary_fingerprint=NULL WHERE id=$1`, f.targetID)
++	f.fx.Exec(t, `UPDATE agent SET instructions='Instructions of an unbounded target' WHERE id=$1`, f.grant.AgentID)
++	f.drain(t)
++	held := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++	grants := switchGrants(t, f.collaborationQueueFixture, held.ID)
++	if view := reconsentResource(t, f, held.ID, f.grant.AgentID); view.Resources[0].CanConsent {
++		t.Fatal("owner was offered re-consent for a target without a recorded boundary")
++	}
++	if _, err := f.svc.ConsentTargetResource(f.ctx, reconsentParams(f, held, f.grant.AgentID)); !collaborationErrorCode(err, "target_configuration_changed") ||
++		!reflect.DeepEqual(held, queueTarget(t, f.collaborationQueueFixture, f.targetID)) || !reflect.DeepEqual(grants, switchGrants(t, f.collaborationQueueFixture, held.ID)) {
++		t.Fatalf("a target without a recorded boundary was recovered by owner re-consent: %v", err)
++	}
++}
++
++// The owner may confirm before the configuration consumer runs. The old
++// configuration's running group must still stop, and the late consumer must keep
++// the confirmation of the refreshed configuration and its hold.
++func TestCollaborationConfigurationReconsentBeforeConsumerStopsOldConfigurationGroup(t *testing.T) {
++	f := preparedReconsentFixture(t)
++	run, claim, _ := startResourceCollaboration(t, f.managedCollaborationFixture)
++	f.fx.Exec(t, `UPDATE agent SET instructions='Confirmed before the consumer' WHERE id=$1`, f.grant.AgentID)
++	edited := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++	if edited.HoldReason.Valid {
++		t.Fatalf("the edit was reconciled before the owner confirmed it: %+v", edited)
++	}
++	r, err := f.svc.ConsentTargetResource(f.ctx, reconsentParams(f, edited, f.grant.AgentID))
++	if err != nil || r.Status != http.StatusCreated {
++		t.Fatalf("owner re-consent before the consumer failed: %+v %v", r, err)
++	}
++	refreshed := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++	if refreshed.HoldReason.String != "config_invalid" || refreshed.ConfigVersion != edited.ConfigVersion+1 ||
++		f.fx.Count(t, `SELECT count(*) FROM collaboration_grant WHERE target_id=$1 AND revoked_at IS NULL`, refreshed.ID) != 1 {
++		t.Fatalf("re-consent did not hold the refreshed configuration behind one current grant: %+v", refreshed)
++	}
++	f.drain(t)
++	if refreshed.ConfigVersion != queueTarget(t, f.collaborationQueueFixture, f.targetID).ConfigVersion ||
++		activeTargetGrants(t, f, refreshed.ID, refreshed.ConfigVersion) != 1 ||
++		f.fx.Count(t, `SELECT count(*) FROM collaboration_target WHERE id=$1 AND hold_reason='config_invalid'`, f.targetID) != 1 {
++		t.Fatal("the late consumer revoked the refreshed confirmation or released its hold")
++	}
++	intent, err := f.svc.RuntimeStopIntent(t.Context(), run, claim.TerminationToken)
++	if err != nil || !intent.StopRequested {
++		t.Fatalf("a group of the old configuration kept running after re-consent: %+v %v", intent, err)
++	}
++}
++
++// Only the resource epoch writer advances the boundary epoch. A child writer's
++// explicit configuration advance widens it, because it may change tools.
++func TestCollaborationConfigurationBoundaryEpochAdvancesOnlyThroughItsWriter(t *testing.T) {
++	f := newConfigInvalidationFixture(t)
++	boundary := func() int64 {
++		var epoch pgtype.Int8
++		if err := f.pool.QueryRow(f.ctx, `SELECT collaboration_boundary_epoch FROM agent WHERE id=$1`, f.grant.AgentID).Scan(&epoch); err != nil {
++			t.Fatal(err)
++		}
++		return epoch.Int64
++	}
++	start := boundary()
++	if _, err := f.pool.Exec(f.ctx, `UPDATE agent SET collaboration_boundary_epoch=COALESCE(collaboration_boundary_epoch,0)+1 WHERE id=$1`, f.grant.AgentID); err == nil {
++		t.Fatal("a direct boundary epoch assignment was accepted")
++	}
++	f.fx.Exec(t, `UPDATE agent SET instructions='inside the boundary', model='inside-model', thinking_level='low' WHERE id=$1`, f.grant.AgentID)
++	if boundary() != start {
++		t.Fatal("an instructions/model/thinking edit widened the boundary")
++	}
++	f.fx.Exec(t, `UPDATE agent SET collaboration_config_epoch=collaboration_config_epoch+1 WHERE id=$1`, f.grant.AgentID)
++	if boundary() != start+1 {
++		t.Fatal("an explicit child configuration advance did not widen the boundary")
++	}
++	f.fx.Exec(t, `UPDATE agent SET service_tier='widened-tier' WHERE id=$1`, f.grant.AgentID)
++	if boundary() != start+2 {
++		t.Fatal("a managed tool or execution column edit did not widen the boundary")
++	}
++}
+diff --git a/server/internal/service/collaboration_resources_view.go b/server/internal/service/collaboration_resources_view.go
+index 5d1e19d0b..40cd52b30 100644
+--- a/server/internal/service/collaboration_resources_view.go
++++ b/server/internal/service/collaboration_resources_view.go
+@@ -97,6 +97,9 @@ func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUI
+ 				return err
+ 			}
+ 			configurationCurrent := code == "" && target.ConfigurationFingerprint.Valid && configuration.Fingerprint == target.ConfigurationFingerprint.String && !target.RevokedAt.Valid
++			// An edit inside the recorded boundary is offered to the resource owner
++			// again; ConsentTargetResource repeats the same check under locks.
++			consentable := configurationCurrent || code == "" && collaborationBoundaryRetained(target, configuration)
+ 			host, err := collaborationScopeUsesHost(ctx, q, access.SessionID, targets, map[pgtype.UUID]bool{target.ID: true})
+ 			if err != nil {
+ 				return err
+@@ -139,7 +142,7 @@ func (s *CollaborationService) Resources(ctx context.Context, issueID pgtype.UUI
+ 						view.GrantID, view.GrantEpoch, view.CanRevoke = util.UUIDToPtr(grant.ID), &epoch, true
+ 					}
+ 				}
+-				view.CanConsent = !legacyHost && owned && configurationCurrent && access.Capabilities.SubmitCommand && !view.Consented && !view.CanRevoke
++				view.CanConsent = !legacyHost && owned && consentable && access.Capabilities.SubmitCommand && !view.Consented && !view.CanRevoke
+ 				item.Resources = append(item.Resources, view)
+ 			}
+ 			out.Targets = append(out.Targets, item)
+@@ -299,7 +302,8 @@ func (s *CollaborationService) ResourceIdentity(ctx context.Context, issueID, ta
+ 		if err != nil {
+ 			return err
+ 		}
+-		if stale || code != "" || configuration.Fingerprint != fingerprint {
++		retained := !proposalID.Valid && code == "" && collaborationBoundaryRetained(target, configuration)
++		if stale || code != "" || configuration.Fingerprint != fingerprint && !retained {
+ 			out.Reason = "target_configuration_changed"
+ 			return nil
+ 		}
+diff --git a/server/internal/service/collaboration_runtime_preparation.go b/server/internal/service/collaboration_runtime_preparation.go
+index 7cc34dda2..95afef09a 100644
+--- a/server/internal/service/collaboration_runtime_preparation.go
++++ b/server/internal/service/collaboration_runtime_preparation.go
+@@ -6,7 +6,9 @@ import (
+ 	"errors"
+ 	"net/http"
+ 	"reflect"
++	"slices"
+ 	"strconv"
++	"strings"
+ 
+ 	"github.com/jackc/pgx/v5"
+ 	"github.com/jackc/pgx/v5/pgtype"
+@@ -15,14 +17,35 @@ import (
+ 	"github.com/multica-ai/multica/server/pkg/protocol"
+ )
+ 
++// The manifest holds every file the prepared inputs reference. Remaining
++// capacity up to the manifest bound goes to the issue's most recently delivered
++// other files, so a long delivery history never blocks later input. Only a
++// referenced set larger than the bound refuses. Every caller uses this one
++// selection rule; a claimed run keeps the manifest it froze at first claim.
+ func (s *CollaborationService) preparationAttachments(ctx context.Context, q *db.Queries, issue, workspace pgtype.UUID, inputs []protocol.CollaborationRunInput) ([]protocol.CollaborationPreparationAttachment, error) {
+-	rows, err := q.ListCollaborationPreparationAttachments(ctx, issue)
+-	if err != nil {
+-		return nil, err
++	referenced := make([]pgtype.UUID, 0)
++	wanted := map[string]bool{}
++	for _, input := range inputs {
++		for _, id := range input.AttachmentIDs {
++			if wanted[id] {
++				continue
++			}
++			parsed, err := util.ParseUUID(id)
++			if err != nil {
++				return nil, collaborationError(http.StatusConflict, "runtime_preparation_unavailable")
++			}
++			wanted[id] = true
++			referenced = append(referenced, parsed)
++		}
+ 	}
+-	if len(rows) > collaborationMaxSelectedAttachments {
++	if len(referenced) > collaborationMaxSelectedAttachments {
+ 		return nil, collaborationError(http.StatusConflict, "runtime_preparation_limits")
+ 	}
++	rows, err := q.ListCollaborationPreparationAttachments(ctx, db.ListCollaborationPreparationAttachmentsParams{
++		IssueID: issue, ReferencedIds: referenced, RowLimit: collaborationMaxSelectedAttachments})
++	if err != nil {
++		return nil, err
++	}
+ 	files := make([]protocol.CollaborationPreparationAttachment, 0, len(rows))
+ 	seen := make(map[string]bool, len(rows))
+ 	for _, row := range rows {
+@@ -37,13 +60,14 @@ func (s *CollaborationService) preparationAttachments(ctx context.Context, q *db
+ 			ContentType: row.ContentType, SizeBytes: row.SizeBytes, Destination: protocol.CollaborationPreparationAttachmentDestination(id, version)})
+ 		seen[id] = true
+ 	}
+-	for _, input := range inputs {
+-		for _, id := range input.AttachmentIDs {
+-			if !seen[id] {
+-				return nil, collaborationError(http.StatusConflict, "runtime_preparation_unavailable")
+-			}
++	for id := range wanted {
++		if !seen[id] {
++			return nil, collaborationError(http.StatusConflict, "runtime_preparation_unavailable")
+ 		}
+ 	}
++	// The selection order puts referenced files first; the manifest keeps
++	// its stable attachment-ID order.
++	slices.SortFunc(files, func(a, b protocol.CollaborationPreparationAttachment) int { return strings.Compare(a.ID, b.ID) })
+ 	return files, nil
+ }
+ 
+@@ -239,8 +263,16 @@ func (s *CollaborationService) settleUnclaimedPreparationRefusal(ctx context.Con
+ 	if denied.Code == "runtime_preparation_unsupported" && runtime.CollaborationCapabilities != nil {
+ 		return false, nil
+ 	}
+-	files, err := r.q.ListCollaborationPreparationAttachments(ctx, r.access.Issue.ID)
+-	if err != nil || len(files) == 0 {
++	// The same selection the claim used decides whether this run needs file
++	// preparation. A referenced set beyond the manifest bound needs it too.
++	inputs, err := collaborationRunInputs(r.inputs)
++	if err != nil {
++		return false, err
++	}
++	files, err := s.preparationAttachments(ctx, r.q, r.access.Issue.ID, r.access.Issue.WorkspaceID, inputs)
++	var limits *CollaborationError
++	overLimit := errors.As(err, &limits) && limits.Code == "runtime_preparation_limits"
++	if !overLimit && (err != nil || len(files) == 0) {
+ 		return false, err
+ 	}
+ 	runs, err := r.q.LockCollaborationGroupRuns(ctx, r.group.ID)
+diff --git a/server/internal/service/collaboration_runtime_preparation_test.go b/server/internal/service/collaboration_runtime_preparation_test.go
+index 4cabf63eb..449e879fb 100644
+--- a/server/internal/service/collaboration_runtime_preparation_test.go
++++ b/server/internal/service/collaboration_runtime_preparation_test.go
+@@ -587,3 +587,95 @@ func TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary(t *
+ 		})
+ 	}
+ }
++
++// Each comment may deliver up to 32 files and delivered files are permanent,
++// so an issue's file history can outgrow the manifest bound. Later input must
++// still run, with the newest deliveries filling the manifest.
++func TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns(t *testing.T) {
++	f := preparedRuntimeFixture(t)
++	files := make([]CollaborationAttachmentView, 0, collaborationMaxSelectedAttachments+1)
++	for i := 0; i <= collaborationMaxSelectedAttachments; i++ {
++		files = append(files, preparationDeliveredFile(t, f))
++	}
++	if got := f.fx.Count(t, `SELECT count(*) FROM collaboration_attachment WHERE issue_id=$1 AND delivered_at IS NOT NULL AND discarded_at IS NULL`, f.issue.Issue.ID); got != collaborationMaxSelectedAttachments+1 {
++		t.Fatalf("fixture delivered %d files, want %d", got, collaborationMaxSelectedAttachments+1)
++	}
++	f.submitManaged(t, f.creator, "text-only input after a long file history")
++	f.resumeManaged(t)
++	list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
++	if err != nil || len(list.RunIDs) != 1 {
++		target := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++		t.Logf("command states: waiting=%d in_flight=%d; target queue=%s hold=%q",
++			f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE target_id=$1 AND state='waiting'`, f.targetID),
++			f.fx.Count(t, `SELECT count(*) FROM collaboration_command WHERE target_id=$1 AND state='in_flight'`, f.targetID),
++			target.QueueState, target.HoldReason.String)
++		t.Fatalf("a text-only input could not run because earlier comments delivered more than %d files: %+v %v", collaborationMaxSelectedAttachments, list, err)
++	}
++	_, claim := claimPreparedCandidate(t, f, util.MustParseUUID(list.RunIDs[0]))
++	manifest := preparationManifestIDs(claim.Preparation)
++	if len(manifest) != collaborationMaxSelectedAttachments || !manifest[util.UUIDToString(files[len(files)-1].ID)] || manifest[util.UUIDToString(files[0].ID)] {
++		t.Fatalf("manifest did not keep the %d newest deliveries: %d entries", collaborationMaxSelectedAttachments, len(manifest))
++	}
++}
++
++// An input's own files are never displaced by newer issue deliveries; only a
++// referenced set larger than the manifest bound refuses.
++func TestCollaborationRuntimePreparationReferencedFileOutranksNewerIssueFiles(t *testing.T) {
++	f := preparedRuntimeFixture(t)
++	files := make([]CollaborationAttachmentView, 0, collaborationMaxSelectedAttachments+1)
++	for i := 0; i <= collaborationMaxSelectedAttachments; i++ {
++		files = append(files, preparationDeliveredFile(t, f))
++	}
++	oldest, newest := files[0], files[len(files)-1]
++	target := queueTarget(t, f.collaborationQueueFixture, f.targetID)
++	if _, err := f.svc.SubmitCommand(f.ctx, CollaborationSubmitCommandParams{CollaborationQueueRequest: f.request(), TargetID: f.targetID,
++		InputEventID: util.MustParseUUID(uuid.NewString()), ExpectedTargetEpoch: target.TargetEpoch, ExpectedConfigVersion: target.ConfigVersion,
++		Content: "review the first file again", AttachmentIDs: []pgtype.UUID{oldest.ID}}); err != nil {
++		t.Fatal(err)
++	}
++	f.resumeManaged(t)
++	list, err := f.svc.ListRuntimeRuns(f.daemonCtx, f.runtime.ID)
++	if err != nil || len(list.RunIDs) != 1 {
++		t.Fatalf("input referencing an old file did not promote: %+v %v", list, err)
++	}
++	runID := util.MustParseUUID(list.RunIDs[0])
++	_, claim := claimPreparedCandidate(t, f, runID)
++	manifest := preparationManifestIDs(claim.Preparation)
++	if len(manifest) != collaborationMaxSelectedAttachments || !manifest[util.UUIDToString(oldest.ID)] || !manifest[util.UUIDToString(newest.ID)] ||
++		manifest[util.UUIDToString(files[1].ID)] {
++		t.Fatalf("manifest did not hold the referenced file plus the newest deliveries: %d entries", len(manifest))
++	}
++	_, permit := permitPreparedClaim(t, f, runID, claim)
++	if _, err = f.svc.RuntimeAttachment(context.Background(), runID, oldest.ID, oldest.Version, permit.BusinessToken); err != nil {
++		t.Fatalf("run could not read the file its input referenced: %v", err)
++	}
++	if _, err = f.svc.RuntimeAttachment(context.Background(), runID, files[1].ID, files[1].Version, permit.BusinessToken); !collaborationErrorCode(err, "attachment_not_found") {
++		t.Fatalf("run read an issue file outside its frozen manifest: %v", err)
++	}
++	referenced := make([]string, 0, len(files))
++	for _, file := range files {
++		referenced = append(referenced, util.UUIDToString(file.ID))
++	}
++	over := []protocol.CollaborationRunInput{{AttachmentIDs: referenced}}
++	if _, err = f.svc.preparationAttachments(f.ctx, f.svc.Queries, f.issue.Issue.ID, f.issue.Issue.WorkspaceID, over); !collaborationErrorCode(err, "runtime_preparation_limits") {
++		t.Fatalf("a referenced set beyond the manifest bound did not refuse: %v", err)
++	}
++	within := []protocol.CollaborationRunInput{{AttachmentIDs: referenced[:collaborationMaxSelectedAttachments]}}
++	selected, err := f.svc.preparationAttachments(f.ctx, f.svc.Queries, f.issue.Issue.ID, f.issue.Issue.WorkspaceID, within)
++	if err != nil || len(selected) != collaborationMaxSelectedAttachments {
++		t.Fatalf("a full referenced set did not fill the manifest: %d %v", len(selected), err)
++	}
++	for _, file := range selected {
++		if file.ID == util.UUIDToString(newest.ID) {
++			t.Fatal("a newer unreferenced delivery displaced a referenced file")
++		}
++	}
++}
++
++func preparationManifestIDs(p *protocol.CollaborationPreparation) map[string]bool {
++	ids := make(map[string]bool, len(p.Attachments))
++	for _, file := range p.Attachments {
++		ids[file.ID] = true
++	}
++	return ids
++}
+diff --git a/server/internal/service/collaboration_squad.go b/server/internal/service/collaboration_squad.go
+index da426854d..36e03e315 100644
+--- a/server/internal/service/collaboration_squad.go
++++ b/server/internal/service/collaboration_squad.go
+@@ -364,11 +364,15 @@ func (r *collaborationRuntimeState) queueContinuation(ctx context.Context, paren
+ 	return pgtype.UUID{}, invalidCollaborationLedger("squad has no frozen leader")
+ }
+ 
++// CollaborationSquadActivityReasonMaxBytes bounds a squad activity reason's
++// decoded text.
++const CollaborationSquadActivityReasonMaxBytes = 64 << 10
++
+ // Existing squad activity is business evidence, independent of supervisor proof.
+ // action/no_action finish this turn successfully; failed records failure. The
+ // final leader turn decides the group, while member failure only wakes it.
+ func (s *CollaborationService) RuntimeSquadActivity(ctx context.Context, runID pgtype.UUID, token, eventID, outcome, reason string) error {
+-	if len(eventID) == 0 || len(eventID) > 128 || len(reason) > 64<<10 || (outcome != "action" && outcome != "no_action" && outcome != "failed") {
++	if len(eventID) == 0 || len(eventID) > 128 || len(reason) > CollaborationSquadActivityReasonMaxBytes || (outcome != "action" && outcome != "no_action" && outcome != "failed") {
+ 		return collaborationError(http.StatusBadRequest, "invalid_squad_activity")
+ 	}
+ 	_, err := collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (bool, error) {
+diff --git a/server/internal/service/collaboration_switch.go b/server/internal/service/collaboration_switch.go
+index 08a0cb63e..73a2fbb6b 100644
+--- a/server/internal/service/collaboration_switch.go
++++ b/server/internal/service/collaboration_switch.go
+@@ -398,7 +398,10 @@ func (s *CollaborationService) CommitTargetSwitch(ctx context.Context, p Collabo
+ 		if err = t.q.RevokeCollaborationTargetConsents(ctx, db.RevokeCollaborationTargetConsentsParams{TargetID: target.ID, Reason: "configuration_switched"}); err != nil {
+ 			return CollaborationQueueReceipt{}, err
+ 		}
+-		target, err = t.q.ReconfigureCollaborationTarget(ctx, db.ReconfigureCollaborationTargetParams{TargetID: target.ID, SessionID: t.session.ID, Roster: proposal.Roster, ConfigurationFingerprint: proposal.ConfigurationFingerprint})
++		// The proposal fingerprint equals this snapshot, so its boundary belongs to
++		// the committed configuration and later in-boundary edits are re-consentable.
++		target, err = t.q.ReconfigureCollaborationTarget(ctx, db.ReconfigureCollaborationTargetParams{TargetID: target.ID, SessionID: t.session.ID, Roster: proposal.Roster,
++			ConfigurationFingerprint: proposal.ConfigurationFingerprint, ConfigurationBoundaryFingerprint: configuration.Boundary})
+ 		if err != nil {
+ 			return CollaborationQueueReceipt{}, err
+ 		}
+diff --git a/server/internal/service/collaboration_targets.go b/server/internal/service/collaboration_targets.go
+index 3d0538708..09649de52 100644
+--- a/server/internal/service/collaboration_targets.go
++++ b/server/internal/service/collaboration_targets.go
+@@ -125,7 +125,8 @@ func (t *collaborationQueueTx) registerTarget(ctx context.Context, p Collaborati
+ 		return CollaborationQueueReceipt{}, err
+ 	}
+ 	target, err := t.q.CreateConsentedCollaborationTarget(ctx, db.CreateConsentedCollaborationTargetParams{SessionID: t.session.ID,
+-		Kind: string(p.Kind), ResourceID: p.ResourceID, Roster: roster, ConfigurationFingerprint: pgtype.Text{String: configuration.Fingerprint, Valid: true}})
++		Kind: string(p.Kind), ResourceID: p.ResourceID, Roster: roster, ConfigurationFingerprint: pgtype.Text{String: configuration.Fingerprint, Valid: true},
++		ConfigurationBoundaryFingerprint: pgtype.Text{String: configuration.Boundary, Valid: true}})
+ 	if err != nil {
+ 		return CollaborationQueueReceipt{}, err
+ 	}
+diff --git a/server/migrations/745_collaboration_owner_reconsent.down.sql b/server/migrations/745_collaboration_owner_reconsent.down.sql
+new file mode 100644
+index 000000000..c06a516ab
+--- /dev/null
++++ b/server/migrations/745_collaboration_owner_reconsent.down.sql
+@@ -0,0 +1,40 @@
++BEGIN;
++
++-- Restores the migration 704 epoch writer before dropping the boundary columns.
++-- Targets lose owner re-consent recovery and return to Switch-only.
++CREATE OR REPLACE FUNCTION collaboration_advance_resource_config() RETURNS trigger LANGUAGE plpgsql AS $$
++DECLARE changed boolean;
++BEGIN
++    IF NEW.collaboration_config_epoch IS DISTINCT FROM OLD.collaboration_config_epoch
++       AND NEW.collaboration_config_epoch <> OLD.collaboration_config_epoch + 1 THEN
++        RAISE EXCEPTION 'invalid collaboration resource epoch advance' USING ERRCODE = '23514';
++    END IF;
++    IF TG_TABLE_NAME = 'agent' THEN
++        changed := ROW(NEW.workspace_id, NEW.owner_id, NEW.runtime_id, NEW.kind, NEW.archived_at,
++            NEW.permission_mode, NEW.runtime_mode, NEW.runtime_config, NEW.instructions, NEW.custom_env,
++            NEW.custom_args, NEW.mcp_config, NEW.model, NEW.thinking_level, NEW.service_tier,
++            NEW.composio_toolkit_allowlist, NEW.disabled_runtime_skills, NEW.autonomy_level)
++            IS DISTINCT FROM
++            ROW(OLD.workspace_id, OLD.owner_id, OLD.runtime_id, OLD.kind, OLD.archived_at,
++            OLD.permission_mode, OLD.runtime_mode, OLD.runtime_config, OLD.instructions, OLD.custom_env,
++            OLD.custom_args, OLD.mcp_config, OLD.model, OLD.thinking_level, OLD.service_tier,
++            OLD.composio_toolkit_allowlist, OLD.disabled_runtime_skills, OLD.autonomy_level);
++    ELSIF TG_TABLE_NAME = 'agent_runtime' THEN
++        changed := ROW(NEW.workspace_id, NEW.owner_id, NEW.daemon_id, NEW.provider, NEW.runtime_mode, NEW.profile_id, NEW.visibility)
++            IS DISTINCT FROM ROW(OLD.workspace_id, OLD.owner_id, OLD.daemon_id, OLD.provider, OLD.runtime_mode, OLD.profile_id, OLD.visibility);
++    ELSIF TG_TABLE_NAME = 'squad' THEN
++        changed := ROW(NEW.workspace_id, NEW.leader_id, NEW.archived_at, NEW.instructions)
++            IS DISTINCT FROM ROW(OLD.workspace_id, OLD.leader_id, OLD.archived_at, OLD.instructions);
++    ELSE
++        RAISE EXCEPTION 'unsupported collaboration resource' USING ERRCODE = '23514';
++    END IF;
++    NEW.collaboration_config_epoch := OLD.collaboration_config_epoch +
++        CASE WHEN changed OR NEW.collaboration_config_epoch <> OLD.collaboration_config_epoch THEN 1 ELSE 0 END;
++    RETURN NEW;
++END;
++$$;
++
++ALTER TABLE collaboration_target DROP COLUMN IF EXISTS configuration_boundary_fingerprint;
++ALTER TABLE agent DROP COLUMN IF EXISTS collaboration_boundary_epoch;
++
++COMMIT;
+diff --git a/server/migrations/745_collaboration_owner_reconsent.up.sql b/server/migrations/745_collaboration_owner_reconsent.up.sql
+new file mode 100644
+index 000000000..7e2f3b38e
+--- /dev/null
++++ b/server/migrations/745_collaboration_owner_reconsent.up.sql
+@@ -0,0 +1,61 @@
++BEGIN;
++
++-- The boundary epoch counts agent changes that may widen execution mode or
++-- managed tool permissions. Instructions, model and thinking level advance only
++-- the configuration epoch, so the resource owner may re-confirm them directly.
++-- NULL counts as zero; only this trigger advances it.
++ALTER TABLE agent ADD COLUMN IF NOT EXISTS collaboration_boundary_epoch bigint
++    CHECK (collaboration_boundary_epoch IS NULL OR collaboration_boundary_epoch > 0);
++
++-- The digest of the target configuration with each agent's boundary epoch in
++-- place of its configuration epoch. NULL keeps a target Switch-only, including
++-- every target registered before this column existed.
++ALTER TABLE collaboration_target ADD COLUMN IF NOT EXISTS configuration_boundary_fingerprint text
++    CHECK (configuration_boundary_fingerprint IS NULL OR configuration_boundary_fingerprint ~ '^[0-9a-f]{64}$');
++
++-- Same contract as migration 704, plus the agent boundary epoch. A child writer
++-- that requests one explicit configuration advance (invocation targets, skill
++-- bindings, skill content, plugin releases) also widens the boundary, because
++-- those writers cannot say which part of the agent's tools changed.
++CREATE OR REPLACE FUNCTION collaboration_advance_resource_config() RETURNS trigger LANGUAGE plpgsql AS $$
++DECLARE changed boolean; widened boolean := false; requested boolean;
++BEGIN
++    IF NEW.collaboration_config_epoch IS DISTINCT FROM OLD.collaboration_config_epoch
++       AND NEW.collaboration_config_epoch <> OLD.collaboration_config_epoch + 1 THEN
++        RAISE EXCEPTION 'invalid collaboration resource epoch advance' USING ERRCODE = '23514';
++    END IF;
++    requested := NEW.collaboration_config_epoch <> OLD.collaboration_config_epoch;
++    IF TG_TABLE_NAME = 'agent' THEN
++        IF NEW.collaboration_boundary_epoch IS DISTINCT FROM OLD.collaboration_boundary_epoch THEN
++            RAISE EXCEPTION 'invalid collaboration boundary epoch advance' USING ERRCODE = '23514';
++        END IF;
++        widened := ROW(NEW.workspace_id, NEW.owner_id, NEW.runtime_id, NEW.kind, NEW.archived_at,
++            NEW.permission_mode, NEW.runtime_mode, NEW.runtime_config, NEW.custom_env,
++            NEW.custom_args, NEW.mcp_config, NEW.service_tier,
++            NEW.composio_toolkit_allowlist, NEW.disabled_runtime_skills, NEW.autonomy_level)
++            IS DISTINCT FROM
++            ROW(OLD.workspace_id, OLD.owner_id, OLD.runtime_id, OLD.kind, OLD.archived_at,
++            OLD.permission_mode, OLD.runtime_mode, OLD.runtime_config, OLD.custom_env,
++            OLD.custom_args, OLD.mcp_config, OLD.service_tier,
++            OLD.composio_toolkit_allowlist, OLD.disabled_runtime_skills, OLD.autonomy_level);
++        changed := widened OR ROW(NEW.instructions, NEW.model, NEW.thinking_level)
++            IS DISTINCT FROM ROW(OLD.instructions, OLD.model, OLD.thinking_level);
++        IF widened OR requested THEN
++            NEW.collaboration_boundary_epoch := COALESCE(OLD.collaboration_boundary_epoch, 0) + 1;
++        END IF;
++    ELSIF TG_TABLE_NAME = 'agent_runtime' THEN
++        changed := ROW(NEW.workspace_id, NEW.owner_id, NEW.daemon_id, NEW.provider, NEW.runtime_mode, NEW.profile_id, NEW.visibility)
++            IS DISTINCT FROM ROW(OLD.workspace_id, OLD.owner_id, OLD.daemon_id, OLD.provider, OLD.runtime_mode, OLD.profile_id, OLD.visibility);
++    ELSIF TG_TABLE_NAME = 'squad' THEN
++        changed := ROW(NEW.workspace_id, NEW.leader_id, NEW.archived_at, NEW.instructions)
++            IS DISTINCT FROM ROW(OLD.workspace_id, OLD.leader_id, OLD.archived_at, OLD.instructions);
++    ELSE
++        RAISE EXCEPTION 'unsupported collaboration resource' USING ERRCODE = '23514';
++    END IF;
++    NEW.collaboration_config_epoch := OLD.collaboration_config_epoch +
++        CASE WHEN changed OR requested THEN 1 ELSE 0 END;
++    RETURN NEW;
++END;
++$$;
++
++COMMIT;
+diff --git a/server/pkg/db/generated/agent.sql.go b/server/pkg/db/generated/agent.sql.go
+index 2c7a95390..15ccd6dfa 100755
+--- a/server/pkg/db/generated/agent.sql.go
++++ b/server/pkg/db/generated/agent.sql.go
+@@ -119,7 +119,7 @@ func (q *Queries) AcknowledgeExhaustedDelegatedFailureRecovery(ctx context.Conte
+ const archiveAgent = `-- name: ArchiveAgent :one
+ UPDATE agent SET archived_at = now(), archived_by = $2, updated_at = now()
+ WHERE id = $1
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type ArchiveAgentParams struct {
+@@ -165,6 +165,7 @@ func (q *Queries) ArchiveAgent(ctx context.Context, arg ArchiveAgentParams) (Age
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -173,7 +174,7 @@ const archiveAgentsByIDs = `-- name: ArchiveAgentsByIDs :many
+ UPDATE agent
+ SET archived_at = now(), archived_by = $1, updated_at = now()
+ WHERE id = ANY($2::uuid[]) AND archived_at IS NULL
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type ArchiveAgentsByIDsParams struct {
+@@ -233,6 +234,7 @@ func (q *Queries) ArchiveAgentsByIDs(ctx context.Context, arg ArchiveAgentsByIDs
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -249,7 +251,7 @@ UPDATE agent
+ SET archived_at = now(), archived_by = $1, updated_at = now()
+ WHERE runtime_id = ANY($2::uuid[]) AND archived_at IS NULL
+   AND (system_key IS NULL OR system_key = '')
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type ArchiveAgentsByRuntimeParams struct {
+@@ -312,6 +314,7 @@ func (q *Queries) ArchiveAgentsByRuntime(ctx context.Context, arg ArchiveAgentsB
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -1994,7 +1997,7 @@ func (q *Queries) ClaimChatFinalizeDeferred(ctx context.Context, id pgtype.UUID)
+ const clearAgentComposioToolkitAllowlist = `-- name: ClearAgentComposioToolkitAllowlist :one
+ UPDATE agent SET composio_toolkit_allowlist = NULL, updated_at = now()
+ WHERE id = $1
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ // Explicit NULL-clear for composio_toolkit_allowlist. The COALESCE-based
+@@ -2041,6 +2044,7 @@ func (q *Queries) ClearAgentComposioToolkitAllowlist(ctx context.Context, id pgt
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -2048,7 +2052,7 @@ func (q *Queries) ClearAgentComposioToolkitAllowlist(ctx context.Context, id pgt
+ const clearAgentMcpConfig = `-- name: ClearAgentMcpConfig :one
+ UPDATE agent SET mcp_config = NULL, updated_at = now()
+ WHERE id = $1
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ func (q *Queries) ClearAgentMcpConfig(ctx context.Context, id pgtype.UUID) (Agent, error) {
+@@ -2089,6 +2093,7 @@ func (q *Queries) ClearAgentMcpConfig(ctx context.Context, id pgtype.UUID) (Agen
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -2096,7 +2101,7 @@ func (q *Queries) ClearAgentMcpConfig(ctx context.Context, id pgtype.UUID) (Agen
+ const clearAgentServiceTier = `-- name: ClearAgentServiceTier :one
+ UPDATE agent SET service_tier = NULL, updated_at = now()
+ WHERE id = $1
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ // Explicit NULL-clear for service_tier. COALESCE-based UpdateAgent cannot
+@@ -2139,6 +2144,7 @@ func (q *Queries) ClearAgentServiceTier(ctx context.Context, id pgtype.UUID) (Ag
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -2146,7 +2152,7 @@ func (q *Queries) ClearAgentServiceTier(ctx context.Context, id pgtype.UUID) (Ag
+ const clearAgentThinkingLevel = `-- name: ClearAgentThinkingLevel :one
+ UPDATE agent SET thinking_level = NULL, updated_at = now()
+ WHERE id = $1
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ // Explicit NULL-clear for thinking_level. COALESCE-based UpdateAgent cannot
+@@ -2190,6 +2196,7 @@ func (q *Queries) ClearAgentThinkingLevel(ctx context.Context, id pgtype.UUID) (
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -2371,7 +2378,7 @@ INSERT INTO agent (
+     COALESCE($23, ''),
+     COALESCE($24, '')
+ )
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type CreateAgentParams struct {
+@@ -2464,6 +2471,7 @@ func (q *Queries) CreateAgent(ctx context.Context, arg CreateAgentParams) (Agent
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -2478,7 +2486,7 @@ INSERT INTO agent (
+     'private', 'private', 1, $5, $6,
+     '{}'::jsonb, '[]'::jsonb, $7, 'system', $8
+ )
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type CreateAgentBuilderParams struct {
+@@ -2543,6 +2551,7 @@ func (q *Queries) CreateAgentBuilder(ctx context.Context, arg CreateAgentBuilder
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -3526,7 +3535,7 @@ INSERT INTO agent (
+     $6, $7, $8, $9, $10,
+     $11, '', '{}'::jsonb, '[]'::jsonb, 'user', $12
+ )
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type CreateSystemUserAgentParams struct {
+@@ -3607,6 +3616,7 @@ func (q *Queries) CreateSystemUserAgent(ctx context.Context, arg CreateSystemUse
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -4384,7 +4394,7 @@ func (q *Queries) FailStaleTasks(ctx context.Context, arg FailStaleTasksParams)
+ }
+ 
+ const getAgent = `-- name: GetAgent :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE id = $1
+ `
+ 
+@@ -4426,12 +4436,13 @@ func (q *Queries) GetAgent(ctx context.Context, id pgtype.UUID) (Agent, error) {
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+ 
+ const getAgentBySystemKey = `-- name: GetAgentBySystemKey :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE workspace_id = $1 AND system_key = $2 AND archived_at IS NULL
+ ORDER BY created_at ASC, id ASC
+ LIMIT 1
+@@ -4483,12 +4494,13 @@ func (q *Queries) GetAgentBySystemKey(ctx context.Context, arg GetAgentBySystemK
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+ 
+ const getAgentByWorkspaceAndTemplateKey = `-- name: GetAgentByWorkspaceAndTemplateKey :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE workspace_id = $1
+   AND template_key = $2
+   AND kind = 'user'
+@@ -4546,12 +4558,13 @@ func (q *Queries) GetAgentByWorkspaceAndTemplateKey(ctx context.Context, arg Get
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+ 
+ const getAgentForClaimUpdate = `-- name: GetAgentForClaimUpdate :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE id = $1
+ FOR UPDATE
+ `
+@@ -4594,12 +4607,13 @@ func (q *Queries) GetAgentForClaimUpdate(ctx context.Context, id pgtype.UUID) (A
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+ 
+ const getAgentForUpdate = `-- name: GetAgentForUpdate :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE id = $1
+ FOR UPDATE
+ `
+@@ -4644,12 +4658,13 @@ func (q *Queries) GetAgentForUpdate(ctx context.Context, id pgtype.UUID) (Agent,
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+ 
+ const getAgentInWorkspace = `-- name: GetAgentInWorkspace :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE id = $1 AND workspace_id = $2 AND kind = 'user'
+ `
+ 
+@@ -4696,6 +4711,7 @@ func (q *Queries) GetAgentInWorkspace(ctx context.Context, arg GetAgentInWorkspa
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -5564,7 +5580,7 @@ func (q *Queries) LinkTaskToIssue(ctx context.Context, arg LinkTaskToIssueParams
+ }
+ 
+ const listActiveAgentsByRuntime = `-- name: ListActiveAgentsByRuntime :many
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE runtime_id = $1 AND archived_at IS NULL AND kind = 'user'
+ ORDER BY name ASC
+ `
+@@ -5619,6 +5635,7 @@ func (q *Queries) ListActiveAgentsByRuntime(ctx context.Context, runtimeID pgtyp
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -5631,7 +5648,7 @@ func (q *Queries) ListActiveAgentsByRuntime(ctx context.Context, runtimeID pgtyp
+ }
+ 
+ const listActiveAgentsByRuntimeForUpdate = `-- name: ListActiveAgentsByRuntimeForUpdate :many
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE runtime_id = $1 AND archived_at IS NULL AND kind = 'user'
+ ORDER BY name ASC
+ FOR UPDATE
+@@ -5688,6 +5705,7 @@ func (q *Queries) ListActiveAgentsByRuntimeForUpdate(ctx context.Context, runtim
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -5963,7 +5981,7 @@ func (q *Queries) ListAgentTasks(ctx context.Context, agentID pgtype.UUID) ([]Ag
+ }
+ 
+ const listAgents = `-- name: ListAgents :many
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE workspace_id = $1 AND archived_at IS NULL AND kind = 'user'
+ ORDER BY created_at ASC
+ `
+@@ -6012,6 +6030,7 @@ func (q *Queries) ListAgents(ctx context.Context, workspaceID pgtype.UUID) ([]Ag
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -6024,7 +6043,7 @@ func (q *Queries) ListAgents(ctx context.Context, workspaceID pgtype.UUID) ([]Ag
+ }
+ 
+ const listAllAgents = `-- name: ListAllAgents :many
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE workspace_id = $1 AND kind = 'user'
+ ORDER BY created_at ASC
+ `
+@@ -6073,6 +6092,7 @@ func (q *Queries) ListAllAgents(ctx context.Context, workspaceID pgtype.UUID) ([
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -6085,7 +6105,7 @@ func (q *Queries) ListAllAgents(ctx context.Context, workspaceID pgtype.UUID) ([
+ }
+ 
+ const listAllAgentsAnyKind = `-- name: ListAllAgentsAnyKind :many
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE workspace_id = $1
+ ORDER BY created_at ASC
+ `
+@@ -6144,6 +6164,7 @@ func (q *Queries) ListAllAgentsAnyKind(ctx context.Context, workspaceID pgtype.U
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -6779,7 +6800,7 @@ func (q *Queries) ListTasksByIssue(ctx context.Context, issueID pgtype.UUID) ([]
+ }
+ 
+ const listUserAgentsByRuntimeForUpdate = `-- name: ListUserAgentsByRuntimeForUpdate :many
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE runtime_id = $1 AND kind = 'user'
+ ORDER BY id
+ FOR UPDATE
+@@ -6834,6 +6855,7 @@ func (q *Queries) ListUserAgentsByRuntimeForUpdate(ctx context.Context, runtimeI
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -7154,7 +7176,7 @@ func (q *Queries) ListWorkspaceWorkingAgents(ctx context.Context, arg ListWorksp
+ }
+ 
+ const lockAgentForAutopilotAssignment = `-- name: LockAgentForAutopilotAssignment :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE id = $1 AND workspace_id = $2 AND kind = 'user'
+ FOR SHARE
+ `
+@@ -7211,12 +7233,13 @@ func (q *Queries) LockAgentForAutopilotAssignment(ctx context.Context, arg LockA
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+ 
+ const lockAgentForAutopilotDispatch = `-- name: LockAgentForAutopilotDispatch :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent
+ WHERE id = $1 AND workspace_id = $2
+ FOR SHARE NOWAIT
+ `
+@@ -7264,6 +7287,7 @@ func (q *Queries) LockAgentForAutopilotDispatch(ctx context.Context, arg LockAge
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -8152,7 +8176,7 @@ SET runtime_id = $1,
+     model = $3,
+     updated_at = now()
+ WHERE id = $4 AND kind = 'system' AND system_key LIKE 'agent_builder:%'
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type RebindAgentBuilderRuntimeParams struct {
+@@ -8221,6 +8245,7 @@ func (q *Queries) RebindAgentBuilderRuntime(ctx context.Context, arg RebindAgent
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -8668,7 +8693,7 @@ SET status = desired.status,
+     updated_at = now()
+ FROM desired
+ WHERE a.id = $1 AND a.status IS DISTINCT FROM desired.status
+-RETURNING a.id, a.workspace_id, a.name, a.avatar_url, a.runtime_mode, a.runtime_config, a.visibility, a.status, a.max_concurrent_tasks, a.owner_id, a.created_at, a.updated_at, a.description, a.runtime_id, a.instructions, a.archived_at, a.archived_by, a.custom_env, a.custom_args, a.mcp_config, a.model, a.thinking_level, a.composio_toolkit_allowlist, a.permission_mode, a.kind, a.system_key, a.disabled_runtime_skills, a.service_tier, a.conversation_starters, a.template_key, a.template_version, a.autonomy_level, a.category, a.collaboration_config_epoch
++RETURNING a.id, a.workspace_id, a.name, a.avatar_url, a.runtime_mode, a.runtime_config, a.visibility, a.status, a.max_concurrent_tasks, a.owner_id, a.created_at, a.updated_at, a.description, a.runtime_id, a.instructions, a.archived_at, a.archived_by, a.custom_env, a.custom_args, a.mcp_config, a.model, a.thinking_level, a.composio_toolkit_allowlist, a.permission_mode, a.kind, a.system_key, a.disabled_runtime_skills, a.service_tier, a.conversation_starters, a.template_key, a.template_version, a.autonomy_level, a.category, a.collaboration_config_epoch, a.collaboration_boundary_epoch
+ `
+ 
+ // Persisted agent.status has no queued/resource-wait bucket. Keep dispatched
+@@ -8714,6 +8739,7 @@ func (q *Queries) RefreshAgentStatusFromTasks(ctx context.Context, id pgtype.UUI
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -8894,7 +8920,7 @@ func (q *Queries) RequeueAgentTaskAfterClaimFailure(ctx context.Context, arg Req
+ const restoreAgent = `-- name: RestoreAgent :one
+ UPDATE agent SET archived_at = NULL, archived_by = NULL, updated_at = now()
+ WHERE id = $1
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ func (q *Queries) RestoreAgent(ctx context.Context, id pgtype.UUID) (Agent, error) {
+@@ -8935,6 +8961,7 @@ func (q *Queries) RestoreAgent(ctx context.Context, id pgtype.UUID) (Agent, erro
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -9214,7 +9241,7 @@ WHERE id = $1
+   AND workspace_id = $23::uuid
+   AND ($24::text IS NULL OR instructions = $24)
+   AND ($25::timestamptz IS NULL OR updated_at = $25)
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type UpdateAgentParams struct {
+@@ -9315,6 +9342,7 @@ func (q *Queries) UpdateAgent(ctx context.Context, arg UpdateAgentParams) (Agent
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -9323,7 +9351,7 @@ const updateAgentCustomEnv = `-- name: UpdateAgentCustomEnv :one
+ UPDATE agent
+ SET custom_env = $2, updated_at = now()
+ WHERE id = $1
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type UpdateAgentCustomEnvParams struct {
+@@ -9374,6 +9402,7 @@ func (q *Queries) UpdateAgentCustomEnv(ctx context.Context, arg UpdateAgentCusto
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -9382,7 +9411,7 @@ const updateAgentDisabledRuntimeSkills = `-- name: UpdateAgentDisabledRuntimeSki
+ UPDATE agent
+ SET disabled_runtime_skills = $2, updated_at = now()
+ WHERE id = $1
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type UpdateAgentDisabledRuntimeSkillsParams struct {
+@@ -9428,6 +9457,7 @@ func (q *Queries) UpdateAgentDisabledRuntimeSkills(ctx context.Context, arg Upda
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+@@ -9435,7 +9465,7 @@ func (q *Queries) UpdateAgentDisabledRuntimeSkills(ctx context.Context, arg Upda
+ const updateAgentStatus = `-- name: UpdateAgentStatus :one
+ UPDATE agent SET status = $2, updated_at = now()
+ WHERE id = $1
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ type UpdateAgentStatusParams struct {
+@@ -9481,6 +9511,7 @@ func (q *Queries) UpdateAgentStatus(ctx context.Context, arg UpdateAgentStatusPa
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+diff --git a/server/pkg/db/generated/collaboration_authority.sql.go b/server/pkg/db/generated/collaboration_authority.sql.go
+index ee1def846..1e56a3a1a 100644
+--- a/server/pkg/db/generated/collaboration_authority.sql.go
++++ b/server/pkg/db/generated/collaboration_authority.sql.go
+@@ -89,16 +89,17 @@ func (q *Queries) CreateCollaborationResourceConsent(ctx context.Context, arg Cr
+ }
+ 
+ const createConsentedCollaborationTarget = `-- name: CreateConsentedCollaborationTarget :one
+-INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint)
+-VALUES ($1, $2, $3, $4, $5) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
++INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint, configuration_boundary_fingerprint)
++VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
+ `
+ 
+ type CreateConsentedCollaborationTargetParams struct {
+-	SessionID                pgtype.UUID `json:"session_id"`
+-	Kind                     string      `json:"kind"`
+-	ResourceID               pgtype.UUID `json:"resource_id"`
+-	Roster                   []byte      `json:"roster"`
+-	ConfigurationFingerprint pgtype.Text `json:"configuration_fingerprint"`
++	SessionID                        pgtype.UUID `json:"session_id"`
++	Kind                             string      `json:"kind"`
++	ResourceID                       pgtype.UUID `json:"resource_id"`
++	Roster                           []byte      `json:"roster"`
++	ConfigurationFingerprint         pgtype.Text `json:"configuration_fingerprint"`
++	ConfigurationBoundaryFingerprint pgtype.Text `json:"configuration_boundary_fingerprint"`
+ }
+ 
+ func (q *Queries) CreateConsentedCollaborationTarget(ctx context.Context, arg CreateConsentedCollaborationTargetParams) (CollaborationTarget, error) {
+@@ -108,6 +109,7 @@ func (q *Queries) CreateConsentedCollaborationTarget(ctx context.Context, arg Cr
+ 		arg.ResourceID,
+ 		arg.Roster,
+ 		arg.ConfigurationFingerprint,
++		arg.ConfigurationBoundaryFingerprint,
+ 	)
+ 	var i CollaborationTarget
+ 	err := row.Scan(
+@@ -129,6 +131,7 @@ func (q *Queries) CreateConsentedCollaborationTarget(ctx context.Context, arg Cr
+ 		&i.ChannelID,
+ 		&i.HoldReason,
+ 		&i.HoldVersion,
++		&i.ConfigurationBoundaryFingerprint,
+ 	)
+ 	return i, err
+ }
+@@ -252,25 +255,82 @@ func (q *Queries) LockCollaborationSessionCommands(ctx context.Context, sessionI
+ const reconfigureCollaborationTarget = `-- name: ReconfigureCollaborationTarget :one
+ UPDATE collaboration_target SET roster = $1::jsonb,
+     configuration_fingerprint = $2::text,
++    configuration_boundary_fingerprint = $3::text,
+     config_version = config_version + 1, target_epoch = target_epoch + 1,
+     hold_reason = 'switch_hold', hold_version = hold_version + 1, revoked_at = NULL
+-WHERE id = $3::uuid AND session_id = $4::uuid
+-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
++WHERE id = $4::uuid AND session_id = $5::uuid
++RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
+ `
+ 
+ type ReconfigureCollaborationTargetParams struct {
+-	Roster                   []byte      `json:"roster"`
+-	ConfigurationFingerprint string      `json:"configuration_fingerprint"`
+-	TargetID                 pgtype.UUID `json:"target_id"`
+-	SessionID                pgtype.UUID `json:"session_id"`
++	Roster                           []byte      `json:"roster"`
++	ConfigurationFingerprint         string      `json:"configuration_fingerprint"`
++	ConfigurationBoundaryFingerprint string      `json:"configuration_boundary_fingerprint"`
++	TargetID                         pgtype.UUID `json:"target_id"`
++	SessionID                        pgtype.UUID `json:"session_id"`
+ }
+ 
+ func (q *Queries) ReconfigureCollaborationTarget(ctx context.Context, arg ReconfigureCollaborationTargetParams) (CollaborationTarget, error) {
+ 	row := q.db.QueryRow(ctx, reconfigureCollaborationTarget,
+ 		arg.Roster,
++		arg.ConfigurationFingerprint,
++		arg.ConfigurationBoundaryFingerprint,
++		arg.TargetID,
++		arg.SessionID,
++	)
++	var i CollaborationTarget
++	err := row.Scan(
++		&i.ID,
++		&i.SessionID,
++		&i.Kind,
++		&i.ResourceID,
++		&i.TargetEpoch,
++		&i.ConfigVersion,
++		&i.Roster,
++		&i.QueueState,
++		&i.ControlVersion,
++		&i.GroupGeneration,
++		&i.ActiveGroupID,
++		&i.PauseReason,
++		&i.RevokedAt,
++		&i.CreatedAt,
++		&i.ConfigurationFingerprint,
++		&i.ChannelID,
++		&i.HoldReason,
++		&i.HoldVersion,
++		&i.ConfigurationBoundaryFingerprint,
++	)
++	return i, err
++}
++
++const refreshCollaborationTargetConfiguration = `-- name: RefreshCollaborationTargetConfiguration :one
++UPDATE collaboration_target SET configuration_fingerprint = $1::text,
++    config_version = config_version + 1
++WHERE id = $2::uuid AND session_id = $3::uuid
++    AND config_version = $4::bigint
++    AND configuration_boundary_fingerprint = $5::text
++    AND revoked_at IS NULL
++RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
++`
++
++type RefreshCollaborationTargetConfigurationParams struct {
++	ConfigurationFingerprint         string      `json:"configuration_fingerprint"`
++	TargetID                         pgtype.UUID `json:"target_id"`
++	SessionID                        pgtype.UUID `json:"session_id"`
++	ExpectedConfigVersion            int64       `json:"expected_config_version"`
++	ConfigurationBoundaryFingerprint string      `json:"configuration_boundary_fingerprint"`
++}
++
++// Owner re-consent of a configuration inside the recorded boundary. The roster,
++// target epoch and boundary stay; the new configuration version separates the
++// old configuration's grants, groups and provider sessions from the new one.
++func (q *Queries) RefreshCollaborationTargetConfiguration(ctx context.Context, arg RefreshCollaborationTargetConfigurationParams) (CollaborationTarget, error) {
++	row := q.db.QueryRow(ctx, refreshCollaborationTargetConfiguration,
+ 		arg.ConfigurationFingerprint,
+ 		arg.TargetID,
+ 		arg.SessionID,
++		arg.ExpectedConfigVersion,
++		arg.ConfigurationBoundaryFingerprint,
+ 	)
+ 	var i CollaborationTarget
+ 	err := row.Scan(
+@@ -292,6 +352,7 @@ func (q *Queries) ReconfigureCollaborationTarget(ctx context.Context, arg Reconf
+ 		&i.ChannelID,
+ 		&i.HoldReason,
+ 		&i.HoldVersion,
++		&i.ConfigurationBoundaryFingerprint,
+ 	)
+ 	return i, err
+ }
+@@ -312,7 +373,7 @@ func (q *Queries) RevokeCollaborationTargetConsents(ctx context.Context, arg Rev
+ }
+ 
+ const tryLockCollaborationAuthorityAgents = `-- name: TryLockCollaborationAuthorityAgents :many
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent WHERE id = ANY($1::uuid[]) ORDER BY id FOR SHARE NOWAIT
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent WHERE id = ANY($1::uuid[]) ORDER BY id FOR SHARE NOWAIT
+ `
+ 
+ func (q *Queries) TryLockCollaborationAuthorityAgents(ctx context.Context, ids []pgtype.UUID) ([]Agent, error) {
+@@ -359,6 +420,7 @@ func (q *Queries) TryLockCollaborationAuthorityAgents(ctx context.Context, ids [
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+diff --git a/server/pkg/db/generated/collaboration_batches.sql.go b/server/pkg/db/generated/collaboration_batches.sql.go
+index bdeb906a9..205bb9225 100644
+--- a/server/pkg/db/generated/collaboration_batches.sql.go
++++ b/server/pkg/db/generated/collaboration_batches.sql.go
+@@ -26,7 +26,7 @@ const bindCollaborationTargetChannel = `-- name: BindCollaborationTargetChannel
+ UPDATE collaboration_target t SET channel_id=ch.id,queue_state=ch.queue_state,pause_reason=ch.pause_reason,
+     control_version=ch.control_version,group_generation=ch.group_generation,active_group_id=ch.active_group_id
+ FROM collaboration_channel ch WHERE ch.id=$1::uuid AND ch.session_id=$2::uuid
+-    AND t.id=$3::uuid AND t.session_id=ch.session_id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
++    AND t.id=$3::uuid AND t.session_id=ch.session_id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version, t.configuration_boundary_fingerprint
+ `
+ 
+ type BindCollaborationTargetChannelParams struct {
+@@ -57,6 +57,7 @@ func (q *Queries) BindCollaborationTargetChannel(ctx context.Context, arg BindCo
+ 		&i.ChannelID,
+ 		&i.HoldReason,
+ 		&i.HoldVersion,
++		&i.ConfigurationBoundaryFingerprint,
+ 	)
+ 	return i, err
+ }
+@@ -629,7 +630,7 @@ func (q *Queries) LockCollaborationWaitingBatches(ctx context.Context, channelID
+ const mirrorCollaborationChannelControl = `-- name: MirrorCollaborationChannelControl :many
+ UPDATE collaboration_target t SET queue_state=ch.queue_state,pause_reason=ch.pause_reason,
+     control_version=ch.control_version,group_generation=ch.group_generation,active_group_id=ch.active_group_id
+-FROM collaboration_channel ch WHERE ch.id=$1 AND t.channel_id=ch.id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version
++FROM collaboration_channel ch WHERE ch.id=$1 AND t.channel_id=ch.id RETURNING t.id, t.session_id, t.kind, t.resource_id, t.target_epoch, t.config_version, t.roster, t.queue_state, t.control_version, t.group_generation, t.active_group_id, t.pause_reason, t.revoked_at, t.created_at, t.configuration_fingerprint, t.channel_id, t.hold_reason, t.hold_version, t.configuration_boundary_fingerprint
+ `
+ 
+ func (q *Queries) MirrorCollaborationChannelControl(ctx context.Context, id pgtype.UUID) ([]CollaborationTarget, error) {
+@@ -660,6 +661,7 @@ func (q *Queries) MirrorCollaborationChannelControl(ctx context.Context, id pgty
+ 			&i.ChannelID,
+ 			&i.HoldReason,
+ 			&i.HoldVersion,
++			&i.ConfigurationBoundaryFingerprint,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+diff --git a/server/pkg/db/generated/collaboration_preparation.sql.go b/server/pkg/db/generated/collaboration_preparation.sql.go
+index fe4def277..32c65d25a 100644
+--- a/server/pkg/db/generated/collaboration_preparation.sql.go
++++ b/server/pkg/db/generated/collaboration_preparation.sql.go
+@@ -108,13 +108,22 @@ func (q *Queries) FreezeCollaborationPreparedRunPrompt(ctx context.Context, arg
+ 
+ const listCollaborationPreparationAttachments = `-- name: ListCollaborationPreparationAttachments :many
+ SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at FROM collaboration_attachment
+-WHERE issue_id = $1 AND delivered_at IS NOT NULL AND discarded_at IS NULL
+-ORDER BY id LIMIT 33
++WHERE issue_id = $1::uuid AND delivered_at IS NOT NULL AND discarded_at IS NULL
++ORDER BY (id = ANY($2::uuid[])) DESC, delivered_at DESC, id
++LIMIT $3::int
+ `
+ 
+-// One beyond the manifest bound distinguishes overflow from a complete list.
+-func (q *Queries) ListCollaborationPreparationAttachments(ctx context.Context, issueID pgtype.UUID) ([]CollaborationAttachment, error) {
+-	rows, err := q.db.Query(ctx, listCollaborationPreparationAttachments, issueID)
++type ListCollaborationPreparationAttachmentsParams struct {
++	IssueID       pgtype.UUID   `json:"issue_id"`
++	ReferencedIds []pgtype.UUID `json:"referenced_ids"`
++	RowLimit      int32         `json:"row_limit"`
++}
++
++// Files the prepared inputs reference come first, then the newest other
++// deliveries. Issue history therefore never displaces a referenced file, and
++// a referenced file absent from this list is no longer delivered.
++func (q *Queries) ListCollaborationPreparationAttachments(ctx context.Context, arg ListCollaborationPreparationAttachmentsParams) ([]CollaborationAttachment, error) {
++	rows, err := q.db.Query(ctx, listCollaborationPreparationAttachments, arg.IssueID, arg.ReferencedIds, arg.RowLimit)
+ 	if err != nil {
+ 		return nil, err
+ 	}
+diff --git a/server/pkg/db/generated/collaboration_resource_invalidation.sql.go b/server/pkg/db/generated/collaboration_resource_invalidation.sql.go
+index c5e694126..e24717297 100644
+--- a/server/pkg/db/generated/collaboration_resource_invalidation.sql.go
++++ b/server/pkg/db/generated/collaboration_resource_invalidation.sql.go
+@@ -441,7 +441,7 @@ func (q *Queries) TryLockCollaborationResourceRuns(ctx context.Context, sessionI
+ }
+ 
+ const tryLockCollaborationResourceTargets = `-- name: TryLockCollaborationResourceTargets :many
+-SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE NOWAIT
++SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE NOWAIT
+ `
+ 
+ func (q *Queries) TryLockCollaborationResourceTargets(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationTarget, error) {
+@@ -472,6 +472,7 @@ func (q *Queries) TryLockCollaborationResourceTargets(ctx context.Context, sessi
+ 			&i.ChannelID,
+ 			&i.HoldReason,
+ 			&i.HoldVersion,
++			&i.ConfigurationBoundaryFingerprint,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+diff --git a/server/pkg/db/generated/collaboration_runtime.sql.go b/server/pkg/db/generated/collaboration_runtime.sql.go
+index a9090ebaf..a1af91fa1 100644
+--- a/server/pkg/db/generated/collaboration_runtime.sql.go
++++ b/server/pkg/db/generated/collaboration_runtime.sql.go
+@@ -276,7 +276,7 @@ func (q *Queries) ClaimCollaborationRuntimeRun(ctx context.Context, arg ClaimCol
+ }
+ 
+ const clearCollaborationChannelTargetGroups = `-- name: ClearCollaborationChannelTargetGroups :many
+-UPDATE collaboration_target SET active_group_id=NULL WHERE channel_id=$1 AND active_group_id=$2 RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
++UPDATE collaboration_target SET active_group_id=NULL WHERE channel_id=$1 AND active_group_id=$2 RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
+ `
+ 
+ type ClearCollaborationChannelTargetGroupsParams struct {
+@@ -312,6 +312,7 @@ func (q *Queries) ClearCollaborationChannelTargetGroups(ctx context.Context, arg
+ 			&i.ChannelID,
+ 			&i.HoldReason,
+ 			&i.HoldVersion,
++			&i.ConfigurationBoundaryFingerprint,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+diff --git a/server/pkg/db/generated/collaboration_targets.sql.go b/server/pkg/db/generated/collaboration_targets.sql.go
+index ad117363f..63a004eea 100644
+--- a/server/pkg/db/generated/collaboration_targets.sql.go
++++ b/server/pkg/db/generated/collaboration_targets.sql.go
+@@ -52,7 +52,7 @@ func (q *Queries) CancelCollaborationGroupDelegations(ctx context.Context, arg C
+ const clearCollaborationActiveGroup = `-- name: ClearCollaborationActiveGroup :one
+ UPDATE collaboration_target SET active_group_id = NULL
+ WHERE id = $1::uuid AND active_group_id = $2::uuid
+-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
++RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
+ `
+ 
+ type ClearCollaborationActiveGroupParams struct {
+@@ -82,6 +82,7 @@ func (q *Queries) ClearCollaborationActiveGroup(ctx context.Context, arg ClearCo
+ 		&i.ChannelID,
+ 		&i.HoldReason,
+ 		&i.HoldVersion,
++		&i.ConfigurationBoundaryFingerprint,
+ 	)
+ 	return i, err
+ }
+@@ -108,7 +109,7 @@ func (q *Queries) CollaborationGrantOwnerCurrent(ctx context.Context, id pgtype.
+ 
+ const createCollaborationTarget = `-- name: CreateCollaborationTarget :one
+ INSERT INTO collaboration_target (session_id, kind, resource_id, roster)
+-VALUES ($1, $2, $3, $4) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
++VALUES ($1, $2, $3, $4) RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
+ `
+ 
+ type CreateCollaborationTargetParams struct {
+@@ -145,6 +146,7 @@ func (q *Queries) CreateCollaborationTarget(ctx context.Context, arg CreateColla
+ 		&i.ChannelID,
+ 		&i.HoldReason,
+ 		&i.HoldVersion,
++		&i.ConfigurationBoundaryFingerprint,
+ 	)
+ 	return i, err
+ }
+@@ -398,7 +400,7 @@ func (q *Queries) ListCollaborationRuns(ctx context.Context, sessionID pgtype.UU
+ }
+ 
+ const listCollaborationTargets = `-- name: ListCollaborationTargets :many
+-SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version FROM collaboration_target WHERE session_id = $1 ORDER BY id
++SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint FROM collaboration_target WHERE session_id = $1 ORDER BY id
+ `
+ 
+ func (q *Queries) ListCollaborationTargets(ctx context.Context, sessionID pgtype.UUID) ([]CollaborationTarget, error) {
+@@ -429,6 +431,7 @@ func (q *Queries) ListCollaborationTargets(ctx context.Context, sessionID pgtype
+ 			&i.ChannelID,
+ 			&i.HoldReason,
+ 			&i.HoldVersion,
++			&i.ConfigurationBoundaryFingerprint,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -595,7 +598,7 @@ func (q *Queries) LockCollaborationTargetGrants(ctx context.Context, targetID pg
+ }
+ 
+ const lockCollaborationTargets = `-- name: LockCollaborationTargets :many
+-SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE
++SELECT id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint FROM collaboration_target WHERE session_id = $1 ORDER BY id FOR UPDATE
+ `
+ 
+ // The permanent source/session/channel locks serialize target membership and
+@@ -628,6 +631,7 @@ func (q *Queries) LockCollaborationTargets(ctx context.Context, sessionID pgtype
+ 			&i.ChannelID,
+ 			&i.HoldReason,
+ 			&i.HoldVersion,
++			&i.ConfigurationBoundaryFingerprint,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+@@ -760,7 +764,7 @@ const pauseCollaborationTarget = `-- name: PauseCollaborationTarget :one
+ UPDATE collaboration_target SET queue_state = 'paused', pause_reason = $1::text,
+     control_version = control_version + 1
+ WHERE session_id = $2::uuid AND id = $3::uuid
+-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
++RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
+ `
+ 
+ type PauseCollaborationTargetParams struct {
+@@ -791,6 +795,7 @@ func (q *Queries) PauseCollaborationTarget(ctx context.Context, arg PauseCollabo
+ 		&i.ChannelID,
+ 		&i.HoldReason,
+ 		&i.HoldVersion,
++		&i.ConfigurationBoundaryFingerprint,
+ 	)
+ 	return i, err
+ }
+@@ -885,7 +890,7 @@ SET hold_reason = $1::text,
+         WHEN hold_reason IS DISTINCT FROM $1::text OR $2::boolean THEN 1
+         ELSE 0 END
+ WHERE session_id = $3::uuid AND id = $4::uuid
+-RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version
++RETURNING id, session_id, kind, resource_id, target_epoch, config_version, roster, queue_state, control_version, group_generation, active_group_id, pause_reason, revoked_at, created_at, configuration_fingerprint, channel_id, hold_reason, hold_version, configuration_boundary_fingerprint
+ `
+ 
+ type SetCollaborationTargetHoldParams struct {
+@@ -924,6 +929,7 @@ func (q *Queries) SetCollaborationTargetHold(ctx context.Context, arg SetCollabo
+ 		&i.ChannelID,
+ 		&i.HoldReason,
+ 		&i.HoldVersion,
++		&i.ConfigurationBoundaryFingerprint,
+ 	)
+ 	return i, err
+ }
+diff --git a/server/pkg/db/generated/lifecycle.sql.go b/server/pkg/db/generated/lifecycle.sql.go
+index 84be5d01c..1102c6c2f 100644
+--- a/server/pkg/db/generated/lifecycle.sql.go
++++ b/server/pkg/db/generated/lifecycle.sql.go
+@@ -23,7 +23,7 @@ func (q *Queries) LifecycleMetadataSize(ctx context.Context, metadata []byte) (i
+ }
+ 
+ const lockLifecycleAgent = `-- name: LockLifecycleAgent :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent WHERE id = $1 AND workspace_id = $2 FOR SHARE NOWAIT
+ `
+ 
+ type LockLifecycleAgentParams struct {
+@@ -69,6 +69,7 @@ func (q *Queries) LockLifecycleAgent(ctx context.Context, arg LockLifecycleAgent
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+diff --git a/server/pkg/db/generated/models.go b/server/pkg/db/generated/models.go
+index ad7302c61..3f1426ddc 100755
+--- a/server/pkg/db/generated/models.go
++++ b/server/pkg/db/generated/models.go
+@@ -156,8 +156,9 @@ type Agent struct {
+ 	TemplateVersion       int32       `json:"template_version"`
+ 	AutonomyLevel         string      `json:"autonomy_level"`
+ 	// User-defined directory category. Empty means uncategorized; independent of role-template provenance and autonomy.
+-	Category                 string `json:"category"`
+-	CollaborationConfigEpoch int64  `json:"collaboration_config_epoch"`
++	Category                   string      `json:"category"`
++	CollaborationConfigEpoch   int64       `json:"collaboration_config_epoch"`
++	CollaborationBoundaryEpoch pgtype.Int8 `json:"collaboration_boundary_epoch"`
+ }
+ 
+ type AgentApprovalRequest struct {
+@@ -1130,24 +1131,25 @@ type CollaborationSwitchProposal struct {
+ }
+ 
+ type CollaborationTarget struct {
+-	ID                       pgtype.UUID        `json:"id"`
+-	SessionID                pgtype.UUID        `json:"session_id"`
+-	Kind                     string             `json:"kind"`
+-	ResourceID               pgtype.UUID        `json:"resource_id"`
+-	TargetEpoch              int64              `json:"target_epoch"`
+-	ConfigVersion            int64              `json:"config_version"`
+-	Roster                   []byte             `json:"roster"`
+-	QueueState               string             `json:"queue_state"`
+-	ControlVersion           int64              `json:"control_version"`
+-	GroupGeneration          int64              `json:"group_generation"`
+-	ActiveGroupID            pgtype.UUID        `json:"active_group_id"`
+-	PauseReason              string             `json:"pause_reason"`
+-	RevokedAt                pgtype.Timestamptz `json:"revoked_at"`
+-	CreatedAt                pgtype.Timestamptz `json:"created_at"`
+-	ConfigurationFingerprint pgtype.Text        `json:"configuration_fingerprint"`
+-	ChannelID                pgtype.UUID        `json:"channel_id"`
+-	HoldReason               pgtype.Text        `json:"hold_reason"`
+-	HoldVersion              int64              `json:"hold_version"`
++	ID                               pgtype.UUID        `json:"id"`
++	SessionID                        pgtype.UUID        `json:"session_id"`
++	Kind                             string             `json:"kind"`
++	ResourceID                       pgtype.UUID        `json:"resource_id"`
++	TargetEpoch                      int64              `json:"target_epoch"`
++	ConfigVersion                    int64              `json:"config_version"`
++	Roster                           []byte             `json:"roster"`
++	QueueState                       string             `json:"queue_state"`
++	ControlVersion                   int64              `json:"control_version"`
++	GroupGeneration                  int64              `json:"group_generation"`
++	ActiveGroupID                    pgtype.UUID        `json:"active_group_id"`
++	PauseReason                      string             `json:"pause_reason"`
++	RevokedAt                        pgtype.Timestamptz `json:"revoked_at"`
++	CreatedAt                        pgtype.Timestamptz `json:"created_at"`
++	ConfigurationFingerprint         pgtype.Text        `json:"configuration_fingerprint"`
++	ChannelID                        pgtype.UUID        `json:"channel_id"`
++	HoldReason                       pgtype.Text        `json:"hold_reason"`
++	HoldVersion                      int64              `json:"hold_version"`
++	ConfigurationBoundaryFingerprint pgtype.Text        `json:"configuration_boundary_fingerprint"`
+ }
+ 
+ type CollaborationTermination struct {
+diff --git a/server/pkg/db/generated/project_update.sql.go b/server/pkg/db/generated/project_update.sql.go
+index 246f220ef..916da983f 100644
+--- a/server/pkg/db/generated/project_update.sql.go
++++ b/server/pkg/db/generated/project_update.sql.go
+@@ -515,7 +515,7 @@ func (q *Queries) ListProjectUpdates(ctx context.Context, arg ListProjectUpdates
+ }
+ 
+ const lockProjectUpdateEvidenceAgent = `-- name: LockProjectUpdateEvidenceAgent :one
+-SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch FROM agent WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT
++SELECT id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch FROM agent WHERE id=$1 AND workspace_id=$2 FOR SHARE NOWAIT
+ `
+ 
+ type LockProjectUpdateEvidenceAgentParams struct {
+@@ -561,6 +561,7 @@ func (q *Queries) LockProjectUpdateEvidenceAgent(ctx context.Context, arg LockPr
+ 		&i.AutonomyLevel,
+ 		&i.Category,
+ 		&i.CollaborationConfigEpoch,
++		&i.CollaborationBoundaryEpoch,
+ 	)
+ 	return i, err
+ }
+diff --git a/server/pkg/db/generated/runtime.sql.go b/server/pkg/db/generated/runtime.sql.go
+index aeaa8cb82..9db595060 100755
+--- a/server/pkg/db/generated/runtime.sql.go
++++ b/server/pkg/db/generated/runtime.sql.go
+@@ -1361,7 +1361,7 @@ const unbindUserAgentsFromRuntime = `-- name: UnbindUserAgentsFromRuntime :many
+ UPDATE agent
+ SET runtime_id = NULL, updated_at = now()
+ WHERE runtime_id = $1 AND kind = 'user'
+-RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch
++RETURNING id, workspace_id, name, avatar_url, runtime_mode, runtime_config, visibility, status, max_concurrent_tasks, owner_id, created_at, updated_at, description, runtime_id, instructions, archived_at, archived_by, custom_env, custom_args, mcp_config, model, thinking_level, composio_toolkit_allowlist, permission_mode, kind, system_key, disabled_runtime_skills, service_tier, conversation_starters, template_key, template_version, autonomy_level, category, collaboration_config_epoch, collaboration_boundary_epoch
+ `
+ 
+ // MUL-5559: the runtime-delete replacement for archive-then-hard-delete. Every
+@@ -1418,6 +1418,7 @@ func (q *Queries) UnbindUserAgentsFromRuntime(ctx context.Context, runtimeID pgt
+ 			&i.AutonomyLevel,
+ 			&i.Category,
+ 			&i.CollaborationConfigEpoch,
++			&i.CollaborationBoundaryEpoch,
+ 		); err != nil {
+ 			return nil, err
+ 		}
+diff --git a/server/pkg/db/queries/collaboration_authority.sql b/server/pkg/db/queries/collaboration_authority.sql
+index 4b135acb6..e528f1710 100644
+--- a/server/pkg/db/queries/collaboration_authority.sql
++++ b/server/pkg/db/queries/collaboration_authority.sql
+@@ -7,17 +7,30 @@ SELECT * FROM collaboration_grant WHERE target_id = $1 ORDER BY id;
+ SELECT * FROM collaboration_runtime_enrollment WHERE id = $1;
+ 
+ -- name: CreateConsentedCollaborationTarget :one
+-INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint)
+-VALUES ($1, $2, $3, $4, $5) RETURNING *;
++INSERT INTO collaboration_target (session_id, kind, resource_id, roster, configuration_fingerprint, configuration_boundary_fingerprint)
++VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+ 
+ -- name: ReconfigureCollaborationTarget :one
+ UPDATE collaboration_target SET roster = sqlc.arg(roster)::jsonb,
+     configuration_fingerprint = sqlc.arg(configuration_fingerprint)::text,
++    configuration_boundary_fingerprint = sqlc.arg(configuration_boundary_fingerprint)::text,
+     config_version = config_version + 1, target_epoch = target_epoch + 1,
+     hold_reason = 'switch_hold', hold_version = hold_version + 1, revoked_at = NULL
+ WHERE id = sqlc.arg(target_id)::uuid AND session_id = sqlc.arg(session_id)::uuid
+ RETURNING *;
+ 
++-- Owner re-consent of a configuration inside the recorded boundary. The roster,
++-- target epoch and boundary stay; the new configuration version separates the
++-- old configuration's grants, groups and provider sessions from the new one.
++-- name: RefreshCollaborationTargetConfiguration :one
++UPDATE collaboration_target SET configuration_fingerprint = sqlc.arg(configuration_fingerprint)::text,
++    config_version = config_version + 1
++WHERE id = sqlc.arg(target_id)::uuid AND session_id = sqlc.arg(session_id)::uuid
++    AND config_version = sqlc.arg(expected_config_version)::bigint
++    AND configuration_boundary_fingerprint = sqlc.arg(configuration_boundary_fingerprint)::text
++    AND revoked_at IS NULL
++RETURNING *;
++
+ -- name: CreateCollaborationResourceConsent :one
+ INSERT INTO collaboration_grant (issue_id, target_id, config_version, role, owner_user_id,
+     owner_auth_epoch, owner_participant_epoch, target_epoch, configuration_fingerprint,
+diff --git a/server/pkg/db/queries/collaboration_preparation.sql b/server/pkg/db/queries/collaboration_preparation.sql
+index 43d50b2fd..9686a561c 100644
+--- a/server/pkg/db/queries/collaboration_preparation.sql
++++ b/server/pkg/db/queries/collaboration_preparation.sql
+@@ -11,10 +11,13 @@ WHERE id = sqlc.arg(run_id)::uuid AND prompt_snapshot IS NULL AND preparation_sn
+ RETURNING *;
+ 
+ -- name: ListCollaborationPreparationAttachments :many
+--- One beyond the manifest bound distinguishes overflow from a complete list.
++-- Files the prepared inputs reference come first, then the newest other
++-- deliveries. Issue history therefore never displaces a referenced file, and
++-- a referenced file absent from this list is no longer delivered.
+ SELECT * FROM collaboration_attachment
+-WHERE issue_id = $1 AND delivered_at IS NOT NULL AND discarded_at IS NULL
+-ORDER BY id LIMIT 33;
++WHERE issue_id = sqlc.arg(issue_id)::uuid AND delivered_at IS NOT NULL AND discarded_at IS NULL
++ORDER BY (id = ANY(sqlc.arg(referenced_ids)::uuid[])) DESC, delivered_at DESC, id
++LIMIT sqlc.arg(row_limit)::int;
+ 
+ -- name: CollaborationRunHasPreparationStartEvidence :one
+ -- An unknown/issued claim or attempt belongs to the original recovery path.

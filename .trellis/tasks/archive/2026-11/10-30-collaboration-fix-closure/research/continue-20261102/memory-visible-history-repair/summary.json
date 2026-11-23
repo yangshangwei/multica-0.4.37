@@ -1,0 +1,27 @@
+{
+  "at": "2026-11-02T17:19:44.318625+00:00",
+  "state": "two_line_patch_ready_pending_independent_review_and_root_browser_replay",
+  "worktree": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+  "branch": "codex/collaboration-e2e-repair-20261103",
+  "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "file": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/e2e/collaboration-memory-web.spec.ts",
+  "source_before_sha256": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+  "source_after_sha256": "2d3ab36d74220324ad4f38b3f70eace05a8a01f1f576d173f100799d54dc1e41",
+  "patch": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/memory-visible-history-repair/two-line-memory-history.patch",
+  "patch_sha256": "6378d5bb6185e8b986b9c52177e5ae2b5040fbdbd149792fe0e05c549982781a",
+  "diff_additions": 2,
+  "diff_deletions": 0,
+  "existing_assertions_controls_receipts_cleanup_preserved": true,
+  "static_validation": {
+    "TypeScript_syntax_diagnostics": 0,
+    "TypeScript_version": "5.9.3",
+    "exact_two_statement_diff_verified": true,
+    "git_diff_check_exit": 0
+  },
+  "main_preexisting_source_untouched": true,
+  "old_v9_raw_report": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/makecheck-playwright-results-v9.json",
+  "old_v9_raw_report_sha256": "8dea30021a5f386e6a217600223c3c6ec299e1a8bd156849a317b48b98de14d3",
+  "actual_browser_tests_or_API_DB_Provider_calls": 0,
+  "project_lint_and_typecheck": "not run; standalone E2E has no root ESLint entry and root owns broader checks; targeted TypeScript syntactic parse and diff checks only",
+  "remaining": "Root-owned targeted actual replay after catalogue environment is ready and independent review has passed; no browser success claimed"
+}

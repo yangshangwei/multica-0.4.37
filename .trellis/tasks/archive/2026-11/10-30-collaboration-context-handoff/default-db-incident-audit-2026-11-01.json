@@ -1,0 +1,33 @@
+{
+  "recorded_at": "2026-11-01T15:24:29.188509+00:00",
+  "incident_source_commit": "0aedf934e",
+  "default_database": "multica",
+  "read_only_audit": true,
+  "rollback_attempted": false,
+  "newly_timestamped_ledger_rows": 272,
+  "ledger_numeric_range": [
+    456,
+    763
+  ],
+  "ledger_not_sql_execution_proof": true,
+  "preincident_snapshot_available": false,
+  "current_schema_backup_is_not_preincident_backup": true,
+  "private_artifacts": [
+    {
+      "file": ".omx/private/collaboration-resume-20261101/default-db-incident/migration-ledger-window.txt",
+      "sha256": "8b1ab20d5c9f3f6062c21a550e2b52b396c1b1cd0051fc402f703c3296af4d6b",
+      "exit_code": 0
+    },
+    {
+      "file": ".omx/private/collaboration-resume-20261101/default-db-incident/audit-summary.txt",
+      "sha256": "a7b2cf7c2f85cb19de680be6eaf7548cd44ee1608a60db379706d96e87cde888",
+      "exit_code": 0
+    },
+    {
+      "file": ".omx/private/collaboration-resume-20261101/default-db-incident/post-incident-schema.sql",
+      "sha256": "e32246e78d74033b3025fc1dce73fabc1ce97ad333a49b5db3cda3f587f67913",
+      "exit_code": 0,
+      "bytes": 462981
+    }
+  ]
+}

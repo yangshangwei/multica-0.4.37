@@ -11,6 +11,17 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const advanceGitHubInstallationTrust = `-- name: AdvanceGitHubInstallationTrust :exec
+UPDATE github_installation SET trust_revision=trust_revision+1, updated_at=now()
+WHERE installation_id=$1
+`
+
+// A permission grant/restore is a new trust observation, not display metadata.
+func (q *Queries) AdvanceGitHubInstallationTrust(ctx context.Context, installationID int64) error {
+	_, err := q.db.Exec(ctx, advanceGitHubInstallationTrust, installationID)
+	return err
+}
+
 const createGitHubInstallation = `-- name: CreateGitHubInstallation :one
 INSERT INTO github_installation (
     workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id
@@ -22,8 +33,9 @@ ON CONFLICT (workspace_id, installation_id) DO UPDATE SET
     account_type = EXCLUDED.account_type,
     account_avatar_url = EXCLUDED.account_avatar_url,
     connected_by_id = EXCLUDED.connected_by_id,
+    trust_revision = github_installation.trust_revision + 1,
     updated_at = now()
-RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at
+RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision
 `
 
 type CreateGitHubInstallationParams struct {
@@ -55,6 +67,7 @@ func (q *Queries) CreateGitHubInstallation(ctx context.Context, arg CreateGitHub
 		&i.ConnectedByID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.TrustRevision,
 	)
 	return i, err
 }
@@ -116,7 +129,7 @@ func (q *Queries) DeletePendingGitHubInstallation(ctx context.Context, installat
 }
 
 const getGitHubInstallationByID = `-- name: GetGitHubInstallationByID :one
-SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at FROM github_installation
+SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision FROM github_installation
 WHERE id = $1
 `
 
@@ -133,12 +146,13 @@ func (q *Queries) GetGitHubInstallationByID(ctx context.Context, id pgtype.UUID)
 		&i.ConnectedByID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.TrustRevision,
 	)
 	return i, err
 }
 
 const getGitHubPullRequest = `-- name: GetGitHubPullRequest :one
-SELECT id, workspace_id, installation_id, repo_owner, repo_name, pr_number, title, state, html_url, branch, author_login, author_avatar_url, merged_at, closed_at, pr_created_at, pr_updated_at, created_at, updated_at, head_sha, mergeable_state, additions, deletions, changed_files, api_mergeable, api_merge_state_status, checks_rollup_state, snapshot_head_sha, snapshot_fetched_at FROM github_pull_request
+SELECT id, workspace_id, installation_id, repo_owner, repo_name, pr_number, title, state, html_url, branch, author_login, author_avatar_url, merged_at, closed_at, pr_created_at, pr_updated_at, created_at, updated_at, head_sha, mergeable_state, additions, deletions, changed_files, api_mergeable, api_merge_state_status, checks_rollup_state, snapshot_head_sha, snapshot_fetched_at, snapshot_complete FROM github_pull_request
 WHERE workspace_id = $1 AND repo_owner = $2 AND repo_name = $3 AND pr_number = $4
 `
 
@@ -186,6 +200,7 @@ func (q *Queries) GetGitHubPullRequest(ctx context.Context, arg GetGitHubPullReq
 		&i.ChecksRollupState,
 		&i.SnapshotHeadSha,
 		&i.SnapshotFetchedAt,
+		&i.SnapshotComplete,
 	)
 	return i, err
 }
@@ -284,6 +299,56 @@ func (q *Queries) GetPendingGitHubInstallation(ctx context.Context, installation
 	return i, err
 }
 
+const linkIssueToObservedGitHubPullRequest = `-- name: LinkIssueToObservedGitHubPullRequest :execrows
+WITH current_pr AS MATERIALIZED (
+ SELECT id FROM github_pull_request
+ WHERE id=$7::uuid AND workspace_id=$8::uuid
+ AND head_sha=$9::text AND pr_updated_at=$10::timestamptz
+ FOR SHARE
+)
+INSERT INTO issue_pull_request (issue_id,pull_request_id,linked_by_type,linked_by_id,close_intent,reference_only)
+SELECT $1::uuid,id,$2::text,$3::uuid,
+ $4::boolean,$5::boolean FROM current_pr
+ON CONFLICT (issue_id,pull_request_id) DO UPDATE SET
+ close_intent=CASE WHEN $6::boolean THEN issue_pull_request.close_intent ELSE EXCLUDED.close_intent END,
+ reference_only=CASE WHEN $6::boolean THEN issue_pull_request.reference_only ELSE EXCLUDED.reference_only END
+`
+
+type LinkIssueToObservedGitHubPullRequestParams struct {
+	IssueID             pgtype.UUID        `json:"issue_id"`
+	LinkedByType        pgtype.Text        `json:"linked_by_type"`
+	LinkedByID          pgtype.UUID        `json:"linked_by_id"`
+	CloseIntent         bool               `json:"close_intent"`
+	ReferenceOnly       bool               `json:"reference_only"`
+	PreserveCloseIntent bool               `json:"preserve_close_intent"`
+	PullRequestID       pgtype.UUID        `json:"pull_request_id"`
+	WorkspaceID         pgtype.UUID        `json:"workspace_id"`
+	HeadSha             string             `json:"head_sha"`
+	PrUpdatedAt         pgtype.Timestamptz `json:"pr_updated_at"`
+}
+
+// A webhook may win the mirror upsert and then lose to a newer observation
+// before deriving links. Fence its exact source row in the link transaction.
+// Manual linking retains LinkIssueToPullRequest's existing contract.
+func (q *Queries) LinkIssueToObservedGitHubPullRequest(ctx context.Context, arg LinkIssueToObservedGitHubPullRequestParams) (int64, error) {
+	result, err := q.db.Exec(ctx, linkIssueToObservedGitHubPullRequest,
+		arg.IssueID,
+		arg.LinkedByType,
+		arg.LinkedByID,
+		arg.CloseIntent,
+		arg.ReferenceOnly,
+		arg.PreserveCloseIntent,
+		arg.PullRequestID,
+		arg.WorkspaceID,
+		arg.HeadSha,
+		arg.PrUpdatedAt,
+	)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected(), nil
+}
+
 const linkIssueToPullRequest = `-- name: LinkIssueToPullRequest :exec
 
 INSERT INTO issue_pull_request (
@@ -339,7 +404,7 @@ func (q *Queries) LinkIssueToPullRequest(ctx context.Context, arg LinkIssueToPul
 }
 
 const listGitHubInstallationsByInstallationID = `-- name: ListGitHubInstallationsByInstallationID :many
-SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at FROM github_installation
+SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision FROM github_installation
 WHERE installation_id = $1
 ORDER BY created_at ASC, id ASC
 `
@@ -366,6 +431,7 @@ func (q *Queries) ListGitHubInstallationsByInstallationID(ctx context.Context, i
 			&i.ConnectedByID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.TrustRevision,
 		); err != nil {
 			return nil, err
 		}
@@ -379,7 +445,7 @@ func (q *Queries) ListGitHubInstallationsByInstallationID(ctx context.Context, i
 
 const listGitHubInstallationsByWorkspace = `-- name: ListGitHubInstallationsByWorkspace :many
 
-SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at FROM github_installation
+SELECT id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision FROM github_installation
 WHERE workspace_id = $1
 ORDER BY created_at ASC
 `
@@ -406,6 +472,7 @@ func (q *Queries) ListGitHubInstallationsByWorkspace(ctx context.Context, worksp
 			&i.ConnectedByID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.TrustRevision,
 		); err != nil {
 			return nil, err
 		}
@@ -592,6 +659,46 @@ func (q *Queries) ListPullRequestsByIssue(ctx context.Context, issueID pgtype.UU
 	return items, nil
 }
 
+const refreshGitHubInstallationDisplay = `-- name: RefreshGitHubInstallationDisplay :one
+UPDATE github_installation
+SET account_login=$3, account_type=$4, account_avatar_url=$5, updated_at=now()
+WHERE id=$1 AND workspace_id=$2
+RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision
+`
+
+type RefreshGitHubInstallationDisplayParams struct {
+	ID               pgtype.UUID `json:"id"`
+	WorkspaceID      pgtype.UUID `json:"workspace_id"`
+	AccountLogin     string      `json:"account_login"`
+	AccountType      string      `json:"account_type"`
+	AccountAvatarUrl pgtype.Text `json:"account_avatar_url"`
+}
+
+// Display enrichment is not a reconnect and must not renew completion trust.
+func (q *Queries) RefreshGitHubInstallationDisplay(ctx context.Context, arg RefreshGitHubInstallationDisplayParams) (GithubInstallation, error) {
+	row := q.db.QueryRow(ctx, refreshGitHubInstallationDisplay,
+		arg.ID,
+		arg.WorkspaceID,
+		arg.AccountLogin,
+		arg.AccountType,
+		arg.AccountAvatarUrl,
+	)
+	var i GithubInstallation
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.InstallationID,
+		&i.AccountLogin,
+		&i.AccountType,
+		&i.AccountAvatarUrl,
+		&i.ConnectedByID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.TrustRevision,
+	)
+	return i, err
+}
+
 const unlinkIssueFromPullRequest = `-- name: UnlinkIssueFromPullRequest :exec
 DELETE FROM issue_pull_request
 WHERE issue_id = $1 AND pull_request_id = $2
@@ -614,7 +721,7 @@ SET account_login = $2,
     account_avatar_url = $4,
     updated_at = now()
 WHERE installation_id = $1
-RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at
+RETURNING id, workspace_id, installation_id, account_login, account_type, account_avatar_url, connected_by_id, created_at, updated_at, trust_revision
 `
 
 type UpdateGitHubInstallationAccountByInstallationIDParams struct {
@@ -651,6 +758,7 @@ func (q *Queries) UpdateGitHubInstallationAccountByInstallationID(ctx context.Co
 			&i.ConnectedByID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.TrustRevision,
 		); err != nil {
 			return nil, err
 		}
@@ -664,6 +772,7 @@ func (q *Queries) UpdateGitHubInstallationAccountByInstallationID(ctx context.Co
 
 const upsertGitHubPullRequest = `-- name: UpsertGitHubPullRequest :one
 
+WITH applied AS (
 INSERT INTO github_pull_request (
     workspace_id, installation_id, repo_owner, repo_name, pr_number,
     title, state, html_url, branch, author_login, author_avatar_url,
@@ -689,6 +798,7 @@ ON CONFLICT (workspace_id, repo_owner, repo_name, pr_number) DO UPDATE SET
     closed_at = EXCLUDED.closed_at,
     pr_updated_at = EXCLUDED.pr_updated_at,
     head_sha = EXCLUDED.head_sha,
+    snapshot_complete = CASE WHEN github_pull_request.head_sha <> EXCLUDED.head_sha THEN FALSE ELSE github_pull_request.snapshot_complete END,
     mergeable_state = CASE
         WHEN COALESCE($21::boolean, FALSE) THEN NULL
         WHEN EXCLUDED.mergeable_state IS NOT NULL THEN EXCLUDED.mergeable_state
@@ -698,7 +808,18 @@ ON CONFLICT (workspace_id, repo_owner, repo_name, pr_number) DO UPDATE SET
     deletions     = EXCLUDED.deletions,
     changed_files = EXCLUDED.changed_files,
     updated_at = now()
-RETURNING id, workspace_id, installation_id, repo_owner, repo_name, pr_number, title, state, html_url, branch, author_login, author_avatar_url, merged_at, closed_at, pr_created_at, pr_updated_at, created_at, updated_at, head_sha, mergeable_state, additions, deletions, changed_files, api_mergeable, api_merge_state_status, checks_rollup_state, snapshot_head_sha, snapshot_fetched_at
+WHERE EXCLUDED.pr_updated_at > github_pull_request.pr_updated_at
+ OR (EXCLUDED.pr_updated_at = github_pull_request.pr_updated_at AND EXCLUDED.head_sha = github_pull_request.head_sha)
+RETURNING id, workspace_id, installation_id, repo_owner, repo_name, pr_number, title, state, html_url, branch, author_login, author_avatar_url, merged_at, closed_at, pr_created_at, pr_updated_at, created_at, updated_at, head_sha, mergeable_state, additions, deletions, changed_files, api_mergeable, api_merge_state_status, checks_rollup_state, snapshot_head_sha, snapshot_fetched_at, snapshot_complete
+), invalidated AS (
+ -- Equal timestamps cannot order different heads. Invalidate strict CI in
+ -- this same statement, while returning no admitted row to the caller.
+ UPDATE github_pull_request SET snapshot_complete=false
+ WHERE workspace_id=$1 AND repo_owner=$3 AND repo_name=$4 AND pr_number=$5
+  AND pr_updated_at=$10 AND head_sha<>$11 AND NOT EXISTS (SELECT 1 FROM applied)
+ RETURNING id
+)
+SELECT id, workspace_id, installation_id, repo_owner, repo_name, pr_number, title, state, html_url, branch, author_login, author_avatar_url, merged_at, closed_at, pr_created_at, pr_updated_at, created_at, updated_at, head_sha, mergeable_state, additions, deletions, changed_files, api_mergeable, api_merge_state_status, checks_rollup_state, snapshot_head_sha, snapshot_fetched_at, snapshot_complete FROM applied
 `
 
 type UpsertGitHubPullRequestParams struct {
@@ -725,6 +846,38 @@ type UpsertGitHubPullRequestParams struct {
 	ClearMergeableState pgtype.Bool        `json:"clear_mergeable_state"`
 }
 
+type UpsertGitHubPullRequestRow struct {
+	ID                  pgtype.UUID        `json:"id"`
+	WorkspaceID         pgtype.UUID        `json:"workspace_id"`
+	InstallationID      int64              `json:"installation_id"`
+	RepoOwner           string             `json:"repo_owner"`
+	RepoName            string             `json:"repo_name"`
+	PrNumber            int32              `json:"pr_number"`
+	Title               string             `json:"title"`
+	State               string             `json:"state"`
+	HtmlUrl             string             `json:"html_url"`
+	Branch              pgtype.Text        `json:"branch"`
+	AuthorLogin         pgtype.Text        `json:"author_login"`
+	AuthorAvatarUrl     pgtype.Text        `json:"author_avatar_url"`
+	MergedAt            pgtype.Timestamptz `json:"merged_at"`
+	ClosedAt            pgtype.Timestamptz `json:"closed_at"`
+	PrCreatedAt         pgtype.Timestamptz `json:"pr_created_at"`
+	PrUpdatedAt         pgtype.Timestamptz `json:"pr_updated_at"`
+	CreatedAt           pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt           pgtype.Timestamptz `json:"updated_at"`
+	HeadSha             string             `json:"head_sha"`
+	MergeableState      pgtype.Text        `json:"mergeable_state"`
+	Additions           int32              `json:"additions"`
+	Deletions           int32              `json:"deletions"`
+	ChangedFiles        int32              `json:"changed_files"`
+	ApiMergeable        pgtype.Text        `json:"api_mergeable"`
+	ApiMergeStateStatus pgtype.Text        `json:"api_merge_state_status"`
+	ChecksRollupState   pgtype.Text        `json:"checks_rollup_state"`
+	SnapshotHeadSha     string             `json:"snapshot_head_sha"`
+	SnapshotFetchedAt   pgtype.Timestamptz `json:"snapshot_fetched_at"`
+	SnapshotComplete    bool               `json:"snapshot_complete"`
+}
+
 // =====================
 // GitHub Pull Request
 // =====================
@@ -738,7 +891,7 @@ type UpsertGitHubPullRequestParams struct {
 //     information that GitHub only re-computes lazily.
 //
 // INSERT path always writes the incoming value (NULL acceptable for a new row).
-func (q *Queries) UpsertGitHubPullRequest(ctx context.Context, arg UpsertGitHubPullRequestParams) (GithubPullRequest, error) {
+func (q *Queries) UpsertGitHubPullRequest(ctx context.Context, arg UpsertGitHubPullRequestParams) (UpsertGitHubPullRequestRow, error) {
 	row := q.db.QueryRow(ctx, upsertGitHubPullRequest,
 		arg.WorkspaceID,
 		arg.InstallationID,
@@ -762,7 +915,7 @@ func (q *Queries) UpsertGitHubPullRequest(ctx context.Context, arg UpsertGitHubP
 		arg.MergeableState,
 		arg.ClearMergeableState,
 	)
-	var i GithubPullRequest
+	var i UpsertGitHubPullRequestRow
 	err := row.Scan(
 		&i.ID,
 		&i.WorkspaceID,
@@ -792,6 +945,7 @@ func (q *Queries) UpsertGitHubPullRequest(ctx context.Context, arg UpsertGitHubP
 		&i.ChecksRollupState,
 		&i.SnapshotHeadSha,
 		&i.SnapshotFetchedAt,
+		&i.SnapshotComplete,
 	)
 	return i, err
 }

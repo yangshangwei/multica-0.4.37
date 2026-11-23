@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T17:58:12.481206+00:00",
+  "verdict": "pass-with-notes",
+  "head": "e1ea3aeb59ee8a1d8a4b5249fd713f4332115ac9",
+  "product_commit": "b8035617de06cf164354ff75f122f1e28c990a8b",
+  "base_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "source_files_sha256": {
+    "scripts/check.sh": "c6d544402060c0e76fafc73e98fece92e063a971bc3cc4e85b36f8d5b8058ae6",
+    "scripts/check.test.sh": "95eab92acc34081bc40b3696240fb620a256569736f4bd09ec5f2d9cbe2f5377",
+    ".trellis/spec/web/frontend/e2e-run-environment.md": "9d6ecdf449ca6a965abb58891e076e3c584043ac843fc730d55327b49cdc16f9"
+  },
+  "product_diff_sha256": "136e4adfe60e8b18c2d01257bcbeaaa19554f6de3a6ea28ddd31f9520a140657",
+  "blocking_findings": [],
+  "nonblocking_product_findings": [],
+  "independent_checks": [
+    {
+      "head": "e1ea3aeb59ee8a1d8a4b5249fd713f4332115ac9",
+      "command": [
+        "bash",
+        "scripts/check.test.sh"
+      ],
+      "started_at": "2026-11-01T17:56:09.635978+00:00",
+      "fake_only": true,
+      "exit_code": 0,
+      "log_sha256": "d65dfa4f30d263150e5c6993bf6be21a728c7ba9e72a775c05bf87cd6dd18873"
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "scripts/check.sh",
+        "scripts/check.test.sh"
+      ],
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "head": "e1ea3aeb59ee8a1d8a4b5249fd713f4332115ac9",
+      "command": "source scripts/check.sh; check_allowed_origins with test-owned URL env values only",
+      "fake_pure_helper_cases": [
+        {
+          "case": "default",
+          "expected_exit": 0,
+          "exit_code": 0,
+          "passed": true,
+          "stdout_sha256": "81859d921fd3781977cb1d047aec5b5a7a1d35828cdda45783bb7348dcef3664",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "case": "canonical",
+          "expected_exit": 0,
+          "exit_code": 0,
+          "passed": true,
+          "stdout_sha256": "48f4af78562add32bb47ccaff7e135e7925b8ce3574433456e81c5543211a4c6",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "case": "default-port",
+          "expected_exit": 0,
+          "exit_code": 0,
+          "passed": true,
+          "stdout_sha256": "f30ee345fcdd511db551b8661af68b2ae26db745e579b8184541bd5db42045dd",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "case": "canonical-dedupe",
+          "expected_exit": 0,
+          "exit_code": 0,
+          "passed": true,
+          "stdout_sha256": "81859d921fd3781977cb1d047aec5b5a7a1d35828cdda45783bb7348dcef3664",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "case": "nonloopback",
+          "expected_exit": 2,
+          "exit_code": 2,
+          "passed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+        },
+        {
+          "case": "suffix-host",
+          "expected_exit": 2,
+          "exit_code": 2,
+          "passed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+        },
+        {
+          "case": "wildcard",
+          "expected_exit": 2,
+          "exit_code": 2,
+          "passed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+        },
+        {
+          "case": "ipv6zero",
+          "expected_exit": 2,
+          "exit_code": 2,
+          "passed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+        },
+        {
+          "case": "overflow",
+          "expected_exit": 2,
+          "exit_code": 2,
+          "passed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+        },
+        {
+          "case": "userinfo",
+          "expected_exit": 2,
+          "exit_code": 2,
+          "passed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+        },
+        {
+          "case": "one-invalid",
+          "expected_exit": 2,
+          "exit_code": 2,
+          "passed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "7196656aad6c7e11bb59f0840c233789388bbccc212aae73e7766b76416a9154"
+        }
+      ],
+      "pass": 11,
+      "fail": 0,
+      "skip": 0,
+      "real_services_started": false,
+      "database_commands": false,
+      "provider_calls": 0
+    }
+  ],
+  "canonical_named_native_cases": 11,
+  "helper_edge_case_pass": 11,
+  "source_env_preservation": "Canonical actual preparation function tests compare source bytes and taskcopy allowlists; no-production source CORS forwarding.",
+  "provenance_timing": "check_main loads trustedsource.env before prepare; both allowlist assignments are written and loaded into taskenv before start_api/api_configuration_id, whose identity hashes actualenvfile bytes.",
+  "url_policy": "WHATWG canonical origin, http(s), hostname inlocalhost/127.0.0.1/[::1], no username/password, noport0; paths/query stripped, CSVdeduped; default80/443allowed as nonzeroimplicitports.",
+  "author_evidence_hashes_match": true,
+  "baseline_red": {
+    "source_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "method": "Final canonical check.test.sh copied unchanged beside baseline check/dev-env/local-env scripts and an empty server directory required by the fake orchestration harness",
+    "command": "bash <scratch>/scripts/check.test.sh",
+    "exit_code": 1,
+    "reason": "Real baseline preparation omits the explicitly configured native HTTP origin",
+    "test_sha256": "95eab92acc34081bc40b3696240fb620a256569736f4bd09ec5f2d9cbe2f5377",
+    "baseline_check_sha256": "932d664240c40a2fa110fe314e836c2666610e8ae23ca3d0880a76ebcd4e5447",
+    "log_sha256": "8cb54c27d475dc04c2032cf1d06c5b493471d316037d3fe507658aa12181fcab",
+    "at": "2026-11-01T17:53:20.750571+00:00",
+    "DB_operations": false,
+    "services_started": false,
+    "prior_replay_setup_fault": "Missing empty server directory; preserved separately and excluded from product-red evidence"
+  },
+  "unchanged_production_cors_ws_api": true,
+  "services_started": false,
+  "database_commands": false,
+  "migration_commands": false,
+  "gui_operations": false,
+  "agent_cli_calls": false,
+  "provider_calls": 0,
+  "network_install": false,
+  "external_ci": false,
+  "dependencies_changed": false,
+  "notes": [
+    {
+      "id": "NO-1",
+      "kind": "acceptance_scope",
+      "description": "Fake preparation and URL validation do not prove actual native browser/WebSocket success. Root must set both existing fixture URLs in trustedsource.env before the next source-bound makecheck run; injecting only a later Playwright child is insufficient."
+    },
+    {
+      "id": "NO-2",
+      "kind": "evidence_scope",
+      "description": "The intentionally interrupted c3makecheck remains incomplete. Its13,082 TS passes remain limited evidence; this repair and fake results do not turn that run into pass."
+    }
+  ],
+  "not_run": [
+    "real makecheck restart",
+    "database/migration",
+    "API/Web/GUI/Electron/WebSocket",
+    "installed AgentCLI/Provider",
+    "external CI/deploy/release"
+  ]
+}

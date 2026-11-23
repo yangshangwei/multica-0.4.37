@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/multica-ai/multica/server/internal/cli"
+	"github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
 	"github.com/multica-ai/multica/server/internal/daemon/execenv"
 )
 
@@ -24,11 +25,12 @@ var (
 var debugFlag bool
 
 var rootCmd = &cobra.Command{
-	Use:           "multica",
-	Short:         "Multica CLI — local agent runtime and management tool",
-	Long:          "Work seamlessly with Multica from the command line.",
-	SilenceUsage:  true,
-	SilenceErrors: true,
+	Use:               "multica",
+	Short:             "Multica CLI — local agent runtime and management tool",
+	Long:              "Work seamlessly with Multica from the command line.",
+	SilenceUsage:      true,
+	SilenceErrors:     true,
+	PersistentPreRunE: guardCollaborationCommand,
 }
 
 func init() {
@@ -71,6 +73,7 @@ func init() {
 	configCmd.GroupID = groupAdditional
 	updateCmd.GroupID = groupAdditional
 	versionCmd.GroupID = groupAdditional
+	collaborationCmd.GroupID = groupAdditional
 
 	rootCmd.AddCommand(issueCmd)
 	rootCmd.AddCommand(projectCmd)
@@ -94,12 +97,16 @@ func init() {
 	rootCmd.AddCommand(configCmd)
 	rootCmd.AddCommand(updateCmd)
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(collaborationCmd)
 
 	initHelp(rootCmd)
 }
 
 func main() {
-	if len(os.Args) == 2 && os.Args[1] == execenv.PreparationHelperArg {
+	if !cli.HasCollaborationContext() && len(os.Args) == 2 && os.Args[1] == collaborationrun.NamespaceHelperArg {
+		os.Exit(collaborationrun.NamespaceHelperMain())
+	}
+	if !cli.HasCollaborationContext() && len(os.Args) == 2 && os.Args[1] == execenv.PreparationHelperArg {
 		logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
 		if err := execenv.RunPreparationHelper(os.Stdin, os.Stdout, logger); err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -107,7 +114,9 @@ func main() {
 		}
 		return
 	}
-	cli.CleanupStaleUpdateArtifacts()
+	if !cli.HasCollaborationContext() {
+		cli.CleanupStaleUpdateArtifacts()
+	}
 	if err := rootCmd.Execute(); err != nil {
 		if err != errSilent {
 			fmt.Fprintln(os.Stderr, cli.FormatError(err, debugFlag))

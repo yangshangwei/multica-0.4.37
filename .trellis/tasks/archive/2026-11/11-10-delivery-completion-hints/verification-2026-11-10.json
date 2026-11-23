@@ -1,0 +1,304 @@
+{
+  "verified_at": "2026-11-10T09:31:33.131598+00:00",
+  "baseline": "05de761de",
+  "source_files": 13,
+  "source_drift": [],
+  "runs": {
+    "backend-compile01": {
+      "record": "research/runs/backend-compile01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "backend-format02": {
+      "record": "research/runs/backend-format02.json",
+      "exit_code": 2,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "2977473e89b533417bb9e6254b1dc6b82cea9bf60467e8fe89396bcc3b363349"
+    },
+    "backend-format03": {
+      "record": "research/runs/backend-format03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baseline-handler01": {
+      "record": "research/runs/baseline-handler01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 235,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "51d20c77983e45fbe3c34b6f9112744b8c9d88a15a54dca0d338b4ccbf72fad8"
+    },
+    "final-build01": {
+      "record": "research/runs/final-build01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-contracts01": {
+      "record": "research/runs/final-contracts01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 50,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3c4dcb221143275ae4eb186aefd9c58aba68354f4f220c246d9aa8ea00ef973"
+    },
+    "final-format01": {
+      "record": "research/runs/final-format01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-handler-normal01": {
+      "record": "research/runs/final-handler-normal01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 325,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "b0d2d59f292a9bdfd9cefead2aece677de1756960f1616ece93702edbc05829c"
+    },
+    "final-handler-race01": {
+      "record": "research/runs/final-handler-race01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 325,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "78668a0d2ebb56d091acf540cf38a1629b3ca28d8aa1804ddc76d9e20490084b"
+    },
+    "final-router-normal01": {
+      "record": "research/runs/final-router-normal01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 103,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "ed27195f6be543b65ad8c7b052e8a812d0a0704a69c1bdd5520086b3aa778fa6"
+    },
+    "final-router-race01": {
+      "record": "research/runs/final-router-race01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 103,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "70f8ab4018d3f5e482335bcb2dbea4f709454dd7c75123d4fd6af09d7d01918f"
+    },
+    "final-sqlc01": {
+      "record": "research/runs/final-sqlc01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "final-vet01": {
+      "record": "research/runs/final-vet01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "handler-iter01": {
+      "record": "research/runs/handler-iter01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 75,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "106f64c0bbc133ea5b7376a8df13c5cbfd108f76bd9196ce4380117a6a28634a"
+    },
+    "handler-nul-red01": {
+      "record": "research/runs/handler-nul-red01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      },
+      "log_sha256": "dd6f223c40765f57f9fa6ac6a7f16133fbeddd93ed58d94d242c150123fffb84"
+    },
+    "hint_baseline_handler-migrate": {
+      "record": "research/runs/hint_baseline_handler-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "0ac97e8fbc9f5c183fa738ee47387bd18139bbcaa5c41f7481a90ae4d39c1f4f"
+    },
+    "hint_final_handler_normal-migrate": {
+      "record": "research/runs/hint_final_handler_normal-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "72563b84a6d8d29142d513e150bc3d961bb873014feb33f843a8146c4529dd59"
+    },
+    "hint_final_handler_race-migrate": {
+      "record": "research/runs/hint_final_handler_race-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "afc4eb22b93cc0b875aa3f7f11d9b502dc8568718ea42f40759f4ce984e8e492"
+    },
+    "hint_final_router_normal-migrate": {
+      "record": "research/runs/hint_final_router_normal-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "ced353e957312d401e66206db629d8c7e2d7a5de886479a77cc1104e7666516b"
+    },
+    "hint_final_router_race-migrate": {
+      "record": "research/runs/hint_final_router_race-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "2190dec660782311520ebe27e2fd3777274956e2ae1e4409c1a2d056aeb96457"
+    },
+    "hint_handler_iter01-migrate": {
+      "record": "research/runs/hint_handler_iter01-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "d4c01045d0f57d698fe5ba49685fe6ee954da6222a4b65bd4bdd57e35373011f"
+    },
+    "hint_handler_iter02-migrate": {
+      "record": "research/runs/hint_handler_iter02-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "a9643dca9700386e75ac184e7d56e9f6fc546a397e74be9d061b52fb34da032d"
+    },
+    "hint_router_iter01-migrate": {
+      "record": "research/runs/hint_router_iter01-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "17fb0c83f61a7d519357a9dbdeeed23d5f822af54aa1db56d2ca29b3d5615ad7"
+    },
+    "hint_router_iter02-migrate": {
+      "record": "research/runs/hint_router_iter02-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "2b6de9804a49750013757a320cfddc861f16e0aca1b55e870f2f48237294cfc7"
+    },
+    "hint_router_iter03-migrate": {
+      "record": "research/runs/hint_router_iter03-migrate.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "54f58b4ab74f33fed5f7729f0f7533c7e3d2cfd5bb4fa3c836e8015cf77ef729"
+    },
+    "router-compile01": {
+      "record": "research/runs/router-compile01.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "router-iter01": {
+      "record": "research/runs/router-iter01.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 15,
+        "fail": 3,
+        "skip": 0
+      },
+      "log_sha256": "c03d1b4beb69ffccb7790c137d3f466805b9375825aa5e43bef3c381a6ceb689"
+    },
+    "router-iter02": {
+      "record": "research/runs/router-iter02.json",
+      "exit_code": 1,
+      "counts": {
+        "pass": 22,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "d3b10ebd4d68defd801f12c830c5f81af7a18eb401a2b80913d4330fcd625d82"
+    },
+    "router-iter03": {
+      "record": "research/runs/router-iter03.json",
+      "exit_code": 0,
+      "counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "35ed7b722f849cb9521f026c866cb4e3b22072f679df056a7c01f9c691c8e74d"
+    }
+  },
+  "inventory_errors": [],
+  "counts_note": "Named counts include subtests; ordinary/race and iterations are separate, never cumulative coverage.",
+  "real_model_calls": 0,
+  "scope": "ordinary human explicit hint API; no UI/CLI/skip/enforce",
+  "frontend": "unchanged; no TS/browser/full repository acceptance",
+  "independent_review": "research/independent-review.json"
+}

@@ -107,10 +107,6 @@ func RecoverPasswordForDeploymentInTx(ctx context.Context, tx pgx.Tx, p Deployme
 	if p.BreakGlass && result.EffectiveSuperAdmins != 0 {
 		return result, platformError(http.StatusConflict, "break_glass_not_applicable", "Another effective administrator remains; use ordinary recovery")
 	}
-	result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID)
-	if err != nil {
-		return DeploymentPasswordRecoveryResult{}, err
-	}
 	// Enumerate only non-secret fields. A password or its KDF output must never
 	// enter an operation digest, audit, or database diagnostic payload.
 	payload, err := json.Marshal(struct {
@@ -133,6 +129,10 @@ func RecoverPasswordForDeploymentInTx(ctx context.Context, tx pgx.Tx, p Deployme
 		PayloadHash: hex.EncodeToString(digest[:]), Reason: strings.TrimSpace(p.Reason),
 		State: "applied", ResultCode: code, AppliedAt: pgtype.Timestamptz{Time: time.Now(), Valid: true},
 	})
+	if err != nil {
+		return DeploymentPasswordRecoveryResult{}, err
+	}
+	result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID, "admin:"+uuid.UUID(op.ID.Bytes).String())
 	if err != nil {
 		return DeploymentPasswordRecoveryResult{}, err
 	}

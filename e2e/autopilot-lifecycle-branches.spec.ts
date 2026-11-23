@@ -103,7 +103,14 @@ async function seedManual({ api, agentId }: LifecycleFixture, title: string) {
 
 async function openCreate(page: Page, slug: string) {
   await page.goto(`/${slug}/autopilots`);
-  await page.getByRole("button", { name: "Start from scratch", exact: true }).click();
+  // The loading header has a same-name action that opens the template picker.
+  // Wait for the empty workspace's welcome action before opening blank creation.
+  const welcome = page.getByRole("region", {
+    name: "Let your agents get to work on schedule",
+    exact: true,
+  });
+  await expect(welcome).toBeVisible();
+  await welcome.getByRole("button", { name: "New autopilot", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "New Autopilot", exact: true });
   await expect(dialog).toBeVisible();
   return dialog;
@@ -318,7 +325,7 @@ test.describe("autopilot lifecycle branches", () => {
     await expect(page.getByText(autopilot.title, { exact: true })).toBeHidden();
     expect((await list(api)).autopilots).toEqual([]);
     await page.reload();
-    await expect(page.getByRole("button", { name: "Start from scratch", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "New autopilot", exact: true })).toBeVisible();
   });
 
   test("preserves a created autopilot when its schedule fails and repairs it without a duplicate", async ({ page, lifecycle }) => {

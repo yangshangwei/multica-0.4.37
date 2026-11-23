@@ -1,0 +1,107 @@
+[
+  {
+    "intent": "fix(security): prevent credentials from surviving structured execution logs",
+    "paths": [
+      "server/pkg/redact/redact.go",
+      "server/pkg/redact/redact_test.go",
+      "server/internal/daemon/daemon.go",
+      "server/internal/daemon/tool_output_preview_test.go",
+      "server/pkg/agent/codex_test.go",
+      ".trellis/spec/server/agent-output-redaction.md",
+      ".trellis/spec/server/index.md"
+    ],
+    "body": "The shared redactor now understands credential fields and JSON member values, preserves ordinary diagnostic bytes, and masks native credentials before daemon preview truncation. Existing capability coverage is retained.",
+    "trailers": [
+      "Constraint: Keep existing API signatures and dependency graph",
+      "Rejected: Global dynamic secret registry | requires a separate task lifecycle and streaming contract",
+      "Confidence: high",
+      "Scope-risk: moderate",
+      "Directive: Redact complete tool output before preview truncation; keep structured and textual cases aligned",
+      "Tested: Focused redaction, race, fake daemon transcript and provider regressions; independent review",
+      "Not-tested: Cross-event streaming, historical log cleanup and real providers"
+    ],
+    "commit": "1cd9c1e60c744b8c82b56297bfe06c4ab23a8cc8"
+  },
+  {
+    "intent": "fix(ci): require working database setup before accepting test results",
+    "paths": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/release.yml",
+      "scripts/test-go.sh",
+      "scripts/test-go.test.sh",
+      "scripts/changelog-workflow.test.mjs",
+      "scripts/go-test-database-preconditions.test.mjs",
+      "server/internal/handler/handler_test.go",
+      "server/cmd/server/integration_test.go",
+      "server/internal/testutil/db_test.go",
+      ".trellis/spec/server/database-test-isolation.md",
+      ".trellis/spec/server/offline-delivery.md",
+      ".trellis/spec/docs/frontend/docs-bundle.md"
+    ],
+    "body": "Release verification provisions the declared test database and Redis before migrations and full Go tests. Database-backed TestMain failures cannot be reported as passing tests, while unconfigured testutil may run its explicit pure-helper subset.",
+    "trailers": [
+      "Constraint: Never access an implicit developer database during verification",
+      "Rejected: Treat unreachable database as skipped success | hides missing execution",
+      "Confidence: high",
+      "Scope-risk: narrow",
+      "Directive: Preserve independent probe timeouts and require named-test evidence for full acceptance",
+      "Tested: Offline actual-binary matrix, wrapper and workflow regressions, package vet and independent review",
+      "Not-tested: Healthy database fixtures, seed fault injection and hosted Release execution"
+    ],
+    "commit": "5975edae9f42d92c30deaae734f11e6f43cc5dbf"
+  },
+  {
+    "intent": "fix(squads): align delivery guidance with acceptance and review requirements",
+    "paths": [
+      "server/internal/daemon/execenv/runtime_config_sections.go",
+      "server/internal/daemon/execenv/runtime_config_test.go",
+      "server/internal/service/builtin_agent_autonomy_test.go",
+      "server/internal/service/builtin_agent_templates/review-gate-lead/INSTRUCTIONS.md",
+      "server/internal/service/builtin_agent_templates_roster.go",
+      "server/internal/service/builtin_squad_templates.go",
+      "server/internal/service/builtin_skills_test.go",
+      "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "server/internal/service/builtin_skills/multica-squads/SKILL.md",
+      "server/internal/service/builtin_skills/multica-squads/references/squad-source-map.md",
+      "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md",
+      "apps/docs/content/docs/squads.mdx",
+      "apps/docs/content/docs/squads.zh.mdx",
+      "packages/views/locales/en/squads.json",
+      "packages/views/locales/zh-Hans/squads.json",
+      "server/internal/docs/content/pages/squads.json",
+      ".trellis/spec/server/builtin-templates.md"
+    ],
+    "body": "Generated instructions now distinguish delivering a child issue from accepting it. Review Gate leader routing covers all six existing specialist roles, with matching skills, bilingual summaries and embedded documentation.",
+    "trailers": [
+      "Constraint: Human or existing integration acceptance still owns done",
+      "Rejected: Automatically advance every in_review child | changes the acceptance boundary",
+      "Confidence: high",
+      "Scope-risk: narrow",
+      "Directive: Existing customized role instances are not upgraded by changing template defaults",
+      "Tested: Generated workflow and role/skill contract tests, docs generation/embed, vet and independent review",
+      "Not-tested: Real-model instruction following, database stage events and existing instance migration"
+    ],
+    "commit": "028e93bb04035960784a339e6789395adba92eeb"
+  },
+  {
+    "intent": "docs(agents): preserve the improvement roadmap and first P1 evidence",
+    "paths": [
+      "docs/audits/2026-11-05-agent-squad-rnd-audit.zh-CN.md",
+      "docs/plans/2026-11-05-agent-squad-rnd-improvements.md",
+      ".trellis/tasks/11-05-agent-squad-rnd-improvements",
+      ".trellis/tasks/11-05-agent-log-redaction",
+      ".trellis/tasks/11-05-agent-ci-test-integrity",
+      ".trellis/tasks/11-05-squad-handoff-contract"
+    ],
+    "body": "Capture the phased roadmap, source-grounded audit and retained red/green evidence for the first prioritized repairs so later permission, evidence, reporting and nonfunctional work can continue without re-opening settled scope.",
+    "trailers": [
+      "Confidence: high",
+      "Scope-risk: narrow",
+      "Directive: M1-M3 remain planned; local scoped tests are not hosted deployment acceptance",
+      "Tested: Task manifests, source review hashes and artifact references",
+      "Not-tested: Future roadmap capabilities",
+      "Directive: Retained raw process logs and probe source preserve original bytes, including whitespace"
+    ]
+  }
+]

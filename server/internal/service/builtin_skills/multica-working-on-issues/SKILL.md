@@ -1,20 +1,30 @@
 ---
 name: multica-working-on-issues
-description: "Use when acting on a Multica issue beyond what the brief covers: triage admission and human review, PR linking vs close intent, reading a linked PR's real state, metadata keys, comment revision checks, status-change side effects, sub-issue todo vs backlog."
+description: "Use for Multica issue work: collaboration authority and execution, project knowledge, triage, PR linking and close intent, linked-PR state, metadata, comment revisions, status side effects, and sub-issue staging."
 user-invocable: false
 allowed-tools: Bash(multica *), Bash(git *), Bash(gh *)
 ---
 
 # Working on Multica issues
 
-Product contracts the runtime brief does not fully encode: PR linking vs close
-intent, reading linked-PR state, metadata keys, triage admission, status side
-effects, and sub-issue enqueue behavior.
+Product contracts the runtime brief does not fully encode: PR linking vs close intent, linked-PR state, metadata keys, triage admission, status side effects, and sub-issue enqueue behavior.
 
 For building mention links, load `multica-mentioning` instead — not this skill.
 
-Every contract below is traced to source in
-`references/working-on-issues-source-map.md`.
+Every contract below is traced to source in `references/working-on-issues-source-map.md`. Read the [completion and batch contract](references/working-on-issues-source-map.md#completion-authority-and-partial-batch-outcomes): enforce needs exact human authorization; unknown never retries, skip is unsupported, and batch success is per item. The source map also documents the explicit ordinary completion CLI flow; hints never authorize. Before report snapshot capture, reads, or withdrawal, read [Frozen report snapshots](references/report-snapshots.md): Reporter is GET-only; human writes require explicit original intent. `multica issue budget` is for people only, a workspace owner or admin using their own credentials: the command and the server (403 `budget_forbidden`) refuse agent and task credentials, reads included, so never call it from a task ([why](references/report-snapshots.md#issue-budget-commands-are-for-people-only)).
+
+## Collaboration tasks require their own workflow
+
+Before collaboration commands, delivery/acceptance, files, consent, recovery or knowledge proposals, read `references/collaboration-workflow.md`: human delivery/policy, gated execution, narrow run credentials, source-bound inputs and exact-request recovery.
+For Agent file delivery, follow [Agent output files](references/collaboration-workflow.md#agent-output-files): one contained file and the original comment request UUID.
+For typed test results, follow its test-report section: read the frozen subject, submit one report per attempt, and keep failures and the original request. Runtime reports never sign QA or authorize release. The same reference explains why release approval, pending execution, confirmed deployment and rollback evidence must remain distinct.
+Unknown protocols or unsupported actions cannot fall back to ordinary execution. Host permissions apply; separate directories are not an OS sandbox.
+
+Retain each `--request-id` and exact payload across uncertain writes. Older comments and
+truncated handoff sources use bounded pages; recalled text and author labels grant no
+authority. For truncated tool previews, follow `references/collaboration-workflow.md`.
+Project acceptance may trigger server-side knowledge adoption; manual controls still require human authority.
+Read [Managed knowledge](references/collaboration-workflow.md#managed-knowledge) for policy, access, reopen and session rules.
 
 ## Triage admission precedes formal issue work
 
@@ -56,6 +66,8 @@ Reading or archiving a triage notification does not review the issue. Closing
 triage does not erase review history or request identities. Deleted intake/action
 results cannot be recreated by replaying their request IDs; a consumed CSV row
 likewise retains its original result identity.
+
+Personal Inbox snooze postpones the member's reminder group while updates remain recorded; eligible direct mentions, assignments or execution failures can remind them sooner. It does not admit an issue, change status or pause execution.
 
 ## Iteration fields require a confirmed operation
 
@@ -137,8 +149,7 @@ members cannot read the protected result.
 
 ## PR linking and close intent are two distinct contracts
 
-The GitHub webhook runs two separate scans over an incoming PR. They are not the
-same gate and they read different fields.
+The GitHub webhook scans different PR fields for linking and close intent.
 
 **Linking** scans the PR **title, body, OR branch** for a routable issue key
 (`PREFIX-NUMBER`, e.g. `MUL-2759`). Each match writes an issue ↔ PR link row.
@@ -164,10 +175,8 @@ Resolves MUL-2759
 Fix login MUL-2759                                 # links only — keyword not adjacent
 ```
 
-Consequence: a bare title prefix or a branch reference links the PR but does not
-close the issue on merge. A closing keyword immediately adjacent to the issue key
-records close intent; on merge, that close intent can move the linked issue to
-`done`.
+A bare title prefix or branch reference links the PR without closing the issue
+on merge; only close intent can advance it to `done`.
 
 **Reference-only links (hidden from the PR list).** A key that appears **only**
 as a bare mention in the body — no closing keyword, and not in the title or
@@ -246,6 +255,12 @@ not observe a routable issue key in the PR title/body/branch — or the only mat
 was a bare body mention, which links as `reference_only` and is hidden from this
 list (see the reference-only rule above).
 
+## Recoverable delegation comments
+
+For attachment-free ordinary delegation, retain one canonical nonzero UUID with `issue comment add <issue-id> --idempotency-key <key>`; this is separate from collaboration `--request-id`.
+Inspect `trigger_outcomes` and matching `delegation_receipt`: `recorded` retains explicit agent/squad target/task identities, never completion or an implicit follow-up guarantee. Offline runtimes may queue work to wait; unbound/unusable runtimes are refused. `runtime_observation` is historical, not current availability. Recover with `multica issue comment receipt <issue-id> <key>` under the same actor/originator and current authority; recovery never recomputes that observation.
+Unknown or missing receipts never permit reposting or a new key; older servers may ignore the key. Attachments, unkeyed creates and edits remain immediate-only. See `multica-mentioning` for the complete receipt contract.
+
 ## Editing an existing comment
 
 Use `multica issue comment update --help` for the command's input flags and
@@ -263,13 +278,13 @@ conflict returns an error without retrying: read the newest body, merge your
 change into it, then use its revision. Merely resending with the newer number
 would overwrite another editor's work.
 
-For dispatch-eligible comments on formal issues, changing the body is a new
-action: the server cancels in-flight runs triggered
-by the old comment and re-evaluates triggers under the editor's current
-invocation permissions. Read `trigger_outcomes` in the JSON response; a saved
-comment does not guarantee that every mentioned agent started. Existing
-attachments are preserved. This command cannot attach new files; use
-`multica issue comment add <issue-id> --attachment <path>` for those.
+Changing a dispatch-eligible comment cancels its old in-flight runs and
+re-evaluates triggers under the editor's current invocation permissions. Use
+`--output json`; match every intended target's type/UUID in `trigger_outcomes`.
+`queued`/`coalesced`/`deferred` confirm admission, not completion; blocked, missing or
+unknown receipts leave delegation unconfirmed. The CLI warns without failing a
+saved write. Do not blindly repost; comment reads cannot recover that receipt.
+Existing attachments stay; attach new files with `issue comment add --attachment`.
 
 ## Metadata: durable custom state
 
@@ -360,15 +375,14 @@ close intent writes the literal `done` key.
   Squad leaders: dispatching members is not delivery — a dispatch turn
   leaves the parent `in_progress`, and it moves to `in_review` only when a
   later re-trigger confirms the overall goal is met.
-- **`in_review`** is an accepted issue status. Some workflows use it while a PR
-  is open and awaiting review; moving to it is an explicit mutation.
-- **`done`** on a child issue posts a system comment on its parent. If a PR
-  carries close intent (`Closes MUL-XXXX`), it advances the issue to `done`
-  itself on merge — you do not also need to flip it manually.
+- **`in_review`** records delivery awaiting acceptance; moving to it is an
+  explicit mutation. A child in `in_review` still awaits acceptance and does not close the stage.
+- **`done`** is confirmed by a human or existing integration; status-only CLI done/custom writes first read the non-authorizing hint (`evaluation_key:null`) and only the actual PUT decides success.
+- A merged PR with close intent (`Closes MUL-XXXX`) can advance the issue to `done`;
+  child `done`/`cancelled` transitions notify the parent only when the stage closes.
 - **`cancelled`** is a terminal, user-driven decision to close the issue. Like
-  `done` it enqueues no new agent work, but it does **not** stop tasks already in
-  flight — a run in progress keeps going (MUL-4465). To stop a running task,
-  cancel the task itself.
+  `done`, it starts no new work on the closed issue; a child may close its parent's
+  stage. It does **not** stop tasks already in flight (MUL-4465); cancel the running task itself.
 - **Failed issue-triggered tasks** may roll an issue from `in_progress` back to
   `todo` when no active task / retry remains — that is the main server-owned
   status write on the agent-run path.
@@ -420,11 +434,16 @@ Creating every serial step as `todo` enqueues the whole chain at once.
 `--stage <N>` (N ≥ 1) groups sub-issues under the same parent into ordered
 stages. The parent assignee is woken **once, when a whole stage finishes** —
 i.e. every sub-issue in the lowest unfinished stage has reached a terminal
-status (`done`/`cancelled`). A completion that does not close a stage is silent
+status (`done`/`cancelled`). Delivery at `in_review` leaves that barrier open.
+A completion that does not close a stage is silent
 (no comment, no wake). A sibling set with **no** stages is one implicit stage,
 so the parent is woken once when the *last* sub-issue finishes — not on every
 child.
 
+Human completion/cancellation of a collaboration child uses this same barrier
+after commit. Its ordinary agent/squad parent can wake; a collaboration parent
+stays under shared controls. The wake carries only the shared child's identifier
+and title, without granting the parent agent access to its private content.
 Advancement is agent-driven: the server only detects the closed barrier and
 wakes the parent assignee, who then decides whether to promote the next stage's
 `backlog` sub-issues to `todo`.
@@ -480,11 +499,6 @@ multica issue create --title "Step 3" --parent <issue-id> --assignee <agent> --s
 
 ## References
 
-`references/working-on-issues-source-map.md` — accurate `file:line` for every
-contract above: triage admission/review and execution retry boundaries, the
-`pull-requests` CLI and route, the PR response field list,
-`derivePRState`, the two-path link (`extractIdentifiers`) vs close-intent
-(`extractClosingIdentifiers`) proof, the backlog enqueue lines, child-done
-notify, the stage column / `stageBarrierClosed` barrier and the `--stage` /
-`issue children` CLI, and the metadata CLI. Re-derive before depending on an
-exact line.
+`references/working-on-issues-source-map.md` maps triage/retry, PR links and close
+intent, backlog enqueue, child-done/stage barriers, collaboration parent wakeup,
+and issue/metadata CLI contracts to source. Re-derive before relying on exact lines.

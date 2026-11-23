@@ -2013,6 +2013,13 @@ func TestClaimTask_ProjectGithubReposOverrideWorkspaceRepos(t *testing.T) {
 		testWorkspaceID,
 	).Scan(&agentID, &runtimeID)
 
+	var heartbeatAgeSeconds float64
+	dbfx.QueryRow(t, `SELECT extract(epoch FROM now() - COALESCE(last_seen_at, updated_at))::float8 FROM agent_runtime WHERE id = $1`, runtimeID).Scan(&heartbeatAgeSeconds)
+	t.Logf("shared runtime heartbeat age before payload claim: %.3fs", heartbeatAgeSeconds)
+
+	// This shared fixture must still satisfy the production heartbeat fence.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, runtimeID)
+
 	issueID := dbfx.Issue(t, "project repo override", testutil.Cols{
 		"project_id": projectID,
 		"priority":   "medium",
@@ -2078,6 +2085,9 @@ func TestClaimTask_ProjectDescriptionInjected(t *testing.T) {
 		`SELECT id, runtime_id FROM agent WHERE workspace_id = $1 LIMIT 1`,
 		testWorkspaceID,
 	).Scan(&agentID, &runtimeID)
+
+	// This shared fixture must still satisfy the production heartbeat fence.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, runtimeID)
 
 	issueID := dbfx.Issue(t, "project description", testutil.Cols{
 		"project_id": projectID,
@@ -2168,6 +2178,9 @@ func TestClaimTask_ProjectWithoutRepos_FallsBackToWorkspaceRepos(t *testing.T) {
 		testWorkspaceID,
 	).Scan(&agentID, &runtimeID)
 
+	// This shared fixture must still satisfy the production heartbeat fence.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, runtimeID)
+
 	issueID := dbfx.Issue(t, "no project repos", testutil.Cols{
 		"project_id": projectID,
 		"priority":   "medium",
@@ -2212,6 +2225,9 @@ func TestClaimTask_AutopilotRunOnly_PopulatesWorkspaceAndProjectContext(t *testi
 	dbfx.QueryRow(t, `
 		SELECT a.id, a.runtime_id FROM agent a WHERE a.workspace_id = $1 LIMIT 1
 	`, testWorkspaceID).Scan(&agentID, &runtimeID)
+
+	// This shared fixture must still satisfy the production heartbeat fence.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, runtimeID)
 
 	const projectDescription = "Use only the bound project resources."
 	projectID := dbfx.Project(t, "Run-only autopilot project", testutil.Cols{
@@ -2354,6 +2370,9 @@ func TestClaimTaskByRuntime_TaskWorkspaceMismatch_CancelsAndRejects(t *testing.T
 		`SELECT id, runtime_id FROM agent WHERE workspace_id = $1 LIMIT 1`,
 		testWorkspaceID,
 	).Scan(&localAgentID, &localRuntimeID)
+
+	// This shared fixture must still satisfy the production heartbeat fence.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at = now() WHERE id = $1`, localRuntimeID)
 
 	// Foreign workspace with its own issue — what the misrouted task will
 	// resolve to.

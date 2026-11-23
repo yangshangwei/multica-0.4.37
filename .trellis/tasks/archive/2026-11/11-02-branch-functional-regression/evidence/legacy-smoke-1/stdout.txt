@@ -1,0 +1,31 @@
+
+Running 27 tests using 1 worker
+
+[1A[2K[1/27] [chromium] › e2e/comments.spec.ts:25:3 › Comments › can add a comment on an issue
+[1A[2K[2/27] [chromium] › e2e/comments.spec.ts:55:3 › Comments › comment submit button is disabled when empty
+[1A[2K[3/27] [chromium] › e2e/issues.spec.ts:47:3 › Issues › issues page loads with board view
+[1A[2K[4/27] [chromium] › e2e/issues.spec.ts:57:3 › Issues › can switch from board to list view
+[1A[2K[5/27] [chromium] › e2e/issues.spec.ts:68:3 › Issues › can filter issues by created and updated dates
+[1A[2K[6/27] [chromium] › e2e/issues.spec.ts:111:3 › Issues › can filter issues by custom created date
+[1A[2K[7/27] [chromium] › e2e/issues.spec.ts:137:3 › Issues › can create a new issue
+[1A[2K[8/27] [chromium] › e2e/issues.spec.ts:160:3 › Issues › can navigate to issue detail page
+[1A[2K[9/27] [chromium] › e2e/issues.spec.ts:189:3 › Issues › can dismiss issue creation
+[1A[2K[10/27] [chromium] › e2e/workspace-access-branches.spec.ts:87:1 › accepting an invitation joins exactly once and revisiting shows its accepted state
+[1A[2K[11/27] [chromium] › e2e/workspace-access-branches.spec.ts:105:1 › declining an invitation persists without membership and prevents later acceptance
+[1A[2K[12/27] [chromium] › e2e/workspace-access-branches.spec.ts:121:1 › revoking an invitation while its page is open rejects stale acceptance
+[1A[2K[13/27] [chromium] › e2e/workspace-access-branches.spec.ts:145:1 › a nonexistent invitation shows a recoverable empty state
+[1A[2K[14/27] [chromium] › e2e/workspace-access-branches.spec.ts:157:1 › another account cannot read accept or decline an invitation addressed to its owner
+[1A[2K[15/27] [chromium] › e2e/workspace-access-branches.spec.ts:173:1 › a nonmember cannot open or mutate another workspace and can recover to their own
+[1A[2K[16/27] [chromium] › e2e/workspace-access-branches.spec.ts:192:1 › [API integration] foreign issue identifiers cannot bypass the selected workspace on reads or writes
+[1A[2K[17/27] [chromium] › e2e/workspace-access-branches.spec.ts:203:1 › removing a member from an open workspace relocates the browser and revokes stale API access
+[1A[2K[18/27] [chromium] › e2e/workspace-access-branches.spec.ts:230:1 › cancelling workspace deletion preserves data and resets the typed confirmation
+[1A[2K[19/27] [chromium] › e2e/workspace-access-branches.spec.ts:250:1 › [browser fault injection] failed workspace deletion keeps the dialog and data until a successful retry
+[1A[2K[20/27] [chromium] › e2e/issue-mutation-branches.spec.ts:152:1 › failed status update rolls back the optimistic value before a successful retry
+[1A[2K[21/27] [chromium] › e2e/issue-mutation-branches.spec.ts:177:1 › failed priority update restores the existing priority and retry persists
+[1A[2K[22/27] [chromium] › e2e/issue-mutation-branches.spec.ts:202:1 › failed deletion keeps the confirmation and issue until a successful retry
+[1A[2K[23/27] [chromium] › e2e/issue-mutation-branches.spec.ts:224:1 › cancelling after a failed deletion leaves the issue readable after reload
+[1A[2K[24/27] [chromium] › e2e/issue-mutation-branches.spec.ts:240:1 › failed manual creation retains title and description and retry creates exactly one issue
+[1A[2K[25/27] [chromium] › e2e/issue-mutation-branches.spec.ts:275:1 › failed comment send preserves the draft across reload and retry posts exactly once
+[1A[2K[26/27] [chromium] › e2e/issue-mutation-branches.spec.ts:307:1 › repeated send shortcuts while a comment is pending create only one comment
+[1A[2K[27/27] [chromium] › e2e/task-lifecycle-qa.spec.ts:21:1 › persists a manually created feature request through edits, workflow, comments and confirmed deletion
+[1A[2K  27 passed (1.3m)

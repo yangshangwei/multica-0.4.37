@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS collaboration_knowledge_evaluation_attempt_idx ON collaboration_knowledge_evaluation (check_attempt_id, candidate_id);

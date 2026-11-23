@@ -1,0 +1,37 @@
+{
+  "started_at": "2026-11-03T03:07:01.261055+00:00",
+  "database": "multica_detail_20261103_080906_service",
+  "package": "./internal/service",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-count=1",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationResourceOfferFrozenAuthorityCannotRevive$"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/callers-offer-green-v2-20261103-110701.jsonl",
+  "exit_code": 0,
+  "inventory": {
+    "pass": [
+      "TestCollaborationResourceOfferFrozenAuthorityCannotRevive/participant_rejoin",
+      "TestCollaborationResourceOfferFrozenAuthorityCannotRevive/account_restore",
+      "TestCollaborationResourceOfferFrozenAuthorityCannotRevive/binding_epoch",
+      "TestCollaborationResourceOfferFrozenAuthorityCannotRevive/configuration_restore",
+      "TestCollaborationResourceOfferFrozenAuthorityCannotRevive/runtime_owner_restore",
+      "TestCollaborationResourceOfferFrozenAuthorityCannotRevive/close_reopen",
+      "TestCollaborationResourceOfferFrozenAuthorityCannotRevive"
+    ],
+    "fail": [],
+    "skip": []
+  }
+}

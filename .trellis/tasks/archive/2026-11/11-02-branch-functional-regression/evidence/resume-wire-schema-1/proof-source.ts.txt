@@ -1,0 +1,21 @@
+// @vitest-environment node
+import { readFileSync } from "node:fs";
+import { expect, it } from "vitest";
+import * as schemas from "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/packages/core/api/triage-schemas.ts";
+const fixture = JSON.parse(readFileSync("/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/resume-handler-wire-live-1/triage-wire.json", "utf8"));
+const cases = {
+  settings: schemas.TriageSettingsSchema,
+  item: schemas.TriageItemSchema,
+  actionResult: schemas.TriageActionResultSchema,
+  items: schemas.TriageListResponseSchema,
+  history: schemas.TriageHistoryResponseSchema,
+  batchPreview: schemas.TriageBatchPreviewSchema,
+  batchResult: schemas.TriageBatchResultSchema,
+};
+for (const [name, schema] of Object.entries(cases)) {
+  it(`real Go ${name} parses through current TypeScript API contract`, () => {
+    expect(Object.hasOwn(fixture, name)).toBe(true);
+    expect(() => schema.parse(fixture[name])).not.toThrow();
+    expect(() => schemas.parseTriageResponse(fixture[name], schema, `real Go wire ${name}`)).not.toThrow();
+  });
+}

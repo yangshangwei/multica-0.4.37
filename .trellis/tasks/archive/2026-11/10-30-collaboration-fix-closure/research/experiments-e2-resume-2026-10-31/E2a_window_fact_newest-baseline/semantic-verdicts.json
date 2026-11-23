@@ -1,0 +1,76 @@
+{
+  "reviewed_by": "trellis-check evidence review",
+  "trials": [
+    {
+      "scenario": "E2a_window_fact_newest",
+      "trial": "1",
+      "run_id": "008e9dd2-4af7-4fc1-ae94-f43307ce0198",
+      "runtime_status": "incomplete",
+      "raw_harness_verdict": "provider_failure_unclassified",
+      "valid_behavior_sample": false,
+      "classification": "environment_provider_rate_limit_timeout",
+      "criterion_passed": null,
+      "criterion_evidence": "No final answer. Host reported claude timed out after 5m0s; the test-owned Provider session recorded four HTTP 429 errors.",
+      "context_reads": 1,
+      "memory_reads": 0,
+      "memory_puts": 0,
+      "requested_model": "claude-opus-5-5",
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "api_error_counts": {
+        "429": 4
+      },
+      "provider_record_partial": false,
+      "provider_record_kinds": {
+        "tool_call": 4,
+        "tool_result": 4
+      },
+      "lifecycle": {
+        "complete": true,
+        "prompt_coverage_complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permits": 1,
+        "terminations": 1,
+        "proofs": 1,
+        "run_identity_verified": true
+      },
+      "http_exchange_count": 3017,
+      "http_request_response_pairs_verified": true,
+      "event_sequence_monotonic": true,
+      "terminal_event_matches_record": true,
+      "served_contexts": [
+        {
+          "comment_count": 200,
+          "first_comment_content": "Status update: reviewed the deployment checklist, ran the smoke suite against the staging cluster, and noted three flaky UI tests that need a follow-up ticket. No change to the release plan from my side; latency dashboards look normal and the on-call rotation is confirmed for next week. (update 1)",
+          "last_comment_content": "DECISION UPDATE: the release freeze moves from 2026-11-07 to 2026-11-14. This replaces every earlier freeze date in this issue.",
+          "response_bytes": 98234
+        }
+      ],
+      "exposure_limit": "The complete 200-comment response was served and the saved Provider tool result contains the decisive latest date after reading persisted output. This proves key-fact exposure, not a final correct answer or general pagination robustness. The timeout remains an invalid behavior sample.",
+      "local_events": "E2a_window_fact_newest-baseline/records.jsonl.trials/008e9dd2-4af7-4fc1-ae94-f43307ce0198/events.jsonl",
+      "provider_key_fact_tool_output_observed": true,
+      "provider_initial_output_persisted": true,
+      "key_fact_tool_result": {
+        "call_id": "toolu_bdrk_018w8aREMHXPaJcscEowTViy",
+        "body": "3 c5d86bdb-cf27-4151-b64d-6d98930af94c member ac7b60a3-243f-4ff0-914a-b917de86685a None 2026-10-01T09:03:00Z\n    Initial plan: the release freeze is 2026-11-07.\n199 bdf46d7f-d857-499c-8c25-47d7f2e111ff member ac7b60a3-243f-4ff0-914a-b917de86685a None 2026-10-01T12:19:00Z\n    DECISION UPDATE: the release freeze moves from 2026-11-07 to 2026-11-14. This replaces every earlier freeze date in this issue.\nShell cwd was reset to /private[local]"
+      },
+      "http_error_statuses": {}
+    }
+  ],
+  "scenario": "E2a_window_fact_newest",
+  "total_slots": 3,
+  "consumed_slots": [
+    1
+  ],
+  "valid_samples": 0,
+  "invalid_attempts": 1,
+  "unrun_trials": [
+    2,
+    3
+  ],
+  "next_scenario": "E2a_window_fact_newest",
+  "next_start_trial": 2,
+  "remaining_provider_call_cap": 23,
+  "later_scenarios_run": false
+}

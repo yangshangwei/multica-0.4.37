@@ -1,0 +1,296 @@
+{
+  "TestRK1KnowledgeEntryGuard": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard/ordinary_capture": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard/marker_missing": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard/identity_missing": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard/identity_noncanonical": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard/identity_ambiguous": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard/credential_wrong_purpose": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard/no_installed_real_target": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard/passthrough_standin": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeWrapperGuard/standin_symlink_refused": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData/ordinary_actual_header": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData/host_actual_header": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData/ordinary_no_material": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData/bare_words_are_not_granted_data": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData/trailing_data_refused": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData/missing_array_refused": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData/empty_host_array": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData/null_array_refused": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgePromptData/ambiguous_blocks_refused": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeTraceCredentialLabels": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeTraceCredentialLabels/JWT": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeTraceCredentialLabels/unknown": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeTraceCredentialLabels/cookie": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeTraceCredentialLabels/daemon": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeTraceCredentialLabels/task": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeTraceCredentialLabels/business": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeTraceCredentialLabels/none": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeNativeMetadataUsesRawOutput": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeNativeMetadataUsesRawOutput/complete": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeNativeMetadataUsesRawOutput/missing_native": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeNativeMetadataUsesRawOutput/missing_result": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeNativeMetadataUsesRawOutput/invalid_raw": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeNativeMetadataUsesRawOutput/changed_native": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeNativeMetadataUsesRawOutput/duplicate_result": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeFakeProof": {
+    "run": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "TestRK1KnowledgeFakeProof/E0b": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeFakeProof/K1": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeFakeProof/K2": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeFakeProof/K3": {
+    "run": 1,
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "TestRK1KnowledgeEvidenceFaults": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeEvidenceFaults/wrong": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeEvidenceFaults/missing_result": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeEvidenceFaults/missing_native": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeEvidenceFaults/evidence_stdout_write": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeEvidenceFaults/evidence_stdout_sync": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeEvidenceFaults/evidence_stdout_close": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "TestRK1KnowledgeEvidenceFaults/evidence_launch_record": {
+    "run": 1,
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  }
+}

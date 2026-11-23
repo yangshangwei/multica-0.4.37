@@ -105,12 +105,17 @@ vi.mock("@multica/core/modals", () => ({
 // lifecycle — including the cancel path, which never calls onDragEnd.
 let lastOnDragStart: any = null;
 let lastOnDragCancel: any = null;
+type RecordedDrag = (event: { active: { id: string }; over: { id: string } }) => void;
+let lastOnDragOver: RecordedDrag | null = null;
+let lastOnDragEnd: RecordedDrag | null = null;
 const stableSetNodeRef = () => {};
 
 vi.mock("@dnd-kit/core", () => ({
-  DndContext: ({ children, onDragStart, onDragCancel }: any) => {
+  DndContext: ({ children, onDragStart, onDragCancel, onDragOver, onDragEnd }: any) => {
     lastOnDragStart = onDragStart;
     lastOnDragCancel = onDragCancel;
+    lastOnDragOver = onDragOver;
+    lastOnDragEnd = onDragEnd;
     return children;
   },
   DragOverlay: () => null,
@@ -361,5 +366,23 @@ describe("ListView non-drag ordering", () => {
     mockViewState.sortBy = "priority";
     renderListView();
     expect(screen.queryByRole("button", { name: /Move MUL-/ })).toBeNull();
+  });
+});
+
+describe("ListView collaboration drag", () => {
+  it("retains the source row while opening a status workflow on drop", () => {
+    mockViewState.sortBy = "position";
+    mockViewState.listCollapsedStatuses = [];
+    const account = { user_id: "external", name: "External handler", avatar_url: "", external: true };
+    const shared = { ...ISSUES[0]!, collaboration: { creator: account, handler: account, has_external_collaborators: true } };
+    const move = vi.fn();
+    const { container } = renderListView([shared, ISSUES[1]!], ["todo", "in_review"], move);
+    act(() => lastOnDragStart({ active: { id: shared.id } }));
+    const before = container.innerHTML;
+    act(() => lastOnDragOver?.({ active: { id: shared.id }, over: { id: "status:in_review" } }));
+    expect(container.innerHTML).toBe(before);
+    expect(move).not.toHaveBeenCalled();
+    act(() => lastOnDragEnd?.({ active: { id: shared.id }, over: { id: "status:in_review" } }));
+    expect(move).toHaveBeenCalledWith(shared.id, { status: "in_review", position: shared.position, before_id: null, after_id: null });
   });
 });

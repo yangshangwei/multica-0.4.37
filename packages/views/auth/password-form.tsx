@@ -80,6 +80,14 @@ export function PasswordForm({ mode = "login", onSuccess, footer, logo, title: l
   const showConfirmationError = passwordsMismatch && confirmationTouched;
   const title = mode === "change" ? t(($) => $.password.change_title) : mode === "setup" ? t(($) => $.password.setup_title) : register ? t(($) => $.password.register_title) : t(($) => $.password.login);
 
+  async function logout() {
+    if (pending.current) return;
+    pending.current = true; setLoading(true); setError("");
+    try { await useAuthStore.getState().logout(); }
+    catch { setError(t(($) => $.password.request_failed)); }
+    finally { pending.current = false; setLoading(false); }
+  }
+
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (pending.current || retryAfter > 0) return;
@@ -176,7 +184,7 @@ export function PasswordForm({ mode = "login", onSuccess, footer, logo, title: l
           {mode === "login" ? <>
             {signup && <Button variant="link" className="min-h-11 whitespace-normal" disabled={loading} onClick={() => {setRegister(!register);setPassword("");setConfirmPassword("");setConfirmationTouched(false);setError("");}}>{register ? t(($) => $.password.back_to_login) : t(($) => $.password.register_title)}</Button>}
             {!register && <p className="text-caption text-muted-foreground">{t(($) => $.password.recovery)}</p>}
-          </> : <Button variant="link" className="min-h-11" disabled={loading} onClick={() => useAuthStore.getState().logout()}>{t(($) => $.password.logout)}</Button>}
+          </> : <Button variant="link" className="min-h-11" disabled={loading} onClick={logout}>{t(($) => $.password.logout)}</Button>}
         </div>
       </CardContent>
       {footer && <CardFooter className="px-6">{footer}</CardFooter>}

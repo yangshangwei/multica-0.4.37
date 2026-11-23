@@ -1,0 +1,19 @@
+=== vet+build 16:54:11
+vet exit=0
+build exit=0
+=== agentintegration vet 16:54:27
+vet-tag exit=0
+=== daemon collaborationrun 16:54:27
+daemon exit=0
+=== RUN   TestHostProviderAccountSmokeAuthorizesSharedContextBase
+--- PASS: TestHostProviderAccountSmokeAuthorizesSharedContextBase (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.451s
+authorizer exit=0
+=== cmd/multica 16:54:38
+cmd exit=0
+=== service collaboration 16:54:42
+service exit=0
+=== handler collaboration 17:00:22
+handler exit=0
+=== done 17:00:43

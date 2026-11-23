@@ -8,6 +8,7 @@ param(
     [ValidatePattern('^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$')][string]$PreviousVersion,
     [switch]$RequireSigned,
     [switch]$BusinessAcceptance,
+    [switch]$CollaborationAcceptance,
     [ValidateRange(1, 600)][int]$TimeoutSeconds = 300
 )
 
@@ -171,6 +172,17 @@ function Install-AndVerify {
         if ($business.status -ne 'passed') { throw "Business report did not pass: $phase" }
         $step.business = $business.status
     }
+    if ($CollaborationAcceptance -and $Label -in @('install_candidate', 'upgrade_candidate', 'reinstall_candidate')) {
+        if ([string]::IsNullOrWhiteSpace($env:MULTICA_COLLABORATION_STATE_DIR)) { throw 'Collaboration state directory missing' }
+        $collaborationReport = "$env:RUNNER_TEMP/multica-windows-collaboration-$Label.json"
+        & node (Join-Path $PSScriptRoot 'windows-collaboration.mjs') --phase $Label --installed-directory $installDirectory --state-dir $env:MULTICA_COLLABORATION_STATE_DIR --report $collaborationReport
+        if ($LASTEXITCODE -ne 0) { throw "Installed collaboration journey failed: $Label" }
+        $collaboration = Get-Content -LiteralPath $collaborationReport -Raw | ConvertFrom-Json
+        if ($collaboration.status -ne 'passed' -or $collaboration.source_commit -cne $env:GITHUB_SHA) { throw 'Installed collaboration evidence is not a source-bound pass' }
+        $step.collaboration = $collaboration.status
+        $report.collaboration_tested = $true
+        $report.gui_tested = $true
+    }
     $step.status = 'passed'
 }
 
@@ -209,7 +221,7 @@ $report = [ordered]@{
     source_commit = $env:GITHUB_SHA; started_at = [DateTime]::UtcNow.ToString('o'); finished_at = $null
     require_signed = [bool]$RequireSigned; installer = $null; previous_installer = $null
     upgrade = if ($PreviousInstallerPath) { 'pending' } else { 'not_tested_no_previous_installer' }
-    gui_tested = $false; managed_backend_tested = $false; update_feed_tested = $false; user_state_retention_tested = $false
+    gui_tested = $false; managed_backend_tested = $false; update_feed_tested = $false; user_state_retention_tested = $false; collaboration_tested = $false
     offline_certificate_trust_tested = $false; steps = [Collections.Generic.List[object]]::new(); error = $null
 }
 try {

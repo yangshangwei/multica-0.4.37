@@ -1,0 +1,32 @@
+{
+  "name": "cli-red01",
+  "command": [
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-p",
+    "1",
+    "./cmd/multica",
+    "-run",
+    "^TestIssueCommentDurable",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T03:57:18.219463+00:00",
+  "finished_at": "2026-11-10T03:57:24.946917+00:00",
+  "exit_code": 0,
+  "database_url": "",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/cli-red01.log",
+  "log_sha256": "a2ade9840f763161be16cb217e387108effef4e732df177fadd05de6f9a0c0a7",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  }
+}

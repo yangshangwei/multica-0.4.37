@@ -1,0 +1,1385 @@
+{
+  "reviewed_at": "2026-11-05T12:23:49.209794+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Actual original H2b three-trial behavior/lifecycle, CLI artifacts and saved operator delta only",
+  "verdict": "pass-with-notes",
+  "checks_passed": 289,
+  "checks_failed": [],
+  "trials": [
+    {
+      "label": "RK1-H2b-t1",
+      "verdict": "pass",
+      "member_run": "fcae6cd2-51c0-4b3e-8086-237f8a8871a6",
+      "continuation_run": "64724dc7-35e8-4c61-96c3-f145d885aaa5",
+      "wake_kind": "proof",
+      "wake_run": "fcae6cd2-51c0-4b3e-8086-237f8a8871a6",
+      "source_truncated": true,
+      "member_result_bytes": 5782,
+      "startup_prefix_bytes": 4096,
+      "exact_source_reads": 1,
+      "matching_tool_results": 1,
+      "started_at": "2026-11-05T12:12:25.117116Z",
+      "finished_at": "2026-11-05T12:14:44.775557Z"
+    },
+    {
+      "label": "RK1-H2b-t2",
+      "verdict": "pass",
+      "member_run": "0d029afc-2484-44a1-9183-7f41b35ecc88",
+      "continuation_run": "7ac131c0-64d9-4d30-ab66-a0e8ba23df9e",
+      "wake_kind": "proof",
+      "wake_run": "0d029afc-2484-44a1-9183-7f41b35ecc88",
+      "source_truncated": true,
+      "member_result_bytes": 5782,
+      "startup_prefix_bytes": 4096,
+      "exact_source_reads": 1,
+      "matching_tool_results": 1,
+      "started_at": "2026-11-05T12:14:44.900432Z",
+      "finished_at": "2026-11-05T12:18:50.93126Z"
+    },
+    {
+      "label": "RK1-H2b-t3",
+      "verdict": "pass",
+      "member_run": "97291261-8db7-498f-b355-3ff9f8958403",
+      "continuation_run": "3d7e7d0e-48fb-4c94-b5eb-2aab666200a3",
+      "wake_kind": "proof",
+      "wake_run": "97291261-8db7-498f-b355-3ff9f8958403",
+      "source_truncated": true,
+      "member_result_bytes": 5782,
+      "startup_prefix_bytes": 4096,
+      "exact_source_reads": 1,
+      "matching_tool_results": 1,
+      "started_at": "2026-11-05T12:18:51.060034Z",
+      "finished_at": "2026-11-05T12:21:29.286323Z"
+    }
+  ],
+  "source": {
+    "head": "b9e35c22cd7e086af321bbf7dc87d1c6ea5b3441",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "source_file_count": 7990,
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "framework_file_count": 17,
+    "product_dirty_paths": []
+  },
+  "CLI_sha256": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+  "physical_starts": {
+    "new_paid": 3,
+    "fake_seeds": 6,
+    "cumulative_paid": 10,
+    "remaining": 15
+  },
+  "original_stop_triggered": false,
+  "helper_review_ready": true,
+  "HTTP_poll_observations": [
+    {
+      "trial": "RK1-H2b-t1",
+      "role": "seed_member",
+      "seq": 60,
+      "at": "2026-11-05T12:12:29.621537Z",
+      "method": "GET",
+      "path": "/api/collaboration/runtime/runs/fcae6cd2-51c0-4b3e-8086-237f8a8871a6/stop-intent",
+      "status": 503
+    },
+    {
+      "trial": "RK1-H2b-t2",
+      "role": "seed_leader",
+      "seq": 27,
+      "at": "2026-11-05T12:14:47.009329Z",
+      "method": "GET",
+      "path": "/api/collaboration/runtime/runs/b79b3c6a-38a7-4fbe-b31d-ed3a42c15930/stop-intent",
+      "status": 503
+    }
+  ],
+  "poll_scope": "Two non-success GET stop-intent observations are retained. Original lifecycle checks require the successful admitted writes/ACKs and no Runner error, not every polling response to be2xx; no timing root cause is asserted.",
+  "operator_delta": {
+    "before": "3abdc4664960b40751b006320fcd79b7bcc179112b2d4a88cbec3e2d63e5ea74",
+    "after": "e58713833ac71539dee81727c478519818dc10326e501ebcceee8ba7de2303e9",
+    "changed_files": 2,
+    "added": 0,
+    "removed": 0,
+    "marketplaces": "Two lastUpdated timestamps only; source/install mappings unchanged.",
+    "directory_catalog": "Exact saved bytes unchanged; no catalog commit/version/summary delta in this invocation.",
+    "builtin_store": "usage-rows-queued UUID changed; identical fixed suffix; raw UUID omitted",
+    "loaded_plugin_reports_identical": true,
+    "loaded_plugin_leaves_unchanged": 1970,
+    "installed_registry_unchanged": true,
+    "assessment": "Saved bytes show only two marketplace refresh timestamps and the builtin queued-usage identifier changed. Full manifests, installed selection, directory catalog and loaded plugin code otherwise unchanged. Preserve full digest difference; rebind before next invocation.",
+    "limits": "No writer attribution or continuous/intermediate-loaded-byte guarantee; full tree is changed, not stable."
+  },
+  "coverage_limits": [
+    "H2b proves decisive code fetched beyond truncated startup prefix and exposed through matching Provider tool result.",
+    "No complete reader-matrix or results/causes pagination beyond32 claim.",
+    "Seeded delegation/member processes are fake, measured continuations are real."
+  ],
+  "recommendation": "Accept original H2b three-of-three. Root may disposition the specific saved timestamp/usage delta; before H3a require full current operator rebind, exact committed source/CLI/DB and new model window. No automatic next scenario.",
+  "next_scenario_authorized": false,
+  "checks": [
+    {
+      "name": "one_original_invocation",
+      "passed": true
+    },
+    {
+      "name": "invocation_hash",
+      "passed": true
+    },
+    {
+      "name": "actual_original_and_helper_success",
+      "passed": true
+    },
+    {
+      "name": "original_stop_false",
+      "passed": true
+    },
+    {
+      "name": "original_command",
+      "passed": true
+    },
+    {
+      "name": "same_admission_binding",
+      "passed": true
+    },
+    {
+      "name": "actual_build_check_success",
+      "passed": true
+    },
+    {
+      "name": "permit_artifact_hashes",
+      "passed": true
+    },
+    {
+      "name": "within_window",
+      "passed": true
+    },
+    {
+      "name": "closed_current_permits",
+      "passed": true
+    },
+    {
+      "name": "no_automatic_next_or_retry",
+      "passed": true
+    },
+    {
+      "name": "ten_actual_captures",
+      "passed": true
+    },
+    {
+      "name": "actual_CLI_hashes",
+      "passed": true
+    },
+    {
+      "name": "actual_CLI_sizes_and_privacy",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:public_copy",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:exact_finished_real_trial",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:trace_sequence",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:trace_published_after_completion",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:exact_roles",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:non_success_is_only_terminal_poll",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_leader:no_recorded_runner_error",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:non_success_is_only_terminal_poll",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:seed_member:no_recorded_runner_error",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:real_provider",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:observed_provider_model",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:no_business_write",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:public_answer_raw",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:non_success_is_only_terminal_poll",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:measured:no_recorded_runner_error",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:real_mention_creates_member",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:member_immutable_parent_assignment",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:delegation_text_authority",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:member_result_matches_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:continuation_envelope_shape",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:independent_strict_answer",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:no_other_member_code",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:decisive_code_beyond4096",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:actual_exact_source_read",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:full_original_content_returned",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:source_code_shown_in_matching_tool_result",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:source_not_answer_only",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:criteria_projection",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t1:observed_input_readers_include_three_runs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:public_copy",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:exact_finished_real_trial",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:trace_sequence",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:trace_published_after_completion",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:exact_roles",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:non_success_is_only_terminal_poll",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_leader:no_recorded_runner_error",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:non_success_is_only_terminal_poll",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:seed_member:no_recorded_runner_error",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:real_provider",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:observed_provider_model",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:no_business_write",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:public_answer_raw",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:non_success_is_only_terminal_poll",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:measured:no_recorded_runner_error",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:real_mention_creates_member",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:member_immutable_parent_assignment",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:delegation_text_authority",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:member_result_matches_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:continuation_envelope_shape",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:independent_strict_answer",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:no_other_member_code",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:decisive_code_beyond4096",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:actual_exact_source_read",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:full_original_content_returned",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:source_code_shown_in_matching_tool_result",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:source_not_answer_only",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:criteria_projection",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t2:observed_input_readers_include_three_runs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:public_copy",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:exact_finished_real_trial",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:trace_sequence",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:trace_published_after_completion",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:exact_roles",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:non_success_is_only_terminal_poll",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_leader:no_recorded_runner_error",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:fake_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:seed_business_writes",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:non_success_is_only_terminal_poll",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:seed_member:no_recorded_runner_error",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:one_physical_and_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:claim_negotiation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:two_permits_one_attempt",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:actual_input_hash_binding",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:mandatory_preparation",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:argv_original_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:complete_launch",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:raw_success_result_matches_outcome",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:checkpoints_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:completed_recording_seal",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:termination_proof_settlement",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:private_ledger_retained",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:durable_ACKs",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:actual_CLI_path",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:real_provider",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:observed_provider_model",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:no_business_write",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:public_answer_raw",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:non_success_is_only_terminal_poll",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:measured:no_recorded_runner_error",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:real_mention_creates_member",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:member_immutable_parent_assignment",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:delegation_text_authority",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:member_result_matches_seed",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:continuation_envelope_shape",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:independent_strict_answer",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:no_other_member_code",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:decisive_code_beyond4096",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:actual_exact_source_read",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:full_original_content_returned",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:source_code_shown_in_matching_tool_result",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:source_not_answer_only",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:criteria_projection",
+      "passed": true
+    },
+    {
+      "name": "RK1-H2b-t3:observed_input_readers_include_three_runs",
+      "passed": true
+    },
+    {
+      "name": "all_nine_prepared_CLI_copies",
+      "passed": true
+    },
+    {
+      "name": "measured_seed_counts",
+      "passed": true
+    },
+    {
+      "name": "cumulative_budget",
+      "passed": true
+    },
+    {
+      "name": "public_private_accounting",
+      "passed": true
+    },
+    {
+      "name": "full_plugin_digests",
+      "passed": true
+    },
+    {
+      "name": "two_exact_plugin_changes",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:known_marketplaces.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:known_marketplaces.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:plugin-directory-cache-v2.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:plugin-directory-cache-v2.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:store/cc-plugin-agents-md_builtin-b049b47b3618.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:store/cc-plugin-agents-md_builtin-b049b47b3618.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:store/cc-plugin-diff_builtin-3903e77c01b1.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:store/cc-plugin-diff_builtin-3903e77c01b1.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:before:oh-my-claudecode/.usage-cache-anthropic.json",
+      "passed": true
+    },
+    {
+      "name": "selected_copy:after:oh-my-claudecode/.usage-cache-anthropic.json",
+      "passed": true
+    },
+    {
+      "name": "marketplace_timestamps_only",
+      "passed": true
+    },
+    {
+      "name": "directory_catalog_bytes_unchanged",
+      "passed": true
+    },
+    {
+      "name": "store_queue_identifier_only",
+      "passed": true
+    },
+    {
+      "name": "remaining_selected_metadata_identical",
+      "passed": true
+    },
+    {
+      "name": "all_reported_loaded_plugins_identical",
+      "passed": true
+    },
+    {
+      "name": "all_loaded_plugin_code_unchanged",
+      "passed": true
+    },
+    {
+      "name": "installed_registry_unchanged",
+      "passed": true
+    },
+    {
+      "name": "operator_only_plugin_delta",
+      "passed": true
+    },
+    {
+      "name": "source_framework_unchanged",
+      "passed": true
+    },
+    {
+      "name": "immutable_binding_fields_equal",
+      "passed": true
+    },
+    {
+      "name": "only_expected_public_additions",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:helper_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:config_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:registration_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:addendum_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:launcher_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:provider_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:go_sha256",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-H2-t1",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-H2-t2",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-H2-t3",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-E0a-t1",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-H1-t1",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-H1-t2",
+      "passed": true
+    },
+    {
+      "name": "prior_public_unchanged:RK1-H1-t3",
+      "passed": true
+    }
+  ],
+  "hashes": {
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/run-result.json": "10ae0fedcf37cfa9e29ece6d4b69f463f1ce31a07b1bf56ec33d360d36a09994",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/build-result.json": "e233685e370f6db61e7e6fd6c7c35af341c1ad689fee432831e4f3778d76ba02",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/check-result.json": "a8e2074319fa7856347afb9b35125b0743c78dcbd247e42559a4c9af9841f062",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/permit-used-run.json": "9209747e76c0fc4a079b229523736b581bfec7178b3a7dc4547c5dcd4fdc49b6",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/permit.json": "2d4a5b833fce4eecad444fefc5b1c06a85f7122afde1f70d86a1f6163c99f3c6",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/run-attempt.json": "7abeb43e17fe96caa5c7b4ae6ad52083894c93239971243977766e487e7f9c9f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures.json": "50fd0d9ec1501fd0a3d249a318e86e6b2b91d7775d6c99637d0d94912c75cead",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/invocation-20261105T121213Z.json": "2dfb723d95173df11cc5fa7fe3e21c04160fbc11841758234022cd4051bd42cf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/upfront-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-000-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-001-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-002-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-003-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-004-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-005-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-006-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-007-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-008-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/captures/capture-009-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2b-t1.json": "ec1990bdc982d0f1350befbe4972879e5c4956edd6f9794f98dd1c7f8ba491c3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/public.json": "ec1990bdc982d0f1350befbe4972879e5c4956edd6f9794f98dd1c7f8ba491c3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/trace.jsonl": "be26d5a637b07b163c1ee2feda11e88dedab21efd49a91cf036e8053d89e9daa",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/f2be9489-57d2-40b5-bd11-0cdd671e2cb6/launch-1/launch.json": "1525430306dc9ece4fb5229eb8a3db718ff49169fadf9e5f3a977797f476ef4a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/f2be9489-57d2-40b5-bd11-0cdd671e2cb6.json": "b5d2c5cace7cd630f1558cbc5954f0bfc3d07936f635e10442a02f9dd6b3d8a9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/f2be9489-57d2-40b5-bd11-0cdd671e2cb6/launch-1/stdin-first.jsonl": "3b35294435739d5f2fbc66d811b8c9b6f5f9d4b778dae8d331b61f222e81d468",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/f2be9489-57d2-40b5-bd11-0cdd671e2cb6/launch-1/stdout.jsonl": "e871aa3bc1771db99f6d3399a7b89d8efecaa251ae593c11c2d165d04992d42d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/ledger/f2be9489-57d2-40b5-bd11-0cdd671e2cb6/38221f9c1dbd493fbade54e5db58a99268261faa522840937d54dbb77c96ad24.json": "a453b76e04db91bac12a0a748cc0974039b52f1a4e7cab1451feed1c450ed076",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/fcae6cd2-51c0-4b3e-8086-237f8a8871a6/launch-1/launch.json": "9b38667c9904805c5cf0e1f6ecbf04eb08e1495f803681ca998b3f723509a3d5",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/fcae6cd2-51c0-4b3e-8086-237f8a8871a6.json": "ddca9f51320b3f57ed11049679e9c7dc055a9496013790203d40a8dbc0beaa3d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/fcae6cd2-51c0-4b3e-8086-237f8a8871a6/launch-1/stdin-first.jsonl": "b9a88829bfa6b64546e62cfc9d72eb4b7907946cc3cc7e2933245248d3c782f1",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/fcae6cd2-51c0-4b3e-8086-237f8a8871a6/launch-1/stdout.jsonl": "4c8a32b842afd234c625157f4601fadec59699711934e946a2273ca3b86e2c3f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/ledger/fcae6cd2-51c0-4b3e-8086-237f8a8871a6/491fc022da72f3f4902bff49a79ae9f2c61b75dbef235625377333bd89424687.json": "8f16f170d6860f060c71df2431c0b7d091a05acc30605514909eca8d29df4ae9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/64724dc7-35e8-4c61-96c3-f145d885aaa5/launch-1/launch.json": "5bb8506a515499c004726a37ef74f26c6f4781dacdf73798402a25d6602502a9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/64724dc7-35e8-4c61-96c3-f145d885aaa5.json": "72fd38d3f3c1dbb0cb75fa6cb49a7854bcb66e0a8e19a8c46c5dc950a68e1ae4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/64724dc7-35e8-4c61-96c3-f145d885aaa5/launch-1/stdin-first.jsonl": "03c357da5ea97cedbe92d65f73d4e57a1703463e37bf6484f4e46cafabc0db55",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/provider/64724dc7-35e8-4c61-96c3-f145d885aaa5/launch-1/stdout.jsonl": "1bba9874f98cf2565d6e1a11982506a5acb76e899e30dac3ace8a48abc331f90",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t1/ledger/64724dc7-35e8-4c61-96c3-f145d885aaa5/6d83e7d289192dc754ebc8541bcc0607798f58de77172c626ff462f72df4ce24.json": "360c62706f65405695084f477456a0ce93300f9b51d93d2f6d2d440f34b09fdb",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2b-t2.json": "8fcb103a282d86aa5a4d6de2aa2de2921ece818b3e607a294c724828660cbec3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/public.json": "8fcb103a282d86aa5a4d6de2aa2de2921ece818b3e607a294c724828660cbec3",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/trace.jsonl": "c79cb2623f56db5e376af5ad854dd6028fb7f6d68bd43cbcf3cd6ac481d13342",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/b79b3c6a-38a7-4fbe-b31d-ed3a42c15930/launch-1/launch.json": "77b3e6fe52741b19248c4f1f2b849854de72d1c109e3df58aa0098201353200a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/b79b3c6a-38a7-4fbe-b31d-ed3a42c15930.json": "482945e5968b155d41d1121e8fd59bb48f7f01fbd28389082b85b11ed2ac1800",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/b79b3c6a-38a7-4fbe-b31d-ed3a42c15930/launch-1/stdin-first.jsonl": "1259747972c0f6bebb254226641db8021286e5800334fc92640fe147fdb1d214",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/b79b3c6a-38a7-4fbe-b31d-ed3a42c15930/launch-1/stdout.jsonl": "5a8d03c85eb77f9e6926fe28515c0092e0927fcee2fec0b07f76d45e36b728ea",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/ledger/b79b3c6a-38a7-4fbe-b31d-ed3a42c15930/c08336de3dcc728607049a4cb141bf2e99b2e46c07994acc3bb490e28ddc43ed.json": "79ffe9c697f689ed7410b4c0c671a15073edbfbba901855238f8a3a1eead9e0a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/0d029afc-2484-44a1-9183-7f41b35ecc88/launch-1/launch.json": "7d98dfa53a2bd19f30cdedac57925530658871593df7df0f9674c73f22759fcf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/0d029afc-2484-44a1-9183-7f41b35ecc88.json": "8d76400f19d181ad1b619ab0073b4574041b7aa43ea62e3401449bfbf0100bea",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/0d029afc-2484-44a1-9183-7f41b35ecc88/launch-1/stdin-first.jsonl": "14a083d8d9d09bacade15774ffbaff9ca2dda0d98b593f026d9e08c48f6e22c8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/0d029afc-2484-44a1-9183-7f41b35ecc88/launch-1/stdout.jsonl": "ee1633f85afdbc9c39a133b0ca641dcaa91758f6ea40f2b49aea72cc59456740",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/ledger/0d029afc-2484-44a1-9183-7f41b35ecc88/2b8c49318de6b55c277f390240eab136ee13bcff7756c77d9c509c4ce3760008.json": "b9dc38ce6d803344cca3728e8665d3d91cdca022d3c20d26a3d5e833f3d05e4b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/7ac131c0-64d9-4d30-ab66-a0e8ba23df9e/launch-1/launch.json": "b895caad8efca5ec5d9ec266097d284370003193ce63d7f092c6bc94aabb52b0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/7ac131c0-64d9-4d30-ab66-a0e8ba23df9e.json": "72fd38d3f3c1dbb0cb75fa6cb49a7854bcb66e0a8e19a8c46c5dc950a68e1ae4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/7ac131c0-64d9-4d30-ab66-a0e8ba23df9e/launch-1/stdin-first.jsonl": "0dfe402297f0c7d26f72ab9408de2175cae79d1a859739d6ff01e42e7c7cb2bf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/provider/7ac131c0-64d9-4d30-ab66-a0e8ba23df9e/launch-1/stdout.jsonl": "4cc436ae27b3da2327bbc2dd0454b8aea2fac3627cea5fe041e5708ddd8822db",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t2/ledger/7ac131c0-64d9-4d30-ab66-a0e8ba23df9e/e6b2e5deb50a79f403965806aafd7d2220bc8744d3ec4e98b3dd0bf436aa1ae4.json": "1b47944e8fa27882331ffea93fa9f2338a64dd3326c77c80f2bdad6a0e89d97a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2b-t3.json": "5a2f48bc823aca228d1857ab3bfafe904ca8551e706190bea7b817e8e11968ef",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/public.json": "5a2f48bc823aca228d1857ab3bfafe904ca8551e706190bea7b817e8e11968ef",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/trace.jsonl": "99edfb5df413c5b1dadc64a51910571f92010c4c2a7b7a3c6b4c6c23910be282",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/867dcf46-a823-47d0-b8f8-2d545788e75f/launch-1/launch.json": "9d7c28701641470d513b40468b4cbb25931a4fe7e72548b97c0a56a862d7928d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/867dcf46-a823-47d0-b8f8-2d545788e75f.json": "c3a14f7e8d2dc21f898e5f3b6ae02495f7f981b5b510dd6a95d56653dcdf231c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/867dcf46-a823-47d0-b8f8-2d545788e75f/launch-1/stdin-first.jsonl": "eefc09ec79179a02b718dcf115f00b04ff76e452795f2a5095dbac7dad477a3a",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/867dcf46-a823-47d0-b8f8-2d545788e75f/launch-1/stdout.jsonl": "afcc421565eaa7ffbcf6b3dafc7d396dfba82803da446890b7431e6292abf9e8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/ledger/867dcf46-a823-47d0-b8f8-2d545788e75f/3bfb69ba8653dbe5b1d5c15d7b7bb28e43b14f3bfc3054b062a9387ecfeeac08.json": "bac75a8a0002ea41dc25fc4361e459219b68f32c7ef1bdd75ff180ddb3750a84",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/97291261-8db7-498f-b355-3ff9f8958403/launch-1/launch.json": "a6ea622b3c912e8c837235025104065a112351223f4af375ed2d361379e48753",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/97291261-8db7-498f-b355-3ff9f8958403.json": "eb5ab801544633e9683a4d214c3d79babce4ea5c65509e0a660dc8bac71b08d6",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/97291261-8db7-498f-b355-3ff9f8958403/launch-1/stdin-first.jsonl": "c6d4b776671137c7dcfac32fdb4df6dd7d6f0eb64534ffa17021d13600f38657",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/97291261-8db7-498f-b355-3ff9f8958403/launch-1/stdout.jsonl": "884290682fcd2e76618430e9cc29d07a7db3c59dc8390633d870b8d9c191ec23",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/ledger/97291261-8db7-498f-b355-3ff9f8958403/4794bc1e0b907031a87184a0b8e1192bf357b87d5b66167b805e3f02508f669c.json": "5509ad790449ac42606b617b73951e82870a129461312cee2748ec8c488dc781",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/3d7e7d0e-48fb-4c94-b5eb-2aab666200a3/launch-1/launch.json": "fa141d9d43ca7be9e1ee5a485c1e395e7432cce41975d820218bc19b8db6a961",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/3d7e7d0e-48fb-4c94-b5eb-2aab666200a3.json": "72fd38d3f3c1dbb0cb75fa6cb49a7854bcb66e0a8e19a8c46c5dc950a68e1ae4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/3d7e7d0e-48fb-4c94-b5eb-2aab666200a3/launch-1/stdin-first.jsonl": "9f7157c7e5c64349df428b340497f2dbaa2558928ba3eeff114f0243ad1e4877",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/provider/3d7e7d0e-48fb-4c94-b5eb-2aab666200a3/launch-1/stdout.jsonl": "26261f7957a1b437ddeedb198a347b6ae0753a94573c8e9bfc463f2d3259a2f6",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H2b/RK1-H2b-t3/ledger/3d7e7d0e-48fb-4c94-b5eb-2aab666200a3/ab15d307ac98d74208ce38ae96db2b6badf105374278dee4c2eae0cb9f85e882.json": "3a51e24bac1af0857db6ed2e7e4012dbf5e1d106289b3f9334aa3491aac9d296",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/run-plugins-before.json": "8f8675a72e98e896467533f2194c73aade9e51c9cf4efa6424272c771af5b4e0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/plugins-after.json": "9f9bbc20be8c246176b0df359a0a606ed1020af9ead7b0e1036bbfd9af340363",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/run-plugins-before.metadata/known_marketplaces.json": "1f2598e31969d280ec3a5911c3d7391e17fe693869ffa853040f9142313f680d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/plugins-after.metadata/known_marketplaces.json": "cba041ec2b059dc31ece2ec8e123410ace8465ae4ea4d8f14ada5c98b0284e08",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/run-plugins-before.metadata/plugin-directory-cache-v2.json": "1c708b89cca563f341aee0a40b98c152e313d501e9b2ce98eefc06791b38f4cf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/plugins-after.metadata/plugin-directory-cache-v2.json": "1c708b89cca563f341aee0a40b98c152e313d501e9b2ce98eefc06791b38f4cf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/run-plugins-before.metadata/store/cc-plugin-agents-md_builtin-b049b47b3618.json": "f8d62c633d90e42db40c9d461e9da3931d9369ed13d24dc9d4f00d83cb9b553b",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/plugins-after.metadata/store/cc-plugin-agents-md_builtin-b049b47b3618.json": "12f91d7d6b9561c5f7780b903d76a32a0f5ed9fffa7c2cc900b28250d2d128bf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/run-plugins-before.metadata/store/cc-plugin-diff_builtin-3903e77c01b1.json": "5a2fc6413dff90d13059cad2773a368ab8b8fce00bd63e2f5056a12ed4cc802f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/plugins-after.metadata/store/cc-plugin-diff_builtin-3903e77c01b1.json": "5a2fc6413dff90d13059cad2773a368ab8b8fce00bd63e2f5056a12ed4cc802f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/run-plugins-before.metadata/oh-my-claudecode/.usage-cache-anthropic.json": "bf95c67de9d6e56214d4be617f664166422e0d5459d93c48b25f160eaff2d6b1",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/plugins-after.metadata/oh-my-claudecode/.usage-cache-anthropic.json": "bf95c67de9d6e56214d4be617f664166422e0d5459d93c48b25f160eaff2d6b1",
+    "/Users/artisan/.claude/plugins/installed_plugins.json": "6f4cfb608719381bdbac3d2bd1404c75b50123cda32af5bf133b664c3784e0a0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/runtime_entry.py": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2b-from-1/config.json": "00cd261fc61c8f6b9e4e394a36c8496fe94ad476b0eeb26d2d9945b6c55d956d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json": "a8f3229d9ed43d1f4159cf139959e126c984efe1063389ced8f79114247ec25f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json": "dadc720481f75ea051f97696dc966888e30b926eb33a9c63941e249598e496ae",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "/Users/artisan/.local/share/claude/versions/2.1.318": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d",
+    "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h2-entry/independent-review.json": "f90f825110cc73d990bf02b65bf8c8a47867366db5e496a57baac59b8317f679",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t1.json": "f1a4ce9102ffae32f7282ab402c66f2753bdafb0b2cc97095e18e814a1885d55",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t2.json": "f820e5486141649e86949fa7e47324f9235ee947830994cb24839a7a43539956",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H2-t3.json": "9422623b33c342fcee96a9f91004fab7d235499796ab0f3aa879b436d4a00476",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-E0a-t1.json": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H1-t1.json": "28ab93f865aba6d2b8acb51d2fc35b214492b9db5a71b3dd3120e208fed8dbf9",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H1-t2.json": "7963fba183a752098e28a9de01cfbae995bf56af2ee945c37554dedba9c3c129",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H1-t3.json": "2f575d44f93683dc05670fb3c1641fff74e3468de9141b15d38c1616642e4008"
+  },
+  "operations": {
+    "tests": 0,
+    "Go": 0,
+    "database": 0,
+    "model": 0,
+    "full_plugin_scan": 0
+  },
+  "verification_script_sha256": "469e3bd01c1079f115909ed9641ee36e0bbd69d60a77185f48e1216053f67fed",
+  "report_md_sha256": "87c085228df048d2bde3a961e1c438c183596b273143cd1aae4c33d96069f41e"
+}

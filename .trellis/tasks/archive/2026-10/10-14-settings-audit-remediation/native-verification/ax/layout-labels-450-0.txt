@@ -1,0 +1,26 @@
+- button "切换左侧边栏"
+- button "Go back"
+- button "Go forward" [disabled]
+- banner:
+  - button "设置"
+  - status
+  - button "New tab"
+- heading "设置" [level=1]
+- 'button "设置目录: 标签"': 设置目录 标签
+- tabpanel "标签":
+  - banner:
+    - heading "标签" [level=2]
+    - paragraph: 分别管理工作空间中用于整理任务和 skill 的标签。两类标签相互独立。
+  - button "任务 1"
+  - button "Skill"
+  - textbox "按名称或描述筛选..."
+  - button "新建标签"
+  - text: Native acceptance label
+  - paragraph: —
+  - text: 已使用 0 次 2026/10/14
+  - button "Native acceptance label 的操作" [expanded]
+  - menu "Native acceptance label 的操作":
+    - menuitem "编辑"
+    - menuitem "删除"
+- button "1 条未读对话"
+- region "Notifications alt+T"

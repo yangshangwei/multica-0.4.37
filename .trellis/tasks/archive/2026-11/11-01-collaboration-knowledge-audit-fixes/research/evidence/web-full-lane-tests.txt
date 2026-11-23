@@ -1,0 +1,26 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+Scope: 2 of 11 workspace projects
+packages/core test$ vitest run -- --maxWorkers=2
+packages/core test:  RUN  v4.1.0 /Volumes/artisan/code/2026/mc-kfix-lane-web/packages/core
+packages/core test:  ❯ platform/core-provider.test.tsx (5 tests | 1 failed) 10239ms
+packages/core test:      × keeps the session pending until device authentication resolves (StrictMode: false) 5075ms
+packages/core test: ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+packages/core test:  FAIL  platform/core-provider.test.tsx > CoreProvider authentication handoff > keeps the session pending until device authentication resolves (StrictMode: false)
+packages/core test: Error: Test timed out in 5000ms.
+packages/core test: If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+packages/core test:  ❯ platform/core-provider.test.tsx:68:25
+packages/core test:      66|
+packages/core test:      67| describe("CoreProvider authentication handoff", () => {
+packages/core test:      68|   it.each([false, true])("keeps the session pending until device authe…
+packages/core test:        |                         ^
+packages/core test:      69|     const identities: ReturnType<typeof deferredResponse>[] = [];
+packages/core test:      70|     const device = deferredResponse();
+packages/core test: ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+packages/core test:  Test Files  1 failed | 326 passed (327)
+packages/core test:       Tests  1 failed | 4337 passed (4338)
+packages/core test:    Start at  23:53:25
+packages/core test:    Duration  50.91s (transform 45.32s, setup 0ms, import 239.00s, tests 51.28s, environment 94.98s)
+packages/core test: Failed
+/Volumes/artisan/code/2026/mc-kfix-lane-web/packages/core:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @multica/core@0.0.0 test: `vitest run -- --maxWorkers=2`
+Exit status 1

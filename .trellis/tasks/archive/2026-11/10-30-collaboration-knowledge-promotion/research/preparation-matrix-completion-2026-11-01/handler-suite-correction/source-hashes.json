@@ -1,0 +1,19 @@
+{
+  "measured_at": "2026-11-01T01:13:24.882039+00:00",
+  "changed": [
+    {
+      "path": "server/internal/handler/collaboration_knowledge_invalidation_test.go",
+      "sha256": "58334c2b69ca1ca815ac29cf61fd1db6542460bb18b892c2a0f011a8575fc945"
+    }
+  ],
+  "preparation_matrix_unchanged": [
+    {
+      "path": "server/internal/handler/knowledge_preparation_isolation_test.go",
+      "sha256": "8d6a78a74fba9d79c976ccf281083b62ff4426dcce2a873a8daab11f70c4f554"
+    },
+    {
+      "path": "server/internal/service/task_knowledge_preparation_boundary_test.go",
+      "sha256": "ffbf07017e599b206091fe7886ae79151f96d335f554299fe02e65d0921c31ef"
+    }
+  ]
+}

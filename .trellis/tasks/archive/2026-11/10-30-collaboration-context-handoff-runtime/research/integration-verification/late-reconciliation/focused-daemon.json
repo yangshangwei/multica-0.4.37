@@ -1,0 +1,27 @@
+{
+  "label": "focused-daemon",
+  "started_at": "2026-10-31T18:48:13.071844+00:00",
+  "duration_seconds": 9.379850290999457,
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "TestClient(CheckpointACK|RecordingSeal)|TestHostRecordingRecovery(BlockedUpload|MalformedSeal)",
+    "-count=1",
+    "-timeout",
+    "3m",
+    "-json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "tracked_diff_sha256": "f9b4287874e33dff2faf1d629e83cd8295c4aa4c4678602379de995262b5fd6e",
+  "source_inventory": "focused-daemon.source.json",
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "database": "not used; HTTP fakes only",
+  "real_provider": false,
+  "exit_code": 0
+}

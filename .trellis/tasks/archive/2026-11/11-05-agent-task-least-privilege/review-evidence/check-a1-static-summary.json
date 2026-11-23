@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "go",
+      "build",
+      "-p",
+      "1",
+      "./internal/auth",
+      "./internal/middleware",
+      "./internal/service",
+      "./internal/handler",
+      "./cmd/server"
+    ],
+    "exit": 0,
+    "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/check-a1-static-0.log"
+  },
+  {
+    "command": [
+      "go",
+      "vet",
+      "-p",
+      "1",
+      "./internal/auth",
+      "./internal/middleware",
+      "./internal/service",
+      "./internal/handler",
+      "./cmd/server"
+    ],
+    "exit": 0,
+    "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/check-a1-static-1.log"
+  }
+]

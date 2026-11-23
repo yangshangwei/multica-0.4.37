@@ -1,0 +1,91 @@
+{
+  "at": "2026-10-22T00:01:41.337116+00:00",
+  "reviewer": "content_creation independent of owner_switch implementation",
+  "decision": "approve_complete_named_clauses",
+  "criteria": [
+    {
+      "id": "AC49",
+      "primary_owner": "P4",
+      "decision": "approve_promotion"
+    },
+    {
+      "id": "AC40",
+      "primary_owner": "P4",
+      "decision": "approve_promotion"
+    }
+  ],
+  "kept_partial": [
+    "AC96"
+  ],
+  "blocking_findings": [],
+  "source_pair": {
+    "server/internal/service/collaboration_owner_departure_targets_test.go": "b04abb1716ed2fff890cd76b5ca709aeaaa61c7444baba60a18beb7d982ab900",
+    "server/internal/service/collaboration_public_switch_resume_test.go": "ce1ac1cd8e0bce606f00ba0c4718b817a010a89a86ba5c37850464cdb1a00ede"
+  },
+  "source_matches_current": true,
+  "isolated": {
+    "pass_top_level": 2,
+    "pass_total": 2,
+    "fail": [],
+    "skip": [],
+    "elapsed_s": 14.247,
+    "raw_sha256": "081c57e9d674d57b1c68fcd65991fd06a4ceb026145017d31e88077838cf9f10"
+  },
+  "current_adjacent": {
+    "pass_top_level": 26,
+    "pass_total": 132,
+    "fail": 0,
+    "skip": 0,
+    "elapsed_s": 36.991,
+    "raw_sha256": "2efacb3739db3833d3dfdb16407e2687f29b01e57c9b059cce7cf03ad874d2ee"
+  },
+  "checks": {
+    "gofmt": "empty",
+    "diff_check": "pass",
+    "vet": "pass"
+  },
+  "artifacts": [
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-final-review.md",
+      "sha256": "5588136812f6c6b63a6ff5dfca7d11a0f53eecf2e7ac481cf0c028515c7a18b5"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-isolated-head-final-source.json",
+      "sha256": "e86a5676e79d992e558917d12bc1de3f60e270167c42e1b12c95680c7f1d961d"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-isolated-head-final-command.json",
+      "sha256": "be1f81b1c38ba8ee409ecfed61693d6179884c2242b0a91dc8060c3aebe446a4"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-isolated-head-final-result.json",
+      "sha256": "495a9978320e0b0e773792e97d45bd00aa3223512e38d976de408d7690a95325"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-isolated-head-final.jsonl",
+      "sha256": "081c57e9d674d57b1c68fcd65991fd06a4ceb026145017d31e88077838cf9f10"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-adjacent-final-20261022-command.json",
+      "sha256": "22227622e78bf91aa80d5280b2c34bad67edf700e2a49ad4bcb36dad7d7bd3d6"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-adjacent-final-20261022-result.json",
+      "sha256": "eb33e51265f5e8dfd41629eb80537878ee3f2a9b084d70aed55da545e91cd674"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-adjacent-final-20261022.jsonl",
+      "sha256": "2efacb3739db3833d3dfdb16407e2687f29b01e57c9b059cce7cf03ad874d2ee"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/owner-switch-vet-result.json",
+      "sha256": "7083a26eff4db95bdec92cfdea56ad485207eb48e20777aa7e76209f6170dbd1"
+    }
+  ],
+  "not_tested": [
+    "actual kernel process or commercial provider in these service tests",
+    "installed Main/old clients",
+    "other OS",
+    "AC96 complete catalogue/derived/old-credential matrix"
+  ]
+}

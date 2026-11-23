@@ -1,0 +1,458 @@
+{
+  "candidate": "95c8b12dc619488e050e96dba8f97a527e2f4a4c",
+  "collection_only": true,
+  "all_cases": 538,
+  "all_files": 187,
+  "historical_core_current": {
+    "work": {
+      "specs": [
+        "e2e/auth-qa.spec.ts",
+        "e2e/auth.spec.ts",
+        "e2e/onboarding-smoke.spec.ts",
+        "e2e/workspace-access-branches.spec.ts",
+        "e2e/workspace-defaults.spec.ts",
+        "e2e/core-business-journeys.spec.ts",
+        "e2e/core-business-workflow.spec.ts",
+        "e2e/task-lifecycle-qa.spec.ts",
+        "e2e/issue-mutation-branches.spec.ts",
+        "e2e/canonical-issue-interaction.spec.ts",
+        "e2e/comments.spec.ts",
+        "e2e/triage.spec.ts",
+        "e2e/triage-branches.spec.ts",
+        "e2e/upstream-selected-fixes.spec.ts"
+      ],
+      "collected_cases": 63
+    },
+    "plan": {
+      "specs": [
+        "e2e/project-squad-workspace.spec.ts",
+        "e2e/projects-p1.spec.ts",
+        "e2e/projects-p1-lifecycle.spec.ts",
+        "e2e/projects-p1-progress.spec.ts",
+        "e2e/projects-p1-goals.spec.ts",
+        "e2e/projects-p1-risk.spec.ts",
+        "e2e/projects-p1-health.spec.ts",
+        "e2e/iterations-i1.spec.ts",
+        "e2e/iteration-scope-business.spec.ts",
+        "e2e/iteration-history-navigation.spec.ts",
+        "e2e/progress-reporting.spec.ts"
+      ],
+      "collected_cases": 69
+    },
+    "agent": {
+      "specs": [
+        "e2e/agents-discovery.spec.ts",
+        "e2e/builtin-agent-concurrency.spec.ts",
+        "e2e/agent-role-template.spec.ts",
+        "e2e/core-business-agent-loops.spec.ts",
+        "e2e/quick-create-autonomy.spec.ts",
+        "e2e/quick-create-blocked-feedback.spec.ts",
+        "e2e/squads-design.spec.ts",
+        "e2e/squad-welcome.spec.ts",
+        "e2e/localized-template-defaults.spec.ts",
+        "e2e/autopilot-template.spec.ts",
+        "e2e/autopilot-template-zh.spec.ts",
+        "e2e/autopilot-lifecycle-branches.spec.ts"
+      ],
+      "collected_cases": 52
+    },
+    "collab": {
+      "specs": [
+        "e2e/collaboration-creation-default.spec.ts",
+        "e2e/collaboration-delivery-web.spec.ts",
+        "e2e/collaboration-boundaries-web.spec.ts",
+        "e2e/collaboration-recipient-picker-web.spec.ts",
+        "e2e/collaboration-workbench-web.spec.ts",
+        "e2e/collaboration-mention-journeys-web.spec.ts",
+        "e2e/collaboration-editing-web.spec.ts"
+      ],
+      "collected_cases": 15
+    },
+    "native": {
+      "specs": [
+        "e2e/projects-p1-desktop.spec.ts",
+        "e2e/iterations-i1-desktop.spec.ts",
+        "e2e/iteration-scope-business-desktop.spec.ts",
+        "e2e/collaboration-account-desktop.spec.ts"
+      ],
+      "collected_cases": 22
+    },
+    "password": {
+      "specs": [
+        "e2e/password-registration.spec.ts",
+        "e2e/password-branches.spec.ts"
+      ],
+      "collected_cases": 14
+    },
+    "handoff": {
+      "specs": [
+        "e2e/collaboration-handoff-chain-web.spec.ts",
+        "e2e/collaboration-handoff-chain-desktop.spec.ts",
+        "e2e/collaboration-terminal-reopen-web.spec.ts",
+        "e2e/collaboration-live-revoke-web.spec.ts"
+      ],
+      "collected_cases": 4
+    },
+    "admin-access": {
+      "specs": [
+        "e2e/platform-admin.spec.ts"
+      ],
+      "collected_cases": 1
+    },
+    "admin-controls": {
+      "specs": [
+        "e2e/admin-collaboration-switches.spec.ts"
+      ],
+      "collected_cases": 1
+    },
+    "host": {
+      "specs": [
+        "e2e/collaboration-business-scenarios.spec.ts",
+        "e2e/collaboration-host-squad.spec.ts"
+      ],
+      "collected_cases": 4
+    },
+    "supplemental": {
+      "specs": [
+        "e2e/main-supplemental-qa.spec.ts"
+      ],
+      "collected_cases": 3
+    }
+  },
+  "recent_ui": {
+    "specs": [
+      "e2e/collaboration-notifications-page.spec.ts",
+      "e2e/global-scope-navigation.spec.ts",
+      "e2e/sidebar-icon-rail.spec.ts",
+      "e2e/agent-template-marketplace-desktop.spec.ts",
+      "e2e/capability-market.spec.ts",
+      "e2e/capability-market-welcome.spec.ts",
+      "e2e/agent-welcome.spec.ts",
+      "e2e/runtime-welcome.spec.ts",
+      "e2e/iteration-welcome.spec.ts",
+      "e2e/mcp-welcome.spec.ts",
+      "e2e/mcp-welcome-desktop.spec.ts",
+      "e2e/skill-welcome.spec.ts",
+      "e2e/skill-welcome-desktop.spec.ts"
+    ],
+    "collected_cases": 19
+  },
+  "historical_core_current_total": 248,
+  "conditional_groups": {
+    "password_core": {
+      "specs": [
+        "e2e/password-registration.spec.ts",
+        "e2e/password-branches.spec.ts"
+      ],
+      "collected_cases": 14
+    },
+    "password_controls": {
+      "specs": [
+        "e2e/collaboration-handoff-chain-web.spec.ts",
+        "e2e/collaboration-handoff-chain-desktop.spec.ts",
+        "e2e/collaboration-control-journey-web.spec.ts",
+        "e2e/collaboration-control-journey-desktop.spec.ts",
+        "e2e/collaboration-live-revoke-web.spec.ts",
+        "e2e/collaboration-terminal-reopen-web.spec.ts",
+        "e2e/collaboration-leave-web.spec.ts"
+      ],
+      "collected_cases": 9
+    },
+    "password_human_extended": {
+      "specs": [
+        "e2e/collaboration-runtime-handoff-web.spec.ts",
+        "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+        "e2e/collaboration-offline-handoff.spec.ts",
+        "e2e/collaboration-retained-attachment.spec.ts",
+        "e2e/collaboration-selection-boundary.spec.ts",
+        "e2e/collaboration-source-surface.spec.ts",
+        "e2e/collaboration-drawer-pointer.spec.ts"
+      ],
+      "collected_cases": 11
+    },
+    "host_business": {
+      "specs": [
+        "e2e/collaboration-business-scenarios.spec.ts",
+        "e2e/collaboration-host-squad.spec.ts",
+        "e2e/collaboration-host-runtime.spec.ts",
+        "e2e/collaboration-host-switch.spec.ts",
+        "e2e/collaboration-order-export-20261109.spec.ts",
+        "e2e/collaboration-order-export-leave-20261109.spec.ts"
+      ],
+      "collected_cases": 8
+    },
+    "admin": {
+      "specs": [
+        "e2e/platform-admin.spec.ts",
+        "e2e/platform-admin-accounts.spec.ts",
+        "e2e/platform-admin-controls.spec.ts",
+        "e2e/platform-admin-executions.spec.ts",
+        "e2e/platform-admin-installations-read.spec.ts",
+        "e2e/platform-admin-observability.spec.ts",
+        "e2e/admin-collaboration-switches.spec.ts",
+        "e2e/collaboration-administration-web.spec.ts",
+        "e2e/collaboration-administration-desktop.spec.ts"
+      ],
+      "collected_cases": 9
+    },
+    "local_provider": {
+      "specs": [
+        "e2e/issue-assist-flow.spec.ts",
+        "e2e/quick-create-actor-picker-phase2.spec.ts",
+        "e2e/quick-create-blocked-feedback.spec.ts"
+      ],
+      "collected_cases": 30
+    },
+    "local_cli": {
+      "specs": [
+        "e2e/cli-forbidden-reason.spec.ts",
+        "e2e/upstream-backports-cli.spec.ts"
+      ],
+      "collected_cases": 6
+    },
+    "special_allocation": {
+      "specs": [
+        "e2e/collaboration-detail-journey.spec.ts",
+        "e2e/inbox-snooze.spec.ts",
+        "e2e/collaboration-stage-approvals.spec.ts",
+        "e2e/collaboration-stage-execution.spec.ts",
+        "e2e/collaboration-pay-creation.spec.ts",
+        "e2e/collaboration-requirements-history.spec.ts",
+        "e2e/collaboration-information-recovery.spec.ts",
+        "e2e/collaboration-recovery.spec.ts",
+        "e2e/collaboration-recovery-extras.spec.ts",
+        "e2e/collaboration-recovery-ordinary-ui.spec.ts",
+        "e2e/collaboration-recovery-subscriptions.spec.ts",
+        "e2e/collaboration-recovery-runtime.spec.ts",
+        "e2e/collaboration-runtime-output.spec.ts",
+        "e2e/project-knowledge-automation.spec.ts",
+        "e2e/issue-completion-authorization.spec.ts",
+        "e2e/collaboration-performance.spec.ts"
+      ],
+      "collected_cases": 47
+    },
+    "cross_platform": {
+      "specs": [
+        "e2e/collaboration-cross-client-execution.spec.ts",
+        "e2e/collaboration-lane-close-controls.spec.ts",
+        "e2e/collaboration-lifecycle-controls.spec.ts",
+        "e2e/collaboration-offline-result-notifications.spec.ts",
+        "e2e/collaboration-installed-clients.spec.ts",
+        "e2e/collaboration-installed-main.spec.ts",
+        "e2e/collaboration-host-installed.spec.ts"
+      ],
+      "collected_cases": 14
+    },
+    "separate_configuration": {
+      "specs": [
+        "e2e/auth-device.spec.ts",
+        "e2e/password-binding-desktop.spec.ts",
+        "e2e/password-migration.spec.ts",
+        "e2e/password-server-switch.spec.ts",
+        "e2e/platform-admin-initialization.spec.ts",
+        "e2e/mcp-desktop.spec.ts",
+        "e2e/mcp-market.spec.ts",
+        "e2e/changelog.spec.ts",
+        "e2e/changelog-desktop.spec.ts",
+        "e2e/desktop-settings.spec.ts",
+        "e2e/retained-languages-desktop.spec.ts",
+        "e2e/admin-resource-publishing.spec.ts",
+        "e2e/collaboration-knowledge-deployed.spec.ts",
+        "e2e/collaboration-memory-runtime.spec.ts",
+        "e2e/collaboration-timeout-recovery.spec.ts",
+        "e2e/collaboration-multi-account-closure.spec.ts"
+      ],
+      "collected_cases": 25
+    }
+  },
+  "default_all_specs": [
+    "e2e/admin-collaboration-switches.spec.ts",
+    "e2e/admin-resource-publishing.spec.ts",
+    "e2e/agent-autonomy-gates.spec.ts",
+    "e2e/agent-categories.spec.ts",
+    "e2e/agent-category-grouping.spec.ts",
+    "e2e/agent-mcp.spec.ts",
+    "e2e/agent-role-template.spec.ts",
+    "e2e/agent-template-marketplace-desktop.spec.ts",
+    "e2e/agent-welcome.spec.ts",
+    "e2e/agents-discovery.spec.ts",
+    "e2e/auth-device.spec.ts",
+    "e2e/auth-qa.spec.ts",
+    "e2e/auth.spec.ts",
+    "e2e/autopilot-lifecycle-branches.spec.ts",
+    "e2e/autopilot-template-zh.spec.ts",
+    "e2e/autopilot-template.spec.ts",
+    "e2e/builtin-agent-concurrency.spec.ts",
+    "e2e/canonical-issue-interaction.spec.ts",
+    "e2e/capability-market-welcome.spec.ts",
+    "e2e/capability-market.spec.ts",
+    "e2e/changelog-desktop.spec.ts",
+    "e2e/changelog.spec.ts",
+    "e2e/chat-actor-picker.spec.ts",
+    "e2e/chat-attachments.spec.ts",
+    "e2e/chat-recovery-branches.spec.ts",
+    "e2e/cli-forbidden-reason.spec.ts",
+    "e2e/collaboration-account-desktop.spec.ts",
+    "e2e/collaboration-administration-desktop.spec.ts",
+    "e2e/collaboration-administration-web.spec.ts",
+    "e2e/collaboration-boundaries-web.spec.ts",
+    "e2e/collaboration-business-scenarios.spec.ts",
+    "e2e/collaboration-command-history-web.spec.ts",
+    "e2e/collaboration-control-journey-desktop.spec.ts",
+    "e2e/collaboration-control-journey-web.spec.ts",
+    "e2e/collaboration-creation-default.spec.ts",
+    "e2e/collaboration-cross-client-execution.spec.ts",
+    "e2e/collaboration-delivery-web.spec.ts",
+    "e2e/collaboration-detail-journey.spec.ts",
+    "e2e/collaboration-drawer-pointer.spec.ts",
+    "e2e/collaboration-editing-web.spec.ts",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts",
+    "e2e/collaboration-handoff-chain-web.spec.ts",
+    "e2e/collaboration-host-installed.spec.ts",
+    "e2e/collaboration-host-runtime.spec.ts",
+    "e2e/collaboration-host-squad.spec.ts",
+    "e2e/collaboration-host-switch.spec.ts",
+    "e2e/collaboration-information-recovery.spec.ts",
+    "e2e/collaboration-installed-clients.spec.ts",
+    "e2e/collaboration-installed-main.spec.ts",
+    "e2e/collaboration-knowledge-deployed.spec.ts",
+    "e2e/collaboration-knowledge.spec.ts",
+    "e2e/collaboration-lane-close-controls.spec.ts",
+    "e2e/collaboration-leave-web.spec.ts",
+    "e2e/collaboration-lifecycle-controls.spec.ts",
+    "e2e/collaboration-live-revoke-web.spec.ts",
+    "e2e/collaboration-machine-boundary.spec.ts",
+    "e2e/collaboration-memory-runtime.spec.ts",
+    "e2e/collaboration-memory-web.spec.ts",
+    "e2e/collaboration-mention-journeys-desktop.spec.ts",
+    "e2e/collaboration-mention-journeys-web.spec.ts",
+    "e2e/collaboration-multi-account-closure.spec.ts",
+    "e2e/collaboration-notifications-page.spec.ts",
+    "e2e/collaboration-offline-handoff.spec.ts",
+    "e2e/collaboration-offline-result-notifications.spec.ts",
+    "e2e/collaboration-order-export-20261109.spec.ts",
+    "e2e/collaboration-order-export-leave-20261109.spec.ts",
+    "e2e/collaboration-pay-creation.spec.ts",
+    "e2e/collaboration-performance.spec.ts",
+    "e2e/collaboration-preparation-records-desktop.spec.ts",
+    "e2e/collaboration-preparation-records-web.spec.ts",
+    "e2e/collaboration-preview-web.spec.ts",
+    "e2e/collaboration-recipient-picker-web.spec.ts",
+    "e2e/collaboration-records-web.spec.ts",
+    "e2e/collaboration-recovery-extras.spec.ts",
+    "e2e/collaboration-recovery-ordinary-ui.spec.ts",
+    "e2e/collaboration-recovery-runtime.spec.ts",
+    "e2e/collaboration-recovery-subscriptions.spec.ts",
+    "e2e/collaboration-recovery.spec.ts",
+    "e2e/collaboration-requirements-history.spec.ts",
+    "e2e/collaboration-resource-offers-web.spec.ts",
+    "e2e/collaboration-resources-web.spec.ts",
+    "e2e/collaboration-retained-attachment.spec.ts",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+    "e2e/collaboration-runtime-handoff-web.spec.ts",
+    "e2e/collaboration-runtime-output.spec.ts",
+    "e2e/collaboration-selection-boundary.spec.ts",
+    "e2e/collaboration-source-surface.spec.ts",
+    "e2e/collaboration-stage-approvals.spec.ts",
+    "e2e/collaboration-stage-execution.spec.ts",
+    "e2e/collaboration-terminal-reopen-web.spec.ts",
+    "e2e/collaboration-timeout-recovery.spec.ts",
+    "e2e/collaboration-workbench-web.spec.ts",
+    "e2e/comments.spec.ts",
+    "e2e/core-business-agent-loops.spec.ts",
+    "e2e/core-business-journeys.spec.ts",
+    "e2e/core-business-workflow.spec.ts",
+    "e2e/desktop-settings.spec.ts",
+    "e2e/global-scope-navigation.spec.ts",
+    "e2e/iframe-scroll-bridge.spec.ts",
+    "e2e/inbox-snooze.spec.ts",
+    "e2e/issue-assist-flow.spec.ts",
+    "e2e/issue-completion-authorization.spec.ts",
+    "e2e/issue-mutation-branches.spec.ts",
+    "e2e/issue-optimistic-status.spec.ts",
+    "e2e/issue-table.spec.ts",
+    "e2e/issues.spec.ts",
+    "e2e/iteration-history-navigation-desktop.spec.ts",
+    "e2e/iteration-history-navigation.spec.ts",
+    "e2e/iteration-scope-business-desktop.spec.ts",
+    "e2e/iteration-scope-business.spec.ts",
+    "e2e/iteration-settings.spec.ts",
+    "e2e/iteration-welcome.spec.ts",
+    "e2e/iterations-audit-desktop.spec.ts",
+    "e2e/iterations-i1-desktop.spec.ts",
+    "e2e/iterations-i1-history.spec.ts",
+    "e2e/iterations-i1.spec.ts",
+    "e2e/lifecycle-handoff.spec.ts",
+    "e2e/localized-template-defaults.spec.ts",
+    "e2e/main-supplemental-qa.spec.ts",
+    "e2e/mcp-desktop.spec.ts",
+    "e2e/mcp-market.spec.ts",
+    "e2e/mcp-welcome-desktop.spec.ts",
+    "e2e/mcp-welcome.spec.ts",
+    "e2e/missing-user-session.spec.ts",
+    "e2e/navigation.spec.ts",
+    "e2e/onboarding-shell.spec.ts",
+    "e2e/onboarding-smoke.spec.ts",
+    "e2e/password-binding-desktop.spec.ts",
+    "e2e/password-branches.spec.ts",
+    "e2e/password-migration.spec.ts",
+    "e2e/password-registration.spec.ts",
+    "e2e/password-server-switch.spec.ts",
+    "e2e/password-session-persistence.spec.ts",
+    "e2e/platform-admin-accounts.spec.ts",
+    "e2e/platform-admin-controls.spec.ts",
+    "e2e/platform-admin-executions.spec.ts",
+    "e2e/platform-admin-initialization.spec.ts",
+    "e2e/platform-admin-installations-read.spec.ts",
+    "e2e/platform-admin-observability.spec.ts",
+    "e2e/platform-admin.spec.ts",
+    "e2e/plugin-surface-document.spec.ts",
+    "e2e/plugin-surface-security.spec.ts",
+    "e2e/progress-reporting.spec.ts",
+    "e2e/project-knowledge-automation.spec.ts",
+    "e2e/project-squad-workspace.spec.ts",
+    "e2e/projects-p1-desktop.spec.ts",
+    "e2e/projects-p1-goals.spec.ts",
+    "e2e/projects-p1-health.spec.ts",
+    "e2e/projects-p1-lifecycle.spec.ts",
+    "e2e/projects-p1-progress.spec.ts",
+    "e2e/projects-p1-risk.spec.ts",
+    "e2e/projects-p1.spec.ts",
+    "e2e/property-icons.spec.ts",
+    "e2e/quick-actions.spec.ts",
+    "e2e/quick-create-actor-picker-phase2.spec.ts",
+    "e2e/quick-create-actor-picker.spec.ts",
+    "e2e/quick-create-autonomy.spec.ts",
+    "e2e/quick-create-blocked-feedback.spec.ts",
+    "e2e/retained-languages-desktop.spec.ts",
+    "e2e/retained-languages.spec.ts",
+    "e2e/runtime-welcome.spec.ts",
+    "e2e/security-remediation-squad.spec.ts",
+    "e2e/settings-integration-catalog.spec.ts",
+    "e2e/settings-preferences.spec.ts",
+    "e2e/settings.spec.ts",
+    "e2e/sidebar-icon-rail.spec.ts",
+    "e2e/skill-category-taxonomy.spec.ts",
+    "e2e/skill-library-accessibility.spec.ts",
+    "e2e/skill-market.spec.ts",
+    "e2e/skill-template-creation.spec.ts",
+    "e2e/skill-welcome-desktop.spec.ts",
+    "e2e/skill-welcome.spec.ts",
+    "e2e/squad-welcome.spec.ts",
+    "e2e/squads-audit.spec.ts",
+    "e2e/squads-design.spec.ts",
+    "e2e/task-lifecycle-qa.spec.ts",
+    "e2e/triage-branches.spec.ts",
+    "e2e/triage-desktop.spec.ts",
+    "e2e/triage-duplicate-picker-desktop.spec.ts",
+    "e2e/triage-duplicate-picker.spec.ts",
+    "e2e/triage-layout.spec.ts",
+    "e2e/triage.spec.ts",
+    "e2e/upstream-backports-cli.spec.ts",
+    "e2e/upstream-selected-fixes.spec.ts",
+    "e2e/workspace-access-branches.spec.ts",
+    "e2e/workspace-defaults.spec.ts",
+    "e2e/workspace-name-series.spec.ts"
+  ],
+  "count_note": "Collection counts only. Conditional groups include mixed files and can overlap default runnable cases. Deduplicate by project,file,title; do not sum conditional groups with full default inventory."
+}

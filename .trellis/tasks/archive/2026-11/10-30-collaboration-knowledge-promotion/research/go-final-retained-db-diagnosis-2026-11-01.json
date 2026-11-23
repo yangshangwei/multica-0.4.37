@@ -1,0 +1,540 @@
+{
+  "disposition": "test_fixture_reuse_artifacts_not_a_confirmed_production_regression",
+  "database": "multica_knowledge_final_20261101_e7059940",
+  "activity": {
+    "tests_run": false,
+    "database_writes": false,
+    "row_or_advisory_locks_requested": false,
+    "provider_calls": false,
+    "code_changes": false,
+    "query_options": "default_transaction_read_only=on; statement_timeout=5000; lock_timeout=100; application_name=knowledge_readonly_diagnosis"
+  },
+  "observations": {
+    "observed_at": "2026-11-01T01:28:45.705228+00:00",
+    "read_only": "on",
+    "candidate_counts": {
+      "total": 593,
+      "published": 380,
+      "newest_proposed_at": "2026-11-01T01:27:59.647228+00:00",
+      "oldest_proposed_at": "2026-11-01T00:42:05.958912+00:00",
+      "missing_source_issue": 593,
+      "missing_target_workspace": 593
+    },
+    "invalidation_counts": [
+      {
+        "kind": "scan",
+        "count": 195,
+        "state": "done",
+        "newest": "2026-11-01T01:22:25.028617+00:00",
+        "oldest": "2026-11-01T00:48:31.166385+00:00",
+        "scope_kind": "all_sources"
+      },
+      {
+        "kind": "scan",
+        "count": 233,
+        "state": "done",
+        "newest": "2026-11-01T01:22:24.239191+00:00",
+        "oldest": "2026-11-01T00:48:25.683914+00:00",
+        "scope_kind": "source_issue"
+      },
+      {
+        "kind": "scan",
+        "count": 83,
+        "state": "done",
+        "newest": "2026-11-01T01:18:34.857015+00:00",
+        "oldest": "2026-11-01T00:42:11.760945+00:00",
+        "scope_kind": "source_workspace"
+      },
+      {
+        "kind": "scan",
+        "count": 29,
+        "state": "pending",
+        "newest": "2026-11-01T01:27:12.496575+00:00",
+        "oldest": "2026-11-01T01:23:34.251414+00:00",
+        "scope_kind": "all_sources"
+      },
+      {
+        "kind": "scan",
+        "count": 119,
+        "state": "pending",
+        "newest": "2026-11-01T01:27:40.853794+00:00",
+        "oldest": "2026-11-01T01:22:51.087191+00:00",
+        "scope_kind": "source_issue"
+      },
+      {
+        "kind": "target_hint",
+        "count": 388,
+        "state": "delivered",
+        "newest": "2026-11-01T01:22:24.453174+00:00",
+        "oldest": "2026-11-01T00:42:05.975774+00:00",
+        "scope_kind": null
+      },
+      {
+        "kind": "target_hint",
+        "count": 140,
+        "state": "pending",
+        "newest": "2026-11-01T01:27:59.670559+00:00",
+        "oldest": "2026-11-01T01:22:24.630102+00:00",
+        "scope_kind": null
+      }
+    ],
+    "pending_events": 86,
+    "pending_non_memory_orphan_events": 66
+  },
+  "scan_work_reconstruction": {
+    "observed_at": "2026-11-01T01:30:11.539176+00:00",
+    "test_window": {
+      "end_at": "2026-11-01T01:22:10.00452+00:00",
+      "start_at": "2026-11-01T01:21:57.509281+00:00"
+    },
+    "published_candidates_at_start": 238,
+    "jobs": [
+      {
+        "newest": "2026-11-01T01:21:53.999019+00:00",
+        "oldest": "2026-11-01T01:09:01.901441+00:00",
+        "scope_kind": "all_sources",
+        "pending_at_start": 98,
+        "unstarted_at_start": 53,
+        "completed_after_failed_test": 98
+      },
+      {
+        "newest": "2026-11-01T01:18:34.857015+00:00",
+        "oldest": "2026-11-01T01:17:12.473973+00:00",
+        "scope_kind": "source_workspace",
+        "pending_at_start": 28,
+        "unstarted_at_start": 28,
+        "completed_after_failed_test": 0
+      },
+      {
+        "newest": "2026-11-01T01:21:57.46098+00:00",
+        "oldest": "2026-11-01T01:17:12.787963+00:00",
+        "scope_kind": "source_issue",
+        "pending_at_start": 48,
+        "unstarted_at_start": 48,
+        "completed_after_failed_test": 0
+      }
+    ],
+    "minimum_work_for_unstarted_all_source_jobs": 12720,
+    "test_helper_max_transactions": 10000,
+    "minimum_calculation": "53 * (238 candidate steps + 1 start + 1 complete) = 12720; excludes 45 already-started all_sources and all source-specific scans"
+  },
+  "orphan_catalogue": {
+    "read_only": "on",
+    "observed_at": "2026-11-01T01:34:39.822734+00:00",
+    "orphan_groups": [
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed",
+          "participant_left",
+          "transferred"
+        ],
+        "issue_id": "01a194ab-2435-74f1-a53f-0d925b6a3b99",
+        "last_event": "2026-11-01T01:13:26.381407+00:00",
+        "first_event": "2026-11-01T01:13:26.319396+00:00",
+        "pending_events": 6,
+        "run": "first",
+        "fixture": "newPreparationExternalFixture"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed",
+          "participant_left",
+          "transferred"
+        ],
+        "issue_id": "01a194ab-25a7-7e19-84b3-687901fab2bc",
+        "last_event": "2026-11-01T01:13:26.783893+00:00",
+        "first_event": "2026-11-01T01:13:26.690871+00:00",
+        "pending_events": 6,
+        "run": "first",
+        "fixture": "newPreparationExternalFixture"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed",
+          "participant_left",
+          "transferred"
+        ],
+        "issue_id": "01a194ab-276b-7119-ac01-1de3f6099042",
+        "last_event": "2026-11-01T01:13:27.203623+00:00",
+        "first_event": "2026-11-01T01:13:27.139238+00:00",
+        "pending_events": 6,
+        "run": "first",
+        "fixture": "newPreparationExternalFixture"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194ab-6c03-7626-abfd-87ee1876a675",
+        "last_event": "2026-11-01T01:13:44.742956+00:00",
+        "first_event": "2026-11-01T01:13:44.686805+00:00",
+        "pending_events": 4,
+        "run": "first",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/service_prepared"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194ab-6cee-787b-b567-133d1fa05b2b",
+        "last_event": "2026-11-01T01:13:44.980748+00:00",
+        "first_event": "2026-11-01T01:13:44.919659+00:00",
+        "pending_events": 4,
+        "run": "first",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/handler_prepared"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194ab-6ded-70ea-b0a0-45bbc639da5a",
+        "last_event": "2026-11-01T01:13:45.233186+00:00",
+        "first_event": "2026-11-01T01:13:45.176283+00:00",
+        "pending_events": 4,
+        "run": "first",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/service_retained"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194ab-6ee5-73ff-9451-2eda93eda45d",
+        "last_event": "2026-11-01T01:13:45.481538+00:00",
+        "first_event": "2026-11-01T01:13:45.423159+00:00",
+        "pending_events": 4,
+        "run": "first",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/handler_retained"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194ab-6fe1-7641-82aa-85c6a88b271e",
+        "last_event": "2026-11-01T01:13:45.731686+00:00",
+        "first_event": "2026-11-01T01:13:45.677125+00:00",
+        "pending_events": 4,
+        "run": "first",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/handler_refusal"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194ab-70d1-70cf-8890-19f35179284b",
+        "last_event": "2026-11-01T01:13:45.974696+00:00",
+        "first_event": "2026-11-01T01:13:45.914641+00:00",
+        "pending_events": 4,
+        "run": "first",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/handler_stale_fence"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed",
+          "participant_left",
+          "transferred"
+        ],
+        "issue_id": "01a194b8-2adf-70bb-bd2b-a9aa724a24b1",
+        "last_event": "2026-11-01T01:27:40.055296+00:00",
+        "first_event": "2026-11-01T01:27:39.994107+00:00",
+        "pending_events": 6,
+        "run": "second",
+        "fixture": "newPreparationExternalFixture"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed",
+          "participant_left",
+          "transferred"
+        ],
+        "issue_id": "01a194b8-2c55-7046-86f3-6288492b7c45",
+        "last_event": "2026-11-01T01:27:40.462582+00:00",
+        "first_event": "2026-11-01T01:27:40.367321+00:00",
+        "pending_events": 6,
+        "run": "second",
+        "fixture": "newPreparationExternalFixture"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed",
+          "participant_left",
+          "transferred"
+        ],
+        "issue_id": "01a194b8-2e05-78b6-8428-e7761bb759b7",
+        "last_event": "2026-11-01T01:27:40.848316+00:00",
+        "first_event": "2026-11-01T01:27:40.800496+00:00",
+        "pending_events": 6,
+        "run": "second",
+        "fixture": "newPreparationExternalFixture"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194b8-7290-72fd-a7fc-8d39b0073c0e",
+        "last_event": "2026-11-01T01:27:58.386155+00:00",
+        "first_event": "2026-11-01T01:27:58.326772+00:00",
+        "pending_events": 4,
+        "run": "second",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/service_prepared"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194b8-7388-7603-a903-5daacec5af1e",
+        "last_event": "2026-11-01T01:27:58.634074+00:00",
+        "first_event": "2026-11-01T01:27:58.577714+00:00",
+        "pending_events": 4,
+        "run": "second",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/handler_prepared"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194b8-7482-7075-af40-ad498a905169",
+        "last_event": "2026-11-01T01:27:58.883184+00:00",
+        "first_event": "2026-11-01T01:27:58.826816+00:00",
+        "pending_events": 4,
+        "run": "second",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/service_retained"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194b8-7583-70e6-b11b-f031a1860f12",
+        "last_event": "2026-11-01T01:27:59.138512+00:00",
+        "first_event": "2026-11-01T01:27:59.082951+00:00",
+        "pending_events": 4,
+        "run": "second",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/handler_retained"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194b8-7681-78a2-9bad-e26c908abb25",
+        "last_event": "2026-11-01T01:27:59.393366+00:00",
+        "first_event": "2026-11-01T01:27:59.338292+00:00",
+        "pending_events": 4,
+        "run": "second",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/handler_refusal"
+      },
+      {
+        "kinds": [
+          "created",
+          "knowledge_changed",
+          "memory_changed"
+        ],
+        "issue_id": "01a194b8-7774-749f-bdf6-a7e16b8bd2f9",
+        "last_event": "2026-11-01T01:27:59.649596+00:00",
+        "first_event": "2026-11-01T01:27:59.580632+00:00",
+        "pending_events": 4,
+        "run": "second",
+        "fixture": "TestKnowledgeServerLogProbe",
+        "parent_case": "TestKnowledgeServerFailureLogsUsePersistedState/handler_stale_fence"
+      }
+    ],
+    "legacy_issue_workspace_fk": [
+      {
+        "name": "issue_workspace_id_fkey",
+        "definition": "FOREIGN KEY (workspace_id) REFERENCES workspace(id) ON DELETE CASCADE"
+      }
+    ]
+  },
+  "run_evidence": {
+    "db.jsonl": {
+      "service_package": [
+        {
+          "action": "start",
+          "time": "2026-11-01T09:04:30.77447+08:00",
+          "elapsed": null
+        },
+        {
+          "action": "fail",
+          "time": "2026-11-01T09:13:46.370156+08:00",
+          "elapsed": 555.594
+        }
+      ],
+      "tests": [
+        {
+          "test": "TestKnowledgePendingChangesDoNotSignalTarget",
+          "start": "2026-11-01T09:07:45.75399+08:00",
+          "end": "2026-11-01T09:07:48.651488+08:00",
+          "outcome": "pass",
+          "elapsed": 2.9
+        },
+        {
+          "test": "TestCollaborationMemoryRealtimePublishesOnlyIssueScope",
+          "start": "2026-11-01T09:08:19.504781+08:00",
+          "end": "2026-11-01T09:08:19.6794+08:00",
+          "outcome": "pass",
+          "elapsed": 0.17
+        },
+        {
+          "test": "TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads",
+          "start": "2026-11-01T09:08:56.465776+08:00",
+          "end": "2026-11-01T09:08:56.600103+08:00",
+          "outcome": "pass",
+          "elapsed": 0.13
+        },
+        {
+          "test": "TestCollaborationRealtimeRetainsFailedSourceInvalidation",
+          "start": "2026-11-01T09:08:56.600125+08:00",
+          "end": "2026-11-01T09:08:56.735025+08:00",
+          "outcome": "pass",
+          "elapsed": 0.13
+        },
+        {
+          "test": "TestCollaborationRealtimeRemovalReachesRevokedAccount",
+          "start": "2026-11-01T09:08:56.735058+08:00",
+          "end": "2026-11-01T09:08:56.928206+08:00",
+          "outcome": "pass",
+          "elapsed": 0.19
+        }
+      ]
+    },
+    "db-final.jsonl": {
+      "service_package": [
+        {
+          "action": "start",
+          "time": "2026-11-01T09:18:36.659128+08:00",
+          "elapsed": null
+        },
+        {
+          "action": "fail",
+          "time": "2026-11-01T09:28:00.016585+08:00",
+          "elapsed": 563.355
+        }
+      ],
+      "tests": [
+        {
+          "test": "TestKnowledgePendingChangesDoNotSignalTarget",
+          "start": "2026-11-01T09:21:57.509281+08:00",
+          "end": "2026-11-01T09:22:10.00452+08:00",
+          "outcome": "fail",
+          "elapsed": 12.5
+        },
+        {
+          "test": "TestCollaborationMemoryRealtimePublishesOnlyIssueScope",
+          "start": "2026-11-01T09:22:51.790128+08:00",
+          "end": "2026-11-01T09:22:51.951685+08:00",
+          "outcome": "fail",
+          "elapsed": 0.16
+        },
+        {
+          "test": "TestCollaborationRealtimeOutboxRetriesWithoutPrivatePayloads",
+          "start": "2026-11-01T09:23:28.828655+08:00",
+          "end": "2026-11-01T09:23:28.960816+08:00",
+          "outcome": "fail",
+          "elapsed": 0.13
+        },
+        {
+          "test": "TestCollaborationRealtimeRetainsFailedSourceInvalidation",
+          "start": "2026-11-01T09:23:28.960834+08:00",
+          "end": "2026-11-01T09:23:29.096906+08:00",
+          "outcome": "fail",
+          "elapsed": 0.14
+        },
+        {
+          "test": "TestCollaborationRealtimeRemovalReachesRevokedAccount",
+          "start": "2026-11-01T09:23:29.09692+08:00",
+          "end": "2026-11-01T09:23:29.249297+08:00",
+          "outcome": "fail",
+          "elapsed": 0.15
+        }
+      ]
+    },
+    "first_run_source_hashes": {
+      "server/internal/service/task_knowledge_preparation_boundary_test.go": "ffbf07017e599b206091fe7886ae79151f96d335f554299fe02e65d0921c31ef",
+      "server/internal/service/task_knowledge_logging_test.go": "b5af337072bfcd29e0911f8bdb9214d65e2b39c3bcc57acb10712c91e59c9afa",
+      "server/internal/service/collaboration_knowledge_invalidation_test.go": "5c017023fc8b5183d787355c57e44f3a080063bf418f54040704add1207c8851",
+      "server/internal/service/collaboration_realtime.go": "4d786ad98c389670ee206b1303d2efd5bbef1412e9b4c8252424d9853ddf2e01",
+      "server/pkg/db/queries/collaboration_knowledge.sql": "c0f04570b33ebeef36dc8b4fb9a5dd06611f9f22ffba419fc8400c531bfb58e9",
+      "server/pkg/db/queries/collaboration_realtime.sql": "3b648a897bd6b0b2bab8414fda36c358a1f9e12bacb72d5dbf05fc87b0d6d6d2",
+      "server/internal/testutil/db.go": "57f74029e5273c15eb32b1b811d0760997dcea4b02d30ac510292d68f21989f1"
+    }
+  },
+  "cleanup_seams": [
+    {
+      "file": "server/internal/service/task_knowledge_preparation_boundary_test.go",
+      "symbol": "newPreparationExternalFixture",
+      "problem": "Adds a service-owned source in a second workspace; inherited collaborationFixture cleanup is bound to the original consumer workspace."
+    },
+    {
+      "file": "server/internal/service/task_knowledge_logging_test.go",
+      "symbol": "TestKnowledgeServerLogProbe",
+      "problem": "Ordinary testutil fixture creates a collaboration source via service without registering its source-owned legacy row cleanup."
+    },
+    {
+      "file": "server/internal/testutil/db.go",
+      "symbol": "Fixture.Workspace -> deleteOnCleanup",
+      "effect": "Raw DELETE workspace triggers legacy issue_workspace_id_fkey ON DELETE CASCADE; new collaboration rows intentionally have no cascade."
+    }
+  ],
+  "dispatcher_failure_chain": [
+    "LockNextCollaborationRealtimeEvent chooses oldest pending event JOIN issue_collaboration, ordered by created_at,id.",
+    "Oldest created event ef4c4ac5-ee2e-44d4-b9e9-3d6234be6fb3 still joins issue_collaboration but source issue01a194ab-2435-74f1-a53f-0d925b6a3b99 is absent.",
+    "deliverNext reaches GetIssue for non-memory event, returns pgx.ErrNoRows before MarkCollaborationRealtimeEventDelivered; transaction rolls back.",
+    "Every global DeliverPending warmup sees the same head; failures are unrelated to the current test's new source."
+  ],
+  "recommendations": [
+    "Use a newly created, empty, migrated database for each complete final gate; do not clone accumulated fixture histories.",
+    "Fix exactly the two fixture cleanup seams using fixed source IDs and existing cleanup helpers before parent deletion, preserving candidate/invalidation history.",
+    "Preserve e705 failed state; do not delete protected retained rows to satisfy a fixed fixture drain limit.",
+    "If repeat-run support is desired later, bound fixture draining by an observed workload or isolate fixture namespaces/causes; keep production bounded scan/retry/retention policy unchanged."
+  ],
+  "limits": [
+    "Read-only reconstruction, no rerun on e705.",
+    "Database counts were observed after the reported failure while/after main's service run was completing; test-start workload is reconstructed from immutable proposal/approval/start/completion timestamps.",
+    "The first service package had an unrelated builtin-template failure; the five tests discussed here individually passed in that run.",
+    "Actual production source deletion guards differ from raw test fixture workspace deletion."
+  ],
+  "owner_followup": "knowledge_launch_leaf has received both orphan families/IDs and owns test-only cleanup verification in separate C2 database; its reported red/green artifacts are research/fixture-cleanup-2026-11-01/."
+}

@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-02T13:27:01.851576+00:00",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-launcher-test.py",
+    "-k",
+    "normalized"
+  ],
+  "launcher": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/adapter-fix/v6-before-make-dollar-fix/run-make-check-v6.py",
+  "exit_code": 1,
+  "expected": "six unsupported-value admission assertions fail; no marker was produced by bare export without variable use",
+  "fixture_execution": "real /usr/bin/make executes only owned temporary include/export .PHONY probe with @:; no repository target, DB, server, Provider or account",
+  "log_sha256": "0b567a6d6be4caca322c207d3f552344938eebe0e1d551c93d7d1604fec380a8",
+  "real_database_commands": 0,
+  "real_provider_calls": 0,
+  "state": "limited_fixture_unreferenced_variable",
+  "classification": "bare export plus @: does not force unused recursive Make value expansion on this installed Make; corrected explicit-value use fixture follows"
+}

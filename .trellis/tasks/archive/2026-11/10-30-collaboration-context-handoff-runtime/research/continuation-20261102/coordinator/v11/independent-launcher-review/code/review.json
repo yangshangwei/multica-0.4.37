@@ -1,0 +1,355 @@
+{
+  "schema_version": 1,
+  "role": "trellis-check",
+  "scope": "Independent read-only v11 launcher/configuration/adapters code review; exact candidate bytes and retained preflight evidence",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "source_or_shared_edits": false,
+  "execution_clearance_created": false,
+  "authorizes_execution": false,
+  "full_candidate_accepted": false,
+  "paid_or_real_provider_completion_granted": false,
+  "reviewed_at_utc": "2026-11-02T23:26:52.001439+00:00",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "bindings": {
+    "launcher": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11.py",
+      "sha256": "b2d17a742c45134640a070e980937b9f0ce4f724611c7e5c0fb6f2f0a333ffd2"
+    },
+    "source_env": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-source-v11.env",
+      "sha256": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f"
+    },
+    "owned_bindings": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/owned-bindings-v11.json",
+      "sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba"
+    },
+    "go_adapter": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/go",
+      "sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce"
+    },
+    "pnpm_adapter": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/pnpm",
+      "sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+    }
+  },
+  "prepared_toolchains": {
+    "node": {
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "version": "v22.23.2"
+    },
+    "pnpm": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+      "sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9",
+      "version": "10.28.2",
+      "bundle_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/dist/pnpm.cjs",
+      "bundle_sha256": "930fe74c335e95a8f9f6786f115f00c37ae82493ba7bdbddaddd9e06de542f43"
+    },
+    "go": {
+      "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+      "version": "go1.26.6",
+      "goroot": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64"
+    },
+    "psql": {
+      "path": "/opt/homebrew/opt/libpq/bin/psql",
+      "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+    }
+  },
+  "preflight_evidence": [
+    {
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-v11.py",
+      "source_sha256": "fcc6fb2693ca19d4355116080ab66e974623a7e9696c64f72a53c2a71ddbeaad",
+      "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/fake-preflight-v11.log",
+      "log_sha256": "a7b097df04e8dc5b915714bc28df92dd03b551dbe3375d6c9fe231458c4e075e",
+      "metadata_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/fake-preflight-v11.json",
+      "metadata_sha256": "76d43c02af5c46e1ea29081094812a98f390b2861e4a7f74a194da87bbbc295a",
+      "recorded_exit_code": 0,
+      "expected_count": 42,
+      "source_count": 42,
+      "raw_terminal_count": 42,
+      "all_terminals_ok": true,
+      "terminal_names_equal_source": true,
+      "recorded_log_hash_matches": true,
+      "recorded_source_hash_matches": true,
+      "raw_summary": [
+        "Ran 42 tests in 0.351s",
+        "OK"
+      ],
+      "test_names": [
+        "test_actual_graph_mismatch_refuses_before_make",
+        "test_backtick_substitution_is_not_executed",
+        "test_blocking_review_cannot_launch",
+        "test_build_temp_git_root_refuses_before_make",
+        "test_candidate_mismatch_is_refused_before_make",
+        "test_catalog_path_mismatch_refuses_before_make",
+        "test_changed_cli_refuses_before_make",
+        "test_changed_pinned_node_refuses_before_make",
+        "test_changed_pinned_pnpm_bundle_refuses_before_make",
+        "test_changed_renderer_refuses_before_make",
+        "test_changed_rollout_gate_refuses_before_make",
+        "test_command_substitution_is_not_executed",
+        "test_credentialed_renderer_is_refused_before_make",
+        "test_escaped_normalized_braced_make_function_is_refused",
+        "test_escaped_normalized_parenthesized_make_function_is_refused",
+        "test_existing_dsh_refuses_before_make",
+        "test_existing_execution_directory_refuses_before_make",
+        "test_foreign_workspace_link_refuses_before_make",
+        "test_generated_quoted_escaped_empty_and_duplicate_values_are_data",
+        "test_launcher_child_gets_private_home_and_explicit_actual_caches",
+        "test_matching_own_tools_and_provider_env_scrub",
+        "test_matching_review_preserves_api_pool_and_dynamic_renderer",
+        "test_missing_catalog_refuses_before_make",
+        "test_missing_resource_ownership_refuses_before_make",
+        "test_missing_review_cannot_launch",
+        "test_modified_tracked_source_refuses_before_make",
+        "test_new_v11_process_paths_and_record_are_bound",
+        "test_non_loopback_renderer_is_refused_before_make",
+        "test_normalized_ascii_control_is_refused",
+        "test_normalized_dollar_reference_is_refused",
+        "test_normalized_tab_is_refused",
+        "test_quoted_normalized_braced_make_function_is_refused",
+        "test_repeated_launch_preserves_previous_evidence",
+        "test_repository_env_copy_preserves_enforced_pool_and_removed_context",
+        "test_root_resource_proof_rejects_unowned_redis",
+        "test_shared_writable_catalog_refuses_before_make",
+        "test_shell_metacharacters_stay_literal_in_canonical_configuration",
+        "test_symlinked_catalog_refuses_before_make",
+        "test_tampered_go_adapter_is_refused_before_make",
+        "test_tampered_launcher_is_refused_before_make",
+        "test_tampered_pnpm_adapter_is_refused_before_make",
+        "test_tampered_source_config_is_refused_before_make"
+      ],
+      "replayed_by_this_reviewer": false
+    },
+    {
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/adapter-env-preflight-v11.py",
+      "source_sha256": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+      "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/adapter-env-preflight-v11.log",
+      "log_sha256": "113295e6dc91da955d1e2795b79f22954c6baca7ad1acc119657e519c803dc12",
+      "metadata_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/owned-candidate-preparation/adapter-env-preflight-v11.json",
+      "metadata_sha256": "4c2a8f8f3125a8419585e4f6658877f70e83173b2b960184e3ac30709d50da15",
+      "recorded_exit_code": 0,
+      "expected_count": 5,
+      "source_count": 5,
+      "raw_terminal_count": 5,
+      "all_terminals_ok": true,
+      "terminal_names_equal_source": true,
+      "recorded_log_hash_matches": true,
+      "recorded_source_hash_matches": true,
+      "raw_summary": [
+        "Ran 5 tests in 2.179s",
+        "OK"
+      ],
+      "test_names": [
+        "test_go_compile_forwarding_preserves_api_configuration_without_sql",
+        "test_non_test_metadata_uses_exact_cached_go",
+        "test_non_test_metadata_uses_exact_own_pnpm_and_node",
+        "test_outer_go_test_removes_api_publication_and_pool_only_in_child",
+        "test_playwright_wiring_delegates_only_to_selected_fake_pnpm"
+      ],
+      "replayed_by_this_reviewer": false
+    }
+  ],
+  "actual_admission_paths_present": {
+    "resource-ownership-v11.json": false,
+    "independent-review-clearance-v11.json": false,
+    "check-source-v11.safe.env": false,
+    "make-check-v11.json": false,
+    "make-check-v11.log": false,
+    "full-check-home-v11": false,
+    "go-packages-v11": false,
+    "dev-registry-v11": false,
+    "profiles-v11": false,
+    "workspaces-v11": false
+  },
+  "v10_preserved": {
+    "record_path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+    "record_sha256": "a691caa6d0168db903bff9abf12d3a393f8949725110710302d4ac42d9034019",
+    "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+    "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+    "final_observation_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v10/final-interrupted-observation.json",
+    "final_observation_sha256": "c306f82d84fe642cfe99c0519466ca167da6055818ad2f9ab09c9c067dc1ca38",
+    "make_exit_code": 2,
+    "check_script_exit_code": 130,
+    "full_candidate_accepted": false,
+    "state": "process-complete-failed; browser-interrupted-scope-incomplete"
+  },
+  "code_contracts": [
+    {
+      "name": "Data-only environment parsing",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11.py",
+      "lines": [
+        26,
+        33,
+        35,
+        41,
+        162,
+        227
+      ],
+      "result": "pass",
+      "detail": "Parser AST is identical to v10. Raw command substitution/backticks and normalized dollars/nonprintable characters are refused. Only a canonical shlex-quoted copy reaches Make include/export and the shell loader; the reviewed source has no assignments that override the pinned toolchains or run locations."
+    },
+    {
+      "name": "Admission before writable execution paths",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11.py",
+      "lines": [
+        146,
+        148,
+        155,
+        156,
+        157,
+        158,
+        67,
+        118,
+        184,
+        223,
+        228,
+        248,
+        250
+      ],
+      "result": "pass",
+      "detail": "Candidate/review status and launcher/env/adapter hashes, then bindings_sha256 and resource_ownership_sha256, are checked before execution HOME creation, safe-env creation, evidence creation and Make launch. The only new subprocess before root resource proof is the pinned read-only Node resolver."
+    },
+    {
+      "name": "Root resource proof fields",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11.py",
+      "lines": [
+        117,
+        118,
+        121,
+        124,
+        125,
+        127,
+        128
+      ],
+      "result": "pass-code-only",
+      "detail": "Requires candidate SHA/root and exclusive_window_verified=true; renderer ownership, exact prepared 19846 URL and current index hash; Redis ownership, port 16422 and a nonempty container identity. The additional clearance hash binds the whole root-owned proof. No live resource proof was available to this reviewer."
+    },
+    {
+      "name": "Actual toolchain dispatch",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11.py",
+      "lines": [
+        90,
+        95,
+        96,
+        99,
+        101,
+        102,
+        186,
+        200,
+        201,
+        207
+      ],
+      "result": "pass-code-and-byte-binding",
+      "detail": "All current Node/pnpm/Go/psql executable hashes match the owned binding. Node 22.23.2 precedes ambient PATH; candidate-local pnpm 10.28.2 entry and bundle hashes match, with 1069/1069 SDK file hashes and the same inventory set. Go 1.26.6 executable and all five recorded members match, with bound GOROOT, GOTOOLCHAIN=local and GOENV=off. Versions are preparation metadata and retained metadata-command assertions; no tool was executed here."
+    },
+    {
+      "name": "Go adapter child configuration",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/go",
+      "lines": [
+        14,
+        46,
+        93,
+        96,
+        100,
+        123,
+        126,
+        127,
+        135,
+        137,
+        155,
+        173,
+        186,
+        187,
+        192,
+        195,
+        196,
+        197,
+        207
+      ],
+      "result": "pass",
+      "detail": "Non-test and compile-only paths forward to selected Go before test-only removals. Executing tests remove API pool/task-root overrides. Outer package execution uses a newly named clone, verifies its identity, assigns a private package HOME, removes only API publication configuration in that child, and calls selected Go. Recursive execution validates its recorded exact package/clone before forwarding. Repository make-check arguments use supported parsing paths."
+    },
+    {
+      "name": "pnpm adapter child configuration",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/pnpm",
+      "lines": [
+        11,
+        12,
+        16,
+        18,
+        19,
+        20,
+        23,
+        25,
+        30,
+        33,
+        35,
+        36
+      ],
+      "result": "pass",
+      "detail": "The exact make-check Playwright invocation is wired to its allocated API and renderer and delegates through the repository agent-CLI guard to selected pnpm. Other commands forward selected pnpm unchanged. Legacy v9 output basenames remain inside the v11 evidence parent, preserving v10."
+    },
+    {
+      "name": "Make and shell consumers",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/scripts/check.sh",
+      "lines": [
+        118,
+        131,
+        141,
+        145,
+        158,
+        160,
+        164,
+        174
+      ],
+      "result": "pass-static",
+      "detail": "Makefile include/export receives canonical private data; dev-env load_env_file sources that copy. Script regressions, ordinary Go race batches, vet/migration/API and production-Web/PW continue through the intended selected command boundaries. No consumer was executed during review."
+    },
+    {
+      "name": "Old v10 preservation",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+      "result": "pass-read-only",
+      "detail": "The original v10 record is still complete with Make exit 2; its final observation retains check-script exit 130 and failed/interrupted browser scope. Neither is reclassified as a full pass."
+    }
+  ],
+  "current_read_only_byte_checks": {
+    "all_four_tool_executable_hashes_match": true,
+    "pnpm_bundle_hash_matches": true,
+    "pnpm_sdk_file_count": 1069,
+    "pnpm_sdk_all_hashes_match": true,
+    "pnpm_sdk_inventory_set_matches": true,
+    "go_recorded_member_hashes_match": true,
+    "environment_parser_AST_equal_v10": true,
+    "private_database_and_redis_source_values_match_v10": true,
+    "private_environment_contents_emitted": false,
+    "bound_workspace_expectations_and_resolver_hashes_match": true,
+    "stored_workspace_auth_paths_share_one_candidate_identity": true,
+    "actual_node_resolver_reexecuted_here": false,
+    "complete_product_fingerprint_recomputed_here": false
+  },
+  "verification": {
+    "lint": "not run; read-only assignment forbids builds/repository checks",
+    "typecheck": "not run; read-only assignment forbids builds/repository checks",
+    "tests": "not run or replayed here; 42+5 retained preflight terminals and source assertions independently read and hash-verified",
+    "services_database_sql_playwright_provider_network": "not executed",
+    "source_review": "pass for this scope",
+    "shell_or_python_syntax_execution": "not run; Python files inspected via AST parsing only"
+  },
+  "limitations": [
+    "Code admission checks do not establish that the root-owned renderer and Redis are live, correctly owned or exclusive at future launch time.",
+    "The stored workspace graph and read-only resolver code do not establish production Next.js SSR singleton behavior.",
+    "Retained fake preflight successes are not repository lint/typecheck/Go/browser/full-run results.",
+    "This review issues no full candidate, paid-model, external publication or execution approval."
+  ],
+  "smallest_owner_followup": [
+    "Root must collect current owned renderer19846, dedicated Redis16422/container and exclusive-window evidence, bind its entire proof hash in the v11 clearance, and combine the independent review lanes.",
+    "Root retains responsibility for the separate minimal production SSR verification, a newly recorded full run, password-mode acceptance and any later already-authorized exclusive real-model window.",
+    "No launcher or adapter code correction is requested by this scoped review."
+  ]
+}

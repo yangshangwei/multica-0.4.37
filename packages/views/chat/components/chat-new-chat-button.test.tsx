@@ -140,7 +140,7 @@ describe("NewChatButton", () => {
     const input = await screen.findByRole("textbox", { name: "Filter options" });
     fireEvent.change(input, { target: { value: "missing" } });
 
-    expect(screen.getByText("No matching actors")).toBeInTheDocument();
+    expect(screen.getByText("No matches")).toBeInTheDocument();
     expect(screen.queryByText("My agents")).not.toBeInTheDocument();
     expect(screen.queryByText("Others")).not.toBeInTheDocument();
   });

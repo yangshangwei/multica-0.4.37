@@ -1,0 +1,550 @@
+{
+  "at": "2026-10-14T03:03:45.975163+00:00",
+  "head": "bb2d9f481e466bced1c39371230d658ce6c41060",
+  "files": [
+    {
+      "file": "apps/desktop/src/renderer/src/components/daemon-settings-tab.tsx",
+      "sha256": "b500dee682d7f759fefda3e235f319f26e587ac93ed427755c8f6425e175aee6"
+    },
+    {
+      "file": "apps/desktop/src/renderer/src/components/desktop-behavior-settings-tab.tsx",
+      "sha256": "d8c3fae5d4b2de401f0755436f0d54e5c12d200d4dd2aef2c9106659d50700fa"
+    },
+    {
+      "file": "apps/desktop/src/renderer/src/components/updates-settings-tab.tsx",
+      "sha256": "111b9e43f7feeee68fdd4fdaa39d1dc8dc9c87b47790ae6f8c849c2c2181146d"
+    },
+    {
+      "file": "packages/core/api/client.ts",
+      "sha256": "fabcc1afab85ac682eca0dd18a77284d02c6f39e6e4c6bd68b4a5d1d766ced22"
+    },
+    {
+      "file": "packages/core/api/schemas.ts",
+      "sha256": "76f3860fb30fe5edf261d2ec11ebe114eadc1fe6a271b3f3a7eef12d5d0fdae2"
+    },
+    {
+      "file": "packages/views/locales/en/admin.json",
+      "sha256": "18e761c261fb7d137b2bd49934a7952fdb9a2ee7e48a6183969be0a74969beb8"
+    },
+    {
+      "file": "packages/views/locales/en/agents.json",
+      "sha256": "2de864990d80eb9f42eb895951322bfcdadcdd3b476c434785bcc2f6431379aa"
+    },
+    {
+      "file": "packages/views/locales/en/auth.json",
+      "sha256": "a5042dba9303cd560f2c2fc46d4dc89eaa7f76a08dbe60e1d3574ce4499578dd"
+    },
+    {
+      "file": "packages/views/locales/en/autopilots.json",
+      "sha256": "e0fbf0b08aa1382816f7f6117fc780f5e6ea5d09069b0bd3adb4ef48e3a0941e"
+    },
+    {
+      "file": "packages/views/locales/en/billing.json",
+      "sha256": "9907c26de88b5a61b07ece8576d60e0a79a215f4933e1a0f6906719f7523ad83"
+    },
+    {
+      "file": "packages/views/locales/en/changelog.json",
+      "sha256": "224088bef3a761aec5df3e9966c3f15aa7a2d39f4fba75f1b86b698c04f74d28"
+    },
+    {
+      "file": "packages/views/locales/en/chat.json",
+      "sha256": "61a42f7c8cf9167e8d5861144f3b7bbf4b0c6c198fa248e63a99b7d4ee4f470e"
+    },
+    {
+      "file": "packages/views/locales/en/common.json",
+      "sha256": "f361e1780213f9fcabdfdaed4dca5380bbf8210f217dabb8f104a12c77fd7b83"
+    },
+    {
+      "file": "packages/views/locales/en/desktop.json",
+      "sha256": "e4705b21a58193dfcad69cd03a2f9d5494122c80ef17e33f971250ebc78ce3ef"
+    },
+    {
+      "file": "packages/views/locales/en/docs.json",
+      "sha256": "d7e59e3d46b2b504a2e0b7e7fa270f0eaf01d06be4fa14f32cf9f428163c7ea5"
+    },
+    {
+      "file": "packages/views/locales/en/editor.json",
+      "sha256": "392fb3d6de553247c48e854f17118235352f58f0d21f1fcae2882cab5d12f52b"
+    },
+    {
+      "file": "packages/views/locales/en/inbox.json",
+      "sha256": "76c86e5693a53eea365e42c119bae50b49d7692a15422a32e3853504993eae72"
+    },
+    {
+      "file": "packages/views/locales/en/invite.json",
+      "sha256": "ea73f603f45419b02f3d594a6367b9042718ec80a2e9c1a32717613e8ad4a806"
+    },
+    {
+      "file": "packages/views/locales/en/issues.json",
+      "sha256": "c511273c2ab05e64ac3b5fa6c6f681b4f5758e120f45c7f784c5be0c101f634b"
+    },
+    {
+      "file": "packages/views/locales/en/labels.json",
+      "sha256": "7e8c91e50e39d9b46f2abc3da0e59baff0c9b84c7f8e89c97139cf5cd3a15807"
+    },
+    {
+      "file": "packages/views/locales/en/layout.json",
+      "sha256": "d79ffeafe8e28d78c95405edd691c1dfa0b4404c2fc98bf9c424526245f7c245"
+    },
+    {
+      "file": "packages/views/locales/en/members.json",
+      "sha256": "764b99e7bf7dbdcd9d6ac1909255f63eea6383170becad18eca0a540d91faa3c"
+    },
+    {
+      "file": "packages/views/locales/en/modals.json",
+      "sha256": "9bc5197b968a84266ab173e6b50e6a43674405c19dd6285e5df0053784636933"
+    },
+    {
+      "file": "packages/views/locales/en/my-issues.json",
+      "sha256": "da0c2f4391f91127cc8b09f35c1bccaee25743f1b5e51f93b2e6f0a983ce5025"
+    },
+    {
+      "file": "packages/views/locales/en/onboarding.json",
+      "sha256": "6b83d2b6fec2e7057b46a357f0bc72f8f93f88eccbd343fd6f6c38414886dd29"
+    },
+    {
+      "file": "packages/views/locales/en/projects.json",
+      "sha256": "bb199c323a202e319775d17ee10fcc850dd5760ce034fee4ffdd8d195cb20914"
+    },
+    {
+      "file": "packages/views/locales/en/runtimes.json",
+      "sha256": "73fceeab2ea3b6e729ee92660ac04e290d0b1a7ef7aee0c6675e2763b929e7b2"
+    },
+    {
+      "file": "packages/views/locales/en/search.json",
+      "sha256": "7a6ffebe79dee6049b78ed9b6b324d587a6dc9bc0f241d3cfac81a89192be087"
+    },
+    {
+      "file": "packages/views/locales/en/settings.json",
+      "sha256": "3094f236e7b23d57d32edf56126533fe2a4670230e9db8944dd9e7497ba1bf1e"
+    },
+    {
+      "file": "packages/views/locales/en/skills.json",
+      "sha256": "a12ab829a6bda986afc6db421e15db653879f761376da34e37b28b31c6b6a52c"
+    },
+    {
+      "file": "packages/views/locales/en/squads.json",
+      "sha256": "407a1c16a0c77839fb0e2ad91048d6608f0fb0195cebbb58d8c264c7ff1784f3"
+    },
+    {
+      "file": "packages/views/locales/en/triage.json",
+      "sha256": "104e351d2a23046b69e3c296324926496775fc465d7c1e0735a6e66a5e9ca569"
+    },
+    {
+      "file": "packages/views/locales/en/ui.json",
+      "sha256": "75ad8f1a45c7ae458db97b4f9b0a299c743e8e06ef19a3bbbe18ee04f5a88606"
+    },
+    {
+      "file": "packages/views/locales/en/usage.json",
+      "sha256": "5247c2a165acd9201408721482582e4efacb235e4f3dfe76744c84bf39da8adb"
+    },
+    {
+      "file": "packages/views/locales/en/workspace.json",
+      "sha256": "f65a693c5cf323b8a7d87d5b7c48beb0567394f9662c2f8694567a34cf12139b"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/admin.json",
+      "sha256": "1139cf85256f7085b05ef54dcea3677e1fd04071e4ebc6ca1a5953b844b3cdd9"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/agents.json",
+      "sha256": "c643a92b37aab3fee9ce2f2e19a75002f582591f5f0709e4c3c9671c3f2204f7"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/auth.json",
+      "sha256": "e332c0c58e66fa59e3dc726887bd96a80fcab18168a23549e977088f8a59db1a"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/autopilots.json",
+      "sha256": "2e2092eab60b5efcef07ca5916c1fe2f7ddcb2c13f5c3ade180f6ab19f438fbd"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/billing.json",
+      "sha256": "32642af26a8b02bc3c9a8a748ffcee0f660ce93133935390386cdce280fe5ff8"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/changelog.json",
+      "sha256": "e1cb4f369d15f4a60d3cfc63d4c444a084e8ee5209006bd09ca0be7d02ca5398"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/chat.json",
+      "sha256": "1a89a8fb15ad542e3b629bdd06d4574cf9030d169160249449d7e2e91a04f188"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/common.json",
+      "sha256": "8e9ccbf75677dab9c3632d20c61dc36804c2ade700bf5a66b72ff4f674213fce"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/desktop.json",
+      "sha256": "bee41fd11689f94cca29756fabaf01489aba4b114b58cdee0650dcb2caa584f6"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/docs.json",
+      "sha256": "1da27626f9931dc9da9f6d2ec0603986fb2a0ce99a0f7bec23af09c77ee2a6f6"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/editor.json",
+      "sha256": "eb3be3ff5f1c899a3bef26da3225ced17f84722f9ad38368395cc8f96535edff"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/inbox.json",
+      "sha256": "2b0cd9d965031ced296933e4669a6dd832177760d31680cbca99c06afd2bb647"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/invite.json",
+      "sha256": "507292f5f15fbcc6408d8b112f53e3781ec384f0b8496104e86fbaddd654da27"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/issues.json",
+      "sha256": "59bac7de6029b7de8b2caddb2477d03852371a47cfc985fd449e1f5518da7dab"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/labels.json",
+      "sha256": "ac23777ab9b0b2ab92dba139a505e7b746a24bbd30653152b3f301babd0ca542"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/layout.json",
+      "sha256": "36d03103210c745ebbffeb0e33a1d2bde2b5ac88b97f3bcee077f8c0cf77dd04"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/members.json",
+      "sha256": "c1238d15e6d9efaf85d9cea5561117d93d66069775eea1c87437a3d9e77592ff"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/modals.json",
+      "sha256": "c6d0607c92a006365b626cd708965fb40526e27fd122e381d98bbdbfd53f5ec3"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/my-issues.json",
+      "sha256": "ea88af52e04655d5c2e1ecbb244b3dc84fb8b70e45c5f0f2aa9f7456843d57c2"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/onboarding.json",
+      "sha256": "77c3e0e5ddcfa52d3ed4459cc28d5ac99d014a1ea9f82022b40fc5fc11ce65d8"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/projects.json",
+      "sha256": "d92ce3c0c61be152735d9f3f31b30c1948eda91333327b08a6757a90d43c4f3d"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/runtimes.json",
+      "sha256": "f06fac5e039386821013bea7cb233ba72020361c4146c61964aa4ce020321216"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/search.json",
+      "sha256": "394fbf76aa36edd0418c228b317d9150a06af9a4a8c2de389c7d0ef17d336de4"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/settings.json",
+      "sha256": "f18d395aad663c33e0c595d1256d2226a99c27e568a9bf316bde2dfe627c7d1d"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/skills.json",
+      "sha256": "3bcfc9ac212c0a49678f7cd4fa599b45fb7b6d6ffcef9da2ff61651307a30d00"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/squads.json",
+      "sha256": "fcd1757d81758ce0b3da4566b4b0fbffaea8fcdcf12bfab9463cbb1243232262"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/triage.json",
+      "sha256": "5dcec441cf617e4f6a5626ffc2edc951c26c19da67c183088d19b617a6d1b920"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/ui.json",
+      "sha256": "70a7e616be1da4be4e66d96ee14993002e682b0d9e2cb5971c9cd6d3d52278c8"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/usage.json",
+      "sha256": "9ae738cccc6136f6c0539add08e71a666eb90c5f5a7a33b0ad2e70e98231794c"
+    },
+    {
+      "file": "packages/views/locales/zh-Hans/workspace.json",
+      "sha256": "94d7caca84f36367f769b33bd69e4ddedc3bd209155bf46dd656e4028750b36e"
+    },
+    {
+      "file": "packages/views/settings/components/account-tab.tsx",
+      "sha256": "b843f538109faa85f0710fa911b83b960445038168763e73c3f2553c571433de"
+    },
+    {
+      "file": "packages/views/settings/components/billing-format.ts",
+      "sha256": "da19e92a45e5dd80b884fac4751a45f5e4b49363490ff68eae598ec2c8c54315"
+    },
+    {
+      "file": "packages/views/settings/components/billing-state.test.ts",
+      "sha256": "6018b49a3f49705a6ed3914b2544a4f3889bb79d680958793ff5101df62b9444"
+    },
+    {
+      "file": "packages/views/settings/components/billing-state.ts",
+      "sha256": "564dbaea5b505b57d3441cd978b0855bba13254805146a11eb609b6124f06abb"
+    },
+    {
+      "file": "packages/views/settings/components/billing-tab.test.tsx",
+      "sha256": "d35807fb1fd931a5242b154e63652a7cdf2c317cec59e60982b720b0910f0fbf"
+    },
+    {
+      "file": "packages/views/settings/components/billing-tab.tsx",
+      "sha256": "f5f2cdfa5c0ebc6953b79155946c8697503a4a7b91774f83b02f5d9b9fd0450c"
+    },
+    {
+      "file": "packages/views/settings/components/browser-notification-setting.tsx",
+      "sha256": "7370b68742ca23b3527d1390893a87f2f2cd9bfb003e16ae638f9372420c9486"
+    },
+    {
+      "file": "packages/views/settings/components/composio-tab.test.tsx",
+      "sha256": "00725aa30dbc4723c52e1972aae1d7b132979fa5203afb32cc7261605f789eae"
+    },
+    {
+      "file": "packages/views/settings/components/composio-tab.tsx",
+      "sha256": "6ec29b4974b3605ee6220a51bfac8fca6f5fd2937c71d2847b69ae6ff65188af"
+    },
+    {
+      "file": "packages/views/settings/components/delete-workspace-dialog.test.tsx",
+      "sha256": "eecb69dae6749b4a0cc3a04f2855e1ac676be7a260418a2b826ebd47370ef872"
+    },
+    {
+      "file": "packages/views/settings/components/delete-workspace-dialog.tsx",
+      "sha256": "f49647ed7709edb2041ec3e41b12ca7217d85a9ff6244d3671e6ff2400834f16"
+    },
+    {
+      "file": "packages/views/settings/components/dingtalk-mark.tsx",
+      "sha256": "a6ae1f11d013f6ed004fb2a92b332b7367da2bf4fa8403356a4d182be68f0250"
+    },
+    {
+      "file": "packages/views/settings/components/dingtalk-tab.test.tsx",
+      "sha256": "063d1650a99a9cf14950ed7614e98e6628d0bf8bfe83e525367bba0f14968083"
+    },
+    {
+      "file": "packages/views/settings/components/dingtalk-tab.tsx",
+      "sha256": "e16a5c8e8c4eb59d8cbd494cb6ea6f8efe96b233faa7584d7798b05efb950475"
+    },
+    {
+      "file": "packages/views/settings/components/github-mark.tsx",
+      "sha256": "75655c0dd2fa48a588ebceef101243b8154dd854a45b486dfba742696169649a"
+    },
+    {
+      "file": "packages/views/settings/components/github-tab.test.tsx",
+      "sha256": "23d1893d7170dfd8beb518068f0b253497441018e53ec8cb5f494ed0b513e0d7"
+    },
+    {
+      "file": "packages/views/settings/components/github-tab.tsx",
+      "sha256": "afb11fa94a58fef763f348496eff2d5b55f762d1333214a1bc931f1f5aa81d88"
+    },
+    {
+      "file": "packages/views/settings/components/index.ts",
+      "sha256": "8d8a05d970ad66019954ddff3748d172ee5a00e455f78e233e93097f60f753ca"
+    },
+    {
+      "file": "packages/views/settings/components/integration-channel-icon.tsx",
+      "sha256": "448eeb24e997e0c8641d73456ef2f9182827a29de3c6084893e4cee95c390eaa"
+    },
+    {
+      "file": "packages/views/settings/components/integrations-tab.test.tsx",
+      "sha256": "f6c5f8f7c9f6ff73d6676a9efa0123d86d228d8b7f502ceb685165d7c8edab9d"
+    },
+    {
+      "file": "packages/views/settings/components/integrations-tab.tsx",
+      "sha256": "4d647247ca82710567327f8c1da21c45a50981d26df5cc483fd4b31f3b1705fb"
+    },
+    {
+      "file": "packages/views/settings/components/issue-statuses-ordering.test.tsx",
+      "sha256": "73d1254ffc74e2bd8a82d9009f9ff4a62168af4e36091d49fefd8375a6dec88b"
+    },
+    {
+      "file": "packages/views/settings/components/issue-statuses-tab.test.tsx",
+      "sha256": "7028ff28ed561e95774cd8f49a03aae9fb73cd69b6671f2ccbe80ffaf3cd9715"
+    },
+    {
+      "file": "packages/views/settings/components/issue-statuses-tab.tsx",
+      "sha256": "3732dc72253a3f7ba9b56c23551864d2800c77b1ec73b21337e1e4d33ccb424e"
+    },
+    {
+      "file": "packages/views/settings/components/keyboard-shortcuts-tab.test.tsx",
+      "sha256": "ac570eeb9ef17a34d7707d979bfd7a23991f946220d108a9d99d3531e627072c"
+    },
+    {
+      "file": "packages/views/settings/components/keyboard-shortcuts-tab.tsx",
+      "sha256": "505e7a9af70d6942f69ff49b2c24532b35006dcba845e84ebef07c91aaf1055f"
+    },
+    {
+      "file": "packages/views/settings/components/labels-tab.test.tsx",
+      "sha256": "c1d61a3a58c1889ab58fdeb31018361b75435b431545f9cba7b833b321ac7759"
+    },
+    {
+      "file": "packages/views/settings/components/labels-tab.tsx",
+      "sha256": "1fccca7c3239bfa4253b2d8deaa32429893896b3ba0df6221886930425067a88"
+    },
+    {
+      "file": "packages/views/settings/components/lark-mark.tsx",
+      "sha256": "3d8c8e8c8ecaaa9c35c90292e89b3ffd97f78208d5bb2c4661a07572335bbd00"
+    },
+    {
+      "file": "packages/views/settings/components/lark-tab.test.tsx",
+      "sha256": "fb8d40a686aaf6db2b2a17be2404c8c8710551cb81a0e36a97b7fc3f40af7736"
+    },
+    {
+      "file": "packages/views/settings/components/lark-tab.tsx",
+      "sha256": "8e3f12098f11279805218661341e42e62aea0bb9d91e7bee4c95949fd50d5baa"
+    },
+    {
+      "file": "packages/views/settings/components/mcp-tab.test.tsx",
+      "sha256": "f8a7721d1675b0da73aa311e4e7c000e0a748ae4dfad0844af967b2770102b7e"
+    },
+    {
+      "file": "packages/views/settings/components/mcp-tab.tsx",
+      "sha256": "fb7e89b7a3b81ced0b66e8419166c83347668164ca36c2ddfb40c6a53252bc62"
+    },
+    {
+      "file": "packages/views/settings/components/members-tab.tsx",
+      "sha256": "10418cea5f0abc529deefaa9c6ad0ffdeda3adbb105bcfca8524579e184ac116"
+    },
+    {
+      "file": "packages/views/settings/components/notifications-tab.test.tsx",
+      "sha256": "89ef372b8304286ea907ca13884939068afad0dfeed722f5aa9a3b2a87e88e39"
+    },
+    {
+      "file": "packages/views/settings/components/notifications-tab.tsx",
+      "sha256": "cfb5e04916dc471de19acb3b7ede676069b39a7b9ebd8c809309d74aa095a17b"
+    },
+    {
+      "file": "packages/views/settings/components/plugins-tab.test.tsx",
+      "sha256": "1715e61103240e89b97a3665a608213e69e2e868456dabcc06844e2874818119"
+    },
+    {
+      "file": "packages/views/settings/components/plugins-tab.tsx",
+      "sha256": "5a5803d6ebb1fce560e5428ca0971a7eef4fd2c8e6e5f536adf2584bd319f34b"
+    },
+    {
+      "file": "packages/views/settings/components/preferences-tab.test.tsx",
+      "sha256": "d51f284174b495b3d590561c4bbe2ae38414f5a27a49e9e16472f4cb4dcce3ae"
+    },
+    {
+      "file": "packages/views/settings/components/preferences-tab.tsx",
+      "sha256": "892f98565907ed3a091c3aadbd6b03d5270eaa245e8e9b0b18756f1b0f7f1027"
+    },
+    {
+      "file": "packages/views/settings/components/properties-tab.tsx",
+      "sha256": "50c421508c9aa45b9b54985e81c5ee46e1705c9b04e8d419d79f1d39d033b774"
+    },
+    {
+      "file": "packages/views/settings/components/quick-actions-tab.tsx",
+      "sha256": "b3a2e6eeb45c2dcd7bf9a8c9417dac4b87ec419325f10797a75b3a67aba460af"
+    },
+    {
+      "file": "packages/views/settings/components/repositories-tab.test.tsx",
+      "sha256": "6b6aa93a2d857744176e1424eede156c97368d7d7f955063b4dae24c62737daf"
+    },
+    {
+      "file": "packages/views/settings/components/repositories-tab.tsx",
+      "sha256": "b50ca6cae9c2c5cfbcfe0f0427e0b3ea0d53ab1cd5b7df350931aaa82b08172e"
+    },
+    {
+      "file": "packages/views/settings/components/seat-invite-purchase.test.ts",
+      "sha256": "2c771c995bb14de52b4e71d9a61fc71d5cc9f94d594a8d57d6980dd07f29393e"
+    },
+    {
+      "file": "packages/views/settings/components/seat-invite-purchase.ts",
+      "sha256": "d091510e85ed3a2cd31bacd2959b57845c16d88a391dc22161ae5e188ca5a816"
+    },
+    {
+      "file": "packages/views/settings/components/settings-integration-navigation.test.ts",
+      "sha256": "131898c0e9f79ad470d2fd63565cba16ac6fb7c21d28b43103bf23c482143cd8"
+    },
+    {
+      "file": "packages/views/settings/components/settings-integration-navigation.ts",
+      "sha256": "09a527a618a000a6c15a732269dd5ca3dfb9ceb06c95389eaa884a07e8f3ef2b"
+    },
+    {
+      "file": "packages/views/settings/components/settings-layout.tsx",
+      "sha256": "c3940018af287969dcddee168c7102e18c6e5e27a5eac259d284095a94116cfd"
+    },
+    {
+      "file": "packages/views/settings/components/settings-nav.test.ts",
+      "sha256": "994a5e9735df5c100e46a6a44f817b9b603cf36d6af426075ae42826847c99da"
+    },
+    {
+      "file": "packages/views/settings/components/settings-nav.ts",
+      "sha256": "b0354974c4e487ba59e82620012545c3ea512318809cad43a83e89a20aee3542"
+    },
+    {
+      "file": "packages/views/settings/components/settings-page.test.tsx",
+      "sha256": "a0f00e0f95fd7fb9a6531103f2ade50c850f4df418c1ce5c1a831e4e4155c29c"
+    },
+    {
+      "file": "packages/views/settings/components/settings-page.tsx",
+      "sha256": "03e79a264657439cb642daf35820166b91f58986232fd4128a461426731b69dc"
+    },
+    {
+      "file": "packages/views/settings/components/slack-mark.tsx",
+      "sha256": "e2145c66d8d1be0711f354b143509d38d6297ba0d70121d370c9edac0f282c7a"
+    },
+    {
+      "file": "packages/views/settings/components/slack-tab.test.tsx",
+      "sha256": "c724e684671e12ad147b480425c008c65edd010f129a89fc227c7a86efc9b92b"
+    },
+    {
+      "file": "packages/views/settings/components/slack-tab.tsx",
+      "sha256": "ac46fce7486bc2644d3315783184335f0801f0bb733fb910e03a36271d9b00ec"
+    },
+    {
+      "file": "packages/views/settings/components/telegram-mark.tsx",
+      "sha256": "1d4b575550bf108d69c067486b3c0dd1c7f32334bcfed45a44610c5fe8a4ad3f"
+    },
+    {
+      "file": "packages/views/settings/components/telegram-tab.test.tsx",
+      "sha256": "8ff1be57cc1fefcf16d3c99f43527fd4ec01e03ff4f9b2863a139df8855f716d"
+    },
+    {
+      "file": "packages/views/settings/components/telegram-tab.tsx",
+      "sha256": "6470a36200b406ee5d0f0c01bfde1598323a80433a478c2c682146f39449414d"
+    },
+    {
+      "file": "packages/views/settings/components/tokens-tab.tsx",
+      "sha256": "cbf3dcd7f52d41565edce0a7bea0636f1c0c95ed802edb5af119dc21583fe87a"
+    },
+    {
+      "file": "packages/views/settings/components/use-auto-save.test.tsx",
+      "sha256": "e3d92fb97290fa83545e182b956f6a16d13dfa8b668a235a01c841663f067db7"
+    },
+    {
+      "file": "packages/views/settings/components/use-auto-save.ts",
+      "sha256": "cd1c43bee593626645540b7cc4dbbe2f869f07c7146a58a521d2ad1cfee62d2d"
+    },
+    {
+      "file": "packages/views/settings/components/vcs-tab.tsx",
+      "sha256": "40215fe93ffcaf108939887d2d0628c8f45528064efcb8d5c244e5e1a73cdbd3"
+    },
+    {
+      "file": "packages/views/settings/components/wecom-mark.tsx",
+      "sha256": "4e24c460dea60b0d1a75a74239d7461043e4c286c46d97aa9c412eae44e40c9d"
+    },
+    {
+      "file": "packages/views/settings/components/wecom-tab.test.tsx",
+      "sha256": "d343f08aea1dd7838132110b384fae71e40cf637a544809538a41eb01de23d12"
+    },
+    {
+      "file": "packages/views/settings/components/wecom-tab.tsx",
+      "sha256": "5cb87af6fe7200c762702207793e78ca8c8651553f24867c7a8fa9e7c4df1a47"
+    },
+    {
+      "file": "packages/views/settings/components/workspace-planning-timezone.test.tsx",
+      "sha256": "d1e9f94982c354b5608371ba9715c9172eb9a89c88050b0e95ff422459e91727"
+    },
+    {
+      "file": "packages/views/settings/components/workspace-planning-timezone.tsx",
+      "sha256": "54990179bf32f41284db4088eea5d38f49b140814ebc57811e5bbc7568f3eb5e"
+    },
+    {
+      "file": "packages/views/settings/components/workspace-tab.test.tsx",
+      "sha256": "55aff3d1d0db0e536e3a7c475bf7e1cf8cc4db8220485886c93e5a8d2a908173"
+    },
+    {
+      "file": "packages/views/settings/components/workspace-tab.tsx",
+      "sha256": "ece2ea2b752ebece037a4522e9a45566fe2f9de2124a3bb95e28f98edb84f2e4"
+    },
+    {
+      "file": "packages/views/triage/triage-settings-tab.tsx",
+      "sha256": "5b09ffa1618a1d7170f5a763d79662889b6ee71b6fb62548ab54055b0f44e6a6"
+    }
+  ]
+}

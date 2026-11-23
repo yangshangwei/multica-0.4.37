@@ -1,0 +1,757 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-03T13:22:01.228672+00:00",
+  "reviewer": "/root/closure_inventory",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha_at_read": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "verdict": "evidence_consistent; closure_blocked_pending_successor_full_gate_and_current_CCG",
+  "task7_closable": false,
+  "new_product_findings": [],
+  "candidate_dirty_at_finish": [
+    "M apps/web/next-env.d.ts",
+    " M e2e/collaboration-boundaries-web.spec.ts",
+    " M e2e/collaboration-memory-web.spec.ts",
+    " M e2e/collaboration-preparation-records-web.spec.ts",
+    " M e2e/collaboration-preview-web.spec.ts",
+    " M e2e/collaboration-workbench-web.spec.ts",
+    " M e2e/fixtures/collaboration-mention-journeys.ts",
+    " M e2e/settings-preferences.spec.ts"
+  ],
+  "hash_checked_paths": 318,
+  "hash_mismatches": [],
+  "source_comparisons": [
+    {
+      "path": "server/internal/service/task_knowledge.go",
+      "old_sha256": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+      "candidate_sha256": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/task_knowledge_prepare.go",
+      "old_sha256": "756823abb5b2a55d6cba2ae037cbfd87bde741ee6da1493972d86c90b1d301ed",
+      "candidate_sha256": "756823abb5b2a55d6cba2ae037cbfd87bde741ee6da1493972d86c90b1d301ed",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "756823abb5b2a55d6cba2ae037cbfd87bde741ee6da1493972d86c90b1d301ed",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/task_knowledge_observe.go",
+      "old_sha256": "3b7c77ec4823ccd30a73189c0d9fbf1b1c2ba7b2c19b49ed6bc6e5630460ebf4",
+      "candidate_sha256": "3b7c77ec4823ccd30a73189c0d9fbf1b1c2ba7b2c19b49ed6bc6e5630460ebf4",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "3b7c77ec4823ccd30a73189c0d9fbf1b1c2ba7b2c19b49ed6bc6e5630460ebf4",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/task.go",
+      "old_sha256": "933bf52d6f637c1203650952c9d6be07a69399b54ea883c5dca5f00ce815fa8d",
+      "candidate_sha256": "933bf52d6f637c1203650952c9d6be07a69399b54ea883c5dca5f00ce815fa8d",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "933bf52d6f637c1203650952c9d6be07a69399b54ea883c5dca5f00ce815fa8d",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/handler/daemon.go",
+      "old_sha256": "f3dabdca68069b967dd8b4b460804c4dfaed1d967369156e9425944f050b0593",
+      "candidate_sha256": "f3dabdca68069b967dd8b4b460804c4dfaed1d967369156e9425944f050b0593",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "f3dabdca68069b967dd8b4b460804c4dfaed1d967369156e9425944f050b0593",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/daemon/daemon.go",
+      "old_sha256": "c1f51b2ab7b26f6f560db9e0dd5061407496f234c34c85922cda4f4d8fd65d97",
+      "candidate_sha256": "c1f51b2ab7b26f6f560db9e0dd5061407496f234c34c85922cda4f4d8fd65d97",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "c1f51b2ab7b26f6f560db9e0dd5061407496f234c34c85922cda4f4d8fd65d97",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/daemon/knowledge_context.go",
+      "old_sha256": "b01525aaa6ea2a60253e61eaac8ba62ecc34467cb7a6c9cae7733936999725fc",
+      "candidate_sha256": "b01525aaa6ea2a60253e61eaac8ba62ecc34467cb7a6c9cae7733936999725fc",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "b01525aaa6ea2a60253e61eaac8ba62ecc34467cb7a6c9cae7733936999725fc",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle.go",
+      "old_sha256": "15431e2e4329ba12a4f3da09114c1d892862fe4e798b124391bf21a25fb326be",
+      "candidate_sha256": "15431e2e4329ba12a4f3da09114c1d892862fe4e798b124391bf21a25fb326be",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "15431e2e4329ba12a4f3da09114c1d892862fe4e798b124391bf21a25fb326be",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/pkg/agent/knowledge_launch_test.go",
+      "old_sha256": "b890b56259806b63670176331f607773c343053ad9fa45569246393238be6f3d",
+      "candidate_sha256": "b890b56259806b63670176331f607773c343053ad9fa45569246393238be6f3d",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "b890b56259806b63670176331f607773c343053ad9fa45569246393238be6f3d",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle_test.go",
+      "old_sha256": "5ee5ea93c430e101e07447ae750765ba1526f7c55f24ff1ce2274d371b01eb69",
+      "candidate_sha256": "5ee5ea93c430e101e07447ae750765ba1526f7c55f24ff1ce2274d371b01eb69",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "5ee5ea93c430e101e07447ae750765ba1526f7c55f24ff1ce2274d371b01eb69",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/pkg/protocol/task_knowledge.go",
+      "old_sha256": "b53ad04e93185cdf6bb35b8f8a9efc09dd8b21936a3c7bc21a7ed706db67b424",
+      "candidate_sha256": "b53ad04e93185cdf6bb35b8f8a9efc09dd8b21936a3c7bc21a7ed706db67b424",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "b53ad04e93185cdf6bb35b8f8a9efc09dd8b21936a3c7bc21a7ed706db67b424",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/realtime/hub.go",
+      "old_sha256": "0dc30f465fd4a3a83e8dc230bfd2230c6538a2b96843ea6250a8e06372cb72dc",
+      "candidate_sha256": "0dc30f465fd4a3a83e8dc230bfd2230c6538a2b96843ea6250a8e06372cb72dc",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "0dc30f465fd4a3a83e8dc230bfd2230c6538a2b96843ea6250a8e06372cb72dc",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/realtime/collaboration.go",
+      "old_sha256": "01cff978aff5a1cd61bcadc95736ec786038bcebdeb8f6dafbedf6e73a6d8bf5",
+      "candidate_sha256": "01cff978aff5a1cd61bcadc95736ec786038bcebdeb8f6dafbedf6e73a6d8bf5",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "01cff978aff5a1cd61bcadc95736ec786038bcebdeb8f6dafbedf6e73a6d8bf5",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge.go",
+      "old_sha256": "a8b9766d340ccd0ed17f1c2f30a3f527597541c3a065f4344250ef5b63e914b6",
+      "candidate_sha256": "a8b9766d340ccd0ed17f1c2f30a3f527597541c3a065f4344250ef5b63e914b6",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "a8b9766d340ccd0ed17f1c2f30a3f527597541c3a065f4344250ef5b63e914b6",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_credentials.go",
+      "old_sha256": "7bd97758175b4e411a156cd7c29591ec9a5f04874c45eb614ea6e6f20aaf273f",
+      "candidate_sha256": "7bd97758175b4e411a156cd7c29591ec9a5f04874c45eb614ea6e6f20aaf273f",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "7bd97758175b4e411a156cd7c29591ec9a5f04874c45eb614ea6e6f20aaf273f",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_invalidation.go",
+      "old_sha256": "75502bea9e4c30a015930fda350e45f9869719d83cbebe52376209a76c445cd9",
+      "candidate_sha256": "75502bea9e4c30a015930fda350e45f9869719d83cbebe52376209a76c445cd9",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "75502bea9e4c30a015930fda350e45f9869719d83cbebe52376209a76c445cd9",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/pkg/db/queries/task_knowledge.sql",
+      "old_sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+      "candidate_sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_knowledge_service.sql",
+      "old_sha256": "c85605952b6b6202b55aaf04b3c00137dbd25ba4626fd8d072da240eed5c29cb",
+      "candidate_sha256": "c85605952b6b6202b55aaf04b3c00137dbd25ba4626fd8d072da240eed5c29cb",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "c85605952b6b6202b55aaf04b3c00137dbd25ba4626fd8d072da240eed5c29cb",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/pkg/db/generated/task_knowledge.sql.go",
+      "old_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+      "candidate_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+      "current_matches_review": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-cache.ts",
+      "old_sha256": "2eeeb421a7cbffeccfbfa54b5773f6b2c6316064b68fba407a1915529f75263b",
+      "candidate_sha256": "2eeeb421a7cbffeccfbfa54b5773f6b2c6316064b68fba407a1915529f75263b",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "2eeeb421a7cbffeccfbfa54b5773f6b2c6316064b68fba407a1915529f75263b",
+      "current_matches_review": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-lease.ts",
+      "old_sha256": "67a78d8880e120b52c253707b4fd7953be7b9d1d1127625d337eff50cec51730",
+      "candidate_sha256": "67a78d8880e120b52c253707b4fd7953be7b9d1d1127625d337eff50cec51730",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "67a78d8880e120b52c253707b4fd7953be7b9d1d1127625d337eff50cec51730",
+      "current_matches_review": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-actions.ts",
+      "old_sha256": "3e5e92fbd51c218e34dd87f10f0a645354dc7b97bbd22b5337bcd7dd6250bb23",
+      "candidate_sha256": "3e5e92fbd51c218e34dd87f10f0a645354dc7b97bbd22b5337bcd7dd6250bb23",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "3e5e92fbd51c218e34dd87f10f0a645354dc7b97bbd22b5337bcd7dd6250bb23",
+      "current_matches_review": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-recovery.ts",
+      "old_sha256": "dca107ab6ba525f25e56e9c113a5353eaf5d8f061154a8e48282f3762c806d89",
+      "candidate_sha256": "dca107ab6ba525f25e56e9c113a5353eaf5d8f061154a8e48282f3762c806d89",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "dca107ab6ba525f25e56e9c113a5353eaf5d8f061154a8e48282f3762c806d89",
+      "current_matches_review": true
+    },
+    {
+      "path": "packages/core/collaboration/knowledge-queries.ts",
+      "old_sha256": "12d090cbc5209fb4ce1d510a9fc2414bd70727e579245cf2ba27707fb9fd41e9",
+      "candidate_sha256": "12d090cbc5209fb4ce1d510a9fc2414bd70727e579245cf2ba27707fb9fd41e9",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "12d090cbc5209fb4ce1d510a9fc2414bd70727e579245cf2ba27707fb9fd41e9",
+      "current_matches_review": true
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-panel.tsx",
+      "old_sha256": "a715581220c16e2045543e971b2dfc4ffb210b314ecf79f7efc63dd32966cb67",
+      "candidate_sha256": "ae493596d090ec1ffc7134b9247e2b58dabf2c8aa9e8c4028164795e9e5be735",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "ae493596d090ec1ffc7134b9247e2b58dabf2c8aa9e8c4028164795e9e5be735",
+      "current_matches_review": true
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-review.tsx",
+      "old_sha256": "7925ae0462fc003efa3ce31a7ddb3b24f4d0657eea6e21930a4be047b7f51b94",
+      "candidate_sha256": "7925ae0462fc003efa3ce31a7ddb3b24f4d0657eea6e21930a4be047b7f51b94",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "7925ae0462fc003efa3ce31a7ddb3b24f4d0657eea6e21930a4be047b7f51b94",
+      "current_matches_review": true
+    },
+    {
+      "path": "packages/views/collaboration/knowledge-proposal.tsx",
+      "old_sha256": "c593f1be704cfe383bd99feb418e133f4b5bd413cb4bf685ba1e7d86ee9a98e8",
+      "candidate_sha256": "c593f1be704cfe383bd99feb418e133f4b5bd413cb4bf685ba1e7d86ee9a98e8",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "c593f1be704cfe383bd99feb418e133f4b5bd413cb4bf685ba1e7d86ee9a98e8",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/cmd/server/collaboration_knowledge_correction_composite_test.go",
+      "old_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "candidate_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/cmd/server/collaboration_knowledge_host_composite_test.go",
+      "old_sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+      "candidate_sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/daemon/knowledge_server_integration_test.go",
+      "old_sha256": "0e74b9e4fe420c7780ef800d022e66f1c187871f2ac8d25eb8c0261db10656f2",
+      "candidate_sha256": "0e74b9e4fe420c7780ef800d022e66f1c187871f2ac8d25eb8c0261db10656f2",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "0e74b9e4fe420c7780ef800d022e66f1c187871f2ac8d25eb8c0261db10656f2",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "old_sha256": "6c7cf270ebb23176c6604ed13bc49f17712ad72d1005df6adf77f43b209ecac9",
+      "candidate_sha256": "57f90b8fdcb2cc83a4a26c131092629ac402d72e6e93241a05f5d09b1bf09bc8",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "57f90b8fdcb2cc83a4a26c131092629ac402d72e6e93241a05f5d09b1bf09bc8",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "old_sha256": "d517f5531a133010c36bbda89ca0d5432e9d3bcfe0e423e5113104aff6573d8f",
+      "candidate_sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/collaboration_authority.go",
+      "old_sha256": "1fdd45b3d04f9c75eba44e0b52a6b6d2596623070666e5d23c40477c2e5cb302",
+      "candidate_sha256": "e067d0f593f6a9482423c641413b08f6eed66bb552dc94020d94800f1f89c52e",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "e067d0f593f6a9482423c641413b08f6eed66bb552dc94020d94800f1f89c52e",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/collaboration_queue.go",
+      "old_sha256": "f47c777ea4869a792624e0cf9d37908a4c573e8582144813a3b33878ddc7044f",
+      "candidate_sha256": "6fd21ce5d824e0a41951cfa3de83ba2fb2db46cc4366cdea74b45c2931ccd34b",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "6fd21ce5d824e0a41951cfa3de83ba2fb2db46cc4366cdea74b45c2931ccd34b",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/collaboration_batches.go",
+      "old_sha256": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+      "candidate_sha256": "098ee6f0a6ff05dd778ead3e3545077133c0e184503943b6f35448339aacdfd7",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "098ee6f0a6ff05dd778ead3e3545077133c0e184503943b6f35448339aacdfd7",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/collaboration_control.go",
+      "old_sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+      "candidate_sha256": "b2006df16d203429136e74a8f024feb5fcd489fe438f37d8affcd5528c698e2a",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "b2006df16d203429136e74a8f024feb5fcd489fe438f37d8affcd5528c698e2a",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/collaboration_mentions.go",
+      "old_sha256": "55f74f4de9b5d6b22ccca0664442ff51bbf6786fd14b622f3de686ef2bccfd8a",
+      "candidate_sha256": "a20b671c1541c93f808881950e387302c5af1e33269c7f98b034fb5d93c2add1",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "a20b671c1541c93f808881950e387302c5af1e33269c7f98b034fb5d93c2add1",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/collaboration/access.go",
+      "old_sha256": "a168ab81a233633fc6cdb5771c52fff2176157e0a30ef58d815370a64635778c",
+      "candidate_sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_knowledge_service.sql.go",
+      "old_sha256": "91463bca4e146d3e7d6bc0c8b48d15b312eb221a06ecb1bbec6790bb82e42a48",
+      "candidate_sha256": "ca38da913fad927991cfc7f791aa30e0390697b82384fbb657a0513aa8960c6d",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "ca38da913fad927991cfc7f791aa30e0390697b82384fbb657a0513aa8960c6d",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "old_sha256": "479c5e3eaf3a7e7a5b707061892d8494f3c0646328002fdd8e71c93a984555fa",
+      "candidate_sha256": "d9ed068b308783b0b5cd9375b86a1e1c592b9abcbd3dd260a5ecf79ae2b9fbfe",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "d9ed068b308783b0b5cd9375b86a1e1c592b9abcbd3dd260a5ecf79ae2b9fbfe",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "old_sha256": "796f561d23690aaed3c1c402663863278e6e7652ea5d9d531fd8abca387963e2",
+      "candidate_sha256": "851d009653677ec358af379e38df156f0d0e9bd5768d9af773b02a29f4a0d5cb",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "851d009653677ec358af379e38df156f0d0e9bd5768d9af773b02a29f4a0d5cb",
+      "current_matches_review": true
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-knowledge.md",
+      "old_sha256": "4ff0a7158b56c354a43b2681609b820a3b1e285c0807b009b68f6536eaafacf2",
+      "candidate_sha256": "4ff0a7158b56c354a43b2681609b820a3b1e285c0807b009b68f6536eaafacf2",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "4ff0a7158b56c354a43b2681609b820a3b1e285c0807b009b68f6536eaafacf2",
+      "current_matches_review": true
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-knowledge-execution.md",
+      "old_sha256": "98c6852e345edf8c7d2fa2bd81a45106bb7e75fd7d0ed799ec4591aa93ca6499",
+      "candidate_sha256": "98c6852e345edf8c7d2fa2bd81a45106bb7e75fd7d0ed799ec4591aa93ca6499",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "98c6852e345edf8c7d2fa2bd81a45106bb7e75fd7d0ed799ec4591aa93ca6499",
+      "current_matches_review": true
+    },
+    {
+      "path": ".trellis/spec/views/frontend/collaboration-knowledge.md",
+      "old_sha256": "82aa61230b3c40a5507160fc3628cbc615453495c12cc1ade3c7fdf8270f7ffd",
+      "candidate_sha256": "21ff3e8d3ee6ba6d594223268b8a420d6efd8f8aa83831406323f872cd8dc8c6",
+      "unchanged_from_final64": false,
+      "worktree_matches_candidate": true,
+      "current_sha256": "21ff3e8d3ee6ba6d594223268b8a420d6efd8f8aa83831406323f872cd8dc8c6",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/migrations/761_collaboration_knowledge_agent_history.down.sql",
+      "old_sha256": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53",
+      "candidate_sha256": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "21cbcb5b9bb6534f8ab52c78493796e92aea9199493472c723148e9652356f53",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/migrations/761_collaboration_knowledge_agent_history.up.sql",
+      "old_sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+      "candidate_sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/migrations/762_collaboration_knowledge_runtime_history.down.sql",
+      "old_sha256": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25",
+      "candidate_sha256": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "e1daae50033e9a9a3adf3fe59ecd141b2a4867e4ee7218b55a13495265a27a25",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/migrations/762_collaboration_knowledge_runtime_history.up.sql",
+      "old_sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+      "candidate_sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/migrations/763_collaboration_knowledge_delivery_history.down.sql",
+      "old_sha256": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f",
+      "candidate_sha256": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "97864fbf166804dddb650e1da40258dda1dd136e525a4d18d207d448f6ecad9f",
+      "current_matches_review": true
+    },
+    {
+      "path": "server/migrations/763_collaboration_knowledge_delivery_history.up.sql",
+      "old_sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+      "candidate_sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+      "unchanged_from_final64": true,
+      "worktree_matches_candidate": true,
+      "current_sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+      "current_matches_review": true
+    }
+  ],
+  "disposition_counts": {
+    "repaired": 19,
+    "not_reproduced_test_covered": 1,
+    "terminology_repair": 1
+  },
+  "independent_review_count": 7,
+  "followup_review_count": 5,
+  "Go_actual": {
+    "package_count": 82,
+    "counts": {
+      "run": 20985,
+      "pass": 20963,
+      "fail": 0,
+      "skip": 22
+    },
+    "counts_match_each_package": true,
+    "unique_databases": 82,
+    "all_race": true,
+    "compile_only_packages": 9,
+    "package_terminal_failures": []
+  },
+  "TS_actual": {
+    "counts": {
+      "core": 4455,
+      "docs": 62,
+      "views": 7165,
+      "desktop": 1272,
+      "web": 290
+    },
+    "total": 13244,
+    "raw_summary_lines": [
+      {
+        "line": 193,
+        "text": " Tasks:    15 successful, 15 total"
+      },
+      {
+        "line": 863,
+        "text": "@multica/core:test:  Test Files  331 passed (331)"
+      },
+      {
+        "line": 864,
+        "text": "@multica/core:test:       Tests  4455 passed (4455)"
+      },
+      {
+        "line": 887,
+        "text": "@multica/docs:test:  Test Files  9 passed (9)"
+      },
+      {
+        "line": 888,
+        "text": "@multica/docs:test:       Tests  62 passed (62)"
+      },
+      {
+        "line": 963,
+        "text": "@multica/views:test:  ✓ collaboration/knowledge-panel.test.tsx (34 tests) 5101ms"
+      },
+      {
+        "line": 7132,
+        "text": "@multica/views:test:  ✓ locales/parity.test.ts (66 tests) 16ms"
+      },
+      {
+        "line": 7287,
+        "text": "@multica/views:test:  Test Files  593 passed (593)"
+      },
+      {
+        "line": 7288,
+        "text": "@multica/views:test:       Tests  7165 passed (7165)"
+      },
+      {
+        "line": 8193,
+        "text": "@multica/desktop:test:  Test Files  102 passed (102)"
+      },
+      {
+        "line": 8194,
+        "text": "@multica/desktop:test:       Tests  1272 passed (1272)"
+      },
+      {
+        "line": 8320,
+        "text": "@multica/web:test:  Test Files  34 passed (34)"
+      },
+      {
+        "line": 8321,
+        "text": "@multica/web:test:       Tests  290 passed (290)"
+      },
+      {
+        "line": 8326,
+        "text": " Tasks:    5 successful, 5 total"
+      }
+    ]
+  },
+  "Playwright_actual": {
+    "count": 441,
+    "counts": {
+      "skipped": 91,
+      "passed": 337,
+      "failed": 10,
+      "timedOut": 3
+    },
+    "stats": {
+      "startTime": "2026-11-03T10:53:53.391Z",
+      "duration": 1771371.6709999999,
+      "expected": 337,
+      "skipped": 91,
+      "unexpected": 13,
+      "flaky": 0
+    },
+    "extra_attempts": 0,
+    "knowledge": [
+      {
+        "file": "collaboration-knowledge-deployed.spec.ts",
+        "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+        "status": "skipped",
+        "runner_status": "skipped",
+        "attempts": 1,
+        "retries": [
+          0
+        ],
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Requires an explicit true/false expectation and isolated task-owned deployment",
+            "location": {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-knowledge-deployed.spec.ts",
+              "line": 18,
+              "column": 8
+            }
+          }
+        ]
+      },
+      {
+        "file": "collaboration-knowledge.spec.ts",
+        "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+        "status": "passed",
+        "runner_status": "expected",
+        "attempts": 1,
+        "retries": [
+          0
+        ],
+        "annotations": []
+      },
+      {
+        "file": "collaboration-knowledge.spec.ts",
+        "title": "Web required memory purge clears open source and managed target material",
+        "status": "passed",
+        "runner_status": "expected",
+        "attempts": 1,
+        "retries": [
+          0
+        ],
+        "annotations": []
+      },
+      {
+        "file": "collaboration-knowledge.spec.ts",
+        "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+        "status": "passed",
+        "runner_status": "expected",
+        "attempts": 1,
+        "retries": [
+          0
+        ],
+        "annotations": []
+      },
+      {
+        "file": "collaboration-knowledge.spec.ts",
+        "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+        "status": "passed",
+        "runner_status": "expected",
+        "attempts": 1,
+        "retries": [
+          0
+        ],
+        "annotations": []
+      },
+      {
+        "file": "collaboration-knowledge.spec.ts",
+        "title": "Web recorded-run source is selected through the authorized reader",
+        "status": "passed",
+        "runner_status": "expected",
+        "attempts": 1,
+        "retries": [
+          0
+        ],
+        "annotations": []
+      },
+      {
+        "file": "collaboration-knowledge.spec.ts",
+        "title": "Web target-only administrator loses source material but can withdraw",
+        "status": "passed",
+        "runner_status": "expected",
+        "attempts": 1,
+        "retries": [
+          0
+        ],
+        "annotations": []
+      },
+      {
+        "file": "collaboration-knowledge.spec.ts",
+        "title": "Web expiry clears active target material when refresh fails",
+        "status": "passed",
+        "runner_status": "expected",
+        "attempts": 1,
+        "retries": [
+          0
+        ],
+        "annotations": []
+      },
+      {
+        "file": "collaboration-knowledge.spec.ts",
+        "title": "Desktop native source review and independent project/workspace contributions",
+        "status": "passed",
+        "runner_status": "expected",
+        "attempts": 1,
+        "retries": [
+          0
+        ],
+        "annotations": []
+      }
+    ]
+  },
+  "SQLC": {
+    "exit_code": 0,
+    "generated_files_before": 130,
+    "generated_files_after": 130,
+    "generated_unchanged": true,
+    "changed_generated_files": [],
+    "source_inputs_unchanged": true,
+    "server_tree_equal": true,
+    "current_server_tracked_diff": []
+  },
+  "actual_final_audit": {
+    "status": "pass",
+    "exit_code": 0,
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/final-candidate/final-state-audit-v13/post-make-v13.json",
+    "sha256": "adc2306d3d4b4a82918048806a4ed09a11af558a7a9923db7c5442104558a385",
+    "scope": "filesystem/source/tool/workspace/artifact identity only",
+    "wholecheck_exit_code": 2,
+    "raw_status_rechecked": "pass",
+    "qualification": "Actual v13 frozen-source end audit only; does not cover later seven-file overlay."
+  },
+  "make_exit": 2,
+  "CCG": {
+    "templates_candidate": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+    "templates_ready": false,
+    "current_actual_runs": 0,
+    "previous_independent_verdict": "pass-with-notes",
+    "mandatory_rebind": "Successor SHA, private path, source-inputs, successful full run, reviewed final auditor/parser, tool/source hashes, fresh four DB allocations and OFF/ON resource/build identities; preserve v13 originals."
+  },
+  "remaining_blockers": [
+    "Restore preserved main precursor assertions P1–P5; independently recheck and run newly numbered directed verification before freezing successor.",
+    "One successor frozen full make check exit0 with actual final audit pass and complete named/skip inventory plus root live identity proof.",
+    "Fresh CCG1 exact correction normal and race: one named pass each with two starts, corrected input and zero third start.",
+    "Current separate CCG2 OFF and ON deployments: one pass each, no skips/retries, full retained evidence attachment.",
+    "Independent final task7 review of resulting source/evidence; #6 model/release not a prerequisite."
+  ],
+  "operations": {
+    "runtime_tests": false,
+    "lint_or_typecheck_executed": false,
+    "reason": "Parent assigned read-only evidence reconciliation; actual retained logs reparsed instead.",
+    "database_API_Provider_calls": 0,
+    "source_edits": false,
+    "task_metadata_edits": false,
+    "writes_only": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/closure-review"
+  },
+  "latest_directed_evidence": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/closure-review/viewport-final-review.json",
+    "sha256": "ec2a7b0769ff7e59a03bdc8fe0019e8cc5f2fa6ac371a6e7b9ca9d7db4361742",
+    "verdict": "pass-with-notes",
+    "pass": 17,
+    "skip": 0,
+    "retry": 0,
+    "scope": "Before main precursor assertion restoration; not successor complete acceptance."
+  },
+  "main_precursor_preservation": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/closure-review/main-precursor-preservation-review.json",
+    "sha256": "a1f30cd347b983e1a6cd00f6975823765d1cd80165bfed1d7d8011743778b8a7",
+    "verdict": "changes-required",
+    "open_findings": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ]
+  }
+}

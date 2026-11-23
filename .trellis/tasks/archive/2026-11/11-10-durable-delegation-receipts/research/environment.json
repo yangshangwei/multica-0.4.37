@@ -1,0 +1,29 @@
+{
+  "baseline": "38d07b6ed",
+  "worktree": "/Volumes/artisan/code/2026/mc-durable-receipts-20261110",
+  "container": "multica-durable-receipts-20261110-pg",
+  "host": "127.0.0.1",
+  "port": 61771,
+  "image": "pgvector/pgvector:pg17",
+  "image_arch": "amd64",
+  "host_arch": "arm64",
+  "performance_claim": false,
+  "database_ownership": {
+    "root": "receipts_baseline_01 and receipts_final_*",
+    "backend": "receipts_handler_*",
+    "router": "receipts_router_*",
+    "cli": "receipts_cli_*"
+  },
+  "real_model_calls": 0,
+  "historical_experiments": "AC43/E5/H3a/knowledge remain stopped/not approved for new calls",
+  "private_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub",
+  "unused_preserved_databases": [
+    "receipts_final_handler02",
+    "receipts_final_handler_race02",
+    "receipts_final_router02",
+    "receipts_final_router_race02",
+    "receipts_final_migration02",
+    "receipts_final_migration_race02"
+  ],
+  "unused_reason": "Allocated from prior test database then not used; final03 instead cloned schema-only baseline and migrated to avoid retained fixture carryover."
+}

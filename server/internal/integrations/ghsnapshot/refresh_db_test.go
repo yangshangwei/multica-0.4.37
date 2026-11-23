@@ -99,7 +99,7 @@ func seedPRAt(t *testing.T, pool *pgxpool.Pool, q *db.Queries, installationID in
 	if err != nil {
 		t.Fatalf("seed PR: %v", err)
 	}
-	return pr
+	return db.GithubPullRequest(pr)
 }
 
 func checkRunCount(t *testing.T, pool *pgxpool.Pool, prID pgtype.UUID) int {

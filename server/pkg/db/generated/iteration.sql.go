@@ -67,6 +67,47 @@ func (q *Queries) AppendIterationIssueEvent(ctx context.Context, arg AppendItera
 	return err
 }
 
+const countRunningIterationTasks = `-- name: CountRunningIterationTasks :many
+SELECT task.issue_id, count(*)::bigint AS running_count
+FROM agent_task_queue task
+JOIN issue ON issue.id = task.issue_id
+WHERE issue.workspace_id = $1::uuid
+  AND issue.id = ANY($2::uuid[])
+  AND task.status = 'running'
+GROUP BY task.issue_id
+`
+
+type CountRunningIterationTasksParams struct {
+	WorkspaceID pgtype.UUID   `json:"workspace_id"`
+	IssueIds    []pgtype.UUID `json:"issue_ids"`
+}
+
+type CountRunningIterationTasksRow struct {
+	IssueID      pgtype.UUID `json:"issue_id"`
+	RunningCount int64       `json:"running_count"`
+}
+
+// The issue set was resolved and authorized by the iteration operation.
+func (q *Queries) CountRunningIterationTasks(ctx context.Context, arg CountRunningIterationTasksParams) ([]CountRunningIterationTasksRow, error) {
+	rows, err := q.db.Query(ctx, countRunningIterationTasks, arg.WorkspaceID, arg.IssueIds)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CountRunningIterationTasksRow{}
+	for rows.Next() {
+		var i CountRunningIterationTasksRow
+		if err := rows.Scan(&i.IssueID, &i.RunningCount); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const deleteIterationNotificationsForMember = `-- name: DeleteIterationNotificationsForMember :exec
 WITH removed_inbox AS (
  DELETE FROM inbox_item i USING iteration_notification n

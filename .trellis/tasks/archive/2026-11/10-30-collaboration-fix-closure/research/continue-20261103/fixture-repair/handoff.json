@@ -1,0 +1,67 @@
+{
+  "recorded_at": "2026-11-03T03:02:36.521830+00:00",
+  "state": "implemented_syntax_passed_live_verification_pending",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-fixture-repair-20261103",
+  "base_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "branch": "codex/collaboration-fixture-repair-20261103",
+  "changed_files": [
+    "e2e/fixtures/collaboration-editing.ts"
+  ],
+  "before_sha256": "7abd25ee581f83b2c380346234b179ae434b9e89456afdb07185c46b0e22503a",
+  "after_sha256": "05da475939355cac066760187d72dbdb2701efa5a7e49fa8d905816df0663287",
+  "patch_sha256": "8795132da422f616dddde513ac8d1a265f041b8ef173215ea4451ae4d95ca88d",
+  "root_cause": "Parent issue changed from native select to searchable PropertyPicker; old fixture still called selectOption on the actual labelled button",
+  "assertion_tail_unmodified": true,
+  "parent_UUID_stage_project_iteration_payload_assertions_preserved": true,
+  "source_references": {
+    "component": "packages/views/collaboration/field-inputs.tsx:94",
+    "picker": "packages/views/issues/components/pickers/property-picker.tsx:313",
+    "product_commit": "4ba3a868a",
+    "red_failure": "v11 collaboration-account-desktop.spec.ts:535 selectOption Element is not a <select> element at fixture:113"
+  },
+  "syntax": {
+    "command": [
+      "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "-e",
+      "<TypeScript transpileModule syntax-only>",
+      "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/node_modules/typescript",
+      "/Volumes/artisan/code/2026/mc-collaboration-fixture-repair-20261103/e2e/fixtures/collaboration-editing.ts"
+    ],
+    "exit_code": 0,
+    "output": {
+      "typescript": "5.9.3",
+      "syntax_errors": [],
+      "source": "/Volumes/artisan/code/2026/mc-collaboration-fixture-repair-20261103/e2e/fixtures/collaboration-editing.ts",
+      "executed_fixture": false
+    }
+  },
+  "diff_check": {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0
+  },
+  "original_regression_tests": [
+    "e2e/collaboration-editing-web.spec.ts:9",
+    "e2e/collaboration-account-desktop.spec.ts:535"
+  ],
+  "root_targeted_selectors": [
+    "e2e/collaboration-editing-web.spec.ts",
+    "e2e/collaboration-account-desktop.spec.ts",
+    "--grep",
+    "(Web source creation, field edits and discussion share one authorized issue|Desktop authors initial fields and preserves discussion through shared edit controls)"
+  ],
+  "live_browser_or_repository_tests": 0,
+  "services_DB_Provider_account_actions": 0,
+  "new_dependencies": 0,
+  "commits_or_staging": 0,
+  "frozen_v11_edited": false,
+  "pending_root": [
+    "Independent patch review",
+    "Owned dependency preparation for isolated candidate",
+    "Run unchanged Web/Desktop regression identities for actual green",
+    "Freeze new complete-run candidate and preserve failed v11 result"
+  ]
+}

@@ -1,0 +1,372 @@
+{
+  "scenario": "s2-support-ticket",
+  "result": "passed",
+  "topology": {
+    "support": {
+      "account_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+      "workspace_id": "6309ec57-a020-4e0d-9929-cbcaa6bfb43f"
+    },
+    "developer": {
+      "account_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+      "workspace_id": "5e78767c-9fa8-4d6a-82a0-ccbe9e1201a1",
+      "runtime_id": "2dc068ee-fbd7-4376-be9c-693752182002",
+      "installation_id": "ef782b66-86b2-48de-9b89-44b005c12eae",
+      "agent_id": "89adc37f-4837-46ab-a15f-583f22d9b640"
+    },
+    "unrelated_account_id": "8be9a910-58c5-4ba1-80ac-eafd6fff4661"
+  },
+  "reopened_lane": {
+    "id": "08bd2130-6707-4f71-96d2-712f40b445eb",
+    "queue_state": "paused",
+    "control_version": "4",
+    "group_generation": "1",
+    "next_command_seq": "2",
+    "active_group_id": null,
+    "pause_reason": "issue_reopened"
+  },
+  "runs": [
+    "2869851f-f065-406f-a4a8-6f9db0cf000c",
+    "0aa8dc8e-8ec0-4ab6-8633-e09576f35b4a"
+  ],
+  "delivery_history": [
+    {
+      "id": "3661dd39-237c-4bb1-9e4f-2ec093c6c881",
+      "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+      "event_seq": "36",
+      "lifecycle_epoch": "3",
+      "author_user_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+      "author": {
+        "user_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+        "name": "Developer D",
+        "avatar_url": "",
+        "external": true
+      },
+      "created_at": "2026-11-10T00:28:47.872363+08:00",
+      "result": "Rework: 180-day exports now stream; regression closed.",
+      "basis": "Synthetic run 0aa8dc8e-8ec0-4ab6-8633-e09576f35b4a.",
+      "attachment_ids": [],
+      "source_comment_id": null,
+      "evidence_state": "available",
+      "decision": {
+        "kind": "accepted",
+        "submission_id": "3661dd39-237c-4bb1-9e4f-2ec093c6c881",
+        "event_seq": "37",
+        "actor_user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+        "actor": {
+          "user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+          "name": "Support lead S",
+          "avatar_url": "",
+          "external": false
+        },
+        "created_at": "2026-11-10T00:28:48.895782+08:00",
+        "reason": null,
+        "target_user_id": null
+      }
+    },
+    {
+      "id": "8e64b2d2-6473-4243-972f-35d2ad4dc58c",
+      "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+      "event_seq": "21",
+      "lifecycle_epoch": "1",
+      "author_user_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+      "author": {
+        "user_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+        "name": "Developer D",
+        "avatar_url": "",
+        "external": true
+      },
+      "created_at": "2026-11-10T00:28:33.351403+08:00",
+      "result": "Fixed: export streams in pages; timeout no longer reproduces.",
+      "basis": "Synthetic run 2869851f-f065-406f-a4a8-6f9db0cf000c; customer log and sample both checked.",
+      "attachment_ids": [],
+      "source_comment_id": null,
+      "evidence_state": "available",
+      "decision": {
+        "kind": "accepted",
+        "submission_id": "8e64b2d2-6473-4243-972f-35d2ad4dc58c",
+        "event_seq": "22",
+        "actor_user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+        "actor": {
+          "user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+          "name": "Support lead S",
+          "avatar_url": "",
+          "external": false
+        },
+        "created_at": "2026-11-10T00:28:34.081314+08:00",
+        "reason": null,
+        "target_user_id": null
+      }
+    }
+  ],
+  "page_errors": [],
+  "provider_observations": [
+    {
+      "owner_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+      "runtime_id": "2dc068ee-fbd7-4376-be9c-693752182002",
+      "visits": [
+        {
+          "identity": {
+            "batch_id": "44a55dc3-dd5f-472d-8f3b-48642c99e757",
+            "channel_id": "08bd2130-6707-4f71-96d2-712f40b445eb",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "2e3eca99-d71c-493f-a084-2d3e1506bf14",
+            "installation_id": "ef782b66-86b2-48de-9b89-44b005c12eae",
+            "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+            "run_id": "2869851f-f065-406f-a4a8-6f9db0cf000c",
+            "session_id": "16f3df13-8961-4054-8117-076088b50e84",
+            "target_id": "ca2ba4f0-428c-4e3a-b79e-cbe4c9834ade"
+          },
+          "inputs": [
+            {
+              "command_id": "8d90100e-8c61-4458-8237-c39e72e0e263",
+              "author_user_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+              "body": "Reproduce the export timeout with both shared files and propose a fix. [@Triage agent 972edece9e](mention://agent/89adc37f-4837-46ab-a15f-583f22d9b640)",
+              "attachment_ids": []
+            }
+          ],
+          "agent_id": "89adc37f-4837-46ab-a15f-583f22d9b640",
+          "agent_owner_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+          "resource_owner_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+          "step_kind": "agent",
+          "squad_id": null,
+          "dispatch_comment": "",
+          "attachment_hashes": {
+            "5db82254-695a-4ea5-bffe-586e989d1504": "34bb700266603adef2f982a89f26ab5389e98a3ee871b487a977ccf71fe5f179",
+            "e59b46ef-8177-4ae3-a90c-b45588d019d9": "cc87dc751e096b7f0e517fc9aaf0538352b97d081e3a087c59a3e8e4266fa761"
+          },
+          "knowledge_observation": {
+            "prompt_sha256": "dd15d06fb3ac8bb333897f236849647b9d459821be013f71222626db1899c3b0",
+            "section_present": false,
+            "contributions": [],
+            "no_session_persistence": false
+          },
+          "started_ms": 17122.052333,
+          "released_ms": 17234.697,
+          "closed_ms": 17239.82,
+          "replies": []
+        },
+        {
+          "identity": {
+            "batch_id": "81c6e7ab-ff99-4b27-99f7-02cc287f447e",
+            "channel_id": "08bd2130-6707-4f71-96d2-712f40b445eb",
+            "claim_generation": "1",
+            "deployment_id": "dea2af91-a2e1-436d-b463-5a7bc7d56de0",
+            "fence": "1",
+            "group_id": "894541fd-c989-49c4-85b0-f2774a3ff4fc",
+            "installation_id": "ef782b66-86b2-48de-9b89-44b005c12eae",
+            "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+            "run_id": "0aa8dc8e-8ec0-4ab6-8633-e09576f35b4a",
+            "session_id": "16f3df13-8961-4054-8117-076088b50e84",
+            "target_id": "ca2ba4f0-428c-4e3a-b79e-cbe4c9834ade"
+          },
+          "inputs": [
+            {
+              "command_id": "47dab011-d97a-4d30-8c4e-805c5c1e819f",
+              "author_user_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+              "body": "Customer reports the timeout again for 180-day exports; extend the fix. [@Triage agent 972edece9e](mention://agent/89adc37f-4837-46ab-a15f-583f22d9b640)",
+              "attachment_ids": []
+            }
+          ],
+          "agent_id": "89adc37f-4837-46ab-a15f-583f22d9b640",
+          "agent_owner_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+          "resource_owner_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+          "step_kind": "agent",
+          "squad_id": null,
+          "dispatch_comment": "",
+          "attachment_hashes": {
+            "5db82254-695a-4ea5-bffe-586e989d1504": "34bb700266603adef2f982a89f26ab5389e98a3ee871b487a977ccf71fe5f179",
+            "e59b46ef-8177-4ae3-a90c-b45588d019d9": "cc87dc751e096b7f0e517fc9aaf0538352b97d081e3a087c59a3e8e4266fa761"
+          },
+          "knowledge_observation": {
+            "prompt_sha256": "df67e9685854fadfb2deaa3330d05819c7645107bad8b2053e312452c2d72656",
+            "section_present": false,
+            "contributions": [],
+            "no_session_persistence": false
+          },
+          "started_ms": 31284.716875,
+          "released_ms": 31889.880125,
+          "closed_ms": 31892.272166,
+          "replies": []
+        }
+      ]
+    }
+  ],
+  "cleanup": [
+    {
+      "owner_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+      "runtime_id": "2dc068ee-fbd7-4376-be9c-693752182002",
+      "exit_code": 0,
+      "errors": [],
+      "ledger": [
+        {
+          "version": 2,
+          "run_id": "2869851f-f065-406f-a4a8-6f9db0cf000c",
+          "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+          "phase": "proof_acknowledged",
+          "session_key": "95975dcc27dbdabb83782130e32912533cd98fca77afeaadaeadf2f8b3692ea7",
+          "namespace_present": false,
+          "sealed": true,
+          "proof_state": "host_exit_observed",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          },
+          "launches": [
+            {
+              "attempt_seq": "1",
+              "kind": "provider",
+              "phase": "attempt_reaped",
+              "process_observed": true,
+              "scope": "process_group",
+              "terminal_accepted": true,
+              "authorized": true,
+              "terminal_kind": "managed_launch_ended",
+              "cleanup": {
+                "state": "tracked_scope_complete",
+                "scope": "process_group",
+                "attempted": true
+              }
+            }
+          ]
+        },
+        {
+          "version": 2,
+          "run_id": "0aa8dc8e-8ec0-4ab6-8633-e09576f35b4a",
+          "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+          "phase": "proof_acknowledged",
+          "session_key": "95975dcc27dbdabb83782130e32912533cd98fca77afeaadaeadf2f8b3692ea7",
+          "namespace_present": false,
+          "sealed": true,
+          "proof_state": "host_exit_observed",
+          "cleanup": {
+            "state": "tracked_scope_complete",
+            "scope": "process_group",
+            "attempted": true
+          },
+          "launches": [
+            {
+              "attempt_seq": "1",
+              "kind": "provider",
+              "phase": "attempt_reaped",
+              "process_observed": true,
+              "scope": "process_group",
+              "terminal_accepted": true,
+              "authorized": true,
+              "terminal_kind": "managed_launch_ended",
+              "cleanup": {
+                "state": "tracked_scope_complete",
+                "scope": "process_group",
+                "attempted": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "cleanup_failures": [],
+  "gate_restored": true,
+  "steps": [
+    {
+      "step": "support creates a manual ticket for development with the customer log",
+      "at": "2026-11-09T16:28:18.411Z",
+      "facts": {
+        "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+        "ai_policy": "manual"
+      }
+    },
+    {
+      "step": "information requested and returned; sample shared as a comment file",
+      "at": "2026-11-09T16:28:21.252Z",
+      "facts": {
+        "requested": "information_requested",
+        "returned": "information_returned",
+        "files": [
+          {
+            "id": "e59b46ef-8177-4ae3-a90c-b45588d019d9",
+            "draft_id": "90c5a1c5-aabf-4171-bd2a-efe0f4e4db52",
+            "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+            "intended_issue_id": null,
+            "source_workspace_id": "6309ec57-a020-4e0d-9929-cbcaa6bfb43f",
+            "uploader_user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+            "name": "customer-log.txt",
+            "content_type": "text/plain; charset=utf-8",
+            "size_bytes": 84,
+            "version": "1",
+            "created_at": "2026-11-10T00:28:16.741302+08:00",
+            "delivered_at": "2026-11-10T00:28:16.918303+08:00"
+          },
+          {
+            "id": "5db82254-695a-4ea5-bffe-586e989d1504",
+            "draft_id": "59e97fca-5220-45f0-aab7-2bd576c1432f",
+            "issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+            "intended_issue_id": "01a1c123-9489-7265-b27c-46643d425201",
+            "source_workspace_id": "6309ec57-a020-4e0d-9929-cbcaa6bfb43f",
+            "uploader_user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+            "name": "sample-export.csv",
+            "content_type": "text/plain; charset=utf-8",
+            "size_bytes": 41,
+            "version": "1",
+            "created_at": "2026-11-10T00:28:20.939953+08:00",
+            "delivered_at": "2026-11-10T00:28:21.208146+08:00"
+          }
+        ]
+      }
+    },
+    {
+      "step": "manual policy refuses resource offer",
+      "at": "2026-11-09T16:28:21.319Z",
+      "facts": {
+        "status": 409,
+        "code": "task_manual"
+      }
+    },
+    {
+      "step": "initiator switched to assisted; queue stays paused; the handler cannot change the policy",
+      "at": "2026-11-09T16:28:22.405Z",
+      "facts": {
+        "receipt": "ai_policy_changed",
+        "developer_status": 403
+      }
+    },
+    {
+      "step": "agent ran only after explicit Resume and received both shared files",
+      "at": "2026-11-09T16:28:32.771Z",
+      "facts": {
+        "run_id": "2869851f-f065-406f-a4a8-6f9db0cf000c",
+        "attachment_hashes": {
+          "5db82254-695a-4ea5-bffe-586e989d1504": "34bb700266603adef2f982a89f26ab5389e98a3ee871b487a977ccf71fe5f179",
+          "e59b46ef-8177-4ae3-a90c-b45588d019d9": "cc87dc751e096b7f0e517fc9aaf0538352b97d081e3a087c59a3e8e4266fa761"
+        }
+      }
+    },
+    {
+      "step": "first delivery accepted",
+      "at": "2026-11-09T16:28:34.329Z",
+      "facts": {
+        "submission_id": "8e64b2d2-6473-4243-972f-35d2ad4dc58c"
+      }
+    },
+    {
+      "step": "reopen preserved support's responsibility; support explicitly transferred rework to development without resuming AI",
+      "at": "2026-11-09T16:28:36.937Z",
+      "facts": {
+        "receipt": "transferred",
+        "from_user_id": "f3d07d47-70f5-4eb0-9d82-d114a33c15a7",
+        "to_user_id": "47c5bea5-25f1-4c5f-b021-44be120f56ec",
+        "prior_submission_id": "8e64b2d2-6473-4243-972f-35d2ad4dc58c"
+      }
+    },
+    {
+      "step": "reopened ticket reworked and accepted again; unrelated account denied",
+      "at": "2026-11-09T16:28:49.402Z",
+      "facts": {
+        "reopened": "reopened",
+        "final_status": "done"
+      }
+    }
+  ]
+}

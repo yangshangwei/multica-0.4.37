@@ -1,0 +1,122 @@
+H1 red run: tests written first, run against the unfixed code
+=============================================================
+
+Tree: /Volumes/artisan/code/2026/mc-kfix-lane-claim (branch codex/kfix-lane-claim-20261101)
+HEAD at run time: see "HEAD:" below. The only uncommitted changes were the new tests, in
+  server/pkg/agent/knowledge_launch_test.go
+  server/internal/service/task_knowledge_invocation_test.go
+  server/internal/handler/daemon_knowledge_test.go
+server/internal/service/task_knowledge.go and server/pkg/agent/knowledge_launch.go had not been changed.
+
+Behavioral tests that MUST fail, and do, for the H1 reason:
+  - TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv (pkg/agent): the build fails with
+    "undefined: KnowledgeSessionSelectorPresent", because the helper does not exist yet.
+  - TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim (service, subtests defaults/custom/persistence):
+    with the gate off, BuildTaskKnowledgeClaim returns knowledge_invocation_unsupported.
+  - TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution (service, subtests custom/defaults):
+    with the gate on, knowledge_invocation_unsupported comes back before the support decision.
+  - TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates (service, subtests defaults/custom):
+    finalize's BuildTaskKnowledgeClaim returns knowledge_invocation_unsupported (it replaces
+    TestKnowledgeOrdinaryNoSessionPersistenceRemainsUnsupported).
+  - TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask (handler): the claim answers
+    409 {"error":"knowledge_invocation_unsupported"} where 200 is expected.
+
+Regression guards that MUST pass both before and after the fix, and do:
+  - TestKnowledgeSessionSelectorsRefusedWhateverTheGate (service, gate on/off x defaults/custom)
+  - TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs (service)
+
+Every go test ran with env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0, -count=1 -v.
+Databases: service uses kfix_claim_svc, handler uses kfix_claim_handler (both on 127.0.0.1:5432,
+migration ledger at 760). pkg/agent uses no database.
+
+HEAD: 4e3b61500ed0afbc12cf4c79b1c6aea866778d0e
+git status --short at run time:
+ M server/internal/handler/daemon_knowledge_test.go
+ M server/internal/service/task_knowledge_invocation_test.go
+ M server/pkg/agent/knowledge_launch_test.go
+
+### 1. pkg/agent (no database)
+$ go test ./pkg/agent -run 'TestKnowledgeSessionSelectorPresentClassifiesClaudeArgv' -count=1 -v
+# github.com/multica-ai/multica/server/pkg/agent [github.com/multica-ai/multica/server/pkg/agent.test]
+pkg/agent/knowledge_launch_test.go:432:7: undefined: KnowledgeSessionSelectorPresent
+pkg/agent/knowledge_launch_test.go:441:6: undefined: KnowledgeSessionSelectorPresent
+pkg/agent/knowledge_launch_test.go:445:5: undefined: KnowledgeSessionSelectorPresent
+FAIL	github.com/multica-ai/multica/server/pkg/agent [build failed]
+FAIL
+exit status: 1
+
+### 2. internal/service (DATABASE_URL=.../kfix_claim_svc)
+$ go test ./internal/service -run '^(TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim|TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution|TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates|TestKnowledgeSessionSelectorsRefusedWhateverTheGate|TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs)$' -count=1 -v
+=== RUN   TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim
+=== RUN   TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/defaults
+    task_knowledge_invocation_test.go:48: closed gate refused or rewrote an ordinary claim with safe options: d=false prior="" err=knowledge_invocation_unsupported
+=== RUN   TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/custom
+    task_knowledge_invocation_test.go:48: closed gate refused or rewrote an ordinary claim with safe options: d=false prior="" err=knowledge_invocation_unsupported
+=== RUN   TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/persistence
+    task_knowledge_invocation_test.go:48: closed gate refused or rewrote an ordinary claim with safe options: d=false prior="" err=knowledge_invocation_unsupported
+--- FAIL: TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim (0.67s)
+    --- FAIL: TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/defaults (0.24s)
+    --- FAIL: TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/custom (0.22s)
+    --- FAIL: TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim/persistence (0.21s)
+=== RUN   TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution
+=== RUN   TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution/custom
+    task_knowledge_invocation_test.go:65: safe option outside the negotiation allowlist did not take base execution: d=false prior="" err=knowledge_invocation_unsupported
+=== RUN   TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution/defaults
+    task_knowledge_invocation_test.go:65: safe option outside the negotiation allowlist did not take base execution: d=false prior="" err=knowledge_invocation_unsupported
+--- FAIL: TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution (0.40s)
+    --- FAIL: TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution/custom (0.20s)
+    --- FAIL: TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution/defaults (0.20s)
+=== RUN   TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates
+=== RUN   TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates/defaults
+    task_knowledge_invocation_test.go:81: knowledge_invocation_unsupported
+=== RUN   TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates/custom
+    task_knowledge_invocation_test.go:81: knowledge_invocation_unsupported
+--- FAIL: TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates (0.39s)
+    --- FAIL: TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates/defaults (0.19s)
+    --- FAIL: TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates/custom (0.20s)
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults
+=== RUN   TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom
+--- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate (0.80s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/defaults (0.20s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=true/custom (0.20s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/defaults (0.20s)
+    --- PASS: TestKnowledgeSessionSelectorsRefusedWhateverTheGate/gate=false/custom (0.20s)
+=== RUN   TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs
+--- PASS: TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs (0.21s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	3.343s
+FAIL
+exit status: 1
+
+### 3. internal/handler (DATABASE_URL=.../kfix_claim_handler)
+$ go test ./internal/handler -run '^TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask$' -count=1 -v
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/01 14:55:37 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask
+2026/11/01 14:55:37 INFO task claimed task_id=4dfa1756-d85e-4219-824e-38cff7577048 agent_id=9fa36492-d904-414e-9251-3f23b655dd1d
+2026/11/01 14:55:37 WARN task failed task_id=4dfa1756-d85e-4219-824e-38cff7577048 issue_id=ebc10fcb-d4ed-45cb-9a04-602f03a5d878 error=knowledge_invocation_unsupported failure_reason=knowledge_invocation_unsupported
+    daemon_knowledge_test.go:209: POST /api/daemon/runtimes/c59a4448-46cd-4f2a-9734-df717cef71b5/tasks/claim: expected 200, got 409: {"error":"knowledge_invocation_unsupported"}
+--- FAIL: TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask (0.15s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/handler	1.151s
+FAIL
+exit status: 1
+
+### Addendum: regression guard extended after the fix was written
+TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs gained a no_session_persistence subtest next to
+allowed_tools, so the spec sentence about retained negotiated tasks and --no-session-persistence is pinned.
+This run uses the BASE server/internal/service/task_knowledge.go (git show HEAD:...) through go test -overlay;
+the working-tree copy was not touched. As a regression guard it passes on base, as it does after the fix.
+$ go test -overlay <base task_knowledge.go> ./internal/service -run '^TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs$' -count=1 -v   (DATABASE_URL=.../kfix_claim_svc)
+=== RUN   TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs
+=== RUN   TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs/allowed_tools
+=== RUN   TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs/no_session_persistence
+--- PASS: TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs (0.49s)
+    --- PASS: TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs/allowed_tools (0.28s)
+    --- PASS: TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs/no_session_persistence (0.21s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	1.404s
+exit status: 0

@@ -20,9 +20,10 @@ const virtual = vi.hoisted(() => ({
 
 vi.mock("react-virtuoso", () => ({
   Virtuoso: forwardRef(function MockVirtuoso(
-    { data, itemContent }: {
+    { data, itemContent, components }: {
       data: InboxItem[];
       itemContent: (index: number, item: InboxItem) => React.ReactNode;
+      components?: { Footer?: React.ComponentType };
     },
     ref: React.Ref<unknown>,
   ) {
@@ -35,9 +36,10 @@ vi.mock("react-virtuoso", () => ({
         else mount();
       },
     }));
+    const Footer = components?.Footer;
     return <div>{data.slice(start, start + virtual.windowSize).map((item, index) => (
       <div key={item.id}>{itemContent(start + index, item)}</div>
-    ))}</div>;
+    ))}{Footer && <Footer />}</div>;
   }),
 }));
 
@@ -95,6 +97,35 @@ beforeEach(() => {
 });
 
 describe("InboxList keyboard navigation", () => {
+  it("offers an empty snoozed view before the archive entry", () => {
+    const onOpenSnoozed = vi.fn();
+    renderWithI18n(<NavigationProvider value={adapter}>
+      <InboxList items={[]} view="inbox" selectedKey="" archivedCount={2} snoozedCount={0}
+        onSelect={vi.fn()} onAction={vi.fn()} onOpenArchived={vi.fn()} onOpenSnoozed={onOpenSnoozed} />
+    </NavigationProvider>);
+
+    const snoozed = screen.getByRole("button", { name: "Snoozed 0" });
+    const archived = screen.getByRole("button", { name: "Archived 2" });
+    expect(snoozed.compareDocumentPosition(archived) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    fireEvent.click(snoozed);
+    expect(onOpenSnoozed).toHaveBeenCalledOnce();
+  });
+
+  it("retains the snoozed footer node and its focus across selection updates", () => {
+    const callbacks = { onSelect: vi.fn(), onAction: vi.fn(), onOpenArchived: vi.fn(), onOpenSnoozed: vi.fn() };
+    const contents = (selectedKey: string) => <NavigationProvider value={adapter}>
+      <InboxList items={items} view="inbox" selectedKey={selectedKey} archivedCount={0} snoozedCount={1} {...callbacks} />
+    </NavigationProvider>;
+    const view = renderWithI18n(contents("issue-a"));
+    const footer = screen.getByRole("button", { name: "Snoozed 1" });
+    footer.focus();
+
+    view.rerender(contents("issue-b"));
+
+    expect(screen.getByRole("button", { name: "Snoozed 1" })).toBe(footer);
+    expect(footer).toHaveFocus();
+  });
+
   it("moves current state and DOM focus with arrow keys", () => {
     const { onSelect } = renderList("issue-a");
     primary("a").focus();

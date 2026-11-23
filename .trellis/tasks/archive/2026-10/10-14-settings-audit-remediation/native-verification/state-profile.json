@@ -1,0 +1,22 @@
+{
+  "id": "profile",
+  "recordedAt": "2026-10-14T12:16:53.850Z",
+  "fixture": "Memory-only API responses and writes in the disposable renderer.",
+  "saved": {
+    "name": "Native acceptance profile",
+    "profile_description": "Native acceptance retained profile context"
+  },
+  "activeDraftRetained": true,
+  "evidence": {
+    "screenshot": "screenshots/state-profile-corrected-save.png",
+    "ax": "ax/state-profile-corrected-save.txt"
+  },
+  "status": "pass",
+  "cleanup": {
+    "restored": true,
+    "methods": 2,
+    "queries": 1,
+    "safetyPresent": true
+  },
+  "completedAt": "2026-10-14T12:16:56.333Z"
+}

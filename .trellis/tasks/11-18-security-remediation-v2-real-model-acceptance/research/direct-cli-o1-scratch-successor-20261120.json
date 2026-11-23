@@ -1,0 +1,38 @@
+{
+  "mode": "official-cli-direct",
+  "source_sha256": "5d99e2138caa4d98e305d4dfb6d9d4b69b0d0cca212fe9d305587f34c9c513ac",
+  "binary_sha256": "d64a346ffee3c074c68d67fd513af87845f992b7ba959001c78565159d455d2f",
+  "shared_p1_source_sha256": "5bc9529464a423d2668c23cba48e2e1bf242a58e2e80518a21e1d3a7194fe248",
+  "backend_sha256": "e5ddd3157bd6044b6242c6aaca54725a7f57391dd869fcc026e6e91a8351e905",
+  "fake_log_sha256": "a8a1c9a9586d71f0fd260b0e43ffa506cd69894b93b87c9df0cfe629b9f23d1a",
+  "result": {
+    "criteria": {
+      "all_four_runs_complete": true,
+      "comment_identity_and_scope": true,
+      "exact_role_task_counts": true,
+      "issue_in_review": true,
+      "no_extra_workspace_issue": true,
+      "owner_releases_new_and_unchanged": true,
+      "restricted_reviewer_result_dispatch_inert": true,
+      "roster_and_config_unchanged": true
+    },
+    "evidence_type": "fake",
+    "manual_review_required": [
+      "G1 type other, hold/unknown, evidence owner and missing materials",
+      "reviewer result grounded in synthetic source",
+      "plain leader only explains valid release, no false approval",
+      "human hold conclusion covers each G1 decision with reason/date",
+      "final summary cites original reviewer/owner and preserves unresolved risk",
+      "broker and filesystem evidence contain no forbidden attempts"
+    ],
+    "scenario": "O1",
+    "task_counts": {
+      "security-remediation-lead/false": 1,
+      "security-remediation-lead/true": 2,
+      "security-reviewer/false": 1
+    },
+    "verdict": "platform-checks-passed-semantic-review-pending"
+  },
+  "manifest_no_repository": "actual claim Repos=0 and ProjectResources=0; explicit counts",
+  "model_calls": 0
+}

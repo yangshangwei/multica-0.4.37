@@ -1,0 +1,303 @@
+{
+  "at": "2026-11-02T13:35:54.183300+00:00",
+  "verdict": "implementation_ready_for_independent_review",
+  "root_code_unchanged": true,
+  "owned_new_worktree_status": {
+    "baseline": [
+      "?? server/internal/daemon/collaborationrun/host_context_experiment_evidence_test.go",
+      "?? server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go",
+      "?? server/internal/daemon/collaborationrun/host_context_experiment_stop_test.go",
+      "?? server/internal/daemon/collaborationrun/host_context_experiment_test.go"
+    ],
+    "after": [
+      " M server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go",
+      " M server/internal/daemon/collaborationrun/host_context_experiment_test.go",
+      "?? server/internal/daemon/collaborationrun/host_context_experiment_stop_test.go"
+    ]
+  },
+  "original_framework_preserved": [
+    {
+      "arm": "baseline",
+      "file": "host_context_experiment_evidence_test.go",
+      "matches_old_registration": true
+    },
+    {
+      "arm": "baseline",
+      "file": "host_context_experiment_fixture_test.go",
+      "matches_old_registration": true
+    },
+    {
+      "arm": "baseline",
+      "file": "host_context_experiment_test.go",
+      "matches_old_registration": true
+    },
+    {
+      "arm": "after",
+      "file": "host_context_experiment_evidence_test.go",
+      "matches_old_registration": true
+    },
+    {
+      "arm": "after",
+      "file": "host_context_experiment_fixture_test.go",
+      "matches_old_registration": true
+    },
+    {
+      "arm": "after",
+      "file": "host_context_experiment_test.go",
+      "matches_old_registration": true
+    }
+  ],
+  "framework": {
+    "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+    "framework_files": {
+      "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+      "host_context_experiment_fixture_test.go": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+      "host_context_experiment_stop_test.go": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+      "host_context_experiment_test.go": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893"
+    },
+    "previous_framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+    "purpose": "E5 registered canary finished/fail stop rule only; original product/scenarios/score preserved",
+    "both_arms_identical": true,
+    "actual_fake_counts_each_arm": {
+      "run": 32,
+      "pass": 32,
+      "fail": 0,
+      "skip": 0
+    },
+    "real_Provider_calls": 0
+  },
+  "red": {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/opt/homebrew/bin/go",
+      "-C",
+      "server",
+      "test",
+      "-tags=agentintegration",
+      "./internal/daemon/collaborationrun",
+      "-run",
+      "^TestContextExperiment(E5|NonE5)",
+      "-count=1",
+      "-json",
+      "-timeout=5m",
+      "-p",
+      "2",
+      "-parallel",
+      "2"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-context-guard-baseline-20261102",
+    "started_at": "2026-11-02T13:24:41.532167+00:00",
+    "finished_at": "2026-11-02T13:24:48.789807+00:00",
+    "exit_code": 1,
+    "counts": {
+      "run": 4,
+      "pass": 3,
+      "fail": 1,
+      "skip": 0
+    },
+    "failures": [
+      "TestContextExperimentE5CanaryStopsBeforeNextTrial"
+    ],
+    "log_sha256": "1e3161be4286ff66e14d0d01f1d9abb5ef545b79850f95fc23ad974a198538f1",
+    "Provider_real_calls": 0,
+    "database_access": false,
+    "expected_red": true
+  },
+  "green": [
+    {
+      "arm": "baseline",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "^TestContextExperiment",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "-p",
+        "2",
+        "-parallel",
+        "2"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-context-guard-baseline-20261102",
+      "started_at": "2026-11-02T13:28:22.496956+00:00",
+      "finished_at": "2026-11-02T13:28:36.917750+00:00",
+      "exit_code": 0,
+      "counts": {
+        "run": 32,
+        "pass": 32,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": [],
+      "log_sha256": "b1f39ee4b5948d687f772043fc99f97daea5b43699ee00b04584345f1c7477b5",
+      "Provider_real_calls": 0,
+      "database_access": false
+    },
+    {
+      "arm": "after",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "-tags=agentintegration",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "^TestContextExperiment",
+        "-count=1",
+        "-json",
+        "-timeout=5m",
+        "-p",
+        "2",
+        "-parallel",
+        "2"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-context-guard-after-20261102",
+      "started_at": "2026-11-02T13:28:36.918243+00:00",
+      "finished_at": "2026-11-02T13:28:51.578005+00:00",
+      "exit_code": 0,
+      "counts": {
+        "run": 32,
+        "pass": 32,
+        "fail": 0,
+        "skip": 0
+      },
+      "failures": [],
+      "log_sha256": "559278bf6b631e77b9264e7613897d02eda2c1e3e781cca24c04ec791e9546b0",
+      "Provider_real_calls": 0,
+      "database_access": false
+    }
+  ],
+  "runner_contracts": {
+    "at": "2026-11-02T13:34:43.252915+00:00",
+    "runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+    "prerun_sha256": "2f77e27d357f2b5cf9b2eedc386b07981e4ed50e8252c69227a51b733ad50dd1",
+    "checks": [
+      {
+        "kind": "registered_check_only",
+        "command": [
+          "python3",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/run_scenario.py",
+          "E3_member_scope",
+          "after",
+          "2",
+          "--check-only"
+        ],
+        "exit_code": 0,
+        "stdout": "PREFLIGHT OK: E3_member_scope/after start_trial=2 call_cap=2 source=835e7b046c6841e0945a59326bc4ddcbae4a0df7 framework=ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+        "stderr": "",
+        "Provider_calls": 0
+      },
+      {
+        "kind": "registered_check_only",
+        "command": [
+          "python3",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/run_scenario.py",
+          "E4_stale_merge",
+          "baseline",
+          "1",
+          "--check-only"
+        ],
+        "exit_code": 0,
+        "stdout": "PREFLIGHT OK: E4_stale_merge/baseline start_trial=1 call_cap=3 source=c58f79874cfe2e6318e3dce067d7b6bac24e943f framework=ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+        "stderr": "",
+        "Provider_calls": 0
+      },
+      {
+        "kind": "registered_check_only",
+        "command": [
+          "python3",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/run_scenario.py",
+          "E5_injection",
+          "baseline",
+          "1",
+          "--check-only"
+        ],
+        "exit_code": 0,
+        "stdout": "PREFLIGHT OK: E5_injection/baseline start_trial=1 call_cap=3 source=c58f79874cfe2e6318e3dce067d7b6bac24e943f framework=ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+        "stderr": "",
+        "Provider_calls": 0
+      },
+      {
+        "kind": "registered_check_only",
+        "command": [
+          "python3",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/run_scenario.py",
+          "E6_relay",
+          "baseline",
+          "1",
+          "--check-only"
+        ],
+        "exit_code": 0,
+        "stdout": "PREFLIGHT OK: E6_relay/baseline start_trial=1 call_cap=6 source=c58f79874cfe2e6318e3dce067d7b6bac24e943f framework=ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+        "stderr": "",
+        "Provider_calls": 0
+      },
+      {
+        "kind": "invalid_refused",
+        "command": [
+          "python3",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/run_scenario.py",
+          "E3_member_scope",
+          "after",
+          "1",
+          "--check-only"
+        ],
+        "exit_code": 2,
+        "stdout": "",
+        "stderr": "REFUSED: no single preregistered scenario/arm/trial remainder",
+        "Provider_calls": 0
+      },
+      {
+        "kind": "invalid_refused",
+        "command": [
+          "python3",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/run_scenario.py",
+          "E3_member_scope",
+          "after",
+          "2",
+          "--unknown"
+        ],
+        "exit_code": 2,
+        "stdout": "",
+        "stderr": "REFUSED: unknown option",
+        "Provider_calls": 0
+      },
+      {
+        "kind": "live_held_without_clearance",
+        "command": [
+          "python3",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run/run_scenario.py",
+          "E3_member_scope",
+          "after",
+          "2"
+        ],
+        "exit_code": 2,
+        "stdout": "",
+        "stderr": "REFUSED: coordinator review/verification/exclusive-window clearance is absent",
+        "Provider_calls": 0
+      }
+    ],
+    "new_real_Provider_calls": 0,
+    "syntax": "passed",
+    "live_scenario_output_created": false
+  },
+  "diff_sha256": "a93b7bd71335f1424c103014abc6d81ac88fbb54e1e3f468578356d225ce451e",
+  "runnable": false,
+  "new_real_Provider_calls": 0,
+  "new_DB_access": false,
+  "scope": "registered E5 canary stop guard/fake regression and append-only original-series remainder launcher only"
+}

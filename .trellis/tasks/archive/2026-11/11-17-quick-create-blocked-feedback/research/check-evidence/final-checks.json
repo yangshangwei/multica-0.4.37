@@ -1,0 +1,85 @@
+[
+  {
+    "name": "core-regression",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/core",
+      "exec",
+      "vitest",
+      "run",
+      "issues/quick-create-submit-state.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-17-quick-create-blocked-feedback/research/check-evidence/core-regression-results.json"
+    ],
+    "started_at": "2026-11-20T06:47:38.668824+00:00",
+    "exit_code": 0,
+    "duration_seconds": 1.28
+  },
+  {
+    "name": "views-regression",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "exec",
+      "vitest",
+      "run",
+      "modals/quick-create-issue.test.tsx",
+      "modals/creator-recommendations.test.tsx",
+      "modals/creator-recommendations-cache.test.tsx",
+      "modals/issue-description-assist.test.tsx",
+      "modals/issue-description-assist-editor.test.tsx",
+      "modals/create-issue.test.tsx",
+      "modals/create-issue-dialog.test.tsx",
+      "modals/quick-create-actor-picker.test.tsx",
+      "chat/components/chat-new-chat-button.test.tsx",
+      "collaboration/creation-description-assist.test.tsx",
+      "collaboration/creation-form.test.tsx",
+      "locales/parity.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-17-quick-create-blocked-feedback/research/check-evidence/views-regression-results.json"
+    ],
+    "started_at": "2026-11-20T06:47:39.946312+00:00",
+    "exit_code": 0,
+    "duration_seconds": 42.12
+  },
+  {
+    "name": "views-typecheck-final",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "typecheck"
+    ],
+    "started_at": "2026-11-20T06:48:22.070504+00:00",
+    "exit_code": 0,
+    "duration_seconds": 68.99
+  },
+  {
+    "name": "views-lint-final",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "exec",
+      "eslint",
+      "modals/quick-create-issue.tsx",
+      "modals/quick-create-issue.test.tsx",
+      "modals/quick-create-actor-picker.tsx",
+      "modals/quick-create-actor-picker.test.tsx",
+      "modals/creator-recommendations.tsx",
+      "modals/creator-recommendations.test.tsx",
+      "modals/issue-description-assist.tsx",
+      "modals/issue-description-assist.test.tsx",
+      "chat/components/chat-new-chat-button.test.tsx"
+    ],
+    "started_at": "2026-11-20T06:49:31.067086+00:00",
+    "exit_code": 0,
+    "duration_seconds": 3.69
+  }
+]

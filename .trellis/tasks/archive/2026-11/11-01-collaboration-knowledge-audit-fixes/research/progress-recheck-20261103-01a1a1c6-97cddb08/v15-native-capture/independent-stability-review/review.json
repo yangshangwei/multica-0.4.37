@@ -1,0 +1,692 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-03T16:53:16.194489+00:00",
+  "reviewer": "/root/native_capture_stability_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "candidate": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_head": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "scope": "Read-only evidence and capture-protocol review; not a final candidate acceptance or original-bug reproduction",
+  "verdict": "approve-minimal-stability-hardening; old failure cause remains unproven",
+  "code_modified": false,
+  "old_failure": {
+    "initial_focus_height": 274,
+    "covered_through": 238,
+    "required": 273,
+    "initial_final_boxes_and_scroll_missing": true,
+    "cannot_distinguish_height_drift_from_clipping_or_clamping": true
+  },
+  "diagnostic_actual": {
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "skip": 0,
+    "retry": 0,
+    "total_reporter_seconds": 13.1,
+    "algorithm_and_old_assertions_unchanged": true,
+    "geometry_stages": 12,
+    "geometry_tiles": 14,
+    "all_initial_current_heights_match": true,
+    "all_original_coverage_constraints_pass": true,
+    "adoption_200_percent": {
+      "initial_current_height": 238,
+      "coverage": 238,
+      "root_height": 384,
+      "viewport_width_height": [
+        450,
+        600
+      ],
+      "requested_actual_scroll_top": 1984,
+      "max_scroll": 2478
+    },
+    "wide_clamping_is_legal_and_covers_target": true,
+    "no_200_percent_clamping_observed": true
+  },
+  "geometry": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-adoption-200-percent-geometry.json",
+      "sha256": "4599c3ab82776ca5af8fd59b6b470983aeeca8c48acbb1ec897991c11970d4ed",
+      "stage": "adoption",
+      "size": "200-percent",
+      "initial_focus_height": 238,
+      "available_height": 360,
+      "offsets": [
+        0
+      ],
+      "covered_through": 238,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 238,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 238,
+          "requested_scroll_top": 1984,
+          "actual_scroll_top": 1984,
+          "max_scroll": 2478,
+          "clamped": false,
+          "root_box": {
+            "x": 8,
+            "y": 208,
+            "width": 434,
+            "height": 384,
+            "top": 208,
+            "right": 442,
+            "bottom": 592,
+            "left": 8
+          },
+          "viewport": {
+            "width": 450,
+            "height": 600
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-adoption-wide-geometry.json",
+      "sha256": "8f11b64c0698a1794f7cb76d696e709a71b7375a907d968fa71f5af76e90db1b",
+      "stage": "adoption",
+      "size": "wide",
+      "initial_focus_height": 222,
+      "available_height": 924,
+      "offsets": [
+        0
+      ],
+      "covered_through": 222,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 222,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 222,
+          "requested_scroll_top": 1683.25,
+          "actual_scroll_top": 1345.5,
+          "max_scroll": 1345,
+          "clamped": true,
+          "root_box": {
+            "x": 360,
+            "y": 164,
+            "width": 1012,
+            "height": 948,
+            "top": 164,
+            "right": 1372,
+            "bottom": 1112,
+            "left": 360
+          },
+          "viewport": {
+            "width": 1380,
+            "height": 1120
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-authorized-200-percent-geometry.json",
+      "sha256": "2c8fa66b87e43843f135c8c60967bc143fe4cca02d020c85dd66c6cd61481321",
+      "stage": "authorized",
+      "size": "200-percent",
+      "initial_focus_height": 178,
+      "available_height": 360,
+      "offsets": [
+        0
+      ],
+      "covered_through": 178,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 178,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 178,
+          "requested_scroll_top": 1706,
+          "actual_scroll_top": 1706,
+          "max_scroll": 2588,
+          "clamped": false,
+          "root_box": {
+            "x": 8,
+            "y": 208,
+            "width": 434,
+            "height": 384,
+            "top": 208,
+            "right": 442,
+            "bottom": 592,
+            "left": 8
+          },
+          "viewport": {
+            "width": 450,
+            "height": 600
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-authorized-wide-geometry.json",
+      "sha256": "54a71fdfd3f14196e2f816b544db7eea7425adb7767c9ed79cf5e6d8bf03e02f",
+      "stage": "authorized",
+      "size": "wide",
+      "initial_focus_height": 160,
+      "available_height": 924,
+      "offsets": [
+        0
+      ],
+      "covered_through": 160,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 160,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 160,
+          "requested_scroll_top": 1487.25,
+          "actual_scroll_top": 1487.5,
+          "max_scroll": 1535,
+          "clamped": false,
+          "root_box": {
+            "x": 360,
+            "y": 164,
+            "width": 1012,
+            "height": 948,
+            "top": 164,
+            "right": 1372,
+            "bottom": 1112,
+            "left": 360
+          },
+          "viewport": {
+            "width": 1380,
+            "height": 1120
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-cancelled-200-percent-geometry.json",
+      "sha256": "92779ffad8c72c0411c4f48b3a5587639eed212deb6f27243185655b6ab81df8",
+      "stage": "cancelled",
+      "size": "200-percent",
+      "initial_focus_height": 378.75,
+      "available_height": 360,
+      "offsets": [
+        0,
+        18.75
+      ],
+      "covered_through": 378.75,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 378.75,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 372,
+          "requested_scroll_top": 2866.75,
+          "actual_scroll_top": 2866.75,
+          "max_scroll": 3454,
+          "clamped": false,
+          "root_box": {
+            "x": 8,
+            "y": 208,
+            "width": 434,
+            "height": 384,
+            "top": 208,
+            "right": 442,
+            "bottom": 592,
+            "left": 8
+          },
+          "viewport": {
+            "width": 450,
+            "height": 600
+          },
+          "root_inside_viewport": true
+        },
+        {
+          "part": 1,
+          "offset": 18.75,
+          "focus_height": 378.75,
+          "initial_height_matches": true,
+          "visible_start": 6.75,
+          "visible_end": 378.75,
+          "requested_scroll_top": 2885.5,
+          "actual_scroll_top": 2885.5,
+          "max_scroll": 3454,
+          "clamped": false,
+          "root_box": {
+            "x": 8,
+            "y": 208,
+            "width": 434,
+            "height": 384,
+            "top": 208,
+            "right": 442,
+            "bottom": 592,
+            "left": 8
+          },
+          "viewport": {
+            "width": 450,
+            "height": 600
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-cancelled-wide-geometry.json",
+      "sha256": "439b1a7186447579d4b8a876dd12a2c688ccdc1b15e6e16fbd220f7755f73455",
+      "stage": "cancelled",
+      "size": "wide",
+      "initial_focus_height": 326.75,
+      "available_height": 924,
+      "offsets": [
+        0
+      ],
+      "covered_through": 326.75,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 326.75,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 326.75,
+          "requested_scroll_top": 2494,
+          "actual_scroll_top": 2213,
+          "max_scroll": 2213,
+          "clamped": true,
+          "root_box": {
+            "x": 360,
+            "y": 164,
+            "width": 1012,
+            "height": 948,
+            "top": 164,
+            "right": 1372,
+            "bottom": 1112,
+            "left": 360
+          },
+          "viewport": {
+            "width": 1380,
+            "height": 1120
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-deleted-200-percent-geometry.json",
+      "sha256": "8a6578adf2bd9598b555b34c195320641039823f90fb689a70452e07e5c0fe76",
+      "stage": "deleted",
+      "size": "200-percent",
+      "initial_focus_height": 378.75,
+      "available_height": 360,
+      "offsets": [
+        0,
+        18.75
+      ],
+      "covered_through": 378.75,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 378.75,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 372,
+          "requested_scroll_top": 2108,
+          "actual_scroll_top": 2108,
+          "max_scroll": 2695,
+          "clamped": false,
+          "root_box": {
+            "x": 8,
+            "y": 208,
+            "width": 434,
+            "height": 384,
+            "top": 208,
+            "right": 442,
+            "bottom": 592,
+            "left": 8
+          },
+          "viewport": {
+            "width": 450,
+            "height": 600
+          },
+          "root_inside_viewport": true
+        },
+        {
+          "part": 1,
+          "offset": 18.75,
+          "focus_height": 378.75,
+          "initial_height_matches": true,
+          "visible_start": 6.75,
+          "visible_end": 378.75,
+          "requested_scroll_top": 2126.75,
+          "actual_scroll_top": 2126.75,
+          "max_scroll": 2695,
+          "clamped": false,
+          "root_box": {
+            "x": 8,
+            "y": 208,
+            "width": 434,
+            "height": 384,
+            "top": 208,
+            "right": 442,
+            "bottom": 592,
+            "left": 8
+          },
+          "viewport": {
+            "width": 450,
+            "height": 600
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-deleted-wide-geometry.json",
+      "sha256": "4af84966b1f909ffa51e2d1a5ee0e2034018951c3b3c33e61fc8e312979eeda8",
+      "stage": "deleted",
+      "size": "wide",
+      "initial_focus_height": 326.75,
+      "available_height": 924,
+      "offsets": [
+        0
+      ],
+      "covered_through": 326.75,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 326.75,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 326.75,
+          "requested_scroll_top": 1803.25,
+          "actual_scroll_top": 1522,
+          "max_scroll": 1522,
+          "clamped": true,
+          "root_box": {
+            "x": 360,
+            "y": 164,
+            "width": 1012,
+            "height": 948,
+            "top": 164,
+            "right": 1372,
+            "bottom": 1112,
+            "left": 360
+          },
+          "viewport": {
+            "width": 1380,
+            "height": 1120
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-supplier-200-percent-geometry.json",
+      "sha256": "1719104ff7a304771a25c33dfb26178f536f4171a58096918794cf903d44d0bf",
+      "stage": "supplier",
+      "size": "200-percent",
+      "initial_focus_height": 338,
+      "available_height": 360,
+      "offsets": [
+        0
+      ],
+      "covered_through": 338,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 338,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 338,
+          "requested_scroll_top": 1812,
+          "actual_scroll_top": 1812,
+          "max_scroll": 2406,
+          "clamped": false,
+          "root_box": {
+            "x": 8,
+            "y": 208,
+            "width": 434,
+            "height": 384,
+            "top": 208,
+            "right": 442,
+            "bottom": 592,
+            "left": 8
+          },
+          "viewport": {
+            "width": 450,
+            "height": 600
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-supplier-wide-geometry.json",
+      "sha256": "1e30f771c9756ec9e76bedaca80527a2f7933ae9fa4af620a443589cee59e1db",
+      "stage": "supplier",
+      "size": "wide",
+      "initial_focus_height": 338,
+      "available_height": 924,
+      "offsets": [
+        0
+      ],
+      "covered_through": 338,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 338,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 338,
+          "requested_scroll_top": 1593.25,
+          "actual_scroll_top": 1371.5,
+          "max_scroll": 1371,
+          "clamped": true,
+          "root_box": {
+            "x": 360,
+            "y": 164,
+            "width": 1012,
+            "height": 948,
+            "top": 164,
+            "right": 1372,
+            "bottom": 1112,
+            "left": 360
+          },
+          "viewport": {
+            "width": 1380,
+            "height": 1120
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-withdrawn-200-percent-geometry.json",
+      "sha256": "d3751f974af93e40375ca203e4895d8b7d091f2ef09773a0254616f546e2d636",
+      "stage": "withdrawn",
+      "size": "200-percent",
+      "initial_focus_height": 306,
+      "available_height": 360,
+      "offsets": [
+        0
+      ],
+      "covered_through": 306,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 306,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 306,
+          "requested_scroll_top": 1900,
+          "actual_scroll_top": 1900,
+          "max_scroll": 2684,
+          "clamped": false,
+          "root_box": {
+            "x": 8,
+            "y": 208,
+            "width": 434,
+            "height": 384,
+            "top": 208,
+            "right": 442,
+            "bottom": 592,
+            "left": 8
+          },
+          "viewport": {
+            "width": 450,
+            "height": 600
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1/collaboration-account-desk-a6f4b-s-cancelled-command-history-chromium/desktop-withdrawn-wide-geometry.json",
+      "sha256": "1f5a07ca920ffb48c321b2319c366ed8db7adaa3a0182e4690efaa63d7f5845a",
+      "stage": "withdrawn",
+      "size": "wide",
+      "initial_focus_height": 306,
+      "available_height": 924,
+      "offsets": [
+        0
+      ],
+      "covered_through": 306,
+      "original_coverage_satisfied": true,
+      "parts": [
+        {
+          "part": 0,
+          "offset": 0,
+          "focus_height": 306,
+          "initial_height_matches": true,
+          "visible_start": 0,
+          "visible_end": 306,
+          "requested_scroll_top": 1663.25,
+          "actual_scroll_top": 1631.5,
+          "max_scroll": 1631,
+          "clamped": true,
+          "root_box": {
+            "x": 360,
+            "y": 164,
+            "width": 1012,
+            "height": 948,
+            "top": 164,
+            "right": 1372,
+            "bottom": 1112,
+            "left": 360
+          },
+          "viewport": {
+            "width": 1380,
+            "height": 1120
+          },
+          "root_inside_viewport": true
+        }
+      ]
+    }
+  ],
+  "source_confirmed_protocol_gaps": [
+    {
+      "id": "NC-S1",
+      "file": "e2e/fixtures/collaboration-native.ts",
+      "issue": "Offsets and final coverage use one initial height/root sample, while later per-tile geometry is not required to represent the same target size/content/root geometry.",
+      "implication": "Changed layouts can invalidate fixed offsets or mix incompatible coordinates; the present old failure still lacks enough raw measurements to prove that occurred."
+    },
+    {
+      "id": "NC-S2",
+      "file": "e2e/fixtures/collaboration-native.ts",
+      "issue": "Geometry and coveredThrough are sampled/updated before asynchronous native capturePage; no post-capture equality check proves the saved PNG matches the measured frame.",
+      "implication": "The helper can return a geometry claim for a screenshot produced after a layout/scroll change. The project guide already requires geometry before and after capture."
+    }
+  ],
+  "source_supported_possible_mechanism": {
+    "component": "OfferConfirmation in packages/views/collaboration/resource-offers.tsx",
+    "facts": [
+      "A query.isFetching status paragraph is conditionally rendered inside the focus form.",
+      "Current resource detail/summary renders depend on asynchronous query data.",
+      "Confirm disabled state includes query.isFetching; the caller waits for enabled before invoking capture, not for all subsequent resize/focus states.",
+      "The resource-offer query has staleTime0.",
+      "fonts.ready plus two RAF only waits for that bounded browser interval, not future asynchronous UI state."
+    ],
+    "unproven": [
+      "No old query.isFetching event or old final focus box survives; do not claim the status line caused the old36px difference.",
+      "The one passing diagnostic is not evidence that the observation-only patch removed the old timing failure."
+    ]
+  },
+  "minimal_decision": {
+    "owning_seam": "captureNativeSection only; no product/form/query policy change",
+    "initial_readiness": "After native size/zoom/font readiness, use the existing bounded expect.poll/RAF pattern to require two successive frame-spanning geometry/content signatures to match. Freeze one accepted snapshot before deriving the original offsets.",
+    "stable_signature_fields": [
+      "focus.x",
+      "focus.width",
+      "focus.height",
+      "root.x",
+      "root.y",
+      "root.width",
+      "root.height",
+      "root.clientHeight",
+      "viewport.width",
+      "viewport.height"
+    ],
+    "content_guard": "Compare the resolved focus node/textContent locally for the same snapshot; persist only equality/summary, not new plaintext body/input values.",
+    "exclude_from_global_signature": [
+      "focus.y/top/bottom because deliberate tile scrolling moves them",
+      "scrollTop because deliberate tile scrolling changes it",
+      "scrollHeight because unrelated content outside the target can change without invalidating coverage"
+    ],
+    "tile_pre_post": "Keep the existing scroll formula and overlap/bounds assertions. Require each tile target dimensions/root/viewport/content to match the frozen signature. Immediately before and after capturePage compare full focus/root rectangles and scrollTop for that tile; persist both readings before rejection.",
+    "original_target_unchanged": "Final coveredThrough >= the unique accepted initial.focusHeight-1 remains unchanged. Do not replace that height with a smaller later value or auto-rebaseline after a changed tile.",
+    "failure_behavior": "Bounded instability or any capture drift is a named evidence failure with raw measurements retained; no full-test retries or silent capture success.",
+    "minimum_scope": "Local stable measure/predicate and pre/post checks within the existing fixture function, no new dependency, global screenshot helper, layout/CSS changes or broader abstraction."
+  },
+  "validation_recommendation": [
+    "Run the same exact native resource-offer case and current17 directed cases against the final fixture; preserve each attempt and all original assertions.",
+    "For the new protocol, a focused task-only negative control should prove changed target height/root/viewport between frozen baseline and native frame is rejected, while deliberate legal scroll positions do not trip the global signature. Do not count these synthetic controls as product/native acceptance.",
+    "The final full shared check, current source binding, actual final audit and remaining CCG/task7 gates still determine acceptance; this read-only review issues no clearance."
+  ],
+  "verification_here": {
+    "operation": "Parsed12 actual saved geometry records and matched factual constraints; inspected current/preserved code and caller/query/form source.",
+    "source_only": true,
+    "lint": "not run (explicit read-only/no-test slice)",
+    "typecheck": "not run (explicit read-only/no-test slice)",
+    "tests": "not run; existing actual one-case result parsed, not re-executed",
+    "build_sql_services_provider": "not run"
+  },
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "production_default_knowledge_changed": false,
+  "input_hashes": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-native-capture/boundary.json": "00ab440b49cfdaaa9e5edc76b92e77aed81ce8ef80d9f002130b17ad02df8e3c",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-directed/directed17/native-capture-failure-handoff.json": "aa954c8066cdb3aab32bf1d8bbdcae025f05d2df94b0c86836ce0b514ff7e943",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-directed/directed17/result.json": "62e4101cc424bdcbbb611f48d31374cf3ad35825c859ea9deb8df88d250b52a2",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-native-capture/result.json": "4c056eb4db1bad760459695094fc6697fc5c57d5e9cb63f0e8be926365dfa08e",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-native-capture/geometry-observations.json": "21f37b45366c6b05828af8d1e0991bae555e1f379bdd819d1b727b06cd2505ab",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-native-capture/playwright-results.json": "58ee3163a467d6f5dfcf9bc7786875107c2a0e98e45e26d41a08273ebf44ba62",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-native.ts": "3c40711ae581da991a99347ac8eea322f025c63f0e41e8ad7d8112d61433e982",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts": "73f6005d8830877bec3b7c7710417ac6cd39fd6eb70dd17d18d3129136add4c4",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-account-desktop.spec.ts": "0e20376018ab0225ea81a637ffc67fdafa4dd73f84a71dad25321e5524b4c328",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/resource-offers.tsx": "692ba5e6ad0c50b01f9ae22af3e1ed86a5a72dae095b12ac2da38e7bfdc7e2ec",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/resource-form.tsx": "6038b86d21d90d4b3f20df2c8cf13173db2e865a3f42f9a58c53d0472ecff546",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/collaboration/focus.ts": "11010ef22ec30559cac07cbe7ca5206e3b2ab903d008cd941d3eaa45bf295859",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/core/collaboration/resource.ts": "b68519e3b0b4a150e4cd32860c0c4dca864e9b2b5cba38f96dc9e6f38d578aa7",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/e2e-run-environment.md": "38ad0b1c4cc218a00184735242fac65a947733e086b116c1e2cd4353ddff6377"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-c",
+    "-o",
+    "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-source-role-compile-_r0p2ohw/service.test",
+    "./internal/service"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "started_at": "2026-10-21T15:21:22.231088+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_source_roles_test.go": "11a418f87f05ba0cfef3139b477c5a169eace0cd7d854eb48b96e7f53bea8332",
+    "server/internal/handler/collaboration_iteration_request_boundary_test.go": "f91fee3e0c4a54221875bccf92204ccaa383e1bdf76c643c4a608644035f8a4f"
+  },
+  "GOTOOLCHAIN": "go1.26.6",
+  "database_access": false,
+  "finished_at": "2026-10-21T15:21:29.811063+00:00",
+  "returncode": 0,
+  "final_source_sha256": {
+    "server/internal/service/collaboration_source_roles_test.go": "11a418f87f05ba0cfef3139b477c5a169eace0cd7d854eb48b96e7f53bea8332",
+    "server/internal/handler/collaboration_iteration_request_boundary_test.go": "f91fee3e0c4a54221875bccf92204ccaa383e1bdf76c643c4a608644035f8a4f"
+  }
+}

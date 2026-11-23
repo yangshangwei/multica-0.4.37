@@ -351,8 +351,7 @@ func (h *Handler) BootstrapOnboardingRuntime(w http.ResponseWriter, r *http.Requ
 			onboardedAt = updatedUser.OnboardedAt.Time.UTC().Format("2006-01-02T15:04:05Z07:00")
 		}
 		obsmetrics.RecordEvent(h.Analytics, h.Metrics, analytics.OnboardingCompleted(
-			userID, req.WorkspaceID, analytics.OnboardingPathFull,
-			onboardedAt, updatedUser.CloudWaitlistEmail.Valid,
+			userID, req.WorkspaceID, analytics.OnboardingPathFull, onboardedAt,
 		))
 	}
 
@@ -502,8 +501,7 @@ func (h *Handler) BootstrapOnboardingNoRuntime(w http.ResponseWriter, r *http.Re
 			onboardedAt = updatedUser.OnboardedAt.Time.UTC().Format("2006-01-02T15:04:05Z07:00")
 		}
 		obsmetrics.RecordEvent(h.Analytics, h.Metrics, analytics.OnboardingCompleted(
-			userID, req.WorkspaceID, analytics.OnboardingPathRuntimeSkipped,
-			onboardedAt, updatedUser.CloudWaitlistEmail.Valid,
+			userID, req.WorkspaceID, analytics.OnboardingPathRuntimeSkipped, onboardedAt,
 		))
 	}
 

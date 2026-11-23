@@ -120,10 +120,10 @@ test("discovers deployment templates and creates a workspace copy while keeping 
 
     await page.setViewportSize(WIDE);
     await page.goto(`/${slug}/skills`);
-    await expect(page.getByText("No skills yet", { exact: true })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Turn your team’s know-how into a skill", exact: true })).toBeVisible();
     await expect(page.getByRole("tab", { name: "Skill templates", exact: true })).toHaveCount(0);
     await page.reload();
-    await expect(page.getByText("No skills yet", { exact: true })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Turn your team’s know-how into a skill", exact: true })).toBeVisible();
     await page.getByRole("link", { name: "From template", exact: true }).focus();
     await page.keyboard.press("Enter");
     await expect(page).toHaveURL(`/${slug}/marketplace?type=skills`);

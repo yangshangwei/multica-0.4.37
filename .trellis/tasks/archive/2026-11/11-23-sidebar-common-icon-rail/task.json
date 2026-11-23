@@ -1,0 +1,43 @@
+{
+  "id": "sidebar-common-icon-rail",
+  "name": "sidebar-common-icon-rail",
+  "title": "折叠侧栏时保留常用入口图标",
+  "description": "按已确认的方案 A，Web/Desktop 折叠侧栏保留常用图标和更多入口；实现验收完成后，用户明确授权本地提交。",
+  "status": "completed",
+  "dev_type": "frontend",
+  "scope": "shared navigation, Web and Desktop",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-23",
+  "completedAt": "2026-11-23",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "76c61f95dbbd2f0d7450af1df633a78449d2f8e9",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/layout/app-sidebar.tsx",
+    "packages/ui/components/ui/sidebar.tsx",
+    "apps/web/platform/account-shell.tsx",
+    "apps/desktop/src/renderer/src/components/desktop-layout.tsx",
+    "e2e/sidebar-icon-rail.spec.ts"
+  ],
+  "notes": "方案 A 已实现并验收；实现期间遵守不提交要求。用户随后明确要求提交，侧栏代码已本地提交，归档当前任务并记录交付；保留其他修改。",
+  "meta": {
+    "commit_policy": "user_authorized_local_commit",
+    "design_approval": "user selected reviewed A and explicitly requested implementation",
+    "verification_worktree": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/sidebar-icon-rail-20261123/src",
+    "implementation_status": "verified",
+    "verification_report": "artifacts/qa/sidebar-icon-rail-20261123/confirmed/report.json",
+    "unit_tests": 143,
+    "e2e_originals": 4,
+    "git_commit": "76c61f95dbbd2f0d7450af1df633a78449d2f8e9",
+    "next_step": "Archived after authorized local commit; no push requested",
+    "delivery_authorization": "用户于验收后明确要求：提交吧"
+  }
+}

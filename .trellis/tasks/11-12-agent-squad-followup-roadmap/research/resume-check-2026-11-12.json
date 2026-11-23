@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-12",
+  "purpose": "M1-S1 planning-only resumption",
+  "task": ".trellis/tasks/11-12-agent-squad-followup-roadmap",
+  "initial_state": {
+    "status": "planning",
+    "active_task": null,
+    "design_present": false,
+    "implement_present": false,
+    "implement_jsonl_entries": 0,
+    "check_jsonl_entries": 0
+  },
+  "source_identity": {
+    "branch": "codex/cross-workspace-collaboration",
+    "head": "ade2298e24c3e99aa1982f9c6ddcbb1dc3bd29d3"
+  },
+  "workspace_preservation": {
+    "initial_head": "ade2298e24c3e99aa1982f9c6ddcbb1dc3bd29d3",
+    "final_head": "ade2298e24c3e99aa1982f9c6ddcbb1dc3bd29d3",
+    "initial_status_entries": 374,
+    "initial_tracked_dirty_files": 150,
+    "changed_preexisting_tracked_paths": [],
+    "new_tracked_changes_outside_scope": []
+  },
+  "scope_boundary": {
+    "writes": "Only this existing task's planning/research/context/metadata files",
+    "task_created": false,
+    "task_activated": false,
+    "implementation_started": false,
+    "product_tests_run": false,
+    "database_operations": false,
+    "provider_calls": 0,
+    "knowledge_injection_enabled": false,
+    "release": false,
+    "hosted_ci": false,
+    "deployment": false,
+    "external_messages": false
+  },
+  "history_rule": "Current source inspection is not a fresh test pass; historical failures, grants and budgets are unchanged",
+  "source_sha256": {
+    "server/cmd/server/router.go": "5b053c0fdce819482da6c3c1be8d1bcd0904af7951a62521e994ca2ca11a4add",
+    "server/internal/handler/delivery_completion_authorization.go": "b75b119b9f7c9f7a772b233dd81538ad4ed29ef5f51b85cef1473a71cff32161",
+    "server/internal/service/delivery_completion_authorization.go": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+    "server/internal/service/delivery_completion_types.go": "2af952d8432da909005cd51c47daa35e961109bf89b97156600c2510b759f439",
+    "server/internal/service/delivery_completion.go": "48ef3b9fa0be3707ee962bab79b541b10cf8e8c5ac28532f3651bca73a3f8994",
+    "server/internal/service/delivery_evidence.go": "34add212a607e2b10ed3bb4c2999fdd86ab5d0fb1bbd7e0f97a81515a9e7b4ed",
+    "server/internal/service/artifact_authority.go": "61e457c83e94f46e8ace6dd58d772fa20c9334dc217421f874b4037f9af7aab8",
+    "server/internal/handler/issue.go": "417744af42e0becbb07ff83116a61fc55d4ba067f0041aaa5fa02faacb22563b",
+    "server/pkg/db/queries/delivery_completion.sql": "6df56dafde98cee949715d09c810cc845ca72a7c35a9c28fac67aa99fd13771b",
+    "packages/core/issues/completion-hint.ts": "35e507873b39c58b2a7c453520b3f94505b7f9cdef1bd8cac3b229d43be7e8cc",
+    "packages/core/issues/mutations.ts": "9b80961cb0414d0a2bc06647abe6a2230ee4a90d858792bbff5144c9006b4342",
+    "packages/core/api/client.ts": "52270961fcb53e9bc694c7d5515c561d3b25595d23ced32465d08b3090a6126f",
+    "packages/views/issues/actions/completion-hint-gate.ts": "c4184690ae1278a70e39d4ece7a8650d842289367df32b3c1e4150baa5e198c0",
+    "packages/views/issues/actions/use-issue-actions.ts": "f57d2157afb6a65db67cae295cd5333bcf8c5bd1e7dd34dd1d8a1b30ae21942c",
+    "server/cmd/multica/cmd_issue.go": "94e254e8673840134b0b312f57ca207abab2b2c217ddc997df20365a797f21ef"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "recorded_at": "2026-11-03T08:19:06.417174+00:00",
+  "runtime_product_commit": "b6c74033f1913e46418ec1b119da33236dcba805",
+  "test_changes_only": [
+    {
+      "path": "e2e/fixtures/collaboration-editing.ts",
+      "before_sha256": "f6a33e2ccf36799ad3f8fb5a557599b7d71ce3a9a8be42140700482d2bf08207",
+      "after_sha256": "085b5af7434d93e3c6efe659c51f7c83bff7ac5c9712a1413e480e4d0e92c58d"
+    },
+    {
+      "path": "e2e/collaboration-editing-web.spec.ts",
+      "before_sha256": "3107232598be85c17368e409647d159eabae8976ccc7518267003395445cbd78",
+      "after_sha256": "fa0aace8ffd19da4dc32eee5c01324df711e4089b79d5472649f54f71a4e3963"
+    },
+    {
+      "path": "e2e/collaboration-account-desktop.spec.ts",
+      "before_sha256": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+      "after_sha256": "7e421e01c1eafbbe9bb3ae28513dd7c60d685ad5e84e2041bae255d6a98235df"
+    }
+  ],
+  "product_API_Web_renderer_files_changed": false,
+  "scope": "directed E2E replay before new frozen complete-check candidate; not whole acceptance"
+}

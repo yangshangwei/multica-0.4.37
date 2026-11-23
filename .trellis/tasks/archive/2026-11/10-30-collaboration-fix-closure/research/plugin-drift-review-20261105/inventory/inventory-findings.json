@@ -1,0 +1,181 @@
+{
+  "observed_at": "2026-11-05T04:20:35.188151+00:00",
+  "scope": "retained task/runtime-private metadata inventory; no whole live plugin tree scan",
+  "algorithm": {
+    "source": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py",
+    "line": 76,
+    "file_record": "relative_path + NUL + file + NUL + file_sha256 + LF",
+    "symlink_record": "relative_path + NUL + link + NUL + os.readlink target + LF",
+    "unreadable_record": "relative_path + NUL + unreadable + NUL + LF",
+    "ordering": "sort complete record strings; UTF-8 with surrogateescape; hash concatenation",
+    "os_walk": "default followlinks=False; symlink dirs recorded, not traversed; ordinary directory entries excluded",
+    "not_in_hash": [
+      "mtime",
+      "size",
+      "mode",
+      "ordinary directory names with no indexed descendant"
+    ]
+  },
+  "endpoint_hashes": {
+    "prelaunch": "617d9c5d6b208b7b1b44aa4ac5bff262a738b926b70886f16dda143873050d8c",
+    "postrun": "91deb2c67550be5d1d1b366dde25543a78fec36ec719e7d9adcd29f3e3d87660"
+  },
+  "retained_inventory": {
+    "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/operator-inventory-initial.json",
+    "timestamp": "2026-11-04T17:23:33.076044+00:00",
+    "rows": 61947,
+    "unique_paths": 61947,
+    "fields": [
+      "bytes",
+      "mtime_ns",
+      "path",
+      "sha256"
+    ],
+    "stored_tree_sha256": "b9942cf349f7109090dd3c01e0b1724fed795733faae080bb0a42d0637013ac0",
+    "reconstructed_assuming_all_regular_files": "6064f16dd5fd249e3ff6fb3d5d19407315c88e1e7bdc0da8a40f148ae54d2a52",
+    "matches_own_stored_hash": false,
+    "matches_prelaunch": false,
+    "matches_postrun": false,
+    "entry_kind_retained": false,
+    "symlink_target_retained": false,
+    "unreadable_state_retained": false
+  },
+  "available_matching_per_file_baseline": false,
+  "available_matching_per_file_postrun": false,
+  "files": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/operator-inventory-initial.json",
+      "sha256": "71fa208010b90575659838757c3683ba2da1f53ba357ca97b41ca47d92b3bd61",
+      "bytes": 15849646
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/operator-drift.json",
+      "sha256": "3af6292fe05dee5db1eef7ece45440b7ae11e383ff9ae13926df486a2f9616b9",
+      "bytes": 81
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/plugin-post-run-mtime.json",
+      "sha256": "92abb728c1f3b4aff8654438bbcc0f68dad41ee7fe0ed8d9e77066266b77a605",
+      "bytes": 583
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/post-run-binding-observation.json",
+      "sha256": "a0f795044a9acb50885dcf03c34bd0d956fa06b38c16c35869d84c8dddbba1f0",
+      "bytes": 5017
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/intended-env-facts.json",
+      "sha256": "596f7cbb4dff74d604c23a3c73a76d98d35c3a6b5d06231a09630f4c11c29947",
+      "bytes": 2778
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py",
+      "sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+      "bytes": 20323
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json",
+      "sha256": "cd75de9cdb111b6de03d50b0db7aacd42bdc74f3934c814cf9c252690dc5dccb",
+      "bytes": 12468
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/operator-stability-observation.json",
+      "sha256": "0b56a864ed7ae1e1a33b9ebdfde0f6dc98e40186af0e081519947a84bc2ef6ce",
+      "bytes": 539
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/e0a-independent-review.json",
+      "sha256": "3f938fbac0f55d4c233545cdc2cac078e2083f3d0d9b1d6ef0784ec65d18c18e",
+      "bytes": 13865
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/e0a-independent-review.md",
+      "sha256": "83ed8223d2bc821ec61be1c16b26d81e8576be7b886cb2e62ce11f6e48ba83f3",
+      "bytes": 2953
+    }
+  ],
+  "finite_current_observations": [
+    {
+      "relative_path": "known_marketplaces.json",
+      "old_inventory_sha256": "43c80f344a4fab0a975404a96bc8febe8f8e18a01e3da04d3d62612b59b2a60d",
+      "old_inventory_bytes": 2047,
+      "current_kind": "regular_file",
+      "current_sha256": "8a586379ff2f0eb2dd6e489bd13bb96fc5b74b806792e7eb07f863781e9af09f",
+      "current_bytes": 2047,
+      "current_mtime_ns": 1793850158897823396,
+      "stored_post_run_mtime": "2026-11-05T03:42:38.897823+00:00",
+      "stored_post_run_size": 2047,
+      "differs_from_old_inventory": true,
+      "scope": "current finite file hashes vs earlier unmatched inventory; not exact prelaunch/postrun delta"
+    },
+    {
+      "relative_path": "plugin-directory-cache-v2.json",
+      "old_inventory_sha256": "e672dbbcb45e4aa01e3074c403aa8b5882dd1e6bc9ae20354e05d0f61eab10d3",
+      "old_inventory_bytes": 2730325,
+      "current_kind": "regular_file",
+      "current_sha256": "2699fea16087f653d294d508d063c35bd8f2afcacd5ea4bc6051b5c0d21e9926",
+      "current_bytes": 2730402,
+      "current_mtime_ns": 1793850157494884044,
+      "stored_post_run_mtime": "2026-11-05T03:42:37.494884+00:00",
+      "stored_post_run_size": 2730402,
+      "differs_from_old_inventory": true,
+      "scope": "current finite file hashes vs earlier unmatched inventory; not exact prelaunch/postrun delta"
+    },
+    {
+      "relative_path": "store/cc-plugin-agents-md_builtin-b049b47b3618.json",
+      "old_inventory_sha256": "4250d7c67b65f248f19de1126d461dcf6e63b394bfc4a964ad98a9ed7a379979",
+      "old_inventory_bytes": 92,
+      "current_kind": "regular_file",
+      "current_sha256": "db2cfab0703ca89e146e1c92886de16773a437fb920fa4494a8bd4c57c195e41",
+      "current_bytes": 92,
+      "current_mtime_ns": 1793850136376609682,
+      "stored_post_run_mtime": "2026-11-05T03:42:16.376610+00:00",
+      "stored_post_run_size": 92,
+      "differs_from_old_inventory": true,
+      "scope": "current finite file hashes vs earlier unmatched inventory; not exact prelaunch/postrun delta"
+    }
+  ],
+  "index_metadata_shape": {
+    "known_marketplaces.json": "marketplace records, no per-file checksum/snapshot key found",
+    "plugin-directory-cache-v2.json": {
+      "top_keys": [
+        "schemaVersion",
+        "fetchedAt",
+        "listings",
+        "entryNames",
+        "entryNameClaims"
+      ],
+      "interpretation": "catalog/index metadata, no complete historical plugin-tree file/kind/target manifest found"
+    },
+    "store/cc-plugin-agents-md_builtin-b049b47b3618.json": {
+      "top_keys": [
+        "usage-rows-queued"
+      ],
+      "interpretation": "single string state; no historical filesystem manifest"
+    }
+  },
+  "conclusions": [
+    "One retained per-file inventory found in bounded filename search. It matches neither recorded endpoint hash.",
+    "Available row fields cannot reproduce the recorded tree hash under exact algorithm; cause is not determined from evidence.",
+    "Three current file hashes differ from older inventory, but that older inventory is not the launch baseline; this does not prove exactly three changes during execution.",
+    "Mtime does not reconstruct old bytes, enumerate removals or identify writer.",
+    "Cannot close configuration equality failure or designate drift harmless from retained artifacts alone."
+  ],
+  "minimal_missing_proof": [
+    "Prelaunch manifest/snapshot that hashes exactly617d9c5d...050d8c under the exact algorithm, including type, file digest, link target and unreadable markers.",
+    "Matching postrun manifest/snapshot for91deb2c6...d87660; retained bytes for changed entries if semantic harmlessness is claimed."
+  ],
+  "calls": {
+    "provider": 0,
+    "tests": 0,
+    "database": 0,
+    "services": 0,
+    "cli_version_or_go": 0
+  },
+  "limitations": [
+    "Bounded result; snapshots outside named task/private evidence not ruled out.",
+    "No attribution of writer or semantic harmlessness.",
+    "No reconstruction from SHA-256 alone.",
+    "Later plugin-forensic directory appeared during parallel work; root owns those new observations separately."
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-18-collaboration-installed-clients-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-installed-clients.spec.ts",
+      "file": "collaboration-installed-clients.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5417,
+                  "error": {
+                    "message": "Error: POST /api/collaboration/issues/01a199ca-a07c-7a1d-80d2-1115cefea06e/control failed: 503",
+                    "stack": "Error: POST /api/collaboration/issues/01a199ca-a07c-7a1d-80d2-1115cefea06e/control failed: 503\n    at TestApiClient.requestJSON (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts:405:29)\n    at control (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-clients.spec.ts:54:21)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-clients.spec.ts:106:12",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts",
+                      "column": 29,
+                      "line": 405
+                    },
+                    "snippet": "   at fixtures.ts:405\n\n  403 |       body: options.body === undefined ? undefined : JSON.stringify(options.body),\n  404 |     });\n> 405 |     if (!response.ok) throw new Error(`${options.method ?? \"GET\"} ${path} failed: ${response.status}`);\n      |                             ^\n  406 |     return response.json() as Promise<T>;\n  407 |   }\n  408 |"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts",
+                        "column": 29,
+                        "line": 405
+                      },
+                      "message": "Error: POST /api/collaboration/issues/01a199ca-a07c-7a1d-80d2-1115cefea06e/control failed: 503\n\n   at fixtures.ts:405\n\n  403 |       body: options.body === undefined ? undefined : JSON.stringify(options.body),\n  404 |     });\n> 405 |     if (!response.ok) throw new Error(`${options.method ?? \"GET\"} ${path} failed: ${response.status}`);\n      |                             ^\n  406 |     return response.json() as Promise<T>;\n  407 |   }\n  408 |\n    at TestApiClient.requestJSON (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts:405:29)\n    at control (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-clients.spec.ts:54:21)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-clients.spec.ts:106:12"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:05:55.028Z",
+                  "annotations": [],
+                  "attachments": [],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts",
+                    "column": 29,
+                    "line": 405
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d",
+          "file": "collaboration-installed-clients.spec.ts",
+          "line": 29,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:05:54.584Z",
+    "duration": 5890.036,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

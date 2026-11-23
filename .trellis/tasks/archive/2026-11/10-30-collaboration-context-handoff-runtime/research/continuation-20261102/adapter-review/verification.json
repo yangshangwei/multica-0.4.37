@@ -1,0 +1,145 @@
+{
+  "recorded_at": "2026-11-02T12:54:10.537121+00:00",
+  "scope": "independent v5 adapters and prepared wholecheck launcher",
+  "network_used": false,
+  "database_connections": 0,
+  "real_provider_calls": 0,
+  "source_files_modified": false,
+  "hashes": {
+    "go": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "contracts": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7",
+    "launcher": "3c50f99cb9b995fa29a0d1ee4e54e98d6aaa28bdf10ebc827c3cb5b302f5f566"
+  },
+  "syntax": [
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+      "ast_parse": "pass"
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/pnpm",
+      "ast_parse": "pass"
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py",
+      "ast_parse": "pass"
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check.py",
+      "ast_parse": "pass"
+    }
+  ],
+  "contracts": {
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-go-isolation-test.py"
+    ],
+    "exit_code": 0,
+    "named_ok_lines": 11,
+    "log_sha256": "6700c88b9444c209723672e88e08b3be6ab9e4717bc141c408354168856c916c"
+  },
+  "api_pool_contamination_proof": {
+    "launcher_assignment": {
+      "DATABASE_MAX_CONNS": "10",
+      "DATABASE_MIN_CONNS": "1"
+    },
+    "fake_go_exit_code": 0,
+    "executed_go_commands": [
+      {
+        "go": [
+          "test",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "example/first"
+        ],
+        "database": "postgres://fixture:fixture@127.0.0.1:5432/ccheck_20261102125414885697_fac3fb5ac146",
+        "mode": "0",
+        "DATABASE_MAX_CONNS": "10",
+        "DATABASE_MIN_CONNS": "1"
+      },
+      {
+        "go": [
+          "test",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "example/second"
+        ],
+        "database": "postgres://fixture:fixture@127.0.0.1:5432/ccheck_20261102125414959445_486ac80ceccf",
+        "mode": "0",
+        "DATABASE_MAX_CONNS": "10",
+        "DATABASE_MIN_CONNS": "1"
+      }
+    ],
+    "fake_sql_only": true,
+    "actual_sql_or_testmain_executed": false
+  },
+  "dotenv_evaluation_proof": {
+    "command_shape": [
+      "bash",
+      "-c",
+      "set -a; . \"$1\"; env -0",
+      "trusted-check-env",
+      "<owned harmless fixture>"
+    ],
+    "exit_code": 0,
+    "shell_substitution_executed": true,
+    "fixture_contains_no_credentials": true,
+    "actual_private_env_executed": false
+  },
+  "stripped_non_test_forwarding": {
+    "command": [
+      "/usr/bin/sandbox-exec",
+      "-p",
+      "(version 1) (allow default) (deny network*)",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+      "version"
+    ],
+    "exit_code": 0,
+    "stdout": "go version go1.27.0 darwin/arm64",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "env_key_names": [
+      "GOTOOLCHAIN",
+      "PATH",
+      "TMPDIR"
+    ],
+    "network_denied": true,
+    "database_environment_absent": true,
+    "isolation_markers_absent": true
+  },
+  "shell_syntax": [
+    {
+      "file": "scripts/check.sh",
+      "command": [
+        "bash",
+        "-n",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/check.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "file": "scripts/test-go.sh",
+      "command": [
+        "bash",
+        "-n",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/test-go.sh"
+      ],
+      "exit_code": 0
+    },
+    {
+      "file": "scripts/go-test-with-agent-cli-guard.sh",
+      "command": [
+        "bash",
+        "-n",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "reviewed_files_unchanged_after_execution": true
+}

@@ -1,0 +1,184 @@
+{
+  "scope": "Original failed v15 case and exact preserved evidence; no diagnosis or rerun",
+  "candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "browser_report": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/makecheck-playwright-results-v9.json",
+    "sha256": "e68164f8e28c5c2a3ff44b36208bb888cc262a5363c275c86d0d9389ed4dd763"
+  },
+  "failed_case": {
+    "spec": {
+      "title": "Web duplicate picker browses all formal tasks and confirms the chosen target (en)",
+      "ok": false,
+      "tags": [],
+      "tests": [
+        {
+          "timeout": 120000,
+          "annotations": [],
+          "expectedStatus": "passed",
+          "projectId": "chromium",
+          "projectName": "chromium",
+          "results": [
+            {
+              "workerIndex": 1,
+              "parallelIndex": 0,
+              "status": "failed",
+              "duration": 6137,
+              "error": {
+                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\nExpected: \u001b[32m\"\"\u001b[39m\nReceived: \u001b[31m\"Same upload failure; retain the customer's additional context\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <input type=\"text\" cmdk-input=\"\" role=\"combobox\" autocorrect=\"off\" id=\"radix-_r_3f_\" autocomplete=\"off\" spellcheck=\"false\" aria-expanded=\"true\" aria-autocomplete=\"list\" data-slot=\"command-input\" aria-controls=\"radix-_r_3d_\" aria-labelledby=\"radix-_r_3e_\" aria-label=\"Duplicate target task\" placeholder=\"Search by title, task ID or task link\" value=\"Same upload failure; retain the customer's additional context\" class=\"w-full text-body outline-hidden disabled:cursor-not-allowed disabled:opacity-50 min-h-…/>\u001b[22m\n\u001b[2m      - unexpected value \"Same upload failure; retain the customer's additional context\"\u001b[22m\n",
+                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\nExpected: \u001b[32m\"\"\u001b[39m\nReceived: \u001b[31m\"Same upload failure; retain the customer's additional context\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <input type=\"text\" cmdk-input=\"\" role=\"combobox\" autocorrect=\"off\" id=\"radix-_r_3f_\" autocomplete=\"off\" spellcheck=\"false\" aria-expanded=\"true\" aria-autocomplete=\"list\" data-slot=\"command-input\" aria-controls=\"radix-_r_3d_\" aria-labelledby=\"radix-_r_3e_\" aria-label=\"Duplicate target task\" placeholder=\"Search by title, task ID or task link\" value=\"Same upload failure; retain the customer's additional context\" class=\"w-full text-body outline-hidden disabled:cursor-not-allowed disabled:opacity-50 min-h-…/>\u001b[22m\n\u001b[2m      - unexpected value \"Same upload failure; retain the customer's additional context\"\u001b[22m\n\n    at duplicatePickerFlow (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts:111:23)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/triage-duplicate-picker.spec.ts:10:7",
+                "location": {
+                  "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts",
+                  "column": 23,
+                  "line": 111
+                },
+                "snippet": "\u001b[90m   at \u001b[39mfixtures/triage-duplicate-picker.ts:111\n\n  109 |   await dialog.getByRole(\"textbox\", { name: copy.reason, exact: true }).fill(reason);\n  110 |   await input.click();\n> 111 |   await expect(input).toHaveValue(\"\");\n      |                       ^\n  112 |   await expect(list).toBeVisible();\n  113 |   await expect(options).toHaveCount(30);\n  114 |   await capturePicker(page, info, `duplicate-picker-${locale}-wide`, 1280);"
+              },
+              "errors": [
+                {
+                  "location": {
+                    "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts",
+                    "column": 23,
+                    "line": 111
+                  },
+                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\nExpected: \u001b[32m\"\"\u001b[39m\nReceived: \u001b[31m\"Same upload failure; retain the customer's additional context\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <input type=\"text\" cmdk-input=\"\" role=\"combobox\" autocorrect=\"off\" id=\"radix-_r_3f_\" autocomplete=\"off\" spellcheck=\"false\" aria-expanded=\"true\" aria-autocomplete=\"list\" data-slot=\"command-input\" aria-controls=\"radix-_r_3d_\" aria-labelledby=\"radix-_r_3e_\" aria-label=\"Duplicate target task\" placeholder=\"Search by title, task ID or task link\" value=\"Same upload failure; retain the customer's additional context\" class=\"w-full text-body outline-hidden disabled:cursor-not-allowed disabled:opacity-50 min-h-…/>\u001b[22m\n\u001b[2m      - unexpected value \"Same upload failure; retain the customer's additional context\"\u001b[22m\n\n\n   at fixtures/triage-duplicate-picker.ts:111\n\n  109 |   await dialog.getByRole(\"textbox\", { name: copy.reason, exact: true }).fill(reason);\n  110 |   await input.click();\n> 111 |   await expect(input).toHaveValue(\"\");\n      |                       ^\n  112 |   await expect(list).toBeVisible();\n  113 |   await expect(options).toHaveCount(30);\n  114 |   await capturePicker(page, info, `duplicate-picker-${locale}-wide`, 1280);\n    at duplicatePickerFlow (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts:111:23)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/triage-duplicate-picker.spec.ts:10:7"
+                }
+              ],
+              "stdout": [],
+              "stderr": [],
+              "retry": 0,
+              "startTime": "2026-11-04T01:21:08.549Z",
+              "annotations": [],
+              "attachments": [
+                {
+                  "name": "page-errors",
+                  "contentType": "application/json",
+                  "body": "W10="
+                },
+                {
+                  "name": "failure-state",
+                  "contentType": "text/plain",
+                  "body": "aHR0cDovL2xvY2FsaG9zdDoxMzg5NC9wMS0wOWEwYzMwNi0yNWMvdHJpYWdlP2lzc3VlPTAxYTFhNDI1LTQ3MWQtNzU4ZC1iNDdjLTBkNDBkYmE3MGNlNQpXb3Jrc3BhY2VzCkNvbGxhYm9yYXRpb24KUApQMSBicm93c2VyIGFjY2VwdGFuY2UKU2VhcmNoLi4uCksKTmV3IElzc3VlCkMKSW5ib3gKTXkgSXNzdWVzCkNoYXQKV29yawpXb3Jrc3BhY2UgaXNzdWVzClByb2plY3RzCkl0ZXJhdGlvbnMKVHJpYWdlCjIKQUkgVGVhbQpBZ2VudHMKU3F1YWRzCkF1dG9waWxvdApSZXNvdXJjZXMgJiBjb25uZWN0aW9ucwpTa2lsbHMKTUNQCkNhcGFiaWxpdHkgbWFya2V0ClJ1bnRpbWVzCkFuYWx5dGljcwpTZXR0aW5ncwpUcmlhZ2UKSW1wb3J0IENTVgpDcmVhdGUgcGVuZGluZyB0YXNrClJlYWR5CjIKQWxsIHBlbmRpbmcKMgpTbm9vemVkCjAKSGlzdG9yeQpGaWx0ZXJzCk9sZGVzdCBmaXJzdApVbnJldmlld2VkIGludGFrZSBtdXN0IGJlIGV4Y2x1ZGVkClAxMDktMzYgwrcgTWFudWFsIMK3IDExLzQvMjAyNgpDdXN0b21lciByZXBvcnRzIHRoZSBzYW1lIHVwbG9hZCBmYWlsdXJlClAxMDktMzcgwrcgTWFudWFsIMK3IDExLzQvMjAyNgoyIHJlc3VsdHMKUHJldmlvdXMgcGFnZQpOZXh0IHBhZ2UKUDEwOS0zNwpDdXN0b21lciByZXBvcnRzIHRoZSBzYW1lIHVwbG9hZCBmYWlsdXJlClBlbmRpbmcgcmV2aWV3ClJvdW5kIDEgwrcgTWFudWFsClJldmlld2VyOiBVbmFzc2lnbmVkCkhpc3RvcnkKCgoKCkFjdGl2aXR5ClVuc3Vic2NyaWJlClBQCgpMZWF2ZSBhIGNvbW1lbnQuLi4KClByb3BlcnRpZXMKU3RhdHVzClBlbmRpbmcgcmV2aWV3CkFzc2lnbmVlClVuYXNzaWduZWQKUHJvamVjdApObyBwcm9qZWN0CkFkZCBwcm9wZXJ0eQpQdWxsIHJlcXVlc3RzCgpObyBsaW5rZWQgcHVsbCByZXF1ZXN0cyB5ZXQuIFJlZmVyZW5jZSB0aGlzIGlzc3VlJ3MgaWRlbnRpZmllciBpbiBhIFBSJ3MgYnJhbmNoIG5hbWUsIHRpdGxlLCBvciBib2R5IHRvIGF1dG8tbGluayBpdC4KCkRldGFpbHMKQ3JlYXRlZCBieQpQUApQMSBwcm9qZWN0IG93bmVyCkNyZWF0ZWQKTm92IDQKVXBkYXRlZApOb3YgNApNYXJrIGR1cGxpY2F0ZQpSZWplY3QKU25vb3plCkFjY2VwdApDaGF0IHdpdGggeW91ciBhZ2VudHMKCkFzayBmb3IgYSBzdW1tYXJ5LCBwbGFuIHlvdXIgZGF5LCBvciBoYW5kIG9mZiBhIHF1aWNrIHRhc2suCgpZb3UgbmVlZCBhbiBhZ2VudCB0byBzdGFydCBjaGF0dGluZy4KCgoKCk1hcmsgZHVwbGljYXRlCgpQMTA5LTM3IMK3IEN1c3RvbWVyIHJlcG9ydHMgdGhlIHNhbWUgdXBsb2FkIGZhaWx1cmUKCkNob29zZSBhIGZvcm1hbCB0YXNrIGluIHRoaXMgd29ya3NwYWNlLCBpbmNsdWRpbmcgY29tcGxldGVkIHRhc2tzLiBDb21tZW50cyBhbmQgYXR0YWNobWVudHMgc3RheSBvbiB0aGlzIHN1Ym1pc3Npb24uCgpEdXBsaWNhdGUgdGFyZ2V0IHRhc2sKRHVwbGljYXRlIHRhcmdldCB0YXNrCgpObyBtYXRjaGluZyB0YXNrcy4KClJlYXNvbgpDYW5jZWwKTWFyayBkdXBsaWNhdGUKQ2xvc2U="
+                },
+                {
+                  "name": "failure",
+                  "contentType": "image/png",
+                  "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/attachments/failure-052712409c79249ce5ca2ceb19471932d3345797.png"
+                },
+                {
+                  "name": "error-context",
+                  "contentType": "text/markdown",
+                  "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/error-context.md"
+                }
+              ],
+              "errorLocation": {
+                "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts",
+                "column": 23,
+                "line": 111
+              }
+            }
+          ],
+          "status": "unexpected"
+        }
+      ],
+      "id": "7e854b2f15c7ccd1df81-3d45549dced8ce6a42a9",
+      "file": "triage-duplicate-picker.spec.ts",
+      "line": 6,
+      "column": 3
+    },
+    "test": {
+      "timeout": 120000,
+      "annotations": [],
+      "expectedStatus": "passed",
+      "projectId": "chromium",
+      "projectName": "chromium",
+      "results": [
+        {
+          "workerIndex": 1,
+          "parallelIndex": 0,
+          "status": "failed",
+          "duration": 6137,
+          "error": {
+            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\nExpected: \u001b[32m\"\"\u001b[39m\nReceived: \u001b[31m\"Same upload failure; retain the customer's additional context\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <input type=\"text\" cmdk-input=\"\" role=\"combobox\" autocorrect=\"off\" id=\"radix-_r_3f_\" autocomplete=\"off\" spellcheck=\"false\" aria-expanded=\"true\" aria-autocomplete=\"list\" data-slot=\"command-input\" aria-controls=\"radix-_r_3d_\" aria-labelledby=\"radix-_r_3e_\" aria-label=\"Duplicate target task\" placeholder=\"Search by title, task ID or task link\" value=\"Same upload failure; retain the customer's additional context\" class=\"w-full text-body outline-hidden disabled:cursor-not-allowed disabled:opacity-50 min-h-…/>\u001b[22m\n\u001b[2m      - unexpected value \"Same upload failure; retain the customer's additional context\"\u001b[22m\n",
+            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\nExpected: \u001b[32m\"\"\u001b[39m\nReceived: \u001b[31m\"Same upload failure; retain the customer's additional context\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <input type=\"text\" cmdk-input=\"\" role=\"combobox\" autocorrect=\"off\" id=\"radix-_r_3f_\" autocomplete=\"off\" spellcheck=\"false\" aria-expanded=\"true\" aria-autocomplete=\"list\" data-slot=\"command-input\" aria-controls=\"radix-_r_3d_\" aria-labelledby=\"radix-_r_3e_\" aria-label=\"Duplicate target task\" placeholder=\"Search by title, task ID or task link\" value=\"Same upload failure; retain the customer's additional context\" class=\"w-full text-body outline-hidden disabled:cursor-not-allowed disabled:opacity-50 min-h-…/>\u001b[22m\n\u001b[2m      - unexpected value \"Same upload failure; retain the customer's additional context\"\u001b[22m\n\n    at duplicatePickerFlow (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts:111:23)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/triage-duplicate-picker.spec.ts:10:7",
+            "location": {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts",
+              "column": 23,
+              "line": 111
+            },
+            "snippet": "\u001b[90m   at \u001b[39mfixtures/triage-duplicate-picker.ts:111\n\n  109 |   await dialog.getByRole(\"textbox\", { name: copy.reason, exact: true }).fill(reason);\n  110 |   await input.click();\n> 111 |   await expect(input).toHaveValue(\"\");\n      |                       ^\n  112 |   await expect(list).toBeVisible();\n  113 |   await expect(options).toHaveCount(30);\n  114 |   await capturePicker(page, info, `duplicate-picker-${locale}-wide`, 1280);"
+          },
+          "errors": [
+            {
+              "location": {
+                "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts",
+                "column": 23,
+                "line": 111
+              },
+              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\nExpected: \u001b[32m\"\"\u001b[39m\nReceived: \u001b[31m\"Same upload failure; retain the customer's additional context\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <input type=\"text\" cmdk-input=\"\" role=\"combobox\" autocorrect=\"off\" id=\"radix-_r_3f_\" autocomplete=\"off\" spellcheck=\"false\" aria-expanded=\"true\" aria-autocomplete=\"list\" data-slot=\"command-input\" aria-controls=\"radix-_r_3d_\" aria-labelledby=\"radix-_r_3e_\" aria-label=\"Duplicate target task\" placeholder=\"Search by title, task ID or task link\" value=\"Same upload failure; retain the customer's additional context\" class=\"w-full text-body outline-hidden disabled:cursor-not-allowed disabled:opacity-50 min-h-…/>\u001b[22m\n\u001b[2m      - unexpected value \"Same upload failure; retain the customer's additional context\"\u001b[22m\n\n\n   at fixtures/triage-duplicate-picker.ts:111\n\n  109 |   await dialog.getByRole(\"textbox\", { name: copy.reason, exact: true }).fill(reason);\n  110 |   await input.click();\n> 111 |   await expect(input).toHaveValue(\"\");\n      |                       ^\n  112 |   await expect(list).toBeVisible();\n  113 |   await expect(options).toHaveCount(30);\n  114 |   await capturePicker(page, info, `duplicate-picker-${locale}-wide`, 1280);\n    at duplicatePickerFlow (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts:111:23)\n    at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/triage-duplicate-picker.spec.ts:10:7"
+            }
+          ],
+          "stdout": [],
+          "stderr": [],
+          "retry": 0,
+          "startTime": "2026-11-04T01:21:08.549Z",
+          "annotations": [],
+          "attachments": [
+            {
+              "name": "page-errors",
+              "contentType": "application/json",
+              "body": "W10="
+            },
+            {
+              "name": "failure-state",
+              "contentType": "text/plain",
+              "body": "aHR0cDovL2xvY2FsaG9zdDoxMzg5NC9wMS0wOWEwYzMwNi0yNWMvdHJpYWdlP2lzc3VlPTAxYTFhNDI1LTQ3MWQtNzU4ZC1iNDdjLTBkNDBkYmE3MGNlNQpXb3Jrc3BhY2VzCkNvbGxhYm9yYXRpb24KUApQMSBicm93c2VyIGFjY2VwdGFuY2UKU2VhcmNoLi4uCksKTmV3IElzc3VlCkMKSW5ib3gKTXkgSXNzdWVzCkNoYXQKV29yawpXb3Jrc3BhY2UgaXNzdWVzClByb2plY3RzCkl0ZXJhdGlvbnMKVHJpYWdlCjIKQUkgVGVhbQpBZ2VudHMKU3F1YWRzCkF1dG9waWxvdApSZXNvdXJjZXMgJiBjb25uZWN0aW9ucwpTa2lsbHMKTUNQCkNhcGFiaWxpdHkgbWFya2V0ClJ1bnRpbWVzCkFuYWx5dGljcwpTZXR0aW5ncwpUcmlhZ2UKSW1wb3J0IENTVgpDcmVhdGUgcGVuZGluZyB0YXNrClJlYWR5CjIKQWxsIHBlbmRpbmcKMgpTbm9vemVkCjAKSGlzdG9yeQpGaWx0ZXJzCk9sZGVzdCBmaXJzdApVbnJldmlld2VkIGludGFrZSBtdXN0IGJlIGV4Y2x1ZGVkClAxMDktMzYgwrcgTWFudWFsIMK3IDExLzQvMjAyNgpDdXN0b21lciByZXBvcnRzIHRoZSBzYW1lIHVwbG9hZCBmYWlsdXJlClAxMDktMzcgwrcgTWFudWFsIMK3IDExLzQvMjAyNgoyIHJlc3VsdHMKUHJldmlvdXMgcGFnZQpOZXh0IHBhZ2UKUDEwOS0zNwpDdXN0b21lciByZXBvcnRzIHRoZSBzYW1lIHVwbG9hZCBmYWlsdXJlClBlbmRpbmcgcmV2aWV3ClJvdW5kIDEgwrcgTWFudWFsClJldmlld2VyOiBVbmFzc2lnbmVkCkhpc3RvcnkKCgoKCkFjdGl2aXR5ClVuc3Vic2NyaWJlClBQCgpMZWF2ZSBhIGNvbW1lbnQuLi4KClByb3BlcnRpZXMKU3RhdHVzClBlbmRpbmcgcmV2aWV3CkFzc2lnbmVlClVuYXNzaWduZWQKUHJvamVjdApObyBwcm9qZWN0CkFkZCBwcm9wZXJ0eQpQdWxsIHJlcXVlc3RzCgpObyBsaW5rZWQgcHVsbCByZXF1ZXN0cyB5ZXQuIFJlZmVyZW5jZSB0aGlzIGlzc3VlJ3MgaWRlbnRpZmllciBpbiBhIFBSJ3MgYnJhbmNoIG5hbWUsIHRpdGxlLCBvciBib2R5IHRvIGF1dG8tbGluayBpdC4KCkRldGFpbHMKQ3JlYXRlZCBieQpQUApQMSBwcm9qZWN0IG93bmVyCkNyZWF0ZWQKTm92IDQKVXBkYXRlZApOb3YgNApNYXJrIGR1cGxpY2F0ZQpSZWplY3QKU25vb3plCkFjY2VwdApDaGF0IHdpdGggeW91ciBhZ2VudHMKCkFzayBmb3IgYSBzdW1tYXJ5LCBwbGFuIHlvdXIgZGF5LCBvciBoYW5kIG9mZiBhIHF1aWNrIHRhc2suCgpZb3UgbmVlZCBhbiBhZ2VudCB0byBzdGFydCBjaGF0dGluZy4KCgoKCk1hcmsgZHVwbGljYXRlCgpQMTA5LTM3IMK3IEN1c3RvbWVyIHJlcG9ydHMgdGhlIHNhbWUgdXBsb2FkIGZhaWx1cmUKCkNob29zZSBhIGZvcm1hbCB0YXNrIGluIHRoaXMgd29ya3NwYWNlLCBpbmNsdWRpbmcgY29tcGxldGVkIHRhc2tzLiBDb21tZW50cyBhbmQgYXR0YWNobWVudHMgc3RheSBvbiB0aGlzIHN1Ym1pc3Npb24uCgpEdXBsaWNhdGUgdGFyZ2V0IHRhc2sKRHVwbGljYXRlIHRhcmdldCB0YXNrCgpObyBtYXRjaGluZyB0YXNrcy4KClJlYXNvbgpDYW5jZWwKTWFyayBkdXBsaWNhdGUKQ2xvc2U="
+            },
+            {
+              "name": "failure",
+              "contentType": "image/png",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/attachments/failure-052712409c79249ce5ca2ceb19471932d3345797.png"
+            },
+            {
+              "name": "error-context",
+              "contentType": "text/markdown",
+              "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/error-context.md"
+            }
+          ],
+          "errorLocation": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts",
+            "column": 23,
+            "line": 111
+          }
+        }
+      ],
+      "status": "unexpected"
+    }
+  },
+  "retained_failure_record": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/record.json",
+    "sha256": "2a3ed28bdaebc0b937113a135bd628411a44d7a90d60cb3a9054fbe1377fa37b"
+  },
+  "retained_evidence": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/artifacts/failure.png",
+      "sha256": "16fa39bee15002784eb03b7c4e7c8c28c4199cb110d79702eb142b00bc8f8682"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/artifacts/error-context.md",
+      "sha256": "c197d90098d12bb8a02800d68c1711460b73cfe6b7ac2d44989c57d667b5e456"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/artifacts/attachments/failure-052712409c79249ce5ca2ceb19471932d3345797.png",
+      "sha256": "16fa39bee15002784eb03b7c4e7c8c28c4199cb110d79702eb142b00bc8f8682"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/triage-duplicate-picker.spec.ts",
+      "sha256": "336fc073a206d90d0dde2da411ec5076f09c5d3a7bd0f5f012509f58e2554cd1"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-execution/first-browser-failure/triage-duplicate-picker.ts",
+      "sha256": "ce2ca701dfd62299b63e5bfc65d79eefca306e7816bd0671dd2a74cd0c78192e"
+    }
+  ],
+  "wholecheck_accepted": false
+}

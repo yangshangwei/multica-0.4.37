@@ -1,0 +1,73 @@
+{
+  "reviewed_by": "main evidence review",
+  "trials": [
+    {
+      "scenario": "E1_memory_first",
+      "trial": "2",
+      "run_id": "26b51bb8-786a-4001-9297-043bb2130362",
+      "runtime_status": "finished",
+      "raw_harness_verdict": "manual_review_required",
+      "valid_behavior_sample": true,
+      "classification": "valid_behavior_sample_after_transient_rate_limit",
+      "fact_answer_correct": true,
+      "memory_write_observed": false,
+      "context_reads": 1,
+      "memory_reads": 1,
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "api_error_counts": {
+        "429": 3
+      },
+      "criterion_evidence": "The rehearsal must use **pg-blue-17**; **pg-green-15** was rejected because it lacks the pgvector 0.8 extension the migration needs. (Source: collaboration memory v3. The issue has no comments.)",
+      "lifecycle": {
+        "complete": true,
+        "prompt_coverage_complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permits": 1,
+        "terminations": 1,
+        "proofs": 1
+      },
+      "local_events": "E1_memory_first-baseline/records.jsonl.trials/26b51bb8-786a-4001-9297-043bb2130362/events.jsonl"
+    },
+    {
+      "scenario": "E1_memory_first",
+      "trial": "3",
+      "run_id": "d0470e80-a96f-464f-a436-faeecc5d4502",
+      "runtime_status": "incomplete",
+      "raw_harness_verdict": "provider_failure_unclassified",
+      "valid_behavior_sample": false,
+      "classification": "environment_provider_rate_limit_timeout",
+      "fact_answer_correct": null,
+      "memory_write_observed": null,
+      "context_reads": 1,
+      "memory_reads": 0,
+      "observed_models": [
+        "claude-opus-5-5"
+      ],
+      "api_error_counts": {
+        "429": 6
+      },
+      "criterion_evidence": "No final answer; Host reported claude timed out after 5m0s",
+      "lifecycle": {
+        "complete": true,
+        "prompt_coverage_complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permits": 1,
+        "terminations": 1,
+        "proofs": 1
+      },
+      "local_events": "E1_memory_first-baseline/records.jsonl.trials/d0470e80-a96f-464f-a436-faeecc5d4502/events.jsonl"
+    }
+  ],
+  "E1_total_slots": 3,
+  "E1_valid_samples": 1,
+  "E1_invalid_attempts": 2,
+  "E1_facts_correct_valid_samples": 1,
+  "E1_memory_write_valid_samples": 0,
+  "E1_acceptance": "incomplete_sample_set_and_observed_memory_write_omission",
+  "next_scenario": "E2a_window_fact_newest",
+  "next_start_trial": 1,
+  "remaining_provider_call_cap": 24,
+  "later_scenarios_run": false
+}

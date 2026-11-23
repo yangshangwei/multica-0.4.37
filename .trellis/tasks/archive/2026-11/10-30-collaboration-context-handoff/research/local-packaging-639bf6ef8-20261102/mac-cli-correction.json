@@ -1,0 +1,9 @@
+{
+  "first_attempt": "mac-package.json exit1 retained",
+  "cause": "The repository wrapper already prepends -c.mac.notarize=false when APPLE_TEAM_ID is absent; duplicating the same -c path via shared args creates an array, rejected by the boolean schema.",
+  "correction": "Remove only the redundant passed-through mac.notarize flag; the wrapper-generated flag remains exactly once.",
+  "product_source_changed": false,
+  "network_policy_unchanged": true,
+  "publish_policy": "never",
+  "retry_output": "new mac-arm64-r2 directory; earlier logs/result retained"
+}

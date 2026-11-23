@@ -1,3 +1,4 @@
+import { sidebarNewButton } from "./fixtures/sidebar-navigation";
 import { expect, type Page } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 
@@ -8,8 +9,8 @@ const DEFAULT_E2E_EMAIL = `e2e-${E2E_WORKER}-${E2E_RUN_ID}@multica.ai`;
 const DEFAULT_E2E_WORKSPACE = `e2e-workspace-${E2E_WORKER}-${E2E_RUN_ID}`;
 
 async function waitForIssuesPage(page: Page) {
-  await waitForPageText(page, "New Issue");
-  await expect(page.getByRole("button", { name: "New Issue" })).toBeVisible({
+  await waitForPageText(page, "Issues");
+  await expect(sidebarNewButton(page)).toBeVisible({
     timeout: 15000,
   });
 }
@@ -78,13 +79,4 @@ export async function preferManualCreateMode(page: Page) {
   });
   await reloadAppPage(page);
   await waitForIssuesPage(page);
-}
-
-export async function openWorkspaceMenu(page: Page) {
-  // Click the workspace switcher button (has ChevronDown icon)
-  const workspaceButton = page.getByRole("button", { name: /E2E Workspace/ }).first();
-  await expect(workspaceButton).toBeVisible({ timeout: 15000 });
-  await workspaceButton.click();
-  // Wait for dropdown to appear
-  await expect(page.locator('[class*="popover"]')).toBeVisible();
 }

@@ -1,0 +1,46 @@
+{
+  "id": "automation-welcome",
+  "name": "automation-welcome",
+  "title": "自动化空状态：参考图引导页与模板入口",
+  "description": "在工作空间没有自动化时展示参考图风格的引导页、创建入口、文档链接和真实模板卡片；有自动化时保持直接进入管理列表，并验证状态分流、返回恢复与响应式布局。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-20",
+  "completedAt": "2026-11-20",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "80df04fe3b09aca874bfd0b80cc8f7fe56650615",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/autopilots/components/autopilot-template-catalog.tsx",
+    "packages/views/autopilots/components/autopilot-template-catalog.test.tsx",
+    "packages/views/autopilots/components/autopilots-page.tsx",
+    "packages/views/autopilots/components/autopilots-page.test.tsx",
+    "packages/views/locales/en/autopilots.json",
+    "packages/views/locales/zh-Hans/autopilots.json",
+    "e2e/autopilot-template.spec.ts",
+    "e2e/progress-reporting.spec.ts",
+    "e2e/autopilot-lifecycle-branches.spec.ts",
+    ".trellis/spec/views/frontend/automation-template-discovery.md"
+  ],
+  "notes": "Accepted: 122 focused component/locale tests; focused lint and views typecheck; 14 production Chromium cases in 40.3s; 18 screenshots independently reviewed, ship 94/100. Corrected the loading-header/welcome browser selector race. Evidence: verification.md and .impeccable/review/automation-welcome/. Owned API/Web stopped; unrelated work preserved.",
+  "meta": {
+    "verification": {
+      "component_tests": 122,
+      "chromium_cases": 14,
+      "visual_captures": 18,
+      "visual_score": 94,
+      "visual_disposition": "ship",
+      "artifact_dir": ".impeccable/review/automation-welcome"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "duplicate_new_prefixes": {},
+  "new_indices": [
+    {
+      "file": "server/migrations/761_collaboration_knowledge_agent_history.up.sql",
+      "sha256": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+      "single_statement": true,
+      "concurrent": true,
+      "no_foreign_key": true
+    },
+    {
+      "file": "server/migrations/762_collaboration_knowledge_runtime_history.up.sql",
+      "sha256": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+      "single_statement": true,
+      "concurrent": true,
+      "no_foreign_key": true
+    },
+    {
+      "file": "server/migrations/763_collaboration_knowledge_delivery_history.up.sql",
+      "sha256": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429",
+      "single_statement": true,
+      "concurrent": true,
+      "no_foreign_key": true
+    }
+  ]
+}

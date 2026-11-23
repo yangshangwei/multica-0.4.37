@@ -186,6 +186,8 @@ const mainSourceFile = "main.go"
 var backgroundServiceConstructors = []string{
 	"service.NewTaskService",
 	"service.NewAutopilotService",
+	"service.NewCollaborationAccountReconciler",
+	"service.NewCollaborationConfigReconciler",
 }
 
 // TestMainUsesRouterOwnedBackgroundServices guards the process wiring behind

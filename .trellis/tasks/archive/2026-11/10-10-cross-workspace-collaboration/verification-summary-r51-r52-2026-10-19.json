@@ -1,0 +1,251 @@
+{
+  "date": "2026-10-19",
+  "scope": "R51 child/source compatibility and source-owned recorded runs/usage/provenance/R52 terminal group notifications",
+  "baseline_commit": "a157fd1407c27319612dd458522a235b2f99522b",
+  "evidence_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/cwc-r51-r52-20261019T110745Z",
+  "typescript": {
+    "core": 3861,
+    "views": 6956,
+    "web": 289,
+    "desktop": 1143,
+    "docs": 62,
+    "total": 12311
+  },
+  "go": {
+    "initial_regular_passed_packages": [
+      "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "github.com/multica-ai/multica/server/cmd/migrate",
+      "github.com/multica-ai/multica/server/cmd/multica",
+      "github.com/multica-ai/multica/server/cmd/server",
+      "github.com/multica-ai/multica/server/internal/analytics",
+      "github.com/multica-ai/multica/server/internal/attribution",
+      "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "github.com/multica-ai/multica/server/internal/auth",
+      "github.com/multica-ai/multica/server/internal/changelog",
+      "github.com/multica-ai/multica/server/internal/channelmedia",
+      "github.com/multica-ai/multica/server/internal/cli",
+      "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "github.com/multica-ai/multica/server/internal/collaboration",
+      "github.com/multica-ai/multica/server/internal/daemon",
+      "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "github.com/multica-ai/multica/server/internal/daemon/processtree",
+      "github.com/multica-ai/multica/server/internal/daemon/repocache",
+      "github.com/multica-ai/multica/server/internal/daemonws",
+      "github.com/multica-ai/multica/server/internal/dbstartup",
+      "github.com/multica-ai/multica/server/internal/docs",
+      "github.com/multica-ai/multica/server/internal/entitlement",
+      "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "github.com/multica-ai/multica/server/internal/events",
+      "github.com/multica-ai/multica/server/internal/featureflags",
+      "github.com/multica-ai/multica/server/internal/installation",
+      "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "github.com/multica-ai/multica/server/internal/issueguard",
+      "github.com/multica-ai/multica/server/internal/issuestatus",
+      "github.com/multica-ai/multica/server/internal/iteration",
+      "github.com/multica-ai/multica/server/internal/logger",
+      "github.com/multica-ai/multica/server/internal/middleware",
+      "github.com/multica-ai/multica/server/internal/migrations",
+      "github.com/multica-ai/multica/server/internal/projecthealth",
+      "github.com/multica-ai/multica/server/internal/realtime",
+      "github.com/multica-ai/multica/server/internal/scheduler",
+      "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "github.com/multica-ai/multica/server/internal/selfexec",
+      "github.com/multica-ai/multica/server/internal/skill",
+      "github.com/multica-ai/multica/server/internal/storage",
+      "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "github.com/multica-ai/multica/server/internal/testutil",
+      "github.com/multica-ai/multica/server/internal/triagecsv",
+      "github.com/multica-ai/multica/server/internal/util",
+      "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "github.com/multica-ai/multica/server/pkg/composio",
+      "github.com/multica-ai/multica/server/pkg/db/generated",
+      "github.com/multica-ai/multica/server/pkg/dbid",
+      "github.com/multica-ai/multica/server/pkg/featureflag",
+      "github.com/multica-ai/multica/server/pkg/llm",
+      "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "github.com/multica-ai/multica/server/pkg/protocol",
+      "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "github.com/multica-ai/multica/server/pkg/redact",
+      "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "github.com/multica-ai/multica/server/pkg/taskfailure"
+    ],
+    "initial_no_test_packages": [
+      "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "github.com/multica-ai/multica/server/internal/admission",
+      "github.com/multica-ai/multica/server/internal/agentconfig",
+      "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "github.com/multica-ai/multica/server/internal/chattitle",
+      "github.com/multica-ai/multica/server/internal/dispatch",
+      "github.com/multica-ai/multica/server/internal/issueposition",
+      "github.com/multica-ai/multica/server/internal/profiling",
+      "github.com/multica-ai/multica/server/internal/runtimeapps"
+    ],
+    "initial_failed_packages": [
+      "github.com/multica-ai/multica/server/internal/handler",
+      "github.com/multica-ai/multica/server/internal/metrics",
+      "github.com/multica-ai/multica/server/internal/service"
+    ],
+    "handler_metrics_full_rerun": "integration/go-failed-packages.log",
+    "service_complete_coverage": {
+      "planned": 1039,
+      "covered": 1039,
+      "missing": [],
+      "failed": [],
+      "groups": {
+        "service_a": {
+          "top_pass": 520,
+          "top_skip": 0,
+          "all_pass": 1152,
+          "all_skip": 0,
+          "duration_seconds": 283.658,
+          "skipped": []
+        },
+        "service_b": {
+          "top_pass": 519,
+          "top_skip": 0,
+          "all_pass": 1140,
+          "all_skip": 0,
+          "duration_seconds": 281.035,
+          "skipped": []
+        }
+      }
+    },
+    "router_final": 0,
+    "agent_final": 0,
+    "handler_metrics_rerun_passed": [
+      "github.com/multica-ai/multica/server/internal/handler",
+      "github.com/multica-ai/multica/server/internal/metrics"
+    ],
+    "complete_package_set_verified": true
+  },
+  "web": {
+    "startTime": "2026-10-19T13:05:22.542Z",
+    "duration": 50129.238000000005,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "native": {
+    "initial_full": {
+      "startTime": "2026-10-19T13:10:34.059Z",
+      "duration": 41002.054000000004,
+      "expected": 9,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "corrected_full_new_journey": {
+      "startTime": "2026-10-19T13:28:12.449Z",
+      "duration": 14836.155,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "stable_capture_journey": {
+      "startTime": "2026-10-19T13:36:08.814Z",
+      "duration": 14748.498,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "file_boundary_exit": 0,
+    "unique_cases_passed": 10
+  },
+  "linux": {
+    "top_level": 1,
+    "subtests": 10,
+    "skipped": 0,
+    "exit_code": 0,
+    "source_drift": []
+  },
+  "static": {
+    "lint_typecheck_tasks": 15,
+    "ui_exports_exit": 0,
+    "knip_comparison": {
+      "reference": ".omx/reports/cwc-source-editing-20261019T035920Z/knip.json",
+      "before_unique": 2475,
+      "after_unique": 2475,
+      "introduced": [],
+      "removed": []
+    }
+  },
+  "visual": {
+    "score": 94,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [],
+    "suggestions": [],
+    "reasoning": "Stable Web and native captures match the existing neutral workbench style. Exact counters, long input/message text, controlled attachment actions and run/group state remain readable at narrow width and native 200% zoom without overflow or closing overlays."
+  },
+  "tested_source_files": 95,
+  "full_product_acceptance_complete": false,
+  "default_rollout_gates_enabled": false,
+  "default_product_rollout_changed": false,
+  "test_environment_creation_enabled": true,
+  "test_environment_execution_enabled": false,
+  "implementation_commits": [
+    {
+      "oid": "28d8df6282c22014dd8387fe4b09a0af77953f7c",
+      "subject": "feat(collaboration): retain shared execution history and result notices",
+      "files": 71
+    },
+    {
+      "oid": "c74d6c58cac31e2bc9ae96f6b209891ee3147264",
+      "subject": "feat(collaboration): make shared children and run results usable across clients",
+      "files": 31
+    }
+  ],
+  "cleanup": {
+    "completed_at": "2026-10-19T13:50:39.093838+00:00",
+    "services": [
+      {
+        "name": "multica-cwc-r51-r52-20261019t110745z-pg",
+        "stopped": true
+      },
+      {
+        "name": "multica-cwc-r51-r52-20261019t110745z-redis-api",
+        "stopped": true
+      },
+      {
+        "name": "multica-cwc-r51-r52-20261019t110745z-redis-test",
+        "stopped": true
+      },
+      {
+        "name": "multica-cwc-r51-r52-20261019t110745z-redis-full",
+        "stopped": true
+      },
+      {
+        "name": "multica-cwc-r51-r52-20261019t110745z-service-a-redis",
+        "stopped": true
+      },
+      {
+        "name": "multica-cwc-r51-r52-20261019t110745z-service-b-redis",
+        "stopped": true
+      }
+    ],
+    "ports_released": {
+      "18880": true,
+      "13800": true,
+      "5974": true
+    },
+    "databases_and_artifacts_retained": true,
+    "unrelated_services_untouched": true
+  }
+}

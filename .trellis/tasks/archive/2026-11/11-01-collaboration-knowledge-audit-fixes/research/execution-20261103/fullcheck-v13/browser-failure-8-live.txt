@@ -1,0 +1,41 @@
+Captured 2026-11-03T11:21:31.179178+00:00 from running v13.
+
+  8) [chromium] › e2e/collaboration-workbench-web.spec.ts:24:1 › Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation 
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Transfer', exact: true })
+
+
+      125 |   await expect(page.getByText("Comment confirmed.")).toBeVisible();
+      126 |
+    > 127 |   await page.getByRole("button", { name: "Transfer", exact: true }).click();
+          |                                                                     ^
+      128 |   const transfer = page.locator("form").filter({ has: page.getByRole("heading", { name: "Transfer", exact: true }) });
+      129 |   await selectHandoffRecipient(page, transfer, { id: recipientAccount.id, name: "Browser recipient" });
+      130 |   await transfer.getByLabel("Note", { exact: true }).fill("Browser handoff note");
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-workbench-web.spec.ts:127:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/collaboration-workbench-we-140e7-tion-handoff-and-revocation-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:6654) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:6654) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+

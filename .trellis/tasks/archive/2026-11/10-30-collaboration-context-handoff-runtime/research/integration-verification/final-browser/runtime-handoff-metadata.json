@@ -1,0 +1,37 @@
+{
+  "started_at": "2026-10-31T18:18:46.856719+00:00",
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031",
+  "command": [
+    "make",
+    "env-exec",
+    "ARGS=-- pnpm exec playwright test e2e/collaboration-runtime-handoff-web.spec.ts e2e/collaboration-runtime-handoff-desktop.spec.ts --workers=1 --retries=0 --reporter=line,json --output=/Volumes/artisan/code/2026/mc-runtime-integration-20261031/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/runtime-handoff-artifacts"
+  ],
+  "candidate_source_id": "6b8edfebf3b98773bd4633c81aafe2429e3dfd3b2d0b4130b13ddbc334d70263",
+  "web_build_id": "TljxpQIug-RaXXf7Xcu_D",
+  "api_origin": "http://localhost:18080",
+  "web_origin": "http://localhost:13000",
+  "renderer_origin": "http://localhost:6274",
+  "source_hashes_before": {
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "d97d72c28e96d4f1157a16ba0f1a45fd32856e9acf33aafa58994425708fbeee",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "b5abfdaaa9d973760f93dd8c0f735cebddacb18551ff07386135c771b48048dc",
+    "e2e/fixtures/collaboration-runtime-handoff.ts": "b2426de829ee36103624437103966ba2664cab7755c89b2fdb895d1c1b9c5574",
+    "e2e/fixtures/collaboration-offline-handoff.ts": "ebbce5318f0cfbbfaba35a52f554af2637f16870329077b3b1fc36b0bf183897",
+    "e2e/fixtures/collaboration-native.ts": "88b19f3fcc107997d5b4a1ab8364de3ba4a4930bacbda3c25fa97d60463c3095",
+    "e2e/fixtures/collaboration-account-electron.mjs": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+    "e2e/fixtures.ts": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2"
+  },
+  "workers": 1,
+  "retries": 0,
+  "finished_at": "2026-10-31T18:19:00.191492+00:00",
+  "elapsed_seconds": 13.335,
+  "exit_code": 2,
+  "source_hashes_after": {
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "d97d72c28e96d4f1157a16ba0f1a45fd32856e9acf33aafa58994425708fbeee",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "b5abfdaaa9d973760f93dd8c0f735cebddacb18551ff07386135c771b48048dc",
+    "e2e/fixtures/collaboration-runtime-handoff.ts": "b2426de829ee36103624437103966ba2664cab7755c89b2fdb895d1c1b9c5574",
+    "e2e/fixtures/collaboration-offline-handoff.ts": "ebbce5318f0cfbbfaba35a52f554af2637f16870329077b3b1fc36b0bf183897",
+    "e2e/fixtures/collaboration-native.ts": "88b19f3fcc107997d5b4a1ab8364de3ba4a4930bacbda3c25fa97d60463c3095",
+    "e2e/fixtures/collaboration-account-electron.mjs": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+    "e2e/fixtures.ts": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-11-03T15:49:45.963200+00:00",
+  "candidate": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_head": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-records.ts",
+  "source_before_sha256": "4823d1b63b6422a767c1e162e3657b7e72fdb1067982c56dc5706208fc94c0e8",
+  "source_after_sha256": "752090f080a3eb2600f3d0609b9b19bfde29c011d12a94a6ceb86ddb90cb666a",
+  "patch_sha256": "bf38e6b18353dd000a3c263078ebf7867194d8786267e8e764f1d86df3de0585",
+  "exact_two_gesture_changes_only": true,
+  "original_action_labels_dialog_and_callers_preserved": true,
+  "typecheck": {
+    "started_at": "2026-11-03T15:47:31.273028+00:00",
+    "finished_at": "2026-11-03T15:47:32.474294+00:00",
+    "command": [
+      "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/typescript/bin/tsc",
+      "--project",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/v15-submenu-fix/typecheck-config.json",
+      "--pretty",
+      "false"
+    ],
+    "exit_code": 0,
+    "config_sha256": "8235e4c5b50d35a9223fedbe25b748d78a409d70821916ba34eb17ff9188d56f",
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "node_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+    "typescript_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/bin/tsc",
+    "scope": "Strict no-emit fixture/import-tree compile only; no product test or TestMain execution"
+  },
+  "diff_check_exit": 0,
+  "dynamic_tests_run": 0,
+  "dynamic_native_pass_claimed": false,
+  "remaining": "Root-owned directed Web/native record regressions and all16 current failures after corrected private deployment UUID; exact independent review and new complete candidate",
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "product_default_knowledge_changed": false
+}

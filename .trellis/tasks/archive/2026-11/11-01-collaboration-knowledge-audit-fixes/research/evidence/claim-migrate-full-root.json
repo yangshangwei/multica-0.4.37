@@ -1,0 +1,34 @@
+{
+  "source_sha": "a4e444bdf90c84939189fc2981cdacab50c678de",
+  "server_tree": "a806fbe6aa17d0dca6777596ed382c8f17eba1ce",
+  "working_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "database": "kfix_claim_migrate_root_20261102_0025",
+  "identity": "kfix_claim_migrate_root_20261102_0025|763_collaboration_knowledge_delivery_history",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./cmd/migrate",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=40m"
+  ],
+  "state": "complete",
+  "started_at": "2026-11-01T16:25:23.731918+00:00",
+  "real_provider_allowed": false,
+  "exit_code": 0,
+  "finished_at": "2026-11-01T16:26:06.739855+00:00",
+  "counts": {
+    "run": 71,
+    "pass": 70,
+    "fail": 0,
+    "skip": 1
+  },
+  "failures": [],
+  "log_sha256": "9a8e3122824ed1f6a804043800a5120ebf8b7c944467f504007bfdea53bd498e"
+}

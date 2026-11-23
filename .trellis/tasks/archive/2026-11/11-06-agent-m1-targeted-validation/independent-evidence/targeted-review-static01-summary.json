@@ -1,0 +1,28 @@
+[
+  {
+    "check": "vet",
+    "command": [
+      "go",
+      "vet",
+      "-p",
+      "1",
+      "./cmd/server"
+    ],
+    "exit": 0,
+    "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-review-vet01.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "empty": true
+  },
+  {
+    "check": "format",
+    "command": [
+      "gofmt",
+      "-l",
+      "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105/server/cmd/server/task_capability_targeted_test.go"
+    ],
+    "exit": 0,
+    "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-review-format01.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "empty": true
+  }
+]

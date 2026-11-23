@@ -1,13 +1,15 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi, beforeEach } from "vitest";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { AgentRuntime } from "@multica/core/types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
+import { configStore } from "@multica/core/config";
 import enCommon from "../../locales/en/common.json";
 import enOnboarding from "../../locales/en/onboarding.json";
 
 const TEST_RESOURCES = { en: { common: enCommon, onboarding: enOnboarding } };
+const DOWNLOAD_URL = "http://10.10.10.20:18080/desktop/";
 
 const mocks = vi.hoisted(() => ({
   pickerState: {
@@ -82,7 +84,10 @@ describe("StepPlatformFork", () => {
   beforeEach(() => {
     resetPicker();
     vi.restoreAllMocks();
+    configStore.getState().setDesktopDownloadUrl(DOWNLOAD_URL);
   });
+
+  afterEach(() => configStore.setState(configStore.getInitialState()));
 
   it("renders the supported connection options at rest", () => {
     renderFork();
@@ -116,6 +121,13 @@ describe("StepPlatformFork", () => {
     expect(onNext).toHaveBeenCalledWith(null);
   });
 
+  it("offers only the terminal option when no download page is configured", () => {
+    configStore.getState().setDesktopDownloadUrl("");
+    renderFork();
+    expect(screen.queryByText(/^use this computer$/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/^connect from the terminal$/i)).toBeInTheDocument();
+  });
+
   it("opens the download page and claims nothing about the outcome", async () => {
     // mockReturnValue(null) is the honest simulation: with `noopener`,
     // window.open returns null by spec whether the tab opened or a popup
@@ -127,10 +139,9 @@ describe("StepPlatformFork", () => {
 
     await user.click(screen.getByText(/^use this computer$/i));
 
-    // Routes to the new /download page (not GitHub releases) so the
-    // user lands on the OS auto-detect surface.
+    // Routes to the operator's download service, not a page in this app.
     expect(openSpy).toHaveBeenCalledWith(
-      "/download",
+      DOWNLOAD_URL,
       "_blank",
       "noopener,noreferrer",
     );
@@ -156,6 +167,29 @@ describe("StepPlatformFork", () => {
     expect(
       within(dialog).getByRole("button", { name: /continue to projects/i }),
     ).toBeDisabled();
+  });
+
+  it.each([
+    [DOWNLOAD_URL, /close this dialog and pick desktop/i],
+    ["", /check the terminal for errors and run the commands again/i],
+  ])("CLI dialog stalled hint with download URL %j only suggests Desktop when it exists", async (url, hint) => {
+    configStore.getState().setDesktopDownloadUrl(url);
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      renderFork();
+      await user.click(screen.getByRole("button", { name: /show steps/i }));
+      const dialog = await screen.findByRole("dialog");
+
+      await act(async () => {
+        vi.advanceTimersByTime(91_000);
+      });
+
+      expect(within(dialog).getByText(hint)).toBeInTheDocument();
+      if (!url) expect(within(dialog).queryByText(/pick desktop/i)).toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("CLI dialog with a selected runtime: Connect enables and fires onNext(runtime)", async () => {

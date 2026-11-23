@@ -1,0 +1,232 @@
+M1 open question 5 green evidence (fix: settleKnowledgeFinalizeRefusal in both FinalizeTaskClaim error branches)
+
+TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask (behavioral) passes. The 33rd claim answers 409
+knowledge_context_changed (single) or is skipped (batch), the task fails with that reason, the 32 recorded
+claims are unchanged, and the next poll returns no task.
+
+=== Targeted run ===
+Command: cd server && DATABASE_URL='postgres://multica:multica@127.0.0.1:5432/kfix_claim_handler?sslmode=disable' env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/handler -run '^TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask$' -count=1 -v
+Exit code: 0
+
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/01 19:12:57 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask
+=== RUN   TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask/single
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:58 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:58 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:58 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:59 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239 agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c runtime_id=e78ad566-76e1-4731-bc40-3b2c6e8f0239
+2026/11/01 19:12:59 INFO task claimed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c agent_id=515bb834-1e21-4216-ab3f-9ced4f9a6011
+2026/11/01 19:12:59 WARN task claim: knowledge finalization refused; settling task task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c code=knowledge_context_changed
+2026/11/01 19:12:59 WARN task failed task_id=b61c8b09-193a-40e6-bcec-fc1d6402a67c issue_id=3834c0ff-26ea-48fb-baed-3b911aa63dff failure_reason=knowledge_context_changed
+=== RUN   TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask/batch
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 INFO task claimed by runtime task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86 agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21 prior_session=""
+2026/11/01 19:12:59 INFO task requeued after claim finalization failure task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c runtime_id=cd9799d3-a1c1-44e4-88a1-e1d3157eea86
+2026/11/01 19:12:59 INFO task claimed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c agent_id=8ce69f70-bce1-4886-9920-d0da40b6eb21
+2026/11/01 19:12:59 WARN task claim: knowledge finalization refused; settling task task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c code=knowledge_context_changed
+2026/11/01 19:12:59 WARN task failed task_id=d8f7ac01-c005-4a00-b19c-db41a5d7c36c issue_id=ed822104-ea5e-44c3-bec4-66806b7beaf4 failure_reason=knowledge_context_changed
+--- PASS: TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask (1.86s)
+    --- PASS: TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask/single (1.02s)
+    --- PASS: TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask/batch (0.83s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	2.886s
+
+=== Related and package suites (summary lines) ===
+go vet ./internal/handler : exit 0
+Command: cd server && DATABASE_URL='postgres://multica:multica@127.0.0.1:5432/kfix_claim_handler?sslmode=disable' env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/handler -run 'Knowledge|Claim|Finalize|Password|CommentDelivery' -count=1 -v
+Exit code: 0; PASS=190 FAIL=0 SKIP=1
+--- SKIP: TestRedisLocalSkillListStore_PopPendingAtomicClaim (0.00s)
+ok  	github.com/multica-ai/multica/server/internal/handler	21.071s
+Command: cd server && DATABASE_URL='postgres://multica:multica@127.0.0.1:5432/kfix_claim_handler?sslmode=disable' env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/handler -count=1 -v -timeout 25m
+Exit code: 0; PASS=2815 FAIL=0 SKIP=53 (skips are env-gated: REDIS_TEST_URL, perf, live integration)
+ok  	github.com/multica-ai/multica/server/internal/handler	137.245s
+Command: cd server && DATABASE_URL='postgres://multica:multica@127.0.0.1:5432/kfix_claim_cmd?sslmode=disable' env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./cmd/server -run 'Knowledge|Claim' -count=1 -v
+Exit code: 0; PASS=7 FAIL=0 SKIP=1
+--- SKIP: TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry (0.00s)
+ok  	github.com/multica-ai/multica/server/cmd/server	2.192s

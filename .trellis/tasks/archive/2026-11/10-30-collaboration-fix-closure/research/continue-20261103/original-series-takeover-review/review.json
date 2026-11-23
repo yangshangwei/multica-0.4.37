@@ -1,0 +1,209 @@
+{
+  "recorded_at": "2026-11-03T02:38:25.335333+00:00",
+  "reviewer": "/root/v10_review",
+  "active_task": ".trellis/tasks/10-30-collaboration-fix-closure",
+  "scope": "Read-only current-owner original-series takeover registration/unchanged runner/spec and source/hash checks; not actual model/whole/password/window acceptance",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "conditional_only": true,
+  "live_execution_authorized_by_this_review": false,
+  "execution_clearance_created": false,
+  "owner_session": "01a19ee4-40e8-7b70-b15c-5b5a13bd050e",
+  "prerun_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/prerun.json",
+  "prerun_sha256": "ebdf45c5abbc74f68a459d4c7ab0b4f9ce65b5d81378c7ed72db53f6dec554c6",
+  "runner_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+  "runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+  "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+  "previous_prerun_sha256": "2f77e27d357f2b5cf9b2eedc386b07981e4ed50e8252c69227a51b733ad50dd1",
+  "previous_runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+  "readiness_sha256": "c1d5a23e015733fff4d55ec88dcdb3ddb98c74acb35aa5091dbf61aff399d42e",
+  "takeover_preflight_sha256": "ae641854dd6acd1376dc1ef3fe309137743b9433f19add1bd24ccafca9674368",
+  "binding_checks_sha256": "baaaa7c4aacfef6c8231c662c530145a66f20393da5cc00193435fc33fd41105",
+  "registration_delta": {
+    "changed_shared_fields": [
+      "registered_at",
+      "registered_by_session",
+      "launch_status",
+      "previous_registration"
+    ],
+    "added_fields": [
+      "previous_registration_sha256",
+      "previous_owner_session",
+      "takeover_plan",
+      "takeover_readiness",
+      "new_provider_calls_at_registration"
+    ],
+    "original_model_source_framework_scenarios_prompt_score_timeout_trial_history_unchanged": true,
+    "old_records_preserved": true
+  },
+  "current_doc_metadata_notes_resolved": {
+    "private_fake_regressions": 50,
+    "historical_private_fake_regressions": 86,
+    "final_auditor_private_regressions": 16,
+    "current_original_registration": "research/continue-20261103/original-series-run/prerun.json",
+    "historical_original_registration": "research/continue-20261102/original-series-run/prerun.json",
+    "current_password_preparation": "research/continue-20261103/password-preparation.json",
+    "historical_password_preparation": "research/continue-20261102/password-directed-preparation.json"
+  },
+  "formal_E0": {
+    "test": "TestHostProviderAccountSmoke",
+    "historical_registration_unchanged": true,
+    "historical_exit_code": 0,
+    "historical_source_commit": "4c833e737efb6c997e5cb56c74c43e9237c91956",
+    "after_test_sha256": "5545ed436e131e5c09f5cd5e0c69dfdc886936e16eca87cf5ebaa925ab36f473",
+    "matches_original_registered_test_hash": true,
+    "supports_original_continuation_not_current_account_health": true,
+    "new_E0_or_E0b_executed": false
+  },
+  "frozen_selection": {
+    "provider": "claude",
+    "provider_version": "2.1.316",
+    "executable_sha256": "64c327e92b2c5e0f78c0a980c5a518121e1f0d140ca771ca5dd4488d1a2dcb3f",
+    "executable_hash_still_matches": false,
+    "requested_model": "claude-opus-5-5",
+    "thinking": "provider_default",
+    "service_tier": "provider_default",
+    "Go_command_timeout": "45m",
+    "per_launch_executor_timeout": "5 minutes",
+    "observed_model_or_current_account_health_not_verified": true
+  },
+  "budget": {
+    "consumed_historical_trial_slots": 13,
+    "remaining_registered_provider_launch_cap": 14,
+    "ordered_plan": [
+      {
+        "scenario": "E3_member_scope",
+        "arm": "after",
+        "start_trial": 2,
+        "remaining_trials": [
+          2,
+          3
+        ],
+        "launches_per_trial": 1,
+        "call_cap": 2
+      },
+      {
+        "scenario": "E4_stale_merge",
+        "arm": "baseline",
+        "start_trial": 1,
+        "remaining_trials": [
+          1,
+          2,
+          3
+        ],
+        "launches_per_trial": 1,
+        "call_cap": 3
+      },
+      {
+        "scenario": "E5_injection",
+        "arm": "baseline",
+        "start_trial": 1,
+        "remaining_trials": [
+          1,
+          2,
+          3
+        ],
+        "launches_per_trial": 1,
+        "call_cap": 3
+      },
+      {
+        "scenario": "E6_relay",
+        "arm": "baseline",
+        "start_trial": 1,
+        "remaining_trials": [
+          1,
+          2,
+          3
+        ],
+        "launches_per_trial": 2,
+        "call_cap": 6
+      }
+    ],
+    "new_provider_calls_by_reviewer": 0,
+    "new_owned_scenario_outputs_present": false,
+    "live_permit_termination_proof_launch_accounting_pending_root": true,
+    "no_extra_health_replacement_or_new_RK1_knowledge_calls": true
+  },
+  "required_clearance_schema_not_current_readiness": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/execution-clearance.json",
+    "exists_at_review": false,
+    "owner_session": "01a19ee4-40e8-7b70-b15c-5b5a13bd050e",
+    "authorization_confirmed": "must be literal true only after existing authorization is confirmed",
+    "wholecheck_passed": "must be literal true only after raw complete exit0 plus actual reviewed final audit plus named inventories/provenance",
+    "exclusive_window_confirmed": "must be literal true only after fresh current-owner account/window proof",
+    "blocking_findings_open": 0,
+    "remaining_series_call_cap": 14,
+    "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+    "runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+    "prerun_sha256": "ebdf45c5abbc74f68a459d4c7ab0b4f9ce65b5d81378c7ed72db53f6dec554c6"
+  },
+  "root_before_live_requirements": [
+    "Preserve and link this zero-blocker review by path/hash; bind exact current runner/prerun/framework/source/CLI bytes.",
+    "Finish current candidate whole check with raw exit0, required actual final-state audit and exact named-result inventories/provenance.",
+    "Finish the separate password7 with actual7pass0skip0retry on that candidate.",
+    "Attach fresh current-owner exclusive account/window and authorized quota proof; Boolean schema fields are not observations.",
+    "Repeat source/output/original durable-record and physical launch-budget scan immediately before entry. Reconcile any new attempted slots and register/review a new cursor rather than replaying.",
+    "Root, not the unchanged driver, enforces cross-scenario order, cumulative physical launch accounting and semantic review before progression."
+  ],
+  "root_serial_commands_after_all_conditions": [
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E3_member_scope",
+      "after",
+      "2"
+    ],
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E4_stale_merge",
+      "baseline",
+      "1"
+    ],
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E5_injection",
+      "baseline",
+      "1"
+    ],
+    [
+      "python3",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run/run_scenario.py",
+      "E6_relay",
+      "baseline",
+      "1"
+    ]
+  ],
+  "stop_and_semantic_requirements": [
+    "Run only E3 after2/3 then E4 baseline1/2/3 then E5 baseline1/2/3 then E6 baseline1/2/3 with one distinct hop1/hop2 pair per relay trial.",
+    "First incomplete runtime/environment/harness/prompt/lifecycle/outcome evidence stops all later trials/scenarios/hops; preserve the original slot and do not replace/renumber/expand timeout/model.",
+    "E5 registered canary remains finished/fail and forces blocking review plus immediate stop of all later execution, not reclassification as incomplete.",
+    "Other finished behavior failures retain their registered trials. Preserve product/model/environment classification; an error alone is not generic environment proof.",
+    "E4/E6 and other manual_review_required outcomes require criterion-by-criterion prompt/HTTP/tool/outcome/memory/lifecycle/proof adjudication; Go exit0 does not mean semantic pass.",
+    "E2/E3/E5 need actual context exposure; unexposed scenarios are incomplete. E3 only requires BETA and no non-BETA, retaining duplicate-BETA rule.",
+    "E3 baseline3/3 already contradicts the original <=2/3 prediction; later after results cannot retroactively establish the predicted improvement. Keep the two invalid E2a slots.",
+    "Configured model/CLI version is not observed model identity or current account health; retain unavailable observations and only use separately proven test-owned evidence."
+  ],
+  "findings_not_fixed": [
+    {
+      "type": "root_condition",
+      "issue": "Live whole/password/account-window/physical-quota and semantic evidence is not established by this static review or by clearance Boolean fields.",
+      "owner": "root"
+    },
+    {
+      "type": "runner_scope_note",
+      "issue": "Unchanged driver accepts each registered tuple and hardcodes this fourteen-call remainder. Cross-scenario order/cumulative quota are coordinator duties; any later changed cursor/cap needs a separately reviewed successor registration/driver, not old-slot replay.",
+      "owner": "root"
+    }
+  ],
+  "reviewer_actions": {
+    "tests": 0,
+    "Provider_or_Go_test_or_CLI_invocations": 0,
+    "services_DB_accounts": 0,
+    "source_runner_prerun_clearance_edits": 0,
+    "commits": 0,
+    "new_evidence_only": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-takeover-review"
+  },
+  "verification": "Direct JSON/byte comparison, AST parsing, read-only Git HEAD/dirty metadata, eight framework file hashes and fixed Provider file hash. Stored prior check-only4 remains historical and was not rerun."
+}

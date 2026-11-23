@@ -1,0 +1,49 @@
+{
+  "checks": [
+    {
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+        "exec",
+        "tsc",
+        "--noEmit",
+        "--strict",
+        "--target",
+        "ESNext",
+        "--module",
+        "ESNext",
+        "--moduleResolution",
+        "Bundler",
+        "--lib",
+        "ESNext,DOM,DOM.Iterable",
+        "--jsx",
+        "react-jsx",
+        "--esModuleInterop",
+        "--skipLibCheck",
+        "--resolveJsonModule",
+        "--types",
+        "node",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/collaboration-handoff-chain.ts",
+        "e2e/collaboration-handoff-chain-web.spec.ts"
+      ],
+      "exit_code": 0,
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/repair-run03-check0.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/packages/views/node_modules/eslint/bin/eslint.js",
+        "--config",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/eslint.config.mjs",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/collaboration-handoff-chain.ts",
+        "e2e/collaboration-handoff-chain-web.spec.ts"
+      ],
+      "exit_code": 0,
+      "log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/password7-20261104-f90b6a65/repair-run03-check1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

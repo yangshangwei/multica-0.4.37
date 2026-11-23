@@ -155,11 +155,22 @@ What the template create does that the ordinary one does not:
 - sets `autonomy_level` from the template.
 
 The listed `progress-reporter` role supports both daily and weekly progress
-reporting. It supplies `multica-progress-report`, uses concurrency one, and has
-Contributor authority so it can move its assigned report issue to `in_review`
-after successfully posting the report. Its narrower instructions keep business
-issues and repository files read-only. It is an ordinary role template, not a
-second system agent or a new permission level.
+reporting. Template v2 supplies `multica-progress-report` v5 and keeps the normal
+concurrency default of six and Contributor autonomy. Its task capability limits
+Multica reads to the current report issue's project; without a project, only
+that report issue is readable. It may add comments only to that report issue,
+never change status (including `in_review` or `done`) or delegate through a
+comment. A published report does not automatically wake a squad leader or
+complete the autopilot's business lifecycle; a human or another already
+authorized actor handles the next step.
+
+Code Reviewer v2, Security Reviewer v2 and Migration Reviewer v3 similarly read
+only their current issue, comments and activity and deliver a new review comment
+on that issue. Changing a display name, instructions or autonomy does not widen
+this capability. Existing agents and saved skills are not upgraded automatically;
+the claim-time capability briefing takes precedence over reused skills. These
+are Multica API restrictions, not a sandbox for the daemon host or ambient
+credentials.
 
 The listed `diagnostician` role supplies only `multica-debugging`, uses
 concurrency one, and has Contributor authority. It reproduces an observed
@@ -218,6 +229,16 @@ declared policy. The most direct such path is closed server-side: a task token
 every `/api/tokens` route — create, list, renew and revoke — so an agent cannot
 mint a JWT or personal access token in its owner's name and re-enter as a human
 caller. A recorded approval does not sandbox the daemon host.
+
+Controlled artifact packaging is a separate, default-disabled backend API at
+`POST /api/agent-approvals/artifact-package`. It supports only operator-staged
+`local-synthetic` tar packaging. A human decision binds the returned
+`spec_digest`; execution uses the dedicated artifact-package endpoint and a
+one-time durable claim. Ordinary `multica approval executed` cannot self-report
+success for a controlled request. Unknown results must never be automatically
+rerun. This path does not authorize deployment, shell commands, publication or
+production access; the existing CLI and approval UI do not implement its typed
+specification flow.
 
 ## Field contracts
 
@@ -423,6 +444,12 @@ at compile time and loaded from `SKILL.md` + sibling files. Both reach the
 provider as skill content — which is why capability belongs in a bound skill,
 not pasted into `instructions`.
 
+For shared collaboration targets, changes to enabled skill bindings, skill body,
+supporting files or release identity invalidate old resource consent. Affected
+targets remain held until fresh owner consent and explicit Resume. Repeating an
+identical binding set or bundle preserves consent; keeping a skill ID alone does
+not authorize changed instructions.
+
 ## Side effects needing approval
 
 Read-only (safe): `agent get`, `agent skills list`, `agent env get`.
@@ -467,3 +494,11 @@ State-changing (require an explicit instruction — do not run speculatively):
 `references/creating-agents-source-map.md` maps every contract above to its
 `file:line` on the current tree, the runtime effect, and a safe read-only
 verification command.
+
+Human-only delivery observation, policy, durable evaluation and completion-hint
+APIs never grant completion/execution authority. Missing or unknown evidence
+cannot pass; see the source map for recovery and explicit hint boundaries.
+Web/Desktop and CLI status-only consumers may request a completion hint before
+an ordinary done-category PUT, but they always send `evaluation_key: null`,
+never expose private evaluation data, and never treat the read as authorization.
+The source map documents the separate human-only ordinary completion CLI and original-key recovery; hints never authorize, and agents cannot reuse another person's private evaluation key.

@@ -1,0 +1,53 @@
+{
+  "at": "2026-11-05T03:48:03.142854+00:00",
+  "scenario": "RK1-E0a",
+  "trial": 1,
+  "raw_status": "finished",
+  "raw_verdict": "pass",
+  "launcher_exit": 0,
+  "helper_exit": 1,
+  "helper_review_ready": false,
+  "helper_failure": "post-run operator_configuration equality changed only ~/.claude/plugins/; raw trial parsing not reached",
+  "measured_launches": 1,
+  "authorized_attempts": 1,
+  "runtime_cap": 25,
+  "consumed": 1,
+  "remaining": 24,
+  "original_stop_state": {
+    "triggered": false,
+    "incomplete_or_blocking_trials": [],
+    "missing_requested_trials": [],
+    "unexpected_trials": []
+  },
+  "additional_evidence_gate": "blocked; do not launch H1 or repeat E0a",
+  "observed_model": [
+    "claude-opus-5-5"
+  ],
+  "provider_version": "2.1.318",
+  "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "source_clean": true,
+  "framework_launcher_provider_environment_stable": true,
+  "actual_captured_CLI_hashes": [
+    "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7"
+  ],
+  "upfront_CLI_hash": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+  "operator_mtime_observation": "Three plugin index/cache/store files changed during trial; mtime not proof of writer/onlychanges",
+  "references": {
+    "public": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-E0a-t1.json",
+    "public_sha256": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba",
+    "private_invocation": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/invocation-20261105T034200Z.json",
+    "invocation_sha256": "eb49cd73bfea5c789fb77d912bc1fe49142825d8f31ad48751d2df627e30f780",
+    "private_helper_result": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/run-result.json",
+    "helper_result_sha256": "99c2184d9b2328e1e8a48fc233af55afb0fda5e621705de0b2b409892efebf15",
+    "post_binding": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/post-run-binding-observation.json",
+    "post_binding_sha256": "a0f795044a9acb50885dcf03c34bd0d956fa06b38c16c35869d84c8dddbba1f0"
+  },
+  "window_released": true,
+  "own_provider_processes": 0,
+  "shared_DB_retained": true,
+  "independent_review": "e0a-independent-review.json",
+  "independent_raw_checks_passed": 66,
+  "independent_raw_checks_failed": 0,
+  "overall_acceptance": "HELD_CONFIGURATION_STABILITY_NOT_PROVEN"
+}

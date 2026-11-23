@@ -1,0 +1,106 @@
+{
+  "scope": "C3 historical-contract maintenance services; not final candidate acceptance",
+  "source_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "coordinator_head": "c6289db93404a2d882ea3a095abdf9073132bfc6",
+  "initial_attempt": {
+    "label": "canonical-red-3classes",
+    "exit_code": 1,
+    "counts": {
+      "startTime": "2026-11-01T18:12:22.173Z",
+      "duration": 255873.366,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 3,
+      "flaky": 0
+    },
+    "classification": "setup_failure_before_target_contracts; API rejected Web CORS; no candidate red/green inference",
+    "execution_sha256": "329631d95c2ef4ef6605e2ebbea13139e389f25443cf6949e08df582ea9f9f45",
+    "results_sha256": "21a8dd9e7a07c0f21dcee581330caee7d0b924bfa155c6d02b03a7b0f8f7c427"
+  },
+  "root_correction": {
+    "operation": "root-owned legacy API only down then up with registered ENV_FILE explicitly selected before launch",
+    "command": [
+      "bash scripts/dev-env.sh down check-20261101174212-32903 --components api",
+      "bash scripts/dev-env.sh up --components api --web-mode production"
+    ],
+    "cause": "dev-env initially loads supplied source env before registered manifest changes ENV_FILE; maintenance source env had no CORS; registered env did",
+    "exit_code": 0,
+    "metadata_sha256": "53b4d24b6a090151e01feb2ac6da9968e0df200dcd71ea15d339993d8de2eef4"
+  },
+  "ready_proofs": {
+    "checked_at": "2026-11-01T18:21:57.079211+00:00",
+    "checks": [
+      {
+        "lane": "legacy",
+        "source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+        "health": {
+          "status": "ok",
+          "pid": 51824,
+          "commit": "c3db64b24",
+          "started_at": "2026-11-01T18:21:28Z"
+        },
+        "api": "http://localhost:18695",
+        "web": "http://localhost:13615",
+        "build_id": "kSOxQuULUHusPenN7I4CC",
+        "cors_preflight": [
+          {
+            "origin": "http://localhost:13615",
+            "status": 200,
+            "allow_origin": "http://localhost:13615"
+          },
+          {
+            "origin": "http://127.0.0.1:19841",
+            "status": 200,
+            "allow_origin": "http://127.0.0.1:19841"
+          }
+        ],
+        "auth_mode": "legacy",
+        "Provider_calls": 0
+      },
+      {
+        "lane": "password",
+        "source": "c3db64b24fea7116622d106ce2231853e1be72f9",
+        "health": {
+          "status": "ok",
+          "pid": 50139,
+          "commit": "c3db64b24",
+          "started_at": "2026-11-01T18:17:18Z"
+        },
+        "api": "http://localhost:19015",
+        "web": "http://localhost:13935",
+        "build_id": "g7ye2W2GKXZyS22lZI1V4",
+        "cors_preflight": [
+          {
+            "origin": "http://localhost:13935",
+            "status": 200,
+            "allow_origin": "http://localhost:13935"
+          },
+          {
+            "origin": "http://127.0.0.1:19841",
+            "status": 200,
+            "allow_origin": "http://127.0.0.1:19841"
+          }
+        ],
+        "auth_mode": "password",
+        "Provider_calls": 0
+      }
+    ]
+  },
+  "runner": {
+    "private_path": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/run-approved-e2e.py",
+    "sha256": "360f84143f953ae25dd4fa665ebb0fa3d5feec7329295c4f2cc977416cbff127",
+    "guards": [
+      "exact task database identity",
+      "C3 source health",
+      "expected auth mode",
+      "knowledge false",
+      "no LLM keys",
+      "live preflight for both origins",
+      "one worker and zero retries",
+      "exclusive new output label"
+    ]
+  },
+  "provider_calls": 0,
+  "external_operations": false,
+  "next": "new representative canonical-red-v2 then minimal scoped repairs and independent review; complete final candidate remains open"
+}

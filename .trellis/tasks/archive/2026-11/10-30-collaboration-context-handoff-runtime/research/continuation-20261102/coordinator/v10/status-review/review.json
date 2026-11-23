@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-02T20:02:59.216945+00:00",
+  "reviewer": "/root/runtime_v10_status_review (native trellis-check)",
+  "verdict": "pass-with-notes",
+  "scope": "Offline status reconciliation and eventual-launch prerequisites only; no v10 launcher contract review or execution.",
+  "status_blocking_findings_open": 0,
+  "paid_launch_clearance_issued": false,
+  "task_completion_claimed": false,
+  "real_behavior_success_claimed": false,
+  "current_status": {
+    "task": "in_progress",
+    "latest_completed_check": {
+      "version": "v9",
+      "exit_code": 2,
+      "browser": {
+        "planned": 439,
+        "pass": 334,
+        "fail": 16,
+        "skip": 89,
+        "retry": 0
+      },
+      "actual_final_acceptance": false
+    },
+    "v10": {
+      "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "owner": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+      "record_state": "running",
+      "started_at": "2026-11-02T19:56:51.936099+00:00",
+      "process_id": 92594,
+      "record_sha256": "b8b7ba7e685530d147413eeae163020ceff4f59addf2d0af213c8e1d252d0f93",
+      "record_exists": true,
+      "log_exists": true,
+      "finished_at_present": false,
+      "exit_code_present": false,
+      "process_liveness_checked": false,
+      "actual_final_acceptance": false
+    },
+    "RKI6": {
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0,
+      "independent_checks_passed": 1794,
+      "normal_pass": 62,
+      "race_pass": 62,
+      "scope": "final639 same-product fake/sim evidence only",
+      "real_provider_calls": 0
+    },
+    "paid_registration": {
+      "runnable": false,
+      "final_source_id": "",
+      "provider_executable_sha256_present": false,
+      "operator_configuration_present": false
+    },
+    "runtime_budget": {
+      "approved_cap": 25,
+      "consumed": 0,
+      "includes_H2b": true,
+      "H6_launches_per_trial": 2
+    },
+    "original_budget": {
+      "remaining_cap": 14,
+      "next": "E3 after trial 2",
+      "separate_from_runtime25": true
+    }
+  },
+  "findings_fixed": [
+    {
+      "id": "SR1",
+      "files": [
+        "task.json",
+        "progress.md",
+        "continuation-plan-2026-11-02.md"
+      ],
+      "issue": "Their not-started/no-record current fields predated the newly observed v10 start at 19:56:51 UTC.",
+      "fix": "Reported upward; root coordinator reconciled current fields to v10 running/result-pending and added run-start-observation.json while preserving preparation/pre-status/recovery snapshots. Re-read and verified after coordinator completion notice.",
+      "fixed_by": "root coordinator; reviewer did not edit shared metadata"
+    }
+  ],
+  "findings_not_fixed": [
+    {
+      "id": "SR-P1",
+      "kind": "expected outstanding paid-launch prerequisite",
+      "issue": "Active final source/executable/operator-configuration binding is intentionally absent, and the serial window and acceptance gates remain pending.",
+      "reason_not_fixed": "Final execution binding/authority and shared integration are outside this reviewer write scope; paid gate correctly remains false.",
+      "references": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6"
+      ]
+    },
+    {
+      "id": "SR-N1",
+      "kind": "nonblocking candidate metadata divergence",
+      "issue": "Candidate framework-registration/runtime-addendum bytes retain pre-reconciliation RKI6-pending/local-preparation text; coordinator records now point to the independent RKI6 pass. Both copies remain non-runnable and the RK1 launcher bytes match.",
+      "reason_not_fixed": "Candidate/shared files are owned by other coordinators. Synchronize the canonical current registration through the later committed final-binding step; do not edit immutable original registration or fake-result summaries."
+    }
+  ],
+  "offline_prerequisites": [
+    {
+      "id": "P1",
+      "state": "pending",
+      "owner": "sole v10 recovery owner, then explicit successor handoff",
+      "requirement": "Obtain actual completed v10 exit/result and named full inventory; v9 exit2 and targeted repairs cannot substitute. Only after an actual pass, run the same-candidate password C3 four and runtime three acceptance items.",
+      "evidence": "continuation-plan-2026-11-02.md; task.meta.next_action"
+    },
+    {
+      "id": "P2",
+      "state": "pending",
+      "owner": "authorized final registration/integration owner",
+      "requirement": "Choose the actual RK1 launching checkout, integrate the canonical RKI6 pass/runtime25 metadata, and commit all changed or untracked non-results files under research/real-model-rk1/. inputs_dirty checks the entire subtree against HEAD, including registration, addendum, helpers, README and evidence; only results/ is excepted. External operator configuration remains private and is fingerprinted, not committed.",
+      "source": "research/real-model-rk1/run_rk1.py:198,296",
+      "actual_inputs_dirty_executed": false,
+      "required_result": "empty list after the final registration commit"
+    },
+    {
+      "id": "P3",
+      "state": "pending",
+      "owner": "authorized final binding owner",
+      "requirement": "Generate the final source manifest from that checkout and require clean product roots plus matching nonempty framework-registration.source_binding.source_id. Recheck the 17-file framework digest and run_rk1.py hash. Bind e2e files, private check scripts/environments and built artifacts separately because they are outside the product digest.",
+      "source_roots": [
+        "server",
+        "apps",
+        "packages",
+        "scripts",
+        "Makefile",
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml"
+      ],
+      "excluded_from_source_digest": [
+        "e2e/",
+        ".trellis/",
+        ".omx/",
+        "operator HOME and selected external configuration"
+      ],
+      "source": "research/real-model-rk1/source_manifest.py:16; run_rk1.py:299"
+    },
+    {
+      "id": "P4",
+      "state": "pending",
+      "owner": "authorized final binding owner",
+      "requirement": "Register the exact Provider executable target/bytes in provider_executable_sha256 and the complete operator_configuration returned by operator_facts, preserving both selected values and absence as hashes. Include applicable operator files/trees, managed configuration, selected CLAUDE_CONFIG_DIR, environment and selected external profile-file hashes. Preserve the fixed requested model/thinking and separately bind the same-source Multica CLI and accepted renderer/preload/build artifacts. Neither provider_executable_sha256 nor operator_configuration exists in the current coordinator or candidate registration.",
+      "source": "research/real-model-rk1/run_rk1.py:211,306"
+    },
+    {
+      "id": "P5",
+      "state": "pending",
+      "owner": "coordinated serial-window owner",
+      "requirement": "Establish the exclusive gateway/service/native/DB window and explicit resource handoff after all coding/review and heavy tests/migrations stop. A byte ledger or completed check-only gate does not establish this window. No health probes, services or Provider access were performed by this reviewer. The current recovery owner is authorized for v10 only.",
+      "source": "research/continuation-20261102/coordinator/authorization-recall.md; continuation-plan-2026-11-02.md"
+    },
+    {
+      "id": "P6",
+      "state": "pending launch-time confirmation",
+      "owner": "authorized runtime/original-series owners",
+      "requirement": "Before each invocation reconcile original contiguous public records with private launch/invocation records, enforce the next unattempted trial and registered order, reserve all launches that the scenario call can start, and count max(public measured launches, private real launches) per label. Keep runtime25 (H2b included; H6 two launches per trial) separate from original14/E3 after trial2. Stop all later trials at the first incomplete/environment/framework/runtime result or blocking_review; retain evidence and H6 manual semantic review. Do not add replacement samples, model changes, timeout extensions or health calls. K1-K3, E0b and installed/account journeys have separate scope/budget; public push/CI/deployment/publication remain unauthorized.",
+      "source": "research/real-model-rk1/run_rk1.py:137,165,180,273; authorization-recall.md"
+    }
+  ],
+  "verification": {
+    "JSON": "pass; 8 selected JSON inputs parsed with duplicate-key rejection",
+    "status_comparisons": {
+      "passed": 15,
+      "failed": 0
+    },
+    "manifest_entry_digest": "pass; 7960 recorded hashes produce the registered source_id; candidate product files were not rehashed in this review",
+    "RKI6_reference_hash": "pass; review SHA matches preparation/framework/addendum pointers",
+    "run_start_reference_hash": "pass; run-start observation SHA matches current running record",
+    "canonical_RK1_ledgers": "0 public trial/private invocation/private trial/provider launch record paths in coordinator and candidate canonical RK1 locations; no global account audit claimed",
+    "lint": "not run: status-only delegation permits byte/source inspection and JSON validation only",
+    "typecheck": "not run: status-only delegation; sole fullcheck owner handles project checks",
+    "tests": "not run: no test, TestMain, contract or service execution authorized for this reviewer"
+  },
+  "candidate_registration_inputs": {
+    "framework-registration.json": {
+      "sha256": "3b51f0501282980d0a6c1af2fe1c81c3b130a905bf269fb1a89469a399c5cd2e",
+      "matches_coordinator_copy": false
+    },
+    "runtime-addendum.json": {
+      "sha256": "6c4df9350a72a3043475a49fad7675d1d600d1e5b5587967fb3b97d5c97bffc9",
+      "matches_coordinator_copy": false
+    },
+    "run_rk1.py": {
+      "sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+      "matches_coordinator_copy": true
+    }
+  },
+  "input_hashes": {
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json": "3939e945d19fe684f32124ce94b54514984ba9dd060bcfa6278b51b98d2976fe",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/progress.md": "304a209b2fe7067ccd73e93b63a85b39a305155ede4f53458c39601d7282d13d",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/continuation-plan-2026-11-02.md": "fb6de8e70e4f28bddce28ef2f8468c3d45d29dd79e4fd64049dc8431f921ca9b",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/prd.md": "b06f02534e5890cb072a144be386eb913d83cdcb42f3d447b6e97fcf721d6d45",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/design.md": "2895ea527343f04a7802f86dbdcb914117b0a4ec194ba22b78bff538dad19204",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/implement.md": "8364588102487a7a92173a349d98e1023966a1e3de5ff455142e25550128618b",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v10/binding-preparation.json": "54afd6a371e5daff9a211cc97fc3d3525f1f47d30a392edb29775aa90b8d82ea",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v10/pre-status-reconciliation.json": "0d887a11c7a9df830c42dabfee498bdafcede30e34e56784e3e333a428000202",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v10/run-start-observation.json": "a834caf07e10259524ae9983416ebed0b633ea395ba4dba8c5411e2274b4140d",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/authorization-recall.md": "4304427d1ab196879f464a11d5c100fb7690174a026a2050d16264cdf876f2a1",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json": "2503d19e59c5a1d58039232cf6404a50f1bbd8cec6fa4d5fb52303ffcbd7b4a3",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json": "9226e482d73a38d87d684c830d6330491f77d77610a322775f754e2a4b40163e",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/source_manifest.py": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/README.md": "03176b6201149a6aabd66b15d699e66ed09e8716047f3c56906aa1d406f83522",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/rki6-review/review.json": "41b99b24d9cecd457b5a2b192af0666e356be509d270c2ccca6f50e5cc8e7672",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/fake-proof/final639-quiet-normal-race-summary.json": "c9e190b74633155c6661a08907801d9ecb6b97e57bb7aacef943e7a3be176be6",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v10/source-manifest-118fc53e.json": "b4c00ed11db06532fef9b0de88179118096d0b4236113343667043c78da9bc10"
+  },
+  "actions": {
+    "writes": [
+      "research/continuation-20261102/coordinator/v10/status-review/review.json",
+      "research/continuation-20261102/coordinator/v10/status-review/review.md"
+    ],
+    "shared_metadata_edits": 0,
+    "source_or_script_edits": 0,
+    "git_commands": 0,
+    "git_mutations": 0,
+    "builds": 0,
+    "test_or_TestMain_runs": 0,
+    "v10_contract_runs": 0,
+    "database_actions": 0,
+    "services_or_Redis_actions": 0,
+    "network_or_health_calls": 0,
+    "Provider_calls": 0,
+    "paid_invocations": 0
+  },
+  "preservation": "All existing preparation, pre-status, v9 failure, RKI6 fake/raw summaries and old registration/addendum source histories were preserved by this reviewer. Earlier not-started/review-pending text is a timestamped snapshot, not current execution clearance."
+}

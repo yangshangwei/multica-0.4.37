@@ -1,0 +1,104 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "./internal/handler",
+    "-run",
+    "^(TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler|TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit|TestCollaborationIterationAssignmentSerializesWithTargetRevision|TestCollaborationSourceStructureAuthorityAndAtomicEdit|TestCollaborationSourceStructureRejectsCyclesAndMixedFailure|TestCollaborationIterationAssignmentVersionsReasonsAndReplay|TestCollaborationCreationInitialFieldsAreOneRecoverableIssue|TestCollaborationIterationCompletedJoinRequiresExplicitConfirmation|TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates|TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory|TestCollaborationEditHTTPSourceFields|TestCollaborationSourceFieldsHTTPPreservesNullAndSeparatesStatus)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "start": "2026-10-21T14:39:17.802595+00:00",
+  "schema_migration": 737,
+  "database_alias": "service_s5",
+  "source_before": [
+    {
+      "path": "server/internal/service/collaboration_source_authority_race_test.go",
+      "sha256": "992d1afb1ee9d71e48daabffe682a6dc034fe593beac97b101ef37dbe9c0f979"
+    },
+    {
+      "path": "server/internal/handler/collaboration_external_iteration_test.go",
+      "sha256": "fe5b0bfe6ac6d377238e40c3ec1475f84cb17eb9c83983cfb3d830079b1a98f7"
+    },
+    {
+      "path": "server/internal/service/collaboration_source_fields.go",
+      "sha256": "794004765369b97bb9f3960f3eb5b7b48ab4bc0a104c12d41265c0ccba03f1a0"
+    },
+    {
+      "path": "server/internal/service/collaboration_iteration.go",
+      "sha256": "2485b7db6a4e9c50c5823e97e218886df4df5b38c9f9b8406a79fc55c8e73daa"
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54"
+    }
+  ],
+  "production_gate_change": false,
+  "real_provider_access": false,
+  "returncode": 0,
+  "elapsed_s": 19.35,
+  "end": "2026-10-21T14:39:37.156233+00:00",
+  "passed": [
+    "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/source_change_first",
+    "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/structure/transfer_first",
+    "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/source_change_first",
+    "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler/iteration/transfer_first",
+    "TestCollaborationSourceStructureAndIterationTransferRecheckCurrentHandler",
+    "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/source_change_first",
+    "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/structure/departure_first",
+    "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/source_change_first",
+    "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit/iteration/departure_first",
+    "TestCollaborationSourceStructureAndIterationHoldMembershipUntilCommit",
+    "TestCollaborationIterationAssignmentSerializesWithTargetRevision/membership_first",
+    "TestCollaborationIterationAssignmentSerializesWithTargetRevision/iteration_edit_first",
+    "TestCollaborationIterationAssignmentSerializesWithTargetRevision",
+    "TestCollaborationSourceStructureAuthorityAndAtomicEdit",
+    "TestCollaborationSourceStructureRejectsCyclesAndMixedFailure",
+    "TestCollaborationIterationAssignmentVersionsReasonsAndReplay",
+    "TestCollaborationCreationInitialFieldsAreOneRecoverableIssue",
+    "TestCollaborationIterationCompletedJoinRequiresExplicitConfirmation",
+    "TestCollaborationCreationInitialIterationRefusalNeverPartiallyCreates",
+    "TestCollaborationEditHTTPSourceFields",
+    "TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory",
+    "TestCollaborationSourceFieldsHTTPPreservesNullAndSeparatesStatus"
+  ],
+  "top_level_passes": 12,
+  "failed": [],
+  "skipped": [],
+  "source_after": [
+    {
+      "path": "server/internal/service/collaboration_source_authority_race_test.go",
+      "sha256": "992d1afb1ee9d71e48daabffe682a6dc034fe593beac97b101ef37dbe9c0f979"
+    },
+    {
+      "path": "server/internal/handler/collaboration_external_iteration_test.go",
+      "sha256": "fe5b0bfe6ac6d377238e40c3ec1475f84cb17eb9c83983cfb3d830079b1a98f7"
+    },
+    {
+      "path": "server/internal/service/collaboration_source_fields.go",
+      "sha256": "794004765369b97bb9f3960f3eb5b7b48ab4bc0a104c12d41265c0ccba03f1a0"
+    },
+    {
+      "path": "server/internal/service/collaboration_iteration.go",
+      "sha256": "2485b7db6a4e9c50c5823e97e218886df4df5b38c9f9b8406a79fc55c8e73daa"
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54"
+    }
+  ],
+  "raw_sha256": "03050ea179d9797c20667a01b0d9c96360bfe136451ce48babad974c2c7eb328"
+}

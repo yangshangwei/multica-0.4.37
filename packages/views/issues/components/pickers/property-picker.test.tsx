@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
 import enIssues from "../../../locales/en/issues.json";
@@ -91,6 +91,9 @@ describe("PropertyPicker optional external navigation reset", () => {
     const user = userEvent.setup(); const onPick = vi.fn();
     render(<Harness reset={false} onPick={onPick} />);
     const input = await screen.findByPlaceholderText("Search");
+    expect(input).not.toHaveAttribute("aria-controls");
+    expect(input).not.toHaveAttribute("aria-activedescendant");
+    expect(screen.queryByRole("option")).toBeNull();
     await user.click(screen.getByText("Swap")); await user.click(input); await user.keyboard("{Enter}");
     expect(onPick).toHaveBeenCalledExactlyOnceWith("Grace");
   });
@@ -108,5 +111,101 @@ describe("PropertyPicker optional external navigation reset", () => {
     await user.keyboard("{Enter}"); expect(onPick).toHaveBeenCalledExactlyOnceWith("Grace");
     await user.click(screen.getByText("Open"));
     expect(await screen.findByPlaceholderText("Search")).toHaveValue("");
+  });
+});
+
+describe("PickerItem semantic state", () => {
+  it("exposes changing native toggle state only when explicitly opted in", async () => {
+    function ToggleRow() {
+      const [selected, setSelected] = useState(true);
+      return <PickerItem toggle selected={selected} onClick={() => setSelected((current) => !current)}>Design</PickerItem>;
+    }
+    const user = userEvent.setup();
+    render(<ToggleRow />);
+    const row = screen.getByRole("button", { name: "Design", pressed: true });
+    await user.click(row);
+    expect(row).toHaveAttribute("aria-pressed", "false");
+    await user.keyboard(" ");
+    expect(row).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it.each([
+    { label: "selection command", toggle: false, emptyValue: false },
+    { label: "clear command", toggle: true, emptyValue: true },
+  ])("keeps a $label free of toggle/listbox state", ({ toggle, emptyValue }) => {
+    render(<PickerItem selected toggle={toggle} emptyValue={emptyValue} onClick={vi.fn()}>None</PickerItem>);
+    const row = screen.getByRole("button", { name: "None" });
+    expect(row).not.toHaveAttribute("aria-pressed");
+    expect(row).not.toHaveAttribute("aria-selected");
+    if (emptyValue) expect(row).toHaveAttribute("data-picker-empty");
+  });
+
+  it("preserves account option semantics ahead of a toggle opt-in", () => {
+    render(<PickerItem optionId="account-option" toggle selected disabled onClick={vi.fn()}>Ada</PickerItem>);
+    const row = screen.getByRole("option", { name: "Ada", selected: true });
+    expect(row).toHaveAttribute("id", "account-option");
+    expect(row).toHaveAttribute("aria-disabled", "true");
+    expect(row).toHaveAttribute("tabindex", "-1");
+    expect(row).not.toHaveAttribute("aria-pressed");
+  });
+});
+
+describe("PropertyPicker named selection list", () => {
+  function SelectionList({ searchable = false, multiple = false }: { searchable?: boolean; multiple?: boolean }) {
+    const [selected, setSelected] = useState(["Grace"]);
+    const [query, setQuery] = useState("");
+    return <I18nProvider locale="en" resources={{ en: { issues: enIssues } }}>
+      <PropertyPicker open onOpenChange={() => {}} trigger="Choose a member"
+        listboxId="member-options" listboxLabel="Members" multiple={multiple}
+        searchable={searchable} onSearchChange={setQuery}>
+        {["Ada", "Grace", "Linus"].filter((name) => name.toLowerCase().includes(query.toLowerCase())).map((name) => (
+          <PickerItem key={name} optionId={`member-${name}`} selected={selected.includes(name)} onClick={() => {
+            setSelected((current) => multiple ? current.includes(name) ? current.filter((item) => item !== name) : [...current, name] : [name]);
+          }}>{name}</PickerItem>
+        ))}
+      </PropertyPicker>
+    </I18nProvider>;
+  }
+
+  it("focuses a named non-search list and exposes arrow navigation independently from selection", async () => {
+    const user = userEvent.setup();
+    render(<SelectionList />);
+    const list = await screen.findByRole("listbox", { name: "Members" });
+    await waitFor(() => expect(list).toHaveFocus());
+    expect(list).toHaveAttribute("aria-activedescendant", "member-Grace");
+    await user.keyboard("{ArrowDown}");
+    expect(list).toHaveAttribute("aria-activedescendant", "member-Linus");
+    expect(screen.getByRole("option", { name: "Grace", selected: true })).toBeInTheDocument();
+    await user.keyboard("{Enter}");
+    expect(screen.getByRole("option", { name: "Linus", selected: true })).toBeInTheDocument();
+    await user.keyboard("{Home}");
+    expect(list).toHaveAttribute("aria-activedescendant", "member-Ada");
+    await user.keyboard("{End}");
+    expect(list).toHaveAttribute("aria-activedescendant", "member-Linus");
+  });
+
+  it("keeps the search's active option and multi-selection state after a keyboard toggle", async () => {
+    const user = userEvent.setup();
+    render(<SelectionList searchable multiple />);
+    expect(await screen.findByRole("listbox", { name: "Members" })).toHaveAttribute("aria-multiselectable", "true");
+    const search = screen.getByRole("textbox", { name: "Filter options" });
+    await user.type(search, "ada");
+    expect(search).toHaveAttribute("aria-activedescendant", "member-Ada");
+    await user.keyboard("{Enter}");
+    expect(screen.getByRole("option", { name: "Ada", selected: true })).toBeInTheDocument();
+    expect(search).toHaveAttribute("aria-activedescendant", "member-Ada");
+    expect(search).toHaveFocus();
+  });
+
+  it("returns pointer selection to the searchable list's focus owner before the next arrow", async () => {
+    const user = userEvent.setup();
+    render(<SelectionList searchable multiple />);
+    const ada = await screen.findByRole("option", { name: "Ada", selected: false });
+    await user.click(ada);
+    const search = screen.getByRole("textbox", { name: "Filter options" });
+    expect(search).toHaveFocus();
+    expect(search).toHaveAttribute("aria-activedescendant", "member-Ada");
+    await user.keyboard("{ArrowDown}");
+    expect(search).toHaveAttribute("aria-activedescendant", "member-Grace");
   });
 });

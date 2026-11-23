@@ -1,0 +1,60 @@
+{
+  "files": [
+    {
+      "path": "e2e/collaboration-host-installed.spec.ts",
+      "sha256": "e439fa251286bd879c1eda278ce1ae264ae8dd3744fba9005e196f069488c97f"
+    },
+    {
+      "path": "e2e/collaboration-installed-main.spec.ts",
+      "sha256": "d240f0a8bd17d34e8ac7111b2a34c1ffe1416ef50e89f0262eda9073e4c5a927"
+    },
+    {
+      "path": "e2e/collaboration-leave-web.spec.ts",
+      "sha256": "de0d566a31710201fc4228ad421d6d1ac56bad908082a9b8552196fa1f35481d"
+    },
+    {
+      "path": "e2e/collaboration-terminal-reopen-web.spec.ts",
+      "sha256": "fa8d8d72d1c07dc4719c7856cf44bee70b92ee4f98b728b9c9bd0b9271a181c9"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-control-gaps.ts",
+      "sha256": "9f7ff5910529e23dfec039258d88843191511f9aefe86e0a13608509131e9053"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-detail-journey.ts",
+      "sha256": "6f5e204e07217cd3875324097d300cf2dfe33bb1ac282b1dc280c56c365d3766"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-installed-main.mjs",
+      "sha256": "b7836546ce9bc0f85b4819c6b27e1d80beef2560ae089cd522310053880850b7"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-installed-main.node-test.mjs",
+      "sha256": "0f59588b5e0b52e5448d8167534cac3be1cc0096b3aeb05bfbfeb2dfe5cedb9d"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-installed-main.ts",
+      "sha256": "ca3bd1dbd3eba417117899ac83a26f803e213ec998af4bcd9b149124db38bd89"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-lane-close-controls.ts",
+      "sha256": "6cfea82bdb9348032ea3fadb21893ec97806ec681d593becf763d46cca207565"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-offline-result-notifications.ts",
+      "sha256": "36d93b95972d3c647bf11d8b89b27d03c166bd41dfaaede365ebbe025cc75b04"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "sha256": "5ee681aef743ed0d900785b198287ef83b61f0ec8225cf133e1847f4c6294013"
+    }
+  ],
+  "spec_append_only": ".trellis/spec/server/database-test-isolation.md section Test state must not inherit a repository",
+  "scope": "test-only repairs owned by this task; existing ROOT already-committed reuse excluded",
+  "product_files": [
+    "server/cmd/multica/cmd_daemon.go",
+    "server/cmd/multica/daemon_fd_linux.go",
+    "server/cmd/multica/daemon_fd_other.go",
+    "server/cmd/multica/daemon_fd_linux_test.go"
+  ]
+}

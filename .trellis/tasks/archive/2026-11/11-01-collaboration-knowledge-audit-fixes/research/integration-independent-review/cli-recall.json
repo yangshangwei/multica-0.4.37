@@ -1,0 +1,27 @@
+{
+  "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/cli",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-run",
+    "^TestCollaboration(ReadHandoff|ReadHandoffSource|RecallPrinting|RuntimeComment)"
+  ],
+  "started_at": "2026-11-01T17:11:06.416835+00:00",
+  "exit_code": 0,
+  "counts": {
+    "run": 58,
+    "pass": 58,
+    "fail": 0,
+    "skip": 0
+  },
+  "log_sha256": "3358277a2518a05eff5bae53c0da15fac2d79a35035c87bb9cdbd0eb00826a98"
+}

@@ -23,7 +23,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@multica/ui/components/ui/dropdown-menu";
-import { Button } from "@multica/ui/components/ui/button";
+import { Button, buttonVariants } from "@multica/ui/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@multica/ui/components/ui/tooltip";
 import { Switch } from "@multica/ui/components/ui/switch";
 import { cn } from "@multica/ui/lib/utils";
 import { api, ApiError } from "@multica/core/api";
@@ -32,6 +33,7 @@ import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
 import { AppLink, resolveClickIntent } from "../navigation";
 import { agentListOptions, squadListOptions } from "@multica/core/workspace/queries";
 import { resolveQuickCreateCreator } from "@multica/core/issues/creator-selection";
+import { resolveQuickCreateSubmitState } from "@multica/core/issues/quick-create-submit-state";
 import { getProjectExecutionSquads } from "@multica/core/projects";
 import { projectListOptions } from "@multica/core/projects/queries";
 import {
@@ -54,7 +56,8 @@ import {
   checkQuickCreateFieldsCliVersion,
   readRuntimeCliVersion,
 } from "@multica/core/runtimes";
-import { useShortcut } from "@multica/core/shortcuts";
+import { useShortcut, shortcutMatchesEvent, isPlainShortcut, isEditableShortcutTarget } from "@multica/core/shortcuts";
+import { isImeComposing } from "@multica/core/utils";
 import { ShortcutKeycaps } from "../common/shortcut-keycaps";
 import {
   contentReferencesAttachment,
@@ -67,7 +70,7 @@ import { ClearablePillButton, PillButton } from "../common/pill-button";
 import { ProjectPicker } from "../projects/components/project-picker";
 import { DueDatePicker, PriorityIcon, PriorityPicker } from "../issues/components";
 import { canAssignAgent } from "../issues/components/pickers/assignee-picker";
-import { isAgentRuntimeBound } from "@multica/core/agents";
+import { canAgentCreateIssues, isAgentRuntimeBound, QUICK_CREATE_MIN_AUTONOMY } from "@multica/core/agents";
 import { useAuthStore } from "@multica/core/auth";
 import { memberListOptions } from "@multica/core/workspace/queries";
 import {
@@ -82,7 +85,7 @@ import { useIssueCreateUploads } from "./use-issue-create-uploads";
 import { FileUploadButton } from "@multica/ui/components/common/file-upload-button";
 import { useT } from "../i18n";
 import { QuickCreateActorPicker } from "./quick-create-actor-picker";
-import { buildActorCatalog } from "./quick-create-actor-picker-model";
+import { actorKey, buildActorCatalog } from "./quick-create-actor-picker-model";
 import { CreatorRecommendations } from "./creator-recommendations";
 import { SourceContextPreviewCard, useSourceContextFailureMessage } from "./source-context-preview";
 import { useIssueLimitUpgradePrompt } from "./use-issue-limit-upgrade-prompt";
@@ -124,7 +127,9 @@ export function AgentCreatePanel({
   const { t } = useT("modals");
   const { t: tIssues } = useT("issues");
   const { t: tProjects } = useT("projects");
+  const { t: tAgents } = useT("agents");
   const promptLabelId = useId();
+  const submitReasonId = useId();
   const sendShortcut = useShortcut("send");
   const workspaceName = useCurrentWorkspace()?.name;
   const workspacePaths = useWorkspacePaths();
@@ -185,6 +190,40 @@ export function AgentCreatePanel({
       ),
     [squads, visibleAgentIds],
   );
+
+  // Create-with-agent runs one `multica issue create` as the chosen agent (the
+  // leader, for a squad), and the server refuses it below Contributor. Those
+  // actors stay listed so people recognise them, but disabled with the reason;
+  // the server answers agent_autonomy_insufficient if one is sent anyway.
+  const autonomyLabel = useCallback((level: string) => {
+    switch (level) {
+      case "observer":
+      case "contributor":
+      case "coordinator":
+      case "operator":
+        return tAgents(($) => $.role_templates.autonomy[level]);
+      default:
+        return level;
+    }
+  }, [tAgents]);
+  const blockedLevels = useMemo(() => {
+    const levels = new Map<string, string>();
+    const agentLevels = new Map(visibleAgents.map((a) => [a.id, a.autonomy_level ?? ""]));
+    for (const a of visibleAgents) {
+      if (!canAgentCreateIssues(a.autonomy_level)) levels.set(actorKey({ type: "agent", id: a.id }), a.autonomy_level ?? "");
+    }
+    for (const s of visibleSquads) {
+      const level = agentLevels.get(s.leader_id);
+      if (level !== undefined && !canAgentCreateIssues(level)) levels.set(actorKey({ type: "squad", id: s.id }), level);
+    }
+    return levels;
+  }, [visibleAgents, visibleSquads]);
+  const creatorDisabledReasons = useMemo(() => new Map([...blockedLevels].map(([key, level]) => [key,
+    key.startsWith("squad:")
+      ? t(($) => $.create_issue.actor_picker.disabled_autonomy_squad, { level: autonomyLabel(level) })
+      : t(($) => $.create_issue.actor_picker.disabled_autonomy_agent, { level: autonomyLabel(level) }),
+  ])), [blockedLevels, t, autonomyLabel]);
+  const canCreateAs = useCallback((ref: QuickCreateActorRef) => !blockedLevels.has(actorKey(ref)), [blockedLevels]);
 
   const preferencesReady = useQuickCreateStore((s) => isQuickCreateStoreReady(s, wsId, userId));
   const resetGeneration = useQuickCreateStore((s) => s.resetGeneration);
@@ -252,9 +291,10 @@ export function AgentCreatePanel({
       agents: visibleAgents, squads: visibleSquads, preferencesReady,
       agentsKnown: agentsQuery.data !== undefined && membersQuery.data !== undefined,
       squadsKnown: squadsQuery.data !== undefined,
+      canCreate: canCreateAs,
     });
   }, [data?.agent_id, data?.squad_id, draft.agent.actorType, draft.agent.actorId, defaultActor, lastActorType, lastActorId,
-    visibleAgents, visibleSquads, preferencesReady, agentsQuery.data, membersQuery.data, squadsQuery.data]);
+    visibleAgents, visibleSquads, preferencesReady, agentsQuery.data, membersQuery.data, squadsQuery.data, canCreateAs]);
 
   const [actor, setActor] = useState<QuickCreateActorRef | null>(() => seedActor());
 
@@ -296,7 +336,16 @@ export function AgentCreatePanel({
     const ids = getProjectExecutionSquads(project).flatMap((config) => config.state === "configured" && config.squad_id && available.has(config.squad_id) ? [config.squad_id] : []);
     return [...new Set(ids)].map((id) => ({type:"squad",id}));
   }, [projects, projectId, visibleSquads]);
-  const recommendationActors = useMemo(() => buildActorCatalog(visibleAgents, visibleSquads), [visibleAgents, visibleSquads]);
+  // Recommending a creator the picker refuses would be a dead end.
+  const recommendationActors = useMemo(
+    () => buildActorCatalog(visibleAgents, visibleSquads).filter((entry) => canCreateAs(entry)),
+    [visibleAgents, visibleSquads, canCreateAs],
+  );
+  // The picker refuses these, but a caller (an agent's "Assign" button) or an
+  // older draft can still land on one. Say why and offer the manual path rather
+  // than silently swapping the creator.
+  const blockedLevel = actor ? blockedLevels.get(actorKey(actor)) : undefined;
+  const autonomyBlocked = blockedLevel !== undefined;
   const [priority, setPriority] = useState<IssuePriority>(
     (data?.priority as IssuePriority | undefined) ?? draft.shared.priority,
   );
@@ -391,6 +440,8 @@ export function AgentCreatePanel({
   // can disable correctly without a controlled-input rerender on every keystroke.
   const editorRef = useRef<ContentEditorRef>(null);
   const creatorRef = useRef<HTMLDivElement>(null);
+  const autonomyActionRef = useRef<HTMLButtonElement>(null);
+  const noRecipientsActionRef = useRef<HTMLAnchorElement>(null);
   const [recommendationText, setRecommendationText] = useState(initialPrompt);
   const descriptionScrollRef = useRef<HTMLDivElement>(null);
   const descriptionContentRef = useRef<HTMLDivElement>(null);
@@ -447,9 +498,9 @@ export function AgentCreatePanel({
     editorRef,
     uploadGate: gate,
     onSubmit: async (md): Promise<boolean> => {
-      // The button already disables on !actor / versionBlocked, but the
-      // ⌘+Enter path bypasses it — re-guard here and keep the draft in place.
-      if (!actor || versionBlocked || (anchorCommentId && !sourcePreview)) return false;
+      // `submit` routes blocked attempts before they get here, but its state
+      // can trail by a frame — re-guard and keep the draft in place.
+      if (!actor || versionBlocked || autonomyBlocked || (anchorCommentId && !sourcePreview)) return false;
       // Flush the prompt editor's pending debounce before snapshotting — see
       // ManualCreatePanel.
       const pendingPrompt = editorRef.current?.flushPendingUpdate?.();
@@ -511,6 +562,8 @@ export function AgentCreatePanel({
             reason?: string;
             current_version?: string;
             min_version?: string;
+            autonomy_level?: unknown;
+            required_autonomy?: unknown;
           };
           if (body.code === "issue_limit_reached") {
             showIssueLimitUpgradePrompt();
@@ -518,6 +571,20 @@ export function AgentCreatePanel({
           }
           if (body.code === "agent_unavailable") {
             setError(body.reason || t(($) => $.create_issue.agent.error_agent_unavailable_fallback));
+            return false;
+          }
+          if (body.code === "agent_autonomy_insufficient") {
+            // Race fallback for a level that changed after the list loaded.
+            // Refetch so the picker disables the creator and the notice offers
+            // the manual path; otherwise the same submit is refused again.
+            // Without a level to name, the server's own sentence still says
+            // what to do.
+            void agentsQuery.refetch();
+            const level = typeof body.autonomy_level === "string" ? body.autonomy_level : "";
+            const required = typeof body.required_autonomy === "string" ? body.required_autonomy : QUICK_CREATE_MIN_AUTONOMY;
+            setError(level
+              ? t(($) => $.create_issue.agent.error_autonomy, { level: autonomyLabel(level), required: autonomyLabel(required) })
+              : e.message || t(($) => $.create_issue.agent.error_unknown));
             return false;
           }
           if (body.code === "daemon_version_unsupported") {
@@ -598,10 +665,101 @@ export function AgentCreatePanel({
       }
     },
   });
-  const submit = () => {
-    void composer.submit();
-  };
   const submitting = composer.submitting;
+
+  // One state for the button, the notice and the keyboard path, so a rendered
+  // affordance can never disagree with what `submit` will actually do. The
+  // order of blockers is pinned in core's quick-create-submit-state.test.ts.
+  const submitStateFor = (contentPresent: boolean) => resolveQuickCreateSubmitState({
+    submitting,
+    uploading: gate.uploading,
+    hasContent: contentPresent,
+    hasActor: actor !== null,
+    autonomyBlocked,
+    versionBlocked,
+    sourceRequired: Boolean(anchorCommentId),
+    sourceReady: sourcePreview !== undefined && sourcePreview !== null,
+    recipientsKnown: agentsQuery.data !== undefined && membersQuery.data !== undefined
+      && squadsQuery.data !== undefined && preferencesReady,
+    recipientsFailed: (agentsQuery.isError === true && agentsQuery.data === undefined)
+      || (membersQuery.isError === true && membersQuery.data === undefined)
+      || (squadsQuery.isError === true && squadsQuery.data === undefined),
+    usableRecipientCount: recommendationActors.length,
+  });
+  const submitState = submitStateFor(hasContent);
+  const submitBusy = submitState === "submitting" || submitState === "uploading";
+  const submitBlockedReason = (() => {
+    switch (submitState) {
+      case "no_recipients": return t(($) => $.create_issue.agent.no_recipients_title);
+      case "autonomy_blocked": return t(($) => $.create_issue.agent.autonomy_blocked_tooltip);
+      case "version_blocked": return t(($) => $.create_issue.agent.version_blocked_tooltip, { min: versionCheck.min });
+      case "source_unavailable": return t(($) => $.create_issue.agent.source_not_ready);
+      case "missing_description": return t(($) => $.create_issue.agent.description_required);
+      case "recipients_failed": return t(($) => $.create_issue.agent.recipients_failed);
+      case "loading_recipients": return t(($) => $.create_issue.agent.recipients_loading);
+      case "missing_recipient": return t(($) => $.create_issue.agent.recipient_required);
+      default: return null;
+    }
+  })();
+
+  // Shared by the button and the editor's send shortcut. A blocked attempt
+  // moves focus to whatever the user has to deal with; the draft stays put.
+  const submit = () => {
+    // `hasContent` trails the editor by its debounce. Match the composer's live
+    // read for both newly typed content and a description that was just cleared.
+    const state = submitStateFor((editorRef.current?.getMarkdown() ?? "").trim().length > 0);
+    switch (state) {
+      case "ready":
+        void composer.submit();
+        return;
+      case "missing_description":
+        editorRef.current?.focus();
+        return;
+      case "missing_recipient":
+      case "recipients_failed":
+      case "loading_recipients":
+      case "version_blocked":
+        creatorRef.current?.querySelector<HTMLButtonElement>("button[data-slot=popover-trigger]")?.focus();
+        return;
+      case "autonomy_blocked":
+        autonomyActionRef.current?.focus();
+        return;
+      case "no_recipients":
+        noRecipientsActionRef.current?.focus();
+        return;
+      default:
+        // Busy states resolve on their own; the source card owns its retry.
+        return;
+    }
+  };
+
+  // The send chord means "hand this off" wherever focus sits in the dialog, not
+  // only inside the editor: adopting a recommendation leaves focus on the
+  // picker, right where the keycap on the submit button would be a dead key.
+  // A native listener on the dialog element, because React would also deliver
+  // keys from portaled popups (the picker's search box) through the tree.
+  const submitRef = useRef(submit);
+  useLayoutEffect(() => {
+    submitRef.current = submit;
+  });
+  useEffect(() => {
+    const dialog = creatorRef.current?.closest<HTMLElement>('[role="dialog"]');
+    if (!dialog) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      // The editor already handled its own send chord.
+      if (event.defaultPrevented) return;
+      if (event.repeat || isImeComposing(event)) return;
+      // A bare Enter has to keep activating the focused control.
+      if (isPlainShortcut(sendShortcut, "Enter")) return;
+      // Other text fields (clarification answers) keep the chord to themselves.
+      if (isEditableShortcutTarget(event.target)) return;
+      if (!shortcutMatchesEvent(sendShortcut, event)) return;
+      event.preventDefault();
+      submitRef.current();
+    };
+    dialog.addEventListener("keydown", onKeyDown);
+    return () => dialog.removeEventListener("keydown", onKeyDown);
+  }, [sendShortcut]);
 
   // Switch to the manual form WITHOUT destroying the agent draft. The agent
   // slot (prompt + actor) is left untouched so a later manual→agent flip
@@ -610,7 +768,9 @@ export function AgentCreatePanel({
   // when the manual slot is still empty: seed the description from the prompt
   // and the assignee from the picked actor. The parent-issue context is not
   // persisted (a per-invocation intent) so it rides the carry channel.
-  const switchToManual = () => {
+  // `assignTo` comes from the autonomy notice, whose button promises that
+  // assignee, so it replaces one left in the manual draft.
+  const switchToManual = (assignTo?: QuickCreateActorRef) => {
     // The prompt is copied into the manual description on assist-init; mid-upload
     // that body has already lost the pending image (see switchToAgent).
     if (gate.isBlocked()) return;
@@ -622,7 +782,9 @@ export function AgentCreatePanel({
       const md = editorRef.current?.getMarkdown() ?? "";
       if (md) setManual({ description: md });
     }
-    if (!draft.manual.assigneeId && actor) {
+    if (assignTo) {
+      setManual({ assigneeType: assignTo.type, assigneeId: assignTo.id });
+    } else if (!draft.manual.assigneeId && actor) {
       setManual({ assigneeType: actor.type, assigneeId: actor.id });
     }
     setLastMode("manual");
@@ -636,6 +798,7 @@ export function AgentCreatePanel({
   // Field visibility lives in Settings → Preferences. Persist the prompt draft
   // before leaving so what the user typed survives the round-trip, then
   // close — the dialog would otherwise linger over the settings page.
+  // The no-recipients notice leaves for the agents page the same way.
   const openFieldSettings = (e: React.MouseEvent) => {
     // Persist the draft either way, but only an in-place navigation closes
     // the dialog — a modifier click opens Settings in another tab and the
@@ -682,11 +845,15 @@ export function AgentCreatePanel({
           </div>
         </div>
 
+        {/* Recipient controls and blocking notices can exceed a short viewport
+            on their own. Keep all variable-height content in one scroller so
+            the property toolbar and submission footer remain reachable. */}
+        <div ref={descriptionScrollRef} className="flex min-h-0 flex-1 flex-col overflow-y-auto">
         {/* Actor picker — agents and squads in one searchable list. Squads
             route to their leader agent on the backend; the leader runs the
             quick-create flow with the squad's Operating Protocol layered
             on top, so a squad pick is "ask this squad to file the issue". */}
-        <div ref={creatorRef} className="px-5 pt-1 pb-2 shrink-0">
+        <div ref={creatorRef} className="px-5 pt-1 pb-3 shrink-0">
           <CreatorRecommendations key={wsId} wsId={wsId} value={recommendationText} projectId={projectId} actor={actor}
             identityKey={`${wsId}:${userId}:${authStatus}:${resetGeneration}`} editorRef={editorRef} actors={recommendationActors} onNeedsSpace={onNeedsSpace}
             onPick={(next) => {
@@ -731,12 +898,56 @@ export function AgentCreatePanel({
                 onRetry: () => { void squadsQuery.refetch(); },
               }}
               onPick={pickActor}
+              disabledReasons={creatorDisabledReasons}
             />
+            <p className="mt-1 text-caption text-muted-foreground">
+              {t(($) => $.create_issue.actor_picker.creator_hint)}
+            </p>
           </CreatorRecommendations>
-          <p className="mt-1 text-caption text-muted-foreground">
-            {t(($) => $.create_issue.actor_picker.creator_hint)}
-          </p>
         </div>
+
+        {submitState === "no_recipients" && (
+          <div role="status" className="mx-5 mb-2 shrink-0 space-y-1.5 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-caption text-warning-foreground">
+            <p className="font-medium wrap-anywhere">{t(($) => $.create_issue.agent.no_recipients_title)}</p>
+            <p className="wrap-anywhere">{t(($) => $.create_issue.agent.no_recipients_reason)}</p>
+            <p className="wrap-anywhere">{t(($) => $.create_issue.agent.no_recipients_next)}</p>
+            <div className="flex flex-wrap gap-2">
+              <AppLink
+                ref={noRecipientsActionRef}
+                href={workspacePaths.agents()}
+                onClick={openFieldSettings}
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "max-w-full max-sm:min-h-11 pointer-coarse:min-h-11")}
+              >
+                <span className="truncate">{t(($) => $.create_issue.agent.no_recipients_action)}</span>
+              </AppLink>
+              {/* A plain button: only the footer switch carries the animated treatment. */}
+              <Button type="button" size="sm" variant="outline" className="max-w-full max-sm:min-h-11 pointer-coarse:min-h-11"
+                disabled={gate.uploading} onClick={() => switchToManual()}>
+                <PencilLine aria-hidden className="size-3.5" />
+                <span className="truncate">{t(($) => $.create_issue.switch_to_manual)}</span>
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {actor && autonomyBlocked && (() => {
+          const name = (actor.type === "squad" ? selectedSquad?.name : selectedAgent?.name) ?? "";
+          const values = { name, level: autonomyLabel(blockedLevel ?? ""), required: autonomyLabel(QUICK_CREATE_MIN_AUTONOMY) };
+          return (
+            <div role="status" className="mx-5 mb-2 shrink-0 space-y-1.5 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-caption text-warning-foreground">
+              <p className="font-medium wrap-anywhere">{t(($) => $.create_issue.agent.autonomy_blocked_title, values)}</p>
+              <p className="wrap-anywhere">{actor.type === "squad"
+                ? t(($) => $.create_issue.agent.autonomy_blocked_reason_squad, values)
+                : t(($) => $.create_issue.agent.autonomy_blocked_reason_agent, values)}</p>
+              <p className="wrap-anywhere">{t(($) => $.create_issue.agent.autonomy_blocked_next, values)}</p>
+              <Button ref={autonomyActionRef} type="button" size="sm" variant="outline" className="max-w-full max-sm:min-h-11 pointer-coarse:min-h-11"
+                disabled={gate.uploading} onClick={() => switchToManual(actor)}>
+                <PencilLine aria-hidden className="size-3.5" />
+                <span className="truncate">{t(($) => $.create_issue.agent.autonomy_blocked_action, values)}</span>
+              </Button>
+            </div>
+          );
+        })()}
 
         {selectedAgent && versionBlocked && (
           <div role="status" className="mx-5 mb-2 shrink-0 rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-caption text-warning-foreground">
@@ -752,14 +963,9 @@ export function AgentCreatePanel({
         {/* Prompt — same rich editor Advanced uses, so paste/drop images,
             mentions, and formatting all work. The dropZone wrapper enables
             drag-and-drop file uploads alongside paste. */}
-        {/* `flex-1 min-h-0 overflow-y-auto` so the editor area absorbs the
-            remaining vertical space inside the (now max-bounded) DialogContent
-            and scrolls internally. Without it, pasting an image expanded the
-            editor unbounded and pushed the modal past the viewport. */}
         <div
           {...dropZoneProps}
-          ref={descriptionScrollRef}
-          className="relative px-5 pb-3 flex flex-col flex-1 min-h-0 overflow-y-auto"
+          className="relative px-5 pb-3 flex flex-auto shrink-0 flex-col"
         >
           <p id={promptLabelId} className="mb-2 text-label font-medium">{t(($) => $.create_issue.agent.prompt_label)}</p>
           <div ref={descriptionContentRef} className="flex min-h-28 flex-auto shrink-0 flex-col [&>div]:min-h-0">
@@ -793,9 +999,10 @@ export function AgentCreatePanel({
                 const scroll = descriptionScrollRef.current;
                 const content = descriptionContentRef.current;
                 if (scroll && content) {
+                  const contentTop = content.getBoundingClientRect().top - scroll.getBoundingClientRect().top + scroll.scrollTop;
                   scroll.scrollTop = position === "start"
-                    ? 0
-                    : Math.max(0, content.offsetHeight - scroll.clientHeight);
+                    ? contentTop
+                    : Math.max(0, contentTop + content.offsetHeight - scroll.clientHeight);
                 }
               });
             }}
@@ -811,6 +1018,7 @@ export function AgentCreatePanel({
             submitting={submitting}
           />
           {isDragOver && <FileDropOverlay />}
+        </div>
         </div>
 
         {anchorCommentId && (
@@ -978,10 +1186,14 @@ export function AgentCreatePanel({
                 {t(($) => $.create_issue.agent.sent_count, { count: sentCount })}
               </span>
             )}
+            {/* The submit button's description. It lives here, out of the
+                button, so it never joins the accessible name, and it does not
+                depend on the tooltip being open. */}
+            {submitBlockedReason && <span id={submitReasonId} className="sr-only">{submitBlockedReason}</span>}
           </div>
           <button
             type="button"
-            onClick={switchToManual}
+            onClick={() => switchToManual()}
             disabled={gate.uploading}
             aria-disabled={gate.uploading || undefined}
             aria-busy={gate.uploading || undefined}
@@ -999,42 +1211,59 @@ export function AgentCreatePanel({
             />
             {t(($) => $.create_issue.create_another)}
           </label>
-          <Button
-            size="sm"
-            onClick={submit}
-            disabled={!hasContent || !actor || submitting || versionBlocked || gate.uploading || (!!anchorCommentId && !sourcePreview)}
-            aria-disabled={gate.uploading || undefined}
-            // Sending is a busy state too, not just uploading.
-            aria-busy={gate.uploading || submitting || undefined}
-            title={
-              versionBlocked
-                ? t(($) => $.create_issue.agent.version_blocked_tooltip, { min: versionCheck.min })
-                : undefined
-            }
-            className={cn(
-              "justify-self-end min-w-28 max-sm:min-h-11 pointer-coarse:min-h-11",
-              justSent && "bg-success/10 text-success-foreground",
-            )}
-          >
-            {submitting ? t(($) => $.create_issue.agent.sending) : gate.uploading ? t(($) => $.create_issue.agent.uploading) : justSent ? (
-              <span className="flex items-center gap-1"><Check className="size-3.5" />{t(($) => $.create_issue.agent.sent_label)}</span>
-            ) : (
-              <>
-                {t(($) => $.create_issue.agent.submit)}
-                {sendShortcut ? (
-                  // Touch phones have no ⌘ key and the narrowest footer row
-                  // to spare — drop the hint at the same breakpoint the
-                  // footer reflows at.
-                  <ShortcutKeycaps
-                    shortcut={sendShortcut}
-                    decorative
-                    className="ml-1 max-sm:hidden"
-                    keyClassName="border-background/30 bg-background/15 text-primary-foreground shadow-none"
-                  />
-                ) : null}
-              </>
-            )}
-          </Button>
+          {/* TooltipProvider/Tooltip render no DOM and TooltipContent is
+              portaled, so the button stays a direct child of the footer grid.
+              Always wrapped, so the button is not remounted as blockers come
+              and go. */}
+          <TooltipProvider delay={200}>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    size="sm"
+                    onClick={submit}
+                    // Native `disabled` only for the transient busy states. Any
+                    // other blocker uses `aria-disabled`: a native-disabled
+                    // button is not focusable, so keyboard and screen-reader
+                    // users could never reach the reason. `submit` is the real
+                    // gate either way.
+                    disabled={submitBusy}
+                    aria-disabled={submitState === "uploading" || submitBlockedReason !== null || undefined}
+                    aria-describedby={submitBlockedReason ? submitReasonId : undefined}
+                    // Sending is a busy state too, not just uploading.
+                    aria-busy={submitBusy || undefined}
+                    // Deliberately no `pointer-events-none`: this control still
+                    // has to hover its tooltip and take the click that moves
+                    // focus to the blocker.
+                    className={cn(
+                      "justify-self-end min-w-28 aria-disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:active:translate-y-0 max-sm:min-h-11 pointer-coarse:min-h-11",
+                      justSent && "bg-success/10 text-success-foreground",
+                    )}
+                  >
+                    {submitting ? t(($) => $.create_issue.agent.sending) : gate.uploading ? t(($) => $.create_issue.agent.uploading) : justSent ? (
+                      <span className="flex items-center gap-1"><Check className="size-3.5" />{t(($) => $.create_issue.agent.sent_label)}</span>
+                    ) : (
+                      <>
+                        {t(($) => $.create_issue.agent.submit)}
+                        {sendShortcut ? (
+                          // Touch phones have no ⌘ key and the narrowest footer row
+                          // to spare — drop the hint at the same breakpoint the
+                          // footer reflows at.
+                          <ShortcutKeycaps
+                            shortcut={sendShortcut}
+                            decorative
+                            className="ml-1 max-sm:hidden"
+                            keyClassName="border-background/30 bg-background/15 text-primary-foreground shadow-none"
+                          />
+                        ) : null}
+                      </>
+                    )}
+                  </Button>
+                }
+              />
+              {submitBlockedReason && <TooltipContent side="top">{submitBlockedReason}</TooltipContent>}
+            </Tooltip>
+          </TooltipProvider>
         </div>
     </>
   );

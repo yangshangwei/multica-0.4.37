@@ -1,0 +1,14 @@
+10:      windows_business_acceptance:
+18:      candidate_version:
+126:      MULTICA_DESKTOP_VERSION: ${{ inputs.candidate_version || format('0.5.3-rc.{0}.{1}', github.run_number, github.run_attempt) }}
+129:      BUSINESS_ACCEPTANCE: ${{ inputs.windows_business_acceptance }}
+166:          foreach ($script in @('windows-business-server.ps1', 'windows-collaboration-server.ps1')) {
+176:          node --test apps/desktop/scripts/windows-update-probe.node-test.mjs apps/desktop/scripts/windows-business-provider.node-test.mjs apps/desktop/scripts/windows-business-proxy.node-test.mjs
+220:        if: inputs.windows_business_acceptance == true
+226:          gh run download 36996436086 --repo $env:GITHUB_REPOSITORY --name windows-x64-accepted-candidate --dir $directory
+233:        if: inputs.windows_business_acceptance != true
+264:            ./scripts/windows-business-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-business" -RepoRoot "$env:GITHUB_WORKSPACE"
+274:        if: inputs.windows_business_acceptance == true
+281:        if: always() && inputs.windows_business_acceptance == true
+283:        run: ./apps/desktop/scripts/windows-business-server.ps1 -StateDirectory "$env:RUNNER_TEMP/multica-business" -RepoRoot "$env:GITHUB_WORKSPACE" -Stop
+313:          name: windows-x64-accepted-candidate

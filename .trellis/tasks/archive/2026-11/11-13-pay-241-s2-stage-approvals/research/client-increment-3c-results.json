@@ -1,0 +1,478 @@
+{
+  "schema_version": 1,
+  "increment": "client3c",
+  "status": "implemented_focused_verification_passed_independent_and_joint_acceptance_pending",
+  "owner": "/root/s2_client_resume",
+  "recorded_at": "2026-11-14T10:22:52.090311+00:00",
+  "head_at_report": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "git_writes_performed": false,
+  "server_or_database_writes": false,
+  "new_dependencies": false,
+  "source": {
+    "kind": "incremental source overlay",
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source",
+    "manifest": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source-manifest.json",
+    "manifest_sha256": "7ae233391024483400a0d5e41a79e25d7629ee8c9c6dfc749958304c873c8939",
+    "prerequisites": [
+      "client-increment-3b2-results.json",
+      "client-increment-3b2-check.json"
+    ],
+    "before_manifest": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/before-manifest.json",
+    "before_manifest_sha256": "830c8129f4cfbdb869e2ed98557d468d962166ab66d03b5bcd2a16ee730e0744"
+  },
+  "files": [
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "before_sha256": "9f21f9b43432113d16b950b253044d8894f0c4aa08af02929e0fa6e15a4bb912",
+      "sha256": "1b78983ef12286e6ba00d09ea0a3943c203e5d8d62744d165e01cde668da83e4",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/core/collaboration/index.ts"
+    },
+    {
+      "path": "packages/core/collaboration/stage-actions.ts",
+      "before_sha256": "e69dd033382e3b03e9aef8021ff11bfe1475eea026aa193db154d0bdd596a029",
+      "sha256": "cfb8482e70dfbf8b39fb73468f7af94e1a620987b59ebfc28b582a95f24e250f",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/core/collaboration/stage-actions.ts"
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.test.ts",
+      "before_sha256": "707d9acfbb5a39f69e138d7309116f80cd7210f599a23230be36b95b44f4cc26",
+      "sha256": "b92a18c69aeba35b5664ab2c97e949cbd19ab85d4f1989887381206bc7e7fca1",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/core/collaboration/stage-code-presentation.test.ts"
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-presentation.ts",
+      "before_sha256": "f7bca16382ef8a311becb17b02e8e683696d8e9d954cf139f3b6d38ddf4443f3",
+      "sha256": "0cecdda2e295f02798151aa4f7f118807f7a0b5136c978ea76827f718bf0dbbb",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/core/collaboration/stage-code-presentation.ts"
+    },
+    {
+      "path": "packages/core/collaboration/stage-code-schema.test.ts",
+      "before_sha256": "d649ecf1814355457eb9a7df0f08452b3922b230239c81650b0e2a36cba5bef7",
+      "sha256": "ecf684996df4a19b45fa2244c1faceeb62b074b72e65eb26754283412c3639a3",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/core/collaboration/stage-code-schema.test.ts"
+    },
+    {
+      "path": "packages/core/collaboration/stage-execution.test.ts",
+      "before_sha256": null,
+      "sha256": "c214155aa8ca5f36bf216ba946e548d1e640799e74c54493aeb12da04b4fb582",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/core/collaboration/stage-execution.test.ts"
+    },
+    {
+      "path": "packages/core/collaboration/stage-execution.ts",
+      "before_sha256": null,
+      "sha256": "9e6121dad3df87e3c3d488e6630e5419d42f4c3a1ea1194f5e970a8e19a403f0",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/core/collaboration/stage-execution.ts"
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.ts",
+      "before_sha256": "87c944735e41e4394f471a505182794e271607e34335ca9b69abb350c468203f",
+      "sha256": "132cac96a0fac002127f05e3d387831be3a8468dfaa58a3c6d18dff346b0f2ed",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/core/collaboration/stage-schema.ts"
+    },
+    {
+      "path": "packages/core/collaboration/stage-test-fixtures.ts",
+      "before_sha256": "d3740570a0cb38f95c4d7d9920b29090acee636ab1e9f7ad5a84f5261021f243",
+      "sha256": "017967ae4168f4223baa4bff0bef5cead43faf1b9e3858bf01a5b81dcf516a2a",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/core/collaboration/stage-test-fixtures.ts"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-forms.tsx",
+      "before_sha256": "634263dad2405ed777148f422a611333394a167690aa85c2d4faf0c510b55600",
+      "sha256": "64aab5d3e70407074f9aae83c5bf13f8d0f44feb6763793d80c57215095e080a",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/views/collaboration/stage-code-forms.tsx"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.test.tsx",
+      "before_sha256": "778093a4c94ddf2891b103131bb2350040b8da5ff5d52b57a49bccf66e490c25",
+      "sha256": "fb3b8b41eff016da043cf8efd2fc95d5f707755d0a26fb6452e053b7439c3858",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/views/collaboration/stage-code-panel.test.tsx"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.tsx",
+      "before_sha256": "e0ceb537d9439f0d3b3686f90f1251591c6bb8978224d109dc88f7635e9f3989",
+      "sha256": "843062b1ef7f474c45da2ac0bb774527fa75882e7dd0664b7dfd4028ce6dbebb",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/views/collaboration/stage-code-panel.tsx"
+    },
+    {
+      "path": "packages/views/collaboration/stage-execution-history.tsx",
+      "before_sha256": null,
+      "sha256": "5badc8cd3aa1c50e41899ce978ccdabd7dcf3daf3acae59ef05ba7b27c3ae167",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/views/collaboration/stage-execution-history.tsx"
+    },
+    {
+      "path": "packages/views/collaboration/stage-labels.ts",
+      "before_sha256": "616bedeb7dea0f02121bbfd270d2c8b3b3ed1bbf81771d4db579d15f505b9dcb",
+      "sha256": "453be7906ae0f5ae090343033c0e1b4f94f49b8539d1b9093b99384beee42bc4",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/views/collaboration/stage-labels.ts"
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "before_sha256": "b420fdc93bf13b5e9b9f9091da97d7efe6f98fda041ad643fb1789dc98d8dba5",
+      "sha256": "2970a09e6e1ad68dd57d41fc42008d0f063f6019b2d23f41eed3b3f996c01cbe",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/views/locales/en/collaboration.json"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "before_sha256": "c1acfbc573cfd76c58416d0ce8fd98a2d299be8a1493b8eb54f123d5f93fac25",
+      "sha256": "9caeaa1cce8358051c072040fe7314b892e421fb32b1ce85c2426b64db828434",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/source/packages/views/locales/zh-Hans/collaboration.json"
+    }
+  ],
+  "contracts": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "dabc19c5762e46577468e3ec436998b4837f28e9ba1996731b47b2d9ad3e8c14",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/contracts/wire-contract.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-control-contract.md",
+      "sha256": "ca3ee225e4a970fba2d70e389049f23f03f9967a01eb1882a812728bf2c6d1a4",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/contracts/server-increment-2c-control-contract.md"
+    }
+  ],
+  "runs": [
+    {
+      "id": "core-green-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/stage-execution.test.ts",
+        "collaboration/stage-code-schema.test.ts",
+        "collaboration/stage-code-actions.test.ts",
+        "--reporter=verbose"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-green-1.log",
+      "sha256": "1f49c9dec6f57e8f5e5ce0911c07776dfa9ce483d3221fee46c8f1bb0f29042a",
+      "exit": 1,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-green-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "core-green-2",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/stage-execution.test.ts",
+        "collaboration/stage-code-schema.test.ts",
+        "collaboration/stage-code-actions.test.ts",
+        "--reporter=verbose"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-green-2.log",
+      "sha256": "0c68efbd8e5470eb9ac8b67056dc5de3a4c39a62fb454416ec336176d65acfe5",
+      "exit": 1,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-green-2.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "core-lint-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "eslint",
+        "collaboration/index.ts",
+        "collaboration/stage-actions.ts",
+        "collaboration/stage-code-presentation.test.ts",
+        "collaboration/stage-code-presentation.ts",
+        "collaboration/stage-code-schema.test.ts",
+        "collaboration/stage-execution.test.ts",
+        "collaboration/stage-execution.ts",
+        "collaboration/stage-schema.ts",
+        "collaboration/stage-test-fixtures.ts"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-lint-1.log",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-lint-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "core-red-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/stage-execution.test.ts",
+        "--reporter=verbose"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-red-1.log",
+      "sha256": "756a5312e60fc70b8d0f3fec921113ee9c504d8c661d0026efbcf88db1ad2f37",
+      "exit": 1,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "core-regression-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/stage-actions.test.ts",
+        "collaboration/stage-api.test.ts",
+        "collaboration/stage-child-privacy.test.ts",
+        "collaboration/stage-code-actions.test.ts",
+        "collaboration/stage-code-api.test.ts",
+        "collaboration/stage-code-presentation.test.ts",
+        "collaboration/stage-code-schema.test.ts",
+        "collaboration/stage-execution.test.ts",
+        "collaboration/stage-generic-refusal.test.ts",
+        "collaboration/stage-intent.test.ts",
+        "collaboration/stage-presentation.test.ts",
+        "collaboration/stage-queries.test.ts",
+        "collaboration/stage-schema.test.ts",
+        "collaboration/stage-source-cache.test.ts",
+        "collaboration/stage-test-comment.test.ts",
+        "collaboration/stage-test-presentation.test.ts",
+        "collaboration/stage-test-report-api.test.ts",
+        "collaboration/stage-test-report-queries.test.ts",
+        "collaboration/stage-test-report-schema.test.ts",
+        "--reporter=verbose"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-regression-1.log",
+      "sha256": "94f4a7a4514e9d3710312b568cc38c0282d5c8f86757767a197689f26ef70c94",
+      "exit": 1,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-regression-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "core-regression-2",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/stage-actions.test.ts",
+        "collaboration/stage-api.test.ts",
+        "collaboration/stage-child-privacy.test.ts",
+        "collaboration/stage-code-actions.test.ts",
+        "collaboration/stage-code-api.test.ts",
+        "collaboration/stage-code-presentation.test.ts",
+        "collaboration/stage-code-schema.test.ts",
+        "collaboration/stage-execution.test.ts",
+        "collaboration/stage-generic-refusal.test.ts",
+        "collaboration/stage-intent.test.ts",
+        "collaboration/stage-presentation.test.ts",
+        "collaboration/stage-queries.test.ts",
+        "collaboration/stage-schema.test.ts",
+        "collaboration/stage-source-cache.test.ts",
+        "collaboration/stage-test-comment.test.ts",
+        "collaboration/stage-test-presentation.test.ts",
+        "collaboration/stage-test-report-api.test.ts",
+        "collaboration/stage-test-report-queries.test.ts",
+        "collaboration/stage-test-report-schema.test.ts",
+        "--reporter=verbose"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-regression-2.log",
+      "sha256": "0620c8c4776e87e2fff4815f18ded58f9354401f357ad2166bbbc9365ad35f83",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-regression-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "core-typecheck-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-typecheck-1.log",
+      "sha256": "22458c8f7012d8262e1fd9041a1b33bb5648f5e559dd766fe55261e8a42145d6",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/core-typecheck-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "types-final-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/types-final-1.log",
+      "sha256": "eb8e50a889d2130f903b1412df3b98ad8050613b4953ad2e9955ee58ffb77adb",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/types-final-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "views-final-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/stage-code-panel.test.tsx",
+        "collaboration/stage-panel.test.tsx",
+        "collaboration/stage-recovery.test.tsx",
+        "collaboration/stage-test-flow.test.tsx",
+        "--reporter=verbose"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-final-1.log",
+      "sha256": "6f2d2c5e5ae7b43e3246dab89101caf67bf70b637af66fb8f5c330bf3653bcc5",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-final-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "views-green-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/stage-code-panel.test.tsx",
+        "--reporter=verbose"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-green-1.log",
+      "sha256": "83eded10b9ff25a6e007bf024a0ae0433db7d676245d23f07d267bf6f7f01ac5",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "views-lint-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "eslint",
+        "collaboration/stage-code-forms.tsx",
+        "collaboration/stage-code-panel.test.tsx",
+        "collaboration/stage-code-panel.tsx",
+        "collaboration/stage-execution-history.tsx",
+        "collaboration/stage-labels.ts"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-lint-1.log",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-lint-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "views-red-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/stage-code-panel.test.tsx",
+        "--reporter=verbose"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-red-1.log",
+      "sha256": "d2bb9c78497359949ad6e0c6ec0a0478a96cd2a9354b22e522a123f6561fef5b",
+      "exit": 1,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "views-regression-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/stage-code-panel.test.tsx",
+        "collaboration/stage-panel.test.tsx",
+        "collaboration/stage-recovery.test.tsx",
+        "collaboration/stage-test-flow.test.tsx",
+        "--reporter=verbose"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-regression-1.log",
+      "sha256": "82f647026ca624da8a14ff73b5b0fe411eb00740e544826eb62c7aefe188411a",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-regression-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "views-typecheck-1",
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-typecheck-1.log",
+      "sha256": "8f442ca6112779dcb1cb48919d5aab6d6f53eb53fa39294bf350ffceb6365d85",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/views-typecheck-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "final_verification": {
+    "core": {
+      "id": "core-regression-2",
+      "suites": 19,
+      "passed": 400,
+      "failed": 0,
+      "skipped": 0
+    },
+    "views": {
+      "id": "views-final-1",
+      "suites": 4,
+      "passed": 54,
+      "failed": 0,
+      "skipped": 0
+    },
+    "typecheck": "types-final-1",
+    "core_lint": "core-lint-1",
+    "views_lint": "views-lint-1",
+    "static": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c/static-final.json",
+      "sha256": "bbf9ace94471fe3ed8a263ce52ff4db1664ba5ca05344fd39f6cfb01639d88b3"
+    }
+  },
+  "implemented": [
+    "Strict bounded R4 targets, operations and rollback metrics with all-or-none older-response omission, same-object correlations and source-denied empty groups",
+    "Release selects a registered target and requires the chosen valid QA approval's full T4 report with the same non-null artifact; internal evidenceReport is never sent",
+    "Rollback is verification-only and binds the exact original successful deployment, immediate previous artifact and current anomalous unexpired observation",
+    "Intent consumption suppresses revocation for every operation state; a full 50-row page cannot prove an older approval remains unconsumed",
+    "Verification advancement follows one selected approval to its unique successful operation/fact and exact current candidate build/target",
+    "Shared target/metric selectors, separate request and fact history, finite metric states and plain-text native operation/summary rendering",
+    "Legacy code-review/QA five-field body bytes and original-key decoding preserved; lost release write+GET404 retains original key/target without POST retry",
+    "Release T4 artifact denial uses the existing source-generation fence and removes cached evidence even while R1 child membership remains readable"
+  ],
+  "first_failures": [
+    "core-red-1: 12 failed/16 passed; new2c fields unavailable, source-denied new arrays ignored, release/rollback capability and request gaps",
+    "views-red-1: 4 failed/12 passed; missing registered target/metric selection and execution-operation history",
+    "core-green-1: duplicate existing boundedText helper introduced during implementation; reused one higher declaration and retained failure",
+    "core-green-2: one older release fixture lacked newly required target_digest; updated fixture to frozen2c contract",
+    "core-regression-1: original-key recovery test replaced the API instance after capturing its scope; corrected test setup to use the same instance; product scope fence retained"
+  ],
+  "verification_limits": [
+    "No real API/database/provider/model/account, browser, production Web or Desktop instance was executed by this lane",
+    "Synthetic unit source/metric facts are not deployment, payment, rollback or integration acceptance",
+    "Policy activation remains owned by server2d and was not changed; M1/activity client2d is separate follow-up",
+    "Independent client3c review, final source-matched Web/Desktop and A01-A12 remain pending; parent matrix unchanged"
+  ],
+  "report_markdown_sha256": "dc2ac27a08aa7d68f08b77d07b4c0410265b9c098c6824155833313a6f6c4681"
+}

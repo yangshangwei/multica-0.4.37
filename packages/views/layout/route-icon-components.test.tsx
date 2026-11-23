@@ -1,8 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { paths, WORKSPACE_PAGES, DEFAULT_ROUTE_ICON_NAME } from "@multica/core/paths";
 import { ROUTE_ICON_COMPONENTS, routeIconForPath } from "./route-icon-components";
+import { Bell } from "lucide-react";
 
 describe("ROUTE_ICON_COMPONENTS", () => {
+  it("renders the notification tab's Bell descriptor through the shared registry", () => {
+    expect(ROUTE_ICON_COMPONENTS.Bell).toBe(Bell);
+  });
+
   it("has a component for every page icon", () => {
     const missing = Object.values(WORKSPACE_PAGES)
       .map((page) => page.icon)

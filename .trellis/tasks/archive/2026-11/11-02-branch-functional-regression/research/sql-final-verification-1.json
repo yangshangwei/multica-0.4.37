@@ -1,0 +1,104 @@
+{
+  "at": "2026-11-02T06:24:20.547171+00:00",
+  "status": "PASS_WITH_REQUIRED_ACCEPTANCE_GATES_OPEN",
+  "historical_files_checked": 5900,
+  "historical_missing": [],
+  "allowed_changed_coordination_files": [
+    ".trellis/tasks/11-02-branch-functional-regression/conditional-matrix.csv",
+    ".trellis/tasks/11-02-branch-functional-regression/defects.md",
+    ".trellis/tasks/11-02-branch-functional-regression/implement.md",
+    ".trellis/tasks/11-02-branch-functional-regression/progress.md",
+    ".trellis/tasks/11-02-branch-functional-regression/report.md",
+    ".trellis/tasks/11-02-branch-functional-regression/research/session-record.md",
+    ".trellis/tasks/11-02-branch-functional-regression/session-prompt.md",
+    ".trellis/tasks/11-02-branch-functional-regression/task.json"
+  ],
+  "unexpected_historical_changes": [],
+  "original_evidence_and_439_inventory_unchanged": true,
+  "e2e_inventory_rows": 439,
+  "matrix_rows": 28,
+  "matrix_statuses": {
+    "PASS": 18,
+    "BLOCKED": 6,
+    "FAIL": 1,
+    "NOT_RUN": 3
+  },
+  "new_json_files_parsed": [
+    "evidence/next-sql-session-1/agent-dispatch.json",
+    "evidence/next-sql-session-1/before.json",
+    "evidence/next-perf-sql-plan-1/analysis-summary.json",
+    "evidence/next-perf-sql-plan-1/canonical-ordered-reads.json",
+    "evidence/next-perf-sql-plan-1/diagnostic-metrics.json",
+    "evidence/next-perf-sql-plan-1/overlay.json",
+    "evidence/next-perf-sql-plan-1/plans-JoinIterationParticipationBatch.json",
+    "evidence/next-perf-sql-plan-1/plans-LeaveDeletedIssueIterationParticipationBatch.json",
+    "evidence/next-perf-sql-plan-1/plans-SetIssueCurrentIterationBatch.json",
+    "evidence/next-perf-sql-plan-1/plans-canonical-reads.json",
+    "evidence/next-perf-sql-plan-1/read-transport-abba.json",
+    "evidence/next-perf-sql-plan-1/run.json",
+    "evidence/next-perf-sql-plan-1/schema-indexes-triggers.json",
+    "evidence/next-perf-sql-plan-1/verification.json",
+    "evidence/next-sql-cleanup-1/owned-mounts.json",
+    "evidence/next-sql-cleanup-1/run.json",
+    "evidence/next-platform-preflight-1/run.json",
+    "evidence/next-sql-parity-1/run.json"
+  ],
+  "new_private_python_syntax": "PASS_AST_PARSE",
+  "diagnostic_go_format": "PASS",
+  "source_checks": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "diff_sha256": "302508308695ab7453f0798ce6a0d46b99a6b827b0a4a6dfd6e1fb6215a35590",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "diff_sha256": "f78404b75d10b2527e0bcef236f86fe2504901df1625a989a23e99f77db46fbe",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+      "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+      "diff_sha256": "62e7a682c59087d42ceaf62aa42d6778b48b3cf6d0b459614bd386c4cd74b374",
+      "frozen_test_sha256": "fc388118311b3b3dc2c7fbec91d8acbba03a0caa5451c58df8f48b442e9cb6ef"
+    }
+  ],
+  "git_diff_check": "PASS",
+  "original_p95_fail_retained": true,
+  "task_status": "in_progress",
+  "owned_resources_cleanup": "evidence/next-sql-cleanup-1/run.json",
+  "full_product_lint_typecheck": "Not rerun: no product/dependency changes, task diagnostics/JSON/CSV/syntax and focused canonicalSQL test verified",
+  "independent_review": "research/sql-evidence-review-1.md/.json",
+  "independent_review_status": "PASS_WITH_NOTES_OPEN_ACCEPTANCE_GATES",
+  "independent_review_raw_artifacts_hashes_still_match": true,
+  "post_review_changes": "Review-result links/status in coordination docs and agent dispatch resolution; later handoff-only next-batch plan clarification in progress/session prompt. Diagnostic/raw evidence and matrix unchanged.",
+  "product_fixes": 0,
+  "new_dependencies": 0,
+  "remote_dispatches": 0,
+  "commercial_provider_calls": 0,
+  "post_review_changed_hashed_coordination_files": [
+    "progress.md",
+    "report.md",
+    "session-prompt.md",
+    "task.json"
+  ],
+  "review_artifacts_sha256": {
+    "sql-evidence-review-1.md": "6d547874ba77ef100f37f92676aec5ef2e3a5c574bdd31148f365181d5b958fd",
+    "sql-evidence-review-1.json": "ca01a6378f0523a6d35d4562e17251de9e7d512423b04d9d41b407151d6e5ff3"
+  },
+  "final_historical_fingerprints_rechecked": true,
+  "coordination_sha256": {
+    ".trellis/tasks/11-02-branch-functional-regression/conditional-matrix.csv": "2ec3772c78c95e1ad0352bff040668992f26907784fb6f356f55bb5af5ed2724",
+    ".trellis/tasks/11-02-branch-functional-regression/defects.md": "2922dd7504c37e4a7cbbade0362eec6708fbdb9d34c692cb346199ced3e53740",
+    ".trellis/tasks/11-02-branch-functional-regression/implement.md": "758a72297e48f8de80414c98c3049bdc386c113fa9c363b8ff02a2ecbd8d7020",
+    ".trellis/tasks/11-02-branch-functional-regression/progress.md": "18ff66204e15d79a322cb4090ac626156dd3e77cb917ec199bd6ad69e3c34e61",
+    ".trellis/tasks/11-02-branch-functional-regression/report.md": "f0a65ac0a35a70252ccb66595aff2a3768452cfb454e677d0627ca4c05967b5f",
+    ".trellis/tasks/11-02-branch-functional-regression/research/session-record.md": "60239c494f0103fca677eb39f1a479e872be253a8f3d0ebba5dcf11dc09e6545",
+    ".trellis/tasks/11-02-branch-functional-regression/session-prompt.md": "3ebd501e6238e947bc151dea070567eec3f44efce69186407133a3021259d100",
+    ".trellis/tasks/11-02-branch-functional-regression/task.json": "8252363fec97f1fb19b6daae56c55ff7793e473b3d172cd6fc2674f23c642e50"
+  },
+  "handoff_updated_at": "2026-11-02T07:05:22.035341+00:00",
+  "handoff_scope": "Only progress.md/session-prompt.md next-session instructions clarified; no new test, process, database or product change. Saved resource cleanup remains prior-batch evidence; next run must recheck."
+}

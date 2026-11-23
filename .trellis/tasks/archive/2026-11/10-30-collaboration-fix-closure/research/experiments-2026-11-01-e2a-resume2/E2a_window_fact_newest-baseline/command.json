@@ -1,0 +1,35 @@
+{
+  "cwd": "/Volumes/artisan/code/2026/mc-context-baseline-20261031/server",
+  "command": [
+    "go",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostContextExperiment$",
+    "-count=1",
+    "-v",
+    "-timeout=45m"
+  ],
+  "explicit_environment": {
+    "MULTICA_RUN_REAL_AGENT_SMOKE": "1",
+    "MULTICA_HOST_SMOKE_PROVIDER": "claude",
+    "MULTICA_HOST_SMOKE_EXECUTABLE": "/Users/artisan/.local/bin/claude",
+    "MULTICA_CONTEXT_EXPERIMENT_OUT": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume2/E2a_window_fact_newest-baseline/records.jsonl",
+    "MULTICA_CONTEXT_EXPERIMENT_COMMIT": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+    "MULTICA_CONTEXT_EXPERIMENT_ARM": "baseline",
+    "MULTICA_CONTEXT_EXPERIMENT_SCENARIO": "E2a_window_fact_newest",
+    "MULTICA_CONTEXT_EXPERIMENT_TRIALS": "3",
+    "MULTICA_CONTEXT_EXPERIMENT_START_TRIAL": "2",
+    "MULTICA_CONTEXT_EXPERIMENT_MODEL": "claude-opus-5-5",
+    "MULTICA_CONTEXT_EXPERIMENT_THINKING_LEVEL": "provider_default",
+    "MULTICA_CONTEXT_EXPERIMENT_SERVICE_TIER": "provider_default"
+  },
+  "started_at": "2026-10-31T19:14:29.722072+00:00",
+  "account_settings": "inherited unchanged; no credentials recorded",
+  "preflight": "both frozen HEADs and three registered overlay hashes match; no product source drift",
+  "concurrency": "no active coding/review agents or additional Provider probes",
+  "preflight_correction": "First local check incorrectly rejected tracked registered overlay; it exited before command creation or Provider launch. Corrected check excludes only hash-verified registered framework files.",
+  "finished_at": "2026-10-31T19:17:49.253337+00:00",
+  "exit_code": 1
+}

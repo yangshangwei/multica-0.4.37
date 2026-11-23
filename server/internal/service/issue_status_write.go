@@ -23,7 +23,7 @@ type IssueStatusWritePolicy func(context.Context, *db.Queries, db.Issue) (bool, 
 // FOR UPDATE is intentional: execution admission holds KEY SHARE, which would
 // not conflict with NO KEY UPDATE. Callers retain their existing retry budget
 // and may broadcast or notify only after changed=true is returned.
-func WriteIssueStatus(ctx context.Context, starter TxStarter, queries *db.Queries, issue db.Issue, target, source string, policy IssueStatusWritePolicy) (before, after db.Issue, changed bool, err error) {
+func WriteIssueStatus(ctx context.Context, starter TxStarter, queries *db.Queries, issue db.Issue, target, source string, policy IssueStatusWritePolicy, webhook *DeliveryWebhookProof, stageSources StageExecutionSources) (before, after db.Issue, changed bool, err error) {
 	if starter == nil || queries == nil || policy == nil || strings.TrimSpace(source) == "" || !issuestatus.IsBuiltIn(target) {
 		return before, after, false, errors.New("status write requires transaction, policy, source and canonical target")
 	}
@@ -60,12 +60,58 @@ func WriteIssueStatus(ctx context.Context, starter TxStarter, queries *db.Querie
 	if err != nil {
 		return before, after, false, err
 	}
+	// System writers (PR merge, failed-task reset) never move a collaboration
+	// issue: its terminal states belong to the creator and close every target
+	// with them (R19/R34/R35). The relation is created with the issue, so the
+	// row lock above makes this read stable.
+	shared, err := q.IsCollaborationIssue(ctx, before.ID)
+	if err != nil {
+		return before, after, false, err
+	}
+	if shared {
+		return before, before, false, nil
+	}
 	allowed, err := policy(ctx, q, before)
 	if err != nil {
 		return before, after, false, err
 	}
 	if !allowed || before.Status == target {
 		return before, before, false, nil
+	}
+	prepared := DeliveryPrepareResult{State: DeliveryNotApplicable}
+	if target == "done" {
+		binding, e := MatchDeliveryWebhookAuthorizationInTx(ctx, tx, before, target, webhook)
+		if e != nil {
+			return before, after, false, e
+		}
+		candidate := before
+		candidate.Status = target
+		prepared, err = PrepareDeliveryMutationInTx(ctx, tx, DeliveryMutationIntent{Before: before, Candidate: candidate, Completion: binding, Webhook: webhook, StageExecutionSources: stageSources})
+		if err != nil {
+			return before, after, false, err
+		}
+		switch prepared.State {
+		case DeliveryReplayed:
+			return before, before, false, nil
+		case DeliveryPrepared:
+			if binding == nil {
+				return before, after, false, completionConflict()
+			}
+			operationID = completionUUIDPG(binding.OperationID)
+			// Prepare now holds the observer's PR/link table fences. A PR may
+			// have changed between the original aggregate read and those fences;
+			// evaluate the independent close policy again from this locked state.
+			allowed, err = policy(ctx, q, before)
+			if err != nil {
+				return before, after, false, err
+			}
+			if !allowed {
+				return before, before, false, nil
+			}
+		case DeliveryNotApplicable:
+		default:
+			return before, after, false, completionConflict()
+		}
 	}
 	record, err := iteration.PrepareIssueRecord(ctx, tx, before, lockedIteration)
 	if err != nil {
@@ -76,6 +122,17 @@ func WriteIssueStatus(ctx context.Context, starter TxStarter, queries *db.Querie
 		return before, after, false, err
 	}
 	if err = iteration.RecordIssueChange(ctx, tx, record, after, actor, operationID); err != nil {
+		return before, after, false, err
+	}
+	if prepared.State == DeliveryPrepared {
+		if webhook == nil {
+			return before, after, false, completionDenied()
+		}
+		if _, err = FinishDeliveryMutationInTx(ctx, tx, prepared.Prepared, after, DeliveryWriterResult{ProviderEventID: webhook.EventID, ProviderEventDigest: webhook.EventDigest}); err != nil {
+			return before, after, false, err
+		}
+	}
+	if err = FinishStageMutationInTx(ctx, tx, prepared, after, DeliveryWriterResult{}); err != nil {
 		return before, after, false, err
 	}
 	if err = tx.Commit(ctx); err != nil {

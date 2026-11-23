@@ -170,6 +170,9 @@ export interface CreateAutopilotRequest {
   execution_mode: AutopilotExecutionMode;
   issue_title_template?: string;
   subscribers?: AutopilotSubscriberInput[];
+  // Omitted means "active". Older servers ignore it and create an active row,
+  // so read `status` back from the response instead of assuming it.
+  status?: Exclude<AutopilotStatus, "archived">;
 }
 
 export interface UpdateAutopilotRequest {

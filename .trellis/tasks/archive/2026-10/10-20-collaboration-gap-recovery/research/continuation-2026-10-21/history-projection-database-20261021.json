@@ -1,0 +1,23 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "python3",
+    "-c",
+    "import os,subprocess,sys; p=subprocess.run(['/opt/homebrew/opt/libpq/bin/psql','-X','-qAt','-d',os.environ['DATABASE_URL'],'-c',sys.argv[1]],capture_output=True,text=True); print(p.stdout,end=''); sys.exit(p.returncode)",
+    "SELECT json_build_object('database',current_database(),'server_version',current_setting('server_version'),'last_migration',(SELECT version FROM schema_migrations ORDER BY version DESC LIMIT 1),'migration_737_present',EXISTS(SELECT 1 FROM schema_migrations WHERE version='737_collaboration_runtime_preparation'),'collaboration_capabilities_column',EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='agent_runtime' AND column_name='collaboration_capabilities'));"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "timestamp": "2026-10-21T08:15:47.756579+00:00",
+  "returncode": 0,
+  "database_alias": "service_s5",
+  "stderr_bytes": 0,
+  "database_provenance": {
+    "database": "multica_gap_service_s5",
+    "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+    "last_migration": "737_collaboration_runtime_preparation",
+    "migration_737_present": true,
+    "collaboration_capabilities_column": true
+  }
+}

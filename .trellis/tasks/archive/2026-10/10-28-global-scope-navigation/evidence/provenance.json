@@ -1,0 +1,58 @@
+{
+  "base_commit": "4bfc3729041704103a2e5739b2a86511b1601f1b",
+  "working_tree_changes": true,
+  "web": {
+    "mode": "production",
+    "build_command": "pnpm exec next build --webpack",
+    "start_command": "pnpm exec next start --port 13493",
+    "build_id": "_U0R-hwREgEsEa7JMuUEm",
+    "checkout": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-scope-qa-bni1k04p/checkout",
+    "url": "http://localhost:13493"
+  },
+  "desktop": {
+    "mode": "built renderer/preload with actual Electron and repository native harness",
+    "build_command": "pnpm --filter @multica/desktop exec electron-vite build",
+    "renderer_url": "http://localhost:5667",
+    "full_packaged_main": false
+  },
+  "api": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=4bfc37290' ./cmd/server (cwd: /Volumes/artisan/code/2026/multica-0.4.37/server)",
+    "source_id": "c6c0c7a02f555d14daa0cb8d291268ef0d2d2e61e204bb20e38dad5e57498e25",
+    "configuration_id": "7e764ca4f60dc7880d9de8c441f5c064aba1896d31cacf0bb838f736a6b6f21c",
+    "commit": "4bfc37290",
+    "launcher_pid": 10084,
+    "started_at": "2026-10-28T05:19:56Z",
+    "listener_pid": 10109
+  },
+  "source_sha256": {
+    "packages/core/navigation/scope-history.ts": "45bc20e09f667d2a08632f518e2a0c430971841bdd9a2dc2575fe4ee2a2cdcbd",
+    "packages/core/navigation/store.test.ts": "438a099ea66ed85aa4677f655406c3102f2ee047c68fae139e13d1f53a17a6e2",
+    "packages/core/navigation/scope-history.test.ts": "8578d579dd4e9c7f5684e651b1b8e7f10ae9f5a018db21c531c5a29511d8e790",
+    "packages/core/navigation/index.ts": "3b63087161148c3213e0a8378662b03d42632710656f97938719375cc4b91423",
+    "packages/core/navigation/store.ts": "7fafb5d1d81827aab5a03637fce5ede79e8917070c8ed2cf45461edd1e030ca8",
+    "packages/views/layout/global-scope-navigation.tsx": "f70b3386721858de2645e3f01d3022d377aa1c2a49b7400e63816fa20a082324",
+    "packages/views/layout/app-sidebar.tsx": "9bc85ac2f8e6911564760987d318b8d8fbdb634ef4165d79bd4e5292b1629f80",
+    "packages/views/layout/dashboard-layout.tsx": "db0bbf3926d7cbf539f4cabdc665d4257c2927b6cc9c3b63112429cf92e6c282",
+    "packages/views/collaboration/collaboration-detail.tsx": "eb29ebcb3d3dc71ea41ea2b4104afc7e68d9aef4657e03341ec67ef90a904879",
+    "packages/views/collaboration/memory-panel.tsx": "f5490e3e7421042b9b77f04aa23cd6cc136569ce7ddbb0cebef52c6c38a385bf",
+    "packages/views/navigation/types.ts": "fd8f48c49b21fc86805c8f45c47e0067937def27a47fc9d2c2b772e8742a8b83",
+    "apps/web/platform/navigation.tsx": "8e1fe12133fa3d3fa2ca417f9431b186b130eeb6d5cd73588596ca8d3294d75d",
+    "apps/web/platform/scope-shell.tsx": "78169854684182afc85f1f3abd9cde7d5323bd6595ca3fed1af90b6f5c6023f0",
+    "apps/web/platform/scroll-restoration.tsx": "7d26f920ba69456fca88e09708e72a3d9d055cb8e4af155a3b29899eee36f3e1",
+    "apps/desktop/src/renderer/src/stores/tab-store.ts": "0e53dfd37c4754908cb40be912745a0ed34114dda703fbd1249172aee3e23004",
+    "apps/desktop/src/renderer/src/components/desktop-layout.tsx": "e6f4bd38bf79f0b7ee538e101384871825a5530b5a93761d4c498ef46eb2bb6a"
+  },
+  "screenshots": {
+    "web-scope-workspace.png": "30a3ec6c150db083906d773d64d4cb18ce6e01879662ccb2dec2802a3fab309c",
+    "web-scope-compact-zh.png": "2c4389ffc3b3a7c740905de0dc62f4c4bd1641894406c76377b55251f46c2f5d",
+    "desktop-scope-compact.png": "a9b1763895a7142e88727ae1eb4a24c13c8edd87476b6e04b43e15bd50ff2ffb",
+    "web-scope-compact.png": "1fa0daadd5309c0a7020ae85f7e912e68e4f6683d827e7e4c521effbd8b714ef",
+    "desktop-scope-workspace.png": "bf1275b4a50563be5b9c0bb8a138b69028fd9ac57e5e395dfe30e93ef360048b",
+    "web-scope-resumed.png": "7e6e25e50d12e629f75696e9211349545f8eabf6f7dc6138ec2f6ec8b9a8bf5d",
+    "desktop-scope-resumed.png": "b9f39b128afd3030c2228ba03c7c2de6017f8929cb851dc994b8960478b2f45b",
+    "desktop-scope-compact-zh.png": "c57c9a538925e13cab16b725e777e7449b624345c12647658e0d07780775951d"
+  }
+}

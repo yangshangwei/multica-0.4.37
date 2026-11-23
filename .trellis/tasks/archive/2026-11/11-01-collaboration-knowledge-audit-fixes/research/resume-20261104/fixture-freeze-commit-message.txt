@@ -1,0 +1,16 @@
+test(collaboration): keep native acceptance evidence stable across rendering
+
+Open the existing Relations submenu through its configured hover gesture and
+freeze native capture layout only after two frame-spanning samples agree.
+Record actual per-tile geometry and refuse capture drift while preserving all
+business, native compositor, bounds and coverage assertions.
+
+Constraint: Reuse the retained candidate and preserve historical failed runs
+Rejected: Relax native coverage threshold | hides incomplete visual evidence
+Confidence: high
+Scope-risk: narrow
+Directive: Stable geometry does not prove the old capture failure root cause
+Tested: 17 directed production-Web/native-Desktop cases, zero retries or skips
+Tested: Independent strict noEmit compilation and ten source predicate controls
+Not-tested: Canonical ESLint ignores root E2E fixture files
+Not-tested: Shared full check and final identity audit remain pending

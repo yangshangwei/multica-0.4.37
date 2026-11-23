@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-05T03:49:15.817802+00:00",
+  "source_summary": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/real-entry/e0a-result-summary.json",
+  "source_summary_sha256": "6eb3a55e184837f918b5284481ae3777a2746fb1559c62a7bfeb359f479866e0",
+  "reference_hashes": {
+    "public": {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-E0a-t1.json",
+      "sha256": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba",
+      "matches": true
+    },
+    "private_invocation": {
+      "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/invocation-20261105T034200Z.json",
+      "sha256": "eb49cd73bfea5c789fb77d912bc1fe49142825d8f31ad48751d2df627e30f780",
+      "matches": true
+    },
+    "private_helper_result": {
+      "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/run-result.json",
+      "sha256": "99c2184d9b2328e1e8a48fc233af55afb0fda5e621705de0b2b409892efebf15",
+      "matches": true
+    },
+    "post_binding": {
+      "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/post-run-binding-observation.json",
+      "sha256": "a0f795044a9acb50885dcf03c34bd0d956fa06b38c16c35869d84c8dddbba1f0",
+      "matches": true
+    }
+  },
+  "E0a_raw_status": "finished/pass",
+  "launcher_exit": 0,
+  "helper_exit": 1,
+  "binding_status": "open_plugin_tree_drift_independent_review_pending",
+  "runtime_consumed": 1,
+  "runtime_remaining": 24,
+  "H1_started": false,
+  "E0a_retry": false,
+  "window_released": true,
+  "original_E5_remaining8": "stopped_separate_budget",
+  "scope": "Read-only summary/raw reference hash reconciliation, not substitute for runtime owner independent review"
+}

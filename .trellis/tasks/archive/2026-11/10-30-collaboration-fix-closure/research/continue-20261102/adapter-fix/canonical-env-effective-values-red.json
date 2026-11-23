@@ -1,0 +1,14 @@
+{
+  "at": "2026-11-02T13:14:58.497880+00:00",
+  "command": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-launcher-test.py",
+    "LauncherEntryTests.test_repository_env_copy_preserves_enforced_pool_and_removed_context"
+  ],
+  "exit_code": 1,
+  "expected": "one assertion failure: downstream safe env still reintroduces25/3/fixture-context despite Python runtime10/1/context removal",
+  "log_sha256": "8a03f8ce16647bc1b2539ffc6b090732df767a6da4e4329a75a1e306fcca839e",
+  "real_database_commands": 0,
+  "real_provider_calls": 0,
+  "shell_execution": "only canonical quoted synthetic fixture values; no source payload or application commands"
+}

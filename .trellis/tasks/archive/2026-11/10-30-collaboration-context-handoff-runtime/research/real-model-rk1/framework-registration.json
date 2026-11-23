@@ -1,0 +1,342 @@
+{
+  "series": "RK1",
+  "scope": "runtime scenarios of runtime-addendum.json, including RK1-H2b (budgeted 2026-11-01T10:33:57Z)",
+  "registered_by_session": "claude multica-0-4-37-35",
+  "runnable": false,
+  "not_runnable_reasons": [
+    "Original stop rule triggered: H3a t2 incomplete/provider_result_missing; t3,H3b,H5,H6 notstarted",
+    "No replacement/healthcall/modelchange/timeoutextension or automaticretry; retain original failure and all spent starts",
+    "Modelwindowreleased; readonly diagnosis/independentreview only"
+  ],
+  "framework_files": "server/cmd/server/rk1_*_test.go (build tag agentintegration, !windows)",
+  "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+  "hash_method": "framework: sha256 over sorted rk1_*_test.go basenames, each as name NUL length NUL content; launcher: sha256 of run_rk1.py",
+  "provider_executable": "/Users/artisan/.local/bin/claude",
+  "requested_model": "claude-opus-5-5",
+  "thinking": "provider_default",
+  "source_binding": {
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "method": "source_manifest.py, same roots/digest as rk1SourceID",
+    "head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "file_count": 7990
+  },
+  "addendum_corrections_requested": [
+    "applied in runtime-addendum.json on this branch: H2b budget, order and product_fix.measured_by"
+  ],
+  "fake_proof": "fake-proof/summary.json",
+  "maintained_by": "Codex root coordinator; current fake evidence recorded; paid gate remains closed",
+  "launcher_regression_sha256": "ace9ef93297921fcf0ea49f1e1e7703f298700c58fefe912a3057e3a3e0e3b17",
+  "fake_proof_current_status": "Current1a32 normal02 and independently quiet race03 each62pass/0fail/skip, independent912/915checks pass; oldfailure remains unresolved historical, no causalfix claim.",
+  "implemented_review_fixes": {
+    "RKI1_RKI2": "62bd98eb9",
+    "RKI3_RKI4": "4229e2d18",
+    "evidence": "ff3532ee1; RKI1-RKI2-verification.json; RKI3-RKI4-verification.json",
+    "RKI5": "current hashes refreshed; launcher37 and exact-format/evidence contracts verified; independent recheck pass-with-notes closes RKI1-5"
+  },
+  "independent_review": {
+    "original": "independent-review/review.json; changes-required preserved",
+    "recheck": "independent-review/recheck-review.json; pass-with-notes; RKI1-5 closed",
+    "remaining": "final reviewed committed execution binding including regenerated CLI artifact; exclusive model window; actual real scenarios",
+    "current_result_review": {
+      "report": "../continuation-20261105/independent-review/current-deterministic-acceptance.json",
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0,
+      "normal_checks": 912,
+      "race_checks": 915,
+      "scope": "current-source deterministic only; real Provider not run"
+    },
+    "historical_remaining_before_20261105": "selected v10 exact launcher clearance and full candidate check; password7; final source/CLI/config/artifact paid binding; exclusive authorized serial runtime window",
+    "historical_current_result_review_before_20261105": {
+      "report": "../continuation-20261102/rki6-review/review.json",
+      "report_sha256": "41b99b24d9cecd457b5a2b192af0666e356be509d270c2ccca6f50e5cc8e7672",
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0,
+      "checks_passed": 1794,
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+      "real_provider_calls": 0,
+      "scope": "current final639 same-product normal/race fake evidence only"
+    }
+  },
+  "fake_proof_current": "../continuation-20261105/independent-review/current-deterministic-acceptance.json",
+  "current_fake_execution": {
+    "source_sha": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "normal_pass": 62,
+    "race_pass": 62,
+    "fail": 0,
+    "skip": 0,
+    "real_Provider_calls": 0,
+    "evidence": "../continuation-20261105/independent-review/current-deterministic-acceptance.json",
+    "normal_run": "quiet02",
+    "race_run": "race03",
+    "framework_changed": false,
+    "historical_failure_fixed": false
+  },
+  "current_fake_independent_result_review": {
+    "report": "../continuation-20261105/independent-review/current-deterministic-acceptance.json",
+    "verdict": "pass-with-notes",
+    "blocking_findings_open": 0,
+    "normal_checks": 912,
+    "race_checks": 915,
+    "scope": "current-source deterministic only; real Provider not run"
+  },
+  "pre_result_review_reasons": [
+    "local integration completed; latest whole make check failed and final combined validation remains open",
+    "final clean candidate source/CLI/configuration/artifact fingerprints remain unregistered",
+    "current final639 fake normal/race passed; independent result review remains unavailable after gateway429",
+    "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
+  ],
+  "maintained_at": "2026-11-05T13:03:49.470074+00:00",
+  "authorization_reference": "../continuation-20261102/coordinator/authorization-recall.md",
+  "selected_candidate_preparation": "../continuation-20261105/paid-binding-preflight.json",
+  "historical_gate_reasons_before_20261104": [
+    "latest actual wholecheck v9 failed; selected v10 wholecheck and same-candidate password7 remain unaccepted",
+    "final clean candidate source/CLI/configuration/artifact paid binding remains unregistered",
+    "runtime25 budget is already approved; exclusive serial gateway/service window remains unestablished; external push/CI/deployment/publication remain unauthorized"
+  ],
+  "current_acceptance_20261104": {
+    "updated_at": "2026-11-04T15:54:34.567289+00:00",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "source_files": 7990,
+    "shared_gate": "../continuation-20261104/shared-gate-reconciliation.json",
+    "normal": {
+      "exit": 0,
+      "pass": 62,
+      "fail": 0,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/normal-review.json"
+    },
+    "race": {
+      "exit": 1,
+      "pass": 60,
+      "fail": 2,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/race-review.json",
+      "overlap_observed": true,
+      "overlap_causal_attribution": false
+    },
+    "password_runtime3": {
+      "passed": 3,
+      "review": "../continuation-20261104/password7/shared-runtime3-review.json",
+      "full7_passed": false
+    },
+    "window_owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+    "window_order": [
+      "shared password7",
+      "original14",
+      "runtime verification after explicit release"
+    ],
+    "runtime_cap": 25,
+    "runtime_consumed": 0,
+    "runnable": false
+  },
+  "current_acceptance_20261105": {
+    "at": "2026-11-04T16:59:10.758678+00:00",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "deterministic_review": "../continuation-20261105/independent-review/current-deterministic-acceptance.json",
+    "normal": {
+      "pass": 62,
+      "independent_checks": 912
+    },
+    "race03": {
+      "pass": 62,
+      "independent_checks": 915
+    },
+    "password7_passed": true,
+    "old_failure_fixed": false,
+    "real_calls": 0,
+    "runtime_cap": 25
+  },
+  "provider_executable_sha256": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d",
+  "operator_configuration": {
+    "~/.claude/settings.json": "f778fbd569ab4aa918ee55446c94037f23cb9a9556bebce275941851eee99afc",
+    "~/.claude/settings.local.json": null,
+    "~/.claude/CLAUDE.md": "7cd2f85f979b138c2557af3cd736a4911c323e03ac2e6ace45f85070fd5feca7",
+    "~/.claude/hooks/": "094bb0d044f311ec46bed8880c1fe8d8804f00531b7bd8566f33a3d99111e0da",
+    "~/.claude/skills/": "0d7e2e273437697ef11e22d168f70fd0e7b7523e9411f1c2167b26e413919789",
+    "~/.claude/plugins/": "e58713833ac71539dee81727c478519818dc10326e501ebcceee8ba7de2303e9",
+    "~/.claude/agents/": "e418e8871a56f58d80832c9a89e0430c37b12efd70d775539f9df512bf026bba",
+    "~/.claude/commands/": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "managed:/Library/Application Support/ClaudeCode/": null,
+    "configuration_environment_sha256": {
+      "CLAUDE_CONFIG_DIR": null,
+      "ANTHROPIC_BASE_URL": null,
+      "ANTHROPIC_MODEL": null,
+      "ANTHROPIC_DEFAULT_HAIKU_MODEL": null,
+      "ANTHROPIC_DEFAULT_SONNET_MODEL": null,
+      "ANTHROPIC_DEFAULT_OPUS_MODEL": null,
+      "CLAUDE_CODE_USE_BEDROCK": null,
+      "CLAUDE_CODE_USE_VERTEX": null,
+      "CLAUDE_CODE_USE_FOUNDRY": null,
+      "CLAUDE_CODE_SUBAGENT_MODEL": null,
+      "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": null,
+      "AWS_PROFILE": null,
+      "AWS_REGION": null,
+      "AWS_DEFAULT_REGION": null,
+      "AWS_CONFIG_FILE": null,
+      "AWS_SHARED_CREDENTIALS_FILE": null,
+      "GOOGLE_CLOUD_PROJECT": null,
+      "CLOUD_ML_REGION": null,
+      "GOOGLE_APPLICATION_CREDENTIALS": null,
+      "AZURE_CONFIG_DIR": null,
+      "ANTHROPIC_FOUNDRY_RESOURCE": null,
+      "ANTHROPIC_FOUNDRY_BASE_URL": null,
+      "HTTP_PROXY": null,
+      "HTTPS_PROXY": null,
+      "ALL_PROXY": null,
+      "NO_PROXY": null,
+      "http_proxy": null,
+      "https_proxy": null,
+      "all_proxy": null,
+      "no_proxy": null,
+      "SSL_CERT_FILE": null,
+      "SSL_CERT_DIR": null,
+      "NODE_EXTRA_CA_CERTS": null,
+      "BASH_MAX_OUTPUT_LENGTH": null
+    },
+    "selected_configuration_tree_sha256": null,
+    "selected_profile_files_sha256": {
+      "AWS_CONFIG_FILE": null,
+      "AWS_SHARED_CREDENTIALS_FILE": null,
+      "GOOGLE_APPLICATION_CREDENTIALS": null
+    },
+    "output_cap_overridden": false
+  },
+  "historical_current_aliases_before_20261105": {
+    "current_fake_execution": {
+      "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "normal_pass": 62,
+      "race_pass": 62,
+      "fail": 0,
+      "skip": 0,
+      "real_Provider_calls": 0,
+      "evidence": "fake-proof/final639-quiet-normal-race-summary.json",
+      "framework_changed": false
+    },
+    "current_fake_independent_result_review": {
+      "report": "../continuation-20261102/rki6-review/review.json",
+      "report_sha256": "41b99b24d9cecd457b5a2b192af0666e356be509d270c2ccca6f50e5cc8e7672",
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0,
+      "checks_passed": 1794,
+      "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+      "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+      "real_provider_calls": 0,
+      "scope": "current final639 same-product normal/race fake evidence only"
+    },
+    "selected_candidate_preparation": "../continuation-20261102/coordinator/v10/binding-preparation.json"
+  },
+  "operator_binding_status": "original runtime stop active; postdelta retained",
+  "real_entry_preparation": {
+    "helper_commit": "86541bb37",
+    "helper_sha256": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+    "review": "../continuation-20261105/real-entry/readiness-review.json",
+    "controls_passed": 7,
+    "calls": 0,
+    "env_sha256": "082f454ff70aac7e4f4feb6b870f00724b9ea9d1870c6f489f8ea9d2b8c8cb55",
+    "config_sha256": "2c16a4f70fe4db6ae59ca544d6e893f63a541de9d8b9a727d3a605438b898d50",
+    "database_allocated": true,
+    "database_receipt": "../continuation-20261105/real-entry/database-recovery-and-allocation.json"
+  },
+  "execution_window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "granted_by": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+    "scenario": "RK1-H3a",
+    "start_trial": 1,
+    "trials": 3,
+    "paid_launches": 3,
+    "outer_timeout_minutes": 26,
+    "recorded_at": "2026-11-05T12:42:19.456100+00:00",
+    "hold": "conditionalwindow H2bPASS met; readiness then original invocation up to26min"
+  },
+  "actual_E0a": {
+    "label": "RK1-E0a-t1",
+    "raw_verdict": "pass",
+    "launcher_exit": 0,
+    "helper_exit": 1,
+    "full_binding_accepted": false,
+    "summary": "../continuation-20261105/real-entry/e0a-result-summary.json",
+    "consumed": 1,
+    "remaining": 24
+  },
+  "E0a_disposition": {
+    "record": "../continuation-20261105/plugin-drift-resolution/disposition.json",
+    "original_result": "accepted_finished_pass",
+    "postrun_operator_stability": "NOT_PROVEN",
+    "helper_original_failure": "preserved",
+    "repeat_allowed": false
+  },
+  "prospective_recorder": {
+    "path": "../continuation-20261105/plugin-drift-resolution/runtime_entry.py",
+    "sha256": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+    "controls": 11,
+    "next_scenario_authorized": false
+  },
+  "actual_H1": {
+    "summary": "../continuation-20261105/h1-entry/result-summary.json",
+    "raw_trials": "3finished/pass",
+    "consumed_total": 4,
+    "remaining": 21,
+    "helper_review_ready": true,
+    "independent_review": "../continuation-20261105/h1-entry/independent-review.json",
+    "accepted": true,
+    "disposition": "../continuation-20261105/h1-entry/disposition.json"
+  },
+  "H2_preparation": {
+    "record": "../continuation-20261105/h2-entry/config-preparation.json",
+    "helper_sha256": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+    "config_sha256": "2ad1828acc5de435da3ac13f428dad4401359cdb3bf12be9c3794a06b4a1e7e6",
+    "env_sha256": "7f77aefa13a8e2bd967673410c30de33b7c9878623e9e1ce54e305acf144602e",
+    "scenario_plan": {
+      "scenario": "RK1-H2",
+      "start": 1,
+      "labels": [
+        "RK1-H2-t1",
+        "RK1-H2-t2",
+        "RK1-H2-t3"
+      ],
+      "launches_per_trial": 1,
+      "paid_launches_expected": 3
+    },
+    "database_created": true,
+    "window_granted": true
+  },
+  "actual_H2": {
+    "summary": "../continuation-20261105/h2-entry/result-summary.json",
+    "raw_trials": "3finished/pass",
+    "consumed_total": 7,
+    "remaining": 18,
+    "independent_review": "../continuation-20261105/h2-entry/independent-review.json",
+    "accepted": true,
+    "disposition": "../continuation-20261105/h2-entry/disposition.json"
+  },
+  "actual_H2b": {
+    "summary": "../continuation-20261105/h2b-entry/result-summary.json",
+    "raw_trials": "3finished/pass",
+    "consumed_total": 10,
+    "remaining": 15,
+    "independent_review": "../continuation-20261105/h2b-entry/independent-review.json",
+    "accepted": true,
+    "disposition": "../continuation-20261105/h2b-entry/disposition.json"
+  },
+  "actual_H3a": {
+    "summary": "../continuation-20261105/h3a-entry/result-summary.json",
+    "raw_trials": [
+      "t1 finished/pass",
+      "t2 incomplete/provider_result_missing",
+      "t3 notstarted"
+    ],
+    "consumed_total": 12,
+    "remaining": 13,
+    "original_stop_triggered": true,
+    "independent_review": "../continuation-20261105/h3a-entry/independent-review.json",
+    "evidence_integrity_checks": 120,
+    "scenario_verdict": "STOP_ORIGINAL_INCOMPLETE",
+    "diagnosis": "../continuation-20261105/h3a-entry/failure-diagnosis.json"
+  }
+}

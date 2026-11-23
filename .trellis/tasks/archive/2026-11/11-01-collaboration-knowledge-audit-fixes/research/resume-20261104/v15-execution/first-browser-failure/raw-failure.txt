@@ -1,0 +1,71 @@
+  1) [chromium] › e2e/triage-duplicate-picker.spec.ts:6:3 › Web duplicate picker browses all formal tasks and confirms the chosen target (en) 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })
+    Expected: ""
+    Received: "Same upload failure; retain the customer's additional context"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" with timeout 5000ms
+      - waiting for getByRole('dialog', { name: 'Mark duplicate', exact: true }).getByRole('combobox', { name: 'Duplicate target task', exact: true })
+        9 × locator resolved to <input type="text" cmdk-input="" role="combobox" autocorrect="off" id="radix-_r_3f_" autocomplete="off" spellcheck="false" aria-expanded="true" aria-autocomplete="list" data-slot="command-input" aria-controls="radix-_r_3d_" aria-labelledby="radix-_r_3e_" aria-label="Duplicate target task" placeholder="Search by title, task ID or task link" value="Same upload failure; retain the customer's additional context" class="w-full text-body outline-hidden disabled:cursor-not-allowed disabled:opacity-50 min-h-…/>
+          - unexpected value "Same upload failure; retain the customer's additional context"
+
+
+       at fixtures/triage-duplicate-picker.ts:111
+
+      109 |   await dialog.getByRole("textbox", { name: copy.reason, exact: true }).fill(reason);
+      110 |   await input.click();
+    > 111 |   await expect(input).toHaveValue("");
+          |                       ^
+      112 |   await expect(list).toBeVisible();
+      113 |   await expect(options).toHaveCount(30);
+      114 |   await capturePicker(page, info, `duplicate-picker-${locale}-wide`, 1280);
+        at duplicatePickerFlow (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/triage-duplicate-picker.ts:111:23)
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/triage-duplicate-picker.spec.ts:10:7
+
+    attachment #2: failure-state (text/plain) ──────────────────────────────────────────────────────
+    http://localhost:13894/p1-09a0c306-25c/triage?issue=01a1a425-471d-758d-b47c-0d40dba70ce5
+    Workspaces
+    Collaboration
+    P
+    P1 browser acceptance
+    Search...
+    K
+    New Issue
+    C
+    Inbox
+    My Issues
+    Chat
+    Work
+    Workspace issues
+    Projects
+    Iterations
+    Triage
+    2
+    AI Team
+    Agents
+    Squads
+    Autopilot
+    Resources & connections
+    Skills
+    MCP...
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: failure (image/png) ─────────────────────────────────────────────────────────────
+    test-results/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/attachments/failure-052712409c79249ce5ca2ceb19471932d3345797.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/triage-duplicate-picker-We-a2833-firms-the-chosen-target-en--chromium/error-context.md
+
+
+(node:89750) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:89750) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+

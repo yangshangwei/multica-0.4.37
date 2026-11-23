@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-11-03T11:34:37.565737+00:00",
+  "base_candidate": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "target": "e2e/collaboration-preparation-records-web.spec.ts",
+  "source_sha256": "12d92bc59a2ca10a42441157332aa6c8dd00699af4be0737e2d612e17b652da3",
+  "proposed_sha256": "6ff9e181295b93079bfd16d618c2fac2b5ba2295591631b30b997d06112a9fec",
+  "patch_sha256": "4a2fdefeb3199b98e00d49dd07c5b0a5c418c86a749f179f76ead4934c7dd226",
+  "git_apply_check": 0,
+  "applied": false,
+  "browser_or_tests_run": false,
+  "kept": [
+    "actual account-detail scroll-root assertion",
+    "two animation frames",
+    "ratio1 viewport assertion",
+    "boundingBox geometry and horizontal bounds",
+    "wide/narrow viewport dimensions",
+    "all preparation state and HTTP assertions"
+  ],
+  "change": "Use native scrollIntoView to align all scroll ancestors, including HTML after native hash navigation. No timeout, force click or weaker assertion.",
+  "diagnosis": "../fullcheck-v13/preparation-viewport-diagnosis.json"
+}

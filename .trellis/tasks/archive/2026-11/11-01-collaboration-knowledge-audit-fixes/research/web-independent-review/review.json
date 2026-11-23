@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T16:05:22.883646+00:00",
+  "verdict": "pass-with-notes",
+  "product_sha": "ed00265253a83ba04fcec73a9285275d26708dcd",
+  "base_sha": "4e3b61500ed0afbc12cf4c79b1c6aea866778d0e",
+  "source_trees": {
+    "packages/core": "ee3f8c471c66836aa207ca1457baba30034a1443",
+    "packages/views": "96cfd3964993d763bd507d518ad135bf78dacd83"
+  },
+  "product_diff_sha256": "2844186e739a0fab6aaab3afbc2d5accb742b53e75ffeedde7e1520e80bfc0c0",
+  "audits": [
+    "M4",
+    "M5",
+    "L8",
+    "L9",
+    "L10",
+    "L11",
+    "L12",
+    "L13"
+  ],
+  "blocking_product_findings": [],
+  "nonblocking_product_findings": [],
+  "checks": [
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=2",
+        "collaboration/knowledge-panel.test.tsx",
+        "locales/parity.test.ts"
+      ],
+      "exit_code": 0,
+      "files": 2,
+      "pass": 100,
+      "fail": 0,
+      "skip": 0,
+      "log": "views-targeted.txt",
+      "log_sha256": "423bec3593c242548df3cbae1cd0a92986ed500c58d76ca67d57bae45ee85b6b"
+    },
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=2",
+        "collaboration/knowledge-schema.test.ts",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-cache.test.ts",
+        "collaboration/knowledge-lease.test.ts"
+      ],
+      "exit_code": 0,
+      "files": 4,
+      "pass": 41,
+      "fail": 0,
+      "skip": 0,
+      "log": "core-targeted.txt",
+      "log_sha256": "d44a62ae056f077566c7bb2b7a6a54c94ff74b17fa46d155c4d189eb14444548"
+    },
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "log": "typecheck.txt",
+      "log_sha256": "eb8e50a889d2130f903b1412df3b98ad8050613b4953ad2e9955ee58ffb77adb"
+    },
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "--filter",
+        "@multica/views",
+        "lint"
+      ],
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 27,
+      "warnings_in_reviewed_changes": 0,
+      "log": "lint.txt",
+      "log_sha256": "1fc15e485ad8985ba92ad28174bcf181389c497a707c25555423dee18ae31e46"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "author_manifest_check": {
+    "manifest": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/evidence/web-takeover-verification.json",
+    "sha256": "ea198e7e2d46071c516c89cc422f88199156025dff6185fd188bdf3c780e9b47",
+    "mismatches": []
+  },
+  "notes": [
+    {
+      "id": "WV-1",
+      "type": "integration_gate",
+      "description": "The complete standalone Views lane run currently reports the known calendar-dependent admin execution filter failure. Its file blob is unchanged from base. Knowledge integration already carries 9c056ad68 clock fix; absorb that existing fix, preserve this failed run and finish full suites on the integrated candidate. This review does not call the standalone full Views suite passed."
+    },
+    {
+      "id": "WV-2",
+      "type": "scope",
+      "description": "Joint knowledge interactions, final candidate make check and Web/Electron/RK1/release gates remain coordinator work; branch results are not final acceptance."
+    }
+  ],
+  "database_access": false,
+  "migration_commands": false,
+  "provider_calls": 0,
+  "product_modified": false,
+  "report_directory_only": true
+}

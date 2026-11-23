@@ -1,0 +1,49 @@
+{
+  "observed_at": "2026-11-04T04:13:17.877960+00:00",
+  "state": "complete",
+  "make_pid": 8959,
+  "launcher_pid": 8940,
+  "wholecheck_accepted": false,
+  "make_exit": 0,
+  "stage": [
+    "6",
+    "Playwright (one worker, zero retries)"
+  ],
+  "log_bytes": 30829525,
+  "tail": [
+    "    \u2713 api stopped (pid 33628)",
+    "    Dropping isolated Go database multica_check_20261104030822_8966_go",
+    "\u2713 All checks passed."
+  ],
+  "Go": {
+    "allocated": 82,
+    "completed": 82,
+    "failed_packages": [],
+    "current_packages": [],
+    "completed_named_counts": {
+      "pass": 20963,
+      "fail": 0,
+      "skip": 22
+    },
+    "running_named_failures": [],
+    "running_package_observed_terminal_counts": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "make_process_alive": false,
+  "launcher_process_alive": false,
+  "TS_completed_package_summaries": {},
+  "static_tasks": {
+    "passed": 15,
+    "total": 15
+  },
+  "Playwright": {
+    "observed_case_index": 441,
+    "discovered_total": 441,
+    "observed_failure_reports": [],
+    "scope": "Reporter schedule position only; not a passed count"
+  },
+  "scope": "Current run only. Phase counts do not constitute wholecheck acceptance; final audit and complete inventory required."
+}

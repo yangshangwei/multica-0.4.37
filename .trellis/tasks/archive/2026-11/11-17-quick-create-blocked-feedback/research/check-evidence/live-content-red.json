@@ -1,0 +1,17 @@
+{
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/views",
+    "exec",
+    "vitest",
+    "run",
+    "modals/quick-create-issue.test.tsx",
+    "-t",
+    "debounced update",
+    "--maxWorkers=1"
+  ],
+  "started_at": "2026-11-20T06:42:59.088856+00:00",
+  "exit_code": 1,
+  "duration_seconds": 4.19
+}

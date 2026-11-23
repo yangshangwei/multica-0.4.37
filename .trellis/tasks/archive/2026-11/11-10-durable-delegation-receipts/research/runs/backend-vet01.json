@@ -1,0 +1,27 @@
+{
+  "name": "backend-vet01",
+  "command": [
+    "go",
+    "vet",
+    "-p",
+    "1",
+    "./internal/handler",
+    "./cmd/migrate"
+  ],
+  "started_at": "2026-11-10T04:17:13.197530+00:00",
+  "finished_at": "2026-11-10T04:17:18.313045+00:00",
+  "exit_code": 0,
+  "database_url": "",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-vet01.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  }
+}

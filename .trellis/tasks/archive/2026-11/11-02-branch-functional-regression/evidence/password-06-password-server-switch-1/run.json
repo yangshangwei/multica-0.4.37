@@ -1,0 +1,47 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "lane": "password",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/password-server-switch.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-06-password-server-switch-1/artifacts"
+  ],
+  "database": "multica_func7af9_password_20261102",
+  "api_health": {
+    "status": "ok",
+    "pid": 26546,
+    "commit": "7af9ab990",
+    "started_at": "2026-11-02T01:01:54Z"
+  },
+  "web_build_id": "wYec8nnmn8Rukz4PiJAJ7",
+  "config_sha256": "8749449aa2ac4e3ae09a5c6bc512ee6a8c19060c5fc57a09a29e1a809d8424dd",
+  "started_at": "2026-11-02T01:03:42.068941+00:00",
+  "state": "complete",
+  "commercial_provider_calls": 0,
+  "agent_cli_guard": true,
+  "harness_patch_sha256": "6378d5bb6185e8b986b9c52177e5ae2b5040fbdbd149792fe0e05c549982781a",
+  "harness_dirty_paths": [
+    "e2e/collaboration-memory-web.spec.ts"
+  ],
+  "exit_code": 0,
+  "finished_at": "2026-11-02T01:03:44.358278+00:00",
+  "stats": {
+    "startTime": "2026-11-02T01:03:42.937Z",
+    "duration": 1396.473,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "collection_errors": []
+}

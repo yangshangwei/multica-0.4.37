@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-11-03T14:03:45.310209+00:00",
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/ccg-v14-preparation/offline-no-network-no-source-writes.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/run-ccg1.py",
+    "normal",
+    "--permit",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v14/permissions/ccg1-normal.json.template",
+    "--label",
+    "offline-unready-ccg1-normal"
+  ],
+  "exit_code": 2,
+  "stdout": "REFUSED: Permit outside owned directory\n",
+  "stderr": "",
+  "candidate_runs_exists": false,
+  "scope": "read-only unready refusal; no database or services"
+}

@@ -1,0 +1,36 @@
+{
+  "allocated_at": "20261103_111943",
+  "cluster": {
+    "connections": 50,
+    "maximum": "100"
+  },
+  "allocations": [
+    {
+      "lane": "service",
+      "package": "./internal/service",
+      "database": "multica_detail_final_20261103_111943_service",
+      "actual_database": "multica_detail_final_20261103_111943_service",
+      "configuration": "/tmp/multica-detail-verification-20261103/final-service-env.json",
+      "template": "multica_detail_final_template_20261103_101054",
+      "state": "fresh_schema_only"
+    },
+    {
+      "lane": "handler",
+      "package": "./internal/handler",
+      "database": "multica_detail_final_20261103_111943_handler",
+      "actual_database": "multica_detail_final_20261103_111943_handler",
+      "configuration": "/tmp/multica-detail-verification-20261103/final-handler-env.json",
+      "template": "multica_detail_final_template_20261103_101054",
+      "state": "fresh_schema_only"
+    },
+    {
+      "lane": "router",
+      "package": "./cmd/server",
+      "database": "multica_detail_final_20261103_111943_router",
+      "actual_database": "multica_detail_final_20261103_111943_router",
+      "configuration": "/tmp/multica-detail-verification-20261103/final-router-env.json",
+      "template": "multica_detail_final_template_20261103_101054",
+      "state": "fresh_schema_only"
+    }
+  ]
+}

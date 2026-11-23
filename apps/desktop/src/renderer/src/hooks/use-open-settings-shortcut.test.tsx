@@ -59,7 +59,7 @@ function stubDesktopAPI(kind: "main" | "issue") {
     windowContext:
       kind === "main"
         ? { kind: "main" }
-        : { kind: "issue", path: "/acme/issues/abc", workspaceSlug: "acme" },
+        : { kind: "issue", scope: "workspace", path: "/acme/issues/abc", workspaceSlug: "acme" },
     onOpenSettings,
   };
   return { onOpenSettings, deliver: () => handler?.() };

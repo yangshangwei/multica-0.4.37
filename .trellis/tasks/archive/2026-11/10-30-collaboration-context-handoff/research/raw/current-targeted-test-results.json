@@ -1,0 +1,51 @@
+[
+  {
+    "command": [
+      "go",
+      "test",
+      "./internal/daemon/collaborationrun/",
+      "./cmd/multica/",
+      "-run",
+      "^(TestHostPromptTellsAMemberRunItsRoleAndStep|TestCollaborationCLICommentAddRejectsLocalPathLinksBeforeHTTP)$",
+      "-count=1",
+      "-json"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-context-plan-20261030/server",
+    "started_at_utc": "2026-10-29T23:12:18.247522+00:00",
+    "completed_at_utc": "2026-10-29T23:12:24.506393+00:00",
+    "head": "4b0cbfde7a2a03142e70ceb91294ec8d8f1ff074",
+    "go_version": "go version go1.27.0 darwin/arm64",
+    "exit_code": 0,
+    "passed": [
+      "TestHostPromptTellsAMemberRunItsRoleAndStep",
+      "TestCollaborationCLICommentAddRejectsLocalPathLinksBeforeHTTP"
+    ],
+    "failed": [],
+    "log": "raw/role-cli-current-head.txt",
+    "real_model_called": false
+  },
+  {
+    "command": [
+      "go",
+      "test",
+      "-tags=agentintegration",
+      "./internal/daemon/collaborationrun/",
+      "-run",
+      "^TestHostProviderAccountSmokeAuthorizesSharedContextBase$",
+      "-count=1",
+      "-json"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-context-plan-20261030/server",
+    "started_at_utc": "2026-10-29T23:12:24.517106+00:00",
+    "completed_at_utc": "2026-10-29T23:12:25.498497+00:00",
+    "head": "4b0cbfde7a2a03142e70ceb91294ec8d8f1ff074",
+    "go_version": "go version go1.27.0 darwin/arm64",
+    "exit_code": 0,
+    "passed": [
+      "TestHostProviderAccountSmokeAuthorizesSharedContextBase"
+    ],
+    "failed": [],
+    "log": "raw/authorizer-current-head.txt",
+    "real_model_called": false
+  }
+]

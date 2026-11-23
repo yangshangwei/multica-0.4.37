@@ -1,0 +1,27 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "./..."
+  ],
+  "environment": "pure",
+  "database": null,
+  "exit_code": 0,
+  "seconds": 6.56,
+  "finished_at": "2026-11-10T08:00:31.206114+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/candidate-vet-01.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "named_test_counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

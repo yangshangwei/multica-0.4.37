@@ -1,0 +1,173 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "review_date": "2026-11-16",
+  "status": "R20_AFTER_SOURCE_HISTORY_AND_OWNED_API_STOP_ACCEPTED_ORIGINAL_FOUR_INCOMPLETE",
+  "after_audit_mismatches": [],
+  "full_S2_A01_A12_parent_or_real_external_acceptance": false,
+  "actual_original_four": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT_RUN": 2,
+    "retry": 0,
+    "case_command_exit": 1,
+    "first_pass_duration_ms": 58741,
+    "first_pass_executes_original_R19_source_denial_assertion": true,
+    "first_pass_cleanup_and_page_errors": [],
+    "second_failure_duration_ms": 19920,
+    "second_failure": "collaboration-stage-execution.ts:338 Approve QA Record approval button disabled within original5000ms",
+    "second_failure_root_cause_inferred": false,
+    "next_diagnosis_lane": "R21",
+    "two_unstarted_cases_and_all_original_failures_retained": true,
+    "intentional_API_shutdown_counted_as_extra_case_failure": false
+  },
+  "bounded_current_frontend_after_check": {
+    "source_files": 3359,
+    "dependency_links": 1961,
+    "compiled_outputs": 1676,
+    "actual_byte_size_mode_and_link_targets_match": true,
+    "mismatches": [],
+    "complete_13428_file_historical_backend_ROOT_audit_repeated": false,
+    "current_result_binding_filesystem_and_stop_distinct_file_hash_references": 106,
+    "reference_mismatches": []
+  },
+  "filesystem_after": {
+    "before_paths_retained": 117,
+    "before_paths_removed": 0,
+    "old_generation_inode_mode_identities_preserved": 56,
+    "legitimate_this_run_generation_mode_transitions": 2,
+    "mode_transition": "0700_to_0500_for_two_new_sealed_R20_inputs",
+    "all_117_modes_claimed_unchanged": false,
+    "new_filesystem_paths": 10,
+    "actual_new_path_set_matches_after_record": true,
+    "R20_generations_sealed": 2,
+    "R20_generations_unused": 6,
+    "old_files_and_generations_reused_deleted_or_rewritten": false,
+    "mismatches": []
+  },
+  "new_artifacts": [
+    {
+      "execution_id": "01a1e4a1-964f-73b1-b077-50c8f5301348",
+      "staging_id": "d59d4384-14e1-47e8-b1f1-c13aedcad097",
+      "source_revision": "8e82eaec439df9bf2f28024782d8fc41c9ab1e95",
+      "spec_digest": "e2953462604b578b96f700f89f5ef2f9fbc2f3f85158ea8b065b7bb4f821b3ce",
+      "receipt_digest": "da52ab264da87436ff67c75ca8f5fd4180b4e9d90154293edf6ae3fee69f5e4e",
+      "tar": {
+        "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-964f-73b1-b077-50c8f5301348/artifact.tar",
+        "sha256": "deb797a943bd9d6edff37595936ac859884b56ab13612324214b698c86dbc665"
+      },
+      "tar_bytes": 2048,
+      "single_member": "stage-regression.json",
+      "member_bytes": 105,
+      "member_sha256": "26ce767f16788b5dd0a5e2a58493fda70915c8921df55905ec1e5994a6dd6e04",
+      "tar_member_equals_sealed_staging_file": true,
+      "manifest_source_revision_equals_execution_record": true,
+      "result": "succeeded/packaged"
+    },
+    {
+      "execution_id": "01a1e4a1-969d-7acd-99e6-93c4c37f229d",
+      "staging_id": "b0024b1b-2e6a-4a8b-b62f-e0330743685d",
+      "source_revision": "1eb38fb89cc07eef462fc8a5e2974b2c6f79ead1",
+      "spec_digest": "736019d2207a26c714b9018e3e148d340e115fa32be884402c6c6d332fd4664f",
+      "receipt_digest": "15ff35d20c494c2e8fd47763078d24bd118751541e299b98b28ed64dee95b6bc",
+      "tar": {
+        "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-969d-7acd-99e6-93c4c37f229d/artifact.tar",
+        "sha256": "2032b567c6227cb3dddee5f2717cb967a84a40c56c46d3b7172a35861d2c6d2a"
+      },
+      "tar_bytes": 2048,
+      "single_member": "stage-regression.json",
+      "member_bytes": 105,
+      "member_sha256": "ae017f1a60d05fcf9012faf8aff77df7801d09de946fb61d3cc4692529c98cb3",
+      "tar_member_equals_sealed_staging_file": true,
+      "manifest_source_revision_equals_execution_record": true,
+      "result": "succeeded/packaged"
+    }
+  ],
+  "opaque_receipt_digests_independently_recomputed": false,
+  "recorded_after_stop_database": {
+    "database": "multica_pay241_20261116_s2_runtime_r11",
+    "queue_rows": 13,
+    "queue_status_counts": {"failed": 11, "deferred": 1, "running": 1},
+    "old_queue_ids_removed": 0,
+    "new_running_synthetic_producer_task_id": "d27bbd39-745e-4fb6-8326-10541b201fdc",
+    "producer_provider": "stage_artifact_fixture",
+    "producer_has_collaboration_run": false,
+    "producer_task_id_matches_two_new_sealed_manifests": true,
+    "host_runs": 23,
+    "old_Host_run_ids_retained": 19,
+    "new_settled_Host_runs": 4,
+    "unsettled": 0,
+    "unreleased": 0,
+    "active_prepare_leases_or_execution_bindings": 0,
+    "artifact_executions": 10,
+    "old_artifact_execution_ids_retained": 8,
+    "incomplete_artifacts": 0,
+    "old_unknown_stage_intents": 1,
+    "rollback_metrics": 0,
+    "gate": {"enabled": false, "creation_enabled": true, "host_execution_enabled": false, "epoch": "24"},
+    "gate_booleans_restored_and_epoch20_to24_monotonic": true,
+    "before_stop_other_connections": 6,
+    "after_stop_other_connections": 0,
+    "history_manually_deleted_or_status_rewritten": false,
+    "history_claimed_empty_or_permanently_inert": false
+  },
+  "recorded_owned_stop": {
+    "signaled_pid": 87271,
+    "signal": "SIGTERM",
+    "API87271_bridge87268_absent": true,
+    "API64922_listener_absent": true,
+    "PAY_API_suites": 0,
+    "owned_Web86953_renderer86966_retained": true,
+    "peer_Web39744_renderer39748_retained": true,
+    "platform_or_forced_signals_recorded": false,
+    "reviewer_signal_or_live_process_query_performed": false
+  },
+  "reused_acceptance": {
+    "product_source_and_outputs": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-independent-check-20261116.json",
+      "sha256": "2d3751e4ca6e4c23ecf80b34879a242554ee19dc17984818a507407708039190"
+    },
+    "original_entry": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-runtime-entry-independent-check-20261116.json",
+      "sha256": "d1d7cf944da6ec8dd7ee4147ce9ed5e985ee09a9e6a6def9ad00d661fecfbf0a"
+    }
+  },
+  "evidence": {
+    "original_four_result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/four-scenarios-r01/result.json",
+      "sha256": "f424ea63461dec5b13a50e932b072a8fd679786c79386835d26ec7913386f388"
+    },
+    "after_files_history": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/after-files-history-r01.json",
+      "sha256": "76eed561dda5290951f912067bcb8bace3fb4918356b3c07875cfecdf4892a7f"
+    },
+    "recorded_after_database": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/database-after-four-r02.json",
+      "sha256": "9b125fe4c2d4821cf6db2cb4721281011123d35b6a35b91b93a0691221e82296"
+    },
+    "recorded_after_stop_database": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/database-after-stop-r02.json",
+      "sha256": "5ab003e7c2acdb471bbbe05f6a5439c91bb26dd6221169eac43b8942cdd06c37"
+    },
+    "stop_receipt": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/stop-owned-api-after-four-r01.json",
+      "sha256": "60e6fca84a46f807979d80e4b99f772b1af80a097b55597311149e28d2163c90"
+    },
+    "filesystem_before": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/artifact-filesystem-before-four-r01.json",
+      "sha256": "d618bab30f498d4ef742a2f82de26951f5da098a8a532702319d4e4a12c9f419"
+    },
+    "final_live_binding": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/live-binding-r01.json",
+      "sha256": "d9c7143fbb12ff5707e82baf36f905c8b5a059cb73f220c70c459f3e82e30ece"
+    },
+    "single_case_command_permit": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/four-scenarios-execution-permit.json",
+      "sha256": "e3ac6e7215277aebeef10fe7715a4bf24d9d5b3eac7ac7bb220eabae3e5c1031"
+    }
+  },
+  "checker_executed_lint_typecheck_tests_DB_API_browser_build_signals_installs_or_Git": 0,
+  "changed_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-original-four-after-independent-check-20261116.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-original-four-after-independent-check-20261116.json"
+  ]
+}

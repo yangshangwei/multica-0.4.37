@@ -1,0 +1,117 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "created_at": "2026-11-15T09:59:39.307251+00:00",
+  "status": "failed_original_preserved_before_repair",
+  "source_id": "b91a4cac945be1bdf3f98ff1d861895fb43602e554fb89ad668be63b19bc2aa5",
+  "build_file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-6d3d2c441904/build.json",
+  "build_sha256": "42fe2e5814cf52256a81af29e7b75d454edbd2fd930c7d90ee1d0dd5ac4c96cf",
+  "allocation_file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json",
+  "allocation_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+  "original_result": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-983245fbeacc/result.json",
+  "original_result_sha256": "180f886d9a187b952831b1d6a0e8f70a3d9f4f1a8b8a3c20565951b77d46b1c0",
+  "original_report": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-983245fbeacc/playwright-report.json",
+  "original_report_sha256": "f1cd08245146b90bf67f708dc6e293e656f485f063871996468f29b2eaf6fb85",
+  "inventory": [
+    {
+      "title": "project-knowledge-automation.spec.ts / web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "expected_status": "passed",
+      "results": [
+        "failed"
+      ]
+    },
+    {
+      "title": "project-knowledge-automation.spec.ts / desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "expected_status": "passed",
+      "results": [
+        "failed"
+      ]
+    }
+  ],
+  "source_stable": true,
+  "readonly_actual_consumers": [
+    {
+      "task_id": "01a1de8f-db18-72c3-85d8-88e8d3f1af5b",
+      "status": "completed",
+      "knowledge_context_version": null,
+      "knowledge_delivery": null,
+      "issue_id": "01a1de8f-dabd-78d1-95eb-7c24ca74ca51",
+      "project_id": "d1dd31fa-c613-49b0-9e10-f1b3a1ba128d"
+    },
+    {
+      "task_id": "01a1de90-6fc4-7883-a4f5-a609ca79e530",
+      "status": "completed",
+      "knowledge_context_version": null,
+      "knowledge_delivery": null,
+      "issue_id": "01a1de90-6f9a-7271-8ab6-0b2717cde0bf",
+      "project_id": "c7d4e38d-637b-404d-adc8-8fc50da78ab0"
+    }
+  ],
+  "runtime_after": {
+    "task": ".trellis/tasks/11-14-project-knowledge-automation",
+    "allocation": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json",
+    "run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156",
+    "database": "mca_knowledge_browser_073bb20e614e",
+    "state": "stopped",
+    "runtime_permitted": false,
+    "services": {
+      "model": {
+        "pid": 5805,
+        "owned_process_alive": false,
+        "origin": "http://127.0.0.1:61993",
+        "listener_pid": null,
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-4da8a00080c1/model.log"
+      },
+      "api": {
+        "pid": 5807,
+        "owned_process_alive": false,
+        "origin": "http://127.0.0.1:61990",
+        "listener_pid": null,
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-4da8a00080c1/api.log"
+      },
+      "web": {
+        "pid": 5809,
+        "owned_process_alive": false,
+        "origin": "http://127.0.0.1:61991",
+        "listener_pid": null,
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-4da8a00080c1/web.log"
+      },
+      "renderer": {
+        "pid": 5811,
+        "owned_process_alive": false,
+        "origin": "http://127.0.0.1:61992",
+        "listener_pid": null,
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/start-4da8a00080c1/renderer.log"
+      }
+    },
+    "source_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-6d3d2c441904/source",
+    "source_id": "b91a4cac945be1bdf3f98ff1d861895fb43602e554fb89ad668be63b19bc2aa5",
+    "build": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-6d3d2c441904/build.json"
+  },
+  "before_files": {
+    "e2e/fixtures/collaboration-detail-journey.ts": {
+      "sha256": "ec727d740cf074b4b7f47a257ef29a3e2e233736b7f69c845c2b69fd58bc88e2",
+      "private_original": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-prerequisite-originals-e7734978/e2e/fixtures/collaboration-detail-journey.ts"
+    },
+    "e2e/fixtures/project-knowledge-automation.ts": {
+      "sha256": "f7553a1785231cab4f0ddc967c7a819b62eea389ca3fcb1a010b84a889cbd106",
+      "private_original": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-prerequisite-originals-e7734978/e2e/fixtures/project-knowledge-automation.ts"
+    },
+    "e2e/project-knowledge-automation.spec.ts": {
+      "sha256": "de6c4090c4e520bfadb87463a28fccb15831557ba8d1404d99a7b78578434381",
+      "private_original": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-prerequisite-originals-e7734978/e2e/project-knowledge-automation.spec.ts"
+    },
+    ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py": {
+      "sha256": "18643895cdf992a684ed22ecead35d3f42e30c27d01fb71e6f784d461bbce69a",
+      "private_original": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-prerequisite-originals-e7734978/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py"
+    }
+  },
+  "diagnosis": "The real daemon completed base execution under legacy user credentials. Private knowledge negotiation requires a real workspace-scoped managed daemon credential; no descriptor was issued. Existing authorization behaved correctly.",
+  "bounded_repair_plan": {
+    "environment": "Task-owned password auth + managed installations + explicit single-process password limiter, with strict source/build/resource/auth guards retained. Original allocation/environment remain unchanged.",
+    "authentication_fixture": "Opt-in password actors and real Web cookie login; default legacy journey stays intact and expected mode is bound to owner proof and live config.",
+    "daemon": "Reuse production prepareManagedInstallationSession, real PAT issuance/enrollment/signature handoff over stdin and matching foreground CLI under unique private HOME.",
+    "product_go_sql_ui_changes": false,
+    "provider_capture_changes_before_descriptor_evidence": false,
+    "verification": "Rebuild frozen candidate, then both original complete journeys without skips/retries and final owned cleanup."
+  }
+}

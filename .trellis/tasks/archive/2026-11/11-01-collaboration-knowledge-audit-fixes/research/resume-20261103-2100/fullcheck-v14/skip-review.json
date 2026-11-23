@@ -1,0 +1,2092 @@
+{
+  "rows": [
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421583865_f9a6f66e94fe.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationPartialResumeRoutesLinux",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "test": "TestPasswordLimiterSharedAtomicAdmission",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142622796822_d4b8dc307441.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "test": "TestCLIConfig_UnknownFieldsArePreserved",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632582902_248934fbfb73.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "collaboration_test.go:189: requires real Linux kernel containment"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "test": "TestIsDriveRoot",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "local_directory_test.go:383: windows-only behaviour"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestIterationI1P95",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestIterationI1DisableP95",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestTriageQueueScaleBaseline",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestTriageWireFixtures",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "triage_test.go:566: wire fixture export requested only by cross-package verification"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "codex_test.go:3198: Linux signal/reap semantics regression"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestPiExecuteAttachesStdinPipe",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl"
+    },
+    {
+      "kind": "Go",
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+      "matches_prior_explicit_skip": true,
+      "actual_reason": [
+        "claude_test.go:756: root-only preflight assertion"
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separate gatedplatform/integration/performance/knownlimitation; notcanonical21auditregression.",
+      "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl"
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "admin-collaboration-switches.spec.ts",
+      "title": "a super administrator closes and reopens new collaboration issues from Settings and members follow",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the password/admin lane with an injected synthetic super administrator",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/admin-collaboration-switches.spec.ts",
+            "line": 24,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "admin-resource-publishing.spec.ts",
+      "title": "first resource page screenshot",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned API, Web, database and managed storage",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/admin-resource-publishing.spec.ts",
+            "line": 166,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "admin-resource-publishing.spec.ts",
+      "title": "localized responsive states and deployment-disabled feedback",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned API, Web, database and managed storage",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/admin-resource-publishing.spec.ts",
+            "line": 166,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "admin-resource-publishing.spec.ts",
+      "title": "real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned API, Web, database and managed storage",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/admin-resource-publishing.spec.ts",
+            "line": 166,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "auth-device.spec.ts",
+      "title": "device login authenticates a distinct user without granting another user's workspace",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a dedicated API with MULTICA_DEVICE_AUTH_ENABLED=true",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/auth-device.spec.ts",
+            "line": 6,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "changelog.spec.ts",
+      "title": "generated publication reaches an open reader and a fresh client without restart",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a task-owned CHANGELOG_E2E_API_URL and CHANGELOG_E2E_FEED",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/changelog.spec.ts",
+            "line": 100,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "cli-forbidden-reason.spec.ts",
+      "title": "an Observer agent's status change prints the autonomy reason, not the workspace hint (en)",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/cli-forbidden-reason.spec.ts",
+            "line": 80,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "cli-forbidden-reason.spec.ts",
+      "title": "an Observer agent's status change prints the autonomy reason, not the workspace hint (zh)",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/cli-forbidden-reason.spec.ts",
+            "line": 80,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "cli-forbidden-reason.spec.ts",
+      "title": "an ordinary member editing someone else's comment sees the server's reason",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/cli-forbidden-reason.spec.ts",
+            "line": 80,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-administration-desktop.spec.ts",
+      "title": "Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the independent password/admin API and rebuilt production Electron renderer/preload",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-administration-desktop.spec.ts",
+            "line": 13,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-administration-web.spec.ts",
+      "title": "Web administers disabled-creator collaborations with explicit succession and original receipt recovery",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the independent password/admin-enabled production Web environment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-administration-web.spec.ts",
+            "line": 63,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-control-journey-desktop.spec.ts",
+      "title": "Desktop controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the task-owned password/managed deployment, execution gate and matching production native renderer",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-control-journey-desktop.spec.ts",
+            "line": 16,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-control-journey-desktop.spec.ts",
+      "title": "Desktop pending termination proof keeps A paused while whole Resume releases B and squad S",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the task-owned password/managed deployment, execution gate and matching production native renderer",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-control-journey-desktop.spec.ts",
+            "line": 16,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-control-journey-web.spec.ts",
+      "title": "Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-control-journey-web.spec.ts",
+            "line": 12,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-control-journey-web.spec.ts",
+      "title": "Web pending termination proof keeps A paused while whole Resume releases B and squad S",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-control-journey-web.spec.ts",
+            "line": 12,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-cross-client-execution.spec.ts",
+      "title": "AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires explicit task-owned password API/Web/renderer and static Linux daemon/provider executables",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-cross-client-execution.spec.ts",
+            "line": 18,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the root session's task-owned production runtime permit",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-detail-journey.spec.ts",
+            "line": 39,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the root session's task-owned production runtime permit",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-detail-journey.spec.ts",
+            "line": 39,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-handoff-chain-desktop.spec.ts",
+      "title": "Electron information return shows the original requester and note before restoring responsibility",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password services and the built desktop renderer",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-handoff-chain-desktop.spec.ts",
+            "line": 18,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-handoff-chain-web.spec.ts",
+      "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-handoff-chain-web.spec.ts",
+            "line": 13,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-host-installed.spec.ts",
+      "title": "Packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly selected packaged Main image or native Windows/macOS executable",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-host-installed.spec.ts",
+            "line": 42,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-host-runtime.spec.ts",
+      "title": "host Web and actual Electron share one ordinary Agent, preserve authors, and explicitly resume after scoped Stop",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires explicit task-owned host daemon/provider/CLI executables; configured runs fail if any environment input is missing",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-host-runtime.spec.ts",
+            "line": 17,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-host-squad.spec.ts",
+      "title": "a capacity-one host squad merges @A with @S, delegates to its member, joins a later instruction and queues another squad",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires explicit task-owned host daemon/provider/CLI executables; configured runs fail if any environment input is missing",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-host-squad.spec.ts",
+            "line": 15,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-host-switch.spec.ts",
+      "title": "switching a squad to another native runtime waits for confirmed Stop and owner consent, then resumes there without moving local files",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires explicit task-owned host daemon/provider/CLI executables; configured runs fail if any environment input is missing",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-host-switch.spec.ts",
+            "line": 16,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-installed-clients.spec.ts",
+      "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the existing isolated password API, exact cached OCI package and explicit Linux stdio relay",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-installed-clients.spec.ts",
+            "line": 30,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-installed-main.spec.ts",
+      "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a task-owned packaged Linux full Main image and password API",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-installed-main.spec.ts",
+            "line": 141,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-knowledge-deployed.spec.ts",
+      "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicit true/false expectation and isolated task-owned deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-knowledge-deployed.spec.ts",
+            "line": 18,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "DirectCCG2gate remainsopen: explicitOFF/ON mustrunlater"
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the root-owned production/password API, renderer and explicit fixture identities",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+            "line": 96,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires root-owned production/password API, Electron and explicit Linux fixtures",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+            "line": 102,
+            "column": 12
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires root-owned production/password API, Electron and explicit Linux fixtures",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+            "line": 102,
+            "column": 12
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the root-owned production/password API, renderer and explicit fixture identities",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+            "line": 96,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires root-owned production/password API, Electron and explicit Linux fixtures",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+            "line": 102,
+            "column": 12
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "title": "Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires root-owned production/password API, Electron and explicit Linux fixtures",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+            "line": 102,
+            "column": 12
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-leave-web.spec.ts",
+      "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-leave-web.spec.ts",
+            "line": 15,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "title": "Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires root-allocated task-owned production Web/password API/renderer and explicit Linux fixtures",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lifecycle-controls.spec.ts",
+            "line": 16,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "title": "Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires root-allocated task-owned production Web/password API/renderer and explicit Linux fixtures",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lifecycle-controls.spec.ts",
+            "line": 16,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-live-revoke-web.spec.ts",
+      "title": "Web withdrawing a grant during a permitted run stops that work, holds only its target, keeps the queued input, and needs proof plus explicit Resume",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-live-revoke-web.spec.ts",
+            "line": 15,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-memory-runtime.spec.ts",
+      "title": "two native runtime profiles hand off shared context through the actual run-local CLI",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires explicit task-owned host daemon, memory-provider and Multica CLI executables",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-memory-runtime.spec.ts",
+            "line": 47,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-handoff.spec.ts",
+            "line": 14,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-handoff.spec.ts",
+            "line": 14,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "title": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services and explicit test-built Linux executables",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-result-notifications.spec.ts",
+            "line": 17,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "title": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services and explicit test-built Linux executables",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-result-notifications.spec.ts",
+            "line": 17,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-retained-attachment.spec.ts",
+            "line": 143,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-retained-attachment.spec.ts",
+            "line": 143,
+            "column": 10
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-retained-attachment.spec.ts",
+      "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-retained-attachment.spec.ts",
+            "line": 158,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-runtime-handoff-desktop.spec.ts",
+      "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-runtime-handoff-desktop.spec.ts",
+            "line": 16,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-runtime-handoff-web.spec.ts",
+            "line": 11,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-runtime-handoff-web.spec.ts",
+            "line": 49,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-selection-boundary.spec.ts",
+      "title": "AC87 Web and actual Electron hide subtask creation for shared body/comment selections while ordinary children retain it",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the task-owned password production Web and actual Electron environment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-selection-boundary.spec.ts",
+            "line": 14,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-source-surface.spec.ts",
+      "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires explicit task-owned password production services",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-source-surface.spec.ts",
+            "line": 13,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "collaboration-terminal-reopen-web.spec.ts",
+      "title": "Web closed issue refuses @agent and Resume, only the creator reopens, and reopening revives nothing or the stop barrier",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-terminal-reopen-web.spec.ts",
+            "line": 14,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "issue-assist-flow.spec.ts",
+      "title": "refines a vague feature, preserves folded answers, merges and undoes, then persists exactly once",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "issue-assist-flow.spec.ts",
+      "title": "handles 0 dynamic clarification questions and undo",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "issue-assist-flow.spec.ts",
+      "title": "handles 1 dynamic clarification questions and undo",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "issue-assist-flow.spec.ts",
+      "title": "preserves edits during generation, supports cancellation and real provider failure",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "issue-assist-flow.spec.ts",
+      "title": "creates the unchanged manual draft after a refinement failure",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "issue-assist-flow.spec.ts",
+      "title": "manual keeps creation reachable at desktop and phone widths with long content",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "issue-assist-flow.spec.ts",
+      "title": "agent keeps creation reachable at desktop and phone widths with long content",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "issue-assist-flow.spec.ts",
+      "title": "agent creation queues the refined prompt through the real API without executing a daemon",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic AI provider and isolated API configuration",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+            "line": 56,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "mcp-desktop.spec.ts",
+      "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a local password-mode API and freshly built desktop renderer/preload",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/mcp-desktop.spec.ts",
+            "line": 80,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-binding-desktop.spec.ts",
+      "title": "an existing Desktop account binds password login without losing its history",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a local password-mode server and migration window",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-binding-desktop.spec.ts",
+            "line": 11,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "invalid username preserves registration fields and can be corrected without restarting",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "five-character password error can be corrected to the supported six-character minimum",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "overlong pasted password is rejected and accepts the corrected 128-character boundary",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "whitespace-only display name reaches server validation and keeps credentials for correction",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "duplicate username after normalization leaves the original identity and password intact",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "incorrect password preserves the login form and a corrected retry restores the same identity",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "unknown account gives a generic error and can sign in after the account is created",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "lost registration response offers sign-in recovery for the account the server already created",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "network failure during login keeps credentials and succeeds after connection recovery",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "temporary authentication service failure preserves the form and permits a real retry",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "Retry-After disables login submissions until cooldown ends without discarding credentials",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-branches.spec.ts",
+      "title": "pending registration locks the form and ignores repeated native submissions",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment with signup enabled",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+            "line": 39,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-migration.spec.ts",
+      "title": "legacy setup returns to the original identity and workspace",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-migration.spec.ts",
+            "line": 10,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-migration.spec.ts",
+      "title": "temporary recovery returns to the original identity and workspace",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-migration.spec.ts",
+            "line": 10,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-registration.spec.ts",
+      "title": "confirmed password registers without email and a second device keeps the same identity",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-registration.spec.ts",
+            "line": 6,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-registration.spec.ts",
+      "title": "confirmation requires an exact match and password visibility stays independent",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated password-mode deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-registration.spec.ts",
+            "line": 6,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "password-server-switch.spec.ts",
+      "title": "Electron server switch clears same-host credentials and closes issue windows",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Opt-in isolated password acceptance",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-server-switch.spec.ts",
+            "line": 17,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "platform-admin-accounts.spec.ts",
+      "title": "account controls, lost response recovery, forced password change and observer UI",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a task-owned password-mode production build",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-accounts.spec.ts",
+            "line": 22,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "platform-admin-controls.spec.ts",
+      "title": "admission receipts and original-key recovery survive a lost cancellation response and reload",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the isolated password-mode production deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-controls.spec.ts",
+            "line": 9,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "platform-admin-executions.spec.ts",
+      "title": "private metadata, filters, cursor, attempt detail and original content permissions",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the isolated password-mode production deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-executions.spec.ts",
+            "line": 9,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "platform-admin-initialization.spec.ts",
+      "title": "initialized administrator changes the temporary password before entering administration",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a fresh isolated administrator-initialization deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-initialization.spec.ts",
+            "line": 12,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "platform-admin-installations-read.spec.ts",
+      "title": "real enrollment and binding keep client, daemon and engine status separate",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the isolated password-mode production deployment",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-installations-read.spec.ts",
+            "line": 12,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "platform-admin-observability.spec.ts",
+      "title": "windowed metrics, active alerts, original-key recovery and observer boundaries",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the isolated password-mode production snapshot",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-observability.spec.ts",
+            "line": 14,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "platform-admin.spec.ts",
+      "title": "zero-workspace cookie access, ordinary-user denial, and live role revocation",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires a task-owned password deployment and bootstrapped administrator",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin.spec.ts",
+            "line": 34,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires the deterministic local recommendation provider",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/quick-create-actor-picker-phase2.spec.ts",
+            "line": 79,
+            "column": 7
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "actual Electron renderer adopts suggestions without running a daemon",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires isolated desktop renderer and provider",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/quick-create-actor-picker-phase2.spec.ts",
+            "line": 119,
+            "column": 7
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires deterministic local provider",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/quick-create-actor-picker-phase2.spec.ts",
+            "line": 135,
+            "column": 7
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "upstream-backports-cli.spec.ts",
+      "title": "skill labels remain typed and idempotent while issue labels still work",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/upstream-backports-cli.spec.ts",
+            "line": 160,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "upstream-backports-cli.spec.ts",
+      "title": "comment updates preserve UTF-8 files and reject stale revisions",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/upstream-backports-cli.spec.ts",
+            "line": 160,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    },
+    {
+      "kind": "Playwright",
+      "project": "chromium",
+      "file": "upstream-backports-cli.spec.ts",
+      "title": "an unrelated member and an outsider cannot update another member's comment",
+      "matches_prior_explicit_skip": true,
+      "actual_annotations": [
+        {
+          "type": "skip",
+          "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+          "location": {
+            "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/upstream-backports-cli.spec.ts",
+            "line": 160,
+            "column": 8
+          }
+        }
+      ],
+      "counted_as_pass": false,
+      "task7_scope": "Separatelygatedscope; preserveclassification, noacceptanceclaimedforitsbehavior."
+    }
+  ],
+  "Go_skips": 22,
+  "PW_skips": 91,
+  "all_match_prior_registered_skips": true,
+  "no_skip_counted_pass": true
+}

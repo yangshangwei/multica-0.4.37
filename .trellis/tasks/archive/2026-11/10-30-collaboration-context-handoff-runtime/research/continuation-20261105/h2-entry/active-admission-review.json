@@ -1,0 +1,77 @@
+{
+  "reviewed_at": "2026-11-05T11:49:27.885837+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "H2 bounded activation-record and saved fresh-allocation review; stage execution remains Root-controlled",
+  "verdict": "pass-with-notes",
+  "blocking_findings": 0,
+  "checks": {
+    "protected_source17_launcher_model_provider": true,
+    "prior_E0a_H1_records_unchanged": true,
+    "registered25_spent4": true,
+    "H2exact3trials3paid": true,
+    "operator_matches_saved_actualenv": true,
+    "operator_no_new_diff": true,
+    "config_actualhash": true,
+    "env_same_reviewed_preparation": true,
+    "helper_actualhash": true,
+    "provider_actualhash": true,
+    "newDB_config_identity": true,
+    "DBmigration764": true,
+    "emptyDBtemplate0": true,
+    "allocationquota": true,
+    "windowmatchesreg": true,
+    "explicit_ready_receipt": true,
+    "stagepermitsstillfalse": true,
+    "privatefilesowned": true,
+    "executionclean": true,
+    "frozenproductunchanged": true
+  },
+  "checks_passed": 20,
+  "execution_before_sync": "ce5c84fa3",
+  "tested_product_head": "1a32ca36c",
+  "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+  "prior_consumed": 4,
+  "prior_remaining": 21,
+  "new_paid_cap": 3,
+  "expected_fake_seeds": 6,
+  "expected_CLI_captures": 10,
+  "expected_after_if3start": {
+    "consumed": 7,
+    "remaining": 18
+  },
+  "window": {
+    "owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+    "granted_by": "01a1a731-b1e5-7b11-b83e-55efca5293d6",
+    "scenario": "RK1-H2",
+    "start_trial": 1,
+    "trials": 3,
+    "paid_launches": 3,
+    "outer_timeout_minutes": 26,
+    "recorded_at": "2026-11-05T11:48:37.575836+00:00",
+    "hold": "preparation then one original invocation up to26min; release onexit"
+  },
+  "live_DB_statement": "Root actual allocation/migration receipt reviewed; reviewer did not query DB",
+  "operator_statement": "Saved full actualenv facts equal enabled registration; original strict checks repeat at execution, no new plugin scan by reviewer",
+  "allowed_next": "Scoped commit/sync, describe, root-bound upfront build, then unchanged launcher check-only; only after actualsuccess andbinding may Root permit one original H2invocationtrial1-3. NoH2bautomatic.",
+  "conditions": [
+    "Use savedparentenv acrossstages; config/source/helper/CLI/fulloperator checks retained",
+    "Preserve actual incomplete/canary/originallauncherfailure and physicalcount stop rules",
+    "Observe fullplugin before/post manifests plus selectedJSON; explicitreview drift beforelaterinvocation",
+    "Actualwindow coverspreparation theninvocation26min; releaseonexit",
+    "Preserve priorE0a/H1rawresults and auxiliarylimitations"
+  ],
+  "hashes": {
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json": "1f1061d86073b83cde3b2e3eab40b4b016c241264613254c7fa6ccf4c5af4eff",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/allocation.json": "9d28c4664dfbfce67705912f9dc23037e72b42465d24155728f09e0b82689c20",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/active-env-facts.json": "346bb455d2e96e20b0d17c4feb8c4a6b26f6b6d92c4b1f1479c77b938e71c86e",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/active-window.json": "38ecde531c4fd068ad6815aaa98829869b8aecab154493796f8329ffd054b84f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-successor-20261105/RK1-H2-from-1/permit.json": "ff489fd013f0ea39baceab5eb9c5903a99350b92b0fd1b93ac9e688d5d627f3c"
+  },
+  "operations": {
+    "Go": 0,
+    "DB": 0,
+    "Provider": 0,
+    "tests": 0,
+    "full_plugin_scan": 0
+  }
+}

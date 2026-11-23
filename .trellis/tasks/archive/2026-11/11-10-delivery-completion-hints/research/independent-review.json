@@ -1,0 +1,850 @@
+{
+  "reviewed_at": "2026-11-10T09:33:47.146377+00:00",
+  "reviewer": "native trellis-check hint_review",
+  "verdict": "pass",
+  "scope": "Explicit human ordinary-issue completion hint API; no UI/CLI, skip, lifecycle enforcement or real-model acceptance",
+  "blocking_findings": [],
+  "resolved_findings": [
+    {
+      "kind": "planning",
+      "issue": "Bare artifactTx omits policy/evaluation readiness",
+      "resolution": "Use deliveryPolicyTx on all successful branches; missing/nonunique index tests pass."
+    },
+    {
+      "kind": "planning",
+      "issue": "Later outer timestamp could overstate expiry revalidation",
+      "resolution": "Outer checked_at equals recovered applicability.checked_at; exact equality tested."
+    },
+    {
+      "kind": "test_coverage",
+      "issue": "No-key/not-applicable responses must retain current authority independently of evaluation recovery",
+      "resolution": "Four branch positives then expired credential/membership/user revocation negatives; zero business mutations."
+    },
+    {
+      "kind": "product",
+      "issue": "Embedded NUL status was sent to PostgreSQL and returned503 rather than400",
+      "red": "handler-nul-red01:0pass2fail (parent+subtest), actual expected400/got503",
+      "resolution": "Reuse existing ValidateKey for normalized custom-key syntax before SQL; final handler normal/race include passing nul_status."
+    }
+  ],
+  "reviewer_product_edits": 0,
+  "reviewer_test_edits": 0,
+  "reviewer_database_actions": 0,
+  "reviewer_real_model_calls": 0,
+  "source_manifest": {
+    "path": "research/final-source-manifest.json",
+    "sha256": "df6bb85566b8cb9cf38f59115df6503c6d7a83e2aef50916b5aebefc3a0d2399",
+    "files": {
+      ".trellis/spec/server/delivery-completion-hints.md": "d515d42fe7aff7413599d8e645e152ec619fa310d83b0db0821ac12bc5d83322",
+      ".trellis/spec/server/delivery-policy-evaluations.md": "025872a5e5e802cf72bfff0cb20b6f23c05ba002d80cd04471650fc793f6d18e",
+      ".trellis/spec/server/index.md": "18cd5d611811587a9c5266e9308eaaf64a6215fbf70fa4cb214eb86f058828b3",
+      "server/cmd/server/delivery_completion_hint_integration_test.go": "24404371a1631657f57f1d5ba888d39a50b7ea006289cf57b0edbd6c579e1016",
+      "server/cmd/server/router.go": "a7132fb04144ea966e38a328f268bcb4a9253dbe4b1d95483259f79f2cb8574d",
+      "server/internal/handler/delivery_completion_hint.go": "d8201594c56d23ce1656a2ee97a854e5bd8c41984bb34bdc2e871e82129b32c0",
+      "server/internal/handler/delivery_completion_hint_test.go": "db393602f169171646d90cc9476ecedf6beda09a6e2087642b31f6d81091c58d",
+      "server/internal/service/builtin_skills/multica-creating-agents/SKILL.md": "d5495772b5b8125c5e15c512977bb7ea2f2401b9f8190966a379f22fcffff3cb",
+      "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md": "1ceb5747acdb318661c7ce49a4ce1fb2de0b144255a3b32ad5dce022f35550a6",
+      "server/internal/handler/delivery_evaluation.go": "f49d65948597d319706c19e2da4f1016e7a9622c3191cdc72c28a6e2c99eeb23",
+      "server/internal/handler/delivery_evidence.go": "82d8fadaf5ec0eb17b2e7890f46e8de178a13a1fb269772ad3b82b9592c2b5f1",
+      "server/internal/handler/delivery_policy.go": "b8dcb0e7f64307d8242d9f05a016276bac5ff4e7a2be9ad0cfe00e69e6b506af",
+      "server/internal/issuestatus/issuestatus.go": "5f73adbc4c21a46eefbde5d9196593e3e55b6e7c2b2069b123b8664cd6b15cd8"
+    },
+    "changed_file_count": 9,
+    "reused_file_count": 4,
+    "source_drift": [],
+    "changed_product_scope_complete": true,
+    "reused_unchanged_from_baseline": {
+      "server/internal/handler/delivery_evaluation.go": true,
+      "server/internal/handler/delivery_evidence.go": true,
+      "server/internal/handler/delivery_policy.go": true,
+      "server/internal/issuestatus/issuestatus.go": true
+    }
+  },
+  "verification_file": {
+    "path": "verification-2026-11-10.json",
+    "sha256": "0e8c8a7a817bcd3653cf45b31abf49ab40fee6e69f9c010aca0e36e47a7a478e"
+  },
+  "inventory_file": {
+    "path": "research/test-inventory.json",
+    "sha256": "d5d2c3223c87b996dbbb2262a722ae1d4a15f9ea327b919bb6cec01dd0112078",
+    "source_and_run_exact": true
+  },
+  "independent_read_only_commands": [
+    {
+      "command": [
+        "gofmt",
+        "-l",
+        "server/cmd/server/delivery_completion_hint_integration_test.go",
+        "server/cmd/server/router.go",
+        "server/internal/handler/delivery_completion_hint.go",
+        "server/internal/handler/delivery_completion_hint_test.go",
+        "server/internal/handler/delivery_evaluation.go",
+        "server/internal/handler/delivery_evidence.go",
+        "server/internal/handler/delivery_policy.go",
+        "server/internal/issuestatus/issuestatus.go"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "final_checks": {
+    "final-build01": {
+      "record": "research/runs/final-build01.json",
+      "record_sha256": "1d9ae8c3e2038b97e8f9f26aa5b5080484b4a3cb1068557e05f267c3f5eecc14",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "database": null,
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-build01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-11-10T09:27:31.291049+00:00",
+      "finished_at": "2026-11-10T09:27:54.445555+00:00",
+      "run_terminal_exact": true
+    },
+    "final-contracts01": {
+      "record": "research/runs/final-contracts01.json",
+      "record_sha256": "6bd2916308cc4668e587da29ddf90c1202b1d378d0c5c809ec41dbf7faa04c0d",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/service",
+        "./internal/migrations",
+        "./internal/metrics",
+        "./internal/issuestatus",
+        "-run",
+        "^Test(BuiltinSkillsConformToTemplate|BuiltinSkillsFrontmatterIsStrictYAML|CreatingAgentsSkillCoversAgentCreationContracts|DeliveryPolicyMigrationContract|NoDirectGetAgentRuntimeCalls|ValidateKey|Resolve|Effective)",
+        "-count=1"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "counts": {
+        "pass": 50,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-contracts01.log",
+      "log_sha256": "e3c4dcb221143275ae4eb186aefd9c58aba68354f4f220c246d9aa8ea00ef973",
+      "started_at": "2026-11-10T09:28:56.571581+00:00",
+      "finished_at": "2026-11-10T09:29:14.882849+00:00",
+      "run_terminal_exact": true,
+      "top_level_count": 24,
+      "new_hint_named_pass": 0,
+      "package_counts": {
+        "github.com/multica-ai/multica/server/internal/issuestatus": {
+          "pass": 11,
+          "fail": 0,
+          "skip": 0
+        },
+        "github.com/multica-ai/multica/server/internal/metrics": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "github.com/multica-ai/multica/server/internal/migrations": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "github.com/multica-ai/multica/server/internal/service": {
+          "pass": 37,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    },
+    "final-format01": {
+      "record": "research/runs/final-format01.json",
+      "record_sha256": "9b29240246c58805ab0de651d71406b57670934cbfd4b66671b2649f62f8d5bb",
+      "command": [
+        "python3",
+        "-c",
+        "import json,pathlib,subprocess; m=json.loads(pathlib.Path(\".trellis/tasks/11-10-delivery-completion-hints/research/final-source-manifest.json\").read_text()); files=[p for p in m[\"files\"] if p.endswith(\".go\")]; output=subprocess.check_output([\"gofmt\",\"-l\",*files],text=True); print(output,end=\"\"); assert not output; subprocess.run([\"git\",\"diff\",\"--check\"],check=True)"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-format01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-11-10T09:31:11.630743+00:00",
+      "finished_at": "2026-11-10T09:31:11.821807+00:00",
+      "run_terminal_exact": true
+    },
+    "final-handler-normal01": {
+      "record": "research/runs/final-handler-normal01.json",
+      "record_sha256": "13425672d58972757e199bd910bc1347fed41c8eb2aab796c1933d2979712df1",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^Test(DeliveryCompletionHint|DeliveryPolicy|DeliveryEvaluation|DeliveryEvidence|ControlledArtifact|.*AgentApproval|RecordExecution)|^TestWorkspaceDeletionManifestCoversPublicSchema$",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "hint_final_handler_normal",
+      "exit_code": 0,
+      "counts": {
+        "pass": 325,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-handler-normal01.log",
+      "log_sha256": "b0d2d59f292a9bdfd9cefead2aece677de1756960f1616ece93702edbc05829c",
+      "started_at": "2026-11-10T09:26:59.449645+00:00",
+      "finished_at": "2026-11-10T09:27:56.187117+00:00",
+      "run_terminal_exact": true,
+      "top_level_count": 76,
+      "new_hint_named_pass": 89,
+      "package_counts": {
+        "github.com/multica-ai/multica/server/internal/handler": {
+          "pass": 325,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    },
+    "final-handler-race01": {
+      "record": "research/runs/final-handler-race01.json",
+      "record_sha256": "d537e93ed1ee90497eaa0511be8db22a4c145973bd5a0ee3dee898b9e9497e74",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^Test(DeliveryCompletionHint|DeliveryPolicy|DeliveryEvaluation|DeliveryEvidence|ControlledArtifact|.*AgentApproval|RecordExecution)|^TestWorkspaceDeletionManifestCoversPublicSchema$",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "hint_final_handler_race",
+      "exit_code": 0,
+      "counts": {
+        "pass": 325,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-handler-race01.log",
+      "log_sha256": "78668a0d2ebb56d091acf540cf38a1629b3ca28d8aa1804ddc76d9e20490084b",
+      "started_at": "2026-11-10T09:28:31.456501+00:00",
+      "finished_at": "2026-11-10T09:29:47.238774+00:00",
+      "run_terminal_exact": true,
+      "top_level_count": 76,
+      "new_hint_named_pass": 89,
+      "package_counts": {
+        "github.com/multica-ai/multica/server/internal/handler": {
+          "pass": 325,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    },
+    "final-router-normal01": {
+      "record": "research/runs/final-router-normal01.json",
+      "record_sha256": "780d2ab09371b01928e19d0c6bea7d872135564ec11f7096156c87d597efff3b",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/server",
+        "-run",
+        "^Test(DeliveryCompletionHint|DeliveryPolicy|DeliveryEvaluation|DeliveryEvidence|ControlledArtifact)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "hint_final_router_normal",
+      "exit_code": 0,
+      "counts": {
+        "pass": 103,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-router-normal01.log",
+      "log_sha256": "ed27195f6be543b65ad8c7b052e8a812d0a0704a69c1bdd5520086b3aa778fa6",
+      "started_at": "2026-11-10T09:28:56.905059+00:00",
+      "finished_at": "2026-11-10T09:29:28.790704+00:00",
+      "run_terminal_exact": true,
+      "top_level_count": 37,
+      "new_hint_named_pass": 23,
+      "package_counts": {
+        "github.com/multica-ai/multica/server/cmd/server": {
+          "pass": 103,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    },
+    "final-router-race01": {
+      "record": "research/runs/final-router-race01.json",
+      "record_sha256": "7efd4afa6a6ff3b0bd03542b8a7881ae116dcfe571dc40d48b059cda0977556b",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/server",
+        "-run",
+        "^Test(DeliveryCompletionHint|DeliveryPolicy|DeliveryEvaluation|DeliveryEvidence|ControlledArtifact)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "hint_final_router_race",
+      "exit_code": 0,
+      "counts": {
+        "pass": 103,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-router-race01.log",
+      "log_sha256": "70f8ab4018d3f5e482335bcb2dbea4f709454dd7c75123d4fd6af09d7d01918f",
+      "started_at": "2026-11-10T09:29:59.226002+00:00",
+      "finished_at": "2026-11-10T09:30:38.828965+00:00",
+      "run_terminal_exact": true,
+      "top_level_count": 37,
+      "new_hint_named_pass": 23,
+      "package_counts": {
+        "github.com/multica-ai/multica/server/cmd/server": {
+          "pass": 103,
+          "fail": 0,
+          "skip": 0
+        }
+      }
+    },
+    "final-sqlc01": {
+      "record": "research/runs/final-sqlc01.json",
+      "record_sha256": "8063c1c6a6c24b2156a23d5e9f45b939a1c441f8a8555dc2dc0f14166e52396d",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "run",
+        "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+        "generate"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-sqlc01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-11-10T09:31:10.430251+00:00",
+      "finished_at": "2026-11-10T09:31:15.961261+00:00",
+      "run_terminal_exact": true
+    },
+    "final-vet01": {
+      "record": "research/runs/final-vet01.json",
+      "record_sha256": "ed44982d6d9f800e95d6573552da2d54f92bc923319e82c5195b1af96ee51228",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./..."
+      ],
+      "database": null,
+      "exit_code": 0,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/final-vet01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "started_at": "2026-11-10T09:27:31.291109+00:00",
+      "finished_at": "2026-11-10T09:27:54.809756+00:00",
+      "run_terminal_exact": true
+    }
+  },
+  "retained_failed_checks": {
+    "backend-format02": {
+      "record": "research/runs/backend-format02.json",
+      "record_sha256": "95194c370be65020e7f69ed91e7f08b770383c42aadcafd5656f40546e58bb92",
+      "command": [
+        "gofmt",
+        "-d",
+        "server/internal/handler/delivery_completion_hint.go",
+        "server/internal/handler/delivery_completion_hint_test.go"
+      ],
+      "database": null,
+      "exit_code": 2,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/backend-format02.log",
+      "log_sha256": "2977473e89b533417bb9e6254b1dc6b82cea9bf60467e8fe89396bcc3b363349",
+      "started_at": "2026-11-10T09:25:40.443784+00:00",
+      "finished_at": "2026-11-10T09:25:40.455989+00:00",
+      "run_terminal_exact": true
+    },
+    "handler-nul-red01": {
+      "record": "research/runs/handler-nul-red01.json",
+      "record_sha256": "5c6708e105e962c9bee1ab03ffd41dee4466c449bce914061f22b36015c295b4",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./internal/handler",
+        "-run",
+        "^TestDeliveryCompletionHintStrictRequestAndStatus$/^nul_status$",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "hint_handler_iter02",
+      "exit_code": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/handler-nul-red01.log",
+      "log_sha256": "dd6f223c40765f57f9fa6ac6a7f16133fbeddd93ed58d94d242c150123fffb84",
+      "started_at": "2026-11-10T09:23:28.239311+00:00",
+      "finished_at": "2026-11-10T09:23:47.727129+00:00",
+      "run_terminal_exact": true
+    },
+    "router-iter01": {
+      "record": "research/runs/router-iter01.json",
+      "record_sha256": "a4144b4f3a11deccb68e6439ea4115c5d3950d26b11dc383ee8e8dce5d6f9a51",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/server",
+        "-run",
+        "^TestDeliveryCompletionHint",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "hint_router_iter01",
+      "exit_code": 1,
+      "counts": {
+        "pass": 15,
+        "fail": 3,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/router-iter01.log",
+      "log_sha256": "c03d1b4beb69ffccb7790c137d3f466805b9375825aa5e43bef3c381a6ceb689",
+      "started_at": "2026-11-10T09:17:08.474008+00:00",
+      "finished_at": "2026-11-10T09:17:30.306537+00:00",
+      "run_terminal_exact": true
+    },
+    "router-iter02": {
+      "record": "research/runs/router-iter02.json",
+      "record_sha256": "964c493a2d078bbf6f72ef0072256fa60e9b57837c7e4d0826774c3385ed815c",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "-p",
+        "1",
+        "./cmd/server",
+        "-run",
+        "^TestDeliveryCompletionHint",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "hint_router_iter02",
+      "exit_code": 1,
+      "counts": {
+        "pass": 22,
+        "fail": 1,
+        "skip": 0
+      },
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/router-iter02.log",
+      "log_sha256": "d3b10ebd4d68defd801f12c830c5f81af7a18eb401a2b80913d4330fcd625d82",
+      "started_at": "2026-11-10T09:22:28.833014+00:00",
+      "finished_at": "2026-11-10T09:22:47.757796+00:00",
+      "run_terminal_exact": true
+    }
+  },
+  "all_run_record_count": 29,
+  "all_run_hash_and_count_checks": {
+    "backend-compile01": {
+      "record_sha256": "2ae60f77991959487dc145268cddaba79d68a37e2533b5d33521b0bae7ecf60f",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "backend-format02": {
+      "record_sha256": "95194c370be65020e7f69ed91e7f08b770383c42aadcafd5656f40546e58bb92",
+      "log_sha256": "2977473e89b533417bb9e6254b1dc6b82cea9bf60467e8fe89396bcc3b363349",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 2
+    },
+    "backend-format03": {
+      "record_sha256": "3f3f4cb4aabff8bc4931d6129928ed797047efbcceecd9f64a2ea11fc2016735",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "baseline-handler01": {
+      "record_sha256": "c29513ffbf92332c67cb61bc09c7a8dd75bda1d7fd3a2ff248fc5863dae40533",
+      "log_sha256": "51d20c77983e45fbe3c34b6f9112744b8c9d88a15a54dca0d338b4ccbf72fad8",
+      "counts": {
+        "pass": 235,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "final-build01": {
+      "record_sha256": "1d9ae8c3e2038b97e8f9f26aa5b5080484b4a3cb1068557e05f267c3f5eecc14",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "final-contracts01": {
+      "record_sha256": "6bd2916308cc4668e587da29ddf90c1202b1d378d0c5c809ec41dbf7faa04c0d",
+      "log_sha256": "e3c4dcb221143275ae4eb186aefd9c58aba68354f4f220c246d9aa8ea00ef973",
+      "counts": {
+        "pass": 50,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "final-format01": {
+      "record_sha256": "9b29240246c58805ab0de651d71406b57670934cbfd4b66671b2649f62f8d5bb",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "final-handler-normal01": {
+      "record_sha256": "13425672d58972757e199bd910bc1347fed41c8eb2aab796c1933d2979712df1",
+      "log_sha256": "b0d2d59f292a9bdfd9cefead2aece677de1756960f1616ece93702edbc05829c",
+      "counts": {
+        "pass": 325,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "final-handler-race01": {
+      "record_sha256": "d537e93ed1ee90497eaa0511be8db22a4c145973bd5a0ee3dee898b9e9497e74",
+      "log_sha256": "78668a0d2ebb56d091acf540cf38a1629b3ca28d8aa1804ddc76d9e20490084b",
+      "counts": {
+        "pass": 325,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "final-router-normal01": {
+      "record_sha256": "780d2ab09371b01928e19d0c6bea7d872135564ec11f7096156c87d597efff3b",
+      "log_sha256": "ed27195f6be543b65ad8c7b052e8a812d0a0704a69c1bdd5520086b3aa778fa6",
+      "counts": {
+        "pass": 103,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "final-router-race01": {
+      "record_sha256": "7efd4afa6a6ff3b0bd03542b8a7881ae116dcfe571dc40d48b059cda0977556b",
+      "log_sha256": "70f8ab4018d3f5e482335bcb2dbea4f709454dd7c75123d4fd6af09d7d01918f",
+      "counts": {
+        "pass": 103,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "final-sqlc01": {
+      "record_sha256": "8063c1c6a6c24b2156a23d5e9f45b939a1c441f8a8555dc2dc0f14166e52396d",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "final-vet01": {
+      "record_sha256": "ed44982d6d9f800e95d6573552da2d54f92bc923319e82c5195b1af96ee51228",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "handler-iter01": {
+      "record_sha256": "e81b7e9a203604b572692f4ef1eee0e684e67d1e6d476c0bff14fad83944423f",
+      "log_sha256": "106f64c0bbc133ea5b7376a8df13c5cbfd108f76bd9196ce4380117a6a28634a",
+      "counts": {
+        "pass": 75,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "handler-nul-red01": {
+      "record_sha256": "5c6708e105e962c9bee1ab03ffd41dee4466c449bce914061f22b36015c295b4",
+      "log_sha256": "dd6f223c40765f57f9fa6ac6a7f16133fbeddd93ed58d94d242c150123fffb84",
+      "counts": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      },
+      "exit_code": 1
+    },
+    "hint_baseline_handler-migrate": {
+      "record_sha256": "08ce2313b1d3bcfa184acf5feab84a102b89c914dddb2e27ca3b9e9146e4c87a",
+      "log_sha256": "0ac97e8fbc9f5c183fa738ee47387bd18139bbcaa5c41f7481a90ae4d39c1f4f",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "hint_final_handler_normal-migrate": {
+      "record_sha256": "845e20d61ccfe0b08a0b25234e8115bdad2007e99d0d0da28223f86cc272df3c",
+      "log_sha256": "72563b84a6d8d29142d513e150bc3d961bb873014feb33f843a8146c4529dd59",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "hint_final_handler_race-migrate": {
+      "record_sha256": "0c8b8bda5d1441b5bd5c59209f117b9a40531eb71f70cdc634e6fe2ebc37899d",
+      "log_sha256": "afc4eb22b93cc0b875aa3f7f11d9b502dc8568718ea42f40759f4ce984e8e492",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "hint_final_router_normal-migrate": {
+      "record_sha256": "0aca6bd6a179bfec8ee51652a9359cd6052de5275282327a93f1bdb2177c0182",
+      "log_sha256": "ced353e957312d401e66206db629d8c7e2d7a5de886479a77cc1104e7666516b",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "hint_final_router_race-migrate": {
+      "record_sha256": "254686e1fff9c2073e4969da5c854f464215ee95eb1cecaae59f9195129753d0",
+      "log_sha256": "2190dec660782311520ebe27e2fd3777274956e2ae1e4409c1a2d056aeb96457",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "hint_handler_iter01-migrate": {
+      "record_sha256": "a0db261e67a0c0e2fda6e44248a31e2f6c437ec4f8eb3799fbee9c81da929199",
+      "log_sha256": "d4c01045d0f57d698fe5ba49685fe6ee954da6222a4b65bd4bdd57e35373011f",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "hint_handler_iter02-migrate": {
+      "record_sha256": "6f2a35de98962a43ab51cdf3902917e4719f464e30a6b2efb6a8f0eaebaca976",
+      "log_sha256": "a9643dca9700386e75ac184e7d56e9f6fc546a397e74be9d061b52fb34da032d",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "hint_router_iter01-migrate": {
+      "record_sha256": "3bb231a734b323d615d5f8ca23bac05b78cea862635353e6d42b831fecdd4273",
+      "log_sha256": "17fb0c83f61a7d519357a9dbdeeed23d5f822af54aa1db56d2ca29b3d5615ad7",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "hint_router_iter02-migrate": {
+      "record_sha256": "a2f444b7aed84787d0fac85fe4ce0cb85a533f128f0a52ae187b921b49628a07",
+      "log_sha256": "2b6de9804a49750013757a320cfddc861f16e0aca1b55e870f2f48237294cfc7",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "hint_router_iter03-migrate": {
+      "record_sha256": "c53a27097cba2db43e56a6acd1737f74396fc615d82c6e7fb214ccc99982dde4",
+      "log_sha256": "54f58b4ab74f33fed5f7729f0f7533c7e3d2cfd5bb4fa3c836e8015cf77ef729",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "router-compile01": {
+      "record_sha256": "1f4f77a56239e4ca1eb2bf4e25dfef001bfe19fb7b716dd1a4d5405a21afb036",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    },
+    "router-iter01": {
+      "record_sha256": "a4144b4f3a11deccb68e6439ea4115c5d3950d26b11dc383ee8e8dce5d6f9a51",
+      "log_sha256": "c03d1b4beb69ffccb7790c137d3f466805b9375825aa5e43bef3c381a6ceb689",
+      "counts": {
+        "pass": 15,
+        "fail": 3,
+        "skip": 0
+      },
+      "exit_code": 1
+    },
+    "router-iter02": {
+      "record_sha256": "964c493a2d078bbf6f72ef0072256fa60e9b57837c7e4d0826774c3385ed815c",
+      "log_sha256": "d3b10ebd4d68defd801f12c830c5f81af7a18eb401a2b80913d4330fcd625d82",
+      "counts": {
+        "pass": 22,
+        "fail": 1,
+        "skip": 0
+      },
+      "exit_code": 1
+    },
+    "router-iter03": {
+      "record_sha256": "4d11ca5c193cdcbdb75f30a13061e9cce5b0e2b2ac4d094010c7430b41cdd556",
+      "log_sha256": "35ed7b722f849cb9521f026c866cb4e3b22072f679df056a7c01f9c691c8e74d",
+      "counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "exit_code": 0
+    }
+  },
+  "counts_note": "Counts include subtests. Ordinary/race and iterations are separate, never additive coverage. Handler325=89new+236existing, router103=23new+80existing. Contracts50=21builtin+16other service Resolve-prefix+11status+1migration+1runtime.",
+  "limits": [
+    "Explicit API foundation only; every completion writer remains unchanged and unenforced.",
+    "No UI/CLI, shared evaluation audit, skip, generic check engine, remote Git HEAD or deployment.",
+    "Real authentication, retained database facts and actual local synthetic tar are tested; no vendor/model-wide acceptance.",
+    "Inherited global PR SHARE NOWAIT and PAT ancillary writes may legitimately conflict; no throughput claim.",
+    "Go1.27darwin/arm64 with PG17amd64 image; functional evidence only.",
+    "No new migration; existing migrations were applied to dedicated fresh run databases, not claimed as a rerun of all migration suites.",
+    "Coordinator owns remaining cleanup, archive, scoped commits and protected local integration.",
+    "AC43/E5/H3a/knowledge budgets and stopping rules remain unchanged."
+  ]
+}

@@ -1,0 +1,522 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-03T23:49:13.633980+00:00",
+  "reviewer": "/root/knowledge6_source_review",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "scope": "initial independent six-file source/evidence audit; write only this review directory; no product edits or dynamic work",
+  "verdict": "changes-required-before-dynamic",
+  "ready_for_dynamic": false,
+  "confirmed_product_defects": 0,
+  "new_blocking_findings": 0,
+  "blocking_findings_open": 2,
+  "findings": [
+    {
+      "id": "KF-NEXT-LIST",
+      "severity": "high",
+      "kind": "confirmed_framework_defect",
+      "blocking": true,
+      "file": "server/cmd/server/rk1k_fixture_test.go:229",
+      "cause": "DB-only issue polling bypasses actual HTTP ListRuntimeRuns promotion and eligible-run selection",
+      "minimum_correction": "Each bounded iteration uses f.client.List with actual runtime/MDT client, intersects eligible run IDs with current session, retains exactly-one/timeout. Modify only new fixture helper; preserve original17 and later seed fix.",
+      "proof": [
+        "rk1k_scenarios_test.go:615: expected one pending run for issue 01a1a09f-6117-72fd-96f7-8e06628da98b, got 0 ()"
+      ]
+    },
+    {
+      "id": "KF-CURRENT-BIND",
+      "severity": "medium",
+      "kind": "acceptance_prerequisite",
+      "blocking": true,
+      "cause": "Framework HEAD118fc53ea differs in61 server paths from candidate d0b132fff; no current final complete normal/race proof or source/CLI/config/DB binding",
+      "correction": "After #7 closure root preserves six/17/evidence and integrates final accepted production source; exact reviewed fresh normal and separate race; final independent six-file source/binary/tool/config/database/artifact bind"
+    }
+  ],
+  "framework_root": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+  "framework_head": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "candidate_at_initial_review": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "server_delta_count": 61,
+  "server_delta_paths": [
+    "server/cmd/server/collaboration_handoff_routes_test.go",
+    "server/cmd/server/collaboration_lifecycle_routes_test.go",
+    "server/cmd/server/collaboration_workflow_routes_test.go",
+    "server/cmd/server/router.go",
+    "server/internal/collaboration/access.go",
+    "server/internal/handler/collaboration.go",
+    "server/internal/handler/collaboration_ai_policy.go",
+    "server/internal/handler/collaboration_creation.go",
+    "server/internal/handler/collaboration_delivery_test.go",
+    "server/internal/handler/collaboration_lifecycle.go",
+    "server/internal/handler/collaboration_parent_wakeup_test.go",
+    "server/internal/handler/collaboration_workflow.go",
+    "server/internal/handler/daemon_test.go",
+    "server/internal/migrations/collaboration_ai_policy_test.go",
+    "server/internal/service/admin_collaboration_authority_test.go",
+    "server/internal/service/admin_collaboration_test.go",
+    "server/internal/service/admin_collaboration_transaction_test.go",
+    "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+    "server/internal/service/collaboration.go",
+    "server/internal/service/collaboration_ai_policy.go",
+    "server/internal/service/collaboration_ai_policy_test.go",
+    "server/internal/service/collaboration_authority.go",
+    "server/internal/service/collaboration_batches.go",
+    "server/internal/service/collaboration_command_history_execution_test.go",
+    "server/internal/service/collaboration_command_history_test.go",
+    "server/internal/service/collaboration_control.go",
+    "server/internal/service/collaboration_delivery.go",
+    "server/internal/service/collaboration_delivery_projection_test.go",
+    "server/internal/service/collaboration_delivery_test.go",
+    "server/internal/service/collaboration_handoff.go",
+    "server/internal/service/collaboration_handoff_execution_boundary_test.go",
+    "server/internal/service/collaboration_handoff_test.go",
+    "server/internal/service/collaboration_host_integration_test.go",
+    "server/internal/service/collaboration_lifecycle.go",
+    "server/internal/service/collaboration_lifecycle_test.go",
+    "server/internal/service/collaboration_memory_test.go",
+    "server/internal/service/collaboration_mention_admission_states_test.go",
+    "server/internal/service/collaboration_mentions.go",
+    "server/internal/service/collaboration_parent_wakeup_test.go",
+    "server/internal/service/collaboration_queue.go",
+    "server/internal/service/collaboration_resource_offers_test.go",
+    "server/internal/service/collaboration_runtime.go",
+    "server/internal/service/collaboration_source_fields.go",
+    "server/internal/service/collaboration_source_fields_test.go",
+    "server/internal/service/collaboration_targets_review_test.go",
+    "server/internal/service/collaboration_targets_test.go",
+    "server/internal/service/collaboration_workflow.go",
+    "server/migrations/764_collaboration_ai_policy.down.sql",
+    "server/migrations/764_collaboration_ai_policy.up.sql",
+    "server/pkg/db/generated/collaboration.sql.go",
+    "server/pkg/db/generated/collaboration_delivery.sql.go",
+    "server/pkg/db/generated/collaboration_knowledge_service.sql.go",
+    "server/pkg/db/generated/collaboration_lifecycle.sql.go",
+    "server/pkg/db/generated/collaboration_reconciliation.sql.go",
+    "server/pkg/db/generated/collaboration_source_fields.sql.go",
+    "server/pkg/db/generated/models.go",
+    "server/pkg/db/queries/collaboration.sql",
+    "server/pkg/db/queries/collaboration_delivery.sql",
+    "server/pkg/db/queries/collaboration_source_fields.sql"
+  ],
+  "current_six_file_sha256": {
+    "server/cmd/server/rk1k_fixture_test.go": "9e31682c037385888be41579cc489f71c2c4e28797ab7bc7d8b596917578a084",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "matches_previous_six_review": {
+    "server/cmd/server/rk1k_fixture_test.go": true,
+    "server/cmd/server/rk1k_provider_test.go": true,
+    "server/cmd/server/rk1k_scenarios_test.go": true,
+    "server/cmd/server/rk1k_evidence_test.go": true,
+    "server/cmd/server/rk1k_entry_test.go": true,
+    "server/internal/daemon/rk1k_driver_agentintegration.go": true
+  },
+  "borrowed_runtime_17": [
+    {
+      "file": "server/cmd/server/rk1_entry_test.go",
+      "sha256": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_evidence_contract_unit_test.go",
+      "sha256": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_evidence_fault_proof_test.go",
+      "sha256": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_evidence_format_test.go",
+      "sha256": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_evidence_publication_test.go",
+      "sha256": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_fake_helpers_test.go",
+      "sha256": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_fake_test.go",
+      "sha256": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_fixture_test.go",
+      "sha256": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_lifecycle_test.go",
+      "sha256": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_observe_test.go",
+      "sha256": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_provider_test.go",
+      "sha256": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_run_test.go",
+      "sha256": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_scenarios_handoff_test.go",
+      "sha256": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_scenarios_recall_test.go",
+      "sha256": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_trace_barrier_test.go",
+      "sha256": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_trace_test.go",
+      "sha256": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    },
+    {
+      "file": "server/cmd/server/rk1_trial_test.go",
+      "sha256": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5",
+      "previous_match": true,
+      "baseline_match": true,
+      "candidate_match": true
+    }
+  ],
+  "original_17_unchanged": true,
+  "previous_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/progress-recheck-20261103-01a1a1c6-97cddb08/knowledge6-k3-review/review.json",
+    "sha256": "f26490e57b92a02d0b68891c2d9698c5407ae3421a4ab14aa57941fd55e95cf5"
+  },
+  "normal8": {
+    "exit_code": 1,
+    "raw": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/raw-go.jsonl",
+    "raw_sha256": "78c2e5fb1d2ef440fb49e4489867ce572563a767ecd0d0492a69567da74989ae",
+    "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "terminals": [
+      {
+        "Time": "2026-11-03T16:55:48.83023+08:00",
+        "Test": "TestRK1KnowledgeFakeProof/E0b",
+        "Action": "pass",
+        "Elapsed": 2.76
+      },
+      {
+        "Time": "2026-11-03T16:55:55.926851+08:00",
+        "Test": "TestRK1KnowledgeFakeProof/K1",
+        "Action": "pass",
+        "Elapsed": 7.1
+      },
+      {
+        "Time": "2026-11-03T16:55:58.763267+08:00",
+        "Test": "TestRK1KnowledgeFakeProof/K2",
+        "Action": "pass",
+        "Elapsed": 2.84
+      },
+      {
+        "Time": "2026-11-03T16:56:12.401337+08:00",
+        "Test": "TestRK1KnowledgeFakeProof/K3",
+        "Action": "fail",
+        "Elapsed": 13.64
+      },
+      {
+        "Time": "2026-11-03T16:56:12.40135+08:00",
+        "Test": "TestRK1KnowledgeFakeProof",
+        "Action": "fail",
+        "Elapsed": 26.34
+      }
+    ],
+    "samples": [
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/E0b/samples/E0b.json",
+        "sha256": "f4589a4098aea783b626e1fe1eba26e92e26a13100d51f335968c410b7733330",
+        "label": "E0b",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K1/samples/K1-approved.json",
+        "sha256": "5400feab69ec390dd588b3b78d654f040384a629de9a621803597d692272ccdc",
+        "label": "K1-approved",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K1/samples/K1-corrected.json",
+        "sha256": "3e8356f30350749efbea3b3f1eca5c12e4fa11a7113ae7511273b8e7204f1fe7",
+        "label": "K1-corrected",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K1/samples/K1-pending.json",
+        "sha256": "391a0471bfb70eb853ab540d1382110fb9c9e1406d23e065191cee4bf59fd1f3",
+        "label": "K1-pending",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K1/samples/K1-withdrawn.json",
+        "sha256": "1222e8118375fc0265af1eb524727772b44a675cd997948954895b7918668cf0",
+        "label": "K1-withdrawn",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K2/samples/K2-fresh.json",
+        "sha256": "d553f1a73fcaf616133d5e47d60464d72b27997216a000a9be968b92fa7afa7a",
+        "label": "K2-fresh",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K2/samples/K2-frozen-refusal.json",
+        "sha256": "3bebbab993ae56315fabc1853b7333548cba3a17adb5fd26dca9038f09a84349",
+        "label": "K2-frozen-refusal",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": "expected knowledge_context_changed; zero third process"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K2/samples/K2-resume.json",
+        "sha256": "c7f83cbaf524b85b417c06db86f5a4a83f7b159cd5157eeeb2951aa062226bf6",
+        "label": "K2-resume",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-autopilot.json",
+        "sha256": "544ef62f42013aec9c1eaa91cc7dbc0b33bc01cee959a4095cd97086c2f73582",
+        "label": "K3-autopilot",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-chat.json",
+        "sha256": "ba3ddc90a3cb6194746e1be6adb0c876161cf67f1d27f120843926d610bcfd22",
+        "label": "K3-chat",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-comment.json",
+        "sha256": "4c615b53d3eb2b469cbb900a7c26113c7943e8bdcc5eb3ff1af83bac23450426",
+        "label": "K3-comment",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-issue.json",
+        "sha256": "a178744fafc00a272544b2cb8134ca78f2868b4d671f99e42f14c1a937889422",
+        "label": "K3-issue",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/proof/K3/samples/K3-quick_create.json",
+        "sha256": "91acc5a84583fd99519107b0517c65ac2b4c2cdc0dfd7f3b0abc79b1d9bd06fc",
+        "label": "K3-quick_create",
+        "state": "finished",
+        "verdict": "pass",
+        "reason": null
+      }
+    ],
+    "sample_count": 13,
+    "physical_launch_records": 12,
+    "fake_starts": 12,
+    "fake_seed_starts": 0,
+    "paid_starts": 0,
+    "complete_summary_present": false
+  },
+  "six_file_contracts": {
+    "entry": "Unconditional0 allocation refusal before account/executable/model lookup; fixed schedule and seven named fake/guard tests",
+    "fixture": "Knowledge-enabled actual router/human producers, hash-bound CLI, separate ordinary/host clients; K3 owning helper remains broken",
+    "provider": "Test-owned init dispatch, actual task/run credential-purpose checks; exact test-byte stand-in only; first stdin/raw stdout/durable capture facts; no installed real target",
+    "scenarios": "Fixed E0b1/K1four/K2two/K3eight+3seeds; true producers/roles and frozen original request/revocation barrier; fail-closed incomplete schedules; missing root/member/continuation dynamic proof",
+    "evidence": "Discriminated actual task/run facts; raw native/results and authorization/fence criteria; deterministic schedule totals separate from diagnostics",
+    "tagged_driver": "Build-tagged thin New/Claim/runTask/reportTaskResult, retains one native store/config across K2; no Daemon.Run/background account discovery"
+  },
+  "coverage_limits": "Seven framework fault cases: wrong, missing_result, missing_native, stdout write/sync/close and launch-record durability. Pure native controls include changed ID/duplicate result/raw defects. Full application noncanonical ACK/stale/unavailable/busy/expiry boundaries are not explicitly new-six-file scenarios; bind existing canonical product tests separately rather than reporting this selected framework as covering them.",
+  "dynamic_handoff": {
+    "normal_command_proposal": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "-C",
+      "server",
+      "test",
+      "-p",
+      "1",
+      "-tags=agentintegration",
+      "./cmd/server",
+      "-run",
+      "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+      "-count=1",
+      "-parallel=1",
+      "-json",
+      "-timeout=10m"
+    ],
+    "race_command_proposal": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-p",
+      "1",
+      "-tags=agentintegration",
+      "./cmd/server",
+      "-run",
+      "^TestRK1Knowledge(EntryGuard|WrapperGuard|PromptData|TraceCredentialLabels|NativeMetadataUsesRawOutput|EvidenceFaults|FakeProof)$",
+      "-count=1",
+      "-parallel=1",
+      "-json",
+      "-timeout=10m"
+    ],
+    "environment_keys": [
+      "DATABASE_URL=<private new task URL>",
+      "RK1K_SOURCE_CLI=<explicit current task-built CLI>",
+      "RK1K_SOURCE_CLI_SHA256=<actual bound binary hash>",
+      "RK1K_FAKE_PROOF_OUT=<new never-reused absolute proof directory>",
+      "MULTICA_RUN_REAL_AGENT_SMOKE=<absent>",
+      "MULTICA_LLM_API_KEY=<absent>",
+      "MULTICA_LLM_BASE_URL=<absent>",
+      "GOMAXPROCS=2",
+      "GOCACHE/GOTMPDIR/GOPATH=<own directories>",
+      "GOMODCACHE=<existing local cache>",
+      "GOPROXY=<reviewed offline local cache policy>"
+    ],
+    "environment_loading": "Parse private env as data; do not source arbitrary dotenv shell. Remove inherited Git config variables/pool overrides in actual test process as specified. Root owns DB creation/migration/window; child permit only exact mode/filter/resources.",
+    "combined_selection_note": "The proposed combined normal/race filter includes all seven framework top-level tests and excludes TestRK1KnowledgeRealModel. The old attempt3 runner/permit selected only FakeProof; a different filter needs an exact reviewed root record. If retaining the old narrow command, guard/fault controls require a separately allocated DB invocation."
+  },
+  "compile_proposal": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-c",
+    "-tags=agentintegration",
+    "-o",
+    "<new absolute test binary>",
+    "./cmd/server"
+  ],
+  "vet_proposal": [
+    "go",
+    "-C",
+    "server",
+    "vet",
+    "-p",
+    "1",
+    "-tags=agentintegration",
+    "./cmd/server",
+    "./internal/daemon"
+  ],
+  "dynamic_required_results": "Both whole FakeProof normal/race exit0; E0b/K1/K2/K3 named terminals, eight K3 row labels/actual role/parent/wake,15 measured+3seed/0paid, zero third process, summary and all artifacts/hashes. Guards/fault cases have independent named terminals; do not add their diagnostic starts into scheduled counters. Independent six-file review after corrections, final source/CLI/tool/env/DB binding.",
+  "final_binding": [
+    "final accepted product/source and clean tracked snapshot before/after",
+    "current six new files and original17 hashes",
+    "pinned Go version/executable and compiled task-owned CLI identity/hash",
+    "exact parsed private environment and separate normal/race permits/resources",
+    "fresh migrated multica_rk1k databases; same-URL observed current_database and migration764",
+    "all raw named outputs/samples/launches/counter summaries/artifact hashes",
+    "separate final six-file review; real admission still closed"
+  ],
+  "real_gate": {
+    "allocated": 0,
+    "consumed": 0,
+    "paid_source": "",
+    "runnable": false,
+    "production_default_enabled": false,
+    "other_ledger_transfer": false
+  },
+  "verification": {
+    "gofmt_l": {
+      "command": [
+        "gofmt",
+        "-l",
+        "server/cmd/server/rk1k_fixture_test.go",
+        "server/cmd/server/rk1k_provider_test.go",
+        "server/cmd/server/rk1k_scenarios_test.go",
+        "server/cmd/server/rk1k_evidence_test.go",
+        "server/cmd/server/rk1k_entry_test.go",
+        "server/internal/daemon/rk1k_driver_agentintegration.go"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "scope": "read-only formatting and syntax parsing"
+    },
+    "lint": "not run; read-only no source edit assignment",
+    "typecheck": "no TS change; tagged compile not run",
+    "build_vet_tests": "not run; dynamic resource window stays with root",
+    "source_modified": false,
+    "database_service_or_Provider_operations": 0,
+    "source_after_six_matches_before": true
+  },
+  "report_md_sha256": "03b8e17c7f804429dbcfdbc868ca582a1eede3bcb515483cee03dd49f9d76780"
+}

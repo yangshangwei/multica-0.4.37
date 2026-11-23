@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-11-04T01:57:00.039262+00:00",
+  "cause": "New inert cache-helper source was written mode0644 before the manifest required mode0600; no template execution or resource operation",
+  "observed": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/seed-warm-go-cache.py.in",
+      "actual_mode": "0o644",
+      "expected_mode": "0o600",
+      "sha256": "2f94d7909b2e6eaa44b9b889c89a77065fbf2fc459454309f76647b05892d839"
+    }
+  ],
+  "corrective_scope": "chmod only that newly owned .in file; source bytes unchanged"
+}

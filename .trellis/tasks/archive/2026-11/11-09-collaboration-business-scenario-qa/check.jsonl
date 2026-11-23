@@ -1,0 +1,7 @@
+{"file": ".trellis/spec/server/collaboration-targets.md", "reason": "Check that hold/Stop/Resume/withdrawal assertions match the documented contract rather than incidental behavior"}
+{"file": ".trellis/spec/server/collaboration-squads.md", "reason": "Check squad delegation assertions (member run, leader continuation, readers) against the contract"}
+{"file": ".trellis/spec/server/collaboration-delivery.md", "reason": "Check acceptance/return/reopen assertions and that agent success is never treated as business completion"}
+{"file": ".trellis/spec/server/collaboration-knowledge.md", "reason": "Check knowledge candidate decision and invalidation assertions"}
+{"file": ".trellis/spec/server/database-test-isolation.md", "reason": "Check the environment never wrote to an unowned database and recorded identity before migration"}
+{"file": ".trellis/spec/server/verification-environment.md", "reason": "Check run identity, preserved failures and source/config hash bindings in the evidence"}
+{"file": ".trellis/tasks/archive/2026-11/11-09-collaboration-business-scenario-qa/research/scenario-feasibility.md", "reason": "Verified mechanics (code citations) and step expectations for scenarios 1-3, plus open items"}

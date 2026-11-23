@@ -1,0 +1,69 @@
+{
+  "at": "2026-11-02T15:24:02.936066+00:00",
+  "scope": "read-only current final4 API publisher/bootstrap and default catalog E2E audit",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "findings": [
+    {
+      "source": "server/cmd/server/main.go:415",
+      "fact": "startup preparePlatformOrganization runs only when password mode AND platform admin enabled; default makecheck sets legacy/platform-admin false"
+    },
+    {
+      "source": "server/internal/handler/workspace.go:256",
+      "fact": "normal public CreateWorkspace transaction unconditionally EnsureInternalOrganization and checks active state before creating workspace; test fixtures using this route initialize catalog organization"
+    },
+    {
+      "source": "server/internal/handler/handler.go:572",
+      "fact": "publisher configured from ResourcePublishDir; OrganizationID closure requires GetInternalOrganization with active state"
+    },
+    {
+      "source": "server/internal/service/skill_template_dir.go:64",
+      "fact": "nonempty publisher root enables managed catalog path/consumerOrganization even for otherwise builtin-only skills; empty root keeps builtin+manual channel"
+    },
+    {
+      "source": "server/internal/service/resource_catalog.go:396",
+      "fact": "MCP deploymentTemplates also calls consumerOrganization when publisher root is nonempty"
+    },
+    {
+      "source": "server/internal/service/resource_catalog.go:33",
+      "fact": "missing manual mounted directory is empty, not by itself resource_store_unavailable"
+    }
+  ],
+  "default_e2e_requirements": [
+    {
+      "spec": "e2e/skill-template-creation.spec.ts",
+      "gate": "ungated default Web",
+      "assertions": "setup calls ensureWorkspace before /api/skills/templates; expects15 builtin templates, no managed/deployment entries"
+    },
+    {
+      "spec": "e2e/skill-market.spec.ts",
+      "gate": "ungated default Web",
+      "assertions": "catalog discovery and workspace copies preserve source/market context"
+    },
+    {
+      "spec": "e2e/mcp-market.spec.ts",
+      "gate": "base recipes ungated; live mounted case requires E2E_MCP_TEMPLATE_DIR",
+      "assertions": "all16 builtin recipes and unchanged catalog counts/source; workspace setup must precede catalog"
+    },
+    {
+      "spec": "e2e/mcp-desktop.spec.ts",
+      "gate": "E2E_PASSWORD_AUTH=1",
+      "assertions": "native catalog and collection flow not default fullcheck proof"
+    },
+    {
+      "spec": "e2e/admin-resource-publishing.spec.ts",
+      "gate": "E2E_RESOURCE_PUBLISHING=1 with password/admin/store",
+      "assertions": "real upload/revision/recovery/withdrawal separate from default legacy"
+    }
+  ],
+  "recommendations": [
+    "ordinary Go TestMain directly inserts test workspace and does not call public CreateWorkspace; API-only PUB_DIR must not alter those default tests",
+    "preserve test-owned PUB_DIR configured inside tests and API/compile/non-test semantics; do not seed a global organization merely to satisfy unrelated unit defaults",
+    "for the actual API keep task store config coherent; default browser fixtures create workspace through public route so org should exist before catalog reads",
+    "verify actual skills/MCP GET200 and expected15/16 entries after test workspace creation; do not change counts or skip assertions",
+    "if pub root already has managed index, it must match the task API organization; retain per-task store isolation and serialize publishing vs live catalog tests"
+  ],
+  "tests_executed": 0,
+  "db_actions": 0,
+  "config_changes": 0,
+  "Provider_calls": 0
+}

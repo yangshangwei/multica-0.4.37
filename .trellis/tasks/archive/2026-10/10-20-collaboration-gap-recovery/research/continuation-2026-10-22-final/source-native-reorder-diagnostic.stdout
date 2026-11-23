@@ -1,0 +1,162 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-native-reorder-diagnostic",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-source-surface.spec.ts",
+      "file": "collaboration-source-surface.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 54546,
+                  "error": {
+                    "message": "TimeoutError: page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"",
+                    "stack": "TimeoutError: page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:77:31)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:234:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                      "column": 31,
+                      "line": 77
+                    },
+                    "snippet": "  75 |     const layout = await sourceSnapshot(fixture);\n  76 |     const original = await sourceCurrent(fixture);\n> 77 |     const reordered = current.waitForResponse((response) => new URL(response.url()).pathname === `/api/issues/${fixture.shared.id}` && response.request().method() === \"PUT\");\n     |                               ^\n  78 |     await dragBoard(current, boardCard(current, fixture.shared.title), boardCard(current, fixture.second.title), async () => {\n  79 |       await info.attach(`${name}-shared-reorder-drag-over`, { contentType: \"application/json\", body: JSON.stringify({ columns: await cardColumns(current, fixture.shared.title),\n  80 |         source: await boardCard(current, fixture.shared.title).boundingBox(), destination: await boardCard(current, fixture.second.title).boundingBox(),"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                        "column": 31,
+                        "line": 77
+                      },
+                      "message": "TimeoutError: page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"\n\n  75 |     const layout = await sourceSnapshot(fixture);\n  76 |     const original = await sourceCurrent(fixture);\n> 77 |     const reordered = current.waitForResponse((response) => new URL(response.url()).pathname === `/api/issues/${fixture.shared.id}` && response.request().method() === \"PUT\");\n     |                               ^\n  78 |     await dragBoard(current, boardCard(current, fixture.shared.title), boardCard(current, fixture.second.title), async () => {\n  79 |       await info.attach(`${name}-shared-reorder-drag-over`, { contentType: \"application/json\", body: JSON.stringify({ columns: await cardColumns(current, fixture.shared.title),\n  80 |         source: await boardCard(current, fixture.shared.title).boundingBox(), destination: await boardCard(current, fixture.second.title).boundingBox(),\n    at inspect (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:77:31)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts:234:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-22T11:09:54.873Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "web-shared-reorder-drag-over",
+                      "contentType": "application/json",
+                      "body": "ewogICJjb2x1bW5zIjogWwogICAgImJvYXJkOnN0YXR1czp0b2RvIgogIF0sCiAgInNvdXJjZSI6IHsKICAgICJ4IjogNTcyLAogICAgInkiOiA0MTcuNjgzMTA1NDY4NzUsCiAgICAid2lkdGgiOiAyNTYsCiAgICAiaGVpZ2h0IjogMTg5LjUKICB9LAogICJkZXN0aW5hdGlvbiI6IHsKICAgICJ4IjogNTcyLAogICAgInkiOiAzNDMuOTM2NzA2NTQyOTY4NzUsCiAgICAid2lkdGgiOiAyNTYsCiAgICAiaGVpZ2h0IjogMTQ2LjI1CiAgfSwKICAibGl2ZSI6IFsKICAgICIiLAogICAgIiIsCiAgICAiRHJhZ2dhYmxlIGl0ZW0gMDFhMTYzNGQtYThiOS03NWRmLThkNGYtZjZhYjRiOTI2Mjk5IHdhcyBtb3ZlZCBvdmVyIGRyb3BwYWJsZSBhcmVhIDAxYTE2MzRkLWE5MjUtN2M2Ny05ZTVjLTAzNzhhMzM2YzA0Yy4iCiAgXQp9"
+                    },
+                    {
+                      "name": "web-board-layout-request",
+                      "contentType": "application/json",
+                      "body": "ewogICJiZWZvcmUiOiAwLAogICJhZnRlciI6IDE1MCwKICAicmVxdWVzdCI6IHsKICAgICJwb3NpdGlvbiI6IDE1MCwKICAgICJleHBlY3RlZF9yZXZpc2lvbiI6IDMKICB9LAogICJ3b3JrZmxvd191bmNoYW5nZWQiOiB0cnVlCn0="
+                    },
+                    {
+                      "name": "web-ordinary-drag-over",
+                      "contentType": "application/json",
+                      "body": "ewogICJiZWZvcmUiOiBbCiAgICAiYm9hcmQ6c3RhdHVzOmJhY2tsb2ciCiAgXSwKICAiY29sdW1ucyI6IFsKICAgICJib2FyZDpzdGF0dXM6aW5fcHJvZ3Jlc3MiCiAgXSwKICAiY2FyZCI6IHsKICAgICJ4IjogODY4LAogICAgInkiOiAxNjAsCiAgICAid2lkdGgiOiAyNTYsCiAgICAiaGVpZ2h0IjogMTQ2LjI1CiAgfSwKICAidGFyZ2V0IjogewogICAgIngiOiA4NjQsCiAgICAieSI6IDE1NiwKICAgICJ3aWR0aCI6IDI2NCwKICAgICJoZWlnaHQiOiA1NDAKICB9LAogICJsaXZlIjogWwogICAgIiIsCiAgICAiIiwKICAgICJEcmFnZ2FibGUgaXRlbSAwMWExNjM0ZC1hOTdhLTc3MTQtOTg1My1kZTg2ZjIzZDQwY2Egd2FzIG1vdmVkIG92ZXIgZHJvcHBhYmxlIGFyZWEgMDFhMTYzNGQtYTk3YS03NzE0LTk4NTMtZGU4NmYyM2Q0MGNhLiIKICBdCn0="
+                    },
+                    {
+                      "name": "electron-source-entry",
+                      "contentType": "application/json",
+                      "body": "ewogICJ1cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo2MDkwLyIsCiAgInRleHQiOiAiQ29sbGFib3JhdGlvblxuQ29sbGFib3JhdGlvblxuV29ya3NwYWNlc1xuU291cmNlIGNvbGxhYm9yYXRpb24gYWNjZXB0YW5jZVxuQ3JlYXRlIHdvcmtzcGFjZVxuQ29sbGFib3JhdGlvblxuQ3VycmVudCBoYW5kbGluZ1xuUGFydGljaXBhdGluZ1xuTmV3IGNvbGxhYm9yYXRpb24gaXNzdWVcbk5vdGlmaWNhdGlvbnNcbjEgdW5yZWFkXG4wIGlzc3Vlc1xuUmVjZW50bHkgdXBkYXRlZFxuVGl0bGVcblxuTm8gaXNzdWVzIG5lZWQgeW91ciBoYW5kbGluZy5cblxuU2VsZWN0IGFuIGlzc3VlIHRvIHNlZSBpdHMgc2hhcmVkIGhpc3RvcnkuIiwKICAibGlua3MiOiBbCiAgICB7CiAgICAgICJ0ZXh0IjogIkNvbGxhYm9yYXRpb24iLAogICAgICAiaHJlZiI6ICJodHRwOi8vbG9jYWxob3N0OjE4OTk2L2FjY291bnQ/dmlldz1jdXJyZW50IiwKICAgICAgInNpZGViYXIiOiBudWxsCiAgICB9LAogICAgewogICAgICAidGV4dCI6ICJDdXJyZW50IGhhbmRsaW5nIiwKICAgICAgImhyZWYiOiAiaHR0cDovL2xvY2FsaG9zdDoxODk5Ni9hY2NvdW50P3ZpZXc9Y3VycmVudCIsCiAgICAgICJzaWRlYmFyIjogbnVsbAogICAgfSwKICAgIHsKICAgICAgInRleHQiOiAiUGFydGljaXBhdGluZyIsCiAgICAgICJocmVmIjogImh0dHA6Ly9sb2NhbGhvc3Q6MTg5OTYvYWNjb3VudD92aWV3PXBhcnRpY2lwYXRpbmciLAogICAgICAic2lkZWJhciI6IG51bGwKICAgIH0KICBdLAogICJlcnJvcnMiOiBbXQp9"
+                    },
+                    {
+                      "name": "electron-shared-reorder-drag-over",
+                      "contentType": "application/json",
+                      "body": "ewogICJjb2x1bW5zIjogWwogICAgImJvYXJkOnN0YXR1czp0b2RvIgogIF0sCiAgInNvdXJjZSI6IHsKICAgICJ4IjogNTc0LAogICAgInkiOiA0NjYuMjM5NjI0MDIzNDM3NSwKICAgICJ3aWR0aCI6IDI1NiwKICAgICJoZWlnaHQiOiAxODguNQogIH0sCiAgImRlc3RpbmF0aW9uIjogewogICAgIngiOiA1NzQsCiAgICAieSI6IDQ3OC44MTY3MTE0MjU3ODEyNSwKICAgICJ3aWR0aCI6IDI1NiwKICAgICJoZWlnaHQiOiAxNDQuNzUKICB9LAogICJsaXZlIjogWwogICAgIiIsCiAgICAiIiwKICAgICIiLAogICAgIkRyYWdnYWJsZSBpdGVtIDAxYTE2MzRkLWE4YjktNzVkZi04ZDRmLWY2YWI0YjkyNjI5OSB3YXMgbW92ZWQgb3ZlciBkcm9wcGFibGUgYXJlYSBzdGF0dXM6dG9kby4iCiAgXQp9"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/final-source-native-reorder-diagnostic/collaboration-source-surfa-1d694-ity-and-scoped-layout-order-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-source-surface.spec.ts",
+                    "column": 31,
+                    "line": 77
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fd76911901244b93c23f-3e206b9269e8f7353c12",
+          "file": "collaboration-source-surface.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-22T11:09:54.317Z",
+    "duration": 55863.892,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

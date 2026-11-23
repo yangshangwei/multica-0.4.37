@@ -1,0 +1,91 @@
+{
+  "status": "pass_after_test_fixture_repair",
+  "non_mobile": {
+    "lint_typecheck_tasks": 15,
+    "unit_tests": 13398,
+    "unit_files": 1077,
+    "selected_final_log": "/Users/artisan/.multica/qa/core-20261108/gate-auth-onboarding.log"
+  },
+  "mobile": {
+    "unit_tests": 196,
+    "unit_files": 28,
+    "lint_warnings": 7,
+    "typecheck": "pass",
+    "ios_wrapper": "pass"
+  },
+  "first_core_run": {
+    "pass": 4462,
+    "fail": 2
+  },
+  "core_after": {
+    "pass": 4464,
+    "fail": 0
+  },
+  "logs": {
+    "static.log": {
+      "path": "/Users/artisan/.multica/qa/core-20261108/static.log",
+      "sha256": "717451be5181b01b9727d95ffb0d01550f429cfbf341660f5d76daa7a3fde8f5"
+    },
+    "scripts.log": {
+      "path": "/Users/artisan/.multica/qa/core-20261108/scripts.log",
+      "sha256": "b4702716b51c3339cf778f45801e736ef22ffb270b0c09fd3d31b8c1adddc6b0"
+    },
+    "unit.log": {
+      "path": "/Users/artisan/.multica/qa/core-20261108/unit.log",
+      "sha256": "b6f3aff7713f4089cf2018afe73ef187b106d60a6c138bc03ebe77e0c662cb50"
+    },
+    "unit-other.log": {
+      "path": "/Users/artisan/.multica/qa/core-20261108/unit-other.log",
+      "sha256": "067c837aa9a1d23a8bb9c49b07209858bd89de208d44bc78926d9703c681d954"
+    },
+    "mobile.log": {
+      "path": "/Users/artisan/.multica/qa/core-20261108/mobile.log",
+      "sha256": "b8830f5ab38cbad445d76cdbf1258ab0f1ee8b9abf4230b49be7d2e4928861c2"
+    },
+    "core-auth/core-after.json": {
+      "path": "/Users/artisan/.multica/qa/core-20261108/core-auth/core-after.json",
+      "sha256": "f6693d47f34884c3107c0c3a0ecae293bab82cbd0c06620d6c4ef5de837e1d68"
+    }
+  },
+  "views_after_product_fix": {
+    "files": 599,
+    "tests": 7291,
+    "failed": 0,
+    "log": "/Users/artisan/.multica/qa/core-20261108/project-conflict/views-after.json"
+  },
+  "integrated_620": {
+    "head": "6201a58102668ce19e5f2959ea7dfb807d932a43",
+    "lint_typecheck_tasks_passed": 15,
+    "core_tests_passed": 4465,
+    "views_tests_passed": 7291,
+    "ui_exports": "pass",
+    "static_log": "/Users/artisan/.multica/qa/core-20261108/static-620.log",
+    "unit_log": "/Users/artisan/.multica/qa/core-20261108/unit-620.log"
+  },
+  "final_auth_onboarding": {
+    "static_tasks_passed": 15,
+    "core": {
+      "files": 332,
+      "tests": 4472
+    },
+    "views": {
+      "files": 599,
+      "tests": 7300
+    },
+    "desktop": {
+      "files": 102,
+      "tests": 1272
+    },
+    "web": {
+      "files": 34,
+      "tests": 290
+    },
+    "docs": {
+      "files": 10,
+      "tests": 64
+    },
+    "total": 13398,
+    "gate_log": "/Users/artisan/.multica/qa/core-20261108/gate-auth-onboarding.log",
+    "exit_code": 0
+  }
+}

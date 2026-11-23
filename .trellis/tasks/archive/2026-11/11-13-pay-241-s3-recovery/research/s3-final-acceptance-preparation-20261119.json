@@ -1,0 +1,2265 @@
+{
+  "recorded_at": "2026-11-19T12:33:16.085230+00:00",
+  "role": "trellis-research",
+  "disposition": "PREPARATION_ONLY_NOT_ACCEPTANCE",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "operations": "Read-only source/report inspection; writes only this report pair; no test/build/API/DB/Git/process commands",
+  "report_fingerprints": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-final-source-readiness-20261119.md",
+      "sha256": "eddeaa801feee6551f24b9831ec0de36adf6f6d349470eeb21069feff5c7cf16",
+      "mode": "0644",
+      "bytes": 29853
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-final-source-readiness-20261119.json",
+      "sha256": "f28e83a3d0ae34eb89785929d1b8d11a1a28baaed5f8748bfd5f4807d530517d",
+      "mode": "0644",
+      "bytes": 304535
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/client-field-r06-independent-check-20261118.md",
+      "sha256": "f713216e8843277745df665ce0ae46b033ed435d711fcdfbfe388c44d1d80516",
+      "mode": "0644",
+      "bytes": 10360
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/comment-batch-r01-independent-check-20261118.md",
+      "sha256": "b662526f5079e5dd9e6638c52c76889e7424107b8f7e0d9c6022695e8e43745d",
+      "mode": "0644",
+      "bytes": 10751
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/extras-a-r05-independent-check-20261118.md",
+      "sha256": "a5a3b7d61d33e0a2ae36b20bd329eed98ff8d762f82c591380f2ea6314a5f193",
+      "mode": "0644",
+      "bytes": 14343
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-runtime-r08-independent-check-20261118.md",
+      "sha256": "45c81697d44b2b5cb5ae2c2d11b8190c76107f314511519a0ec1824908c5b6d0",
+      "mode": "0644",
+      "bytes": 8049
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-notification-green-independent-check-20261119.md",
+      "sha256": "e3b8dd821c738761b0a3646c806d165f909b04cb7846b03c1e713b53e987cb10",
+      "mode": "0644",
+      "bytes": 17383
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-subscription-r05-independent-check-20261119.md",
+      "sha256": "f250ed59ad7df1a9c0127bdfabc2ac5ad99a25ea24eb9e3aeff5e2432005b5e3",
+      "mode": "0644",
+      "bytes": 10878
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/controlled-runtime-r03-independent-check-20261119.md",
+      "sha256": "31ee573450a7ae8e9e610b88589bbf4a9548cceb4cce304a8716826bd5770d50",
+      "mode": "0644",
+      "bytes": 18373
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/agent-output-runtime-r03-independent-check-20261119.md",
+      "sha256": "025b5798849519670565f4359556b76260b00027779cad71097b8ab083c673b2",
+      "mode": "0644",
+      "bytes": 14629
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/agent-output-code-check-20261119.md",
+      "sha256": "52434cf5ff3f9245c888b775fe2edbd740354b1b156e94f50b35c98ca671f009",
+      "mode": "0644",
+      "bytes": 24810
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-ui-cas-code-independent-check-20261119.md",
+      "sha256": "7b12364d6897d266354ff1624b87c7de06eccea3e6bb06d5de94dc26ed8812b0",
+      "mode": "0644",
+      "bytes": 15247
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-ui-cas-code-independent-check-20261119.json",
+      "sha256": "a833b49fb77ec5c422772ffa6017c1af124f7c5110d2bd56637a00456c707fc0",
+      "mode": "0644",
+      "bytes": 797195
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-ui-cas-e2e-implementation-20261119.md",
+      "sha256": "f9652f9f2f5c31b3436e8df5a0f0fe682751f5ea493ecb1e5ddcf0e0878a97dd",
+      "mode": "0644",
+      "bytes": 17353
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-ui-cas-allocation-20261119-r02.json",
+      "sha256": "f4ac410a75e1c0e617471a3bfd934f134ceaf3503c94494982bb6adda654e083",
+      "mode": "0600",
+      "bytes": 3120
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md",
+      "sha256": "ffb0264996dbf7700cb934fe66e0a54989928147d6d778e78bcb582590503a60",
+      "mode": "0644",
+      "bytes": 3638
+    }
+  ],
+  "domain_owner_fingerprints": [
+    {
+      "path": "server/internal/service/collaboration_control.go",
+      "recorded_ROOT": {
+        "sha256": "b2006df16d203429136e74a8f024feb5fcd489fe438f37d8affcd5528c698e2a",
+        "mode": "0644",
+        "bytes": 28522
+      },
+      "current": {
+        "sha256": "b2006df16d203429136e74a8f024feb5fcd489fe438f37d8affcd5528c698e2a",
+        "mode": "0644",
+        "bytes": 28522
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_host_runtime.go",
+      "recorded_ROOT": {
+        "sha256": "2c5b44b5f3d1a58064b38f8b682e9761fddfcd212f8cca3a710d5f892814936f",
+        "mode": "0644",
+        "bytes": 16012
+      },
+      "current": {
+        "sha256": "2c5b44b5f3d1a58064b38f8b682e9761fddfcd212f8cca3a710d5f892814936f",
+        "mode": "0644",
+        "bytes": 16012
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_recovery_cas_test.go",
+      "recorded_ROOT": {
+        "sha256": "bc87efccf85c2ac0f8a7c2c74a91e102b21198938992c84272dc9abb00076b29",
+        "mode": "0644",
+        "bytes": 30817
+      },
+      "current": {
+        "sha256": "bc87efccf85c2ac0f8a7c2c74a91e102b21198938992c84272dc9abb00076b29",
+        "mode": "0644",
+        "bytes": 30817
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/handler/collaboration_child_recovery_cas_test.go",
+      "recorded_ROOT": {
+        "sha256": "0e6e67e6c45358aaf758de0409fe062193fbdbb3f35551b5ae458c212de0e046",
+        "mode": "0644",
+        "bytes": 12270
+      },
+      "current": {
+        "sha256": "0e6e67e6c45358aaf758de0409fe062193fbdbb3f35551b5ae458c212de0e046",
+        "mode": "0644",
+        "bytes": 12270
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/handler/issue.go",
+      "recorded_ROOT": {
+        "sha256": "df3abff6e56a65404fe8b818f32c344f503150bb20a07201499368fdbee18f43",
+        "mode": "0755",
+        "bytes": 223156
+      },
+      "current": {
+        "sha256": "df3abff6e56a65404fe8b818f32c344f503150bb20a07201499368fdbee18f43",
+        "mode": "0755",
+        "bytes": 223156
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/pkg/db/queries/issue.sql",
+      "recorded_ROOT": {
+        "sha256": "1a83e00afbfab08d8d75a1cf9c1d9269a209216f9fa24c1e2cc6a2980d98583e",
+        "mode": "0755",
+        "bytes": 30835
+      },
+      "current": {
+        "sha256": "1a83e00afbfab08d8d75a1cf9c1d9269a209216f9fa24c1e2cc6a2980d98583e",
+        "mode": "0755",
+        "bytes": 30835
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "recorded_ROOT": {
+        "sha256": "3334108715206626af359b70f3cdf1f22b4bc92879bbf3bbaccc4a55c70b237d",
+        "mode": "0644",
+        "bytes": 37070
+      },
+      "current": {
+        "sha256": "3334108715206626af359b70f3cdf1f22b4bc92879bbf3bbaccc4a55c70b237d",
+        "mode": "0644",
+        "bytes": 37070
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "recorded_ROOT": {
+        "sha256": "901a32dbdf0b68a24dc13dabda1dc0bc3121c72c041c4f3548dbbfffcc2e5845",
+        "mode": "0644",
+        "bytes": 28690
+      },
+      "current": {
+        "sha256": "901a32dbdf0b68a24dc13dabda1dc0bc3121c72c041c4f3548dbbfffcc2e5845",
+        "mode": "0644",
+        "bytes": 28690
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/handler/collaboration_information.go",
+      "recorded_ROOT": {
+        "sha256": "71ae10ad9cf06e05ba608a5639e7a97e34bb322e2b6eaeae06f9aad6f700fe5f",
+        "mode": "0644",
+        "bytes": 9051
+      },
+      "current": {
+        "sha256": "71ae10ad9cf06e05ba608a5639e7a97e34bb322e2b6eaeae06f9aad6f700fe5f",
+        "mode": "0644",
+        "bytes": 9051
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_information_state.go",
+      "recorded_ROOT": {
+        "sha256": "c0a833283691d75c6913cb83db090f38172c5f7e3881771cc962e4d4dff756fb",
+        "mode": "0644",
+        "bytes": 19253
+      },
+      "current": {
+        "sha256": "c0a833283691d75c6913cb83db090f38172c5f7e3881771cc962e4d4dff756fb",
+        "mode": "0644",
+        "bytes": 19253
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_information.sql",
+      "recorded_ROOT": {
+        "sha256": "791e2fd02326940f028d3274822a436498439d4a4f2edbc721fd1bb4c4c3a57a",
+        "mode": "0644",
+        "bytes": 5186
+      },
+      "current": {
+        "sha256": "791e2fd02326940f028d3274822a436498439d4a4f2edbc721fd1bb4c4c3a57a",
+        "mode": "0644",
+        "bytes": 5186
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_records.sql",
+      "recorded_ROOT": {
+        "sha256": "752d4f83244bc3ebf310ee966548cfbedcf504bf23295428f217a2377d69b096",
+        "mode": "0644",
+        "bytes": 2409
+      },
+      "current": {
+        "sha256": "752d4f83244bc3ebf310ee966548cfbedcf504bf23295428f217a2377d69b096",
+        "mode": "0644",
+        "bytes": 2409
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_comments.sql",
+      "recorded_ROOT": {
+        "sha256": "367e12d829b345087f8e36d390723115e8e92f88ee62f1d3af870748d52f8e87",
+        "mode": "0644",
+        "bytes": 3598
+      },
+      "current": {
+        "sha256": "367e12d829b345087f8e36d390723115e8e92f88ee62f1d3af870748d52f8e87",
+        "mode": "0644",
+        "bytes": 3598
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_recipients.sql",
+      "recorded_ROOT": {
+        "sha256": "1dc09fdaa152f89ad86c323f64b5c1feb23a42c7c7a5df60f9b3f1d6fcbf324e",
+        "mode": "0644",
+        "bytes": 4950
+      },
+      "current": {
+        "sha256": "1dc09fdaa152f89ad86c323f64b5c1feb23a42c7c7a5df60f9b3f1d6fcbf324e",
+        "mode": "0644",
+        "bytes": 4950
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_notifications.sql",
+      "recorded_ROOT": {
+        "sha256": "d964a2bcc3139a4d36f47ba8bec23b3aa97d32ed2691285a3629120282254b31",
+        "mode": "0644",
+        "bytes": 2201
+      },
+      "current": {
+        "sha256": "d964a2bcc3139a4d36f47ba8bec23b3aa97d32ed2691285a3629120282254b31",
+        "mode": "0644",
+        "bytes": 2201
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/cmd/server/notification_listeners.go",
+      "recorded_ROOT": {
+        "sha256": "8308a58cfcb9217da8cf313b112b1c434e1245b3d2e2a2af05e48e8652dbab42",
+        "mode": "0755",
+        "bytes": 35714
+      },
+      "current": {
+        "sha256": "8308a58cfcb9217da8cf313b112b1c434e1245b3d2e2a2af05e48e8652dbab42",
+        "mode": "0755",
+        "bytes": 35714
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/pkg/db/queries/inbox.sql",
+      "recorded_ROOT": {
+        "sha256": "44c0fefd774151a341cef5f024e9b9e79ab8d1f1fdb27d41f66a66ddbe6b3bfe",
+        "mode": "0755",
+        "bytes": 10259
+      },
+      "current": {
+        "sha256": "44c0fefd774151a341cef5f024e9b9e79ab8d1f1fdb27d41f66a66ddbe6b3bfe",
+        "mode": "0755",
+        "bytes": 10259
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/pkg/db/queries/subscriber.sql",
+      "recorded_ROOT": {
+        "sha256": "28962c68d00920f56fbee504af1ab5af0a144404d718e006b28b4bd4107ae407",
+        "mode": "0755",
+        "bytes": 14617
+      },
+      "current": {
+        "sha256": "28962c68d00920f56fbee504af1ab5af0a144404d718e006b28b4bd4107ae407",
+        "mode": "0755",
+        "bytes": 14617
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_output.go",
+      "recorded_ROOT": {
+        "sha256": "35dee95a84e2de69672988ae4d8d3da764e3c245e404754cc89ac3966b5c05a2",
+        "mode": "0644",
+        "bytes": 10356
+      },
+      "current": {
+        "sha256": "35dee95a84e2de69672988ae4d8d3da764e3c245e404754cc89ac3966b5c05a2",
+        "mode": "0644",
+        "bytes": 10356
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "recorded_ROOT": {
+        "sha256": "77091d2fb8c21c859c38af744e47a9f3c5495e1f9cd7a0ea08a5c1a6540ad2e0",
+        "mode": "0644",
+        "bytes": 33751
+      },
+      "current": {
+        "sha256": "77091d2fb8c21c859c38af744e47a9f3c5495e1f9cd7a0ea08a5c1a6540ad2e0",
+        "mode": "0644",
+        "bytes": 33751
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_records.go",
+      "recorded_ROOT": {
+        "sha256": "219b643ed0059687ae42afd76c07e8ed9231f8577f41687a46872964fa9d92bb",
+        "mode": "0644",
+        "bytes": 20842
+      },
+      "current": {
+        "sha256": "219b643ed0059687ae42afd76c07e8ed9231f8577f41687a46872964fa9d92bb",
+        "mode": "0644",
+        "bytes": 20842
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_checkpoints.go",
+      "recorded_ROOT": {
+        "sha256": "990bafbc733695d5d3b4c8284c5d1464476025a5accbd6ab35857c58746ff490",
+        "mode": "0644",
+        "bytes": 13702
+      },
+      "current": {
+        "sha256": "990bafbc733695d5d3b4c8284c5d1464476025a5accbd6ab35857c58746ff490",
+        "mode": "0644",
+        "bytes": 13702
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "recorded_ROOT": {
+        "sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191",
+        "mode": "0644",
+        "bytes": 19170
+      },
+      "current": {
+        "sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191",
+        "mode": "0644",
+        "bytes": 19170
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report.go",
+      "recorded_ROOT": {
+        "sha256": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44",
+        "mode": "0644",
+        "bytes": 13872
+      },
+      "current": {
+        "sha256": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44",
+        "mode": "0644",
+        "bytes": 13872
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "packages/views/collaboration/information-history.tsx",
+      "recorded_ROOT": {
+        "sha256": "68108a95400826e32c47eb6662aebf5b0a294186af74d3176472cba21e41e1b8",
+        "mode": "0644",
+        "bytes": 14621
+      },
+      "current": {
+        "sha256": "68108a95400826e32c47eb6662aebf5b0a294186af74d3176472cba21e41e1b8",
+        "mode": "0644",
+        "bytes": 14621
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "packages/core/collaboration/information-schema.ts",
+      "recorded_ROOT": {
+        "sha256": "494fe0239e921c15ecf31a43ab1d5454971ab083e434adaa5cebed0880ac7845",
+        "mode": "0644",
+        "bytes": 13116
+      },
+      "current": {
+        "sha256": "494fe0239e921c15ecf31a43ab1d5454971ab083e434adaa5cebed0880ac7845",
+        "mode": "0644",
+        "bytes": 13116
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "packages/core/collaboration/attachment-schema.ts",
+      "recorded_ROOT": {
+        "sha256": "15358b441161ee340e1a8ca4c8b3ccec2b5ea4c01b55668c335ac460ed105ed9",
+        "mode": "0644",
+        "bytes": 5606
+      },
+      "current": {
+        "sha256": "15358b441161ee340e1a8ca4c8b3ccec2b5ea4c01b55668c335ac460ed105ed9",
+        "mode": "0644",
+        "bytes": 5606
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "packages/core/collaboration/run-records-schema.ts",
+      "recorded_ROOT": {
+        "sha256": "1d01c9f04a6bdb8ca18ef83360e6f5d184879e10b81e03c358784aa85b10a82e",
+        "mode": "0644",
+        "bytes": 7787
+      },
+      "current": {
+        "sha256": "1d01c9f04a6bdb8ca18ef83360e6f5d184879e10b81e03c358784aa85b10a82e",
+        "mode": "0644",
+        "bytes": 7787
+      },
+      "matches_previous_readiness": true
+    },
+    {
+      "path": "packages/views/collaboration/run-records.tsx",
+      "recorded_ROOT": {
+        "sha256": "7e64fc4423e92500a01b5001bf68c15280d22858c559faef7fb07fc55f807cfc",
+        "mode": "0644",
+        "bytes": 15431
+      },
+      "current": {
+        "sha256": "7e64fc4423e92500a01b5001bf68c15280d22858c559faef7fb07fc55f807cfc",
+        "mode": "0644",
+        "bytes": 15431
+      },
+      "matches_previous_readiness": true
+    }
+  ],
+  "current_host_vs_accepted_output": [
+    {
+      "path": "server/internal/daemon/collaboration_host_router_boundary_test.go",
+      "ROOT": {
+        "sha256": "3ad39578ecca2cbcf57c1237df3bb20f0567a6b9b75d0261ebb706b95a24e61a",
+        "mode": "0644",
+        "bytes": 5091
+      },
+      "accepted_output_source": {
+        "sha256": "3ad39578ecca2cbcf57c1237df3bb20f0567a6b9b75d0261ebb706b95a24e61a",
+        "mode": "0644",
+        "bytes": 5091
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_test.go",
+      "ROOT": {
+        "sha256": "6ea88ebb555918c2e75878dca7addbc0af11adc5dadb6604fb8fad230fa70aab",
+        "mode": "0644",
+        "bytes": 11928
+      },
+      "accepted_output_source": {
+        "sha256": "6ea88ebb555918c2e75878dca7addbc0af11adc5dadb6604fb8fad230fa70aab",
+        "mode": "0644",
+        "bytes": 11928
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_test.go",
+      "ROOT": {
+        "sha256": "6acfcebdd4ae06a8dd101dd64ae25a1c33b13e96a359581bfed681202e4e3cf7",
+        "mode": "0644",
+        "bytes": 5060
+      },
+      "accepted_output_source": {
+        "sha256": "6acfcebdd4ae06a8dd101dd64ae25a1c33b13e96a359581bfed681202e4e3cf7",
+        "mode": "0644",
+        "bytes": 5060
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_version_test.go",
+      "ROOT": {
+        "sha256": "c44eb6ad27a366ee91ce7a0b6709e5c6d98f6cc7b725d97344d72a4c0c323913",
+        "mode": "0644",
+        "bytes": 2827
+      },
+      "accepted_output_source": {
+        "sha256": "c44eb6ad27a366ee91ce7a0b6709e5c6d98f6cc7b725d97344d72a4c0c323913",
+        "mode": "0644",
+        "bytes": 2827
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client.go",
+      "ROOT": {
+        "sha256": "9664c5862247f3a679ac1dae8864515871e9143abc9640eea707dce82d5d40a2",
+        "mode": "0644",
+        "bytes": 14438
+      },
+      "accepted_output_source": {
+        "sha256": "9664c5862247f3a679ac1dae8864515871e9143abc9640eea707dce82d5d40a2",
+        "mode": "0644",
+        "bytes": 14438
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_context_extensions_test.go",
+      "ROOT": {
+        "sha256": "651307abc5c50b4a993141b6fa9fcaf8a00ad8bf7370c9bebfbd0bb1defb42cf",
+        "mode": "0644",
+        "bytes": 2390
+      },
+      "accepted_output_source": {
+        "sha256": "651307abc5c50b4a993141b6fa9fcaf8a00ad8bf7370c9bebfbd0bb1defb42cf",
+        "mode": "0644",
+        "bytes": 2390
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_host.go",
+      "ROOT": {
+        "sha256": "43f3bc3383917b772f3ec4df3160491c9ec8078ffaa164aeb1f7391ffdd24f7b",
+        "mode": "0644",
+        "bytes": 3239
+      },
+      "accepted_output_source": {
+        "sha256": "43f3bc3383917b772f3ec4df3160491c9ec8078ffaa164aeb1f7391ffdd24f7b",
+        "mode": "0644",
+        "bytes": 3239
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_preparation.go",
+      "ROOT": {
+        "sha256": "e7541e5b5d1c5f995e2d43a63802c88297e21b67a2a1e22e997b28f93e1c823c",
+        "mode": "0644",
+        "bytes": 7990
+      },
+      "accepted_output_source": {
+        "sha256": "e7541e5b5d1c5f995e2d43a63802c88297e21b67a2a1e22e997b28f93e1c823c",
+        "mode": "0644",
+        "bytes": 7990
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_preparation_test.go",
+      "ROOT": {
+        "sha256": "35de2afe9cd104cb5fbaeb568bdeb217ffd9df7b87aa28a936bf384aa4c07763",
+        "mode": "0644",
+        "bytes": 9499
+      },
+      "accepted_output_source": {
+        "sha256": "35de2afe9cd104cb5fbaeb568bdeb217ffd9df7b87aa28a936bf384aa4c07763",
+        "mode": "0644",
+        "bytes": 9499
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_recording_ack_test.go",
+      "ROOT": {
+        "sha256": "6ac5490055c3c49cb548b9d89b02461c667245a8f64bf3ff97a7dc82a0515dd1",
+        "mode": "0644",
+        "bytes": 5015
+      },
+      "accepted_output_source": {
+        "sha256": "6ac5490055c3c49cb548b9d89b02461c667245a8f64bf3ff97a7dc82a0515dd1",
+        "mode": "0644",
+        "bytes": 5015
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client_test.go",
+      "ROOT": {
+        "sha256": "efe0f17c038aa7b8c931f1c0aceb1348dffd1b465e2a6906d48e463351e1fe97",
+        "mode": "0644",
+        "bytes": 6467
+      },
+      "accepted_output_source": {
+        "sha256": "efe0f17c038aa7b8c931f1c0aceb1348dffd1b465e2a6906d48e463351e1fe97",
+        "mode": "0644",
+        "bytes": 6467
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/controller.go",
+      "ROOT": {
+        "sha256": "64644a4488f66fc8abc5e05aad2c6c0e870ea1dcd04ecf6af9d852f907fe1ef6",
+        "mode": "0644",
+        "bytes": 11993
+      },
+      "accepted_output_source": {
+        "sha256": "64644a4488f66fc8abc5e05aad2c6c0e870ea1dcd04ecf6af9d852f907fe1ef6",
+        "mode": "0644",
+        "bytes": 11993
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/controller_linux.go",
+      "ROOT": {
+        "sha256": "e143add39dec306b28fb6508ba44611f4103ecf24e30c556af7bd49fb45d0e6e",
+        "mode": "0644",
+        "bytes": 9668
+      },
+      "accepted_output_source": {
+        "sha256": "e143add39dec306b28fb6508ba44611f4103ecf24e30c556af7bd49fb45d0e6e",
+        "mode": "0644",
+        "bytes": 9668
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/controller_linux_test.go",
+      "ROOT": {
+        "sha256": "7cb9b859dd51721619d2dd38f5aba63d17fe36f38063384b4eaa8d39c7c5d053",
+        "mode": "0644",
+        "bytes": 8699
+      },
+      "accepted_output_source": {
+        "sha256": "7cb9b859dd51721619d2dd38f5aba63d17fe36f38063384b4eaa8d39c7c5d053",
+        "mode": "0644",
+        "bytes": 8699
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/controller_other_test.go",
+      "ROOT": {
+        "sha256": "8a02b2ea1fdd7fd33e73c113048349c001413ac1b115e4c72356a759b25859e9",
+        "mode": "0644",
+        "bytes": 147
+      },
+      "accepted_output_source": {
+        "sha256": "8a02b2ea1fdd7fd33e73c113048349c001413ac1b115e4c72356a759b25859e9",
+        "mode": "0644",
+        "bytes": 147
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/controller_test.go",
+      "ROOT": {
+        "sha256": "b4797d94c73a9cda3605a722ddb74c690b78e596f1beca0372353695d95dead1",
+        "mode": "0644",
+        "bytes": 1036
+      },
+      "accepted_output_source": {
+        "sha256": "b4797d94c73a9cda3605a722ddb74c690b78e596f1beca0372353695d95dead1",
+        "mode": "0644",
+        "bytes": 1036
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/controller_unsupported.go",
+      "ROOT": {
+        "sha256": "c98872b3068a5ae47ef869d94a96678059c9ed0dbfa8820717f24b2ee1e3e767",
+        "mode": "0644",
+        "bytes": 203
+      },
+      "accepted_output_source": {
+        "sha256": "c98872b3068a5ae47ef869d94a96678059c9ed0dbfa8820717f24b2ee1e3e767",
+        "mode": "0644",
+        "bytes": 203
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_agentintegration_authorizer_test.go",
+      "ROOT": {
+        "sha256": "ac7de3f4ccd470aab83a49e0d26888569e67eab11a2a31174d4ac1bb70be0416",
+        "mode": "0644",
+        "bytes": 4215
+      },
+      "accepted_output_source": {
+        "sha256": "ac7de3f4ccd470aab83a49e0d26888569e67eab11a2a31174d4ac1bb70be0416",
+        "mode": "0644",
+        "bytes": 4215
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_agentintegration_test.go",
+      "ROOT": {
+        "sha256": "851fbd36c86b56ae1217444cbd43b0a46b5a5e0a59586adef02655ad857c69cf",
+        "mode": "0644",
+        "bytes": 10709
+      },
+      "accepted_output_source": {
+        "sha256": "851fbd36c86b56ae1217444cbd43b0a46b5a5e0a59586adef02655ad857c69cf",
+        "mode": "0644",
+        "bytes": 10709
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoint_delivery_test.go",
+      "ROOT": {
+        "sha256": "1534f0515e6d24121286fba458d7b98f4fc8483748359a03e7ddd1e52f0a393e",
+        "mode": "0644",
+        "bytes": 19060
+      },
+      "accepted_output_source": {
+        "sha256": "1534f0515e6d24121286fba458d7b98f4fc8483748359a03e7ddd1e52f0a393e",
+        "mode": "0644",
+        "bytes": 19060
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoint_gap_test.go",
+      "ROOT": {
+        "sha256": "cfaa5464eb89569c90af7e0fdd373b510f12afbde1f6a987d73239ce0db93c21",
+        "mode": "0644",
+        "bytes": 8869
+      },
+      "accepted_output_source": {
+        "sha256": "cfaa5464eb89569c90af7e0fdd373b510f12afbde1f6a987d73239ce0db93c21",
+        "mode": "0644",
+        "bytes": 8869
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go",
+      "ROOT": {
+        "sha256": "ef28f07f95682414bfbb043b0b0f6b6601fa15267a8765d62ab66f6d89ac4172",
+        "mode": "0644",
+        "bytes": 9755
+      },
+      "accepted_output_source": {
+        "sha256": "ef28f07f95682414bfbb043b0b0f6b6601fa15267a8765d62ab66f6d89ac4172",
+        "mode": "0644",
+        "bytes": 9755
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoints.go",
+      "ROOT": {
+        "sha256": "d0c9c920865fdf3e7318cef1935ff58c871c1ca58d894e466262f0fa24f8a5f6",
+        "mode": "0644",
+        "bytes": 14072
+      },
+      "accepted_output_source": {
+        "sha256": "d0c9c920865fdf3e7318cef1935ff58c871c1ca58d894e466262f0fa24f8a5f6",
+        "mode": "0644",
+        "bytes": 14072
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_checkpoints_test.go",
+      "ROOT": {
+        "sha256": "9d948ef3194f519b2354c6bd6bee2d972003e9ff70b98cb91af7ac543a00f886",
+        "mode": "0644",
+        "bytes": 5504
+      },
+      "accepted_output_source": {
+        "sha256": "9d948ef3194f519b2354c6bd6bee2d972003e9ff70b98cb91af7ac543a00f886",
+        "mode": "0644",
+        "bytes": 5504
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_config.go",
+      "ROOT": {
+        "sha256": "bfd1ab2dec0c7242212b6f810074a43e880fe78677f0428f47d87b24e37a4a34",
+        "mode": "0644",
+        "bytes": 7720
+      },
+      "accepted_output_source": {
+        "sha256": "bfd1ab2dec0c7242212b6f810074a43e880fe78677f0428f47d87b24e37a4a34",
+        "mode": "0644",
+        "bytes": 7720
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_config_test.go",
+      "ROOT": {
+        "sha256": "d18b933f9d225ef4f8aacd4915779a62403c18c1ccb249df0a5f7e2d89d14819",
+        "mode": "0644",
+        "bytes": 1848
+      },
+      "accepted_output_source": {
+        "sha256": "d18b933f9d225ef4f8aacd4915779a62403c18c1ccb249df0a5f7e2d89d14819",
+        "mode": "0644",
+        "bytes": 1848
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_context_experiment_evidence_test.go",
+      "ROOT": {
+        "sha256": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+        "mode": "0644",
+        "bytes": 8757
+      },
+      "accepted_output_source": {
+        "sha256": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+        "mode": "0644",
+        "bytes": 8757
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go",
+      "ROOT": {
+        "sha256": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+        "mode": "0644",
+        "bytes": 18456
+      },
+      "accepted_output_source": {
+        "sha256": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+        "mode": "0644",
+        "bytes": 18456
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_context_experiment_stop_test.go",
+      "ROOT": {
+        "sha256": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+        "mode": "0644",
+        "bytes": 4174
+      },
+      "accepted_output_source": {
+        "sha256": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+        "mode": "0644",
+        "bytes": 4174
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_context_experiment_test.go",
+      "ROOT": {
+        "sha256": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893",
+        "mode": "0644",
+        "bytes": 27948
+      },
+      "accepted_output_source": {
+        "sha256": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893",
+        "mode": "0644",
+        "bytes": 27948
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_git_test.go",
+      "ROOT": {
+        "sha256": "b2d16b6b21e2d164c9abdbe6bc4c7c9cb3d40af712acf3600f509ba37a50f0e3",
+        "mode": "0644",
+        "bytes": 4669
+      },
+      "accepted_output_source": {
+        "sha256": "b2d16b6b21e2d164c9abdbe6bc4c7c9cb3d40af712acf3600f509ba37a50f0e3",
+        "mode": "0644",
+        "bytes": 4669
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff.go",
+      "ROOT": {
+        "sha256": "787dcc86c230e5e5c13dafe88755538f346d8168bc7b3883e0fe0b9b98083718",
+        "mode": "0644",
+        "bytes": 7134
+      },
+      "accepted_output_source": {
+        "sha256": "787dcc86c230e5e5c13dafe88755538f346d8168bc7b3883e0fe0b9b98083718",
+        "mode": "0644",
+        "bytes": 7134
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_budget_test.go",
+      "ROOT": {
+        "sha256": "3740d24bf0956f4ab23fb2a0218f051cf7627e2f2716a9103728cf282aa6cbea",
+        "mode": "0644",
+        "bytes": 7534
+      },
+      "accepted_output_source": {
+        "sha256": "3740d24bf0956f4ab23fb2a0218f051cf7627e2f2716a9103728cf282aa6cbea",
+        "mode": "0644",
+        "bytes": 7534
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_checkpoint_lifecycle_test.go",
+      "ROOT": {
+        "sha256": "8fd5b7c68aedaefc6701b65d8190e013f04e5283321440d6baa8cb6619187393",
+        "mode": "0644",
+        "bytes": 9691
+      },
+      "accepted_output_source": {
+        "sha256": "8fd5b7c68aedaefc6701b65d8190e013f04e5283321440d6baa8cb6619187393",
+        "mode": "0644",
+        "bytes": 9691
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_checkpoint_test.go",
+      "ROOT": {
+        "sha256": "44065e0579c58cc03704728894c66fa4c947cf228be90019e2a5362dfd9d8ef4",
+        "mode": "0644",
+        "bytes": 7322
+      },
+      "accepted_output_source": {
+        "sha256": "44065e0579c58cc03704728894c66fa4c947cf228be90019e2a5362dfd9d8ef4",
+        "mode": "0644",
+        "bytes": 7322
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_codex_launch_test.go",
+      "ROOT": {
+        "sha256": "2e904a4bdc6ca1823a494a6b811e9291df9648758c4b3c6c9c485023a505955d",
+        "mode": "0644",
+        "bytes": 6840
+      },
+      "accepted_output_source": {
+        "sha256": "2e904a4bdc6ca1823a494a6b811e9291df9648758c4b3c6c9c485023a505955d",
+        "mode": "0644",
+        "bytes": 6840
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_launch_test.go",
+      "ROOT": {
+        "sha256": "16d9f62c8515de5468240bc85e8ddeddb0b186f3f99b62b1d23c2617f66b3336",
+        "mode": "0644",
+        "bytes": 23184
+      },
+      "accepted_output_source": {
+        "sha256": "16d9f62c8515de5468240bc85e8ddeddb0b186f3f99b62b1d23c2617f66b3336",
+        "mode": "0644",
+        "bytes": 23184
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_handoff_wire_test.go",
+      "ROOT": {
+        "sha256": "a57504bd74c50740aeccf3c2b5ffffe58e6641f7fda56a12df0f6b37c3b0095a",
+        "mode": "0644",
+        "bytes": 3713
+      },
+      "accepted_output_source": {
+        "sha256": "a57504bd74c50740aeccf3c2b5ffffe58e6641f7fda56a12df0f6b37c3b0095a",
+        "mode": "0644",
+        "bytes": 3713
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_knowledge.go",
+      "ROOT": {
+        "sha256": "94e8b3ec6f3a912fb20ac58e55a2af14513707413b6aaabaaf4dc2a4342c35a6",
+        "mode": "0644",
+        "bytes": 5985
+      },
+      "accepted_output_source": {
+        "sha256": "94e8b3ec6f3a912fb20ac58e55a2af14513707413b6aaabaaf4dc2a4342c35a6",
+        "mode": "0644",
+        "bytes": 5985
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_knowledge_codex_test.go",
+      "ROOT": {
+        "sha256": "fccaf09fc24db4bb784f37d9d2acac24720ba2e8035bb72ac5499edeb5f093b0",
+        "mode": "0644",
+        "bytes": 2609
+      },
+      "accepted_output_source": {
+        "sha256": "fccaf09fc24db4bb784f37d9d2acac24720ba2e8035bb72ac5499edeb5f093b0",
+        "mode": "0644",
+        "bytes": 2609
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_knowledge_stderr_test.go",
+      "ROOT": {
+        "sha256": "42202b8c8d23191b86b05c32105037b8d06c1f315c4c19d5764651da55703b86",
+        "mode": "0644",
+        "bytes": 3492
+      },
+      "accepted_output_source": {
+        "sha256": "42202b8c8d23191b86b05c32105037b8d06c1f315c4c19d5764651da55703b86",
+        "mode": "0644",
+        "bytes": 3492
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_knowledge_test.go",
+      "ROOT": {
+        "sha256": "28ece93946af43695206a1cc8bae9f0e9d0901501b0318d7805286e8424ab0fd",
+        "mode": "0644",
+        "bytes": 23982
+      },
+      "accepted_output_source": {
+        "sha256": "28ece93946af43695206a1cc8bae9f0e9d0901501b0318d7805286e8424ab0fd",
+        "mode": "0644",
+        "bytes": 23982
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_ledger.go",
+      "ROOT": {
+        "sha256": "54965bd28c5bad9388fd8078d4d6daab106d2f4f07c17ec4d9ba27a71f5bace0",
+        "mode": "0644",
+        "bytes": 20139
+      },
+      "accepted_output_source": {
+        "sha256": "54965bd28c5bad9388fd8078d4d6daab106d2f4f07c17ec4d9ba27a71f5bace0",
+        "mode": "0644",
+        "bytes": 20139
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_ledger_test.go",
+      "ROOT": {
+        "sha256": "7b24e90e7be8d20a2bc3c9853158a255cdba3fce90e3e956b304abeecda43393",
+        "mode": "0644",
+        "bytes": 7415
+      },
+      "accepted_output_source": {
+        "sha256": "7b24e90e7be8d20a2bc3c9853158a255cdba3fce90e3e956b304abeecda43393",
+        "mode": "0644",
+        "bytes": 7415
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_memory.go",
+      "ROOT": {
+        "sha256": "c29f0e275a610d45e73a21313eded903329d98aff0cbb80898a7e7d31ad25315",
+        "mode": "0644",
+        "bytes": 3624
+      },
+      "accepted_output_source": {
+        "sha256": "c29f0e275a610d45e73a21313eded903329d98aff0cbb80898a7e7d31ad25315",
+        "mode": "0644",
+        "bytes": 3624
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_memory_test.go",
+      "ROOT": {
+        "sha256": "b225a09ec04859c70a10016bbed7ebea576695212c67d95e6f81b445e661d5ff",
+        "mode": "0644",
+        "bytes": 9739
+      },
+      "accepted_output_source": {
+        "sha256": "b225a09ec04859c70a10016bbed7ebea576695212c67d95e6f81b445e661d5ff",
+        "mode": "0644",
+        "bytes": 9739
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_preparation.go",
+      "ROOT": {
+        "sha256": "8b897ba497b013c0ca47eeb2b82658cfa425bdb3c3dcfcd90120d716879e3c2f",
+        "mode": "0644",
+        "bytes": 11324
+      },
+      "accepted_output_source": {
+        "sha256": "8b897ba497b013c0ca47eeb2b82658cfa425bdb3c3dcfcd90120d716879e3c2f",
+        "mode": "0644",
+        "bytes": 11324
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_prompt_role_test.go",
+      "ROOT": {
+        "sha256": "9bbbd412a15268dbb5e88a6e3ab219d6454efbcec9159c7be9a34bc5f7fac78e",
+        "mode": "0644",
+        "bytes": 1523
+      },
+      "accepted_output_source": {
+        "sha256": "9bbbd412a15268dbb5e88a6e3ab219d6454efbcec9159c7be9a34bc5f7fac78e",
+        "mode": "0644",
+        "bytes": 1523
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_recall.go",
+      "ROOT": {
+        "sha256": "be1c17e2622095c5d5eaee03897f77ae4c8b522313fb1038ad4e2e81ab32582a",
+        "mode": "0644",
+        "bytes": 2364
+      },
+      "accepted_output_source": {
+        "sha256": "be1c17e2622095c5d5eaee03897f77ae4c8b522313fb1038ad4e2e81ab32582a",
+        "mode": "0644",
+        "bytes": 2364
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_recall_test.go",
+      "ROOT": {
+        "sha256": "201b77dbc58b7e1bfb53cb91fc524857cca5cd1dedb2a0e1336b8b68ad5d8be4",
+        "mode": "0644",
+        "bytes": 3818
+      },
+      "accepted_output_source": {
+        "sha256": "201b77dbc58b7e1bfb53cb91fc524857cca5cd1dedb2a0e1336b8b68ad5d8be4",
+        "mode": "0644",
+        "bytes": 3818
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_recording.go",
+      "ROOT": {
+        "sha256": "d7ee88e1bb0612071f132e06884e9febfb099eb8b92eb44d3f1eb80fbc914ed9",
+        "mode": "0644",
+        "bytes": 9159
+      },
+      "accepted_output_source": {
+        "sha256": "d7ee88e1bb0612071f132e06884e9febfb099eb8b92eb44d3f1eb80fbc914ed9",
+        "mode": "0644",
+        "bytes": 9159
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_recording_recovery_test.go",
+      "ROOT": {
+        "sha256": "d3603e09b71aa8b988ed36ced0623d90a5a6b58f735ed55acb153d09c0239f82",
+        "mode": "0644",
+        "bytes": 16115
+      },
+      "accepted_output_source": {
+        "sha256": "d3603e09b71aa8b988ed36ced0623d90a5a6b58f735ed55acb153d09c0239f82",
+        "mode": "0644",
+        "bytes": 16115
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_review_test.go",
+      "ROOT": {
+        "sha256": "d61f2458293cf29768fa6e7d546883dfd9d05736807ca2e8f8f5c03fc147cfa2",
+        "mode": "0644",
+        "bytes": 17244
+      },
+      "accepted_output_source": {
+        "sha256": "d61f2458293cf29768fa6e7d546883dfd9d05736807ca2e8f8f5c03fc147cfa2",
+        "mode": "0644",
+        "bytes": 17244
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_runner.go",
+      "ROOT": {
+        "sha256": "be033bc153dfc6ac78e10e708cdda19604939aec9855044777cb8526a8d22bb6",
+        "mode": "0644",
+        "bytes": 26779
+      },
+      "accepted_output_source": {
+        "sha256": "be033bc153dfc6ac78e10e708cdda19604939aec9855044777cb8526a8d22bb6",
+        "mode": "0644",
+        "bytes": 26779
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_runner_test.go",
+      "ROOT": {
+        "sha256": "7d513668d77e2ceb329fea0f83d9838e4624a34d1da5b6a4bf426da2d3afbab1",
+        "mode": "0644",
+        "bytes": 19437
+      },
+      "accepted_output_source": {
+        "sha256": "7d513668d77e2ceb329fea0f83d9838e4624a34d1da5b6a4bf426da2d3afbab1",
+        "mode": "0644",
+        "bytes": 19437
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_session.go",
+      "ROOT": {
+        "sha256": "2cac38e3efeb209775668933731562d7928e3e94f7bef029fa2ecb335e084c15",
+        "mode": "0644",
+        "bytes": 4933
+      },
+      "accepted_output_source": {
+        "sha256": "2cac38e3efeb209775668933731562d7928e3e94f7bef029fa2ecb335e084c15",
+        "mode": "0644",
+        "bytes": 4933
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_session_test.go",
+      "ROOT": {
+        "sha256": "20871fbfc882ab821828ba98fb7b71becb6a8c8a53607e22ba415a9c9fd7ad55",
+        "mode": "0644",
+        "bytes": 4098
+      },
+      "accepted_output_source": {
+        "sha256": "20871fbfc882ab821828ba98fb7b71becb6a8c8a53607e22ba415a9c9fd7ad55",
+        "mode": "0644",
+        "bytes": 4098
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go",
+      "ROOT": {
+        "sha256": "2e3ebf0c906058855cb399ce717051b20a4443ee90778c36823b74c8ab0bb5f6",
+        "mode": "0644",
+        "bytes": 7535
+      },
+      "accepted_output_source": {
+        "sha256": "2e3ebf0c906058855cb399ce717051b20a4443ee90778c36823b74c8ab0bb5f6",
+        "mode": "0644",
+        "bytes": 7535
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/ledger.go",
+      "ROOT": {
+        "sha256": "69b3e6fef876cd802c5690558de874c71d153f16552164b74bffc15090524b33",
+        "mode": "0644",
+        "bytes": 16960
+      },
+      "accepted_output_source": {
+        "sha256": "69b3e6fef876cd802c5690558de874c71d153f16552164b74bffc15090524b33",
+        "mode": "0644",
+        "bytes": 16960
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/ledger_test.go",
+      "ROOT": {
+        "sha256": "394d2b624e5d2a9f47ea606851952de489698dfff8fbbfff5fc522a96ab6c771",
+        "mode": "0644",
+        "bytes": 8528
+      },
+      "accepted_output_source": {
+        "sha256": "394d2b624e5d2a9f47ea606851952de489698dfff8fbbfff5fc522a96ab6c771",
+        "mode": "0644",
+        "bytes": 8528
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/ledger_unix.go",
+      "ROOT": {
+        "sha256": "5c52ae86bb5a4a145490a3f32fd933435762e8fd480a6740479b824ce574a4cd",
+        "mode": "0644",
+        "bytes": 1826
+      },
+      "accepted_output_source": {
+        "sha256": "5c52ae86bb5a4a145490a3f32fd933435762e8fd480a6740479b824ce574a4cd",
+        "mode": "0644",
+        "bytes": 1826
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/ledger_unsupported.go",
+      "ROOT": {
+        "sha256": "ee4b92588b89be275386bc50700acd720a4706b3fa7d20e2d0be91785a3f4aa5",
+        "mode": "0644",
+        "bytes": 784
+      },
+      "accepted_output_source": {
+        "sha256": "ee4b92588b89be275386bc50700acd720a4706b3fa7d20e2d0be91785a3f4aa5",
+        "mode": "0644",
+        "bytes": 784
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/ledger_windows.go",
+      "ROOT": {
+        "sha256": "66fe919c10555a4c604809d875cce0e9a4cd20653a4b788de5e52e5e7c8cb60c",
+        "mode": "0644",
+        "bytes": 5898
+      },
+      "accepted_output_source": {
+        "sha256": "66fe919c10555a4c604809d875cce0e9a4cd20653a4b788de5e52e5e7c8cb60c",
+        "mode": "0644",
+        "bytes": 5898
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/ledger_windows_test.go",
+      "ROOT": {
+        "sha256": "1afec91248fc1d2e291e90a4eb82646c5256d67ee7ef6f8d3ffc631bd00b73fc",
+        "mode": "0644",
+        "bytes": 2945
+      },
+      "accepted_output_source": {
+        "sha256": "1afec91248fc1d2e291e90a4eb82646c5256d67ee7ef6f8d3ffc631bd00b73fc",
+        "mode": "0644",
+        "bytes": 2945
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/preparation.go",
+      "ROOT": {
+        "sha256": "04d1cd9b4182ed9b648ea766570e0879c59b93f20cacbc45ee9e98d408f8bc18",
+        "mode": "0644",
+        "bytes": 10166
+      },
+      "accepted_output_source": {
+        "sha256": "04d1cd9b4182ed9b648ea766570e0879c59b93f20cacbc45ee9e98d408f8bc18",
+        "mode": "0644",
+        "bytes": 10166
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/preparation_git.go",
+      "ROOT": {
+        "sha256": "5b1b07084c7c5d56a42e1ce94e62ec10b2acbfaa8576fb92e6c3ec7ece647f82",
+        "mode": "0644",
+        "bytes": 6883
+      },
+      "accepted_output_source": {
+        "sha256": "5b1b07084c7c5d56a42e1ce94e62ec10b2acbfaa8576fb92e6c3ec7ece647f82",
+        "mode": "0644",
+        "bytes": 6883
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/preparation_git_linux_test.go",
+      "ROOT": {
+        "sha256": "89a31179e42c9a4935a50aa9df2888c3fc2bd9e60c228437172cfc46a6c16bd8",
+        "mode": "0644",
+        "bytes": 10062
+      },
+      "accepted_output_source": {
+        "sha256": "89a31179e42c9a4935a50aa9df2888c3fc2bd9e60c228437172cfc46a6c16bd8",
+        "mode": "0644",
+        "bytes": 10062
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/preparation_git_test.go",
+      "ROOT": {
+        "sha256": "cd7b761464d2e843d30f009c2f9d2bf829678f93673ddd877f7e72e6a2750d9f",
+        "mode": "0644",
+        "bytes": 5027
+      },
+      "accepted_output_source": {
+        "sha256": "cd7b761464d2e843d30f009c2f9d2bf829678f93673ddd877f7e72e6a2750d9f",
+        "mode": "0644",
+        "bytes": 5027
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/preparation_linux.go",
+      "ROOT": {
+        "sha256": "a14accb3d71d686cad47581a69a56de69ed3e228ab72dbf561ea149fafbb0fbf",
+        "mode": "0644",
+        "bytes": 13857
+      },
+      "accepted_output_source": {
+        "sha256": "a14accb3d71d686cad47581a69a56de69ed3e228ab72dbf561ea149fafbb0fbf",
+        "mode": "0644",
+        "bytes": 13857
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/preparation_linux_test.go",
+      "ROOT": {
+        "sha256": "455f6ccb2e061cbc6b495d2e9ed6c9c65c2ea51f3f796a24048840e1281aad95",
+        "mode": "0644",
+        "bytes": 20102
+      },
+      "accepted_output_source": {
+        "sha256": "455f6ccb2e061cbc6b495d2e9ed6c9c65c2ea51f3f796a24048840e1281aad95",
+        "mode": "0644",
+        "bytes": 20102
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/preparation_recovery_linux_test.go",
+      "ROOT": {
+        "sha256": "3a227affb919cf8d3e51929a4cd0d9f3ac0b829c9b5cce22915a9b242fc4380f",
+        "mode": "0644",
+        "bytes": 6483
+      },
+      "accepted_output_source": {
+        "sha256": "3a227affb919cf8d3e51929a4cd0d9f3ac0b829c9b5cce22915a9b242fc4380f",
+        "mode": "0644",
+        "bytes": 6483
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/provider_bundle.go",
+      "ROOT": {
+        "sha256": "6226850f8577faeb3ed35a921671198e75821596e5351e063a4de4cab1ef9c12",
+        "mode": "0644",
+        "bytes": 14442
+      },
+      "accepted_output_source": {
+        "sha256": "6226850f8577faeb3ed35a921671198e75821596e5351e063a4de4cab1ef9c12",
+        "mode": "0644",
+        "bytes": 14442
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/provider_bundle_test.go",
+      "ROOT": {
+        "sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+        "mode": "0644",
+        "bytes": 7851
+      },
+      "accepted_output_source": {
+        "sha256": "6eca92b5a7e88aafb0ade56ca88956318b112487c723ce58f2ca24dfe87bb045",
+        "mode": "0644",
+        "bytes": 7851
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/provider_bundle_unix.go",
+      "ROOT": {
+        "sha256": "096e1303ad3addcdc587837b8ce1107d0bcf6c24078d18fd5ea1dfd1f7dfeabe",
+        "mode": "0644",
+        "bytes": 1459
+      },
+      "accepted_output_source": {
+        "sha256": "096e1303ad3addcdc587837b8ce1107d0bcf6c24078d18fd5ea1dfd1f7dfeabe",
+        "mode": "0644",
+        "bytes": 1459
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/provider_bundle_unsupported.go",
+      "ROOT": {
+        "sha256": "b300a765bf08ff27d9cadaa48dd9fa27f2e0e87e715290cb0da96961bd047b92",
+        "mode": "0644",
+        "bytes": 148
+      },
+      "accepted_output_source": {
+        "sha256": "b300a765bf08ff27d9cadaa48dd9fa27f2e0e87e715290cb0da96961bd047b92",
+        "mode": "0644",
+        "bytes": 148
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/recovery.go",
+      "ROOT": {
+        "sha256": "02b6510a97801453854db3d818517f262b383e672ec2719d5eb763470cda9dca",
+        "mode": "0644",
+        "bytes": 4036
+      },
+      "accepted_output_source": {
+        "sha256": "02b6510a97801453854db3d818517f262b383e672ec2719d5eb763470cda9dca",
+        "mode": "0644",
+        "bytes": 4036
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/recovery_test.go",
+      "ROOT": {
+        "sha256": "51a3e5525e735d09ce6f0e95adefb470717fb4f1573ed83e4b7055f87e797fd2",
+        "mode": "0644",
+        "bytes": 6561
+      },
+      "accepted_output_source": {
+        "sha256": "51a3e5525e735d09ce6f0e95adefb470717fb4f1573ed83e4b7055f87e797fd2",
+        "mode": "0644",
+        "bytes": 6561
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/runner.go",
+      "ROOT": {
+        "sha256": "19252b5f861dc382669ef3637694acf76d9de60cb4a545332dc7eef9b31f67c7",
+        "mode": "0644",
+        "bytes": 9993
+      },
+      "accepted_output_source": {
+        "sha256": "19252b5f861dc382669ef3637694acf76d9de60cb4a545332dc7eef9b31f67c7",
+        "mode": "0644",
+        "bytes": 9993
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/runner_linux_test.go",
+      "ROOT": {
+        "sha256": "f7f105e0d88777067cff14483ef23ca24653ac38a645d5db80861153fdf71f0a",
+        "mode": "0644",
+        "bytes": 8689
+      },
+      "accepted_output_source": {
+        "sha256": "f7f105e0d88777067cff14483ef23ca24653ac38a645d5db80861153fdf71f0a",
+        "mode": "0644",
+        "bytes": 8689
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/runner_permit_test.go",
+      "ROOT": {
+        "sha256": "327f534221b4f8a033cd0d8063e7e2471ffb1f4b0b956e760d6c716fd6e8f485",
+        "mode": "0644",
+        "bytes": 6530
+      },
+      "accepted_output_source": {
+        "sha256": "327f534221b4f8a033cd0d8063e7e2471ffb1f4b0b956e760d6c716fd6e8f485",
+        "mode": "0644",
+        "bytes": 6530
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/runner_preparation_test.go",
+      "ROOT": {
+        "sha256": "e8b64c8d637b540e4ef5bfbdcff19cc5854f2f64e76428aabdd6d091389fc3ed",
+        "mode": "0644",
+        "bytes": 4844
+      },
+      "accepted_output_source": {
+        "sha256": "e8b64c8d637b540e4ef5bfbdcff19cc5854f2f64e76428aabdd6d091389fc3ed",
+        "mode": "0644",
+        "bytes": 4844
+      },
+      "match": true
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/runner_test.go",
+      "ROOT": {
+        "sha256": "00304669e2bff5b0b99c24494c1243e881b4174b10e0d3b0239afb39aa374107",
+        "mode": "0644",
+        "bytes": 5950
+      },
+      "accepted_output_source": {
+        "sha256": "00304669e2bff5b0b99c24494c1243e881b4174b10e0d3b0239afb39aa374107",
+        "mode": "0644",
+        "bytes": 5950
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/claude.go",
+      "ROOT": {
+        "sha256": "027200a87a76dcb2c2c67a3543bb1591cd169b35609af2e3eeec2a31bd65dec3",
+        "mode": "0755",
+        "bytes": 49953
+      },
+      "accepted_output_source": {
+        "sha256": "027200a87a76dcb2c2c67a3543bb1591cd169b35609af2e3eeec2a31bd65dec3",
+        "mode": "0755",
+        "bytes": 49953
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/claude_cancel_unix_test.go",
+      "ROOT": {
+        "sha256": "206505a9dfce05b5e2eb26d8c03c1eaeda15d4486e354b8c53c9c0bb6231f6f4",
+        "mode": "0755",
+        "bytes": 5426
+      },
+      "accepted_output_source": {
+        "sha256": "206505a9dfce05b5e2eb26d8c03c1eaeda15d4486e354b8c53c9c0bb6231f6f4",
+        "mode": "0755",
+        "bytes": 5426
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/claude_codec.go",
+      "ROOT": {
+        "sha256": "db79d78ff7d666dbf9e2030433246ac7412867abf6ed7f82d15d70b397ded490",
+        "mode": "0644",
+        "bytes": 12134
+      },
+      "accepted_output_source": {
+        "sha256": "db79d78ff7d666dbf9e2030433246ac7412867abf6ed7f82d15d70b397ded490",
+        "mode": "0644",
+        "bytes": 12134
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/claude_codec_test.go",
+      "ROOT": {
+        "sha256": "60aa1093fab94a9ba83510a9f2417981425b857b64e3331121d7f5bb524bdffb",
+        "mode": "0644",
+        "bytes": 6774
+      },
+      "accepted_output_source": {
+        "sha256": "60aa1093fab94a9ba83510a9f2417981425b857b64e3331121d7f5bb524bdffb",
+        "mode": "0644",
+        "bytes": 6774
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/claude_context_exhausted_test.go",
+      "ROOT": {
+        "sha256": "12d580b278d60bf5f94e9bf98dab503315b91ea87ee994f5ecbe4dfdd8cb14f1",
+        "mode": "0755",
+        "bytes": 11279
+      },
+      "accepted_output_source": {
+        "sha256": "12d580b278d60bf5f94e9bf98dab503315b91ea87ee994f5ecbe4dfdd8cb14f1",
+        "mode": "0755",
+        "bytes": 11279
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/claude_deadlock_test.go",
+      "ROOT": {
+        "sha256": "30f1589608c923669f06e97ae084c55080a412b7e6c1c019cafaf4e6fc070524",
+        "mode": "0755",
+        "bytes": 12318
+      },
+      "accepted_output_source": {
+        "sha256": "30f1589608c923669f06e97ae084c55080a412b7e6c1c019cafaf4e6fc070524",
+        "mode": "0755",
+        "bytes": 12318
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/claude_models.go",
+      "ROOT": {
+        "sha256": "199979b464d847854c870537bc2164f6d5f9d369d5769df8f61f4ef5bebda9c3",
+        "mode": "0644",
+        "bytes": 19425
+      },
+      "accepted_output_source": {
+        "sha256": "199979b464d847854c870537bc2164f6d5f9d369d5769df8f61f4ef5bebda9c3",
+        "mode": "0644",
+        "bytes": 19425
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/claude_models_test.go",
+      "ROOT": {
+        "sha256": "01c8d39a14ece573df483b5b54e3174605fbd9e5e0e00406ef74ae438ff098ff",
+        "mode": "0644",
+        "bytes": 21336
+      },
+      "accepted_output_source": {
+        "sha256": "01c8d39a14ece573df483b5b54e3174605fbd9e5e0e00406ef74ae438ff098ff",
+        "mode": "0644",
+        "bytes": 21336
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/claude_test.go",
+      "ROOT": {
+        "sha256": "58394d73138c089d364e23cbbab2d3d04c4b74b115f307360bbfbc351d2e5dc7",
+        "mode": "0755",
+        "bytes": 40650
+      },
+      "accepted_output_source": {
+        "sha256": "58394d73138c089d364e23cbbab2d3d04c4b74b115f307360bbfbc351d2e5dc7",
+        "mode": "0755",
+        "bytes": 40650
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle.go",
+      "ROOT": {
+        "sha256": "723efd4247436a5f808019f4d62ab2883b9ad90867ad257ee92d8218c760b86d",
+        "mode": "0644",
+        "bytes": 17765
+      },
+      "accepted_output_source": {
+        "sha256": "723efd4247436a5f808019f4d62ab2883b9ad90867ad257ee92d8218c760b86d",
+        "mode": "0644",
+        "bytes": 17765
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle_test.go",
+      "ROOT": {
+        "sha256": "5ee5ea93c430e101e07447ae750765ba1526f7c55f24ff1ce2274d371b01eb69",
+        "mode": "0644",
+        "bytes": 32418
+      },
+      "accepted_output_source": {
+        "sha256": "5ee5ea93c430e101e07447ae750765ba1526f7c55f24ff1ce2274d371b01eb69",
+        "mode": "0644",
+        "bytes": 32418
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle_unix_test.go",
+      "ROOT": {
+        "sha256": "8725f1e1c515234df16eac630adeb0a56c5092205ceafe60375b599e83817f52",
+        "mode": "0644",
+        "bytes": 2589
+      },
+      "accepted_output_source": {
+        "sha256": "8725f1e1c515234df16eac630adeb0a56c5092205ceafe60375b599e83817f52",
+        "mode": "0644",
+        "bytes": 2589
+      },
+      "match": true
+    },
+    {
+      "path": "server/pkg/agent/launch_lifecycle_windows_test.go",
+      "ROOT": {
+        "sha256": "af74b7e7933cd7dec58ab495ca711acd1c2cabf42f25484f7ff3a4542111e4a1",
+        "mode": "0644",
+        "bytes": 5823
+      },
+      "accepted_output_source": {
+        "sha256": "af74b7e7933cd7dec58ab495ca711acd1c2cabf42f25484f7ff3a4542111e4a1",
+        "mode": "0644",
+        "bytes": 5823
+      },
+      "match": true
+    }
+  ],
+  "ordinary_UI_candidate": [
+    {
+      "path": "packages/core/issues/field-revision.test.ts",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/core/issues/field-revision.test.ts",
+        "mode": "0o644",
+        "sha256": "a000153faef5469def5b52ca245435bcec95d08d29111434b542659602f5227a"
+      },
+      "private_candidate": {
+        "sha256": "a000153faef5469def5b52ca245435bcec95d08d29111434b542659602f5227a",
+        "mode": "0644",
+        "bytes": 3501
+      },
+      "matches_accepted": true,
+      "ROOT": null,
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/core/issues/mutations.test.tsx",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/core/issues/mutations.test.tsx",
+        "mode": "0o755",
+        "sha256": "960e2502fcc9fef7f125a0b97d35fa48cebd8025edf3597cc6bec2bf2c243dd8"
+      },
+      "private_candidate": {
+        "sha256": "960e2502fcc9fef7f125a0b97d35fa48cebd8025edf3597cc6bec2bf2c243dd8",
+        "mode": "0755",
+        "bytes": 54518
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "abd1d0ce071b0fa05d8e3667350b687159ffacb7a46b9a233915ef53621dd8f9",
+        "mode": "0755",
+        "bytes": 52762
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/core/issues/mutations.ts",
+      "kind": "product",
+      "accepted": {
+        "path": "packages/core/issues/mutations.ts",
+        "mode": "0o755",
+        "sha256": "d1de248dfb739dfc2a372219fba7c729e302d750735f9abca636951160a10b77"
+      },
+      "private_candidate": {
+        "sha256": "d1de248dfb739dfc2a372219fba7c729e302d750735f9abca636951160a10b77",
+        "mode": "0755",
+        "bytes": 48153
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "d53b3b2d7c75510ae06625088625d0048b51a974d9ea6a927c3d624ac8f0fde0",
+        "mode": "0755",
+        "bytes": 47462
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/actions/__tests__/use-issue-actions.test.tsx",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/views/issues/actions/__tests__/use-issue-actions.test.tsx",
+        "mode": "0o755",
+        "sha256": "6e1c7d2f40fc220baefdb6b586a89ca99353f149974856d38364127973ae09c8"
+      },
+      "private_candidate": {
+        "sha256": "6e1c7d2f40fc220baefdb6b586a89ca99353f149974856d38364127973ae09c8",
+        "mode": "0755",
+        "bytes": 22207
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "8f064486d17cd2b5d3dea9f72183ad7b650a5a76833d6f90eb49a876a7bbc5bb",
+        "mode": "0755",
+        "bytes": 19326
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/actions/run-confirm-gate.test.ts",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/views/issues/actions/run-confirm-gate.test.ts",
+        "mode": "0o755",
+        "sha256": "546e6678ace18602b8ee89ee5a1b1c4d62eeb51aeaf4aa7cc6c4952eb607e421"
+      },
+      "private_candidate": {
+        "sha256": "546e6678ace18602b8ee89ee5a1b1c4d62eeb51aeaf4aa7cc6c4952eb607e421",
+        "mode": "0755",
+        "bytes": 6139
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "9c9c1e75116ab9cb92e1eeb6d37cee611f649642103ceb9b00b2b7789b2f7448",
+        "mode": "0755",
+        "bytes": 5370
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/actions/run-confirm-gate.ts",
+      "kind": "product",
+      "accepted": {
+        "path": "packages/views/issues/actions/run-confirm-gate.ts",
+        "mode": "0o755",
+        "sha256": "a117527ae793d02f9d14ef495cf583889d5ab0acc740f200d6ec1de2b07cfbaa"
+      },
+      "private_candidate": {
+        "sha256": "a117527ae793d02f9d14ef495cf583889d5ab0acc740f200d6ec1de2b07cfbaa",
+        "mode": "0755",
+        "bytes": 4577
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "89f18c3c13dd5baf4923c59a8ec031c195bc1b5f6f0f297d1444898964fccfe7",
+        "mode": "0755",
+        "bytes": 4307
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/actions/use-issue-actions.ts",
+      "kind": "product",
+      "accepted": {
+        "path": "packages/views/issues/actions/use-issue-actions.ts",
+        "mode": "0o755",
+        "sha256": "314379827c1a46d08921b4a7990241cd6b8f38f38e7946a13bd3983202200406"
+      },
+      "private_candidate": {
+        "sha256": "314379827c1a46d08921b4a7990241cd6b8f38f38e7946a13bd3983202200406",
+        "mode": "0755",
+        "bytes": 11784
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "db51b3841750d2617af35f4be92cdfffedcab718e48dc92ffd21a1dad8eacbda",
+        "mode": "0755",
+        "bytes": 11675
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx",
+        "mode": "0o755",
+        "sha256": "1ca87595a5e1cb5977ba96b7274e4ab1479a4ecd59b4cd04b336ed91f4d94608"
+      },
+      "private_candidate": {
+        "sha256": "1ca87595a5e1cb5977ba96b7274e4ab1479a4ecd59b4cd04b336ed91f4d94608",
+        "mode": "0755",
+        "bytes": 14127
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "2e574865976e4a0026c66a139a884b1f3862e5c3786110d5563565119c27c0f8",
+        "mode": "0755",
+        "bytes": 10950
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/components/batch-action-toolbar.test.tsx",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/views/issues/components/batch-action-toolbar.test.tsx",
+        "mode": "0o755",
+        "sha256": "5bfc20d452422d90a228926e6fadef621872b8a94c93ea7a1eb14dc73e50e751"
+      },
+      "private_candidate": {
+        "sha256": "5bfc20d452422d90a228926e6fadef621872b8a94c93ea7a1eb14dc73e50e751",
+        "mode": "0755",
+        "bytes": 8579
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "1a4a4042a7c832e07320ab279847c204f7ce02145572acaf74808cb0795d4052",
+        "mode": "0755",
+        "bytes": 6618
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/components/batch-action-toolbar.tsx",
+      "kind": "product",
+      "accepted": {
+        "path": "packages/views/issues/components/batch-action-toolbar.tsx",
+        "mode": "0o755",
+        "sha256": "190665f7d92ef027b2b12be548808c197cd779863767c005142c8ed0dead38b4"
+      },
+      "private_candidate": {
+        "sha256": "190665f7d92ef027b2b12be548808c197cd779863767c005142c8ed0dead38b4",
+        "mode": "0755",
+        "bytes": 13462
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "d8ae26c591674a8d999d4747492aba9a7a0d84f82616f6cad05138bb136963c9",
+        "mode": "0755",
+        "bytes": 12723
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/components/board-card-assignee-picker.test.tsx",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/views/issues/components/board-card-assignee-picker.test.tsx",
+        "mode": "0o755",
+        "sha256": "ad243d72bfa1aa6bd4bd1752c66da1bf5f9e75538189b4e50f80fa62ee5b8ed4"
+      },
+      "private_candidate": {
+        "sha256": "ad243d72bfa1aa6bd4bd1752c66da1bf5f9e75538189b4e50f80fa62ee5b8ed4",
+        "mode": "0755",
+        "bytes": 6941
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "89dba3b11d247367d8bfc37efb4cfed8dbd9df0eb4b1f1fc6fa546c2c400a649",
+        "mode": "0755",
+        "bytes": 4867
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/components/board-card.tsx",
+      "kind": "product",
+      "accepted": {
+        "path": "packages/views/issues/components/board-card.tsx",
+        "mode": "0o755",
+        "sha256": "cdfbfa10e643704d7c00419bf13be3357c12dcda9cdfdc1c93ef2085a25bd3df"
+      },
+      "private_candidate": {
+        "sha256": "cdfbfa10e643704d7c00419bf13be3357c12dcda9cdfdc1c93ef2085a25bd3df",
+        "mode": "0755",
+        "bytes": 15494
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "7bcd40f2b89243eeafcc0e4c9fb1f36c2144c8b4b3a3d22846ba27ed78ea603f",
+        "mode": "0755",
+        "bytes": 15377
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/components/issue-detail.test.tsx",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/views/issues/components/issue-detail.test.tsx",
+        "mode": "0o755",
+        "sha256": "42389517f5cbd6109020093e410b40fce068ba7267833a3bae64176d97edbcb7"
+      },
+      "private_candidate": {
+        "sha256": "42389517f5cbd6109020093e410b40fce068ba7267833a3bae64176d97edbcb7",
+        "mode": "0755",
+        "bytes": 123523
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "528e634eeb670d8e38fa3ab869dd58504bd3dfab44861310783e52437351156c",
+        "mode": "0755",
+        "bytes": 120666
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/components/issue-detail.tsx",
+      "kind": "product",
+      "accepted": {
+        "path": "packages/views/issues/components/issue-detail.tsx",
+        "mode": "0o755",
+        "sha256": "f1956a4bf2c0bb528de70bb170ea9f4c38b8d8c86799dd35e701f1b04d487434"
+      },
+      "private_candidate": {
+        "sha256": "f1956a4bf2c0bb528de70bb170ea9f4c38b8d8c86799dd35e701f1b04d487434",
+        "mode": "0755",
+        "bytes": 170834
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "04c2420bdacbfe43640317699aeb78c24cfcfed21bfc4cfd2f2cd152cd1facd1",
+        "mode": "0755",
+        "bytes": 170625
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/components/table-view-editing.test.tsx",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/views/issues/components/table-view-editing.test.tsx",
+        "mode": "0o755",
+        "sha256": "4bbc0746589bf3c4022c3c343f14a58d702c8db8c70dc72b6849dffcfdd893dc"
+      },
+      "private_candidate": {
+        "sha256": "4bbc0746589bf3c4022c3c343f14a58d702c8db8c70dc72b6849dffcfdd893dc",
+        "mode": "0755",
+        "bytes": 25986
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "b5f110b991685fd6898159e7d0f14ece59020f0d7654bdb97f952e6201c08525",
+        "mode": "0755",
+        "bytes": 22491
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/issues/components/table-view.tsx",
+      "kind": "product",
+      "accepted": {
+        "path": "packages/views/issues/components/table-view.tsx",
+        "mode": "0o755",
+        "sha256": "84b2bb490bfe3d19d8121aafc99103a24b84f73c78a5b21c9197ec041bd62051"
+      },
+      "private_candidate": {
+        "sha256": "84b2bb490bfe3d19d8121aafc99103a24b84f73c78a5b21c9197ec041bd62051",
+        "mode": "0755",
+        "bytes": 90235
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "b287e03497d080398534f541415b8c440e1f74ed6cb3edec5d0d7fbe1e44c396",
+        "mode": "0755",
+        "bytes": 90090
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/modals/run-confirm.test.tsx",
+      "kind": "test",
+      "accepted": {
+        "path": "packages/views/modals/run-confirm.test.tsx",
+        "mode": "0o755",
+        "sha256": "6c1dcfdb1208162169b4f5f5ea8a7da48b83c4ca226b07a3c5443b66b74b2349"
+      },
+      "private_candidate": {
+        "sha256": "6c1dcfdb1208162169b4f5f5ea8a7da48b83c4ca226b07a3c5443b66b74b2349",
+        "mode": "0755",
+        "bytes": 22723
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "c9990bba6552676e590f7cea873dccaebde48a6c7ffd3908f879cb0762f85545",
+        "mode": "0755",
+        "bytes": 19048
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    },
+    {
+      "path": "packages/views/modals/run-confirm.tsx",
+      "kind": "product",
+      "accepted": {
+        "path": "packages/views/modals/run-confirm.tsx",
+        "mode": "0o755",
+        "sha256": "6974f2718b8b283a6cae8ca164703c913818b4815c21a1354da5dba50b01532d"
+      },
+      "private_candidate": {
+        "sha256": "6974f2718b8b283a6cae8ca164703c913818b4815c21a1354da5dba50b01532d",
+        "mode": "0755",
+        "bytes": 14292
+      },
+      "matches_accepted": true,
+      "ROOT": {
+        "sha256": "f65f352a52629b173baa35d34e277004a55353806c2c0b1e72040c157e3fb08e",
+        "mode": "0755",
+        "bytes": 14187
+      },
+      "ROOT_matches_candidate": false,
+      "ROOT_matches_BASE": true
+    }
+  ],
+  "current_source_summary": {
+    "domain_owners_unchanged": 29,
+    "domain_owner_total": 29,
+    "host_unchanged": 95,
+    "host_total": 95,
+    "UI_accepted_matches": 18,
+    "UI_owned_total": 18,
+    "UI_ROOT_BASE_matches": 18,
+    "UI_ROOT_candidate_matches": 0
+  },
+  "no_reverification_of_old_raw": true,
+  "parent_matrix_mutated": false,
+  "full_S3_accepted": false,
+  "comparison_note": "Mode representations 0o644 and0644 normalized as octal; path labels excluded. Initial local report draft stringwise comparison was corrected; no source or accepted evidence changed.",
+  "verification": {
+    "report_fingerprints_unchanged": 16,
+    "R01_R09_present": true,
+    "source_comparison_counts_checked": true,
+    "runtime_or_test_commands": 0,
+    "only_new_owned_report_pair_written": true
+  },
+  "markdown_report": {
+    "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-final-acceptance-preparation-20261119.md",
+    "sha256": "06465203aac11eb1fbd375e43d6052d09d8581faecf3760cb1c8173fe12ef58d",
+    "bytes": 17257
+  }
+}

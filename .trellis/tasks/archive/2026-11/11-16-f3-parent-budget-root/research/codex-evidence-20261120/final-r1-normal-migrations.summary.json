@@ -1,0 +1,27 @@
+{
+  "database": "f3_budget_cx_final_normal_migrations",
+  "package": "./internal/migrations",
+  "exit": 0,
+  "counts": {
+    "pass": 4
+  },
+  "tests": [
+    {
+      "test": "TestIssueBudgetTableMigrationContract",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetIndexMigrationContract",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetReadyMigrationListsEveryIndex",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetRollbackKeepsLedgerRows",
+      "action": "pass"
+    }
+  ],
+  "log": "/tmp/f3-codex-20261120/final-r1-normal-migrations.jsonl"
+}

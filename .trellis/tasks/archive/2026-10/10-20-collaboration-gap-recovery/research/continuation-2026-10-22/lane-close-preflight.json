@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-22T00:12:55.716894+00:00",
+  "parent_preflight": "content-admin-preflight.json",
+  "api_health": {
+    "status": "ok",
+    "pid": 22414,
+    "commit": "8ecb98883",
+    "started_at": "2026-10-21T23:29:04Z"
+  },
+  "configuration": {
+    "auth_mode": "password",
+    "platform_admin_available": true,
+    "managed_installation_supported": true,
+    "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905"
+  },
+  "production_web_http": 200,
+  "production_web_build_id": "tP4r55FoDsuyXfi1EylGw",
+  "expected_web_build_id": "tP4r55FoDsuyXfi1EylGw",
+  "native_renderer_http": 200,
+  "native_renderer_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "native_renderer_expected_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "binary_sha256": {
+    "daemon.test": "57f9aa8c2306992964aa714eef324fb5435e8218f143bb28702378adbe67d358",
+    "cross-client-provider": "80c3225030ff105764e3b65309d9b3e599c223a8914def1cb37ab6f3217a9f94"
+  },
+  "explicit_electron_exists": true,
+  "commands": {
+    "pnpm": "/opt/homebrew/bin/pnpm",
+    "docker": "/usr/local/bin/docker",
+    "python3": "/opt/homebrew/bin/python3"
+  },
+  "production_gate_change": false,
+  "real_provider_account_access": false,
+  "ready": true
+}

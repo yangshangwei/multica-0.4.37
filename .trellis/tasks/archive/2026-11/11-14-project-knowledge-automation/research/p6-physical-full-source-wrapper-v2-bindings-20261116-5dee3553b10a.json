@@ -1,0 +1,244 @@
+{
+  "kind": "physical_full_ROOT_SOURCE_and_persistent_wrapper_v2_binding_review",
+  "at": "2026-11-15T16:57:37.540191+00:00",
+  "ROOT": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "source_COPY": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/full-source-copy-result.json",
+    "sha256": "10155431b7c57d085c4a892a06fdf53740ba6a0678f1b44224820e81f34b2527"
+  },
+  "source_COPY_execution": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/full-source-copy-execution.json",
+    "sha256": "33bd3f25bf8f741b65345305d126a6c6a57e31ac0c4373b8c778dd301794cc0d"
+  },
+  "before": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/ROOT-before.json",
+    "sha256": "0e531a38756bc20f8f02cf0646b793508a221c548818b1b907a9d89f051db060"
+  },
+  "after": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/ROOT-after.json",
+    "sha256": "b1a28ebc0f64c28a3d49ba34d5ef1610dbcfcb42b6ff436153e87c7258d1ec86"
+  },
+  "ROOT_before_after_full_source_byte_mode_link_identity_equal": true,
+  "ROOT_HEAD_before": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+  "ROOT_HEAD_after": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+  "selected_private_source_commit": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+  "selected_commit_raw": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/selected-ROOT-commit.txt",
+    "sha256": "a08973f015aa11b87c9ee95d1546a7bd0c2925d9db0fa50e84ca4de0da6003af",
+    "git_commit": "2f6989bfa5630ff2790d37a539c1522d2d29d094"
+  },
+  "root3_after_images_checked": 3,
+  "RK3_after_images_checked": 3,
+  "Final5_after_images_checked": 5,
+  "registered_joint_rows_checked": 5038,
+  "admitted_joint_rows_after_overlays": 5039,
+  "joint_rows_outside_unchanged_controller_source_paths": [],
+  "sources": {
+    "frozen": {
+      "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-source",
+      "owned_mode": "0o700",
+      "SOURCE_only_not_fixture_HOME_or_TMP": true,
+      "manifest": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-full-manifest.json",
+        "sha256": "7a34a4f4821b323a1e3376fad2115be2b8cadb01139326f2cc921013fab4b1bf"
+      },
+      "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+      "physical_source_files": 10408,
+      "source_bytes": 177744406,
+      "code_files": 6478,
+      "Markdown_source_files": 631,
+      "workspace_links": 32,
+      "workspace_link_physical_targets_verified": true,
+      "private_git_selected_HEAD": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+      "private_index_sha256": "a0d42936a6139b25bfc19dd86edb3571a120dfbb69cb85ee9c732740077ddf8d",
+      "controller": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+        "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c"
+      },
+      "wrapper_load_controller_ROOT_binding_passed": true,
+      "dependency_BOM": {
+        "package.json": {
+          "sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+          "normalized_sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+          "mode": 493,
+          "link": null
+        },
+        "pnpm-lock.yaml": {
+          "sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+          "normalized_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+          "mode": 493,
+          "link": null
+        },
+        "pnpm-workspace.yaml": {
+          "sha256": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+          "normalized_sha256": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+          "mode": 493,
+          "link": null
+        },
+        "turbo.json": {
+          "sha256": "34eebc15eb95ab5fe4addefef3ac0e97f746a6524373c8da41e47c2ed54ef6ef",
+          "normalized_sha256": "34eebc15eb95ab5fe4addefef3ac0e97f746a6524373c8da41e47c2ed54ef6ef",
+          "mode": 493,
+          "link": null
+        },
+        "apps/web/package.json": {
+          "sha256": "5b639bf5af713948958d66329dfc3e66cea0df0ca77d219ab431a00125f74844",
+          "normalized_sha256": "5b639bf5af713948958d66329dfc3e66cea0df0ca77d219ab431a00125f74844",
+          "mode": 493,
+          "link": null
+        },
+        "apps/desktop/package.json": {
+          "sha256": "3f330b6bd215f95694b94d65c9f39ca3f168bf3d2a6511de7074d02bc46ddb09",
+          "normalized_sha256": "3f330b6bd215f95694b94d65c9f39ca3f168bf3d2a6511de7074d02bc46ddb09",
+          "mode": 493,
+          "link": null
+        },
+        "apps/docs/package.json": {
+          "sha256": "93268768696633ee668d217452f98ba38f5e56f82ea69c7d481a3b5179cb4145",
+          "normalized_sha256": "93268768696633ee668d217452f98ba38f5e56f82ea69c7d481a3b5179cb4145",
+          "mode": 493,
+          "link": null
+        },
+        "server/go.mod": {
+          "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+          "normalized_sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+          "mode": 493,
+          "link": null
+        },
+        "server/go.sum": {
+          "sha256": "7bb6e5e0576e89cb9f7b13c81a0fcd4b39acb2fae75ef9b6499066915b4e281d",
+          "normalized_sha256": "7bb6e5e0576e89cb9f7b13c81a0fcd4b39acb2fae75ef9b6499066915b4e281d",
+          "mode": 493,
+          "link": null
+        }
+      },
+      "private_PG_config_present": false
+    },
+    "new_mutable": {
+      "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+      "owned_mode": "0o700",
+      "SOURCE_only_not_fixture_HOME_or_TMP": true,
+      "manifest": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-full-manifest.json",
+        "sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84"
+      },
+      "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+      "physical_source_files": 10408,
+      "source_bytes": 177744406,
+      "code_files": 6478,
+      "Markdown_source_files": 631,
+      "workspace_links": 32,
+      "workspace_link_physical_targets_verified": true,
+      "private_git_selected_HEAD": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+      "private_index_sha256": "3e175cfcea426f6abc98a04c334a7427f6b71c515bc4a45557c02d4b9bf9c5d2",
+      "controller": {
+        "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+        "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c"
+      },
+      "wrapper_load_controller_ROOT_binding_passed": true,
+      "dependency_BOM": {
+        "package.json": {
+          "sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+          "normalized_sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+          "mode": 493,
+          "link": null
+        },
+        "pnpm-lock.yaml": {
+          "sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+          "normalized_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+          "mode": 493,
+          "link": null
+        },
+        "pnpm-workspace.yaml": {
+          "sha256": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+          "normalized_sha256": "3cd5c01bc94714d024783854d888c58f58137837b2631247bab8cb1058841020",
+          "mode": 493,
+          "link": null
+        },
+        "turbo.json": {
+          "sha256": "34eebc15eb95ab5fe4addefef3ac0e97f746a6524373c8da41e47c2ed54ef6ef",
+          "normalized_sha256": "34eebc15eb95ab5fe4addefef3ac0e97f746a6524373c8da41e47c2ed54ef6ef",
+          "mode": 493,
+          "link": null
+        },
+        "apps/web/package.json": {
+          "sha256": "5b639bf5af713948958d66329dfc3e66cea0df0ca77d219ab431a00125f74844",
+          "normalized_sha256": "5b639bf5af713948958d66329dfc3e66cea0df0ca77d219ab431a00125f74844",
+          "mode": 493,
+          "link": null
+        },
+        "apps/desktop/package.json": {
+          "sha256": "3f330b6bd215f95694b94d65c9f39ca3f168bf3d2a6511de7074d02bc46ddb09",
+          "normalized_sha256": "3f330b6bd215f95694b94d65c9f39ca3f168bf3d2a6511de7074d02bc46ddb09",
+          "mode": 493,
+          "link": null
+        },
+        "apps/docs/package.json": {
+          "sha256": "93268768696633ee668d217452f98ba38f5e56f82ea69c7d481a3b5179cb4145",
+          "normalized_sha256": "93268768696633ee668d217452f98ba38f5e56f82ea69c7d481a3b5179cb4145",
+          "mode": 493,
+          "link": null
+        },
+        "server/go.mod": {
+          "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+          "normalized_sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+          "mode": 493,
+          "link": null
+        },
+        "server/go.sum": {
+          "sha256": "7bb6e5e0576e89cb9f7b13c81a0fcd4b39acb2fae75ef9b6499066915b4e281d",
+          "normalized_sha256": "7bb6e5e0576e89cb9f7b13c81a0fcd4b39acb2fae75ef9b6499066915b4e281d",
+          "mode": 493,
+          "link": null
+        }
+      },
+      "private_PG_config_present": false
+    }
+  },
+  "persistent_STATE": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6",
+  "persistent_STATE_owned_mode": "0o700",
+  "persistent_STATE_trusted_ancestor_and_Git_external_validation": "PASS through NEW wrapperv2.trusted_state",
+  "wrapper": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+    "sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8"
+  },
+  "wrapper_plan": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/fresh-runtime-plan-v2.json",
+    "sha256": "382bb57268d9dd8bb091131895601fd63dc223bbc8755fc2551a4a06a9647b7f"
+  },
+  "wrapper_fixtures": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/persistent-wrapper-v2-fixtures.json",
+    "sha256": "d978a7fb2161de91db9a69d93ef3397ad4a9514ff6f04b229f4bc59c97285dcc"
+  },
+  "wrapper_OFFLINE_checks_passed": 58,
+  "wrapper_original_seven_checks_passed": 7,
+  "wrapper_v1_red_counterexamples": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v1-query-override-red/v1-query-override-red.json",
+    "sha256": "8d6be9ab199562270cd6b29103ad87290b97e43082a430dee5dd9d66be4ed640"
+  },
+  "wrapper_v1_protected_preservation": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/v1-preserved-before-query-guard/preserved-inputs.json",
+    "sha256": "ef9a05833ba94acf65a29fa0db0f7922785e29bb2a52a7be9e4e51ce597ef1f2"
+  },
+  "retained_raw_reference_inputs": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/retained-reference-inputs.json",
+    "sha256": "da87f82d122b7b48a04bafb6661248a677adcb98843b0e1bf3867237b80d7443"
+  },
+  "retained_raw_reference_count": 9,
+  "original_missing_assets_still_unavailable": true,
+  "original_missing_assets_written_or_recreated": false,
+  "old_runtime_receipts_or_hashes_rewritten": false,
+  "new_source_PG_config_written": false,
+  "new_actual_database_or_runtime_or_account_actions": 0,
+  "source_ready": false,
+  "ready_for_main_independent_whole_SOURCE_and_wrapper_review": true,
+  "next_required_main_clearance": [
+    "Independent whole physical SOURCE/root3/RK3/final5/codecheck and wrapperv2 review",
+    "Main permission for NEW mutableSOURCE exclusive0600 PG-only config, with separately pinned hash",
+    "Main explicit permission for actual fresh allocation/build/start/runtime under the SAME pinned wrapperv2/controller/SOURCE/STATE; actual source-ready only main supplies"
+  ],
+  "external_binding_review": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/physical-source-wrapper-v2-bindings.json",
+    "sha256": "1b50ed41914c880b1bf7ee3c3d8f1a250f6d80f6b0b04639c0d6af19ee691d61"
+  }
+}

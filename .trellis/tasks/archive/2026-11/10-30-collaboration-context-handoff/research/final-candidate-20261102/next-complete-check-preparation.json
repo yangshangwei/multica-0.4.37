@@ -1,0 +1,60 @@
+{
+  "at": "2026-11-01T23:10:59.269442+00:00",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102",
+  "state": "prepared_not_run; independent v5/RKI6 actual result review unavailable429",
+  "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "clean_at_preparation": true,
+  "verification_harness_includes_reviewed_memory_Transfer": true,
+  "untracked_Mac_diagnostic_spec_absent": true,
+  "adapter_sha256": {
+    "go": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+    "pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "launcher_sha256": "3c50f99cb9b995fa29a0d1ee4e54e98d6aaa28bdf10ebc827c3cb5b302f5f566",
+  "source_env_sha256": "685e3a6674cbb97eb8ea2408be004a5bcca4f896ea36a883776ac6e122e2ef96",
+  "build_temp": {
+    "directory": "/private/tmp/multica-final-check4-yxg6alb4",
+    "mode": "0700",
+    "owner_uid": 501,
+    "git_root_absent": true,
+    "keep_for_evidence": true
+  },
+  "runtime_API_pool": {
+    "max": 10,
+    "min": 1
+  },
+  "knowledge_default": false,
+  "owned_proof_APIs_stopped": true,
+  "processes_to_start_concurrently_with_wholecheck": 0,
+  "Node": "v22.23.2",
+  "go": "go version go1.27.0 darwin/arm64",
+  "modules_reused_links": [
+    "node_modules",
+    "apps/web/node_modules",
+    "apps/desktop/node_modules",
+    "apps/docs/node_modules",
+    "apps/mobile/node_modules",
+    "packages/ui/node_modules",
+    "packages/core/node_modules",
+    "packages/plugin-sdk/node_modules",
+    "packages/eslint-config/node_modules",
+    "packages/views/node_modules"
+  ],
+  "renderer_reuse": "product-byte-equivalent639 build copied; original static HTTP19844 same bytes, no acceptance claim from copy",
+  "CLI_reused_sha256": "b1d54d78f9f4ea8a1ab69a450735cd92e64e7bee98449679cd4b6486325a9d19",
+  "CLI_source_equivalence": "source639 product9f72 matches candidate64a product9f72; paid final binding remains empty",
+  "command_after_review": [
+    "python3",
+    "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/run-make-check.py"
+  ],
+  "review_clearance_file": "absent; required before launcher will start",
+  "real_Provider_calls": 0,
+  "external_operations": false,
+  "wholecheck_actual_result": null
+}

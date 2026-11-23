@@ -1,0 +1,12 @@
+{
+  "score": 86,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "The Web capture has scrolled the main header and filter navigation above the painted content despite a retained inner detail root."
+  ],
+  "suggestions": [
+    "Correct the platform scroll ownership so source-anchor focus and history restoration operate inside account-detail without moving the page chrome."
+  ],
+  "reasoning": "Tokens and list/detail styling match the incumbent app, but competing Web navigation scroll has displaced the page header. Confirm the platform fix with a settled Web capture."
+}

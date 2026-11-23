@@ -1,0 +1,144 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "related_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "observed_at": "2026-11-15T13:00:54.629364+00:00",
+  "evidence_kind": "coordinator_readonly_observation_of_existing_owner_sealed_results_not_new_code_acceptance",
+  "source_thread": "01a1dde9-4bd6-7c00-9fa1-e29bf5ddb142",
+  "input_reports": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/foundation-check/logs/foundation-race-r01.result.json",
+      "sha256_before": "b5a4f71aad04bbe05ddc4cc64b1016d37387f95bdccde90782ec8285f96a3eed",
+      "sha256_after": "b5a4f71aad04bbe05ddc4cc64b1016d37387f95bdccde90782ec8285f96a3eed",
+      "unchanged_during_observation": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/foundation-check/foundation-race-v02-reconciled-r01.json",
+      "sha256_before": "4dc568996ac0575ee8101e29107f6d093a3d588bca4c72f5f9a8012f7451a0ec",
+      "sha256_after": "4dc568996ac0575ee8101e29107f6d093a3d588bca4c72f5f9a8012f7451a0ec",
+      "unchanged_during_observation": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/completion-check/completion-race-completion.json",
+      "sha256_before": "9665165aec8a679c51699c926b1424c4fae6d13d74561d974027c6cf873e5064",
+      "sha256_after": "9665165aec8a679c51699c926b1424c4fae6d13d74561d974027c6cf873e5064",
+      "unchanged_during_observation": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/completion-check/completion-race-result.json",
+      "sha256_before": "52727b986043589f28e846a64ec870068e077f0792436ca83385f918463086a1",
+      "sha256_after": "52727b986043589f28e846a64ec870068e077f0792436ca83385f918463086a1",
+      "unchanged_during_observation": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/completion-check/peer-foundation-race-independent-r01.json",
+      "sha256_before": "03e711fae977f6919ec212c6a4243c4eb0584bcf3f8a7c19008f0746b514f861",
+      "sha256_after": "03e711fae977f6919ec212c6a4243c4eb0584bcf3f8a7c19008f0746b514f861",
+      "unchanged_during_observation": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/completion-check/completion-race-source-before.json",
+      "sha256_before": "87f4f12905fa3720d2d5f4186926fbbba54bcfe599012799f180695aab6fdb23",
+      "sha256_after": "87f4f12905fa3720d2d5f4186926fbbba54bcfe599012799f180695aab6fdb23",
+      "unchanged_during_observation": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/completion-check/completion-race-source-after.json",
+      "sha256_before": "c4f4e80a31a38fb66ef4c5903f835966986d948a7cf50e1d8526142884e5f667",
+      "sha256_after": "c4f4e80a31a38fb66ef4c5903f835966986d948a7cf50e1d8526142884e5f667",
+      "unchanged_during_observation": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/completion-check/completion-race-command.json",
+      "sha256_before": "85081cc0ac2c9f8061d9d118fc92cbc284cb97b69c5261480cc21ce1c5ed790b",
+      "sha256_after": "85081cc0ac2c9f8061d9d118fc92cbc284cb97b69c5261480cc21ce1c5ed790b",
+      "unchanged_during_observation": true
+    }
+  ],
+  "source_root": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/combined-final-verification-r06-r01/source",
+  "source_manifest_sha256": "fffeec5a7c48ad8fee7a4bc0933e0a0416d1357fc8ec56c93cc77b0e06c3bda4",
+  "source_input_files": 4968,
+  "execution_permit_sha256": "69d967e0d9efc1dfd03b6f89c508be5c3354de73762966f7c1a24818173c00a8",
+  "normal": {
+    "completion": {
+      "top": 37,
+      "named_pass": 128,
+      "leaves": 95,
+      "fail": 0,
+      "skip": 0,
+      "raw_sha256": "a6daa8c1d391f208e15555e4deaa1a962c0001114c7936442e36f12f94f2b62c"
+    },
+    "foundation": {
+      "top": 79,
+      "named_pass": 193,
+      "leaves": 168,
+      "fail": 0,
+      "skip": 0,
+      "raw_sha256": "4416c15a060996cc115ab8290cdc742f77611fef23088c9a6de6422b4fdf29a0"
+    },
+    "unique_tops": 116,
+    "different_named_records": 321,
+    "missing_extra_duplicate_or_unfinished": 0,
+    "source_config_drift": 0,
+    "original_r03_failure_cause_proven": false
+  },
+  "normal_observation_reused": {
+    "path": ".trellis/tasks/11-14-project-knowledge-automation/research/pay241-current-normal-116-pass-observation-5c87c170.json",
+    "sha256": "75a5e96542f942e11a3928cd183a40e51a8995148e7933de59786cb7f5178bd1"
+  },
+  "race": {
+    "completion": {
+      "top": 37,
+      "named_pass": 128,
+      "leaves": 95,
+      "fail": 0,
+      "skip": 0,
+      "raw_path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/completion-check/completion-race.jsonl",
+      "raw_sha256": "cdbaa393cee5a1560aa28c2fa001fc37b619d24f95269c12609f3387f285a1ed",
+      "status": "PASS_CURRENT_COMPLETE_SEGMENT",
+      "result_sha256": "52727b986043589f28e846a64ec870068e077f0792436ca83385f918463086a1",
+      "actor_result_corruption_both_reached": true,
+      "first_pg_errors": []
+    },
+    "foundation": {
+      "top": 79,
+      "named_pass": 193,
+      "leaves": 168,
+      "fail": 0,
+      "skip": 0,
+      "raw_path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/foundation-check/logs/foundation-race-r01.jsonl",
+      "raw_sha256": "bdf85ec0bf1b66b463bc922e1fc11853f21f10db7b37785e84a18e1e4299334c",
+      "accepted": true,
+      "result_sha256": "b5a4f71aad04bbe05ddc4cc64b1016d37387f95bdccde90782ec8285f96a3eed",
+      "source_config_launcher_unchanged": true,
+      "peer_reconciliation": "PASS"
+    },
+    "unique_tops_each_mode": 116,
+    "different_named_records_each_mode": 321,
+    "complete_partitions": 2,
+    "missing_extra_duplicate_or_unfinished": 0,
+    "completion_4968_source_byte_mode_and_config_snapshots_equal": true,
+    "current_source_drift_reported": 0
+  },
+  "owner_coordination_registry_still_reports_race_complete_partitions": 0,
+  "complete_new_code_verdict_independently_accepted": false,
+  "original_r03_failure_cause_proven": false,
+  "original_r03_accepted": false,
+  "p2_readiness": false,
+  "product_passed": 0,
+  "product_total": 4,
+  "missing_path_disposition": {
+    "incorrect_old_review_path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-code-review",
+    "exists": false,
+    "resolved_retained_review_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/resume-r05/final-code-review",
+    "resolved_exists": true,
+    "classification": "readonly_path_lookup_setup_error_not_product_failure"
+  },
+  "new_suite_executed_by_this_observer": false,
+  "pay_source_report_database_process_or_configuration_mutations": false,
+  "remaining_gates": [
+    "Original owner complete independent W01-W18/Q01-Q12/new code verdict",
+    "Actual P2 positive/negative readiness, enable/disable and original-key recovery",
+    "Final source/build/runtime binding and four actual scenarios/A01-A12",
+    "S3 then real external S4 then final-candidate S5"
+  ]
+}

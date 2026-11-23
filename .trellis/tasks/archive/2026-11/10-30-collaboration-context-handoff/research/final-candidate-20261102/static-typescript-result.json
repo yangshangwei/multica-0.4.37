@@ -1,0 +1,37 @@
+{
+  "candidate_sha": "7f8ca87252b53f16041485ac867e501962377802",
+  "at": "2026-11-01T18:58:31.733270+00:00",
+  "static_tasks_pass": 15,
+  "typescript_pass": {
+    "core": 4340,
+    "docs": 62,
+    "views": 7118,
+    "web": 290,
+    "desktop": 1272
+  },
+  "typescript_total_pass": 13082,
+  "failed_typescript": 0,
+  "commands": [
+    "pnpm exec turbo run lint typecheck --filter=!@multica/mobile --concurrency=1 --force",
+    "pnpm check:ui-exports",
+    "pnpm exec turbo run test --filter=!@multica/mobile --concurrency=1 --force -- --maxWorkers=2"
+  ],
+  "prefix_log_sha256": "655dabf0a8616c799412c4a19cdfefbc44dd19a7cebb829de48487aa4f1b4078",
+  "prefix_private_path": "/Volumes/artisan/code/2026/mc-collaboration-final-20261102/.omx/private/final-candidate/static-typescript-completed-prefix.log",
+  "completed_summary_lines": [
+    " Tasks:    15 successful, 15 total",
+    "@multica/core:test:  Test Files  327 passed (327)",
+    "@multica/core:test:       Tests  4340 passed (4340)",
+    "@multica/docs:test:  Test Files  9 passed (9)",
+    "@multica/docs:test:       Tests  62 passed (62)",
+    "@multica/views:test:  Test Files  591 passed (591)",
+    "@multica/views:test:       Tests  7118 passed (7118)",
+    "@multica/web:test:  Test Files  34 passed (34)",
+    "@multica/web:test:       Tests  290 passed (290)",
+    "@multica/desktop:test:  Test Files  102 passed (102)",
+    "@multica/desktop:test:       Tests  1272 passed (1272)",
+    " Tasks:    5 successful, 5 total"
+  ],
+  "overall_make_check": "still_running_Go_race; not acceptance pass",
+  "Provider_calls": 0
+}

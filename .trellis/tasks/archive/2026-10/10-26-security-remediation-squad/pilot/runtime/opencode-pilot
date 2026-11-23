@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+case "$PWD" in
+  /work/*) chown -R node:node "$PWD" ;;
+esac
+case "${TMPDIR:-}" in
+  /tmp/multica-task-*) chown -R node:node "$TMPDIR" ;;
+esac
+exec runuser -u node -- /usr/local/bin/opencode "$@"

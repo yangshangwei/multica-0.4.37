@@ -1,0 +1,521 @@
+{
+  "task": "11-13-pay-241-s2-stage-approvals",
+  "lane": "client",
+  "increment": 1,
+  "date": "2026-11-14",
+  "branch": "codex/cross-workspace-collaboration",
+  "head_at_final_runs": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+  "git_writes": "none",
+  "real_environment": {
+    "browser": false,
+    "api": false,
+    "database": false,
+    "desktop": false,
+    "model": false
+  },
+  "contract": {
+    "id": "collaboration-stage-v1",
+    "status": "frozen v1",
+    "sha256_at_start": "02fb1c2ca6e4eb19abeb75253b07dca4c9861de77d682a59bcf0fd9bf0ceafce",
+    "sha256_before_a5": "02fb1c2ca6e4eb19abeb75253b07dca4c9861de77d682a59bcf0fd9bf0ceafce",
+    "sha256_at_finish": "516e6dd9066b434cc59d46d44878bb5c2fe3d357582674d445c4612779d2288b",
+    "section_13_items_at_finish": 2,
+    "section_13_followed": [
+      "13.1 role holders reuse the existing CollaborationAccountSummarySchema, nullable"
+    ],
+    "section_13_no_client_change": [
+      "13.2 section 10 ordinary-endpoint wording"
+    ],
+    "announced_open_points_not_in_section_13": [
+      "A5 child entry code-version reference",
+      "deeper descendant admission"
+    ]
+  },
+  "scope_actions": [
+    "P1",
+    "P2",
+    "P3",
+    "R1",
+    "R2",
+    "R3",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "O1"
+  ],
+  "files_created": [
+    "packages/core/collaboration/stage-schema.ts",
+    "packages/core/collaboration/stage-intent.ts",
+    "packages/core/collaboration/stage-queries.ts",
+    "packages/core/collaboration/stage-actions.ts",
+    "packages/core/collaboration/stage-presentation.ts",
+    "packages/core/collaboration/stage-test-fixtures.ts",
+    "packages/core/collaboration/stage-schema.test.ts",
+    "packages/core/collaboration/stage-intent.test.ts",
+    "packages/core/collaboration/stage-api.test.ts",
+    "packages/core/collaboration/stage-actions.test.ts",
+    "packages/core/collaboration/stage-queries.test.ts",
+    "packages/core/collaboration/stage-presentation.test.ts",
+    "packages/views/collaboration/stage-panel.tsx",
+    "packages/views/collaboration/stage-forms.tsx",
+    "packages/views/collaboration/stage-proposals.tsx",
+    "packages/views/collaboration/stage-labels.ts",
+    "packages/views/collaboration/stage-panel.test.tsx"
+  ],
+  "files_modified": {
+    "packages/core/api/client.ts": "+156 stage transport methods",
+    "packages/core/collaboration/index.ts": "+7 exports",
+    "packages/core/collaboration/draft.ts": "+3 stage intent erasure hooks (outside the literal ownership list)",
+    "packages/core/collaboration/test-fixtures.ts": "+3 re-export of stage fixtures (outside the literal ownership list)",
+    "packages/views/collaboration/collaboration-detail.tsx": "+2 mount",
+    "packages/views/collaboration/collaboration-detail.test.tsx": "+5/-1 sibling isolation and position assertion",
+    "packages/views/locales/en/collaboration.json": "+312 stage section",
+    "packages/views/locales/zh-Hans/collaboration.json": "+309 stage section"
+  },
+  "files_modified_by_other_sessions_not_touched": [
+    "packages/views/collaboration/account-picker.tsx",
+    "packages/views/collaboration/creation-form.tsx",
+    "packages/views/collaboration/creation-form.test.tsx",
+    "packages/views/collaboration/field-editing.test.tsx"
+  ],
+  "log_dir": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs",
+  "commands": [
+    {
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-schema.test.ts",
+      "log": "s2-client-inc1-core-schema-run1.log",
+      "exit": 1,
+      "note": "1 of 101 failed: invalid fixture row in the test"
+    },
+    {
+      "command": "same",
+      "log": "s2-client-inc1-core-schema-run2.log",
+      "exit": 0
+    },
+    {
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-{intent,api,actions,queries,presentation}.test.ts",
+      "log": "s2-client-inc1-core-first-failure.log",
+      "exit": 1,
+      "note": "tests written before the modules; 5 files failed"
+    },
+    {
+      "command": "six core stage suites",
+      "log": "s2-client-inc1-core-stage-run2.log",
+      "exit": 1,
+      "note": "1 of 200: test expectation about a cancelled read"
+    },
+    {
+      "command": "six core stage suites",
+      "log": "s2-client-inc1-core-stage-run3.log",
+      "exit": 0
+    },
+    {
+      "command": "pnpm --filter @multica/core exec tsc --noEmit",
+      "log": "s2-client-inc1-core-typecheck-run1.log",
+      "exit": 1,
+      "note": "test typing"
+    },
+    {
+      "command": "pnpm --filter @multica/core exec tsc --noEmit",
+      "log": "s2-client-inc1-core-typecheck-run2.log",
+      "exit": 0
+    },
+    {
+      "command": "pnpm --filter @multica/views exec tsc --noEmit",
+      "log": "s2-client-inc1-views-typecheck-run1.log",
+      "exit": 0
+    },
+    {
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/stage-panel.test.tsx",
+      "log": "s2-client-inc1-views-stage-run1.log",
+      "exit": 1,
+      "note": "4 of 16 failed"
+    },
+    {
+      "command": "same",
+      "log": "s2-client-inc1-views-stage-run4.log",
+      "exit": 0,
+      "note": "18 tests; run2 and run3 also 0"
+    },
+    {
+      "command": "pnpm --filter @multica/views exec vitest run collaboration locales",
+      "log": "s2-client-inc1-views-collaboration-run1.log",
+      "exit": 1,
+      "note": "2 of 400: 5s timeouts in field-editing and resource-offers under load"
+    },
+    {
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/field-editing.test.tsx collaboration/resource-offers.test.tsx",
+      "log": "s2-client-inc1-views-flake-rerun1.log",
+      "exit": 0
+    },
+    {
+      "command": "pnpm --filter @multica/views exec vitest run issues/components/issue-detail.test.tsx collaboration/account-workbench-page.test.tsx collaboration/source-bridge.test.tsx collaboration/run-navigation.test.tsx",
+      "log": "s2-client-inc1-views-detail-mounts-run1.log",
+      "exit": 0
+    },
+    {
+      "command": "pnpm --filter @multica/core exec eslint <lane files>",
+      "log": "s2-client-inc1-core-lint-files-run1.log",
+      "exit": 0,
+      "warnings": 0
+    },
+    {
+      "command": "pnpm --filter @multica/views exec eslint <lane files>",
+      "log": "s2-client-inc1-views-lint-files-run1.log",
+      "exit": 0,
+      "warnings": 0
+    },
+    {
+      "command": "pnpm --filter @multica/core exec vitest run collaboration api",
+      "log": "s2-client-inc1-core-collaboration-final.log",
+      "exit": 0,
+      "files": 127,
+      "tests": 2473,
+      "failed": 0
+    },
+    {
+      "command": "pnpm --filter @multica/views exec vitest run collaboration locales issues/components/issue-detail.test.tsx",
+      "log": "s2-client-inc1-views-collaboration-final.log",
+      "exit": 0,
+      "files": 37,
+      "tests": 489,
+      "failed": 0
+    },
+    {
+      "command": "pnpm typecheck --concurrency=1",
+      "log": "s2-client-inc1-typecheck-all-final.log",
+      "exit": 0,
+      "tasks": "9/9"
+    },
+    {
+      "command": "pnpm lint --concurrency=1",
+      "log": "s2-client-inc1-lint-all-final.log",
+      "exit": 0,
+      "tasks": "6/6",
+      "warnings_total": 30,
+      "warnings_in_lane_files": 0,
+      "warnings_by_package": {
+        "@multica/views": 27,
+        "@multica/ui": 3
+      }
+    }
+  ],
+  "first_failure_logs": [
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc1-core-first-failure.log",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc1-core-schema-run1.log",
+    "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc1-views-stage-run1.log"
+  ],
+  "test_inventory": {
+    "core/collaboration/stage-schema.test.ts": {
+      "tests": 102,
+      "passed": 102,
+      "failed": 0,
+      "skipped": 0
+    },
+    "core/collaboration/stage-actions.test.ts": {
+      "tests": 38,
+      "passed": 38,
+      "failed": 0,
+      "skipped": 0
+    },
+    "core/collaboration/stage-api.test.ts": {
+      "tests": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0
+    },
+    "core/collaboration/stage-presentation.test.ts": {
+      "tests": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0
+    },
+    "core/collaboration/stage-intent.test.ts": {
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "core/collaboration/stage-queries.test.ts": {
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "core/collaboration/draft.test.ts": {
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "existing": true
+    },
+    "views/collaboration/stage-panel.test.tsx": {
+      "tests": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "note": "A5 happy path replaced by the hold regression"
+    },
+    "views/collaboration/collaboration-detail.test.tsx": {
+      "tests": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "existing": true
+    },
+    "named_tests": [
+      "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc1-core-stage-inventory.json",
+      "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-inc1-views-stage-inventory.json"
+    ]
+  },
+  "action_map": {
+    "P1": {
+      "client": "ApiClient.getProjectStagePolicy",
+      "core": [
+        "collaborationStagePolicyOptions",
+        "parseCollaborationStagePolicy"
+      ],
+      "views": "StagePolicy",
+      "tests": [
+        "stage-schema P1",
+        "stage-api P1-P3",
+        "stage-panel reads the project policy"
+      ]
+    },
+    "P2": {
+      "client": "ApiClient.reviseProjectStagePolicy",
+      "core": [
+        "prepareCollaborationStagePolicyRevision",
+        "executeCollaborationStageIntent"
+      ],
+      "views": "StagePolicyContent form",
+      "tests": [
+        "stage-actions project policy intents",
+        "stage-api PUTs a revision",
+        "stage-panel temporary 503"
+      ]
+    },
+    "P3": {
+      "client": "ApiClient.getProjectStagePolicyOperation",
+      "core": [
+        "recoverCollaborationStageIntent"
+      ],
+      "views": "PendingStageRequests in StagePolicyContent",
+      "tests": [
+        "stage-actions recovers by GET",
+        "stage-api recovers by GET only"
+      ]
+    },
+    "R1": {
+      "client": "ApiClient.getCollaborationStage",
+      "core": [
+        "collaborationStageViewOptions",
+        "useCollaborationStageView",
+        "deriveCollaborationStageState"
+      ],
+      "views": "CollaborationStagePanel",
+      "tests": [
+        "stage-schema R1",
+        "stage-api R1",
+        "stage-queries stage view",
+        "stage-presentation",
+        "stage-panel unavailable/unknown/unmanaged/summary"
+      ]
+    },
+    "R2": {
+      "client": "ApiClient.getCollaborationStageProposals",
+      "core": [
+        "collaborationStageProposalsOptions"
+      ],
+      "views": "StageProposals",
+      "tests": [
+        "stage-schema R2",
+        "stage-api R2",
+        "stage-queries proposal list pages"
+      ]
+    },
+    "R3": {
+      "client": "ApiClient.getCollaborationStageProposal",
+      "core": [
+        "collaborationStageProposalOptions",
+        "collaborationStageProposalActions"
+      ],
+      "views": "StageProposalRecord, StageDecisionForm",
+      "tests": [
+        "stage-schema R3",
+        "stage-api R3",
+        "stage-presentation",
+        "stage-panel accept and accepted detail"
+      ]
+    },
+    "A1": {
+      "client": "sendCollaborationStageRequest(configure_roles)",
+      "core": [
+        "prepareCollaborationStageAction",
+        "collaborationStageRoleConflicts"
+      ],
+      "views": "StageRolesForm",
+      "tests": [
+        "stage-schema request bodies",
+        "stage-actions",
+        "stage-panel configures the six roles"
+      ]
+    },
+    "A2": {
+      "client": "sendCollaborationStageRequest(create_proposal)",
+      "core": [
+        "prepareCollaborationStageAction"
+      ],
+      "views": "StageProposalForm create",
+      "tests": [
+        "stage-schema content/source",
+        "stage-actions",
+        "stage-api route table"
+      ]
+    },
+    "A3": {
+      "client": "sendCollaborationStageRequest(revise_proposal)",
+      "core": [
+        "prepareCollaborationStageAction"
+      ],
+      "views": "StageProposalForm revise/modify",
+      "tests": [
+        "stage-schema",
+        "stage-actions",
+        "stage-panel modify-and-accept"
+      ]
+    },
+    "A4": {
+      "client": "sendCollaborationStageRequest(decide_proposal)",
+      "core": [
+        "prepareCollaborationStageAction",
+        "matchesCollaborationStageConfirmation"
+      ],
+      "views": "StageDecisionForm",
+      "tests": [
+        "stage-schema matching matrix",
+        "stage-actions",
+        "stage-panel accept, stored refusal, modify-and-accept"
+      ]
+    },
+    "A5": {
+      "client": "sendCollaborationStageRequest(confirm_scope)",
+      "core": [
+        "collaborationStageScopeSelection",
+        "prepareCollaborationStageAction"
+      ],
+      "views": "StageScopeForm",
+      "tests": [
+        "stage-schema",
+        "stage-presentation scope selection",
+        "stage-panel confirms the explicit existing sub-issue set"
+      ]
+    },
+    "O1": {
+      "client": "ApiClient.getCollaborationStageOperation",
+      "core": [
+        "recoverCollaborationStageIntent",
+        "dismissCollaborationStageIntent"
+      ],
+      "views": "PendingStageRequests",
+      "tests": [
+        "stage-actions GET-only recovery",
+        "stage-api O1",
+        "stage-panel keeps an unconfirmed request"
+      ]
+    }
+  },
+  "confirmation_variants_defined": 10,
+  "request_actions_wired": 6,
+  "deviations": [
+    "D1 draft.ts (+3) and test-fixtures.ts (+3) edited outside the literal ownership list",
+    "D2 stage-schema.ts written before its test; views suite written after the panel; five behavioural core suites were test-first",
+    "D3 views suite uses the real ApiClient with an endpoint-routed fetch stub instead of mocking @multica/core/api",
+    "D4 pending stage intents are erased on issue access loss, like the other drafts",
+    "D5 client consistency rules beyond the literal contract text (roles/scope revision pairing, missing scope vs scope_state, monotonic role/policy revision in confirmations)",
+    "D6 unknown stored-refusal code with a coherent envelope is settled as refused",
+    "D7 a missing write route on the first dispatch is reported as not written",
+    "D8 project policy UI is a disclosure in the stage panel without owner/admin detection",
+    "D9 proposal source picker uses loaded comments and execution runs only",
+    "D10 proposal text rendered as plain text"
+  ],
+  "flakes": [
+    {
+      "suites": [
+        "views/collaboration/field-editing.test.tsx",
+        "views/collaboration/resource-offers.test.tsx"
+      ],
+      "symptom": "5000ms test timeout under load",
+      "passed_alone": true,
+      "passed_in_final_run": true,
+      "mounts_stage_panel": false
+    }
+  ],
+  "increment_2_needs": [
+    "exact R4 and T4 shapes",
+    "capability hint names for A6-A9",
+    "M1 collaboration typed completion consumer contract",
+    "activity allowlist and notification kinds for stage_* events",
+    "final A5 child entry and descendant admission rule",
+    "decision on D4 and D8",
+    "E2E ownership for a stage canonical spec"
+  ],
+  "not_verified": [
+    "no real server response",
+    "no browser or Electron run, no screenshot or visual check",
+    "realtime invalidation and view polling end to end",
+    "second-reader review of zh-Hans copy",
+    "Web and Desktop wiring beyond typecheck and the shared detail mount",
+    "no claim that a stage policy can be enabled or that S2 or any parent case passes"
+  ],
+  "held": {
+    "A5": {
+      "reason": "server increment 1b changes the per-child entry (required `code` member), R1 code reference and descendant admission; contract section 13 does not record it yet",
+      "mechanism": "COLLABORATION_STAGE_SCOPE_CONFIRMATION_HELD=true forces can.confirmScope=false; never rendered, prepare refuses",
+      "not_final": [
+        "CollaborationStageRequestSchemas.confirm_scope",
+        "collaborationStageScopeSelection",
+        "StageScopeForm",
+        "confirm_scope branch of matchesCollaborationStageConfirmation"
+      ]
+    }
+  },
+  "commands_after_hold": [
+    {
+      "command": "six core stage suites",
+      "log": "s2-client-inc1-core-stage-hold-run1.log",
+      "exit": 0,
+      "tests": 202
+    },
+    {
+      "command": "views stage-panel + collaboration-detail",
+      "log": "s2-client-inc1-views-stage-hold-run1.log",
+      "exit": 0,
+      "tests": 29
+    },
+    {
+      "command": "pnpm --filter @multica/core exec vitest run collaboration api",
+      "log": "s2-client-inc1-core-collaboration-hold.log",
+      "exit": 0,
+      "files": 127
+    },
+    {
+      "command": "pnpm --filter @multica/views exec vitest run collaboration locales issues/components/issue-detail.test.tsx",
+      "log": "s2-client-inc1-views-collaboration-hold.log",
+      "exit": 0,
+      "files": 37
+    },
+    {
+      "command": "pnpm typecheck --concurrency=1",
+      "log": "s2-client-inc1-typecheck-all-hold.log",
+      "exit": 0
+    },
+    {
+      "command": "pnpm lint --concurrency=1",
+      "log": "s2-client-inc1-lint-all-hold.log",
+      "exit": 0,
+      "warnings_in_lane_files": 0
+    }
+  ]
+}

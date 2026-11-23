@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-p",
+    "(version 1) (allow default) (deny network*)",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-go-isolation-test.py"
+  ],
+  "exit_code": 0,
+  "named_pass": 17,
+  "expected_count": 17,
+  "source_sha256": "31bcefb99e7ca5265f31594aa07a56857e8701f84405b4f6cf78b5b55baee5df",
+  "log_sha256": "3f73c48dda9f96b450047007353d87fd8d02eea277531133e76a92e69090517d",
+  "network_denied": true,
+  "all_database_commands_fake": true,
+  "services_started": 0,
+  "real_provider_calls": 0
+}

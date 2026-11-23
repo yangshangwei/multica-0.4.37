@@ -1,0 +1,1295 @@
+{
+  "schema": "pay241-r33-s2-final-scope-applicability-v1",
+  "date": "2026-11-18",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "APPLICABILITY_READY_CURRENT_FOUR_RUNNING_FINAL_A12_NOT_ACCEPTED",
+  "scope": "Sealed research/acceptance documents and coordinator-provided current run state; no source/live runtime/diag/command/result file inspection",
+  "write_scope": [
+    "research/r33-s2-final-scope-applicability-20261118.md",
+    "research/r33-s2-final-scope-applicability-20261118.json"
+  ],
+  "seal_mode": "0444",
+  "denominators": {
+    "A": 12,
+    "W": 18,
+    "Q": 12,
+    "applicability_rows": 42,
+    "original_business_cases": 4,
+    "parent_business_cases": 24,
+    "unit_groups_not_additive_business_denominators": true
+  },
+  "references": {
+    "R31_MAP": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-s2-final-scope-applicability-20261118.json",
+      "sha256": "1ad8e057b8f0018f3a8457a21eef42e2d8b0e21966d52427f3f46e8b8b6b940d",
+      "sealed_document_read": true,
+      "raw_runtime_read": false
+    },
+    "R33_GREEN": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-green-independent-check-20261118.json",
+      "sha256": "439e5179a82715f2c62c750c339ae88a225723e6bcdb7b953dc79d5ea299befe",
+      "sealed_document_read": true,
+      "raw_runtime_read": false
+    },
+    "R33_ROOT": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-root-runtime-preparation-independent-check-20261118.json",
+      "sha256": "7a96fa83b219d466543485586ab402061cd09221fb3e7648b0d908c962b968b9",
+      "sealed_document_read": true,
+      "raw_runtime_read": false
+    },
+    "R31_37": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-independent-check-20261118.json",
+      "sha256": "d63f8ed8db89091cb52be9f6cfd957ebaf5b3e3758054207e76f656990d46283",
+      "sealed_document_read": true,
+      "raw_runtime_read": false
+    },
+    "R29_82": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-green-independent-check-20261118.json",
+      "sha256": "662d3113fd5820f3d6771cdbb521ef3be8d5bcdadb62d63d6bdf5bb3e02e7031",
+      "sealed_document_read": true,
+      "raw_runtime_read": false
+    },
+    "R33_INVENTORY": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-original-control-inventory-20261118.json",
+      "sha256": "92e3faf1b1287554ee8538f260849ccea58e4d24aceb7428bc802f9b9df6e6e4",
+      "sealed_document_read": true,
+      "raw_runtime_read": false
+    },
+    "R33_ROOT_INTEGRATION": {
+      "bytes": 1922,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/ROOT-integration-r01/integration-proof.json",
+      "sha256": "e63dd726bf4d7b97d6c733a55df4c0cb6f8ee996897f5448a7977f0bc634cabf",
+      "raw_record_read": false,
+      "accepted_by": "R33_ROOT"
+    },
+    "R33_FIVE_BUILDS": {
+      "bytes": 7230,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/build-final-r01/build-result-r01.json",
+      "sha256": "adadfd9083cd7db020dde9eb9c5ffde537864c865cfb4dd87f31656e341e13c3",
+      "raw_record_read": false,
+      "accepted_by": "R33_ROOT"
+    },
+    "FRONT_RETAINED": {
+      "source": "R31_MAP#/ROOT_and_FRONT/frontend",
+      "records": 3359,
+      "dependency_links": 1961,
+      "production_output_records": 1676,
+      "current_API_platform_binding_required": true,
+      "live_probe_by_research": false
+    }
+  },
+  "retained_original_scope": {
+    "service": {
+      "top": 116,
+      "named": 321,
+      "leaf": 263
+    },
+    "handler": {
+      "top": 99,
+      "named": 326,
+      "leaf": 275
+    },
+    "router": {
+      "top": 54,
+      "named": 208,
+      "leaf": 174
+    },
+    "source_raw_refs": "R31_MAP#/retained_original_groups and /retained_old_raw_bindings",
+    "raw_refs_followed_by_research": false,
+    "retention_eligible": true,
+    "acceptance_authority": "Final independent A12",
+    "intentional_exception": "M1 policy PUT project lock wait; all original completion guards/DTO/schema/stage NOWAIT remain preserved by accepted text/default proof",
+    "blanket_rerun_required_solely_for_R33": false,
+    "current_whole_suites_reexecuted_claimed": false,
+    "invalidate_if": "Actual unbound caller/default/authority/schema/finalization/side-effect/source drift; delimit real affected tests."
+  },
+  "current_accepted_groups_each_mode": {
+    "R29_82": {
+      "service_named": 76,
+      "handler_named": 6,
+      "combined_named": 82,
+      "report": "R29_82"
+    },
+    "R31_37": {
+      "main_service_named": 34,
+      "temporal_handler_named": 1,
+      "cache_service_named": 2,
+      "combined_named": 37,
+      "report": "R31_37"
+    },
+    "R33_40": {
+      "top": 10,
+      "named": 40,
+      "leaf": 33,
+      "normal_race_accepted": true,
+      "report": "R33_GREEN",
+      "eight_original34_plus_new6": true
+    }
+  },
+  "R33_source_scope": {
+    "product_files": [
+      "server/internal/handler/delivery_policy.go",
+      "server/pkg/db/generated/delivery_policy.sql.go",
+      "server/pkg/db/queries/delivery_policy.sql"
+    ],
+    "regression": {
+      "bytes": 20049,
+      "mode": "0644",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-green-r01/server/internal/handler/delivery_policy_project_wait_test.go",
+      "sha256": "443fc8a99a88130df7005854d9759360341c982190c75b0e84100de7547f22b3"
+    },
+    "current_source_records": 5056,
+    "baseline_records": 5055,
+    "sole_M1PUT_wait_caller": true,
+    "GET_shared_NOWAIT_unchanged": true,
+    "oldstage_query_NOWAIT_unchanged": true,
+    "authority_credential_CAS_schema_timeout_transaction_HTTP_unchanged": true,
+    "per_lock_ms": 250,
+    "zero_SQL_claim": false,
+    "zero_DDL": true,
+    "canonical_outputs": 143,
+    "unchanged_other_outputs": 142,
+    "same_context_UUIDparams_Projectscanner_errorreturn": true,
+    "historical_R32_holder_known": false,
+    "postwait_credential_expiry_matrix_claimed": false
+  },
+  "ROOT_FRONT": {
+    "preparation_review": "R33_ROOT",
+    "integration": "R33_ROOT_INTEGRATION",
+    "five_builds": "R33_FIVE_BUILDS",
+    "current_cli_sha256": "02df61bb3e9382af2b17fd7156b1d73617c53f2bfbc203074e972e1eccb1a17e",
+    "source_records": 5056,
+    "frontend": "FRONT_RETAINED",
+    "whole_ROOT_workspace_equivalence_claimed": false
+  },
+  "A": [
+    {
+      "id": "A01",
+      "label": "Roles, stable business owner/current handler and authority",
+      "canonical_requirement_ref": "R31_MAP#/A/0/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/0",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "E01 current role/config/history evidence remains required.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A02",
+      "label": "Immutable proposals, decisions, single materialization/no dispatch",
+      "canonical_requirement_ref": "R31_MAP#/A/1/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/1",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "E01 exact single materialization and rejected/unapproved no-dispatch evidence.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A03",
+      "label": "Exact PR/head/trust/strict CI refusal",
+      "canonical_requirement_ref": "R31_MAP#/A/2/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/2",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "E01 exact failed/missing/mismatched CI/head/trust denial and unchanged stage.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A04",
+      "label": "Human reviewer, self/machine/revocation exclusion",
+      "canonical_requirement_ref": "R31_MAP#/A/3/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/3",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "E01 genuine reviewer identity and negative human/authority boundaries.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A05",
+      "label": "Immutable actual run/case/log, QA return/retest history",
+      "canonical_requirement_ref": "R31_MAP#/A/4/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/4",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Current E01 failed run/log/QA-return/retest history and E02 QA evidence, with source/current-R4 identity.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A06",
+      "label": "QA/build/release authority and transitive issuer validity",
+      "canonical_requirement_ref": "R31_MAP#/A/5/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/5",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "E02 exact QA/build/release/issuer/deployment evidence; test-synthetic scope remains explicit.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A07",
+      "label": "Target/physical conflict, rollback observation and single execution",
+      "canonical_requirement_ref": "R31_MAP#/A/6/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/6",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "E02 exact prior deployment/target/metric/approved rollback and one controlled receipt.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A08",
+      "label": "Versions, authority/expiry, original keys and late history",
+      "canonical_requirement_ref": "R31_MAP#/A/7/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/7",
+      "actual_entry_path_retained": null,
+      "treatment": "B",
+      "source_applicability": "Versions/original-key and consumed recovery remain retained; policy CAS/off activation now also have current R33 forty-name coverage.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_GREEN",
+        "R33_ROOT"
+      ],
+      "final_required": "Current E03 late immutable fact plus E04 original Web authorization/Desktop completion/Web operation and consumed GET200 chain; compare actual current keys/bodies/receipts without replay.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A09",
+      "label": "Stage plus M1 all writers/three modes/R38 and outside consumer",
+      "canonical_requirement_ref": "R31_MAP#/A/8/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/8",
+      "actual_entry_path_retained": null,
+      "treatment": "ΔB",
+      "source_applicability": "Only M1 policy PUT waits at its exclusive project fence; all completion writers remain retained. Current E04 policyoff/admin/R38 composition still requires final evidence.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_GREEN",
+        "R33_ROOT"
+      ],
+      "final_required": "Retained all-writer modes/defaults plus actual current E04 policyoff200, admin disable, disabled-creator R38 completion, restore and exact effects.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A10",
+      "label": "Current source privacy and mid-revocation reads/cache",
+      "canonical_requirement_ref": "R31_MAP#/A/9/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/9",
+      "actual_entry_path_retained": null,
+      "treatment": "RU",
+      "source_applicability": "Source/current-account privacy remains unchanged. Independently review backend authority and shared-detail R1 access state for each relevant actor/issue/phase.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "FRONT_RETAINED"
+      ],
+      "final_required": "Actor/issue/source/account-phase-specific backend access and expected denial/private hiding; resolve or explicitly delimit shared-detail R1 denial before claiming UI acceptance.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A11",
+      "label": "Matching production Web/Desktop real four-case verification",
+      "canonical_requirement_ref": "R31_MAP#/A/10/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/10",
+      "actual_entry_path_retained": null,
+      "treatment": "BU",
+      "source_applicability": "R33 integrated5056 source/five programs plus retained production FRONT require current four and explicit UI/detail-access evidence; running is not accepted.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_ROOT",
+        "FRONT_RETAINED"
+      ],
+      "final_required": "Current original four raw assertions/profiles/actors/PNG/source/program identity and actual detail-access UI coverage;4PASS alone does not prove omitted access behavior.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A12",
+      "label": "Independent complete evidence, scoped diff/after and parent ledger",
+      "canonical_requirement_ref": "R31_MAP#/A/11/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/A/11",
+      "actual_entry_path_retained": null,
+      "treatment": "B",
+      "source_applicability": "Final independent whole42 review joins retained proofs, current R29/R31/R33 controls and actual current run/after/UI evidence.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_GREEN",
+        "R33_ROOT"
+      ],
+      "final_required": "One independent final full42-row/all-affected-module review including retained default chains, R29_82/R31_37/R33_GREEN, current four, CLI, source/after/history and UI scope.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    }
+  ],
+  "W": [
+    {
+      "id": "W01",
+      "label": "协作正式交付submit",
+      "canonical_requirement_ref": "R31_MAP#/W/0/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/0",
+      "actual_entry_path_retained": "server/internal/handler/collaboration_workflow.go:SubmitCollaborationAcceptance → server/internal/service/collaboration_handoff.go:SubmitAcceptance → mutateCollaborationWorkflow",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retain three-mode submit matrix; current E04 negatives and exact positive immutable submission.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W02",
+      "label": "协作精确submission完成",
+      "canonical_requirement_ref": "R31_MAP#/W/1/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/1",
+      "actual_entry_path_retained": "ChangeCollaborationLifecycle → CollaborationService.ChangeLifecycle → PrepareDeliveryMutationInTx → prepareCompletion → changeLifecycle → 最终stage guard → outer commit",
+      "treatment": "RB",
+      "source_applicability": "Exact submission completion/consumed recovery code remains retained; reconcile current Web/Desktop original key/body/receipts, not earlier-run IDs.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_ROOT"
+      ],
+      "final_required": "Current E04 exact original authorization, Desktop lifecycle200 and consumedGET200, Web operationGET200/consumedGET200/equality and one actual completion; no replay.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W03",
+      "label": "协作self-result完成",
+      "canonical_requirement_ref": "R31_MAP#/W/2/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/2",
+      "actual_entry_path_retained": "ChangeLifecycle/prepareCompletionMode(false) → PrepareDeliveryMutationInTx → prepareCompletion",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retain backend three-mode self positives and current E04 self negatives.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W04",
+      "label": "R38失能发起人管理完成",
+      "canonical_requirement_ref": "R31_MAP#/W/3/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/3",
+      "actual_entry_path_retained": "server/internal/service/admin_collaboration.go:ChangeLifecycle → PrepareDeliveryMutationInTx → recordAdminCollaborationHistory/CompleteCollaborationOperation → commit",
+      "treatment": "RB",
+      "source_applicability": "R38 defaults/issuer/disabled-creator scope remain retained; actual current policyoff200 precedes disable, R38 completion and restore evidence.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_ROOT"
+      ],
+      "final_required": "Current E04 explicit policyoff200 followed by actual admin disable/R38 outcome/restore; retain backend R38 mode/issuer/default positives.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W05",
+      "label": "普通PUT/旧client/Agent的完成请求",
+      "canonical_requirement_ref": "R31_MAP#/W/4/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/4",
+      "actual_entry_path_retained": "server/internal/handler/issue.go:UpdateIssue → updateIssueAtomicallyOnce",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retained handler/router matrix plus exact current R31 W10 ordinary refusal; old installed-client limits separate.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W06",
+      "label": "普通Move",
+      "canonical_requirement_ref": "R31_MAP#/W/5/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/5",
+      "actual_entry_path_retained": "server/internal/handler/issue_move.go:MoveIssue → UpdateIssue → updateIssueAtomicallyOnce",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retained actual Move/child semantic atomic proofs.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W07",
+      "label": "普通批量更新",
+      "canonical_requirement_ref": "R31_MAP#/W/6/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/6",
+      "actual_entry_path_retained": "server/internal/handler/issue.go:BatchUpdateIssues → updateIssueAtomicallyOnce per item",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retained original99/54 batch completion/refusal/unknown controls; no new full batch suite.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W08",
+      "label": "Create/快速创建/comment-to-child/create-as-done",
+      "canonical_requirement_ref": "R31_MAP#/W/7/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/7",
+      "actual_entry_path_retained": "server/internal/service/issue.go:IssueService.CreateInTx → checkStageChildCreate → CheckDeliveryCreateInTx",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retained creation/no-unapproved-dispatch plus current queued/deferred/capacity controls and E01 materialization.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W09",
+      "label": "GitHub/VCS/system状态writer",
+      "canonical_requirement_ref": "R31_MAP#/W/8/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/8",
+      "actual_entry_path_retained": "server/internal/handler/github.go:advanceIssueToDone; vcs_webhook.go → server/internal/service/issue_status_write.go:WriteIssueStatus",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retained signed writer/default proof; real external integration remains S4.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W10",
+      "label": "完成CLI及run-local machine边界",
+      "canonical_requirement_ref": "R31_MAP#/W/9/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/9",
+      "actual_entry_path_retained": "server/cmd/multica/cmd_issue_completion.go:runIssueCompletionSubmit → ordinary issue PUT；cmd_collaboration.go运行能力allowlist",
+      "treatment": "B",
+      "source_applicability": "CLI behavior remains retained; current binary is R33 CLI02df61... from adad... build record. Current exact ordinary/run-local receipts still require binding.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_ROOT"
+      ],
+      "final_required": "Current R33 CLI02df61bb3e9382af2b17fd7156b1d73617c53f2bfbc203074e972e1eccb1a17e with exact actor/env/refusal/no-effects and run-local scope receipts.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W11",
+      "label": "协作root project move/clear",
+      "canonical_requirement_ref": "R31_MAP#/W/10/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/10",
+      "actual_entry_path_retained": "server/internal/service/collaboration_edit.go:EditIssue → CheckDeliveryProjectChangeInTx → workflow commit",
+      "treatment": "RB",
+      "source_applicability": "Move/clear writer semantics remain retained; policy PUT ordering is the explicit M1 wait exception, covered by current40 and current E04 project probes.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_ROOT"
+      ],
+      "final_required": "Retained project move/clear transaction proofs, current E04 early project probes, accepted R33 policy wait/CAS controls and actual later policyoff200.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W12",
+      "label": "项目delete-impact和实际delete",
+      "canonical_requirement_ref": "R31_MAP#/W/11/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/11",
+      "actual_entry_path_retained": "server/internal/handler/project.go:GetProjectDeleteImpact / DeleteProject → CheckDeliveryProjectDeleteInTx",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retain managed refusal/unrelated empty project delete and prior races; no destructive replay.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W13",
+      "label": "managed root普通delete与batch-delete",
+      "canonical_requirement_ref": "R31_MAP#/W/12/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/12",
+      "actual_entry_path_retained": "server/internal/handler/issue.go:DeleteIssue/loadIssueForUser；BatchDeleteIssues/rejectLegacyCollaborationBatch",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retained original delete/raw controls; no new matrix solely for R31.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W14",
+      "label": "普通child语义编辑/换parent/project/删除",
+      "canonical_requirement_ref": "R31_MAP#/W/13/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/13",
+      "actual_entry_path_retained": "CheckStageChildUpdateInTx/updateIssueAtomicallyOnce；deleteIssueAndCollectAttachmentURLs/deleteIssuesAndCollectAttachmentURLs",
+      "treatment": "RU",
+      "source_applicability": "Child semantic/parent/project/delete contracts remain retained; child detail access must match actual source/account authority, with no assumed blanket access after done.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "FRONT_RETAINED"
+      ],
+      "final_required": "Retained child semantic/default proofs; classify actual child/detail reads by source membership/account phase, including any expected denial and restored access.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W15",
+      "label": "真正enqueue与queued→started",
+      "canonical_requirement_ref": "R31_MAP#/W/14/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/14",
+      "actual_entry_path_retained": "TaskService.checkIssueExecution；EnqueuePreparedIssueTaskInTx；startTaskAtomically",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Accepted34 service+1 temporal+2 cache names/mode plus retained enqueue/start orders. Bind actual current source/router/client/harness; singular idle sibling remains unchanged.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W16",
+      "label": "cancel与reopen",
+      "canonical_requirement_ref": "R31_MAP#/W/15/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/15",
+      "actual_entry_path_retained": "CollaborationService.ChangeLifecycle / admin原允许动作 → changeLifecycle",
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retain cancelled/reopened/newscope/current GET history; no original successful completion replay.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W17",
+      "label": "root/R38 completion candidates与preview",
+      "canonical_requirement_ref": "R31_MAP#/W/16/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/16",
+      "actual_entry_path_retained": "冻结F06四路由 → root/source同事务当前权限+M1 observer+stage blocker",
+      "treatment": "RU",
+      "source_applicability": "Preview/candidate/bound-submission/read defaults retain R26-R29 proofs; current preview/detail access is checked separately from policy-wait success.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "FRONT_RETAINED"
+      ],
+      "final_required": "Current E04 exact source child/build/submission/preview/reference and source-authorized UI; retain R26-R29 bound read/preview controls.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W18",
+      "label": "活动与原操作回执投影",
+      "canonical_requirement_ref": "R31_MAP#/W/17/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/W/17",
+      "actual_entry_path_retained": "collaboration workflow event/finishWith、activity allowlist、GetWorkflowOperation/O1、原M1 GET",
+      "treatment": "RB",
+      "source_applicability": "Activity/original-operation/minimal grant schemas remain retained; current completed receipt equality and pending retirement require current evidence.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_ROOT"
+      ],
+      "final_required": "Current E04 operation/consumed receipt equality and pending retirement plus current event/audit/minimal projection; preserve every older failed/unknown intent.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    }
+  ],
+  "Q": [
+    {
+      "id": "Q01",
+      "label": "Three modes × submit/submission/self/R38 verified and incomplete; enforce missing grant remains refused",
+      "canonical_requirement_ref": "R31_MAP#/Q/0/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/0",
+      "actual_entry_path_retained": null,
+      "treatment": "RΔ",
+      "source_applicability": "All three-mode completion guards remain retained; explicit policy-setter wait is bridged by R33 forty controls, not a replacement completion matrix.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_GREEN"
+      ],
+      "final_required": "Retained full M1 mode/writer positives/negatives plus current R33 policy controls and current E04 representative composition, including R38 after off.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q02",
+      "label": "Owning Tx/before/allowed after, wrong Tx, missing/unfinalized/reuse, NA finalization, original actor/header/result",
+      "canonical_requirement_ref": "R31_MAP#/Q/1/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/1",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Accepted R29Tx/default and R31real-writer/idle/error controls; final actual actor/header/body/source identity.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q03",
+      "label": "Last DB clock after receipts/audit, issuer/caller/PAT/source/CI/artifact/target/metrics; real orders distinct from same-Tx seams",
+      "canonical_requirement_ref": "R31_MAP#/Q/2/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/2",
+      "actual_entry_path_retained": null,
+      "treatment": "RΔ",
+      "source_applicability": "Final completion/signer/credential clocks remain unchanged. New policy wait stays250ms per lock and retains its final credential recheck; no new expiry matrix claimed.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_GREEN"
+      ],
+      "final_required": "Retained final DB-clock/issuer/caller orders and R31 temporal controls; accepted R33 finite wait/current schema/unchanged final credential call; no inferred new credential-expiry result.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q04",
+      "label": "Exact immutable submission/candidate/lifecycle/scope/operation/handoff locks and legacy/corrupt refusal",
+      "canonical_requirement_ref": "R31_MAP#/Q/3/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/3",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Retained immutable/refusal/mismatch controls; current actual E04 exact submission/grant/operation receipt.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q05",
+      "label": "P ≠ E without source membership, real issuer authorization, minimal grant, revoked/expired roles and frozen refusal recovery",
+      "canonical_requirement_ref": "R31_MAP#/Q/4/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/4",
+      "actual_entry_path_retained": null,
+      "treatment": "RU",
+      "source_applicability": "Distinct source/issuer/consumer privacy contracts remain retained; current same-P journey alone proves neither P!=E nor all UI access states.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "FRONT_RETAINED"
+      ],
+      "final_required": "Retained P!=E/current-source/minimal/private-denial controls plus current actor/issue/phase-specific detail-access review.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q06",
+      "label": "Read-only source/root preview and self attachment inspection, zero business-write witnesses",
+      "canonical_requirement_ref": "R31_MAP#/Q/5/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/5",
+      "actual_entry_path_retained": null,
+      "treatment": "RB",
+      "source_applicability": "Existing read/claim zero-effect proofs remain retained; R33 short reader/writer each permit one append, long reader/member refusal zero append. No whole-DB-zero claim.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_GREEN",
+        "R33_ROOT"
+      ],
+      "final_required": "Actual current four/after classify allowed writes and artifacts; rely on per-call protected snapshots for R29/R31/R33, not a whole database equality claim.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q07",
+      "label": "Strict objects/aliases/limits, root/source/viewer/revision cursor, empty/cached/mid-revoke orders",
+      "canonical_requirement_ref": "R31_MAP#/Q/6/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/6",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Old99/54 remains source/raw-bound; new source/caller/default delta alone discharges with R31current controls,not full rerun.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q08",
+      "label": "Lost/unknown commit, original refused/consumed key and current read authority; late external fact history",
+      "canonical_requirement_ref": "R31_MAP#/Q/7/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/7",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Accepted one sentinel control/temporal2mode and current completed Desktop/Web original receipt chain; late policy failure cause remains separate.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q09",
+      "label": "Exact864 ledger and readiness dependencies; missing state is unavailable, P2 remains false",
+      "canonical_requirement_ref": "R31_MAP#/Q/8/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/8",
+      "actual_entry_path_retained": null,
+      "treatment": "Δ",
+      "source_applicability": "R31 EXISTS/getter plus R33 separate exclusive Wait query/generated adapter are SQL changes. DDL/index/readiness/schema are unchanged; canonical generation143 outputs with142 unchanged.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_GREEN"
+      ],
+      "final_required": "R33 accepted canonical generation/source hashes with old SQL/stage NOWAIT unchanged; retain original exact864/readiness/physical-DDL proofs; no new migration execution required solely for Wait.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q10",
+      "label": "Policy/project/submit/complete ordering, physical-target uncertainty, human-child independence",
+      "canonical_requirement_ref": "R31_MAP#/Q/9/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/9",
+      "actual_entry_path_retained": null,
+      "treatment": "ΔB",
+      "source_applicability": "Exact R32 project55P03/busy branch is known. Accepted R33 short-read/long-read/competing-CAS/member controls bridge M1 policy timing; current E04 policyoff/R38 ordering remains final.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_GREEN",
+        "R33_ROOT"
+      ],
+      "final_required": "Accepted R33 actual two-PID short-read200, long-reader55P03/busy409 and competing writer staleCAS409; current policyoff/R38/project ordering content required.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q11",
+      "label": "Four exact835/864 schemas plus source shapes/cleanup map; root-owned six raw controls + one immutable supplement,39 assertions",
+      "canonical_requirement_ref": "R31_MAP#/Q/10/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/10",
+      "actual_entry_path_retained": null,
+      "treatment": "R",
+      "source_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37"
+      ],
+      "final_required": "Final current schema/history identity; keep old cleanup/Go1.26/Linux/true external limits declared.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q12",
+      "label": "Immutable inputs/configs/owned cleanup collected",
+      "canonical_requirement_ref": "R31_MAP#/Q/11/canonical_requirement",
+      "prior_row_ref": "R31_MAP#/Q/11",
+      "actual_entry_path_retained": null,
+      "treatment": "B",
+      "source_applicability": "Current R33 source/build/CLI/runtime/owned stop and all historical resource descriptors require final reconciliation; no current after snapshot is read here.",
+      "retained_aliases_via_R31_MAP": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "current_evidence_refs": [
+        "R31_MAP",
+        "R29_82",
+        "R31_37",
+        "R33_ROOT"
+      ],
+      "final_required": "Current exact program/CLI/actor/profile/source/before/after plus normal owned stop, zero live connections/leases/work, restored gate booleans/monotonic epochs and immutable historical resources.",
+      "current_status": "APPLICABILITY_READY_R33_FOUR_ROOT_REPORTED_RUNNING_FINAL_A12_PENDING",
+      "accepted_row_by_research": false
+    }
+  ],
+  "ui_access_review": {
+    "state": "PENDING_EXPLICIT_FINAL_REVIEW_NOT_ROOT_CAUSE_DIAGNOSIS",
+    "relevant_rows": [
+      "A10",
+      "A11",
+      "A12",
+      "W14",
+      "W17",
+      "Q05",
+      "Q12"
+    ],
+    "classify_by": [
+      "actual actor/account/source workspace and issue",
+      "child vs creator/root identity",
+      "disabled/revoked/restored phase",
+      "authoritative backend response",
+      "R1/shared detail rendered state"
+    ],
+    "rule": "Expected authorized creator/child access after done depends on actual current source/account authority. Legitimate denied/revoked/disabled phases require private hiding; restored/authorized backend access with persistent shared-detail no-access cannot be silently accepted. A transient label is not a diagnosis or closure proof.",
+    "whole_UI_proved_by_four_PASS_alone": false,
+    "live_UI_inspected": false
+  },
+  "final_gates": [
+    {
+      "id": "F01",
+      "need": "Current four and explicit UI scope",
+      "required": "All four original cases PASS once/retry0 with exact current raw/assertions/profile/actor/PNG/source evidence. Review detail-access assertions independently; no automatic all-UI acceptance from4PASS."
+    },
+    {
+      "id": "F02",
+      "need": "Actual current E04 completion, policy and administration",
+      "required": "Original Web authorization -> Desktop same-key lifecycle200/consumedGET200 -> Web operationGET200/consumedGET200; then actual policyoff200, admin disable, R38 outcome and restore with exact actor/body/effects. No completed write replay."
+    },
+    {
+      "id": "F03",
+      "need": "Current API/CLI/platform/source identity",
+      "required": "R33 integration/five programs5056 plus retained FRONT3359/1961/1676 and Core/Views; current consuming API/origins/WS/native account/profile and CLI refusal/no-effects identities. Selected integration is not whole-workspace equivalence."
+    },
+    {
+      "id": "F04",
+      "need": "Owned normal stop and after",
+      "required": "Final reviewer receives owning API/bridge normal stop once, absent listeners/zero connections/no live leases or unsettled/unreleased work, original gate booleans restored with monotonic epoch, current DB identity. No process actions by research."
+    },
+    {
+      "id": "F05",
+      "need": "Immutable old and new history/resources",
+      "required": "Reconcile every declared old descriptor/archive/source/spec/input/tar/receipt/unknown state byte/permission/type/path/inode identity and legitimate R33 additions, matching database artifacts/settled work. Retain all prior failures and successful intents."
+    },
+    {
+      "id": "F06",
+      "need": "One independent full-S2 A12",
+      "required": "Assess all42 rows/all genuinely affected modules with old116/99/54 raw/default chains, accepted R29_82/R31_37/R33_40, current four/admin/CLI/source/history/after and explicit UI access scope. Broaden only for concrete unbound change or failed contract; then S2 bookkeeping/S3 handoff."
+    }
+  ],
+  "final_S2_accepted": false,
+  "coordinator_current_four": {
+    "state": "RUNNING",
+    "reported_process": 39126,
+    "final_result_provided": false,
+    "runtime_files_read": false,
+    "accepted_by_research": false
+  },
+  "parent24": {
+    "PASS": 0,
+    "PARTIAL": 9,
+    "NOT_RUN": 15,
+    "updated_by_research": false
+  },
+  "handoff": {
+    "S3": "Only after complete independent S2 acceptance",
+    "S4": "Real input/integration gaps remain separate",
+    "S5": "Rehearsal and final-candidate gates remain separate"
+  },
+  "execution_by_research": {
+    "Go": 0,
+    "AST": 0,
+    "tests": 0,
+    "DB": 0,
+    "API": 0,
+    "browser": 0,
+    "source_edits": 0,
+    "live_runtime_diag_command_result_reads": 0,
+    "process_control": 0,
+    "agents": 0
+  },
+  "caveats": [
+    "Applicability is not acceptance. No row marked PASS here.",
+    "Current four outcome and actual UI/admin/source/CLI/after evidence remain final-review work.",
+    "R33 accepted controls bridge only the intentional M1 policy timing change; no whole-suite rerun claim.",
+    "Accepted control counts are not new business cases or parent PASS increments."
+  ],
+  "markdown": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-s2-final-scope-applicability-20261118.md",
+  "markdown_sha256": "2baa221e46278f71d4ba5f012e44a64152dacdfdb3f8c81f80cc48df3fd6b90c"
+}

@@ -133,7 +133,7 @@ func TestCreateAgentFromTemplate_ObserverRevisionsPreserveWorkspaceCopies(t *tes
 		roleVersion  int32
 		skillVersion int32
 	}{
-		{"migration-reviewer", "multica-migration-review", 2, 1},
+		{"migration-reviewer", "multica-migration-review", 3, 2},
 		{"architect", "multica-architecture-decision-record", 2, 6},
 	} {
 		t.Run(tc.roleKey, func(t *testing.T) {
@@ -230,7 +230,7 @@ func TestCreateAgentFromTemplate_DiagnosticianCopiesAndPreservesWorkspaceContent
 	if first.Name != "诊断工程师" || first.Description != role.Description("zh") || first.Instructions != role.Instructions() {
 		t.Error("diagnostician must copy the localized identity and canonical server instructions")
 	}
-	if first.TemplateKey != role.Key || first.TemplateVersion != 1 || first.AutonomyLevel != "contributor" || first.MaxConcurrentTasks != 1 || first.PermissionMode != "private" {
+	if first.TemplateKey != role.Key || first.TemplateVersion != 1 || first.AutonomyLevel != "contributor" || first.MaxConcurrentTasks != 6 || first.PermissionMode != "private" {
 		t.Errorf("diagnostician policy/provenance = %s v%d %s/%d/%s", first.TemplateKey, first.TemplateVersion, first.AutonomyLevel, first.MaxConcurrentTasks, first.PermissionMode)
 	}
 	if len(first.Skills) != 1 || first.Skills[0].Name != "multica-debugging" {
@@ -391,14 +391,14 @@ func TestCreateAgentFromTemplate_ProgressReporterUsesServerDefaults(t *testing.T
 	if created.Name != "进展报告员" || created.Description != template.Description("zh") {
 		t.Errorf("reporter name/description = %q/%q, want the localized default name and Chinese description", created.Name, created.Description)
 	}
-	if created.TemplateKey != template.Key || created.TemplateVersion != 1 {
-		t.Errorf("reporter provenance = %q v%d, want progress-reporter v1", created.TemplateKey, created.TemplateVersion)
+	if created.TemplateKey != template.Key || created.TemplateVersion != 2 {
+		t.Errorf("reporter provenance = %q v%d, want progress-reporter v2", created.TemplateKey, created.TemplateVersion)
 	}
 	if created.Instructions != template.Instructions() {
 		t.Error("reporter instructions must be copied verbatim from the server, independently of language or client input")
 	}
-	if created.AutonomyLevel != "contributor" || created.MaxConcurrentTasks != 1 || created.PermissionMode != "private" {
-		t.Errorf("reporter policy = %s/%d/%s, want contributor/1/private", created.AutonomyLevel, created.MaxConcurrentTasks, created.PermissionMode)
+	if created.AutonomyLevel != "contributor" || created.MaxConcurrentTasks != 6 || created.PermissionMode != "private" {
+		t.Errorf("reporter policy = %s/%d/%s, want contributor/6/private", created.AutonomyLevel, created.MaxConcurrentTasks, created.PermissionMode)
 	}
 	if len(created.Skills) != 1 || created.Skills[0].Name != "multica-progress-report" {
 		t.Fatalf("reporter skills = %+v, want only multica-progress-report", created.Skills)
@@ -411,8 +411,8 @@ func TestCreateAgentFromTemplate_ProgressReporterUsesServerDefaults(t *testing.T
 	var content, description, origin, version string
 	dbfx.QueryRow(t, `SELECT content, description, config->'origin'->>'type', config->'origin'->>'version' FROM skill WHERE id = $1`,
 		created.Skills[0].ID).Scan(&content, &description, &origin, &version)
-	if content != skill.Content || description != skill.Description || origin != roleSkillOriginType || version != "4" {
-		t.Error("reporter's materialized role skill must preserve the embedded body, description and v4 provenance")
+	if content != skill.Content || description != skill.Description || origin != roleSkillOriginType || version != "5" {
+		t.Error("reporter's materialized role skill must preserve the embedded body, description and v5 provenance")
 	}
 }
 

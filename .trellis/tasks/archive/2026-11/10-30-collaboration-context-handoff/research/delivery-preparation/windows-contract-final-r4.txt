@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: builds one isolated candidate journey from pinned source and explicit services
+ok 1 - builds one isolated candidate journey from pinned source and explicit services
+  ---
+  duration_ms: 2.197709
+  type: 'test'
+  ...
+# Subtest: refuses a baseline, persistent runner, unsupported host and mismatched source
+ok 2 - refuses a baseline, persistent runner, unsupported host and mismatched source
+  ---
+  duration_ms: 2.322875
+  type: 'test'
+  ...
+# Subtest: refuses escaped roots, foreign binaries, business databases and external endpoints
+ok 3 - refuses escaped roots, foreign binaries, business databases and external endpoints
+  ---
+  duration_ms: 0.845334
+  type: 'test'
+  ...
+# Subtest: the real driver refuses a non-disposable host before opening its private setup or launching a process
+ok 4 - the real driver refuses a non-disposable host before opening its private setup or launching a process
+  ---
+  duration_ms: 39.052541
+  type: 'test'
+  ...
+# Subtest: installed collaboration is a separate opt-in selecting only the Windows acceptance job
+ok 5 - installed collaboration is a separate opt-in selecting only the Windows acceptance job
+  ---
+  duration_ms: 0.6715
+  type: 'test'
+  ...
+# Subtest: prepares and always stops the same private collaboration services without uploading state
+ok 6 - prepares and always stops the same private collaboration services without uploading state
+  ---
+  duration_ms: 0.169875
+  type: 'test'
+  ...
+# Subtest: runs collaboration only after candidate installs and compiles the Host without TestMain
+ok 7 - runs collaboration only after candidate installs and compiles the Host without TestMain
+  ---
+  duration_ms: 0.660875
+  type: 'test'
+  ...
+# Subtest: Windows uses the installed EXE resources and bundled EXE with an encoded file URL
+ok 8 - Windows uses the installed EXE resources and bundled EXE with an encoded file URL
+  ---
+  duration_ms: 0.863917
+  type: 'test'
+  ...
+# Subtest: macOS preserves the app Contents layout and encodes package names
+ok 9 - macOS preserves the app Contents layout and encodes package names
+  ---
+  duration_ms: 0.301334
+  type: 'test'
+  ...
+# Subtest: native layouts reject unsupported platforms and paths outside a supported package shape
+ok 10 - native layouts reject unsupported platforms and paths outside a supported package shape
+  ---
+  duration_ms: 0.986584
+  type: 'test'
+  ...
+# Subtest: native homes use platform path rules and reject network or relative roots
+ok 11 - native homes use platform path rules and reject network or relative roots
+  ---
+  duration_ms: 0.372416
+  type: 'test'
+  ...
+# Subtest: native controller shutdown preserves a failed close command after its owned child exits
+ok 12 - native controller shutdown preserves a failed close command after its owned child exits
+  ---
+  duration_ms: 0.808917
+  type: 'test'
+  ...
+# Subtest: already closed controller does not send another command or touch Docker
+ok 13 - already closed controller does not send another command or touch Docker
+  ---
+  duration_ms: 0.074167
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 98.532208

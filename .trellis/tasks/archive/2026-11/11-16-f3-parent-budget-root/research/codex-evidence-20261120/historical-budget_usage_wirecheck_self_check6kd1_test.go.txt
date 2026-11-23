@@ -1,0 +1,314 @@
+package daemon
+
+import (
+	"fmt"
+	"strings"
+	"testing"
+)
+
+// Check 6kd1: the checker of budget_usage_wirecheck_check6kd1_test.go is
+// only worth something if it refuses what design 11.5 says is refused. This
+// file feeds it documents that each break one rule, and a few that break
+// none.
+
+const (
+	check6kd1Head = `"protocol_version":1,"batch_key":"0195f3a2-0000-7000-8000-000000000002","producer_epoch":"0195f39e-0000-7000-8000-00000000b01d","adapter":"claude","adapter_version":"2.1.34","normalizer_version":"1","reported_at":"2026-11-17T08:00:00Z"`
+	check6kd1IDa  = "0195f3a1-0000-7000-8000-00000000000a"
+	check6kd1IDb  = "0195f3a1-0000-7000-8000-00000000000b"
+)
+
+// check6kd1Doc is a batch with the given envelope fields and invocations.
+func check6kd1Doc(head string, invocations ...string) string {
+	return `{` + head + `,"invocations":[` + strings.Join(invocations, ",") + `]}`
+}
+
+func check6kd1Inv(id, ended string, items ...string) string {
+	return `{"invocation_id":"` + id + `","resumed":false,"ended":"` + ended + `","observed_at":"2026-11-17T07:59:58Z","usage":[` + strings.Join(items, ",") + `]}`
+}
+
+// check6kd1Item is a usage item; an empty cost leaves cost_ticks out.
+func check6kd1Item(model, input, cost string) string {
+	item := `{"model":"` + model + `","tokens":{"input":"` + input + `","output":"340","cache_read":"0","cache_write":"0"}`
+	if cost != "" {
+		item += `,"cost_ticks":"` + cost + `"`
+	}
+	return item + `}`
+}
+
+// check6kd1Example is the example of design 11.5 with complete identifiers.
+func check6kd1Example() string {
+	return check6kd1Doc(check6kd1Head, check6kd1Inv(check6kd1IDa, "returned", check6kd1Item("claude-fable-5", "1200", "81000000")))
+}
+
+// check6kd1Changed replaces one piece of the example and fails when the
+// piece is not there exactly once: a case that changes nothing proves
+// nothing.
+func check6kd1Changed(t *testing.T, old, replacement string) string {
+	t.Helper()
+	example := check6kd1Example()
+	if strings.Count(example, old) != 1 {
+		t.Fatalf("the example holds %q %d times, want once", old, strings.Count(example, old))
+	}
+	return strings.Replace(example, old, replacement, 1)
+}
+
+func check6kd1NumberedID(n int) string {
+	return fmt.Sprintf("0195f3a1-0000-7000-8000-%012x", n)
+}
+
+func TestCheck6KD1WireCheckerRefuses(t *testing.T) {
+	t.Parallel()
+
+	const (
+		batchKey   = `"batch_key":"0195f3a2-0000-7000-8000-000000000002"`
+		epoch      = `"producer_epoch":"0195f39e-0000-7000-8000-00000000b01d"`
+		reportedAt = `"reported_at":"2026-11-17T08:00:00Z"`
+		observedAt = `"observed_at":"2026-11-17T07:59:58Z"`
+		invocation = `"invocation_id":"0195f3a1-0000-7000-8000-00000000000a"`
+		tokens     = `"tokens":{"input":"1200","output":"340","cache_read":"0","cache_write":"0"}`
+		usage      = `"usage":[{"model":"claude-fable-5",` + tokens + `,"cost_ticks":"81000000"}]`
+	)
+	sixByteEscape := func(hex string) string { return "\\" + "u" + hex }
+
+	type refusal struct {
+		name string
+		// old and replacement change the example; document, when set, is the
+		// whole body instead.
+		old, replacement string
+		document         string
+		want             string
+	}
+	cases := []refusal{
+		// Fields the wire does not have (11.5: metering mode, sequence,
+		// baseline, overlap, supersedes, currency, zero-cost basis, price
+		// version, any release proof), each as an unknown field.
+		{name: "metering mode", old: `"invocations":[`, replacement: `"metering_mode":"delta","invocations":[`, want: `unknown field "metering_mode"`},
+		{name: "sequence", old: `"resumed":false,`, replacement: `"resumed":false,"sequence":1,`, want: `unknown field "sequence"`},
+		{name: "baseline", old: `"resumed":false,`, replacement: `"resumed":false,"baseline":"0",`, want: `unknown field "baseline"`},
+		{name: "overlap", old: `"resumed":false,`, replacement: `"resumed":false,"overlap":false,`, want: `unknown field "overlap"`},
+		{name: "supersedes", old: `"invocations":[`, replacement: `"supersedes":"0195f3a2-0000-7000-8000-000000000001","invocations":[`, want: `unknown field "supersedes"`},
+		{name: "currency", old: `"cost_ticks":"81000000"`, replacement: `"cost_ticks":"81000000","currency":"USD"`, want: `unknown field "currency"`},
+		{name: "zero-cost basis", old: `"cost_ticks":"81000000"`, replacement: `"zero_cost_basis":"free_tier"`, want: `unknown field "zero_cost_basis"`},
+		{name: "price version", old: `"invocations":[`, replacement: `"price_version":"2026-11","invocations":[`, want: `unknown field "price_version"`},
+		{name: "release proof", old: `"invocations":[`, replacement: `"release_proof":{"kind":"exit"},"invocations":[`, want: `unknown field "release_proof"`},
+		{name: "an unknown token field", old: `"cache_write":"0"}`, replacement: `"cache_write":"0","reasoning":"0"}`, want: `unknown field "reasoning"`},
+		{name: "a key in another letter case", old: `"batch_key":`, replacement: `"Batch_Key":`, want: `unknown field "Batch_Key"`},
+		{name: "a nested key in another letter case", old: `"cache_read":`, replacement: `"Cache_Read":`, want: `unknown field "Cache_Read"`},
+
+		// Repeated keys.
+		{name: "a repeated envelope key", old: `"adapter":"claude",`, replacement: `"adapter":"claude","adapter":"claude",`, want: `duplicate key "adapter"`},
+		{name: "a repeated token key", old: `"input":"1200",`, replacement: `"input":"1200","input":"1200",`, want: `duplicate key "input"`},
+		{name: "a repeated invocation key", old: `"resumed":false,`, replacement: `"resumed":true,"resumed":false,`, want: `duplicate key "resumed"`},
+
+		// Missing keys.
+		{name: "no protocol_version", old: `"protocol_version":1,`, replacement: ``, want: `missing field "protocol_version"`},
+		{name: "no batch_key", old: batchKey + `,`, replacement: ``, want: `missing field "batch_key"`},
+		{name: "no producer_epoch", old: epoch + `,`, replacement: ``, want: `missing field "producer_epoch"`},
+		{name: "no adapter", old: `"adapter":"claude",`, replacement: ``, want: `missing field "adapter"`},
+		{name: "no normalizer_version", old: `"normalizer_version":"1",`, replacement: ``, want: `missing field "normalizer_version"`},
+		{name: "no reported_at", old: `,` + reportedAt, replacement: ``, want: `missing field "reported_at"`},
+		{name: "no invocations", document: `{` + check6kd1Head + `}`, want: `missing field "invocations"`},
+		{name: "no invocation_id", old: invocation + `,`, replacement: ``, want: `missing field "invocation_id"`},
+		{name: "no resumed", old: `"resumed":false,`, replacement: ``, want: `missing field "resumed"`},
+		{name: "no ended", old: `"ended":"returned",`, replacement: ``, want: `missing field "ended"`},
+		{name: "no observed_at", old: observedAt + `,`, replacement: ``, want: `missing field "observed_at"`},
+		{name: "no usage", old: `,` + usage, replacement: ``, want: `missing field "usage"`},
+		{name: "no model", old: `"model":"claude-fable-5",`, replacement: ``, want: `missing field "model"`},
+		{name: "no tokens", old: tokens + `,`, replacement: ``, want: `missing field "tokens"`},
+		{name: "no input count", old: `"input":"1200",`, replacement: ``, want: `missing field "input"`},
+		{name: "no output count", old: `"output":"340",`, replacement: ``, want: `missing field "output"`},
+		{name: "no cache_read count", old: `"cache_read":"0",`, replacement: ``, want: `missing field "cache_read"`},
+		{name: "no cache_write count", old: `,"cache_write":"0"`, replacement: ``, want: `missing field "cache_write"`},
+
+		// null.
+		{name: "batch_key null", old: batchKey, replacement: `"batch_key":null`, want: `batch_key is null`},
+		{name: "protocol_version null", old: `"protocol_version":1`, replacement: `"protocol_version":null`, want: `protocol_version is null`},
+		{name: "adapter_version null", old: `"adapter_version":"2.1.34"`, replacement: `"adapter_version":null`, want: `adapter_version is null`},
+		{name: "invocations null", document: `{` + check6kd1Head + `,"invocations":null}`, want: `invocations is null`},
+		{name: "usage null", old: usage, replacement: `"usage":null`, want: `usage is null`},
+		{name: "tokens null", old: tokens, replacement: `"tokens":null`, want: `tokens is null`},
+		{name: "a count null", old: `"output":"340"`, replacement: `"output":null`, want: `tokens.output is null`},
+		{name: "cost_ticks null", old: `"cost_ticks":"81000000"`, replacement: `"cost_ticks":null`, want: `cost_ticks is null`},
+		{name: "resumed null", old: `"resumed":false`, replacement: `"resumed":null`, want: `resumed is null`},
+		{name: "an invocation null", document: check6kd1Doc(check6kd1Head, `null`), want: `invocations[0] is null`},
+
+		// A JSON type other than the field's.
+		{name: "a count as a number", old: `"input":"1200"`, replacement: `"input":1200`, want: `tokens.input is a number`},
+		{name: "the cost as a number", old: `"cost_ticks":"81000000"`, replacement: `"cost_ticks":81000000`, want: `cost_ticks is a number`},
+		{name: "batch_key as a number", old: batchKey, replacement: `"batch_key":1234567890123456`, want: `batch_key is a number`},
+		{name: "normalizer_version as a number", old: `"normalizer_version":"1"`, replacement: `"normalizer_version":1`, want: `normalizer_version is a number`},
+		{name: "reported_at as a number", old: reportedAt, replacement: `"reported_at":1763366400`, want: `reported_at is a number`},
+		{name: "protocol_version as a string", old: `"protocol_version":1`, replacement: `"protocol_version":"1"`, want: `protocol_version is a string`},
+		{name: "protocol_version 2", old: `"protocol_version":1`, replacement: `"protocol_version":2`, want: `want the number 1`},
+		{name: "protocol_version 1.0", old: `"protocol_version":1`, replacement: `"protocol_version":1.0`, want: `want the number 1`},
+		{name: "protocol_version 1e0", old: `"protocol_version":1`, replacement: `"protocol_version":1e0`, want: `want the number 1`},
+		{name: "resumed as a string", old: `"resumed":false`, replacement: `"resumed":"false"`, want: `resumed is a string`},
+		{name: "resumed as a number", old: `"resumed":false`, replacement: `"resumed":0`, want: `resumed is a number`},
+		{name: "usage as an object", old: usage, replacement: `"usage":{}`, want: `usage is an object`},
+		{name: "tokens as an array", old: tokens, replacement: `"tokens":["1200","340","0","0"]`, want: `tokens is an array`},
+		{name: "the body is an array", document: `[]`, want: `batch is an array`},
+		{name: "the body is null", document: `null`, want: `batch is null`},
+
+		// Counts that are not canonical decimal strings.
+		{name: "a count with a plus sign", old: `"input":"1200"`, replacement: `"input":"+1200"`, want: `not a canonical decimal string`},
+		{name: "a count with a minus sign", old: `"input":"1200"`, replacement: `"input":"-1200"`, want: `not a canonical decimal string`},
+		{name: "a count with a leading zero", old: `"input":"1200"`, replacement: `"input":"01200"`, want: `not a canonical decimal string`},
+		{name: "a double zero", old: `"cache_read":"0"`, replacement: `"cache_read":"00"`, want: `not a canonical decimal string`},
+		{name: "an empty count", old: `"input":"1200"`, replacement: `"input":""`, want: `not a canonical decimal string`},
+		{name: "a count with a fraction", old: `"input":"1200"`, replacement: `"input":"1200.0"`, want: `not a canonical decimal string`},
+		{name: "a count with an exponent", old: `"input":"1200"`, replacement: `"input":"12e2"`, want: `not a canonical decimal string`},
+		{name: "a count with a leading space", old: `"input":"1200"`, replacement: `"input":" 1200"`, want: `not a canonical decimal string`},
+		{name: "a count with a trailing space", old: `"input":"1200"`, replacement: `"input":"1200 "`, want: `not a canonical decimal string`},
+		{name: "a count in base 16", old: `"input":"1200"`, replacement: `"input":"0x4b0"`, want: `not a canonical decimal string`},
+		{name: "a count in full-width digits", old: `"input":"1200"`, replacement: `"input":"１２００"`, want: `not a canonical decimal string`},
+		{name: "a count beyond 64 bits", old: `"input":"1200"`, replacement: `"input":"9223372036854775808"`, want: `out of range`},
+		{name: "a cost of zero", old: `"cost_ticks":"81000000"`, replacement: `"cost_ticks":"0"`, want: `cost_ticks is "0"`},
+		{name: "a negative cost", old: `"cost_ticks":"81000000"`, replacement: `"cost_ticks":"-1"`, want: `not a canonical decimal string`},
+		{name: "a cost with a leading zero", old: `"cost_ticks":"81000000"`, replacement: `"cost_ticks":"081"`, want: `not a canonical decimal string`},
+		{name: "an empty cost", old: `"cost_ticks":"81000000"`, replacement: `"cost_ticks":""`, want: `not a canonical decimal string`},
+
+		// Times time.Parse(time.RFC3339, ...) refuses.
+		{name: "a time with a space", old: reportedAt, replacement: `"reported_at":"2026-11-17 08:00:00Z"`, want: `not an RFC 3339 time`},
+		{name: "a time without a zone", old: reportedAt, replacement: `"reported_at":"2026-11-17T08:00:00"`, want: `not an RFC 3339 time`},
+		{name: "a time without seconds", old: reportedAt, replacement: `"reported_at":"2026-11-17T08:00Z"`, want: `not an RFC 3339 time`},
+		{name: "a time in month 13", old: reportedAt, replacement: `"reported_at":"2026-13-17T08:00:00Z"`, want: `not an RFC 3339 time`},
+		{name: "an empty time", old: reportedAt, replacement: `"reported_at":""`, want: `not an RFC 3339 time`},
+		{name: "a date only", old: observedAt, replacement: `"observed_at":"2026-11-17"`, want: `not an RFC 3339 time`},
+		{name: "seconds since the epoch as a string", old: observedAt, replacement: `"observed_at":"1763366398"`, want: `not an RFC 3339 time`},
+
+		// Identifiers.
+		{name: "an upper-case invocation id", old: invocation, replacement: `"invocation_id":"0195F3A1-0000-7000-8000-00000000000A"`, want: `invocation_id`},
+		{name: "an invocation id in braces", old: invocation, replacement: `"invocation_id":"{0195f3a1-0000-7000-8000-00000000000a}"`, want: `invocation_id`},
+		{name: "an invocation id without hyphens", old: invocation, replacement: `"invocation_id":"0195f3a1000070008000000000000000"`, want: `invocation_id`},
+		{name: "an invocation id of 37 characters", old: invocation, replacement: `"invocation_id":"0195f3a1-0000-7000-8000-00000000000a0"`, want: `invocation_id`},
+		{name: "an invocation id as a URN", old: invocation, replacement: `"invocation_id":"urn:uuid:0195f3a1-0000-7000-8000-00000000000a"`, want: `invocation_id`},
+		{name: "an empty invocation id", old: invocation, replacement: `"invocation_id":""`, want: `invocation_id`},
+		{name: "a repeated invocation id", document: check6kd1Doc(check6kd1Head,
+			check6kd1Inv(check6kd1IDa, "returned", check6kd1Item("m", "1", "")),
+			check6kd1Inv(check6kd1IDa, "returned", check6kd1Item("m", "2", ""))), want: `repeated invocation_id`},
+		{name: "a batch key of 15 characters", old: batchKey, replacement: `"batch_key":"0123456789abcde"`, want: `batch_key`},
+		{name: "a batch key of 65 characters", old: batchKey, replacement: `"batch_key":"` + strings.Repeat("k", 65) + `"`, want: `batch_key`},
+		{name: "a batch key shaped like a claim key", old: batchKey, replacement: `"batch_key":"claim:0195f3a2-0000-7000-8000-000000000002:1"`, want: `batch_key`},
+		{name: "an adapter with an upper-case letter", old: `"adapter":"claude"`, replacement: `"adapter":"Claude"`, want: `adapter = "Claude"`},
+		{name: "an adapter that starts with a digit", old: `"adapter":"claude"`, replacement: `"adapter":"1claude"`, want: `adapter = "1claude"`},
+		{name: "an empty adapter", old: `"adapter":"claude"`, replacement: `"adapter":""`, want: `adapter = ""`},
+		{name: "an adapter of 64 characters", old: `"adapter":"claude"`, replacement: `"adapter":"` + strings.Repeat("a", 64) + `"`, want: `adapter = `},
+		{name: "an adapter with a dot", old: `"adapter":"claude"`, replacement: `"adapter":"claude.code"`, want: `adapter = "claude.code"`},
+		{name: "a producer epoch with a space", old: epoch, replacement: `"producer_epoch":"epoch 1"`, want: `producer_epoch`},
+		{name: "an empty producer epoch", old: epoch, replacement: `"producer_epoch":""`, want: `producer_epoch`},
+		{name: "a producer epoch of 65 characters", old: epoch, replacement: `"producer_epoch":"` + strings.Repeat("e", 65) + `"`, want: `producer_epoch`},
+		{name: "an empty normalizer version", old: `"normalizer_version":"1"`, replacement: `"normalizer_version":""`, want: `normalizer_version`},
+		{name: "a normalizer version with a slash", old: `"normalizer_version":"1"`, replacement: `"normalizer_version":"claude/1"`, want: `normalizer_version`},
+		{name: "an empty adapter version", old: `"adapter_version":"2.1.34"`, replacement: `"adapter_version":""`, want: `adapter_version has 0 bytes`},
+		{name: "an adapter version of 121 bytes", old: `"adapter_version":"2.1.34"`, replacement: `"adapter_version":"` + strings.Repeat("v", 121) + `"`, want: `adapter_version has 121 bytes`},
+		{name: "an empty model", old: `"model":"claude-fable-5"`, replacement: `"model":""`, want: `model has 0 bytes`},
+		{name: "a model of 121 bytes", old: `"model":"claude-fable-5"`, replacement: `"model":"` + strings.Repeat("m", 121) + `"`, want: `model has 121 bytes`},
+		{name: "an ended that is none of the three", old: `"ended":"returned"`, replacement: `"ended":"completed"`, want: `none of returned, interrupted, unknown`},
+		{name: "an ended in another letter case", old: `"ended":"returned"`, replacement: `"ended":"Returned"`, want: `none of returned, interrupted, unknown`},
+
+		// Usage items.
+		{name: "a repeated model in one invocation", document: check6kd1Doc(check6kd1Head,
+			check6kd1Inv(check6kd1IDa, "returned", check6kd1Item("m", "1", ""), check6kd1Item("m", "2", ""))), want: `listed twice`},
+		{name: "four zero counts and no cost", document: check6kd1Doc(check6kd1Head,
+			check6kd1Inv(check6kd1IDa, "returned", `{"model":"m","tokens":{"input":"0","output":"0","cache_read":"0","cache_write":"0"}}`)), want: `four zero token counts and no cost`},
+		{name: "usage on an unknown invocation", document: check6kd1Doc(check6kd1Head,
+			check6kd1Inv(check6kd1IDa, "unknown", check6kd1Item("m", "1", ""))), want: `an unknown invocation carries 1 usage items`},
+
+		// Control characters, judged after decoding, and bytes that are not
+		// UTF-8.
+		{name: "an escaped line feed in the adapter version", old: `"adapter_version":"2.1.34"`, replacement: `"adapter_version":"2.1.34\n"`, want: `control character U+000A`},
+		{name: "an escaped tab in a model", old: `"model":"claude-fable-5"`, replacement: `"model":"claude\tfable"`, want: `control character U+0009`},
+		{name: "a six-byte escape of U+0085", old: `"adapter_version":"2.1.34"`, replacement: `"adapter_version":"2.1` + sixByteEscape("0085") + `34"`, want: `control character U+0085`},
+		{name: "a six-byte escape of U+0000", old: `"model":"claude-fable-5"`, replacement: `"model":"claude` + sixByteEscape("0000") + `"`, want: `control character U+0000`},
+		{name: "a raw DEL", old: `"model":"claude-fable-5"`, replacement: `"model":"claude` + string(rune(0x7f)) + `"`, want: `control character U+007F`},
+		{name: "a raw line feed inside a string", old: `"model":"claude-fable-5"`, replacement: "\"model\":\"claude\nfable\"", want: `not one JSON value`},
+		{name: "a byte that is not UTF-8", old: `"model":"claude-fable-5"`, replacement: `"model":"claude` + string([]byte{0xff}) + `"`, want: `not valid UTF-8`},
+
+		// More or less than one value.
+		{name: "a line end after the value", document: check6kd1Example() + "\n", want: `trailing bytes`},
+		{name: "a space after the value", document: check6kd1Example() + " ", want: `trailing bytes`},
+		{name: "a second value", document: check6kd1Example() + `{}`, want: `trailing bytes`},
+		{name: "an empty body", document: ``, want: `not one JSON value`},
+		{name: "a value cut short", document: strings.TrimSuffix(check6kd1Example(), `}`), want: `not one JSON value`},
+	}
+
+	// The limits.
+	tooMany := make([]string, 0, check6kd1MaxInvocations+1)
+	for n := range check6kd1MaxInvocations + 1 {
+		tooMany = append(tooMany, check6kd1Inv(check6kd1NumberedID(n), "returned"))
+	}
+	cases = append(cases, refusal{name: "33 invocations", document: check6kd1Doc(check6kd1Head, tooMany...), want: `33 invocations`})
+	var crowded []string
+	for n := range 9 {
+		items := make([]string, 0, 29)
+		for m := range 29 {
+			items = append(items, check6kd1Item(fmt.Sprintf("model-%02d", m), "1", ""))
+		}
+		crowded = append(crowded, check6kd1Inv(check6kd1NumberedID(n), "returned", items...))
+	}
+	cases = append(cases, refusal{name: "261 usage items in 9 invocations", document: check6kd1Doc(check6kd1Head, crowded...), want: `261 usage items`})
+	cases = append(cases, refusal{name: "a body over 256 KiB", document: `{` + strings.Repeat(" ", check6kd1MaxBodyBytes) + strings.TrimPrefix(check6kd1Example(), `{`), want: `more than 256 KiB`})
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			document := tc.document
+			if tc.old != "" {
+				document = check6kd1Changed(t, tc.old, tc.replacement)
+			}
+			err := check6kd1ValidateBatch([]byte(document))
+			if err == nil {
+				t.Fatalf("the checker accepts a body that breaks a rule of 11.5:\n%.400s", document)
+			}
+			if !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("refused for another reason\n got:  %v\n want: ...%s...", err, tc.want)
+			}
+		})
+	}
+}
+
+func TestCheck6KD1WireCheckerAccepts(t *testing.T) {
+	t.Parallel()
+
+	full := make([]string, 0, check6kd1MaxInvocations)
+	for n := range check6kd1MaxInvocations {
+		items := make([]string, 0, 8)
+		for m := range 8 {
+			items = append(items, check6kd1Item(fmt.Sprintf("model-%02d", m), "1", ""))
+		}
+		full = append(full, check6kd1Inv(check6kd1NumberedID(n), "interrupted", items...))
+	}
+	cases := []struct {
+		name     string
+		document string
+	}{
+		{"the example of 11.5", check6kd1Example()},
+		{"no adapter version", strings.Replace(check6kd1Example(), `"adapter_version":"2.1.34",`, ``, 1)},
+		{"no invocation", check6kd1Doc(check6kd1Head)},
+		{"an unknown invocation without usage", check6kd1Doc(check6kd1Head, check6kd1Inv(check6kd1IDa, "unknown"))},
+		{"a returned invocation without usage", check6kd1Doc(check6kd1Head, check6kd1Inv(check6kd1IDa, "returned"))},
+		{"an item with four zeros and a cost", check6kd1Doc(check6kd1Head,
+			check6kd1Inv(check6kd1IDa, "returned", `{"model":"m","tokens":{"input":"0","output":"0","cache_read":"0","cache_write":"0"},"cost_ticks":"1"}`))},
+		{"the same model in two invocations", check6kd1Doc(check6kd1Head,
+			check6kd1Inv(check6kd1IDa, "returned", check6kd1Item("m", "1", "")),
+			check6kd1Inv(check6kd1IDb, "interrupted", check6kd1Item("m", "1", "")))},
+		{"a fraction of a second and a zone offset", strings.NewReplacer(
+			`"reported_at":"2026-11-17T08:00:00Z"`, `"reported_at":"2026-11-17T16:00:00.123456789+08:00"`,
+			`"observed_at":"2026-11-17T07:59:58Z"`, `"observed_at":"2026-11-17T07:59:58.5Z"`).Replace(check6kd1Example())},
+		{"the largest count", strings.Replace(check6kd1Example(), `"input":"1200"`, `"input":"9223372036854775807"`, 1)},
+		{"a model of 120 bytes", strings.Replace(check6kd1Example(), `"model":"claude-fable-5"`, `"model":"`+strings.Repeat("m", 120)+`"`, 1)},
+		{"a model with a line separator, which is not a control character", strings.Replace(check6kd1Example(), `"model":"claude-fable-5"`, `"model":"claude`+string(rune(0x2028))+`fable"`, 1)},
+		{"a model with characters HTML escaping would change", strings.Replace(check6kd1Example(), `"model":"claude-fable-5"`, `"model":"<synthetic>&co"`, 1)},
+		{"an adapter of 63 characters", strings.Replace(check6kd1Example(), `"adapter":"claude"`, `"adapter":"`+strings.Repeat("a", 63)+`"`, 1)},
+		{"a batch key of 16 and of 64 characters", strings.Replace(check6kd1Example(), `"batch_key":"0195f3a2-0000-7000-8000-000000000002"`, `"batch_key":"`+strings.Repeat("K", 64)+`"`, 1)},
+		{"32 invocations with 256 usage items", check6kd1Doc(check6kd1Head, full...)},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			if err := check6kd1ValidateBatch([]byte(tc.document)); err != nil {
+				t.Fatalf("the checker refuses a body that keeps every rule of 11.5: %v\n%.400s", err, tc.document)
+			}
+		})
+	}
+}

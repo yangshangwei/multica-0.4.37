@@ -1,0 +1,19 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "env",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-offline-handoff.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--project=chromium",
+    "--reporter=json",
+    "--output=/tmp/multica-gap-recovery-20261021-h6phxwo9/offline-handoff-coordinator-rerun-output"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-21T14:40:09.849585+00:00"
+}

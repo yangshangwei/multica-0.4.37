@@ -463,6 +463,15 @@ SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
 		})
 	}
 
+	issueIDs := make([]pgtype.UUID, len(scanned))
+	for index, row := range scanned {
+		issueIDs[index] = row.issue.ID
+	}
+	collaborations, ok := h.sourceIssueCollaborations(w, r, compiled.workspaceID, issueIDs)
+	if !ok {
+		return
+	}
+
 	// The row window, optional root total and cursor are the authoritative snapshot. Commit
 	// it before the best-effort display enrichment below: PostgreSQL aborts a
 	// transaction after any statement error, so running getIssuePrefix or
@@ -476,16 +485,13 @@ SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
 	committed = true
 
 	prefix := baseHandler.getIssuePrefix(r.Context(), compiled.workspaceID)
-	issueIDs := make([]pgtype.UUID, len(scanned))
-	for index, row := range scanned {
-		issueIDs[index] = row.issue.ID
-	}
 	labelsByIssue := baseHandler.labelsByIssue(r.Context(), compiled.workspaceID, issueIDs)
 	// One Resolver for the page — see newStatusCategoryFiller. (MUL-6243)
 	fillTableRow := baseHandler.newStatusCategoryFiller(r.Context(), compiled.workspaceID)
 	responseRows := make([]issueTableRowResponse, len(scanned))
 	for index, row := range scanned {
 		issue := issueListRowToResponse(row.issue, prefix)
+		issue.Collaboration = collaborations[issue.ID]
 		fillTableRow(&issue)
 		labels := labelsByIssue[issue.ID]
 		if labels == nil {

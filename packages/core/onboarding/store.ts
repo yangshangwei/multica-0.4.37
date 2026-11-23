@@ -18,7 +18,12 @@ import type { OnboardingCompletionPath, QuestionnaireAnswers } from "./types";
 export async function saveQuestionnaire(
   answers: Partial<QuestionnaireAnswers>,
 ): Promise<void> {
+  const scope = api.getSessionScope();
+  const userId = useAuthStore.getState().user?.id;
   const user = await api.patchOnboarding({ questionnaire: answers });
+  if (api.getSessionScope() !== scope || useAuthStore.getState().user?.id !== userId) {
+    throw new DOMException("Onboarding session changed", "AbortError");
+  }
   useAuthStore.getState().setUser(user);
   // Mirror the three cohort signals into person properties so every
   // PostHog event on this user can be broken down by source / role /
@@ -64,20 +69,4 @@ export async function completeOnboarding(
       : undefined,
   );
   await useAuthStore.getState().refreshMe();
-}
-
-/**
- * Records interest in cloud runtimes. Pure side effect — does NOT
- * complete onboarding; the user still has to pick a real Step 3
- * path (CLI with a detected runtime) or Skip to move on.
- *
- * Returned user object is not synced into the auth store because no
- * user-visible field (`onboarded_at`, anything in `UserResponse`)
- * actually changes here.
- */
-export async function joinCloudWaitlist(
-  email: string,
-  reason: string,
-): Promise<void> {
-  await api.joinCloudWaitlist({ email, reason });
 }

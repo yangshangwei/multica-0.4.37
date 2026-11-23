@@ -1,0 +1,117 @@
+import ast
+import collections
+import datetime
+import hashlib
+import json
+import re
+import shutil
+import subprocess
+from pathlib import Path
+
+ROOT = Path('/Volumes/artisan/code/2026/multica-0.4.37')
+TASK = ROOT / '.trellis/tasks/11-02-branch-functional-regression'
+SOURCE = ROOT.parent / 'mc-functional-go-7af9ab990-20261102'
+PRIVATE = Path(__file__).resolve().parent
+RUN = TASK / 'evidence/next-webhook-lookup-1'
+sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+run = json.loads((RUN / 'run.json').read_text())
+assert run['state'] == 'complete' and run['exit_code'] == 0
+assert run['compile_attempts'] == run['test_execution_attempts'] == 1
+assert run['top_counts'] == {'pass': 1} and run['sub_counts'] == {'pass': 4}
+assert run['connections_after'] == 0 and not run['owned_processes_remaining']
+assert run['source_diff_unchanged'] and run['watched_sources_unchanged'] and run['frozen_test_unchanged']
+assert run['overlay_target_absent_before'] and run['overlay_target_absent_after']
+for step in run['steps']:
+    assert step['exit_code'] == 0
+    for stream in ['stdout', 'stderr']:
+        assert sha(RUN / (step['name'] + '.' + stream)) == step[stream + '_sha256']
+    if step['name'].startswith('compile-') or step['name'] == 'diagnostic':
+        assert step['command'][:3] == ['bash', 'scripts/go-test-with-agent-cli-guard.sh', '--']
+        assert step['private_test_sha256'] == run['private_test_sha256']
+assert sha(PRIVATE / 'handler-webhook-lookup.test') == run['binary_sha256']
+assert sha(PRIVATE / 'environment.json') == run['private_environment_sha256']
+assert sha(PRIVATE / 'diagnostic_test.go') == run['private_test_sha256']
+assert sha(PRIVATE / 'overlay.json') == run['overlay_sha256']
+for filename in ['run.py', 'analyze.py']:
+    ast.parse((PRIVATE / filename).read_text())
+canonical = re.search(r'const getWebhookTriggerByToken = `([\s\S]*?)`',
+                      (SOURCE / 'server/pkg/db/generated/autopilot.sql.go').read_text()).group(1)
+assert (RUN / 'canonical_sql.txt').read_text() == canonical
+facts = {fact['case']: fact for fact in json.loads((RUN / 'cases.json').read_text())}
+assert set(facts) == {'server_lookup_error_returns500', 'closed_owned_pool_returns500',
+                      'real_missing_token_returns404', 'absolute_limit_preempts_lookup'}
+for fact in facts.values():
+    assert not fact['test_failed'] and fact['owned_pool_closed']
+    assert fact['database'] == run['task_database']
+    assert fact['body_read_calls'] == fact['exec_calls'] == fact['query_calls'] == fact['batch_calls'] == 0
+    assert fact['persistence_before'] == fact['persistence_after'] and fact['persistence_unchanged']
+    assert fact['shared_pool_ping_after'] and fact['shared_search_path_before'] == fact['shared_search_path_after']
+    if fact['lookup_calls']:
+        assert fact['lookup_calls'] == fact['scan_calls'] == 1 and len(fact['scan_destination_types']) == 20
+        assert fact['canonical_sql'] == canonical
+        assert fact['argument_type'] == 'pgtype.Text' and fact['argument_valid']
+        assert fact['argument_bytes'] == 47 and fact['argument_matches_synthetic_path']
+    payload = json.loads(fact['response_body'])
+    assert len(payload) == 1 and 'error' in payload
+    assert 'whk_' not in fact['response_body']
+server = facts['server_lookup_error_returns500']
+assert server['http_status'] == 500 and server['sqlstate'] == '42P01' and not server['is_no_rows']
+assert server['scan_error_type'] == '*pgconn.PrepareError'
+assert server['owned_search_path'] == 'pg_catalog' and server['bad_debt_after_allowed']
+closed = facts['closed_owned_pool_returns500']
+assert closed['http_status'] == 500 and closed['scan_error_message'] == 'closed pool'
+assert closed['sqlstate'] == '' and not closed['is_no_rows'] and closed['bad_debt_after_allowed']
+missing = facts['real_missing_token_returns404']
+assert missing['http_status'] == 404 and missing['is_no_rows'] and not missing['bad_debt_after_allowed']
+limited = facts['absolute_limit_preempts_lookup']
+assert limited['http_status'] == 429 and limited['lookup_calls'] == limited['scan_calls'] == 0
+assert limited['absolute_precharged'] and int(limited['retry_after']) > 0 and limited['bad_debt_after_allowed']
+events = [json.loads(line) for line in (RUN / 'diagnostic.stdout').read_text().splitlines() if line.startswith('{')]
+terminal = {e['Test']: e['Action'] for e in events if e.get('Test') and e['Action'] in ['pass', 'fail', 'skip']}
+assert terminal == run['outcomes']
+assert all(state == 'pass' for state in terminal.values())
+assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=SOURCE).decode().strip() == run['candidate']
+assert hashlib.sha256(subprocess.check_output(['git', 'diff', '--binary'], cwd=SOURCE)).hexdigest() == run['source_diff_sha256_before']
+for path, expected in run['source_watched_sha256_before'].items():
+    assert sha(SOURCE / path) == expected
+summary = {
+    'at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    'reviewer': 'Native implement child self-verification; coordinator and independent review separate',
+    'status': 'PASS_DIAGNOSTIC_ONLY_REQUIRED_ACCEPTANCE_GATES_OPEN',
+    'candidate': run['candidate'], 'candidate_version': run['version'],
+    'new_top_level_pass': 1, 'new_subcase_pass': 4, 'fail': 0, 'skip': 0,
+    'compile_attempts': 1, 'actual_test_execution_attempts': 1, 'race_enabled': True, 'agent_cli_guard': True,
+    'terminal_events': terminal, 'command_stream_hashes_match': True,
+    'canonical_sql_and_typed_argument_exact': True,
+    'generated_twenty_destination_scanner_invoked': True,
+    'successful_materialized_row_or_decode_parity_proven': False,
+    'server_error_boundary': 'Actual PostgreSQL prepare/parse failure: *pgconn.PrepareError unwraps PgError42P01. No executor SELECT result or returned row is claimed.',
+    'closed_pool_boundary': 'Actual client pool-acquisition failure; no server-side SQL execution in this case.',
+    'server500_no_bad_credential_debt': True, 'closed500_no_bad_credential_debt': True,
+    'real_no_row404_charges_bad_credential_debt': True,
+    'absolute429_before_query_or_body': True, 'absolute_retry_after_seconds': int(limited['retry_after']),
+    'request_body_reads': 0, 'non_lookup_exec_multirow_query_batch_calls': 0,
+    'actual_request_queryrow_calls': sum(f['lookup_calls'] for f in facts.values()),
+    'covered_three_table_fingerprints_unchanged': True,
+    'healthy_shared_pool_after_faults': True, 'shared_search_path_unchanged': True,
+    'database': run['task_database'], 'database_connections_after': 0,
+    'owned_compile_test_process_groups_remaining': [], 'owned_pools_closed': True,
+    'source_diff_and_frozen_identity_unchanged': True, 'ten_watched_source_files_unchanged': True,
+    'original_two_skip_sources_unchanged': True, 'virtual_overlay_target_absent_before_after': True,
+    'python_ast': 'PASS', 'gofmt_and_git_diff_check': 'PASS',
+    'full_product_lint_typecheck_tests': 'NOT_RERUN: task-private Go diagnostic and evidence only; no product/TS/dependency change.',
+    'original_go_inventory': '10376PASS/1FAIL/6SKIP remains unchanged; new diagnostic identity recorded separately.',
+    'original_p95': '2171ms>2000ms FAIL retained; not executed.',
+    'commercial_calls': 0, 'account_actions': 0, 'remote_dispatches': 0,
+    'services_ports_apps_containers_mounts_protocol_actions_created': 0,
+    'limits': ['Early lookup-error/admission proof only; no valid-token signature/delivery/worker/Provider claim.',
+               'Fingerprints cover webhook_delivery/autopilot_run/agent_task_queue, not every table.',
+               'Handler TestMain performed its normal fixture lifecycle solely in the allocated task database.',
+               'Original skipped test markers are preserved and not reclassified.'],
+}
+shutil.copyfile(__file__, RUN / 'analysis-driver.py.txt')
+summary['artifact_sha256'] = {str(p.relative_to(TASK)): sha(p) for p in sorted(RUN.iterdir())
+                            if p.is_file() and p.name != 'verification.json'}
+(RUN / 'verification.json').write_text(json.dumps(summary, indent=2) + '\n')
+(TASK / 'research/webhook-lookup-diagnostic-1.json').write_text(json.dumps(summary, indent=2) + '\n')
+print(json.dumps({key: summary[key] for key in ['status', 'new_top_level_pass', 'new_subcase_pass', 'database_connections_after', 'server_error_boundary']}, indent=2))

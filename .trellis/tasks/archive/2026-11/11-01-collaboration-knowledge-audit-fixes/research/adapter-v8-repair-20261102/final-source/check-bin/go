@@ -1,0 +1,224 @@
+#!/usr/bin/env python3
+"""Task-private make-check adapter: one migrated clone per Go package."""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+from urllib.parse import unquote, urlsplit, urlunsplit
+
+args = sys.argv[1:]
+real_go = os.environ.get("MULTICA_TASK_REAL_GO") or "/opt/homebrew/bin/go"
+os.environ.setdefault("GOPROXY", "file:///Users/artisan/go/pkg/mod/cache/download")
+os.environ.setdefault("GOSUMDB", "off")
+
+def refuse(message):
+    print("Task database isolation refused: " + message, file=sys.stderr)
+    raise SystemExit(2)
+
+global_args = []
+command_index = 0
+test_command = False
+while command_index < len(args):
+    arg = args[command_index]
+    if arg in ("-C", "--C"):
+        if command_index + 1 >= len(args):
+            refuse("missing Go working directory")
+        global_args += args[command_index:command_index + 2]
+        command_index += 2
+    elif arg.startswith(("-C=", "--C=")):
+        global_args.append(arg)
+        command_index += 1
+    elif arg == "test" and not test_command:
+        test_command = True
+        command_index += 1
+    else:
+        break
+command_args = ["test", *args[command_index:]] if test_command else args[command_index:]
+if not test_command:
+    os.execv(real_go, [real_go, *args])
+
+# Only a real Go compile flag before -args/-- exempts TestMain execution.
+value_flags = {"-C", "-p", "-asmflags", "-compiler", "-buildmode", "-gcflags", "-gccgoflags", "-mod", "-modfile",
+               "-overlay", "-installsuffix", "-ldflags", "-pgo", "-pkgdir", "-tags", "-toolexec",
+               "-debug-actiongraph", "-debug-runtime-trace", "-debug-trace", "-covermode", "-coverpkg", "-coverprofile",
+               "-o", "-exec", "-vet"}
+test_value_flags = {"-bench", "-benchtime", "-blockprofile", "-blockprofilerate", "-count", "-coverprofile", "-cpu", "-cpuprofile",
+                    "-fuzz", "-fuzzminimizetime", "-fuzztime", "-list", "-memprofile", "-memprofilerate",
+                    "-mutexprofile", "-mutexprofilefraction", "-outputdir", "-parallel", "-run", "-shuffle",
+                    "-skip", "-timeout", "-trace"}
+value_flags |= test_value_flags | {"-test." + flag[1:] for flag in test_value_flags}
+boolean_flags = {"-n", "-x", "-a", "-asan", "-buildvcs", "-linkshared", "-modcacherw", "-msan", "-race", "-trimpath",
+                 "-work", "-cover", "-c", "-json"}
+test_boolean_flags = {"-artifacts", "-benchmem", "-failfast", "-fullpath", "-short", "-v"}
+boolean_flags |= test_boolean_flags | {"-test." + flag[1:] for flag in test_boolean_flags}
+compile_only = False
+source_override = False
+package_list_closed = False
+patterns = []
+index = 1
+while index < len(command_args):
+    arg = command_args[index]
+    if arg in ("-args", "--args", "--"):
+        break
+    if arg.startswith("--"):
+        arg = arg[1:]
+    name = arg.split("=", 1)[0]
+    if arg.startswith("-"):
+        if name not in value_flags and name not in boolean_flags:
+            refuse("unclassified Go test option")
+        package_list_closed = bool(patterns)
+        source_override = source_override or name in ("-modfile", "-overlay")
+    if name in value_flags and "=" not in arg:
+        if index + 1 >= len(command_args):
+            refuse("missing test flag value")
+        index += 2
+        continue
+    if arg == "-c":
+        compile_only = True
+    elif arg.startswith("-c="):
+        compile_only = arg.split("=", 1)[1].lower() in ("true", "t", "1")
+    elif not arg.startswith("-"):
+        if package_list_closed:
+            break
+        patterns.append(arg)
+    index += 1
+if compile_only:
+    os.execv(real_go, [real_go, *args])
+
+# API pool limits belong to service startup; tests own their unset/default cases.
+for key in ("DATABASE_MAX_CONNS", "DATABASE_MIN_CONNS"):
+    os.environ.pop(key, None)
+
+mode = os.environ.get("MULTICA_TASK_PACKAGE_DB_MODE")
+if mode == "0" and source_override:
+    refuse("recursive test source overrides are not permitted")
+if mode == "0":
+    child_url = urlsplit(os.environ.get("DATABASE_URL", ""))
+    child_database = unquote(child_url.path.lstrip("/"))
+    if child_url.scheme not in ("postgres", "postgresql") or child_url.hostname not in ("127.0.0.1", "localhost") or not re.fullmatch(r"ccheck_[0-9]{20}_[0-9a-f]{12}", child_database):
+        refuse("recursive test execution requires its explicit owned clone")
+    evidence_root = os.environ.get("MULTICA_TASK_PACKAGE_DB_EVIDENCE")
+    if not all(os.environ.get(key, "").strip() for key in ("MULTICA_TASK_PACKAGE_DB_EVIDENCE", "MULTICA_TASK_REAL_GO")):
+        refuse("recursive test execution requires its allocation record")
+    allocation_file = Path(evidence_root) / (child_database + ".json")
+    try:
+        allocation = json.loads(allocation_file.read_text())
+    except (OSError, ValueError):
+        refuse("recursive test allocation record is unavailable")
+    package = allocation.get("package") if isinstance(allocation, dict) else None
+    if not isinstance(package, str) or not re.fullmatch(r"[A-Za-z0-9_][A-Za-z0-9._~/-]*", package) or "..." in package or any(part in ("", ".", "..") for part in package.split("/")):
+        refuse("recursive test allocation requires a canonical package identity")
+    if allocation.get("database") != child_database or allocation.get("state") not in ("running", "complete") or not re.fullmatch(r"multica_check_[a-zA-Z0-9_]+_go", allocation.get("template", "")):
+        refuse("recursive test allocation record does not match")
+    if len(patterns) > 1 or any("..." in pattern for pattern in patterns):
+        refuse("recursive test execution requires exactly its allocated package")
+    listed = subprocess.run([real_go, *global_args, "list", *(patterns or ["."])], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if listed.returncode or listed.stdout.splitlines() != [package]:
+        refuse("recursive test package selection does not match its allocation")
+    os.execv(real_go, [real_go, *args])
+if mode != "1":
+    refuse("test execution requires an explicit task isolation context")
+if not all(os.environ.get(key, "").strip() for key in ("MULTICA_TASK_REAL_GO", "MULTICA_TASK_PSQL", "MULTICA_TASK_PACKAGE_DB_EVIDENCE")):
+    refuse("test execution requires explicit Go, SQL and evidence context")
+args = command_args
+
+url = urlsplit(os.environ.get("DATABASE_URL", ""))
+template = unquote(url.path.lstrip("/"))
+if url.scheme not in ("postgres", "postgresql") or url.hostname not in ("localhost", "127.0.0.1"):
+    refuse("an explicit local check database is required")
+if not re.fullmatch(r"multica_check_[a-zA-Z0-9_]+_go", template):
+    refuse("only the newly migrated make-check Go template is accepted")
+output = Path(os.environ["MULTICA_TASK_PACKAGE_DB_EVIDENCE"]).resolve()
+output.mkdir(parents=True, exist_ok=True)
+output.chmod(0o700)
+psql = os.environ["MULTICA_TASK_PSQL"]
+admin = urlunsplit(url._replace(path="/postgres"))
+
+def sql(database_url, statement):
+    result = subprocess.run([psql, database_url, "-X", "-A", "-t", "-v", "ON_ERROR_STOP=1", "-c", statement],
+                            text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if result.returncode:
+        diagnostic = output / ("database-error-" + datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d%H%M%S%f") + ".txt")
+        diagnostic.write_text(result.stderr)
+        diagnostic.chmod(0o600)
+        refuse("database operation failed; diagnostic retained privately")
+    return result.stdout.strip()
+
+if sql(url.geturl(), "SELECT current_database()") != template:
+    refuse("actual database does not match the check allocation")
+
+flags, patterns = [], []
+index = 1
+value_flags = {"-timeout", "-p", "-parallel", "-run", "-skip", "-count", "-tags", "-cpu", "-coverprofile", "-coverpkg", "-vet"}
+while index < len(args):
+    arg = args[index]
+    if arg.startswith("-"):
+        flags.append(arg)
+        if arg in value_flags:
+            index += 1
+            if index >= len(args):
+                refuse("missing test flag value")
+            flags.append(args[index])
+    else:
+        patterns.append(arg)
+    index += 1
+listed = subprocess.run([real_go, *global_args, "list", *(patterns or ["."])], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+if listed.returncode:
+    refuse("could not expand package selection")
+packages = listed.stdout.splitlines()
+if not packages:
+    refuse("empty package selection")
+if "-json" not in flags:
+    flags.append("-json")
+for package in packages:
+    digest = hashlib.sha256(package.encode()).hexdigest()[:12]
+    nonce = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d%H%M%S%f")
+    database = "ccheck_" + nonce + "_" + digest
+    selected = urlunsplit(url._replace(path="/" + database))
+    sql(admin, f'CREATE DATABASE "{database}" TEMPLATE "{template}"')
+    if sql(selected, "SELECT current_database()") != database:
+        refuse("clone identity mismatch")
+    environment = os.environ.copy()
+    environment.update(DATABASE_URL=selected, POSTGRES_DB=database, MULTICA_TASK_PACKAGE_DB_MODE="0")
+    command = [real_go, *global_args, "test", *flags, package]
+    evidence = {"package": package, "database": database, "template": template, "command": command,
+                "started_at": datetime.datetime.now(datetime.timezone.utc).isoformat(), "state": "running"}
+    metadata = output / (database + ".json")
+    metadata.write_text(json.dumps(evidence, indent=2) + "\n")
+    log = output / (database + ".jsonl")
+    counts = {action: 0 for action in ("run", "pass", "fail", "skip")}
+    package_passed, package_skipped, no_test_files = False, False, False
+    with log.open("w") as sink:
+        process = subprocess.Popen(command, env=environment, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in process.stdout:
+            sink.write(line)
+            sys.stdout.write(line)
+            try:
+                event = json.loads(line)
+            except ValueError:
+                continue
+            action = event.get("Action")
+            if event.get("Test") and action in counts:
+                counts[action] += 1
+            if action == "pass" and not event.get("Test"):
+                package_passed = True
+            if action == "skip" and not event.get("Test"):
+                package_skipped = True
+            if "[no test files]" in event.get("Output", ""):
+                no_test_files = True
+        code = process.wait()
+    evidence.update(state="complete", exit_code=code, counts=counts, package_passed=package_passed,
+                    compiled_without_tests=package_skipped and no_test_files,
+                    log_sha256=hashlib.sha256(log.read_bytes()).hexdigest(),
+                    finished_at=datetime.datetime.now(datetime.timezone.utc).isoformat())
+    metadata.write_text(json.dumps(evidence, indent=2) + "\n")
+    if code:
+        raise SystemExit(code)
+    if counts["skip"] and not counts["pass"]:
+        print("Task package contains only skipped named tests: " + package, file=sys.stderr)
+    if not (package_passed and counts["run"] > 0 or package_skipped and no_test_files):
+        refuse("no successful package completion was captured")

@@ -1,0 +1,28 @@
+{
+  "recorded_at": "2026-11-04T10:47:40.513891+00:00",
+  "state": "v3_two_new_764_empty_databases; no_test_body",
+  "resources": [
+    {
+      "lane": "normal",
+      "database": "multica_rk1k_20261104_v16_normal3_a3c9",
+      "identity": "multica_rk1k_20261104_v16_normal3_a3c9|764_collaboration_ai_policy|0|0",
+      "migration_exit": 0,
+      "log_sha256": "7d3cb2e041d6e2ebb34ebb67f6457c12b0a56a761be69b2f27a36447062f0e26"
+    },
+    {
+      "lane": "race",
+      "database": "multica_rk1k_20261104_v16_race3_a3c9",
+      "identity": "multica_rk1k_20261104_v16_race3_a3c9|764_collaboration_ai_policy|0|0",
+      "migration_exit": 0,
+      "log_sha256": "72b7fc942bc94946dcd202382936c5d343e89d41efb11c577a3ab10619260f91"
+    }
+  ],
+  "private_allocation": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/root-database-allocations-private.json",
+    "sha256": "05e503bc1c019bdec29ede9628f3a94f4f9f2c9c2af073ce3d60bf4e62b0a67e"
+  },
+  "all_previous_failure_databases_and_raws_retained": true,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false
+}

@@ -1,0 +1,114 @@
+{
+  "at": "2026-11-02T03:32:13.455470+00:00",
+  "status": "DIAGNOSTIC_COMPLETE_ORIGINAL_PERFORMANCE_GATE_STILL_FAIL",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "evidence": "evidence/next-perf-probe-1",
+  "database": "multica_func7af9_next_perf_diag_1",
+  "scope": "One real HTTP closure; setup/start/preview excluded by request-context marker; no P95 gate claim",
+  "test_result": {
+    "TestIterationClosurePhaseDiagnostic": "pass"
+  },
+  "original_p95_gate_executed": false,
+  "original_p95_status": "FAIL:2171ms>2000ms retained",
+  "original_failure_cause_proven": false,
+  "source_and_frozen_test_unchanged": true,
+  "closure_operations": 1,
+  "tasks": 1000,
+  "handler_ms": 2396.832334,
+  "individual_queries": {
+    "count": 3053,
+    "total_ms": 986.8559869999997,
+    "percent_handler": 41.17334254052998,
+    "active_task_reads": {
+      "count": 1000,
+      "total_ms": 226.9874469999996,
+      "max_ms": 2.467875,
+      "errors": 0
+    },
+    "participation_lock_reads": {
+      "count": 2000,
+      "total_ms": 504.42550399999965,
+      "max_ms": 6.9225,
+      "errors": 0
+    }
+  },
+  "membership_pipeline": {
+    "phases": 7,
+    "statements": 7000,
+    "total_ms": 1279.291707,
+    "percent_handler": 53.374267730485315,
+    "batches": [
+      {
+        "name": "AppendIterationLifecycleEventBatch",
+        "statements": 1000,
+        "duration_ms": 26.376666
+      },
+      {
+        "name": "LeaveDeletedIssueIterationParticipationBatch",
+        "statements": 1000,
+        "duration_ms": 623.603875
+      },
+      {
+        "name": "AdvanceIterationScopeRevisionBatch",
+        "statements": 1000,
+        "duration_ms": 33.126875
+      },
+      {
+        "name": "AppendIterationLifecycleEventBatch",
+        "statements": 1000,
+        "duration_ms": 29.311458
+      },
+      {
+        "name": "JoinIterationParticipationBatch",
+        "statements": 1000,
+        "duration_ms": 197.019583
+      },
+      {
+        "name": "AdvanceIterationScopeRevisionBatch",
+        "statements": 1000,
+        "duration_ms": 44.660583
+      },
+      {
+        "name": "SetIssueCurrentIterationBatch",
+        "statements": 1000,
+        "duration_ms": 325.192667
+      }
+    ]
+  },
+  "acquire_ms": 0.001958,
+  "empty_acquire_wait_ms": 0,
+  "commit": {
+    "count": 1,
+    "total_ms": 4.042,
+    "max_ms": 4.042,
+    "errors": 0
+  },
+  "handler_residual_ms": 130.6826820000004,
+  "allocated_bytes_delta": 242007280,
+  "gc_count_delta": 15,
+  "allocation_scope": "Process-wide counters around the closure; not a per-goroutine CPU or allocation profile",
+  "timing_semantics": "Client pgx Query spans and complete Batch spans; query groups exclude batch result counts to avoid double-counting. They include transport/decoding/client processing, not pure PostgreSQL execution time.",
+  "observer_difference": "Original1ms Lock-only observer not started in this diagnostic",
+  "one_operation_is_p95_proof": false,
+  "pg_version": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+  "go_version": "go1.27.0",
+  "go_platform": "darwin/arm64",
+  "cleanup": {
+    "at": "2026-11-02T03:32:13.455470+00:00",
+    "source_and_frozen_test_unchanged": true,
+    "overlay_is_additive_virtual_test_only": true,
+    "all_command_and_metric_hashes_match": true,
+    "connections_after": 0,
+    "owned_probe_processes_remaining": [],
+    "product_lint_typecheck": "Not repeated: no product source or dependencies changed; private Go overlay compiled and executed one real diagnostic operation",
+    "original_failed_evidence_unchanged": true
+  },
+  "limitations": [
+    "Single first-closure diagnostic operation; OS/PG caches not flushed, no tail distribution or confidence interval",
+    "Different observer/instrumentation than original gate",
+    "Does not identify the exact cause of original slow samples or prove a product fix",
+    "Shared host/PG resources and execution architecture retained"
+  ],
+  "source_record_sha256": "3d26dc081eaa9de7dd278957a83e7b2e4e5f245301ce3bf032e62b733d1f5e14",
+  "metrics_sha256": "a3f59948352fc441368a83152df4c41cce9672facadb8685abd0b22ba9d99ba3"
+}

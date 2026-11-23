@@ -1,0 +1,116 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-25-collaboration-handoff-chain-desktop-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-handoff-chain-desktop.spec.ts",
+      "file": "collaboration-handoff-chain-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Electron information return shows the original requester and note before restoring responsibility",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6606,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:16:16.709Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "native-information-return-evidence",
+                      "contentType": "application/json",
+                      "body": "ewogICJpc3N1ZV9pZCI6ICIwMWExOTlkNC0xYWI4LTdkN2QtODY1Yy05YTNlNjRhODNkMjYiLAogICJyZXF1ZXN0ZXIiOiAiYTQwNWIwNzEtOTk4MC00NDM1LWFmMTItNTA3NGQxOGVmMjY2IiwKICAicmVjaXBpZW50IjogIjViMzMyZDczLTY4NzctNDM4MC05MzNkLTAyY2VjYzIwZWI0ZiIsCiAgInJlcXVlc3Rfbm90ZSI6ICJXaGljaCBjb25maWd1cmVkIHByb3ZpZGVyIHNob3VsZCB0aGUgZGVza3RvcCByZXRyeSB1c2U/IiwKICAicmVxdWVzdGVkIjogewogICAgImNvZGUiOiAiaW5mb3JtYXRpb25fcmVxdWVzdGVkIiwKICAgICJjb2xsYWJvcmF0aW9uX3JldmlzaW9uIjogIjMiCiAgfSwKICAicmV0dXJuZWQiOiB7CiAgICAiY29kZSI6ICJpbmZvcm1hdGlvbl9yZXR1cm5lZCIsCiAgICAiY29sbGFib3JhdGlvbl9yZXZpc2lvbiI6ICI0IgogIH0sCiAgInNlbGVjdGVkX3N0YXR1cyI6ICJ0b2RvIiwKICAiZmluYWxfaGFuZGxlciI6ICJhNDA1YjA3MS05OTgwLTQ0MzUtYWYxMi01MDc0ZDE4ZWYyNjYiLAogICJuYXRpdmVfcGxhdGZvcm0iOiAiZGFyd2luIiwKICAicmVuZGVyZXIiOiAiaHR0cDovL2xvY2FsaG9zdDoxOTg2MCIsCiAgInByb3ZpZGVyX2FjY291bnRfYWNjZXNzIjogZmFsc2UsCiAgIm5hdGl2ZV9zb3VyY2VzIjogWwogICAgewogICAgICAiZmlsZSI6ICJlMmUvZml4dHVyZXMvY29sbGFib3JhdGlvbi1hY2NvdW50LWVsZWN0cm9uLm1qcyIsCiAgICAgICJzaGEyNTYiOiAiZjkwMjFhYjA3NjM1ZjJmNDhkMGY5MDYxM2ZjZDNjODU1OGNiNzI2MmIzYmRkMmFjYTk4ZWRiMzE2NTQ0NzVkMiIKICAgIH0sCiAgICB7CiAgICAgICJmaWxlIjogImFwcHMvZGVza3RvcC9vdXQvcHJlbG9hZC9pbmRleC5qcyIsCiAgICAgICJzaGEyNTYiOiAiNDI5NTVmZTFmMjRjMTExNmJlYjYyODk0ZmEyMjUzNmJiZjY0NjYyYzNhZGZiMTBmMTUwNDczZDQ3NzFlNzE2MCIKICAgIH0sCiAgICB7CiAgICAgICJmaWxlIjogImFwcHMvZGVza3RvcC9vdXQvcmVuZGVyZXIvaW5kZXguaHRtbCIsCiAgICAgICJzaGEyNTYiOiAiZmE0YTk4Y2JkNDUzZDJjZTg4MTA4OGQyZjNmMTY2MTAzMDU3OWE4Y2VhNGI4YWQ1OWVlNGJjMDkzNTQ0YmUwNyIKICAgIH0KICBdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "34b4463281fad786160c-704b869416befd2e99b4",
+          "file": "collaboration-handoff-chain-desktop.spec.ts",
+          "line": 16,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:16:16.283Z",
+    "duration": 7059.888,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

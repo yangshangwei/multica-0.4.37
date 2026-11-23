@@ -1,0 +1,275 @@
+{
+  "recorded_at": "2026-11-13T07:19:39.952951+00:00",
+  "source_head": "c79dfe304d172c1127d2271fb3932eb751b7c0fb",
+  "files": [
+    {
+      "file": "server/internal/service/collaboration_comments_view.go",
+      "before_sha256": "897c76577401a8ca576222f06a471928cd5aede1c71d6e2e17e9fb4115008c30",
+      "after_sha256": "612d325ad9bb5ebc5842324eb8d292958c0412dd1fde21b537d22450e66b50d0"
+    },
+    {
+      "file": "server/internal/service/collaboration_comments_test.go",
+      "before_sha256": "a6a81db7bb593f351b2d141db072b44589fe2e826ac6053ed66eeed9eaef4576",
+      "after_sha256": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0"
+    },
+    {
+      "file": "server/internal/service/collaboration_comments_recall_test.go",
+      "before_sha256": "fc8de27bfeb20bc6a8397161c0a5a7e2e01fb40d9833f76a337512b1f953cd18",
+      "after_sha256": "2fef734cebd6d102c7e5a993a74197cdc4cea32ecdbf09603dda31d6059ee0cd"
+    },
+    {
+      "file": "server/internal/handler/collaboration_comments_test.go",
+      "before_sha256": "a1fa453c133baffa5bac3a0b609f56d5cbdaf96e0cae4957019b02db896cd7d1",
+      "after_sha256": "a4604f0b1062f98303e571143d1d57c741650661bc12de047a8b4718a2e2d59e"
+    }
+  ],
+  "runs": [
+    {
+      "log": "server-service-red.jsonl",
+      "package_result": "fail",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [],
+        "fail": [],
+        "skip": []
+      },
+      "sha256": "8ac8326a355f2eeca716f1fd5dbc93eb07808cf6a955ae4aa1969b39a13bb6a2"
+    },
+    {
+      "log": "server-service-red-2.jsonl",
+      "package_result": "fail",
+      "counts": {
+        "pass": 0,
+        "fail": 6,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [],
+        "fail": [
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/detail",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/list",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/recall",
+          "TestCollaborationCommentAgentProjectionRetainsRunIdentityAndCurrentAccess",
+          "TestCollaborationRecallPublicAgentNamesCountTowardBudgetAndKeepIdentity"
+        ],
+        "skip": []
+      },
+      "sha256": "72d6b9f1542bd29e6e2ad5ea72caa1c0aa1502eea6a3e4f4a62fcaa262036dbb"
+    },
+    {
+      "log": "server-handler-red.jsonl",
+      "package_result": "fail",
+      "counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [],
+        "fail": [
+          "TestCollaborationCommentHTTPAgentProjectionIsMinimalAndCurrentAccessBound"
+        ],
+        "skip": []
+      },
+      "sha256": "ce655b894a9947aecca5faf75fe9b10e85b7cf628f2e6dea8d027dd429ce30a4"
+    },
+    {
+      "log": "server-service-green.jsonl",
+      "package_result": "pass",
+      "counts": {
+        "pass": 53,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/detail",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/list",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/recall",
+          "TestCollaborationCommentAgentProjectionRetainsRunIdentityAndCurrentAccess",
+          "TestCollaborationCommentAuthorEditRetainsHistoryAndDeletedReplyAnchor",
+          "TestCollaborationCommentCommitFailureRollsBackEveryEffect",
+          "TestCollaborationCommentCommitFailureRollsBackEveryEffect/CompleteCollaborationOperation",
+          "TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationCommand",
+          "TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationComment",
+          "TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationContentEvent",
+          "TestCollaborationCommentCommitFailureRollsBackEveryEffect/CreateCollaborationContentNotification",
+          "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked",
+          "TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory",
+          "TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory/delete_first",
+          "TestCollaborationCommentEditDeleteBothCommitOrdersRetainHistory/edit_first",
+          "TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification",
+          "TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/CompleteCollaborationOperation",
+          "TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/CreateCollaborationContentEvent",
+          "TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/CreateCollaborationContentNotification",
+          "TestCollaborationCommentEditFailureRollsBackBodyHistoryAndNotification/EditCollaborationComment",
+          "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants",
+          "TestCollaborationCommentEditsSerializeAndUnknownCommitDoesNotRepeat",
+          "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+          "TestCollaborationCommentOversizedOriginalGetsDurableRefusal",
+          "TestCollaborationCommentPreviewContinuationRespectsNewMentionOrder",
+          "TestCollaborationCommentPreviewContinuationRespectsNewMentionOrder/active_squad_first",
+          "TestCollaborationCommentPreviewContinuationRespectsNewMentionOrder/other_squad_first",
+          "TestCollaborationCommentPreviewContinuationStopsAtCurrentBoundaries",
+          "TestCollaborationCommentPreviewContinuationStopsAtCurrentBoundaries/channel_paused",
+          "TestCollaborationCommentPreviewContinuationStopsAtCurrentBoundaries/gate_disabled",
+          "TestCollaborationCommentPreviewContinuationStopsAtCurrentBoundaries/held",
+          "TestCollaborationCommentPreviewContinuationStopsAtCurrentBoundaries/installation_stopped",
+          "TestCollaborationCommentPreviewContinuationStopsAtCurrentBoundaries/issue_paused",
+          "TestCollaborationCommentPreviewContinuationStopsAtCurrentBoundaries/sealed",
+          "TestCollaborationCommentPreviewContinuationStopsAtCurrentBoundaries/stale_frozen_grant",
+          "TestCollaborationCommentPreviewDescribesSquadContinuationWithoutJoining",
+          "TestCollaborationCommentPreviewDoesNotPromoteSourceMembershipToExecution",
+          "TestCollaborationCommentPreviewGroupsTypedTargetsAndSplitsSecondSquad",
+          "TestCollaborationCommentPreviewIsReadOnlyAndKeepsIndependentPeopleAndTargets",
+          "TestCollaborationCommentPreviewPendingInputsRespectEligibility",
+          "TestCollaborationCommentPreviewPendingInputsRespectEligibility/eligible",
+          "TestCollaborationCommentPreviewPendingInputsRespectEligibility/held",
+          "TestCollaborationCommentPreviewPendingInputsRespectEligibility/revoked",
+          "TestCollaborationCommentPreviewPendingInputsRespectEligibility/stale_author",
+          "TestCollaborationCommentPreviewPendingMergePreservesHeldAndDeniedTargets",
+          "TestCollaborationCommentPreviewSplitsAtRuntimeInputBudget",
+          "TestCollaborationCommentSourceMemberAndPlainRepliesStayHumanOnly",
+          "TestCollaborationRecallBudgetCountsEscapingEnvelopeAndAdvances",
+          "TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding",
+          "TestCollaborationRecallPublicAgentNamesCountTowardBudgetAndKeepIdentity",
+          "TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority",
+          "TestCollaborationRuntimeCommentsCarryMemberDisplayNames"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "sha256": "5ee6f1255ef2de93346e744e5d13b68140c5607e99173861d84c2dcbca74dc3d"
+    },
+    {
+      "log": "server-handler-green.jsonl",
+      "package_result": "pass",
+      "counts": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestCollaborationCommentAttachmentDisplayRemovalKeepsDeliveredFile",
+          "TestCollaborationCommentHTTPAgentProjectionIsMinimalAndCurrentAccessBound",
+          "TestCollaborationCommentHTTPCreateKeepsOneCommentAndLocatedNotification",
+          "TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection",
+          "TestCollaborationCommentHTTPPaginationHasStableChronologicalPages",
+          "TestCollaborationCommentHTTPRejectsForeignCommentsAndMalformedVersions",
+          "TestCollaborationCommentUTF8LimitIncludesJSONEnvelopeAndOriginalRecovery",
+          "TestCollaborationRecallHTTPBudgetAndLegacyFullComment",
+          "TestCollaborationRecallHTTPRejectsAmbientCredentials"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "sha256": "adb72b97f2a1dc983c29de9853e949daa8b66768ab38c1225c26ff0660dffa6f"
+    },
+    {
+      "log": "server-service-race.jsonl",
+      "cwd": "/Volumes/artisan/code/2026/mc-s1-agent-identity-20261113-01",
+      "package_result": "pass",
+      "exit_code": 0,
+      "race": true,
+      "counts": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/detail",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/list",
+          "TestCollaborationCommentAgentProjectionLookupIsRequiredOnlyForAgents/recall",
+          "TestCollaborationCommentAgentProjectionRetainsRunIdentityAndCurrentAccess",
+          "TestCollaborationRecallPublicAgentNamesCountTowardBudgetAndKeepIdentity"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "sha256": "8555b1edf7a4242a1343ba851c98968e1605f2ef3092c33bb2350561a402005f"
+    },
+    {
+      "log": "server-handler-race.jsonl",
+      "cwd": "/Volumes/artisan/code/2026/mc-s1-agent-identity-20261113-01",
+      "package_result": "pass",
+      "exit_code": 0,
+      "race": true,
+      "counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "tests": {
+        "pass": [
+          "TestCollaborationCommentHTTPAgentProjectionIsMinimalAndCurrentAccessBound"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "sha256": "415ce878c6a9fb78a84cc5aadb590c59ca1d701c949602898480ce67514c5c59"
+    }
+  ],
+  "checks": {
+    "git_diff_check": "pass",
+    "gofmt": "pass",
+    "go_vet": "pass: isolated candidate, go -C server vet -p 2 ./internal/service ./internal/handler, exit 0",
+    "go_race": "pass: focused service (6 named tests/subtests) and handler (1 named test), sequential -p 2, exit 0, no skips"
+  },
+  "notes": [
+    "Initial compile red included own int64 comparison (corrected) and concurrent F2 reportID shadowing (fixed by its owner, not this lane).",
+    "Behavioral red then green retained; no real provider/OS process or production claims.",
+    "Public identity is minimal current Agent ID/name; human author and runtime comment protocol unchanged.",
+    "One stale runtime-protocol test comment updated after greens; no behavior changed.",
+    "Final explicit vet and focused race ran in the isolated c79dfe304 + S1 candidate, excluding concurrent F2. All four server files matched root before and after checks; no code changes were needed."
+  ],
+  "vet": {
+    "cwd": "/Volumes/artisan/code/2026/mc-s1-agent-identity-20261113-01",
+    "log": "server-vet.log",
+    "exit_code": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

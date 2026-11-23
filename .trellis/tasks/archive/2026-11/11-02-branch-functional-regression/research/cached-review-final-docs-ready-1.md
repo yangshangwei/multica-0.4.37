@@ -1,0 +1,7 @@
+Active task: .trellis/tasks/11-02-branch-functional-regression.
+
+Independent reviewer: current progress/report/defects/matrix/session-prompt/task/implement have now been reconciled to completed14,000actualplans and12top+14subrace. Please finish final-document supplement in your owned reviewfiles without waiting for another message; coordinator will only replace pendingreviewstatus/link text after final verdict.
+
+Latest resource audit is evidence/next-cached-cleanup-2/run.json:9DBconnections0 inclcached_diag_2,6oldportsclosed,process/container/mount/protocolidentityclean. Matrix31rows21PASS/6BLOCKED/1FAIL/3NOT_RUN; new3PASS arediagnosticidentitiesonly, originalP95FAILretained and439unchanged. All5949historyfiles preserved except8allowedcoordination paths.36workspacefiles: existing content unchanged, database-test-isolation.md has additive prepared/statistics conventions starting '## Prepared-plan and statistics diagnostics'. Please verify original prefix preserved and newsectioncontract rather than claiming all36hashesidentical. No product/harness/source/dependencychanges. Noarchive/commit/publication.
+
+Coordinator finalverification research/cached-final-verification-1.json is current but independentreviewpendingmetadata will change on links only. Allraws remainunchanged. New research/perf-cached-reprepare-diagnosis-1.md accurately scopes originalflowCommitrollback/genericreplays/timeargs/notificationfingerprint/actualcachedplan/nofrozenP95replay. Please finalreportwithsupplementandfinish.

@@ -156,6 +156,11 @@ reuse the original request identity; they are not a reason to create another
 record. Member mentions only notify current authorized workspace members;
 agent mentions remain references and never run an agent.
 
+Project-progress notifications respect each member's saved Inbox snooze. The
+progress record and stable notification identity remain available while the
+personal reminder is postponed; notification snooze does not pause the project
+or change its progress, acceptance or execution decisions.
+
 Evidence is re-authorized when read. Internal execution references use a
 project-update-scoped read endpoint and the existing transcript viewer, not an
 invented `/tasks/<id>` page or a broader unrelated task endpoint. A source-only

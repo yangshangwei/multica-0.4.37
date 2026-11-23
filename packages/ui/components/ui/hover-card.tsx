@@ -3,9 +3,11 @@
 import { PreviewCard as PreviewCardPrimitive } from "@base-ui/react/preview-card"
 
 import { cn } from "@multica/ui/lib/utils"
+import { usePopupVisibility, useScopedPopup } from "./popup-visibility"
 
 function HoverCard({ ...props }: PreviewCardPrimitive.Root.Props) {
-  return <PreviewCardPrimitive.Root data-slot="hover-card" {...props} />
+  const scope = useScopedPopup(props)
+  return <PreviewCardPrimitive.Root data-slot="hover-card" {...props} {...scope} />
 }
 
 function HoverCardTrigger({ ...props }: PreviewCardPrimitive.Trigger.Props) {
@@ -30,6 +32,7 @@ function HoverCardContent({
     PreviewCardPrimitive.Positioner.Props,
     "align" | "alignOffset" | "side" | "sideOffset"
   >) {
+  const visible = usePopupVisibility()
   // Stop interaction events from bubbling out of the popup. Base UI portals
   // the popup to <body> so the DOM is detached, but React's synthetic event
   // system still bubbles through the React component tree — without this,
@@ -68,6 +71,9 @@ function HoverCardContent({
             className
           )}
           {...props}
+          hidden={!visible || props.hidden}
+          inert={!visible || props.inert}
+          aria-hidden={!visible || props["aria-hidden"]}
         />
       </PreviewCardPrimitive.Positioner>
     </PreviewCardPrimitive.Portal>

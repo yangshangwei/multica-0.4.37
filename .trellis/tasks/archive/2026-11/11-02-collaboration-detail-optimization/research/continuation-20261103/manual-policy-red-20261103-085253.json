@@ -1,0 +1,36 @@
+{
+  "started_at": "2026-11-03T00:52:53.413107+00:00",
+  "database": "multica_detail_20261103_080906_service",
+  "package": "./internal/service",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/multica-0.4.37/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "test",
+    "-json",
+    "-p",
+    "2",
+    "-count=1",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationManualPolicy(BlocksExplicitInputAndResume|FencesRuntimeAdmission)$"
+  ],
+  "output": "/tmp/multica-detail-verification-20261103/manual-policy-red-20261103-085253.jsonl",
+  "exit_code": 1,
+  "inventory": {
+    "pass": [],
+    "fail": [
+      "TestCollaborationManualPolicyBlocksExplicitInputAndResume/input",
+      "TestCollaborationManualPolicyBlocksExplicitInputAndResume/resume",
+      "TestCollaborationManualPolicyBlocksExplicitInputAndResume",
+      "TestCollaborationManualPolicyFencesRuntimeAdmission/promotion",
+      "TestCollaborationManualPolicyFencesRuntimeAdmission/claim",
+      "TestCollaborationManualPolicyFencesRuntimeAdmission/permit",
+      "TestCollaborationManualPolicyFencesRuntimeAdmission"
+    ],
+    "skip": []
+  }
+}

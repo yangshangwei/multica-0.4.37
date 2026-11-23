@@ -10,6 +10,14 @@ import type { Label } from "./label";
 
 // WebSocket event types (matching Go server protocol/events.go)
 export type WSEventType =
+  | "subscribe_ack"
+  | "subscribe_error"
+  | "collaboration:changed"
+  | "collaboration:children_changed"
+  | "collaboration:access_changed"
+  | "collaboration:source_access_changed"
+  | "collaboration:workbench_changed"
+  | "collaboration:knowledge_changed"
   | "iteration:updated"
   | "triage:updated"
   | "issue:created"
@@ -35,6 +43,7 @@ export type WSEventType =
   | "task:message"
   | "task:cancelled"
   | "inbox:new"
+  | "inbox:updated"
   | "inbox:read"
   | "inbox:unread"
   | "inbox:archived"
@@ -188,6 +197,16 @@ export interface InboxNewPayload {
   item: InboxItem;
 }
 
+export interface InboxUpdatedPayload {
+  workspace_id: string;
+  recipient_type: "member" | "agent";
+  recipient_id: string;
+  group_kind: "issue" | "item";
+  group_id: string;
+  revision: number;
+  reason?: string;
+}
+
 export interface InboxReadPayload {
   item_id: string;
   recipient_id: string;
@@ -258,7 +277,8 @@ export interface MemberUpdatedPayload {
 
 export interface MemberAddedPayload {
   member: MemberWithUser;
-  workspace_id: string;
+  // Not sent by the server today; the workspace id lives on `member`.
+  workspace_id?: string;
   workspace_name?: string;
 }
 
@@ -585,6 +605,7 @@ export interface WSEventPayloadMap {
   "task:cancelled": TaskCancelledPayload;
   "task:progress": unknown;
   "inbox:new": InboxNewPayload;
+  "inbox:updated": InboxUpdatedPayload;
   "inbox:read": InboxReadPayload;
   "inbox:unread": InboxUnreadPayload;
   "inbox:archived": InboxArchivedPayload;

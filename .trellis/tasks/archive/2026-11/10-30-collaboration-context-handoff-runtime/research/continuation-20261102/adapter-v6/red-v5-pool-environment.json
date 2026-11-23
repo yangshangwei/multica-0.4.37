@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-go-isolation-test.py",
+    "PoolEnvironmentTests.test_fresh_package_children_do_not_inherit_api_pool_defaults",
+    "PoolEnvironmentTests.test_validated_recursive_child_does_not_inherit_api_pool_defaults"
+  ],
+  "wrapper": "v5 original",
+  "exit_code": 1,
+  "expected_failure": true,
+  "log_sha256": "00e2988cb9fe853075696b47e039a9d382a20a3febb47990b3393bae75974144",
+  "database_connections": 0,
+  "network_calls": 0
+}

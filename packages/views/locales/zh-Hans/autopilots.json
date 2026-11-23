@@ -1,6 +1,8 @@
 {
   "page": {
     "title": "自动化",
+    "tagline": "按时间或 Webhook 自动处理重复工作。",
+    "learn_more": "了解更多 →",
     "new_autopilot": "新建自动化",
     "browse_templates": "浏览模板",
     "start_blank": "从空白开始",
@@ -24,6 +26,13 @@
     "scope_all": "全部",
     "no_matches": "没有匹配的自动化",
     "retry": "重试"
+  },
+  "welcome": {
+    "title": "让智能体按时自己开工",
+    "description": "设好时间表或 Webhook，每次触发都可以创建任务交给智能体，也可以直接运行。挑一个模板，改改就能用。",
+    "read_docs": "阅读文档",
+    "browse_all": "浏览全部模板",
+    "template_hint": "下一步选择智能体或AI小队和时区，计划与指令可在创建后修改。"
   },
   "status": {
     "active": "启用",
@@ -471,6 +480,7 @@
     },
     "recommended": "推荐起点",
     "view_template": "查看模板",
+    "view_label": "查看模板：{{name}}",
     "follow_up": "按需创建或补充任务",
     "creates_task": "每次运行创建任务",
     "default_schedule_note": "创建后可修改"

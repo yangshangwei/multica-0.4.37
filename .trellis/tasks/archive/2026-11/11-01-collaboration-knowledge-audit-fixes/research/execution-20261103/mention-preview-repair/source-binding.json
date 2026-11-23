@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-11-03T11:29:24.588263+00:00",
+  "active_task": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "state": "patch_prepared_not_applied_not_tested",
+  "write_scope": [
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/mention-preview-repair-v13",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/mention-preview-repair"
+  ],
+  "changed_source_files": [
+    "e2e/fixtures/collaboration-mention-journeys.ts",
+    "e2e/collaboration-preview-web.spec.ts"
+  ],
+  "source_before": {
+    "e2e/fixtures/collaboration-mention-journeys.ts": "0a2b14cb1ebebe159e274a67b9306ab291067257c7557494cb211ccbf5e47697",
+    "e2e/collaboration-preview-web.spec.ts": "4ea82836095e23f1f4b0569265b44a8d98cd1335e7d4b3ba0f5ecee4d9019efb"
+  },
+  "proposed_source": {
+    "e2e/fixtures/collaboration-mention-journeys.ts": "5311e1873ebebde2b6453de8c47374eb2f1b700e0009d9124d02a33f5288832e",
+    "e2e/collaboration-preview-web.spec.ts": "e09d9e7f8b79c5b0f5e3b2949a0943858ea8176b60219ac049cd695977b50397"
+  },
+  "context_hashes": {
+    "packages/views/collaboration/comment-composer.tsx": "9281818cdd5fdadaed9701d6f4c2b11b5fbe054b90b88acfba97f836412cf9d3",
+    "packages/views/collaboration/comment-composer.test.tsx": "c3517a8789ccdfe391b45dcc8df18ad8fe180439b3f4bf096aad19802a51d494",
+    ".trellis/spec/views/frontend/collaboration-detail.md": "98a803765bea3b162dfce21d2f88614654a3a3cb902053c4d38866c806b0403d",
+    "e2e/fixtures/collaboration-editing.ts": "085b5af7434d93e3c6efe659c51f7c83bff7ac5c9712a1413e480e4d0e92c58d",
+    "e2e/fixtures/collaboration-disclosures.ts": "87b156d9da50daa7af35dab40130fe03579cfb9ef6c1a10e15b6f2a88499bb32",
+    "e2e/collaboration-mention-journeys-web.spec.ts": "67a6cdd7da37d5840dbaca0f0b3396c7f22671e74c4a388554536d40b7d63d47",
+    "e2e/collaboration-mention-journeys-desktop.spec.ts": "515eb616f099e313002727a9bbf16d33727b9e83993942c570a1999cba4304e8"
+  },
+  "patch_sha256": "95cc89fa0bdbe5d6609ab6c2ce26fd38b8923f50a18dc6a332f4487695f1b62c",
+  "candidate_source_unchanged": true,
+  "provider_calls": 0,
+  "test_or_service_runs": 0
+}

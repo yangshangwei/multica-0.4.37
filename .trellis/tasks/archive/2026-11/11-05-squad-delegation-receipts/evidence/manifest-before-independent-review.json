@@ -1,0 +1,166 @@
+{
+  "baseline": "5aef9c19ad3e764d09cff939edfded53f8c513bd",
+  "execution_head": "d7969e7569f613196b44dd836fa5ae8c1f907fc6",
+  "checkout": "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105",
+  "go": "go version go1.27.0 darwin/arm64",
+  "files": {
+    "server/cmd/multica/cmd_comment_trigger_outcomes.go": "cd5b93b2d09133a6c2ca049d64af684f36eac1b4fc22e7bce718846483c84824",
+    "server/cmd/multica/cmd_comment_trigger_outcomes_test.go": "1367357e05b82f408d8635fd517f1b82756e1bd81f846ac1246824d0883f045f",
+    "server/cmd/multica/cmd_issue.go": "f3b7f7845b50fd619f0d7a48bdf0451639b6fdce7ae7646d053ae8924a60a9a8",
+    "server/internal/handler/squad_briefing.go": "fd7141fbefede1b742f58d4ad2ae745bc75f21287462e3c54b6811f4263a5b01",
+    "server/internal/handler/squad_briefing_test.go": "9f74ef727b3a995490698879202a9c19f277f08d90ebd0163776ae65e5ff051f",
+    "server/internal/daemon/execenv/runtime_config_sections.go": "f8acd8b4e23943bc928be0b7c8c556c4ae85ba4f51b3fe959c1e502263052b53",
+    "server/internal/daemon/execenv/execenv_test.go": "1daf4f8f46857b6c6273c4470fd92d374e907d21b56f8266bfb42e63bfb081d1",
+    "server/internal/service/builtin_skills/multica-mentioning/SKILL.md": "ec5ae58617131b5d0d9dc47eb3e38bba2b29b91d2dcf3dfdef8b0209adcc27dc",
+    "server/internal/service/builtin_skills/multica-mentioning/references/mentioning-source-map.md": "90a957555b229d1a576e578cb83a0922b97e9cb7ed1919bd6780e44d6e7a6cce",
+    "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md": "6c94bf9c3fc332b8fbb7ca07a9470e0957aa2f25b49c64858aff5866bba4a7be",
+    "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md": "f5790430dec45a65189e09973ac06ad73d87894ccddfe82a77f2a4e957182b33"
+  },
+  "runs": [
+    {
+      "run": "receipts-cli-red-01",
+      "classification": "test_fixture_failure",
+      "exit": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 50,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-cli-red-01.jsonl",
+      "log_sha256": "d8e2491644c6103a02ac468d171d0ba43bdad3bf2407a916ebe73c0e1a13349a"
+    },
+    {
+      "run": "receipts-cli-red-02",
+      "classification": "behavioral_red",
+      "exit": 1,
+      "counts": {
+        "pass": 16,
+        "fail": 34,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-cli-red-02.jsonl",
+      "log_sha256": "8cde806528096ff4ca44f2df6677bd7eecf11453a835a872e7022deb87c9b0e2"
+    },
+    {
+      "run": "receipts-handler-red-01",
+      "classification": "behavioral_red",
+      "exit": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-handler-red-01.jsonl",
+      "log_sha256": "5d623b456335940005c55165dacb50a5beadde8b5da3889272c628057049e2b7"
+    },
+    {
+      "run": "receipts-execenv-red-01",
+      "classification": "behavioral_red",
+      "exit": 1,
+      "counts": {
+        "pass": 2,
+        "fail": 2,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-execenv-red-01.jsonl",
+      "log_sha256": "50dd31acbe5af08fd02eeb53697b4d2692ffd77c31edac554f249a7c94109520"
+    },
+    {
+      "run": "receipts-cli-green-01",
+      "classification": "parallel_dependency_compile_failure",
+      "exit": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-cli-green-01.jsonl",
+      "log_sha256": "1c87391235d27667df7e3daa1e8b0b991f8a2c68f3b6f3f3fcfc154dc55917c5"
+    },
+    {
+      "run": "receipts-handler-green-01",
+      "classification": "parallel_dependency_compile_failure",
+      "exit": 1,
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-handler-green-01.jsonl",
+      "log_sha256": "bd1cf95f1e41c58f8cdba9e15f78b97b1de9513685329a57381f0ba0c3cc0b8f"
+    },
+    {
+      "run": "receipts-cli-green-02",
+      "classification": "pass",
+      "exit": 0,
+      "counts": {
+        "pass": 62,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-cli-green-02.jsonl",
+      "log_sha256": "579da0ba3bc61554fc230a7637b08ce01980fb179d9193837a9b7788c17491c6"
+    },
+    {
+      "run": "receipts-handler-green-02",
+      "classification": "superseded_pass_before_readback_clarification",
+      "exit": 0,
+      "counts": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-handler-green-02.jsonl",
+      "log_sha256": "2bd6ec4c5a01b1b893b47f1c7eb39a1156cea0fc1092dda2300217de7855c535"
+    },
+    {
+      "run": "receipts-handler-green-03",
+      "classification": "pass",
+      "exit": 0,
+      "counts": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-handler-green-03.jsonl",
+      "log_sha256": "3edfd5190f7f5a2b6a19207cbf0e98882ca649b9300dbc36c6c6a8e3d71a1397"
+    },
+    {
+      "run": "receipts-execenv-green-01",
+      "classification": "pass",
+      "exit": 0,
+      "counts": {
+        "pass": 4,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-execenv-green-01.jsonl",
+      "log_sha256": "2ac15c33c703c6170791a6b0ace812d0a849857063f3337f13ffe4a4cc099bb8"
+    },
+    {
+      "run": "receipts-skills-green-01",
+      "classification": "pass",
+      "exit": 0,
+      "counts": {
+        "pass": 20,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-skills-green-01.jsonl",
+      "log_sha256": "dbf33e90ce54fecf9c0382e7b1aa3bc2a90bc5430572074765b7daf02e1451f2"
+    },
+    {
+      "run": "receipts-skill-contract-green-01",
+      "classification": "pass",
+      "exit": 0,
+      "counts": {
+        "pass": 8,
+        "fail": 0,
+        "skip": 0
+      },
+      "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-skill-contract-green-01.jsonl",
+      "log_sha256": "627c3ec4d9a4fb83d802ff271e0658ffc65465be30a1cbb0f87b4f9007ded0d0"
+    }
+  ],
+  "scope": "Owned source hashes only; parallel least-privilege source exists in the same checkout. Main session owns final integrated verification."
+}

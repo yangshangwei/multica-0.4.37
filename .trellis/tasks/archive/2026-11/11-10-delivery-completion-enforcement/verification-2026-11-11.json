@@ -1,0 +1,163 @@
+{
+  "verified_at": "2026-11-10T19:34:12.551750+00:00",
+  "scope": "v1 transactional completion enforcement; independent review and local integration recorded separately",
+  "final_test_packages": {
+    "handler": {
+      "normal": {
+        "record": "research/runs/final-handler-normal02.json",
+        "sha256": "e6d2632f8ca2b8b2d8f023ffd172371b3c52205cbae928e0168ea897289a99a4",
+        "counts": {
+          "pass": 620,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_handler_normal02"
+      },
+      "race": {
+        "record": "research/runs/final-handler-race01.json",
+        "sha256": "73b3f1ce38c99040cf50105020ec5d408aeb4696668c65a350796170e0a4f848",
+        "counts": {
+          "pass": 620,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_handler_race01"
+      }
+    },
+    "router": {
+      "normal": {
+        "record": "research/runs/final-router-normal02.json",
+        "sha256": "1645391729b1d73fa9eb0debebe234fb14503ab3e97343622a0b6572cb8c46b5",
+        "counts": {
+          "pass": 166,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_router_normal02"
+      },
+      "race": {
+        "record": "research/runs/final-router-race01.json",
+        "sha256": "c2b524f0b1e3266a6c63ac543470dc33614756475714c13ad2efea90e3562bac",
+        "counts": {
+          "pass": 166,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_router_race01"
+      }
+    },
+    "service": {
+      "normal": {
+        "record": "research/runs/final-service-normal01.json",
+        "sha256": "3ec3537609ad3e5b3e60cb7b3324c2c39c7461c476a9b476595ac4360cffa9ca",
+        "counts": {
+          "pass": 272,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_service_normal02"
+      },
+      "race": {
+        "record": "research/runs/final-service-race01.json",
+        "sha256": "0fc0f0474a0e58e98e722498db5f30d135da36fed881b69966f4f2111634fe04",
+        "counts": {
+          "pass": 272,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_service_race01"
+      }
+    },
+    "migrations": {
+      "normal": {
+        "record": "research/runs/final-migrate-normal01.json",
+        "sha256": "ccfa97855933292d59624a571b12554e7eef12cfd472554efea1437612a4a421",
+        "counts": {
+          "pass": 62,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_migrate_normal01"
+      },
+      "race": {
+        "record": "research/runs/final-migrate-race01.json",
+        "sha256": "de489ec6efa5ad47b89e0a0ee00bd3cef42395d01c5ec09262b54651622a7f2e",
+        "counts": {
+          "pass": 62,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_migrate_race01"
+      }
+    },
+    "deletion_retention": {
+      "normal": {
+        "record": "research/runs/final-retention-normal01.json",
+        "sha256": "8be2b29b3ffb6b15710ab8c0d3e414bb5b0c10966ccb0e70421af821d167dc0f",
+        "counts": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_retention_normal01"
+      },
+      "race": {
+        "record": "research/runs/final-retention-race01.json",
+        "sha256": "61f8eddb73e313f8ceded5eab98fa578b71270af2006cda35eb3d59c40e84962",
+        "counts": {
+          "pass": 4,
+          "fail": 0,
+          "skip": 0
+        },
+        "database": "enf_final_retention_race01"
+      }
+    }
+  },
+  "static_checks": {
+    "final-build01": {
+      "record": "research/runs/final-build01.json",
+      "sha256": "7ecded78b90b41b8d5c5867b4375407da5538848d8617c7c9e2cf447c3d422f0",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-vet01": {
+      "record": "research/runs/final-vet01.json",
+      "sha256": "63ca8b42b0ef6142dc6d7fce926dc47adb13838561c3f35827a2cef687817d1c",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-sqlc01": {
+      "record": "research/runs/final-sqlc01.json",
+      "sha256": "ef28109750ffc8061c6cb444a58853221aea7a3ebe988dfd4f8f0775d955bfc5",
+      "counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-contracts01": {
+      "record": "research/runs/final-contracts01.json",
+      "sha256": "b3ca47ed485a46d648bfb21bbe57d13228baf17e7e25447859138cb951a4beb8",
+      "counts": {
+        "pass": 52,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  },
+  "frontend": "batch-client-independent-review.md: Core63 Views91, both typecheck and scope lint passed; same frozen frontend source",
+  "source_manifest": "research/final-source-manifest.json",
+  "source_files": 110,
+  "normal_race_and_rounds_not_summed": true,
+  "historical_failures_preserved": true,
+  "real_provider_calls": 0,
+  "browser_performance_deployed_acceptance": "not run or claimed",
+  "full_m1_complete": false,
+  "skip_supported": false
+}

@@ -1,0 +1,33 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "related_task": "PAY-241",
+  "created_at": "2026-11-15T11:47:34.188744+00:00",
+  "source_thread": "01a1dde9-4bd6-7c00-9fa1-e29bf5ddb142",
+  "raw_file": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/capacity-r03/artifact-env-probe-r01/logs/artifact-env-probe-r01.jsonl",
+  "raw_sha256": "6d3de43aa46edd3c65b727bd9474ee0824607ea41fb4d05661ac899f7414d457",
+  "raw_file_bytes": 19597,
+  "owner_reported_result": {
+    "data_home_tmp_gotmp_singleton": "PASS1",
+    "test_only_source_prefix": "1265d4fa",
+    "source_input_files": 4967,
+    "reassembled_diagnostics_sha256_prefix": "a7b73683",
+    "actual_data_temp_modes": [
+      "0500",
+      "0700"
+    ],
+    "nofollow_errno": 0,
+    "artifact_new_error": null,
+    "initial_state": "unknown",
+    "actual_calls": 1,
+    "late_succeeded_fact_retained": true,
+    "deadline_seconds_unchanged": 2,
+    "scope": "Environment correction and singleton path only"
+  },
+  "original_r03_v01_v02_full_s2": "NOT_ACCEPTABLE",
+  "p2_readiness": false,
+  "product_passed": 0,
+  "product_total": 4,
+  "final_source_binding": "pending",
+  "next_gate": "One unified test-instrumented source with unchanged production bytes; complete 116-top-level normal/race under registered four fresh DBs; at most two bounded suites and no performance100",
+  "no_peer_code_or_test_work_repeated": true
+}

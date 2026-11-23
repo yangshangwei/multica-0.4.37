@@ -1,0 +1,13 @@
+{
+  "score": 88,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "The complete 16-case native layout matrix preserves the approved hierarchy and meets measured focus contrast and narrow target geometry.",
+    "Returning from configuration to the empty-list origin briefly focuses a temporary picker, which is then unmounted and leaves focus on BODY."
+  ],
+  "suggestions": [
+    "Prevent the outgoing template route from mounting a picker against the destination pathname before Desktop commits its router projection. Add a staged-route regression and rerun both-origin native Back checks."
+  ],
+  "reasoning": "The committed visuals pass the layout and contrast checks, but fresh production Electron evidence exposes an A02 focus lifetime gap that the immediate historical capture missed."
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "runtime_h3a_continuation_preflight",
+  "recorded_at_utc": "2026-11-12T04:36:42.066954+00:00",
+  "scenario": "RK1-H3a",
+  "trial": 3,
+  "check_only": true,
+  "provider_cli_invoked": false,
+  "model_calls": 0,
+  "permit_used": false,
+  "execution_window_claimed": false,
+  "historical": {
+    "result": "9a4b94050ad696c46512b0833d27398ac0c6ef48770f6085d1db1283f9d628ce",
+    "invocation": "909ac2da3054ab19ce4a75290ce9c5b06778740835efa414f6f206d863ddd3ed",
+    "review": "e5807dddbc40ff880b431fb5ba002457c407fb2d77b75ee76d3b3841d30b991b",
+    "approval": "7d743b5e1defa5fe8875c79a84d95c9982e9b0bfb650258a936a9214ed74f53c",
+    "authorization": "1f56add2daca80c4f17575550979ce783f7a1ea860ef63e78e584e80e258f580"
+  },
+  "budget": {
+    "cap": 25,
+    "prior_actual_starts": 12,
+    "remaining": 13
+  },
+  "gate": {
+    "runnable": false,
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false,
+    "reason": "Current source, framework review, CLI/config/database/window/permit and legitimate Provider gateway bindings are not all proven; registration is preparation-only."
+  },
+  "problems": [
+    "current execution gate is closed",
+    "current source_binding_ready is not proven",
+    "current framework_binding_ready is not proven",
+    "current cli_ready is not proven",
+    "current configuration_ready is not proven",
+    "current database_ready is not proven",
+    "current window_ready is not proven",
+    "current permit_ready is not proven",
+    "current gateway_ready is not proven",
+    "current source is dirty or drifted"
+  ]
+}

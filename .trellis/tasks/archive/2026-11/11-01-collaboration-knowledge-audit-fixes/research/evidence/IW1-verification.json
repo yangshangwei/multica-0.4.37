@@ -1,0 +1,26 @@
+{
+  "base_product": "d4bc37a86",
+  "scope": "IW1 same DB timestamp for approval expiry and target budget",
+  "red": "IW1-budget-red-r2.json",
+  "green": "IW1-budget-green.json",
+  "race": "IW1-budget-race.json",
+  "red_result": "one real named failure: second contribution approved despite DB-active first contribution",
+  "green_counts": {
+    "pass": 7,
+    "fail": 0,
+    "skip": 0
+  },
+  "race_counts": {
+    "pass": 7,
+    "fail": 0,
+    "skip": 0
+  },
+  "build_exit": 0,
+  "vet_exit": 0,
+  "initial_fault": "IW1-budget-red.json compile failure due wrong injected-clock field name; preserved, not product reproduction",
+  "source_sha256": {
+    "server/internal/service/collaboration_knowledge.go": "a8b9766d340ccd0ed17f1c2f30a3f527597541c3a065f4344250ef5b63e914b6",
+    "server/internal/service/collaboration_knowledge_resolve_test.go": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0"
+  },
+  "remaining": "independent delta review and final combined full suite; previous d4bc37a86 full service results keep their original source scope"
+}

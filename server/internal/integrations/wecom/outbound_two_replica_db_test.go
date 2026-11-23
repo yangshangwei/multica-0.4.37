@@ -82,10 +82,11 @@ func twoReplicaDB(t *testing.T) *pgxpool.Pool {
 // installation, a session bound to a chat, and a task whose input batch
 // carries the immutable channel_ingested stamp.
 type boundTurn struct {
-	sessionID string
-	taskID    string
-	instID    string
-	chatID    string
+	workspaceID string
+	sessionID   string
+	taskID      string
+	instID      string
+	chatID      string
 }
 
 func seedBoundTurn(t *testing.T, pool *pgxpool.Pool) boundTurn {
@@ -109,6 +110,7 @@ func seedBoundTurn(t *testing.T, pool *pgxpool.Pool) boundTurn {
 		chatID: "CHAT_" + tag,
 	}
 	wsID, userID, agentID, inputTaskID := newID(), newID(), newID(), newID()
+	turn.workspaceID = wsID
 
 	exec := func(sql string, args ...any) {
 		t.Helper()
@@ -209,7 +211,7 @@ func newReplica(t *testing.T, pool *pgxpool.Pool, instID string, holdsSocket boo
 func chatDoneFor(turn boundTurn) events.Event {
 	return events.Event{
 		Type:          protocol.EventChatDone,
-		WorkspaceID:   "",
+		WorkspaceID:   turn.workspaceID,
 		ActorType:     "system",
 		ChatSessionID: turn.sessionID,
 		Payload: protocol.ChatDonePayload{
@@ -218,6 +220,25 @@ func chatDoneFor(turn boundTurn) events.Event {
 			Content:       "S270 的价格是 1280 元。",
 		},
 	}
+}
+
+// relayWireFixture supplies the immutable delivery and current authority that
+// the receiver validates before these wire/dedupe tests reach the sender.
+func relayWireFixture(t *testing.T, instID pgtype.UUID, content string) (*fakeOutboundQueries, relayFrame) {
+	t.Helper()
+	taskID, sessionID, workspaceID := mustTestUUID(t), mustTestUUID(t), mustTestUUID(t)
+	q := &fakeOutboundQueries{
+		sessionBinding:  db.ChannelChatSessionBinding{InstallationID: instID, ChannelChatID: "CHAT_1", ChatType: "p2p"},
+		installation:    db.ChannelInstallation{ID: instID, WorkspaceID: workspaceID, Status: string(InstallationActive)},
+		channelIngested: askedOverWecom(),
+	}
+	q.fileTask(t, util.UUIDToString(taskID))
+	task := q.tasks[util.UUIDToString(taskID)]
+	task.ChatSessionID = sessionID
+	q.tasks[util.UUIDToString(taskID)] = task
+	return q, relayFrame{Kind: relayKindReply, InstallationID: util.UUIDToString(instID),
+		ChatID: "CHAT_1", ChatType: chatTypeSingleInt, Content: content,
+		TaskID: util.UUIDToString(taskID), SessionID: util.UUIDToString(sessionID), WorkspaceID: util.UUIDToString(workspaceID)}
 }
 
 func (r *replica) frames() int {
@@ -520,12 +541,10 @@ func TestRelay_DispatchNeverBlocksTheShardReader(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer func() { cancel(); router.Wait() }()
 	router.Start(ctx)
-	router.Attach(&Outbound{senders: reg, logger: slog.Default()})
+	q, frame := relayWireFixture(t, instID, "hello")
+	router.Attach(NewOutbound(q, reg, slog.Default()))
 
-	body, _ := json.Marshal(relayFrame{
-		Kind: relayKindReply, InstallationID: util.UUIDToString(instID),
-		ChatID: "CHAT_1", ChatType: chatTypeSingleInt, Content: "hello",
-	})
+	body, _ := json.Marshal(frame)
 	start := time.Now()
 	router.DeliverWecomOutbound(util.UUIDToString(instID), body, "ev-1")
 	if elapsed := time.Since(start); elapsed > 200*time.Millisecond {
@@ -651,10 +670,8 @@ func TestRelay_NonHolderNeverCompetesForTheClaim(t *testing.T) {
 	relay.register(router)
 
 	instID := mustTestUUID(t)
-	body, _ := json.Marshal(relayFrame{
-		Kind: relayKindReply, InstallationID: util.UUIDToString(instID),
-		ChatID: "CHAT_1", ChatType: chatTypeSingleInt, Content: "hello",
-	})
+	q, frame := relayWireFixture(t, instID, "hello")
+	body, _ := json.Marshal(frame)
 	router.DeliverWecomOutbound(util.UUIDToString(instID), body, "ev-strand")
 
 	time.Sleep(80 * time.Millisecond)
@@ -671,7 +688,7 @@ func TestRelay_NonHolderNeverCompetesForTheClaim(t *testing.T) {
 	hctx, hcancel := context.WithCancel(context.Background())
 	t.Cleanup(func() { hcancel(); holderRouter.Wait() })
 	holderRouter.Start(hctx)
-	holderRouter.Attach(&Outbound{senders: holderReg, logger: slog.Default()})
+	holderRouter.Attach(NewOutbound(q, holderReg, slog.Default()))
 	holderRouter.DeliverWecomOutbound(util.UUIDToString(instID), body, "ev-strand")
 
 	waitFor(t, "the late holder to deliver", func() bool { return conn.frameCount() == 1 })
@@ -705,12 +722,10 @@ func TestRelay_AttemptedWriteKeepsTheClaim(t *testing.T) {
 	t.Cleanup(func() { cancel(); router.Wait() })
 	router.Start(ctx)
 	mx := newCountingMetrics()
-	router.Attach(NewOutbound(nil, reg, slog.Default(), WithOutboundMetrics(mx)))
+	q, frame := relayWireFixture(t, instID, "hello")
+	router.Attach(NewOutbound(q, reg, slog.Default(), WithOutboundMetrics(mx)))
 
-	body, _ := json.Marshal(relayFrame{
-		Kind: relayKindReply, InstallationID: util.UUIDToString(instID),
-		ChatID: "CHAT_1", ChatType: chatTypeSingleInt, Content: "hello",
-	})
+	body, _ := json.Marshal(frame)
 	router.DeliverWecomOutbound(util.UUIDToString(instID), body, "ev-attempted")
 
 	// An attempted write is an UNKNOWN outcome, so it files under unconfirmed
@@ -734,14 +749,12 @@ func TestDeliverRelayed_ContextErrorsDoNotRelease(t *testing.T) {
 	reg := newSendersRegistry()
 	conn := &recordingConn{}
 	reg.set(instID, conn.autoAck(newWSSender(conn, nil)))
-	o := NewOutbound(nil, reg, slog.Default())
+	q, frame := relayWireFixture(t, instID, "hello")
+	o := NewOutbound(q, reg, slog.Default())
 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel() // already expired: sendTextCtx fails on its pre-write check
-	got := o.deliverRelayed(ctx, relayFrame{
-		Kind: relayKindReply, InstallationID: util.UUIDToString(instID),
-		ChatID: "CHAT_1", ChatType: chatTypeSingleInt, Content: "hello",
-	})
+	got := o.deliverRelayed(ctx, frame)
 	if got == outcomeProvablyNotSent {
 		t.Fatal("a context error released the claim; it is ambiguous and must not")
 	}
@@ -798,15 +811,13 @@ func TestRelay_LeaseMoveMidFlightIsRescuedByRetry(t *testing.T) {
 	bctx, bcancel := context.WithCancel(context.Background())
 	t.Cleanup(func() { bcancel(); bRouter.Wait() })
 	bRouter.Start(bctx)
-	bRouter.Attach(&Outbound{senders: bReg, logger: slog.Default()})
+	q, frame := relayWireFixture(t, instID, "hello")
+	bRouter.Attach(NewOutbound(q, bReg, slog.Default()))
 
 	relay.register(aRouter)
 	relay.register(bRouter)
 
-	body, _ := json.Marshal(relayFrame{
-		Kind: relayKindReply, InstallationID: util.UUIDToString(instID),
-		ChatID: "CHAT_1", ChatType: chatTypeSingleInt, Content: "hello",
-	})
+	body, _ := json.Marshal(frame)
 	// Both replicas read the frame, as every replica does.
 	aRouter.DeliverWecomOutbound(util.UUIDToString(instID), body, "ev-move")
 	bRouter.DeliverWecomOutbound(util.UUIDToString(instID), body, "ev-move")
@@ -916,12 +927,10 @@ func TestDrainDeliversOnlyWhileSocketsLive(t *testing.T) {
 		reg.set(instID, sender)
 		router := NewRelayOutbound(nil, nil, RelayConfig{}, slog.Default())
 		ctx, cancel := context.WithCancel(context.Background())
-		router.Attach(&Outbound{senders: reg, logger: slog.Default()})
+		q, frame := relayWireFixture(t, instID, "queued before shutdown")
+		router.Attach(NewOutbound(q, reg, slog.Default()))
 
-		body, _ := json.Marshal(relayFrame{
-			Kind: relayKindReply, InstallationID: util.UUIDToString(instID),
-			ChatID: "CHAT_1", ChatType: chatTypeSingleInt, Content: "queued before shutdown",
-		})
+		body, _ := json.Marshal(frame)
 		router.DeliverWecomOutbound(util.UUIDToString(instID), body, "ev-drain")
 		if !live {
 			reg.clear(instID, sender) // what supervisor teardown does

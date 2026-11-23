@@ -1,0 +1,47 @@
+{
+  "verdict": "PASS",
+  "blocking_findings_open": 0,
+  "reviewed_at": "2026-11-04T15:58:53.175542+00:00",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "source_root": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+  "runner_sha256": "787f8ad19091bf955a2264bbecabb7560a06042e71a48a466242c5ce051b45df",
+  "allocation_request_sha256": "a54fbcbdbf24ec896c484de4f321479d229a174b547f690dceff0490d77350ff",
+  "source_sha256": "252147577459a20f4deba1ddb88551d3d0013db2a6cbe9b9d3f670923e4456bb",
+  "packages": 82,
+  "expected_top_names": 10413,
+  "review_mode": "independent static code and manifest review; runner and application tests not executed",
+  "fixed_by_author_during_review": [
+    "Pin allocation-request SHA in root permit before using package argv or expected names",
+    "Require exact Package identity, complete named inventory and one valid package terminal",
+    "Bind three actual cross-tree contract files and Go/Node/Bash physical binary identities; refuse nonignored untracked backend/script inputs"
+  ],
+  "checks": [
+    "Private root permit and exact candidate/runner/request/source binding",
+    "Unique exact package/database mapping, loopback database URL and readonly actual name/schema/empty issue probe",
+    "Fresh per-package HOME/TMP with explicit GOCACHE/GOMODCACHE/GOPATH",
+    "Minimal inherited environment excludes deployment/pool/task-root/model/auth variables; real-agent flags absent",
+    "Current repository ambient agent CLI sentinel guard wraps every test",
+    "Sequential package execution, -p1/-parallel2/GOMAXPROCS2, 40m test timeout",
+    "Raw per-run evidence is exclusive; missing tests, wrong package terminal, foreign package and source drift cause nonzero result",
+    "Pass/fail/skip names and skip output retained; no claim that skip means tested"
+  ],
+  "notes": [
+    "Root must issue the actual permit only after allocation/template identity is independently verified; readonly runner probe alone does not prove all business tables are pristine. Root reports clean template with752 migrations and fresh82 clones.",
+    "Root explicitly authorized existing test-owned temporary database lifecycle in two packages, with pre/post audit of multica_codex_usage_backfill_, multica_v034_upgrade_, multica_v034_fresh_. No unowned force-drop.",
+    "Conditional skipped tests and no-test packages remain distinct from executed pass inventory. A successful runner is not full product/native/real-model acceptance.",
+    "This runner audits backend/scripts plus three concrete frontend contract inputs. Root owns the broader frontend/build/source final audit, endpoint identities and owned-resource cleanup.",
+    "Go test timeout bounds test execution, not the separate compile/vet stage; root retains process supervision."
+  ],
+  "verification": {
+    "runner_executed": false,
+    "database_access": false,
+    "test_suites_executed": false,
+    "static_manifest_and_ast": "PASS",
+    "author_supplied_probe_records": [
+      "evidence/backend/prepare/runner-static-check-v2.json",
+      "evidence/backend/prepare/runner-static-check-v3.json"
+    ],
+    "lint": "not applicable: static review of private Python runner; no product edits",
+    "typecheck": "not applicable: static review of private Python runner; no product edits"
+  }
+}

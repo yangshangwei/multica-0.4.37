@@ -1,0 +1,58 @@
+{
+  "at": "2026-11-02T03:46:10.892962+00:00",
+  "state": "complete",
+  "mac_runs": [
+    {
+      "run": "next-mac-runtime-1",
+      "status": "PASS",
+      "versions": [
+        "0.6.5-185-g61ff581d2-dirty",
+        "0.6.8-rc.20261102"
+      ],
+      "protocol_default_and_set_preserved": true,
+      "synthetic_port": 58786,
+      "synthetic_port_closed": true,
+      "driver_hash_matches": true,
+      "normal_password_forms_visible": false
+    },
+    {
+      "run": "next-mac-runtime-2",
+      "status": "PASS",
+      "versions": [
+        "0.6.5-185-g61ff581d2-dirty",
+        "0.6.8-rc.20261102"
+      ],
+      "protocol_default_and_set_preserved": true,
+      "synthetic_port": 60790,
+      "synthetic_port_closed": true,
+      "driver_hash_matches": true,
+      "normal_password_forms_visible": true
+    }
+  ],
+  "owned_processes_remaining": [],
+  "database_connections_after": {
+    "multica_func7af9_next_perf_diag_1": 0,
+    "multica_func7af9_resume_perf_1": 0,
+    "multica_func7af9_resume_wire_live_1": 0,
+    "multica_func7af9_resume_linux_1": 0
+  },
+  "independent_review": "research/next-evidence-review-1.json (supplemental runtime2 section)",
+  "reviewed_runtime2_record_matches": true,
+  "historical_files_checked": 4614,
+  "intended_coordination_files_changed": [
+    "implement.md",
+    "report.md",
+    "task.json",
+    "progress.md",
+    "session-prompt.md",
+    "conditional-matrix.csv",
+    "defects.md",
+    "research/session-record.md"
+  ],
+  "original_evidence_and_439_coverage_unchanged": true,
+  "original_p95_fail_retained": true,
+  "product_source_not_changed_by_this_plan": true,
+  "git_diff_check_exit_code": 0,
+  "full_product_lint_typecheck": "Not repeated: task docs/spec notes/private diagnostic only; actual diagnostic build/runtime and Mac runtime checks executed",
+  "private_profiles_binaries_dbs_retained": true
+}

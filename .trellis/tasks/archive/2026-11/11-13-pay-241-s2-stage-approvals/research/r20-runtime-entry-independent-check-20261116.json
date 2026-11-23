@@ -1,0 +1,146 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "review_date": "2026-11-16",
+  "status": "R20_RUNTIME_ENTRY_ACCEPTED_FOR_SINGLE_CANONICAL_ORIGINAL_FOUR_CASE_RUN",
+  "blocking_findings": [],
+  "full_S2_A01_A12_parent_or_real_external_acceptance": false,
+  "prior_code_source_output_review_reused": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-independent-check-20261116.json",
+    "sha256": "2d3751e4ca6e4c23ecf80b34879a242554ee19dc17984818a507407708039190"
+  },
+  "current_reference_check": {
+    "API_start_plan_references": 48,
+    "draft_live_binding_references": 60,
+    "mismatches": [],
+    "complete_historical_source_output_audit_repeated": false
+  },
+  "recorded_runtime": {
+    "API_pid": 87271,
+    "bridge_pid": 87268,
+    "Web_pid": 86953,
+    "renderer_pid": 86966,
+    "api_origin": "http://127.0.0.1:64922",
+    "web_origin": "http://127.0.0.1:64925",
+    "renderer_origin": "http://127.0.0.1:64926",
+    "health_and_new_surfaces_HTTP200": true,
+    "compiled_metadata_HEAD": "86fea651cc5d09360327b6cf0f8357c1f360070d",
+    "production_BUILD_ID": "PpNZY2bAtTOUVfi6UgJKT",
+    "renderer_index_sha256": "0be2384231a80a945c1de883e8f9c1971b0c5d5831f1d005c4a531870cb8a91f",
+    "fresh_retained_administrator_login_and_me_adminme_verified": true,
+    "administrator_role": "super_admin",
+    "password_or_role_changed": false,
+    "peer_Web39744_renderer39748_signaled": false,
+    "reviewer_live_API_or_process_query_performed": false
+  },
+  "configuration": {
+    "frontend_source_socket_web_renderer_common_four_fields_match": true,
+    "actual_CORS_new_origin_coherence": true,
+    "frontend_API_WS_and_remote_API_match64922": true,
+    "incorrect_initial_bridge_preparation_preserved_and_superseded": true,
+    "R19_database_JWT_admin_credentials_constructor_roots_unchanged": true,
+    "reviewed_model_keys_empty": true,
+    "maximum_API_launch_commands": 1,
+    "PAY_database_suites": 1,
+    "global_database_suites_max": 2,
+    "captured_cluster_max_connections": 100,
+    "captured_reserved_connections": 3,
+    "captured_other_client_connections": 18,
+    "calculated_headroom": 79,
+    "proposed_API_connections": 25,
+    "actual_pool_size_newly_measured_by_reviewer": false
+  },
+  "original_four_case_entry": {
+    "case_count": 4,
+    "approval_QA_cases": 1,
+    "execution_completion_cases": 3,
+    "workers": 1,
+    "retries": 0,
+    "max_failures": 1,
+    "default_expect_timeout_ms": 5000,
+    "action_timeout_ms": 20000,
+    "each_original_case_timeout_ms": 480000,
+    "unchanged_config_default_timeout_ms": 60000,
+    "two_original_case_files_and_four_related_fixtures_equal_R19": true,
+    "launcher_and_Playwright_config_only_owned_path_constants_changed": true,
+    "original_case_bodies_assertions_and_explicit_poll_deadlines_changed": false,
+    "R19_metric_TTL_fixture_repair_retained": true,
+    "case_grep_or_extra_selector_added": false,
+    "fresh_output_directory_absent_at_check": true,
+    "canonical_entry_requires_final_binding_and_single_command_permit": true,
+    "actual_new_four_case_result_claimed": false
+  },
+  "recorded_live_before_history": {
+    "database": "multica_pay241_20261116_s2_runtime_r11",
+    "read_only_transaction": true,
+    "queue_rows": 12,
+    "queue_status_counts": {"failed": 11, "deferred": 1},
+    "old_queue_ids_removed": 0,
+    "new_natural_attempt2_retry_rows": 1,
+    "old_natural_status_transitions": 2,
+    "leased_or_bound": 0,
+    "host_runs": 19,
+    "unsettled": 0,
+    "artifacts": 8,
+    "incomplete_artifacts": 0,
+    "unreleased": 0,
+    "unknown_stage_intents": 1,
+    "rollback_metrics": 0,
+    "live_other_connections": 5,
+    "gate": {"enabled": false, "creation_enabled": true, "host_execution_enabled": false, "epoch": "20"},
+    "original_Host_run_and_artifact_execution_ID_sets_unchanged": true,
+    "manual_history_or_gate_writes": false,
+    "all_history_empty_or_permanently_inert_claimed": false
+  },
+  "narrow_staging_check": {
+    "staging_root_mode": "0500",
+    "new_unused_generation_count": 8,
+    "new_generations_empty_owner_matching_non_symlink_mode0700": true,
+    "configured_generation_list_matches": true,
+    "old_generation_inode_mode_identities_checked": 56,
+    "mismatches": [],
+    "old_generations_reused_or_deleted_by_reviewer": false
+  },
+  "evidence": {
+    "API_start_plan": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/api-start-plan.json",
+      "sha256": "a17fab5d7de22f41937837d7436f01aff4f9a447b22511d9118b8a3aa6de306b"
+    },
+    "reviewed_draft_live_binding": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/live-binding-draft-r01.json",
+      "sha256": "8faf2c7f2ee7e64b9cd54c48f688a2d7380f2166f6b190f4e99f41e41dfddae1"
+    },
+    "live_probe": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/live-surfaces-and-existing-admin-r01.json",
+      "sha256": "9be4f5933f2af499e749c74c10bd8afe06a9b7e1192aedf826ad88ef0e3920e7"
+    },
+    "recorded_live_before_database": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/database-live-before-four-r02.json",
+      "sha256": "710405a13424ee854972bd0629a90f5fea1189696d16f0a7fd8172da796cb74e"
+    },
+    "generation_preparation": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/generation-and-config-preparation-r01.json",
+      "sha256": "14df0008bf354cd5d79d8d193e4201f4c1ee9bb5c53a4365704f775c8f63cb93"
+    },
+    "bridge_source_rebind": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/bridge-frontend-source-rebind-r01.json",
+      "sha256": "c6c2dfb7f2d850dbd20bd46f71642c37aaf468aafe3e4b18b8621410046ffdf6"
+    },
+    "connection_budget": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/connection-budget-before-api-r01.json",
+      "sha256": "5279b426d95d5c48233153b2119d11959f6effa50400962680bfe17bce25ae75"
+    },
+    "Playwright_config": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/playwright-four-scenarios.config.mjs",
+      "sha256": "c4cf2d92126482452b673ebca5bc04072b56cf3be131e34f450a6ff1e4a697fa"
+    },
+    "canonical_launcher": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/run-original-four-scenarios.mjs",
+      "sha256": "dde894bd02299d7df694dcc070131336ab608c2be269c9353b5ef47cfc661126"
+    }
+  },
+  "checker_executed_test_API_DB_build_signals_or_Git_commands": 0,
+  "changed_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-runtime-entry-independent-check-20261116.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-runtime-entry-independent-check-20261116.json"
+  ]
+}

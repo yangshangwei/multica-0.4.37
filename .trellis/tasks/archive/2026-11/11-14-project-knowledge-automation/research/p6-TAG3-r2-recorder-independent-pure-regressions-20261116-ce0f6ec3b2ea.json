@@ -1,0 +1,190 @@
+{
+  "Root_Source_MD_ENV_or_existing_report_writes": 0,
+  "actual_processes_spawned": 0,
+  "all_passed": true,
+  "all_top_level_function_ASTs_equal_to_initial_v3": true,
+  "at": "2026-11-16T02:07:18.358901+00:00",
+  "case_count": 7,
+  "cases": [
+    {
+      "case": "success",
+      "events": [
+        "spawn",
+        "enter",
+        "getpgid",
+        "save_start",
+        "communicate",
+        "poll",
+        "exit",
+        "wait",
+        "save_finish"
+      ],
+      "exception": null,
+      "kill_count": 0,
+      "passed": true,
+      "returncode": 0,
+      "saved_stages": [
+        "start",
+        "finish"
+      ],
+      "simulated_child_reaped": true,
+      "stdin_capture_text_env_timeout_preserved": true,
+      "wait_count": 1
+    },
+    {
+      "case": "lookup_failure",
+      "events": [
+        "spawn",
+        "enter",
+        "getpgid",
+        "kill",
+        "exit",
+        "wait"
+      ],
+      "exception": "ProcessLookupError",
+      "kill_count": 1,
+      "passed": true,
+      "returncode": null,
+      "saved_stages": [],
+      "simulated_child_reaped": true,
+      "stdin_capture_text_env_timeout_preserved": true,
+      "wait_count": 1
+    },
+    {
+      "case": "start_record_failure",
+      "events": [
+        "spawn",
+        "enter",
+        "getpgid",
+        "save_start",
+        "kill",
+        "exit",
+        "wait"
+      ],
+      "exception": "OSError",
+      "kill_count": 1,
+      "passed": true,
+      "returncode": null,
+      "saved_stages": [],
+      "simulated_child_reaped": true,
+      "stdin_capture_text_env_timeout_preserved": true,
+      "wait_count": 1
+    },
+    {
+      "case": "finish_record_failure",
+      "events": [
+        "spawn",
+        "enter",
+        "getpgid",
+        "save_start",
+        "communicate",
+        "poll",
+        "exit",
+        "wait",
+        "save_finish"
+      ],
+      "exception": "OSError",
+      "kill_count": 0,
+      "passed": true,
+      "returncode": null,
+      "saved_stages": [
+        "start"
+      ],
+      "simulated_child_reaped": true,
+      "stdin_capture_text_env_timeout_preserved": true,
+      "wait_count": 1
+    },
+    {
+      "case": "timeout",
+      "events": [
+        "spawn",
+        "enter",
+        "getpgid",
+        "save_start",
+        "communicate",
+        "kill",
+        "wait",
+        "exit",
+        "wait",
+        "save_finish"
+      ],
+      "exception": "TimeoutExpired",
+      "kill_count": 1,
+      "passed": true,
+      "returncode": null,
+      "saved_stages": [
+        "start",
+        "finish"
+      ],
+      "simulated_child_reaped": true,
+      "stdin_capture_text_env_timeout_preserved": true,
+      "wait_count": 2
+    },
+    {
+      "case": "check_nonzero",
+      "events": [
+        "spawn",
+        "enter",
+        "getpgid",
+        "save_start",
+        "communicate",
+        "poll",
+        "exit",
+        "wait",
+        "save_finish"
+      ],
+      "exception": "CalledProcessError",
+      "kill_count": 0,
+      "passed": true,
+      "returncode": null,
+      "saved_stages": [
+        "start",
+        "finish"
+      ],
+      "simulated_child_reaped": true,
+      "stdin_capture_text_env_timeout_preserved": true,
+      "wait_count": 1
+    },
+    {
+      "case": "trace_inactive",
+      "events": [
+        "spawn",
+        "enter",
+        "communicate",
+        "poll",
+        "exit",
+        "wait"
+      ],
+      "exception": null,
+      "kill_count": 0,
+      "passed": true,
+      "returncode": 0,
+      "saved_stages": [],
+      "simulated_child_reaped": true,
+      "stdin_capture_text_env_timeout_preserved": true,
+      "wait_count": 1
+    }
+  ],
+  "constructor_postfork_blocker_closed": true,
+  "cross_source_guard_probe_reuse": {
+    "negative": 23,
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-TAG3-cross-source-guards-independent-pure-probes-20261116-11ed0a0c6e7f.json",
+    "positive": 2,
+    "qualified_by_unchanged_function_ASTs": true,
+    "sha256": "6d1d19c52de5f1d26873cd7b924ee68cdf145c7bd2ba0007e77bcd02e167956d"
+  },
+  "kind": "independent_TAG3_r2_exact_stdlib_run_fake_Popen_recorder_regressions",
+  "limits": "Recorder-only regression acceptance; not full TAG3 execution/ROOT/P6 acceptance.",
+  "method": "Exact candidate TracedPopen class AST over fake Popen; exact standard-library run code/defaults with Popen replacement only. Fake getpgid and fake metadata store. No actual processes, Go, SQL, parser or source traversal.",
+  "observation_runs_after_context_enter": true,
+  "original_counterexample_preserved": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-TAG3-recorder-postfork-independent-counterexamples-20261116-bc5041efa331.json",
+    "sha256": "59514091d5932ffbbefa7f51f091557412613c5740da2e3bddbe0d7e4782cd9e"
+  },
+  "reviewer": "/root/continuation_gate_audit",
+  "runner": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-tagged-runner-v3-r2.py",
+    "sha256": "0b9850c279d847425407465038e930aedbbd6e38dd984babd287d4900d2a07ce"
+  },
+  "task": ".trellis/tasks/11-14-project-knowledge-automation"
+}

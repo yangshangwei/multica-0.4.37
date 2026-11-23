@@ -1,0 +1,14 @@
+{
+  "reviewer": "root; CT1 authored by /root/claim_tuple_regression",
+  "reviewed_commit": "5c3549001277d246e28314e1d449edb2baa5786f",
+  "verdict": "pass",
+  "delta": "32 lines in canonical service test; no production SQL or Go behavior changed",
+  "command": "guarded go test ./internal/service -run ^TestKnowledgeResumeEqualTimestampHistoryStillChecksLaterIDs$ -count=1 -json",
+  "exit_code": 0,
+  "pass": 1,
+  "fail": 0,
+  "skip": 0,
+  "database": "kfix_claim_tuple_root_20261102_0033",
+  "log_sha256": "fd5d2b616c6246552fc750859e051019ff4d0e6ef9bd4ba4a2ed1ed4cefba405",
+  "prior_invalid_selector": "CT1-root-recheck.json; no named tests, not counted"
+}

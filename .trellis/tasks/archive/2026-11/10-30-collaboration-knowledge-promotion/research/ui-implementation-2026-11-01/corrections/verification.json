@@ -1,0 +1,139 @@
+{
+  "recorded_at_utc": "2026-10-31T22:39:10.736035+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "head": "bbbfc731ddf9a77d3266d4fc5561e2d89a24b258",
+  "changed_files": [
+    "packages/core/collaboration/knowledge-actions.ts",
+    "packages/core/collaboration/knowledge-actions.test.ts",
+    "packages/core/collaboration/knowledge-recovery.ts",
+    "packages/views/collaboration/knowledge-panel.tsx",
+    "packages/views/collaboration/knowledge-panel.test.tsx",
+    "packages/views/collaboration/knowledge-review.tsx",
+    "packages/views/locales/en/collaboration.json",
+    "packages/views/locales/zh-Hans/collaboration.json"
+  ],
+  "tests": {
+    "core": {
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "suites": 2
+    },
+    "views": {
+      "passed": 83,
+      "failed": 0,
+      "skipped": 0,
+      "suites": 2
+    }
+  },
+  "red": {
+    "core": {
+      "passed": 11,
+      "failed": 2,
+      "skipped": 0
+    },
+    "views": {
+      "passed": 12,
+      "failed": 3,
+      "skipped": 0
+    }
+  },
+  "commands": {
+    "core-tests": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/knowledge-actions.test.ts",
+        "api/collaboration-knowledge.test.ts",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile.json=/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-implementation-2026-11-01/corrections/core-vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 2.295
+    },
+    "views-tests": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/knowledge-panel.test.tsx",
+        "locales/parity.test.ts",
+        "--reporter=verbose",
+        "--reporter=json",
+        "--outputFile.json=/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-implementation-2026-11-01/corrections/views-vitest.json"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 6.654
+    },
+    "core-typecheck": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 8.273
+    },
+    "views-typecheck": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "typecheck"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 31.974
+    },
+    "core-lint": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/core",
+        "exec",
+        "eslint",
+        "collaboration/knowledge-actions.ts",
+        "collaboration/knowledge-actions.test.ts",
+        "collaboration/knowledge-recovery.ts"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 1.863
+    },
+    "views-lint": {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "packages/views",
+        "exec",
+        "eslint",
+        "collaboration/knowledge-panel.tsx",
+        "collaboration/knowledge-panel.test.tsx",
+        "collaboration/knowledge-review.tsx"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+      "exit_code": 0,
+      "duration_seconds": 1.975
+    }
+  },
+  "diff_check_exit_code": 0,
+  "scope": "B2 stage/ambiguity-aware recovery and audit metadata only",
+  "review_disposition": "Main owns independent recheck/closure and screenshot/platform acceptance",
+  "not_run": [
+    "DB/provider/model calls",
+    "browser screenshots/platform E2E",
+    "style detector (main already ran its single pass)"
+  ]
+}

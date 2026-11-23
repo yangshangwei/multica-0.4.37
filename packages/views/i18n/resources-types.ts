@@ -4,6 +4,7 @@ import "i18next";
 // typecheck program to see ui's contribution to `I18nResources`.
 import "@multica/ui/i18n-types";
 import type common from "../locales/en/common.json";
+import type collaboration from "../locales/en/collaboration.json";
 import type admin from "../locales/en/admin.json";
 import type auth from "../locales/en/auth.json";
 import type settings from "../locales/en/settings.json";
@@ -49,6 +50,7 @@ import type desktop from "../locales/en/desktop.json";
 // selector form standalone without depending on @multica/views.
 declare global {
   interface I18nResources {
+    collaboration: typeof collaboration;
     common: typeof common;
     auth: typeof auth;
     admin: typeof admin;

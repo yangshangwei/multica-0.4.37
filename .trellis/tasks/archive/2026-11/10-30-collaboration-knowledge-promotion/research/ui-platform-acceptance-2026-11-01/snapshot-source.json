@@ -1,0 +1,828 @@
+{
+  "base_commit": "53a1662586555d14ea04efb3b951744a4993fa60",
+  "source": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101",
+  "snapshot": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101",
+  "frozen_at": "2026-10-31T22:54:39.079483+00:00",
+  "scope": "Preliminary UI; backend WIP is not final G2 evidence",
+  "files": [
+    {
+      "path": "server/cmd/server/collaboration_knowledge_realtime_test.go",
+      "source_before": "38bbfc8ec3f952b1ca7ee11e9e243f3d07fcba906a0f0a18bc813520cc5c7378",
+      "source_after": "38bbfc8ec3f952b1ca7ee11e9e243f3d07fcba906a0f0a18bc813520cc5c7378",
+      "snapshot_sha256": "38bbfc8ec3f952b1ca7ee11e9e243f3d07fcba906a0f0a18bc813520cc5c7378",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/cmd/server/collaboration_knowledge_routes_test.go",
+      "source_before": "ccdcaec822f38dbcb4f0126c43a577d8872345056a56fc6d176f9f1f019199c4",
+      "source_after": "ccdcaec822f38dbcb4f0126c43a577d8872345056a56fc6d176f9f1f019199c4",
+      "snapshot_sha256": "ccdcaec822f38dbcb4f0126c43a577d8872345056a56fc6d176f9f1f019199c4",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/cmd/server/collaboration_knowledge_runtime_routes_test.go",
+      "source_before": "20bc52444baf20acb3400d727be290220c56386cf793a3ba9855a1530415d1c1",
+      "source_after": "20bc52444baf20acb3400d727be290220c56386cf793a3ba9855a1530415d1c1",
+      "snapshot_sha256": "20bc52444baf20acb3400d727be290220c56386cf793a3ba9855a1530415d1c1",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/cmd/server/collaboration_scope_authorizer.go",
+      "source_before": "466d1cfa89d9bde6bdcf453480b1562fd30e329f3c254a460cd5e58e3911ff36",
+      "source_after": "466d1cfa89d9bde6bdcf453480b1562fd30e329f3c254a460cd5e58e3911ff36",
+      "snapshot_sha256": "466d1cfa89d9bde6bdcf453480b1562fd30e329f3c254a460cd5e58e3911ff36",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/cmd/server/main.go",
+      "source_before": "561c399b22265548f56f3d383a2b4ec18ddca1efa5a4662005ca99199210d0f1",
+      "source_after": "561c399b22265548f56f3d383a2b4ec18ddca1efa5a4662005ca99199210d0f1",
+      "snapshot_sha256": "561c399b22265548f56f3d383a2b4ec18ddca1efa5a4662005ca99199210d0f1",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "source_before": "e8faf46a46bd0916c0a68e79ca6b5b229384e3ae33c046cb0ae1be4d4d0215d8",
+      "source_after": "e8faf46a46bd0916c0a68e79ca6b5b229384e3ae33c046cb0ae1be4d4d0215d8",
+      "snapshot_sha256": "e8faf46a46bd0916c0a68e79ca6b5b229384e3ae33c046cb0ae1be4d4d0215d8",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/cmd/server/task_knowledge_routes_test.go",
+      "source_before": "464070612894b7a18a3b76e273fe6651ee5915d0ddb7f2501e186a0aaa91ded9",
+      "source_after": "464070612894b7a18a3b76e273fe6651ee5915d0ddb7f2501e186a0aaa91ded9",
+      "snapshot_sha256": "464070612894b7a18a3b76e273fe6651ee5915d0ddb7f2501e186a0aaa91ded9",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/auth/password_revoke.go",
+      "source_before": "ddfa5ec98771dbac02c152d8c89ce0da33d5fd979760912e8867d9f48173ef2a",
+      "source_after": "ddfa5ec98771dbac02c152d8c89ce0da33d5fd979760912e8867d9f48173ef2a",
+      "snapshot_sha256": "ddfa5ec98771dbac02c152d8c89ce0da33d5fd979760912e8867d9f48173ef2a",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/auth/pat_principal.go",
+      "source_before": "e3382c2c97a542671595a6951fdf816eb3989ab0581f18108b36e4da130e1fd0",
+      "source_after": "e3382c2c97a542671595a6951fdf816eb3989ab0581f18108b36e4da130e1fd0",
+      "snapshot_sha256": "e3382c2c97a542671595a6951fdf816eb3989ab0581f18108b36e4da130e1fd0",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/auth/principal.go",
+      "source_before": "f45fbbb6a544ce68cb2fd52b371f1e020c0dd4c7ffe9ec9b449ed3c597fc3435",
+      "source_after": "f45fbbb6a544ce68cb2fd52b371f1e020c0dd4c7ffe9ec9b449ed3c597fc3435",
+      "snapshot_sha256": "f45fbbb6a544ce68cb2fd52b371f1e020c0dd4c7ffe9ec9b449ed3c597fc3435",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/client.go",
+      "source_before": "ba1b521622c9e6ad2461271ac30ea8517da59c871ad78128421fa0ca310e83ec",
+      "source_after": "ba1b521622c9e6ad2461271ac30ea8517da59c871ad78128421fa0ca310e83ec",
+      "snapshot_sha256": "ba1b521622c9e6ad2461271ac30ea8517da59c871ad78128421fa0ca310e83ec",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/client.go",
+      "source_before": "cbebe86553c1434a1a787852212795627a21d18ed620d2be274c19c045765be3",
+      "source_after": "cbebe86553c1434a1a787852212795627a21d18ed620d2be274c19c045765be3",
+      "snapshot_sha256": "cbebe86553c1434a1a787852212795627a21d18ed620d2be274c19c045765be3",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_config.go",
+      "source_before": "f5fc5c8b08b50e65573d3a757bcc7c664954e5b4b39cd730d63009ba25cf3571",
+      "source_after": "f5fc5c8b08b50e65573d3a757bcc7c664954e5b4b39cd730d63009ba25cf3571",
+      "snapshot_sha256": "f5fc5c8b08b50e65573d3a757bcc7c664954e5b4b39cd730d63009ba25cf3571",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_knowledge.go",
+      "source_before": "e732d22ec9620bf64d4c50043e1a2d7cf0b052d8ce7359b0267648b64379ac58",
+      "source_after": "e732d22ec9620bf64d4c50043e1a2d7cf0b052d8ce7359b0267648b64379ac58",
+      "snapshot_sha256": "e732d22ec9620bf64d4c50043e1a2d7cf0b052d8ce7359b0267648b64379ac58",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_knowledge_test.go",
+      "source_before": "89068e8e7a5e8a78270846335060e022347eaab62dd1809f9e4d7f8dd3356611",
+      "source_after": "89068e8e7a5e8a78270846335060e022347eaab62dd1809f9e4d7f8dd3356611",
+      "snapshot_sha256": "89068e8e7a5e8a78270846335060e022347eaab62dd1809f9e4d7f8dd3356611",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_ledger.go",
+      "source_before": "111e9b4a51454e4d41a5cdc331efa6bf93feb93c993da17547eaa96f746416ab",
+      "source_after": "111e9b4a51454e4d41a5cdc331efa6bf93feb93c993da17547eaa96f746416ab",
+      "snapshot_sha256": "111e9b4a51454e4d41a5cdc331efa6bf93feb93c993da17547eaa96f746416ab",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_runner.go",
+      "source_before": "a573958a173e743cc043cfb80576d1ebed68cbeb1446500fb41da7c3173a505d",
+      "source_after": "a573958a173e743cc043cfb80576d1ebed68cbeb1446500fb41da7c3173a505d",
+      "snapshot_sha256": "a573958a173e743cc043cfb80576d1ebed68cbeb1446500fb41da7c3173a505d",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_session.go",
+      "source_before": "2fcb69d3b6afafe512796730d91c844a6721f49c03788c1eecc248bcab1b6470",
+      "source_after": "2fcb69d3b6afafe512796730d91c844a6721f49c03788c1eecc248bcab1b6470",
+      "snapshot_sha256": "2fcb69d3b6afafe512796730d91c844a6721f49c03788c1eecc248bcab1b6470",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/daemon.go",
+      "source_before": "4d2537587fa89252c756638c7575e8c16394c85246ad94399b1fec652125c5de",
+      "source_after": "4d2537587fa89252c756638c7575e8c16394c85246ad94399b1fec652125c5de",
+      "snapshot_sha256": "4d2537587fa89252c756638c7575e8c16394c85246ad94399b1fec652125c5de",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/knowledge_context.go",
+      "source_before": "d202e4b046cfec3f6043622fee43a4ac7ab7c88c4f1a090549aa2927b4582529",
+      "source_after": "d202e4b046cfec3f6043622fee43a4ac7ab7c88c4f1a090549aa2927b4582529",
+      "snapshot_sha256": "d202e4b046cfec3f6043622fee43a4ac7ab7c88c4f1a090549aa2927b4582529",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/knowledge_context_claim_test.go",
+      "source_before": "1cc11355edbf90e228d1dad9ae7f484f87a6241ae322dcbeae83b8abcb498aed",
+      "source_after": "1cc11355edbf90e228d1dad9ae7f484f87a6241ae322dcbeae83b8abcb498aed",
+      "snapshot_sha256": "1cc11355edbf90e228d1dad9ae7f484f87a6241ae322dcbeae83b8abcb498aed",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/knowledge_context_test.go",
+      "source_before": "1228e216eac71d21edada9478abe014fa37e84ce0320abc73e64445caf96e92e",
+      "source_after": "1228e216eac71d21edada9478abe014fa37e84ce0320abc73e64445caf96e92e",
+      "snapshot_sha256": "1228e216eac71d21edada9478abe014fa37e84ce0320abc73e64445caf96e92e",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/managed_transport.go",
+      "source_before": "0252432eb59fbe39c270b6122e83896ede8e942aca5c1aee2dd3b643755ecf2e",
+      "source_after": "0252432eb59fbe39c270b6122e83896ede8e942aca5c1aee2dd3b643755ecf2e",
+      "snapshot_sha256": "0252432eb59fbe39c270b6122e83896ede8e942aca5c1aee2dd3b643755ecf2e",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/prompt.go",
+      "source_before": "8cf088df314eff7aeb181be453fa870ad4eaf4a3750cab3dafe2efaf2566c9b3",
+      "source_after": "8cf088df314eff7aeb181be453fa870ad4eaf4a3750cab3dafe2efaf2566c9b3",
+      "snapshot_sha256": "8cf088df314eff7aeb181be453fa870ad4eaf4a3750cab3dafe2efaf2566c9b3",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/types.go",
+      "source_before": "18070fd79ff047445c4fa84c50cbe28fe264682193e69e83a0f90f33e3ccdbfb",
+      "source_after": "18070fd79ff047445c4fa84c50cbe28fe264682193e69e83a0f90f33e3ccdbfb",
+      "snapshot_sha256": "18070fd79ff047445c4fa84c50cbe28fe264682193e69e83a0f90f33e3ccdbfb",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/daemon/wsrpc.go",
+      "source_before": "31ca2ceb3173f1e0278e8ae74b4ac16742af5e3fbfb22e0a0bcb53dbc1f372ab",
+      "source_after": "31ca2ceb3173f1e0278e8ae74b4ac16742af5e3fbfb22e0a0bcb53dbc1f372ab",
+      "snapshot_sha256": "31ca2ceb3173f1e0278e8ae74b4ac16742af5e3fbfb22e0a0bcb53dbc1f372ab",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/agent.go",
+      "source_before": "6c7a29620663de67ffd29a31671e16bf39382731e054724fe4ce74eef06d8b4b",
+      "source_after": "6c7a29620663de67ffd29a31671e16bf39382731e054724fe4ce74eef06d8b4b",
+      "snapshot_sha256": "6c7a29620663de67ffd29a31671e16bf39382731e054724fe4ce74eef06d8b4b",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/auth_device.go",
+      "source_before": "dd57627e0e21848bfdb3a6be26015fe7fd2ff60abd704f5efaf3aaf3fbd73dbf",
+      "source_after": "dd57627e0e21848bfdb3a6be26015fe7fd2ff60abd704f5efaf3aaf3fbd73dbf",
+      "snapshot_sha256": "dd57627e0e21848bfdb3a6be26015fe7fd2ff60abd704f5efaf3aaf3fbd73dbf",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/claim_project_context_test.go",
+      "source_before": "e9a319031fad77b27022bf88d5f70f8c9c58c62d73b3bc144b1239f1fd469b1e",
+      "source_after": "e9a319031fad77b27022bf88d5f70f8c9c58c62d73b3bc144b1239f1fd469b1e",
+      "snapshot_sha256": "e9a319031fad77b27022bf88d5f70f8c9c58c62d73b3bc144b1239f1fd469b1e",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/collaboration_knowledge.go",
+      "source_before": "16a33cf847d7449f0ab0fea0108d9a86a1b143509e70caf262cffed808932949",
+      "source_after": "16a33cf847d7449f0ab0fea0108d9a86a1b143509e70caf262cffed808932949",
+      "snapshot_sha256": "16a33cf847d7449f0ab0fea0108d9a86a1b143509e70caf262cffed808932949",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/collaboration_knowledge_invalidation_test.go",
+      "source_before": "964390ba25f0d52f03abbd5a4aa942fde25a1bf625fe78f9e062266d5aee4ff1",
+      "source_after": "964390ba25f0d52f03abbd5a4aa942fde25a1bf625fe78f9e062266d5aee4ff1",
+      "snapshot_sha256": "964390ba25f0d52f03abbd5a4aa942fde25a1bf625fe78f9e062266d5aee4ff1",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/collaboration_knowledge_runtime.go",
+      "source_before": "d7c40f45c36c1f1ce5be0bc0e3c6dda7eac41294657c32b2c7dd3d0441a6916b",
+      "source_after": "d7c40f45c36c1f1ce5be0bc0e3c6dda7eac41294657c32b2c7dd3d0441a6916b",
+      "snapshot_sha256": "d7c40f45c36c1f1ce5be0bc0e3c6dda7eac41294657c32b2c7dd3d0441a6916b",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/collaboration_knowledge_runtime_test.go",
+      "source_before": "aaa7cdb61ba8598dd15190ee76b1987528e154f693b2078108d8cc3571deba28",
+      "source_after": "aaa7cdb61ba8598dd15190ee76b1987528e154f693b2078108d8cc3571deba28",
+      "snapshot_sha256": "aaa7cdb61ba8598dd15190ee76b1987528e154f693b2078108d8cc3571deba28",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/collaboration_knowledge_test.go",
+      "source_before": "cc745e20febebd27ce5747a7d097b3a95a7aba77d2c85debbdf391aa8d190665",
+      "source_after": "cc745e20febebd27ce5747a7d097b3a95a7aba77d2c85debbdf391aa8d190665",
+      "snapshot_sha256": "cc745e20febebd27ce5747a7d097b3a95a7aba77d2c85debbdf391aa8d190665",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/collaboration_recipients_test.go",
+      "source_before": "bb63763c8f0bb2bf2e5ea5780424e8affabec391c0234ee9d41b8185c460e64c",
+      "source_after": "bb63763c8f0bb2bf2e5ea5780424e8affabec391c0234ee9d41b8185c460e64c",
+      "snapshot_sha256": "bb63763c8f0bb2bf2e5ea5780424e8affabec391c0234ee9d41b8185c460e64c",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime.go",
+      "source_before": "212ea209ecafa89ee317bca92ad6a5e4293d85c13f8fbee622d449d6ab92fffb",
+      "source_after": "212ea209ecafa89ee317bca92ad6a5e4293d85c13f8fbee622d449d6ab92fffb",
+      "snapshot_sha256": "212ea209ecafa89ee317bca92ad6a5e4293d85c13f8fbee622d449d6ab92fffb",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/daemon.go",
+      "source_before": "7744ae2b53126a2ffcfd8ba2448ec79bbdc221472753065568599fc8701c7ee8",
+      "source_after": "7744ae2b53126a2ffcfd8ba2448ec79bbdc221472753065568599fc8701c7ee8",
+      "snapshot_sha256": "7744ae2b53126a2ffcfd8ba2448ec79bbdc221472753065568599fc8701c7ee8",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/daemon_comment_delivery_test.go",
+      "source_before": "040dfedeb08fcfdc85c3637f3ddca9f52e4a3d5a78ee1c43df702583fb510bf5",
+      "source_after": "040dfedeb08fcfdc85c3637f3ddca9f52e4a3d5a78ee1c43df702583fb510bf5",
+      "snapshot_sha256": "040dfedeb08fcfdc85c3637f3ddca9f52e4a3d5a78ee1c43df702583fb510bf5",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/daemon_knowledge.go",
+      "source_before": "221b6427916d677cd6987508fc53ec26e0cf91273c61cf2783e9769867e0d84a",
+      "source_after": "221b6427916d677cd6987508fc53ec26e0cf91273c61cf2783e9769867e0d84a",
+      "snapshot_sha256": "221b6427916d677cd6987508fc53ec26e0cf91273c61cf2783e9769867e0d84a",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/daemon_knowledge_test.go",
+      "source_before": "466f8e882b70512185985268af632b8470bc2ab119ba93cc455c47231b40edc8",
+      "source_after": "466f8e882b70512185985268af632b8470bc2ab119ba93cc455c47231b40edc8",
+      "snapshot_sha256": "466f8e882b70512185985268af632b8470bc2ab119ba93cc455c47231b40edc8",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/daemon_runtime_access_test.go",
+      "source_before": "c785b3485ceef3090a317939da4cbc43e18a1dcc14e820e69fe32adc08292a70",
+      "source_after": "c785b3485ceef3090a317939da4cbc43e18a1dcc14e820e69fe32adc08292a70",
+      "snapshot_sha256": "c785b3485ceef3090a317939da4cbc43e18a1dcc14e820e69fe32adc08292a70",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/invitation.go",
+      "source_before": "0ee1b7ca60bd691535809eae777c8c0f1b99f4108c3a42182ac320522854fbaf",
+      "source_after": "0ee1b7ca60bd691535809eae777c8c0f1b99f4108c3a42182ac320522854fbaf",
+      "snapshot_sha256": "0ee1b7ca60bd691535809eae777c8c0f1b99f4108c3a42182ac320522854fbaf",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/password_claim_test.go",
+      "source_before": "b373720af4d5950f3b67d937049054cce97362672d9c29ffc5332276c7431281",
+      "source_after": "b373720af4d5950f3b67d937049054cce97362672d9c29ffc5332276c7431281",
+      "snapshot_sha256": "b373720af4d5950f3b67d937049054cce97362672d9c29ffc5332276c7431281",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/personal_access_token.go",
+      "source_before": "ea653bb374e3efbdd662e76d6a89ab296b5f07cf9ec4bf2aeddd462d94c6529c",
+      "source_after": "ea653bb374e3efbdd662e76d6a89ab296b5f07cf9ec4bf2aeddd462d94c6529c",
+      "snapshot_sha256": "ea653bb374e3efbdd662e76d6a89ab296b5f07cf9ec4bf2aeddd462d94c6529c",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/project.go",
+      "source_before": "28f0d3c5ce613f7bff6461e04823b95aa1439e17b23731973033b589ef998448",
+      "source_after": "28f0d3c5ce613f7bff6461e04823b95aa1439e17b23731973033b589ef998448",
+      "snapshot_sha256": "28f0d3c5ce613f7bff6461e04823b95aa1439e17b23731973033b589ef998448",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/share_link.go",
+      "source_before": "5643f5d9db8402a4727b159aa3cc918e020ba050e95dd3e6ef3f9a7bbda9fe3e",
+      "source_after": "5643f5d9db8402a4727b159aa3cc918e020ba050e95dd3e6ef3f9a7bbda9fe3e",
+      "snapshot_sha256": "5643f5d9db8402a4727b159aa3cc918e020ba050e95dd3e6ef3f9a7bbda9fe3e",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/task_lifecycle.go",
+      "source_before": "4f55f59bcdd3d23a28df0fc3d9cdd8d017be9797aadac6e117f106ff9e6d5e0c",
+      "source_after": "4f55f59bcdd3d23a28df0fc3d9cdd8d017be9797aadac6e117f106ff9e6d5e0c",
+      "snapshot_sha256": "4f55f59bcdd3d23a28df0fc3d9cdd8d017be9797aadac6e117f106ff9e6d5e0c",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/workspace.go",
+      "source_before": "3c80027560c505cf12c298772ddb0f36dc7942c6638fbe765d19b4b2ecc6709f",
+      "source_after": "3c80027560c505cf12c298772ddb0f36dc7942c6638fbe765d19b4b2ecc6709f",
+      "snapshot_sha256": "3c80027560c505cf12c298772ddb0f36dc7942c6638fbe765d19b4b2ecc6709f",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/handler/workspace_revoke.go",
+      "source_before": "e66a530adc17bd8414f2ef323a0f80d4b698c1a35a4b5a99e99704ec1368f72d",
+      "source_after": "e66a530adc17bd8414f2ef323a0f80d4b698c1a35a4b5a99e99704ec1368f72d",
+      "snapshot_sha256": "e66a530adc17bd8414f2ef323a0f80d4b698c1a35a4b5a99e99704ec1368f72d",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/middleware/auth.go",
+      "source_before": "e3a6e224d5ec84d2eda47f43c5372edbd395b0f973d77018bbeef2b583900417",
+      "source_after": "e3a6e224d5ec84d2eda47f43c5372edbd395b0f973d77018bbeef2b583900417",
+      "snapshot_sha256": "e3a6e224d5ec84d2eda47f43c5372edbd395b0f973d77018bbeef2b583900417",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/middleware/auth_knowledge_test.go",
+      "source_before": "df8335a77ee8c8cd3a4b25f3628674f46e84f8bc21df71aad5a3b2226ec66089",
+      "source_after": "df8335a77ee8c8cd3a4b25f3628674f46e84f8bc21df71aad5a3b2226ec66089",
+      "snapshot_sha256": "df8335a77ee8c8cd3a4b25f3628674f46e84f8bc21df71aad5a3b2226ec66089",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/realtime/collaboration.go",
+      "source_before": "f526ea14ceae605530c303613827c190ae1f28fe5555036c0593f67ab77208ae",
+      "source_after": "f526ea14ceae605530c303613827c190ae1f28fe5555036c0593f67ab77208ae",
+      "snapshot_sha256": "f526ea14ceae605530c303613827c190ae1f28fe5555036c0593f67ab77208ae",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/realtime/collaboration_knowledge_envelope.go",
+      "source_before": "59b5e37b98ef513f976c4457f4a99423529b8a017350617ed395d3705ad4e5a8",
+      "source_after": "59b5e37b98ef513f976c4457f4a99423529b8a017350617ed395d3705ad4e5a8",
+      "snapshot_sha256": "59b5e37b98ef513f976c4457f4a99423529b8a017350617ed395d3705ad4e5a8",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/realtime/collaboration_knowledge_envelope_test.go",
+      "source_before": "a499a33f7ad68881a236113601f9e5ad88efcc2dcf221743b73c3dddb8faa6c0",
+      "source_after": "a499a33f7ad68881a236113601f9e5ad88efcc2dcf221743b73c3dddb8faa6c0",
+      "snapshot_sha256": "a499a33f7ad68881a236113601f9e5ad88efcc2dcf221743b73c3dddb8faa6c0",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/realtime/collaboration_knowledge_test.go",
+      "source_before": "3dd69a37e956a7c9469a91211b904ad9efee1db887ada4ec47871a3cdaba7693",
+      "source_after": "3dd69a37e956a7c9469a91211b904ad9efee1db887ada4ec47871a3cdaba7693",
+      "snapshot_sha256": "3dd69a37e956a7c9469a91211b904ad9efee1db887ada4ec47871a3cdaba7693",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/realtime/hub.go",
+      "source_before": "c8aa75ef11556cd509a69d4dcd882bcab2703d053273f61cc0b5bbf8885f68f8",
+      "source_after": "c8aa75ef11556cd509a69d4dcd882bcab2703d053273f61cc0b5bbf8885f68f8",
+      "snapshot_sha256": "c8aa75ef11556cd509a69d4dcd882bcab2703d053273f61cc0b5bbf8885f68f8",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration.go",
+      "source_before": "d3936eb1977c93e8d0af9de28255919fd8154a2eb3805301828eebccf17f2f7c",
+      "source_after": "d3936eb1977c93e8d0af9de28255919fd8154a2eb3805301828eebccf17f2f7c",
+      "snapshot_sha256": "d3936eb1977c93e8d0af9de28255919fd8154a2eb3805301828eebccf17f2f7c",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_edit.go",
+      "source_before": "7cd5dfabb33d6a384ba337f0182609ba368907c3e800312dae75962f1d671063",
+      "source_after": "7cd5dfabb33d6a384ba337f0182609ba368907c3e800312dae75962f1d671063",
+      "snapshot_sha256": "7cd5dfabb33d6a384ba337f0182609ba368907c3e800312dae75962f1d671063",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge.go",
+      "source_before": "e5ab3ed2860747603bec5edcf58d4fb952cf2137eb488f9b9094bdb7f05ec855",
+      "source_after": "e5ab3ed2860747603bec5edcf58d4fb952cf2137eb488f9b9094bdb7f05ec855",
+      "snapshot_sha256": "e5ab3ed2860747603bec5edcf58d4fb952cf2137eb488f9b9094bdb7f05ec855",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_authority_test.go",
+      "source_before": "205e6d3a9b53e20c8ac602e837a92d89021b6f4a83f0348c4880b2611693b12a",
+      "source_after": "205e6d3a9b53e20c8ac602e837a92d89021b6f4a83f0348c4880b2611693b12a",
+      "snapshot_sha256": "205e6d3a9b53e20c8ac602e837a92d89021b6f4a83f0348c4880b2611693b12a",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_concurrency_test.go",
+      "source_before": "8c8b274914f761ea2da1892a8a9530c0d73ef0a634731ea14353f6a1928feada",
+      "source_after": "8c8b274914f761ea2da1892a8a9530c0d73ef0a634731ea14353f6a1928feada",
+      "snapshot_sha256": "8c8b274914f761ea2da1892a8a9530c0d73ef0a634731ea14353f6a1928feada",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_credentials.go",
+      "source_before": "b43f7ca2a8b6a101147e1d167d76995fa51028e683a08a6fa17fd20254ad51d6",
+      "source_after": "b43f7ca2a8b6a101147e1d167d76995fa51028e683a08a6fa17fd20254ad51d6",
+      "snapshot_sha256": "b43f7ca2a8b6a101147e1d167d76995fa51028e683a08a6fa17fd20254ad51d6",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_credentials_test.go",
+      "source_before": "cd15d504460f249005b877618ab5ae9afcad1cf22c027088468b67520198c73a",
+      "source_after": "cd15d504460f249005b877618ab5ae9afcad1cf22c027088468b67520198c73a",
+      "snapshot_sha256": "cd15d504460f249005b877618ab5ae9afcad1cf22c027088468b67520198c73a",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_invalidation.go",
+      "source_before": "f10abd7316609800fb05eb16014e0a0e0eeb2ac07f3c851501b21d713100d73b",
+      "source_after": "f10abd7316609800fb05eb16014e0a0e0eeb2ac07f3c851501b21d713100d73b",
+      "snapshot_sha256": "f10abd7316609800fb05eb16014e0a0e0eeb2ac07f3c851501b21d713100d73b",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_invalidation_test.go",
+      "source_before": "5c017023fc8b5183d787355c57e44f3a080063bf418f54040704add1207c8851",
+      "source_after": "5c017023fc8b5183d787355c57e44f3a080063bf418f54040704add1207c8851",
+      "snapshot_sha256": "5c017023fc8b5183d787355c57e44f3a080063bf418f54040704add1207c8851",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_locks.go",
+      "source_before": "dc1d3b63f6b9c961eb168b3bc41ea2bc0dc5034597dca7362f1db580e8eef2b2",
+      "source_after": "dc1d3b63f6b9c961eb168b3bc41ea2bc0dc5034597dca7362f1db580e8eef2b2",
+      "snapshot_sha256": "dc1d3b63f6b9c961eb168b3bc41ea2bc0dc5034597dca7362f1db580e8eef2b2",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_material.go",
+      "source_before": "7a7c59682d49c9cb9fce5667c43de82cba3a776619fd2f2b45c7994689dab5a4",
+      "source_after": "7a7c59682d49c9cb9fce5667c43de82cba3a776619fd2f2b45c7994689dab5a4",
+      "snapshot_sha256": "7a7c59682d49c9cb9fce5667c43de82cba3a776619fd2f2b45c7994689dab5a4",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_resolve.go",
+      "source_before": "4c04486fa0360939cfff9dafda27b09e02ffd84ba80e6e527648b54377f511b5",
+      "source_after": "4c04486fa0360939cfff9dafda27b09e02ffd84ba80e6e527648b54377f511b5",
+      "snapshot_sha256": "4c04486fa0360939cfff9dafda27b09e02ffd84ba80e6e527648b54377f511b5",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_resolve_test.go",
+      "source_before": "0e4adf5a40d3cd6d648b79227657db39f70310f81654ab93d77cb7efd45c5c06",
+      "source_after": "0e4adf5a40d3cd6d648b79227657db39f70310f81654ab93d77cb7efd45c5c06",
+      "snapshot_sha256": "0e4adf5a40d3cd6d648b79227657db39f70310f81654ab93d77cb7efd45c5c06",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_runtime.go",
+      "source_before": "0092cb25ed9e132ee8eda23e3830334c5b48144e06f605c5718759d66849d54d",
+      "source_after": "0092cb25ed9e132ee8eda23e3830334c5b48144e06f605c5718759d66849d54d",
+      "snapshot_sha256": "0092cb25ed9e132ee8eda23e3830334c5b48144e06f605c5718759d66849d54d",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_runtime_test.go",
+      "source_before": "10ce62d501c13d4524aa38e6586467c2e728a22605dd6a39fb49b6078ade0615",
+      "source_after": "10ce62d501c13d4524aa38e6586467c2e728a22605dd6a39fb49b6078ade0615",
+      "snapshot_sha256": "10ce62d501c13d4524aa38e6586467c2e728a22605dd6a39fb49b6078ade0615",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_source_auth_test.go",
+      "source_before": "a40af92bc2a57235c66589681ca57968933f45b2761109a517944b62b31ebe9c",
+      "source_after": "a40af92bc2a57235c66589681ca57968933f45b2761109a517944b62b31ebe9c",
+      "snapshot_sha256": "a40af92bc2a57235c66589681ca57968933f45b2761109a517944b62b31ebe9c",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_sources.go",
+      "source_before": "6ca2ef349f5d7611600906f8124ba0b0773f093a59342eab6f9e0ed494f53e0c",
+      "source_after": "6ca2ef349f5d7611600906f8124ba0b0773f093a59342eab6f9e0ed494f53e0c",
+      "snapshot_sha256": "6ca2ef349f5d7611600906f8124ba0b0773f093a59342eab6f9e0ed494f53e0c",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_test.go",
+      "source_before": "68043a6de65a48693db5df0b0713f593935fd79a9c1e48e222b963caff8e1192",
+      "source_after": "68043a6de65a48693db5df0b0713f593935fd79a9c1e48e222b963caff8e1192",
+      "snapshot_sha256": "68043a6de65a48693db5df0b0713f593935fd79a9c1e48e222b963caff8e1192",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_view.go",
+      "source_before": "ef686d1c404b8c0f0121b492b855b6be6011f86ba833dd07eefc739f9e784f82",
+      "source_after": "ef686d1c404b8c0f0121b492b855b6be6011f86ba833dd07eefc739f9e784f82",
+      "snapshot_sha256": "ef686d1c404b8c0f0121b492b855b6be6011f86ba833dd07eefc739f9e784f82",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_knowledge_view_test.go",
+      "source_before": "4610c809d2471aad466a3c8c01a76ee6af1ae499e7054336cc54abdaa674d119",
+      "source_after": "4610c809d2471aad466a3c8c01a76ee6af1ae499e7054336cc54abdaa674d119",
+      "snapshot_sha256": "4610c809d2471aad466a3c8c01a76ee6af1ae499e7054336cc54abdaa674d119",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_memory.go",
+      "source_before": "f78a2da8f8c89010c8091163879ed0f7b08906813c9dff8cde039b0e12abd072",
+      "source_after": "f78a2da8f8c89010c8091163879ed0f7b08906813c9dff8cde039b0e12abd072",
+      "snapshot_sha256": "f78a2da8f8c89010c8091163879ed0f7b08906813c9dff8cde039b0e12abd072",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "source_before": "223785a0d0917ce9d28016938c838f7199755dc49829c094af477e253170c639",
+      "source_after": "223785a0d0917ce9d28016938c838f7199755dc49829c094af477e253170c639",
+      "snapshot_sha256": "223785a0d0917ce9d28016938c838f7199755dc49829c094af477e253170c639",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "source_before": "88a0751c04e0087e2636c85dd87ff844bae0b6473bddf947e32ac7c101ed69a2",
+      "source_after": "88a0751c04e0087e2636c85dd87ff844bae0b6473bddf947e32ac7c101ed69a2",
+      "snapshot_sha256": "88a0751c04e0087e2636c85dd87ff844bae0b6473bddf947e32ac7c101ed69a2",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/legacy_execution_boundary_test.go",
+      "source_before": "60d6e09f12461df0599a49346f7e79c6ce681508deae3d58f519aef56008792b",
+      "source_after": "60d6e09f12461df0599a49346f7e79c6ce681508deae3d58f519aef56008792b",
+      "snapshot_sha256": "60d6e09f12461df0599a49346f7e79c6ce681508deae3d58f519aef56008792b",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/managed_admission_test.go",
+      "source_before": "1536e327a6e8f6fb1bb8161fd78e7a8cc4b44d2d957b2ebad585e1c7cf52ca0d",
+      "source_after": "1536e327a6e8f6fb1bb8161fd78e7a8cc4b44d2d957b2ebad585e1c7cf52ca0d",
+      "snapshot_sha256": "1536e327a6e8f6fb1bb8161fd78e7a8cc4b44d2d957b2ebad585e1c7cf52ca0d",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/managed_runtime_test.go",
+      "source_before": "ade350bbe3d64aa3021d920b7e32d06959982269adcf1b7dbc8b63b8fdf27da0",
+      "source_after": "ade350bbe3d64aa3021d920b7e32d06959982269adcf1b7dbc8b63b8fdf27da0",
+      "snapshot_sha256": "ade350bbe3d64aa3021d920b7e32d06959982269adcf1b7dbc8b63b8fdf27da0",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task.go",
+      "source_before": "8ed6fcb4abaf256e8f01cc81e7aa571fa6254f51161019ee9a97ae028f1a6784",
+      "source_after": "8ed6fcb4abaf256e8f01cc81e7aa571fa6254f51161019ee9a97ae028f1a6784",
+      "snapshot_sha256": "8ed6fcb4abaf256e8f01cc81e7aa571fa6254f51161019ee9a97ae028f1a6784",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_cancellation.go",
+      "source_before": "f161458f5384d5e7d18809a6769b9e98417fb2eee6523a06c693a26f32b00d0f",
+      "source_after": "f161458f5384d5e7d18809a6769b9e98417fb2eee6523a06c693a26f32b00d0f",
+      "snapshot_sha256": "f161458f5384d5e7d18809a6769b9e98417fb2eee6523a06c693a26f32b00d0f",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_finalize_failure_test.go",
+      "source_before": "28db44cf6f0331e0d3e0e1f1bad1d829e49084da8191468c7deed8a39a4c372d",
+      "source_after": "28db44cf6f0331e0d3e0e1f1bad1d829e49084da8191468c7deed8a39a4c372d",
+      "snapshot_sha256": "28db44cf6f0331e0d3e0e1f1bad1d829e49084da8191468c7deed8a39a4c372d",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_knowledge.go",
+      "source_before": "e76ff5445e30d9ae661a73f8b54696c0a73dc0178770c90a69810c62c31cb05a",
+      "source_after": "e76ff5445e30d9ae661a73f8b54696c0a73dc0178770c90a69810c62c31cb05a",
+      "snapshot_sha256": "e76ff5445e30d9ae661a73f8b54696c0a73dc0178770c90a69810c62c31cb05a",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_knowledge_concurrency_test.go",
+      "source_before": "a8dc87ef549678bf310025c422f1f6e2c9825e644d342fc5d4218c3489104e34",
+      "source_after": "a8dc87ef549678bf310025c422f1f6e2c9825e644d342fc5d4218c3489104e34",
+      "snapshot_sha256": "a8dc87ef549678bf310025c422f1f6e2c9825e644d342fc5d4218c3489104e34",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_knowledge_fence_test.go",
+      "source_before": "17e0ea51f71fc1c6fe4d3d0f61042b72c9913102680890196a2ae6996b31250b",
+      "source_after": "17e0ea51f71fc1c6fe4d3d0f61042b72c9913102680890196a2ae6996b31250b",
+      "snapshot_sha256": "17e0ea51f71fc1c6fe4d3d0f61042b72c9913102680890196a2ae6996b31250b",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_knowledge_history_test.go",
+      "source_before": "8cdf4aa7b928efb291431d987b77cb54522ddcf4db2e3d2ecb09d936dfc2fb11",
+      "source_after": "8cdf4aa7b928efb291431d987b77cb54522ddcf4db2e3d2ecb09d936dfc2fb11",
+      "snapshot_sha256": "8cdf4aa7b928efb291431d987b77cb54522ddcf4db2e3d2ecb09d936dfc2fb11",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_knowledge_invocation_test.go",
+      "source_before": "66549dbebbc47a37f32557b40bfb265d4571732da8ad92a6f530cc251b84ed04",
+      "source_after": "66549dbebbc47a37f32557b40bfb265d4571732da8ad92a6f530cc251b84ed04",
+      "snapshot_sha256": "66549dbebbc47a37f32557b40bfb265d4571732da8ad92a6f530cc251b84ed04",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_knowledge_managed_test.go",
+      "source_before": "3ea81ae093d8f5962233d391e19dee228223c6230a8837b80c9092db822840f5",
+      "source_after": "3ea81ae093d8f5962233d391e19dee228223c6230a8837b80c9092db822840f5",
+      "snapshot_sha256": "3ea81ae093d8f5962233d391e19dee228223c6230a8837b80c9092db822840f5",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_knowledge_observe.go",
+      "source_before": "f7668b3c4d2da3671a7160e2517fa84b612c35eb9a41a9427243b2db2c27a8de",
+      "source_after": "f7668b3c4d2da3671a7160e2517fa84b612c35eb9a41a9427243b2db2c27a8de",
+      "snapshot_sha256": "f7668b3c4d2da3671a7160e2517fa84b612c35eb9a41a9427243b2db2c27a8de",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_knowledge_prepare.go",
+      "source_before": "5604333902b19df2608d1dcfc8f94584ee1295904c1a5dd5b344417f9577e667",
+      "source_after": "5604333902b19df2608d1dcfc8f94584ee1295904c1a5dd5b344417f9577e667",
+      "snapshot_sha256": "5604333902b19df2608d1dcfc8f94584ee1295904c1a5dd5b344417f9577e667",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_knowledge_test.go",
+      "source_before": "bc384ceb8000fde945300bbda37339eeb14390daa5f10ec228da4bc23681db2c",
+      "source_after": "bc384ceb8000fde945300bbda37339eeb14390daa5f10ec228da4bc23681db2c",
+      "snapshot_sha256": "bc384ceb8000fde945300bbda37339eeb14390daa5f10ec228da4bc23681db2c",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/task_start.go",
+      "source_before": "f63236fbff502d5a23699b3bff357e009110c6073a287c2e4499e7b248a55979",
+      "source_after": "f63236fbff502d5a23699b3bff357e009110c6073a287c2e4499e7b248a55979",
+      "snapshot_sha256": "f63236fbff502d5a23699b3bff357e009110c6073a287c2e4499e7b248a55979",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/internal/service/triage_admission_test.go",
+      "source_before": "d99a2bdb034a5d011631ef3dd321565c4b4d24844eb17bca68d792493ca09f67",
+      "source_after": "d99a2bdb034a5d011631ef3dd321565c4b4d24844eb17bca68d792493ca09f67",
+      "snapshot_sha256": "d99a2bdb034a5d011631ef3dd321565c4b4d24844eb17bca68d792493ca09f67",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/generated/agent.sql.go",
+      "source_before": "234283e657fcdb39c14bea05decb8005cf20e43b5bb63b29ba7f99a3347a42a5",
+      "source_after": "234283e657fcdb39c14bea05decb8005cf20e43b5bb63b29ba7f99a3347a42a5",
+      "snapshot_sha256": "234283e657fcdb39c14bea05decb8005cf20e43b5bb63b29ba7f99a3347a42a5",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_knowledge_invalidation.sql.go",
+      "source_before": "e7ede16554d531a3012e01e4c9521d669df626a86c071ff70ce7563478c257fe",
+      "source_after": "e7ede16554d531a3012e01e4c9521d669df626a86c071ff70ce7563478c257fe",
+      "snapshot_sha256": "e7ede16554d531a3012e01e4c9521d669df626a86c071ff70ce7563478c257fe",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_knowledge_runtime.sql.go",
+      "source_before": "e6542be1effb187353b710db2f2ab0b18cf5a33b7045a89609c9ed4b37847588",
+      "source_after": "e6542be1effb187353b710db2f2ab0b18cf5a33b7045a89609c9ed4b37847588",
+      "snapshot_sha256": "e6542be1effb187353b710db2f2ab0b18cf5a33b7045a89609c9ed4b37847588",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_knowledge_service.sql.go",
+      "source_before": "6ab39d887df970249b9c7aa26cbaabed6e4c3477b0d00bdbe98dbfd8b922ecef",
+      "source_after": "6ab39d887df970249b9c7aa26cbaabed6e4c3477b0d00bdbe98dbfd8b922ecef",
+      "snapshot_sha256": "6ab39d887df970249b9c7aa26cbaabed6e4c3477b0d00bdbe98dbfd8b922ecef",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/generated/knowledge_serialization_test.go",
+      "source_before": "609057d6105fac59d009fb1d1976b3f2d495d6591de9b9fd7ab30a4a81e25c86",
+      "source_after": "609057d6105fac59d009fb1d1976b3f2d495d6591de9b9fd7ab30a4a81e25c86",
+      "snapshot_sha256": "609057d6105fac59d009fb1d1976b3f2d495d6591de9b9fd7ab30a4a81e25c86",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/generated/models.go",
+      "source_before": "52ee61afa68069ac2f983c879ee624d545d983c3fa46d8ee97bf28fa77638a71",
+      "source_after": "52ee61afa68069ac2f983c879ee624d545d983c3fa46d8ee97bf28fa77638a71",
+      "snapshot_sha256": "52ee61afa68069ac2f983c879ee624d545d983c3fa46d8ee97bf28fa77638a71",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/generated/task_knowledge.sql.go",
+      "source_before": "284d86b4d0a07ca243944b12788a8ff31289fbc6100093c6b200ba37d18e6526",
+      "source_after": "284d86b4d0a07ca243944b12788a8ff31289fbc6100093c6b200ba37d18e6526",
+      "snapshot_sha256": "284d86b4d0a07ca243944b12788a8ff31289fbc6100093c6b200ba37d18e6526",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_knowledge_invalidation.sql",
+      "source_before": "78f70c097e674f834f8e297c97933eb309ea7f8caa67639f71cc445d962d3264",
+      "source_after": "78f70c097e674f834f8e297c97933eb309ea7f8caa67639f71cc445d962d3264",
+      "snapshot_sha256": "78f70c097e674f834f8e297c97933eb309ea7f8caa67639f71cc445d962d3264",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_knowledge_runtime.sql",
+      "source_before": "8f847fc8d0af047f8ed583f899441cad8dec3380d5f674b113b9327720045f28",
+      "source_after": "8f847fc8d0af047f8ed583f899441cad8dec3380d5f674b113b9327720045f28",
+      "snapshot_sha256": "8f847fc8d0af047f8ed583f899441cad8dec3380d5f674b113b9327720045f28",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_knowledge_service.sql",
+      "source_before": "84b55548e61bbe09dc3bbe5cb9966634a59efd11fc8534ec5e5b2017a7849d9f",
+      "source_after": "84b55548e61bbe09dc3bbe5cb9966634a59efd11fc8534ec5e5b2017a7849d9f",
+      "snapshot_sha256": "84b55548e61bbe09dc3bbe5cb9966634a59efd11fc8534ec5e5b2017a7849d9f",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/db/queries/task_knowledge.sql",
+      "source_before": "b9ea53c9c71ea24e0b546b6afab5640560f3934991c09df9cb96e9f33bd8bb3d",
+      "source_after": "b9ea53c9c71ea24e0b546b6afab5640560f3934991c09df9cb96e9f33bd8bb3d",
+      "snapshot_sha256": "b9ea53c9c71ea24e0b546b6afab5640560f3934991c09df9cb96e9f33bd8bb3d",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/protocol/collaboration.go",
+      "source_before": "261485f959840a638ace1f0260141ce6fbb6432be6b3cdb97d9115fadf5dd4ee",
+      "source_after": "261485f959840a638ace1f0260141ce6fbb6432be6b3cdb97d9115fadf5dd4ee",
+      "snapshot_sha256": "261485f959840a638ace1f0260141ce6fbb6432be6b3cdb97d9115fadf5dd4ee",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_knowledge_runtime.go",
+      "source_before": "101afafacf7b199c652d923527355401f0832474df1848f9f71b52b9708f0972",
+      "source_after": "101afafacf7b199c652d923527355401f0832474df1848f9f71b52b9708f0972",
+      "snapshot_sha256": "101afafacf7b199c652d923527355401f0832474df1848f9f71b52b9708f0972",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/protocol/events.go",
+      "source_before": "9cb508241118479b72e4da3ba6ae20f967c24e7e0223da18fd034ce78878286b",
+      "source_after": "9cb508241118479b72e4da3ba6ae20f967c24e7e0223da18fd034ce78878286b",
+      "snapshot_sha256": "9cb508241118479b72e4da3ba6ae20f967c24e7e0223da18fd034ce78878286b",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/protocol/task_knowledge.go",
+      "source_before": "bd8183cf498eee7e20ebd16ddece4cd7f7103af4402c7b9ac191b944ecd5efe8",
+      "source_after": "bd8183cf498eee7e20ebd16ddece4cd7f7103af4402c7b9ac191b944ecd5efe8",
+      "snapshot_sha256": "bd8183cf498eee7e20ebd16ddece4cd7f7103af4402c7b9ac191b944ecd5efe8",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/protocol/task_knowledge_test.go",
+      "source_before": "749f1a7d3109dc5bdcba2b18cab0f92aed0fa5c4e615f6d91c0cf1aa1eb7c320",
+      "source_after": "749f1a7d3109dc5bdcba2b18cab0f92aed0fa5c4e615f6d91c0cf1aa1eb7c320",
+      "snapshot_sha256": "749f1a7d3109dc5bdcba2b18cab0f92aed0fa5c4e615f6d91c0cf1aa1eb7c320",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/taskfailure/classify.go",
+      "source_before": "0ce4c293fe9141ce4e8553efb307f24393491b43b5c97ecafda76ceeb88615bd",
+      "source_after": "0ce4c293fe9141ce4e8553efb307f24393491b43b5c97ecafda76ceeb88615bd",
+      "snapshot_sha256": "0ce4c293fe9141ce4e8553efb307f24393491b43b5c97ecafda76ceeb88615bd",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/taskfailure/failure.go",
+      "source_before": "e2e84cbbce7f8816bdef6dc65ff1045624f04ecab9cbe60c608adbcb472390f6",
+      "source_after": "e2e84cbbce7f8816bdef6dc65ff1045624f04ecab9cbe60c608adbcb472390f6",
+      "snapshot_sha256": "e2e84cbbce7f8816bdef6dc65ff1045624f04ecab9cbe60c608adbcb472390f6",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/taskfailure/failure_test.go",
+      "source_before": "15ab4bb3f5f551de46ec059abbc907ede6f437e733f8326548d6753f60056403",
+      "source_after": "15ab4bb3f5f551de46ec059abbc907ede6f437e733f8326548d6753f60056403",
+      "snapshot_sha256": "15ab4bb3f5f551de46ec059abbc907ede6f437e733f8326548d6753f60056403",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/pkg/taskfailure/knowledge_test.go",
+      "source_before": "bd0749a82017101ff5f7a7c46391c2f0b3e3536c4ec7d560047bcf15e024cd8f",
+      "source_after": "bd0749a82017101ff5f7a7c46391c2f0b3e3536c4ec7d560047bcf15e024cd8f",
+      "snapshot_sha256": "bd0749a82017101ff5f7a7c46391c2f0b3e3536c4ec7d560047bcf15e024cd8f",
+      "copy_attempts": 1
+    },
+    {
+      "path": "server/sqlc.yaml",
+      "source_before": "8750ca13eebe791b45bfbe21882d0f646fd3d2648646bdccd13dc8f76deb86ec",
+      "source_after": "8750ca13eebe791b45bfbe21882d0f646fd3d2648646bdccd13dc8f76deb86ec",
+      "snapshot_sha256": "8750ca13eebe791b45bfbe21882d0f646fd3d2648646bdccd13dc8f76deb86ec",
+      "copy_attempts": 1
+    }
+  ]
+}

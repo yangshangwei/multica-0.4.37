@@ -1,0 +1,292 @@
+{
+  "id": "agent-squad-rnd-improvements",
+  "name": "agent-squad-rnd-improvements",
+  "title": "智能体与 AI小队研发体系优化",
+  "description": "已交付阶段结项：M0、已验收M1增量与完成事务门禁v1；本轮UI/CLI提示以最终提交和定向复核记录为准。 原范围剩余事项已移交后续待办，完整路线与真实验收未因此完成。",
+  "status": "completed",
+  "dev_type": "backend",
+  "scope": "agent-rnd-p1",
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-05",
+  "completedAt": "2026-11-12",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "11-05-agent-log-redaction",
+    "11-05-agent-ci-test-integrity",
+    "11-05-squad-handoff-contract",
+    "11-05-agent-task-least-privilege",
+    "11-05-squad-delegation-receipts",
+    "11-05-agent-critical-path-ci",
+    "11-06-agent-m1-targeted-validation",
+    "11-06-controlled-artifact-execution",
+    "11-10-delivery-evidence-gate",
+    "11-10-durable-delegation-receipts",
+    "11-10-delivery-policy-evaluations",
+    "11-10-delivery-completion-hints",
+    "11-10-delivery-completion-enforcement"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "2026-11-12 用户确认“归档已交付阶段”。本任务仅关闭已交付工程阶段；见stage-closure-2026-11-12.md及后续待办。原失败、授权、预算、默认关闭状态保留。",
+  "meta": {
+    "m0_status": "integrated",
+    "m1_status": "delivered_increments_closed_remaining_scope_transferred",
+    "m2_status": "planned_in_successor",
+    "m3_status": "planned_in_successor",
+    "m0_merge_commit": "48aa997452cbc912e4052e44794386eafd023a25",
+    "m0_source_branch": "codex/agent-rnd-p1-20261105",
+    "next_milestone": "M1",
+    "integration_status": "prior_M0_M1_present_in_local_origin_tracking; five_new_M1_increments_in_HEAD_only; no_fetch_or_deployment_verification",
+    "m1_accepted_children": [
+      "agent-task-least-privilege",
+      "squad-delegation-receipts",
+      "agent-critical-path-ci",
+      "controlled-artifact-execution",
+      "delivery-evidence-gate",
+      "durable-delegation-receipts",
+      "delivery-policy-evaluations",
+      "delivery-completion-hints"
+    ],
+    "m1_branch": "codex/agent-rnd-m1-20261105",
+    "m1_worktree": "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105",
+    "m1_integration_status": "eight_functional_increments_and_targeted_validation_integrated; enforcement_planning",
+    "m1_integration_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+    "m1_source_branch": "codex/agent-rnd-m1-20261105",
+    "m1_source_worktree": "/Volumes/artisan/code/2026/mc-agent-rnd-m1-20261105",
+    "observed_origin_tracking_head": "e541cfb436fed9c6733174479718b651e2cf030d",
+    "next_action": "Remaining scope transferred to 11-12-agent-squad-followup-roadmap, 11-12-collaboration-real-runtime-acceptance; old stage is not an execution target.",
+    "authoritative_status_2026_11_11": {
+      "source": "accepted_current_HEAD_and_archived_child",
+      "head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+      "enforcement_commit": "18b743291d03c67ff519bea3151e166f96f72669",
+      "child": "11-10-delivery-completion-enforcement",
+      "child_status": "completed_archived",
+      "implementation_ready": true,
+      "full_delivery_gate_complete": true,
+      "full_m1_complete": false,
+      "skip_supported": false,
+      "next_m1_scope": "delivery_completion_ui_cli_hints_and_remaining_governance",
+      "real_provider_acceptance": "independent_open_scope"
+    },
+    "status_reconciliation_2026_11_09": {
+      "source_head": "b10da8fec9dab057f9830bd336369d42e27b8c85",
+      "report": "docs/audits/2026-11-09-active-task-reconciliation.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "notes": "M0 and accepted M1 increments/testing locally integrated into codex/cross-workspace-collaboration. M1 controlled executor/evidence gates/durable receipts and M2/M3 remain incomplete. Real Codex targeted trials:2complete,1timeout retained.",
+        "meta": {
+          "m0_status": "merged_locally",
+          "integration_status": "local_only",
+          "m1_integration_status": "merged_locally"
+        }
+      }
+    },
+    "progress_audit_2026_11_10": {
+      "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
+      "finding": "M0 and accepted M1 integrated. Controlled-artifact contradictory contracts and two subsequent authority/deletion findings resolved; planning independently ready, product not yet implemented. Other M1 and M2/M3 remain open.",
+      "snapshot_scope": "Historical first-stage audit; current status is status_refresh_2026_11_11"
+    },
+    "m1_controlled_artifact_status": "verified_integrated_archived",
+    "m1_controlled_artifact_commit": "f5b51d7be",
+    "progress_2026_11_10_artifact": {
+      "commit": "f5b51d7be",
+      "verified": "handler84 normal/race; router23 normal/race; pure macOS/Linux78; build/vet/sqlc; independent PASS",
+      "parent_complete": false
+    },
+    "delivery_evidence_observation_2026_11_10": {
+      "status": "verified_observe_increment",
+      "task": "11-10-delivery-evidence-gate",
+      "handler_normal_race_named_pass_each": 140,
+      "router_normal_race_named_pass_each": 34,
+      "full_delivery_gate_complete": false,
+      "remaining": [
+        "project_policy_and_durable_evaluation",
+        "all_done_writer_enforcement",
+        "durable_delegation_receipts",
+        "M2",
+        "M3"
+      ],
+      "real_model_calls": 0
+    },
+    "durable_delegation_receipts_2026_11_10": {
+      "status": "verified_increment",
+      "task": "11-10-durable-delegation-receipts",
+      "baseline": "38d07b6ed",
+      "scope": "opt-in idempotent ordinary comment creation and recovery",
+      "real_model_calls": 0,
+      "handler_normal_race_named_each": 342,
+      "router_normal_race_named_each": 20,
+      "migrations_normal_race_named_each": 5,
+      "full_m1_complete": false,
+      "commit": "f4782b863"
+    },
+    "delivery_policy_evaluations_2026_11_10": {
+      "status": "verified_independent_review_pass",
+      "task": "11-10-delivery-policy-evaluations",
+      "baseline": "c3bc9abd1",
+      "scope": "off/observe project policy revisions and immutable durable evaluations",
+      "handler_normal_race_named_each": 236,
+      "router_normal_race_named_each": 80,
+      "migration_normal_race_named_each": 37,
+      "full_delivery_gate_complete": false,
+      "full_m1_complete": false,
+      "real_model_calls": 0,
+      "commit": "4ec66e93c"
+    },
+    "delivery_completion_hints_2026_11_10": {
+      "status": "verified_independent_review_pass",
+      "task": "11-10-delivery-completion-hints",
+      "baseline": "05de761de",
+      "scope": "explicit ordinary human completion-hint API; no skip/UI/CLI/enforcement",
+      "handler_normal_race_named_each": 325,
+      "router_normal_race_named_each": 103,
+      "real_model_calls": 0,
+      "full_m1_complete": false,
+      "commit": "ca0c8efd3"
+    },
+    "delivery_completion_enforcement_2026_11_10": {
+      "status": "planning_business_decisions_partially_resolved",
+      "task": "11-10-delivery-completion-enforcement",
+      "baseline": "a37bee7cd1c05122383a6c40e157ef9ed5890bf4",
+      "archive_run_records_verified": 169,
+      "completion_source_files_verified": 45,
+      "product_changes": false,
+      "full_delivery_gate_complete": false,
+      "full_m1_complete": false,
+      "real_model_calls": 0,
+      "confirmed_decisions": {
+        "D1": "A_explicit_human_acceptance_with_one_time_designated_completion",
+        "D2": "A_owner_admin_reasoned_bound_revocable_single_use_skip_max_24h_capped_by_evidence_expiry",
+        "D3": "A_reject_create_as_done_in_resolved_enforce_project_including_parent_inheritance_and_comment_child",
+        "D4a": "A_non_project_enter_done_only_revalidation_and_frozen_historical_acceptance_for_done_edits",
+        "D4b": "A_owner_admin_personal_reasoned_enforce_exit_reopen_before_migration_no_combined_done_explicit_off_before_delete"
+      },
+      "pending_decisions": [
+        "D5",
+        "D6",
+        "D7"
+      ],
+      "pending_policy_detail": "Explicit waivable-check allowlist; unknown, missing, expired, revoked or mismatched authority/bindings cannot be waived",
+      "implementation_ready": false
+    },
+    "status_refresh_2026_11_11": {
+      "source_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+      "report": "docs/audits/2026-11-11-active-task-progress-refresh.zh-CN.md",
+      "archive_ready": false,
+      "previous_current_fields": {
+        "description": "依据 2026-11-05 审计分阶段增强交付可信度、权限、安全、CI、汇报与非功能保障；本轮交付首批 P1 修复。",
+        "notes": "2026-11-09校准：M0、三个M1增量及定向测试已在当前HEAD及本地origin跟踪记录中；7个子任务已归档。受控制品执行在来源worktree退回planning且修订设计未同步，本轮补齐；证据门禁、持久化回执、M2/M3仍未完成。真实定向试验2完成、1超时保留。",
+        "meta": {
+          "integration_status": "integrated_in_HEAD_and_local_origin_tracking; remote_not_fetched_deployment_not_verified",
+          "m1_accepted_children": [
+            "agent-task-least-privilege",
+            "squad-delegation-receipts",
+            "agent-critical-path-ci"
+          ],
+          "m1_integration_status": "accepted_increments_integrated",
+          "m1_integration_head": "a6552a03533c2fc11f940b849c3da4e0a3db8878",
+          "next_action": "M1 full enforcement: resolve evaluator sharing, skip authority/bindings, create-done, done edits/moves and collaboration/R38 semantics; then integrate all writers atomically. Explicit API hint foundation verified, UI/CLI prompting absent. M2 snapshot -> parent budget -> capability/load; M3 governance.",
+          "progress_audit_2026_11_10": {
+            "report": "docs/plans/2026-11-10-business-progress-and-execution.zh-CN.md",
+            "finding": "M0 and accepted M1 integrated. Controlled-artifact contradictory contracts and two subsequent authority/deletion findings resolved; planning independently ready, product not yet implemented. Other M1 and M2/M3 remain open."
+          },
+          "delivery_completion_enforcement_2026_11_10": {
+            "status": "planning_business_decisions_pending",
+            "task": "11-10-delivery-completion-enforcement",
+            "baseline": "a37bee7cd1c05122383a6c40e157ef9ed5890bf4",
+            "archive_run_records_verified": 169,
+            "completion_source_files_verified": 45,
+            "product_changes": false,
+            "full_delivery_gate_complete": false,
+            "full_m1_complete": false,
+            "real_model_calls": 0
+          }
+        }
+      }
+    },
+    "delivery_completion_enforcement_2026_11_11": {
+      "status": "verified_integrated_archived_v1",
+      "task": "11-10-delivery-completion-enforcement",
+      "baseline": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+      "source_files": 110,
+      "handler_each_normal_race": 620,
+      "router_each_normal_race": 166,
+      "service_each_normal_race": 272,
+      "migrations_each_normal_race": 62,
+      "retention_each_normal_race": 4,
+      "skip_supported": false,
+      "full_m1_complete": false,
+      "real_model_calls": 0,
+      "commit": "18b743291d03c67ff519bea3151e166f96f72669",
+      "full_delivery_gate_complete": true
+    },
+    "delivered_stage_closure_2026_11_12": {
+      "date": "2026-11-12",
+      "kind": "delivered_stage_only",
+      "user_instruction": "归档已交付阶段",
+      "status": "archived_delivered_stage",
+      "delivered_scope": "M0、已验收M1增量与完成事务门禁v1；本轮UI/CLI提示以最终提交和定向复核记录为准。",
+      "remaining_scope": "M1剩余交互/授权、M2报告/父级预算/能力负载、M3持续治理转入后续能力建设；真实小队可靠性转入真实运行验收。",
+      "original_full_scope_complete": false,
+      "successor_tasks": [
+        ".trellis/tasks/11-12-agent-squad-followup-roadmap",
+        ".trellis/tasks/11-12-collaboration-real-runtime-acceptance"
+      ],
+      "report": "stage-closure-2026-11-12.md",
+      "historical_failures_reclassified": false,
+      "budgets_reset": false,
+      "new_provider_calls": 0,
+      "execution_enabled_by_archive": false,
+      "previous_state": {
+        "description": "依据研发体系审计分阶段交付权限、受控制品、证据、委派与完成门禁；M0及M1八个功能增量和完成事务强制门禁v1已集成验收，M1剩余交付UX/治理与真实供应商验收，M2/M3未实施。",
+        "notes": "2026-11-11权威状态：完成事务强制门禁v1已由18b743291集成并归档验收；M1父任务仍in_progress，v1现有检查不可豁免（skip_supported=false），UI/CLI自动提示、真实供应商验收及其余M1/M2/M3范围仍开放。旧planning snapshot与未跟踪同步资料保留为历史，不恢复或重做11-10子任务。",
+        "meta": {
+          "next_action": "M1 completion enforcement v1 is verified and locally integrated; M1 remains open for explicitly scoped remaining delivery UX/governance and real-provider acceptance. No waivable v1 checks or usable skip. M2 deterministic snapshot -> parent budget -> capability/load; M3 governance. Historical provider stops unchanged.",
+          "m1_status": "in_progress",
+          "m2_status": "planned",
+          "m3_status": "planned"
+        }
+      },
+      "original_full_real_acceptance_passed": false,
+      "code_commits": [
+        "e08ab34ce228cf11a39c153ccd33d61626ebd75b",
+        "c5c6fd29a74deee2b52726c92d6c05fbfc289748"
+      ],
+      "verification": {
+        "hints": {
+          "commit": "c5c6fd29a74deee2b52726c92d6c05fbfc289748",
+          "core_tests_passed": 22,
+          "views_tests_passed": 131,
+          "cli_tests": "passed",
+          "lint_typecheck_vet_contracts": "passed",
+          "existing_views_lint_warnings": 27,
+          "scope": "ordinary single-issue status-only consumer only"
+        },
+        "runtime_preparation": {
+          "commit": "e08ab34ce228cf11a39c153ccd33d61626ebd75b",
+          "mock_tests_passed": 5,
+          "compile_vet_gofmt": "passed",
+          "current_db_controls_run": false,
+          "real_provider_tests_run": false,
+          "historical_go_framework_and_fake_evidence_hashes": "matched",
+          "H6_real_continuation_delivered": false
+        },
+        "new_provider_calls": 0,
+        "independent_scope_review": "passed"
+      },
+      "archive_ready": true,
+      "historical_paths_preserved_without_rebinding": true,
+      "archived_path": ".trellis/tasks/archive/2026-11/11-05-agent-squad-rnd-improvements"
+    },
+    "archive_ready": true,
+    "archive_ready_scope": "delivered_stage_only_remaining_scope_transferred"
+  }
+}

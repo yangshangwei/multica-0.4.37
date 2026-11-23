@@ -60,6 +60,9 @@ type CheckContext struct {
 // PRSnapshot is the atomic unit written per fetch. It mirrors exactly what the
 // API returned — no incremental inference.
 type PRSnapshot struct {
+	// Set only by the complete, validated fetch. Older/incomplete snapshots
+	// remain useful display facts but cannot authorize strict stage CI.
+	complete         bool
 	HeadSHA          string
 	Mergeable        string // MERGEABLE / CONFLICTING / UNKNOWN (raw enum)
 	MergeStateStatus string // CLEAN / DIRTY / BLOCKED / BEHIND / UNSTABLE / ... (raw enum)
@@ -179,16 +182,20 @@ func FetchPRSnapshot(ctx context.Context, c *Client, installationID int64, owner
 			if page > 0 {
 				return nil, errors.New("ghsnapshot: check rollup changed during pagination")
 			}
+			snap.complete = true
 			return snap, nil
 		}
 		snap.HasChecks = true
 		snap.RollupState = rollup.State
 		for _, raw := range rollup.Contexts.Nodes {
-			if cc, ok := normalizeNode(raw); ok {
-				snap.Contexts = append(snap.Contexts, cc)
+			cc, ok := normalizeNode(raw)
+			if !ok {
+				return nil, errors.New("ghsnapshot: incomplete check-context normalization")
 			}
+			snap.Contexts = append(snap.Contexts, cc)
 		}
 		if !rollup.Contexts.PageInfo.HasNextPage {
+			snap.complete = true
 			return snap, nil
 		}
 		nextCursor := rollup.Contexts.PageInfo.EndCursor
@@ -227,7 +234,7 @@ func normalizeNode(raw json.RawMessage) (CheckContext, bool) {
 			Conclusion string `json:"conclusion"`
 			DetailsURL string `json:"detailsUrl"`
 		}
-		if err := json.Unmarshal(raw, &n); err != nil {
+		if err := json.Unmarshal(raw, &n); err != nil || strings.TrimSpace(n.Name) == "" {
 			return CheckContext{}, false
 		}
 		return CheckContext{
@@ -242,7 +249,7 @@ func normalizeNode(raw json.RawMessage) (CheckContext, bool) {
 			State     string `json:"state"`
 			TargetURL string `json:"targetUrl"`
 		}
-		if err := json.Unmarshal(raw, &n); err != nil {
+		if err := json.Unmarshal(raw, &n); err != nil || strings.TrimSpace(n.Context) == "" {
 			return CheckContext{}, false
 		}
 		status, conclusion := normalizeStatusState(n.State)

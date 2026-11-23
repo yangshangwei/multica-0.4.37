@@ -1,0 +1,13 @@
+First argument must use the object destructuring pattern: _fixtures
+
+   at collaboration-installed-clients.spec.ts:29
+
+  27 | }
+  28 |
+> 29 | test("cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands", async (_fixtures, info) => {
+     | ^
+  30 |   test.skip(!controlEnvironmentReady() || !process.env.COLLABORATION_INSTALLED_CLI_RELAY,
+  31 |     "Requires the existing isolated password API, exact cached OCI package and explicit Linux stdio relay");
+  32 |   test.setTimeout(240_000);
+
+[1A[2K

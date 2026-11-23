@@ -1,0 +1,29 @@
+{
+  "baseline_ref": "242680c911af9427ec69ae59c53742c54a33dbf9",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "validate_fixture.py"
+      ],
+      "exit_code": 0,
+      "stdout": "Fixture structure: PASS (8 Python files parsed; local source hashes match)\nSupply-chain conclusion: hold/unknown; local hashes do not establish producer trust\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_dependency",
+        "test_authorization"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "test_label_at_limit_is_accepted (test_dependency.DependencyContractTests.test_label_at_limit_is_accepted) ... ok\ntest_label_over_limit_is_rejected (test_dependency.DependencyContractTests.test_label_over_limit_is_rejected) ... FAIL\ntest_regular_label_is_trimmed (test_dependency.DependencyContractTests.test_regular_label_is_trimmed) ... ok\ntest_current_workspace_can_read_its_row (test_authorization.AuthorizationContractTests.test_current_workspace_can_read_its_row) ... ok\ntest_other_workspace_is_denied_before_read_audit (test_authorization.AuthorizationContractTests.test_other_workspace_is_denied_before_read_audit) ... FAIL\ntest_unknown_issue_has_no_read_audit (test_authorization.AuthorizationContractTests.test_unknown_issue_has_no_read_audit) ... ok\n\n======================================================================\nFAIL: test_label_over_limit_is_rejected (test_dependency.DependencyContractTests.test_label_over_limit_is_rejected)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/work/lab/test_dependency.py\", line 16, in test_label_over_limit_is_rejected\n    with self.assertRaises(ValueError):\nAssertionError: ValueError not raised\n\n======================================================================\nFAIL: test_other_workspace_is_denied_before_read_audit (test_authorization.AuthorizationContractTests.test_other_workspace_is_denied_before_read_audit)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/work/lab/test_authorization.py\", line 25, in test_other_workspace_is_denied_before_read_audit\n    self.assertEqual((result, self.audit), (None, []))\nAssertionError: Tuples differ: ({'id': 'issue-two', 'title': 'Synthetic task two'}, ['issue-two']) != (None, [])\n\nFirst differing element 0:\n{'id': 'issue-two', 'title': 'Synthetic task two'}\nNone\n\n- ({'id': 'issue-two', 'title': 'Synthetic task two'}, ['issue-two'])\n+ (None, [])\n\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nFAILED (failures=2)\n"
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "at": "2026-10-22T00:37:25.567745+00:00",
+  "reviewer": "content_creation independent of remaining_controls implementation",
+  "decision": "approve_complete_named_clauses",
+  "criteria": [
+    {
+      "id": "AC34",
+      "primary_owner": "P5",
+      "decision": "approve_promotion"
+    },
+    {
+      "id": "AC57",
+      "primary_owner": "P5",
+      "decision": "approve_promotion"
+    }
+  ],
+  "blocking_findings": [],
+  "exact_current_sources": {
+    "e2e/collaboration-lane-close-controls.spec.ts": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+    "e2e/fixtures/collaboration-lane-close-controls.ts": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+    "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+    "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+    "e2e/fixtures/collaboration-cross-client-provider.go": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+  },
+  "source_changed_during_run": false,
+  "clients": {
+    "startTime": "2026-10-22T00:32:29.341Z",
+    "duration": 107534.009,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "all_test_retries": 0,
+  "raw_sha256": "3bbcab7c52cb54937c6350bc4051234513ca966476258cf8d921b7a814356558",
+  "credential_projection_corrected": true,
+  "decoded_raw_attachment_violations": [],
+  "earlier_redacted_copy_hash_diff_explicit": true,
+  "actual_native_started_by_reviewer": 0,
+  "canonical15/35_verified": true,
+  "not_tested": [
+    "commercial provider account/quota",
+    "installed full Main/old clients",
+    "other OS containment",
+    "full97acceptance"
+  ],
+  "artifacts": [
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-final-review.md",
+      "sha256": "f472b0167c800f6cc6dbbbfc7eed95bf6acc53268fed09595a7258cd81133826"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-clients-final-command.json",
+      "sha256": "ccf67a1c1a3aeefb2c6e7c73f82e170387fac108f77192be5d032dcbddc6f14c"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-clients-final-result.json",
+      "sha256": "9e455547bd133f8dddf9db1fb2600a063b4244e132930b5908d202a6362d5753"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-clients-final.json",
+      "sha256": "3bbcab7c52cb54937c6350bc4051234513ca966476258cf8d921b7a814356558"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-final-summary.json",
+      "sha256": "0bc1121b1613880307aed1b34bc29397384bbfe77b4468191dea24a336428229"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-static-public-typecheck-result.json",
+      "sha256": "48510085d0d127f59b4fb76b61ae9c183a3eafef28f6b64d4e4b749f9b26b293"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-static-public-lint-result.json",
+      "sha256": "b1bc951ba14d8ee0f15b71fa0bdade304764ada9be96eae6c83ba03ce0505859"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-static-public-discovery-result.json",
+      "sha256": "5e41d4d3d76a1b2881566747ff22ceea891d22dbd422116eacc33096d63490e1"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-preflight.json",
+      "sha256": "9ba7aab3a987b1f160afb4ad61eb306b1083112c0b9c1642c3c33d0f6b7965b1"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-artifact-redaction-repair.json",
+      "sha256": "6c0abdb30f6b7fda0938a6c2f73901e44d6130b4a8fb34bd72977e003ff6211b"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-redaction-final-check.json",
+      "sha256": "c91d3320c76f6844cde78d27827057c88b47f2f04aadde6533383d23049f0dd3"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lifecycle-service-canonical-result.json",
+      "sha256": "e8d0786f9d9cb3930860caa2233dcbf021a776bffddc3d0097c3239c530a7fdb"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lifecycle-service-canonical.jsonl",
+      "sha256": "24735e696d5eb4e1bf212659d908b62c39b51af2138156a70751a640457f95e8"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-final-web-same-lane-identities.json",
+      "sha256": "c88fdae34e93917f59a8cf8e2ce3e39ed7311ad2f70316d2abe9ebfe2838044d"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-final-web-complete-identities.json",
+      "sha256": "7a9ed8458dbc0d0d5562e72dabaf1231401f705f2c241ab81ab80934acac226e"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-final-web-cancel-identities.json",
+      "sha256": "7bf3229b50392c5dd891582c13f58e7b801eb74516795faa65d3dbcb578d272c"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-final-electron-same-lane-identities.json",
+      "sha256": "4768d7d91d9407b9198143ca016add0de1b77e17f87270c31524d125a9e86c71"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-final-electron-complete-identities.json",
+      "sha256": "09b1a914bd29af5ca2a3f6338ca7b8451f251d5ea700294cd5e332edbbb3d945"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lane-close-final-electron-cancel-identities.json",
+      "sha256": "8e6b1e62490beb7bede10418ab5272dea52a2db99935c5122cf330cd009dc7a7"
+    }
+  ]
+}

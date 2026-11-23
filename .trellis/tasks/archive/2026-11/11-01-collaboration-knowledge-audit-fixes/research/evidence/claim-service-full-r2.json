@@ -1,0 +1,26 @@
+{
+  "source_sha": "0aedf934e0cc2b3a959e9be3216305a25bf4e6ce",
+  "working_diff_sha256": "18c13b3541dce9b5b39313a679ba6f09968033d7c5d4ebc6099ac49b726e872d",
+  "database": "kfix_claim_full_r2_20261101_2338",
+  "database_identity": "kfix_claim_full_r2_20261101_2338|763_collaboration_knowledge_delivery_history",
+  "command": [
+    "/Volumes/artisan/code/2026/mc-kfix-lane-claim/scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "./internal/service",
+    "-count=1",
+    "-json",
+    "-timeout=40m"
+  ],
+  "started_at": "2026-11-01T15:38:56.896054+00:00",
+  "exit_code": 0,
+  "finished_at": "2026-11-01T16:00:09.225064+00:00",
+  "sha256": "928435d2f810bc386ceaabae5be25e271b333bc53b3d18c5ac638caa0db06338",
+  "test_events": {
+    "pass": 3281,
+    "skip": 18
+  },
+  "failures": [],
+  "verified_product_commit": "94e790d2d",
+  "reuse_boundary": "compiled service includes H3/M3 dirty bytes mapped by H3-M3-source-and-sqlc.json; later managed argv changes are outside service behavior"
+}

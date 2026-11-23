@@ -63,4 +63,20 @@ export interface InboxItem {
   archived: boolean;
   created_at: string;
   details: Record<string, string> | null;
+  /** Personal group state; absent fields preserve older backend responses. */
+  snoozed_until?: string | null;
+  snooze_revision?: number;
+  reminded_at?: string | null;
+  reminder_reason?: string | null;
+}
+
+export interface InboxSnoozeReceipt {
+  workspace_id: string;
+  group_kind: "issue" | "item";
+  group_id: string;
+  revision: number;
+  snoozed_until: string | null;
+  reminded_at: string | null;
+  reminder_reason?: string | null;
+  undo_token?: string | null;
 }

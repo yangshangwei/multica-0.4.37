@@ -1,0 +1,17 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "database": "multica_seed_test_func7af9_20261102",
+  "started_at": "2026-11-02T00:26:02.319849+00:00",
+  "state": "complete",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "node",
+    "--test",
+    "scripts/seed-rich-test-data.test.mjs"
+  ],
+  "scope": "Existing seed script integration on a new task-owned database",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:26:07.683851+00:00"
+}

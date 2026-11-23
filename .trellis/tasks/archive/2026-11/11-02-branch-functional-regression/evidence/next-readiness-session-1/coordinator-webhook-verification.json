@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-02T10:16:54.505525+00:00",
+  "reviewer": "coordinator; independent review separate",
+  "status": "PASS_NEW_WEBHOOK_DIAGNOSTIC_ONLY",
+  "raw_hash_mismatches": [],
+  "actual_top_pass": 1,
+  "actual_sub_pass": 4,
+  "compile_attempts": 1,
+  "actual_test_execution_attempts": 1,
+  "race": true,
+  "canonical_sql_hash": "4007048c71c8c2f3568d9ed4774d5c2f87c1da22795f1f413edca329bebb6865",
+  "actual_error_boundary": "PrepareError wrappingPgError42P01 is serverprepare/parse; closedpool is clientacquisition; noSELECTexecutor claim",
+  "body_nonlookup_writes_queries_batches": 0,
+  "three_table_fingerprints_unchanged": true,
+  "debt_split_and_absolute429_correct": true,
+  "database_connections_after": 0,
+  "source_and_frozen_unchanged": true,
+  "original_inventory": "10376PASS/1FAIL/6SKIP unchanged; newprivateidentity separate",
+  "original_p95": "2171ms>2000msFAIL retained; no rerun",
+  "commercial_calls": 0,
+  "remote_dispatches": 0,
+  "limits": "No materialized successful20fieldrow/decode/signing/delivery/worker orProvider acceptance proof"
+}

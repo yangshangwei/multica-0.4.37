@@ -1,0 +1,252 @@
+{
+  "at": "2026-11-02T09:48:33.098401+00:00",
+  "role": "native trellis-research /root/skipped_assertion_scope",
+  "scope": "Two original Go skips only; research/pre-execution recommendation",
+  "status": "READY_FOR_OWNED_WEBHOOK_DIAGNOSTIC_PENDING_COORDINATOR_PERMIT",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "candidate_identity_basis": "Supplied dispatch and existing task record; no git operation executed by researcher",
+  "context_loading": "Complete native research-only hook header; root/artifacts/workflow/spec manually read; no implement/check.jsonl loaded under research role isolation",
+  "files_found": {
+    "server/internal/cli/config.go": "Typed CLI configuration and load/save implementation; explicit unknown-key limitation",
+    "server/internal/cli/config_test.go": "Original forward-compat skip and existing canonical known-field round trips",
+    "server/internal/handler/autopilot_webhook.go": "Public bearer-token ingress, rate limits, ErrNoRows/other-error split",
+    "server/internal/handler/autopilot_webhook_handler_test.go": "Original skipped500marker and existing rate-limit/control journeys",
+    "server/pkg/db/generated/db.go": "Existing DBTX injection seam; no product interface change needed",
+    "server/pkg/db/generated/autopilot.sql.go": "Canonical token query and generated20-column Scan",
+    "server/internal/handler/handler_test.go": "Mandatory database-backed TestMain and shared fixture/pool owner",
+    "server/internal/handler/handler.go": "Handler fields and standard error response writer",
+    "server/internal/handler/webhook_rate_limiter.go": "Real in-memory Allow/Check behavior and IP factories",
+    "server/internal/testutil/http.go": "Existing request/URL-param/Call/Want/JSON helpers",
+    "server/internal/testutil/db.go": "Owned fixture/count helpers",
+    "server/internal/handler/project_health_test.go": "Prior independent-pool/session search_path fault pattern (do not copy its DDL)",
+    "server/internal/handler/daemon_comment_delivery_test.go": "Existing DBTX counting/failure-wrapper pattern",
+    "server/go.mod": "Repo Go1.26.6 and pgx/v5v5.9.2 dependency identity",
+    ".trellis/spec/server/database-test-isolation.md": "Explicit database, TestMain, guard, source/frozen and cleanup contract",
+    ".trellis/spec/server/security-boundaries.md": "Automation principal/dispatch authority remains separate",
+    "server/internal/metrics/business_events.go": "Nil-safe webhook rate-limit metric method; no analytics/network call on early429"
+  },
+  "source_sha256": {
+    "server/internal/cli/config.go": "b73c435388ef0f0feb3052e9bebd0ffe18f95ec0b420186cd69c25fb34afad31",
+    "server/internal/cli/config_test.go": "4f3f6bb72fa4d6eb2888ddbd379f7d13a16adc2fee3f8375fb011060eb93f266",
+    "server/internal/handler/autopilot_webhook.go": "09ac6d45c195091b2d758f85258dfcbbe4f5043a5efe70b864d514e0a4d1529b",
+    "server/internal/handler/autopilot_webhook_handler_test.go": "dea4ec7e88200e4be3b0b69867d8779104a49948b9b75a5272877eabce42e67d",
+    "server/pkg/db/generated/db.go": "b795d118ae65ff39cfa847999234c683cebb6d8e7664ab35a122e44d8b33dd76",
+    "server/pkg/db/generated/autopilot.sql.go": "37481bc2826ec17a25b77b5b508f200834c32456bd82a8eaf9d555ab98ce1e47",
+    "server/internal/handler/handler_test.go": "66b4ea1c269b4e431a0118cfe88eb14fc707979a2aab70a626d07167e02ae12b",
+    "server/internal/handler/handler.go": "c0d052b478820c2f757651329a4f893f095adf1d345d7ac3ba7e49ef08e959f2",
+    "server/internal/handler/webhook_rate_limiter.go": "53ddddaa1049f9e262969aae79f0a0778935b043c5c6fabd7e9f872050f3f1e2",
+    "server/internal/testutil/http.go": "7ce527a76f5055230ae98cf886edeb7fc8f9b7d53cc5da807671aa949deb885e",
+    "server/internal/testutil/db.go": "57f74029e5273c15eb32b1b811d0760997dcea4b02d30ac510292d68f21989f1",
+    "server/internal/handler/project_health_test.go": "e96b5687d6183d0cdc08e1d1cf9b6d833a93bc0b7f0bea48c1f2084f0f6b11b2",
+    "server/internal/handler/daemon_comment_delivery_test.go": "040dfedeb08fcfdc85c3637f3ddca9f52e4a3d5a78ee1c43df702583fb510bf5",
+    "server/go.mod": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+    ".trellis/spec/server/database-test-isolation.md": "fa12c446750bbb2ab0a5ffca9d0a5dfc960bdcae08c8614bcd895175ec1dcb09",
+    ".trellis/spec/server/security-boundaries.md": "eafe18806e77423c13062317ab9168019f0148131107179bfdd162876957e2cf",
+    "server/internal/metrics/business_events.go": "3f20fe6670f58074bd4c1b66ab1d0889ddff36882e9a1252eb9b4def56e68891"
+  },
+  "cli": {
+    "original_skip": "TestCLIConfig_UnknownFieldsArePreserved",
+    "status": "KNOWN_UNIMPLEMENTED_PRESERVATION_CAPABILITY_ORIGINAL_SKIP_RETAINED",
+    "recommendation": "No new CLI preservation/loss diagnostic in this batch, per coordinator steering. Preserve caveat; known typed-field round trips already have canonical tests.",
+    "evidence": [
+      "config.go:162-167",
+      "config.go:305-321",
+      "config.go:361-389",
+      "config_test.go:255-298"
+    ],
+    "mechanism": "encoding/json decodes only CLIConfig/BackendOverrides/OpenClawOverride represented fields and marshals only those fields; no RawMessage/extras merge path exists.",
+    "limits": "Unknown keys inside declared map[string]string values are map contents and can be retained; do not claim all arbitrary config-map entries are lost. Existing old-file compatibility is separate."
+  },
+  "webhook": {
+    "original_skip": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+    "current_contract": "Nonempty bearer path -> real generated token lookup; errors.Is(pgx.ErrNoRows)404 plus bad-credential debit, all othererrors500internalerror before body/persistence; absolute gate429 precedes DB",
+    "seam": "db.New(DBTX) is existing generated API, despite skipcomment focusing on concrete*Queries field; owned pool + row/count wrapper require no product refactor",
+    "locally_feasible": true,
+    "feasibility_limit": "Execution requires actual fresh owned migratedDB and verified connection budget, allocated by coordinator; researcher did not inspect liveDB"
+  },
+  "proposed_permit": {
+    "status": "PROPOSED_PRE_EXECUTION_PERMIT_NOT_EXECUTED",
+    "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "candidate_version": "0.6.8-rc.20261102",
+    "owner": "Coordinator allocates/records environment; separately dispatched native implement child writes/run private diagnostic only",
+    "new_top_level_test": "TestTaskPrivateWebhookTokenLookupErrorDiagnostic",
+    "recommended_subcases": [
+      {
+        "id": "server_lookup_error_returns500",
+        "priority": "recommended",
+        "fault": "Separate owned pool with connection-local search_path=pg_catalog; no DDL or canonical SQL rewrite",
+        "expected_http": 500,
+        "expected_body": {
+          "error": "internal error"
+        },
+        "expected_lookup_calls": 1,
+        "expected_scan_error": "pgconn.PgError SQLSTATE42P01, not pgx.ErrNoRows",
+        "body_read_calls": 0,
+        "writes_queries_batches": 0,
+        "bad_credential_debt_charged": false
+      },
+      {
+        "id": "closed_owned_pool_returns500",
+        "priority": "recommended",
+        "fault": "Close only a separately constructed and identity-verified owned pgxpool before canonical lookup",
+        "expected_http": 500,
+        "expected_body": {
+          "error": "internal error"
+        },
+        "expected_lookup_calls": 1,
+        "expected_scan_error": "Actual closed-pool acquisition error, nonnil and not pgx.ErrNoRows; no claim of server-side SQL execution",
+        "body_read_calls": 0,
+        "writes_queries_batches": 0,
+        "bad_credential_debt_charged": false
+      },
+      {
+        "id": "real_missing_token_returns404",
+        "priority": "recommended control",
+        "fault": "Normal separate healthy pool; a fresh synthetic valid-shaped47-byte token with no row",
+        "expected_http": 404,
+        "expected_body": {
+          "error": "webhook not found"
+        },
+        "expected_lookup_calls": 1,
+        "expected_scan_error": "errors.Is(err,pgx.ErrNoRows)",
+        "body_read_calls": 0,
+        "writes_queries_batches": 0,
+        "bad_credential_debt_charged": true
+      },
+      {
+        "id": "absolute_limit_preempts_lookup",
+        "priority": "recommended ordering control",
+        "fault": "Precharge a real memory absolute-IP limiter with Limit1; error-pool DBTX remains ready",
+        "expected_http": 429,
+        "expected_body": {
+          "error": "rate limit exceeded"
+        },
+        "expected_lookup_calls": 0,
+        "expected_retry_after": "positive integer",
+        "body_read_calls": 0,
+        "writes_queries_batches": 0
+      }
+    ],
+    "private_test_file": ".omx/private/branch-functional-regression-20261102/next-webhook-lookup-1/diagnostic_test.go",
+    "virtual_overlay_target": "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102/server/internal/handler/zz_task_private_webhook_lookup_test.go",
+    "new_evidence_run": "evidence/next-webhook-lookup-1",
+    "suggested_owned_database": "multica_func7af9_next_webhook_lookup_1",
+    "compile_argv": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "-p",
+      "2",
+      "-overlay",
+      "ABS_TASK_OVERLAY_JSON",
+      "-c",
+      "-o",
+      "ABS_TASK_PRIVATE_HANDLER_BINARY",
+      "./internal/handler"
+    ],
+    "execution": "Run the guarded compiled binary through saved Go JSON capture, selecting only ^TestTaskPrivateWebhookTokenLookupErrorDiagnostic$, -test.count=1 -test.parallel=1 -test.timeout=5m. Expected1top/4sub if all four recommended cases execute. Count actual terminal events; do not infer execution from exit0.",
+    "environment_requirements": [
+      "New explicit task-owned migrated/empty DB verified by coordinator; not default, browser, prior failed or other task DB",
+      "Handler TestMain requires DATABASE_URL and performs fixture writes even under a narrow filter; unreachable DB can exit0 without tests, so require actual named terminals",
+      "Private HOME and explicit existing GOCACHE/GOMODCACHE/GOPATH; no MULTICA_TASK_CONFIG_ROOT/MULTICA_TASK_WORKSPACES_ROOT global overrides",
+      "No test-process DATABASE_MAX_CONNS/DATABASE_MIN_CONNS global overrides; each extra pgxpool uses own Config() copy with MaxConns1/MinConns0 and a bounded connect timeout",
+      "Repository Agent CLI guard enabled; no agentintegration or real-user executable discovery; no app/API/listener/provider startup",
+      "Source/test/frozen hashes match saved candidate identity before/after; virtual overlay target absent before/after; preserve original two skip source bytes"
+    ],
+    "query_witness": [
+      "Use existing db.New(DBTX); wrapper forwards exact canonical SQL/arguments unchanged to its own pool",
+      "Capture QueryRow count and SQL hash/name plus single pgtype.Text argument equal to the synthetic path token",
+      "Wrap returned pgx.Row.Scan, delegate all20destinations unchanged and record actual error type/SQLSTATE; do not manufacture the result",
+      "Count Exec/Query/SendBatch too: all zero for these request paths; no later GetAutopilot or delivery query"
+    ],
+    "handler_setup": "Use a new minimal Handler with only Queries, cfg:Config{} and owned real memory absolute/bad-credential limiters; Metrics nil. Do not mutate testHandler or close testPool. No New() service factory is required for this early branch.",
+    "request_setup": "Use testutil.JSONRequest/WithURLParams/Call(t,h.HandleAutopilotWebhook,req).Want(status).JSON(&out); bind a synthetic path token and a stable documentation-range RemoteAddr. A counting body reader must remain unread. No router/server socket.",
+    "persistence_and_cleanup": [
+      "Before/after each request, healthy testPool read counts/fingerprints for owned webhook_delivery, autopilot_run and agent_task_queue are equal; no new domain fixtures are required for a synthetic missing token",
+      "Healthy testPool.Ping succeeds after error-pool close/fault; optionally record pg_backend_pid/current_database from the normal pool separately from request witness",
+      "All test-created pools close; handler TestMain owns closing global testPool and fixture cleanup. Coordinator proves selected DB connections0 afterward and preserves DB/raw evidence",
+      "All task processes/ports/mounts/protocol registrations checked by coordinator; expected no resource of these classes from this probe"
+    ],
+    "forbidden": [
+      "Delete/change existingskip methods",
+      "Change product SQL/index/DDL/dependencies or shared maintenance",
+      "P95/cache/stats fixtures or completed E2E/DEB/Mac repeats",
+      "Close sharedtestPool",
+      "User accounts/provider/remote calls",
+      "Claim completeWebhookdispatch/signature/worker acceptance from an early lookup failure"
+    ]
+  },
+  "external_references": {
+    "consulted": "No external lookup required; implementation facts grounded in repository source and existing patterns",
+    "repo_go_directive": "1.26.6",
+    "pgx_dependency": "github.com/jackc/pgx/v5 v5.9.2",
+    "sqlc_generated_version": "v1.31.1",
+    "standards_urls": [
+      "https://pkg.go.dev/encoding/json",
+      "https://pkg.go.dev/github.com/jackc/pgx/v5/pgxpool"
+    ]
+  },
+  "related_specs": [
+    "CLAUDE.md testing rules",
+    ".trellis/spec/server/database-test-isolation.md",
+    ".trellis/spec/server/security-boundaries.md"
+  ],
+  "tool_observations": [
+    {
+      "kind": "read_only_lookup_tool_rejection",
+      "status": "rejected",
+      "reason": "The Bash output indicates a command/setup failure that should be fixed before retrying.",
+      "referenced_paths": [
+        {
+          "path": "server/internal/handler/response.go",
+          "exists": false
+        },
+        {
+          "path": "server/pkg/db/generated/autopilot_trigger.sql.go",
+          "exists": false
+        }
+      ],
+      "recovery": "Verified actual files using rg --files / rg exact symbols, then read handler.go, autopilot.sql.go and webhook_rate_limiter.go. No test/database/source mutation."
+    },
+    {
+      "kind": "read_only_lookup_tool_rejection",
+      "status": "rejected",
+      "reason": "The Bash output indicates a command/setup failure that should be fixed before retrying.",
+      "referenced_paths": [
+        {
+          "path": "server/internal/handler/autopilot_webhook_iprl.go",
+          "exists": false
+        },
+        {
+          "path": "server/internal/handler/webhook_rate_limit.go",
+          "exists": false
+        },
+        {
+          "path": "server/internal/handler/rate_limit.go",
+          "exists": false
+        }
+      ],
+      "recovery": "Verified actual files using rg --files / rg exact symbols, then read handler.go, autopilot.sql.go and webhook_rate_limiter.go. No test/database/source mutation."
+    }
+  ],
+  "observed429": false,
+  "observed_empty_messages": false,
+  "executed_tests": 0,
+  "database_connections": 0,
+  "app_or_service_launches": 0,
+  "account_or_remote_actions": 0,
+  "commercial_calls": 0,
+  "product_or_original_test_edits": 0,
+  "inventory": "Original10376PASS/1FAIL/6SKIP unchanged; no new top-level result exists yet; original2171ms>2000ms performanceFAIL preserved",
+  "caveats": [
+    "Recommended diagnostic is not originalskip closure",
+    "Query/HTTPearly-error proof does not establish accepted webhook signing/delivery/worker/Provider behavior",
+    "Closed-pool case is client acquisition failure, not server SQL execution; connection-localsearch_path variant can additionally record realSQLSTATE42P01 with unchanged canonical SQL and no DDL",
+    "No automatic product repair if an actual probe later fails"
+  ]
+}

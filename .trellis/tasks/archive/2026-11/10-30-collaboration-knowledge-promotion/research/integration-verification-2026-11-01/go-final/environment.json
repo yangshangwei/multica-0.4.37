@@ -1,0 +1,17 @@
+{
+  "database": "multica_knowledge_final_20261101_e7059940",
+  "host": "localhost",
+  "port": 5432,
+  "private_env": "/tmp/multica_knowledge_final_20261101_e7059940.env",
+  "created_at": "2026-11-01T00:10:02.202777+00:00",
+  "source_head": "53a1662586555d14ea04efb3b951744a4993fa60",
+  "migration_exit_code": 0,
+  "migration_command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ]
+}

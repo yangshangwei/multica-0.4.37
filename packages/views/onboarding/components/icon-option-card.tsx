@@ -9,13 +9,12 @@ const OTHER_INPUT_MAX_LENGTH = 80;
 
 /**
  * One option in a questionnaire card grid. `slug` is the persisted
- * enum value; `icon` is a React node (lucide icon, brand SVG, or emoji
- * span); `label` is the localized string already resolved by the
+ * enum value; `icon` is a React node (lucide icon or emoji span);
+ * `label` is the localized string already resolved by the
  * caller. `isOther` flips this card into a free-text input row.
  *
- * Shared by the About-you onboarding step and the workspace
- * source-backfill prompt, which both render their options through the
- * cards below.
+ * Used by the About-you onboarding step, which renders its options
+ * through the cards below.
  */
 export interface QuestionOption {
   slug: string;
@@ -34,7 +33,7 @@ export interface QuestionOption {
  * the column has.
  *
  * `mode` controls ARIA role: `"radio"` for single-select questions
- * (role, source), `"checkbox"` for multi-select (use case). Visual
+ * (role), `"checkbox"` for multi-select (use case). Visual
  * style is identical — the tinted border already conveys "selected";
  * multi-select chips just additionally don't deselect other chips when
  * clicked, which is the parent's responsibility.

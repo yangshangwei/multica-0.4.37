@@ -15,7 +15,7 @@ vi.mock("../i18n", () => ({
   }),
 }));
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "ws" }));
-vi.mock("@multica/core/paths", () => ({ useWorkspacePaths: () => ({ triage: () => "/acme/triage", settings: () => "/acme/settings", issueDetail: (id: string) => `/acme/issues/${id}` }) }));
+vi.mock("@multica/core/paths", () => ({ useWorkspacePaths: () => ({ triage: () => "/acme/triage", settings: () => "/acme/settings", issueDetail: (id: string) => `/acme/issues/${id}`, docsPage: (slug: string) => `/acme/docs/${slug}` }) }));
 vi.mock("@multica/core/permissions", () => ({ useCurrentMember: () => ({ role: "member" }) }));
 vi.mock("../navigation", () => ({
   useNavigation: () => ({ searchParams: state.params, replace: state.replace }),
@@ -29,8 +29,12 @@ vi.mock("@multica/ui/components/ui/resizable", () => ({
 }));
 vi.mock("../issues/components/issue-detail", () => ({ IssueDetail: () => <input aria-label="Issue draft" /> }));
 vi.mock("./triage-filters", () => ({ TriageFilters: () => null }));
-vi.mock("./triage-create-dialog", () => ({ TriageCreateDialog: () => null }));
-vi.mock("./triage-import-dialog", () => ({ TriageImportDialog: () => null }));
+vi.mock("./triage-create-dialog", () => ({ TriageCreateDialog: () => <div role="dialog" aria-label="Task intake form" /> }));
+vi.mock("./triage-import-dialog", () => ({
+  TriageImportDialog: ({ onClose }: { onClose: () => void }) => (
+    <div role="dialog" aria-label="CSV intake form"><button onClick={onClose}>Close CSV intake</button></div>
+  ),
+}));
 vi.mock("./triage-action-dialog", () => ({ TriageActionDialog: () => null }));
 vi.mock("./triage-batch-dialog", () => ({ TriageBatchDialog: () => null }));
 vi.mock("./triage-history", () => ({
@@ -45,11 +49,14 @@ const row = {
   entered_at: "2026-10-04T10:00:00Z", first_entered_at: "2026-10-04T10:00:00Z", source: "manual", round: 1,
 };
 const listResponse = { items: [row], total: 1, counts: { pending: 1, ready: 1, snoozed: 0 } };
+const emptyList = { items: [], total: 0, counts: { pending: 0, ready: 0, snoozed: 0 } };
 const historyEntry: TriageHistoryEntry = {
   id: "event-1", kind: "action", issue_id: "a", identifier: "MUL-1", title: "Review this task", action: "accept",
   actor_id: "user-1", created_at: "2026-10-04T10:00:00Z", reason: null, before: {}, after: {}, batch_id: null, filename: null, counts: null,
 };
 const historyResponse = { entries: [historyEntry], total: 1, offset: 0, limit: 50 };
+const emptyHistory = { entries: [], total: 0, offset: 0, limit: 1 };
+const welcomeTitle = "Collect first, decide what to do";
 let client: QueryClient;
 let listItems: ReturnType<typeof vi.fn>;
 let listHistory: ReturnType<typeof vi.fn>;
@@ -77,6 +84,117 @@ function mount() {
 function invalidate(view: "queue" | "history") {
   return client.invalidateQueries({ queryKey: view === "queue" ? triageKeys.lists("ws") : ["triage", "ws", "history"] });
 }
+
+it("waits for unfiltered review history before welcoming a first submission", async () => {
+  listItems.mockResolvedValue(emptyList);
+  let finishHistory!: (value: typeof emptyHistory) => void;
+  listHistory.mockImplementation(() => new Promise((resolve) => { finishHistory = resolve; }));
+  mount();
+
+  await waitFor(() => expect(listHistory).toHaveBeenCalledExactlyOnceWith("ws", { limit: 1 }, expect.anything()));
+  expect(screen.queryByRole("heading", { name: welcomeTitle })).not.toBeInTheDocument();
+  await act(async () => finishHistory(emptyHistory));
+  expect(await screen.findByRole("heading", { name: welcomeTitle })).toBeVisible();
+  expect(screen.getByRole("link", { name: "Read docs" })).toHaveAttribute("href", "/acme/docs/triage");
+  expect(screen.queryByRole("region", { name: en.queue_label })).not.toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole("button", { name: en.import_csv }));
+  expect(screen.getByRole("dialog", { name: "CSV intake form" })).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Close CSV intake" }));
+  fireEvent.click(screen.getByRole("button", { name: en.create }));
+  expect(screen.getByRole("dialog", { name: "Task intake form" })).toBeVisible();
+});
+
+it("does not reuse invalidated empty history after the last task is reviewed", async () => {
+  listItems.mockResolvedValue(emptyList);
+  listHistory.mockResolvedValue(emptyHistory);
+  mount();
+  await screen.findByRole("heading", { name: welcomeTitle });
+
+  listItems.mockResolvedValue(listResponse);
+  await act(async () => { await client.invalidateQueries({ queryKey: triageKeys.all("ws") }); });
+  expect(await screen.findByRole("button", { name: /Review this task/ })).toBeVisible();
+  expect(screen.queryByRole("heading", { name: welcomeTitle })).not.toBeInTheDocument();
+
+  listItems.mockResolvedValue(emptyList);
+  let finishHistory!: (value: typeof historyResponse) => void;
+  listHistory.mockImplementation(() => new Promise((resolve) => { finishHistory = resolve; }));
+  await act(async () => { await client.invalidateQueries({ queryKey: triageKeys.all("ws") }); });
+  await waitFor(() => expect(finishHistory).toBeTypeOf("function"));
+  expect(screen.queryByRole("heading", { name: welcomeTitle })).not.toBeInTheDocument();
+
+  await act(async () => finishHistory({ ...historyResponse, limit: 1 }));
+  const historyLink = await screen.findByRole("button", { name: "View review history" });
+  expect(screen.getByRole("heading", { name: "No tasks ready for review" })).toBeVisible();
+  fireEvent.click(historyLink);
+  expect(state.replace).toHaveBeenCalledExactlyOnceWith("/acme/triage?view=history");
+  expect(screen.getByRole("tab", { name: en.history })).toHaveFocus();
+});
+
+it("directs an empty ready queue to snoozed tasks without requesting history", async () => {
+  listItems.mockResolvedValue({ ...emptyList, counts: { pending: 1, ready: 0, snoozed: 1 } });
+  mount();
+
+  const button = await screen.findByRole("button", { name: "View snoozed tasks" });
+  expect(screen.queryByRole("heading", { name: welcomeTitle })).not.toBeInTheDocument();
+  expect(listHistory).not.toHaveBeenCalled();
+  fireEvent.click(button);
+  expect(state.replace).toHaveBeenCalledExactlyOnceWith("/acme/triage?view=snoozed");
+});
+
+it("keeps the history shortcut while sorting or opening filters on an empty ready queue", async () => {
+  state.params = new URLSearchParams("sort=newest");
+  listItems.mockResolvedValue(emptyList);
+  mount();
+
+  const historyLink = await screen.findByRole("button", { name: "View review history" });
+  fireEvent.click(screen.getByRole("button", { name: en.filters }));
+  expect(historyLink).toBeVisible();
+  expect(screen.getByRole("button", { name: en.filters })).toHaveAttribute("aria-expanded", "true");
+  expect(screen.queryByRole("heading", { name: welcomeTitle })).not.toBeInTheDocument();
+});
+
+it.each([
+  ["a search", "q=missing", en.no_matches],
+  ["a saved filter", "source=csv", en.no_matches],
+  ["a later page", "offset=50", en.empty],
+  ["a task link", "issue=a", en.empty],
+  ["another tab", "view=all", en.empty],
+])("retains the queue context for %s when there are no rows", async (_case, query, heading) => {
+  state.params = new URLSearchParams(query);
+  listItems.mockResolvedValue(emptyList);
+  listHistory.mockResolvedValue(emptyHistory);
+  mount();
+
+  expect(await screen.findByRole("heading", { name: heading })).toBeVisible();
+  expect(screen.queryByRole("heading", { name: welcomeTitle })).not.toBeInTheDocument();
+  expect(listHistory).not.toHaveBeenCalled();
+});
+
+it("keeps the queue and intake controls when the history check fails", async () => {
+  listItems.mockResolvedValue(emptyList);
+  listHistory.mockRejectedValue(new ApiError("history failed", 500, "Internal Server Error"));
+  mount();
+
+  await waitFor(() => expect(client.getQueryState(triageKeys.history("ws", { limit: 1 }))?.status).toBe("error"));
+  expect(screen.getByRole("region", { name: en.queue_label })).toBeVisible();
+  expect(screen.getByRole("button", { name: en.create })).toBeVisible();
+  expect(screen.queryByRole("heading", { name: welcomeTitle })).not.toBeInTheDocument();
+});
+
+it.each(["queue", "settings", "history"] as const)("does not show a first-use introduction after a cached-empty %s refresh fails", async (source) => {
+  listItems.mockResolvedValue(emptyList);
+  listHistory.mockResolvedValue(emptyHistory);
+  mount();
+  await screen.findByRole("heading", { name: welcomeTitle });
+
+  const request = source === "queue" ? listItems : source === "settings" ? getSettings : listHistory;
+  request.mockRejectedValue(new ApiError("offline", 500, "Internal Server Error"));
+  await act(async () => { await client.invalidateQueries({ queryKey: triageKeys.all("ws") }); });
+  await waitFor(() => expect(screen.queryByRole("heading", { name: welcomeTitle })).not.toBeInTheDocument());
+  expect(screen.getByRole("region", { name: en.queue_label })).toBeVisible();
+  expect(screen.getByRole("button", { name: en.create })).toBeVisible();
+});
 
 it("keeps the queue and selection when a settings refresh fails, then hides them on access loss", async () => {
   mount();

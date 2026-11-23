@@ -1,0 +1,14 @@
+{"Time":"2026-11-02T10:36:42.636789+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/handler"}
+{"Time":"2026-11-02T10:36:44.438867+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)\n"}
+{"Time":"2026-11-02T10:36:44.439385+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"2026/11/02 10:36:44 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false\n"}
+{"Time":"2026-11-02T10:36:44.53816+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestFetchFromSkillsSh_AnthropicPptxIntegration"}
+{"Time":"2026-11-02T10:36:44.538204+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestFetchFromSkillsSh_AnthropicPptxIntegration","Output":"=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration\n","OutputType":"frame"}
+{"Time":"2026-11-02T10:36:49.250238+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestFetchFromSkillsSh_AnthropicPptxIntegration","Output":"--- PASS: TestFetchFromSkillsSh_AnthropicPptxIntegration (4.71s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T10:36:49.250345+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestFetchFromSkillsSh_AnthropicPptxIntegration","Elapsed":4.71}
+{"Time":"2026-11-02T10:36:49.251009+08:00","Action":"run","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestTriageWireFixtures"}
+{"Time":"2026-11-02T10:36:49.25105+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestTriageWireFixtures","Output":"=== RUN   TestTriageWireFixtures\n","OutputType":"frame"}
+{"Time":"2026-11-02T10:36:49.505421+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestTriageWireFixtures","Output":"--- PASS: TestTriageWireFixtures (0.25s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T10:36:49.505635+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/handler","Test":"TestTriageWireFixtures","Elapsed":0.25}
+{"Time":"2026-11-02T10:36:49.505975+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-02T10:36:50.533496+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"ok  \tgithub.com/multica-ai/multica/server/internal/handler\t7.896s\n"}
+{"Time":"2026-11-02T10:36:50.533567+08:00","Action":"pass","Package":"github.com/multica-ai/multica/server/internal/handler","Elapsed":7.897}

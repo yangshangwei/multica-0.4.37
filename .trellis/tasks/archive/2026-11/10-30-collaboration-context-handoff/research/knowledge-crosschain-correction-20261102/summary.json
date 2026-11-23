@@ -1,0 +1,37 @@
+{
+  "scope": "CCG1 exact human correction -> next actual fake Host stdin -> withdrawal authorization refusal",
+  "code_commit": "057bc96163c5ef38fe82920784b80d5e0d619c35",
+  "base": "20f128dce",
+  "status": "canonical_normal_and_race_passed_pending_independent_review_and_integration",
+  "test_name": "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch",
+  "tag": "knowledgeintegration",
+  "source_file": "server/cmd/server/collaboration_knowledge_correction_composite_test.go",
+  "source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+  "normal": "normal.json; exit0, named1pass0fail0skip",
+  "race": "race.json; exit0, named1pass0fail0skip",
+  "actual_asserted_facts": [
+    "baseline approved project v1 in first actual fake Host stdin",
+    "real authenticated human HTTP v2 proposal remains pending and does not displace v1",
+    "exact reviewed v2 hash/state/version approved via real HTTP",
+    "separate second run and workdir, fresh no-resume physical child receives v2 and excludes superseded v1",
+    "real prepare contribution matches v2 exact identity/version/hash; real authorize prompt hash matches captured stdin",
+    "human withdrawal at third actual authorization causes409 and no third physical child",
+    "prior two physical-success proofs retained, original preparation metadata and proposal/approval receipts unchanged"
+  ],
+  "physical_fake_launches_per_run": 2,
+  "third_launches_per_run": 0,
+  "database_policy": "two distinct root-created/migrated databases; exact actual identity verified before each permitted package/filter; preserved",
+  "production_or_shared_fixture_changes": false,
+  "new_dependencies": false,
+  "timeouts_or_retries_changed": false,
+  "historical_red_claim": "none; this closes missing behavior coverage, not a reproduced product defect",
+  "independent_review": "root pending",
+  "final_source_rebinding_required": true,
+  "not_proven": [
+    "deployed API startup environment ON/OFF (CCG2)",
+    "human browser UI->real model journey",
+    "real Provider/model/installed platform/account evidence",
+    "final combined candidate full acceptance"
+  ],
+  "Provider_calls": 0
+}

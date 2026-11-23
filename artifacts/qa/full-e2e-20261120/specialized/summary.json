@@ -1,0 +1,652 @@
+{
+  "recorded_at": "2026-11-20T01:18:53.468378+00:00",
+  "browser_cases": [
+    {
+      "file": "issue-completion-authorization.spec.ts",
+      "title": "Web enforces the explicit evidence authorization and shows a narrow keyboard flow",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "issue-completion-authorization.spec.ts",
+      "title": "Electron renderer enforces the explicit evidence authorization in a narrow window",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "collaboration-detail-journey.spec.ts",
+      "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-history-navigation.spec.ts",
+      "title": "expanded history survives the readable issue commit before its history response",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "iteration-history-navigation.spec.ts",
+      "title": "navigating from expanded A to its B parent starts B history collapsed",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "explicit default outranks accepted history and project candidates do not replace it",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "actual Electron renderer adopts suggestions without running a daemon",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "cli-forbidden-reason.spec.ts",
+      "title": "an Observer agent's status change prints the autonomy reason, not the workspace hint (en)",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "cli-forbidden-reason.spec.ts",
+      "title": "an Observer agent's status change prints the autonomy reason, not the workspace hint (zh)",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "cli-forbidden-reason.spec.ts",
+      "title": "an ordinary member editing someone else's comment sees the server's reason",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "upstream-backports-cli.spec.ts",
+      "title": "skill labels remain typed and idempotent while issue labels still work",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "upstream-backports-cli.spec.ts",
+      "title": "comment updates preserve UTF-8 files and reject stale revisions",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "upstream-backports-cli.spec.ts",
+      "title": "an unrelated member and an outsider cannot update another member's comment",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "changelog.spec.ts",
+      "title": "generated publication reaches an open reader and a fresh client without restart",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "auth-device.spec.ts",
+      "title": "device login authenticates a distinct user without granting another user's workspace",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "project-knowledge-automation.spec.ts",
+      "title": "web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "project-knowledge-automation.spec.ts",
+      "title": "desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "status": "expected",
+      "project": "chromium",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "collaboration-installed-main.spec.ts",
+      "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "project": "chromium",
+      "status": "expected",
+      "terminal_statuses": [
+        "passed"
+      ]
+    },
+    {
+      "file": "collaboration-host-installed.spec.ts",
+      "title": "Packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "project": "chromium",
+      "status": "expected",
+      "terminal_statuses": [
+        "passed"
+      ]
+    }
+  ],
+  "browser_unique_count": 22,
+  "passed": 22,
+  "failed": 0,
+  "skipped": 0,
+  "runs": [
+    {
+      "run": "m1-fixed-browser",
+      "cases": [
+        {
+          "file": "issue-completion-authorization.spec.ts",
+          "title": "Web enforces the explicit evidence authorization and shows a narrow keyboard flow",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "issue-completion-authorization.spec.ts",
+          "title": "Electron renderer enforces the explicit evidence authorization in a narrow window",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "detail-fixed",
+      "cases": [
+        {
+          "file": "collaboration-detail-journey.spec.ts",
+          "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "collaboration-detail-journey.spec.ts",
+          "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "history-fixed",
+      "cases": [
+        {
+          "file": "iteration-history-navigation.spec.ts",
+          "title": "expanded history survives the readable issue commit before its history response",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "iteration-history-navigation.spec.ts",
+          "title": "navigating from expanded A to its B parent starts B history collapsed",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "recommendation-cli",
+      "cases": [
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "title": "explicit default outranks accepted history and project candidates do not replace it",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "title": "actual Electron renderer adopts suggestions without running a daemon",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "quick-create-actor-picker-phase2.spec.ts",
+          "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "cli-replay",
+      "cases": [
+        {
+          "file": "cli-forbidden-reason.spec.ts",
+          "title": "an Observer agent's status change prints the autonomy reason, not the workspace hint (en)",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "cli-forbidden-reason.spec.ts",
+          "title": "an Observer agent's status change prints the autonomy reason, not the workspace hint (zh)",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "cli-forbidden-reason.spec.ts",
+          "title": "an ordinary member editing someone else's comment sees the server's reason",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "upstream-backports-cli.spec.ts",
+          "title": "skill labels remain typed and idempotent while issue labels still work",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "upstream-backports-cli.spec.ts",
+          "title": "comment updates preserve UTF-8 files and reject stale revisions",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "upstream-backports-cli.spec.ts",
+          "title": "an unrelated member and an outsider cannot update another member's comment",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "changelog-live-replay",
+      "cases": [
+        {
+          "file": "changelog.spec.ts",
+          "title": "generated publication reaches an open reader and a fresh client without restart",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "device-auth",
+      "cases": [
+        {
+          "file": "auth-device.spec.ts",
+          "title": "device login authenticates a distinct user without granting another user's workspace",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    {
+      "run": "knowledge/browser",
+      "cases": [
+        {
+          "file": "project-knowledge-automation.spec.ts",
+          "title": "web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        },
+        {
+          "file": "project-knowledge-automation.spec.ts",
+          "title": "desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+          "status": "expected",
+          "project": "chromium",
+          "terminal_statuses": [
+            "passed"
+          ]
+        }
+      ]
+    }
+  ],
+  "original_failures_retained": [
+    "detail-browser.json:2 product failures, fixed and replayed",
+    "recommendation-cli.json:6 CLI fixture path setup failures, replayed",
+    "changelog-live.json:0 cases due to grep selection, replayed",
+    "status-options-red.log:5 expected red regressions",
+    "status-options-green.log:1 invalid wire mock corrected",
+    "workflow-fix-check.log and workflow-completion-replay.log:5s load timeouts; default-budget replay2 passed7/7",
+    "packaged/browser.json: host final all200 assertion contradicted exact Stop403 contract; independent-reviewed fixture fix and replay pass",
+    "packaged/browser.json: installed synthetic protocol2 read409 with hosttrue; separate hostfalse replay pass",
+    "packaged/directory.log: first package collector used npm instead of pnpm, stopped at143; corrected package-manager-only replay passed"
+  ],
+  "cleanup": {
+    "legacy": {
+      "api_stopped": true,
+      "web_stopped": true,
+      "renderer_stopped": true,
+      "owned_ports_free": true,
+      "database_connections": 0,
+      "postgres_container_stopped": true,
+      "postgres_container_retained_for_inspection": true
+    },
+    "knowledge": {
+      "api_stopped": true,
+      "web_stopped": true,
+      "renderer_stopped": true,
+      "model_stopped": true,
+      "owned_ports_free": true,
+      "database_connections": 0,
+      "postgres_container_stopped": true,
+      "postgres_container_retained_for_inspection": true
+    }
+  },
+  "claims": [
+    "Production Web and Electron renderer share fixed ppJO9 build for M1/detail/history/Knowledge runs.",
+    "Knowledge uses real managed production daemon but deterministic local model/provider, no real provider accounts.",
+    "Recommendation and CLI/device/live-changelog extras used prior current-code build; owning core-query change does not alter those feature paths.",
+    "Native package installer/updater is not covered by these renderer runs."
+  ],
+  "changes": [
+    "packages/core/collaboration/queries.ts",
+    "packages/core/collaboration/status-options.test.tsx",
+    "e2e/iteration-history-navigation.spec.ts",
+    "e2e/collaboration-host-installed.spec.ts"
+  ],
+  "parent_spec_update": ".trellis/spec/core/frontend/collaboration-workbench.md",
+  "final_checks": [
+    {
+      "name": "core-lint",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "lint"
+      ],
+      "started_at": "2026-11-20T00:42:35.542502+00:00",
+      "cache": "Direct package command; no Turbo result cache or mdx rewrite",
+      "exit_code": 0,
+      "duration_seconds": 27.26
+    },
+    {
+      "name": "core-typecheck",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "typecheck"
+      ],
+      "started_at": "2026-11-20T00:43:02.806593+00:00",
+      "cache": "Direct package command; no Turbo result cache or mdx rewrite",
+      "exit_code": 0,
+      "duration_seconds": 33.95
+    },
+    {
+      "name": "views-lint",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "lint"
+      ],
+      "started_at": "2026-11-20T00:43:36.754968+00:00",
+      "cache": "Direct package command; no Turbo result cache or mdx rewrite",
+      "exit_code": 0,
+      "duration_seconds": 55.73
+    },
+    {
+      "name": "views-typecheck",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "started_at": "2026-11-20T00:44:32.482923+00:00",
+      "cache": "Direct package command; no Turbo result cache or mdx rewrite",
+      "exit_code": 0,
+      "duration_seconds": 625.03
+    },
+    {
+      "name": "web-lint",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/web",
+        "lint"
+      ],
+      "started_at": "2026-11-20T00:54:57.523357+00:00",
+      "cache": "Direct package command; no Turbo result cache or mdx rewrite",
+      "exit_code": 0,
+      "duration_seconds": 7.37
+    },
+    {
+      "name": "web-typecheck",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/web",
+        "typecheck"
+      ],
+      "started_at": "2026-11-20T00:55:04.899220+00:00",
+      "cache": "Direct package command; no Turbo result cache or mdx rewrite",
+      "exit_code": 0,
+      "duration_seconds": 61.08
+    },
+    {
+      "name": "core-regression",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/status-options.test.tsx",
+        "collaboration/queries.test.ts",
+        "collaboration/field-queries.test.ts",
+        "collaboration/access.test.ts",
+        "collaboration/action.test.ts",
+        "--maxWorkers=1",
+        "--reporter=default"
+      ],
+      "started_at": "2026-11-20T00:56:05.984222+00:00",
+      "cache": "Direct package command; no Turbo result cache or mdx rewrite",
+      "exit_code": 0,
+      "duration_seconds": 9.88
+    },
+    {
+      "name": "views-regression",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/workflow.test.tsx",
+        "collaboration/information-workflow.test.tsx",
+        "collaboration/completion-authorization.test.tsx",
+        "--maxWorkers=1",
+        "--reporter=default"
+      ],
+      "started_at": "2026-11-20T00:56:15.872154+00:00",
+      "cache": "Direct package command; no Turbo result cache or mdx rewrite",
+      "exit_code": 0,
+      "duration_seconds": 46.58
+    }
+  ],
+  "review": {
+    "verdict": "pass",
+    "path": "artifacts/qa/full-e2e-20261120/specialized/review.md",
+    "independence": "Author review plus separate parent independent review, communicated in task messages"
+  },
+  "packaged_verification": {
+    "recorded_at": "2026-11-20T01:16:37.301433+00:00",
+    "package_hashes_unchanged": true,
+    "shared_desktop_output_unchanged": true,
+    "source_head_at_package": "c56e2194ee45236b8c634843579b7f3e492b0db4",
+    "current_head": "c56e2194ee45236b8c634843579b7f3e492b0db4",
+    "packaged_container_checks": [
+      {
+        "container": "multica-collaboration-main-1aa87d96-53b",
+        "removed": true,
+        "running": false
+      },
+      {
+        "container": "multica-collaboration-main-4cbc72c3-fe1",
+        "removed": true,
+        "running": false
+      },
+      {
+        "container": "multica-collaboration-main-506ec629-716",
+        "removed": true,
+        "running": false
+      },
+      {
+        "container": "multica-collaboration-main-bdf579e5-f43",
+        "removed": true,
+        "running": false
+      }
+    ],
+    "cleanup": {
+      "api_stopped": true,
+      "web_stopped": true,
+      "owned_ports_free": true,
+      "database_connections": 0,
+      "postgres_container_stopped": true,
+      "gates_restored": true
+    },
+    "gate_restored": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": 8
+    },
+    "fresh_tests": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0
+    },
+    "claim": "Fresh current unsigned Linux arm64 electron-builder directory package; actual packaged Main/preload/renderer/bundled CLI. Does not establish dpkg installer, updater, macOS/Windows packaged lifecycle or real provider quality.",
+    "embedded_evidence_decoded_to": "artifacts/qa/full-e2e-20261120/specialized/packaged/decoded-evidence"
+  }
+}

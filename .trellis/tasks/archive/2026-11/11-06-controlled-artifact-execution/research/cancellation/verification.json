@@ -1,0 +1,88 @@
+{
+  "at": "2026-11-10T08:06:41.872324+08:00",
+  "source": "server/internal/handler/agent_artifact_cancel_test.go",
+  "sha256": "4c10d7c01a347b790e1f8faa9c277142e7c8ac19b1727cd3d31bd5c0cac88edb",
+  "actual_production_seam": "service.TaskService.CancelTaskInTx, the transaction core used by CancelTaskWithResult",
+  "runs": [
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/handler",
+        "-run",
+        "^TestControlledArtifactTaskCancellation",
+        "-count=1"
+      ],
+      "environment": "handler",
+      "database": "multica_artifact_20261110_handler",
+      "exit_code": 0,
+      "seconds": 13.539,
+      "finished_at": "2026-11-10T08:05:14.385181+08:00",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/cancel-red-01.log",
+      "log_sha256": "e01cd8bd21b1e60e8852723b073b596c8e04662ec3e0bb7fb2ea8aa61618c616",
+      "named_test_counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "test_names": {
+        "pass": [
+          "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactTaskCancellationBeforeClaim",
+          "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactTaskCancellationAfterClaim"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "agent_cli_guard": true
+    },
+    {
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "-json",
+        "./internal/handler",
+        "-run",
+        "^TestControlledArtifactTaskCancellation",
+        "-count=1"
+      ],
+      "environment": "handler",
+      "database": "multica_artifact_20261110_handler",
+      "exit_code": 0,
+      "seconds": 23.539,
+      "finished_at": "2026-11-10T08:05:59.083816+08:00",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/cancel-race-01.log",
+      "log_sha256": "f951a07b0a33485c976311ed8ab54d245209830626be84ea2a1981c47e4db5bb",
+      "named_test_counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      },
+      "test_names": {
+        "pass": [
+          "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactTaskCancellationBeforeClaim",
+          "github.com/multica-ai/multica/server/internal/handler:TestControlledArtifactTaskCancellationAfterClaim"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "agent_cli_guard": true
+    }
+  ],
+  "verified": [
+    "cancel-before-claim holds real chat/task writes uncommitted: other connection sees running, controlled attempt busy409, actual Pack calls0, no claim",
+    "cancellation commits cancelled: new admission403, Pack calls0",
+    "claim-before-cancel: durableunknown then actual CancelTaskInTx commits cancelled; original adapter finalizes atomic success",
+    "postcancel human read/replay retains execution/receipt with Pack calls1 and cancelled task unchanged"
+  ],
+  "limits": [
+    "Exercises production cancellation transaction core, not separate HTTP cancellation access checks or postcommit event broadcasting",
+    "Initial red-labelled execution passed immediately; label is not failing-test evidence",
+    "No product edits, DB provisioning/migration, model calls or commits"
+  ]
+}

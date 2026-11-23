@@ -1,0 +1,238 @@
+{
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "packages": [
+    {
+      "package": "./pkg/agent",
+      "files": [
+        "codex_knowledge_test.go",
+        "knowledge_launch_test.go",
+        "launch_lifecycle_test.go",
+        "codex_test.go"
+      ],
+      "expected_names": [
+        "TestCodexRawItemMCPToolCall",
+        "TestCodexRawItemMCPToolCallFailureIsSanitized",
+        "TestHostLifecycleBusinessResultIndependentOfReceiptFailure",
+        "TestHostLifecycleCodexInternalRetryUsesNewGateAfterWait",
+        "TestHostLifecycleCodexTimeoutDoesNotLaunchUnpermittedDiagnostic",
+        "TestHostLifecycleConcurrentWaitKeepsOriginalWait",
+        "TestHostLifecycleFiltersAmbientOrdinaryCredentials",
+        "TestHostLifecycleFiltersExplicitOrdinaryCredentials",
+        "TestHostLifecycleGateFailureNeverFallsBack",
+        "TestHostLifecycleMissingExecutableIsNotStarted",
+        "TestHostLifecycleObservesRealWaitAndSerialLaunches",
+        "TestHostLifecycleProviderWaitDoesNotUseEOFOrProcessExited",
+        "TestHostLifecycleRejectedCommandCannotBypassGate",
+        "TestHostLifecycleRejectsInvalidEnvironmentRefresh",
+        "TestHostLifecycleRepeatedStartKeepsActiveLaunch",
+        "TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback",
+        "TestHostLifecycleStopDuringStartedObservation",
+        "TestHostLifecycleStopKeepsConstructedCommandFenced",
+        "TestHostLifecycleStopWinsBetweenPermitAndSpawn",
+        "TestHostLifecycleTerminationFailureBlocksNextPermit",
+        "TestHostLifecycleUnsupportedProviderFailsBeforeSpawn",
+        "TestKnowledgeClaudeNativeObservationIsBoundToPhysicalAttempt",
+        "TestKnowledgeClaudeResultOnlyObservationPrecedesPointer",
+        "TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated",
+        "TestKnowledgeCodexConfigurationInstructionBinding",
+        "TestKnowledgeCodexConfiguredCredentialEnvironmentBinding",
+        "TestKnowledgeCodexEphemeralThread",
+        "TestKnowledgeCodexFingerprint",
+        "TestKnowledgeCodexPendingNotificationByteBound",
+        "TestKnowledgeCodexPrivateTurnIdentityLogs",
+        "TestKnowledgeCodexRejectsChangedInputsBeforeLaunch",
+        "TestKnowledgeCodexSessionSelectors",
+        "TestKnowledgeCodexTerminationRefusalRetainsPrivateOutput",
+        "TestKnowledgeCodexThreadAdmission",
+        "TestKnowledgeCodexTurnResponseBinding",
+        "TestKnowledgeInvalidNativeIDCannotBecomeObservation",
+        "TestKnowledgeInvalidSessionIntentCannotLaunch",
+        "TestKnowledgeInvocationFingerprintRejectsDrift",
+        "TestKnowledgeLeafLaunchRefusalDoesNotReplayInput",
+        "TestKnowledgeMissingNativeCallbackRetainsUnusedAdmission",
+        "TestKnowledgeNativeObservationFailureStopsProcessAndSeals",
+        "TestKnowledgeTerminationCallbackFailureKeepsUsageAndRefusal",
+        "TestKnowledgeUnknownFreshSessionCannotBePinnedWithoutObservation",
+        "TestOrdinaryKnowledgeLifecyclePreservesTaskCredentials",
+        "TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment"
+      ],
+      "filter": "^(TestCodexRawItemMCPToolCall|TestCodexRawItemMCPToolCallFailureIsSanitized|TestHostLifecycleBusinessResultIndependentOfReceiptFailure|TestHostLifecycleCodexInternalRetryUsesNewGateAfterWait|TestHostLifecycleCodexTimeoutDoesNotLaunchUnpermittedDiagnostic|TestHostLifecycleConcurrentWaitKeepsOriginalWait|TestHostLifecycleFiltersAmbientOrdinaryCredentials|TestHostLifecycleFiltersExplicitOrdinaryCredentials|TestHostLifecycleGateFailureNeverFallsBack|TestHostLifecycleMissingExecutableIsNotStarted|TestHostLifecycleObservesRealWaitAndSerialLaunches|TestHostLifecycleProviderWaitDoesNotUseEOFOrProcessExited|TestHostLifecycleRejectedCommandCannotBypassGate|TestHostLifecycleRejectsInvalidEnvironmentRefresh|TestHostLifecycleRepeatedStartKeepsActiveLaunch|TestHostLifecycleStartedFailureStillWaitsAndBlocksFallback|TestHostLifecycleStopDuringStartedObservation|TestHostLifecycleStopKeepsConstructedCommandFenced|TestHostLifecycleStopWinsBetweenPermitAndSpawn|TestHostLifecycleTerminationFailureBlocksNextPermit|TestHostLifecycleUnsupportedProviderFailsBeforeSpawn|TestKnowledgeClaudeNativeObservationIsBoundToPhysicalAttempt|TestKnowledgeClaudeResultOnlyObservationPrecedesPointer|TestKnowledgeClaudeStartedCallbackFailureStillReportsTerminated|TestKnowledgeCodexConfigurationInstructionBinding|TestKnowledgeCodexConfiguredCredentialEnvironmentBinding|TestKnowledgeCodexEphemeralThread|TestKnowledgeCodexFingerprint|TestKnowledgeCodexPendingNotificationByteBound|TestKnowledgeCodexPrivateTurnIdentityLogs|TestKnowledgeCodexRejectsChangedInputsBeforeLaunch|TestKnowledgeCodexSessionSelectors|TestKnowledgeCodexTerminationRefusalRetainsPrivateOutput|TestKnowledgeCodexThreadAdmission|TestKnowledgeCodexTurnResponseBinding|TestKnowledgeInvalidNativeIDCannotBecomeObservation|TestKnowledgeInvalidSessionIntentCannotLaunch|TestKnowledgeInvocationFingerprintRejectsDrift|TestKnowledgeLeafLaunchRefusalDoesNotReplayInput|TestKnowledgeMissingNativeCallbackRetainsUnusedAdmission|TestKnowledgeNativeObservationFailureStopsProcessAndSeals|TestKnowledgeTerminationCallbackFailureKeepsUsageAndRefusal|TestKnowledgeUnknownFreshSessionCannotBePinnedWithoutObservation|TestOrdinaryKnowledgeLifecyclePreservesTaskCredentials|TestOrdinaryKnowledgeObserverCannotSubstituteEnvironment)$"
+    },
+    {
+      "package": "./pkg/redact",
+      "files": [
+        "redact_test.go"
+      ],
+      "expected_names": [
+        "TestInputMap",
+        "TestInputMapBoundsRecursionDepth",
+        "TestInputMapDoesNotMutateInput",
+        "TestInputMapNil",
+        "TestInputMapPreservesNonSecretFields",
+        "TestInputMapRedactsDeeplyNestedMaps",
+        "TestInputMapRedactsNestedSliceOfMaps",
+        "TestInputMapRedactsStringSliceAndStringMap",
+        "TestInputMapSensitiveFields",
+        "TestNoFalsePositivesOnNormalText",
+        "TestRedactAWSAccessKey",
+        "TestRedactAWSSecretKey",
+        "TestRedactBearerMCPToken",
+        "TestRedactBearerToken",
+        "TestRedactCollaborationCapabilities",
+        "TestRedactCollaborationCapabilitiesPreservesWordBoundaries",
+        "TestRedactConnectionString",
+        "TestRedactGenericCredentials",
+        "TestRedactGitHubFineGrainedToken",
+        "TestRedactGitHubToken",
+        "TestRedactGitLabToken",
+        "TestRedactGoogleAPIKey",
+        "TestRedactGoogleAPIKeyEndingWithDash",
+        "TestRedactJWT",
+        "TestRedactMulticaTokens",
+        "TestRedactMultipleSecrets",
+        "TestRedactOpenAIKey",
+        "TestRedactPasswordEnvVar",
+        "TestRedactPrivateKey",
+        "TestRedactSlackAppAndConfigTokens",
+        "TestRedactSlackToken",
+        "TestRedactStripeLiveKey",
+        "TestTextLargeJSONKeysAndUnmatchedQuotes",
+        "TestTextLeavesHomePathIntact",
+        "TestTextRedactsInvalidOrOversizedSensitiveJSON",
+        "TestTextRedactsJSONMembersWithoutReformatting"
+      ],
+      "filter": "^(TestInputMap|TestInputMapBoundsRecursionDepth|TestInputMapDoesNotMutateInput|TestInputMapNil|TestInputMapPreservesNonSecretFields|TestInputMapRedactsDeeplyNestedMaps|TestInputMapRedactsNestedSliceOfMaps|TestInputMapRedactsStringSliceAndStringMap|TestInputMapSensitiveFields|TestNoFalsePositivesOnNormalText|TestRedactAWSAccessKey|TestRedactAWSSecretKey|TestRedactBearerMCPToken|TestRedactBearerToken|TestRedactCollaborationCapabilities|TestRedactCollaborationCapabilitiesPreservesWordBoundaries|TestRedactConnectionString|TestRedactGenericCredentials|TestRedactGitHubFineGrainedToken|TestRedactGitHubToken|TestRedactGitLabToken|TestRedactGoogleAPIKey|TestRedactGoogleAPIKeyEndingWithDash|TestRedactJWT|TestRedactMulticaTokens|TestRedactMultipleSecrets|TestRedactOpenAIKey|TestRedactPasswordEnvVar|TestRedactPrivateKey|TestRedactSlackAppAndConfigTokens|TestRedactSlackToken|TestRedactStripeLiveKey|TestTextLargeJSONKeysAndUnmatchedQuotes|TestTextLeavesHomePathIntact|TestTextRedactsInvalidOrOversizedSensitiveJSON|TestTextRedactsJSONMembersWithoutReformatting)$"
+    },
+    {
+      "package": "./cmd/multica",
+      "files": [
+        "cmd_comment_trigger_outcomes_test.go"
+      ],
+      "expected_names": [
+        "TestIssueCommentDelegationReceipts",
+        "TestIssueCommentDelegationReceiptsTableAndUncertainWrite"
+      ],
+      "filter": "^(TestIssueCommentDelegationReceipts|TestIssueCommentDelegationReceiptsTableAndUncertainWrite)$"
+    },
+    {
+      "package": "./internal/daemon",
+      "files": [
+        "knowledge_codex_configuration_test.go",
+        "knowledge_context_test.go",
+        "knowledge_context_claim_test.go",
+        "knowledge_context_stderr_test.go",
+        "knowledge_context_rebind_boundary_test.go",
+        "tool_output_preview_test.go"
+      ],
+      "expected_names": [
+        "TestCodexKnowledgeNamespaceBindsSourceConfiguration",
+        "TestExecuteAndDrain_ToolOutputRedactedBeforePreview",
+        "TestExecuteAndDrain_ToolOutputUTF8Boundary",
+        "TestKnowledgeActualResumeKeepsExactScopeGeneration",
+        "TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities",
+        "TestKnowledgeAllOrdinaryPromptBranchesReachActualStdin",
+        "TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor",
+        "TestKnowledgeCancellationAccountingUsesActualProcesses",
+        "TestKnowledgeCapabilityRequiresActualBuiltinAndDaemonCredential",
+        "TestKnowledgeChangedNativeIDIsObservedButNeverRelabeled",
+        "TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask",
+        "TestKnowledgeCleanupObservationSurvivesCallerCancellation",
+        "TestKnowledgeConfigurationNamespaceIsStableAndTaskIndependent",
+        "TestKnowledgeEmptyAuthorizedBundleKeepsBaseAndLaunchFence",
+        "TestKnowledgeFailuresNeverEnterFreshReplay",
+        "TestKnowledgeLostPreparationRechecksRevokedSource",
+        "TestKnowledgeMissingOriginatorCannotBeFilledFromDisplayIdentity",
+        "TestKnowledgeNativeBindingRefusalNeverPinsUnapprovedID",
+        "TestKnowledgeNativeRefusalRetainsFailureEvidence",
+        "TestKnowledgeObservationRejectsNoncanonicalAcknowledgement",
+        "TestKnowledgeObservationRequiresPositiveAcknowledgement",
+        "TestKnowledgeOriginalReceiptSurvivesLostResponse",
+        "TestKnowledgePreparationBudgetIncludesFullEnvelope",
+        "TestKnowledgePrepareBusyExhaustionRetainsOriginalReceipt",
+        "TestKnowledgePromptRebindUsesPreparedFreshIdentity",
+        "TestKnowledgeRebindClaimRequiresOwnReachabilityDecision",
+        "TestKnowledgeRebindPreparationPreservesClaimIdentity",
+        "TestKnowledgeStartRefusalKeepsTerminalClassificationAndFence",
+        "TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit",
+        "TestKnowledgeStderrRemainsPrivateAndRetainsFailureEvidence",
+        "TestKnowledgeUnobservedFreshSessionIsNeverPublished",
+        "TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration",
+        "TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding",
+        "TestKnowledgeUnreachableResumeOnOlderServerFailsClosed",
+        "TestKnowledgeWrongIdentitiesNeverLaunch",
+        "TestOrdinaryKnowledgeFirstLaunchRefusalIsTerminal",
+        "TestOrdinaryKnowledgeLaterLaunchRefusalDoesNotReplay",
+        "TestOrdinaryUnsupportedKnowledgeBackendRunsSafeBaseTask",
+        "TestToolOutputPreview",
+        "TestToolOutputPreviewRuneBoundaries"
+      ],
+      "filter": "^(TestCodexKnowledgeNamespaceBindsSourceConfiguration|TestExecuteAndDrain_ToolOutputRedactedBeforePreview|TestExecuteAndDrain_ToolOutputUTF8Boundary|TestKnowledgeActualResumeKeepsExactScopeGeneration|TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities|TestKnowledgeAllOrdinaryPromptBranchesReachActualStdin|TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor|TestKnowledgeCancellationAccountingUsesActualProcesses|TestKnowledgeCapabilityRequiresActualBuiltinAndDaemonCredential|TestKnowledgeChangedNativeIDIsObservedButNeverRelabeled|TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask|TestKnowledgeCleanupObservationSurvivesCallerCancellation|TestKnowledgeConfigurationNamespaceIsStableAndTaskIndependent|TestKnowledgeEmptyAuthorizedBundleKeepsBaseAndLaunchFence|TestKnowledgeFailuresNeverEnterFreshReplay|TestKnowledgeLostPreparationRechecksRevokedSource|TestKnowledgeMissingOriginatorCannotBeFilledFromDisplayIdentity|TestKnowledgeNativeBindingRefusalNeverPinsUnapprovedID|TestKnowledgeNativeRefusalRetainsFailureEvidence|TestKnowledgeObservationRejectsNoncanonicalAcknowledgement|TestKnowledgeObservationRequiresPositiveAcknowledgement|TestKnowledgeOriginalReceiptSurvivesLostResponse|TestKnowledgePreparationBudgetIncludesFullEnvelope|TestKnowledgePrepareBusyExhaustionRetainsOriginalReceipt|TestKnowledgePromptRebindUsesPreparedFreshIdentity|TestKnowledgeRebindClaimRequiresOwnReachabilityDecision|TestKnowledgeRebindPreparationPreservesClaimIdentity|TestKnowledgeStartRefusalKeepsTerminalClassificationAndFence|TestKnowledgeStartedObservationRefusalStillConfirmsProcessExit|TestKnowledgeStderrRemainsPrivateAndRetainsFailureEvidence|TestKnowledgeUnobservedFreshSessionIsNeverPublished|TestKnowledgeUnreachablePriorWorkdirRebindsFreshGeneration|TestKnowledgeUnreachablePriorWorkdirRefusesEchoedStaleBinding|TestKnowledgeUnreachableResumeOnOlderServerFailsClosed|TestKnowledgeWrongIdentitiesNeverLaunch|TestOrdinaryKnowledgeFirstLaunchRefusalIsTerminal|TestOrdinaryKnowledgeLaterLaunchRefusalDoesNotReplay|TestOrdinaryUnsupportedKnowledgeBackendRunsSafeBaseTask|TestToolOutputPreview|TestToolOutputPreviewRuneBoundaries)$"
+    },
+    {
+      "package": "./internal/daemon/execenv",
+      "files": [
+        "runtime_config_test.go",
+        "execenv_test.go"
+      ],
+      "expected_names": [
+        "TestEveryBriefThatTeachesJSONOutputAlsoWarnsAgainstMergingStderr",
+        "TestInjectRuntimeConfigMentionLoopHardening",
+        "TestIssueWorkflowSeparatesDeliveryFromStageAcceptance",
+        "TestStatusRuleIsFactJudgmentAtBothMoments"
+      ],
+      "filter": "^(TestEveryBriefThatTeachesJSONOutputAlsoWarnsAgainstMergingStderr|TestInjectRuntimeConfigMentionLoopHardening|TestIssueWorkflowSeparatesDeliveryFromStageAcceptance|TestStatusRuleIsFactJudgmentAtBothMoments)$"
+    },
+    {
+      "package": "./internal/migrations",
+      "files": [
+        "task_capability_rollback_test.go"
+      ],
+      "expected_names": [
+        "TestTaskCapabilityRollbackFence"
+      ],
+      "filter": "^(TestTaskCapabilityRollbackFence)$"
+    },
+    {
+      "package": "./internal/service",
+      "files": [
+        "task_knowledge_codex_test.go",
+        "builtin_skills_test.go",
+        "builtin_agent_autonomy_test.go"
+      ],
+      "expected_names": [
+        "TestCodexCollaborationKnowledgeAuthorizesExactProviderAndRevokes",
+        "TestCodexCollaborationKnowledgeRefusesProviderChange",
+        "TestCodexKnowledgeExposedHistoryRefusesLegacyAndChangedConfiguration",
+        "TestCodexKnowledgeInvocationRequiresBuiltinMatchingLocalRuntime",
+        "TestCodexKnowledgeNativeExposureResumeAndWithdrawal",
+        "TestSquadTemplates_LifecycleEvidenceRouting",
+        "TestSquadsSkillCoversLeaderRoutingContract"
+      ],
+      "filter": "^(TestCodexCollaborationKnowledgeAuthorizesExactProviderAndRevokes|TestCodexCollaborationKnowledgeRefusesProviderChange|TestCodexKnowledgeExposedHistoryRefusesLegacyAndChangedConfiguration|TestCodexKnowledgeInvocationRequiresBuiltinMatchingLocalRuntime|TestCodexKnowledgeNativeExposureResumeAndWithdrawal|TestSquadTemplates_LifecycleEvidenceRouting|TestSquadsSkillCoversLeaderRoutingContract)$"
+    },
+    {
+      "package": "./internal/handler",
+      "files": [
+        "comment_trigger_outcomes_test.go",
+        "squad_briefing_test.go"
+      ],
+      "expected_names": [
+        "TestCreateComment_MixedMentionSurfacesPartialTriggerOutcomes",
+        "TestSquadOperatingProtocolChecksDelegationReceipts"
+      ],
+      "filter": "^(TestCreateComment_MixedMentionSurfacesPartialTriggerOutcomes|TestSquadOperatingProtocolChecksDelegationReceipts)$"
+    },
+    {
+      "package": "./internal/daemon/collaborationrun",
+      "files": [
+        "host_handoff_codex_launch_test.go",
+        "host_knowledge_codex_test.go"
+      ],
+      "expected_names": [
+        "TestHostCodexKnowledgeRequiresEphemeralBeforePrivateTurn",
+        "TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback"
+      ],
+      "filter": "^(TestHostCodexKnowledgeRequiresEphemeralBeforePrivateTurn|TestHostHandoffLaunchCodexBindsActualTurnAcrossInternalFallback)$"
+    }
+  ]
+}

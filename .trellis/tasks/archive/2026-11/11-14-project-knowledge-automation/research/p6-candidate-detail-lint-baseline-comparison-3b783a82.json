@@ -1,0 +1,69 @@
+{
+  "recorded_at": "2026-11-15T09:23:15.824818+00:00",
+  "state": "original_import_configuration_error_reproduced_no_new_lint_diagnostic",
+  "source_id": "32f271d5bd4a8dd6954f847e430291998b5ed5db6d7e800b10b6c50dbd098268",
+  "source_file_stable": true,
+  "config_stable": true,
+  "command": [
+    "/opt/homebrew/bin/pnpm",
+    "exec",
+    "eslint",
+    "--config",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/packages/eslint-config/base.js",
+    "--format",
+    "json",
+    "--stdin",
+    "--stdin-filename",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/project-knowledge-automation.spec.ts"
+  ],
+  "config_sha256": "e01db5d145559b2f4d340da68e191d6be42ce7b39eda40e269a8a620730e0884",
+  "results": [
+    {
+      "label": "original",
+      "exit": 1,
+      "source_sha256": "af0b644f25a9089c55ca9ce8604f405458576b967df1572d4851d0b6397b35a0",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 3,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 3,
+          "endColumn": 72
+        }
+      ],
+      "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/lint-baseline-comparison-3b783a82/original.log",
+      "log_sha256": "4db331f45b791ccb17b425b15393115775860e3798665c1d2ec0f9a3280fe05e"
+    },
+    {
+      "label": "corrected",
+      "exit": 1,
+      "source_sha256": "6635894c5de46cc7349bb8871f425780dbb1bdd9854f6f5062b30f81727663b7",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 3,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 3,
+          "endColumn": 72
+        }
+      ],
+      "log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/lint-baseline-comparison-3b783a82/corrected.log",
+      "log_sha256": "cc30529e0c728f0f5bb710a871ab3cf58dccbbbea6237c22cf4a4922c23de550"
+    }
+  ],
+  "diagnostics_identical": true,
+  "new_diagnostics": 0,
+  "standalone_e2e_lint_passed": false,
+  "canonical_frontend_package_lint_carry": "research/p6-isolated-frontend-0f91ae3c.json: package lints passed; package/config/product/test sources unchanged",
+  "explanation": "Standalone shared-base ESLint resolves the existing @multica/core import against the monorepo root package rather than the Playwright workspace alias. The unchanged original line3 produces exactly the same error. No dependencies/config/guards were changed to hide it.",
+  "original_current_run": "research/p6-candidate-detail-explicit-lint-5fd70a8c.json",
+  "runtime_acceptance": false
+}

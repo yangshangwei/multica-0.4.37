@@ -340,6 +340,9 @@ func (h *Handler) groupAttachments(r *http.Request, commentIDs []pgtype.UUID) ma
 	mode := attachmentURLModeFromRequest(r)
 	grouped := make(map[string][]AttachmentResponse, len(commentIDs))
 	for _, a := range attachments {
+		if h.collaborationPrivateStorageURL(a.Url) {
+			continue
+		}
 		cid := uuidToString(a.CommentID)
 		grouped[cid] = append(grouped[cid], h.attachmentToResponse(a, mode))
 	}
@@ -364,6 +367,9 @@ func (h *Handler) groupChatMessageAttachments(ctx context.Context, workspaceID s
 	}
 	grouped := make(map[string][]AttachmentResponse, len(messageIDs))
 	for _, a := range attachments {
+		if h.collaborationPrivateStorageURL(a.Url) {
+			continue
+		}
 		mid := uuidToString(a.ChatMessageID)
 		grouped[mid] = append(grouped[mid], h.attachmentToResponse(a, attachmentURLModeSigned))
 	}
@@ -473,6 +479,11 @@ func (h *Handler) UploadFile(w http.ResponseWriter, r *http.Request) {
 				writeError(w, http.StatusForbidden, "invalid issue_id")
 				return
 			}
+			// Collaboration files go through the private draft/bind flow. The
+			// generic ledger would bypass its storage, revisions and broadcasts.
+			if h.rejectLegacyCollaborationWrite(w, r, issue.ID) {
+				return
+			}
 			params.IssueID = issue.ID
 		}
 		if commentID := r.FormValue("comment_id"); commentID != "" {
@@ -483,6 +494,9 @@ func (h *Handler) UploadFile(w http.ResponseWriter, r *http.Request) {
 			comment, err := h.Queries.GetComment(r.Context(), commentUUID)
 			if err != nil || uuidToString(comment.WorkspaceID) != workspaceID {
 				writeError(w, http.StatusForbidden, "invalid comment_id")
+				return
+			}
+			if h.rejectLegacyCollaborationWrite(w, r, comment.IssueID) {
 				return
 			}
 			params.CommentID = comment.ID
@@ -635,9 +649,11 @@ func (h *Handler) ListAttachments(w http.ResponseWriter, r *http.Request) {
 	}
 
 	mode := attachmentURLModeFromRequest(r)
-	resp := make([]AttachmentResponse, len(attachments))
-	for i, a := range attachments {
-		resp[i] = h.attachmentToResponse(a, mode)
+	resp := make([]AttachmentResponse, 0, len(attachments))
+	for _, a := range attachments {
+		if !h.collaborationPrivateStorageURL(a.Url) {
+			resp = append(resp, h.attachmentToResponse(a, mode))
+		}
 	}
 	writeJSON(w, http.StatusOK, resp)
 }
@@ -750,8 +766,20 @@ func (h *Handler) loadAttachmentForRequest(w http.ResponseWriter, r *http.Reques
 		writeError(w, http.StatusNotFound, "attachment not found")
 		return db.Attachment{}, false
 	}
+	if h.collaborationPrivateStorageURL(att.Url) {
+		writeError(w, http.StatusNotFound, "attachment not found")
+		return db.Attachment{}, false
+	}
 
 	return att, true
+}
+
+func (h *Handler) collaborationPrivateStorageURL(raw string) bool {
+	if h.Storage != nil && storage.IsCollaborationPrivateKey(h.Storage.KeyFromURL(raw)) {
+		return true
+	}
+	parsed, err := url.Parse(raw)
+	return err == nil && storage.IsCollaborationPrivateKey(strings.TrimPrefix(parsed.Path, "/uploads/"))
 }
 
 // loadAttachmentForDownload is a workspace-self-resolving variant used by the
@@ -783,6 +811,10 @@ func (h *Handler) loadAttachmentForDownload(w http.ResponseWriter, r *http.Reque
 		// 404 (not 403/401) so non-member and non-existent look identical
 		// to outside callers. Same shape as ServeLocalUpload's
 		// canReadWorkspaceUpload deny path.
+		writeError(w, http.StatusNotFound, "attachment not found")
+		return db.Attachment{}, false
+	}
+	if h.collaborationPrivateStorageURL(att.Url) {
 		writeError(w, http.StatusNotFound, "attachment not found")
 		return db.Attachment{}, false
 	}
@@ -965,6 +997,10 @@ func (h *Handler) ServeLocalUpload(w http.ResponseWriter, r *http.Request) {
 //     RFC 7233 it is ignored and the full body is served (200), matching the
 //     seekable path's successful outcome rather than failing with 416.
 func (h *Handler) proxyAttachmentDownload(w http.ResponseWriter, r *http.Request, att db.Attachment, key string, forceAttachment bool) {
+	if storage.IsCollaborationPrivateKey(key) {
+		writeError(w, http.StatusNotFound, "attachment not found")
+		return
+	}
 	reader, err := h.Storage.GetReader(r.Context(), key)
 	if err != nil {
 		slog.Error("failed to open attachment for download", "id", uuidToString(att.ID), "key", key, "error", err)
@@ -1499,7 +1535,7 @@ func (h *Handler) linkAttachmentsByIDs(ctx context.Context, commentID, issueID p
 
 // deleteS3Object removes a single file from S3 by its CDN URL.
 func (h *Handler) deleteS3Object(ctx context.Context, url string) {
-	if h.Storage == nil || url == "" {
+	if h.Storage == nil || url == "" || h.collaborationPrivateStorageURL(url) {
 		return
 	}
 	h.Storage.Delete(ctx, h.Storage.KeyFromURL(url))
@@ -1510,9 +1546,11 @@ func (h *Handler) deleteS3Objects(ctx context.Context, urls []string) {
 	if h.Storage == nil || len(urls) == 0 {
 		return
 	}
-	keys := make([]string, len(urls))
-	for i, u := range urls {
-		keys[i] = h.Storage.KeyFromURL(u)
+	keys := make([]string, 0, len(urls))
+	for _, u := range urls {
+		if !h.collaborationPrivateStorageURL(u) {
+			keys = append(keys, h.Storage.KeyFromURL(u))
+		}
 	}
 	h.Storage.DeleteKeys(ctx, keys)
 }

@@ -1,0 +1,24 @@
+{
+  "name": "handler_normal01-migrate",
+  "started_at": "2026-11-10T08:26:51.071696+00:00",
+  "finished_at": "2026-11-10T08:26:52.326152+00:00",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-delivery-policy-20261110",
+  "database": "policy_final_handler_normal01",
+  "exit_code": 0,
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/handler_normal01-migrate.log",
+  "log_sha256": "e4e4ba9eb475d71dddf6d6c60323b7003075ecc8bb8e73830d79be412615fe27",
+  "tests": []
+}

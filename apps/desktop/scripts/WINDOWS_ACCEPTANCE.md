@@ -64,3 +64,57 @@ marker. It does not bypass signature policy or establish signed/offline trust.
 Only sanitized named JSON reports are uploaded. The business state directory
 contains private credentials and must never be uploaded. Backend cleanup is an
 always-run step; final runner disposal handles failed partial preparation.
+
+## Opt-in installed collaboration acceptance
+
+`windows_collaboration_acceptance=true` selects the Windows x64 acceptance job
+and adds the existing packaged collaboration Host journey after candidate upgrade
+and after candidate reinstall. Its default is `false`. It can be combined with
+`windows_business_acceptance=true`; it never applies the new collaboration
+contract to the historical baseline. The candidate numeric version still must
+exceed the selected previous version: for example, choose `0.6.8-rc.1` with
+`previous_tag=v0.6.6`. The default RC version is not appropriate for that baseline.
+Do not select `v0.6.7` until its installer is available; a missing asset is a
+failed preparation, not permission to substitute another baseline.
+
+`windows-collaboration-server.ps1` prepares a separate disposable PostgreSQL/API
+and **production** Web with the same candidate commit, and builds a native
+`internal/daemon` test binary with `go test -c`, a stdlib-only synthetic Provider
+and a source-bound CLI. It never runs `TestMain` during compilation. The API
+helper verifies its own task database before applying migrations; no existing
+business database is selected. Knowledge execution stays `false`. The Host
+fixture temporarily opens and then restores the task database's collaboration
+gates during each journey.
+
+The journey launches the actual installed `Multica.exe` with the production
+Main/preload/renderer and a fresh explicit acceptance home. It logs in through
+the real password form and exercises account-scoped collaboration, issued input
+identities, Stop/terminal proof, retained paused state across actual app restart,
+explicit Resume and shared Agent input history. The runtime is the separately
+owned native fixture; Provider work uses only the test-created executable, not a
+personal CLI/account. A controlled Node controller is closed normally, with a
+bounded process-tree fallback limited to that spawned PID on Windows.
+The separately owned Host daemon receives stdin EOF without a POSIX resume
+signal on Windows, so it can emit its actual final claims/proof summary. The
+fixture's POSIX-only suspend/resume helpers explicitly refuse Windows; this
+installed journey does not claim suspension coverage there. A forced fallback
+exit remains a failure under the unchanged exit/summary assertions.
+
+Every report includes source SHA, installed EXE/ASAR/bundled CLI hashes and Host
+fixture binary hashes. The packaged journey independently checks those pins and
+actual native OS/architecture, requires exactly one passing non-retried test,
+and writes the Stop/final screenshots with SHA-256. Reports named
+`multica-windows-collaboration-{phase}.json` and their named PNGs are the only
+new upload artifacts. `multica-collaboration/`, its `server-private.json`,
+`web-private.json`, raw Playwright output and profiles contain private fixture
+state and are never uploaded or overwritten after a failed phase. The always-run
+cleanup verifies the saved Web PID/path/start time before stopping its tree, then
+stops only the task-owned API and PostgreSQL. Failed databases remain in their
+disposable state until runner teardown.
+
+This code is a prepared local framework. It establishes no Windows native pass
+until the authorized workflow runs on the final candidate. Linux/macOS fixtures,
+cross-compilation and Node path/configuration tests cannot close that gate. Signed
+trust, offline certificates, Windows arm64, paid Provider accounts, actual quota
+sources and AC43 remain separate acceptance requirements. The coordinator must
+authorize any public push or external workflow execution before using it.

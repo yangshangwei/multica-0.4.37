@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/opt/homebrew/bin/go",
+    "-C",
+    "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "run",
+    "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+    "generate",
+    "-f",
+    "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p1-sqlc-check-6cd9f6c6/sqlc.yaml"
+  ],
+  "exit": 1,
+  "generated_count": 0,
+  "generated": {},
+  "all_generated_drift": [],
+  "owned_drift": [],
+  "output_directory": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p1-sqlc-check-6cd9f6c6/generated",
+  "private_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p1-sqlc-check-6cd9f6c6/sqlc.log",
+  "source_sha256_before": "29f62716f7cd00f3c8d600a59becfa6c14dc940210754429a58d59e80f568f3f",
+  "source_sha256_after": "29f62716f7cd00f3c8d600a59becfa6c14dc940210754429a58d59e80f568f3f",
+  "source_stable": true,
+  "production_files_written": false,
+  "finished_at": "2026-11-15T03:48:04.736535+00:00"
+}

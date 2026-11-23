@@ -1,0 +1,112 @@
+diff --git a/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/server/internal/service/collaboration_knowledge_resolve.go b/server/internal/service/collaboration_knowledge_resolve.go
+index 024944edf..8ee0f9853 100644
+--- a/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/server/internal/service/collaboration_knowledge_resolve.go
++++ b/server/internal/service/collaboration_knowledge_resolve.go
+@@ -252,7 +252,7 @@ func (s *CollaborationService) knowledgeConsumer(ctx context.Context, q *db.Quer
+ 	default:
+ 		return "target_not_applicable", nil
+ 	}
+-	runtime, err := q.GetAgentRuntime(ctx, f.RuntimeID)
++	runtime, err := s.collaborationRuntimeLookup(q).Get(ctx, f.RuntimeID)
+ 	if errors.Is(err, pgx.ErrNoRows) {
+ 		return "missing_runtime_owner", nil
+ 	}
+diff --git a/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/server/internal/service/task_knowledge.go b/server/internal/service/task_knowledge.go
+index 173bfb37d..8fa8e8695 100644
+--- a/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/server/internal/service/task_knowledge.go
++++ b/server/internal/service/task_knowledge.go
+@@ -192,7 +192,7 @@ func taskKnowledgeClaimAt(d *taskKnowledgeDelivery, generation int64) (*taskKnow
+ }
+ 
+ func (s *TaskService) taskKnowledgeFacts(ctx context.Context, q *db.Queries, task db.AgentTaskQueue) (KnowledgeConsumerFacts, db.AgentRuntime, db.Agent, error) {
+-	r, err := q.GetAgentRuntime(ctx, task.RuntimeID)
++	r, err := s.runtimeLookup(q).Get(ctx, task.RuntimeID)
+ 	if err != nil {
+ 		return KnowledgeConsumerFacts{}, r, db.Agent{}, err
+ 	}
+@@ -339,7 +339,7 @@ func validateTaskKnowledgeOrdinaryArgs(provider string, args []string) error {
+ // BuildTaskKnowledgeClaim checks the finally chosen native session, including
+ // old-client claims. It discloses no contribution and does not finalize a claim.
+ func (s *TaskService) BuildTaskKnowledgeClaim(ctx context.Context, task db.AgentTaskQueue, inv *protocol.TaskKnowledgeInvocation, chosen string) (*protocol.TaskKnowledgeClaimDescriptor, string, error) {
+-	r, err := s.Queries.GetAgentRuntime(ctx, task.RuntimeID)
++	r, err := s.runtimeLookup(s.Queries).Get(ctx, task.RuntimeID)
+ 	if err != nil {
+ 		return nil, "", err
+ 	}
+@@ -436,7 +436,7 @@ func (s *TaskService) taskKnowledgeRuntimeExposure(ctx context.Context, r db.Age
+ 
+ func (s *TaskService) taskKnowledgeResume(ctx context.Context, task db.AgentTaskQueue, f KnowledgeConsumerFacts, want protocol.TaskKnowledgeSessionBinding, native string, supported bool) (*protocol.TaskKnowledgeSessionBinding, bool, error) {
+ 	want.NativeSessionID = native
+-	binding, managed, manifest, err := taskKnowledgeExposure(ctx, s.Queries, task, want, supported)
++	binding, managed, manifest, err := s.taskKnowledgeExposure(ctx, s.Queries, task, want, supported)
+ 	if err != nil {
+ 		return nil, managed, err
+ 	}
+@@ -452,12 +452,12 @@ func (s *TaskService) taskKnowledgeResume(ctx context.Context, task db.AgentTask
+ 	return binding, managed, nil
+ }
+ 
+-func taskKnowledgeExposure(ctx context.Context, q *db.Queries, task db.AgentTaskQueue, want protocol.TaskKnowledgeSessionBinding, supported bool) (*protocol.TaskKnowledgeSessionBinding, bool, KnowledgeManifest, error) {
++func (s *TaskService) taskKnowledgeExposure(ctx context.Context, q *db.Queries, task db.AgentTaskQueue, want protocol.TaskKnowledgeSessionBinding, supported bool) (*protocol.TaskKnowledgeSessionBinding, bool, KnowledgeManifest, error) {
+ 	manifest := KnowledgeManifest{ProtocolVersion: 1, Entries: []KnowledgeManifestEntry{}}
+ 	if want.NativeSessionID == "" {
+ 		return nil, false, manifest, nil
+ 	}
+-	runtime, err := q.GetAgentRuntime(ctx, task.RuntimeID)
++	runtime, err := s.runtimeLookup(q).Get(ctx, task.RuntimeID)
+ 	if err != nil {
+ 		return nil, false, manifest, err
+ 	}
+@@ -580,7 +580,7 @@ func (s *TaskService) finalizeTaskKnowledgeClaim(ctx context.Context, q *db.Quer
+ 	if len(d.Claims) >= maxTaskKnowledgeClaims {
+ 		return knowledgeFailure(409, "knowledge_context_changed")
+ 	}
+-	r, err := q.GetAgentRuntime(ctx, task.RuntimeID)
++	r, err := s.runtimeLookup(q).Get(ctx, task.RuntimeID)
+ 	if err != nil {
+ 		return err
+ 	}
+diff --git a/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/server/internal/service/task_knowledge_prepare.go b/server/internal/service/task_knowledge_prepare.go
+index 9d6a3e32a..9badd2716 100644
+--- a/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/server/internal/service/task_knowledge_prepare.go
++++ b/server/internal/service/task_knowledge_prepare.go
+@@ -134,7 +134,7 @@ func (s *TaskService) taskKnowledgeTransaction(ctx context.Context, caller TaskK
+ 	if !c.Descriptor.PreparationRequired || caller.RuntimeID != task.RuntimeID {
+ 		return knowledgeFailure(403, "knowledge_authorization_denied")
+ 	}
+-	_, managed, history, err := taskKnowledgeExposure(ctx, s.Queries, task, c.Descriptor.Session, true)
++	_, managed, history, err := s.taskKnowledgeExposure(ctx, s.Queries, task, c.Descriptor.Session, true)
+ 	if err != nil {
+ 		return taskKnowledgeError(err)
+ 	}
+@@ -327,7 +327,7 @@ func (s *TaskService) taskKnowledgeTransaction(ctx context.Context, caller TaskK
+ 	if digest != c.ConfigurationDigest {
+ 		return knowledgeFailure(409, "knowledge_context_changed")
+ 	}
+-	actualBinding, actualManaged, actualHistory, err := taskKnowledgeExposure(ctx, q, current, c.Descriptor.Session, true)
++	actualBinding, actualManaged, actualHistory, err := s.taskKnowledgeExposure(ctx, q, current, c.Descriptor.Session, true)
+ 	if err != nil {
+ 		return taskKnowledgeError(err)
+ 	}
+@@ -423,7 +423,7 @@ func (s *TaskService) PrepareTaskKnowledge(ctx context.Context, caller TaskKnowl
+ 			if err = ValidateKnowledgeResolutionLocks(resolved, hints); err != nil {
+ 				return err
+ 			}
+-			_, _, history, err := taskKnowledgeExposure(ctx, q, task, c.Descriptor.Session, true)
++			_, _, history, err := s.taskKnowledgeExposure(ctx, q, task, c.Descriptor.Session, true)
+ 			if err != nil {
+ 				return err
+ 			}
+diff --git a/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/server/internal/service/task_knowledge_observe.go b/server/internal/service/task_knowledge_observe.go
+index a56649538..69f6c6a29 100644
+--- a/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/server/internal/service/task_knowledge_observe.go
++++ b/server/internal/service/task_knowledge_observe.go
+@@ -114,7 +114,7 @@ func (s *TaskService) ObserveTaskKnowledgeLaunch(ctx context.Context, caller Tas
+ 	if err != nil {
+ 		return taskKnowledgeError(err)
+ 	}
+-	runtime, err := s.Queries.GetAgentRuntime(ctx, task.RuntimeID)
++	runtime, err := s.runtimeLookup(s.Queries).Get(ctx, task.RuntimeID)
+ 	if err != nil {
+ 		return taskKnowledgeError(err)
+ 	}

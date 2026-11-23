@@ -9,12 +9,37 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 CHECK_STARTED_API=false
 CHECK_STARTED_WEB=false
+CHECK_STARTED_RENDERER=false
 CHECK_GO_DB_CREATED=false
 CHECK_COMPLETE=false
+
+check_allowed_origins() {
+  node - "$1" "$2" <<'JS'
+const origins = new Set([process.argv[2]]);
+for (const key of ["COLLABORATION_ELECTRON_RENDERER_URL", "CHANGELOG_ELECTRON_RENDERER_URL"]) {
+  const raw = process.env[key];
+  if (!raw) continue;
+  try {
+    const url = new URL(raw);
+    if (!["http:", "https:"].includes(url.protocol) ||
+        !["localhost", "127.0.0.1", "[::1]"].includes(url.hostname) ||
+        url.username || url.password || url.port === "0") throw new Error();
+    origins.add(url.origin);
+  } catch {
+    // Renderer URLs can contain credentials; never echo rejected input.
+    console.error("Native fixture renderer URL requires credential-free loopback HTTP(S)");
+    process.exit(2);
+  }
+}
+origins.add(process.argv[3]);
+process.stdout.write([...origins].join(","));
+JS
+}
 
 check_cleanup() {
   local result=$? cleanup_failed=0
   trap - EXIT INT TERM
+  if [ "$CHECK_STARTED_RENDERER" = true ]; then stop_component desktop-renderer || cleanup_failed=1; fi
   if [ "$CHECK_STARTED_WEB" = true ]; then stop_component web || cleanup_failed=1; fi
   if [ "$CHECK_STARTED_API" = true ]; then stop_component api || cleanup_failed=1; fi
   if [ "$CHECK_GO_DB_CREATED" = true ]; then
@@ -34,7 +59,9 @@ check_cleanup() {
 }
 
 prepare_check_environment() {
-  local source_env=$1 offset task_id
+  local source_env=$1 offset task_id origins task_jwt_secret
+  task_jwt_secret="$(node -e 'process.stdout.write(require("node:crypto").randomBytes(32).toString("hex"))')" \
+    || die "Could not generate an isolated check signing key."
   task_id="$(date -u '+%Y%m%d%H%M%S')-$$"
   acquire_lock
   trap release_lock EXIT
@@ -52,7 +79,10 @@ prepare_check_environment() {
   CHECK_GO_DB_NAME="multica_check_${task_id//-/_}_go"
   PROFILE="dev-$NAME"
   WEB_MODE=production
+  # Ignore an inherited development renderer port; this slot owns all ports.
+  DESKTOP_RENDERER_PORT="$(renderer_port_for_offset "$OFFSET")"
   bind_paths
+  origins="$(check_allowed_origins "http://localhost:$FRONTEND_PORT" "http://127.0.0.1:$DESKTOP_RENDERER_PORT")" || die "Native fixture renderer URL is invalid."
   ENV_FILE="$STATE_DIR/check.env"
   cp "$source_env" "$ENV_FILE"
   printf '\n' >> "$ENV_FILE"
@@ -63,12 +93,15 @@ prepare_check_environment() {
     write_manifest_value PORT "$BACKEND_PORT"
     write_manifest_value BACKEND_PORT "$BACKEND_PORT"
     write_manifest_value FRONTEND_PORT "$FRONTEND_PORT"
+    write_manifest_value DESKTOP_RENDERER_PORT "$DESKTOP_RENDERER_PORT"
     write_manifest_value POSTGRES_DB "$DB_NAME"
     write_manifest_value GO_TEST_DB_NAME "$CHECK_GO_DB_NAME"
     write_manifest_value DATABASE_URL "$DATABASE_URL"
+    # Private history cursors reject development defaults; never reuse a deployment key.
+    write_manifest_value JWT_SECRET "$task_jwt_secret"
     write_manifest_value FRONTEND_ORIGIN "http://localhost:$FRONTEND_PORT"
-    write_manifest_value CORS_ALLOWED_ORIGINS "http://localhost:$FRONTEND_PORT"
-    write_manifest_value ALLOWED_ORIGINS "http://localhost:$FRONTEND_PORT"
+    write_manifest_value CORS_ALLOWED_ORIGINS "$origins"
+    write_manifest_value ALLOWED_ORIGINS "$origins"
     write_manifest_value PLAYWRIGHT_BASE_URL "http://localhost:$FRONTEND_PORT"
     write_manifest_value MULTICA_PUBLIC_URL "http://localhost:$BACKEND_PORT"
     write_manifest_value MULTICA_APP_URL "http://localhost:$FRONTEND_PORT"
@@ -76,9 +109,15 @@ prepare_check_environment() {
     write_manifest_value LOCAL_UPLOAD_BASE_URL "http://localhost:$BACKEND_PORT"
     write_manifest_value NEXT_PUBLIC_API_URL "http://localhost:$BACKEND_PORT"
     write_manifest_value NEXT_PUBLIC_WS_URL "ws://localhost:$BACKEND_PORT/ws"
+    write_manifest_value COLLABORATION_E2E_API_URL "http://localhost:$BACKEND_PORT"
+    write_manifest_value COLLABORATION_ELECTRON_WS_URL "ws://localhost:$BACKEND_PORT/ws"
+    write_manifest_value COLLABORATION_ELECTRON_RENDERER_URL "http://127.0.0.1:$DESKTOP_RENDERER_PORT"
+    write_manifest_value COLLABORATION_ELECTRON_SOURCE_ROOT "$REPO_ROOT"
+    write_manifest_value MULTICA_E2E_DESKTOP_OUTPUT_DIR "$REPO_ROOT/apps/desktop/out"
     write_manifest_value REMOTE_API_URL "http://localhost:$BACKEND_PORT"
     write_manifest_value MULTICA_AUTH_MODE legacy
     write_manifest_value MULTICA_MANAGED_INSTALLATIONS_ENABLED false
+    write_manifest_value MULTICA_KNOWLEDGE_CONTEXT_ENABLED false
     write_manifest_value MULTICA_PLATFORM_ADMIN_ENABLED false
     write_manifest_value MULTICA_DEVICE_AUTH_ENABLED false
     write_manifest_value MULTICA_DEV_VERIFICATION_CODE "$DEV_CODE_DEFAULT"
@@ -96,12 +135,39 @@ prepare_check_environment() {
   CHECK_GO_DATABASE_URL="$(database_url_with_name "$DATABASE_URL" "$CHECK_GO_DB_NAME")"
 }
 
+# Serve only the built renderer, never production Electron Main (which owns the
+# daemon lifecycle). Reuse registry allocation and process ownership/cleanup.
+start_check_desktop_renderer() {
+  local renderer="$REPO_ROOT/apps/desktop/out/renderer" waited=0 listener
+  [ -s "$renderer/index.html" ] && [ -s "$REPO_ROOT/apps/desktop/out/preload/index.js" ] \
+    || die "Desktop renderer/preload are missing; build @multica/desktop first."
+  port_free "$DESKTOP_RENDERER_PORT" || die "Allocated Desktop renderer port is busy."
+  launch_detached desktop-renderer node "$SCRIPT_DIR/check-desktop-renderer.mjs" \
+    "$renderer" "$DESKTOP_RENDERER_PORT" "$STATE_DIR/desktop-renderer.running.json"
+  while [ "$waited" -lt 50 ]; do
+    if [ -s "$STATE_DIR/desktop-renderer.running.json" ] \
+      && curl -sf --max-time 2 "http://127.0.0.1:$DESKTOP_RENDERER_PORT/" > "$STATE_DIR/desktop-renderer.served.html" \
+      && cmp -s "$renderer/index.html" "$STATE_DIR/desktop-renderer.served.html"; then
+      listener_belongs_to_component desktop-renderer "$DESKTOP_RENDERER_PORT" \
+        || die "Desktop renderer listener is not owned by this check."
+      listener="$(port_listener_pid "$DESKTOP_RENDERER_PORT")"
+      printf '%s\n' "$listener" > "$(listener_pid_file desktop-renderer)"
+      ok "Built Desktop renderer ready (pid $listener, port $DESKTOP_RENDERER_PORT)."
+      return 0
+    fi
+    component_pid desktop-renderer >/dev/null || die "Desktop renderer exited; see $(log_file desktop-renderer)"
+    sleep 0.2
+    waited=$((waited + 1))
+  done
+  die "Desktop renderer did not serve the candidate build; see $(log_file desktop-renderer)"
+}
+
 check_main() {
   local source_env tool
   cd "$REPO_ROOT"
   source_env="$(env_file_path "${ENV_FILE:-$(detect_env_file)}")"
   [ -f "$source_env" ] || die "Missing env file: $source_env"
-  for tool in node go pnpm psql lsof make; do
+  for tool in node go pnpm psql lsof make curl cmp; do
     command -v "$tool" >/dev/null 2>&1 || die "Missing prerequisite: $tool (add its installed bin directory to PATH)."
   done
   load_env_file "$source_env"
@@ -141,7 +207,10 @@ check_main() {
   CHECK_STARTED_API=true
   start_api
 
-  step "[5/6] Production Web build and start"
+  step "[5/6] Production Web and Desktop builds and start"
+  pnpm --filter @multica/desktop build
+  CHECK_STARTED_RENDERER=true
+  start_check_desktop_renderer
   CHECK_STARTED_WEB=true
   start_web
   print_status_json > "$STATE_DIR/verification.running.json"

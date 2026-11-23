@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-10-31T21:16:20.078090+00:00",
+  "scope": "Read-only post-incident counts; no default DB writes, cleanup or restoration by this audit",
+  "observed": {
+    "database": "multica",
+    "read_only": "on",
+    "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+    "handler_user_count": 0,
+    "integration_user_count": 0,
+    "handler_workspace_count": 0,
+    "integration_workspace_count": 0,
+    "named_handler_runtime_count": 0,
+    "named_integration_runtime_count": 0,
+    "knowledge_delivery_column_present": false
+  },
+  "source_findings": [
+    "Handler TestMain falls back to localhost:5432/multica with DATABASE_URL unset, cleans reserved fixture before and after m.Run",
+    "cmd/server TestMain has same fallback; exact incident command inventory still being confirmed",
+    "Neither TestMain performs migrations directly; router initialization in cmd/server may have conditional setup, so no broad absence-of-effects claim made from test selector alone"
+  ],
+  "limits": [
+    "No pre-run default-DB snapshot exists in this task; absence of current reserved rows cannot prove earlier same-name test data was not deleted",
+    "Cleanup SQL can use existing database cascades; prior affected row inventory is not reconstructible from this check alone"
+  ]
+}

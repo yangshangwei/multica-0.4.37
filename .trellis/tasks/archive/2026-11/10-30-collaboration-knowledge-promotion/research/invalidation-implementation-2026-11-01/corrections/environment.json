@@ -1,0 +1,26 @@
+{
+  "database": "multica_knowledge_invalidation_20261101_849a1c21",
+  "private_environment": "/tmp/multica_knowledge_invalidation_20261101_849a1c21.env",
+  "schema": 760,
+  "redis_image": "redis:7-alpine",
+  "redis_container": "multica-knowledge-invalidation-849a1c21",
+  "redis_test_url": "redis://127.0.0.1:50326/0",
+  "redis_no_shared_flush": true,
+  "redis_lifecycle": "stopped successfully after final tests; --rm removed the temporary container",
+  "redis_start_command": [
+    "docker",
+    "run",
+    "-d",
+    "--rm",
+    "--name",
+    "multica-knowledge-invalidation-849a1c21",
+    "-p",
+    "127.0.0.1::6379",
+    "redis:7-alpine",
+    "redis-server",
+    "--save",
+    "",
+    "--appendonly",
+    "no"
+  ]
+}

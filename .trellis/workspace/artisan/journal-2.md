@@ -1,10 +1,1236 @@
 # Journal - artisan (Part 2)
 
 > Continuation from `journal-1.md` (archived at ~2000 lines)
-> Started: 2026-10-16
+> Started: 2026-10-12
 
 ---
 
+
+
+## Session 63: Desktop connection recovery and native acceptance
+<!-- trellis-session: v=2 fp=ede83f1031e835d0 -->
+
+**Date**: 2026-10-12
+**Task**: Desktop connection recovery and native acceptance
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Implemented bounded boot requests, live recovery metadata, shared workspace recovery and persistent server editing with authorized child-window handoff. Fixed language-sync reload losing unsaved input by deferring desktop locale refresh until Back. Verified 2030 related tests, affected lint/typechecks/build, independent review, six isolated macOS Electron groups and visual score 93. Archived the completed task; unrelated planning and admin archive changes remain separate.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `0c6afec4c` | fix(desktop): keep recovery usable while the server is unavailable |
+
+### Status
+
+[OK] **Completed**
+
+
+## Session 65: 丰富当前后端与桌面业务测试数据
+<!-- trellis-session: v=2 fp=2329d15c9880a9f5 -->
+
+**Date**: 2026-10-12
+**Task**: 丰富当前后端与桌面业务测试数据
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+当前 desktop-qa-1008-1743 新增44条任务及5项目、计划迭代、标签/评论/通知/聊天/合成执行。原有15任务与项目/迭代/评论/设置逐条保留。幂等重跑无新增，13安全测试、31真实API、9原生Electron页面、lint/typecheck通过。模拟运行时离线，验证临时数据库已清理。
+
+### Main Changes
+
+- 新增make seed与pnpm seed/test:seed入口，无新依赖
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ede5ae202` | test(seed): retain realistic scenarios for desktop business acceptance |
+
+### Testing
+
+- [OK] 13/13隔离schema安全测试；31 API；9 Electron页面；lint/typecheck
+
+### Status
+
+[OK] **Completed**
+
+
+## Session 66: MCP agent category filters
+<!-- trellis-session: v=2 fp=2cc1f4923c4f3dc0 -->
+
+**Date**: 2026-10-12
+**Task**: MCP agent category filters
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Implemented and verified category filtering in the shared MCP agent assignment picker. Category chips use explicit saved categories and existing template provenance, preserve hidden selections across category/search projections, and keep All/explicit categories usable while metadata recovers.
+
+### Main Changes
+
+- Added represented category chips and full-directory counts to the shared MCP picker.
+- Gated existing role/squad template catalog queries to eligible template-backed rows and preserved retry/cache behavior.
+- Recorded bilingual copy, focused regressions, production browser evidence, and the MCP spec contract.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `6642de425` | Make MCP assignment choices easier to classify |
+
+### Testing
+
+- [OK] pnpm --filter @multica/views test: 546 files, 6694 tests passed.
+- [OK] pnpm typecheck and pnpm lint passed with existing warnings only.
+- [OK] Production component fixture passed five responsive locale/theme scenarios with zero browser errors.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Knip still reports the repository baseline unused files/dependencies; clean it in a separate task.
+
+
+## Session 67: 内网静态下载页与首次安装指导
+<!-- trellis-session: v=2 fp=f1692dc37447d725 -->
+
+**Date**: 2026-10-13
+**Task**: 内网静态下载页与首次安装指导
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+基于现有下载页交付 Nginx 静态版本，自动跟随 Windows x64 发布，支持业务地址复制和完整中文首次使用指导。
+
+### Main Changes
+
+- 静态深色首屏和浅色平台列表，其他平台待开放，纯内网运行。
+- 发布流程从已校验安装包生成 download.json，配置保留并支持失败重试。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `35cc68ca2` | feat(desktop): let intranet users install without a manual handoff |
+
+### Testing
+
+- [OK] 166 项测试、Desktop 类型检查、lint 和内嵌脚本检查通过；有 1 条既有 lint 告警。
+- [OK] 隔离 Nginx/Chromium 验证下载摘要、Range、新版刷新、HTTP 复制、错误重试、窄屏和重启持久化。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 部署现有内网 Nginx；配置业务 URL，使用正式 Windows 安装包完成原生验收。
+
+
+## Session 68: Complete v0.6.6 offline delivery
+<!-- trellis-session: v=2 fp=4be2a5b8a211fb8b -->
+
+**Date**: 2026-10-13
+**Task**: Complete v0.6.6 offline delivery
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Finished frozen-source Linux amd64 and Windows x64 delivery in dist/release/v0.6.6. Verified password/device upgrades, fresh administrator, artifact/feed integrity, source regressions and all 21 checksums; retained native Windows and real-environment limits.
+
+### Main Changes
+
+- Finalized matching upgrade guides, portable verification reports and checksums; archived the approved release task.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f90c3fe13` | docs(release): make the v0.6.6 offline handoff verifiable |
+
+### Testing
+
+- [OK] Final independent review passed: 22 files, 13 documentation ZIP members; source lint/typecheck/vet and selected regressions; actual cmd/server 25 top-level / 63 pass events.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Target Windows installation/upgrade and real intranet acceptance remain deployment-side checks; Windows payload is unsigned.
+
+
+## Session 69: 跨空间协作：编辑、交接确认与持久撤权
+<!-- trellis-session: v=2 fp=8c08c7f474539db0 -->
+
+**Date**: 2026-10-14
+**Task**: 跨空间协作：编辑、交接确认与持久撤权
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Session summary was not supplied.
+
+### Main Changes
+
+- 继续既有58项需求任务，完成R41/R48编辑、D04定向状态确认、账号失效消费和跨批次饥饿修复；创建与正向执行仍关闭
+- 独立复核关闭legacy agent人类令牌边界，新增真实DB并发、回滚、重启和调度失败证据；同步规范与任务进度
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `cc85172d98ad11a3e4e123f379639431f8df0f08` | feat(collaboration): preserve authority through handoffs and account revocation |
+
+### Testing
+
+- [OK] 259个Go顶层测试及323个子项通过，1061个core测试通过，9项workspace typecheck、core lint、Go vet、sqlc一致性及迁移619验证通过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续P1剩余来源字段与P3私有内容/实时；P4运行身份和可信终结证明完成后再实现P5正向Resume/FIFO及双端P8验收
+
+
+## Session 70: Close usage documentation consistency gaps
+<!-- trellis-session: v=2 fp=ac5b6a1144afe7ee -->
+
+**Date**: 2026-10-14
+**Task**: Close usage documentation consistency gaps
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+关闭使用说明审计的 D01–D18：修订 18 篇中文文档和英文规范、同步文档包并完成独立复核。保留其他会话修改，任务已归档。
+
+### Main Changes
+
+- 修正导入、触发、离线回收、认证、权限、协作、工具能力及开发规范；标明旧截图差异。
+- 文档目录仅提交本轮摘要修改；已有分拣台、迭代、认证等文档 WIP 留给原会话。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4d7399b7470506aa72a6e66fa5db264c76baf5c8` | docs: prevent misleading usage instructions |
+
+### Testing
+
+- [OK] 62 项文档测试、12 项 Docs handler、Go docs/vet、docs typecheck、MDX 和生产构建通过。
+- [OK] 39 页、58 资源、98 文件逐字节一致；252 内部链接、43 锚点、57 图片引用无错误；隔离测试数据库已清理。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本任务无剩余修订；后续正常发布时交付新嵌入包，现场登录、真实工具与长时断线未在本轮验证。
+
+
+## Session 71: Settings audit remediation
+<!-- trellis-session: v=2 fp=6c01724d167a2a57 -->
+
+**Date**: 2026-10-14
+**Task**: Settings audit remediation
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Completed F01-F17 settings remediation, independent review and native Electron acceptance.
+
+### Main Changes
+
+- Unified settings read recovery and protected cached data through denial, retry cancellation and remounts.
+- Retained invalid drafts and failed confirmations; protected PAT parsing, cache secrecy, pending actions and native updater focus.
+- Archived reproducible evidence and staged only PAT hunks in the concurrently edited API client.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `f3e1161a46fab6cab448a4fb44575c5464a2f37c` | fix(core): keep settings data trustworthy across failures |
+| `6ccd5e643485bafb2408c343d3bca289f319e0f4` | fix(settings): preserve edits and make failed actions recoverable |
+
+### Testing
+
+- [OK] 907 tests passed: 783 views, 105 core and 19 desktop.
+- [OK] Core, views, Web and desktop node/renderer TypeScript checks, scoped ESLint and 27 UI detector targets passed.
+- [OK] Electron fixtures verified all 17 findings, 18 catalog layout combinations and light/dark contrast; owned processes/profiles cleaned.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining work in the agreed task scope; live backend writes, native Windows/Linux and spoken screen-reader checks were not exercised.
+
+
+## Session 72: Commit completed collaboration and automation slices
+<!-- trellis-session: v=2 fp=a714606fa8dae3f7 -->
+
+**Date**: 2026-10-14
+**Task**: Commit completed collaboration and automation slices
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Committed completed implementation slices and preserved existing archival moves; verified checks while keeping unfinished product acceptance and unrelated audit/diagnostic work explicit.
+
+### Main Changes
+
+- packages/core/api and collaboration plus server handlers/services/SQL: R29 recipient resolution, transaction eligibility and R42 metadata editing; reuse ordinary property validation instead of keeping a duplicate handler validator.
+- server source_context service/handler and regression tests: reject collaboration capture before projecting content or copying attachments; ordinary child controls remain valid.
+- packages/views/autopilots/locales/platform and Web/Desktop adapters: preserve template origin/focus and improve guidance and blank entry targets; accompanying specs committed.
+- apps/docs content, embedded server docs and DocsNav: complete authentication/triage/iteration guidance and accessible navigation; source and generated bundle committed together.
+- Three views test files: preserve ApiError exports, use semantic inbox listitem and await pointer activation before filter typing. No production workaround, sleeps, test retries or assertion weakening.
+- Preserved six existing archive moves and obsolete admin-init duplicate removal, repaired 46 archival context references, and retained selected authoritative task/audit evidence. Bookkeeping commit: f09aefab0df3486ab93dd897e34909382c010028.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `57f6163f454af6d17f3f4bb352b71b06fa4c8f25` | feat(collaboration): preserve authority when editing fields and choosing recipients |
+| `c29e05c8f63864e13b037a643b35a20180cbfef1` | fix(collaboration): prevent private source capture from bypassing collaboration rules |
+| `e5fe7b909c6d3987fed1a06d033edb5dd17bd3e8` | fix(autopilots): preserve template intent and keyboard focus through creation |
+| `5d6966b4baa1480a9b251558f79da4785a0f3a1f` | docs: make authentication and work management guidance complete and readable |
+| `14642c42ff763384ae49191916385a3390a6deec` | test(views): keep committed page regressions aligned with current contracts |
+
+### Testing
+
+- [OK] Full TS lint/typecheck: 15 tasks passed, no cached results; post-fix views typecheck and scoped lint also passed; UI wildcard exports and whitespace checks passed.
+- [OK] Final frontend coverage totals 954 files / 11728 tests: core 254/3406, docs 9/62, views 561/6880, web 36/283, desktop 94/1097. Final full views run exit 0; failed mock/selector and virtual-focus versions were corrected before the passing run.
+- [OK] Guarded isolated-DB Go race matrix: service 428, handler 152, router 19, util 115 = 714 cases passed, 0 skips; all 44 newly added top-level regressions executed; full go vet passed.
+- [OK] sqlc v1.31.1 private generation: 93 Go files byte-match. Docs build and Go embed tests pass; 98 docs bundle files byte-match and 32 source links/images resolve.
+- [OK] Archive preservation: 145 original files retained, 46 repaired JSONL references resolve; 58 JSON and 16 JSONL evidence files validate. Remaining 428 untracked files match the pre-review snapshot exactly.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Collaboration task remains in progress: full P1-P8, Web/Desktop flow, controlled-comment UI and native/real-AI acceptance remain open; creation/execution gates preserved.
+- Automation task remains in progress: historical visual verdict is revise/88, final accepted native visual verdict and complete fresh matrix remain open.
+- Windows runtime-offline planning and raw audit/runtime harness/patch files remain untracked. Only local commits were requested; no push, merge, release or deploy.
+
+
+## Session 73: Archive runtime-offline investigation at user request
+<!-- trellis-session: v=2 fp=6e1f1db6356e083f -->
+
+**Date**: 2026-10-15
+**Task**: Archive runtime-offline investigation at user request
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按用户要求归档 10-14-runtime-offline-after-reopen，结束本任务追踪；保留诊断、已有修复证据及未完成的 Windows 现场验收记录。
+
+### Main Changes
+
+- 归档 9 份任务资料，更新 4 处任务内研究引用；在任务、PRD 和实施计划中注明用户要求归档及 AC4/AC5 未完成。
+
+### Git Commits
+
+(No product-code commits; task archival recorded separately.)
+
+### Testing
+
+- [OK] 归档前后文件清单一致，4 份设计/研究/验证资料哈希不变；10 条 JSONL 引用可解析，任务已从活跃列表移除，git diff --check 通过。
+- 本轮仅做任务归档，未运行产品测试或 Windows 现场验收。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本任务按用户要求结束追踪；如后续重开排查，仍需验证 Windows 现场恢复及原始凭据失效原因。
+
+
+## Session 74: Complete automation template native acceptance
+<!-- trellis-session: v=2 fp=a01a2c8b1bc69d57 -->
+
+**Date**: 2026-10-15
+**Task**: Complete automation template native acceptance
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Closed A01–A07 after a 96/100 native visual verdict, including an additional staged Desktop route focus repair discovered during acceptance.
+
+### Main Changes
+
+- Prevented the outgoing template route from consuming the destination gallery focus handoff; preserved route aliases and added a staged navigation regression.
+- Retained final native screenshots, measured contrast, build/source hashes and the independent review; archived the completed task with valid context references.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `c98c14ad4beb43a613237288e617af7405e81306` | fix(autopilots): preserve return focus through desktop route commits |
+
+### Testing
+
+- [OK] Final scoped views: 123 tests passed; focused page/catalog: 41 passed. ESLint, typechecks, UI export check and diff checks passed.
+- [OK] Native Electron: 16 layout cases, 8 Back paths, 8 focus-owner cases and 4 synthetic-touch cases passed; visual verdict 96/pass; no runtime/request errors or write/execution side effects.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining work in the agreed task scope. Physical touch, native Windows/Linux, spoken screen readers, production performance and live automation execution were outside this acceptance.
+
+
+## Session 84: 跨账号协作新版需求核对与多目标基础验证
+<!-- trellis-session: v=2 fp=d0eea54d53319833 -->
+
+**Date**: 2026-10-17
+**Task**: 跨账号协作新版需求核对与多目标基础验证
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成新版需求对照、多目标队列与组停止基础、普通执行入口隔离和 v2 读取；保留任务进行中及完整运行/双端验收门禁。
+
+### Main Changes
+
+- Typed target、逐目标输入、执行组、两级停止及资源/账号/生命周期联动；旧记录保留隔离。
+- 独立复核修复缺失目标与悬空 legacy 指针造成的漏停；同步规范、内置 skill/source map 和任务证据。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `e6bc3759e` | fix(collaboration): prevent ordinary execution from crossing shared-task boundaries |
+| `f5259e245` | feat(collaboration): preserve each target input and stop boundary |
+| `96331dd66` | docs(task): preserve the revised collaboration contract and verified continuation |
+
+### Testing
+
+- [OK] Go 1.26.6 与 1.27 race：323 顶层测试、638 子测试通过；两个非本任务 opt-in triage 检查跳过。
+- [OK] Core 255 文件/3452 测试、全仓类型检查与 lint、Go vet、迁移演练、97 个 sqlc 文件一致性通过。
+
+### Status
+
+[OK] **Foundation iteration verified; parent task remains in progress**
+
+### Next Steps
+
+- 任务保持 in_progress，接续 P1 剩余创建/来源字段，P3 私有内容/@提交/通知，P4 资源授权/运行身份/真实 proof。
+- 新增独立 runtime writer 前统一后置锁顺序；再完成调度/正向恢复、Web/Desktop 及完整 97 项 AC。
+
+
+## Session 85: M09 单智能体闭环与最终评审续作
+<!-- trellis-session: v=2 fp=375f284c127fe4d5 -->
+
+**Date**: 2026-10-18
+**Task**: M09 单智能体闭环与最终评审续作
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按最终 Claude 文档核对当前实现，完成并验证 M09 单直接智能体文本闭环；原任务继续进行，后续控制阶段须重读最新执行契约。
+
+### Main Changes
+
+- 统一业务结果与 v3 通道/批次读取，修复迟到权限拒绝、FIFO、孤儿派发校验和迁移索引恢复。
+- 保留合批后的原业务断言，修正旧测试时间线、外部身份前提及 Query 故障注入。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `188a7f4a5b0dc0e08873389c6261be0a55f012f9` | feat(collaboration): keep single-agent execution ordered and provable |
+| `6794f4e3680526d0105df9d58fa93edc4f937603` | fix(collaboration): preserve current authority and batch identity in account reads |
+| `3737af87db8c4d7e364e870c32354a772a1a4939` | docs(collaboration): make the verified slice and remaining controls explicit |
+
+### Testing
+
+- [OK] Go 协作和运行端/CLI race、Linux 真 DB/API/daemon/namespace、core 3484 测试、全仓 lint/typecheck、迁移和 sqlc 通过；独立复核通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 在 target hold、多通道或 M11 开始前完整重读最新执行契约，再按更新后的控制/批次规则实现。
+
+
+## Session 86: Target holds and M04 control recovery verified
+<!-- trellis-session: v=2 fp=41c483934f1804fa -->
+
+**Date**: 2026-10-18
+**Task**: Target holds and M04 control recovery verified
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Implemented and verified target hold/control and resource invalidation boundaries after rereading the latest execution contract; full collaboration task remains in progress.
+
+### Main Changes
+
+- Separate target hold/version from channel pause; atomic target Resume, partial issue Resume and original control receipt recovery.
+- Use borrowed resource transactions for runtime teardown/rebind; preserve proof and reservations; repair only provable legacy reconfigure mirrors.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a389ef8596791cb8639ce21b27f64868cf93d715` | feat(collaboration): keep resource holds independent of channel pause |
+| `dcbb584a019b38f0646887b26fe47a565737619c` | docs(collaboration): preserve the verified hold and recovery boundary |
+
+### Testing
+
+- [OK] Go race: 603 top-level and 687 subtests, including isolated Redis follow-up; Linux ARM64 routes: 5, no skips.
+- [OK] Core: 3509 tests; workspace typecheck 9/9 and lint 6/6; Go vet/gofmt; migration698 and 103-file sqlc consistency; independent H01/H02/H03 closed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Reread current contracts and implement real channel FIFO/eligibility rebatching so held S cannot block valid A; preserve source/proof identity and verify never-launched return-to-waiting.
+- Then complete frozen grants, Switch/configuration convergence, M08/M11, file/provider paths and Web/Desktop/P1-P8; keep task in_progress and client execution unavailable.
+
+
+## Session 87: 通道 FIFO、消费历史与配置失效收敛
+<!-- trellis-session: v=2 fp=df10b7876ed1959f -->
+
+**Date**: 2026-10-18
+**Task**: 通道 FIFO、消费历史与配置失效收敛
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成通道 FIFO、完整 nonlaunch 回队、待配置迁移、持久配置失效和 v4 读取；保留整体任务进行中。
+
+### Main Changes
+
+- 按通道筛选合格输入，保留固定组输入历史及原证明，复用已有停组与事务逻辑。
+- 接线真实配置写入失效及公平后台收敛，统一写入与读取的完整证明校验。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `33f584ae14f8eae77a96381e5c273ed3fecac497` | feat(collaboration): keep eligible input moving with durable history |
+
+### Testing
+
+- [OK] Go race 1191 顶层/1211 子测试；Linux10；core3532；lint/typecheck/vet、708迁移与104个sqlc通过。
+- [OK] 4个Linux跳过项已补跑；仅既有live GitHub opt-in未运行；专用环境已清理。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续完整冻结资源/授权就绪Switch、M08/M11与容量1小队，再推进完整Web/Desktop及其余AC。
+
+
+## Session 88: 跨账号协作运行闭环与双端基础工作台
+<!-- trellis-session: v=2 fp=70925dd38e7b255f -->
+
+**Date**: 2026-10-18
+**Task**: 跨账号协作运行闭环与双端基础工作台
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成原子 Switch、小队读取/轮次约束、静态 Linux CLI/daemon 闭环和已有协作单双端接线；原任务保持 in_progress，完整产品验收继续。
+
+### Main Changes
+
+- 按输入冻结授权并保留全部读取者/终结证明，复用现有 CLI、窗口协议和 Query/草稿机制。
+- 修复 API 循环依赖、权限恢复与七字段回执、Desktop 启动/历史/独立窗口，以及广泛验证中的测试隔离与归档夹具。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b434d191dcc3df0e44d521e50839f9d315ec44f1` | test(projects): keep canonical verification valid after task archival |
+| `0155ee7353a02c082e6c49d61e7c652e7ad97ff4` | feat(collaboration): keep shared runs authorized and recoverable |
+| `6063a2682a10d7b5123f480f6aa56ab0f2e8ec9a` | feat(collaboration): preserve account intent through uncertain responses |
+| `374049cecd4a2f30595e9131722722d5c7782937` | feat(collaboration): keep account work reachable across clients |
+
+### Testing
+
+- [OK] TypeScript 11993；Go 最新受影响包 6168 顶层 + 6402 子测试通过；81 个默认跳过项如实记录。
+- [OK] 真实 Linux 当前源码路由6、daemon5、runner18；生产 Web1和 macOS Electron6通过；lint/typecheck15、sqlc108一致、独立检查和视觉94/pass。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 补齐公开创建/受控附件、资源授权与 Switch 写表单、参与人及其余编辑/评论操作、来源页面/账号实时和完整运行记录。
+- 完成通用 provider/Git/其他 OS 及 P7/P8/97项产品验收，再评估启用；当前不归档父任务。
+
+
+## Session 89: 协作单新建、私有附件与资源表单
+<!-- trellis-session: v=2 fp=4b76fcbf86b065c8 -->
+
+**Date**: 2026-10-19
+**Task**: 协作单新建、私有附件与资源表单
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成账号新建/私有附件、资源授权与Switch、参与人管理和实时增量；原请求/持久拒绝恢复及双端验证收口，父任务保持 in_progress。
+
+### Main Changes
+
+- 复用现有 Storage/操作表/用户锁/Query/native IPC；整组草稿一次消费，业务拒绝保存点回滚并固定原key。
+- 共享创建、私有附件、资源和禁用参与人表单接线；账号WS在最终发送时重验，客户端取消/迟到响应不丢原意图。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `2f39f00be81be0f2294ee967282071a4e12bdf52` | feat(collaboration): keep newly shared work private and recoverable |
+| `e5876258b49f7ddc72106813cf6f42249d15af4b` | feat(collaboration): retain account intent through delivery and denial |
+| `9a8b7f4833cf0ceac6df38106cbdb3232116149a` | feat(collaboration): make account delivery and consent usable across clients |
+| `1f6e61e39ea29e8edc11a56bd4bcb70cd91e9ddf` | docs(collaboration): preserve verified product boundaries for continuation |
+
+### Testing
+
+- [OK] TypeScript 12073；lint/typecheck15；112文件sqlc一致；受影响Go/race与创建/迁移/恢复独立检查通过。
+- [OK] 生产Web4、macOS Electron8、真实Linux6，均无该专项跳过；native文件边界16项和视觉93/pass。默认条件跳过及31个旧lint/12个旧Knip项已记录。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续来源页面/完整字段评论、运行记录与R52通知、运行端文件/Git/通用provider、有限代管及P7/P8和全部97项验收；保留默认门禁，当前不归档父任务。
+
+
+## Session 90: 来源页面、日常编辑与原请求恢复验证
+<!-- trellis-session: v=2 fp=59168ffa55a73051 -->
+
+**Date**: 2026-10-19
+**Task**: 来源页面、日常编辑与原请求恢复验证
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+继续原跨账号协作任务，完成来源共享入口、字段/迭代与评论操作；独立检查、双端和视觉验证通过，父任务保持进行中。
+
+### Main Changes
+
+- 来源页面复用共享详情和动作；外部账号最小投影/筛选、空 WS 刷新与缓存隔离。
+- 初始与日常字段、来源结构/迭代、本人评论编辑/删除/回复/解决/回应；保留历史、附件和原请求。
+- 修复旧迭代移动旁路、UTF-8 超限恢复、后台/分页输入丢失、日志隐私、重复 React key 与卡片重叠。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `5c6ec11c763c3c246a130ba90fae200cdfa1391a` | feat(collaboration): keep source edits within shared authority |
+| `34a01fa16f76db19f37ac55e83003e0723c725fc` | feat(collaboration): keep shared work usable from source pages |
+| `2f799a97af8c0d0216dab07d2924d9be69ec803c` | docs(collaboration): preserve verified source editing contracts |
+
+### Testing
+
+- [OK] TypeScript 12162 项、15/15 lint/typecheck；115 个 SQL 生成文件无漂移。
+- [OK] Go 合并988顶层+1097子测试通过，8项条件跳过；相关 race/vet 与新边界回归通过。
+- [OK] 生产 Web6项、macOS Electron9项；视觉后续2个Web+1个Electron复验，94/100。
+- [OK] 源清单148文件匹配；测试服务/容器已停止，证据和隔离数据库保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 按 research/remaining-product-work-2026-10-18.md 接续 R51 普通子任务共享详情、完整运行记录与 R52 通知。
+- 完成运行端 Git/附件和通用供应商、其他 OS、P7 有限代管及 P8 全部验收；默认发布门禁保持关闭。
+
+
+## Session 91: 跨工作区协作专项 QA 与报告
+<!-- trellis-session: v=2 fp=2b8ae28d5814607b -->
+
+**Date**: 2026-10-19
+**Task**: 跨工作区协作专项 QA 与报告
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+记录独立工作区 A/B/C 流转、Web/Electron、前后端回归及两条并发恢复路径；报告保留 P2 提示问题与全部失败历史。
+
+### Main Changes
+
+- 新增测试报告、结构化结果和测试子任务归档；父协作任务保持进行中，无产品源码改动。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] 标准 Web 6、macOS Electron 9、补测 4 次通过；客户端历史 22 次：19 pass、3 fail，0 自动重试。
+- [OK] 前端 901 条通过；Go 581 顶层和 900 子测试通过、7 显式跳过、另 4 Linux 未执行；所选 lint/typecheck/race/vet 通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 跟进 CWC-QA-001（P2）初始并发拒绝提示；补真实 provider、Linux runtime、安装包与全量验收。
+
+
+## Session 92: 修复跨工作区并发拒绝提示 P2
+<!-- trellis-session: v=2 fp=d0da04c904ecfec1 -->
+
+**Date**: 2026-10-19
+**Task**: 修复跨工作区并发拒绝提示 P2
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+明确的 stale_revision 409 立即按拒绝收敛，保留原页输入与显式新键提交；网络未知、权限和访问版本屏障保留。
+
+### Main Changes
+
+- 运行代码仅修改共享 operation.ts；新增/更新回归并记录精确规范；修复提交 a157fd140。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a157fd140` | fix(collaboration): keep known revision conflicts out of uncertain recovery |
+
+### Testing
+
+- [OK] Core/API 47 文件680项、共享界面13文件46项、生产Web7项通过；四包类型、受影响lint、差异检查和独立审查通过。
+- [OK] 真实双账号409立即拒绝；无reload、无恢复GET、两次生命周期POST、新key200同单done、无AI/pageerror；服务已停止，数据与证据保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 原协作父任务保持进行中；真实provider、Linux runtime及原生安装包完整验收仍按原范围推进。
+
+
+## Session 93: Shared children, recorded runs and result notifications
+<!-- trellis-session: v=2 fp=2b2585b94c499864 -->
+
+**Date**: 2026-10-19
+**Task**: Shared children, recorded runs and result notifications
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成既有跨工作区协作任务的 R51 子任务/旧入口及运行记录、用量、来源与 R52 结果通知增量，保留父任务进行中。
+
+### Main Changes
+
+- Added source-authorized ordinary children, shared recorded runs and compatible result links across Web and Desktop.
+- Preserved immutable source data, exact nullable usage, proven group notifications, current access and native focus.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `28d8df628` | feat(collaboration): retain shared execution history and result notices |
+| `c74d6c58c` | feat(collaboration): make shared children and run results usable across clients |
+| `a4b9f188b` | docs(collaboration): preserve the verified children and records handoff |
+
+### Testing
+
+- [OK] TypeScript 12311 passed; full Go race coverage completed, including all 1039 service cases in isolated partitions.
+- [OK] Production Web 8 and macOS Electron 10 unique journeys passed; actual Linux 10 cases and native file boundaries passed.
+- [OK] Independent reviews closed; visual94; Knip2475 baseline findings with no additions.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Continue trigger-preview completeness, runtime files/Git and provider adapters, P7 administration and full P8 acceptance.
+
+
+## Session 94: 触发预览与普通父任务阶段唤醒
+<!-- trellis-session: v=2 fp=8d55991ca65fadfd -->
+
+**Date**: 2026-10-20
+**Task**: 触发预览与普通父任务阶段唤醒
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成原协作任务的预览合批/续作与 R58/AC89 反向父任务唤醒；独立复核及专项验证通过，父任务保持进行中。
+
+### Main Changes
+
+- 预览复用 FIFO 兼容/字节计算并绑定完整草稿身份；父任务复用既有阶段屏障与提交后唤醒。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `5dd5ccd8b` | feat(collaboration): make shared AI grouping visible before submission |
+| `b6f1e3ec9` | fix(collaboration): let completed shared children advance ordinary parents |
+| `9d3f99c4b` | docs(collaboration): preserve the verified preview and parent wakeup handoff |
+
+### Testing
+
+- [OK] 相关 TS934、Go race104顶层、生产 Web5场景、类型/lint/vet及视觉94通过；失败历史与范围保留在验证报告。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 运行端附件/Git、通用 provider/非 Linux 隔离、P7 有限代管和 P8 完整验收；默认门禁保持关闭。
+
+
+## Session 95: Collaboration gap recovery current source, installed Main and old CLI acceptance
+<!-- trellis-session: v=2 fp=33d9d7ed864b90ec -->
+
+**Date**: 2026-10-22
+**Task**: Collaboration gap recovery current source, installed Main and old CLI acceptance
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Continued the existing task without replanning;96/97 exact clauses now pass with current race, Web/Electron/full Main and old CLI evidence. Real provider account/quota remains unverified and production gates closed.
+
+### Main Changes
+
+- WeCom relay validates immutable delivery before private wire/media; multiowner catalogue, source ordering/stage and offline/installed client evidence added.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `80b7af5da` | Prevent relayed chat replies from bypassing private collaboration delivery |
+| `b665756f9` | Keep every actual resource owner authoritative through derived collaboration runs |
+| `fbf5cc2ef` | Preserve external source identity and layout without changing collaboration authority |
+| `0a17aa7b2` | Keep offline workflow and proven-result notifications actionable across clients |
+| `63c0beeb5` | Make the current collaboration acceptance boundary traceable |
+| `a1d17d2ee` | Keep prior packaged CLI calls inside current collaboration control fences |
+| `e13160fa0` | Keep first-version collaboration flows consistent in the complete packaged client |
+
+### Testing
+
+- [OK] Current handoff112/406, source23/75, isolated outbound33/97, Core1024 Views94 Admin239/28; installed pair2/2 and natural reconnect2/2;404 evidence hashes and97 definitions verified.
+
+### Status
+
+[OK] **Verified slices recorded; task remains in_progress (AC43 pending)**
+
+### Next Steps
+
+- AC43 only: obtain separate real provider account/quota authorization and verify exact environment billing/provenance; keep task and parent in_progress.
+
+
+## Session 96: 归档跨账号协作遗漏补齐与运行恢复
+<!-- trellis-session: v=2 fp=8f38e4084d13e6b2 -->
+
+**Date**: 2026-10-22
+**Task**: 归档跨账号协作遗漏补齐与运行恢复
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+用户确认子任务完成并要求归档；保留96/97验收记录，AC43留在进行中的父任务跟踪。
+
+### Main Changes
+
+- 归档到 archive/2026-10/10-20-collaboration-gap-recovery，记录完成日期与用户归档决定，并更新父任务链接。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `94e19da3b` | Keep the current collaboration acceptance handoff recoverable |
+| `3e504db3d` | Retain only the real provider-account gap after current client acceptance |
+| `e13160fa0` | Keep first-version collaboration flows consistent in the complete packaged client |
+
+### Testing
+
+- [OK] 归档后上下文校验通过；1748份原有证据和262份其他未提交文件哈希未变，父任务保持in_progress。
+- [OK] 本轮只归档任务记录，未重跑产品测试。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 父任务继续跟踪AC43真实供应商账号、额度与来源验证；生产门禁保持关闭。
+
+
+## Session 97: 跨平台协作普通执行：实现与安装版验收
+<!-- trellis-session: v=2 fp=5be7ef6a909ab98c -->
+
+**Date**: 2026-10-26
+**Task**: 跨平台协作普通执行：实现与安装版验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+复用普通 Provider 的协作执行已本地提交，完整检查及 Web/Linux full Main 专项通过；Windows CI 和真实账号门禁待授权，任务保持进行中。
+
+### Main Changes
+
+继续现有 `10-24-cross-platform-collaboration-runtime`，不新建重复任务。新模式复用普通 Backend/ExecOptions/Session，保留按单授权、共享参与者控制、原作者/资源拥有者、独立会话目录和未确认执行屏障；旧 Linux 运行按原模式收尾。新准入仍默认关闭。
+
+本轮补齐 v6 可用性提示：开启执行时去掉旧版全局不可用提示，关闭时只说明新的执行未开放。保留既有记录和停止操作。组件回归先失败后通过。
+
+原生证据检查器修复了“父用例通过但子用例跳过”的假通过，补齐 OS 参数校验和七个回归。macOS arm64 在 Go 1.26.9/1.27.0 下各通过 46 个顶层用例、62 个子用例，无跳过，11 个必需用例均通过。Linux arm64 的非 root 原生生命周期/runner 证据保留。
+
+生产 Web/原生 Electron host 流程通过（1 test, 25.7s）。独立工作树构建当前 Linux arm64/Electron 39.8.7 目录包，保持原 checkout 的 Windows 安装包和旧目录包卷不变。安装版真实 Main/preload/renderer 控制 macOS host 的流程通过（1 test, 22.0s），覆盖共享 Agent、目标 Stop、应用重启后仍暂停、混合作者明确 Resume、三个真实启动及回执/容量。
+
+第三次完整检查的静态、TS、Go race/vet 均通过；浏览器 260 通过、128 按环境跳过，一次邀请跳转超过原 5s 断言。原日志/截图完整保留；11 次原用例带 trace 运行和 8 次被动诊断均通过，无法证明根因，未改业务逻辑或放宽超时。最终完整检查保留失败 trace 并以 exit 0 通过：浏览器 261 通过、128 按环境跳过，原邀请用例在 2.8s 内通过；所有静态、TS、Go race/vet 和清理步骤通过。原始单次超时仍记录为未解释历史，不声称修复。
+
+本地已准备原生 CI 快照 `92bb6d86`，临时分支 `codex/verify-collaboration-host-runtime-20261026` 仅触发原生验证。公开仓库上传授权和真实 Provider 账号 smoke 授权均尚未收到。没有合并 main、发布安装包或使用真实 Provider 账号。任务保留 in_progress；Windows/账号/其余平台安装交付门禁不冒充完成。
+
+本机详细证据位于 `/tmp/multica-host-runtime.HiUXkC/`；长期结论和范围见任务 `verification.md`、`progress.md` 及 `collaboration-host-execution.md`。
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `75d4d341c037721c991799d12332edc4a1a9d736` | test(verification): prevent cross-package fixture interference |
+| `e4df692885c73ca33214597113fada25c89c799c` | feat(agent): prevent unobserved launches during collaboration |
+| `8bfc84ad17fb529baf8a82a7dfd42b3e3d59b6f8` | feat(collaboration): preserve shared control with ordinary host permissions |
+| `88d9949b1f068058466aba0f704cbf93e28a9de4` | feat(collaboration): prevent overstated host execution guarantees |
+| `a76605caca6c5da6c31af30579c8a98c348846ad` | test(collaboration): require native and packaged host evidence |
+| `9d7221ad84d0309138fa25cb1c938c411d1a6f37` | docs(collaboration): keep host rollout tied to recorded acceptance |
+
+### Status
+
+[OK] **Completed**
+
+
+## Session 98: 运行控制与 Linux 安装版流程验收
+<!-- trellis-session: v=2 fp=6cd626db4f33a507 -->
+
+**Date**: 2026-10-26
+**Task**: 运行控制与 Linux 安装版流程验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+沿用现有任务和记录；认证31/31、协作58/58（原30保留来源，本轮28在1bfd169dc通过）。保留Docker挂载失败与复验、源码和包哈希证据；测试准入关闭、服务停止、数据保留，父任务继续跟踪其他平台和真实账号门禁。
+
+### Main Changes
+
+- 更新验收报告、版本化机器证据、任务进度与密码/Docker前置规范；修复仅在隔离验收环境。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `70914d6d8651697a04d668a9724bd2c4e900af22` | docs(collaboration): Keep verified runtime acceptance tied to its source |
+
+### Testing
+
+- [OK] 独立核对31认证和58协作原始身份；当前28项实际通过、无最终跳过，包哈希、准入关闭与服务清理通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续原任务的 Windows/其他平台安装交付和真实 Provider 账号/额度验收；默认准入保持关闭。
+
+
+## Session 99: 复核协作进度并验收 Debian 安装版 Main
+<!-- trellis-session: v=2 fp=6f64a8f32362f774 -->
+
+**Date**: 2026-10-26
+**Task**: 复核协作进度并验收 Debian 安装版 Main
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+沿用原任务复核认证31/31和协作58/58，完成Linux arm64真实.deb安装及完整Main控制和目录回归；保留初始失败和平台门禁。
+
+### Main Changes
+
+- 复用既有控制旅程增加固定哈希的.deb模式，校验真实dpkg/桌面入口/CLI分离并修复失败证据与清理。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4d9f47928` | test(collaboration): require installation before accepting packaged controls |
+| `0db7e7713` | docs(collaboration): preserve installed acceptance and remaining platform gates |
+
+### Testing
+
+- [OK] 89个原始身份与51项哈希复核通过；离线安装通过；最终.deb 30.418s、目录26.853s各1项通过，零重试/跳过；lint/严格tsc/语法/差异检查通过。
+- [OK] 隔离门禁epoch7全关闭；19180/14100/6274端口关闭，无运行的自有Main/预检容器。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续原生Windows、macOS安装及独立授权的真实Provider账号验收；保持生产新准入关闭。
+
+
+## Session 100: 守护进程重连诊断验收与归档
+<!-- trellis-session: v=2 fp=95f30cf34e5caeb3 -->
+
+**Date**: 2026-10-26
+**Task**: 守护进程重连诊断验收与归档
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+用户确认验证通过并要求归档。补充验收确认和实现提交，将守护进程重连诊断任务标记完成并归档至 2026-10。
+
+### Main Changes
+
+- 归档 15 个任务文件，补充用户验收记录、完成日期及实现提交关联。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `0a567894a` | fix(desktop): make daemon failures diagnosable without weakening identity checks |
+| `dc60bfc87` | feat(desktop): reveal the selected CLI location for troubleshooting |
+
+### Testing
+
+- [OK] 归档元数据、文件完整性、JSON/JSONL 和差异空白检查通过；本次未重跑产品测试。
+
+### Status
+
+[OK] **Completed**
+
+
+## Session 101: 安全修复小队阶段一：原 runtime 恢复与模型阻塞证据
+<!-- trellis-session: v=2 fp=1fb4258448e58e16 -->
+
+**Date**: 2026-10-27
+**Task**: 安全修复小队阶段一：原 runtime 恢复与模型阻塞证据
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按已批准的恢复旧 runtime 路径验证原身份连接；保留8个角色自治与私有Access，准备4个合成案例。真实模型调用受匿名额度限制，阶段一未验收、阶段二未启动；试点容器已停止且临时认证已清理。
+
+### Main Changes
+
+- 新增任务内合成实验室、隔离runtime来源、真实失败任务/评论/activity和续跑记录；复用原角色，不改产品模板。
+- 补充模板来源恢复规范，区分普通copy、from-template、工作区复用、运行时连通与真实角色执行。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `50a7bf50f` | test(security): preserve role authority while making the pilot reproducible |
+
+### Testing
+
+- [OK] 服务端角色/小队注册表窄测通过；独立trellis-check和43个任务文件静态校验通过。
+- [OK] 合成基线6项：4通过、2个预期失败；尚无修复后独立QA或成功角色路由。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 指定可用的OpenCode provider/model配置并验证网络目的地约束后，恢复隔离原daemon并重跑POLA-3。
+- 依次分配POLA-4/5/6，保留实现/QA分离和真实证据；阶段一通过后另行启动内置固化。
+
+
+## Session 102: 安全修复试点重试：真实修复、独立审查与精确派活
+<!-- trellis-session: v=2 fp=bdf62e5d72819e52 -->
+
+**Date**: 2026-10-27
+**Task**: 安全修复试点重试：真实修复、独立审查与精确派活
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+匿名nemotron模型恢复后完成四个父案例和八个独立成员子任务，合成补丁六项测试通过并可移植回放。试点指令使用精确mention后已证明真实leader委派；最后成员遇到免费额度限制被取消，完整返回收口未证明，阶段一保持未验收、阶段二未启动。
+
+### Main Changes
+
+- 保存真实task/comment/activity、三文件实验室diff、portable replay、当前briefing投影及最终清理；复用原8个私有角色，未改产品代码或模板。
+- 修正仅试运行小队的派活指令，记录普通thread reply与真正squad leader回合的差异；保留leader直接实现、代写及报告失实证据。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `87939bbe0` | test(security): distinguish real pilot repairs from incomplete squad routing |
+
+### Testing
+
+- [OK] 六项合成测试通过；原始失败基线回放4通过2失败，应用实际三文件补丁后6通过；测试/vendor/供应链文件不变。
+- [OK] 现有ParseMentions/HasMentionAll Go窄测通过；独立trellis-check、65个任务文件静态核对通过；完整产品suite未运行。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 额度可用后补齐真实delegated成员返回、leader收口及正确activity；执行诊断/实现角色本人交接，更正证据误述，完成网络目的地验证。
+- 保持任务in_progress与阶段二准入关闭；容器已停止、临时认证已删除，全部原namespace无待执行任务。
+
+
+## Session 103: 完整 E2E 验证：408 现有用例与 3 个补充场景全部通过
+<!-- trellis-session: v=2 fp=487ba1f08dfe260b -->
+
+**Date**: 2026-10-27
+**Task**: 完整 E2E 验证：408 现有用例与 3 个补充场景全部通过
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+验证 a8e374bb9 应用源码，408/408 现有 E2E 和 3/3 补充场景通过；12,804 TS 测试、73 Go 包 race/vet、lint/typecheck 通过。补齐两个 Electron home mock，修复原 18 条单测失败。全部本次测试服务已停止、门禁已关闭，报告和用例矩阵已归档。
+
+### Main Changes
+
+- 复用测试临时目录补齐 app.getPath，保持全部原有断言及产品代码。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `22de67f6f` | test(desktop): preserve verification after the home boundary change |
+
+### Testing
+
+- [OK] E2E 408 + 3；TypeScript 12804；Go race/vet 73 包；所有测试端口关闭。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本任务完成；真实供应商账号、原生 Windows 与正式发布验收不在本次范围。
+
+
+## Session 104: 安全小队的无模型脚本验证
+<!-- trellis-session: v=2 fp=75d91ba9a760eb57 -->
+
+**Date**: 2026-10-27
+**Task**: 安全小队的无模型脚本验证
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按用户要求停止真实运行时，完成四例脚本模拟和实际产品交接验证；父任务保留进行中。
+
+### Main Changes
+
+- 新增任务内模拟 provider、API-only 隔离配置和持久化证据校验器，复用现有队列、角色权限与合成补丁。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `18b176612` | test(security): verify squad handoffs without requiring a live model |
+
+### Testing
+
+- [OK] 24 项后端契约零跳过；14 项模拟工具测试通过；12 个证据破坏样例均被拒绝；四例共 29 次成功任务，2 次早期失败已恢复并保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 原真实模型验收与阶段二仍未通过；模拟不证明模型判断和指令遵守，不从本轮记录恢复真实模型调用。
+
+
+## Session 105: 内置安全修复小队第二阶段交付
+<!-- trellis-session: v=2 fp=ef065174deda298e -->
+
+**Date**: 2026-10-27
+**Task**: 内置安全修复小队第二阶段交付
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按用户新授权基于模拟和产品契约完成内置安全修复小队；保留真实模型未验证的事实，任务已归档。
+
+### Main Changes
+
+- 新增专用未列出 Coordinator leader 和第九个内置小队，复用七个角色；同步目录、双语文档、嵌入包及权限/归属回归。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `476eaee40` | feat(squads): coordinate security repairs through a reusable template |
+
+### Testing
+
+- [OK] 15 项静态任务、12807 项 TS 测试、Go race/vet 通过；32 个相关生产 Web E2E 已覆盖（30 首轮通过、两项按配置状态契约修正后通过）；独立复核无阻塞。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本任务已完成。真实模型判断与指令遵守未验证；如需后续实测，仍须遵守用户对真实运行时调用的最新授权。
+
+
+## Session 106: 固定全局切换与位置恢复
+<!-- trellis-session: v=2 fp=7c4b663682b179e3 -->
+
+**Date**: 2026-10-28
+**Task**: 固定全局切换与位置恢复
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成 Web 与桌面固定全局导航，复用位置恢复，区分显式锚点；两端真实往返及原有桌面账号恢复测试通过。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `cad3fa410` | feat(navigation): preserve place when switching application scopes |
+
+### Testing
+
+- [OK] 四包 lint/typecheck；桌面1245测试；Web/Electron往返2项与原有桌面3项验收通过
+
+### Status
+
+[OK] **Completed**
 
 
 ## Session 75: 独立功能分批合入本地 main
@@ -313,3 +1539,430 @@ Archived password registration and the complete platform administration task tre
 ### Next Steps
 
 - Target deployment and released-client acceptance, trusted signing, reference-hardware and production recovery gates remain documented in the archives; archival performs no deployment.
+
+
+## Session 107: 推进协作交付闭环并保留真实实验阻塞证据
+<!-- trellis-session: v=2 fp=d998a5128a5371bf -->
+
+**Date**: 2026-10-31
+**Task**: 推进协作交付闭环并保留真实实验阻塞证据
+**Branch**: `codex/collaboration-context-resume-20261031`
+
+### Summary
+
+确定性验收与正式 E0 通过；E1 在读取 context/memory 后遇到 429/503 并超时，按预登记停止后续实验。任务保留 in_progress。
+
+### Main Changes
+
+- 补齐实验框架持久化、脱敏、完整入口回归及每轮独立身份；共用接收人选择 helper，补原生信息返回验收。
+- 恢复已批准的知识权限；更新父任务和闭环证据。主工作区另一流程的 runtime 规划按 hash 保持原样，补充设计保存在独立 worktree。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `0755e7d34` | test(collaboration): preserve evidence before trusting context experiments |
+| `48a7101eb` | test(collaboration): verify recipients can complete desktop handoffs |
+| `4482ff2ce` | docs(collaboration): keep handoff progress tied to verified evidence |
+| `47e1c0eda` | test(collaboration): preserve raw verification evidence across checkouts |
+
+### Testing
+
+- [OK] 迁移矩阵、118 sqlc outputs、lint/typecheck、12930 TS tests、41 recipient Go tests plus165 subtests、2 Web plus2 Electron 通过。
+- [OK] 正式 E0 通过；E1 有效样本为0，Provider 6次429及1次503后5分钟超时；完整原始证据和hash已保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 环境恢复后续作预登记实验，保留无效样本；可靠交接与知识沉淀产品功能仍未完成。
+
+
+## Session 108: 保留 E1 部分结果并防止续跑重放旧样本
+<!-- trellis-session: v=2 fp=cc68f5e509eb40f9 -->
+
+**Date**: 2026-10-31
+**Task**: 保留 E1 部分结果并防止续跑重放旧样本
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+修复实验起始轮次校验并保留原编号；真实 E1 第 2 轮事实回答正确但未回写，第 3 轮六次 429 后超时。E1 累计一个有效样本、两次无效尝试；E2–E6 未运行，任务保持进行中。
+
+### Main Changes
+
+- 两个 tagged 测试文件和实验规范增加受校验的续跑起点，默认轮次与剩余轮次均经完整假 Provider 入口验证。
+- 持久化原始 prompt/HTTP/lifecycle、Provider 诊断、逐项裁决、任务状态及 37 文件 hash，保留旧 E1 第 1 轮证据。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `9673ab3bf` | test(collaboration): avoid replaying consumed experiment trials |
+| `ac011aff7` | docs(collaboration): preserve partial E1 results without replacing failed samples |
+
+### Testing
+
+- [OK] 两条源码 arm 的假 Provider 套件、tagged 编译/vet、gofmt、独立代码及证据复核通过。
+- [OBSERVED] E1 trial 2 有效但 memory PUT 为 0；trial 3 429 后五分钟超时，后续未调用。
+
+### Status
+
+**In progress** — 本次会话已记录；交付闭环仍受上游限流及有效样本不足限制。
+
+### Next Steps
+
+- 环境恢复后从 E2a trial 1 继续；剩余上限 24 次 Provider 调用。不得补跑或替换 E1 已消耗的三个槽位。
+
+
+## Session 109: 保留 E2a 限流超时和关键日期暴露证据
+<!-- trellis-session: v=2 fp=c324594d0ef29205 -->
+
+**Date**: 2026-10-31
+**Task**: 保留 E2a 限流超时和关键日期暴露证据
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+从 E2a trial 1 继续；最新日期已出现在工具输出，但四次上游 429 后五分钟超时，没有最终答案，不能评分。后续全部停止，任务保持进行中。
+
+### Main Changes
+
+- 新增本轮原始记录、Provider 诊断、语义裁决和 11 文件 hash；更新任务报告与父任务证据映射。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `54d6ecb02` | docs(collaboration): retain the incomplete E2a attempt without scoring a timeout |
+
+### Testing
+
+- [OK] 独立核对 3017 个 HTTP 请求响应配对、单次 permit/termination/proof、proof_acknowledged、Provider 状态及框架来源。
+
+### Status
+
+**In progress** — 会话已记录；本轮无有效行为样本，后续等待上游恢复。
+
+### Next Steps
+
+- 环境恢复后从 E2a trial 2 接续，剩余最多 23 次 Provider 调用；不重跑已消耗槽位。
+
+
+## Session 110: 可靠交接：有界记录恢复与原终止证明
+<!-- trellis-session: v=2 fp=26d3916c4e39f1f1 -->
+
+**Date**: 2026-11-01
+**Task**: 可靠交接：有界记录恢复与原终止证明
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+补齐上传持续失败和磁盘重启恢复；源码增量已按哈希合回，任务保持进行中。
+
+### Main Changes
+
+- 复用 host lifecycle/proof；有界重放原 checkpoint/seal，严格验证 ACK 和单调水位。
+- 新增 Go 回归，修复执行面板响应队列串用，同步 spec 和任务证据。
+
+### Git Commits
+
+历史增量会话未在此处登记提交；后续 runtime 集成与证据提交为 `0e1ee8e1e` / `2b861347e`。
+
+### Testing
+
+- [OK] TS 12949 通过；Go 1640 通过事件，1 个既有明确跳过；race 38 零跳过。
+- [OK] 专用 DB service/handler 8+11 通过；lint/typecheck/vet/build 通过；主工作区 protocol/daemon 316 零跳过。
+
+### Status
+
+[OK] **本次增量已交付；父任务仍在进行**
+
+### Next Steps
+
+- 独立终审仍受模型限流/路由不可用影响；继续完整锁序矩阵、启动注入及平台/真实模型验收。
+
+
+## Session 111: 知识沉淀完成确定性集成验收
+<!-- trellis-session: v=2 fp=fdb8d479e07041c1 -->
+
+**Date**: 2026-11-01
+**Task**: 知识沉淀完成确定性集成验收
+**Branch**: `codex/collaboration-knowledge-promotion-20261101`
+
+### Summary
+
+知识全链路、验收证据与台账已合入协作主分支；真实模型和发布矩阵仍开放。
+
+### Main Changes
+
+- 完成人工候选/版本/撤回、持久失效、Core/共享页面与普通/Host启动接线；生产开关默认false。
+- 修正项目元数据锁、runtime查询计数、测试夹具清理和删除清单；同步规范与内置指导。
+- 保留默认数据库测试隔离事件的追溯限制，以及复用验收库的只读诊断。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `96cedf485` | feat(collaboration): keep approved knowledge authorized through every launch |
+| `93093d2e9` | docs(collaboration): bind knowledge acceptance to reproducible source evidence |
+| `8cb04e329` | merge(collaboration): make reviewed knowledge delivery available on the integration branch |
+
+### Testing
+
+- [OK] Go 82包，10284顶层通过，21既有跳过；前端13060测试与lint/typecheck通过。
+- [OK] sqlc零漂移，Go build/vet通过；Web/macOS8用例、实际输入组合及独立终审通过。
+- [OK] 合并后4437个server、3408个frontend和156个审阅路径指纹一致。
+
+### Status
+
+[OK] **本轮确定性集成交付完成；父任务真实模型与发布验收仍开放**
+
+### Next Steps
+
+- 有上游恢复依据后在独立窗口从原E2a trial3/剩余22次续跑；保持场景、模型、编号和停止规则。
+- 新runtime/知识真实验收绑定自身提交；Windows、安装组合、多账号额度及发布门另验，技能层后置。
+
+
+## Session 112: 联合验收在最终合并版本上补验
+<!-- trellis-session: v=2 fp=c52dd0227785cf3c -->
+
+**Date**: 2026-11-01
+**Task**: 联合验收在最终合并版本上补验
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+恢复父流程最新交付，在93afc3cb0复核启动注入与checkpoint联合故障；补强原termination/proof事实一致性，提交65cd0599b。保留真实模型与跨平台开放门。
+
+### Main Changes
+
+- 复用现有联合fixture，仅补强permit身份、终止kind与proof一致性；同步startup spec和验收指纹。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `65cd0599b` | test(collaboration): preserve original termination facts during combined failures |
+
+### Testing
+
+- [OK] 联合race40项、tagged fake80项、补强race6项、vet、gofmt和证据hash通过；计数不相加。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 原实验保持停止；下一E2a trial3，余22次。新runtime真实验收须另行绑定版本和预算；父任务保持in_progress。
+
+
+## Session 113: Collaboration quiet fake and current platform proofs
+<!-- trellis-session: v=2 fp=275fe938c239c64d -->
+
+**Date**: 2026-11-02
+**Task**: Collaboration quiet fake and current platform proofs
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+继续既有父任务，只做本地准备：Transfer独立复核合入；RK1同源quiet normal/race各62通过，原生焦点1、Mac.app原旅程1、Linux有界旅程、Windows两架构12编译检查留证。真实Provider0，父任务保持in_progress。
+
+### Main Changes
+
+- 复用现有UUID picker契约；补registry/ENV_FILE/实际HTML API与WS地址及DSH缺失路径的交接规范。原Mac配置失败与DB全部保留。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4085e5b38` | test(e2e): align Transfer journeys with the reviewed UUID picker contract |
+| `64a9994ec` | docs(acceptance): preserve current framework and platform proofs without closing missing gates |
+
+### Testing
+
+- [OK] RK1 normal62/race62，0fail/skip；原始native focus1；canonical Mac Main1/3fake启动；Windows12禁网编译/vet0。
+
+### Status
+
+[PARTIAL] **Local proofs recorded; parent remains in_progress**
+
+### Next Steps
+
+- 网关429恢复后独立复核v5与RKI6结果，再启动准备好的64a9994ec完整check（API10/1，无其他API并发）；平台/账号/预算门保持未验。
+- 仅本地操作；runtime25消耗0，原冻结另余14/E3aftertrial2；默认业务库旧迁移事故缺前快照，未恢复。
+
+
+## Session 114: 完成当前协作分支本地功能回归并交接剩余平台验收
+<!-- trellis-session: v=2 fp=12d98232f395a3d1 -->
+
+**Date**: 2026-11-02
+**Task**: 完成当前协作分支本地功能回归并交接剩余平台验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+固定7af9ab990，439项E2E均有通过证据；TS13278通过；Go82包复验完成、保留条件跳过。只修测试与规范，清理自有环境，未提交推送。
+
+### Main Changes
+
+# 本轮测试记录
+
+固定产品候选7af9ab9905c98c77bb091223ebe687c639475bb4。用户已审阅测试计划并授权执行。
+
+- 439个E2E唯一身份均有当前通过证据，原349PASS/1FAIL/89SKIP整轮保持失败；588条逐次结果包含重跑与原始跳过。
+- 非Mobile13,082、Mobile196单元及静态/脚本、种子数据库13项通过。
+- Go82包按各包最新完整结果和明确条件补跑派生顶层10,365PASS/18SKIP、子例10,491PASS；原失败保留。knowledgeintegration额外23顶层分别normal/race全过。
+- 实际Web/Electron、两Linuxnamespace、Host运行/切换/小队、知识开关OFFON输入、Mac.app和Linux目录包完整Main均完成本次新执行。
+- memory交互、5个handler在线fixture和完整Main UUID picker测试修复经独立审阅与实际回归；只改测试与规范，无业务代码/依赖改动。
+- 所有测试结束，仅自有环境清理完成，9个browser库门恢复，4端口无监听，数据库/日志保留（browser registry有24hTTL）。未知默认环境未动。
+- 交付测试计划、报告、逐例矩阵、缺陷/前置、条件平台矩阵与新会话提示。任务保持in_progress承接Windows/iOS/安装升级/签名/真实商业Provider等缺口，不归档为发布通过，不提交或推送。
+
+后续先读本任务report/progress/session-prompt及最终独立证据审阅，按剩余平台/授权轴补证，不重跑439库存、不挪用历史付费额度。
+
+
+### Git Commits
+
+(No commits - planning session)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 读取任务报告和新会话引导语，补Windows/iOS/安装升级与真实Provider授权后的验收。
+
+
+## Session 115: 固定候选实际缓存计划与读取语义诊断
+<!-- trellis-session: v=2 fp=024332d9d73a9a85 -->
+
+**Date**: 2026-11-02
+**Task**: 固定候选实际缓存计划与读取语义诊断
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+14,000条实际计划区分无统计缓存复用/重准备与ANALYZE；typed读取和现有owner race12顶层14子例通过。独立审阅PASS WITH NOTES，原2171ms性能FAIL及剩余门开放，9库连接0。无产品改动，不提交不归档。
+
+### Main Changes
+
+- 新增两轮prepared/statistics/reprepare诊断、读取语义与回归证据，更新任务文档和验证规范；全部既有改动保留。
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] 2个独立缓存诊断PASS；race handler4顶层6子例、service8顶层8子例PASS；14,000计划参数独立复核；JSON/CSV/AST/gofmt/diffcheck通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 继续既有任务；按session-prompt仅推进新真实条件，不重复P95/439E2E/DEB/macOS已过子门；产品优化需明确新增范围。
+
+
+## Session 116: Continue fixed-candidate remaining gates without repeating completed diagnostics
+<!-- trellis-session: v=2 fp=de487d097ade67a0 -->
+
+**Date**: 2026-11-02
+**Task**: Continue fixed-candidate remaining gates without repeating completed diagnostics
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Existing functional-regression task resumed; native platform and identity slices completed; no new symptom or runnable gate; 56 owned database connections zero; original P95 FAIL and required gates remain open.
+
+### Main Changes
+
+- Updated existing progress/report/defects/conditional matrix/session prompt and task metadata; preserved prior evidence and source/test identities.
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] Native prerequisite audit 10 commands/4 pinned artifacts; source/frozen and 158 raw-hash comparisons; JSON/CSV/AST/diff checks; fresh owned-resource cleanup. No P95/E2E/DEB/Mac passed-gate reruns.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Complete independent current-document/history/cleanup review; continue only on genuine new symptom or actual unpassed-gate prerequisites; keep task in_progress.
+
+
+## Session 117: Prove Webhook early errors and prepare source-faithful Mac updater inputs
+<!-- trellis-session: v=2 fp=14b2ff5ac97b62a2 -->
+
+**Date**: 2026-11-02
+**Task**: Prove Webhook early errors and prepare source-faithful Mac updater inputs
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Private Webhook lookup diagnostic race1top4subPASS once; originalskips/P95FAIL retained; Mac updater offlinefeed and cache/nativephase boundaries prepared; independent quality/cleanup pending.
+
+### Main Changes
+
+- Added bounded research/private diagnostic/raw evidence and appended verification specs; updated existing task coordination documents.
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] Once guarded race compile and newWebhook diagnostic1top4subPASS; actualcanonicalSQL and PrepareError42P01/clientclosed/404/429 witnesses;5updaterofflinecommands/parser/reference/SHA512 checks; no priorgate repeats.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Finish independent code/raw review and narrow overlayvet, then fresh resource cleanup and final document/hash review; keep mandatory gates in_progress.
+
+
+## Session 118: Collaboration source picker and complete identifier search
+<!-- trellis-session: v=2 fp=29214f4358500297 -->
+
+**Date**: 2026-11-03
+**Task**: Collaboration source picker and complete identifier search
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Unified the optional source-parent picker, repaired displayed identifier search, and retained query-error drafts; production Chromium and scoped tests passed.
+
+### Main Changes
+
+- Click-open parent candidates, visible loading/empty/retry states, selected UUID retention and bilingual hints.
+- Match full source identifiers using the same actual numeric/legacy workspace prefix as display.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `4ba3a868a02e2e1e00499447c67b0f61cf3307d7` | fix(collaboration): let users choose source tasks without remembered IDs |
+
+### Testing
+
+- [OK] 95 views tests, 68 Core boundary tests, 13 service tests, lint/typecheck/build/vet; final 2 production Chromium cases and visual 96/pass.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining work for this scoped repair; native installed Electron was not part of this acceptance.

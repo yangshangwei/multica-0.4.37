@@ -10,7 +10,7 @@ import { copyText } from "@multica/ui/lib/clipboard";
 import { toast } from "sonner";
 import type { ProjectStatus, ProjectPriority, ProjectRiskSignal } from "@multica/core/types";
 import { useAuthStore } from "@multica/core/auth";
-import { ApiError } from "@multica/core/api";
+import { ApiError, errorCode } from "@multica/core/api";
 import { projectDetailOptions } from "@multica/core/projects/queries";
 import { useUpdateProject, useDeleteProject } from "@multica/core/projects/mutations";
 import { pinListOptions } from "@multica/core/pins";
@@ -26,6 +26,8 @@ import { PROJECT_STATUS_ORDER, PROJECT_STATUS_CONFIG, PROJECT_PRIORITY_ORDER } f
 import { projectCapabilitiesOptions, projectOverviewOptions, projectDeleteImpactOptions, useProjectAccessStore } from "@multica/core/projects";
 import { useProjectPropertyEditor } from "./project-property-recovery";
 import { ProjectDescription } from "./project-description";
+import { ManagedKnowledgePanel } from "../../collaboration/knowledge-panel";
+import { ProjectKnowledgePolicy } from "./project-knowledge-policy";
 import { ProjectOverviewPanel, ProjectAcceptance } from "./project-overview";
 import { ProjectRiskIssues } from "./project-risk-issues";
 import { useProjectAccessGuard } from "./use-project-access-guard";
@@ -202,6 +204,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   });
   const sidebarRef = usePanelRef();
   const rightSidebarShortcutTargetRef = useRef<HTMLDivElement | null>(null);
+  const rightSidebarToggleRef = useRef<HTMLButtonElement | null>(null);
   const desktopSidebarInitialOpen = getAnimatedRightSidebarInitialOpen(
     true,
     defaultLayout,
@@ -263,6 +266,11 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const handleDelete = useCallback(() => {
     if (!project) return;
     deleteProject.mutate(project.id, {
+      onError: (error) => {
+        if (error instanceof ApiError && !error.isStaleAuthResponse && error.status === 409 && errorCode(error) === "stage_policy_exit_required") {
+          toast.error(t(($) => $.delete_dialog.stage_policy_exit_required));
+        }
+      },
       onSuccess: () => {
         toast.success(t(($) => $.detail.toast_project_deleted));
         router.push(wsPaths.projects());
@@ -271,7 +279,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   }, [project, deleteProject, router, wsPaths, t]);
 
   if (accessLost || revoked) return <div role="alert" className="p-6 text-muted-foreground">{t(($) => $.management.permission_lost)}</div>;
-  if (deletedTexts) return <div className="mx-auto max-w-3xl space-y-4 p-6"><h1 className="text-heading font-medium">{t(($) => $.management.project_deleted)}</h1><p className="text-caption text-muted-foreground">{t(($) => $.management.deleted_copy_hint)}</p>
+  if (deletedTexts) return <div className="mx-auto max-w-3xl space-y-4 p-6"><h1 className="text-title font-medium">{t(($) => $.management.project_deleted)}</h1><p className="text-caption text-muted-foreground">{t(($) => $.management.deleted_copy_hint)}</p>
     {deletedTexts.map((text, index) => <div key={index} className="space-y-2"><Textarea readOnly aria-label={t(($) => $.management.unsent_text)} value={text} /><Button variant="outline" onClick={() => void copyText(text)}>{t(($) => $.management.copy_text)}</Button></div>)}
   </div>;
 
@@ -529,7 +537,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${descriptionOpen ? "rotate-90" : ""}`} />
         </button>
         <div id={descriptionId} hidden={!descriptionOpen} className="pl-2">
-          <ProjectDescription key={project.id} project={project} supported={capabilities.data?.description_cas === true} isVisible={descriptionOpen} />
+          <ProjectDescription key={project.id} project={project} supported={capabilities.data?.description_cas === true} isVisible={descriptionOpen && sidebarOpen} />
           <p className="mt-1 px-2 text-caption text-muted-foreground">
             {t(($) => $.detail.description_hint)}
           </p>
@@ -537,6 +545,8 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
       </div>
 
       {/* Resources */}
+      <ManagedKnowledgePanel workspaceId={wsId} projectId={project.id} />
+      <ProjectKnowledgePolicy workspaceId={wsId} projectId={project.id} />
       <ProjectResourcesSection projectId={projectId} />
       <ProjectAutomationsSection projectId={project.id} defaultSquadId={project.execution_squad?.squad_id ?? null} />
     </div>
@@ -602,6 +612,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                 <TooltipTrigger
                   render={
                     <Button
+                      ref={rightSidebarToggleRef}
                       variant={sidebarOpen ? "secondary" : "ghost"}
                       size="icon-sm"
                       aria-label={t(($) => $.detail.sidebar_tooltip)}
@@ -654,7 +665,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           panelRef={sidebarRef}
           onResize={handleDesktopSidebarResize}
         >
-          <AnimatedRightSidebar open={desktopSidebarVisualOpen} motionEnabled={desktopSidebarMotionEnabled}>
+          <AnimatedRightSidebar open={desktopSidebarVisualOpen} motionEnabled={desktopSidebarMotionEnabled} returnFocusRef={rightSidebarToggleRef}>
             {sidebarContent}
           </AnimatedRightSidebar>
         </ResizablePanel>

@@ -1,0 +1,3096 @@
+{
+  "schema_version": 1,
+  "collected_at": "2026-11-04T00:09:11.260909+00:00",
+  "collector": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/collect.py",
+    "sha256": "a39fe96d1e3e4766164e904783692ad765fdc1f775088e5a2bad56da6d713e2d",
+    "bytes": 28966
+  },
+  "inputs": {
+    "path": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/v14-control-inputs.json",
+    "sha256": "839bb53ecc49058c8f2a35afd39593ffa6514df3309cab27d7334781f2a568bd",
+    "bytes": 6841
+  },
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "full_result": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.json",
+    "sha256": "fc479c764bf1092026603b7e685ae9a996bda8dca63a15afcbe34e6f7c23bd85",
+    "bytes": 259801
+  },
+  "actual_make_exit": 2,
+  "raw_log": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/make-check-v14.log",
+    "sha256": "d20bc6177a221d3c4921592548ff99e5be567e74977d8223c1eda2c18435f557",
+    "bytes": 27047905
+  },
+  "TS": {
+    "packages": [],
+    "leaf_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/ts-leaves.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "file_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/ts-files.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "skip_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/ts-skips.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "counts": {},
+    "file_count": 0,
+    "leaf_count": 0
+  },
+  "Go": {
+    "packages": [
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+        "database": "ccheck_20261103142414456860_bb940f8eb38e",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142414456860_bb940f8eb38e.json",
+          "sha256": "87ccdf9a26e0207dbe95bcef16461ff609298c31e6a45dd1a831d1404e3d1175",
+          "bytes": 1346
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142414456860_bb940f8eb38e.jsonl",
+          "sha256": "4ae716e97f8c68eb9c098c9e14e010c80a0b847805828bf24b816895d367b0f8",
+          "bytes": 20515
+        },
+        "counts": {
+          "run": 11,
+          "pass": 11
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+        "database": "ccheck_20261103142420384899_07eb79fa72b8",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142420384899_07eb79fa72b8.json",
+          "sha256": "87989f05d0d20aa5b44a26b87d6f6f0318cbeb3ddb7bae0fb2f525ef340a42c2",
+          "bytes": 1348
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142420384899_07eb79fa72b8.jsonl",
+          "sha256": "a14a8a352adae297f20bfdd715b3f96deeffcdfeb58cefebb4183763be6cf287",
+          "bytes": 2658
+        },
+        "counts": {
+          "run": 2,
+          "pass": 2
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+        "database": "ccheck_20261103142421063304_f47ea76e9369",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421063304_f47ea76e9369.json",
+          "sha256": "9bf8b1dee8c101003082f0b28337226accfbe9fc2563eb63983f814e194d5f3d",
+          "bytes": 1344
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421063304_f47ea76e9369.jsonl",
+          "sha256": "8690e2fee882640a0d19e176aa8b9909b8c85c6be59f080993991afb72ac129a",
+          "bytes": 538
+        },
+        "counts": {},
+        "exit_code": 0,
+        "terminal_actions": [
+          "skip"
+        ],
+        "compiled_without_tests": true,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/migrate",
+        "database": "ccheck_20261103142421583865_f9a6f66e94fe",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421583865_f9a6f66e94fe.json",
+          "sha256": "baa520dc0158696d8cfdb0f6df3ec2f107c605b893d5be281ca7b69c3a250e9f",
+          "bytes": 1308
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142421583865_f9a6f66e94fe.jsonl",
+          "sha256": "cff2ad1429ccd19b646c0e83c97f795637885976992c6113d95d20af1f276c6b",
+          "bytes": 305739
+        },
+        "counts": {
+          "run": 71,
+          "pass": 70,
+          "skip": 1
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/cmd/migrate"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/multica",
+        "database": "ccheck_20261103142440526499_b0ca13f2a1d5",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142440526499_b0ca13f2a1d5.json",
+          "sha256": "52e82ed836b61c27607abfdc1a4a913090ab0ff1cd6f49fe87d0028b6fa059f9",
+          "bytes": 1312
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142440526499_b0ca13f2a1d5.jsonl",
+          "sha256": "8bcbcfd9d841b375fdfa35fba9439f2bcd92de9d99ad10acb90df839c6293282",
+          "bytes": 1099438
+        },
+        "counts": {
+          "run": 1074,
+          "pass": 1074
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/cmd/multica"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "database": "ccheck_20261103142448233116_6f87875654d8",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.json",
+          "sha256": "33c18195d93d3a1e8e6dcd5ca71a8101fa6e7b702270ded06d13c304f9704631",
+          "bytes": 1308
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142448233116_6f87875654d8.jsonl",
+          "sha256": "48846562f2bad6f2ce4e06b8afba871b88399d23a6f9a886d68a9afc262a1897",
+          "bytes": 1445492
+        },
+        "counts": {
+          "run": 741,
+          "pass": 735,
+          "skip": 6
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/cmd/server"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/admission",
+        "database": "ccheck_20261103142617219999_7427887f8751",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142617219999_7427887f8751.json",
+          "sha256": "9822b7928d1af6cbd348f454d133530d4614635b9fb2408be69af5ec7d9f17e8",
+          "bytes": 1320
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142617219999_7427887f8751.jsonl",
+          "sha256": "bb359e7c31b03606025971a612831c50e3656d1d0f6922aa234e94e2a86cd018",
+          "bytes": 491
+        },
+        "counts": {},
+        "exit_code": 0,
+        "terminal_actions": [
+          "skip"
+        ],
+        "compiled_without_tests": true,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/admission"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+        "database": "ccheck_20261103142618140093_e243b33d7b90",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142618140093_e243b33d7b90.json",
+          "sha256": "2695e23ec737d1fb5d15f93f4410099b93d394aff04f061ea30f5c8ed0fad4a4",
+          "bytes": 1324
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142618140093_e243b33d7b90.jsonl",
+          "sha256": "c90094d99c2dda482e0eaa05a9fdde002d37f2e4b089e0c3ec049424fd056e91",
+          "bytes": 499
+        },
+        "counts": {},
+        "exit_code": 0,
+        "terminal_actions": [
+          "skip"
+        ],
+        "compiled_without_tests": true,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/agentconfig"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/analytics",
+        "database": "ccheck_20261103142618415974_a33d11aa74fd",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142618415974_a33d11aa74fd.json",
+          "sha256": "9e041d32d2d50c8d6586819ca30ef38f63f275e1c20853a966bbd5d6e1774596",
+          "bytes": 1320
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142618415974_a33d11aa74fd.jsonl",
+          "sha256": "1f5ad13031c0f90d8e1a99adef527bab9ac24050a543eb267fe98f64cf9756d1",
+          "bytes": 8709
+        },
+        "counts": {
+          "run": 8,
+          "pass": 8
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/analytics"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/attribution",
+        "database": "ccheck_20261103142618943519_8ec97853df30",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142618943519_8ec97853df30.json",
+          "sha256": "85e6d2ac1d96493f36ed9b7a214a2545747024c03c9cf5e544865fc82e05394b",
+          "bytes": 1326
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142618943519_8ec97853df30.jsonl",
+          "sha256": "029b43e6598410168b7c8d1d7cb28749586c80eb6fb63edf423cde515103b122",
+          "bytes": 28532
+        },
+        "counts": {
+          "run": 31,
+          "pass": 31
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/attribution"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+        "database": "ccheck_20261103142619286627_d642fc7111ff",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142619286627_d642fc7111ff.json",
+          "sha256": "d2cc88d61e2e3c18ed866b32a6c9790e1af84f7a7a6b1fdbcaf2ca47fc4f3d7c",
+          "bytes": 1340
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142619286627_d642fc7111ff.jsonl",
+          "sha256": "3df741062525878a4ddaa4155f770e5d7d169a427c002d194f070466e4d0813e",
+          "bytes": 7495
+        },
+        "counts": {
+          "run": 4,
+          "pass": 4
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/attributionbackfill"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/auth",
+        "database": "ccheck_20261103142622796822_d4b8dc307441",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142622796822_d4b8dc307441.json",
+          "sha256": "a4e8b97cbb6ff1ff9ff9cd53ea718a21aac5a5cfcf94deb7f1f2f688a8696362",
+          "bytes": 1314
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142622796822_d4b8dc307441.jsonl",
+          "sha256": "6b593072bf0eccce5d94ea1dd2eb65d60604ca5f20afc2813884af093fc7b2b6",
+          "bytes": 97400
+        },
+        "counts": {
+          "run": 113,
+          "pass": 112,
+          "skip": 1
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/auth"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/changelog",
+        "database": "ccheck_20261103142629480868_cc1252fad4dc",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142629480868_cc1252fad4dc.json",
+          "sha256": "5c89d3f44b648c312d00995a46de6cb549aebc4db61af712d164af212cf4ef5f",
+          "bytes": 1322
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142629480868_cc1252fad4dc.jsonl",
+          "sha256": "d5e6da9701d5b65546da5d3bb60819bf3eb421fa7e88b4fdca0c7962a578bd47",
+          "bytes": 55278
+        },
+        "counts": {
+          "run": 56,
+          "pass": 56
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/changelog"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+        "database": "ccheck_20261103142631646941_4b76585c3aa4",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142631646941_4b76585c3aa4.json",
+          "sha256": "29d9e979273516bf8540a861a409cf755e0a22d27d5e364a303f3bccdb55ad1d",
+          "bytes": 1326
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142631646941_4b76585c3aa4.jsonl",
+          "sha256": "4a6086c7c7d84c4b45018c808f9b98fb93b303e3bd6972683da960cbda112bfb",
+          "bytes": 3274
+        },
+        "counts": {
+          "run": 3,
+          "pass": 3
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/channelmedia"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+        "database": "ccheck_20261103142632017025_b8d431c478e1",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632017025_b8d431c478e1.json",
+          "sha256": "57d51781a80e00c7ab82a6aa2ea2e76533e465f7e804fea61e23e2560ad3e8f7",
+          "bytes": 1338
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632017025_b8d431c478e1.jsonl",
+          "sha256": "ebae913710edfb345f5b4cfdd64808771c523bed11b3f7c4171eb9053fed97ba",
+          "bytes": 527
+        },
+        "counts": {},
+        "exit_code": 0,
+        "terminal_actions": [
+          "skip"
+        ],
+        "compiled_without_tests": true,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/chatoriginbackfill"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/chattitle",
+        "database": "ccheck_20261103142632340600_f26ab7ece539",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632340600_f26ab7ece539.json",
+          "sha256": "23e40d631cfd5d9c2a87e3e070e66ac5134ffe6b14ddf8aad6b30ffe7b7c6218",
+          "bytes": 1320
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632340600_f26ab7ece539.jsonl",
+          "sha256": "57007886be4101969ae071f97d36e29f51b47b82dff6f191b1773666b52dd305",
+          "bytes": 491
+        },
+        "counts": {},
+        "exit_code": 0,
+        "terminal_actions": [
+          "skip"
+        ],
+        "compiled_without_tests": true,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/chattitle"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/cli",
+        "database": "ccheck_20261103142632582902_248934fbfb73",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632582902_248934fbfb73.json",
+          "sha256": "4f55757465038f2a8ad30d2c7ec6eeb0fd5a65f6a413da50c1b63d7db8ea852e",
+          "bytes": 1312
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142632582902_248934fbfb73.jsonl",
+          "sha256": "3cae6896d809bc071bf5adfc93c8faecb7f417db784e44d000d235d61bb12722",
+          "bytes": 302127
+        },
+        "counts": {
+          "run": 326,
+          "pass": 325,
+          "skip": 1
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/cli"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+        "database": "ccheck_20261103142637242175_cffe407cfbfc",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142637242175_cffe407cfbfc.json",
+          "sha256": "0b37aa9455d91adf71454359112d163ef4c47fca665b1d862385f76832313bb3",
+          "bytes": 1326
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142637242175_cffe407cfbfc.jsonl",
+          "sha256": "44f0043887dd11bd54b73aa5d9801f22045561f1658ffee3bde8516195185084",
+          "bytes": 3018
+        },
+        "counts": {
+          "run": 3,
+          "pass": 3
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/cloudruntime"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/collaboration",
+        "database": "ccheck_20261103142637590865_472bb8236d85",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142637590865_472bb8236d85.json",
+          "sha256": "3696f7d4a1f3cc4d09dd8532a0ac60b8ce2779f3eab25b41a722aadd1e398df8",
+          "bytes": 1330
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142637590865_472bb8236d85.jsonl",
+          "sha256": "861a1369c22d311a01edda29696448d1ae955ccbf396da31411b64a305283444",
+          "bytes": 11372
+        },
+        "counts": {
+          "run": 11,
+          "pass": 11
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/collaboration"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "database": "ccheck_20261103142638210715_7a21f045e560",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.json",
+          "sha256": "86b385ddbb9bae0526fb1f6587286805cfa94269f27a965bebaf3dfe0073f85a",
+          "bytes": 1320
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142638210715_7a21f045e560.jsonl",
+          "sha256": "f586d65c1c77081f3011a769eda3944b8a8cfe0c0022b59fca5fdc003492100c",
+          "bytes": 2262569
+        },
+        "counts": {
+          "run": 1716,
+          "pass": 1714,
+          "skip": 2
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/daemon"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+        "database": "ccheck_20261103142742809429_e304ab6e77ff",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142742809429_e304ab6e77ff.json",
+          "sha256": "67cedfef72f9c544438e59a66602609daeb5614591556667dae9ff787e79014a",
+          "bytes": 1352
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142742809429_e304ab6e77ff.jsonl",
+          "sha256": "3dd33affd377742319354b0d3cbbdf09c1b17f585f387ac6aa99f2796008142d",
+          "bytes": 377222
+        },
+        "counts": {
+          "run": 348,
+          "pass": 348
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+        "database": "ccheck_20261103142921666424_443be4706fd4",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142921666424_443be4706fd4.json",
+          "sha256": "e38a1d1ccb8c3e0bcc4fc9bd6675eeac20a53a97d82047d385e5185f83763fd5",
+          "bytes": 1336
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103142921666424_443be4706fd4.jsonl",
+          "sha256": "3b80c0c9ac3ee07ad633a03f7db5c95c53875f8c9e582cac4d6f27173ecb077b",
+          "bytes": 2384251
+        },
+        "counts": {
+          "run": 1345,
+          "pass": 1345
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/daemon/execenv"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+        "database": "ccheck_20261103143027779583_abe022601f40",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143027779583_abe022601f40.json",
+          "sha256": "fca5be9c853169dde681cbff47d25e783fc39e0de548e7a52f5da5163a7e5dc6",
+          "bytes": 1338
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143027779583_abe022601f40.jsonl",
+          "sha256": "2f39cbb04a7451fa9588fe1e183bd2bbc3e4c5c1c2895821cd26376a68fb72a0",
+          "bytes": 2545
+        },
+        "counts": {
+          "run": 1,
+          "pass": 1
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/daemon/processtree"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+        "database": "ccheck_20261103143031006242_9ae551c14945",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143031006242_9ae551c14945.json",
+          "sha256": "7b3d14f6391ea5de54526d4943633e01912aeb4eb3259ee16e3962b9a5b38aa9",
+          "bytes": 1336
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143031006242_9ae551c14945.jsonl",
+          "sha256": "41c2fbc1f3135fc250ab1427df4b8a4b35d94cf04e10ed59456b3d4712cdcade",
+          "bytes": 138646
+        },
+        "counts": {
+          "run": 61,
+          "pass": 61
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/daemon/repocache"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemonws",
+        "database": "ccheck_20261103143038984041_a2993220b42d",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143038984041_a2993220b42d.json",
+          "sha256": "6b61709d0689f19ad80c1532bdff7c9fb1109c954fa1755cb00f8c04f5f53a70",
+          "bytes": 1320
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143038984041_a2993220b42d.jsonl",
+          "sha256": "62cacac4617c614cdd4974efa374a6b7d25e0f7b77a36c6a079e326c4eedf3c7",
+          "bytes": 43583
+        },
+        "counts": {
+          "run": 30,
+          "pass": 30
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/daemonws"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+        "database": "ccheck_20261103143039894572_2ec21eaa1b3e",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143039894572_2ec21eaa1b3e.json",
+          "sha256": "24cb0933e9747d2a9ba3863c27dfa5ef34c7c5f5b8cdb8ad12bc56c2e0e0a59e",
+          "bytes": 1322
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143039894572_2ec21eaa1b3e.jsonl",
+          "sha256": "04efe571a48b8c151e06fb6c9a6b8492e397b1890b3bde09d79cf0c90e7d3bc6",
+          "bytes": 31249
+        },
+        "counts": {
+          "run": 33,
+          "pass": 33
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/dbstartup"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/dispatch",
+        "database": "ccheck_20261103143043358399_2c99ee2c73c6",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143043358399_2c99ee2c73c6.json",
+          "sha256": "c0308190fc0c215c8d1bf076755599a4d43de7c80ffc72ce33071e623c24bea8",
+          "bytes": 1318
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143043358399_2c99ee2c73c6.jsonl",
+          "sha256": "3c3aecf51ecd3c0177de8d12560ee27b2eb692db72840cb77ed47cbb1547fb14",
+          "bytes": 487
+        },
+        "counts": {},
+        "exit_code": 0,
+        "terminal_actions": [
+          "skip"
+        ],
+        "compiled_without_tests": true,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/dispatch"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/docs",
+        "database": "ccheck_20261103143043572043_0fb816f659c3",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143043572043_0fb816f659c3.json",
+          "sha256": "f6f1cc8ba464d298ab8a008104e5485e042b3bf6c8bc5d226f47f68968911b0b",
+          "bytes": 1312
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143043572043_0fb816f659c3.jsonl",
+          "sha256": "334be989ce6cd3bd09b7996c75dae86dd59e6a094fbcfdb11958a8771935a7d2",
+          "bytes": 15184
+        },
+        "counts": {
+          "run": 16,
+          "pass": 16
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/docs"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/entitlement",
+        "database": "ccheck_20261103143045808082_103bcb57d099",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143045808082_103bcb57d099.json",
+          "sha256": "0e5130caa848ab0695250368518b09752be8e749f93a7bd998142c932e5c2f2c",
+          "bytes": 1326
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143045808082_103bcb57d099.jsonl",
+          "sha256": "8f6d8c9b12f2e986886a7a7d7a99fb438aa20897495d810e006753507357ccf6",
+          "bytes": 30179
+        },
+        "counts": {
+          "run": 33,
+          "pass": 33
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/entitlement"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+        "database": "ccheck_20261103143046194798_2f5af1a52539",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143046194798_2f5af1a52539.json",
+          "sha256": "3d6405eb58689a39f7b5f66562388ff3bf5c82252180ef157f7dd6e41c764a99",
+          "bytes": 1356
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143046194798_2f5af1a52539.jsonl",
+          "sha256": "6457300b8fcfb2dd5b5048c71f0a13f4db4cc5bfc2c91ddc802d196e21f8985a",
+          "bytes": 1651
+        },
+        "counts": {
+          "run": 1,
+          "pass": 1
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/events",
+        "database": "ccheck_20261103143046511022_c824a98f5f50",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143046511022_c824a98f5f50.json",
+          "sha256": "b82dfe86c9c829f9d9b9dbd81f1ab6e5b06ba77c885c7d4ee3d0cb3e757497f8",
+          "bytes": 1314
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143046511022_c824a98f5f50.jsonl",
+          "sha256": "c7bb0c56977379b3dc535606fa0aa216fa48c36635e241829e347ef23ccf49a1",
+          "bytes": 7613
+        },
+        "counts": {
+          "run": 8,
+          "pass": 8
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/events"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/featureflags",
+        "database": "ccheck_20261103143046779654_5baa8458c611",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143046779654_5baa8458c611.json",
+          "sha256": "b32dbbbbc82cd2ab8d676d7c7938975e32f6321e470fc61df24130394853a047",
+          "bytes": 1326
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143046779654_5baa8458c611.jsonl",
+          "sha256": "08bfb281ab4a91fc121819ed098d1a2b5a38ef4dffa09a2c25155bd1c58012b9",
+          "bytes": 6698
+        },
+        "counts": {
+          "run": 7,
+          "pass": 7
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/featureflags"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "database": "ccheck_20261103143047061309_199d57419d78",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.json",
+          "sha256": "0feea534d1842f4b65291e3ce5d306f257923fe017d5532344675992cc382b73",
+          "bytes": 1322
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143047061309_199d57419d78.jsonl",
+          "sha256": "9612417363a11a34c6753565cbce80965adb860697ab9f19163acdcdf8ce21bb",
+          "bytes": 5200849
+        },
+        "counts": {
+          "run": 5349,
+          "pass": 5342,
+          "skip": 7
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/handler"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/installation",
+        "database": "ccheck_20261103143538973766_f98f1babe5ae",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143538973766_f98f1babe5ae.json",
+          "sha256": "de8cf32d924c22aa385f71faa72afb62720cde631f7009b0ab89381481974406",
+          "bytes": 1326
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143538973766_f98f1babe5ae.jsonl",
+          "sha256": "5fba866e93f8577ba35df57bc13dfa449d7e17432044dc41355708d219545be7",
+          "bytes": 8013
+        },
+        "counts": {
+          "run": 8,
+          "pass": 8
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/installation"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+        "database": "ccheck_20261103143539906942_bbd7303d32a6",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143539906942_bbd7303d32a6.json",
+          "sha256": "806c8a3365e1d3a7888444b6bc849e600f391dbf55d72cfb6cd1feecb6e14721",
+          "bytes": 1344
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143539906942_bbd7303d32a6.jsonl",
+          "sha256": "d766a0c6715a363719c7226a1f09d72afaecf8db6637aa862faf05fc05f7b716",
+          "bytes": 19928
+        },
+        "counts": {
+          "run": 22,
+          "pass": 22
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/channel"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+        "database": "ccheck_20261103143540304268_d01cb786d08e",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143540304268_d01cb786d08e.json",
+          "sha256": "4944251536181182c9db153ce9172270182286f799dc6191394da8d80c8358f4",
+          "bytes": 1360
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143540304268_d01cb786d08e.jsonl",
+          "sha256": "edfb2d0193c814fba6913103547dd96c6b682f9d71ad3d812db4d376eda29369",
+          "bytes": 215210
+        },
+        "counts": {
+          "run": 211,
+          "pass": 211
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/channel/engine"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+        "database": "ccheck_20261103143551595046_e133f82ee548",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143551595046_e133f82ee548.json",
+          "sha256": "8be7aed2a6969e02fee08aec2b0be7ab054ccef5e4e18d93ec46f030a761d530",
+          "bytes": 1346
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143551595046_e133f82ee548.jsonl",
+          "sha256": "1e2dcc920e6682be5b012ba3ff8fbee01ca7229de21e92f4db7b58538f1aee50",
+          "bytes": 76497
+        },
+        "counts": {
+          "run": 42,
+          "pass": 42
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/composio"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+        "database": "ccheck_20261103143552509140_33991a652421",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143552509140_33991a652421.json",
+          "sha256": "ce7160bdf374b970eff4dd5b713b986a19106f0617a1c46a69b7e75b2fd9505c",
+          "bytes": 1348
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143552509140_33991a652421.jsonl",
+          "sha256": "b0dae44ae43bc7c0c78c30881c25abfc94ef06044658195ef1cd63bda5df92f4",
+          "bytes": 223406
+        },
+        "counts": {
+          "run": 212,
+          "pass": 212
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/dingtalk"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+        "database": "ccheck_20261103143601625070_a384d9e70280",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143601625070_a384d9e70280.json",
+          "sha256": "053df90567224c65e4d91c58565aac1899177ecb6fd2127ddf4739bd912dfc7f",
+          "bytes": 1350
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143601625070_a384d9e70280.jsonl",
+          "sha256": "85aefdeee53b9ca7821173f5704edd6aade1e97479fc76ee4659af3a213d4763",
+          "bytes": 33505
+        },
+        "counts": {
+          "run": 36,
+          "pass": 36
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+        "database": "ccheck_20261103143605628837_36f5a604ea4d",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143605628837_36f5a604ea4d.json",
+          "sha256": "61eb5cb3825f9bd097e44b0a2f208ac62334a8ad9ddeebf5775f6926e0ed4879",
+          "bytes": 1340
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143605628837_36f5a604ea4d.jsonl",
+          "sha256": "4f7a7ac28dc5d4c7ba04d974330f2d9a721265963f0f91d744ec9bf3cc9ce115",
+          "bytes": 548470
+        },
+        "counts": {
+          "run": 426,
+          "pass": 426
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/lark"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+        "database": "ccheck_20261103143614437911_a57e8d23d980",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143614437911_a57e8d23d980.json",
+          "sha256": "ec925e63e0b8094e113fa8b755c5eed9a06abd24fbf2a989a42d6bc6e1d05863",
+          "bytes": 1342
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143614437911_a57e8d23d980.jsonl",
+          "sha256": "dbd69820aca6c9eb734bffabd4e549479e22b1058cca81fce2b3a566f2627595",
+          "bytes": 181842
+        },
+        "counts": {
+          "run": 188,
+          "pass": 188
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/slack"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+        "database": "ccheck_20261103143620678000_72398aa1f6d0",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143620678000_72398aa1f6d0.json",
+          "sha256": "b383e3b9459a80300935a1e2e16800c8c53fd036d6c72411a3e8da9701a35915",
+          "bytes": 1348
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143620678000_72398aa1f6d0.jsonl",
+          "sha256": "72a319bc6ab54628b905a3acbdc0c2ade4f7fc5f4ac7c57b179326c5c19c64b6",
+          "bytes": 120277
+        },
+        "counts": {
+          "run": 114,
+          "pass": 114
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/telegram"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+        "database": "ccheck_20261103143632400161_b565f47a53d0",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143632400161_b565f47a53d0.json",
+          "sha256": "c5d7184384b788ddba705d8413ba15511a074b5864e18fe91ba44f8296bc8778",
+          "bytes": 1336
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143632400161_b565f47a53d0.jsonl",
+          "sha256": "f63bf922b6d0132b35ea12933486f0ee43eec46be4944d91d895dacdd0194a95",
+          "bytes": 12753
+        },
+        "counts": {
+          "run": 15,
+          "pass": 15
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/vcs"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+        "database": "ccheck_20261103143633292403_549757f027eb",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143633292403_549757f027eb.json",
+          "sha256": "33974fa497089e1fa746158dc0baca5a03df4cafc6f73f10192c1d83ab1b4fa4",
+          "bytes": 1342
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143633292403_549757f027eb.jsonl",
+          "sha256": "de8b2d17c9c2eb0e757387271b6e9eabc4e49fe0edac39b4451c300ff86f8fb8",
+          "bytes": 906155
+        },
+        "counts": {
+          "run": 616,
+          "pass": 616
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/integrations/wecom"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+        "database": "ccheck_20261103143736599698_6bdd179505c2",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143736599698_6bdd179505c2.json",
+          "sha256": "9a3c511ecb7d815ecfb4ab6332dedb678bfda0b8a1fb65bccb04557588ae6853",
+          "bytes": 1344
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143736599698_6bdd179505c2.jsonl",
+          "sha256": "1bd196444235b20faa23a8b4c8714fc4ab704afe76f1d7ec7b9aba9a35fb2689",
+          "bytes": 2462
+        },
+        "counts": {
+          "run": 2,
+          "pass": 2
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/issueactivitybackfill"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issueguard",
+        "database": "ccheck_20261103143740532108_3202a0f12174",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143740532108_3202a0f12174.json",
+          "sha256": "456aaff46cdb2fa1451d145affa22ca93f772632ab587fc1f7d1048734b1b51f",
+          "bytes": 1322
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143740532108_3202a0f12174.jsonl",
+          "sha256": "54e64fed06915d2c593929775e7e915e4c7eab3e34fcafe9601f46bf1773df39",
+          "bytes": 2663
+        },
+        "counts": {
+          "run": 2,
+          "pass": 2
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/issueguard"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issueposition",
+        "database": "ccheck_20261103143740971069_7a51ef9d7409",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143740971069_7a51ef9d7409.json",
+          "sha256": "5d56271d48a8445a54f179d6fde164e652047a1d10f3dbe3dcf38c1461432f82",
+          "bytes": 1328
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143740971069_7a51ef9d7409.jsonl",
+          "sha256": "091b333dede1da662c8379ca30187367a49b47ccd30aacd0211021bcce64a8b7",
+          "bytes": 507
+        },
+        "counts": {},
+        "exit_code": 0,
+        "terminal_actions": [
+          "skip"
+        ],
+        "compiled_without_tests": true,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/issueposition"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+        "database": "ccheck_20261103143741368206_3df108fbf701",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143741368206_3df108fbf701.json",
+          "sha256": "b8397f390101e22a1351c970a676c3deceb6e0d202d83da5db8f5b4c249483a1",
+          "bytes": 1326
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143741368206_3df108fbf701.jsonl",
+          "sha256": "702f15a2c728d0b861751eff645d6ea11efb0143ce04f44fde7264d448a0387b",
+          "bytes": 24403
+        },
+        "counts": {
+          "run": 26,
+          "pass": 26
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/issuestatus"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/iteration",
+        "database": "ccheck_20261103143741771756_fb52e0df1f83",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143741771756_fb52e0df1f83.json",
+          "sha256": "7b40f2781739e56ad266ea4bfcd6f36c3e257fc50383d262d66a920c6a7c8067",
+          "bytes": 1324
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143741771756_fb52e0df1f83.jsonl",
+          "sha256": "8a8a525c0a86ccb6a9e12ab2a7f205061f190b25910e7085418dd0b2104f9fa5",
+          "bytes": 122546
+        },
+        "counts": {
+          "run": 122,
+          "pass": 122
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/iteration"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/logger",
+        "database": "ccheck_20261103143742191490_b3616ef0c58b",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143742191490_b3616ef0c58b.json",
+          "sha256": "9f582800e43505ec99d9e97e650d8757917db787765a5bd12612f4bf5cee0031",
+          "bytes": 1314
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143742191490_b3616ef0c58b.jsonl",
+          "sha256": "2cc7e44e9f4180c8b8648545eb81b22ec4b59e8761c3e70f66f8ddf654437ab6",
+          "bytes": 1383
+        },
+        "counts": {
+          "run": 1,
+          "pass": 1
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/logger"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/metrics",
+        "database": "ccheck_20261103143743051588_734f4abb7b12",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143743051588_734f4abb7b12.json",
+          "sha256": "a8ce0c1f5dda0066cdc938b873f9e780fbcdb3d2ec02fe9ca2cf17c7f409f217",
+          "bytes": 1318
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143743051588_734f4abb7b12.jsonl",
+          "sha256": "074206d7785da64d8bef731249c550b77d302256e19982572a62d66e41b9247c",
+          "bytes": 117840
+        },
+        "counts": {
+          "run": 87,
+          "pass": 87
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/metrics"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/middleware",
+        "database": "ccheck_20261103143743870879_919b30f55bea",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143743870879_919b30f55bea.json",
+          "sha256": "7e9a83c33092728a18f6954486b0c3c3e1ae2b62200cf65dd8ada56b94e6b809",
+          "bytes": 1326
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143743870879_919b30f55bea.jsonl",
+          "sha256": "e3ede2f8d046ac99d1b6c3502aa84471cf194bb5eb3112fe4300720d085abd1e",
+          "bytes": 117030
+        },
+        "counts": {
+          "run": 119,
+          "pass": 119
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/middleware"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/migrations",
+        "database": "ccheck_20261103143747720134_33c023a139ab",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143747720134_33c023a139ab.json",
+          "sha256": "7ab308fee7f5be0f14ebd7a72998d17c7e133031fc537c852110901ed3a7b335",
+          "bytes": 1326
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143747720134_33c023a139ab.jsonl",
+          "sha256": "55f745da205c99df4e6a37a293885f230db6be983768bec2be778f4f2dadbbaf",
+          "bytes": 626557
+        },
+        "counts": {
+          "run": 540,
+          "pass": 540
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/migrations"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/profiling",
+        "database": "ccheck_20261103143825010600_9f2c7589a33e",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143825010600_9f2c7589a33e.json",
+          "sha256": "1289100067aafb098d44dc05d30cc1834f0dfb27ae01d1892ccc1605ccd33d2e",
+          "bytes": 1320
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143825010600_9f2c7589a33e.jsonl",
+          "sha256": "9ba586b70d5b5e47bebb56fe15735dba6d1aecdc987a8b4fc673ead86dc2a9e3",
+          "bytes": 491
+        },
+        "counts": {},
+        "exit_code": 0,
+        "terminal_actions": [
+          "skip"
+        ],
+        "compiled_without_tests": true,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/profiling"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+        "database": "ccheck_20261103143825686832_402988e4441d",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143825686832_402988e4441d.json",
+          "sha256": "ad425f3a315214be31bc3ace8e9ccf2b545f660c9898aced41a5fd1c8cd186b4",
+          "bytes": 1330
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143825686832_402988e4441d.jsonl",
+          "sha256": "84b580b90b6d1ac26bef99ee038e2544c6ce37191e08b6be409e9357373e26e2",
+          "bytes": 17883
+        },
+        "counts": {
+          "run": 18,
+          "pass": 18
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/projecthealth"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/realtime",
+        "database": "ccheck_20261103143826155566_08997a7fa7fe",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143826155566_08997a7fa7fe.json",
+          "sha256": "4ba553f9fca2a74d2716386b7bf3fba2ca2ddd8605280ec7fb5f2141cab0ad3f",
+          "bytes": 1320
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143826155566_08997a7fa7fe.jsonl",
+          "sha256": "a06bd5b0bbc58d49f4186a72e601519503c15b5044ed81f85d7ffb1c2e057570",
+          "bytes": 86408
+        },
+        "counts": {
+          "run": 87,
+          "pass": 87
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/realtime"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+        "database": "ccheck_20261103143831637052_6d7856d79665",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143831637052_6d7856d79665.json",
+          "sha256": "e8547edbc9a2905e4ba0c17e0f57dfd0a6a736cd7ae4799ca601dfbe375eb17e",
+          "bytes": 1324
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143831637052_6d7856d79665.jsonl",
+          "sha256": "5b03ec5d656a64b44c87f90376feccd582ccd4e92dc0a1eb3aada954e288dddd",
+          "bytes": 499
+        },
+        "counts": {},
+        "exit_code": 0,
+        "terminal_actions": [
+          "skip"
+        ],
+        "compiled_without_tests": true,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/runtimeapps"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/scheduler",
+        "database": "ccheck_20261103143831989575_b41f457af4f5",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143831989575_b41f457af4f5.json",
+          "sha256": "0f92e15921684ac999f6e8e95244663604f50fd660487110b0bfa9f811571b0f",
+          "bytes": 1322
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143831989575_b41f457af4f5.jsonl",
+          "sha256": "be7af56b802462fe73066e7f6474967d82f1da0406b7f4aca87a195eb629d767",
+          "bytes": 39285
+        },
+        "counts": {
+          "run": 31,
+          "pass": 31
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/scheduler"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+        "database": "ccheck_20261103143837701378_2f225990571e",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143837701378_2f225990571e.json",
+          "sha256": "a9425d69db153635277df8ea4c99e36568ff17f61b1683845a1366ab7631baa1",
+          "bytes": 1328
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143837701378_2f225990571e.jsonl",
+          "sha256": "374f15c796a188ef57dd1e3e166c91da1a48ebeca240651bd5937c5fcac54216",
+          "bytes": 22146
+        },
+        "counts": {
+          "run": 23,
+          "pass": 23
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/seatcapacity"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/selfexec",
+        "database": "ccheck_20261103143838105801_0ee13f0d2884",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143838105801_0ee13f0d2884.json",
+          "sha256": "e73256951a357fb947c46e9212ead7ecb6a3cab32375c1d4f2ba7cd84997d4f7",
+          "bytes": 1320
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143838105801_0ee13f0d2884.jsonl",
+          "sha256": "614ce8ea12520b9bc628caa4d3efbe189a2b98c3d77760b2e1ed8837ff76098b",
+          "bytes": 9489
+        },
+        "counts": {
+          "run": 10,
+          "pass": 10
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/selfexec"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/service",
+        "database": "ccheck_20261103143839963014_986dfe9cbf73",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.json",
+          "sha256": "0ab5ad65102f0a8c5e1f2c891efbf81fa5a52b2ce403e55de1596cfd127a5b49",
+          "bytes": 1322
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103143839963014_986dfe9cbf73.jsonl",
+          "sha256": "7f48831a43b725880efec631b9a2007e7ee9101c0b05cd042f2bc6f753ff2af5",
+          "bytes": 4082576
+        },
+        "counts": {
+          "run": 3430,
+          "pass": 3430
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/service"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/skill",
+        "database": "ccheck_20261103145715083770_c0b56fe05d44",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145715083770_c0b56fe05d44.json",
+          "sha256": "ef425b5582916c3e39c6a8aa44a6d8ab90b65b3aef90164138539d9e8736eec8",
+          "bytes": 1314
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145715083770_c0b56fe05d44.jsonl",
+          "sha256": "b7a29be68374f6d855f7620267e7d5ad202e238443212f8eb2ce2cef280c86a9",
+          "bytes": 60073
+        },
+        "counts": {
+          "run": 66,
+          "pass": 66
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/skill"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/storage",
+        "database": "ccheck_20261103145715950320_85091a8daf2c",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145715950320_85091a8daf2c.json",
+          "sha256": "d864291763dbf3f3a0a17957ac740550ad78ce3e3528637b2b12208afa40e0d0",
+          "bytes": 1318
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145715950320_85091a8daf2c.jsonl",
+          "sha256": "946b9c5526c68b4cde4ca58a2f95905b0c43b9012a48d5fd77f3d19c9b27ce33",
+          "bytes": 101897
+        },
+        "counts": {
+          "run": 99,
+          "pass": 99
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/storage"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+        "database": "ccheck_20261103145719839465_0548817c3f9d",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145719839465_0548817c3f9d.json",
+          "sha256": "97675b904ce6c4c5eefb5878fcf7a334dd432313700920e55ea89b90362e56cd",
+          "bytes": 1336
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145719839465_0548817c3f9d.jsonl",
+          "sha256": "9e5037dfae648cfce65cbd0cfc7f4a4e131c936effef1a5ea1c53193ce98275d",
+          "bytes": 3707
+        },
+        "counts": {
+          "run": 2,
+          "pass": 2
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/taskusagebackfill"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/testutil",
+        "database": "ccheck_20261103145724036420_8c57f41cf87d",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145724036420_8c57f41cf87d.json",
+          "sha256": "ee41380fdd6ca63f9611077ba2878cf0174b665838075fb9c92b433d49453e21",
+          "bytes": 1320
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145724036420_8c57f41cf87d.jsonl",
+          "sha256": "4284d7e3dc814a3739080acaf43b60f363fe53724102659e134acee48a409931",
+          "bytes": 21330
+        },
+        "counts": {
+          "run": 18,
+          "pass": 18
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/testutil"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+        "database": "ccheck_20261103145724597470_c02d86db4237",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145724597470_c02d86db4237.json",
+          "sha256": "7044e530286409d36a8ff8677fb711ef84672cb76dc1dbe967ec212fd965bcd7",
+          "bytes": 1322
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145724597470_c02d86db4237.jsonl",
+          "sha256": "7a85d837c7dfe32778c0cbe875d11bbf106081f128f9735ad28318fa9325e184",
+          "bytes": 13997
+        },
+        "counts": {
+          "run": 15,
+          "pass": 15
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/triagecsv"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/util",
+        "database": "ccheck_20261103145724896538_d763dfcd7176",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145724896538_d763dfcd7176.json",
+          "sha256": "21bd6b6c015d2a44fecba92d946fefc98927078b7985b5f814a5e04793949d8b",
+          "bytes": 1314
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145724896538_d763dfcd7176.jsonl",
+          "sha256": "78d6e407b0453b5bfd45191b60903a1eb3b1d1f95320fd080c0988f55a47fbc3",
+          "bytes": 103596
+        },
+        "counts": {
+          "run": 115,
+          "pass": 115
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/util"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+        "database": "ccheck_20261103145725277589_f8cc8b7af4e6",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145725277589_f8cc8b7af4e6.json",
+          "sha256": "32098ebcfe8e6308e797d597843c5d7d9871ec2a4cd5e3a0bb48c62ed491f3b1",
+          "bytes": 1332
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145725277589_f8cc8b7af4e6.jsonl",
+          "sha256": "776d5f7e602a612b12884e44d48a7b14496ad3b022e3a411119e434baa88d92a",
+          "bytes": 8281
+        },
+        "counts": {
+          "run": 10,
+          "pass": 10
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/internal/util/secretbox"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/composio",
+        "database": "ccheck_20261103145725570176_3b4cd4ae0d09",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145725570176_3b4cd4ae0d09.json",
+          "sha256": "0e9f7056c9de243e1e0352b78605780ffdb897af4881d15a7d25b3fa33c586a2",
+          "bytes": 1310
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145725570176_3b4cd4ae0d09.jsonl",
+          "sha256": "02d8a0c67f196bc19e6b188d286d41b95a261a0fe4be2a6b719ac2c06e4e134e",
+          "bytes": 31582
+        },
+        "counts": {
+          "run": 39,
+          "pass": 39
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/composio"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+        "database": "ccheck_20261103145725996378_fb47920ce532",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145725996378_fb47920ce532.json",
+          "sha256": "f22cb92b1808bd891454c69c1e11a4dbd767efe6ca5c09e184f4b4214b32cbf8",
+          "bytes": 1316
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145725996378_fb47920ce532.jsonl",
+          "sha256": "0f0f2338695f1487a2c971346e259cfa0beb41a0e590af19f1c7b4e8c37de94d",
+          "bytes": 6544
+        },
+        "counts": {
+          "run": 6,
+          "pass": 6
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/db/generated"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/dbid",
+        "database": "ccheck_20261103145726417604_bd354a329a15",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145726417604_bd354a329a15.json",
+          "sha256": "6ecb2f9694b8952a03cc4f4ba877c3b03bb0af80e664ff97f0888db7a0cd5ece",
+          "bytes": 1302
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145726417604_bd354a329a15.jsonl",
+          "sha256": "8bdc8bf3f666ed2dab635037779524be7dfb0d9380822ae883ba2680f1d9bc75",
+          "bytes": 21967
+        },
+        "counts": {
+          "run": 23,
+          "pass": 23
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/dbid"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+        "database": "ccheck_20261103145731177209_d7ecdfa3f812",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145731177209_d7ecdfa3f812.json",
+          "sha256": "76354a51dde5cb794123b8e40522f87bbf2f6fbbb2b750bfac9b36adf495c817",
+          "bytes": 1316
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145731177209_d7ecdfa3f812.jsonl",
+          "sha256": "cab1c21ce67f493f96f66ff8c30f4bcddfa2296d01fdb897e50db6b7ca0599a6",
+          "bytes": 73549
+        },
+        "counts": {
+          "run": 51,
+          "pass": 51
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/featureflag"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/llm",
+        "database": "ccheck_20261103145733069028_e859efa47f08",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145733069028_e859efa47f08.json",
+          "sha256": "6d3dfb7bd59ae464a34510325344a1ad1bf3508247f690188388f65fb4ab1d1e",
+          "bytes": 1300
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145733069028_e859efa47f08.jsonl",
+          "sha256": "7218fee2f6d54f91f31315a14619a73eb12211808b19e2fccd3ee32cd8fc928d",
+          "bytes": 28940
+        },
+        "counts": {
+          "run": 34,
+          "pass": 34
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/llm"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+        "database": "ccheck_20261103145742992223_2801bc792e83",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145742992223_2801bc792e83.json",
+          "sha256": "fe1c50c3be072ee8fd169183d908a9960551d62caf73e556df0802911810b1f2",
+          "bytes": 1322
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145742992223_2801bc792e83.jsonl",
+          "sha256": "51241dfb128ca9ee02511598d19c1c8c3be1a5e715b4c4fbf759360ed60f9ce4",
+          "bytes": 96506
+        },
+        "counts": {
+          "run": 99,
+          "pass": 99
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/plugincontract"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/protocol",
+        "database": "ccheck_20261103145743426254_b2f76499e952",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145743426254_b2f76499e952.json",
+          "sha256": "9fcb46aec1782291d195313dc0795a860443e25c42a3c7c231b9fef1bed1b75d",
+          "bytes": 1312
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145743426254_b2f76499e952.jsonl",
+          "sha256": "87ef98114a8b46819dbb28a43ccfaffb94c9206d641fe3bd5090e69a1b8d9299",
+          "bytes": 395841
+        },
+        "counts": {
+          "run": 390,
+          "pass": 390
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/protocol"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+        "database": "ccheck_20261103145743799658_4fc98d5f8acf",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145743799658_4fc98d5f8acf.json",
+          "sha256": "505ae5da260fc794acd2dcdb52fd3bc00b1f373081cd33427d852a54a37637c8",
+          "bytes": 1316
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145743799658_4fc98d5f8acf.jsonl",
+          "sha256": "7aebe94aab2f1dd9f641bae2fcfd2c60f4122ac98cca395cbe88a5e6e18955f1",
+          "bytes": 4939
+        },
+        "counts": {
+          "run": 5,
+          "pass": 5
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/publicapi/v1"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/redact",
+        "database": "ccheck_20261103145744255807_4f0dde5e8035",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145744255807_4f0dde5e8035.json",
+          "sha256": "96c95aeda65f00609ba414bb4f904424da3e8dc4a926fc0f456be2c3405b4b21",
+          "bytes": 1306
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145744255807_4f0dde5e8035.jsonl",
+          "sha256": "74ed0ea68a4ef4b8e1eadb160de3833511e5b4b0a77dcaec5ac241e5a462d6de",
+          "bytes": 48115
+        },
+        "counts": {
+          "run": 35,
+          "pass": 35
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/redact"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+        "database": "ccheck_20261103145746103782_b541162c7d6d",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145746103782_b541162c7d6d.json",
+          "sha256": "78055b96d8e6429c51d7182b820aa1bc8a88536e88f946888c4ac69dbdfd443e",
+          "bytes": 1310
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145746103782_b541162c7d6d.jsonl",
+          "sha256": "7f8eff5145db265bd879f887870b02969b8b97de365464f2e5fb40e5c39f29ca",
+          "bytes": 7521
+        },
+        "counts": {
+          "run": 8,
+          "pass": 8
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/remotemcp"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+        "database": "ccheck_20261103145746451490_e6acddbc5503",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145746451490_e6acddbc5503.json",
+          "sha256": "3d29586de4e4d36bb4e9224648501b02af07d64e1e4cba019f4b56d0501a87eb",
+          "bytes": 1338
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145746451490_e6acddbc5503.jsonl",
+          "sha256": "033358c5a7c391b39145e08ce1398e2c4484d1141d80e49d5e93f0a0d8598e59",
+          "bytes": 1592
+        },
+        "counts": {
+          "run": 1,
+          "pass": 1
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+        "database": "ccheck_20261103145746789073_2405237448a4",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145746789073_2405237448a4.json",
+          "sha256": "821d6ae077cce11855174c6f93fd230ef22b548f49ecece09b85fdbeca72fd03",
+          "bytes": 1314
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145746789073_2405237448a4.jsonl",
+          "sha256": "2ff7c930bb30c44fe3d021c563c5e61a28b415753a8742c806312ee310ced691",
+          "bytes": 2317
+        },
+        "counts": {
+          "run": 2,
+          "pass": 2
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/skillbundle"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+        "database": "ccheck_20261103145747088589_d8de8e43c096",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747088589_d8de8e43c096.json",
+          "sha256": "05dff824d835f598d6cd7beb078d315b53543b1fad90b63626ca6f99cb7e3865",
+          "bytes": 1318
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747088589_d8de8e43c096.jsonl",
+          "sha256": "33de26e0924b191624247bf2045b0769b28b6db4c95d3f3fcdf048954206e652",
+          "bytes": 240336
+        },
+        "counts": {
+          "run": 222,
+          "pass": 222
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "1",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/taskfailure"
+        ],
+        "race": true
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "database": "ccheck_20261103145747640958_56802910400e",
+        "metadata": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.json",
+          "sha256": "cce27295a2f03892d64078f4f96e11f914bb740701a555d886aa0360208f8b20",
+          "bytes": 1308
+        },
+        "raw": {
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/go-packages-v14/ccheck_20261103145747640958_56802910400e.jsonl",
+          "sha256": "20165c548edc147700c4992ceb13d5db8fbdbf04f942f716adf8c5b48b4d02ec",
+          "bytes": 3522563
+        },
+        "counts": {
+          "run": 1955,
+          "pass": 1951,
+          "skip": 4
+        },
+        "exit_code": 0,
+        "terminal_actions": [
+          "pass"
+        ],
+        "compiled_without_tests": false,
+        "actual_command": [
+          "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+          "test",
+          "-timeout=40m",
+          "-race",
+          "-p",
+          "2",
+          "-parallel",
+          "2",
+          "-json",
+          "github.com/multica-ai/multica/server/pkg/agent"
+        ],
+        "race": true
+      }
+    ],
+    "package_count": 82,
+    "unique_database_count": 82,
+    "counts": {
+      "run": 20985,
+      "pass": 20963,
+      "skip": 22
+    },
+    "leaf_count": 20985,
+    "package_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/go-packages.jsonl",
+      "sha256": "c5cf49063e8f38cefb2a28986c89058c0f00ba1880f1f2cfb6937f5671d8c9b3",
+      "bytes": 81811
+    },
+    "leaf_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/go-leaves.jsonl",
+      "sha256": "4f8e69e3066684db5dddab74b2cf3a76041684c1d5c52dc46beec469ad45a9e7",
+      "bytes": 9816726
+    },
+    "skip_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/go-skips.jsonl",
+      "sha256": "14550fdd063876bc01bd81e3c3c4bcbd13dbb39c35b6b046822dfbf80109ff1a",
+      "bytes": 33835
+    },
+    "compiled_no_test_file_packages": [
+      "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "github.com/multica-ai/multica/server/internal/admission",
+      "github.com/multica-ai/multica/server/internal/agentconfig",
+      "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "github.com/multica-ai/multica/server/internal/chattitle",
+      "github.com/multica-ai/multica/server/internal/dispatch",
+      "github.com/multica-ai/multica/server/internal/issueposition",
+      "github.com/multica-ai/multica/server/internal/profiling",
+      "github.com/multica-ai/multica/server/internal/runtimeapps"
+    ]
+  },
+  "Browser": {
+    "report": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/makecheck-playwright-results-v9.json",
+      "sha256": "dc6603b3ef78ef81c597f061b12fb0f02f9b035a3dc891e7fb8b415e1fad04da",
+      "bytes": 3069164
+    },
+    "case_count": 441,
+    "terminal_counts": {
+      "skipped": 91,
+      "passed": 334,
+      "failed": 16
+    },
+    "report_status_counts": {
+      "skipped": 91,
+      "expected": 334,
+      "unexpected": 16
+    },
+    "stats": {
+      "startTime": "2026-11-03T15:03:30.655Z",
+      "duration": 1125500.604,
+      "expected": 334,
+      "skipped": 91,
+      "unexpected": 16,
+      "flaky": 0
+    },
+    "retry_count": 0,
+    "report_errors": [],
+    "case_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/browser-cases.jsonl",
+      "sha256": "783503472ea26fa906116133c91c82f1c2e29d28b280d5a4df70d2c7c6ad7c59",
+      "bytes": 189881
+    },
+    "skip_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/browser-skips.jsonl",
+      "sha256": "825c03c1333f63be6d474b3e01c6fcf76fddb4f2c526b144fd2e76e34f35c224",
+      "bytes": 149953
+    }
+  },
+  "explicit_skip_dispositions": {
+    "previous_independent_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-contract-review/review.json",
+      "sha256": "111f08f6bf423ea27e698acfc6fc0c5cdc4dfb038ff0c070ed3a5c8fca531b73",
+      "bytes": 318796
+    },
+    "count": 113,
+    "all_explicit_dispositions_verified": true,
+    "unresolved": [],
+    "inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/inventory-review/historical-v14-missing-ts-control-v3/explicit-skip-dispositions.jsonl",
+      "sha256": "243ab3d73953e505bc649dd2834847ce60523ea8cf6d8035229ad12222050ec6",
+      "bytes": 47377
+    },
+    "note": "Source-reviewed explicit skip/todo is a complete independent terminal, never a pass or an automatic full-run failure."
+  },
+  "complete_named_inventory": false,
+  "all_collected_test_results_clean": false,
+  "final_identity_audit": null,
+  "final_identity_audit_pass": false,
+  "root_live_proof": null,
+  "root_live_proof_pass": false,
+  "shared_gate_ready": false,
+  "task7_closed": false,
+  "CCG1_CCG2_and_independent_final_review_required": true,
+  "problems": [
+    "TS: missing actual complete reporter JSON for @multica/core",
+    "TS: missing actual complete reporter JSON for @multica/views",
+    "TS: missing actual complete reporter JSON for @multica/ui",
+    "TS: missing actual complete reporter JSON for @multica/web",
+    "TS: missing actual complete reporter JSON for @multica/desktop",
+    "Final identity audit: missing path/hash input",
+    "Root live proof: missing path/hash input"
+  ],
+  "scope": "Only actual pinned raw inputs parsed; no test, DB, service, browser or Provider was started.",
+  "knowledge_budget": {
+    "allocated": 0,
+    "real_calls": 0,
+    "production_default_enabled": false
+  }
+}

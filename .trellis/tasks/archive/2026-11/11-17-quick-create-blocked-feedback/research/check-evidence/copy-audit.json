@@ -1,0 +1,32 @@
+{
+  "locale": [
+    {
+      "locale": "en",
+      "forbidden_group_words_found": [],
+      "ai_optimize_old_verb_found": false
+    },
+    {
+      "locale": "zh-Hans",
+      "forbidden_group_words_found": [],
+      "ai_optimize_old_verb_found": false
+    }
+  ],
+  "old_copy_search": {
+    "command": [
+      "rg",
+      "-n",
+      "-g",
+      "!node_modules",
+      "-g",
+      "!.next",
+      "-g",
+      "!dist",
+      "Finding suitable assistants|No matching actors|Optimization failed|使用此助手|将当前助手设为默认",
+      "packages",
+      "apps",
+      "e2e"
+    ],
+    "exit": 1,
+    "matches": ""
+  }
+}

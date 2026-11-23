@@ -189,14 +189,12 @@ export function InboxFilterMenu({
       <DropdownMenuTrigger
         render={
           <Button
-            variant={activeCount > 0 ? "default" : "ghost"}
+            variant={activeCount > 0 ? "brand" : "ghost"}
             size="icon-sm"
             aria-label={triggerLabel}
             title={triggerLabel}
             className={cn(
-              "text-muted-foreground",
-              activeCount > 0 &&
-                "w-auto gap-1 bg-brand px-2 text-white hover:bg-brand/90",
+              activeCount > 0 ? "w-auto gap-1 px-2" : "text-muted-foreground",
             )}
           />
         }

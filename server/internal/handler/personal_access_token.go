@@ -8,9 +8,11 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -319,12 +321,28 @@ func (h *Handler) RevokePersonalAccessToken(w http.ResponseWriter, r *http.Reque
 	if !ok {
 		return
 	}
-	hash, err := h.Queries.RevokePersonalAccessToken(r.Context(), db.RevokePersonalAccessTokenParams{
+	tx, err := h.TxStarter.Begin(r.Context())
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to revoke token")
+		return
+	}
+	defer tx.Rollback(r.Context())
+	q := h.Queries.WithTx(tx)
+	hash, err := q.RevokePersonalAccessToken(r.Context(), db.RevokePersonalAccessTokenParams{
 		ID:     idUUID,
 		UserID: parseUUID(userID),
 	})
 	switch {
 	case err == nil:
+		cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(idUUID.Bytes), []byte("collaboration-knowledge:pat-revoked")), Valid: true}
+		if err = service.EnqueueKnowledgeSourceInvalidation(r.Context(), q, cause, "all_sources", pgtype.UUID{}); err != nil {
+			writeError(w, http.StatusInternalServerError, "failed to revoke token")
+			return
+		}
+		if err = tx.Commit(r.Context()); err != nil {
+			writeError(w, http.StatusInternalServerError, "failed to revoke token")
+			return
+		}
 		// Drop the cache entry immediately so the revocation takes effect
 		// before the TTL would otherwise expire the cached lookup.
 		h.PATCache.Invalidate(r.Context(), hash)

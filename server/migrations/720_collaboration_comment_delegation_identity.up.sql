@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_collaboration_delegation_comment_member ON collaboration_delegation(source_comment_id,member_agent_id) WHERE source_comment_id IS NOT NULL;

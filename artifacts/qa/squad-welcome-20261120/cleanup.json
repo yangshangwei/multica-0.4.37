@@ -1,0 +1,37 @@
+{
+  "ownedProcesses": {
+    "api": {
+      "pid": 67392,
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "canonicalCwd": null,
+      "alreadyExited": true,
+      "signal": "SIGTERM",
+      "exited": true
+    },
+    "renderer": {
+      "pid": 67640,
+      "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/candidate/apps/desktop",
+      "canonicalCwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/candidate/apps/desktop",
+      "alreadyExited": false,
+      "signal": "SIGTERM",
+      "exited": true
+    },
+    "web": {
+      "pid": 70120,
+      "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/candidate/apps/web",
+      "canonicalCwd": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/candidate/apps/web",
+      "alreadyExited": false,
+      "signal": "SIGTERM",
+      "exited": true
+    }
+  },
+  "databaseContainer": "7b7a905e94dc025eef311fdae1a3489f5e9808801c7de627bc20c8960faf86b2",
+  "privateState": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq",
+  "timestamp": "2026-11-20T15:56:00Z",
+  "note": "Cwd ownership compares canonical paths because macOS /var resolves through /private/var.",
+  "databaseContainerRemoved": true,
+  "apiPortClosed": true,
+  "webPortClosed": true,
+  "rendererPortClosed": true,
+  "privateStateRemoved": true
+}

@@ -6,7 +6,7 @@ import { submitAdminControl, findAdminControlOperation, AdminControlUncertainErr
 import { readAdminControlDraft, saveAdminControlDraft, removeAdminControlDraft } from "./operation-draft";
 const state = vi.hoisted(() => ({ userId: "actor", session: "session", api: {
   getBaseUrl: () => "https://test.invalid", getSessionScope: (): string => state.session,
-  changeAdminAdmission: vi.fn(), cancelAdminExecution: vi.fn(), changeAdminAlert: vi.fn(), getAdminOperations: vi.fn(), getAdminOperation: vi.fn(),
+  changeAdminAdmission: vi.fn(), cancelAdminExecution: vi.fn(), changeAdminAlert: vi.fn(), changeAdminCollaborationGate: vi.fn(), getAdminOperations: vi.fn(), getAdminOperation: vi.fn(),
 } }));
 vi.mock("../api", async original => ({ ...await original<typeof import("../api")>(), getApi: () => state.api }));
 vi.mock("../auth", () => ({ useAuthStore: { getState: () => ({ user: { id: state.userId } }) } }));
@@ -31,6 +31,32 @@ describe("control submission and recovery", () => {
     state.api.getAdminOperations.mockResolvedValueOnce({ items: [operation], scope: "organization" });
     await expect(submitAdminControl(scope, alertInput)).resolves.toEqual(operation);
     expect(state.api.getAdminOperations).toHaveBeenCalledWith(alertInput.key);
+  });
+  it("shows the committed refusal of a stale collaboration gate change instead of clearing its intent", async () => {
+    const gateInput = { id: "organization", key: input.key, action: "collaboration_gate" as const, body: { action: "open_creation" as const, reason: "Pilot" } };
+    state.api.changeAdminCollaborationGate.mockRejectedValueOnce(new ApiError("Changed", 409, "Conflict", { code: "collaboration_gate_conflict" }));
+    const failed = { ...receipt, targetId: "organization", kind: "collaboration.gate", state: "failed", resultCode: "collaboration_gate_conflict", confirmation: "not_required", reconciliationState: "complete" };
+    state.api.getAdminOperations.mockResolvedValueOnce({ items: [failed], scope: "organization" });
+    await expect(submitAdminControl(scope, gateInput)).resolves.toEqual(failed);
+    expect(state.api.changeAdminCollaborationGate).toHaveBeenCalledExactlyOnceWith(gateInput.body, gateInput.key);
+    expect(state.api.getAdminOperations).toHaveBeenCalledWith(gateInput.key);
+  });
+  it("recovers a collaboration gate change after a lost response and rejects another kind", async () => {
+    const gateInput = { id: "organization", key: input.key, action: "collaboration_gate" as const, body: { action: "open_execution" as const, expectedExecutionEpoch: "8", reason: "Pilot agents" } };
+    const applied = { ...receipt, targetId: "organization", kind: "collaboration.gate", state: "succeeded" };
+    state.api.changeAdminCollaborationGate.mockRejectedValueOnce(new TypeError("Lost response"));
+    state.api.getAdminOperations.mockResolvedValueOnce({ items: [applied], scope: "organization" });
+    await expect(submitAdminControl(scope, gateInput)).resolves.toEqual(applied);
+    state.api.getAdminOperations.mockResolvedValueOnce({ items: [{ ...applied, kind: "installation.admission" }], scope: "organization" });
+    await expect(findAdminControlOperation(scope, gateInput)).rejects.toThrow();
+  });
+  it("reconciles a malformed gate change response through the original key", async () => {
+    const gateInput = { id: "organization", key: input.key, action: "collaboration_gate" as const, body: { action: "close_creation" as const, reason: "Pilot finished" } };
+    const applied = { ...receipt, targetId: "organization", kind: "collaboration.gate", state: "succeeded" };
+    state.api.changeAdminCollaborationGate.mockResolvedValueOnce(null);
+    state.api.getAdminOperations.mockResolvedValueOnce({ items: [applied], scope: "organization" });
+    await expect(submitAdminControl(scope, gateInput)).resolves.toEqual(applied);
+    expect(state.api.changeAdminCollaborationGate).toHaveBeenCalledTimes(1);
   });
   it("does not send a command when its original intent cannot be saved", async () => {
     vi.mocked(saveAdminControlDraft).mockImplementationOnce(() => { throw new Error("Storage unavailable"); });

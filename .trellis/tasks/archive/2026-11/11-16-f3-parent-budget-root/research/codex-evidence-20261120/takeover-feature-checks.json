@@ -1,0 +1,79 @@
+[
+  {
+    "name": "feature-build",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./..."
+    ],
+    "exit": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "feature-vet",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./..."
+    ],
+    "exit": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "feature-metrics-normal",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/metrics",
+      "-count=1",
+      "-json"
+    ],
+    "exit": 0,
+    "sha256": "296969e8b89d5d94b123757b486771cc642e6a046e3bfafc8feeba896691ad8c",
+    "counts": {
+      "pass": 88
+    },
+    "package_terminal": [
+      "pass"
+    ]
+  },
+  {
+    "name": "feature-metrics-race",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-race",
+      "./internal/metrics",
+      "-count=1",
+      "-json"
+    ],
+    "exit": 0,
+    "sha256": "24096fe5f9f59c9dc5c6e190562d5be2c70d060f5c75ef1025a0c900ae5723df",
+    "counts": {
+      "pass": 88
+    },
+    "package_terminal": [
+      "pass"
+    ]
+  }
+]

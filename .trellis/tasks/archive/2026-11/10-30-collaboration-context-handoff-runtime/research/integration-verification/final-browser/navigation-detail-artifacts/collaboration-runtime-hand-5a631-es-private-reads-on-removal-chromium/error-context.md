@@ -1,0 +1,42 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - navigation "Application navigation" [ref=e4]:
+        - button "Workspaces" [ref=e5]
+        - button "Collaboration" [ref=e6]
+        - button "Create workspace" [ref=e8]
+    - main [ref=e10]:
+      - generic [ref=e11]:
+        - heading "Collaboration" [level=1] [ref=e12]
+        - navigation "Collaboration" [ref=e13]:
+          - link "Current handling" [ref=e14] [cursor=pointer]:
+            - /url: /account?view=current&issue=01a19334-dfd4-7c38-b7f6-3c0a0b788faa#run-51057c32-1d96-48b5-aefb-64a41321f7a3
+          - link "Participating" [ref=e15] [cursor=pointer]:
+            - /url: /account?view=participating&issue=01a19334-dfd4-7c38-b7f6-3c0a0b788faa#run-51057c32-1d96-48b5-aefb-64a41321f7a3
+        - button "New collaboration issue" [ref=e16]
+        - button "Notifications 2 unread" [ref=e18]:
+          - text: Notifications
+          - generic [ref=e19]: 2 unread
+      - generic [ref=e20]:
+        - region "Collaboration issues" [ref=e21]:
+          - generic [ref=e22]:
+            - textbox "Search loaded issues" [ref=e23]
+            - generic [ref=e24]:
+              - generic [ref=e25]: 0 issues
+              - combobox "Sort" [ref=e26]:
+                - option "Recently updated" [selected]
+                - option "Title"
+          - generic [ref=e27]:
+            - paragraph [ref=e28]: No participating issues yet.
+            - list
+        - region "Issue detail" [ref=e29]:
+          - status [ref=e31]: This issue is outside the current list. You can continue viewing it here.
+          - alert [ref=e32]:
+            - paragraph [ref=e33]: You no longer have access to this issue.
+            - button "Refresh" [ref=e34]
+  - region "Notifications alt+T"
+  - alert [ref=e35]: Collaboration | Multica
+```

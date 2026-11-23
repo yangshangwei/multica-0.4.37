@@ -1,0 +1,25 @@
+  1) [chromium] › e2e/collaboration-account-desktop.spec.ts:277:1 › Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history 
+
+    error: invalid input syntax for type uuid: "collaboration-closure-v14-01a1a186"
+
+       at fixtures/collaboration-resource-offers.ts:100
+
+       98 |     const updated = await db.query("UPDATE agent_runtime SET status='offline', custom_name='Private owner machine for the selected resource' WHERE id=$1 AND owner_id=$2 AND workspace_id=$3", [runtime.id, ownerAccount.id, executionWorkspace.id]);
+       99 |     expect(updated.rowCount).toBe(1);
+    > 100 |     await db.query("INSERT INTO collaboration_runtime_enrollment (deployment_id,owner_user_id,execution_workspace_id,runtime_id,installation_id,public_key) VALUES ($1,$2,$3,$4,$5,$6)",
+          |     ^
+      101 |       [deploymentId, ownerAccount.id, executionWorkspace.id, runtime.id, randomUUID(), randomBytes(32)]);
+      102 |     await db.query("COMMIT");
+      103 |   } catch (error) { await db.query("ROLLBACK"); throw error; }
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/client.js:631:17
+        at seedCollaborationResourceOfferJourney (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-resource-offers.ts:100:5)
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-account-desktop.spec.ts:280:19
+
+
+(node:77157) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:77157) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+

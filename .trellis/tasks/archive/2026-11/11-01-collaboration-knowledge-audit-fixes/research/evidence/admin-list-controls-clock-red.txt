@@ -1,0 +1,33 @@
+BEHAVIORAL (pre-existing, not a knowledge defect): fails on 6aed33aad/2057b5890 from 2026-11-01 because time_from=2026-10-01 with open time_to exceeds the 31-day window against the real clock.
+cmd: pnpm --filter @multica/views exec vitest run admin/executions/list-controls.test.tsx  (run 2026-11-01 ~19:02 +0800)
+
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views
+
+ ❯ admin/executions/list-controls.test.tsx (8 tests | 1 failed) 253ms
+   × keeps current-state scope only for a legal queued filter (2026-10-01T00:00:00Z) 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  admin/executions/list-controls.test.tsx > keeps current-state scope only for a legal queued filter (2026-10-01T00:00:00Z)
+TypeError: Cannot read properties of undefined (reading '0')
+ ❯ admin/executions/list-controls.test.tsx:20:34
+     18|   if (from) fireEvent.change(screen.getByLabelText(en.executions.from)…
+     19|   fireEvent.click(screen.getByRole("button", { name: "Apply filters" }…
+     20|   expect(new URL(push.mock.calls[0]![0], "https://test.invalid").searc…
+       |                                  ^
+     21| });
+     22| it("identifies and focuses an invalid filter without navigating", asyn…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  19:00:59
+   Duration  2.03s (transform 405ms, setup 102ms, import 810ms, tests 253ms, environment 772ms)
+
+undefined
+/Volumes/artisan/code/2026/mc-knowledge-fixes-20261101/packages/views:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run admin/executions/list-controls.test.tsx

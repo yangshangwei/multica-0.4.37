@@ -1,8 +1,10 @@
-import { describe, expect, it } from "vitest";
+// @vitest-environment node
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { InboxItem, InboxWorkspaceUnread } from "../types";
 import {
   deduplicateArchivedInboxItems,
   deduplicateInboxItems,
+  deduplicateSnoozedInboxItems,
   hasOtherWorkspaceUnread,
   inboxKeys,
   unreadWorkspaceIds,
@@ -29,6 +31,8 @@ function item(overrides: Partial<InboxItem>): InboxItem {
     ...overrides,
   };
 }
+
+afterEach(() => vi.useRealTimers());
 
 describe("deduplicateInboxItems", () => {
   it("keeps the newest issue row while preserving an older comment anchor", () => {
@@ -85,6 +89,77 @@ describe("deduplicateInboxItems", () => {
     ]);
 
     expect(merged.map((i) => i.id)).toEqual(["active"]);
+  });
+
+  it("hides the whole future-snoozed group including a newer ordinary sibling", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-06-15T08:00:00Z"));
+    const snoozed = {
+      ...item({ id: "delayed" }),
+      snoozed_until: "2026-06-15T09:00:00Z",
+    };
+
+    expect(
+      deduplicateInboxItems([
+        snoozed,
+        item({ id: "ordinary-update", created_at: "2026-06-15T08:01:00Z" }),
+        item({ id: "other-issue", issue_id: "issue-2" }),
+      ]).map((entry) => entry.id),
+    ).toEqual(["other-issue"]);
+  });
+
+  it("moves a reminded group forward without replacing its newest original event", () => {
+    const reminder = {
+      ...item({ id: "original-newest", created_at: "2026-06-15T07:00:00Z" }),
+      reminded_at: "2026-06-15T09:00:00Z",
+    };
+    const olderAnchor = {
+      ...item({
+        id: "original-comment",
+        created_at: "2026-06-15T06:00:00Z",
+        details: { comment_id: "comment-before-delay" },
+      }),
+      reminded_at: "2026-06-15T09:00:00Z",
+    };
+
+    const result = deduplicateInboxItems([
+      reminder,
+      olderAnchor,
+      item({ id: "recent-other", issue_id: "issue-2" }),
+    ]);
+
+    expect(result.map((entry) => entry.id)).toEqual(["original-newest", "recent-other"]);
+    expect(result[0]?.created_at).toBe("2026-06-15T07:00:00Z");
+    expect(result[0]?.details?.comment_id).toBe("comment-before-delay");
+  });
+});
+
+describe("deduplicateSnoozedInboxItems", () => {
+  it("groups all delayed siblings and sorts by the nearest reminder time", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-06-15T08:00:00Z"));
+    const result = deduplicateSnoozedInboxItems([
+      item({ id: "later", issue_id: "issue-2", snoozed_until: "2026-06-15T11:00:00Z" }),
+      item({ id: "soon-old", snoozed_until: "2026-06-15T09:00:00Z" }),
+      item({ id: "soon-new", created_at: "2026-06-15T08:05:00Z" }),
+      item({ id: "active", issue_id: "issue-3" }),
+      item({ id: "archived", issue_id: "issue-4", archived: true, snoozed_until: "2026-06-15T09:30:00Z" }),
+    ]);
+
+    expect(result.map((entry) => entry.id)).toEqual(["soon-new", "later"]);
+    expect(result[0]?.snoozed_until).toBe("2026-06-15T09:00:00Z");
+  });
+
+  it("keeps issue-less notification state independent and releases expired entries", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-06-15T08:00:00Z"));
+    const rows = [
+      item({ id: "one", issue_id: null, snoozed_until: "2026-06-15T09:00:00Z" }),
+      item({ id: "two", issue_id: null }),
+      item({ id: "expired", issue_id: "issue-expired", snoozed_until: "2026-06-15T07:00:00Z" }),
+    ];
+    expect(deduplicateSnoozedInboxItems(rows).map((entry) => entry.id)).toEqual(["one"]);
+    expect(deduplicateInboxItems(rows).map((entry) => entry.id)).toEqual(["two", "expired"]);
   });
 });
 

@@ -1,0 +1,70 @@
+{
+  "recorded_at": "2026-11-04T02:32:12.790015+00:00",
+  "diagnostic_checkout": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime",
+  "manifest_sha256": "8427b8065f26f5479e38423be2090b87cac1331e140be8a795f06f1fe6aab467",
+  "source_env_sha256": "e45d6ca44e68594080e70ed97e0c1122b57adaa998dc7350f3d03063d3660ebf",
+  "api": "http://localhost:19006",
+  "web": "http://localhost:13926",
+  "health": {
+    "status": "ok",
+    "pid": 3006,
+    "commit": "d41573e3a",
+    "started_at": "2026-11-04T02:26:27Z"
+  },
+  "config_nonsecret": {
+    "auth_mode": "legacy",
+    "deployment_id": "f99cc692-f919-417a-aa3e-a801fea5751b"
+  },
+  "actual_API_process": " 3006  2983  2983 /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/uncontrolled-green/go-cache/fb/fb2439443d52730c7aa7ce49814c547b3b7c2502cbbec67a82b13641d247afae-d/server\n",
+  "actual_API_cwd": "p3006\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/server\n",
+  "actual_API_flags": {
+    "MULTICA_AUTH_MODE": "legacy",
+    "MULTICA_DEPLOYMENT_ID": "f99cc692-f919-417a-aa3e-a801fea5751b",
+    "MULTICA_DEVICE_AUTH_ENABLED": "false",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+    "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false",
+    "MULTICA_PLATFORM_ADMIN_ENABLED": "false",
+    "DATABASE_MAX_CONNS": "6",
+    "DATABASE_MIN_CONNS": "0"
+  },
+  "actual_database_url_matches": true,
+  "database": {
+    "database": "multica_triage_green_v15_01a1a3c9",
+    "latest": "764_collaboration_ai_policy",
+    "cluster_connections": 37,
+    "max_connections": "100"
+  },
+  "bootstrap": {
+    "apiBaseUrl": "http://localhost:19006",
+    "wsUrl": "ws://localhost:19006/ws"
+  },
+  "api_provenance": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=d41573e3a' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/triage-focus-diagnostic-v15/runtime/server)",
+    "source_id": "03da7d3b12a0eba3cf7bfe2dc67c9875e255305f8f8ec8255b18d3bde7f58e17",
+    "configuration_id": "555f20132a3b2bba8e6b1a48c637c608ea4de0908ade79b4b28b47bdc1a74f90",
+    "commit": "d41573e3a",
+    "launcher_pid": 2983,
+    "started_at": "2026-11-04T02:26:24Z",
+    "listener_pid": 3006
+  },
+  "web_provenance": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "1ms49xStP6TA8-tXRGPzC",
+    "command": "pnpm --filter @multica/web exec next start --port 13926",
+    "source_id": "03da7d3b12a0eba3cf7bfe2dc67c9875e255305f8f8ec8255b18d3bde7f58e17",
+    "configuration_id": "d6e87564567d2dcbe544e2e43dd9beaa4ea84792d75183621f9f2d2f1909849e",
+    "commit": "d41573e3a",
+    "launcher_pid": 3281,
+    "started_at": "2026-11-04T02:27:29Z",
+    "listener_pid": 3300
+  },
+  "html_sha256": "6b85073c71d3d5097dfa14e53d0563eb19bd67cbc4b7780a8cce24a4acefbe3a",
+  "knowledge_budget": 0,
+  "knowledge_calls": 0,
+  "real_provider_allowed": false,
+  "test_fixture_writes_started": true
+}

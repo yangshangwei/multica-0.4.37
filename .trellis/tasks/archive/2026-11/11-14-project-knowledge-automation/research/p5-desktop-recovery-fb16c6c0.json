@@ -1,0 +1,72 @@
+{
+  "run_id": "p5-desktop-recovery-fb16c6c0",
+  "command": [
+    "/opt/homebrew/bin/pnpm",
+    "--filter",
+    "@multica/desktop",
+    "exec",
+    "vitest",
+    "run",
+    "src/renderer/src/components/connection-recovery-boundary.test.tsx",
+    "--maxWorkers=1",
+    "--reporter=json",
+    "--outputFile=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p5-desktop-recovery-fb16c6c0/tests.json"
+  ],
+  "exit": 0,
+  "private_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p5-desktop-recovery-fb16c6c0/test.log",
+  "real_model_credentials_inherited": false,
+  "source_before": {
+    "apps/desktop/src/renderer/src/components/connection-recovery-boundary.test.tsx": "3a7d0341e19377e8e01d741d55fd1c58697966c10da14150570579e171d79506",
+    "apps/desktop/src/renderer/src/components/connection-recovery-boundary.tsx": "53f99b825b0cd32775ac6662c4316ec9f01e9d818240f86578f3cd80c2a784d0"
+  },
+  "source_after": {
+    "apps/desktop/src/renderer/src/components/connection-recovery-boundary.test.tsx": "3a7d0341e19377e8e01d741d55fd1c58697966c10da14150570579e171d79506",
+    "apps/desktop/src/renderer/src/components/connection-recovery-boundary.tsx": "53f99b825b0cd32775ac6662c4316ec9f01e9d818240f86578f3cd80c2a784d0"
+  },
+  "source_stable": true,
+  "tests": [
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/src/renderer/src/components/connection-recovery-boundary.test.tsx",
+      "name": "DesktopConnectionRecoveryBoundary reports editor opening synchronously for button and closes only on Back",
+      "status": "passed",
+      "duration": 160.47741599999972,
+      "failureMessages": []
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/src/renderer/src/components/connection-recovery-boundary.test.tsx",
+      "name": "DesktopConnectionRecoveryBoundary reports editor opening synchronously for IPC and closes only on Back",
+      "status": "passed",
+      "duration": 26.976832999999715,
+      "failureMessages": []
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/src/renderer/src/components/connection-recovery-boundary.test.tsx",
+      "name": "DesktopConnectionRecoveryBoundary keeps unsaved endpoint input mounted when background recovery succeeds",
+      "status": "passed",
+      "duration": 30.235041000000365,
+      "failureMessages": []
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/src/renderer/src/components/connection-recovery-boundary.test.tsx",
+      "name": "DesktopConnectionRecoveryBoundary opens the editor from a main-process request even after recovery has ended",
+      "status": "passed",
+      "duration": 9.960291000000325,
+      "failureMessages": []
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/src/renderer/src/components/connection-recovery-boundary.test.tsx",
+      "name": "DesktopConnectionRecoveryBoundary hands child-window editing to main instead of mounting a local editor",
+      "status": "passed",
+      "duration": 19.5502919999999,
+      "failureMessages": []
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/src/renderer/src/components/connection-recovery-boundary.test.tsx",
+      "name": "DesktopConnectionRecoveryBoundary leaves child recovery actionable when the main-window handoff fails",
+      "status": "passed",
+      "duration": 20.048333000000184,
+      "failureMessages": []
+    }
+  ],
+  "finished_at": "2026-11-15T03:41:10.250059+00:00"
+}

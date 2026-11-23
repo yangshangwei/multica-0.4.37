@@ -1,0 +1,30 @@
+diff --git a/server/internal/handler/collaboration_knowledge_invalidation_test.go b/server/internal/handler/collaboration_knowledge_invalidation_test.go
+index 11f30eb0b..ad0c16dc4 100644
+--- a/server/internal/handler/collaboration_knowledge_invalidation_test.go
++++ b/server/internal/handler/collaboration_knowledge_invalidation_test.go
+@@ -153,11 +153,14 @@ func TestKnowledgeWorkspaceDeletionRetainsEveryTargetHint(t *testing.T) {
+ 
+ func TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource(t *testing.T) {
+ 	source := knowledgeHookWorkspace(t)
++	// Retained publication history outlives fixture cleanup, so its target must
++	// not share the suite workspace after the target counter is removed.
++	target := knowledgeHookWorkspace(t)
+ 	user := dbfx.User(t, "Historical source reader", "knowledge-history-"+uuid.NewString()+"@example.test")
+ 	member := dbfx.Member(t, source, user, "member")
+-	seedKnowledgeHookTarget(t, testWorkspaceID, "")
++	seedKnowledgeHookTarget(t, target, "")
+ 	q := testHandler.Queries
+-	row, err := q.CreateKnowledgeCandidate(context.Background(), db.CreateKnowledgeCandidateParams{ID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, SourceWorkspaceID: parseUUID(source), SourceIssueID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, TargetKind: "workspace", TargetWorkspaceID: parseUUID(testWorkspaceID), Content: "PRIVATE_SOURCE_HISTORY", Summary: "PRIVATE_SUMMARY", ContentSha256: protocol.CollaborationKnowledgeHash("PRIVATE_SOURCE_HISTORY"), Sources: []byte(`[{"kind":"memory"}]`), Evidence: []byte(`[]`), Applicability: []byte(`{"surfaces":["issue"]}`), ProposedByUserID: parseUUID(user)})
++	row, err := q.CreateKnowledgeCandidate(context.Background(), db.CreateKnowledgeCandidateParams{ID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, SourceWorkspaceID: parseUUID(source), SourceIssueID: pgtype.UUID{Bytes: uuid.New(), Valid: true}, TargetKind: "workspace", TargetWorkspaceID: parseUUID(target), Content: "PRIVATE_SOURCE_HISTORY", Summary: "PRIVATE_SUMMARY", ContentSha256: protocol.CollaborationKnowledgeHash("PRIVATE_SOURCE_HISTORY"), Sources: []byte(`[{"kind":"memory"}]`), Evidence: []byte(`[]`), Applicability: []byte(`{"surfaces":["issue"]}`), ProposedByUserID: parseUUID(user)})
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
+@@ -179,7 +182,7 @@ func TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource(t *testing.
+ 			break
+ 		}
+ 	}
+-	if dbfx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation h JOIN collaboration_knowledge_invalidation s ON s.cause_id=h.cause_id AND s.kind='scan' WHERE s.scope_id=$1 AND h.target_workspace_id=$2 AND h.kind='target_hint'`, source, testWorkspaceID) != 1 {
++	if dbfx.Count(t, `SELECT count(*) FROM collaboration_knowledge_invalidation h JOIN collaboration_knowledge_invalidation s ON s.cause_id=h.cause_id AND s.kind='scan' WHERE s.scope_id=$1 AND h.target_workspace_id=$2 AND h.kind='target_hint'`, source, target) != 1 {
+ 		t.Fatal("historical outside target disappeared when source member was removed")
+ 	}
+ }

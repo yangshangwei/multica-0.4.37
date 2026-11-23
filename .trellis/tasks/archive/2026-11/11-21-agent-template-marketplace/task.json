@@ -1,0 +1,38 @@
+{
+  "id": "agent-template-marketplace",
+  "name": "agent-template-marketplace",
+  "title": "将智能体角色模板纳入能力市场",
+  "description": "统一智能体角色模板的发现入口，保留智能体快捷创建及已有成员管理，规划 Web/Desktop 路由、状态与验收",
+  "status": "completed",
+  "dev_type": "frontend",
+  "scope": "agent-template-marketplace",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-21",
+  "completedAt": "2026-11-21",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "09281851723cdabdf20ed1e6a55f6354cebec926",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/marketplace/marketplace-page.tsx",
+    "packages/views/agents/create/template-create-agent-page.tsx",
+    "packages/views/agents/create/use-role-templates.ts",
+    "packages/core/paths/paths.ts",
+    ".trellis/spec/views/frontend/capability-market.md",
+    ".trellis/spec/views/frontend/agent-discovery.md"
+  ],
+  "notes": "2026-11-21: 用户批准规划并要求继续推进。实现、独立检查与视觉验收完成；119项定向单测、9项生产Web/原生Desktop测试通过，包括原生实际创建与详情跳转。全仓knip仅有既有基线问题，详见verification.md。提交仅包含本任务，保留其他未提交工作。 最终提交树已按验收哈希复核；通过补充提交隔离了提交期间进入共享文件的并行市场欢迎页改版，未改写或删除并行工作区内容。",
+  "meta": {
+    "work_commits": [
+      "828df41865f067ee4328f38e123682f73cf2beb1",
+      "09281851723cdabdf20ed1e6a55f6354cebec926"
+    ]
+  }
+}

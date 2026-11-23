@@ -1,0 +1,38 @@
+{
+  "name": "migrations-static01",
+  "started_at": "2026-11-10T08:14:12.764428+00:00",
+  "finished_at": "2026-11-10T08:14:15.890383+00:00",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-p",
+    "1",
+    "./internal/migrations",
+    "-run",
+    "^TestDeliveryPolicyMigrationContract$",
+    "-count=1"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-delivery-policy-20261110",
+  "database": null,
+  "exit_code": 0,
+  "counts": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/migrations-static01.log",
+  "log_sha256": "3ff1fe9cb16baab92aab77c5fbd04e7755ab6131ed2bf06f6dae5305be19a0dc",
+  "tests": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestDeliveryPolicyMigrationContract",
+      "action": "pass"
+    }
+  ]
+}

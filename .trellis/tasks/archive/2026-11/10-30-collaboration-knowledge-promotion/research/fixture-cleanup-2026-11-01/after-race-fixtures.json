@@ -1,0 +1,587 @@
+{
+  "started_at": "2026-11-01T01:41:13.326971+00:00",
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "action": "audit",
+  "before": {
+    "database": "multica_knowledge_c2_20261101_7d95f46f",
+    "all_pending": 0,
+    "owned_sources": [
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "e1ac1aae-53aa-4ad5-bd3b-fa88545ae6d2",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19474-73af-7b17-b05d-25ab846ccd86",
+        "collaboration_rows": 0,
+        "source_workspace_id": "27b7a540-4f3d-4c9e-a805-fb131ae8599e"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "2abff736-60da-4b93-a346-af54991e49b6",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19474-749d-79f2-9621-92a3ff0efdd5",
+        "collaboration_rows": 0,
+        "source_workspace_id": "c5802bc8-ac35-4e6f-9adb-e15fbc8f11ee"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "abf03cf1-b059-47ef-a122-05b97417575c",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19474-758d-77f7-979b-1046947a8c2f",
+        "collaboration_rows": 0,
+        "source_workspace_id": "b209ca0a-a1bc-47b9-81f7-8c5f606f35b7"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "f7010fb4-d498-4573-9d44-ca07098f9980",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19474-7676-7ba4-b96b-f894bcc9c71b",
+        "collaboration_rows": 0,
+        "source_workspace_id": "f1f7977f-eda3-481e-9105-a61d43039e50"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "e15b6c3c-0af1-4564-81fc-ba116a9550c3",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19474-7765-7088-aaad-049d6bc22fbc",
+        "collaboration_rows": 0,
+        "source_workspace_id": "841b3482-b0b3-4acd-be7e-b6ae8fe60ecc"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "ce0e0199-3c6a-48d7-afe5-cfb1a16e9147",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19474-7854-79c7-89e8-9df1dd03f6b6",
+        "collaboration_rows": 0,
+        "source_workspace_id": "14438daa-53c9-4e17-b275-f5525e645770"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "14c55b42-136b-41ba-a909-9e08d02f72b0",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19476-37e0-74e2-955f-d4f8dbb4cc7a",
+        "collaboration_rows": 0,
+        "source_workspace_id": "de108147-306c-4eb8-aad5-5201f93791a1"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "81ab8b5f-a5af-46c8-943b-a0ba177a8f4c",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19476-38bf-796e-a017-83145aa10456",
+        "collaboration_rows": 0,
+        "source_workspace_id": "2a4e5cd2-bb99-40d8-95a3-7a7d17c105c2"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "314ee83f-8ef9-4fa8-b041-85fefd9e7954",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19476-399a-777d-b88a-3df5b0c972ee",
+        "collaboration_rows": 0,
+        "source_workspace_id": "20698e82-bfdc-4be3-8bac-a630b3487153"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "fafe6b13-5029-4c5e-ae19-a7b481d8c1f1",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19476-3a7a-77fa-8e93-8c2ec5a18a2c",
+        "collaboration_rows": 0,
+        "source_workspace_id": "0c25f924-a12d-4c5b-bc0b-2f3d9e142c3c"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "6f58529f-df33-4c8c-ae15-a564f22347bb",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19476-3b69-7261-abc9-b0caebfa851a",
+        "collaboration_rows": 0,
+        "source_workspace_id": "ab47d796-bbf7-455a-a6b3-7e1a03c34705"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "f9a7efa3-70bf-4156-bdf6-e45d3cbc11d2",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19476-3c5b-7d52-916e-28133975a159",
+        "collaboration_rows": 0,
+        "source_workspace_id": "d9188df8-eeb8-4bca-86b9-d7cd14a477c6"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "bd3448d6-8bca-4cd8-8d21-033c48320a02",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947a-2107-7abe-bfba-1be9a08ecb6b",
+        "collaboration_rows": 0,
+        "source_workspace_id": "d8403f79-0f7d-4fb0-857f-9e8cf8707a5b"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "12004ff7-85e3-4aad-b56f-e77604f1dea6",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947a-2271-7874-ae53-5d5de6860aed",
+        "collaboration_rows": 0,
+        "source_workspace_id": "8eb79a1b-baa7-4132-801b-994c999abc05"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "0ae9692d-fbd6-4285-8f9c-e0c2003f7722",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947a-2537-76f9-98b1-2481623f536e",
+        "collaboration_rows": 0,
+        "source_workspace_id": "e2743eaf-47a1-48e8-9b09-f6bf5c5ea3aa"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "66563891-ef76-42f3-857d-658884c4f9a7",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947a-270b-7afc-ae6e-4ce087e43c28",
+        "collaboration_rows": 0,
+        "source_workspace_id": "e2f5a6bd-79af-4f36-b055-f86b4fc18d99"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "b671acfd-d512-4add-a26f-2fa01e612d4e",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947a-2817-7d88-b434-20feb39b74f7",
+        "collaboration_rows": 0,
+        "source_workspace_id": "4b5e9d58-e1d6-4b2d-b15b-43c69f5a3cb0"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "ca25347f-fc1f-4971-a494-cce5c66dad01",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947a-2919-7622-aa88-fd0c545552c3",
+        "collaboration_rows": 0,
+        "source_workspace_id": "84ff5b80-4a7b-469f-8c57-53579ae4ddf3"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "426ef27c-aedf-4d5a-9213-c5701341b894",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947b-51c9-7910-980f-5ff4ad26a224",
+        "collaboration_rows": 0,
+        "source_workspace_id": "d2fde81e-d22c-4a73-8aed-f9029c87ea83"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "a94067f2-2008-4136-aae8-d2211684c126",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947b-5728-72da-983a-1f3610d7f275",
+        "collaboration_rows": 0,
+        "source_workspace_id": "e8ea7e5f-154b-4656-bdf6-86c212be6d68"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "20e25d71-5f40-4f01-888c-69946e4752b1",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947b-5c6e-7d5d-9204-4c443b599f0a",
+        "collaboration_rows": 0,
+        "source_workspace_id": "0c718f6b-ce3b-4252-9a2c-ba90b54f1284"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "ecab1865-80c0-40f8-a2a8-1381a5ea3ef3",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947b-61c4-7148-a009-16ad51287cd3",
+        "collaboration_rows": 0,
+        "source_workspace_id": "b1c70b68-0b3e-420a-ace9-3f0e2ca7c4a0"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "d2506e33-570d-4da2-9c37-2deb9e555dbe",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947b-6721-7f2a-a447-804061ffda2f",
+        "collaboration_rows": 0,
+        "source_workspace_id": "57907b38-c873-4fad-8d04-fe533a133d1f"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "632426af-6412-4aff-a804-26bcf3c2c617",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1947b-6c79-7f32-a64e-4e69920fbdb2",
+        "collaboration_rows": 0,
+        "source_workspace_id": "e561db64-b7fb-425c-8742-d8e72e702344"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "28a76a35-9bb3-4bec-a1ec-f490ca37df29",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19492-c369-7cf0-bc55-a6ddef288476",
+        "collaboration_rows": 0,
+        "source_workspace_id": "4964d470-59a6-4bf9-b2f6-7017ce2a7b05"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "b63dbe0e-9f57-46dd-a030-abde8a219906",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19492-c4d1-7c9e-9492-34c7d9005c6b",
+        "collaboration_rows": 0,
+        "source_workspace_id": "749903ae-4b0c-4492-9ca0-cdece74d76c0"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "8c41b467-4a9f-4c47-9a88-118f305e4c6e",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a19492-c676-7ae8-92e1-44fb8b74997e",
+        "collaboration_rows": 0,
+        "source_workspace_id": "eb01bdf2-e83f-4061-af53-c6be441f7e9a"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "0a2309df-e0d1-4d89-96c3-0fe2e3110668",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1949e-75a8-739d-90c0-96e63b97e972",
+        "collaboration_rows": 0,
+        "source_workspace_id": "3d3fbf7e-0493-4486-a209-1061fb69945d"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "c658d49b-7f76-4e29-828a-1815b92030ca",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1949e-7741-7d88-b79a-36a5f1ec4043",
+        "collaboration_rows": 0,
+        "source_workspace_id": "0f440306-d4ee-46e8-947d-f1754550f224"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "eb961eb7-9323-4c05-b7cf-7df8cbd9af64",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a1949e-7925-740b-94d9-43e0479a936a",
+        "collaboration_rows": 0,
+        "source_workspace_id": "f537e917-ddc1-4611-b6cc-58c074c1ef8d"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "3d8c82f8-01bf-463b-a11d-5f455d9732eb",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c1-c014-79d7-91dc-b89349953a31",
+        "collaboration_rows": 0,
+        "source_workspace_id": "e237f62b-442e-43d0-a7e5-89b936c9f4de"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "a86d6f33-19b4-44a6-9d8a-645fe4f5a331",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c1-c1b1-74c2-b5ec-402451a228b8",
+        "collaboration_rows": 0,
+        "source_workspace_id": "e200269e-487e-48ea-8770-c4e649ed2774"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "9125c44d-51db-4b64-bb7d-6b120c30a561",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c1-c38b-7674-ac6f-d342399a6148",
+        "collaboration_rows": 0,
+        "source_workspace_id": "b813327e-8852-4256-8254-140da9c918d5"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "4eb878df-5aba-4ff7-9add-f283e3b8df69",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c1-c485-7271-8e05-6fd042bff969",
+        "collaboration_rows": 0,
+        "source_workspace_id": "f8601d6d-6744-45a2-b310-277e587bdec6"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "88bebbd2-e872-47c7-8d93-ffbb1854c2d0",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c1-c57d-7ac9-8b90-f88bb812cd85",
+        "collaboration_rows": 0,
+        "source_workspace_id": "9b4aded2-c95b-4869-9589-48db9e5a3595"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "633a7623-ae84-4a04-b904-b905451314dc",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c1-c67f-7c87-8548-3e5d3beeca24",
+        "collaboration_rows": 0,
+        "source_workspace_id": "fd354e6f-22bf-4da9-a31e-4ef30b12b0dd"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "c8fe5632-74fb-414a-9e00-4a5ae0a1b735",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c1-c778-737e-99a2-6c0c9bb18d4e",
+        "collaboration_rows": 0,
+        "source_workspace_id": "bce04107-da09-423f-9a3f-9e3707e39099"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "268aa4a8-5f78-4709-ab73-b85df30b5ed0",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c1-c86d-756a-a768-259b407774c1",
+        "collaboration_rows": 0,
+        "source_workspace_id": "b2f3d434-b9e8-41e7-bccf-237f6595a014"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "48e154f8-76b6-4a56-8c1e-1a4945e0596a",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c1-c95d-73c0-89ac-f091e3a37ee4",
+        "collaboration_rows": 0,
+        "source_workspace_id": "7e70b3a4-dc2a-4117-a1fa-1b7e6ca18947"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "8eab3c3a-e27c-49f8-8053-f810e3c97d90",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c2-db1f-781e-a3ac-f40eba786178",
+        "collaboration_rows": 0,
+        "source_workspace_id": "94ad5e89-d5f1-404e-9737-47596dd3de33"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "881a8acc-34e2-49e4-8eb2-80b93d90530d",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c2-dc98-706d-8aaa-afda1a3cdbea",
+        "collaboration_rows": 0,
+        "source_workspace_id": "7b90dcfe-7dc8-4a1f-9fec-b1a6d23d0c71"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "fd7cad05-0df9-4c43-84fe-92f14caf9131",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c2-de65-7e30-b4f7-69f85cc7e423",
+        "collaboration_rows": 0,
+        "source_workspace_id": "54238563-bebd-438a-acaa-c826d06c81c4"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "ac161f9a-01b4-4275-a75e-40e7950b3d13",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c2-df62-7140-a933-8fd2b158c01c",
+        "collaboration_rows": 0,
+        "source_workspace_id": "66d68483-0776-4c28-8039-b555368683a9"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "6986effc-ba64-4c72-8194-d44aa0710d06",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c2-e058-729b-adce-18f344bb0788",
+        "collaboration_rows": 0,
+        "source_workspace_id": "d0d0cdc9-a101-447f-bae6-caef42330211"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "bbeea8a1-7d43-430a-aff6-483604bdba87",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c2-e13e-781a-b1a1-f5c426aedc82",
+        "collaboration_rows": 0,
+        "source_workspace_id": "faeb74a6-aa3d-4066-834e-4ba11b70e477"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "f09929c5-7925-45bf-8b45-064529f8dd23",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c2-e252-77c0-ac6c-8589924f0b6d",
+        "collaboration_rows": 0,
+        "source_workspace_id": "cbb45de5-b12f-46db-837f-6a8294a57d08"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "e286aa2a-d097-4285-bd9e-cc9e80227aa0",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c2-e33f-7b17-837b-edaab223cb1a",
+        "collaboration_rows": 0,
+        "source_workspace_id": "d9c5f5f8-e29f-4975-bbb3-afca30ae5df2"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "902c726e-1b84-4f05-a310-a01d5751464c",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c2-e430-7334-a678-83debba5d15b",
+        "collaboration_rows": 0,
+        "source_workspace_id": "c15ff496-a7b0-4b1f-9a60-570cbad7530a"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "b3e5d426-6bb4-4360-af67-7dea4e94df3d",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c4-17fc-7416-8de0-4237d889019b",
+        "collaboration_rows": 0,
+        "source_workspace_id": "fd337f80-8da1-4068-a55f-fb7b109098e5"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "e3fe48b1-884f-45e4-a895-2207dd53d7fd",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c4-1997-70cb-b94b-5e88fd27d2df",
+        "collaboration_rows": 0,
+        "source_workspace_id": "950a35c3-ccf4-4cdb-956e-9f97bcba7e5f"
+      },
+      {
+        "events": 0,
+        "family": "preparation",
+        "candidate_id": "c996a888-203d-4042-a2a6-70f19ce58afa",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c4-1bbc-716f-a28b-bdb192086e0d",
+        "collaboration_rows": 0,
+        "source_workspace_id": "299b2b83-ea0b-4aa2-a543-5480adeec1b9"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "99581a4d-57ec-44f5-ac65-6bf15b2fb2ef",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c4-1d0b-7603-aa16-f7903352fbd6",
+        "collaboration_rows": 0,
+        "source_workspace_id": "e623b4ef-eed8-4bf3-a474-59df78bf2167"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "70c6e55f-f04b-4812-b59e-04fe174ba4fd",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c4-226b-795a-9b8d-953df2ca2c0c",
+        "collaboration_rows": 0,
+        "source_workspace_id": "5f08f015-18f2-4e86-967a-9f3978c3a809"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "8d41931b-bf59-48c4-b86c-ac8c5361f3b4",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c4-27db-7a2d-9485-37dd21679b69",
+        "collaboration_rows": 0,
+        "source_workspace_id": "17c8f11c-51bf-4389-b1eb-81c4f45aca94"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "039249af-c1e3-4415-805c-a64f3f4c16fe",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c4-2d35-7927-9eb3-daf3cb179e11",
+        "collaboration_rows": 0,
+        "source_workspace_id": "31f1e2fc-f00b-4b70-b192-9a345f906bd8"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "314fe999-655b-444f-8d34-fb951a40963c",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c4-3296-76be-8cab-f57d9259b713",
+        "collaboration_rows": 0,
+        "source_workspace_id": "1b951b9d-433e-4777-a2ae-1187fcc37833"
+      },
+      {
+        "events": 0,
+        "family": "server_logging",
+        "candidate_id": "a0da10d4-186d-4c29-9d77-271fb0e7d749",
+        "issue_exists": false,
+        "pending_events": 0,
+        "source_issue_id": "01a194c4-37ec-7d9c-b23f-a83c3c1cdeb7",
+        "collaboration_rows": 0,
+        "source_workspace_id": "b86b5acb-7243-44f2-a4a2-c0498821734a"
+      }
+    ],
+    "candidate_hash": "ab03d2a34dea7f41e7bce1fceddb3bbe",
+    "orphan_pending": 0,
+    "candidate_count": 785,
+    "invalidation_hash": "5dfc7f723e8ee05e18ff0e3202a7499d",
+    "invalidation_count": 1059
+  },
+  "finished_at": "2026-11-01T01:41:13.455213+00:00"
+}

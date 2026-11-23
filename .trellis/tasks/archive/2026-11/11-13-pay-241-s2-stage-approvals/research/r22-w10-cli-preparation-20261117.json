@@ -1,0 +1,303 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "date": "2026-11-17",
+  "status": "W10_RECIPE_READY_PREFERRED_RETAINED_CREATOR_CREDENTIAL_UNPROVED_EXPLICIT_NEW_SYNTHETIC_ROOT_FALLBACK",
+  "scope": "read-only exact retained task evidence and source; no API/DB/tests/builds/process/source actions",
+  "original_target": {
+    "issue_id": "01a1e4a0-afa2-72f9-94c2-3c3c9ba256f1",
+    "source_workspace_id": "e37632b9-1082-4664-9b83-b4eb74d40898",
+    "creator_user_id": "1a4a48b5-659d-4e08-ab6f-3084905c9dfb",
+    "creation_HTTP_status": 201,
+    "registration_fact_count": 1,
+    "registration_fact_fields": [
+      "actor_id",
+      "username"
+    ],
+    "registration_username_sha256": "fde582e44da560f2fc635eb4efc3fe68f745a139bf746c1dc84e2424012df0d7",
+    "raw_credential_values_reported": false
+  },
+  "credential_findings": {
+    "consumed_R20_factory_ROOT_bytes_equal": true,
+    "factory_line": 499,
+    "password_derivation": "independent randomUUID() template interpolation; no username/suffix derivation",
+    "password_retained_in_actor_registration_fact": false,
+    "original_test_results_trace_zip_count": 0,
+    "scoped_original_password_witness_found": false,
+    "unrelated_account_stores_inspected": false,
+    "fresh_original_login_possible_without_separate_credential_witness": false,
+    "no_password_guess_reset_or_admin_impersonation": true
+  },
+  "current_CLI": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/multica",
+    "sha256": "817360414a24d19ed760633c8080fe1bfd8201b7dc47f4e214e205cfe5218abb",
+    "bytes": 36959698,
+    "mode": "0o755",
+    "matches_current_products_record": true,
+    "executed": false
+  },
+  "commands": [
+    {
+      "kind": "ordinary_completion_scope_read",
+      "argv": [
+        "<current-R22-cli>",
+        "--debug",
+        "--server-url",
+        "http://127.0.0.1:64922",
+        "--workspace-id",
+        "<actual source workspace>",
+        "issue",
+        "completion",
+        "prepare",
+        "<actual collaboration root>",
+        "--status",
+        "done"
+      ],
+      "required_method": "GET",
+      "required_path": "/api/issues/<root>/delivery-evidence/candidates?limit=20",
+      "expected_HTTP_status": 409,
+      "expected_code": "delivery_completion_consumer_unsupported",
+      "operation_file_created": false
+    },
+    {
+      "kind": "actual_ordinary_CLI_PUT",
+      "argv": [
+        "<current-R22-cli>",
+        "--debug",
+        "--server-url",
+        "http://127.0.0.1:64922",
+        "--workspace-id",
+        "<actual source workspace>",
+        "issue",
+        "update",
+        "<actual collaboration root>",
+        "--status",
+        "done",
+        "--priority",
+        "<actual unchanged before priority>"
+      ],
+      "required_method": "PUT",
+      "required_path": "/api/issues/<root>",
+      "expected_HTTP_status": 409,
+      "expected_code": "unsupported_collaboration_action",
+      "expected_request_keys": [
+        "status",
+        "priority"
+      ],
+      "why_unchanged_priority": "Explicit priority flag makes issueUpdateIsStatusOnly false and reaches actual PUT without advisory hint interception"
+    }
+  ],
+  "safe_status_capture": {
+    "existing_flag": "--debug",
+    "root_flag_source": "server/cmd/multica/main.go:47",
+    "typed_error_source": "server/internal/cli/client.go:73-102",
+    "formatted_status_source": "server/internal/cli/errors.go:591-595",
+    "contains_request_authorization_headers": false,
+    "new_proxy_or_tracer_required": false,
+    "capture": [
+      "exact argv/cwd/binary source hashes",
+      "start/end and nonzero exit",
+      "private stdout/stderr",
+      "actual method/path/status/code"
+    ],
+    "do_not_capture": [
+      "login request/response body",
+      "password/token values",
+      "full child environment",
+      "arbitrary headers"
+    ],
+    "401_403_404_503_config_or_marker_refusal_closes_W10": false
+  },
+  "child_environment": {
+    "allowlist_only": true,
+    "private_HOME_TMP_CWD_mode": "0700",
+    "synthetic_JWT_in_private_env_only": "MULTICA_TOKEN",
+    "explicit_server_and_workspace_flags": true,
+    "strip": [
+      "MULTICA_AGENT_ID",
+      "MULTICA_TASK_ID",
+      "MULTICA_DAEMON_PORT",
+      "MULTICA_TASK_CONFIG_ROOT",
+      "MULTICA_COLLABORATION_TOKEN",
+      "MULTICA_COLLABORATION_SERVER",
+      "MULTICA_COLLABORATION_CONTEXT",
+      "MULTICA_COLLABORATION_ISSUE_ID",
+      "MULTICA_COLLABORATION_RUN_ID"
+    ],
+    "task_marker_CWD_ancestor_check_required": true,
+    "real_account_store_or_profile_reuse": false
+  },
+  "fallback": {
+    "required_without_separate_original_credential_witness": true,
+    "factory": "closureActor -> createHostActor",
+    "new_label_and_suffix": true,
+    "credential_handoff": "authenticateInstalled accepts a task-private callback consuming newly created credentials in memory; no native process needed",
+    "actual_auth_endpoints": [
+      "POST /auth/register",
+      "POST /auth/login",
+      "GET /api/me"
+    ],
+    "actual_onboarding_endpoint": "POST /api/me/onboarding/complete",
+    "create_only_owned_synthetic_workspace_and_manual_collaboration_root": true,
+    "match_actual_creator_ID_and_formal_admission": true,
+    "optional_managed_stage_target": "Bind original authorized project policy/config APIs before baseline if acceptance explicitly requires managed-stage supplement",
+    "baseline_begins_after_declared_setup": true,
+    "setup_writes_misrepresented_as_zeroeffects": false,
+    "original_case_body_or_denominator_changed": false
+  },
+  "audit": {
+    "read_only_repeatable_read": true,
+    "statement_timeout_seconds": 5,
+    "terminal": "ROLLBACK",
+    "queries": {
+      "issue": "SELECT id::text,workspace_id::text,creator_id::text,creator_type,admission_status,status,priority,revision FROM issue WHERE id=$1::uuid AND workspace_id=$2::uuid",
+      "collaboration": "SELECT to_jsonb(c) AS snapshot FROM issue_collaboration c WHERE issue_id=$1::uuid",
+      "stage": "SELECT to_jsonb(s) AS snapshot FROM collaboration_stage_task s WHERE issue_id=$1::uuid",
+      "effect_counts": "SELECT (SELECT count(*) FROM collaboration_operation WHERE scope_id=$1::uuid) AS operations,(SELECT count(*) FROM collaboration_event WHERE issue_id=$1::uuid) AS events,(SELECT count(*) FROM issue_handoff WHERE issue_id=$1::uuid) AS handoffs,(SELECT count(*) FROM collaboration_stage_submission WHERE issue_id=$1::uuid) AS stage_submissions,(SELECT count(*) FROM delivery_completion_authorization WHERE issue_id=$1::uuid) AS authorizations,(SELECT count(*) FROM delivery_completion_terminal t JOIN delivery_completion_authorization a ON a.id=t.authorization_id WHERE a.issue_id=$1::uuid) AS terminals,(SELECT count(*) FROM delivery_evidence_evaluation WHERE issue_id=$1::uuid) AS evaluations,(SELECT count(*) FROM agent_task_queue WHERE issue_id=$1::uuid) AS queued_tasks"
+    },
+    "parameters": "exact original IDs if separate verified creator credential exists, otherwise actual new synthetic IDs",
+    "assertions": [
+      "exact synthetic caller matches current actual issue creator",
+      "formal admission and current readable collaboration authority",
+      "actual before priority used unchanged in update argv",
+      "stable status/priority/revision",
+      "stable full collaboration/stage snapshot hashes",
+      "equal operation/event/handoff/stage submission/authorization/terminal/evaluation/agent_task_queue counts",
+      "no local operation or authorization file",
+      "two actual method/path/409/code refusals retained separately from four original cases"
+    ]
+  },
+  "references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-final-a01-a12-evidence-map-20261116.json",
+      "sha256": "01162af46f6d74d5e3a145a7283e891bd9279cce4005c9193afb5b8ad45f2153",
+      "bytes": 44467
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-runtime-entry-check-20261117.json",
+      "sha256": "bf7d264d81ad8488de78e704b41c3eab6bba18d0936facc4a22e4cd9d2876097",
+      "bytes": 21496
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-preparation-20261117.md",
+      "sha256": "200a6966523282ca16c9ef2aec42dda7b1ccbd68e441c275e307bcd96b4ab293",
+      "bytes": 12193
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "3ea2e6a51cd782f55d2268427739e6749f93c8bf23069f817147f2cff603fc92",
+      "bytes": 59429
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-stage-approvals.spec.ts",
+      "sha256": "f8f0c32f7622ef4cb521bdfd6aec423906d7f955e3b9be7aea940f73d8883e73",
+      "bytes": 49079
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures.ts",
+      "sha256": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+      "bytes": 16085
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/cmd_issue_completion.go",
+      "sha256": "d65357fa081e47674f1227b4326bf5b4683c24d806f86572d17428841ddbccaa",
+      "bytes": 55533
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/cmd_issue.go",
+      "sha256": "193bcb6a2a8519d767f00bab779333ae88acd6a70b05ac7090459d27a719cc59",
+      "bytes": 115279
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/cmd_agent.go",
+      "sha256": "58504f9d1d906fa714e81dfa593b5d1a50b7fbd43b8055dbbb35def9e738d4f9",
+      "bytes": 52461
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/main.go",
+      "sha256": "5e1b462578eb71a90e9d3bce355db7261b0acc72096bb2970f4a56de2d437bb2",
+      "bytes": 4018
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/cli/client.go",
+      "sha256": "ecd769276c04bb6ead7db26f6d1e53c06b622c11a64279adac3b29cd99a5ac59",
+      "bytes": 27335
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/cli/errors.go",
+      "sha256": "21adb28d3c96b6c8a0b81f7f7b71e40c92a16a9151c0c102b902356dd7722918",
+      "bytes": 23093
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/cli/collaboration.go",
+      "sha256": "127ad16d7b9e2288e934b9e0dbdda6b5ceaac65e6ab23e56a7f821db5dd773b4",
+      "bytes": 9137
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_boundary.go",
+      "sha256": "9aa7d2496ea97f533b90a3887409c8d21f4f4835fafb03e6cdcac357d752ae89",
+      "bytes": 5799
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/delivery_completion_preview.go",
+      "sha256": "24388feb9bd9e575939aa74fad715002bec874ea8aa899d01aafaac1f306453b",
+      "bytes": 3448
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/delivery_completion.go",
+      "sha256": "2ba7220b5e95d73db6bdff2f2c012905e4e3f4928e573a7e8413332f91b53a5e",
+      "bytes": 20379
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/delivery_completion_types.go",
+      "sha256": "2af952d8432da909005cd51c47daa35e961109bf89b97156600c2510b759f439",
+      "bytes": 16481
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/delivery_completion_preview.go",
+      "sha256": "a33096e9fedec4367b45b5152fbe92a484a5c62d5a97dc4094f406f39d348ef1",
+      "bytes": 16575
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/stage-approvals-evidence.json",
+      "sha256": "4445337bcc8da301db6b01a0683c5fd0e47a58fdf18635784ccc4674753e5be5",
+      "bytes": 208536
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/products.json",
+      "sha256": "b2d1179108dbf50311cb1f367dd1011649d2a7fdedc9f6307e2163816d01f79b",
+      "bytes": 2894
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/multica",
+      "sha256": "817360414a24d19ed760633c8080fe1bfd8201b7dc47f4e214e205cfe5218abb",
+      "bytes": 36959698
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "3ea2e6a51cd782f55d2268427739e6749f93c8bf23069f817147f2cff603fc92",
+      "bytes": 59429
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/e2e/collaboration-stage-approvals.spec.ts",
+      "sha256": "f8f0c32f7622ef4cb521bdfd6aec423906d7f955e3b9be7aea940f73d8883e73",
+      "bytes": 49079
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/e2e/fixtures.ts",
+      "sha256": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+      "bytes": 16085
+    }
+  ],
+  "reference_count": 24,
+  "executed_API_DB_CLI_Go_test_build_process_or_source_actions": 0,
+  "written_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-preparation-20261117.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-preparation-20261117.json"
+  ],
+  "caveats": [
+    "Original password cannot be derived from random factory data/actor metadata.",
+    "No actual W10 refusal or no-effects outcome observed here.",
+    "A supplemental unmanaged root does not substitute for original managed-stage acceptance.",
+    "W10 is a separate negative supplement, not a fifth original scenario or full A09/S2/parent acceptance."
+  ]
+}

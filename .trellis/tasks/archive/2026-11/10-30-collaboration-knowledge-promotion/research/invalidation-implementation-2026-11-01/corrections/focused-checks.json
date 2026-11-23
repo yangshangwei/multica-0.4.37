@@ -1,0 +1,38 @@
+[
+  {
+    "name": "realtime-focused",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/realtime",
+      "-run",
+      "^TestKnowledge",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.1739201545715332,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21",
+    "redis": "isolated redis:7-alpine 127.0.0.1:50326"
+  },
+  {
+    "name": "sockets-focused",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/server",
+      "-run",
+      "^TestKnowledge",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 4.000173091888428,
+    "database": "multica_knowledge_invalidation_20261101_849a1c21",
+    "redis": "isolated redis:7-alpine 127.0.0.1:50326"
+  }
+]

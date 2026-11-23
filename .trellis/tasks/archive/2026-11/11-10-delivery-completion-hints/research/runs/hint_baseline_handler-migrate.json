@@ -1,0 +1,24 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "database": "hint_baseline_handler",
+  "started_at": "2026-11-10T09:05:27.416106+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-delivery-completion-hints-20261110",
+  "exit_code": 0,
+  "finished_at": "2026-11-10T09:05:34.349568+00:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/hint_baseline_handler-migrate.log",
+  "log_sha256": "0ac97e8fbc9f5c183fa738ee47387bd18139bbcaa5c41f7481a90ae4d39c1f4f",
+  "counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "inventory": [],
+  "packages": []
+}

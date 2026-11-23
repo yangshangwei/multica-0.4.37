@@ -1,0 +1,141 @@
+{
+  "observed_at": "2026-11-03T11:43:03.552171+00:00",
+  "state": "complete_failed",
+  "make_pid": 73567,
+  "launcher_pid": 73549,
+  "wholecheck_accepted": false,
+  "make_exit": 2,
+  "stage": [
+    "6",
+    "Playwright (one worker, zero retries)"
+  ],
+  "log_bytes": 27098179,
+  "tail": [
+    "    Dropping isolated Go database multica_check_20261103100106_73574_go",
+    "✗ Checks FAILED (exit 1).",
+    "make: *** [check] Error 1"
+  ],
+  "Go": {
+    "allocated": 82,
+    "completed": 82,
+    "failed_packages": [],
+    "current_packages": [],
+    "completed_named_counts": {
+      "pass": 20963,
+      "fail": 0,
+      "skip": 22
+    },
+    "running_named_failures": [],
+    "running_package_observed_terminal_counts": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "make_process_alive": false,
+  "launcher_process_alive": false,
+  "TS_completed_package_summaries": {
+    "@multica/core": {
+      "passed": 4455
+    },
+    "@multica/docs": {
+      "passed": 62
+    },
+    "@multica/views": {
+      "passed": 7165
+    },
+    "@multica/desktop": {
+      "passed": 1272
+    },
+    "@multica/web": {
+      "passed": 290
+    }
+  },
+  "static_tasks": {
+    "passed": 15,
+    "total": 15
+  },
+  "Playwright": {
+    "total": 441,
+    "pass": 337,
+    "fail": 13,
+    "explicit_skip": 91,
+    "unrun_or_blocked": 0,
+    "flaky": 0,
+    "workers": 1,
+    "retries": 0,
+    "skips_by_file": {
+      "admin-collaboration-switches.spec.ts": 1,
+      "admin-resource-publishing.spec.ts": 3,
+      "auth-device.spec.ts": 1,
+      "changelog.spec.ts": 1,
+      "cli-forbidden-reason.spec.ts": 3,
+      "collaboration-administration-desktop.spec.ts": 1,
+      "collaboration-administration-web.spec.ts": 1,
+      "collaboration-control-journey-desktop.spec.ts": 2,
+      "collaboration-control-journey-web.spec.ts": 2,
+      "collaboration-cross-client-execution.spec.ts": 1,
+      "collaboration-detail-journey.spec.ts": 2,
+      "collaboration-handoff-chain-desktop.spec.ts": 1,
+      "collaboration-handoff-chain-web.spec.ts": 1,
+      "collaboration-host-installed.spec.ts": 1,
+      "collaboration-host-runtime.spec.ts": 1,
+      "collaboration-host-squad.spec.ts": 1,
+      "collaboration-host-switch.spec.ts": 1,
+      "collaboration-installed-clients.spec.ts": 1,
+      "collaboration-installed-main.spec.ts": 1,
+      "collaboration-knowledge-deployed.spec.ts": 1,
+      "collaboration-lane-close-controls.spec.ts": 6,
+      "collaboration-leave-web.spec.ts": 1,
+      "collaboration-lifecycle-controls.spec.ts": 2,
+      "collaboration-live-revoke-web.spec.ts": 1,
+      "collaboration-memory-runtime.spec.ts": 1,
+      "collaboration-offline-handoff.spec.ts": 2,
+      "collaboration-offline-result-notifications.spec.ts": 2,
+      "collaboration-retained-attachment.spec.ts": 3,
+      "collaboration-runtime-handoff-desktop.spec.ts": 1,
+      "collaboration-runtime-handoff-web.spec.ts": 2,
+      "collaboration-selection-boundary.spec.ts": 1,
+      "collaboration-source-surface.spec.ts": 1,
+      "collaboration-terminal-reopen-web.spec.ts": 1,
+      "issue-assist-flow.spec.ts": 8,
+      "mcp-desktop.spec.ts": 1,
+      "password-binding-desktop.spec.ts": 1,
+      "password-branches.spec.ts": 12,
+      "password-migration.spec.ts": 2,
+      "password-registration.spec.ts": 2,
+      "password-server-switch.spec.ts": 1,
+      "platform-admin-accounts.spec.ts": 1,
+      "platform-admin-controls.spec.ts": 1,
+      "platform-admin-executions.spec.ts": 1,
+      "platform-admin-initialization.spec.ts": 1,
+      "platform-admin-installations-read.spec.ts": 1,
+      "platform-admin-observability.spec.ts": 1,
+      "platform-admin.spec.ts": 1,
+      "quick-create-actor-picker-phase2.spec.ts": 3,
+      "upstream-backports-cli.spec.ts": 3
+    },
+    "knowledge_pass": 8,
+    "deployed_knowledge": [
+      {
+        "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+        "outcome": "explicit_skipped",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Requires an explicit true/false expectation and isolated task-owned deployment",
+            "location": {
+              "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-knowledge-deployed.spec.ts",
+              "line": 18,
+              "column": 8
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "scope": "Current run only. Phase counts do not constitute wholecheck acceptance; final audit and complete inventory required.",
+  "inventory_complete": true,
+  "final_identity_audit": "pass",
+  "result_summary": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/fullcheck-v13/result-summary.json"
+}

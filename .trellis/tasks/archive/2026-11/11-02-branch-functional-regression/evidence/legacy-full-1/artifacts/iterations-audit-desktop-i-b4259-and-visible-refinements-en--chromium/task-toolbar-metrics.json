@@ -1,0 +1,139 @@
+{
+  "locale": "en",
+  "firstTask": {
+    "x": 290,
+    "y": 363,
+    "width": 147.65625,
+    "height": 17
+  },
+  "searchBounds": {
+    "x": 1585.734375,
+    "y": 306,
+    "width": 192,
+    "height": 32
+  },
+  "layouts": [
+    {
+      "name": "tasks-en-planned-wide",
+      "expectedViewport": {
+        "width": 2048,
+        "height": 1088,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 2048,
+        "height": 1088,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 2048,
+        "height": 1088,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 2048,
+        "height": 1088
+      },
+      "overflow": [
+        {
+          "scrollWidth": 1718,
+          "clientWidth": 1718
+        }
+      ],
+      "targets": [
+        {
+          "name": "",
+          "x": 1585.734375,
+          "y": 306,
+          "width": 192,
+          "height": 32
+        },
+        {
+          "name": "Filter tasks",
+          "x": 1783.734375,
+          "y": 308,
+          "width": 107.96875,
+          "height": 28
+        },
+        {
+          "name": "No grouping▼",
+          "x": 1897.703125,
+          "y": 306,
+          "width": 110.296875,
+          "height": 32
+        }
+      ]
+    },
+    {
+      "name": "tasks-en-filtered-narrow",
+      "expectedViewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "viewport": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "viewportAfterCapture": {
+        "width": 680,
+        "height": 900,
+        "coarse": true,
+        "touchPoints": 5
+      },
+      "screenshotSize": {
+        "width": 680,
+        "height": 900
+      },
+      "overflow": [
+        {
+          "scrollWidth": 605,
+          "clientWidth": 605
+        }
+      ],
+      "targets": [
+        {
+          "name": "",
+          "x": 227.828125,
+          "y": 378,
+          "width": 192,
+          "height": 44
+        },
+        {
+          "name": "Filter tasks",
+          "x": 425.828125,
+          "y": 378,
+          "width": 132.390625,
+          "height": 44
+        },
+        {
+          "name": "Status▼",
+          "x": 564.21875,
+          "y": 378,
+          "width": 75.78125,
+          "height": 44
+        },
+        {
+          "name": "Remove Status: Blocked filter",
+          "x": 86.984375,
+          "y": 434,
+          "width": 136.75,
+          "height": 44
+        },
+        {
+          "name": "Remove Priority: High filter",
+          "x": 232.40625,
+          "y": 434,
+          "width": 121.421875,
+          "height": 44
+        }
+      ]
+    }
+  ]
+}

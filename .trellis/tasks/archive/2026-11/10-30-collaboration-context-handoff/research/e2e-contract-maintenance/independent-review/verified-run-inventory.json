@@ -1,0 +1,387 @@
+{
+  "runs": [
+    {
+      "label": "repaired-legacy-10",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T18:29:52.264Z",
+        "duration": 68341.095,
+        "expected": 9,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+      "source_env_sha256": "9b2a83533edb85b7cc539a3c16962710c26773b795833e5a308eda7029c01cb3",
+      "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "execution_sha256": "2068b3223eaea3e9dac933efdd282635d7c6ad6c4db6c2370bed6a3bb2f71a16",
+      "results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "output_sha256": "849742b52e69227b2dc89bec298f034a82a850e7184ab411783a0bfe62162eb2",
+      "workers": 1,
+      "project_retries": [
+        0
+      ],
+      "cases": [
+        {
+          "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web source creation, field edits and discussion share one authorized issue",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "statuses": [
+            "skipped"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "label": "repaired-password-5",
+      "exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-01T18:33:03.772Z",
+        "duration": 32716.305000000004,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+      "source_env_sha256": "ee2c2cb36b62bb14c941ce12377d37f394c8a7e29c644c76142325804770d7e5",
+      "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "execution_sha256": "ddd1b28ffc55bd3b93a5311f4901b4086cd877d29ff2c12c82de5cd4ac887109",
+      "results_sha256": "17c83b482e02feebc348cdfcbd31985e0d6f4c045ec4fca7da7b0bdfc99ca966",
+      "output_sha256": "d44f3654cbad96371f9ac1a27fc06dc1ad1a9a863a1d76346edb57774b2f51bc",
+      "workers": 1,
+      "project_retries": [
+        0
+      ],
+      "cases": [
+        {
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "statuses": [
+            "failed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "statuses": [
+            "failed"
+          ],
+          "retries": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "label": "repaired-password-final-2",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T18:37:25.044Z",
+        "duration": 35462.172,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+      "source_env_sha256": "f7575ce7bbbb0d07523fe58a139ce67c0c9564da46b1cafe0c461ff29c413452",
+      "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "execution_sha256": "1f27cf06b7a1e6251d98c9d5cb1520ac114795c727b350cbcd0cf1f206252261",
+      "results_sha256": "10da8ec0ce12c27702d5fe6e31370a04f3f86464653c8f40cc90a436f5dc1ac5",
+      "output_sha256": "10d9c92ad81ca8fa6afb35ba5552a24da8d2bc4a65235e1735bbd1999f12bca3",
+      "workers": 1,
+      "project_retries": [
+        0
+      ],
+      "cases": [
+        {
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "label": "runtime-password-3",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T18:34:56.564Z",
+        "duration": 7445.718,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+      "source_env_sha256": "ee2c2cb36b62bb14c941ce12377d37f394c8a7e29c644c76142325804770d7e5",
+      "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "execution_sha256": "545d3d2bb8ebde29cb40ab00c4273a10eefa101dee924655b292f6e8c6659bb0",
+      "results_sha256": "358ca2016390172ee96c79d47ea77bdad174cf12bd251752df24cc49f43b3640",
+      "output_sha256": "9a04ac73d3f073e45002cef414752f04de36bb462c77b4778b579a9809eaead0",
+      "workers": 1,
+      "project_retries": [
+        0
+      ],
+      "cases": [
+        {
+          "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "target_coverage": [
+    {
+      "historical_case_key": "3dccc2100422",
+      "historical_title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "current_title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "category": "record_region_scope",
+      "passing_run": "repaired-legacy-10"
+    },
+    {
+      "historical_case_key": "c919808d1d26",
+      "historical_title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "current_title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "category": "recipient_picker_interaction",
+      "passing_run": "repaired-legacy-10"
+    },
+    {
+      "historical_case_key": "5a60ce5f71f0",
+      "historical_title": "Smaller gaps: title/date edits leave attributed records, recipient lookup is exact-only, a source member resolves and reacts without notifications",
+      "current_title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+      "category": "recipient_picker_interaction",
+      "passing_run": "repaired-legacy-10"
+    },
+    {
+      "historical_case_key": "158a87f90c8f",
+      "historical_title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "current_title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "category": "recipient_picker_interaction",
+      "passing_run": "repaired-legacy-10"
+    },
+    {
+      "historical_case_key": "72c1ec89998d",
+      "historical_title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "current_title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "category": "recipient_picker_interaction",
+      "passing_run": "repaired-legacy-10"
+    },
+    {
+      "historical_case_key": "187ee1881c81",
+      "historical_title": "Web source creation, field edits and discussion share one authorized issue",
+      "current_title": "Web source creation, field edits and discussion share one authorized issue",
+      "category": "recipient_picker_interaction",
+      "passing_run": "repaired-legacy-10"
+    },
+    {
+      "historical_case_key": "535e317ad170",
+      "historical_title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "current_title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "category": "recipient_picker_interaction",
+      "passing_run": "repaired-password-final-2"
+    },
+    {
+      "historical_case_key": "4971c07b93b6",
+      "historical_title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "current_title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "category": "read_time_evaluation_timestamp",
+      "passing_run": "repaired-legacy-10"
+    },
+    {
+      "historical_case_key": "8e9c882cd544",
+      "historical_title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "current_title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "category": "read_time_evaluation_timestamp",
+      "passing_run": "repaired-legacy-10"
+    },
+    {
+      "historical_case_key": "cd80f1b61840",
+      "historical_title": "Web shares ordinary child references and retained run records through account notification links",
+      "current_title": "Web shares ordinary child references and retained run records through account notification links",
+      "category": "record_region_scope",
+      "passing_run": "repaired-legacy-10"
+    },
+    {
+      "historical_case_key": "f390d53c1162",
+      "historical_title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "current_title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "category": "recipient_picker_interaction",
+      "passing_run": "repaired-password-5"
+    },
+    {
+      "historical_case_key": "18e4a6485b4d",
+      "historical_title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "current_title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "category": "recipient_picker_interaction",
+      "passing_run": "repaired-password-5"
+    },
+    {
+      "historical_case_key": "37ff666368df",
+      "historical_title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "current_title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "category": "read_time_evaluation_timestamp",
+      "passing_run": "repaired-password-5"
+    },
+    {
+      "historical_case_key": "7b935d7ce8d5",
+      "historical_title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "current_title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "category": "recipient_picker_interaction",
+      "passing_run": "repaired-password-final-2"
+    }
+  ],
+  "historical_targets": 14,
+  "historical_targets_with_pass": 14,
+  "runtime_positive_passes": [
+    "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+    "ENV-1 live latest shared context preserves the run's empty startup version",
+    "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal"
+  ]
+}

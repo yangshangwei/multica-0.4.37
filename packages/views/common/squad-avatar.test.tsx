@@ -44,9 +44,12 @@ describe("SquadAvatar", () => {
     expect(screen.getByRole("img", { name: base.name })).toHaveClass("lucide-package");
   });
 
-  it("uses the template icon when no avatar is set", () => {
-    const { container } = render(<SquadAvatar {...base} />);
-    expect(container.querySelector("svg.lucide-package")).not.toBeNull();
+  it.each([
+    ["release", "package"],
+    ["security-remediation", "shield-check"],
+  ])("uses the %s template icon when no avatar is set", (templateKey, icon) => {
+    const { container } = render(<SquadAvatar {...base} templateKey={templateKey} />);
+    expect(container.querySelector(`svg.lucide-${icon}`)).not.toBeNull();
   });
 
   it("retains the circular Users fallback for a hand-built squad", () => {

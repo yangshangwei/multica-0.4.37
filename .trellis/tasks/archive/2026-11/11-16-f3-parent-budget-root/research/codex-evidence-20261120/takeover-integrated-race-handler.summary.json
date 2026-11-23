@@ -1,0 +1,671 @@
+{
+  "tag": "integrated-race-handler",
+  "package": "./internal/handler",
+  "database": "f3_budget_cx_takeover_race_handler",
+  "exit": 0,
+  "seconds": 89.64,
+  "counts": {
+    "pass": 159
+  },
+  "missing_expected": [],
+  "package_terminal": [
+    "pass"
+  ],
+  "raw_sha256": "e77cf11f10cf15699a08280b193079007598d5947a8e8344557a5ce281c36efa",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/handler",
+    "-run",
+    "^(TestClaimBudgetBatch|TestClaimBudgetBatchBindingInProgress|TestClaimBudgetBindingInProgressInvalidatesEmptyVerdict|TestClaimBudgetBindingInProgressLogsAtInfo|TestClaimBudgetCapabilityHeader|TestClaimBudgetClosedRoot|TestClaimBudgetDaemonRPC|TestClaimBudgetFinalizeFailure|TestClaimBudgetOutsideEveryRoot|TestClaimBudgetSingleRuntimeBindingInProgress|TestClaimBudgetSingleRuntimeDeclaredProtocol|TestClaimBudgetSingleRuntimeUndeclaredProtocol|TestDaemonBudgetUsageAtomicRefusalVersusLegacy|TestDaemonBudgetUsageAuthorizationAndValidationOrder|TestDaemonBudgetUsageHTTPReceiptsAndLegacyIndependence|TestDaemonBudgetUsageHTTPStateAndErrorMapping|TestDaemonBudgetUsageLateHoldAndRevokedWorkspace|TestDaemonBudgetUsageRuntimeRemovalAndDatabaseErrors|TestDaemonBudgetUsageTaskCredentialRejectedByDaemonAuth|TestDeleteMemberIssueKeepsBudgetRows|TestDeliveryCompletionCandidatesBoundedHiddenScan|TestDeliveryCompletionCandidatesPaginationAndAuthority|TestDeliveryCompletionPreviewBranchesAndCurrentRefusal|TestDeliveryCompletionPreviewCredentialHorizon|TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites|TestDeliveryCompletionPreviewIncompletePackageIsNotAuthorization|TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure|TestF2ReportSnapshotActivityScanBeyondTimelineCap|TestF2ReportSnapshotCancelStopsCollectionWithoutRestart|TestF2ReportSnapshotCaptureReplayCorrectionAndFrozenSources|TestF2ReportSnapshotConcurrentOriginalRequest|TestF2ReportSnapshotConcurrentWithdrawalReturnsOneReceipt|TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts|TestF2ReportSnapshotOwnedDeleteCleanup|TestF2ReportSnapshotReportOnlyGapKeepsSourceUnknown|TestF2ReportSnapshotReportWithdrawalIsTerminalAndRecoverable|TestF2ReportSnapshotRequiresBoundStoredPublicProjection|TestF2ReportSnapshotRetainedPagesKeepOneCutAndConfirmEOF|TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit|TestF2ReportSnapshotSourceGapAndFailedSeal|TestF2ReportSnapshotStrictRequestAndHeaderBoundaries|TestF2ReportSnapshotUpdateGapDoesNotDiscardProjectFacts|TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders|TestF2ReportSnapshotWithdrawalRejectsMalformedAndStaleIntent|TestIssueBudgetBatchDeleteTombstonesEveryMember|TestIssueBudgetBusinessReopenWritesNothing|TestIssueBudgetConcurrentWritersKeepEveryTreeBound|TestIssueBudgetCreateUsesVerifiedExecutionIdentity|TestIssueBudgetDeleteMemberLeavesATombstone|TestIssueBudgetDeleteRootIssueTombstonesTheRoot|TestIssueBudgetEveryParentCapableWriterBinds|TestIssueBudgetLedgerLoadIsOrderedByItsKey|TestIssueBudgetLifecycleFollowUpUsesVerifiedExecutionIdentity|TestIssueBudgetManagementFrozenWire|TestIssueBudgetManagementHumanGate|TestIssueBudgetManagementLoaderAndTombstone|TestIssueBudgetManagementOperations|TestIssueBudgetManagementPageParameters|TestIssueBudgetManagementPrivacyAndParsingOrder|TestIssueBudgetManagementRevokedInvokeCannotReserve|TestIssueBudgetManagementShowCoverageAndOff|TestIssueBudgetManagementStrictBody|TestIssueBudgetManagementWorkspaceMiddleware|TestIssueBudgetMoveIntoAnotherRootIsRecordedNotRefused|TestIssueBudgetMoveKeepsTheMemberRow|TestIssueBudgetQueriesRoundTrip|TestIssueBudgetSchemaCatalog|TestIssueBudgetSchemaConstraints|TestIssueBudgetTriageCreationUsesVerifiedExecutionIdentity|TestIssueBudgetVerifiedCreationTaskIsWorkspaceScoped|TestIssueBudgetWritesNothingForATreeWithoutARoot|TestProjectDeletionPreservesKnowledgeAutomationHistory|TestWorkspaceDeletionLeavesBudgetRowsUntouched|TestWorkspaceDeletionManifestCoversPublicSchema|TestWorkspaceDeletionManifestPreservesKnowledgeHistory|TestWorkspaceDeletionRemovesKnowledgePolicy)$",
+    "-count=1",
+    "-p",
+    "1",
+    "-json",
+    "-timeout=10m",
+    "-race"
+  ],
+  "tests": [
+    {
+      "name": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/invalid_id",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/workspace",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/oversize",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/invalid",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageAuthorizationAndValidationOrder",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageRuntimeRemovalAndDatabaseErrors",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageHTTPReceiptsAndLegacyIndependence",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageTaskCredentialRejectedByDaemonAuth",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageAtomicRefusalVersusLegacy",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageLateHoldAndRevokedWorkspace",
+      "action": "pass"
+    },
+    {
+      "name": "TestDaemonBudgetUsageHTTPStateAndErrorMapping",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetSingleRuntimeDeclaredProtocol",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetSingleRuntimeUndeclaredProtocol",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetBatch/declared",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetBatch/not_declared",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetBatch",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetOutsideEveryRoot/single_runtime,_declared",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetOutsideEveryRoot/single_runtime,_not_declared",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetOutsideEveryRoot/batch,_declared",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetOutsideEveryRoot/batch,_not_declared",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetOutsideEveryRoot",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetCapabilityHeader/among_others,_with_spaces",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetCapabilityHeader/a_longer_name",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetCapabilityHeader/a_shorter_name",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetCapabilityHeader/other_letter_case",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetCapabilityHeader/an_empty_header",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetCapabilityHeader",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetSingleRuntimeBindingInProgress",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetBindingInProgressInvalidatesEmptyVerdict",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetBatchBindingInProgress",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetFinalizeFailure/single_runtime",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetFinalizeFailure/batch",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetFinalizeFailure",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetDaemonRPC/declared_among_others",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetDaemonRPC/other_capabilities_only",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetDaemonRPC/none",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetDaemonRPC",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetClosedRoot",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetBindingInProgressLogsAtInfo/single_runtime",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetBindingInProgressLogsAtInfo/batch",
+      "action": "pass"
+    },
+    {
+      "name": "TestClaimBudgetBindingInProgressLogsAtInfo",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/custom_done",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/custom_archived",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/already_done",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/non_done",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/off",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/observe",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/no_project",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/stale",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/missing_head",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/different_head",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/authority",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/credential",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/other_issue",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewCredentialHorizon",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionCandidatesPaginationAndAuthority",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionPreviewIncompletePackageIsNotAuthorization",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeliveryCompletionCandidatesBoundedHiddenScan",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementHumanGate",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementOperations/owner",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementOperations/admin",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementOperations",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementPrivacyAndParsingOrder",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementLoaderAndTombstone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementShowCoverageAndOff",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementRevokedInvokeCannotReserve",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementWorkspaceMiddleware",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetCreateUsesVerifiedExecutionIdentity",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetVerifiedCreationTaskIsWorkspaceScoped",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleFollowUpUsesVerifiedExecutionIdentity",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetTriageCreationUsesVerifiedExecutionIdentity",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetBusinessReopenWritesNothing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetMoveKeepsTheMemberRow",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetMoveIntoAnotherRootIsRecordedNotRefused",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetDeleteMemberLeavesATombstone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetBatchDeleteTombstonesEveryMember",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetDeleteRootIssueTombstonesTheRoot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEveryParentCapableWriterBinds/C1_POST_/api/issues",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEveryParentCapableWriterBinds/C2_POST_/api/comments/{id}/sub-issues",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEveryParentCapableWriterBinds/C4_lifecycle_handoff_follow-up",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEveryParentCapableWriterBinds/S3_UpdateIssue",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEveryParentCapableWriterBinds/S4_DetachDirectChildIssues",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEveryParentCapableWriterBinds/S6_PrepareWorkspaceDeletionLinks",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEveryParentCapableWriterBinds",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetWritesNothingForATreeWithoutARoot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetConcurrentWritersKeepEveryTreeBound",
+      "action": "pass"
+    },
+    {
+      "name": "TestDeleteMemberIssueKeepsBudgetRows",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerLoadIsOrderedByItsKey",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetQueriesRoundTrip",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetSchemaCatalog",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetSchemaConstraints",
+      "action": "pass"
+    },
+    {
+      "name": "TestWorkspaceDeletionLeavesBudgetRowsUntouched",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/attempts-empty.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/attempts-page.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/attempts-unavailable.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/enable-request.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/error-budget-forbidden.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/error-not-found.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/error-policy-revision-conflict.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/issue-binding.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/observations-empty.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/observations-last-page.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/observations-page.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/operation-close-request.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/operation-committed-stale.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/operation-committed.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/operation-reopen-request.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/operation-set-limit-request.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/operation-set-mode-request.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/operation-unknown.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/show-known.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/show-no-limit.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/show-open.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/show-tombstoned-off.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/show-unavailable.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/write-200-replayed-set-limit.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/write-201-enable-no-gaps.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire/write-201-enable.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementFrozenWire",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementStrictBody",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementPageParameters",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotRetainedPagesKeepOneCutAndConfirmEOF",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotCancelStopsCollectionWithoutRestart",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts/live_request",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts/canceled_request",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotCaptureReplayCorrectionAndFrozenSources",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotRequiresBoundStoredPublicProjection/legacy_internal_only",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotRequiresBoundStoredPublicProjection/different_public_identity",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotRequiresBoundStoredPublicProjection/duplicate_storage_field",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotRequiresBoundStoredPublicProjection",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit/public",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit/audit",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotActivityScanBeyondTimelineCap",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries/duplicate_key",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries/workspace_conflict",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries/actor_spoof",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries/duplicate_workspace",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotSourceGapAndFailedSeal",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotReportOnlyGapKeepsSourceUnknown",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotUpdateGapDoesNotDiscardProjectFacts",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotConcurrentOriginalRequest",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotOwnedDeleteCleanup",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotWithdrawalRejectsMalformedAndStaleIntent",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotReportWithdrawalIsTerminalAndRecoverable",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotConcurrentWithdrawalReturnsOneReceipt",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders/withdrawal_first",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders/correction_first",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders",
+      "action": "pass"
+    },
+    {
+      "name": "TestWorkspaceDeletionManifestPreservesKnowledgeHistory",
+      "action": "pass"
+    },
+    {
+      "name": "TestProjectDeletionPreservesKnowledgeAutomationHistory",
+      "action": "pass"
+    },
+    {
+      "name": "TestWorkspaceDeletionRemovesKnowledgePolicy",
+      "action": "pass"
+    },
+    {
+      "name": "TestWorkspaceDeletionManifestCoversPublicSchema",
+      "action": "pass"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { test, expect } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
+import enSkills from "../packages/views/locales/en/skills.json" with { type: "json" };
 
 test("capability market restores type and draft through history while resource management stays separate", async ({ page }, info) => {
   test.setTimeout(120_000);
@@ -22,7 +23,7 @@ test("capability market restores type and draft through history while resource m
     }, api.getToken());
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`/${slug}/skills`);
-    await expect(page.getByText("No skills yet", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: enSkills.welcome.title, exact: true })).toBeVisible();
     for (const [label, path] of [["Skills", "skills"], ["MCP", "mcp"], ["Runtimes", "runtimes"], ["Capability market", "marketplace"]]) {
       await expect(page.getByRole("link", { name: label, exact: true })).toHaveAttribute("href", `/${slug}/${path}`);
     }
@@ -31,6 +32,8 @@ test("capability market restores type and draft through history while resource m
     const types = page.getByRole("tablist", { name: "Capability type", exact: true });
     const mcp = types.getByRole("tab", { name: "MCP", exact: true });
     const skills = types.getByRole("tab", { name: "Skills", exact: true });
+    const squadTemplates = types.getByRole("tab", { name: "Squad templates", exact: true });
+    const agentTemplates = types.getByRole("tab", { name: "Agent templates", exact: true });
     await expect(mcp).toHaveAttribute("aria-selected", "true");
     await expect(page.getByTestId("mcp-market")).toBeVisible();
     const navigationScreenshot = info.outputPath("capability-market-navigation.png");
@@ -49,6 +52,26 @@ test("capability market restores type and draft through history while resource m
     await expect(skills).toHaveAttribute("aria-selected", "true");
     await page.reload();
     await expect(skills).toHaveAttribute("aria-selected", "true");
+
+    await squadTemplates.click();
+    await expect(page).toHaveURL(`/${slug}/marketplace?type=squad-templates`);
+    await expect(squadTemplates).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("region", { name: "Squad templates", exact: true })).toBeVisible();
+    await page.goBack();
+    await expect(skills).toHaveAttribute("aria-selected", "true");
+    await page.goForward();
+    await expect(squadTemplates).toHaveAttribute("aria-selected", "true");
+
+    await squadTemplates.focus();
+    await page.keyboard.press("ArrowRight");
+    await expect(agentTemplates).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(`/${slug}/marketplace?type=agent-templates`);
+    await expect(page.getByRole("region", { name: "Agent templates", exact: true })).toBeVisible();
+    await page.goBack();
+    await expect(squadTemplates).toHaveAttribute("aria-selected", "true");
+    await page.goForward();
+    await expect(agentTemplates).toHaveAttribute("aria-selected", "true");
 
     await page.goto(`/${slug}/marketplace?type=invalid&context=keep#catalog`);
     await expect(mcp).toHaveAttribute("aria-selected", "true");
@@ -80,7 +103,8 @@ test("capability market restores type and draft through history while resource m
 
     await page.getByRole("link", { name: "Skills", exact: true }).click();
     await expect(page).toHaveURL(`/${slug}/skills`);
-    await expect(page.getByRole("link", { name: "From template", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: enSkills.welcome.title, exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: enSkills.page.new_skill, exact: true })).toBeVisible();
     await expect(page.getByRole("textbox", { name: "Search templates", exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "MCP", exact: true }).click();
     await expect(page).toHaveURL(`/${slug}/mcp`);
@@ -169,9 +193,13 @@ test("capability market isolates workspace resources, preferences and transient 
 
     // Use the real workspace switcher so the same application instance must
     // rehydrate the prior workspace's preferences without retaining a draft.
-    await page.getByRole("button", { name: new RegExp(`${second.name}$`) }).click();
+    await expect(page.getByRole("button", { name: "Switch workspace", exact: true })).toHaveAttribute("aria-description", second.name);
+    await page.getByRole("button", { name: "Switch workspace", exact: true }).click();
     await page.getByRole("menuitem", { name: new RegExp(`${first.name}$`) }).click();
     await expect(page).toHaveURL(`/${first.slug}/issues`);
+    const firstResources = page.getByRole("navigation", { name: "Application navigation", exact: true })
+      .getByRole("button", { name: "Resources & connections", exact: true });
+    if (await firstResources.getAttribute("aria-expanded") !== "true") await firstResources.click();
     await page.getByRole("link", { name: "Skills", exact: true }).click();
     await expect(page.getByText(firstName, { exact: true })).toBeVisible();
     await expect(page.getByText(secondName, { exact: true })).toHaveCount(0);
@@ -185,8 +213,15 @@ test("capability market isolates workspace resources, preferences and transient 
     await expect(dialog.getByRole("textbox", { name: "Name", exact: true })).not.toHaveValue(draftName);
     await page.keyboard.press("Escape");
     await expect(dialog).toHaveCount(0);
-    await page.getByRole("button", { name: new RegExp(`${first.name}$`) }).click();
+    await expect(page.getByRole("button", { name: "Switch workspace", exact: true })).toHaveAttribute("aria-description", first.name);
+    await page.getByRole("button", { name: "Switch workspace", exact: true }).click();
     await page.getByRole("menuitem", { name: new RegExp(`${second.name}$`) }).click();
+    // Wait for the switch to land, as above: until then the sidebar's Skills
+    // link still points at the first workspace.
+    await expect(page).toHaveURL(`/${second.slug}/issues`);
+    const secondResources = page.getByRole("navigation", { name: "Application navigation", exact: true })
+      .getByRole("button", { name: "Resources & connections", exact: true });
+    if (await secondResources.getAttribute("aria-expanded") !== "true") await secondResources.click();
     await page.getByRole("link", { name: "Skills", exact: true }).click();
     await expect(page.getByText(secondName, { exact: true })).toBeVisible();
     await expect(page.getByText(firstName, { exact: true })).toHaveCount(0);

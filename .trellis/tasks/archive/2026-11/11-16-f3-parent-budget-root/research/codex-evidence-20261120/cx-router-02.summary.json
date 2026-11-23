@@ -1,0 +1,28 @@
+{
+  "database": "f3_budget_cx_router",
+  "package": "./cmd/server",
+  "exit": 1,
+  "counts": {
+    "pass": 2,
+    "fail": 2
+  },
+  "tests": [
+    {
+      "test": "TestIssueBudgetRouterManagementRecoveryAndTombstone",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetRouterCredentialBoundaryBeforeCapabilityGuard",
+      "action": "fail"
+    },
+    {
+      "test": "TestIssueBudgetRouterHumanPATAndCrossWorkspacePrivacy",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetRouterClaimUsageAndOriginalBatchRecovery",
+      "action": "fail"
+    }
+  ],
+  "log": "/tmp/f3-codex-20261120/cx-router-02.jsonl"
+}

@@ -1,0 +1,162 @@
+{
+  "recorded_at": "2026-11-03T07:59:49.802386+00:00",
+  "checks": [
+    {
+      "label": "fake45",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/fake-preflight-v12-provenance.py",
+      "source_sha256": "83c6e4724afc70b99d8384e620345760c08ccfe28c8a3729de22fcb7f2805e1c",
+      "command": [
+        "env",
+        "-i",
+        "PATH=/opt/homebrew/opt/python@3.14/bin:/Users/artisan/.nvm/versions/node/v22.23.2/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "HOME=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/home",
+        "LC_ALL=C",
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/offline.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/fake-preflight-v12-provenance.py"
+      ],
+      "exit_code": 0,
+      "tests": 45,
+      "pass": 45,
+      "fail": 0,
+      "skip": 0,
+      "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/fake45.log",
+      "log_sha256": "2975cb0dc43fc9ac55d0fabff5ba64c443ea989e7d90e4bc95042698f06a2dbe",
+      "network_denied": true
+    },
+    {
+      "label": "adapter5",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/adapter-env-preflight-v12.py",
+      "source_sha256": "d83016349ea0ada8133b80019745c760cedea8ff320a8db086d997a6ee2be5ef",
+      "command": [
+        "env",
+        "-i",
+        "PATH=/opt/homebrew/opt/python@3.14/bin:/Users/artisan/.nvm/versions/node/v22.23.2/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "HOME=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/home",
+        "LC_ALL=C",
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/offline.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/adapter-env-preflight-v12.py"
+      ],
+      "exit_code": 0,
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skip": 0,
+      "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/adapter5.log",
+      "log_sha256": "8d13ee4674719b69ab4bb489c6ee6d734c2bc8169d5cdede6996a97f5898b63f",
+      "network_denied": true
+    },
+    {
+      "label": "audit16",
+      "source_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/final-state-audit-v12/final_state_audit_test.py",
+      "source_sha256": "e840befe9e5a95d1caccadbcbdc1890b639ac53546a2d79166b50106a2feb3a0",
+      "command": [
+        "env",
+        "-i",
+        "PATH=/opt/homebrew/opt/python@3.14/bin:/Users/artisan/.nvm/versions/node/v22.23.2/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "HOME=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/home",
+        "LC_ALL=C",
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/offline.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/final-state-audit-v12/final_state_audit_test.py"
+      ],
+      "exit_code": 0,
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "skip": 0,
+      "log_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/v12-review/audit16.log",
+      "log_sha256": "9986e5a05b892195a80b5bb201fa8a048eb00556c2d8458845dc725fd32b445f",
+      "network_denied": true
+    }
+  ],
+  "total_private_cases": 66,
+  "pass": 66,
+  "fail": 0,
+  "skip": 0,
+  "syntax": {
+    "files": {
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/run-make-check-v12-provenance.py": "4681128130f5161777c9039bd5ae8bb801a112958eaf5d4e22f9f2d686ac56c0",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/fake-preflight-v12-provenance.py": "83c6e4724afc70b99d8384e620345760c08ccfe28c8a3729de22fcb7f2805e1c",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/adapter-env-preflight-v12.py": "d83016349ea0ada8133b80019745c760cedea8ff320a8db086d997a6ee2be5ef",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/check-bin/go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v12/check-bin/pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/final-state-audit-v12/final_state_audit.py": "162e8fdd9ac3561f0f67880b308266958d99354b8167695a91312888f86d2f7a",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/final-state-audit-v12/final_state_audit_test.py": "e840befe9e5a95d1caccadbcbdc1890b639ac53546a2d79166b50106a2feb3a0"
+    },
+    "parse_pass": 7,
+    "compiled_product_or_services": false
+  },
+  "actual_repository_product_tests": 0,
+  "services_DB_Provider_calls": 0,
+  "candidate_or_old_evidence_mutations": 0,
+  "overlay_matches": [
+    {
+      "path": "e2e/collaboration-delivery-web.spec.ts",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "e2e/collaboration-installed-main.spec.ts",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "e2e/collaboration-memory-web.spec.ts",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-editing.ts",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-installed-main.mjs",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recipient-picker.mjs",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "packages/views/collaboration/field-editing.test.tsx",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "packages/views/collaboration/field-inputs.test.tsx",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "packages/views/collaboration/field-inputs.tsx",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    },
+    {
+      "path": "server/internal/handler/daemon_test.go",
+      "sha_matches_frozen_overlay": true,
+      "mode_matches": true
+    }
+  ]
+}

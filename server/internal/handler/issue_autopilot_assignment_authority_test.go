@@ -18,7 +18,7 @@ import (
 // can assign through (create top-level, create child, update, batch):
 //
 //   - the run's human holds invoke rights   -> assigned and dispatched once
-//   - the run's human holds none            -> 403 / silently skipped in a batch
+//   - the run's human holds none            -> 403 / explicit batch rejection
 //   - the run carries no human at all       -> fail closed
 //
 // These files previously pinned the borrow bounds instead (MUL-4857's
@@ -467,16 +467,22 @@ func TestBatchUpdateIssues_AutopilotRunAssign(t *testing.T) {
 	})
 
 	t.Run("assigns nothing when the run's human holds no rights", func(t *testing.T) {
-		// The batch endpoint SKIPS an issue whose assignee validation fails and
-		// still answers 200 — a partial success the caller is not told about. That
-		// is pre-existing behaviour, pinned here because the mixed-outcome case is
-		// now reachable through ordinary permissions rather than a borrow scope.
+		// Rejection must be visible in the ordered batch outcome, with no
+		// committed issue or dispatched task when the run lacks invoke rights.
 		workerID, _, plainMemberID := privateAgentTestFixture(t)
 		fx := newRunOnlyAutopilotFixture(t, workerID, plainMemberID)
 		issueID := createUnassignedIssueAsRun(t, fx.LeaderAgentID, fx.LeaderTaskID)
 
+		var response BatchUpdateIssuesResponse
 		batchAssignAsRun(t, plainMemberID, fx.LeaderAgentID, fx.LeaderTaskID, workerID, issueID).
-			Want(http.StatusOK)
+			Want(http.StatusForbidden).JSON(&response)
+		if response.Updated != 0 || response.Code != "batch_update_incomplete" || response.CauseCode != "access_denied" {
+			t.Fatalf("batch denial did not report zero committed items: %+v", response)
+		}
+		want := BatchUpdateIssueResult{Index: 0, IssueID: issueID, State: "rejected", Code: "access_denied"}
+		if len(response.Results) != 1 || response.Results[0] != want {
+			t.Fatalf("batch denial lost its ordered rejected outcome: %+v", response.Results)
+		}
 
 		if got := assigneeOf(t, issueID); got != "" {
 			t.Fatalf("issue was assigned to %q despite no invoke rights", got)
@@ -491,11 +497,22 @@ func TestBatchUpdateIssues_AutopilotRunAssign(t *testing.T) {
 		fx := newRunOnlyAutopilotFixture(t, workerID, ownerID, noHumanOnRun())
 		issueID := createUnassignedIssueAsRun(t, fx.LeaderAgentID, fx.LeaderTaskID)
 
+		var response BatchUpdateIssuesResponse
 		batchAssignAsRun(t, plainMemberID, fx.LeaderAgentID, fx.LeaderTaskID, workerID, issueID).
-			Want(http.StatusOK)
+			Want(http.StatusForbidden).JSON(&response)
+		if response.Updated != 0 || response.Code != "batch_update_incomplete" || response.CauseCode != "access_denied" {
+			t.Fatalf("batch denial did not report zero committed items: %+v", response)
+		}
+		want := BatchUpdateIssueResult{Index: 0, IssueID: issueID, State: "rejected", Code: "access_denied"}
+		if len(response.Results) != 1 || response.Results[0] != want {
+			t.Fatalf("batch denial lost its ordered rejected outcome: %+v", response.Results)
+		}
 
 		if got := assigneeOf(t, issueID); got != "" {
 			t.Fatalf("issue was assigned to %q by a run with no human", got)
+		}
+		if total, _ := tasksFor(t, issueID, workerID); total != 0 {
+			t.Fatalf("enqueued %d tasks by a run with no human", total)
 		}
 	})
 }

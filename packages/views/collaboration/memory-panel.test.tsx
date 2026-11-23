@@ -1,0 +1,390 @@
+// Parsing and original-key boundary matrices live in core/collaboration/memory-*.test.ts.
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { focusManager, onlineManager, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ApiClient, ApiError, setApiInstance } from "@multica/core/api";
+import { CollaborationUnavailableError, collaborationMemoryKeys, collaborationScope, parseCollaborationIssue, parseCollaborationMemory, parseCollaborationMemoryVersion, parseCollaborationMemoryVersions,
+  prepareCollaborationMemoryChange, readCollaborationDrafts, saveCollaborationDraft, type CollaborationMemoryReceipt } from "@multica/core/collaboration";
+import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
+import { renderWithI18n } from "../test/i18n";
+import { CollaborationMemoryPanel } from "./memory-panel";
+
+const userId = "00000000-0000-4000-8000-000000000001";
+vi.mock("@multica/core/auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
+vi.mock("../rich-content", () => ({ RichContent: ({ content }: { content: string }) => <p>{content}</p> }));
+vi.mock("../navigation", () => ({ AppLink: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props} /> }));
+const issue = parseCollaborationIssue(collaborationIssueFixture)!;
+const author = { kind: "member", member: issue.creator, agent: null, resource_owner: null };
+const memory = (version = "1", content = "Initial decision", canEdit = true) => parseCollaborationMemory({
+  issue_id: issue.id, version, content, bytes: new TextEncoder().encode(content).length, max_bytes: 131072,
+  author, created_at: "2026-10-26T00:00:00Z", restored_from_version: null, can_edit: canEdit, can_purge: true,
+})!;
+const history = (versions = ["2", "1"], currentVersion = "2", nextCursor: string | null = null) => parseCollaborationMemoryVersions({ issue_id: issue.id, current_version: currentVersion, max_bytes: 131072, can_purge: true,
+  items: versions.map(version => ({ version, bytes: 16, author, created_at: "2026-10-26T00:00:00Z", restored_from_version: null,
+    purged: false, purged_at: null, purged_by: null, purged_by_admin: false })), next_cursor: nextCursor })!;
+let api: ApiClient;
+let client: QueryClient;
+let scope: ReturnType<typeof collaborationScope>;
+beforeEach(() => {
+  localStorage.clear();
+  api = new ApiClient("https://memory.example"); setApiInstance(api); scope = collaborationScope(userId);
+  client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
+  vi.spyOn(api, "getCollaborationMemory").mockResolvedValue(memory());
+  vi.spyOn(api, "getCollaborationMemoryVersions").mockResolvedValue(history());
+  vi.spyOn(api, "getCollaborationMemoryOperation").mockResolvedValue(null);
+});
+afterEach(() => { client.clear(); focusManager.setFocused(undefined); onlineManager.setOnline(true); vi.useRealTimers(); localStorage.clear(); vi.restoreAllMocks(); });
+function mount(currentIssue = issue) {
+  return renderWithI18n(<QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={currentIssue} /></QueryClientProvider>);
+}
+function receipt(requestId: string, version: string | null, code = "memory_updated", status = 200): CollaborationMemoryReceipt {
+  return { request_id: requestId, action: "memory_update", protocol_version: 1, issue_id: issue.id, version,
+    current_version: version ?? "2", code, status, max_bytes: 131072, ...(status === 200 ? { bytes: 8, event_seq: "3" } : {}) };
+}
+
+it("keeps a named loading region, reports an initial read failure and refreshes explicitly", async () => {
+  let rejectRead!: (reason: Error) => void;
+  vi.mocked(api.getCollaborationMemory).mockImplementationOnce(() => new Promise((_resolve, reject) => { rejectRead = reject; }));
+  const update = vi.spyOn(api, "updateCollaborationMemory");
+  mount();
+  const panel = screen.getByRole("region", { name: "Shared context" });
+  expect(within(panel).getByRole("status")).toHaveTextContent("Loading shared context...");
+  await act(async () => rejectRead(new TypeError("Offline")));
+  expect(await within(panel).findByRole("alert")).toHaveTextContent("Could not load collaboration. Try again.");
+  expect(screen.queryByRole("button", { name: "Edit shared context" })).not.toBeInTheDocument();
+  await userEvent.click(within(panel).getByRole("button", { name: "Refresh" }));
+  expect(await within(panel).findByText("Initial decision")).toBeVisible();
+  expect(api.getCollaborationMemory).toHaveBeenCalledTimes(2);
+  expect(update).not.toHaveBeenCalled();
+});
+
+it.each(["unsupported response", "unavailable response"])("reports an %s without inventing empty shared context", async (kind) => {
+  if (kind === "unsupported response") vi.mocked(api.getCollaborationMemory).mockResolvedValue(null);
+  else vi.mocked(api.getCollaborationMemory).mockRejectedValue(new CollaborationUnavailableError());
+  mount();
+  expect(await screen.findByRole("alert")).toHaveTextContent("This collaboration response is unavailable. Refresh to check again.");
+  expect(screen.getByRole("region", { name: "Shared context" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "Refresh" })).toBeEnabled();
+  expect(screen.queryByText(/No shared context yet/)).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Edit shared context" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Version history" })).not.toBeInTheDocument();
+});
+
+it("hides stale shared context after a failed refresh and preserves the editor for a successful retry", async () => {
+  mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Edit shared context" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Shared context (Markdown)" }), { target: { value: "Unsent draft" } });
+  vi.mocked(api.getCollaborationMemory).mockRejectedValueOnce(new TypeError("Offline"));
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationMemoryKeys.root(scope, issue.id) }); });
+  expect(await screen.findByRole("alert")).toHaveTextContent("Could not load collaboration. Try again.");
+  expect(screen.queryByText("Initial decision")).not.toBeInTheDocument();
+  expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+  expect(screen.queryByText("v1")).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "Refresh" }));
+  expect(await screen.findByRole("textbox", { name: "Shared context (Markdown)" })).toHaveValue("Unsent draft");
+});
+
+it("reveals original recovery through enclosing disclosures while the current read fails", async () => {
+  const requestId = "00000000-0000-4000-8000-000000000003";
+  const draft = prepareCollaborationMemoryChange(scope, memory(), requestId, { action: "update", baseVersion: "1", content: "Original request text" });
+  saveCollaborationDraft(draft);
+  vi.mocked(api.getCollaborationMemory).mockRejectedValue(new TypeError("Offline"));
+  vi.mocked(api.getCollaborationMemoryOperation).mockResolvedValue(receipt(requestId, "2"));
+  const update = vi.spyOn(api, "updateCollaborationMemory");
+  renderWithI18n(<QueryClientProvider client={client}><details><summary>Auxiliary context</summary><details><summary>Context disclosure</summary>
+    <CollaborationMemoryPanel scope={scope} issue={issue} />
+  </details></details></QueryClientProvider>);
+  expect(await screen.findByRole("button", { name: "Check original result" })).toBeVisible();
+  expect(screen.getByText("Auxiliary context", { selector: "summary" }).closest("details")).toHaveAttribute("open");
+  expect(screen.getByText("Context disclosure", { selector: "summary" }).closest("details")).toHaveAttribute("open");
+  expect(api.getCollaborationMemoryOperation).not.toHaveBeenCalled();
+  expect(update).not.toHaveBeenCalled();
+  await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  await waitFor(() => expect(api.getCollaborationMemoryOperation).toHaveBeenCalledWith(issue.id, requestId));
+  expect(await screen.findByText("Shared context saved as v2.")).toBeVisible();
+  expect(readCollaborationDrafts({ ...scope, issueId: issue.id })).toEqual([]);
+  expect(update).not.toHaveBeenCalled();
+});
+
+it("does not refocus a shared-context anchor on resume but focuses a fresh open", async () => {
+  const view = (resume: boolean, navigationKey: number) => <QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={issue}
+    destination={{ view: "current", issueId: issue.id, commentId: null, anchor: "memory" }} isScopeResume={resume} navigationKey={navigationKey} /></QueryClientProvider>;
+  const mounted = renderWithI18n(view(true, 1));
+  await screen.findByText("Initial decision");
+  expect(document.getElementById("memory")).not.toHaveFocus();
+  mounted.rerender(view(false, 2));
+  expect(document.getElementById("memory")).toHaveFocus();
+});
+
+it("leaves a dismissed version dialog closed on resume and reopens it for an explicit link", async () => {
+  const version = vi.spyOn(api, "getCollaborationMemoryVersion").mockRejectedValue(new Error("Version unavailable in fixture"));
+  const view = (resume: boolean, navigationKey: number) => <QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={issue}
+    destination={{ view: "current", issueId: issue.id, commentId: null, memoryVersion: "1" }} isScopeResume={resume} navigationKey={navigationKey} /></QueryClientProvider>;
+  const mounted = renderWithI18n(view(true, 1));
+  await screen.findByText("Initial decision");
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(version).not.toHaveBeenCalled();
+  mounted.rerender(view(false, 2));
+  await screen.findByRole("dialog");
+  await userEvent.keyboard("{Escape}");
+  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  mounted.rerender(view(false, 3));
+  expect(await screen.findByRole("dialog")).toBeVisible();
+});
+
+it("keeps the editing base and text after a stale save until the user explicitly rebases", async () => {
+  const update = vi.spyOn(api, "updateCollaborationMemory").mockImplementationOnce(async (_id, key) => receipt(key, null, "stale_memory_version", 409))
+    .mockImplementationOnce(async (_id, key) => receipt(key, "3"));
+  mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Edit shared context" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Shared context (Markdown)" }), { target: { value: "My decision to merge" } });
+  vi.mocked(api.getCollaborationMemory).mockResolvedValue(memory("2", "Another writer's decision"));
+  await userEvent.click(screen.getByRole("button", { name: "Save shared context" }));
+  await screen.findByText(/Someone updated the shared context after you started/);
+  expect(update).toHaveBeenCalledWith(issue.id, expect.any(String), { expected_version: "1", content: "My decision to merge" });
+  expect(screen.getByRole("textbox", { name: "Shared context (Markdown)" })).toHaveValue("My decision to merge");
+  expect(screen.getByRole("button", { name: "Save shared context" })).toBeDisabled();
+  await userEvent.click(await screen.findByRole("button", { name: "Use current version" }));
+  expect(screen.getByRole("textbox", { name: "Shared context (Markdown)" })).toHaveValue("My decision to merge");
+  await userEvent.click(screen.getByRole("button", { name: "Save shared context" }));
+  await waitFor(() => expect(update).toHaveBeenCalledTimes(2));
+  expect(update.mock.calls[1]?.[2]).toEqual({ expected_version: "2", content: "My decision to merge" });
+  expect(update.mock.calls[1]?.[1]).not.toBe(update.mock.calls[0]?.[1]);
+});
+
+it("requires explicit review when realtime refreshes the current version during editing", async () => {
+  const update = vi.spyOn(api, "updateCollaborationMemory").mockImplementation(async (_id, key) => receipt(key, "3"));
+  mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Edit shared context" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Shared context (Markdown)" }), { target: { value: "Unmerged local text" } });
+  act(() => client.setQueryData(collaborationMemoryKeys.root(scope, issue.id), memory("2", "New remote text")));
+  expect(await screen.findByText(/Someone updated the shared context after you started/)).toBeVisible();
+  expect(screen.getByRole("textbox", { name: "Shared context (Markdown)" })).toHaveValue("Unmerged local text");
+  expect(screen.getByText("New remote text")).toBeVisible();
+  expect(screen.getByRole("button", { name: "Save shared context" })).toBeDisabled();
+  expect(update).not.toHaveBeenCalled();
+});
+
+it("restores an uncertain update after remount and retries its original key and payload", async () => {
+  const update = vi.spyOn(api, "updateCollaborationMemory").mockRejectedValueOnce(new TypeError("Response lost"))
+    .mockImplementationOnce(async (_id, key) => receipt(key, "2"));
+  const view = mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Edit shared context" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Shared context (Markdown)" }), { target: { value: "Retained request" } });
+  await userEvent.click(screen.getByRole("button", { name: "Save shared context" }));
+  await screen.findByRole("button", { name: "Retry original request" });
+  const original = readCollaborationDrafts({ ...scope, issueId: issue.id })[0]!;
+  view.unmount(); mount();
+  await screen.findByRole("button", { name: "Check original result" });
+  expect(update).toHaveBeenCalledTimes(1);
+  expect(screen.queryByRole("button", { name: "Edit shared context" })).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "Retry original request" }));
+  await waitFor(() => expect(update).toHaveBeenCalledTimes(2));
+  expect(update.mock.calls[1]).toEqual(update.mock.calls[0]);
+  expect(update.mock.calls[1]?.[1]).toBe(original.requestId);
+  await waitFor(() => expect(readCollaborationDrafts({ ...scope, issueId: issue.id })).toEqual([]));
+});
+
+it("confirms restore and keeps closed content read-only while permitting historical disposal", async () => {
+  vi.mocked(api.getCollaborationMemory).mockResolvedValue(memory("2"));
+  const restore = vi.spyOn(api, "restoreCollaborationMemoryVersion").mockImplementation(async (_id, key) => ({ ...receipt(key, "3"), action: "memory_restore", code: "memory_restored" }));
+  const view = mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Version history" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Restore v1" }));
+  const dialog = await screen.findByRole("alertdialog", { name: "Restore v1?" });
+  expect(restore).not.toHaveBeenCalled();
+  await userEvent.click(within(dialog).getByRole("button", { name: "Restore as new version" }));
+  await waitFor(() => expect(restore).toHaveBeenCalledTimes(1));
+  vi.mocked(api.getCollaborationMemory).mockResolvedValue(memory("2", "Closed decision", false));
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationMemoryKeys.root(scope, issue.id) }); });
+  view.rerender(<QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={{ ...issue, status: "done", status_category: "done" }} /></QueryClientProvider>);
+  expect(await screen.findByText("This issue is closed, so its shared context is read-only.")).toBeVisible();
+  expect(screen.queryByRole("button", { name: "Edit shared context" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Restore v1" })).not.toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "Purge v1" }));
+  const purge = await screen.findByRole("alertdialog", { name: "Purge the text of v1?" });
+  expect(within(purge).getByRole("button", { name: "Purge text" })).toBeDisabled();
+});
+
+it("keeps a legal multiline purge reason intact and sends it only after explicit confirmation", async () => {
+  vi.mocked(api.getCollaborationMemory).mockResolvedValue(memory("2"));
+  const purge = vi.spyOn(api, "purgeCollaborationMemoryVersion").mockImplementation(async (_id, key) => ({
+    ...receipt(key, "1", "memory_purged"), action: "memory_purge", current_version: "2",
+  }));
+  mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Version history" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Purge v1" }));
+  const dialog = screen.getByRole("alertdialog", { name: "Purge the text of v1?" });
+  const reason = within(dialog).getByRole("textbox", { name: "Reason" });
+  const text = `${Array.from({ length: 40 }, () => "a".repeat(24)).join("\n")}.`;
+  expect(new TextEncoder().encode(text)).toHaveLength(1000);
+  fireEvent.change(reason, { target: { value: text } });
+  expect(reason).toHaveValue(text);
+  expect(reason).not.toHaveAttribute("aria-invalid");
+  expect(within(dialog).getByRole("button", { name: "Cancel" })).toBeEnabled();
+  expect(within(dialog).getByRole("button", { name: "Purge text" })).toBeEnabled();
+  expect(purge).not.toHaveBeenCalled();
+  await userEvent.click(within(dialog).getByRole("button", { name: "Purge text" }));
+  await waitFor(() => expect(purge).toHaveBeenCalledTimes(1));
+  expect(purge).toHaveBeenCalledWith(issue.id, expect.any(String), "1", { reason: text });
+});
+
+it("keeps restore pinned to its snapshot until the changed current version is explicitly reviewed", async () => {
+  vi.mocked(api.getCollaborationMemory).mockResolvedValue(memory("2"));
+  const restore = vi.spyOn(api, "restoreCollaborationMemoryVersion").mockImplementation(async (_id, key) => ({
+    ...receipt(key, "4", "memory_restored"), action: "memory_restore",
+  }));
+  mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Version history" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Restore v1" }));
+  const dialog = screen.getByRole("alertdialog", { name: "Restore v1?" });
+  act(() => client.setQueryData(collaborationMemoryKeys.root(scope, issue.id), memory("3", "New current context")));
+  const confirm = within(dialog).getByRole("button", { name: "Restore as new version" });
+  await waitFor(() => expect(confirm).toBeDisabled());
+  expect(restore).not.toHaveBeenCalled();
+  await userEvent.click(within(dialog).getByRole("button", { name: "Use current version" }));
+  expect(confirm).toBeEnabled();
+  expect(restore).not.toHaveBeenCalled();
+  await userEvent.click(confirm);
+  await waitFor(() => expect(restore).toHaveBeenCalledTimes(1));
+  expect(restore).toHaveBeenCalledWith(issue.id, expect.any(String), "1", { expected_version: "3" });
+});
+
+it("suspends hidden historical pages across polling, invalidation and refocus while retaining the editor and pages", async () => {
+  vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
+  vi.mocked(api.getCollaborationMemory).mockResolvedValue(memory("3"));
+  vi.mocked(api.getCollaborationMemoryVersions).mockImplementation(async (_id, page) => page?.cursor === "2"
+    ? history(["1"], "3") : history(["3", "2"], "3", "2"));
+  const view = (active: boolean) => <QueryClientProvider client={client}><button>Outside panel</button><div hidden={!active} inert={!active}>
+    <CollaborationMemoryPanel scope={scope} issue={issue} active={active} />
+  </div></QueryClientProvider>;
+  const mounted = renderWithI18n(view(true));
+  await userEvent.click(await screen.findByRole("button", { name: "Edit shared context" }));
+  const editor = screen.getByRole("textbox", { name: "Shared context (Markdown)" });
+  fireEvent.change(editor, { target: { value: "Unsent historical review draft" } });
+  await userEvent.click(screen.getByRole("button", { name: "Version history" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Load more versions" }));
+  expect(await screen.findByRole("button", { name: "View v1" })).toBeVisible();
+  expect(api.getCollaborationMemoryVersions).toHaveBeenCalledTimes(2);
+  expect(client.getQueryData(collaborationMemoryKeys.versions(scope, issue.id))).toMatchObject({
+    pages: [{ items: [{ version: "3" }, { version: "2" }] }, { items: [{ version: "1" }] }],
+  });
+  const rootReads = vi.mocked(api.getCollaborationMemory).mock.calls.length;
+  mounted.rerender(view(false));
+  const outside = screen.getByRole("button", { name: "Outside panel" });
+  outside.focus();
+
+  await act(async () => { await vi.advanceTimersByTimeAsync(30_000); });
+  await waitFor(() => expect(vi.mocked(api.getCollaborationMemory).mock.calls.length).toBeGreaterThan(rootReads));
+  expect(api.getCollaborationMemoryVersions).toHaveBeenCalledTimes(2);
+  vi.useRealTimers();
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationMemoryKeys.root(scope, issue.id) }); });
+  await act(async () => { focusManager.setFocused(false); focusManager.setFocused(true); });
+  await waitFor(() => expect(client.isFetching()).toBe(0));
+  expect(api.getCollaborationMemoryVersions).toHaveBeenCalledTimes(2);
+  expect(editor).toBeInTheDocument();
+  expect(editor).toHaveValue("Unsent historical review draft");
+  expect(outside).toHaveFocus();
+  expect(client.getQueryData(collaborationMemoryKeys.versions(scope, issue.id))).toMatchObject({
+    pages: [{ items: [{ version: "3" }, { version: "2" }] }, { items: [{ version: "1" }] }],
+  });
+
+  mounted.rerender(view(true));
+  await waitFor(() => expect(api.getCollaborationMemoryVersions).toHaveBeenCalledTimes(4));
+  expect(screen.getByRole("button", { name: "Version history" })).toHaveAttribute("aria-expanded", "true");
+  expect(screen.getByRole("button", { name: "View v1" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "View v2" })).toBeVisible();
+  expect(screen.getByRole("textbox", { name: "Shared context (Markdown)" })).toBe(editor);
+  expect(editor).toHaveValue("Unsent historical review draft");
+});
+
+it("suspends a hidden selected version across invalidation, refocus and reconnect and resumes the same selection", async () => {
+  vi.mocked(api.getCollaborationMemory).mockResolvedValue(memory("2"));
+  const version = vi.spyOn(api, "getCollaborationMemoryVersion").mockResolvedValue(parseCollaborationMemoryVersion({
+    ...history().items[1], issue_id: issue.id, current_version: "2", max_bytes: 131072, content: "Earlier decision",
+  }));
+  const view = (active: boolean) => <QueryClientProvider client={client}><button>Outside panel</button><div hidden={!active} inert={!active}>
+    <CollaborationMemoryPanel scope={scope} issue={issue} active={active} />
+  </div></QueryClientProvider>;
+  const mounted = renderWithI18n(view(true));
+  await userEvent.click(await screen.findByRole("button", { name: "Edit shared context" }));
+  const editor = screen.getByRole("textbox", { name: "Shared context (Markdown)" });
+  fireEvent.change(editor, { target: { value: "Unsent selected-version draft" } });
+  await userEvent.click(screen.getByRole("button", { name: "Version history" }));
+  await userEvent.click(await screen.findByRole("button", { name: "View v1" }));
+  const dialog = screen.getByRole("dialog", { name: "Shared context v1" });
+  expect(await within(dialog).findByText("Earlier decision")).toBeVisible();
+  expect(version).toHaveBeenCalledTimes(1);
+  mounted.rerender(view(false));
+  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  const outside = screen.getByRole("button", { name: "Outside panel" });
+  outside.focus();
+
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationMemoryKeys.version(scope, issue.id, "1") }); });
+  await act(async () => { focusManager.setFocused(false); focusManager.setFocused(true); });
+  await act(async () => { onlineManager.setOnline(false); onlineManager.setOnline(true); });
+  await waitFor(() => expect(client.isFetching()).toBe(0));
+  expect(version).toHaveBeenCalledTimes(1);
+  expect(editor).toBeInTheDocument();
+  expect(editor).toHaveValue("Unsent selected-version draft");
+  expect(outside).toHaveFocus();
+
+  mounted.rerender(view(true));
+  expect(await screen.findByRole("dialog", { name: "Shared context v1" })).toBeVisible();
+  await waitFor(() => expect(version).toHaveBeenCalledTimes(2));
+  expect(editor).toBeInTheDocument();
+  expect(editor).toHaveValue("Unsent selected-version draft");
+  await userEvent.keyboard("{Escape}");
+  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  expect(screen.getByRole("button", { name: "Version history" })).toHaveAttribute("aria-expanded", "true");
+  expect(screen.getByRole("textbox", { name: "Shared context (Markdown)" })).toBe(editor);
+});
+
+it("removes private editor content after access is revoked", async () => {
+  mount();
+  await userEvent.click(await screen.findByRole("button", { name: "Edit shared context" }));
+  fireEvent.change(screen.getByRole("textbox", { name: "Shared context (Markdown)" }), { target: { value: "PRIVATE_EDITOR" } });
+  vi.mocked(api.getCollaborationMemory).mockRejectedValue(new ApiError("Access lost", 403, "Forbidden"));
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationMemoryKeys.root(scope, issue.id) }); });
+  await waitFor(() => expect(screen.queryByRole("textbox")).not.toBeInTheDocument());
+  expect(screen.queryByText("PRIVATE_EDITOR")).not.toBeInTheDocument();
+});
+
+it("defers linked versions until visible and does not reopen a dismissed version on panel switching", async () => {
+  const version = vi.spyOn(api, "getCollaborationMemoryVersion").mockRejectedValue(new Error("Version unavailable in fixture"));
+  const view = (active: boolean, navigationKey: number) => <QueryClientProvider client={client}><CollaborationMemoryPanel scope={scope} issue={issue}
+    active={active} destination={{ view: "current", issueId: issue.id, commentId: null, memoryVersion: "1" }} navigationKey={navigationKey} /></QueryClientProvider>;
+  const mounted = renderWithI18n(view(false, 1));
+  await screen.findByText("Initial decision");
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  expect(version).not.toHaveBeenCalled();
+  mounted.rerender(view(true, 1));
+  expect(await screen.findByRole("dialog")).toBeVisible();
+  await userEvent.keyboard("{Escape}");
+  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+  mounted.rerender(view(false, 1)); mounted.rerender(view(true, 1));
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  mounted.rerender(view(false, 2));
+  expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  mounted.rerender(view(true, 2));
+  expect(await screen.findByRole("dialog")).toBeVisible();
+});
+
+it("keeps hidden anchors from taking focus while reporting pending recovery", async () => {
+  const requestId = "00000000-0000-4000-8000-000000000003";
+  saveCollaborationDraft(prepareCollaborationMemoryChange(scope, memory(), requestId, { action: "update", baseVersion: "1", content: "Original request text" }));
+  const status = vi.fn();
+  const view = (active: boolean) => <QueryClientProvider client={client}><button>Outside panel</button><div hidden={!active}>
+    <CollaborationMemoryPanel scope={scope} issue={issue} active={active} onStatusChange={status}
+      destination={{ view: "current", issueId: issue.id, commentId: null, anchor: "memory" }} />
+  </div></QueryClientProvider>;
+  const mounted = renderWithI18n(view(false));
+  const outside = screen.getByRole("button", { name: "Outside panel" }); outside.focus();
+  await waitFor(() => expect(status).toHaveBeenLastCalledWith({ attention: true }));
+  expect(outside).toHaveFocus();
+  expect(api.getCollaborationMemoryOperation).not.toHaveBeenCalled();
+  mounted.rerender(view(true));
+  expect(await screen.findByRole("button", { name: "Check original result" })).toBeVisible();
+  await waitFor(() => expect(document.getElementById("memory")).toHaveFocus());
+});

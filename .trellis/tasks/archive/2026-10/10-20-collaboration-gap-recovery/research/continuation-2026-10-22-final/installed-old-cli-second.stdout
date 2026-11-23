@@ -1,0 +1,19 @@
+
+Running 1 test using 1 worker
+
+
+
+
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands
+[1A[2K  1) [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 
+
+    Error: Command failed: docker cp /private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay multica-installed-cli-02d525d8-1700-4a69-ac9c-8b5a4107f525:/fixture-relay
+    time="2026-10-22T21:14:10+08:00" level=error msg="Can't add file /private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-cli-relay to tar: io: read/write on closed pipe"
+    time="2026-10-22T21:14:10+08:00" level=error msg="Can't close tar writer: io: read/write on closed pipe"
+    Error response from daemon: container rootfs is marked read-only
+
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 

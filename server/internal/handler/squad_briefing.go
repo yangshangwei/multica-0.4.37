@@ -49,12 +49,47 @@ Your responsibilities, in order:
      Two or three sentences is usually plenty.
    - Use the exact mention markdown shown in the Squad Roster below —
      typing a plain "@name" will not trigger anyone.
+   - For an attachment-free ordinary delegation, choose and retain one new
+     canonical UUID as ` + "`" + `--idempotency-key <key>` + "`" + ` before sending.
+     This key is separate from collaboration ` + "`" + `--request-id` + "`" + `.
+   - Request ` + "`" + `--output json` + "`" + ` and inspect the saved comment's
+     ` + "`" + `trigger_outcomes` + "`" + `. Match EVERY intended target by
+     ` + "`" + `target_type` + "`" + ` and ` + "`" + `target_id` + "`" + ` — the
+     exact UUID from the live roster, including the squad UUID for a squad
+     mention. ` + "`" + `queued` + "`" + `, ` + "`" + `coalesced` + "`" + ` and
+     ` + "`" + `deferred` + "`" + ` confirm admission/coverage only, not proof
+     that work started or completed. A blocked, missing, malformed, unknown,
+     or contradictory duplicate receipt leaves that target unconfirmed.
+   - Check ` + "`" + `delegation_receipt` + "`" + ` matches your key and comment ID.
+     Its ` + "`" + `recorded` + "`" + ` state means admission facts were retained,
+     never completion. Match retained targets and actual task IDs; a changed
+     roster must not replace the original target identity.
+     Per-target receipts cover explicit agent/squad mentions only; an empty
+     target list does not guarantee implicit follow-up routing.
+     ` + "`" + `runtime_observation` + "`" + ` records status and observation time
+     for the actual admitted task's runtime, not current availability.
+     An offline runtime may queue work to wait; unbound/unusable runtimes
+     are refused. Recovery never recomputes the historical observation.
+     Optional ` + "`" + `executing_squad_id` + "`" + ` identifies the actual task's
+     squad context, which may differ from the mentioned target squad.
+   - Do not repost a saved comment or blindly retry after a lost response.
+     Recover a keyed create with the read-only command
+     ` + "`" + `multica issue comment receipt <issue-id> <key>` + "`" + `, including
+     after restart under the same agent and originator with current authority.
+     An ` + "`" + `unknown` + "`" + ` or missing receipt never permits a new key or
+     another dispatch. Keep uncertainty for an authorized follow-up.
+     For unkeyed creates and edits, first check whether the comment was saved;
+     reading that comment cannot recover its original dispatch receipt.
 3. **Record your evaluation.** After every trigger — whether you delegated,
    decided no action is needed, or encountered an error — record it:
    ` + "`" + `multica squad activity <issue-id> <outcome> --reason "<short reason>"` + "`" + `
    Outcome values: ` + "`" + `action` + "`" + ` (you delegated or acted),
    ` + "`" + `no_action` + "`" + ` (you evaluated and decided nothing is needed),
    ` + "`" + `failed` + "`" + ` (you hit an error).
+   For a delegation-only turn, use ` + "`" + `action` + "`" + ` only when every
+   intended target has a handled receipt. Otherwise record ` + "`" + `failed` + "`" + `,
+   identifying the blocked/unconfirmed targets and any handled subset in the
+   reason. A partial result must not be described as full delegation success.
    This is mandatory on every turn — it records your decision in the
    issue timeline so humans can see you evaluated the trigger.
    Record it against the issue THIS turn is running on (the issue id in
@@ -64,10 +99,10 @@ Your responsibilities, in order:
    outcome and the error ONLY if you have not already commented this turn
    (the no_action case). If you already posted a delegation comment, that
    comment is the record — do not add a second one.
-4. **Stop after dispatching.** Once your delegation comment is posted
-   and evaluation recorded, end your turn. Do not continue working,
-   do not write code, do not open files. You will be re-triggered
-   automatically when:
+4. **Stop after dispatching.** With the receipt checked and evaluation recorded,
+   end your turn. Do not continue working, do not write code, do not open files.
+   A saved comment alone does not guarantee a member will run or wake you.
+   Existing return routes may re-trigger you when:
    - a delegated member posts an update or asks you a question;
    - a delegated member finishes and the issue moves forward;
    - someone @mentions you again on this issue.

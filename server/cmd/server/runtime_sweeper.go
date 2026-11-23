@@ -488,6 +488,8 @@ type runtimeGCResult struct {
 	skipReason  string
 }
 
+var errRuntimeGCRetained = errors.New("runtime GC candidate retained")
+
 // gcRuntime re-checks and deletes one candidate under a runtime-row FOR UPDATE
 // lock. Task ownership writes take FOR KEY SHARE on the same row through
 // lock_task_owner_rows, so a concurrent enqueue either commits before the
@@ -495,19 +497,27 @@ type runtimeGCResult struct {
 // observes that its runtime no longer exists.
 func gcRuntime(ctx context.Context, txStarter runtimeGCTxStarter, queries *db.Queries, runtimeID pgtype.UUID) (runtimeGCResult, error) {
 	var result runtimeGCResult
-	tx, err := txStarter.Begin(ctx)
-	if err != nil {
-		return result, fmt.Errorf("begin transaction: %w", err)
+	err := service.WithRuntimeResourceTransaction(ctx, txStarter, queries, func(q *db.Queries) error {
+		var err error
+		result, err = gcRuntimeInTx(ctx, q, runtimeID)
+		if err == nil && !result.deleted {
+			// A refusal must roll back any borrowed teardown work too. Ordinary
+			// terminal tasks never justify committing partial invalidation.
+			return errRuntimeGCRetained
+		}
+		return err
+	})
+	if errors.Is(err, errRuntimeGCRetained) {
+		return result, nil
 	}
-	defer func() {
-		// The operation context may already be cancelled on a timeout. Give
-		// rollback its own short window so the pool does not retain an open
-		// transaction/connection after a failed GC attempt.
-		rollbackCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), runtimeGCOperationTimeout)
-		defer cancel()
-		_ = tx.Rollback(rollbackCtx)
-	}()
-	qtx := queries.WithTx(tx)
+	if err != nil {
+		return runtimeGCResult{}, err
+	}
+	return result, nil
+}
+
+func gcRuntimeInTx(ctx context.Context, qtx *db.Queries, runtimeID pgtype.UUID) (runtimeGCResult, error) {
+	var result runtimeGCResult
 
 	runtime, err := qtx.LockAgentRuntime(ctx, runtimeID)
 	if errors.Is(err, pgx.ErrNoRows) {
@@ -574,10 +584,6 @@ func gcRuntime(ctx context.Context, txStarter runtimeGCTxStarter, queries *db.Qu
 	if err := qtx.DeleteAgentRuntime(ctx, runtimeID); err != nil {
 		return result, fmt.Errorf("delete runtime: %w", err)
 	}
-	if err := tx.Commit(ctx); err != nil {
-		return result, fmt.Errorf("commit transaction: %w", err)
-	}
-
 	result.teardown = teardown
 	result.deleted = true
 	return result, nil

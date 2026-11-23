@@ -1,0 +1,26 @@
+{
+  "name": "typecheck",
+  "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/mobile",
+    "typecheck"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-11-02T00:01:16.721509+00:00",
+  "state": "complete",
+  "environment_overrides": {
+    "CI": "1",
+    "EXPO_OFFLINE": "1",
+    "EXPO_NO_TELEMETRY": "1",
+    "EXPO_NO_DOTENV": "1"
+  },
+  "finished_at": "2026-11-02T00:01:22.928992+00:00",
+  "exit_code": 0,
+  "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "stdout": "typecheck.stdout.txt",
+  "stderr": "typecheck.stderr.txt",
+  "stdout_sha256": "7160ed0df29a61f91121f69f0add970e635fb09238c31a10a4421360ba2a6025",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+}

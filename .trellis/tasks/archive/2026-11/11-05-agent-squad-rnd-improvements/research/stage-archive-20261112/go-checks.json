@@ -1,0 +1,42 @@
+[
+  {
+    "name": "cli-tests",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/multica",
+      "-count=1"
+    ],
+    "exit_code": 0,
+    "seconds": 5.79
+  },
+  {
+    "name": "cli-vet",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./cmd/multica"
+    ],
+    "exit_code": 0,
+    "seconds": 0.52
+  },
+  {
+    "name": "builtin-contracts",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^(TestBuiltinSkillsConformToTemplate|TestBuiltinSkillsFrontmatterIsStrictYAML|TestWorkingOnIssuesSkillCoversIssueLoopContracts|TestCreatingAgentsSkillCoversAgentCreationContracts)$",
+      "-count=1"
+    ],
+    "exit_code": 0,
+    "seconds": 6.05
+  }
+]

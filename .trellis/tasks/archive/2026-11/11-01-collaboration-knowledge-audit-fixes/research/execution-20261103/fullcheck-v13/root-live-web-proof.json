@@ -1,0 +1,31 @@
+{
+  "observed_at": "2026-11-03T10:55:46.348049+00:00",
+  "observer": "root",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "running_record": {
+    "component": "web",
+    "mode": "production",
+    "build_id": "QbgtzO5rtV_yQgK1AKq42",
+    "command": "pnpm --filter @multica/web exec next start --port 13894",
+    "source_id": "c77e3cab13a324e3041cbc9633b4d107e51700d817e7347fd972fe9dca4929fb",
+    "configuration_id": "e7d76b7401903d9818670c228bd538d848744a517f6634ffb0a13f1b214623d6",
+    "commit": "85ef5d205",
+    "launcher_pid": 2439,
+    "started_at": "2026-11-03T10:53:49Z",
+    "listener_pid": 2458
+  },
+  "running_record_sha256": "cd25cf819e49bab23aa41a07ad7205cbae0e904861eb4234a12e754179468518",
+  "HTTP": {
+    "status": 200,
+    "final_url": "http://127.0.0.1:13894/",
+    "html_sha256": "afbab7668eca1922122ec97d632b183f7ea505fb66d920a6de4d701b09aeb873",
+    "html_bytes": 626068
+  },
+  "cwd_verified": true,
+  "actual_environment_selected": {},
+  "loopback_origins_in_HTML": [
+    "http://localhost:18974",
+    "ws://localhost:18974"
+  ],
+  "source_id_matches_frozen_binding": true
+}

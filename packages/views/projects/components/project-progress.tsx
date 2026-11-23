@@ -127,11 +127,9 @@ function ProjectUpdateComposer({ project, initial, onClose, onProtectedError }: 
   const preview = usePreviewProjectUpdate(project.workspace_id, project.id); const publish = usePublishProjectUpdate(project.workspace_id, project.id);
   const editor = useRef<ContentEditorRef>(null); const [evidenceKind, setEvidenceKind] = useState<ProjectEvidenceInput["kind"]>("url");
   const [evidenceValue, setEvidenceValue] = useState(""); const [conflict, setConflict] = useState<ProjectUpdateRevision | null>(null);
-  const [descriptionConflict, setDescriptionConflict] = useState<Project | null>(null);
   const originalDescription = useRef(project.description ?? "");
   const errorFocus = useRef<HTMLDivElement>(null);
   const [reviewing, setReviewing] = useState(false);
-  useProjectAccessGuard(publish.error ?? preview.error, project.workspace_id, project.id, onProtectedError);
   const patch = (change: Partial<ProjectUpdateDraft>) => {
     if (!canAccessProject(project.workspace_id, project.id, generation)) return;
     const current = useProjectProgressDraftStore.getState().draft.entries[key]?.draft ?? draft;
@@ -145,16 +143,20 @@ function ProjectUpdateComposer({ project, initial, onClose, onProtectedError }: 
     if (editor.current && (entry || editor.current.getMarkdown().trim() !== initial.body) && canAccessProject(project.workspace_id, project.id, generation)) writeProjectProgressDraft(key, { ...draft, body: editor.current.getMarkdown().trim() });
   }), [project.workspace_id, project.id, key, draft, entry, initial.body, generation]);
   const busy = preview.isPending || publish.isPending;
-  const error = publish.error ?? preview.error;
+  const mutationError = publish.error ?? preview.error;
+  const needsDescriptionReview = errorCode(mutationError) === "project_description_conflict" && draft.operation === "create" && draft.kind === "acceptance";
+  // Realtime can replace this read repeatedly. Observe the authoritative cache
+  // instead of losing recovery when an imperative fetch promise is cancelled.
+  const descriptionQuery = useQuery({ ...projectDetailOptions(project.workspace_id, project.id), enabled: needsDescriptionReview, staleTime: 0 });
+  const descriptionConflict = needsDescriptionReview && !descriptionQuery.error && descriptionQuery.data?.description_revision != null
+    && descriptionQuery.data.description_revision !== draft.expected_description_revision ? descriptionQuery.data : null;
+  const error = needsDescriptionReview ? descriptionQuery.error ?? mutationError : mutationError;
+  useProjectAccessGuard(error, project.workspace_id, project.id, onProtectedError);
   useEffect(() => { if (error) errorFocus.current?.focus(); }, [error]);
   const handleConflict = async (failure: unknown) => {
     if (errorCode(failure) === "project_update_revision_conflict" && draft.update_id) {
       const result = await qc.fetchQuery({ ...projectUpdateRevisionsOptions(project.workspace_id, project.id, draft.update_id), staleTime: 0 }).catch(() => undefined);
       setConflict(result?.items[0] ?? null);
-    }
-    if (errorCode(failure) === "project_description_conflict" && draft.operation === "create" && draft.kind === "acceptance") {
-      const current = await qc.fetchQuery({ ...projectDetailOptions(project.workspace_id, project.id), staleTime: 0 }).catch(() => undefined);
-      if (current) setDescriptionConflict(current);
     }
   };
   const previewPublish = () => {
@@ -208,14 +210,15 @@ function ProjectUpdateComposer({ project, initial, onClose, onProtectedError }: 
     </div>}
     {error && <div ref={errorFocus} tabIndex={-1} role="alert" className="space-y-2 text-caption text-destructive"><p>{t(($) => $.management.not_published)}</p><p>{stale ? t(($) => $.management.preview_stale) : errorCode(error) === "project_evidence_forbidden" ? t(($) => $.management.source_forbidden) : error.message}</p>
       {error instanceof ApiError && error.body && typeof error.body === "object" && "field_errors" in error.body && Array.isArray(error.body.field_errors) ? <ul>{error.body.field_errors.map((item: { field?: string; message?: string }, i: number) => <li key={i}>{item.field}: {item.message}</li>)}</ul> : null}
+      {needsDescriptionReview && descriptionQuery.isError && <Button size="sm" variant="outline" disabled={descriptionQuery.isFetching} onClick={() => void descriptionQuery.refetch()}>{t(($) => $.management.retry)}</Button>}
     </div>}
     {conflict && <RevisionConflictCompare title={t(($) => $.management.conflict)} serverLabel={t(($) => $.management.server_version)} localLabel={t(($) => $.management.local_version)} serverValue={conflict.body} localValue={draft.body}
       localAction={<Button size="sm" onClick={() => { patch({ expected_revision: conflict.revision }); setConflict(null); publish.reset(); }}>{t(($) => $.management.save_merge)}</Button>} />}
     {descriptionConflict && <RevisionConflictCompare title={t(($) => $.management.conflict)} serverLabel={t(($) => $.management.server_version)} localLabel={t(($) => $.management.acceptance_description)}
       serverValue={descriptionConflict.description ?? ""} localValue={originalDescription.current}
-      serverAction={<Button size="sm" onClick={() => {
+      serverAction={<Button size="sm" disabled={descriptionQuery.isFetching} onClick={() => {
         patch({ expected_description_revision: descriptionConflict.description_revision ?? null });
-        originalDescription.current = descriptionConflict.description ?? ""; setDescriptionConflict(null); publish.reset();
+        originalDescription.current = descriptionConflict.description ?? ""; publish.reset();
       }}>{t(($) => $.management.adopt_description)}</Button>} />}
     <div className="flex flex-wrap gap-2">
       <Button variant="outline" disabled={busy} onClick={() => { if (canAccessProject(project.workspace_id, project.id, generation)) writeProjectProgressDraft(key, { ...draft, body: (editor.current?.getMarkdown() ?? draft.body).trim() }); onClose(); }}>{t(($) => $.management.cancel)}</Button>
@@ -233,7 +236,7 @@ export function ProjectProgress({ project, onProtectedError, targetUpdateId }: {
     risk: { label: t(($) => $.management.manual_risk), Icon: ShieldAlert },
     acceptance: { label: t(($) => $.management.acceptance), Icon: ClipboardCheck },
   };
-  return <section className="space-y-4"><div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-heading font-medium">{t(($) => $.management.updates)}</h2><div className="flex flex-wrap gap-2"><Button size="sm" variant="outline" onClick={() => setComposer(emptyProjectUpdateDraft())}>{t(($) => $.management.new_update)}</Button><Button size="sm" variant="outline" onClick={() => setComposer({ ...emptyProjectUpdateDraft(), kind: "acceptance", acceptance: { conclusion: "passed", scope: "", explanation: "" }, expected_description_revision: project.description_revision ?? null })}>{t(($) => $.management.new_acceptance)}</Button></div></div>
+  return <section className="space-y-4"><div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-title-sm font-medium">{t(($) => $.management.updates)}</h2><div className="flex flex-wrap gap-2"><Button size="sm" variant="outline" onClick={() => setComposer(emptyProjectUpdateDraft())}>{t(($) => $.management.new_update)}</Button><Button size="sm" variant="outline" onClick={() => setComposer({ ...emptyProjectUpdateDraft(), kind: "acceptance", acceptance: { conclusion: "passed", scope: "", explanation: "" }, expected_description_revision: project.description_revision ?? null })}>{t(($) => $.management.new_acceptance)}</Button></div></div>
     {targetUpdateId && <UpdateHistory project={project} updateId={targetUpdateId} onProtectedError={onProtectedError} />}
     {composer && <ProjectUpdateComposer key={composer.update_id ?? "create"} project={project} initial={composer} onClose={() => setComposer(null)} onProtectedError={onProtectedError} />}
     {query.isPending && <p role="status">{t(($) => $.management.loading)}</p>}

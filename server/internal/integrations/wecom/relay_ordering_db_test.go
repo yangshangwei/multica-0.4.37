@@ -146,7 +146,8 @@ func seedSiblingTurn(t *testing.T, pool *pgxpool.Pool, turn boundTurn) boundTurn
 		t.Fatalf("seed sibling: read binding: %v", err)
 	}
 	sibling := boundTurn{
-		sessionID: turn.sessionID, taskID: newID(),
+		workspaceID: turn.workspaceID,
+		sessionID:   turn.sessionID, taskID: newID(),
 		instID: turn.instID, chatID: turn.chatID,
 	}
 	inputTaskID := newID()

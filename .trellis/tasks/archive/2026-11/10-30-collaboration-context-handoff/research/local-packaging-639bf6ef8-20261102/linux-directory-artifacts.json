@@ -1,0 +1,43 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "at": "2026-11-01T20:21:54.648095+00:00",
+  "directory": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/linux-arm64-dir/linux-arm64-unpacked",
+  "tree_sha256": "19dcb5af1383834b3c784141d1db3cc1dfe99d2677f78d8cada33a6f89e35970",
+  "tree_hash_method": "same sorted compactJSON entry method asmac-app audit",
+  "manifest_entries": 85,
+  "file_count": 80,
+  "symlink_count": 0,
+  "electron": {
+    "name": "multica-desktop",
+    "sha256": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+    "type": "ELF 64-bit LSB pie executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=a0ca5486999260838b38abbe7a75c6d5ed0750df, stripped"
+  },
+  "bundled_cli": {
+    "sha256": "d616e35c73aff287210eb6d33c8be69e4420c8f6362466ed0f1db5bef07085f2",
+    "type": "ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=1caDWryPYS1hf2jJRyAJ/d_kXrTtK_t8utuSf4F3a/MAV-lJ0-KI72cANTQW58/_ovVFoqUvRJ6gxHQ9Fzc, BuildID[sha1]=18a31a0f283e82e12aa5834afb01ad004ea4ecf3, with debug_info, not stripped",
+    "build_metadata_command": [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+      "/opt/homebrew/bin/go",
+      "version",
+      "-m",
+      "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/linux-arm64-dir/linux-arm64-unpacked/resources/app.asar.unpacked/resources/bin/multica"
+    ],
+    "exit_code": 0,
+    "go": "go1.27.0",
+    "target": "linux/arm64",
+    "version_from_ldflags": "0.6.8-rc.20261102",
+    "commit_from_ldflags": "639bf6ef8",
+    "vcs_revision": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+    "vcs_modified": true,
+    "vcs_modified_scope_note": "only this lane untracked task evidence; tracked product diff and product source_id unchanged",
+    "raw_log_sha256": "d36430a88ed3da83aa3edc6ec947510245da9484f4a725f07594b9cdb9d56e22",
+    "execution": "NOT_RUN"
+  },
+  "Mac_bundled_CLI_unchanged_after_Linux_build": true,
+  "Mac_Linux_runtime_JS_and_HTML_hashes_equal": true,
+  "deb_rpm": "NOT_BUILT; uncached/uninstalled fpm/dpkg-deb/rpmbuild, no tool download",
+  "native_Linux_GUI_install_upgrade_accounts": "NOT_RUN",
+  "Provider_calls": 0
+}

@@ -1,0 +1,81 @@
+{
+  "candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "command": [
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-handoff-chain-web.spec.ts",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts",
+    "e2e/collaboration-offline-handoff.spec.ts",
+    "e2e/collaboration-runtime-handoff-web.spec.ts",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+    "--project=chromium",
+    "--workers=1",
+    "--retries=0",
+    "--list",
+    "--reporter=json"
+  ],
+  "exit_code": 0,
+  "cases": [
+    {
+      "file": "collaboration-handoff-chain-desktop.spec.ts",
+      "title": "Electron information return shows the original requester and note before restoring responsibility",
+      "project": "chromium",
+      "timeout": 60000
+    },
+    {
+      "file": "collaboration-handoff-chain-web.spec.ts",
+      "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "project": "chromium",
+      "timeout": 60000
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "project": "chromium",
+      "timeout": 60000
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "project": "chromium",
+      "timeout": 60000
+    },
+    {
+      "file": "collaboration-runtime-handoff-desktop.spec.ts",
+      "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+      "project": "chromium",
+      "timeout": 60000
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "project": "chromium",
+      "timeout": 60000
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "project": "chromium",
+      "timeout": 60000
+    }
+  ],
+  "files": [
+    "e2e/collaboration-handoff-chain-web.spec.ts",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts",
+    "e2e/collaboration-offline-handoff.spec.ts",
+    "e2e/collaboration-runtime-handoff-web.spec.ts",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts"
+  ],
+  "source_sha256": {
+    "e2e/collaboration-handoff-chain-web.spec.ts": "f2031dfae9a864ccd1a9d04a778a21000ff8e99bfb1f1c3e796a0affcb63a760",
+    "e2e/collaboration-handoff-chain-desktop.spec.ts": "9444fa57fef1fa73641dbced0409eb606d22e0ad44992990526684e30cdb1e1d",
+    "e2e/collaboration-offline-handoff.spec.ts": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e",
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540"
+  },
+  "actual_tests_executed": false,
+  "list_report_sha256": "caf259d817d03123dcb05d4cbac6ece63ab6447c50706fb48fba0b96d59b06a3"
+}

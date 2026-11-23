@@ -1,0 +1,50 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-runtime-integration-20261031/packages/views
+
+Not implemented: navigation to another Document
+ ❯ collaboration/execution-panel.test.tsx (9 tests | 2 failed) 557ms
+   × opens recorded content lazily, retains the group context and retries the next page without losing the first 160ms
+   × removes the open transcript when a later page confirms access loss 27ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  collaboration/execution-panel.test.tsx > opens recorded content lazily, retains the group context and retries the next page without losing the first
+AssertionError: expected 'https://server.example/api/collaborat…' to contain 'cursor=records-page-two'
+
+Expected: "cursor=records-page-two"
+Received: "https://server.example/api/collaboration/issues/00000000-0000-4000-8000-000000000001/runs/00000000-0000-4000-8000-000000000017/handoff?execution_view_version=6"
+
+ ❯ collaboration/execution-panel.test.tsx:97:36
+     95|   expect(within(records).queryByRole("button", { name: "Load more reco…
+     96|   expect(within(records).getByRole("link", { name: "Open comment" })).…
+     97|   expect(fetch.mock.calls[1]?.[0]).toContain("cursor=records-page-two"…
+       |                                    ^
+     98|   expect(fetch.mock.calls[2]?.[0]).toContain("cursor=records-page-two"…
+     99| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  collaboration/execution-panel.test.tsx > removes the open transcript when a later page confirms access loss
+Error: expect(element).toBeInTheDocument()
+
+element could not be found in the document
+ ❯ collaboration/execution-panel.test.tsx:121:54
+    119|     .mockResolvedValueOnce(new Response(JSON.stringify({ code: "not_fo…
+    120|   mount(page.run.id);
+    121|   expect(await screen.findByText("Frozen question")).toBeInTheDocument…
+       |                                                      ^
+    122|   await userEvent.click(screen.getByRole("button", { name: "Load more …
+    123|   expect(await screen.findByText("You no longer have access to this is…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  2 failed | 50 passed (52)
+   Start at  00:55:34
+   Duration  4.49s (transform 4.91s, setup 491ms, import 10.42s, tests 1.72s, environment 4.25s)
+
+undefined
+/Volumes/artisan/code/2026/mc-runtime-integration-20261031/packages/views:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/run-handoff.test.tsx collaboration/run-navigation.test.tsx collaboration/execution-panel.test.tsx collaboration/collaboration-detail.test.tsx collaboration/host-execution.test.tsx navigation/app-link.test.tsx

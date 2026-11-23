@@ -1,0 +1,41 @@
+{
+  "externalRequests": [],
+  "pageErrors": [],
+  "checks": [
+    {
+      "name": "Direct Nginx browser download",
+      "file": "multica-desktop-1.0.0-windows-x64.exe",
+      "bytes": 32768
+    },
+    {
+      "name": "Publish then refresh",
+      "from": "1.0.0",
+      "to": "1.0.1",
+      "configPreserved": true
+    },
+    {
+      "name": "Malformed metadata -> disabled link -> retry recovery",
+      "guidePreserved": true,
+      "configIndependent": true
+    },
+    {
+      "name": "390px viewport / long business address",
+      "overflow": false
+    },
+    {
+      "name": "HTTP insecure-context clipboard fallback",
+      "secureContext": false,
+      "feedback": "已复制业务服务器地址。请粘贴到客户端的服务器设置中。",
+      "transport": "Reserved test hostname responses relayed from real Nginx; no content mocked"
+    },
+    {
+      "name": "Simulated clipboard denial",
+      "selectionPreserved": true,
+      "truthfulFeedback": true
+    }
+  ],
+  "screenshots": [
+    "desktop.png",
+    "mobile.png"
+  ]
+}

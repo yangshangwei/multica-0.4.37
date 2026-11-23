@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect, vi } from "vitest";
 import { QueryClient } from "@tanstack/react-query";
 import {
@@ -75,6 +76,16 @@ describe("onInboxIssueDeleted", () => {
     const qc = new QueryClient();
     expect(() => onInboxIssueDeleted(qc, wsId, "issue-a")).not.toThrow();
     expect(qc.getQueryData<InboxItem[]>(inboxKeys.list(wsId))).toBeUndefined();
+  });
+
+  it("also removes inaccessible issue rows from the snoozed list", () => {
+    const qc = new QueryClient();
+    qc.setQueryData(inboxKeys.snoozed(wsId), [
+      makeItem("delayed-a", "issue-a", { snoozed_until: "2027-01-01T09:00:00Z" }),
+      makeItem("delayed-b", "issue-b", { snoozed_until: "2027-01-01T09:00:00Z" }),
+    ]);
+    onInboxIssueDeleted(qc, wsId, "issue-a");
+    expect(qc.getQueryData<InboxItem[]>(inboxKeys.snoozed(wsId))?.map((item) => item.id)).toEqual(["delayed-b"]);
   });
 });
 
@@ -195,5 +206,15 @@ describe("patchInboxIssueProjection", () => {
     expect(
       qc.getQueryData<InboxItem[]>(inboxKeys.list(wsId))?.[0],
     ).not.toHaveProperty("issue_priority");
+  });
+
+  it("refreshes current issue status and priority in snoozed rows", () => {
+    const qc = new QueryClient();
+    qc.setQueryData(inboxKeys.snoozed(wsId), [
+      makeItem("delayed-a", "issue-a", { issue_status: "todo", issue_priority: "low", snoozed_until: "2027-01-01T09:00:00Z" }),
+    ]);
+    patchInboxIssueProjection(qc, wsId, "issue-a", { status: "done", priority: "high" });
+    expect(qc.getQueryData<InboxItem[]>(inboxKeys.snoozed(wsId))?.[0])
+      .toMatchObject({ issue_status: "done", issue_priority: "high", snoozed_until: "2027-01-01T09:00:00Z" });
   });
 });

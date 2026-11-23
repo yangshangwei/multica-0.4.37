@@ -9,7 +9,8 @@ usage() {
   echo "usage: $0 [--race]" >&2
 }
 
-go_test_args=(test)
+# internal/service alone takes ~13 min under -race, past go test's 10 min default.
+go_test_args=(test -timeout=40m)
 case "$#" in
   0) ;;
   1)
@@ -25,6 +26,16 @@ case "$#" in
     ;;
 esac
 
+# Some test helpers still have local-development defaults. Refuse missing
+# configuration before even listing packages, so none can reach that database.
+case "${DATABASE_URL:-}" in
+  *[![:space:]]*) ;;
+  *)
+    echo "Go tests require an explicit DATABASE_URL for an isolated test database; use go test -c for compile-only checks" >&2
+    exit 2
+    ;;
+esac
+
 cd "$REPO_ROOT/server"
 packages=$(go list ./...)
 regular_packages=()
@@ -35,7 +46,9 @@ for package in $packages; do
   esac
 done
 
-"$GUARD_SCRIPT" -- go "${go_test_args[@]}" -p 2 -parallel 2 "${regular_packages[@]}"
+# Database-backed packages share DATABASE_URL and mutate singleton rows, such
+# as the internal organization. Serialize packages to keep their fixtures apart.
+"$GUARD_SCRIPT" -- go "${go_test_args[@]}" -p 1 -parallel 2 "${regular_packages[@]}"
 # Subprocess-backed agent tests have hard deadlines. Limit both package and
 # within-package parallelism so race builds do not starve their parent loops.
 "$GUARD_SCRIPT" -- go "${go_test_args[@]}" -p 2 -parallel 2 ./pkg/agent/...

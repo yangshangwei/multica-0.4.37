@@ -1,0 +1,55 @@
+
+Running 6 tests using 1 worker
+
+[1A[2K[1/6] [chromium] › e2e/collaboration-lane-close-controls.spec.ts:94:3 › Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets
+[1A[2K[2/6] [chromium] › e2e/collaboration-lane-close-controls.spec.ts:100:5 › Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed
+[1A[2K[3/6] [chromium] › e2e/collaboration-lane-close-controls.spec.ts:100:5 › Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed
+[1A[2K[4/6] [chromium] › e2e/collaboration-lane-close-controls.spec.ts:94:3 › Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets
+[1A[2K[5/6] [chromium] › e2e/collaboration-lane-close-controls.spec.ts:100:5 › Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed
+[1A[2K  1) [chromium] › e2e/collaboration-lane-close-controls.spec.ts:100:5 › Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed 
+
+    Error: password registration failed: 429
+
+       at fixtures.ts:77
+
+      75 |       body: JSON.stringify({ username, password, name }),
+      76 |     });
+    > 77 |     if (!response.ok) throw new Error(`password registration failed: ${response.status}`);
+         |                             ^
+      78 |     const data = await response.json();
+      79 |     if (typeof data.token !== "string" || !data.token || typeof data.user?.id !== "string") {
+      80 |       throw new Error("Password registration returned an unusable test session");
+        at TestApiClient.registerPassword (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts:77:29)
+        at actor (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-execution.ts:115:21)
+        at seedCrossClientExecution (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-execution.ts:127:24)
+        at seedLifecycleControls (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-lifecycle-controls.ts:138:19)
+        at laneCloseClients (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-lane-close-controls.spec.ts:16:16)
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-lane-close-controls.spec.ts:103:7
+
+
+[1A[2K[6/6] [chromium] › e2e/collaboration-lane-close-controls.spec.ts:100:5 › Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed
+[1A[2K  2) [chromium] › e2e/collaboration-lane-close-controls.spec.ts:100:5 › Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed 
+
+    Error: password registration failed: 429
+
+       at fixtures.ts:77
+
+      75 |       body: JSON.stringify({ username, password, name }),
+      76 |     });
+    > 77 |     if (!response.ok) throw new Error(`password registration failed: ${response.status}`);
+         |                             ^
+      78 |     const data = await response.json();
+      79 |     if (typeof data.token !== "string" || !data.token || typeof data.user?.id !== "string") {
+      80 |       throw new Error("Password registration returned an unusable test session");
+        at TestApiClient.registerPassword (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts:77:29)
+        at actor (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-execution.ts:115:21)
+        at seedCrossClientExecution (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-cross-client-execution.ts:126:20)
+        at seedLifecycleControls (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-lifecycle-controls.ts:138:19)
+        at laneCloseClients (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-lane-close-controls.spec.ts:16:16)
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-lane-close-controls.spec.ts:103:7
+
+
+[1A[2K  2 failed
+    [chromium] › e2e/collaboration-lane-close-controls.spec.ts:100:5 › Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed 
+    [chromium] › e2e/collaboration-lane-close-controls.spec.ts:100:5 › Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed 
+  4 passed (1.0m)

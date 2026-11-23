@@ -1,0 +1,2 @@
+CREATE UNIQUE INDEX CONCURRENTLY idx_collaboration_account_invalidation_credential
+ON collaboration_account_invalidation (user_id, revocation_key);

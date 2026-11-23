@@ -1,0 +1,551 @@
+{
+  "schema_version": 1,
+  "increment": "client3d",
+  "owner": "/root/s2_client_resume",
+  "status": "implemented_focused_checks_passed_independent_check_pending",
+  "recorded_at": "2026-11-14T12:40:10.455482+00:00",
+  "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "source": {
+    "overlay": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source",
+    "manifest": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source-manifest.json",
+    "manifest_sha256": "de33c14aefa0d9422ef21f750ddc7ea75087105332bdc4fb6d9f83e3b332a460",
+    "checked3c_base": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3c-check/final-source-manifest.json",
+    "checked3c_base_sha256": "72bd081c7299d58577081e52d1c434267783cf04af1c32ac80570dd5bf8497e5",
+    "full_source": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/verification-source",
+    "full_manifest": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/full-source-manifest.json",
+    "full_manifest_sha256": "21b16e7707ac9f58333772a918d05c29f566282ae0e8531134cdcd3fc9dd929d",
+    "files": 2532,
+    "links": 152,
+    "patch": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/s2-client3d.patch",
+    "patch_sha256": "c4204e10ea5e4bd6911af143aa7a031ba526d1f350ea1e9862981f300ff524bf",
+    "pre3d_manifest": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/before-manifest.json",
+    "pre3d_manifest_sha256": "b584ff6e99396d8a9808fbf3591be32e44169b374b05a546a0a26cb549df7826",
+    "new_dependency_supplement": 0,
+    "live_peer_differences_at_freeze": []
+  },
+  "files": [
+    {
+      "path": "packages/core/issues/completion-schema.ts",
+      "before_sha256": "0034c4d653f8df75692719857bf7806331e0a979f9d7c1111285fc7a57fe40a6",
+      "sha256": "8a27a35bf99f35f79a6be9636b64a77138e9bb4a9cf99faa50f085686bfbcc18",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/issues/completion-schema.ts",
+      "live_sha256_at_freeze": "8a27a35bf99f35f79a6be9636b64a77138e9bb4a9cf99faa50f085686bfbcc18"
+    },
+    {
+      "path": "packages/core/issues/completion-draft.ts",
+      "before_sha256": "b7ae526c4b8cbedf955b7b3bf5e5a5e7d92948e9827ebdf8bf9800472340c105",
+      "sha256": "b7ae526c4b8cbedf955b7b3bf5e5a5e7d92948e9827ebdf8bf9800472340c105",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/issues/completion-draft.ts",
+      "live_sha256_at_freeze": "b7ae526c4b8cbedf955b7b3bf5e5a5e7d92948e9827ebdf8bf9800472340c105"
+    },
+    {
+      "path": "packages/core/issues/completion-queries.ts",
+      "before_sha256": "7ade1dcd03205d6b9825b4edc3577a6bc9d8f2042ea9f8129221806eb59ff9e1",
+      "sha256": "d67f712c463993e2fef0d8224099e7900dc6e98ed2d16b3fef8ca1f1db74ec5c",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/issues/completion-queries.ts",
+      "live_sha256_at_freeze": "d67f712c463993e2fef0d8224099e7900dc6e98ed2d16b3fef8ca1f1db74ec5c"
+    },
+    {
+      "path": "packages/core/issues/completion-test-fixtures.ts",
+      "before_sha256": "ae6507c25c00c82184022ea8027242d2e16c2ee38818fa62576635d3feb16fe6",
+      "sha256": "a33246fcadd69fdb90bf6bacb07ebe5fb818c7e3372db83fcbbb0b2549c4469c",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/issues/completion-test-fixtures.ts",
+      "live_sha256_at_freeze": "a33246fcadd69fdb90bf6bacb07ebe5fb818c7e3372db83fcbbb0b2549c4469c"
+    },
+    {
+      "path": "packages/core/issues/completion-collaboration-schema.test.ts",
+      "before_sha256": null,
+      "sha256": "8f3bcb64c920c01d17a84879941d6e57587682ffecd28334d5639c640f80491a",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/issues/completion-collaboration-schema.test.ts",
+      "live_sha256_at_freeze": "8f3bcb64c920c01d17a84879941d6e57587682ffecd28334d5639c640f80491a"
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "before_sha256": "4f4c077ce5d097bfd5c414b81acc34b61f313b9630f86e09e9f50154f57baf27",
+      "sha256": "d11ccf3d1a0d18907ad2b15ef78733b857ddd109fd5ac82a6fe9b1d3ff8d8932",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/api/client.ts",
+      "live_sha256_at_freeze": "d11ccf3d1a0d18907ad2b15ef78733b857ddd109fd5ac82a6fe9b1d3ff8d8932"
+    },
+    {
+      "path": "packages/core/collaboration/completion-schema.ts",
+      "before_sha256": null,
+      "sha256": "f7b36b0e2c55f5f09c0dd51cd7a4f3a9ecb86d5239a590eae5d28b9fd1d65145",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/completion-schema.ts",
+      "live_sha256_at_freeze": "f7b36b0e2c55f5f09c0dd51cd7a4f3a9ecb86d5239a590eae5d28b9fd1d65145"
+    },
+    {
+      "path": "packages/core/collaboration/completion-queries.ts",
+      "before_sha256": null,
+      "sha256": "ab1654a5cd106f8a839a57a37c3022e9bb5df8a849f40f684ffd5533d1d73394",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/completion-queries.ts",
+      "live_sha256_at_freeze": "ab1654a5cd106f8a839a57a37c3022e9bb5df8a849f40f684ffd5533d1d73394"
+    },
+    {
+      "path": "packages/core/collaboration/completion.test.ts",
+      "before_sha256": null,
+      "sha256": "b8aa8362db3c8dbbc47ee64e4d92d3fd12d9c626ee9c8732cad21755080b8aa4",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/completion.test.ts",
+      "live_sha256_at_freeze": "b8aa8362db3c8dbbc47ee64e4d92d3fd12d9c626ee9c8732cad21755080b8aa4"
+    },
+    {
+      "path": "packages/core/collaboration/action.ts",
+      "before_sha256": "ff45c1808a94d6068e4c40695a2085c880a266a3d011da6c82dc8f350e6aca55",
+      "sha256": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/action.ts",
+      "live_sha256_at_freeze": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65"
+    },
+    {
+      "path": "packages/core/collaboration/operation.ts",
+      "before_sha256": "92c9e004d61001a3c448fd416fc68efeb2d2cfa7d9c5bef8f61140f38715460e",
+      "sha256": "b9cd10c98e42be139046d8c672643e3d969df2694965dc66206947555a05b79c",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/operation.ts",
+      "live_sha256_at_freeze": "b9cd10c98e42be139046d8c672643e3d969df2694965dc66206947555a05b79c"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-schema.ts",
+      "before_sha256": "ebdcd5409168fefd2212627cce519a78935243a1a63d61b09b1962a4a781a965",
+      "sha256": "67883a29c07f5b9df2a3a52a315230152fb4ac49afd0c434868db423576fe8d8",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/delivery-schema.ts",
+      "live_sha256_at_freeze": "67883a29c07f5b9df2a3a52a315230152fb4ac49afd0c434868db423576fe8d8"
+    },
+    {
+      "path": "packages/core/collaboration/stage-source-cache.ts",
+      "before_sha256": "794b9d3502a9a075512ea49d14cea863b2898e327b023071b3b8cffcd501cfed",
+      "sha256": "6a5d3c26cea253a65ec4c4360f71e92643398c6c4eaccee39b775b17181b3e6e",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/stage-source-cache.ts",
+      "live_sha256_at_freeze": "6a5d3c26cea253a65ec4c4360f71e92643398c6c4eaccee39b775b17181b3e6e"
+    },
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "before_sha256": "1b78983ef12286e6ba00d09ea0a3943c203e5d8d62744d165e01cde668da83e4",
+      "sha256": "4b6dddc5a49be457aca6414d10254f4bdae0605f00f3a60d0c52f05b7839d384",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/index.ts",
+      "live_sha256_at_freeze": "4b6dddc5a49be457aca6414d10254f4bdae0605f00f3a60d0c52f05b7839d384"
+    },
+    {
+      "path": "packages/core/collaboration/schema.ts",
+      "before_sha256": "a4af82f7b8ebd82001cab485a4e8e5b29efb42eebd8cde8027550bccd5e0bbc6",
+      "sha256": "780f2248b0798741b64315c531ff3f84309885468e8b80b27cc2b9df1ab3880b",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/schema.ts",
+      "live_sha256_at_freeze": "780f2248b0798741b64315c531ff3f84309885468e8b80b27cc2b9df1ab3880b"
+    },
+    {
+      "path": "packages/core/collaboration/activity-schema.ts",
+      "before_sha256": "a2f5a07550cc619dd281e4f8146873f945341657f16cb948f846d5017324ee39",
+      "sha256": "793ee6958ff5b776b422c4f597cb65864dc961578d0da430f76e4932bef63997",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/activity-schema.ts",
+      "live_sha256_at_freeze": "793ee6958ff5b776b422c4f597cb65864dc961578d0da430f76e4932bef63997"
+    },
+    {
+      "path": "packages/core/collaboration/result-operation.test.ts",
+      "before_sha256": "2ed734e46bab3c840a76bdc8900d4423bddf2b233cfcf1aa2d1dc8d9a12163b5",
+      "sha256": "4bb67336b8a45293581c9d489bdc44927aa0dea8434a1cdce54da5023a974d59",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/collaboration/result-operation.test.ts",
+      "live_sha256_at_freeze": "4bb67336b8a45293581c9d489bdc44927aa0dea8434a1cdce54da5023a974d59"
+    },
+    {
+      "path": "packages/core/admin/collaboration-schema.ts",
+      "before_sha256": "e53d0b3759c5289b1710d8b3ef87cfe60311ae785343db34376edfe1a9e41396",
+      "sha256": "945e36e6d91d7a3bbe2d2bc4e9b2914efca5ade3dd45c343cab14d8d0547974e",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/admin/collaboration-schema.ts",
+      "live_sha256_at_freeze": "945e36e6d91d7a3bbe2d2bc4e9b2914efca5ade3dd45c343cab14d8d0547974e"
+    },
+    {
+      "path": "packages/core/admin/operation-draft.ts",
+      "before_sha256": "12b9bd36f05be1c088056c0b66fb7726362b898a09946228850b2313c28182ee",
+      "sha256": "1472e0597696a86343fb18dad4d236cecd8baade07ebb2fc5bdc54711d6398f9",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/admin/operation-draft.ts",
+      "live_sha256_at_freeze": "1472e0597696a86343fb18dad4d236cecd8baade07ebb2fc5bdc54711d6398f9"
+    },
+    {
+      "path": "packages/core/admin/collaboration-queries.ts",
+      "before_sha256": "c7c555c90ef255e236b59714f64a3b559d0b30fade31f7f514e9ba3cc9073307",
+      "sha256": "8eaf4df19a8828ccb8edc5e57fb4f15a1fb07f33d4685c460bfb2ff5f264ccdf",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/core/admin/collaboration-queries.ts",
+      "live_sha256_at_freeze": "8eaf4df19a8828ccb8edc5e57fb4f15a1fb07f33d4685c460bfb2ff5f264ccdf"
+    },
+    {
+      "path": "packages/views/collaboration/completion-authorization.tsx",
+      "before_sha256": null,
+      "sha256": "d1f6d6025cbfd4e77ad2149f547c42d03cd376ef8406d8b751c60e9ebbb4eea8",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/views/collaboration/completion-authorization.tsx",
+      "live_sha256_at_freeze": "d1f6d6025cbfd4e77ad2149f547c42d03cd376ef8406d8b751c60e9ebbb4eea8"
+    },
+    {
+      "path": "packages/views/collaboration/completion-authorization.test.tsx",
+      "before_sha256": null,
+      "sha256": "2343b2ad8e203f5f3a9b803d0e81f0218dd5fad5b9a1ba9c9d93a054f50d7e7d",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/views/collaboration/completion-authorization.test.tsx",
+      "live_sha256_at_freeze": "2343b2ad8e203f5f3a9b803d0e81f0218dd5fad5b9a1ba9c9d93a054f50d7e7d"
+    },
+    {
+      "path": "packages/views/collaboration/workflow.tsx",
+      "before_sha256": "d75193bad8733a722bccfad7e5fe494031104de053e54268c6efe126ea1a90ea",
+      "sha256": "bf247af6b9f93246ebb7e8ea168526d46ed62ac2db3df04484018a7266515d91",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/views/collaboration/workflow.tsx",
+      "live_sha256_at_freeze": "bf247af6b9f93246ebb7e8ea168526d46ed62ac2db3df04484018a7266515d91"
+    },
+    {
+      "path": "packages/views/collaboration/activity.tsx",
+      "before_sha256": "9f6c9435d8292f54dd0a18836a2aa030deaec8123e99fe5cc88c3bac99269b8e",
+      "sha256": "03b9055038661f320a35bd7a932bb0afc54375bba90c36dace3025765aec5940",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/views/collaboration/activity.tsx",
+      "live_sha256_at_freeze": "03b9055038661f320a35bd7a932bb0afc54375bba90c36dace3025765aec5940"
+    },
+    {
+      "path": "packages/views/collaboration/notifications.tsx",
+      "before_sha256": "46ec528e45ae7fa5fbf51b85ef5b41c9c7f33b2d4db7aa924a2d6c99d2f327e2",
+      "sha256": "ed9a744ae3e61b5387135a1f8cc9b9499dceff1f824bb770542fd30d22ee1264",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/views/collaboration/notifications.tsx",
+      "live_sha256_at_freeze": "ed9a744ae3e61b5387135a1f8cc9b9499dceff1f824bb770542fd30d22ee1264"
+    },
+    {
+      "path": "packages/views/admin/collaboration/collaboration-form.tsx",
+      "before_sha256": "392970cb97afa64c6b13470e0d6255d93a9fe03b641bf63f86d3e7b254524119",
+      "sha256": "bc5d8886f0360483a9e42cd45f3e98c59aa58625c2d521ef66e0ea8117443da5",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/views/admin/collaboration/collaboration-form.tsx",
+      "live_sha256_at_freeze": "bc5d8886f0360483a9e42cd45f3e98c59aa58625c2d521ef66e0ea8117443da5"
+    },
+    {
+      "path": "packages/views/admin/collaboration/collaboration-page.test.tsx",
+      "before_sha256": "dc2197ebeee1d2f522fdf31290dd24be6e5722a7743eb12649d88a908a50b578",
+      "sha256": "74a06a74d2553e5885b428188396431eb9707947bf23cbc6c9242ceb06cd124c",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/views/admin/collaboration/collaboration-page.test.tsx",
+      "live_sha256_at_freeze": "74a06a74d2553e5885b428188396431eb9707947bf23cbc6c9242ceb06cd124c"
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "before_sha256": "2970a09e6e1ad68dd57d41fc42008d0f063f6019b2d23f41eed3b3f996c01cbe",
+      "sha256": "c90649667ac038cc021e70cec4e93adece9ac0c647845ac407d6656def87c3d5",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/views/locales/en/collaboration.json",
+      "live_sha256_at_freeze": "c90649667ac038cc021e70cec4e93adece9ac0c647845ac407d6656def87c3d5"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "before_sha256": "9caeaa1cce8358051c072040fe7314b892e421fb32b1ce85c2426b64db828434",
+      "sha256": "d14670ee3ff361c9f0e39b1676cd405a4f8d5172241858278ae7a88ce07b2984",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/source/packages/views/locales/zh-Hans/collaboration.json",
+      "live_sha256_at_freeze": "d14670ee3ff361c9f0e39b1676cd405a4f8d5172241858278ae7a88ce07b2984"
+    }
+  ],
+  "contracts": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "12009ef3533f12eba8a5773e98f970a0576073c0bbbd7d1124e336b1af30106a",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/contracts/wire-contract.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-client-contract.md",
+      "sha256": "0d46ea40ac97b0bef782b959222035dbcdf5c96c921a7ff6d7b1a5a16f17fcc6",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/contracts/server-increment-2d-client-contract.md"
+    }
+  ],
+  "commands": [
+    {
+      "id": "core-flow-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-flow-1.command.json",
+      "command_sha256": "f561597d3cf294b0d67f6ed6869789362dc50806b68b484da22816630c7cb00d",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-flow-1.log",
+      "log_sha256": "0c082c241f3ff9b70b0adbcbbd8503a3471df95562d58fb0a0849c9d02b59e1b",
+      "exit": 1,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-flow-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "core-red-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-red-1.command.json",
+      "command_sha256": "67383b37a94a33e45200516eb4aa9f63c19b35a582a1db75a7c20b415c2f4528",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-red-1.log",
+      "log_sha256": "a22f6bf1b94d3c813233a421b6df819118c9538bf0b693e21028ecd3db9f662c",
+      "exit": 1,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "core-schema-green-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-schema-green-1.command.json",
+      "command_sha256": "334b019077e72457046e4dc685b02ad4dfb1501b6805f0837deb492abdbde120",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-schema-green-1.log",
+      "log_sha256": "8b0ec543df4cc2ad70f64772af0fbc2f9ee40ba84208358dc22be8597ce2f2b6",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-schema-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "core-typecheck-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-typecheck-1.command.json",
+      "command_sha256": "35a5411102d2cc72337cb17b3d940f69787e622e3c54ff94d3ffa97fde99a626",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-typecheck-1.log",
+      "log_sha256": "650408cc4647c802c83be2a01790fdba2bc502c0caff1b26979f56b9cf686c77",
+      "exit": 2,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/core-typecheck-1.exit",
+      "exit_sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "id": "isolated-admin-privacy-green",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-admin-privacy-green.command.json",
+      "command_sha256": "63830249c8ee964a1601e017a5be8e778e2dda2276e8acc5f1b527f20598ff9b",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-admin-privacy-green.log",
+      "log_sha256": "30eb666ed505e9279b10d079bb16b68d19bfa2655c7aea9e4c8934c09b39eeab",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-admin-privacy-green.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-admin-privacy-red",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-admin-privacy-red.command.json",
+      "command_sha256": "f4d6688b1dffb1bc97e9be114a9a14e113d1f0dd02fa991997a9e2b5a3669706",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-admin-privacy-red.log",
+      "log_sha256": "8387096b3b3293f5033c3ff1064b5836c20ba7270d9f0b0ac2dde37e2a3a3397",
+      "exit": 1,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-admin-privacy-red.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "isolated-core-final-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-final-1.command.json",
+      "command_sha256": "beda3c4b95db0d92abdc0f502227c7ccca9394fb63e372fbfe253e38e3c39153",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-final-1.log",
+      "log_sha256": "090d64de5056203bee6e28b39f947988e8d4ffdbd6aede48a4d888abcddfbcd1",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-final-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-core-final-2",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-final-2.command.json",
+      "command_sha256": "beda3c4b95db0d92abdc0f502227c7ccca9394fb63e372fbfe253e38e3c39153",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-final-2.log",
+      "log_sha256": "9f3d606d6516c46f3ee185c20df62058f62943f119646e7bda5facea1c6b906b",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-final-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-core-flow-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-flow-1.command.json",
+      "command_sha256": "0e7b0fe3c8588d872dcc36f495f57086467867b186f66191d66583771be3711a",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-flow-1.log",
+      "log_sha256": "3f6a204c668d3234bc160e9fcba3b7b55041141eca7cd4f1c25e06dacaad64b2",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-flow-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-core-lint-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-lint-1.command.json",
+      "command_sha256": "778196f102da29841e7538005329b5c0670e60842667763c3366d47804f8289a",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-lint-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-lint-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-core-lint-final",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-lint-final.command.json",
+      "command_sha256": "7b823d51624e1c4901307b4efaa3ce81434ae22873c22e44fad2b5766cb06229",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-lint-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-lint-final.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-core-types-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-types-1.command.json",
+      "command_sha256": "488d9b1fac2b4ef79a48dfb7b5bb53b6ce020a746a6c0573ea29a57591e0b9a0",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-types-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-types-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-core-types-final-2",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-types-final-2.command.json",
+      "command_sha256": "488d9b1fac2b4ef79a48dfb7b5bb53b6ce020a746a6c0573ea29a57591e0b9a0",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-types-final-2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-types-final-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-core-types-final",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-types-final.command.json",
+      "command_sha256": "488d9b1fac2b4ef79a48dfb7b5bb53b6ce020a746a6c0573ea29a57591e0b9a0",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-types-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-core-types-final.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-views-final-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-final-1.command.json",
+      "command_sha256": "866ebce9ff98afca4b6c71bb3dc975abe67a4ed0e9ea5942506a9784a0a19551",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-final-1.log",
+      "log_sha256": "f6640fb2ece0580eb02af001ea5312a61bb69556252ce942e693dec3c5dcc320",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-final-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-views-flow-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-flow-1.command.json",
+      "command_sha256": "cf15cb12cfd052ce869be1779145c714264b974385d48d301dc5bc7759480140",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-flow-1.log",
+      "log_sha256": "b1cc17efacdbafa0b57dafe92964e70ec7935a06f30a3f1c961ba6864cd1a23a",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-flow-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-views-lint-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-lint-1.command.json",
+      "command_sha256": "d933023020023a69ecee879fbc879b2d5cb74e3c16e0ab567d07051d9c016932",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-lint-1.log",
+      "log_sha256": "41d7c1c59837344eeec0dd4ac88dd4195570cde497517c1e507468a1ef3fd2ed",
+      "exit": 1,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-lint-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "isolated-views-lint-2",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-lint-2.command.json",
+      "command_sha256": "d933023020023a69ecee879fbc879b2d5cb74e3c16e0ab567d07051d9c016932",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-lint-2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-lint-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-views-types-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-1.command.json",
+      "command_sha256": "8e43c67916e801934d3e3480229e9a4f21fabe08a2711b607c6e55560794a7cc",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-1.log",
+      "log_sha256": "77df63efc227489329c82ca284b930b2f4bffc621c1b0a062f18015aa35ea52f",
+      "exit": 2,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-1.exit",
+      "exit_sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "id": "isolated-views-types-2",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-2.command.json",
+      "command_sha256": "8e43c67916e801934d3e3480229e9a4f21fabe08a2711b607c6e55560794a7cc",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-views-types-final-2",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-final-2.command.json",
+      "command_sha256": "8e43c67916e801934d3e3480229e9a4f21fabe08a2711b607c6e55560794a7cc",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-final-2.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-final-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "isolated-views-types-final",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-final.command.json",
+      "command_sha256": "8e43c67916e801934d3e3480229e9a4f21fabe08a2711b607c6e55560794a7cc",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/isolated-views-types-final.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "types-2",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/types-2.command.json",
+      "command_sha256": "4cab21f2e0598fa1d33fab20d2440be9b738a08ab0dec1015b5f05337f2b61c2",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/types-2.log",
+      "log_sha256": "6ffb1bd6f9a7b81cc8e4e0da9ecbc6d4a88870e879751e6c4d59dda49b5c3aa9",
+      "exit": 2,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/types-2.exit",
+      "exit_sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "id": "views-flow-1",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/views-flow-1.command.json",
+      "command_sha256": "33597845dc5b5358c374458a66ed8e7d50a2ed87befaadbddb2559a0fd9eccf7",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/views-flow-1.log",
+      "log_sha256": "ecf33b052adf7f32d43964173b4d84a8990897e92f512a5685d471f46075bcd4",
+      "exit": 1,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/views-flow-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "views-flow-2",
+      "command_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/views-flow-2.command.json",
+      "command_sha256": "a9ea7abea9f265a8a7cb92e00c5a65546f6da8368b0c7f935ba46ebcee83d874",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/views-flow-2.log",
+      "log_sha256": "635528fc6846345cfa000301061acd923be76a8b629463ffa4f2e59884b19874",
+      "exit": 0,
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/views-flow-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "final_command_ids": [
+    "isolated-core-final-2",
+    "isolated-views-final-1",
+    "isolated-core-types-final-2",
+    "isolated-views-types-final-2",
+    "isolated-core-lint-1",
+    "isolated-core-lint-final",
+    "isolated-views-lint-2"
+  ],
+  "final_counts": {
+    "core": {
+      "suites": 28,
+      "passed": 544,
+      "failed": 0,
+      "skipped": 0
+    },
+    "views": {
+      "suites": 11,
+      "passed": 110,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "static": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-client3d/static-final.json",
+    "sha256": "857e694f85ea8bd68f8e872b8eb0206e3712b913a4731ebed692bf0819c6ecf5"
+  },
+  "retained_failures": [
+    "core-red-1: ordinary-only M1 schema refused collaboration targets (9 failures)",
+    "core-typecheck-1: in-flight common operation parameter lacked completion",
+    "views-flow-1: recovery test used a nonexistent old button label",
+    "core-flow-1: test terminal collaboration revision did not increment the large original version",
+    "types-2: concurrent peer knowledge schema/view failures; not modified or included in S2 snapshot",
+    "isolated-views-types-1: unused test parameter",
+    "isolated-views-lint-1: React reserved children prop, renamed sourceChildren",
+    "isolated-admin-privacy-red: actual administrative source ID/cursor/private error logging; fixed narrow read-path redaction"
+  ],
+  "implementation": [
+    "Closed ordinary/submission/self/admin M1 target models and exact variant receipts; existing common authorization draft/GET recovery reused",
+    "Normal and R38 root candidate/preview reads use the frozen2d contract; true numeric root revision and separately authorized ordinary child evidence",
+    "Shared UI explicitly chooses source/artifact, reviews, authorizes, then uses existing normal/admin completion writer with the same operation ID",
+    "Completion is retired only after existing workflow receipt plus exact consumed M1 authorization receipt; bound normal GET404 never reposts",
+    "Source-generation fencing now clears completion evidence; private M1 authorization references remain separate; administrator evidence logs redacted",
+    "Safe closed stage activity metadata and localized reference-only notification kinds; no new channel/outbox"
+  ],
+  "limits": [
+    "No real API/DB/model/provider/browser/production Web/Desktop execution; synthetic HTTP/unit fixtures only",
+    "Server2d routes and all-writer gates plus final joint A01-A12 remain required",
+    "No server/E2E/platform routing/dependency/git edits; no task archive",
+    "Final checking uses independently checked3c plus explicit29-file S2 overlay, not concurrent peer workspace graph"
+  ],
+  "git_writes": false,
+  "database_access": false,
+  "real_runtime_started": false,
+  "new_dependencies": false,
+  "report_markdown_sha256": "9e4f505c347af0bd76c38f1f01607b523e57c4015183f5eb4a234c5b93553984"
+}

@@ -1,0 +1,80 @@
+{
+  "at": "2026-11-16T00:32:10.338753+00:00",
+  "reviewer": "/root/p2_r07_check",
+  "verdict": "R11_AFTER_REUSE_ACCEPTED_WITH_RETAINED_ARTIFACT_AUDIT_CORRECTION",
+  "original_after": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/execution-after-r11-r01.json",
+    "sha256": "73dc2caa4bc729c509fa753bfa0d5a8db0d019c501dee616d37e2582b6232611",
+    "bytes": 62367
+  },
+  "artifact_supplement": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/execution-after-r11-r01-artifact-supplement.json",
+    "sha256": "1b54b0a1548c0c0d7739415956edb0a425a55c2f5ed8b394413f30d51f0cff38",
+    "bytes": 4829
+  },
+  "original_audit_not_overwritten": true,
+  "sole_original_false_reuse_cause": "Wrong nonexistent artifact_execution/artifact_approval table names; actual agent_artifact_execution is empty.",
+  "gate_before": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": "2"
+  },
+  "gate_after": {
+    "enabled": false,
+    "creation_enabled": true,
+    "host_execution_enabled": false,
+    "epoch": "4"
+  },
+  "gate_booleans_restored_epoch_monotonic": true,
+  "actual_work": {
+    "schema": {
+      "database": "multica_pay241_20261116_s2_runtime_r11",
+      "actual_table": "agent_artifact_execution",
+      "nonexistent_execution_name": null,
+      "nonexistent_approval_name": null
+    },
+    "artifact_executions": 0,
+    "gate": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "4"
+    },
+    "tasks": {
+      "total": 0,
+      "pending_or_leased": 0
+    },
+    "reservations": {
+      "unreleased": 0
+    },
+    "runs": {
+      "total": 1,
+      "unsettled": 0
+    }
+  },
+  "artifact_slots": {
+    "count": 8,
+    "mode": 448,
+    "uid": 501,
+    "empty": true,
+    "staging_empty": true,
+    "original_staging_mode": 320
+  },
+  "extra_Playwright_host_daemon_provider_native_processes": 0,
+  "retained_API_idle_connections": 9,
+  "live_services_retained": true,
+  "old_result_counts": {
+    "PASS": 0,
+    "FAIL": 1,
+    "NOT_RUN": 3,
+    "denominator": 4
+  },
+  "support_same_API_new_suffix_after_new_fixture_bound_permit": true,
+  "reset_migrate_or_delete_history_needed": false,
+  "new_runner_requires_new_ROOT_permit": true,
+  "original_output_refs_rehashed": 16,
+  "reviewer_new_DB_API_case_or_source_mutations": 0,
+  "A11": "OPEN",
+  "A12": "OPEN"
+}

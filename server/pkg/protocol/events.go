@@ -2,6 +2,8 @@ package protocol
 
 // Event types for WebSocket communication between server, web clients, and daemon.
 const (
+	EventCollaborationKnowledgeChanged = "collaboration:knowledge_changed"
+
 	// Issue events
 	EventIssueCreated            = "issue:created"
 	EventIssueUpdated            = "issue:updated"
@@ -45,6 +47,7 @@ const (
 	EventInboxNew           = "inbox:new"
 	EventInboxRead          = "inbox:read"
 	EventInboxUnread        = "inbox:unread"
+	EventInboxUpdated       = "inbox:updated"
 	EventInboxArchived      = "inbox:archived"
 	EventInboxUnarchived    = "inbox:unarchived"
 	EventInboxBatchRead     = "inbox:batch-read"

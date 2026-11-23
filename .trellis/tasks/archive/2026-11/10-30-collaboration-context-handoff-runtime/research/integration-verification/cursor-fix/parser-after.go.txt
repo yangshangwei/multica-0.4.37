@@ -1,0 +1,73 @@
+func parseHandoffCursor(raw, runID string) (collaborationHandoffCursor, error) {
+	var c collaborationHandoffCursor
+	if raw == "" {
+		c.RunID = runID
+		return c, nil
+	}
+	invalid := collaborationError(http.StatusBadRequest, "invalid_handoff_cursor")
+	if len(raw) > 1024 {
+		return c, invalid
+	}
+	b, e := base64.RawURLEncoding.DecodeString(raw)
+	if e != nil {
+		return c, invalid
+	}
+	decoder := json.NewDecoder(bytes.NewReader(b))
+	token, e := decoder.Token()
+	if e != nil || token != json.Delim('{') {
+		return c, invalid
+	}
+	// Decode canonical fields once. Struct decoding otherwise accepts duplicate
+	// and case-insensitive keys, and prefilled values can hide a missing run ID.
+	seen := make(map[string]bool, 6)
+	for decoder.More() {
+		token, e = decoder.Token()
+		name, ok := token.(string)
+		if e != nil || !ok || seen[name] {
+			return c, invalid
+		}
+		seen[name] = true
+		var field any
+		switch name {
+		case "kind":
+			field = &c.Kind
+		case "run_id":
+			field = &c.RunID
+		case "offset":
+			field = &c.Offset
+		case "after_id":
+			field = &c.AfterID
+		case "before_at":
+			field = &c.BeforeAt
+		case "command_id":
+			field = &c.CommandID
+		default:
+			return c, invalid
+		}
+		if decoder.Decode(field) != nil {
+			return c, invalid
+		}
+	}
+	if token, e = decoder.Token(); e != nil || token != json.Delim('}') {
+		return c, invalid
+	}
+	if _, e = decoder.Token(); !errors.Is(e, io.EOF) {
+		return c, invalid
+	}
+	if c.RunID == "" || c.RunID != runID || c.Offset < 0 {
+		return c, invalid
+	}
+	switch c.Kind {
+	case "inputs", "results", "causes", "readers":
+	default:
+		return c, invalid
+	}
+	for _, id := range []string{c.AfterID, c.CommandID} {
+		if id != "" {
+			if _, err := util.ParseUUID(id); err != nil {
+				return c, invalid
+			}
+		}
+	}
+	return c, nil
+}

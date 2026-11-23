@@ -195,6 +195,7 @@ export function sourceContextPreviewOptions(
 
 export type MyIssuesFilter = Pick<
   ListIssuesParams,
+  | "external_collaborators"
   | "assignee_id"
   | "assignee_ids"
   | "assignee_types"

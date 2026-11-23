@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-11T15:00:00Z",
+  "scope": "Read-only current RK1 runtime binding preflight after explicit H3a-t3 authorization",
+  "execution": {
+    "provider_cli_invoked": false,
+    "model_calls": 0,
+    "permit_used": false,
+    "execution_window_claimed": false,
+    "database_mutated": false
+  },
+  "historical_registration": {
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "provider_version": "2.1.316",
+    "provider_executable_sha256": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d"
+  },
+  "current_checkout": {
+    "head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+    "source_id": "7d9b7fa2be856c3a573c14c8dd682045c053034f897997567f2b3e78fce2c4d5",
+    "source_file_count": 8193,
+    "dirty_product_path_count": 158,
+    "source_binding_ready": false,
+    "framework_file_count": 19,
+    "framework_sha256": "72c51f98d36aaed382749cfd153340f54f2d91cf266c7627a29ddfc1666754f9",
+    "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "provider_version": "2.1.322",
+    "provider_executable": "/Users/artisan/.local/bin/claude",
+    "provider_executable_target": "/Users/artisan/.local/share/claude/versions/2.1.322",
+    "provider_executable_sha256": "a9d237949db816a0b7afd88a9a8e1df36b3a597a30f5a41d1c0539eb180a3450",
+    "claude_process_count": 0
+  },
+  "result": {
+    "current_source_binding": false,
+    "current_framework_binding": false,
+    "current_provider_binding": false,
+    "current_launcher_binding": true,
+    "provider_gateway_admission_confirmed": false,
+    "exclusive_window_confirmed": false,
+    "separate_permit_confirmed": false,
+    "runnable": false,
+    "reason": "Current source has dirty product paths, framework bytes include unregistered files, and provider version/bytes moved from the registered 2.1.316 artifact to 2.1.322."
+  }
+}

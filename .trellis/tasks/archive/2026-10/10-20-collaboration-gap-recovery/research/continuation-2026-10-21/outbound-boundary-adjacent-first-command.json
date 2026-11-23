@@ -1,0 +1,39 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_collab",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "./internal/integrations/slack",
+    "-run",
+    "^(TestCollaborationOutbound.*|TestEventBridgeMapsInternalEventsToThePublishedVocabulary|TestEventBridgeFindsTheIssueInEveryPayloadShape|TestEventDispatchWithholdsCollaborationIssues|TestHookRequestIsSignedAndVerifiableByTheReceiver|TestLegacyExecutionCannotInheritCollaborationComments|TestLegacyExecutionSQLBoundaryAndOrdinaryChild|TestCollaborationManagedRuntimeBatchProofAndExactReplay|TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary|TestOutbound_.*)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "database_alias": "service_s6_collab",
+  "schema_migration": 737,
+  "started_at": "2026-10-21T16:12:39.677397+00:00",
+  "source": [
+    {
+      "path": "server/internal/service/collaboration_outbound_boundary_test.go",
+      "sha256": "f565b46b2631214ccfc7a335683b2d16411f8872b59205ffe49fb63adde75786"
+    },
+    {
+      "path": "server/internal/integrations/slack/collaboration_outbound_boundary_test.go",
+      "sha256": "41ee89285877f88ec2e43d755ea0def87b7084d02da6f1feb6060c8e67e9c9ab"
+    }
+  ],
+  "finished_at": "2026-10-21T16:12:57.034812+00:00",
+  "exit_code": 0
+}

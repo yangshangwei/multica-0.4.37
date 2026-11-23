@@ -1,0 +1,55 @@
+{
+  "at": "2026-11-18T09:41:06.682762+00:00",
+  "status": "REPRODUCED_NATIVE_FETCH_FULFILL_STATUS_ZERO_WITHOUT_BUSINESS_WRITES",
+  "probe": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/native-transport-probe-r01/result.json",
+  "probe_sha256": "29ea85557c41bdeb96308036eabcfc0cec46d52c1bb4499333b88307a95662ae",
+  "cases": [
+    {
+      "method": "GET",
+      "mode": "natural",
+      "upstream_status": null,
+      "browser_status": 200
+    },
+    {
+      "method": "GET",
+      "mode": "fetch_fulfill",
+      "upstream_status": 200,
+      "browser_status": 0
+    },
+    {
+      "method": "GET",
+      "mode": "continue",
+      "upstream_status": null,
+      "browser_status": 200
+    },
+    {
+      "method": "PATCH",
+      "mode": "natural",
+      "upstream_status": null,
+      "browser_status": 405
+    },
+    {
+      "method": "PATCH",
+      "mode": "fetch_fulfill",
+      "upstream_status": 405,
+      "browser_status": 0
+    },
+    {
+      "method": "PATCH",
+      "mode": "continue",
+      "upstream_status": null,
+      "browser_status": 405
+    }
+  ],
+  "nativeprefs": {
+    "webSecurity": false,
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false
+  },
+  "DB_counts_ledger_gate_unchanged": true,
+  "R05_current_client_field_round": "NOT_ACCEPTED",
+  "correction": "actual original request route.continue for responses intended to reach browser; fetch->abort only explicit committed response loss",
+  "product_change_required": false,
+  "production_or_CORS_cause_attributed": false
+}

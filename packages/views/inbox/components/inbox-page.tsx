@@ -25,8 +25,10 @@ import { useIssueDraftStore } from "@multica/core/issues/stores/draft-store";
 import {
   inboxListOptions,
   archivedInboxListOptions,
+  snoozedInboxListOptions,
   deduplicateInboxItems,
   deduplicateArchivedInboxItems,
+  deduplicateSnoozedInboxItems,
   useInboxUnreadCount,
 } from "@multica/core/inbox/queries";
 import {
@@ -39,6 +41,9 @@ import {
   useArchiveAllReadInbox,
   useArchiveCompletedInbox,
   useRetrySourceContextQuickCreate,
+  useSnoozeInboxItem,
+  useUnsnoozeInboxItem,
+  useUndoInboxSnooze,
 } from "@multica/core/inbox/mutations";
 import {
   filterInboxItems,
@@ -65,8 +70,10 @@ import {
   ChevronLeft,
   ListChecks,
   ArrowLeft,
+  BellRing,
+  Clock,
 } from "lucide-react";
-import type { InboxItem } from "@multica/core/types";
+import type { InboxItem, InboxSnoozeReceipt } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
 import {
   ResizablePanelGroup,
@@ -90,7 +97,9 @@ import { useTimeAgo } from "./inbox-list-item";
 import { InboxList } from "./inbox-list";
 import { InboxFilterMenu } from "./inbox-filter-menu";
 import { InboxContextMenuProvider } from "./inbox-context-menu";
-import { ARCHIVED_VIEW_PARAM, type InboxView } from "./inbox-view";
+import { ARCHIVED_VIEW_PARAM, SNOOZED_VIEW_PARAM, type InboxView } from "./inbox-view";
+import { InboxSnoozePicker, type InboxSnoozeTarget } from "./inbox-snooze-picker";
+import { formatInboxReminderTime } from "./inbox-reminder-time";
 import { useTypeLabels } from "./inbox-detail-label";
 import {
   getInboxDisplayTitle,
@@ -102,22 +111,30 @@ import { useT } from "../../i18n";
 import { useIssueLimitUpgradePrompt } from "../../modals/use-issue-limit-upgrade-prompt";
 
 export function InboxPage() {
-  const { t } = useT("inbox");
+  const { t, i18n } = useT("inbox");
   const showIssueLimitUpgradePrompt = useIssueLimitUpgradePrompt();
   const { searchParams, replace, push } = useNavigation();
   const urlIssue = searchParams.get("issue") ?? "";
   const urlView: InboxView =
-    searchParams.get("view") === ARCHIVED_VIEW_PARAM ? "archived" : "inbox";
+    searchParams.get("view") === ARCHIVED_VIEW_PARAM ? "archived"
+      : searchParams.get("view") === SNOOZED_VIEW_PARAM ? "snoozed" : "inbox";
   const wsPaths = useWorkspacePaths();
 
   const [selectedKey, setSelectedKeyState] = useState(() => urlIssue);
   const [view, setViewState] = useState<InboxView>(() => urlView);
+  const selectedKeyRef = useRef(selectedKey);
+  const viewRef = useRef(view);
+  const [pendingRemovalKey, setPendingRemovalKey] = useState<string | null>(null);
+  const [snoozeTarget, setSnoozeTarget] = useState<InboxSnoozeTarget | null>(null);
+  const snoozeTargetRef = useRef<InboxSnoozeTarget | null>(null);
 
   // Sync from URL when searchParams change (e.g. navigation)
   useEffect(() => {
+    selectedKeyRef.current = urlIssue;
     setSelectedKeyState(urlIssue);
   }, [urlIssue]);
   useEffect(() => {
+    viewRef.current = urlView;
     setViewState(urlView);
   }, [urlView]);
 
@@ -140,12 +157,18 @@ export function InboxPage() {
     [rawArchivedItems],
   );
 
+  const snoozedQuery = useQuery(snoozedInboxListOptions(wsId));
+  const { data: rawSnoozedItems = [] } = snoozedQuery;
+  const snoozedItems = useMemo(() => deduplicateSnoozedInboxItems(rawSnoozedItems), [rawSnoozedItems]);
+
   const isArchivedView = view === "archived";
-  const viewQuery = isArchivedView ? archivedQuery : inboxQuery;
+  const isSnoozedView = view === "snoozed";
+  const isInboxView = view === "inbox";
+  const viewQuery = isArchivedView ? archivedQuery : isSnoozedView ? snoozedQuery : inboxQuery;
   const viewError = viewQuery.isError;
   const viewHasData = viewQuery.data !== undefined;
   const viewLoadFailed = viewError && !viewHasData;
-  const viewItems = isArchivedView ? archivedItems : items;
+  const viewItems = isArchivedView ? archivedItems : isSnoozedView ? snoozedItems : items;
   const filters = useInboxFilters(wsId);
   const clearFilters = useInboxFilterStore((state) => state.clearFilters);
   // Active and archived endpoints return the same row contract and are both
@@ -153,8 +176,8 @@ export function InboxPage() {
   // projection prevents one pod in a rolling deploy from advertising a
   // capability the other pod does not have yet.
   const priorityFilterSupport = useMemo(
-    () => inboxPriorityFilterSupport([...rawItems, ...rawArchivedItems]),
-    [rawItems, rawArchivedItems],
+    () => inboxPriorityFilterSupport([...rawItems, ...rawArchivedItems, ...rawSnoozedItems]),
+    [rawItems, rawArchivedItems, rawSnoozedItems],
   );
   const effectiveFilters = useMemo(
     () => inboxFiltersForPrioritySupport(filters, priorityFilterSupport),
@@ -207,6 +230,7 @@ export function InboxPage() {
     (nextView: InboxView, key: string) => {
       const params = new URLSearchParams();
       if (nextView === "archived") params.set("view", ARCHIVED_VIEW_PARAM);
+      if (nextView === "snoozed") params.set("view", SNOOZED_VIEW_PARAM);
       if (key) params.set("issue", key);
       const query = params.toString();
       const inboxPath = wsPaths.inbox();
@@ -216,6 +240,7 @@ export function InboxPage() {
   );
 
   const setSelectedKey = useCallback((key: string) => {
+    selectedKeyRef.current = key;
     setSelectedKeyState(key);
     replace(buildInboxUrl(view, key));
   }, [replace, buildInboxUrl, view]);
@@ -224,14 +249,19 @@ export function InboxPage() {
   // exclusive, so a key carried across would never resolve, and the fallback
   // effect below would bounce the user to the issue page.
   const setView = useCallback((nextView: InboxView) => {
+    viewRef.current = nextView;
+    selectedKeyRef.current = "";
     setViewState(nextView);
     setSelectedKeyState("");
+    setSnoozeTarget(null);
+    setPendingRemovalKey(null);
     replace(buildInboxUrl(nextView, ""));
   }, [replace, buildInboxUrl]);
 
   // Stable identity: InboxList memoizes the archive entry on this callback, so
   // an inline arrow here would rebuild (and remount) the entry every render.
   const openArchived = useCallback(() => setView("archived"), [setView]);
+  const openSnoozed = useCallback(() => setView("snoozed"), [setView]);
 
   // Applying a filter can remove the open row from the list. Clear that local
   // selection instead of treating it as a broken deep link and redirecting to
@@ -255,6 +285,7 @@ export function InboxPage() {
     if (viewLoading || viewError || !viewHasData) return;
     if (!selectedKey) return;
     if (selected) return;
+    if (pendingRemovalKey === selectedKey) return;
     if (selectionFilteredOut) return;
     if (lastResolvedKeyRef.current === selectedKey) {
       setSelectedKey("");
@@ -267,6 +298,7 @@ export function InboxPage() {
     viewHasData,
     selectedKey,
     selected,
+    pendingRemovalKey,
     selectionFilteredOut,
     replace,
     wsPaths,
@@ -315,6 +347,11 @@ export function InboxPage() {
   const archiveAllReadMutation = useArchiveAllReadInbox();
   const archiveCompletedMutation = useArchiveCompletedInbox();
   const retrySourceContextMutation = useRetrySourceContextQuickCreate();
+  const snoozeMutation = useSnoozeInboxItem(wsId);
+  const unsnoozeMutation = useUnsnoozeInboxItem(wsId);
+  const undoSnoozeMutation = useUndoInboxSnooze(wsId);
+  const snoozeBusy = snoozeMutation.isPending || unsnoozeMutation.isPending;
+  const snoozeScopeRef = useRef(wsId);
   const timeAgo = useTimeAgo();
   const typeLabels = useTypeLabels();
 
@@ -325,6 +362,43 @@ export function InboxPage() {
   // it stays selected: moving the selection elsewhere releases the guard, so
   // re-opening the row later marks it read again like any other open.
   const manualUnreadIdRef = useRef<string | null>(null);
+  const reminderUnreadKeyRef = useRef<string | null>(null);
+  const observedReminderRef = useRef<{ key: string; time: string | null } | null>(null);
+
+  useEffect(() => {
+    snoozeTargetRef.current = snoozeTarget;
+  }, [snoozeTarget]);
+
+  useEffect(() => {
+    if (!snoozeTarget || snoozeBusy || inboxQuery.data === undefined || snoozedQuery.data === undefined) return;
+    if (inboxQuery.isError || snoozedQuery.isError) return;
+    const key = snoozeTarget.item.issue_id ?? snoozeTarget.item.id;
+    const exists = [...rawItems, ...rawSnoozedItems].some((item) => item.archived !== true && (item.issue_id ?? item.id) === key);
+    if (!exists) setSnoozeTarget(null);
+  }, [snoozeTarget, snoozeBusy, inboxQuery.data, inboxQuery.isError, snoozedQuery.data, snoozedQuery.isError, rawItems, rawSnoozedItems]);
+
+  useEffect(() => {
+    snoozeScopeRef.current = wsId;
+    setSnoozeTarget(null);
+    setPendingRemovalKey(null);
+    reminderUnreadKeyRef.current = null;
+    observedReminderRef.current = null;
+  }, [wsId]);
+
+  // A reminder arriving while its older detail is already open is a new
+  // unread intent. A deliberate row click below acknowledges it instead.
+  const selectedReminderTime = selected?.reminded_at ?? null;
+  useEffect(() => {
+    if (!selected) {
+      observedReminderRef.current = null;
+      return;
+    }
+    const previous = observedReminderRef.current;
+    if (previous?.key === selectedKey && selectedReminderTime && previous.time !== selectedReminderTime) {
+      reminderUnreadKeyRef.current = selectedKey;
+    }
+    observedReminderRef.current = { key: selectedKey, time: selectedReminderTime };
+  }, [selected, selectedKey, selectedReminderTime]);
 
   // Auto-mark-read whenever a selected item is unread — covers both click-
   // to-select and URL-param-select (e.g. OS notification click on desktop).
@@ -337,6 +411,7 @@ export function InboxPage() {
   useEffect(() => {
     if (!selectedId || selectedRead) return;
     if (manualUnreadIdRef.current === selectedId) return;
+    if (reminderUnreadKeyRef.current === selectedKey) return;
     markReadMutate(selectedId, {
       onError: (err) =>
         toast.error(
@@ -345,7 +420,7 @@ export function InboxPage() {
             : t(($) => $.errors.mark_read_failed),
         ),
     });
-  }, [selectedId, selectedRead, markReadMutate, t]);
+  }, [selectedId, selectedRead, selectedKey, markReadMutate, t]);
 
   // Release the guard as soon as the selection moves off the parked row.
   useEffect(() => {
@@ -353,6 +428,9 @@ export function InboxPage() {
       manualUnreadIdRef.current = null;
     }
   }, [selectedId]);
+  useEffect(() => {
+    if (reminderUnreadKeyRef.current && reminderUnreadKeyRef.current !== selectedKey) reminderUnreadKeyRef.current = null;
+  }, [selectedKey]);
 
   const writeViewState = useViewStateWriter();
   // Bumped when the already-open notification row is re-clicked; threaded to
@@ -362,6 +440,10 @@ export function InboxPage() {
   const [highlightRequestToken, setHighlightRequestToken] = useState(0);
   const handleSelect = (item: InboxItem) => {
     const nextKey = item.issue_id ?? item.id;
+    if (reminderUnreadKeyRef.current === nextKey) {
+      reminderUnreadKeyRef.current = null;
+      handleMarkRead(item.id);
+    }
     // Every click on a notification row is a fresh deep-link intent: clear
     // the "highlight already landed" memento entry so the comment jump runs
     // again even if this issue's detail was opened (and its landing
@@ -380,6 +462,7 @@ export function InboxPage() {
   const handleMarkRead = (id: string) => {
     // Reading it back explicitly cancels an earlier park on the same row.
     if (manualUnreadIdRef.current === id) manualUnreadIdRef.current = null;
+    if (selected?.id === id) reminderUnreadKeyRef.current = null;
     markReadMutation.mutate(id, {
       onError: (err) =>
         toast.error(
@@ -412,7 +495,7 @@ export function InboxPage() {
   const advanceSelectionPast = (id: string, list: InboxItem[]) => {
     const idx = list.findIndex((i) => i.id === id);
     const target = idx >= 0 ? list[idx] : null;
-    const wasSelected = !!target && (target.issue_id ?? target.id) === selectedKey;
+    const wasSelected = !!target && (target.issue_id ?? target.id) === selectedKeyRef.current;
     if (!wasSelected) return;
     // List is sorted newest-first; prefer the next (older) item, fall back
     // to the previous (newer) one when actioning at the bottom, and only
@@ -423,17 +506,108 @@ export function InboxPage() {
 
   // Toasts live in these shared handlers so every archive surface confirms alike.
   const handleArchive = (id: string) => {
-    advanceSelectionPast(id, visibleItems);
+    const target = visibleItems.find((item) => item.id === id);
+    const key = target ? target.issue_id ?? target.id : null;
+    if (isSnoozedView && key === selectedKeyRef.current) setPendingRemovalKey(key);
+    if (!isSnoozedView) advanceSelectionPast(id, visibleItems);
     archiveMutation.mutate(id, {
-      onSuccess: () => toast.success(t(($) => $.toasts.archived)),
-      onError: (err) =>
+      onSuccess: () => {
+        if (isSnoozedView && viewRef.current === view) advanceSelectionPast(id, visibleItems);
+        setPendingRemovalKey((current) => current === key ? null : current);
+        toast.success(t(($) => $.toasts.archived));
+      },
+      onError: (err) => {
+        setPendingRemovalKey((current) => current === key ? null : current);
         toast.error(
           err instanceof Error && err.message
             ? err.message
             : t(($) => $.errors.archive_failed),
-        ),
+        );
+      },
     });
   };
+
+  const showUndo = (receipt: InboxSnoozeReceipt, item: InboxItem, message: string) => {
+    const token = receipt.undo_token;
+    toast.success(message, token ? {
+      action: {
+        label: t(($) => $.snooze.undo),
+        onClick: () => {
+          void undoSnoozeMutation.mutateAsync({ id: item.id, undoToken: token }).then(
+            () => toast.success(t(($) => $.snooze.undone)),
+            (failure: unknown) => toast.error(failure instanceof ApiError && failure.status === 409
+              ? t(($) => $.snooze.undo_changed) : t(($) => $.snooze.undo_failed)),
+          );
+        },
+      },
+    } : undefined);
+  };
+
+  const handleOpenSnooze = (id: string, anchor?: HTMLElement) => {
+    if (snoozeBusy) return;
+    const item = viewItems.find((entry) => entry.id === id);
+    if (!item || item.archived === true) return;
+    const selection = Array.from(document.querySelectorAll<HTMLButtonElement>("button[data-inbox-selection]"))
+      .find((button) => button.dataset.inboxSelection === id);
+    const trigger = anchor ?? selection ?? null;
+    setSnoozeTarget({ item, anchor: trigger, focusScope: trigger?.closest<HTMLElement>("[data-inbox-page]") ?? null });
+  };
+
+  const handleSaveSnooze = async (until: string) => {
+    const target = snoozeTargetRef.current;
+    if (!target) return;
+    const key = target.item.issue_id ?? target.item.id;
+    if (isInboxView && key === selectedKeyRef.current) setPendingRemovalKey(key);
+    try {
+      const receipt = await snoozeMutation.mutateAsync({
+        id: target.item.id,
+        snoozedUntil: until,
+        expectedRevision: target.item.snooze_revision ?? 0,
+      });
+      if (snoozeScopeRef.current !== wsId) return;
+      if (snoozeTargetRef.current === target) {
+        if (isInboxView && viewRef.current === view) advanceSelectionPast(target.item.id, visibleItems);
+        setSnoozeTarget(null);
+      }
+      showUndo(receipt, target.item, receipt.snoozed_until
+        ? t(($) => $.snooze.saved, { time: formatInboxReminderTime(receipt.snoozed_until, i18n?.language ?? "en") })
+        : t(($) => $.snooze.restored));
+    } finally {
+      setPendingRemovalKey((current) => current === key ? null : current);
+    }
+  };
+
+  const handleRefreshSnooze = async () => {
+    const target = snoozeTargetRef.current;
+    if (!target) return;
+    const current = await Promise.all([inboxQuery.refetch(), snoozedQuery.refetch(), archivedQuery.refetch()]);
+    const key = target.item.issue_id ?? target.item.id;
+    const latest = current.filter((result) => !result.isError).flatMap((result) => result.data ?? [])
+      .filter((entry) => entry.archived !== true && (entry.issue_id ?? entry.id) === key)
+      .sort((a, b) => (b.snooze_revision ?? 0) - (a.snooze_revision ?? 0))[0];
+    if (!latest) throw new Error(t(($) => $.snooze.unavailable));
+    if (snoozeScopeRef.current === wsId) setSnoozeTarget({ ...target, item: latest });
+  };
+
+  const handleUnsnooze = (id: string) => {
+    const item = viewItems.find((entry) => entry.id === id);
+    if (!item || snoozeBusy) return;
+    const key = item.issue_id ?? item.id;
+    if (key === selectedKeyRef.current) setPendingRemovalKey(key);
+    void unsnoozeMutation.mutateAsync({ id, expectedRevision: item.snooze_revision ?? 0 }).then(
+      (receipt) => {
+        if (snoozeScopeRef.current !== wsId) return;
+        reminderUnreadKeyRef.current = item.issue_id ?? item.id;
+        if (viewRef.current === view) advanceSelectionPast(id, visibleItems);
+        showUndo(receipt, item, t(($) => $.snooze.restored));
+      },
+      (failure: unknown) => toast.error(failure instanceof ApiError && failure.status === 409
+        ? t(($) => $.snooze.changed) : t(($) => $.snooze.remind_failed)),
+    ).finally(() => setPendingRemovalKey((current) => current === key ? null : current));
+  };
+
+  const snoozePicker = <InboxSnoozePicker target={snoozeTarget} busy={snoozeBusy}
+    onClose={() => setSnoozeTarget(null)} onSave={handleSaveSnooze} onRefresh={handleRefreshSnooze} />;
 
   const handleUnarchive = (id: string) => {
     advanceSelectionPast(id, visibleItems);
@@ -545,7 +719,7 @@ export function InboxPage() {
       {/* Batch actions are main-view only. Every entry archives from the MAIN
           inbox, so offering them while the archived list is on screen reads as
           "archive all of these" and does the opposite of what it looks like. */}
-      {!isArchivedView && (
+      {isInboxView && (
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
@@ -586,16 +760,16 @@ export function InboxPage() {
   // Back out of the archive. Sits inside the list panel rather than replacing
   // the PageHeader: the user is still in the Inbox, so the page title stays put
   // and this reads as a sub-view — the same shape chat's archived view uses.
-  const archivedBackRow = (
+  const subViewBackRow = (
     <button
       type="button"
       onClick={() => setView("inbox")}
-      className="flex w-full shrink-0 items-center gap-1.5 border-b px-3 py-2 text-left text-caption font-medium text-muted-foreground outline-none transition-colors hover:bg-accent/50 hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring"
+      className="flex min-h-11 w-full shrink-0 items-center gap-1.5 border-b px-3 py-2 text-left text-caption font-medium text-muted-foreground outline-none transition-colors hover:bg-accent/50 hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring"
     >
       <ChevronLeft className="size-4 shrink-0" />
-      <span className="truncate">{t(($) => $.list.archived_title)}</span>
+      <span className="truncate">{isSnoozedView ? t(($) => $.list.snoozed_title) : t(($) => $.list.archived_title)}</span>
       <span className="ml-auto shrink-0 tabular-nums text-muted-foreground">
-        {archivedItems.length}
+        {viewItems.length}
       </span>
     </button>
   );
@@ -604,7 +778,7 @@ export function InboxPage() {
     <CollectionPageState
       icon={AlertCircle}
       role="alert"
-      title={isArchivedView ? t(($) => $.errors.archived_load_failed) : t(($) => $.errors.load_failed)}
+      title={isArchivedView ? t(($) => $.errors.archived_load_failed) : isSnoozedView ? t(($) => $.errors.snoozed_load_failed) : t(($) => $.errors.load_failed)}
       actions={
         <Button variant="outline" size="sm" disabled={viewQuery.isFetching} onClick={() => void viewQuery.refetch()}>
           {t(($) => $.errors.retry)}
@@ -618,6 +792,8 @@ export function InboxPage() {
         onMarkRead: handleMarkRead,
         onMarkUnread: handleMarkUnread,
         onAction: isArchivedView ? handleUnarchive : handleArchive,
+        onSnooze: handleOpenSnooze,
+        onUnsnooze: handleUnsnooze,
       }}
     >
       <InboxList
@@ -625,9 +801,11 @@ export function InboxPage() {
         view={view}
         selectedKey={selectedKey}
         archivedCount={archivedItems.length}
+        snoozedCount={snoozedQuery.data !== undefined ? snoozedItems.length : undefined}
         onSelect={handleSelect}
         onAction={isArchivedView ? handleUnarchive : handleArchive}
         onOpenArchived={openArchived}
+        onOpenSnoozed={openSnoozed}
         emptyLabel={
           hasActiveFilters && viewItems.length > 0 && visibleItems.length === 0
             ? t(($) => $.filters.empty)
@@ -660,7 +838,7 @@ export function InboxPage() {
   const listPanel = (
     <>
       {listHeader}
-      {isArchivedView && archivedBackRow}
+      {!isInboxView && subViewBackRow}
       {refreshError}
       {list}
     </>
@@ -683,7 +861,7 @@ export function InboxPage() {
       <ArrowLeft className="h-4 w-4" />
       {/* Back goes to the list the user came FROM, so the label has to
           name it — "Inbox" here would be a lie about the destination. */}
-      {isArchivedView ? t(($) => $.list.archived_title) : t(($) => $.page.back)}
+      {isArchivedView ? t(($) => $.list.archived_title) : isSnoozedView ? t(($) => $.list.snoozed_title) : t(($) => $.page.back)}
     </Button>
   ) : undefined;
 
@@ -691,6 +869,24 @@ export function InboxPage() {
     <div className={cn("flex h-12 shrink-0 items-center gap-2 border-b", PAGE_GUTTER)}>
       {compactBackAction}
     </div>
+  ) : null;
+
+  const detailSnoozeControls = detailItem && !isArchivedView ? (
+    <>
+      <Button variant="outline" size="icon-sm" disabled={snoozeBusy}
+        aria-label={isSnoozedView ? t(($) => $.snooze.change_time) : t(($) => $.snooze.action)}
+        title={isSnoozedView ? t(($) => $.snooze.change_time) : t(($) => $.snooze.action)}
+        aria-haspopup="dialog" aria-expanded="false"
+        onClick={(event) => handleOpenSnooze(detailItem.id, event.currentTarget)}
+        className="shrink-0 [@media(pointer:coarse)]:size-11">
+        <Clock className="size-3.5" />
+      </Button>
+      {isSnoozedView && <Button variant="outline" size="icon-sm" disabled={snoozeBusy}
+        aria-label={t(($) => $.snooze.remind_now)} title={t(($) => $.snooze.remind_now)}
+        onClick={() => handleUnsnooze(detailItem.id)} className="shrink-0 [@media(pointer:coarse)]:size-11">
+        <BellRing className="size-3.5" />
+      </Button>}
+    </>
   ) : null;
 
   const detailContent = detailItem?.issue_id ? (
@@ -719,12 +915,14 @@ export function InboxPage() {
         layoutId="multica_inbox_issue_detail_layout"
         highlightCommentId={detailItem.details?.comment_id ?? undefined}
         highlightRequestToken={highlightRequestToken}
-        // The split layout already has a nav trigger in the list header.
-        // Explicit false suppresses the detail header's fallback trigger.
-        leadingAction={compactBackAction ?? false}
+        // Host controls replace the detail's fallback navigation trigger; the
+        // split layout already owns navigation in the list header.
+        leadingAction={compactBackAction || detailSnoozeControls
+          ? <div className="flex min-w-0 items-center gap-2">{compactBackAction}{detailSnoozeControls}</div>
+          : false}
         onDelete={() => {
-          // Issue deletion CASCADE-deletes the inbox item server-side, and the
-          // issue:deleted WS event prunes it from the inbox cache. Just clear
+          // Issue cleanup deletes its inbox rows server-side, and the
+          // issue:deleted WS event prunes them from the inbox cache. Just clear
           // the selection — calling archive here would 404 on a row that no
           // longer exists.
           setSelectedKey("");
@@ -754,6 +952,7 @@ export function InboxPage() {
         </div>
       )}
       <div className="mt-4 flex gap-2">
+        {detailSnoozeControls}
         {(detailItem.type === "iteration" || detailItem.type === "triage" || detailItem.type === "project_update") && (
           <Button
             data-testid="open-triage-notification"
@@ -784,11 +983,15 @@ export function InboxPage() {
                     showIssueLimitUpgradePrompt();
                     return;
                   }
+                  const code = error instanceof ApiError ? errorCode(error) : undefined;
+                  // The agent's level is why the first run failed, so a retry
+                  // fails the same way; the generic copy would invite another.
                   toast.error(
-                    error instanceof ApiError &&
-                      errorCode(error) === "source_context_retry_unavailable"
-                      ? t(($) => $.errors.source_context_retry_unavailable)
-                      : t(($) => $.errors.source_context_retry_failed),
+                    code === "agent_autonomy_insufficient"
+                      ? t(($) => $.errors.source_context_retry_autonomy)
+                      : code === "source_context_retry_unavailable"
+                        ? t(($) => $.errors.source_context_retry_unavailable)
+                        : t(($) => $.errors.source_context_retry_failed),
                   );
                 }
               }}
@@ -844,7 +1047,7 @@ export function InboxPage() {
   ) : null;
 
   if (viewLoadFailed) {
-    return <div className="flex flex-1 flex-col min-h-0">{listPanel}</div>;
+    return <div data-inbox-page="" className="flex flex-1 flex-col min-h-0">{listPanel}{snoozePicker}</div>;
   }
 
   // -- Compact layout: list / detail toggle -----------------------------------
@@ -852,7 +1055,7 @@ export function InboxPage() {
   if (isCompact) {
     if (viewLoading) {
       return (
-        <div className="flex flex-1 flex-col min-h-0">
+        <div data-inbox-page="" className="flex flex-1 flex-col min-h-0">
           <div className={cn("flex h-12 shrink-0 items-center border-b", PAGE_GUTTER)}>
             <Skeleton className="h-5 w-16" />
           </div>
@@ -867,6 +1070,7 @@ export function InboxPage() {
               </div>
             ))}
           </div>
+          {snoozePicker}
         </div>
       );
     }
@@ -884,30 +1088,31 @@ export function InboxPage() {
       // no-op, and pointed both scroll restoration and the timeline
       // virtualizer at an element that never scrolls. This wrapper only has to
       // give the detail a definite height to fill.
-      return <div className="flex flex-1 flex-col min-h-0">{refreshError}{detailContent}</div>;
+      return <div data-inbox-page="" className="flex flex-1 flex-col min-h-0">{refreshError}{detailContent}{snoozePicker}</div>;
     }
 
     if (detailItem) {
       // A notification body is a plain block with no header to host a leading
       // slot and no scroller of its own, so this branch keeps supplying both.
       return (
-        <div className="flex flex-1 flex-col min-h-0">
+        <div data-inbox-page="" className="flex flex-1 flex-col min-h-0">
           {compactBackBar}
           {refreshError}
           <div className="flex-1 min-h-0 overflow-y-auto">{detailContent}</div>
+          {snoozePicker}
         </div>
       );
     }
 
     // Compact: full-screen list
-    return <div className="flex flex-1 flex-col min-h-0">{listPanel}</div>;
+    return <div data-inbox-page="" className="flex flex-1 flex-col min-h-0">{listPanel}{snoozePicker}</div>;
   }
 
   // -- Desktop layout: resizable two-panel -----------------------------------
 
   if (viewLoading) {
     return (
-      <ResizablePanelGroup orientation="horizontal" className="flex-1 min-h-0" defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
+      <><ResizablePanelGroup data-inbox-page="" orientation="horizontal" className="flex-1 min-h-0" defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
         <ResizablePanel id="list" defaultSize={320} minSize={240} maxSize={480} groupResizeBehavior="preserve-pixel-size">
           <div className="flex flex-col border-r h-full">
             <div className={cn("flex h-12 shrink-0 items-center border-b", PAGE_GUTTER)}>
@@ -933,12 +1138,12 @@ export function InboxPage() {
             <Skeleton className="mt-4 h-4 w-32" />
           </div>
         </ResizablePanel>
-      </ResizablePanelGroup>
+      </ResizablePanelGroup>{snoozePicker}</>
     );
   }
 
   return (
-    <ResizablePanelGroup orientation="horizontal" className="flex-1 min-h-0" defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
+    <><ResizablePanelGroup data-inbox-page="" orientation="horizontal" className="flex-1 min-h-0" defaultLayout={defaultLayout} onLayoutChanged={onLayoutChanged}>
       <ResizablePanel id="list" defaultSize={320} minSize={240} maxSize={480} groupResizeBehavior="preserve-pixel-size">
       <div className="flex flex-col border-r h-full">
         {listPanel}
@@ -952,13 +1157,13 @@ export function InboxPage() {
             <Inbox className="mb-3 h-10 w-10 text-faint-foreground" />
             <p className="text-body">
               {visibleItems.length === 0
-                ? t(($) => $.detail.empty)
+                ? isSnoozedView ? t(($) => $.detail.snoozed_empty) : t(($) => $.detail.empty)
                 : t(($) => $.detail.select_prompt)}
             </p>
           </div>
         )}
       </div>
       </ResizablePanel>
-    </ResizablePanelGroup>
+    </ResizablePanelGroup>{snoozePicker}</>
   );
 }

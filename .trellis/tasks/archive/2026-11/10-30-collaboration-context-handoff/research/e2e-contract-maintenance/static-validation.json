@@ -1,0 +1,109 @@
+{
+  "product_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "test_base_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+  "files": {
+    "e2e/collaboration-boundaries-web.spec.ts": "c2b37edb1e7fb8f0bc9f054f8b6fc2c8d27dcb398e033ff7ed6b4c81c0c5635d",
+    "e2e/collaboration-delivery-web.spec.ts": "a6fd52979da147dd0fa4768bc1b6d078ae2f9523764d95aa9fe153f944456912",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540",
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+    "e2e/collaboration-source-surface.spec.ts": "639214a9ceea2f0371e0a9cccb9863bcfbdf38067537c21c5f9c4a6dc173ea47",
+    "e2e/fixtures/collaboration-control-gaps.ts": "27a17c3dc0f274df7ddb046f1ac3001c056d721eb4db9120d946fe4805d7fe9d",
+    "e2e/fixtures/collaboration-editing.ts": "7abd25ee581f83b2c380346234b179ae434b9e89456afdb07185c46b0e22503a",
+    "e2e/fixtures/collaboration-mention-journeys.ts": "0a2b14cb1ebebe159e274a67b9306ab291067257c7557494cb211ccbf5e47697",
+    "e2e/fixtures/collaboration-offline-handoff.ts": "4179e69cdafa8eec8200e8fedcc832fdf43a199665192b9c5fc8c02fe15bc658",
+    "e2e/fixtures/collaboration-records.ts": "4823d1b63b6422a767c1e162e3657b7e72fdb1067982c56dc5706208fc94c0e8",
+    "e2e/fixtures/collaboration-retained-attachments.ts": "85237e54cda7b40fb1d7d88ab41518d6ada7760e98c3dadee729a3ec8502f4a9"
+  },
+  "checks": [
+    {
+      "kind": "strict_changed_file_typecheck",
+      "command": "pnpm exec tsc -p .omx/private/e2e-maintenance/tsconfig-changed.json",
+      "exit_code": 0,
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "config": {
+        "extends": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/packages/tsconfig/react-library.json",
+        "compilerOptions": {
+          "noEmit": true,
+          "baseUrl": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102",
+          "paths": {
+            "@multica/core": [
+              "packages/core/index.ts"
+            ],
+            "@multica/core/*": [
+              "packages/core/*"
+            ]
+          },
+          "declaration": false,
+          "declarationMap": false
+        },
+        "files": [
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-boundaries-web.spec.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-delivery-web.spec.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-runtime-handoff-desktop.spec.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-runtime-handoff-web.spec.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-source-surface.spec.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/fixtures/collaboration-control-gaps.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/fixtures/collaboration-editing.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/fixtures/collaboration-mention-journeys.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/fixtures/collaboration-offline-handoff.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/fixtures/collaboration-records.ts",
+          "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/fixtures/collaboration-retained-attachments.ts"
+        ],
+        "include": []
+      }
+    },
+    {
+      "kind": "repository_eslint_with_test_fixture_dependency_context",
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        ".omx/private/e2e-maintenance/eslint-e2e.config.mjs",
+        "--format",
+        "json",
+        "e2e/collaboration-boundaries-web.spec.ts",
+        "e2e/collaboration-delivery-web.spec.ts",
+        "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+        "e2e/collaboration-runtime-handoff-web.spec.ts",
+        "e2e/collaboration-source-surface.spec.ts",
+        "e2e/fixtures/collaboration-control-gaps.ts",
+        "e2e/fixtures/collaboration-editing.ts",
+        "e2e/fixtures/collaboration-mention-journeys.ts",
+        "e2e/fixtures/collaboration-offline-handoff.ts",
+        "e2e/fixtures/collaboration-records.ts",
+        "e2e/fixtures/collaboration-retained-attachments.ts"
+      ],
+      "exit_code": 0,
+      "files": 11,
+      "errors": 0,
+      "warnings": 0,
+      "result_sha256": "a465d143ba2e1129a00df0643a1483e68d45fa121c6a58e6d5402bb43afcf0b2",
+      "config_source": "import base from \"../../../packages/eslint-config/base.js\";\nexport default [...base, {files:[\"e2e/fixtures/**/*.ts\"],rules:{\"import-x/no-extraneous-dependencies\":[\"error\",{devDependencies:true,peerDependencies:true}]}}];\n",
+      "context_reason": "E2E helper modules are test fixtures and use already declared root devDependencies. Every other repository base lint rule remains active."
+    },
+    {
+      "kind": "unmodified_base_eslint_context",
+      "exit_code": 1,
+      "errors": 7,
+      "diagnostic": "Existing fixture imports of @playwright/test and pg are classified as runtime dependencies when helpers are not identified as tests. No source/package workaround or lint suppression applied.",
+      "result_sha256": "4202912c2eb78c483970497c128c6efaf7fa25db127a9d1891f4a3e64fbe8ffc"
+    },
+    {
+      "kind": "strict_expanded_scope_typecheck",
+      "exit_code": 2,
+      "diagnostics": 51,
+      "unchanged_file": "e2e/collaboration-account-desktop.spec.ts",
+      "identical_to_git_base": true,
+      "comparison": "typecheck-baseline-comparison.json"
+    },
+    {
+      "kind": "git_diff_whitespace",
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "provider_calls": 0,
+  "no_dependencies_added": true
+}

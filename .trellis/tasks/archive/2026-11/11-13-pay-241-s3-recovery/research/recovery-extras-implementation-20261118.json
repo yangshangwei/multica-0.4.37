@@ -1,0 +1,168 @@
+{
+  "at": "2026-11-18T10:26:29.754090+00:00",
+  "owner": "/root/s3_clients_implement",
+  "status": "AUTHOR_STATIC_READY_RUNTIME_NOT_RUN",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "main_environment_db_api_build_execution_commit_owner": "/root",
+  "top_denominator": 6,
+  "subcase_denominator": 18,
+  "inventory": [
+    {
+      "platform": "Web",
+      "group": "notifications",
+      "top_name": "Web recovery extras preserve typed mentions, original notification events and owner withdrawal",
+      "subcases": [
+        "mixed_repeat_replay_reconnect",
+        "late_join_and_edit_delta",
+        "target_withdrawal_after_preview"
+      ],
+      "status": "NOT_RUN"
+    },
+    {
+      "platform": "Web",
+      "group": "uploads",
+      "top_name": "Web recovery extras preserve three original multipart intents through GET, matching retry and changed reselection",
+      "subcases": [
+        "committed_upload_GET_reload",
+        "same_bytes_unknown_retry",
+        "changed_reselection_matching_retry"
+      ],
+      "status": "NOT_RUN"
+    },
+    {
+      "platform": "Web",
+      "group": "revocations",
+      "top_name": "Web recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "subcases": [
+        "participant_last_basis_offline_and_delayed_read",
+        "source_only_membership_loss",
+        "source_loss_participation_survives"
+      ],
+      "status": "NOT_RUN"
+    },
+    {
+      "platform": "Desktop",
+      "group": "notifications",
+      "top_name": "Desktop recovery extras preserve typed mentions, original notification events and owner withdrawal",
+      "subcases": [
+        "mixed_repeat_replay_reconnect",
+        "late_join_and_edit_delta",
+        "target_withdrawal_after_preview"
+      ],
+      "status": "NOT_RUN"
+    },
+    {
+      "platform": "Desktop",
+      "group": "uploads",
+      "top_name": "Desktop recovery extras preserve three original multipart intents through GET, matching retry and changed reselection",
+      "subcases": [
+        "committed_upload_GET_reload",
+        "same_bytes_unknown_retry",
+        "changed_reselection_matching_retry"
+      ],
+      "status": "NOT_RUN"
+    },
+    {
+      "platform": "Desktop",
+      "group": "revocations",
+      "top_name": "Desktop recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "subcases": [
+        "participant_last_basis_offline_and_delayed_read",
+        "source_only_membership_loss",
+        "source_loss_participation_survives"
+      ],
+      "status": "NOT_RUN"
+    }
+  ],
+  "actual_body_executions_by_author": 0,
+  "source_hashes": {
+    "e2e/collaboration-recovery.spec.ts": "10cac566342deb24c68e90fd15cdcfd1c8a6aec50c9572116dfbb683c77b67ca",
+    "e2e/fixtures/collaboration-recovery.ts": "7f125d331adcfa85dab491b3def6ec07bca084238b71eae90f8e5eafcbffb3d1",
+    "e2e/collaboration-recovery-extras.spec.ts": "9c1030bb0291118e691ebe6412f77dc794c2ac21003420b61ab15fe07423144b",
+    "e2e/fixtures/collaboration-recovery-extras.ts": "a2d96cfcf477440a1c6bec5177cf5b4cbdd68d76b60b7a454b5c2b0ceea371ca"
+  },
+  "owned_changes": [
+    "e2e/fixtures/collaboration-recovery.ts",
+    "e2e/collaboration-recovery-extras.spec.ts",
+    "e2e/fixtures/collaboration-recovery-extras.ts"
+  ],
+  "base_field_spec_changed": false,
+  "frozen_R06_field_source_preserved": true,
+  "minimal_shared_diff_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r03/shared-exports-only.diff",
+  "minimal_shared_diff_sha256": "fb6e0c2cccbb07bc1454adccba68e40a1acba89810ea4d59db59868e21c3c8b1",
+  "static_checks": {
+    "R01": {
+      "typecheck": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r01/typecheck-result.json",
+        "exit_code": 2,
+        "result_sha256": "92bfd23d28dca1c4e9f95f0b5464655db6bd5d7df8e33b4cf4f6d38a2cd9be50"
+      },
+      "eslint": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r01/eslint-result.json",
+        "exit_code": 0,
+        "result_sha256": "af1a5a9365351fdbbd000f21a88ea5ed3f087cde4a1bc6cc345dd909e40dc2e4"
+      }
+    },
+    "R02": {
+      "typecheck": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r02/typecheck-result.json",
+        "exit_code": 2,
+        "result_sha256": "a1429d02ad9820b4eee046bafc9318f041f605c67c3ccaab6388a7a1b4af8349"
+      },
+      "eslint": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r02/eslint-result.json",
+        "exit_code": 0,
+        "result_sha256": "6b56a3c1e5fc8e10ea3db831bdf2731d75ef785122996924fed602022c2cdab2"
+      }
+    },
+    "R03": {
+      "typecheck": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r03/typecheck-result.json",
+        "exit_code": 0,
+        "result_sha256": "4a166ad093b7bed3024d3812a31c7e5dd32c79e84f8e9cf90d216585ae1e93e6"
+      },
+      "eslint": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r03/eslint-result.json",
+        "exit_code": 0,
+        "result_sha256": "f6e08a06e23231cc8efc56e942e3e92e373faaddf45b0683bfadd86c14994c0f"
+      }
+    }
+  },
+  "static_failed_sources_preserved": {
+    "R01": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r01/retained-source",
+    "R01_capture": "Exact reverse applied diff from R02 snapshot, verified all actual original hashes; method labelled rather than claiming original-time capture.",
+    "R02": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r02",
+    "R03": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-author-r03"
+  },
+  "main_execution_requirements": [
+    "Fresh private managed password DB/API/deployment, full migration/gate/process ledgers and current production Web/matching native builds",
+    "PAY241_S3_RECOVERY_EXTRAS_A_ACCEPTANCE=1, base recovery required environment values and MULTICA_DEPLOYMENT_ID",
+    "Creation enabled; execution and host disabled; actual existing public offline managed enrollment/adoption/consents",
+    "Accepted native response-stage health probe and PAY241_S3_RESPONSE_STAGE_HOLD_ACCEPTED=1 before revocation top",
+    "Retries0, one serialized browser source/DB owner and full six-top/18-subcase raw inventory",
+    "Main ciphertext row/object/reference audit for each returned distinct original uploader/draft/request/file tuple",
+    "Canonical service/handler normal/race gates and independent native check before acceptance/matrix/commit"
+  ],
+  "probe_candidate": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/native-response-stage-probe-r02/probe.mjs",
+    "sha256": "2cd819dd440240a4ffbf6130c7702d8998d017b8965630e577e853004624a282",
+    "syntax_check": "node --check exit0",
+    "cases": 4,
+    "body_execution_by_author": false,
+    "business_case_proof": false
+  },
+  "exact_evidence_boundaries": {
+    "uploads": "Three distinct original upload tuples per platform; no one-total-object claim. Each source bytes SHA compared and original comment replay separate.",
+    "notifications": "Frozen original comment event targets/notification IDs, real typed preview and public waiting input; ordinary subscriber/outbox/proven result canonical proof remains independently required.",
+    "late_read": "Actual server GET200 body paused through CDP, current real revoke/access denial, exact NetworkId cancellation or ContinueResponse without replacements. A cancelled response is explicitly not labelled delivered browser200.",
+    "native_capabilities": "Actual content/download200 before revoke and404 checked before real60s expiry; old member/participant identities stay invalid while fresh authorized reads may survive.",
+    "runtime": "No simulated permit, claim, provider, proof or run. Actual run/handoff/runtime-token reads belong to Extras-B and remain NOT_RUN.",
+    "full_S3": "No parent/S3/archive acceptance inferred from author static checks."
+  },
+  "simplifications": [
+    "Reuse existing current password/native session and original held JSON transport",
+    "Use existing public delivery-record parser against a read-only adapter; do not change package exports or add parser copy",
+    "Reuse existing public Control seed, typed mention and comment controls",
+    "No production/source preferences/auth stores/dependencies/migrations edited"
+  ]
+}

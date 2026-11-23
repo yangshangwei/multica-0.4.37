@@ -1,0 +1,584 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-14T12:05:09.600070+00:00",
+  "owner": "/root/s2_e2e_resume",
+  "status": "bounded_authoring_frozen_independent_review_pending_m1_ui_followup_required",
+  "head_at_report": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "source": {
+    "directory": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/source-v2",
+    "manifest": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/source-manifest-v2.json",
+    "manifest_sha256": "ae12e6cf4fd3e76f236e1169d7722e976f8034bbda901355b1f9d2723647c41c",
+    "prior_freeze_preserved": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/source-manifest.json",
+    "original5_manifest": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/before-manifest.json",
+    "original5_manifest_sha256": "6bd2d1b8ec927af0f6ccf083ee02f5ab708286725c4d1b8c0eb1947c5a5d8c36",
+    "checked3c_reconstruction": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/checked-3c-reconstruction-v2.json",
+    "checked3c_reconstruction_sha256": "00082112e9f1273da95d107b7af14cff2d800680b367940942e55beb61bfb4f9",
+    "checked3c_final_audit": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/checked-3c-final-audit.json",
+    "checked3c_final_audit_sha256": "203119116ed78dca33514e1bcf12a8460a8853ca866859abe728bbe463d977df",
+    "reconstructed_files": 2543,
+    "base_client_files": 2526,
+    "e2e_files": 17,
+    "live_core_views_source_copied": false
+  },
+  "files": [
+    {
+      "path": "e2e/collaboration-stage-execution.spec.ts",
+      "sha256": "b6079b84ee1172517ac1c7477ca377b8614d2efc69242a25925f2f44160dddaf",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/source-v2/e2e/collaboration-stage-execution.spec.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-execution.ts",
+      "sha256": "861c4fd47c70e06ba816e8e101a6af13c255dd16ef2a49374b498e22eb26d25e",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/source-v2/e2e/fixtures/collaboration-stage-execution.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-control.ts",
+      "sha256": "cd3d1e26322312dd1ad01e5d86c8fb20df82334356b6a4d436293f95475adb76",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/source-v2/e2e/fixtures/collaboration-stage-control.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-control.node-test.mjs",
+      "sha256": "d4f102197a8b410e5912c5e6d02dfac46749c05ea5b0336f5b41b76c9c466b49",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/source-v2/e2e/fixtures/collaboration-stage-control.node-test.mjs"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-artifact.node-test.mjs",
+      "sha256": "34c585dc832300d7d445896606905d128370bef648ce72689e53b1ac3248a7e4",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/source-v2/e2e/fixtures/collaboration-stage-artifact.node-test.mjs"
+    }
+  ],
+  "preserved_files": [
+    {
+      "path": "e2e/collaboration-stage-approvals.spec.ts",
+      "sha256": "f8f0c32f7622ef4cb521bdfd6aec423906d7f955e3b9be7aea940f73d8883e73",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/before/e2e/collaboration-stage-approvals.spec.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-approvals.ts",
+      "sha256": "00405f3f5b6d978fe22ae54a35500a9481888a0cd4976aefe29df8a346dd3f27",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/before/e2e/fixtures/collaboration-stage-approvals.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/before/e2e/fixtures/collaboration-host-runtime.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider.go",
+      "sha256": "fc1095dc4fea11ad6a3e0a96647d99996687ba10937c00ebda53097f26fcd77f",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/before/e2e/fixtures/collaboration-host-provider.go"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider_test.go",
+      "sha256": "4830a9dd03ea6e9212918418eb0654d62f77b0fbbff6e70df7bdc52d8ad9f4a3",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/before/e2e/fixtures/collaboration-host-provider_test.go"
+    }
+  ],
+  "contracts": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "b6b02c016c3ca8de0c5e254c6a78d2e6f2be7a975868a2d2efc1c84c92b1e8d4",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/contracts/wire-contract.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-control-contract.md",
+      "sha256": "ca3ee225e4a970fba2d70e389049f23f03f9967a01eb1882a812728bf2c6d1a4",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/contracts/server-increment-2c-control-contract.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-control-transport.md",
+      "sha256": "629f79765a1e8f12cd29bd275b33a436771eadaa192d31cf91a40f1d8beea901",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/contracts/server-increment-2c-control-transport.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/joint-e2e-increment-2-results.json",
+      "sha256": "dbb67b4d692b885e67a640c8bf9a4236229d194f0d56e535fb7e1f67d8b945d5",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/contracts/joint-e2e-increment-2-results.json"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/joint-e2e-increment-2-check.json",
+      "sha256": "b0e6b0f80bbf5d399576c9e82d1143ae008066a7b8ed8618b291c5fd50b105b4",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/contracts/joint-e2e-increment-2-check.json"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3c-check.json",
+      "sha256": "e9b12f0ec9fa238df5a40a3a6fce1fc1b73f5f800b4e715c7c47341a7d2bf06e",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/contracts/client-increment-3c-check.json"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-acl-fix-check.json",
+      "sha256": "75590eb5a753aff970963cc9e29c9e9d8af72825488980caf0c3987d56179a34",
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/contracts/server-increment-2b-acl-fix-check.json"
+    }
+  ],
+  "runs": [
+    {
+      "id": "artifact-1",
+      "command": [
+        "node",
+        "--test",
+        "e2e/fixtures/collaboration-stage-artifact.node-test.mjs"
+      ],
+      "command_sha256": "5da29be55e5b8d39401f5393a26d8f190fbc3072dbe625a687684e88280fbe22",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/artifact-1.log",
+      "log_sha256": "cc1351de0ce62ed9bc2b0eb8d1f4922e871918927c0ed5eba5b89d66b942c24c",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/artifact-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named_pass": [
+        "actual tar verifier accepts independent USTAR output and rejects wrong source, headers, extra entries and padding",
+        "artifact generation allocation requires exact privately owned immutable-root modes and unique slots"
+      ]
+    },
+    {
+      "id": "control-green-1",
+      "command": [
+        "node",
+        "--test",
+        "e2e/fixtures/collaboration-stage-control.node-test.mjs"
+      ],
+      "command_sha256": "2e14f969130520a8f4b8ee5849b5026f752bf33b2ee858cf108ed0a35d667b1b",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/control-green-1.log",
+      "log_sha256": "eb7cce18029fe2d54ef87accd437bba0f644a038e1ee25867ca5ba1490418ec8",
+      "exit": 1,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/control-green-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "named_pass": [
+        "private control accepts a frozen original request and bounded native operation IDs",
+        "private control rejects unknown actions/fields, duplicate response keys and contradictory replies"
+      ],
+      "interpretation": "fixture path-length failures; owned test child terminated; incomplete initial suite retained"
+    },
+    {
+      "id": "control-green-2",
+      "command": [
+        "node",
+        "--test",
+        "e2e/fixtures/collaboration-stage-control.node-test.mjs"
+      ],
+      "command_sha256": "2e14f969130520a8f4b8ee5849b5026f752bf33b2ee858cf108ed0a35d667b1b",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/control-green-2.log",
+      "log_sha256": "64bc6ee23e471a6ec8a5906fe393a3d32cfc18d72ba1be2beed74a37b377cf3c",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/control-green-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named_pass": [
+        "private control accepts a frozen original request and bounded native operation IDs",
+        "private control rejects unknown actions/fields, duplicate response keys and contradictory replies",
+        "receipt recovery may reuse an already completed original request ID without a second prepare",
+        "disconnected prepare stays uncertain and is never resent",
+        "a mismatched response cannot confirm another original request",
+        "shared-write socket permissions are refused before sending",
+        "overlong Unix socket paths fail before an operating-system truncation"
+      ]
+    },
+    {
+      "id": "control-red-1",
+      "command": [
+        "node",
+        "--test",
+        "e2e/fixtures/collaboration-stage-control.node-test.mjs"
+      ],
+      "command_sha256": "2e14f969130520a8f4b8ee5849b5026f752bf33b2ee858cf108ed0a35d667b1b",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/control-red-1.log",
+      "log_sha256": "130d32141649d69ee2f7561e64334ab4951cc167dd0a67a9fab67dee744c4ceb",
+      "exit": 1,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/control-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "discovery-1",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-stage-approvals.spec.ts",
+        "e2e/collaboration-stage-execution.spec.ts",
+        "--list"
+      ],
+      "command_sha256": "977a13470c2cdcbc15bb78a4ffff25b3526b8879c88e18dc93ce103aaeb3b4dd",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/discovery-1.log",
+      "log_sha256": "a196e050ec3eb35105e239b72c0721f54ef7f47c4018ada003847e465f3c3bfb",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/discovery-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "discovery-2",
+      "command": [
+        "pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-stage-approvals.spec.ts",
+        "e2e/collaboration-stage-execution.spec.ts",
+        "--list"
+      ],
+      "command_sha256": "977a13470c2cdcbc15bb78a4ffff25b3526b8879c88e18dc93ce103aaeb3b4dd",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/discovery-2.log",
+      "log_sha256": "6bf1efb2ad9aa2ee78a0487e69b1a808f5b8e3ee6c1e577720ae877d3c6fae5a",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/discovery-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "fixture-final-1",
+      "command": [
+        "node",
+        "--test",
+        "e2e/fixtures/collaboration-stage-control.node-test.mjs",
+        "e2e/fixtures/collaboration-stage-artifact.node-test.mjs"
+      ],
+      "command_sha256": "c0d81a0b6316036eca2bf3038dc9bf8a6891e5cd92090d01585b3c645d0da47c",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/fixture-final-1.log",
+      "log_sha256": "59d7ee645aaf7c990d3fcf2796423526aebafb44f4055e47606c6e9770ba6845",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/fixture-final-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named_pass": [
+        "actual tar verifier accepts independent USTAR output and rejects wrong source, headers, extra entries and padding",
+        "artifact generation allocation requires exact privately owned immutable-root modes and unique slots",
+        "private control accepts a frozen original request and bounded native operation IDs",
+        "private control rejects unknown actions/fields, duplicate response keys and contradictory replies",
+        "receipt recovery may reuse an already completed original request ID without a second prepare",
+        "disconnected prepare stays uncertain and is never resent",
+        "a mismatched response cannot confirm another original request",
+        "shared-write socket permissions are refused before sending",
+        "overlong Unix socket paths fail before an operating-system truncation",
+        "one pending original ID cannot be sent twice concurrently",
+        "oversized and invalid UTF-8 replies remain unconfirmed without replay"
+      ]
+    },
+    {
+      "id": "fixture-final-2",
+      "command": [
+        "node",
+        "--test",
+        "e2e/fixtures/collaboration-stage-control.node-test.mjs",
+        "e2e/fixtures/collaboration-stage-artifact.node-test.mjs"
+      ],
+      "command_sha256": "c0d81a0b6316036eca2bf3038dc9bf8a6891e5cd92090d01585b3c645d0da47c",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/fixture-final-2.log",
+      "log_sha256": "855f6daa38068626c80bd7f698f2f1a0a41b8b5a9b4dc883fb80526375b9a49f",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/fixture-final-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "named_pass": [
+        "actual tar verifier accepts independent USTAR output and rejects wrong source, headers, extra entries and padding",
+        "artifact generation allocation requires exact privately owned immutable-root modes and unique slots",
+        "private control accepts a frozen original request and bounded native operation IDs",
+        "private control rejects unknown actions/fields, duplicate response keys and contradictory replies",
+        "receipt recovery may reuse an already completed original request ID without a second prepare",
+        "disconnected prepare stays uncertain and is never resent",
+        "a mismatched response cannot confirm another original request",
+        "shared-write socket permissions are refused before sending",
+        "overlong Unix socket paths fail before an operating-system truncation",
+        "one pending original ID cannot be sent twice concurrently",
+        "oversized and invalid UTF-8 replies remain unconfirmed without replay"
+      ]
+    },
+    {
+      "id": "lint-1",
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "eslint",
+        "--config",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/eslint.config.mjs",
+        "--no-warn-ignored",
+        "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-stage-execution.spec.ts",
+        "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-stage-execution.ts",
+        "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-stage-control.ts"
+      ],
+      "command_sha256": "927e5e9b6fb4ed4ded54caeae8a0434adccb86f403e7d6ef23b7ee95405a9d79",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-1.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "not_used_as_gate": "package cwd and suppressed ignored-file warnings did not bind checked file scope"
+    },
+    {
+      "id": "lint-2",
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/eslint.config.mjs",
+        "--max-warnings=0",
+        "e2e/collaboration-stage-execution.spec.ts",
+        "e2e/fixtures/collaboration-stage-execution.ts",
+        "e2e/fixtures/collaboration-stage-control.ts"
+      ],
+      "command_sha256": "2d680372d5b4a7c4b61af0a78bda2d0f09e0e1cbad5827676f0329f59ef66012",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-2.log",
+      "log_sha256": "ee49ec9a1869bd1cb4b08d8161c69a70bdca7f414fcc9001a7d0a1d490d7a307",
+      "exit": 1,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-2.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "lint-3",
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/eslint.config.mjs",
+        "--max-warnings=0",
+        "--format",
+        "json",
+        "e2e/collaboration-stage-execution.spec.ts",
+        "e2e/fixtures/collaboration-stage-execution.ts",
+        "e2e/fixtures/collaboration-stage-control.ts"
+      ],
+      "command_sha256": "6dd18ecc55949d9662bcb71e60c0a07055d6ede01f252784eefc35a2bb2394de",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-3.log",
+      "log_sha256": "1f94942acfec10ddc183b40ef7b06e97a5d38db92550b64cc16cf3ed86e3d28f",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-3.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "lint-final-1",
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/eslint.config.mjs",
+        "--max-warnings=0",
+        "--format",
+        "json",
+        "e2e/collaboration-stage-execution.spec.ts",
+        "e2e/fixtures/collaboration-stage-execution.ts",
+        "e2e/fixtures/collaboration-stage-control.ts",
+        "e2e/fixtures/collaboration-stage-control.node-test.mjs",
+        "e2e/fixtures/collaboration-stage-artifact.node-test.mjs"
+      ],
+      "command_sha256": "e99a3a90a9f3752cff0408130bf53cc0bbb62fee825f5589b7e287ccbd456925",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-final-1.log",
+      "log_sha256": "03e7d11d2ba1fbd40f14ab27d18b1067894000a7eb506c85b4b9fe535cdc5bac",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-final-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "lint-final-2",
+      "command": [
+        "pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/eslint.config.mjs",
+        "--max-warnings=0",
+        "--format",
+        "json",
+        "e2e/collaboration-stage-execution.spec.ts",
+        "e2e/fixtures/collaboration-stage-execution.ts",
+        "e2e/fixtures/collaboration-stage-control.ts",
+        "e2e/fixtures/collaboration-stage-control.node-test.mjs",
+        "e2e/fixtures/collaboration-stage-artifact.node-test.mjs"
+      ],
+      "command_sha256": "e99a3a90a9f3752cff0408130bf53cc0bbb62fee825f5589b7e287ccbd456925",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-final-2.log",
+      "log_sha256": "03e7d11d2ba1fbd40f14ab27d18b1067894000a7eb506c85b4b9fe535cdc5bac",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/lint-final-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "type-dependencies-1",
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "-p",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/tsconfig.json",
+        "--listFilesOnly",
+        "--pretty",
+        "false"
+      ],
+      "command_sha256": "fbc47cd812aaace6de71a125bf732549f290a8e1119113d3d429a97593dca0b0",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/type-dependencies-1.log",
+      "log_sha256": "6b31d24d41bea37de3fcd29439086e03ba2439ec644f9d6983ab009f6682375d",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/type-dependencies-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "type-dependencies-checked3c",
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "-p",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/tsconfig-checked3c.json",
+        "--listFilesOnly",
+        "--pretty",
+        "false"
+      ],
+      "command_sha256": "dbc036cf75304c207d5686a25a5c22adef76aefade63015a774a8727689d4f91",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/type-dependencies-checked3c.log",
+      "log_sha256": "5aad3a5b4ccb86bc49ce3dccad2fffddad1515409b4f00cdbdcc3f3f21cbd8fb",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/type-dependencies-checked3c.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "typecheck-1",
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "-p",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/tsconfig.json"
+      ],
+      "command_sha256": "87df768eb48deb9c262de2af7104a0e16a9117c2b306bb8ce3f27457acac1773",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-1.log",
+      "log_sha256": "8f948f31de618a5546ba04bdf99d5aee3d065fff48408944608a7b5372463c2b",
+      "exit": 2,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-1.exit",
+      "exit_sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "id": "typecheck-2",
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "-p",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/tsconfig.json"
+      ],
+      "command_sha256": "87df768eb48deb9c262de2af7104a0e16a9117c2b306bb8ce3f27457acac1773",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-2.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "typecheck-checked3c-1",
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "-p",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/tsconfig-checked3c.json"
+      ],
+      "command_sha256": "32928c167c3ebefd1088bec71964eac2ba274c93e78bb279d2d75365512d5933",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-checked3c-1.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-checked3c-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "typecheck-checked3c-2",
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "-p",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/tsconfig-checked3c.json"
+      ],
+      "command_sha256": "32928c167c3ebefd1088bec71964eac2ba274c93e78bb279d2d75365512d5933",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-checked3c-2.log",
+      "log_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "exit": 0,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-checked3c-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "typecheck-final-1",
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "-p",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/tsconfig.json"
+      ],
+      "command_sha256": "87df768eb48deb9c262de2af7104a0e16a9117c2b306bb8ce3f27457acac1773",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-final-1.log",
+      "log_sha256": "dc5d0d3b739b86c7f5d9aab275b756aed5a3dd514fa2ccd2cefbb5024a30f9ec",
+      "exit": 2,
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/typecheck-final-1.exit",
+      "exit_sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+      "interpretation": "current graph includes in-progress client3d/parallel sources; only recorded TS2353 is core/api/client.ts completion field; not fixed by E2E lane"
+    }
+  ],
+  "final_verification_ids": [
+    "fixture-final-2",
+    "typecheck-checked3c-2",
+    "lint-final-2",
+    "discovery-2",
+    "type-dependencies-checked3c"
+  ],
+  "verification": {
+    "pure_fixture_tests": {
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    "lint": {
+      "reported_files": 5,
+      "errors": 0,
+      "warnings": 0
+    },
+    "typescript": "pass_on_declared_checked3c_reconstruction",
+    "current_full_graph": "blocked_by_in_progress_core3d_TS2353_preserved",
+    "playwright_discovery": {
+      "files": 2,
+      "scenarios": 4,
+      "bodies_executed": 0
+    }
+  },
+  "runtime_execution": {
+    "product_api_calls": 0,
+    "database_connections": 0,
+    "browser_launches": 0,
+    "daemon_launches": 0,
+    "real_model_account_calls": 0,
+    "real_git_fixture_runs": 0,
+    "external_provider_calls": 0,
+    "fake_unix_socket_unit_tests": "executed; all owned test processes ended"
+  },
+  "startup": {
+    "control_socket": "COLLABORATION_STAGE_CONTROL_SOCKET; bare JSONL, canonical outside checkout, <=103 UTF8 bytes, parent0700/socket0600; root starts/stops bridge+harness",
+    "artifact_staging": "MULTICA_ARTIFACT_STAGING_ROOT fixed0500 before API construction",
+    "artifact_output": "MULTICA_ARTIFACT_OUTPUT_ROOT0700",
+    "artifact_slots": "COLLABORATION_STAGE_ARTIFACT_SLOTS: 8 canonicalUUIDs; root precreates0700 generation dirs, E2E uses0..6 and changes only own generation/files to0500 and files0400",
+    "worker_retry": "one worker, zero retries; no timeout/pool/cleanup rule raised"
+  },
+  "first_failures": [
+    "control-red-1 missing new implementation module",
+    "control-green-1 overlong Darwin Unix paths and incomplete fixture cleanup; owned child terminated",
+    "typecheck-1 unused symbols",
+    "lint-2 unnecessary regex escape",
+    "typecheck-final-1 in-progress foreign Core3d completion field"
+  ],
+  "initial_source_reconstruction": {
+    "manifest": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/initial-source-from-recorded-patches/manifest.json",
+    "sha256": "c358e189c964f4cb22bfb35590832ae3d3d443ab4a3af5fdbd0eca2c2a67dca6",
+    "note": "derived from recorded initial Add File tool inputs after run; not contemporaneous pre-run snapshot"
+  },
+  "required_followup": [
+    "Connect final M1 shared Completion authorization gate in Web/Desktop after client3d freeze; API-positive is not UI enforce acceptance",
+    "Rebind and verify final full graph after server2d/client3d and parallel changes are isolated",
+    "Run all four real authored scenarios plus complete A01–A12 under coordinator-owned API/CLI/Git/baseHost/productionWeb/matchingDesktop",
+    "Independent check of this authoring freeze, later follow-up and full phase before S2 archive"
+  ],
+  "git_writes": false,
+  "new_dependencies": false,
+  "server_core_views_edits": false,
+  "parent_matrix_changed": false,
+  "final_author_audit": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-e2e3/final-author-audit.json",
+    "sha256": "8ccc76131d4a825e6b2e15c57e2e89dbf66454419825d65673f70ee2c4a24f34"
+  },
+  "report_markdown_sha256": "d86ca68ba02e15b8e3b2fd2823a5c0da6093490f64c26c2669c435bdd3b4450a"
+}

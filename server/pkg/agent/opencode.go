@@ -47,6 +47,11 @@ type opencodeBackend struct {
 }
 
 func (b *opencodeBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "opencode"
@@ -191,7 +196,7 @@ func (b *opencodeBackend) Execute(ctx context.Context, prompt string, opts ExecO
 	msgCh := make(chan Message, 256)
 	resCh := make(chan Result, 1)
 
-	// procDone closes once cmd.Wait() returns, letting the cancellation handler
+	// procDone closes once waitOwnedProcessTree(cmd) returns, letting the cancellation handler
 	// skip a process that already exited and avoid signalling a dead pid.
 	procDone := make(chan struct{})
 
@@ -248,7 +253,7 @@ func (b *opencodeBackend) Execute(ctx context.Context, prompt string, opts ExecO
 		scanResult := b.processEvents(stdout, msgCh)
 
 		// Wait for process exit, then release the cancellation handler.
-		exitErr := cmd.Wait()
+		exitErr := waitOwnedProcessTree(cmd)
 		close(procDone)
 		releaseProcessGroup(cmd)
 		duration := time.Since(startTime)
@@ -307,12 +312,13 @@ func (b *opencodeBackend) Execute(ctx context.Context, prompt string, opts ExecO
 		}
 
 		resCh <- Result{
-			Status:     scanResult.status,
-			Output:     scanResult.output,
-			Error:      scanResult.errMsg,
-			DurationMs: duration.Milliseconds(),
-			SessionID:  scanResult.sessionID,
-			Usage:      usage,
+			BusinessOutcomeMissing: !scanResult.sawTerminalSignal && !scanResult.sawErrorEvent,
+			Status:                 scanResult.status,
+			Output:                 scanResult.output,
+			Error:                  scanResult.errMsg,
+			DurationMs:             duration.Milliseconds(),
+			SessionID:              scanResult.sessionID,
+			Usage:                  usage,
 		}
 	}()
 
@@ -337,6 +343,7 @@ type eventResult struct {
 	// need "this run really completed" must test this field; status defaults to
 	// "completed" and cannot carry that meaning on its own.
 	sawTerminalSignal bool
+	sawErrorEvent     bool // An explicit provider error is a business failure.
 }
 
 // processEvents reads JSON lines from r, dispatches events to ch, and returns
@@ -347,6 +354,7 @@ func (b *opencodeBackend) processEvents(r io.Reader, ch chan<- Message) eventRes
 	var usage TokenUsage
 	finalStatus := "completed"
 	var finalError string
+	sawErrorEvent := false
 
 	// Track step bracketing so a stream that ends mid-step is not mistaken for a
 	// clean completion. OpenCode's JSON stream has no terminal result event
@@ -416,6 +424,7 @@ func (b *opencodeBackend) processEvents(r io.Reader, ch chan<- Message) eventRes
 				stepHasContinuationTool = true
 			}
 		case "error":
+			sawErrorEvent = true
 			b.handleErrorEvent(event, ch, &finalStatus, &finalError)
 		case "step_start":
 			openStep = true
@@ -489,6 +498,7 @@ func (b *opencodeBackend) processEvents(r io.Reader, ch chan<- Message) eventRes
 		usage:             usage,
 		noTerminalSignal:  noTerminalSignal,
 		sawTerminalSignal: sawStepFinish && !noTerminalSignal,
+		sawErrorEvent:     sawErrorEvent,
 	}
 }
 

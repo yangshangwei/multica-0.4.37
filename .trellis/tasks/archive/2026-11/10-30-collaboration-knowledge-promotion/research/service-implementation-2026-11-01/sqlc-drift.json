@@ -1,0 +1,14 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+    "generate"
+  ],
+  "exit_code": 0,
+  "generated_files": 126,
+  "drift": [],
+  "query_changed_during_generation": []
+}

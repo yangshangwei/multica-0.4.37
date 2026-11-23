@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-11-02T19:57:56.960314+00:00",
+  "actual_run_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+  "observed_record_sha256": "b8b7ba7e685530d147413eeae163020ceff4f59addf2d0af213c8e1d252d0f93",
+  "actual_record": {
+    "candidate_sha": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+    "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+    "command": [
+      "make",
+      "check",
+      "ENV_FILE=<canonical private task env>"
+    ],
+    "adapter_sha256": {
+      "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+    },
+    "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+    "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+    "effective_env_sha256": "b2bc3ffbde4008106ae43bf7b2b7dc5bb2c08134411e12ebdf3bf57b3ee84a16",
+    "environment_loading": "data parsing plus canonical shell-quoted task copy",
+    "environment_value_contract": "normalized values contain no dollar signs or control/newline characters",
+    "database_policy": "a separate newly migrated task clone per Go package; never business default; package databases and failures retained",
+    "api_pool": {
+      "max": 10,
+      "min": 1
+    },
+    "Go_test_pool_overrides": "removed only in actual test adapter branch",
+    "home": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/full-check-home-v10",
+    "Go_cache_paths": {
+      "GOCACHE": "/Volumes/artisan/dev-cache/go-build",
+      "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+      "GOPATH": "/Users/artisan/go"
+    },
+    "renderer": "http://127.0.0.1:19845/",
+    "knowledge_default": false,
+    "real_provider_allowed": false,
+    "build_temp_directory": "/private/tmp/multica-final-check-v10-8t_05bq4",
+    "build_temp_git_root_absent": true,
+    "state": "running",
+    "started_at": "2026-11-02T19:56:51.936099+00:00",
+    "process_id": 92594
+  },
+  "independent_review": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-executable-review.json",
+  "independent_review_sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
+  "clearance": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/independent-review-clearance-v10.json",
+  "clearance_sha256": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae",
+  "root_preflight": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/v10-root-preflight.json",
+  "owner_thread": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+  "exec_session": 86640,
+  "actual_full_check_pass": false,
+  "previous_failed_result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/shared-check-v9-result.json",
+  "duplicate_run": false
+}

@@ -1,0 +1,82 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "related_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "observed_at": "2026-11-15T13:13:33.888822+00:00",
+  "source_thread": "01a1dde9-4bd6-7c00-9fa1-e29bf5ddb142",
+  "evidence_kind": "bound_owner_callback_and_readonly_formal_independent_code_verdict_verification",
+  "code_report": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r06.json",
+    "sha256": "06cb58ddf6bbc1ff1f069144f2756b48c0b2801d1396cc2affe48eb1c59d23a7",
+    "matches_callback": true,
+    "status": "CODE_ACCEPTED_R06",
+    "code_verification_accepted": true,
+    "current_code_blockers": 0,
+    "accepted_for_root_next_p2_code_step": true,
+    "source_manifest_sha256": "fffeec5a7c48ad8fee7a4bc0933e0a0416d1357fc8ec56c93cc77b0e06c3bda4",
+    "verification": {
+      "lint": "PASS: gofmt7 and go vet service; base nonS2 formatting findings retained",
+      "typecheck": "PASS: both actual service test builds, go vet and hash-bound retained frontend checks",
+      "tests": "PASS_CURRENT_COMPLETE116_NORMAL_RACE",
+      "normal": {
+        "top": 116,
+        "named": 321,
+        "leaf": 263,
+        "pass": 321
+      },
+      "race": {
+        "top": 116,
+        "named": 321,
+        "leaf": 263,
+        "pass": 321
+      },
+      "static": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-verification-r06/completion-check/static-results-r01.json",
+        "sha256": "99e923657dc44313a5584bc433886ffb54071f5a54df6bd40935f926eaa2d6f6",
+        "bytes": 6008
+      },
+      "ci_go126_linux_proven": false
+    }
+  },
+  "coordinator": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/coordination-freeze-r05.json",
+    "sha256": "7570980daf83b4144bd6dfe3b2c25684deb9d9a06dc8418fa8dcc08a17bd9b11",
+    "callback_sha256": "7570980daf83b4144bd6dfe3b2c25684deb9d9a06dc8418fa8dcc08a17bd9b11",
+    "race_complete_partitions": 2,
+    "completed_go_test_commands": 4,
+    "current_p2_r07": {
+      "status": "PRIVATE_TEST_RED_IMPLEMENTATION_AND_17_ENVIRONMENTS_PREPARATION_AUTHORIZED",
+      "accepted_parent_code_verdict": "CODE_ACCEPTED_R06",
+      "accepted_parent_manifest_sha256": "fffeec5a7c48ad8fee7a4bc0933e0a0416d1357fc8ec56c93cc77b0e06c3bda4",
+      "brief_sha256": "20b475c38fedb1ebc13cbb37dbec0e332a00d1c5b71699327fce6f59f66fd432",
+      "package_selectors_sha256": "d90167c35ca0ea7fbd92882c1402d637c429e899991698135f0d9a198a42cc60",
+      "implementation_permit": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-implementation-r07-r01/implementation-permit-r07-r01.json",
+      "implementation_permit_sha256": "03d673453ae2f8b1b2b22964cd940282e19c0670778fc31d506d1a84ac078759",
+      "environment_preparation_permit": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/environment-preparation-permit-r07-r01.json",
+      "environment_preparation_permit_sha256": "249efdd4f1ca85e259e698fc7b1fe7dc3c7d1f21a1b2a1ed9558848bca0dbc87",
+      "owned_existing_paths": [
+        "server/internal/handler/collaboration_stage.go",
+        "server/internal/handler/collaboration_stage_test.go",
+        "server/cmd/server/collaboration_stage_routes_test.go"
+      ],
+      "fresh_profile_count": 17,
+      "new_go_tests_or_sql_controls_authorized_yet": false,
+      "initial_source_flag_must_stay_false_until_actual_red": true,
+      "real_native_schema_negative_and_disable_recovery_required": true,
+      "no_new_product_sql_migrations_or_fixture_activation_override": true,
+      "live_and_accepted_source_p2_available": false,
+      "actual_web_desktop_scenarios_passed": 0
+    }
+  },
+  "p2_available": false,
+  "actual_web_desktop_scenarios_passed": 0,
+  "actual_web_desktop_scenarios_total": 4,
+  "full_s2_accepted": false,
+  "a01_a12_accepted": false,
+  "original_r03_accepted": false,
+  "original_r03_verdict": "NOT_ACCEPTABLE_R03",
+  "historical_v01_v02_root_causes_classified": false,
+  "historical_product_fix_proved": false,
+  "new_PAY_owner_or_suite_created": false,
+  "PAY_source_report_resources_mutated": false,
+  "next_gate": "P2_r07_independent_acceptance_real_schema_negative_disable_history_recovery_then_five_matching_binaries_full_DDL_865_four_products_A01_A12_S3"
+}

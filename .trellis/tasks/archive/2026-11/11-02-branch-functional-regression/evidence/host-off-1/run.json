@@ -1,0 +1,64 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "lane": "password",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-host-runtime.spec.ts",
+    "e2e/collaboration-host-switch.spec.ts",
+    "e2e/collaboration-host-squad.spec.ts",
+    "e2e/collaboration-knowledge-deployed.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/host-off-1/artifacts"
+  ],
+  "database": "multica_func7af9_host_off_20261102",
+  "api_health": {
+    "status": "ok",
+    "pid": 41359,
+    "commit": "7af9ab990",
+    "started_at": "2026-11-02T01:43:30Z"
+  },
+  "web_build_id": "wYec8nnmn8Rukz4PiJAJ7",
+  "config_sha256": "1850520bf156081b43ac40865e98a83e1c66289af68bb15a48446a5efd37545b",
+  "started_at": "2026-11-02T01:43:37.316303+00:00",
+  "state": "complete",
+  "commercial_provider_calls": 0,
+  "agent_cli_guard": true,
+  "collaboration_gate_before": {
+    "id": 1,
+    "epoch": 2,
+    "enabled": false,
+    "freeze_progress": null,
+    "creation_enabled": true,
+    "freeze_operation_id": null,
+    "host_execution_enabled": false
+  },
+  "harness_patch_sha256": "8f82ee5462c37a7933c2a79f462fe9febfe0979862e03603b06707d283319c98",
+  "harness_dirty_paths": [
+    "e2e/collaboration-installed-main.spec.ts",
+    "e2e/collaboration-memory-web.spec.ts",
+    "e2e/fixtures/collaboration-installed-main.mjs"
+  ],
+  "harness_untracked_files": {
+    "e2e/fixtures/collaboration-recipient-picker.mjs": "4f3ed8fcac50f7fdef4a35dbd4a9c0f2e92c3d64faffdffb23f8df047250bdb5"
+  },
+  "exit_code": 0,
+  "finished_at": "2026-11-02T01:44:42.493434+00:00",
+  "stats": {
+    "startTime": "2026-11-02T01:43:38.303Z",
+    "duration": 64161.79,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "collection_errors": []
+}

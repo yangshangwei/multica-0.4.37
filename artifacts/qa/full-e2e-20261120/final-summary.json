@@ -1,0 +1,126 @@
+{
+  "canonical_e2e": {
+    "inventory": 496,
+    "latest_counts": {
+      "passed": 496
+    },
+    "automatic_retries": 0,
+    "reports": 105,
+    "diagnostic_copies_counted": false
+  },
+  "initial_core": {
+    "pass": 47,
+    "fail": 0,
+    "skip": 0
+  },
+  "full_default_native_original": {
+    "pass": 356,
+    "fail": 9,
+    "skip": 131
+  },
+  "fixed_replay": {
+    "pass": 69,
+    "fail": 0,
+    "skip": 1
+  },
+  "latest_candidate_focused": {
+    "pass": 14,
+    "fail": 0,
+    "skip": 0,
+    "head": "d1b25077b89af8ef72e58c0b040b9ea495261b1b",
+    "web_build": "EmDGPM9UCUMAhrfQuV0fk",
+    "source_files": 9055,
+    "source_drift": 0
+  },
+  "typescript_initial_full": {
+    "pass": 14709,
+    "fail": 0,
+    "skip": 0,
+    "files": 1166
+  },
+  "performance": {
+    "propagation_samples": 10000,
+    "missing": 0,
+    "pooled_p95_ms": 736.109,
+    "slowest_observer_p95_ms": 820.073,
+    "business_writeback_count": 100,
+    "business_writeback_p95_ms": 278.066,
+    "finalization_count": 100,
+    "finalization_p95_ms": 1028.716
+  },
+  "product_fix": "Action-specific completion options denial no longer clears readable collaboration issue",
+  "original_failures_preserved": true,
+  "committed": true,
+  "deployed": false,
+  "external_model_calls": false,
+  "backend": {
+    "scope": "Casewise coverage across explicitly identified candidate snapshots and focused replays; not a single complete current-HEAD package run.",
+    "current_default_casewise_top_counts": {
+      "pass": 11233,
+      "skip": 9
+    },
+    "current_default_casewise_named_counts": {
+      "pass": 23688,
+      "skip": 9
+    },
+    "missing_default_top_level": [],
+    "unresolved_default_failed_names": [],
+    "whole_service_package_pass": false,
+    "whole_service_reason": "The original single-process40m run timed out. Case groups/replays establish individual coverage separately; the original failure remains failed.",
+    "excluded_default_platform_or_tag_top_counts": {
+      "pass": 86,
+      "not_run": 115,
+      "partial": 1
+    },
+    "remaining_named_skips": [
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/migrate",
+        "name": "TestCommentContentBigramRequirementMatchesRealPGBigm"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "name": "TestCollaborationStageExecutionHarness"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "name": "TestDeliveryCompletionM1BrowserFixture"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/cli",
+        "name": "TestCLIConfig_UnknownFieldsArePreserved"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/daemon",
+        "name": "TestIsDriveRoot"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "name": "TestMcpMarketPublicHTTPRecipeLifecycle"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "name": "TestTriageWireFixtures"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "name": "TestWebhookHandler_DBErrorOnTokenLookupReturns500"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/pkg/agent",
+        "name": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput"
+      }
+    ],
+    "report": "backend/FINAL.md"
+  },
+  "status": "complete",
+  "cleanup": {
+    "owned_listener_residue": [],
+    "owned_named_container_residue": [],
+    "normal_shared_postgres": "127.0.0.1:5432 - accepting connections"
+  },
+  "task_status": "completed_in_place",
+  "work_commits": {
+    "product": "67af89db85a25d7bf44dd793f3bd5db07babe397",
+    "fixtures": "7817d8958bbe9d0579b3191833d5aa9358fa8a93"
+  }
+}

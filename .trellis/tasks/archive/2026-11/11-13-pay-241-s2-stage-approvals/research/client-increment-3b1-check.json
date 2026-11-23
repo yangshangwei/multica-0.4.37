@@ -1,0 +1,713 @@
+{
+  "status": "no_new_findings_in_frozen_client3b1",
+  "completed_at": "2026-11-14T07:20:50.275108+00:00",
+  "scope": "Read-only independent client3b1 generic stage-refusal/R38/project-delete feedback review. Privacy/T4/M1/activity excluded.",
+  "snapshot": {
+    "directory": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z",
+    "manifest": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/source-manifest.json",
+    "sha256": "c0ff1fe928d7597f61ba6c548e031f207f1c9b5b24579ebfd8145156f9d3cf02",
+    "file_count": 482,
+    "verified_files": 482,
+    "verified_changed_files": 24,
+    "verified_protected_files": 4,
+    "mutated": false
+  },
+  "result_report": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3b1-results.json",
+    "sha256": "0fd3706d190fe2fb2ef7da5d89ec77186f93be02c4cf933a043ebaca98578faa"
+  },
+  "contract": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+    "reported_wire_sha256": "a71d71570cf1f337d0f8c299e77e307e6d37516dd516eaa6e0882548c5669520",
+    "reviewed_section": "10.2; snapshot does not contain a wire copy",
+    "section_sha256": "30e735211aa78aff1abea7e887442edb009aa50729e76d41b1ab894ae15b4a71"
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "review_evidence": [
+    {
+      "id": "G1",
+      "topic": "Strict stored stage refusal fields",
+      "sources": [
+        [
+          "packages/core/collaboration/schema.ts",
+          351
+        ],
+        [
+          "packages/core/collaboration/stage-schema.ts",
+          554
+        ]
+      ],
+      "finding": "No issue. Generic stage_incomplete requires 409, nonempty bounded blockers and a truncation flag. Hidden evidence identifiers, contradictory confirmations and stage blocks on policy-exit/non-stage outcomes are rejected. Unknown blocker codes remain blocking."
+    },
+    {
+      "id": "G2",
+      "topic": "Malformed is not missing; legacy 404 remains unchanged",
+      "sources": [
+        [
+          "packages/core/api/client.ts",
+          1689
+        ],
+        [
+          "packages/core/collaboration/action.ts",
+          94
+        ],
+        [
+          "packages/core/collaboration/result-operation.test.ts",
+          204
+        ]
+      ],
+      "finding": "No issue. A malformed stage-marked GET body throws instead of returning null. The unchanged generic recoverCollaborationAction still resends the frozen original on genuine 404/missing legacy receipt. No automatic new key/payload is introduced."
+    },
+    {
+      "id": "G3",
+      "topic": "Result and source-form retention",
+      "sources": [
+        [
+          "packages/core/collaboration/operation.ts",
+          36
+        ],
+        [
+          "packages/core/collaboration/operation.ts",
+          62
+        ],
+        [
+          "packages/core/collaboration/result-operation.test.ts",
+          217
+        ],
+        [
+          "packages/views/collaboration/workflow.tsx",
+          54
+        ],
+        [
+          "packages/views/collaboration/workflow.tsx",
+          97
+        ]
+      ],
+      "finding": "No issue. Valid stored refusal retires only the operation draft; delivery form completion cleanup requires a successful status. Refusal does not dismiss the form. Recovery restores its original action/input, while malformed responses retain pending identity and input. Existing scope/access guards remain in the actual path."
+    },
+    {
+      "id": "G4",
+      "topic": "R38 diagnostic error vs stored success",
+      "sources": [
+        [
+          "packages/core/admin/collaboration-schema.ts",
+          64
+        ],
+        [
+          "packages/core/admin/collaboration-schema.ts",
+          140
+        ],
+        [
+          "packages/core/admin/collaboration-queries.ts",
+          142
+        ],
+        [
+          "packages/views/admin/collaboration/collaboration-controls.tsx",
+          42
+        ]
+      ],
+      "finding": "No issue. The actual admin error envelope is code/error/request_id, where request_id is a transport trace. Stage refusal parser strips prose/trace and does not manufacture an operation receipt. A first known rejected attempt removes its draft; a later rejected attempt with an existing unknown original retains that original and checks GET. GET results remain success-receipt-only; malformed failure-like results stay unresolved."
+    },
+    {
+      "id": "G5",
+      "topic": "Shared status/blocker feedback",
+      "sources": [
+        [
+          "packages/views/collaboration/stage-refusal-notice.tsx",
+          6
+        ],
+        [
+          "packages/views/admin/collaboration/collaboration-receipt.tsx",
+          7
+        ],
+        [
+          "packages/views/admin/collaboration/collaboration-controls.tsx",
+          59
+        ]
+      ],
+      "finding": "No issue. Views render retained HTTP status and historical blocker snapshot, distinguish a refused retry with unknown original from a known refusal, and preserve the reason. A stage refusal cannot render a completed receipt or raw private server error."
+    },
+    {
+      "id": "G6",
+      "topic": "Project DELETE409 stays put",
+      "sources": [
+        [
+          "packages/views/projects/components/project-detail.tsx",
+          264
+        ],
+        [
+          "packages/views/projects/components/project-detail.test.tsx",
+          712
+        ]
+      ],
+      "finding": "No issue. Only current-session 409 stage_policy_exit_required gets the localized disable-policy instruction. Success toast/navigation remain in onSuccess. The recorded-HEAD useDeleteProject mutation removes data only on success; a failed delete preserves state. No delete-impact fields were invented."
+    }
+  ],
+  "changed_source_bindings": [
+    {
+      "path": "packages/core/admin/collaboration-api.test.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/admin/collaboration-api.test.ts",
+      "sha256": "5f244b5390fea37656af298823f10f4146212d90f58f16469f0f7febfa366cca"
+    },
+    {
+      "path": "packages/core/admin/collaboration-queries.test.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/admin/collaboration-queries.test.ts",
+      "sha256": "6ceb6f8807a3494be44e06cf2203bd8c20277210aca37e8c0fc8074cb96710c1"
+    },
+    {
+      "path": "packages/core/admin/collaboration-queries.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/admin/collaboration-queries.ts",
+      "sha256": "c7c555c90ef255e236b59714f64a3b559d0b30fade31f7f514e9ba3cc9073307"
+    },
+    {
+      "path": "packages/core/admin/collaboration-schema.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/admin/collaboration-schema.ts",
+      "sha256": "e53d0b3759c5289b1710d8b3ef87cfe60311ae785343db34376edfe1a9e41396"
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/api/client.ts",
+      "sha256": "ac1b6e284fa9656df64401b21dceb55a987bb41b58b404f317b81989f549cecd"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-schema.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/collaboration/delivery-schema.ts",
+      "sha256": "ebdcd5409168fefd2212627cce519a78935243a1a63d61b09b1962a4a781a965"
+    },
+    {
+      "path": "packages/core/collaboration/result-operation.test.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/collaboration/result-operation.test.ts",
+      "sha256": "2ed734e46bab3c840a76bdc8900d4423bddf2b233cfcf1aa2d1dc8d9a12163b5"
+    },
+    {
+      "path": "packages/core/collaboration/schema.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/collaboration/schema.ts",
+      "sha256": "a4af82f7b8ebd82001cab485a4e8e5b29efb42eebd8cde8027550bccd5e0bbc6"
+    },
+    {
+      "path": "packages/core/collaboration/stage-generic-refusal.test.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/collaboration/stage-generic-refusal.test.ts",
+      "sha256": "d9f676c7841f53f5be536e34da89266b0c3edfd6883fab30750bd83d4634adc6"
+    },
+    {
+      "path": "packages/core/collaboration/stage-schema.ts",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/core/collaboration/stage-schema.ts",
+      "sha256": "0477374825e303e150c02f7c9f9a0a39225a734b64f9dcab8e0d0c78ef4dcc68"
+    },
+    {
+      "path": "packages/views/admin/collaboration/collaboration-controls.tsx",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/admin/collaboration/collaboration-controls.tsx",
+      "sha256": "7b466f6fd1ebae60051f18e1b440a4a47b5b583955c3af479fec8bb1f3ab399a"
+    },
+    {
+      "path": "packages/views/admin/collaboration/collaboration-page.test.tsx",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/admin/collaboration/collaboration-page.test.tsx",
+      "sha256": "dc2197ebeee1d2f522fdf31290dd24be6e5722a7743eb12649d88a908a50b578"
+    },
+    {
+      "path": "packages/views/admin/collaboration/collaboration-receipt.tsx",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/admin/collaboration/collaboration-receipt.tsx",
+      "sha256": "4495916d81fba37f1a17a2bb570c441ded97c8901e8218a27a4d6ebe85457ac1"
+    },
+    {
+      "path": "packages/views/collaboration/stage-refusal-notice.tsx",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/collaboration/stage-refusal-notice.tsx",
+      "sha256": "60da053703d00db6bdf024ef2acfe88213dc9842bdc624e26dba801515b379ac"
+    },
+    {
+      "path": "packages/views/collaboration/workflow.test.tsx",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/collaboration/workflow.test.tsx",
+      "sha256": "f9228b8d05787188f6d084726416fb33d55923a9774191904e36ae710126506b"
+    },
+    {
+      "path": "packages/views/collaboration/workflow.tsx",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/collaboration/workflow.tsx",
+      "sha256": "d75193bad8733a722bccfad7e5fe494031104de053e54268c6efe126ea1a90ea"
+    },
+    {
+      "path": "packages/views/locales/en/admin.json",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/locales/en/admin.json",
+      "sha256": "8a0ed9e8fd8c26bb8d1c229d0ba17fbd23533a3389d5ee76b089f61badcef923"
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/locales/en/collaboration.json",
+      "sha256": "62323fc52147fb1671514dcd45c786808cef9ab22db360b17b63f98485427be0"
+    },
+    {
+      "path": "packages/views/locales/en/projects.json",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/locales/en/projects.json",
+      "sha256": "706047bb82df160817e9b967cdd52abe273f6e539bfb70189b4b4289f6dd07cc"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/admin.json",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/locales/zh-Hans/admin.json",
+      "sha256": "249c3cd5dc24aa056ec35bb3981fed5f050f3fcbafb3fd3ef894bac790d4ed09"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/locales/zh-Hans/collaboration.json",
+      "sha256": "1884a19c96fb3491053b977e5768c33873888d47ec9d8c351ee49d3d436b9ae2"
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/projects.json",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/locales/zh-Hans/projects.json",
+      "sha256": "b82a9ee88f942e05b14216a229b2b65bf3b442c90afa6168e2f4357afd82b7ff"
+    },
+    {
+      "path": "packages/views/projects/components/project-detail.test.tsx",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/projects/components/project-detail.test.tsx",
+      "sha256": "7ff54f1f26f4f2743ea68d1b1c97cb09ef560b06ef5c43d58cc08b44b8ef7788"
+    },
+    {
+      "path": "packages/views/projects/components/project-detail.tsx",
+      "snapshot_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z/packages/views/projects/components/project-detail.tsx",
+      "sha256": "f7e96f1fdfde135d9580b00b179771dc44fa9b268b183e861256cca3607a6d32"
+    }
+  ],
+  "historical_logs": [
+    {
+      "name": "core-red",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-generic-refusal.test.ts collaboration/result-operation.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-core-red.log",
+      "sha256": "c23d46ffc967baa30955f23d483112f260a8aebffe50da4f0ce5e082f1b0f388",
+      "exit_code": 1,
+      "test_summary": "25 failed | 32 passed (57)",
+      "independently_hash_verified": true,
+      "embedded_exit": 1
+    },
+    {
+      "name": "core-green1",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-generic-refusal.test.ts collaboration/result-operation.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-core-green1.log",
+      "sha256": "f062a2b6b965ffc6933955700ac7b70892fab8e8e85dca3cfd64b95e5b5dec89",
+      "exit_code": 0,
+      "test_summary": "57 passed (57)",
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "admin-red",
+      "command": "pnpm --filter @multica/core exec vitest run admin/collaboration-queries.test.ts -t 'S2'",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-admin-red.log",
+      "sha256": "329f16fcb65cec8bdd035941638c250da3d84320ab91ad2c8623a1eb5a22faa6",
+      "exit_code": 1,
+      "test_summary": "2 failed | 1 passed | 45 skipped (48)",
+      "independently_hash_verified": true,
+      "embedded_exit": 1
+    },
+    {
+      "name": "views-red",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/workflow.test.tsx admin/collaboration/collaboration-page.test.tsx projects/components/project-detail.test.tsx -t 'S2'",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-views-red.log",
+      "sha256": "893faf99f7d5c5c9e52afbe02dd4da4af13af9e54e8d0c075c0851c4df5cf866",
+      "exit_code": 1,
+      "test_summary": "3 failed | 59 skipped (62)",
+      "independently_hash_verified": true,
+      "embedded_exit": 1
+    },
+    {
+      "name": "core-green2",
+      "command": "pnpm --filter @multica/core exec vitest run admin/collaboration-queries.test.ts collaboration/stage-generic-refusal.test.ts collaboration/result-operation.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-core-green2.log",
+      "sha256": "0695ffd1e8beabb21b0c07405f6de00294f46535f5ba1582818ec32480bd9a42",
+      "exit_code": 0,
+      "test_summary": "105 passed (105)",
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "views-green1",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/workflow.test.tsx admin/collaboration/collaboration-page.test.tsx projects/components/project-detail.test.tsx -t 'S2'",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-views-green1.log",
+      "sha256": "3bff3f41a8d287d592fa6b4b4dbaf8754539b1bda7c383b99d14a60a539624fb",
+      "exit_code": 1,
+      "test_summary": "1 failed | 2 passed | 59 skipped (62)",
+      "independently_hash_verified": true,
+      "embedded_exit": 1
+    },
+    {
+      "name": "types1",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-types1.log",
+      "sha256": "422f4da545c57c88cfab32b379a91c86e9e122ac02fee60b5a9e1eb6986c2a6d",
+      "exit_code": 0,
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "views-green2",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/workflow.test.tsx admin/collaboration/collaboration-page.test.tsx projects/components/project-detail.test.tsx -t 'S2'",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-views-green2.log",
+      "sha256": "983bab2898dc3a406be0fead7519efb6547ff9a1f0d3d33d5a34228a7c806fc7",
+      "exit_code": 0,
+      "test_summary": "4 passed | 59 skipped (63)",
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "core-final",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-generic-refusal.test.ts collaboration/stage-schema.test.ts collaboration/schema.test.ts collaboration/operation.test.ts collaboration/result-operation.test.ts collaboration/delivery-api.test.ts collaboration/delivery-result.test.ts admin/collaboration-schema.test.ts admin/collaboration-queries.test.ts admin/collaboration-api.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-core-final.log",
+      "sha256": "1b091d5c165c093cea8e37483f221158bfc0c21b9b093560c40cf9e8afff49ca",
+      "exit_code": 1,
+      "test_summary": "1 failed | 364 passed (365)",
+      "independently_hash_verified": true,
+      "embedded_exit": 1
+    },
+    {
+      "name": "views-final",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/workflow.test.tsx collaboration/workflow-upload.test.tsx admin/collaboration/collaboration-page.test.tsx projects/components/project-detail.test.tsx locales",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-views-final.log",
+      "sha256": "8063b141eca4a03e2d393b2fb997d8979b540ec41925a3b1f60250e782d53c39",
+      "exit_code": 1,
+      "test_summary": "1 failed | 135 passed (136)",
+      "independently_hash_verified": true,
+      "embedded_exit": 1
+    },
+    {
+      "name": "types-final",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-types-final.log",
+      "sha256": "422f4da545c57c88cfab32b379a91c86e9e122ac02fee60b5a9e1eb6986c2a6d",
+      "exit_code": 0,
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "core-lint",
+      "command": "(cwd packages/core) pnpm exec eslint collaboration/schema.ts collaboration/delivery-schema.ts collaboration/stage-schema.ts collaboration/stage-generic-refusal.test.ts collaboration/result-operation.test.ts api/client.ts admin/collaboration-schema.ts admin/collaboration-queries.ts admin/collaboration-queries.test.ts admin/collaboration-api.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-core-lint.log",
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5",
+      "exit_code": 0,
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "views-lint",
+      "command": "(cwd packages/views) pnpm exec eslint collaboration/workflow.tsx collaboration/workflow.test.tsx collaboration/stage-refusal-notice.tsx admin/collaboration/collaboration-controls.tsx admin/collaboration/collaboration-receipt.tsx admin/collaboration/collaboration-page.test.tsx projects/components/project-detail.tsx projects/components/project-detail.test.tsx",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-views-lint.log",
+      "sha256": "64bdef049cd3afae8ba2460853fb922292ee90434e2b2cb0e7bd297b5fde96e4",
+      "exit_code": 0,
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "result-final2",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/result-operation.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-result-final2.log",
+      "sha256": "09e82221f5812645690966321879fef0973bb3363d7171da9f06e430ca5f205b",
+      "exit_code": 0,
+      "test_summary": "37 passed (37)",
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "core-final2",
+      "command": "pnpm --filter @multica/core exec vitest run collaboration/stage-generic-refusal.test.ts collaboration/stage-schema.test.ts collaboration/schema.test.ts collaboration/operation.test.ts collaboration/result-operation.test.ts collaboration/delivery-api.test.ts collaboration/delivery-result.test.ts admin/collaboration-schema.test.ts admin/collaboration-queries.test.ts admin/collaboration-api.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-core-final2.log",
+      "sha256": "2ee37ddf6ecd65d2f9ce77808e0b48069069aea684171926d8db8de708d0c88b",
+      "exit_code": 0,
+      "test_summary": "365 passed (365)",
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "views-final2",
+      "command": "pnpm --filter @multica/views exec vitest run collaboration/workflow.test.tsx collaboration/workflow-upload.test.tsx admin/collaboration/collaboration-page.test.tsx projects/components/project-detail.test.tsx locales",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-views-final2.log",
+      "sha256": "3878fbe2f87e5e17b86256eac7667f3c1215a1d52d19bb4ee97f33720422ee03",
+      "exit_code": 0,
+      "test_summary": "136 passed (136)",
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "types-final2",
+      "command": "pnpm --filter @multica/core --filter @multica/views typecheck",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-types-final2.log",
+      "sha256": "422f4da545c57c88cfab32b379a91c86e9e122ac02fee60b5a9e1eb6986c2a6d",
+      "exit_code": 0,
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "core-lint-final",
+      "command": "(cwd packages/core) pnpm exec eslint collaboration/result-operation.test.ts",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-core-lint-final.log",
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5",
+      "exit_code": 0,
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    },
+    {
+      "name": "views-lint-final",
+      "command": "(cwd packages/views) pnpm exec eslint admin/collaboration/collaboration-receipt.tsx",
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-client-3b1-views-lint-final.log",
+      "sha256": "b6bddef08894ad50d8f2e577427cd2307b7ed9706e81df9f2fbdcdfc057141f5",
+      "exit_code": 0,
+      "independently_hash_verified": true,
+      "embedded_exit": 0
+    }
+  ],
+  "independent_verification": {
+    "kind": "Three frozen schema suites bundled with a strictly enumerated pure dependency supplement; not a full package rerun",
+    "command": "node /Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check/prepare.cjs && node /Volumes/artisan/code/2026/multica-0.4.37/node_modules/vitest/vitest.mjs run --root /Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check --config /Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check/vitest.config.mjs",
+    "test_suites": 3,
+    "tests_passed": 173,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "exit_code": 0,
+    "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check/schema-test.log",
+    "log_sha256": "1f179264e2f67b2fd55d67837d70b673ee9b1cc7444fc11c9b04f851f2977b39",
+    "prepare_script": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check/prepare.cjs",
+    "prepare_script_sha256": "1aa3b477dd75b980783bbc5e61625100fd4ecdc15f9a05e143d693fe80fccca7",
+    "dependency_binding_file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check/dependency-binding.json",
+    "dependency_binding_sha256": "c4521206d3161721b65e1cd87a4ba6c64a5ecdc2d67345c69b834ef8a1b9b033",
+    "dependency_binding": {
+      "snapshot": "/Users/artisan/.multica/acceptance/pay241-20261113-01/snapshots/client-3b1-20261114T062238Z",
+      "manifest_sha256": "c0ff1fe928d7597f61ba6c548e031f207f1c9b5b24579ebfd8145156f9d3cf02",
+      "supplement_head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+      "loaded_sources": [
+        {
+          "path": "packages/core/admin/collaboration-schema.test.ts",
+          "source": "frozen_snapshot",
+          "sha256": "91c5716b0c1bf46bd685ad02eae5078c36056679c7ca1c3933884e11f2bd1502",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/admin/collaboration-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "e53d0b3759c5289b1710d8b3ef87cfe60311ae785343db34376edfe1a9e41396",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/admin/control-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "502d5c658d45464b8286c8bc0b1c80c193a674bea17f121edf0e1e2e5db3a85d",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/admin/operation-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "6bd9d6e4918623de0d422d86398851104ee1f93aa3f870ce182abf480fb5fdd6",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/api/schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "bcb94812fd7c38e3bd4ac018afc875db52f52f049020cba624e584ba4f4400f4",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/account-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "2d0343d1467fad4c62b29ee562c2c343945b17686931ecd420daadaaae03a88c",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/attachment-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "5bf13062dcc770dda0cc8691f3e8728802968b8c714c206df4b4bd6ca451db64",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/command-history-test-fixtures.ts",
+          "source": "frozen_snapshot",
+          "sha256": "69fcc8df4b17caebb2066ab48bc4a8166526ae1024b34f658ca1201acba2c294",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/delivery-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "ebdcd5409168fefd2212627cce519a78935243a1a63d61b09b1962a4a781a965",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/execution-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "bfb3eeeb6090020d7a6eb547b43a25f9d5ffa454ffc6d6740ef03640e7a3f7ba",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/knowledge-test-fixtures.ts",
+          "source": "frozen_snapshot",
+          "sha256": "6ac3425dedbb4e2f5e64b80a2c2a2973649eec7c490df09a9aa2e9309dfb7d0c",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/memory-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "cbd8350516ff78f0bd3f96bb2024f0cea461c2a49814435cad5b213d6b547b21",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "a4af82f7b8ebd82001cab485a4e8e5b29efb42eebd8cde8027550bccd5e0bbc6",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-generic-refusal.test.ts",
+          "source": "frozen_snapshot",
+          "sha256": "d9f676c7841f53f5be536e34da89266b0c3edfd6883fab30750bd83d4634adc6",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-schema.test.ts",
+          "source": "frozen_snapshot",
+          "sha256": "22ecf3a91694f9ac8bfe18004db2243b1da22118dd5a710c3cb319ecd5984766",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/stage-schema.ts",
+          "source": "frozen_snapshot",
+          "sha256": "0477374825e303e150c02f7c9f9a0a39225a734b64f9dcab8e0d0c78ef4dcc68",
+          "current_bytes_match": false
+        },
+        {
+          "path": "packages/core/collaboration/stage-test-fixtures.ts",
+          "source": "frozen_snapshot",
+          "sha256": "d3740570a0cb38f95c4d7d9920b29090acee636ab1e9f7ad5a84f5261021f243",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/test-fixtures.ts",
+          "source": "frozen_snapshot",
+          "sha256": "85add33fa32fc9c8ee0c93019ff3eafe66d2a182b1f11042c5c10ad06045762d",
+          "current_bytes_match": false
+        },
+        {
+          "path": "packages/core/collaboration/text-limits.ts",
+          "source": "frozen_snapshot",
+          "sha256": "c5af04568fc1e70abbbb408b8223adc538c19bb009f0dc5f0a312e05738dfb56",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/collaboration/version.ts",
+          "source": "frozen_snapshot",
+          "sha256": "ff55efa4562191af9afea21c07cf1a5e5fb1865508e28e0dbcf015e8e6c0099f",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/logger.ts",
+          "source": "git_head_supplement",
+          "sha256": "1d96c1dda7723e07d8e241677729d9c115468a5a39f779df5803b94acd96435f",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/paths/reserved-slugs.ts",
+          "source": "git_head_supplement",
+          "sha256": "e432b5b2dca47c9eb7cc14f9d2be86079d2e2a9d450b4494d2cba987fa21b20f",
+          "current_bytes_match": true
+        },
+        {
+          "path": "packages/core/types/property.ts",
+          "source": "git_head_supplement",
+          "sha256": "f9a75d7b947089e0850ae4ac5733f21cd19a04a9c9c11fa80b52f52a559f5ff6",
+          "current_bytes_match": true
+        }
+      ],
+      "external_packages": {
+        "vitest": {
+          "version": "4.1.0",
+          "package_json_sha256": "dfb7e8c1ec00a9ce602253f05ac0ed49702bccf4f50f8c8ae41e62df44cbbec5",
+          "real_path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/vitest@4.1.0_@opentelemetry+api@1.9.1_@types+node@25.5.0_jsdom@29.0.1_@noble+hashes@1.8_ff48d36d6bc43d12ce43d4c6cc46616e/node_modules/vitest"
+        },
+        "zod": {
+          "version": "4.3.6",
+          "package_json_sha256": "1a316ad36e36c6c500bce6e9a6dcbec8efda1083f49a72185226b35573b543ba",
+          "real_path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/zod@4.3.6/node_modules/zod"
+        },
+        "esbuild": {
+          "version": "0.25.12",
+          "package_json_sha256": "cb7d5b1fe478f8cbaae566a86031b6fdf5f7d444354f35d1cb3cba9adf6d2935",
+          "real_path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/.pnpm/esbuild@0.25.12/node_modules/esbuild"
+        }
+      },
+      "lock_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+      "head_lock_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+      "lock_matches_head": true,
+      "generated_tests": [
+        {
+          "path": "admin-collaboration-schema.snapshot.test.mjs",
+          "sha256": "be4c1e0dfbf2f9158425c036da9ecd03c12350503fe3b6d815b730f36dc73ed8"
+        },
+        {
+          "path": "stage-generic-refusal.snapshot.test.mjs",
+          "sha256": "c38a0243cab37cc4f4880b91f1662aeb4475bba79392c9767c8cba9845983c5d"
+        },
+        {
+          "path": "stage-schema.snapshot.test.mjs",
+          "sha256": "64e5124aa68f5f994f2a0beb9449eec4ec03e629147beb74bc32d9e7753f42cf"
+        }
+      ]
+    },
+    "runtime": "Node 22.23.2; Vitest 4.1.0; Zod 4.3.6; esbuild 0.25.12",
+    "active_client3b2_sources_loaded": false,
+    "typecheck": "Historical Core/Views pass hash/exit verified only; no fresh full package typecheck. Bundling is not a typecheck.",
+    "lint": "Historical zero errors / two pre-existing ProjectDetail warnings hash/exit verified only; no fresh full lint."
+  },
+  "historical_validation": {
+    "core": {
+      "files": 10,
+      "passed": 365,
+      "failed": 0,
+      "skipped": 0
+    },
+    "views": {
+      "files": 6,
+      "passed": 136,
+      "failed": 0,
+      "skipped": 0
+    },
+    "typecheck": "recorded pass, not rerun",
+    "lint": "recorded 0 errors; two pre-existing warnings at project-detail.tsx:153/261"
+  },
+  "head_reference_sources": [
+    {
+      "path": "packages/core/projects/mutations.ts",
+      "commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+      "sha256": "93ccb3cf8f20aa426da247875903c0c4de586aaeda2bf008c7488b6391284cca",
+      "copy": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check/reference-head/packages/core/projects/mutations.ts"
+    },
+    {
+      "path": "server/internal/handler/admin_auth.go",
+      "commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+      "sha256": "1b9d61f438bb7270194e60bcbc99cbaeea041987b3396df2ffcb67ddac1e02be",
+      "copy": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check/reference-head/server/internal/handler/admin_auth.go"
+    },
+    {
+      "path": "server/internal/handler/admin_collaboration.go",
+      "commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+      "sha256": "cb2e44e7d4d7452d1e2d9335f939091bb892dca6324273f15016d957a340d7c8",
+      "copy": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check/reference-head/server/internal/handler/admin_collaboration.go"
+    },
+    {
+      "path": "server/internal/service/admin_collaboration.go",
+      "commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+      "sha256": "8268be7e80b4ead6c5fab3ac90209b8a4adb9f72d6de2f8d2c4561843bd8174e",
+      "copy": "/Users/artisan/.multica/acceptance/pay241-20261113-01/reviews/client3b1-check/reference-head/server/internal/service/admin_collaboration.go"
+    }
+  ],
+  "remaining_limits": [
+    "No complete historically frozen package dependency tree; independent runtime checks are limited to the bound schema closure.",
+    "Two existing ProjectDetail hooks warnings predate the 3b1 diff and remain unchanged.",
+    "Final integration must retest the combined privacy/3b2/M1/activity client against the eventual server contract.",
+    "Production Web/Desktop, API/DB and A01-A12 joint acceptance remain open."
+  ],
+  "ready_for_client3b1_integration": true,
+  "whole_s2_accepted": false,
+  "parent_accepted": false,
+  "repository_writes": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3b1-check.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3b1-check.json"
+  ],
+  "product_edits": false,
+  "test_source_edits": false,
+  "spec_edits": false,
+  "contract_edits": false,
+  "git_writes": false,
+  "runtime_services_started": false
+}

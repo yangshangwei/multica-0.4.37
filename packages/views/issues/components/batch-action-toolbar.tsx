@@ -1,7 +1,7 @@
 "use client";
 
 import { IterationBatchAssignment } from "../../iterations/iteration-assignment";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { X, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -19,7 +19,7 @@ import {
 import type { Issue, UpdateIssueRequest } from "@multica/core/types";
 import { commonIssueFields } from "@multica/core/issues/batch";
 import { issueBehavesAs } from "@multica/core/issues";
-import { useBatchUpdateIssues, useBatchDeleteIssues } from "@multica/core/issues/mutations";
+import { useBatchUpdateIssues, useBatchDeleteIssues, withObservedIssueFieldRevision } from "@multica/core/issues/mutations";
 import { useModalStore } from "@multica/core/modals";
 import { StatusPicker, PriorityPicker, AssigneePicker } from "./pickers";
 import { useT } from "../../i18n";
@@ -51,6 +51,7 @@ export function BatchActionToolbar({
   placement?: "fixed-bottom" | "inline";
 }) {
   const { t } = useT("issues");
+  const { t: tCollaboration } = useT("collaboration");
   const selection = useIssueSurfaceSelection();
   const selectedIds = selection.selectedIds;
   const clear = selection.clear;
@@ -66,6 +67,8 @@ export function BatchActionToolbar({
     [issues, selectedIds],
   );
   const count = selectedIssues.length;
+  const containsCollaboration = selectedIssues.some((issue) => issue.collaboration != null);
+  const reasonId = useId();
 
   // Reflect the real shared value of the selected issues in each picker; fall
   // back to an empty (no-checkmark) state when the selection is mixed, instead
@@ -86,6 +89,18 @@ export function BatchActionToolbar({
   const loading =
     surfaceActions?.isPending ?? (batchUpdate.isPending || batchDelete.isPending);
   const ids = selectedIssues.map((issue) => issue.id);
+  // The existing batch request has one token, so every selected rendered
+  // issue must share that known observation before it can be attached.
+  const commonRevision = selectedIssues[0]?.revision;
+  const observedBatchIssue = typeof commonRevision === "number"
+    && Number.isSafeInteger(commonRevision)
+    && commonRevision > 0
+    && selectedIssues.every((issue) => issue.revision === commonRevision)
+    ? selectedIssues[0]
+    : undefined;
+  // Shared issues change only through their own workflow, so batch actions are
+  // disabled up front with the reason shown, not refused after a click.
+  const actionsDisabled = loading || containsCollaboration;
 
   useEffect(() => {
     if (count > 0) return;
@@ -95,14 +110,19 @@ export function BatchActionToolbar({
     setDeleteOpen(false);
   }, [count]);
 
+  // The controls are disabled; this only guards a handler reached another way.
+  const refuseCollaborationBatch = () => containsCollaboration;
+
   const handleBatchUpdate = async (updates: Partial<UpdateIssueRequest>) => {
+    if (refuseCollaborationBatch()) return;
+    updates = withObservedIssueFieldRevision(observedBatchIssue, updates);
     try {
-      if (surfaceActions) {
-        await surfaceActions.batchUpdate(ids, updates);
-      } else {
-        await batchUpdate.mutateAsync({ ids, updates });
+      const result = surfaceActions
+        ? await surfaceActions.batchUpdate(ids, updates)
+        : await batchUpdate.mutateAsync({ ids, updates });
+      if (result.updated > 0) {
+        toast.success(t(($) => $.batch.update_success, { count: result.updated }));
       }
-      toast.success(t(($) => $.batch.update_success, { count }));
     } catch (err) {
       toast.error(
         err instanceof Error && err.message
@@ -127,6 +147,8 @@ export function BatchActionToolbar({
   };
 
   const handleBatchAssignee = (updates: Partial<UpdateIssueRequest>) => {
+    if (refuseCollaborationBatch()) return;
+    updates = withObservedIssueFieldRevision(observedBatchIssue, updates);
     if ((updates.assignee_type === "agent" || updates.assignee_type === "squad") && updates.assignee_id) {
       // Backlog never starts a run on assign (parking lot), so if every selected
       // issue is in backlog the confirm modal would only render an empty "won't
@@ -142,6 +164,7 @@ export function BatchActionToolbar({
           mode: "assign",
           assigneeType: updates.assignee_type,
           assigneeId: updates.assignee_id,
+          ...(updates.expected_revision !== undefined ? { issueRevision: updates.expected_revision } : {}),
         });
         return;
       }
@@ -150,6 +173,7 @@ export function BatchActionToolbar({
   };
 
   const handleBatchDelete = async () => {
+    if (refuseCollaborationBatch()) { setDeleteOpen(false); return; }
     try {
       if (surfaceActions) {
         await surfaceActions.batchDelete(ids);
@@ -183,7 +207,7 @@ export function BatchActionToolbar({
             )}
           >
             <motion.div
-              className="flex items-center gap-1 rounded-lg border bg-background px-2 py-1.5 shadow-lg"
+              className="flex max-w-[calc(100vw-2rem)] flex-col gap-1 rounded-lg border bg-background px-2 py-1.5 shadow-lg"
               initial={{
                 opacity: 0,
                 transform: shouldReduceMotion
@@ -211,12 +235,14 @@ export function BatchActionToolbar({
                 },
               }}
             >
+        <div className="flex items-center gap-1">
         <div className="flex items-center gap-1.5 pl-1 pr-2 border-r mr-1">
           <span className="text-body font-medium">{t(($) => $.batch.selected, { count })}</span>
           <button
             type="button"
             onClick={clear}
             aria-label={t(($) => $.batch.clear_selection)}
+            aria-describedby={containsCollaboration ? reasonId : undefined}
             className="rounded p-0.5 hover:bg-accent transition-colors"
           >
             <X className="size-3.5 text-muted-foreground" />
@@ -229,7 +255,7 @@ export function BatchActionToolbar({
           onUpdate={handleBatchStatus}
           open={statusOpen}
           onOpenChange={setStatusOpen}
-          triggerRender={<Button variant="ghost" size="sm" disabled={loading} />}
+          triggerRender={<Button variant="ghost" size="sm" disabled={actionsDisabled} />}
           trigger={t(($) => $.batch.status)}
           align="center"
         />
@@ -240,7 +266,7 @@ export function BatchActionToolbar({
           onUpdate={handleBatchUpdate}
           open={priorityOpen}
           onOpenChange={setPriorityOpen}
-          triggerRender={<Button variant="ghost" size="sm" disabled={loading} />}
+          triggerRender={<Button variant="ghost" size="sm" disabled={actionsDisabled} />}
           trigger={t(($) => $.batch.priority)}
           align="center"
         />
@@ -253,24 +279,26 @@ export function BatchActionToolbar({
           onUpdate={handleBatchAssignee}
           open={assigneeOpen}
           onOpenChange={setAssigneeOpen}
-          triggerRender={<Button variant="ghost" size="sm" disabled={loading} />}
+          triggerRender={<Button variant="ghost" size="sm" disabled={actionsDisabled} />}
           trigger={t(($) => $.batch.assignee)}
           align="center"
         />
 
-        {selectedIssues[0]?.workspace_id && selectedIssues.every((issue) => issue.workspace_id === selectedIssues[0]?.workspace_id) && <IterationBatchAssignment key={JSON.stringify(ids)} wsId={selectedIssues[0].workspace_id} issueIds={ids} />}
+        {!containsCollaboration && selectedIssues[0]?.workspace_id && selectedIssues.every((issue) => issue.workspace_id === selectedIssues[0]?.workspace_id) && <IterationBatchAssignment key={JSON.stringify(ids)} wsId={selectedIssues[0].workspace_id} issueIds={ids} />}
 
         {/* Delete */}
         <Button
           variant="ghost"
           size="sm"
-          disabled={loading}
-          onClick={() => setDeleteOpen(true)}
+          disabled={actionsDisabled}
+          onClick={() => { if (!refuseCollaborationBatch()) setDeleteOpen(true); }}
           className="text-destructive hover:text-destructive"
         >
           <Trash2 className="size-3.5 mr-1" />
           {t(($) => $.batch.delete)}
         </Button>
+        </div>
+        {containsCollaboration && <p id={reasonId} data-slot="batch-disabled-reason" className="max-w-md px-1 pb-0.5 text-caption text-muted-foreground">{tCollaboration(($) => $.source.batchUnsupported)}</p>}
             </motion.div>
           </div>
         )}

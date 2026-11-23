@@ -1,0 +1,57 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=120s",
+    "./internal/service",
+    "-run",
+    "^Test(BuiltinSkillsConformToTemplate|BuiltinSkillsFrontmatterIsStrictYAML|MentioningSkillFollowsContractFrontmatter|MentioningSkillTeachesTheParserContract|WorkingOnIssuesSkillCoversIssueLoopContracts)$"
+  ],
+  "exit": 0,
+  "tests": {
+    "pass": [
+      "TestBuiltinSkillsConformToTemplate/multica-autopilots",
+      "TestBuiltinSkillsConformToTemplate/multica-creating-agents",
+      "TestBuiltinSkillsConformToTemplate/multica-mentioning",
+      "TestBuiltinSkillsConformToTemplate/multica-onboarding",
+      "TestBuiltinSkillsConformToTemplate/multica-projects-and-resources",
+      "TestBuiltinSkillsConformToTemplate/multica-runtimes-and-repos",
+      "TestBuiltinSkillsConformToTemplate/multica-skill-importing",
+      "TestBuiltinSkillsConformToTemplate/multica-squads",
+      "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+      "TestBuiltinSkillsConformToTemplate",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-autopilots",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-creating-agents",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-mentioning",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-onboarding",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-projects-and-resources",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-runtimes-and-repos",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-skill-importing",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-squads",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-working-on-issues",
+      "TestBuiltinSkillsFrontmatterIsStrictYAML",
+      "TestMentioningSkillFollowsContractFrontmatter",
+      "TestMentioningSkillTeachesTheParserContract/name_where_a_uuid_belongs_is_silently_dead",
+      "TestMentioningSkillTeachesTheParserContract/bare_@name_is_plain_text",
+      "TestMentioningSkillTeachesTheParserContract/real_uuid_with_matching_type_fires",
+      "TestMentioningSkillTeachesTheParserContract/all_uses_the_literal_all",
+      "TestMentioningSkillTeachesTheParserContract/wrong_type_still_parses_(points_at_wrong_entity)",
+      "TestMentioningSkillTeachesTheParserContract",
+      "TestWorkingOnIssuesSkillCoversIssueLoopContracts"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "counts": {
+    "pass": 28,
+    "fail": 0,
+    "skip": 0
+  },
+  "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-independent-skills-01.jsonl",
+  "log_sha256": "a986c86b33851d22cc61f0ac230722c0d640384a16488d98f4a9ad18988e34bb",
+  "classification": "independent_review_pass"
+}

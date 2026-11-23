@@ -1,0 +1,113 @@
+{
+  "recorded_at": "2026-11-02T17:16:25.115057+00:00",
+  "reviewer": "/root/noncatalog_browser_diagnosis",
+  "scope": "read-only diagnosis of three non-catalog unexpected E2E failures",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "verdict": "diagnosis_complete_with_replay_required",
+  "source_changed": false,
+  "tests_executed": 0,
+  "lint": "not run; read-only diagnostic scope",
+  "typecheck": "not run; read-only diagnostic scope",
+  "database_actions": 0,
+  "http_requests": 0,
+  "provider_actions": 0,
+  "raw_failure_json": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/browser-v9-final-failures.json",
+  "raw_failure_sha256": "64ce72010e17267cc984919f4c6d5025060760d810cec5d6db84123b6468ff41",
+  "source_sha256": {
+    "e2e/collaboration-memory-web.spec.ts": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+    "e2e/settings-preferences.spec.ts": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+    "e2e/workspace-access-branches.spec.ts": "30bc2d131901149aedd344dce3f6e0ef7b69f12c7c75b750276a1b13415cbe25",
+    "packages/views/collaboration/memory-panel.tsx": "7003f28a4b8e8c3648ec22c10e9c4ef204d486335a8920e9c9b22d87171f04b0",
+    "packages/views/modals/create-issue.tsx": "16f154a27dc64ecd435b40d560a076546b7c90c27f0571e95d2f75b90b676b70",
+    "packages/views/modals/create-issue-dialog.tsx": "15ca7d2fd4819c0f151ab4dbf180f44e377e9706245d6041433b2152da98e6c3",
+    "packages/views/editor/title-editor.tsx": "ea7e9e64a6a23ae0daffcaf1cd6ee7636457976a8710454363dff38c51a242cd",
+    "packages/views/invite/invite-page.tsx": "3850b6ea11b595700743f87163d6f55e81e92c8e65fe104a07f58e45850ebdd5",
+    "apps/web/platform/navigation.tsx": "725295f47abbbb945c760a213f4d790856dbd03900f3c9a6b8be72a80452f615",
+    "packages/core/workspace/queries.ts": "d88db2e7030aa81a4f93e6e1e5128ffac3590b7ce72853821aa12993b095e826"
+  },
+  "findings": [
+    {
+      "id": "NC-1",
+      "file": "e2e/collaboration-memory-web.spec.ts",
+      "line": 84,
+      "classification": "confirmed_test_interaction_omission",
+      "confidence": "high",
+      "observed_failure": "Purge v2 click waits15s; failed snapshot is closed v4/read-only with Version history collapsed and no history rows",
+      "source_evidence": [
+        "memory-panel.tsx historyOpen starts false; history query requires historyOpen",
+        "Purge buttons render only inside CollapsibleContent and remain enabled for historical versions when can_purge is true"
+      ],
+      "minimal_change_files": [
+        "e2e/collaboration-memory-web.spec.ts"
+      ],
+      "recommendation": "After completion and closed-state confirmation, explicitly open Version history before the absence-of-Restore assertion and clicking Purge v2. Preserve original purge/read-only/current-v4/API assertions. Existing main functional-regression2line diff already does exactly this; coordinate ownership rather than overwrite it.",
+      "product_change_required": false,
+      "targeted_test": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+      "remaining_proof": "Replay the updated original scenario, zero skip/retry."
+    },
+    {
+      "id": "NC-2",
+      "file": "e2e/settings-preferences.spec.ts",
+      "line": 136,
+      "classification": "confirmed_popup_lifecycle_failure_with_focus_race_hypothesis",
+      "confidence": "medium",
+      "observed_failure": "More options click finishes at1712556.946; menuitem click begins1712558.237; popup visible at1712642.777 but becomes detached by1712752.296, then waits to60s timeout. Screenshot before cleanup retains manual dialog with collapsed menu and focus outline on Switch to Agent.",
+      "source_evidence": [
+        "Manual TitleEditor uses immediatelyRender:false and autoFocus",
+        "TitleEditor delays natural focus50ms; otherTextEntryFocused protects other text fields, not menu/button focus",
+        "Manual popup CSS transitions all properties300ms",
+        "No failing network request during this menu interval; workspace deletion/redirect to onboarding occurs only in timeout cleanup"
+      ],
+      "minimal_change_files": [
+        "e2e/settings-preferences.spec.ts"
+      ],
+      "recommendation": "First add semantic readiness before opening overflow: await naturally focused Title (required) in the manual dialog, then open More options and assert real popup/menuitem visible before selecting. Keep priority hidden-by-default, selected High, POST201, server priority and persisted preference assertions. If popup still closes after natural initial focus, capture focus transitions and fix the component that steals focus; do not force click or add sleep/retry.",
+      "product_change_required": "undetermined_pending_focus_synchronized_replay",
+      "remaining_proof": "Replay with trace/focus observations. Existing record proves disappearance but not the exact focus handler; it does not justify a broad product patch."
+    },
+    {
+      "id": "NC-3",
+      "file": "e2e/workspace-access-branches.spec.ts",
+      "line": 93,
+      "classification": "confirmed_frontend_transition_failure_backend_acceptance_succeeded",
+      "confidence": "high_for_observed_scope_unknown_exact_frontend_cause",
+      "observed_failure": "Original URL expectation5s expires on /invite/<id>; failed DOM says You joined Access owner! and Redirecting to workspace.",
+      "api_evidence": {
+        "accepted_at": "2026-11-03 00:52:16 local",
+        "accept_HTTP": 200,
+        "accept_duration": "22.245ms",
+        "onboarding_HTTP": 200,
+        "me_HTTP": 200,
+        "workspace_GET_HTTP": [
+          200,
+          200
+        ],
+        "workspace_GET_durations": [
+          "6.631ms",
+          "1.445ms"
+        ]
+      },
+      "source_evidence": [
+        "InvitePage awaits accept/onboarding/refreshMe before setDone(accepted)",
+        "setDone precedes qc.fetchQuery(workspaceListOptions staleTime0); target resolved by workspace_id then setTimeout(push,1000)",
+        "Web adapter forwards cross-route push to Next router.push",
+        "No invite trace retained, so RSC navigation/request timing and page-error cause are unavailable"
+      ],
+      "minimal_change_files": [
+        "e2e/workspace-access-branches.spec.ts (diagnostic trace only initially)"
+      ],
+      "recommendation": "Replay the original scenario with trace and capture page errors, the exact accept/list responses and target workspace RSC/navigation request. Keep original joined-workspace URL plus exactly-one membership and revisit-already-accepted assertions. Do not change backend, force navigation or extend5s blindly. If a post-accept refetch fails, success UI currently hides catch error behind done; address that actual failure at InvitePage only after it is reproduced.",
+      "product_change_required": "undetermined_pending_original_navigation_replay",
+      "remaining_proof": "Fresh owned environment, original assertions, trace and response-shape/navigation evidence."
+    }
+  ],
+  "ownership_handoff": {
+    "memory_main_patch_owner": "11-02-branch-functional-regression; pre-existing main diff inspected only",
+    "all_other_mutable_main_UI": "unrelated parallel work; no use as frozen source evidence"
+  },
+  "limits": [
+    "No test replay or actual browser interaction was authorized for this slice.",
+    "Preferences timeout cleanup snapshot is not the state at the first popup disappearance; preserved pre-cleanup screenshot/trace were used.",
+    "The successful invite HTTP statuses do not establish eventual route navigation or exactly-one membership assertion because the test stopped before those checks."
+  ]
+}

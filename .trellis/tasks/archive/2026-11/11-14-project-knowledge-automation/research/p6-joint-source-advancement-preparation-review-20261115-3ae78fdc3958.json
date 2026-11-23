@@ -1,0 +1,507 @@
+{
+  "schema_version": 1,
+  "kind": "independent_readonly_existing_primitives_joint_source_preparation_review",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check",
+  "at": "2026-11-15T15:44:28.883814+00:00",
+  "verdict": "PREPARATION_ACCEPTED_ONLY_FULL_JOINT_SOURCE_AND_P2_STILL_MISSING",
+  "blocking_count": 0,
+  "blocking_findings": [],
+  "preparation_receipt": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-joint-source-advancement-preparation-20261115-80335bbedfe7.json",
+    "sha256": "7bac8b156e0bdfb699a26d618ee5393a5f1eedc108f583f7196d8c4d31cc8f5f"
+  },
+  "checks": {
+    "preparation_receipt_hash_matches": true,
+    "all_referenced_hashes_match": true,
+    "observer_syntax_valid": true,
+    "runtime_helper_hashes_match_record": true,
+    "all_stored_source_ids_recompute": true,
+    "all_three_before_after_manifest_pairs_equal": true,
+    "counts_root11028_working11017_links32": true,
+    "exact_delta11_added47_changed0_removed10970_unchanged": true,
+    "workspace_link_graph_equal": true,
+    "protected_allocation_env_build_runtime_provenance_hashes_equal": true,
+    "current_working_and_sealed_source_rows_unchanged": true,
+    "actual_state_is_owned0700_and_disjoint_all_real_source_runtime_roots": true,
+    "four_probes_passed_and_use_actual_primitives": true,
+    "exact_copy_probe_live_files_match_and_Git_index_absence_truthful": true,
+    "real_Runtime_constructor_or_lifecycle_not_invoked_by_observer": true,
+    "new_observer_has_no_promotion_or_runtime_command": true,
+    "actual_P2_and_selected_full_joint_source_missing_and_not_promoted": true,
+    "preparation_grants_no_final_ROOT_P2_product_acceptance": true,
+    "recipe_uses_existing_lock_and_new_build_stage_not_stale_replacement": true,
+    "recipe_requires_full_joint_graph_and_exact_before_images_before_writes": true
+  },
+  "reference_hash_audit": {
+    "count": 21,
+    "matching": 21,
+    "checks": [
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/preparation-result.json",
+        "expected_sha256": "8530206b7925d052a29bb3721afc333e8d7ca271fb5f5d4f6dbb373bac308499",
+        "actual_sha256": "8530206b7925d052a29bb3721afc333e8d7ca271fb5f5d4f6dbb373bac308499",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "prep.preparation_result"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/observe-and-probe.py",
+        "expected_sha256": "9a58cb2b711affe5e8ea65adc88c115339dd996d109163c4584c1821a77a454f",
+        "actual_sha256": "9a58cb2b711affe5e8ea65adc88c115339dd996d109163c4584c1821a77a454f",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "prep.observer"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/main-after-accepted-joint-source-recipe.json",
+        "expected_sha256": "a33e33be51806022315fd3bd7111e52dc696fe19a118db458516e65d3d961a8f",
+        "actual_sha256": "a33e33be51806022315fd3bd7111e52dc696fe19a118db458516e65d3d961a8f",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "prep.recipe"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/plain-ROOT-to-working-observation-delta.json",
+        "expected_sha256": "3d6cf445cc1c5503cff54a22483eb6158efcc9b56822edd22ccf57aae9794eb9",
+        "actual_sha256": "3d6cf445cc1c5503cff54a22483eb6158efcc9b56822edd22ccf57aae9794eb9",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.artifacts.projection_delta"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/existing-primitives-probes.json",
+        "expected_sha256": "cb20604c1467908c4093503957d0a55e6d3c9e6967bffd6bdc4e5c5f62f86371",
+        "actual_sha256": "cb20604c1467908c4093503957d0a55e6d3c9e6967bffd6bdc4e5c5f62f86371",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.artifacts.primitive_probes"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/sealed-4e-before.json",
+        "expected_sha256": "e81af799f43ffec945dc21f0dacaeae4f03fefcaa509869c9aa832be67f92ed6",
+        "actual_sha256": "e81af799f43ffec945dc21f0dacaeae4f03fefcaa509869c9aa832be67f92ed6",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.artifacts.sealed_before"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/sealed-4e-after.json",
+        "expected_sha256": "e81af799f43ffec945dc21f0dacaeae4f03fefcaa509869c9aa832be67f92ed6",
+        "actual_sha256": "e81af799f43ffec945dc21f0dacaeae4f03fefcaa509869c9aa832be67f92ed6",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.artifacts.sealed_after"
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json",
+        "expected_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+        "actual_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.original_bindings_after./Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/allocation.json",
+        "expected_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+        "actual_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.original_bindings_after./private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/allocation.json"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/environment.json",
+        "expected_sha256": "bc1f96e026f7dc801bcad1d1c3344b10105a8aa05dc0a809d578d641aae2166b",
+        "actual_sha256": "bc1f96e026f7dc801bcad1d1c3344b10105a8aa05dc0a809d578d641aae2166b",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.original_bindings_after./private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/environment.json"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build.json",
+        "expected_sha256": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+        "actual_sha256": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.original_bindings_after./private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build.json"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/build.json",
+        "expected_sha256": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+        "actual_sha256": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.original_bindings_after./private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/build.json"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/runtime.json",
+        "expected_sha256": "47d0f1ba64949786f4eca9aeb2834cdb478dd6cf7f5b0883056b9e982b3522bf",
+        "actual_sha256": "47d0f1ba64949786f4eca9aeb2834cdb478dd6cf7f5b0883056b9e982b3522bf",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.original_bindings_after./private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/runtime.json"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/provenance.json",
+        "expected_sha256": "7490fd4003274e8a506cdf6a9ec3349217d839af11d4ea16e082d72a3da2121b",
+        "actual_sha256": "7490fd4003274e8a506cdf6a9ec3349217d839af11d4ea16e082d72a3da2121b",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.original_bindings_after./private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/provenance.json"
+      },
+      {
+        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+        "expected_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "actual_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "matches": true,
+        "mode": "0o644",
+        "reference": "result.runtime_scripts.ROOT"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+        "expected_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "actual_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+        "matches": true,
+        "mode": "0o644",
+        "reference": "result.runtime_scripts.working"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/ROOT-before.json",
+        "expected_sha256": "268770eabaf59f7b3ca5fbc82ada24bffcd08e29e42095cc54c94b3ab5011751",
+        "actual_sha256": "268770eabaf59f7b3ca5fbc82ada24bffcd08e29e42095cc54c94b3ab5011751",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.artifacts.ROOT_before"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/ROOT-after.json",
+        "expected_sha256": "268770eabaf59f7b3ca5fbc82ada24bffcd08e29e42095cc54c94b3ab5011751",
+        "actual_sha256": "268770eabaf59f7b3ca5fbc82ada24bffcd08e29e42095cc54c94b3ab5011751",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.artifacts.ROOT_after"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/working-before.json",
+        "expected_sha256": "c1fa3345b0ade86823e74aff1f0251427e10188f0dbd507cb5a5e244fd4ae824",
+        "actual_sha256": "c1fa3345b0ade86823e74aff1f0251427e10188f0dbd507cb5a5e244fd4ae824",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.artifacts.working_before"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/working-after.json",
+        "expected_sha256": "c1fa3345b0ade86823e74aff1f0251427e10188f0dbd507cb5a5e244fd4ae824",
+        "actual_sha256": "c1fa3345b0ade86823e74aff1f0251427e10188f0dbd507cb5a5e244fd4ae824",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "result.artifacts.working_after"
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/probe-drift/before-image.bin",
+        "expected_sha256": "9160d4be34c8695bd172a76c7c7966587ea5a4d991ad22c87b2b91af54aa9ebb",
+        "actual_sha256": "9160d4be34c8695bd172a76c7c7966587ea5a4d991ad22c87b2b91af54aa9ebb",
+        "matches": true,
+        "mode": "0o600",
+        "reference": "probes[1].before_image"
+      }
+    ]
+  },
+  "source_manifest_audit": {
+    "ROOT_before": {
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/ROOT-before.json",
+      "reference_sha256": "268770eabaf59f7b3ca5fbc82ada24bffcd08e29e42095cc54c94b3ab5011751",
+      "file_count": 11028,
+      "source_id": "b51aa5b063e9345fc2c922fdfc3bcd49b97768dff8b743ebb2791371b74845dc",
+      "recomputed_source_id": "b51aa5b063e9345fc2c922fdfc3bcd49b97768dff8b743ebb2791371b74845dc",
+      "source_id_matches": true,
+      "links": 32
+    },
+    "ROOT_after": {
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/ROOT-after.json",
+      "reference_sha256": "268770eabaf59f7b3ca5fbc82ada24bffcd08e29e42095cc54c94b3ab5011751",
+      "file_count": 11028,
+      "source_id": "b51aa5b063e9345fc2c922fdfc3bcd49b97768dff8b743ebb2791371b74845dc",
+      "recomputed_source_id": "b51aa5b063e9345fc2c922fdfc3bcd49b97768dff8b743ebb2791371b74845dc",
+      "source_id_matches": true,
+      "links": 32
+    },
+    "working_before": {
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/working-before.json",
+      "reference_sha256": "c1fa3345b0ade86823e74aff1f0251427e10188f0dbd507cb5a5e244fd4ae824",
+      "file_count": 11017,
+      "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+      "recomputed_source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+      "source_id_matches": true,
+      "links": 32
+    },
+    "working_after": {
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/working-after.json",
+      "reference_sha256": "c1fa3345b0ade86823e74aff1f0251427e10188f0dbd507cb5a5e244fd4ae824",
+      "file_count": 11017,
+      "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+      "recomputed_source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+      "source_id_matches": true,
+      "links": 32
+    },
+    "sealed_before": {
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/sealed-4e-before.json",
+      "reference_sha256": "e81af799f43ffec945dc21f0dacaeae4f03fefcaa509869c9aa832be67f92ed6",
+      "file_count": 11017,
+      "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+      "recomputed_source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+      "source_id_matches": true,
+      "links": null
+    },
+    "sealed_after": {
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/sealed-4e-after.json",
+      "reference_sha256": "e81af799f43ffec945dc21f0dacaeae4f03fefcaa509869c9aa832be67f92ed6",
+      "file_count": 11017,
+      "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+      "recomputed_source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+      "source_id_matches": true,
+      "links": null
+    }
+  },
+  "stored_delta": {
+    "added": 11,
+    "changed": 47,
+    "removed": 0,
+    "unchanged": 10970,
+    "added_paths": [
+      "e2e/fixtures/collaboration-comment-menu.ts",
+      "packages/core/collaboration/comment-threads.test.ts",
+      "packages/core/collaboration/comment-threads.ts",
+      "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+      "server/cmd/server/rk1k_codex_migration_test.go",
+      "server/internal/handler/collaboration_stage_exit_continuation_test.go",
+      "server/internal/handler/collaboration_stage_writer_continuation_test.go",
+      "server/internal/service/collaboration_stage_exit_continuation_test.go",
+      "server/internal/service/collaboration_stage_writer_continuation_test.go",
+      "server/pkg/db/generated/issue_delete.sql.go",
+      "server/pkg/db/queries/issue_delete.sql"
+    ],
+    "changed_paths": [
+      ".trellis/spec/server/database-test-isolation.md",
+      ".trellis/spec/server/index.md",
+      ".trellis/spec/server/verification-environment.md",
+      ".trellis/spec/web/frontend/e2e-run-environment.md",
+      ".trellis/spec/web/frontend/index.md",
+      ".trellis/tasks/11-14-project-knowledge-automation/implement.md",
+      ".trellis/tasks/11-14-project-knowledge-automation/research/implementation-progress.md",
+      ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime-usage.md",
+      ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+      "apps/web/next-env.d.ts",
+      "docs/plans/2026-11-15-pay-241-continuation.md",
+      "e2e/collaboration-editing-web.spec.ts",
+      "e2e/collaboration-multi-account-closure.spec.ts",
+      "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "e2e/collaboration-timeout-recovery.spec.ts",
+      "e2e/fixtures/collaboration-command-history.ts",
+      "e2e/fixtures/collaboration-detail-journey.ts",
+      "e2e/fixtures/collaboration-editing.ts",
+      "e2e/fixtures/collaboration-mention-journeys.ts",
+      "e2e/fixtures/collaboration-retained-attachments.ts",
+      "e2e/fixtures/collaboration-runtime-handoff.ts",
+      "packages/core/collaboration/index.ts",
+      "packages/views/collaboration/collaboration-detail.test.tsx",
+      "packages/views/collaboration/collaboration-detail.tsx",
+      "packages/views/collaboration/comment-history.tsx",
+      "packages/views/collaboration/comment-list.test.tsx",
+      "packages/views/collaboration/comment-list.tsx",
+      "packages/views/collaboration/discussion-actions.tsx",
+      "packages/views/locales/en/collaboration.json",
+      "packages/views/locales/zh-Hans/collaboration.json",
+      "server/cmd/server/rk1k_codex_continuation_test.go",
+      "server/cmd/server/rk1k_codex_registration_test.go",
+      "server/internal/handler/issue.go",
+      "server/internal/service/admin_collaboration.go",
+      "server/internal/service/collaboration_handoff.go",
+      "server/internal/service/collaboration_lifecycle.go",
+      "server/internal/service/collaboration_stage_completion.go",
+      "server/internal/service/collaboration_stage_completion_binding.go",
+      "server/internal/service/collaboration_stage_completion_test.go",
+      "server/internal/service/collaboration_stage_completion_tx_test.go",
+      "server/internal/service/collaboration_stage_execution_fixture_test.go",
+      "server/internal/service/collaboration_stage_signer.go",
+      "server/internal/service/collaboration_workflow.go",
+      "server/internal/service/delivery_completion.go",
+      "server/internal/service/task.go",
+      "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+      "server/pkg/db/queries/collaboration_stage_submission.sql"
+    ],
+    "removed_paths": [],
+    "delta_reference": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/plain-ROOT-to-working-observation-delta.json",
+      "sha256": "3d6cf445cc1c5503cff54a22483eb6158efcc9b56822edd22ccf57aae9794eb9"
+    }
+  },
+  "immutable_working_and_sealed_4e_current_row_checks": [
+    {
+      "scope": "working",
+      "source_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+      "rows_checked": 11017,
+      "difference_count": 0,
+      "differences": []
+    },
+    {
+      "scope": "sealed4e",
+      "source_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/source",
+      "rows_checked": 11017,
+      "difference_count": 0,
+      "differences": []
+    }
+  ],
+  "current_mutable_ROOT_observation": {
+    "recorded_source_id": "b51aa5b063e9345fc2c922fdfc3bcd49b97768dff8b743ebb2791371b74845dc",
+    "rows_checked": 11028,
+    "later_existing_row_difference_count": 1,
+    "later_existing_row_differences": [
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/progress-2026-11-15.md",
+        "change": "bytes_mode_or_normalized_link_after_recorded_observation"
+      }
+    ],
+    "new_path_enumeration_or_final_ROOT_manifest_not_performed": true,
+    "not_a_source_ready_or_final_joint_graph": true
+  },
+  "observer_write_scope_audit": {
+    "observer": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/observe-and-probe.py",
+      "sha256": "9a58cb2b711affe5e8ea65adc88c115339dd996d109163c4584c1821a77a454f",
+      "mode": "0o600",
+      "syntax": "ast.parse_pass"
+    },
+    "syntax_check": "ast.parse only; no import/main execution",
+    "real_call_path": "main→observe→actual source_paths/source_snapshot/workspace_links; probes→actual stage_sources only with tiny fixture module. Runtime constructor/lifecycle never called.",
+    "actual_state": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf",
+    "actual_state_mode": "0o700",
+    "disjoint_ROOT_working_sealed_RUN": true,
+    "writes": "Only publish/probe fixture paths derived from independent external state. Root/working/sealed are read operands; protected files read+hashed only.",
+    "probe_mock_scope": "Only git_output for the tiny fixture names/objects; source_paths/source_snapshot/workspace_links/stage_sources implementations unmodified.",
+    "probe_call_counts": {
+      "source_snapshot": 6,
+      "workspace_links": 3,
+      "stage_sources": 2,
+      "source_paths": 1
+    }
+  },
+  "four_probe_review": {
+    "recorded_result": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/existing-primitives-probes.json",
+      "sha256": "cb20604c1467908c4093503957d0a55e6d3c9e6967bffd6bdc4e5c5f62f86371"
+    },
+    "cases": [
+      {
+        "case": "existing_stage_copies_exact_bytes_modes_and_workspace_links",
+        "passed": true,
+        "source_before_image_unchanged": true,
+        "private_Git_index_created_by_stage_sources": false
+      },
+      {
+        "case": "existing_stage_refuses_post_snapshot_source_drift",
+        "passed": true,
+        "refusal": "Source changed while staging",
+        "source_mutation_during_call": false,
+        "before_image": {
+          "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/probe-drift/before-image.bin",
+          "sha256": "9160d4be34c8695bd172a76c7c7966587ea5a4d991ad22c87b2b91af54aa9ebb"
+        },
+        "partial_tiny_output_retained": true
+      },
+      {
+        "case": "existing_source_paths_refuses_outside_source_link",
+        "passed": true,
+        "refusal": "Source symlink leaves the checkout"
+      },
+      {
+        "case": "existing_workspace_links_refuses_foreign_workspace_target",
+        "passed": true,
+        "refusal": "A workspace dependency points outside its source snapshot"
+      }
+    ],
+    "cloned_fixture_live_row_checks": [
+      {
+        "path": "package.json",
+        "source_sha256": "ccf6ffa6e72543dd4b555dab955bb3cff514cb6b50d3ded3d36a67e017ddf736",
+        "staged_sha256": "ccf6ffa6e72543dd4b555dab955bb3cff514cb6b50d3ded3d36a67e017ddf736",
+        "mode_equal": true,
+        "normalized_link_equal": true
+      },
+      {
+        "path": "packages/core/package.json",
+        "source_sha256": "450444fe5dd974d5c0839d621120a0213899a4fdd33af01d1cfdd084bcac5539",
+        "staged_sha256": "450444fe5dd974d5c0839d621120a0213899a4fdd33af01d1cfdd084bcac5539",
+        "mode_equal": true,
+        "normalized_link_equal": true
+      },
+      {
+        "path": "code.txt",
+        "source_sha256": "9160d4be34c8695bd172a76c7c7966587ea5a4d991ad22c87b2b91af54aa9ebb",
+        "staged_sha256": "9160d4be34c8695bd172a76c7c7966587ea5a4d991ad22c87b2b91af54aa9ebb",
+        "mode_equal": true,
+        "normalized_link_equal": true
+      },
+      {
+        "path": "code-link",
+        "source_sha256": "9160d4be34c8695bd172a76c7c7966587ea5a4d991ad22c87b2b91af54aa9ebb",
+        "staged_sha256": "9160d4be34c8695bd172a76c7c7966587ea5a4d991ad22c87b2b91af54aa9ebb",
+        "mode_equal": true,
+        "normalized_link_equal": true
+      }
+    ],
+    "private_Git_index_not_created": true,
+    "qualification": "The exact-copy probe proves bytes/modes/normalized links, not private Git-index preservation or actual in-place joint-source promotion. This absence is disclosed correctly; the later recipe must capture/retain private .git before any real delta."
+  },
+  "private_git_identity": {
+    "HEAD": {
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/.git/HEAD",
+      "sha256": "d14d06fbe7b921d67d47391c141498fba4522e35a1a38c683e86bfeaea04576e"
+    },
+    "index": {
+      "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/.git/index",
+      "sha256": "d4c7194a00eb3176dd4b6d4146749a86b35a2c323e674cf69de673eab2115e7b",
+      "matches_prior_private_final_AC_index": true
+    },
+    "no_before_images_or_index_writes_by_this_review": true
+  },
+  "post_P2_recipe_review": {
+    "file": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/main-after-accepted-joint-source-recipe.json",
+      "sha256": "a33e33be51806022315fd3bd7111e52dc696fe19a118db458516e65d3d961a8f"
+    },
+    "consistent_with_existing_Runtime_identity_and_nonblocking_lock": true,
+    "allocation_and_environment_kept_byte_identical": true,
+    "preserved_sealed_4e_build_and_runtime_evidence": true,
+    "complete_peer_ROOT_preserved_then_only_reviewed_P2_delta_applied": true,
+    "before_image_of_each_changed_removed_file_plus_absent_added_marker_required": true,
+    "same_mutable_directory_identity_and32_workspace_edges_preserved": true,
+    "private_HEAD_objects_and_index_before_image_required": true,
+    "build_uses_new_empty_stage_via_existing_Runtime_build": true,
+    "no_new_promotion_framework": true,
+    "execution_performed": false
+  },
+  "actionable_remaining_gates": [
+    "Receive actual independent accepted P2 and final narrow peer-preserving integration receipt plus selected COMPLETE full joint source tree/manifest. Neither plain ROOT nor Go-onlyd1b63872/5038 nor frontend3358/619 tests/two builds nor test-only80abb746 grants this gate.",
+    "Recompute full selected-versus-mutable delta after accepted P2, with final hashes/modes/link graph and current resource/configuration clearance.",
+    "Main captures exact file/.git before-images under the existing allocation lock, applies only that admitted delta, verifies source discovery and32links while preserving old4e/env/allocation/peer work, then releases the overlay lock before using the existing lifecycle CLI that acquires its own lock.",
+    "Independently accept the newly frozen complete joint graph and affected checks before matching builds and actual Web/Desktop knowledge acceptance."
+  ],
+  "ownership": {
+    "only_new_receipt": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-joint-source-advancement-preparation-review-20261115-3ae78fdc3958.json",
+    "source_spec_metadata_progress_allocation_working_4e_or_existing_proof_writes": 0,
+    "observer_or_fixture_probes_reexecuted": 0,
+    "syntax_checks": "AST parsing only",
+    "Go_DB_build_browser_API_model_PROVIDER_dependency_or_PAY_test_operations": 0,
+    "descendants": 0
+  },
+  "acceptance_limits": {
+    "preparation_only": true,
+    "actual_source_copy": false,
+    "source_ready": false,
+    "source_advance_admitted": false,
+    "ROOT_final": false,
+    "P2_final": false,
+    "product_final": false
+  }
+}

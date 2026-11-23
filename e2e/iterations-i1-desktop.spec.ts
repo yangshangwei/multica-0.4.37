@@ -4,8 +4,6 @@ import type { TestApiClient } from "./fixtures";
 import { iterationClosureFlow, iterationOptOut, iterationSettingsFeedbackFlow } from "./fixtures/iterations-i1";
 import { p1Capture, p1NoOverflow } from "./fixtures/project-p1";
 
-test.skip(process.env.MULTICA_RUN_I1_E2E !== "1", "Requires isolated I1 test API fixture");
-
 // The native renderer is already loaded; reload so it reads the explicit opt-out.
 async function optOutNative(native: { page: Page; api: TestApiClient; workspace: { id: string } }) {
   await iterationOptOut(native.api, native.workspace);

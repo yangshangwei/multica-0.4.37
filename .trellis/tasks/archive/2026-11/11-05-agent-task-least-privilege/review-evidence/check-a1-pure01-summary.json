@@ -1,0 +1,35 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "./internal/auth",
+    "./internal/middleware",
+    "-run",
+    "^(TestTaskCapability|TestRefreshCloudFrontCookies)"
+  ],
+  "exit": 0,
+  "counts": {
+    "pass": 8,
+    "fail": 0,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [
+      "TestTaskCapabilityProfileAndStrictDecode",
+      "TestRefreshCloudFrontCookies_UsesAuthTokenTTL",
+      "TestRefreshCloudFrontCookies_NilSigner",
+      "TestRefreshCloudFrontCookies_SkipsWhenCookiePresent",
+      "TestRefreshCloudFrontCookies_RestrictedTaskCannotMintWildcard",
+      "TestTaskCapabilityAuthenticationLookupFailure/device",
+      "TestTaskCapabilityAuthenticationLookupFailure/password",
+      "TestTaskCapabilityAuthenticationLookupFailure"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "sha256": "2750d9e051907c3b3a0062b1f5081c21605cee9b6d967a283893ff1f519e8640"
+}

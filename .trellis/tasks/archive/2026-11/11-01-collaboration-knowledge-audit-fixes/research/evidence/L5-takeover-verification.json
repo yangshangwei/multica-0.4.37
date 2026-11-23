@@ -1,0 +1,75 @@
+{
+  "recorded_at": "2026-11-01T15:16:05.643855+00:00",
+  "base_sha": "fba1fca3fc40bede13e293ee3e568c6907bd192b",
+  "tested_modified_file_sha256": {
+    ".trellis/spec/server/collaboration-knowledge.md": "b8fd9b7444209716e3f85502c6242324ca9068031bd923c45b05200240409899",
+    "server/internal/service/collaboration_knowledge_credentials.go": "7bd97758175b4e411a156cd7c29591ec9a5f04874c45eb614ea6e6f20aaf273f",
+    "server/internal/service/collaboration_knowledge_credentials_test.go": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+    "server/pkg/db/generated/collaboration_knowledge_service.sql.go": "91463bca4e146d3e7d6bc0c8b48d15b312eb221a06ecb1bbec6790bb82e42a48",
+    "server/pkg/db/queries/collaboration_knowledge_service.sql": "c85605952b6b6202b55aaf04b3c00137dbd25ba4626fd8d072da240eed5c29cb"
+  },
+  "results": [
+    {
+      "file": "L5-red.txt",
+      "sha256": "52f5a3cc995b599ca79363352f3015301e5f2ed5296256f9fec74af413251cdf"
+    },
+    {
+      "file": "L5-takeover-green.jsonl",
+      "sha256": "f8aff1a4f4a8f5e4545e1953a4d6702346196549bdfd819a106f4835e3ceab1c",
+      "counts_including_subtests": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_pass": [
+        "TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential",
+        "TestKnowledgePATWriteHoldsCredentialUntilPublication",
+        "TestKnowledgePATWriteWaitsOutLastUsedUpdate",
+        "TestKnowledgePATWriteWaitsForConcurrentRevocation",
+        "TestKnowledgePATWriteLockWaitIsBounded",
+        "TestKnowledgePATLockRestoresLockTimeout"
+      ],
+      "package_pass": true
+    },
+    {
+      "file": "L5-takeover-race.jsonl",
+      "sha256": "1097a6188153a74f093accdcf11c73c07397c7ed019da7ef4bbf91acc391c01f",
+      "counts_including_subtests": {
+        "run": 11,
+        "pass": 11,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_pass": [
+        "TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential",
+        "TestKnowledgePATWriteHoldsCredentialUntilPublication",
+        "TestKnowledgePATWriteWaitsOutLastUsedUpdate",
+        "TestKnowledgePATWriteWaitsForConcurrentRevocation",
+        "TestKnowledgePATWriteLockWaitIsBounded",
+        "TestKnowledgePATLockRestoresLockTimeout"
+      ],
+      "package_pass": true
+    }
+  ],
+  "commands": [
+    {
+      "command": "env -u MULTICA_RUN_REAL_AGENT_SMOKE -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=<task_db> bash scripts/go-test-with-agent-cli-guard.sh -- go -C server test ./internal/service -run '^TestKnowledgePAT' -count=1 -json",
+      "database": "kfix_write_takeover_root_20261101_2320",
+      "exit_code": 0
+    },
+    {
+      "command": "same command with -race",
+      "database": "kfix_write_takeover_race_20261101_2325",
+      "exit_code": 0
+    },
+    {
+      "command": "go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 generate",
+      "exit_code": 0,
+      "changed_generated_files": []
+    }
+  ],
+  "migration_source": "new clones of kfix_template_20261101 migrated through 760",
+  "real_provider_calls": 0,
+  "scope": "L5 targeted checks only; full lane and final integrated review pending"
+}

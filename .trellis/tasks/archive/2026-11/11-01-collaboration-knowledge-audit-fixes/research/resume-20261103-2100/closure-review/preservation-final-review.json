@@ -1,0 +1,534 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-03T13:40:38.092981+00:00",
+  "reviewer": "/root/closure_inventory",
+  "verdict": "pass-with-notes",
+  "blocking_findings": [],
+  "scope": "Exact seven-file E2E overlay before successor commit/freeze; not final whole-check or task7 closure.",
+  "candidate_head": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "all_seven_source_hashes": {
+    "e2e/collaboration-boundaries-web.spec.ts": "8dff851fee66b7b7df826d7ec4c5e3f2c41e4c1fb44b25d9d1d6523ccef5e7c7",
+    "e2e/collaboration-workbench-web.spec.ts": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742",
+    "e2e/collaboration-memory-web.spec.ts": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e",
+    "e2e/fixtures/collaboration-mention-journeys.ts": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+    "e2e/collaboration-preview-web.spec.ts": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+    "e2e/collaboration-preparation-records-web.spec.ts": "92b47ff47942218e53207b850e6331d3c0d5f7d1d0f36f11a074013a0036c8ff",
+    "e2e/settings-preferences.spec.ts": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7"
+  },
+  "source_binding": [
+    {
+      "path": "e2e/collaboration-boundaries-web.spec.ts",
+      "sha256": "8dff851fee66b7b7df826d7ec4c5e3f2c41e4c1fb44b25d9d1d6523ccef5e7c7",
+      "author_sha256": "8dff851fee66b7b7df826d7ec4c5e3f2c41e4c1fb44b25d9d1d6523ccef5e7c7",
+      "run_before_sha256": "8dff851fee66b7b7df826d7ec4c5e3f2c41e4c1fb44b25d9d1d6523ccef5e7c7",
+      "run_after_sha256": "8dff851fee66b7b7df826d7ec4c5e3f2c41e4c1fb44b25d9d1d6523ccef5e7c7",
+      "all_match": true
+    },
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "sha256": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742",
+      "author_sha256": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742",
+      "run_before_sha256": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742",
+      "run_after_sha256": "c3a902fe29e90df772ff65c66e23aba86c54cb1cb2bcb7b0d0a8acc8e31dd742",
+      "all_match": true
+    },
+    {
+      "path": "e2e/collaboration-memory-web.spec.ts",
+      "sha256": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e",
+      "author_sha256": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e",
+      "run_before_sha256": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e",
+      "run_after_sha256": "48ad9875f6d849ecfc50d115d9b656c63b03aa4d14f164a4fd215bf83bc00c0e",
+      "all_match": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+      "author_sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+      "run_before_sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+      "run_after_sha256": "1fe5fef06293779712f655fd9fb36aaca8027f75d8ed8bff40ee85b556781bdc",
+      "all_match": true
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "sha256": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+      "author_sha256": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+      "run_before_sha256": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+      "run_after_sha256": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+      "all_match": true
+    },
+    {
+      "path": "e2e/collaboration-preparation-records-web.spec.ts",
+      "sha256": "92b47ff47942218e53207b850e6331d3c0d5f7d1d0f36f11a074013a0036c8ff",
+      "author_sha256": "92b47ff47942218e53207b850e6331d3c0d5f7d1d0f36f11a074013a0036c8ff",
+      "run_before_sha256": "92b47ff47942218e53207b850e6331d3c0d5f7d1d0f36f11a074013a0036c8ff",
+      "run_after_sha256": "92b47ff47942218e53207b850e6331d3c0d5f7d1d0f36f11a074013a0036c8ff",
+      "all_match": true
+    },
+    {
+      "path": "e2e/settings-preferences.spec.ts",
+      "sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+      "author_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+      "run_before_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+      "run_after_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+      "all_match": true
+    }
+  ],
+  "main_precursor_preservation": [
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "sha256": "a8311313c502c74afe4df709d66cf16630bb3ac7396c912c3e4a7501a6fb1377",
+      "expected_sha256": "a8311313c502c74afe4df709d66cf16630bb3ac7396c912c3e4a7501a6fb1377",
+      "unchanged": true
+    },
+    {
+      "path": "e2e/collaboration-memory-web.spec.ts",
+      "sha256": "62c26fe70f60418a836abf3741c0ed8f08e21b163fa61c0a846c0f0964ae5943",
+      "expected_sha256": "62c26fe70f60418a836abf3741c0ed8f08e21b163fa61c0a846c0f0964ae5943",
+      "unchanged": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "sha256": "44738e30f08d31e691b58dadcac98cbfdd67b5ab8be9c021c7ed9d07ea5973ef",
+      "expected_sha256": "44738e30f08d31e691b58dadcac98cbfdd67b5ab8be9c021c7ed9d07ea5973ef",
+      "unchanged": true
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "sha256": "ae65f83b009bdbc0684c6ee4795eba59190c1594da7fa663435a79d8dd267995",
+      "expected_sha256": "ae65f83b009bdbc0684c6ee4795eba59190c1594da7fa663435a79d8dd267995",
+      "unchanged": true
+    },
+    {
+      "path": "e2e/collaboration-boundaries-web.spec.ts",
+      "sha256": "d81d1fcac8d8eeb542da8af4c8c1a1fb71cea8085e75633b4f1e75c17fd5964d",
+      "expected_sha256": "d81d1fcac8d8eeb542da8af4c8c1a1fb71cea8085e75633b4f1e75c17fd5964d",
+      "unchanged": true
+    }
+  ],
+  "P1_P5": {
+    "P1": {
+      "state": "resolved",
+      "files": [
+        "e2e/collaboration-workbench-web.spec.ts"
+      ],
+      "evidence": "Result and Basis visible after409 and after explicit rebase; exact submission marker, all authority epochs, new idempotency key and2POST/0operation-read guards retained."
+    },
+    "P2": {
+      "state": "resolved",
+      "files": [
+        "e2e/fixtures/collaboration-mention-journeys.ts"
+      ],
+      "evidence": "Fresh Send-preview confirmation/draft/unchecked suppression retained; subsequent suppressed ManualPreview preserves draft, zeroPOST and full readJourneyState at both boundaries."
+    },
+    "P3": {
+      "state": "resolved",
+      "files": [
+        "e2e/collaboration-preview-web.spec.ts"
+      ],
+      "evidence": "Fresh Chinese Send-preview draft remains; localized manual-preview exactPOST/status200/issueID/suppressedtarget verified; grouping, checkbox, draft and zeroPOST/fullcomment/execution assertions at both boundaries. One later actualSend still checked."
+    },
+    "P4": {
+      "state": "resolved",
+      "files": [
+        "e2e/collaboration-boundaries-web.spec.ts",
+        "e2e/collaboration-memory-web.spec.ts",
+        "e2e/collaboration-workbench-web.spec.ts"
+      ],
+      "evidence": "All three submission.id UUID-shape checks restored alongside stronger exact delivery/receipt checks."
+    },
+    "P5": {
+      "state": "resolved",
+      "files": [
+        "e2e/collaboration-memory-web.spec.ts"
+      ],
+      "evidence": "Completion form toHaveCount0 restored after successful completion response; final accepted delivery and immutable retained memory/purge assertions retained."
+    }
+  },
+  "assertion_locations": [
+    {
+      "path": "e2e/collaboration-boundaries-web.spec.ts",
+      "line": 194,
+      "text": "expect(submission.id).toMatch(/^[0-9a-f-]{36}$/i);"
+    },
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "line": 241,
+      "text": "expect(submission.id).toMatch(/^[0-9a-f-]{36}$/i);"
+    },
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "line": 296,
+      "text": "await expect(form.getByText(resultText, { exact: true })).toBeVisible();"
+    },
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "line": 297,
+      "text": "await expect(form.getByText(basisText, { exact: true })).toBeVisible();"
+    },
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "line": 308,
+      "text": "await expect(form.getByText(resultText, { exact: true })).toBeVisible();"
+    },
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "line": 309,
+      "text": "await expect(form.getByText(basisText, { exact: true })).toBeVisible();"
+    },
+    {
+      "path": "e2e/collaboration-memory-web.spec.ts",
+      "line": 93,
+      "text": "expect(submission.id).toMatch(/^[0-9a-f-]{36}$/i);"
+    },
+    {
+      "path": "e2e/collaboration-memory-web.spec.ts",
+      "line": 108,
+      "text": "await expect(completion).toHaveCount(0);"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "line": 391,
+      "text": "await expect(composerFor(page).getByLabel(\"Add comment\", { exact: true })).toHaveValue(content);"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "line": 401,
+      "text": "await expect(composerFor(page).getByLabel(\"Add comment\", { exact: true })).toHaveValue(content);"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "line": 408,
+      "text": "await expect(composerFor(page).getByLabel(\"Add comment\", { exact: true })).toHaveValue(content);"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "line": 473,
+      "text": "await expect(composerFor(page).getByLabel(\"Add comment\", { exact: true })).toHaveValue(content);"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 58,
+      "text": "await expect(chineseComposer.getByLabel(\"添加评论\", { exact: true })).toHaveValue(original);"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 70,
+      "text": "await expect(chineseComposer.getByLabel(\"添加评论\", { exact: true })).toHaveValue(original);"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 84,
+      "text": "await expect(chineseComposer.getByLabel(\"添加评论\", { exact: true })).toHaveValue(original);"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 85,
+      "text": "const expectPreviewDidNotPublish = async () => {"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 98,
+      "text": "expect(Date.parse(currentTime)).toBeGreaterThanOrEqual(Date.parse(previousTime));"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 100,
+      "text": "return { ...comment, author_authority: { ...comment.author_authority, evaluated_at: previousTime } };"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 104,
+      "text": "await expectPreviewDidNotPublish();"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 106,
+      "text": "const manualPreviewPending = chinesePage.waitForResponse((item) => new URL(item.url()).pathname === `${root}/comments/trigger-preview`"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 109,
+      "text": "const manualPreviewResponse = await manualPreviewPending;"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 117,
+      "text": "await expect(chineseComposer.getByLabel(\"添加评论\", { exact: true })).toHaveValue(original);"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "line": 118,
+      "text": "await expectPreviewDidNotPublish();"
+    }
+  ],
+  "timestamp_normalization": {
+    "allowed_field": "author_authority.evaluated_at only",
+    "reason_source": "server/internal/service/collaboration_comments_recall.go:60,84,96 evaluates current authority at time.Now().UTC() on each GET",
+    "source_sha256": "5ffa0c1784063a5e07eb8feb5a624b2995a1530e83b653c993011120fbe25ad8",
+    "checks": "ISO syntax, finite Date.parse and nondecreasing vs original; full other comment/authority fields and lengths/order retained. Applied at freshSend and manualPreview boundaries.",
+    "retained_red": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/viewport/assertions/evaluated-at-original-failure.json",
+    "retained_red_sha256": "e28a2e3622c3b5450d78ad4ec584f0c09a59179456dd40b9503e402ec95163c1"
+  },
+  "viewport": {
+    "verdict": "pass",
+    "source_sha256": "92b47ff47942218e53207b850e6331d3c0d5f7d1d0f36f11a074013a0036c8ff",
+    "unchanged_since_independent_review": true,
+    "reference": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/closure-review/viewport-final-review.json",
+    "reference_sha256": "ec2a7b0769ff7e59a03bdc8fe0019e8cc5f2fa6ac371a6e7b9ca9d7db4361742",
+    "ratio1_and_all_geometry_assertions_retained": true,
+    "diagnostic_instrumentation_removed": true
+  },
+  "main_spec_note": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/e2e-run-environment.md",
+    "sha256": "38ad0b1c4cc218a00184735242fac65a947733e086b116c1e2cd4353ddff6377",
+    "paragraph": "When a focused screenshot requires `toBeInViewport({ ratio: 1 })`, scroll the\ntarget through all native scroll ancestors with\n`scrollIntoView({ block: \"center\", inline: \"nearest\", behavior: \"instant\" })`\nbefore measuring it. Start alignment can leave a fractional edge clipped even\nafter layout settles: the preparation-record fixture measured `y=-0.25` and\n311.75 visible pixels of a 312px region. Preserve the full-ratio and bounding-box\nassertions; changing the ratio or waiting longer does not correct that geometry.\nKeep the failed capture, actual geometry and successful uninstrumented replay\nas separate evidence (`collaboration-preparation-records-web.spec.ts`).",
+    "verdict": "accurate; actualfractionalclip observation and nativescroll centering retain ratio/bounds.",
+    "changes_requested": false
+  },
+  "final_directed17": {
+    "result": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-chinese17/result.json",
+    "result_sha256": "8534a53afe2e37241e83e3e898b83d2a577fa9d0a47d5cbd83573857bb1c99c4",
+    "raw": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-chinese17/results.json",
+    "raw_sha256": "d76ece4aca397aeab446013c03f8ecb11db2707348fe10ba2f8b59a469023dfe",
+    "log": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/runs/assertions-chinese17/run.log",
+    "log_sha256": "3e32cd3db34fed7f43f9b376ee429c987bb1d0daa54514ea1c6c15fe192ce6b3",
+    "stats": {
+      "startTime": "2026-11-03T13:35:36.903Z",
+      "duration": 86945.431,
+      "expected": 17,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "file": "collaboration-boundaries-web.spec.ts",
+        "title": "Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-boundaries-web.spec.ts",
+        "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-boundaries-web.spec.ts",
+        "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-memory-web.spec.ts",
+        "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-memory-web.spec.ts",
+        "title": "shared context recovers a lost save response with its original request after reload",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-desktop.spec.ts",
+        "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-desktop.spec.ts",
+        "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-desktop.spec.ts",
+        "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-preparation-records-web.spec.ts",
+        "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-preview-web.spec.ts",
+        "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-workbench-web.spec.ts",
+        "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "collaboration-workbench-web.spec.ts",
+        "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "settings-preferences.spec.ts",
+        "title": "grouped settings remain reachable from the sidebar and floating chat survives navigation and reload",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      },
+      {
+        "file": "settings-preferences.spec.ts",
+        "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+        "status": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "retry": 0
+          }
+        ]
+      }
+    ],
+    "source_id": "166a63e0c4467612a5d3b206743e18ed0e72ce5f24a733f6bc521a4937648e65",
+    "runtime_product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+    "before_after_snapshot_equal": true,
+    "paid_calls": 0,
+    "exit_code": 0
+  },
+  "independent_static": {
+    "typecheck": {
+      "typescript_version": "5.9.3",
+      "root_files": [
+        "e2e/collaboration-boundaries-web.spec.ts",
+        "e2e/collaboration-workbench-web.spec.ts",
+        "e2e/collaboration-memory-web.spec.ts",
+        "e2e/fixtures/collaboration-mention-journeys.ts",
+        "e2e/collaboration-preview-web.spec.ts",
+        "e2e/collaboration-preparation-records-web.spec.ts",
+        "e2e/settings-preferences.spec.ts"
+      ],
+      "method": "strict TypeScript noEmit over final seven-file E2E overlay and imports",
+      "diagnostics": [],
+      "exit_code": 0
+    },
+    "evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/closure-review/preservation-final-types.json",
+    "sha256": "e9d5ea081da00c4489525a742dda9ff9d07f6fcf5836c4febb57b9acae366fa8",
+    "git_diff_check_exit": 0,
+    "lint": "No separate lint execution; retained v13 lint success and final strictTS/whitespace verification apply to this bounded test-only repair."
+  },
+  "provenance_notes": [
+    "Author report P3_source carries original unapplied proposal booleans. Applied.json, current exactsource, finalmanifest and actualrun prove application; reviewer does not treat those proposal booleans as current state.",
+    "All preceding failed and partial runs retain their original classification; final17 does not replace required successor fullcheck."
+  ],
+  "permitted_next_step": "Root may commit these exact seven reviewedfiles and freeze new candidate under existing authorization; then build/bind independentclearance and uniquecompletegate.",
+  "task7_closable": false,
+  "wholecheck_accepted": false,
+  "operations": {
+    "source_edits": false,
+    "runtime_tests": false,
+    "DB_API_Provider_calls": 0,
+    "offline_strict_typecheck_executed": true,
+    "no318file_hash_resweep": true
+  }
+}

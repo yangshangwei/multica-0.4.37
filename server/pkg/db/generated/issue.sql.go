@@ -386,6 +386,18 @@ const deleteIssue = `-- name: DeleteIssue :exec
 WITH target AS (
     SELECT issue.id FROM issue WHERE issue.id = $1 AND issue.workspace_id = $2
 ),
+cleared_inbox_snoozes AS (
+ DELETE FROM inbox_snooze WHERE inbox_snooze.workspace_id=$2 AND inbox_snooze.group_kind='issue' AND inbox_snooze.group_id IN (SELECT target.id FROM target)
+),
+cleared_inbox_critical_sources AS (
+ DELETE FROM inbox_critical_source WHERE inbox_critical_source.workspace_id=$2 AND inbox_critical_source.group_kind='issue' AND inbox_critical_source.group_id IN (SELECT target.id FROM target)
+),
+cleared_report_snapshots AS (
+    DELETE FROM report_snapshot WHERE workspace_id=$2 AND report_issue_id IN (SELECT target.id FROM target)
+),
+cleared_report_snapshot_control AS (
+    DELETE FROM report_snapshot_control WHERE workspace_id=$2 AND report_issue_id IN (SELECT target.id FROM target)
+),
 cleared_triage AS (
     DELETE FROM issue_triage WHERE issue_id IN (SELECT target.id FROM target)
 ),
@@ -564,6 +576,10 @@ WHERE workspace_id = $1 AND admission_status IN ('not_required','accepted')
   AND project_id IS NOT DISTINCT FROM $3::uuid
   AND parent_issue_id IS NOT DISTINCT FROM $4::uuid
   AND lower(btrim(regexp_replace(title, '[[:space:]]+', ' ', 'g'))) = $5
+  -- Collaboration issues are created with AllowDuplicate and never block an
+  -- ordinary create. Matching them would return their private body in the
+  -- 409 and let callers probe their project, parent and open state (R53).
+  AND NOT EXISTS (SELECT 1 FROM issue_collaboration c WHERE c.issue_id = issue.id)
 ORDER BY created_at ASC
 LIMIT 1
 `
@@ -1262,17 +1278,39 @@ const listOpenIssues = `-- name: ListOpenIssues :many
 SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
        i.assignee_type, i.assignee_id, i.creator_type, i.creator_id,
        i.parent_issue_id, i.position, i.start_date, i.due_date, i.created_at, i.updated_at, i.last_activity_at, i.number, i.project_id, i.metadata, i.stage, i.properties,
-       i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count
+       i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count,
+       ($2::boolean AND collaboration.issue_id IS NOT NULL)::boolean AS collaboration_reference
 FROM issue i
+LEFT JOIN issue_collaboration collaboration ON collaboration.issue_id = i.id
 WHERE i.admission_status IN ('not_required', 'accepted') AND i.workspace_id = $1
+  AND (NOT $3::boolean OR (
+       NOT $2::boolean AND collaboration.issue_id IS NOT NULL AND EXISTS (
+           SELECT 1 FROM issue_participant p JOIN "user" u ON u.id=p.user_id AND u.disabled_at IS NULL
+           WHERE p.issue_id=i.id AND p.revoked_at IS NULL
+             AND NOT EXISTS (SELECT 1 FROM member m WHERE m.workspace_id=i.workspace_id AND m.user_id=p.user_id)
+       )
+  ))
   -- Negate only known terminal keys so an unknown legacy key remains visible.
-  AND NOT (i.status = ANY($2::text[]))
-  AND ($3::text IS NULL OR i.priority = $3)
-  AND ($4::uuid IS NULL OR i.assignee_id = $4)
-  AND ($5::uuid[] IS NULL OR i.assignee_id = ANY($5::uuid[]))
-  AND ($6::uuid IS NULL OR i.creator_id = $6)
-  AND ($7::uuid IS NULL OR i.project_id = $7)
-  AND ($8::jsonb IS NULL OR i.metadata @> $8::jsonb)
+  -- A machine sees a reference regardless of private status, so comparing
+  -- open_only and ordinary lists cannot reveal the collaboration's status.
+  AND (($2::boolean AND collaboration.issue_id IS NOT NULL)
+       OR NOT (i.status = ANY($4::text[])))
+  AND (NOT $2::boolean OR collaboration.issue_id IS NULL OR (
+       $5::text IS NULL
+       AND $6::uuid IS NULL
+       AND $7::uuid[] IS NULL
+       AND $8::uuid IS NULL
+       AND $9::uuid IS NULL
+       AND $10::jsonb IS NULL
+       AND $11::jsonb IS NULL
+       AND $12::uuid IS NULL
+  ))
+  AND ($5::text IS NULL OR i.priority = $5)
+  AND ($6::uuid IS NULL OR i.assignee_id = $6)
+  AND ($7::uuid[] IS NULL OR i.assignee_id = ANY($7::uuid[]))
+  AND ($8::uuid IS NULL OR i.creator_id = $8)
+  AND ($9::uuid IS NULL OR i.project_id = $9)
+  AND ($10::jsonb IS NULL OR i.metadata @> $10::jsonb)
   -- properties_filter is a jsonb array of groups, each group an array of
   -- containment patterns (built by parsePropertiesFilterParam): the issue
   -- must match at least one pattern from EVERY group (AND of ORs). A pattern
@@ -1283,10 +1321,10 @@ WHERE i.admission_status IN ('not_required', 'accepted') AND i.workspace_id = $1
   -- remains a filter rather than a positive index narrowing so unknown legacy
   -- status keys stay visible.
   AND (
-    $9::jsonb IS NULL
+    $11::jsonb IS NULL
     OR NOT EXISTS (
       SELECT 1
-      FROM jsonb_array_elements($9::jsonb) AS pf(alternatives)
+      FROM jsonb_array_elements($11::jsonb) AS pf(alternatives)
       WHERE NOT EXISTS (
         SELECT 1
         FROM jsonb_array_elements(pf.alternatives) AS alt(pattern)
@@ -1296,11 +1334,11 @@ WHERE i.admission_status IN ('not_required', 'accepted') AND i.workspace_id = $1
     )
   )
   AND (
-    $10::uuid IS NULL
+    $12::uuid IS NULL
     OR (i.assignee_type = 'agent' AND i.assignee_id IN (
           SELECT a.id FROM agent a
            WHERE a.workspace_id = $1
-             AND a.owner_id     = $10::uuid
+             AND a.owner_id     = $12::uuid
     ))
     OR (i.assignee_type = 'squad' AND i.assignee_id IN (
           SELECT sm.squad_id
@@ -1308,14 +1346,14 @@ WHERE i.admission_status IN ('not_required', 'accepted') AND i.workspace_id = $1
             JOIN squad s ON s.id = sm.squad_id
            WHERE s.workspace_id = $1
              AND sm.member_type = 'member'
-             AND sm.member_id   = $10::uuid
+             AND sm.member_id   = $12::uuid
           UNION
           SELECT s.id
             FROM squad s
             JOIN agent a ON a.id = s.leader_id
            WHERE s.workspace_id = $1
              AND a.workspace_id = $1
-             AND a.owner_id     = $10::uuid
+             AND a.owner_id     = $12::uuid
           UNION
           SELECT sm.squad_id
             FROM squad_member sm
@@ -1324,23 +1362,27 @@ WHERE i.admission_status IN ('not_required', 'accepted') AND i.workspace_id = $1
            WHERE s.workspace_id = $1
              AND sm.member_type = 'agent'
              AND a.workspace_id = $1
-             AND a.owner_id     = $10::uuid
+             AND a.owner_id     = $12::uuid
     ))
   )
-ORDER BY i.position ASC, i.created_at DESC
+ORDER BY CASE WHEN $2::boolean AND collaboration.issue_id IS NOT NULL THEN 0 ELSE i.position END ASC,
+         CASE WHEN $2::boolean AND collaboration.issue_id IS NOT NULL THEN 'epoch'::timestamptz ELSE i.created_at END DESC,
+         i.id
 `
 
 type ListOpenIssuesParams struct {
-	WorkspaceID        pgtype.UUID   `json:"workspace_id"`
-	TerminalStatusKeys []string      `json:"terminal_status_keys"`
-	Priority           pgtype.Text   `json:"priority"`
-	AssigneeID         pgtype.UUID   `json:"assignee_id"`
-	AssigneeIds        []pgtype.UUID `json:"assignee_ids"`
-	CreatorID          pgtype.UUID   `json:"creator_id"`
-	ProjectID          pgtype.UUID   `json:"project_id"`
-	MetadataFilter     []byte        `json:"metadata_filter"`
-	PropertiesFilter   []byte        `json:"properties_filter"`
-	InvolvesUserID     pgtype.UUID   `json:"involves_user_id"`
+	WorkspaceID           pgtype.UUID   `json:"workspace_id"`
+	MachinePrincipal      bool          `json:"machine_principal"`
+	ExternalCollaborators bool          `json:"external_collaborators"`
+	TerminalStatusKeys    []string      `json:"terminal_status_keys"`
+	Priority              pgtype.Text   `json:"priority"`
+	AssigneeID            pgtype.UUID   `json:"assignee_id"`
+	AssigneeIds           []pgtype.UUID `json:"assignee_ids"`
+	CreatorID             pgtype.UUID   `json:"creator_id"`
+	ProjectID             pgtype.UUID   `json:"project_id"`
+	MetadataFilter        []byte        `json:"metadata_filter"`
+	PropertiesFilter      []byte        `json:"properties_filter"`
+	InvolvesUserID        pgtype.UUID   `json:"involves_user_id"`
 }
 
 type ListOpenIssuesRow struct {
@@ -1370,6 +1412,7 @@ type ListOpenIssuesRow struct {
 	AdmissionStatus        string             `json:"admission_status"`
 	CurrentIterationID     pgtype.UUID        `json:"current_iteration_id"`
 	IterationRolloverCount int32              `json:"iteration_rollover_count"`
+	CollaborationReference bool               `json:"collaboration_reference"`
 }
 
 // See ListIssues for the semantics of involves_user_id (mirrors the 4-branch
@@ -1377,6 +1420,8 @@ type ListOpenIssuesRow struct {
 func (q *Queries) ListOpenIssues(ctx context.Context, arg ListOpenIssuesParams) ([]ListOpenIssuesRow, error) {
 	rows, err := q.db.Query(ctx, listOpenIssues,
 		arg.WorkspaceID,
+		arg.MachinePrincipal,
+		arg.ExternalCollaborators,
 		arg.TerminalStatusKeys,
 		arg.Priority,
 		arg.AssigneeID,
@@ -1421,6 +1466,7 @@ func (q *Queries) ListOpenIssues(ctx context.Context, arg ListOpenIssuesParams) 
 			&i.AdmissionStatus,
 			&i.CurrentIterationID,
 			&i.IterationRolloverCount,
+			&i.CollaborationReference,
 		); err != nil {
 			return nil, err
 		}

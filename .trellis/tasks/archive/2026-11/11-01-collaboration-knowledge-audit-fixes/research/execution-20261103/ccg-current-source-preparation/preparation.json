@@ -1,0 +1,179 @@
+{
+  "recorded_at": "2026-11-03T10:15:26.715892+00:00",
+  "state": "preparation_only_needs_independent_review_and_later_root_dispatch",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "commands": {
+    "CCG1-normal": [
+      "python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg1.py",
+      "normal",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-normal.json",
+      "--label",
+      "ccg1-normal-1"
+    ],
+    "CCG1-race": [
+      "python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg1.py",
+      "race",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-race.json",
+      "--label",
+      "ccg1-race-1"
+    ],
+    "host-daemon-build": [
+      "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "-C",
+      "server",
+      "test",
+      "-c",
+      "-o",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/binaries/host-daemon.test",
+      "./internal/daemon"
+    ],
+    "host-provider-build": [
+      "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "build",
+      "-o",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/binaries/host-provider",
+      "e2e/fixtures/collaboration-host-provider.go"
+    ],
+    "CLI": "After full-check release, copy the audited current-source v13/multica into the new binaries directory; bind its original successful build/source record and exact hash. No installed user agent CLI.",
+    "CCG2-off": [
+      "python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg2.py",
+      "off",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-off.json",
+      "--label",
+      "ccg2-off-1"
+    ],
+    "deploy-off": {
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "environment": {
+        "MULTICA_DEV_HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/registry",
+        "MULTICA_DEV_PROFILES_HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/profiles",
+        "MULTICA_DEV_WORKSPACES_PARENT": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/workspaces",
+        "ENV_FILE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/source.env",
+        "MULTICA_DEV_TMPDIR": "ROOT_ALLOCATED_NEW_GIT_FREE_CCG_TEMP"
+      },
+      "command": [
+        "make",
+        "up",
+        "ENV_FILE=/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/source.env",
+        "C=api,web",
+        "ARGS=--name knowledge-v13-off-ROOT_NONCE --ephemeral --web-mode production"
+      ],
+      "state": "proposal_only; not allocated or started"
+    },
+    "CCG2-on": [
+      "python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg2.py",
+      "on",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-on.json",
+      "--label",
+      "ccg2-on-1"
+    ],
+    "deploy-on": {
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "environment": {
+        "MULTICA_DEV_HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/registry",
+        "MULTICA_DEV_PROFILES_HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/profiles",
+        "MULTICA_DEV_WORKSPACES_PARENT": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/workspaces",
+        "ENV_FILE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/source.env",
+        "MULTICA_DEV_TMPDIR": "ROOT_ALLOCATED_NEW_GIT_FREE_CCG_TEMP"
+      },
+      "command": [
+        "make",
+        "up",
+        "ENV_FILE=/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/source.env",
+        "C=api,web",
+        "ARGS=--name knowledge-v13-on-ROOT_NONCE --ephemeral --web-mode production"
+      ],
+      "state": "proposal_only; not allocated or started"
+    }
+  },
+  "old_runner_sha256": {
+    "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/.omx/private/knowledge-final-gates/run-gate.py": "00f1dde9057e6496566c495290fb362b31d591b5a67e1f1aefc5070260f00031",
+    "/Volumes/artisan/code/2026/mc-knowledge-deployed-probe-20261102/.omx/private/run-deployed-probe.py": "fe87b66ac8283afa1c964c5407c97ea8a9e7c8b99044c2d6d6642726af2d0e45"
+  },
+  "files": {
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/binary-binding.json.template": {
+      "sha256": "17ccee4eb46eae2b0d37ebfa1c10704d2429d7e37590b4fbc3b557752da4cc64",
+      "bytes": 1108
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/ccg-admission-template.py.txt": {
+      "sha256": "8a80ad4827b7fc0081747dfc84f1519f5e6588dffe033c727a4c7e8bc799c5d8",
+      "bytes": 5913
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/deployment-proof.json.template": {
+      "sha256": "d2fc16a239036c5598f5beecd0830826b9b02b11e142379280b682c59a01bb0f",
+      "bytes": 982
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/source-values.json.template": {
+      "sha256": "f42ed2ecc8f454499b0bfb7e55eb6ad550f12bc61718dbd76a1143e0020723b3",
+      "bytes": 1467
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/deployment-proof.json.template": {
+      "sha256": "4626edf623c460f202139e41de4d8224b3a15258d3e9d814fbbae4af42184cb7",
+      "bytes": 979
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/source-values.json.template": {
+      "sha256": "4b0c1ab9d8b29fea4987de8464759220548177ceccb39b80f1e8633f494ef087",
+      "bytes": 1466
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-normal.json.template": {
+      "sha256": "24421fc6cd9fc8b6fb233bd9b9a26e95e05077c5e9949763bdeb5b0feaa8a558",
+      "bytes": 947
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-race.json.template": {
+      "sha256": "5fa9be9e9ea8c7f6f64d8b435c3f584a68fd310e6a88935e015f2f084dd8df5f",
+      "bytes": 945
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-off.json.template": {
+      "sha256": "f7cca624250bcc634fa6015b7c85b94d8ce5e946bba651d3c1d2012ed723b439",
+      "bytes": 1133
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-on.json.template": {
+      "sha256": "ca340f0dbecd68bbca1ca14d0dd1906499d0cfc1be74ab51f2ab9b6dea5c3753",
+      "bytes": 1132
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg1.py": {
+      "sha256": "2dc49a29c3d8d5274eea8875a98c797e8225b8e06a9f8e231551ec43b5fefb6b",
+      "bytes": 9523
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg2.py": {
+      "sha256": "041ce1d42d7d783842bdc0518e9ab37c4b4f0776b4fd88413f838c79a0beba62",
+      "bytes": 16494
+    },
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/source-inputs.json": {
+      "sha256": "e0971829e126ca6513a932e5cecee5dd44517f479e1e1a302c41dc425fe23aaa",
+      "bytes": 3516
+    }
+  },
+  "validation": {
+    "python_ast": [
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg1.py",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg2.py"
+    ],
+    "json_templates_parsed": 10,
+    "runner_executions": 0,
+    "go_or_browser_or_database_or_service_or_provider_operations": 0
+  },
+  "constraints": [
+    "No writes to running final-check-v13 or tracked source",
+    "CCG1 normal/race each get a distinct new migrated DB with required literal host_composite prefix",
+    "OFF/ON use separate registries because dev-env reuses a matching checkout regardless of --name",
+    "Root must prove selected database did not exist before allocation; dev-env port fallback can rewrite DB names",
+    "No current fullcheck API/Web/Redis/renderer reuse; no global PostgreSQL changes",
+    "Only later root-created ready permissions may invoke runners after actual full-check pass and released resources",
+    "Preserve all old runs and failures; no fake pass claims"
+  ],
+  "preparation_notes": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/ccg-current-source-preparation/PREPARATION.md",
+    "sha256": "205e6b6a9eaefdfec364e0281210cca661cc04c4ae21a58b85efa3130b6eb4c8"
+  },
+  "static_input_recheck": "old runner hashes preserved; both Python ASTs valid; all file hashes and four unready permits consistent"
+}

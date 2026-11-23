@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY delivery_project_change_operation_idx ON delivery_project_change(workspace_id,operation_id,issue_id);

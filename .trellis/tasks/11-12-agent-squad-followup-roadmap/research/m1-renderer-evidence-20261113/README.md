@@ -1,0 +1,9 @@
+# M1-S1 Renderer Acceptance
+
+The final renderer run used source HEAD `463b201fa`, a production Web build `M-WGkBlRRSxxdDC6L3KVT` at `localhost:13493`, the API health identity `pid=10062/commit=463b201fa` at `localhost:18573`, and task-owned database `multica_multica_0_4_37_493`. The fixture created two issues in one new enforce project, each with a fixed `candidate.txt` local-synthetic artifact, an actual packager receipt, and a database-observed PR head. `provider_calls=0`; no evaluation key was used.
+
+The final fresh-fixture Web and Electron runs both selected the candidate, observed `pass`, entered a non-empty acceptance reason, and used keyboard activation for authorization and submit. The API returned `201` for the explicit authorization and `200` for the bound status PUT. Each run then queried the same authorization ID and separately read the issue: receipt state was `consumed`, completed revision was `2`, and current status was `done`. The modal remained open after completion and displayed both facts separately.
+
+Web ran in Chromium at `390x844` for the narrow evidence view. Desktop ran a real Electron window using the built renderer/preload through loopback proxy origin `http://127.0.0.1:5668`, resized to `680x900`; the fixture recorded zero daemon starts. The final combined one-worker, zero-retry Playwright run reports two passed tests and no failures. Screenshots, `final-playwright-last-run.json`, and machine-readable receipt/current-state evidence are beside this file. `acceptance.json` contains no authentication token.
+
+Earlier attempts exposed harness issues: a consumed fixture was reused, an about:blank localStorage init produced a pageerror, the Electron SPA proxy did not support direct deep links, and registry identity had to be rebound after task docs changed. Those attempts are not counted. The final run uses fresh issues, origin-aware token setup, Electron sidebar navigation, and current API/Web process identities.

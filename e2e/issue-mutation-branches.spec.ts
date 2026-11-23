@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import {
   expect,
@@ -239,11 +240,11 @@ test("cancelling after a failed deletion leaves the issue readable after reload"
 
 test("failed manual creation retains title and description and retry creates exactly one issue", async ({ page, fixture }) => {
   await page.goto(`/${fixture.workspace.slug}/issues`, { waitUntil: "domcontentloaded" });
-  await page.getByRole("button", { name: "New Issue", exact: true }).click();
+  await openNewIssue(page);
   const dialog = page.getByRole("dialog", { name: "New Issue", exact: true });
   const title = "Retain manual issue draft";
   const description = "The complete description must survive the rejected request.";
-  const titleInput = dialog.getByRole("textbox", { name: "Title (required)", exact: true });
+  const titleInput = dialog.getByRole("textbox", { name: "Title", exact: true });
   const editor = dialog.locator('.ProseMirror.rich-text-editor[contenteditable="true"]');
   await titleInput.fill(title);
   await editor.fill(description);

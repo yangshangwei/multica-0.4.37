@@ -1,0 +1,53 @@
+Captured 2026-11-03T11:18:25.266827+00:00 from running v13; not final inventory.
+
+  5) [chromium] › e2e/collaboration-mention-journeys-web.spec.ts:65:1 › Web offline mentions survive a fresh context and edits notify only newly added people 
+
+    TimeoutError: locator.click: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Edit issue', exact: true })
+
+
+       at fixtures/collaboration-mention-journeys.ts:492
+
+      490 | }
+      491 | async function editBody(page: Page, fixture: CollaborationMentionJourney, description: string) {
+    > 492 |   await page.getByRole("button", { name: "Edit issue", exact: true }).click();
+          |                                                                       ^
+      493 |   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: "Edit issue", exact: true }) });
+      494 |   await form.getByLabel("Description", { exact: true }).fill(description);
+      495 |   const responsePending = page.waitForResponse((response) => new URL(response.url()).pathname === issuePath(fixture) && response.request().method() === "PATCH");
+        at editBody (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:492:71)
+        at exerciseDurableMentionNotifications (/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/fixtures/collaboration-mention-journeys.ts:561:9)
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-mention-journeys-web.spec.ts:93:22
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/collaboration-mention-jour-cf0df-ify-only-newly-added-people-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:6444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:6444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+

@@ -1,0 +1,77 @@
+{
+  "registered_at": "2026-10-31T19:10:15.624569+00:00",
+  "authorization": "Existing account/quota approval and latest six-step execution instruction; dedicated serial window after runtime coding/reviews ended.",
+  "remaining_provider_call_cap": 23,
+  "prior_consumed": {
+    "E1": [
+      1,
+      2,
+      3
+    ],
+    "E2a": [
+      1
+    ]
+  },
+  "prior_summary": "../experiments-e2-resume-2026-10-31/run-summary.json",
+  "ordered_plan": [
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "start_trial": 2
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E4_stale_merge",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E5_injection",
+      "arm": "baseline",
+      "start_trial": 1
+    },
+    {
+      "scenario": "E6_relay",
+      "arm": "baseline",
+      "start_trial": 1
+    }
+  ],
+  "trials": 3,
+  "source_arms": {
+    "baseline": {
+      "cwd": "/Volumes/artisan/code/2026/mc-context-baseline-20261031/server",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f"
+    },
+    "after": {
+      "cwd": "/Volumes/artisan/code/2026/mc-context-resume-20261031/server",
+      "source_commit": "835e7b046c6841e0945a59326bc4ddcbae4a0df7"
+    }
+  },
+  "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+  "framework_files": {
+    "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+    "host_context_experiment_fixture_test.go": "dc50d452f6630d8838040ac250ddd837dbcd3723acf20a3812abb0dbc6d97494",
+    "host_context_experiment_test.go": "738208242aa029af09fe5bafa055db2054f088c422bbb4f34eec28780bf720a7"
+  },
+  "provider": "claude",
+  "executable": "/Users/artisan/.local/bin/claude",
+  "requested_model": "claude-opus-5-5",
+  "thinking": "provider_default",
+  "service_tier": "provider_default",
+  "stop_rule": "Stop every later trial/scenario after first incomplete runtime/environment/harness result; no extra replacement/health calls or timeout/model change. E5 canary stops for blocking review.",
+  "new_runtime_scope": "This resumes original frozen product arms, not the newly committed runtime0e1ee8e1e model acceptance."
+}

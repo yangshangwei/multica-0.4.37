@@ -1,0 +1,33 @@
+{
+  "reviewed_at": "2026-11-05T02:58:02.298598+00:00",
+  "verdict": "pass_isolated_database_rebinding",
+  "blocking_findings": [],
+  "runner_sha256": "3bd21bbad41a745dc2e551a9a03f3d577e5f529f8ec77752ab3826ab2faf1ec3",
+  "previous_reviewed_runner_sha256": "915599503e2909c893189fd0bc3b717db718292391ca35f7314e0fdf413c8bf8",
+  "only_change": "private database configuration file path; restoring old path reproduces exact reviewed runner hash",
+  "isolated_database_record_sha256": "3650c70c921eb6decb3fda20ca413c6b2547a041c348179492797fe1d7bdd96e",
+  "database_config_sha256": "062407a22092e5693b5afe925673bc3805eda09c66f70210d434d5578bb0aa81",
+  "database_config_private_mode": "0o600",
+  "actual_config_endpoint": {
+    "host": "127.0.0.1",
+    "port": 63019
+  },
+  "source_two_files_match_prior_review": true,
+  "strict_scorer_unchanged": true,
+  "preserved": [
+    "all3selectors",
+    "clean minimal env/ambient CLI guard",
+    "three distinct owned migration764 databases",
+    "overlay-only disabled-answer mutation",
+    "named terminal/no-skip/one-launch/no-write guards"
+  ],
+  "environment_scope": "Root owns Docker live isolation/current host-process observations; reviewer read no service/DB or Provider",
+  "reviewer_operations": {
+    "tests": 0,
+    "compile": 0,
+    "services": 0,
+    "database": 0,
+    "provider": 0
+  },
+  "actual_results": "pending"
+}

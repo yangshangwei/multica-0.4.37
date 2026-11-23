@@ -1,0 +1,606 @@
+{
+  "version": 1,
+  "at": "2026-11-15T04:11:58.932Z",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "scope": "4949-file frozen DDL binding, seven coordinator retention controls and dedicated read-only database identity/schema. Not S2 2d product or A01-A12 acceptance.",
+  "verdict": "source_binding_and_readonly_schema_pass; immutable_execution_raw_witness_blocked",
+  "product_or_schema_defects_found": 0,
+  "source_or_log_hash_mismatches": 0,
+  "blockers": [
+    {
+      "id": "SCHEMA-R02-E01",
+      "kind": "missing_raw_execution_evidence",
+      "file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/retention-results.json",
+      "control": "immutable-update-refused",
+      "evidence_present": "Structured sqlstate=23514/pass=true plus after snapshot; independently read enabled BEFORE UPDATE trigger and unconditional 23514 function body match the frozen source.",
+      "missing": "No standalone original SQL/error transcript or log/exit hash pair for this direct SQL control. Unlike six migrator controls, it cannot be certified here as an independently verified raw execution witness.",
+      "impact": "Blocks claiming all seven controls have complete raw execution evidence. Does not negate the passing source binding/current read-only schema checks; no product/schema defect is inferred.",
+      "resolution": "Coordinator supplies preserved original SQL/error evidence and its hash/binding, if available. Reviewer does not rerun UPDATE or create a new fact under this permit."
+    }
+  ],
+  "findings_fixed": [
+    {
+      "file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-check/audit-database.mjs",
+      "line": 89,
+      "issue": "Reviewer expected conname in the coordinator constraint snapshot; that snapshot contains only contype/definition.",
+      "fix": "Compare exact sorted contype/definition multisets and owner; preserve independently read constraint names separately. No product or test edits.",
+      "preserved_failure": {
+        "report": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-check/database-audit-r01.json",
+        "sha256": "57878c0429e883e4a96c52248326f30b1140072197a7d906196f5b251458e680",
+        "checks": 14,
+        "passed": 13,
+        "source": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-check/audit-database-r01-failed.mjs",
+        "source_sha256": "8506415b32c33ab8ecb3ed57fc323c7dc26f16a0ea00d1cbfd3f33323b9b67c2",
+        "exit": 2
+      },
+      "verified_success": {
+        "report": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-check/database-audit-r02.json",
+        "sha256": "07c8dd5092ed8f2b3c7159a2668870bfb8dc49a2f328d286b10dcacb77bf7078",
+        "checks": 16,
+        "passed": 16,
+        "source_sha256": "8c73945bebb0bf73d4b49a07359674850a5aa0d1d3e43c83f53aa33f35390414",
+        "exit": 0
+      }
+    }
+  ],
+  "source_binding": {
+    "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/source",
+    "checked_base_files": 4939,
+    "implementation_base_files": 4939,
+    "final_files": 4949,
+    "manifest_sha256": "8d97b43cb68e20c3ffb943c8b010a69793ceef6954bb069ead82fe7ed98e96fb",
+    "overlay_layers": 2,
+    "overlay_file_entries": 16,
+    "unique_overlay_paths": 12,
+    "overlays": [
+      {
+        "layer": 1,
+        "path": "server/cmd/migrate/main.go",
+        "sha256": "a9e3293bccdecef6ca8ac24a3c24389affb03e84d44899c143de94b111a31caa",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/migrations/861_collaboration_stage_submission.down.sql",
+        "sha256": "4ce16d2b31270bb8bf99d0460056d51dfa7888ec97f0b5917faa1e4b9f2da12a",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/migrations/861_collaboration_stage_submission.up.sql",
+        "sha256": "34eb9ee904288768e001ef903f69f539ddafdc233243f489f7ea44a6447c83a6",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/migrations/862_collaboration_stage_submission_id.down.sql",
+        "sha256": "97063cda7c48fe84cf153687110a39da67c5e35df1902de3d07af073aed0df58",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/migrations/862_collaboration_stage_submission_id.up.sql",
+        "sha256": "2e79328ed36c32f54b07572bf70e9100110822b78b751bf26d44306bdf122842",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/migrations/863_collaboration_stage_submission_issue.down.sql",
+        "sha256": "934964c4bdfb5fb3a95f500907b22dbc8866dc9c3e4bb9e049ec287ec1a11ef9",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/migrations/863_collaboration_stage_submission_issue.up.sql",
+        "sha256": "9758a1410e6a6c413b335a4243e7e6a4e4d0e44421ea1cd9f496d0f2373d5fc2",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/migrations/864_collaboration_stage_submission_ready.down.sql",
+        "sha256": "32b995f283d49eb1d7f278508f13a62a95f6867c06f001361e0554a23c1fa1c8",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/migrations/864_collaboration_stage_submission_ready.up.sql",
+        "sha256": "c8521e7349b99b3d51c321646e12cd07e40390adb57bca4ebe01ae7bdaff12b2",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+        "sha256": "4b08d9c2d3ee3a91436fc3362575a30ede8639d99732808b75d0ae9b9a4f7e72",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/pkg/db/generated/models.go",
+        "sha256": "5a75c15da2e672f92125aa05277af66c99b2b96ccc70a35aafb1c6fe0d6bfbcd",
+        "previous_sha256": null
+      },
+      {
+        "layer": 1,
+        "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+        "sha256": "5a0cdb6153f4b97a7cea1ac113b9b115d0fbfcef9d3d5e051b80739456af7062",
+        "previous_sha256": null
+      },
+      {
+        "layer": 2,
+        "path": "server/migrations/861_collaboration_stage_submission.up.sql",
+        "sha256": "7d884d34cd3e4e13cb7cf0ff564612784a12c9599f211e729d116dfdeac77633",
+        "previous_sha256": "34eb9ee904288768e001ef903f69f539ddafdc233243f489f7ea44a6447c83a6"
+      },
+      {
+        "layer": 2,
+        "path": "server/migrations/864_collaboration_stage_submission_ready.up.sql",
+        "sha256": "467e26e0eb8544b0d150e15f08a66fcbf744310d18dc140ac2456d44476d41c2",
+        "previous_sha256": "c8521e7349b99b3d51c321646e12cd07e40390adb57bca4ebe01ae7bdaff12b2"
+      },
+      {
+        "layer": 2,
+        "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+        "sha256": "03a4feaf53021e0bffd72bcd5c2021928092b48054d7674556180005384ae113",
+        "previous_sha256": "5a0cdb6153f4b97a7cea1ac113b9b115d0fbfcef9d3d5e051b80739456af7062"
+      },
+      {
+        "layer": 2,
+        "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+        "sha256": "bc81aa51901ec304b1a923ba90108a96cb1a9d37e71e928095cbb856da595f55",
+        "previous_sha256": "4b08d9c2d3ee3a91436fc3362575a30ede8639d99732808b75d0ae9b9a4f7e72"
+      }
+    ],
+    "copied_ddl": [
+      {
+        "directory": "submission-only",
+        "files": 8,
+        "inventory_sha256": "0a8bcb5f62baf394ce2d0d3c00dd566846982a4b0f2121081f2fdb1d3fa52bb2"
+      },
+      {
+        "directory": "ready-only",
+        "files": 2,
+        "inventory_sha256": "4af0b948c67da7fe6da692662ea1d16cd86ab4951d6d694d5628ede3c65b0ad8"
+      },
+      {
+        "directory": "table-only",
+        "files": 1,
+        "inventory_sha256": "356d4072ccd8596ca36a3c8f2fef9abdeba385ba28438778d7d581a92f3b827d"
+      }
+    ],
+    "filesystem_assertions": 158,
+    "filesystem_assertions_passed": 158,
+    "config_sha256": "0dd6708ff4dc4b73e3c65198449eabbe9913b0f8bc95e2c920e1dafb3b7449e9",
+    "binary_sha256": "a3d33828acfffccd3e2f8e5bbe5d2f6603e3a2fa48088c057a63e2746684c8e1",
+    "exact_evidence_hashes": [
+      {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/source-binding.json",
+        "sha256": "537a3690ebcb4ef8e7dfa0ab3295ea87c4cd468b97e53541dfc29438b5871d7d"
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c-followup-check/input-check.json",
+        "sha256": "48ff40f1e40528bf46a7ae1b28afcef1154b3ee6c2ee761a1f292f03c62fa5b0"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2c-followup-results.json",
+        "sha256": "441f6352cb4b6e7ec70e080c41bc5594d294a2a7b59a3066347af9a07db40265"
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/retention-results.json",
+        "sha256": "2750851b6c4d698fc2b890522685025c18b4022d56cc3d230455889c7ccab3e0"
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/evidence/database-allocations.json",
+        "sha256": "a9a6e590c8dfbad41ba565ed70a0134604328d7e5b4fdad5461783516b367db8"
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/before-up.json",
+        "sha256": "9ea59fe9dd74295d8ed4a171bd05614489594481b64226e862d90be394a9dc59"
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/after-up.json",
+        "sha256": "8a25785768c6700ae0b4d64510d70c95c6689174cb8a6c63d80849f53aeaa154"
+      },
+      {
+        "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/after-retention.json",
+        "sha256": "ed93d6c1c0f00357dcd8c4b97bc6ff2452c34d9ad67574f208051d2e2a65d01f"
+      }
+    ]
+  },
+  "full_up": {
+    "ledger_count": 835,
+    "last": "864_collaboration_stage_submission_ready",
+    "sql_skips": [
+      {
+        "version": "371_comment_content_search_index_strategy",
+        "sql_skipped": "preferred index public.idx_comment_content_bigm is unavailable or unusable"
+      }
+    ],
+    "all_new_ddl_sql_ran": true,
+    "fresh_before_snapshot": "No schema_migrations or submission table/rows before this r02 full up; original snapshot hash is listed in exact_evidence_hashes.",
+    "old_database_reused_for_proof": false,
+    "old_database_live_state_rechecked": false
+  },
+  "raw_commands": [
+    {
+      "id": "build-r01",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/build-r01.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/build-r01.exit",
+      "exit_file_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "full-up-r01",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/full-up-r01.log",
+      "log_sha256": "5ecc8cea51b499405fa5187e926b8f82db889a8db1db3f1d0410c1587932d46c",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/full-up-r01.exit",
+      "exit_file_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "empty-down",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/empty-down.log",
+      "log_sha256": "c9ca8fbb7f019788463e4709e9f9068095b7a5775e741b7e4c631a130a6bbd30",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/empty-down.exit",
+      "exit_file_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "empty-up",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/empty-up.log",
+      "log_sha256": "d0d15fa8003059e3eec0a85a671305cf00947c9a8dcc7e043fc31f7b4ce7eca3",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/empty-up.exit",
+      "exit_file_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "ready-only-down",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/ready-only-down.log",
+      "log_sha256": "3e5ebf9ee6fa703e8d524d1b050e00981774bc75b8f819f37858ff752eb40a7c",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/ready-only-down.exit",
+      "exit_file_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "ready-only-up",
+      "exit": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/ready-only-up.log",
+      "log_sha256": "f18d1c8659d008b89734bd3bb5d75e19921858bc482ea6393c79abb3de65a7f9",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/ready-only-up.exit",
+      "exit_file_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "id": "retained-down",
+      "exit": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/retained-down.log",
+      "log_sha256": "4e1cfd211f0fe81972218716d97c454cf4acf56f576f15aff9efa96a462e3a26",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/retained-down.exit",
+      "exit_file_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "id": "retained-table-down",
+      "exit": 1,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/retained-table-down.log",
+      "log_sha256": "9c550408eb50ffd6808bba64a2ab37c063fbf5e6b9da0a73a5f3280df6bdea59",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-r02/logs/retained-table-down.exit",
+      "exit_file_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    }
+  ],
+  "retention_controls": [
+    {
+      "id": "empty-down",
+      "recorded_pass": true,
+      "raw_command_pair": true,
+      "exit": 0,
+      "sqlstate": null,
+      "ledger_count": 831,
+      "structural_ready": false,
+      "ready_ledger": false,
+      "rows": [],
+      "independently_checked_raw_command": true,
+      "raw_execution_gate": "pass",
+      "structural_and_after_snapshot_evidence_checked": true
+    },
+    {
+      "id": "empty-up",
+      "recorded_pass": true,
+      "raw_command_pair": true,
+      "exit": 0,
+      "sqlstate": null,
+      "ledger_count": 835,
+      "structural_ready": true,
+      "ready_ledger": true,
+      "rows": [],
+      "independently_checked_raw_command": true,
+      "raw_execution_gate": "pass",
+      "structural_and_after_snapshot_evidence_checked": true
+    },
+    {
+      "id": "ready-only-down",
+      "recorded_pass": true,
+      "raw_command_pair": true,
+      "exit": 0,
+      "sqlstate": null,
+      "ledger_count": 834,
+      "structural_ready": true,
+      "ready_ledger": false,
+      "rows": [],
+      "independently_checked_raw_command": true,
+      "raw_execution_gate": "pass",
+      "structural_and_after_snapshot_evidence_checked": true
+    },
+    {
+      "id": "ready-only-up",
+      "recorded_pass": true,
+      "raw_command_pair": true,
+      "exit": 0,
+      "sqlstate": null,
+      "ledger_count": 835,
+      "structural_ready": true,
+      "ready_ledger": true,
+      "rows": [],
+      "independently_checked_raw_command": true,
+      "raw_execution_gate": "pass",
+      "structural_and_after_snapshot_evidence_checked": true
+    },
+    {
+      "id": "immutable-update-refused",
+      "recorded_pass": true,
+      "raw_command_pair": false,
+      "exit": null,
+      "sqlstate": "23514",
+      "ledger_count": 835,
+      "structural_ready": true,
+      "ready_ledger": true,
+      "rows": [
+        {
+          "submission_id": "04ec1bce-2286-4e0f-a5eb-56a23f5ce9d7",
+          "digest": "4afe7a9c8e28f10337d371fd24d82129"
+        }
+      ],
+      "independently_checked_raw_command": false,
+      "raw_execution_gate": "blocked_missing_raw",
+      "structural_and_after_snapshot_evidence_checked": true
+    },
+    {
+      "id": "retained-down",
+      "recorded_pass": true,
+      "raw_command_pair": true,
+      "exit": 1,
+      "sqlstate": "23514",
+      "ledger_count": 835,
+      "structural_ready": true,
+      "ready_ledger": true,
+      "rows": [
+        {
+          "submission_id": "04ec1bce-2286-4e0f-a5eb-56a23f5ce9d7",
+          "digest": "4afe7a9c8e28f10337d371fd24d82129"
+        }
+      ],
+      "independently_checked_raw_command": true,
+      "raw_execution_gate": "pass",
+      "structural_and_after_snapshot_evidence_checked": true
+    },
+    {
+      "id": "retained-table-down",
+      "recorded_pass": true,
+      "raw_command_pair": true,
+      "exit": 1,
+      "sqlstate": "23514",
+      "ledger_count": 835,
+      "structural_ready": true,
+      "ready_ledger": true,
+      "rows": [
+        {
+          "submission_id": "04ec1bce-2286-4e0f-a5eb-56a23f5ce9d7",
+          "digest": "4afe7a9c8e28f10337d371fd24d82129"
+        }
+      ],
+      "independently_checked_raw_command": true,
+      "raw_execution_gate": "pass",
+      "structural_and_after_snapshot_evidence_checked": true
+    }
+  ],
+  "covered_retention_snapshot_preservation": {
+    "equal_after_immutable_and_both_refused_downs": true,
+    "covers": [
+      "table presence",
+      "two index definitions/valid/ready/live flags",
+      "all ledger stems",
+      "retained row fingerprint",
+      "structural/ready-ledger booleans"
+    ],
+    "limitations": "This is equality of recorded snapshots plus current independent read-only state, not a new reviewer downgrade/write experiment."
+  },
+  "partial_down": {
+    "control": "ready-only-down",
+    "structural_ready": true,
+    "ledger_count": 834,
+    "ready_864_ledger_present": false,
+    "runtime_admission_proven": false
+  },
+  "read_only_database": {
+    "report": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-check/database-audit-r02.json",
+    "report_sha256": "07c8dd5092ed8f2b3c7159a2668870bfb8dc49a2f328d286b10dcacb77bf7078",
+    "assertions": 16,
+    "assertions_passed": 16,
+    "identity": {
+      "database": "multica_pay241_20261114_s2_2d_migrate_r02",
+      "owner": "multica",
+      "backend_pid": 45391,
+      "transaction_read_only": "on",
+      "default_transaction_read_only": "on",
+      "time_zone": "Etc/UTC",
+      "server_version": "17.11 (Debian 17.11-1.pgdg12+2)",
+      "observed_at": "2026-11-15T04:07:20.199Z"
+    },
+    "ledger_count": 835,
+    "last": "864_collaboration_stage_submission_ready",
+    "exact_ledger_matches_source": true,
+    "columns": 16,
+    "validated_checks": 6,
+    "new_foreign_keys": 0,
+    "digest_constraint": "CHECK ((content_digest ~ '^[0-9a-f]{64}$'::text))",
+    "indexes": [
+      {
+        "name": "collaboration_stage_submission_id_idx",
+        "unique": true,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "exclusion": false,
+        "key_count": 1,
+        "attribute_count": 1,
+        "no_expression": true,
+        "no_predicate": true,
+        "access_method": "btree",
+        "columns": "submission_id",
+        "definition": "CREATE UNIQUE INDEX collaboration_stage_submission_id_idx ON public.collaboration_stage_submission USING btree (submission_id)"
+      },
+      {
+        "name": "collaboration_stage_submission_issue_idx",
+        "unique": false,
+        "valid": true,
+        "ready": true,
+        "live": true,
+        "exclusion": false,
+        "key_count": 4,
+        "attribute_count": 4,
+        "no_expression": true,
+        "no_predicate": true,
+        "access_method": "btree",
+        "columns": "issue_id,lifecycle_epoch,created_at,submission_id",
+        "definition": "CREATE INDEX collaboration_stage_submission_issue_idx ON public.collaboration_stage_submission USING btree (issue_id, lifecycle_epoch, created_at, submission_id)"
+      }
+    ],
+    "immutable_trigger": {
+      "name": "collaboration_stage_submission_immutable",
+      "type": 19,
+      "enabled": "O",
+      "internal": false,
+      "function": "collaboration_stage_immutable",
+      "body": "\nBEGIN\n RAISE EXCEPTION 'collaboration stage fact % is immutable', TG_TABLE_NAME USING ERRCODE = '23514';\nEND; ",
+      "definition": "CREATE TRIGGER collaboration_stage_submission_immutable BEFORE UPDATE ON public.collaboration_stage_submission FOR EACH ROW EXECUTE FUNCTION collaboration_stage_immutable()",
+      "actual_function_matches_frozen_source": true,
+      "update_reexecuted_by_reviewer": false
+    },
+    "retained_rows": 1,
+    "retained_submission_id": "04ec1bce-2286-4e0f-a5eb-56a23f5ce9d7",
+    "retained_md5": "4afe7a9c8e28f10337d371fd24d82129",
+    "retained_md5_method": "md5(row_to_json(submission_row)::text)",
+    "retained_row_json_sha256": "a9376cee025c831030cde0d16c58d0a4d71a81248bfef891d766b21216efa82a",
+    "other_connections_at_start": 0,
+    "other_connections_at_finish": 0,
+    "cleanup": {
+      "rollback": true,
+      "client_closed": true,
+      "socket_destroyed": true,
+      "connected": true
+    },
+    "sequential_read_only_connections": 2,
+    "any_overlapping_connection_observed": false,
+    "database_writes": 0,
+    "api_starts": 0,
+    "migrations_run_by_reviewer": 0,
+    "old_or_clone_database_connections": 0
+  },
+  "allocations": {
+    "at": "2026-11-15T03:28:51.123Z",
+    "predates_retention": true,
+    "assignments": [
+      {
+        "label": "service",
+        "database": "multica_pay241_20261115_s2_service",
+        "package": "./internal/service",
+        "config_sha256": "b4a13f261b5d9dcd0724a67e09354928d2d66bdbcec394d96e437a803d62efb3",
+        "live_database_accessed": false
+      },
+      {
+        "label": "handler",
+        "database": "multica_pay241_20261115_s2_handler",
+        "package": "./internal/handler",
+        "config_sha256": "1ef7c7574343e872b4879007ea65ec39964161480e0cb31bc5eaa3ced8f4ccc7",
+        "live_database_accessed": false
+      },
+      {
+        "label": "service_race",
+        "database": "multica_pay241_20261115_s2_service_race",
+        "package": "./internal/service",
+        "config_sha256": "fb6c4b66acdbd8d829c41870b3f51e14d3b9c899417e082c4a2af57b3f376344",
+        "live_database_accessed": false
+      },
+      {
+        "label": "handler_race",
+        "database": "multica_pay241_20261115_s2_handler_race",
+        "package": "./internal/handler",
+        "config_sha256": "882477760a510fdccd13642f6563a58d5de6c80caedcdb869cb3ffce55aecf13",
+        "live_database_accessed": false
+      },
+      {
+        "label": "router",
+        "database": "multica_pay241_20261115_s2_router",
+        "package": "./cmd/server",
+        "config_sha256": "18013dee72ebcc3f6c94f9bb1f3b92e87c1cd855d0b57b474406b2f127f9869e",
+        "live_database_accessed": false
+      },
+      {
+        "label": "router_race",
+        "database": "multica_pay241_20261115_s2_router_race",
+        "package": "./cmd/server",
+        "config_sha256": "7d51872bf7eb9926cd9e1b064bc3ba4d38d318f1233526d47afa4cd6fbb37bb4",
+        "live_database_accessed": false
+      },
+      {
+        "label": "harness",
+        "database": "multica_pay241_20261115_s2_harness",
+        "package": "./cmd/server",
+        "config_sha256": "b0fc9b87ed596975d6a4ad91d22c66f1164d190b086bc330ca5e06bf0bc0421a",
+        "live_database_accessed": false
+      },
+      {
+        "label": "check_service",
+        "database": "multica_pay241_20261115_s2_check_service",
+        "package": "./internal/service",
+        "config_sha256": "2bcc44bb0b51782e9dd6c3200ef8d708150ca4ecfa385e01bfc438fa5c0f44ea",
+        "live_database_accessed": false
+      },
+      {
+        "label": "check_handler",
+        "database": "multica_pay241_20261115_s2_check_handler",
+        "package": "./internal/handler",
+        "config_sha256": "ea34669e728c386fef79185b5d0f4d0f533d33ddfb814e693ba79d95d625c94c",
+        "live_database_accessed": false
+      },
+      {
+        "label": "check_router",
+        "database": "multica_pay241_20261115_s2_check_router",
+        "package": "./cmd/server",
+        "config_sha256": "95eef111d1180f149235c36a4dc2298c1a88546c0f70a0ce503a89423d017600",
+        "live_database_accessed": false
+      }
+    ],
+    "accessed_clone_databases": 0
+  },
+  "verification": {
+    "private_javascript_syntax": "pass: node --check on both current auditor scripts",
+    "product_lint": "not_run: evidence-only write scope",
+    "product_typecheck": "not_run: evidence-only write scope",
+    "service_handler_router_suites": "not_run: explicitly outside permit",
+    "current_readonly_structural_predicate": "pass; predicate is structurally scoped and does not itself prove runtime admission",
+    "full_seven_raw_retention_gate": "blocked: SCHEMA-R02-E01",
+    "product_acceptance": "not_performed"
+  },
+  "limits": [
+    "Previous 861/864 use ^sha256:[0-9a-f]{64}$; four r02 overlay files change only to ^[0-9a-f]{64}$. Old ledger cannot certify changed same-stem SQL; no old database is accessed or up-replayed here.",
+    "Full up records 835 stems through 864, with one historical SQL-skipped entry at 371. All four new 861-864 SQL entries execute; 835 ledger rows do not mean every historical SQL body executed.",
+    "Two new indexes each have a separate single-statement CONCURRENTLY migration and registered invalid-index cleanup. No new FK/inline PK is present; current table has six validated checks.",
+    "Ten distinct allocation/configuration hashes and 0600 modes match, and allocation time precedes retention rehearsal. No clone, implementation or later check_* database is accessed; current clone row contents are not attested.",
+    "The single retained row is a synthetic migration probe, not a valid formal submission, human approval, deployment or runtime-admission fact.",
+    "No S2 2d feature, policy activation, completion writer, runtime build, Web/Desktop journey, A01-A12 or parent 24-case acceptance is certified."
+  ],
+  "written_paths": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/schema-r02-continuation-check-20261115.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/schema-r02-continuation-check-20261115.json",
+    "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/schema-check"
+  ]
+}

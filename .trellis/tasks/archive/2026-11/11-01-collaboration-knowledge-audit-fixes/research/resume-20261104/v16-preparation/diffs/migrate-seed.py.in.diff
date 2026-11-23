@@ -1,0 +1,39 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v15-preparation/migrate-seed.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/migrate-seed.py.in
+@@ -9,8 +9,8 @@
+ 
+ HERE = Path(__file__).resolve().parent
+ ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+-OUT = ROOT / '.omx/private/final-check-v15'
+-EXPECTED = 'd41573e3a4eb3bd6c36feed3f0d542a0e066ee0f'
++OUT = ROOT / '.omx/private/final-check-v16'
++EXPECTED = 'PENDING_ROOT_FINAL_SHA'
+ GO = '/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go'
+ PSQL = '/opt/homebrew/opt/libpq/bin/psql'
+ 
+@@ -25,7 +25,7 @@
+ assert checked(['git', 'rev-parse', 'HEAD'], cwd=ROOT).stdout.strip() == EXPECTED
+ assert not checked(['git', 'status', '--porcelain'], cwd=ROOT).stdout.strip()
+ values = {}
+-for line in (OUT / 'check-source-v15.env').read_text().splitlines():
++for line in (OUT / 'check-source-v16.env').read_text().splitlines():
+     if line and not line.startswith('#'):
+         key, raw = line.split('=', 1)
+         tokens = shlex.split(raw)
+@@ -39,14 +39,14 @@
+            'PGCONNECT_TIMEOUT': '5', 'PGOPTIONS': '-c statement_timeout=30000'}
+ sql_cmd = [PSQL, '-X', '-v', 'ON_ERROR_STOP=1', '-At', '-c']
+ assert checked(sql_cmd + ['SELECT current_database()'], env=sql_env).stdout.strip() == database
+-env = json.loads((HERE / 'candidate-setup/cli-build-v15.json').read_text())['environment']
++env = json.loads((HERE / 'candidate-setup/cli-build-v16.json').read_text())['environment']
+ env.update(HOME=str(OUT / 'build-home-migrate'), TMPDIR=str(Path(allocation['allocation']['directory']) / 'migrate-build'))
+ Path(env['HOME']).mkdir(mode=0o700)
+ Path(env['TMPDIR']).mkdir(mode=0o700)
+ binary = OUT / 'migrate'
+ assert not binary.exists()
+ record = {'started_at': datetime.now(timezone.utc).isoformat(), 'candidate_sha': EXPECTED,
+-          'database': database, 'source_env_sha256': digest(OUT / 'check-source-v15.env'),
++          'database': database, 'source_env_sha256': digest(OUT / 'check-source-v16.env'),
+           'allocation_sha256': digest(HERE / 'resource-allocation-redis.json'), 'script_sha256': digest(__file__),
+           'database_before': database, 'no_default_or_docker_database_execution': True}
+ build_cmd = ['/usr/bin/sandbox-exec', '-f', str(OUT / 'cli-build-offline.sb'), GO,

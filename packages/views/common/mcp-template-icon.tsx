@@ -1,5 +1,5 @@
 import { AVATAR_ICON_COMPONENTS } from "@multica/ui/lib/avatar-icon";
-import { cn } from "@multica/ui/lib/utils";
+import { IconTile } from "./icon-tile";
 
 const templateIcons: Record<string, keyof typeof AVATAR_ICON_COMPONENTS> = {
   "chrome-devtools": "bug",
@@ -32,21 +32,17 @@ export function McpTemplateIcon({ templateKey, source = "builtin", category }: {
   const reasoning = builtinKey === "sequential-thinking" || category === "reasoning";
   const documentation = builtinKey === "microsoft-learn" || builtinKey === "deepwiki" || builtinKey === "markitdown" || category === "documentation";
   const fallback = reasoning ? "brain" : category === "database" ? "database" : category === "coding" ? "code" : "globe";
-  const Icon = AVATAR_ICON_COMPONENTS[templateIcons[builtinKey] ?? fallback];
 
   return (
-    <span
-      aria-hidden="true"
-      className={cn(
-        "inline-flex size-10 shrink-0 items-center justify-center rounded-lg",
+    <IconTile
+      icon={AVATAR_ICON_COMPONENTS[templateIcons[builtinKey] ?? fallback]}
+      tone={
         documentation
           ? "bg-skill-writing/12 text-skill-writing"
           : reasoning
             ? "bg-skill-research/12 text-skill-research"
-            : "bg-skill-engineering/12 text-skill-engineering",
-      )}
-    >
-      <Icon className="size-5" />
-    </span>
+            : "bg-skill-engineering/12 text-skill-engineering"
+      }
+    />
   );
 }

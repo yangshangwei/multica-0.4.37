@@ -1,5 +1,5 @@
 // Codes emitted by managed_installation, platform_admin, platform_account,
-// admin_alert and admin_operation in server/internal/service.
+// admin_alert, admin_operation and admin_collaboration_gate in server/internal/service.
 export const auditActionCodes = {
   "resource.publish": "resourcePublish",
   "resource.withdraw": "resourceWithdraw",
@@ -16,6 +16,7 @@ export const auditActionCodes = {
   "alert.acknowledge": "alertAcknowledge",
   "alert.assign": "alertAssign",
   "alert.close": "alertClose",
+  "collaboration.gate": "collaborationGate",
 } as const;
 
 export const auditResultCodes = {
@@ -39,6 +40,10 @@ export const auditResultCodes = {
   already_cancelled_unverified: { label: "alreadyCancelledUnverified", tone: "statusWarning" },
   already_terminal: { label: "alreadyTerminal", tone: "statusNeutral" },
   execution_fence_conflict: { label: "executionFenceConflict", tone: "statusDanger" },
+  collaboration_creation_opened: { label: "collaborationCreationOpened", tone: "statusSuccess" },
+  collaboration_creation_closed: { label: "collaborationCreationClosed", tone: "statusNeutral" },
+  collaboration_execution_opened: { label: "collaborationExecutionOpened", tone: "statusSuccess" },
+  collaboration_gate_conflict: { label: "collaborationGateConflict", tone: "statusDanger" },
 } as const;
 
 export const auditPhaseCodes = {
@@ -56,6 +61,7 @@ export const auditTargetKinds = {
   task: "task",
   user: "user",
   alert: "alert",
+  collaboration_gate: "collaborationGate",
 } as const;
 
 // Unknown server codes must remain visible, including object-property names.

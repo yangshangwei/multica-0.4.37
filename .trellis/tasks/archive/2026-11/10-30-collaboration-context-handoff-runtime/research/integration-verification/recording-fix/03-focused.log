@@ -1,0 +1,30 @@
+=== RUN   TestHostCheckpointsKeepOriginalPayloadAcrossLostACK
+--- PASS: TestHostCheckpointsKeepOriginalPayloadAcrossLostACK (0.10s)
+=== RUN   TestHostCheckpointBackpressureDoesNotBlockMessageDrain
+--- PASS: TestHostCheckpointBackpressureDoesNotBlockMessageDrain (0.09s)
+=== RUN   TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim
+--- PASS: TestHostCheckpointLedgerFitsMaximumEscapedRecordingAndClaim (0.26s)
+=== RUN   TestHostHandoffCheckpointBlockedRecordingCannotHoldProof
+--- PASS: TestHostHandoffCheckpointBlockedRecordingCannotHoldProof (2.27s)
+=== RUN   TestHostHandoffCheckpointRestartRecoversWithoutExecution
+--- PASS: TestHostHandoffCheckpointRestartRecoversWithoutExecution (0.30s)
+=== RUN   TestHostHandoffCheckpointFailureCleanup
+=== RUN   TestHostHandoffCheckpointFailureCleanup/snapshot_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/binding_refused
+=== RUN   TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift
+--- PASS: TestHostHandoffCheckpointFailureCleanup (0.67s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/snapshot_refused (0.16s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/binding_refused (0.21s)
+    --- PASS: TestHostHandoffCheckpointFailureCleanup/fallback_snapshot_drift (0.30s)
+=== RUN   TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof
+--- PASS: TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof (1.42s)
+=== RUN   TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement
+--- PASS: TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement (0.15s)
+=== RUN   TestHostRecordingRecoveredUnflushedTailRemainsUnknown
+--- PASS: TestHostRecordingRecoveredUnflushedTailRemainsUnknown (0.13s)
+=== RUN   TestHostRecordingLedgerRejectsSealWithUnissuedNonce
+--- PASS: TestHostRecordingLedgerRejectsSealWithUnissuedNonce (0.08s)
+=== RUN   TestHostRecordingRedactsCollaborationCapabilities
+--- PASS: TestHostRecordingRedactsCollaborationCapabilities (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	5.946s

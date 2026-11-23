@@ -1,0 +1,158 @@
+{
+  "files": [
+    "e2e/auth-qa.spec.ts",
+    "e2e/auth.spec.ts",
+    "e2e/collaboration-account-desktop.spec.ts",
+    "e2e/collaboration-business-scenarios.spec.ts",
+    "e2e/collaboration-creation-default.spec.ts",
+    "e2e/collaboration-delivery-web.spec.ts",
+    "e2e/collaboration-multi-account-closure.spec.ts",
+    "e2e/collaboration-order-export-20261109.spec.ts",
+    "e2e/collaboration-order-export-leave-20261109.spec.ts",
+    "e2e/collaboration-recipient-picker-web.spec.ts",
+    "e2e/core-business-agent-loops.spec.ts",
+    "e2e/fixtures/collaboration-editing.ts",
+    "e2e/fixtures/collaboration-knowledge.ts",
+    "e2e/fixtures/collaboration-native.ts",
+    "e2e/fixtures/collaboration-pay-creation.ts",
+    "e2e/fixtures/collaboration-retained-attachments.ts",
+    "e2e/fixtures/iterations-i1.ts",
+    "e2e/global-scope-navigation.spec.ts",
+    "e2e/helpers.ts",
+    "e2e/issue-assist-flow.spec.ts",
+    "e2e/issue-mutation-branches.spec.ts",
+    "e2e/issues.spec.ts",
+    "e2e/iterations-audit-desktop.spec.ts",
+    "e2e/main-supplemental-qa.spec.ts",
+    "e2e/mcp-desktop.spec.ts",
+    "e2e/navigation.spec.ts",
+    "e2e/quick-create-actor-picker-phase2.spec.ts",
+    "e2e/quick-create-actor-picker.spec.ts",
+    "e2e/quick-create-autonomy.spec.ts",
+    "e2e/quick-create-blocked-feedback.spec.ts",
+    "e2e/settings-preferences.spec.ts",
+    "e2e/task-lifecycle-qa.spec.ts",
+    "e2e/upstream-selected-fixes.spec.ts",
+    "e2e/workspace-access-branches.spec.ts",
+    "e2e/fixtures/sidebar-navigation.ts"
+  ],
+  "checkedFiles": 35,
+  "ownedFiles": [
+    "e2e/global-scope-navigation.spec.ts",
+    "e2e/fixtures/sidebar-navigation.ts"
+  ],
+  "ownedLintMessages": 0,
+  "broaderCurrentFindings": [
+    {
+      "path": "e2e/fixtures/collaboration-pay-creation.ts",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "message": "'zod' should be listed in the project's dependencies. Run 'npm i zod' to add it"
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+        }
+      ]
+    },
+    {
+      "path": "e2e/mcp-desktop.spec.ts",
+      "messages": [
+        {
+          "ruleId": "no-empty-pattern",
+          "message": "Unexpected empty object pattern."
+        }
+      ]
+    },
+    {
+      "path": "e2e/quick-create-actor-picker-phase2.spec.ts",
+      "messages": [
+        {
+          "ruleId": "no-empty-pattern",
+          "message": "Unexpected empty object pattern."
+        }
+      ]
+    },
+    {
+      "path": "e2e/quick-create-actor-picker.spec.ts",
+      "messages": [
+        {
+          "ruleId": "no-empty-pattern",
+          "message": "Unexpected empty object pattern."
+        }
+      ]
+    },
+    {
+      "path": "e2e/workspace-access-branches.spec.ts",
+      "messages": [
+        {
+          "ruleId": "no-empty-pattern",
+          "message": "Unexpected empty object pattern."
+        }
+      ]
+    }
+  ],
+  "broaderHeadFindings": [
+    {
+      "path": "e2e/fixtures/collaboration-pay-creation.ts",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "message": "'zod' should be listed in the project's dependencies. Run 'npm i zod' to add it"
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'npm i @multica/core' to add it"
+        }
+      ]
+    },
+    {
+      "path": "e2e/mcp-desktop.spec.ts",
+      "messages": [
+        {
+          "ruleId": "no-empty-pattern",
+          "message": "Unexpected empty object pattern."
+        }
+      ]
+    },
+    {
+      "path": "e2e/quick-create-actor-picker-phase2.spec.ts",
+      "messages": [
+        {
+          "ruleId": "no-empty-pattern",
+          "message": "Unexpected empty object pattern."
+        }
+      ]
+    },
+    {
+      "path": "e2e/quick-create-actor-picker.spec.ts",
+      "messages": [
+        {
+          "ruleId": "no-empty-pattern",
+          "message": "Unexpected empty object pattern."
+        }
+      ]
+    },
+    {
+      "path": "e2e/workspace-access-branches.spec.ts",
+      "messages": [
+        {
+          "ruleId": "no-empty-pattern",
+          "message": "Unexpected empty object pattern."
+        }
+      ]
+    }
+  ],
+  "noNewBroaderFindings": true,
+  "sourceHashes": {
+    "e2e/global-scope-navigation.spec.ts": {
+      "sha256": "5a48960bda82f18136d066ce949a36fa37f0c79ddd944324e24dca69edb7f06e",
+      "mtime": "2026-11-21T16:03:39.436Z"
+    },
+    "e2e/fixtures/sidebar-navigation.ts": {
+      "sha256": "cade750bd9b026a77f95acc5de4af2b5e8e66af8b84256fe85a1a95596ff3735",
+      "mtime": "2026-11-21T15:53:30.953Z"
+    }
+  }
+}

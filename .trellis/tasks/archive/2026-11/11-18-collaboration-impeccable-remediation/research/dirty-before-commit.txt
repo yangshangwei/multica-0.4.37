@@ -1,0 +1,344 @@
+ M .trellis/spec/core/frontend/collaboration-knowledge.md
+ M .trellis/spec/server/collaboration-stage-approvals.md
+ M .trellis/spec/server/delivery-completion-enforcement.md
+ M .trellis/spec/views/frontend/collaboration-creation.md
+ M .trellis/spec/views/frontend/collaboration-detail.md
+ M .trellis/spec/views/frontend/collaboration-knowledge.md
+ M .trellis/spec/views/frontend/collaboration-source-picker.md
+ M .trellis/spec/views/frontend/issue-description-assist.md
+ M .trellis/spec/views/frontend/quick-create-actor-picker.md
+ M .trellis/spec/web/frontend/e2e-run-environment.md
+ M .trellis/tasks/11-12-agent-squad-followup-roadmap/research/f3-acceptance-matrix-20261113.md
+ M .trellis/tasks/11-12-agent-squad-followup-roadmap/task.json
+ M .trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md
+ M .trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md
+ M .trellis/tasks/11-13-pay-241-collaboration-acceptance/task.json
+ M .trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv
+ M .trellis/tasks/11-13-pay-241-s2-stage-approvals/check.jsonl
+ M .trellis/tasks/11-13-pay-241-s2-stage-approvals/implement.jsonl
+ M .trellis/tasks/11-13-pay-241-s2-stage-approvals/implement.md
+ M .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/coordination-freeze-r05.json
+ M .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/progress-20261116.md
+ M .trellis/tasks/11-13-pay-241-s2-stage-approvals/task.json
+ M e2e/chat-actor-picker.spec.ts
+ M e2e/collaboration-stage-execution.spec.ts
+ M e2e/core-business-agent-loops.spec.ts
+ M e2e/fixtures/collaboration-host-runtime.node-test.mjs
+ M e2e/fixtures/collaboration-host-runtime.ts
+ M e2e/fixtures/collaboration-stage-control.node-test.mjs
+ M e2e/fixtures/collaboration-stage-control.ts
+ M e2e/fixtures/collaboration-stage-execution.ts
+ M e2e/issue-assist-flow.spec.ts
+ M e2e/quick-create-actor-picker-phase2.spec.ts
+ M e2e/quick-create-actor-picker.spec.ts
+ M e2e/quick-create-autonomy.spec.ts
+ M e2e/upstream-selected-fixes.spec.ts
+ M packages/core/collaboration/knowledge-queries.ts
+ M packages/core/collaboration/stage-code-presentation.test.ts
+ M packages/core/collaboration/stage-schema.test.ts
+ M packages/core/collaboration/stage-schema.ts
+ M packages/core/package.json
+ M packages/views/chat/components/chat-new-chat-button.test.tsx
+ M packages/views/collaboration/creation-form.test.tsx
+ M packages/views/collaboration/creation-form.tsx
+ M packages/views/collaboration/detail-auxiliary.test.tsx
+ M packages/views/collaboration/detail-auxiliary.tsx
+ M packages/views/collaboration/field-inputs.test.tsx
+ M packages/views/collaboration/field-inputs.tsx
+ M packages/views/collaboration/knowledge-panel.test.tsx
+ M packages/views/collaboration/knowledge-panel.tsx
+ M packages/views/collaboration/knowledge-proposal.tsx
+ M packages/views/collaboration/knowledge-review.tsx
+ M packages/views/collaboration/knowledge-source-picker.tsx
+ M packages/views/collaboration/memory-panel.test.tsx
+ M packages/views/collaboration/memory-panel.tsx
+ M packages/views/collaboration/stage-code-panel.test.tsx
+ M packages/views/collaboration/stage-code-panel.tsx
+ M packages/views/collaboration/stage-labels.ts
+ M packages/views/collaboration/workflow.test.tsx
+ M packages/views/collaboration/workflow.tsx
+ M packages/views/issues/components/pickers/custom-property-picker.tsx
+ M packages/views/issues/components/pickers/property-picker.test.tsx
+ M packages/views/issues/components/pickers/property-picker.tsx
+ M packages/views/locales/en/collaboration.json
+ M packages/views/locales/en/modals.json
+ M packages/views/locales/zh-Hans/collaboration.json
+ M packages/views/locales/zh-Hans/modals.json
+ M packages/views/modals/creator-recommendations.test.tsx
+ M packages/views/modals/creator-recommendations.tsx
+ M packages/views/modals/issue-description-assist.test.tsx
+ M packages/views/modals/issue-description-assist.tsx
+ M packages/views/modals/quick-create-actor-picker.test.tsx
+ M packages/views/modals/quick-create-actor-picker.tsx
+ M packages/views/modals/quick-create-issue.test.tsx
+ M packages/views/modals/quick-create-issue.tsx
+ M server/internal/service/collaboration_completion_preview.go
+ M server/internal/service/collaboration_runtime_preparation_capabilities.go
+ M server/internal/service/collaboration_stage_completion.go
+ M server/internal/service/collaboration_stage_evidence.go
+ M server/internal/service/collaboration_stage_evidence_read.go
+ M server/internal/service/collaboration_stage_execution_approvals.go
+ M server/internal/service/collaboration_stage_qa.go
+ M server/internal/service/collaboration_workflow.go
+ M server/internal/service/delivery_completion_authorization.go
+ M server/internal/service/delivery_completion_collaboration.go
+ M server/internal/service/delivery_completion_preview.go
+ M server/internal/service/delivery_evidence.go
+ M server/internal/service/managed_runtime.go
+ M server/internal/service/task.go
+ M server/pkg/db/generated/agent.sql.go
+ M server/pkg/db/queries/agent.sql
+?? .impeccable/critique/2026-11-16T19-05-31Z__packages-views-modals-quick-create-issue-tsx.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/diagnostic-r03-cause-independent-check-r01.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/diagnostic-r03-cause-independent-check-r01.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/final-entry-verdict-r09-r01.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/final-entry-verdict-r09-r01.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/frontend-r11-r12-repair-accepted-r01.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/new-session-handoff-20261116-r15.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/progress-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/progress-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r11-after-safe-reuse-independent-r01.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r11-hostControl-target-scope-cause-r01.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r13-fixture-ready-root-independent-r01.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-candidate-read-research.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-candidate-read-research.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-get503-diagnosis-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-original-postgres-window-check.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-original-postgres-window-check.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-peer-runtime-coordination-01a1e232.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-progress-environment-check.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-progress-environment-check.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-progress-reconciliation.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-progress-reconciliation.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r17-original-four-failure-and-after-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r18-actual-after-and-r19-continuation-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r18-run-fence-checkpoint-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-final-a01-a12-evidence-map-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-final-a01-a12-evidence-map-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-original-four-after-independent-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-original-four-after-independent-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-independent-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-independent-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-r19-evidence-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-r19-evidence-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-read-lock-diagnosis-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-read-lock-diagnosis-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-runtime-entry-independent-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-runtime-entry-independent-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-s3-s4-s5-readiness-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-s3-s4-s5-readiness-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-qa-form-read-failure-diagnosis-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-qa-form-read-failure-diagnosis-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-receipt-read-concurrency-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-receipt-read-concurrency-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-receipt-read-regression-boundary-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-receipt-read-regression-boundary-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-red-green-boundary-independent-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-red-green-boundary-independent-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-red-outcome-independent-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-red-outcome-independent-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-runtime-poller-qa-applicability-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-runtime-poller-qa-applicability-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-runtime-product-entry-independent-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-runtime-product-entry-independent-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-corrected-boundary-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-corrected-boundary-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-implementation-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-implementation-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-red-boundary-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-red-boundary-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-red-green-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-red-green-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-red-outcome-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-red-outcome-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-session-boundary-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-session-boundary-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-continuation-status-check-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-continuation-status-check-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-final-restoration-audit-plan-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-live-four-entry-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-live-four-entry-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-live-four-entry-check-r02-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-live-four-entry-check-r02-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-original-four-after-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-original-four-after-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-read-lock-next-step-20261116.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-read-lock-next-step-20261116.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-runtime-entry-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-runtime-entry-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-preparation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-preparation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-control-codec-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-control-codec-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-control-codec-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-control-codec-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-control-unconfirmed-diagnosis-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-control-unconfirmed-diagnosis-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-integrated-codec-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-integrated-codec-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-r22-restoration-current-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-r22-restoration-current-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-runtime-entry-current-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-runtime-entry-current-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-s3-s4-next-slice-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-s3-s4-next-slice-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-continuation-evidence-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-continuation-evidence-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-runtime-after-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-runtime-after-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-runtime-entry-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-runtime-entry-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-submit-result-selector-diagnosis-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-submit-result-selector-diagnosis-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-submit-selector-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-submit-selector-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-submit-selector-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-submit-selector-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-candidate-diagnostics-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-candidate-diagnostics-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-diagnostic-entry-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-diagnostic-entry-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-m1-preview-diagnosis-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-m1-preview-diagnosis-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-m1-read-coexistence-test-plan-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-m1-read-coexistence-test-plan-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-green-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-green-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-green-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-green-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-red-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-red-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-red-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-red-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-m1-preview-regression-plan-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-m1-preview-regression-plan-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-green-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-green-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-green-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-green-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-utc-followup-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-utc-followup-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-utc-followup-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-utc-followup-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-current-controls-and-runtime-after-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-current-controls-and-runtime-after-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-final-a01-a12-readiness-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-final-a01-a12-readiness-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-green-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-green-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-green-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-green-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-red-implementation-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-red-implementation-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-red-independent-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-red-independent-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-repair-design-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-repair-design-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-r27-root-runtime-preparation-check-20261117.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-r27-root-runtime-preparation-check-20261117.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-completion-receipt-diagnosis-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-completion-receipt-diagnosis-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-green-implementation-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-green-implementation-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-green-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-green-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118-r02.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118-r02.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-regression-boundary-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-regression-boundary-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-grant-control-inventory-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-grant-control-inventory-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-root-runtime-preparation-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-root-runtime-preparation-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-runtime-after-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-runtime-after-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-qa-form-read-diagnosis-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-qa-form-read-diagnosis-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-qa-read-contenders-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-qa-read-contenders-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-read-diagnostics-fixture-followup-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-read-diagnostics-fixture-followup-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-read-diagnostics-implementation-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-read-diagnostics-implementation-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-read-diagnostics-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-read-diagnostics-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-root-runtime-preparation-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-root-runtime-preparation-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-runtime-after-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-runtime-after-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-authority-scope-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-authority-scope-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-implementation-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-implementation-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-original-control-inventory-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-original-control-inventory-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-boundary-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-boundary-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-implementation-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-implementation-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-preflight-error-control-implementation-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-preflight-error-control-implementation-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-preflight-safety-check-plan-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-preflight-safety-check-plan-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-qa-entry-native-failure-diagnosis-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-qa-entry-native-failure-diagnosis-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-root-runtime-preparation-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-root-runtime-preparation-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-runtime-after-independent-check-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-runtime-after-independent-check-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-s2-final-scope-applicability-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-s2-final-scope-applicability-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r32-final-admin-policy-conflict-diagnosis-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r32-final-admin-policy-conflict-diagnosis-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r32-policy-diagnostic-implementation-20261118.json
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r32-policy-diagnostic-implementation-20261118.md
+?? .trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-r11-selected-entry-reuse-r01.json
+?? .trellis/tasks/11-16-f3-parent-budget-root/
+?? .trellis/tasks/11-17-quick-create-blocked-feedback/
+?? .trellis/tasks/11-18-collaboration-impeccable-remediation/
+?? .trellis/tasks/11-18-security-remediation-squad-v2/
+?? artifacts/qa/collaboration-impeccable-20261117/
+?? docs/audits/2026-11-17-collaboration-impeccable.md
+?? docs/plans/2026-11-16-pay-241-continuation.md
+?? docs/plans/2026-11-17-pay-241-continuation.md
+?? docs/plans/2026-11-18-pay-241-continuation.md
+?? e2e/fixtures/collaboration-stage-execution.node-test.mjs
+?? packages/core/issues/quick-create-submit-state.test.ts
+?? packages/core/issues/quick-create-submit-state.ts
+?? packages/views/collaboration/knowledge-source-picker.test.tsx
+?? packages/views/collaboration/stage-labels.test.ts
+?? packages/views/issues/components/pickers/custom-property-picker.test.tsx
+?? server/internal/service/collaboration_completion_candidates_read_concurrency_test.go
+?? server/internal/service/collaboration_completion_preview_admin_submission_test.go
+?? server/internal/service/collaboration_completion_preview_managed_submission_test.go
+?? server/internal/service/collaboration_completion_preview_read_concurrency_test.go
+?? server/internal/service/collaboration_runtime_capabilities_read_concurrency_test.go
+?? server/internal/service/collaboration_stage_evidence_read_concurrency_test.go
+?? server/internal/service/collaboration_stage_execution_read_concurrency_test.go
+?? server/internal/service/collaboration_stage_execution_run_read_fences_test.go
+?? server/internal/service/collaboration_workflow_read_concurrency_test.go
+?? server/internal/service/delivery_completion_consumed_read_concurrency_test.go
+?? server/internal/service/task_idle_claim_preflight_failure_test.go
+?? server/internal/service/task_idle_claim_read_concurrency_test.go
+?? server/pkg/db/generated/delivery_evidence_read.sql.go
+?? server/pkg/db/queries/delivery_evidence_read.sql

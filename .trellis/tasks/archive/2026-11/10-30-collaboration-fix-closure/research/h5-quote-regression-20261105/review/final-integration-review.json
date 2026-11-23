@@ -1,0 +1,22 @@
+{
+  "reviewed_at": "2026-11-05T03:07:03.865468+00:00",
+  "verdict": "pass_final_integration_static_release",
+  "blocking_findings": [],
+  "integration_sha256": "4d16dd46e4ec4f75839ef96a0919d986073b70b07bfa84f0411dc14266bc9435",
+  "exact_two_main_bytes": {
+    "server/cmd/server/rk1_fake_test.go": "145213b678ea70dfa1d11741d2661b060f4adffa77c49187a367625f21e4e51c",
+    "server/cmd/server/rk1_entry_test.go": "7462808e720c8457279c622706270fe8a8f29cde9a025cf47c3e84072e9b2d6e"
+  },
+  "static": "gofmt clean; tagged cmd/server vet exit0, log hash verified; no TestMain",
+  "static_sha256": "b0faa902a4f0fc60cb478cc335160c675b4a1a3183696f74e5853d20323fe4a6",
+  "release": "owned isolated Docker stopped;3 databases0connections; DB/raw evidence retained; existing cluster untouched per retained record",
+  "release_sha256": "93e508ed48d91aeb81b6a691f24b12f579a17f34fbd114ef72e599ab2b40e6ba",
+  "verification_report_sha256": "2ce23c1f92206a9ba806b9539b8cf7fc0277a1ffbecc91293bdfe0a6515b1d57",
+  "counts": "mutation4fake +normal3fake +race3fake=10fake; normal/race7named include parents and3leaf trials each; no real Provider",
+  "successor_recomputed": "265f3dad838f87ce7f319bbeaf555d702060f5bb2863e0585cdc73e268fb122c",
+  "old_registry_hash_unchanged": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "scope": "two tests+smallspec+evidence only; no complete old17framework/real-model claim",
+  "original_E5_failure_and8": "unchanged_blocked",
+  "runtime25": "not_consumed",
+  "reviewer_execution": 0
+}

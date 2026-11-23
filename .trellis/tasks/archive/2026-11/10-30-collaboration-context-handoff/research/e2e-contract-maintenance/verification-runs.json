@@ -1,0 +1,469 @@
+[
+  {
+    "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_branch_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_diff_sha256": "1e10e5a7971d8260d7df9a1b86bb69f908cf68e1c7d871f41170099ad00d50ed",
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-editing-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-mention-journeys-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-records-web.spec.ts",
+      "--config=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/playwright.config.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/canonical-red-3classes/artifacts",
+      "--grep",
+      "Web source creation|Web owner revocation|Web shares ordinary"
+    ],
+    "database": "multica_check_20261101174212_32903_api",
+    "api_url": "http://localhost:18695",
+    "web_url": "http://localhost:13615",
+    "renderer_url": "http://127.0.0.1:19841",
+    "health_commit": "c3db64b24",
+    "state": "complete",
+    "started_at": "2026-11-01T18:12:21.494234+00:00",
+    "Provider_calls_allowed": false,
+    "exit_code": 1,
+    "finished_at": "2026-11-01T18:16:38.060360+00:00",
+    "output_sha256": "45e9d814bf9c0286ffff93207afe26b606a4befab87f0d0fec5495aaf5522e27",
+    "stats": {
+      "startTime": "2026-11-01T18:12:22.173Z",
+      "duration": 255873.366,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 3,
+      "flaky": 0
+    },
+    "results_sha256": "21a8dd9e7a07c0f21dcee581330caee7d0b924bfa155c6d02b03a7b0f8f7c427",
+    "label": "canonical-red-3classes",
+    "cases": [
+      {
+        "title": "Web source creation, field edits and discussion share one authorized issue",
+        "file": "collaboration-editing-web.spec.ts",
+        "status": "timedOut",
+        "duration_ms": 240033,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "status": "failed",
+        "duration_ms": 6778,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web shares ordinary child references and retained run records through account notification links",
+        "file": "collaboration-records-web.spec.ts",
+        "status": "failed",
+        "duration_ms": 5851,
+        "skip_reasons": []
+      }
+    ],
+    "raw_private_path": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/canonical-red-3classes",
+    "provider_calls": 0
+  },
+  {
+    "lane": "legacy",
+    "source_env_sha256": "9b2a83533edb85b7cc539a3c16962710c26773b795833e5a308eda7029c01cb3",
+    "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_branch_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_diff_sha256": "1e10e5a7971d8260d7df9a1b86bb69f908cf68e1c7d871f41170099ad00d50ed",
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-editing-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-mention-journeys-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-records-web.spec.ts",
+      "--config=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/playwright.config.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/canonical-red-3classes-v2/artifacts",
+      "--grep",
+      "Web source creation|Web owner revocation|Web shares ordinary"
+    ],
+    "database": "multica_check_20261101174212_32903_api",
+    "api_url": "http://localhost:18695",
+    "web_url": "http://localhost:13615",
+    "renderer_url": "http://127.0.0.1:19841",
+    "health_commit": "c3db64b24",
+    "state": "complete",
+    "started_at": "2026-11-01T18:22:42.215438+00:00",
+    "Provider_calls_allowed": false,
+    "exit_code": 1,
+    "finished_at": "2026-11-01T18:27:00.407066+00:00",
+    "output_sha256": "bde9802cf0688fc217a9013431077f960d230b9d502b9484c7230b72318ead7f",
+    "stats": {
+      "startTime": "2026-11-01T18:22:43.259Z",
+      "duration": 257134.162,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 3,
+      "flaky": 0
+    },
+    "results_sha256": "39dc7b1242ddadcc1c23100eef1a0aabfef62dad43436805cd44d5efb7024219",
+    "label": "canonical-red-3classes-v2",
+    "cases": [
+      {
+        "title": "Web source creation, field edits and discussion share one authorized issue",
+        "file": "collaboration-editing-web.spec.ts",
+        "status": "timedOut",
+        "duration_ms": 240051,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "status": "failed",
+        "duration_ms": 3105,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web shares ordinary child references and retained run records through account notification links",
+        "file": "collaboration-records-web.spec.ts",
+        "status": "failed",
+        "duration_ms": 11113,
+        "skip_reasons": []
+      }
+    ],
+    "raw_private_path": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/canonical-red-3classes-v2",
+    "provider_calls": 0
+  },
+  {
+    "lane": "legacy",
+    "source_env_sha256": "9b2a83533edb85b7cc539a3c16962710c26773b795833e5a308eda7029c01cb3",
+    "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_branch_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-account-desktop.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-boundaries-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-delivery-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-editing-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-leave-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-mention-journeys-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-records-web.spec.ts",
+      "--config=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/playwright.config.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/repaired-legacy-10/artifacts",
+      "--grep",
+      "Desktop child links|Desktop authors initial|Smaller gaps:|Web creates one private issue|Web explicitly resubmits|Web source creation,|Web Leave issue|(?:Web|Desktop) owner revocation|Web shares ordinary"
+    ],
+    "database": "multica_check_20261101174212_32903_api",
+    "api_url": "http://localhost:18695",
+    "web_url": "http://localhost:13615",
+    "renderer_url": "http://127.0.0.1:19841",
+    "health_commit": "c3db64b24",
+    "state": "complete",
+    "started_at": "2026-11-01T18:29:51.443773+00:00",
+    "Provider_calls_allowed": false,
+    "exit_code": 0,
+    "finished_at": "2026-11-01T18:31:00.624374+00:00",
+    "output_sha256": "849742b52e69227b2dc89bec298f034a82a850e7184ab411783a0bfe62162eb2",
+    "stats": {
+      "startTime": "2026-11-01T18:29:52.264Z",
+      "duration": 68341.095,
+      "expected": 9,
+      "skipped": 1,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+    "label": "repaired-legacy-10",
+    "cases": [
+      {
+        "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+        "file": "collaboration-account-desktop.spec.ts",
+        "status": "passed",
+        "duration_ms": 15457,
+        "skip_reasons": []
+      },
+      {
+        "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+        "file": "collaboration-account-desktop.spec.ts",
+        "status": "passed",
+        "duration_ms": 8518,
+        "skip_reasons": []
+      },
+      {
+        "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+        "file": "collaboration-boundaries-web.spec.ts",
+        "status": "passed",
+        "duration_ms": 5851,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+        "file": "collaboration-delivery-web.spec.ts",
+        "status": "passed",
+        "duration_ms": 4688,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+        "file": "collaboration-delivery-web.spec.ts",
+        "status": "passed",
+        "duration_ms": 2175,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web source creation, field edits and discussion share one authorized issue",
+        "file": "collaboration-editing-web.spec.ts",
+        "status": "passed",
+        "duration_ms": 9266,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+        "file": "collaboration-leave-web.spec.ts",
+        "status": "skipped",
+        "duration_ms": 0,
+        "skip_reasons": [
+          "Requires the task-owned password/managed deployment with execution enabled and matching production Web"
+        ]
+      },
+      {
+        "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "file": "collaboration-mention-journeys-desktop.spec.ts",
+        "status": "passed",
+        "duration_ms": 7521,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "file": "collaboration-mention-journeys-web.spec.ts",
+        "status": "passed",
+        "duration_ms": 4387,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web shares ordinary child references and retained run records through account notification links",
+        "file": "collaboration-records-web.spec.ts",
+        "status": "passed",
+        "duration_ms": 7064,
+        "skip_reasons": []
+      }
+    ],
+    "raw_private_path": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/repaired-legacy-10",
+    "provider_calls": 0
+  },
+  {
+    "lane": "password",
+    "source_env_sha256": "ee2c2cb36b62bb14c941ce12377d37f394c8a7e29c644c76142325804770d7e5",
+    "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_branch_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-retained-attachment.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-source-surface.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-leave-web.spec.ts",
+      "--config=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/playwright.config.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/repaired-password-5/artifacts"
+    ],
+    "database": "collab_joint_password_c3_20261102",
+    "api_url": "http://localhost:19015",
+    "web_url": "http://localhost:13935",
+    "renderer_url": "http://127.0.0.1:19841",
+    "health_commit": "c3db64b24",
+    "state": "complete",
+    "started_at": "2026-11-01T18:33:03.016267+00:00",
+    "Provider_calls_allowed": false,
+    "exit_code": 1,
+    "finished_at": "2026-11-01T18:33:36.507854+00:00",
+    "output_sha256": "d44f3654cbad96371f9ac1a27fc06dc1ad1a9a863a1d76346edb57774b2f51bc",
+    "stats": {
+      "startTime": "2026-11-01T18:33:03.772Z",
+      "duration": 32716.305000000004,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    "results_sha256": "17c83b482e02feebc348cdfcbd31985e0d6f4c045ec4fca7da7b0bdfc99ca966",
+    "label": "repaired-password-5",
+    "cases": [
+      {
+        "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+        "file": "collaboration-leave-web.spec.ts",
+        "status": "failed",
+        "duration_ms": 2162,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+        "file": "collaboration-retained-attachment.spec.ts",
+        "status": "passed",
+        "duration_ms": 4471,
+        "skip_reasons": []
+      },
+      {
+        "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+        "file": "collaboration-retained-attachment.spec.ts",
+        "status": "passed",
+        "duration_ms": 6564,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+        "file": "collaboration-retained-attachment.spec.ts",
+        "status": "passed",
+        "duration_ms": 12610,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+        "file": "collaboration-source-surface.spec.ts",
+        "status": "failed",
+        "duration_ms": 5167,
+        "skip_reasons": []
+      }
+    ],
+    "raw_private_path": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/repaired-password-5",
+    "provider_calls": 0
+  },
+  {
+    "lane": "password",
+    "source_env_sha256": "ee2c2cb36b62bb14c941ce12377d37f394c8a7e29c644c76142325804770d7e5",
+    "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_branch_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-runtime-handoff-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-runtime-handoff-desktop.spec.ts",
+      "--config=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/playwright.config.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/runtime-password-3/artifacts"
+    ],
+    "database": "collab_joint_password_c3_20261102",
+    "api_url": "http://localhost:19015",
+    "web_url": "http://localhost:13935",
+    "renderer_url": "http://127.0.0.1:19841",
+    "health_commit": "c3db64b24",
+    "state": "complete",
+    "started_at": "2026-11-01T18:34:55.734483+00:00",
+    "Provider_calls_allowed": false,
+    "exit_code": 0,
+    "finished_at": "2026-11-01T18:35:04.031294+00:00",
+    "output_sha256": "9a04ac73d3f073e45002cef414752f04de36bb462c77b4778b579a9809eaead0",
+    "stats": {
+      "startTime": "2026-11-01T18:34:56.564Z",
+      "duration": 7445.718,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "results_sha256": "358ca2016390172ee96c79d47ea77bdad174cf12bd251752df24cc49f43b3640",
+    "label": "runtime-password-3",
+    "cases": [
+      {
+        "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+        "file": "collaboration-runtime-handoff-desktop.spec.ts",
+        "status": "passed",
+        "duration_ms": 2264,
+        "skip_reasons": []
+      },
+      {
+        "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+        "file": "collaboration-runtime-handoff-web.spec.ts",
+        "status": "passed",
+        "duration_ms": 1192,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+        "file": "collaboration-runtime-handoff-web.spec.ts",
+        "status": "passed",
+        "duration_ms": 2520,
+        "skip_reasons": []
+      }
+    ],
+    "raw_private_path": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/runtime-password-3",
+    "provider_calls": 0
+  },
+  {
+    "lane": "password",
+    "source_env_sha256": "f7575ce7bbbb0d07523fe58a139ce67c0c9564da46b1cafe0c461ff29c413452",
+    "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_branch_head": "c3db64b24fea7116622d106ce2231853e1be72f9",
+    "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+    "command": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-leave-web.spec.ts",
+      "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/e2e/collaboration-source-surface.spec.ts",
+      "--config=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/playwright.config.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=line,json",
+      "--output=/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/repaired-password-final-2/artifacts"
+    ],
+    "database": "collab_joint_password_c3_20261102",
+    "api_url": "http://localhost:19015",
+    "web_url": "http://localhost:13935",
+    "renderer_url": "http://127.0.0.1:19841",
+    "health_commit": "c3db64b24",
+    "state": "complete",
+    "started_at": "2026-11-01T18:37:24.323033+00:00",
+    "Provider_calls_allowed": false,
+    "exit_code": 0,
+    "finished_at": "2026-11-01T18:38:00.523872+00:00",
+    "output_sha256": "10d9c92ad81ca8fa6afb35ba5552a24da8d2bc4a65235e1735bbd1999f12bca3",
+    "stats": {
+      "startTime": "2026-11-01T18:37:25.044Z",
+      "duration": 35462.172,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "results_sha256": "10da8ec0ce12c27702d5fe6e31370a04f3f86464653c8f40cc90a436f5dc1ac5",
+    "label": "repaired-password-final-2",
+    "cases": [
+      {
+        "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+        "file": "collaboration-leave-web.spec.ts",
+        "status": "passed",
+        "duration_ms": 9785,
+        "skip_reasons": []
+      },
+      {
+        "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+        "file": "collaboration-source-surface.spec.ts",
+        "status": "passed",
+        "duration_ms": 24035,
+        "skip_reasons": []
+      }
+    ],
+    "raw_private_path": "/Volumes/artisan/code/2026/mc-e2e-contract-maintenance-20261102/.omx/private/e2e-maintenance/repaired-password-final-2",
+    "provider_calls": 0
+  }
+]

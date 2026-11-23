@@ -73,6 +73,9 @@ const WORKSPACE_ROUTES: readonly RoutePattern[] = [
   ["agents", ":id"],
   ["members", ":id"],
   ["squads"],
+  ["squads", "new"],
+  ["squads", "new", "manual"],
+  ["squads", "new", "template"],
   ["squads", ":id"],
   ["inbox"],
   ["chat"],
@@ -100,6 +103,7 @@ const WORKSPACE_ROUTES: readonly RoutePattern[] = [
 ];
 
 const GLOBAL_ROUTES: readonly RoutePattern[] = [
+  ["account"],
   ["login"],
   ["signup"],
   ["logout"],

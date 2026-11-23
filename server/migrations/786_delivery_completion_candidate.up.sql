@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY delivery_completion_candidate_idx ON delivery_completion_authorization (workspace_id, issue_id, issue_revision, policy_revision, consumer_kind, integration_id, pull_request_id);

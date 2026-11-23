@@ -1,0 +1,95 @@
+{
+  "recorded_at": "2026-11-04T08:56:40.156027+00:00",
+  "framework_HEAD": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "product_trees": {
+    "server": "f245624a344af700d11ebfa3fa15194e2235f6f6",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "c34c22d60416b9e0786dc23f14fa3c5a00c38e85",
+    "scripts": "602113e862a08b682721b2c2d92169b3d6836e5a",
+    "e2e": "ca80cc15f8275025534950b7bca54ec8c05681e1"
+  },
+  "six_before": {
+    "server/cmd/server/rk1k_fixture_test.go": "9e31682c037385888be41579cc489f71c2c4e28797ab7bc7d8b596917578a084",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "old17_before": {
+    "server/cmd/server/rk1_entry_test.go": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+    "server/cmd/server/rk1_evidence_contract_unit_test.go": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+    "server/cmd/server/rk1_evidence_fault_proof_test.go": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090",
+    "server/cmd/server/rk1_evidence_format_test.go": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+    "server/cmd/server/rk1_evidence_publication_test.go": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+    "server/cmd/server/rk1_fake_helpers_test.go": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2",
+    "server/cmd/server/rk1_fake_test.go": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840",
+    "server/cmd/server/rk1_fixture_test.go": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+    "server/cmd/server/rk1_lifecycle_test.go": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+    "server/cmd/server/rk1_observe_test.go": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+    "server/cmd/server/rk1_provider_test.go": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+    "server/cmd/server/rk1_run_test.go": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+    "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+    "server/cmd/server/rk1_scenarios_recall_test.go": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+    "server/cmd/server/rk1_trace_barrier_test.go": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94",
+    "server/cmd/server/rk1_trace_test.go": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+    "server/cmd/server/rk1_trial_test.go": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5"
+  },
+  "normal8_raw": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-20261103/normal8/raw-go.jsonl",
+    "sha256": "78c2e5fb1d2ef440fb49e4489867ce572563a767ecd0d0492a69567da74989ae",
+    "retained_failure": "K3 first squad/root pending0; no new dynamic execution"
+  },
+  "tools": {
+    "go": {
+      "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412"
+    },
+    "gofmt": {
+      "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/gofmt",
+      "sha256": "350abb0daa1b58fa1fc7a48dcd482f75ebccfc9b7252f1113ef7585ad6245911"
+    }
+  },
+  "CLI": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/multica",
+    "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac",
+    "executed": false
+  },
+  "static_environment": {
+    "PATH": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/fixture-repair-static-01/home",
+    "TMPDIR": "/private/tmp/multica-rk1k-static-20261104-5sn65zpy",
+    "TMP": "/private/tmp/multica-rk1k-static-20261104-5sn65zpy",
+    "TEMP": "/private/tmp/multica-rk1k-static-20261104-5sn65zpy",
+    "GOROOT": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64",
+    "GOCACHE": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/fixture-repair-static-01/go-build-cache",
+    "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+    "GOPATH": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/fixture-repair-static-01/go-path",
+    "GOPROXY": "file:///Users/artisan/go/pkg/mod/cache/download",
+    "GOSUMDB": "off",
+    "GOTOOLCHAIN": "local",
+    "GOENV": "off",
+    "GOWORK": "off",
+    "GOTELEMETRY": "off",
+    "GOMAXPROCS": "2",
+    "GOFLAGS": "-p=1 -mod=readonly",
+    "GIT_OPTIONAL_LOCKS": "0",
+    "LC_ALL": "C",
+    "CI": "1",
+    "MULTICA_RUN_REAL_AGENT_SMOKE": "",
+    "MULTICA_LLM_API_KEY": "",
+    "MULTICA_LLM_BASE_URL": "",
+    "ANTHROPIC_API_KEY": "",
+    "OPENAI_API_KEY": "",
+    "GEMINI_API_KEY": "",
+    "GOOGLE_API_KEY": ""
+  },
+  "static_directory": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/fixture-repair-static-01",
+  "COW_cached_files": 11728,
+  "databases_created_or_migrated_or_connected": false,
+  "new_test_bodies_executed": false,
+  "code_scope": "server/cmd/server/rk1k_fixture_test.go::nextRunForIssue only",
+  "knowledge_allocated": 0,
+  "real_Provider_calls": 0
+}

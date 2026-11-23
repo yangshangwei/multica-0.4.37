@@ -1,0 +1,40 @@
+{
+  "at": "2026-10-21T16:13:27.598004+00:00",
+  "head": "7794f57d969fb583ddf02c830f6d1ab72186595d",
+  "snapshot": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-source-roles-head-pxmywphi",
+  "only_added_sources": [
+    "server/internal/service/collaboration_source_roles_test.go",
+    "server/internal/handler/collaboration_iteration_request_boundary_test.go"
+  ],
+  "source_sha256": {
+    "server/internal/service/collaboration_source_roles_test.go": "f006430da597c8a62209f72b8f04c32d9104df2f13886b87e8f9b9ac69fe694d",
+    "server/internal/handler/collaboration_iteration_request_boundary_test.go": "7a081b2d5a46b11299b343ca8fcbb6cc5a13372bc77013abb9098fd14b8923a0"
+  },
+  "archive_sha256": "bb70831936bf724b89adc1b5db02ec35077069991a5f60f42ac5a97daad85fcc",
+  "no_shared_dirty_source": true,
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_ordinary",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "./internal/handler",
+    "-run",
+    "^(TestCollaborationSourceStructureAndIterationRejectNonManagers|TestCollaborationIterationRemovalRequiresReasonAndOriginalRefusal|TestCollaborationIterationPUTRejectsMetadataBeforeEffects)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-source-roles-head-pxmywphi/server",
+  "start": "2026-10-21T16:13:27.612007+00:00",
+  "database_alias": "service_s6_ordinary",
+  "schema_migration": 737
+}

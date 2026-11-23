@@ -1,0 +1,186 @@
+{
+  "at": "2026-11-18T09:43:24.554237+00:00",
+  "owner": "/root/s3_clients_implement",
+  "status": "AUTHOR_STATIC_READY_BUSINESS_R06_NOT_RUN",
+  "main_execution_owner": "/root",
+  "actual_failed_rounds_preserved": [
+    {
+      "run": "runtime/field-r01",
+      "top_denominator": 4,
+      "top_results": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 1
+      },
+      "ordering_denominator": 8,
+      "ordering_results": {
+        "PASS": 4,
+        "FAIL": 1,
+        "NOT_RUN": 3
+      }
+    },
+    {
+      "run": "runtime/field-r02",
+      "top_denominator": 4,
+      "top_results": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 1
+      },
+      "ordering_denominator": 8,
+      "ordering_results": {
+        "PASS": 4,
+        "FAIL": 1,
+        "NOT_RUN": 3
+      }
+    },
+    {
+      "run": "runtime/field-r03",
+      "top_denominator": 4,
+      "top_results": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 1
+      },
+      "ordering_denominator": 8,
+      "ordering_results": {
+        "PASS": 4,
+        "FAIL": 1,
+        "NOT_RUN": 3
+      }
+    },
+    {
+      "run": "runtime/field-r04",
+      "top_denominator": 4,
+      "top_results": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 1
+      },
+      "ordering_denominator": 8,
+      "ordering_results": {
+        "PASS": 5,
+        "FAIL": 1,
+        "NOT_RUN": 2
+      }
+    },
+    {
+      "run": "runtime/field-r05",
+      "top_denominator": 4,
+      "top_results": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 1
+      },
+      "ordering_denominator": 8,
+      "ordering_results": {
+        "PASS": 5,
+        "FAIL": 1,
+        "NOT_RUN": 2
+      }
+    }
+  ],
+  "diagnostic": {
+    "kind": "native_unauthenticated_loopback_health_transport_only",
+    "result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/native-transport-probe-r01/result.json",
+    "sha256": "29ea85557c41bdeb96308036eabcfc0cec46d52c1bb4499333b88307a95662ae",
+    "script_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/native-transport-probe-r01/probe.mjs",
+    "script_sha256": "2fe3c9d96414241ff94cac0d9965c9b04a42a0c8e7d0d395f56ccb831b763de2",
+    "status": "PROBE_COMPLETED_NOT_BUSINESS_ACCEPTANCE",
+    "cases": [
+      {
+        "method": "GET",
+        "mode": "natural",
+        "upstream_status": null,
+        "client_status": 200,
+        "body_sha256": "21caadaeddcf71bf4534e982bca0213641a0d6f2e6f9c91316f29831bdabdcdf"
+      },
+      {
+        "method": "GET",
+        "mode": "fetch_fulfill",
+        "upstream_status": 200,
+        "client_status": 0,
+        "body_sha256": "21caadaeddcf71bf4534e982bca0213641a0d6f2e6f9c91316f29831bdabdcdf"
+      },
+      {
+        "method": "GET",
+        "mode": "continue",
+        "upstream_status": null,
+        "client_status": 200,
+        "body_sha256": "21caadaeddcf71bf4534e982bca0213641a0d6f2e6f9c91316f29831bdabdcdf"
+      },
+      {
+        "method": "PATCH",
+        "mode": "natural",
+        "upstream_status": null,
+        "client_status": 405,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "method": "PATCH",
+        "mode": "fetch_fulfill",
+        "upstream_status": 405,
+        "client_status": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "method": "PATCH",
+        "mode": "continue",
+        "upstream_status": null,
+        "client_status": 405,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "native": {
+      "pid": 61783,
+      "versions": {
+        "electron": "39.8.7",
+        "chromium": "142.0.7444.265",
+        "node": "22.22.1",
+        "userData": "/Users/artisan/.multica/acceptance/pay241-s3-clients-20261118-x4c5mjep/desktop/native-transport-probe-r01"
+      },
+      "preferences": {
+        "webSecurity": false,
+        "sandbox": true,
+        "contextIsolation": true,
+        "nodeIntegration": false
+      },
+      "initial_url": "http://127.0.0.1:64932/"
+    },
+    "business_writes": 0,
+    "author_executed_runtime": false,
+    "main_reported_unchanged_db_gate_ledger": true
+  },
+  "correction": {
+    "path": "e2e/fixtures/collaboration-recovery.ts",
+    "before_sha256": "5b2d782d17744906c8e2307cf562353c5b2e28eb9a589d047ea7778968f07189",
+    "nonlost": "route.continue unchanged original browser request; exact request identity, bounded real response; joined wait and continuation",
+    "deliberate_lost": "route.fetch maxRetries0 then abort unchanged actual committed request response; upstream identity retained",
+    "production_changes": [],
+    "CORS_cause_claim": false,
+    "synthetic_headers_or_business_response": false,
+    "fresh_auto_recover_or_timeout_extension": false
+  },
+  "source_hashes": {
+    "e2e/collaboration-recovery.spec.ts": "10cac566342deb24c68e90fd15cdcfd1c8a6aec50c9572116dfbb683c77b67ca",
+    "e2e/fixtures/collaboration-recovery.ts": "e11aa601afe3bb82d245a6af04c67a99587fbc5f0c4964f284392cd4852d74d5"
+  },
+  "static_checks": {
+    "typecheck": {
+      "result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/client-native-forward-r09/typecheck-result.json",
+      "exit_code": 0,
+      "sha256": "136dac728795c6046643843acae500a06e0766685b234d0c7a98adbd4a03043a"
+    },
+    "eslint": {
+      "result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/client-native-forward-r09/eslint-result.json",
+      "exit_code": 0,
+      "sha256": "e963ebbbea11ba7e1ca0375c40427015d2677d9c3da85f6884ea110acdd44ba6"
+    }
+  },
+  "next": [
+    "Main freezes new R09 source and runs fresh complete four field tops as R06; retries0",
+    "Complete 55-comment/WebSocket run remains independent and open",
+    "Extras-A delayed authorized-response choreography must preserve actual native Response status; route.fulfill status0 is not authority denial evidence",
+    "No S3/parent/archive acceptance inferred from health probe/static source"
+  ]
+}

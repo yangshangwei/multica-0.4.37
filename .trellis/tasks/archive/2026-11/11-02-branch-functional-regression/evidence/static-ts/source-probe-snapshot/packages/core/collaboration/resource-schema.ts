@@ -1,0 +1,159 @@
+import { z } from "zod";
+import { parseWithFallback } from "../api/schema";
+import { CollaborationAccountSummarySchema } from "./schema";
+import { positiveVersion } from "./version";
+import { CollaborationExecutionModeSchema, CollaborationExecutionViewVersionSchema } from "./execution-schema";
+
+const uuid = z.uuid().transform((value) => value.toLowerCase());
+export const CollaborationTargetResourceSchema = z.strictObject({
+  role: z.enum(["agent", "leader", "member"]), agent_id: uuid, runtime_id: uuid,
+  execution_workspace_id: uuid, owner_user_id: uuid,
+});
+export const CollaborationResourceIdentitySchema = z.strictObject({
+  kind: z.enum(["managed", "enrolled"]), installation_id: uuid, binding_id: uuid, binding_epoch: positiveVersion,
+});
+export type CollaborationTargetResource = z.infer<typeof CollaborationTargetResourceSchema>;
+export const CollaborationResourceRuntimeSchema = z.object({ id: uuid, name: z.string(), custom_name: z.string().nullable(), provider: z.string() });
+
+export const collaborationResourceExecutionFields = {
+  execution_mode: CollaborationExecutionModeSchema.optional(), agent_owner_user_id: uuid.optional(),
+  provider: z.string().min(1).max(128).nullable().optional(), provider_version: z.string().min(1).max(128).nullable().optional(),
+  account_source: z.literal("runtime_configuration").nullable().optional(),
+};
+export function collaborationResourceExecutionIsValid(value: {
+  execution_mode?: z.infer<typeof CollaborationExecutionModeSchema>; provider?: string | null; provider_version?: string | null; account_source?: string | null;
+}): boolean {
+  if (value.execution_mode === undefined) return value.provider === undefined && value.provider_version === undefined && value.account_source === undefined;
+  if (value.execution_mode === "linux_pid_namespace_v1") return value.provider_version == null;
+  return Boolean(value.provider && value.provider_version) && value.account_source === "runtime_configuration";
+}
+const resourceView = CollaborationTargetResourceSchema.extend({
+  ...collaborationResourceExecutionFields,
+  agent_name: z.string(), runtime: CollaborationResourceRuntimeSchema.nullable(),
+  owner: CollaborationAccountSummarySchema.nullable(), consented: z.boolean(), grant_id: uuid.nullable(), grant_epoch: positiveVersion.nullable(),
+  can_consent: z.boolean(), can_revoke: z.boolean(),
+}).strip().refine(collaborationResourceExecutionIsValid).refine((value) => (value.grant_id === null) === (value.grant_epoch === null) &&
+  (!value.can_revoke || value.grant_id !== null) && !(value.can_consent && (value.consented || value.can_revoke)) &&
+  (value.runtime === null || value.runtime.id === value.runtime_id) && (value.owner === null || value.owner.user_id.toLowerCase() === value.owner_user_id));
+export type CollaborationResourceView = z.infer<typeof resourceView>;
+
+export function collaborationResourceRosterIsValid(value: { kind: "agent" | "squad"; resource_id: string; resources: CollaborationTargetResource[] }) {
+  const roster = value.resources;
+  if (new Set(roster.map((item) => item.agent_id)).size !== roster.length) return false;
+  return value.kind === "agent"
+    ? roster.length === 1 && roster[0]!.role === "agent" && roster[0]!.agent_id === value.resource_id
+    : roster.filter((item) => item.role === "leader").length === 1 && roster.every((item) => item.role !== "agent");
+}
+const targetResources = z.object({
+  target_id: uuid, kind: z.enum(["agent", "squad"]), resource_id: uuid, name: z.string(), target_epoch: positiveVersion, config_version: positiveVersion,
+  authorized: z.boolean(), reason: z.string(), resources: z.array(resourceView).min(1).max(256),
+}).refine(collaborationResourceRosterIsValid).refine((value) => !value.authorized || (value.reason === "" && value.resources.every((item) => item.consented)));
+export const CollaborationResourcesSchema = z.object({
+  protocol_version: z.literal(1), issue_id: uuid, lifecycle_epoch: positiveVersion, target_set_version: positiveVersion, can_organize: z.boolean(),
+  targets: z.array(targetResources),
+}).refine((value) => new Set(value.targets.map((item) => item.target_id)).size === value.targets.length &&
+  new Set(value.targets.map((item) => `${item.kind}:${item.resource_id}`)).size === value.targets.length);
+export type CollaborationResources = z.infer<typeof CollaborationResourcesSchema>;
+
+const option = z.object({ kind: z.enum(["agent", "squad"]), resource_id: uuid, name: z.string(), available: z.boolean(), reason: z.string(),
+  resources: z.array(resourceView).min(1).max(256),
+}).refine(collaborationResourceRosterIsValid).refine((value) => value.available === (value.reason === ""));
+export const CollaborationResourceOptionsSchema = z.object({ protocol_version: z.literal(1), issue_id: uuid, execution_workspace_id: uuid, items: z.array(option) })
+  .refine((value) => value.items.every((item) => item.resources.every((resource) => resource.execution_workspace_id === value.execution_workspace_id)) &&
+    new Set(value.items.map((item) => `${item.kind}:${item.resource_id}`)).size === value.items.length);
+export type CollaborationResourceOptions = z.infer<typeof CollaborationResourceOptionsSchema>;
+export type CollaborationResourceOption = z.infer<typeof option>;
+export const CollaborationResourceIdentityViewSchema = z.object({ issue_id: uuid, target_id: uuid, agent_id: uuid, proposal_id: uuid.nullable(),
+  identity: CollaborationResourceIdentitySchema.nullable(), reason: z.string(),
+}).refine((value) => (value.identity !== null) === (value.reason === ""));
+export type CollaborationResourceIdentityView = z.infer<typeof CollaborationResourceIdentityViewSchema>;
+
+const authority = { execution_view_version: CollaborationExecutionViewVersionSchema.optional(), expected_lifecycle_epoch: positiveVersion, expected_participant_epoch: positiveVersion, expected_account_epoch: positiveVersion };
+export const CollaborationResourceInputSchema = z.discriminatedUnion("action", [
+  z.strictObject({ ...authority, action: z.literal("register_target"), kind: z.enum(["agent", "squad"]), resource_id: uuid,
+    expected_target_set_version: positiveVersion, roster: z.array(CollaborationTargetResourceSchema).min(1).max(256) })
+    .refine((value) => collaborationResourceRosterIsValid({ ...value, resources: value.roster })),
+  z.strictObject({ ...authority, action: z.literal("consent_resource"), target_id: uuid, agent_id: uuid,
+    expected_target_epoch: positiveVersion, expected_config_version: positiveVersion, identity: CollaborationResourceIdentitySchema }),
+  z.strictObject({ ...authority, action: z.literal("revoke_grant"), grant_id: uuid, expected_grant_epoch: positiveVersion }),
+  z.strictObject({ ...authority, action: z.literal("offer_resource"), execution_workspace_id: uuid, kind: z.enum(["agent", "squad"]), resource_id: uuid,
+    roster: z.array(CollaborationTargetResourceSchema).min(1).max(256) })
+    .refine((value) => collaborationResourceRosterIsValid({ ...value, resources: value.roster }) && value.roster.every((item) => item.execution_workspace_id === value.execution_workspace_id)),
+  z.strictObject({ ...authority, action: z.literal("withdraw_resource_offer"), offer_id: uuid, expected_offer_version: positiveVersion }),
+  z.strictObject({ ...authority, action: z.literal("adopt_resource_offer"), offer_id: uuid, expected_offer_version: positiveVersion, expected_target_set_version: positiveVersion }),
+]);
+export type CollaborationResourceInput = z.infer<typeof CollaborationResourceInputSchema>;
+
+const action = z.enum(["register_target", "consent_resource", "revoke_grant", "offer_resource", "withdraw_resource_offer", "adopt_resource_offer"]);
+const failure = z.enum(["not_found", "forbidden", "stale_authority", "stale_scope", "stale_grant", "stale_target", "target_exists", "target_not_found",
+  "issue_closed", "owner_not_participant", "resource_owner_not_participant", "resource_owner_unavailable", "target_configuration_changed", "runtime_registration_required", "invalid_target_configuration",
+  "invalid_resource_offer", "invalid_resource_offer_query", "resource_offer_not_found", "stale_offer", "offer_withdrawn", "offer_adopted", "resource_not_owned", "resource_workspace_unavailable", "resource_options_unavailable", "resource_not_found",
+  "collaboration_client_upgrade_required", "execution_mode_unsupported", "execution_consent_required"]);
+const code = z.union([z.enum(["target_registered", "resource_consented", "grant_revoked", "grant_already_revoked", "resource_offered", "resource_offer_withdrawn", "resource_offer_adopted"]), failure]);
+const receiptBase = { protocol_version: z.literal(2), issue_id: uuid, request_id: z.string().min(1).max(128), action, status: z.number().int().min(200).max(599), code };
+function validOutcome(value: { action: z.infer<typeof action>; code: string; status: number }) {
+  if (failure.safeParse(value.code).success) return value.status >= 400;
+  if (value.status !== 200 && value.status !== 201) return false;
+  switch (value.action) {
+    case "register_target": return value.code === "target_registered";
+    case "consent_resource": return value.code === "resource_consented";
+    case "revoke_grant": return value.code === "grant_revoked" || value.code === "grant_already_revoked";
+    case "offer_resource": return value.status === 201 && value.code === "resource_offered";
+    case "withdraw_resource_offer": return value.status === 200 && value.code === "resource_offer_withdrawn";
+    case "adopt_resource_offer": return value.status === 201 && value.code === "resource_offer_adopted";
+    default: return false;
+  }
+}
+const fullReceipt = z.object({ ...receiptBase, redacted: z.literal(false).optional(), scope: z.enum(["issue", "target"]), target_id: uuid.nullable(), grant_id: uuid.nullable(),
+  offer_id: uuid.optional(), offer_version: positiveVersion.optional(),
+}).refine(validOutcome).refine((value) => {
+  if (value.offer_version !== undefined && value.offer_id === undefined) return false;
+  if (value.status >= 400) return true;
+  switch (value.action) {
+    case "offer_resource": return value.offer_id !== undefined && value.offer_version === "1" && value.scope === "issue" && value.target_id === null && value.grant_id === null;
+    case "withdraw_resource_offer": return value.offer_id !== undefined && value.offer_version === "2" && value.scope === "issue" && value.target_id === null && value.grant_id === null;
+    case "adopt_resource_offer": return value.offer_id !== undefined && value.offer_version === "2" && value.scope === "target" && value.target_id !== null && value.grant_id === null;
+    case "revoke_grant": return true;
+    case "register_target": case "consent_resource": return value.scope === "target" && value.target_id !== null && (value.action !== "consent_resource" || value.grant_id !== null);
+    default: return false;
+  }
+});
+const redactedReceipt = z.strictObject({ ...receiptBase, redacted: z.literal(true) }).refine(validOutcome);
+export const CollaborationResourceReceiptSchema = z.union([redactedReceipt, fullReceipt]);
+export type CollaborationResourceReceipt = z.infer<typeof CollaborationResourceReceiptSchema>;
+
+const parse = <T>(value: unknown, schema: z.ZodType<T>, endpoint: string): T | null => parseWithFallback<T | null>(value, schema, null, { endpoint, redact: true });
+export const parseCollaborationResources = (value: unknown) => parse(value, CollaborationResourcesSchema, "collaboration resources");
+export const parseCollaborationResourceOptions = (value: unknown) => parse(value, CollaborationResourceOptionsSchema, "collaboration resource options");
+export const parseCollaborationResourceIdentity = (value: unknown) => parse(value, CollaborationResourceIdentityViewSchema, "collaboration resource identity");
+export const parseCollaborationResourceReceipt = (value: unknown) => parse(value, CollaborationResourceReceiptSchema, "collaboration resource receipt");
+
+export function matchesCollaborationResourceReceipt(receipt: CollaborationResourceReceipt, issueId: string, requestId: string, input: CollaborationResourceInput) {
+  if (receipt.issue_id !== issueId.toLowerCase() || receipt.request_id !== requestId || receipt.action !== input.action) return false;
+  if (receipt.redacted === true) return true;
+  if (input.action === "adopt_resource_offer" || input.action === "withdraw_resource_offer") {
+    return receipt.offer_id === input.offer_id && (receipt.status >= 400 || receipt.offer_version === (BigInt(input.expected_offer_version) + 1n).toString());
+  }
+  return input.action !== "consent_resource" || receipt.target_id === input.target_id || receipt.status >= 400 && receipt.target_id === null;
+}
+export function collaborationResourceRequest(issueId: string, input: CollaborationResourceInput) {
+  const root = `/api/collaboration/issues/${encodeURIComponent(issueId)}`;
+  const { action: operation, ...data } = input;
+  switch (operation) {
+    case "register_target": return { path: `${root}/targets`, body: data };
+    case "consent_resource": {
+      const { target_id, action: _action, ...body } = input;
+      return { path: `${root}/targets/${encodeURIComponent(target_id)}/consents`, body };
+    }
+    case "revoke_grant": {
+      const { grant_id, action: _action, ...body } = input;
+      return { path: `${root}/grants/${encodeURIComponent(grant_id)}/revoke`, body };
+    }
+    case "offer_resource": return { path: `${root}/resources/offers`, body: data };
+    case "adopt_resource_offer": case "withdraw_resource_offer": {
+      const { offer_id, action: _action, ...body } = input;
+      return { path: `${root}/resources/offers/${encodeURIComponent(offer_id)}/${operation === "adopt_resource_offer" ? "adopt" : "withdraw"}`, body };
+    }
+    default: throw new TypeError("Invalid collaboration resource intent");
+  }
+}

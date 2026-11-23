@@ -1,0 +1,205 @@
+{
+  "kind": "independent_no_fetch_exact_pnpm10_production_tooling_preparation_review",
+  "at": "2026-11-16T01:12:17.089835+00:00",
+  "reviewer": "/root/root_knowledge_service_check",
+  "status": "EXACT_EXISTING_PNPM10_BINDING_ACCEPTED_FOR_LATER_MAIN_TOOLING_CLEARANCE",
+  "blocking_findings_open": 0,
+  "preparation": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-package-manager-binding-preparation.json",
+    "sha256": "13d95dd712f38a170c08b487f4d84f77ab4356d652e25bc6042494ec1df8e445",
+    "bytes": 6016,
+    "mode": 384
+  },
+  "SOURCE_packageManager": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/postcopy-five-candidate-source/package.json",
+    "sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+    "bytes": 2669,
+    "mode": 493
+  },
+  "declared_package_manager": "pnpm@10.28.2",
+  "global_entry": {
+    "path": "/opt/homebrew/lib/node_modules/pnpm/bin/pnpm.mjs",
+    "sha256": "ff3224d46b47fbb24a7e9fe15fededef7e00892d07d4e376b6762d4899906bfd",
+    "bytes": 1464,
+    "mode": 493
+  },
+  "global_package": {
+    "path": "/opt/homebrew/lib/node_modules/pnpm/package.json",
+    "sha256": "9b0a99aa6fe76f312d45dca47aef5ecc3627405f38ee702c0184a6e4f2c51cd3",
+    "bytes": 2349,
+    "mode": 420
+  },
+  "global_version": "11.13.1",
+  "existing_cached_package_manager": {
+    "root": "/Users/artisan/.cache/node/corepack/v1/pnpm/10.28.2",
+    "version": "10.28.2",
+    "distribution_manifest": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/cached-pnpm10-distribution.json",
+      "sha256": "24d99caae2b3a948c0554884654453e80273a0d99c39d79917fa41322bea96c8",
+      "bytes": 179609,
+      "mode": 384
+    },
+    "actual_files": 1069,
+    "complete_discovery_raw_byte_mode_rows_equal": true,
+    "symlinks": [],
+    "raw_tree_sha256": "dda3a971366627d67360f9317d3cefdafacf12bd61fb8a4b00c12333d4ddbfd4"
+  },
+  "launcher": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/bin/pnpm",
+    "sha256": "0d9ec8145a1dfc44699a4e00132d51c4d3f26745038c81c90276973fcb3bbeef",
+    "bytes": 765,
+    "mode": 448
+  },
+  "launcher_pins": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/pins.json",
+    "sha256": "36673a09a100a8870e9574ffb96c33db19664490cc16776a803c4449c0750396",
+    "bytes": 1415,
+    "mode": 384
+  },
+  "exact_four_input_pins": [
+    {
+      "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "bytes": 112937728,
+      "mode": 493
+    },
+    {
+      "path": "/Users/artisan/.cache/node/corepack/v1/pnpm/10.28.2/bin/pnpm.cjs",
+      "sha256": "b276da51dc8ca5b0d3ee3371695b50fc8b3244b281b091c63a3f082a88dadeb9",
+      "bytes": 1102,
+      "mode": 493
+    },
+    {
+      "path": "/Users/artisan/.cache/node/corepack/v1/pnpm/10.28.2/package.json",
+      "sha256": "b74e71cf954512126aaddaa4afc339f17ee2ab747a0328d58df3b6220d38c7f7",
+      "bytes": 6075,
+      "mode": 420
+    },
+    {
+      "path": "/Users/artisan/.cache/node/corepack/v1/pnpm/10.28.2/dist/pnpm.cjs",
+      "sha256": "930fe74c335e95a8f9f6786f115f00c37ae82493ba7bdbddaddd9e06de542f43",
+      "bytes": 7546648,
+      "mode": 420
+    }
+  ],
+  "launcher_interpreter": {
+    "path": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+    "sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43",
+    "bytes": 52448,
+    "mode": 493
+  },
+  "launcher_logic": "load private pins, hash-check the four exact inputs and version, execve the absolute pinned Node with the existing cached pnpm.cjs plus argv unchanged; no provisioning, shell, flags relaxed or packageManager rewrite",
+  "cached_manager_control_flow": {
+    "file": {
+      "path": "/Users/artisan/.cache/node/corepack/v1/pnpm/10.28.2/dist/pnpm.cjs",
+      "sha256": "930fe74c335e95a8f9f6786f115f00c37ae82493ba7bdbddaddd9e06de542f43",
+      "bytes": 7546648,
+      "mode": 420
+    },
+    "switch_function": "switchCliVersion",
+    "matching_version_return_line": 193907,
+    "installPnpmToTools_line": 193918,
+    "matching_declared_and_actual_version_returns_before_manager_install": true
+  },
+  "reported_actual_empty_HOME_probes": [
+    {
+      "label": "exact-manager-version",
+      "actual_argv": [
+        "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/bin/pnpm",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "10.28.2\n",
+      "stderr": ""
+    },
+    {
+      "label": "exact-manager-package-script-node",
+      "actual_argv": [
+        "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/bin/pnpm",
+        "--dir",
+        "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/postcopy-five-candidate-source",
+        "--filter",
+        "@multica/core",
+        "exec",
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v22.23.2\n",
+      "stderr": ""
+    }
+  ],
+  "current_empty_HOME": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/empty-home",
+    "uid": 501,
+    "mode": 448,
+    "files": 0
+  },
+  "unchanged_runtime_inputs": {
+    "wrapper": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+      "sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+      "bytes": 6316,
+      "mode": 384
+    },
+    "controller": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-current-root-reference-20261116-1a5e537b-dc4ed3016256/postcopy-five-candidate-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+      "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+      "bytes": 65656,
+      "mode": 420
+    }
+  },
+  "PATH_contract": {
+    "required_outer_order": [
+      "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/production-tool-binding-preparation/bin",
+      "/Users/artisan/.nvm/versions/node/v22.23.2/bin",
+      "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin",
+      "/opt/homebrew/Cellar/go/1.27.0/libexec/bin",
+      "/opt/homebrew/Cellar/git/2.52.0/bin",
+      "/usr/bin",
+      "/bin",
+      "/usr/sbin",
+      "/sbin"
+    ],
+    "controller_selection_line": 565,
+    "controller_child_PATH_lines": [
+      444,
+      445
+    ],
+    "controller_PNPM_commands_line": 602,
+    "actual_child_PATH_built_from_selected_tool_parents_including_Node_and_launcher": true,
+    "Go_readonly_PATH_contains_Node_or_Pnpm": false,
+    "forward_contract": "prepend the prepared launcher and Node22 for the separately authorized production command; include/bind the Python3.14 interpreter so actual python3 and shim interpreter can share the recorded tool identity; keep the unmodified wrapper/controller and original environment/allocation files"
+  },
+  "original_failed_frontend_attempt": {
+    "receipt": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-current19eb-frontend-independent-review-20261116-9e21c79350c6.json",
+      "sha256": "50226ad7b1031a48b50872fda77b2bf906ef80b3bf2fd8c791527db3050defbe",
+      "bytes": 123912,
+      "mode": 384
+    },
+    "original_failure": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-current-root-reference-latest-dc4ed3016256/frontend-refresh-f6a01cae1823/failed.json",
+      "sha256": "9f2559514f8a53aa58e33cf3c773a4f3e4a0d518e785c97d15053c33e9eba170",
+      "bytes": 201,
+      "mode": 384
+    },
+    "two_commands_exit": 1,
+    "named_tests": 0,
+    "preserved": true
+  },
+  "new_dependencies_or_package_manager_downloads_by_reviewer": 0,
+  "wrapper_controller_SOURCE_ENV_allocation_or_probe_mutations_by_reviewer": 0,
+  "actual_tool_probe_reruns_by_reviewer": 0,
+  "production_build_runtime_or_adoption_by_reviewer": 0,
+  "main_gate": [
+    "bind source target, shim, pins JSON, complete cached distribution, Node and interpreter in the later concrete main tooling clearance",
+    "verify those exact identities before and after the production build",
+    "wait for matching completed TAG/source adoption gates; use the existing recorded allocation and environment"
+  ],
+  "source_ready": false,
+  "actual_production_build_accepted": false,
+  "final_ROOT_acceptance": false,
+  "findings_fixed": [],
+  "findings_not_fixed": []
+}

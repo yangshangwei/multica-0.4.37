@@ -1,0 +1,85 @@
+{
+  "recorded_at": "2026-11-15T10:24:25.411Z",
+  "typescript_version": "5.9.3",
+  "compiler_options": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true,
+    "noEmit": true,
+    "incremental": false,
+    "composite": false,
+    "jsx": "react-jsx",
+    "types": [
+      "node"
+    ],
+    "allowImportingTsExtensions": true,
+    "typeRoots": [
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/node_modules/@types"
+    ]
+  },
+  "files": [
+    "e2e/fixtures/collaboration-detail-journey.ts",
+    "e2e/fixtures/project-knowledge-automation.ts",
+    "e2e/project-knowledge-automation.spec.ts"
+  ],
+  "before_hashes": {
+    "e2e/fixtures/collaboration-detail-journey.ts": "470dde98fab303d210701fe03cca296ec5ee712d7e44ffbfd63914f7401355aa",
+    "e2e/fixtures/project-knowledge-automation.ts": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+    "e2e/project-knowledge-automation.spec.ts": "d4af16db947c7ae3e1379f5d079759b2c860efe1de427f606177c53093e11d73"
+  },
+  "after_hashes": {
+    "e2e/fixtures/collaboration-detail-journey.ts": "470dde98fab303d210701fe03cca296ec5ee712d7e44ffbfd63914f7401355aa",
+    "e2e/fixtures/project-knowledge-automation.ts": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+    "e2e/project-knowledge-automation.spec.ts": "d4af16db947c7ae3e1379f5d079759b2c860efe1de427f606177c53093e11d73"
+  },
+  "results": [
+    {
+      "label": "original",
+      "source_files": 641,
+      "diagnostics": [
+        {
+          "code": 2339,
+          "category": "Error",
+          "file": "e2e/project-knowledge-automation.spec.ts",
+          "line": 102,
+          "message": "Property 'version' does not exist on type '{ availability: \"source_unavailable\"; capabilities: { can_approve: boolean; can_reject: boolean; can_withdraw: boolean; }; decision: { actor_user_id: string; at: string; } | null; lineage_id: string; ... 14 more ...; state_revision: string; } | { ...; } | { ...; } | { ...; } | { ...; }'.\n  Property 'version' does not exist on type '{ availability: \"restricted\"; capabilities: { can_withdraw: boolean; }; candidate_id: string; state: \"pending\" | \"rejected\" | \"approved\" | \"superseded\" | \"withdrawn\"; state_revision: string; }'."
+        },
+        {
+          "code": 18048,
+          "category": "Error",
+          "file": "e2e/project-knowledge-automation.spec.ts",
+          "line": 150,
+          "message": "'fresh.capture' is possibly 'undefined'."
+        },
+        {
+          "code": 18048,
+          "category": "Error",
+          "file": "e2e/project-knowledge-automation.spec.ts",
+          "line": 150,
+          "message": "'first.capture' is possibly 'undefined'."
+        }
+      ]
+    },
+    {
+      "label": "current",
+      "source_files": 649,
+      "diagnostics": []
+    }
+  ],
+  "new_diagnostics": [],
+  "current_typecheck_passed": true,
+  "source_files_stable": true
+}

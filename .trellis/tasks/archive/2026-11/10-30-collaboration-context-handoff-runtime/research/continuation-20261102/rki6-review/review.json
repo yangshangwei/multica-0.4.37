@@ -1,0 +1,89 @@
+{
+  "at": "2026-11-02T13:00:45.470123+00:00",
+  "reviewer": "/root/rki6_result_review (native trellis-check)",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "scope": "current final639 normal/race fake/sim execution evidence only",
+  "source_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "prepared_candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "source_file_count": 7960,
+  "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "framework_file_count": 17,
+  "summary_sha256": "c9e190b74633155c6661a08907801d9ecb6b97e57bb7aacef943e7a3be176be6",
+  "executions": [
+    {
+      "kind": "normal",
+      "counts": {
+        "run": 62,
+        "pass": 62,
+        "fail": 0,
+        "skip": 0
+      },
+      "physical_launches": 32,
+      "record_sha256": "d9a61875e2c0dcf308e2070d4afc9addcad23db8a21e5ab49d2f08fba0eb27d9",
+      "log_sha256": "fd95c62e1f6a17897a41eaa5aa9bb020f31ba8298ed5eb602b5fd1671352cf5a",
+      "fixture_cases": 19,
+      "public_trials": 22
+    },
+    {
+      "kind": "race",
+      "counts": {
+        "run": 62,
+        "pass": 62,
+        "fail": 0,
+        "skip": 0
+      },
+      "physical_launches": 32,
+      "record_sha256": "bf8dadd829eef7c3f4d5ce4445f17e7faa1bd63b569760c26c6bf7593aa1fc0d",
+      "log_sha256": "c5395236ed41215d5741f19579a13bee42697fb4bd615aff5018fdbe5b3dffd2",
+      "fixture_cases": 19,
+      "public_trials": 22
+    }
+  ],
+  "verification": {
+    "command": [
+      "python3",
+      ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/rki6-review/verify_evidence.py"
+    ],
+    "exit_code": 0,
+    "cross_record_checks_passed": 1794,
+    "failed": 0,
+    "python_version": "3.14.3",
+    "script_sha256": "9daa7b79b3ea3b84a6d2c3ec6656f338e83e5b1cd930b73bf5524d26a61089c3",
+    "result": "verification.json",
+    "result_sha256": "44fc22449bc0e9a4b8557a29ff46b8247f03b0c035030094c8b55169c50f64ce",
+    "syntax": "Python AST pass"
+  },
+  "history_preservation": {
+    "entry_commit": "7af9ab990",
+    "files_checked": 38,
+    "changed": [],
+    "evidence": "history-preservation.json",
+    "sha256": "901302a794bbdb3454ef2363ab943e352631a7db828acf3f4431f18e72f966b9"
+  },
+  "findings": [
+    {
+      "id": "RKI6-N1",
+      "severity": "low",
+      "blocking": false,
+      "issue": "H6 fake relay_read returns six lines of memory while its question requests at most three; current registered scorer preserves manual_review_required and does not claim model behavior passed.",
+      "action": "Retain current source/scoring; keep real H6 manual review and preregister any future additional line-count criterion."
+    }
+  ],
+  "scope_notes": [
+    "Current runtime-addendum explicitly excludes >32 result/cause paging from RK1; H2b covers truncated source and H3b older comment paging.",
+    "No installed Provider execution, model behavior pass, native resume, full candidate acceptance or paid launch authorization claimed.",
+    "Historical quiet process state and DB snapshot cannot be independently recreated by read-only artifact review."
+  ],
+  "production_files_changed": false,
+  "database_operations": 0,
+  "real_provider_calls": 0,
+  "runtime_budget_consumed": 0,
+  "paid_runnable": false,
+  "lint": "not run: read-only evidence review; parent whole-candidate gate required",
+  "typecheck": "not run: no TypeScript changes; parent whole-candidate gate required",
+  "fixed_findings": [],
+  "report": "review.md",
+  "report_sha256": "4e07500b31d390cc4878833b65f7480db772078d328ce28d05b35652d5578b0d"
+}

@@ -15,6 +15,11 @@
       "title": "No runtimes yet",
       "hint": "Desktop auto-scans this computer. To use another machine — a server, dev box, or any computer with a terminal — add it here."
     },
+    "load_error": {
+      "title": "Couldn't load runtimes",
+      "hint": "Your computers may still be connected. Try loading the runtime list again.",
+      "retry": "Try again"
+    },
     "no_matches": {
       "title": "No matches",
       "with_query": "No runtimes match \"{{query}}\"{{filterSuffix}}.",
@@ -25,6 +30,34 @@
     "bootstrapping": {
       "title": "Starting local runtime…",
       "hint": "This usually takes a few seconds. Your daemon is registering with the workspace."
+    }
+  },
+  "welcome": {
+    "title": "Give your agents a computer to work on",
+    "description": "A runtime is where your agents actually do the work: your computer, a server, or a cloud machine.",
+    "add_runtime": "Add runtime",
+    "guide": "Read the connection guide",
+    "download_desktop": "Download Desktop",
+    "examples": "Ways to connect a runtime",
+    "example": "Example",
+    "previous": "Previous example",
+    "next": "Next example",
+    "show_example": "Show example {{number}}: {{title}}",
+    "position": "Example {{number}} of {{total}}: {{title}}",
+    "desktop": {
+      "title": "This computer, connected automatically",
+      "description": "Sign in to the desktop app. Installed CLIs such as Claude Code and Codex appear automatically.",
+      "machine": "studio-mbp",
+      "machine_hint": "This computer · Desktop app",
+      "online": "Online",
+      "detected": "Automatically detected CLIs"
+    },
+    "remote": {
+      "title": "Another computer, guided setup",
+      "description": "Install the CLI on a server or another computer, then follow the connection steps for that machine.",
+      "prompt": "Run on the other computer",
+      "install_hint": "After installing the Multica CLI",
+      "connected": "ci-runner-02 connected to Multica"
     }
   },
   "mika_setup": {

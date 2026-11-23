@@ -1,0 +1,27 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "database": "multica_delivery_20261110_router_final",
+  "exit_code": 0,
+  "duration_seconds": 13.15,
+  "finished_at": "2026-11-10T09:12:37.256917+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/router-final-migrate.log",
+  "log_sha256": "e858fc9808ddcc6f02e1f779d1f8f474d7603e6b5885f8a64919d5d9d4f7ba37",
+  "named_test_counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": false
+}

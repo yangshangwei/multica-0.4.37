@@ -1,0 +1,102 @@
+{
+  "finding": "RR2/P2",
+  "status": "correction_ready_for_independent_recheck",
+  "finding_closed_by_implementer": false,
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "env_file": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+  "provider_calls": false,
+  "commits": false,
+  "global_logger_mutation": false,
+  "source_before": "red-source.json",
+  "source_after": "green-source.json",
+  "runs": [
+    {
+      "log": "red-server-logs.jsonl",
+      "sha256": "b69c35b55ec944c948ee989f95586ab181fe1b7e71d2e7d8e6239b7531e649e7",
+      "expected_result": "fail",
+      "exit_code": 1,
+      "counts": {
+        "pass": 3,
+        "fail": 6,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestKnowledgeServerFailureLogsUsePersistedState/service_prepared",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_prepared",
+        "TestKnowledgeServerFailureLogsUsePersistedState/service_retained",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_retained",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_refusal",
+        "TestKnowledgeServerFailureLogsUsePersistedState"
+      ],
+      "passed_tests": [
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_stale_fence",
+        "TestKnowledgeServerFailureLogsUsePersistedState/service_legacy",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_legacy_with_fence"
+      ],
+      "elapsed_seconds": 2.634
+    },
+    {
+      "log": "green-server-logs-final.jsonl",
+      "sha256": "308aa24fc7615d3a712c3b5d8bec36126e4a6ce15685e21836d3183e1ccdd2bb",
+      "expected_result": "pass",
+      "exit_code": 0,
+      "counts": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [],
+      "passed_tests": [
+        "TestKnowledgeServerFailureLogsUsePersistedState/service_prepared",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_prepared",
+        "TestKnowledgeServerFailureLogsUsePersistedState/service_retained",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_retained",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_refusal",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_stale_fence",
+        "TestKnowledgeServerFailureLogsUsePersistedState/service_legacy",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_legacy_with_fence",
+        "TestKnowledgeServerFailureLogsUsePersistedState"
+      ],
+      "elapsed_seconds": 3.7800000000000002
+    },
+    {
+      "log": "race-server-logs.jsonl",
+      "sha256": "46a89f2c79834b8233940f8802ed14121211b315b2882c0c21be0ce7f4f6eba8",
+      "expected_result": "pass",
+      "exit_code": 0,
+      "counts": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [],
+      "passed_tests": [
+        "TestKnowledgeServerFailureLogsUsePersistedState/service_prepared",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_prepared",
+        "TestKnowledgeServerFailureLogsUsePersistedState/service_retained",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_retained",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_refusal",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_stale_fence",
+        "TestKnowledgeServerFailureLogsUsePersistedState/service_legacy",
+        "TestKnowledgeServerFailureLogsUsePersistedState/handler_legacy_with_fence",
+        "TestKnowledgeServerFailureLogsUsePersistedState"
+      ],
+      "elapsed_seconds": 12.743
+    }
+  ],
+  "commands": [
+    "source /tmp/multica_knowledge_c2_20261101_7d95f46f.env; test -n \"$DATABASE_URL\"; go test ./internal/service -run ^TestKnowledgeServerFailureLogsUsePersistedState$ -count=1 -json",
+    "source /tmp/multica_knowledge_c2_20261101_7d95f46f.env; test -n \"$DATABASE_URL\"; go test -race ./internal/service -run ^TestKnowledgeServerFailureLogsUsePersistedState$ -count=1 -json",
+    "go vet ./internal/service ./internal/handler",
+    "go build ./internal/service ./internal/handler ./cmd/server",
+    "gofmt -w <three owned files>",
+    "git diff --check -- <three owned files>"
+  ],
+  "static_results": {
+    "vet_exit": 0,
+    "build_exit": 0,
+    "whitespace_exit": 0
+  },
+  "test_contract": "Child test process captures normal server stdout/stderr without slog.SetDefault or global output redirection. Actual private preparation supplies the diagnostic sentinel; service and real DaemonAuth/handler failures preserve exact task.error. Retained metadata/gate closure, knowledge reason, stale fence refusal and legacy-with-fence are covered. Both generic failure records retain task ID and persisted canonical reason.",
+  "remaining": "Main/reviewer must recheck RR2 and combined acceptance; no G2 closure claimed."
+}

@@ -1,0 +1,154 @@
+{
+  "recorded_at": "2026-11-04T04:36:14.298457+00:00",
+  "executor": "/root/shared_executor",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "state": "complete_make0_final_identity_pass_awaiting_root_independent_inventory",
+  "full_invocations": 1,
+  "auditor_invocations": 1,
+  "make_exit": 0,
+  "final_audit_exit": 0,
+  "final_audit_status": "pass",
+  "filesystem_wholecheck_passed": true,
+  "root_final_shared_acceptance_scope": "Root independent named inventory/live/skip review is authoritative; this executor does not grant later test permits",
+  "static_pass": 15,
+  "TS_reports": [
+    {
+      "package": "@multica/core",
+      "raw_object_sha256": "f7ded14d1d94032e8a4c993b979e74f0080066f7852552be2bd33621d626032c",
+      "files": 331,
+      "numTotalTests": 4455,
+      "numPassedTests": 4455,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    },
+    {
+      "package": "@multica/docs",
+      "raw_object_sha256": "9adfc2ddd474c5db4f66376a9081612fb58bf4cc6183ce929ae8c831f0b8ce7d",
+      "files": 9,
+      "numTotalTests": 62,
+      "numPassedTests": 62,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    },
+    {
+      "package": "@multica/views",
+      "raw_object_sha256": "569f085430a1b18d1fc6d31ff45894717ed3ac0ee46a681747a942724e7c8b85",
+      "files": 593,
+      "numTotalTests": 7165,
+      "numPassedTests": 7165,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    },
+    {
+      "package": "@multica/desktop",
+      "raw_object_sha256": "60ebf00e506ee73435a99f7d9af0bff31a2e2f0af2c820b9c832cc1249d783b2",
+      "files": 102,
+      "numTotalTests": 1272,
+      "numPassedTests": 1272,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    },
+    {
+      "package": "@multica/web",
+      "raw_object_sha256": "40d6fbd3585692b8721ec72414b62c745b5a7497ae8ab454cb6585821c80d602",
+      "files": 34,
+      "numTotalTests": 290,
+      "numPassedTests": 290,
+      "numFailedTests": 0,
+      "numPendingTests": 0,
+      "numTodoTests": 0,
+      "success": true
+    }
+  ],
+  "TS_pass": 13244,
+  "Go": {
+    "directory": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/go-packages-v16",
+    "package_records": 82,
+    "named_pass": 20963,
+    "fail": 0,
+    "skip": 22
+  },
+  "browser": {
+    "startTime": "2026-11-04T03:54:00.427Z",
+    "duration": 1112065.8930000002,
+    "expected": 350,
+    "skipped": 91,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "case_count": 441,
+  "only_registered_generated_next_source": {
+    "path": "apps/web/next-env.d.ts",
+    "generated_rewrite": true,
+    "raw_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+    "normalized_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc"
+  },
+  "source_status": " M apps/web/next-env.d.ts\n",
+  "API_Web_released": true,
+  "package_databases_retained": true,
+  "test_artifacts_retained": {
+    "test-results": {
+      "original": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results",
+      "retained": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/retained-test-artifacts/test-results",
+      "file_count": 873,
+      "bytes": 128327284,
+      "manifest_sha256": "5fc1f99eb3419952923249dd49951dc8c86c4007dab7a88ac424a5d751e3090b"
+    }
+  },
+  "historical_protected_hashes_unchanged": true,
+  "knowledge_budget": 0,
+  "knowledge_calls": 0,
+  "production_knowledge_default": false,
+  "references": {
+    "run": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.json",
+      "sha256": "bf9fa963e44a90af50ed51e258cf50434923a9a5820846f61c688c4bf0df7fa2"
+    },
+    "rawlog": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/make-check-v16.log",
+      "sha256": "699a2e82527ffae908fbec8d7471ce7b94047f19b914d9ca40fe3a27094fc5c7"
+    },
+    "browser": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/makecheck-playwright-results-v9.json",
+      "sha256": "8f7c2b55fa3c5f8cefa6625b9dbb88d73bb468f5b91336cd70bde4a472994bfc"
+    },
+    "audit": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/post-make-v16.json",
+      "sha256": "73c198b8f21f92235f5d20f54031e486ce0de23fcdb4521712daaf03e0194baf"
+    },
+    "wrapper_result": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/execution-finished.json",
+      "sha256": "85d7564140a675f217a8d94af5c6495468af665beb2f45b853957196a3eac53b"
+    },
+    "claim": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/execution-claim.json",
+      "sha256": "b0e330815ad788253680797c94e3450df8645fcf27fb4ed9dae1430a88e4ee0f"
+    },
+    "cleanup": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/final-cleanup-source-observation.json",
+      "sha256": "88b3d467668866846a1b3970c059931b659f35068f5a9d77df1b520aaaa48236"
+    },
+    "test_artifacts": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/test-artifact-retention.json",
+      "sha256": "beeb52a6755f17e11cb2cdf4cc1c6de1aaaf2a71e2b9c011b3d39eeecbba83f2"
+    },
+    "TS": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/TS-phase-observation.json",
+      "sha256": "cbf3d6e37b46d551393691ab2b30e0beb5b789c3c903d511d7e5541586fb0da5"
+    },
+    "live_completion": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-execution/live-proof/completion-witness.json",
+      "sha256": "32b0f6a14648ae68848161d74aa938ee62f6c4ebad482e262499cbe2f5d142e3"
+    }
+  },
+  "no_extra_test_CC1_CC2_frame_calls": true
+}

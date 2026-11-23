@@ -1,0 +1,157 @@
+{
+  "recorded_at": "2026-11-13T09:37:31.088366+00:00",
+  "status": "implementation_static_checks_pass",
+  "source_files": {
+    "server/internal/daemon/collaborationrun/host_runner_test.go": "7d513668d77e2ceb329fea0f83d9838e4624a34d1da5b6a4bf426da2d3afbab1",
+    "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go": "2e3ebf0c906058855cb399ce717051b20a4443ee90778c36823b74c8ab0bb5f6",
+    "server/internal/daemon/collaboration_host_router_test.go": "5c7365dd147850d0820e87ead8378f60a879f1c67176a07952cfa675a66b7ea7",
+    "server/internal/daemon/collaboration_host_router_boundary_test.go": "62309cc37706f063f79c518cf6aac95afd0ac2af1a55fd16ba05aee3a0583dab",
+    "e2e/fixtures/collaboration-host-runtime.ts": "10d40de911c937bde95f5578b82a82a40ae60d2996133b3a91dbfb9de9009417",
+    "e2e/collaboration-timeout-recovery.spec.ts": "d7d63e25cb4b96c22c5e5577dbb8f0749dcce53c4fca7529eb5723bd3d4fb306"
+  },
+  "go": {
+    "final-normal": {
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-final-normal.jsonl",
+      "sha256": "e7198e79fbb258d304f1cc59abb1c55a4caad04a8140904b9875e725f43267b9",
+      "tests": {
+        "pass": [
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/outcome",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/proof",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/both",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/timeout_before_stop",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/stop_before_timeout",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome",
+          "TestCollaborationHostHarnessTimeoutBoundary/default",
+          "TestCollaborationHostHarnessTimeoutBoundary/minimum",
+          "TestCollaborationHostHarnessTimeoutBoundary/e2e_budget",
+          "TestCollaborationHostHarnessTimeoutBoundary/maximum",
+          "TestCollaborationHostHarnessTimeoutBoundary/null",
+          "TestCollaborationHostHarnessTimeoutBoundary/zero",
+          "TestCollaborationHostHarnessTimeoutBoundary/negative",
+          "TestCollaborationHostHarnessTimeoutBoundary/too_short",
+          "TestCollaborationHostHarnessTimeoutBoundary/too_long",
+          "TestCollaborationHostHarnessTimeoutBoundary/string",
+          "TestCollaborationHostHarnessTimeoutBoundary/fraction",
+          "TestCollaborationHostHarnessTimeoutBoundary/overflow",
+          "TestCollaborationHostHarnessTimeoutBoundary",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/OK",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/Forbidden",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/Service_Unavailable",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/OK",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/Forbidden",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/Service_Unavailable",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "package_terminal": [
+        {
+          "Time": "2026-11-13T17:35:07.154507+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "Elapsed": 7.497
+        },
+        {
+          "Time": "2026-11-13T17:35:15.575343+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/daemon",
+          "Elapsed": 0.981
+        }
+      ],
+      "exit_code": 0
+    },
+    "final-race": {
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-final-race.jsonl",
+      "sha256": "4124dd02132665be186e8dfb9ffb7f1634cf0c83ae61a5eabd8bb8ab83457c94",
+      "tests": {
+        "pass": [
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/outcome",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/proof",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner/both",
+          "TestHostTimeoutRetainsOriginalReceiptsAcrossNewRunner",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/timeout_before_stop",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome/stop_before_timeout",
+          "TestHostTimeoutAndStopKeepTheirActualFirstOutcome",
+          "TestCollaborationHostHarnessTimeoutBoundary/default",
+          "TestCollaborationHostHarnessTimeoutBoundary/minimum",
+          "TestCollaborationHostHarnessTimeoutBoundary/e2e_budget",
+          "TestCollaborationHostHarnessTimeoutBoundary/maximum",
+          "TestCollaborationHostHarnessTimeoutBoundary/null",
+          "TestCollaborationHostHarnessTimeoutBoundary/zero",
+          "TestCollaborationHostHarnessTimeoutBoundary/negative",
+          "TestCollaborationHostHarnessTimeoutBoundary/too_short",
+          "TestCollaborationHostHarnessTimeoutBoundary/too_long",
+          "TestCollaborationHostHarnessTimeoutBoundary/string",
+          "TestCollaborationHostHarnessTimeoutBoundary/fraction",
+          "TestCollaborationHostHarnessTimeoutBoundary/overflow",
+          "TestCollaborationHostHarnessTimeoutBoundary",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/OK",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/Forbidden",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/outcome/Service_Unavailable",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/OK",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/Forbidden",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements/proof/Service_Unavailable",
+          "TestCollaborationHostHarnessHoldsOnlyCommittedReceiptAcknowledgements"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "package_terminal": [
+        {
+          "Time": "2026-11-13T17:36:22.907323+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+          "Elapsed": 8.438
+        },
+        {
+          "Time": "2026-11-13T17:36:27.700366+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/daemon",
+          "Elapsed": 1.7930000000000001
+        }
+      ],
+      "exit_code": 0
+    }
+  },
+  "checks": {
+    "typecheck": {
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-typecheck-complete.log",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    "eslint": {
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-eslint-complete.log",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    "go_vet": {
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node_close": {
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-node-close.jsonl",
+      "sha256": "10b37f6242020279f6598114ed51519b688fb729e3f08fa30bfbe3054c3a72d7"
+    },
+    "playwright_list": {
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s3-timeout-impl-e2e-list.log",
+      "sha256": "779e5b313560d271d3f55cdf3ca3b3d8995109ad81e9885622affe44014565f6"
+    }
+  },
+  "first_failures": [
+    "s3-timeout-impl-unit-first.jsonl",
+    "s3-timeout-impl-harness-red.jsonl",
+    "s3-timeout-impl-eslint.log",
+    "s3-timeout-impl-stop-final.jsonl"
+  ],
+  "e2e_runtime": "NOT_RUN_BY_CHILD; main session owns matching-source API/production Web/Desktop execution",
+  "limits": [
+    "Test-only modifications; no production implementation change",
+    "No real model account, payment, release, database or migration operations",
+    "T05/T06, S3 and PAY-241 remain open pending actual runtime evidence and independent check"
+  ]
+}

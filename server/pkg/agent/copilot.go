@@ -335,6 +335,11 @@ func withCopilotExitCode(msg string, exitCode int) string {
 }
 
 func (b *copilotBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execName := b.cfg.ExecutablePath
 	if execName == "" {
 		execName = "copilot"
@@ -414,7 +419,7 @@ func (b *copilotBackend) Execute(ctx context.Context, prompt string, opts ExecOp
 			slog.Warn("copilot stdout scanner error", "err", err)
 		}
 
-		exitErr := cmd.Wait()
+		exitErr := waitOwnedProcessTree(cmd)
 		releaseProcessGroup(cmd)
 		duration := time.Since(startTime)
 

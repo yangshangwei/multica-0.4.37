@@ -1,0 +1,41 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "created_at": "2026-11-15T13:38:13.337031+00:00",
+  "kind": "readonly_full_source_and_workspace_link_intake_for_future_knowledge_build_not_freeze",
+  "ROOT": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "ROOT_head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+  "ROOT_source_id_observed": "b1940589309559b23bcaef1f78cd18609b2c01daa0e81e360484c59e2955e664",
+  "source_files": 11028,
+  "workspace_link_count": 32,
+  "two_complete_source_and_link_reads_identical": true,
+  "source_snapshot": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-ROOT-input-intake-a7127b07/ROOT-source-snapshot.json",
+    "sha256": "51dd99372d3c3fdc82a8cd4939092368140236858a65ea2fbfa51ec33f61c9f4",
+    "mode": "0600"
+  },
+  "source_selector": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+    "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+    "pure_source_selection_only": true,
+    "Runtime_or_allocation_controller_not_instantiated": true,
+    "CWD": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source"
+  },
+  "private_accepted_parent": {
+    "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+    "candidate_working_source_unchanged": true,
+    "immutable_passed_build": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/build.json",
+    "build_sha256": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482"
+  },
+  "shared_ROOT_final_acceptance_verified": false,
+  "ROOT_source_frozen": false,
+  "source_ready": false,
+  "allocation_environment_or_source_mutations": false,
+  "future_gate": "accepted_P2_r07_source_then_validate_exact_delta_and_Go_SQL_frontend_closure_advance_candidate_working_sources_preserving_passed_build_then_new_owned_build_start_run_stop",
+  "source_advance_constraints": [
+    "Only after accepted P2 source and final ROOT/source/dependency verification; no current copy performed",
+    "Use existing allocation and CANDIDATE controller CWD; allocation/environment stay byte-identical",
+    "Preserve all existing passed private build/test/snapshot evidence; working-source advancement must get its own before/after provenance",
+    "Copy only the verified final ROOT source set into the private working source; preserve ROOT peers and dependency ownership",
+    "Fresh build/start/run/stop and independent final ROOT knowledge acceptance; current intake never authorizes runtime"
+  ]
+}

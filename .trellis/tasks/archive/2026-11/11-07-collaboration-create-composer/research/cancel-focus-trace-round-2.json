@@ -1,0 +1,145 @@
+{
+  "build": "/tmp/collaboration-create-composer-round-2-88980",
+  "trace": [
+    {
+      "type": "before-cancel-focus",
+      "at": 1230.800000011921,
+      "active": {
+        "tag": "BUTTON",
+        "role": null,
+        "text": "Attach files"
+      },
+      "cancelPresent": true,
+      "trigger": {
+        "connected": true,
+        "disabled": false,
+        "ariaDisabled": "true",
+        "tabIndex": 0
+      }
+    },
+    {
+      "type": "mutation",
+      "at": 1232.6000000238419,
+      "active": {
+        "tag": "BUTTON",
+        "role": null,
+        "text": "Attach files"
+      },
+      "cancelPresent": true,
+      "trigger": {
+        "connected": true,
+        "disabled": false,
+        "ariaDisabled": "true",
+        "tabIndex": 0
+      }
+    },
+    {
+      "type": "focusin",
+      "at": 1240.6000000238419,
+      "active": {
+        "tag": "BUTTON",
+        "role": null,
+        "text": "Cancel upload"
+      },
+      "cancelPresent": true,
+      "trigger": {
+        "connected": true,
+        "disabled": false,
+        "ariaDisabled": "true",
+        "tabIndex": 0
+      }
+    },
+    {
+      "type": "cancel-click-capture",
+      "at": 1241.7000000178814,
+      "active": {
+        "tag": "BUTTON",
+        "role": null,
+        "text": "Cancel upload"
+      },
+      "cancelPresent": true,
+      "trigger": {
+        "connected": true,
+        "disabled": false,
+        "ariaDisabled": "true",
+        "tabIndex": 0
+      }
+    },
+    {
+      "type": "focusin",
+      "at": 1253.1000000238419,
+      "active": {
+        "tag": "DIV",
+        "role": "dialog",
+        "text": "New collaboration issueCreate an issue in a source"
+      },
+      "cancelPresent": false,
+      "trigger": {
+        "connected": true,
+        "disabled": false,
+        "ariaDisabled": "true",
+        "tabIndex": 0
+      }
+    },
+    {
+      "type": "mutation",
+      "at": 1253.5,
+      "active": {
+        "tag": "DIV",
+        "role": "dialog",
+        "text": "New collaboration issueCreate an issue in a source"
+      },
+      "cancelPresent": false,
+      "trigger": {
+        "connected": true,
+        "disabled": false,
+        "ariaDisabled": "true",
+        "tabIndex": 0
+      }
+    },
+    {
+      "type": "focusin",
+      "at": 1266.5,
+      "active": {
+        "tag": "BUTTON",
+        "role": null,
+        "text": "Attach files"
+      },
+      "cancelPresent": false,
+      "trigger": {
+        "connected": true,
+        "disabled": false,
+        "ariaDisabled": "true",
+        "tabIndex": 0
+      }
+    },
+    {
+      "type": "focusin",
+      "at": 1267.4000000059605,
+      "active": {
+        "tag": "DIV",
+        "role": "dialog",
+        "text": "New collaboration issueCreate an issue in a source"
+      },
+      "cancelPresent": false,
+      "trigger": {
+        "connected": true,
+        "disabled": false,
+        "ariaDisabled": "true",
+        "tabIndex": 0
+      }
+    }
+  ],
+  "finalFocus": {
+    "tag": "DIV",
+    "text": "New collaboration issueCreate an issue in a source workspace and share it with a",
+    "role": "dialog",
+    "disabled": false,
+    "body": false
+  },
+  "cancelTriggerFocused": false,
+  "cleanup": {
+    "browserClosed": true,
+    "listenerClosed": true
+  }
+}

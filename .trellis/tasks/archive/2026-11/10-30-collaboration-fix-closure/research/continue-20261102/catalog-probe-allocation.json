@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-02T15:19:23.534756+00:00",
+  "database": "multica_check_catalogprobe_20261102_go",
+  "owner": "root closure catalog probe",
+  "fresh": true,
+  "source_candidate": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "run",
+    "./cmd/migrate",
+    "up"
+  ],
+  "state": "migration_complete",
+  "real_Provider_calls": 0,
+  "successful": true,
+  "log_sha256": "969d355ae57177a8dde5a34baac96c05a22cede5e9eb7415f8519195569ff602"
+}

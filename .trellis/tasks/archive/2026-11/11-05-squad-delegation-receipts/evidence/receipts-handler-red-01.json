@@ -1,0 +1,31 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=180s",
+    "./internal/handler",
+    "-run",
+    "^TestSquadOperatingProtocolChecksDelegationReceipts$"
+  ],
+  "database": "rnd_m1_receipts",
+  "exit": 1,
+  "counts": {
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "tests": {
+    "pass": [],
+    "fail": [
+      "TestSquadOperatingProtocolChecksDelegationReceipts"
+    ],
+    "skip": []
+  },
+  "log_sha256": "5d623b456335940005c55165dacb50a5beadde8b5da3889272c628057049e2b7",
+  "classification": "behavioral_red",
+  "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-handler-red-01.jsonl"
+}

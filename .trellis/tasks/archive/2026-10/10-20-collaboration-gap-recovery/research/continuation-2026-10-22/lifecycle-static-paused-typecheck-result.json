@@ -1,0 +1,30 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "tsc",
+    "--noEmit",
+    "--module",
+    "ESNext",
+    "--moduleResolution",
+    "Bundler",
+    "--target",
+    "ES2022",
+    "--skipLibCheck",
+    "--strict",
+    "--noUncheckedIndexedAccess",
+    "--esModuleInterop",
+    "--types",
+    "node",
+    "e2e/collaboration-lifecycle-controls.spec.ts",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "at": "2026-10-21T23:45:16.813283+00:00",
+  "source_sha256": {
+    "e2e/collaboration-lifecycle-controls.spec.ts": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d"
+  },
+  "exit_code": 0,
+  "finished_at": "2026-10-21T23:45:20.471597+00:00"
+}

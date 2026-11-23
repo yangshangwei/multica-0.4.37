@@ -1,0 +1,965 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-11-04T15:35:41.688914+00:00",
+  "scope": "Original E1-E6 task durable records; formal E0 excluded; fake/verification directories excluded; no account logs read",
+  "registration": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/original-series-run/prerun.json",
+    "sha256": "58a3b385eb559c0fa420e2f06319b0db6b00243dd579794d455025c433949fe4",
+    "bytes": 5170
+  },
+  "record_files": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-10-31-series2/E1_memory_first-baseline/records.jsonl",
+      "sha256": "455dc58db8683254df6733efd811bd95c5fc77f92adede052406cc2188c49080",
+      "bytes": 15278
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume2/E2a_window_fact_newest-baseline/records.jsonl",
+      "sha256": "2ffc9122f628f0face1d18d7c355e0654bec49e9203fb4bfa6527d89b15f3fb2",
+      "bytes": 11786
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2a_window_fact_newest-baseline/records.jsonl",
+      "sha256": "47c2a58a9eae35213ab9d282dbcd4b70d480742502bdf64412b64b92fd811371",
+      "bytes": 29739
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl",
+      "sha256": "d3881be4c8c2cf0f258fa7b5189999002df1a676ea042674e357aecf7f50eeab",
+      "bytes": 97005
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-after/records.jsonl",
+      "sha256": "f49706080f5cdfc7995674b7fbdb7ae8d54cc99263cc04816c0f8a6c9e2d0f00",
+      "bytes": 27102
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl",
+      "sha256": "b9d78b7f4a2db7e6faa3f06225db1c37d253c7f581720a8bd28f8ff54d5cb2d5",
+      "bytes": 98338
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-e2-resume-2026-10-31/E2a_window_fact_newest-baseline/records.jsonl",
+      "sha256": "c01145dacabcf3c5d693eee645ceb39d5e969675c0178d55d5d8deb83d951553",
+      "bytes": 21186
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/E1_memory_first-baseline/records.jsonl",
+      "sha256": "1443c22013cf7fbb0584a4bbb56f83992886b4604ddeec40b74c48484ad035a4",
+      "bytes": 30276
+    }
+  ],
+  "excluded_record_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/verification/implementation-fake-entrypoint/records.jsonl",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/verification/review-fake-entrypoint/resume/records.jsonl",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/verification/review-fake-entrypoint/unset/records.jsonl"
+  ],
+  "slot_count": 13,
+  "physical_provider_launches": 13,
+  "all_evidence_consistent": true,
+  "latest_started_at": "2026-11-01T04:17:34.320893Z",
+  "latest_terminal_at": "2026-11-01T04:22:35.231856Z",
+  "slots": [
+    {
+      "scenario": "E1_memory_first",
+      "arm": "baseline",
+      "trial": "1",
+      "run_id": "12f7f898-b819-43cf-848e-b26fae635e55",
+      "started_at": "2026-10-31T12:35:06.467913Z",
+      "finished_at": "2026-10-31T12:40:07.497753Z",
+      "status": "incomplete",
+      "verdict": "provider_failure_unclassified",
+      "outcome": "failure",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "d5a682bac34e01ab5293fb372bae7d259413f420f151a85c231421146d7633db",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 1,
+      "memory_reads": 1,
+      "posted_comments": null,
+      "seconds": 300.940825875,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-10-31-series2/E1_memory_first-baseline/records.jsonl",
+        "sha256": "455dc58db8683254df6733efd811bd95c5fc77f92adede052406cc2188c49080",
+        "bytes": 15278
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/mc-context-resume-20261031/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-10-31-series2/E1_memory_first-baseline/records.jsonl.trials/12f7f898-b819-43cf-848e-b26fae635e55/events.jsonl",
+        "sha256": "eee71c41ef8aa32d9dceab472b1310538254e6a8277207dabddb06c9d5698fb6",
+        "bytes": 3800828
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 3018,
+        "response_count": 3018,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E1_memory_first",
+      "arm": "baseline",
+      "trial": "2",
+      "run_id": "26b51bb8-786a-4001-9297-043bb2130362",
+      "started_at": "2026-10-31T13:14:20.849429Z",
+      "finished_at": "2026-10-31T13:17:57.456781Z",
+      "status": "finished",
+      "verdict": "manual_review_required",
+      "outcome": "success",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 1,
+      "memory_reads": 1,
+      "posted_comments": null,
+      "seconds": 216.454974666,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/E1_memory_first-baseline/records.jsonl",
+        "sha256": "1443c22013cf7fbb0584a4bbb56f83992886b4604ddeec40b74c48484ad035a4",
+        "bytes": 30276
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/E1_memory_first-baseline/records.jsonl.trials/26b51bb8-786a-4001-9297-043bb2130362/events.jsonl",
+        "sha256": "6da12bf2586c9fb416123f5974ba0121e7fed9e3be5dd5366f75fec7e4950f50",
+        "bytes": 2747134
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 2173,
+        "response_count": 2173,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E1_memory_first",
+      "arm": "baseline",
+      "trial": "3",
+      "run_id": "d0470e80-a96f-464f-a436-faeecc5d4502",
+      "started_at": "2026-10-31T13:17:57.480886Z",
+      "finished_at": "2026-10-31T13:22:58.413363Z",
+      "status": "incomplete",
+      "verdict": "provider_failure_unclassified",
+      "outcome": "failure",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 1,
+      "memory_reads": 0,
+      "posted_comments": null,
+      "seconds": 300.882346458,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/E1_memory_first-baseline/records.jsonl",
+        "sha256": "1443c22013cf7fbb0584a4bbb56f83992886b4604ddeec40b74c48484ad035a4",
+        "bytes": 30276
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-resume-2026-10-31/E1_memory_first-baseline/records.jsonl.trials/d0470e80-a96f-464f-a436-faeecc5d4502/events.jsonl",
+        "sha256": "c02628690f70c9e04294cad5df33df8848c6b7a79c9dbe9a92485868da094ab9",
+        "bytes": 3797157
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 3016,
+        "response_count": 3016,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "trial": "1",
+      "run_id": "008e9dd2-4af7-4fc1-ae94-f43307ce0198",
+      "started_at": "2026-10-31T13:58:37.379518Z",
+      "finished_at": "2026-10-31T14:03:38.403914Z",
+      "status": "incomplete",
+      "verdict": "provider_failure_unclassified",
+      "outcome": "failure",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 1,
+      "memory_reads": 0,
+      "posted_comments": null,
+      "seconds": 300.903829875,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-e2-resume-2026-10-31/E2a_window_fact_newest-baseline/records.jsonl",
+        "sha256": "c01145dacabcf3c5d693eee645ceb39d5e969675c0178d55d5d8deb83d951553",
+        "bytes": 21186
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-e2-resume-2026-10-31/E2a_window_fact_newest-baseline/records.jsonl.trials/008e9dd2-4af7-4fc1-ae94-f43307ce0198/events.jsonl",
+        "sha256": "01dc59e15c1c488e860423bad30bb78f962b894a52e92c863c7a65e40bbe9cb2",
+        "bytes": 4009454
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 3017,
+        "response_count": 3017,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "trial": "2",
+      "run_id": "bd1f29a8-2650-4704-9362-b94c1f7bef93",
+      "started_at": "2026-10-31T19:14:33.32988Z",
+      "finished_at": "2026-10-31T19:17:49.193798Z",
+      "status": "incomplete",
+      "verdict": "provider_failure_unclassified",
+      "outcome": "failure",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 0,
+      "memory_reads": 0,
+      "posted_comments": null,
+      "seconds": 195.7443795,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume2/E2a_window_fact_newest-baseline/records.jsonl",
+        "sha256": "2ffc9122f628f0face1d18d7c355e0654bec49e9203fb4bfa6527d89b15f3fb2",
+        "bytes": 11786
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume2/E2a_window_fact_newest-baseline/records.jsonl.trials/bd1f29a8-2650-4704-9362-b94c1f7bef93/events.jsonl",
+        "sha256": "21f694eda0d427f6240b0c113fc4bff18f03f2ecc60f2ded00d6c746e48e877e",
+        "bytes": 2574052
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 1964,
+        "response_count": 1964,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E2a_window_fact_newest",
+      "arm": "baseline",
+      "trial": "3",
+      "run_id": "420ded43-5b43-4f04-95c8-ebec3ae03d2d",
+      "started_at": "2026-11-01T04:03:13.072515Z",
+      "finished_at": "2026-11-01T04:04:33.968805Z",
+      "status": "finished",
+      "verdict": "pass",
+      "outcome": "success",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 1,
+      "memory_reads": 0,
+      "posted_comments": null,
+      "seconds": 80.788504083,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2a_window_fact_newest-baseline/records.jsonl",
+        "sha256": "47c2a58a9eae35213ab9d282dbcd4b70d480742502bdf64412b64b92fd811371",
+        "bytes": 29739
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2a_window_fact_newest-baseline/records.jsonl.trials/420ded43-5b43-4f04-95c8-ebec3ae03d2d/events.jsonl",
+        "sha256": "6b9bba91755099f7285dad965287b42e321f98fe23fd437f34866bff182c41d5",
+        "bytes": 1280743
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 816,
+        "response_count": 816,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "trial": "1",
+      "run_id": "5fc1ef44-9511-4c0b-b3ad-c6f44873c3f4",
+      "started_at": "2026-11-01T04:06:13.433981Z",
+      "finished_at": "2026-11-01T04:07:46.510181Z",
+      "status": "finished",
+      "verdict": "pass",
+      "outcome": "success",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 2,
+      "memory_reads": 1,
+      "posted_comments": null,
+      "seconds": 92.990738375,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl",
+        "sha256": "d3881be4c8c2cf0f258fa7b5189999002df1a676ea042674e357aecf7f50eeab",
+        "bytes": 97005
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl.trials/5fc1ef44-9511-4c0b-b3ad-c6f44873c3f4/events.jsonl",
+        "sha256": "adb48a8af059e4d1931dcc490fc9fb2d4ada434328e6f639d96c7f72d06d24a9",
+        "bytes": 1556304
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 939,
+        "response_count": 939,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "trial": "2",
+      "run_id": "97dc4218-13f8-418f-b22b-d2ee91e0fd7d",
+      "started_at": "2026-11-01T04:07:46.555945Z",
+      "finished_at": "2026-11-01T04:08:52.248504Z",
+      "status": "finished",
+      "verdict": "pass",
+      "outcome": "success",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 1,
+      "memory_reads": 0,
+      "posted_comments": null,
+      "seconds": 65.607422209,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl",
+        "sha256": "d3881be4c8c2cf0f258fa7b5189999002df1a676ea042674e357aecf7f50eeab",
+        "bytes": 97005
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl.trials/97dc4218-13f8-418f-b22b-d2ee91e0fd7d/events.jsonl",
+        "sha256": "8464336105f851744d8f5d67d9d8a428c914db6681a55857aa18305ee0458d0c",
+        "bytes": 1098616
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 664,
+        "response_count": 664,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E2b_window_fact_oldest",
+      "arm": "baseline",
+      "trial": "3",
+      "run_id": "f805fd55-50f2-40a6-accc-8a067385721d",
+      "started_at": "2026-11-01T04:08:52.28941Z",
+      "finished_at": "2026-11-01T04:09:35.875954Z",
+      "status": "finished",
+      "verdict": "pass",
+      "outcome": "success",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 1,
+      "memory_reads": 0,
+      "posted_comments": null,
+      "seconds": 43.502499917,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl",
+        "sha256": "d3881be4c8c2cf0f258fa7b5189999002df1a676ea042674e357aecf7f50eeab",
+        "bytes": 97005
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E2b_window_fact_oldest-baseline/records.jsonl.trials/f805fd55-50f2-40a6-accc-8a067385721d/events.jsonl",
+        "sha256": "4b5bddc562945074ce0532f91557648c922c2ade53fea1c8594f8bd10c604c6e",
+        "bytes": 807075
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 443,
+        "response_count": 443,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "trial": "1",
+      "run_id": "86ff8933-8d55-4675-879f-f62e2df72aae",
+      "started_at": "2026-11-01T04:10:43.336068Z",
+      "finished_at": "2026-11-01T04:12:25.228942Z",
+      "status": "finished",
+      "verdict": "pass",
+      "outcome": "success",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 6,
+      "memory_reads": 1,
+      "posted_comments": [
+        "BETA",
+        "BETA"
+      ],
+      "seconds": 101.846905209,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl",
+        "sha256": "b9d78b7f4a2db7e6faa3f06225db1c37d253c7f581720a8bd28f8ff54d5cb2d5",
+        "bytes": 98338
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl.trials/86ff8933-8d55-4675-879f-f62e2df72aae/events.jsonl",
+        "sha256": "3c46332d058580c695008d624ade4495400d1eab5338c0723c83e0e5f238965b",
+        "bytes": 1371459
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 1035,
+        "response_count": 1035,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "trial": "2",
+      "run_id": "ae864440-47ab-4c8d-a18c-251791b13284",
+      "started_at": "2026-11-01T04:12:25.270892Z",
+      "finished_at": "2026-11-01T04:13:55.204784Z",
+      "status": "finished",
+      "verdict": "pass",
+      "outcome": "success",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 3,
+      "memory_reads": 1,
+      "posted_comments": [
+        "BETA"
+      ],
+      "seconds": 89.8830205,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl",
+        "sha256": "b9d78b7f4a2db7e6faa3f06225db1c37d253c7f581720a8bd28f8ff54d5cb2d5",
+        "bytes": 98338
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl.trials/ae864440-47ab-4c8d-a18c-251791b13284/events.jsonl",
+        "sha256": "13714152051e235042881f2232e5147e6fcaf91e9d7193a44f063148760f4e3d",
+        "bytes": 1201150
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 912,
+        "response_count": 912,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "baseline",
+      "trial": "3",
+      "run_id": "fe9e3573-ca1e-4e07-b9d7-afe6f664860d",
+      "started_at": "2026-11-01T04:13:55.237879Z",
+      "finished_at": "2026-11-01T04:16:33.140107Z",
+      "status": "finished",
+      "verdict": "pass",
+      "outcome": "success",
+      "source_commit": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 4,
+      "memory_reads": 2,
+      "posted_comments": [
+        "BETA"
+      ],
+      "seconds": 157.850706042,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl",
+        "sha256": "b9d78b7f4a2db7e6faa3f06225db1c37d253c7f581720a8bd28f8ff54d5cb2d5",
+        "bytes": 98338
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-baseline/records.jsonl.trials/fe9e3573-ca1e-4e07-b9d7-afe6f664860d/events.jsonl",
+        "sha256": "9b80614d59f0ce64ab45900242e9252a49eb2f56e96d46a6ceb260d9dd396f34",
+        "bytes": 2066552
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 1593,
+        "response_count": 1593,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    },
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "trial": "1",
+      "run_id": "3aa8be3c-769e-4c7e-a821-d99e464ebefb",
+      "started_at": "2026-11-01T04:17:34.320893Z",
+      "finished_at": "2026-11-01T04:22:35.231856Z",
+      "status": "incomplete",
+      "verdict": "provider_failure_unclassified",
+      "outcome": "failure",
+      "source_commit": "835e7b046c6841e0945a59326bc4ddcbae4a0df7",
+      "framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+      "provider": "claude",
+      "provider_version": "2.1.316",
+      "requested_model": "claude-opus-5-5",
+      "model_observation": "unavailable_in_host_projection",
+      "observed_model": null,
+      "context_reads": 6,
+      "memory_reads": 1,
+      "posted_comments": [
+        "BETA",
+        "BETA"
+      ],
+      "seconds": 300.856403333,
+      "record_partial": null,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-after/records.jsonl",
+        "sha256": "f49706080f5cdfc7995674b7fbdb7ae8d54cc99263cc04816c0f8a6c9e2d0f00",
+        "bytes": 27102
+      },
+      "evidence": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-11-01-e2a-resume3/E3_member_scope-after/records.jsonl.trials/3aa8be3c-769e-4c7e-a821-d99e464ebefb/events.jsonl",
+        "sha256": "c6ef124806985c1ab1b114c19d8abe0936daebd23c8ea89ff65c5a0a2d869447",
+        "bytes": 3839870
+      },
+      "lifecycle": {
+        "count": 1,
+        "complete": true,
+        "ledger_phase": "proof_acknowledged",
+        "permit_count": 1,
+        "termination_count": 1,
+        "proof_count": 1,
+        "proof_launch_count": 1,
+        "attempt_nonces_match": true,
+        "prompt_coverage_complete": true
+      },
+      "http": {
+        "request_count": 3025,
+        "response_count": 3025,
+        "paired": true
+      },
+      "physical_launch_count": 1,
+      "evidence_consistent": true
+    }
+  ],
+  "remaining_provider_cap": 14,
+  "next": "E3_member_scope after trial2",
+  "remaining_plan": [
+    {
+      "scenario": "E3_member_scope",
+      "arm": "after",
+      "start_trial": 2,
+      "remaining_trials": [
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 2
+    },
+    {
+      "scenario": "E4_stale_merge",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 3
+    },
+    {
+      "scenario": "E5_injection",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 1,
+      "call_cap": 3
+    },
+    {
+      "scenario": "E6_relay",
+      "arm": "baseline",
+      "start_trial": 1,
+      "remaining_trials": [
+        1,
+        2,
+        3
+      ],
+      "launches_per_trial": 2,
+      "call_cap": 6
+    }
+  ],
+  "sources": {
+    "baseline": {
+      "root": "/Volumes/artisan/code/2026/mc-context-guard-baseline-20261102",
+      "head_from_git_metadata": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "expected_head": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+      "head_matches": true,
+      "framework_files": {
+        "host_context_experiment_evidence_test.go": {
+          "sha256": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+          "matches_registered": true
+        },
+        "host_context_experiment_fixture_test.go": {
+          "sha256": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+          "matches_registered": true
+        },
+        "host_context_experiment_stop_test.go": {
+          "sha256": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+          "matches_registered": true
+        },
+        "host_context_experiment_test.go": {
+          "sha256": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893",
+          "matches_registered": true
+        }
+      },
+      "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+      "framework_matches": true,
+      "verification_scope": "Read metadata/hashes only; no git operation or dirty-tree validation"
+    },
+    "after": {
+      "root": "/Volumes/artisan/code/2026/mc-context-guard-after-20261102",
+      "head_from_git_metadata": "835e7b046c6841e0945a59326bc4ddcbae4a0df7",
+      "expected_head": "835e7b046c6841e0945a59326bc4ddcbae4a0df7",
+      "head_matches": true,
+      "framework_files": {
+        "host_context_experiment_evidence_test.go": {
+          "sha256": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+          "matches_registered": true
+        },
+        "host_context_experiment_fixture_test.go": {
+          "sha256": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+          "matches_registered": true
+        },
+        "host_context_experiment_stop_test.go": {
+          "sha256": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+          "matches_registered": true
+        },
+        "host_context_experiment_test.go": {
+          "sha256": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893",
+          "matches_registered": true
+        }
+      },
+      "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+      "framework_matches": true,
+      "verification_scope": "Read metadata/hashes only; no git operation or dirty-tree validation"
+    }
+  },
+  "preserved_executable": {
+    "path": "/Users/artisan/.local/share/claude/versions/2.1.316",
+    "sha256": "64c327e92b2c5e0f78c0a980c5a518121e1f0d140ca771ca5dd4488d1a2dcb3f",
+    "bytes": 310114176,
+    "executable": true,
+    "expected_sha256": "64c327e92b2c5e0f78c0a980c5a518121e1f0d140ca771ca5dd4488d1a2dcb3f",
+    "matches_registered": true,
+    "executed": false
+  },
+  "continuation_output_inventory": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/original-series-run",
+      "exists": true,
+      "clearance_exists": false,
+      "selected_outputs": [
+        {
+          "name": "E3_member_scope-after",
+          "exists": false
+        },
+        {
+          "name": "E4_stale_merge-baseline",
+          "exists": false
+        },
+        {
+          "name": "E5_injection-baseline",
+          "exists": false
+        },
+        {
+          "name": "E6_relay-baseline",
+          "exists": false
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261103/original-series-run",
+      "exists": true,
+      "clearance_exists": false,
+      "selected_outputs": [
+        {
+          "name": "E3_member_scope-after",
+          "exists": false
+        },
+        {
+          "name": "E4_stale_merge-baseline",
+          "exists": false
+        },
+        {
+          "name": "E5_injection-baseline",
+          "exists": false
+        },
+        {
+          "name": "E6_relay-baseline",
+          "exists": false
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continuation-current-session/original-series-run",
+      "exists": true,
+      "clearance_exists": false,
+      "selected_outputs": [
+        {
+          "name": "E3_member_scope-after",
+          "exists": false
+        },
+        {
+          "name": "E4_stale_merge-baseline",
+          "exists": false
+        },
+        {
+          "name": "E5_injection-baseline",
+          "exists": false
+        },
+        {
+          "name": "E6_relay-baseline",
+          "exists": false
+        }
+      ]
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run",
+      "exists": true,
+      "clearance_exists": false,
+      "selected_outputs": [
+        {
+          "name": "E3_member_scope-after",
+          "exists": false
+        },
+        {
+          "name": "E4_stale_merge-baseline",
+          "exists": false
+        },
+        {
+          "name": "E5_injection-baseline",
+          "exists": false
+        },
+        {
+          "name": "E6_relay-baseline",
+          "exists": false
+        }
+      ]
+    }
+  ],
+  "critical_findings": [],
+  "new_provider_calls": 0,
+  "limitations": [
+    "Does not prove current account health or exclusive live account window.",
+    "Root must check worktree dirty scope before launch.",
+    "Snapshot cannot exclude outputs outside named task/frozen worktrees.",
+    "Historical E3after1 remains incomplete despite BETA comments and complete lifecycle."
+  ],
+  "frozen_worktree_record_inventory": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-context-guard-after-20261102/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-10-31-series2/E1_memory_first-baseline/records.jsonl",
+      "sha256": "455dc58db8683254df6733efd811bd95c5fc77f92adede052406cc2188c49080",
+      "canonical_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/experiments-2026-10-31-series2/E1_memory_first-baseline/records.jsonl",
+      "canonical_sha256": "455dc58db8683254df6733efd811bd95c5fc77f92adede052406cc2188c49080",
+      "byte_identical_copy": true,
+      "counted_as_new": false
+    }
+  ]
+}

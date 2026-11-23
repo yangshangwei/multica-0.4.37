@@ -1,0 +1,396 @@
+{
+  "at": "2026-10-22T05:05:43.608776+00:00",
+  "raw": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22-resume/current-lane-notification-clients.stdout",
+  "raw_sha256": "506299b1a544078c73af21a0425d4349d1ffa11c71ea8c708ba865522c0066c8",
+  "stats": {
+    "startTime": "2026-10-22T04:57:12.673Z",
+    "duration": 166631.51799999998,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "actual_tests": [
+    {
+      "title": "Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "line": 94,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 23099,
+      "source_bytes": {
+        "e2e/collaboration-lane-close-controls.spec.ts": {
+          "recorded": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "current": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lane-close-controls.ts": {
+          "recorded": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "current": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lifecycle-controls.ts": {
+          "recorded": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "current": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-execution.ts": {
+          "recorded": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "current": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-native.ts": {
+          "recorded": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "current": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-provider.go": {
+          "recorded": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "current": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "equal": true
+        }
+      },
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/current-session-web-same-lane-identities.json",
+          "sha256": "f2ef4253f2f5d945206a3f9566dc3da4dcd4414270343a320c1394c49ac6fc73"
+        }
+      ]
+    },
+    {
+      "title": "Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "line": 100,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 18409,
+      "source_bytes": {
+        "e2e/collaboration-lane-close-controls.spec.ts": {
+          "recorded": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "current": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lane-close-controls.ts": {
+          "recorded": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "current": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lifecycle-controls.ts": {
+          "recorded": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "current": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-execution.ts": {
+          "recorded": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "current": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-native.ts": {
+          "recorded": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "current": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-provider.go": {
+          "recorded": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "current": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "equal": true
+        }
+      },
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/current-session-web-complete-identities.json",
+          "sha256": "90941ead089558229ded077d1982ea3e5cb9e13571367147787226123c4b4c9b"
+        }
+      ]
+    },
+    {
+      "title": "Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "line": 100,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 18441,
+      "source_bytes": {
+        "e2e/collaboration-lane-close-controls.spec.ts": {
+          "recorded": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "current": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lane-close-controls.ts": {
+          "recorded": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "current": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lifecycle-controls.ts": {
+          "recorded": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "current": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-execution.ts": {
+          "recorded": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "current": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-native.ts": {
+          "recorded": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "current": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-provider.go": {
+          "recorded": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "current": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "equal": true
+        }
+      },
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/current-session-web-cancel-identities.json",
+          "sha256": "96651ccc130f097018ab30ff1025a7ef23cda6997edbf3d9dc647722b86fa20e"
+        }
+      ]
+    },
+    {
+      "title": "Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "line": 94,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 19390,
+      "source_bytes": {
+        "e2e/collaboration-lane-close-controls.spec.ts": {
+          "recorded": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "current": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lane-close-controls.ts": {
+          "recorded": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "current": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lifecycle-controls.ts": {
+          "recorded": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "current": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-execution.ts": {
+          "recorded": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "current": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-native.ts": {
+          "recorded": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "current": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-provider.go": {
+          "recorded": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "current": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "equal": true
+        }
+      },
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/current-session-electron-same-lane-identities.json",
+          "sha256": "edc7ac2a24445541675c9ce31191144a9e3e1b00f5e759aaabc8d0ea6a1d2f5f"
+        }
+      ]
+    },
+    {
+      "title": "Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "line": 100,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 17641,
+      "source_bytes": {
+        "e2e/collaboration-lane-close-controls.spec.ts": {
+          "recorded": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "current": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lane-close-controls.ts": {
+          "recorded": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "current": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lifecycle-controls.ts": {
+          "recorded": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "current": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-execution.ts": {
+          "recorded": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "current": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-native.ts": {
+          "recorded": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "current": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-provider.go": {
+          "recorded": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "current": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "equal": true
+        }
+      },
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/current-session-electron-complete-identities.json",
+          "sha256": "f832009c974c843cbb03578aa8ab68371267ba2079c181daf112783fe37cce2e"
+        }
+      ]
+    },
+    {
+      "title": "Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "line": 100,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 22810,
+      "source_bytes": {
+        "e2e/collaboration-lane-close-controls.spec.ts": {
+          "recorded": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "current": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lane-close-controls.ts": {
+          "recorded": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "current": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lifecycle-controls.ts": {
+          "recorded": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "current": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-execution.ts": {
+          "recorded": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "current": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-native.ts": {
+          "recorded": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "current": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-provider.go": {
+          "recorded": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "current": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "equal": true
+        }
+      },
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/current-session-electron-cancel-identities.json",
+          "sha256": "9aace7fe80a0b507f3873c4dd437e8dfa1b55d35b5fc27b3882e9853d19daeff"
+        }
+      ]
+    },
+    {
+      "title": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "file": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "line": 15,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 21386,
+      "source_bytes": {
+        "e2e/collaboration-offline-result-notifications.spec.ts": {
+          "recorded": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+          "current": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-offline-result-notifications.ts": {
+          "recorded": "ab8c09d4600e354231e870721665798cbedd0cb584350f03cb96ebaeb3ac615c",
+          "current": "ab8c09d4600e354231e870721665798cbedd0cb584350f03cb96ebaeb3ac615c",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-offline-handoff.ts": {
+          "recorded": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35",
+          "current": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lifecycle-controls.ts": {
+          "recorded": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "current": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-execution.ts": {
+          "recorded": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "current": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-native.ts": {
+          "recorded": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "current": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-provider.go": {
+          "recorded": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "current": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "equal": true
+        }
+      },
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/current-session-web-notifications-identities.json",
+          "sha256": "90f2007d68af17fa867d1086a579b262f887b9d0482c16090c9e84630ae705f9"
+        }
+      ]
+    },
+    {
+      "title": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "file": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "line": 15,
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 22482,
+      "source_bytes": {
+        "e2e/collaboration-offline-result-notifications.spec.ts": {
+          "recorded": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+          "current": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-offline-result-notifications.ts": {
+          "recorded": "ab8c09d4600e354231e870721665798cbedd0cb584350f03cb96ebaeb3ac615c",
+          "current": "ab8c09d4600e354231e870721665798cbedd0cb584350f03cb96ebaeb3ac615c",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-offline-handoff.ts": {
+          "recorded": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35",
+          "current": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-lifecycle-controls.ts": {
+          "recorded": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "current": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-execution.ts": {
+          "recorded": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "current": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-native.ts": {
+          "recorded": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "current": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "equal": true
+        },
+        "e2e/fixtures/collaboration-cross-client-provider.go": {
+          "recorded": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "current": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+          "equal": true
+        }
+      },
+      "attachments": [
+        {
+          "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/current-session-electron-notifications-identities.json",
+          "sha256": "d165c59ce8dc9337b547d274ab302b52f3e6e6664047ce09e3ab6ae2c9e2c85a"
+        }
+      ]
+    }
+  ],
+  "credential_scan_violations": 0,
+  "product_change": false,
+  "scope": "Current actual production Web/Electron+Linux namespaces; explicit synthetic provider; no installed full Main or commercial account"
+}

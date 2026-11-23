@@ -1,22 +1,23 @@
 import { useState } from "react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, screen, within } from "@testing-library/react";
+import { fireEvent, screen, waitFor, within } from "@testing-library/react";
 import type { MemberWithUser, Squad, SquadTemplate } from "@multica/core/types";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 import { renderWithI18n } from "../../test/i18n";
 import { SquadsPage } from "./squads-page";
 
 const mocks = vi.hoisted(() => ({
+  workspace: { id: "ws-1", slug: "acme" },
   squads: [] as Squad[],
   agents: [] as { id: string; name: string }[],
   members: [] as MemberWithUser[],
   squadsError: false,
+  squadsPending: false,
   refetchSquads: vi.fn(),
   templates: [] as SquadTemplate[],
   templatesError: false,
   refetchTemplates: vi.fn(),
-  openModal: vi.fn(),
   viewState: {
     scope: "all", sortField: "name", sortDirection: "asc", hiddenColumns: [],
     filters: { leaders: [] as string[], creators: [] as string[] },
@@ -27,7 +28,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("@tanstack/react-query", () => ({
   useQuery: (options: { queryKey: unknown[] }) => options.queryKey[0] === "squads"
-    ? { data: mocks.squads, isLoading: false, error: mocks.squadsError ? new Error("failed") : null, refetch: mocks.refetchSquads }
+    ? { data: mocks.squadsPending ? undefined : mocks.squads, isSuccess: !mocks.squadsPending && !mocks.squadsError, error: mocks.squadsError ? new Error("failed") : null, refetch: mocks.refetchSquads }
     : { data: options.queryKey[0] === "members" ? mocks.members : mocks.agents, isLoading: false, refetch: vi.fn() },
   useQueryClient: () => ({ invalidateQueries: vi.fn() }),
   useMutation: () => ({ isPending: false, mutate: vi.fn() }),
@@ -46,13 +47,9 @@ vi.mock("@multica/core/paths", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@multica/core/paths")>();
   return {
     ...actual,
-    useCurrentWorkspace: () => ({ id: "ws-1", slug: "acme" }),
-    useWorkspacePaths: () => actual.paths.workspace("acme"),
+    useCurrentWorkspace: () => mocks.workspace,
+    useWorkspacePaths: () => actual.paths.workspace(mocks.workspace.slug),
   };
-});
-vi.mock("@multica/core/modals", () => {
-  const state = { open: mocks.openModal };
-  return { useModalStore: Object.assign((selector: (value: typeof state) => unknown) => selector(state), { getState: () => state }) };
 });
 vi.mock("@multica/core/squads/stores", () => ({
   useSquadsViewStore: Object.assign((selector: (state: typeof mocks.viewState) => unknown) => selector(mocks.viewState), { getState: () => mocks.viewState }),
@@ -106,15 +103,18 @@ function renderPage(navigation = adapter(), locale: "en" | "zh-Hans" = "en") {
       </NavigationProvider>
     );
   }
-  return renderWithI18n(<Page />, { locale });
+  const view = renderWithI18n(<Page />, { locale });
+  return { ...view, rerenderPage: () => view.rerender(<Page />) };
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mocks.workspace = { id: "ws-1", slug: "acme" };
   mocks.squads = [];
   mocks.agents = [{ id: SQUAD.leader_id, name: "Taylor" }];
   mocks.members = [CURRENT_MEMBER];
   mocks.squadsError = false;
+  mocks.squadsPending = false;
   mocks.templates = [TEMPLATE];
   mocks.templatesError = false;
   mocks.viewState.scope = "all";
@@ -122,56 +122,71 @@ beforeEach(() => {
 });
 
 describe("SquadsPage discovery and management", () => {
-  it("defaults to saved squads and switches to a separate template view in the URL", async () => {
+  it("shows the saved-squad directory without workspace and template tabs", () => {
+    mocks.squads = [SQUAD];
+    const navigation = adapter();
+    renderPage(navigation);
+    expect(screen.getByRole("link", { name: SQUAD.name })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Apply to project" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("tab", { name: "Workspace" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("tab", { name: "Templates" })).not.toBeInTheDocument();
+  });
+
+  it("redirects legacy template bookmarks to the market and preserves unrelated URL state", async () => {
+    const navigation = {
+      ...adapter(),
+      searchParams: new URLSearchParams("view=templates&context=project"),
+      hash: "#catalog",
+    };
+    renderPage(navigation);
+    await waitFor(() => {
+      expect(navigation.replace).toHaveBeenCalledWith(
+        "/acme/marketplace?context=project&type=squad-templates#catalog",
+      );
+    });
+    expect(screen.queryByRole("tab", { name: "Templates" })).not.toBeInTheDocument();
+  });
+
+  it("opens the creation page from the header without displaying a dialog", async () => {
     const user = userEvent.setup();
     mocks.squads = [SQUAD];
     const navigation = adapter();
     renderPage(navigation);
-    expect(screen.getByRole("tab", { name: "Workspace" })).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByRole("link", { name: SQUAD.name })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Apply to project" })).not.toBeInTheDocument();
-    await user.click(screen.getByRole("tab", { name: "Templates" }));
-    expect(navigation.replace).toHaveBeenCalledWith("/acme/squads?view=templates");
-    expect(screen.getByRole("button", { name: "Apply to project" })).toBeVisible();
-    expect(screen.queryByRole("table")).not.toBeInTheDocument();
-    await user.click(screen.getByRole("tab", { name: "Workspace" }));
-    expect(navigation.replace).toHaveBeenLastCalledWith("/acme/squads");
-    expect(screen.getByRole("link", { name: SQUAD.name })).toBeVisible();
+    const link = screen.getByRole("link", { name: "New Squad" });
+    expect(link).toHaveAttribute("href", "/acme/squads/new");
+    link.focus();
+    await user.keyboard("{Enter}");
+    expect(navigation.push).toHaveBeenCalledExactlyOnceWith("/acme/squads/new");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("opens bookmarked templates and preserves unrelated query state when switching", async () => {
+  it("links to the creation chooser and in-app documentation from an empty directory", async () => {
     const user = userEvent.setup();
-    const navigation = { ...adapter(), searchParams: new URLSearchParams("view=templates&context=project") };
+    const navigation = adapter();
     renderPage(navigation);
-    expect(screen.getByRole("tab", { name: "Templates" })).toHaveAttribute("aria-selected", "true");
-    await user.click(screen.getByRole("tab", { name: "Workspace" }));
-    expect(navigation.replace).toHaveBeenCalledWith("/acme/squads?context=project");
+    for (const [name, href] of [
+      ["New Squad", "/acme/squads/new"],
+      ["Read the docs", "/acme/docs/squads"],
+      ["Browse templates", "/acme/marketplace?type=squad-templates"],
+    ]) {
+      const link = screen.getByRole("link", { name });
+      expect(link).toHaveAttribute("href", href);
+      link.focus();
+      await user.keyboard("{Enter}");
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith(href);
+      vi.mocked(navigation.push).mockClear();
+      await user.click(link);
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith(href);
+      vi.mocked(navigation.push).mockClear();
+    }
   });
 
-  it("offers template and custom creation in a dismissible chooser", async () => {
-    const user = userEvent.setup();
+  it("uses the shared agent-style collection header for saved squads", () => {
     mocks.squads = [SQUAD];
     renderPage();
-    const trigger = screen.getByRole("button", { name: "New Squad" });
-    trigger.focus();
-    await user.keyboard("{Enter}");
-    const chooser = screen.getByRole("dialog", { name: "New Squad" });
-    expect(chooser).toHaveAccessibleDescription("Choose how to create your squad.");
-    expect(within(chooser).getByRole("button", { name: /Create from template/ })).toBeVisible();
-    expect(within(chooser).getByRole("button", { name: /Create custom squad/ })).toBeVisible();
-    await user.keyboard("{Escape}");
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(trigger).toHaveFocus();
-    expect(mocks.openModal).not.toHaveBeenCalled();
 
-    await user.click(trigger);
-    await user.click(screen.getByRole("button", { name: /Create from template/ }));
-    expect(mocks.openModal).toHaveBeenCalledWith("staff-squad-template");
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    await user.click(trigger);
-    await user.click(screen.getByRole("button", { name: /Create custom squad/ }));
-    expect(mocks.openModal).toHaveBeenCalledWith("create-squad");
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByText("Give work to a squad and let the leader coordinate each role.")).toBeVisible();
+    expect(screen.getByRole("link", { name: "Learn more →" })).toHaveAttribute("href", "/acme/docs/squads");
   });
 
   it("provides a native squad link and only navigates once for keyboard and pointer activation", async () => {
@@ -322,9 +337,108 @@ describe("SquadsPage discovery and management", () => {
 
   it("keeps empty-state creation available and never counts templates as saved squads", () => {
     renderPage();
-    expect(screen.getByText("No squads yet. Create one to get started.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Create from template" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Let your agents work as a team." })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "New Squad" })).toHaveLength(1);
     expect(within(screen.getByRole("heading", { level: 1 }).parentElement!).queryByText("1")).not.toBeInTheDocument();
+  });
+
+  it("does not mistake a pending squad response for an empty workspace", () => {
+    mocks.squadsPending = true;
+    renderPage();
+    expect(screen.queryByRole("heading", { name: "Let your agents work as a team." })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Read the docs" })).not.toBeInTheDocument();
+  });
+
+  it("keeps filtered-empty results separate from the welcome page", () => {
+    mocks.squads = [SQUAD];
+    mocks.viewState.filters = { leaders: ["other-leader"], creators: [] };
+    renderPage();
+    expect(screen.getByText("No squads match")).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "Clear filters" }).length).toBeGreaterThan(0);
+    expect(screen.queryByRole("heading", { name: "Let your agents work as a team." })).not.toBeInTheDocument();
+  });
+
+  it("localizes the welcome copy and controls", () => {
+    renderPage(adapter(), "zh-Hans");
+    expect(screen.getByRole("heading", { name: "让智能体组队， 像团队一样干活" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "新建AI小队" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "浏览模板" })).toHaveAttribute("href", "/acme/marketplace?type=squad-templates");
+    expect(screen.getByRole("link", { name: "阅读文档" })).toHaveAttribute("href", "/acme/docs/squads");
+    expect(screen.getByRole("button", { name: "下一个示例" })).toBeInTheDocument();
+  });
+
+  it("lets keyboard and pointer users explore the examples while hiding inactive slides", async () => {
+    const user = userEvent.setup();
+    renderPage();
+    const carousel = screen.getByRole("region", { name: "How squads work" });
+    const previous = within(carousel).getByRole("button", { name: "Previous example" });
+    const next = within(carousel).getByRole("button", { name: "Next example" });
+    const firstDot = within(carousel).getByRole("button", { name: "Show example 1: One entry point. The right next step." });
+    const slides = within(carousel).getAllByRole("group", { hidden: true });
+
+    expect(previous).toBeDisabled();
+    expect(firstDot).toHaveAttribute("aria-pressed", "true");
+    expect(slides).toHaveLength(3);
+    expect(slides[0]).not.toHaveAttribute("inert");
+    expect(slides[1]).toHaveAttribute("inert");
+    expect(slides[2]).toHaveAttribute("inert");
+    expect(within(carousel).getByRole("heading", { name: "One entry point. The right next step." })).toBeInTheDocument();
+    expect(within(carousel).queryByRole("heading", { name: "A role for every member" })).not.toBeInTheDocument();
+
+    next.focus();
+    await user.keyboard("{Enter}");
+    expect(within(carousel).getByRole("heading", { name: "A role for every member" })).toBeInTheDocument();
+    expect(within(carousel).queryByRole("heading", { name: "One entry point. The right next step." })).not.toBeInTheDocument();
+    expect(previous).toBeEnabled();
+    expect(firstDot).toHaveAttribute("aria-pressed", "false");
+    expect(slides[0]).toHaveAttribute("inert");
+    expect(slides[1]).not.toHaveAttribute("inert");
+    expect(slides[2]).toHaveAttribute("inert");
+
+    await user.click(next);
+    expect(within(carousel).getByRole("heading", { name: "Every result moves work forward" })).toBeInTheDocument();
+    expect(next).toBeDisabled();
+    expect(within(carousel).getByRole("status")).toHaveTextContent("Example 3 of 3: Every result moves work forward");
+
+    await user.click(previous);
+    expect(within(carousel).getByRole("heading", { name: "A role for every member" })).toBeInTheDocument();
+    await user.click(firstDot);
+    expect(within(carousel).getByRole("heading", { name: "One entry point. The right next step." })).toBeInTheDocument();
+    expect(previous).toBeDisabled();
+    expect(within(carousel).getAllByRole("group")).toHaveLength(1);
+  });
+
+  it("starts a newly selected workspace at the first example with its own creation and docs links", async () => {
+    const user = userEvent.setup();
+    const navigation = adapter();
+    const { rerenderPage } = renderPage(navigation);
+    await user.click(screen.getByRole("button", { name: /^Show example 3:/ }));
+    expect(screen.getByRole("status")).toHaveTextContent("Example 3 of 3");
+    rerenderPage();
+    expect(screen.getByRole("status")).toHaveTextContent("Example 3 of 3");
+
+    mocks.workspace = { id: "ws-2", slug: "beta" };
+    navigation.pathname = "/beta/squads";
+    rerenderPage();
+
+    expect(screen.getByRole("status")).toHaveTextContent("Example 1 of 3");
+    expect(screen.getByRole("button", { name: "Previous example" })).toBeDisabled();
+    expect(screen.getByRole("link", { name: "New Squad" })).toHaveAttribute("href", "/beta/squads/new");
+    expect(screen.getByRole("link", { name: "Read the docs" })).toHaveAttribute("href", "/beta/docs/squads");
+  });
+
+  it("replaces a previously successful empty response with retry feedback when refreshing fails", () => {
+    const { rerenderPage } = renderPage();
+    expect(screen.getByRole("heading", { name: "Let your agents work as a team." })).toBeInTheDocument();
+
+    mocks.squadsError = true;
+    rerenderPage();
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not load squads.");
+    expect(screen.getByRole("button", { name: "Retry" })).toBeEnabled();
+    expect(screen.getByRole("link", { name: "New Squad" })).toHaveAttribute("href", "/acme/squads/new");
+    expect(screen.queryByRole("heading", { name: "Let your agents work as a team." })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Read the docs" })).not.toBeInTheDocument();
   });
 
   it("retains retry and template navigation when the saved squad query fails", async () => {
@@ -332,10 +446,9 @@ describe("SquadsPage discovery and management", () => {
     mocks.squadsError = true;
     renderPage();
     expect(screen.getByRole("alert")).toHaveTextContent("Could not load squads.");
-    expect(screen.queryByText("No squads yet. Create one to get started.")).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Let your agents work as a team." })).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Retry" }));
     expect(mocks.refetchSquads).toHaveBeenCalledOnce();
-    await user.click(screen.getByRole("tab", { name: "Templates" }));
-    expect(screen.getByRole("button", { name: "Apply to project" })).toBeInTheDocument();
+    expect(screen.queryByRole("tab", { name: "Templates" })).not.toBeInTheDocument();
   });
 });

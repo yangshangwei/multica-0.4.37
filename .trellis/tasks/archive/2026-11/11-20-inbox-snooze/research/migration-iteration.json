@@ -1,0 +1,34 @@
+[
+  {
+    "role": "handler_iter",
+    "database": "multica_inbox_snooze_handler_iter",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "run",
+      "./cmd/migrate",
+      "up"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/migrate-handler_iter.log",
+    "log_sha256": "4cd7427e0e2027fc76965d21d0b217dd9889470e4cb9baacee68102d425b1885",
+    "migration_ledger": "877|889_inbox_critical_source_identity"
+  },
+  {
+    "role": "state_iter",
+    "database": "multica_inbox_snooze_state_iter",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "run",
+      "./cmd/migrate",
+      "up"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/migrate-state_iter.log",
+    "log_sha256": "f8dd0431f1f6b0fdde7dde00881f9ae81601c69c8fad7b43a938382c6ce04fb7",
+    "migration_ledger": "877|889_inbox_critical_source_identity"
+  }
+]

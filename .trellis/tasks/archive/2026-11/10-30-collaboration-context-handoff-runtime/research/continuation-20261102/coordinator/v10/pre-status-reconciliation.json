@@ -1,0 +1,63 @@
+{
+  "recorded_at": "2026-11-02T19:53:13.799505+00:00",
+  "purpose": "Preserve stale current-status fields before aligning them with observed v9/v10 and approved runtime25 gates",
+  "task_before": {
+    "notes": "runtime9项审计和5项召回跟进已独立复核并合入；知识/框架/交付/E2E也已合流，RKI1-5关闭、RKI6开放。7f8ca8725完整check exit2，bundle测试fixture修复分支91113cbeb正在完整包及独立复核；最终同候选fake/race/平台验收待验。RK1runtime25消耗0，原冻结实验另余14，下一E3 after trial2。",
+    "meta": {
+      "progress_phase": "v9_browser16_failed_targeted_repairs_passed_v10_wholecheck_preparation",
+      "next_action": "single_owner_freeze_repaired_E2E_harness_then_v10_complete_run_then_password7",
+      "current_final_candidate": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+      "current_candidate_record": "../10-30-collaboration-context-handoff/research/final-candidate-20261102/attempt-3-registration.json",
+      "shared_fullcheck_owner": {
+        "session": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+        "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102",
+        "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+        "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+        "adapter_variant": "resume-20261101/adapter-v6",
+        "cross_review": "research/continuation-20261102/v6-cross-review/review.json",
+        "actual_fullcheck_started": true,
+        "runtime_real_provider_calls": 0,
+        "run_record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v6.json",
+        "run_log": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v6.log",
+        "process_id": 91222,
+        "started_at": "2026-11-02T14:47:28.083133+00:00",
+        "state": "complete_failed",
+        "exit_code": 2,
+        "finished_at": "2026-11-02T15:02:20.157158+00:00"
+      },
+      "latest_shared_complete_check": {
+        "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+        "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v6.json",
+        "exit_code": 2,
+        "static_tasks_pass": 15,
+        "TS_pass": 13082,
+        "Go_named_events": {
+          "run": 1899,
+          "pass": 1889,
+          "skip": 7,
+          "fail": 3
+        },
+        "Go_failure_package": "github.com/multica-ai/multica/server/cmd/server",
+        "canonical_failed_tests": [
+          "TestSkillTemplateCatalog_RouterAndWorkspaceGates/member",
+          "TestSkillTemplateCopy_OrdinaryCreatePreservesSourceAndBindings"
+        ],
+        "failure": "GET/api/skills/templates expected200 actual503/resource_store_unavailable",
+        "browser_not_run": true,
+        "actual_final_acceptance": false,
+        "runtime_real_provider_calls": 0
+      }
+    }
+  },
+  "framework_before": {
+    "fake_proof_current_status": "Current639 quiet normal62pass/race62pass,0fail/skip, exit0 each; same reviewed framework hash. RKI6 fake execution passed; independent result review pending429. Historical missing-seal incomplete results unchanged.",
+    "not_runnable_reasons": [
+      "local integration completed; latest whole make check failed and final combined validation remains open",
+      "final clean candidate source/CLI/configuration/artifact fingerprints remain unregistered",
+      "user currently permits local preparation only; exclusive serial gateway window and applicable execution authority required before paid execution"
+    ],
+    "maintained_at": "2026-11-02T13:37:28.487277+00:00"
+  },
+  "budget_source": "research/continuation-20261102/coordinator/authorization-recall.md",
+  "paid_gate_unchanged": true
+}

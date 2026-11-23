@@ -1,0 +1,181 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "review_date": "2026-11-16",
+  "status": "R21_ORIGINAL_RED_COMPLETE_BUT_NOT_ACCEPTED_UNEXPECTED_WRITER_CONTROL_FAILURE",
+  "original_RED_gate_accepted": false,
+  "product_lock_repair_accepted_or_authorized": false,
+  "actual_R20_lock_holder_proven": false,
+  "original_four_or_S2_acceptance_increment": 0,
+  "actual_inventory": {
+    "top": 4,
+    "named": 6,
+    "leaves": 5,
+    "leaf_PASS": 2,
+    "leaf_FAIL": 3,
+    "SKIP": 0,
+    "package_terminal": "fail",
+    "command_exit": 1,
+    "parse_errors": [],
+    "actual_run_and_terminal_sets_match_expected_names": true,
+    "actual_terminal_values_match_original_result": true
+  },
+  "expected_coexistence_observations": [
+    {
+      "test": "TestCollaborationWorkflowReceiptReadThenStageEvidence",
+      "result": "FAIL",
+      "line": 81,
+      "actual_error": "PostgreSQL55P03 could not obtain lock on row in relation user",
+      "real_held_receipt_and_distinct_PID_checks_reached": true
+    },
+    {
+      "test": "TestCollaborationWorkflowStageEvidenceThenReceiptRead",
+      "result": "FAIL",
+      "line": 120,
+      "actual_error": "timeout: context deadline exceeded",
+      "deadline_seconds": 5,
+      "real_held_R4_and_distinct_PID_checks_reached": true
+    }
+  ],
+  "unexpected_writer_control": {
+    "test": "TestCollaborationWorkflowReceiptReadOriginalWriterFence",
+    "result": "FAIL",
+    "line": 160,
+    "original_needle": "GetCollaborationStageCodeCandidate",
+    "actual_production_query": "GetCollaborationStageCodeHead",
+    "production_helper": "collaboration_stage_review.go:31 codeCandidate; invoked by DecideStage:243",
+    "original_needle_reached": false,
+    "R4_refusal_and_final_returned_confirmation_assertions_executed": false,
+    "raw_error_value": "<nil>",
+    "raw_receipt_captured": false,
+    "original_writer_control_retroactively_counted_PASS": false,
+    "earlier_static_review_missed_actual_query_name": true
+  },
+  "authority_controls": {
+    "wrong_actor": "PASS",
+    "disabled_account": "PASS"
+  },
+  "source_and_recorded_cleanup": {
+    "original_argv_cwd_matches_binding": true,
+    "source_before_after_files": 5045,
+    "source_drift": [],
+    "original_test_hash_9048a661_retained": true,
+    "ledger_and_indexes_unchanged": true,
+    "other_connections_after": 0,
+    "required_fixture_tables_empty": true,
+    "whole_database_claimed_empty": false,
+    "retained_configuration_invalidations": {"before": 21, "after": 27},
+    "retained_knowledge_invalidations": {"before": 18, "after": 33}
+  },
+  "recorder_provenance": {
+    "original_consumed_reference_path_now_contains_r02_adaptation": true,
+    "original_reference_current_path_hash_matches": false,
+    "original_consumed_bytes_archived_before_adaptation": true,
+    "archived_original_bytes_match_consumed_dd112881_hash": true,
+    "original_binding_or_result_rewritten": false,
+    "new_recorder_claimed_as_original_input": false
+  },
+  "test_only_supplement_handoff": {
+    "proposed_change": "Use actual GetCollaborationStageCodeHead writer needle and print unexpected receipt; preserve all original assertions, controls and5s budgets.",
+    "new_frozen_copy_and_fresh_full_original_RED_required": true,
+    "new_supplement_execution_or_GREEN_product_result_claimed": false
+  },
+  "frozen_r02_test_only_boundary": {
+    "verdict": "PASS_ACCEPTED_FOR_ONE_FRESH_ORIGINAL_PRODUCT_RED",
+    "source": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/implement/source-control-r02",
+    "exact_changed_test_lines": 2,
+    "actual_GetCollaborationStageCodeHead_needle_confirmed": true,
+    "unexpected_receipt_diagnostic_added": true,
+    "all_original_assertions_controls_5s_contexts_and_cleanup_unchanged": true,
+    "inventory": {"top": 4, "named": 6, "leaves": 5},
+    "source_manifest_files": 5045,
+    "other_5044_source_byte_mode_identities_unchanged": true,
+    "product_changes": 0,
+    "fresh_r02_profiles": ["red", "green", "race"],
+    "recorded_other_connections_each": 0,
+    "recorded_Go_commands_started": 0,
+    "ledger_entries_each": 853,
+    "index_records_each": 663,
+    "table_counts_each": 211,
+    "environment_and_clone_audit_hashes_match": true,
+    "reviewed_draft_input_references": 8,
+    "draft_reference_mismatches": [],
+    "draft_cwd_selector_expected_names_and_5m_budget_match": true,
+    "explicit_fresh_database": "multica_pay241_20261116_s2_receiptread_red_r21r02",
+    "new_immutable_r02_runner_reviewed_separately": true,
+    "requires_final_review_binding_before_single_RED_command": true,
+    "actual_new_RED_outcome_observed": false,
+    "original_r01_RED_gate_reclassified_as_accepted": false,
+    "product_repair_authorized": false
+  },
+  "evidence": {
+    "original_RED_result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/database/profiles-r01/red-r01/result.json",
+      "sha256": "62039eaaa412baa219958648d421534c2c29828902bd74af03ab24b7e1f0f7d4"
+    },
+    "original_raw": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/database/profiles-r01/red-r01/stdout.jsonl",
+      "sha256": "80ced6ce52e25a1e73a8f2ff184e8a1b5969408bd2405bb206665a278bc727a1"
+    },
+    "source_before": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/database/profiles-r01/red-r01/source-before.json",
+      "sha256": "695b69b798af0bdea8da9aae433e49fc742f35bec28187464b087acf853af835"
+    },
+    "source_after": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/database/profiles-r01/red-r01/source-after.json",
+      "sha256": "695b69b798af0bdea8da9aae433e49fc742f35bec28187464b087acf853af835"
+    },
+    "database_before": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/database/profiles-r01/red-r01/database-before.json",
+      "sha256": "29b0cdb95ddf98514f1184c939bce4b8525471cdd457d4b985afa3eacf00788c"
+    },
+    "database_after": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/database/profiles-r01/red-r01/database-after.json",
+      "sha256": "7ef27f7efa8c477c512ac1a69ddcce451f0b8c42466e25fdcb45c1886b62f417"
+    },
+    "original_consumed_binding": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/red-command-binding-r01.json",
+      "sha256": "f8f83cb2dfc35fd66d6138634dc5bf279011743600ea1b5b989827ec044e298c"
+    },
+    "archived_original_recorder": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/evidence/recorder-before-r02-profile-allowlist.py",
+      "sha256": "dd112881fc16ccec184f2324dd8f473b5d218968ef18125c77a775deb849c162"
+    },
+    "explicit_recorder_provenance": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/evidence/recorder-r01-r02-provenance.json",
+      "sha256": "0cef117d0216ff38ed551ef035ec06c96818c534978c397ae6f1c987811477cf"
+    },
+    "corrected_r02_test": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/implement/source-control-r02/server/internal/service/collaboration_workflow_read_concurrency_test.go",
+      "sha256": "0dfec7c38d0cc651aaf614cc9208ab2f00ec055c6cf6f846684ed34e06cf31c6"
+    },
+    "corrected_r02_source_manifest": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/evidence/red-source-manifest-r02.json",
+      "sha256": "c65bff32dff8180c153bfe7df2accf337602ba6d5ae6d630eee26be352f1a209"
+    },
+    "corrected_r02_inventory": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/evidence/red-test-inventory-r02.json",
+      "sha256": "48c964279ce045ddd03b31216d7e067a255286dd514746dbabf814db18b63357"
+    },
+    "corrected_r02_two_line_patch": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/evidence/control-r02-test-only-diff.patch",
+      "sha256": "dcbd60a62adcc2285859538ebf00e0e4f2772f693505bbe18a7ad0e60180b8d8"
+    },
+    "fresh_r02_profile_allocation": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/database/profiles-r02/three-profile-allocation-r01.json",
+      "sha256": "ae7aa457e2ca1bed4435c4fb70374fdb96b6336d6fed0a715a96fda98c75c522"
+    },
+    "reviewed_r02_command_draft": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/red-command-binding-draft-r02.json",
+      "sha256": "27e027ffa8585f1fd49d8fed16547239043a4274dd221270dff5a1e8b6ce49b8"
+    },
+    "immutable_r02_runner": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/run-service-check-r02.py",
+      "sha256": "ba39d217e81bc84ca1ba906cf09890d66dbe74811728fc0f910fc634de114acd"
+    }
+  },
+  "checker_executed_lint_typecheck_tests_DB_API_browser_build_signals_installs_or_Git": 0,
+  "changed_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-red-outcome-independent-check-20261116.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-red-outcome-independent-check-20261116.json"
+  ]
+}

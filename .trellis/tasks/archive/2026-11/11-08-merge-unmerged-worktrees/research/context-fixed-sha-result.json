@@ -1,0 +1,22 @@
+{
+  "head": "18e43dc93b0f54fe02aceff2c226f7837a471346",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestContextExperiment",
+    "-count=1",
+    "-json"
+  ],
+  "exit_code": 0,
+  "counts": {
+    "pass": 32
+  }
+}

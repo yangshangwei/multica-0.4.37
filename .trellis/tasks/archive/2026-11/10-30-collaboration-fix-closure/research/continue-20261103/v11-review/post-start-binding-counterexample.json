@@ -1,0 +1,35 @@
+{
+  "recorded_at": "2026-11-03T01:09:08.663608+00:00",
+  "scope": "credential-free fake entrypoint counterexamples only",
+  "launcher_sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+  "existing_preflight_sha256": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+  "observations": [
+    {
+      "kind": "tracked_source",
+      "mutation_point": "fake Make launch after all initial binding validation",
+      "launcher_exit_code": 0,
+      "record_state": "complete",
+      "record_exit_code": 0,
+      "make_launches": 1,
+      "initial_source_sha256": "d8339acd98dd31d2560a96bf3f226e8c9267404f662e5cc5c81cc5ba1f64d3d1",
+      "final_source_sha256": "8dd7a3f0155016c0c12837179b10e6d5bcda028a9856a9107137407478bcfcab",
+      "workspace_link_now_owned": true,
+      "only_synthetic_fixture_modified": true,
+      "actual_repository_Make_DB_services_Provider": 0
+    },
+    {
+      "kind": "workspace_link",
+      "mutation_point": "fake Make launch after all initial binding validation",
+      "launcher_exit_code": 0,
+      "record_state": "complete",
+      "record_exit_code": 0,
+      "make_launches": 1,
+      "initial_source_sha256": "d8339acd98dd31d2560a96bf3f226e8c9267404f662e5cc5c81cc5ba1f64d3d1",
+      "final_source_sha256": "d8339acd98dd31d2560a96bf3f226e8c9267404f662e5cc5c81cc5ba1f64d3d1",
+      "workspace_link_now_owned": false,
+      "only_synthetic_fixture_modified": true,
+      "actual_repository_Make_DB_services_Provider": 0
+    }
+  ],
+  "conclusion": "The launcher validates before Make, then accepts its exit without post-run source/workspace revalidation. Root must bind a separate final audit before full acceptance or review a successor post-run guard."
+}

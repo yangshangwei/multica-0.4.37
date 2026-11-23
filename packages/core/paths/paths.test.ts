@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { paths, isGlobalPath } from "./paths";
 
@@ -44,10 +45,19 @@ describe("paths.workspace(slug)", () => {
     expect(ws.issueDetail("id with space")).toBe("/acme/issues/id%20with%20space");
   });
 
+  it("builds squad creation destinations within the current workspace", () => {
+    const squadWorkspace = paths.workspace("team space");
+    expect(squadWorkspace.newSquad()).toBe("/team%20space/squads/new");
+    expect(squadWorkspace.newSquadManual()).toBe("/team%20space/squads/new/manual");
+    expect(squadWorkspace.newSquadTemplate()).toBe("/team%20space/squads/new/template");
+  });
+
   it("builds workspace-scoped marketplace destinations", () => {
     expect(ws.marketplace()).toBe("/acme/marketplace");
     expect(ws.marketplaceTab("mcp")).toBe("/acme/marketplace?type=mcp");
     expect(ws.marketplaceTab("skills")).toBe("/acme/marketplace?type=skills");
+    expect(ws.marketplaceTab("squad-templates")).toBe("/acme/marketplace?type=squad-templates");
+    expect(ws.marketplaceTab("agent-templates")).toBe("/acme/marketplace?type=agent-templates");
     expect(paths.workspace("team space").marketplace()).toBe("/team%20space/marketplace");
   });
 

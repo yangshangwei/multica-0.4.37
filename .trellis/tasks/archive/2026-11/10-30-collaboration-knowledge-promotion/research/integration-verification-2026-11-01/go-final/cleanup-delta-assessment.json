@@ -1,0 +1,15 @@
+{
+  "full_run": "db-clean-command.json",
+  "product_source_unchanged": true,
+  "changed_test_files": [
+    "server/internal/service/task_knowledge_logging_test.go",
+    "server/internal/service/task_knowledge_preparation_boundary_test.go"
+  ],
+  "change_scope": "Only exact-source fixture teardown after product assertions; no test assertion or production change",
+  "ordered_normal_and_race": "../../fixture-cleanup-2026-11-01/verification.json",
+  "final_vet": "vet-command.json",
+  "final_source": {
+    "server/internal/service/task_knowledge_logging_test.go": "f31f3e8eafdbb23bd451a7a4222a961b4069eaa1e382087cf30fcfe36b969061",
+    "server/internal/service/task_knowledge_preparation_boundary_test.go": "ca2fae80e142236dd93ee02823c3a99be4913c305c98cb9eb4ab131637ecd4b9"
+  }
+}

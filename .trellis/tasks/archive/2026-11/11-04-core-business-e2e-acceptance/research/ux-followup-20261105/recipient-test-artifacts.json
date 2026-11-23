@@ -1,0 +1,33 @@
+{
+  "recorded_at_utc": "2026-11-05T04:27:52.296145+00:00",
+  "observed_head": "d88551718b362c5fb2b3d5cfed5808513a0b3676",
+  "source_write_scope": [
+    "e2e/collaboration-recipient-picker-web.spec.ts"
+  ],
+  "implementation": {
+    "file": "e2e/collaboration-recipient-picker-web.spec.ts",
+    "base_git_blob": "88032e430f0dd716a1a541413f725a9fcda524aa",
+    "base_sha256": "1531b8bb9550ca411e17ef5b09649f4a8980d56cc360003615fc89ebf6409f41",
+    "source_sha256": "4975f7e6198cac880216138b71b0bdfa0099c636f20416e808caae21de0b12a4",
+    "patch_file": ".trellis/tasks/11-04-core-business-e2e-acceptance/research/ux-followup-20261105/recipient-test.patch",
+    "patch_sha256": "5eb50ad192c6825436fd431c7cf6a8de0e29f1c53a1d139c493f3fd8cdced031"
+  },
+  "static_checks": {
+    "syntax_parse": ".trellis/tasks/11-04-core-business-e2e-acceptance/research/ux-followup-20261105/recipient-static-parse.json",
+    "syntax_parse_sha256": "57ad1a74c15bfa002cee46ad74fe923c8015818e06b67c0cd1e48356a4afad66",
+    "syntax_diagnostics": 0,
+    "git_diff_check_exit": 0,
+    "runtime_typecheck_lint": "NOT_RUN"
+  },
+  "delivery_proposal": {
+    "file": ".trellis/tasks/11-04-core-business-e2e-acceptance/research/ux-followup-20261105/delivery-attachment-locator-proposal.patch",
+    "sha256": "39d901efbea055f422c82118638d3b4b2c1afe66387ca2d4a140bd49b2dd649a",
+    "target": "e2e/collaboration-delivery-web.spec.ts",
+    "target_sha256": "2abe357d3dda931edae450548183a9501d00daec98c124c28227f23b4342f110",
+    "target_matches_head": true,
+    "git_apply_check_exit": 0,
+    "applied": false
+  },
+  "runtime_status": "NOT_RUN; parent schedules isolated host window",
+  "committed_by_this_agent": false
+}

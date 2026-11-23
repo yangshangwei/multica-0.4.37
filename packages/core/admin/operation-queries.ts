@@ -5,14 +5,15 @@ import { ApiError, errorCode, getApi } from "../api";
 import { useAuthStore } from "../auth";
 import { adminApiScope, adminKeys, AdminUnsupportedError, type AdminScope } from "./queries";
 import { operationNeedsPolling, type AdminOperation } from "./operation-schema";
-import type { AdminAdmissionChange, AdminExecutionCancellation } from "./control-schema";
+import type { AdminAdmissionChange, AdminCollaborationGateChange, AdminExecutionCancellation } from "./control-schema";
 import type { AdminAlertChange } from "./alert-schema";
 import { readAdminControlDraft, saveAdminControlDraft, removeAdminControlDraft, type AdminControlDraftScope, type AdminControlDraft } from "./operation-draft";
 
 export type AdminControlInput = { id: string; key: string } & (
   { action: "admission"; body: AdminAdmissionChange } |
   { action: "cancel"; body: AdminExecutionCancellation } |
-  { action: "alert"; body: AdminAlertChange }
+  { action: "alert"; body: AdminAlertChange } |
+  { action: "collaboration_gate"; body: AdminCollaborationGateChange }
 );
 export class AdminControlUncertainError extends Error {
   constructor(readonly idempotencyKey: string) {
@@ -34,9 +35,25 @@ function clearDeterminedDraft(scope: AdminScope, input: AdminControlInput) {
   try { removeAdminControlDraft(draftScope(scope), input.id, input.key); return true; }
   catch { return false; }
 }
+function operationKind(input: AdminControlInput): string {
+  switch (input.action) {
+    case "cancel": return "task.cancel";
+    case "alert": return `alert.${input.body.action}`;
+    case "collaboration_gate": return "collaboration.gate";
+    default: return "installation.admission";
+  }
+}
 function matches(scope: AdminScope, input: AdminControlInput, operation: AdminOperation): boolean {
   return operation.organizationId === scope.organizationId && operation.actorId === scope.userId && operation.targetId === input.id &&
-    operation.kind === (input.action === "cancel" ? "task.cancel" : input.action === "alert" ? `alert.${input.body.action}` : "installation.admission");
+    operation.kind === operationKind(input);
+}
+function sendAdminControl(input: AdminControlInput) {
+  switch (input.action) {
+    case "alert": return getApi().changeAdminAlert(input.id, input.body, input.key);
+    case "cancel": return getApi().cancelAdminExecution(input.id, input.body, input.key);
+    case "collaboration_gate": return getApi().changeAdminCollaborationGate(input.body, input.key);
+    default: return getApi().changeAdminAdmission(input.id, input.body, input.key);
+  }
 }
 export async function findAdminControlOperation(scope: AdminScope, input: AdminControlInput): Promise<AdminOperation | null> {
   assertScope(scope);
@@ -53,9 +70,7 @@ export async function submitAdminControl(scope: AdminScope, input: AdminControlI
   const existing = readAdminControlDraft(persistentScope, input.id);
   saveAdminControlDraft(persistentScope, input);
   try {
-    const result = input.action === "alert" ? await getApi().changeAdminAlert(input.id, input.body, input.key) : input.action === "cancel"
-      ? await getApi().cancelAdminExecution(input.id, input.body, input.key)
-      : await getApi().changeAdminAdmission(input.id, input.body, input.key);
+    const result = await sendAdminControl(input);
     assertScope(scope);
     if (!result || result.target.id !== input.id || !matches(scope, input, result.operation)) throw new AdminUnsupportedError();
     clearDeterminedDraft(scope, input);
@@ -63,7 +78,9 @@ export async function submitAdminControl(scope: AdminScope, input: AdminControlI
   } catch (error) {
     assertScope(scope);
     if (error instanceof ApiError && error.status >= 400 && error.status < 500) {
-      const hasFailedReceipt = error.status === 409 && (input.action === "cancel" && errorCode(error) === "execution_fence_conflict" || input.action === "alert" && ["alert_version_conflict", "alert_state_conflict", "alert_assignee_unavailable", "alert_resolution_invalid"].includes(errorCode(error) ?? ""));
+      // These refusals commit a failed receipt under the original key.
+      const hasFailedReceipt = error.status === 409 && (input.action === "cancel" && errorCode(error) === "execution_fence_conflict" || input.action === "alert" && ["alert_version_conflict", "alert_state_conflict", "alert_assignee_unavailable", "alert_resolution_invalid"].includes(errorCode(error) ?? "") ||
+        input.action === "collaboration_gate" && errorCode(error) === "collaboration_gate_conflict");
       if (!existing && !hasFailedReceipt) { clearDeterminedDraft(scope, input); throw error; }
       if ([401, 403].includes(error.status)) throw error;
     }

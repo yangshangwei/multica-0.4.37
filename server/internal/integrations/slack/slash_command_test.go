@@ -321,6 +321,28 @@ func TestSlashHandle_IssueLimitReachedIsActionable(t *testing.T) {
 	}
 }
 
+// An Observer installation agent can never file the issue, so the reply must
+// say why and what to do instead of inviting a retry that fails the same way.
+func TestSlashHandle_ObserverAgentGetsAutonomyReply(t *testing.T) {
+	q := &fakeSlashQueries{
+		inst:    activeSlashInstallation(),
+		binding: db.ChannelUserBinding{MulticaUserID: slashTestUUID(9)},
+	}
+	tasks := &fakeQuickCreate{err: service.CheckQuickCreateAutonomy(string(service.AutonomyObserver))}
+	p, captured, _ := newTestSlashProcessor(q, tasks, &fakeBindingMinter{})
+	var logs bytes.Buffer
+	p.logger = slog.New(slog.NewTextHandler(&logs, nil))
+
+	p.Handle(context.Background(), issueSlashCmd())
+
+	if *captured != slashAutonomyText {
+		t.Fatalf("expected autonomy reply, got %q", *captured)
+	}
+	if logs.Len() != 0 {
+		t.Fatalf("expected an autonomy refusal not to emit a warning, got %q", logs.String())
+	}
+}
+
 func TestSlashHandle_IgnoresOtherCommands(t *testing.T) {
 	tasks := &fakeQuickCreate{}
 	p, _, count := newTestSlashProcessor(&fakeSlashQueries{inst: activeSlashInstallation()}, tasks, &fakeBindingMinter{})

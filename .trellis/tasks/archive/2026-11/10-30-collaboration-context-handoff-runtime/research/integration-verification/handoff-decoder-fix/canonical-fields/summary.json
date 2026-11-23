@@ -1,0 +1,177 @@
+{
+  "head": "e3620721efacb820b89709c8db9d326d9cf2b00b",
+  "owned_files": {
+    "server/pkg/protocol/collaboration_host.go": {
+      "before_sha256": "b90cbc66ec86c493d6307a659d0ebd3f819b42c444e8ea3de7cf7519c72a641d",
+      "after_sha256": "e1ea570679355b0d87c02faf2f421565efc6fcb6c9692690d9693020eb37e43f"
+    },
+    "server/pkg/protocol/collaboration_handoff_decode_test.go": {
+      "before_sha256": "bfdc5f03511eee38589cab90c211b72f342da712d4dd309f62371e83eaebfa05",
+      "after_sha256": "c7ef601b462231d9f18fc240e5a257d93638fbba3adeed0227ee07ca60fa5b54"
+    },
+    "server/internal/daemon/collaborationrun/host_handoff_wire_test.go": {
+      "before_sha256": "86c56ddc10d1d7e509f19388cb16f8cb3a9eeec098c61117ee01272663bcd7f3",
+      "after_sha256": "a57504bd74c50740aeccf3c2b5ffffe58e6641f7fda56a12df0f6b37c3b0095a"
+    }
+  },
+  "checks": [
+    {
+      "name": "red-protocol",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./pkg/protocol",
+        "-run",
+        "TestCollaborationHandoffWireRejectsFieldAliases|TestCollaborationHostObjectChecksTypedChildrenWithoutChangingContentMaps|TestCollaborationHandoffWirePreservesEscapedCanonicalNamesAndLiteralText",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 1,
+      "started_at": "2026-10-31T18:02:53.947931+00:00",
+      "finished_at": "2026-10-31T18:02:54.791673+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 1,
+      "failed_top_level_tests": [
+        "TestCollaborationHandoffWireRejectsFieldAliases",
+        "TestCollaborationHostObjectChecksTypedChildrenWithoutChangingContentMaps"
+      ]
+    },
+    {
+      "name": "red-daemon",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "^TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof$",
+        "-count=1",
+        "-timeout=60s",
+        "-json"
+      ],
+      "exit_code": 1,
+      "started_at": "2026-10-31T18:02:53.947928+00:00",
+      "finished_at": "2026-10-31T18:02:56.322357+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 0,
+      "failed_top_level_tests": [
+        "TestHostHandoffMalformedWireRefusesBeforeLaunchAndPreservesProof"
+      ]
+    },
+    {
+      "name": "green-protocol",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./pkg/protocol",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-31T18:05:00.595371+00:00",
+      "finished_at": "2026-10-31T18:05:01.516814+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 31,
+      "failed_top_level_tests": []
+    },
+    {
+      "name": "green-daemon",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "TestHostHandoff|TestClientHostContextExtensions|TestClientNamespaceCannotAcquireHostContextExtensions",
+        "-count=1",
+        "-timeout=5m",
+        "-json"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-31T18:05:00.595371+00:00",
+      "finished_at": "2026-10-31T18:05:16.733140+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 23,
+      "failed_top_level_tests": []
+    },
+    {
+      "name": "race",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "./pkg/protocol",
+        "./internal/daemon/collaborationrun",
+        "-run",
+        "TestCollaboration|TestHostHandoffMalformedWire|TestHostHandoffLaunchInjectsAndBindsTheActualFirstInput",
+        "-count=1",
+        "-timeout=5m",
+        "-json"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-31T18:05:56.324803+00:00",
+      "finished_at": "2026-10-31T18:06:03.368698+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 33,
+      "failed_top_level_tests": []
+    },
+    {
+      "name": "vet",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./pkg/protocol",
+        "./internal/daemon/collaborationrun"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-31T18:05:56.324801+00:00",
+      "finished_at": "2026-10-31T18:05:56.691631+00:00",
+      "skipped": [],
+      "passed_top_level_tests": 0,
+      "failed_top_level_tests": []
+    }
+  ],
+  "format_checks": [
+    {
+      "command": [
+        "gofmt",
+        "-l",
+        "server/pkg/protocol/collaboration_host.go",
+        "server/pkg/protocol/collaboration_handoff_decode_test.go",
+        "server/internal/daemon/collaborationrun/host_handoff_wire_test.go"
+      ],
+      "exit_code": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "server/pkg/protocol/collaboration_host.go",
+        "server/pkg/protocol/collaboration_handoff_decode_test.go",
+        "server/internal/daemon/collaborationrun/host_handoff_wire_test.go"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "owned_sources_match_green_race_vet": true,
+  "frozen_handoff_tests_unchanged": true,
+  "behavior": "Require canonical decoded JSON field names and unique names for typed objects, recursively following typed struct/array children and flattening embedded metadata. Preserve arbitrary maps/interfaces and literal text. Single escaped canonical names remain valid; escaped duplicates/case aliases fail.",
+  "limitations": [
+    "No DB or installed/real Provider execution.",
+    "No schema/budget/seal semantics or production daemon/service changes."
+  ]
+}

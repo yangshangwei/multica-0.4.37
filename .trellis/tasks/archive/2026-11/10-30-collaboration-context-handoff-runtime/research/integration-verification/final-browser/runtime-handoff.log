@@ -1,0 +1,61 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+◇ injected env (1) from .env.worktree // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+
+Running 2 tests using 1 worker
+
+[1A[2K(node:55649) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:55649) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K◇ injected env (0) from .env.worktree // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[1A[2K[1/2] [chromium] › e2e/collaboration-runtime-handoff-desktop.spec.ts:14:1 › Electron deep link opens retained handoff context and honestly marks an unknown recording tail
+[1A[2K(node:55672) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:55672) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K◇ injected env (0) from .env.worktree // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+
+[1A[2K[2/2] [chromium] › e2e/collaboration-runtime-handoff-web.spec.ts:6:1 › Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal
+[1A[2K  1) [chromium] › e2e/collaboration-runtime-handoff-web.spec.ts:6:1 › Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[id="run-f337e5ea-9e1d-4170-a1c7-56118463ce17"]').getByRole('region', { name: 'Run records', exact: true }).getByText('Recording range is unavailable on this server.', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "soft toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('[id="run-f337e5ea-9e1d-4170-a1c7-56118463ce17"]').getByRole('region', { name: 'Run records', exact: true }).getByText('Recording range is unavailable on this server.', { exact: true })[22m
+
+
+      35 |   await sourceLink.click();
+      36 |   const prior = page.locator(`[id="run-${fixture.priorRunId}"]`).getByRole("region", { name: "Run records", exact: true });
+    > 37 |   await expect.soft(prior.getByText("Recording range is unavailable on this server.", { exact: true })).toBeVisible();
+         |                                                                                                         ^
+      38 |   await info.attach("source-run-navigation", { contentType: "application/json", body: JSON.stringify({
+      39 |     requested_href: sourceHref, observed_url: page.url(), issue_id: fixture.issueId, source_run_id: fixture.priorRunId,
+      40 |   }) });
+        at /Volumes/artisan/code/2026/mc-runtime-integration-20261031/e2e/collaboration-runtime-handoff-web.spec.ts:37:105
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/runtime-handoff-artifacts/collaboration-runtime-hand-5a631-es-private-reads-on-removal-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/integration-verification/final-browser/runtime-handoff-artifacts/collaboration-runtime-hand-5a631-es-private-reads-on-removal-chromium/error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-runtime-handoff-web.spec.ts:6:1 › Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal 
+  1 passed (12.2s)
+make: *** [env-exec] Error 1

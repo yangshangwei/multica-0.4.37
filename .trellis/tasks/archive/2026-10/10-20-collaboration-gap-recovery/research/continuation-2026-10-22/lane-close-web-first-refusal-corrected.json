@@ -1,0 +1,110 @@
+{
+  "at": "2026-10-22T00:17:13.045362+00:00",
+  "command": [
+    "psql",
+    "<task DATABASE_URL>",
+    "-XAt",
+    "-c",
+    "SELECT json_build_object('kind',kind,'request_id',request_id,'result_code',result_code,'result',result) FROM collaboration_operation WHERE scope_id='01a160f4-ca4b-7d71-b951-f60526bf30a4' AND request_id IN ('fe4c07a9-b7a1-49e5-ae33-5161fffcb253','d18d2bf8-99c4-41ae-b54d-e64ec3755b84') ORDER BY created_at"
+  ],
+  "exit_code": 0,
+  "rows": [
+    {
+      "kind": "stop_queue",
+      "request_id": "fe4c07a9-b7a1-49e5-ae33-5161fffcb253",
+      "result_code": "already_ended",
+      "result": {
+        "code": "already_ended",
+        "scope": "target",
+        "action": "stop",
+        "run_id": null,
+        "status": 200,
+        "targets": [
+          {
+            "code": "already_ended",
+            "group_id": null,
+            "target_id": "a8df2a76-aa8f-4eaf-bf7d-5d5bcb07682a",
+            "channel_id": "d9af25ea-ed48-48f6-84ea-3aa132d04468",
+            "queue_state": "paused",
+            "stopped_runs": 0,
+            "group_settled": false,
+            "unsettled_runs": 0,
+            "control_version": "5",
+            "group_generation": "0"
+          },
+          {
+            "code": "already_ended",
+            "group_id": null,
+            "target_id": "e77d00f8-c009-4454-9aec-3ed1621ae7b0",
+            "channel_id": "d9af25ea-ed48-48f6-84ea-3aa132d04468",
+            "queue_state": "paused",
+            "stopped_runs": 0,
+            "group_settled": false,
+            "unsettled_runs": 0,
+            "control_version": "5",
+            "group_generation": "0"
+          }
+        ],
+        "batch_id": null,
+        "channels": [
+          {
+            "code": "already_ended",
+            "group_id": null,
+            "channel_id": "d9af25ea-ed48-48f6-84ea-3aa132d04468",
+            "queue_state": "paused",
+            "stopped_runs": 0,
+            "group_settled": false,
+            "unsettled_runs": 0,
+            "control_version": "5",
+            "group_generation": "0"
+          }
+        ],
+        "grant_id": null,
+        "group_id": null,
+        "issue_id": "01a160f4-ca4b-7d71-b951-f60526bf30a4",
+        "target_id": "e77d00f8-c009-4454-9aec-3ed1621ae7b0",
+        "channel_id": "d9af25ea-ed48-48f6-84ea-3aa132d04468",
+        "command_id": null,
+        "request_id": "fe4c07a9-b7a1-49e5-ae33-5161fffcb253",
+        "proposal_id": null,
+        "queue_state": "paused",
+        "run_settled": false,
+        "target_holds": [],
+        "group_settled": false,
+        "control_version": "5",
+        "protocol_version": 2,
+        "target_set_version": "5"
+      }
+    },
+    {
+      "kind": "resume_queue",
+      "request_id": "d18d2bf8-99c4-41ae-b54d-e64ec3755b84",
+      "result_code": "stale_control_version",
+      "result": {
+        "code": "stale_control_version",
+        "scope": "target",
+        "action": "resume",
+        "run_id": null,
+        "status": 409,
+        "batch_id": null,
+        "channels": [],
+        "grant_id": null,
+        "group_id": null,
+        "issue_id": "01a160f4-ca4b-7d71-b951-f60526bf30a4",
+        "target_id": "e77d00f8-c009-4454-9aec-3ed1621ae7b0",
+        "channel_id": "d9af25ea-ed48-48f6-84ea-3aa132d04468",
+        "command_id": null,
+        "request_id": "d18d2bf8-99c4-41ae-b54d-e64ec3755b84",
+        "proposal_id": null,
+        "queue_state": "paused",
+        "run_settled": false,
+        "target_holds": [],
+        "group_settled": false,
+        "control_version": "5",
+        "protocol_version": 2,
+        "target_set_version": "5"
+      }
+    }
+  ],
+  "stderr": ""
+}

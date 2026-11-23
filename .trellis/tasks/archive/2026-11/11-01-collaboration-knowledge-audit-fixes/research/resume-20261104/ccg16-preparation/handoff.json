@@ -1,0 +1,81 @@
+{
+  "recorded_at": "2026-11-04T02:46:22.718756+00:00",
+  "state": "prepared_not_runnable",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "donor_candidate_sha": "d41573e3a4eb3bd6c36feed3f0d542a0e066ee0f",
+  "source_inputs_sha256": "089935913d6c0bccca30cdde842fc6a64293244e71be2f33ff1e8cf73caa99fb",
+  "templates": 13,
+  "protected_CCG15_files": 13,
+  "unchanged_current_sources": 11,
+  "pinned_tools": 4,
+  "python_AST_compile_only": 3,
+  "JSON_parsed": 10,
+  "early_refusal_controls_passed": 10,
+  "control_process_exit": 0,
+  "actual_permissions": 0,
+  "permissions_all_false": true,
+  "immutable_current_vs_future": {
+    "audit_module": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/final-state-audit-v16/final_state_audit.py",
+      "sha256": "2bf50f6e244f4c5f3b1c2022ae67663d8888047098145f8a1ea30fb4d28eb318",
+      "state": "actual_materialized_bytes_pending_independent_binding"
+    },
+    "environment_parser": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/run-make-check-v16-provenance.py",
+      "sha256": "52c2f0a40fab9dcaabbc20267c106cdffc503d126853e9a3290da280350deaca",
+      "state": "actual_materialized_bytes_pending_independent_binding"
+    },
+    "audit_review": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/v16-preparation/independent-review/review.json",
+      "sha256": null,
+      "state": "pending_actual_V16_independent_review"
+    },
+    "pending_bindings": [
+      "actual_full_result_and_independent_final_identity",
+      "four_actual_permission_resource_and_freshness_fields",
+      "current_CLI_and_fake_binary_builds",
+      "audit_review.actual_sha256"
+    ],
+    "forbidden_renderer_origins": [
+      "http://127.0.0.1:55132",
+      "http://localhost:55132",
+      "http://127.0.0.1:61276",
+      "http://localhost:61276",
+      "http://127.0.0.1:58268",
+      "http://localhost:58268"
+    ]
+  },
+  "current_CLI_binary_binding": "pending_actual_audited_V16_CLI_and_explicit_fake_builds",
+  "artifacts": {
+    "prepared-manifest.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/prepared-manifest.json",
+      "sha256": "1f5115505a1319e81c137b5047b68df4a442b87f7c0ba1498c6c508b397bb362"
+    },
+    "verification.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/verification.json",
+      "sha256": "4c17d55a9347f3db8205c955929f10f0543165728973cd5f84e8c736f01eed19"
+    },
+    "controls-execution.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/controls-execution.json",
+      "sha256": "4a2d58a2531a59c99d75d0eb22fd48d6840cdb050f3530885e9b24642e13cda2"
+    },
+    "commands.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/commands.json",
+      "sha256": "14136825f991769ad3368f24934aa7debff48c20af9893a690e41e281a595aab"
+    },
+    "README.md": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-preparation/README.md",
+      "sha256": "6f1e733935951b890dc32ea655ab322f6055692510d4262a2034b6d304ac5c6a"
+    }
+  },
+  "old_source_input_preserved": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v15/source-inputs.json",
+    "sha256": "90dc201a2b340c76329b1ccd8697e9bd0f7baf087ebfcde5075f558547da2eb9"
+  },
+  "Root_next": "actual_V16_shared_exit0_final_audit_inventory_live_release; immutable_CCG16_rebind_and_independent_review; fresh_CCG1_normal_race_then_CCG2_OFF_ON",
+  "DB_TestMain_build_service_browser_Provider_operations": 0,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false
+}

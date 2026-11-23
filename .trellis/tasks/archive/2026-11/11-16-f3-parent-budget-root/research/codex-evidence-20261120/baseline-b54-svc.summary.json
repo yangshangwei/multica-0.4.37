@@ -1,0 +1,47 @@
+{
+  "database": "f3_budget_cx_baseline_service",
+  "package": "./internal/service",
+  "exit": 0,
+  "counts": {
+    "pass": 9
+  },
+  "tests": [
+    {
+      "test": "TestReportSnapshotCollectionAuditPageSizeDoesNotChangeFacts",
+      "action": "pass"
+    },
+    {
+      "test": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/cut",
+      "action": "pass"
+    },
+    {
+      "test": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/page_hash",
+      "action": "pass"
+    },
+    {
+      "test": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/missing_EOF",
+      "action": "pass"
+    },
+    {
+      "test": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/page_boundary",
+      "action": "pass"
+    },
+    {
+      "test": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/classification",
+      "action": "pass"
+    },
+    {
+      "test": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/missing_source",
+      "action": "pass"
+    },
+    {
+      "test": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift",
+      "action": "pass"
+    },
+    {
+      "test": "TestReportSnapshotCollectionAuditHasNoPublicProjection",
+      "action": "pass"
+    }
+  ],
+  "log": "/tmp/f3-codex-20261120/baseline-b54-svc.jsonl"
+}

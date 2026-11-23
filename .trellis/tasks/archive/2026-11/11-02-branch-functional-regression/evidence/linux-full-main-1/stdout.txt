@@ -1,0 +1,26 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-installed-main.spec.ts:139:1 › installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume
+[1A[2K  1) [chromium] › e2e/collaboration-installed-main.spec.ts:139:1 › installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume 
+
+    TimeoutError: locator.fill: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Add participant', exact: true }) }).getByLabel('Exact recipient', { exact: true })[22m
+
+
+      54 |   await page.getByRole("button", { name: label, exact: true }).click();
+      55 |   const form = page.locator("form").filter({ has: page.getByRole("heading", { name: label, exact: true }) });
+    > 56 |   await form.getByLabel("Exact recipient", { exact: true }).fill(userId);
+         |                                                             ^
+      57 |   await form.getByRole("button", { name: "Find account", exact: true }).click();
+      58 |   await expect(form.getByText(`Selected account: ${name}`, { exact: true })).toBeVisible();
+      59 |   if (action === "transfer") await form.getByLabel("Note", { exact: true }).fill(note);
+        at webOperation (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-main.spec.ts:56:61)
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-main.spec.ts:165:17
+
+    Error Context: ../multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/linux-full-main-1/artifacts/collaboration-installed-ma-ccdb4-d-reject-unconfirmed-Resume-chromium/error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-installed-main.spec.ts:139:1 › installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume 

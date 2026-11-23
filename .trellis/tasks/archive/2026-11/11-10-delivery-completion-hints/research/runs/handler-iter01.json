@@ -1,0 +1,414 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-p",
+    "1",
+    "./internal/handler",
+    "-run",
+    "^TestDeliveryCompletionHint",
+    "-count=1",
+    "-timeout=10m"
+  ],
+  "database": "hint_handler_iter01",
+  "started_at": "2026-11-10T09:18:53.424514+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-delivery-completion-hints-20261110",
+  "exit_code": 0,
+  "finished_at": "2026-11-10T09:19:14.884469+00:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-completion-hints-20261110-q2osx5ar/logs/handler-iter01.log",
+  "log_sha256": "106f64c0bbc133ea5b7376a8df13c5cbfd108f76bd9196ce4380117a6a28634a",
+  "counts": {
+    "pass": 75,
+    "fail": 0,
+    "skip": 0
+  },
+  "inventory": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintMatchingPreservesPersistedFacts/done",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintMatchingPreservesPersistedFacts/_DONE_",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintMatchingPreservesPersistedFacts/accepted_hint",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintMatchingPreservesPersistedFacts",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintApplicabilityBranchesDoNotReadKeys/non_done",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintApplicabilityBranchesDoNotReadKeys/custom_non_done",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintApplicabilityBranchesDoNotReadKeys/off",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintApplicabilityBranchesDoNotReadKeys/no_project",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintApplicabilityBranchesDoNotReadKeys/missing_key",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintApplicabilityBranchesDoNotReadKeys",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/null_object",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/null_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/verdict",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/missing_fields",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/array",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/overflow_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/string_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/null_status",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/noncanonical_key",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/invalid_key",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/missing_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/fractional_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/blank_status",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/boolean_status",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/blank_key",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/case_alias",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/skip",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/negative_revision",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/missing_key",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/zero_key",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/duplicate",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/trailing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/oversize",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/media_type",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/nonexistent_hint",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus/retired_hint",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintStrictRequestAndStatus",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintKeyIsolationAndCurrentIdentity/missing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintKeyIsolationAndCurrentIdentity/other_evaluator",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintKeyIsolationAndCurrentIdentity/other_issue",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintKeyIsolationAndCurrentIdentity/expired_credential",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintKeyIsolationAndCurrentIdentity/forged_agent",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintKeyIsolationAndCurrentIdentity/forged_task",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintKeyIsolationAndCurrentIdentity/unverified",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintKeyIsolationAndCurrentIdentity/machine",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintKeyIsolationAndCurrentIdentity",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintOldNegativeNeverUpgrades/unknown",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintOldNegativeNeverUpgrades/hold",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintOldNegativeNeverUpgrades",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal/policy_aba",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal/issue",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal/project",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal/head",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal/missing_head",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal/receipt",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal/missing_execution",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal/revoked_producer",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal/stale_request",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintLiveInvalidationAndRefusal",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintCommitFailureHasNoSuccessOrWrites/false",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintCommitFailureHasNoSuccessOrWrites/true",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintCommitFailureHasNoSuccessOrWrites",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintConcurrentWriterFirst/policy",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintConcurrentWriterFirst/issue",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintConcurrentWriterFirst/status_catalog",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintConcurrentWriterFirst",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintFencesPolicyAndStatusUntilCommit/policy",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintFencesPolicyAndStatusUntilCommit/status_catalog",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintFencesPolicyAndStatusUntilCommit/issue",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintFencesPolicyAndStatusUntilCommit/member",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintFencesPolicyAndStatusUntilCommit",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintRejectsUnreadySchemaEvenWhenOff/missing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintRejectsUnreadySchemaEvenWhenOff/nonunique",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintRejectsUnreadySchemaEvenWhenOff",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "test": "TestDeliveryCompletionHintErrorBodyDoesNotContainEvaluation",
+      "action": "pass"
+    }
+  ],
+  "packages": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "action": "pass"
+    }
+  ]
+}

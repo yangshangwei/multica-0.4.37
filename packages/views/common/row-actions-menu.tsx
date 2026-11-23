@@ -2,6 +2,7 @@
 
 import { Fragment, type KeyboardEvent, type ReactNode } from "react";
 import { MoreHorizontal } from "lucide-react";
+import { cn } from "@multica/ui/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,10 +52,14 @@ export function handleRowActivationKey(
 export function RowActionsMenu({
   label,
   groups,
+  triggerClassName,
+  contentClassName,
 }: {
   /** Accessible name of the trigger, e.g. "Chat actions". */
   label: string;
   groups: RowActionItem[][];
+  triggerClassName?: string;
+  contentClassName?: string;
 }) {
   const filled = groups.filter((group) => group.length > 0);
   if (filled.length === 0) return null;
@@ -69,13 +74,13 @@ export function RowActionsMenu({
             // The row owns click-to-select; opening the menu must not select it.
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
-            className="inline-flex size-8 shrink-0 items-center justify-center rounded text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring data-popup-open:bg-accent data-popup-open:text-foreground [@media(hover:hover)]:hidden"
+            className={cn("inline-flex size-8 shrink-0 items-center justify-center rounded text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring data-popup-open:bg-accent data-popup-open:text-foreground [@media(hover:hover)]:hidden", triggerClassName)}
           >
             <MoreHorizontal className="size-4" />
           </button>
         }
       />
-      <DropdownMenuContent align="end" className="w-auto">
+      <DropdownMenuContent align="end" className={cn("w-auto", contentClassName)}>
         {filled.map((group, index) => (
           <Fragment key={group[0]!.key}>
             {index > 0 && <DropdownMenuSeparator />}

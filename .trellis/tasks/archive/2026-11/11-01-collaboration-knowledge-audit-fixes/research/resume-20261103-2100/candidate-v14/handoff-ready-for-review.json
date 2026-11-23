@@ -1,0 +1,116 @@
+{
+  "recorded_at": "2026-11-03T13:54:29.852674+00:00",
+  "state": "ready_for_independent_review_and_root_resource_clearance",
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "candidate_clean": true,
+  "coordinator": "01a1a186-9a5c-7b00-96f8-0430b47edb4c",
+  "canonical_product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "development_source_id": "26c01e6174e12fdf99c1a586271a0b0ac66c02f515070d16e42a8a26be05babc",
+  "tracked_files": 17536,
+  "product_files": 7984,
+  "workspace_edges": 22,
+  "workspace_exports": 66,
+  "builds": {
+    "cli": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/candidate-setup/cli-build-v14.json",
+      "sha256": "99a426822170b176c7f241107b3c4677b8d1a9b915180daeb6632dd2811c2b50"
+    },
+    "desktop": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/candidate-setup/desktop-build-v14.json",
+      "sha256": "072308ab5b888c39d6cfd1b97e7d98733a5ec86e12126973c6e973521aafe1dc"
+    }
+  },
+  "staged_desktop": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/staged-desktop-ready.json",
+    "sha256": "dad8d92f479e37931cbf45cad10e6d86ace8b6410eb77ddb908a7b3d27991bf5"
+  },
+  "installed_artifact_binding": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/candidate-setup/artifact-bindings-v14.json",
+    "sha256": "9a8cef03383b01cfeaf048955cb289927c01deee5e0713a18ddcfe45b944b898"
+  },
+  "bindings": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/owned-bindings-v14-provenance.json",
+    "sha256": "c86aaae47ff62a177dd0cf469396cd26e6db647c0c3cffd4fdf7befd40030cfa"
+  },
+  "source_env": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/check-source-v14.env",
+    "sha256": "da26b06efe361d0a51f3a6e474db84764bf19095f0e151c8b32b7c3970bba771"
+  },
+  "launcher": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/run-make-check-v14-provenance.py",
+    "sha256": "7bdc66bcab9b31bf3ec570fd005d0fd59e89d9efe0ec08a2ed170ce0e0eb480c"
+  },
+  "adapters": {
+    "go": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/check-bin/go",
+      "sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce"
+    },
+    "pnpm": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/check-bin/pnpm",
+      "sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+    }
+  },
+  "final_auditor": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-state-audit-v14/final_state_audit.py",
+    "sha256": "9dfa39822223d8487d569cbe619b7ee4039277aec3a211bdfaa3148f1076484e"
+  },
+  "private_checks": {
+    "launcher": {
+      "tests": 45,
+      "exit_code": 0,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/launcher-private-preflight.json",
+        "sha256": "fb98679d05f6c032ec2f116d098d63a37e103a11b7b2313b21e6d3f86fe2d89b"
+      },
+      "log": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/launcher-private-preflight.log",
+        "sha256": "1345c841f6c5909982cd2b5ef32cde45666b06041415c45af6ca33eac1835774"
+      }
+    },
+    "adapter-env": {
+      "tests": 5,
+      "exit_code": 0,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/adapter-env-private-preflight.json",
+        "sha256": "70a0fd69c263693cb40d21afdc1e708c2bce73bdbd6f1705310850682bb6bc16"
+      },
+      "log": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/adapter-env-private-preflight.log",
+        "sha256": "8c5695523953a9e86583a69ab1aeab3bab4b8be71fb4568109b28807e9064857"
+      }
+    },
+    "final-audit": {
+      "tests": 16,
+      "exit_code": 0,
+      "record": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-audit-private-preflight.json",
+        "sha256": "252bc06734aac363d8407e92d3481a03a4aae7f103bf3e219f7dfb0fb3f576de"
+      },
+      "log": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/final-audit-private-preflight.log",
+        "sha256": "7790e357c4b7ca7875619c41ff11e49e5ec0a06c97c635154043c81b5f97596b"
+      }
+    }
+  },
+  "private_checks_total": 66,
+  "resource_proposal": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/resource-ownership-proposal.json",
+    "sha256": "e9494c956b5cafe209cb525927d815cc4a8ebf20d1609f95d7300abc38f74115"
+  },
+  "setup_failure_retained": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261103-2100/candidate-v14/resource-preflight-failure-01.json",
+    "sha256": "77382a0c2c5bf02ae548d34c9a0108aecfa822a6c164408021439ff89d9606b7"
+  },
+  "protected_v13_artifacts_unchanged": 7,
+  "fullcheck_started": false,
+  "fullcheck_writable_state_absent": true,
+  "provider_calls": 0,
+  "knowledge_default": false,
+  "remaining": [
+    "Independent exact-byte review including resource/environment binding",
+    "Root confirms live resource ownership and exclusive window",
+    "Root creates hash-bound independent clearance",
+    "Sole executor launches full make check then actual final audit and inventories"
+  ]
+}

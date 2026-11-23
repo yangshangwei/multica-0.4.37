@@ -1,0 +1,40 @@
+{
+  "started_at": "2026-11-03T13:50:55.833189+00:00",
+  "candidate_sha": "d0b132fff0c477eb2d744933e13db730240231aa",
+  "database": "multica_closure_v14_seed_01a1a186",
+  "source_env_sha256": "da26b06efe361d0a51f3a6e474db84764bf19095f0e151c8b32b7c3970bba771",
+  "allocation_sha256": "b7cb58c3e728ddf32175f9d559d671d3daeb9c14202cd55b644a07f549d4c103",
+  "script_sha256": "62ca5374aeb437a805737b4c592377dac26f193097a4edcdc92f0381742730fe",
+  "database_before": "multica_closure_v14_seed_01a1a186",
+  "no_default_or_docker_database_execution": true,
+  "build_command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/cli-build-offline.sb",
+    "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+    "build",
+    "-p=1",
+    "-mod=readonly",
+    "-o",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/migrate",
+    "./cmd/migrate"
+  ],
+  "build_exit": 0,
+  "build_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "migration_exit": 0,
+  "migration_log_sha256": "3bdef5b2ca0c896eab665efe4c1f661dbea2bcb06383285d8e863cb544a1cb7a",
+  "migrate_binary_sha256": "060c3a17ba03e9837092884a6fc789c067830629692d4ddec6f309c40f26a379",
+  "migration_command": [
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v14/migrate",
+    "up"
+  ],
+  "final_database_witness": {
+    "database": "multica_closure_v14_seed_01a1a186",
+    "server_addr": "172.20.0.2",
+    "server_port": 5432,
+    "migration_count": 752,
+    "latest_migration": "764_collaboration_ai_policy"
+  },
+  "finished_at": "2026-11-03T13:51:02.182594+00:00",
+  "candidate_status_after": ""
+}

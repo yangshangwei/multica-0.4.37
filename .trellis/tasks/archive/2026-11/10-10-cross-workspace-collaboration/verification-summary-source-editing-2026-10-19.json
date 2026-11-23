@@ -1,0 +1,317 @@
+{
+  "status": "verified_source_editing_increment_full_parent_pending",
+  "baseline_commit": "5f5fb9138820abd9b6c2c45d6bf0aeaeabf0fe60",
+  "verified_at": "2026-10-19T06:49:58.496919+00:00",
+  "evidence_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/cwc-source-editing-20261019T035920Z",
+  "typescript": {
+    "passed": 12162,
+    "files": 1010,
+    "packages": {
+      "@multica/core": 3732,
+      "@multica/docs": 62,
+      "@multica/views": 6936,
+      "@multica/web": 289,
+      "@multica/desktop": 1143
+    },
+    "report": "typescript-final.log",
+    "followup": "12 existing board-card tests and scoped lint passed after a CSS-only wrap correction; E2E TypeScript and restored generated-route typing passed."
+  },
+  "static": {
+    "lint_typecheck_tasks": 15,
+    "report": "static-final.log",
+    "go_vet": "go-vet-final.log",
+    "sqlc": {
+      "exit_code": 0,
+      "generated_files": 115,
+      "drift": []
+    },
+    "ui_exports": "62 files clean",
+    "knip": {
+      "exit_code": 1,
+      "findings": 1913,
+      "changed_file_findings": 0,
+      "report": "knip.json",
+      "classification": "Findings are outside changed files; existing repository static findings remain."
+    }
+  },
+  "go": {
+    "passed_unique_including_subtests": 2085,
+    "passed_top_level": 988,
+    "skipped_top_level": 8,
+    "skipped": [
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestIterationI1P95"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/internal/handler",
+        "test": "TestIterationI1DisableP95"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationPartialResumeRoutesLinux"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationSingleAgentRuntimeRoutesLinux"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux"
+      },
+      {
+        "package": "github.com/multica-ai/multica/server/cmd/server",
+        "test": "TestCollaborationSquadCapacityOneRoutesLinux"
+      }
+    ],
+    "reports": [
+      "go-final.jsonl",
+      "go-iteration-final.jsonl"
+    ],
+    "counting": "Latest outcome by package/test; the follow-up fixes the built-in skill line budget and adds the ordinary iteration-move guard. Parent-search character-limit tests also passed in the implementation lane."
+  },
+  "web": {
+    "report": "web-verified.json",
+    "stats": {
+      "startTime": "2026-10-19T06:35:08.787Z",
+      "duration": 39031.089,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+        "file": "collaboration-delivery-web.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+        "file": "collaboration-delivery-web.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Web source creation, field edits and discussion share one authorized issue",
+        "file": "collaboration-editing-web.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "A source member outside the collaboration receives only an empty workspace refresh",
+        "file": "collaboration-editing-web.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "resource owners register, authorize, withdraw and switch while participant management preserves authority",
+        "file": "collaboration-resources-web.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+        "file": "collaboration-workbench-web.spec.ts",
+        "results": [
+          "passed"
+        ]
+      }
+    ]
+  },
+  "desktop": {
+    "report": "desktop-verified.json",
+    "stats": {
+      "startTime": "2026-10-19T06:35:08.786Z",
+      "duration": 35801.473,
+      "expected": 9,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",
+        "file": "collaboration-account-desktop.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+        "file": "collaboration-account-desktop.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+        "file": "collaboration-account-desktop.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Desktop account links retain one tab across workspaces, popouts and restart",
+        "file": "collaboration-account-desktop.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Desktop cold account links work without workspaces and survive a controlled list error",
+        "file": "collaboration-account-desktop.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Desktop login opens the pending account destination while workspace loading is stalled",
+        "file": "collaboration-account-desktop.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Desktop account entry obeys the requires_account_setup guard",
+        "file": "collaboration-account-desktop.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Desktop account entry obeys the requires_password_change guard",
+        "file": "collaboration-account-desktop.spec.ts",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "Desktop viewer and server changes discard the previous account tab and close popouts",
+        "file": "collaboration-account-desktop.spec.ts",
+        "results": [
+          "passed"
+        ]
+      }
+    ]
+  },
+  "visual_followup": {
+    "web": {
+      "report": "web-visual.json",
+      "stats": {
+        "startTime": "2026-10-19T06:44:38.306Z",
+        "duration": 14851.219,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "Web source creation, field edits and discussion share one authorized issue",
+          "file": "collaboration-editing-web.spec.ts",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "title": "A source member outside the collaboration receives only an empty workspace refresh",
+          "file": "collaboration-editing-web.spec.ts",
+          "results": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    "desktop": {
+      "report": "desktop-visual.json",
+      "stats": {
+        "startTime": "2026-10-19T06:44:38.306Z",
+        "duration": 8744.275,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+          "file": "collaboration-account-desktop.spec.ts",
+          "results": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    "verdict": {
+      "score": 94,
+      "verdict": "pass",
+      "category_match": true,
+      "differences": [],
+      "suggestions": [],
+      "reasoning": "Board metadata wraps without overlap; narrow Web and actual native 200% edit controls remain readable with no horizontal overflow."
+    }
+  },
+  "native_scope": "macOS Electron with the real renderer/preload/IPC and bounded existing native-service harness; no full packaged Main or other-OS claim.",
+  "source_manifest": "verification-source-manifest-source-editing-2026-10-19.json",
+  "independent_review": "research/review-source-editing-contracts-2026-10-19.md",
+  "remaining_scope": "research/remaining-product-work-2026-10-18.md",
+  "publication": {
+    "default_creation_gate": false,
+    "default_execution_gate": false,
+    "production_deployed": false,
+    "test_creation_only": "Enabled in the isolated disposable API database."
+  },
+  "implementation_commits": [
+    {
+      "key": "server",
+      "sha": "5c6ec11c763c3c246a130ba90fae200cdfa1391a",
+      "subject": "feat(collaboration): keep source edits within shared authority",
+      "file_count": 54
+    },
+    {
+      "key": "clients",
+      "sha": "34a01fa16f76db19f37ac55e83003e0723c725fc",
+      "subject": "feat(collaboration): keep shared work usable from source pages",
+      "file_count": 94
+    }
+  ],
+  "cleanup": {
+    "api": "stopped",
+    "web": "stopped",
+    "desktop_renderer": "stopped",
+    "containers": [
+      {
+        "name": "multica-cwc-edit-571944c3-pg",
+        "state": "stopped",
+        "retained": true
+      },
+      {
+        "name": "multica-cwc-edit-571944c3-redis-api",
+        "state": "stopped",
+        "retained": true
+      },
+      {
+        "name": "multica-cwc-edit-571944c3-redis-test",
+        "state": "stopped",
+        "retained": true
+      }
+    ],
+    "evidence": "retained",
+    "databases": "retained in stopped task-owned PostgreSQL container"
+  }
+}

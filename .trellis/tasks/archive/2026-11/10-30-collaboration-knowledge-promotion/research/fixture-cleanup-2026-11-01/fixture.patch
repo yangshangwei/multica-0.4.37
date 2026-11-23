@@ -1,0 +1,40 @@
+diff --git a/server/internal/service/task_knowledge_logging_test.go b/server/internal/service/task_knowledge_logging_test.go
+index 5f9b8d975..f20c009e1 100644
+--- a/server/internal/service/task_knowledge_logging_test.go
++++ b/server/internal/service/task_knowledge_logging_test.go
+@@ -149,6 +149,15 @@ func TestKnowledgeServerLogProbe(t *testing.T) {
+ 		if err != nil {
+ 			t.Fatal(err)
+ 		}
++		// Create owns these collaboration rows; the ordinary fixture only removes
++		// their parents. Clean this exact source first, retaining knowledge history.
++		fx.Cleanup(t, `DELETE FROM issue WHERE id=$1`, source.Issue.ID)
++		for _, table := range []string{"issue_collaboration", "issue_participant", "collaboration_session", "issue_handoff", "collaboration_event", "collaboration_notification", "collaboration_memory_version"} {
++			fx.Cleanup(t, `DELETE FROM `+table+` WHERE issue_id=$1`, source.Issue.ID)
++		}
++		fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, source.Issue.ID)
++		fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='create' AND scope_id=$1`, workspace)
++		fx.Cleanup(t, `DELETE FROM collaboration_account_fence WHERE user_id=ANY($1::uuid[])`, []string{owner, other})
+ 		if _, err = collab.UpdateMemory(ctx, service.CollaborationMemoryUpdateParams{IssueID: source.Issue.ID, RequestID: uuid.NewString(), ExpectedVersion: 0, Content: serverLogPrivateSentinel}); err != nil {
+ 			t.Fatal(err)
+ 		}
+diff --git a/server/internal/service/task_knowledge_preparation_boundary_test.go b/server/internal/service/task_knowledge_preparation_boundary_test.go
+index 7ba01c3da..2661f634e 100644
+--- a/server/internal/service/task_knowledge_preparation_boundary_test.go
++++ b/server/internal/service/task_knowledge_preparation_boundary_test.go
+@@ -40,6 +40,15 @@ func newPreparationExternalFixture(t *testing.T) *preparationExternalFixture {
+ 	if err != nil {
+ 		t.Fatal(err)
+ 	}
++	// This source is outside f.workspace, so the base fixture cannot clean its
++	// service-owned rows. Remove them before parent teardown, retaining knowledge history.
++	f.fx.Cleanup(t, `DELETE FROM issue WHERE id=$1`, source.Issue.ID)
++	for _, table := range []string{"issue_collaboration", "issue_participant", "collaboration_session", "issue_handoff", "collaboration_event", "collaboration_notification", "collaboration_memory_version"} {
++		f.fx.Cleanup(t, `DELETE FROM `+table+` WHERE issue_id=$1`, source.Issue.ID)
++	}
++	f.fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='issue' AND scope_id=$1`, source.Issue.ID)
++	f.fx.Cleanup(t, `DELETE FROM collaboration_operation WHERE scope_kind='create' AND scope_id=$1`, workspace)
++	f.fx.Cleanup(t, `DELETE FROM collaboration_account_fence WHERE user_id=$1`, owner)
+ 	if _, err = f.svc.UpdateMemory(ownerCtx, CollaborationMemoryUpdateParams{IssueID: source.Issue.ID, RequestID: uuid.NewString(), ExpectedVersion: 0, Content: "EXTERNAL_PREPARATION_PRIVATE_SOURCE"}); err != nil {
+ 		t.Fatal(err)
+ 	}

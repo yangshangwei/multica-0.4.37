@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-10-21T11:07:32.056431+00:00",
+  "existing_product_helpers_unchanged": {
+    "server/internal/service/collaboration_discussion.go": true,
+    "server/internal/service/collaboration_comments.go": true,
+    "server/internal/service/collaboration_comments_edit.go": true,
+    "server/internal/service/collaboration_comments_test.go": true,
+    "server/internal/service/collaboration_discussion_test.go": true,
+    "server/internal/service/collaboration_attachments_test.go": true,
+    "server/internal/service/collaboration_recipient_eligibility_test.go": true,
+    "server/internal/service/collaboration_fifo_test.go": true
+  },
+  "test_returncode": 0,
+  "top_level_pass_count": 13,
+  "total_pass_events": 21,
+  "failed": [],
+  "skipped": [],
+  "source_unchanged_during_final_run": true,
+  "gofmt": {
+    "command": [
+      "gofmt",
+      "-d",
+      "server/internal/service/collaboration_discussion_resume_test.go",
+      "server/internal/service/collaboration_comment_edit_delete_test.go"
+    ],
+    "returncode": 0,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0
+  },
+  "vet_returncode": 0,
+  "trailing_whitespace": [],
+  "source_sha256": {
+    "server/internal/service/collaboration_discussion_resume_test.go": "27b0abb0614ef71f96645ab3feb4063c4d33c9e071542c7747cb105b7894d747",
+    "server/internal/service/collaboration_comment_edit_delete_test.go": "37849f45948264b9c99257823935138d974797103be14ab3b4b48bc58aa0a3c2"
+  },
+  "scope": "two new service test files and own report/logs only"
+}

@@ -148,6 +148,16 @@ const LEGACY_EMOJI_ICONS: Record<string, AvatarIconName> = {
   "👾": "bot", "🧠": "brain",
 };
 
+const BUILTIN_FU_AVATAR_URL = /^(?:https?:\/\/[^/]+)?\/api\/avatars\/builtin\/afu-seal-v1\.png$/;
+
+// Xiao Afu's built-in seal, and the legacy unicorn default it replaced, render
+// as the Fu character on the bot tone instead of the stored image.
+export const BUILTIN_FU_AVATAR_GLYPH = "孚";
+
+export function isBuiltinFuAvatar(value?: string | null): boolean {
+  return value === "emoji:🦄" || BUILTIN_FU_AVATAR_URL.test(value ?? "");
+}
+
 export function resolveAvatarIcon(value?: string | null): AvatarIconName | null {
   const icon = parseAvatarIcon(value);
   if (icon) return icon;

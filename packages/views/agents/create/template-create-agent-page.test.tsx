@@ -28,6 +28,7 @@ vi.mock("@multica/core/paths", async (importOriginal) => ({
     agents: () => "/acme/agents",
     newAgent: () => "/acme/agents/new",
     newAgentTemplate: () => "/acme/agents/new/template",
+    marketplaceTab: (type: string) => `/acme/marketplace?type=${type}`,
     agentDetail: (id: string) => `/acme/agents/${id}`,
     squadDetail: (id: string) => `/acme/squads/${id}`,
   }),
@@ -294,6 +295,41 @@ describe("TemplateCreateAgentPage role picker", () => {
     expect(navigation.replace).toHaveBeenCalledWith("/acme/agents/new/template?squad=squad-7");
     expect(mockCreateAgent).not.toHaveBeenCalled();
     expect(mockAddSquadMember).not.toHaveBeenCalled();
+  });
+
+  it.each([true, false, undefined])("returns market configuration through safe history or the fixed category (%s)", async (canGoBack) => {
+    const { navigation } = renderPicker(makeNavigation({
+      searchParams: new URLSearchParams("template=product-analyst&source=marketplace"),
+      canGoBack: canGoBack === undefined ? undefined : () => canGoBack,
+    }));
+    await screen.findByText("Product Analyst");
+    await userEvent.setup().click(screen.getByRole("button", { name: "Go back" }));
+    if (canGoBack) {
+      expect(navigation.back).toHaveBeenCalledOnce();
+      expect(navigation.replace).not.toHaveBeenCalled();
+    } else {
+      expect(navigation.replace).toHaveBeenCalledExactlyOnceWith("/acme/marketplace?type=agent-templates");
+      expect(navigation.back).not.toHaveBeenCalled();
+    }
+    expect(mockCreateAgent).not.toHaveBeenCalled();
+  });
+
+  it.each(["template=product-analyst&source=https://example.com", "template=product-analyst&source=marketplace&squad=squad-7"])("preserves original creation navigation for %s", async (search) => {
+    const { navigation } = renderPicker(makeNavigation({ searchParams: new URLSearchParams(search), canGoBack: () => true }));
+    await screen.findByText("Product Analyst");
+    await userEvent.setup().click(screen.getByRole("button", { name: "Go back" }));
+    expect(navigation.replace).toHaveBeenCalledExactlyOnceWith(
+      search.includes("squad=") ? "/acme/agents/new/template?squad=squad-7" : "/acme/agents/new/template",
+    );
+    expect(navigation.back).not.toHaveBeenCalled();
+  });
+
+  it("falls back safely for an unknown market template without creating it", async () => {
+    const { navigation } = renderPicker(makeNavigation({ searchParams: new URLSearchParams("template=unknown&source=marketplace") }));
+    await screen.findByRole("listitem", { name: "Product Analyst" });
+    await userEvent.setup().click(screen.getByRole("button", { name: "Go back" }));
+    expect(navigation.replace).toHaveBeenCalledExactlyOnceWith("/acme/marketplace?type=agent-templates");
+    expect(mockCreateAgent).not.toHaveBeenCalled();
   });
 
   it("restores the picker scroll after instance data loads, including an explicit zero", async () => {

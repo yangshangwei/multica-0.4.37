@@ -1,0 +1,467 @@
+{
+  "at": "2026-10-22T00:36:07.696971+00:00",
+  "sources": {
+    "e2e/collaboration-lane-close-controls.spec.ts": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+    "e2e/fixtures/collaboration-lane-close-controls.ts": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7"
+  },
+  "static": "lane-close-static-public-{typecheck,lint,discovery}-result.json",
+  "runs": [
+    {
+      "command": "lane-close-clients-first-command.json",
+      "result": "lane-close-clients-first-result.json",
+      "summary": "lane-close-first-summary.json",
+      "passed": 5,
+      "failed": 1,
+      "skipped": 0,
+      "retries": 0,
+      "accepted_subset": "4 live close/cancel cases, original Electron same-lane supplementary only"
+    },
+    {
+      "command": "lane-close-lanes-observed-command.json",
+      "result": "lane-close-lanes-observed-result.json",
+      "summary": "lane-close-observed-summary.json",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "retries": 0,
+      "accepted_subset": "Current Web/Electron same-lane explicit baseline"
+    }
+  ],
+  "canonical": {
+    "result": "lifecycle-service-canonical-result.json",
+    "stdout": "lifecycle-service-canonical.jsonl",
+    "passed_top_level": 15,
+    "passed_including_subtests": 35,
+    "reused": true
+  },
+  "proposed_criteria": [
+    {
+      "id": "AC34",
+      "recommendation": "passed_subject_to_independent_review",
+      "current_ui": [
+        "lane-close-final-web-same-lane-identities.json",
+        "lane-close-final-electron-same-lane-identities.json"
+      ],
+      "scope": "Public same-lane controls/independent holds/offline queue/whole-pause new target/dual-client rejection and unchanged peer; actual descendants separately canonical/Linux"
+    },
+    {
+      "id": "AC57",
+      "recommendation": "passed_subject_to_independent_review",
+      "current_ui": [
+        "lane-close-final-web-complete-identities.json",
+        "lane-close-final-web-cancel-identities.json",
+        "lane-close-final-electron-complete-identities.json",
+        "lane-close-final-electron-cancel-identities.json"
+      ],
+      "scope": "2 true in-flight Linux runs per case, 4 waiting instructions authored by creator/handler in both lanes; actual lifecycleUI with original natural proof delayed and delivered; no user socket-release proof"
+    }
+  ],
+  "failure_preservation": {
+    "first_ui": "lane-close-web-first-attempt.json",
+    "original_refusal": "lane-close-web-first-refusal-corrected.json",
+    "result": "stale_control_version409 from immediate Stop/Resume same Paused label; new fixture explicitly refreshes original observation, no failure discarded",
+    "read_only_diagnostic_first": "lane-close-web-first-refusal.json",
+    "diagnostic_first_result": "column http_status absent; corrected query uses actual result schema, retains first diagnostic"
+  },
+  "product_changes": false,
+  "production_gate_change": false,
+  "real_provider_account_access": false,
+  "task_status": "in_progress",
+  "matrix_not_edited": true,
+  "full_acceptance_complete": false,
+  "artifacts": [
+    {
+      "path": "lane-close-artifact-redaction-repair.json",
+      "sha256": "6c0abdb30f6b7fda0938a6c2f73901e44d6130b4a8fb34bd72977e003ff6211b"
+    },
+    {
+      "path": "lane-close-boundary.json",
+      "sha256": "77218a9748682bc7f47e478e0bf90012523b833d29f48697c81d5ed45859ad59"
+    },
+    {
+      "path": "lane-close-clients-final-command.json",
+      "sha256": "ccf67a1c1a3aeefb2c6e7c73f82e170387fac108f77192be5d032dcbddc6f14c"
+    },
+    {
+      "path": "lane-close-clients-final-result.json",
+      "sha256": "9e455547bd133f8dddf9db1fb2600a063b4244e132930b5908d202a6362d5753"
+    },
+    {
+      "path": "lane-close-clients-final.json",
+      "sha256": "3bbcab7c52cb54937c6350bc4051234513ca966476258cf8d921b7a814356558"
+    },
+    {
+      "path": "lane-close-clients-final.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-clients-first-command.json",
+      "sha256": "105f316fd5d1b415bc86b114c8ef4caf0d90e55a671115561726ba20f14ef01c"
+    },
+    {
+      "path": "lane-close-clients-first-result.json",
+      "sha256": "c76f0d2adea2c4f40bb39c4472f985b68212d4c53a9c6427881414a97684baa9"
+    },
+    {
+      "path": "lane-close-clients-first.json",
+      "sha256": "2b398907e0535cc036c5b60083dd3822e9dee6a20ddd58aeeb23979d43b555cc"
+    },
+    {
+      "path": "lane-close-clients-first.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-final-all-artifacts-redaction-check.json",
+      "sha256": "5fd172fe3485e934adf38b9ded353d75931474236a3c9b3d0b5d65ae8c5802f8"
+    },
+    {
+      "path": "lane-close-final-diffcheck.json",
+      "sha256": "9e77fd3386c2a15deda7275d31f9ab42cdcd81f7edfb8fb5dfd029b41f67877c"
+    },
+    {
+      "path": "lane-close-final-electron-cancel-1-electron-cancel-closed-proof-unconfirmed-electron.png",
+      "sha256": "d7e7701a28b64ce78b81fd6ff867a9256e528dd12d398c9da77896fa4487c2d5"
+    },
+    {
+      "path": "lane-close-final-electron-cancel-2-electron-cancel-closed-proof-unconfirmed-web.png",
+      "sha256": "8e27a4659cb59167fed2f6b7f6d4e53d2046e6f7fa5727fe25dadccbdabbd171"
+    },
+    {
+      "path": "lane-close-final-electron-cancel-identities.json",
+      "sha256": "8e6b1e62490beb7bede10418ab5272dea52a2db99935c5122cf330cd009dc7a7"
+    },
+    {
+      "path": "lane-close-final-electron-complete-1-electron-complete-closed-proof-unconfirmed-electron.png",
+      "sha256": "893107fe1a95991a20595660995e869dec09fe5891e99a7f1be57c474256e5c0"
+    },
+    {
+      "path": "lane-close-final-electron-complete-2-electron-complete-closed-proof-unconfirmed-web.png",
+      "sha256": "342e4fbc1a3c88a2fe22849007477970550e6ac28923b7e4b6ecd52fdb361116"
+    },
+    {
+      "path": "lane-close-final-electron-complete-identities.json",
+      "sha256": "09b1a914bd29af5ca2a3f6338ca7b8451f251d5ea700294cd5e332edbbb3d945"
+    },
+    {
+      "path": "lane-close-final-electron-same-lane-1-electron-same-lane-stop-a-and-s-electron.png",
+      "sha256": "fbd847ac272a34522dccccc9575d37b9b352fb14b37305ea34217011599caf55"
+    },
+    {
+      "path": "lane-close-final-electron-same-lane-2-electron-whole-pause-client-switch-refused-web.png",
+      "sha256": "e1be1adad955534166f8a3ad4e5ddd2b19ebe44ef59cdb8000e12c42f241ca7c"
+    },
+    {
+      "path": "lane-close-final-electron-same-lane-identities.json",
+      "sha256": "4768d7d91d9407b9198143ca016add0de1b77e17f87270c31524d125a9e86c71"
+    },
+    {
+      "path": "lane-close-final-summary.json",
+      "sha256": "0bc1121b1613880307aed1b34bc29397384bbfe77b4468191dea24a336428229"
+    },
+    {
+      "path": "lane-close-final-web-cancel-1-web-cancel-closed-proof-unconfirmed-web.png",
+      "sha256": "645e31c951d9585630cfc38f4443d1681d313b8e81d7342958e12da4c26cf576"
+    },
+    {
+      "path": "lane-close-final-web-cancel-2-web-cancel-closed-proof-unconfirmed-electron.png",
+      "sha256": "c0a8a6ece438364db7f8d5ea1d98cab93e48da8a9fc9572c3275bb883cd8b3b2"
+    },
+    {
+      "path": "lane-close-final-web-cancel-identities.json",
+      "sha256": "7bf3229b50392c5dd891582c13f58e7b801eb74516795faa65d3dbcb578d272c"
+    },
+    {
+      "path": "lane-close-final-web-complete-1-web-complete-closed-proof-unconfirmed-web.png",
+      "sha256": "06183e7f4a7f543acc041bff5e2cbf6dbc2eac3a07f67cfc4753d4280d0fb6dc"
+    },
+    {
+      "path": "lane-close-final-web-complete-2-web-complete-closed-proof-unconfirmed-electron.png",
+      "sha256": "ca250f104680ded7da8c46339b968d6d9bb2f372a5f37b31008352c8413f701a"
+    },
+    {
+      "path": "lane-close-final-web-complete-identities.json",
+      "sha256": "7a9ed8458dbc0d0d5562e72dabaf1231401f705f2c241ab81ab80934acac226e"
+    },
+    {
+      "path": "lane-close-final-web-same-lane-1-web-same-lane-stop-a-and-s-web.png",
+      "sha256": "1a14fa5b13eecfded26e513693726e47047986b1477de6b5a34a923006d60f50"
+    },
+    {
+      "path": "lane-close-final-web-same-lane-2-web-whole-pause-client-switch-refused-electron.png",
+      "sha256": "1a7658067dd54aa40f6f84f6eb1b34b901ce1f20d3cb868e2f96da0c9ab63688"
+    },
+    {
+      "path": "lane-close-final-web-same-lane-identities.json",
+      "sha256": "c88fdae34e93917f59a8cf8e2ce3e39ed7311ad2f70316d2abe9ebfe2838044d"
+    },
+    {
+      "path": "lane-close-first-electron-cancel-1-electron-cancel-closed-proof-unconfirmed-electron.png",
+      "sha256": "d287956ae7e8d027e77e8726cf5829cb5102fc6313c46cbd452ae5f2140eb88e"
+    },
+    {
+      "path": "lane-close-first-electron-cancel-2-electron-cancel-closed-proof-unconfirmed-web.png",
+      "sha256": "2a82affb5ee44d3ffa5e013e157fe55ef1adb8b76d404765d5b3029ab295da83"
+    },
+    {
+      "path": "lane-close-first-electron-cancel-identities.json",
+      "sha256": "e5bf9791a02d899b7f4223031009f50b8263abf6c3c78a987fdb4a2dad9b5243"
+    },
+    {
+      "path": "lane-close-first-electron-complete-1-electron-complete-closed-proof-unconfirmed-electron.png",
+      "sha256": "b07f81eb693486060c4ac4cb453ae67a6a5abe50d592904700a13d0b1407e4cc"
+    },
+    {
+      "path": "lane-close-first-electron-complete-2-electron-complete-closed-proof-unconfirmed-web.png",
+      "sha256": "abbfb11e6801aa18e02cde894f684574138d6d93a9114ba2be9da5dea8aeb164"
+    },
+    {
+      "path": "lane-close-first-electron-complete-identities.json",
+      "sha256": "5c12651e691ea2f2470c9a4ee0381046969ea3c510af5582ae437459872fa8f2"
+    },
+    {
+      "path": "lane-close-first-electron-same-lane-1-electron-same-lane-stop-a-and-s-electron.png",
+      "sha256": "6c29a44542e19ff51e0379ee9b52a4623d0d8530c66a7be5066896a1ee451fb9"
+    },
+    {
+      "path": "lane-close-first-electron-same-lane-2-electron-whole-pause-client-switch-refused-web.png",
+      "sha256": "472232dfe62dee1cee7d31528263cb36efd61319803f95d9a31ccbdd4eb16b97"
+    },
+    {
+      "path": "lane-close-first-electron-same-lane-identities.json",
+      "sha256": "c49e7a7387bed6dbdd1826f8540a4e7b8449a12ebf2723973575121d4286640c"
+    },
+    {
+      "path": "lane-close-first-summary.json",
+      "sha256": "8ce21b92783ce556b30f8d6a86d2fed4f7be0b14388cf5cf51335a0ff6395319"
+    },
+    {
+      "path": "lane-close-first-web-cancel-1-web-cancel-closed-proof-unconfirmed-web.png",
+      "sha256": "cc147682ab4376de9f57b97d710c1bfd1423028db81f370a93cf1c5af373c026"
+    },
+    {
+      "path": "lane-close-first-web-cancel-2-web-cancel-closed-proof-unconfirmed-electron.png",
+      "sha256": "576463cb620501b5fc3266b8ebea55e0ff3949852ca7d770322237b6677248b8"
+    },
+    {
+      "path": "lane-close-first-web-cancel-identities.json",
+      "sha256": "1d5f76567c3b60426fd386937e129c4b9e366c50aea9e7a06804220618f698e3"
+    },
+    {
+      "path": "lane-close-first-web-complete-1-web-complete-closed-proof-unconfirmed-web.png",
+      "sha256": "366c2e6626afde27d5b940655df2f477b4421932156cf1224515904d549e6793"
+    },
+    {
+      "path": "lane-close-first-web-complete-2-web-complete-closed-proof-unconfirmed-electron.png",
+      "sha256": "dee231ed8a55a66a5d828cc52d9778534e932742d32662cee9102e4c2ab13970"
+    },
+    {
+      "path": "lane-close-first-web-complete-identities.json",
+      "sha256": "41643b7b64d482ddc583c8ce680d1d85c7bc5dc4e54800ac8243ca91b4115501"
+    },
+    {
+      "path": "lane-close-lanes-observed-command.json",
+      "sha256": "21c6e727f4f11f4b12390630c3a2b109de27aa533ce421df27eb9397daa83c7c"
+    },
+    {
+      "path": "lane-close-lanes-observed-result.json",
+      "sha256": "eb69216f2675d33dff8d263a2eb1e963344aa98b5fc00c3fd2930ddd095d72f6"
+    },
+    {
+      "path": "lane-close-lanes-observed.json",
+      "sha256": "e6ddbbc7e67f7497805a48857adda8ace07e3c7b3e0c1198277245fc588a626e"
+    },
+    {
+      "path": "lane-close-lanes-observed.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-observed-electron-1-electron-same-lane-stop-a-and-s-electron.png",
+      "sha256": "a06a9d5d696f37b7678e2809864224157ae6f44c17b1434af165ebd09276d0e3"
+    },
+    {
+      "path": "lane-close-observed-electron-2-electron-whole-pause-client-switch-refused-web.png",
+      "sha256": "ff00391cb8c7d3f32999908ec542779918975cd689db4635cf4a9008393843be"
+    },
+    {
+      "path": "lane-close-observed-electron-identities.json",
+      "sha256": "33f4c206b3cb101f2af8c9db60c744d07d174050e8dea7694fc7497d18c64acd"
+    },
+    {
+      "path": "lane-close-observed-summary.json",
+      "sha256": "a24f63228337320168b897bc2d3b4d58d4457208001e49530f371a8502570ad3"
+    },
+    {
+      "path": "lane-close-observed-web-1-web-same-lane-stop-a-and-s-web.png",
+      "sha256": "48dc1e35ede4a87f7550f24ecc18e54bbc0c1d8d91730ff1a0c5e8745e3cd34b"
+    },
+    {
+      "path": "lane-close-observed-web-2-web-whole-pause-client-switch-refused-electron.png",
+      "sha256": "d9763c18b6d3addf0f09cf7ab9f8397830c35b47b2c4e249a2ccc93fa5ba61c5"
+    },
+    {
+      "path": "lane-close-observed-web-identities.json",
+      "sha256": "0ad5925caafb0b65aecf27ef5ea19cc01e74748c0094fffd3893f2e384c00c11"
+    },
+    {
+      "path": "lane-close-preflight.json",
+      "sha256": "9ba7aab3a987b1f160afb4ad61eb306b1083112c0b9c1642c3c33d0f6b7965b1"
+    },
+    {
+      "path": "lane-close-redaction-final-check.json",
+      "sha256": "c91d3320c76f6844cde78d27827057c88b47f2f04aadde6533383d23049f0dd3"
+    },
+    {
+      "path": "lane-close-review.md",
+      "sha256": "774b3b5bc581971c35187d8e8644cdfd612e2585f7b4f6067291cd093fd6ae72"
+    },
+    {
+      "path": "lane-close-source-and-redaction-check.json",
+      "sha256": "379e4bc074a423ae1c00fa428881f677a50416181cfb131ac7a990641fc6a9d6"
+    },
+    {
+      "path": "lane-close-static-first-discovery-result.json",
+      "sha256": "8fbce092c1341fb603581ee3ecf806ce5fa65523081df3e97914f35c1efd82f4"
+    },
+    {
+      "path": "lane-close-static-first-discovery.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-static-first-discovery.stdout",
+      "sha256": "e8ed028d6b9f060774f90383952aea7dbaa6f5266cafed88bdd6d05dfb3735fd"
+    },
+    {
+      "path": "lane-close-static-first-lint-result.json",
+      "sha256": "aa31706f4dca569046e4a87baf1f75c2cb14fc23b8ae4d019cf01169269ddae6"
+    },
+    {
+      "path": "lane-close-static-first-lint.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-static-first-lint.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lane-close-static-first-typecheck-result.json",
+      "sha256": "480b06f3424f2a243162a6ca7c2b03d09e3f3deb115369e2c1ecdc95306527d4"
+    },
+    {
+      "path": "lane-close-static-first-typecheck.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-static-first-typecheck.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lane-close-static-observed-discovery-result.json",
+      "sha256": "c2194bb5452b04dcdbd8fb0f568b6579c75184e654bff7a428c3a3302872a7a6"
+    },
+    {
+      "path": "lane-close-static-observed-discovery.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-static-observed-discovery.stdout",
+      "sha256": "e8ed028d6b9f060774f90383952aea7dbaa6f5266cafed88bdd6d05dfb3735fd"
+    },
+    {
+      "path": "lane-close-static-observed-lint-result.json",
+      "sha256": "2c7cbee98b988c09d6de195d1393be6da4313bee5177533770d70bb12b83cee5"
+    },
+    {
+      "path": "lane-close-static-observed-lint.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-static-observed-lint.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lane-close-static-observed-typecheck-result.json",
+      "sha256": "4c2f8e5faa42e7b16e9ff056e8b40c61b19be113016e7d3623a5ea6a1f86ed8f"
+    },
+    {
+      "path": "lane-close-static-observed-typecheck.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-static-observed-typecheck.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lane-close-static-public-diffcheck.json",
+      "sha256": "7be73f478b21c76cea2d333413ffcb6fe52e13542c5de1cade0bf6bc89221344"
+    },
+    {
+      "path": "lane-close-static-public-discovery-result.json",
+      "sha256": "5e41d4d3d76a1b2881566747ff22ceea891d22dbd422116eacc33096d63490e1"
+    },
+    {
+      "path": "lane-close-static-public-discovery.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-static-public-discovery.stdout",
+      "sha256": "e8ed028d6b9f060774f90383952aea7dbaa6f5266cafed88bdd6d05dfb3735fd"
+    },
+    {
+      "path": "lane-close-static-public-lint-result.json",
+      "sha256": "b1bc951ba14d8ee0f15b71fa0bdade304764ada9be96eae6c83ba03ce0505859"
+    },
+    {
+      "path": "lane-close-static-public-lint.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-static-public-lint.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lane-close-static-public-typecheck-result.json",
+      "sha256": "48510085d0d127f59b4fb76b61ae9c183a3eafef28f6b64d4e4b749f9b26b293"
+    },
+    {
+      "path": "lane-close-static-public-typecheck.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": "lane-close-static-public-typecheck.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "lane-close-synthetic-credential-deregistration.json",
+      "sha256": "b0e0ae553dea3afc6e490d8c2c61fa69cb9c9d81874a5df5ff9142c532d7f307"
+    },
+    {
+      "path": "lane-close-web-first-attempt.json",
+      "sha256": "70e9d54818aebbc46d8738ec9c7e86d4bf8b22aa5209ebbe612fc749f8baaa70"
+    },
+    {
+      "path": "lane-close-web-first-refusal-corrected.json",
+      "sha256": "5de50cc81d1f837a2ae7f4f27475fc7e1bb41cf0cde73e413631f9c89661660b"
+    },
+    {
+      "path": "lane-close-web-first-refusal.json",
+      "sha256": "dc7ec1f8c91b8469d772350c11baac6ea2eb9ae169e2f6c0eb4797b60085b751"
+    }
+  ],
+  "artifact_redaction": {
+    "repair": "lane-close-artifact-redaction-repair.json",
+    "audit": "lane-close-redaction-final-check.json",
+    "synthetic_runtime_deregistration": "lane-close-synthetic-credential-deregistration.json",
+    "final_all_audit": "lane-close-final-all-artifacts-redaction-check.json"
+  },
+  "final_current_all_six": {
+    "command": "lane-close-clients-final-command.json",
+    "result": "lane-close-clients-final-result.json",
+    "summary": "lane-close-final-summary.json",
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "raw_sha256": "3bbcab7c52cb54937c6350bc4051234513ca966476258cf8d921b7a814356558",
+    "source_drift": false
+  }
+}

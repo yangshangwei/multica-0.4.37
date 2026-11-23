@@ -1,0 +1,49 @@
+{
+  "recorded_at": "2026-11-03T16:31:38.957858+00:00",
+  "manifest": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/registry/envs/v15-native-3a33a34345e9/manifest.env",
+  "manifest_sha256": "d369b4b884ac528be857cca5ab2ede8017bdae1af0af24468eab8852541bd457",
+  "matched_allocation": true,
+  "source_environment_sha256": "f89677463d1c67d86fb4434c77ee71a83e47f82746bcb98abab799247455dabb",
+  "api_url": "http://localhost:18820",
+  "web_url": "http://localhost:13740",
+  "health": {
+    "status": "ok",
+    "pid": 99298,
+    "commit": "d0b132fff",
+    "started_at": "2026-11-03T16:28:01Z"
+  },
+  "config_nonsecret": {
+    "deployment_id": "9e9ace05-f3f4-49dc-93c6-21329e97ad95",
+    "auth_mode": "legacy",
+    "managed_installations_enabled": null,
+    "device_auth_enabled": null
+  },
+  "actual_API_process": "99298 98904 98904 Wed Nov  4 00:28:01 2026     /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/tmp/go-build1215691896/b001/exe/server",
+  "actual_API_cwd": "p99298\nfcwd\nn/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server",
+  "actual_API_database_matches": true,
+  "actual_API_flags": {
+    "MULTICA_AUTH_MODE": "legacy",
+    "MULTICA_MANAGED_INSTALLATIONS_ENABLED": "false",
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": "false",
+    "MULTICA_DEPLOYMENT_ID": "9e9ace05-f3f4-49dc-93c6-21329e97ad95"
+  },
+  "database_probe": "multica_check_v15_native_3a33a34345e9|multica|764_collaboration_ai_policy",
+  "actual_rendered_api": [
+    "http://localhost:18820"
+  ],
+  "actual_rendered_ws": [
+    "ws://localhost:18820/ws"
+  ],
+  "html_sha256": "a6286a2165990d106b7c2929ad42f523640a4ac20afb0a1b85cc0405c7fc2718",
+  "renderer": {
+    "url": "http://127.0.0.1:55132",
+    "actual_served_index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+    "retired_bytes_transferred_for_diagnostic_only": true,
+    "actual_pid": 35776,
+    "actual_process": "35776     1 35776 /opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u -m http.server 55132 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer"
+  },
+  "knowledge_budget_allocated": 0,
+  "knowledge_real_calls": 0,
+  "real_provider_allowed": false,
+  "actual_web_process": "99807 99801 99782 next-server (v16.2.6)"
+}

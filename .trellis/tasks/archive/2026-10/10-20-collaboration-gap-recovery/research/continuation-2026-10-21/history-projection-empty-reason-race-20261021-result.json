@@ -1,0 +1,52 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "database_alias": "service_s5",
+    "schema_expected_through": 737,
+    "real_provider_access": false
+  },
+  "started_at": "2026-10-21T07:47:53.451530+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_command_history.go": "a23ad56dae751bc9cf7f0ef226292f3bea7ff3661cc7ebc6310bde49ef79e526",
+    "server/internal/service/collaboration_command_history_test.go": "1acc62dad720ef75b0bdaf38fd4c312f8c85d0b5299ac2119b8820cb467ec9b2",
+    "server/internal/service/collaboration_runtime_test.go": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+    "server/internal/service/collaboration_queue_test.go": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+    "scripts/go-test-with-agent-cli-guard.sh": "f657e450f0d9c914d49fc2bc60e21f6ec91337e916d4e397312b7caef1d78a0a"
+  },
+  "finished_at": "2026-10-21T07:48:00.759823+00:00",
+  "elapsed_seconds": 7.305,
+  "returncode": 1,
+  "test_passes": [],
+  "test_failures": [
+    "TestCollaborationCommandHistoryProjectsEmptyTerminalReasonAsNull"
+  ],
+  "test_skips": [],
+  "package_results": [
+    {
+      "Action": "fail",
+      "Package": "github.com/multica-ai/multica/server/internal/service",
+      "Elapsed": 1.73
+    }
+  ]
+}

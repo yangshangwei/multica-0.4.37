@@ -1,0 +1,42 @@
+{
+  "command": [
+    "python3",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/provenance-recheck/collector-executed.py"
+  ],
+  "exit_code": 0,
+  "md_sha256": "e3c6e7746da687e8ddff0aba8b55f1e0f566f45ab50f390a628ab0e65fc83faf",
+  "executed_script_sha256": "55f1c1525d2635f3824d8fb548deddc9f928d041e1a5ca1a45c9422e57369934",
+  "result_sha256": "03fec7ccf268e49be2e2ab60283f67d399b7525851f22df6a7734e07728ad384",
+  "result_bytes": 37532,
+  "summary": {
+    "status": "narrow_read_only_collection_complete",
+    "result": "<root>/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v11/independent-launcher-review/evidence/provenance-recheck/collector-result.json",
+    "pins": {
+      "binding_matches": true,
+      "launcher_matches": true,
+      "summary_prefix_matches": true,
+      "canonical_manifest_matches": true,
+      "original_binding_preserved": true
+    },
+    "manifests": {
+      "new_count": 7962,
+      "old_count": 7962,
+      "new_computed_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+      "old_computed_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+      "file_sets_equal": true,
+      "file_hash_differences": 0,
+      "both_match_canonical": true,
+      "both_counts_match": true
+    },
+    "head_matches": true,
+    "artifact_target_pins_found": {
+      "cli": true,
+      "renderer_index": true,
+      "preload": true,
+      "main": true
+    },
+    "artifact_root_count": 6,
+    "preserved_reports_unchanged": true,
+    "errors": []
+  }
+}

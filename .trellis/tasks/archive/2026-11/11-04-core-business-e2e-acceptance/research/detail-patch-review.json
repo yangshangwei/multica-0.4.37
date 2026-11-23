@@ -1,0 +1,117 @@
+{
+  "verdict": "PASS_FOR_NARROW_HARNESS_CHANGE",
+  "blocking_findings_open": 0,
+  "runtime_acceptance": "NOT_RUN",
+  "reviewed_at": "2026-11-04T16:39:57.632931+00:00",
+  "patch_sha256": "c67d35c9f70ed55fb70f660d51330b04c427b62ce57141c6e50ec465a694f7b9",
+  "original_fixture_sha256": "56181bfef4c16cddfee5daf5a9f1ecafe0f6f6e49a7016670dc608226a685219",
+  "proposed_fixture_sha256": "6f5e204e07217cd3875324097d300cf2dfe33bb1ac282b1dc280c56c365d3766",
+  "scope": "Independent static review only; patch not applied and no guard tests executed by reviewer",
+  "finding": "The old fixture binds every reuse to a historical task directory. Proposed patch supplies explicit current task/allocation and binds the exact allocation file bytes/path to the permit.",
+  "retained_guards": [
+    "runtime_permitted/task/source_root",
+    "loopback/no credentials origins",
+    "DB URL actual DB/gates",
+    "source/artifact hashes",
+    "production Build ID",
+    "listeners",
+    "health/API config",
+    "rendered API/WS URLs",
+    "all existing journey business assertions"
+  ],
+  "new_guards": [
+    "Required relative Trellis task identifier constrained to a single task slug",
+    "Required absolute allocation file",
+    "Permit task and source root still match actual checkout",
+    "Permit allocation realpath and SHA256 equal selected allocation",
+    "Allocation itself declares matching task and source root"
+  ],
+  "recommendation": "Apply only in the test-harness scope after source freeze/update coordination, then exercise the actual exported detailJourneyProvenance with mocked fs/process/network/pg boundaries or task-owned temporary records. Do not test a duplicated predicate implementation. No live services or auth needed for negative contract cases. Run two unchanged product journeys separately only after production provenance is reissued for new harness bytes.",
+  "required_cases": [
+    {
+      "id": "D01",
+      "case": "Valid new task and exact allocation",
+      "change": "Set current task environment; permit.task and allocation.task match; both source_root resolve to candidate; permit allocation path/hash match actual temp allocation bytes; all existing identities valid.",
+      "expected": "Actual detailJourneyProvenance returns current task and reaches existing listener/health/read-only DB validation. No login or mutation is performed by this function."
+    },
+    {
+      "id": "D02",
+      "case": "Required input absent",
+      "change": "Remove task, allocation env, or provenance env separately.",
+      "expected": "Throws before listener, fetch, pg.connect and TestApiClient/login."
+    },
+    {
+      "id": "D03",
+      "case": "Invalid task name",
+      "change": "Use absolute task, ../ traversal, nested path, or task string with separator after task slug.",
+      "expected": "Rejects at new task format gate before any live side effects."
+    },
+    {
+      "id": "D04",
+      "case": "Relative allocation filename",
+      "change": "Set allocation env to relative file path.",
+      "expected": "Rejects before reading allocation or fetching services."
+    },
+    {
+      "id": "D05",
+      "case": "Permit disagrees with current task",
+      "change": "Valid new task env but permit.task is old task; separately set runtime_permitted=false or wrong source_root.",
+      "expected": "Rejects original permit identity gate before allocation/network/DB."
+    },
+    {
+      "id": "D06",
+      "case": "Exact allocation path mismatch",
+      "change": "Permit points at one file; env points at a different resolved file containing identical bytes.",
+      "expected": "Rejects resolved-file binding even though byte hash matches."
+    },
+    {
+      "id": "D07",
+      "case": "Allocation bytes changed",
+      "change": "Hash original bytes in permit, then change allocated database or any byte without changing permit hash.",
+      "expected": "Rejects new allocation digest gate before origin, listeners, fetch or DB."
+    },
+    {
+      "id": "D08",
+      "case": "Allocation ownership mismatch",
+      "change": "Update permit hash to the fixture bytes but allocation.task or resolved allocation.source_root belongs to another task/checkout.",
+      "expected": "Rejects allocation ownership; hash correctness alone is insufficient."
+    },
+    {
+      "id": "D09",
+      "case": "Missing allocation binding metadata",
+      "change": "Remove allocation_file or allocation_sha256 from otherwise valid permit; use malformed JSON separately.",
+      "expected": "Fails closed before service calls, without falling back to historic allocation."
+    },
+    {
+      "id": "D10",
+      "case": "Existing provenance guards remain active",
+      "change": "With valid current-task inputs, parameterize wrong allocated endpoint/DB, credentialed or remote origin, changed source/artifact hash, wrong Build ID, different PID, wrong health commit/auth mode, served renderer hash drift, rendered API/WS drift and wrong DB gates.",
+      "expected": "Each actual old guard rejects at its existing boundary; count preceding read-only operations and prove no authentication/mutation occurs."
+    },
+    {
+      "id": "D11",
+      "case": "Canonical alias behavior",
+      "change": "Use two symlink aliases to the same actual allocation file, same bytes/hash; then retarget one alias to another file.",
+      "expected": "Same realpath aliases are accepted as designed; different realpath rejects. This checks resolved identity rather than textual path equality."
+    }
+  ],
+  "test_design": [
+    "Invoke actual exported function; count execFileSync/fetch/pg connect/query/TestApiClient calls. Early new-gate failures must make no listener/network/DB/auth calls.",
+    "Full valid case supplies deterministic fixtures for existing listener/HTTP/DB guards and returns current task; no new alternate acceptance path.",
+    "Keep original source/artifact/Build ID/listener/HTTP/DB mismatch expectations to detect accidental bypass.",
+    "Each test restores process.env and module mocks; mutable files are temporary owned fixture files, never old task evidence or application source."
+  ],
+  "notes": [
+    "The patch removes only the hardcoded task and historical allocation location. Existing business-journey assertions and downstream production checks are unchanged.",
+    "Allocation/provenance files remain root-produced control inputs; this patch does not cryptographically authenticate their author and does not claim to.",
+    "Missing or inconsistent files fail rather than fall back to the historical task. Prior two BLOCKED inventory rows remain blocked until patch plus contract checks and actual journeys pass."
+  ],
+  "verification": {
+    "static_patch_inspection": "PASS",
+    "exact_patch_and_proposed_hashes": "PASS",
+    "author_prior_syntax_and_apply_check": "evidence/runtime-preparation/detail-proposal-check.json; preparation evidence only",
+    "tests_executed_by_reviewer": false,
+    "patch_applied_by_reviewer": false,
+    "services_or_databases_accessed": false
+  }
+}

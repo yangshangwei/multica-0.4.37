@@ -1,0 +1,12 @@
+{
+  "tsconfig.json": {
+    "original_path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/content-static-20261022/tsconfig.json",
+    "sha256": "a9f58244d3f20e5a6ad878f0a8ee9d72ace1c3ce37a2f817da15e1b55cd05639",
+    "content": "{\n  \"extends\": \"/Volumes/artisan/code/2026/multica-0.4.37/packages/tsconfig/react-library.json\",\n  \"compilerOptions\": {\n    \"noEmit\": true,\n    \"declaration\": false,\n    \"declarationMap\": false,\n    \"sourceMap\": false,\n    \"incremental\": false,\n    \"baseUrl\": \"/Volumes/artisan/code/2026/multica-0.4.37\",\n    \"paths\": {\n      \"@multica/core/*\": [\n        \"/Volumes/artisan/code/2026/multica-0.4.37/packages/core/*\"\n      ]\n    },\n    \"typeRoots\": [\n      \"/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@types\"\n    ]\n  },\n  \"include\": [\n    \"/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-retained-attachment.spec.ts\",\n    \"/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-retained-attachments.ts\"\n  ],\n  \"exclude\": []\n}\n"
+  },
+  "eslint.config.mjs": {
+    "original_path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/content-static-20261022/eslint.config.mjs",
+    "sha256": "4c00a6a94ee63295098190ae26771983afab81a57886b141c40aa3be80166741",
+    "content": "import config from '/Volumes/artisan/code/2026/multica-0.4.37/packages/core/eslint.config.mjs';\nexport default [...config, { files: [\"**/e2e/**/*.ts\"], rules: { \"import-x/no-extraneous-dependencies\": [\"error\", {devDependencies: true, peerDependencies: true, packageDir: '/Volumes/artisan/code/2026/multica-0.4.37'}] } }];\n"
+  }
+}

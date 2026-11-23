@@ -1,0 +1,123 @@
+//go:build agentintegration && !windows
+
+package main
+
+import (
+	"errors"
+	"regexp"
+	"strconv"
+	"strings"
+	"time"
+)
+
+const rk1EvidenceFailureMarker = "RK1_EVIDENCE_PUBLICATION_FAILED"
+
+var rk1WrapperExitField = regexp.MustCompile(`(?:^| )exit_code=(-?[0-9]+)(?: |$)`)
+
+// This log is produced after the backend's actual process Wait. Provider
+// stderr is quoted under a different message, never this fixed summary.
+func rk1HostWrapperExit(diagnostics string) *int {
+	var observed *int
+	for _, line := range strings.Split(diagnostics, "\n") {
+		if !strings.Contains(line, `level=INFO msg="agent stream protocol summary" provider=claude `) {
+			continue
+		}
+		if field := rk1WrapperExitField.FindStringSubmatch(line); field != nil {
+			if code, err := strconv.Atoi(field[1]); err == nil {
+				observed = &code
+			}
+		}
+	}
+	return observed
+}
+
+type rk1LaunchMeta struct {
+	Args             []string `json:"args"`
+	Cwd              string   `json:"cwd"`
+	Mode             string   `json:"mode"`
+	Behavior         string   `json:"behavior"`
+	Fault            string   `json:"fault,omitempty"`
+	RemovedEnv       []string `json:"removed_env"`
+	StartedAt        string   `json:"started_at"`
+	FinishedAt       string   `json:"finished_at,omitempty"`
+	ExitCode         *int     `json:"exit_code,omitempty"`
+	PromptBytes      int      `json:"prompt_frame_bytes"`
+	EvidenceState    string   `json:"evidence_state"`
+	EvidenceFailures []string `json:"evidence_failures,omitempty"`
+}
+
+type rk1CaptureFinalizer interface {
+	Sync() error
+	Close() error
+}
+
+// Faults are selected only by test-owned fake plans, never real Provider plans.
+// The real operation still runs so retained bytes and its own errors survive.
+type rk1InjectedEvidenceCapture struct {
+	rk1CaptureFinalizer
+	fault string
+}
+
+func (c rk1InjectedEvidenceCapture) Sync() error {
+	return errors.Join(c.rk1CaptureFinalizer.Sync(), rk1InjectedEvidenceError("stdout_sync", c.fault))
+}
+
+func (c rk1InjectedEvidenceCapture) Close() error {
+	return errors.Join(c.rk1CaptureFinalizer.Close(), rk1InjectedEvidenceError("stdout_close", c.fault))
+}
+
+func rk1InjectedEvidenceError(stage, fault string) error {
+	if fault == "evidence_"+stage {
+		return errors.New("test-owned " + stage + " publication error")
+	}
+	return nil
+}
+
+// Finalize raw capture before publishing the terminal launch record. The
+// execution exit belongs to the Provider; publication errors are independent.
+func rk1FinalizeLaunchEvidence(capture rk1CaptureFinalizer, meta *rk1LaunchMeta, executionExit int, publish func(rk1LaunchMeta) error) error {
+	_ = capture.Sync()
+	_ = capture.Close()
+	meta.FinishedAt, meta.ExitCode = time.Now().UTC().Format(time.RFC3339Nano), &executionExit
+	meta.EvidenceState = "complete"
+	_ = publish(*meta)
+	return nil
+}
+
+// A distinct wrapper exit lets the observer detect a failed final metadata
+// write even when the old or partially written file can still be read.
+func rk1EvidenceFailureExit(executionExit int) int {
+	if executionExit == 43 {
+		return 44
+	}
+	return 43
+}
+
+func rk1LaunchEvidenceFault(meta rk1LaunchMeta, diagnostics string, stopped, resultSeen bool) string {
+	// A failed final record sync can leave complete-looking cache bytes. The
+	// wrapper also emits a fixed nonsecret diagnostic through the separately
+	// captured host stderr channel; raw I/O errors never enter public JSON.
+	if strings.Contains(diagnostics, rk1EvidenceFailureMarker) || meta.EvidenceState == "failed" || len(meta.EvidenceFailures) != 0 {
+		return "provider_evidence_publication_failed"
+	}
+	if meta.EvidenceState == "started" && stopped && !resultSeen && meta.ExitCode == nil && meta.FinishedAt == "" {
+		// Stop deliberately kills the H1 seed before wrapper finalization. Its
+		// private capture remains partial, never a completed Provider result.
+		return ""
+	}
+	if meta.EvidenceState != "complete" || meta.ExitCode == nil || meta.FinishedAt == "" {
+		return "provider_evidence_not_finalized"
+	}
+	wrapperExit := rk1HostWrapperExit(diagnostics)
+	if wrapperExit == nil {
+		return "provider_evidence_wrapper_exit_missing"
+	}
+	if *wrapperExit != *meta.ExitCode {
+		return "provider_evidence_publication_failed"
+	}
+	return ""
+}
+
+func rk1StopsAfter(status, verdict string) bool {
+	return status != "finished" || verdict == "blocking_review"
+}

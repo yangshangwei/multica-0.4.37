@@ -1,0 +1,39 @@
+{
+  "candidate_sha": "639bf6ef85ad894553b244873c2ed8d9f9dd29b2",
+  "sandbox_profile_sha256": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+  "checks": [
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+        "/usr/bin/true"
+      ],
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "local_exec_success": true,
+      "network_denial_observed": false
+    },
+    {
+      "command": [
+        "/usr/bin/sandbox-exec",
+        "-f",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/.omx/private/local-packaging/deny-network.sb",
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-c",
+        "import socket; s=socket.socket(); s.bind((\"127.0.0.1\",0))"
+      ],
+      "exit_code": 1,
+      "log_sha256": "e9f7c6c5496e2ffc1b894d5d2cf2747d449be7a5417c4ba2c92924aa27a41aac",
+      "local_exec_success": false,
+      "network_denial_observed": true
+    }
+  ],
+  "network_denial_ready": true,
+  "at": "2026-11-01T20:05:49.899249+00:00",
+  "status_after_owned_evidence_creation": [
+    "?? .trellis/tasks/10-30-collaboration-context-handoff/research/local-packaging-639bf6ef8-20261102/"
+  ],
+  "initial_source_status_observed_clean_before_owned_report_creation": true,
+  "tracked_diff_empty": true
+}

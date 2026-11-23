@@ -1,0 +1,242 @@
+{
+  "files": [
+    {
+      "path": "adapter-v6-to-v8.diff",
+      "sha256": "8ce4430ae6aa1788c2ca9f709f1ab52c55edd19b51a33d453b30e010136fc210",
+      "bytes": 48913
+    },
+    {
+      "path": "adapter-v7-to-v8.diff",
+      "sha256": "679c1f6d9615545b3efb5c10136c92f7960081e597742cef31dd738e6b2df17f",
+      "bytes": 18146
+    },
+    {
+      "path": "change-boundary.md",
+      "sha256": "d6c4ec7fde48667197cad26b9c32271a5d9d3d3d171a34149403c8e93897c4fb",
+      "bytes": 2109
+    },
+    {
+      "path": "check-source.py",
+      "sha256": "04aa54ab46cdec25db078f893316888b820b21425d6c2fca25510155a673fe77",
+      "bytes": 3959
+    },
+    {
+      "path": "final-source/check-bin/go",
+      "sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+      "bytes": 11215
+    },
+    {
+      "path": "final-source/check-bin/pnpm",
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "bytes": 2228
+    },
+    {
+      "path": "final-source/check-go-isolation-test.py",
+      "sha256": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+      "bytes": 11915
+    },
+    {
+      "path": "final-source/check-go-package-binding-test.py",
+      "sha256": "ffc111f2fff4ca50254fb3f815fb01a1506e3956f02973d70b1b24c91105222c",
+      "bytes": 29049
+    },
+    {
+      "path": "final-source/check-pnpm-reporting-test.py",
+      "sha256": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+      "bytes": 6108
+    },
+    {
+      "path": "final-source/deny-network.sb",
+      "sha256": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+      "bytes": 44
+    },
+    {
+      "path": "final-source/go-flag-registry.json",
+      "sha256": "55f8ef47eb344b83671254a1143710fed60fd0ad0d27b43910ddb63e20739f87",
+      "bytes": 3496
+    },
+    {
+      "path": "final-source/plain-go-list-oracle/module/alternate.mod",
+      "sha256": "9336fbbb991e9a26028a2b2c100b63835824494be9ec0b166a0b5092990d3b36",
+      "bytes": 28
+    },
+    {
+      "path": "final-source/plain-go-list-oracle/module/first/fixture.go",
+      "sha256": "513adb14178d483c37630210a6ce886878b6d71ffe71720b3567b7e22784b4ed",
+      "bytes": 45
+    },
+    {
+      "path": "final-source/plain-go-list-oracle/module/go.mod",
+      "sha256": "0c7a339129e40163ad4c1563d59ba5058d3d8cf325db0a9d3dc84de450e022ee",
+      "bytes": 26
+    },
+    {
+      "path": "full-green-v8-command.json",
+      "sha256": "36e75ecc8368340640a483751312d5897a5a794402710642f96eb37edb9e8307",
+      "bytes": 1536
+    },
+    {
+      "path": "full-green-v8.json",
+      "sha256": "9c6667df64b11022baa15c4306ddc6defc9029f82236f60d41b9a845325fc635",
+      "bytes": 679262
+    },
+    {
+      "path": "full-green-v8.log",
+      "sha256": "43b1c1b268eece28c5784712dda197e8e2190af2d39d5231ea0ca21c18ff5e93",
+      "bytes": 6217
+    },
+    {
+      "path": "handoff.json",
+      "sha256": "4f90be73b1223db25ed00fac88d9066243b51e0db16741cf824ec5f1a0fca36e",
+      "bytes": 3221
+    },
+    {
+      "path": "handoff.md",
+      "sha256": "daab46dc8fd40befd4fea4b86539081db8dd91cd5fc2c4faee21c451a90d24df",
+      "bytes": 7768
+    },
+    {
+      "path": "incoming/adapter-v6/check-bin/go",
+      "sha256": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+      "bytes": 8284
+    },
+    {
+      "path": "incoming/adapter-v6/check-bin/pnpm",
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "bytes": 2228
+    },
+    {
+      "path": "incoming/adapter-v6/check-go-isolation-test.py",
+      "sha256": "ddeb1c96fbefa7aaa4f88b8b0478f313eda4abc4eb26eff369c2b5e284aed66a",
+      "bytes": 11809
+    },
+    {
+      "path": "incoming/adapter-v7/check-bin/go",
+      "sha256": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+      "bytes": 9886
+    },
+    {
+      "path": "incoming/adapter-v7/check-bin/pnpm",
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "bytes": 2228
+    },
+    {
+      "path": "incoming/adapter-v7/check-go-isolation-test.py",
+      "sha256": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+      "bytes": 11915
+    },
+    {
+      "path": "incoming/adapter-v7/check-go-package-binding-test.py",
+      "sha256": "ffafa89ada008bd1829ec74e3dbe58dd1058fc0fbdef95d99be61156af753d1a",
+      "bytes": 21885
+    },
+    {
+      "path": "incoming/adapter-v7/check-pnpm-reporting-test.py",
+      "sha256": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+      "bytes": 6108
+    },
+    {
+      "path": "incoming/adapter-v7/deny-network.sb",
+      "sha256": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+      "bytes": 44
+    },
+    {
+      "path": "incoming-manifest.json",
+      "sha256": "475956b06350484a15531f14342cb3101ebdda90ade46f99dfa03a006ca9ab28",
+      "bytes": 1958
+    },
+    {
+      "path": "incoming-v6-to-v8-go.patch",
+      "sha256": "a1d3f34093940ba07ac6f4808ca76ac398bff5f48a5bdcf6f8c1b0ccea4210c8",
+      "bytes": 6330
+    },
+    {
+      "path": "inherited-v8-command.json",
+      "sha256": "222b56e5527c892daeb6dbdc7ebfd92627a0cadc65fb257abd2eb4dd572942c2",
+      "bytes": 1344
+    },
+    {
+      "path": "inherited-v8.log",
+      "sha256": "038a678a533c695150215eda1d992fa8eb0f8c07fb716f6f6220f919369a11f8",
+      "bytes": 2274
+    },
+    {
+      "path": "plain-go-list-alternate-modfile.log",
+      "sha256": "597f3b8f7b278914bb72945892f14df7adf46dee8ce6f00e7e39f02233e63991",
+      "bytes": 16
+    },
+    {
+      "path": "plain-go-list-default.log",
+      "sha256": "a70bc9bca7f18851dd3037715c070392e6c03e91957cbe1223418f590dba8599",
+      "bytes": 14
+    },
+    {
+      "path": "plain-go-list-oracle.json",
+      "sha256": "f679618537712decb1ffaf1b0dcbd8c0633aa59fa5ca3c03d8717f3be0d79054",
+      "bytes": 5082
+    },
+    {
+      "path": "red-v7-command.json",
+      "sha256": "bb43dc1ad43e1187ff1f991e4e4d17546664aa5e60349b214b1437cd22e45740",
+      "bytes": 2302
+    },
+    {
+      "path": "red-v7.json",
+      "sha256": "19f86f9f3221d42832eaf949313a4959bb08c2e7de2004826457b4b0741af2af",
+      "bytes": 530191
+    },
+    {
+      "path": "red-v7.log",
+      "sha256": "1aa94b690c01e41994a6e742341e9880e4867990185d154c74f119c6f0643278",
+      "bytes": 581919
+    },
+    {
+      "path": "references/build-value-flag-initial-probe.json",
+      "sha256": "da9978a4caaee43a5ea7bfb5dd804f87b72b8027f549cc4add1737c25398e653",
+      "bytes": 1248
+    },
+    {
+      "path": "references/cached-go-flag-definitions.json",
+      "sha256": "41dc3c1b555e0523d1d4f9234fb16847fb7b36e50746017c0a668dbb145be47f",
+      "bytes": 20976
+    },
+    {
+      "path": "references/go-flag-registry.json",
+      "sha256": "55f8ef47eb344b83671254a1143710fed60fd0ad0d27b43910ddb63e20739f87",
+      "bytes": 3496
+    },
+    {
+      "path": "references/go-metadata-reference.json",
+      "sha256": "27b8a622c0cf45db5ffbb71e078c4ce79acb5ce4d31fb6d3bc3cac7396930505",
+      "bytes": 10166
+    },
+    {
+      "path": "source-check-command.json",
+      "sha256": "4710f7fd6dfcb43f9754b18dde4ec0c5aa64eec3d8c7df8d6bcf6be0b30f5f22",
+      "bytes": 1253
+    },
+    {
+      "path": "source-check.json",
+      "sha256": "1cd9cb5e4e5e601ee0e0e0398f940235f8ff0794c2548f929f42eac9cfed006f",
+      "bytes": 1880
+    },
+    {
+      "path": "source-check.log",
+      "sha256": "1cd9cb5e4e5e601ee0e0e0398f940235f8ff0794c2548f929f42eac9cfed006f",
+      "bytes": 1880
+    },
+    {
+      "path": "source-manifest.json",
+      "sha256": "6c04e097ff773e535411c2297f356e861c2d0c269893abc81c0a23d71cde1821",
+      "bytes": 2715
+    },
+    {
+      "path": "v7-to-v8-go.patch",
+      "sha256": "c3d61fa1785a61b4d78daebe336c4f8e99ca4b77f1ff10a5efe3b2c5ffa7baf5",
+      "bytes": 4047
+    }
+  ],
+  "private_ignored": true,
+  "frozen_go_sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+  "commit_or_clearance_created": false
+}

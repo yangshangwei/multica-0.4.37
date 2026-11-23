@@ -1,0 +1,89 @@
+{
+  "recorded_at": "2026-11-04T08:39:34.007386+00:00",
+  "state": "task7_closed_and_archived; ready_for_source_sync_and_minimum_List_fix",
+  "task7_closed": true,
+  "task7_original_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+  "task7_archive_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes",
+  "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "main_integration": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/main-source-integration-result.json",
+    "sha256": "931bb586a5f0531169e25618e1815918ac3fa995c36f47fc7d6283ca7b7fc7c7"
+  },
+  "task7_independent_acceptance": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/final-acceptance-review.json",
+    "sha256": "ce7822106c10b5841fd25ae32d2330b0b618d8c47e9c1e4c19c9d806db9c6da2"
+  },
+  "four_CCG_independent_review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg2-on01-result-review/review.json",
+    "sha256": "68fcbc4331392e8d5cc5c02f8f78e98009c754b03c5a9e1aee899b79d2a64978"
+  },
+  "stable_input_copies": {
+    "preregistration-design.md": {
+      "current_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/design.md",
+      "archived_original_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/design.md",
+      "stable_copy": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/preregistration-design.md",
+      "sha256": "d30bba413c97b46565bc1a46bcc9208cd27a7b6b701419208d63bd8120eeedb8"
+    },
+    "entry-matrix.json": {
+      "current_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/entry-matrix.json",
+      "archived_original_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/knowledge-real-model-preregistration-20261102/entry-matrix.json",
+      "stable_copy": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/entry-matrix.json",
+      "sha256": "73283c928ae76aa41ce3df5e0b09208f0603c967ea19919bcbafc31d5add8f46"
+    },
+    "initial-six-file-review.json": {
+      "current_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/knowledge6-source-review/review.json",
+      "archived_original_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/knowledge6-source-review/review.json",
+      "stable_copy": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/initial-six-file-review.json",
+      "sha256": "69d52bd5cd1d6e484d1a63852af1a6072414475b29a8cd8603b9fd332d47de17"
+    }
+  },
+  "historical_evidence_relocation": {
+    "old_prefix": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes",
+    "new_prefix": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes",
+    "rule": "Original evidence bytes and recorded historical paths remain unchanged; resolve only the leading old task prefix through this mapping when reading a moved artifact."
+  },
+  "framework_root": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103",
+  "framework_before_head": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "six_before_sha256": {
+    "server/cmd/server/rk1k_fixture_test.go": "9e31682c037385888be41579cc489f71c2c4e28797ab7bc7d8b596917578a084",
+    "server/cmd/server/rk1k_provider_test.go": "114439c31ac397e3195ae23e806487f3c02df1cae9bd422d90b73db66f879924",
+    "server/cmd/server/rk1k_scenarios_test.go": "7cd1780f910bc350dadf607aeb8c0f8451eb926da95556241ca5baaeb9289217",
+    "server/cmd/server/rk1k_evidence_test.go": "198402547160cfe530faf9175efe802ee19370eed4ab62bdc6dec8290b3b7717",
+    "server/cmd/server/rk1k_entry_test.go": "e58fff97a4654f32363b9cbb5be1e5562100354747a79a091747ec1dbb2e4844",
+    "server/internal/daemon/rk1k_driver_agentintegration.go": "b0ed3e55972f3f8208bfde741d73ae419d83acca316ee0e109eed8e643f002e0"
+  },
+  "borrowed_runtime_17_sha256": {
+    "server/cmd/server/rk1_entry_test.go": "0e7bd9887edc6be00c020fc861aab6c26cfbe494fb1dcd30b1a53f857541d0e3",
+    "server/cmd/server/rk1_evidence_contract_unit_test.go": "9868bad19675c8ebdaf43bf9d63b59485e12830501379acc769ba8f0c3a603ef",
+    "server/cmd/server/rk1_evidence_fault_proof_test.go": "b43d805ecdbaca8d61d1aeb777108f99ab74046f7b84b8d36ffa219f19079090",
+    "server/cmd/server/rk1_evidence_format_test.go": "648d8edb9640ba4cd09d213c785e232d4904ebff5d1631ec015f4eb6ea1962d4",
+    "server/cmd/server/rk1_evidence_publication_test.go": "461ae12b8da9ffc803681608f7d88db0f39342158f3223d71ad167a772e690f1",
+    "server/cmd/server/rk1_fake_helpers_test.go": "d863e2b35aab4a127e26f6a923fd4d60438aa610804a96f67aa2be23c0c50ab2",
+    "server/cmd/server/rk1_fake_test.go": "952165b30c01d6486304b81df72e3bcd373ce1e794a716772a344dece137e840",
+    "server/cmd/server/rk1_fixture_test.go": "c257225e01c00a92dc266226347a3ffa016ac79db18c592dff6d293c6294994b",
+    "server/cmd/server/rk1_lifecycle_test.go": "b1fe1002b28804b7bfd8593b5df0c20502e246de5b5e7ab8760029a5da3e8c6f",
+    "server/cmd/server/rk1_observe_test.go": "5472c35cff8f5f99eb1c84381656e9677985e3743a278ff271531a01740f1b07",
+    "server/cmd/server/rk1_provider_test.go": "02050fc42ba6aeb02f4d7695ce76f4ee7a4402f07048cc2326dcde5d7b3e4f05",
+    "server/cmd/server/rk1_run_test.go": "0eb15501131a043c2cbd98c5ac33e515a9b1d6c55d4ba54f0388a13516a85763",
+    "server/cmd/server/rk1_scenarios_handoff_test.go": "eaba9f65a465f12afb3c5322ffefe6f6ec9d5e94bfa50870bf3027fea992c06a",
+    "server/cmd/server/rk1_scenarios_recall_test.go": "644797d7325ab91c9ac6f306a86bf426bbbf6375009673118f1fe3f7706a7cda",
+    "server/cmd/server/rk1_trace_barrier_test.go": "caa003b5b79f0747198d1fbdb268cdb9fdab8b289b691bd0222b2ab5e72a1c94",
+    "server/cmd/server/rk1_trace_test.go": "6f3a767c574d363d3f078bd8b9386c734366186c477493c03067f57f43e7c172",
+    "server/cmd/server/rk1_trial_test.go": "bfdfb910b40dc43c8b8a43d49a617dedc5421d8ed251c30b4488e581f105f5a5"
+  },
+  "next": "After #7 archive, root integrates accepted product source preserving six/17; sole executor fixes actual HTTP List polling, then fresh normal/race and independent six-file/source binding.",
+  "real_gate": {
+    "allocated": 0,
+    "calls": 0,
+    "runnable": false,
+    "production_injection": false,
+    "budget_transfers": false
+  },
+  "archive_file_count": 2428,
+  "original_research_artifact_bytes_and_modes_preserved": true,
+  "task7_mutable_closure_documents_finalized": [
+    "task.json",
+    "progress.md",
+    "advance-plan-2026-11-03.md"
+  ]
+}

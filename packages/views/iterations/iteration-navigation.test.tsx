@@ -48,6 +48,7 @@ vi.mock("@multica/core/paths", () => ({
     root: () => "/acme/issues",
     iterations: () => "/acme/iterations",
     settings: () => "/acme/settings",
+    docsPage: (slug: string) => `/acme/docs/${slug}`,
     iterationDetail: (id: string) => `/acme/iterations/${id}`,
     issueDetail: (id: string) => `/acme/issues/${id}`,
   }),
@@ -966,6 +967,68 @@ describe("approved iteration business pages", () => {
 });
 
 describe("iteration page review regressions", () => {
+  it("introduces iteration planning on a successful first empty workspace and reuses the create dialog", async () => {
+    vi.mocked(api.listIterations).mockResolvedValue({
+      workspace_id: ws,
+      items: [],
+      next_cursor: null,
+    });
+    const { user } = mount();
+
+    expect(await screen.findByRole("heading", { name: projects.iterations.welcome.title })).toBeVisible();
+    expect(screen.getByText(projects.iterations.welcome.example)).toBeVisible();
+    expect(screen.getAllByRole("button", { name: "Create iteration" })).toHaveLength(1);
+    expect(screen.getAllByRole("link", { name: projects.iterations.settings })).toHaveLength(1);
+    expect(screen.getByRole("link", { name: projects.iterations.settings })).toHaveAttribute("href", "/acme/settings?tab=iterations");
+    expect(screen.queryByText(projects.iterations.noActive)).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Create iteration" }));
+    expect(await screen.findByRole("dialog")).toBeVisible();
+    expect(screen.getByLabelText("Name")).toBeVisible();
+  });
+
+  it("keeps the timeline empty state for an existing history-only workspace", async () => {
+    vi.mocked(api.listIterations).mockResolvedValue({
+      workspace_id: ws,
+      items: [{ ...source, status: "completed" }],
+      next_cursor: null,
+    });
+    mount();
+
+    expect(await screen.findByText(projects.iterations.noActive)).toBeVisible();
+    expect(screen.getByText(projects.iterations.empty)).toBeVisible();
+    expect(screen.queryByRole("heading", { name: projects.iterations.welcome.title })).not.toBeInTheDocument();
+  });
+
+  it("keeps filtered-empty results separate from the first-use welcome", async () => {
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [], next_cursor: null });
+    const { user } = mount();
+    await user.click(await screen.findByRole("button", { name: projects.iterations.pages.filters }));
+    await user.type(screen.getByRole("textbox", { name: projects.iterations.search }), "missing");
+
+    expect(screen.getByText(projects.iterations.pages.noMatches)).toBeVisible();
+    expect(screen.getAllByRole("button", { name: projects.iterations.pages.clearFilters }).length).toBeGreaterThan(0);
+    expect(screen.queryByRole("heading", { name: projects.iterations.welcome.title })).not.toBeInTheDocument();
+  });
+
+  it("does not treat a failed first catalogue read as an empty workspace", async () => {
+    vi.mocked(api.listIterations).mockRejectedValue(new TypeError("Offline"));
+    mount();
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(projects.iterations.error);
+    expect(screen.queryByRole("heading", { name: projects.iterations.welcome.title })).not.toBeInTheDocument();
+  });
+
+  it("does not show the first-use welcome when iteration planning is disabled", async () => {
+    vi.mocked(api.getIterationSettings).mockResolvedValue({ ...settings, enabled: false });
+    vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [], next_cursor: null });
+    mount();
+
+    expect(await screen.findByText(projects.iterations.pages.disabledHistory)).toBeVisible();
+    expect(screen.queryByRole("heading", { name: projects.iterations.welcome.title })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: projects.iterations.create })).not.toBeInTheDocument();
+  });
+
   it("keeps the current iteration visible beyond fifty future plans", async () => {
     const plans = Array.from({ length: 51 }, (_, index) => ({ ...targetA, id: `plan-${index}`, name: `Plan ${index}` }));
     vi.mocked(api.listIterations).mockResolvedValue({ workspace_id: ws, items: [...plans, source], next_cursor: null });

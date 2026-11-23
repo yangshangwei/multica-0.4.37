@@ -1,0 +1,29 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_other",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "github.com/multica-ai/multica/server/internal/auth",
+    "github.com/multica-ai/multica/server/internal/handler",
+    "github.com/multica-ai/multica/server/internal/integrations/wecom",
+    "github.com/multica-ai/multica/server/internal/middleware",
+    "-run",
+    "^(TestAuth_PATCacheHit|TestCloudPATVerifier_CacheHitSkipsHTTP|TestCloudPATVerifier_LookupRejectsUnknownOwner|TestCloudPATVerifier_LookupSuccessIsCached|TestCloudPATVerifier_NegativesNotCached|TestDaemonAuth_DaemonTokenCacheHit|TestDaemonAuth_PATCacheHit|TestDaemonAuth_StripsClientSuppliedActorSource|TestDaemonTokenCache_SetGetInvalidate|TestDaemonTokenCache_Set_RespectsClampedTTL|TestDaemonTokenCache_TTL|TestMembershipCache_InvalidatedOnDeleteMember|TestMembershipCache_InvalidatedOnDeleteWorkspace|TestMembershipCache_InvalidatedOnLeaveWorkspace|TestMembershipCache_InvalidatedOnUpdateMember|TestMembershipCache_IsolatesKeysByUser|TestMembershipCache_SetGetInvalidate|TestMembershipCache_TTL|TestPATCache_SetGetInvalidate|TestPATCache_Set_RespectsClampedTTL|TestPATCache_TTL|TestPasswordLimiterSharedAtomicAdmission|TestPluginRateLimitIsPerCredentialAndUsesStableProblem|TestRateLimit_AllowsUnderLimit|TestRateLimit_BlocksOverLimit|TestRateLimit_DifferentIPs|TestRateLimit_LuaScript_SetsTTL|TestRateLimit_RetryAfterHeader|TestRedisLivenessStore_BatchEmptyInput|TestRedisLivenessStore_Forget|TestRedisLivenessStore_TTLExpiry|TestRedisLivenessStore_TouchAndIsAlive|TestRedisLocalSkillImportStore_CompletePreservesFiles|TestRedisLocalSkillImportStore_CreateWithoutMultiPermission|TestRedisLocalSkillImportStore_PopPendingAcrossInstances|TestRedisLocalSkillImportStore_PopPendingBatch|TestRedisLocalSkillImportStore_PreservesConflict|TestRedisLocalSkillImportStore_PreservesCreatorID|TestRedisLocalSkillListStore_CreateGetComplete|TestRedisLocalSkillListStore_CreateWithoutMultiPermission|TestRedisLocalSkillListStore_PendingTimeout|TestRedisLocalSkillListStore_PerRuntimeIsolation|TestRedisLocalSkillListStore_PopPendingAcrossInstances|TestRedisLocalSkillListStore_PopPendingAtomicClaim|TestRedisLocalSkillListStore_PopPendingConcurrent|TestRedisModelCatalogCache_DropsUndecodableSnapshot|TestRedisModelCatalogCache_InvalidateAndExpiry|TestRedisModelCatalogCache_RoundTrip|TestRedisModelCatalogCache_SkipsUncacheableResults|TestRedisModelListStore_CreateGetComplete|TestRedisModelListStore_CreateWithoutMultiPermission|TestRedisModelListStore_HasPending|TestRedisModelListStore_PendingTimeout|TestRedisModelListStore_PopPendingAcrossInstances|TestRedisModelListStore_PopPendingConcurrent|TestRedisModelListStore_RunningTimeout|TestRedisSlidingWindowRateLimiter_PreservesWebhookFailOpenAndExposesErrors|TestRedisSlidingWindowRateLimiter_SeparatesInvitationNamespaces|TestRedisUpdateStore_CreateGetComplete|TestRedisUpdateStore_CreateWithoutMultiPermission|TestRedisUpdateStore_FailAcrossInstances|TestRedisUpdateStore_PopPendingAcrossInstances|TestRedisUpdateStore_PopPendingConcurrent|TestRedisUpdateStore_RejectsConcurrentActive|TestRedisUpdateStore_ReportAndPollAcrossInstances|TestRedisUpdateStore_RunningTimeoutClearsActive|TestRedisWebhookIPRateLimiter_HasSeparateBudgetFromTokenLimiter|TestRedisWebhookRateLimiter_RejectsAboveLimit|TestRelay_ADeliveredReplyIsCountedOnceAndNotAlsoLost|TestRelay_AReplyNoReplicaCouldSendIsCountedOnce|TestRelay_ARetriedReplyKeepsItsPlaceInLine|TestRequireDaemonWorkspaceAccess_CacheHit|TestRequireDaemonWorkspaceAccess_CacheMissBackfills)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=15m"
+  ],
+  "redis_url": "redis://127.0.0.1:57244",
+  "started_at": "2026-10-21T05:28:43.260591+00:00",
+  "selected_top_level_tests": 73,
+  "exit_code": 0
+}

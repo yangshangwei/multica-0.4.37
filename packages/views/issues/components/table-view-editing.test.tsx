@@ -34,6 +34,7 @@ import type {
 import { renderWithI18n } from "../../test/i18n";
 import { IssueSurfaceSelectionProvider } from "../surface/selection-context";
 import type { IssueSurfaceSelection } from "../surface/selection-context";
+import { IssueSurfaceActionsProvider, type IssueSurfaceActions } from "../surface/actions-context";
 import type { IssueCreateDefaults } from "../surface/types";
 import type { ChildProgress } from "./list-row";
 import { TableView, useReleaseEditingCellOnUnmount } from "./table-view";
@@ -200,6 +201,8 @@ const serverQuery: IssueTableQuerySpec = {
 };
 
 let serverIssues: Issue[] = [];
+let selectableAgents: Array<{ id: string; name: string; owner_id: string; runtime_id: string; archived_at: null }> = [];
+let selectableSquads: Array<{ id: string; name: string; leader_id: string; archived_at: null }> = [];
 
 function Harness({
   childProgressMap,
@@ -234,6 +237,58 @@ function Harness({
 }
 
 describe("TableView cell editors under data refresh", () => {
+  function renderEditableTable(updateIssue: IssueSurfaceActions["updateIssue"]) {
+    const actions: IssueSurfaceActions = {
+      isPending: false,
+      createIssue: vi.fn(),
+      updateIssue,
+      moveIssue: vi.fn(),
+      batchUpdate: vi.fn().mockResolvedValue({ updated: 0 }),
+      batchDelete: vi.fn().mockResolvedValue(undefined),
+    };
+    return renderWithI18n(
+      <QueryClientProvider client={queryClient}>
+        <IssueSurfaceActionsProvider actions={actions}>
+          <Harness childProgressMap={new Map()} surfaceKey="ordinary-field-revision" />
+        </IssueSurfaceActionsProvider>
+      </QueryClientProvider>,
+    );
+  }
+
+  // Core field-revision.test.ts owns the observation matrix. Each real picker
+  // gets a fresh row/cache mismatch so one completed edit cannot hide another
+  // field accidentally reading its token from the newer detail cache.
+  it.each([
+    { field: "priority", trigger: "No priority", option: "High", update: { priority: "high" } },
+    { field: "clear-assignee", trigger: "Someone", option: "Unassigned", update: { assignee_type: null, assignee_id: null } },
+  ])("uses the rendered row revision for $field despite a newer detail cache", async ({ trigger, option, update }) => {
+    const user = userEvent.setup({ delay: null, pointerEventsCheck: 0 });
+    const issue = { ...makeIssue("c", "Observed row", "todo"), revision: 23, assignee_type: "member" as const, assignee_id: "user-1" };
+    serverIssues = [issue];
+    queryClient.setQueryData(issueKeys.detail("ws-1", issue.id), { ...issue, revision: 24 });
+    const updateIssue = vi.fn();
+    renderEditableTable(updateIssue);
+    const row = (await screen.findByText("MUL-c")).closest("tr")!;
+    await user.click(within(row).getByRole("button", { name: trigger }));
+    await user.click(screen.getByRole("option", { name: option }));
+    expect(updateIssue).toHaveBeenCalledExactlyOnceWith(issue.id, { ...update, expected_revision: 23 });
+    expect(navigationMocks.push).not.toHaveBeenCalled();
+  });
+
+  it.each(["agent", "squad"] as const)("pins the rendered row revision before a real %s assignment confirmation", async (assigneeType) => {
+    const user = userEvent.setup({ delay: null, pointerEventsCheck: 0 });
+    serverIssues = [{ ...makeIssue("c", "Observed row", "todo"), revision: 23 }];
+    selectableAgents = [{ id: "agent-1", name: "Assignable agent", owner_id: "user-1", runtime_id: "runtime-1", archived_at: null }];
+    selectableSquads = [{ id: "squad-1", name: "Assignable squad", leader_id: "agent-1", archived_at: null }];
+    const updateIssue = vi.fn();
+    renderEditableTable(updateIssue);
+    const row = (await screen.findByText("MUL-c")).closest("tr")!;
+    await user.click(within(row).getByRole("button", { name: "Unassigned" }));
+    await user.click(await screen.findByRole("option", { name: `Assignable ${assigneeType}` }));
+    expect(useModalStore.getState().data).toEqual({ issueIds: ["c"], mode: "assign", assigneeType, assigneeId: `${assigneeType}-1`, issueRevision: 23 });
+    expect(updateIssue).not.toHaveBeenCalled();
+  });
+
   // The table's inline pickers are single-issue writes like the issue detail's,
   // so they route on the same run-confirm gate: promoting an agent-owned issue
   // out of backlog starts a run and must confirm first (MUL-6463). The gate's
@@ -262,7 +317,7 @@ describe("TableView cell editors under data refresh", () => {
     await screen.findByText("MUL-c");
     const row = screen.getByText("MUL-c").closest("tr")!;
     await user.click(within(row).getByRole("button", { name: /Backlog/ }));
-    await user.click(screen.getByRole("button", { name: /^Todo$/ }));
+    await user.click(screen.getByRole("option", { name: /^Todo$/ }));
 
     const { modal, data } = useModalStore.getState();
     expect(modal).toBe("issue-run-confirm");
@@ -278,6 +333,9 @@ describe("TableView cell editors under data refresh", () => {
   let queryClient: QueryClient;
 
   beforeEach(() => {
+    selectableAgents = [];
+    selectableSquads = [];
+    useModalStore.getState().close();
     navigationMocks.push.mockReset();
     navigationMocks.openInNewTab.mockReset();
     navigationMocks.getShareableUrl.mockReset();
@@ -293,8 +351,8 @@ describe("TableView cell editors under data refresh", () => {
     setApiInstance({
       listProperties: async () => ({ properties: [] }),
       listMembers: async () => [],
-      listAgents: async () => [],
-      listSquads: async () => [],
+      listAgents: async () => selectableAgents,
+      listSquads: async () => selectableSquads,
       getAssigneeFrequency: async () => [],
       listIssueStatuses: async () => ({ statuses: [] }),
       listIssueTableRows: async () => ({
@@ -314,6 +372,8 @@ describe("TableView cell editors under data refresh", () => {
 
   afterEach(() => {
     cleanup();
+    useModalStore.getState().close();
+    queryClient.clear();
     vi.unstubAllGlobals();
   });
 
@@ -354,7 +414,7 @@ describe("TableView cell editors under data refresh", () => {
     const rowA = screen.getByText("MUL-a").closest("tr")!;
     await user.click(within(rowA).getByRole("button", { name: /Todo/ }));
     // Base UI portals the popup; "Backlog" only exists while it is open.
-    expect(screen.getByRole("button", { name: /Backlog/ })).toBeTruthy();
+    expect(screen.getByRole("option", { name: /Backlog/ })).toBeTruthy();
 
     // A realtime refresh lands: new array identities, rows reordered, new
     // childProgressMap. The popup must stay open and the structure must hold
@@ -388,15 +448,15 @@ describe("TableView cell editors under data refresh", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Backlog/ })).toBeTruthy();
+      expect(screen.getByRole("option", { name: /Backlog/ })).toBeTruthy();
       expect(identifiers()).toEqual(["MUL-a", "MUL-b"]);
       // …while the VALUES inside the frozen rows keep tracking live data.
       expect(screen.getByText("Alpha task (updated)")).toBeTruthy();
     });
 
     // Selecting a value closes the editor; the deferred live order applies.
-    await user.click(screen.getByRole("button", { name: /Backlog/ }));
-    expect(screen.queryByRole("button", { name: /Backlog/ })).toBeNull();
+    await user.click(screen.getByRole("option", { name: /Backlog/ }));
+    expect(screen.queryByRole("option", { name: /Backlog/ })).toBeNull();
     expect(identifiers()).toEqual(["MUL-b", "MUL-a"]);
   }, 60_000);
 
@@ -506,6 +566,29 @@ describe("TableView cell editors under data refresh", () => {
       "/test/issues/a",
       "MUL-a",
     );
+  });
+
+  // Shared rows are read-only cells that open the collaboration action; they
+  // must still announce the value a sighted user sees, not just the column.
+  it("names a collaboration row's cells by column and visible value", async () => {
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    serverIssues = [{ ...makeIssue("s", "Shared task", "todo"), assignee_type: "member", assignee_id: "user-1",
+      collaboration: { creator: account, handler: account, has_external_collaborators: true } }];
+
+    renderWithI18n(
+      <QueryClientProvider client={queryClient}>
+        <Harness
+          childProgressMap={new Map()}
+          surfaceKey={`test-collaboration-cells-${Math.floor(Math.random() * 1e9)}`}
+        />
+      </QueryClientProvider>,
+    );
+
+    // jsdom ignores CSS, so it drops the space Chrome inserts between flex items.
+    const row = (await screen.findByText("MUL-s")).closest("tr")!;
+    expect(within(row).getByRole("button", { name: /^Status:\s*Todo$/ })).toBeInTheDocument();
+    expect(within(row).getByRole("button", { name: /^Assignee:\s*Outside/ })).toBeInTheDocument();
+    expect(within(row).getByRole("button", { name: /^Labels:\s*Empty$/ })).toBeInTheDocument();
   });
 
   it("without a tab adapter (web), plain click pushes and a modifier click opens a browser tab", async () => {

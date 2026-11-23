@@ -1,0 +1,192 @@
+{
+  "reviewer": "/root/adapter_preflight_review",
+  "verdict": "pass-with-notes",
+  "scope": "Docs-only current delivery records and new verification environment spec",
+  "execution_blocking_findings_open": 0,
+  "documentation_findings_open": 0,
+  "findings": [
+    {
+      "id": "DOC-1",
+      "severity": "medium",
+      "file": ".trellis/tasks/10-30-collaboration-fix-closure/verification-continue-2026-11-02.md",
+      "location": "opening paragraph, 当前验收表/private entry, 下一入口",
+      "issue": "Current wording still says successor complete check is awaiting startup, and private preflight shows83 without a v6-history label. Actual v9 is running and its final preflight has86 passing fakes.",
+      "evidence": "make-check-v9.json is state=running, started2026-11-02T15:36:09.037397+00:00, process20588; final-v9-review.json records86/0.",
+      "fix": "Label v6 as failed historical run; add current v9 running record/start identity and86-fake/7-targeted-pass references. Keep full-result gate open until actual run ends.",
+      "status": "closed_after_Root_mechanical_sync",
+      "closure": "Verification intro/table/next entry distinguish failed v6 and running v9, historical83 and current86, current PID20588 and pending whole-run gates."
+    },
+    {
+      "id": "DOC-2",
+      "severity": "medium",
+      "file": ".trellis/tasks/10-30-collaboration-fix-closure/task.json",
+      "location": "notes; meta.fullcheck_pid / preflight_final_status / progress_phase",
+      "issue": "Current run record points to v9, but fullcheck_pid still91222 from v6, preflight_final_status says83, and notes describe pending v5 review.",
+      "evidence": "Actual v9 process_id is20588 and final v9 preflight is86/0; historical v6 process91222 finishedfailed. Current status remainsin_progress/completedAt=null correctly.",
+      "fix": "Update current v9 identity/status/preflight reference and mark existing static/TS/fullcheck-v6-result fields explicitly as historical/completed-run evidence when necessary. Do not replace the old failed proof or marktask complete.",
+      "status": "closed_after_Root_mechanical_sync",
+      "closure": "Task notes/preflight now identify v9/86fake/actual7; current PID20588 and historical failed v6 PID91222 are separate."
+    },
+    {
+      "id": "DOC-3",
+      "severity": "low",
+      "files": [
+        "docs/plans/2026-11-02-collaboration-fix-closure.md",
+        ".trellis/tasks/10-30-collaboration-fix-closure/implement.md"
+      ],
+      "location": "plan steps2/3 and 本轮执行补记; implement current checklist",
+      "issue": "Live continuation checklist still has v5 preflight pending, v6 successor under repair, and v6 TypeScript running, despite completed v6/v9 preflights and a running new full check.",
+      "fix": "Mark already completed bounded preflight/ownership checks or label them historical; record actualv9 as running and point to final-v9-review/catalog-actual-redgreen. Keep whole-check, password7 and original14 real-execution gates pending until actual evidence exists.",
+      "status": "closed_after_Root_mechanical_sync",
+      "closure": "Completed preflight/resources are checked; current v9 and historical v6 hashes/results are separated, and repair/TS-running prose is replaced with failed v6/current Go-running notes."
+    }
+  ],
+  "verified_correct": {
+    "new_spec_has_seven_required_sections": true,
+    "new_spec_index_row_exists": true,
+    "frozen_v9_PUB_ordinary_strip_vs_recursive_API_choice": true,
+    "pool_HOME_Make_hash_package_global_admission_contracts_match_reviewed_code": true,
+    "fake_vs_real_model_and_targeted_vs_complete_claims_separated": true,
+    "status_in_progress_and_completed_at_null": true,
+    "E3_after_trial2": [
+      "after",
+      2
+    ],
+    "budget_cap": 14,
+    "registered_call_cap_sum": 14,
+    "source_arm_paths_exist": {
+      "baseline": true,
+      "after": true
+    },
+    "private_output_paths_exist": {
+      "current_run_record": true,
+      "selected_v9_go": true,
+      "selected_v9_pnpm": true,
+      "v9_launcher": true
+    },
+    "Markdown_link_count": 40,
+    "broken_Markdown_links": [],
+    "manifests": [
+      {
+        "name": "implement.jsonl",
+        "rows": 20,
+        "missing_files": [],
+        "missing_reasons": [],
+        "new_spec_present": true
+      },
+      {
+        "name": "check.jsonl",
+        "rows": 20,
+        "missing_files": [],
+        "missing_reasons": [],
+        "new_spec_present": true
+      }
+    ]
+  },
+  "verification_commands": "Pure file reads, path/hash/link/JSON checks only",
+  "tests_lint_typecheck_rerun": false,
+  "DB_services_or_owned_process_actions": false,
+  "files_modified_outside_review_reports": [],
+  "Root_followup": "All three reported mechanical stale groups closed. Single v9 check continues; collect actual whole-run/password/model results before any task-completion claim.",
+  "previous_review_snapshot": {
+    "reviewed_file_hashes": {
+      "docs/plans/2026-11-02-collaboration-fix-closure.md": "5e4d485dad1ef856aae22de2823dd6b67c328d6e3461364351d2e3839d600f7c",
+      ".trellis/tasks/10-30-collaboration-fix-closure/implement.md": "17f45e9237657a03ed089ffd8b4c953528b91dccd9bc308abcc153592369c3e2",
+      ".trellis/tasks/10-30-collaboration-fix-closure/verification-continue-2026-11-02.md": "90dc888b794116d6a2cd43550a46b0693ca462bc8549037f3e759203125d7448",
+      ".trellis/spec/server/verification-environment.md": "334a47edd4f78d00325467bc762b2d9454762750df7e36d2c26c48338932c022",
+      ".trellis/spec/server/index.md": "5caca5c857c6447473b638da6bbbe8f789730039303920fef065f3bdf5de13cf"
+    },
+    "Markdown_link_count": 40,
+    "broken_Markdown_links": [],
+    "manifest_status": [
+      {
+        "name": "implement.jsonl",
+        "rows": 20,
+        "missing_files": [],
+        "missing_reasons": [],
+        "new_spec_present": true
+      },
+      {
+        "name": "check.jsonl",
+        "rows": 20,
+        "missing_files": [],
+        "missing_reasons": [],
+        "new_spec_present": true
+      }
+    ],
+    "spec_sections": [
+      [
+        "1",
+        "Scope / trigger"
+      ],
+      [
+        "2",
+        "Signatures"
+      ],
+      [
+        "3",
+        "Contracts"
+      ],
+      [
+        "4",
+        "Validation / error matrix"
+      ],
+      [
+        "5",
+        "Good / base / bad cases"
+      ],
+      [
+        "6",
+        "Required tests and assertion points"
+      ],
+      [
+        "7",
+        "Wrong vs correct"
+      ]
+    ],
+    "required_seven_sections_present": true,
+    "run_state": "running",
+    "actual_v9_process_id": 20588,
+    "metadata_process_id": 91222,
+    "actual_candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+    "actual_v9_adapter_hashes": {
+      "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+    },
+    "actual_launcher_hash": "68dfc4c48a42e7ea276eee815b7f0985e96cf950ec3e2e623187e8ab583bf475",
+    "next_original_cursor": [
+      "after",
+      2
+    ],
+    "registered_budget": 14,
+    "planned_launch_cap_sum": 14,
+    "source_arm_paths_exist": {
+      "baseline": true,
+      "after": true
+    },
+    "private_output_paths_exist": {
+      "current_run_record": true,
+      "selected_v9_go": true,
+      "selected_v9_pnpm": true,
+      "v9_launcher": true
+    },
+    "status": "in_progress",
+    "completed_at": null
+  },
+  "closure_read_snapshot": {
+    "status": "in_progress",
+    "completedAt": null,
+    "notes": "2026-11-02 按现有任务推进。v6完整check实际exit2，Go技能catalog受API publisher配置污染；两个新克隆复现3fail后v9原断言7/7pass。v9独立86fake复核0阻塞，当前同一候选64a完整检查执行中，15静态/13082 TS及cmd/server735pass已通过，其他Go/race尚待结束。原实验从E3 after trial2接续，剩余14次且本轮真实调用0；password7项待后续。历史失败及其他任务未提交工作保留。",
+    "preflight_final_status": "v9_independent_pass86_and_actual_catalog7_no_blocking_v6_historical_crosspass83",
+    "fullcheck_pid": 20588,
+    "v6_failed_fullcheck_pid": 91222,
+    "progress_phase": "fullcheck_v9_Go_running",
+    "owned_file_hashes": {
+      ".trellis/tasks/10-30-collaboration-fix-closure/task.json": "dc80b98e524f13d5bf071da6a06e9f0151810fb6d4c718022cc110cbc6f15f33",
+      ".trellis/tasks/10-30-collaboration-fix-closure/implement.md": "bccc533293130967c1f6bd7206a46362a22cbfee188fd8a4ca9599ccdb89eacb",
+      ".trellis/tasks/10-30-collaboration-fix-closure/verification-continue-2026-11-02.md": "b8e0a16440f8139d1101bae9bbc14acf2179d47ff034207326ecbed550219cdd",
+      "docs/plans/2026-11-02-collaboration-fix-closure.md": "352a625de359dcf73215df9766ba28dbb5ffd37b4d353816b0ea0b33f29640a2"
+    }
+  },
+  "status_remains_open": true
+}

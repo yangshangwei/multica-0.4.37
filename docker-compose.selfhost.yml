@@ -113,11 +113,15 @@ services:
       MULTICA_DATABASE_CONNECT_TIMEOUT: ${MULTICA_DATABASE_CONNECT_TIMEOUT:-5s}
       MULTICA_SHUTDOWN_HOLD_DURATION: ${MULTICA_SHUTDOWN_HOLD_DURATION:-}
       MULTICA_RUNTIME_RECONNECT_GRACE: ${MULTICA_RUNTIME_RECONNECT_GRACE:-}
+      # Shared context document limit in UTF-8 bytes. The server default is
+      # 131072 (128 KiB); valid overrides range from 32768 to 524288.
+      MULTICA_COLLABORATION_MEMORY_MAX_BYTES: ${MULTICA_COLLABORATION_MEMORY_MAX_BYTES:-}
       # Project rollout remains configurable; iterations use workspace settings.
       FF_PROJECTS_P1: ${FF_PROJECTS_P1:-true}
       MULTICA_AUTH_MODE: ${MULTICA_AUTH_MODE:-legacy}
       MULTICA_PLATFORM_ADMIN_ENABLED: ${MULTICA_PLATFORM_ADMIN_ENABLED:-false}
       MULTICA_MANAGED_INSTALLATIONS_ENABLED: ${MULTICA_MANAGED_INSTALLATIONS_ENABLED:-false}
+      MULTICA_KNOWLEDGE_CONTEXT_ENABLED: ${MULTICA_KNOWLEDGE_CONTEXT_ENABLED:-true}
       MULTICA_DEPLOYMENT_ID: ${MULTICA_DEPLOYMENT_ID:-}
       MULTICA_ADMIN_CONFIRMED_OPERATIONS_RETENTION_DAYS: ${MULTICA_ADMIN_CONFIRMED_OPERATIONS_RETENTION_DAYS:-}
       MULTICA_ADMIN_ALERT_RETENTION_DAYS: ${MULTICA_ADMIN_ALERT_RETENTION_DAYS:-}
@@ -130,6 +134,9 @@ services:
       ALLOWED_EMAILS: ${ALLOWED_EMAILS:-}
       ALLOWED_EMAIL_DOMAINS: ${ALLOWED_EMAIL_DOMAINS:-}
       DISABLE_WORKSPACE_CREATION: ${DISABLE_WORKSPACE_CREATION:-}
+      # Recipient picker lists every available account by default; "false"
+      # lists only people sharing a workspace or collaboration issue.
+      MULTICA_COLLABORATION_DIRECTORY_ENABLED: ${MULTICA_COLLABORATION_DIRECTORY_ENABLED:-}
       # Intranet device auth. With this true, any client that can reach this
       # port mints its own identity and needs no login; each first launch then
       # names its own workspace unless MULTICA_DEVICE_AUTH_WORKSPACE names one
@@ -186,6 +193,9 @@ services:
       MULTICA_CLI_INSTALL_COMMAND_WINDOWS: ${MULTICA_CLI_INSTALL_COMMAND_WINDOWS:-}
       MULTICA_CLI_INSTALL_COMMAND_MACOS: ${MULTICA_CLI_INSTALL_COMMAND_MACOS:-}
       MULTICA_CLI_INSTALL_COMMAND_LINUX: ${MULTICA_CLI_INSTALL_COMMAND_LINUX:-}
+      # Public desktop download page (the desktop-updates service's /desktop/).
+      # Empty hides the download links in Web.
+      MULTICA_DESKTOP_DOWNLOAD_URL: ${MULTICA_DESKTOP_DOWNLOAD_URL:-}
       # Comma-separated CIDRs whose source IP is allowed to set
       # X-Forwarded-For / X-Real-IP for the webhook per-IP rate limiter.
       # Empty default = headers ignored, RemoteAddr used. Set e.g.

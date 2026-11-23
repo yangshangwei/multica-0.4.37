@@ -1,0 +1,16 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^(TestHostHandoffLaunch|TestHostProviderAccountSmokeAuthorizes)",
+    "-count=1",
+    "-v"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-handoff-launch-20261031/server",
+  "started_at": "2026-10-31T14:51:44.441165+00:00",
+  "elapsed_seconds": 11.14,
+  "exit_code": 0
+}

@@ -1,0 +1,205 @@
+{
+  "status": "PACKAGING_AND_STATIC_INSPECTION_PASS",
+  "native_acceptance": "NOT_RUN_BY_THIS_LANE",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "version": "0.6.7-476-g1a32ca36c",
+  "debian_version": "0.6.7~476~g1a32ca36c",
+  "architecture": "arm64",
+  "worktree": "/Volumes/artisan/code/2026/mc-core-e2e-linux-package-20261104",
+  "directory": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/directory-v2/linux-arm64-unpacked",
+  "deb": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/deb-v2/multica-desktop-0.6.7-476-g1a32ca36c-linux-arm64.deb",
+  "hashes": {
+    "asar": "5da9b5eb86ffd6513f21acdab19a57c755807c2620833a8e77714a01997afd8d",
+    "executable": "379334fb6707615062d32fcc481a8a8d3140938531378ccba14f3fa169665043",
+    "cli": "7cd6e1b4364842c98760983f5e248e4e2de8dcbe49701846907b3f5c120ad648",
+    "deb": "1d19374fbb82b9f1dea694804cd7481981871c6517ba6653edd47b501c63af0b"
+  },
+  "source_to_payload": {
+    "copied_out_files": 495,
+    "packaged_out_files": 495,
+    "all_out_bytes_match": true,
+    "directory_files_unchanged_after_deb": 80,
+    "all_original_staged_files_unchanged": true,
+    "staging_added_files": [
+      "resources/apparmor-profile",
+      "resources/package-type"
+    ],
+    "deb_staged_files_match": 82
+  },
+  "commands": [
+    {
+      "id": "01-worktree",
+      "argv": [
+        "git",
+        "worktree",
+        "add",
+        "--detach",
+        "/Volumes/artisan/code/2026/mc-core-e2e-linux-package-20261104",
+        "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "started_at": "2026-11-04T16:29:07.484752+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T16:29:13.027530+00:00"
+    },
+    {
+      "id": "02-install",
+      "argv": [
+        "pnpm",
+        "install",
+        "--offline",
+        "--frozen-lockfile"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-linux-package-20261104",
+      "started_at": "2026-11-04T17:02:33.053924+00:00",
+      "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T17:02:48.592279+00:00",
+      "duration_seconds": 15.538
+    },
+    {
+      "id": "04-cli",
+      "argv": [
+        "go",
+        "build",
+        "-p",
+        "2",
+        "-ldflags",
+        "-X main.version=0.6.7-476-g1a32ca36c -X main.commit=1a32ca36c -X main.date=2026-11-04T17:03:53Z",
+        "-o",
+        "/Volumes/artisan/code/2026/mc-core-e2e-linux-package-20261104/apps/desktop/resources/bin/multica",
+        "./cmd/multica"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-linux-package-20261104/server",
+      "started_at": "2026-11-04T17:03:53.586107+00:00",
+      "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T17:04:05.342896+00:00",
+      "duration_seconds": 11.757
+    },
+    {
+      "id": "05-directory",
+      "argv": [
+        "pnpm",
+        "exec",
+        "electron-builder",
+        "--linux",
+        "dir",
+        "--arm64",
+        "--publish",
+        "never",
+        "-c.extraMetadata.version=0.6.7-476-g1a32ca36c",
+        "-c.electronDist=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/electron-linux-arm64",
+        "-c.directories.output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/directory"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-linux-package-20261104/apps/desktop",
+      "started_at": "2026-11-04T17:04:21.772244+00:00",
+      "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T17:05:42.416793+00:00",
+      "duration_seconds": 80.649
+    },
+    {
+      "id": "06-deb",
+      "argv": [
+        "pnpm",
+        "exec",
+        "electron-builder",
+        "--prepackaged",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/directory/linux-arm64-unpacked",
+        "--linux",
+        "deb",
+        "--arm64",
+        "--publish",
+        "never",
+        "-c.extraMetadata.version=0.6.7-476-g1a32ca36c",
+        "-c.directories.output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/deb"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-linux-package-20261104/apps/desktop",
+      "started_at": "2026-11-04T17:06:29.932741+00:00",
+      "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T17:06:57.167034+00:00",
+      "duration_seconds": 27.234
+    },
+    {
+      "id": "08-directory-v2",
+      "argv": [
+        "pnpm",
+        "exec",
+        "electron-builder",
+        "--linux",
+        "dir",
+        "--arm64",
+        "--publish",
+        "never",
+        "-c.extraMetadata.version=0.6.7-476-g1a32ca36c",
+        "-c.electronDist=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/electron-linux-arm64",
+        "-c.directories.output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/directory-v2"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-linux-package-20261104/apps/desktop",
+      "started_at": "2026-11-04T17:08:27.839893+00:00",
+      "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T17:09:31.098452+00:00",
+      "duration_seconds": 63.258
+    },
+    {
+      "id": "09-deb-v2",
+      "argv": [
+        "pnpm",
+        "exec",
+        "electron-builder",
+        "--prepackaged",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/deb-stage-v2/linux-arm64-unpacked",
+        "--linux",
+        "deb",
+        "--arm64",
+        "--publish",
+        "never",
+        "-c.extraMetadata.version=0.6.7-476-g1a32ca36c",
+        "-c.directories.output=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/linux-package/deb-v2"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/mc-core-e2e-linux-package-20261104/apps/desktop",
+      "started_at": "2026-11-04T17:10:05.474160+00:00",
+      "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+      "status": "PASS",
+      "exit_code": 0,
+      "finished_at": "2026-11-04T17:10:38.007798+00:00",
+      "duration_seconds": 32.532
+    }
+  ],
+  "preserved_harness_failures": [
+    "06-postcondition-failure.json",
+    "09-postcondition-failure.json",
+    "11-desktop-inspector-failure.json"
+  ],
+  "protected_live_state": {
+    "live_protected_files_unchanged": true,
+    "live_out_unchanged": true,
+    "packaging_worktree_status": " M apps/desktop/build/icons/128x128.png\n M apps/desktop/build/icons/16x16.png\n M apps/desktop/build/icons/24x24.png\n M apps/desktop/build/icons/256x256.png\n M apps/desktop/build/icons/32x32.png\n M apps/desktop/build/icons/48x48.png\n M apps/desktop/build/icons/512x512.png\n M apps/desktop/build/icons/64x64.png\n",
+    "packaging_source": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_package_json_matches_HEAD": true,
+    "packaging_modes_observed_then_restored": true,
+    "packaging_worktree_status_after_mode_restoration": ""
+  },
+  "env_files": [
+    "evidence/linux-package/directory.env",
+    "evidence/linux-package/deb.env"
+  ],
+  "prerequisites": [
+    "Parent-owned password API/Web production environment and exact source/DB/PID/origin identity",
+    "E2E_PASSWORD_AUTH=1, DATABASE_URL, COLLABORATION_E2E_API_URL, NEXT_PUBLIC_API_URL, MULTICA_DEPLOYMENT_ID, PLAYWRIGHT_BASE_URL, COLLABORATION_ELECTRON_RENDERER_URL",
+    "COLLABORATION_HOST_DAEMON/PROVIDER/CLI explicit native fixture executables; isolated host gate state",
+    "Docker bind visibility of realpath fixture repository and artifact must be checked by executor",
+    "Select only APP_DIR directory mode OR DEB mode; clear APP_VOLUME and native executable variables",
+    "Container /workspace node_modules must resolve Playwright within mounted paths; host absolute pnpm links need validation",
+    "Run e2e/collaboration-host-installed.spec.ts --workers=1 --retries=0 with fresh evidence; package inspection is not installation/Main execution"
+  ],
+  "created_at": "2026-11-04T17:15:21.471904+00:00"
+}

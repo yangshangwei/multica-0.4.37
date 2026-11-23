@@ -1,0 +1,80 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/packages/core
+
+ ❯ collaboration/run-handoff-schema.test.ts (16 tests | 1 failed | 15 skipped) 13ms
+   × preserves frozen snapshots without a memory base and refuses the live-only field 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  collaboration/run-handoff-schema.test.ts > preserves frozen snapshots without a memory base and refuses the live-only field
+AssertionError: expected { protocol_version: 1, …(15) } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "assignment": {
+    "role": "agent",
+    "step_key": "agent",
+  },
+  "authority": {
+    "handler_id": "00000000-0000-4000-8000-000000000001",
+    "status": "in_progress",
+  },
+  "event_seq": "9007199254740993",
+  "handoff": null,
+  "information_request": null,
+  "inputs": {
+    "items": [],
+    "returned": 0,
+    "total": 0,
+    "truncated": false,
+  },
+  "issue_id": "00000000-0000-4000-8000-000000000001",
+  "memory": {
+    "availability": "absent",
+    "base_version": "0",
+    "version": "0",
+  },
+  "missing": [],
+  "mode": "snapshot",
+  "protocol_version": 1,
+  "results": {
+    "items": [],
+    "returned": 0,
+    "total": 0,
+    "truncated": false,
+  },
+  "run_id": "00000000-0000-4000-8000-000000000002",
+  "snapshot_id": "00000000-0000-4000-8000-000000000001",
+  "sources": [],
+  "wakeup_causes": {
+    "completeness": "unknown",
+    "items": [],
+    "returned": 0,
+    "total": 0,
+    "truncated": false,
+  },
+}
+
+ ❯ collaboration/run-handoff-schema.test.ts:76:105
+     74|   expect(parseCollaborationRunHandoff(snapshot)).toEqual(snapshot);
+     75|   for (const base_version of ["0", "3"]) {
+     76|     expect(parseCollaborationRunHandoff({ ...snapshot, memory: { ...sn…
+       |                                                                                                         ^
+     77|   }
+     78| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 skipped (16)
+   Start at  23:40:20
+   Duration  1.62s (transform 938ms, setup 0ms, import 1.42s, tests 13ms, environment 0ms)
+
+undefined
+/Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/packages/core:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run collaboration/run-handoff-schema.test.ts -t preserves frozen snapshots

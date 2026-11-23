@@ -1,0 +1,30 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-race",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostHandoffCheckpoint(BlockedRecordingCannotHoldProof|RestartRecoversWithoutExecution)$",
+    "-count=1",
+    "-json",
+    "-timeout=40s"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-runtime-integration-20261031/server",
+  "exit_code": 1,
+  "elapsed_seconds": 6.221,
+  "finished_at": "2026-10-31T15:27:10.726439+00:00",
+  "test_sha256": "bdcfd02210d871918a3e16537b6605bbca9c93381b9067effe40a466857830c9",
+  "frozen_717c_unchanged": true,
+  "production_edits": false,
+  "db_calls": false,
+  "real_provider_calls": false,
+  "passed_tests": [
+    "TestHostHandoffCheckpointBlockedRecordingCannotHoldProof"
+  ],
+  "failed_tests": [
+    "TestHostHandoffCheckpointRestartRecoversWithoutExecution"
+  ],
+  "skipped_tests": []
+}

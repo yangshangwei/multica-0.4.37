@@ -1,0 +1,56 @@
+Captured 2026-11-03T11:13:28.692820+00:00 from running v13; not final inventory.
+
+  2) [chromium] › e2e/collaboration-boundaries-web.spec.ts:273:1 › Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues 
+
+    Test timeout of 240000ms exceeded.
+
+    Error: browserContext.close: Target page, context or browser has been closed
+
+      402 |     await pages.member!.page.screenshot({ path: test.info().outputPath("source-member-agent-refused.png"), animations: "disabled" });
+      403 |   } finally {
+    > 404 |     for (const side of Object.values(pages)) await side.context.close();
+          |                                              ^
+      405 |   }
+      406 | });
+      407 |
+        at /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-boundaries-web.spec.ts:404:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-4.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-3.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #5: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/test-failed-5.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/error-context.md
+
+    attachment #7: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/collaboration-boundaries-w-7eb03-cipant-s-agent-never-queues-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:5458) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+(node:5458) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+

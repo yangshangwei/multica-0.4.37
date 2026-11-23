@@ -1,0 +1,28 @@
+{
+  "state": "compile_only_pass",
+  "started_at": "2026-11-04T09:58:36.033367+00:00",
+  "fixture_sha256": "3d873520f490def55aaccc42bd4f577f969e19bfc4c5a5e3ebf81baf2344c140",
+  "diff_sha256": "fea834af7ab994052b47a42fcae513da12525581d33f3228af03a9398ba33164",
+  "gofmt_exit": 0,
+  "new_test_bodies": 0,
+  "exit_status": 0,
+  "command": [
+    "/bin/bash",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+    "-C",
+    "server",
+    "test",
+    "-c",
+    "-tags=agentintegration",
+    "-p=1",
+    "-mod=readonly",
+    "-o",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/k3-diagnostic-01/diagnostic-static.test",
+    "./cmd/server"
+  ],
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "finished_at": "2026-11-04T09:58:51.791985+00:00",
+  "binary_sha256": "6fc75bb8e825359e8c8736f40a7b6d811431e668cf60570d849e9ed4c844285e"
+}

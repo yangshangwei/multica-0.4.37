@@ -1,0 +1,74 @@
+{
+  "recorded_at": "2026-10-27T01:00:00+08:00",
+  "scope": "macOS arm64 packaged full Main host-control acceptance after fixture gate/readiness fixes",
+  "source_head": "61ff581d247dbae6b00f148fbc660b9762385aac",
+  "source_worktree": "dirty: task-owned E2E fixture and documentation changes were present during packaging",
+  "run": {
+    "command": "pnpm exec playwright test e2e/collaboration-host-installed.spec.ts --project=chromium --workers=1 --retries=0 --reporter=line,json",
+    "result": "passed",
+    "expected": 1,
+    "unexpected": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "duration_ms": 29911,
+    "result_json": "/tmp/t24-packaged-run3-1793033926/result.json",
+    "evidence_json": "/tmp/t24-packaged-run3-1793033926/artifacts/collaboration-host-install-7dc38-ly-resumes-the-shared-Agent-chromium/installed-host-evidence.json"
+  },
+  "packaged_client": {
+    "os": "darwin",
+    "arch": "arm64",
+    "electron": "39.8.7",
+    "version": "0.6.5-185-g61ff581d2-dirty",
+    "executable_sha256": "ed3bc83cc76ab5297348d24b8a8d4c558993c88fae49339dc56c7e961434bed9",
+    "app_asar_sha256": "da566a4d55d35948fdf8150251e5980bbfcc6ffd0845f659f8f02737fe4201c6",
+    "bundled_cli_sha256": "f2f27ba05b4da2eb87f60cb52d75e59f212835f796602cd16c7fc736a9ecafa4",
+    "zip_sha256": "807cf1adb72639dc696070de8c0e0a684386b5092daac1da48b8c2b56cc473a1",
+    "dmg_sha256": "7e472970b3934ad8be9fe344b34bf3028f46307443630b8a8b06bd0947fdb191",
+    "signature": "ad-hoc",
+    "acceptance_home": "/tmp/t24-packaged-run3-1793033926",
+    "user_data": "/tmp/t24-packaged-run3-1793033926/.config/Multica"
+  },
+  "runtime": {
+    "arch": "arm64",
+    "execution_mode": "host_process_supervision_v1",
+    "max_concurrent_tasks": 1,
+    "os": "darwin",
+    "preparation_version": 2,
+    "protocol_version": 3,
+    "ready": true,
+    "runtime_config_epoch": "2"
+  },
+  "control": {
+    "password_form": true,
+    "stop_code": "stop_requested",
+    "resume_code": "resumed",
+    "launches": 3,
+    "ledger_entries": 3,
+    "ledger_proof_states": [
+      "host_exit_observed"
+    ],
+    "all_ledger_sealed": true,
+    "daemon_exit_code": 0,
+    "daemon_errors": [],
+    "capacity_invalid": false,
+    "screenshots": [
+      "installed-host-stopped.png",
+      "installed-host-ended.png"
+    ]
+  },
+  "scope_limits": [
+    "test-owned native host provider/daemon fixture, not an authenticated vendor Provider run",
+    "ad-hoc signed local artifacts, not release/notarization",
+    "macOS arm64 only",
+    "Windows and other installer/platform combinations remain unverified"
+  ],
+  "cleanup": {
+    "gate_expected": "enabled=false, creation_enabled=false, host_execution_enabled=false",
+    "gate_observed": "enabled=false, creation_enabled=false, host_execution_enabled=false, epoch=8",
+    "api_web_ports": [
+      18573,
+      13493
+    ],
+    "owned_main_closed": true
+  }
+}

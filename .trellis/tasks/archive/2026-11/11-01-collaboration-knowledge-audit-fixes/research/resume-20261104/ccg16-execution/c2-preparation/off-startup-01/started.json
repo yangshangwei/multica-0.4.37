@@ -1,0 +1,29 @@
+{
+  "state": "running",
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "started_at": "2026-11-04T05:44:16.332359+00:00",
+  "command": [
+    "/bin/bash",
+    "-c",
+    "set -euo pipefail\nsource scripts/dev-env.sh\nload_manifest \"$1\"\nbind_paths\nload_env_file \"$ENV_FILE\" \"$DIR\"\nexport PORT=\"$BACKEND_PORT\" FRONTEND_PORT DATABASE_URL POSTGRES_DB=\"$DB_NAME\"\nWEB_MODE=production\nstart_api\nstart_web\n",
+    "_",
+    "knowledge-v16-off-a3c9-01"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "shell_code_sha256": "625a994d62e5b352cf8215372a7fd14783b4bd718b287cf21ec1d7793c55202c",
+  "startup_source": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/scripts/dev-env.sh",
+  "startup_source_sha256": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e",
+  "source_environment_sha256": "e0a6a47cc30e26b36c2b3e7dbf2a219481401362c73a1e0323ecbabc17ba15a1",
+  "private_launch_environment_sha256": "18249fb408a22beddd6ebcbf0f669be6ccd3a5fe16c353d3ccff707a6868e4ee",
+  "registry_manifest_sha256": "4d55b5b7f288a879bb603399f1662dc927116d35900074903e38a0824b8650ae",
+  "database": "multica_ccg2_v16_off_a3c9",
+  "origins": {
+    "api": "http://127.0.0.1:18231",
+    "web": "http://127.0.0.1:13151",
+    "renderer": "http://127.0.0.1:60377"
+  },
+  "allocation_or_migration_called": false,
+  "ON_started": false,
+  "browser_probe_started": false,
+  "real_Provider_calls": 0
+}

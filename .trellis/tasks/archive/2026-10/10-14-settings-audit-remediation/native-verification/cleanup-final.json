@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-14T12:25:30.683461+00:00",
+  "processesExited": {
+    "32080": true,
+    "32079": true
+  },
+  "portsClosed": {
+    "9367": true,
+    "9368": true
+  },
+  "temporaryProfileRemoved": true,
+  "preexistingServices": {
+    "api": 200,
+    "renderer": 200
+  },
+  "rendererListener": "COMMAND  PID    USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME\nnode    5842 artisan   30u  IPv6 0x6b4f4542181ac3aa      0t0  TCP [::1]:5666 (LISTEN)",
+  "rendererHealthProbe": "Direct HTTP to the existing IPv6 loopback listener; environment proxy bypassed."
+}

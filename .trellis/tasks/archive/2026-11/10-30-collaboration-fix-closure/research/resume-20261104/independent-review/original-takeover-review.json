@@ -1,0 +1,47 @@
+{
+  "recorded_at": "2026-11-04T15:36:53.442334+00:00",
+  "verdict": "pass_preparation_only",
+  "blocking_findings": [],
+  "scope": "owner/time/authorization/evidence-pointer delta; no live launch permission",
+  "prerun_sha256": "a6a172d675e48402fbb50d3a8644b413e21c492bcedeccf66b8f6b4091e28a12",
+  "runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+  "previous_prerun_sha256": "58a3b385eb559c0fa420e2f06319b0db6b00243dd579794d455025c433949fe4",
+  "changed_fields": [
+    "authorization",
+    "previous_owner_session",
+    "previous_registration",
+    "previous_registration_sha256",
+    "registered_at",
+    "registered_by_session",
+    "takeover_plan",
+    "takeover_readiness"
+  ],
+  "unchanged": [
+    "driver bytes",
+    "both source arms",
+    "framework file/combined hashes",
+    "exact Claude 2.1.316 executable bytes",
+    "requested model/thinking/tier",
+    "formal E0",
+    "three-slot trial labels and E3after2/E4/E5/E6 order",
+    "remaining cap14",
+    "first-incomplete/E5canary stop rules"
+  ],
+  "check_only_records": "four original check-only invocations exit0; checked existing results, not rerun",
+  "required_before_live": [
+    "actual password7 pass with exact names/no skip/retry and source/artifact/runtime identity",
+    "fresh reconciled original physical starts/remaining quota",
+    "fresh exclusive authorized Provider window under current root identity",
+    "hash-bound root clearance reflecting actual evidence"
+  ],
+  "provider_invocations": 0,
+  "clearance_exists": false,
+  "original_inventory": {
+    "path": ".trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-inventory/inventory.json",
+    "sha256": "aed1c38e0c9dbd88aede4a6f4e532394ab3d5bfc2690bbd3b8e9ffdcd0f4aa65",
+    "physical_starts": 13,
+    "remaining_cap": 14,
+    "consistency": true,
+    "source": "separate inventory agent checked raw permits/termination/proof; reviewer reconciled summary and registration"
+  }
+}

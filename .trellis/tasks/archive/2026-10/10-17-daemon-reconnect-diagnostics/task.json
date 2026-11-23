@@ -11,11 +11,11 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-10-17",
-  "completedAt": "2026-10-17",
+  "completedAt": "2026-10-26",
   "branch": "codex/daemon-reconnect-diagnostics",
   "base_branch": "main",
   "worktree_path": null,
-  "commit": "a5c3c1da6",
+  "commit": "0a567894ae5c4b3d1b1537c073bc37b4e5bd222d",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -48,6 +48,16 @@
     "packages/views/locales/en/settings.json",
     "packages/views/locales/zh-Hans/settings.json"
   ],
-  "notes": "Implementation and independent review complete. Final desktop: 96 test files / 1184 tests, typecheck and lint passed; one existing lint warning. Seven isolated renderer scenarios passed. Native Windows/live-server/installer delivery not performed.",
-  "meta": {}
+  "notes": "Implementation and independent review complete. Final desktop: 96 test files / 1184 tests, typecheck and lint passed; one existing lint warning. Seven isolated renderer scenarios passed. Original agent verification excluded native Windows/live-server/installer delivery. User confirmed verification and requested archival on 2026-10-26.",
+  "meta": {
+    "userAcceptance": {
+      "date": "2026-10-26",
+      "confirmedBy": "artisan",
+      "statement": "请归档吧，我验证过了",
+      "commits": [
+        "0a567894ae5c4b3d1b1537c073bc37b4e5bd222d",
+        "dc60bfc87badb591a6da10447b0d6f69b0f22b2f"
+      ]
+    }
+  }
 }

@@ -1,0 +1,25 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "eslint",
+    "--config",
+    "packages/core/eslint.config.mjs",
+    "--rule",
+    "import-x/no-extraneous-dependencies: [error, {devDependencies: true, includeTypes: false}]",
+    "e2e/collaboration-source-surface.spec.ts",
+    "e2e/fixtures/collaboration-source-surface.ts"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "database_alias": null,
+  "started_at": "2026-10-22T00:24:48.401367+00:00",
+  "source_sha256": {},
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 1.561,
+  "finished_at": "2026-10-22T00:24:49.962854+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/source-surface-lint-first.stdout",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_changed_during_run": []
+}

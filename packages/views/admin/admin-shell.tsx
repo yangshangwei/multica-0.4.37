@@ -73,7 +73,11 @@ export function AdminShell({ children }: { children?: ReactNode }) {
       { href: "/admin/workspaces", label: t(($) => $.workspaces.title) },
     ] },
     { href: "/admin/installations", label: t(($) => $.shell.installations), icon: Monitor },
-    { href: "/admin/tasks", label: t(($) => $.shell.executions), icon: ListTodo, related: "/admin/issues" },
+    { href: "/admin/tasks", label: t(($) => $.shell.executions), icon: ListTodo, children: [
+      { href: "/admin/tasks", label: t(($) => $.executions.executions) },
+      { href: "/admin/issues", label: t(($) => $.executions.issues) },
+      ...(identity?.role === "super_admin" ? [{ href: "/admin/collaboration", label: t(($) => $.collaboration.title) }] : []),
+    ] },
     { href: "/admin/alerts", label: t(($) => $.shell.monitoring), icon: Bell, children: [
       { href: "/admin/alerts", label: t(($) => $.alerts.title) },
       { href: "/admin/health", label: t(($) => $.health.title) },

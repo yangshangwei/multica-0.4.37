@@ -1,0 +1,81 @@
+{
+  "at": "2026-11-02T02:19:59.405527+00:00",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "stdout": " M .trellis/spec/server/database-test-isolation.md\n M .trellis/spec/web/frontend/e2e-run-environment.md\n M .trellis/workspace/artisan/index.md\n M .trellis/workspace/artisan/journal-2.md\n M e2e/collaboration-installed-main.spec.ts\n M e2e/collaboration-memory-web.spec.ts\n M e2e/fixtures/collaboration-installed-main.mjs\n M server/internal/handler/daemon_test.go\n?? .trellis/tasks/11-01-branch-e2e-acceptance/\n?? .trellis/tasks/11-02-branch-functional-regression/\n?? e2e/fixtures/collaboration-recipient-picker.mjs\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "7af9ab9905c98c77bb091223ebe687c639475bb4\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/Volumes/artisan/code/2026/mc-functional-go-7af9ab990-20261102",
+        "diff",
+        "--name-only"
+      ],
+      "exit_code": 0,
+      "stdout": "server/internal/handler/daemon_test.go\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "ps",
+        "--format",
+        "{{.ID}} {{.Image}} {{.Names}}"
+      ],
+      "exit_code": 0,
+      "stdout": "b96eed35feaa redis:7-alpine multica-final-c3db-redis-a8b82ed1\nf06e055b60eb pgvector/pgvector:pg17 multica-postgres-1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "docker",
+        "image",
+        "ls",
+        "--format",
+        "{{.Repository}}:{{.Tag}} {{.ID}} {{.Size}}"
+      ],
+      "exit_code": 0,
+      "stdout": "multica-security-scripted-sim:20261027 181509625ed4 1.67GB\nmultica-security-codex-pilot:20261027 f3ba3b59ec5b 2.57GB\nmultica-security-pilot:20261027 054c28f9ae6c 2.3GB\nmultica-collaboration-deb-acceptance:20261026 0d433ecf8ede 2.04GB\nmultica-gap-full-main:20261022 db164dd5195d 2GB\nmultica-web:v0.6.7 692825989330 391MB\nmultica-backend:v0.6.7 8d5ede4df2fa 188MB\nmultica-web:v0.6.6 dc5348a77b35 391MB\nmultica-backend:v0.6.6 841dabc839f7 188MB\nmultica-web:v0.6.5 c543885840cc 390MB\nmultica-backend:v0.6.5 837b33814636 188MB\nghcr.io/xiaocqaq/octopus:latest 13ec6c195126 87.2MB\nmultica-web:v0.6.1 caca36c28400 390MB\nmultica-backend:v0.6.1 3fd4fed32b5a 187MB\nmultica-web:v0.6.0 5eb609dbe217 390MB\nmultica-backend:v0.6.0 3543304d5b84 187MB\nmultica-v060-upgrade-helper:latest bb5181254120 240MB\nnode:22-bookworm 0e5f90657369 3.29GB\nplane-source-api-tests:latest b88be5259287 3.19GB\nmultica-web:v0.5.5 85027beda8ed 388MB\nmultica-backend:v0.5.5 f62d288c12fe 183MB\npgvector/pgvector:pg17 cd4ccfdaf62c 637MB\npgvector/pgvector:<none> 215ae4d47393 656MB\nmultica-web:v0.5.2 002ca32b67e5 384MB\nmultica-backend:v0.5.2 2ff5c2ba18d7 180MB\nmultica-web:v0.5.1 968b46a75185 384MB\nmultica-backend:v0.5.1 366fd861d513 179MB\nmultica-web:v0.5.0 dfaaa301d932 90.1MB\nmultica-backend:v0.5.0 35286ff01828 179MB\nmultica-desktop-nginx:985220252f38-amd64 8f84ed99befc 92.8MB\nnginx:stable-alpine 985220252f38 187MB\nmultica-desktop-nginx:985220252f38-arm64 3abad30db61d 92MB\npython:3.13-slim 9d2e5553305c 215MB\nregistry-1.docker.io/makeplane/plane-space:v1.4.2 ddc5528d16bd 1.43GB\nregistry-1.docker.io/makeplane/plane-frontend:v1.4.2 fb382e3a4861 147MB\nregistry-1.docker.io/makeplane/plane-live:v1.4.2 1695d0851f1f 1.64GB\nregistry-1.docker.io/makeplane/plane-admin:v1.4.2 f36abad72d72 106MB\nregistry-1.docker.io/makeplane/plane-backend:v1.4.2 502aae3f87fc 506MB\nregistry-1.docker.io/makeplane/plane-proxy:v1.4.2 b6997371ecff 182MB\ngolang:1.26.6-bookworm 116d58cbd88c 1.23GB\npostgres:17-alpine 18cfe3ef5e68 415MB\npostgres:18-alpine 54451ecb8ab3 403MB\nredis:7-alpine 7aec734b2bb2 61.9MB\npostgres:15 c635fa3e3b74 654MB\nvalkey/valkey:7.2.11-alpine 10328d00120d 59.7MB\nregistry-1.docker.io/valkey/valkey:7.2.11-alpine e9f0f60c54a9 59.7MB\nmysql:latest 569c4128dfa6 1.29GB\nredis:latest 4521b581dbdd 222MB\nquay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z 9966a92a734f 228MB\ndocker.elastic.co/elasticsearch/elasticsearch:7.17.28 f2ce8a4c644a 1.03GB\nregistry-1.docker.io/library/postgres:15.7-alpine a9870e090dbb 354MB\npostgres:15.7-alpine 468d34fefd63 355MB\nregistry-1.docker.io/library/rabbitmq:3.13.6-management-alpine bb599f8b8e4c 280MB\nrabbitmq:3.13.6-management-alpine 611107e29cce 282MB\napache/kafka:3.7.0 41c20d65b0a2 578MB\nminio/minio:RELEASE.2023-03-20T20-16-18Z 6d770d7f255c 374MB\nmaven:3.8-openjdk-17 3a9c30b3af62 1.3GB\ndocker:29-cli b1805116a6a8 237MB\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "xcode-select",
+        "-p"
+      ],
+      "exit_code": 0,
+      "stdout": "/Library/Developer/CommandLineTools\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "xcrun",
+        "--find",
+        "simctl"
+      ],
+      "exit_code": 72,
+      "stdout": "",
+      "stderr": "xcrun: error: unable to find utility \"simctl\", not a developer tool or in PATH\n"
+    }
+  ]
+}

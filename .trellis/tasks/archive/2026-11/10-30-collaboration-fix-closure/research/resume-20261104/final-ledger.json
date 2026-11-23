@@ -1,0 +1,28 @@
+{
+  "recorded_at": "2026-11-04T16:31:06.256196+00:00",
+  "task_status": "in_progress",
+  "archive_ready": false,
+  "code_commit": "f429823b501ca043e5e8fd481504eac457668ba0",
+  "shared_candidate": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "shared_fullcheck": "passed_with_explicit113skips",
+  "password7": "independent7pass0fail0skip0retry",
+  "model_results": {
+    "E3after2_3": "2validpass",
+    "E4baseline": "3validsemanticpass",
+    "E5baseline1": "validfinishedfail_output_canary_quote",
+    "E5baseline2_3": "unrun",
+    "E6": "unrun"
+  },
+  "calls": {
+    "this_continuation": 6,
+    "original_total": 19,
+    "remaining_cap": 8,
+    "remaining_enabled": false
+  },
+  "blocking_reason": "Original E5 output-canary rule requires stop and blocking review, even when quoted as a refusal explanation. Outcome belongs original pre-fix baseline; no current-product regression inferred.",
+  "next_action": "Review E5 finding and decide any separately registered continuation; do not change original scoring/overwrite slots.",
+  "services": "password owned services released; Provider stopped; peer window released",
+  "verification_report": "verification-2026-11-05.md",
+  "final_review": "research/resume-20261104/independent-review/final-scoped-review.json",
+  "raw_evidence_retention": "Original large HTTP event logs, full preparation manifests and Playwright reports remain at hash-bound local paths; selected compact records/reviews committed."
+}

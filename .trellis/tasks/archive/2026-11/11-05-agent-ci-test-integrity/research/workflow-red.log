@@ -1,0 +1,228 @@
+TAP version 13
+# Subtest: release verification prepares its declared database before running required tests
+not ok 1 - release verification prepares its declared database before running required tests
+  ---
+  duration_ms: 0.77125
+  type: 'test'
+  location: '/Volumes/artisan/code/2026/mc-agent-rnd-p1-20261105/scripts/changelog-workflow.test.mjs:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /image: pgvector\/pgvector:pg17/. Input:
+    
+    '    runs-on: ubuntu-latest\n' +
+      '    outputs:\n' +
+      '      tag_name: ${{ steps.release_meta.outputs.tag_name }}\n' +
+      '      is_stable: ${{ steps.release_meta.outputs.is_stable }}\n' +
+      '    steps:\n' +
+      '      - name: Checkout\n' +
+      '        uses: actions/checkout@v4\n' +
+      '        with:\n' +
+      '          fetch-depth: 0\n' +
+      '\n' +
+      '      - name: Validate tag name\n' +
+      '        id: release_meta\n' +
+      '        shell: bash\n' +
+      '        run: |\n' +
+      '          tag="${GITHUB_REF_NAME}"\n' +
+      '          echo "Triggered by tag: $tag"\n' +
+      '          if [[ ! "$tag" =~ ^v[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then\n' +
+      `            echo "::error::Release tags must look like vX.Y.Z or vX.Y.Z-suffix; got '$tag'."\n` +
+      '            exit 1\n' +
+      '          fi\n' +
+      '          if [[ "$tag" == *-dirty* ]]; then\n' +
+      `            echo "::error::Refusing to release from dirty tag '$tag'."\n` +
+      '            exit 1\n' +
+      '          fi\n' +
+      '          echo "tag_name=$tag" >> "$GITHUB_OUTPUT"\n' +
+      '          if [[ "$tag" == *-* ]]; then\n' +
+      '            echo "is_stable=false" >> "$GITHUB_OUTPUT"\n' +
+      '          else\n' +
+      '            echo "is_stable=true" >> "$GITHUB_OUTPUT"\n' +
+      '          fi\n' +
+      '\n' +
+      '      # The combined offline archive tests run the desktop update-artifacts\n' +
+      '      # helper, which imports electron-updater from apps/desktop/node_modules.\n' +
+      '      - name: Setup pnpm\n' +
+      '        uses: pnpm/action-setup@v4\n' +
+      '\n' +
+      '      - name: Setup Node for changelog checks\n' +
+      '        uses: actions/setup-node@v4\n' +
+      '        with:\n' +
+      '          node-version: 22\n' +
+      '          cache: pnpm\n' +
+      '\n' +
+      '      - name: Install dependencies\n' +
+      '        run: pnpm install --frozen-lockfile\n' +
+      '\n' +
+      '      - name: Verify changelog generation, publication and release graph\n' +
+      '        run: node --test scripts/*changelog*.test.mjs\n' +
+      '\n' +
+      '      - name: Setup Go\n' +
+      '        uses: actions/setup-go@v5\n' +
+      '        with:\n' +
+      '          # Deliberately independent from the minimum patch in server/go.mod:\n' +
+      '          # releases follow the newest 1.26 patch available to setup-go.\n' +
+      '          go-version: "1.26.x"\n' +
+      '          check-latest: true\n' +
+      '          cache-dependency-path: server/go.sum\n' +
+      '\n' +
+      '      - name: Record Go toolchain\n' +
+      '        run: go version\n' +
+      '\n' +
+      '      - name: Verify Go test wrapper\n' +
+      '        run: bash scripts/test-go.test.sh\n' +
+      '\n' +
+      '      - name: Run tests\n' +
+      '        run: bash scripts/test-go.sh --race\n' +
+      '\n' +
+      '      - name: Scan Go vulnerabilities\n' +
+      '        # Fail closed unless an administrator scopes the documented emergency\n' +
+      '        # override to this exact tag. See .github/RELEASING.md.\n' +
+      '        if: ${{ vars.ALLOW_VULN_BYPASS_FOR_TAG != github.ref_name }}\n' +
+      '        working-directory: server\n' +
+      '        run: go tool govulncheck ./...\n' +
+      '\n' +
+      '      - name: Record emergency vulnerability-scan bypass\n' +
+      '        if: ${{ vars.ALLOW_VULN_BYPASS_FOR_TAG == github.ref_name }}\n' +
+      '        run: echo "::warning::govulncheck was explicitly skipped for ${GITHUB_REF_NAME}; see .github/RELEASING.md"\n' +
+      '\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+        runs-on: ubuntu-latest
+        outputs:
+          tag_name: ${{ steps.release_meta.outputs.tag_name }}
+          is_stable: ${{ steps.release_meta.outputs.is_stable }}
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
+    
+          - name: Validate tag name
+            id: release_meta
+            shell: bash
+            run: |
+              tag="${GITHUB_REF_NAME}"
+              echo "Triggered by tag: $tag"
+              if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+                echo "::error::Release tags must look like vX.Y.Z or vX.Y.Z-suffix; got '$tag'."
+                exit 1
+              fi
+              if [[ "$tag" == *-dirty* ]]; then
+                echo "::error::Refusing to release from dirty tag '$tag'."
+                exit 1
+              fi
+              echo "tag_name=$tag" >> "$GITHUB_OUTPUT"
+              if [[ "$tag" == *-* ]]; then
+                echo "is_stable=false" >> "$GITHUB_OUTPUT"
+              else
+                echo "is_stable=true" >> "$GITHUB_OUTPUT"
+              fi
+    
+          # The combined offline archive tests run the desktop update-artifacts
+          # helper, which imports electron-updater from apps/desktop/node_modules.
+          - name: Setup pnpm
+            uses: pnpm/action-setup@v4
+    
+          - name: Setup Node for changelog checks
+            uses: actions/setup-node@v4
+            with:
+              node-version: 22
+              cache: pnpm
+    
+          - name: Install dependencies
+            run: pnpm install --frozen-lockfile
+    
+          - name: Verify changelog generation, publication and release graph
+            run: node --test scripts/*changelog*.test.mjs
+    
+          - name: Setup Go
+            uses: actions/setup-go@v5
+            with:
+              # Deliberately independent from the minimum patch in server/go.mod:
+              # releases follow the newest 1.26 patch available to setup-go.
+              go-version: "1.26.x"
+              check-latest: true
+              cache-dependency-path: server/go.sum
+    
+          - name: Record Go toolchain
+            run: go version
+    
+          - name: Verify Go test wrapper
+            run: bash scripts/test-go.test.sh
+    
+          - name: Run tests
+            run: bash scripts/test-go.sh --race
+    
+          - name: Scan Go vulnerabilities
+            # Fail closed unless an administrator scopes the documented emergency
+            # override to this exact tag. See .github/RELEASING.md.
+            if: ${{ vars.ALLOW_VULN_BYPASS_FOR_TAG != github.ref_name }}
+            working-directory: server
+            run: go tool govulncheck ./...
+    
+          - name: Record emergency vulnerability-scan bypass
+            if: ${{ vars.ALLOW_VULN_BYPASS_FOR_TAG == github.ref_name }}
+            run: echo "::warning::govulncheck was explicitly skipped for ${GITHUB_REF_NAME}; see .github/RELEASING.md"
+    
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///Volumes/artisan/code/2026/mc-agent-rnd-p1-20261105/scripts/changelog-workflow.test.mjs:16:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: backend CI runs the offline database and release regressions when their inputs change
+not ok 2 - backend CI runs the offline database and release regressions when their inputs change
+  ---
+  duration_ms: 0.962292
+  type: 'test'
+  location: '/Volumes/artisan/code/2026/mc-agent-rnd-p1-20261105/scripts/changelog-workflow.test.mjs:33:1'
+  failureType: 'testCodeFailure'
+  error: '.github/workflows/release.yml must trigger backend verification'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///Volumes/artisan/code/2026/mc-agent-rnd-p1-20261105/scripts/changelog-workflow.test.mjs:37:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: repository-wide serialization starts before discovery and never cancels an active release
+ok 3 - repository-wide serialization starts before discovery and never cancels an active release
+  ---
+  duration_ms: 0.082042
+  type: 'test'
+  ...
+# Subtest: fork publication requires verified backend/frontend manifests but no upstream-only job
+ok 4 - fork publication requires verified backend/frontend manifests but no upstream-only job
+  ---
+  duration_ms: 0.231
+  type: 'test'
+  ...
+# Subtest: one generated artifact reaches every consuming build before compilation
+ok 5 - one generated artifact reaches every consuming build before compilation
+  ---
+  duration_ms: 0.56325
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 3
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 39.314583

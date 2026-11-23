@@ -1,0 +1,54 @@
+# L4 red: a timed-out hint keeps the head of the queue and DeliverPending stops at the first error
+#
+# Code under test: 931446b23 (L1-L3 fixed, no L4 fix) plus, uncommitted:
+#   - the test seam in server/internal/service/collaboration_knowledge_invalidation.go:
+#     CollaborationKnowledgeInvalidation.hintTimeout (zero = 5s) used by deliverNext's
+#     context.WithTimeout. The defer still records the attempt only when the hint ctx is alive,
+#     and DeliverPending still returns on the first error.
+#   - the new tests and helpers in server/internal/service/collaboration_knowledge_invalidation_test.go.
+# Database: postgres://multica:multica@127.0.0.1:5432/kfix_write_svc (migrated to 760).
+# Command (from server/):
+#   env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=...kfix_write_svc go test ./internal/service \
+#     -run 'TestKnowledgeTimedOutHintDoesNotBlockLaterHints|TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit|TestKnowledgeTargetHintRelayFailureRetainsStableID' -count=1 -v
+# Exit code: 1
+#
+# BEHAVIORAL, fail for the defect's reason:
+# - TestKnowledgeTimedOutHintDoesNotBlockLaterHints: the relay stub holds hint A for 600ms with a
+#   200ms hint budget. MarkKnowledgeTargetHintDelivered fails with "context already done", the
+#   defer skips RecordKnowledgeJobAttempt because the hint ctx is dead, and DeliverPending returns
+#   at once: hint B is never published (events has only A). The test stops at this first check;
+#   the last_attempted_at half is shown separately by mutation in L4-green.txt.
+# - TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/{skips_failed_hint,
+#   each_hint_once_per_pass, stops_after_three_consecutive_failures, success_resets_the_limit}:
+#   every pass ends after the first relay failure (events has one entry).
+#
+# REGRESSION GUARD, passes before and after the fix by design:
+# - TestKnowledgeTargetHintRelayFailureRetainsStableID: a relay failure or unknown commit keeps
+#   the hint pending with the same event id and frame, and a later pass settles it once.
+
+=== RUN   TestKnowledgeTargetHintRelayFailureRetainsStableID
+=== RUN   TestKnowledgeTargetHintRelayFailureRetainsStableID/rollback
+=== RUN   TestKnowledgeTargetHintRelayFailureRetainsStableID/lost_ack
+--- PASS: TestKnowledgeTargetHintRelayFailureRetainsStableID (0.94s)
+    --- PASS: TestKnowledgeTargetHintRelayFailureRetainsStableID/rollback (0.63s)
+    --- PASS: TestKnowledgeTargetHintRelayFailureRetainsStableID/lost_ack (0.31s)
+=== RUN   TestKnowledgeTimedOutHintDoesNotBlockLaterHints
+    collaboration_knowledge_invalidation_test.go:715: hint behind the timed-out hint was not delivered in the same pass: delivered=0 events=[f2a959a8-9024-594b-b176-49eb9800d910:target] err=timeout: context already done: context deadline exceeded
+--- FAIL: TestKnowledgeTimedOutHintDoesNotBlockLaterHints (0.88s)
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/skips_failed_hint
+    collaboration_knowledge_invalidation_test.go:745: failed hint stopped the pass: delivered=0 events=[6ff9df44-d66d-5235-9ad0-628aea43eef5:target] err=relay unavailable
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/each_hint_once_per_pass
+    collaboration_knowledge_invalidation_test.go:759: failed hints were not each attempted exactly once: delivered=0 events=[1db7a990-bda5-5ad6-8ccc-d7dd7bd36b82:target] err=relay unavailable
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/stops_after_three_consecutive_failures
+    collaboration_knowledge_invalidation_test.go:770: dead relay pass: delivered=0 events=[68bf6ed4-c934-5919-89c8-4f5e66d773c9:target] err=relay unavailable
+=== RUN   TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/success_resets_the_limit
+    collaboration_knowledge_invalidation_test.go:790: limit counted non-consecutive failures: delivered=0 events=[231a795e-b306-57b7-9f95-c0fa95bd5c1f:target] err=relay unavailable
+--- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit (1.18s)
+    --- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/skips_failed_hint (0.27s)
+    --- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/each_hint_once_per_pass (0.31s)
+    --- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/stops_after_three_consecutive_failures (0.28s)
+    --- FAIL: TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit/success_resets_the_limit (0.33s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	4.026s
+FAIL

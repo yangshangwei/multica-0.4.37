@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T19:39:27.410416+00:00",
+  "verdict": "pass-with-notes",
+  "scope": "CCG1 actual-input correction/withdrawal behavior-coverage addition only",
+  "code_commit": "057bc96163c5ef38fe82920784b80d5e0d619c35",
+  "head_with_evidence": "9c5e48761b197583be485d55ec19727f3c15d5ec",
+  "base_commit": "20f128dcecbf1c5eda793e8feddef892799abe76",
+  "test_file": "server/cmd/server/collaboration_knowledge_correction_composite_test.go",
+  "test_source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+  "server_tree": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+  "test_delta_sha256": "c0c6221e022cdb68536e67f07636272f55382f73afcb5e732c2572e9a0bf5928",
+  "shared_fixture_path": "server/cmd/server/collaboration_knowledge_host_composite_test.go",
+  "shared_fixture_sha256": "d866d3f888a1ed48b015a04bb844170a1b5cd8c53ee662f104f0508b23fac3f6",
+  "blocking_findings": [],
+  "nonblocking_product_findings": [],
+  "reviewed_contracts": [
+    "Real human JWT routes propose pendingv2, approve exact reviewedversion2/hash and withdraw through productionHTTP; priorapprovedv1 stays effective until approval.",
+    "Actual testbinary provider capture records first/second runIDs and real stream-json stdin; no fabricated capture or Provider invocation.",
+    "Secondrun/workdir distinct, freshnoresume persistence policy and business-only credential checks retained.",
+    "Capturedstdincontainsv2, excludesv1, retains otherworkspaceknowledge and acceptedinput/author; exact candidateID/version/contenthash in prepare and authorize promptSHA match actualstdin.",
+    "Withdrawalcallback matches the third run exactauthorizeURL; successful humanwithdrawreceipt plus actual409authorizationresponse and capturecount2/thirdneverlaunchedproof jointly exclude a false fixtureboolean-only result.",
+    "Earlierfirst/second settledhostexit/successfacts, immutable originalpreparationpayload and exactproposal/approvalGETreceipt recovery retained.",
+    "Existing early fake-child dispatch/basename guard and explicit taskDBprefix/identityguard unchanged; testtagknowledgeintegration, productionlogic/dependencies/sharedfixture/timeouts unchanged."
+  ],
+  "recorded_checks": [
+    {
+      "metadata": "normal.json",
+      "metadata_sha256": "31fcf9c7f116a54909c85e65d85096cc2279b0c625021ec1b67fa5eaea6b624d",
+      "source_base": "20f128dcecbf1c5eda793e8feddef892799abe76",
+      "test_source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestCollaborationKnowledgeHostCompositeCorrection",
+        "-count=1",
+        "-json",
+        "-parallel=2",
+        "-timeout=5m"
+      ],
+      "database": "multica_knowledge_host_composite_20261101_ccg1_1102_normal",
+      "verified_identity": "multica_knowledge_host_composite_20261101_ccg1_1102_normal|763_collaboration_knowledge_delivery_history",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "4ab01eef800d1136fba9eee7c0873cccb284d57153e41cb443e90f7df62989ae",
+      "actual_named_test": [
+        "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch"
+      ],
+      "safe_fact_line": "collaboration_knowledge_correction_composite_test.go:171: physical_launches=2 corrected_version=2 superseded_stdin_absent=true third_authorization_refused=true third_physical_launches=0 original_exposure_and_receipts_retained=true",
+      "identity_logged": true,
+      "TestMain_not_skipped": true
+    },
+    {
+      "metadata": "race.json",
+      "metadata_sha256": "40c13e6e72de6da4745ab61b969f5e2ae831af8d21e1ec0c6666c764a78edf69",
+      "source_base": "20f128dcecbf1c5eda793e8feddef892799abe76",
+      "test_source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/go",
+        "-C",
+        "server",
+        "test",
+        "./cmd/server",
+        "-race",
+        "-tags=knowledgeintegration",
+        "-run",
+        "^TestCollaborationKnowledgeHostCompositeCorrection",
+        "-count=1",
+        "-json",
+        "-parallel=2",
+        "-timeout=5m"
+      ],
+      "database": "multica_knowledge_host_composite_20261101_ccg1_1102_race",
+      "verified_identity": "multica_knowledge_host_composite_20261101_ccg1_1102_race|763_collaboration_knowledge_delivery_history",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "52048a357fb62d33bdb9f66b12149bd7011426ab341a9d6f96651e4424382d9e",
+      "actual_named_test": [
+        "TestCollaborationKnowledgeHostCompositeCorrectionReplacesActualInputAndWithdrawalRefusesNextLaunch"
+      ],
+      "safe_fact_line": "collaboration_knowledge_correction_composite_test.go:171: physical_launches=2 corrected_version=2 superseded_stdin_absent=true third_authorization_refused=true third_physical_launches=0 original_exposure_and_receipts_retained=true",
+      "identity_logged": true,
+      "TestMain_not_skipped": true
+    }
+  ],
+  "compile_only_author_record": {
+    "source_base": "20f128dcecbf1c5eda793e8feddef892799abe76",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-c",
+      "-tags=knowledgeintegration",
+      "-o",
+      "<private>/server.test",
+      "./cmd/server"
+    ],
+    "exit_code": 0,
+    "test_source_sha256": "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41",
+    "binary_sha256": "a5a55a9280932f0da668d3d18fd8c21ccfcd9c793fa1a2fb9288aae8115a53c7",
+    "TestMain_executed": false,
+    "Provider_calls": 0
+  },
+  "author_tagged_vet": {
+    "command": [
+      "env",
+      "-u",
+      "DATABASE_URL",
+      "-u",
+      "MULTICA_RUN_REAL_AGENT_SMOKE",
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "-tags=knowledgeintegration",
+      "./cmd/server"
+    ],
+    "exit_code": 0,
+    "execution": "analysis only; TestMain not executed"
+  },
+  "evidence_manifest_sha256": "2400c0253b7d0ca190f985643f60cf303e17cdb90473d3d66262094af0b7742d",
+  "evidence_manifest_references_hash_match": true,
+  "root_permission_record_sha256": "743e1e00d7c3c8c3303777e8789be15e4ed18255df1dd0cf3567ebc90e6d2038",
+  "coverage_classification": "Coveragegap CCG1closed with actualfakephysicalinput; no productdefect or pre-fixred fabricated.",
+  "reviewer_commands": [
+    "Read-only git status/log/diff/show/rev-parse/merge-base; source/evidenceJSON/hash inspection",
+    "git diff --check exit0"
+  ],
+  "reviewer_test_execution": false,
+  "reviewer_database_commands": false,
+  "reviewer_browser_commands": false,
+  "reviewer_service_or_container_commands": false,
+  "reviewer_provider_calls": 0,
+  "installed_cli_calls": false,
+  "product_edits_by_reviewer": false,
+  "notes": [
+    {
+      "id": "CCGR-1",
+      "kind": "coverage_scope",
+      "description": "Programmatic testfixture enables knowledge and uses realrouter/DB/fakeprocess; this proves correctedprivateinput and prelaunchwithdrawal, not humanUI or modelunderstanding/deployedENVwiring. CCG2remainsopen and is outside this assignment."
+    },
+    {
+      "id": "CCGR-2",
+      "kind": "candidate_scope",
+      "description": "The test is based on20f128dce/product231a08063 and should be integrated and rebound. Root frozenfinal2makecheck remains independent/running; this new taggedtest result does not declare fullcandidate/model/platform/release passed."
+    }
+  ],
+  "remaining": "Root owns reviewevidencecommit/localmerge/finalsourcebinding and final samecandidate crosschain/C CG2 acceptance; no paidorexternaloperations authorized by this review."
+}

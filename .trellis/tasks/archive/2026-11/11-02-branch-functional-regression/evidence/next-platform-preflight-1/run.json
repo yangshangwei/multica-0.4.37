@@ -1,0 +1,300 @@
+{
+  "started_at": "2026-11-02T05:11:52.844132+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "scope": "Read-only local prerequisite, owned-resource and protocol inspection; no app launch or installation",
+  "steps": [
+    {
+      "name": "os",
+      "command": [
+        "uname",
+        "-srm"
+      ],
+      "started_at": "2026-11-02T05:11:52.844271+00:00",
+      "finished_at": "2026-11-02T05:11:52.846775+00:00",
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "fbcf26fb9058bc45b68007bec15ae5998059197cd9b43dc1850894a44aae6878",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "xcode-select",
+      "command": [
+        "xcode-select",
+        "-p"
+      ],
+      "started_at": "2026-11-02T05:11:52.846942+00:00",
+      "finished_at": "2026-11-02T05:11:52.852131+00:00",
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "a8044fec385da5d3d686b9c06000917f00d0f27ca72b7db5b47bfc277f748301",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "simctl-location",
+      "command": [
+        "xcrun",
+        "--find",
+        "simctl"
+      ],
+      "started_at": "2026-11-02T05:11:52.852291+00:00",
+      "finished_at": "2026-11-02T05:11:52.860345+00:00",
+      "exit_code": 72,
+      "expected_exit_codes": [
+        72
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "99b8da8adc7e70feba56cd931740e16d0f5724d7515e98d84d2c8bf1bb63dec8"
+    },
+    {
+      "name": "protocol-readonly",
+      "command": [
+        "osascript",
+        "-l",
+        "JavaScript",
+        "-e",
+        "ObjC.import(\"AppKit\");\nconst w=$.NSWorkspace.sharedWorkspace;\nconst current=w.URLForApplicationToOpenURL($.NSURL.URLWithString(\"multica://branch-functional-regression\"));\nlet p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}\nconst urls=w.URLsForApplicationsWithBundleIdentifier(\"ai.multica.desktop\");\nconst paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));\nJSON.stringify({defaultApplicationPath:p,registeredApplications:paths});"
+      ],
+      "started_at": "2026-11-02T05:11:52.864286+00:00",
+      "finished_at": "2026-11-02T05:11:52.946989+00:00",
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "2151fbce42f76f5cc8b11f4a58a9afa626658b26852d09b3c5447622867feacd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "process-table",
+      "command": [
+        "ps",
+        "-axo",
+        "pid=,ppid=,command="
+      ],
+      "started_at": "2026-11-02T05:11:52.947228+00:00",
+      "finished_at": "2026-11-02T05:11:52.966564+00:00",
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_scope": "Filtered to recorded task paths only; process table collected read-only in memory"
+    },
+    {
+      "name": "port-18920",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:18920",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T05:11:52.967449+00:00",
+      "finished_at": "2026-11-02T05:11:52.996665+00:00",
+      "exit_code": 1,
+      "expected_exit_codes": [
+        1
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "port-13840",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:13840",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T05:11:52.997074+00:00",
+      "finished_at": "2026-11-02T05:11:53.019643+00:00",
+      "exit_code": 1,
+      "expected_exit_codes": [
+        1
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "port-19860",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:19860",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T05:11:53.019871+00:00",
+      "finished_at": "2026-11-02T05:11:53.042733+00:00",
+      "exit_code": 1,
+      "expected_exit_codes": [
+        1
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "port-16390",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:16390",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T05:11:53.042958+00:00",
+      "finished_at": "2026-11-02T05:11:53.065707+00:00",
+      "exit_code": 1,
+      "expected_exit_codes": [
+        1
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "port-58786",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:58786",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T05:11:53.065918+00:00",
+      "finished_at": "2026-11-02T05:11:53.088405+00:00",
+      "exit_code": 1,
+      "expected_exit_codes": [
+        1
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "port-60790",
+      "command": [
+        "lsof",
+        "-nP",
+        "-iTCP:60790",
+        "-sTCP:LISTEN"
+      ],
+      "started_at": "2026-11-02T05:11:53.088637+00:00",
+      "finished_at": "2026-11-02T05:11:53.111860+00:00",
+      "exit_code": 1,
+      "expected_exit_codes": [
+        1
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "mounts-readonly",
+      "command": [
+        "hdiutil",
+        "info",
+        "-plist"
+      ],
+      "started_at": "2026-11-02T05:11:53.112119+00:00",
+      "finished_at": "2026-11-02T05:11:53.129085+00:00",
+      "exit_code": 0,
+      "expected_exit_codes": [
+        0
+      ],
+      "exit_expected": true,
+      "stdout_sha256": "eabcdf5d0fdd2605a3772daa687bed8a70819c2cd7c80bac936fd318f9bffda5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "commercial_provider_calls": 0,
+  "remote_dispatches": 0,
+  "services_started": 0,
+  "completed_acceptance_tests_rerun": 0,
+  "local_tools": {
+    "qemu-system-aarch64": null,
+    "qemu-system-x86_64": null,
+    "prlctl": null,
+    "VBoxManage": null,
+    "vmrun": null,
+    "tart": null,
+    "multipass": null,
+    "docker": "/usr/local/bin/docker",
+    "psql": null,
+    "osascript": "/usr/bin/osascript",
+    "go": "/opt/homebrew/bin/go"
+  },
+  "bounded_native_app_inventory": {
+    "roots": [
+      "/Applications",
+      "/System/Applications",
+      "/Developer/Applications"
+    ],
+    "matching_apps": [],
+    "scope": "Top-level known application roots only; not proof that no remote VM exists"
+  },
+  "protocol": {
+    "observed": {
+      "defaultApplicationPath": "/Applications/Multica.app",
+      "registeredApplications": [
+        "/Applications/Multica.app",
+        "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/branch-e2e-822c15785-20261101/mac-package/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/e2e-collab-8f80b8700/source/apps/desktop/dist/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/full-e2e-20261029/source/apps/desktop/dist/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/recent-commits-e2e-20261027/native-source/apps/desktop/dist/mac-arm64/Multica.app",
+        "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/dist/mac-arm64/Multica.app"
+      ]
+    },
+    "original_exact_default_preserved": true,
+    "original_registration_set_preserved": true,
+    "task_registrations": [],
+    "query_only": true
+  },
+  "preexisting_task_processes": [],
+  "preexisting_ports": {
+    "18920": {
+      "closed": true,
+      "exit_code": 1
+    },
+    "13840": {
+      "closed": true,
+      "exit_code": 1
+    },
+    "19860": {
+      "closed": true,
+      "exit_code": 1
+    },
+    "16390": {
+      "closed": true,
+      "exit_code": 1
+    },
+    "58786": {
+      "closed": true,
+      "exit_code": 1
+    },
+    "60790": {
+      "closed": true,
+      "exit_code": 1
+    }
+  },
+  "finished_at": "2026-11-02T05:11:53.129270+00:00",
+  "state": "complete",
+  "gates": {
+    "IOS-UI": "BLOCKED_NO_COMPLETE_XCODE_SIMCTL",
+    "LINUX-NATIVE-DESKTOP": "BLOCKED_NO_PROVIDED_NATIVE_SESSION",
+    "WIN-INSTALL-UPGRADE": "BLOCKED_NO_AUTHORIZED_DISPOSABLE_WINDOWS_RUNNER",
+    "MAC-AUTH-MIGRATION": "NOT_RUN",
+    "MAC-AUTOMATIC-UPDATER": "NOT_RUN",
+    "MAC-TRUST": "BLOCKED_NO_SIGNED_DISTRIBUTION",
+    "REAL-PROVIDER": "BLOCKED_NO_CURRENT_ACCOUNT_MODEL_BUDGET_AUTHORIZATION"
+  }
+}

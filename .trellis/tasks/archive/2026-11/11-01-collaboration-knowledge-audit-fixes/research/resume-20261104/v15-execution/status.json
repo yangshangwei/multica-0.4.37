@@ -1,0 +1,51 @@
+{
+  "observed_at": "2026-11-04T01:27:52.138045+00:00",
+  "state": "complete",
+  "make_pid": 54354,
+  "launcher_pid": 54337,
+  "wholecheck_accepted": false,
+  "make_exit": 2,
+  "stage": [
+    "6",
+    "Playwright (one worker, zero retries)"
+  ],
+  "log_bytes": 30842625,
+  "tail": [
+    "    Dropping isolated Go database multica_check_20261104001655_54361_go",
+    "\u2717 Checks FAILED (exit 1).",
+    "make: *** [check] Error 1"
+  ],
+  "Go": {
+    "allocated": 82,
+    "completed": 82,
+    "failed_packages": [],
+    "current_packages": [],
+    "completed_named_counts": {
+      "pass": 20963,
+      "fail": 0,
+      "skip": 22
+    },
+    "running_named_failures": [],
+    "running_package_observed_terminal_counts": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    }
+  },
+  "make_process_alive": false,
+  "launcher_process_alive": false,
+  "TS_completed_package_summaries": {},
+  "static_tasks": {
+    "passed": 15,
+    "total": 15
+  },
+  "Playwright": {
+    "observed_case_index": 441,
+    "discovered_total": 441,
+    "observed_failure_reports": [
+      "  1) [chromium] \u203a e2e/triage-duplicate-picker.spec.ts:6:3 \u203a Web duplicate picker browses all formal tasks and confirms the chosen target (en) "
+    ],
+    "scope": "Reporter schedule position only; not a passed count"
+  },
+  "scope": "Current run only. Phase counts do not constitute wholecheck acceptance; final audit and complete inventory required."
+}

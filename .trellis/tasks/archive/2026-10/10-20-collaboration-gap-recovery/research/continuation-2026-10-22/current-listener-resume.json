@@ -1,0 +1,66 @@
+{
+  "at": "2026-10-22T03:20:18.522362+00:00",
+  "endpoints": {
+    "api": {
+      "url": "http://127.0.0.1:18996/health",
+      "status": 200,
+      "body_sha256": "fc6aafc44d2b184ac6c8dae6e781e43c0bcfdae6ae43b8a1ce1bf92286c2abd3",
+      "health": {
+        "status": "ok",
+        "pid": 22414,
+        "commit": "8ecb98883",
+        "started_at": "2026-10-21T23:29:04Z"
+      },
+      "listener_pids": [
+        "22414"
+      ]
+    },
+    "web": {
+      "url": "http://127.0.0.1:13916",
+      "status": 200,
+      "body_sha256": "0749f164d36c18acb16d2386d0c3992d60c2e945854b7cc8af67f1801ac2aafd",
+      "listener_pids": [
+        "76944"
+      ]
+    },
+    "renderer": {
+      "url": "http://127.0.0.1:6090",
+      "status": 200,
+      "body_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+      "listener_pids": [
+        "36145"
+      ]
+    }
+  },
+  "production_gate_change": false,
+  "real_provider_account_access": false,
+  "web_build_id": "tP4r55FoDsuyXfi1EylGw",
+  "renderer_built_index_sha256": "337c08a228217fb574b77bb5fb6942bcbc40f2f1ce42587ceec5264204f3b35c",
+  "source_hashes": {
+    "server/internal/service/collaboration_authority.go": {
+      "current": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b",
+      "snapshot": "11842f553fe4ae1aefc0b44e3381fb86b28b7f5369545d0dd68aa30f433d493b",
+      "matches": true
+    },
+    "server/internal/service/collaboration_runtime.go": {
+      "current": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+      "snapshot": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+      "matches": true
+    },
+    "server/internal/service/collaboration_command_history.go": {
+      "current": "6ddc3e26ef0d06a449140e6638731cb9693660b38b1d78ccd83d3c0c860ff2be",
+      "snapshot": "6ddc3e26ef0d06a449140e6638731cb9693660b38b1d78ccd83d3c0c860ff2be",
+      "matches": true
+    },
+    "packages/views/collaboration/execution-panel.tsx": {
+      "current": "3c185417a4e67776ca98bca3820b9b0ea4d75453a650b5603dd6ffe44302b698",
+      "snapshot": "3c185417a4e67776ca98bca3820b9b0ea4d75453a650b5603dd6ffe44302b698",
+      "matches": true
+    },
+    "packages/views/collaboration/comment-composer.tsx": {
+      "current": "d2944b577271c5ce98bcedfddecc00d3a50211b366f628ba4320222259db23fb",
+      "snapshot": "d2944b577271c5ce98bcedfddecc00d3a50211b366f628ba4320222259db23fb",
+      "matches": true
+    }
+  }
+}

@@ -1,0 +1,5 @@
+# READY — new preserved-history clone added
+
+Rootcreatedandverified `kfix_joint_plan_history_20261102_0122`, clonedfrompreservedfailed `kfix_joint_svc_20261102_0110` afteritssuitecompleted. OriginalfailureDBuntouched. Exactprivatepermit `.omx/private/joint-plan-history-root-20261102/db-permission.json`. Primarynormal/race/originalstrictassertionoverlayshouldusethishistoryclone. A separatefreshthrough763permitremains `.omx/private/joint-plan-root-20261102/db-permission.json` for freshcatalogcontrolifuseful.
+
+OnlycanonicalTestKnowledgeRuntimeHistoryIsIndexDriven/renamedandadjacentH3controls allowed. SELECT/EXPLAINallowed. A transaction-ownedTEMPshadowagent_task_queue createdLIKEactualtableWITHOUTindexes isallowed ONLYinside thenegativecontroltestoverlayandrollsback; realindexes/historymustnotbedropped/changed. NoDBcreation/migration/drop/otherdatabasecommandsbychild. ReadpermitURL, verifycurrent_databasebeforeeachrun, CLIguardandrealgateunset. Rootrequestsnormal/racegreenonthehistoryclone, oldstrictassertionoverlayredandmissingindextempshadowcontrolred, allsourcebound. PreserveoldfailureSQLplansasrawhash, no fakeperformanceregressionclaim.

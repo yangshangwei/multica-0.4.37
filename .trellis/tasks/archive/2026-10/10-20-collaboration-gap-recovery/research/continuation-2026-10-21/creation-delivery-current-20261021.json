@@ -1,0 +1,161 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-gap-recovery-20261021-h6phxwo9/creation-delivery-current-output",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-account-desktop.spec.ts",
+      "file": "collaboration-account-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5446,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T15:27:09.035Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "native-creation-delivery",
+                      "contentType": "application/json",
+                      "body": "eyJpc3N1ZUlkIjoiMDFhMTVmMTItZDc5OS03OTZhLWE1YzQtM2MwOWEzNjBjMzQ2IiwicmVxdWVzdElkIjoiZTU0MjY4MGYtZjZlMS00ZWMwLThhMjQtNmY2MWRlNDI3N2FjIiwid29ya3NwYWNlSWQiOiJmYzc0MmQ4ZS0wMDVjLTQ4NDAtOTBkOC0zMGVmZjA5YzU4MzgiLCJuYXRpdmVEb3dubG9hZCI6eyJzdGF0ZSI6ImNvbXBsZXRlZCIsImZpbGVuYW1lIjoiZGVza3RvcC1ub3RlLnR4dCJ9LCJyZXN0b3JlZCI6dHJ1ZX0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "d830fff7a787071ac252-aeabddf81c5e64c81e35",
+          "file": "collaboration-account-desktop.spec.ts",
+          "line": 319,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-delivery-web.spec.ts",
+      "file": "collaboration-delivery-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7116,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T15:27:15.198Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "creation-delivery-evidence",
+                      "contentType": "application/json",
+                      "body": "ewogICJpc3N1ZUlkIjogIjAxYTE1ZjEyLWYwMTAtNzYxZS1hNGM5LTMwNzAzMWJmYzBjNSIsCiAgInVwbG9hZEtleSI6ICI2ZGE5YTczZS01YTEwLTRiNzEtOGJiZi04NmYxOWNkMTgwZTAiLAogICJjcmVhdGVLZXkiOiAiMmQyYWJhYWYtYjkwOC00YTc2LTlhZDItMGM0ZDVjZmQ5MDU2IiwKICAidXBsb2FkUG9zdHMiOiAyLAogICJjcmVhdGVQb3N0cyI6IDEsCiAgInNvdXJjZVdvcmtzcGFjZUlkIjogIjNhZjQxMTJhLWM0NzAtNDY4MS04YzI5LWZhYzdjNGM1MTJiZiIsCiAgImFjY291bnRTb2NrZXRDb3VudCI6IDEsCiAgImZyYW1lcyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiYXV0aF9hY2siCiAgICB9LAogICAgewogICAgICAicGF5bG9hZCI6IHsKICAgICAgICAiaWQiOiAiMDFhMTVmMTItZjAxMC03NjFlLWE0YzktMzA3MDMxYmZjMGM1IiwKICAgICAgICAic2NvcGUiOiAiaXNzdWUiCiAgICAgIH0sCiAgICAgICJ0eXBlIjogInN1YnNjcmliZV9hY2siCiAgICB9LAogICAgewogICAgICAiZXZlbnRfaWQiOiAiNGY4NGEwY2QtYjlkYi00MGIzLTgyMWQtYjkwYmY5MTZlODk4OmFjY291bnQ6ODcxOWY4ZDUtN2YwYS00YzVjLWFlYjItNjkwMWE5NzMzY2VhIiwKICAgICAgInBheWxvYWQiOiB7fSwKICAgICAgInR5cGUiOiAiY29sbGFib3JhdGlvbjp3b3JrYmVuY2hfY2hhbmdlZCIKICAgIH0sCiAgICB7CiAgICAgICJldmVudF9pZCI6ICI0Zjg0YTBjZC1iOWRiLTQwYjMtODIxZC1iOTBiZjkxNmU4OTg6aXNzdWUiLAogICAgICAicGF5bG9hZCI6IHsKICAgICAgICAiaXNzdWVfaWQiOiAiMDFhMTVmMTItZjAxMC03NjFlLWE0YzktMzA3MDMxYmZjMGM1IiwKICAgICAgICAiZXZlbnRfc2VxIjogIjIiLAogICAgICAgICJjb2xsYWJvcmF0aW9uX3JldmlzaW9uIjogIjEiLAogICAgICAgICJhdXRob3JpdHlfZXBvY2giOiAiMSIKICAgICAgfSwKICAgICAgInR5cGUiOiAiY29sbGFib3JhdGlvbjpjaGFuZ2VkIgogICAgfSwKICAgIHsKICAgICAgInBheWxvYWQiOiB7CiAgICAgICAgImlzc3VlX2lkIjogIjAxYTE1ZjEyLWYwMTAtNzYxZS1hNGM5LTMwNzAzMWJmYzBjNSIKICAgICAgfSwKICAgICAgInR5cGUiOiAiY29sbGFib3JhdGlvbjphY2Nlc3NfY2hhbmdlZCIKICAgIH0sCiAgICB7CiAgICAgICJldmVudF9pZCI6ICJlOTU1ZTE0OC1lOWQ3LTQ1NDQtYjczNi03MWVkMDJhMjhhYTY6YWNjZXNzIiwKICAgICAgInBheWxvYWQiOiB7CiAgICAgICAgImlzc3VlX2lkIjogIjAxYTE1ZjEyLWYwMTAtNzYxZS1hNGM5LTMwNzAzMWJmYzBjNSIsCiAgICAgICAgImV2ZW50X3NlcSI6ICI0IiwKICAgICAgICAiY29sbGFib3JhdGlvbl9yZXZpc2lvbiI6ICIyIiwKICAgICAgICAiYXV0aG9yaXR5X2Vwb2NoIjogIjIiCiAgICAgIH0sCiAgICAgICJ0eXBlIjogImNvbGxhYm9yYXRpb246YWNjZXNzX2NoYW5nZWQiCiAgICB9LAogICAgewogICAgICAiZXZlbnRfaWQiOiAiZTk1NWUxNDgtZTlkNy00NTQ0LWI3MzYtNzFlZDAyYTI4YWE2OmFjY291bnQ6ODcxOWY4ZDUtN2YwYS00YzVjLWFlYjItNjkwMWE5NzMzY2VhIiwKICAgICAgInBheWxvYWQiOiB7fSwKICAgICAgInR5cGUiOiAiY29sbGFib3JhdGlvbjp3b3JrYmVuY2hfY2hhbmdlZCIKICAgIH0KICBdLAogICJub0FtYmllbnRXb3Jrc3BhY2UiOiB0cnVlCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "15f3b9165f0f8e648925-78fcb3f0d415495d3093",
+          "file": "collaboration-delivery-web.spec.ts",
+          "line": 21,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-21T15:27:08.484Z",
+    "duration": 14618.151,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

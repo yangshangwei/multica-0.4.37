@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "runtime_h3a_continuation_binding_review",
+  "recorded_at_utc": "2026-11-12T04:44:17.901371+00:00",
+  "head": "45ec006d96445b41d02c5d26acd5b8c574ea0289",
+  "source_id": "60cad529c638fc3a56fe2cfbd41af1f142677ee23af0350d937b9623ac6ff7db",
+  "source_file_count": 8193,
+  "dirty_product_path_count": 177,
+  "framework_file_count": 19,
+  "framework_sha256": "71f7ca86b99d1e12cc71980d4f5c506e5c6d15b6e56ebab8731ea0d43609bad8",
+  "task_local_launcher_sha256": "4b3799485dfbe4103b7f44ab130920e0a0a1ad5607a70573c6d09de671ece54e",
+  "historical_launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+  "provider": {
+    "path": "/Users/artisan/.local/bin/claude",
+    "version": "2.1.322",
+    "sha256": "a9d237949db816a0b7afd88a9a8e1df36b3a597a30f5a41d1c0539eb180a3450",
+    "historical_version": "2.1.316",
+    "historical_sha256": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d"
+  },
+  "operator_config_sha256": "42738ed8982962a865463df461e51641624457fa198e31c0ba3653e87c3378e3",
+  "database": {
+    "name": "multica_rk1_continuation_20261112",
+    "migration": "793_delivery_vcs_trust",
+    "identity_sha256": "eb7d391405453f76a67b86894cfe0414d8750ea24caef82d3f4cba851e0d69ec"
+  },
+  "window": {
+    "id": "",
+    "owner": "",
+    "expires_at": ""
+  },
+  "permit": {
+    "id": "",
+    "issued_at": "",
+    "expires_at": ""
+  },
+  "gateway": {
+    "admission_id": "",
+    "provider": "",
+    "evidence": ""
+  },
+  "status": {
+    "source": "blocked",
+    "framework": "blocked",
+    "provider_cli": "blocked",
+    "configuration": "recorded_not_admitted",
+    "database": "candidate_only",
+    "exclusive_window": "blocked",
+    "permit": "blocked",
+    "provider_gateway": "blocked"
+  },
+  "real_gate": {
+    "runnable": false,
+    "allow_build": false,
+    "allow_check": false,
+    "allow_run": false,
+    "reason": "Current source, framework review, CLI/config/database/window/permit and legitimate Provider gateway bindings are not all proven; registration is preparation-only."
+  },
+  "provider_calls": 0,
+  "model_calls": 0,
+  "database_mutations": 0,
+  "tasks_in_progress": true,
+  "historical_evidence_sha256": {
+    "result": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-H3a-t2.json",
+    "result_sha256": "9a4b94050ad696c46512b0833d27398ac0c6ef48770f6085d1db1283f9d628ce",
+    "invocation": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-H3a/invocation-20261105T125045Z.json",
+    "invocation_sha256": "909ac2da3054ab19ce4a75290ce9c5b06778740835efa414f6f206d863ddd3ed",
+    "review_inventory": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/h3a-entry/independent-review.json",
+    "review_inventory_sha256": "e5807dddbc40ff880b431fb5ba002457c407fb2d77b75ee76d3b3841d30b991b",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "launcher_sha256": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "consumed": 12,
+    "remaining": 13
+  }
+}

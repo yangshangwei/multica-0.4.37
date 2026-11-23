@@ -1,0 +1,29 @@
+# L1 red: approval that meets expiry returns 404 instead of 409
+#
+# Code under test: c930ac847 (clock seam only, no fix) plus the two new tests in
+# server/internal/service/collaboration_knowledge_concurrency_test.go (uncommitted).
+# Database: postgres://multica:multica@127.0.0.1:5432/kfix_write_svc (migrated to 760).
+# Command (from server/):
+#   env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 DATABASE_URL=...kfix_write_svc go test ./internal/service \
+#     -run 'TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock|TestKnowledgeCorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry' -count=1 -v
+# Exit code: 1
+#
+# Both tests are BEHAVIORAL and fail for the defect's reason:
+# - TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock: the seam makes the
+#   application clock lag PostgreSQL by 1h. The Go expiry check passes, the
+#   ApproveKnowledgeCandidate UPDATE (expires_at > clock_timestamp()) matches no row,
+#   and pgx.ErrNoRows becomes 404 knowledge_candidate_not_found.
+# - TestKnowledgeCorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry: no skew;
+#   the database clock passes expiry after the precheck, after AdvanceKnowledgeTarget and
+#   SupersedeKnowledgeCandidate ran. The same ErrNoRows becomes 404.
+# No regression guard is in this run.
+
+=== RUN   TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock
+    collaboration_knowledge_concurrency_test.go:423: approval after database expiry with a lagging application clock: {ProtocolVersion:0 RequestID: Action: Code: CandidateID: Version: StateRevision: State: TargetKnowledgeRevision:<nil>} knowledge_candidate_not_found
+--- FAIL: TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock (1.87s)
+=== RUN   TestKnowledgeCorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry
+    collaboration_knowledge_concurrency_test.go:463: approval expiring between precheck and UPDATE: {ProtocolVersion:0 RequestID: Action: Code: CandidateID: Version: StateRevision: State: TargetKnowledgeRevision:<nil>} knowledge_candidate_not_found
+--- FAIL: TestKnowledgeCorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry (2.34s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/service	5.011s
+FAIL

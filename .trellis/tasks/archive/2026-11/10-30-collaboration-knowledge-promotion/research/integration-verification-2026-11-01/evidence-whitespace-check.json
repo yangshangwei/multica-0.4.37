@@ -1,0 +1,24 @@
+{
+  "raw_check_exit": 2,
+  "raw_artifact_paths": [
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/fixture-cleanup-2026-11-01/fixture.patch",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/integration-verification-2026-11-01/go-final/runtime-lookup-correction.patch",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/preparation-matrix-completion-2026-11-01/handler-suite-correction/fixture.patch",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/review-gallery.md",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/snapshot.patch",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/visual-review-final.md",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/visual-review.md",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/workspace-deletion-manifest-2026-11-01/change.diff"
+  ],
+  "reason": "Unified patch context lines intentionally begin with a space before original tabs; preserve evidence bytes and hashes",
+  "non_patch_check_exit": 2,
+  "non_patch_output": ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/review-gallery.md:124: new blank line at EOF.\n.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/visual-review-final.md:77: new blank line at EOF.\n.trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/visual-review.md:14: new blank line at EOF.\n",
+  "frozen_review_markdown": [
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/review-gallery.md",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/visual-review-final.md",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/research/ui-platform-acceptance-2026-11-01/visual-review.md"
+  ],
+  "review_reason": "Frozen reviewer outputs retain their original hashes and one extra EOF blank line; no product whitespace exemption",
+  "checked_remaining_exit": 0,
+  "checked_remaining_output": ""
+}

@@ -1,0 +1,39 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "./internal/handler",
+    "-run",
+    "^(TestCollaborationSourceStructureAndIterationRejectNonManagers|TestCollaborationIterationRemovalRequiresReasonAndOriginalRefusal|TestCollaborationIterationPUTRejectsMetadataBeforeEffects)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "started_at": "2026-10-21T15:59:51.638190+00:00",
+  "environment": {
+    "GOTOOLCHAIN": "go1.26.6",
+    "database_alias": "service_s5",
+    "schema_migration": 737,
+    "real_provider_access": false
+  },
+  "source_sha256": {
+    "server/internal/service/collaboration_source_roles_test.go": "f006430da597c8a62209f72b8f04c32d9104df2f13886b87e8f9b9ac69fe694d",
+    "server/internal/handler/collaboration_iteration_request_boundary_test.go": "7a081b2d5a46b11299b343ca8fcbb6cc5a13372bc77013abb9098fd14b8923a0",
+    "server/internal/service/collaboration_source_fields.go": "794004765369b97bb9f3960f3eb5b7b48ab4bc0a104c12d41265c0ccba03f1a0",
+    "server/internal/service/collaboration_iteration.go": "2485b7db6a4e9c50c5823e97e218886df4df5b38c9f9b8406a79fc55c8e73daa",
+    "server/internal/service/collaboration_workflow.go": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+    "server/internal/handler/collaboration_source_fields.go": "1b5d1653bbd2cf7dd22ee997f51bf9e6cb1c4192e651081ac75389fe29d4dbd0"
+  }
+}

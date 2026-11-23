@@ -53,6 +53,11 @@ type openclawBackend struct {
 }
 
 func (b *openclawBackend) Execute(ctx context.Context, prompt string, opts ExecOptions) (*Session, error) {
+	var lifecycleErr error
+	ctx, lifecycleErr = withExecutionLifecycle(ctx, opts, b.cfg.provider)
+	if lifecycleErr != nil {
+		return nil, lifecycleErr
+	}
 	execPath := b.cfg.ExecutablePath
 	if execPath == "" {
 		execPath = "openclaw"
@@ -147,7 +152,7 @@ func (b *openclawBackend) Execute(ctx context.Context, prompt string, opts ExecO
 		}
 
 		// Wait for process exit.
-		exitErr := cmd.Wait()
+		exitErr := waitOwnedProcessTree(cmd)
 		releaseProcessGroup(cmd)
 		duration := time.Since(startTime)
 
@@ -383,7 +388,7 @@ type openclawEventResult struct {
 	model string
 	// cutShort is true when the run ended because openclaw had delivered a
 	// complete result but would not exit, rather than because stdout reached
-	// EOF. The caller must cancel the run context before cmd.Wait() in that
+	// EOF. The caller must cancel the run context before waitOwnedProcessTree(cmd) in that
 	// case — otherwise it waits on a process that never leaves — and must not
 	// report the resulting cancellation as an abort. Same treatment
 	// cursor-agent's `resultSeen` gets.

@@ -1,0 +1,1285 @@
+{
+  "reviewed_at": "2026-10-21T14:59:43.322578+00:00",
+  "role": "trellis-check",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "branch": "codex/cross-workspace-collaboration",
+  "head_observed": "5baf8659296a4a04666e6eaaa60e5965ffc70725",
+  "decision": "recommend passed AC06/16/28/30 at P5/P4/P2; root owns acceptance promotion and commit",
+  "no_automatic_acceptance_promotion": true,
+  "matrix_changed_by_reviewer": false,
+  "product_changed_by_reviewer": false,
+  "git_index_changed_by_reviewer": false,
+  "files_written": [
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-final-review.md",
+    ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-final-review.json"
+  ],
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "criterion_source_validation": {
+    "exact_parent_clause_text_and_line_match": true,
+    "source_sha256": "d8e8beef2c01f01bcf39d3da32179bcf99c711493b977166440574200896dc54",
+    "matrix_sha256_at_review": "9b68ed85466f287bf5fc4107082cf0346980a196766eabd8fd6c3924ea940080"
+  },
+  "row_recommendations": [
+    {
+      "id": "AC06",
+      "requirements": "R06、R07",
+      "criterion": "产品、当前处理人以及保留权限的原处理人都能在本单授权范围内发指令、停止及恢复；普通转交不会自动移除原协作者权限。",
+      "source": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
+      "source_line": 14,
+      "primary_owner": "P5",
+      "ledger_status_observed": "not_verified_in_this_task",
+      "recommendation": "passed",
+      "full_clause_support_at_primary_layer": true,
+      "remaining_gaps": [],
+      "clauses": [
+        {
+          "clause": "Three participant role action cycles",
+          "assessment": "Creator, newly transferred current handler and former noncreator handler each submit through one retained grant, claim/permit, Stop, refused early Resume, original proof and fresh explicit Resume. Immutable authors/bodies/target/issue identities and stopped input are asserted.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationTransferredHandlersShareExistingGrantAndControls/creator",
+            "internal/service::TestCollaborationTransferredHandlersShareExistingGrantAndControls/current_handler",
+            "internal/service::TestCollaborationTransferredHandlersShareExistingGrantAndControls/former_handler"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:47",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:71",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:83",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:97"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021",
+            "handoff-isolated-head-race"
+          ]
+        },
+        {
+          "clause": "Ordinary transfer preserves participation and task authorization",
+          "assessment": "Public service InviteParticipant then Transfer keeps all three participant rows active and no newcomer source membership/personal grant. Full execution snapshot remains identical; former actor original GET recovery is read-only, while current transfer/new acceptance rights remain withheld.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+            "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:25",
+            "server/internal/service/collaboration_workflow_test.go:705"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021"
+          ]
+        },
+        {
+          "clause": "Authority and scoped control fences",
+          "assessment": "Stale/machine/revoked source-only submissions produce no command; selected target Stop keeps unrelated target/run and issue active; refused Resume key remains unchanged after proof and cannot become deferred intent.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationQueueRejectsStaleIdentityAndMachine",
+            "internal/service::TestCollaborationTargetStopLeavesOtherTargetAndIssueActive",
+            "internal/service::TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_queue_test.go:354",
+            "server/internal/service/collaboration_targets_test.go:144",
+            "server/internal/service/collaboration_queue_test.go:291"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AC16",
+      "requirements": "R12、R13",
+      "criterion": "现有及以后合法加入的参与者可使用本单已有有效目标授权，无需逐人确认；授权不扩展到其他任务/资源。小队所有实际成员资源须授权，但这不使其成员自动成为独立 @agent 目标，也不邀请人类 owner/成员。",
+      "source": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
+      "source_line": 24,
+      "primary_owner": "P4",
+      "ledger_status_observed": "not_verified_in_this_task",
+      "recommendation": "passed",
+      "full_clause_support_at_primary_layer": true,
+      "remaining_gaps": [],
+      "clauses": [
+        {
+          "clause": "New participant uses existing grant without per-person consent",
+          "assessment": "A genuinely invited password account becomes current handler with no source membership, submits and controls through the exact pre-existing owner grant. Grant row byte equality/count and target count remain one throughout all three roles; no further consent call occurs.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationTransferredHandlersShareExistingGrantAndControls/current_handler",
+            "internal/service::TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:19",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:105",
+            "server/internal/service/collaboration_authority_test.go:67"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021"
+          ]
+        },
+        {
+          "clause": "Authorization stays scoped to each task/resource",
+          "assessment": "The same actual owner/agent/runtime/binding has distinct grants/targets/issues. A nonempty peer task snapshot/current catalog remains identical after affected creation/consent, revoke, leave/rejoin, proof, reconsent and fresh Resume. Actual final peer submission succeeds under unchanged grant. Production input/control lookup remains session/issue scoped.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask/revoke_grant",
+            "internal/service::TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask/leave_rejoin"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_grant_task_isolation_test.go:17",
+            "server/internal/service/collaboration_grant_task_isolation_test.go:212",
+            "server/internal/service/collaboration_batches.go:156"
+          ],
+          "run_ids": [
+            "grant-task-isolation-adjacent-final-20261021",
+            "grant-isolated-head-race"
+          ]
+        },
+        {
+          "clause": "Every squad resource owner; no independent member targets or implicit invitations",
+          "assessment": "Explicit actual-owner consent, complete squad roster and offered squad all-owner checks refuse partial grants, then expose only the original squad. Every resource is revalidated for input. Standalone member target counts remain zero and consent keeps participant count unchanged; registration validates existing owner participation rather than enrolls an owner.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent",
+            "internal/service::TestCollaborationConsentUsesCompleteSquadRoster",
+            "internal/service::TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent",
+            "internal/service::TestCollaborationSquadInputRechecksEveryResourceConsent"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_authority_test.go:67",
+            "server/internal/service/collaboration_authority_test.go:100",
+            "server/internal/service/collaboration_resource_offer_authority_test.go:40",
+            "server/internal/service/collaboration_targets_review_test.go:63",
+            "server/internal/service/collaboration_targets.go:90",
+            "server/internal/service/collaboration_authority.go:664"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AC28",
+      "requirements": "R04、R18、R19、R38",
+      "criterion": "提交阶段结果、执行\"补充完成并交回\"、记录测试通过或 AI 执行成功都不会自动完成整单；整单完成必须来自发起人的明确操作，或符合 R38 的明确代管操作。",
+      "source": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
+      "source_line": 36,
+      "primary_owner": "P2",
+      "ledger_status_observed": "not_verified_in_this_task",
+      "recommendation": "passed",
+      "full_clause_support_at_primary_layer": true,
+      "remaining_gaps": [],
+      "clauses": [
+        {
+          "clause": "Stage transfer and information return never complete whole issue",
+          "assessment": "Actual Transfer with stage/test handoff note retains todo/status/creator and previous participation. Nested ReturnInformation restores original responsibility/status rather than done and preserves waiting/active execution.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationWorkflowInviteTransferPreservesExecution",
+            "internal/service::TestCollaborationInformationChainReturnsLayerByLayer"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_workflow_test.go:705",
+            "server/internal/service/collaboration_handoff_test.go:92"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021"
+          ]
+        },
+        {
+          "clause": "AI success plus human test-pass record does not complete",
+          "assessment": "A real original service-issued business capability succeeds after active SubmitAcceptance and synthetic original proof settles only execution. A real saved former-handler human stage/test-pass comment with no AI targets leaves issue in_review, creator responsible, epoch1 and queue active.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:128",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:156",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:164",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:169"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021",
+            "handoff-isolated-head-race"
+          ]
+        },
+        {
+          "clause": "Whole completion requires explicit authorized creator/admin operation",
+          "assessment": "Former handler complete is forbidden after its recorded validation. Fresh explicit creator lifecycle completes, closes and cancels future input. Canonical lifecycle rejects handler/source-admin/disabled/revoked creator; R38 admin action is explicit and retains original creator/actor without participation.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion",
+            "internal/service::TestCollaborationLifecycleAuthorityAndExplicitReopen",
+            "internal/service::TestAdminCollaborationLifecyclePreservesCreatorAndRealActor"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:176",
+            "server/internal/service/collaboration_lifecycle_test.go:164",
+            "server/internal/service/admin_collaboration_test.go:118"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "AC30",
+      "requirements": "R07、R11、R19、R20、R38",
+      "criterion": "提交验收后整单仍未完成，须经 R19 或 R38 允许的明确完成操作；原处理人保留协作权限，运行中的 AI 继续运行，已挂起的队列仍挂起，不因提交验收自动停止、恢复或重启。",
+      "source": ".trellis/tasks/10-10-cross-workspace-collaboration/acceptance.md",
+      "source_line": 38,
+      "primary_owner": "P2",
+      "ledger_status_observed": "not_verified_in_this_task",
+      "recommendation": "passed",
+      "full_clause_support_at_primary_layer": true,
+      "remaining_gaps": [],
+      "clauses": [
+        {
+          "clause": "Active acceptance leaves execution and authorization intact",
+          "assessment": "Actual managed Claim/Permit is unsettled when acceptance occurs. Complete execution-owned snapshot remains identical (only legitimate shared event_seq excluded); original attempt/capability/reservation/termination and waiting command remain unchanged; original business token is then still usable.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:124",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:134",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:147",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:156",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:195"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021",
+            "handoff-isolated-head-race"
+          ]
+        },
+        {
+          "clause": "Paused queue and former-handler rights survive acceptance",
+          "assessment": "Canonical paused acceptance returns issue in_review to creator with queue paused/control1 and waiting input preserved; former actor keeps comment/control but loses current-manager actions. New active sequence additionally asserts former submit/control and persists its human comment.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+            "internal/service::TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_handoff_test.go:261",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:141",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:164"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021"
+          ]
+        },
+        {
+          "clause": "No automatic whole completion; creator or qualifying admin only",
+          "assessment": "In_review and lifecycle1 persist through acceptance/outcome/comment; explicit former handler complete is refused and explicit creator completes. Qualifying explicit admin lifecycle keeps original creator/real actor. No acceptance Stop/Resume/restart or proof intent is added.",
+          "executed_test_identities": [
+            "internal/service::TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion",
+            "internal/service::TestCollaborationLifecycleAuthorityAndExplicitReopen",
+            "internal/service::TestAdminCollaborationLifecyclePreservesCreatorAndRealActor"
+          ],
+          "source_locations": [
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:169",
+            "server/internal/service/collaboration_handoff_execution_boundary_test.go:176",
+            "server/internal/service/collaboration_lifecycle_test.go:164",
+            "server/internal/service/admin_collaboration_test.go:118"
+          ],
+          "run_ids": [
+            "handoff-authority-coordinator-rerun-20261021",
+            "handoff-execution-boundary-adjacent-final-20261021"
+          ]
+        }
+      ]
+    }
+  ],
+  "executed_test_evidence": [
+    {
+      "run_id": "handoff-authority-coordinator-rerun-20261021",
+      "executor": "coordinator",
+      "reviewer_reran_db_tests": false,
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^(TestCollaborationTransferredHandlersShareExistingGrantAndControls|TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion|TestCollaborationWorkflowInviteTransferPreservesExecution|TestCollaborationQueueRejectsStaleIdentityAndMachine|TestCollaborationTargetStopLeavesOtherTargetAndIssueActive|TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent|TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent|TestCollaborationConsentUsesCompleteSquadRoster|TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent|TestCollaborationSquadInputRechecksEveryResourceConsent|TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator|TestCollaborationInformationChainReturnsLayerByLayer|TestCollaborationLifecycleAuthorityAndExplicitReopen|TestAdminCollaborationLifecyclePreservesCreatorAndRealActor)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "environment": {
+        "database_alias": "service_s5",
+        "schema_migration": 737,
+        "real_provider_access": false
+      },
+      "returncode": 0,
+      "started_at": "2026-10-21T14:37:41.948939+00:00",
+      "finished_at": "2026-10-21T14:37:58.933902+00:00",
+      "elapsed_seconds": 16.984,
+      "top_level_pass_count": 14,
+      "pass_count_with_subtests": 36,
+      "passed_test_identities": [
+        "TestAdminCollaborationLifecyclePreservesCreatorAndRealActor/complete",
+        "TestAdminCollaborationLifecyclePreservesCreatorAndRealActor/cancel",
+        "TestAdminCollaborationLifecyclePreservesCreatorAndRealActor",
+        "TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent",
+        "TestCollaborationConsentUsesCompleteSquadRoster",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/creator",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/current_handler",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/former_handler",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+        "TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion",
+        "TestCollaborationInformationChainReturnsLayerByLayer",
+        "TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen/handler",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen/source_admin",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen/disabled_creator",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen/revoked_creator",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen",
+        "TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/machine",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/participant_epoch",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/account_epoch",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/lifecycle_epoch",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/closed",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/unknown_status",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/source_member_only",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine",
+        "TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/complete_offline_roster",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/missing_member_consent",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/member_owner_epoch_changed",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/member_runtime_owner_changed",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/member_enrollment_revoked",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/squad_leader_changed",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent",
+        "TestCollaborationTargetStopLeavesOtherTargetAndIssueActive",
+        "TestCollaborationWorkflowInviteTransferPreservesExecution"
+      ],
+      "failed_test_identities": [],
+      "skipped_test_identities": [],
+      "package_results": [
+        {
+          "Time": "2026-10-21T22:37:58.877715+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Elapsed": 12.355
+        }
+      ],
+      "raw": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-authority-coordinator-rerun-20261021.jsonl",
+        "sha256": "d09907ff550ae311b7d72927405649932af8aad9727d4bd6660e41a821feac87"
+      },
+      "result": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-authority-coordinator-rerun-20261021-result.json",
+        "sha256": "3938676a4bc35a88d60ab0afc36c4729bf4af5c13d3093d5ee71095d8e98ebe7"
+      },
+      "command_manifest": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-authority-coordinator-rerun-20261021-command.json",
+        "sha256": "c67d09cbbe47edaab2e45529b4b93197f9a49679b27784a60bb9e2abd46624bc"
+      },
+      "stderr_bytes": 0,
+      "source_checks": [
+        {
+          "path": "server/internal/service/collaboration_handoff_execution_boundary_test.go",
+          "recorded_sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+          "current_sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_workflow.go",
+          "recorded_sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "current_sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_queue.go",
+          "recorded_sha256": "51d6e45656eed725dac4836b043afe4f719157be0d82e268f187aa6cebf11982",
+          "current_sha256": "51d6e45656eed725dac4836b043afe4f719157be0d82e268f187aa6cebf11982",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime.go",
+          "recorded_sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "current_sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "run_id": "handoff-execution-boundary-adjacent-final-20261021",
+      "executor": "implementation lane",
+      "reviewer_reran_db_tests": false,
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^(TestCollaborationTransferredHandlersShareExistingGrantAndControls|TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion|TestCollaborationWorkflowInviteTransferPreservesExecution|TestCollaborationQueueRejectsStaleIdentityAndMachine|TestCollaborationTargetStopLeavesOtherTargetAndIssueActive|TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent|TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent|TestCollaborationConsentUsesCompleteSquadRoster|TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent|TestCollaborationSquadInputRechecksEveryResourceConsent|TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator|TestCollaborationInformationChainReturnsLayerByLayer|TestCollaborationLifecycleAuthorityAndExplicitReopen|TestAdminCollaborationLifecyclePreservesCreatorAndRealActor)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "environment": {
+        "GOTOOLCHAIN": "go1.26.6",
+        "database_alias": "service_s5",
+        "schema_migration": 737,
+        "real_provider_access": false
+      },
+      "returncode": 0,
+      "started_at": "2026-10-21T14:13:26.074643+00:00",
+      "finished_at": "2026-10-21T14:13:42.873056+00:00",
+      "elapsed_seconds": 16.79,
+      "top_level_pass_count": 14,
+      "pass_count_with_subtests": 36,
+      "passed_test_identities": [
+        "TestAdminCollaborationLifecyclePreservesCreatorAndRealActor/complete",
+        "TestAdminCollaborationLifecyclePreservesCreatorAndRealActor/cancel",
+        "TestAdminCollaborationLifecyclePreservesCreatorAndRealActor",
+        "TestCollaborationOwnerConsentIsExplicitScopedAndIdempotent",
+        "TestCollaborationConsentUsesCompleteSquadRoster",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/creator",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/current_handler",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/former_handler",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+        "TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion",
+        "TestCollaborationInformationChainReturnsLayerByLayer",
+        "TestCollaborationAcceptanceSubmissionReturnsOpenIssueToCreator",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen/handler",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen/source_admin",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen/disabled_creator",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen/revoked_creator",
+        "TestCollaborationLifecycleAuthorityAndExplicitReopen",
+        "TestCollaborationQueueResumeRejectionNeverTurnsIntoDeferredIntent",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/machine",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/participant_epoch",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/account_epoch",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/lifecycle_epoch",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/closed",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/unknown_status",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine/source_member_only",
+        "TestCollaborationQueueRejectsStaleIdentityAndMachine",
+        "TestCollaborationResourceOfferSquadStillRequiresEveryOwnerConsent",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/complete_offline_roster",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/missing_member_consent",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/member_owner_epoch_changed",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/member_runtime_owner_changed",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/member_enrollment_revoked",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent/squad_leader_changed",
+        "TestCollaborationSquadInputRechecksEveryResourceConsent",
+        "TestCollaborationTargetStopLeavesOtherTargetAndIssueActive",
+        "TestCollaborationWorkflowInviteTransferPreservesExecution"
+      ],
+      "failed_test_identities": [],
+      "skipped_test_identities": [],
+      "package_results": [
+        {
+          "Time": "2026-10-21T22:13:42.837966+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Elapsed": 11.856
+        }
+      ],
+      "raw": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-boundary-adjacent-final-20261021.jsonl",
+        "sha256": "93e09c491eb014ecb1b3a5ea1c9362fcfbfa46041193d5e8f1933e10f58d5c1d"
+      },
+      "result": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-boundary-adjacent-final-20261021-result.json",
+        "sha256": "b18f9799be0b3f033ead4626f1ad8745b76ac04607de7e37729d0bb685e0a534"
+      },
+      "command_manifest": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-boundary-adjacent-final-20261021-command.json",
+        "sha256": "b1945666f08dea3636c77c0e7625c7d8338dac5f9e8796652d55fd8e75d0ec22"
+      },
+      "stderr_bytes": 0,
+      "source_checks": [
+        {
+          "path": "server/internal/service/collaboration_handoff_execution_boundary_test.go",
+          "recorded_sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+          "current_sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_handoff.go",
+          "recorded_sha256": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+          "current_sha256": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_workflow.go",
+          "recorded_sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "current_sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_control.go",
+          "recorded_sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "current_sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime.go",
+          "recorded_sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "current_sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime_test.go",
+          "recorded_sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "current_sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_lifecycle.go",
+          "recorded_sha256": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "current_sha256": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_handoff_test.go",
+          "recorded_sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992",
+          "current_sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_workflow_test.go",
+          "recorded_sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+          "current_sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_authority_test.go",
+          "recorded_sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9",
+          "current_sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_targets_review_test.go",
+          "recorded_sha256": "8ee17bfef1702248089c9373f81045b55856eac4f22d8e5aa6d894b03116dcee",
+          "current_sha256": "8ee17bfef1702248089c9373f81045b55856eac4f22d8e5aa6d894b03116dcee",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "run_id": "handoff-execution-boundary-focused-recovery-20261021",
+      "executor": "implementation lane",
+      "reviewer_reran_db_tests": false,
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^(TestCollaborationTransferredHandlersShareExistingGrantAndControls|TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "environment": {
+        "GOTOOLCHAIN": "go1.26.6",
+        "database_alias": "service_s5",
+        "schema_migration": 737,
+        "real_provider_access": false
+      },
+      "returncode": 0,
+      "started_at": "2026-10-21T14:09:13.724237+00:00",
+      "finished_at": "2026-10-21T14:09:31.834284+00:00",
+      "elapsed_seconds": 18.108,
+      "top_level_pass_count": 2,
+      "pass_count_with_subtests": 5,
+      "passed_test_identities": [
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/creator",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/current_handler",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/former_handler",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+        "TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion"
+      ],
+      "failed_test_identities": [],
+      "skipped_test_identities": [],
+      "package_results": [
+        {
+          "Time": "2026-10-21T22:09:31.769361+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Elapsed": 4.569
+        }
+      ],
+      "raw": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-boundary-focused-recovery-20261021.jsonl",
+        "sha256": "61fdfdc895616be19c55fef6c30ac37663c02a721cbc0dbb0f3131e26fca79c2"
+      },
+      "result": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-boundary-focused-recovery-20261021-result.json",
+        "sha256": "6522cfde1613865d62080b26c0a210cbce4333ab89907d4b3fded89999ff969e"
+      },
+      "command_manifest": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-boundary-focused-recovery-20261021-command.json",
+        "sha256": "ac82452e29132d4f4e9b9d878aab8976618f298df316236c28c4164f48539ef9"
+      },
+      "stderr_bytes": 0,
+      "source_checks": [
+        {
+          "path": "server/internal/service/collaboration_handoff_execution_boundary_test.go",
+          "recorded_sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+          "current_sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_handoff.go",
+          "recorded_sha256": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+          "current_sha256": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_workflow.go",
+          "recorded_sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "current_sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_control.go",
+          "recorded_sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "current_sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime.go",
+          "recorded_sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "current_sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime_test.go",
+          "recorded_sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "current_sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_lifecycle.go",
+          "recorded_sha256": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "current_sha256": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "run_id": "handoff-isolated-head-race",
+      "executor": "coordinator isolated HEAD",
+      "reviewer_reran_db_tests": false,
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^(TestCollaborationTransferredHandlersShareExistingGrantAndControls|TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/tmp/multica-gap-recovery-20261021-h6phxwo9/handoff-execution-head-yvnid2bq/server",
+      "environment": {
+        "database_alias": "service_s5",
+        "schema_migration": 737,
+        "real_provider_access": false
+      },
+      "returncode": 0,
+      "started_at": null,
+      "finished_at": null,
+      "elapsed_seconds": 18.766075874998933,
+      "top_level_pass_count": 2,
+      "pass_count_with_subtests": 5,
+      "passed_test_identities": [
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/creator",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/current_handler",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls/former_handler",
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+        "TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion"
+      ],
+      "failed_test_identities": [],
+      "skipped_test_identities": [],
+      "package_results": [
+        {
+          "Time": "2026-10-21T22:29:24.461846+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Elapsed": 3.624
+        }
+      ],
+      "raw": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-isolated-head-race.jsonl",
+        "sha256": "925fea4e06bde111ec9cbce1b8085e121cb892ef5618467634d6df5f176dcc2c"
+      },
+      "result": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-isolated-head-race-result.json",
+        "sha256": "b33e71e58a11918979a0dcae00b848b0d257342d755ba4f6ab95bc2670eaa258"
+      },
+      "command_manifest": null,
+      "stderr_bytes": 0,
+      "source_checks": []
+    },
+    {
+      "run_id": "grant-task-isolation-adjacent-final-20261021",
+      "executor": "previous current-task grant lane",
+      "reviewer_reran_db_tests": false,
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^(TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask|TestCollaborationTargetResumeInvalidGrantIsAtomic|TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch|TestCollaborationPermissionRestoreCannotReviveConsent|TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof|TestCollaborationResourceRevocationPreservesAllWaitingAuthors|TestCollaborationResourceHoldDoesNotPauseChannel|TestCollaborationTargetResumeForcedActiveGroupRefusesWithoutWrites|TestCollaborationTargetConsentRetainsInitialHold|TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "environment": {
+        "GOTOOLCHAIN": "go1.26.6",
+        "database_alias": "service_s5",
+        "schema_migration": 737,
+        "real_provider_access": false
+      },
+      "returncode": 0,
+      "started_at": "2026-10-21T12:38:07.851183+00:00",
+      "finished_at": "2026-10-21T12:38:22.344752+00:00",
+      "elapsed_seconds": 14.493,
+      "top_level_pass_count": 10,
+      "pass_count_with_subtests": 22,
+      "passed_test_identities": [
+        "TestCollaborationPermissionRestoreCannotReviveConsent",
+        "TestCollaborationTargetResumeForcedActiveGroupRefusesWithoutWrites",
+        "TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask/revoke_grant",
+        "TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask/leave_rejoin",
+        "TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask",
+        "TestCollaborationTargetConsentRetainsInitialHold",
+        "TestCollaborationResourceHoldDoesNotPauseChannel",
+        "TestCollaborationReconsentHoldRequiresFreshResumeBeforeLaunch",
+        "TestCollaborationTargetResumeInvalidGrantIsAtomic",
+        "TestCollaborationResourceRevocationPreservesAllWaitingAuthors",
+        "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/never_permitted_author",
+        "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/permitted_author",
+        "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/permitted_owner_other_author",
+        "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/never_permitted_owner_other_author",
+        "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/preserve_first_stop",
+        "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof/contradictory_running_without_permit",
+        "TestCollaborationWorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof",
+        "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/unrelated_participant",
+        "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/idle_active_owner",
+        "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/leaving_author",
+        "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution/leaving_owner",
+        "TestCollaborationWorkflowDepartureOnlyStopsAffectedExecution"
+      ],
+      "failed_test_identities": [],
+      "skipped_test_identities": [],
+      "package_results": [
+        {
+          "Time": "2026-10-21T20:38:22.285551+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Elapsed": 9.203
+        }
+      ],
+      "raw": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/grant-task-isolation-adjacent-final-20261021.jsonl",
+        "sha256": "6a514344838ae566151eda183bb732c460cb2ecd2312f104846636400b9c2866"
+      },
+      "result": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/grant-task-isolation-adjacent-final-20261021-result.json",
+        "sha256": "0b0cd79c2c753dffb63d36087ca0b0e2a914cb411ab20e2dc4bf2973db8cbae5"
+      },
+      "command_manifest": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/grant-task-isolation-adjacent-final-20261021-command.json",
+        "sha256": "6101fea3d4cfa6aff1d9548a81c84472af1caf2228f5120de7b490cd2f881109"
+      },
+      "stderr_bytes": 0,
+      "source_checks": [
+        {
+          "path": "server/internal/service/collaboration_grant_task_isolation_test.go",
+          "recorded_sha256": "2c80c3277f3d4d8891f1938f585f7f4bb6eb4cfe83f251bc080f03fdf6ea13fe",
+          "current_sha256": "2c80c3277f3d4d8891f1938f585f7f4bb6eb4cfe83f251bc080f03fdf6ea13fe",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_targets.go",
+          "recorded_sha256": "0ea88bd886d6dc2f84dbf20c10522aa65989b05e7fe37640bb1d3275728bd57a",
+          "current_sha256": "0ea88bd886d6dc2f84dbf20c10522aa65989b05e7fe37640bb1d3275728bd57a",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_workflow.go",
+          "recorded_sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "current_sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_authority.go",
+          "recorded_sha256": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "current_sha256": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_control.go",
+          "recorded_sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "current_sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime.go",
+          "recorded_sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "current_sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_runtime_test.go",
+          "recorded_sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "current_sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_hold_test.go",
+          "recorded_sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "current_sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_authority_test.go",
+          "recorded_sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9",
+          "current_sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_targets_test.go",
+          "recorded_sha256": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef",
+          "current_sha256": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef",
+          "matches": true
+        },
+        {
+          "path": "server/internal/service/collaboration_workflow_test.go",
+          "recorded_sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+          "current_sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "run_id": "grant-isolated-head-race",
+      "executor": "previous current-task isolated grant lane",
+      "reviewer_reran_db_tests": false,
+      "command": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "cwd": "/tmp/multica-gap-recovery-20261021-h6phxwo9/content-acceptance-head-bjg3a90e/server",
+      "environment": {
+        "database_alias": "service_s5",
+        "schema_migration": 737,
+        "real_provider_access": false
+      },
+      "returncode": 0,
+      "started_at": null,
+      "finished_at": null,
+      "elapsed_seconds": 14.274183333996916,
+      "top_level_pass_count": 1,
+      "pass_count_with_subtests": 3,
+      "passed_test_identities": [
+        "TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask/revoke_grant",
+        "TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask/leave_rejoin",
+        "TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask"
+      ],
+      "failed_test_identities": [],
+      "skipped_test_identities": [],
+      "package_results": [
+        {
+          "Time": "2026-10-21T20:43:11.548051+08:00",
+          "Action": "pass",
+          "Package": "github.com/multica-ai/multica/server/internal/service",
+          "Elapsed": 3.8689999999999998
+        }
+      ],
+      "raw": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/grant-isolated-head-race.jsonl",
+        "sha256": "da657a0af9fc30320ec4d9d2bb526a3f406a10b34163b64e9fce88a8917eb419"
+      },
+      "result": {
+        "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/grant-isolated-head-race-result.json",
+        "sha256": "17129021da96e55c870b9159354b89af791ebcc3c038826253b791be1823b051"
+      },
+      "command_manifest": null,
+      "stderr_bytes": 0,
+      "source_checks": []
+    }
+  ],
+  "current_source_hashes": [
+    {
+      "path": "server/internal/collaboration/access.go",
+      "sha256": "a168ab81a233633fc6cdb5771c52fff2176157e0a30ef58d815370a64635778c",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/admin_collaboration_test.go",
+      "sha256": "10226e77c18e1da334686c559fdfc7e9b1ee3ae3890108b74daad5e9ac2eefc0",
+      "present_in_exact_head_snapshot": false,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_authority.go",
+      "sha256": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_authority_test.go",
+      "sha256": "9804e0705acf9270b542e5476a7770d691b6fa26658558e24f050565d48cdfd9",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_batches.go",
+      "sha256": "5ce1d33180d1abdd5ff11de3d0890fa0fbc43ba6ffef809c0070528262889409",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_control.go",
+      "sha256": "ec45389d29ad82e103afbe14795b93343f8e693cd40745e439881413da1a85ed",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_control_managed_test.go",
+      "sha256": "4e7feaecc081a08eeb982b9e06c487f982a6cb3c7504bec633c2302654ab15a7",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_control_test.go",
+      "sha256": "55e251e8a23109e9393b4cb459c8dbd1ec96afb5672df0c7b562d452c418f31b",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_grant_task_isolation_test.go",
+      "sha256": "2c80c3277f3d4d8891f1938f585f7f4bb6eb4cfe83f251bc080f03fdf6ea13fe",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff.go",
+      "sha256": "5757c544bd97e96f506a1f5ad4d12775a2de2b8d7e69508d61be8a9685c84053",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_execution_boundary_test.go",
+      "sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_test.go",
+      "sha256": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_hold_test.go",
+      "sha256": "6c0f4fdfbc00a5d6adf4f727e0aee77045bade1881fb1df52ccfc4494ecd7d9e",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "sha256": "08cf44625a95f70c448e98f192ba392c130f1705f0bc245e4d69e8d12d7064a4",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle_test.go",
+      "sha256": "164c27d7f3e34ac838607b73ecb3f02a6c12d7ab19ac685636d0110404d5842f",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_queue.go",
+      "sha256": "51d6e45656eed725dac4836b043afe4f719157be0d82e268f187aa6cebf11982",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_queue_test.go",
+      "sha256": "5e39f2aff563b696656cf57fa9e1845c0e8f57d18c10c5c269874c704108f862",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_resource_offer_authority_test.go",
+      "sha256": "5444d771f399da9892083eb0d0e0cf1114d87f66df8ecf515ca906e32c43b49e",
+      "present_in_exact_head_snapshot": false,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_resource_offers_test.go",
+      "sha256": "a166369ae2250a77622549d81c29bcb6148cee82ad5ec7824c8371f19194b3a0",
+      "present_in_exact_head_snapshot": false,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "sha256": "c4e9d3011470395151ae885784e2e54a3c2e4139b3ecc453517ec1eb792d4c87",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "sha256": "aa8bcd7f6be51e9070b015ab301b506f0a2f44920320a7ef5ca0b1ad7d478c15",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_test.go",
+      "sha256": "6a8786e311f289db37f99a25bf9d8b46affe4707dfa1fd9c33a81e2d65cc32cc",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_targets.go",
+      "sha256": "0ea88bd886d6dc2f84dbf20c10522aa65989b05e7fe37640bb1d3275728bd57a",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_targets_review_test.go",
+      "sha256": "8ee17bfef1702248089c9373f81045b55856eac4f22d8e5aa6d894b03116dcee",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_targets_test.go",
+      "sha256": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "a1aa1d1d7d8e2b7ccbe402605796dff48eebad4652c8018abec957bc9fbe1d54",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": false
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow_test.go",
+      "sha256": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration.sql",
+      "sha256": "84a42e64fa3eac60dd2138f515bc5bdd6ab3fc35bc5b7d1c8acf7fdd219fa589",
+      "present_in_exact_head_snapshot": true,
+      "current_bytes_match_head_snapshot": false
+    }
+  ],
+  "snapshot_assertion_review": {
+    "helper": "server/internal/service/collaboration_handoff_execution_boundary_test.go:195",
+    "only_excluded_session_field": "event_seq",
+    "reason": "AdvanceCollaborationEventSequence in actual workflow/comment events changes only this common event-order fact; issue responsibility/status/event/operation writes are human workflow facts.",
+    "retained_complete_execution_relations": [
+      "session (excluding only event_seq)",
+      "channels",
+      "targets",
+      "grants",
+      "commands",
+      "batches",
+      "groups",
+      "runs",
+      "group inputs",
+      "group dependencies",
+      "terminations",
+      "attempts",
+      "business capabilities",
+      "runtime reservations"
+    ],
+    "original_key_no_op_comparison": "controlStateSnapshot retains full session/event state; immutable refused Resume and actor-owned workflow GET/replayed acceptance change none of these facts"
+  },
+  "single_file_commit_isolation": {
+    "recorded_head": "5baf8659296a4a04666e6eaaa60e5965ffc70725",
+    "manifest_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-isolated-head-source.json",
+    "manifest_sha256": "8a089002d0b52146277eb7eb0152f168263faec91a1827e1da6ebcb9cb1d5b1a",
+    "root": "/tmp/multica-gap-recovery-20261021-h6phxwo9/handoff-execution-head-yvnid2bq",
+    "retained_archive_path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/handoff-execution-head-yvnid2bq/head-server.tar",
+    "retained_archive_sha256": "bd31d1fad1f975020c06e78af7cd5622eda7283bb7a1d82c5aba2ebb62be9998",
+    "matches_manifest_archive_sha256": true,
+    "all_4063_retained_archive_files_match_recorded_head_and_extracted_bytes": true,
+    "tracked_server_files": 4061,
+    "head_guard_support_files": [
+      "scripts/agent-cli-command-names.txt",
+      "scripts/go-test-with-agent-cli-guard.sh"
+    ],
+    "only_added_server_source": [
+      "server/internal/service/collaboration_handoff_execution_boundary_test.go"
+    ],
+    "new_test_sha256": "2711e8e6aea0e111f5438834e1bb5f116c2b1ffb7b071d4b9c39e8b434baefb6",
+    "retained_non_source_extra": "head-server.tar",
+    "isolated_selected_test_passes": [
+      "TestCollaborationTransferredHandlersShareExistingGrantAndControls/creator",
+      "TestCollaborationTransferredHandlersShareExistingGrantAndControls/current_handler",
+      "TestCollaborationTransferredHandlersShareExistingGrantAndControls/former_handler",
+      "TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+      "TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion"
+    ],
+    "scope": "Exact server HEAD plus one new test and two HEAD guard support files. Current dirty workflow/runtime/lifecycle/fixtures and untracked admin/offer adjacent tests are integration evidence, not required commit contents; isolated run proves the new file works without them.",
+    "whole_repo_snapshot_claimed": false,
+    "physical_two_file_checkout_claimed": false
+  },
+  "reviewer_verification": {
+    "checks": [
+      {
+        "name": "gofmt",
+        "command": [
+          "gofmt",
+          "-d",
+          "server/internal/service/collaboration_handoff_execution_boundary_test.go"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+        "environment": {},
+        "started_at": "2026-10-21T14:59:41.525020+00:00",
+        "elapsed_seconds": 0.013,
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "name": "go_vet",
+        "command": [
+          "go",
+          "vet",
+          "-p",
+          "1",
+          "./internal/service"
+        ],
+        "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+        "environment": {
+          "GOTOOLCHAIN": "go1.26.6"
+        },
+        "started_at": "2026-10-21T14:59:41.538778+00:00",
+        "elapsed_seconds": 1.781,
+        "returncode": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    ],
+    "go_toolchain": "go1.26.6 darwin/arm64",
+    "lint": "pass (fresh scoped gofmt + go vet)",
+    "typecheck": "Go compilation is covered by fresh go vet and executed race suites; frontend TypeScript not applicable",
+    "db_tests": "reviewed coordinator/implementation current raw evidence; no reviewer DB run",
+    "no_frontend_or_native_command_run": true
+  },
+  "retained_failed_attempts": [
+    {
+      "run_id": "handoff-execution-boundary-focused-first-20261021",
+      "returncode": 1,
+      "classification": "superseded test expectation failure",
+      "reason": "Test-only snapshot incorrectly required human event_seq not to advance; successful invite/transfer/acceptance legitimately creates events.",
+      "raw_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-boundary-focused-first-20261021.jsonl",
+      "raw_sha256": "2e18bf1d1b4fe4462fb8fbe4f0313fb641a6fb12a4491eadbe8a64e7d50ee858",
+      "new_test_sha256_at_run": "19571bdfadc78deb8efd1a192b9619b8d252815ac2715f1a8dcfbb8edf54e060",
+      "failed_test_identities": [
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls",
+        "TestCollaborationActiveAcceptanceAndResultsRequireExplicitCompletion"
+      ]
+    },
+    {
+      "run_id": "handoff-execution-boundary-focused-fixed-20261021",
+      "returncode": 1,
+      "classification": "superseded test expectation failure",
+      "reason": "Test attempted Transfer POST after losing current-handler authority. Correct actor-owned original GET recovery is used in final source.",
+      "raw_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/handoff-execution-boundary-focused-fixed-20261021.jsonl",
+      "raw_sha256": "aa331b0a9d26ba48fb01f98034f3bc2d32245b264cf9f0c7a70f6c4fd53a2232",
+      "new_test_sha256_at_run": "a81156d03bdbc214d2d96352f95f00bf3304c48d75f0a7f3876d8459790ae1ea",
+      "failed_test_identities": [
+        "TestCollaborationTransferredHandlersShareExistingGrantAndControls"
+      ]
+    }
+  ],
+  "spec_sync_recommendation": "No public behavior/interface change. Root may append current test/evidence scope and legitimate human-event ordering to collaboration-targets/foundation specs; reviewer did not edit specs.",
+  "remaining_task_limits": [
+    "Synthetic outcome and sealed service proof, no provider process/kernel observation in these tests",
+    "This is backend-primary acceptance evidence, not new Web/Electron/native packaging execution",
+    "Real provider executable/version/account/quota and rollout remain separately authorized",
+    "Natural Linux process proof, unsupported OS, storage/runtime fault matrices and full installed Main/installer remain separately attributed",
+    "Child and parent stay in_progress until all 97 full clauses have current evidence"
+  ],
+  "simplifications": "Reuse tracked managed/workflow/status/comment/control primitives; no product abstraction, dependency, generated SQL, migration or broad shared implementation added"
+}

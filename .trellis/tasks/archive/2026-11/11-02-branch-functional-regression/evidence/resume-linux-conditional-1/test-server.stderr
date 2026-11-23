@@ -1,0 +1,347 @@
+2026/11/02 02:38:04 INFO S3_BUCKET not set, cloud upload disabled
+2026/11/02 02:38:04 ERROR failed to create upload directory dir=./data/uploads error="mkdir ./data: read-only file system"
+2026/11/02 02:38:04 INFO CLOUDFRONT_KEY_PAIR_ID not set, signed cookies disabled
+2026/11/02 02:38:04 WARN collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account fix="set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false"
+2026/11/02 02:38:04 WARN device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace
+2026/11/02 02:38:04 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+2026/11/02 02:38:04 INFO channel engine: lease backend configured backend=postgres ttl=3m0s renew_interval=1m0s poll_interval=30s
+2026/11/02 02:38:04 INFO lark integration disabled (MULTICA_LARK_SECRET_KEY not set)
+2026/11/02 02:38:04 INFO slack integration disabled (MULTICA_SLACK_SECRET_KEY not set)
+2026/11/02 02:38:04 INFO dingtalk integration disabled (MULTICA_DINGTALK_SECRET_KEY not set)
+2026/11/02 02:38:04 INFO wecom integration disabled (MULTICA_WECOM_SECRET_KEY not set)
+2026/11/02 02:38:04 INFO telegram integration disabled (MULTICA_TELEGRAM_SECRET_KEY not set)
+2026/11/02 02:38:04 INFO composio integration disabled (COMPOSIO_API_KEY not set)
+2026/11/02 02:38:04 INFO vcs integration disabled (MULTICA_VCS_SECRET_KEY not set)
+2026/11/02 02:38:04 INFO Plugin secrets disabled (MULTICA_PLUGIN_SECRET_KEY not set)
+2026/11/02 02:38:04 WARN plugins: MULTICA_PLUGIN_API_URL and MULTICA_PUBLIC_URL are not set; hook callbacks will carry no callback_url
+2026/11/02 02:38:04 WARN auth rate limiting disabled: REDIS_URL not configured
+2026/11/02 02:38:04 INFO S3_BUCKET not set, cloud upload disabled
+2026/11/02 02:38:04 ERROR failed to create upload directory dir=./data/uploads error="mkdir ./data: read-only file system"
+2026/11/02 02:38:04 INFO CLOUDFRONT_KEY_PAIR_ID not set, signed cookies disabled
+2026/11/02 02:38:04 WARN collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account fix="set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false"
+2026/11/02 02:38:04 WARN device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace
+2026/11/02 02:38:04 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+2026/11/02 02:38:04 INFO channel engine: lease backend configured backend=postgres ttl=3m0s renew_interval=1m0s poll_interval=30s
+2026/11/02 02:38:04 INFO messaging integrations disabled (MULTICA_MESSAGING_INTEGRATIONS_ENABLED=false)
+2026/11/02 02:38:04 INFO composio integration disabled (COMPOSIO_API_KEY not set)
+2026/11/02 02:38:04 INFO vcs integration disabled (MULTICA_VCS_SECRET_KEY not set)
+2026/11/02 02:38:04 INFO Plugin secrets disabled (MULTICA_PLUGIN_SECRET_KEY not set)
+2026/11/02 02:38:04 WARN plugins: MULTICA_PLUGIN_API_URL and MULTICA_PUBLIC_URL are not set; hook callbacks will carry no callback_url
+2026/11/02 02:38:04 WARN auth rate limiting disabled: REDIS_URL not configured
+2026/11/02 02:38:05 INFO http request method=POST path=/api/installations/challenges status=200 duration=72.358ms request_id=c60ff0116d40/rDQ6p1zRv4-000001 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:05 INFO http request method=POST path=/api/installations/enroll status=200 duration=54.794ms request_id=c60ff0116d40/rDQ6p1zRv4-000002 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:05 INFO http request method=POST path=/api/installations/challenges status=200 duration=12.027ms request_id=c60ff0116d40/rDQ6p1zRv4-000003 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:05 INFO http request method=POST path=/api/daemon/installation-bindings status=200 duration=35.797ms request_id=c60ff0116d40/rDQ6p1zRv4-000004 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:05 INFO http request method=POST path=/api/collaboration/issues/2401c406-de9d-483e-9c1f-f261f99f69a2/targets status=201 duration=48.587ms request_id=c60ff0116d40/rDQ6p1zRv4-000005 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:05 INFO http request method=POST path=/api/collaboration/issues/2401c406-de9d-483e-9c1f-f261f99f69a2/targets/1b861b71-c958-40de-9e00-5d5bbef8fdf0/consents status=201 duration=29.907ms request_id=c60ff0116d40/rDQ6p1zRv4-000006 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:05 INFO daemon registered workspace_id=c4613349-e4c0-4026-a651-95e68074a59a daemon_id=77f78328-2e4f-4dd7-b634-ec7d8bc4f542 runtimes_count=1
+2026/11/02 02:38:05 INFO http request method=POST path=/api/daemon/register status=200 duration=26.769ms request_id=c60ff0116d40/rDQ6p1zRv4-000007 user_id=f5c7e77b-2160-4587-a329-d8583d67c105 client_platform=daemon client_os=linux
+2026/11/02 02:38:05 INFO http request method=POST path=/api/collaboration/issues/2401c406-de9d-483e-9c1f-f261f99f69a2/targets status=201 duration=33.705ms request_id=c60ff0116d40/rDQ6p1zRv4-000009 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:05 INFO http request method=POST path=/api/collaboration/issues/2401c406-de9d-483e-9c1f-f261f99f69a2/targets/60aa45df-9acd-416f-9fa8-728f0e3df87e/consents status=201 duration=37.248ms request_id=c60ff0116d40/rDQ6p1zRv4-000010 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:06 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=128.538ms request_id=c60ff0116d40/rDQ6p1zRv4-000008 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:06 INFO http request method=POST path=/api/collaboration/issues/2401c406-de9d-483e-9c1f-f261f99f69a2/targets/60aa45df-9acd-416f-9fa8-728f0e3df87e/consents status=201 duration=80.549ms request_id=c60ff0116d40/rDQ6p1zRv4-000011 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:06 INFO http request method=POST path=/api/collaboration/issues/2401c406-de9d-483e-9c1f-f261f99f69a2/comments status=201 duration=102.945ms request_id=c60ff0116d40/rDQ6p1zRv4-000013 user_id=655e81e9-b1a2-4259-87ff-50f2b9e6e4e1
+2026/11/02 02:38:06 INFO http request method=POST path=/api/daemon/tasks/claim status=200 duration=155.513ms request_id=c60ff0116d40/rDQ6p1zRv4-000012 user_id=f5c7e77b-2160-4587-a329-d8583d67c105 client_platform=daemon client_os=linux
+2026/11/02 02:38:06 INFO http request method=POST path=/api/collaboration/issues/2401c406-de9d-483e-9c1f-f261f99f69a2/control status=200 duration=68.526ms request_id=c60ff0116d40/rDQ6p1zRv4-000014 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:06 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=181.749ms request_id=c60ff0116d40/rDQ6p1zRv4-000015 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:06 INFO http request method=POST path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/claim status=200 duration=120.661ms request_id=c60ff0116d40/rDQ6p1zRv4-000016 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:06 INFO http request method=POST path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/permit status=200 duration=96.797ms request_id=c60ff0116d40/rDQ6p1zRv4-000017 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:06 INFO http request method=GET path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/stop-intent status=200 duration=7.743ms request_id=c60ff0116d40/rDQ6p1zRv4-000018
+2026/11/02 02:38:06 INFO http request method=GET path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/context status=200 duration=75.308ms request_id=c60ff0116d40/rDQ6p1zRv4-000019 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:06 INFO http request method=GET path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/context status=200 duration=53.093ms request_id=c60ff0116d40/rDQ6p1zRv4-000020 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:07 INFO http request method=POST path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/comments status=201 duration=64.664ms request_id=c60ff0116d40/rDQ6p1zRv4-000021 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:07 INFO http request method=GET path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/context status=200 duration=60.434ms request_id=c60ff0116d40/rDQ6p1zRv4-000022 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:07 INFO http request method=POST path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/comments status=201 duration=51.6ms request_id=c60ff0116d40/rDQ6p1zRv4-000023 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:07 INFO http request method=GET path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/context status=200 duration=63.685ms request_id=c60ff0116d40/rDQ6p1zRv4-000024 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:07 INFO http request method=POST path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/squad-activity status=200 duration=57.13ms request_id=c60ff0116d40/rDQ6p1zRv4-000025 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:07 INFO http request method=POST path=/api/collaboration/runtime/runs/42f4ca6a-feba-4cff-9bcd-84f2920744e8/proof status=200 duration=24.197ms request_id=c60ff0116d40/rDQ6p1zRv4-000026
+2026/11/02 02:38:07 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=37.256ms request_id=c60ff0116d40/rDQ6p1zRv4-000027 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:07 INFO http request method=POST path=/api/collaboration/runtime/runs/c9a89790-09ef-4a7f-9828-b887d4ccb15a/claim status=200 duration=92.685ms request_id=c60ff0116d40/rDQ6p1zRv4-000028 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:07 INFO http request method=POST path=/api/collaboration/runtime/runs/c9a89790-09ef-4a7f-9828-b887d4ccb15a/permit status=200 duration=71.619ms request_id=c60ff0116d40/rDQ6p1zRv4-000029 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:07 INFO http request method=GET path=/api/collaboration/runtime/runs/c9a89790-09ef-4a7f-9828-b887d4ccb15a/stop-intent status=200 duration=6.434ms request_id=c60ff0116d40/rDQ6p1zRv4-000030
+2026/11/02 02:38:07 INFO http request method=GET path=/api/collaboration/runtime/runs/c9a89790-09ef-4a7f-9828-b887d4ccb15a/context status=200 duration=68.281ms request_id=c60ff0116d40/rDQ6p1zRv4-000031 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:07 INFO http request method=GET path=/api/collaboration/runtime/runs/c9a89790-09ef-4a7f-9828-b887d4ccb15a/context status=200 duration=55.008ms request_id=c60ff0116d40/rDQ6p1zRv4-000032 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:07 INFO http request method=POST path=/api/collaboration/runtime/runs/c9a89790-09ef-4a7f-9828-b887d4ccb15a/comments status=201 duration=60.522ms request_id=c60ff0116d40/rDQ6p1zRv4-000033 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:07 INFO http request method=POST path=/api/collaboration/issues/2401c406-de9d-483e-9c1f-f261f99f69a2/comments status=201 duration=121.844ms request_id=c60ff0116d40/rDQ6p1zRv4-000034 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:08 INFO http request method=POST path=/api/collaboration/runtime/runs/c9a89790-09ef-4a7f-9828-b887d4ccb15a/outcome status=200 duration=67.406ms request_id=c60ff0116d40/rDQ6p1zRv4-000035
+2026/11/02 02:38:08 INFO http request method=POST path=/api/collaboration/runtime/runs/c9a89790-09ef-4a7f-9828-b887d4ccb15a/proof status=200 duration=17.702ms request_id=c60ff0116d40/rDQ6p1zRv4-000036
+2026/11/02 02:38:08 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=101.905ms request_id=c60ff0116d40/rDQ6p1zRv4-000037 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:08 INFO http request method=POST path=/api/collaboration/runtime/runs/5db0dd8c-4396-4d0f-ba5d-24f837d5be9c/claim status=200 duration=96.171ms request_id=c60ff0116d40/rDQ6p1zRv4-000038 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:08 INFO http request method=POST path=/api/collaboration/runtime/runs/5db0dd8c-4396-4d0f-ba5d-24f837d5be9c/permit status=200 duration=98.134ms request_id=c60ff0116d40/rDQ6p1zRv4-000039 user_id=f5c7e77b-2160-4587-a329-d8583d67c105
+2026/11/02 02:38:08 INFO http request method=GET path=/api/collaboration/runtime/runs/5db0dd8c-4396-4d0f-ba5d-24f837d5be9c/stop-intent status=200 duration=6.415ms request_id=c60ff0116d40/rDQ6p1zRv4-000040
+2026/11/02 02:38:08 INFO http request method=GET path=/api/collaboration/runtime/runs/5db0dd8c-4396-4d0f-ba5d-24f837d5be9c/context status=200 duration=82.616ms request_id=c60ff0116d40/rDQ6p1zRv4-000041 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:08 INFO http request method=GET path=/api/collaboration/runtime/runs/5db0dd8c-4396-4d0f-ba5d-24f837d5be9c/context status=200 duration=85.97ms request_id=c60ff0116d40/rDQ6p1zRv4-000042 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:08 INFO http request method=POST path=/api/collaboration/runtime/runs/5db0dd8c-4396-4d0f-ba5d-24f837d5be9c/squad-activity status=200 duration=74.489ms request_id=c60ff0116d40/rDQ6p1zRv4-000043 client_platform=cli client_version=dev client_os=linux
+2026/11/02 02:38:08 INFO http request method=POST path=/api/collaboration/runtime/runs/5db0dd8c-4396-4d0f-ba5d-24f837d5be9c/proof status=200 duration=27.814ms request_id=c60ff0116d40/rDQ6p1zRv4-000044
+2026/11/02 02:38:09 INFO S3_BUCKET not set, cloud upload disabled
+2026/11/02 02:38:09 ERROR failed to create upload directory dir=./data/uploads error="mkdir ./data: read-only file system"
+2026/11/02 02:38:09 INFO CLOUDFRONT_KEY_PAIR_ID not set, signed cookies disabled
+2026/11/02 02:38:09 WARN collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account fix="set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false"
+2026/11/02 02:38:09 WARN device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace
+2026/11/02 02:38:09 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+2026/11/02 02:38:09 INFO channel engine: lease backend configured backend=postgres ttl=3m0s renew_interval=1m0s poll_interval=30s
+2026/11/02 02:38:09 INFO messaging integrations disabled (MULTICA_MESSAGING_INTEGRATIONS_ENABLED=false)
+2026/11/02 02:38:09 INFO composio integration disabled (COMPOSIO_API_KEY not set)
+2026/11/02 02:38:09 INFO vcs integration disabled (MULTICA_VCS_SECRET_KEY not set)
+2026/11/02 02:38:09 INFO Plugin secrets disabled (MULTICA_PLUGIN_SECRET_KEY not set)
+2026/11/02 02:38:09 WARN plugins: MULTICA_PLUGIN_API_URL and MULTICA_PUBLIC_URL are not set; hook callbacks will carry no callback_url
+2026/11/02 02:38:09 WARN auth rate limiting disabled: REDIS_URL not configured
+2026/11/02 02:38:09 INFO http request method=POST path=/api/installations/challenges status=200 duration=9.939ms request_id=c60ff0116d40/rDQ6p1zRv4-000045 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/installations/enroll status=200 duration=27.872ms request_id=c60ff0116d40/rDQ6p1zRv4-000046 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/installations/challenges status=200 duration=6.339ms request_id=c60ff0116d40/rDQ6p1zRv4-000047 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/daemon/installation-bindings status=200 duration=44.097ms request_id=c60ff0116d40/rDQ6p1zRv4-000048 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/targets status=201 duration=46.488ms request_id=c60ff0116d40/rDQ6p1zRv4-000049 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/targets/fc7bfdf5-6fbe-441a-bb1d-14e01dd1a694/consents status=201 duration=28.881ms request_id=c60ff0116d40/rDQ6p1zRv4-000050 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/installations/challenges status=200 duration=2.994ms request_id=c60ff0116d40/rDQ6p1zRv4-000051 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/installations/enroll status=200 duration=6.876ms request_id=c60ff0116d40/rDQ6p1zRv4-000052 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/installations/challenges status=200 duration=5.273ms request_id=c60ff0116d40/rDQ6p1zRv4-000053 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/daemon/installation-bindings status=200 duration=10.978ms request_id=c60ff0116d40/rDQ6p1zRv4-000054 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/targets status=201 duration=24.265ms request_id=c60ff0116d40/rDQ6p1zRv4-000055 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:09 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/targets/ff9f889f-b3dd-447e-9859-63dae79ac0de/consents status=201 duration=22.848ms request_id=c60ff0116d40/rDQ6p1zRv4-000056 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:10 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/comments status=201 duration=96.456ms request_id=c60ff0116d40/rDQ6p1zRv4-000057 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:10 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/comments status=201 duration=61.292ms request_id=c60ff0116d40/rDQ6p1zRv4-000058 user_id=1275ef31-b4e3-4d58-8abe-37c2d7c115a2
+2026/11/02 02:38:10 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control status=200 duration=43.082ms request_id=c60ff0116d40/rDQ6p1zRv4-000059 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:10 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=136.4ms request_id=c60ff0116d40/rDQ6p1zRv4-000060 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:10 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=135.669ms request_id=c60ff0116d40/rDQ6p1zRv4-000061 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:10 INFO http request method=POST path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/claim status=200 duration=118.144ms request_id=c60ff0116d40/rDQ6p1zRv4-000062 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:10 INFO http request method=POST path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/claim status=200 duration=269.277ms request_id=c60ff0116d40/rDQ6p1zRv4-000063 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/permit status=200 duration=219.137ms request_id=c60ff0116d40/rDQ6p1zRv4-000064 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=10.542ms request_id=c60ff0116d40/rDQ6p1zRv4-000066
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/permit status=200 duration=167.412ms request_id=c60ff0116d40/rDQ6p1zRv4-000065 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=18.647ms request_id=c60ff0116d40/rDQ6p1zRv4-000067
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/stop-intent status=200 duration=15.016ms request_id=c60ff0116d40/rDQ6p1zRv4-000068
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=17.493ms request_id=c60ff0116d40/rDQ6p1zRv4-000069
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=14.136ms request_id=c60ff0116d40/rDQ6p1zRv4-000070
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=13.351ms request_id=c60ff0116d40/rDQ6p1zRv4-000071
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=35.086ms request_id=c60ff0116d40/rDQ6p1zRv4-000072
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=21.078ms request_id=c60ff0116d40/rDQ6p1zRv4-000073
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=20.585ms request_id=c60ff0116d40/rDQ6p1zRv4-000074
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=15.137ms request_id=c60ff0116d40/rDQ6p1zRv4-000075
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/stop-intent status=200 duration=18.081ms request_id=c60ff0116d40/rDQ6p1zRv4-000076
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=14.842ms request_id=c60ff0116d40/rDQ6p1zRv4-000078
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/stop-intent status=200 duration=14.669ms request_id=c60ff0116d40/rDQ6p1zRv4-000079
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=15.91ms request_id=c60ff0116d40/rDQ6p1zRv4-000080
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/stop-intent status=200 duration=14.969ms request_id=c60ff0116d40/rDQ6p1zRv4-000081
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=14.567ms request_id=c60ff0116d40/rDQ6p1zRv4-000082
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/stop-intent status=200 duration=15.853ms request_id=c60ff0116d40/rDQ6p1zRv4-000083
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=15.461ms request_id=c60ff0116d40/rDQ6p1zRv4-000084
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/stop-intent status=200 duration=15.453ms request_id=c60ff0116d40/rDQ6p1zRv4-000085
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=17.203ms request_id=c60ff0116d40/rDQ6p1zRv4-000086
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/stop-intent status=200 duration=17.897ms request_id=c60ff0116d40/rDQ6p1zRv4-000087
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=15.144ms request_id=c60ff0116d40/rDQ6p1zRv4-000088
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/comments status=201 duration=216.431ms request_id=c60ff0116d40/rDQ6p1zRv4-000077 user_id=1275ef31-b4e3-4d58-8abe-37c2d7c115a2
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/stop-intent status=200 duration=131.687ms request_id=c60ff0116d40/rDQ6p1zRv4-000089
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=133.616ms request_id=c60ff0116d40/rDQ6p1zRv4-000090
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control status=200 duration=67.243ms request_id=c60ff0116d40/rDQ6p1zRv4-000091 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/stop-intent status=200 duration=65.715ms request_id=c60ff0116d40/rDQ6p1zRv4-000092
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/stop-intent status=200 duration=65.446ms request_id=c60ff0116d40/rDQ6p1zRv4-000093
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/runtime/runs/02f7d4a9-2443-4a0b-9cb6-a6911073cffd/proof status=200 duration=28.333ms request_id=c60ff0116d40/rDQ6p1zRv4-000094
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/grants/7d42c72e-1f29-4045-a2b5-88f234888440/revoke status=200 duration=29.012ms request_id=c60ff0116d40/rDQ6p1zRv4-000095 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/targets/fc7bfdf5-6fbe-441a-bb1d-14e01dd1a694/consents status=201 duration=23.214ms request_id=c60ff0116d40/rDQ6p1zRv4-000096 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/grants/dbfeb440-2014-4447-8a7f-bb06a53a70fd/revoke status=200 duration=14.64ms request_id=c60ff0116d40/rDQ6p1zRv4-000097 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/targets/ff9f889f-b3dd-447e-9859-63dae79ac0de/consents status=201 duration=18.066ms request_id=c60ff0116d40/rDQ6p1zRv4-000098 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control status=200 duration=39.135ms request_id=c60ff0116d40/rDQ6p1zRv4-000099 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:11 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/comments status=201 duration=50.911ms request_id=c60ff0116d40/rDQ6p1zRv4-000100 user_id=1275ef31-b4e3-4d58-8abe-37c2d7c115a2
+2026/11/02 02:38:11 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=98.934ms request_id=c60ff0116d40/rDQ6p1zRv4-000101 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/runtime/runs/55e13b2e-1451-4468-8f3b-72208bcf06d5/claim status=200 duration=77.202ms request_id=c60ff0116d40/rDQ6p1zRv4-000102 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/runtime/runs/55e13b2e-1451-4468-8f3b-72208bcf06d5/permit status=200 duration=54.447ms request_id=c60ff0116d40/rDQ6p1zRv4-000103 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/runtime/runs/55e13b2e-1451-4468-8f3b-72208bcf06d5/stop-intent status=200 duration=7.799ms request_id=c60ff0116d40/rDQ6p1zRv4-000104
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/runtime/runs/55e13b2e-1451-4468-8f3b-72208bcf06d5/stop-intent status=200 duration=13.314ms request_id=c60ff0116d40/rDQ6p1zRv4-000105
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/runtime/runs/55e13b2e-1451-4468-8f3b-72208bcf06d5/outcome status=200 duration=45.716ms request_id=c60ff0116d40/rDQ6p1zRv4-000106
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/runtime/runs/55e13b2e-1451-4468-8f3b-72208bcf06d5/proof status=200 duration=23.448ms request_id=c60ff0116d40/rDQ6p1zRv4-000107
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=23.463ms request_id=c60ff0116d40/rDQ6p1zRv4-000108 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 WARN http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control status=409 duration=25.273ms request_id=c60ff0116d40/rDQ6p1zRv4-000109 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control/operations/c5a838f4-770e-4467-872a-e360ffda1a02 status=200 duration=3.912ms request_id=c60ff0116d40/rDQ6p1zRv4-000110 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control/operations/2f715e53-ac49-45b7-b947-f2c5f9b958d8 status=200 duration=2.66ms request_id=c60ff0116d40/rDQ6p1zRv4-000111 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/runtime/runs/fae4fb28-5360-4fb3-a17b-30b35fffa09f/proof status=200 duration=22.581ms request_id=c60ff0116d40/rDQ6p1zRv4-000112
+2026/11/02 02:38:12 WARN http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control status=409 duration=7.242ms request_id=c60ff0116d40/rDQ6p1zRv4-000113 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control status=200 duration=28.526ms request_id=c60ff0116d40/rDQ6p1zRv4-000114 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=99.251ms request_id=c60ff0116d40/rDQ6p1zRv4-000115 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/runtime/runs/91c8faa7-022b-40c6-bb8e-6ec0a64ad9d2/claim status=200 duration=65.776ms request_id=c60ff0116d40/rDQ6p1zRv4-000116 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/runtime/runs/91c8faa7-022b-40c6-bb8e-6ec0a64ad9d2/permit status=200 duration=54.569ms request_id=c60ff0116d40/rDQ6p1zRv4-000117 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/runtime/runs/91c8faa7-022b-40c6-bb8e-6ec0a64ad9d2/stop-intent status=200 duration=9.267ms request_id=c60ff0116d40/rDQ6p1zRv4-000118
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/runtime/runs/91c8faa7-022b-40c6-bb8e-6ec0a64ad9d2/stop-intent status=200 duration=33.401ms request_id=c60ff0116d40/rDQ6p1zRv4-000119
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/runtime/runs/91c8faa7-022b-40c6-bb8e-6ec0a64ad9d2/outcome status=200 duration=72.802ms request_id=c60ff0116d40/rDQ6p1zRv4-000120
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/runtime/runs/91c8faa7-022b-40c6-bb8e-6ec0a64ad9d2/proof status=200 duration=27.792ms request_id=c60ff0116d40/rDQ6p1zRv4-000121
+2026/11/02 02:38:12 INFO http request method=POST path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control status=200 duration=10.84ms request_id=c60ff0116d40/rDQ6p1zRv4-000122 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control/operations/c5a838f4-770e-4467-872a-e360ffda1a02 status=200 duration=2.782ms request_id=c60ff0116d40/rDQ6p1zRv4-000123 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:12 INFO http request method=GET path=/api/collaboration/issues/00c0d9cb-ca67-47a1-b4fb-edd517c9eecb/control/operations/2f715e53-ac49-45b7-b947-f2c5f9b958d8 status=200 duration=2.253ms request_id=c60ff0116d40/rDQ6p1zRv4-000124 user_id=1f9e5b98-e2a6-4900-aeb4-b792a725ede3
+2026/11/02 02:38:13 INFO S3_BUCKET not set, cloud upload disabled
+2026/11/02 02:38:13 ERROR failed to create upload directory dir=./data/uploads error="mkdir ./data: read-only file system"
+2026/11/02 02:38:13 INFO CLOUDFRONT_KEY_PAIR_ID not set, signed cookies disabled
+2026/11/02 02:38:13 WARN collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account fix="set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false"
+2026/11/02 02:38:13 WARN device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace
+2026/11/02 02:38:13 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+2026/11/02 02:38:13 INFO channel engine: lease backend configured backend=postgres ttl=3m0s renew_interval=1m0s poll_interval=30s
+2026/11/02 02:38:13 INFO messaging integrations disabled (MULTICA_MESSAGING_INTEGRATIONS_ENABLED=false)
+2026/11/02 02:38:13 INFO composio integration disabled (COMPOSIO_API_KEY not set)
+2026/11/02 02:38:13 INFO vcs integration disabled (MULTICA_VCS_SECRET_KEY not set)
+2026/11/02 02:38:13 INFO Plugin secrets disabled (MULTICA_PLUGIN_SECRET_KEY not set)
+2026/11/02 02:38:13 WARN plugins: MULTICA_PLUGIN_API_URL and MULTICA_PUBLIC_URL are not set; hook callbacks will carry no callback_url
+2026/11/02 02:38:13 WARN auth rate limiting disabled: REDIS_URL not configured
+2026/11/02 02:38:13 INFO http request method=POST path=/api/installations/challenges status=200 duration=10.119ms request_id=c60ff0116d40/rDQ6p1zRv4-000125 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:13 INFO http request method=POST path=/api/installations/enroll status=200 duration=28.187ms request_id=c60ff0116d40/rDQ6p1zRv4-000126 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:13 INFO http request method=POST path=/api/installations/challenges status=200 duration=6.946ms request_id=c60ff0116d40/rDQ6p1zRv4-000127 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:13 INFO http request method=POST path=/api/daemon/installation-bindings status=200 duration=21.038ms request_id=c60ff0116d40/rDQ6p1zRv4-000128 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:13 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/targets status=201 duration=48.743ms request_id=c60ff0116d40/rDQ6p1zRv4-000129 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:13 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/targets/e72f5b63-2f8d-43f5-b324-c1d19727dae7/consents status=201 duration=25.009ms request_id=c60ff0116d40/rDQ6p1zRv4-000130 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:13 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/comments status=201 duration=77.437ms request_id=c60ff0116d40/rDQ6p1zRv4-000131 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:13 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/control status=200 duration=31.432ms request_id=c60ff0116d40/rDQ6p1zRv4-000132 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:13 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=136.443ms request_id=c60ff0116d40/rDQ6p1zRv4-000133 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:14 INFO http request method=POST path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/claim status=200 duration=79.09ms request_id=c60ff0116d40/rDQ6p1zRv4-000134 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:14 INFO http request method=POST path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/permit status=200 duration=51.452ms request_id=c60ff0116d40/rDQ6p1zRv4-000135 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=6.294ms request_id=c60ff0116d40/rDQ6p1zRv4-000136
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=12.648ms request_id=c60ff0116d40/rDQ6p1zRv4-000137
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=7.999ms request_id=c60ff0116d40/rDQ6p1zRv4-000139
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=10.438ms request_id=c60ff0116d40/rDQ6p1zRv4-000140
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=10.664ms request_id=c60ff0116d40/rDQ6p1zRv4-000141
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=6.486ms request_id=c60ff0116d40/rDQ6p1zRv4-000142
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=7.396ms request_id=c60ff0116d40/rDQ6p1zRv4-000143
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=7.111ms request_id=c60ff0116d40/rDQ6p1zRv4-000144
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=9.495ms request_id=c60ff0116d40/rDQ6p1zRv4-000145
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=7.287ms request_id=c60ff0116d40/rDQ6p1zRv4-000146
+2026/11/02 02:38:14 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/comments status=201 duration=183.45ms request_id=c60ff0116d40/rDQ6p1zRv4-000138 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=103.803ms request_id=c60ff0116d40/rDQ6p1zRv4-000147
+2026/11/02 02:38:14 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/comments status=201 duration=63.737ms request_id=c60ff0116d40/rDQ6p1zRv4-000148 user_id=aaed33e1-baa4-41a9-b3eb-0f8e38dcbf71
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=65.172ms request_id=c60ff0116d40/rDQ6p1zRv4-000149
+2026/11/02 02:38:14 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/control status=200 duration=48.29ms request_id=c60ff0116d40/rDQ6p1zRv4-000150 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/stop-intent status=200 duration=48.015ms request_id=c60ff0116d40/rDQ6p1zRv4-000151
+2026/11/02 02:38:14 WARN http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/control status=409 duration=28.227ms request_id=c60ff0116d40/rDQ6p1zRv4-000152 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:14 INFO http request method=POST path=/api/collaboration/runtime/runs/298ecf7a-151b-4923-aac7-950daa6ee156/proof status=200 duration=29.191ms request_id=c60ff0116d40/rDQ6p1zRv4-000153
+2026/11/02 02:38:14 WARN http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/control status=409 duration=7.861ms request_id=c60ff0116d40/rDQ6p1zRv4-000154 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:14 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/control status=200 duration=28.027ms request_id=c60ff0116d40/rDQ6p1zRv4-000155 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:14 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=117.672ms request_id=c60ff0116d40/rDQ6p1zRv4-000156 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:14 INFO http request method=POST path=/api/collaboration/runtime/runs/65a29bc5-5c2f-4294-b1db-a1730b25effa/claim status=200 duration=75.862ms request_id=c60ff0116d40/rDQ6p1zRv4-000157 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/runtime/runs/65a29bc5-5c2f-4294-b1db-a1730b25effa/permit status=200 duration=65.516ms request_id=c60ff0116d40/rDQ6p1zRv4-000158 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=GET path=/api/collaboration/runtime/runs/65a29bc5-5c2f-4294-b1db-a1730b25effa/stop-intent status=200 duration=7.155ms request_id=c60ff0116d40/rDQ6p1zRv4-000159
+2026/11/02 02:38:15 INFO http request method=GET path=/api/collaboration/runtime/runs/65a29bc5-5c2f-4294-b1db-a1730b25effa/stop-intent status=200 duration=16.43ms request_id=c60ff0116d40/rDQ6p1zRv4-000160
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/runtime/runs/65a29bc5-5c2f-4294-b1db-a1730b25effa/outcome status=200 duration=53.951ms request_id=c60ff0116d40/rDQ6p1zRv4-000161
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/runtime/runs/65a29bc5-5c2f-4294-b1db-a1730b25effa/proof status=200 duration=21.633ms request_id=c60ff0116d40/rDQ6p1zRv4-000162
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/comments status=201 duration=49.846ms request_id=c60ff0116d40/rDQ6p1zRv4-000163 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=163.91ms request_id=c60ff0116d40/rDQ6p1zRv4-000164 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/control status=200 duration=36.031ms request_id=c60ff0116d40/rDQ6p1zRv4-000165 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=GET path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5 status=200 duration=16.138ms request_id=c60ff0116d40/rDQ6p1zRv4-000166 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=18.914ms request_id=c60ff0116d40/rDQ6p1zRv4-000167 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/issues/bfc4b999-63bb-42ba-a77f-89a8aec258e5/control status=200 duration=23.536ms request_id=c60ff0116d40/rDQ6p1zRv4-000168 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=96.247ms request_id=c60ff0116d40/rDQ6p1zRv4-000169 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/runtime/runs/175dd871-8410-484c-ab41-18276cb2a41d/claim status=200 duration=58.287ms request_id=c60ff0116d40/rDQ6p1zRv4-000170 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/runtime/runs/175dd871-8410-484c-ab41-18276cb2a41d/permit status=200 duration=53.287ms request_id=c60ff0116d40/rDQ6p1zRv4-000171 user_id=35c6fe08-9c6b-4464-ad71-0aab0ade4228
+2026/11/02 02:38:15 INFO http request method=GET path=/api/collaboration/runtime/runs/175dd871-8410-484c-ab41-18276cb2a41d/stop-intent status=200 duration=6.331ms request_id=c60ff0116d40/rDQ6p1zRv4-000172
+2026/11/02 02:38:15 INFO http request method=GET path=/api/collaboration/runtime/runs/175dd871-8410-484c-ab41-18276cb2a41d/stop-intent status=200 duration=10.195ms request_id=c60ff0116d40/rDQ6p1zRv4-000173
+2026/11/02 02:38:15 INFO http request method=GET path=/api/collaboration/runtime/runs/175dd871-8410-484c-ab41-18276cb2a41d/stop-intent status=200 duration=7.534ms request_id=c60ff0116d40/rDQ6p1zRv4-000174
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/runtime/runs/175dd871-8410-484c-ab41-18276cb2a41d/outcome status=200 duration=39.273ms request_id=c60ff0116d40/rDQ6p1zRv4-000175
+2026/11/02 02:38:15 INFO http request method=POST path=/api/collaboration/runtime/runs/175dd871-8410-484c-ab41-18276cb2a41d/proof status=200 duration=21.858ms request_id=c60ff0116d40/rDQ6p1zRv4-000176
+2026/11/02 02:38:16 INFO S3_BUCKET not set, cloud upload disabled
+2026/11/02 02:38:16 ERROR failed to create upload directory dir=./data/uploads error="mkdir ./data: read-only file system"
+2026/11/02 02:38:16 INFO CLOUDFRONT_KEY_PAIR_ID not set, signed cookies disabled
+2026/11/02 02:38:16 WARN collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account fix="set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false"
+2026/11/02 02:38:16 WARN device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace
+2026/11/02 02:38:16 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+2026/11/02 02:38:16 INFO channel engine: lease backend configured backend=postgres ttl=3m0s renew_interval=1m0s poll_interval=30s
+2026/11/02 02:38:16 INFO messaging integrations disabled (MULTICA_MESSAGING_INTEGRATIONS_ENABLED=false)
+2026/11/02 02:38:16 INFO composio integration disabled (COMPOSIO_API_KEY not set)
+2026/11/02 02:38:16 INFO vcs integration disabled (MULTICA_VCS_SECRET_KEY not set)
+2026/11/02 02:38:16 INFO Plugin secrets disabled (MULTICA_PLUGIN_SECRET_KEY not set)
+2026/11/02 02:38:16 WARN plugins: MULTICA_PLUGIN_API_URL and MULTICA_PUBLIC_URL are not set; hook callbacks will carry no callback_url
+2026/11/02 02:38:16 WARN auth rate limiting disabled: REDIS_URL not configured
+2026/11/02 02:38:16 INFO http request method=POST path=/api/installations/challenges status=200 duration=9.597ms request_id=c60ff0116d40/rDQ6p1zRv4-000177 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:16 INFO http request method=POST path=/api/installations/enroll status=200 duration=27.66ms request_id=c60ff0116d40/rDQ6p1zRv4-000178 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:16 INFO http request method=POST path=/api/installations/challenges status=200 duration=5.191ms request_id=c60ff0116d40/rDQ6p1zRv4-000179 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:16 INFO http request method=POST path=/api/daemon/installation-bindings status=200 duration=19.655ms request_id=c60ff0116d40/rDQ6p1zRv4-000180 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:16 INFO http request method=POST path=/api/collaboration/issues/14d37149-29a0-4e9c-adb9-cce881a86b62/targets status=201 duration=46.806ms request_id=c60ff0116d40/rDQ6p1zRv4-000181 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:16 INFO http request method=POST path=/api/collaboration/issues/14d37149-29a0-4e9c-adb9-cce881a86b62/targets/67780287-2817-43be-aa1a-c4818daa44ab/consents status=201 duration=30.249ms request_id=c60ff0116d40/rDQ6p1zRv4-000182 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:16 INFO http request method=POST path=/api/collaboration/issues/14d37149-29a0-4e9c-adb9-cce881a86b62/control status=200 duration=42.171ms request_id=c60ff0116d40/rDQ6p1zRv4-000183 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:16 INFO http request method=POST path=/api/collaboration/issues/14d37149-29a0-4e9c-adb9-cce881a86b62/targets status=201 duration=21.476ms request_id=c60ff0116d40/rDQ6p1zRv4-000184 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:16 INFO http request method=POST path=/api/collaboration/issues/14d37149-29a0-4e9c-adb9-cce881a86b62/targets/15334d7f-a291-4229-86b0-96d8d1b58bda/consents status=201 duration=20.455ms request_id=c60ff0116d40/rDQ6p1zRv4-000185 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:16 INFO http request method=POST path=/api/collaboration/issues/14d37149-29a0-4e9c-adb9-cce881a86b62/comments status=201 duration=71.616ms request_id=c60ff0116d40/rDQ6p1zRv4-000186 user_id=276780c8-3616-4208-bbe0-59742f9e17ac
+2026/11/02 02:38:16 INFO http request method=POST path=/api/collaboration/issues/14d37149-29a0-4e9c-adb9-cce881a86b62/comments status=201 duration=61.216ms request_id=c60ff0116d40/rDQ6p1zRv4-000187 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:17 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=148.512ms request_id=c60ff0116d40/rDQ6p1zRv4-000188 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:17 INFO http request method=POST path=/api/collaboration/runtime/runs/401f5f4e-9d54-4b0e-866b-bb01591d9e1d/claim status=200 duration=86.911ms request_id=c60ff0116d40/rDQ6p1zRv4-000189 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:17 INFO http request method=POST path=/api/collaboration/runtime/runs/401f5f4e-9d54-4b0e-866b-bb01591d9e1d/permit status=200 duration=58.591ms request_id=c60ff0116d40/rDQ6p1zRv4-000190 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:17 INFO http request method=GET path=/api/collaboration/runtime/runs/401f5f4e-9d54-4b0e-866b-bb01591d9e1d/stop-intent status=200 duration=8.548ms request_id=c60ff0116d40/rDQ6p1zRv4-000191
+2026/11/02 02:38:17 INFO http request method=GET path=/api/collaboration/runtime/runs/401f5f4e-9d54-4b0e-866b-bb01591d9e1d/stop-intent status=200 duration=10.947ms request_id=c60ff0116d40/rDQ6p1zRv4-000192
+2026/11/02 02:38:17 INFO http request method=POST path=/api/collaboration/runtime/runs/401f5f4e-9d54-4b0e-866b-bb01591d9e1d/outcome status=200 duration=44.086ms request_id=c60ff0116d40/rDQ6p1zRv4-000193
+2026/11/02 02:38:17 INFO http request method=POST path=/api/collaboration/runtime/runs/401f5f4e-9d54-4b0e-866b-bb01591d9e1d/proof status=200 duration=31.214ms request_id=c60ff0116d40/rDQ6p1zRv4-000194
+2026/11/02 02:38:17 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=20.348ms request_id=c60ff0116d40/rDQ6p1zRv4-000195 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:17 INFO http request method=GET path=/api/collaboration/issues/14d37149-29a0-4e9c-adb9-cce881a86b62 status=200 duration=15.273ms request_id=c60ff0116d40/rDQ6p1zRv4-000196 user_id=b3dca053-f457-47c4-8c72-fd36e2f449ce
+2026/11/02 02:38:17 INFO S3_BUCKET not set, cloud upload disabled
+2026/11/02 02:38:17 ERROR failed to create upload directory dir=./data/uploads error="mkdir ./data: read-only file system"
+2026/11/02 02:38:17 INFO CLOUDFRONT_KEY_PAIR_ID not set, signed cookies disabled
+2026/11/02 02:38:17 WARN collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account fix="set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false"
+2026/11/02 02:38:17 WARN device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace
+2026/11/02 02:38:17 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+2026/11/02 02:38:17 INFO channel engine: lease backend configured backend=postgres ttl=3m0s renew_interval=1m0s poll_interval=30s
+2026/11/02 02:38:17 INFO messaging integrations disabled (MULTICA_MESSAGING_INTEGRATIONS_ENABLED=false)
+2026/11/02 02:38:17 INFO composio integration disabled (COMPOSIO_API_KEY not set)
+2026/11/02 02:38:17 INFO vcs integration disabled (MULTICA_VCS_SECRET_KEY not set)
+2026/11/02 02:38:17 INFO Plugin secrets disabled (MULTICA_PLUGIN_SECRET_KEY not set)
+2026/11/02 02:38:17 WARN plugins: MULTICA_PLUGIN_API_URL and MULTICA_PUBLIC_URL are not set; hook callbacks will carry no callback_url
+2026/11/02 02:38:17 WARN auth rate limiting disabled: REDIS_URL not configured
+2026/11/02 02:38:18 INFO http request method=POST path=/api/installations/challenges status=200 duration=7.804ms request_id=c60ff0116d40/rDQ6p1zRv4-000197 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=POST path=/api/installations/enroll status=200 duration=28.612ms request_id=c60ff0116d40/rDQ6p1zRv4-000198 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=POST path=/api/installations/challenges status=200 duration=5.909ms request_id=c60ff0116d40/rDQ6p1zRv4-000199 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=POST path=/api/daemon/installation-bindings status=200 duration=21.172ms request_id=c60ff0116d40/rDQ6p1zRv4-000200 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=POST path=/api/collaboration/issues/aa0f21f1-ed40-46ff-bb6e-f0c553325ca8/targets status=201 duration=49.121ms request_id=c60ff0116d40/rDQ6p1zRv4-000201 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=POST path=/api/collaboration/issues/aa0f21f1-ed40-46ff-bb6e-f0c553325ca8/targets/42b635eb-6fdc-440e-8a59-9b97506d6acd/consents status=201 duration=23.811ms request_id=c60ff0116d40/rDQ6p1zRv4-000202 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=POST path=/api/collaboration/issues/aa0f21f1-ed40-46ff-bb6e-f0c553325ca8/comments status=201 duration=82.039ms request_id=c60ff0116d40/rDQ6p1zRv4-000203 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=POST path=/api/collaboration/issues/aa0f21f1-ed40-46ff-bb6e-f0c553325ca8/control status=200 duration=28.679ms request_id=c60ff0116d40/rDQ6p1zRv4-000204 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=129.195ms request_id=c60ff0116d40/rDQ6p1zRv4-000205 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=POST path=/api/collaboration/runtime/runs/1e784c66-e1de-4755-8a45-0e83648c5875/claim status=200 duration=72.164ms request_id=c60ff0116d40/rDQ6p1zRv4-000206 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=POST path=/api/collaboration/runtime/runs/1e784c66-e1de-4755-8a45-0e83648c5875/permit status=200 duration=56.656ms request_id=c60ff0116d40/rDQ6p1zRv4-000207 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=GET path=/api/collaboration/runtime/runs/1e784c66-e1de-4755-8a45-0e83648c5875/stop-intent status=200 duration=9.557ms request_id=c60ff0116d40/rDQ6p1zRv4-000208
+2026/11/02 02:38:18 INFO http request method=POST path=/api/collaboration/issues/aa0f21f1-ed40-46ff-bb6e-f0c553325ca8/control status=200 duration=36.902ms request_id=c60ff0116d40/rDQ6p1zRv4-000210 user_id=f23436fa-fc84-42cf-a858-248ee901c43d
+2026/11/02 02:38:18 INFO http request method=GET path=/api/collaboration/runtime/runs/1e784c66-e1de-4755-8a45-0e83648c5875/stop-intent status=200 duration=69.957ms request_id=c60ff0116d40/rDQ6p1zRv4-000209
+2026/11/02 02:38:18 WARN http request method=GET path=/api/collaboration/runtime/runs status=401 duration=2.287ms request_id=c60ff0116d40/rDQ6p1zRv4-000211
+2026/11/02 02:38:19 INFO http request method=POST path=/api/collaboration/runtime/runs/1e784c66-e1de-4755-8a45-0e83648c5875/proof status=200 duration=71.406ms request_id=c60ff0116d40/rDQ6p1zRv4-000212
+2026/11/02 02:38:19 INFO S3_BUCKET not set, cloud upload disabled
+2026/11/02 02:38:19 ERROR failed to create upload directory dir=./data/uploads error="mkdir ./data: read-only file system"
+2026/11/02 02:38:19 INFO CLOUDFRONT_KEY_PAIR_ID not set, signed cookies disabled
+2026/11/02 02:38:19 WARN collaboration recipient directory is on while self-service signup is allowed: any self-registered account can list the names and avatars of every available account fix="set MULTICA_COLLABORATION_DIRECTORY_ENABLED=false or ALLOW_SIGNUP=false"
+2026/11/02 02:38:19 WARN device auth enabled: any client that can reach this server can mint an identity without logging in and create workspaces of its own; set MULTICA_DEVICE_AUTH_ENABLED=false to require a login, or MULTICA_DEVICE_AUTH_WORKSPACE=<slug> to put every device in one shared workspace
+2026/11/02 02:38:19 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+2026/11/02 02:38:19 INFO channel engine: lease backend configured backend=postgres ttl=3m0s renew_interval=1m0s poll_interval=30s
+2026/11/02 02:38:19 INFO messaging integrations disabled (MULTICA_MESSAGING_INTEGRATIONS_ENABLED=false)
+2026/11/02 02:38:19 INFO composio integration disabled (COMPOSIO_API_KEY not set)
+2026/11/02 02:38:19 INFO vcs integration disabled (MULTICA_VCS_SECRET_KEY not set)
+2026/11/02 02:38:19 INFO Plugin secrets disabled (MULTICA_PLUGIN_SECRET_KEY not set)
+2026/11/02 02:38:19 WARN plugins: MULTICA_PLUGIN_API_URL and MULTICA_PUBLIC_URL are not set; hook callbacks will carry no callback_url
+2026/11/02 02:38:19 WARN auth rate limiting disabled: REDIS_URL not configured
+2026/11/02 02:38:19 INFO http request method=POST path=/api/installations/challenges status=200 duration=9.222ms request_id=c60ff0116d40/rDQ6p1zRv4-000213 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:19 INFO http request method=POST path=/api/installations/enroll status=200 duration=28.31ms request_id=c60ff0116d40/rDQ6p1zRv4-000214 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:19 INFO http request method=POST path=/api/installations/challenges status=200 duration=5.495ms request_id=c60ff0116d40/rDQ6p1zRv4-000215 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:19 INFO http request method=POST path=/api/daemon/installation-bindings status=200 duration=22.261ms request_id=c60ff0116d40/rDQ6p1zRv4-000216 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:19 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/targets status=201 duration=45.984ms request_id=c60ff0116d40/rDQ6p1zRv4-000217 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:19 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/targets/0f1fc8f2-b44d-422a-9771-439df98d8d93/consents status=201 duration=32.927ms request_id=c60ff0116d40/rDQ6p1zRv4-000218 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:19 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/targets status=201 duration=24.825ms request_id=c60ff0116d40/rDQ6p1zRv4-000219 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:19 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/targets/3b4180f8-40b9-4dc3-a098-4b9f0d088fbd/consents status=201 duration=23.576ms request_id=c60ff0116d40/rDQ6p1zRv4-000220 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:19 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/targets/3b4180f8-40b9-4dc3-a098-4b9f0d088fbd/consents status=201 duration=25.428ms request_id=c60ff0116d40/rDQ6p1zRv4-000221 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:19 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/comments status=201 duration=95.035ms request_id=c60ff0116d40/rDQ6p1zRv4-000222 user_id=027bc0b1-9fd8-4e90-bd59-1e65d7a800e4
+2026/11/02 02:38:19 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/control status=200 duration=46.55ms request_id=c60ff0116d40/rDQ6p1zRv4-000223 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:20 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=177.581ms request_id=c60ff0116d40/rDQ6p1zRv4-000224 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:20 INFO http request method=POST path=/api/collaboration/runtime/runs/670bb704-f0ff-4b1f-be96-e05f003d3904/claim status=200 duration=88.153ms request_id=c60ff0116d40/rDQ6p1zRv4-000225 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:20 INFO http request method=POST path=/api/collaboration/runtime/runs/670bb704-f0ff-4b1f-be96-e05f003d3904/permit status=200 duration=69.908ms request_id=c60ff0116d40/rDQ6p1zRv4-000226 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:20 INFO http request method=GET path=/api/collaboration/runtime/runs/670bb704-f0ff-4b1f-be96-e05f003d3904/stop-intent status=200 duration=7.583ms request_id=c60ff0116d40/rDQ6p1zRv4-000227
+2026/11/02 02:38:20 INFO http request method=GET path=/api/collaboration/runtime/runs/670bb704-f0ff-4b1f-be96-e05f003d3904/context status=200 duration=65.412ms request_id=c60ff0116d40/rDQ6p1zRv4-000228
+2026/11/02 02:38:20 INFO http request method=POST path=/api/collaboration/runtime/runs/670bb704-f0ff-4b1f-be96-e05f003d3904/comments status=201 duration=68.782ms request_id=c60ff0116d40/rDQ6p1zRv4-000229
+2026/11/02 02:38:20 INFO http request method=POST path=/api/collaboration/runtime/runs/670bb704-f0ff-4b1f-be96-e05f003d3904/comments status=201 duration=49.663ms request_id=c60ff0116d40/rDQ6p1zRv4-000230
+2026/11/02 02:38:20 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/comments status=201 duration=142.439ms request_id=c60ff0116d40/rDQ6p1zRv4-000231 user_id=027bc0b1-9fd8-4e90-bd59-1e65d7a800e4
+2026/11/02 02:38:20 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/comments status=201 duration=154.145ms request_id=c60ff0116d40/rDQ6p1zRv4-000232 user_id=027bc0b1-9fd8-4e90-bd59-1e65d7a800e4
+2026/11/02 02:38:21 INFO http request method=POST path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828/commands/163293d4-3176-4c8b-9b43-a2daeb150a56/cancel status=200 duration=15.254ms request_id=c60ff0116d40/rDQ6p1zRv4-000233 user_id=027bc0b1-9fd8-4e90-bd59-1e65d7a800e4
+2026/11/02 02:38:21 INFO http request method=GET path=/api/collaboration/issues/723ac525-15a0-4308-b709-75ab5ea91828 status=200 duration=14.418ms request_id=c60ff0116d40/rDQ6p1zRv4-000234 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:21 INFO http request method=POST path=/api/collaboration/runtime/runs/670bb704-f0ff-4b1f-be96-e05f003d3904/squad-activity status=200 duration=72.147ms request_id=c60ff0116d40/rDQ6p1zRv4-000235
+2026/11/02 02:38:21 INFO http request method=POST path=/api/collaboration/runtime/runs/670bb704-f0ff-4b1f-be96-e05f003d3904/proof status=200 duration=22.66ms request_id=c60ff0116d40/rDQ6p1zRv4-000236
+2026/11/02 02:38:21 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=28.281ms request_id=c60ff0116d40/rDQ6p1zRv4-000237 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:21 INFO http request method=POST path=/api/collaboration/runtime/runs/0bb380ce-a92c-4aeb-b0dc-928fedbdb94c/claim status=200 duration=94.049ms request_id=c60ff0116d40/rDQ6p1zRv4-000238 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:21 INFO http request method=POST path=/api/collaboration/runtime/runs/0bb380ce-a92c-4aeb-b0dc-928fedbdb94c/permit status=200 duration=86.149ms request_id=c60ff0116d40/rDQ6p1zRv4-000239 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:21 INFO http request method=GET path=/api/collaboration/runtime/runs/0bb380ce-a92c-4aeb-b0dc-928fedbdb94c/stop-intent status=200 duration=5.765ms request_id=c60ff0116d40/rDQ6p1zRv4-000240
+2026/11/02 02:38:21 INFO http request method=GET path=/api/collaboration/runtime/runs/0bb380ce-a92c-4aeb-b0dc-928fedbdb94c/context status=200 duration=81.111ms request_id=c60ff0116d40/rDQ6p1zRv4-000241
+2026/11/02 02:38:21 INFO http request method=POST path=/api/collaboration/runtime/runs/0bb380ce-a92c-4aeb-b0dc-928fedbdb94c/comments status=201 duration=87.851ms request_id=c60ff0116d40/rDQ6p1zRv4-000242
+2026/11/02 02:38:21 INFO http request method=POST path=/api/collaboration/runtime/runs/0bb380ce-a92c-4aeb-b0dc-928fedbdb94c/outcome status=200 duration=77.631ms request_id=c60ff0116d40/rDQ6p1zRv4-000243
+2026/11/02 02:38:21 INFO http request method=POST path=/api/collaboration/runtime/runs/0bb380ce-a92c-4aeb-b0dc-928fedbdb94c/proof status=200 duration=20.965ms request_id=c60ff0116d40/rDQ6p1zRv4-000244
+2026/11/02 02:38:21 INFO http request method=GET path=/api/collaboration/runtime/runs status=200 duration=138.468ms request_id=c60ff0116d40/rDQ6p1zRv4-000245 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:22 INFO http request method=POST path=/api/collaboration/runtime/runs/0a830e50-e0a7-4afe-959a-10012095439a/claim status=200 duration=95.779ms request_id=c60ff0116d40/rDQ6p1zRv4-000246 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:22 INFO http request method=POST path=/api/collaboration/runtime/runs/0a830e50-e0a7-4afe-959a-10012095439a/permit status=200 duration=97.183ms request_id=c60ff0116d40/rDQ6p1zRv4-000247 user_id=6e812151-8d0c-49d0-aeb4-69242692e823
+2026/11/02 02:38:22 INFO http request method=GET path=/api/collaboration/runtime/runs/0a830e50-e0a7-4afe-959a-10012095439a/stop-intent status=200 duration=5.866ms request_id=c60ff0116d40/rDQ6p1zRv4-000248
+2026/11/02 02:38:22 INFO http request method=GET path=/api/collaboration/runtime/runs/0a830e50-e0a7-4afe-959a-10012095439a/context status=200 duration=84.665ms request_id=c60ff0116d40/rDQ6p1zRv4-000249
+2026/11/02 02:38:22 INFO http request method=POST path=/api/collaboration/runtime/runs/0a830e50-e0a7-4afe-959a-10012095439a/squad-activity status=200 duration=71.656ms request_id=c60ff0116d40/rDQ6p1zRv4-000250
+2026/11/02 02:38:22 INFO http request method=POST path=/api/collaboration/runtime/runs/0a830e50-e0a7-4afe-959a-10012095439a/proof status=200 duration=27.778ms request_id=c60ff0116d40/rDQ6p1zRv4-000251

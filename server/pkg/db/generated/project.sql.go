@@ -165,8 +165,14 @@ func (q *Queries) DeleteProjectProgress(ctx context.Context, arg DeleteProjectPr
 }
 
 const deleteProjectProgressInbox = `-- name: DeleteProjectProgressInbox :exec
-DELETE FROM inbox_item i WHERE i.workspace_id=$2
-AND i.id IN (SELECT n.id FROM project_update_notification n WHERE n.project_id=$1 AND n.workspace_id=$2)
+WITH target AS (
+ SELECT n.id FROM project_update_notification n WHERE n.project_id=$1 AND n.workspace_id=$2
+),cleared_snoozes AS (
+ DELETE FROM inbox_snooze s WHERE s.workspace_id=$2 AND s.group_kind='item' AND s.group_id IN (SELECT target.id FROM target)
+),cleared_sources AS (
+ DELETE FROM inbox_critical_source s WHERE s.workspace_id=$2 AND s.group_kind='item' AND s.group_id IN (SELECT target.id FROM target)
+)
+DELETE FROM inbox_item i WHERE i.workspace_id=$2 AND i.id IN (SELECT target.id FROM target)
 `
 
 type DeleteProjectProgressInboxParams struct {
@@ -657,6 +663,45 @@ type LockProjectForExecutionSquadParams struct {
 // compared under this lock before any template resources are materialized.
 func (q *Queries) LockProjectForExecutionSquad(ctx context.Context, arg LockProjectForExecutionSquadParams) (Project, error) {
 	row := q.db.QueryRow(ctx, lockProjectForExecutionSquad, arg.ID, arg.WorkspaceID)
+	var i Project
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Title,
+		&i.Description,
+		&i.Icon,
+		&i.Status,
+		&i.LeadType,
+		&i.LeadID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Priority,
+		&i.StartDate,
+		&i.DueDate,
+		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
+	)
+	return i, err
+}
+
+const lockProjectForUpdate = `-- name: LockProjectForUpdate :one
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project
+WHERE id = $1 AND workspace_id = $2
+FOR NO KEY UPDATE
+`
+
+type LockProjectForUpdateParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+// Metadata edits serialize revisions and conflict with authority SHARE readers,
+// while remaining compatible with KEY SHARE readers of parent existence.
+func (q *Queries) LockProjectForUpdate(ctx context.Context, arg LockProjectForUpdateParams) (Project, error) {
+	row := q.db.QueryRow(ctx, lockProjectForUpdate, arg.ID, arg.WorkspaceID)
 	var i Project
 	err := row.Scan(
 		&i.ID,

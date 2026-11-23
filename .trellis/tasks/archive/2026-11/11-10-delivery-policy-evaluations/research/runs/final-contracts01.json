@@ -1,0 +1,150 @@
+{
+  "name": "final-contracts01",
+  "started_at": "2026-11-10T08:33:16.973246+00:00",
+  "finished_at": "2026-11-10T08:33:28.849673+00:00",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "-p",
+    "1",
+    "./internal/service",
+    "./internal/migrations",
+    "./internal/metrics",
+    "-run",
+    "^Test(BuiltinSkillsConformToTemplate|BuiltinSkillsFrontmatterIsStrictYAML|CreatingAgentsSkillCoversAgentCreationContracts|DeliveryPolicyMigrationContract|NoDirectGetAgentRuntimeCalls)$",
+    "-count=1"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-delivery-policy-20261110",
+  "database": null,
+  "exit_code": 0,
+  "counts": {
+    "pass": 23,
+    "fail": 0,
+    "skip": 0
+  },
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-policy-20261110-nzr66nfi/logs/final-contracts01.log",
+  "log_sha256": "fc884bfdf09dcf0d261b5f9654eb5540b26f7f69d86c78bcf3fdd6101a9ede04",
+  "tests": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-autopilots",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-creating-agents",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-mentioning",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-onboarding",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-projects-and-resources",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-runtimes-and-repos",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-skill-importing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-squads",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsConformToTemplate",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-autopilots",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-creating-agents",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-mentioning",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-onboarding",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-projects-and-resources",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-runtimes-and-repos",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-skill-importing",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-squads",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-working-on-issues",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestBuiltinSkillsFrontmatterIsStrictYAML",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "test": "TestCreatingAgentsSkillCoversAgentCreationContracts",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "test": "TestDeliveryPolicyMigrationContract",
+      "action": "pass"
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "test": "TestNoDirectGetAgentRuntimeCalls",
+      "action": "pass"
+    }
+  ]
+}

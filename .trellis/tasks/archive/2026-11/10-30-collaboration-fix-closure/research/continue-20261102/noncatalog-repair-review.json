@@ -1,0 +1,272 @@
+{
+  "reviewer": "/root/adapter_preflight_review",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "scope": "Only two owned E2E harness readiness additions, no product change",
+  "repair_worktree": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+  "repair_head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "same_product_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "product_trees": {
+    "server": "a1b81d7a86630ac1d1b87c7712c17e30765fd449",
+    "apps": "ba60665b581dc6569d0beb2fb98ad975173dadb7",
+    "packages": "eaf403eac173f6dd8e9d49fbe90ae7ad9444a292"
+  },
+  "changed_files": [
+    {
+      "file": "e2e/collaboration-memory-web.spec.ts",
+      "added_lines": 2,
+      "deleted_lines": 0,
+      "source_before_sha256": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+      "source_after_sha256": "2d3ab36d74220324ad4f38b3f70eace05a8a01f1f576d173f100799d54dc1e41",
+      "patch_sha256": "6378d5bb6185e8b986b9c52177e5ae2b5040fbdbd149792fe0e05c549982781a",
+      "logic": "Open the original Version history control after closed-state confirmation, repeat absence-of-Restore on the expanded history, then retain original Purge v2 and API assertions."
+    },
+    {
+      "file": "e2e/settings-preferences.spec.ts",
+      "added_lines": 3,
+      "deleted_lines": 0,
+      "source_before_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+      "source_after_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+      "patch_sha256": "cddc2a8f0c0f65163087946dfb5b34a73030d6b0bb67ed1452ad619fa6249b80",
+      "logic": "Wait for visible manual New Issue dialog and its naturally autofocus Title (required), then wait for the existing priority menu item to be visible before original selection."
+    }
+  ],
+  "preserved_invariants": {
+    "all_original_source_is_byte_identical_after_removing_new_statements": true,
+    "original_business_control_HTTP_URL_persistence_cleanup_timeout_assertions": true,
+    "no_forced_focus_or_forced_click_or_sleep_or_retry": true,
+    "product_sources_unchanged": true,
+    "only_two_test_files_dirty": true,
+    "unrelated_main_functional_regression_memory_patch_untouched_by_reviewer": true
+  },
+  "Root_actual_replays": {
+    "catalog13": {
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "retries": 0,
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/catalog13-run.json",
+      "record_sha256": "426e6b6967a73a2810cec31b77e9c7bdeab0bfd8df3dcd4c17fdbe1fac468cc6",
+      "result_sha256": "01ab56c0269bc1c1edf7c59a6d5f4b684b16ed592bb2376073ba60351e69d79f",
+      "code_scope": "original catalog tests on corrected task catalog preparation"
+    },
+    "memory": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "retries": 0,
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/memory-visible-history/run.json",
+      "record_sha256": "363102988ed34c4bd054220862bd7cb22f417dbae45959483d8e68dc9c10b498",
+      "result_sha256": "9e7c25c1a306f310d0f47ab528963fcc5c5a953919f300f0dd355b83fae086ca",
+      "code_scope": "owned two-line memory patch, original assertions, trace on"
+    },
+    "invite": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "retries": 0,
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/invite-original-trace/run.json",
+      "record_sha256": "24dcd96d69cbc5e1a0c1cf18deefd33e2a2577dfec7c2187b1ea0ea1e8f9a8fc",
+      "result_sha256": "6c2ab548e2c35c5a91b2763789e45374faab1433d84e57b2f855432ec5d4139a",
+      "code_scope": "original unmodified invite scenario, trace on; original redirect failure cause remains unknown"
+    },
+    "preferences": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0,
+      "retries": 0,
+      "record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/preferences-natural-focus/run.json",
+      "record_sha256": "dfa1213b21e6449394c98de39be847a730f9c1506895ef1fbd257bafc11b0553",
+      "result_sha256": "bff153da9450a68a52f96bfe9c0f337eaa8615e0441db86183c4507950997f90",
+      "code_scope": "owned natural-focus three-line patch, original priority/persistence assertions, trace on"
+    }
+  },
+  "original_v9_failure_preserved": {
+    "raw_report_sha256": "8dea30021a5f386e6a217600223c3c6ec299e1a8bd156849a317b48b98de14d3",
+    "original_16_failures_not_relabelled": true,
+    "invite_cause_not_inferred_from_green_replay": true
+  },
+  "findings_not_fixed": [],
+  "limits": [
+    "Targeted replays do not turn the original failed v9 full run into a pass or replace a newly frozen whole-run result.",
+    "The preferences readiness change is justified by actual delayed natural title focus and disappearance evidence; the original precise focus-race cause is not claimed from a later green replay alone.",
+    "Root owns API/database/browser verification. Reviewer ran only source/diff/JSON/hash reads and wrote review reports; no lint/typecheck/test/service/database/process action."
+  ],
+  "source_integrity": {
+    "exact_two_file_source_validation": [
+      {
+        "file": "e2e/collaboration-memory-web.spec.ts",
+        "added_sequence_occurrences": [
+          1
+        ],
+        "all_original_source_preserved": true,
+        "actual_sha256": "2d3ab36d74220324ad4f38b3f70eace05a8a01f1f576d173f100799d54dc1e41",
+        "before_sha256": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+        "new_forced_focus_click_sleep": false
+      },
+      {
+        "file": "e2e/settings-preferences.spec.ts",
+        "added_sequence_occurrences": [
+          1,
+          1
+        ],
+        "all_original_source_preserved": true,
+        "actual_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+        "before_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+        "new_forced_focus_click_sleep": false
+      }
+    ],
+    "raw_v9_failed_report_sha256": "8dea30021a5f386e6a217600223c3c6ec299e1a8bd156849a317b48b98de14d3"
+  },
+  "reviewed_run_records": [
+    {
+      "name": "catalog13",
+      "run_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/catalog13-run.json",
+      "run_sha256": "426e6b6967a73a2810cec31b77e9c7bdeab0bfd8df3dcd4c17fdbe1fac468cc6",
+      "results_sha256": "01ab56c0269bc1c1edf7c59a6d5f4b684b16ed592bb2376073ba60351e69d79f",
+      "state": "complete",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/capability-market.spec.ts",
+        "e2e/localized-template-defaults.spec.ts",
+        "e2e/mcp-market.spec.ts",
+        "e2e/missing-user-session.spec.ts",
+        "e2e/skill-market.spec.ts",
+        "e2e/skill-template-creation.spec.ts",
+        "e2e/workspace-defaults.spec.ts",
+        "--grep",
+        "capability\\ market\\ restores\\ type\\ and\\ draft\\ through\\ history\\ while\\ resource\\ management\\ stays\\ separate|capability\\ market\\ isolates\\ workspace\\ resources,\\ preferences\\ and\\ transient\\ drafts|capability\\ market\\ separates\\ catalog\\ failures\\ and\\ polls\\ only\\ the\\ active\\ type|specialist\\ skills\\ localize,\\ search\\ and\\ open\\ their\\ official\\ copies\\ without\\ rewriting\\ stored\\ content|deployment\\ MCP\\ files\\ appear\\ live\\ and\\ saved\\ snapshots\\ survive\\ updates\\ and\\ withdrawal|uses\\ the\\ collection\\ canvas\\ and\\ adapts\\ template\\ columns\\ to\\ the\\ available\\ width|creates\\ and\\ explicitly\\ assigns\\ all\\ sixteen\\ recipes,\\ preserves\\ source\\ after\\ rename,\\ and\\ reuses\\ an\\ instance\\ from\\ an\\ agent|retries\\ a\\ failed\\ assignment\\ without\\ recreating\\ the\\ saved\\ MCP\\ or\\ repeating\\ successful\\ grants|a\\ member\\ can\\ discover\\ templates\\ and\\ reuse\\ a\\ workspace\\ instance\\ for\\ their\\ agent\\ without\\ creating\\ one|an\\ obsolete\\ session\\ returns\\ to\\ sign\\-in\\ and\\ can\\ open\\ the\\ MCP\\ market\\ after\\ a\\ fresh\\ login|discovers\\ deployment\\ templates\\ and\\ creates\\ a\\ workspace\\ copy\\ while\\ keeping\\ market\\ context|creates\\ an\\ edited\\ independent\\ skill\\ after\\ previewing\\ and\\ cancelling\\ without\\ writes|keeps\\ built\\-in\\ resources\\ available\\ on\\ request\\ and\\ retains\\ a\\ project\\ without\\ a\\ runtime",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--trace=retain-on-failure",
+        "--output=/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/catalog13-artifacts"
+      ],
+      "code_changed": null,
+      "exit_code": 0,
+      "source_commit": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+      "stats": {
+        "startTime": "2026-11-02T17:25:17.152Z",
+        "duration": 161242.461,
+        "expected": 13,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "memory-visible-history",
+      "run_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/memory-visible-history/run.json",
+      "run_sha256": "363102988ed34c4bd054220862bd7cb22f417dbae45959483d8e68dc9c10b498",
+      "results_sha256": "9e7c25c1a306f310d0f47ab528963fcc5c5a953919f300f0dd355b83fae086ca",
+      "state": "complete",
+      "command": [
+        "bash",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/collaboration-memory-web.spec.ts",
+        "--grep",
+        "shared context keeps concurrent edits",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--trace=on",
+        "--output=/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/memory-visible-history/artifacts"
+      ],
+      "code_changed": true,
+      "exit_code": 0,
+      "source_commit": null,
+      "stats": {
+        "startTime": "2026-11-02T17:33:03.491Z",
+        "duration": 4589.329,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "invite-original-trace",
+      "run_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/invite-original-trace/run.json",
+      "run_sha256": "24dcd96d69cbc5e1a0c1cf18deefd33e2a2577dfec7c2187b1ea0ea1e8f9a8fc",
+      "results_sha256": "6c2ab548e2c35c5a91b2763789e45374faab1433d84e57b2f855432ec5d4139a",
+      "state": "complete",
+      "command": [
+        "bash",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/workspace-access-branches.spec.ts",
+        "--grep",
+        "accepting an invitation joins exactly once",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--trace=on",
+        "--output=/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/invite-original-trace/artifacts"
+      ],
+      "code_changed": false,
+      "exit_code": 0,
+      "source_commit": null,
+      "stats": {
+        "startTime": "2026-11-02T17:32:56.968Z",
+        "duration": 5496.8279999999995,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "name": "preferences-natural-focus",
+      "run_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/preferences-natural-focus/run.json",
+      "run_sha256": "dfa1213b21e6449394c98de39be847a730f9c1506895ef1fbd257bafc11b0553",
+      "results_sha256": "bff153da9450a68a52f96bfe9c0f337eaa8615e0441db86183c4507950997f90",
+      "state": "complete",
+      "command": [
+        "bash",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "playwright",
+        "test",
+        "e2e/settings-preferences.spec.ts",
+        "--grep",
+        "hidden manual issue fields persist",
+        "--workers=1",
+        "--retries=0",
+        "--reporter=line,json",
+        "--trace=on",
+        "--output=/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-replay/preferences-natural-focus/artifacts"
+      ],
+      "code_changed": null,
+      "exit_code": 0,
+      "source_commit": null,
+      "stats": {
+        "startTime": "2026-11-02T17:38:21.932Z",
+        "duration": 6890.223,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "reviewer_tests_or_lint_typecheck_rerun": false,
+  "reviewer_code_or_resource_changes": [],
+  "source_diffs_approved_for_Root_integration": true
+}

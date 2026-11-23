@@ -1,0 +1,36 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "state": "project_fixture_title_contract_corrected",
+  "created_at": "2026-11-15T08:53:21.521819+00:00",
+  "changed_paths": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/project-knowledge-automation.ts"
+  ],
+  "candidate_mirror": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/fixtures/project-knowledge-automation.ts",
+  "original_fixture": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/p6-project-fixture-wire-repair-e3563f14/project-knowledge-automation.original.ts",
+  "original_sha256": "9ed10ec2f4d468c5b368347e7c6322d41f7a193d52744ad1bbd710bb7e373444",
+  "current_sha256": "ff1a078c5add76c8edc31b59b8ca86c04b381770d6fca3f00391f4577476cb28",
+  "source_id_before": "162da53fb0844d3f75bac4eaa3e5b0c0fd6e6ff625b300c3c963c41b3c8aa856",
+  "source_id_after": "2ac0b36939db68ff2e767f2f86f50a06586506cb70e17a34a49af22cbb622198",
+  "source_changed_paths": [
+    "e2e/fixtures/project-knowledge-automation.ts"
+  ],
+  "original_failure_report": "research/p6-original-project-setup-failure-7432183b.json",
+  "request_field": "title",
+  "parsed_response_fields": [
+    "id",
+    "title"
+  ],
+  "request_contract": {
+    "path": "server/internal/handler/project.go",
+    "sha256": "9ae511568b6c4d66adf71f67456b91780252fb6aa713ca4d41add4470d27b1eb",
+    "type": "CreateProjectRequest",
+    "required_field": "title"
+  },
+  "frontend_product_or_test_inputs_changed": false,
+  "production_go_sql_or_ui_changed": false,
+  "new_dependencies": false,
+  "owned_runtime_stopped_before_edit": true,
+  "rebuild_required": true,
+  "runtime_product_acceptance": false,
+  "final_acceptance_verified": false
+}

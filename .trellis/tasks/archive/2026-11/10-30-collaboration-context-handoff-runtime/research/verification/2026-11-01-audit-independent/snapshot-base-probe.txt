@@ -1,0 +1,72 @@
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.onlyBuiltDependencies", "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-audit-independent
+
+ ❯ snapshot-base-probe.test.ts (1 test | 1 failed) 5ms
+   × refuses a snapshot carrying the live-only memory base field 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  snapshot-base-probe.test.ts > refuses a snapshot carrying the live-only memory base field
+AssertionError: expected { protocol_version: 1, …(15) } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "assignment": {
+    "role": "agent",
+    "step_key": "agent",
+  },
+  "authority": {
+    "status": "in_progress",
+  },
+  "event_seq": "0",
+  "handoff": null,
+  "information_request": null,
+  "inputs": {
+    "items": [],
+    "returned": 0,
+    "total": 0,
+    "truncated": false,
+  },
+  "issue_id": "00000000-0000-4000-8000-000000000001",
+  "memory": {
+    "availability": "available",
+    "base_version": "3",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "version": "4",
+  },
+  "missing": [],
+  "mode": "snapshot",
+  "protocol_version": 1,
+  "results": {
+    "items": [],
+    "returned": 0,
+    "total": 0,
+    "truncated": false,
+  },
+  "run_id": "00000000-0000-4000-8000-000000000001",
+  "snapshot_id": "00000000-0000-4000-8000-000000000001",
+  "sources": [],
+  "wakeup_causes": {
+    "completeness": "unknown",
+    "items": [],
+    "returned": 0,
+    "total": 0,
+    "truncated": false,
+  },
+}
+
+ ❯ snapshot-base-probe.test.ts:7:46
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  23:34:08
+   Duration  187ms (transform 46ms, setup 0ms, import 94ms, tests 5ms, environment 0ms)
+

@@ -1,0 +1,27 @@
+{
+  "recorded_at": "2026-11-04T08:35:40.562310+00:00",
+  "authority": "Existing user autonomous local execution/integration authorization; no repeat confirmation for these reversible in-scope commits.",
+  "work_commit": {
+    "intent": "Keep audit acceptance and isolated browser provenance reproducible",
+    "paths": [
+      ".trellis/spec/web/frontend/e2e-run-environment.md",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/progress.md",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/task.json",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/closing-report-20261104.md",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/advance-plan-2026-11-03.md",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/main-source-integration-result.json",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/main-source-integration-before.json",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-integration-preservation-plan.json",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/final-acceptance-review.json",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/final-acceptance-review.md",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg2-on01-result-review/review.json",
+      ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/ccg2-on01-result-review/review.md"
+    ]
+  },
+  "archive_commit": {
+    "intent": "Retain completed audit history without reopening knowledge model gates",
+    "paths": "Tracked task7 directory relocations plus explicit stable task6 context/handoff updates only"
+  },
+  "unrelated_dirty_scope": "All server-spec/runtime/shared-task/workspace changes outside explicit listed task7 and current task6 handoff paths are preserved; not staged.",
+  "no_push_or_PR": true
+}

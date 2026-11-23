@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "scope": "runtime post-merge audit and recall follow-ups",
+  "owner": "native Codex /root/runtime_fixes",
+  "branch": "codex/runtime-audit-fixes-27-20261101",
+  "worktree": "/Volumes/artisan/code/2026/mc-runtime-audit-fixes-27-20261101",
+  "product_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+  "source_trees": {
+    "server": "9891ce18df23b8461b6baa934eda212c17542f63",
+    "packages": "11a28ae8d2a899915c83fc8d169d308474717e25"
+  },
+  "state": "branch_quality_and_independent_review_passed_ready_local_merge",
+  "independent_review": "../2026-11-01-audit-independent/review.json; pass-with-notes; RV1 fixed58d486656 root16/16",
+  "real_provider_launches": 0,
+  "runtime_budget": {
+    "approved_max_launches": 25,
+    "spent": 0,
+    "includes_H2b": true,
+    "H6_launches_per_trial": 2
+  },
+  "original_experiment": {
+    "remaining_max_launches": 14,
+    "next": "E3 after trial 2",
+    "frozen_sources_unchanged": true
+  },
+  "audits": [
+    {
+      "id": "REC-1",
+      "commit": "4456cc65a",
+      "behavior": "Transient checkpoint failures keep the original staged request retryable during the run",
+      "canonical_tests": [
+        "TestHostCheckpointTransientFailureRetriesDuringRun",
+        "TestHostOutcomeCarriesUndeliveredTail"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "REC-2",
+      "commit": "4456cc65a",
+      "behavior": "Superseded uncommitted chunks move only after definitive old-attempt refusal",
+      "canonical_tests": [
+        "TestHostCheckpointUncommittedChunkRebindsToFallbackAttempt"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "REC-3",
+      "commit": "4456cc65a",
+      "behavior": "Stop/content conflict/authority refusal retain distinct seal reasons",
+      "canonical_tests": [
+        "TestHostCheckpointRefusalNamesSealReason"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "REC-4",
+      "commit": "4456cc65a",
+      "behavior": "A retained contiguous outcome tail does not stay partial solely because upload was transiently delayed",
+      "canonical_tests": [
+        "TestHostOutcomeCarriesUndeliveredTail",
+        "TestHostOutcomeTailFitsRecordAndLedgerBounds"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "ENV-1",
+      "commit": "1eb0cb33c",
+      "behavior": "Live latest memory version remains separate from the recorded launch base",
+      "canonical_tests": [
+        "TestCollaborationLiveHandoffNamesTheRunsLaunchBase",
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "ENV-2",
+      "commit": "5b9f66292",
+      "behavior": "Redaction expansion cannot truncate an admitted 64KiB delegation",
+      "canonical_tests": [
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "ENV-4",
+      "commit": "e1e6090eb",
+      "behavior": "New continuation keys prove wake-cause inventory recording; historical continuations stay unknown",
+      "canonical_tests": [
+        "TestCollaborationHandoffPreservesEveryMergedWakeCause"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "RECALL-1",
+      "commit": "7627916c8",
+      "behavior": "Member display labels survive paged and legacy runtime reads, without authority",
+      "canonical_tests": [
+        "TestCollaborationRuntimeCommentsCarryMemberDisplayNames",
+        "TestCollaborationRuntimeCommentKeepsOptionalDisplayName"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "RECALL-2",
+      "commit": "7627916c8",
+      "behavior": "Runtime CLI spec documents explicit recall/content pagination, budgets, revision and authorization",
+      "canonical_tests": [
+        "TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority",
+        "TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    }
+  ],
+  "recall_followups": [
+    {
+      "id": "wrong_source_reference_404",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestCollaborationRuntimeHandoffSourceWrongReferenceIsNotFound"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "source_run_id_canonical_before_http",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestCollaborationReadHandoffSourceRefusesBadReferenceBeforeHTTP"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "all_cursor_kinds_must_advance",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestCollaborationReadHandoffEncodesCursorAndBindsTheLiveRun"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "truncated_final_chunk_refused",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestDecodeCollaborationHandoffSourcePageRejectsMalformedWire"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    },
+    {
+      "id": "knowledge_negotiation_claim_only",
+      "commit": "c9b285552",
+      "canonical_tests": [
+        "TestHostProviderAccountSmokeAuthorizesSharedContextBase",
+        "TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries"
+      ],
+      "state": "implemented_awaiting_independent_review"
+    }
+  ],
+  "additional_preview_followup": {
+    "commit": "7627916c8",
+    "canonical_test": "TestCollaborationRecallPrintingKeepsContinuationBeforeLargeText",
+    "coverage": [
+      "comments page",
+      "comment content chunk",
+      "handoff source chunk"
+    ],
+    "startup_snapshot_encoding_changed": false,
+    "protocol_default_budget_changed": false
+  },
+  "integration_gate": "Do not count branch-local results as final merged-candidate acceptance. Coordinator review and source-bound final checks remain required.",
+  "final_branch_service": "root-service-final-summary.json",
+  "rv1_product_sha": "58d486656e146237d5de08ccac62dc6b1ec5876b"
+}

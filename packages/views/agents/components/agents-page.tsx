@@ -83,6 +83,7 @@ import {
 } from "../../layout/collection-page";
 import { availabilityConfig } from "../presence";
 import { AgentRowActions } from "./agent-row-actions";
+import { AgentWelcome } from "./agent-welcome";
 import { useRoleTemplates, useSquadTemplates } from "../create/use-role-templates";
 import { AgentDiscoveryToolbar } from "./agent-discovery-toolbar";
 import {
@@ -269,9 +270,11 @@ export interface AgentsPageProps {
 function PageHeaderBar({
   totalCount,
   onCreate,
+  showCreate = true,
 }: {
   totalCount: number;
   onCreate: () => void;
+  showCreate?: boolean;
 }) {
   const { t } = useT("agents");
   const paths = useWorkspacePaths();
@@ -288,11 +291,11 @@ function PageHeaderBar({
       actions={
         <>
           <ApprovalQueueAction />
-          <CollectionPageHeaderAction
+          {showCreate && <CollectionPageHeaderAction
             icon={Plus}
             label={t(($) => $.page.new_agent)}
             onClick={onCreate}
-          />
+          />}
         </>
       }
     />
@@ -364,23 +367,6 @@ function ListError({
         }
       />
     </div>
-  );
-}
-
-function EmptyState({ onCreate }: { onCreate: () => void }) {
-  const { t } = useT("agents");
-  return (
-    <CollectionPageState
-      icon={Bot}
-      title={t(($) => $.empty.title)}
-      description={t(($) => $.empty.description)}
-      actions={
-        <Button type="button" onClick={onCreate} size="sm">
-          <Plus aria-hidden="true" className="size-3" />
-          {t(($) => $.page.new_agent)}
-        </Button>
-      }
-    />
   );
 }
 
@@ -867,11 +853,12 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
 
   const {
     data: agents = [],
-    isLoading,
+    isPending,
+    isSuccess,
     error: listError,
     refetch: refetchList,
   } = useQuery(agentListOptions(wsId));
-  const { data: runtimes = [] } = useQuery(
+  const { data: runtimes = [], isSuccess: runtimesSuccess } = useQuery(
     runtimeListOptions(wsId),
   );
   const { data: members = [] } = useQuery(memberListOptions(wsId));
@@ -1181,7 +1168,7 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
   }
 
   const totalCount = agents.filter((a) => !a.archived_at).length;
-  const showEmpty = !isLoading && agents.length === 0;
+  const showEmpty = isSuccess && agents.length === 0;
 
   // The active sort field / availability filter reads columns that arrive in
   // separate queries from the main agent list (activity → lastActiveDays,
@@ -1212,16 +1199,15 @@ export function AgentsPage(_props: AgentsPageProps = {}) {
       <PageHeaderBar
         totalCount={totalCount}
         onCreate={() => navigation.push(paths.newAgent())}
+        showCreate={!showEmpty}
       />
 
-      {isLoading || (!showEmpty && !listReady) ? (
+      {isPending || (!showEmpty && !listReady) ? (
         <div className="flex-1 overflow-y-auto @container">
           <LoadingSkeleton />
         </div>
       ) : showEmpty ? (
-        <div className="flex flex-1 items-center justify-center">
-          <EmptyState onCreate={() => navigation.push(paths.newAgent())} />
-        </div>
+        <AgentWelcome key={wsId} runtimeConnected={runtimesSuccess && runtimes.some((runtime) => runtime.status === "online")} />
       ) : (
         <>
           <AgentListToolbar

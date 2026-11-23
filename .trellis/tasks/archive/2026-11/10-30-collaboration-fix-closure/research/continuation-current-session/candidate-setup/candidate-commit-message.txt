@@ -1,0 +1,15 @@
+test(collaboration): keep final acceptance aligned with current interaction contracts
+
+Freeze the committed collaboration detail implementation together with the
+reviewed pending source and E2E overlays, so the next complete check can run
+against one stable candidate without changing the shared working tree.
+The picker fixture follows the current button interaction and stage label;
+creation refusal retains the current separated preservation and reason text.
+
+Constraint: Preserve the failed v11 candidate and every other session's changes
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Directive: This snapshot is a verification candidate; complete acceptance requires a new full check and final source audit
+Tested: git diff --check; focused views35 tests and E2E static checks reported by fix_check
+Not-tested: Full make check, password7 and real-model continuation are owned by the main session

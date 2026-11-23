@@ -1,0 +1,423 @@
+{
+  "schema_version": 1,
+  "review_id": "p6-independent-resume-spec-recheck-20261115-b930f73c",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "approved_revision": "2026-11-14-v1",
+  "reviewer_role": "trellis-check",
+  "mode": "bounded_read_only_spec_recheck",
+  "reviewed_at": "2026-11-15T05:49:10.870Z",
+  "scope": {
+    "request": "仅快速核对 Proven legacy sessions preserve 后新增修复契约；与此前审查源码和最新既有测试证据绑定，不自动扩大审查范围。",
+    "allowed_write": "one new research JSON, mode 0600",
+    "prohibited_actions_performed": false,
+    "prohibited_actions": [
+      "Go/DB execution",
+      "model/Provider calls",
+      "P6 start or control",
+      "product/tests/spec/Markdown/metadata/dependency mutation",
+      "recursive delegation"
+    ]
+  },
+  "verdict": "new_spec_contract_matches_reviewed_source_no_new_confirmed_security_defect",
+  "blocking_security_findings_open": 0,
+  "findings_fixed": [],
+  "confirmed_security_findings": [],
+  "findings_not_fixed": [
+    {
+      "id": "C1",
+      "category": "test_coverage_gap",
+      "severity": "medium",
+      "blocking": false,
+      "title": "混合 prepared history 的早遇 human 冲突与深处 automatic exposure 尚无组合回归",
+      "evidence": [
+        {
+          "path": "server/internal/service/task_knowledge_version_integration_test.go",
+          "line": 109,
+          "detail": "四个变体各创建一个 automatic exposure；native_refused 的自动证明与 refusal 在同一行。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_history_growth_test.go",
+          "line": 20,
+          "detail": "增长填充明确清除 Prepared 和 Attempts，260 行 claimed-only 历史不会先将 compatible 置为 false。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "line": 551,
+          "detail": "Refused 仅置 managed/compatible 标志，继续后续 claims/rows。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "line": 583,
+          "detail": "historyVersion 和 automatic 在 compatibility 检查及 continue 之前更新。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "line": 603,
+          "detail": "以复合 keyset 游标继续所有页；结束后 incompatible+automatic 返回 knowledge_context_changed。"
+        }
+      ],
+      "carry_forward_from": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-security-review-20261115-41b188ec.json",
+      "status": "unchanged_coverage_comment_not_confirmed_vulnerability",
+      "not_fixed_reason": "本轮新增 spec 契约不改变 Go 源码或测试覆盖；用户仅授权新增复核 JSON。具体 bounded regression 建议见不可变前次报告。"
+    },
+    {
+      "id": "C2",
+      "category": "test_coverage_gap",
+      "severity": "low",
+      "blocking": false,
+      "title": "纯 v2 human 配置冲突后的最高版本回传与空 legacy 对照缺少直接覆盖",
+      "evidence": [
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "line": 583,
+          "detail": "匹配 prepared history 的最高 manifest 版本独立于 compatible 累计。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "line": 613,
+          "detail": "无 automatic 的不兼容历史返回最高版本的空 manifest，而不是降回 v1。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "line": 488,
+          "detail": "resume 在决定 fresh-binding 之前拒绝 history 版本高于 invocation。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_prepare.go",
+          "line": 231,
+          "detail": "prepare/authorize 共用事务在 pre-read 和 locked read 均检查 history 版本。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_version_integration_test.go",
+          "line": 63,
+          "detail": "已有纯 v2 human exposure 用例保持配置一致，主要走 union 路径。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_version_integration_test.go",
+          "line": 155,
+          "detail": "v1_after_configuration_change 是 automatic 分支，不能单独证明 non-automatic 的空 manifest 最高版本回传。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_invocation_test.go",
+          "line": 292,
+          "detail": "空/claimed history 对照使用 inv=nil，走 namespace guard，而非 supported resume helper。"
+        }
+      ],
+      "carry_forward_from": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-security-review-20261115-41b188ec.json",
+      "status": "unchanged_coverage_comment_not_confirmed_vulnerability",
+      "not_fixed_reason": "本轮新增 spec 契约不改变 Go 源码或测试覆盖；用户仅授权新增复核 JSON。具体 bounded regression 建议见不可变前次报告。"
+    },
+    {
+      "id": "C3",
+      "category": "test_coverage_gap",
+      "severity": "low",
+      "blocking": false,
+      "title": "换证后原 prepare/authorize 请求恢复缺少直接 automatic replay 回归",
+      "evidence": [
+        {
+          "path": "server/internal/service/collaboration_knowledge_consumption_test.go",
+          "line": 224,
+          "detail": "重新验收用例验证 resolver、lock hints、BuildTaskKnowledgeClaim 拒绝旧证明并允许 fresh proof2。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_automation_test.go",
+          "line": 43,
+          "detail": "消费竞态覆盖 reopen 的 prepare/authorize 两种提交顺序，未更新到 reacceptance 的 proof2 后复用原请求。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_history_test.go",
+          "line": 233,
+          "detail": "原 authorize 请求丢响应后的当前资格复查对照是 human withdrawal。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_prepare.go",
+          "line": 544,
+          "detail": "prepared replay 只复查原 p.Manifest 并要求原 request/hash；不重新 Resolve 当前集合。"
+        },
+        {
+          "path": "server/internal/service/task_knowledge_prepare.go",
+          "line": 660,
+          "detail": "authorize 的共用事务与原 prepared manifest 复查发生在原 receipt 回放前。"
+        },
+        {
+          "path": "server/internal/service/collaboration_knowledge_locks.go",
+          "line": 173,
+          "detail": "原 manifest validity 与当前 head 不相等即拒绝。"
+        }
+      ],
+      "carry_forward_from": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-security-review-20261115-41b188ec.json",
+      "status": "unchanged_coverage_comment_not_confirmed_vulnerability",
+      "not_fixed_reason": "本轮新增 spec 契约不改变 Go 源码或测试覆盖；用户仅授权新增复核 JSON。具体 bounded regression 建议见不可变前次报告。"
+    }
+  ],
+  "prior_review": {
+    "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-security-review-20261115-41b188ec.json",
+    "sha256": "a353a29fc1996b846d33f41abaa45ec32657001a77022079d61a171d61c69071",
+    "bytes": 46718,
+    "unchanged": true,
+    "verdict": "no_confirmed_security_defect_in_reviewed_helper_and_callers"
+  },
+  "spec_binding": {
+    "path": ".trellis/spec/server/collaboration-knowledge-execution.md",
+    "anchor": {
+      "line": 173,
+      "text": "Proven legacy sessions preserve their existing behavior."
+    },
+    "reviewed_paragraph": {
+      "start_line": 175,
+      "end_line": 183,
+      "exact_text": "Supported resume selection scans all relevant matching preparations before an\nincompatible binding can take the legacy fresh-binding path. Native refusal or\nconfiguration/session disagreement is retained while the complete history is\ndecoded. If any matching preparation contains an automatic validity proof,\nincompatibility returns 409 `knowledge_context_changed`; it never silently\nadvertises an empty prior pointer. A pure human legacy fallback preserves the\nhighest matching manifest version, so a v1 request cannot discard retained v2\nhistory. An explicit empty resume selector remains a fresh execution and does\nnot relabel or delete the older history.",
+      "added_bytes_with_separator": 660
+    },
+    "sha256_before": "e0236c932229967c274bd864dfde29e29290b859aad28dba0821a5ca1cd088e2",
+    "sha256_after": "f9302a6ce63fee9c86b0449cac4b2d0bf698cd38cf2fb13840cd2a616221f2bb",
+    "bytes_before": 29155,
+    "bytes_after": 29815,
+    "mode_observed": "644",
+    "removal_of_exact_added_paragraph_reconstructs_prior_spec_sha256": true
+  },
+  "contract_checks": [
+    {
+      "id": "complete_matching_preparation_scan",
+      "result": "pass_static",
+      "spec_lines": [
+        175,
+        176,
+        177
+      ],
+      "code_references": [
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "lines": [
+            535,
+            540,
+            549,
+            551,
+            554,
+            570,
+            587,
+            592,
+            603,
+            607
+          ]
+        }
+      ],
+      "assessment": "supported 原 native 的匹配 preparation 按 keyset 翻完整 history；Refused 与配置/session disagreement 保留为 compatible=false 并继续扫描，只有错误或明确拒绝能提前终止，不能提前进入 legacy fallback。"
+    },
+    {
+      "id": "automatic_incompatibility_typed_refusal",
+      "result": "pass_static",
+      "spec_lines": [
+        178,
+        179,
+        180
+      ],
+      "code_references": [
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "lines": [
+            583,
+            584,
+            585,
+            609,
+            610,
+            611,
+            423,
+            424
+          ]
+        }
+      ],
+      "assessment": "automatic validity 在 compatibility continue 之前累计；任意匹配 automatic 且不兼容最终返回 409 knowledge_context_changed，claim builder 传播错误而不发出 descriptor/空 prior 的成功响应。"
+    },
+    {
+      "id": "human_legacy_highest_matching_manifest_version",
+      "result": "pass_static",
+      "spec_lines": [
+        180,
+        181,
+        182
+      ],
+      "code_references": [
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "lines": [
+            583,
+            613,
+            488,
+            489,
+            428,
+            429
+          ]
+        },
+        {
+          "path": "server/internal/service/task_knowledge_prepare.go",
+          "lines": [
+            227,
+            231,
+            434,
+            438
+          ]
+        }
+      ],
+      "assessment": "纯 human 不兼容时保留最高 matching prepared manifest 版本；resume 在 fresh-binding 决策前比较 invocation 版本；prepare/authorize 共用事务前后再次检查版本。未把合法 legacy fresh-binding 报告为风险。"
+    },
+    {
+      "id": "explicit_empty_selector_fresh_and_retained_history_immutable",
+      "result": "pass_static",
+      "spec_lines": [
+        182,
+        183
+      ],
+      "code_references": [
+        {
+          "path": "server/internal/service/task_knowledge.go",
+          "lines": [
+            420,
+            421,
+            434,
+            435,
+            510,
+            511
+          ]
+        }
+      ],
+      "prior_retained_writer_review": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-security-review-20261115-41b188ec.json",
+      "assessment": "chosen==空串不调用 resume helper；builder mint 新 generation、native 保持空。BuildTaskKnowledgeClaim 与 helper 是读路径；原 history 不被 relabel/delete。此前审查 retained writers 的结论因整个 server 指纹未变而继续适用。"
+    }
+  ],
+  "source_identity": {
+    "head": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "helper_path": "server/internal/service/task_knowledge.go",
+    "helper_sha256": "a2258373d8c0abc4883e5fdd7fc28a0bca80ce106bc41758d5ecdb795f21d9e7",
+    "prepare_authorize_path": "server/internal/service/task_knowledge_prepare.go",
+    "prepare_authorize_sha256": "be50608fed856ba0131e81645e2fd9cef17e0227f6b4e6bef1f51a944de80486",
+    "server_fingerprint": {
+      "sha256": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+      "file_count": 4764,
+      "byte_count": 41712688
+    },
+    "server_fingerprint_algorithm": "Sorted server/**/* files with suffix .go or .sql or basename go.mod/go.sum/sqlc.yaml; SHA256(path relative to repository + NUL + file bytes), matching run-owned-go.py:42.",
+    "entire_fingerprinted_server_unchanged_since_prior_review": true,
+    "source_fingerprint_matches_17_418_44_evidence": true
+  },
+  "retained_test_evidence": {
+    "reviewed_without_execution": true,
+    "completed": [
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-resume-history-green-2263dc18.json",
+        "artifact_sha256": "d1a43b744feebe52e2e769ebf5cd08d019a62c5c2515530d33eaf033c6f6b9ef",
+        "state": "complete",
+        "test_counts": {
+          "run": 17,
+          "pass": 17,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_exit": 0,
+        "source_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_stable": true,
+        "connections_after": 0,
+        "execution_by_reviewer": false
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-knowledge-final-race-c2596140.json",
+        "artifact_sha256": "5b000e20154c0e0ed354fd58057562232fe587e5517176dc9221bd9ecc9e5f92",
+        "state": "complete",
+        "test_counts": {
+          "run": 418,
+          "pass": 418,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_exit": 0,
+        "source_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_stable": true,
+        "connections_after": 0,
+        "race_enabled": true,
+        "redis_ownership_recorded": false,
+        "observed_at": "2026-11-15T05:47:22.262Z",
+        "snapshot_only": false
+      },
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-stage-canonical-replay-5928d656.json",
+        "artifact_sha256": "8fdb9978a76faa77609d7ad4bd2c6c876d177d7d28276822000247e8289de0eb",
+        "state": "complete",
+        "test_counts": {
+          "run": 44,
+          "pass": 44,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_exit": 0,
+        "source_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_after": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_stable": true,
+        "connections_after": 0,
+        "race_enabled": true,
+        "redis_ownership_recorded": false,
+        "observed_at": "2026-11-15T05:47:22.263Z",
+        "snapshot_only": false
+      }
+    ],
+    "incomplete_snapshot": [
+      {
+        "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-service-final-race-4f72f717.json",
+        "artifact_sha256": "1ca91c824f35bafa060e87024fe09543c8022ea7dfc06806d24c37300f7219fa",
+        "state": "running",
+        "test_counts": {},
+        "test_exit": null,
+        "source_before": "ca9f17d0dd27ddbc1d9dbd442992ed0dfd2a95ceacf771a52e632ca22ce41c2d",
+        "source_after": null,
+        "source_stable": null,
+        "connections_after": null,
+        "race_enabled": true,
+        "redis_ownership_recorded": true,
+        "observed_at": "2026-11-15T05:47:22.263Z",
+        "snapshot_only": true
+      }
+    ],
+    "incomplete_snapshot_note": "完整 service race 记录读取时为 running；仅绑定该快照与已记录的 Redis ownership，不证明完成或 Redis 运行行为，不轮询/控制父会话执行。原 RED 证据保留，不由本复核重新分类。"
+  },
+  "verification": {
+    "static_whitespace": {
+      "status": "pass",
+      "command": "git diff --check -- .trellis/spec/server/collaboration-knowledge-execution.md server/internal/service/task_knowledge.go server/internal/service/task_knowledge_prepare.go",
+      "stdout_empty": true,
+      "exit_code": 0
+    },
+    "source_fingerprint": {
+      "status": "pass",
+      "method": "read-only Python SHA256; no Go/DB process"
+    },
+    "lint": {
+      "status": "not_run_this_recheck"
+    },
+    "typecheck": {
+      "status": "not_run_this_recheck"
+    },
+    "tests": {
+      "status": "not_run_by_reviewer",
+      "existing_completed_counts": [
+        "17/17",
+        "418/418 race",
+        "44/44 race"
+      ],
+      "reason": "用户禁止本代理运行 Go/DB；仅读取父会话既有证据。"
+    },
+    "report": {
+      "format": "JSON",
+      "expected_mode": "0600",
+      "post_write_validation": "read back exact JSON payload and permission bits before final response"
+    }
+  },
+  "modified_paths": [
+    {
+      "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-resume-spec-recheck-20261115-b930f73c.json",
+      "change": "added",
+      "mode": "0600"
+    }
+  ],
+  "scope_closed_after_publication": true
+}

@@ -1,0 +1,50 @@
+{
+  "compiled_python_files": [
+    "check-bin/go",
+    "check-bin/pnpm",
+    "check-go-isolation-test.py",
+    "check-go-package-binding-test.py",
+    "check-pnpm-reporting-test.py"
+  ],
+  "syntax_errors": 0,
+  "all_source_snapshots_match": true,
+  "declared_value_flags_match_official_registry": 70,
+  "declared_boolean_flags_match_official_registry": 26,
+  "incoming_v7_sources_unchanged": 6,
+  "previous_v7_evidence_files_unchanged": 59,
+  "unchanged_pnpm_proof_reused": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/pnpm-v7.json",
+    "tests_run": 5,
+    "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+  },
+  "whitespace_checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/incoming/adapter-v7/check-bin/go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--no-index",
+        "--check",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/incoming/adapter-v7/check-go-package-binding-test.py",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-go-package-binding-test.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "actual_go_tests_or_testmain": 0,
+  "actual_sql_connections": 0
+}

@@ -1,0 +1,161 @@
+{
+  "schema": "v11-narrow-corrected-provenance-verdict-v1",
+  "status": "pass_with_notes_code_and_artifact_source_only",
+  "prior_label_RK1_discrepancy": "closed_for_exact_corrected_binding_and_launcher",
+  "scope": "Corrected identity labels, exact metadata pins, preserved independent canonical records and current static artifact bytes; no runtime or product acceptance",
+  "corrected_files": {
+    "binding_path": "<candidate>/.omx/private/final-check-v11/owned-bindings-v11-provenance.json",
+    "binding_sha256": "6db6435e476b8f448a412d4b097e16e6131ddbf7458450ced1cf69a8f281d80b",
+    "binding_pin_matches": true,
+    "launcher_path": "<candidate>/.omx/private/final-check-v11/run-make-check-v11-provenance.py",
+    "launcher_sha256": "dd0f5903b8b604f409fd10505645b9cc3920028ea4af56ad0adab8ee5a96063e",
+    "launcher_pin_matches": true,
+    "canonical_manifest_sha256": "bafbb6dd9ab1f017f2d4ce8f9291bb13d6c7103362fed5b235b3e70c501a8beb",
+    "canonical_manifest_pin_matches": true,
+    "correction_summary_sha256_prefix": "749aeae4",
+    "correction_summary_prefix_matches": true,
+    "binding_changed_fields": [
+      ".provenance_revision",
+      ".source.checkout_source_id_method",
+      ".source.identity_purposes",
+      ".source.product_source"
+    ],
+    "non_source_binding_fields_unchanged": true
+  },
+  "identities": {
+    "head": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+    "current_head_matches": true,
+    "canonical_product_source_id": "4622182a7e129f1712f883eaea36a4756b183f539b5733eb818b7f8df9195fcb",
+    "canonical_product_file_count": 7962,
+    "new_and_preserved_manifest_counts_match": true,
+    "new_and_preserved_computed_source_ids_match": true,
+    "manifest_file_sets_equal": true,
+    "manifest_file_hash_differences": 0,
+    "dev_environment_head_overlay_identity": "3f9788baf2ad3d922df86c4817b7fe0f3183e1a5c6c0e40d43fc76cd4f2c1d88",
+    "dev_overlay_method_sha256": "817348f249009f05e0e05a4a08d0f76581cda60fac9f9ce88b18255fd4e85bc8",
+    "all_tracked_snapshot_fingerprint": "26e38d9e62f8a7cfa8cba243f2387934ee067677b6fa58fde2e12f0026b66920",
+    "all_tracked_snapshot_file_count": 17182,
+    "identity_roles_separate": true,
+    "tracked_snapshot_scope": "Preserved independently verified snapshot, echoed unchanged by the corrected binding; not freshly rehashed over all tracked files in this narrow pass",
+    "manifest_scope": "Actual corrected canonical records independently matched and re-digested against preserved direct-source-manifest.json; no fresh all-source filesystem scan"
+  },
+  "current_static_artifacts": {
+    "cli_sha256": "c008c02377c4c52665000a0620a5a7b3f90f4d10d54d53e1d74bce97dccc6197",
+    "cli_pin_matches": true,
+    "renderer_index_html_sha256": "9d92714285456d587bb8bcd3ecf2897ad015cf7f63d76f75fea9a541536ae0eb",
+    "preload_index_js_sha256": "68a9036e201a462ffd10a1a4890e052a0b6b342c0b74d6d8ac489d9f5d8e78e5",
+    "main_index_js_sha256": "99129d6206e52ac9fdbe7454e1391d7e3b97dd80091f7461fc335a34d61b5678",
+    "all_six_index_pins_match": true,
+    "roots": {
+      "renderer": {
+        "installed_count": 493,
+        "staged_count": 493,
+        "declared_manifest_sha256": "bc46754412b91fac5f6649b7b37ad537e067bb9ab6fa6f0c4012cb0fced91d18",
+        "actual_and_expected_normalized_record_digest": "b3e36d9985069535a82a01070336956fe8a3e007428f8204a4473377c3b3c4b3"
+      },
+      "preload": {
+        "installed_count": 1,
+        "staged_count": 1,
+        "actual_and_expected_normalized_record_digest": "2053c77c6cb88a75f537948adc9dd6328286f94bb8bcf2771fc7b2d6e0af10ba"
+      },
+      "main": {
+        "installed_count": 1,
+        "staged_count": 1,
+        "actual_and_expected_normalized_record_digest": "f83541ac3b0f789c32aba9adf2e574ad14ad21217bf5df32bc2641d46a58c3c8"
+      }
+    },
+    "all_six_file_sets_match_corrected_binding": true,
+    "all_six_path_sha256_bytes_mode_records_match": true,
+    "all_six_reads_stable": true,
+    "all_six_roots_and_counts_match_preserved_observation": true,
+    "normalized_digest_scope": "SHA256 of sorted path/SHA256/bytes/mode tuples; distinct from declared file-list manifest serialization",
+    "clearance_scope": "Current disk artifact/source metadata pins only; process ownership, installed runtime behavior and compilation acceptance remain unproved"
+  },
+  "code_lane": {
+    "report": "../../code/provenance-recheck/review.json",
+    "report_sha256": "a859c3615b24d7b747afd28edc4f49d6a50783a2d7fd7b9332df028397555f19",
+    "blocking_findings": 0,
+    "standard_method_sha256": "d5c9e9822f680ce10930ec8c36fe9266d60302aef1089fda3640e7d20252dbb3",
+    "recorded_canonical_verification_sha256": "9788360b2864ee2402916bf15d9d9f38fb942b8014880b37d1069b550efce5e2",
+    "recorded_canonical_verification_exit_code": 0,
+    "offline_case_count": 45,
+    "offline_source_sha256": "4ca624c9623c267be53928017f1771280579ab6272bc7fb49e09644573b0a09d",
+    "offline_log_sha256": "58fe58271850779c8edfdb51b8c88a93094d7b4077f276080eda66f0b63c3011",
+    "raw_distinct_ok_terminals": 45,
+    "original_42_names_retained": true,
+    "cases_replayed_by_reviewers": false,
+    "scope": "Separate code reviewer verified corrected launcher/metadata semantics and recorded offline proof bytes; no repository, DB, PW, Provider, SSR or full-run acceptance"
+  },
+  "narrow_collector_provenance": {
+    "owner_command": "python3 evidence/provenance-recheck/collector-executed.py",
+    "owner_execution_time": "01:34 UTC",
+    "execution_count": 1,
+    "exit_code": 0,
+    "collector_md_sha256": "e3c6e7746da687e8ddff0aba8b55f1e0f566f45ab50f390a628ab0e65fc83faf",
+    "executed_code_sha256": "55f1c1525d2635f3824d8fb548deddc9f928d041e1a5ca1a45c9422e57369934",
+    "result_sha256": "03fec7ccf268e49be2e2ab60283f67d399b7525851f22df6a7734e07728ad384",
+    "result_bytes": 37532,
+    "errors": [],
+    "transport_route": "Reviewer did not retry unavailable command transport; root executed the frozen standard-library collector once",
+    "schema": "Exact corrected_binding.desktop[role][installed|staged] path/files/file_count/manifest_sha256, preserved cli_actual and desktop_actual root/count observations",
+    "original_60MB_collector_read_or_rerun": false,
+    "original_reports_and_observations_unchanged": true,
+    "original_binding_sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+    "original_binding_preserved": true
+  },
+  "evidence_reuse_limits": {
+    "historical_fake_normal_race": "Original62+62 belongs to recorded source639/source9f72 plus17-framework5eaea44f, Go1.27 and oldCLIb1d54; it is not current canonical462/Go1.26.6/CLIc008 acceptance",
+    "historical_knowledge_CCG": "Old9f72 results keep original source/model/run attribution; no automatic new-identity acceptance",
+    "narrow_unchanged_evidence": "Explicit unchanged code/protocol/guard or exact retained helper/log bytes remain supporting evidence within their scope; no old result was relabeled",
+    "current_same_source_fake_62_plus_62": "pending",
+    "current_source_CLI_runtime": "pending",
+    "current_real_knowledge_CCG": "pending",
+    "new_SSR_full_password7": "pending",
+    "paid_gate": "not_cleared"
+  },
+  "owner_and_preregistration_context": {
+    "new_owner_thread": "01a19ee4-40e8-7b70-b15c-5b5a13bd050e",
+    "new_owner_scope": ["SSR", "full", "password7", "original14 execution"],
+    "provenance_creator_or_original_owner_fields_rewritten": false,
+    "original_series_remaining_cap": 14,
+    "original_new_launches_consumed_here": 0,
+    "original_next_cursor": "E3 after-arm trial 2",
+    "runtime_cap": 25,
+    "runtime_consumed": 0,
+    "runtime_allocation": {
+      "E0a": 1,
+      "H1": 3,
+      "H2": 3,
+      "H2b": 3,
+      "H3a": 3,
+      "H3b": 3,
+      "H5": 3,
+      "H6": {"trials": 3, "launches_per_trial": 2, "total_launches": 6}
+    },
+    "H2b_separate_from_H6": true,
+    "budgets_and_ownership_scopes_separate": true,
+    "new_paid_instruction_or_launch": false,
+    "budget_or_gate_state_changed_by_reviewer": false,
+    "context_basis": "Latest exact preregistration/ownership corrections supplied by the root owner; no runtime state query performed"
+  },
+  "verification": {
+    "corrected_identity_labels_and_RK1_source_binding": "pass_exact_files",
+    "canonical_manifest_comparison": "pass_7962_each_identical_sets_zero_hash_differences",
+    "current_static_artifact_bytes": "pass_exact_binding_records",
+    "original_evidence_preservation": "pass",
+    "lint": "not_run_read_only_scope",
+    "typecheck": "not_run_read_only_scope",
+    "repository_runtime_tests": "not_run",
+    "Source_Binary_SDK_DB_Node_PW_Provider_network_execution": "not_run"
+  },
+  "clearances": {
+    "exact_corrected_label_and_artifact_source_metadata": true,
+    "resource_or_current_process_ownership": false,
+    "compiled_Next_or_SSR_graph": false,
+    "current_source_fake_or_real_runtime": false,
+    "full_password7_product_acceptance": false,
+    "paid": false,
+    "wholecheck": false,
+    "task_completion": false
+  }
+}

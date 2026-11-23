@@ -1,0 +1,42 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_other",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(QueueResumeRejectionNeverTurnsIntoDeferredIntent|ReconsentHoldRequiresFreshResumeBeforeLaunch|WorkflowRemovalRevokesAuthorAndResourceWithoutInventingProof|RemovalOfNonRootBatchAuthorStopsRun|WorkflowDepartureOnlyStopsAffectedExecution|ManagedStopProofPreservesFreshResumeIntent|WorkflowVoluntaryLeaveAndMinimalRecovery|CommandHistoryAutomaticM11Detach|PausedFollowupRequiresProofFreshResumeAndNeverRetriesStoppedInput|TargetStopLeavesOtherTargetAndIssueActive|IssueStopFencesChangedAndLaterTargetSets|ResumeAliasesKeepIndependentHolds|WholeLifecycleKeepsAllTargetBarriersOnReopen|LifecycleCloseAndReopenPreservePermanentQueue|DepartureStopsAuthorAndOwnerGroupsOnly)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "database_alias": "service_s6_other",
+  "started_at": "2026-10-21T23:40:33.874032+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_paused_followup_test.go": "85ba407981009a381aed0c6e408032cf999891f6cba6b4b645ff70fb02e99793",
+    "server/internal/service/collaboration_targets_test.go": "fa50282a74ab50ea4856adbcb16ff6c716db0b6a98b2215b17bd9598083aabef",
+    "server/internal/service/collaboration_workflow_test.go": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 27.124,
+  "finished_at": "2026-10-21T23:41:00.998608+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/lifecycle-service-canonical.jsonl",
+  "stdout_sha256": "24735e696d5eb4e1bf212659d908b62c39b51af2138156a70751a640457f95e8",
+  "source_changed_during_run": [],
+  "passed_top_level": 15,
+  "passed_including_subtests": 35,
+  "failed": [],
+  "skipped": []
+}

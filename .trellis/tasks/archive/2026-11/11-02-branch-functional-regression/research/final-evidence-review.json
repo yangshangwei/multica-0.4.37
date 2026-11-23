@@ -1,0 +1,92 @@
+{
+  "reviewed_at": "2026-11-02T01:55:00Z",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "verdict": "PASS_WITH_NOTES",
+  "local_campaign_evidence_blockers": [],
+  "release_approved": false,
+  "old_private_launcher_approved": false,
+  "reviewer_test_or_service_operations": false,
+  "reviewer_private_credentials_read": false,
+  "raw_results_independently_recounted": true,
+  "e2e": {
+    "unique_inventory": 439,
+    "spec_files": 148,
+    "completed_runs": 60,
+    "framework_records": 588,
+    "record_status": {"PASS": 486, "FAIL": 13, "NOT_RUN": 89},
+    "latest_unique_status": {"PASS": 439, "FAIL": 0, "NOT_RUN": 0},
+    "coverage_mismatches": 0,
+    "unmatched_identities": 0,
+    "automatic_retries": 0,
+    "original_complete_run_still_failed": true,
+    "original_complete_run": {"passed": 349, "failed": 1, "skipped": 89, "exit_code": 1}
+  },
+  "go": {
+    "packages_with_complete_successful_latest_run": 82,
+    "packages_with_named_tests": 73,
+    "packages_without_named_tests": 9,
+    "top_level": {"pass": 10365, "skip": 18, "fail": 0},
+    "subtests": {"pass": 10491, "skip": 0, "fail": 0},
+    "original_first_run_still_failed": true,
+    "single_complete_command_pass_claimed": false
+  },
+  "tagged_knowledge": {
+    "unique_top_level": 23,
+    "modes": ["normal", "race"],
+    "top_level_executions": 46,
+    "subtest_executions": 42,
+    "failed": 0,
+    "skipped": 0,
+    "excluded_from_default_go_count": true
+  },
+  "typescript": {"non_mobile_pass": 13082, "mobile_pass": 196},
+  "seed_integration": {"pass": 13, "skip": 0},
+  "deployed_knowledge": {
+    "off_input_section_present": false,
+    "off_contribution_count": 0,
+    "off_each_authorization_event_count": 0,
+    "on_input_section_present": true,
+    "on_contribution_count": 1,
+    "on_each_authorization_event_count": 1,
+    "both_runs_settled_with_host_exit_observed": true,
+    "reported_real_provider_calls": 0
+  },
+  "root_test_hash_bindings_match": true,
+  "business_source_or_dependency_diff_found": false,
+  "cleanup_evidence": {
+    "browser_databases_checked": 9,
+    "execution_and_host_gates_closed": true,
+    "epochs_nondecreasing": true,
+    "allocated_ports_without_listener": [18920, 13840, 19860, 16390],
+    "owned_runtime_process_matches_after": [],
+    "database_evidence_retained_with_ttl_limits_disclosed": true
+  },
+  "summary_document_secret_pattern_scan": {"files": 7, "hits": 0, "values_printed": false, "full_binary_trace_scan": false},
+  "notes": [
+    {
+      "id": "N1",
+      "status_at_review": "TEXT_CORRECTION_REQUIRED_BEFORE_HANDOFF",
+      "files": ["report.md", "defects.md"],
+      "finding": "Two quota occurrences are stated, while three raw result runs contain password registration429 errors.",
+      "quota_affected_runs": [
+        "password-22-collaboration-control-journey-web-1",
+        "password-26-collaboration-lane-close-controls-1",
+        "password-31-collaboration-retained-attachment-1"
+      ],
+      "recommendation": "Say three runs were affected, or omit the count; keep all original failures and later passes."
+    },
+    {
+      "id": "N2",
+      "status_at_review": "RESOLVED_BY_PARENT_DURING_REVIEW",
+      "finding": "Initial handoff/progress snapshots were stale; reread confirms updated01:53:18UTC documents accurately describe completed local runs and cleanup."
+    }
+  ],
+  "remaining_acceptance_axes": [
+    "Windows native and install/upgrade",
+    "iOS actual UI and semantic parity",
+    "Linux package-manager install/upgrade and native desktop session",
+    "signatures and notarization",
+    "commercial Provider accounts, different-account execution and model quality",
+    "18 declared Go top-level skips"
+  ]
+}

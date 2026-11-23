@@ -1,0 +1,96 @@
+[
+  {
+    "name": "protocol",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./pkg/protocol",
+      "-run",
+      "^TestCollaboration(Checkpoint|RecordingSeal)",
+      "-count=1",
+      "-json"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101",
+    "started_at": "2026-10-31T16:54:03.556556+00:00",
+    "elapsed_seconds": 1.227,
+    "exit_code": 0,
+    "top_level_passes": 3,
+    "including_subtest_passes": 11,
+    "top_level_test_names": [
+      "TestCollaborationCheckpointBoundsAndKinds",
+      "TestCollaborationCheckpointRecordVersionCompatibility",
+      "TestCollaborationRecordingSealHasOnlyBoundedMetadata"
+    ],
+    "failed": [],
+    "skipped": [],
+    "log": "boundary-protocol.jsonl",
+    "database_url": "unset",
+    "environment_note": "Genuinely DB-free protocol or daemon/client fixtures; DATABASE_URL removed."
+  },
+  {
+    "name": "client",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/daemon/collaborationrun",
+      "-run",
+      "^TestClient(HostContextExtensionsAreExplicitAndVersioned|NamespaceCannotAcquireHostContextExtensions)$",
+      "-count=1",
+      "-json"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101",
+    "started_at": "2026-10-31T16:54:04.783923+00:00",
+    "elapsed_seconds": 2.061,
+    "exit_code": 0,
+    "top_level_passes": 2,
+    "including_subtest_passes": 9,
+    "top_level_test_names": [
+      "TestClientHostContextExtensionsAreExplicitAndVersioned",
+      "TestClientNamespaceCannotAcquireHostContextExtensions"
+    ],
+    "failed": [],
+    "skipped": [],
+    "log": "boundary-client.jsonl",
+    "database_url": "unset",
+    "environment_note": "Genuinely DB-free protocol or daemon/client fixtures; DATABASE_URL removed."
+  },
+  {
+    "name": "handler",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/handler",
+      "-run",
+      "^TestCollaboration(RuntimeManagedBoundaryRejectsBroadCredentials|RuntimeRecordingHTTPRejectsMalformedPrivateTelemetry|RuntimeHandlersRequireActualManagedSource|RuntimeNarrowHandlersNeverFallBackToOtherPurposes|RuntimeProofBodyIsBoundedStrictAndMatchesPath|ClaimRejectsInvalidExtensionBeforeMutation|RecordingSealRejectsBodyAndWrongCredential)$",
+      "-count=1",
+      "-json"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-runtime-recording-recovery-20261101",
+    "started_at": "2026-10-31T16:54:06.845207+00:00",
+    "elapsed_seconds": 13.057,
+    "exit_code": 0,
+    "top_level_passes": 7,
+    "including_subtest_passes": 11,
+    "top_level_test_names": [
+      "TestCollaborationRecordingSealRejectsBodyAndWrongCredential",
+      "TestCollaborationClaimRejectsInvalidExtensionBeforeMutation",
+      "TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials",
+      "TestCollaborationRuntimeRecordingHTTPRejectsMalformedPrivateTelemetry",
+      "TestCollaborationRuntimeHandlersRequireActualManagedSource",
+      "TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes",
+      "TestCollaborationRuntimeProofBodyIsBoundedStrictAndMatchesPath"
+    ],
+    "failed": [],
+    "skipped": [],
+    "log": "boundary-handler.jsonl",
+    "database_url": "unset",
+    "environment_note": "DATABASE_URL was removed, but handler/handler_test.go TestMain defaulted to its localhost database and bootstrapped fixtures. This is exploratory default-DB evidence, not exclusive task-DB validation. The coordinator will rerun on the exclusive env file after service checks.",
+    "exclusive_task_db_evidence": false
+  }
+]

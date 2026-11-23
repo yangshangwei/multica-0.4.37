@@ -13,12 +13,14 @@ import (
 	"time"
 	"unicode"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/analytics"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
 	"github.com/multica-ai/multica/server/internal/logger"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -370,12 +372,19 @@ func (h *Handler) provisionDeviceIdentity(ctx context.Context, deviceID, deviceN
 		if out.createdWorkspace {
 			role = "owner"
 		}
-		if _, err := qtx.CreateMember(ctx, db.CreateMemberParams{
+		member, err := qtx.CreateMember(ctx, db.CreateMemberParams{
 			WorkspaceID: ws.ID,
 			UserID:      user.ID,
 			Role:        role,
-		}); err != nil {
+		})
+		if err != nil {
 			return out, raceOrErr(err)
+		}
+		if !out.createdWorkspace {
+			cause := pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(member.ID.Bytes), []byte("collaboration-knowledge:member-added")), Valid: true}
+			if err = service.EnqueueKnowledgeSourceInvalidation(ctx, qtx, cause, "source_workspace", ws.ID); err != nil {
+				return out, err
+			}
 		}
 		out.createdMember = true
 	default:

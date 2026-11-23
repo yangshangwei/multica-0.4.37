@@ -2,9 +2,10 @@ vi.mock("../../iterations/iteration-assignment", () => ({
   IterationBatchAssignment: ({ issueIds }: { issueIds: string[] }) => <button aria-label="Iteration batch selection" data-issue-ids={issueIds.join(",")}>Iterations</button>,
 }));
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import type { Issue, UpdateIssueRequest } from "@multica/core/types";
 import { BatchActionToolbar } from "./batch-action-toolbar";
+import { toast } from "sonner";
 
 // MUL-4155: batch status changes must apply directly (no run-confirm modal),
 // while agent/squad assignment still confirms and delete still confirms. These
@@ -21,9 +22,12 @@ vi.mock("@multica/core/issues/stores/selection-store", () => ({
   useIssueSelectionStore: (selector: (s: typeof selection) => unknown) => selector(selection),
 }));
 
-const batchUpdate = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
+const batchUpdate = vi.hoisted(() => vi.fn().mockResolvedValue({ updated: 1 }));
 const batchDelete = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
-vi.mock("@multica/core/issues/mutations", () => ({
+const surface = vi.hoisted(() => ({ current: null as { batchUpdate: typeof batchUpdate; batchDelete: typeof batchDelete; isPending: boolean } | null }));
+vi.mock("../surface/actions-context", () => ({ useIssueSurfaceActionsOptional: () => surface.current }));
+vi.mock("@multica/core/issues/mutations", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/issues/mutations")>(),
   useBatchUpdateIssues: () => ({ mutateAsync: batchUpdate, isPending: false }),
   useBatchDeleteIssues: () => ({ mutateAsync: batchDelete, isPending: false }),
 }));
@@ -33,7 +37,8 @@ vi.mock("@multica/core/modals", () => ({
   useModalStore: (selector: (s: { open: typeof openModal }) => unknown) => selector({ open: openModal }),
 }));
 
-vi.mock("../../i18n", () => ({ useT: () => ({ t: () => "label" }) }));
+const translate = vi.hoisted(() => vi.fn((_key: unknown, _params?: unknown) => "label"));
+vi.mock("../../i18n", () => ({ useT: () => ({ t: translate }) }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 // Interactive picker stubs: each renders buttons that fire the real onUpdate the
@@ -41,28 +46,34 @@ vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 const ACTIVE_STATUSES = ["todo", "in_progress", "in_review", "blocked"] as const;
 const TERMINAL_STATUSES = ["done", "cancelled"] as const;
 vi.mock("./pickers", () => ({
-  StatusPicker: ({ onUpdate }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void }) => (
+  StatusPicker: ({ onUpdate, triggerRender }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void; triggerRender?: { props: { disabled?: boolean } } }) => (
     <div>
       {[...ACTIVE_STATUSES, ...TERMINAL_STATUSES, "backlog"].map((s) => (
         <button
           key={s}
           data-testid={`status-${s}`}
+          data-trigger-disabled={String(triggerRender?.props.disabled === true)}
           onClick={() => onUpdate({ status: s as UpdateIssueRequest["status"] })}
         />
       ))}
     </div>
   ),
-  PriorityPicker: () => <div data-testid="priority-picker" />,
-  AssigneePicker: ({ onUpdate }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void }) => (
+  PriorityPicker: ({ onUpdate, triggerRender }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void; triggerRender?: { props: { disabled?: boolean } } }) => (
+    <button data-testid="priority-picker" data-trigger-disabled={String(triggerRender?.props.disabled === true)} onClick={() => onUpdate({ priority: "urgent" })} />
+  ),
+  AssigneePicker: ({ onUpdate, triggerRender }: { onUpdate: (u: Partial<UpdateIssueRequest>) => void; triggerRender?: { props: { disabled?: boolean } } }) => (
     <div>
       <button
         data-testid="assign-agent"
+        data-trigger-disabled={String(triggerRender?.props.disabled === true)}
         onClick={() => onUpdate({ assignee_type: "agent", assignee_id: "agent-1" })}
       />
       <button
         data-testid="assign-member"
         onClick={() => onUpdate({ assignee_type: "member", assignee_id: "user-1" })}
       />
+      <button data-testid="assign-squad" onClick={() => onUpdate({ assignee_type: "squad", assignee_id: "squad-1" })} />
+      <button data-testid="clear-assignee" onClick={() => onUpdate({ assignee_type: null, assignee_id: null })} />
     </div>
   ),
 }));
@@ -97,19 +108,126 @@ function makeIssue(overrides: Partial<Issue> = {}): Issue {
 
 beforeEach(() => {
   selection.selectedIds = new Set(["a"]);
-  batchUpdate.mockClear();
+  batchUpdate.mockReset().mockResolvedValue({ updated: 1 });
   batchDelete.mockClear();
   openModal.mockClear();
+  selection.clear.mockClear();
+  surface.current = null;
+  vi.mocked(toast.error).mockClear();
+  vi.mocked(toast.success).mockClear();
+  translate.mockClear();
 });
 
 describe("BatchActionToolbar status routing (MUL-4155)", () => {
+  it.each(["surface", "embedded"] as const)("passes a common rendered revision through %s member and clear actions", async (placement) => {
+    selection.selectedIds = new Set(["a", "b", "missing-row"]);
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue({ revision: 7 }), makeIssue({ id: "b", revision: 7 }), makeIssue({ id: "unselected", revision: 99 })]} />);
+    fireEvent.click(screen.getByTestId("assign-member"));
+    await waitFor(() => expect(batchUpdate).toHaveBeenCalledOnce());
+    const member = { assignee_type: "member", assignee_id: "user-1", expected_revision: 7 };
+    if (placement === "surface") expect(batchUpdate).toHaveBeenLastCalledWith(["a", "b"], member);
+    else expect(batchUpdate).toHaveBeenLastCalledWith({ ids: ["a", "b"], updates: member });
+
+    fireEvent.click(screen.getByTestId("clear-assignee"));
+    const cleared = { assignee_type: null, assignee_id: null, expected_revision: 7 };
+    if (placement === "surface") expect(batchUpdate).toHaveBeenLastCalledWith(["a", "b"], cleared);
+    else expect(batchUpdate).toHaveBeenLastCalledWith({ ids: ["a", "b"], updates: cleared });
+    expect(openModal).not.toHaveBeenCalled();
+    expect(selection.clear).not.toHaveBeenCalled();
+  });
+
+  it.each(["agent", "squad"] as const)("captures the common revision before a %s batch confirmation", (assigneeType) => {
+    selection.selectedIds = new Set(["a", "b"]);
+    const view = render(<BatchActionToolbar issues={[makeIssue({ revision: 7 }), makeIssue({ id: "b", revision: 7 })]} />);
+    fireEvent.click(screen.getByTestId(`assign-${assigneeType}`));
+    const expected = { issueIds: ["a", "b"], mode: "assign", assigneeType, assigneeId: `${assigneeType}-1`, issueRevision: 7 };
+    expect(openModal).toHaveBeenCalledWith("issue-run-confirm", expected);
+    view.rerender(<BatchActionToolbar issues={[makeIssue({ revision: 8 }), makeIssue({ id: "b", revision: 8 })]} />);
+    expect(openModal).toHaveBeenCalledOnce();
+    expect(openModal.mock.calls[0]?.[1]).toEqual(expected);
+    expect(batchUpdate).not.toHaveBeenCalled();
+  });
+
+  it("retains the common token on the existing all-backlog assignment bypass", () => {
+    selection.selectedIds = new Set(["a", "b"]);
+    render(<BatchActionToolbar issues={[
+      makeIssue({ status: "backlog", revision: 7 }),
+      makeIssue({ id: "b", status: "later", status_category: "backlog", revision: 7 }),
+    ]} />);
+    fireEvent.click(screen.getByTestId("assign-agent"));
+    expect(batchUpdate).toHaveBeenCalledWith({ ids: ["a", "b"], updates: { assignee_type: "agent", assignee_id: "agent-1", expected_revision: 7 } });
+    expect(openModal).not.toHaveBeenCalled();
+  });
+
+  it.each(["surface", "embedded"] as const)("does not report an update for a no-change %s result", async (placement) => {
+    batchUpdate.mockResolvedValue({ updated: 0 });
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue()]} />);
+    fireEvent.click(screen.getByTestId("priority-picker"));
+    await waitFor(() => expect(batchUpdate).toHaveBeenCalledOnce());
+    expect(toast.success).not.toHaveBeenCalled();
+    expect(selection.clear).not.toHaveBeenCalled();
+  });
+
+  it.each(["surface", "embedded"] as const)("uses the returned update count in the %s toolbar", async (placement) => {
+    selection.selectedIds = new Set(["a", "b"]);
+    batchUpdate.mockResolvedValue({ updated: 1 });
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue(), makeIssue({ id: "b" })]} />);
+    fireEvent.click(screen.getByTestId("priority-picker"));
+    await waitFor(() => expect(toast.success).toHaveBeenCalledOnce());
+    expect(translate).toHaveBeenLastCalledWith(expect.any(Function), { count: 1 });
+  });
+
+  it.each(["surface", "embedded"] as const)("preserves selection and shows only failure for an incomplete %s update", async (placement) => {
+    batchUpdate.mockRejectedValue(new Error("One update committed; refresh before continuing."));
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue()]} />);
+    fireEvent.click(screen.getByTestId("priority-picker"));
+    await waitFor(() => expect(toast.error).toHaveBeenCalledWith("One update committed; refresh before continuing."));
+    expect(toast.success).not.toHaveBeenCalled();
+    expect(selection.clear).not.toHaveBeenCalled();
+    expect(batchUpdate).toHaveBeenCalledOnce();
+  });
+
+  it.each(["surface", "embedded"] as const)("blocks mixed shared selection before ordinary confirmation or transport in the %s toolbar", (placement) => {
+    const account = { user_id: "user-1", name: "Outside", avatar_url: "", external: true };
+    const shared = makeIssue({ id: "shared", collaboration: { creator: account, handler: account, has_external_collaborators: true } });
+    selection.selectedIds = new Set(["a", "shared"]);
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue(), shared]} />);
+    fireEvent.click(screen.getByTestId("assign-agent"));
+    fireEvent.click(screen.getByTestId("status-in_progress"));
+    fireEvent.click(screen.getByTestId("priority-picker"));
+    fireEvent.click(screen.getByText("label", { selector: "button.text-destructive" }));
+    expect(openModal).not.toHaveBeenCalled();
+    expect(batchUpdate).not.toHaveBeenCalled();
+    expect(batchDelete).not.toHaveBeenCalled();
+    expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Iteration batch selection")).not.toBeInTheDocument();
+    expect(selection.clear).not.toHaveBeenCalled();
+    // Disabled up front with the reason shown, instead of a toast after the click.
+    expect(toast.error).not.toHaveBeenCalled();
+    expect(screen.getByTestId("priority-picker")).toHaveAttribute("data-trigger-disabled", "true");
+    expect(screen.getByText("label", { selector: "button.text-destructive" })).toBeDisabled();
+    const reason = document.querySelector('[data-slot="batch-disabled-reason"]');
+    expect(reason).toBeInTheDocument();
+    expect(screen.getByTestId("status-in_progress")).toHaveAttribute("data-trigger-disabled", "true");
+    expect(screen.getByTestId("assign-agent")).toHaveAttribute("data-trigger-disabled", "true");
+    const clear = screen.getByLabelText("label", { selector: "button" });
+    expect(clear).toBeEnabled();
+    expect(clear).toHaveAttribute("aria-describedby", reason!.id);
+    fireEvent.click(clear);
+    expect(selection.clear).toHaveBeenCalledOnce();
+  });
   it("applies every status target directly, never opening the run-confirm modal", () => {
     for (const status of [...ACTIVE_STATUSES, ...TERMINAL_STATUSES, "backlog"]) {
       batchUpdate.mockClear();
       openModal.mockClear();
       // A backlog issue in the selection is the case that historically could
       // start a run — it still must not pop the confirm modal now.
-      const { unmount } = render(<BatchActionToolbar issues={[makeIssue({ status: "backlog" })]} />);
+      const { unmount } = render(<BatchActionToolbar issues={[makeIssue({ status: "backlog", revision: 7 })]} />);
       fireEvent.click(screen.getByTestId(`status-${status}`));
       expect(openModal).not.toHaveBeenCalled();
       expect(batchUpdate).toHaveBeenCalledWith({ ids: ["a"], updates: { status } });
@@ -125,6 +243,7 @@ describe("BatchActionToolbar status routing (MUL-4155)", () => {
       expect.objectContaining({ issueIds: ["a"], mode: "assign", assigneeType: "agent", assigneeId: "agent-1" }),
     );
     expect(batchUpdate).not.toHaveBeenCalled();
+    expect(openModal.mock.calls[0]?.[1]).not.toHaveProperty("issueRevision");
   });
 
   it("applies member assignment directly (never starts a run)", () => {

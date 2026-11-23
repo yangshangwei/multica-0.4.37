@@ -1,0 +1,493 @@
+{
+  "status": "ACCEPTED_SERVICE_SLICE",
+  "updated_at": "2026-11-18T04:09:33.257805+00:00",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "owner": "/root/s3_service_cas_implement",
+  "scope": "TEST_ONLY_S3_R04_TC16_SERVICE_INCREMENT",
+  "private_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-r01",
+  "new_code_file": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-r01/server/internal/service/collaboration_recovery_cas_test.go",
+    "sha256": "bc87efccf85c2ac0f8a7c2c74a91e102b21198938992c84272dc9abb00076b29",
+    "mode": "0o644",
+    "top_level_tests": [
+      "TestCollaborationRecoveryPriorityConcurrentIdentity",
+      "TestCollaborationRecoveryPriorityTransferCommitOrders"
+    ]
+  },
+  "markdown_report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/cas-service-implementation-20261118.md",
+    "sha256": "02036759d071bbf12791251f1b5893b0c3afc4c5044df98cae551e68d3140317"
+  },
+  "source_admission": {
+    "reference": ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-source-binding-20261118.md",
+    "accepted_input": "final S2 R33",
+    "coordinator_verified_existing_regular_files": 5056,
+    "accepted_input_manifest_sha256": "dfb1afa63f96cf419527cb77fa85bdc0a632607c8a612ce5fa1c6fdc5280bf84",
+    "preservation_audit_owner": "/root"
+  },
+  "expected_inventory": {
+    "top_level_count": 2,
+    "subtest_count": 5,
+    "named_count": 7,
+    "leaf_count": 5,
+    "top_level_names": [
+      "TestCollaborationRecoveryPriorityConcurrentIdentity",
+      "TestCollaborationRecoveryPriorityTransferCommitOrders"
+    ],
+    "leaf_names": [
+      "TestCollaborationRecoveryPriorityConcurrentIdentity/same_key_same_priority",
+      "TestCollaborationRecoveryPriorityConcurrentIdentity/same_key_different_priority",
+      "TestCollaborationRecoveryPriorityConcurrentIdentity/different_keys_same_revision",
+      "TestCollaborationRecoveryPriorityTransferCommitOrders/priority_first",
+      "TestCollaborationRecoveryPriorityTransferCommitOrders/transfer_first"
+    ],
+    "run_pattern": "^TestCollaborationRecoveryPriority(ConcurrentIdentity|TransferCommitOrders)$"
+  },
+  "static_checks": {
+    "gofmt": {
+      "receipt_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r02/gofmt.json",
+      "receipt_sha256": "a5471ddae1a32bc793f3d42b21376e0f893edc84cc383555659896e2600218a8",
+      "exit_code": 0,
+      "elapsed_seconds": 0.008,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "compile": {
+      "receipt_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r02/compile.json",
+      "receipt_sha256": "16eeb3afbf3f646c481255910e38be0aca34f906e2d01f5e9337f7c84d8375a8",
+      "exit_code": 0,
+      "elapsed_seconds": 17.092,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "binary_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r02/service.test",
+      "binary_sha256": "2e4a3bb0026d6096eeab67e3d0d479be5ffbfa91ec239833799d06adada0b684"
+    },
+    "vet": {
+      "receipt_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r02/vet.json",
+      "receipt_sha256": "a57c93cee46f931029bdc955e4dc94ca9ec75184eb2a4f18c9e344f3cb166f5d",
+      "exit_code": 0,
+      "elapsed_seconds": 1.992,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "static_no_database_runner": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/helpers/run-nodb.mjs",
+    "sha256": "ab064d765f018d3b9174b8b6fb49c5df608629e7632df2cdd18d4e50a10accd1",
+    "config_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/configs/nodb.json",
+    "config_sha256": "d1eecd914509737b828dfc1a9607b6c410d8e85d9bdd8c26cab7d8b23c3096c2"
+  },
+  "database_verification": {
+    "status": "ACCEPTED_COORDINATOR_NORMAL_RACE",
+    "executed_by_this_owner": false,
+    "normal_evidence": {
+      "status": "PASS",
+      "executed_by": "coordinator /root",
+      "profile": "service-normal",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-verification-r03",
+      "source_manifest_sha256": "992ff44a33f70b83914a3fe49f99533413b35dd416f3b80644b2f3e2a96d5b42",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestCollaborationRecoveryPriority(ConcurrentIdentity|TransferCommitOrders)$",
+        "./internal/service"
+      ],
+      "working_directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-verification-r03/server",
+      "command_receipt_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/verification/service-normal/command.json",
+      "command_receipt_sha256": "f854e58b82186d9d209180e1384d134ebf4d244de11a1fe9429cdb3aa069675e",
+      "configuration_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/configs/service-normal.json",
+      "configuration_sha256": "34a290ff01ffb74c4c178ff9794f7faf743e4d7670dc9f92716610bd081b2ad3",
+      "result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/verification/service-normal/result.json",
+      "result_sha256": "115ed297f15d978eac92bd0b964c0f8a96135c7bf7f5bc0ac6d16227e7a7e908",
+      "independent_audit_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/independent-check/raw-inventory-service-normal-r01.json",
+      "independent_audit_sha256": "d4e216b88a68023bcc550ce5ba0b4507acc5712d6093794bb03a1d9c3dc13704",
+      "exit_code": 0,
+      "package_test_elapsed_seconds": 3.178,
+      "top_level_count": 2,
+      "named_count": 7,
+      "leaf_count": 5,
+      "named_tests": [
+        "TestCollaborationRecoveryPriorityConcurrentIdentity",
+        "TestCollaborationRecoveryPriorityConcurrentIdentity/different_keys_same_revision",
+        "TestCollaborationRecoveryPriorityConcurrentIdentity/same_key_different_priority",
+        "TestCollaborationRecoveryPriorityConcurrentIdentity/same_key_same_priority",
+        "TestCollaborationRecoveryPriorityTransferCommitOrders",
+        "TestCollaborationRecoveryPriorityTransferCommitOrders/priority_first",
+        "TestCollaborationRecoveryPriorityTransferCommitOrders/transfer_first"
+      ],
+      "single_start_and_pass_terminal_for_every_name": true,
+      "failed_skipped_missing_duplicate_unfinished": 0,
+      "raw_stdout_sha256": "57a5ae04dd043998e11aae0cc0b48e964ccde6f56d559193d4d47903481af70c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifact_hashes": {
+        "exit.json": "6a05538d6e94f07e87429c3766c93a233fb448a8289ef45cce59edc0d943624a",
+        "result.json": "115ed297f15d978eac92bd0b964c0f8a96135c7bf7f5bc0ac6d16227e7a7e908",
+        "source-before.json": "543b4ce85eb00f2ec45f71479553f718f4e9d63f287347e68e99921a6f1d4187",
+        "source-after.json": "543b4ce85eb00f2ec45f71479553f718f4e9d63f287347e68e99921a6f1d4187",
+        "go.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "database-final.json": "322f0aa4e2bfa99949792a15fd79d5f9164139f39144a6a656c84104aa13d8eb",
+        "command.json": "f854e58b82186d9d209180e1384d134ebf4d244de11a1fe9429cdb3aa069675e",
+        "database-before.json": "618154723da5d880d02c7d9aee7d59e1c335ff03aadf504ddc1a6651f7b1fdd6",
+        "database-after-test.json": "b4278a5846410c99f72afa3c391f819ba525879ad70c3e9c5c5cedce8d8ef370",
+        "go.stdout.jsonl": "57a5ae04dd043998e11aae0cc0b48e964ccde6f56d559193d4d47903481af70c"
+      },
+      "source_before_after_equal": true,
+      "source_file_count": 5058,
+      "configuration_unchanged": true,
+      "database": "multica_pay241_s3_20261118_hxjmd77_service_normal",
+      "fixture_table_count": 30,
+      "before_after_final_all_fixture_counts_zero": true,
+      "final_fixture_counts": {
+        "agent": 0,
+        "agent_invocation_target": 0,
+        "agent_runtime": 0,
+        "agent_task_queue": 0,
+        "collaboration_account_fence": 0,
+        "collaboration_batch": 0,
+        "collaboration_channel": 0,
+        "collaboration_command": 0,
+        "collaboration_event": 0,
+        "collaboration_execution_group": 0,
+        "collaboration_grant": 0,
+        "collaboration_group_dependency": 0,
+        "collaboration_group_input": 0,
+        "collaboration_notification": 0,
+        "collaboration_operation": 0,
+        "collaboration_run": 0,
+        "collaboration_run_event": 0,
+        "collaboration_runtime_enrollment": 0,
+        "collaboration_session": 0,
+        "collaboration_target": 0,
+        "comment": 0,
+        "issue": 0,
+        "issue_collaboration": 0,
+        "issue_handoff": 0,
+        "issue_participant": 0,
+        "issue_status": 0,
+        "member": 0,
+        "project": 0,
+        "user": 0,
+        "workspace": 0
+      },
+      "before_after_final_other_connections": 0,
+      "migration_ledger_count": 853,
+      "migration_ledger_unchanged": true,
+      "migration_ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+      "gate_before": {
+        "id": 1,
+        "enabled": false,
+        "creation_enabled": true,
+        "epoch": 2,
+        "freeze_operation_id": null,
+        "freeze_progress": null,
+        "host_execution_enabled": false
+      },
+      "gate_after_tests": {
+        "id": 1,
+        "enabled": false,
+        "creation_enabled": false,
+        "epoch": 2,
+        "freeze_operation_id": null,
+        "freeze_progress": null,
+        "host_execution_enabled": false
+      },
+      "gate_final": {
+        "id": 1,
+        "enabled": false,
+        "creation_enabled": true,
+        "epoch": 3,
+        "freeze_operation_id": null,
+        "freeze_progress": null,
+        "host_execution_enabled": false
+      },
+      "original_gate_flags_restored": true,
+      "epoch_monotonic": true,
+      "max_concurrent_database_suites": 1
+    },
+    "race_evidence": {
+      "status": "PASS",
+      "executed_by": "coordinator /root",
+      "profile": "service-race",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-verification-r03",
+      "source_manifest_sha256": "992ff44a33f70b83914a3fe49f99533413b35dd416f3b80644b2f3e2a96d5b42",
+      "command": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-race",
+        "-run",
+        "^TestCollaborationRecoveryPriority(ConcurrentIdentity|TransferCommitOrders)$",
+        "./internal/service"
+      ],
+      "working_directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-verification-r03/server",
+      "command_receipt_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/verification/service-race/command.json",
+      "command_receipt_sha256": "e3d232fe9475549d60fedaaf632e3768dee673a51422d08b8c0ebadc4ae4b96e",
+      "configuration_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/configs/service-race.json",
+      "configuration_sha256": "3ad487908e083a4967a335c075f40ad3b8786f940f709f43193fa45ccd0255bc",
+      "result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/verification/service-race/result.json",
+      "result_sha256": "a3881c40342af19438d2e17bd26b363f7c641a1afd4c94f9a15053a828e30cf9",
+      "independent_audit_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/independent-check/raw-inventory-service-race-r01.json",
+      "independent_audit_sha256": "82b0cd93727a923363d9b32ae40999a0e6a57931adec7c912fad45edb2a2edff",
+      "exit_code": 0,
+      "package_test_elapsed_seconds": 4.574,
+      "top_level_count": 2,
+      "named_count": 7,
+      "leaf_count": 5,
+      "named_tests": [
+        "TestCollaborationRecoveryPriorityConcurrentIdentity",
+        "TestCollaborationRecoveryPriorityConcurrentIdentity/different_keys_same_revision",
+        "TestCollaborationRecoveryPriorityConcurrentIdentity/same_key_different_priority",
+        "TestCollaborationRecoveryPriorityConcurrentIdentity/same_key_same_priority",
+        "TestCollaborationRecoveryPriorityTransferCommitOrders",
+        "TestCollaborationRecoveryPriorityTransferCommitOrders/priority_first",
+        "TestCollaborationRecoveryPriorityTransferCommitOrders/transfer_first"
+      ],
+      "single_start_and_pass_terminal_for_every_name": true,
+      "failed_skipped_missing_duplicate_unfinished": 0,
+      "raw_stdout_sha256": "e0194a57afc517277045652a5ea3f847d94802c938ebcef51ed51e2afd26b788",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "artifact_hashes": {
+        "exit.json": "cd3ccbe06597ca0238616887fe997ee0fd6ea9fea354121e9dafd499945f8ce0",
+        "result.json": "a3881c40342af19438d2e17bd26b363f7c641a1afd4c94f9a15053a828e30cf9",
+        "source-before.json": "543b4ce85eb00f2ec45f71479553f718f4e9d63f287347e68e99921a6f1d4187",
+        "source-after.json": "543b4ce85eb00f2ec45f71479553f718f4e9d63f287347e68e99921a6f1d4187",
+        "go.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "database-final.json": "702838c82071fde68e1b45b9c47588a453720f0f2a0ed3ce6eb1935ba749d212",
+        "command.json": "e3d232fe9475549d60fedaaf632e3768dee673a51422d08b8c0ebadc4ae4b96e",
+        "database-before.json": "a20d44e9be05389e4342b95657e454d7ae5cf91a9a8cc463cccb0393d56dc81e",
+        "database-after-test.json": "84ebc60a7dc1a550652812a1efc66276151cdae458364fd26e0ae19ef311c24a",
+        "go.stdout.jsonl": "e0194a57afc517277045652a5ea3f847d94802c938ebcef51ed51e2afd26b788"
+      },
+      "source_before_after_equal": true,
+      "source_file_count": 5058,
+      "configuration_unchanged": true,
+      "database": "multica_pay241_s3_20261118_hxjmd77_service_race",
+      "fixture_table_count": 30,
+      "before_after_final_all_fixture_counts_zero": true,
+      "final_fixture_counts": {
+        "agent": 0,
+        "agent_invocation_target": 0,
+        "agent_runtime": 0,
+        "agent_task_queue": 0,
+        "collaboration_account_fence": 0,
+        "collaboration_batch": 0,
+        "collaboration_channel": 0,
+        "collaboration_command": 0,
+        "collaboration_event": 0,
+        "collaboration_execution_group": 0,
+        "collaboration_grant": 0,
+        "collaboration_group_dependency": 0,
+        "collaboration_group_input": 0,
+        "collaboration_notification": 0,
+        "collaboration_operation": 0,
+        "collaboration_run": 0,
+        "collaboration_run_event": 0,
+        "collaboration_runtime_enrollment": 0,
+        "collaboration_session": 0,
+        "collaboration_target": 0,
+        "comment": 0,
+        "issue": 0,
+        "issue_collaboration": 0,
+        "issue_handoff": 0,
+        "issue_participant": 0,
+        "issue_status": 0,
+        "member": 0,
+        "project": 0,
+        "user": 0,
+        "workspace": 0
+      },
+      "before_after_final_other_connections": 0,
+      "migration_ledger_count": 853,
+      "migration_ledger_unchanged": true,
+      "migration_ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+      "gate_before": {
+        "id": 1,
+        "enabled": false,
+        "creation_enabled": true,
+        "epoch": 2,
+        "freeze_operation_id": null,
+        "freeze_progress": null,
+        "host_execution_enabled": false
+      },
+      "gate_after_tests": {
+        "id": 1,
+        "enabled": false,
+        "creation_enabled": false,
+        "epoch": 2,
+        "freeze_operation_id": null,
+        "freeze_progress": null,
+        "host_execution_enabled": false
+      },
+      "gate_final": {
+        "id": 1,
+        "enabled": false,
+        "creation_enabled": true,
+        "epoch": 3,
+        "freeze_operation_id": null,
+        "freeze_progress": null,
+        "host_execution_enabled": false
+      },
+      "original_gate_flags_restored": true,
+      "epoch_monotonic": true,
+      "max_concurrent_database_suites": 1
+    },
+    "normal_race_exact_named_sets_equal": true,
+    "new_service_r04_execution_claimed": false
+  },
+  "implementation_contracts": {
+    "current_authority_first_transfer_then_priority": {
+      "status": 403,
+      "code": "forbidden"
+    },
+    "priority_then_old_revision_transfer": {
+      "status": 409,
+      "code": "stale_revision"
+    },
+    "same_key_different_priority": {
+      "status": 409,
+      "code": "idempotency_conflict",
+      "separate_changed_payload_receipt": false
+    },
+    "fresh_request_required": true,
+    "former_handler_recovers_via_actor_owned_get": true,
+    "immutable_full_operation_rows_and_json": true,
+    "outbox_delivery_marker_excluded_from_business_equality": true,
+    "barrier_release_cancel_and_join_on_all_exits": true,
+    "nonempty_run_and_waiting_input_fixtures": true,
+    "native_provider_execution_proven": false
+  },
+  "reused_helpers": [
+    "newCollaborationQueueFixture",
+    "workflowRequest",
+    "fieldJSON",
+    "mustAccess",
+    "sourceRoleBusinessSnapshot",
+    "sourceRoleExecutionSnapshot",
+    "sourceAuthorityExecutionState",
+    "lifecycleCommitBarrierStarter",
+    "waitWorkflowBlocked"
+  ],
+  "no_product_defect_reproduced": true,
+  "production_sql_ddl_dependency_existing_test_changes": 0,
+  "root_server_code_changes_by_this_owner": 0,
+  "task_state_plan_spec_git_changes_by_this_owner": 0,
+  "api_browser_provider_account_payment_deployment_execution_by_this_owner": 0,
+  "parent24_unchanged": {
+    "PASS": 2,
+    "PARTIAL": 11,
+    "NOT_RUN": 11
+  },
+  "remaining": [
+    "combined independent check awaiting separately owned handler-race at handoff",
+    "full native Trellis/product acceptance",
+    "current API/production Web/Desktop recovery acceptance",
+    "full S3 R01-R09 and TC16 completion",
+    "remaining reconnect/backfill/notifications/content/block-repair and S4/S5"
+  ],
+  "current_revision": "r02",
+  "retained_r01": {
+    "status": "NOT_RUN_PRE_EXECUTION_TEST_FIXTURE_REVIEW",
+    "source_sha256": "ec6c67b6ad847e62be5698d7c88f5e9dfb0b917aa650e8101859c1753290ae6d",
+    "static_checks": {
+      "gofmt": {
+        "receipt_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r01/gofmt.json",
+        "receipt_sha256": "13494913eb8e433c5f475bd38b095c998b368a3a6b386e8ad7a8ff5291bab2d9",
+        "exit_code": 0,
+        "elapsed_seconds": 0.025,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "compile": {
+        "receipt_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r01/compile.json",
+        "receipt_sha256": "615b1e551f5df4277249dacf5c45d7b1d8ac7796c6b7b67a0b487a8edeeb3291",
+        "exit_code": 0,
+        "elapsed_seconds": 16.55,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "binary_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r01/service.test",
+        "binary_sha256": "0390ecf19c94b83f27fde461351f3d8c294e8b634674e917f36680400b61817a"
+      },
+      "vet": {
+        "receipt_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r01/vet.json",
+        "receipt_sha256": "f93e2ae643b128ba63ca8d57609280a119a5e04c2dc5b39dc0039a0347225b2e",
+        "exit_code": 0,
+        "elapsed_seconds": 2.284,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "markdown_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r01/implementation-report-r01.md",
+    "markdown_sha256": "1ba37e6b565e1d0c2d9876b155762c9a1d8e160c3bcdfdb02bc53bc6080bf0f0",
+    "json_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r01/implementation-report-r01.json",
+    "json_sha256": "38d09eebd3f127e19154020287bae462efc034a1b918ef9a2091b8b8ecdbe4c2",
+    "database_testmain_or_test_body_started": false,
+    "finding": "queue fixture does not register generated channel/batch cleanup; existing content fixture supplies the exact registrations"
+  },
+  "cleanup_correction": {
+    "new_file_only": true,
+    "added_lines": 4,
+    "fixture_locations": 2,
+    "registration_table_order": [
+      "collaboration_channel",
+      "collaboration_batch"
+    ],
+    "lifo_teardown_table_order": [
+      "collaboration_batch",
+      "collaboration_channel"
+    ],
+    "registered_before_inputs_and_runs": true,
+    "existing_pattern": "server/internal/service/collaboration_comments_test.go:140-141",
+    "delta_receipt_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/service-static-r02/source-delta.json",
+    "delta_receipt_sha256": "a39db044cc4ef1c0a9a128d4700c81df6f0adca5c3e8519b8038f6cde273d5dd",
+    "removing_only_four_registration_lines_recreates_r01_sha256": true,
+    "old_snapshot_or_database_edited": false
+  },
+  "final_source_applicability": {
+    "status": "PASS",
+    "audit_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/independent-check/source-static-audit-r03.json",
+    "audit_sha256": "5ce577fcffcbe7710863c39364084e90fdacfd2fe4481f218c9cde015ffb6aa7",
+    "executed_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-verification-r03",
+    "executed_source_manifest_sha256": "992ff44a33f70b83914a3fe49f99533413b35dd416f3b80644b2f3e2a96d5b42",
+    "final_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-verification-r04",
+    "final_source_manifest_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-verification-r04-manifest.json",
+    "final_source_manifest_sha256": "1275d9709b94d55586d155cfec42886d14663ed9090d0da34cb7388d49e62dd3",
+    "final_source_file_count": 5058,
+    "R33_unchanged_base_files": 5055,
+    "retained_R33_base_paths": 5056,
+    "allowed_existing_fixture_deltas": {
+      "path": "server/internal/handler/handler_test.go",
+      "before_sha256": "e925f073ec818d34c65c3706005223c2114e02ed633fe6a1350590cd386daa52",
+      "after_sha256": "abf93cbad6eca6c1e93d75ea8d02e90a4a2306b41669ee08b60246617a8b7fc3",
+      "mode": "0o755",
+      "scope": "exact five-line checked dependent-target fixture cleanup"
+    },
+    "same_two_test_additions": [
+      "server/internal/handler/collaboration_child_recovery_cas_test.go",
+      "server/internal/service/collaboration_recovery_cas_test.go"
+    ],
+    "service_source_sha256": "bc87efccf85c2ac0f8a7c2c74a91e102b21198938992c84272dc9abb00076b29",
+    "common5057_sha256": "a6d7449609ed6bb8f2613ea557d3e801ce3847657787c0e5bc6e16df2741b2ef",
+    "package_consumption_basis": "Go compiles test files only for their owning package; handler/handler_test.go is not a service test input. Selected service tests call service/database fixtures directly, without a handler TestMain/body/subprocess invocation. Every other frozen file and mode is equal.",
+    "handler_test_file_is_not_service_compilation_input": true,
+    "new_service_execution_claimed": false
+  },
+  "handoff": {
+    "owned_service_slice": "ACCEPTED",
+    "combined_check": "OPEN_AWAITING_HANDLER_RACE_AT_DISPATCH",
+    "whole_S3": "OPEN",
+    "TC16": "OPEN",
+    "parent24": "UNCHANGED",
+    "native_and_current_API_Web_Desktop_acceptance": "OPEN",
+    "this_followup_writes_only": [
+      "research/cas-service-implementation-20261118.md",
+      "research/cas-service-implementation-20261118.json"
+    ],
+    "new_code_DB_Go_Git_agent_operations": 0,
+    "test_repeats": 0,
+    "matrix_or_task_state_changes": 0
+  }
+}

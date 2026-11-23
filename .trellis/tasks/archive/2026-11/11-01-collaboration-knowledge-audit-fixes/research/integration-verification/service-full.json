@@ -1,0 +1,40 @@
+{
+  "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "server_tree": "6822fc3013dc4757257a2652af227d78ed4031cd",
+  "working_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "database": "kfix_joint_svc_20261102_0110",
+  "identity": "kfix_joint_svc_20261102_0110|763_collaboration_knowledge_delivery_history",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-parallel=2",
+    "-count=1",
+    "-json",
+    "-timeout=40m"
+  ],
+  "state": "complete",
+  "started_at": "2026-11-01T17:06:57.775070+00:00",
+  "real_provider_allowed": false,
+  "exit_code": 1,
+  "finished_at": "2026-11-01T17:19:52.065603+00:00",
+  "counts": {
+    "run": 3340,
+    "pass": 3319,
+    "fail": 3,
+    "skip": 18
+  },
+  "failures": [
+    "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+    "TestBuiltinSkillsConformToTemplate",
+    "TestKnowledgeRuntimeHistoryIsIndexDriven",
+    "github.com/multica-ai/multica/server/internal/service"
+  ],
+  "log_sha256": "8a4ce2a4e62c3202d29f5c987f8a52fcd7b8649a0559a725f4c5036bbaf9d227",
+  "process_exit_code": 1
+}

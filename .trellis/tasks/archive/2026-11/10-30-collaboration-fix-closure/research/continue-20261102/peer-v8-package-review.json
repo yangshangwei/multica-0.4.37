@@ -1,0 +1,523 @@
+{
+  "reviewer": "/root/adapter_preflight_review",
+  "verdict": "changes-required",
+  "blocking_findings_open": 1,
+  "scope": "peer v8 cumulative parser/package-permit delta; final selected wrapper/launcher clearance remains separate",
+  "cumulative_delta_review": {
+    "verdict": "pass-with-notes",
+    "approved_for_integrator_as_bounded_repair": true,
+    "patch_sha256": "a1d3f34093940ba07ac6f4808ca76ac398bff5f48a5bdcf6f8c1b0ccea4210c8",
+    "resulting_peer_go_sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+    "condition": "Root sole integrator must add the confirmed global before-command -- recognition and narrow regressions before final selected approval. Do not issue clearance for the uncorrected peer v8 source."
+  },
+  "reviewed_bindings": {
+    "peer_go": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+      "sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+      "python_AST": "pass"
+    },
+    "peer_pnpm": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/pnpm",
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "python_AST": "pass"
+    },
+    "binding_tests": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-go-package-binding-test.py",
+      "sha256": "ffc111f2fff4ca50254fb3f815fb01a1506e3956f02973d70b1b24c91105222c",
+      "python_AST": "pass"
+    },
+    "legacy_tests": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-go-isolation-test.py",
+      "sha256": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+      "python_AST": "pass"
+    },
+    "pnpm_tests": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-pnpm-reporting-test.py",
+      "sha256": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+      "python_AST": "pass"
+    },
+    "flag_registry": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/go-flag-registry.json",
+      "sha256": "55f8ef47eb344b83671254a1143710fed60fd0ad0d27b43910ddb63e20739f87"
+    },
+    "cumulative_patch": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/incoming-v6-to-v8-go.patch",
+      "sha256": "a1d3f34093940ba07ac6f4808ca76ac398bff5f48a5bdcf6f8c1b0ccea4210c8"
+    },
+    "incremental_patch": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v8-repair-20261102/v7-to-v8-go.patch",
+      "sha256": "c3d61fa1785a61b4d78daebe336c4f8e99ca4b77f1ff10a5efe3b2c5ffa7baf5"
+    },
+    "cumulative_patch_application": {
+      "exit_code": 0,
+      "stdout": "patching file 'check-bin/go'\n",
+      "stderr": "",
+      "result_go_sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+      "matches_reviewed_peer_go": true,
+      "scope": "only disposable copy of incoming v6; no selected source mutation"
+    },
+    "expected_go_hash_matches": true,
+    "peer_snapshot_matches_evidence": true
+  },
+  "confirmed_closures": [
+    "Mode0 canonical/default/relative package and both -C contexts bind to allocation.package; missing/wrong/multiple/wildcard permits refuse.",
+    "Actual -modfile/-overlay options, including double-dash and equals forms, refuse in recursive mode before list/SQL/test. Their literal values and test-binary arguments are retained.",
+    "Mode1 requires explicit nonblank Go, PSQL and evidence context.",
+    "Pinned Go1.27 known value/bool/forwarded-alias registry consumes flag values; value -c is not compilation permission. Unknown bare options refuse before subprocesses.",
+    "Known flags before/after package and actual -c/last-setting/binary-tail boundaries retain current cached Go syntax.",
+    "Selected v6 pool stripping and non-test/compile configuration forwarding are preserved by the delta."
+  ],
+  "findings": [
+    {
+      "id": "PV8-D1",
+      "severity": "high",
+      "blocking": true,
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+      "issue": "A legal global -- before the command is treated as non-test dispatch. Thus -- test and -C <root> -- test bypass isolation admission.",
+      "evidence": "Two completely mocked REAL_GO negative probes capture direct exec without context; no actual Go test/SQL process ran. Root separately verified actual go -- version is accepted.",
+      "required_fix": "Root sole integrator adds the four-line global -- recognition before test_command is established; retain it in global_args for package list and preserve original argv for exec. Add two unmarked negative cases and a compile-only positive case, then run final selected source checks. Peer should not create another version for this bounded fix."
+    }
+  ],
+  "verification": {
+    "fake_package_parser": {
+      "pass": 38,
+      "fail": 0,
+      "exit_code": 0
+    },
+    "fake_legacy_isolation": {
+      "pass": 14,
+      "fail": 0,
+      "exit_code": 0
+    },
+    "fake_pnpm": {
+      "pass": 5,
+      "fail": 0,
+      "exit_code": 0
+    },
+    "actual_compile_only": {
+      "pass": 9,
+      "fail": 0,
+      "TestMain": "none in temporary stdlib-only fixture",
+      "test_body_execution": 0
+    },
+    "actual_Go_list": {
+      "pass": 4,
+      "fail": 0
+    },
+    "exact_cumulative_patch_application": {
+      "exit_code": 0,
+      "stdout": "patching file 'check-bin/go'\n",
+      "stderr": "",
+      "result_go_sha256": "0d8d62797c887440d23b129f2e0d86eab4bbea88dcffc463de6478ea1bc65330",
+      "matches_reviewed_peer_go": true,
+      "scope": "only disposable copy of incoming v6; no selected source mutation"
+    },
+    "Python_AST": "pass five peer sources",
+    "global_separator_negative": {
+      "cases": 2,
+      "result": "both incorrectly forwarded; confirmed blocker"
+    },
+    "global_separator_compile": {
+      "cases": 1,
+      "result": "forwarded, positive behavior to retain"
+    },
+    "no_database_or_provider_or_account_or_product_test_execution": true,
+    "source_or_metadata_modified": false,
+    "clearance_created": false,
+    "lint": "not applicable to bounded Python-only patch; no JS/TS changes",
+    "typecheck": "not applicable to bounded Python-only patch; no JS/TS changes"
+  },
+  "limits": [
+    "The guard is pinned to cached Go1.27 flag definitions; unknown options before test-binary boundaries deliberately require review.",
+    "Mode1's historical outer argument splitter is unchanged and remains scoped to repository full-check timeout/race/p/parallel/package callers; arbitrary outer benchmark/module semantics are not certified.",
+    "Apply the reviewed cumulative delta onto current selected source preserving Root-owned Make/HOME/pool isolation changes. The peer Go file must not replace selected source wholesale.",
+    "This reviewed delta addresses confirmed parser/permit closure; final source still needs the narrow global -- correction and independent whole-source hash binding.",
+    "No final launcher clearance, product acceptance or runtime Provider result is implied by these safe probes."
+  ],
+  "raw_fake_runs": [
+    {
+      "name": "v8-package-binding",
+      "command": "env -u CHECK_BINDING_EVIDENCE /usr/bin/sandbox-exec -f .omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb python3 -B .omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-go-package-binding-test.py",
+      "chunk_id": "a92729",
+      "wall_time_seconds": 0.932918042,
+      "exit_code": 0,
+      "original_token_count": 1555,
+      "output": "test_canonical_selector_resolves_before_forwarding (__main__.PackageBindingTests.test_canonical_selector_resolves_before_forwarding) ... ok\ntest_changed_C_and_C_equals_default_package_refuse (__main__.PackageBindingTests.test_changed_C_and_C_equals_default_package_refuse) ... ok\ntest_compile_scanner_preserves_last_real_flag_and_args_boundaries (__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries) ... ok\ntest_complete_go_value_registry_never_exempts_unmarked_test_execution (__main__.PackageBindingTests.test_complete_go_value_registry_never_exempts_unmarked_test_execution) ... ok\ntest_default_selector_after_args_boundary_is_not_compile_only (__main__.PackageBindingTests.test_default_selector_after_args_boundary_is_not_compile_only) ... ok\ntest_default_selector_in_another_directory_refuses (__main__.PackageBindingTests.test_default_selector_in_another_directory_refuses) ... ok\ntest_default_selector_uses_the_current_package (__main__.PackageBindingTests.test_default_selector_uses_the_current_package) ... ok\ntest_empty_multiple_and_different_list_results_refuse (__main__.PackageBindingTests.test_empty_multiple_and_different_list_results_refuse) ... ok\ntest_equals_value_flags_and_test_arguments_remain_exact (__main__.PackageBindingTests.test_equals_value_flags_and_test_arguments_remain_exact) ... ok\ntest_explicit_dot_is_permitted_in_owner_directory (__main__.PackageBindingTests.test_explicit_dot_is_permitted_in_owner_directory) ... ok\ntest_flag_values_and_false_compile_override_require_package_binding (__main__.PackageBindingTests.test_flag_values_and_false_compile_override_require_package_binding) ... ok\ntest_go_list_failure_refuses_before_test_execution (__main__.PackageBindingTests.test_go_list_failure_refuses_before_test_execution) ... ok\ntest_go_value_flags_and_test_aliases_keep_permitted_package_binding (__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding) ... ok\ntest_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests) ... ok\ntest_inherited_pool_overrides_are_removed_for_permitted_recursive_tests (__main__.PackageBindingTests.test_inherited_pool_overrides_are_removed_for_permitted_recursive_tests) ... ok\ntest_inline_known_values_and_last_compile_setting_remain_exact (__main__.PackageBindingTests.test_inline_known_values_and_last_compile_setting_remain_exact) ... ok\ntest_known_boolean_registry_keeps_standalone_compile_flag (__main__.PackageBindingTests.test_known_boolean_registry_keeps_standalone_compile_flag) ... ok\ntest_leading_C_aliases_and_command_local_C_use_the_same_package_identity (__main__.PackageBindingTests.test_leading_C_aliases_and_command_local_C_use_the_same_package_identity) ... ok\ntest_leading_C_and_C_equals_keep_identical_list_and_test_semantics (__main__.PackageBindingTests.test_leading_C_and_C_equals_keep_identical_list_and_test_semantics) ... ok\ntest_missing_empty_and_malformed_package_identities_refuse_before_calls (__main__.PackageBindingTests.test_missing_empty_and_malformed_package_identities_refuse_before_calls) ... ok\ntest_mode0_requires_nonblank_explicit_go_and_evidence_before_any_call (__main__.PackageBindingTests.test_mode0_requires_nonblank_explicit_go_and_evidence_before_any_call) ... ok\ntest_mode0_source_resolution_options_refuse_before_list_sql_or_execution (__main__.PackageBindingTests.test_mode0_source_resolution_options_refuse_before_list_sql_or_execution) ... ok\ntest_mode1_keeps_fresh_per_package_allocation_and_original_check_flags (__main__.PackageBindingTests.test_mode1_keeps_fresh_per_package_allocation_and_original_check_flags) ... ok\ntest_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call (__main__.PackageBindingTests.test_mode1_requires_nonblank_explicit_go_psql_and_evidence_before_any_call) ... ok\ntest_multiple_selectors_refuse_even_if_they_resolve_to_one_owner (__main__.PackageBindingTests.test_multiple_selectors_refuse_even_if_they_resolve_to_one_owner) ... ok\ntest_noncanonical_allocation_package_refuses_before_calls (__main__.PackageBindingTests.test_noncanonical_allocation_package_refuses_before_calls) ... ok\ntest_other_canonical_and_relative_packages_refuse (__main__.PackageBindingTests.test_other_canonical_and_relative_packages_refuse) ... ok\ntest_package_positional_tail_and_args_boundaries_do_not_reclassify_binary_c (__main__.PackageBindingTests.test_package_positional_tail_and_args_boundaries_do_not_reclassify_binary_c) ... ok\ntest_real_compile_flags_forward_without_isolation_context (__main__.PackageBindingTests.test_real_compile_flags_forward_without_isolation_context) ... ok\ntest_relative_selector_compares_canonical_import_path (__main__.PackageBindingTests.test_relative_selector_compares_canonical_import_path) ... ok\ntest_relative_selector_under_C_is_resolved_by_go_list (__main__.PackageBindingTests.test_relative_selector_under_C_is_resolved_by_go_list) ... ok\ntest_source_resolution_names_as_values_or_binary_arguments_are_preserved (__main__.PackageBindingTests.test_source_resolution_names_as_values_or_binary_arguments_are_preserved) ... ok\ntest_stripped_non_test_forwarding_keeps_fallback_and_pool_configuration (__main__.PackageBindingTests.test_stripped_non_test_forwarding_keeps_fallback_and_pool_configuration) ... ok\ntest_unknown_options_never_grant_compile_or_touch_go_or_sql (__main__.PackageBindingTests.test_unknown_options_never_grant_compile_or_touch_go_or_sql) ... ok\ntest_unmarked_test_commands_refuse_before_all_calls (__main__.PackageBindingTests.test_unmarked_test_commands_refuse_before_all_calls) ... ok\ntest_value_flags_do_not_become_package_selectors (__main__.PackageBindingTests.test_value_flags_do_not_become_package_selectors) ... ok\ntest_wildcard_refuses_even_when_list_would_return_only_owner (__main__.PackageBindingTests.test_wildcard_refuses_even_when_list_would_return_only_owner) ... ok\ntest_wildcard_selectors_never_use_the_parent_clone (__main__.PackageBindingTests.test_wildcard_selectors_never_use_the_parent_clone) ... ok\n\n----------------------------------------------------------------------\nRan 38 tests in 0.942s\n\nOK\n"
+    },
+    {
+      "name": "v8-legacy-isolation",
+      "command": "/usr/bin/sandbox-exec -f .omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb python3 -B .omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-go-isolation-test.py",
+      "chunk_id": "15b036",
+      "wall_time_seconds": 5.0385725,
+      "exit_code": 0,
+      "original_token_count": 569,
+      "output": "test_api_pool_overrides_preserved_for_non_test_calls (__main__.IsolationLauncherTests.test_api_pool_overrides_preserved_for_non_test_calls) ... ok\ntest_api_pool_overrides_removed_for_package_tests (__main__.IsolationLauncherTests.test_api_pool_overrides_removed_for_package_tests) ... ok\ntest_api_pool_overrides_removed_for_recursive_tests (__main__.IsolationLauncherTests.test_api_pool_overrides_removed_for_recursive_tests) ... ok\ntest_compile_and_non_test_calls_never_touch_database (__main__.IsolationLauncherTests.test_compile_and_non_test_calls_never_touch_database) ... ok\ntest_default_and_remote_templates_refuse_before_database_commands (__main__.IsolationLauncherTests.test_default_and_remote_templates_refuse_before_database_commands) ... ok\ntest_no_test_files_are_compilation_only (__main__.IsolationLauncherTests.test_no_test_files_are_compilation_only) ... ok\ntest_packages_get_distinct_owned_clones_without_recursive_mode (__main__.IsolationLauncherTests.test_packages_get_distinct_owned_clones_without_recursive_mode) ... ok\ntest_recursive_context_forwards_only_its_explicit_owned_clone (__main__.IsolationLauncherTests.test_recursive_context_forwards_only_its_explicit_owned_clone) ... ok\ntest_recursive_context_refuses_default_or_unowned_database (__main__.IsolationLauncherTests.test_recursive_context_refuses_default_or_unowned_database) ... ok\ntest_recursive_named_clone_without_allocation_record_refuses (__main__.IsolationLauncherTests.test_recursive_named_clone_without_allocation_record_refuses) ... ok\ntest_silent_testmain_success_is_not_named_test_evidence (__main__.IsolationLauncherTests.test_silent_testmain_success_is_not_named_test_evidence) ... ok\ntest_unmarked_real_compile_flag_still_compiles_without_a_database (__main__.IsolationLauncherTests.test_unmarked_real_compile_flag_still_compiles_without_a_database) ... ok\ntest_unmarked_test_execution_refuses_before_real_go_or_sql (__main__.IsolationLauncherTests.test_unmarked_test_execution_refuses_before_real_go_or_sql) ... ok\ntest_allocated_api_and_renderer_are_explicit_without_network (__main__.PlaywrightWiringTests.test_allocated_api_and_renderer_are_explicit_without_network) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 5.082s\n\nOK\n"
+    },
+    {
+      "name": "v8-pnpm-reporting",
+      "command": "/usr/bin/sandbox-exec -f .omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb python3 -B .omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-pnpm-reporting-test.py",
+      "chunk_id": "4a2f95",
+      "wall_time_seconds": 0.002984375,
+      "exit_code": 0,
+      "original_token_count": 228,
+      "output": "test_both_explicit_reporter_forms_remain_unchanged (__main__.PnpmReportingTests.test_both_explicit_reporter_forms_remain_unchanged) ... ok\ntest_default_database_or_remote_api_refuses_before_forwarding (__main__.PnpmReportingTests.test_default_database_or_remote_api_refuses_before_forwarding) ... ok\ntest_missing_repository_guard_refuses_before_pnpm_execution (__main__.PnpmReportingTests.test_missing_repository_guard_refuses_before_pnpm_execution) ... ok\ntest_non_playwright_commands_forward_without_guard_or_added_flags (__main__.PnpmReportingTests.test_non_playwright_commands_forward_without_guard_or_added_flags) ... ok\ntest_selection_workers_retries_timeout_and_default_reporter_are_preserved (__main__.PnpmReportingTests.test_selection_workers_retries_timeout_and_default_reporter_are_preserved) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.015s\n\nOK\n"
+    }
+  ],
+  "safe_actual_go_list_compile": {
+    "scope": "cached Go on temporary stdlib-only fixture without TestMain; compile-only and list only; network denied",
+    "records": [
+      {
+        "name": "before-package",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "test",
+          "-c",
+          "./first",
+          "-o",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/probe-0.test"
+        ],
+        "exit_code": 0,
+        "artifact_exists": true,
+        "artifact_sha256": "21bc4f7afcd313d072fdc26a861c01c91094fb59b8ab98ab8a9e63703dcac655",
+        "stdout": "",
+        "stderr": "",
+        "real_test_or_TestMain_execution": 0
+      },
+      {
+        "name": "after-package",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "test",
+          "./first",
+          "-c",
+          "-o",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/probe-1.test"
+        ],
+        "exit_code": 0,
+        "artifact_exists": true,
+        "artifact_sha256": "21bc4f7afcd313d072fdc26a861c01c91094fb59b8ab98ab8a9e63703dcac655",
+        "stdout": "",
+        "stderr": "",
+        "real_test_or_TestMain_execution": 0
+      },
+      {
+        "name": "consumed-c-then-real-c",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "test",
+          "./first",
+          "-bench",
+          "-c",
+          "-c",
+          "-o",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/probe-2.test"
+        ],
+        "exit_code": 0,
+        "artifact_exists": true,
+        "artifact_sha256": "21bc4f7afcd313d072fdc26a861c01c91094fb59b8ab98ab8a9e63703dcac655",
+        "stdout": "",
+        "stderr": "",
+        "real_test_or_TestMain_execution": 0
+      },
+      {
+        "name": "command-local-C",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+          "test",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/first",
+          "-c",
+          ".",
+          "-o",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/probe-3.test"
+        ],
+        "exit_code": 0,
+        "artifact_exists": true,
+        "artifact_sha256": "21bc4f7afcd313d072fdc26a861c01c91094fb59b8ab98ab8a9e63703dcac655",
+        "stdout": "",
+        "stderr": "",
+        "real_test_or_TestMain_execution": 0
+      },
+      {
+        "name": "double-dash-C-and-c",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+          "--C=/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "test",
+          "--c=1",
+          "./first",
+          "-o",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/probe-4.test"
+        ],
+        "exit_code": 0,
+        "artifact_exists": true,
+        "artifact_sha256": "21bc4f7afcd313d072fdc26a861c01c91094fb59b8ab98ab8a9e63703dcac655",
+        "stdout": "",
+        "stderr": "",
+        "real_test_or_TestMain_execution": 0
+      },
+      {
+        "name": "boolean-TRUE",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "test",
+          "-c=TRUE",
+          "./first",
+          "-o",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/probe-5.test"
+        ],
+        "exit_code": 0,
+        "artifact_exists": true,
+        "artifact_sha256": "21bc4f7afcd313d072fdc26a861c01c91094fb59b8ab98ab8a9e63703dcac655",
+        "stdout": "",
+        "stderr": "",
+        "real_test_or_TestMain_execution": 0
+      },
+      {
+        "name": "buildvcs-auto",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "test",
+          "-buildvcs=auto",
+          "-c",
+          "./first",
+          "-o",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/probe-6.test"
+        ],
+        "exit_code": 0,
+        "artifact_exists": true,
+        "artifact_sha256": "21bc4f7afcd313d072fdc26a861c01c91094fb59b8ab98ab8a9e63703dcac655",
+        "stdout": "",
+        "stderr": "",
+        "real_test_or_TestMain_execution": 0
+      },
+      {
+        "name": "v-test2json",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "test",
+          "-v=test2json",
+          "-c",
+          "./first",
+          "-o",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/probe-7.test"
+        ],
+        "exit_code": 0,
+        "artifact_exists": true,
+        "artifact_sha256": "21bc4f7afcd313d072fdc26a861c01c91094fb59b8ab98ab8a9e63703dcac655",
+        "stdout": "",
+        "stderr": "",
+        "real_test_or_TestMain_execution": 0
+      },
+      {
+        "name": "test-v-alias",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/check-bin/go",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "test",
+          "-test.v=test2json",
+          "-c",
+          "./first",
+          "-o",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/probe-8.test"
+        ],
+        "exit_code": 0,
+        "artifact_exists": true,
+        "artifact_sha256": "21bc4f7afcd313d072fdc26a861c01c91094fb59b8ab98ab8a9e63703dcac655",
+        "stdout": "",
+        "stderr": "",
+        "real_test_or_TestMain_execution": 0
+      },
+      {
+        "name": "default",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/opt/homebrew/bin/go",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "list",
+          "./first"
+        ],
+        "kind": "Go list only",
+        "exit_code": 0,
+        "stdout": "example/first\n",
+        "stderr": ""
+      },
+      {
+        "name": "modfile-oracle",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/opt/homebrew/bin/go",
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_",
+          "list",
+          "-modfile",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/alternate.mod",
+          "./first"
+        ],
+        "kind": "Go list only",
+        "exit_code": 0,
+        "stdout": "alternate/first\n",
+        "stderr": ""
+      },
+      {
+        "name": "leading-C-double",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/opt/homebrew/bin/go",
+          "--C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/first",
+          "list",
+          "."
+        ],
+        "kind": "Go list only",
+        "exit_code": 0,
+        "stdout": "example/first\n",
+        "stderr": ""
+      },
+      {
+        "name": "command-local-C-double",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-f",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v8-knowledge-advance-20261102/deny-network.sb",
+          "/opt/homebrew/bin/go",
+          "list",
+          "--C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-compile-review-su21rhs_/first",
+          "."
+        ],
+        "kind": "Go list only",
+        "exit_code": 0,
+        "stdout": "example/first\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "fake_global_separator_probe": {
+    "scope": "fully mocked REAL_GO global-separator dispatch; no actual process or SQL",
+    "records": [
+      {
+        "case": "unmarked-global-separator",
+        "argv": [
+          "--",
+          "test",
+          "./..."
+        ],
+        "terminal": "forwarded",
+        "exit_code": 0,
+        "calls": [
+          {
+            "kind": "exec-captured-only",
+            "executable": "/fixture/fake-go",
+            "arguments": [
+              "/fixture/fake-go",
+              "--",
+              "test",
+              "./..."
+            ]
+          }
+        ],
+        "actual_Go_test_or_SQL_execution": 0
+      },
+      {
+        "case": "unmarked-C-global-separator",
+        "argv": [
+          "-C",
+          "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-global-separator-review-qhepfudy",
+          "--",
+          "test",
+          "./..."
+        ],
+        "terminal": "forwarded",
+        "exit_code": 0,
+        "calls": [
+          {
+            "kind": "exec-captured-only",
+            "executable": "/fixture/fake-go",
+            "arguments": [
+              "/fixture/fake-go",
+              "-C",
+              "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-v8-global-separator-review-qhepfudy",
+              "--",
+              "test",
+              "./..."
+            ]
+          }
+        ],
+        "actual_Go_test_or_SQL_execution": 0
+      },
+      {
+        "case": "compile-only-global-separator",
+        "argv": [
+          "--",
+          "test",
+          "-c",
+          "./fixture"
+        ],
+        "terminal": "forwarded",
+        "exit_code": 0,
+        "calls": [
+          {
+            "kind": "exec-captured-only",
+            "executable": "/fixture/fake-go",
+            "arguments": [
+              "/fixture/fake-go",
+              "--",
+              "test",
+              "-c",
+              "./fixture"
+            ]
+          }
+        ],
+        "actual_Go_test_or_SQL_execution": 0
+      }
+    ]
+  }
+}

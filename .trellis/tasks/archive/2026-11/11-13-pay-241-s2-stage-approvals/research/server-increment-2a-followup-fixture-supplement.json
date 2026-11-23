@@ -1,0 +1,27 @@
+{
+  "status": "followup_manifest_omission_corrected_by_separate_supplement",
+  "scope": "Three nullable ContentDigest test-fixture adaptations were already present when the prior green follow-up tests ran but omitted from its 11-file manifest. Original report/manifests and independent failed reconstruction vet log are retained.",
+  "files": [
+    {
+      "path": "server/internal/service/collaboration_stage_admission_test.go",
+      "sha256": "153a5652b2484e50ac7fe24b4e79b1b363596e0cefcbcca10fc988e3729b7188",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-fixture-supplement/server/internal/service/collaboration_stage_admission_test.go",
+      "previous_frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-source/server/internal/service/collaboration_stage_admission_test.go",
+      "previous_sha256": null
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_enqueue_test.go",
+      "sha256": "55a50b5957a8c06f50552985a2d3e3925694fffbd0e9210b7cf383866bde30c5",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-fixture-supplement/server/internal/service/collaboration_stage_enqueue_test.go",
+      "previous_frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-source/server/internal/service/collaboration_stage_enqueue_test.go",
+      "previous_sha256": null
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_test.go",
+      "sha256": "207fe086999e347c437fd648fc343e1d8baff4332fccc2ad2bdeb0420f16111c",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-followup-fixture-supplement/server/internal/service/collaboration_stage_test.go",
+      "previous_frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2a-source/server/internal/service/collaboration_stage_test.go",
+      "previous_sha256": "b87ac68039d97f2b4a415ddcf36ed20523215f35f75788f4f5019d43c768dc02"
+    }
+  ]
+}

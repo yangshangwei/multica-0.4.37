@@ -1,0 +1,42 @@
+import datetime,hashlib,json,os,plistlib,shutil,subprocess
+from pathlib import Path
+ROOT=Path('/Volumes/artisan/code/2026/multica-0.4.37')
+TASK=ROOT/'.trellis/tasks/11-02-branch-functional-regression'
+RUN=TASK/'evidence/next-platform-preflight-2'
+RUN.mkdir(exist_ok=False)
+now=lambda:datetime.datetime.now(datetime.timezone.utc).isoformat()
+sha=lambda x:hashlib.sha256(x).hexdigest()
+record=dict(started_at=now(),candidate='7af9ab9905c98c77bb091223ebe687c639475bb4',scope='Read-only bounded local platform prerequisite check; no application launch, installation, account or remote action',steps=[],remote_dispatches=0,commercial_provider_calls=0,services_started=0,completed_gates_rerun=0)
+def save(): (RUN/'run.json').write_text(json.dumps(record,indent=2)+'\n')
+def command(name,args,expected=[0],filter_output=None):
+ step=dict(name=name,command=args,started_at=now()); record['steps'].append(step); save()
+ p=subprocess.run(args,cwd=ROOT,capture_output=True,timeout=30)
+ out=filter_output(p.stdout) if filter_output else p.stdout
+ (RUN/(name+'.stdout')).write_bytes(out); (RUN/(name+'.stderr')).write_bytes(p.stderr)
+ step.update(finished_at=now(),exit_code=p.returncode,expected_exit_codes=expected,stdout_sha256=sha(out),stderr_sha256=sha(p.stderr),stdout_filtered=bool(filter_output))
+ save(); assert p.returncode in expected, name
+ return out
+save()
+try:
+ command('os',['uname','-srm'])
+ command('xcode-select',['xcode-select','-p'])
+ command('simctl-location',['xcrun','--find','simctl'],[0,72])
+ record['local_vm_tools']={n:shutil.which(n) for n in ['qemu-system-aarch64','qemu-system-x86_64','prlctl','VBoxManage','vmrun','tart','multipass']}
+ roots=[Path('/Applications'),Path('/System/Applications'),Path('/Developer/Applications')]
+ matches=[str(p) for root in roots if root.exists() for p in root.glob('*.app') if any(s in p.name.lower() for s in ['xcode','parallels','vmware','utm','virtualbox'])]
+ record['bounded_application_inventory']=dict(roots=list(map(str,roots)),matches=matches,limit='Top-level local app roots only; does not assert absence of remote runners')
+ js='\n'.join(['ObjC.import("AppKit");','const w=$.NSWorkspace.sharedWorkspace;','const current=w.URLForApplicationToOpenURL($.NSURL.URLWithString("multica://branch-functional-regression"));','let p=null;try{p=ObjC.unwrap(current.path)||null;}catch(e){}','const urls=w.URLsForApplicationsWithBundleIdentifier("ai.multica.desktop");','const paths=[];for(let i=0;i<urls.count;i++)paths.push(ObjC.unwrap(urls.objectAtIndex(i).path));','JSON.stringify({defaultApplicationPath:p,registeredApplications:paths});'])
+ protocol=json.loads(command('protocol-readonly',['osascript','-l','JavaScript','-e',js]))
+ original=json.loads((TASK/'evidence/next-mac-runtime-2/protocol-before.stdout').read_text())
+ record['protocol']=dict(observed=protocol,original_exact_default_preserved=protocol['defaultApplicationPath']==original['defaultApplicationPath'],original_registration_set_preserved=sorted(protocol['registeredApplications'])==sorted(original['registeredApplications']),task_registrations=[s for s in protocol['registeredApplications'] if '/.omx/private/branch-functional-regression-20261102/' in s])
+ # Read-only host checks; no codesign identity/keychain, artifact downloads or runner dispatch.
+ command('docker-engine',['docker','info','--format','{{json .Architecture}}'])
+ paths=['.github/workflows/desktop-smoke.yml','apps/desktop/scripts/accept-windows-installer.ps1','e2e/fixtures/collaboration-installed-layout.mjs','apps/mobile/scripts/ios-run.sh']
+ record['handoff_source_sha256']={s:sha((ROOT/s).read_bytes()) for s in paths}
+ record['gates']={'IOS-UI':'BLOCKED_NO_COMPLETE_XCODE_SIMCTL','LINUX-NATIVE-DESKTOP':'BLOCKED_NO_PROVIDED_NATIVE_SESSION','WIN-INSTALL-UPGRADE':'BLOCKED_NO_AUTHORIZED_DISPOSABLE_WINDOWS_RUNNER','MAC-AUTH-MIGRATION':'NOT_RUN_NO_REAL_LOGIN_JOURNEY','MAC-AUTOMATIC-UPDATER':'NOT_RUN','MAC-TRUST':'BLOCKED_NO_SIGNED_DISTRIBUTION','REAL-PROVIDER':'BLOCKED_NO_CURRENT_ACCOUNT_MODEL_CALL_BUDGET_AUTHORIZATION'}
+ record.update(state='complete',finished_at=now())
+ save()
+ shutil.copyfile(__file__,RUN/'host-runner.py.txt')
+ print(json.dumps({k:record[k] for k in ['state','bounded_application_inventory','local_vm_tools','gates']},indent=2))
+except Exception as e:
+ record.update(state='failed',error=str(e),finished_at=now());save();raise

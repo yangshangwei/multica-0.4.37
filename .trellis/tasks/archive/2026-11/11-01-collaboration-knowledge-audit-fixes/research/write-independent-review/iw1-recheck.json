@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T17:03:20.043784+00:00",
+  "verdict": "pass",
+  "scope": "IW-1 delta only",
+  "head": "46454019190720d0a95c61b1d87284ff7af75cf6",
+  "base_product": "d4bc37a86e36f7db517c451a4db1eba5b56973b4",
+  "server_tree": "ff216a05dd69e27a1366e834a57c52f50d1c639b",
+  "delta_sha256": "afa5c61f1c80374f44dd083e5cb8d77b63be3f8f9c2727aeabdf6be30f72311e",
+  "files_sha256": {
+    "server/internal/service/collaboration_knowledge.go": "a8b9766d340ccd0ed17f1c2f30a3f527597541c3a065f4344250ef5b63e914b6",
+    "server/internal/service/collaboration_knowledge_resolve_test.go": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+    ".trellis/spec/server/collaboration-knowledge.md": "58c5e7b1b3b2fb503aca1a2ba61ce7a79f6fac15fd4c8e1aa8223666d4653d92"
+  },
+  "blocking_findings": [],
+  "closed_finding": "IW-1 application-clock active-target budget",
+  "independent_checks": [
+    {
+      "source_sha": "46454019190720d0a95c61b1d87284ff7af75cf6",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "-p",
+        "2",
+        "./internal/service"
+      ],
+      "started_at": "2026-11-01T17:02:34.248616+00:00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source_sha": "46454019190720d0a95c61b1d87284ff7af75cf6",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "-p",
+        "2",
+        "./internal/service"
+      ],
+      "started_at": "2026-11-01T17:02:34.897563+00:00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "author_evidence": "iw1-evidence-check.json",
+  "evidence_counts": {
+    "red_reproduction": {
+      "named_fail": 1,
+      "exit_code": 1
+    },
+    "normal": {
+      "named_pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0
+    },
+    "race": {
+      "named_pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "exit_code": 0
+    }
+  },
+  "initial_compile_fault_preserved": true,
+  "database_commands": false,
+  "migration_commands": false,
+  "provider_calls": 0,
+  "installed_cli_calls": 0,
+  "product_edits": false,
+  "remaining_gates": [
+    "Final combined-source full validation; prior3262 service and536 migration results remain bound to their original product scope."
+  ],
+  "test_scope_note": "Ahead-clock/no-expiry-new-candidate bypass is reproduced and blocked. Lagging-clock removal of already-expired rows follows directly from the same existing DB-time predicate, but no separate DB lagging-clock test was rerun by reviewer."
+}

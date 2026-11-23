@@ -1,0 +1,78 @@
+{
+  "results": [
+    {
+      "version": "v6",
+      "started_at": "2026-11-02T15:25:33.549622+00:00",
+      "finished_at": "2026-11-02T15:25:50.799948+00:00",
+      "status_code": 1,
+      "expected_result": "control fails503",
+      "counts": {
+        "run": 7,
+        "pass": 4,
+        "fail": 3,
+        "skip": 0
+      },
+      "failed_tests": [
+        "TestSkillTemplateCatalog_RouterAndWorkspaceGates/member",
+        "TestSkillTemplateCatalog_RouterAndWorkspaceGates",
+        "TestSkillTemplateCopy_OrdinaryCreatePreservesSourceAndBindings"
+      ],
+      "log_sha256": "25afa7e2a01c329702d06a66747dcd52df14c658e1bc6437e5e5428e9778b215",
+      "command": [
+        "bash",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^(TestSkillTemplateCatalog_RouterAndWorkspaceGates|TestSkillTemplateCopy_OrdinaryCreatePreservesSourceAndBindings)$",
+        "-count=1",
+        "-parallel=2",
+        "-json",
+        "-timeout=10m"
+      ],
+      "fresh_package_clone_records": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-probe/targeted-v6/packages",
+      "provider_calls": 0
+    },
+    {
+      "version": "v9",
+      "started_at": "2026-11-02T15:25:50.800784+00:00",
+      "finished_at": "2026-11-02T15:25:55.500883+00:00",
+      "status_code": 0,
+      "expected_result": "successor original assertions pass",
+      "counts": {
+        "run": 7,
+        "pass": 7,
+        "fail": 0,
+        "skip": 0
+      },
+      "failed_tests": [],
+      "log_sha256": "ca26408da19964a31f2597244b5a0ae747a156344df9779310e472133472bff1",
+      "command": [
+        "bash",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go",
+        "-C",
+        "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/server",
+        "test",
+        "./cmd/server",
+        "-run",
+        "^(TestSkillTemplateCatalog_RouterAndWorkspaceGates|TestSkillTemplateCopy_OrdinaryCreatePreservesSourceAndBindings)$",
+        "-count=1",
+        "-parallel=2",
+        "-json",
+        "-timeout=10m"
+      ],
+      "fresh_package_clone_records": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/catalog-probe/targeted-v9/packages",
+      "provider_calls": 0
+    }
+  ],
+  "source_candidate": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "product_source_changed": false,
+  "only_successor_env_difference": "mode1 package child removes API resource publisher directory",
+  "real_provider_calls": 0
+}

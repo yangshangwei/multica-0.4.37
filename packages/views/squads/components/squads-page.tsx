@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AlertCircle,
   ArrowDown,
@@ -11,7 +11,6 @@ import {
   Loader2,
   MoreHorizontal,
   Plus,
-  Sparkles,
   SlidersHorizontal,
   Trash2,
   Users,
@@ -20,6 +19,7 @@ import {
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import {
   agentListOptions,
   memberListOptions,
@@ -29,7 +29,6 @@ import {
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { useAuthStore } from "@multica/core/auth";
 import { api } from "@multica/core/api";
-import { useModalStore } from "@multica/core/modals";
 import {
   useSquadsViewStore,
   SQUAD_SCOPES,
@@ -77,7 +76,6 @@ import {
   PopoverTrigger,
 } from "@multica/ui/components/ui/popover";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@multica/ui/components/ui/tabs";
 import { Switch } from "@multica/ui/components/ui/switch";
 import {
   Tooltip,
@@ -101,8 +99,7 @@ import {
 } from "../../layout/collection-page";
 import { useT } from "../../i18n";
 import { PAGE_TOOLBAR } from "../../layout/page-header";
-import { BuiltinSquadCatalog } from "./builtin-squad-catalog";
-import { CreateSquadChooser } from "./create-squad-chooser";
+import { SquadWelcome } from "./squad-welcome";
 
 // Reveal secondary columns as the container grows. Including 44px touch
 // actions, the tiers need 664px / 820px / 936px and fit @2xl / @4xl / @5xl.
@@ -784,21 +781,25 @@ export function SquadsPage() {
   const p = useWorkspacePaths();
   const rowLink = useRowLink();
   const navigation = useNavigation();
-  const activeView = navigation.searchParams.get("view") === "templates" ? "templates" : "workspace";
-  const selectView = (view: string) => {
-    const params = new URLSearchParams(navigation.searchParams);
-    if (view === "templates") params.set("view", "templates");
-    else params.delete("view");
-    navigation.replace(currentPath({ ...navigation, searchParams: params }));
-  };
+  const legacyTemplateView = navigation.searchParams.get("view") === "templates";
+  const marketPath = p.marketplace();
+  const { hash, replace, searchParams } = navigation;
+  useEffect(() => {
+    if (!legacyTemplateView) return;
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.delete("view");
+    nextSearchParams.set("type", "squad-templates");
+    replace(currentPath({ pathname: marketPath, searchParams: nextSearchParams, hash }));
+  }, [legacyTemplateView, marketPath, replace, searchParams, hash]);
   const currentUser = useAuthStore((s) => s.user);
 
-  const { data: squads = [], isLoading, error: listError, refetch: refetchSquads } = useQuery({
+  const { data: squads = [], isSuccess, error: listError, refetch: refetchSquads } = useQuery({
     ...squadListOptions(wsId),
-    enabled: !!wsId,
+    enabled: !!wsId && !legacyTemplateView,
   });
-  const { data: agents = [] } = useQuery(agentListOptions(wsId));
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
+  const { data: agents = [] } = useQuery({ ...agentListOptions(wsId), enabled: !!wsId && !legacyTemplateView });
+  const { data: members = [] } = useQuery({ ...memberListOptions(wsId), enabled: !!wsId && !legacyTemplateView });
+  const showWelcome = isSuccess && squads.length === 0;
 
   const agentsById = useMemo(() => {
     const m = new Map<string, Agent>();
@@ -929,166 +930,131 @@ export function SquadsPage() {
     [isWorkspaceAdmin, rows, currentUser],
   );
 
+  if (legacyTemplateView) return null;
+
   return (
     <div className="flex flex-1 min-h-0 flex-col">
       <CollectionPageHeader
         icon={Users}
         title={t(($) => $.page.title)}
         count={squads.length}
-        actions={<CreateSquadChooser />}
+        description={t(($) => $.page.tagline)}
+        learnMore={{ href: p.docsPage(DOCS_SLUGS.squads), label: t(($) => $.page.learn_more) }}
+        actions={showWelcome ? undefined : (
+          <Button
+            size="sm"
+            className="pointer-coarse:min-h-11"
+            render={<AppLink href={p.newSquad()} />}
+          >
+            <Plus className="size-3.5" aria-hidden="true" />
+            {t(($) => $.page.new_button)}
+          </Button>
+        )}
       />
-
-      <Tabs
-        value={activeView}
-        onValueChange={(value) => selectView(String(value))}
-        className="min-h-0 flex-1 gap-0"
-      >
-        <div className="shrink-0 overflow-x-auto border-b px-4 py-2">
-          <TabsList variant="line" aria-label={t(($) => $.page.title)} className="pointer-coarse:min-h-12">
-            <TabsTrigger value="workspace" className="px-3 pointer-coarse:min-h-11">
-              {t(($) => $.page.tabs.workspace)}
-            </TabsTrigger>
-            <TabsTrigger value="templates" className="px-3 pointer-coarse:min-h-11">
-              {t(($) => $.page.tabs.templates)}
-            </TabsTrigger>
-          </TabsList>
-        </div>
-        <TabsContent value="templates" className="min-h-0 overflow-auto">
-          <BuiltinSquadCatalog key={wsId} squads={squads} />
-        </TabsContent>
-        <TabsContent value="workspace" className="flex min-h-0 flex-col">
-          {listError ? (
-            <CollectionPageState
-              role="alert"
-              tone="destructive"
-              icon={AlertCircle}
-              title={t(($) => $.page.list_error)}
-              actions={<Button type="button" size="sm" variant="outline" className="pointer-coarse:min-h-11" onClick={() => void refetchSquads()}>{t(($) => $.catalog.retry)}</Button>}
-            />
-          ) : isLoading ? (
-            <LoadingSkeleton />
-          ) : squads.length === 0 ? (
-            <CollectionPageState
-              icon={Users}
-              title={t(($) => $.page.empty_no_squads)}
-              actions={
-                <>
-                  <Button
-                    size="sm"
-                    className="pointer-coarse:min-h-11"
-                    onClick={() =>
-                      useModalStore.getState().open("staff-squad-template")
-                    }
-                  >
-                    <Sparkles aria-hidden="true" className="size-3.5" />
-                    {t(($) => $.page.template_button)}
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="pointer-coarse:min-h-11"
-                    variant="outline"
-                    onClick={() => useModalStore.getState().open("create-squad")}
-                  >
-                    <Plus aria-hidden="true" className="size-3.5" />
-                    {t(($) => $.page.custom_button)}
-                  </Button>
-                </>
-              }
-            />
-          ) : (
-            <>
-              <SquadListToolbar
-                scope={scope}
-                onScopeChange={setScope}
-                scopeCounts={scopeCounts}
-                filters={filters}
-                onToggleFilter={toggleFilter}
-                onClearFilters={clearFilters}
-                leaderOptions={leaderOptions}
-                creatorOptions={creatorOptions}
-                visibleCount={rows.length}
-                totalCount={scopeRows.length}
+      {listError ? (
+        <CollectionPageState
+          role="alert"
+          tone="destructive"
+          icon={AlertCircle}
+          title={t(($) => $.page.list_error)}
+          actions={<Button type="button" size="sm" variant="outline" className="pointer-coarse:min-h-11" onClick={() => void refetchSquads()}>{t(($) => $.catalog.retry)}</Button>}
+        />
+      ) : !isSuccess ? (
+        <LoadingSkeleton />
+      ) : showWelcome ? (
+        <SquadWelcome key={wsId} />
+      ) : (
+        <>
+          <SquadListToolbar
+            scope={scope}
+            onScopeChange={setScope}
+            scopeCounts={scopeCounts}
+            filters={filters}
+            onToggleFilter={toggleFilter}
+            onClearFilters={clearFilters}
+            leaderOptions={leaderOptions}
+            creatorOptions={creatorOptions}
+            visibleCount={rows.length}
+            totalCount={scopeRows.length}
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSortFieldChange={handleSortFieldSelect}
+            onSortDirectionChange={setSortDirection}
+            hiddenColumns={hiddenColumns}
+            onToggleColumn={toggleColumn}
+          />
+          <div className="min-h-0 flex-1 overflow-auto @container">
+            <ListGrid
+              className={GRID_COLS}
+              style={{
+                ...columnTrackVars(isColVisible, canManageAnyRow),
+                paddingBottom: LIST_GRID_BOTTOM_CLEARANCE,
+              }}
+            >
+              <SquadListHeader
                 sortField={sortField}
                 sortDirection={sortDirection}
-                onSortFieldChange={handleSortFieldSelect}
-                onSortDirectionChange={setSortDirection}
-                hiddenColumns={hiddenColumns}
-                onToggleColumn={toggleColumn}
+                onSort={handleSort}
+                isColVisible={isColVisible}
               />
-              <div className="min-h-0 flex-1 overflow-auto @container">
-                <ListGrid
-                  className={GRID_COLS}
-                  style={{
-                    ...columnTrackVars(isColVisible, canManageAnyRow),
-                    paddingBottom: LIST_GRID_BOTTOM_CLEARANCE,
-                  }}
-                >
-                  <SquadListHeader
-                    sortField={sortField}
-                    sortDirection={sortDirection}
-                    onSort={handleSort}
-                    isColVisible={isColVisible}
-                  />
-                  {rows.length === 0 ? (
-                    <div className="col-span-full py-16 text-center text-body text-muted-foreground">
-                      {t(($) => $.page.no_matches)}
-                    </div>
-                  ) : (
-                    rows.map((squad) => (
-                      <ListGridRow
-                        key={squad.id}
-                        className="h-14 cursor-pointer pointer-coarse:h-auto pointer-coarse:min-h-18 pointer-coarse:py-1"
-                        {...rowLink(p.squadDetail(squad.id), squad.name)}
-                      >
-                        <NameCell squad={squad} />
-                        <LeaderCell
-                          leaderId={squad.leader_id}
-                          leader={agentsById.get(squad.leader_id)}
-                        />
-                        {isColVisible("members") ? (
-                          <MembersCell squad={squad} />
-                        ) : (
-                          <ListGridCell className="hidden px-0 @2xl:flex" />
-                        )}
-                        {isColVisible("creator") ? (
-                          <ListGridCell className="hidden @4xl:flex">
-                            <AppLink
-                              href={p.memberDetail(squad.creator_id)}
-                              newTabTitle={membersById.get(squad.creator_id)?.name ?? squad.creator_id.slice(0, 8)}
-                              {...rowLinkInteractiveProps}
-                              className="flex min-w-0 items-center gap-1.5 rounded-sm text-caption text-muted-foreground hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11"
-                            >
-                              <span aria-hidden="true"><ActorAvatar actorType="member" actorId={squad.creator_id} size="sm" profileLink={false} /></span>
-                              <span className="min-w-0 truncate">
-                                {membersById.get(squad.creator_id)?.name ?? squad.creator_id.slice(0, 8)}
-                              </span>
-                            </AppLink>
-                          </ListGridCell>
-                        ) : (
-                          <ListGridCell className="hidden px-0 @4xl:flex" />
-                        )}
-                        {isColVisible("created") ? (
-                          <ListGridCell className="hidden whitespace-nowrap text-caption tabular-nums text-muted-foreground @5xl:flex">
-                            {new Date(squad.created_at).toLocaleDateString()}
-                          </ListGridCell>
-                        ) : (
-                          <ListGridCell className="hidden px-0 @5xl:flex" />
-                        )}
-                        <ListGridCell className="justify-end px-0">
-                          {isWorkspaceAdmin ||
-                          (!!currentUser && squad.creator_id === currentUser.id) ? (
-                            <SquadRowActions squad={squad} />
-                          ) : null}
-                        </ListGridCell>
-                      </ListGridRow>
-                    ))
-                  )}
-                </ListGrid>
-              </div>
-            </>
-          )}
-        </TabsContent>
-      </Tabs>
+              {rows.length === 0 ? (
+                <div className="col-span-full py-16 text-center text-body text-muted-foreground">
+                  {t(($) => $.page.no_matches)}
+                </div>
+              ) : (
+                rows.map((squad) => (
+                  <ListGridRow
+                    key={squad.id}
+                    className="h-14 cursor-pointer pointer-coarse:h-auto pointer-coarse:min-h-18 pointer-coarse:py-1"
+                    {...rowLink(p.squadDetail(squad.id), squad.name)}
+                  >
+                    <NameCell squad={squad} />
+                    <LeaderCell
+                      leaderId={squad.leader_id}
+                      leader={agentsById.get(squad.leader_id)}
+                    />
+                    {isColVisible("members") ? (
+                      <MembersCell squad={squad} />
+                    ) : (
+                      <ListGridCell className="hidden px-0 @2xl:flex" />
+                    )}
+                    {isColVisible("creator") ? (
+                      <ListGridCell className="hidden @4xl:flex">
+                        <AppLink
+                          href={p.memberDetail(squad.creator_id)}
+                          newTabTitle={membersById.get(squad.creator_id)?.name ?? squad.creator_id.slice(0, 8)}
+                          {...rowLinkInteractiveProps}
+                          className="flex min-w-0 items-center gap-1.5 rounded-sm text-caption text-muted-foreground hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11"
+                        >
+                          <span aria-hidden="true"><ActorAvatar actorType="member" actorId={squad.creator_id} size="sm" profileLink={false} /></span>
+                          <span className="min-w-0 truncate">
+                            {membersById.get(squad.creator_id)?.name ?? squad.creator_id.slice(0, 8)}
+                          </span>
+                        </AppLink>
+                      </ListGridCell>
+                    ) : (
+                      <ListGridCell className="hidden px-0 @4xl:flex" />
+                    )}
+                    {isColVisible("created") ? (
+                      <ListGridCell className="hidden whitespace-nowrap text-caption tabular-nums text-muted-foreground @5xl:flex">
+                        {new Date(squad.created_at).toLocaleDateString()}
+                      </ListGridCell>
+                    ) : (
+                      <ListGridCell className="hidden px-0 @5xl:flex" />
+                    )}
+                    <ListGridCell className="justify-end px-0">
+                      {isWorkspaceAdmin ||
+                      (!!currentUser && squad.creator_id === currentUser.id) ? (
+                        <SquadRowActions squad={squad} />
+                      ) : null}
+                    </ListGridCell>
+                  </ListGridRow>
+                ))
+              )}
+            </ListGrid>
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -1,0 +1,19 @@
+{
+  "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+  "framework_files": {
+    "host_context_experiment_evidence_test.go": "6ad5f77069a5a6477e81763a9a8578ba3ff5838b0abeb947c01169bc68eb2b2f",
+    "host_context_experiment_fixture_test.go": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+    "host_context_experiment_stop_test.go": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d",
+    "host_context_experiment_test.go": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893"
+  },
+  "previous_framework_sha256": "f6f62e55888fa2d3e733ff12dec6054e07f877828363ad0d503ada6db07aa0bd",
+  "purpose": "E5 registered canary finished/fail stop rule only; original product/scenarios/score preserved",
+  "both_arms_identical": true,
+  "actual_fake_counts_each_arm": {
+    "run": 32,
+    "pass": 32,
+    "fail": 0,
+    "skip": 0
+  },
+  "real_Provider_calls": 0
+}

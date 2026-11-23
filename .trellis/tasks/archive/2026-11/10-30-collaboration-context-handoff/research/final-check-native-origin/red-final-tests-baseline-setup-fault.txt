@@ -1,0 +1,11 @@
+    Verification environment: check-fixture; logs and provenance: /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/tmp.FAWptuIFOg
+
+==> [1/6] Static checks
+
+==> [2/6] TypeScript tests (one package, two workers)
+
+==> [3/6] Script regressions and isolated Go tests
+/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-native-origin-baseline-501w7d9s/scripts/check.sh: line 136: cd: /var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-native-origin-baseline-501w7d9s/server: No such file or directory
+    Dropping isolated Go database go_fixture
+✗ Checks FAILED (exit 1).
+api-failure: exit 1, expected 23

@@ -311,7 +311,7 @@ func (s *PlatformAdminService) ChangeRole(ctx context.Context, p PlatformRoleCha
 			return result, err
 		}
 		version = bumped.SessionVersion
-		result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID)
+		result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID, "admin:"+util.UUIDToString(op.ID))
 		if err != nil {
 			return PlatformRoleChangeResult{}, err
 		}
@@ -439,6 +439,12 @@ func (s *PlatformAdminService) CreateOperationInTx(ctx context.Context, tx pgx.T
 	validAction = validAction || p.Kind == "installation.admission" && p.TargetKind == "installation" && (p.ResultCode == "admission_stopped" || p.ResultCode == "admission_accepting")
 	alertCode := map[string]string{"alert.acknowledge": "alert_acknowledged", "alert.assign": "alert_assigned", "alert.close": "alert_closed"}[p.Kind]
 	validAction = validAction || alertCode != "" && p.TargetKind == "alert" && p.ResultCode == alertCode
+	collaborationCode := map[string]string{"collaboration.complete": "completed", "collaboration.cancel": "cancelled", "collaboration.reopen": "reopened",
+		"collaboration.purge_memory": "memory_purged"}[p.Kind]
+	validAction = validAction || collaborationCode != "" && p.TargetKind == "collaboration_issue" && p.ResultCode == collaborationCode
+	// The deployment-wide gate is addressed through the administered organization.
+	gateCode := p.ResultCode == "collaboration_creation_opened" || p.ResultCode == "collaboration_creation_closed" || p.ResultCode == "collaboration_execution_opened"
+	validAction = validAction || p.Kind == "collaboration.gate" && p.TargetKind == "collaboration_gate" && p.TargetID == actor.OrganizationID && gateCode
 	if !validAction || p.State != "applied" {
 		return empty, false, platformError(http.StatusBadRequest, "invalid_operation", "The operation kind or state is not supported")
 	}
@@ -561,10 +567,6 @@ func (s *PlatformAdminService) Bootstrap(ctx context.Context, p PlatformAdminBoo
 	if err = q.SetPlatformRole(ctx, db.SetPlatformRoleParams{UserID: p.TargetUserID, Role: PlatformRoleSuperAdmin}); err != nil {
 		return result, err
 	}
-	result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID)
-	if err != nil {
-		return PlatformRoleChangeResult{}, err
-	}
 	role := PlatformRoleSuperAdmin
 	hash, err := roleChangeHash(PlatformRoleChangeParams{TargetUserID: p.TargetUserID, Role: &role, ExpectedRole: beforeRole, ExpectedAuthVersion: credential.SessionVersion - 1, Reason: p.Reason})
 	if err != nil {
@@ -575,6 +577,10 @@ func (s *PlatformAdminService) Bootstrap(ctx context.Context, p PlatformAdminBoo
 		Kind: "user.role.bootstrap", IdempotencyKey: pgtype.UUID{Bytes: uuid.New(), Valid: true}, PayloadHash: hash,
 		Reason: strings.TrimSpace(p.Reason), State: "applied", ResultCode: "role_changed", AppliedAt: pgtype.Timestamptz{Time: time.Now(), Valid: true},
 	})
+	if err != nil {
+		return PlatformRoleChangeResult{}, err
+	}
+	result.Revocation, err = auth.RevokePasswordCredentials(ctx, tx, p.TargetUserID, "admin:"+util.UUIDToString(op.ID))
 	if err != nil {
 		return PlatformRoleChangeResult{}, err
 	}

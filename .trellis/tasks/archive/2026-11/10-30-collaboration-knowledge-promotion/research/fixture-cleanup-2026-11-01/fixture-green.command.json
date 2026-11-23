@@ -1,0 +1,53 @@
+{
+  "command": [
+    "go",
+    "test",
+    "./internal/service",
+    "-run",
+    "^TestKnowledge(PreparationSourceRevocationBothCommitOrders|SourceAuthorityChangesBetweenClaimBuildAndFinalize|ServerFailureLogsUsePersistedState)$",
+    "-count=1",
+    "-json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-knowledge-promotion-20261101/server",
+  "environment_file": "/tmp/multica_knowledge_c2_20261101_7d95f46f.env",
+  "database": "multica_knowledge_c2_20261101_7d95f46f",
+  "started_at": "2026-11-01T01:39:11.101740+00:00",
+  "finished_at": "2026-11-01T01:39:23.271400+00:00",
+  "exit_code": 0,
+  "log": "fixture-green.jsonl",
+  "log_sha256": "10fcd06de78dcc85b0407d76c78317491a9d85c6aca0e9e003c4fe6cd61c726e",
+  "run": [
+    "TestKnowledgePreparationSourceRevocationBothCommitOrders",
+    "TestKnowledgePreparationSourceRevocationBothCommitOrders/source_revocation",
+    "TestKnowledgePreparationSourceRevocationBothCommitOrders/disclosure",
+    "TestKnowledgeSourceAuthorityChangesBetweenClaimBuildAndFinalize",
+    "TestKnowledgeServerFailureLogsUsePersistedState",
+    "TestKnowledgeServerFailureLogsUsePersistedState/service_prepared",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_prepared",
+    "TestKnowledgeServerFailureLogsUsePersistedState/service_retained",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_retained",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_refusal",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_stale_fence",
+    "TestKnowledgeServerFailureLogsUsePersistedState/service_legacy",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_legacy_with_fence"
+  ],
+  "pass": [
+    "TestKnowledgePreparationSourceRevocationBothCommitOrders/source_revocation",
+    "TestKnowledgePreparationSourceRevocationBothCommitOrders/disclosure",
+    "TestKnowledgePreparationSourceRevocationBothCommitOrders",
+    "TestKnowledgeSourceAuthorityChangesBetweenClaimBuildAndFinalize",
+    "TestKnowledgeServerFailureLogsUsePersistedState/service_prepared",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_prepared",
+    "TestKnowledgeServerFailureLogsUsePersistedState/service_retained",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_retained",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_refusal",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_stale_fence",
+    "TestKnowledgeServerFailureLogsUsePersistedState/service_legacy",
+    "TestKnowledgeServerFailureLogsUsePersistedState/handler_legacy_with_fence",
+    "TestKnowledgeServerFailureLogsUsePersistedState"
+  ],
+  "fail": [],
+  "skip": [],
+  "top_level_passes": 3,
+  "leaf_passes": 11
+}

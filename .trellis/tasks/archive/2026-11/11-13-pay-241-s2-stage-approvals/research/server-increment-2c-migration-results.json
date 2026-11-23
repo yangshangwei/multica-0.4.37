@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-11-14T11:07:19.417472+00:00",
+  "status": "isolated_migration_checks_pass_global_F2_inventory_failed",
+  "whole_2c_accepted": false,
+  "whole_s2_accepted": false,
+  "policy_activation": false,
+  "review_correction": "829 down repeats843 retention guard; originalfreeze preserved; no runtime red claim",
+  "database_count": 8,
+  "ledger_entries": 831,
+  "highest_migration": 843,
+  "new_index_count": 13,
+  "new_foreign_keys": 0,
+  "synthetic_retained_intents": 1,
+  "synthetic_intent_database": "multica_pay241_20261114_s2_2c_migrate_r01",
+  "external_invocations": 0,
+  "existing_global_F2_failures": [
+    "795_report_snapshot_id",
+    "796_report_snapshot_request",
+    "797_report_snapshot_sequence",
+    "798_report_snapshot_cycle",
+    "799_report_snapshot_correction",
+    "801_report_snapshot_control_identity",
+    "802_report_snapshot_withdrawal_request",
+    "803_report_snapshot_withdrawal_identity"
+  ],
+  "references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/ddl-ready.json",
+      "sha256": "9f72a779fb94bba448d1b30eabcf1fcaa7ee9285977e2ae23744309e25c8ceef"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2c/ddl-ready-r02.json",
+      "sha256": "7a0bd851350ce1e8a0ff7b0c51d58078714f186fa362f3149f9adb3b727c273d"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2c-ddl-root-binding.json",
+      "sha256": "9caf206309516f5cca4875b01f829011354df25b2a9faad7678dc53ff06d6467"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2c-migrations.json",
+      "sha256": "d2db1bf85ecc7f502f924b1a793ce7ccc0f5d91148feb739ca0619eabc06f8b7"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2c-downgrade-check.json",
+      "sha256": "5da2fc62b07fde084d75d3d7381c36c9eded4ac2c99236003276db83a53a5636"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2c-cleanup-inventory.json",
+      "sha256": "eb5fd3aba399fd1571f4d79169e8d8d45678b82cfd153fe7a0842e5e9459a431"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2c-router-safe-configs.json",
+      "sha256": "41288cc4848f61c6b4205159c32f0019033afa369ea1d3b9d5012f9f3fc67790"
+    }
+  ],
+  "report_markdown_sha256": "2657e2c125d5441dc94d13a0a3e5427126b5727e1bfc23e0f1ee84acdde99842"
+}

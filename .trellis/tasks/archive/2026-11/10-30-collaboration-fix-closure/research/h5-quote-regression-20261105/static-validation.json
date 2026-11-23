@@ -1,0 +1,16 @@
+{
+  "at": "2026-11-05T03:03:39.489971+00:00",
+  "command": [
+    "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+    "-C",
+    "server",
+    "vet",
+    "-tags=agentintegration",
+    "./cmd/server"
+  ],
+  "exit_code": 0,
+  "log": "/Volumes/artisan/code/2026/mc-h5-quote-20261105/.omx/private/h5-quote/vet.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "gofmt_clean": true,
+  "testmain_executed": false
+}

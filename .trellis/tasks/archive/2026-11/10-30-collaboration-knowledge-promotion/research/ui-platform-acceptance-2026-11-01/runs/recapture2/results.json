@@ -1,0 +1,192 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/multica-knowledge-ui-results/recapture2",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-knowledge.spec.ts",
+      "file": "collaboration-knowledge.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 24595,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Toggle right sidebar', exact: true })\n    - locator resolved to <button tabindex=\"0\" type=\"button\" id=\"base-ui-_r_3h_\" data-slot=\"tooltip-trigger\" aria-label=\"Toggle right sidebar\" class=\"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-non\u2026>\u2026</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p>Knowledge project 6153b44d-3</p> from <div id=\"_r_ao_\" data-base-ui-portal=\"\" data-slot=\"sheet-portal\">\u2026</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p>Knowledge project 6153b44d-3</p> from <div id=\"_r_ao_\" data-base-ui-portal=\"\" data-slot=\"sheet-portal\">\u2026</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    28 \u00d7 waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <p>Knowledge project 6153b44d-3</p> from <div id=\"_r_ao_\" data-base-ui-portal=\"\" data-slot=\"sheet-portal\">\u2026</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n",
+                    "stack": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Toggle right sidebar', exact: true })\n    - locator resolved to <button tabindex=\"0\" type=\"button\" id=\"base-ui-_r_3h_\" data-slot=\"tooltip-trigger\" aria-label=\"Toggle right sidebar\" class=\"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-non\u2026>\u2026</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p>Knowledge project 6153b44d-3</p> from <div id=\"_r_ao_\" data-base-ui-portal=\"\" data-slot=\"sheet-portal\">\u2026</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p>Knowledge project 6153b44d-3</p> from <div id=\"_r_ao_\" data-base-ui-portal=\"\" data-slot=\"sheet-portal\">\u2026</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    28 \u00d7 waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <p>Knowledge project 6153b44d-3</p> from <div id=\"_r_ao_\" data-base-ui-portal=\"\" data-slot=\"sheet-portal\">\u2026</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n\n    at captureKnowledge (/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts:292:122)\n    at ownerVersions (/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/collaboration-knowledge.spec.ts:75:3)\n    at /Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/collaboration-knowledge.spec.ts:100:5",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts",
+                      "column": 122,
+                      "line": 292
+                    },
+                    "snippet": "   at fixtures/collaboration-knowledge.ts:292\n\n  290 |         await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));\n  291 |         const openSheet = page.locator('[data-slot=\"sheet-content\"][data-open]');\n> 292 |         if (await openSheet.count() === 0) await page.getByRole(\"button\", { name: \"Toggle right sidebar\", exact: true }).click();\n      |                                                                                                                          ^\n  293 |         await expect(openSheet).toBeVisible();\n  294 |       } else {\n  295 |         await expect(sheet).toHaveCount(0);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts",
+                        "column": 122,
+                        "line": 292
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Toggle right sidebar', exact: true })\n    - locator resolved to <button tabindex=\"0\" type=\"button\" id=\"base-ui-_r_3h_\" data-slot=\"tooltip-trigger\" aria-label=\"Toggle right sidebar\" class=\"group/button inline-flex shrink-0 items-center justify-center border border-transparent bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-non\u2026>\u2026</button>\n  - attempting click action\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p>Knowledge project 6153b44d-3</p> from <div id=\"_r_ao_\" data-base-ui-portal=\"\" data-slot=\"sheet-portal\">\u2026</div> subtree intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <p>Knowledge project 6153b44d-3</p> from <div id=\"_r_ao_\" data-base-ui-portal=\"\" data-slot=\"sheet-portal\">\u2026</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    28 \u00d7 waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <p>Knowledge project 6153b44d-3</p> from <div id=\"_r_ao_\" data-base-ui-portal=\"\" data-slot=\"sheet-portal\">\u2026</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n\n\n   at fixtures/collaboration-knowledge.ts:292\n\n  290 |         await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));\n  291 |         const openSheet = page.locator('[data-slot=\"sheet-content\"][data-open]');\n> 292 |         if (await openSheet.count() === 0) await page.getByRole(\"button\", { name: \"Toggle right sidebar\", exact: true }).click();\n      |                                                                                                                          ^\n  293 |         await expect(openSheet).toBeVisible();\n  294 |       } else {\n  295 |         await expect(sheet).toHaveCount(0);\n    at captureKnowledge (/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts:292:122)\n    at ownerVersions (/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/collaboration-knowledge.spec.ts:75:3)\n    at /Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/collaboration-knowledge.spec.ts:100:5"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T23:47:04.876Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "web-full-source-review-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-1380-part-1-png-5610f2132b7f60c5c101e1d64c60b5f12931b3c3.png"
+                    },
+                    {
+                      "name": "web-full-source-review-1380-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-1380-part-2-png-03bd054ec50206d71e28527ae95be357c64950d6.png"
+                    },
+                    {
+                      "name": "web-full-source-review-640-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-640-part-1-png-6c32e4a7250e869adff5df78cf708f167404a813.png"
+                    },
+                    {
+                      "name": "web-full-source-review-640-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-640-part-2-png-36e75e5ed6e6be58dceeb75df0c2163db078e925.png"
+                    },
+                    {
+                      "name": "web-full-source-review-640-part-3.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-full-source-review-640-part-3-png-273b22f00b9ae5f0fbb1eef802be11267cd5a6d6.png"
+                    },
+                    {
+                      "name": "full-source-review-capture-geometry",
+                      "contentType": "application/json",
+                      "body": "WwogIHsKICAgICJuYW1lIjogIndlYi1mdWxsLXNvdXJjZS1yZXZpZXctMTM4MC1wYXJ0LTEucG5nIiwKICAgICJ2aWV3cG9ydCI6IHsKICAgICAgIndpZHRoIjogMTM4MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJkZXZpY2VQaXhlbFJhdGlvIjogMSwKICAgICJyZWN0IjogewogICAgICAieCI6IDQxOCwKICAgICAgInkiOiAxMzEuNSwKICAgICAgIndpZHRoIjogODk2LAogICAgICAiaGVpZ2h0IjogMTM1My43NSwKICAgICAgInRvcCI6IDEzMS41LAogICAgICAicmlnaHQiOiAxMzE0LAogICAgICAiYm90dG9tIjogMTQ4NS4yNSwKICAgICAgImxlZnQiOiA0MTgKICAgIH0sCiAgICAiY2xpcCI6IHsKICAgICAgImxlZnQiOiAzNTIsCiAgICAgICJ0b3AiOiAxMTYsCiAgICAgICJyaWdodCI6IDEzODAsCiAgICAgICJib3R0b20iOiA5NjAKICAgIH0sCiAgICAicm9vdCI6IHsKICAgICAgIngiOiAzNTIsCiAgICAgICJ5IjogMTE2LAogICAgICAid2lkdGgiOiAxMDI4LAogICAgICAiaGVpZ2h0IjogODQ0LAogICAgICAidG9wIjogMTE2LAogICAgICAicmlnaHQiOiAxMzgwLAogICAgICAiYm90dG9tIjogOTYwLAogICAgICAibGVmdCI6IDM1MgogICAgfSwKICAgICJzY3JvbGxUb3AiOiAxNjMzLAogICAgInNjcm9sbEhlaWdodCI6IDQwMjUsCiAgICAidmlzaWJsZVN0YXJ0IjogMCwKICAgICJ2aXNpYmxlRW5kIjogODI4LjUsCiAgICAib3BhY2l0eSI6IDEsCiAgICAicnVubmluZ0FuaW1hdGlvbnMiOiAwLAogICAgInVub2JzY3VyZWQiOiB0cnVlLAogICAgInNoZWV0IjogbnVsbCwKICAgICJsYXN0Q29udHJvbCI6IHsKICAgICAgInRleHQiOiAiVmVyc2lvbiAxIMK3IFBlbmRpbmciLAogICAgICAicmVjdCI6IHsKICAgICAgICAieCI6IDQzOSwKICAgICAgICAieSI6IDE0NjQuMjUsCiAgICAgICAgIndpZHRoIjogMTM5Ljc2NTYyNSwKICAgICAgICAiaGVpZ2h0IjogMjgsCiAgICAgICAgInRvcCI6IDE0NjQuMjUsCiAgICAgICAgInJpZ2h0IjogNTc4Ljc2NTYyNSwKICAgICAgICAiYm90dG9tIjogMTQ5Mi4yNSwKICAgICAgICAibGVmdCI6IDQzOQogICAgICB9CiAgICB9LAogICAgIm92ZXJmbG93IjogZmFsc2UsCiAgICAiYWZ0ZXIiOiB7CiAgICAgICJ2aWV3cG9ydCI6IHsKICAgICAgICAid2lkdGgiOiAxMzgwLAogICAgICAgICJoZWlnaHQiOiA5NjAKICAgICAgfSwKICAgICAgImRldmljZVBpeGVsUmF0aW8iOiAxLAogICAgICAicmVjdCI6IHsKICAgICAgICAieCI6IDQxOCwKICAgICAgICAieSI6IDEzMS41LAogICAgICAgICJ3aWR0aCI6IDg5NiwKICAgICAgICAiaGVpZ2h0IjogMTM1My43NSwKICAgICAgICAidG9wIjogMTMxLjUsCiAgICAgICAgInJpZ2h0IjogMTMxNCwKICAgICAgICAiYm90dG9tIjogMTQ4NS4yNSwKICAgICAgICAibGVmdCI6IDQxOAogICAgICB9LAogICAgICAiY2xpcCI6IHsKICAgICAgICAibGVmdCI6IDM1MiwKICAgICAgICAidG9wIjogMTE2LAogICAgICAgICJyaWdodCI6IDEzODAsCiAgICAgICAgImJvdHRvbSI6IDk2MAogICAgICB9LAogICAgICAicm9vdCI6IHsKICAgICAgICAieCI6IDM1MiwKICAgICAgICAieSI6IDExNiwKICAgICAgICAid2lkdGgiOiAxMDI4LAogICAgICAgICJoZWlnaHQiOiA4NDQsCiAgICAgICAgInRvcCI6IDExNiwKICAgICAgICAicmlnaHQiOiAxMzgwLAogICAgICAgICJib3R0b20iOiA5NjAsCiAgICAgICAgImxlZnQiOiAzNTIKICAgICAgfSwKICAgICAgInNjcm9sbFRvcCI6IDE2MzMsCiAgICAgICJzY3JvbGxIZWlnaHQiOiA0MDI1LAogICAgICAidmlzaWJsZVN0YXJ0IjogMCwKICAgICAgInZpc2libGVFbmQiOiA4MjguNSwKICAgICAgIm9wYWNpdHkiOiAxLAogICAgICAicnVubmluZ0FuaW1hdGlvbnMiOiAwLAogICAgICAidW5vYnNjdXJlZCI6IHRydWUsCiAgICAgICJzaGVldCI6IG51bGwsCiAgICAgICJsYXN0Q29udHJvbCI6IHsKICAgICAgICAidGV4dCI6ICJWZXJzaW9uIDEgwrcgUGVuZGluZyIsCiAgICAgICAgInJlY3QiOiB7CiAgICAgICAgICAieCI6IDQzOSwKICAgICAgICAgICJ5IjogMTQ2NC4yNSwKICAgICAgICAgICJ3aWR0aCI6IDEzOS43NjU2MjUsCiAgICAgICAgICAiaGVpZ2h0IjogMjgsCiAgICAgICAgICAidG9wIjogMTQ2NC4yNSwKICAgICAgICAgICJyaWdodCI6IDU3OC43NjU2MjUsCiAgICAgICAgICAiYm90dG9tIjogMTQ5Mi4yNSwKICAgICAgICAgICJsZWZ0IjogNDM5CiAgICAgICAgfQogICAgICB9LAogICAgICAib3ZlcmZsb3ciOiBmYWxzZQogICAgfQogIH0sCiAgewogICAgIm5hbWUiOiAid2ViLWZ1bGwtc291cmNlLXJldmlldy0xMzgwLXBhcnQtMi5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiAxMzgwLAogICAgICAiaGVpZ2h0IjogOTYwCiAgICB9LAogICAgImRldmljZVBpeGVsUmF0aW8iOiAxLAogICAgInJlY3QiOiB7CiAgICAgICJ4IjogNDE4LAogICAgICAieSI6IC02MzIuNSwKICAgICAgIndpZHRoIjogODk2LAogICAgICAiaGVpZ2h0IjogMTM1My43NSwKICAgICAgInRvcCI6IC02MzIuNSwKICAgICAgInJpZ2h0IjogMTMxNCwKICAgICAgImJvdHRvbSI6IDcyMS4yNSwKICAgICAgImxlZnQiOiA0MTgKICAgIH0sCiAgICAiY2xpcCI6IHsKICAgICAgImxlZnQiOiAzNTIsCiAgICAgICJ0b3AiOiAxMTYsCiAgICAgICJyaWdodCI6IDEzODAsCiAgICAgICJib3R0b20iOiA5NjAKICAgIH0sCiAgICAicm9vdCI6IHsKICAgICAgIngiOiAzNTIsCiAgICAgICJ5IjogMTE2LAogICAgICAid2lkdGgiOiAxMDI4LAogICAgICAiaGVpZ2h0IjogODQ0LAogICAgICAidG9wIjogMTE2LAogICAgICAicmlnaHQiOiAxMzgwLAogICAgICAiYm90dG9tIjogOTYwLAogICAgICAibGVmdCI6IDM1MgogICAgfSwKICAgICJzY3JvbGxUb3AiOiAyMzk3LAogICAgInNjcm9sbEhlaWdodCI6IDQwMjUsCiAgICAidmlzaWJsZVN0YXJ0IjogNzQ4LjUsCiAgICAidmlzaWJsZUVuZCI6IDEzNTMuNzUsCiAgICAib3BhY2l0eSI6IDEsCiAgICAicnVubmluZ0FuaW1hdGlvbnMiOiAwLAogICAgInVub2JzY3VyZWQiOiB0cnVlLAogICAgInNoZWV0IjogbnVsbCwKICAgICJsYXN0Q29udHJvbCI6IHsKICAgICAgInRleHQiOiAiVmVyc2lvbiAxIMK3IFBlbmRpbmciLAogICAgICAicmVjdCI6IHsKICAgICAgICAieCI6IDQzOSwKICAgICAgICAieSI6IDcwMC4yNSwKICAgICAgICAid2lkdGgiOiAxMzkuNzY1NjI1LAogICAgICAgICJoZWlnaHQiOiAyOCwKICAgICAgICAidG9wIjogNzAwLjI1LAogICAgICAgICJyaWdodCI6IDU3OC43NjU2MjUsCiAgICAgICAgImJvdHRvbSI6IDcyOC4yNSwKICAgICAgICAibGVmdCI6IDQzOQogICAgICB9CiAgICB9LAogICAgIm92ZXJmbG93IjogZmFsc2UsCiAgICAiYWZ0ZXIiOiB7CiAgICAgICJ2aWV3cG9ydCI6IHsKICAgICAgICAid2lkdGgiOiAxMzgwLAogICAgICAgICJoZWlnaHQiOiA5NjAKICAgICAgfSwKICAgICAgImRldmljZVBpeGVsUmF0aW8iOiAxLAogICAgICAicmVjdCI6IHsKICAgICAgICAieCI6IDQxOCwKICAgICAgICAieSI6IC02MzIuNSwKICAgICAgICAid2lkdGgiOiA4OTYsCiAgICAgICAgImhlaWdodCI6IDEzNTMuNzUsCiAgICAgICAgInRvcCI6IC02MzIuNSwKICAgICAgICAicmlnaHQiOiAxMzE0LAogICAgICAgICJib3R0b20iOiA3MjEuMjUsCiAgICAgICAgImxlZnQiOiA0MTgKICAgICAgfSwKICAgICAgImNsaXAiOiB7CiAgICAgICAgImxlZnQiOiAzNTIsCiAgICAgICAgInRvcCI6IDExNiwKICAgICAgICAicmlnaHQiOiAxMzgwLAogICAgICAgICJib3R0b20iOiA5NjAKICAgICAgfSwKICAgICAgInJvb3QiOiB7CiAgICAgICAgIngiOiAzNTIsCiAgICAgICAgInkiOiAxMTYsCiAgICAgICAgIndpZHRoIjogMTAyOCwKICAgICAgICAiaGVpZ2h0IjogODQ0LAogICAgICAgICJ0b3AiOiAxMTYsCiAgICAgICAgInJpZ2h0IjogMTM4MCwKICAgICAgICAiYm90dG9tIjogOTYwLAogICAgICAgICJsZWZ0IjogMzUyCiAgICAgIH0sCiAgICAgICJzY3JvbGxUb3AiOiAyMzk3LAogICAgICAic2Nyb2xsSGVpZ2h0IjogNDAyNSwKICAgICAgInZpc2libGVTdGFydCI6IDc0OC41LAogICAgICAidmlzaWJsZUVuZCI6IDEzNTMuNzUsCiAgICAgICJvcGFjaXR5IjogMSwKICAgICAgInJ1bm5pbmdBbmltYXRpb25zIjogMCwKICAgICAgInVub2JzY3VyZWQiOiB0cnVlLAogICAgICAic2hlZXQiOiBudWxsLAogICAgICAibGFzdENvbnRyb2wiOiB7CiAgICAgICAgInRleHQiOiAiVmVyc2lvbiAxIMK3IFBlbmRpbmciLAogICAgICAgICJyZWN0IjogewogICAgICAgICAgIngiOiA0MzksCiAgICAgICAgICAieSI6IDcwMC4yNSwKICAgICAgICAgICJ3aWR0aCI6IDEzOS43NjU2MjUsCiAgICAgICAgICAiaGVpZ2h0IjogMjgsCiAgICAgICAgICAidG9wIjogNzAwLjI1LAogICAgICAgICAgInJpZ2h0IjogNTc4Ljc2NTYyNSwKICAgICAgICAgICJib3R0b20iOiA3MjguMjUsCiAgICAgICAgICAibGVmdCI6IDQzOQogICAgICAgIH0KICAgICAgfSwKICAgICAgIm92ZXJmbG93IjogZmFsc2UKICAgIH0KICB9LAogIHsKICAgICJuYW1lIjogIndlYi1mdWxsLXNvdXJjZS1yZXZpZXctNjQwLXBhcnQtMS5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiA2NDAsCiAgICAgICJoZWlnaHQiOiA5NjAKICAgIH0sCiAgICAiZGV2aWNlUGl4ZWxSYXRpbyI6IDEsCiAgICAicmVjdCI6IHsKICAgICAgIngiOiAxNiwKICAgICAgInkiOiAxNzUuNSwKICAgICAgIndpZHRoIjogNjA4LAogICAgICAiaGVpZ2h0IjogMTYyNSwKICAgICAgInRvcCI6IDE3NS41LAogICAgICAicmlnaHQiOiA2MjQsCiAgICAgICJib3R0b20iOiAxODAwLjUsCiAgICAgICJsZWZ0IjogMTYKICAgIH0sCiAgICAiY2xpcCI6IHsKICAgICAgImxlZnQiOiAwLAogICAgICAidG9wIjogMTYwLAogICAgICAicmlnaHQiOiA2NDAsCiAgICAgICJib3R0b20iOiA5NjAKICAgIH0sCiAgICAicm9vdCI6IHsKICAgICAgIngiOiAwLAogICAgICAieSI6IDE2MCwKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogODAwLAogICAgICAidG9wIjogMTYwLAogICAgICAicmlnaHQiOiA2NDAsCiAgICAgICJib3R0b20iOiA5NjAsCiAgICAgICJsZWZ0IjogMAogICAgfSwKICAgICJzY3JvbGxUb3AiOiAxNzg1LAogICAgInNjcm9sbEhlaWdodCI6IDQ0NDgsCiAgICAidmlzaWJsZVN0YXJ0IjogMCwKICAgICJ2aXNpYmxlRW5kIjogNzg0LjUsCiAgICAib3BhY2l0eSI6IDEsCiAgICAicnVubmluZ0FuaW1hdGlvbnMiOiAwLAogICAgInVub2JzY3VyZWQiOiB0cnVlLAogICAgInNoZWV0IjogbnVsbCwKICAgICJsYXN0Q29udHJvbCI6IHsKICAgICAgInRleHQiOiAiVmVyc2lvbiAxIMK3IFBlbmRpbmciLAogICAgICAicmVjdCI6IHsKICAgICAgICAieCI6IDM3LAogICAgICAgICJ5IjogMTc3OS41LAogICAgICAgICJ3aWR0aCI6IDEzOS43NjU2MjUsCiAgICAgICAgImhlaWdodCI6IDI4LAogICAgICAgICJ0b3AiOiAxNzc5LjUsCiAgICAgICAgInJpZ2h0IjogMTc2Ljc2NTYyNSwKICAgICAgICAiYm90dG9tIjogMTgwNy41LAogICAgICAgICJsZWZ0IjogMzcKICAgICAgfQogICAgfSwKICAgICJvdmVyZmxvdyI6IGZhbHNlLAogICAgImFmdGVyIjogewogICAgICAidmlld3BvcnQiOiB7CiAgICAgICAgIndpZHRoIjogNjQwLAogICAgICAgICJoZWlnaHQiOiA5NjAKICAgICAgfSwKICAgICAgImRldmljZVBpeGVsUmF0aW8iOiAxLAogICAgICAicmVjdCI6IHsKICAgICAgICAieCI6IDE2LAogICAgICAgICJ5IjogMTc1LjUsCiAgICAgICAgIndpZHRoIjogNjA4LAogICAgICAgICJoZWlnaHQiOiAxNjI1LAogICAgICAgICJ0b3AiOiAxNzUuNSwKICAgICAgICAicmlnaHQiOiA2MjQsCiAgICAgICAgImJvdHRvbSI6IDE4MDAuNSwKICAgICAgICAibGVmdCI6IDE2CiAgICAgIH0sCiAgICAgICJjbGlwIjogewogICAgICAgICJsZWZ0IjogMCwKICAgICAgICAidG9wIjogMTYwLAogICAgICAgICJyaWdodCI6IDY0MCwKICAgICAgICAiYm90dG9tIjogOTYwCiAgICAgIH0sCiAgICAgICJyb290IjogewogICAgICAgICJ4IjogMCwKICAgICAgICAieSI6IDE2MCwKICAgICAgICAid2lkdGgiOiA2NDAsCiAgICAgICAgImhlaWdodCI6IDgwMCwKICAgICAgICAidG9wIjogMTYwLAogICAgICAgICJyaWdodCI6IDY0MCwKICAgICAgICAiYm90dG9tIjogOTYwLAogICAgICAgICJsZWZ0IjogMAogICAgICB9LAogICAgICAic2Nyb2xsVG9wIjogMTc4NSwKICAgICAgInNjcm9sbEhlaWdodCI6IDQ0NDgsCiAgICAgICJ2aXNpYmxlU3RhcnQiOiAwLAogICAgICAidmlzaWJsZUVuZCI6IDc4NC41LAogICAgICAib3BhY2l0eSI6IDEsCiAgICAgICJydW5uaW5nQW5pbWF0aW9ucyI6IDAsCiAgICAgICJ1bm9ic2N1cmVkIjogdHJ1ZSwKICAgICAgInNoZWV0IjogbnVsbCwKICAgICAgImxhc3RDb250cm9sIjogewogICAgICAgICJ0ZXh0IjogIlZlcnNpb24gMSDCtyBQZW5kaW5nIiwKICAgICAgICAicmVjdCI6IHsKICAgICAgICAgICJ4IjogMzcsCiAgICAgICAgICAieSI6IDE3NzkuNSwKICAgICAgICAgICJ3aWR0aCI6IDEzOS43NjU2MjUsCiAgICAgICAgICAiaGVpZ2h0IjogMjgsCiAgICAgICAgICAidG9wIjogMTc3OS41LAogICAgICAgICAgInJpZ2h0IjogMTc2Ljc2NTYyNSwKICAgICAgICAgICJib3R0b20iOiAxODA3LjUsCiAgICAgICAgICAibGVmdCI6IDM3CiAgICAgICAgfQogICAgICB9LAogICAgICAib3ZlcmZsb3ciOiBmYWxzZQogICAgfQogIH0sCiAgewogICAgIm5hbWUiOiAid2ViLWZ1bGwtc291cmNlLXJldmlldy02NDAtcGFydC0yLnBuZyIsCiAgICAidmlld3BvcnQiOiB7CiAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgImhlaWdodCI6IDk2MAogICAgfSwKICAgICJkZXZpY2VQaXhlbFJhdGlvIjogMSwKICAgICJyZWN0IjogewogICAgICAieCI6IDE2LAogICAgICAieSI6IC01NDQuNSwKICAgICAgIndpZHRoIjogNjA4LAogICAgICAiaGVpZ2h0IjogMTYyNSwKICAgICAgInRvcCI6IC01NDQuNSwKICAgICAgInJpZ2h0IjogNjI0LAogICAgICAiYm90dG9tIjogMTA4MC41LAogICAgICAibGVmdCI6IDE2CiAgICB9LAogICAgImNsaXAiOiB7CiAgICAgICJsZWZ0IjogMCwKICAgICAgInRvcCI6IDE2MCwKICAgICAgInJpZ2h0IjogNjQwLAogICAgICAiYm90dG9tIjogOTYwCiAgICB9LAogICAgInJvb3QiOiB7CiAgICAgICJ4IjogMCwKICAgICAgInkiOiAxNjAsCiAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgImhlaWdodCI6IDgwMCwKICAgICAgInRvcCI6IDE2MCwKICAgICAgInJpZ2h0IjogNjQwLAogICAgICAiYm90dG9tIjogOTYwLAogICAgICAibGVmdCI6IDAKICAgIH0sCiAgICAic2Nyb2xsVG9wIjogMjUwNSwKICAgICJzY3JvbGxIZWlnaHQiOiA0NDQ4LAogICAgInZpc2libGVTdGFydCI6IDcwNC41LAogICAgInZpc2libGVFbmQiOiAxNTA0LjUsCiAgICAib3BhY2l0eSI6IDEsCiAgICAicnVubmluZ0FuaW1hdGlvbnMiOiAwLAogICAgInVub2JzY3VyZWQiOiB0cnVlLAogICAgInNoZWV0IjogbnVsbCwKICAgICJsYXN0Q29udHJvbCI6IHsKICAgICAgInRleHQiOiAiVmVyc2lvbiAxIMK3IFBlbmRpbmciLAogICAgICAicmVjdCI6IHsKICAgICAgICAieCI6IDM3LAogICAgICAgICJ5IjogMTA1OS41LAogICAgICAgICJ3aWR0aCI6IDEzOS43NjU2MjUsCiAgICAgICAgImhlaWdodCI6IDI4LAogICAgICAgICJ0b3AiOiAxMDU5LjUsCiAgICAgICAgInJpZ2h0IjogMTc2Ljc2NTYyNSwKICAgICAgICAiYm90dG9tIjogMTA4Ny41LAogICAgICAgICJsZWZ0IjogMzcKICAgICAgfQogICAgfSwKICAgICJvdmVyZmxvdyI6IGZhbHNlLAogICAgImFmdGVyIjogewogICAgICAidmlld3BvcnQiOiB7CiAgICAgICAgIndpZHRoIjogNjQwLAogICAgICAgICJoZWlnaHQiOiA5NjAKICAgICAgfSwKICAgICAgImRldmljZVBpeGVsUmF0aW8iOiAxLAogICAgICAicmVjdCI6IHsKICAgICAgICAieCI6IDE2LAogICAgICAgICJ5IjogLTU0NC41LAogICAgICAgICJ3aWR0aCI6IDYwOCwKICAgICAgICAiaGVpZ2h0IjogMTYyNSwKICAgICAgICAidG9wIjogLTU0NC41LAogICAgICAgICJyaWdodCI6IDYyNCwKICAgICAgICAiYm90dG9tIjogMTA4MC41LAogICAgICAgICJsZWZ0IjogMTYKICAgICAgfSwKICAgICAgImNsaXAiOiB7CiAgICAgICAgImxlZnQiOiAwLAogICAgICAgICJ0b3AiOiAxNjAsCiAgICAgICAgInJpZ2h0IjogNjQwLAogICAgICAgICJib3R0b20iOiA5NjAKICAgICAgfSwKICAgICAgInJvb3QiOiB7CiAgICAgICAgIngiOiAwLAogICAgICAgICJ5IjogMTYwLAogICAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgICAiaGVpZ2h0IjogODAwLAogICAgICAgICJ0b3AiOiAxNjAsCiAgICAgICAgInJpZ2h0IjogNjQwLAogICAgICAgICJib3R0b20iOiA5NjAsCiAgICAgICAgImxlZnQiOiAwCiAgICAgIH0sCiAgICAgICJzY3JvbGxUb3AiOiAyNTA1LAogICAgICAic2Nyb2xsSGVpZ2h0IjogNDQ0OCwKICAgICAgInZpc2libGVTdGFydCI6IDcwNC41LAogICAgICAidmlzaWJsZUVuZCI6IDE1MDQuNSwKICAgICAgIm9wYWNpdHkiOiAxLAogICAgICAicnVubmluZ0FuaW1hdGlvbnMiOiAwLAogICAgICAidW5vYnNjdXJlZCI6IHRydWUsCiAgICAgICJzaGVldCI6IG51bGwsCiAgICAgICJsYXN0Q29udHJvbCI6IHsKICAgICAgICAidGV4dCI6ICJWZXJzaW9uIDEgwrcgUGVuZGluZyIsCiAgICAgICAgInJlY3QiOiB7CiAgICAgICAgICAieCI6IDM3LAogICAgICAgICAgInkiOiAxMDU5LjUsCiAgICAgICAgICAid2lkdGgiOiAxMzkuNzY1NjI1LAogICAgICAgICAgImhlaWdodCI6IDI4LAogICAgICAgICAgInRvcCI6IDEwNTkuNSwKICAgICAgICAgICJyaWdodCI6IDE3Ni43NjU2MjUsCiAgICAgICAgICAiYm90dG9tIjogMTA4Ny41LAogICAgICAgICAgImxlZnQiOiAzNwogICAgICAgIH0KICAgICAgfSwKICAgICAgIm92ZXJmbG93IjogZmFsc2UKICAgIH0KICB9LAogIHsKICAgICJuYW1lIjogIndlYi1mdWxsLXNvdXJjZS1yZXZpZXctNjQwLXBhcnQtMy5wbmciLAogICAgInZpZXdwb3J0IjogewogICAgICAid2lkdGgiOiA2NDAsCiAgICAgICJoZWlnaHQiOiA5NjAKICAgIH0sCiAgICAiZGV2aWNlUGl4ZWxSYXRpbyI6IDEsCiAgICAicmVjdCI6IHsKICAgICAgIngiOiAxNiwKICAgICAgInkiOiAtMTI2NC41LAogICAgICAid2lkdGgiOiA2MDgsCiAgICAgICJoZWlnaHQiOiAxNjI1LAogICAgICAidG9wIjogLTEyNjQuNSwKICAgICAgInJpZ2h0IjogNjI0LAogICAgICAiYm90dG9tIjogMzYwLjUsCiAgICAgICJsZWZ0IjogMTYKICAgIH0sCiAgICAiY2xpcCI6IHsKICAgICAgImxlZnQiOiAwLAogICAgICAidG9wIjogMTYwLAogICAgICAicmlnaHQiOiA2NDAsCiAgICAgICJib3R0b20iOiA5NjAKICAgIH0sCiAgICAicm9vdCI6IHsKICAgICAgIngiOiAwLAogICAgICAieSI6IDE2MCwKICAgICAgIndpZHRoIjogNjQwLAogICAgICAiaGVpZ2h0IjogODAwLAogICAgICAidG9wIjogMTYwLAogICAgICAicmlnaHQiOiA2NDAsCiAgICAgICJib3R0b20iOiA5NjAsCiAgICAgICJsZWZ0IjogMAogICAgfSwKICAgICJzY3JvbGxUb3AiOiAzMjI1LAogICAgInNjcm9sbEhlaWdodCI6IDQ0NDgsCiAgICAidmlzaWJsZVN0YXJ0IjogMTQyNC41LAogICAgInZpc2libGVFbmQiOiAxNjI1LAogICAgIm9wYWNpdHkiOiAxLAogICAgInJ1bm5pbmdBbmltYXRpb25zIjogMCwKICAgICJ1bm9ic2N1cmVkIjogdHJ1ZSwKICAgICJzaGVldCI6IG51bGwsCiAgICAibGFzdENvbnRyb2wiOiB7CiAgICAgICJ0ZXh0IjogIlZlcnNpb24gMSDCtyBQZW5kaW5nIiwKICAgICAgInJlY3QiOiB7CiAgICAgICAgIngiOiAzNywKICAgICAgICAieSI6IDMzOS41LAogICAgICAgICJ3aWR0aCI6IDEzOS43NjU2MjUsCiAgICAgICAgImhlaWdodCI6IDI4LAogICAgICAgICJ0b3AiOiAzMzkuNSwKICAgICAgICAicmlnaHQiOiAxNzYuNzY1NjI1LAogICAgICAgICJib3R0b20iOiAzNjcuNSwKICAgICAgICAibGVmdCI6IDM3CiAgICAgIH0KICAgIH0sCiAgICAib3ZlcmZsb3ciOiBmYWxzZSwKICAgICJhZnRlciI6IHsKICAgICAgInZpZXdwb3J0IjogewogICAgICAgICJ3aWR0aCI6IDY0MCwKICAgICAgICAiaGVpZ2h0IjogOTYwCiAgICAgIH0sCiAgICAgICJkZXZpY2VQaXhlbFJhdGlvIjogMSwKICAgICAgInJlY3QiOiB7CiAgICAgICAgIngiOiAxNiwKICAgICAgICAieSI6IC0xMjY0LjUsCiAgICAgICAgIndpZHRoIjogNjA4LAogICAgICAgICJoZWlnaHQiOiAxNjI1LAogICAgICAgICJ0b3AiOiAtMTI2NC41LAogICAgICAgICJyaWdodCI6IDYyNCwKICAgICAgICAiYm90dG9tIjogMzYwLjUsCiAgICAgICAgImxlZnQiOiAxNgogICAgICB9LAogICAgICAiY2xpcCI6IHsKICAgICAgICAibGVmdCI6IDAsCiAgICAgICAgInRvcCI6IDE2MCwKICAgICAgICAicmlnaHQiOiA2NDAsCiAgICAgICAgImJvdHRvbSI6IDk2MAogICAgICB9LAogICAgICAicm9vdCI6IHsKICAgICAgICAieCI6IDAsCiAgICAgICAgInkiOiAxNjAsCiAgICAgICAgIndpZHRoIjogNjQwLAogICAgICAgICJoZWlnaHQiOiA4MDAsCiAgICAgICAgInRvcCI6IDE2MCwKICAgICAgICAicmlnaHQiOiA2NDAsCiAgICAgICAgImJvdHRvbSI6IDk2MCwKICAgICAgICAibGVmdCI6IDAKICAgICAgfSwKICAgICAgInNjcm9sbFRvcCI6IDMyMjUsCiAgICAgICJzY3JvbGxIZWlnaHQiOiA0NDQ4LAogICAgICAidmlzaWJsZVN0YXJ0IjogMTQyNC41LAogICAgICAidmlzaWJsZUVuZCI6IDE2MjUsCiAgICAgICJvcGFjaXR5IjogMSwKICAgICAgInJ1bm5pbmdBbmltYXRpb25zIjogMCwKICAgICAgInVub2JzY3VyZWQiOiB0cnVlLAogICAgICAic2hlZXQiOiBudWxsLAogICAgICAibGFzdENvbnRyb2wiOiB7CiAgICAgICAgInRleHQiOiAiVmVyc2lvbiAxIMK3IFBlbmRpbmciLAogICAgICAgICJyZWN0IjogewogICAgICAgICAgIngiOiAzNywKICAgICAgICAgICJ5IjogMzM5LjUsCiAgICAgICAgICAid2lkdGgiOiAxMzkuNzY1NjI1LAogICAgICAgICAgImhlaWdodCI6IDI4LAogICAgICAgICAgInRvcCI6IDMzOS41LAogICAgICAgICAgInJpZ2h0IjogMTc2Ljc2NTYyNSwKICAgICAgICAgICJib3R0b20iOiAzNjcuNSwKICAgICAgICAgICJsZWZ0IjogMzcKICAgICAgICB9CiAgICAgIH0sCiAgICAgICJvdmVyZmxvdyI6IGZhbHNlCiAgICB9CiAgfQpd"
+                    },
+                    {
+                      "name": "web-project-managed-1380-part-1.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-project-managed-1380-part-1-png-7495b360f750a1274f7bf6fa1f24bcb29cd3785b.png"
+                    },
+                    {
+                      "name": "web-project-managed-1380-part-2.png",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/attachments/web-project-managed-1380-part-2-png-3a78835ecc62c583b943258112f940ce06b49d47.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/test-failed-2.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/tmp/multica-knowledge-ui-results/recapture2/collaboration-knowledge-We-62bc6-on-and-workspace-derivation-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-knowledge-ui-qa-20261101/e2e/fixtures/collaboration-knowledge.ts",
+                    "column": 122,
+                    "line": 292
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "518f6bbc4476ef6f9015-5553c27836ef6710d3b7",
+          "file": "collaboration-knowledge.spec.ts",
+          "line": 88,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-31T23:47:04.347Z",
+    "duration": 25977.246,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

@@ -12,6 +12,9 @@ import type { ApiClient } from "@multica/core/api/client";
 import { projectKeys } from "@multica/core/projects/queries";
 import { emptyProjectUpdateDraft, projectP1Keys, projectProgressDraftKey, useProjectAccessStore, useProjectProgressDraftStore, writeProjectProgressDraft } from "@multica/core/projects";
 import { p1Overview, p1Preview, p1Project } from "@multica/core/projects/test-fixtures/p1";
+// Knowledge interactions are canonical in collaboration/knowledge-panel.test.tsx.
+vi.mock("../../collaboration/knowledge-panel", () => ({ ManagedKnowledgePanel: ({ workspaceId, projectId }: { workspaceId: string; projectId?: string }) => <div data-testid="knowledge-target-mount" data-workspace={workspaceId} data-project={projectId} /> }));
+vi.mock("./project-knowledge-policy", () => ({ ProjectKnowledgePolicy: ({ workspaceId, projectId }: { workspaceId: string; projectId: string }) => <div data-testid="knowledge-policy-mount" data-workspace={workspaceId} data-project={projectId} /> }));
 
 const mocks = vi.hoisted(() => ({
   role: "admin",
@@ -402,6 +405,7 @@ describe("ProjectDetail task workspace", () => {
     renderProjectDetail();
 
     expect(screen.getByText("Create your first issue")).toBeInTheDocument();
+    expect(screen.getByTestId("knowledge-target-mount")).toHaveAttribute("data-project", PROJECT.id);
     expect(screen.getAllByRole("button", { name: /^new issue$/i })).toHaveLength(1);
     await userEvent.setup().click(screen.getByRole("button", { name: /^new issue$/i }));
     expect(mocks.openCreateIssue).toHaveBeenCalledOnce();
@@ -704,4 +708,14 @@ it("isolates cached same-tab overview navigation and flushes outgoing text under
   expect(screen.getByLabelText("Progress editor")).toHaveValue("First project's last keystroke");
   expect(mocks.editorEmitted).not.toHaveBeenCalled();
   view.unmount(); client.clear();
+});
+
+it("S2 explains the project stage-policy exit requirement without success or navigation", async () => {
+  renderProjectDetail();
+  await userEvent.click(screen.getByRole("button", { name: "Delete project" }));
+  await userEvent.click(screen.getByRole("button", { name: "Delete" }));
+  const options = mocks.deleteProject.mock.calls[0]?.[1] as { onError?: (error: Error) => void };
+  options.onError?.(new ApiError("PRIVATE server message", 409, "Conflict", { code: "stage_policy_exit_required", error: "stage_policy_exit_required", message: "PRIVATE server message" }));
+  expect(mocks.toastError).toHaveBeenCalledWith("Disable stage gates before deleting this project.");
+  expect(mocks.push).not.toHaveBeenCalled();expect(mocks.toastSuccess).not.toHaveBeenCalled();
 });

@@ -1,0 +1,1027 @@
+// @vitest-environment jsdom
+import { useState, type ReactNode } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { I18nProvider } from "@multica/core/i18n/react";
+import type {
+  McpServerTemplate,
+  WorkspaceMcpServer,
+} from "@multica/core/types";
+import enSettings from "../locales/en/settings.json";
+import enAgents from "../locales/en/agents.json";
+import { ApiError } from "@multica/core/api";
+import { McpTemplateCatalog } from "./mcp-market";
+import { McpSetupDialog } from "./mcp-setup-dialog";
+
+const mocks = vi.hoisted(() => ({
+  create: vi.fn(),
+  resetCreate: vi.fn(),
+  assign: vi.fn(),
+  custom: vi.fn(),
+  templates: [] as unknown[] | undefined,
+  templatesPending: false,
+  templatesError: false,
+  refetch: vi.fn(),
+  queryOptions: vi.fn(),
+  agents: [] as unknown[],
+  roleTemplates: [] as unknown[] | undefined,
+  squadTemplates: [] as unknown[] | undefined,
+  metadataError: false,
+  metadataQueries: vi.fn(),
+}));
+vi.mock("@multica/core/api", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/api")>(),
+  api: { getBaseUrl: () => "https://multica.test" },
+}));
+vi.mock("../settings/hooks/use-mcp-server-templates", () => ({
+  useMcpServerTemplates: (_ws: string, options: unknown) => {
+    mocks.queryOptions(options);
+    return ({
+    data: mocks.templates,
+    isPending: mocks.templatesPending,
+    isError: mocks.templatesError,
+    refetch: mocks.refetch,
+  }); },
+}));
+vi.mock("@multica/core/workspace/mutations", () => ({
+  useCreateWorkspaceMcpServerFromTemplate: () => ({
+    mutateAsync: mocks.create,
+    reset: mocks.resetCreate,
+    isPending: false,
+  }),
+  useAssignWorkspaceMcpServer: () => ({
+    mutateAsync: mocks.assign,
+    isPending: false,
+  }),
+}));
+vi.mock("../agents/create/use-role-templates", () => ({
+  useRoleTemplates: (options: { enabled?: boolean }) => {
+    mocks.metadataQueries("roles", options);
+    return ({
+    data: mocks.roleTemplates,
+    isPending: false,
+    isError: mocks.metadataError,
+    refetch: mocks.refetch,
+    });
+  },
+  useSquadTemplates: (options: { enabled?: boolean }) => {
+    mocks.metadataQueries("squads", options);
+    return ({
+    data: mocks.squadTemplates,
+    isPending: false,
+    isError: mocks.metadataError,
+    refetch: mocks.refetch,
+    });
+  },
+}));
+vi.mock("@multica/core/workspace/queries", () => ({
+  agentListOptions: () => ({
+    queryKey: ["agents"],
+    queryFn: async () => mocks.agents,
+  }),
+}));
+const template: McpServerTemplate = {
+  key: "playwright",
+  title: "Playwright",
+  description: "Browse the web",
+  config: { command: "npx" },
+  version: "1",
+  category: "browser",
+  requirements: ["Node.js and npx"],
+};
+const documentationTemplates: McpServerTemplate[] = [
+  {
+    key: "microsoft-learn",
+    title: "Microsoft Learn",
+    description: "Search official Microsoft documentation and code examples.",
+    config: { type: "http", url: "https://learn.microsoft.com/api/mcp" },
+    version: "1",
+    category: "documentation",
+    documentationUrl: "https://learn.microsoft.com/en-us/training/support/mcp",
+    requirements: ["Streamable HTTP support and network access", "Public documentation only; no training or user profile information"],
+  },
+  {
+    key: "deepwiki",
+    title: "DeepWiki",
+    description: "Explore documentation and ask questions about public GitHub repositories.",
+    config: { type: "http", url: "https://mcp.deepwiki.com/mcp" },
+    version: "1",
+    category: "documentation",
+    documentationUrl: "https://docs.devin.ai/work-with-devin/deepwiki-mcp",
+    requirements: ["Streamable HTTP support and network access", "Indexed public repositories only; private repositories are not supported"],
+  },
+];
+function Wrapper({ children }: { children: ReactNode }) {
+  const [client] = useState(() => new QueryClient({ defaultOptions: { queries: { retry: false } } }));
+  return (
+    <QueryClientProvider client={client}>
+      <I18nProvider
+        locale="en"
+        resources={{ en: { settings: enSettings, agents: enAgents } }}
+      >
+        {children}
+      </I18nProvider>
+    </QueryClientProvider>
+  );
+}
+function renderCatalog(
+  props: Partial<Parameters<typeof McpTemplateCatalog>[0]> = {},
+) {
+  return render(
+    <McpTemplateCatalog
+      workspaceId="ws"
+      servers={[]}
+      canManage
+      onCustom={mocks.custom}
+      {...props}
+    />,
+    { wrapper: Wrapper },
+  );
+}
+function renderAssignment(
+  canManage = true,
+  agentContext?: Parameters<typeof McpSetupDialog>[0]["agentContext"],
+) {
+  return render(
+    <McpSetupDialog
+      workspaceId="ws"
+      initialServer={{
+        id: "saved",
+        workspace_id: "ws",
+        name: "playwright",
+        transport: "stdio",
+        created_at: "",
+        updated_at: "",
+      }}
+      servers={[]}
+      canManage={canManage}
+      agentContext={agentContext}
+      onClose={vi.fn()}
+    />,
+    { wrapper: Wrapper },
+  );
+}
+describe("MCP market", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.templatesPending = false;
+    mocks.templatesError = false;
+    mocks.metadataError = false;
+    mocks.refetch.mockImplementation(async () => ({ data: mocks.templates, isError: mocks.templatesError }));
+    mocks.agents = [
+      { id: "a", name: "Ada" },
+      { id: "b", name: "Ben" },
+    ];
+    mocks.templates = [
+      template,
+      {
+        ...template,
+        key: "thinking",
+        title: "Sequential thinking",
+        category: "reasoning",
+      },
+    ];
+    mocks.roleTemplates = [{ key: "reviewer", title: "Reviewer", name: "Reviewer" }];
+    mocks.squadTemplates = [{
+      key: "delivery",
+      title: "Delivery",
+      name: "Delivery",
+      leader: { template_key: "delivery-lead", title: "Delivery lead", name: "Lead" },
+      members: [],
+    }];
+    mocks.create.mockResolvedValue({
+      id: "saved",
+      name: "playwright",
+      transport: "stdio",
+    });
+    mocks.assign.mockResolvedValue({ succeeded: ["a", "b"], failed: [] });
+  });
+  it("filters sources independently of search/category, refreshes deployment immediately, and keeps same-key instances separate", async () => {
+    const user = userEvent.setup();
+    mocks.templates!.push({ ...template, source: "deployment", title: "Team browser", config: {}, transport: "http", version: "sha256:abc", category: "coding" });
+    renderCatalog({ servers: [{ id: "deployed", workspace_id: "ws", name: "internal-browser", transport: "http", template_key: "playwright", template_source: "deployment", created_at: "", updated_at: "" }] });
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent("All sources3");
+    const builtin = screen.getByRole("button", { name: "View configuration: Playwright" });
+    expect(within(builtin).queryByText(/internal-browser/)).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Reasoning" }));
+    await user.type(screen.getByRole("searchbox"), "browser");
+    const before = mocks.refetch.mock.calls.length;
+    await user.click(screen.getByRole("button", { name: "Deployment provided" }));
+    expect(mocks.refetch).toHaveBeenCalledTimes(before + 1);
+    expect(screen.getByRole("searchbox")).toHaveValue("browser");
+    expect(screen.queryByRole("button", { name: "Reasoning" })).toBeNull();
+    expect(screen.getByRole("button", { name: "View configuration: Team browser" })).toHaveTextContent("internal-browser");
+    expect(screen.getByRole("button", { name: "Deployment provided" })).toHaveTextContent("1");
+    expect(screen.getByRole("button", { name: "Platform built-in" })).toHaveTextContent("2");
+  });
+  it("enables catalog reads and polling only while active", () => {
+    const view = renderCatalog();
+    expect(mocks.queryOptions).toHaveBeenLastCalledWith({ enabled: true, poll: true });
+    view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} active={false} />);
+    expect(mocks.queryOptions).toHaveBeenLastCalledWith({ enabled: false, poll: false });
+    view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} active />);
+    expect(mocks.queryOptions).toHaveBeenLastCalledWith({ enabled: true, poll: true });
+  });
+  it("explains an empty deployment source without exposing server setup details", async () => {
+    const user = userEvent.setup();
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "Deployment provided" }));
+    expect(screen.getByText("No deployment-provided MCP templates yet. Contact your deployment administrator to add one.")).toBeVisible();
+    expect(screen.queryByText(/MULTICA_MCP/)).toBeNull();
+  });
+  it("restores focus to catalog search when the preview opener was withdrawn", async () => {
+    const user = userEvent.setup();
+    const view = renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    mocks.templates = [];
+    view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} />);
+    await user.click(screen.getByRole("button", { name: "Close" }));
+    await waitFor(() => expect(screen.getByRole("searchbox", { name: "Search MCP templates" })).toHaveFocus());
+  });
+  it("saves a config-free deployment snapshot then retains assignment when the catalog removes it", async () => {
+    const user = userEvent.setup();
+    const deployment = { ...template, source: "deployment", title: "Team browser", config: {}, transport: "http", version: "sha256:abc" };
+    mocks.templates = [deployment];
+    const view = renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Team browser" }));
+    expect(screen.queryByText(/sha256/)).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenCalledWith({ name: "playwright", templateSource: "deployment", templateKey: "playwright", templateVersion: "sha256:abc" });
+    await screen.findByRole("heading", { name: "Choose agents" });
+    mocks.templates = [];
+    view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} />);
+    expect(screen.getByRole("heading", { name: "Choose agents" })).toBeVisible();
+    expect(mocks.custom).not.toHaveBeenCalled();
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("blocks changed snapshots, preserves drafts on refresh failure, and clears inputs only when reloading", async () => {
+    const user = userEvent.setup();
+    const deployment = { ...template, source: "deployment", config: {}, transport: "http", version: "sha256:old", inputs: [{ key: "token", label: "Access token", description: "", required: true, secret: true }] };
+    mocks.templates = [deployment];
+    const view = renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    await user.type(screen.getByLabelText("Access token", { exact: false }), "old-secret");
+    const rerender = () => view.rerender(<McpTemplateCatalog workspaceId="ws" servers={[]} canManage onCustom={mocks.custom} />);
+    mocks.templatesError = true;
+    rerender();
+    expect(screen.getByLabelText("Access token", { exact: false })).toHaveValue("old-secret");
+    expect(screen.getByRole("button", { name: "Save and continue" })).toBeEnabled();
+    mocks.templatesError = false;
+    mocks.templates = [{ ...deployment, version: "sha256:new" }];
+    rerender();
+    expect(screen.getByRole("button", { name: "Save and continue" })).toBeDisabled();
+    expect(screen.getByLabelText("Access token", { exact: false })).toHaveValue("old-secret");
+    await user.click(screen.getByRole("button", { name: "Reload template" }));
+    expect(screen.getByLabelText("Access token", { exact: false })).toHaveValue("");
+    await user.type(screen.getByLabelText("Access token", { exact: false }), "new-secret");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({ templateVersion: "sha256:new", templateInputs: { token: "new-secret" } }));
+  });
+  it.each(["mcp_template_changed", "mcp_template_unavailable", "mcp_catalog_unavailable"])("recovers from %s without leaking API details", async (code) => {
+    const user = userEvent.setup();
+    mocks.create.mockRejectedValueOnce(new ApiError("sensitive-path", code === "mcp_catalog_unavailable" ? 503 : 409, "", { code }));
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(screen.queryByText("sensitive-path")).toBeNull();
+    expect(screen.getByRole("textbox", { name: "Configuration name" })).toHaveValue("playwright");
+    if (code === "mcp_catalog_unavailable") {
+      expect(screen.getByRole("button", { name: "Save and continue" })).toBeEnabled();
+      expect(screen.getByRole("button", { name: "Refresh catalog" })).toBeEnabled();
+    } else {
+      expect(screen.getByRole("button", { name: "Save and continue" })).toBeDisabled();
+      expect(mocks.refetch).toHaveBeenCalled();
+    }
+  });
+  it("keeps source totals separate from filtered template results", async () => {
+    const user = userEvent.setup();
+    mocks.templates!.push({ ...template, key: "unusable", config: {} });
+    renderCatalog();
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent("All sources2");
+    await user.click(screen.getByRole("button", { name: "Reasoning" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Templates found: 1");
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent("All sources2");
+  });
+  it("discovers intranet collaboration and operations recipes with multiple secret inputs", async () => {
+    const user = userEvent.setup();
+    mocks.templates = [{
+      ...template, key: "gitlab", title: "GitLab MCP", category: "collaboration",
+      config: { command: "zereight-mcp-gitlab", args: [] },
+      requirements: ["Install the local executable before using the intranet catalog."],
+      inputs: [
+        { key: "gitlab_api_url", label: "GitLab API URL", description: "Use the intranet API ending in /api/v4.", required: true, secret: false },
+        { key: "gitlab_token", label: "Access token", description: "Use a read-only token.", required: true, secret: true },
+      ],
+    }, { ...template, key: "grafana", title: "Grafana MCP", category: "operations" }];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "Operations & monitoring" }));
+    expect(screen.getByRole("button", { name: "View configuration: Grafana MCP" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "View configuration: GitLab MCP" })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Collaboration" }));
+    await user.click(screen.getByRole("button", { name: "View configuration: GitLab MCP" }));
+    expect(screen.getByText("Install the local executable before using the intranet catalog.")).toBeVisible();
+    await user.type(screen.getByLabelText("GitLab API URL", { exact: false }), "https://gitlab.internal/api/v4");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    const token = screen.getByLabelText("Access token", { exact: false });
+    expect(token).toHaveFocus();
+    expect(token).toHaveAttribute("type", "password");
+    expect(mocks.create).not.toHaveBeenCalled();
+    await user.type(token, "fixture-readonly-token");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({
+      templateKey: "gitlab", templateInputs: {
+        gitlab_api_url: "https://gitlab.internal/api/v4", gitlab_token: "fixture-readonly-token",
+      },
+    }));
+    await screen.findByRole("heading", { name: "Choose agents" });
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("treats a required constructor input as an empty draft until the user enters its value", async () => {
+    const user = userEvent.setup();
+    mocks.templates = [{
+      ...template,
+      source: "deployment",
+      transport: "http",
+      config: {},
+      version: "sha256:constructor-input",
+      inputs: [{ key: "constructor", label: "Account token", description: "", required: true, secret: true }],
+    }];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    const input = screen.getByLabelText("Account token", { exact: false });
+    expect(input).toHaveValue("");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent("Enter Account token.");
+    expect(input).toHaveFocus();
+    await user.type(input, "account-secret");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenCalledWith({
+      name: "playwright",
+      templateSource: "deployment",
+      templateKey: "playwright",
+      templateVersion: "sha256:constructor-input",
+      templateInputs: { constructor: "account-secret" },
+    });
+    await screen.findByRole("heading", { name: "Choose agents" });
+    expect(screen.queryByLabelText("Account token", { exact: false })).toBeNull();
+  });
+  it("requires and masks database input, preserves it on failure, then clears the form on save", async () => {
+    const user = userEvent.setup();
+    const database = {
+      ...template, key: "dbhub", title: "DBHub", category: "database",
+      inputs: [{ key: "database_url", label: "Database connection URL", description: "Use a database reachable from the agent runtime.", required: true, secret: true }],
+    };
+    mocks.templates = [database, { ...template, key: "serena", title: "Serena", category: "coding" }];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "Coding" }));
+    expect(screen.getByRole("button", { name: "View configuration: Serena" })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Databases" }));
+    expect(screen.queryByRole("button", { name: "View configuration: Serena" })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "View configuration: DBHub" }));
+    const input = screen.getByLabelText("Database connection URL", { exact: false });
+    expect(input).toHaveAttribute("type", "password");
+    expect(input).toHaveAttribute("aria-required", "true");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).not.toHaveBeenCalled();
+    expect(input).toHaveFocus();
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("alert")).toHaveTextContent("Enter Database connection URL.");
+    const databaseUrl = "postgresql://user:secret@localhost/app";
+    await user.type(input, databaseUrl);
+    mocks.create.mockRejectedValueOnce(new Error("Temporary server failure"));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("Temporary server failure"));
+    expect(input).toHaveValue(databaseUrl);
+    expect(mocks.resetCreate).toHaveBeenCalledTimes(1);
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenLastCalledWith({
+      name: "dbhub", templateSource: "builtin", templateKey: "dbhub", templateVersion: "1", templateInputs: { database_url: databaseUrl },
+    });
+    await screen.findByRole("heading", { name: "Choose agents" });
+    expect(screen.queryByLabelText("Database connection URL", { exact: false })).toBeNull();
+    expect(mocks.resetCreate).toHaveBeenCalledTimes(2);
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("reuses an existing database configuration without asking for its secret again", async () => {
+    const user = userEvent.setup();
+    render(<McpSetupDialog workspaceId="ws" template={{
+      ...template, key: "postgres-mcp", title: "Postgres MCP Pro",
+      inputs: [{ key: "database_url", label: "Database connection URL", description: "", required: true, secret: true }],
+    }} available servers={[{
+      id: "existing", workspace_id: "ws", name: "dev-db", transport: "stdio", template_key: "postgres-mcp", template_version: "1", created_at: "", updated_at: "",
+    }]} canManage onCustom={mocks.custom} onClose={vi.fn()} />, { wrapper: Wrapper });
+    await user.click(screen.getByRole("button", { name: "Use dev-db" }));
+    await screen.findByRole("heading", { name: "Choose agents" });
+    expect(mocks.create).not.toHaveBeenCalled();
+    expect(screen.queryByLabelText("Database connection URL", { exact: false })).toBeNull();
+  });
+  it("does not present unknown template sources as zero counts", () => {
+    mocks.templates = undefined;
+    mocks.templatesPending = true;
+    renderCatalog({ servers: undefined });
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent(/^All sources$/);
+    expect(screen.getByRole("button", { name: "Deployment provided" })).toHaveTextContent(/^Deployment provided$/);
+  });
+  it.each(documentationTemplates)("discovers $title by documentation category and search, then explicitly assigns its saved HTTP recipe", async (recipe) => {
+    const user = userEvent.setup();
+    mocks.templates!.push(...documentationTemplates);
+    mocks.create.mockResolvedValue({
+      id: "saved-http",
+      name: recipe.key,
+      transport: "http",
+      template_key: recipe.key,
+      template_version: recipe.version,
+    });
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "Documentation & knowledge" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Templates found: 2");
+    expect(screen.queryByRole("button", { name: "View configuration: Playwright" })).toBeNull();
+    await user.type(screen.getByRole("searchbox", { name: "Search MCP templates" }), recipe.key);
+    expect(screen.getByRole("status")).toHaveTextContent("Templates found: 1");
+    expect(screen.getByRole("button", { name: "All sources" })).toHaveTextContent("All sources4");
+    await user.click(screen.getByRole("button", { name: `View configuration: ${recipe.title}` }));
+    for (const requirement of recipe.requirements ?? []) {
+      expect(screen.getByText(requirement, { exact: true })).toBeVisible();
+    }
+    expect(screen.getByRole("link", { name: "Documentation" })).toHaveAttribute("href", recipe.documentationUrl);
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenCalledWith({
+      name: recipe.key,
+      templateSource: "builtin",
+      templateKey: recipe.key,
+      templateVersion: "1",
+    });
+    const ada = await screen.findByRole("checkbox", { name: "Ada" });
+    expect(ada).not.toBeChecked();
+    expect(mocks.assign).not.toHaveBeenCalled();
+    await user.click(ada);
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved-http", agentIds: ["a"] });
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+  });
+  it("hides category filters the loaded catalog does not use", () => {
+    renderCatalog();
+    expect(screen.getByRole("button", { name: "Browser" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Reasoning" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Documentation & knowledge" })).toBeNull();
+  });
+  it("lets members browse without creation", async () => {
+    const user = userEvent.setup();
+    renderCatalog({ canManage: false });
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    expect(
+      screen.getByRole("heading", { name: "Set up Playwright" }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole("button", { name: "Save and continue" }),
+    ).toBeNull();
+  });
+  it("filters by category and search without disabling renamed template instances", async () => {
+    const user = userEvent.setup();
+    renderCatalog({
+      servers: [
+        {
+          id: "existing",
+          workspace_id: "ws",
+          name: "qa-browser",
+          transport: "stdio",
+          created_at: "",
+          updated_at: "",
+          template_key: "playwright",
+        } satisfies WorkspaceMcpServer,
+      ],
+    });
+    expect(screen.getByText(/qa-browser/)).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Reasoning" }));
+    expect(
+      screen.queryByRole("button", { name: "View configuration: Playwright" }),
+    ).toBeNull();
+    await user.type(
+      screen.getByRole("searchbox", { name: "Search MCP templates" }),
+      "missing",
+    );
+    expect(screen.getByText("No matching templates")).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Clear filters" }));
+    expect(
+      screen.getByRole("button", { name: "View configuration: Playwright" }),
+    ).toBeEnabled();
+  });
+  it("announces result counts as filters change without moving search focus", async () => {
+    const user = userEvent.setup();
+    renderCatalog();
+    const status = screen.getByRole("status");
+    expect(status).toHaveTextContent("Templates found: 2");
+    await user.click(screen.getByRole("button", { name: "Reasoning" }));
+    expect(status).toHaveTextContent("Templates found: 1");
+    const search = screen.getByRole("searchbox", { name: "Search MCP templates" });
+    await user.type(search, "missing");
+    expect(status).toHaveTextContent("Templates found: 0");
+    expect(search).toHaveFocus();
+    await user.click(screen.getByRole("button", { name: "Clear filters" }));
+    expect(status).toHaveTextContent("Templates found: 2");
+  });
+  it("keeps the saved ID after partial failure and retries only failed assignments", async () => {
+    const user = userEvent.setup();
+    mocks.assign
+      .mockResolvedValueOnce({
+        succeeded: ["a"],
+        failed: [{ agentId: "b", message: "Permission changed" }],
+      })
+      .mockResolvedValueOnce({ succeeded: ["b"], failed: [] });
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(mocks.create).toHaveBeenCalledWith({
+      name: "playwright",
+      templateSource: "builtin",
+      templateKey: "playwright",
+      templateVersion: "1",
+    });
+    await waitFor(() =>
+      expect(
+        screen.getByRole("heading", { name: "Choose agents" }),
+      ).toBeVisible(),
+    );
+    expect(screen.getByRole("heading", { name: "Choose agents" })).toHaveFocus();
+    const ada = await screen.findByRole("checkbox", { name: "Ada" });
+    expect(ada).not.toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Ben" })).not.toBeChecked();
+    expect(mocks.assign).not.toHaveBeenCalled();
+    await user.click(ada);
+    await user.click(screen.getByRole("checkbox", { name: "Ben" }));
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(await screen.findByText("Permission changed")).toBeVisible();
+    expect(screen.getByRole("checkbox", { name: "Ada" })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    const search = screen.getByRole("searchbox", { name: "Search agents" });
+    await user.type(search, "Ada");
+    expect(screen.queryByRole("checkbox", { name: "Ben" })).toBeNull();
+    expect(screen.getByText("Ben: Permission changed")).toBeVisible();
+    expect(screen.getByText(enSettings.mcp.market.partial_failure)).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Clear selection" }));
+    expect(screen.getByRole("checkbox", { name: "Ada" })).toBeChecked();
+    expect(screen.queryByRole("button", { name: "Retry failed" })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(screen.getByRole("checkbox", { name: "Ben" })).not.toBeChecked();
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    await user.type(search, "Ada");
+    await user.click(screen.getByRole("button", { name: "Retry failed" }));
+    await waitFor(() =>
+      expect(mocks.assign).toHaveBeenLastCalledWith({
+        serverId: "saved",
+        agentIds: ["b"],
+      }),
+    );
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole("button", { name: "Done" })).toBeEnabled();
+  });
+  it("searches full descriptions and submits hidden selections by ID after clearing no matches", async () => {
+    const user = userEvent.setup();
+    const description = `${"General documentation. ".repeat(20)}Database migration specialist`;
+    mocks.agents = [
+      { id: "a", name: "Ada", description: "Interface design" },
+      { id: "b", name: "Ben", description, avatar_url: "/uploads/ben.png" },
+      { id: "c", name: "Ada", description: "Release operations" },
+    ];
+    renderAssignment();
+    const ada = (await screen.findAllByRole("checkbox", { name: "Ada" }))[0]!;
+    expect(screen.getByRole("button", { name: "Assign selected" })).toBeDisabled();
+    await user.click(ada);
+    const search = screen.getByRole("searchbox", { name: "Search agents" });
+    const status = screen.getByRole("status");
+    await user.type(search, "  MIGRATION specialist  ");
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+    const ben = screen.getByRole("checkbox", { name: "Ben" });
+    expect(ben).toHaveAccessibleDescription(description);
+    expect(within(ben.closest("label")!).getByAltText("Ben")).toHaveAttribute("src", "https://multica.test/uploads/ben.png");
+    expect(search).toHaveFocus();
+    await user.click(ben);
+    expect(status).toHaveTextContent("Selected: 2");
+    expect(status).toHaveTextContent("Selected outside this view: 1");
+    await user.clear(search);
+    await user.type(search, "missing-agent");
+    expect(screen.getByText("No agents match your search.")).toBeVisible();
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    expect(status).toHaveTextContent("Selected: 2");
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(search).toHaveFocus();
+    expect(screen.getAllByRole("checkbox", { name: "Ada" })[0]).toBeChecked();
+    expect(screen.getAllByRole("checkbox", { name: "Ada" })[1]).not.toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Ben" })).toBeChecked();
+    await user.type(search, "Ben");
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved", agentIds: ["a", "b"] });
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+  it("scopes bulk selection to current results and keeps selected review independent of search", async () => {
+    const user = userEvent.setup();
+    mocks.agents = [
+      { id: "a", name: "Ada", description: "Design" },
+      { id: "b", name: "Ben", description: "Deployment" },
+      { id: "c", name: "Cai", description: "Deployment" },
+    ];
+    renderAssignment();
+    const ada = await screen.findByRole("checkbox", { name: "Ada" });
+    await user.click(screen.getByText("Ada"));
+    expect(ada).toBeChecked();
+    const search = screen.getByRole("searchbox", { name: "Search agents" });
+    await user.type(search, "deployment");
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(2);
+    expect(screen.getByRole("checkbox", { name: "Ben" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Cai" })).toBeChecked();
+    expect(screen.getByRole("status")).toHaveTextContent("Selected: 3");
+    await user.click(screen.getByRole("button", { name: "Deselect results" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Selected: 1");
+    await user.click(screen.getByRole("button", { name: "Show selected only" }));
+    expect(screen.getByRole("button", { name: "Show selected only" })).toHaveAttribute("aria-pressed", "true");
+    expect(search).toHaveValue("deployment");
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+    expect(screen.getByRole("checkbox", { name: "Ada" })).toBeChecked();
+    await user.click(screen.getByRole("button", { name: "Clear selection" }));
+    expect(screen.getByText("No selected agents to show.")).toBeVisible();
+    expect(screen.getByRole("button", { name: "Assign selected" })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Show selected only" }));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(3);
+    screen.getAllByRole("checkbox").forEach((checkbox) => expect(checkbox).not.toBeChecked());
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("excludes selected agents that become archived, system-owned or removed from counts and submission", async () => {
+    const user = userEvent.setup();
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    mocks.agents = [
+      { id: "a", name: "Ada" },
+      { id: "b", name: "Ben" },
+      { id: "c", name: "Cai" },
+    ];
+    mocks.assign.mockResolvedValueOnce({ succeeded: ["d"], failed: [] });
+    render(
+      <QueryClientProvider client={client}>
+        <I18nProvider locale="en" resources={{ en: { settings: enSettings, agents: enAgents } }}>
+          <McpSetupDialog
+            workspaceId="ws"
+            initialServer={{ id: "saved", workspace_id: "ws", name: "playwright", transport: "stdio", created_at: "", updated_at: "" }}
+            servers={[]}
+            canManage
+            onClose={vi.fn()}
+          />
+        </I18nProvider>
+      </QueryClientProvider>,
+    );
+    await screen.findByRole("checkbox", { name: "Ada" });
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    const status = screen.getByRole("status");
+    expect(status).toHaveTextContent("Selected: 3");
+
+    await act(async () => {
+      client.setQueryData(["agents"], [
+        { id: "a", name: "Ada", archived_at: "2026-10-12T00:00:00Z" },
+        { id: "b", name: "Ben", system_key: "internal" },
+        { id: "d", name: "Dee" },
+      ]);
+    });
+    await waitFor(() => expect(status).toHaveTextContent("Selected: 0"));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+    expect(screen.getByRole("checkbox", { name: "Dee" })).not.toBeChecked();
+    expect(screen.getByRole("button", { name: "Assign selected" })).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    expect(status).toHaveTextContent("Selected: 1");
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved", agentIds: ["d"] });
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+  it("disables every selection control while an assignment awaits confirmation", async () => {
+    const user = userEvent.setup();
+    let finishAssignment!: (value: { succeeded: string[]; failed: { agentId: string; message: string }[] }) => void;
+    mocks.assign.mockReturnValueOnce(new Promise((resolve) => { finishAssignment = resolve; }));
+    renderAssignment();
+    await screen.findByRole("checkbox", { name: "Ada" });
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    await user.type(screen.getByRole("searchbox", { name: "Search agents" }), "Ada");
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(screen.getByRole("searchbox", { name: "Search agents" })).toBeDisabled();
+    for (const name of ["Select results", "Deselect results", "Clear selection", "Clear search", "Show selected only", "Assign selected"]) {
+      expect(screen.getByRole("button", { name })).toBeDisabled();
+    }
+    within(screen.getByRole("group", { name: "Agent categories" })).getAllByRole("button").forEach((button) => expect(button).toBeDisabled());
+    expect(screen.getByRole("checkbox", { name: "Ada" })).toHaveAttribute("aria-disabled", "true");
+    await user.click(screen.getByRole("button", { name: "Clear selection" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Selected: 2");
+    await act(async () => { finishAssignment({ succeeded: ["a", "b"], failed: [] }); });
+    expect(screen.getByRole("button", { name: "Done" })).toBeEnabled();
+    expect(screen.getByRole("status")).toHaveTextContent("Assigned: 2");
+  });
+  it("keeps workspace selection and search disabled without management permission", async () => {
+    renderAssignment(false);
+    expect(await screen.findByRole("checkbox", { name: "Ada" })).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByRole("searchbox", { name: "Search agents" })).toBeDisabled();
+    for (const name of ["Select results", "Deselect results", "Clear selection", "Show selected only", "Assign selected"]) {
+      expect(screen.getByRole("button", { name })).toBeDisabled();
+    }
+    within(screen.getByRole("group", { name: "Agent categories" })).getAllByRole("button").forEach((button) => expect(button).toBeDisabled());
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it.each([false, true])("retains the contextual singleton and its unsupported=%s assignment guard", async (unsupported) => {
+    const user = userEvent.setup();
+    renderAssignment(false, { agent: { id: "a", name: "Ada" }, managedNames: new Set(), runtimeNames: new Set(), unsupported });
+    const ada = screen.getByRole("checkbox", { name: "Ada" });
+    expect(ada).not.toBeChecked();
+    expect(screen.queryByRole("searchbox", { name: "Search agents" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Select results" })).toBeNull();
+    expect(screen.queryByRole("group", { name: "Agent categories" })).toBeNull();
+    expect(mocks.metadataQueries.mock.calls.every(([, options]) => options.enabled === false)).toBe(true);
+    await user.click(ada);
+    const submit = screen.getByRole("button", { name: "Assign selected" });
+    if (unsupported) {
+      expect(ada).toHaveAttribute("aria-disabled", "true");
+      expect(submit).toBeDisabled();
+      expect(mocks.assign).not.toHaveBeenCalled();
+    } else {
+      expect(submit).toBeEnabled();
+      await user.click(submit);
+      expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved", agentIds: ["a"] });
+    }
+  });
+  it("retains the assignment step when the new saved configuration updates the library", async () => {
+    const user = userEvent.setup();
+    const view = renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    await screen.findByRole("heading", { name: "Choose agents" });
+    view.rerender(
+      <McpTemplateCatalog
+        workspaceId="ws"
+        servers={[
+          {
+            id: "saved",
+            workspace_id: "ws",
+            name: "playwright",
+            transport: "stdio",
+            created_at: "",
+            updated_at: "",
+            template_key: "playwright",
+          },
+        ]}
+          canManage
+        onCustom={mocks.custom}
+      />,
+    );
+    expect(
+      screen.getByRole("heading", { name: "Choose agents" }),
+    ).toBeVisible();
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+  });
+  it("keeps a failed creation editable without granting access", async () => {
+    const user = userEvent.setup();
+    mocks.create.mockRejectedValueOnce(new Error("Server unavailable"));
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Server unavailable",
+    );
+    expect(
+      screen.getByRole("textbox", { name: "Configuration name" }),
+    ).toHaveValue("playwright");
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("explains the required name format before submission and keeps it with errors", async () => {
+    const user = userEvent.setup();
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    const name = screen.getByRole("textbox", { name: "Configuration name" });
+    expect(name).toBeRequired();
+    expect(name).toHaveAccessibleDescription(
+      "Required. Use English letters, numbers, hyphens, and underscores.",
+    );
+    await user.clear(name);
+    await user.type(name, "浏览器");
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(name).toHaveFocus();
+    expect(name).toHaveAttribute("aria-invalid", "true");
+    expect(name).toHaveAccessibleDescription(
+      /Required\. Use English letters, numbers, hyphens, and underscores\..*Use only/,
+    );
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+  it("resumes assignment for an existing custom configuration without creating again", async () => {
+    const user = userEvent.setup();
+    render(
+      <McpSetupDialog
+        workspaceId="ws"
+        initialServer={{
+          id: "custom",
+          workspace_id: "ws",
+          name: "my-tool",
+          transport: "http",
+          created_at: "",
+          updated_at: "",
+        }}
+        servers={[]}
+        canManage
+        onClose={vi.fn()}
+      />,
+      { wrapper: Wrapper },
+    );
+    await user.click(await screen.findByRole("checkbox", { name: "Ada" }));
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({
+      serverId: "custom",
+      agentIds: ["a"],
+    });
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+  it("does not switch to an existing configuration while creation is pending", async () => {
+    const user = userEvent.setup();
+    let finishCreate!: (value: { id: string; name: string }) => void;
+    mocks.create.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishCreate = resolve;
+        }),
+    );
+    renderCatalog({
+      servers: [
+        {
+          id: "existing",
+          workspace_id: "ws",
+          name: "qa-browser",
+          transport: "stdio",
+          created_at: "",
+          updated_at: "",
+          template_key: "playwright",
+        },
+      ],
+    });
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(
+      screen.getByRole("button", { name: "Use qa-browser" }),
+    ).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Use qa-browser" }));
+    expect(screen.queryByRole("heading", { name: "Choose agents" })).toBeNull();
+    finishCreate({ id: "new-server", name: "playwright" });
+    await user.click(await screen.findByRole("checkbox", { name: "Ada" }));
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({
+      serverId: "new-server",
+      agentIds: ["a"],
+    });
+  });
+  it("only offers active user-created agents when inventory contains invalid or system entries", async () => {
+    const user = userEvent.setup();
+    mocks.agents = [
+      null,
+      { id: "system", name: "Mika", system_key: "mika" },
+      { id: "archived", name: "Archived", archived_at: "2026-01-01" },
+      { id: "missing-name" },
+      { id: "a", name: "Ada" },
+    ];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    expect(await screen.findByRole("checkbox", { name: "Ada" })).toBeVisible();
+    expect(screen.getAllByRole("checkbox")).toHaveLength(1);
+  });
+
+  it("filters the saved assignment directory by real agent categories without changing hidden selection payloads", async () => {
+    const user = userEvent.setup();
+    mocks.agents = [
+      { id: "specialist", name: "Renamed reviewer", template_key: "reviewer" },
+      { id: "coordinator", name: "Renamed lead", template_key: "delivery-lead" },
+      { id: "custom", name: "Custom category", category: "Research", template_key: "reviewer" },
+    ];
+    mocks.assign.mockResolvedValueOnce({ succeeded: ["specialist", "coordinator", "custom"], failed: [] });
+    renderAssignment();
+    await screen.findByRole("checkbox", { name: "Renamed reviewer" });
+
+    expect(screen.getByRole("group", { name: "Agent categories" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "All (3)" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Specialists (1)" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Coordinators (1)" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Research (1)" })).toBeVisible();
+
+    await user.click(screen.getByRole("button", { name: "Specialists (1)" }));
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    await user.click(screen.getByRole("button", { name: "Coordinators (1)" }));
+    await user.click(screen.getByRole("button", { name: "Select results" }));
+    await user.click(screen.getByRole("button", { name: "Research (1)" }));
+    expect(screen.getByRole("checkbox", { name: "Custom category" })).toBeVisible();
+    expect(screen.queryByRole("checkbox", { name: "Renamed reviewer" })).toBeNull();
+    await user.click(screen.getByRole("checkbox", { name: "Custom category" }));
+    await user.click(screen.getByRole("button", { name: "All (3)" }));
+    expect(screen.getByRole("checkbox", { name: "Custom category" })).toBeChecked();
+    await user.click(screen.getByRole("button", { name: "Coordinators (1)" }));
+    expect(screen.getByRole("status")).toHaveTextContent("Selected outside this view: 2");
+    await user.click(screen.getByRole("button", { name: "Assign selected" }));
+    expect(mocks.assign).toHaveBeenCalledWith({ serverId: "saved", agentIds: ["specialist", "coordinator", "custom"] });
+  });
+
+  it("gates metadata requests to saved eligible rows that need template classification", async () => {
+    const user = userEvent.setup();
+    mocks.agents = [{ id: "specialist", name: "Renamed reviewer", template_key: "reviewer", category: "  " }];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    expect(mocks.metadataQueries.mock.calls.every(([, options]) => options.enabled === false)).toBe(true);
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    await screen.findByRole("button", { name: "Specialists (1)" });
+    expect(mocks.metadataQueries).toHaveBeenCalledWith("roles", { enabled: true });
+    expect(mocks.metadataQueries).toHaveBeenCalledWith("squads", { enabled: true });
+  });
+
+  it("does not enable metadata for explicit, untemplated, archived or system choices", async () => {
+    mocks.agents = [
+      { id: "plain", name: "Personal helper" },
+      { id: "explicit", name: "Research helper", template_key: "reviewer", category: "Research" },
+      { id: "archived", name: "Archived reviewer", template_key: "reviewer", archived_at: "2026-10-12" },
+      { id: "system", name: "System reviewer", template_key: "reviewer", system_key: "internal" },
+    ];
+    renderAssignment();
+    await screen.findByRole("checkbox", { name: "Personal helper" });
+    expect(mocks.metadataQueries.mock.calls.every(([, options]) => options.enabled === false)).toBe(true);
+  });
+
+  it("keeps initial metadata errors recoverable without losing query/category/selection, then uses cached catalogs on refresh errors", async () => {
+    const user = userEvent.setup();
+    const roles = mocks.roleTemplates;
+    const squads = mocks.squadTemplates;
+    mocks.roleTemplates = undefined;
+    mocks.squadTemplates = undefined;
+    mocks.metadataError = true;
+    mocks.agents = [
+      { id: "specialist", name: "Renamed reviewer", template_key: "reviewer", description: "Payments review" },
+      { id: "custom", name: "Research helper", category: "Research", description: "Payments research" },
+    ];
+    const view = renderAssignment();
+    await screen.findByRole("checkbox", { name: "Renamed reviewer" });
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not refresh category information.");
+    expect(screen.queryByRole("button", { name: "General-purpose agents (2)" })).toBeNull();
+    await user.click(screen.getByRole("button", { name: "Research (1)" }));
+    await user.type(screen.getByRole("searchbox"), "payments");
+    await user.click(screen.getByRole("checkbox", { name: "Research helper" }));
+    mocks.refetch.mockImplementation(async () => {
+      mocks.roleTemplates = roles;
+      mocks.squadTemplates = squads;
+      mocks.metadataError = false;
+      return {};
+    });
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    expect(mocks.refetch).toHaveBeenCalledTimes(2);
+    view.rerender(
+      <McpSetupDialog workspaceId="ws" initialServer={{ id: "saved", workspace_id: "ws", name: "playwright", transport: "stdio", created_at: "", updated_at: "" }} servers={[]} canManage onClose={vi.fn()} />,
+    );
+    expect(screen.getByRole("searchbox")).toHaveValue("payments");
+    expect(screen.getByRole("button", { name: "Research (1)" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("checkbox", { name: "Research helper" })).toBeChecked();
+    await user.click(screen.getByRole("button", { name: "Specialists (1)" }));
+    mocks.metadataError = true;
+    view.rerender(
+      <McpSetupDialog workspaceId="ws" initialServer={{ id: "saved", workspace_id: "ws", name: "playwright", transport: "stdio", created_at: "", updated_at: "" }} servers={[]} canManage onClose={vi.fn()} />,
+    );
+    expect(screen.getByRole("checkbox", { name: "Renamed reviewer" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Specialists (1)" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Retry" })).toBeVisible();
+    expect(screen.getByRole("status")).toHaveTextContent("Selected: 1");
+  });
+
+  it("does not introduce squad or system categories in the saved assignment picker", async () => {
+    mocks.agents = [
+      { id: "a", name: "Ada", system_key: "mika" },
+      { id: "b", name: "Builder", template_key: "reviewer" },
+    ];
+    renderAssignment();
+    await screen.findByRole("checkbox", { name: "Builder" });
+    expect(screen.queryByRole("button", { name: /squad|system/i })).toBeNull();
+    expect(screen.queryByText(/squad|system/i)).toBeNull();
+  });
+  it("can save and skip without assigning any agent", async () => {
+    const user = userEvent.setup();
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    await user.click(screen.getByRole("button", { name: "Save and continue" }));
+    await user.click(screen.getByRole("button", { name: "Skip for now" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it("keeps old catalog entries on the ordinary custom path", async () => {
+    const user = userEvent.setup();
+    mocks.templates = [{ ...template, version: undefined }];
+    renderCatalog();
+    await user.click(screen.getByRole("button", { name: "View configuration: Playwright" }));
+    await user.click(
+      screen.getByRole("button", { name: "Open custom configuration" }),
+    );
+    expect(mocks.custom).toHaveBeenCalledWith({
+      name: "playwright",
+      config: { command: "npx" },
+    }, expect.any(Function));
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+});

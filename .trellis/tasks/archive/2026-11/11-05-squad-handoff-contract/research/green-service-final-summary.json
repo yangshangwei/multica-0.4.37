@@ -1,0 +1,27 @@
+{
+  "package": "service",
+  "exit_code": 0,
+  "state_root": "/private/tmp/multica-squad-service-final-n0alo6b9",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-p",
+    "2",
+    "-parallel",
+    "2",
+    "-count=1",
+    "-timeout=3m",
+    "./internal/service",
+    "-run",
+    "^(TestReviewGateInstructionsCoverEveryRosterRole|TestBuiltinSkillsConformToTemplate|TestBuiltinSkillsFrontmatterIsStrictYAML|TestWorkingOnIssuesSkillCoversIssueLoopContracts|TestSquadsSkillCoversLeaderRoutingContract|TestSquadTemplates_.*|TestAgentRoleTemplates_.*|TestAgentRoleTemplate_.*|TestRoleSkillTemplates_RosterIsFifteen|TestReleaseGateGovernanceDrill_Contract)$",
+    "-json"
+  ],
+  "named_pass": 61,
+  "failed": [],
+  "skipped": []
+}

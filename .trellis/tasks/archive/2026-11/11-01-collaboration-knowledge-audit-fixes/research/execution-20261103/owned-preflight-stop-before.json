@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-11-03T09:40:03.977984+00:00",
+  "owner": "01a1a0a5-47d8-7f90-bc95-15d004c13bd9",
+  "candidate": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "health_before": {
+    "status": "ok",
+    "pid": 44536,
+    "commit": "b6c74033f",
+    "started_at": "2026-11-03T08:25:11Z"
+  },
+  "api_record_before": {
+    "component": "api",
+    "mode": "development",
+    "build_id": "",
+    "command": "go run -ldflags '-X main.commit=b6c74033f' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server)",
+    "source_id": "8c1cb5b85e7e03ec71fb7583b11d2fda143fb2a5bc5fb54ba63b9dc25694b272",
+    "configuration_id": "194f8992fbabfea53c2f744d5e316abffaf7dbaa8141c7fb406e3b48722c4446",
+    "commit": "b6c74033f",
+    "launcher_pid": 44510,
+    "started_at": "2026-11-03T08:25:08Z",
+    "listener_pid": 44536
+  },
+  "renderer_command_before": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -u -m http.server 19857 --bind 127.0.0.1 --directory /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/apps/desktop/out/renderer",
+  "scope": "only owned preflight API/Web and renderer; all databases/Redis retained"
+}

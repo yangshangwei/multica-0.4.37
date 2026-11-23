@@ -1,0 +1,946 @@
+{
+  "FAIL": 0,
+  "HEAD": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+  "SKIP": 0,
+  "accepted": true,
+  "actual_input_index": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/TAG3-r2-actual-final-inputs-index.json",
+    "sha256": "c2cc333dda98cf5736eda95e07e7476622e975a70831a8cc5e121f7a0dd3b50f"
+  },
+  "actual_tagged_test_invocations": 2,
+  "all100_input_references_match": true,
+  "all_typed_observations": [
+    {
+      "all": 0,
+      "client": 0,
+      "database": "multica_knowledge_host_composite_20261101_87098785d91b",
+      "gate": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/typed-resources/result.json",
+        "sha256": "d8bbbc8f5311fb648e8313474f4656d8772b2ccb8e6115e9ed9d8c7f3c56ac82"
+      },
+      "mode": "normal",
+      "observation": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/typed-resources/1.observation.json",
+        "sha256": "933b177615c3bb4e74e5280332711e75a0792d254b220c10d450683f0d419985"
+      },
+      "observed_at": "2026-11-16T02:26:20.032632+00:00",
+      "other": 0,
+      "raw": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/typed-resources/1.stdout.json",
+        "sha256": "340858078ee3c31086ac0705959be083d46df095e0da7b81aed35f5daa728a85"
+      },
+      "stage": "step",
+      "transcript": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/typed-resources/transcript.json",
+        "sha256": "1a6252264f7b5918156b0ba7a1030a3d3a19a3d8ae7de3ebe56008e36a6412ac"
+      }
+    },
+    {
+      "all": 0,
+      "client": 0,
+      "database": "multica_knowledge_host_composite_20261101_87098785d91b",
+      "gate": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-1/result.json",
+        "sha256": "5f61cd99d607010aa43c726bdc25a401996942eaa74c3e03daa6b64be5cb9dec"
+      },
+      "mode": "normal",
+      "observation": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-1/1.observation.json",
+        "sha256": "b6b044c215bb6d9007ce6409b7fa7a2663ee7e14daa34ce5de6e7d56114cb52e"
+      },
+      "observed_at": "2026-11-16T02:28:42.963936+00:00",
+      "other": 0,
+      "raw": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-1/1.stdout.json",
+        "sha256": "549e60253a17baeed3a5690b53e0c9e0d0d5d4de2aa7880e73ab9eaa28888812"
+      },
+      "stage": "final",
+      "transcript": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-1/transcript.json",
+        "sha256": "99ac9b25c6c91e05f10bd92a5eea47843ab03a2dd01e7363acb6ee27d009a051"
+      }
+    },
+    {
+      "all": 0,
+      "client": 0,
+      "database": "multica_knowledge_host_composite_20261101_75b7996af7f8",
+      "gate": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/typed-resources/result.json",
+        "sha256": "48c2d342f831e3ec911038b58613e118432c7dcf2782547cd43e84d3556932ff"
+      },
+      "mode": "race",
+      "observation": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/typed-resources/1.observation.json",
+        "sha256": "f2ba3713d6d20188310829a940a2bc42334b79068aafb7303414fe784eacafed"
+      },
+      "observed_at": "2026-11-16T02:28:40.801397+00:00",
+      "other": 0,
+      "raw": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/typed-resources/1.stdout.json",
+        "sha256": "449e0135da732fef7dece1ed3a1e53e15398ba7a5c2fa2167200de7307df0642"
+      },
+      "stage": "step",
+      "transcript": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/typed-resources/transcript.json",
+        "sha256": "61cf03f1350291aa52a6557e11409519903b12c494d48e851553f22b560ad8c8"
+      }
+    },
+    {
+      "all": 0,
+      "client": 0,
+      "database": "multica_knowledge_host_composite_20261101_75b7996af7f8",
+      "gate": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-2/result.json",
+        "sha256": "ea1c6c613c616d1572f4e8ed0ecfb2a0772f11051707f69d231669149a719719"
+      },
+      "mode": "race",
+      "observation": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-2/1.observation.json",
+        "sha256": "730ece6ce5537564e30cfeaebc79f168e6dccc1862cb0e7ece2be4f28395e228"
+      },
+      "observed_at": "2026-11-16T02:28:43.037708+00:00",
+      "other": 0,
+      "raw": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-2/1.stdout.json",
+        "sha256": "b446580797046757d235f977b07b9e44e0c904bff5d920dcb627e31fecb6ceec"
+      },
+      "stage": "final",
+      "transcript": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-2/transcript.json",
+        "sha256": "adb8c2d797baf487a41cc393c28160fea21353cc5eccad01b8a65dc2e2b7b9bb"
+      }
+    }
+  ],
+  "at": "2026-11-16T02:36:32.463237+00:00",
+  "blocking_findings": [],
+  "blocking_findings_open": 0,
+  "components": [
+    {
+      "PID_finished": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/native-Go-10660-finished.json",
+        "sha256": "11e8578765bc34adbf090a89100d6e00d41dc4c0320d964958cf4e605df93dff"
+      },
+      "PID_started": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/native-Go-10660-started.json",
+        "sha256": "815c019bbd0c3bede73ea51611d5709005a99e95d5993371ef0336665ba7cbc8"
+      },
+      "actual_argv": [
+        "/bin/bash",
+        "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source/server",
+        "test",
+        "-json",
+        "-count=1",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-timeout=15m",
+        "-tags=knowledgeintegration",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite"
+      ],
+      "actual_environment_files": [
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-2.json",
+          "sha256": "ad3ea9a63f36c1b60a191164879197f0cc811e9e60506cb9cd581ab7393f0b86"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-3.json",
+          "sha256": "ad3ea9a63f36c1b60a191164879197f0cc811e9e60506cb9cd581ab7393f0b86"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-4.json",
+          "sha256": "4e5835abc05c0959c81eee7d502d46b8f76c7f79c4593859b633f3ff8903800e"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-7.json",
+          "sha256": "b97be15400286c4f20f196f0f563bb60f6893ed40c78bdeef972aa40ecd6aaef"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-8.json",
+          "sha256": "4e5835abc05c0959c81eee7d502d46b8f76c7f79c4593859b633f3ff8903800e"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-9.json",
+          "sha256": "4e5835abc05c0959c81eee7d502d46b8f76c7f79c4593859b633f3ff8903800e"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-10.json",
+          "sha256": "b97be15400286c4f20f196f0f563bb60f6893ed40c78bdeef972aa40ecd6aaef"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-11.json",
+          "sha256": "ad3ea9a63f36c1b60a191164879197f0cc811e9e60506cb9cd581ab7393f0b86"
+        }
+      ],
+      "counts": {
+        "fail": 0,
+        "pass": 17,
+        "run": 17,
+        "skip": 0
+      },
+      "database": "multica_knowledge_host_composite_20261101_87098785d91b",
+      "full_v3_replay_equal": true,
+      "independent_terminal_inventory_equal": true,
+      "inventory": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/strict-v3-inventory.json",
+        "sha256": "0117fb5f3c5747a13be0fad9b168eac3116f36e4a43abd52aeaffbb9371e11b0"
+      },
+      "leaf": 14,
+      "leaf_set_sha256": "fae933c5960c8bb62823e00cbaa31f1c369d1bbb5c61bc914ad31a01e57549bb",
+      "named": 17,
+      "named_set_sha256": "d0abd057035d16c746461098df118b1cffd76bbc549ac3b41c5d17d9bcc55bac",
+      "namer_AST": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-namer-AST-transform.json",
+        "sha256": "8b53c3955f937472124cb1862b235e8791c0de8c014ea9bf8da17331d3ee11c0"
+      },
+      "native_current_database_witness_count": 13,
+      "native_receipt": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/reports/knowledge-tagged-v2-normal-866dcb93.json",
+        "sha256": "22fbfc99d98b087a1e50e3742ec152d2b66ffc40bc91bcdb2e9ffe4dd81c6f2a"
+      },
+      "original_environment": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/environment.json",
+        "sha256": "78cc3ac4b74f5abe2f77a64e8f2d54a68f75a2f5b9c87c9ecdb1d1165df65ac9"
+      },
+      "pgid": 10553,
+      "pid": 10660,
+      "raw": {
+        "bytes": 871824,
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/tests.jsonl",
+        "sha256": "466638956505bd5f0df4fdcfe2ddc9b63820d24d9055efb8e11862c1a8d5aea4"
+      },
+      "result": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/result.json",
+        "sha256": "71ce697174115bc265798531e5c279708fe6a0463f8a2a589fba5a5f2a1d5e86"
+      },
+      "step": {
+        "build_tags": [
+          "knowledgeintegration"
+        ],
+        "expected_tops_sha256": "6957483edf719bd994e6e3f6e12c177a8b65145ae37c7dfb4973e13759e3169c",
+        "mode": "normal",
+        "package": "./cmd/server",
+        "selector": "^TestCollaborationKnowledgeHostComposite",
+        "slug": "router",
+        "timeout": "15m"
+      },
+      "subprocess_transcript": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/subprocess-transcript.json",
+        "sha256": "f782da7711b623b3e3afeb31734e674f348fd717807703312287a46f7b279732"
+      },
+      "top": 9
+    },
+    {
+      "PID_finished": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/native-Go-11477-finished.json",
+        "sha256": "c03238e5b4dafa9e1b05c805aa89572078c8a372ed3f252a4a9ad3c292fc04e8"
+      },
+      "PID_started": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/native-Go-11477-started.json",
+        "sha256": "7dde0cc0a29fb4074dbd92ff7431896cee0def6e3b7256eecc0e0255c59ad677"
+      },
+      "actual_argv": [
+        "/bin/bash",
+        "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source/scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "-C",
+        "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source/server",
+        "test",
+        "-json",
+        "-count=1",
+        "-p",
+        "1",
+        "-parallel",
+        "2",
+        "-timeout=15m",
+        "-race",
+        "-tags=knowledgeintegration",
+        "./cmd/server",
+        "-run",
+        "^TestCollaborationKnowledgeHostComposite"
+      ],
+      "actual_environment_files": [
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-2.json",
+          "sha256": "babe4a09765ed29381e53bce766180a6534144eb425886668e9506fb7334cc24"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-3.json",
+          "sha256": "babe4a09765ed29381e53bce766180a6534144eb425886668e9506fb7334cc24"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-4.json",
+          "sha256": "942a4ce870d8fb07a326aaf20d080a5b372ecbd93c104271fd73915c928d9085"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-7.json",
+          "sha256": "56dcd57e5007da4259bf6cf143333a2ed39185e97936c06dc08f052e4a887388"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-8.json",
+          "sha256": "942a4ce870d8fb07a326aaf20d080a5b372ecbd93c104271fd73915c928d9085"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-9.json",
+          "sha256": "942a4ce870d8fb07a326aaf20d080a5b372ecbd93c104271fd73915c928d9085"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-10.json",
+          "sha256": "56dcd57e5007da4259bf6cf143333a2ed39185e97936c06dc08f052e4a887388"
+        },
+        {
+          "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-11.json",
+          "sha256": "babe4a09765ed29381e53bce766180a6534144eb425886668e9506fb7334cc24"
+        }
+      ],
+      "counts": {
+        "fail": 0,
+        "pass": 17,
+        "run": 17,
+        "skip": 0
+      },
+      "database": "multica_knowledge_host_composite_20261101_75b7996af7f8",
+      "full_v3_replay_equal": true,
+      "independent_terminal_inventory_equal": true,
+      "inventory": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/strict-v3-inventory.json",
+        "sha256": "c0a5410160727c098b20403a2e3c5c3a7a86422b2ee56188e9a1df0aba4bf79c"
+      },
+      "leaf": 14,
+      "leaf_set_sha256": "fae933c5960c8bb62823e00cbaa31f1c369d1bbb5c61bc914ad31a01e57549bb",
+      "named": 17,
+      "named_set_sha256": "d0abd057035d16c746461098df118b1cffd76bbc549ac3b41c5d17d9bcc55bac",
+      "namer_AST": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-namer-AST-transform.json",
+        "sha256": "8b53c3955f937472124cb1862b235e8791c0de8c014ea9bf8da17331d3ee11c0"
+      },
+      "native_current_database_witness_count": 13,
+      "native_receipt": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/reports/knowledge-tagged-v2-race-5034012d.json",
+        "sha256": "fc3b9ab54f15881c9e6f7d5419d00bc0e32bc1b79097c13583f9e4cdcf541437"
+      },
+      "original_environment": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/environment.json",
+        "sha256": "2b153f2e7886aca996e74e5b6780964957c3620abfbe0a9288296709333d8d05"
+      },
+      "pgid": 10553,
+      "pid": 11477,
+      "raw": {
+        "bytes": 1286473,
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/tests.jsonl",
+        "sha256": "31b7d0b8d15c564346f9d4cf599509c3582b839ea72b2e307db69b413bd095cb"
+      },
+      "result": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/result.json",
+        "sha256": "28c9647e67bd7fc56ede8f8816a6a5a8388a81186e6672b1b5107e9e8e9b806c"
+      },
+      "step": {
+        "build_tags": [
+          "knowledgeintegration"
+        ],
+        "expected_tops_sha256": "6957483edf719bd994e6e3f6e12c177a8b65145ae37c7dfb4973e13759e3169c",
+        "mode": "race",
+        "package": "./cmd/server",
+        "selector": "^TestCollaborationKnowledgeHostComposite",
+        "slug": "router",
+        "timeout": "15m"
+      },
+      "subprocess_transcript": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/subprocess-transcript.json",
+        "sha256": "7b70951945bed55323d10487de4ee3362a2c2d9e0866c4a5e0f050b0f9ab2b98"
+      },
+      "top": 9
+    }
+  ],
+  "consumed_once": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/permit-consumed-1f6ed05a7af3beabbfed1d6dbddc7ec07f67b04a8443fab886fd8be9505a8c35.json",
+    "sha256": "6a9fdf8cee9ef77f0417b967d573449d228335f057a1870f38df408ceebd1f5f"
+  },
+  "driver": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/launcher-result.json",
+    "sha256": "97167d8226aef9e09b3a4b6ab23f022fcb3708ccc036f86d7a7aeaab9ae965a5"
+  },
+  "fake_only": {
+    "actual_input_and_broad_credential_refusal_assertions_passed": true,
+    "actual_lost_marker_safety_case_passed_both_modes": true,
+    "declared_and_source_bound": true,
+    "exact_two_tagged_fixture_source_shas": [
+      "2a23b2e20a664bcc5d4f91696f2310f46a50002a14153f33ba6443ed14b9b298",
+      "4895bf49e1cdd94aa9d29d39f623a6ddd059d3865beadd3ede3411a5f6ac1f41"
+    ],
+    "executable_is_copied_native_test_binary": true,
+    "no_real_model_accounts_or_installed_provider_selected": true,
+    "source_fake_capture_includes_individual_PIDs": false,
+    "temporary_copy_and_capture_files_separately_retained": false
+  },
+  "final_source_binding": {
+    "config_sha256": "1b9a599ceb33fd5ea118c1a6b44696148851d60ad6549342674f642a24a93a34",
+    "database_prefix": "multica_knowledge_host_composite_20261101_",
+    "equivalence_proof_sha256": "f27b2a45a148909093edbab3e50588f485bc26459b463303e041f9edca44d719",
+    "file_count": 10408,
+    "head": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+    "manifest_sha256": "be10fa334ea831163839c5daf90eed5effb979cd93b818774276bc0f6c546daf",
+    "old_no_tags_source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+    "pg_config_sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+    "source_id": "6cc2f561d1d8eb6c81569147dc7611d1feb84c8ccb06b2290d43b5b54dcb1f54",
+    "tagged_scope_sha256": "0246b334aac27ab59ecb3fe5941558707d930c9433d7ce6263ae31deb4d28fa0",
+    "tagged_top_count": 9,
+    "tools": {
+      "bash": {
+        "path": "/bin/bash",
+        "sha256": "07ad8525844ce61471e08e8c515b76bf063bac482394152bad814026cd577f69"
+      },
+      "git": {
+        "path": "/opt/homebrew/Cellar/git/2.52.0/bin/git",
+        "sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197"
+      },
+      "go": {
+        "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+      },
+      "node": {
+        "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+      },
+      "psql": {
+        "path": "/opt/homebrew/Cellar/libpq/18.6/bin/psql",
+        "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+      },
+      "python3": {
+        "path": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43"
+      }
+    },
+    "typed_helper_sha256": "139d3c038083d4dfdd972d9b067cf3cf65a095136fd8639451b9a8e5afe0458b",
+    "workspace_link_count": 32
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "intake": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/TAG3-r2-actual-intake.json",
+    "sha256": "35f7aaabc39496a42e740bf8bb7f4c51df74739d5dad086a467bf38c6dd01253"
+  },
+  "kind": "independent_actual_TAG3_r2_normal_race_acceptance",
+  "leaf_per_mode": 14,
+  "limits": {
+    "AC1_12_full_product_scope": false,
+    "LIVE": false,
+    "P2": false,
+    "P6": false,
+    "ROOT8877_adoption_accepted_by_this_receipt": false,
+    "actual_PG_database_state_after_recorded_observation_times": "not queried by reviewer",
+    "actual_source_adoption": false,
+    "final_ROOT_acceptance": false,
+    "final_knowledge": false,
+    "next_gate": "Separate independent8877/26-plan preparation/adoption clearance and NEW explicit main adoption authority; production build/runtime/journeys remain later gates.",
+    "production_build_ready": false,
+    "runtime_ready": false,
+    "source_ready": false
+  },
+  "mode_qualified_named_PASS_total": 34,
+  "named_PASS_per_mode": 17,
+  "new_Go_all_source_byte_fingerprint": "f7883cff56f32da49749fd4c3580cd0795fb8046fe08a28870e34475d0635b3e",
+  "normal_race_equal": true,
+  "old_Go6_identity_relabelled": false,
+  "old_no_tags_prerequisite": {
+    "current_source_id": "6cc2f561d1d8eb6c81569147dc7611d1feb84c8ccb06b2290d43b5b54dcb1f54",
+    "current_source_root": "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source",
+    "default_compile_input_equivalence": {
+      "new_source_id": "6cc2f561d1d8eb6c81569147dc7611d1feb84c8ccb06b2290d43b5b54dcb1f54",
+      "new_source_root": "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source",
+      "old_source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-tag3-source-fixture-inputeq-independent-review-20261116-6cc2f561d1d8.json",
+      "proof_sha256": "f27b2a45a148909093edbab3e50588f485bc26459b463303e041f9edca44d719",
+      "sha256": "64635164078c226fda1b31b2db364ae2d36520f87807daa91956947a5688712a"
+    },
+    "equivalence_proof": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-preparation-d17a4421f4c3/no-tags-compile-input-equivalence.json",
+    "original_Go6": {
+      "accepted_physical_component_databases": 7,
+      "accepted_six_steps": 6,
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-completion-four-20261116-04f2f1c712e7-29cfb354d77b/result.json",
+      "qualified_review": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-completion-four-six-no-tags-independent-final-review-20261116-1e081600b369.json",
+      "qualified_review_sha256": "00396ffe08965cc0bc8a4d7029c1f98a0356e136139b45cef67702fab3418157",
+      "sha256": "aabc436fb07a2275bed7650e08a1f22674b6f14dbe6610ca14fc9a7c56449c8e"
+    },
+    "original_Go6_source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33"
+  },
+  "permit": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/main-knowledge-tagged-v3-r2-20261116-b00dd7a1b021.json",
+    "sha256": "1f6ed05a7af3beabbfed1d6dbddc7ec07f67b04a8443fab886fd8be9505a8c35"
+  },
+  "preservation": {
+    "ROOT_Source_MD_ENV_PG_or_original_report_writes": 0,
+    "initial_recorder_failure_counterexample_and_corrected_r2_evidence_retained": true,
+    "original_b21_failed_normal_and_NOT_RUN_race_stay_false": true,
+    "original_router_SKIP_and_a57_a33_ad460_failures_and_permit_markers_unchanged": true,
+    "original_service_count1_backend_type_unknown_unchanged": true,
+    "rerun_or_drop": 0
+  },
+  "process_verification": {
+    "broader_unrecorded_fake_PID_cleanup_inferred": false,
+    "current_numeric_only_rows": [],
+    "hash_bound_producer_observation": {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/TAG3-r2-final-recorded-process-observation.json",
+      "sha256": "b2c2e8e023a219df0c54ea6431809c58eb6bd6d94722c6df9c80fafac04339ed"
+    },
+    "launcher_PGID": 10553,
+    "observed_at": "2026-11-16T02:36:32.463398+00:00",
+    "recorded_PIDs": [
+      10553,
+      10660,
+      11477
+    ]
+  },
+  "qualified_tagged_normal_race": true,
+  "result": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/result.json",
+    "sha256": "c91ca33c5ec0181fb067ac8ca811061132234d24a3bec343f0716902afea741a"
+  },
+  "reviewed_references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/result.json",
+      "sha256": "c91ca33c5ec0181fb067ac8ca811061132234d24a3bec343f0716902afea741a"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/main-knowledge-tagged-v3-r2-20261116-b00dd7a1b021.json",
+      "sha256": "1f6ed05a7af3beabbfed1d6dbddc7ec07f67b04a8443fab886fd8be9505a8c35"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/launcher-result.json",
+      "sha256": "97167d8226aef9e09b3a4b6ab23f022fcb3708ccc036f86d7a7aeaab9ae965a5"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/TAG3-r2-actual-intake.json",
+      "sha256": "35f7aaabc39496a42e740bf8bb7f4c51df74739d5dad086a467bf38c6dd01253"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/TAG3-r2-actual-final-inputs-index.json",
+      "sha256": "c2cc333dda98cf5736eda95e07e7476622e975a70831a8cc5e121f7a0dd3b50f"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+      "sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-owned-v2.py",
+      "sha256": "139d3c038083d4dfdd972d9b067cf3cf65a095136fd8639451b9a8e5afe0458b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-tagged-runner-v2.py",
+      "sha256": "d61263fc5e504c81855a64070981f9576c844804abe56a77cdd35b3be2d3a481"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-tagged-runner-v3-r2.py",
+      "sha256": "0b9850c279d847425407465038e930aedbbd6e38dd984babd287d4900d2a07ce"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/tagged-runner-config-v3-r2.json",
+      "sha256": "1b9a599ceb33fd5ea118c1a6b44696148851d60ad6549342674f642a24a93a34"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/tagged-v3-exact-nine-scope.json",
+      "sha256": "0246b334aac27ab59ecb3fe5941558707d930c9433d7ce6263ae31deb4d28fa0"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-preparation-d17a4421f4c3/TAG3-r2-final-review-inputs-index.json",
+      "sha256": "0026d1fc4b58b76dfb86facc6c76e2e8e68a664e26be001bac84d9746036b690"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-preparation-d17a4421f4c3/no-tags-compile-input-equivalence.json",
+      "sha256": "f27b2a45a148909093edbab3e50588f485bc26459b463303e041f9edca44d719"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/TAG3-r2-final-recorded-process-observation.json",
+      "sha256": "b2c2e8e023a219df0c54ea6431809c58eb6bd6d94722c6df9c80fafac04339ed"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/launcher-command.json",
+      "sha256": "9796fcc5299fbc6289a9bc36aad6375daa6d275c83438097893e5bb030beb3e9"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/launcher-started.json",
+      "sha256": "f651e8d8cf622f2059af28b19c9ec76fc3f56529e3c9fc246f069144ab2ea8ab"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/launcher.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/newreports/tagged-v3-r2-actual-cd349dd89742/launcher.stdout",
+      "sha256": "198708e2555f34c973440e6d1df94b501138775381d6f5fe0927e9833a4710ac"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-completion-four-20261116-04f2f1c712e7-29cfb354d77b/result.json",
+      "sha256": "aabc436fb07a2275bed7650e08a1f22674b6f14dbe6610ca14fc9a7c56449c8e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-20261116-f5289077fe4a-e44528dcfd4e/failed.json",
+      "sha256": "7e4429dd70b18af03ad1e8437afe595ac3d3533989631e059e7a9829a156a8be"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/environment.json",
+      "sha256": "78cc3ac4b74f5abe2f77a64e8f2d54a68f75a2f5b9c87c9ecdb1d1165df65ac9"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/home/Library/Application Support/go/telemetry/local/asm@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "9c239afc4af93243a16c7f1300ec67b265fcc87bc4260c350f3cad5ed4a297e5"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/home/Library/Application Support/go/telemetry/local/cgo@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "400567dd47d5337a5e57b3e954a6dd13e81f84b5079893b17420e1735025bc8e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/home/Library/Application Support/go/telemetry/local/compile@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "afb24c95e4a0afe04354b976185179bc36bd7c0a1f4d392b6152a74c7877d5e1"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/home/Library/Application Support/go/telemetry/local/go@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "6579c71243c2fe7d8359533ed4880bb479d480853c3bc7bb11749f896cfcda26"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/home/Library/Application Support/go/telemetry/local/link@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "bbc09451f8f1f9ba76a4fc645aebe714f2ea82fa42b12593a10f996cc449beea"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/home/Library/Application Support/go/telemetry/local/upload.token",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/home/Library/Application Support/go/telemetry/local/vet@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "877abc0f3cb59521b42ea2d3dd37eebf63a44627435b079f5c796534146f8ad2"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/home/Library/Application Support/go/telemetry/local/weekends",
+      "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/migrate.log",
+      "sha256": "a75e28b0f113daef659e0b8469682578cd3a99827f1e9bf45d73fe0433b79f60"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-normal-866dcb93/tests.jsonl",
+      "sha256": "466638956505bd5f0df4fdcfe2ddc9b63820d24d9055efb8e11862c1a8d5aea4"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/environment.json",
+      "sha256": "2b153f2e7886aca996e74e5b6780964957c3620abfbe0a9288296709333d8d05"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/home/Library/Application Support/go/telemetry/local/asm@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "319264b4dbfe92fc4a44ea59f2b829e3fc39db3fd4790203d9dbdfa0580d66a7"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/home/Library/Application Support/go/telemetry/local/cgo@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "7e67f3dfc5c3df59f2cca12a89e5e8b8faeeb7658a952e45869a19a2a1f708fb"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/home/Library/Application Support/go/telemetry/local/compile@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "9f7eb47f3bc5553e331cb666f4eb4afd0d1c49ca5697b73643425ee0bd9ad590"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/home/Library/Application Support/go/telemetry/local/go@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "e7a7cb73366ec6438177cc2aad3ad6162f50d0c118f3aaf60da36ef96429afd7"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/home/Library/Application Support/go/telemetry/local/link@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "c21a30c7aa5adc6689e9b7b9648fee2b20b76cc034640d437757b96442d64cf9"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/home/Library/Application Support/go/telemetry/local/upload.token",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/home/Library/Application Support/go/telemetry/local/vet@go1.27.0-go1.27.0-darwin-arm64-2026-11-16.v1.count",
+      "sha256": "91ab1a1dab8adf4639288072b157e3f63db9a6def13298d12eefd733f6deced9"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/home/Library/Application Support/go/telemetry/local/weekends",
+      "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/migrate.log",
+      "sha256": "34ffb215039f9691690b3f271b5f4c1d8a25dd67fddd9817b61e0e733587858b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v2-race-5034012d/tests.jsonl",
+      "sha256": "31b7d0b8d15c564346f9d4cf599509c3582b839ea72b2e307db69b413bd095cb"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-10.json",
+      "sha256": "b97be15400286c4f20f196f0f563bb60f6893ed40c78bdeef972aa40ecd6aaef"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-11.json",
+      "sha256": "ad3ea9a63f36c1b60a191164879197f0cc811e9e60506cb9cd581ab7393f0b86"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-2.json",
+      "sha256": "ad3ea9a63f36c1b60a191164879197f0cc811e9e60506cb9cd581ab7393f0b86"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-3.json",
+      "sha256": "ad3ea9a63f36c1b60a191164879197f0cc811e9e60506cb9cd581ab7393f0b86"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-4.json",
+      "sha256": "4e5835abc05c0959c81eee7d502d46b8f76c7f79c4593859b633f3ff8903800e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-7.json",
+      "sha256": "b97be15400286c4f20f196f0f563bb60f6893ed40c78bdeef972aa40ecd6aaef"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-8.json",
+      "sha256": "4e5835abc05c0959c81eee7d502d46b8f76c7f79c4593859b633f3ff8903800e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-child-environment-9.json",
+      "sha256": "4e5835abc05c0959c81eee7d502d46b8f76c7f79c4593859b633f3ff8903800e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/actual-namer-AST-transform.json",
+      "sha256": "8b53c3955f937472124cb1862b235e8791c0de8c014ea9bf8da17331d3ee11c0"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/native-Go-10660-finished.json",
+      "sha256": "11e8578765bc34adbf090a89100d6e00d41dc4c0320d964958cf4e605df93dff"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/native-Go-10660-started.json",
+      "sha256": "815c019bbd0c3bede73ea51611d5709005a99e95d5993371ef0336665ba7cbc8"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/result.json",
+      "sha256": "71ce697174115bc265798531e5c279708fe6a0463f8a2a589fba5a5f2a1d5e86"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/strict-v3-inventory.json",
+      "sha256": "0117fb5f3c5747a13be0fad9b168eac3116f36e4a43abd52aeaffbb9371e11b0"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/subprocess-transcript.json",
+      "sha256": "f782da7711b623b3e3afeb31734e674f348fd717807703312287a46f7b279732"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/typed-resources/1.observation.json",
+      "sha256": "933b177615c3bb4e74e5280332711e75a0792d254b220c10d450683f0d419985"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/typed-resources/1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/typed-resources/1.stdout.json",
+      "sha256": "340858078ee3c31086ac0705959be083d46df095e0da7b81aed35f5daa728a85"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/typed-resources/result.json",
+      "sha256": "d8bbbc8f5311fb648e8313474f4656d8772b2ccb8e6115e9ed9d8c7f3c56ac82"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/1-normal-tagged-v2/typed-resources/transcript.json",
+      "sha256": "1a6252264f7b5918156b0ba7a1030a3d3a19a3d8ae7de3ebe56008e36a6412ac"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-10.json",
+      "sha256": "56dcd57e5007da4259bf6cf143333a2ed39185e97936c06dc08f052e4a887388"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-11.json",
+      "sha256": "babe4a09765ed29381e53bce766180a6534144eb425886668e9506fb7334cc24"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-2.json",
+      "sha256": "babe4a09765ed29381e53bce766180a6534144eb425886668e9506fb7334cc24"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-3.json",
+      "sha256": "babe4a09765ed29381e53bce766180a6534144eb425886668e9506fb7334cc24"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-4.json",
+      "sha256": "942a4ce870d8fb07a326aaf20d080a5b372ecbd93c104271fd73915c928d9085"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-7.json",
+      "sha256": "56dcd57e5007da4259bf6cf143333a2ed39185e97936c06dc08f052e4a887388"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-8.json",
+      "sha256": "942a4ce870d8fb07a326aaf20d080a5b372ecbd93c104271fd73915c928d9085"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-child-environment-9.json",
+      "sha256": "942a4ce870d8fb07a326aaf20d080a5b372ecbd93c104271fd73915c928d9085"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/actual-namer-AST-transform.json",
+      "sha256": "8b53c3955f937472124cb1862b235e8791c0de8c014ea9bf8da17331d3ee11c0"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/native-Go-11477-finished.json",
+      "sha256": "c03238e5b4dafa9e1b05c805aa89572078c8a372ed3f252a4a9ad3c292fc04e8"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/native-Go-11477-started.json",
+      "sha256": "7dde0cc0a29fb4074dbd92ff7431896cee0def6e3b7256eecc0e0255c59ad677"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/result.json",
+      "sha256": "28c9647e67bd7fc56ede8f8816a6a5a8388a81186e6672b1b5107e9e8e9b806c"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/strict-v3-inventory.json",
+      "sha256": "c0a5410160727c098b20403a2e3c5c3a7a86422b2ee56188e9a1df0aba4bf79c"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/subprocess-transcript.json",
+      "sha256": "7b70951945bed55323d10487de4ee3362a2c2d9e0866c4a5e0f050b0f9ab2b98"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/typed-resources/1.observation.json",
+      "sha256": "f2ba3713d6d20188310829a940a2bc42334b79068aafb7303414fe784eacafed"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/typed-resources/1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/typed-resources/1.stdout.json",
+      "sha256": "449e0135da732fef7dece1ed3a1e53e15398ba7a5c2fa2167200de7307df0642"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/typed-resources/result.json",
+      "sha256": "48c2d342f831e3ec911038b58613e118432c7dcf2782547cd43e84d3556932ff"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/2-race-tagged-v2/typed-resources/transcript.json",
+      "sha256": "61cf03f1350291aa52a6557e11409519903b12c494d48e851553f22b560ad8c8"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-1/1.observation.json",
+      "sha256": "b6b044c215bb6d9007ce6409b7fa7a2663ee7e14daa34ce5de6e7d56114cb52e"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-1/1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-1/1.stdout.json",
+      "sha256": "549e60253a17baeed3a5690b53e0c9e0d0d5d4de2aa7880e73ab9eaa28888812"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-1/result.json",
+      "sha256": "5f61cd99d607010aa43c726bdc25a401996942eaa74c3e03daa6b64be5cb9dec"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-1/transcript.json",
+      "sha256": "99ac9b25c6c91e05f10bd92a5eea47843ab03a2dd01e7363acb6ee27d009a051"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-2/1.observation.json",
+      "sha256": "730ece6ce5537564e30cfeaebc79f168e6dccc1862cb0e7ece2be4f28395e228"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-2/1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-2/1.stdout.json",
+      "sha256": "b446580797046757d235f977b07b9e44e0c904bff5d920dcb627e31fecb6ceec"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-2/result.json",
+      "sha256": "ea1c6c613c616d1572f4e8ed0ecfb2a0772f11051707f69d231669149a719719"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/knowledge-tagged-v3-r2-20261116-b00dd7a1b021-e81ff224b80c/final-typed-2/transcript.json",
+      "sha256": "adb8c2d797baf487a41cc393c28160fea21353cc5eccad01b8a65dc2e2b7b9bb"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/permit-consumed-1f6ed05a7af3beabbfed1d6dbddc7ec07f67b04a8443fab886fd8be9505a8c35.json",
+      "sha256": "6a9fdf8cee9ef77f0417b967d573449d228335f057a1870f38df408ceebd1f5f"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/reports/knowledge-tagged-v2-normal-866dcb93.json",
+      "sha256": "22fbfc99d98b087a1e50e3742ec152d2b66ffc40bc91bcdb2e9ffe4dd81c6f2a"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/runtime/reports/knowledge-tagged-v2-race-5034012d.json",
+      "sha256": "fc3b9ab54f15881c9e6f7d5419d00bc0e32bc1b79097c13583f9e4cdcf541437"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-full-manifest.json",
+      "sha256": "be10fa334ea831163839c5daf90eed5effb979cd93b818774276bc0f6c546daf"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source/.env",
+      "sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+      "sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source/.trellis/tasks/11-14-project-knowledge-automation/research/run-owned-go.py",
+      "sha256": "983a7895b0ce815b0f86344d0b802d15de6805e0aff0bbd57e987aae198b994e"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source/server/cmd/server/collaboration_knowledge_host_composite_test.go",
+      "sha256": "2a23b2e20a664bcc5d4f91696f2310f46a50002a14153f33ba6443ed14b9b298"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-TAG3-r2-runner-permit-independent-preparation-review-20261116-871c457abf64.json",
+      "sha256": "892af0ca3a0e7dadea4aa0b0c7af8894064d5c3ec4da45516040d116283ae785"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-completion-four-six-no-tags-independent-final-review-20261116-1e081600b369.json",
+      "sha256": "00396ffe08965cc0bc8a4d7029c1f98a0356e136139b45cef67702fab3418157"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-tag3-source-fixture-inputeq-independent-review-20261116-6cc2f561d1d8.json",
+      "sha256": "64635164078c226fda1b31b2db364ae2d36520f87807daa91956947a5688712a"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-persistent-wrapper-v2-independent-closure-20261116-74cbae139a17.json",
+      "sha256": "a755bf60c407d0fe521b3d9a6ea0c2dd6539208953ed3963ee5f506a65fd5fc4"
+    }
+  ],
+  "reviewer": "/root/continuation_gate_audit",
+  "runner_preparation_review": {
+    "accepted": true,
+    "blocking_findings_open": 0,
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-TAG3-r2-runner-permit-independent-preparation-review-20261116-871c457abf64.json",
+    "sha256": "892af0ca3a0e7dadea4aa0b0c7af8894064d5c3ec4da45516040d116283ae785"
+  },
+  "scope_sha256": "0246b334aac27ab59ecb3fe5941558707d930c9433d7ce6263ae31deb4d28fa0",
+  "source_equivalence_review": {
+    "accepted": true,
+    "blocking_findings_open": 0,
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-tag3-source-fixture-inputeq-independent-review-20261116-6cc2f561d1d8.json",
+    "sha256": "64635164078c226fda1b31b2db364ae2d36520f87807daa91956947a5688712a"
+  },
+  "source_final_verification": "Hash-bound immutable admitted runner checked the full physical source before/after both modes and at final; values match the independently admitted6cc manifest. This reviewer did not repeat the preceding full physical source scan.",
+  "source_id": "6cc2f561d1d8eb6c81569147dc7611d1feb84c8ccb06b2290d43b5b54dcb1f54",
+  "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-tagged-v3-source-20261116-d17a4421f4c3/verification-source",
+  "status": "ACTUAL_TAG3_R2_NORMAL_RACE_ACCEPTED_SCOPED",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "top_per_mode": 9,
+  "typed_resources_qualified": true,
+  "verification": {
+    "Go_SQL_or_build_executions_by_reviewer": 0,
+    "Lint_TypeCheck": "Existing source-bound checks unchanged; newly tagged compilation proved by actual Go exits0; no project code edits by reviewer",
+    "independent_terminal_reconciliations": 2,
+    "new_source_Copy_or_physical_whole_source_recheck_by_reviewer": 0,
+    "pinned_v3_new_raw_replays_by_reviewer": 2,
+    "read_only_assertions_passed": 895,
+    "tests": "PASS actual two modes, independently replayed full new raw inventories and reconciled terminal sets"
+  }
+}

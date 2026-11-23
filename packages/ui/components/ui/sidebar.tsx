@@ -31,7 +31,8 @@ const SIDEBAR_WIDTH_MIN = 200
 const SIDEBAR_WIDTH_MAX = 360
 const SIDEBAR_WIDTH_STORAGE_KEY = "sidebar_width"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
-const SIDEBAR_WIDTH_ICON = "3rem"
+const SIDEBAR_WIDTH_ICON = 48
+const SIDEBAR_WIDTH_INSET_ICON = SIDEBAR_WIDTH_ICON + 16
 const SIDEBAR_DRAG_THRESHOLD = 2
 // Tailwind `lg`–`xl`: wide enough to keep a two-pane list/detail surface, too
 // narrow to also spend 256px on the nav. The nav starts collapsed here and the
@@ -260,7 +261,8 @@ function SidebarProvider({
           style={
             {
               "--sidebar-width": `${width}px`,
-              "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+              "--sidebar-width-icon": `${SIDEBAR_WIDTH_ICON}px`,
+              "--sidebar-width-inset-icon": `${SIDEBAR_WIDTH_INSET_ICON}px`,
               ...style,
             } as React.CSSProperties
           }
@@ -291,11 +293,13 @@ function Sidebar({
   className,
   children,
   dir,
+  compactInitialFocus,
   ...props
 }: React.ComponentProps<"div"> & {
   side?: "left" | "right"
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
+  compactInitialFocus?: React.ComponentProps<typeof SheetContent>["initialFocus"]
 }) {
   const { isCompact, state, openMobile, setOpenMobile } = useSidebar()
 
@@ -318,6 +322,7 @@ function Sidebar({
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
         <SheetContent
+          initialFocus={compactInitialFocus}
           dir={dir}
           data-sidebar="sidebar"
           data-slot="sidebar"
@@ -361,7 +366,7 @@ function Sidebar({
           "group-data-[collapsible=offcanvas]:w-0",
           "group-data-[side=right]:rotate-180",
           variant === "floating" || variant === "inset"
-            ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
+            ? "group-data-[collapsible=icon]:w-(--sidebar-width-inset-icon)"
             : "group-data-[collapsible=icon]:w-(--sidebar-width-icon)"
         )}
       />
@@ -372,8 +377,10 @@ function Sidebar({
           "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-out motion-reduce:transition-none lg:flex",
           "data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
           // Adjust the padding for floating and inset variants.
-          variant === "floating" || variant === "inset"
-            ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
+          variant === "inset"
+            ? "p-2 group-data-[collapsible=icon]:w-(--sidebar-width-inset-icon)"
+            : variant === "floating"
+            ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-inset-icon)+2px)]"
             : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l",
           className
         )}
@@ -419,7 +426,7 @@ function SidebarTrigger({
 }
 
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, state, isCompact } = useSidebar()
   const { commitWidth } = useSidebarResize()
   const { t } = useTranslation("ui")
   const toggleLabel = t(($) => $.toggle_sidebar)
@@ -436,11 +443,18 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   } | null>(null)
   const cancelActiveDragRef = React.useRef<(() => void) | null>(null)
 
-  React.useEffect(() => () => cancelActiveDragRef.current?.(), [])
+  React.useLayoutEffect(() => () => cancelActiveDragRef.current?.(), [])
+  React.useLayoutEffect(() => {
+    if (state !== "expanded" || isCompact) cancelActiveDragRef.current?.()
+  }, [state, isCompact])
 
   const onPointerDown = React.useCallback(
     (e: React.PointerEvent<HTMLButtonElement>) => {
       if (e.button !== 0 || e.isPrimary === false) return
+      if (state !== "expanded" || isCompact) {
+        didDragRef.current = false
+        return
+      }
       e.preventDefault()
       cancelActiveDragRef.current?.()
       didDragRef.current = false
@@ -539,7 +553,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
       cancelActiveDragRef.current = () => finishDrag("cancel")
       railEl.setPointerCapture?.(e.pointerId)
     },
-    [commitWidth]
+    [commitWidth, state, isCompact]
   )
 
   const handleClick = React.useCallback(() => {
@@ -561,6 +575,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
         "group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full hover:group-data-[collapsible=offcanvas]:bg-sidebar",
         "[[data-side=left][data-collapsible=offcanvas]_&]:-right-2",
         "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2",
+        "group-data-[collapsible=icon]:cursor-pointer",
         className
       )}
       {...props}
@@ -573,7 +588,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
     <main
       data-slot="sidebar-inset"
       className={cn(
-        "relative flex w-full flex-1 flex-col bg-page-canvas lg:peer-data-[variant=inset]:m-2 lg:peer-data-[variant=inset]:ml-0 lg:peer-data-[variant=inset]:rounded-xl lg:peer-data-[variant=inset]:ring-1 lg:peer-data-[variant=inset]:ring-surface-border lg:peer-data-[variant=inset]:shadow-[var(--surface-shadow)] lg:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
+        "relative flex w-full flex-1 flex-col bg-page-canvas lg:peer-data-[variant=inset]:m-2 lg:peer-data-[variant=inset]:ml-0 lg:peer-data-[variant=inset]:rounded-xl lg:peer-data-[variant=inset]:ring-1 lg:peer-data-[variant=inset]:ring-surface-border lg:peer-data-[variant=inset]:shadow-[var(--surface-shadow)] lg:peer-data-[variant=inset]:peer-data-[collapsible=offcanvas]:ml-2",
         className
       )}
       {...props}
@@ -637,7 +652,7 @@ function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="sidebar-content"
       data-sidebar="content"
       className={cn(
-        "no-scrollbar flex min-h-0 flex-1 flex-col gap-0 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+        "no-scrollbar flex min-h-0 flex-1 flex-col gap-0 overflow-auto group-data-[collapsible=icon]:overflow-x-hidden group-data-[collapsible=icon]:overflow-y-auto",
         className
       )}
       {...props}
@@ -741,7 +756,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-body ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate",
+  "peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-body ring-sidebar-ring outline-hidden transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-8! [@media(any-pointer:coarse)]:group-data-[collapsible=icon]:size-11! group-data-[collapsible=icon]:p-2! group-data-[collapsible=icon]:justify-center hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-open:hover:bg-sidebar-accent data-open:hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground data-active:hover:bg-sidebar-accent [&_svg]:size-4 [&_svg]:shrink-0 [&>span:last-child]:truncate",
   {
     variants: {
       variant: {
@@ -962,6 +977,7 @@ function SidebarMenuSubButton({
 }
 
 export {
+  SIDEBAR_WIDTH_INSET_ICON,
   SIDEBAR_WRAPPER_FILL_CLASS,
   Sidebar,
   SidebarContent,

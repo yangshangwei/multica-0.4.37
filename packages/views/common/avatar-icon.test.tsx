@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
-import { AVATAR_ICON_COMPONENTS, formatAvatarIcon, parseAvatarIcon, resolveAvatarIcon, type AvatarIconName } from "@multica/ui/lib/avatar-icon";
+import { AVATAR_ICON_COMPONENTS, formatAvatarIcon, isBuiltinFuAvatar, parseAvatarIcon, resolveAvatarIcon, type AvatarIconName } from "@multica/ui/lib/avatar-icon";
 
 describe("Lucide avatar markers", () => {
   it.each([
@@ -13,6 +13,14 @@ describe("Lucide avatar markers", () => {
     expect(screen.getByRole("img", { name: "Renamed assistant" })).toHaveTextContent("孚");
     expect(container.firstElementChild).toHaveClass("rounded-full", "bg-skill-quality/12", "text-skill-quality");
     expect(container.querySelector("svg, img")).toBeNull();
+  });
+  it.each([
+    "emoji:🐼",
+    "/api/avatars/builtin/afu-seal-v2.png",
+    "https://cdn.example.test/uploads/afu-seal-v1.png",
+    null,
+  ])("does not treat %s as the built-in Fu avatar", (value) => {
+    expect(isBuiltinFuAvatar(value)).toBe(false);
   });
   it("round trips every selectable icon", () => {
     for (const name of Object.keys(AVATAR_ICON_COMPONENTS) as AvatarIconName[]) {

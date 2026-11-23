@@ -1,0 +1,64 @@
+{
+  "task": ".trellis/tasks/11-20-squad-welcome",
+  "commit": "f0f0776887b9bece64ec2fa004bc83fde1762313",
+  "sourceRoot": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "candidate": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/candidate",
+  "web": "http://localhost:59366",
+  "api": "http://localhost:59365",
+  "renderer": "http://127.0.0.1:59367",
+  "desktopRoot": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/candidate",
+  "databaseContainer": "7b7a905e94dc025eef311fdae1a3489f5e9808801c7de627bc20c8960faf86b2",
+  "processes": {
+    "api": {
+      "pid": 67392,
+      "command": [
+        "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/api"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server"
+    },
+    "renderer": {
+      "pid": 67640,
+      "command": [
+        "python3",
+        "-m",
+        "http.server",
+        "59367",
+        "--bind",
+        "127.0.0.1",
+        "--directory",
+        "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/candidate/apps/desktop/out/renderer"
+      ],
+      "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/candidate/apps/desktop"
+    },
+    "web": {
+      "pid": 70120,
+      "command": [
+        "pnpm",
+        "exec",
+        "next",
+        "start",
+        "--port",
+        "59366"
+      ],
+      "cwd": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-squad-welcome-21hp9bnq/candidate/apps/web"
+    }
+  },
+  "health": {
+    "status": "ok",
+    "pid": 67392,
+    "commit": "f0f0776887b9bece64ec2fa004bc83fde1762313",
+    "started_at": "2026-11-20T15:39:38Z"
+  },
+  "buildId": "yISe9EtuoakuXvlpxoPNH",
+  "sources": {
+    "packages/views/squads/components/squad-welcome.module.css": "95794122816e07225f9bff5b6f4cc094015c598998605d3d95ad2c1bd2c77b1d",
+    "packages/views/squads/components/squad-welcome.module.css.d.ts": "f3f8c2f7c77b154b24adf6e338061597e7173ac3af9a8d6b058c6e9ba682f509",
+    "packages/views/squads/components/squad-welcome.tsx": "b8449766772e3cd3dc6ed0965bf42c71a10baa2205a5d6cc6c404a09f9fc1e4f",
+    "packages/views/squads/components/squads-page.tsx": "276202bdb60d9ab9e60d822d12ce6a3dce893bd7b1a03a8f06cb48b72b4e3df7",
+    "packages/views/locales/en/squads.json": "68509e2b2093a30aa220b88c9258ee4357b52beaf202c75d7f7d78da03882073",
+    "packages/views/locales/zh-Hans/squads.json": "f376a931f7d56e86150c51ed8ef058f79f936c4e68d0619d3496fc2e7a0b1c09",
+    "packages/core/docs/slugs.ts": "0cd78334945de5fec9bdcf1070c87200a63b99f352a4654d63b47e4dcb0510e0",
+    "server/internal/docs/content/pages/squads.json": "6159ccf7477917e90652bacfe65da3f23b03a981f8dd0046ee62bdc1b0af59eb",
+    "e2e/squad-welcome.spec.ts": "5d038a586368e981eb8ba6e5d795853bef0c5dcd4098d0f5579f00b17adb3b95"
+  }
+}

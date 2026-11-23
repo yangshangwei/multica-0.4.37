@@ -1,0 +1,74 @@
+{
+  "recorded_at": "2026-11-04T08:48:12.408512+00:00",
+  "state": "two_distinct_new_764_empty_databases_ready; no_fake_tests_run",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "source_head": "92a4c7adfad20354e79855e4134934e6004774ad",
+  "accepted_product_source": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "resources": [
+    {
+      "lane": "normal",
+      "database": "multica_rk1k_20261104_v16_normal_a3c9",
+      "identity_verified": "multica_rk1k_20261104_v16_normal_a3c9|764_collaboration_ai_policy",
+      "issue_rows": 0,
+      "task_rows": 0,
+      "created_at": "2026-11-04T08:48:00.884043+00:00",
+      "migration_exit": 0,
+      "migration_command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "-C",
+        "server",
+        "run",
+        "-p=1",
+        "./cmd/migrate",
+        "up"
+      ],
+      "migration_log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/database-allocation/normal-migration.log",
+      "migration_log_sha256": "0440ea223779e397842d086353f9cc2a4128b7057187ae70aa772082277837ed"
+    },
+    {
+      "lane": "race",
+      "database": "multica_rk1k_20261104_v16_race_a3c9",
+      "identity_verified": "multica_rk1k_20261104_v16_race_a3c9|764_collaboration_ai_policy",
+      "issue_rows": 0,
+      "task_rows": 0,
+      "created_at": "2026-11-04T08:48:08.932780+00:00",
+      "migration_exit": 0,
+      "migration_command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "-C",
+        "server",
+        "run",
+        "-p=1",
+        "./cmd/migrate",
+        "up"
+      ],
+      "migration_log": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-knowledge-promotion/research/knowledge-framework-final-20261104/database-allocation/race-migration.log",
+      "migration_log_sha256": "eb7a622fefaed2402ca61bb1861b134cf0066135b976c0214b6722de93be0351"
+    }
+  ],
+  "private_allocation": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/root-database-allocations-private.json",
+    "sha256": "8ba83cccc7df6385aafb48907d58825c1840e828cfd3024ca4d469ce609b107a"
+  },
+  "tools": {
+    "go": {
+      "path": "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "sha256": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412"
+    },
+    "psql": {
+      "path": "/opt/homebrew/opt/libpq/bin/psql",
+      "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+    }
+  },
+  "old_databases_and_failures_retained": true,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "real_entry_runnable": false,
+  "production_default_enabled": false
+}

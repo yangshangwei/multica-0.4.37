@@ -1,0 +1,140 @@
+[
+  {
+    "name": "typecheck",
+    "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/mobile",
+      "typecheck"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "started_at": "2026-11-02T00:01:16.721509+00:00",
+    "state": "complete",
+    "environment_overrides": {
+      "CI": "1",
+      "EXPO_OFFLINE": "1",
+      "EXPO_NO_TELEMETRY": "1",
+      "EXPO_NO_DOTENV": "1"
+    },
+    "finished_at": "2026-11-02T00:01:22.928992+00:00",
+    "exit_code": 0,
+    "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout": "typecheck.stdout.txt",
+    "stderr": "typecheck.stderr.txt",
+    "stdout_sha256": "7160ed0df29a61f91121f69f0add970e635fb09238c31a10a4421360ba2a6025",
+    "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  },
+  {
+    "name": "lint",
+    "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/mobile",
+      "lint"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "started_at": "2026-11-02T00:01:22.948584+00:00",
+    "state": "complete",
+    "environment_overrides": {
+      "CI": "1",
+      "EXPO_OFFLINE": "1",
+      "EXPO_NO_TELEMETRY": "1",
+      "EXPO_NO_DOTENV": "1"
+    },
+    "finished_at": "2026-11-02T00:01:25.322294+00:00",
+    "exit_code": 0,
+    "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout": "lint.stdout.txt",
+    "stderr": "lint.stderr.txt",
+    "stdout_sha256": "665fbf86a44267fc38e7523d62786f5dac59ae3cdd5ac2559cd20588adba75d7",
+    "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  },
+  {
+    "name": "unit",
+    "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "pnpm",
+      "--filter",
+      "@multica/mobile",
+      "exec",
+      "vitest",
+      "run",
+      "--maxWorkers=1",
+      "--reporter=json",
+      "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/mobile/vitest-results.json"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "started_at": "2026-11-02T00:01:25.339079+00:00",
+    "state": "complete",
+    "environment_overrides": {
+      "CI": "1",
+      "EXPO_OFFLINE": "1",
+      "EXPO_NO_TELEMETRY": "1",
+      "EXPO_NO_DOTENV": "1"
+    },
+    "finished_at": "2026-11-02T00:01:29.924811+00:00",
+    "exit_code": 0,
+    "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout": "unit.stdout.txt",
+    "stderr": "unit.stderr.txt",
+    "stdout_sha256": "225672e91b5bc1be704efc92b45162c6ab3650e63a9d35a12b70e4d03362ddaf",
+    "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+  },
+  {
+    "name": "ios-wrapper",
+    "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "command": [
+      "bash",
+      "apps/mobile/scripts/ios-run.test.sh"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "started_at": "2026-11-02T00:01:29.942934+00:00",
+    "state": "complete",
+    "environment_overrides": {
+      "CI": "1",
+      "EXPO_OFFLINE": "1",
+      "EXPO_NO_TELEMETRY": "1",
+      "EXPO_NO_DOTENV": "1"
+    },
+    "finished_at": "2026-11-02T00:01:30.446776+00:00",
+    "exit_code": 0,
+    "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout": "ios-wrapper.stdout.txt",
+    "stderr": "ios-wrapper.stderr.txt",
+    "stdout_sha256": "8a7cab15a7f5e1e881699bea1c2f22b2e56f90a6d43e12f056c20df4f42e0790",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "simulator-inventory",
+    "candidate_sha": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "command": [
+      "xcrun",
+      "simctl",
+      "list",
+      "devices",
+      "available",
+      "--json"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "started_at": "2026-11-02T00:01:30.463417+00:00",
+    "state": "complete",
+    "environment_overrides": {
+      "CI": "1",
+      "EXPO_OFFLINE": "1",
+      "EXPO_NO_TELEMETRY": "1",
+      "EXPO_NO_DOTENV": "1"
+    },
+    "finished_at": "2026-11-02T00:01:30.475769+00:00",
+    "exit_code": 72,
+    "candidate_sha_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+    "stdout": "simulator-inventory.stdout.txt",
+    "stderr": "simulator-inventory.stderr.txt",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "99b8da8adc7e70feba56cd931740e16d0f5724d7515e98d84d2c8bf1bb63dec8"
+  }
+]

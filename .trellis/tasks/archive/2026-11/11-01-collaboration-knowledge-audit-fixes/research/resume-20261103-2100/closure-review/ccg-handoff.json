@@ -1,0 +1,115 @@
+{
+  "reviewer": "/root/closure_inventory",
+  "created_at": "2026-11-03T13:24:19.603231+00:00",
+  "state": "handoff_only_not_permission_to_execute",
+  "current_templates": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13",
+  "prepared_candidate": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "prepared_commands_read_from_source": {
+    "CCG1-normal": [
+      "python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg1.py",
+      "normal",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-normal.json",
+      "--label",
+      "ccg1-normal-1"
+    ],
+    "CCG1-race": [
+      "python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg1.py",
+      "race",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg1-race.json",
+      "--label",
+      "ccg1-race-1"
+    ],
+    "host-daemon-build": [
+      "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "-C",
+      "server",
+      "test",
+      "-c",
+      "-o",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/binaries/host-daemon.test",
+      "./internal/daemon"
+    ],
+    "host-provider-build": [
+      "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+      "build",
+      "-o",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/binaries/host-provider",
+      "e2e/fixtures/collaboration-host-provider.go"
+    ],
+    "CLI": "After full-check release, copy the audited current-source v13/multica into the new binaries directory; bind its original successful build/source record and exact hash. No installed user agent CLI.",
+    "CCG2-off": [
+      "python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg2.py",
+      "off",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-off.json",
+      "--label",
+      "ccg2-off-1"
+    ],
+    "deploy-off": {
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "environment": {
+        "MULTICA_DEV_HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/registry",
+        "MULTICA_DEV_PROFILES_HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/profiles",
+        "MULTICA_DEV_WORKSPACES_PARENT": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/workspaces",
+        "ENV_FILE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/source.env",
+        "MULTICA_DEV_TMPDIR": "ROOT_ALLOCATED_NEW_GIT_FREE_CCG_TEMP"
+      },
+      "command": [
+        "make",
+        "up",
+        "ENV_FILE=/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/off/source.env",
+        "C=api,web",
+        "ARGS=--name knowledge-v13-off-ROOT_NONCE --ephemeral --web-mode production"
+      ],
+      "state": "proposal_only; not allocated or started"
+    },
+    "CCG2-on": [
+      "python3.14",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/run-ccg2.py",
+      "on",
+      "--permit",
+      "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/permissions/ccg2-on.json",
+      "--label",
+      "ccg2-on-1"
+    ],
+    "deploy-on": {
+      "cwd": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+      "environment": {
+        "MULTICA_DEV_HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/registry",
+        "MULTICA_DEV_PROFILES_HOME": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/profiles",
+        "MULTICA_DEV_WORKSPACES_PARENT": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/workspaces",
+        "ENV_FILE": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/source.env",
+        "MULTICA_DEV_TMPDIR": "ROOT_ALLOCATED_NEW_GIT_FREE_CCG_TEMP"
+      },
+      "command": [
+        "make",
+        "up",
+        "ENV_FILE=/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v13/deployments/on/source.env",
+        "C=api,web",
+        "ARGS=--name knowledge-v13-on-ROOT_NONCE --ephemeral --web-mode production"
+      ],
+      "state": "proposal_only; not allocated or started"
+    }
+  },
+  "python": "/opt/homebrew/bin/python3.14 (available; do not use system Python3.9 for hashlib.file_digest)",
+  "binding_steps": [
+    "Preserve v13 originals. Copy the13 prepared files to a new task-owned CCG directory; update ROOT only if actual checkout moves. Rebind PRIVATE, EXPECTED, temporary prefix, full_run_path, audit_module/review, environment_parser and forbidden_renderer_origins to final successor inputs; do not replace v12 inside the actual worktree path.",
+    "Pin actual new runner/source-input/template hashes after rebinding; replay applicable offline refusal controls in an independent review. ready_to_execute remainsfalse until root final allocation evidence is complete.",
+    "Require one actual successor make check exit0, actual final audit pass, complete named/skip inventory and root-owned live resource proof; release complete-check API/Web/renderer/test window, retaining allDBs/logs.",
+    "Allocate fresh Git-free temporary directory mode0700 and explicit task caches. CCG1normal/race use two distinct newly migrated DBs named multica_knowledge_host_composite_20261101_<new_suffix>; capture actual database plus max schema_migrations=764_. No defaultDB, failedDB reuse, or implicitmigration entry.",
+    "Set root permit ready_to_execute, candidate, runner/source-input hashes, fullcheck resources/inventory clearance, freshDB proof, real_provider_allowed=false, DB URL privately, identity_verified, temp_directory/cache paths, and root_permission_record. One invocation per permit/label.",
+    "Run CCG1normal thenrace with new labels. Exact named test/tag/flags remain those in prepared_commands_read_from_source. Require1pass0fail0skip and logged physical_launches=2 corrected_version=2 superseded_stdin_absent=true third_authorization_refused=true third_physical_launches=0 original_exposure_and_receipts_retained=true.",
+    "Compile current daemon with go test -c and fake Hostprovider with go build under private caches/temp. Copy source-bound currentCLI from successful build; retain command/source/tool hashes, binary hashes and build exit0 in binary-binding. Default tests must not discover a userAgent CLI.",
+    "Create separate private OFF andON registries; same checkout lookup otherwise reuses a priorenvironment. Allocate fresh DB and safeavailable ports before makeup; verify actual manifest after startup because port fallback can rewrite DB name. Deploy serial productionWeb/API using explicit ENV_FILE and task-only pooling.",
+    "Record actual APIprocess PID/commit/startup knowledgefalse ortrue, productionWeb renderedAPI/WS, registry/database/newallocation, renderer index exactbytes, current fakebinaries+CLI. Root must inspect these; runner only reads selected rootproof fields andHTTPfacts and does not independently validate buildrecord references or registry.",
+    "Issue bound OFFpermit then execute; stop only owned OFFservices retaining evidence. Issue separate ONpermit/execute. Each single Playwright test must be1pass0fail0skip0retry. Read full deployed-knowledge-gate-evidence attachment: exact knowledgecontribution/version/contenthash forON, no knowledge forOFF, exact account/deployment/run IDs, one physicalfake start, authorized/observed/reaped/sealed proof.",
+    "Independent finalreview rechecks result/attachment/rawlog/sourcehashes; task7 may then close independently of task6 realmodel/framework/platform-release gates. Production defaultfalse and knowledgebudget/calls0/0 remain."
+  ],
+  "do_not_run_old_commands_directly": true,
+  "runtime_calls_performed_by_this_reviewer": 0
+}

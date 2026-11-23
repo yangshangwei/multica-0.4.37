@@ -1,0 +1,115 @@
+{
+  "observations": [
+    {
+      "observed_at": "2026-11-23T18:48:50.112404+08:00",
+      "phase": "planning-written",
+      "head": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "base": "dd87e0b33c1d6a64d488f7ee9ecd0a65984a68ff",
+      "remote_branch": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "main_behind_ahead": [
+        "0",
+        "858"
+      ],
+      "remote_behind_ahead": [
+        "0",
+        "0"
+      ],
+      "main_is_ancestor": true,
+      "tracked_uncommitted": [
+        {
+          "status": " M",
+          "path": "apps/web/next-env.d.ts",
+          "sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651"
+        },
+        {
+          "status": " M",
+          "path": "docs/plans/2026-11-18-pay-241-continuation.md",
+          "sha256": "af4385d1c12921bb937bec2b902ea3119996e7b280f5b6a75262e9c79071bf4a"
+        },
+        {
+          "status": " M",
+          "path": "e2e/agent-template-marketplace-desktop.spec.ts",
+          "sha256": "58e4460db9e6accab9d4ac1d917804c576043e56e724715293b58507ab8f9f2e"
+        },
+        {
+          "status": " M",
+          "path": "packages/views/collaboration/notifications-page.test.tsx",
+          "sha256": "31cdfb77f5e7876146a96401ed73561ff9126eee8a2c688e970ef40a8807d01f"
+        },
+        {
+          "status": " M",
+          "path": "packages/views/collaboration/notifications-page.tsx",
+          "sha256": "f4f97787c94d3c2da610e31ed14ae4862af69f49459f537cdbd65b19f24c4b49"
+        }
+      ],
+      "concurrent_session_completion_confirmed": false
+    },
+    {
+      "observed_at": "2026-11-23T18:49:18.982578+08:00",
+      "phase": "planning-final-recheck-after-fetch",
+      "head": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "base": "dd87e0b33c1d6a64d488f7ee9ecd0a65984a68ff",
+      "remote_branch": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "main_behind_ahead": [
+        "0",
+        "858"
+      ],
+      "remote_behind_ahead": [
+        "0",
+        "0"
+      ],
+      "main_is_ancestor": true,
+      "commits_since_previous_observation": [],
+      "previous_dirty_paths_changed": [],
+      "concurrent_session_completion_confirmed": false
+    },
+    {
+      "observed_at": "2026-11-23T19:18:55.214999+08:00",
+      "phase": "validation-in-flight-new-commits",
+      "head": "95c8b12dc619488e050e96dba8f97a527e2f4a4c",
+      "base": "dd87e0b33c1d6a64d488f7ee9ecd0a65984a68ff",
+      "remote_branch": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "commits_since_previous": [
+        "95c8b12dc chore(web): keep generated route types aligned with production builds",
+        "914c1bf77 docs(plans): preserve the dated PAY-241 continuation evidence",
+        "2d8fa836e fix(notifications): make the complete row open its exact target"
+      ],
+      "changed_paths": [
+        ".trellis/spec/core/frontend/collaboration-notifications.md",
+        "apps/web/next-env.d.ts",
+        "docs/plans/2026-11-16-pay-241-continuation.md",
+        "docs/plans/2026-11-17-pay-241-continuation.md",
+        "docs/plans/2026-11-18-pay-241-continuation.md",
+        "packages/views/collaboration/notifications-page.test.tsx",
+        "packages/views/collaboration/notifications-page.tsx"
+      ],
+      "validation_source_sha": "cb192014b2f27e9bb64112db52073cbb31ce8f04",
+      "action": "Preserve in-flight evidence; integrate new UI/docs after originals then rebuild impacted UI and replay affected flows. Backend source unchanged.",
+      "concurrent_session_completion_confirmed": false
+    },
+    {
+      "observed_at": "2026-11-23T19:31:20.887463+08:00",
+      "phase": "private-candidate-integrated",
+      "head": "95c8b12dc619488e050e96dba8f97a527e2f4a4c",
+      "validation_source_sha": "95c8b12dc619488e050e96dba8f97a527e2f4a4c",
+      "integration": "Fast-forwarded task private branch only; preserved all task repairs. Root branch/index untouched.",
+      "backend_change": false,
+      "frontend_required_rechecks": [
+        "notifications unit + browser exact-target interactions",
+        "production Web/Desktop rebuild"
+      ],
+      "other_session_marketplace_dirty": true,
+      "concurrent_session_completion_confirmed": false
+    },
+    {
+      "observed_at": "2026-11-23T20:10:44.655730+08:00",
+      "phase": "full-runtime-validation-midrun",
+      "head": "73a28ed90fdcfd9eda1ac5d2970df5af2c486f94",
+      "base": "dd87e0b33c1d6a64d488f7ee9ecd0a65984a68ff",
+      "remote_branch": "73a28ed90fdcfd9eda1ac5d2970df5af2c486f94",
+      "tracked_status": [],
+      "concurrent_session_completion_confirmed": false,
+      "validation_note": "Frozen main private candidate73a28ed90; modal repair isolated in second sparse worktree until fullbrowser ends."
+    }
+  ]
+}

@@ -23,7 +23,7 @@ func (q *Queries) DeleteGitHubPRCheckRuns(ctx context.Context, prID pgtype.UUID)
 }
 
 const getGitHubPullRequestByID = `-- name: GetGitHubPullRequestByID :one
-SELECT id, workspace_id, installation_id, repo_owner, repo_name, pr_number, title, state, html_url, branch, author_login, author_avatar_url, merged_at, closed_at, pr_created_at, pr_updated_at, created_at, updated_at, head_sha, mergeable_state, additions, deletions, changed_files, api_mergeable, api_merge_state_status, checks_rollup_state, snapshot_head_sha, snapshot_fetched_at FROM github_pull_request WHERE id = $1
+SELECT id, workspace_id, installation_id, repo_owner, repo_name, pr_number, title, state, html_url, branch, author_login, author_avatar_url, merged_at, closed_at, pr_created_at, pr_updated_at, created_at, updated_at, head_sha, mergeable_state, additions, deletions, changed_files, api_mergeable, api_merge_state_status, checks_rollup_state, snapshot_head_sha, snapshot_fetched_at, snapshot_complete FROM github_pull_request WHERE id = $1
 `
 
 func (q *Queries) GetGitHubPullRequestByID(ctx context.Context, id pgtype.UUID) (GithubPullRequest, error) {
@@ -58,6 +58,7 @@ func (q *Queries) GetGitHubPullRequestByID(ctx context.Context, id pgtype.UUID) 
 		&i.ChecksRollupState,
 		&i.SnapshotHeadSha,
 		&i.SnapshotFetchedAt,
+		&i.SnapshotComplete,
 	)
 	return i, err
 }
@@ -294,8 +295,9 @@ SET api_mergeable          = $1,
     checks_rollup_state    = $3,
     snapshot_head_sha      = $4,
     snapshot_fetched_at    = $5,
+    snapshot_complete      = $6::boolean,
     updated_at             = now()
-WHERE id = $6 AND head_sha = $4
+WHERE id = $7 AND head_sha = $4
 `
 
 type UpdateGitHubPRSnapshotParams struct {
@@ -304,6 +306,7 @@ type UpdateGitHubPRSnapshotParams struct {
 	ChecksRollupState   pgtype.Text        `json:"checks_rollup_state"`
 	HeadSha             string             `json:"head_sha"`
 	FetchedAt           pgtype.Timestamptz `json:"fetched_at"`
+	SnapshotComplete    bool               `json:"snapshot_complete"`
 	PrID                pgtype.UUID        `json:"pr_id"`
 }
 
@@ -319,6 +322,7 @@ func (q *Queries) UpdateGitHubPRSnapshot(ctx context.Context, arg UpdateGitHubPR
 		arg.ChecksRollupState,
 		arg.HeadSha,
 		arg.FetchedAt,
+		arg.SnapshotComplete,
 		arg.PrID,
 	)
 	if err != nil {

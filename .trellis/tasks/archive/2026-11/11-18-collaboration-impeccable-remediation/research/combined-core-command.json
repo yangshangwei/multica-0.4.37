@@ -1,0 +1,16 @@
+[
+  "pnpm",
+  "--dir",
+  "packages/core",
+  "exec",
+  "vitest",
+  "run",
+  "collaboration/knowledge-cache.test.ts",
+  "collaboration/knowledge-lease.test.ts",
+  "collaboration/memory-queries.test.ts",
+  "collaboration/knowledge-sources.test.ts",
+  "collaboration/knowledge-actions.test.ts",
+  "collaboration/knowledge-schema.test.ts",
+  "collaboration/knowledge-automation-queries.test.ts",
+  "--maxWorkers=2"
+]

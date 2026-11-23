@@ -1,0 +1,250 @@
+{
+  "tag": "integrated-normal-router",
+  "package": "./cmd/server",
+  "database": "f3_budget_cx_takeover_normal_router",
+  "exit": 0,
+  "seconds": 19.27,
+  "counts": {
+    "pass": 54
+  },
+  "missing_expected": [],
+  "package_terminal": [
+    "pass"
+  ],
+  "raw_sha256": "7cf5c27a385d1c01a28db4351ab0f2201a23c72f4a32055743a5f769cd621c0d",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./cmd/server",
+    "-run",
+    "^(TestBudgetLifecycleRunsOutsideTheLivenessLoop|TestBudgetLifecycleSweepReconcilesTheRootsItFinds|TestBudgetLifecycleSweepReportsWhatTheRoundDid|TestBudgetLifecycleSweepWithNothingToReconcileIsOneRead|TestBudgetLifecycleSweeperStopsWithItsContext|TestF2ReportSnapshotFirstReadAuthorityBarrier|TestF2ReportSnapshotProductionLegacyReviewerAndNoProject|TestF2ReportSnapshotProductionReporterExactGetMatrix|TestF2ReportSnapshotProductionRevocationAndFreshClaim|TestF2ReportSnapshotPublicProjectionAndHumanReceipt|TestF2ReportSnapshotReadCommitFailureWithholdsPublicBody|TestIssueBudgetRouterClaimUsageAndOriginalBatchRecovery|TestIssueBudgetRouterCredentialBoundaryBeforeCapabilityGuard|TestIssueBudgetRouterHumanPATAndCrossWorkspacePrivacy|TestIssueBudgetRouterManagementRecoveryAndTombstone)$",
+    "-count=1",
+    "-p",
+    "1",
+    "-json",
+    "-timeout=10m"
+  ],
+  "tests": [
+    {
+      "name": "TestBudgetLifecycleRunsOutsideTheLivenessLoop",
+      "action": "pass"
+    },
+    {
+      "name": "TestBudgetLifecycleSweepReportsWhatTheRoundDid",
+      "action": "pass"
+    },
+    {
+      "name": "TestBudgetLifecycleSweeperStopsWithItsContext",
+      "action": "pass"
+    },
+    {
+      "name": "TestBudgetLifecycleSweepWithNothingToReconcileIsOneRead",
+      "action": "pass"
+    },
+    {
+      "name": "TestBudgetLifecycleSweepReconcilesTheRootsItFinds",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRouterManagementRecoveryAndTombstone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRouterCredentialBoundaryBeforeCapabilityGuard/progress-reporter",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRouterCredentialBoundaryBeforeCapabilityGuard/delivery-reviewer",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRouterCredentialBoundaryBeforeCapabilityGuard/custom-budget-test",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRouterCredentialBoundaryBeforeCapabilityGuard",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRouterHumanPATAndCrossWorkspacePrivacy",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRouterClaimUsageAndOriginalBatchRecovery",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotPublicProjectionAndHumanReceipt",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/other_report",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/unbound_snapshot",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/post_capture",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/post_withdrawal",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/head",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/delete",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/query",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/empty_query",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/duplicate_query",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/encoded_path",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/upper_uuid",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/workspace_header",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/actor_header",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/source_header",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/slug_header",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix/credential_exchange",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionReporterExactGetMatrix",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionRevocationAndFreshClaim",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionLegacyReviewerAndNoProject/progress-reporter1",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionLegacyReviewerAndNoProject/code-reviewer2",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotProductionLegacyReviewerAndNoProject",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/token/before_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/token/after_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/claim/before_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/claim/after_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/runtime_owner/before_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/runtime_owner/after_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/originator_membership/before_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/originator_membership/after_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/originator_invoke/before_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/originator_invoke/after_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_project/before_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_project/after_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_admission/before_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_admission/after_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_kind/before_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_kind/after_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/withdrawal/before_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier/withdrawal/after_first_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotFirstReadAuthorityBarrier",
+      "action": "pass"
+    },
+    {
+      "name": "TestF2ReportSnapshotReadCommitFailureWithholdsPublicBody",
+      "action": "pass"
+    }
+  ]
+}

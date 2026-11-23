@@ -1,0 +1,335 @@
+
+ RUN  v4.1.0 /Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/core
+
+ ❯ api/issue-budget-schemas.test.ts (99 tests | 7 failed) 151ms
+     × keeps a 400 error body out of the client logger 7ms
+     × keeps a 401 error body out of the client logger 2ms
+     × keeps a 403 error body out of the client logger 1ms
+     × keeps a 404 error body out of the client logger 1ms
+     × keeps a 409 error body out of the client logger 1ms
+     × keeps a 500 error body out of the client logger 1ms
+     × keeps a 502 error body out of the client logger 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  api/issue-budget-schemas.test.ts > the request for an issue budget > keeps a 400 error body out of the client logger
+AssertionError: expected "vi.fn()" to be called with arguments: [ …(2) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "← 400 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
++   "→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "rid": "87c26d00",
+    },
+  ]
+
+  2nd vi.fn() call:
+
+  [
+    "← 400 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "duration": "0ms",
++     "error": "private budget reason, amount 73500000000",
++     "rid": "87c26d00",
+    },
+  ]
+
+
+Number of calls: 2
+
+ ❯ api/issue-budget-schemas.test.ts:149:24
+    147|
+    148|     expect(warn).not.toHaveBeenCalled();
+    149|     expect(requestLog).toHaveBeenCalledWith(`← ${status} /api/issue-bu…
+       |                        ^
+    150|       rid: expect.any(String), duration: expect.any(String), error: "B…
+    151|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  api/issue-budget-schemas.test.ts > the request for an issue budget > keeps a 401 error body out of the client logger
+AssertionError: expected "vi.fn()" to be called with arguments: [ …(2) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "← 401 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
++   "→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "rid": "721045da",
+    },
+  ]
+
+  2nd vi.fn() call:
+
+  [
+    "← 401 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "duration": "0ms",
++     "error": "private budget reason, amount 73500000000",
++     "rid": "721045da",
+    },
+  ]
+
+
+Number of calls: 2
+
+ ❯ api/issue-budget-schemas.test.ts:149:24
+    147|
+    148|     expect(warn).not.toHaveBeenCalled();
+    149|     expect(requestLog).toHaveBeenCalledWith(`← ${status} /api/issue-bu…
+       |                        ^
+    150|       rid: expect.any(String), duration: expect.any(String), error: "B…
+    151|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  api/issue-budget-schemas.test.ts > the request for an issue budget > keeps a 403 error body out of the client logger
+AssertionError: expected "vi.fn()" to be called with arguments: [ …(2) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "← 403 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
++   "→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "rid": "704b7bc5",
+    },
+  ]
+
+  2nd vi.fn() call:
+
+  [
+    "← 403 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "duration": "1ms",
++     "error": "private budget reason, amount 73500000000",
++     "rid": "704b7bc5",
+    },
+  ]
+
+
+Number of calls: 2
+
+ ❯ api/issue-budget-schemas.test.ts:149:24
+    147|
+    148|     expect(warn).not.toHaveBeenCalled();
+    149|     expect(requestLog).toHaveBeenCalledWith(`← ${status} /api/issue-bu…
+       |                        ^
+    150|       rid: expect.any(String), duration: expect.any(String), error: "B…
+    151|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  api/issue-budget-schemas.test.ts > the request for an issue budget > keeps a 404 error body out of the client logger
+AssertionError: expected "vi.fn()" to be called with arguments: [ …(2) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "← 404 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
++   "→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "rid": "ae4e3c10",
+    },
+  ]
+
+  2nd vi.fn() call:
+
+  [
+    "← 404 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "duration": "0ms",
++     "error": "private budget reason, amount 73500000000",
++     "rid": "ae4e3c10",
+    },
+  ]
+
+
+Number of calls: 2
+
+ ❯ api/issue-budget-schemas.test.ts:149:24
+    147|
+    148|     expect(warn).not.toHaveBeenCalled();
+    149|     expect(requestLog).toHaveBeenCalledWith(`← ${status} /api/issue-bu…
+       |                        ^
+    150|       rid: expect.any(String), duration: expect.any(String), error: "B…
+    151|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  api/issue-budget-schemas.test.ts > the request for an issue budget > keeps a 409 error body out of the client logger
+AssertionError: expected "vi.fn()" to be called with arguments: [ …(2) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "← 409 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
++   "→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "rid": "7628ed8e",
+    },
+  ]
+
+  2nd vi.fn() call:
+
+  [
+    "← 409 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "duration": "1ms",
++     "error": "private budget reason, amount 73500000000",
++     "rid": "7628ed8e",
+    },
+  ]
+
+
+Number of calls: 2
+
+ ❯ api/issue-budget-schemas.test.ts:149:24
+    147|
+    148|     expect(warn).not.toHaveBeenCalled();
+    149|     expect(requestLog).toHaveBeenCalledWith(`← ${status} /api/issue-bu…
+       |                        ^
+    150|       rid: expect.any(String), duration: expect.any(String), error: "B…
+    151|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  api/issue-budget-schemas.test.ts > the request for an issue budget > keeps a 500 error body out of the client logger
+AssertionError: expected "vi.fn()" to be called with arguments: [ …(2) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "← 500 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
++   "→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "rid": "f94c9e5d",
+    },
+  ]
+
+  2nd vi.fn() call:
+
+  [
+    "← 500 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "duration": "1ms",
++     "error": "private budget reason, amount 73500000000",
++     "rid": "f94c9e5d",
+    },
+  ]
+
+
+Number of calls: 2
+
+ ❯ api/issue-budget-schemas.test.ts:149:24
+    147|
+    148|     expect(warn).not.toHaveBeenCalled();
+    149|     expect(requestLog).toHaveBeenCalledWith(`← ${status} /api/issue-bu…
+       |                        ^
+    150|       rid: expect.any(String), duration: expect.any(String), error: "B…
+    151|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  api/issue-budget-schemas.test.ts > the request for an issue budget > keeps a 502 error body out of the client logger
+AssertionError: expected "vi.fn()" to be called with arguments: [ …(2) ]
+
+Received:
+
+  1st vi.fn() call:
+
+  [
+-   "← 502 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
++   "→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "rid": "086158be",
+    },
+  ]
+
+  2nd vi.fn() call:
+
+  [
+    "← 502 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",
+    {
+-     "duration": Any<String>,
+-     "error": "Budget request failed",
+-     "rid": Any<String>,
++     "duration": "0ms",
++     "error": "private budget reason, amount 73500000000",
++     "rid": "086158be",
+    },
+  ]
+
+
+Number of calls: 2
+
+ ❯ api/issue-budget-schemas.test.ts:149:24
+    147|
+    148|     expect(warn).not.toHaveBeenCalled();
+    149|     expect(requestLog).toHaveBeenCalledWith(`← ${status} /api/issue-bu…
+       |                        ^
+    150|       rid: expect.any(String), duration: expect.any(String), error: "B…
+    151|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 92 passed (99)
+   Start at  19:59:07
+   Duration  853ms (transform 335ms, setup 0ms, import 567ms, tests 151ms, environment 0ms)
+

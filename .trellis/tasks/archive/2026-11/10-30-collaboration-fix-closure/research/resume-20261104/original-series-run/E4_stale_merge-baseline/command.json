@@ -1,0 +1,41 @@
+{
+  "cwd": "/Volumes/artisan/code/2026/mc-context-guard-baseline-20261102/server",
+  "command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-tags=agentintegration",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "^TestHostContextExperiment$",
+    "-count=1",
+    "-v",
+    "-timeout=45m"
+  ],
+  "explicit_environment": {
+    "MULTICA_RUN_REAL_AGENT_SMOKE": "1",
+    "MULTICA_HOST_SMOKE_PROVIDER": "claude",
+    "MULTICA_HOST_SMOKE_EXECUTABLE": "/Users/artisan/.local/share/claude/versions/2.1.316",
+    "MULTICA_CONTEXT_EXPERIMENT_OUT": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/E4_stale_merge-baseline/records.jsonl",
+    "MULTICA_CONTEXT_EXPERIMENT_COMMIT": "c58f79874cfe2e6318e3dce067d7b6bac24e943f",
+    "MULTICA_CONTEXT_EXPERIMENT_ARM": "baseline",
+    "MULTICA_CONTEXT_EXPERIMENT_SCENARIO": "E4_stale_merge",
+    "MULTICA_CONTEXT_EXPERIMENT_TRIALS": "3",
+    "MULTICA_CONTEXT_EXPERIMENT_START_TRIAL": "1",
+    "MULTICA_CONTEXT_EXPERIMENT_MODEL": "claude-opus-5-5",
+    "MULTICA_CONTEXT_EXPERIMENT_THINKING_LEVEL": "provider_default",
+    "MULTICA_CONTEXT_EXPERIMENT_SERVICE_TIER": "provider_default"
+  },
+  "removed_session_environment": [],
+  "started_at": "2026-11-04T16:14:26.221110+00:00",
+  "state": "complete",
+  "launched_by": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+  "account_settings": "inherited unchanged; credentials never recorded",
+  "preflight": "both frozen product HEADs and exact successor framework match",
+  "framework_sha256": "ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0",
+  "runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+  "call_cap": 3,
+  "prior_invalid_slots_preserved": true,
+  "finished_at": "2026-11-04T16:22:03.528963+00:00",
+  "exit_code": 0,
+  "log_sha256": "fbba50d9cf6abfd0630aac02f34ac92d325d85be9035c0aaa3cf0006daaaf7e2"
+}

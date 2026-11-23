@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_notification_recipient_event_idx ON collaboration_notification (recipient_user_id, issue_id, event_seq);

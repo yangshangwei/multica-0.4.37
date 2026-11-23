@@ -1,0 +1,50 @@
+{
+  "baselineHead": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "currentHead": "9dd8a5d99a01205d64a8be6275fca7b6a364cfdc",
+  "unchangedOutsideOwned": 6766,
+  "concurrentDrift": [
+    ".trellis/spec/server/collaboration-preparation.md",
+    ".trellis/spec/server/index.md",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/task.json",
+    ".trellis/tasks/10-30-collaboration-fix-closure/check.jsonl",
+    ".trellis/tasks/10-30-collaboration-fix-closure/implement.jsonl",
+    ".trellis/tasks/10-30-collaboration-fix-closure/implement.md",
+    ".trellis/tasks/10-30-collaboration-fix-closure/task.json",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/progress.md",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/real-model-acceptance-plan.md",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion/task.json",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/progress.md",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/task.json",
+    ".trellis/workspace/artisan/index.md",
+    ".trellis/workspace/artisan/journal-2.md",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime/continuation-plan-2026-11-02.md",
+    ".trellis/tasks/10-30-collaboration-fix-closure/verification-continue-2026-11-02.md",
+    ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/advance-plan-2026-11-02.md",
+    "docs/plans/2026-11-02-collaboration-fix-closure.md"
+  ],
+  "concurrentMovedOrMissing": [
+    ".trellis/tasks/11-02-collaboration-source-picker/check.jsonl",
+    ".trellis/tasks/11-02-collaboration-source-picker/design.md",
+    ".trellis/tasks/11-02-collaboration-source-picker/implement.jsonl",
+    ".trellis/tasks/11-02-collaboration-source-picker/implement.md",
+    ".trellis/tasks/11-02-collaboration-source-picker/prd.md",
+    ".trellis/tasks/11-02-collaboration-source-picker/research/source-query.md",
+    ".trellis/tasks/11-02-collaboration-source-picker/task.json"
+  ],
+  "ownedPaths": [
+    ".trellis/spec/views/frontend/collaboration-creation.md",
+    ".trellis/spec/views/frontend/index.md",
+    "packages/views/collaboration/account-picker.test.tsx",
+    "packages/views/collaboration/account-picker.tsx",
+    "packages/views/collaboration/creation-form.test.tsx",
+    "packages/views/collaboration/creation-form.tsx",
+    "packages/views/collaboration/field-inputs.tsx",
+    "packages/views/collaboration/form-styles.ts",
+    "packages/views/collaboration/labels.ts",
+    "packages/views/issues/components/pickers/property-picker.test.tsx",
+    "packages/views/issues/components/pickers/property-picker.tsx",
+    "packages/views/locales/en/collaboration.json",
+    "packages/views/locales/zh-Hans/collaboration.json"
+  ],
+  "policy": "No reset/restore/clean or existing-service lifecycle actions. Parallel source-picker changes were preserved and committed by its own session as4ba3a868a; this task stages only the explicit current-task paths."
+}

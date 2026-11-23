@@ -181,6 +181,25 @@ func parseLLMMaxRetries(raw string) (*llm.RetryOverride, error) {
 	return override, nil
 }
 
+// parseCollaborationMemoryMaxBytes turns MULTICA_COLLABORATION_MEMORY_MAX_BYTES
+// into the shared-context byte limit. Like parseLLMMaxRetries it fails the boot
+// instead of falling back: a limit silently restored to the default would make
+// every agent and client report a ceiling the operator did not configure.
+func parseCollaborationMemoryMaxBytes(raw string) (int, error) {
+	raw = strings.TrimSpace(raw)
+	if raw == "" {
+		return service.CollaborationMemoryDefaultMaxBytes, nil
+	}
+	v, err := strconv.Atoi(raw)
+	if err != nil {
+		return 0, fmt.Errorf("must be an integer number of bytes, got %q", raw)
+	}
+	if v < service.CollaborationMemoryMinMaxBytes || v > service.CollaborationMemoryHardMaxBytes {
+		return 0, fmt.Errorf("must be between %d and %d bytes, got %d", service.CollaborationMemoryMinMaxBytes, service.CollaborationMemoryHardMaxBytes, v)
+	}
+	return v, nil
+}
+
 func envPositiveInt64(name string, def int64) int64 {
 	raw := os.Getenv(name)
 	if raw == "" {
@@ -335,6 +354,9 @@ func main() {
 			slog.Warn("MULTICA_DEV_VERIFICATION_CODE is enabled. Use it only for local development or private test instances.")
 		}
 	}
+	if strings.TrimSpace(os.Getenv("MULTICA_DESKTOP_DOWNLOAD_URL")) != "" && handler.DesktopDownloadURLFromEnv() == "" {
+		slog.Warn("invalid env var, ignored: desktop download links stay hidden until it is an absolute http(s) URL without credentials", "name", "MULTICA_DESKTOP_DOWNLOAD_URL")
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -424,7 +446,10 @@ func main() {
 	// operations. Channel leases are initialized separately below so production
 	// can point them at a dedicated no-eviction Redis instance.
 	relayCtx, relayCancel := context.WithCancel(context.Background())
-	var broadcaster realtime.Broadcaster = hub
+	var broadcaster interface {
+		realtime.Broadcaster
+		realtime.RelayPublisher
+	} = hub
 	var storeRedis *redis.Client
 	var channelLeaseRedis *redis.Client
 	var relayWriteRedis *redis.Client
@@ -573,13 +598,14 @@ func main() {
 	defer analyticsClient.Close()
 
 	queries := db.New(pool)
-	hub.SetAuthorizer(newScopeAuthorizer(queries))
+	collaborationService := service.NewCollaborationService(queries, pool, nil)
+	hub.SetAuthorizer(&collaborationScopeAuthorizer{workspace: newScopeAuthorizer(queries), service: collaborationService})
 	// Order matters: subscriber listeners must register BEFORE notification listeners.
 	// The notification listener queries the subscriber table to determine recipients,
 	// so subscribers must be written first within the same synchronous event dispatch.
 	registerSubscriberListeners(bus, pool)
 	registerActivityListeners(bus, queries)
-	registerNotificationListeners(bus, queries)
+	registerNotificationListeners(bus, queries, pool)
 
 	metricsConfig := obsmetrics.ConfigFromEnv()
 	var metricsServer *http.Server
@@ -628,20 +654,26 @@ func main() {
 		slog.Error("invalid MULTICA_LLM_MAX_RETRIES", "error", err)
 		os.Exit(1)
 	}
+	collaborationMemoryMaxBytes, err := parseCollaborationMemoryMaxBytes(os.Getenv("MULTICA_COLLABORATION_MEMORY_MAX_BYTES"))
+	if err != nil {
+		slog.Error("invalid MULTICA_COLLABORATION_MEMORY_MAX_BYTES", "error", err)
+		os.Exit(1)
+	}
 
 	r, h := NewRouterWithOptions(pool, hub, bus, analyticsClient, storeRedis, RouterOptions{
-		HTTPMetrics:         httpMetrics,
-		BusinessMetrics:     businessMetrics,
-		ChannelLeaseMetrics: channelLeaseMetrics,
-		ChannelLeaseRedis:   channelLeaseRedis,
-		WecomMetrics:        wecomMetrics,
-		DaemonHub:           daemonHub,
-		DaemonWakeup:        daemonWakeup,
-		WecomSenders:        wecomSenders,
-		WecomRelayOutbound:  wecomRelayOutbound,
-		FeatureFlags:        flags,
-		HeartbeatScheduler:  heartbeatScheduler,
-		LLMMaxRetries:       llmMaxRetries,
+		HTTPMetrics:                 httpMetrics,
+		BusinessMetrics:             businessMetrics,
+		ChannelLeaseMetrics:         channelLeaseMetrics,
+		ChannelLeaseRedis:           channelLeaseRedis,
+		WecomMetrics:                wecomMetrics,
+		DaemonHub:                   daemonHub,
+		DaemonWakeup:                daemonWakeup,
+		WecomSenders:                wecomSenders,
+		WecomRelayOutbound:          wecomRelayOutbound,
+		FeatureFlags:                flags,
+		HeartbeatScheduler:          heartbeatScheduler,
+		LLMMaxRetries:               llmMaxRetries,
+		CollaborationMemoryMaxBytes: collaborationMemoryMaxBytes,
 	})
 
 	srv := newMainHTTPServer(":"+port, r)
@@ -650,6 +682,7 @@ func main() {
 	// Start background workers.
 	sweepCtx, sweepCancel := context.WithCancel(context.Background())
 	go h.RunTriageNotifications(sweepCtx)
+	go h.RunInboxSnoozes(sweepCtx)
 	go h.RunProjectUpdateNotifications(sweepCtx)
 	iterationNotifications := &service.IterationService{
 		TxStarter: pool,
@@ -662,6 +695,15 @@ func main() {
 	// that cache's version, so an idle runtime could keep returning an empty
 	// claim until the cache TTL expires.
 	taskSvc, autopilotSvc := backgroundServices(h)
+	// Account and resource invalidations converge even while collaboration creation or
+	// execution is disabled. Reuse the router-owned database/transaction owner.
+	go h.CollaborationAccountReconciler.Run(sweepCtx)
+	go h.CollaborationConfigReconciler.Run(sweepCtx)
+	go (&service.CollaborationRealtime{Queries: queries, TxStarter: pool, Publisher: broadcaster}).Run(sweepCtx)
+	go (&service.CollaborationKnowledgeInvalidation{Queries: queries, TxStarter: pool, Publisher: broadcaster}).Run(sweepCtx)
+	// Extraction uses the router's configured assist client and durable jobs;
+	// it never dispatches work into a completed collaboration session.
+	go service.NewKnowledgeAutomationWorker(service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService), h.LLM).Run(sweepCtx)
 	var taskObservation, cancellationObservation adminWorkerObservation
 	go service.NewAdminOperationService(queries, pool, taskSvc).Run(sweepCtx, cancellationObservation.record)
 	registerAutopilotListeners(bus, autopilotSvc)
@@ -726,11 +768,16 @@ func main() {
 	// its bounded transactions run independently once per hour, so a slow GC
 	// round cannot delay offline detection or task recovery.
 	go runRuntimeGCSweeper(sweepCtx, pool, queries, taskSvc.Metrics, h)
+	// The budget lifecycle reconciliation takes a root lock and a transaction
+	// per root, so it does not share the liveness tick either. It has no
+	// observer: a failed round is its own stage metric and log line, and never
+	// the health of the task sweeper.
+	go runBudgetLifecycleSweeper(sweepCtx, service.NewIssueBudgetService(queries, pool), taskSvc.Metrics)
 	// Source-context cleanup is object-store work, so it gets its own goroutine
 	// instead of a slot in the runtime sweep tick.
 	go runSourceContextSweeper(sweepCtx, taskSvc)
 	go heartbeatScheduler.Run(sweepCtx)
-	go runAutopilotFailureMonitor(autopilotCtx, queries, bus, envFailureMonitorConfig())
+	go runAutopilotFailureMonitor(autopilotCtx, queries, pool, bus, envFailureMonitorConfig())
 	if autopilotSvc.QuotaEnabled() {
 		go runAutopilotQuotaReconciler(autopilotCtx, autopilotSvc)
 	}

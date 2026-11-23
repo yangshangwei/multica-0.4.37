@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX CONCURRENTLY collaboration_termination_token_idx ON collaboration_termination (token_hash);

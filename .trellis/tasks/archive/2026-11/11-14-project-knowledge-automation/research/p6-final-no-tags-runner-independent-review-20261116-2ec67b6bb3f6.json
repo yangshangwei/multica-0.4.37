@@ -1,0 +1,2383 @@
+{
+  "schema_version": 1,
+  "kind": "independent_no_tags_actual_Go_runner_preparation_review",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-check",
+  "at": "2026-11-15T17:53:39.230765+00:00",
+  "verdict": "NO_TAGS_RUNNER_ACCEPTED_FOR_MAIN_SINGLE_USE_KNOWLEDGE_PERMIT",
+  "accepted": true,
+  "blocking_findings_open": 0,
+  "blocking_findings": [],
+  "checks": {
+    "runner_exact_SHA": true,
+    "config_exact_SHA": true,
+    "scope_exact_SHA": true,
+    "parser_driver_exact_SHA": true,
+    "original_strict_v3_exact_SHA": true,
+    "offline52_report_SHA_count_all_pass": true,
+    "offline_fixture_actual_SQL_Go_model_none": true,
+    "independent_permit_replays_pass": true,
+    "exact_194_36_10_no_tags_darwin_arm64": true,
+    "top_names_and_raw_source_declarations_match": true,
+    "full_current_SOURCE_10408_32_pinned": true,
+    "all_config_tool_source_refs_match": true,
+    "template_approved_and_source_ready_false": true,
+    "schema_exact_steps_review_shape_and_keys_match": true,
+    "single_use_and_one_suite_lock_present": true,
+    "fixed_normal_then_race_six_steps_no_arbitrary_forwarding": true,
+    "actual_GOTMPDIR_and_env_capability_gate_present": true,
+    "strict_parser_and_final_inventory_SOURCE_connections_checks_present": true,
+    "prepare_defaults_no_actual_execution_without_flag": true
+  },
+  "runner": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/knowledge-final-runner.py",
+    "sha256": "da0a17d0afed083466290a0b390ca67e135dac36a1a4515d0723b9048060a911"
+  },
+  "config": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/runner-config.json",
+    "sha256": "7d0b65fdcb2dcc582cd182423d9221d95ce128ab20c4351295dbbdc62f9f1758"
+  },
+  "scope": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/final-knowledge-scope.json",
+    "sha256": "fe6a495674bb748d3e6d6e080be4003f629ec657d0c83f42ad811dcdfe725819"
+  },
+  "parser": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/inventory-parser-v3.cjs",
+    "sha256": "7c10d5d3b60ba701767acbb2be128d12b18542460c3711540c76d7f312b7e3e2"
+  },
+  "parse_driver": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/parse-run.cjs",
+    "sha256": "63958a7c826b990f464f4c9e01359acc7a2ec65d59780437c299b97ca8c819d2"
+  },
+  "permit_template": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/permit-template.json",
+    "sha256": "668a5f9ea0f94ee0283445a83e2c085132875b2d2699115300b17dc69a718fb8"
+  },
+  "permit_schema": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/config/permit-schema.json",
+    "sha256": "3ba2c8eaddb957a4b0b97687e376b33dc556dd06c339d26ddb7e00f7a8c0604d"
+  },
+  "52_offline_results": {
+    "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/reports/offline-refusal-fixtures.json",
+    "sha256": "ceec9259ed8c9b411067da10cf23db0aecafefecbfad2b2ef133094852ecc0ff",
+    "all52_passed": true,
+    "mocked_children": 2,
+    "reviewer_did_not_reexecute_full_fixture_script_or_overwrite_results": true
+  },
+  "independent_pure_permit_probe_results": [
+    {
+      "case": "exact_same_source_scope_positive",
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "error": null
+    },
+    {
+      "case": "unapproved_immutable_template",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Separate actual execution is unapproved"
+    },
+    {
+      "case": "reject_approved_2",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Separate actual execution is unapproved"
+    },
+    {
+      "case": "reject_source_ready_3",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Separate actual execution is unapproved"
+    },
+    {
+      "case": "reject_issuer_4",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit task or knowledge role differs"
+    },
+    {
+      "case": "reject_recipient_5",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit task or knowledge role differs"
+    },
+    {
+      "case": "reject_task_6",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit task or knowledge role differs"
+    },
+    {
+      "case": "reject_source_id_7",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit SOURCE or configuration differs"
+    },
+    {
+      "case": "reject_source_root_8",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit SOURCE or configuration differs"
+    },
+    {
+      "case": "reject_head_9",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit SOURCE or configuration differs"
+    },
+    {
+      "case": "reject_pg_config_sha256_10",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit SOURCE or configuration differs"
+    },
+    {
+      "case": "reject_config_sha256_11",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit tooling or scope differs"
+    },
+    {
+      "case": "reject_runner_sha256_12",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit tooling or scope differs"
+    },
+    {
+      "case": "reject_scope_sha256_13",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit tooling or scope differs"
+    },
+    {
+      "case": "reject_expires_at_14",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit is future, expired or excessively broad"
+    },
+    {
+      "case": "reject_issued_at_15",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit is future, expired or excessively broad"
+    },
+    {
+      "case": "reject_issued_at_16",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit requires timezone"
+    },
+    {
+      "case": "reject_budget_17",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Suite reservation differs"
+    },
+    {
+      "case": "reject_forbidden_capabilities_18",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Capability boundary differs"
+    },
+    {
+      "case": "missing_step",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Package, selector, mode, tag or order differs"
+    },
+    {
+      "case": "reverse_modes",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Package, selector, mode, tag or order differs"
+    },
+    {
+      "case": "wildcard_package",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Package, selector, mode, tag or order differs"
+    },
+    {
+      "case": "empty_selector",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Package, selector, mode, tag or order differs"
+    },
+    {
+      "case": "tags",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Package, selector, mode, tag or order differs"
+    },
+    {
+      "case": "unaccepted_review",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Independent review is not accepted"
+    },
+    {
+      "case": "extra_key",
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "error": "Permit shape differs"
+    }
+  ],
+  "scope_AST_source_bindings": [
+    {
+      "slug": "service",
+      "package": "./internal/service",
+      "selector": "^Test(Knowledge|TaskKnowledge|CollaborationKnowledge)",
+      "tops": 194,
+      "expected_file": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/service-expected-tops.json",
+        "sha256": "e41d9761f61db3e647d64d0204962ea314d98037b02890b319447227a94ace97"
+      },
+      "expected_tops_sorted_unique_and_scope_equal": true,
+      "compiled_test_files": 285,
+      "TestMain": false,
+      "raw_top_declaration_checks": [
+        {
+          "name": "TestCollaborationKnowledgePrepareWaitsOutSiblingNamespaceHolder",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "3809efd723f584953fc6d284342f22a94638ce29cfbb04c0e932443fe69e2450",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeApprovedExactManifestAndOriginalInputs",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "3809efd723f584953fc6d284342f22a94638ce29cfbb04c0e932443fe69e2450",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeAudienceCannotReadAnotherSourcesPrivateBody",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "3809efd723f584953fc6d284342f22a94638ce29cfbb04c0e932443fe69e2450",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeChangedRequestCannotReplacePreparedManifest",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "3809efd723f584953fc6d284342f22a94638ce29cfbb04c0e932443fe69e2450",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeEveryAuthorAndCurrentOwnerMustRemainAuthorized",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "3809efd723f584953fc6d284342f22a94638ce29cfbb04c0e932443fe69e2450",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeLateRunLockIsNowait",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "3809efd723f584953fc6d284342f22a94638ce29cfbb04c0e932443fe69e2450",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeNegotiationCannotUpgradeOrDowngrade",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "3809efd723f584953fc6d284342f22a94638ce29cfbb04c0e932443fe69e2450",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeWithdrawExpiryPurgeStopFutureDisclosure",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "3809efd723f584953fc6d284342f22a94638ce29cfbb04c0e932443fe69e2450",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeSquadRootMemberContinuation",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_squad_runtime_test.go",
+          "actual_source_SHA": "4ea72ce73ef653214e38cc6baa92e36b19c0e54cd6c40122b430f0fc1f49a1a9",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAdministrativeDisableAppendsBeforeReconciliation",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalAndParticipantRemovalBothCommitOrders",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "actual_source_SHA": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalExpiryUsesDatabaseClockNotApplicationClock",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "actual_source_SHA": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalMatrixActorDisableBothCommitOrders",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "62988b2be497552f75b9fd31aa9ca70ab16031abbb68e4f41b8153da086a326c",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalMatrixApprovedWithdrawalAndCorrectionBothOrders",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "62988b2be497552f75b9fd31aa9ca70ab16031abbb68e4f41b8153da086a326c",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalMatrixCompetingCorrectionsBothCommitOrders",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "62988b2be497552f75b9fd31aa9ca70ab16031abbb68e4f41b8153da086a326c",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalMatrixConcurrentCorrectionAllocation",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "62988b2be497552f75b9fd31aa9ca70ab16031abbb68e4f41b8153da086a326c",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalMatrixDeletedCommentSuppressesAllHumanProjections",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "62988b2be497552f75b9fd31aa9ca70ab16031abbb68e4f41b8153da086a326c",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalMatrixPendingWithdrawalBothCommitOrders",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "62988b2be497552f75b9fd31aa9ca70ab16031abbb68e4f41b8153da086a326c",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalMatrixRecoveryRejectsOtherCandidateAndKinds",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "62988b2be497552f75b9fd31aa9ca70ab16031abbb68e4f41b8153da086a326c",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalMatrixSourceWritesBothCommitOrders",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "62988b2be497552f75b9fd31aa9ca70ab16031abbb68e4f41b8153da086a326c",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalRequiresCurrentHumanProjectLeadOrAdmin",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalTargetBudgetUsesDatabaseClock",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_resolve_test.go",
+          "actual_source_SHA": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalUnexpiredNoRowsDoesNotBecomeExpiryRetry",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "actual_source_SHA": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAuthorityChangeBetweenDisclosureAndLaunch",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAuthorityChangesFanOutWithoutCurrentMembershipJoin",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAuthorizationWaitsOutSiblingNamespaceHolder",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_concurrency_test.go",
+          "actual_source_SHA": "bad900ed90cd982539e1f25fbc9e7ea62baecda2d40bf10721aeaa18b3851ba8",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAuthorizeLostResponseRechecksCurrentEligibility",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomaticApprovalRequiresProofAndV2",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_validity_test.go",
+          "actual_source_SHA": "ee2186f20101724638f4df756d47ada5e0cd24e2132e83b6850b14315f1f65e2",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomaticHistoryCannotDisappearDuringResumeSelection",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_version_integration_test.go",
+          "actual_source_SHA": "c74e4294a46f19d97167bd9940ad71ca33f6df9846e42e87b35e570d3bb0771a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomaticValidityChecksNewSupportSources",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_consumption_test.go",
+          "actual_source_SHA": "2a9015de956a785d2e330050fe7b5624801c2d523ce0a2ec82d5185e49e93f01",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomaticValidityKeepsPolicyOffHistory",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_consumption_test.go",
+          "actual_source_SHA": "2a9015de956a785d2e330050fe7b5624801c2d523ce0a2ec82d5185e49e93f01",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomaticValidityPausesOnReopenWithoutOutbox",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_consumption_test.go",
+          "actual_source_SHA": "2a9015de956a785d2e330050fe7b5624801c2d523ce0a2ec82d5185e49e93f01",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationContentNormalizationPreservesMeaningfulBytes",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_rules_test.go",
+          "actual_source_SHA": "ebc14d0f70bc7c9a36c27ac84fc1b492b3486da6e7ef581131fb533191e56247",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationModelCallPreservesUsageAndSanitizesFailures",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_model_test.go",
+          "actual_source_SHA": "225d3f48d56f3f09a317fe039f5980d1523d81d2d38db3f509ce182ecdf3bb12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationModelCandidateByteBudgets",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_model_test.go",
+          "actual_source_SHA": "225d3f48d56f3f09a317fe039f5980d1523d81d2d38db3f509ce182ecdf3bb12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationModelChecksCannotRewriteOrOmitCandidates",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_model_test.go",
+          "actual_source_SHA": "225d3f48d56f3f09a317fe039f5980d1523d81d2d38db3f509ce182ecdf3bb12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationModelDecodedAndWireBudgets",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_model_test.go",
+          "actual_source_SHA": "225d3f48d56f3f09a317fe039f5980d1523d81d2d38db3f509ce182ecdf3bb12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationModelGenerationBoundaries",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_model_test.go",
+          "actual_source_SHA": "225d3f48d56f3f09a317fe039f5980d1523d81d2d38db3f509ce182ecdf3bb12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationModelInputBudgetsAndFrozenHashes",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_model_test.go",
+          "actual_source_SHA": "225d3f48d56f3f09a317fe039f5980d1523d81d2d38db3f509ce182ecdf3bb12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationModelRevalidationCoversEveryFixedPredecessor",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_model_test.go",
+          "actual_source_SHA": "225d3f48d56f3f09a317fe039f5980d1523d81d2d38db3f509ce182ecdf3bb12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationModelReviewComparisonMustBeExact",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_model_test.go",
+          "actual_source_SHA": "225d3f48d56f3f09a317fe039f5980d1523d81d2d38db3f509ce182ecdf3bb12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationModelStagesKeepPrivateIdentitiesAndComparisonBoundaries",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_model_test.go",
+          "actual_source_SHA": "225d3f48d56f3f09a317fe039f5980d1523d81d2d38db3f509ce182ecdf3bb12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationOnlyFormalProjectAcceptanceCreatesIntent",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_test.go",
+          "actual_source_SHA": "c2772b02f39d17748b705a155c17c4c4154de1c4f7503a33d6e25261ab1dac60",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationPolicyPermissionsAndOriginalRecovery",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_test.go",
+          "actual_source_SHA": "c2772b02f39d17748b705a155c17c4c4154de1c4f7503a33d6e25261ab1dac60",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationRuleOutcomes",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_rules_test.go",
+          "actual_source_SHA": "ebc14d0f70bc7c9a36c27ac84fc1b492b3486da6e7ef581131fb533191e56247",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationRuleUpgradePreservesExplicitPolicy",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_test.go",
+          "actual_source_SHA": "c2772b02f39d17748b705a155c17c4c4154de1c4f7503a33d6e25261ab1dac60",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerAcceptanceQuotaCountsPublishedLineages",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerAcceptedCreateAndCompleteRevalidation",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerAtomicSettlementAndStageReuse",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerBoundsConcurrentBatches",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerComparisonClosureAndPrivateReason",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerCurrentAuthorityWinsAfterModel",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerExpiredLeasePreservesUncertainty",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerExplicitRetryRefreshesPolicy",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerLateComparisonIsAuthorizedBeforeAnyModel",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerLaterAcceptancePassesStaleAutomaticProposal",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerPartialCapacityIsAtomic",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerRevisionAndHumanWithdrawal",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAutomationWorkerUnconfiguredZeroAndUncertain",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_automation_worker_test.go",
+          "actual_source_SHA": "edee570a9d519031e1c57c04f01a77208f4ab0933160849c90a452bf66536640",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeBoundedHistoryRemainsReachableThroughSourcePaging",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_view_test.go",
+          "actual_source_SHA": "4610c809d2471aad466a3c8c01a76ee6af1ae499e7054336cc54abdaa674d119",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeBusyTargetYieldsToOtherScans",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeClaimDoesNotNegotiateAfterProviderChanges",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeClaimFinalizationDisclosesNoPrivateFields",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeClaimedOnlyManagedSessionResumesForUnsupportedInvocation",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeCommentEditRetainsSourceUntilDelete",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeCorrectionApprovalCannotReplaceNewerApprovedVersion",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "actual_source_SHA": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeCorrectionApprovalExpiringMidTransactionRetriesIntoSealedExpiry",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "actual_source_SHA": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeCreateLostResponseUsesPreselectedCandidateID",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeDeletedTargetIsNotRecreatedByPendingFanout",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeDeliveryCanonicalPreservesFullFieldsAndEscaping",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_delivery_test.go",
+          "actual_source_SHA": "06eedc36a91d465d1b9e16b6020de8ff3020ca8baf2ed01d91d7b256fa8e54ea",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeDeliverySourceExactAcceptedSnapshot",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_delivery_test.go",
+          "actual_source_SHA": "06eedc36a91d465d1b9e16b6020de8ff3020ca8baf2ed01d91d7b256fa8e54ea",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeDisabledGatePreservesOriginalObservationCleanup",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeExternalHandlerCanProposeToSourceWorkspaceWithoutMembership",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_test.go",
+          "actual_source_SHA": "68043a6de65a48693db5df0b0713f593935fd79a9c1e48e222b963caff8e1192",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeExternalHandlerCanProposeToVisibleCurrentSourceProject",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeFailureNeverCreatesAutomaticRetry",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeFanoutCrashAndReplayPreserveCursorAndRevision",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeFanoutNeverWaitsOnSourceWriter",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeFreshLockHintsOmitMissingSourceButExactManifestRefuses",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_resolve_test.go",
+          "actual_source_SHA": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeGateOffSafeArgsKeepOrdinaryClaim",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeGateOnSafeUnlistedArgsUseBaseExecution",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHintDeliverySkipsFailuresUntilConsecutiveLimit",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHumanApprovalAndWithdrawalUseExactReviewedVersion",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_test.go",
+          "actual_source_SHA": "68043a6de65a48693db5df0b0713f593935fd79a9c1e48e222b963caff8e1192",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHumanApprovalOfAutomationProposalSurvivesReopen",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_consumption_test.go",
+          "actual_source_SHA": "2a9015de956a785d2e330050fe7b5624801c2d523ce0a2ec82d5185e49e93f01",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHumanChangesPreserveBaseContextAndExecutionState",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_test.go",
+          "actual_source_SHA": "68043a6de65a48693db5df0b0713f593935fd79a9c1e48e222b963caff8e1192",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHumanHistoryVersionSurvivesIncompatibleBinding",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_mixed_history_integration_test.go",
+          "actual_source_SHA": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHumanListDetailHistoryAndTargetSuppressPurgedSourceText",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_view_test.go",
+          "actual_source_SHA": "4610c809d2471aad466a3c8c01a76ee6af1ae499e7054336cc54abdaa674d119",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHumanTargetBudgetRefusalRetainsOriginalOutcome",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_resolve_test.go",
+          "actual_source_SHA": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeInvalidNewProposalRemainsUnsealedAndCannotFabricateRecovery",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeInvalidationRunSchedulesScannerAndDrainer",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeLaunchRequiresPreparedInvocationAndPrompt",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeLegacyClientCannotResumeManagedSession",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeLegacyHumanHistoryAllowsFreshV2Binding",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_mixed_history_integration_test.go",
+          "actual_source_SHA": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeLegacyNoneDiffersFromCorruptNegotiatedHistory",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeMalformedCustomArgsRefuseWhateverTheGate",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeManagedClaimKeepsOriginalRuntimeBinding",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_managed_test.go",
+          "actual_source_SHA": "3ea81ae093d8f5962233d391e19dee228223c6230a8837b80c9092db822840f5",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeManifestUnionComparesValidityValues",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_version_test.go",
+          "actual_source_SHA": "69a665b21675887be73315be6b2ae4d3cb2779bc874a791297d5e04835bc4e44",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeMetadataDoesNotSerializeThroughOrdinaryTask",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeMissingCounterDoesNotReportEmptySuccess",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeMissingOriginatorDoesNotUseAccountableIdentity",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeMixedPreparedHistoryCannotHideAutomaticExposure",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_mixed_history_integration_test.go",
+          "actual_source_SHA": "42efe25cc5a54c19e2518eee60307baaa23788dc10e05f9a7f70b771e9ea141a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeNativeObservationReplayKeepsOriginalReceipt",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeOldClaimZeroSessionReportsCannotMutateReclaimedTask",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_fence_test.go",
+          "actual_source_SHA": "17e0ea51f71fc1c6fe4d3d0f61042b72c9913102680890196a2ae6996b31250b",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeOrdinaryNoSessionPersistenceNeverNegotiates",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeOwnerApprovalDoesNotContendWithProjectDescriptionUpdate",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "actual_source_SHA": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePATLockRestoresLockTimeout",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_credentials_test.go",
+          "actual_source_SHA": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePATReadsWritesAndRecoveryRecheckOriginalCredential",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_credentials_test.go",
+          "actual_source_SHA": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePATWriteHoldsCredentialUntilPublication",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_credentials_test.go",
+          "actual_source_SHA": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePATWriteLockWaitIsBounded",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_credentials_test.go",
+          "actual_source_SHA": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePATWriteWaitsForConcurrentRevocation",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_credentials_test.go",
+          "actual_source_SHA": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePATWriteWaitsOutLastUsedUpdate",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_credentials_test.go",
+          "actual_source_SHA": "da14d70c472f9fbd9840a9573ca03211e2be57e6debeb49459b1144262bd93dd",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePagingRejectsExpiredForeignAndMalformedBoundary",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_view_test.go",
+          "actual_source_SHA": "4610c809d2471aad466a3c8c01a76ee6af1ae499e7054336cc54abdaa674d119",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePendingChangesDoNotSignalTarget",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationCompleteEnvelopeBudgetRollsBackDisclosure",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_concurrency_test.go",
+          "actual_source_SHA": "bad900ed90cd982539e1f25fbc9e7ea62baecda2d40bf10721aeaa18b3851ba8",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationFinalizerContentionUsesNowait",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationHoldsConsumerProjectIdentity",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_concurrency_test.go",
+          "actual_source_SHA": "bad900ed90cd982539e1f25fbc9e7ea62baecda2d40bf10721aeaa18b3851ba8",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationLostResponseReauthorizes",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationMultiTargetReplayKeepsExactOrder",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationNamespaceBusyBudgetIsBounded",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_concurrency_test.go",
+          "actual_source_SHA": "bad900ed90cd982539e1f25fbc9e7ea62baecda2d40bf10721aeaa18b3851ba8",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationRejectsOldClaimGeneration",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationSourceRevocationBothCommitOrders",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_preparation_boundary_test.go",
+          "actual_source_SHA": "ca2fae80e142236dd93ee02823c3a99be4913c305c98cb9eb4ab131637ecd4b9",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationVersusWithdrawAndSourceRevoke",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_concurrency_test.go",
+          "actual_source_SHA": "bad900ed90cd982539e1f25fbc9e7ea62baecda2d40bf10721aeaa18b3851ba8",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationWaitsOutSiblingNamespaceHolder",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_concurrency_test.go",
+          "actual_source_SHA": "bad900ed90cd982539e1f25fbc9e7ea62baecda2d40bf10721aeaa18b3851ba8",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationWorkspaceDeleteLockOrder",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePrepareBeforeFinalizedClaimRefused",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeProposalOtherCheckViolationsStayUnavailable",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeProposeHidesUnreadableSourceBeforeTargetResolution",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeProposeRejectsInvisibleArbitraryDestination",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeProvenLegacySessionRemainsResumable",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePublicCursorCannotChangeProtocolVersion",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_public_test.go",
+          "actual_source_SHA": "69e4cf44485d318b957c5a370f481140509b439ae16e3fc3bdea6b2aa7decac6",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePublicV1CannotHideAutomationBeyondPage",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_public_test.go",
+          "actual_source_SHA": "69e4cf44485d318b957c5a370f481140509b439ae16e3fc3bdea6b2aa7decac6",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePublicV2PreservesHumanReceiptsAndAudit",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_public_test.go",
+          "actual_source_SHA": "69e4cf44485d318b957c5a370f481140509b439ae16e3fc3bdea6b2aa7decac6",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeReacceptanceCannotReplaceOldManifestProof",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_consumption_test.go",
+          "actual_source_SHA": "2a9015de956a785d2e330050fe7b5624801c2d523ce0a2ec82d5185e49e93f01",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeReadLockHintsContainOnlyBoundedMetadata",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_resolve_test.go",
+          "actual_source_SHA": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeReclaimedTaskRetainsPriorDisclosureBindings",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeReopenFencesPreparationAndAuthorizationBothOrders",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_automation_test.go",
+          "actual_source_SHA": "664da26f7931835af3b3586dbb4241a9796cf7dcf764950c377a8dcdda54e94f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeReopenKeepsOtherSourceInSameProjectActive",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_consumption_test.go",
+          "actual_source_SHA": "2a9015de956a785d2e330050fe7b5624801c2d523ce0a2ec82d5185e49e93f01",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeRequestIDConflictsAcrossOperationKinds",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeRequestsMustMatchRetainedClaimVersion",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_version_integration_test.go",
+          "actual_source_SHA": "c74e4294a46f19d97167bd9940ad71ca33f6df9846e42e87b35e570d3bb0771a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResolverCanonicalContributionsMatchPreparedReplay",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_resolve_test.go",
+          "actual_source_SHA": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResolverCrossWorkspaceAudienceAndPrivateChat",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_resolve_test.go",
+          "actual_source_SHA": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResolverCurrentSourcesConsumersAndExactManifest",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_resolve_test.go",
+          "actual_source_SHA": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResolverNoOriginatorOrOwnerAuthorityFallback",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_resolve_test.go",
+          "actual_source_SHA": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResumeCancelledTaskRetainsExposure",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResumeChangedServerConfigurationStartsFresh",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResumeCorruptRowAnywhereRefuses",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_growth_test.go",
+          "actual_source_SHA": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResumeDeepExposureStillGoverns",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_growth_test.go",
+          "actual_source_SHA": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResumeEqualTimestampHistoryStillChecksLaterIDs",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_growth_test.go",
+          "actual_source_SHA": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResumeReadsCompleteLongSessionHistory",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_growth_test.go",
+          "actual_source_SHA": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResumeSameSessionUnionsAllTurns",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeRetainedNegotiationRefusesSafeUnlistedArgs",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeRuntimeHistoryIsIndexDriven",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_growth_test.go",
+          "actual_source_SHA": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeRuntimeHistoryLostMetadataRefuses",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_growth_test.go",
+          "actual_source_SHA": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeRuntimeHistoryReadsCompleteNamespace",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_growth_test.go",
+          "actual_source_SHA": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeRuntimeHistoryRefusesCorruptProof",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeRuntimeMergeDoesNotRelabelExposureAsLegacy",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSafeUnlistedArgsRefuseInExposedNamespace",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeScanBoundaryAndConcurrentApprovalHaveIndependentHints",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeServerFailureLogsUsePersistedState",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_logging_test.go",
+          "actual_source_SHA": "f31f3e8eafdbb23bd451a7a4222a961b4069eaa1e382087cf30fcfe36b969061",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeServerLogProbe",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_logging_test.go",
+          "actual_source_SHA": "f31f3e8eafdbb23bd451a7a4222a961b4069eaa1e382087cf30fcfe36b969061",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSessionPointerAndExposureBindAtomically",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_test.go",
+          "actual_source_SHA": "7a68a595cea6a46d8ff585aeb812410e7f335376dc1365819ebb3b0d0d1b50a0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSessionSelectorsRefusedWhateverTheGate",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceAuthorityChangesBetweenClaimBuildAndFinalize",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_preparation_boundary_test.go",
+          "actual_source_SHA": "ca2fae80e142236dd93ee02823c3a99be4913c305c98cb9eb4ab131637ecd4b9",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceAvailabilitySuppressesPurgedAndDeletedSources",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_test.go",
+          "actual_source_SHA": "68043a6de65a48693db5df0b0713f593935fd79a9c1e48e222b963caff8e1192",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceDeletionRetainsInvalidationRouting",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceDependencyFailureIsNotEmptyKnowledge",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_resolve_test.go",
+          "actual_source_SHA": "932a9d33bd2321037e99d053b2b0a6f8542da450b1ff9fcc426a574d740f79c0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceMemberCreatorWithoutParticipantCanProposeAndWithdraw",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceMutationRollsBackWhenScanAppendFails",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceProjectEditAfterProposalKeepsOriginalTarget",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "actual_source_SHA": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceProjectEditRespectsStagePolicy",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "actual_source_SHA": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceProjectProposalRevalidatesCurrentRelationship",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_concurrency_test.go",
+          "actual_source_SHA": "28e582cd62e516863794a17d8b53e865cdf37c405cbc3daf4125f98043b7098f",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourcePurgeAppendsIntentWithoutTargetLocks",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSourceReadersRevalidateCachedPATForMemoryCommentsAndRecords",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_source_auth_test.go",
+          "actual_source_SHA": "a40af92bc2a57235c66589681ca57968933f45b2761109a517944b62b31ebe9c",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeStorageCollaborationVersions",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_version_test.go",
+          "actual_source_SHA": "69a665b21675887be73315be6b2ae4d3cb2779bc874a791297d5e04835bc4e44",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeStorageV2CanContainOnlyLegacyClaims",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_version_test.go",
+          "actual_source_SHA": "69a665b21675887be73315be6b2ae4d3cb2779bc874a791297d5e04835bc4e44",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeStorageV2RetainsOriginalV1Claim",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_version_test.go",
+          "actual_source_SHA": "69a665b21675887be73315be6b2ae4d3cb2779bc874a791297d5e04835bc4e44",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeStorageVersionReadersPreserveOriginal",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_version_test.go",
+          "actual_source_SHA": "69a665b21675887be73315be6b2ae4d3cb2779bc874a791297d5e04835bc4e44",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeStorageVersionReadersRejectMismatches",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_version_test.go",
+          "actual_source_SHA": "69a665b21675887be73315be6b2ae4d3cb2779bc874a791297d5e04835bc4e44",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSupportDependenciesRequireBoundedExactRefs",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_validity_test.go",
+          "actual_source_SHA": "ee2186f20101724638f4df756d47ada5e0cd24e2132e83b6850b14315f1f65e2",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeTargetHintHasOnlyPublicTargetFields",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeTargetHintRelayFailureRetainsStableID",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeTargetWithdrawalRecoveryAfterSourceAndTargetRoleLoss",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_authority_test.go",
+          "actual_source_SHA": "6e7a671bb4b5024acaeb160043ac37d0b0e4363ad6554c2312b6a55f304b0eb0",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeTimedOutHintDoesNotBlockLaterHints",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeTrustedServerFailureCanSettleRetainedTask",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_fence_test.go",
+          "actual_source_SHA": "17e0ea51f71fc1c6fe4d3d0f61042b72c9913102680890196a2ae6996b31250b",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeUnavailableResumeRebindsFreshGeneration",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_resume_test.go",
+          "actual_source_SHA": "594648c826eadca405dd28d7a1638458d23e3b29455d6e2f5b7dd9204a161967",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeUnavailableResumeRefusesUnsafeRebind",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_resume_test.go",
+          "actual_source_SHA": "594648c826eadca405dd28d7a1638458d23e3b29455d6e2f5b7dd9204a161967",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeUnavailableResumeSkipsDroppedSessionRevalidation",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_resume_test.go",
+          "actual_source_SHA": "594648c826eadca405dd28d7a1638458d23e3b29455d6e2f5b7dd9204a161967",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeUnsafeV1SelectorsRefuseBeforeOrdinaryFallback",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeUnsupportedBackendCannotResumeManagedSessionAcrossScopes",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeV1CannotResumeV2Exposure",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_version_integration_test.go",
+          "actual_source_SHA": "c74e4294a46f19d97167bd9940ad71ca33f6df9846e42e87b35e570d3bb0771a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeValidEmptyAndClaimedHistoryPreserveLegacyWork",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_invocation_test.go",
+          "actual_source_SHA": "1f338f9a8d41b66f92e3a4031fdd601eb5b6996e30bf7c2028dca79b22f82745",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeWithdrawnOnlyInOlderTurnForcesFresh",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/task_knowledge_history_test.go",
+          "actual_source_SHA": "9e57365f99568d91df7853b57f6bfa3b02c3fdbf8a0d27bcae35b3272513f223",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeWithdrawnOrExpiredHistoryRemainsReadableWhenSourceAvailable",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_view_test.go",
+          "actual_source_SHA": "4610c809d2471aad466a3c8c01a76ee6af1ae499e7054336cc54abdaa674d119",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeWorkspaceAuthorizationRequiresCurrentMembership",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/service/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "60bf6a3581c40c12483eb8173d726d0cdd84f1e0cbbddfc1897267660e0c593a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        }
+      ]
+    },
+    {
+      "slug": "handler",
+      "package": "./internal/handler",
+      "selector": "^Test(Knowledge|TaskKnowledge|CollaborationKnowledge)|^Test(WorkspaceDeletionManifestPreservesKnowledgeHistory|ProjectDeletionPreservesKnowledgeAutomationHistory|WorkspaceDeletionRemovesKnowledgePolicy)$",
+      "tops": 36,
+      "expected_file": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/handler-expected-tops.json",
+        "sha256": "2dc250ad68559f4f7ee3fdbde911bb5286465c8f79ed28c2f3ca96bfead7068d"
+      },
+      "expected_tops_sorted_unique_and_scope_equal": true,
+      "compiled_test_files": 451,
+      "TestMain": true,
+      "raw_top_declaration_checks": [
+        {
+          "name": "TestCollaborationKnowledgeRuntimeClaimRejectsSpoofedBodyCapability",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "aaa7cdb61ba8598dd15190ee76b1987528e154f693b2078108d8cc3571deba28",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeHTTPRequiresManagedNegotiation",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "aaa7cdb61ba8598dd15190ee76b1987528e154f693b2078108d8cc3571deba28",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeHTTPStrictBodiesAndClosedGate",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_runtime_test.go",
+          "actual_source_SHA": "aaa7cdb61ba8598dd15190ee76b1987528e154f693b2078108d8cc3571deba28",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeAllFirstPartyClaimSurfaces",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalHTTPMatrixAuthorityAndProjectDeletionBothOrders",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "f56a38483878de034156b2190cff93f611c6e82ac4dacb15ede690b6af12c431",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalHTTPMatrixLegacyDeletedSourceKeepsDeletionGuard",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "f56a38483878de034156b2190cff93f611c6e82ac4dacb15ede690b6af12c431",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeApprovalHTTPMatrixWrongCandidateRecoveryIsContentFree",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_final_matrix_test.go",
+          "actual_source_SHA": "f56a38483878de034156b2190cff93f611c6e82ac4dacb15ede690b6af12c431",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeClaimErrorDisposition",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeClaimFinalizeRefusalAtClaimBoundSettlesTask",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeClaimGateOffSafeArgsDispatchesOrdinaryTask",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeClaimTransientHistoryErrorRequeuesTask",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeDeviceJoinInvalidatesExistingWorkspaceOnly",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "58334c2b69ca1ca815ac29cf61fd1db6542460bb18b892c2a0f011a8575fc945",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeExplicitRerunUsesSourceSessionExposure",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHTTPHumanRoundTripAndPurgedProjection",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_test.go",
+          "actual_source_SHA": "cc745e20febebd27ce5747a7d097b3a95a7aba77d2c85debbdf391aa8d190665",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHTTPNegotiationDoesNotEnableClosedGate",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHTTPRejectsHumanCredentialFallback",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHTTPStrictErrorsAndOriginalRecovery",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_test.go",
+          "actual_source_SHA": "cc745e20febebd27ce5747a7d097b3a95a7aba77d2c85debbdf391aa8d190665",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHTTPVersionNegotiationAndOriginalReceipts",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_version_test.go",
+          "actual_source_SHA": "4f0a0534b15f8b3b191c1be940e8ac992628bf73fba38c77e4c45dc3748c9e51",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeHeldOwnerApprovalAllowsActualUnrelatedWriters",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/knowledge_preparation_isolation_test.go",
+          "actual_source_SHA": "8d6a78a74fba9d79c976ccf281083b62ff4426dcce2a873a8daab11f70c4f554",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeJobHTTPPreservesSealedRefusal",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_version_test.go",
+          "actual_source_SHA": "4f0a0534b15f8b3b191c1be940e8ac992628bf73fba38c77e4c45dc3748c9e51",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeMemberRemovalFansOutHistoricalTargetsOutsideSource",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "58334c2b69ca1ca815ac29cf61fd1db6542460bb18b892c2a0f011a8575fc945",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeMemberRoleAndRemovalAppendInAuthoritativeTransaction",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "58334c2b69ca1ca815ac29cf61fd1db6542460bb18b892c2a0f011a8575fc945",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeMembershipGrantsAppendOnlyWithCommittedMembership",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "58334c2b69ca1ca815ac29cf61fd1db6542460bb18b892c2a0f011a8575fc945",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeOrdinaryCoalescedCommentsCheckEveryCurrentAuthor",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/knowledge_preparation_isolation_test.go",
+          "actual_source_SHA": "8d6a78a74fba9d79c976ccf281083b62ff4426dcce2a873a8daab11f70c4f554",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePATRevocationRetainsOriginalCauseAndRollsBackOnAppendFailure",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "58334c2b69ca1ca815ac29cf61fd1db6542460bb18b892c2a0f011a8575fc945",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePolicyHTTPRequiresExplicitToggleAndRecoversAfterRoleLoss",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_version_test.go",
+          "actual_source_SHA": "4f0a0534b15f8b3b191c1be940e8ac992628bf73fba38c77e4c45dc3748c9e51",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationReplayStillFencesActualProjectDeletion",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/knowledge_preparation_isolation_test.go",
+          "actual_source_SHA": "8d6a78a74fba9d79c976ccf281083b62ff4426dcce2a873a8daab11f70c4f554",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePreparationWhileRealOrdinaryWriterIsUncommitted",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/knowledge_preparation_isolation_test.go",
+          "actual_source_SHA": "8d6a78a74fba9d79c976ccf281083b62ff4426dcce2a873a8daab11f70c4f554",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeProjectDeletionRetainsFinalHintAndPendingRouting",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "58334c2b69ca1ca815ac29cf61fd1db6542460bb18b892c2a0f011a8575fc945",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResumeDirectChatPointerUsesExactExposure",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeResumeOlderSessionFallbackUsesChosenKey",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_test.go",
+          "actual_source_SHA": "da395290c7d6820e29d7cbb06c6c5214ce36091f48efe1c37e8860fc850bd4cc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeUnreachableResumeHTTPRebindsAndBreaksLoop",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/daemon_knowledge_resume_test.go",
+          "actual_source_SHA": "13f95dcd3047476c5e8909e870776f5ba4c3288469cc1a1290c5501d5420d734",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeWorkspaceDeletionRetainsEveryTargetHint",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/collaboration_knowledge_invalidation_test.go",
+          "actual_source_SHA": "58334c2b69ca1ca815ac29cf61fd1db6542460bb18b892c2a0f011a8575fc945",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestProjectDeletionPreservesKnowledgeAutomationHistory",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/workspace_delete_manifest_test.go",
+          "actual_source_SHA": "7de1513b341b327d2e6c6747575158640e91acbb3f5de1b6c68727ffa1584adc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestWorkspaceDeletionManifestPreservesKnowledgeHistory",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/workspace_delete_manifest_test.go",
+          "actual_source_SHA": "7de1513b341b327d2e6c6747575158640e91acbb3f5de1b6c68727ffa1584adc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestWorkspaceDeletionRemovesKnowledgePolicy",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/internal/handler/workspace_delete_manifest_test.go",
+          "actual_source_SHA": "7de1513b341b327d2e6c6747575158640e91acbb3f5de1b6c68727ffa1584adc",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        }
+      ]
+    },
+    {
+      "slug": "router",
+      "package": "./cmd/server",
+      "selector": "^Test(Knowledge|TaskKnowledge|CollaborationKnowledge)|^TestCORSKnowledgeVersionNegotiation$",
+      "tops": 10,
+      "expected_file": {
+        "path": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/router-expected-tops.json",
+        "sha256": "9721375a527b52cb8320c63ed3ed8e142d200a6128338ff86d6a0937e2557ca4"
+      },
+      "expected_tops_sorted_unique_and_scope_equal": true,
+      "compiled_test_files": 113,
+      "TestMain": true,
+      "raw_top_declaration_checks": [
+        {
+          "name": "TestCORSKnowledgeVersionNegotiation",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/cors_headers_test.go",
+          "actual_source_SHA": "3f1be866db38d6c11ac9f0d8180538ecf3fe7d9abf095b7976f690446d4a5fca",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeProductionManagedRoutesHonorExplicitlyDisabledGate",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/collaboration_knowledge_runtime_routes_test.go",
+          "actual_source_SHA": "865d5baa27217d1a3c9c43fa2bdf3aaa9fc6a3d4ad8f654003ca798761e01c55",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestCollaborationKnowledgeRuntimeProductionRoutesRejectBusinessCredential",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/collaboration_knowledge_runtime_routes_test.go",
+          "actual_source_SHA": "865d5baa27217d1a3c9c43fa2bdf3aaa9fc6a3d4ad8f654003ca798761e01c55",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeContextDefaultEnabled",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/task_knowledge_config_test.go",
+          "actual_source_SHA": "e27dbcc675c9d3826b7fed310728429796b166e0d2856261223937c3e8371f0b",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgePolicyRecoveryRouteSurvivesWorkspaceDeparture",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/project_permission_route_test.go",
+          "actual_source_SHA": "0b40902275dececc038b1d4565d67a0b180d01164b76ea04d2a0b073abcb1f3d",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeProductionRoutesPreserveAccountAndTargetScopes",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/collaboration_knowledge_routes_test.go",
+          "actual_source_SHA": "ccdcaec822f38dbcb4f0126c43a577d8872345056a56fc6d176f9f1f019199c4",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/collaboration_knowledge_realtime_test.go",
+          "actual_source_SHA": "38bbfc8ec3f952b1ca7ee11e9e243f3d07fcba906a0f0a18bc813520cc5c7378",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSocketPreservesCurrentJWTAndPasswordGates",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/collaboration_knowledge_realtime_test.go",
+          "actual_source_SHA": "38bbfc8ec3f952b1ca7ee11e9e243f3d07fcba906a0f0a18bc813520cc5c7378",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestKnowledgeSocketRejectsPrivateOrAmbiguousOuterEnvelope",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/collaboration_knowledge_realtime_test.go",
+          "actual_source_SHA": "38bbfc8ec3f952b1ca7ee11e9e243f3d07fcba906a0f0a18bc813520cc5c7378",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        },
+        {
+          "name": "TestTaskKnowledgeProductionRoutesKeepMachineScopeWithExplicitlyDisabledGate",
+          "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/server/cmd/server/task_knowledge_routes_test.go",
+          "actual_source_SHA": "702765fed2f3649b983fef4eaafbccce7eae08865b7f6009d3beef779eb9c34a",
+          "name_declared": true,
+          "metadata_source_SHA": null,
+          "source_SHA_matches": true
+        }
+      ]
+    }
+  ],
+  "static_input_identity_readonly_probe": {
+    "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+    "file_count": 10408,
+    "workspace_link_count": 32,
+    "head": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+    "manifest_sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+    "pg_config_sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+    "config_sha256": "7d0b65fdcb2dcc582cd182423d9221d95ce128ab20c4351295dbbdc62f9f1758",
+    "tools": {
+      "go": {
+        "path": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+        "sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+      },
+      "psql": {
+        "path": "/opt/homebrew/Cellar/libpq/18.6/bin/psql",
+        "sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07"
+      },
+      "node": {
+        "path": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+        "sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572"
+      },
+      "git": {
+        "path": "/opt/homebrew/Cellar/git/2.52.0/bin/git",
+        "sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197"
+      },
+      "bash": {
+        "path": "/bin/bash",
+        "sha256": "07ad8525844ce61471e08e8c515b76bf063bac482394152bad814026cd577f69"
+      },
+      "python3": {
+        "path": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43"
+      }
+    }
+  },
+  "reference_hash_checks": [
+    {
+      "file": "/opt/homebrew/Cellar/go/1.27.0/libexec/bin/go",
+      "expected_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+      "actual_sha256": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702",
+      "matched": true,
+      "context": "config.tools.go"
+    },
+    {
+      "file": "/opt/homebrew/Cellar/libpq/18.6/bin/psql",
+      "expected_sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+      "actual_sha256": "34661328090ed7ac45b804ed5d96b9e0517c5be0bd6131fb5b4ab215bf1eba07",
+      "matched": true,
+      "context": "config.tools.psql"
+    },
+    {
+      "file": "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+      "expected_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "actual_sha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+      "matched": true,
+      "context": "config.tools.node"
+    },
+    {
+      "file": "/opt/homebrew/Cellar/git/2.52.0/bin/git",
+      "expected_sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197",
+      "actual_sha256": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197",
+      "matched": true,
+      "context": "config.tools.git"
+    },
+    {
+      "file": "/bin/bash",
+      "expected_sha256": "07ad8525844ce61471e08e8c515b76bf063bac482394152bad814026cd577f69",
+      "actual_sha256": "07ad8525844ce61471e08e8c515b76bf063bac482394152bad814026cd577f69",
+      "matched": true,
+      "context": "config.tools.bash"
+    },
+    {
+      "file": "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "expected_sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43",
+      "actual_sha256": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43",
+      "matched": true,
+      "context": "config.tools.python3"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/full-source-input.json",
+      "expected_sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+      "actual_sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+      "matched": true,
+      "context": "config.source_manifest"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/manifests/final-knowledge-scope.json",
+      "expected_sha256": "fe6a495674bb748d3e6d6e080be4003f629ec657d0c83f42ad811dcdfe725819",
+      "actual_sha256": "fe6a495674bb748d3e6d6e080be4003f629ec657d0c83f42ad811dcdfe725819",
+      "matched": true,
+      "context": "config.scope"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/inventory-parser-v3.cjs",
+      "expected_sha256": "7c10d5d3b60ba701767acbb2be128d12b18542460c3711540c76d7f312b7e3e2",
+      "actual_sha256": "7c10d5d3b60ba701767acbb2be128d12b18542460c3711540c76d7f312b7e3e2",
+      "matched": true,
+      "context": "config.parser"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-final-go-preparation-20261116-439f3adfcebb/bin/parse-run.cjs",
+      "expected_sha256": "63958a7c826b990f464f4c9e01359acc7a2ec65d59780437c299b97ca8c819d2",
+      "actual_sha256": "63958a7c826b990f464f4c9e01359acc7a2ec65d59780437c299b97ca8c819d2",
+      "matched": true,
+      "context": "config.parse_driver"
+    },
+    {
+      "file": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-persistent-state-wrapper-v2.py",
+      "expected_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+      "actual_sha256": "f114c7f27fee76a58caada1bde81f5d1c5106c59ab2b8e618be0e04e945675c8",
+      "matched": true,
+      "context": "config.wrapper"
+    },
+    {
+      "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/run-owned-go.py",
+      "expected_sha256": "983a7895b0ce815b0f86344d0b802d15de6805e0aff0bbd57e987aae198b994e",
+      "actual_sha256": "983a7895b0ce815b0f86344d0b802d15de6805e0aff0bbd57e987aae198b994e",
+      "matched": true,
+      "context": "config.original"
+    },
+    {
+      "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+      "expected_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+      "actual_sha256": "0282275ad5ef5bad5f3546a3084dd56b49dd15b934d24ae39798236182a6cc3c",
+      "matched": true,
+      "context": "config.controller"
+    }
+  ],
+  "permission_ready_semantics": {
+    "consumer": "knowledge-final-runner.validate_permit only",
+    "Go_permit_source_ready_true_means": "The exact physical SOURCE/config/tool/AST scope inputs have been independently admitted for these six knowledge Go suites. It does not assert that those tests already passed.",
+    "separate_original_P6_build_flag": "p6-runtime.py --source-ready controls production build/start/run after their own main clearance; neither this review nor the Go permit grants that P6 flag.",
+    "no_circular_requirement_for_test_success_before_Go_permit": true
+  },
+  "runtime_safety_review": {
+    "fresh_DB_per_package_and_mode": true,
+    "exact_CREATE_identity_ledger_connection_queries_only": true,
+    "single_local_knowledge_suite_lock": true,
+    "global2_onePAY_reservation_is_main_scheduling_contract": true,
+    "normal_before_race_complete_expected_named_leaf_sets_required": true,
+    "source_code_write_overlay_modfile_tags_API_browser_Redis_model_ambient_CLI_denied": true,
+    "whole_final10408_32_and_tool_hash_check_before_after_final": true,
+    "final6_owned_DB_connection_checks": true,
+    "original_ownedGo_bytecode_unchanged_only_STATE_RESEARCH_PSQL_and_classified_subprocess_boundaries_relocated": true
+  },
+  "nine_tag_scope": {
+    "not_part_of_this_review": true,
+    "must_use_separate_NEW_scope_runner_and_AST_then_main_permission": true,
+    "knowledgeintegration9_only_after_no_tags_no_TestRK1": true
+  },
+  "ownership": {
+    "new_review_JSON_only": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-final-no-tags-runner-independent-review-20261116-2ec67b6bb3f6.json",
+    "actual_DB_SQL_repository_Go_test_runtime_model_network_or_source_proof_writes": 0,
+    "only_readonly_Git_static_input_and_pure_permit_validation_used": true,
+    "recursive_children": 0
+  },
+  "acceptance_limits": {
+    "runner_preparation_accepted": true,
+    "actual_MAIN_permit_minted_by_reviewer": false,
+    "actual_suites_executed_by_reviewer": false,
+    "original_P6_production_source_ready": false,
+    "ROOT_final": false,
+    "P2_product_final": false,
+    "final_knowledge": false
+  }
+}

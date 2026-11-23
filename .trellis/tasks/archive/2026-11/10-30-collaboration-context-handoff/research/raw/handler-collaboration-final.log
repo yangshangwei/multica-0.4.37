@@ -1,0 +1,624 @@
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/10/30 08:25:53 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestAdminCollaborationGateOpensCreationAndExecutionWithReceipts
+--- PASS: TestAdminCollaborationGateOpensCreationAndExecutionWithReceipts (0.18s)
+=== RUN   TestAdminCollaborationGateObserverAndFreezeBoundaries
+--- PASS: TestAdminCollaborationGateObserverAndFreezeBoundaries (0.20s)
+=== RUN   TestAdminCollaborationHTTPMinimalReadsLifecycleAndOriginalRecovery
+--- PASS: TestAdminCollaborationHTTPMinimalReadsLifecycleAndOriginalRecovery (0.28s)
+=== RUN   TestAdminCollaborationHTTPExplicitSuccessorAndPausedReopen
+--- PASS: TestAdminCollaborationHTTPExplicitSuccessorAndPausedReopen (0.32s)
+=== RUN   TestAdminCollaborationHTTPRejectsMalformedAndUnauthorizedRequests
+--- PASS: TestAdminCollaborationHTTPRejectsMalformedAndUnauthorizedRequests (0.24s)
+=== RUN   TestPasswordCollaborationInvalidationChangeAndOrdinaryControls
+--- PASS: TestPasswordCollaborationInvalidationChangeAndOrdinaryControls (0.27s)
+=== RUN   TestPasswordCollaborationInvalidationLegacySetup
+--- PASS: TestPasswordCollaborationInvalidationLegacySetup (0.07s)
+=== RUN   TestPasswordCollaborationInvalidationRejectedChangePreservesAuthority
+--- PASS: TestPasswordCollaborationInvalidationRejectedChangePreservesAuthority (0.19s)
+=== RUN   TestCollaborationActivityHTTPPaginationAndPrivateBoundary
+--- PASS: TestCollaborationActivityHTTPPaginationAndPrivateBoundary (0.03s)
+=== RUN   TestCollaborationActivityHTTPRejectsInvalidCursors
+--- PASS: TestCollaborationActivityHTTPRejectsInvalidCursors (0.00s)
+=== RUN   TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes
+2026/10/30 08:25:54 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativ621505575/001 baseURL=""
+--- PASS: TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes (0.03s)
+=== RUN   TestCollaborationCommentAttachmentDisplayRemovalKeepsDeliveredFile
+2026/10/30 08:25:54 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationCommentAttachmentDisplayRemovalKeepsDeliveredFi3996088952/001 baseURL=""
+--- PASS: TestCollaborationCommentAttachmentDisplayRemovalKeepsDeliveredFile (0.03s)
+=== RUN   TestCollaborationAttachmentCapabilityRejectsTamperingAndInvalidSelections
+2026/10/30 08:25:54 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentCapabilityRejectsTamperingAndInvalidS3158859825/001 baseURL=""
+--- PASS: TestCollaborationAttachmentCapabilityRejectsTamperingAndInvalidSelections (0.00s)
+=== RUN   TestCollaborationPrivateObjectsRejectOrdinaryFileCapabilities
+2026/10/30 08:25:54 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationPrivateObjectsRejectOrdinaryFileCapabilities1682701583/001 baseURL=""
+--- PASS: TestCollaborationPrivateObjectsRejectOrdinaryFileCapabilities (0.01s)
+=== RUN   TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes
+2026/10/30 08:25:54 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes556131747/001 baseURL=""
+--- PASS: TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes (0.02s)
+=== RUN   TestCollaborationAttachmentUploadEnforcesRealFileLimitBeforeStorage
+--- PASS: TestCollaborationAttachmentUploadEnforcesRealFileLimitBeforeStorage (0.19s)
+=== RUN   TestCollaborationAttachmentForeignDraftDoesNotRevealExistence
+2026/10/30 08:25:55 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationAttachmentForeignDraftDoesNotRevealExistence1153538713/001 baseURL=""
+--- PASS: TestCollaborationAttachmentForeignDraftDoesNotRevealExistence (0.02s)
+=== RUN   TestLegacyIssueWritesCannotBypassCollaborationLifecycle
+--- PASS: TestLegacyIssueWritesCannotBypassCollaborationLifecycle (0.01s)
+=== RUN   TestSystemStatusWriterSkipsCollaborationIssue
+--- PASS: TestSystemStatusWriterSkipsCollaborationIssue (0.01s)
+=== RUN   TestLegacyDeleteCannotDetachCollaborationIssue
+--- PASS: TestLegacyDeleteCannotDetachCollaborationIssue (0.02s)
+=== RUN   TestLegacyMixedBatchRefusesBeforeAnyCollaborationSideEffects
+--- PASS: TestLegacyMixedBatchRefusesBeforeAnyCollaborationSideEffects (0.01s)
+=== RUN   TestWorkspaceWithCollaborationHistoryCannotBeDeleted
+=== RUN   TestWorkspaceWithCollaborationHistoryCannotBeDeleted/todo
+2026/10/30 08:25:55 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestWorkspaceWithCollaborationHistoryCannotBeDeletedtodo3514466026/001 baseURL=""
+=== RUN   TestWorkspaceWithCollaborationHistoryCannotBeDeleted/done
+2026/10/30 08:25:55 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestWorkspaceWithCollaborationHistoryCannotBeDeleteddone3999097233/001 baseURL=""
+=== RUN   TestWorkspaceWithCollaborationHistoryCannotBeDeleted/cancelled
+2026/10/30 08:25:55 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestWorkspaceWithCollaborationHistoryCannotBeDeletedcancelled2145104248/001 baseURL=""
+--- PASS: TestWorkspaceWithCollaborationHistoryCannotBeDeleted (0.24s)
+    --- PASS: TestWorkspaceWithCollaborationHistoryCannotBeDeleted/todo (0.09s)
+    --- PASS: TestWorkspaceWithCollaborationHistoryCannotBeDeleted/done (0.07s)
+    --- PASS: TestWorkspaceWithCollaborationHistoryCannotBeDeleted/cancelled (0.07s)
+=== RUN   TestCollaborationPositionUsesSourceAuthorityWithoutChangingCollaborationVersion
+--- PASS: TestCollaborationPositionUsesSourceAuthorityWithoutChangingCollaborationVersion (0.01s)
+=== RUN   TestLegacyCollaborationCommentAndRerunPathsStayInert
+--- PASS: TestLegacyCollaborationCommentAndRerunPathsStayInert (0.01s)
+=== RUN   TestLegacyIssueDetailDoesNotExposeCollaborationToMachine
+--- PASS: TestLegacyIssueDetailDoesNotExposeCollaborationToMachine (0.01s)
+=== RUN   TestCollaborationMachineSearchAndListKeepOnlyReferences
+=== RUN   TestCollaborationMachineSearchAndListKeepOnlyReferences/task_token
+=== RUN   TestCollaborationMachineSearchAndListKeepOnlyReferences/cloud_pat
+=== RUN   TestCollaborationMachineSearchAndListKeepOnlyReferences/#00
+=== RUN   TestCollaborationMachineSearchAndListKeepOnlyReferences/future_machine
+=== RUN   TestCollaborationMachineSearchAndListKeepOnlyReferences/missing_context
+--- PASS: TestCollaborationMachineSearchAndListKeepOnlyReferences (0.11s)
+    --- PASS: TestCollaborationMachineSearchAndListKeepOnlyReferences/task_token (0.03s)
+    --- PASS: TestCollaborationMachineSearchAndListKeepOnlyReferences/cloud_pat (0.01s)
+    --- PASS: TestCollaborationMachineSearchAndListKeepOnlyReferences/#00 (0.02s)
+    --- PASS: TestCollaborationMachineSearchAndListKeepOnlyReferences/future_machine (0.02s)
+    --- PASS: TestCollaborationMachineSearchAndListKeepOnlyReferences/missing_context (0.01s)
+=== RUN   TestCollaborationMachineReferencesDoNotRevealStatusOrPrivateOrdering
+--- PASS: TestCollaborationMachineReferencesDoNotRevealStatusOrPrivateOrdering (0.02s)
+=== RUN   TestCollaborationOrdinaryChildrenCompleteAuthorizedProjection
+--- PASS: TestCollaborationOrdinaryChildrenCompleteAuthorizedProjection (0.27s)
+=== RUN   TestCollaborationOrdinaryChildWritesKeepParentStateAndEmitCommittedHints
+2026/10/30 08:25:55 INFO issue updated user_id=2e8c61e9-c1f1-486a-90c1-d435e1f7bf45 issue_id=c89a88b0-fe7b-4bc2-8912-674130fa146c workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+2026/10/30 08:25:55 INFO issue updated user_id=2e8c61e9-c1f1-486a-90c1-d435e1f7bf45 issue_id=c89a88b0-fe7b-4bc2-8912-674130fa146c workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+2026/10/30 08:25:55 INFO issue updated user_id=2e8c61e9-c1f1-486a-90c1-d435e1f7bf45 issue_id=c89a88b0-fe7b-4bc2-8912-674130fa146c workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+2026/10/30 08:25:55 INFO issue updated user_id=2e8c61e9-c1f1-486a-90c1-d435e1f7bf45 issue_id=c89a88b0-fe7b-4bc2-8912-674130fa146c workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+2026/10/30 08:25:55 INFO issue created user_id=2e8c61e9-c1f1-486a-90c1-d435e1f7bf45 issue_id=01a18a32-edf9-79bc-a970-08c313a7a280 title="Created ordinary child 837c3098-c3e8-4099-a449-8f702ae1560a" status=todo workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+2026/10/30 08:25:55 INFO issue deleted user_id=2e8c61e9-c1f1-486a-90c1-d435e1f7bf45 issue_id=01a18a32-edf9-79bc-a970-08c313a7a280 workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+2026/10/30 08:25:55 INFO batch delete issues user_id=2e8c61e9-c1f1-486a-90c1-d435e1f7bf45 count=2
+--- PASS: TestCollaborationOrdinaryChildWritesKeepParentStateAndEmitCommittedHints (0.06s)
+=== RUN   TestCollaborationCommandHistoryHTTPRejectsMalformedQuery
+--- PASS: TestCollaborationCommandHistoryHTTPRejectsMalformedQuery (0.00s)
+=== RUN   TestCollaborationCommandHistoryHTTPPagingAndPrivateBoundary
+--- PASS: TestCollaborationCommandHistoryHTTPPagingAndPrivateBoundary (0.04s)
+=== RUN   TestCollaborationWaitingCancelHTTPRejectsMalformedScope
+--- PASS: TestCollaborationWaitingCancelHTTPRejectsMalformedScope (0.00s)
+=== RUN   TestCollaborationCommandHTTPRedactedRecoveryOmitsExecutionFields
+--- PASS: TestCollaborationCommandHTTPRedactedRecoveryOmitsExecutionFields (0.01s)
+=== RUN   TestCollaborationCommentUTF8LimitIncludesJSONEnvelopeAndOriginalRecovery
+--- PASS: TestCollaborationCommentUTF8LimitIncludesJSONEnvelopeAndOriginalRecovery (0.02s)
+=== RUN   TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection
+--- PASS: TestCollaborationCommentHTTPKeepsAuthorControlHistoryAndPrivateProjection (0.03s)
+=== RUN   TestCollaborationCommentHTTPRejectsForeignCommentsAndMalformedVersions
+--- PASS: TestCollaborationCommentHTTPRejectsForeignCommentsAndMalformedVersions (0.01s)
+=== RUN   TestCollaborationCommentHTTPPaginationHasStableChronologicalPages
+--- PASS: TestCollaborationCommentHTTPPaginationHasStableChronologicalPages (0.01s)
+=== RUN   TestCollaborationCommentHTTPCreateKeepsOneCommentAndLocatedNotification
+--- PASS: TestCollaborationCommentHTTPCreateKeepsOneCommentAndLocatedNotification (0.02s)
+=== RUN   TestCollaborationConfigurationAgentHTTPDisplayEchoPreservesAuthority
+2026/10/30 08:25:56 INFO agent updated user_id=b25ae8b6-ce56-4107-9d73-f56224a7f43a agent_id=d52b1a63-c28d-46d2-a0fb-aacfaadb5083 workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+2026/10/30 08:26:02 INFO agent updated user_id=b25ae8b6-ce56-4107-9d73-f56224a7f43a agent_id=d52b1a63-c28d-46d2-a0fb-aacfaadb5083 workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+2026/10/30 08:26:02 INFO agent updated user_id=b25ae8b6-ce56-4107-9d73-f56224a7f43a agent_id=d52b1a63-c28d-46d2-a0fb-aacfaadb5083 workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+--- PASS: TestCollaborationConfigurationAgentHTTPDisplayEchoPreservesAuthority (6.15s)
+=== RUN   TestCollaborationConfigurationAgentHTTPUpdateIsAtomic
+=== RUN   TestCollaborationConfigurationAgentHTTPUpdateIsAtomic/clear
+2026/10/30 08:26:02 WARN update agent failed user_id=b25ae8b6-ce56-4107-9d73-f56224a7f43a error="injected lifecycle SQL failure" agent_id=2e1e160e-40b8-4574-a0c1-96c9ef39331b
+=== RUN   TestCollaborationConfigurationAgentHTTPUpdateIsAtomic/commit
+2026/10/30 08:26:02 WARN update agent failed user_id=b25ae8b6-ce56-4107-9d73-f56224a7f43a error="commit runtime resource mutation: injected confirmed commit failure" agent_id=c68fdbc8-a8b2-4d30-ac7d-9dcaed70e531
+--- PASS: TestCollaborationConfigurationAgentHTTPUpdateIsAtomic (0.06s)
+    --- PASS: TestCollaborationConfigurationAgentHTTPUpdateIsAtomic/clear (0.03s)
+    --- PASS: TestCollaborationConfigurationAgentHTTPUpdateIsAtomic/commit (0.03s)
+=== RUN   TestCollaborationConfigurationSquadHTTPMembershipPersistsInvalidation
+--- PASS: TestCollaborationConfigurationSquadHTTPMembershipPersistsInvalidation (0.03s)
+=== RUN   TestCollaborationConfigurationSkillHTTPEnabledChangePersistsInvalidation
+--- PASS: TestCollaborationConfigurationSkillHTTPEnabledChangePersistsInvalidation (0.04s)
+=== RUN   TestCollaborationControlHTTPRequiresExplicitScopeAndExactVersions
+--- PASS: TestCollaborationControlHTTPRequiresExplicitScopeAndExactVersions (0.00s)
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/missing_hold
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/null_hold
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/numeric_hold
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/zero_hold
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/overflow_hold
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/stop_hold
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/stop_null_hold
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/stop_null_gate
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/target_issue_version
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/missing_group_observation
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/missing_targets
+=== RUN   TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/unknown_target_field
+--- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/missing_hold (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/null_hold (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/numeric_hold (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/zero_hold (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/overflow_hold (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/stop_hold (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/stop_null_hold (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/stop_null_gate (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/target_issue_version (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/missing_group_observation (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/missing_targets (0.00s)
+    --- PASS: TestCollaborationControlHTTPRejectsHoldAndScopeAmbiguity/unknown_target_field (0.00s)
+=== RUN   TestCollaborationControlHTTPRecoversOriginalStructuredRefusal
+--- PASS: TestCollaborationControlHTTPRecoversOriginalStructuredRefusal (0.04s)
+=== RUN   TestCollaborationCreationResultHTTPRecoversOnlyOwnSettledRejection
+--- PASS: TestCollaborationCreationResultHTTPRecoversOnlyOwnSettledRejection (0.05s)
+=== RUN   TestCollaborationCreationResultHTTPRejectsUntrustedAndMalformedRequests
+--- PASS: TestCollaborationCreationResultHTTPRejectsUntrustedAndMalformedRequests (0.01s)
+=== RUN   TestCollaborationCreationResultHTTPCommitUncertaintyDoesNotReportRejection
+=== RUN   TestCollaborationCreationResultHTTPCommitUncertaintyDoesNotReportRejection/rolled_back
+=== RUN   TestCollaborationCreationResultHTTPCommitUncertaintyDoesNotReportRejection/acknowledgement_lost
+--- PASS: TestCollaborationCreationResultHTTPCommitUncertaintyDoesNotReportRejection (0.02s)
+    --- PASS: TestCollaborationCreationResultHTTPCommitUncertaintyDoesNotReportRejection/rolled_back (0.01s)
+    --- PASS: TestCollaborationCreationResultHTTPCommitUncertaintyDoesNotReportRejection/acknowledgement_lost (0.01s)
+=== RUN   TestCollaborationDiscussionHTTPUsesPrivateRoutesAndOwnReceipts
+--- PASS: TestCollaborationDiscussionHTTPUsesPrivateRoutesAndOwnReceipts (0.02s)
+=== RUN   TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify
+=== RUN   TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/resolve
+=== RUN   TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/unresolve
+=== RUN   TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/add_comment_reaction
+=== RUN   TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/remove_comment_reaction
+=== RUN   TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/add_issue_reaction
+=== RUN   TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/remove_issue_reaction
+--- PASS: TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify (0.01s)
+    --- PASS: TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/resolve (0.00s)
+    --- PASS: TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/unresolve (0.00s)
+    --- PASS: TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/add_comment_reaction (0.00s)
+    --- PASS: TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/remove_comment_reaction (0.00s)
+    --- PASS: TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/add_issue_reaction (0.00s)
+    --- PASS: TestCollaborationDiscussionLegacyPathsCannotMutateOrNotify/remove_issue_reaction (0.00s)
+=== RUN   TestCollaborationEditHTTPExternalHandlerAndExactVersions
+--- PASS: TestCollaborationEditHTTPExternalHandlerAndExactVersions (0.02s)
+=== RUN   TestCollaborationEditHTTPSourceFields
+--- PASS: TestCollaborationEditHTTPSourceFields (0.02s)
+=== RUN   TestCollaborationEditHTTPPresenceAndClearing
+=== RUN   TestCollaborationEditHTTPPresenceAndClearing/omitted
+=== RUN   TestCollaborationEditHTTPPresenceAndClearing/text_null_is_untouched
+=== RUN   TestCollaborationEditHTTPPresenceAndClearing/empty_text_is_saved
+=== RUN   TestCollaborationEditHTTPPresenceAndClearing/date_null_clears
+=== RUN   TestCollaborationEditHTTPPresenceAndClearing/empty_date_clears
+=== RUN   TestCollaborationEditHTTPPresenceAndClearing/legacy_midnight
+--- PASS: TestCollaborationEditHTTPPresenceAndClearing (0.07s)
+    --- PASS: TestCollaborationEditHTTPPresenceAndClearing/omitted (0.01s)
+    --- PASS: TestCollaborationEditHTTPPresenceAndClearing/text_null_is_untouched (0.01s)
+    --- PASS: TestCollaborationEditHTTPPresenceAndClearing/empty_text_is_saved (0.01s)
+    --- PASS: TestCollaborationEditHTTPPresenceAndClearing/date_null_clears (0.01s)
+    --- PASS: TestCollaborationEditHTTPPresenceAndClearing/empty_date_clears (0.01s)
+    --- PASS: TestCollaborationEditHTTPPresenceAndClearing/legacy_midnight (0.01s)
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/assignee
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/project
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/priority
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/properties
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/labels
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/position
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/iteration
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/stage
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/title_object
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/description_array
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/numeric_date
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/bad_date
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/numeric_version
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/overflow
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/leading_zero
+=== RUN   TestCollaborationEditHTTPStrictFieldsAndVersions/fraction
+--- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions (0.09s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/assignee (0.01s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/project (0.01s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/priority (0.01s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/properties (0.01s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/labels (0.00s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/position (0.01s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/iteration (0.00s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/stage (0.01s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/title_object (0.00s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/description_array (0.00s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/numeric_date (0.01s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/bad_date (0.01s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/numeric_version (0.00s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/overflow (0.00s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/leading_zero (0.00s)
+    --- PASS: TestCollaborationEditHTTPStrictFieldsAndVersions/fraction (0.00s)
+=== RUN   TestCollaborationEditHTTPRejectsMachineBeforeDependencies
+--- PASS: TestCollaborationEditHTTPRejectsMachineBeforeDependencies (0.00s)
+=== RUN   TestCollaborationEditHTTPPreservesStatusPatchAndRejectsMixedIntent
+--- PASS: TestCollaborationEditHTTPPreservesStatusPatchAndRejectsMixedIntent (0.02s)
+=== RUN   TestCollaborationExecutionHTTPProjection
+--- PASS: TestCollaborationExecutionHTTPProjection (0.03s)
+=== RUN   TestCollaborationExecutionHTTPEmptyCollections
+--- PASS: TestCollaborationExecutionHTTPEmptyCollections (0.01s)
+=== RUN   TestCollaborationExecutionHTTPRetainsHistoryAfterTargetMoves
+--- PASS: TestCollaborationExecutionHTTPRetainsHistoryAfterTargetMoves (0.03s)
+=== RUN   TestCollaborationExecutionHTTPUsesAuthorizedSnapshot
+--- PASS: TestCollaborationExecutionHTTPUsesAuthorizedSnapshot (0.11s)
+=== RUN   TestCollaborationExecutionHTTPReadFailureIsUnavailable
+=== RUN   TestCollaborationExecutionHTTPReadFailureIsUnavailable/ListCollaborationRuns
+=== RUN   TestCollaborationExecutionHTTPReadFailureIsUnavailable/ListCollaborationSessionGroupInputs
+--- PASS: TestCollaborationExecutionHTTPReadFailureIsUnavailable (0.01s)
+    --- PASS: TestCollaborationExecutionHTTPReadFailureIsUnavailable/ListCollaborationRuns (0.00s)
+    --- PASS: TestCollaborationExecutionHTTPReadFailureIsUnavailable/ListCollaborationSessionGroupInputs (0.00s)
+=== RUN   TestCollaborationExecutionNegotiationPreservesQueryScope
+=== RUN   TestCollaborationExecutionNegotiationPreservesQueryScope/?limit=20
+=== RUN   TestCollaborationExecutionNegotiationPreservesQueryScope/?limit=20&execution_view_version=6
+=== RUN   TestCollaborationExecutionNegotiationPreservesQueryScope/?execution_view_version=5&limit=20
+=== RUN   TestCollaborationExecutionNegotiationPreservesQueryScope/?execution_view_version=7
+=== RUN   TestCollaborationExecutionNegotiationPreservesQueryScope/?execution_view_version=6&execution_view_version=5
+=== RUN   TestCollaborationExecutionNegotiationPreservesQueryScope/?execution_view_version=06
+--- PASS: TestCollaborationExecutionNegotiationPreservesQueryScope (0.00s)
+    --- PASS: TestCollaborationExecutionNegotiationPreservesQueryScope/?limit=20 (0.00s)
+    --- PASS: TestCollaborationExecutionNegotiationPreservesQueryScope/?limit=20&execution_view_version=6 (0.00s)
+    --- PASS: TestCollaborationExecutionNegotiationPreservesQueryScope/?execution_view_version=5&limit=20 (0.00s)
+    --- PASS: TestCollaborationExecutionNegotiationPreservesQueryScope/?execution_view_version=7 (0.00s)
+    --- PASS: TestCollaborationExecutionNegotiationPreservesQueryScope/?execution_view_version=6&execution_view_version=5 (0.00s)
+    --- PASS: TestCollaborationExecutionNegotiationPreservesQueryScope/?execution_view_version=06 (0.00s)
+=== RUN   TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages
+=== RUN   TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/permit_version_null
+=== RUN   TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/permit_version_zero
+=== RUN   TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/permit_descriptor
+=== RUN   TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/proof_launches
+=== RUN   TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/proof_cleanup
+=== RUN   TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/outcome_containment
+--- PASS: TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages (0.00s)
+    --- PASS: TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/permit_version_null (0.00s)
+    --- PASS: TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/permit_version_zero (0.00s)
+    --- PASS: TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/permit_descriptor (0.00s)
+    --- PASS: TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/proof_launches (0.00s)
+    --- PASS: TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/proof_cleanup (0.00s)
+    --- PASS: TestCollaborationRuntimeDecoderRejectsNewFieldsOnLegacyMessages/outcome_containment (0.00s)
+=== RUN   TestCollaborationExecutionV6ReadsHostAndV5KeepsHumanAccess
+--- PASS: TestCollaborationExecutionV6ReadsHostAndV5KeepsHumanAccess (0.03s)
+=== RUN   TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory
+--- PASS: TestCollaborationExternalHandlerIterationStatisticsPreviewAndHistory (0.12s)
+=== RUN   TestCollaborationFieldsHTTPOptionsAndDetail
+--- PASS: TestCollaborationFieldsHTTPOptionsAndDetail (0.03s)
+=== RUN   TestCollaborationFieldsHTTPPreserveAndClear
+=== RUN   TestCollaborationFieldsHTTPPreserveAndClear/omitted
+=== RUN   TestCollaborationFieldsHTTPPreserveAndClear/whole_null
+=== RUN   TestCollaborationFieldsHTTPPreserveAndClear/empty_properties
+=== RUN   TestCollaborationFieldsHTTPPreserveAndClear/clear
+--- PASS: TestCollaborationFieldsHTTPPreserveAndClear (0.06s)
+    --- PASS: TestCollaborationFieldsHTTPPreserveAndClear/omitted (0.01s)
+    --- PASS: TestCollaborationFieldsHTTPPreserveAndClear/whole_null (0.02s)
+    --- PASS: TestCollaborationFieldsHTTPPreserveAndClear/empty_properties (0.01s)
+    --- PASS: TestCollaborationFieldsHTTPPreserveAndClear/clear (0.02s)
+=== RUN   TestCollaborationFieldsHTTPRejectsMalformedFields
+--- PASS: TestCollaborationFieldsHTTPRejectsMalformedFields (0.01s)
+=== RUN   TestCollaborationFieldsHTTPBrokenDefinitionIsUnavailable
+--- PASS: TestCollaborationFieldsHTTPBrokenDefinitionIsUnavailable (0.01s)
+=== RUN   TestCollaborationFieldsHTTPDetailUsesOneSnapshot
+--- PASS: TestCollaborationFieldsHTTPDetailUsesOneSnapshot (0.07s)
+=== RUN   TestCollaborationTransferRejectsDirectedStatusFields
+=== RUN   TestCollaborationTransferRejectsDirectedStatusFields/expected_status
+=== RUN   TestCollaborationTransferRejectsDirectedStatusFields/expected_status#01
+=== RUN   TestCollaborationTransferRejectsDirectedStatusFields/expected_status#02
+=== RUN   TestCollaborationTransferRejectsDirectedStatusFields/status_options_version
+=== RUN   TestCollaborationTransferRejectsDirectedStatusFields/status_options_version#01
+=== RUN   TestCollaborationTransferRejectsDirectedStatusFields/status_options_version#02
+--- PASS: TestCollaborationTransferRejectsDirectedStatusFields (0.00s)
+    --- PASS: TestCollaborationTransferRejectsDirectedStatusFields/expected_status (0.00s)
+    --- PASS: TestCollaborationTransferRejectsDirectedStatusFields/expected_status#01 (0.00s)
+    --- PASS: TestCollaborationTransferRejectsDirectedStatusFields/expected_status#02 (0.00s)
+    --- PASS: TestCollaborationTransferRejectsDirectedStatusFields/status_options_version (0.00s)
+    --- PASS: TestCollaborationTransferRejectsDirectedStatusFields/status_options_version#01 (0.00s)
+    --- PASS: TestCollaborationTransferRejectsDirectedStatusFields/status_options_version#02 (0.00s)
+=== RUN   TestCollaborationInformationRequestRejectsNonStringStatusConfirmation
+--- PASS: TestCollaborationInformationRequestRejectsNonStringStatusConfirmation (0.00s)
+=== RUN   TestCollaborationIterationPUTRejectsMetadataBeforeEffects
+=== RUN   TestCollaborationIterationPUTRejectsMetadataBeforeEffects/title
+=== RUN   TestCollaborationIterationPUTRejectsMetadataBeforeEffects/project_id
+=== RUN   TestCollaborationIterationPUTRejectsMetadataBeforeEffects/status
+=== RUN   TestCollaborationIterationPUTRejectsMetadataBeforeEffects/stage
+--- PASS: TestCollaborationIterationPUTRejectsMetadataBeforeEffects (0.08s)
+    --- PASS: TestCollaborationIterationPUTRejectsMetadataBeforeEffects/title (0.00s)
+    --- PASS: TestCollaborationIterationPUTRejectsMetadataBeforeEffects/project_id (0.00s)
+    --- PASS: TestCollaborationIterationPUTRejectsMetadataBeforeEffects/status (0.00s)
+    --- PASS: TestCollaborationIterationPUTRejectsMetadataBeforeEffects/stage (0.00s)
+=== RUN   TestProjectHealthRisksKeepCollaborationFromMachines
+=== RUN   TestProjectHealthRisksKeepCollaborationFromMachines/task_token
+=== RUN   TestProjectHealthRisksKeepCollaborationFromMachines/cloud_pat
+=== RUN   TestProjectHealthRisksKeepCollaborationFromMachines/future_machine
+=== RUN   TestProjectHealthRisksKeepCollaborationFromMachines/missing_context
+--- PASS: TestProjectHealthRisksKeepCollaborationFromMachines (0.04s)
+    --- PASS: TestProjectHealthRisksKeepCollaborationFromMachines/task_token (0.01s)
+    --- PASS: TestProjectHealthRisksKeepCollaborationFromMachines/cloud_pat (0.01s)
+    --- PASS: TestProjectHealthRisksKeepCollaborationFromMachines/future_machine (0.00s)
+    --- PASS: TestProjectHealthRisksKeepCollaborationFromMachines/missing_context (0.00s)
+=== RUN   TestCreateIssueDuplicateGuardIgnoresCollaborationIssue
+2026/10/30 08:26:03 INFO issue created user_id=b25ae8b6-ce56-4107-9d73-f56224a7f43a issue_id=01a18a33-0b3a-79a4-a916-a84f94145f3f title="Duplicate probe b0530d14-ba6a-4d47-8925-bbb985b47a8d" status=todo workspace_id=99401149-39c6-4edc-831c-22a2d23bcc35
+--- PASS: TestCreateIssueDuplicateGuardIgnoresCollaborationIssue (0.01s)
+=== RUN   TestLegacyUploadCannotAttachToCollaboration
+--- PASS: TestLegacyUploadCannotAttachToCollaboration (0.01s)
+=== RUN   TestCollaborationMemoryHTTPWireShapes
+--- PASS: TestCollaborationMemoryHTTPWireShapes (0.05s)
+=== RUN   TestCollaborationMemoryHTTPRejectsMalformedRequests
+--- PASS: TestCollaborationMemoryHTTPRejectsMalformedRequests (0.02s)
+=== RUN   TestCollaborationNotificationHTTPRechecksRecipientAndObjectAccess
+--- PASS: TestCollaborationNotificationHTTPRechecksRecipientAndObjectAccess (0.02s)
+=== RUN   TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit
+=== RUN   TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_
+2026/10/30 08:26:03 INFO mention task enqueued task_id=01a18a33-0bbd-7416-af05-022510611e86 issue_id=3c3ef9eb-94e6-4626-83bb-f7fdf132c308 agent_id=e542f8da-417a-4865-9ae6-d3cabbcdc1c0 is_leader_task=false
+=== RUN   TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_rollback
+=== RUN   TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_unknown_commit
+--- PASS: TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit (0.08s)
+    --- PASS: TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_ (0.04s)
+    --- PASS: TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_rollback (0.02s)
+    --- PASS: TestCollaborationChildWakeupRunsOnlyAfterConfirmedCommit/commit_unknown_commit (0.02s)
+=== RUN   TestCollaborationChildCompletionWakesOrdinaryParentOnce
+=== RUN   TestCollaborationChildCompletionWakesOrdinaryParentOnce/agent
+2026/10/30 08:26:03 INFO mention task enqueued task_id=01a18a33-0c06-79d3-b88c-a0f42cd9ca48 issue_id=e3615081-5787-4e30-82bc-0178770c46f1 agent_id=240e3b01-81d8-4d95-8497-4df5c0b94147 is_leader_task=false
+=== RUN   TestCollaborationChildCompletionWakesOrdinaryParentOnce/squad
+2026/10/30 08:26:03 INFO mention task enqueued task_id=01a18a33-0c29-74b3-b26a-d237d60da096 issue_id=8d2bc6e1-3f47-4209-9b72-16c3cff6c1f4 agent_id=27a17d2a-6d2d-4c8c-85f9-7c6cfe338060 is_leader_task=true
+--- PASS: TestCollaborationChildCompletionWakesOrdinaryParentOnce (0.07s)
+    --- PASS: TestCollaborationChildCompletionWakesOrdinaryParentOnce/agent (0.03s)
+    --- PASS: TestCollaborationChildCompletionWakesOrdinaryParentOnce/squad (0.03s)
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/same_stage_open
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/earlier_stage_open
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/later_stage_parked
+2026/10/30 08:26:03 INFO mention task enqueued task_id=01a18a33-0c6d-7ccd-aa97-4b5f6c6239ec issue_id=0513e69c-69e1-458f-9ca0-4c00c3179980 agent_id=9aabc9c1-5eff-4cbe-9365-aea6d63e7a4a is_leader_task=false
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/unstaged_sibling_open
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/unstaged_in_staged_set
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/cancelled_sibling
+2026/10/30 08:26:03 INFO mention task enqueued task_id=01a18a33-0cab-7b7d-9033-7ead42043e99 issue_id=5d5a1054-d44f-445d-92b5-7365991712e4 agent_id=1f48a401-a58d-484e-8848-fd0a4d813047 is_leader_task=false
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/backlog_parent
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/terminal_parent
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/human_parent
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/shared_parent
+=== RUN   TestCollaborationChildCompletionPreservesParentGuards/shared_parent_legacy_agent
+--- PASS: TestCollaborationChildCompletionPreservesParentGuards (0.22s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/same_stage_open (0.02s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/earlier_stage_open (0.02s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/later_stage_parked (0.02s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/unstaged_sibling_open (0.02s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/unstaged_in_staged_set (0.02s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/cancelled_sibling (0.03s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/backlog_parent (0.02s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/terminal_parent (0.02s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/human_parent (0.02s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/shared_parent (0.02s)
+    --- PASS: TestCollaborationChildCompletionPreservesParentGuards/shared_parent_legacy_agent (0.02s)
+=== RUN   TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup
+=== RUN   TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_done
+2026/10/30 08:26:03 INFO mention task enqueued task_id=01a18a33-0d24-7032-b471-163291400fdb issue_id=48b311fc-c8f4-4eaa-acfd-aed66edd5248 agent_id=deab5014-09c7-4426-8a3c-19f64a94796c is_leader_task=false
+=== RUN   TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/cancel
+2026/10/30 08:26:03 INFO mention task enqueued task_id=01a18a33-0d3f-7c67-a0c4-4967471dfe06 issue_id=f755c4a2-fac4-4345-b8db-c975a1422859 agent_id=ec1099a8-d35e-4bc6-92aa-a71928df80d2 is_leader_task=false
+=== RUN   TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_terminal_parent
+=== RUN   TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_backlog_parent
+--- PASS: TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup (0.10s)
+    --- PASS: TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_done (0.03s)
+    --- PASS: TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/cancel (0.03s)
+    --- PASS: TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_terminal_parent (0.02s)
+    --- PASS: TestCollaborationChildTerminalCategoriesUseOrdinaryStageWakeup/custom_backlog_parent (0.02s)
+=== RUN   TestCollaborationChildWakeupRechecksParentBeforePublishing
+=== RUN   TestCollaborationChildWakeupRechecksParentBeforePublishing/terminal
+=== RUN   TestCollaborationChildWakeupRechecksParentBeforePublishing/human
+=== RUN   TestCollaborationChildWakeupRechecksParentBeforePublishing/shared
+--- PASS: TestCollaborationChildWakeupRechecksParentBeforePublishing (0.04s)
+    --- PASS: TestCollaborationChildWakeupRechecksParentBeforePublishing/terminal (0.01s)
+    --- PASS: TestCollaborationChildWakeupRechecksParentBeforePublishing/human (0.01s)
+    --- PASS: TestCollaborationChildWakeupRechecksParentBeforePublishing/shared (0.01s)
+=== RUN   TestResolveCollaborationRecipientStrictBody
+=== RUN   TestResolveCollaborationRecipientStrictBody/missing_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/null_issue
+=== RUN   TestResolveCollaborationRecipientStrictBody/null_source
+=== RUN   TestResolveCollaborationRecipientStrictBody/both_contexts
+=== RUN   TestResolveCollaborationRecipientStrictBody/second_null_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/first_null_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/empty_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/malformed_context
+=== RUN   TestResolveCollaborationRecipientStrictBody/wrong_context_type
+=== RUN   TestResolveCollaborationRecipientStrictBody/unknown_field
+=== RUN   TestResolveCollaborationRecipientStrictBody/missing_kind
+=== RUN   TestResolveCollaborationRecipientStrictBody/missing_value
+=== RUN   TestResolveCollaborationRecipientStrictBody/null_value
+=== RUN   TestResolveCollaborationRecipientStrictBody/null_kind
+=== RUN   TestResolveCollaborationRecipientStrictBody/wrong_value_type
+=== RUN   TestResolveCollaborationRecipientStrictBody/duplicate_field
+=== RUN   TestResolveCollaborationRecipientStrictBody/duplicate_alias
+=== RUN   TestResolveCollaborationRecipientStrictBody/trailing_json
+=== RUN   TestResolveCollaborationRecipientStrictBody/malformed_json
+=== RUN   TestResolveCollaborationRecipientStrictBody/array
+=== RUN   TestResolveCollaborationRecipientStrictBody/null
+=== RUN   TestResolveCollaborationRecipientStrictBody/oversized
+--- PASS: TestResolveCollaborationRecipientStrictBody (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/missing_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null_issue (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null_source (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/both_contexts (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/second_null_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/first_null_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/empty_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/malformed_context (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/wrong_context_type (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/unknown_field (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/missing_kind (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/missing_value (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null_value (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null_kind (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/wrong_value_type (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/duplicate_field (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/duplicate_alias (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/trailing_json (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/malformed_json (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/array (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/null (0.00s)
+    --- PASS: TestResolveCollaborationRecipientStrictBody/oversized (0.00s)
+=== RUN   TestResolveCollaborationRecipientHumanBackstop
+--- PASS: TestResolveCollaborationRecipientHumanBackstop (0.00s)
+=== RUN   TestResolveCollaborationRecipientRequiresJSON
+--- PASS: TestResolveCollaborationRecipientRequiresJSON (0.00s)
+=== RUN   TestResolveCollaborationRecipientPrivateProjectionAndContext
+--- PASS: TestResolveCollaborationRecipientPrivateProjectionAndContext (0.01s)
+=== RUN   TestResolveCollaborationRecipientRateBudgetCannotRotateQueryOrHeaders
+--- PASS: TestResolveCollaborationRecipientRateBudgetCannotRotateQueryOrHeaders (0.02s)
+=== RUN   TestResolveCollaborationRecipientIPBudgetCannotRotateAccounts
+--- PASS: TestResolveCollaborationRecipientIPBudgetCannotRotateAccounts (0.00s)
+=== RUN   TestResolveCollaborationRecipientLimiterFailureIsUnavailable
+=== RUN   TestResolveCollaborationRecipientLimiterFailureIsUnavailable/missing_limiter
+=== RUN   TestResolveCollaborationRecipientLimiterFailureIsUnavailable/missing_shared_backend
+=== RUN   TestResolveCollaborationRecipientLimiterFailureIsUnavailable/failed_shared_backend
+--- PASS: TestResolveCollaborationRecipientLimiterFailureIsUnavailable (0.00s)
+    --- PASS: TestResolveCollaborationRecipientLimiterFailureIsUnavailable/missing_limiter (0.00s)
+    --- PASS: TestResolveCollaborationRecipientLimiterFailureIsUnavailable/missing_shared_backend (0.00s)
+    --- PASS: TestResolveCollaborationRecipientLimiterFailureIsUnavailable/failed_shared_backend (0.00s)
+=== RUN   TestResolveCollaborationRecipientDatabaseFailureDoesNotLeakPrivateValues
+--- PASS: TestResolveCollaborationRecipientDatabaseFailureDoesNotLeakPrivateValues (0.00s)
+=== RUN   TestCollaborationResourceOfferHTTPPrivateOwnerAndOutsideOrganizer
+--- PASS: TestCollaborationResourceOfferHTTPPrivateOwnerAndOutsideOrganizer (0.07s)
+=== RUN   TestCollaborationResourceOfferHTTPActualInventoryPredicateProtectsSquads
+--- PASS: TestCollaborationResourceOfferHTTPActualInventoryPredicateProtectsSquads (0.05s)
+=== RUN   TestCollaborationResourceOfferHTTPPaginationIsViewerBoundAndReauthorized
+--- PASS: TestCollaborationResourceOfferHTTPPaginationIsViewerBoundAndReauthorized (0.07s)
+=== RUN   TestCollaborationResourceOfferHTTPRecoveryIsExactlyRedactedAfterDeparture
+=== RUN   TestCollaborationResourceOfferHTTPRecoveryIsExactlyRedactedAfterDeparture/offer
+=== RUN   TestCollaborationResourceOfferHTTPRecoveryIsExactlyRedactedAfterDeparture/withdraw
+=== RUN   TestCollaborationResourceOfferHTTPRecoveryIsExactlyRedactedAfterDeparture/adopt
+--- PASS: TestCollaborationResourceOfferHTTPRecoveryIsExactlyRedactedAfterDeparture (0.13s)
+    --- PASS: TestCollaborationResourceOfferHTTPRecoveryIsExactlyRedactedAfterDeparture/offer (0.04s)
+    --- PASS: TestCollaborationResourceOfferHTTPRecoveryIsExactlyRedactedAfterDeparture/withdraw (0.04s)
+    --- PASS: TestCollaborationResourceOfferHTTPRecoveryIsExactlyRedactedAfterDeparture/adopt (0.06s)
+=== RUN   TestCollaborationResourceOfferHTTPRejectsMachineBeforeDatabase
+--- PASS: TestCollaborationResourceOfferHTTPRejectsMachineBeforeDatabase (0.00s)
+=== RUN   TestCollaborationResourceOfferHTTPStrictQueries
+--- PASS: TestCollaborationResourceOfferHTTPStrictQueries (0.00s)
+=== RUN   TestCollaborationResourceOfferHTTPStrictWriteShapes
+--- PASS: TestCollaborationResourceOfferHTTPStrictWriteShapes (0.00s)
+=== RUN   TestCollaborationResourceOfferHTTPRequiresParticipationBeforeDisclosure
+--- PASS: TestCollaborationResourceOfferHTTPRequiresParticipationBeforeDisclosure (0.04s)
+=== RUN   TestCollaborationResourceOptionsRespectExistingVisibility
+--- PASS: TestCollaborationResourceOptionsRespectExistingVisibility (0.02s)
+=== RUN   TestCollaborationResourceHTTPExplicitScopeAndOwnerIdentity
+--- PASS: TestCollaborationResourceHTTPExplicitScopeAndOwnerIdentity (0.03s)
+=== RUN   TestCollaborationResourceOptionsExplainDisabledOwner
+--- PASS: TestCollaborationResourceOptionsExplainDisabledOwner (0.02s)
+=== RUN   TestCollaborationResourceHTTPRefusesMachineBeforeDatabase
+--- PASS: TestCollaborationResourceHTTPRefusesMachineBeforeDatabase (0.00s)
+=== RUN   TestCollaborationRuntimeCommentBodyAcceptsCodeWithinTheContentLimit
+--- PASS: TestCollaborationRuntimeCommentBodyAcceptsCodeWithinTheContentLimit (0.01s)
+=== RUN   TestCollaborationRuntimePreparationHTTPRejectsCredentialFallbacks
+--- PASS: TestCollaborationRuntimePreparationHTTPRejectsCredentialFallbacks (0.00s)
+=== RUN   TestCollaborationRuntimePreparationHTTPUsesStorageAndRechecksAfterIO
+2026/10/30 08:26:04 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationRuntimePreparationHTTPUsesStorageAndRechecksAft836956593/001 baseURL=""
+--- PASS: TestCollaborationRuntimePreparationHTTPUsesStorageAndRechecksAfterIO (0.44s)
+=== RUN   TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials
+--- PASS: TestCollaborationRuntimeManagedBoundaryRejectsBroadCredentials (0.00s)
+=== RUN   TestCollaborationRuntimeRecordingHTTPRejectsMalformedPrivateTelemetry
+--- PASS: TestCollaborationRuntimeRecordingHTTPRejectsMalformedPrivateTelemetry (0.00s)
+=== RUN   TestCollaborationRuntimeHandlersRequireActualManagedSource
+--- PASS: TestCollaborationRuntimeHandlersRequireActualManagedSource (0.00s)
+=== RUN   TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes
+--- PASS: TestCollaborationRuntimeNarrowHandlersNeverFallBackToOtherPurposes (0.00s)
+=== RUN   TestCollaborationRuntimeProofBodyIsBoundedStrictAndMatchesPath
+--- PASS: TestCollaborationRuntimeProofBodyIsBoundedStrictAndMatchesPath (0.00s)
+=== RUN   TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop
+=== RUN   TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop/update
+=== RUN   TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop/overwrite
+=== RUN   TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop/single_file
+=== RUN   TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop/binding_set
+--- PASS: TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop (0.26s)
+    --- PASS: TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop/update (0.11s)
+    --- PASS: TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop/overwrite (0.05s)
+    --- PASS: TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop/single_file (0.05s)
+    --- PASS: TestCollaborationSharedSkillHTTPSaveAndReimportPreserveNoop/binding_set (0.05s)
+=== RUN   TestCollaborationSharedSkillRefreshPersistsReleaseVersion
+--- PASS: TestCollaborationSharedSkillRefreshPersistsReleaseVersion (0.05s)
+=== RUN   TestCollaborationSharedSkillPluginVersionInvalidatesBoundTarget
+--- PASS: TestCollaborationSharedSkillPluginVersionInvalidatesBoundTarget (0.07s)
+=== RUN   TestCollaborationCreationParentSearchAcceptsMultibyteCharacters
+=== RUN   TestCollaborationCreationParentSearchAcceptsMultibyteCharacters/chinese_at_limit
+=== RUN   TestCollaborationCreationParentSearchAcceptsMultibyteCharacters/ascii_at_limit
+=== RUN   TestCollaborationCreationParentSearchAcceptsMultibyteCharacters/chinese_over_limit
+=== RUN   TestCollaborationCreationParentSearchAcceptsMultibyteCharacters/ascii_over_limit
+--- PASS: TestCollaborationCreationParentSearchAcceptsMultibyteCharacters (0.04s)
+    --- PASS: TestCollaborationCreationParentSearchAcceptsMultibyteCharacters/chinese_at_limit (0.01s)
+    --- PASS: TestCollaborationCreationParentSearchAcceptsMultibyteCharacters/ascii_at_limit (0.01s)
+    --- PASS: TestCollaborationCreationParentSearchAcceptsMultibyteCharacters/chinese_over_limit (0.00s)
+    --- PASS: TestCollaborationCreationParentSearchAcceptsMultibyteCharacters/ascii_over_limit (0.00s)
+=== RUN   TestCollaborationSourceFieldsHTTPPreservesNullAndSeparatesStatus
+--- PASS: TestCollaborationSourceFieldsHTTPPreservesNullAndSeparatesStatus (0.04s)
+=== RUN   TestCollaborationCreationFieldsHTTPAndInitialIteration
+--- PASS: TestCollaborationCreationFieldsHTTPAndInitialIteration (0.03s)
+=== RUN   TestSourceCollaborationProjectionAndExternalFilter
+--- PASS: TestSourceCollaborationProjectionAndExternalFilter (0.05s)
+=== RUN   TestSourceCollaborationTableAndChildMachineBoundary
+--- PASS: TestSourceCollaborationTableAndChildMachineBoundary (0.04s)
+=== RUN   TestCollaborationSwitchHTTPRedactedRecoveryOmitsExecutionFields
+--- PASS: TestCollaborationSwitchHTTPRedactedRecoveryOmitsExecutionFields (0.01s)
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/missing_control
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/missing_hold
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/null_hold
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/numeric_hold
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/padded_hold
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/overflow_hold
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/missing_group
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/missing_generation
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/scientific_generation
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/wrong_target
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/unknown_field
+=== RUN   TestCollaborationSwitchHTTPRejectsMalformedObservations/bad_authority
+--- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/missing_control (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/missing_hold (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/null_hold (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/numeric_hold (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/padded_hold (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/overflow_hold (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/missing_group (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/missing_generation (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/scientific_generation (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/wrong_target (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/unknown_field (0.00s)
+    --- PASS: TestCollaborationSwitchHTTPRejectsMalformedObservations/bad_authority (0.00s)
+=== RUN   TestCollaborationSwitchHTTPMachineCannotBorrowOwnerConsent
+--- PASS: TestCollaborationSwitchHTTPMachineCannotBorrowOwnerConsent (0.00s)
+=== RUN   TestCollaborationSwitchHTTPStagedConsentCommitAndRecovery
+--- PASS: TestCollaborationSwitchHTTPStagedConsentCommitAndRecovery (0.06s)
+=== RUN   TestCollaborationAccountReadIgnoresAmbientWorkspaceAndKeepsPrivateIdentity
+--- PASS: TestCollaborationAccountReadIgnoresAmbientWorkspaceAndKeepsPrivateIdentity (0.01s)
+=== RUN   TestCollaborationIssueProjectsCalendarDatesForExternalParticipant
+--- PASS: TestCollaborationIssueProjectsCalendarDatesForExternalParticipant (0.02s)
+=== RUN   TestCollaborationWorkbenchKeepsResponsibilityParticipationAndPaginationSeparate
+--- PASS: TestCollaborationWorkbenchKeepsResponsibilityParticipationAndPaginationSeparate (0.04s)
+=== RUN   TestCollaborationWorkbenchWorksWithoutAnyWorkspaceMembership
+--- PASS: TestCollaborationWorkbenchWorksWithoutAnyWorkspaceMembership (0.01s)
+=== RUN   TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions
+=== RUN   TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions/todo
+2026/10/30 08:26:05 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAnd845446906/001 baseURL=""
+=== RUN   TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions/done
+2026/10/30 08:26:05 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAnd1295804694/001 baseURL=""
+=== RUN   TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions/cancelled
+2026/10/30 08:26:05 INFO local storage initialized dir=/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAnd3273350034/001 baseURL=""
+--- PASS: TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions (0.17s)
+    --- PASS: TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions/todo (0.06s)
+    --- PASS: TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions/done (0.05s)
+    --- PASS: TestCollaborationWorkspaceDeletionPreservesPrivateAttachmentsAndPermissions/cancelled (0.06s)
+=== RUN   TestIterationHTTPExplicitCollaborationMoveRequiresDedicatedWorkflow
+--- PASS: TestIterationHTTPExplicitCollaborationMoveRequiresDedicatedWorkflow (0.06s)
+=== RUN   TestPluginActionCannotReachACollaborationIssue
+--- PASS: TestPluginActionCannotReachACollaborationIssue (0.02s)
+=== RUN   TestSourceContextCollaborationPreviewIsDenied
+--- PASS: TestSourceContextCollaborationPreviewIsDenied (0.00s)
+=== RUN   TestSourceContextCollaborationBothModesRejectBeforeCopyOrAgentLookup
+=== RUN   TestSourceContextCollaborationBothModesRejectBeforeCopyOrAgentLookup/shared_source
+=== RUN   TestSourceContextCollaborationBothModesRejectBeforeCopyOrAgentLookup/lookup_failure
+--- PASS: TestSourceContextCollaborationBothModesRejectBeforeCopyOrAgentLookup (0.03s)
+    --- PASS: TestSourceContextCollaborationBothModesRejectBeforeCopyOrAgentLookup/shared_source (0.02s)
+    --- PASS: TestSourceContextCollaborationBothModesRejectBeforeCopyOrAgentLookup/lookup_failure (0.01s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	13.975s
+exit_code=0

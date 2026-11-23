@@ -1,0 +1,2346 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-11-07T05:04:02.464889+00:00",
+  "reviewer": "native trellis-check /root/evidence_reconcile",
+  "scope": "Read-only historical evidence and source ancestry reconciliation; no current product executions",
+  "candidate": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "initial_observation": "514e89752",
+  "live_HEAD_when_started": "4c817dee9397a42ac903f419af7804b11d2d863e",
+  "freeze_path": "/Volumes/artisan/code/2026/mc-branch-e2e-4c817dee9-20261107",
+  "source_drift": "Initial514→4c817 includes4431f89d6 focus/modal andba5b4bdd2 auxiliary drawer product changes; current source differs materially from historical1a32.",
+  "original_counts": {
+    "coverage_csv_rows": 437,
+    "coverage_csv_statuses": {
+      "PASS": 421,
+      "FAIL": 14,
+      "BLOCKED": 2
+    },
+    "additional_ENV1_failure": 1,
+    "report_total": 438,
+    "original_failures_including_ENV1": 15,
+    "original_blockers": 2
+  },
+  "reconciled_case_count": 17,
+  "historical_core_raw_passes_without_retry": 17,
+  "historical_functional_raw_passes_without_retry": 17,
+  "historical_pass_is_current_pass": false,
+  "cases": [
+    {
+      "old_case_key": "3dccc2100422",
+      "original_status": "FAIL",
+      "original_title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "current_file": "e2e/collaboration-account-desktop.spec.ts",
+      "current_title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "current_title_line": 402,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "d830fff7a787071ac252-2802bec50cf95487730b:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-account-desktop.spec.ts",
+        "line": "402",
+        "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+        "journeys": "E07|E08|E10",
+        "lane": "legacy-collaboration-native",
+        "evidence_scope": "browser-real-api|native-renderer-harness|contains-http-fault-or-route-fixtures",
+        "native_required": "True",
+        "status": "PASS",
+        "result_evidence": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+          "bytes": 3268711
+        },
+        "run_stats": {
+          "startTime": "2026-11-04T16:04:23.179Z",
+          "duration": 1823496.723,
+          "expected": 354,
+          "skipped": 84,
+          "unexpected": 3,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+            "file": "collaboration-account-desktop.spec.ts",
+            "line": 402,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-04T16:09:04.813Z",
+                "duration_ms": 15877
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-079",
+        "project": "chromium",
+        "spec": "e2e/collaboration-account-desktop.spec.ts",
+        "line": "399",
+        "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "legacy-full-1",
+        "evidence": "evidence/legacy-full-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ba398aab4fc054d14cf0bdd0de86048f927037ad368074588a2ba93f9d8e1cea",
+          "bytes": 3195810
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T00:16:09.300Z",
+          "duration": 1350393.784,
+          "expected": 349,
+          "skipped": 89,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+            "file": "collaboration-account-desktop.spec.ts",
+            "line": 399,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T00:19:40.308Z",
+                "duration_ms": 17120
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "c919808d1d26",
+      "original_status": "FAIL",
+      "original_title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "current_file": "e2e/collaboration-account-desktop.spec.ts",
+      "current_title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "current_title_line": 544,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "d830fff7a787071ac252-a17f2ed256028f8c455c:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-account-desktop.spec.ts",
+        "line": "544",
+        "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+        "journeys": "E01|E08|E09|E10",
+        "lane": "legacy-collaboration-native",
+        "evidence_scope": "browser-real-api|native-renderer-harness|contains-http-fault-or-route-fixtures",
+        "native_required": "True",
+        "status": "PASS",
+        "result_evidence": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+          "bytes": 3268711
+        },
+        "run_stats": {
+          "startTime": "2026-11-04T16:04:23.179Z",
+          "duration": 1823496.723,
+          "expected": 354,
+          "skipped": 84,
+          "unexpected": 3,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+            "file": "collaboration-account-desktop.spec.ts",
+            "line": 544,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-04T16:09:20.696Z",
+                "duration_ms": 10916
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-080",
+        "project": "chromium",
+        "spec": "e2e/collaboration-account-desktop.spec.ts",
+        "line": "535",
+        "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "legacy-full-1",
+        "evidence": "evidence/legacy-full-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ba398aab4fc054d14cf0bdd0de86048f927037ad368074588a2ba93f9d8e1cea",
+          "bytes": 3195810
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T00:16:09.300Z",
+          "duration": 1350393.784,
+          "expected": 349,
+          "skipped": 89,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+            "file": "collaboration-account-desktop.spec.ts",
+            "line": 535,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T00:19:57.445Z",
+                "duration_ms": 13174
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "5a60ce5f71f0",
+      "original_status": "FAIL",
+      "original_title": "Smaller gaps: title/date edits leave attributed records, recipient lookup is exact-only, a source member resolves and reacts without notifications",
+      "current_file": "e2e/collaboration-boundaries-web.spec.ts",
+      "current_title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+      "current_title_line": 450,
+      "title_mapping": "explicit reviewed rename in 1ecabb964",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "6e126002765c26c65f32-9d52924653599de8bd73:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-boundaries-web.spec.ts",
+        "line": "446",
+        "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+        "journeys": "E02|E07|E08|E09|E10",
+        "lane": "legacy-collaboration",
+        "evidence_scope": "browser-real-api|daemon-http-protocol-simulation|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+          "bytes": 3268711
+        },
+        "run_stats": {
+          "startTime": "2026-11-04T16:04:23.179Z",
+          "duration": 1823496.723,
+          "expected": 354,
+          "skipped": 84,
+          "unexpected": 3,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+            "file": "collaboration-boundaries-web.spec.ts",
+            "line": 446,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-04T16:25:37.698Z",
+                "duration_ms": 8647
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-092",
+        "project": "chromium",
+        "spec": "e2e/collaboration-boundaries-web.spec.ts",
+        "line": "425",
+        "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "legacy-full-1",
+        "evidence": "evidence/legacy-full-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ba398aab4fc054d14cf0bdd0de86048f927037ad368074588a2ba93f9d8e1cea",
+          "bytes": 3195810
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T00:16:09.300Z",
+          "duration": 1350393.784,
+          "expected": 349,
+          "skipped": 89,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+            "file": "collaboration-boundaries-web.spec.ts",
+            "line": 425,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T00:32:45.830Z",
+                "duration_ms": 7662
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": false,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "158a87f90c8f",
+      "original_status": "FAIL",
+      "original_title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "current_file": "e2e/collaboration-delivery-web.spec.ts",
+      "current_title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "current_title_line": 23,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "15f3b9165f0f8e648925-78fcb3f0d415495d3093:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-delivery-web.spec.ts",
+        "line": "23",
+        "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+        "journeys": "E03|E08|E09|E10",
+        "lane": "legacy-collaboration",
+        "evidence_scope": "browser-real-api|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+          "bytes": 3268711
+        },
+        "run_stats": {
+          "startTime": "2026-11-04T16:04:23.179Z",
+          "duration": 1823496.723,
+          "expected": 354,
+          "skipped": 84,
+          "unexpected": 3,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+            "file": "collaboration-delivery-web.spec.ts",
+            "line": 23,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-04T16:10:07.024Z",
+                "duration_ms": 5996
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-101",
+        "project": "chromium",
+        "spec": "e2e/collaboration-delivery-web.spec.ts",
+        "line": "22",
+        "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "legacy-full-1",
+        "evidence": "evidence/legacy-full-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ba398aab4fc054d14cf0bdd0de86048f927037ad368074588a2ba93f9d8e1cea",
+          "bytes": 3195810
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T00:16:09.300Z",
+          "duration": 1350393.784,
+          "expected": 349,
+          "skipped": 89,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+            "file": "collaboration-delivery-web.spec.ts",
+            "line": 22,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T00:20:47.052Z",
+                "duration_ms": 6614
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": false,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "72c1ec89998d",
+      "original_status": "FAIL",
+      "original_title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "current_file": "e2e/collaboration-delivery-web.spec.ts",
+      "current_title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "current_title_line": 194,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "15f3b9165f0f8e648925-458993d157d1e764a931:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-delivery-web.spec.ts",
+        "line": "193",
+        "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+        "journeys": "E08",
+        "lane": "legacy-collaboration",
+        "evidence_scope": "browser-real-api|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+          "bytes": 3268711
+        },
+        "run_stats": {
+          "startTime": "2026-11-04T16:04:23.179Z",
+          "duration": 1823496.723,
+          "expected": 354,
+          "skipped": 84,
+          "unexpected": 3,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+            "file": "collaboration-delivery-web.spec.ts",
+            "line": 193,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-04T16:10:13.027Z",
+                "duration_ms": 2589
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-102",
+        "project": "chromium",
+        "spec": "e2e/collaboration-delivery-web.spec.ts",
+        "line": "191",
+        "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "legacy-full-1",
+        "evidence": "evidence/legacy-full-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ba398aab4fc054d14cf0bdd0de86048f927037ad368074588a2ba93f9d8e1cea",
+          "bytes": 3195810
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T00:16:09.300Z",
+          "duration": 1350393.784,
+          "expected": 349,
+          "skipped": 89,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+            "file": "collaboration-delivery-web.spec.ts",
+            "line": 191,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T00:20:53.675Z",
+                "duration_ms": 3037
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": false,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "187ee1881c81",
+      "original_status": "FAIL",
+      "original_title": "Web source creation, field edits and discussion share one authorized issue",
+      "current_file": "e2e/collaboration-editing-web.spec.ts",
+      "current_title": "Web source creation, field edits and discussion share one authorized issue",
+      "current_title_line": 9,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "16fb198f1f05de30d9cd-9ee56d8d1c279b1ffa65:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-editing-web.spec.ts",
+        "line": "9",
+        "title": "Web source creation, field edits and discussion share one authorized issue",
+        "journeys": "E01|E03|E08",
+        "lane": "legacy-collaboration",
+        "evidence_scope": "browser-real-api|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+          "bytes": 3268711
+        },
+        "run_stats": {
+          "startTime": "2026-11-04T16:04:23.179Z",
+          "duration": 1823496.723,
+          "expected": 354,
+          "skipped": 84,
+          "unexpected": 3,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web source creation, field edits and discussion share one authorized issue",
+            "file": "collaboration-editing-web.spec.ts",
+            "line": 9,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-04T16:10:15.637Z",
+                "duration_ms": 12035
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-103",
+        "project": "chromium",
+        "spec": "e2e/collaboration-editing-web.spec.ts",
+        "line": "9",
+        "title": "Web source creation, field edits and discussion share one authorized issue",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "legacy-full-1",
+        "evidence": "evidence/legacy-full-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ba398aab4fc054d14cf0bdd0de86048f927037ad368074588a2ba93f9d8e1cea",
+          "bytes": 3195810
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T00:16:09.300Z",
+          "duration": 1350393.784,
+          "expected": 349,
+          "skipped": 89,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web source creation, field edits and discussion share one authorized issue",
+            "file": "collaboration-editing-web.spec.ts",
+            "line": 9,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T00:20:56.747Z",
+                "duration_ms": 15075
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "860dfeffcf00",
+      "original_status": "BLOCKED",
+      "original_title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "current_file": "e2e/collaboration-installed-clients.spec.ts",
+      "current_title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "current_title_line": 29,
+      "title_mapping": "exact title",
+      "repair_commits": [],
+      "repair_scope": "Historical prerequisite subsequently supplied; current candidate needs its own package/CLI/config identity.",
+      "core_historical": {
+        "id": "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-installed-clients.spec.ts",
+        "line": "29",
+        "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+        "journeys": "E01|E02|E06|E08|E09",
+        "lane": "password-installed-legacy-cli",
+        "evidence_scope": "browser-real-api|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".omx/private/core-e2e-20261104/runtime/runs/password-runtime-phase2-2/pw-14/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".omx/private/core-e2e-20261104/runtime/runs/password-runtime-phase2-2/pw-14/results.json",
+          "exists": true,
+          "sha256": "ce9cf9014f2c0fbb565747eda8d99156cdba3266e274891c8a8638d5972d1a29",
+          "bytes": 94360
+        },
+        "run_stats": {
+          "startTime": "2026-11-05T03:01:28.887Z",
+          "duration": 32938.79,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+            "file": "collaboration-installed-clients.spec.ts",
+            "line": 29,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-05T03:01:29.961Z",
+                "duration_ms": 31795
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-111",
+        "project": "chromium",
+        "spec": "e2e/collaboration-installed-clients.spec.ts",
+        "line": "29",
+        "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "password-18-collaboration-installed-clients-2",
+        "evidence": "evidence/password-18-collaboration-installed-clients-2/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/password-18-collaboration-installed-clients-2/results.json",
+          "exists": true,
+          "sha256": "cebcd7eadedc23fe0e537e2a520ceb5465ed7557aa8e14ae94b9c8d38c947c11",
+          "bytes": 94391
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T01:14:39.769Z",
+          "duration": 10447.855,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+            "file": "collaboration-installed-clients.spec.ts",
+            "line": 29,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T01:14:40.219Z",
+                "duration_ms": 9975
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "8b009b887e43",
+      "original_status": "BLOCKED",
+      "original_title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "current_file": "e2e/collaboration-installed-main.spec.ts",
+      "current_title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "current_title_line": 143,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "76836fa8d",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Historical prerequisite subsequently supplied; current candidate needs its own package/CLI/config identity.",
+      "core_historical": {
+        "id": "6bb3c38027cdc912e0b7-7d0a58cb34e138e51c15:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-installed-main.spec.ts",
+        "line": "138",
+        "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+        "journeys": "E01|E03|E06|E08|E09",
+        "lane": "password-packaged-linux-main",
+        "evidence_scope": "browser-real-api|packaged-main|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".omx/private/core-e2e-20261104/runtime/runs/linux-fixed-fd-integration-1/linux-fixed-fd-r8/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32+daemon-fd-fix-d6f4ceeb; CLI8ad7a9ac"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".omx/private/core-e2e-20261104/runtime/runs/linux-fixed-fd-integration-1/linux-fixed-fd-r8/results.json",
+          "exists": true,
+          "sha256": "7d5e2a6b82d0033f420ebd2e844709a23489de305f4d10d768dfdbd4ac92741d",
+          "bytes": 1438219
+        },
+        "run_stats": {
+          "startTime": "2026-11-05T11:45:17.686Z",
+          "duration": 47268.545999999995,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+            "file": "collaboration-installed-main.spec.ts",
+            "line": 143,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-05T11:45:18.245Z",
+                "duration_ms": 45844
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-112",
+        "project": "chromium",
+        "spec": "e2e/collaboration-installed-main.spec.ts",
+        "line": "139",
+        "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "linux-full-main-4",
+        "evidence": "evidence/linux-full-main-4/results.json",
+        "note": "Framework: passed; reviewed harness patch 8f82ee5462c37a7933c2a79f462fe9febfe0979862e03603b06707d283319c98"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/linux-full-main-4/results.json",
+          "exists": true,
+          "sha256": "11fbf9286beb30207519c586ad18921e77794be85be103d8dda02ad327658b96",
+          "bytes": 1240102
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T01:42:10.815Z",
+          "duration": 38501.041000000005,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+            "file": "collaboration-installed-main.spec.ts",
+            "line": 138,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T01:42:11.433Z",
+                "duration_ms": 37256
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": false,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "535e317ad170",
+      "original_status": "FAIL",
+      "original_title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "current_file": "e2e/collaboration-leave-web.spec.ts",
+      "current_title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "current_title_line": 14,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        },
+        {
+          "commit": "76836fa8d",
+          "ancestor_of_candidate": true
+        },
+        {
+          "commit": "4431f89d6",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "c32a5058833059c3776e-cc2b7d39a133cac5df19:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-leave-web.spec.ts",
+        "line": "13",
+        "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+        "journeys": "E03|E06|E08|E09",
+        "lane": "password-managed-control",
+        "evidence_scope": "browser-real-api|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".omx/private/core-e2e-20261104/runtime/runs/ui-harness-replay-2/ui-r2-05/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".omx/private/core-e2e-20261104/runtime/runs/ui-harness-replay-2/ui-r2-05/results.json",
+          "exists": true,
+          "sha256": "e0c963c5862dd94da5b97232a0e9795643d15f3b1475284771fee625a0d9ddaa",
+          "bytes": 19290
+        },
+        "run_stats": {
+          "startTime": "2026-11-05T03:53:25.967Z",
+          "duration": 11899.648,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+            "file": "collaboration-leave-web.spec.ts",
+            "line": 14,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-05T03:53:26.520Z",
+                "duration_ms": 10718
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-128",
+        "project": "chromium",
+        "spec": "e2e/collaboration-leave-web.spec.ts",
+        "line": "13",
+        "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "password-20-collaboration-leave-web-2",
+        "evidence": "evidence/password-20-collaboration-leave-web-2/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/password-20-collaboration-leave-web-2/results.json",
+          "exists": true,
+          "sha256": "86d39c5a89ca78cd234c07442fd5aad158604a85b27d72030736ce3be68ddf13",
+          "bytes": 19328
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T01:15:05.861Z",
+          "duration": 10547.710000000001,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+            "file": "collaboration-leave-web.spec.ts",
+            "line": 13,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T01:15:06.304Z",
+                "duration_ms": 9767
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": false,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "4971c07b93b6",
+      "original_status": "FAIL",
+      "original_title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "current_file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "current_title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "current_title_line": 102,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "e1244c64bf212413b472-40cb2a40180050917361:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+        "line": "102",
+        "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "journeys": "E07|E08|E09",
+        "lane": "legacy-collaboration-native",
+        "evidence_scope": "browser-real-api|native-renderer-harness|contains-http-fault-or-route-fixtures",
+        "native_required": "True",
+        "status": "PASS",
+        "result_evidence": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+          "bytes": 3268711
+        },
+        "run_stats": {
+          "startTime": "2026-11-04T16:04:23.179Z",
+          "duration": 1823496.723,
+          "expected": 354,
+          "skipped": 84,
+          "unexpected": 3,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+            "file": "collaboration-mention-journeys-desktop.spec.ts",
+            "line": 102,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-04T16:32:07.725Z",
+                "duration_ms": 12829
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-137",
+        "project": "chromium",
+        "spec": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+        "line": "102",
+        "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "legacy-full-1",
+        "evidence": "evidence/legacy-full-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ba398aab4fc054d14cf0bdd0de86048f927037ad368074588a2ba93f9d8e1cea",
+          "bytes": 3195810
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T00:16:09.300Z",
+          "duration": 1350393.784,
+          "expected": 349,
+          "skipped": 89,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+            "file": "collaboration-mention-journeys-desktop.spec.ts",
+            "line": 102,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T00:36:09.108Z",
+                "duration_ms": 7952
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "8e9c882cd544",
+      "original_status": "FAIL",
+      "original_title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "current_file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "current_title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "current_title_line": 44,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "a2c6b754d21b70f11df3-64a32e62b06c28657aa8:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+        "line": "46",
+        "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "journeys": "E07|E08|E09",
+        "lane": "legacy-collaboration",
+        "evidence_scope": "browser-real-api|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+          "bytes": 3268711
+        },
+        "run_stats": {
+          "startTime": "2026-11-04T16:04:23.179Z",
+          "duration": 1823496.723,
+          "expected": 354,
+          "skipped": 84,
+          "unexpected": 3,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+            "file": "collaboration-mention-journeys-web.spec.ts",
+            "line": 46,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-04T16:26:03.588Z",
+                "duration_ms": 4850
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-140",
+        "project": "chromium",
+        "spec": "e2e/collaboration-mention-journeys-web.spec.ts",
+        "line": "46",
+        "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "legacy-full-1",
+        "evidence": "evidence/legacy-full-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ba398aab4fc054d14cf0bdd0de86048f927037ad368074588a2ba93f9d8e1cea",
+          "bytes": 3195810
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T00:16:09.300Z",
+          "duration": 1350393.784,
+          "expected": 349,
+          "skipped": 89,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+            "file": "collaboration-mention-journeys-web.spec.ts",
+            "line": 46,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T00:33:07.505Z",
+                "duration_ms": 5180
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "cd80f1b61840",
+      "original_status": "FAIL",
+      "original_title": "Web shares ordinary child references and retained run records through account notification links",
+      "current_file": "e2e/collaboration-records-web.spec.ts",
+      "current_title": "Web shares ordinary child references and retained run records through account notification links",
+      "current_title_line": 7,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "0bfd230843f79e727b28-dc35d5e24b961c6b892f:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-records-web.spec.ts",
+        "line": "7",
+        "title": "Web shares ordinary child references and retained run records through account notification links",
+        "journeys": "E07|E08|E10",
+        "lane": "legacy-collaboration",
+        "evidence_scope": "browser-real-api|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ebbc3b665fd5b7028a888cffcb3d84c0489f98540f8878ded55d84bbd85caf2d",
+          "bytes": 3268711
+        },
+        "run_stats": {
+          "startTime": "2026-11-04T16:04:23.179Z",
+          "duration": 1823496.723,
+          "expected": 354,
+          "skipped": 84,
+          "unexpected": 3,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web shares ordinary child references and retained run records through account notification links",
+            "file": "collaboration-records-web.spec.ts",
+            "line": 7,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-04T16:10:44.526Z",
+                "duration_ms": 8934
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-150",
+        "project": "chromium",
+        "spec": "e2e/collaboration-records-web.spec.ts",
+        "line": "6",
+        "title": "Web shares ordinary child references and retained run records through account notification links",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "legacy-full-1",
+        "evidence": "evidence/legacy-full-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/legacy-full-1/results.json",
+          "exists": true,
+          "sha256": "ba398aab4fc054d14cf0bdd0de86048f927037ad368074588a2ba93f9d8e1cea",
+          "bytes": 3195810
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T00:16:09.300Z",
+          "duration": 1350393.784,
+          "expected": 349,
+          "skipped": 89,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web shares ordinary child references and retained run records through account notification links",
+            "file": "collaboration-records-web.spec.ts",
+            "line": 6,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T00:21:30.585Z",
+                "duration_ms": 13562
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "f390d53c1162",
+      "original_status": "FAIL",
+      "original_title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "current_file": "e2e/collaboration-retained-attachment.spec.ts",
+      "current_title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "current_title_line": null,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        },
+        {
+          "commit": "76836fa8d",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "32ff48078ff9327ee98f-b14f87017555ef29f972:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-retained-attachment.spec.ts",
+        "line": "141",
+        "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+        "journeys": "E08",
+        "lane": "password-collaboration",
+        "evidence_scope": "browser-real-api|contains-http-fault-or-route-fixtures",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".omx/private/core-e2e-20261104/runtime/runs/final-fixture-replay-1/final-r3-04/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".omx/private/core-e2e-20261104/runtime/runs/final-fixture-replay-1/final-r3-04/results.json",
+          "exists": true,
+          "sha256": "97c09b6e3f11a69bea4aebd46c41ee75e146c79683cb7204ec0b9a707482b80b",
+          "bytes": 155668
+        },
+        "run_stats": {
+          "startTime": "2026-11-05T04:10:36.020Z",
+          "duration": 26306.882,
+          "expected": 3,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+            "file": "collaboration-retained-attachment.spec.ts",
+            "line": 141,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-05T04:10:36.570Z",
+                "duration_ms": 4743
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-153",
+        "project": "chromium",
+        "spec": "e2e/collaboration-retained-attachment.spec.ts",
+        "line": "141",
+        "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "password-31-collaboration-retained-attachment-1",
+        "evidence": "evidence/password-31-collaboration-retained-attachment-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/password-31-collaboration-retained-attachment-1/results.json",
+          "exists": true,
+          "sha256": "452e9a79b2726520c566e216c4979a6f1161c870520c3acb6b55cecb2691906e",
+          "bytes": 55439
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T01:27:32.572Z",
+          "duration": 12245.285,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+            "file": "collaboration-retained-attachment.spec.ts",
+            "line": 141,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T01:27:33.141Z",
+                "duration_ms": 4737
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "18e4a6485b4d",
+      "original_status": "FAIL",
+      "original_title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "current_file": "e2e/collaboration-retained-attachment.spec.ts",
+      "current_title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "current_title_line": null,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        },
+        {
+          "commit": "76836fa8d",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "32ff48078ff9327ee98f-30169eca31035cff2a15:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-retained-attachment.spec.ts",
+        "line": "141",
+        "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+        "journeys": "E08",
+        "lane": "password-collaboration-native",
+        "evidence_scope": "browser-real-api|native-renderer-harness|contains-http-fault-or-route-fixtures",
+        "native_required": "True",
+        "status": "PASS",
+        "result_evidence": ".omx/private/core-e2e-20261104/runtime/runs/final-fixture-replay-1/final-r3-04/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".omx/private/core-e2e-20261104/runtime/runs/final-fixture-replay-1/final-r3-04/results.json",
+          "exists": true,
+          "sha256": "97c09b6e3f11a69bea4aebd46c41ee75e146c79683cb7204ec0b9a707482b80b",
+          "bytes": 155668
+        },
+        "run_stats": {
+          "startTime": "2026-11-05T04:10:36.020Z",
+          "duration": 26306.882,
+          "expected": 3,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+            "file": "collaboration-retained-attachment.spec.ts",
+            "line": 141,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-05T04:10:41.839Z",
+                "duration_ms": 6572
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-154",
+        "project": "chromium",
+        "spec": "e2e/collaboration-retained-attachment.spec.ts",
+        "line": "141",
+        "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "password-31-collaboration-retained-attachment-1",
+        "evidence": "evidence/password-31-collaboration-retained-attachment-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/password-31-collaboration-retained-attachment-1/results.json",
+          "exists": true,
+          "sha256": "452e9a79b2726520c566e216c4979a6f1161c870520c3acb6b55cecb2691906e",
+          "bytes": 55439
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T01:27:32.572Z",
+          "duration": 12245.285,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+            "file": "collaboration-retained-attachment.spec.ts",
+            "line": 141,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T01:27:38.291Z",
+                "duration_ms": 6393
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "37ff666368df",
+      "original_status": "FAIL",
+      "original_title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "current_file": "e2e/collaboration-retained-attachment.spec.ts",
+      "current_title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "current_title_line": 156,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        },
+        {
+          "commit": "76836fa8d",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "32ff48078ff9327ee98f-952cd334ba541c9d53a9:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-retained-attachment.spec.ts",
+        "line": "156",
+        "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+        "journeys": "E02|E07|E08",
+        "lane": "password-collaboration-native",
+        "evidence_scope": "browser-real-api|native-renderer-harness|contains-http-fault-or-route-fixtures",
+        "native_required": "True",
+        "status": "PASS",
+        "result_evidence": ".omx/private/core-e2e-20261104/runtime/runs/final-fixture-replay-1/final-r3-04/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".omx/private/core-e2e-20261104/runtime/runs/final-fixture-replay-1/final-r3-04/results.json",
+          "exists": true,
+          "sha256": "97c09b6e3f11a69bea4aebd46c41ee75e146c79683cb7204ec0b9a707482b80b",
+          "bytes": 155668
+        },
+        "run_stats": {
+          "startTime": "2026-11-05T04:10:36.020Z",
+          "duration": 26306.882,
+          "expected": 3,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+            "file": "collaboration-retained-attachment.spec.ts",
+            "line": 156,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-05T04:10:48.416Z",
+                "duration_ms": 13852
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-155",
+        "project": "chromium",
+        "spec": "e2e/collaboration-retained-attachment.spec.ts",
+        "line": "156",
+        "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "password-31-collaboration-retained-attachment-2",
+        "evidence": "evidence/password-31-collaboration-retained-attachment-2/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/password-31-collaboration-retained-attachment-2/results.json",
+          "exists": true,
+          "sha256": "5794f1ce82f2115135f0bd432f84b49c476a3a4ae409749c7eaa6aa44888895d",
+          "bytes": 105643
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T01:33:41.091Z",
+          "duration": 15542.839,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+            "file": "collaboration-retained-attachment.spec.ts",
+            "line": 156,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T01:33:41.780Z",
+                "duration_ms": 14189
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "7b935d7ce8d5",
+      "original_status": "FAIL",
+      "original_title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "current_file": "e2e/collaboration-source-surface.spec.ts",
+      "current_title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "current_title_line": 11,
+      "title_mapping": "exact title",
+      "repair_commits": [
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Current picker/record-page/dynamic evaluation-time contract captured by reviewed test-only maintenance; original full business assertions retained.",
+      "core_historical": {
+        "id": "fd76911901244b93c23f-3e206b9269e8f7353c12:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-source-surface.spec.ts",
+        "line": "11",
+        "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+        "journeys": "E03|E07|E08",
+        "lane": "password-collaboration-native",
+        "evidence_scope": "browser-real-api|native-renderer-harness",
+        "native_required": "True",
+        "status": "PASS",
+        "result_evidence": ".omx/private/core-e2e-20261104/runtime/runs/ui-harness-replay-2/ui-r2-09/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".omx/private/core-e2e-20261104/runtime/runs/ui-harness-replay-2/ui-r2-09/results.json",
+          "exists": true,
+          "sha256": "d4d3c72287b4587f3068a2d34020fdfebe4f9a80e40dd7938c46e7a8f43ad8e2",
+          "bytes": 21149
+        },
+        "run_stats": {
+          "startTime": "2026-11-05T03:55:43.129Z",
+          "duration": 24483.202,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+            "file": "collaboration-source-surface.spec.ts",
+            "line": 11,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-05T03:55:43.599Z",
+                "duration_ms": 23598
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-160",
+        "project": "chromium",
+        "spec": "e2e/collaboration-source-surface.spec.ts",
+        "line": "11",
+        "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "password-35-collaboration-source-surface-1",
+        "evidence": "evidence/password-35-collaboration-source-surface-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/password-35-collaboration-source-surface-1/results.json",
+          "exists": true,
+          "sha256": "4142f8eb3daebc8798839cc5c530cb56ba75ebfdcad9ae80e11452ae342ebcf8",
+          "bytes": 21268
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T01:34:16.179Z",
+          "duration": 23189.946,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+            "file": "collaboration-source-surface.spec.ts",
+            "line": 11,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T01:34:16.605Z",
+                "duration_ms": 22358
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "old_case_key": "QA-PRODUCT-001/ENV-1",
+      "original_status": "FAIL",
+      "original_title": "ENV-1 a live latest memory v1 must not be labelled as the startup version of a run frozen at v0",
+      "current_file": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "current_title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "current_title_line": 9,
+      "title_mapping": "Promoted private reproduction to stronger canonical positive-and-negative test in 1ecabb964",
+      "repair_commits": [
+        {
+          "commit": "1eb0cb33c",
+          "ancestor_of_candidate": true
+        },
+        {
+          "commit": "9e7f18785",
+          "ancestor_of_candidate": true
+        },
+        {
+          "commit": "1ecabb964",
+          "ancestor_of_candidate": true
+        }
+      ],
+      "repair_scope": "Product DTO memory.base_version and UI HandoffMemory distinguish immutable base from live latest; persisted v0/current v1 and both positive labels asserted. Seeded retained execution; not actual Provider ingestion.",
+      "core_historical": {
+        "id": "535c4a178b0047bfeb34-fc595010fd4da324f891:chromium",
+        "project": "chromium",
+        "file": "e2e/collaboration-runtime-handoff-web.spec.ts",
+        "line": "9",
+        "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+        "journeys": "E05|E08|E09|E16",
+        "lane": "password-collaboration",
+        "evidence_scope": "browser-real-api",
+        "native_required": "False",
+        "status": "PASS",
+        "result_evidence": ".omx/private/core-e2e-20261104/runtime/runs/password-runtime-phase2-2/pw-27/results.json",
+        "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+        "framework_status": "PASS",
+        "audit_status": "PASS",
+        "acceptance_status": "PASS",
+        "validated_product_variant": "base1a32"
+      },
+      "core_raw": {
+        "evidence": {
+          "path": ".omx/private/core-e2e-20261104/runtime/runs/password-runtime-phase2-2/pw-27/results.json",
+          "exists": true,
+          "sha256": "ed1f9323ce11c18391b31cd183022bb4db43ce4781fe7e99b2398e5b30960596",
+          "bytes": 195233
+        },
+        "run_stats": {
+          "startTime": "2026-11-05T03:11:57.502Z",
+          "duration": 8346.244999999999,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+            "file": "collaboration-runtime-handoff-web.spec.ts",
+            "line": 9,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-05T03:11:57.991Z",
+                "duration_ms": 2097
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "functional_historical": {
+        "case_id": "E2E-157",
+        "project": "chromium",
+        "spec": "e2e/collaboration-runtime-handoff-web.spec.ts",
+        "line": "9",
+        "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+        "domain": "collaboration",
+        "priority": "P0",
+        "status": "PASS",
+        "run_id": "password-32-collaboration-runtime-handoff-web-1",
+        "evidence": "evidence/password-32-collaboration-runtime-handoff-web-1/results.json",
+        "note": "Framework: passed"
+      },
+      "functional_raw": {
+        "evidence": {
+          "path": ".trellis/tasks/11-02-branch-functional-regression/evidence/password-32-collaboration-runtime-handoff-web-1/results.json",
+          "exists": true,
+          "sha256": "14ce886ebfb620d996892fac64481e6e13a324c705861551d0ae19d9bead55e5",
+          "bytes": 193289
+        },
+        "run_stats": {
+          "startTime": "2026-11-02T01:33:57.798Z",
+          "duration": 4606.554,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "matches": [
+          {
+            "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+            "file": "collaboration-runtime-handoff-web.spec.ts",
+            "line": 9,
+            "project": "chromium",
+            "status": "expected",
+            "results": [
+              {
+                "status": "passed",
+                "retry": 0,
+                "start_time": "2026-11-02T01:33:58.233Z",
+                "duration_ms": 1081
+              }
+            ]
+          }
+        ],
+        "all_selected_passed_without_retry": true
+      },
+      "spec_same_as_base1a32": true,
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    }
+  ],
+  "admin_clock_test": {
+    "file": "packages/views/admin/executions/list-controls.test.tsx",
+    "repair_commit": "9c056ad68",
+    "ancestor_of_candidate": true,
+    "behavior": "Pin Date to2026-10-02, preserve real timers and31-day validation; afterEach restores timers.",
+    "rerun": "pnpm --filter @multica/views exec vitest run admin/executions/list-controls.test.tsx",
+    "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+  },
+  "runtime9": [
+    {
+      "id": "REC-1",
+      "behavior": "Transient checkpoint failures keep the original staged request retryable during the run",
+      "repair_commit": "4456cc65a",
+      "ancestor_of_candidate": true,
+      "canonical_tests": {
+        "TestHostCheckpointTransientFailureRetriesDuringRun": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/daemon/collaborationrun/host_checkpoint_delivery_test.go:230:func TestHostCheckpointTransientFailureRetriesDuringRun(t *testing.T) {"
+        ],
+        "TestHostOutcomeCarriesUndeliveredTail": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/daemon/collaborationrun/host_checkpoint_delivery_test.go:279:func TestHostOutcomeCarriesUndeliveredTail(t *testing.T) {"
+        ]
+      },
+      "historical_state": "repaired and independently reviewed; integrated through9e7f18785; later deterministic acceptance separately recorded",
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "id": "REC-2",
+      "behavior": "Superseded uncommitted chunks move only after definitive old-attempt refusal",
+      "repair_commit": "4456cc65a",
+      "ancestor_of_candidate": true,
+      "canonical_tests": {
+        "TestHostCheckpointUncommittedChunkRebindsToFallbackAttempt": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/daemon/collaborationrun/host_checkpoint_delivery_test.go:366:func TestHostCheckpointUncommittedChunkRebindsToFallbackAttempt(t *testing.T) {"
+        ]
+      },
+      "historical_state": "repaired and independently reviewed; integrated through9e7f18785; later deterministic acceptance separately recorded",
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "id": "REC-3",
+      "behavior": "Stop/content conflict/authority refusal retain distinct seal reasons",
+      "repair_commit": "4456cc65a",
+      "ancestor_of_candidate": true,
+      "canonical_tests": {
+        "TestHostCheckpointRefusalNamesSealReason": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/daemon/collaborationrun/host_checkpoint_delivery_test.go:422:func TestHostCheckpointRefusalNamesSealReason(t *testing.T) {"
+        ]
+      },
+      "historical_state": "repaired and independently reviewed; integrated through9e7f18785; later deterministic acceptance separately recorded",
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "id": "REC-4",
+      "behavior": "A retained contiguous outcome tail does not stay partial solely because upload was transiently delayed",
+      "repair_commit": "4456cc65a",
+      "ancestor_of_candidate": true,
+      "canonical_tests": {
+        "TestHostOutcomeCarriesUndeliveredTail": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/daemon/collaborationrun/host_checkpoint_delivery_test.go:279:func TestHostOutcomeCarriesUndeliveredTail(t *testing.T) {"
+        ],
+        "TestHostOutcomeTailFitsRecordAndLedgerBounds": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/daemon/collaborationrun/host_checkpoint_delivery_test.go:453:func TestHostOutcomeTailFitsRecordAndLedgerBounds(t *testing.T) {"
+        ]
+      },
+      "historical_state": "repaired and independently reviewed; integrated through9e7f18785; later deterministic acceptance separately recorded",
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "id": "ENV-1",
+      "behavior": "Live latest memory version remains separate from the recorded launch base",
+      "repair_commit": "1eb0cb33c",
+      "ancestor_of_candidate": true,
+      "canonical_tests": {
+        "TestCollaborationLiveHandoffNamesTheRunsLaunchBase": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/service/collaboration_runtime_handoff_test.go:209:func TestCollaborationLiveHandoffNamesTheRunsLaunchBase(t *testing.T) {"
+        ],
+        "TestCollaborationHandoffWireBoundsMemoryBaseVersion": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/pkg/protocol/collaboration_handoff_decode_test.go:234:func TestCollaborationHandoffWireBoundsMemoryBaseVersion(t *testing.T) {"
+        ]
+      },
+      "historical_state": "repaired and independently reviewed; integrated through9e7f18785; later deterministic acceptance separately recorded",
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "id": "ENV-2",
+      "behavior": "Redaction expansion cannot truncate an admitted 64KiB delegation",
+      "repair_commit": "5b9f66292",
+      "ancestor_of_candidate": true,
+      "canonical_tests": {
+        "TestCollaborationHandoffSnapshotPreservesMaximumAssignment": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/service/collaboration_runtime_handoff_budget_test.go:16:func TestCollaborationHandoffSnapshotPreservesMaximumAssignment(t *testing.T) {"
+        ]
+      },
+      "historical_state": "repaired and independently reviewed; integrated through9e7f18785; later deterministic acceptance separately recorded",
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "id": "ENV-4",
+      "behavior": "New continuation keys prove wake-cause inventory recording; historical continuations stay unknown",
+      "repair_commit": "e1e6090eb",
+      "ancestor_of_candidate": true,
+      "canonical_tests": {
+        "TestCollaborationHandoffPreservesEveryMergedWakeCause": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/service/collaboration_runtime_handoff_test.go:100:func TestCollaborationHandoffPreservesEveryMergedWakeCause(t *testing.T) {"
+        ]
+      },
+      "historical_state": "repaired and independently reviewed; integrated through9e7f18785; later deterministic acceptance separately recorded",
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "id": "RECALL-1",
+      "behavior": "Member display labels survive paged and legacy runtime reads, without authority",
+      "repair_commit": "7627916c8",
+      "ancestor_of_candidate": true,
+      "canonical_tests": {
+        "TestCollaborationRuntimeCommentsCarryMemberDisplayNames": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/service/collaboration_comments_recall_test.go:227:func TestCollaborationRuntimeCommentsCarryMemberDisplayNames(t *testing.T) {"
+        ],
+        "TestCollaborationRuntimeCommentKeepsOptionalDisplayName": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/cli/collaboration_test.go:106:func TestCollaborationRuntimeCommentKeepsOptionalDisplayName(t *testing.T) {"
+        ]
+      },
+      "historical_state": "repaired and independently reviewed; integrated through9e7f18785; later deterministic acceptance separately recorded",
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    },
+    {
+      "id": "RECALL-2",
+      "behavior": "Runtime CLI spec documents explicit recall/content pagination, budgets, revision and authorization",
+      "repair_commit": "7627916c8",
+      "ancestor_of_candidate": true,
+      "canonical_tests": {
+        "TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/service/collaboration_comments_recall_test.go:114:func TestCollaborationRecallRuntimePagesFulltextAndCurrentAuthority(t *testing.T) {"
+        ],
+        "TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding": [
+          "4c817dee9397a42ac903f419af7804b11d2d863e:server/internal/service/collaboration_comments_recall_test.go:69:func TestCollaborationRecallChunksReassembleUTF8AndRejectCrossBinding(t *testing.T) {"
+        ]
+      },
+      "historical_state": "repaired and independently reviewed; integrated through9e7f18785; later deterministic acceptance separately recorded",
+      "candidate_execution_status": "NOT_RUN_BY_THIS_REVIEW"
+    }
+  ],
+  "runtime_later_deterministic": {
+    "record": {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/independent-review/current-deterministic-acceptance.json",
+      "exists": true,
+      "sha256": "51531ae7e53bd0dc87fa1b6b5df10718abce70defd59c6ecd907dc2f9eea30d6",
+      "bytes": 5108
+    },
+    "candidate_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "verdict": "pass-with-notes",
+    "accepted": true,
+    "normal": {
+      "run": "quiet02/normal",
+      "started_at": "2026-11-04T16:41:00.599086+00:00",
+      "finished_at": "2026-11-04T16:43:40.745474+00:00",
+      "exit": 0,
+      "named_pass": 62,
+      "independent_checks": 912,
+      "result_sha256": "8237fb3a21e5e57d092a4fb006f8adf10dda4e8756717d4aae0a2e01b31dc71c",
+      "review": "quiet02-normal-review.json"
+    },
+    "race": {
+      "run": "race03/race",
+      "started_at": "2026-11-04T16:53:39.407853+00:00",
+      "finished_at": "2026-11-04T16:56:28.862083+00:00",
+      "exit": 0,
+      "named_pass": 62,
+      "independent_checks": 915,
+      "result_sha256": "b08791a475909fb7feaada2d6daa8d6ac1fe80f0963cb626ccbbbe84576bffb3",
+      "review": "race03-evidence-review.json"
+    },
+    "candidate_ancestor": true
+  },
+  "knowledge21": {
+    "record": {
+      "path": ".trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/final-acceptance-review.json",
+      "exists": true,
+      "sha256": "ce7822106c10b5841fd25ae32d2330b0b618d8c47e9c1e4c19c9d806db9c6da2",
+      "bytes": 10853
+    },
+    "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+    "ancestor_of_candidate": true,
+    "verdict": "pass",
+    "all_21_dispositions_accepted": true,
+    "disposition_ids": [
+      "H1",
+      "H2",
+      "H3",
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7",
+      "L8",
+      "L9",
+      "L10",
+      "L11",
+      "L12",
+      "L13"
+    ],
+    "reproduced_baseline_red_count": 19,
+    "accepted_exceptions": {
+      "L7": "not reproduced; actual exactly-once termination regressions retained",
+      "L13": "terminology and locale parity exception"
+    },
+    "product_acceptance_complete": true,
+    "integration_commit": "6cb9fcb36",
+    "integration_ancestor": true,
+    "closure_report": ".trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/closing-report-20261104.md",
+    "scope_limit": "Historical deterministic product closure; not current-candidate re-execution or real-provider/release approval."
+  },
+  "open_gates": [
+    "Run named current-candidate15 prior failures and2 conditional blockers with current production Web/native matching binaries.",
+    "Full branch acceptance requires current core smoke, permission/recovery and changed business coverage, not this17-case historical reconciliation.",
+    "Current Linux package must include76836fa8d; old1a32+FD fix package proves only its bound variant.",
+    "NativeWindows/iOS/LinuxDesktop, signing/notarization/upgrade/updater and actual external integrations require separate owned prerequisites.",
+    "Commercial Provider/account/model calls are unauthorized in this task; other task budgets are not transferable.",
+    "1a32 performance exception is candidate/sample-specific, not a waived threshold for current candidate."
+  ],
+  "references": [
+    {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/summary.json",
+      "exists": true,
+      "sha256": "1d7fcaee7b9bea6c36cd2bd6962a4a7f478f768ddab70580973dc3b120fb5e53",
+      "bytes": 631
+    },
+    {
+      "path": ".trellis/tasks/11-01-branch-e2e-acceptance/coverage.csv",
+      "exists": true,
+      "sha256": "9d33fe0798ea136c793f01b92e0f1d11c771c903db1e400b7be744e7891b1259",
+      "bytes": 194645
+    },
+    {
+      "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/coverage.csv",
+      "exists": true,
+      "sha256": "6297614d0608aa3e36d410946777e2fa3cc449cce9728c70daa648b3eb194092",
+      "bytes": 188108
+    },
+    {
+      "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/report.md",
+      "exists": true,
+      "sha256": "8baeb829aaf37d5bb71f5830420a628602d1ef07b41791e2b50796de5fe51d6b",
+      "bytes": 4865
+    },
+    {
+      "path": ".trellis/tasks/11-04-core-business-e2e-acceptance/research/final-evidence-review.md",
+      "exists": true,
+      "sha256": "633bb60950f5103e2b72051832be157c4c79ac2efa10f7dbbe8e277437e1b673",
+      "bytes": 1522
+    },
+    {
+      "path": ".trellis/tasks/11-02-branch-functional-regression/coverage.csv",
+      "exists": true,
+      "sha256": "7903d052be10f586bbed0f026b90bc8f75c59c12691fe230b316ee6d7e574ede",
+      "bytes": 110285
+    },
+    {
+      "path": ".trellis/tasks/11-02-branch-functional-regression/report.md",
+      "exists": true,
+      "sha256": "2498fcb7d0ce09d54e6a99401ffac0c7a64f80ed70c46e05068e590c2a70308b",
+      "bytes": 21405
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/verification/2026-11-01-audit-takeover/repair-ledger.json",
+      "exists": true,
+      "sha256": "ac1dac38356dc81a6048836b069f8541439a13c2230b2a4b268cbca8ea690138",
+      "bytes": 6215
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/final-acceptance-review.json",
+      "exists": true,
+      "sha256": "ce7822106c10b5841fd25ae32d2330b0b618d8c47e9c1e4c19c9d806db9c6da2",
+      "bytes": 10853
+    },
+    {
+      "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/independent-review/current-deterministic-acceptance.json",
+      "exists": true,
+      "sha256": "51531ae7e53bd0dc87fa1b6b5df10718abce70defd59c6ecd907dc2f9eea30d6",
+      "bytes": 5108
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-07-collaboration-detail-drawer/verification.md",
+      "exists": true,
+      "sha256": "57e1c35a12682098be3e3c2d76d63a3a3b25436c2b8b0b084b7180dfb86b9c54",
+      "bytes": 445
+    }
+  ],
+  "verification": {
+    "source_edits": false,
+    "runtime_operations": false,
+    "database_operations": false,
+    "provider_calls": 0,
+    "lint": "NOT_RUN: read-only reconciliation plus report-only writes; current execution belongs to parent lane",
+    "typecheck": "NOT_RUN: read-only reconciliation plus report-only writes",
+    "tests": "No current tests executed; selected historical JSON case terminals inspected and hashes recorded",
+    "report_checks": "17 case identities,17 core+17 functional selected passed/retry0 terminals;9 runtime test mappings; all repair ancestry checked"
+  }
+}

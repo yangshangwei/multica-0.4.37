@@ -1,0 +1,34 @@
+{
+  "at": "2026-10-22T00:16:07.285232+00:00",
+  "task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "head": "238d4bb3974094ce55ab911c99cf2eedb845d278",
+  "ownership": [
+    "server/internal/integrations/lark/collaboration_outbound_boundary_test.go",
+    "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go",
+    "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go",
+    "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go"
+  ],
+  "new_files_present": {
+    "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": false,
+    "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": false,
+    "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": false,
+    "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go": false
+  },
+  "before_product_sha256": {
+    "server/internal/integrations/lark/outbound.go": "5d922e8aa483a19cc64aed59b00f7c5f7a67fa5090d303719e87de8865eb2139",
+    "server/internal/integrations/dingtalk/outbound.go": "872f838638bc44186fd198c465e93d796d0c5e7679d6752a1711876ca4def257",
+    "server/internal/integrations/telegram/outbound.go": "758e6cdb3153ddfa677c5d179ea3f140f9e06b61ddbc9064287c1651144d95de",
+    "server/internal/integrations/wecom/outbound.go": "e5e668f1852be24936b72e504d1c866c2a5a8dc37a86a869c314a17c72026b63",
+    "server/internal/integrations/wecom/relay_outbound.go": "7633bbd80b1ac3200f6cc4cbbfb4511b25b9ac21cf403e3807ebbccdfde4fca8",
+    "server/internal/integrations/wecom/outbound_media.go": "9e56d19f4baec903cb30e9e503dc43ae3da93987625397f33e58f369c76c5e60"
+  },
+  "gap": "Other IM consumers lack exact current classified-collaboration transport proof. WeCom relay receiver currently trusts content/frame without immutable task-delivery recheck.",
+  "test_boundary": "Real task-owned DB shared issue/body/comment/encrypted attachment/retained source run; real ordinary-child channel-ingested input/delivery; local Lark API, HTTP DingTalk/Telegram and recorded WeCom text/media/relay. All production callbacks remain unchanged in this lane.",
+  "excluded": [
+    "new task or replan",
+    "external IM or provider send",
+    "SQL/schema/generated/shared testutil/product source edits",
+    "ledger/spec/progress/commit updates"
+  ],
+  "verification": "Guarded serial Go -json -race -p1 -parallel1 -count1 -timeout30m on service_s5 or separately assigned schema737 task clone; no global gate/outbox cleanup"
+}

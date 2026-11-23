@@ -1,0 +1,2315 @@
+[
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/migrate",
+    "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+    "action": "skip",
+    "time": "2026-11-03T18:13:00.653007+08:00",
+    "elapsed": 0.06,
+    "output": "=== RUN   TestCommentContentBigramRequirementMatchesRealPGBigm\n    migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test\n--- SKIP: TestCommentContentBigramRequirementMatchesRealPGBigm (0.06s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+    "action": "skip",
+    "time": "2026-11-03T18:14:25.070123+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux\n    collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationPartialResumeRoutesLinux",
+    "action": "skip",
+    "time": "2026-11-03T18:14:28.324997+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestCollaborationPartialResumeRoutesLinux\n    collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationPartialResumeRoutesLinux (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+    "action": "skip",
+    "time": "2026-11-03T18:14:37.062645+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestCollaborationSingleAgentRuntimeRoutesLinux\n    collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSingleAgentRuntimeRoutesLinux (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+    "action": "skip",
+    "time": "2026-11-03T18:14:37.062708+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux\n    collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+    "action": "skip",
+    "time": "2026-11-03T18:14:37.062745+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestCollaborationRuntimeProofSurvivesOwnerDisableLinux\n    collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationRuntimeProofSurvivesOwnerDisableLinux (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/cmd/server",
+    "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+    "action": "skip",
+    "time": "2026-11-03T18:14:37.062795+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestCollaborationSquadCapacityOneRoutesLinux\n    collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment\n--- SKIP: TestCollaborationSquadCapacityOneRoutesLinux (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/auth",
+    "test": "TestPasswordLimiterSharedAtomicAdmission",
+    "action": "skip",
+    "time": "2026-11-03T18:16:08.859351+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestPasswordLimiterSharedAtomicAdmission\n    password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured\n--- SKIP: TestPasswordLimiterSharedAtomicAdmission (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/cli",
+    "test": "TestCLIConfig_UnknownFieldsArePreserved",
+    "action": "skip",
+    "time": "2026-11-03T18:16:20.320485+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestCLIConfig_UnknownFieldsArePreserved\n    config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder\n--- SKIP: TestCLIConfig_UnknownFieldsArePreserved (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+    "action": "skip",
+    "time": "2026-11-03T18:16:54.934334+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestCollaborationBatchPollerSlotsAndRunnerLinux\n    collaboration_test.go:189: requires real Linux kernel containment\n--- SKIP: TestCollaborationBatchPollerSlotsAndRunnerLinux (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/daemon",
+    "test": "TestIsDriveRoot",
+    "action": "skip",
+    "time": "2026-11-03T18:17:15.793932+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestIsDriveRoot\n    local_directory_test.go:383: windows-only behaviour\n--- SKIP: TestIsDriveRoot (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+    "action": "skip",
+    "time": "2026-11-03T18:23:14.867419+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestWebhookHandler_DBErrorOnTokenLookupReturns500\n    autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant\n--- SKIP: TestWebhookHandler_DBErrorOnTokenLookupReturns500 (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestIterationI1P95",
+    "action": "skip",
+    "time": "2026-11-03T18:24:16.402584+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestIterationI1P95\n    iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1P95 (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestIterationI1DisableP95",
+    "action": "skip",
+    "time": "2026-11-03T18:24:16.40265+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestIterationI1DisableP95\n    iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL\n--- SKIP: TestIterationI1DisableP95 (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+    "action": "skip",
+    "time": "2026-11-03T18:25:22.428744+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestFetchFromSkillsSh_AnthropicPptxIntegration\n    skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test\n--- SKIP: TestFetchFromSkillsSh_AnthropicPptxIntegration (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestTriageQueueScaleBaseline",
+    "action": "skip",
+    "time": "2026-11-03T18:25:38.872047+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestTriageQueueScaleBaseline\n    triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending\n--- SKIP: TestTriageQueueScaleBaseline (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestTriageWireFixtures",
+    "action": "skip",
+    "time": "2026-11-03T18:25:39.260625+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestTriageWireFixtures\n    triage_test.go:566: wire fixture export requested only by cross-package verification\n--- SKIP: TestTriageWireFixtures (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/internal/handler",
+    "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+    "action": "skip",
+    "time": "2026-11-03T18:25:50.458105+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestMcpMarketPublicHTTPRecipeLifecycle\n    workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes\n--- SKIP: TestMcpMarketPublicHTTPRecipeLifecycle (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+    "action": "skip",
+    "time": "2026-11-03T18:47:46.702078+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestACPManagedTerminalPreservesWindowsUnicodeShellOutput\n    acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows\n--- SKIP: TestACPManagedTerminalPreservesWindowsUnicodeShellOutput (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+    "action": "skip",
+    "time": "2026-11-03T18:48:49.266339+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestCodexExecuteRetriesAfterSignaledProcessIsReaped\n    codex_test.go:3198: Linux signal/reap semantics regression\n--- SKIP: TestCodexExecuteRetriesAfterSignaledProcessIsReaped (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestPiExecuteAttachesStdinPipe",
+    "action": "skip",
+    "time": "2026-11-03T18:50:52.965974+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestPiExecuteAttachesStdinPipe\n=== PAUSE TestPiExecuteAttachesStdinPipe\n=== CONT  TestPiExecuteAttachesStdinPipe\n    pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0\n--- SKIP: TestPiExecuteAttachesStdinPipe (0.00s)\n2026/11/03 18:50:52 INFO agent command provider=reasonix exec=/private/tmp/multica-final-check-v13-fed2n321/TestReasonixBackendCancelledStopReasonAborts1598112712/001/reasonix args=\"[acp --profile <redacted> --planner <redacted> --sandbox-network <redacted> --sandbox-bash <redacted> --workspace-only]\" arg_count=10\n2026/11/03 18:50:52 INFO reasonix acp started pid=98648 cwd=\"\"\n2026/11/03 18:50:52 INFO reasonix session created session_id=reasonix-session\n2026/11/03 18:50:52 INFO reasonix finished pid=98648 status=aborted duration=402ms\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "package": "github.com/multica-ai/multica/server/pkg/agent",
+    "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+    "action": "skip",
+    "time": "2026-11-03T18:51:53.290591+08:00",
+    "elapsed": 0,
+    "output": "=== RUN   TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== PAUSE TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n=== CONT  TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors\n    claude_test.go:756: root-only preflight assertion\n--- SKIP: TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors (0.00s)\n",
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate platform/integration/performance/known limitation; not one of the 21 audit canonical regressions or CCG1"
+  },
+  {
+    "file": "admin-collaboration-switches.spec.ts",
+    "title": "a super administrator closes and reopens new collaboration issues from Settings and members follow",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the password/admin lane with an injected synthetic super administrator",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/admin-collaboration-switches.spec.ts",
+          "line": 24,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "admin-resource-publishing.spec.ts",
+    "title": "first resource page screenshot",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned API, Web, database and managed storage",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/admin-resource-publishing.spec.ts",
+          "line": 166,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "admin-resource-publishing.spec.ts",
+    "title": "localized responsive states and deployment-disabled feedback",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned API, Web, database and managed storage",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/admin-resource-publishing.spec.ts",
+          "line": 166,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "admin-resource-publishing.spec.ts",
+    "title": "real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned API, Web, database and managed storage",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/admin-resource-publishing.spec.ts",
+          "line": 166,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "auth-device.spec.ts",
+    "title": "device login authenticates a distinct user without granting another user's workspace",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires a dedicated API with MULTICA_DEVICE_AUTH_ENABLED=true",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/auth-device.spec.ts",
+          "line": 6,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "changelog.spec.ts",
+    "title": "generated publication reaches an open reader and a fresh client without restart",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires a task-owned CHANGELOG_E2E_API_URL and CHANGELOG_E2E_FEED",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/changelog.spec.ts",
+          "line": 100,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "cli-forbidden-reason.spec.ts",
+    "title": "an Observer agent's status change prints the autonomy reason, not the workspace hint (en)",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/cli-forbidden-reason.spec.ts",
+          "line": 80,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "cli-forbidden-reason.spec.ts",
+    "title": "an Observer agent's status change prints the autonomy reason, not the workspace hint (zh)",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/cli-forbidden-reason.spec.ts",
+          "line": 80,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "cli-forbidden-reason.spec.ts",
+    "title": "an ordinary member editing someone else's comment sees the server's reason",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/cli-forbidden-reason.spec.ts",
+          "line": 80,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-administration-desktop.spec.ts",
+    "title": "Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the independent password/admin API and rebuilt production Electron renderer/preload",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-administration-desktop.spec.ts",
+          "line": 13,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-administration-web.spec.ts",
+    "title": "Web administers disabled-creator collaborations with explicit succession and original receipt recovery",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the independent password/admin-enabled production Web environment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-administration-web.spec.ts",
+          "line": 63,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-control-journey-desktop.spec.ts",
+    "title": "Desktop controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the task-owned password/managed deployment, execution gate and matching production native renderer",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-control-journey-desktop.spec.ts",
+          "line": 16,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-control-journey-desktop.spec.ts",
+    "title": "Desktop pending termination proof keeps A paused while whole Resume releases B and squad S",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the task-owned password/managed deployment, execution gate and matching production native renderer",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-control-journey-desktop.spec.ts",
+          "line": 16,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-control-journey-web.spec.ts",
+    "title": "Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-control-journey-web.spec.ts",
+          "line": 12,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-control-journey-web.spec.ts",
+    "title": "Web pending termination proof keeps A paused while whole Resume releases B and squad S",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-control-journey-web.spec.ts",
+          "line": 12,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-cross-client-execution.spec.ts",
+    "title": "AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires explicit task-owned password API/Web/renderer and static Linux daemon/provider executables",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-cross-client-execution.spec.ts",
+          "line": 18,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-detail-journey.spec.ts",
+    "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the root session's task-owned production runtime permit",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-detail-journey.spec.ts",
+          "line": 39,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-detail-journey.spec.ts",
+    "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the root session's task-owned production runtime permit",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-detail-journey.spec.ts",
+          "line": 39,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-handoff-chain-desktop.spec.ts",
+    "title": "Electron information return shows the original requester and note before restoring responsibility",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password services and the built desktop renderer",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-handoff-chain-desktop.spec.ts",
+          "line": 18,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-handoff-chain-web.spec.ts",
+    "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-handoff-chain-web.spec.ts",
+          "line": 13,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-host-installed.spec.ts",
+    "title": "Packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires an explicitly selected packaged Main image or native Windows/macOS executable",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-host-installed.spec.ts",
+          "line": 42,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-host-runtime.spec.ts",
+    "title": "host Web and actual Electron share one ordinary Agent, preserve authors, and explicitly resume after scoped Stop",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires explicit task-owned host daemon/provider/CLI executables; configured runs fail if any environment input is missing",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-host-runtime.spec.ts",
+          "line": 17,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-host-squad.spec.ts",
+    "title": "a capacity-one host squad merges @A with @S, delegates to its member, joins a later instruction and queues another squad",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires explicit task-owned host daemon/provider/CLI executables; configured runs fail if any environment input is missing",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-host-squad.spec.ts",
+          "line": 15,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-host-switch.spec.ts",
+    "title": "switching a squad to another native runtime waits for confirmed Stop and owner consent, then resumes there without moving local files",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires explicit task-owned host daemon/provider/CLI executables; configured runs fail if any environment input is missing",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-host-switch.spec.ts",
+          "line": 16,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-installed-clients.spec.ts",
+    "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the existing isolated password API, exact cached OCI package and explicit Linux stdio relay",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-installed-clients.spec.ts",
+          "line": 30,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-installed-main.spec.ts",
+    "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires a task-owned packaged Linux full Main image and password API",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-installed-main.spec.ts",
+          "line": 141,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-knowledge-deployed.spec.ts",
+    "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires an explicit true/false expectation and isolated task-owned deployment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-knowledge-deployed.spec.ts",
+          "line": 18,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Direct CCG2 blocker: need separately bound OFF and ON actual pass"
+  },
+  {
+    "file": "collaboration-lane-close-controls.spec.ts",
+    "title": "Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the root-owned production/password API, renderer and explicit fixture identities",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+          "line": 96,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-lane-close-controls.spec.ts",
+    "title": "Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires root-owned production/password API, Electron and explicit Linux fixtures",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+          "line": 102,
+          "column": 12
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-lane-close-controls.spec.ts",
+    "title": "Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires root-owned production/password API, Electron and explicit Linux fixtures",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+          "line": 102,
+          "column": 12
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-lane-close-controls.spec.ts",
+    "title": "Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the root-owned production/password API, renderer and explicit fixture identities",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+          "line": 96,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-lane-close-controls.spec.ts",
+    "title": "Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires root-owned production/password API, Electron and explicit Linux fixtures",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+          "line": 102,
+          "column": 12
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-lane-close-controls.spec.ts",
+    "title": "Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires root-owned production/password API, Electron and explicit Linux fixtures",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lane-close-controls.spec.ts",
+          "line": 102,
+          "column": 12
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-leave-web.spec.ts",
+    "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-leave-web.spec.ts",
+          "line": 15,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-lifecycle-controls.spec.ts",
+    "title": "Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires root-allocated task-owned production Web/password API/renderer and explicit Linux fixtures",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lifecycle-controls.spec.ts",
+          "line": 16,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-lifecycle-controls.spec.ts",
+    "title": "Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires root-allocated task-owned production Web/password API/renderer and explicit Linux fixtures",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-lifecycle-controls.spec.ts",
+          "line": 16,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-live-revoke-web.spec.ts",
+    "title": "Web withdrawing a grant during a permitted run stops that work, holds only its target, keeps the queued input, and needs proof plus explicit Resume",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-live-revoke-web.spec.ts",
+          "line": 15,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-memory-runtime.spec.ts",
+    "title": "two native runtime profiles hand off shared context through the actual run-local CLI",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires explicit task-owned host daemon, memory-provider and Multica CLI executables",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-memory-runtime.spec.ts",
+          "line": 47,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-offline-handoff.spec.ts",
+    "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-handoff.spec.ts",
+          "line": 14,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-offline-handoff.spec.ts",
+    "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-handoff.spec.ts",
+          "line": 14,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-offline-result-notifications.spec.ts",
+    "title": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services and explicit test-built Linux executables",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-result-notifications.spec.ts",
+          "line": 17,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-offline-result-notifications.spec.ts",
+    "title": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services and explicit test-built Linux executables",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-offline-result-notifications.spec.ts",
+          "line": 17,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-retained-attachment.spec.ts",
+    "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-retained-attachment.spec.ts",
+          "line": 143,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-retained-attachment.spec.ts",
+    "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-retained-attachment.spec.ts",
+          "line": 143,
+          "column": 10
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-retained-attachment.spec.ts",
+    "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-retained-attachment.spec.ts",
+          "line": 158,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-runtime-handoff-desktop.spec.ts",
+    "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-runtime-handoff-desktop.spec.ts",
+          "line": 16,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-runtime-handoff-web.spec.ts",
+    "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-runtime-handoff-web.spec.ts",
+          "line": 11,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-runtime-handoff-web.spec.ts",
+    "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-runtime-handoff-web.spec.ts",
+          "line": 49,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-selection-boundary.spec.ts",
+    "title": "AC87 Web and actual Electron hide subtask creation for shared body/comment selections while ordinary children retain it",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the task-owned password production Web and actual Electron environment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-selection-boundary.spec.ts",
+          "line": 14,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-source-surface.spec.ts",
+    "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires explicit task-owned password production services",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-source-surface.spec.ts",
+          "line": 13,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "collaboration-terminal-reopen-web.spec.ts",
+    "title": "Web closed issue refuses @agent and Resume, only the creator reopens, and reopening revives nothing or the stop barrier",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the task-owned password/managed deployment with execution enabled and matching production Web",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/collaboration-terminal-reopen-web.spec.ts",
+          "line": 14,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "issue-assist-flow.spec.ts",
+    "title": "refines a vague feature, preserves folded answers, merges and undoes, then persists exactly once",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the deterministic AI provider and isolated API configuration",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+          "line": 56,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "issue-assist-flow.spec.ts",
+    "title": "handles 0 dynamic clarification questions and undo",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the deterministic AI provider and isolated API configuration",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+          "line": 56,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "issue-assist-flow.spec.ts",
+    "title": "handles 1 dynamic clarification questions and undo",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the deterministic AI provider and isolated API configuration",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+          "line": 56,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "issue-assist-flow.spec.ts",
+    "title": "preserves edits during generation, supports cancellation and real provider failure",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the deterministic AI provider and isolated API configuration",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+          "line": 56,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "issue-assist-flow.spec.ts",
+    "title": "creates the unchanged manual draft after a refinement failure",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the deterministic AI provider and isolated API configuration",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+          "line": 56,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "issue-assist-flow.spec.ts",
+    "title": "manual keeps creation reachable at desktop and phone widths with long content",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the deterministic AI provider and isolated API configuration",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+          "line": 56,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "issue-assist-flow.spec.ts",
+    "title": "agent keeps creation reachable at desktop and phone widths with long content",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the deterministic AI provider and isolated API configuration",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+          "line": 56,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "issue-assist-flow.spec.ts",
+    "title": "agent creation queues the refined prompt through the real API without executing a daemon",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the deterministic AI provider and isolated API configuration",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/issue-assist-flow.spec.ts",
+          "line": 56,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "mcp-desktop.spec.ts",
+    "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires a local password-mode API and freshly built desktop renderer/preload",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/mcp-desktop.spec.ts",
+          "line": 80,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-binding-desktop.spec.ts",
+    "title": "an existing Desktop account binds password login without losing its history",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires a local password-mode server and migration window",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-binding-desktop.spec.ts",
+          "line": 11,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "invalid username preserves registration fields and can be corrected without restarting",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "five-character password error can be corrected to the supported six-character minimum",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "overlong pasted password is rejected and accepts the corrected 128-character boundary",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "whitespace-only display name reaches server validation and keeps credentials for correction",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "duplicate username after normalization leaves the original identity and password intact",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "incorrect password preserves the login form and a corrected retry restores the same identity",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "unknown account gives a generic error and can sign in after the account is created",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "lost registration response offers sign-in recovery for the account the server already created",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "network failure during login keeps credentials and succeeds after connection recovery",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "temporary authentication service failure preserves the form and permits a real retry",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "Retry-After disables login submissions until cooldown ends without discarding credentials",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-branches.spec.ts",
+    "title": "pending registration locks the form and ignores repeated native submissions",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment with signup enabled",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-branches.spec.ts",
+          "line": 39,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-migration.spec.ts",
+    "title": "legacy setup returns to the original identity and workspace",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-migration.spec.ts",
+          "line": 10,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-migration.spec.ts",
+    "title": "temporary recovery returns to the original identity and workspace",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-migration.spec.ts",
+          "line": 10,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-registration.spec.ts",
+    "title": "confirmed password registers without email and a second device keeps the same identity",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-registration.spec.ts",
+          "line": 6,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-registration.spec.ts",
+    "title": "confirmation requires an exact match and password visibility stays independent",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated password-mode deployment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-registration.spec.ts",
+          "line": 6,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "password-server-switch.spec.ts",
+    "title": "Electron server switch clears same-host credentials and closes issue windows",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Opt-in isolated password acceptance",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/password-server-switch.spec.ts",
+          "line": 17,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "platform-admin-accounts.spec.ts",
+    "title": "account controls, lost response recovery, forced password change and observer UI",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires a task-owned password-mode production build",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-accounts.spec.ts",
+          "line": 22,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "platform-admin-controls.spec.ts",
+    "title": "admission receipts and original-key recovery survive a lost cancellation response and reload",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the isolated password-mode production deployment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-controls.spec.ts",
+          "line": 9,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "platform-admin-executions.spec.ts",
+    "title": "private metadata, filters, cursor, attempt detail and original content permissions",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the isolated password-mode production deployment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-executions.spec.ts",
+          "line": 9,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "platform-admin-initialization.spec.ts",
+    "title": "initialized administrator changes the temporary password before entering administration",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires a fresh isolated administrator-initialization deployment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-initialization.spec.ts",
+          "line": 12,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "platform-admin-installations-read.spec.ts",
+    "title": "real enrollment and binding keep client, daemon and engine status separate",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the isolated password-mode production deployment",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-installations-read.spec.ts",
+          "line": 12,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "platform-admin-observability.spec.ts",
+    "title": "windowed metrics, active alerts, original-key recovery and observer boundaries",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the isolated password-mode production snapshot",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin-observability.spec.ts",
+          "line": 14,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "platform-admin.spec.ts",
+    "title": "zero-workspace cookie access, ordinary-user denial, and live role revocation",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires a task-owned password deployment and bootstrapped administrator",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/platform-admin.spec.ts",
+          "line": 34,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "quick-create-actor-picker-phase2.spec.ts",
+    "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires the deterministic local recommendation provider",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/quick-create-actor-picker-phase2.spec.ts",
+          "line": 79,
+          "column": 7
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "quick-create-actor-picker-phase2.spec.ts",
+    "title": "actual Electron renderer adopts suggestions without running a daemon",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires isolated desktop renderer and provider",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/quick-create-actor-picker-phase2.spec.ts",
+          "line": 119,
+          "column": 7
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "quick-create-actor-picker-phase2.spec.ts",
+    "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires deterministic local provider",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/quick-create-actor-picker-phase2.spec.ts",
+          "line": 135,
+          "column": 7
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "upstream-backports-cli.spec.ts",
+    "title": "skill labels remain typed and idempotent while issue labels still work",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/upstream-backports-cli.spec.ts",
+          "line": 160,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "upstream-backports-cli.spec.ts",
+    "title": "comment updates preserve UTF-8 files and reject stale revisions",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/upstream-backports-cli.spec.ts",
+          "line": 160,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  },
+  {
+    "file": "upstream-backports-cli.spec.ts",
+    "title": "an unrelated member and an outsider cannot update another member's comment",
+    "status": "skipped",
+    "runner_status": "skipped",
+    "attempts": 1,
+    "retries": [
+      0
+    ],
+    "annotations": [
+      {
+        "type": "skip",
+        "description": "Requires an explicitly supplied task-owned MULTICA_E2E_CLI_BINARY",
+        "location": {
+          "file": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/e2e/upstream-backports-cli.spec.ts",
+          "line": 160,
+          "column": 8
+        }
+      }
+    ],
+    "task7_counted_as_pass": false,
+    "task7_relation": "Separate scenario/platform/configuration gate; retained explicitly, not passed by v13"
+  }
+]

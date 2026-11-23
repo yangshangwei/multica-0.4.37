@@ -1,0 +1,121 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-33-collaboration-runtime-handoff-desktop-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-runtime-handoff-desktop.spec.ts",
+      "file": "collaboration-runtime-handoff-desktop.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2225,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:34:03.847Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "desktop-runtime-handoff",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-33-collaboration-runtime-handoff-desktop-1/artifacts/collaboration-runtime-hand-40605-s-an-unknown-recording-tail-chromium/attachments/desktop-runtime-handoff-fbe0506f02b4504584b733e4ab0dcc528b23b9eb.png"
+                    },
+                    {
+                      "name": "runtime-handoff-native-evidence",
+                      "contentType": "application/json",
+                      "body": "ewogICJpc3N1ZV9pZCI6ICIwMWExOTllNC02MzNmLTdlOTItOGJlMy0yNGM3MjBlNmIxMDgiLAogICJydW5faWQiOiAiODU5ODFkYzAtOWU1ZS00ZjY4LWJkMTctZjYxNTBmOGI4M2UzIiwKICAicGxhdGZvcm0iOiAiZGFyd2luIiwKICAicmVuZGVyZXIiOiAiaHR0cDovL2xvY2FsaG9zdDoxOTg2MCIsCiAgInNvdXJjZXMiOiBbCiAgICB7CiAgICAgICJmaWxlIjogImUyZS9maXh0dXJlcy9jb2xsYWJvcmF0aW9uLWFjY291bnQtZWxlY3Ryb24ubWpzIiwKICAgICAgInNoYTI1NiI6ICJmOTAyMWFiMDc2MzVmMmY0OGQwZjkwNjEzZmNkM2M4NTU4Y2I3MjYyYjNiZGQyYWNhOThlZGIzMTY1NDQ3NWQyIgogICAgfSwKICAgIHsKICAgICAgImZpbGUiOiAiYXBwcy9kZXNrdG9wL291dC9wcmVsb2FkL2luZGV4LmpzIiwKICAgICAgInNoYTI1NiI6ICI0Mjk1NWZlMWYyNGMxMTE2YmViNjI4OTRmYTIyNTM2YmJmNjQ2NjJjM2FkZmIxMGYxNTA0NzNkNDc3MWU3MTYwIgogICAgfSwKICAgIHsKICAgICAgImZpbGUiOiAiYXBwcy9kZXNrdG9wL291dC9yZW5kZXJlci9pbmRleC5odG1sIiwKICAgICAgInNoYTI1NiI6ICJmYTRhOThjYmQ0NTNkMmNlODgxMDg4ZDJmM2YxNjYxMDMwNTc5YThjZWE0YjhhZDU5ZWU0YmMwOTM1NDRiZTA3IgogICAgfQogIF0sCiAgImhhbmRvZmYiOiB7CiAgICAicHJvdG9jb2xfdmVyc2lvbiI6IDEsCiAgICAiaXNzdWVfaWQiOiAiMDFhMTk5ZTQtNjMzZi03ZTkyLThiZTMtMjRjNzIwZTZiMTA4IiwKICAgICJydW5faWQiOiAiODU5ODFkYzAtOWU1ZS00ZjY4LWJkMTctZjYxNTBmOGI4M2UzIiwKICAgICJtb2RlIjogImxpdmUiLAogICAgImV2ZW50X3NlcSI6ICIzIiwKICAgICJhdXRob3JpdHkiOiB7CiAgICAgICJzdGF0dXMiOiAidG9kbyIsCiAgICAgICJoYW5kbGVyX2lkIjogImI5ODYzZTNjLWZjOWItNDJiZi1iNDRkLTViM2VkZDU3OTU2ZiIsCiAgICAgICJjcmVhdG9yX2lkIjogImQ2MTM1ZTZjLTEwYzYtNGY2Mi04MTAyLWJiYTdmNDVlMDI5MSIKICAgIH0sCiAgICAiYXNzaWdubWVudCI6IHsKICAgICAgInJvbGUiOiAiY29udGludWF0aW9uIiwKICAgICAgInN0ZXBfa2V5IjogImNvbnRpbnVhdGlvbiIsCiAgICAgICJwYXJlbnRfcnVuX2lkIjogIjg0NWE3ZjU5LTQzNGYtNGQ0Mi1hMzQ3LTZjZTU5N2I3ZTA4ZCIKICAgIH0sCiAgICAiaGFuZG9mZiI6IHsKICAgICAgImlkIjogImExOWRiZmNlLWNmZjYtNGY1Ny1iNjQ3LThjZGJlZGNjMmVkZSIsCiAgICAgICJhdXRob3JfaWQiOiAiZDYxMzVlNmMtMTBjNi00ZjYyLTgxMDItYmJhN2Y0NWUwMjkxIiwKICAgICAgImZyb21faWQiOiAiZDYxMzVlNmMtMTBjNi00ZjYyLTgxMDItYmJhN2Y0NWUwMjkxIiwKICAgICAgInRvX2lkIjogImI5ODYzZTNjLWZjOWItNDJiZi1iNDRkLTViM2VkZDU3OTU2ZiIsCiAgICAgICJwdXJwb3NlIjogInRyYW5zZmVyIiwKICAgICAgImV2ZW50X3NlcSI6ICIyIiwKICAgICAgInNvdXJjZV9pZCI6ICJhMTlkYmZjZS1jZmY2LTRmNTctYjY0Ny04Y2RiZWRjYzJlZGUiCiAgICB9LAogICAgImluZm9ybWF0aW9uX3JlcXVlc3QiOiBudWxsLAogICAgInJlY29yZGluZyI6IHsKICAgICAgInZlcnNpb24iOiAxLAogICAgICAic3RyZWFtX2lkIjogIjNjZjBmNjRlLTNkYTYtNDI3NC1iNjc5LTIxZGVhN2U3NTIwZSIsCiAgICAgICJyZXRhaW5lZF90aHJvdWdoIjogMiwKICAgICAgIm9ic2VydmVkX3Rocm91Z2giOiBudWxsLAogICAgICAic2VhbGVkIjogdHJ1ZSwKICAgICAgInJlYXNvbiI6ICJzdG9wcGVkIgogICAgfSwKICAgICJtZW1vcnkiOiB7CiAgICAgICJ2ZXJzaW9uIjogIjAiLAogICAgICAiYXZhaWxhYmlsaXR5IjogImFic2VudCIKICAgIH0sCiAgICAiaW5wdXRzIjogewogICAgICAidG90YWwiOiAxLAogICAgICAicmV0dXJuZWQiOiAxLAogICAgICAidHJ1bmNhdGVkIjogZmFsc2UsCiAgICAgICJpdGVtcyI6IFsKICAgICAgICB7CiAgICAgICAgICAiY29tbWFuZF9pZCI6ICJhZmY2ZjI4YS05Y2UwLTRlZjItYWRmMS0yZTY4MzYwN2M4ZDIiLAogICAgICAgICAgImF1dGhvcl9pZCI6ICJkNjEzNWU2Yy0xMGM2LTRmNjItODEwMi1iYmE3ZjQ1ZTAyOTEiLAogICAgICAgICAgInN0YXRlIjogImZhaWxlZCIsCiAgICAgICAgICAicmVhZGVyX3J1bl9pZHMiOiBbCiAgICAgICAgICAgICI4NDVhN2Y1OS00MzRmLTRkNDItYTM0Ny02Y2U1OTdiN2UwOGQiLAogICAgICAgICAgICAiODU5ODFkYzAtOWU1ZS00ZjY4LWJkMTctZjYxNTBmOGI4M2UzIgogICAgICAgICAgXSwKICAgICAgICAgICJyZWFkZXJzX3RydW5jYXRlZCI6IGZhbHNlCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgInJlc3VsdHMiOiB7CiAgICAgICJ0b3RhbCI6IDIsCiAgICAgICJyZXR1cm5lZCI6IDIsCiAgICAgICJ0cnVuY2F0ZWQiOiBmYWxzZSwKICAgICAgIml0ZW1zIjogWwogICAgICAgIHsKICAgICAgICAgICJydW5faWQiOiAiODU5ODFkYzAtOWU1ZS00ZjY4LWJkMTctZjYxNTBmOGI4M2UzIiwKICAgICAgICAgICJwYXJlbnRfcnVuX2lkIjogIjg0NWE3ZjU5LTQzNGYtNGQ0Mi1hMzQ3LTZjZTU5N2I3ZTA4ZCIsCiAgICAgICAgICAicm9sZSI6ICJjb250aW51YXRpb24iLAogICAgICAgICAgInN0ZXBfa2V5IjogImNvbnRpbnVhdGlvbiIsCiAgICAgICAgICAibGVhZGVyX3R1cm4iOiAiMiIsCiAgICAgICAgICAicHJvZ3Jlc3MiOiAic2V0dGxlZCIsCiAgICAgICAgICAib3V0Y29tZSI6ICJmYWlsdXJlIiwKICAgICAgICAgICJwcm9vZl9zdGF0ZSI6ICJleGl0ZWRfcHJvdmVuIiwKICAgICAgICAgICJyZWNvcmRpbmdfaW5jb21wbGV0ZSI6IHRydWUsCiAgICAgICAgICAicmVzdWx0X3N0YXRlIjogImFic2VudCIsCiAgICAgICAgICAiZmluYWxfYW5zd2VyX3N0YXRlIjogImFic2VudCIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICJydW5faWQiOiAiODQ1YTdmNTktNDM0Zi00ZDQyLWEzNDctNmNlNTk3YjdlMDhkIiwKICAgICAgICAgICJyb2xlIjogImxlYWRlciIsCiAgICAgICAgICAic3RlcF9rZXkiOiAibGVhZGVyIiwKICAgICAgICAgICJsZWFkZXJfdHVybiI6ICIxIiwKICAgICAgICAgICJwcm9ncmVzcyI6ICJzZXR0bGVkIiwKICAgICAgICAgICJvdXRjb21lIjogImZhaWx1cmUiLAogICAgICAgICAgInByb29mX3N0YXRlIjogImV4aXRlZF9wcm92ZW4iLAogICAgICAgICAgInJlY29yZGluZ19pbmNvbXBsZXRlIjogZmFsc2UsCiAgICAgICAgICAicmVzdWx0X3N0YXRlIjogInByZXNlbnQiLAogICAgICAgICAgImZpbmFsX2Fuc3dlcl9zdGF0ZSI6ICJ1bmtub3duIiwKICAgICAgICAgICJzb3VyY2VfaWQiOiAiYzUwODMyZGMtYzRkYy00YzlhLTk5NWYtNzkxYWY4YTYyNzBmIiwKICAgICAgICAgICJzb3VyY2Vfa2luZCI6ICJwcm92aWRlcl9yZXN1bHQiCiAgICAgICAgfQogICAgICBdCiAgICB9LAogICAgIndha2V1cF9jYXVzZXMiOiB7CiAgICAgICJ0b3RhbCI6IDAsCiAgICAgICJyZXR1cm5lZCI6IDAsCiAgICAgICJ0cnVuY2F0ZWQiOiBmYWxzZSwKICAgICAgIml0ZW1zIjogW10sCiAgICAgICJjb21wbGV0ZW5lc3MiOiAidW5rbm93biIKICAgIH0sCiAgICAic291cmNlcyI6IFsKICAgICAgewogICAgICAgICJraW5kIjogImhhbmRvZmYiLAogICAgICAgICJpZCI6ICJhMTlkYmZjZS1jZmY2LTRmNTctYjY0Ny04Y2RiZWRjYzJlZGUiLAogICAgICAgICJzaGEyNTYiOiAiNTMxM2NlODQ0MjIwMDk5ZjBjNWRlMGY1ZmUzMWVmZWUxODFiOWFhZTJmMzhmOGUxZmI4MGU5NTFiZjU3ZDg5ZSIsCiAgICAgICAgImNvbnRlbnQiOiAiQ29udGludWUgZnJvbSB0aGUgcmV0YWluZWQgZGF0YWJhc2UgZGVjaXNpb247IHZlcmlmeSB0aGUgbWlncmF0aW9uIGJlZm9yZSByb2xsb3V0LiIsCiAgICAgICAgInRydW5jYXRlZCI6IGZhbHNlLAogICAgICAgICJhdmFpbGFiaWxpdHkiOiAiYXZhaWxhYmxlIiwKICAgICAgICAidHJ1c3QiOiAiZGF0YV9vbmx5IgogICAgICB9LAogICAgICB7CiAgICAgICAgImtpbmQiOiAicHJvdmlkZXJfcmVzdWx0IiwKICAgICAgICAiaWQiOiAiYzUwODMyZGMtYzRkYy00YzlhLTk5NWYtNzkxYWY4YTYyNzBmIiwKICAgICAgICAicnVuX2lkIjogIjg0NWE3ZjU5LTQzNGYtNGQ0Mi1hMzQ3LTZjZTU5N2I3ZTA4ZCIsCiAgICAgICAgInZlcnNpb24iOiAiMSIsCiAgICAgICAgInNoYTI1NiI6ICI5NjBlMzA1ZGRhNTk2NTgzOTlhZjQ3MDg0OTMzNTNlYmFjMzY1NzA0OGQxMGQyNzA5NjE0NjZkZWU4YTg3NDM2IiwKICAgICAgICAiY29udGVudCI6ICJFYXJsaWVyIHByb3ZpZGVyIHJlc3VsdDogdXNlIFBvc3RncmVTUUwgYWR2aXNvcnkgbG9ja3M7IFJlZGlzIHdhcyByZWplY3RlZCBiZWNhdXNlIGl0cyBzdGF0ZSBpcyBub3QgZHVyYWJsZS4iLAogICAgICAgICJ0cnVuY2F0ZWQiOiBmYWxzZSwKICAgICAgICAiYXZhaWxhYmlsaXR5IjogImF2YWlsYWJsZSIsCiAgICAgICAgInRydXN0IjogImRhdGFfb25seSIKICAgICAgfQogICAgXSwKICAgICJtaXNzaW5nIjogW10KICB9LAogICJyZWNvcmRpbmciOiB7CiAgICAic3RhdHVzIjogInBhcnRpYWwiLAogICAgImlucHV0c19yZWNvcmRlZCI6IHRydWUsCiAgICAicmV0ZW50aW9uIjogewogICAgICAidmVyc2lvbiI6IDEsCiAgICAgICJzdHJlYW1faWQiOiAiM2NmMGY2NGUtM2RhNi00Mjc0LWI2NzktMjFkZWE3ZTc1MjBlIiwKICAgICAgInJldGFpbmVkX3Rocm91Z2giOiAyLAogICAgICAib2JzZXJ2ZWRfdGhyb3VnaCI6IG51bGwsCiAgICAgICJzZWFsZWQiOiB0cnVlLAogICAgICAicmVhc29uIjogInN0b3BwZWQiCiAgICB9CiAgfSwKICAibmF0aXZlIjogewogICAgImRhZW1vblN0YXJ0cyI6IDAsCiAgICAibmF0aXZlSXNzdWVSZXF1ZXN0cyI6IFtdLAogICAgImF1dGhTZXNzaW9ucyI6IFsKICAgICAgImI5ODYzZTNjLWZjOWItNDJiZi1iNDRkLTViM2VkZDU3OTU2ZiIKICAgIF0sCiAgICAiZXh0ZXJuYWxMaW5rcyI6IFtdCiAgfSwKICAiaGlzdG9yeV9vcmlnaW4iOiAic2VlZGVkIHJldGFpbmVkIGV2ZW50czsgaW5nZXN0aW9uIHZlcmlmaWVkIHNlcGFyYXRlbHkgaW4gR28iLAogICJwcm92aWRlcl9hY2NvdW50X2FjY2VzcyI6IGZhbHNlCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5218ae82d47952dd2ef5-24ac0b7b816e413d94af",
+          "file": "collaboration-runtime-handoff-desktop.spec.ts",
+          "line": 14,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:34:03.431Z",
+    "duration": 2664.125,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

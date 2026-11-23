@@ -43,9 +43,56 @@
     "active_link": "Active agents",
     "title": "Archived agents"
   },
-  "empty": {
-    "title": "No agents yet",
-    "description": "Create an agent and assign it issues, like any teammate. Local agents run on your machine; cloud agents run on Multica's runtime."
+  "welcome": {
+    "title": "Meet your first AI teammate",
+    "description": "Agents take on issues like any teammate. They use tools like Claude Code and Codex on your runtime, then share the results in the comments.",
+    "docs": "Read the docs",
+    "examples": "How agents work",
+    "example": "Example",
+    "previous": "Previous example",
+    "next": "Next example",
+    "show_example": "Show example {{number}}: {{title}}",
+    "position": "Example {{number}} of {{total}}: {{title}}",
+    "steps": {
+      "label": "Get started with agents",
+      "connect": "Connect a runtime",
+      "connect_action": "Connect runtime",
+      "connected": "Runtime connected",
+      "view_runtimes": "View runtimes",
+      "create": "Create an agent",
+      "assign": "Assign it an issue"
+    },
+    "people": {
+      "agent": "Turing",
+      "other_agent": "Kepler",
+      "member": "Mia"
+    },
+    "setup": {
+      "title": "Describe what it should do",
+      "description": "Describe its role, choose a runtime and model, and create your agent. Refine its instructions or add skills whenever you need.",
+      "question": "What should this agent do?",
+      "prompt": "Review frontend PRs for accessibility and performance. Leave your findings in a PR comment.",
+      "machine": "studio-mbp",
+      "provider": "Claude Code",
+      "model": "Sonnet 4.5"
+    },
+    "assignment": {
+      "title": "Assign work like a teammate",
+      "description": "Choose the agent as an issue's assignee. It picks up the work on its runtime, with the issue's context at hand.",
+      "issue_id": "MUL-142",
+      "issue_title": "Fix the pricing page on mobile",
+      "search": "Assign to...",
+      "members": "Members"
+    },
+    "delivery": {
+      "title": "Find the result in the comments",
+      "description": "Read its findings, review the changes, and leave feedback. The work and the conversation stay with the issue.",
+      "thread": "Issue comments",
+      "just_now": "Just now",
+      "result": "Fixed the mobile layout and checked keyboard navigation. The changes are ready for your review.",
+      "review": "View pull request",
+      "status": "Ready for review"
+    }
   },
   "no_matches": {
     "title": "No matches",
@@ -392,6 +439,10 @@
     }
   },
   "role_templates": {
+    "market_title": "Agent templates",
+    "market_description": "Choose a role template to create an agent for your team.",
+    "market_loading": "Loading agent templates...",
+    "use_template": "Use template",
     "title": "Start from a role template",
     "description": "Open an existing agent, or create one from a role template.",
     "step_pick": "Pick a role",
@@ -428,7 +479,6 @@
   "approvals": {
     "title": "Approvals",
     "tagline": "High-risk actions an agent has asked a person to authorize.",
-    "learn_more": "Learn more",
     "open_button": "Approvals",
     "filter_pending": "Waiting",
     "filter_all": "All",

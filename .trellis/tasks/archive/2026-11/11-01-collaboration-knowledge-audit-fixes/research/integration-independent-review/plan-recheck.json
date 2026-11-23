@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T17:31:54.228019+00:00",
+  "verdict": "pass-with-notes",
+  "scope": "test-only history index eligibility/probe delta",
+  "head_at_review": "0702d5039b235adc88dbd3d7d949a1a8f165d247",
+  "test_file": "server/internal/service/task_knowledge_history_growth_test.go",
+  "test_file_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+  "uncommitted_test_delta_sha256": "2fd592ae651844255c54d55e92bf3a024bf6188d6deb666266a65ec1364d7b7d",
+  "production_unchanged": true,
+  "production_file_sha256": {
+    "server/pkg/db/queries/task_knowledge.sql": "b81310e58a007854f91bae89309c7afa36ba8ffe87eb8dd1b68146f49a4248c3",
+    "server/pkg/db/generated/task_knowledge.sql.go": "5212789d55f677588306bb5de9d185dc175333e2b8699fbd54896c0047d64f17",
+    "server/internal/service/task_knowledge.go": "cb566995f0c504bf956c8873f61c0593597923c89f20dc9d6e766124ece2870b",
+    "server/migrations/761_collaboration_knowledge_agent_history.up.sql": "53237dd02cbb329ecb0b53485b819fee5289503a71d0fd4ea543f7c31b141551",
+    "server/migrations/762_collaboration_knowledge_runtime_history.up.sql": "20ed5a00c54f4cb3074602fb5bb3b8d86e98c2dbc42ac00bab3753208ef71021",
+    "server/migrations/763_collaboration_knowledge_delivery_history.up.sql": "f7fa8bc2b96b04ea5d02328ba76bcd7b2a99052c18d46b7a5a9fab4cf1c6a429"
+  },
+  "checked_catalog_contracts": [
+    "Resolved agent_task_queue table OID plus index namespace match",
+    "indisvalid AND indisready AND indislive AND NOT indisunique",
+    "Expected btree or gin method",
+    "Expected key order/DESC and ginjsonb_path_ops definition",
+    "Exact knowledge_context_version IS NOT NULL predicate"
+  ],
+  "negative_control": "Real current catalog lookup fails named test on rollback-only TEMPshadow lacking indexes; not a compile/setup failure and no real index dropped.",
+  "coordinator_evidence": [
+    {
+      "file": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-normal.json",
+      "metadata_sha256": "051e0a1dd6e5a00aa540090f2fe4cc08df69b2900acfbd2b707db9da47b7106e",
+      "database": "kfix_joint_plan_root_20261102_0145",
+      "clone_source": null,
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "a08f9b36be8312ff3d51f02be416a0d1f0dd4c044cf6bbf70808ff69d73815c6",
+      "classification": null
+    },
+    {
+      "file": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-race.json",
+      "metadata_sha256": "722c0a0f3361aa5c1f8e862b309d9c58d30d5db0c2366149660e675981150f8d",
+      "database": "kfix_joint_plan_root_20261102_0145",
+      "clone_source": null,
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 9,
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e09467759a6ebd867a6afaab0a4347dd2782fbd0139285d428dbde11b5c0718b",
+      "classification": null
+    },
+    {
+      "file": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-missing-index-red.json",
+      "metadata_sha256": "b10aa358469f93b3cb0f419fa2775adb41bede6afea28d6f368b506cec31b7af",
+      "database": "kfix_joint_plan_root_20261102_0145",
+      "clone_source": null,
+      "state": "complete",
+      "exit_code": 1,
+      "counts": {
+        "run": 1,
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      },
+      "log_sha256": "38a8541703c9daf5ff212795e9202d0e022204098b269214c3684ad9f93d4e38",
+      "classification": null
+    },
+    {
+      "file": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-history-normal.json",
+      "metadata_sha256": "71e9e9c01c9c1c1fcb329a0c59b315f7f085d37dc34c109fbd8f5c7d126b7340",
+      "database": "kfix_joint_plan_history_20261102_0122",
+      "clone_source": "kfix_joint_svc_20261102_0110",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "e10ffdc17533013f0d433c5de8a12da328bfe8411907d6477e67a635274d9e3c",
+      "classification": null
+    },
+    {
+      "file": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-history-race.json",
+      "metadata_sha256": "4d3a3f152302c0ad82d085516a14a27305a0b281b7248728493a63f58038a38a",
+      "database": "kfix_joint_plan_history_20261102_0122",
+      "clone_source": "kfix_joint_svc_20261102_0110",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 9,
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "55351eeea8f8e9bf9231fc4955c37f7b0921b27fa33ec35d2f2cff614d76084e",
+      "classification": null
+    },
+    {
+      "file": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/plan-history-old-assertion-red.json",
+      "metadata_sha256": "5fc2f2ef7c0dfa5ba68af2971a4b558ac228b8c5bf6dca93abdac633e64c23f9",
+      "database": "kfix_joint_plan_history_20261102_0122",
+      "clone_source": "kfix_joint_svc_20261102_0110",
+      "state": "complete",
+      "exit_code": 0,
+      "counts": {
+        "run": 1,
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "log_sha256": "aca18baff2991484e08c743a0ae5d327404b86d791a58d415782f01b23148119",
+      "classification": "expected old assertion failure was not reproduced on the new history clone; actual one named pass retained"
+    }
+  ],
+  "original_full_service": {
+    "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+    "exit_code": 1,
+    "counts": {
+      "run": 3340,
+      "pass": 3319,
+      "fail": 3,
+      "skip": 18
+    },
+    "raw_log_sha256": "8a4ce2a4e62c3202d29f5c987f8a52fcd7b8649a0559a725f4c5036bbaf9d227",
+    "retained_as_failed": true
+  },
+  "independent_compile": {
+    "head": "0702d5039b235adc88dbd3d7d949a1a8f165d247",
+    "test_file_sha256": "daa0c3829403a10f0d74604093f50a6cefa646c52a65dd75a1e9100749211a12",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "-c",
+      "-o",
+      "/dev/null",
+      "./internal/service"
+    ],
+    "compile_only": true,
+    "started_at": "2026-11-01T17:31:12.882641+00:00",
+    "exit_code": 0,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "blocking_findings": [],
+  "notes": [
+    {
+      "id": "PI-1",
+      "description": "Controlled EXPLAIN still forbids SeqScan but does not require any specific new index to win. No default-planner selectivity, production-scale cost or fixed partial-index choice is established."
+    },
+    {
+      "id": "PI-2",
+      "description": "Old assertion overlay on the preserved-history clone actually passed1/1. This is explicitly classified as not reproduced, not killed or red. The original full-suite failure remains the real failure provenance; any subsequent recorded-plan replay is a separate evidence scope."
+    },
+    {
+      "id": "PI-3",
+      "description": "Missing-index control is executed; wrong-definition and unready/invalid/liveness/nonunique cases are guarded by independently inspected catalog predicates, not claimed as separate executed DB mutants."
+    }
+  ],
+  "product_edits": false,
+  "database_commands": false,
+  "migration_commands": false,
+  "provider_calls": 0,
+  "installed_cli_calls": 0,
+  "remaining_gate": "Root must commit exact reviewed test bytes and rerun full final makecheck/service; failed45efa full run is never renamed green."
+}

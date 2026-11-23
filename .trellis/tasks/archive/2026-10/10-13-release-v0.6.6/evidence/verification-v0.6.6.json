@@ -1,0 +1,1644 @@
+{
+  "schema_version": 1,
+  "version": "v0.6.6",
+  "desktop_version": "0.6.6",
+  "source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+  "source_branch_at_selection": "main",
+  "delivery": "Local offline server archive and Windows x64 installer",
+  "status": "passed",
+  "acceptance_scope": "Artifact integrity, selected source checks and disposable deployment acceptance, with explicit native/production limits",
+  "verified_at": "2026-10-13T11:40:52.148789+00:00",
+  "source": {
+    "version": "v0.6.6",
+    "source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+    "source_tree": "d2a916a7cb7ab4a2168fd63ae5ece9cf5876d179",
+    "source_selection": "User-approved latest committed main, frozen before packaging",
+    "previous_local_source": "7ab8d038963dd920a611047997ac1904ee69a1eb",
+    "previous_published_tag_commit": "24771b0d803f2063e432a38cfe2bf72c9f107a92",
+    "previous_published_changelog_sha256": "06430c9e9a83ff6caa1720f0b37c27826e79186271be2b153ad2628d821225b8",
+    "prepared": {
+      "offline-upgrade.zh-CN.md": {
+        "sha256": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a",
+        "bytes": 41190
+      },
+      "README-v0.6.6.zh-CN.md": {
+        "sha256": "3d372305dd7c986d3c8d296a5ea052ec256d28f42180fe322ce996c06b8b0273",
+        "bytes": 9824
+      },
+      "ENV-CHANGES-v0.6.6.zh-CN.md": {
+        "sha256": "cad6be0e64d7619b644a05dd6b435344009a68185f84a532c4403045b9294c90",
+        "bytes": 2203
+      },
+      "changelog.json": {
+        "sha256": "80ae9124ab424ace0ae5779bad5536833de2d7a2180af413c5534104caf0e9ee",
+        "bytes": 70844
+      },
+      "CHANGELOG-v0.6.6.md": {
+        "sha256": "301345647563f3e7fc49520eaa3b1f07f20384df79afc62ffffc16ec8edacce9",
+        "bytes": 796
+      }
+    },
+    "configuration_delta": {
+      "env_example_matches_previous_delivered_bytes": true,
+      "main_compose_unchanged_from_v065_tag": true,
+      "migration_paths_unchanged_from_v065_local": true
+    }
+  },
+  "documentation": {
+    "status": "passed",
+    "verified_at": "2026-10-13T11:11:10.853122+00:00",
+    "source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+    "prepared_hashes_verified": {
+      "offline-upgrade.zh-CN.md": {
+        "sha256": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a",
+        "bytes": 41190
+      },
+      "README-v0.6.6.zh-CN.md": {
+        "sha256": "3d372305dd7c986d3c8d296a5ea052ec256d28f42180fe322ce996c06b8b0273",
+        "bytes": 9824
+      },
+      "ENV-CHANGES-v0.6.6.zh-CN.md": {
+        "sha256": "cad6be0e64d7619b644a05dd6b435344009a68185f84a532c4403045b9294c90",
+        "bytes": 2203
+      },
+      "changelog.json": {
+        "sha256": "80ae9124ab424ace0ae5779bad5536833de2d7a2180af413c5534104caf0e9ee",
+        "bytes": 70844
+      },
+      "CHANGELOG-v0.6.6.md": {
+        "sha256": "301345647563f3e7fc49520eaa3b1f07f20384df79afc62ffffc16ec8edacce9",
+        "bytes": 796
+      }
+    },
+    "env_matches_actual_v065_delivery": true,
+    "compose_matches_v065_tag": true,
+    "migration_paths_unchanged_from_previous_local_source": true,
+    "frozen_reference_docs": {
+      "desktop-intranet-update-runbook.zh-CN.md": "5b4796f7b1f87650c9acbaf496e9f811fd738c9a0e87e6b97855cf87c234276c",
+      "admin-resource-publishing.zh-CN.md": "e0585804ca33917a30c52f0eb574159105ba8fc961dca927db7515bb338ef2bc",
+      "mcp-catalog-publishing.md": "cb99aed8524045a3568204cd6239b8c144e297132becd2b8384370a9d1243029",
+      "mcp-intranet-setup.md": "0bddc7064401bebef9cd610e827267df18a2e986d08ed13a9ed7b9c168c766f7"
+    },
+    "generic_guide_matches_tracked_source": true,
+    "uncommitted_download_page_included": false
+  },
+  "artifacts": {
+    "multica-server-upgrade-v0.6.6-linux-amd64.tar.gz": {
+      "bytes": 295661175,
+      "sha256": "80b43b34eb06f1e0db4b673f365f1e70f907caac9969cec9fecaa382b1f881da"
+    },
+    "multica-desktop-0.6.6-windows-x64.exe": {
+      "bytes": 179209872,
+      "sha256": "e3fe9227158b60ce089415ec86ed79cd2804895fd15bfea5c33c4995d07f483b",
+      "sha512": "8WVsWj6HgbPeVK/NAI+EomJfJNef42je673BhaB6IZLdvh6uY3yi9o1irojodTHDjv8emrd5w1wOvB0TTMXIHw=="
+    },
+    "multica-desktop-0.6.6-windows-x64.exe.blockmap": {
+      "bytes": 189344,
+      "sha256": "dc3af843abdca1d0fbedea52de8d45f02300828dcbd0cc7c997faabab4d9ad05",
+      "sha512": "ZqXOQamnNSNptW9uDYmirELh9QlDXgNG2YrQWByvvHRSwaZF8ltYsabIwM+rQJcJ+G2xkitDoXG80WfPqZln7Q=="
+    },
+    "latest.yml": {
+      "bytes": 371,
+      "sha256": "82730d53541067d4b8c35f7f4a43a737dc21d2d28f41d6f91b8e1580c2c1bbf3",
+      "sha512": "qKPR2uRP8+nmwSsFpy/OKNj5NvhldCfDk42TnPypF+lMEhuebVflWONULQar9am6BdSwyZ+hCXrQizbA+WU2nQ=="
+    }
+  },
+  "linux": {
+    "schema_version": 1,
+    "version": "v0.6.6",
+    "platform": "linux/amd64",
+    "passed": true,
+    "verified_at": "2026-10-13T11:35:06.646315+00:00",
+    "report_updated_at": "2026-10-13T11:39:59.323485+00:00",
+    "application_source": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+    "local_delivery_only": true,
+    "remote_release_or_tag_published": false,
+    "artifact": {
+      "archive": {
+        "name": "multica-server-upgrade-v0.6.6-linux-amd64.tar.gz",
+        "bytes": 295661175,
+        "sha256": "80b43b34eb06f1e0db4b673f365f1e70f907caac9969cec9fecaa382b1f881da",
+        "superseded_build_script_sha256": "02ae1f530772ef38197ff4de940244d362a6aa2716332160897e704afc73385d"
+      },
+      "archive_format": "Python tarfile PAX, root:root owners, no host metadata; one safe root; staging and extracted bytes identical",
+      "member_count": 34,
+      "inner_images_sha256": "818d24b9a40f6b2c626a207ac66bea2ec479312ef35357705f7a1e556797cf93",
+      "source_copies": {
+        ".env.example": "d36aef0040f4d20e70cbb5952baeae07f31e3be1d049d02182e1aef6b96d7b3f",
+        "docker-compose.selfhost.yml": "eafd7bea83dbd45746f961b844892777494a6f366dbe36abb4c26da68704f2cb",
+        "docker-compose.resource-publishing.yml": "35431b82cb0eb993c26f9a8b34a53d51ddf7f5017c715af797547adbcc5853c5",
+        "offline-upgrade.sh": "2b618f1e372ca99bd2acc7aa9704a14481d0d6d629daae440cc9d95e8b3d317a",
+        "initialize-platform-admin.sh": "f88bf6758d4e3f0d4150374f47917778cdb04d4e9c8faaa6a89156bcc142deee",
+        "install-changelog.sh": "3b09552f7a1e94846b71e61a455c3f81f35146b1a5381baf2d0b33b7d2eb1015",
+        "changelog/changelog.json": "80ae9124ab424ace0ae5779bad5536833de2d7a2180af413c5534104caf0e9ee",
+        "README.md": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a",
+        "操作文档.md": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a",
+        "offline-upgrade.zh-CN.md": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a",
+        "README-v0.6.6.zh-CN.md": "3d372305dd7c986d3c8d296a5ea052ec256d28f42180fe322ce996c06b8b0273",
+        "ENV-CHANGES-v0.6.6.zh-CN.md": "cad6be0e64d7619b644a05dd6b435344009a68185f84a532c4403045b9294c90",
+        "CHANGELOG-v0.6.6.md": "301345647563f3e7fc49520eaa3b1f07f20384df79afc62ffffc16ec8edacce9",
+        "desktop-intranet-update-runbook.zh-CN.md": "5b4796f7b1f87650c9acbaf496e9f811fd738c9a0e87e6b97855cf87c234276c",
+        "scripts/changelog-lib.mjs": "a1894bb1c89c85761a77b64ce39fa3f6c14daa1752fefed360ccf8d62cad7dd2",
+        "scripts/publish-changelog.mjs": "98b029f713a7ea17f66d6ad34cdc5d11089c7e3abdba03421d82437730077018",
+        "scripts/install-changelog.mjs": "d7bfb299708375e8373af20a1543ce666be4ea7cd277b6d7febd65e09aaea077",
+        "scripts/admin-init-compose.mjs": "7de3d7551edc8514545b25a3ef3b9b7f216be9c3df8f895e4e7a0ce662ad1441",
+        "admin-resource-publishing.zh-CN.md": "e0585804ca33917a30c52f0eb574159105ba8fc961dca927db7515bb338ef2bc",
+        "docs/admin-resource-publishing.zh-CN.md": "e0585804ca33917a30c52f0eb574159105ba8fc961dca927db7515bb338ef2bc",
+        "mcp-catalog-publishing.md": "cb99aed8524045a3568204cd6239b8c144e297132becd2b8384370a9d1243029",
+        "docs/mcp-catalog-publishing.md": "cb99aed8524045a3568204cd6239b8c144e297132becd2b8384370a9d1243029",
+        "mcp-intranet-setup.md": "0bddc7064401bebef9cd610e827267df18a2e986d08ed13a9ed7b9c168c766f7",
+        "docs/mcp-intranet-setup.md": "0bddc7064401bebef9cd610e827267df18a2e986d08ed13a9ed7b9c168c766f7"
+      },
+      "document_overlays": {
+        "README.md": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a",
+        "操作文档.md": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a",
+        "offline-upgrade.zh-CN.md": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a",
+        "README-v0.6.6.zh-CN.md": "3d372305dd7c986d3c8d296a5ea052ec256d28f42180fe322ce996c06b8b0273",
+        "ENV-CHANGES-v0.6.6.zh-CN.md": "cad6be0e64d7619b644a05dd6b435344009a68185f84a532c4403045b9294c90",
+        "CHANGELOG-v0.6.6.md": "301345647563f3e7fc49520eaa3b1f07f20384df79afc62ffffc16ec8edacce9"
+      }
+    },
+    "build": {
+      "source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+      "source_status_before_overlay": "clean",
+      "created_at": "2026-10-13T03:43:28.563191+00:00",
+      "build_overlay": {
+        "path": "Dockerfile.web",
+        "original_sha256": "7a6e19d8142dd24839453f8d611ded972c97c59fbaa03ae6c304e0318a7df7a4",
+        "overlay_sha256": "f3217ec501c2f9d02ca82b869a323a066d2bdc1e1cbf2d2c69e3a8e0824efd41",
+        "change": "RUN NODE_OPTIONS=--max-old-space-size=4096 pnpm --filter @multica/web build",
+        "runtime_change": false
+      },
+      "host": "Darwin arm64",
+      "tools": {
+        "docker": "29.2.1 / 29.2.1",
+        "compose": "5.0.2",
+        "node": "v22.23.2",
+        "host_go": "go version go1.27.0 darwin/arm64"
+      },
+      "frozen_source_diff": "Dockerfile.web | 2 +-\n 1 file changed, 1 insertion(+), 1 deletion(-)"
+    },
+    "baseline_archive": {
+      "archive": "multica-server-upgrade-v0.6.5-linux-amd64.tar.gz",
+      "sha256": "66eb23ddcaad832eec51b134ac189fc41043873ed68f75eb24d63f42cd5bab71",
+      "bytes": 295642813,
+      "original_delivery_checksum_matches": true,
+      "safe_members": true,
+      "member_count": 32,
+      "all_extracted_file_bytes_match": true
+    },
+    "baseline_deployment": {
+      "passed": true,
+      "version": "v0.6.5",
+      "source_commit": "7ab8d038963dd920a611047997ac1904ee69a1eb",
+      "healthz": {
+        "status": "ok",
+        "checks": {
+          "db": "ok",
+          "migrations": "ok"
+        }
+      },
+      "migration_rows": 594,
+      "migration_ceiling": 570,
+      "invalid_indexes": 0,
+      "auth_mode": "password",
+      "synthetic_account_workspace_issue_upload_seeded": true,
+      "upload_sha256": "3caceed4ebd2fa28792989bb3396d11584152ab5b72a4363af9eb3b9c4443467"
+    },
+    "saved_images": [
+      {
+        "tag": "multica-web:v0.6.6",
+        "os": "linux",
+        "architecture": "amd64",
+        "saved_config_sha256": "358e27a1349349df9a7528cf37f203389d21644e1a8a49b5b4c01c5fa17b299a",
+        "inspected_id": "sha256:dc5348a77b35bcfb3934b16d8f69f1893f5b59095662a3aca60a47051d9b729e",
+        "layers": 10,
+        "rootfs_matches": true,
+        "runtime_config_matches": true,
+        "no_runtime_node_options": true
+      },
+      {
+        "tag": "pgvector/pgvector:pg17",
+        "os": "linux",
+        "architecture": "amd64",
+        "saved_config_sha256": "151aa1c2e849e7828ed8aef2183ae15f692cbe887d2f28921d8b44b26e154d7e",
+        "inspected_id": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+        "layers": 16,
+        "rootfs_matches": true,
+        "runtime_config_matches": true,
+        "no_runtime_node_options": true
+      },
+      {
+        "tag": "multica-backend:v0.6.6",
+        "os": "linux",
+        "architecture": "amd64",
+        "saved_config_sha256": "3711028520200c2b0883bb5a882542257f3d661a28ed068df522f8fbccb8a172",
+        "inspected_id": "sha256:841dabc839f7b208bc70f0b40fdd92dfe198824618f318487f12ae27b973f720",
+        "layers": 12,
+        "rootfs_matches": true,
+        "runtime_config_matches": true,
+        "no_runtime_node_options": true
+      }
+    ],
+    "final_binaries": {
+      "binaries": {
+        "server": {
+          "sha256": "939cc80f2cea1a1d9da4ef40fcba5c5abf051c48a5fb8318be76d1baa17feda0",
+          "file": "ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, Go BuildID=4y7Z-Bn4ZLpHRNfnFeQq/xbLrE3yOxw-JWRHfEQFJ/QoFxT6sJGKOM-UKAc_v6/TkGUktluh8lF-A4Lt_CD, BuildID[sha1]=11fadc3dbcffd12e9a55cf73c5d70693f9ed73f6, stripped",
+          "go_version": "go1.26.9",
+          "version_and_commit_build_flags_verified": true,
+          "x_text": "v0.41.0"
+        },
+        "multica": {
+          "sha256": "e46f03d3ebde0e10c7186bb7803a8917b54c3e7bba41406ccf2f530f9cde53f2",
+          "file": "ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, Go BuildID=uSRVxIRhJApsp1Dk6ZRi/2shL516P00qBsngq_u-p/0i7dvOz45aXtPSv6thv0/zIUryrqLVK4sO8V6ecSY, BuildID[sha1]=262fe1d49c96b90e5bef0781c82e98c545726aef, stripped",
+          "go_version": "go1.26.9",
+          "version_and_commit_build_flags_verified": true,
+          "x_text": "v0.41.0"
+        }
+      },
+      "cli_version": {
+        "arch": "amd64",
+        "commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+        "date": "2026-10-13T03:43:28Z",
+        "go": "go1.26.9",
+        "os": "linux",
+        "version": "v0.6.6"
+      },
+      "rechecked_against_final_loaded_image": true
+    },
+    "password_mode_upgrade": {
+      "passed": true,
+      "from": "v0.6.5",
+      "to": "v0.6.6",
+      "healthz": {
+        "status": "ok",
+        "checks": {
+          "db": "ok",
+          "migrations": "ok"
+        }
+      },
+      "migration_rows": 594,
+      "migration_ceiling": 570,
+      "migration_delta": 0,
+      "ledger_identical": true,
+      "invalid_indexes": 0,
+      "existing_session_and_password_retained": true,
+      "workspace_issue_upload_retained": true,
+      "saved_iteration_opt_out_retained": true,
+      "auth_env_uuid_secrets_retained": true,
+      "overlays_and_mounts_retained": true,
+      "backup_verified": true,
+      "compose_order_and_persisted_images_verified": true,
+      "file_feed_matches_prepared": true,
+      "existing_admin_credentials_retained": true,
+      "admin_private_file_mode": "0600",
+      "admin_private_file_link_count": 1,
+      "admin_retry_status_before_and_after_first_change": [
+        "already_initialized",
+        "already_initialized"
+      ],
+      "admin_first_change_restriction_verified": true,
+      "same_temporary_password_rejected": true,
+      "admin_role_overview_users_installations_verified": true,
+      "old_temporary_password_rejected_after_change": true,
+      "runtime_image_platforms_verified": true,
+      "running_binary_hashes_match_final_image": true,
+      "verification_recovery": {
+        "initial_attempt_exit": 1,
+        "initial_attempt_log": "upgrade-verification-final-snapshot-timeout.log",
+        "initial_attempt_log_sha256": "0bffbc504e9e478e58b44308758b81502ae8ad3a282afd9f2ba0f6228cfc2711",
+        "initial_attempt_failure": "All retained-state and administrator assertions completed; final result construction failed on a 30-second /healthz timeout. The failed attempt remains recorded as failed.",
+        "recovery": "Rechecked full retained state, original user session/password, mounts, ledger, final binaries, new administrator login/role/APIs, old password rejection and unchanged initialization file. Final health read succeeded.",
+        "first_change_assertion_source": "Completed assertions before the initial attempt reached result construction; fresh-initialization.json separately repeats the complete first-change flow successfully."
+      }
+    },
+    "device_mode_upgrade": {
+      "passed": true,
+      "from": "v0.6.5",
+      "to": "v0.6.6",
+      "project": "multica-release-066-device",
+      "auth_mode_preserved": "legacy",
+      "device_identity_and_original_session_retained": true,
+      "workspace_issue_retained": true,
+      "admin_disabled_preserved": true,
+      "initializer_status": "skipped_mode_disabled",
+      "no_administrator_credentials_created": true,
+      "no_initialization_rows_created": true,
+      "secrets_uuid_and_volumes_preserved": true,
+      "migration_rows": 594,
+      "migration_ceiling": 570,
+      "migration_delta": 0,
+      "invalid_indexes": 0,
+      "archive_sha256": "80b43b34eb06f1e0db4b673f365f1e70f907caac9969cec9fecaa382b1f881da"
+    },
+    "primary_recovery_invocation": {
+      "schema_version": 1,
+      "recorded_at": "2026-10-13T11:39:37.083854+00:00",
+      "record_kind": "Historical execution trace preserved after cleanup; no rehearsal rerun performed.",
+      "command_source": "Exact shell/heredoc command from the implementer functions.exec tool history; exec_command session87611 returned exit0 when polled.",
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "invocation_file": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-recovery.command.sh",
+      "child_argv": [
+        "sys.executable (the Python3 interpreter running the recorded wrapper)",
+        ".artifacts/release-v0.6.6/rehearsal/verify-upgrade.py",
+        "--resume-after-final-snapshot-timeout"
+      ],
+      "observed_wrapper_stdout": "Upgrade verification recovery exit: 0\n",
+      "observed_wrapper_exit": 0,
+      "saved_child_exit": 0,
+      "reused_harness": ".artifacts/release-v0.6.6/rehearsal/verify-upgrade.py",
+      "source_snapshot_note": "Copies preserve the harness and imported fixture as used in the recovery run; neither source was changed between that run and this preservation.",
+      "behavior": "The flag selects the existing verify-upgrade.py recovery branch. All preceding retained-state assertions execute again, then the branch reads the saved synthetic new password from the private fixture file, performs a real login, and continues through administrator APIs, old-temporary-password rejection, initializer retry, Web login and final health checks.",
+      "private_input": "rehearsal/private-upgrade-admin-new-password.json (0600, remains outside delivery; no value copied into evidence)",
+      "first_change_boundary": "The recovery branch does not repeat the already completed initial forced-change/same-temporary-password assertions. Their original attempt remains exit1 because its final health snapshot timed out; the separate fresh initializer run also completed those assertions successfully.",
+      "rerun_warning": "This command is historical evidence, not an idempotent retry entry point: it renames the original attempt files and expects live task-owned services, which have now been removed.",
+      "previous_linux_report_sha256": "df2f278137f86480eee21bc0daf0bbfbc5719534b032333343f48cdc93b25122",
+      "evidence": {
+        "upgrade-verification-recovery.command.sh": {
+          "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-recovery.command.sh",
+          "sha256": "e41e9185e41199c475dae5426a02d833f29b570be07d9aa68070f300e7ed1028"
+        },
+        "recovery-verify-upgrade.py": {
+          "path": ".artifacts/release-v0.6.6/linux-evidence/recovery-verify-upgrade.py",
+          "sha256": "14778dc775c39f948b1f92674dfed3497d07e9bc4e1a82c2fffd55d0b8578317"
+        },
+        "recovery-fixture.py": {
+          "path": ".artifacts/release-v0.6.6/linux-evidence/recovery-fixture.py",
+          "sha256": "96c77ce108f8d1caacd20409a724a996822d39fbe0c517811121d411bef39316"
+        },
+        "upgrade-verification-recovery.log": {
+          "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-recovery.log",
+          "sha256": "dac1a3147c6b236901548e62ff6ca23964cecde6d0d5564f2576a31220a7f052"
+        },
+        "upgrade-verification-recovery.exit": {
+          "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-recovery.exit",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "upgrade-verification-final-snapshot-timeout.log": {
+          "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-final-snapshot-timeout.log",
+          "sha256": "0bffbc504e9e478e58b44308758b81502ae8ad3a282afd9f2ba0f6228cfc2711"
+        },
+        "upgrade-verification-final-snapshot-timeout.exit": {
+          "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-final-snapshot-timeout.exit",
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        "upgrade-rehearsal.json": {
+          "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-rehearsal.json",
+          "sha256": "22a7d2ba28ed3a7ea2ce71954fd65b1b5fefc614dffb3da2cc549427b2f18801"
+        }
+      }
+    },
+    "fresh_administrator": {
+      "passed": true,
+      "version": "v0.6.6",
+      "separate_database": true,
+      "signup_disabled": true,
+      "initialized_status": "initialized",
+      "retry_status": "already_initialized",
+      "private_file_mode": "0600",
+      "private_file_single_link": true,
+      "no_staging_artifacts": true,
+      "retry_bytes_unchanged": true,
+      "second_maintenance_host_without_credentials_rejected": true,
+      "first_change_restriction": true,
+      "same_temporary_password_rejected": true,
+      "admin_role_overview_users_installations_verified": true,
+      "embedded_feed_equals_prepared": true,
+      "publication": "Linux renameat2(RENAME_NOREPLACE) against Docker Desktop host bind mount; file/directory sync enforced by actual final binary"
+    },
+    "runtime_final": {
+      "containers": [
+        {
+          "name": "multica-release-066-rehearsal-backend-1",
+          "image": "multica-backend:v0.6.6",
+          "image_id": "sha256:841dabc839f7b208bc70f0b40fdd92dfe198824618f318487f12ae27b973f720",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "running": true,
+          "uname": "x86_64",
+          "matches_saved_image": true,
+          "no_node_options": true
+        },
+        {
+          "name": "multica-release-066-rehearsal-frontend-1",
+          "image": "multica-web:v0.6.6",
+          "image_id": "sha256:dc5348a77b35bcfb3934b16d8f69f1893f5b59095662a3aca60a47051d9b729e",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "running": true,
+          "uname": "x86_64",
+          "matches_saved_image": true,
+          "no_node_options": true
+        },
+        {
+          "name": "multica-release-066-rehearsal-postgres-1",
+          "image": "pgvector/pgvector:pg17",
+          "image_id": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "running": true,
+          "uname": "x86_64",
+          "matches_saved_image": true,
+          "no_node_options": true
+        },
+        {
+          "name": "multica-release-066-device-backend-1",
+          "image": "multica-backend:v0.6.6",
+          "image_id": "sha256:841dabc839f7b208bc70f0b40fdd92dfe198824618f318487f12ae27b973f720",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "running": true,
+          "uname": "x86_64",
+          "matches_saved_image": true,
+          "no_node_options": true
+        },
+        {
+          "name": "multica-release-066-device-frontend-1",
+          "image": "multica-web:v0.6.6",
+          "image_id": "sha256:dc5348a77b35bcfb3934b16d8f69f1893f5b59095662a3aca60a47051d9b729e",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "running": true,
+          "uname": "x86_64",
+          "matches_saved_image": true,
+          "no_node_options": true
+        },
+        {
+          "name": "multica-release-066-device-postgres-1",
+          "image": "pgvector/pgvector:pg17",
+          "image_id": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "running": true,
+          "uname": "x86_64",
+          "matches_saved_image": true,
+          "no_node_options": true
+        },
+        {
+          "name": "multica-release-066-fresh-backend",
+          "image": "multica-backend:v0.6.6",
+          "image_id": "sha256:841dabc839f7b208bc70f0b40fdd92dfe198824618f318487f12ae27b973f720",
+          "platform": {
+            "architecture": "amd64",
+            "os": "linux"
+          },
+          "running": true,
+          "uname": "x86_64",
+          "matches_saved_image": true,
+          "no_node_options": true
+        }
+      ],
+      "healthz": {
+        "password_upgrade": {
+          "status": "ok",
+          "checks": {
+            "db": "ok",
+            "migrations": "ok"
+          }
+        },
+        "fresh_administrator": {
+          "status": "ok",
+          "checks": {
+            "db": "ok",
+            "migrations": "ok"
+          }
+        },
+        "device_upgrade": {
+          "status": "ok",
+          "checks": {
+            "db": "ok",
+            "migrations": "ok"
+          }
+        }
+      },
+      "every_backend_binary_matches_final_image": true,
+      "no_runtime_node_options": true
+    },
+    "linux_credential_file_tests": {
+      "passed": true,
+      "test_binary_go_version": "go1.27.0",
+      "test_binary_sha256": "a42c124826716efa72bdf7c682534f36afd2c37413965be53ca8d685b7797466",
+      "top_level_test_count": 5,
+      "top_level_tests": [
+        "TestPlatformAdminCredentialFileRandomPrivateAndStable",
+        "TestPlatformAdminCredentialFileRejectsUnsafeExistingFiles",
+        "TestPlatformAdminCredentialFileFailureAndResync",
+        "TestPlatformAdminCredentialFileNoClobberPublication",
+        "TestPlatformAdminCredentialFileInterruptedPublication"
+      ],
+      "environment": "Final backend image, Linux amd64, network disabled, read-only root, unprivileged UID/GID, host bind temporary directory. File-only compilation excludes integration TestMain.",
+      "actual_process_exit_after_publication": true
+    },
+    "fixture_corrections": [
+      {
+        "check": "Mount identity",
+        "initial_result": "Assertion rejected alternate Docker Desktop bind source representation.",
+        "before_prefix": "/host_mnt/Volumes/",
+        "after_prefix": "/Volumes/",
+        "correction": "Normalize that Docker Desktop alias for bind sources only. Retain exact source/destination/type/RW and volume comparisons; verify mounted sentinel bytes independently.",
+        "application_source_changed": false
+      },
+      {
+        "cause": "requires_password_change is a Go json omitempty bool; successful change omits false.",
+        "correction": "Use absence or false as no longer requiring password change, then verify authenticated admin APIs.",
+        "source_evidence": "server/internal/handler/auth.go:55",
+        "application_source_changed": false,
+        "fresh_fixture_action": "Recreate only task-owned synthetic fresh database and keep first-attempt files/logs outside delivery."
+      }
+    ],
+    "cleanup": {
+      "completed_at": "2026-10-13T11:34:38.670062+00:00",
+      "passed": true,
+      "projects_removed": {
+        "multica-release-066-rehearsal": {
+          "containers": [
+            "multica-release-066-rehearsal-frontend-1",
+            "multica-release-066-rehearsal-backend-1",
+            "multica-release-066-rehearsal-postgres-1"
+          ],
+          "volumes": [
+            "multica-release-066-rehearsal_backend_uploads",
+            "multica-release-066-rehearsal_managed_resources",
+            "multica-release-066-rehearsal_pgdata"
+          ]
+        },
+        "multica-release-066-device": {
+          "containers": [
+            "multica-release-066-device-frontend-1",
+            "multica-release-066-device-backend-1",
+            "multica-release-066-device-postgres-1"
+          ],
+          "volumes": [
+            "multica-release-066-device_backend_uploads",
+            "multica-release-066-device_managed_resources",
+            "multica-release-066-device_pgdata"
+          ]
+        }
+      },
+      "standalone_container_removed": "multica-release-066-fresh-backend",
+      "project_containers_volumes_networks_absent": true,
+      "only_task_owned_runtime_resources_targeted": true,
+      "images_preserved": true,
+      "private_fixtures_and_backups_retained_outside_delivery": true
+    },
+    "evidence": {
+      "archive.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/archive.json",
+        "sha256": "2504d3bd8d8bede4c842a576fdcba5f706344456f2e99711f27a225a9b959e57"
+      },
+      "archive-before-finalization.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/archive-before-finalization.json",
+        "sha256": "dc45684700a33aa17fe0be1f4dd444dedd1c036a066d41909ed0f9c3fa6848d4"
+      },
+      "baseline-archive.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/baseline-archive.json",
+        "sha256": "9c4baf9dee726af199963b44c2dbd4c78411f26a282ac5e2326d3ba1645d0764"
+      },
+      "baseline-images.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/baseline-images.json",
+        "sha256": "8a7f0523958917b93d3a813dbfd732eced2bab45ee9a95051d074481c1109da2"
+      },
+      "baseline.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/baseline.json",
+        "sha256": "9387e9a0634ee070552236b8a1ea1ee2c2c43d4c9e05f834877bb3774dc2667e"
+      },
+      "build-provenance.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/build-provenance.json",
+        "sha256": "e4218cda85d27384170a0ed81ff6d63f21dbe33861d52719e9d62ae6c8fc2627"
+      },
+      "images.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/images.json",
+        "sha256": "b6698723416a0115696668e1193001356dd6a57fd536a7c7d2c72889644e3b11"
+      },
+      "final-binaries.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/final-binaries.json",
+        "sha256": "e99473c7e2800bf2d8b287ed4d512d625ec6b93bd4fe59b078e2a9513400801a"
+      },
+      "upgrade-command.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-command.json",
+        "sha256": "fe2b948c372d9522c7ff8303ebcdf96130b4d86a7388a0b43c3086b2f1559e59"
+      },
+      "upgrade.log": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade.log",
+        "sha256": "8fc58ca0ccff9ca8d712ccbbdc0452febc6bc540d040d4e049bf8e46a91e8144"
+      },
+      "upgrade-rehearsal.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-rehearsal.json",
+        "sha256": "22a7d2ba28ed3a7ea2ce71954fd65b1b5fefc614dffb3da2cc549427b2f18801"
+      },
+      "upgrade-verification-final-snapshot-timeout.log": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-final-snapshot-timeout.log",
+        "sha256": "0bffbc504e9e478e58b44308758b81502ae8ad3a282afd9f2ba0f6228cfc2711"
+      },
+      "upgrade-verification-final-snapshot-timeout.exit": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-final-snapshot-timeout.exit",
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      "upgrade-verification-recovery.log": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-recovery.log",
+        "sha256": "dac1a3147c6b236901548e62ff6ca23964cecde6d0d5564f2576a31220a7f052"
+      },
+      "upgrade-verification-recovery.exit": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-recovery.exit",
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "fresh-initialization.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/fresh-initialization.json",
+        "sha256": "c0515787b69a1f17f66767ba4ce002f455d4172e9fbfd9f7556beb3db68adf60"
+      },
+      "device-upgrade-rehearsal.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/device-upgrade-rehearsal.json",
+        "sha256": "c13863a2d00b3044d425f198ec06cd4c5e215e5cc035c8ea18c8c5097d4888d7"
+      },
+      "device-upgrade.log": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/device-upgrade.log",
+        "sha256": "9b091e2fe0d1648957f0e1dcb7f15496c7a6b7e01c9740f0fde21d8262b1620f"
+      },
+      "linux-credential-tests.log": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/linux-credential-tests.log",
+        "sha256": "0c2494e4c4cc2f371874d08679e9efa8d72567643f35128bdd315bb75d34c749"
+      },
+      "runtime-final.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/runtime-final.json",
+        "sha256": "2344fc9c2a1af0e2db709867b178c3bd35f101d37cd9f93893164af08f3c9cfc"
+      },
+      "fixture-adjustment.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/fixture-adjustment.json",
+        "sha256": "789774776d5472f063045be0d688e17d583d4b2672bdbc7fccca07f5a4b5e59c"
+      },
+      "optional-field-fixture-correction.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/optional-field-fixture-correction.json",
+        "sha256": "05f5358d4376f7b03956dc33198084d26cbb83a304ea8bb89cdabbb73d4d908a"
+      },
+      "cleanup.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/cleanup.json",
+        "sha256": "a47f240ec3a52688ac0ec7c363929280b7df4eb7f17a4b3c498d0c9d54674017"
+      },
+      "upgrade-verification-recovery.command.sh": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-recovery.command.sh",
+        "sha256": "e41e9185e41199c475dae5426a02d833f29b570be07d9aa68070f300e7ed1028"
+      },
+      "upgrade-verification-recovery-invocation.json": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/upgrade-verification-recovery-invocation.json",
+        "sha256": "a564e2ad4a3286f1c6e4005bcd477dcdefa16f678e21e135d680563a7aa0c18a"
+      },
+      "recovery-verify-upgrade.py": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/recovery-verify-upgrade.py",
+        "sha256": "14778dc775c39f948b1f92674dfed3497d07e9bc4e1a82c2fffd55d0b8578317"
+      },
+      "recovery-fixture.py": {
+        "path": ".artifacts/release-v0.6.6/linux-evidence/recovery-fixture.py",
+        "sha256": "96c77ce108f8d1caacd20409a724a996822d39fbe0c517811121d411bef39316"
+      }
+    },
+    "acceptance_limits": [
+      "Linux amd64 containers ran on Docker Desktop on an ARM macOS host; the unmodified upgrade helper ran under Rosetta x86_64 Bash. Native target Linux hardware and its deployment filesystem still require operator acceptance.",
+      "Synthetic password-mode and device-mode deployments were upgraded; live intranet data, device-to-password account migration and external integrations were not exercised.",
+      "Archive and image checksums verify the captured bytes. Independent artifact signatures and target-host trust were not tested.",
+      "Windows installer/native GUI acceptance and the frozen-source lint/typecheck/Go suite are documented in the parent release verification."
+    ]
+  },
+  "windows": {
+    "artifact_verification": {
+      "schema_version": 1,
+      "scope": "cross_compiled_windows_x64_packaging_and_offline_update_artifacts",
+      "status": "passed",
+      "version": "0.6.6",
+      "source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+      "host": {
+        "platform": "darwin",
+        "architecture": "arm64",
+        "node": "v22.23.2",
+        "go": "go version go1.27.0 darwin/arm64"
+      },
+      "package_metadata": {
+        "name": "@multica/desktop",
+        "productName": "Multica",
+        "version": "0.6.6",
+        "main": "./out/main/index.js"
+      },
+      "build_source": {
+        "kind": "clean detached git worktree",
+        "path": ".artifacts/release-v0.6.6/windows-source",
+        "git_status_clean": true,
+        "cli_vcs_modified": false
+      },
+      "packaging_config": {
+        "path": "apps/desktop/electron-builder.yml",
+        "sha256": "962eea177f02bdfa75937312e339e042664724245086fbb6d24eeb387d6cf4d6",
+        "release_file_allowlist": [
+          "out/**",
+          "resources/**",
+          "package.json"
+        ],
+        "no_environment_or_private_tool_state_files": true
+      },
+      "archive_integrity": {
+        "bytes": 477486351,
+        "sha256": "259a13214269177b5ca723df86d82e4d04df95708a9e7f1703ef4b8db28a03db",
+        "sha512": "AcI4Rn3PPXF//nDiSCIQwv7N9u/ZPbg4401VICyszwS94zi619MlwOUTgcW/VCj6MjUhHtu4roJZi41u/4CGgQ==",
+        "files_verified": 47451,
+        "unpacked_files_verified": 2,
+        "bytes_verified": 495905857,
+        "blocks_verified": 47470,
+        "header_sha256": "51073a8ad56d63a05e2fa1a3d9a46dc690097caaeeebda80ad4d73e486f40ab8",
+        "missing_hashes": []
+      },
+      "installer": {
+        "name": "multica-desktop-0.6.6-windows-x64.exe",
+        "machine": "0x14c",
+        "architecture": "ia32",
+        "peMagic": "0x10b",
+        "certificateTablePresent": false,
+        "certificateOffset": 0,
+        "certificateSize": 0,
+        "bytes": 179209872,
+        "sha256": "e3fe9227158b60ce089415ec86ed79cd2804895fd15bfea5c33c4995d07f483b",
+        "sha512": "8WVsWj6HgbPeVK/NAI+EomJfJNef42je673BhaB6IZLdvh6uY3yi9o1irojodTHDjv8emrd5w1wOvB0TTMXIHw==",
+        "versionResources": [
+          {
+            "fixedInfo": {
+              "fileVersionMS": 6,
+              "fileVersionLS": 393216,
+              "productVersionMS": 6,
+              "productVersionLS": 393216,
+              "fileFlagsMask": 0,
+              "fileFlags": 0,
+              "fileOS": 4,
+              "fileType": 1,
+              "fileSubtype": 0,
+              "fileDateMS": 0,
+              "fileDateLS": 0
+            },
+            "strings": [
+              {
+                "language": {
+                  "codepage": 1252,
+                  "lang": 1033
+                },
+                "values": {
+                  "CompanyName": "Multica",
+                  "FileDescription": "Multica Desktop — native desktop client for the Multica platform.",
+                  "FileVersion": "0.6.6",
+                  "LegalCopyright": "Copyright © 2026 Multica",
+                  "ProductName": "Multica",
+                  "ProductVersion": "0.6.6"
+                }
+              }
+            ]
+          }
+        ],
+        "embeddedAsarIntegrity": [],
+        "bootstrap_note": "NSIS uses a 32-bit bootstrap; installed Desktop and bundled CLI are x64."
+      },
+      "desktop": {
+        "machine": "0x8664",
+        "architecture": "x64",
+        "peMagic": "0x20b",
+        "certificateTablePresent": false,
+        "certificateOffset": 0,
+        "certificateSize": 0,
+        "bytes": 210991616,
+        "sha256": "581b261b4340341a2783eea33d4ce49ed75b5612190b297658a47072167569be",
+        "sha512": "T5SOrtiROhe3PweUzEtmSQ5Vv2Au64P3spS70GKfRBoFKIqk1GcHjGfcV75lTaUaDTU3n0vlJ8wM1CU5eUNAJg==",
+        "versionResources": [
+          {
+            "fixedInfo": {
+              "fileVersionMS": 6,
+              "fileVersionLS": 393216,
+              "productVersionMS": 6,
+              "productVersionLS": 393216,
+              "fileFlagsMask": 63,
+              "fileFlags": 0,
+              "fileOS": 262148,
+              "fileType": 1,
+              "fileSubtype": 0,
+              "fileDateMS": 0,
+              "fileDateLS": 0
+            },
+            "strings": [
+              {
+                "language": {
+                  "codepage": 1200,
+                  "lang": 1033
+                },
+                "values": {
+                  "CompanyName": "Multica",
+                  "FileDescription": "Multica",
+                  "FileVersion": "0.6.6",
+                  "InternalName": "Multica",
+                  "LegalCopyright": "Copyright © 2026 Multica",
+                  "OriginalFilename": "",
+                  "ProductName": "Multica",
+                  "ProductVersion": "0.6.6.0",
+                  "SquirrelAwareVersion": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "embeddedAsarIntegrity": [
+          {
+            "file": "resources\\app.asar",
+            "alg": "SHA256",
+            "value": "51073a8ad56d63a05e2fa1a3d9a46dc690097caaeeebda80ad4d73e486f40ab8"
+          }
+        ]
+      },
+      "cli": {
+        "machine": "0x8664",
+        "architecture": "x64",
+        "peMagic": "0x20b",
+        "certificateTablePresent": false,
+        "certificateOffset": 0,
+        "certificateSize": 0,
+        "bytes": 30489600,
+        "sha256": "fa5a756d16a789faafab8f7c395a0db3831869d38a0375c50cbcee5467752a6d",
+        "sha512": "TxAzxTwW7H8DSp5GBX5PjIJfXyoxJ9bQYd/rW6afl+RjlQi/dbT7ZvL1v4RMQlRd2EwxhCZlk7fqLbxDBscN+Q==",
+        "versionResources": [],
+        "embeddedAsarIntegrity": [],
+        "version_evidence": "Embedded Go build info verified: main.version=0.6.6; exact vcs.revision; GOOS=windows; GOARCH=amd64; CGO_ENABLED=0; vcs.modified=false.",
+        "native_execution_tested": false
+      },
+      "renderer": {
+        "files_verified": 493,
+        "all_built_output_files_verified": 495,
+        "byte_for_byte_asar_match": true,
+        "manifest": ".artifacts/release-v0.6.6/windows-evidence/packaged-build-manifest.json"
+      },
+      "installer_payload_comparison": {
+        "status": "passed",
+        "method": "7zip-bin extracted the embedded 7z payload directly from the NSIS installer without executing Windows binaries",
+        "files": [
+          {
+            "path": "Multica.exe",
+            "bytes": 210991616,
+            "sha256": "581b261b4340341a2783eea33d4ce49ed75b5612190b297658a47072167569be",
+            "sha512": "T5SOrtiROhe3PweUzEtmSQ5Vv2Au64P3spS70GKfRBoFKIqk1GcHjGfcV75lTaUaDTU3n0vlJ8wM1CU5eUNAJg==",
+            "installer_bytes_match": true
+          },
+          {
+            "path": "resources/app.asar",
+            "bytes": 477486351,
+            "sha256": "259a13214269177b5ca723df86d82e4d04df95708a9e7f1703ef4b8db28a03db",
+            "sha512": "AcI4Rn3PPXF//nDiSCIQwv7N9u/ZPbg4401VICyszwS94zi619MlwOUTgcW/VCj6MjUhHtu4roJZi41u/4CGgQ==",
+            "installer_bytes_match": true
+          },
+          {
+            "path": "resources/app.asar.unpacked/resources/bin/multica.exe",
+            "bytes": 30489600,
+            "sha256": "fa5a756d16a789faafab8f7c395a0db3831869d38a0375c50cbcee5467752a6d",
+            "sha512": "TxAzxTwW7H8DSp5GBX5PjIJfXyoxJ9bQYd/rW6afl+RjlQi/dbT7ZvL1v4RMQlRd2EwxhCZlk7fqLbxDBscN+Q==",
+            "installer_bytes_match": true
+          }
+        ],
+        "archive_warning": "7-Zip reports data after the embedded archive; extraction succeeds and verified payload bytes match."
+      },
+      "artifacts": {
+        "multica-desktop-0.6.6-windows-x64.exe": {
+          "bytes": 179209872,
+          "sha256": "e3fe9227158b60ce089415ec86ed79cd2804895fd15bfea5c33c4995d07f483b",
+          "sha512": "8WVsWj6HgbPeVK/NAI+EomJfJNef42je673BhaB6IZLdvh6uY3yi9o1irojodTHDjv8emrd5w1wOvB0TTMXIHw=="
+        },
+        "multica-desktop-0.6.6-windows-x64.exe.blockmap": {
+          "bytes": 189344,
+          "sha256": "dc3af843abdca1d0fbedea52de8d45f02300828dcbd0cc7c997faabab4d9ad05",
+          "sha512": "ZqXOQamnNSNptW9uDYmirELh9QlDXgNG2YrQWByvvHRSwaZF8ltYsabIwM+rQJcJ+G2xkitDoXG80WfPqZln7Q=="
+        },
+        "latest.yml": {
+          "bytes": 371,
+          "sha256": "82730d53541067d4b8c35f7f4a43a737dc21d2d28f41d6f91b8e1580c2c1bbf3",
+          "sha512": "qKPR2uRP8+nmwSsFpy/OKNj5NvhldCfDk42TnPypF+lMEhuebVflWONULQar9am6BdSwyZ+hCXrQizbA+WU2nQ=="
+        }
+      },
+      "signature": {
+        "authenticode": "unsigned",
+        "windows_trust_verified": false
+      },
+      "native_windows_installation_tested": false,
+      "native_windows_gui_tested": false,
+      "native_windows_upgrade_and_profile_retention_tested": false,
+      "limitations": [
+        "Built on macOS ARM64; native Windows installer lifecycle, GUI, update installation/profile retention, SmartScreen and Authenticode trust were not exercised."
+      ],
+      "verified_at": "2026-10-13T03:55:48.263Z"
+    },
+    "http_verification": {
+      "project": "v066-windows-feed",
+      "scope": "temporary loopback Nginx fixture using frozen repository production configuration",
+      "image": {
+        "Id": "sha256:8f84ed99befc3891b8f329c5c202785278a2cfb7c25107d57fb2a134a3117433",
+        "Architecture": "amd64",
+        "Os": "linux"
+      },
+      "port": 52666,
+      "public_mount_read_only": true,
+      "runtime_architecture": "x86_64",
+      "http_update_verification": {
+        "url": "http://127.0.0.1:52666/desktop",
+        "version": "0.6.6",
+        "metadata": {
+          "name": "latest.yml",
+          "cacheControl": "no-cache",
+          "bytes": 371
+        },
+        "artifacts": [
+          {
+            "name": "multica-desktop-0.6.6-windows-x64.exe",
+            "bytes": 179209872,
+            "sha512": "8WVsWj6HgbPeVK/NAI+EomJfJNef42je673BhaB6IZLdvh6uY3yi9o1irojodTHDjv8emrd5w1wOvB0TTMXIHw==",
+            "checksumVerified": true,
+            "headStatus": 200,
+            "rangeStatus": 206,
+            "rangeBytes": 1024
+          }
+        ],
+        "blockmaps": [
+          {
+            "name": "multica-desktop-0.6.6-windows-x64.exe.blockmap",
+            "bytes": 189344,
+            "sha512": "ZqXOQamnNSNptW9uDYmirELh9QlDXgNG2YrQWByvvHRSwaZF8ltYsabIwM+rQJcJ+G2xkitDoXG80WfPqZln7Q==",
+            "checksumVerified": false,
+            "headStatus": 200,
+            "rangeStatus": 206,
+            "rangeBytes": 1024,
+            "available": true
+          }
+        ],
+        "verifiedAt": "2026-10-13T03:51:25.695Z"
+      },
+      "http_after_restart": {
+        "url": "http://127.0.0.1:52666/desktop",
+        "version": "0.6.6",
+        "metadata": {
+          "name": "latest.yml",
+          "cacheControl": "no-cache",
+          "bytes": 371
+        },
+        "artifacts": [
+          {
+            "name": "multica-desktop-0.6.6-windows-x64.exe",
+            "bytes": 179209872,
+            "sha512": "8WVsWj6HgbPeVK/NAI+EomJfJNef42je673BhaB6IZLdvh6uY3yi9o1irojodTHDjv8emrd5w1wOvB0TTMXIHw==",
+            "checksumVerified": true,
+            "headStatus": 200,
+            "rangeStatus": 206,
+            "rangeBytes": 1024
+          }
+        ],
+        "blockmaps": [
+          {
+            "name": "multica-desktop-0.6.6-windows-x64.exe.blockmap",
+            "bytes": 189344,
+            "sha512": "ZqXOQamnNSNptW9uDYmirELh9QlDXgNG2YrQWByvvHRSwaZF8ltYsabIwM+rQJcJ+G2xkitDoXG80WfPqZln7Q==",
+            "checksumVerified": false,
+            "headStatus": 200,
+            "rangeStatus": 206,
+            "rangeBytes": 1024,
+            "available": true
+          }
+        ],
+        "verifiedAt": "2026-10-13T03:52:07.693Z"
+      },
+      "restart_retains_artifacts": true,
+      "source_public_comparison": [
+        {
+          "name": "latest.yml",
+          "sha256": "82730d53541067d4b8c35f7f4a43a737dc21d2d28f41d6f91b8e1580c2c1bbf3",
+          "source_matches_public": true
+        },
+        {
+          "name": "multica-desktop-0.6.6-windows-x64.exe",
+          "sha256": "e3fe9227158b60ce089415ec86ed79cd2804895fd15bfea5c33c4995d07f483b",
+          "source_matches_public": true
+        },
+        {
+          "name": "multica-desktop-0.6.6-windows-x64.exe.blockmap",
+          "sha256": "dc3af843abdca1d0fbedea52de8d45f02300828dcbd0cc7c997faabab4d9ad05",
+          "source_matches_public": true
+        }
+      ],
+      "status": "passed",
+      "verified_at": "2026-10-13T03:52:10.422141+00:00"
+    }
+  },
+  "checks": {
+    "schema_version": 1,
+    "generated_at": "2026-10-13T11:29:36.109218+00:00",
+    "source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+    "scope": "Selected frozen-source release regressions and static checks",
+    "quality_gate": "passed_with_declared_limits",
+    "source_snapshots": [
+      {
+        "path": ".artifacts/release-v0.6.6/checks-source",
+        "commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+        "tracked_and_untracked_status_clean": true
+      },
+      {
+        "path": ".artifacts/release-v0.6.6/windows-source",
+        "commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+        "tracked_and_untracked_status_clean": true
+      }
+    ],
+    "source_edits": [],
+    "test_harness_edits": [],
+    "checks": {
+      "lint": {
+        "status": "passed",
+        "record": "lint.json",
+        "log": "lint.log",
+        "command": "pnpm lint --force",
+        "counts": {},
+        "started_at": "2026-10-13T03:49:19.723293+00:00",
+        "finished_at": "2026-10-13T03:51:21.279095+00:00",
+        "existing_warnings": 31,
+        "warning_packages": {
+          "@multica/ui": 3,
+          "@multica/desktop": 1,
+          "@multica/views": 27
+        }
+      },
+      "typecheck": {
+        "status": "passed",
+        "record": "typecheck.json",
+        "log": "typecheck.log",
+        "command": "pnpm typecheck --force",
+        "counts": {},
+        "started_at": "2026-10-13T03:49:19.769132+00:00",
+        "finished_at": "2026-10-13T04:03:02.525148+00:00"
+      },
+      "go-vet": {
+        "status": "passed",
+        "record": "go-vet.json",
+        "log": "go-vet.log",
+        "command": "bash scripts/go-test-with-agent-cli-guard.sh go -C server vet -p=2 ./cmd/server ./internal/auth ./internal/changelog ./internal/handler ./internal/service ./pkg/featureflag",
+        "counts": {},
+        "started_at": "2026-10-13T03:51:14.999287+00:00",
+        "finished_at": "2026-10-13T03:56:19.062525+00:00"
+      },
+      "selfhost-config": {
+        "status": "passed",
+        "record": "selfhost-config.json",
+        "log": "selfhost-config.log",
+        "command": "bash scripts/selfhost-config.test.sh",
+        "counts": {},
+        "started_at": "2026-10-13T03:49:05.421526+00:00",
+        "finished_at": "2026-10-13T03:49:16.333737+00:00"
+      },
+      "release-node": {
+        "status": "passed",
+        "record": "release-node.json",
+        "log": "release-node.log",
+        "command": "node --test --test-reporter=tap scripts/offline-changelog.test.mjs scripts/offline-build-changelog.test.mjs scripts/admin-init-compose.test.mjs scripts/desktop-updates.test.mjs scripts/windows-candidate-version.test.mjs scripts/release-changelog.test.mjs scripts/install-changelog.test.mjs",
+        "counts": {
+          "tests": 97,
+          "suites": 0,
+          "pass": 93,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 4,
+          "todo": 0
+        },
+        "started_at": "2026-10-13T03:49:04.155751+00:00",
+        "finished_at": "2026-10-13T03:58:28.717489+00:00"
+      },
+      "go-auth-changelog-config": {
+        "status": "passed",
+        "record": "go-auth-changelog-config.json",
+        "log": "go-auth-changelog-config.log",
+        "command": "bash scripts/go-test-with-agent-cli-guard.sh go -C server test -json -count=1 -race -p=2 -timeout=8m ./internal/auth ./internal/changelog ./pkg/featureflag",
+        "counts": {
+          "go_test_run": 218,
+          "go_test_pass": 218,
+          "go_test_fail": 0,
+          "go_test_skip": 0,
+          "go_top_level_tests_passed": 102
+        },
+        "started_at": "2026-10-13T03:54:25.255359+00:00",
+        "finished_at": "2026-10-13T03:56:30.914374+00:00"
+      },
+      "go-integration": {
+        "status": "passed",
+        "record": "go-integration.json",
+        "log": "go-integration.log",
+        "command": "bash scripts/go-test-with-agent-cli-guard.sh go -C server test -json -count=1 -p=1 -timeout=12m ./cmd/server ./internal/handler ./internal/service -run '^(TestPlatformAdmin|TestPlatformControls|TestChangelog|TestGetChangelog|TestGetConfig|TestPassword|TestDeviceLogin|TestDeviceOnboarding)'",
+        "counts": {
+          "go_test_run": 174,
+          "go_test_pass": 174,
+          "go_test_fail": 0,
+          "go_test_skip": 0,
+          "go_top_level_tests_passed": 91
+        },
+        "started_at": "2026-10-13T03:54:24.352956+00:00",
+        "finished_at": "2026-10-13T04:06:25.816156+00:00",
+        "coverage_qualification": "174 pass events are handler/service only; cmd/server silently exited during database recovery. Use go-cmd-server-rerun plus its required named-event audit for cmd/server coverage."
+      },
+      "go-cmd-server-rerun": {
+        "status": "passed",
+        "record": "go-cmd-server-rerun.json",
+        "log": "go-cmd-server-rerun.log",
+        "command": "bash scripts/go-test-with-agent-cli-guard.sh go -C server test -json -count=1 -p=1 -timeout=12m ./cmd/server -run '^(TestPlatformAdmin|TestPlatformControls|TestChangelog|TestGetChangelog|TestGetConfig|TestPassword|TestDeviceLogin|TestDeviceOnboarding)'",
+        "counts": {
+          "go_test_run": 63,
+          "go_test_pass": 63,
+          "go_test_fail": 0,
+          "go_test_skip": 0,
+          "go_top_level_tests_passed": 25
+        },
+        "started_at": "2026-10-13T11:20:03.793497+00:00",
+        "finished_at": "2026-10-13T11:24:08.508830+00:00"
+      },
+      "go-cmd-server-event-audit": {
+        "status": "passed",
+        "record": "go-cmd-server-event-audit.json",
+        "log": "go-cmd-server-event-audit.log",
+        "command": "env GITHUB_SHA=4797e6d971296e56f3edc4f6cb6d3f218d9f8d85 RUNNER_OS=macOS node apps/desktop/scripts/verify-go-test-events.mjs .artifacts/release-v0.6.6/checks-evidence/go-cmd-server-rerun.log .artifacts/release-v0.6.6/checks-evidence/go-cmd-server-completeness.json TestChangelogRouteRequiresAuthenticationWithoutWorkspace TestChangelogRouteAllowsCrossOriginRevalidation TestChangelogRouterCapturesConfiguredSourceAndRefreshesIt TestPasswordRecoveryPreservesUserAndRequiresChange TestPasswordRecoveryRequiresReasonBeforeReadingSecret TestPasswordRecoveryBreakGlassCLI TestPasswordRecoveryUsernameCollisionRollsBack TestPlatformAdminRouterCredentialMatrix TestPlatformAdminRouterCookieWritesRequireBoundCSRF TestPlatformAdminRouterRejectsDisabledFeatureAndOtherAuthMode TestPlatformAdminRouterDatabaseFailureIsUnavailable TestPlatformAdminRouterMissingOrInactiveOrganizationIsUnavailable TestPlatformAdminCredentialFileInterruptedPublication TestPlatformAdminCredentialFileRandomPrivateAndStable TestPlatformAdminCredentialFileRejectsUnsafeExistingFiles TestPlatformAdminCredentialFileFailureAndResync TestPlatformAdminCredentialFileNoClobberPublication TestPlatformAdminInitializeSkipsWithoutDatabaseOrFile TestPlatformAdminInitializeIdempotentAndMissingCredentials TestPlatformAdminInitializeConcurrentSameAndDifferentPaths TestPlatformAdminInitializeSyncFailurePreventsCommitAndRetainsIntent TestPlatformAdminInitializeReconcilesUncertainCommitWithoutReplay TestPlatformAdminInitializeAuditFailureLeavesReusableFile TestPlatformAdminBootstrapRejectsAmbiguousOperatorInput TestPlatformControlsRequireUsableIndexesAndStateTrigger",
+        "counts": {},
+        "started_at": "2026-10-13T11:24:56.244068+00:00",
+        "finished_at": "2026-10-13T11:24:56.406697+00:00"
+      },
+      "core-delta": {
+        "status": "passed",
+        "record": "core-delta.json",
+        "log": "core-delta.log",
+        "command": "pnpm --filter @multica/core exec vitest run --maxWorkers=2 --reporter=json --outputFile=.artifacts/release-v0.6.6/checks-evidence/core-delta-vitest.json api/recovery-requests.test.ts auth/recovery.test.ts auth/store.test.ts i18n/user-locale-sync.test.tsx iterations/candidates.test.ts platform/auth-initializer.test.tsx workspace/hooks.test.tsx",
+        "counts": {
+          "tests_passed": 134,
+          "tests_failed": 0,
+          "tests_pending": 0,
+          "files": 7
+        },
+        "started_at": "2026-10-13T03:56:21.943051+00:00",
+        "finished_at": "2026-10-13T03:57:23.018310+00:00"
+      },
+      "desktop-auth-isolated": {
+        "status": "passed",
+        "record": "desktop-auth-isolated.json",
+        "log": "desktop-auth-isolated.log",
+        "command": "pnpm --filter @multica/desktop exec vitest run --maxWorkers=1 --no-file-parallelism --reporter=verbose --reporter=json --outputFile.json=.artifacts/release-v0.6.6/checks-evidence/desktop-auth-isolated-vitest.json src/main/daemon-manager-auth.test.ts",
+        "counts": {
+          "tests_passed": 30,
+          "tests_failed": 0,
+          "tests_pending": 0,
+          "files": 1
+        },
+        "started_at": "2026-10-13T11:10:07.336875+00:00",
+        "finished_at": "2026-10-13T11:10:09.789051+00:00"
+      },
+      "views-iterations-isolated": {
+        "status": "passed",
+        "record": "views-iterations-isolated.json",
+        "log": "views-iterations-isolated.log",
+        "command": "pnpm --filter @multica/views exec vitest run --maxWorkers=1 --no-file-parallelism --reporter=verbose --reporter=json --outputFile.json=.artifacts/release-v0.6.6/checks-evidence/views-iterations-isolated-vitest.json iterations/iteration-settings-tab.test.tsx",
+        "counts": {
+          "tests_passed": 19,
+          "tests_failed": 0,
+          "tests_pending": 0,
+          "files": 1
+        },
+        "started_at": "2026-10-13T11:10:47.377413+00:00",
+        "finished_at": "2026-10-13T11:10:51.842007+00:00"
+      },
+      "desktop-delta-rerun": {
+        "status": "passed",
+        "record": "desktop-delta-rerun.json",
+        "log": "desktop-delta-rerun.log",
+        "command": "pnpm --filter @multica/desktop exec vitest run --maxWorkers=2 --reporter=verbose --reporter=json --outputFile.json=.artifacts/release-v0.6.6/checks-evidence/desktop-delta-rerun-vitest.json src/main/daemon-manager-auth.test.ts src/main/runtime-config-editor.test.ts src/renderer/src/components/connection-recovery-boundary.test.tsx src/renderer/src/components/daemon-runtime-card.test.tsx src/renderer/src/components/daemon-settings-tab.test.tsx src/renderer/src/components/issue-window.test.tsx src/renderer/src/hooks/use-workspace-connection-recovery.test.tsx src/renderer/src/pages/auth-recovery.test.tsx src/renderer/src/platform/i18n-adapter.test.tsx src/shared/main-renderer-messages.test.ts",
+        "counts": {
+          "tests_passed": 86,
+          "tests_failed": 0,
+          "tests_pending": 0,
+          "files": 10
+        },
+        "started_at": "2026-10-13T11:11:48.102032+00:00",
+        "finished_at": "2026-10-13T11:12:11.826515+00:00"
+      },
+      "views-delta-rerun": {
+        "status": "passed",
+        "record": "views-delta-rerun.json",
+        "log": "views-delta-rerun.log",
+        "command": "pnpm --filter @multica/views exec vitest run --maxWorkers=2 --reporter=verbose --reporter=json --outputFile.json=.artifacts/release-v0.6.6/checks-evidence/views-delta-rerun-vitest.json agents/create/use-role-templates.queries.test.tsx editor/content-editor.test.tsx iterations/iteration-settings-tab.test.tsx mcp/mcp-agent-picker.test.tsx mcp/mcp-market.test.tsx triage/triage-import-dialog.test.tsx triage/triage-ui.test.ts",
+        "counts": {
+          "tests_passed": 158,
+          "tests_failed": 0,
+          "tests_pending": 0,
+          "files": 7
+        },
+        "started_at": "2026-10-13T11:12:12.023549+00:00",
+        "finished_at": "2026-10-13T11:14:17.433713+00:00"
+      },
+      "desktop-packaging": {
+        "status": "passed",
+        "tests_passed": 136,
+        "files": 5,
+        "record": "../windows-evidence/packaging-tests.json",
+        "command": [
+          "pnpm",
+          "--filter",
+          "@multica/desktop",
+          "exec",
+          "vitest",
+          "run",
+          "scripts/package.test.mjs",
+          "scripts/bundle-cli.test.mjs",
+          "scripts/update-artifacts.test.mjs",
+          "scripts/verify-updates.test.mjs",
+          "scripts/configure-updates.test.mjs",
+          "--reporter=default",
+          "--reporter=json",
+          "--outputFile=.artifacts/release-v0.6.6/windows-evidence/packaging-tests-results.json"
+        ],
+        "reused_existing_result": true,
+        "integrity": {
+          "method": "Command exit, verbose log and JSON results agree; source files match frozen Git and build provenance.",
+          "preexisting_log_hash_available": false,
+          "current_files_sha256": {
+            "packaging-tests.json": "8dbc2799b5bff43748648ea3db0ee59c73c7f9ad168bc0c1858c523e1dae4d49",
+            "packaging-tests.log": "abf6472ea7b7bf730457f7d2ad1ec67bbeeac1e941be3278d7b2608c9df9218b",
+            "packaging-tests-results.json": "0876c48ba937aa647fb3b3da4f3bd347a613531ec8a395ac15c3653d148d8c06"
+          }
+        }
+      }
+    },
+    "go_cmd_server_initial_gap": {
+      "original_record": "go-integration.json",
+      "original_test_pass_events": 0,
+      "original_package_exit_status": 0,
+      "reason": "TestMain exited 0 when PostgreSQL returned SQLSTATE 57P03 (recovery mode), without run/pass/skip test events.",
+      "negative_event_audit": "go-cmd-original-completeness.json",
+      "resolution": "Successful SQL readiness query followed by isolated guarded cmd/server rerun and mandatory named-event validation.",
+      "expected_top_level_tests": [
+        "TestChangelogRouteRequiresAuthenticationWithoutWorkspace",
+        "TestChangelogRouteAllowsCrossOriginRevalidation",
+        "TestChangelogRouterCapturesConfiguredSourceAndRefreshesIt",
+        "TestPasswordRecoveryPreservesUserAndRequiresChange",
+        "TestPasswordRecoveryRequiresReasonBeforeReadingSecret",
+        "TestPasswordRecoveryBreakGlassCLI",
+        "TestPasswordRecoveryUsernameCollisionRollsBack",
+        "TestPlatformAdminRouterCredentialMatrix",
+        "TestPlatformAdminRouterCookieWritesRequireBoundCSRF",
+        "TestPlatformAdminRouterRejectsDisabledFeatureAndOtherAuthMode",
+        "TestPlatformAdminRouterDatabaseFailureIsUnavailable",
+        "TestPlatformAdminRouterMissingOrInactiveOrganizationIsUnavailable",
+        "TestPlatformAdminCredentialFileInterruptedPublication",
+        "TestPlatformAdminCredentialFileRandomPrivateAndStable",
+        "TestPlatformAdminCredentialFileRejectsUnsafeExistingFiles",
+        "TestPlatformAdminCredentialFileFailureAndResync",
+        "TestPlatformAdminCredentialFileNoClobberPublication",
+        "TestPlatformAdminInitializeSkipsWithoutDatabaseOrFile",
+        "TestPlatformAdminInitializeIdempotentAndMissingCredentials",
+        "TestPlatformAdminInitializeConcurrentSameAndDifferentPaths",
+        "TestPlatformAdminInitializeSyncFailurePreventsCommitAndRetainsIntent",
+        "TestPlatformAdminInitializeReconcilesUncertainCommitWithoutReplay",
+        "TestPlatformAdminInitializeAuditFailureLeavesReusableFile",
+        "TestPlatformAdminBootstrapRejectsAmbiguousOperatorInput",
+        "TestPlatformControlsRequireUsableIndexesAndStateTrigger"
+      ],
+      "positive_event_audit": "go-cmd-server-completeness.json",
+      "database_diagnostics": "database-recovery-diagnostics.log",
+      "database_failure_cause": "PostgreSQL logs show child process exit code 2 and recovery; exact exit cause is not logged. Container OOMKilled=false and restart count=0. This is a disposable checks fixture."
+    },
+    "skipped_tests": {
+      "release_node": {
+        "count": 4,
+        "names": [
+          "real Compose preserves every literal path character after installation and reinstallation",
+          "actual loaded frontend image installs with UID permissions and durable Compose dotenv escaping",
+          "real shell entry rejects CR/LF directory values before mkdir or any bind mount",
+          "real shell entry preserves quotes and commas in every Docker bind source"
+        ],
+        "reason": "Explicit opt-in MULTICA_RUN_DOCKER_CHANGELOG_SMOKE=1 was not enabled for this source regression command.",
+        "scope_note": "Independent artifact upgrade rehearsal is separate evidence; it does not retroactively mark these four tests run."
+      }
+    },
+    "limits": [
+      "Lint has 31 existing warnings and zero errors. Frozen-source release scope excludes unrelated warning fixes.",
+      "Root lint/typecheck scripts exclude mobile. Tests are selected release/source-delta suites, not the whole repository test suite.",
+      "Go source regressions ran on macOS ARM64 against a disposable PostgreSQL fixture; Linux credential syscall checks are owned by the Linux release lane.",
+      "Source tests do not establish native Windows GUI/installer/upgrade acceptance, Authenticode trust, or production/intranet acceptance.",
+      "No installed agent CLI was executed; Go commands used the repository agent CLI guard and desktop daemon tests use fixture mocks."
+    ],
+    "runtime_cleanup": {
+      "status": "removed",
+      "verified_at": "2026-10-13T11:28:28.220584+00:00",
+      "project": "v066-checks-db",
+      "containers_remaining": [],
+      "networks_remaining": [],
+      "volumes_remaining": [],
+      "removed_container_count": 2,
+      "removed_volume_count": 2,
+      "scope": "Only checks-owned project; Linux rehearsal resources untouched"
+    },
+    "initial_failures": [
+      {
+        "record": "desktop-delta.json",
+        "report": "desktop-delta-vitest.json",
+        "resolution": "Unmodified isolated rerun (desktop-auth-isolated) and complete original suite (desktop-delta-rerun) passed.",
+        "diagnosis": "Environment/load-sensitive failure; original runs overlapped long typecheck and Go work. Several failed cases crossed the default 5-second test deadline; async cleanup then raced. Exact host resource responsible was not measured. No product cause reproduced.",
+        "changes": "No source, assertions, mocks, fixture, dependencies or timeout settings changed. Complete reruns retained original maxWorkers=2; only added verbose reporting and ran check groups sequentially.",
+        "failed_count": 9,
+        "failed_test_names": [
+          "cached daemon credentials in password deployments validates and preserves the same user's accepted PAT without minting or restarting",
+          "cached daemon credentials in password deployments replaces a revoked cached PAT using the current session even without managed enrollment",
+          "cached daemon credentials in password deployments preserves the cached PAT when its probe is inconclusive (403)",
+          "cached daemon credentials in password deployments preserves the cached PAT when its probe is inconclusive (503)",
+          "cached daemon credentials in password deployments preserves the cached PAT when its probe is inconclusive (network)",
+          "cached daemon credentials in password deployments leaves disk credentials unchanged when replacement mint fails (401)",
+          "cached daemon credentials in password deployments does not restart after logout supersedes the credential-change health check",
+          "cached daemon credentials in password deployments does not restart a credential change queued before logout",
+          "manual daemon reauthentication does not restart if logout occurs during the manual restart preflight"
+        ]
+      },
+      {
+        "record": "views-delta.json",
+        "report": "views-delta-vitest.json",
+        "resolution": "Unmodified isolated rerun (views-iterations-isolated) and complete original suite (views-delta-rerun) passed.",
+        "diagnosis": "Environment/load-sensitive failure; original runs overlapped long typecheck and Go work. Several failed cases crossed the default 5-second test deadline; async cleanup then raced. Exact host resource responsible was not measured. No product cause reproduced.",
+        "changes": "No source, assertions, mocks, fixture, dependencies or timeout settings changed. Complete reruns retained original maxWorkers=2; only added verbose reporting and ran check groups sequentially.",
+        "failed_count": 7,
+        "failed_test_names": [
+          "shows the shared timezone with a link to its only editor",
+          "enables with the displayed timezone 'Asia/Shanghai' when configured=false",
+          "updates feedback after enable, normal disable and re-enable without remounting",
+          "adopts the saved timezone from iteration settings before enabling",
+          "opens the complete disable operation and cancellation leaves the switch on",
+          "keeps enabled feedback and the reason after a rejected disable",
+          "retains the original disable request when realtime closes settings before a lost response"
+        ]
+      }
+    ],
+    "full_local_evidence": {
+      "path": ".artifacts/release-v0.6.6/checks-evidence/checks-summary.json",
+      "sha256": "f7a33f5d358f67e92a18c725ab8a5da5f5f917f4aa1cfd22238ded9cdd89cdc4",
+      "command_log_hashes_verified": 26
+    }
+  },
+  "independent_artifact_audit": {
+    "reviewed_at": "2026-10-13T11:18:20.070494+00:00",
+    "source_commit": "4797e6d971296e56f3edc4f6cb6d3f218d9f8d85",
+    "source_revision_and_prepared_hashes_verified": true,
+    "env_against_previous_delivered_archive_and_migrations_against_previous_source": true,
+    "build_overlay_exactly_one_build_run_env_change": true,
+    "published_history_preserved_and_local_version_not_marked_published": {
+      "published_records": 11,
+      "feed_sha256": "80ae9124ab424ace0ae5779bad5536833de2d7a2180af413c5534104caf0e9ee"
+    },
+    "linux_archive": {
+      "sha256": "80b43b34eb06f1e0db4b673f365f1e70f907caac9969cec9fecaa382b1f881da",
+      "member_count": 34,
+      "safe_members": true,
+      "all_members_match_staging_and_rehearsal": true,
+      "members": [
+        {
+          "path": ".env.example",
+          "bytes": 41605,
+          "sha256": "d36aef0040f4d20e70cbb5952baeae07f31e3be1d049d02182e1aef6b96d7b3f"
+        },
+        {
+          "path": "CHANGELOG-v0.6.6.md",
+          "bytes": 796,
+          "sha256": "301345647563f3e7fc49520eaa3b1f07f20384df79afc62ffffc16ec8edacce9"
+        },
+        {
+          "path": "ENV-CHANGES-v0.6.6.zh-CN.md",
+          "bytes": 2203,
+          "sha256": "cad6be0e64d7619b644a05dd6b435344009a68185f84a532c4403045b9294c90"
+        },
+        {
+          "path": "MANIFEST.txt",
+          "bytes": 565,
+          "sha256": "8fc4fb00396322b16bfde9ee7ccb74b4f7ba149c6fa6134a0a223f883e80761a"
+        },
+        {
+          "path": "README-v0.6.6.zh-CN.md",
+          "bytes": 9824,
+          "sha256": "3d372305dd7c986d3c8d296a5ea052ec256d28f42180fe322ce996c06b8b0273"
+        },
+        {
+          "path": "README.md",
+          "bytes": 41190,
+          "sha256": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a"
+        },
+        {
+          "path": "admin-resource-publishing.zh-CN.md",
+          "bytes": 4931,
+          "sha256": "e0585804ca33917a30c52f0eb574159105ba8fc961dca927db7515bb338ef2bc"
+        },
+        {
+          "path": "changelog/changelog.json",
+          "bytes": 70844,
+          "sha256": "80ae9124ab424ace0ae5779bad5536833de2d7a2180af413c5534104caf0e9ee"
+        },
+        {
+          "path": "desktop-intranet-update-runbook.zh-CN.md",
+          "bytes": 27434,
+          "sha256": "5b4796f7b1f87650c9acbaf496e9f811fd738c9a0e87e6b97855cf87c234276c"
+        },
+        {
+          "path": "docker-compose.resource-publishing.yml",
+          "bytes": 350,
+          "sha256": "35431b82cb0eb993c26f9a8b34a53d51ddf7f5017c715af797547adbcc5853c5"
+        },
+        {
+          "path": "docker-compose.selfhost.yml",
+          "bytes": 15460,
+          "sha256": "eafd7bea83dbd45746f961b844892777494a6f366dbe36abb4c26da68704f2cb"
+        },
+        {
+          "path": "docs/admin-resource-publishing.zh-CN.md",
+          "bytes": 4931,
+          "sha256": "e0585804ca33917a30c52f0eb574159105ba8fc961dca927db7515bb338ef2bc"
+        },
+        {
+          "path": "docs/mcp-catalog-publishing.md",
+          "bytes": 21169,
+          "sha256": "cb99aed8524045a3568204cd6239b8c144e297132becd2b8384370a9d1243029"
+        },
+        {
+          "path": "docs/mcp-intranet-setup.md",
+          "bytes": 5957,
+          "sha256": "0bddc7064401bebef9cd610e827267df18a2e986d08ed13a9ed7b9c168c766f7"
+        },
+        {
+          "path": "initialize-platform-admin.sh",
+          "bytes": 4401,
+          "sha256": "f88bf6758d4e3f0d4150374f47917778cdb04d4e9c8faaa6a89156bcc142deee"
+        },
+        {
+          "path": "install-changelog.sh",
+          "bytes": 6414,
+          "sha256": "3b09552f7a1e94846b71e61a455c3f81f35146b1a5381baf2d0b33b7d2eb1015"
+        },
+        {
+          "path": "mcp-catalog-publishing.md",
+          "bytes": 21169,
+          "sha256": "cb99aed8524045a3568204cd6239b8c144e297132becd2b8384370a9d1243029"
+        },
+        {
+          "path": "mcp-intranet-setup.md",
+          "bytes": 5957,
+          "sha256": "0bddc7064401bebef9cd610e827267df18a2e986d08ed13a9ed7b9c168c766f7"
+        },
+        {
+          "path": "mcp-templates/README.txt",
+          "bytes": 875,
+          "sha256": "6133a5587d21dea6ba7ab6d5750d2b078a21874f2b9e12d9e8f117aeb3ea63af"
+        },
+        {
+          "path": "multica-images.tar.gz",
+          "bytes": 295423638,
+          "sha256": "818d24b9a40f6b2c626a207ac66bea2ec479312ef35357705f7a1e556797cf93"
+        },
+        {
+          "path": "offline-upgrade.sh",
+          "bytes": 11696,
+          "sha256": "2b618f1e372ca99bd2acc7aa9704a14481d0d6d629daae440cc9d95e8b3d317a"
+        },
+        {
+          "path": "offline-upgrade.zh-CN.md",
+          "bytes": 41190,
+          "sha256": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a"
+        },
+        {
+          "path": "scripts/admin-init-compose.mjs",
+          "bytes": 4702,
+          "sha256": "7de3d7551edc8514545b25a3ef3b9b7f216be9c3df8f895e4e7a0ce662ad1441"
+        },
+        {
+          "path": "scripts/changelog-lib.mjs",
+          "bytes": 8710,
+          "sha256": "a1894bb1c89c85761a77b64ce39fa3f6c14daa1752fefed360ccf8d62cad7dd2"
+        },
+        {
+          "path": "scripts/install-changelog.mjs",
+          "bytes": 5170,
+          "sha256": "d7bfb299708375e8373af20a1543ce666be4ea7cd277b6d7febd65e09aaea077"
+        },
+        {
+          "path": "scripts/publish-changelog.mjs",
+          "bytes": 819,
+          "sha256": "98b029f713a7ea17f66d6ad34cdc5d11089c7e3abdba03421d82437730077018"
+        },
+        {
+          "path": "skill-templates/README.txt",
+          "bytes": 493,
+          "sha256": "b708122d5d255a6f68e000701bff2f3afdaf15ac608ee068ec892340fea66317"
+        },
+        {
+          "path": "操作文档.md",
+          "bytes": 41190,
+          "sha256": "67a75028a52c1cd1a2a536f24776a9dc8ea279abd1037e4e6922984374336c4a"
+        }
+      ]
+    },
+    "saved_images": {
+      "verified_content_addressed_blobs": 47,
+      "layer_diff_ids_verified": 38,
+      "all_linux_amd64": true,
+      "no_runtime_node_options": true,
+      "final_saved_binary_hashes": {
+        "server": "939cc80f2cea1a1d9da4ef40fcba5c5abf051c48a5fb8318be76d1baa17feda0",
+        "multica": "e46f03d3ebde0e10c7186bb7803a8917b54c3e7bba41406ccf2f530f9cde53f2"
+      },
+      "exact_feed_found_in_final_server": true
+    },
+    "windows": {
+      "original_build_collected_and_delivery_bytes_identical": true,
+      "pe": {
+        "nsis": {
+          "machine": "0x14c",
+          "certificate_table_absent": true,
+          "sha256": "e3fe9227158b60ce089415ec86ed79cd2804895fd15bfea5c33c4995d07f483b"
+        },
+        "desktop": {
+          "machine": "0x8664",
+          "certificate_table_absent": true,
+          "sha256": "581b261b4340341a2783eea33d4ce49ed75b5612190b297658a47072167569be"
+        },
+        "cli": {
+          "machine": "0x8664",
+          "certificate_table_absent": true,
+          "sha256": "fa5a756d16a789faafab8f7c395a0db3831869d38a0375c50cbcee5467752a6d"
+        }
+      },
+      "go_metadata_verified": true,
+      "asar_files_and_blocks_verified": 47451,
+      "asar_unpacked_files_verified": 2,
+      "compiled_output_files_match": 495,
+      "native_windows_execution": "not performed; existing expected acceptance limit"
+    },
+    "status": "passed"
+  },
+  "independent_feed_audit": {
+    "status": "passed",
+    "feed_rebuilt_from_git_objects_byte_identical": true,
+    "markdown_rebuilt_from_git_objects_byte_identical": true,
+    "update_metadata_parsed_with_frozen_runtime_dependency": true,
+    "safe_references_and_actual_sha512_and_size_verified": true,
+    "preview_items": 9,
+    "at": "2026-10-13T11:21:14.000Z"
+  },
+  "harness_correction_review": {
+    "status": "passed",
+    "reviewed_at": "2026-10-13T11:27:20.235180+00:00",
+    "mount_correction": {
+      "literal_alias": "/host_mnt/Volumes/ => /Volumes/ for bind sources only",
+      "synthetic_negative_checks": [
+        "source_suffix",
+        "destination",
+        "write_mode",
+        "mount_type",
+        "volume_name",
+        "other_host_path",
+        "named_volume_identity",
+        "duplicate_entry_count"
+      ],
+      "actual_current_mounts_equal_baseline_after_only_alias_normalization": true,
+      "actual_raw_differences": [
+        {
+          "service": "backend",
+          "destination": "/app/data/mcp-templates",
+          "changed_fields": [
+            "Source"
+          ],
+          "before_source": "/host_mnt.artifacts/release-v0.6.6/rehearsal/deployment/mcp-templates",
+          "after_source": ".artifacts/release-v0.6.6/rehearsal/deployment/mcp-templates"
+        }
+      ]
+    },
+    "optional_password_flag_correction": {
+      "frozen_field": "server/internal/handler/auth.go:55: RequiresPasswordChange bool json requires_password_change,omitempty",
+      "response_source": "auth_password.go passwordSessionResponse assigns typed credential.MustChangePassword",
+      "password_change_behavior": "password change resolves the authenticated user ID, updates that credential, commits revocation, and returns passwordSessionResponse for the same user",
+      "surrounding_acceptance": "Both harnesses require restricted initial login, business denial, unchanged temporary password rejection, changed-password admin role/overview/users/installations access, and unchanged credential-file bytes. Upgrade harness additionally verifies original ordinary account session/login IDs, workspace/issue/upload, original environment, ledger, and old temporary password rejection."
+    },
+    "source_files_sha256": {
+      "fixture.py": "7f6046153dc71ffdc6e45bf2bca85255562dbb30d9bd70f5e7a4534842c35c9d",
+      "verify-upgrade.py": "9cab5c337099a831b83b61147105f02dcbad132ce932c69d10ef803b8eae8631",
+      "verify-fresh.py": "ace3e3830e7eed81cb26cda6a12960c58d83f138db36d3f2a1343b73b7fcaea8"
+    },
+    "application_source_changed": false,
+    "harness_files_edited_by_reviewer": false,
+    "findings": []
+  },
+  "not_verified": [
+    "Windows installer, Desktop and CLI are unsigned. Native Windows GUI, installation, upgrade/profile retention, elevation, SmartScreen and Authenticode trust were not tested.",
+    "Linux acceptance used Docker Desktop amd64 emulation on macOS ARM64 and synthetic deployments; target intranet hardware and production were not accessed.",
+    "This local release does not publish a GitHub release/tag or deploy production. Source tests cover selected release/source-delta suites, not the whole repository or mobile.",
+    "Four opt-in Docker changelog smoke tests remained skipped. Actual archive upgrade rehearsals are separate evidence and do not retroactively execute them."
+  ],
+  "github_release_published_by_this_task": false
+}

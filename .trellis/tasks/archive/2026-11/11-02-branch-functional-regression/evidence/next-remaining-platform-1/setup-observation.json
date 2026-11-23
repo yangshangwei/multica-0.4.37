@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-02T08:46:15.843000+00:00",
+  "scope": "Child setup lookup observation; distinct from actual platform preflight",
+  "tool_result": {
+    "status": "rejected",
+    "reason": "The Bash output indicates a command/setup failure that should be fixed before retrying."
+  },
+  "referenced_missing_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/resume-linux-deb-1/run.json",
+  "actual_path_exists": false,
+  "correct_source": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/resume-linux-deb-1/build.json",
+  "correct_source_exists": true,
+  "recovery": "Used rg --files to verify source filenames; subsequent recorder reads build.json. No mutating operation was involved.",
+  "http_429_observed_in_this_child": false,
+  "empty_messages_observed_in_this_child": false
+}

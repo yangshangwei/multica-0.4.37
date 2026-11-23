@@ -1,0 +1,13 @@
+[
+  {
+    "id": "HARNESS-001",
+    "run": "run-01",
+    "category": "test_harness",
+    "severity": "test-blocking",
+    "summary": "Agent public comment projection has no author_id; the initial test expected that field.",
+    "product_change": false,
+    "resolution": "Use exact comment id/content in per-run records plus run/resource/memory agent and owner attribution.",
+    "evidence": "run-01/playwright.json",
+    "status": "resolved_in_run-04-closure"
+  }
+]

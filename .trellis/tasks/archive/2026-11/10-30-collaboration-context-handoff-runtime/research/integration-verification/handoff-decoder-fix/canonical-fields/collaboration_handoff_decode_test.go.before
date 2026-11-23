@@ -1,0 +1,142 @@
+package protocol
+
+import (
+	"encoding/json"
+	"reflect"
+	"strconv"
+	"strings"
+	"testing"
+)
+
+func populatedHandoffEnvelope() CollaborationHandoffEnvelope {
+	v := testHandoffEnvelope()
+	v.Handoff = &CollaborationHandoffTransfer{ID: v.IssueID, AuthorID: v.IssueID, FromID: v.IssueID, ToID: v.RunID, Purpose: "transfer", EventSequence: "0", SourceID: v.IssueID}
+	v.InformationRequest = v.Handoff
+	v.Inputs = CollaborationHandoffInputs{CollaborationHandoffPage: CollaborationHandoffPage{Total: 1, Returned: 1},
+		Items: []CollaborationHandoffInput{{CommandID: v.IssueID, AuthorID: v.IssueID, State: "consumed", ReaderRunIDs: []string{v.RunID}}}}
+	v.Results = CollaborationHandoffResults{CollaborationHandoffPage: CollaborationHandoffPage{Total: 1, Returned: 1},
+		Items: []CollaborationHandoffResult{{RunID: v.RunID, Role: "agent", Progress: "completed", ProofState: "host_exit_observed", ResultState: "absent", FinalAnswerState: "unknown"}}}
+	v.WakeupCauses = CollaborationHandoffCauses{CollaborationHandoffPage: CollaborationHandoffPage{Total: 1, Returned: 1}, Completeness: "recorded",
+		Items: []CollaborationHandoffCause{{ID: v.IssueID, SourceKind: "proof", SourceID: v.IssueID, SourceRunID: v.RunID, Sequence: "1"}}}
+	v.Sources = []CollaborationHandoffSource{{Kind: "handoff", ID: v.IssueID, SHA256: CollaborationHandoffHash(""), Content: "", Availability: "available", Trust: "data_only"}}
+	return v
+}
+
+func handoffWireObject(t *testing.T, value any) map[string]any {
+	t.Helper()
+	raw, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var object map[string]any
+	if err := json.Unmarshal(raw, &object); err != nil {
+		t.Fatal(err)
+	}
+	return object
+}
+
+func handoffWireAt(object map[string]any, path string) map[string]any {
+	var current any = object
+	if path != "" {
+		for _, part := range strings.Split(path, ".") {
+			if items, ok := current.([]any); ok {
+				index, _ := strconv.Atoi(part)
+				current = items[index]
+			} else {
+				current = current.(map[string]any)[part]
+			}
+		}
+	}
+	return current.(map[string]any)
+}
+
+func TestCollaborationHandoffWireRequiresDeclaredFields(t *testing.T) {
+	// Completeness and empty text are facts even when their value is false/zero.
+	for path, fields := range map[string][]string{
+		"":                      {"protocol_version", "issue_id", "run_id", "mode", "event_seq", "authority", "assignment", "memory", "inputs", "results", "wakeup_causes", "sources", "missing"},
+		"authority":             {"status"},
+		"assignment":            {"role", "step_key"},
+		"handoff":               {"id", "author_id", "from_id", "to_id", "purpose", "event_seq", "source_id"},
+		"information_request":   {"id", "author_id", "from_id", "to_id", "purpose", "event_seq", "source_id"},
+		"memory":                {"version", "availability"},
+		"inputs":                {"total", "returned", "truncated", "items"},
+		"inputs.items.0":        {"command_id", "author_id", "state", "reader_run_ids", "readers_truncated"},
+		"results":               {"total", "returned", "truncated", "items"},
+		"results.items.0":       {"run_id", "role", "step_key", "progress", "proof_state", "recording_incomplete", "result_state", "final_answer_state"},
+		"wakeup_causes":         {"total", "returned", "truncated", "items", "completeness"},
+		"wakeup_causes.items.0": {"id", "source_kind", "source_id", "source_run_id", "sequence"},
+		"sources.0":             {"kind", "id", "sha256", "content", "truncated", "availability", "trust"},
+	} {
+		for _, field := range fields {
+			for _, mode := range []string{"missing", "null"} {
+				t.Run(path+"/"+field+"/"+mode, func(t *testing.T) {
+					object := handoffWireObject(t, populatedHandoffEnvelope())
+					nested := handoffWireAt(object, path)
+					if mode == "missing" {
+						delete(nested, field)
+					} else {
+						nested[field] = nil
+					}
+					raw, _ := json.Marshal(object)
+					var out CollaborationHandoffEnvelope
+					if json.Unmarshal(raw, &out) == nil {
+						t.Fatal("accepted a handoff without a required fact")
+					}
+				})
+			}
+		}
+	}
+}
+
+func TestCollaborationHandoffWireRequiresEmptyPageFacts(t *testing.T) {
+	for _, page := range []string{"inputs", "results", "wakeup_causes"} {
+		for _, field := range []string{"total", "returned", "truncated"} {
+			for _, mode := range []string{"missing", "null"} {
+				t.Run(page+"/"+field+"/"+mode, func(t *testing.T) {
+					object := handoffWireObject(t, testHandoffEnvelope())
+					nested := handoffWireAt(object, page)
+					if mode == "missing" {
+						delete(nested, field)
+					} else {
+						nested[field] = nil
+					}
+					raw, _ := json.Marshal(object)
+					var out CollaborationHandoffEnvelope
+					if json.Unmarshal(raw, &out) == nil {
+						t.Fatal("fabricated a complete empty page")
+					}
+				})
+			}
+		}
+	}
+}
+
+func TestCollaborationHandoffWirePreservesZeroFalseAndOptionalFields(t *testing.T) {
+	for name, value := range map[string]CollaborationHandoffEnvelope{"empty": testHandoffEnvelope(), "populated": populatedHandoffEnvelope()} {
+		t.Run(name, func(t *testing.T) {
+			raw, _ := json.Marshal(value)
+			var out CollaborationHandoffEnvelope
+			if err := json.Unmarshal(raw, &out); err != nil || !reflect.DeepEqual(value, out) {
+				t.Fatalf("changed a valid envelope with omitted optional fields: %v", err)
+			}
+		})
+	}
+	for _, field := range []string{"handoff", "information_request"} {
+		t.Run(field, func(t *testing.T) {
+			object := handoffWireObject(t, testHandoffEnvelope())
+			delete(object, field)
+			raw, _ := json.Marshal(object)
+			var out CollaborationHandoffEnvelope
+			if json.Unmarshal(raw, &out) == nil {
+				t.Fatal("missing transfer must not be interpreted as explicit null")
+			}
+		})
+	}
+	object := handoffWireObject(t, testHandoffEnvelope())
+	object["recording"] = nil
+	raw, _ := json.Marshal(object)
+	var out CollaborationHandoffEnvelope
+	if err := json.Unmarshal(raw, &out); err != nil || out.Recording != nil {
+		t.Fatalf("optional null recording refused: %v", err)
+	}
+}

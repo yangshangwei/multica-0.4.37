@@ -1,0 +1,29 @@
+{
+  "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "provider": "Only test-created fake executables; no installed Provider version/account probe",
+  "go": {
+    "command": [
+      "go",
+      "version"
+    ],
+    "exit_code": 0,
+    "version": "go version go1.27.0 darwin/arm64"
+  },
+  "node": {
+    "command": [
+      "node",
+      "--version"
+    ],
+    "exit_code": 0,
+    "version": "v22.23.2"
+  },
+  "pnpm": {
+    "command": [
+      "pnpm",
+      "--version"
+    ],
+    "exit_code": 0,
+    "version": "10.28.2"
+  }
+}

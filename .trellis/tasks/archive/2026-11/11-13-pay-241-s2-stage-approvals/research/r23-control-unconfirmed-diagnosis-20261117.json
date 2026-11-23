@@ -1,0 +1,306 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "date": "2026-11-17",
+  "status": "CONFIRMED_TEST_ONLY_REPLY_CODEC_MISMATCH_SUCCESSFUL_ROLLBACK_RECEIPT_REJECTED",
+  "scope": "read-only original result/evidence/source/bridge/harness logs and recorded after snapshot",
+  "original_four": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT_RUN": 2,
+    "retry": 0,
+    "first_case_ms": 76407,
+    "second_case_ms": 49857,
+    "result_sha256": "a6a9b58fe105b95a5497ac014cb598d43efb1457a96dcd338eb4058a8941f968",
+    "unchanged": true
+  },
+  "failure": {
+    "request_id": "61b4733a-f70e-424c-8f4b-c337ea9c3f52",
+    "client_class": "StageExecutionControl",
+    "error_line": "e2e/fixtures/collaboration-stage-control.ts:189",
+    "data_catch_line": "e2e/fixtures/collaboration-stage-control.ts:203",
+    "exact_rejecting_field": "calls.last.conditional_version",
+    "actual_value": "1/after/01a1e575-3092-7cb9-bfa2-8a28d87745ff",
+    "decimal_protocol_version_predicate_matches": false,
+    "bounded_nonempty_UTF8_text_predicate_matches": true,
+    "bytes": 44,
+    "client_version_validator_line": 148,
+    "deadline_or_ACK_loss_as_observed_cause": false,
+    "old_R20_user_holder_attribution": false
+  },
+  "original_harness_reply": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/harness.stdout.log",
+    "line": 24,
+    "initial_inspected_lines": 24,
+    "initial_inspected_bytes": 9270,
+    "initial_inspected_sha256": "30e41954b0128cc2ecc5c87416220939df193957629fa25f606d3aaf4ed2aa21",
+    "current_full_file_sha256": "30e41954b0128cc2ecc5c87416220939df193957629fa25f606d3aaf4ed2aa21",
+    "line_sha256": "b00bc0a507bf3c9d8652964f8880da4d6e2bdf826c247b13fc25ad82719c71c6",
+    "payload_sha256": "f6814357e786784fd26a92a2f1f4eeb8c383c876b70232ececaee4837baf698c",
+    "payload": {
+      "request_id": "61b4733a-f70e-424c-8f4b-c337ea9c3f52",
+      "ok": true,
+      "result": {
+        "version": 1,
+        "issue_id": "01a1e574-a1ac-74de-89bd-9a58186b56ad",
+        "request_id": "61b4733a-f70e-424c-8f4b-c337ea9c3f52",
+        "intent_id": "01a1e575-5feb-7382-a862-81b0f0793478",
+        "approval_decision_id": "01a1e575-5cf4-71a5-9607-64b9d8f0b9ab",
+        "kind": "rollback",
+        "state": "succeeded",
+        "fact_id": "01a1e575-600d-7ccd-800c-cd8ec86aa8ef",
+        "observation_id": "01a1e575-600d-7ccd-800c-cd8ec86aa8ef"
+      },
+      "calls": {
+        "count": 2,
+        "last": {
+          "intent_id": "01a1e575-5feb-7382-a862-81b0f0793478",
+          "kind": "rollback",
+          "target_digest": "69f136894a3bb3a99dbbba3f55a2644c13f8eff1a73b580fea107e66f229b5f3",
+          "artifact_digest": "ee8e03a8180cc18648b74891cf7ebab384debe3e542b2f9b89d54928cdf0ea4f",
+          "external_request_key": "01a1e575-5feb-7382-a862-81b0f0793478",
+          "conditional_version": "1/after/01a1e575-3092-7cb9-bfa2-8a28d87745ff"
+        }
+      }
+    },
+    "still_owned_API_log_may_legitimately_append": true
+  },
+  "request_provenance": {
+    "body": {
+      "request_id": "61b4733a-f70e-424c-8f4b-c337ea9c3f52",
+      "action": "execution.prepare",
+      "issue_id": "01a1e574-a1ac-74de-89bd-9a58186b56ad",
+      "approval_decision_id": "01a1e575-5cf4-71a5-9607-64b9d8f0b9ab",
+      "candidate": {
+        "candidate_id": "01a1e574-a533-7480-9c02-54a3f79dd6a7",
+        "version": "1",
+        "content_digest": "978dbb13848dbfe044d1e1074776785016a963849346e1d425a0f17b022cfc88"
+      },
+      "target_digest": "69f136894a3bb3a99dbbba3f55a2644c13f8eff1a73b580fea107e66f229b5f3"
+    },
+    "classification": "SOURCE_RECONSTRUCTED_NOT_ORIGINAL_ENCODED_FRAME",
+    "original_request_frame_found": false,
+    "original_source_construction": "e2e/collaboration-stage-execution.spec.ts:326-327",
+    "retained_base": "case2 steps[name=approval and one uncertain intent do not imply deployment or cancellation].facts.original",
+    "fresh_rollback_approval_HTTP_index": 33,
+    "fresh_rollback_approval_HTTP_status": 200,
+    "fresh_rollback_approval_HTTP_at": "2026-11-16T17:43:56.430Z",
+    "correlated_request_issue_candidate_approval_and_target_match": true,
+    "request_sent_or_replayed_by_researcher": false
+  },
+  "durable_result": {
+    "recorded_snapshot_path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/database-after-four-r03.json",
+    "snapshot_sha256": "e6fd17ce87aea0b97021b5299d321201c9ca5fe2dd5a0f7a8435e0ac6f142ff3",
+    "intent_index": 3,
+    "intent": {
+      "intent_id": "01a1e575-5feb-7382-a862-81b0f0793478",
+      "workspace_id": "f1c26344-0053-4b7b-a2a1-94ddba33af95",
+      "issue_id": "01a1e574-a1ac-74de-89bd-9a58186b56ad",
+      "candidate_id": "01a1e574-a533-7480-9c02-54a3f79dd6a7",
+      "candidate_version": "1",
+      "approval_decision_id": "01a1e575-5cf4-71a5-9607-64b9d8f0b9ab",
+      "request_id": "61b4733a-f70e-424c-8f4b-c337ea9c3f52",
+      "target_digest": "69f136894a3bb3a99dbbba3f55a2644c13f8eff1a73b580fea107e66f229b5f3",
+      "artifact_digest": "ee8e03a8180cc18648b74891cf7ebab384debe3e542b2f9b89d54928cdf0ea4f",
+      "kind": "rollback",
+      "admitted_at": "2026-11-16T17:43:57.162Z",
+      "dispatch_expires_at": "2026-11-16T17:44:27.162Z"
+    },
+    "observation_index": 5,
+    "observation": {
+      "observation_id": "01a1e575-600d-7ccd-800c-cd8ec86aa8ef",
+      "intent_id": "01a1e575-5feb-7382-a862-81b0f0793478",
+      "issue_id": "01a1e574-a1ac-74de-89bd-9a58186b56ad",
+      "origin": "integration",
+      "native_id": "callback:01a1e575-5feb-7382-a862-81b0f0793478",
+      "native_version": "1",
+      "observation_digest": "cccb10d74a46f02816d6bab19b697b76e2bdcac31b9f301bc8e5e94bee3a51f3",
+      "result": "succeeded",
+      "external_operation_id": "rollback/provider:95b2633a3e",
+      "created_at": "2026-11-16T17:43:57.198Z"
+    },
+    "service_commit_return_boundary": "collaboration_stage_execution_observations.go:89-93",
+    "controller_OK_only_on_nil_error": "collaboration_stage_execution_control_test.go:163-175",
+    "matching_actual_intent_and_successful_integration_observation_recorded": true,
+    "new_DB_read_executed": false,
+    "snapshot_summary": {
+      "database": "multica_pay241_20261116_s2_runtime_r11",
+      "other_connections": 5,
+      "gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": "28"
+      },
+      "queue_rows": 15,
+      "queue_status_counts": {
+        "failed": 13,
+        "deferred": 1,
+        "running": 1
+      },
+      "leased_or_bound": 0,
+      "host_runs": 27,
+      "unsettled": 0,
+      "unreleased": 0,
+      "artifacts": 12,
+      "incomplete_artifacts": 0,
+      "stage_intents": 4,
+      "stage_observations": 6,
+      "unresolved_stage_intents": 1,
+      "rollback_metrics": 3
+    },
+    "snapshot_is_stopped_zero_connection_proof": false
+  },
+  "transport": {
+    "bridge_path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/runtime-r05/bridge.mjs",
+    "request_forward_once_lines": "95-103",
+    "reply_forward_same_correlated_payload_lines": "196-208",
+    "bridge_conditional_version_validation": false,
+    "harness_actual_service_prepare_lines": "collaboration_stage_execution_control_test.go:242-269",
+    "harness_response_stdout_lines": "389-395",
+    "client_generic_catch_loses_specific_decoder_error": true,
+    "original_client_received_bytes_capture_found": false
+  },
+  "contract": {
+    "provider_changes_conditional_state": "collaboration_stage_execution_source_test.go:221-226",
+    "provider_call_snapshot_copies_original_conditional_state": "collaboration_stage_execution_source_test.go:158-160",
+    "product_validates_conditional_state_as_bounded_text": "collaboration_stage_execution_identity.go:11-12,29",
+    "product_successful_after_conditional_state_as_bounded_text": "collaboration_stage_execution_observations.go:32",
+    "opaque_conditional_state_is_protocol_revision": false
+  },
+  "minimum_proposed_repair": {
+    "files": [
+      "e2e/fixtures/collaboration-stage-control.ts",
+      "e2e/fixtures/collaboration-stage-control.node-test.mjs"
+    ],
+    "product_Go_SQL_bridge_or_UI_edit_required": false,
+    "specific_delta": "calls.last.conditional_version: reuse text(value,256) instead of decimal version(value)",
+    "expected_RED_controls": [
+      "retained opaque token successful terminal reply parser",
+      "same successful opaque reply via existing private AF_UNIX socket resolves original after one send"
+    ],
+    "negative_controls": [
+      "empty/null/nonstring",
+      "NUL/invalid Unicode",
+      "over256 UTF8 bytes with multibyte boundary",
+      "wrong request ID",
+      "duplicate fields",
+      "unknown envelope/invocation fields",
+      "invalid count/digest/kind",
+      "invalid UTF8/oversized frames",
+      "disconnection and no replay"
+    ],
+    "preserve": [
+      "candidate/protocol/native numeric validators",
+      "source configuration request contract",
+      "64KiB frame limit",
+      "20s control timer",
+      "private socket/identity enforcement",
+      "one send/no replay",
+      "original four case bodies",
+      "original five/20/480 second deadlines"
+    ],
+    "regression_commands_run": 0
+  },
+  "unreached_assertions": [
+    "post-rollback exact R4 execution facts",
+    "original-key execution.receipt",
+    "Desktop rollback fact display",
+    "final rollback screenshot and passed outcome"
+  ],
+  "full_S2_A01_A12_or_parent_accepted": false,
+  "references": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/result.json",
+      "sha256": "a6a9b58fe105b95a5497ac014cb598d43efb1457a96dcd338eb4058a8941f968",
+      "bytes": 6766
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/stage-execution-evidence.json",
+      "sha256": "b1bc224f6e92de157121f10f97977eba9d5632d6eab78755d0e42e99fceb0d83",
+      "bytes": 142499
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/database-after-four-r03.json",
+      "sha256": "e6fd17ce87aea0b97021b5299d321201c9ca5fe2dd5a0f7a8435e0ac6f142ff3",
+      "bytes": 62596
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/harness.stdout.log",
+      "sha256": "30e41954b0128cc2ecc5c87416220939df193957629fa25f606d3aaf4ed2aa21",
+      "bytes": 9270
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/bridge.log",
+      "sha256": "236c42e08ee787159f2c3aeaf50e380c847315ce8fac3e911eb42c4d08c26d55",
+      "bytes": 194
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/api-start-plan.json",
+      "sha256": "3ea2a684cace9102c2a745f3f3edff9a0850893abe56a5fb8f59f07cea53c238",
+      "bytes": 5541
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/e2e/fixtures/collaboration-stage-control.ts",
+      "sha256": "cd3d1e26322312dd1ad01e5d86c8fb20df82334356b6a4d436293f95475adb76",
+      "bytes": 13240
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/e2e/fixtures/collaboration-stage-control.node-test.mjs",
+      "sha256": "af4b5aa148ec5855bc068a195c93f2c25c1e29121cd5dabedbe537a2aebab966",
+      "bytes": 10656
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/e2e/collaboration-stage-execution.spec.ts",
+      "sha256": "781c29f1bee79160e82e6c587439870f6cfbe303af3d1fab3aafc65a9972b90e",
+      "bytes": 59247
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-green-r01/server/cmd/server/collaboration_stage_execution_control_test.go",
+      "sha256": "5a8dceb725802a80d61438e0f6b1f2055eefffa88b964ab203f6b8a05fca579e",
+      "bytes": 17212
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-green-r01/server/cmd/server/collaboration_stage_execution_source_test.go",
+      "sha256": "4ce7ef0bc64b3986c40221d72d9c1d2fa2423ac8d6f570655c94ea9bfaa92678",
+      "bytes": 11644
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-green-r01/server/internal/service/collaboration_stage_execution_identity.go",
+      "sha256": "2129ede9677f5da9febbd1082f17584e5251d2cfbc08dc5b3945f215cb177166",
+      "bytes": 2575
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-green-r01/server/internal/service/collaboration_stage_execution_types.go",
+      "sha256": "500f05fece4da888a44750046a6c420170a96fcaf54c773079ee1460e1cdf68b",
+      "bytes": 9014
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-green-r01/server/internal/service/collaboration_stage_execution_observations.go",
+      "sha256": "6cb8f58cbc40336b66b72abe65317e9305a910e80dc976491cd4495096b2291f",
+      "bytes": 8316
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/runtime-r05/bridge.mjs",
+      "sha256": "1f0663a8c16c77414929ce39949e7130c2d2424a63c9d772c145db744b4e9b40",
+      "bytes": 12628
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-control-unconfirmed-diagnosis-20261117.md",
+      "sha256": "6373a3bb0ac82bb3d4ec312db797597048c03dd47dc8ff5a82c8e1d3a746bc6a",
+      "bytes": 11676
+    }
+  ],
+  "reference_count": 16,
+  "API_DB_request_replay_process_build_test_source_or_Git_actions": 0,
+  "written_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-control-unconfirmed-diagnosis-20261117.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-control-unconfirmed-diagnosis-20261117.json"
+  ],
+  "caveats": [
+    "Exact emitted reply is captured; original encoded request/client-received bytes are not.",
+    "Request reconstruction is labelled separately from original wire evidence.",
+    "Successful committed rollback does not pass unexecuted later scenario assertions.",
+    "Original R20 holder and accepted R21/R22 lock fixes retain separate evidence.",
+    "No test/repair/runtime command was executed by researcher; W10 report and peer files preserved."
+  ]
+}

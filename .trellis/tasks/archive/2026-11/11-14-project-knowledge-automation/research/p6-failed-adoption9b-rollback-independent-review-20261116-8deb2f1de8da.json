@@ -1,0 +1,108 @@
+{
+  "kind": "independent_failed9b_source_adoption_complete_guarded_rollback_review",
+  "at": "2026-11-16T03:14:45.672240+00:00",
+  "reviewer": "/root/p6_source_check",
+  "status": "FAILED_ADOPTION_PRESERVED_ROLLBACK5DEE_ACCEPTED",
+  "accepted": true,
+  "blocking_findings_open": 0,
+  "failed_operation_accepted": false,
+  "failed_receipt": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/reports/failed-adoption-9b0291c83697.json",
+    "sha256": "fc2427ea45c8321371400e1b34af8f09d2b527b63b9f6cb43677157bc0a0f232",
+    "bytes": 586,
+    "mode": 384
+  },
+  "main_one_shot_grant": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/reports/main-native-adoption-handoff-2b993ad4eaf1.json",
+    "sha256": "ed58a94e35970301dcf8adda4f2e56c6a2b7fe0439e3b99375aed99a9cb693f4",
+    "bytes": 4883,
+    "mode": 384
+  },
+  "source_id": "5dee3553b10a530ac841c58afe3ad2e737eaf7eab4bd72e3544b3d65c2edae33",
+  "source_root": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source",
+  "HEAD": "2f6989bfa5630ff2790d37a539c1522d2d29d094",
+  "files": 10408,
+  "workspace_links": 32,
+  "full_initial_final_equal": true,
+  "full_actual_rows_match_before_manifest": true,
+  "transaction_before_source_matches_restored_actual": true,
+  "actual_index_HEAD_before_bytes_restored": {
+    "index": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.git/index",
+      "sha256": "3e175cfcea426f6abc98a04c334a7427f6b71c515bc4a45557c02d4b9bf9c5d2",
+      "bytes": 1239688,
+      "mode": 384
+    },
+    "HEAD": {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.git/HEAD",
+      "sha256": "66a57f6a3f84ddb0e00759a01577f94b332360c4a7cf019799b3af48a6a1ea1a",
+      "bytes": 41,
+      "mode": 420
+    }
+  },
+  "exact26_operations_restored": true,
+  "original3_harnesses_restored": true,
+  "added2_bytes_retained_in_owned_quarantine": true,
+  "intents": 26,
+  "applied": 26,
+  "unpublished_index": {
+    "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/same-volume-backups/transaction-9b0291c83697/unpublished-1237b350522a",
+    "sha256": "ad37cf79a46c63967199b1f680b1eb3289d56ca030bc16865f6220c839466c44",
+    "bytes": 1239630,
+    "mode": 384
+  },
+  "protected": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.env",
+      "sha256": "023175cea43e8d88c06c0e298b9e7ba4459ce0e2ff2aba3114f4124eb9582569",
+      "bytes": 98,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-source/.trellis/tasks/11-14-project-knowledge-automation/research/p6-allocation.json",
+      "sha256": "c005866cf315f588f251353a489c3f0b839362eba18ceac8c17b96f8408bc3dd",
+      "bytes": 1541,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-browser-25c0cd1e/allocation.json",
+      "sha256": "c005866cf315f588f251353a489c3f0b839362eba18ceac8c17b96f8408bc3dd",
+      "bytes": 1541,
+      "mode": 384
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/knowledge-automation-persistent-20261116-495c4b90d6/p6-browser-25c0cd1e/environment.json",
+      "sha256": "2e85e5ff7183b5db84b9a165119b59c750f8aef26534b2634ce94ae953c4ced9",
+      "bytes": 8583,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/frozen-full-manifest.json",
+      "sha256": "7a34a4f4821b323a1e3376fad2115be2b8cadb01139326f2cc921013fab4b1bf",
+      "bytes": 3110342,
+      "mode": 384
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/knowledge-automation-full-source-20261116-f74efb26c8/mutable-full-manifest.json",
+      "sha256": "d00cf4bd187d7d26471bd570190eb28aefc214585d55b92daaa56fbc0f35dd84",
+      "bytes": 3110343,
+      "mode": 384
+    }
+  ],
+  "original_failure_stays_failed": true,
+  "old_grant_consumed_not_replayed": true,
+  "reviewer_Go_SQL_build_runtime_execution": 0,
+  "reviewer_source_mutation": false,
+  "source_ready": false,
+  "production_build": false,
+  "final_ROOT_acceptance": false,
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "file": "/Volumes/artisan/.multica-acceptance/knowledge-automation-root-next-preparation-20261116-8fe979e10bad/execute-reviewed-adoption.py",
+      "issue": "stage_index exact raw Git blob/mode check refused after all26 guarded source operations; executable result remains FAILED",
+      "scope": "private executor mechanics only; runtime owner diagnoses and repairs",
+      "next_gate": "NEW corrected executor, focused regression and independent exact admission plus fresh MAIN grant; no reuse of consumeded58 handoff"
+    }
+  ]
+}

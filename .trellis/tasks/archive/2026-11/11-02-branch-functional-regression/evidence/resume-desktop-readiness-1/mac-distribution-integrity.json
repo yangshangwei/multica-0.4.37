@@ -1,0 +1,45 @@
+{
+  "at": "2026-11-02T02:21:41.732399+00:00",
+  "metadata_source": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/latest-mac.yml",
+  "metadata_sha256": "addb8b0e3a3d31888bed89db52b02315d9b7c129da55296290f6643a79c59dbf",
+  "artifacts": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.zip",
+      "bytes": 223524090,
+      "expected_bytes": 223524090,
+      "sha256": "b50a00fa6fc44ca612a834aa8fd1c638f91431b87d5b6bb47abbd479433183d9",
+      "sha512_base64": "JWDSnUuNQmDKJQGa9PnhYPZ4j2gqDhlGPjMWUQ9ymS9q/QJ4Ge0b/wVh0rZfR9BrK9GhSUhpXJ8Iku31OgfTaQ==",
+      "expected_sha512_base64": "JWDSnUuNQmDKJQGa9PnhYPZ4j2gqDhlGPjMWUQ9ymS9q/QJ4Ge0b/wVh0rZfR9BrK9GhSUhpXJ8Iku31OgfTaQ==",
+      "metadata_matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-packaging-639bf6ef8-20261102/dist/local-candidate-639bf6ef8/mac-arm64-r3/multica-desktop-0.6.8-rc.20261102-mac-arm64.dmg",
+      "bytes": 233408426,
+      "expected_bytes": 233408426,
+      "sha256": "bd82fe6ddc6b65fce891f078d64326d91742d951f310b67589eb654bdaceabf6",
+      "sha512_base64": "P7kbdU8Z5fW/S8eSWY1HzVmYKxIAlt7RQPSmZjX8lSQVmPKAcM8arDW7K+G8BwuRzS/az4evQfYiMCxdnlaUbA==",
+      "expected_sha512_base64": "P7kbdU8Z5fW/S8eSWY1HzVmYKxIAlt7RQPSmZjX8lSQVmPKAcM8arDW7K+G8BwuRzS/az4evQfYiMCxdnlaUbA==",
+      "metadata_matches": true
+    }
+  ],
+  "zip_pinned_members": [
+    {
+      "member": "Multica.app/Contents/Resources/app.asar",
+      "sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+      "expected_sha256": "128ff6f87dc18b78355ee5161171a86ec7828b18d5b87751d0f8142dd81b8485",
+      "matches": true
+    },
+    {
+      "member": "Multica.app/Contents/MacOS/Multica",
+      "sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "expected_sha256": "a46d907fc69ec527d1653bb0c231f9a569b4e255ae3f94bf0736f5abcbd9ebd0",
+      "matches": true
+    },
+    {
+      "member": "Multica.app/Contents/Resources/app.asar.unpacked/resources/bin/multica",
+      "sha256": "706b6ac4fcef6fb41493785c0ac70d4ea3b1886efcd817882305eb5ab272a475",
+      "expected_sha256": "706b6ac4fcef6fb41493785c0ac70d4ea3b1886efcd817882305eb5ab272a475",
+      "matches": true
+    }
+  ]
+}

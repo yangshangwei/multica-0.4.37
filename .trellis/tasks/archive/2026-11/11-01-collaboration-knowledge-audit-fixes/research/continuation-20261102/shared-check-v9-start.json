@@ -1,0 +1,34 @@
+{
+  "recorded_at": "2026-11-02T15:41:19.528955+00:00",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "owner": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+  "actual_state_at_capture": "running",
+  "started_at": "2026-11-02T15:36:09.037397+00:00",
+  "source_record": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/make-check-v9.json",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "launcher_sha256": "68dfc4c48a42e7ea276eee815b7f0985e96cf950ec3e2e623187e8ab583bf475",
+  "source_env_sha256": "99475d2e36917761e88bab9687073ddb182c131241d8d815b7eb18850572dfe2",
+  "clearance_sha256": "09e0d33eb8250bc813cf8244afd8af3bddb119fe104ef8dcff8db88858344a4f",
+  "reviewed_prerequisites": [
+    {
+      "kind": "review",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/final-v9-review.json",
+      "sha256": "60cf0b4189d5674c7fade1a495f4aaf54003054a5691c42365f58f4653b8fcd0",
+      "verdict": "pass-with-notes",
+      "blocking_findings_open": 0
+    },
+    {
+      "kind": "actual_catalog_redgreen",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/catalog-actual-redgreen.json",
+      "sha256": "88bb001b361d9e3acf72bc8e5af90a43981cd1823895cda2d661c0a9df8de955",
+      "verdict": null,
+      "blocking_findings_open": null
+    }
+  ],
+  "previous_v6_failed_result_preserved": true,
+  "real_provider_allowed": false,
+  "claim_scope": "targeted source-bound red/green and actual new run start; running is not full pass"
+}

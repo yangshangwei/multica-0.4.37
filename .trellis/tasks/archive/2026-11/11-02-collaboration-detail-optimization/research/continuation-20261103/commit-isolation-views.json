@@ -1,0 +1,61 @@
+{
+  "at": "2026-11-03T06:15:02.485232+00:00",
+  "purpose": "Prove task Views commit remains valid after excluding parallel field-input/stage-hint changes",
+  "source_root": "/tmp/multica-detail-verification-20261103/source",
+  "main_files_mutated": false,
+  "excluded_parallel_locale_keys": [
+    "fields.stageInputLabel",
+    "fields.stageHint"
+  ],
+  "before": {
+    "packages/views/collaboration/field-inputs.tsx": "823c7a6d1898eea6b85f39ff0b103fdec32b8858d70f85200c3f811049967987",
+    "packages/views/collaboration/field-inputs.test.tsx": "3c1398807c0ee3e4f6a9d48a553552038370803a6a6f49527d827fe348661794",
+    "packages/views/collaboration/field-editing.test.tsx": "be59331b9060dda80bd0376c02a41ad76a05aec6bbfb1de92835bcf98d744674",
+    "packages/views/locales/en/collaboration.json": "1f6ba410002f2617901cb64a67b9fbb4def88e61faf00b0c75b65d415709f819",
+    "packages/views/locales/zh-Hans/collaboration.json": "604a79e99eaafc4aa97b7ec2d51042a03abfef490f947851bfd3e7203e58a6be"
+  },
+  "variant": {
+    "packages/views/collaboration/field-inputs.tsx": "71f583dbedbc875142b942400fa1120f207b6016f3d8a5ba1b0ba51d7471ea64",
+    "packages/views/collaboration/field-inputs.test.tsx": "4025b9da76c2428b2965e6631ce4c775589eb61a5319f2f97691faa724817ef3",
+    "packages/views/collaboration/field-editing.test.tsx": "8b4ca9f5f716ea5256cf44ef91b12df2bdbf4390ab3245976a5453994cfb89ae",
+    "packages/views/locales/en/collaboration.json": "9d73694cde15b613f0045e02fe9b542fed4a9a4a7986e2c304b03dbc3c7ad46b",
+    "packages/views/locales/zh-Hans/collaboration.json": "c79b40cc49c7f0a7e5c117f434535e62d6d5e327773275e0e1aa9da1986da662"
+  },
+  "restored": {
+    "packages/views/collaboration/field-inputs.tsx": "823c7a6d1898eea6b85f39ff0b103fdec32b8858d70f85200c3f811049967987",
+    "packages/views/collaboration/field-inputs.test.tsx": "3c1398807c0ee3e4f6a9d48a553552038370803a6a6f49527d827fe348661794",
+    "packages/views/collaboration/field-editing.test.tsx": "be59331b9060dda80bd0376c02a41ad76a05aec6bbfb1de92835bcf98d744674",
+    "packages/views/locales/en/collaboration.json": "1f6ba410002f2617901cb64a67b9fbb4def88e61faf00b0c75b65d415709f819",
+    "packages/views/locales/zh-Hans/collaboration.json": "604a79e99eaafc4aa97b7ec2d51042a03abfef490f947851bfd3e7203e58a6be"
+  },
+  "all_restored": true,
+  "checks": [
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "typecheck"
+      ],
+      "exit_code": 0,
+      "output": "/tmp/multica-detail-verification-20261103/commit-isolation-views-1.log"
+    },
+    {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/views",
+        "exec",
+        "vitest",
+        "run",
+        "collaboration/workflow.test.tsx",
+        "collaboration/creation-form.test.tsx",
+        "collaboration/collaboration-detail.test.tsx",
+        "collaboration/delivery-panel.test.tsx",
+        "--maxWorkers=2"
+      ],
+      "exit_code": 0,
+      "output": "/tmp/multica-detail-verification-20261103/commit-isolation-views-2.log"
+    }
+  ]
+}

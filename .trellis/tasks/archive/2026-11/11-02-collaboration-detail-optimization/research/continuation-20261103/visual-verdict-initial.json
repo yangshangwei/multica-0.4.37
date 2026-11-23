@@ -1,0 +1,16 @@
+{
+  "score": 32,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "desktop-accepted-en-wide.png shows the middle of the requirements and omits the delivered result, basis and accepted decision visible in the web-result-en-wide.png reference.",
+    "desktop-result-en-wide.png shows the page header even though its recorded scrollTop is 1579; the native images lag the immediately preceding programmatic scroll.",
+    "The accepted capture call has no explicit result target, and the helper checks document width and PNG dimensions without checking whether its intended heading and content are inside the clipped content viewport."
+  ],
+  "suggestions": [
+    "Declare explicit accepted-delivery, result/basis, decision and bounded long-content targets at the capture callsites.",
+    "Scroll the actual account-detail container to the complete target bounds, wait for rendering after the final scroll, and capture the native compositor only after stable target geometry is visible.",
+    "Assert and retain the target heading/content rectangles against the intersection of the scroll container and the native content viewport before and after capture."
+  ],
+  "reasoning": "The native screenshot matches the collaboration interface style but does not provide the intended accepted-delivery evidence. The mismatch is grounded in fixture target selection and capture timing; the current evidence does not justify a production UI change."
+}

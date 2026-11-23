@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-02T19:41:12.965680+00:00",
+  "state": "interrupted_not_accepted",
+  "previous_owner_thread": "01a19c0d-cce1-73e3-99ee-2c3c9e9239ba",
+  "recovery_owner_thread": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+  "selected_candidate": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+  "selected_v10_root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+  "new_duplicate_full_check": false,
+  "new_run_started": true,
+  "independent_review_pending": false,
+  "real_provider_allowed": false,
+  "existing_Redis_renderer_failed_databases_preserved": true,
+  "other_threads_notified": true,
+  "original14_runtime25_knowledge0_unchanged": true,
+  "actual_run_record": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.json",
+  "actual_run_log": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+  "actual_process_id": 92594,
+  "actual_started_at": "2026-11-02T19:56:51.936099+00:00",
+  "launcher_sha256": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+  "source_env_sha256": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "product_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "independent_review_sha256": "72d162db17b143658fa6d213d7022ab8b26f5a42b983bb9539aa1f1c589520e1",
+  "clearance_sha256": "c103127276621b1e85d1489d297a9bb2aeb443c4a6bdf7061591fb372a7ea6ae",
+  "window_scope": "single existing v10 only; runtime/knowledge DB tests and all Provider execution stay stopped",
+  "initial_preflight_observation": {
+    "reason": "original shared execution thread has at least three consecutive failed turns with Azure resource mismatch; selected v10 has no record/log/clearance and no matching complete-check process",
+    "DB_API_and_service_actions": false
+  },
+  "current_execution_policy": "reviewed check.sh owns its newly allocated API/Go/package databases and staged services; no independent/manual resource mutations or Provider calls",
+  "current_stage": "terminated after proven invalid mixed-workspace browser build",
+  "actual_finished_at": "2026-11-02T21:12:33.404620+00:00",
+  "actual_make_exit_code": 2,
+  "actual_check_script_exit_code": 130,
+  "result": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/continuation-20261103/shared-check-v10-result.json",
+  "API_Web_stopped": true,
+  "all_Provider_and_postcheck_windows_closed": true
+}

@@ -1,0 +1,9 @@
+# Per-role full-fixture source/static review
+
+**Pass with notes; 0 source/static blockers.** The failed same-daemon runtime clone is rejected and preserved. No new fake body ran.
+
+Fixture restores exact working `f7072ce7…`. Scenario `10c04718…` adds only four setup lines inside the existing K3 host-role loop: create an existing knowledge fixture in a unique role directory, write inert memory, actually propose Alpha, actually approve it. Removing those lines recreates the original `7cd1780f…` bytes. All later flags/client/service/query/Host calls bind the inner fixture; outer five ordinary producers, K1/K2/native history, seeds, role order, assertions and 15+3/0 counters are unchanged.
+
+This uses verified existing lifecycle: every constructor creates a UUID-named schema/pool, fresh workspace and genuine installation/daemon binding, then its single Claude runtime. It avoids both the runtime `(workspace,daemon,provider)` uniqueness failure and the previous runtime-wide pending-continuation barrier. It does not clone runtime/grant IDs or settle old work. The per-role policy rows are real independently authorized Alpha proposals/approvals; the producer map constrains provenance/content and per-sample binding, not one global candidate/source UUID. Inner host fixtures do not call ordinaryDriver; the existing cleanup/explicit CLI/default real guards remain.
+
+Handoff `304ead64…`, static `e2087fff…`, exact four-line patch `b549fbf1…`, old17 and other four files match. Actual gofmt/tagged compile-only/vet returned 0 with matching logs. No v3 runner was inspected here. Root can proceed to its separately frozen v3 admission and fresh full normal/race; dynamic eight-role proof and final binding remain open. Only this review directory was written; budget/calls stay 0/0 and production defaults false.

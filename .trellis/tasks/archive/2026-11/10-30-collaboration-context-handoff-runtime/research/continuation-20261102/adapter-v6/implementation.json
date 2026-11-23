@@ -1,0 +1,207 @@
+{
+  "at": "2026-11-02T13:11:42.074265+00:00",
+  "status": "implemented_independent_review_pending_execution_coordinator_handoff",
+  "versioned_source_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6",
+  "runtime_copy_snapshot": {
+    "at": "2026-11-02T13:09:47.114006+00:00",
+    "files_sha256": {
+      "check-bin/go": "eabbfdfe047ec686a6e25d413be9dc14dc1ce068ac72317530d6ec049f84aa29",
+      "check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "check-go-isolation-test.py": "31bcefb99e7ca5265f31594aa07a56857e8701f84405b4f6cf78b5b55baee5df",
+      "run-make-check.py": "836f2d066b74edbb14e39fda49ac314e40f11b9618cbd8d07eb44c020747ad1f",
+      "check-launcher-test.py": "ae7de706ba04fd11a125a436d7a2b9e92cbf276e7375fc67bb6661c34884ba0c"
+    },
+    "original_v5_sha256": {
+      "check-bin/go": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+      "check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "check-go-isolation-test.py": "5c5aad4d0e04427a1c53eadec2067a2ac355701c9d4605e722a87ccf9acad4e7"
+    },
+    "runtime_copy_root": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261102/adapter-v6",
+    "runtime_copies_match": true,
+    "syntax": "all five source files AST parse successfully",
+    "production_files_changed": false,
+    "database_connections": 0,
+    "real_provider_calls": 0
+  },
+  "tests": {
+    "red-v5-pool-environment.json": {
+      "command": [
+        "python3",
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-go-isolation-test.py",
+        "PoolEnvironmentTests.test_fresh_package_children_do_not_inherit_api_pool_defaults",
+        "PoolEnvironmentTests.test_validated_recursive_child_does_not_inherit_api_pool_defaults"
+      ],
+      "wrapper": "v5 original",
+      "exit_code": 1,
+      "expected_failure": true,
+      "log_sha256": "00e2988cb9fe853075696b47e039a9d382a20a3febb47990b3393bae75974144",
+      "database_connections": 0,
+      "network_calls": 0
+    },
+    "green-v6-isolation.json": {
+      "command": [
+        "python3",
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-go-isolation-test.py"
+      ],
+      "exit_code": 0,
+      "passed": 17,
+      "log_sha256": "fcc9ace28c9147e16385468150aaa9c5faaa030aa9dffc687098a086388a13c2",
+      "database_connections": 0,
+      "network_calls": 0,
+      "real_provider_calls": 0
+    },
+    "green-v6-launcher.json": {
+      "command": [
+        "python3",
+        ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-launcher-test.py"
+      ],
+      "exit_code": 0,
+      "passed": 11,
+      "log_sha256": "f7004dd258bd6df5700bb30199455473ac6aeab27f308062ec08ffb5f5e4aa55",
+      "database_connections": 0,
+      "network_calls": 0,
+      "real_provider_calls": 0,
+      "make_and_git_executables": "test-created fakes only",
+      "original_fixture_failures_retained": true
+    }
+  },
+  "unchanged_existing_pool_tests": {
+    "results": [
+      {
+        "version": "v5",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1) (allow default) (deny network*)",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/mc-collaboration-final5-20261102/server",
+          "test",
+          "-p",
+          "2",
+          "./cmd/server/dbstats.go",
+          "./cmd/server/dbstats_test.go",
+          "-count=1",
+          "-json"
+        ],
+        "exit_code": 1,
+        "counts": {
+          "run": 7,
+          "pass": 3,
+          "fail": 4,
+          "skip": 0
+        },
+        "started_at": "2026-11-02T13:08:27.424252+00:00",
+        "finished_at": "2026-11-02T13:08:35.424232+00:00",
+        "log_sha256": "70de5c4d115ecf831dacfa9f36f5479420ad9943e577e6841297383d6c17bcad",
+        "wrapper_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+        "sources_sha256": {
+          "server/cmd/server/dbstats.go": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+          "server/cmd/server/dbstats_test.go": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71"
+        },
+        "exact_file_list_excludes_DB_TestMain": true,
+        "network_denied": true,
+        "database_connections": 0,
+        "actual_database_allocated": false,
+        "real_provider_calls": 0
+      },
+      {
+        "version": "v6",
+        "command": [
+          "/usr/bin/sandbox-exec",
+          "-p",
+          "(version 1) (allow default) (deny network*)",
+          "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/adapter-v6/check-bin/go",
+          "-C",
+          "/Volumes/artisan/code/2026/mc-collaboration-final5-20261102/server",
+          "test",
+          "-p",
+          "2",
+          "./cmd/server/dbstats.go",
+          "./cmd/server/dbstats_test.go",
+          "-count=1",
+          "-json"
+        ],
+        "exit_code": 0,
+        "counts": {
+          "run": 7,
+          "pass": 7,
+          "fail": 0,
+          "skip": 0
+        },
+        "started_at": "2026-11-02T13:08:35.424949+00:00",
+        "finished_at": "2026-11-02T13:08:36.078664+00:00",
+        "log_sha256": "0587267ab1cec4fb4eb957da46738a335bce17757ae34dfea2cd64a25ec4bc92",
+        "wrapper_sha256": "eabbfdfe047ec686a6e25d413be9dc14dc1ce068ac72317530d6ec049f84aa29",
+        "sources_sha256": {
+          "server/cmd/server/dbstats.go": "588b1a7d781c965b7d3fd525af940549ad9d8653a04b68390ff1338c3dcb7f1b",
+          "server/cmd/server/dbstats_test.go": "027dcb6059a6e0f77a09e4277ded200e81e924aae23a6cc67835737719877c71"
+        },
+        "exact_file_list_excludes_DB_TestMain": true,
+        "network_denied": true,
+        "database_connections": 0,
+        "actual_database_allocated": false,
+        "real_provider_calls": 0
+      }
+    ],
+    "source_files_unchanged": true
+  },
+  "production_files_changed": false,
+  "database_connections": 0,
+  "databases_created": 0,
+  "services_started": 0,
+  "whole_checks_started": 0,
+  "real_provider_calls": 0,
+  "running_processes": [],
+  "runtime_directory_writes_stopped_after_cross_session_coordination": true,
+  "followups": [
+    "Resolve possibly shared runtime adapter-v6 path ownership before any further write or execution",
+    "Independently review selected exact adapter/launcher/configuration bytes; implementer supplied no clearance",
+    "Another authorized session owns the shared full makecheck with Redis16422/renderer19845; use one original whole result",
+    "Prepared final5 config example is not a launch permit; regenerate exact input/source/renderer pins for the chosen execution owner"
+  ],
+  "python_compilation": {
+    "command": "stdlib py_compile.compile for six owned Python sources; temporary bytecode cleaned",
+    "files": [
+      {
+        "file": "check-bin/go",
+        "compile": "passed",
+        "sha256": "eabbfdfe047ec686a6e25d413be9dc14dc1ce068ac72317530d6ec049f84aa29"
+      },
+      {
+        "file": "check-bin/pnpm",
+        "compile": "passed",
+        "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48"
+      },
+      {
+        "file": "check-go-isolation-test.py",
+        "compile": "passed",
+        "sha256": "31bcefb99e7ca5265f31594aa07a56857e8701f84405b4f6cf78b5b55baee5df"
+      },
+      {
+        "file": "run-make-check.py",
+        "compile": "passed",
+        "sha256": "836f2d066b74edbb14e39fda49ac314e40f11b9618cbd8d07eb44c020747ad1f"
+      },
+      {
+        "file": "check-launcher-test.py",
+        "compile": "passed",
+        "sha256": "ae7de706ba04fd11a125a436d7a2b9e92cbf276e7375fc67bb6661c34884ba0c"
+      },
+      {
+        "file": "check-pool-precedence.py",
+        "compile": "passed",
+        "sha256": "190ebb7ad8426240e50b27eb95634f17d96c230aafc44847e1d9e37a87e61630"
+      }
+    ],
+    "exit_code": 0
+  },
+  "commands_contain_database_urls_or_credentials": false,
+  "actual_pool_proof_excludes_DB_TestMain": true,
+  "database_writes": 0,
+  "current_versioned_source_sha256": {
+    "check-bin/go": "eabbfdfe047ec686a6e25d413be9dc14dc1ce068ac72317530d6ec049f84aa29",
+    "check-bin/pnpm": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+    "run-make-check.py": "836f2d066b74edbb14e39fda49ac314e40f11b9618cbd8d07eb44c020747ad1f"
+  }
+}

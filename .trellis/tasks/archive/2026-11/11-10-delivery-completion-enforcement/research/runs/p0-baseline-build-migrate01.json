@@ -1,0 +1,30 @@
+{
+  "run_id": "p0-baseline-build-migrate01",
+  "started_at": "2026-11-10T16:29:40.840255+00:00",
+  "duration_seconds": 5.435,
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "build",
+    "-o",
+    "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/binaries/migrate",
+    "./cmd/migrate"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-delivery-completion-enforcement-20261110",
+  "database": null,
+  "container": "mc-completion-enforcement-20261111-315f96e0",
+  "source_head": "1ce4e81223be3397fe15e2649debfac40720ddd9",
+  "exit_code": 0,
+  "log": "/private/tmp/multica-completion-enforcement-20261111-y9c0v8ro/logs/p0-baseline-build-migrate01.log",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "named_counts": {
+    "pass": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "names": {},
+  "duplicate_terminals": [],
+  "unterminated_names": [],
+  "real_provider_calls": 0
+}

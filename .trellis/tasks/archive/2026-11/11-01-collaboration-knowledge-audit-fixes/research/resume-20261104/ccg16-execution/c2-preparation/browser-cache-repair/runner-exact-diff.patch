@@ -1,0 +1,82 @@
+--- run-ccg2.py
++++ run-ccg2-browser-bound.py
+@@ -99,6 +99,63 @@
+             and parsed.password is None and parsed.port is not None, 'Expected explicit credential-free loopback origin')
+     return value.rstrip('/')
+ 
++def bind_browser_cache(permission, inputs, environment):
++    spec = permission.get('browser_binding')
++    require(isinstance(spec, dict) and not Path(spec['path']).is_symlink(), 'Reviewed browser binding is required')
++    binding_path = checked_file(spec)
++    binding = json.loads(binding_path.read_text())
++    require(binding.get('schema_version') == 1 and binding.get('candidate_sha') == EXPECTED
++            and binding.get('platform') == 'darwin' and binding.get('arch') == 'arm64'
++            and os.uname().sysname == 'Darwin' and os.uname().machine == 'arm64'
++            and binding.get('playwright_version') == '1.58.2' and binding.get('revision') == '1208',
++            'Browser tool, platform or revision differs from this reviewed gate')
++    require(binding['tools'] == {key: inputs['tools'][key] for key in ('node', 'pnpm')}, 'Browser tool binding differs')
++
++    def directory(item, expected):
++        path = Path(item['path'])
++        require(path.is_absolute() and path == expected and path.resolve() == path and not path.is_symlink()
++                and path.is_dir() and path.stat().st_uid == item['uid'] == os.geteuid()
++                and path.stat().st_mode & 0o777 == item['mode'] and not item['mode'] & 0o022,
++                'Browser directory identity or ownership differs')
++        return path
++
++    def regular_file(item):
++        path = Path(item['path'])
++        require(path.is_absolute() and path.resolve() == path and not path.is_symlink() and path.is_file()
++                and path.stat().st_uid == item['uid'] and path.stat().st_mode & 0o777 == item['mode']
++                and path.stat().st_size == item['bytes'] and digest(path) == item['sha256'],
++                'Browser resource bytes, mode or identity differs')
++        return path
++
++    cache = directory(binding['cache_root'], Path('/Users/artisan/Library/Caches/ms-playwright'))
++    sources = binding['source_files']
++    require(set(sources) == {'playwright_package', 'playwright_core_package', 'playwright_test_package',
++                            'browsers_json', 'registry_source', 'playwright_config'}, 'Browser tool source inventory differs')
++    for item in sources.values():
++        require(regular_file(item).is_relative_to(ROOT), 'Browser tool source is outside this candidate')
++    for key in ('playwright_package', 'playwright_core_package', 'playwright_test_package'):
++        require(json.loads(Path(sources[key]['path']).read_text())['version'] == '1.58.2', 'Browser package version differs')
++    definitions = {item['name']: item for item in json.loads(Path(sources['browsers_json']['path']).read_text())['browsers']}
++    installs = binding['installations']
++    require(set(installs) == {'chromium', 'chromium-headless-shell'}, 'Browser installation inventory differs')
++    for name, suffix, executable in (
++            ('chromium', 'chromium-1208', 'chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing'),
++            ('chromium-headless-shell', 'chromium_headless_shell-1208', 'chrome-headless-shell-mac-arm64/chrome-headless-shell')):
++        require(definitions[name]['revision'] == '1208' and definitions[name]['browserVersion'] == '145.0.7632.6', 'Browser registry revision differs')
++        install = installs[name]
++        parent = directory(install['directory'], cache / suffix)
++        require(set(install['markers']) == {'INSTALLATION_COMPLETE', 'DEPENDENCIES_VALIDATED'}, 'Browser completion markers missing')
++        for marker, item in install['markers'].items():
++            require(regular_file(item) == parent / marker, 'Browser marker path differs')
++        program = regular_file(install['executable'])
++        require(program == parent / executable and os.access(program, os.X_OK), 'Browser executable path or permission differs')
++    require(len(binding['required_resources']) == 11, 'Browser main resource inventory differs')
++    for relative, item in binding['required_resources'].items():
++        require(regular_file(item) == cache / relative, 'Browser resource path differs')
++    environment['PLAYWRIGHT_BROWSERS_PATH'] = str(cache)
++    return digest(binding_path)
++
++
+ def main():
+     parser = argparse.ArgumentParser(description='Current CCG2 deployment probe; later root allocation/permission only')
+     parser.add_argument('lane', choices=('off', 'on'))
+@@ -106,6 +163,7 @@
+     parser.add_argument('--label', required=True)
+     args = parser.parse_args()
+     permission, inputs, audited, output, environment = admission('ccg2-' + args.lane, args.permit, args.label)
++    browser_binding_sha256 = bind_browser_cache(permission, inputs, environment)
+     expected = 'true' if args.lane == 'on' else 'false'
+     envfile = checked_file({'path': permission['source_environment'], 'sha256': permission['source_environment_sha256']})
+     proof_file = checked_file({'path': permission['deployment_proof'], 'sha256': permission['deployment_proof_sha256']})
+@@ -168,6 +226,7 @@
+     record = {'candidate_sha': EXPECTED, 'lane': args.lane, 'expected_knowledge': expected, 'command': command,
+               'permit_sha256': digest(args.permit), 'source_env_sha256': digest(envfile), 'deployment_proof_sha256': digest(proof_file),
+               'binary_binding_sha256': digest(binaries_file), 'database': permission['database'], 'health': health,
++              'browser_binding_sha256': browser_binding_sha256, 'PLAYWRIGHT_BROWSERS_PATH': environment['PLAYWRIGHT_BROWSERS_PATH'],
+               'root_fullcheck_identity_audit': audited, 'state': 'running',
+               'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'real_Provider_calls': 0}
+     write_json(output / 'started.json', record)

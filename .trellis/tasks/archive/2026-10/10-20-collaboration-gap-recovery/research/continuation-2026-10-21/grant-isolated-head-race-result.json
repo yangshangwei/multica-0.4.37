@@ -1,0 +1,38 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s5",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/tmp/multica-gap-recovery-20261021-h6phxwo9/content-acceptance-head-bjg3a90e/server",
+  "head": "aef77e9ce62b2f665f6a99676a79244b49fde497",
+  "additional_test_files": [
+    "server/internal/service/collaboration_discussion_resume_test.go",
+    "server/internal/service/collaboration_comment_edit_delete_test.go",
+    "server/internal/service/collaboration_grant_task_isolation_test.go"
+  ],
+  "elapsed_s": 14.274183333996916,
+  "returncode": 0,
+  "passed": [
+    "TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask/revoke_grant",
+    "TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask/leave_rejoin",
+    "TestCollaborationGrantWithdrawalAndOwnerRejoinIsolateOtherTask"
+  ],
+  "failed": [],
+  "skipped": []
+}

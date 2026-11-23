@@ -1,0 +1,76 @@
+{
+  "kind": "retained_P6_asset_availability_failure",
+  "at": "2026-11-15T16:12:23.581970+00:00",
+  "allocation_metadata_present": true,
+  "canonical_and_alias_checked": true,
+  "checks": [
+    {
+      "path": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156",
+      "exists": false,
+      "directory": false
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156",
+      "exists": false,
+      "directory": false
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+      "exists": false,
+      "directory": false
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/source",
+      "exists": false,
+      "directory": false
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json",
+      "exists": true,
+      "expected_prior_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+      "current_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966"
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/allocation.json",
+      "exists": false,
+      "expected_prior_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+      "current_sha256": null
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/environment.json",
+      "exists": false,
+      "expected_prior_sha256": "bc1f96e026f7dc801bcad1d1c3344b10105a8aa05dc0a809d578d641aae2166b",
+      "current_sha256": null
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build.json",
+      "exists": false,
+      "expected_prior_sha256": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+      "current_sha256": null
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/build.json",
+      "exists": false,
+      "expected_prior_sha256": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+      "current_sha256": null
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/runtime.json",
+      "exists": false,
+      "expected_prior_sha256": "47d0f1ba64949786f4eca9aeb2834cdb478dd6cf7f5b0883056b9e982b3522bf",
+      "current_sha256": null
+    },
+    {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/provenance.json",
+      "exists": false,
+      "expected_prior_sha256": "7490fd4003274e8a506cdf6a9ec3349217d839af11d4ea16e082d72a3da2121b",
+      "current_sha256": null
+    }
+  ],
+  "known_temp_parent_exists": true,
+  "missing_old_state_parent": true,
+  "cause": "not yet established; no assumption of mover/deleter",
+  "historical_verdicts_reclassified": false,
+  "source_or_runtime_mutations_by_main": 0,
+  "next": "Read-only recovery search; absent complete originals, use separately identified fresh durable allocation and source for actual ROOT acceptance without fabricating historical assets."
+}

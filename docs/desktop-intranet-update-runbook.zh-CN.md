@@ -173,6 +173,8 @@ bash scripts/desktop-updates.sh status
 
 `serverUrl` 是客户端首次连接时填写的业务 HTTP(S) 地址，允许必要的端口和路径，不包含用户名或密码。它与下载页地址、`DESKTOP_UPDATES_URL`、客户端 `updateUrl` 分开维护。业务服务器无需和下载服务器位于同一主机。配置刷新页面后生效；重复 `start`、发包和页面升级都保留此文件。维护中的配置先写同目录临时文件，再重命名替换，并保留公开可读权限 `0644`。
 
+反方向也要配置：在业务服务器的 `.env` 中把 `MULTICA_DESKTOP_DOWNLOAD_URL` 设为本页地址，例如 `http://10.10.10.20:18080/desktop/`，再沿用原 Compose 覆盖文件顺序重建后端。Web 端的登录页、新手引导和首页据此显示"下载桌面端"入口；留空或填写非法地址时这些入口全部隐藏，后端启动日志会对非法值给出警告。
+
 后续管理自动复用同一份 `updates.env`。需要用其他配置时，在命令前传 `--env-file /绝对路径/updates.env`。配置文件按 Docker Compose 的 dotenv 规则读取，不会作为 Shell 执行。进程中已有的同名环境变量按 Compose 规则优先；长期运维应避免遗留的临时 `export DESKTOP_UPDATES_*` 覆盖配置文件。
 
 `DESKTOP_UPDATES_URL` 是客户端实际可访问的完整目录地址，用于 `verify` 和 `configure`；它不会改变 Nginx 的端口监听。首次部署后请记录服务器地址、配置文件位置、存储位置和镜像标签，后续不要仅凭默认值操作。

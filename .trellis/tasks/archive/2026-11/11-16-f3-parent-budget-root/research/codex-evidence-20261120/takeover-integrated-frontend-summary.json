@@ -1,0 +1,64 @@
+[
+  {
+    "name": "integrated-core-typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/core",
+    "exit": 0,
+    "seconds": 8.57,
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "integrated-core-lint",
+    "command": [
+      "node",
+      "/Volumes/artisan/code/2026/mc-f3-completion-20261120/node_modules/eslint/bin/eslint.js",
+      "."
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/core",
+    "exit": 0,
+    "seconds": 5.98,
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "integrated-core-tests",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--maxWorkers=2"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/core",
+    "exit": 0,
+    "seconds": 58.61,
+    "raw_sha256": "b7ecabb70bcf5b05d3dc848c509608bfb50f69372a89036c75f8ce5ea61ade37"
+  },
+  {
+    "name": "integrated-views-typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/views",
+    "exit": 0,
+    "seconds": 59.23,
+    "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "integrated-views-tests",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "--maxWorkers=2"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/mc-f3-completion-20261120/packages/views",
+    "exit": 0,
+    "seconds": 437.94,
+    "raw_sha256": "c633f27900908eef09006aed3c9b3ad35b14f539d6b238361f3801856292646e"
+  }
+]

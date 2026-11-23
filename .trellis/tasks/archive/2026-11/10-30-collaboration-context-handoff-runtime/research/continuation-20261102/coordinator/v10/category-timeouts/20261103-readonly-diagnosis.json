@@ -1,0 +1,943 @@
+{
+  "schema_version": 1,
+  "captured_at_utc": "2026-11-02T21:11:41.876040+00:00",
+  "role": "trellis-check/read-only root-cause diagnosis",
+  "active_task": ".trellis/tasks/10-30-collaboration-context-handoff-runtime",
+  "candidate": {
+    "root": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+    "head_verified": "118fc53ea8eb8ebc53b4f9c1131e3e7910eacce9",
+    "evidence_applies_only_to_this_candidate": true
+  },
+  "status": "direct-cause-proven; no fix or reproduction performed",
+  "scope": {
+    "write_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261102/coordinator/v10/category-timeouts",
+    "code_edits": 0,
+    "test_build_service_database_network_browser_executions": 0,
+    "git_mutations": 0,
+    "subagents_spawned": 0,
+    "execution_owner": "01a19c0e-5cc4-77e0-b2d3-bd2842d39899",
+    "clearance_granted": false,
+    "raw_private_logs_copied": false
+  },
+  "proven_direct_cause": {
+    "finding_id": "CAT-V10-1",
+    "confidence": "high",
+    "statement": "The v10 SSR bundle registers the root auth store in one webpack module but AdminSessionBoundary reads a different, unregistered auth facade. The root provider renders this boundary for category and login routes, causing the global error screen before category UI can mount.",
+    "server_error": "Auth store not initialised — call registerAuthStore() first",
+    "digest": "3602458576",
+    "server_stack": [
+      {
+        "function": "Object.apply",
+        "file": ".next/server/chunks/6491.js",
+        "line": 5,
+        "column": 32969
+      },
+      {
+        "function": "g / AdminSessionBoundary",
+        "file": ".next/server/chunks/6491.js",
+        "line": 7,
+        "column": 75189
+      }
+    ],
+    "source_chain": [
+      {
+        "file": "packages/core/auth/index.ts",
+        "line": 35,
+        "behavior": "Proxy apply requires the module-local registered instance."
+      },
+      {
+        "file": "packages/views/admin/admin-session-boundary.tsx",
+        "line": 11,
+        "behavior": "Calls useAuthStore while rendering."
+      },
+      {
+        "file": "apps/web/components/web-providers.tsx",
+        "line": 115,
+        "behavior": "Mounts AdminSessionBoundary above route content."
+      },
+      {
+        "file": "packages/core/platform/core-provider.tsx",
+        "line": 113,
+        "behavior": "Registers the instance in initCore before rendering children."
+      }
+    ],
+    "v9_compiled_graph": {
+      "ssr_chunk": "4288.js",
+      "web_providers_module": 81904,
+      "core_provider_module": 37702,
+      "registered_auth_module": 48286,
+      "admin_boundary_module": 60892,
+      "boundary_auth_module": 48286,
+      "same_auth_instance": true
+    },
+    "v10_compiled_graph": {
+      "ssr_chunk": "6491.js",
+      "web_providers_module": 81904,
+      "core_provider_module": 5429,
+      "registered_auth_module": 99423,
+      "admin_boundary_module": 19653,
+      "boundary_auth_module": 10100,
+      "same_auth_instance": false,
+      "module_99423": "register setter m(a){l=a}; hook n reads l.",
+      "module_10100": "Proxy apply is an unconditional throw; no registration setter is retained."
+    },
+    "v10_ssr_source_edges": [
+      {
+        "parent": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/components/web-providers.tsx",
+        "child": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/auth/index.ts",
+        "trace_span_id": 3185
+      },
+      {
+        "parent": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/components/web-providers.tsx",
+        "child": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/platform/core-provider.tsx",
+        "trace_span_id": 3639,
+        "via": "packages/core/platform/index.ts"
+      },
+      {
+        "parent": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/admin/admin-session-boundary.tsx",
+        "child": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/auth/index.ts",
+        "trace_span_id": 3278
+      }
+    ],
+    "client_manifest_boundary_source": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/admin/admin-session-boundary.tsx",
+    "client_manifest_boundary_ssr_id": 19653,
+    "both_auth_source_identities_also_present_in_browser_layer": true
+  },
+  "failures": [
+    {
+      "spec": "e2e/agent-categories.spec.ts",
+      "line": 10,
+      "name": "custom categories survive creation, editing and clearing and compose with directory grouping",
+      "timeout_ms": 180000,
+      "runner_error_line": 114176,
+      "intended_first_navigation": {
+        "line": 35,
+        "path": "/{workspaceSlug}/agents/new/manual"
+      },
+      "immediate_control_action": {
+        "line": 36,
+        "action": "click button 展开分类列表"
+      },
+      "first_missing_screenshot": "category-dropdown-empty-1440-zh.png (line41)",
+      "observed_dom": "Only Something went wrong, explanatory paragraph, and Reload button.",
+      "exact_pending_await": "Not recorded. Bounded to first page.goto or immediate dropdown click; no action/locator stack is retained.",
+      "browser_api_200_lines": [
+        176,
+        177
+      ],
+      "fixture_http_lines": [
+        165,
+        167,
+        168,
+        169,
+        171,
+        172,
+        173
+      ],
+      "category_product_writes_observed": 0,
+      "cleanup": {
+        "line": 197,
+        "http_status": 500,
+        "duration": "31.225ms",
+        "error_line": 196,
+        "error": "context canceled",
+        "timing": "At the whole-test deadline."
+      },
+      "v9": {
+        "status": "passed",
+        "duration_ms": 8042,
+        "retry": 0,
+        "start_time": "2026-11-02T16:28:13.750Z"
+      }
+    },
+    {
+      "spec": "e2e/agent-category-grouping.spec.ts",
+      "line": 23,
+      "name": "saved categories drive the default directory, counts and filters after legacy preference migration",
+      "timeout_ms": 180000,
+      "runner_error_line": 114192,
+      "intended_first_navigation": {
+        "line": 57,
+        "path": "/{workspaceSlug}/agents/{openCodeId}?view=general"
+      },
+      "immediate_control_action": {
+        "line": 58,
+        "action": "click button 展开分类列表"
+      },
+      "first_missing_screenshot": "default-category-grouping-fixed-1440.png (line69)",
+      "observed_dom": "Only Something went wrong, explanatory paragraph, and Reload button.",
+      "exact_pending_await": "Not recorded. Bounded to first browser entry and dropdown action; the category mutation is not reached.",
+      "browser_api_200_lines": [
+        219,
+        220
+      ],
+      "fixture_http_lines": [
+        199,
+        201,
+        202,
+        203,
+        205,
+        206,
+        207,
+        210,
+        213,
+        216
+      ],
+      "setup_agent_creations": {
+        "POST /api/agents": 2,
+        "POST /api/agents/from-template": 1,
+        "all_status": 201
+      },
+      "category_product_writes_observed": 0,
+      "cleanup": {
+        "line": 238,
+        "http_status": 500,
+        "duration": "30.051ms",
+        "error_line": 237,
+        "error": "context canceled",
+        "timing": "At the whole-test deadline."
+      },
+      "v9": {
+        "status": "passed",
+        "duration_ms": 4958,
+        "retry": 0,
+        "start_time": "2026-11-02T16:28:22.183Z"
+      }
+    }
+  ],
+  "http_evidence": [
+    {
+      "line": 165,
+      "local_clock": "04:47:36.515",
+      "method": "POST",
+      "path": "/auth/send-code",
+      "status": "200",
+      "duration": "7.877ms"
+    },
+    {
+      "line": 167,
+      "local_clock": "04:47:36.534",
+      "method": "POST",
+      "path": "/auth/verify-code",
+      "status": "200",
+      "duration": "5.969ms"
+    },
+    {
+      "line": 168,
+      "local_clock": "04:47:36.540",
+      "method": "PATCH",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "3.172ms"
+    },
+    {
+      "line": 169,
+      "local_clock": "04:47:36.553",
+      "method": "GET",
+      "path": "/api/workspaces",
+      "status": "200",
+      "duration": "1.113ms"
+    },
+    {
+      "line": 171,
+      "local_clock": "04:47:36.571",
+      "method": "POST",
+      "path": "/api/workspaces",
+      "status": "201",
+      "duration": "15.714ms"
+    },
+    {
+      "line": 172,
+      "local_clock": "04:47:36.627",
+      "method": "PATCH",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "1.422ms"
+    },
+    {
+      "line": 173,
+      "local_clock": "04:47:36.632",
+      "method": "GET",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "458µs"
+    },
+    {
+      "line": 174,
+      "local_clock": "04:47:37.066",
+      "method": "OPTIONS",
+      "path": "/api/config",
+      "status": "200",
+      "duration": "31µs"
+    },
+    {
+      "line": 175,
+      "local_clock": "04:47:37.066",
+      "method": "OPTIONS",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "24µs"
+    },
+    {
+      "line": 176,
+      "local_clock": "04:47:37.067",
+      "method": "GET",
+      "path": "/api/config",
+      "status": "200",
+      "duration": "155µs"
+    },
+    {
+      "line": 177,
+      "local_clock": "04:47:37.068",
+      "method": "GET",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "1.325ms"
+    },
+    {
+      "line": 197,
+      "local_clock": "04:50:36.480",
+      "method": "DELETE",
+      "path": "/api/workspaces/b8c0fc5b-5ff9-4c62-9062-6e160499ecd2",
+      "status": "500",
+      "duration": "31.225ms"
+    },
+    {
+      "line": 199,
+      "local_clock": "04:50:37.541",
+      "method": "POST",
+      "path": "/auth/send-code",
+      "status": "200",
+      "duration": "20.759ms"
+    },
+    {
+      "line": 201,
+      "local_clock": "04:50:37.559",
+      "method": "POST",
+      "path": "/auth/verify-code",
+      "status": "200",
+      "duration": "5.947ms"
+    },
+    {
+      "line": 202,
+      "local_clock": "04:50:37.563",
+      "method": "PATCH",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "2.632ms"
+    },
+    {
+      "line": 203,
+      "local_clock": "04:50:37.576",
+      "method": "GET",
+      "path": "/api/workspaces",
+      "status": "200",
+      "duration": "2.543ms"
+    },
+    {
+      "line": 205,
+      "local_clock": "04:50:37.592",
+      "method": "POST",
+      "path": "/api/workspaces",
+      "status": "201",
+      "duration": "14.288ms"
+    },
+    {
+      "line": 206,
+      "local_clock": "04:50:37.640",
+      "method": "PATCH",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "1.372ms"
+    },
+    {
+      "line": 207,
+      "local_clock": "04:50:37.644",
+      "method": "GET",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "400µs"
+    },
+    {
+      "line": 210,
+      "local_clock": "04:50:37.711",
+      "method": "POST",
+      "path": "/api/agents",
+      "status": "201",
+      "duration": "15.779ms"
+    },
+    {
+      "line": 213,
+      "local_clock": "04:50:37.719",
+      "method": "POST",
+      "path": "/api/agents",
+      "status": "201",
+      "duration": "5.094ms"
+    },
+    {
+      "line": 216,
+      "local_clock": "04:50:37.737",
+      "method": "POST",
+      "path": "/api/agents/from-template",
+      "status": "201",
+      "duration": "15.947ms"
+    },
+    {
+      "line": 217,
+      "local_clock": "04:50:38.058",
+      "method": "OPTIONS",
+      "path": "/api/config",
+      "status": "200",
+      "duration": "72µs"
+    },
+    {
+      "line": 218,
+      "local_clock": "04:50:38.058",
+      "method": "OPTIONS",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "27µs"
+    },
+    {
+      "line": 219,
+      "local_clock": "04:50:38.058",
+      "method": "GET",
+      "path": "/api/config",
+      "status": "200",
+      "duration": "52µs"
+    },
+    {
+      "line": 220,
+      "local_clock": "04:50:38.059",
+      "method": "GET",
+      "path": "/api/me",
+      "status": "200",
+      "duration": "971µs"
+    },
+    {
+      "line": 238,
+      "local_clock": "04:53:37.484",
+      "method": "DELETE",
+      "path": "/api/workspaces/f43cf3f5-30d6-49d3-b5c7-4c086c01f366",
+      "status": "500",
+      "duration": "30.051ms"
+    }
+  ],
+  "artifact_limits": {
+    "each_failure_directory_contains_only": "error-context.md",
+    "playwright_config": "retries=0, workers=1; no trace/video/screenshot option configured.",
+    "failure_report": "Live line reporter records only whole-test timeout; no exact action stack or response-status trace.",
+    "pageerror_listeners": "Test-local arrays are asserted at the end and are not attached on failure. React global error boundary capture also need not emit window pageerror.",
+    "cleanup": "500/context canceled is preserved; successful cleanup is not claimed.",
+    "suite_status": "Still owned by the sole execution thread; no final suite verdict inferred."
+  },
+  "production_environment": {
+    "web_mode": "production",
+    "web_build_id": "XBQ1-kYxShqvrub7FJsc4",
+    "web_commit": "118fc53ea",
+    "web_port": 13549,
+    "api_commit": "118fc53ea",
+    "api_port": 18629,
+    "auth_mode": "legacy",
+    "device_auth_enabled": false,
+    "built_rewrites_upstream": "http://localhost:18629",
+    "check_env_api_upstream": "http://localhost:18629",
+    "browser_config_me_observation": "GET /api/config and GET /api/me return200 rapidly for both cases.",
+    "proxy_port_mismatch_observed": false,
+    "v9_web_auth_store_error_count": 0
+  },
+  "source_comparison": [
+    {
+      "file": "e2e/agent-categories.spec.ts",
+      "v9_sha256": "4c89cb6fc5b385942b525b70a97eb00e6762506e0f7ee53645129307ab6a357b",
+      "v10_sha256": "4c89cb6fc5b385942b525b70a97eb00e6762506e0f7ee53645129307ab6a357b",
+      "identical": true
+    },
+    {
+      "file": "e2e/agent-category-grouping.spec.ts",
+      "v9_sha256": "6c13731e83da28975a41d1d7219efa94a1e0409ac577bf86d4f01134e502b137",
+      "v10_sha256": "6c13731e83da28975a41d1d7219efa94a1e0409ac577bf86d4f01134e502b137",
+      "identical": true
+    },
+    {
+      "file": "e2e/fixtures.ts",
+      "v9_sha256": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+      "v10_sha256": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+      "identical": true
+    },
+    {
+      "file": "packages/core/auth/index.ts",
+      "v9_sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+      "v10_sha256": "072aa588a05e4cae8ac4f0c25688ba4dd7fe95810d5dd25a17bfc5d14277a152",
+      "identical": true
+    },
+    {
+      "file": "packages/core/platform/core-provider.tsx",
+      "v9_sha256": "818397a3999c2e4be0e6236be344e0cbce30a78e326699b86739aff44c1338fb",
+      "v10_sha256": "818397a3999c2e4be0e6236be344e0cbce30a78e326699b86739aff44c1338fb",
+      "identical": true
+    },
+    {
+      "file": "apps/web/components/web-providers.tsx",
+      "v9_sha256": "8d5f4964a1b8fb4ee01b15f1dbf5df3bd7ac85281df14f64e5b5f5fcabfe630d",
+      "v10_sha256": "8d5f4964a1b8fb4ee01b15f1dbf5df3bd7ac85281df14f64e5b5f5fcabfe630d",
+      "identical": true
+    },
+    {
+      "file": "apps/web/platform/admin-session-boundary.tsx",
+      "v9_sha256": "8add974a6e93d0a55e7eb1f8435e78009fb9a239baeff3fa4f3fd4a379c195ab",
+      "v10_sha256": "8add974a6e93d0a55e7eb1f8435e78009fb9a239baeff3fa4f3fd4a379c195ab",
+      "identical": true
+    },
+    {
+      "file": "packages/views/admin/admin-session-boundary.tsx",
+      "v9_sha256": "ad5be22261e1b5fc40835880ba7a74f52fa0a2cb60ff7c8d83a3082f555e9d76",
+      "v10_sha256": "ad5be22261e1b5fc40835880ba7a74f52fa0a2cb60ff7c8d83a3082f555e9d76",
+      "identical": true
+    },
+    {
+      "file": "packages/views/admin/index.ts",
+      "v9_sha256": "457e321af8cb3ae841df3480d5532720c7913038902192b607decb5bec2ec644",
+      "v10_sha256": "457e321af8cb3ae841df3480d5532720c7913038902192b607decb5bec2ec644",
+      "identical": true
+    },
+    {
+      "file": "apps/web/next.config.ts",
+      "v9_sha256": "a07c77a82846c5a7f7eecdce04ce7731e73d6d01143b0b503395480891aeb209",
+      "v10_sha256": "a07c77a82846c5a7f7eecdce04ce7731e73d6d01143b0b503395480891aeb209",
+      "identical": true
+    },
+    {
+      "file": "package.json",
+      "v9_sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+      "v10_sha256": "6b39e202cf248877a8fb146fc6d9d9bcd26f50f43f4a5cf207154e559ce4dc4c",
+      "identical": true
+    },
+    {
+      "file": "pnpm-lock.yaml",
+      "v9_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+      "v10_sha256": "bb0c3d632b568a991422a25b335cf31ccbda55206cd138aed7bba63f169af4ac",
+      "identical": true
+    }
+  ],
+  "dependency_realpaths": [
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/node_modules",
+      "link_target": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/node_modules",
+      "link_target": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/node_modules/@multica/core",
+      "link_target": "../../../../packages/core",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/node_modules/@multica/views",
+      "link_target": "../../../../packages/views",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/views"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/node_modules",
+      "link_target": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/views/node_modules",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/views/node_modules"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/node_modules/@multica/core",
+      "link_target": "../../../core",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/node_modules",
+      "link_target": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/node_modules",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/node_modules"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/node_modules/react",
+      "link_target": "../../../node_modules/.pnpm/react@19.2.3/node_modules/react",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/node_modules/react",
+      "link_target": "../../../node_modules/.pnpm/react@19.2.3/node_modules/react",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/node_modules/next",
+      "link_target": "../../../node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next"
+    },
+    {
+      "candidate": "v9",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/node_modules/@playwright/test",
+      "link_target": "../.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/node_modules",
+      "link_target": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/node_modules",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/node_modules",
+      "link_target": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/node_modules",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/apps/web/node_modules"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/node_modules/@multica/core",
+      "link_target": "../../../../packages/core",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/node_modules/@multica/views",
+      "link_target": "../../../../packages/views",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/views"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/views/node_modules",
+      "link_target": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/node_modules",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/views/node_modules"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/views/node_modules/@multica/core",
+      "link_target": "../../../core",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/node_modules",
+      "link_target": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/node_modules",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/node_modules"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/packages/core/node_modules/react",
+      "link_target": "../../../node_modules/.pnpm/react@19.2.3/node_modules/react",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/node_modules/react",
+      "link_target": "../../../node_modules/.pnpm/react@19.2.3/node_modules/react",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/node_modules/next",
+      "link_target": "../../../node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next"
+    },
+    {
+      "candidate": "v10",
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/node_modules/@playwright/test",
+      "link_target": "../.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test",
+      "resolved_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test"
+    }
+  ],
+  "installed_package_identity": [
+    {
+      "candidate": "v9",
+      "name": "next",
+      "version": "16.2.6",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/package.json",
+      "sha256": "1ec03f46fd6a51b9adbc80b023f6e75223f0a7125b1394023d55841ca5ddf625"
+    },
+    {
+      "candidate": "v9",
+      "name": "react",
+      "version": "19.2.3",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react/package.json",
+      "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+    },
+    {
+      "candidate": "v9",
+      "name": "@playwright/test",
+      "version": "1.58.2",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/package.json",
+      "sha256": "c3633ad1a5096090c15b0a3b414ede7b9628e0b1cafa62e8c0b4321683cc1d90"
+    },
+    {
+      "candidate": "v10",
+      "name": "next",
+      "version": "16.2.6",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/package.json",
+      "sha256": "1ec03f46fd6a51b9adbc80b023f6e75223f0a7125b1394023d55841ca5ddf625"
+    },
+    {
+      "candidate": "v10",
+      "name": "react",
+      "version": "19.2.3",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/react@19.2.3/node_modules/react/package.json",
+      "sha256": "c383aced6a67c8d06f02996015c0a163e78532a330a96dff1ccfd107b00ab326"
+    },
+    {
+      "candidate": "v10",
+      "name": "@playwright/test",
+      "version": "1.58.2",
+      "resolved_package_json": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/@playwright+test@1.58.2/node_modules/@playwright/test/package.json",
+      "sha256": "c3633ad1a5096090c15b0a3b414ede7b9628e0b1cafa62e8c0b4321683cc1d90"
+    }
+  ],
+  "build_trace_modules": [
+    {
+      "span_id": 665,
+      "layer": "rsc",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/admin/admin-session-boundary.tsx",
+      "parent_span_id": 439,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/admin/index.ts",
+      "parent_layer": "rsc"
+    },
+    {
+      "span_id": 3095,
+      "layer": "ssr",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/admin/admin-session-boundary.tsx",
+      "parent_span_id": 2972,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/dist/build/webpack/loaders/next-flight-client-entry-loader.js",
+      "parent_layer": "ssr"
+    },
+    {
+      "span_id": 3185,
+      "layer": "ssr",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/auth/index.ts",
+      "parent_span_id": 3069,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/components/web-providers.tsx",
+      "parent_layer": "ssr"
+    },
+    {
+      "span_id": 3278,
+      "layer": "ssr",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/auth/index.ts",
+      "parent_span_id": 3095,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/admin/admin-session-boundary.tsx",
+      "parent_layer": "ssr"
+    },
+    {
+      "span_id": 3639,
+      "layer": "ssr",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/platform/core-provider.tsx",
+      "parent_span_id": 3220,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/platform/index.ts",
+      "parent_layer": "ssr"
+    },
+    {
+      "span_id": 4471,
+      "layer": "ssr",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/platform/core-provider.tsx",
+      "parent_span_id": 3755,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/platform/index.ts",
+      "parent_layer": "ssr"
+    },
+    {
+      "span_id": 10720,
+      "layer": "app-pages-browser",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/admin/admin-session-boundary.tsx",
+      "parent_span_id": 10668,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/node_modules/.pnpm/next@16.2.6_@opentelemetry+api@1.9.1_@playwright+test@1.58.2_babel-plugin-react-compile_ed406c9a437a853e63fa43ba4a2ae5f2/node_modules/next/dist/build/webpack/loaders/next-flight-client-entry-loader.js",
+      "parent_layer": "app-pages-browser"
+    },
+    {
+      "span_id": 10835,
+      "layer": "app-pages-browser",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/auth/index.ts",
+      "parent_span_id": 10714,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/platform/account-route.tsx",
+      "parent_layer": "app-pages-browser"
+    },
+    {
+      "span_id": 10846,
+      "layer": "app-pages-browser",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/auth/index.ts",
+      "parent_span_id": 10718,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/views/billing/billing-return-page.tsx",
+      "parent_layer": "app-pages-browser"
+    },
+    {
+      "span_id": 11245,
+      "layer": "app-pages-browser",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/platform/core-provider.tsx",
+      "parent_span_id": 10836,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/packages/core/platform/index.ts",
+      "parent_layer": "app-pages-browser"
+    },
+    {
+      "span_id": 12158,
+      "layer": "app-pages-browser",
+      "source_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/platform/core-provider.tsx",
+      "parent_span_id": 11404,
+      "parent_source_path": "/Volumes/artisan/code/2026/mc-collaboration-final3-20261102/packages/core/platform/index.ts",
+      "parent_layer": "app-pages-browser"
+    }
+  ],
+  "remaining_mechanism_hypothesis": {
+    "confidence": "medium; not experimentally isolated",
+    "statement": "Chained borrowing of whole workspace node_modules directories allows webpack to use the intermediate final4 workspace identity at app imports and the terminal final3 identity at imports inside shared views. The mixed compiler graph and two auth instances are proven; the exact resolver/cache step creating those two identities still needs a controlled reproduction.",
+    "why_v9_differs": "v9 borrows directly from final3; v10 borrows via final4. Their final filesystem realpaths and inspected installed dependency versions/bytes are identical.",
+    "not_a_source_fix": "The guard and registration order are correct within one facade instance; changing them or category assertions would mask this build-identity defect."
+  },
+  "recommended_later_scope": [
+    "Wait until the live439 run has stopped and the sole owner hands over an exclusive window; preserve this failure, logs, build artifacts and failed database.",
+    "Create task-owned per-workspace dependency directories whose @multica package links all target the same candidate packages. Reuse the pinned external dependency cache without changing versions; do not mutate the borrowed final3/final4 directories.",
+    "Use a fresh owned production build/cache in the isolated reproduction. Capture the module graph and require one auth facade identity shared by root registration and AdminSessionBoundary in SSR and browser output.",
+    "First reproduce with a minimal /login server-render/browser navigation, then rerun the unchanged two category cases only as scheduled by the owner. Preserve guards, assertions, timeout and zero-retry settings.",
+    "Only after that discriminating result consider the next full gate under the parent plan; this report grants no execution, paid-model, release or task-completion clearance."
+  ],
+  "spec_sync_recommendation": "Add a task-owned offline dependency invariant to the E2E environment/preflight guidance after the mechanism is validated: candidate fingerprint alone does not prove a single workspace module identity when node_modules resolves other checkouts.",
+  "verification": {
+    "read_only_inspection": "completed",
+    "lint": "not run; execution expressly prohibited",
+    "typecheck": "not run; execution expressly prohibited",
+    "tests": "not run; live suite exclusively owned elsewhere",
+    "source_changes": false,
+    "fixes_applied": false
+  },
+  "artifacts": {
+    "v10_runner_log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/make-check-v10.log",
+      "snapshot_sha256": "c086dc2a70cdb35fadc0d5d5f2efd5fc9cb2d3785fd28e4204a91dd6c23cd3f9",
+      "snapshot_bytes": 27880032,
+      "snapshot_lines": 115273,
+      "mutable_after_snapshot": true,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_web_log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/dev-registry-v10/envs/check-20261102195652-92601/logs/web.log",
+      "snapshot_sha256": "95f4a7f64fed4775e2d4573978c51496ebc123be3c32999030e225ecc415fd97",
+      "snapshot_bytes": 8051,
+      "snapshot_lines": 192,
+      "mutable_after_snapshot": true,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_api_log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/dev-registry-v10/envs/check-20261102195652-92601/logs/api.log",
+      "snapshot_sha256": "fb954c9fbec15243160ff2f917bfd57fc71c343e80e7946c91059403a983479c",
+      "snapshot_bytes": 597518,
+      "snapshot_lines": 2735,
+      "mutable_after_snapshot": true,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_web_build_log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/dev-registry-v10/envs/check-20261102195652-92601/logs/web-build.log",
+      "snapshot_sha256": "9e78d289d70b7276c882802aacffe2e1602ab32be5f2273815674c6a15065fdf",
+      "snapshot_bytes": 4309,
+      "snapshot_lines": 132,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_ssr_chunk": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/.next/server/chunks/6491.js",
+      "snapshot_sha256": "1d5f87b3427ddb235b1d9c2bf78948f4fc3f91fb8db68cb88aa3fe35de0e6ac6",
+      "snapshot_bytes": 3429172,
+      "snapshot_lines": 126,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_build_trace": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/.next/trace",
+      "snapshot_sha256": "84d3838e25bcc5955cd55fcd867bb17b59912964070ca1a79960ab44017f2153",
+      "snapshot_bytes": 6913965,
+      "snapshot_lines": 174,
+      "mutable_after_snapshot": true,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_manual_client_manifest": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/.next/server/app/[workspaceSlug]/(dashboard)/agents/new/manual/page_client-reference-manifest.js",
+      "snapshot_sha256": "2d490f2d9938978582f62c007ae5617d80229009926bd8b885f031196a2acfed",
+      "snapshot_bytes": 116534,
+      "snapshot_lines": 1,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_routes_manifest": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/apps/web/.next/routes-manifest.json",
+      "snapshot_sha256": "3c173c9f17a74f524dc26566a96d3ca450984b5f6177e2bd7f7615333808364c",
+      "snapshot_bytes": 20049,
+      "snapshot_lines": 685,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_web_running": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/dev-registry-v10/envs/check-20261102195652-92601/web.running.json",
+      "snapshot_sha256": "6d60cefec197d49d8377102b9da5f5a9d0a9762d8e91e5ecd96dc5d4733e0580",
+      "snapshot_bytes": 448,
+      "snapshot_lines": 12,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_api_running": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/dev-registry-v10/envs/check-20261102195652-92601/api.running.json",
+      "snapshot_sha256": "e388a51c6c2f396a6ae867b8daaed85ff878f92515cf25caac6fe74ef0cebde6",
+      "snapshot_bytes": 506,
+      "snapshot_lines": 12,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_verification_running": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/.omx/private/final-check-v10/dev-registry-v10/envs/check-20261102195652-92601/verification.running.json",
+      "snapshot_sha256": "e49d6c153f72c31030d4cceb9d4810fb4f11d91e5f8ee399f2530281edd929c3",
+      "snapshot_bytes": 1156,
+      "snapshot_lines": 1,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_categories_error_context": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/test-results/agent-categories-custom-ca-068a8-ose-with-directory-grouping-chromium/error-context.md",
+      "snapshot_sha256": "65dd60569309289b51140c4ff51cd90ce85c2e524bbc6cbdd530f616a8d9f276",
+      "snapshot_bytes": 221,
+      "snapshot_lines": 8,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v10_grouping_error_context": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103/test-results/agent-category-grouping-sa-6059c-legacy-preference-migration-chromium/error-context.md",
+      "snapshot_sha256": "65dd60569309289b51140c4ff51cd90ce85c2e524bbc6cbdd530f616a8d9f276",
+      "snapshot_bytes": 221,
+      "snapshot_lines": 8,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v9_report": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/makecheck-playwright-results-v9.json",
+      "snapshot_sha256": "8dea30021a5f386e6a217600223c3c6ec299e1a8bd156849a317b48b98de14d3",
+      "snapshot_bytes": 1610935,
+      "snapshot_lines": 20418,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v9_web_log": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/dev-registry-v9/envs/check-20261102153609-20595/logs/web.log",
+      "snapshot_sha256": "2c3d817be557745575356851d060cfcefce879000616a41af9edc6c615353c89",
+      "snapshot_bytes": 476,
+      "snapshot_lines": 7,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    },
+    "v9_ssr_chunk": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/apps/web/.next/server/chunks/4288.js",
+      "snapshot_sha256": "af0e6f0afbbe1102d1d07a0bf239bce52f4391511a7c69c283d4a80a0bb4bdd5",
+      "snapshot_bytes": 3217291,
+      "snapshot_lines": 124,
+      "mutable_after_snapshot": false,
+      "capture_utc": "2026-11-02T21:11:41.876040+00:00"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "recorded_at": "2026-11-03T07:59:49.802386+00:00",
+  "reviewer": "/root/v12_review",
+  "scope": "Narrow v12 input rebinding and source-overlay assertion review only; final binding/resource review pending root",
+  "verdict": "pass-with-notes",
+  "blocking_findings_open": 0,
+  "candidate_root": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+  "candidate_sha": "b6c74033f1913e46418ec1b119da33236dcba805",
+  "launcher_sha256": "4681128130f5161777c9039bd5ae8bb801a112958eaf5d4e22f9f2d686ac56c0",
+  "source_env_sha256": "10514ee04d8b9837987f99c7f96148dd2ae325ee444668aa0d8c262ea9432bb5",
+  "adapter_sha256": {
+    "go": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+    "pnpm": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+  },
+  "auditor_sha256": "162e8fdd9ac3561f0f67880b308266958d99354b8167695a91312888f86d2f7a",
+  "auditor_test_sha256": "e840befe9e5a95d1caccadbcbdc1890b639ac53546a2d79166b50106a2feb3a0",
+  "exact_rebinding_only": true,
+  "unchanged_adapters": true,
+  "private_cases_pass": 66,
+  "preliminary_verification_sha256": "dee8cb0898afa57a7a12470705bb666927c3a37d92e27e651523b502dc30846e",
+  "fixes_by_reviewer": [],
+  "notes": [
+    "The source overlay preserves parent UUID, initial stage2/edited stage3, recipient UUID, file identity, durable rejection correlation, new explicit request key and retained old rejection.",
+    "The optional-stage product overlay resets stage when parent is cleared and keeps number bounds and separate source/iteration actions; focused component evidence covers this contract.",
+    "Installed Main recipient interactions and memory version-history opening adapt to current visible controls; assertions remain. Fresh runtime timestamps apply only to payload fixtures and do not remove the production heartbeat fence.",
+    "Old v11 final audit correctly refused its unregistered E2E changes; that failed historical run grants no v12 acceptance."
+  ],
+  "pending_root": [
+    "Provide final source/product/node/tool/CLI/desktop bindings and fresh resource proof for independent review.",
+    "Run actual targeted production Web/native E2E, then original complete make check, preserve full named inventory and run actual final auditor after completion.",
+    "Password7 and original E3-E6 remain separate gates."
+  ],
+  "whole_product_acceptance": false,
+  "final_runtime_clearance": false
+}

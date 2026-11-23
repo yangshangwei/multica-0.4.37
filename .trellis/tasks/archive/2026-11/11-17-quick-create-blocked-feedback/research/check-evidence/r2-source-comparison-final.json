@@ -1,0 +1,27 @@
+{
+  "manifest": "artifacts/qa/full-e2e-20261120-r2/candidate-source-sha256.json",
+  "checked": 2562,
+  "matched": 2558,
+  "mismatches": [
+    {
+      "file": "packages/views/modals/creator-recommendations.test.tsx",
+      "expected": "4ba46c08a41e6f30df36f0f71fda25cee285d4d76b0a11b74c52dd78b37cd083",
+      "actual": "53aa6db930059a9515fc78bcbb02be445c0aabeb690e724bc054a56b22f43a5e"
+    },
+    {
+      "file": "packages/views/modals/creator-recommendations.tsx",
+      "expected": "0f4cac1473b0bb8985331ec9f3342c052626bbdaa8a6d14215319101ac5f3a02",
+      "actual": "319e6b39f691352ba2542b57cff0bd6ad807613c0d4909fcbbd0a14d29162820"
+    },
+    {
+      "file": "packages/views/modals/quick-create-issue.test.tsx",
+      "expected": "85a48f67e1b332872041d054ee75ad011e9eaa2e37c8aa95f76953357c6fa22f",
+      "actual": "8f2259a8da6ae8656258b03a097018c35bbc82dc389ee8b8b70f9971f55c9fe6"
+    },
+    {
+      "file": "packages/views/modals/quick-create-issue.tsx",
+      "expected": "1803c30af1b7aa3c7252cd689f6b0eff6969d846b1afa7e5274a7ddff9417ac0",
+      "actual": "9bf089caf226d7baef748e95ad9c532874cc8cea4ad792496685556161183e94"
+    }
+  ]
+}

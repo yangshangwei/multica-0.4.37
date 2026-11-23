@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-16",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "STATIC_REPORT_APPLICABILITY_DOES_NOT_REQUIRE_QA_DAEMON_ONLINE_POST_CLOSE_OBSERVATION_REQUIRED",
+  "scope": "read-only source research",
+  "qa_report_requires_daemon_online": false,
+  "historical_human_artifact_read_requires_runtime_online": false,
+  "runtime_row_identity_still_required": true,
+  "current_human_source_signer_grants_expiry_still_required": true,
+  "resource_separation": {
+    "artifact_producer": "source workspace; Product-owned; R20 spec137",
+    "qa_daemon": "separate execution workspace; Quality-owned; R20 spec169-173"
+  },
+  "fixture_close": {
+    "native_stdin_eof_and_exit": true,
+    "owned_heartbeat_stopped": true,
+    "local_allowlisted_ledger_captured": true,
+    "owned_local_directory_removed": true,
+    "server_member_agent_runtime_delete": false,
+    "explicit_credential_revocation": false,
+    "stage_mutation": false,
+    "runtime_online_indefinitely_claimed": false,
+    "artifact_producer_closed": false,
+    "owned_work_drain_must_be_observed": true
+  },
+  "original_r20_order": {
+    "settled_and_proof_check": "e2e/collaboration-stage-execution.spec.ts:203-205",
+    "report_and_log_check": "e2e/collaboration-stage-execution.spec.ts:206-210",
+    "human_qa_form": "e2e/collaboration-stage-execution.spec.ts:218",
+    "resource_close": "e2e/collaboration-stage-execution.spec.ts:221"
+  },
+  "contract_paths": [
+    "server/internal/service/collaboration_test_report_view.go:114",
+    "server/internal/service/collaboration_test_report_view.go:188",
+    "server/internal/service/collaboration_test_subject.go:249",
+    "server/internal/service/collaboration_stage_qa.go:27",
+    "server/internal/service/collaboration_stage_qa.go:157",
+    "server/internal/service/delivery_evidence.go:277",
+    "server/internal/service/artifact_authority.go:284",
+    "server/internal/service/agent_runtime_lookup.go:43",
+    "e2e/fixtures/collaboration-stage-approvals.ts:266",
+    "e2e/fixtures/collaboration-host-runtime.ts:374",
+    "e2e/fixtures/collaboration-performance.ts:984",
+    "server/internal/daemon/collaboration_host_router_test.go:240"
+  ],
+  "required_post_close_proof": [
+    "original settled host_exit_observed success before shutdown",
+    "native exit_code0 active_tasks0 ledger and cleanup errors checked",
+    "fresh R4 same candidate and current QA signability",
+    "fresh T4 same report/run/subject/artifact passed and usable",
+    "retained report logs verified",
+    "current human source roles dependencies expiry still checked",
+    "original five-second enabled assertion and all outcomes retained"
+  ],
+  "actual_r20_poller_holder_proved": false,
+  "post_close_product_observation_executed": false,
+  "action_order_changed": false,
+  "database_api_browser_tests_builds_signals": 0,
+  "acceptance_claims": {"S2_complete": false, "parent24_updated": false},
+  "report": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-runtime-poller-qa-applicability-20261116.md"
+}

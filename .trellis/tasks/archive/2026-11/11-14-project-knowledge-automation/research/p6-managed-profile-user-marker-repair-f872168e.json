@@ -1,0 +1,45 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "created_at": "2026-11-15T11:41:34.223627+00:00",
+  "original_failure": "research/p6-original-after-password-fixture-failure-1a428255.json",
+  "actual_terminal_logs": {
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/logs/p6-web-a1b93d4d.log": "9620f739aa753854f05276f031f027ffcdfd82d6b0a7e11116cc304047239517",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/logs/p6-desktop-4ad33664.log": "9620f739aa753854f05276f031f027ffcdfd82d6b0a7e11116cc304047239517"
+  },
+  "actual_terminal_error": "managed profile has no user identity",
+  "change_boundary": {
+    "gap": "Actual managed daemon authenticates then refuses startup because fixture omitted the verified Desktop profile owner marker.",
+    "owner": "E2E managed profile setup in project-knowledge-automation.ts; production Desktop writeProfileUserId and Go managedProfileUser remain authoritative.",
+    "files": [
+      "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/project-knowledge-automation.ts",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/fixtures/project-knowledge-automation.ts"
+    ],
+    "approach": "Persist verified managed.userId to task-owned .desktop-user-id using 0600/wx and assert it matches the registered creator. Keep actual PAT, enrollment, challenge signing and stdin handoff.",
+    "exclusions": [
+      "Production Go/SQL/auth changes",
+      "Default user home or other profiles",
+      "New shared API/helper/dependency",
+      "Weakened input/manifest/resume assertions"
+    ],
+    "verification": "Focused noEmit and baseline-aware lint, exact candidate one-file delta and independent admission, fresh full build/start/two original journeys."
+  },
+  "before_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/project-knowledge-automation.ts": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/fixtures/project-knowledge-automation.ts": "74f9e74a0cf0d33b600eb84eb6f89e20f1412ec9cbb34a855c6408e98788502b"
+  },
+  "state": "source_repaired_pending_checks_and_rebuild",
+  "after_sha256": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/project-knowledge-automation.ts": "e4f3831c51bc40a1c83fd11aecd35f01cd4baedb06a6c9d48e308c1fa260440b",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/fixtures/project-knowledge-automation.ts": "e4f3831c51bc40a1c83fd11aecd35f01cd4baedb06a6c9d48e308c1fa260440b"
+  },
+  "public_private_this_file_parity": true,
+  "production_profile_contract_sources": [
+    "apps/desktop/src/main/daemon-manager.ts:277",
+    "apps/desktop/src/main/daemon-manager.ts:958",
+    "server/internal/daemon/managed_lifecycle.go:32",
+    "server/internal/daemon/managed_lifecycle.go:89",
+    "server/internal/daemon/managed_lifecycle_test.go:67"
+  ],
+  "authentication_guards_unchanged": true,
+  "original_logs_unchanged": true
+}

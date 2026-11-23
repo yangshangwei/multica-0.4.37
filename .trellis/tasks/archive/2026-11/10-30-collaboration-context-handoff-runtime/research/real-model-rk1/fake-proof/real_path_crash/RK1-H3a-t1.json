@@ -1,0 +1,85 @@
+{
+ "series": "RK1",
+ "label": "RK1-H3a-t1",
+ "scenario": "RK1-H3a",
+ "trial": 1,
+ "mode": "sim",
+ "fault": "crash",
+ "status": "incomplete",
+ "verdict": "measured:provider_result_missing",
+ "criteria": {},
+ "answer": "",
+ "runs": [
+  {
+   "role": "measured",
+   "run_id": "43aed22c-c217-42cd-866f-44b8d0bce465",
+   "measured": true,
+   "lifecycle_incomplete": "provider_result_missing",
+   "physical_launches": 1,
+   "authorized_attempts": 1,
+   "permit_calls": 2,
+   "progress_state": "settled",
+   "proof_state": "host_exit_observed",
+   "business_outcome": "failure",
+   "step_kind": "agent",
+   "recording_incomplete": false,
+   "seal_reason": "completed",
+   "seal_observed_through": 0,
+   "seal_acknowledged_through": 0,
+   "outcome_record_completeness": "complete",
+   "provider_recordable_messages": 0,
+   "provider_messages_over_record_limit": 0,
+   "provider_init_models": null,
+   "claim_query": "handoff_version=1\u0026recording_version=1\u0026knowledge_version=1",
+   "granted": {
+    "handoff_version": 1,
+    "knowledge_context": false,
+    "recording_version": 1
+   },
+   "stdin_prompt_sha256": [
+    "48a91d5a409dd09555b3d04fdb47f9831808474b398245e8708d88df909e7262"
+   ],
+   "argv": [
+    [
+     "-p",
+     "--output-format",
+     "stream-json",
+     "--input-format",
+     "stream-json",
+     "--verbose",
+     "--permission-mode",
+     "bypassPermissions",
+     "--disallowedTools",
+     "AskUserQuestion",
+     "--model",
+     "rk1-requested-model"
+    ]
+   ],
+   "removed_child_env": [
+    "DATABASE_URL",
+    "RK1_FAKE_PROOF_OUT",
+    "RK1_PROVIDER_PLAN_DIR"
+   ],
+   "observed_models": null,
+   "cli_reads": 0,
+   "business_writes": 0,
+   "provider_tool_results": 0,
+   "provider_tool_result_max_chars": 0,
+   "provider_tool_results_with_cursor": 0,
+   "run_events": {
+    "handoff_binding": 1,
+    "handoff_snapshot": 1,
+    "outcome": 1,
+    "preparation": 1,
+    "recording_seal": 1,
+    "resource_snapshot": 1
+   }
+  }
+ ],
+ "provider": "claude",
+ "provider_version": "2.1.200",
+ "requested_model": "rk1-requested-model",
+ "observed_models": [],
+ "started_at": "2026-11-01T15:16:52.325631Z",
+ "finished_at": "2026-11-01T15:16:58.768017Z"
+}

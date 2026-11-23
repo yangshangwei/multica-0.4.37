@@ -149,7 +149,7 @@ type skillOverwriteInput struct {
 // Preserved: id, created_by, created_at, name, and agent_skill bindings (the
 // row identity and the binding table are never touched). Replaced: description,
 // content, config (origin), and the full file set — files absent from the new
-// bundle are pruned via DeleteSkillFilesBySkill. On any error the tx rolls back,
+// bundle are pruned while unchanged files retain their identity. On error the tx rolls back,
 // leaving the original skill unchanged.
 func (h *Handler) overwriteSkillWithFiles(ctx context.Context, input skillOverwriteInput) (SkillWithFilesResponse, error) {
 	config, err := json.Marshal(input.Config)
@@ -221,22 +221,9 @@ func (h *Handler) overwriteSkillWithFiles(ctx context.Context, input skillOverwr
 		return SkillWithFilesResponse{}, err
 	}
 
-	// Full replace: drop every existing file, then re-insert the new set so
-	// files no longer present in the local source are removed.
-	if err := qtx.DeleteSkillFilesBySkill(ctx, skill.ID); err != nil {
+	fileResps, err := replaceSkillFiles(ctx, qtx, skill.ID, input.Files)
+	if err != nil {
 		return SkillWithFilesResponse{}, err
-	}
-	fileResps := make([]SkillFileResponse, 0, len(input.Files))
-	for _, f := range input.Files {
-		sf, err := qtx.UpsertSkillFile(ctx, db.UpsertSkillFileParams{
-			SkillID: skill.ID,
-			Path:    sanitizeNullBytes(f.Path),
-			Content: sanitizeNullBytes(f.Content),
-		})
-		if err != nil {
-			return SkillWithFilesResponse{}, err
-		}
-		fileResps = append(fileResps, skillFileToResponse(sf))
 	}
 
 	if err := tx.Commit(ctx); err != nil {

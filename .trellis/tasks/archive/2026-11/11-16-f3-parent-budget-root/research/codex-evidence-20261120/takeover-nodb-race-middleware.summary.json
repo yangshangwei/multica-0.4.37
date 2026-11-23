@@ -1,0 +1,63 @@
+{
+  "tag": "nodb-race-middleware",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-f3-completion-20261120/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/opt/homebrew/bin/go",
+    "test",
+    "-p=1",
+    "./internal/middleware",
+    "-run",
+    "^(TestIssueBudgetActorHeaderPresence|TestIssueBudgetNoStore|TestReportSnapshotHeadersLeaveOtherNamespacesUnchanged|TestReportSnapshotHeadersNoStoreBeforeAuthentication)$",
+    "-count=1",
+    "-json",
+    "-timeout=10m",
+    "-race"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-f3-completion-20261120/server",
+  "env": {
+    "PATH": "/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "HOME": "/tmp/f3-takeover-20261120/nodb-private-home",
+    "TMPDIR": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T",
+    "GOMAXPROCS": "2",
+    "GOPATH": "/Users/artisan/go",
+    "GOMODCACHE": "/Users/artisan/go/pkg/mod",
+    "GOCACHE": "/Volumes/artisan/dev-cache/go-build",
+    "GOTOOLCHAIN": "local",
+    "GOPROXY": "off",
+    "GOSUMDB": "off",
+    "GOFLAGS": "-mod=readonly",
+    "CGO_ENABLED": "1",
+    "DATABASE_URL": "postgres://invalid:invalid@127.0.0.1:1/f3_no_database?sslmode=disable"
+  },
+  "started_at": "2026-11-20T13:30:54.861021+00:00",
+  "finished_at": "2026-11-20T13:30:59.171508+00:00",
+  "exit": 0,
+  "log": "nodb-race-middleware.jsonl",
+  "sha256": "2c9ae0c6ecff97c07e39f55fe0d123b8b8a72f86fd0493f842393826f5da29ca",
+  "bytes": 10028,
+  "agent_cli_guard_violations": [],
+  "counts": {
+    "pass": 8
+  },
+  "top_level_counts": {
+    "pass": 4
+  },
+  "expected_names": [
+    "TestIssueBudgetActorHeaderPresence",
+    "TestIssueBudgetNoStore",
+    "TestReportSnapshotHeadersLeaveOtherNamespacesUnchanged",
+    "TestReportSnapshotHeadersNoStoreBeforeAuthentication"
+  ],
+  "missing_names": [],
+  "failed_names": [],
+  "skipped_names": [],
+  "package_terminal": [
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "action": "pass"
+    }
+  ],
+  "valid": true
+}

@@ -1,0 +1,41 @@
+{
+  "launcher_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/run-make-check-v11.py",
+  "launcher_sha256": "b2d17a742c45134640a070e980937b9f0ce4f724611c7e5c0fb6f2f0a333ffd2",
+  "source_env_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-source-v11.env",
+  "source_env_sha256": "999decf083adf9cea0271cef37834fe6528104d4ca63f8e69c90afacd01ecd8f",
+  "bindings_path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/owned-bindings-v11.json",
+  "bindings_sha256": "ccc11e4d7e79a19c964b75d4b2c3354268a4bf28fa7ad153c23aa0a95b30b6ba",
+  "preserved_parser_and_guard_AST": [
+    "require",
+    "sha256",
+    "parse_generated_environment",
+    "renderer_url"
+  ],
+  "changed_source_env_keys": [
+    "MULTICA_MCP_TEMPLATE_DIR",
+    "E2E_MCP_TEMPLATE_DIR",
+    "MULTICA_SKILL_TEMPLATE_DIR",
+    "MULTICA_RESOURCE_PUBLISH_DIR",
+    "COLLABORATION_SOURCE_CLI",
+    "MULTICA_DSH_PATH",
+    "COLLABORATION_ELECTRON_RENDERER_URL",
+    "CHANGELOG_ELECTRON_RENDERER_URL"
+  ],
+  "database_source_values_unchanged": true,
+  "real_gate_absent": true,
+  "model_values_empty": true,
+  "actual_clearance_safe_env_run_state_absent": true,
+  "new_clearance_fields_required": [
+    "bindings_sha256",
+    "resource_ownership_sha256"
+  ],
+  "resource_ownership_proof_root_owned": true,
+  "private_environment_delta": [
+    "pinned cached Go1.26.6",
+    "pinned own pnpm10.28.2",
+    "Node22.23.2 first in PATH",
+    "own Go/home/cache/registry/profile/workspace dirs",
+    "GOPROXY=off,GOENV=off,GOMAXPROCS=2",
+    "provider secrets and Node preload variables stripped"
+  ]
+}

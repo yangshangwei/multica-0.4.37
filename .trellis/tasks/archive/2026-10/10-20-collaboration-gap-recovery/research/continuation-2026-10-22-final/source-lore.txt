@@ -1,0 +1,14 @@
+Preserve external source identity and layout without changing collaboration authority
+
+Source cards must keep their external account identity across Web and Electron while layout reorder remains independent of collaboration workflow. The real dual-client journey verifies list, board, Gantt and comment summaries, external filtering, versioned transfer/status/lifecycle entry and ordinary move behavior.
+
+After shared board and CLI moves, rendered card order matches persisted numeric positions following reload, with no collaboration revision, event or notification change. Three canonical stage tests pin creator/current-source-handler history and both PostgreSQL commit orders against transfer or source departure. Existing native/sidebar and source helpers are reused; the fixture records rather than guesses request routes and animation geometry.
+
+Constraint: Preserve shared uncommitted product work; production Web and actual renderer/preload harness only
+Rejected: Use renderer URLs as native route authority | the desktop tab-owned MemoryRouter requires actual workspace navigation
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Directive: Observe ordinary POST/move as well as PUT; compare real rendered order after reload before claiming reorder persistence
+Tested: Strengthened Web/Electron/CLI1/1 zero retry/skip; current source/machine/runtime23/75; exact HEAD stage-only3/9; strict tsc/lint; independent full AC85/89 review
+Not-tested: Native duplicate nonmanager matrix, uploaded-avatar fetching, installed full Main/old releases, durable parent wake delivery

@@ -1,0 +1,55 @@
+{
+  "recorded_at": "2026-11-02T22:32:48.573903+00:00",
+  "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+  "temp_allocation": {
+    "directory": "/private/tmp/multica-final-check-v11-6phaqd3s",
+    "mode": "0700",
+    "owner_uid": 501,
+    "git_root_absent": true,
+    "keep_for_evidence": true,
+    "candidate_sha": "304f74dd3ba4ddea862c94917c5bb0770355a351",
+    "allocation_phase": "preparation-only",
+    "allocated_at": "2026-11-02T22:32:44.566670+00:00"
+  },
+  "source_contracts": {
+    "Makefile": "02db245b6fc53efd75119b897fd5aad832141f6fed770156e165d9e5c0bd9260",
+    "server/cmd/multica/main.go": "5e1b462578eb71a90e9d3bce355db7261b0acc72096bb2970f4a56de2d437bb2",
+    "server/pkg/agent/version.go": "5abbd5d5de155033fb4e697fe6ada94bcbdd68c733fa4b35b129f3231f3e30b3",
+    "apps/desktop/package.json": "3f330b6bd215f95694b94d65c9f39ca3f168bf3d2a6511de7074d02bc46ddb09",
+    "apps/desktop/electron.vite.config.ts": "af76a1be148e5ff45ce6061d6781e76888cd0314c2c8a0e23a5eb8f7251f49c4",
+    "apps/desktop/scripts/bundle-cli.mjs": "448213940496521f456442f599172c4505bc9aaa320197d76eb86108e5cffb09",
+    "scripts/dev-env.sh": "6fb4a38c75ffe51c4e1a60712f52887263ee2a21ab205432c3bc90fdf25e001e"
+  },
+  "preserved_v10_inputs": {
+    "run-make-check-v10.py": "e01f72f3c24a824782d3e9ebfdc2c07108768766c14fb504d3e178f2bbf121a4",
+    "check-launcher-v10-preflight.py": "8face46aaf0c79aff33771778bb54aa2e617e2d1c585aa7a19c91b0ae1e8ab93",
+    "check-source-v10.env": "41a20e71e0d9806867e5beba8deaac291d2a5a577255d0689701957a99e64f18",
+    "build-temp-allocation-v10.json": "195a6d3d7afae79db81e9aea4469d95c422fbd64ebc181e23ea9bdffa53d06b4",
+    "artifact-manifest-v10.json": "6c319701f08a159b31d4ebcec6140e28a1c693531c5a8dfa77d95a6d1cbb20f7"
+  },
+  "adapters": {
+    "go": {
+      "source": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/go",
+      "source_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce",
+      "copy": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/go",
+      "copy_sha256": "70ca24bb88b2a8df93ae4694e9fd9739c523e8f35755a10bb799b7561b934fce"
+    },
+    "pnpm": {
+      "source": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v9/check-bin/pnpm",
+      "source_sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2",
+      "copy": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/check-bin/pnpm",
+      "copy_sha256": "acb022a829423fd10cde20c30b00ceb15c9ce4c38a1dd3327e8e0338bbce7ca2"
+    }
+  },
+  "private_build_config": {
+    "source": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/electron.vite.config.ts",
+    "copy": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/apps/desktop/node_modules/.cache/final-check-v11/electron.vite.config.cts",
+    "source_sha256": "af76a1be148e5ff45ce6061d6781e76888cd0314c2c8a0e23a5eb8f7251f49c4",
+    "copy_sha256": "af76a1be148e5ff45ce6061d6781e76888cd0314c2c8a0e23a5eb8f7251f49c4",
+    "same_bytes": true,
+    "reason": "supported CJS config avoids the tool-generated unignored timestamp ESM file; same desktop cwd/package resolutions"
+  },
+  "workspace_expectations_sha256": "579f69cdd7c561a9d65c20fa21cde1443092696fcef860c8a315ce9ba7daf49d",
+  "actual_execution_paths_created": false,
+  "databases_or_services_touched": false
+}

@@ -40,7 +40,7 @@ export function useAdminFilterFeedback(params: URLSearchParams) {
 }
 
 /** Native selects share the Input density; the admin shell raises both for touch. */
-export const adminSelectClass = "h-8 w-full min-w-0 rounded-lg border border-input bg-background px-2.5 text-body outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive dark:bg-input/30";
+export const adminSelectClass = "h-8 w-full min-w-0 rounded-lg border border-input bg-background px-2.5 text-body outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive dark:bg-input-fill/30";
 
 let zones: string[] | undefined;
 /** Suggestions for an IANA time zone text field; validation still decides what is accepted. */

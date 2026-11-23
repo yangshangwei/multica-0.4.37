@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-11-15T09:28:13.363301+00:00",
+  "state": "active_modal_capture_and_close_repaired_rebuild_required",
+  "original_failure_report": "research/p6-original-modal-capture-failure-1bbd46cc.json",
+  "changed_files": [
+    {
+      "path": "e2e/project-knowledge-automation.spec.ts",
+      "original_bytes": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/p6-modal-capture-repair-1bbd46cc/project-knowledge-automation.spec.ts",
+      "original_sha256": "6635894c5de46cc7349bb8871f425780dbb1bdd9854f6f5062b30f81727663b7",
+      "corrected_sha256": "de6c4090c4e520bfadb87463a28fccb15831557ba8d1404d99a7b78578434381"
+    },
+    {
+      "path": "e2e/fixtures/project-knowledge-automation.ts",
+      "original_bytes": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/p6-modal-capture-repair-1bbd46cc/project-knowledge-automation.ts",
+      "original_sha256": "ff1a078c5add76c8edc31b59b8ca86c04b381770d6fca3f00391f4577476cb28",
+      "corrected_sha256": "f7553a1785231cab4f0ddc967c7a819b62eea389ca3fcb1a010b84a889cbd106"
+    }
+  ],
+  "source_id_before": "32f271d5bd4a8dd6954f847e430291998b5ed5db6d7e800b10b6c50dbd098268",
+  "source_id_after": "b91a4cac945be1bdf3f98ff1d861895fb43602e554fb89ad668be63b19bc2aa5",
+  "source_map_changed_paths": [
+    "e2e/fixtures/project-knowledge-automation.ts",
+    "e2e/project-knowledge-automation.spec.ts"
+  ],
+  "product_source_changed": false,
+  "controller_bytes_unchanged": true,
+  "behavior": "Capture current visible Review candidate/Knowledge candidates, retain its region name with screenshot text, close the actual resources dialog before continuing UI actions. Other status screenshots retain their original Project knowledge target.",
+  "contract": [
+    "e2e/fixtures/collaboration-disclosures.ts: knowledge discovery opens real modal resources drawer",
+    "packages/views/collaboration/detail-auxiliary.tsx: Dialog plus explicit Close resources; background accessibility is intentionally suppressed"
+  ],
+  "runtime_stopped_before_edit": true,
+  "runtime_source_ready": false,
+  "final_acceptance_verified": false,
+  "current_root_acceptance_verified": false
+}

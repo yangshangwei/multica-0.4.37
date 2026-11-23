@@ -299,6 +299,10 @@ WHERE workspace_id = $1 AND admission_status IN ('not_required','accepted')
   AND project_id IS NOT DISTINCT FROM sqlc.arg('project_id')::uuid
   AND parent_issue_id IS NOT DISTINCT FROM sqlc.arg('parent_issue_id')::uuid
   AND lower(btrim(regexp_replace(title, '[[:space:]]+', ' ', 'g'))) = sqlc.arg('normalized_title')
+  -- Collaboration issues are created with AllowDuplicate and never block an
+  -- ordinary create. Matching them would return their private body in the
+  -- 409 and let callers probe their project, parent and open state (R53).
+  AND NOT EXISTS (SELECT 1 FROM issue_collaboration c WHERE c.issue_id = issue.id)
 ORDER BY created_at ASC
 LIMIT 1;
 
@@ -342,6 +346,18 @@ LIMIT 1;
 WITH target AS (
     SELECT issue.id FROM issue WHERE issue.id = $1 AND issue.workspace_id = $2
 ),
+cleared_inbox_snoozes AS (
+ DELETE FROM inbox_snooze WHERE inbox_snooze.workspace_id=$2 AND inbox_snooze.group_kind='issue' AND inbox_snooze.group_id IN (SELECT target.id FROM target)
+),
+cleared_inbox_critical_sources AS (
+ DELETE FROM inbox_critical_source WHERE inbox_critical_source.workspace_id=$2 AND inbox_critical_source.group_kind='issue' AND inbox_critical_source.group_id IN (SELECT target.id FROM target)
+),
+cleared_report_snapshots AS (
+    DELETE FROM report_snapshot WHERE workspace_id=$2 AND report_issue_id IN (SELECT target.id FROM target)
+),
+cleared_report_snapshot_control AS (
+    DELETE FROM report_snapshot_control WHERE workspace_id=$2 AND report_issue_id IN (SELECT target.id FROM target)
+),
 cleared_triage AS (
     DELETE FROM issue_triage WHERE issue_id IN (SELECT target.id FROM target)
 ),
@@ -359,11 +375,33 @@ DELETE FROM issue WHERE issue.id IN (SELECT target.id FROM target);
 SELECT i.id, i.workspace_id, i.title, i.description, i.status, i.priority,
        i.assignee_type, i.assignee_id, i.creator_type, i.creator_id,
        i.parent_issue_id, i.position, i.start_date, i.due_date, i.created_at, i.updated_at, i.last_activity_at, i.number, i.project_id, i.metadata, i.stage, i.properties,
-       i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count
+       i.revision, i.admission_status, i.current_iteration_id, i.iteration_rollover_count,
+       (sqlc.arg('machine_principal')::boolean AND collaboration.issue_id IS NOT NULL)::boolean AS collaboration_reference
 FROM issue i
+LEFT JOIN issue_collaboration collaboration ON collaboration.issue_id = i.id
 WHERE i.admission_status IN ('not_required', 'accepted') AND i.workspace_id = $1
+  AND (NOT sqlc.arg('external_collaborators')::boolean OR (
+       NOT sqlc.arg('machine_principal')::boolean AND collaboration.issue_id IS NOT NULL AND EXISTS (
+           SELECT 1 FROM issue_participant p JOIN "user" u ON u.id=p.user_id AND u.disabled_at IS NULL
+           WHERE p.issue_id=i.id AND p.revoked_at IS NULL
+             AND NOT EXISTS (SELECT 1 FROM member m WHERE m.workspace_id=i.workspace_id AND m.user_id=p.user_id)
+       )
+  ))
   -- Negate only known terminal keys so an unknown legacy key remains visible.
-  AND NOT (i.status = ANY(sqlc.arg('terminal_status_keys')::text[]))
+  -- A machine sees a reference regardless of private status, so comparing
+  -- open_only and ordinary lists cannot reveal the collaboration's status.
+  AND ((sqlc.arg('machine_principal')::boolean AND collaboration.issue_id IS NOT NULL)
+       OR NOT (i.status = ANY(sqlc.arg('terminal_status_keys')::text[])))
+  AND (NOT sqlc.arg('machine_principal')::boolean OR collaboration.issue_id IS NULL OR (
+       sqlc.narg('priority')::text IS NULL
+       AND sqlc.narg('assignee_id')::uuid IS NULL
+       AND sqlc.narg('assignee_ids')::uuid[] IS NULL
+       AND sqlc.narg('creator_id')::uuid IS NULL
+       AND sqlc.narg('project_id')::uuid IS NULL
+       AND sqlc.narg('metadata_filter')::jsonb IS NULL
+       AND sqlc.narg('properties_filter')::jsonb IS NULL
+       AND sqlc.narg('involves_user_id')::uuid IS NULL
+  ))
   AND (sqlc.narg('priority')::text IS NULL OR i.priority = sqlc.narg('priority'))
   AND (sqlc.narg('assignee_id')::uuid IS NULL OR i.assignee_id = sqlc.narg('assignee_id'))
   AND (sqlc.narg('assignee_ids')::uuid[] IS NULL OR i.assignee_id = ANY(sqlc.narg('assignee_ids')::uuid[]))
@@ -424,7 +462,9 @@ WHERE i.admission_status IN ('not_required', 'accepted') AND i.workspace_id = $1
              AND a.owner_id     = sqlc.narg('involves_user_id')::uuid
     ))
   )
-ORDER BY i.position ASC, i.created_at DESC;
+ORDER BY CASE WHEN sqlc.arg('machine_principal')::boolean AND collaboration.issue_id IS NOT NULL THEN 0 ELSE i.position END ASC,
+         CASE WHEN sqlc.arg('machine_principal')::boolean AND collaboration.issue_id IS NOT NULL THEN 'epoch'::timestamptz ELSE i.created_at END DESC,
+         i.id;
 
 -- name: CountIssues :one
 -- See ListIssues for the semantics of involves_user_id.

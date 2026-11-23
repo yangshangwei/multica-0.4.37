@@ -1,0 +1,5480 @@
+{
+  "wrapper": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-bin/go",
+  "wrapper_sha256": "c987ea45cf75e4fa2fe5858a6bc5d82bb1f30ac289162015ebe544dab8b6382f",
+  "tests_run": 3,
+  "failure_count": 114,
+  "error_count": 0,
+  "failure_test_ids": [
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-bench', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-bench', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-benchtime', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-benchtime', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-blockprofile', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-blockprofile', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-blockprofilerate', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-blockprofilerate', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-cpuprofile', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-cpuprofile', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-fuzz', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-fuzz', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-fuzzminimizetime', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-fuzzminimizetime', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-fuzztime', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-fuzztime', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-memprofile', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-memprofile', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-memprofilerate', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-memprofilerate', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-mutexprofile', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-mutexprofile', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-mutexprofilefraction', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-mutexprofilefraction', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-outputdir', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-outputdir', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-shuffle', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-shuffle', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-trace', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-trace', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.bench', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.bench', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.benchtime', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.benchtime', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.blockprofile', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.blockprofile', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.blockprofilerate', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.blockprofilerate', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.count', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.count', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.cpu', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.cpu', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.cpuprofile', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.cpuprofile', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.fuzz', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.fuzz', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.fuzzminimizetime', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.fuzzminimizetime', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.fuzztime', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.fuzztime', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.list', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.list', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.memprofile', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.memprofile', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.memprofilerate', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.memprofilerate', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.mutexprofile', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.mutexprofile', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.mutexprofilefraction', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.mutexprofilefraction', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.outputdir', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.outputdir', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.parallel', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.parallel', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.run', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.run', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.shuffle', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.shuffle', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.skip', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.skip', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.timeout', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.timeout', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.trace', value='-c')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests (flag='-test.trace', value='-c=true')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-bench')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-benchtime')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-blockprofile')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-blockprofilerate')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-cpuprofile')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-fuzz')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-fuzzminimizetime')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-fuzztime')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-memprofile')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-memprofilerate')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-mutexprofile')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-mutexprofilefraction')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-outputdir')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-shuffle')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-trace')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.bench')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.benchtime')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.blockprofile')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.blockprofilerate')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.count')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.cpu')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.cpuprofile')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.fuzz')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.fuzzminimizetime')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.fuzztime')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.list')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.memprofile')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.memprofilerate')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.mutexprofile')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.mutexprofilefraction')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.outputdir')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.parallel')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.run')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.shuffle')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.skip')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.timeout')",
+    "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding (flag='-test.trace')",
+    "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries (argv=['test', '-c=false', '-bench', '-c', 'example/first'])",
+    "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries (argv=['test', '-c=false', '-test.run', '-c=true', 'example/first'])",
+    "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries (argv=['test', '-c', '-test.run', '-c=false', 'example/first'])"
+  ],
+  "observations": [
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-bench",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-bench",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-bench",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-bench",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-benchtime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-benchtime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-benchtime",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-benchtime",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-blockprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-blockprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-blockprofile",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-blockprofile",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-blockprofilerate",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-blockprofilerate",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-blockprofilerate",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-blockprofilerate",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-count",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-count",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-cpu",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-cpu",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-cpuprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-cpuprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-cpuprofile",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-cpuprofile",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-fuzz",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-fuzz",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-fuzz",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-fuzz",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-fuzzminimizetime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-fuzzminimizetime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-fuzzminimizetime",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-fuzzminimizetime",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-fuzztime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-fuzztime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-fuzztime",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-fuzztime",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-list",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-list",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-memprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-memprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-memprofile",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-memprofile",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-memprofilerate",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-memprofilerate",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-memprofilerate",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-memprofilerate",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-mutexprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-mutexprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-mutexprofile",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-mutexprofile",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-mutexprofilefraction",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-mutexprofilefraction",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-mutexprofilefraction",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-mutexprofilefraction",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-outputdir",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-outputdir",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-outputdir",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-outputdir",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-parallel",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-parallel",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-run",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-run",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-shuffle",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-shuffle",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-shuffle",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-shuffle",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-skip",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-skip",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-timeout",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-timeout",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-trace",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-trace",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-trace",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-trace",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.bench",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.bench",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.bench",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.bench",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.benchtime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.benchtime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.benchtime",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.benchtime",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.blockprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.blockprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.blockprofile",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.blockprofile",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.blockprofilerate",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.blockprofilerate",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.blockprofilerate",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.blockprofilerate",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.count",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.count",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.count",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.count",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.cpu",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.cpu",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.cpu",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.cpu",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.cpuprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.cpuprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.cpuprofile",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.cpuprofile",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.fuzz",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.fuzz",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.fuzz",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.fuzz",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.fuzzminimizetime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.fuzzminimizetime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.fuzzminimizetime",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.fuzzminimizetime",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.fuzztime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.fuzztime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.fuzztime",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.fuzztime",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.list",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.list",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.list",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.list",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.memprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.memprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.memprofile",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.memprofile",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.memprofilerate",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.memprofilerate",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.memprofilerate",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.memprofilerate",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.mutexprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.mutexprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.mutexprofile",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.mutexprofile",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.mutexprofilefraction",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.mutexprofilefraction",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.mutexprofilefraction",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.mutexprofilefraction",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.outputdir",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.outputdir",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.outputdir",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.outputdir",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.parallel",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.parallel",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.parallel",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.parallel",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.run",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.run",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.run",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.run",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.shuffle",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.shuffle",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.shuffle",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.shuffle",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.skip",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.skip",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.skip",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.skip",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.timeout",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.timeout",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.timeout",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.timeout",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.trace",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.trace",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_never_exempt_unmarked_tests",
+      "argv": [
+        "test",
+        "-test.trace",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-qkvopz02/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-test.trace",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-bench",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-bench",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-benchtime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-benchtime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-blockprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-blockprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-blockprofilerate",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-blockprofilerate",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-count",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-count",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-cpu",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-cpu",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-cpuprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-cpuprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-fuzz",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-fuzz",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-fuzzminimizetime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-fuzzminimizetime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-fuzztime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-fuzztime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-list",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-list",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-memprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-memprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-memprofilerate",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-memprofilerate",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-mutexprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-mutexprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-mutexprofilefraction",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-mutexprofilefraction",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-outputdir",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-outputdir",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-parallel",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-parallel",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-run",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-run",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-shuffle",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-shuffle",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-skip",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-skip",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-timeout",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "list",
+          "argv": [
+            "/fixture/fake-go",
+            "list",
+            "example/first"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "effective_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+          "selectors": [
+            "example/first"
+          ]
+        },
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-timeout",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-trace",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-trace",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.bench",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.bench",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.benchtime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.benchtime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.blockprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.blockprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.blockprofilerate",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.blockprofilerate",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.count",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.count",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.cpu",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.cpu",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.cpuprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.cpuprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.fuzz",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.fuzz",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.fuzzminimizetime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.fuzzminimizetime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.fuzztime",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.fuzztime",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.list",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.list",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.memprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.memprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.memprofilerate",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.memprofilerate",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.mutexprofile",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.mutexprofile",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.mutexprofilefraction",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.mutexprofilefraction",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.outputdir",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.outputdir",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.parallel",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.parallel",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.run",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.run",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.shuffle",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.shuffle",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.skip",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.skip",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.timeout",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.timeout",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_go_value_flags_and_test_aliases_keep_permitted_package_binding",
+      "argv": [
+        "test",
+        "-test.trace",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-mbdo94cm/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/fixture/fake-go",
+          "argv": [
+            "/fixture/fake-go",
+            "test",
+            "-test.trace",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "0",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "-c=true",
+        "-c=false",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "-c=false",
+        "-bench",
+        "-c",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-c=false",
+            "-bench",
+            "-c",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "-c=false",
+        "-test.run",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-c=false",
+            "-test.run",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "example/first",
+        "-args",
+        "-bench",
+        "-c"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "example/first",
+        "--",
+        "-test.run",
+        "-c=true"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "-c=false",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-c=false",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "-c",
+        "-test.run",
+        "-c=false",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "refused",
+      "exit_code": 2,
+      "calls": [],
+      "stdout": "",
+      "stderr": "Task database isolation refused: test execution requires an explicit task isolation context\n",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "-bench",
+        "-c",
+        "-c=true",
+        "example/first"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-bench",
+            "-c",
+            "-c=true",
+            "example/first"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "-c",
+        "example/first",
+        "-args",
+        "-c=false"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-c",
+            "example/first",
+            "-args",
+            "-c=false"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    },
+    {
+      "test": "__main__.PackageBindingTests.test_compile_scanner_preserves_last_real_flag_and_args_boundaries",
+      "argv": [
+        "test",
+        "-c=true",
+        "example/first",
+        "--",
+        "-c=false"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp/binding-94qwloe4/module",
+      "allocation": {
+        "database": "ccheck_20261102010101000000_fac3fb5ac146",
+        "template": "multica_check_fixture_go",
+        "state": "running",
+        "package": "example/first"
+      },
+      "terminal": "forwarded",
+      "exit_code": 0,
+      "calls": [
+        {
+          "kind": "exec",
+          "executable": "/opt/homebrew/bin/go",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "test",
+            "-c=true",
+            "example/first",
+            "--",
+            "-c=false"
+          ],
+          "database_name": "ccheck_20261102010101000000_fac3fb5ac146",
+          "mode": "",
+          "pool_max": null,
+          "pool_min": null
+        }
+      ],
+      "stdout": "",
+      "stderr": "",
+      "actual_subprocesses": 0,
+      "actual_sql_connections": 0
+    }
+  ],
+  "method": "Exact wrapper with execv/execve/execvpe/run/Popen mocked; no real executable or SQL calls"
+}

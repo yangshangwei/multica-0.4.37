@@ -1,0 +1,49 @@
+{
+  "recorded_at": "2026-11-04T11:01:58.644656+00:00",
+  "resources": [
+    {
+      "lane": "normal",
+      "database": "multica_rk1k_20261104_v16_normal3_a3c9",
+      "identity": "multica_rk1k_20261104_v16_normal3_a3c9|764_collaboration_ai_policy",
+      "issue_rows": 0,
+      "task_rows": 0,
+      "temp": "/private/tmp/multica-rk1k-20261104-v3-normal-mqtwjrrd",
+      "home": "/private/tmp/multica-rk1k-20261104-v3-normal-mqtwjrrd/home",
+      "label": "rk1k-normal-v16-03",
+      "environment_sha256": "5b232a904f571dcb22e7b0e391ae06be3f92bde554011aa9fa44b3d6c65dcd79",
+      "COW_cached_files": 13439
+    },
+    {
+      "lane": "race",
+      "database": "multica_rk1k_20261104_v16_race3_a3c9",
+      "identity": "multica_rk1k_20261104_v16_race3_a3c9|764_collaboration_ai_policy",
+      "issue_rows": 0,
+      "task_rows": 0,
+      "temp": "/private/tmp/multica-rk1k-20261104-v3-race-ec43lsc5",
+      "home": "/private/tmp/multica-rk1k-20261104-v3-race-ec43lsc5/home",
+      "label": "rk1k-race-v16-03",
+      "environment_sha256": "71dbd8ccaba303dc884fed784a48faecca794a5adac5125023fa19a6438479e4",
+      "COW_cached_files": 13439
+    }
+  ],
+  "runner_sha256": "30f9a552a7fa5eb28b778f53a38915b2b89356c283f319206cbb90e34099ef36",
+  "input_binding_sha256": "bfd819dd8e7d3c40237680790d5a038efb511df1ef0a3513d6b6ac164d757cb4",
+  "permits": {
+    "normal": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/permissions/rk1k-normal-v16-03.json",
+      "sha256": "f4944997acdb9c06b03ad9c14b7859ec4f91b65ea30a1ee47e2495656a2031f5",
+      "ready": false,
+      "label": "rk1k-normal-v16-03"
+    },
+    "race": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v3/permissions/rk1k-race-v16-03.json",
+      "sha256": "7ab3d849933e80e793c614195013c179eb0a541b92c0645541b569aa0d0e0e34",
+      "ready": false,
+      "label": "rk1k-race-v16-03"
+    }
+  },
+  "source_manifest_only_existing_two_changed_hashes": true,
+  "new_controls_or_test_bodies": false,
+  "old_generations_overwritten": false,
+  "real_Provider_calls": 0
+}

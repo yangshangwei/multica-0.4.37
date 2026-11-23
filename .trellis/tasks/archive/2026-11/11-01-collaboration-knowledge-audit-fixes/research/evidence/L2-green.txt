@@ -1,0 +1,35 @@
+# L2 green: only the expiry CHECK violation maps to 400 invalid_knowledge_request
+#
+# Code under test: 0cf5f7918 plus the L2 fix (uncommitted at run time): createKnowledgeCandidate
+# maps a 23514 whose TableName is collaboration_knowledge_candidate and ConstraintName is
+# collaboration_knowledge_candidate_check5 to 400 invalid_knowledge_request. Every other
+# error keeps its previous mapping.
+# Database: postgres://multica:multica@127.0.0.1:5432/kfix_write_svc (migrated to 760).
+# Command (from server/): same as L2-red.txt. Exit code: 0
+#
+# BEHAVIORAL: TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest (failed in L2-red.txt) now passes.
+# REGRESSION GUARD: TestKnowledgeProposalOtherCheckViolationsStayUnavailable still passes.
+
+=== RUN   TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest
+--- PASS: TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest (0.26s)
+=== RUN   TestKnowledgeProposalOtherCheckViolationsStayUnavailable
+=== RUN   TestKnowledgeProposalOtherCheckViolationsStayUnavailable/trigger_without_name
+=== RUN   TestKnowledgeProposalOtherCheckViolationsStayUnavailable/same_name_other_table
+=== RUN   TestKnowledgeProposalOtherCheckViolationsStayUnavailable/other_candidate_CHECK
+--- PASS: TestKnowledgeProposalOtherCheckViolationsStayUnavailable (0.20s)
+    --- PASS: TestKnowledgeProposalOtherCheckViolationsStayUnavailable/trigger_without_name (0.01s)
+    --- PASS: TestKnowledgeProposalOtherCheckViolationsStayUnavailable/same_name_other_table (0.01s)
+    --- PASS: TestKnowledgeProposalOtherCheckViolationsStayUnavailable/other_candidate_CHECK (0.01s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/service	2.038s
+
+# Mutation check (temporary edit, file restored and cmp-verified): mapping every 23514 to 400
+# keeps the behavioral test green but the guard fails all three cases:
+#    --- PASS: TestKnowledgeProposalExpiryCheckViolationIsInvalidRequest (0.21s)
+#        collaboration_knowledge_authority_test.go:225: server-side CHECK violation was reported as a client error: invalid_knowledge_request
+#        collaboration_knowledge_authority_test.go:225: server-side CHECK violation was reported as a client error: invalid_knowledge_request
+#        collaboration_knowledge_authority_test.go:225: server-side CHECK violation was reported as a client error: invalid_knowledge_request
+#    --- FAIL: TestKnowledgeProposalOtherCheckViolationsStayUnavailable (0.22s)
+#        --- FAIL: TestKnowledgeProposalOtherCheckViolationsStayUnavailable/same_name_other_table (0.02s)
+#        --- FAIL: TestKnowledgeProposalOtherCheckViolationsStayUnavailable/other_candidate_CHECK (0.01s)
+#        --- FAIL: TestKnowledgeProposalOtherCheckViolationsStayUnavailable/trigger_without_name (0.01s)

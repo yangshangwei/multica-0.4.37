@@ -5,6 +5,7 @@ import { ArrowRight, Download, Loader2 } from "lucide-react";
 import { statusCategoryOfKey } from "@multica/core/issues";
 import { STATUS_CONFIG } from "@multica/core/issues/config";
 import type { IssueStatus } from "@multica/core/types";
+import { useConfigStore } from "@multica/core/config";
 import { StatusIcon } from "../../issues/components/status-icon";
 import { Button, buttonVariants } from "@multica/ui/components/ui/button";
 import { MulticaIcon } from "@multica/ui/components/common/multica-icon";
@@ -33,8 +34,10 @@ import { useT } from "../../i18n";
  *
  * `isWeb` flips two things when true: the subheading acknowledges
  * that web users have an extra runtime step (so "3 minutes" stops
- * being a lie), and a "Download Desktop" secondary CTA surfaces
- * before the user has invested in questionnaire / workspace. Desktop
+ * being a lie), and a "Download Desktop" CTA surfaces before the user
+ * has invested in questionnaire / workspace. It links to the operator's
+ * download page (`desktop_download_url`) and is omitted when none is
+ * configured, leaving "Continue on web" as the primary action. Desktop
  * bundles a daemon, so the same prompt would be noise there.
  */
 export function StepWelcome({
@@ -49,6 +52,7 @@ export function StepWelcome({
   isWeb?: boolean;
 }) {
   const { t } = useT("onboarding");
+  const downloadUrl = useConfigStore((s) => s.desktopDownloadUrl);
   const illustrationTitleId = useId();
   // Tracks which button is mid-flight so we can show a per-button
   // spinner and disable both while one is in progress.
@@ -102,9 +106,11 @@ export function StepWelcome({
                 {t(($) => $.welcome.lede)}
               </p>
               <p className="text-body leading-relaxed text-muted-foreground">
-                {isWeb
-                  ? t(($) => $.welcome.lede_web)
-                  : t(($) => $.welcome.lede_desktop)}
+                {!isWeb
+                  ? t(($) => $.welcome.lede_desktop)
+                  : downloadUrl
+                    ? t(($) => $.welcome.lede_web)
+                    : t(($) => $.welcome.lede_web_no_desktop)}
               </p>
             </div>
 
@@ -118,19 +124,21 @@ export function StepWelcome({
                       that mutates flow state). New tab preserves this
                       onboarding tab in case the desktop install
                       stalls and the user falls back here. */}
-                  <a
-                    href="/download"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={buttonVariants({ size: "lg", className: "h-11 px-4" })}
-                  >
-                    <Download className="h-4 w-4" />
-                    {t(($) => $.welcome.download_desktop)}
-                  </a>
+                  {downloadUrl && (
+                    <a
+                      href={downloadUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={buttonVariants({ size: "lg", className: "h-11 px-4" })}
+                    >
+                      <Download className="h-4 w-4" />
+                      {t(($) => $.welcome.download_desktop)}
+                    </a>
+                  )}
                   <Button
                     size="lg"
                     className="h-11 px-4"
-                    variant="outline"
+                    variant={downloadUrl ? "outline" : "default"}
                     onClick={handleNext}
                     disabled={pending !== null}
                   >

@@ -1,0 +1,37 @@
+{
+  "candidate_sha": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "state": "actual_built_fake_only",
+  "exit_code": 0,
+  "source_sha256": {
+    "server/internal/daemon/collaboration_host_router_test.go": "1939ea098c47210f62512a138b35d944add6f3b4f02b5f2e0fd9a5dabaab130f",
+    "e2e/fixtures/collaboration-host-provider.go": "a235dfe2a4858f20f653099e27ae88b93eab9194ef08468306679457f5d54c9a"
+  },
+  "binaries": {
+    "COLLABORATION_HOST_DAEMON": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/host-daemon.test",
+      "sha256": "2b36f0de335919fbc1d36247d9573b13b776e8a1e85e78c0e7117e8e05ed7847",
+      "bytes": 40944178,
+      "mode": 493,
+      "build_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/binary-build-01/result.json"
+    },
+    "COLLABORATION_HOST_PROVIDER": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/host-provider",
+      "sha256": "133c116fddf461e69b6f154c1d83123055d59934981e69deb85a45b9fe942061",
+      "bytes": 4755410,
+      "mode": 493,
+      "build_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/binary-build-01/result.json"
+    },
+    "COLLABORATION_HOST_CLI": {
+      "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/knowledge-final-gates-v16/binaries/multica",
+      "sha256": "f9f34cce3a625557bdcae0e29d193d42a6fa915db5e4fb3037e70959a08ae2ac",
+      "bytes": 29314610,
+      "mode": 493,
+      "build_record": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/binary-build-01/result.json"
+    }
+  },
+  "build_record": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/ccg16-execution/c2-preparation/binary-build-01/result.json",
+    "sha256": "281a08aa6249ee06c00518b187cef316b7222e877b92b13719d7ff0de5aa7649"
+  },
+  "real_Provider_calls": 0
+}

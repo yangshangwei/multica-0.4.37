@@ -1,0 +1,33 @@
+{
+  "command": [
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/metrics",
+    "-run",
+    "^TestNoDirectGetAgentRuntimeCalls$",
+    "-count=1"
+  ],
+  "environment": "pure",
+  "database": null,
+  "exit_code": 0,
+  "seconds": 3.494,
+  "finished_at": "2026-11-10T08:03:18.572153+08:00",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/runtime-lookup-contract-01.log",
+  "log_sha256": "ce565adbf92ac9e93e88bddfd16382e34e085d8747e326198cbbc496df868018",
+  "named_test_counts": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [
+      "github.com/multica-ai/multica/server/internal/metrics:TestNoDirectGetAgentRuntimeCalls"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "agent_cli_guard": true
+}

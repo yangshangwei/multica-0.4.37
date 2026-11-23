@@ -66,6 +66,14 @@ describe("resolveStatusCategory", () => {
 });
 
 describe("runConfirmIntent — assign", () => {
+  it.each(["agent", "squad"] as const)("echoes a supplied %s assignment token into the intent", (assigneeType) => {
+    expect(runConfirmIntent(
+      issue({ status: "todo" }),
+      { assignee_type: assigneeType, assignee_id: "target-2", expected_revision: 11 },
+      CATALOG,
+    )).toEqual({ issueIds: ["issue-1"], mode: "assign", assigneeType, assigneeId: "target-2", issueRevision: 11 });
+  });
+
   it("confirms when the issue is not parked", () => {
     expect(
       runConfirmIntent(issue({ status: "todo" }), { assignee_type: "agent", assignee_id: "a-2" }, CATALOG),
@@ -102,6 +110,17 @@ describe("runConfirmIntent — assign", () => {
 });
 
 describe("runConfirmIntent — promote", () => {
+  it("preserves an explicit promotion token without adding an issue observation", () => {
+    expect(runConfirmIntent(issue(), { status: "rework", expected_revision: 11 }, CATALOG)).toEqual({
+      issueIds: ["issue-1"],
+      mode: "promote",
+      status: "rework",
+      assigneeType: "agent",
+      assigneeId: "agent-1",
+      issueRevision: 11,
+    });
+  });
+
   it.each([
     ["built-in todo", "backlog", "todo"],
     ["custom Todo-category status", "backlog", "rework"],

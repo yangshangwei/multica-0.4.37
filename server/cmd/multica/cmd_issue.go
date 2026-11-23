@@ -481,6 +481,9 @@ func init() {
 	issueCmd.AddCommand(issueUpdateCmd)
 	issueCmd.AddCommand(issueAssignCmd)
 	issueCmd.AddCommand(issueStatusCmd)
+	issueCmd.AddCommand(issueCompletionCmd)
+	issueCmd.AddCommand(issueReportSnapshotCmd)
+	issueCmd.AddCommand(issueBudgetCmd)
 	issueCmd.AddCommand(issueReorderCmd)
 	issueCmd.AddCommand(issueCommentCmd)
 	issueCmd.AddCommand(issueSubscriberCmd)
@@ -492,7 +495,9 @@ func init() {
 	issueCmd.AddCommand(issueSearchCmd)
 
 	issueCommentCmd.AddCommand(issueCommentListCmd)
+	issueCommentCmd.AddCommand(issueCommentContentCmd)
 	issueCommentCmd.AddCommand(issueCommentAddCmd)
+	issueCommentCmd.AddCommand(issueCommentReceiptCmd)
 	issueCommentCmd.AddCommand(issueCommentUpdateCmd)
 	issueCommentCmd.AddCommand(issueCommentDeleteCmd)
 	issueCommentCmd.AddCommand(issueCommentResolveCmd)
@@ -580,6 +585,9 @@ func init() {
 
 	// issue comment list
 	issueCommentListCmd.Flags().String("output", "table", "Output format: table or json")
+	issueCommentListCmd.Flags().Int("limit", 50, "Collaboration runtime only: page size (1-100); returns a JSON page envelope")
+	issueCommentListCmd.Flags().Int("max-bytes", 65536, "Collaboration runtime only: JSON page byte budget (4096-1048576)")
+	issueCommentListCmd.Flags().String("cursor", "", "Collaboration runtime only: next_cursor from a comment page")
 	issueCommentListCmd.Flags().String("since", "", "Only return comments created after this timestamp (RFC3339)")
 	issueCommentListCmd.Flags().String("thread", "", "Comment UUID — return the thread containing this comment (root + every descendant). May be a root or a reply id.")
 	issueCommentListCmd.Flags().Int("tail", 0, "Only valid with --thread. Cap reply count to the N most recent replies; the thread root is always included (even with --tail 0). Use --before/--before-id to scroll to older replies.")
@@ -614,8 +622,10 @@ func init() {
 	issueCommentAddCmd.Flags().String("content-file", "", "Read comment content from a UTF-8 file (preserves multi-line content verbatim; use this on Windows when stdin piping mangles non-ASCII bytes). The path must be inside the current working directory unless --allow-external-file is set.")
 	issueCommentAddCmd.Flags().Bool("allow-external-file", false, "Allow --content-file / --attachment to read a path outside the current working directory. Off by default so a stale file from another run/environment can't be picked up (MUL-4252).")
 	issueCommentAddCmd.Flags().String("parent", "", "Parent comment ID to reply under. A comment-triggered agent task must reply under its trigger comment; omitting --parent to post a top-level comment is rejected")
-	issueCommentAddCmd.Flags().StringSlice("attachment", nil, "File path(s) to attach (can be specified multiple times)")
+	issueCommentAddCmd.Flags().StringSlice("attachment", nil, "File path(s) to attach; collaboration runs accept one file inside the current working directory")
 	issueCommentAddCmd.Flags().String("output", "json", "Output format: table or json")
+	issueCommentAddCmd.Flags().String("request-id", "", "Collaboration write UUID; reuse with the unchanged command after an uncertain result")
+	issueCommentAddCmd.Flags().String("idempotency-key", "", "Ordinary attachment-free comment UUID key; retain it for read-only receipt recovery after an uncertain result")
 
 	// issue comment update
 	issueCommentUpdateCmd.Flags().String("content", "", "New comment content (decodes \\n, \\r, \\t, \\\\; pipe via --content-stdin for multi-line bodies or to preserve literal backslashes)")
@@ -870,6 +880,9 @@ func pullRequestURL(pr map[string]any) string {
 }
 
 func runIssueGet(cmd *cobra.Command, args []string) error {
+	if handled, err := runCollaborationCLI(cmd, args, "issue get"); handled {
+		return err
+	}
 	client, err := newAPIClient(cmd)
 	if err != nil {
 		return err
@@ -1438,6 +1451,11 @@ func runIssueUpdate(cmd *cobra.Command, args []string) error {
 	if noStart {
 		body["suppress_run"] = true
 	}
+	if statusChanged && issueUpdateIsStatusOnly(cmd) && issueStatusMayNeedCompletionHint(statusFlag) {
+		if err := runIssueCompletionHint(ctx, client, issueRef.ID, statusFlag); err != nil {
+			return fmt.Errorf("update issue: %w", err)
+		}
+	}
 
 	var result map[string]any
 	if err := client.PutJSON(ctx, "/api/issues/"+issueRef.ID, body, &result); err != nil {
@@ -1549,6 +1567,11 @@ func runIssueStatus(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("resolve issue: %w", err)
 	}
+	if issueStatusMayNeedCompletionHint(status) {
+		if err := runIssueCompletionHint(ctx, client, issueRef.ID, status); err != nil {
+			return fmt.Errorf("update status: %w", err)
+		}
+	}
 
 	body := map[string]any{"status": status}
 	if noStart {
@@ -1566,6 +1589,166 @@ func runIssueStatus(cmd *cobra.Command, args []string) error {
 		return cli.PrintJSON(os.Stdout, result)
 	}
 	return nil
+}
+
+// issueCompletionHintResponse is intentionally private to the CLI. The hint
+// is an advisory read and never carries an authorization, binding, operation
+// ID or evaluation key for a later status write.
+type issueCompletionHintResponse struct {
+	IssueID             string          `json:"issue_id"`
+	IssueRevision       *int64          `json:"issue_revision"`
+	TargetStatus        string          `json:"target_status"`
+	TargetCategory      string          `json:"target_category"`
+	ProjectID           json.RawMessage `json:"project_id"`
+	PolicyRevision      *int64          `json:"policy_revision"`
+	PolicyMode          string          `json:"policy_mode"`
+	Hint                string          `json:"hint"`
+	Reason              string          `json:"reason"`
+	CheckedAt           *time.Time      `json:"checked_at"`
+	Enforced            *bool           `json:"enforced"`
+	UsableForCompletion *bool           `json:"usable_for_completion"`
+}
+
+type issueCompletionHintIssue struct {
+	Revision *int64 `json:"revision"`
+}
+
+func issueUpdateIsStatusOnly(cmd *cobra.Command) bool {
+	for _, name := range []string{
+		"title", "description", "description-stdin", "description-file", "priority",
+		"assignee", "assignee-id", "project", "start-date", "due-date", "parent",
+		"stage", "position",
+	} {
+		if cmd.Flags().Changed(name) {
+			return false
+		}
+	}
+	return cmd.Flags().Changed("status")
+}
+
+func issueStatusMayNeedCompletionHint(status string) bool {
+	normalized := strings.ToLower(strings.TrimSpace(status))
+	if normalized == "done" {
+		return true
+	}
+	for _, builtIn := range validIssueStatuses {
+		if normalized == builtIn {
+			return false
+		}
+	}
+	// A custom status may be an active done category, so the server must
+	// resolve its category before a status-only write proceeds.
+	return true
+}
+
+func runIssueCompletionHint(ctx context.Context, client *cli.APIClient, issueID, targetStatus string) error {
+	revision, err := fetchIssueCompletionRevision(ctx, client, issueID)
+	if err != nil {
+		return err
+	}
+
+	body := struct {
+		ExpectedIssueRevision int64   `json:"expected_issue_revision"`
+		TargetStatus          string  `json:"target_status"`
+		EvaluationKey         *string `json:"evaluation_key"`
+	}{
+		ExpectedIssueRevision: revision,
+		TargetStatus:          targetStatus,
+		EvaluationKey:         nil,
+	}
+	var hint issueCompletionHintResponse
+	if err := client.PostJSON(ctx, "/api/issues/"+url.PathEscape(issueID)+"/delivery-evidence/completion-hint", body, &hint); err != nil {
+		if isLegacyCompletionHintError(err) {
+			return nil
+		}
+		return formatCompletionHintError(err)
+	}
+	if err := validateIssueCompletionHintResponse(hint, revision, targetStatus); err != nil {
+		return err
+	}
+	switch hint.Hint {
+	case "not_applicable":
+		return nil
+	case "attention":
+		fmt.Fprintf(os.Stderr, "Completion hint: current delivery evidence needs attention (%s). This read does not grant completion; continuing with status update.\n", hint.Reason)
+		return nil
+	case "matching":
+		fmt.Fprintf(os.Stderr, "Completion hint: the current observation still matches (%s), but this read does not grant completion; continuing with status update.\n", hint.Reason)
+		return nil
+	default:
+		return fmt.Errorf("completion hint returned unknown hint %q; status was not changed", hint.Hint)
+	}
+}
+
+func fetchIssueCompletionRevision(ctx context.Context, client *cli.APIClient, issueID string) (int64, error) {
+	var issue issueCompletionHintIssue
+	if err := client.GetJSON(ctx, "/api/issues/"+url.PathEscape(issueID), &issue); err != nil {
+		return 0, fmt.Errorf("read issue revision: %w", err)
+	}
+	if issue.Revision == nil || *issue.Revision < 0 {
+		return 0, fmt.Errorf("completion hint unavailable: issue response is missing a valid revision")
+	}
+	return *issue.Revision, nil
+}
+
+func validateIssueCompletionHintResponse(hint issueCompletionHintResponse, expectedRevision int64, targetStatus string) error {
+	if hint.IssueID == "" || hint.IssueRevision == nil || *hint.IssueRevision < 0 || hint.TargetStatus == "" || hint.TargetCategory == "" || len(hint.ProjectID) == 0 ||
+		hint.PolicyMode == "" || hint.Hint == "" || hint.Reason == "" || hint.CheckedAt == nil || hint.CheckedAt.IsZero() ||
+		hint.PolicyRevision == nil || hint.Enforced == nil || hint.UsableForCompletion == nil {
+		return fmt.Errorf("completion hint returned an incomplete response; status was not changed")
+	}
+	if *hint.IssueRevision != expectedRevision {
+		return fmt.Errorf("completion hint returned revision %d for expected revision %d; refresh the issue before retrying", *hint.IssueRevision, expectedRevision)
+	}
+	if hint.TargetStatus != strings.ToLower(strings.TrimSpace(targetStatus)) {
+		return fmt.Errorf("completion hint returned target status %q for requested %q; refresh the issue before retrying", hint.TargetStatus, targetStatus)
+	}
+	if *hint.Enforced || *hint.UsableForCompletion {
+		return fmt.Errorf("completion hint returned an authorization-like result; status was not changed")
+	}
+	if hint.Hint == "attention" || hint.Hint == "matching" {
+		if hint.TargetCategory != "done" {
+			return fmt.Errorf("completion hint returned %q for non-done target category %q; status was not changed", hint.Hint, hint.TargetCategory)
+		}
+	}
+	return nil
+}
+
+func isLegacyCompletionHintError(err error) bool {
+	var httpErr *cli.HTTPError
+	if !errors.As(err, &httpErr) || (httpErr.StatusCode != http.StatusNotFound && httpErr.StatusCode != http.StatusMethodNotAllowed) {
+		return false
+	}
+	var payload map[string]json.RawMessage
+	if json.Unmarshal([]byte(httpErr.Body), &payload) != nil {
+		return true
+	}
+	if len(payload) == 0 {
+		return true
+	}
+	for _, key := range []string{"code", "error_code", "resource", "resource_type", "resource_id", "permission", "permission_code", "delivery", "delivery_code"} {
+		if _, ok := payload[key]; ok {
+			return false
+		}
+	}
+	return true
+}
+
+func formatCompletionHintError(err error) error {
+	var httpErr *cli.HTTPError
+	if errors.As(err, &httpErr) {
+		var payload map[string]json.RawMessage
+		if json.Unmarshal([]byte(httpErr.Body), &payload) == nil {
+			if rawCode, ok := payload["code"]; ok {
+				var code string
+				if json.Unmarshal(rawCode, &code) == nil && code != "" {
+					return fmt.Errorf("completion hint refused: %s", code)
+				}
+			}
+		}
+		return fmt.Errorf("completion hint request failed with HTTP %d", httpErr.StatusCode)
+	}
+	return fmt.Errorf("completion hint request failed: %v", err)
 }
 
 // ---------------------------------------------------------------------------
@@ -1869,6 +2052,12 @@ func floatVal(m map[string]any, key string) float64 {
 // ---------------------------------------------------------------------------
 
 func runIssueCommentList(cmd *cobra.Command, args []string) error {
+	if handled, err := runCollaborationCLI(cmd, args, "issue comment list"); handled {
+		return err
+	}
+	if cmd.Flags().Changed("limit") || cmd.Flags().Changed("max-bytes") || cmd.Flags().Changed("cursor") {
+		return errors.New("--limit, --max-bytes and --cursor are available only inside a collaboration run")
+	}
 	client, err := newAPIClient(cmd)
 	if err != nil {
 		return err
@@ -2036,6 +2225,18 @@ func runIssueCommentList(cmd *cobra.Command, args []string) error {
 }
 
 func runIssueCommentAdd(cmd *cobra.Command, args []string) error {
+	if handled, err := runCollaborationCLI(cmd, args, "issue comment add"); handled {
+		return err
+	}
+	idempotencyKey, _ := cmd.Flags().GetString("idempotency-key")
+	if cmd.Flags().Changed("idempotency-key") {
+		if !validDelegationKey(idempotencyKey) {
+			return fmt.Errorf("--idempotency-key must be a canonical nonzero UUID")
+		}
+		if attachments, _ := cmd.Flags().GetStringSlice("attachment"); len(attachments) > 0 {
+			return fmt.Errorf("--idempotency-key does not support attachments")
+		}
+	}
 	content, hasContent, err := resolveTextFlag(cmd, "content")
 	if err != nil {
 		return err
@@ -2096,11 +2297,16 @@ func runIssueCommentAdd(cmd *cobra.Command, args []string) error {
 		body["attachment_ids"] = attachmentIDs
 	}
 	var result map[string]any
-	if err := client.PostJSON(ctx, "/api/issues/"+issueID+"/comments", body, &result); err != nil {
+	if err := client.PostJSONWithIdempotencyKey(ctx, "/api/issues/"+issueID+"/comments", body, &result, idempotencyKey); err != nil {
 		return fmt.Errorf("add comment: %w", err)
 	}
 
 	fmt.Fprintf(os.Stderr, "Comment added to issue %s.\n", issueRef.Display)
+	warnCommentTriggerOutcomes(os.Stderr, result)
+	if idempotencyKey != "" {
+		commentID, _ := result["id"].(string)
+		warnDurableDelegationReceipt(os.Stderr, result["delegation_receipt"], idempotencyKey, commentID)
+	}
 
 	output, _ := cmd.Flags().GetString("output")
 	if output == "table" {
@@ -2145,6 +2351,7 @@ func runIssueCommentUpdate(cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Fprintf(os.Stderr, "Comment %s updated.\n", commentID)
+	warnCommentTriggerOutcomes(os.Stderr, result)
 	output, _ := cmd.Flags().GetString("output")
 	if output == "table" {
 		return nil

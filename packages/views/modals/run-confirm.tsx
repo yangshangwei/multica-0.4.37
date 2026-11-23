@@ -14,7 +14,7 @@ import {
 import { Button } from "@multica/ui/components/ui/button";
 import { Textarea } from "@multica/ui/components/ui/textarea";
 import { Spinner } from "@multica/ui/components/ui/spinner";
-import type { IssueAssigneeType, IssueStatus, UpdateIssueRequest } from "@multica/core/types";
+import type { Issue, IssueAssigneeType, IssueStatus, UpdateIssueRequest } from "@multica/core/types";
 import { useUpdateIssue, useBatchUpdateIssues } from "@multica/core/issues/mutations";
 import { errorCode } from "@multica/core/api";
 import { useActorName } from "@multica/core/workspace/hooks";
@@ -73,6 +73,8 @@ interface RunConfirmData {
   assigneeId?: string;
   assigneeName?: string;
   issueRevision?: number;
+  /** Transient success continuation used by detail's mark-done action. */
+  onSuccess?: (issue: Issue) => void;
 }
 
 /**
@@ -166,7 +168,11 @@ export function RunConfirmModal({
           assignee_type: d.assigneeType ?? null,
           assignee_id: d.assigneeId ?? null,
         };
-    return { ...base, ...extra };
+    return {
+      ...base,
+      ...extra,
+      ...(d.issueRevision !== undefined ? { expected_revision: d.issueRevision } : {}),
+    };
   };
 
   // The copy names whoever the issue is handed to; for a squad that is the
@@ -188,10 +194,11 @@ export function RunConfirmModal({
       // no result toast to add here. Whether a run started is the server's
       // existing decision at write time, not something this dialog reports.
       if (issueIds.length === 1) {
-        await updateIssue.mutateAsync({
+        const updated = await updateIssue.mutateAsync({
           id: issueIds[0]!,
           ...payload,
         });
+        d.onSuccess?.(updated);
       } else {
         await batchUpdate.mutateAsync({ ids: issueIds, updates: payload });
       }

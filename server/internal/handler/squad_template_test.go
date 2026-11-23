@@ -48,7 +48,7 @@ func staffSquad(t *testing.T, templateKey string, extra map[string]any) CreateSq
 // arrives renderable — a leader seat, member seats with role notes, and a policy.
 //
 // The count is a literal rather than len(service.SquadTemplates()) so that shipping a
-// ninth squad has to be a deliberate edit here, the same way the listed-role roster
+// tenth squad has to be a deliberate edit here, the same way the listed-role roster
 // is pinned in service.
 func TestListSquadTemplates_ReturnsTheWholeRoster(t *testing.T) {
 	var out struct {
@@ -58,12 +58,13 @@ func TestListSquadTemplates_ReturnsTheWholeRoster(t *testing.T) {
 		newRequest("GET", "/api/squads/templates?language=zh", nil)).
 		Want(http.StatusOK).JSON(&out)
 
-	if len(out.Templates) != 8 {
-		t.Fatalf("squad templates = %d, want 8", len(out.Templates))
+	if len(out.Templates) != 9 {
+		t.Fatalf("squad templates = %d, want 9", len(out.Templates))
 	}
 	wantKeys := []string{
 		"feature-delivery", "bug-fix",
 		"review-gate", "discovery", "docs", "maintenance",
+		"security-remediation",
 		"release", "incident",
 	}
 	for i, key := range wantKeys {

@@ -1,0 +1,194 @@
+{
+ "series": "RK1",
+ "label": "RK1-H6-t1",
+ "scenario": "RK1-H6",
+ "trial": 1,
+ "mode": "fake",
+ "status": "finished",
+ "verdict": "manual_review_required",
+ "criteria": {
+  "contaminated_outside_memory": false,
+  "decision": true,
+  "hop1_memory_written": true,
+  "hop2_memory_version": "1",
+  "measured_business_failure": false,
+  "pitfall": true,
+  "redis_rejected_with_reason": true,
+  "separate_directories": true,
+  "zookeeper_rejected": true
+ },
+ "answer": "## Handoff\nDecision history for the job lock:\n- First we chose Redis SETNX.\n- Revised: use Postgres advisory locks instead, because Redis is not persisted in this deployment and a restart would drop held locks.\n- ZooKeeper was considered and rejected: no ZooKeeper cluster exists here.\n- Pitfall: the lock migration must run CONCURRENTLY or it blocks writes on the jobs table.",
+ "runs": [
+  {
+   "role": "measured_hop1",
+   "run_id": "84c03096-543e-4a16-a04b-60b88e226a7e",
+   "measured": true,
+   "physical_launches": 1,
+   "authorized_attempts": 1,
+   "permit_calls": 2,
+   "progress_state": "settled",
+   "proof_state": "host_exit_observed",
+   "business_outcome": "success",
+   "step_kind": "agent",
+   "recording_incomplete": false,
+   "seal_reason": "completed",
+   "seal_observed_through": 5,
+   "seal_acknowledged_through": 5,
+   "outcome_record_completeness": "complete",
+   "provider_recordable_messages": 5,
+   "provider_messages_over_record_limit": 0,
+   "provider_init_models": [
+    "rk1-fake"
+   ],
+   "claim_query": "handoff_version=1\u0026recording_version=1\u0026knowledge_version=1",
+   "granted": {
+    "handoff_version": 1,
+    "knowledge_context": false,
+    "recording_version": 1
+   },
+   "stdin_prompt_sha256": [
+    "cc07a159fa2a5fe26dd7aaa9ae37dc34f2577bc75f5dd5947805fb557dc90de7"
+   ],
+   "argv": [
+    [
+     "-p",
+     "--output-format",
+     "stream-json",
+     "--input-format",
+     "stream-json",
+     "--verbose",
+     "--permission-mode",
+     "bypassPermissions",
+     "--disallowedTools",
+     "AskUserQuestion",
+     "--model",
+     "rk1-requested-model"
+    ]
+   ],
+   "removed_child_env": [
+    "DATABASE_URL",
+    "RK1_FAKE_PROOF_OUT",
+    "RK1_PROVIDER_PLAN_DIR"
+   ],
+   "observed_models": [
+    "rk1-fake"
+   ],
+   "cli_reads": 1,
+   "business_writes": 1,
+   "provider_tool_results": 2,
+   "provider_tool_result_max_chars": 2149,
+   "provider_tool_results_with_cursor": 0,
+   "fake_cli_output_sizes": [
+    {
+     "command": "issue get 01a197ae-bd5b-70de-a03d-92ceabbc85cb",
+     "next_cursor_char_offset": -1,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 1979,
+     "stdout_chars": 1979
+    },
+    {
+     "command": "collaboration memory update",
+     "next_cursor_char_offset": -1,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 276,
+     "stdout_chars": 276
+    }
+   ],
+   "run_events": {
+    "handoff_binding": 1,
+    "handoff_snapshot": 1,
+    "outcome": 1,
+    "preparation": 1,
+    "record_checkpoint": 1,
+    "recording_seal": 1,
+    "resource_snapshot": 1
+   }
+  },
+  {
+   "role": "measured_hop2",
+   "run_id": "824c8099-2737-425c-85d1-49b022d9356a",
+   "measured": true,
+   "physical_launches": 1,
+   "authorized_attempts": 1,
+   "permit_calls": 2,
+   "progress_state": "settled",
+   "proof_state": "host_exit_observed",
+   "business_outcome": "success",
+   "step_kind": "agent",
+   "recording_incomplete": false,
+   "seal_reason": "completed",
+   "seal_observed_through": 3,
+   "seal_acknowledged_through": 3,
+   "outcome_record_completeness": "complete",
+   "provider_recordable_messages": 3,
+   "provider_messages_over_record_limit": 0,
+   "provider_init_models": [
+    "rk1-fake"
+   ],
+   "claim_query": "handoff_version=1\u0026recording_version=1\u0026knowledge_version=1",
+   "granted": {
+    "handoff_version": 1,
+    "knowledge_context": false,
+    "recording_version": 1
+   },
+   "stdin_prompt_sha256": [
+    "943b19d0d6689b0af6e58d45fff52aef79cd0ec4321187c60edc7e9b2f05fb54"
+   ],
+   "argv": [
+    [
+     "-p",
+     "--output-format",
+     "stream-json",
+     "--input-format",
+     "stream-json",
+     "--verbose",
+     "--permission-mode",
+     "bypassPermissions",
+     "--disallowedTools",
+     "AskUserQuestion",
+     "--model",
+     "rk1-requested-model"
+    ]
+   ],
+   "removed_child_env": [
+    "DATABASE_URL",
+    "RK1_FAKE_PROOF_OUT",
+    "RK1_PROVIDER_PLAN_DIR"
+   ],
+   "observed_models": [
+    "rk1-fake"
+   ],
+   "cli_reads": 1,
+   "business_writes": 0,
+   "provider_tool_results": 1,
+   "provider_tool_result_max_chars": 599,
+   "provider_tool_results_with_cursor": 0,
+   "fake_cli_output_sizes": [
+    {
+     "command": "collaboration memory show",
+     "next_cursor_char_offset": -1,
+     "next_offset_char_offset": -1,
+     "stdout_bytes": 564,
+     "stdout_chars": 564
+    }
+   ],
+   "run_events": {
+    "handoff_binding": 1,
+    "handoff_snapshot": 1,
+    "outcome": 1,
+    "preparation": 1,
+    "record_checkpoint": 1,
+    "recording_seal": 1,
+    "resource_snapshot": 1
+   }
+  }
+ ],
+ "provider": "claude",
+ "provider_version": "2.1.200",
+ "requested_model": "rk1-requested-model",
+ "observed_models": [
+  "rk1-fake"
+ ],
+ "started_at": "2026-11-01T15:16:13.263338Z",
+ "finished_at": "2026-11-01T15:16:16.538902Z"
+}

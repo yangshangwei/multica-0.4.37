@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@multica/core/auth";
 import { clearClientSessionData } from "@multica/core/platform";
 import { paths } from "@multica/core/paths";
 import { useNavigation } from "../navigation";
+import { toast } from "sonner";
+import { useT } from "../i18n";
 
 /**
  * Performs a complete logout: clears per-workspace client storage, legacy
@@ -24,18 +26,21 @@ export function useLogout() {
   const queryClient = useQueryClient();
   const authLogout = useAuthStore((s) => s.logout);
   const { push } = useNavigation();
+  const { t } = useT("auth");
+  const pending = useRef(false);
 
-  return useCallback(() => {
-    // Shared with the session-expiry path, which has to erase exactly the
-    // same client-side state — see core's platform/session-cleanup for what
-    // and why.
-    clearClientSessionData(queryClient);
-    authLogout();
-
-    // Navigate to /login explicitly. authLogout() clears state but doesn't
-    // move the URL — without this the caller might be on a workspace URL
-    // which renders null (layout gates on user) and leaves the user
-    // stuck on a blank page.
-    push(paths.login());
-  }, [queryClient, authLogout, push]);
+  return useCallback(async () => {
+    if (pending.current) return;
+    pending.current = true;
+    try {
+      // Cookie teardown must succeed before erasing drafts or redirecting.
+      // The store invokes this callback before publishing unauthenticated state.
+      await authLogout(() => clearClientSessionData(queryClient));
+      push(paths.login());
+    } catch {
+      toast.error(t(($) => $.password.request_failed));
+    } finally {
+      pending.current = false;
+    }
+  }, [queryClient, authLogout, push, t]);
 }

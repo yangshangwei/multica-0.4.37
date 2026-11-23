@@ -78,6 +78,8 @@
   },
   "page": {
     "breadcrumb_title": "Issues",
+    "tagline": "Create, assign, and track issues.",
+    "learn_more": "Learn more →",
     "breadcrumb_workspace_fallback": "Workspace",
     "empty_title": "No issues yet",
     "empty_hint": "Create an issue to get started.",
@@ -440,6 +442,19 @@
       "next": "Next match",
       "close": "Close find"
     },
+    "completion_hint": {
+      "attention_title": "Review completion evidence",
+      "attention_description": "The current evidence needs attention. This check only describes the current read and does not grant permission to complete the issue.",
+      "matching_title": "Completion evidence still matches",
+      "matching_description": "The current observation still matches, but it is not completion permission. Continue only if you want to submit the status change.",
+      "refusal_title": "Completion check refused",
+      "refusal_description": "The completion check could not approve this status change. Refresh the issue and try again.",
+      "unknown_title": "Completion check unavailable",
+      "unknown_description": "The completion check could not be confirmed. No status change was sent.",
+      "continue": "Continue",
+      "cancel": "Cancel",
+      "retry": "Retry"
+    },
     "update_failed": "Failed to update issue",
     "link_copied": "Link copied",
     "link_copy_failed": "Failed to copy link",
@@ -452,7 +467,61 @@
     "refresh_failed": "Could not refresh this issue. Your current content is preserved.",
     "access_denied": "You no longer have access to this issue.",
     "retry": "Retry",
-    "retrying": "Retrying..."
+    "retrying": "Retrying...",
+    "completion_authorization": {
+      "title": "Authorize issue completion",
+      "description": "Review the current delivery evidence, authorize this version, then submit completion. Closing this window does not revoke an existing authorization.",
+      "unavailable": "The current evidence could not be confirmed. Refresh the issue before reviewing again.",
+      "access_denied": "Access to current delivery evidence is unavailable.",
+      "read_failed": "Current delivery evidence could not be read. Try again.",
+      "session_changed": "This completion session is no longer active. Open the issue again to continue.",
+      "storage_failed": "The original operation could not be preserved. No new request can be sent.",
+      "close": "Close",
+      "revision": "Version",
+      "evidence": "Choose delivery evidence",
+      "loading": "Loading evidence...",
+      "no_evidence": "No accessible delivery evidence is available.",
+      "evidence_unavailable": "This evidence is unavailable for authorization.",
+      "expired": "Expired",
+      "previous": "Previous evidence page",
+      "next": "Next evidence page",
+      "checking": "Checking the selected evidence...",
+      "observation": "Current observation",
+      "observation_limit": "This observation checks the recorded artifact and database PR head. It does not verify a live remote head, general quality, publication or deployment.",
+      "evidence_details": "Evidence and version details",
+      "project_revision": "Project / version / policy",
+      "source": "Source revision",
+      "artifact": "Artifact SHA-256",
+      "spec": "Specification SHA-256",
+      "checked_at": "Checked at",
+      "evidence_expiry": "Evidence expires",
+      "authorization_limit": "Latest authorization expiry",
+      "reason": "Acceptance reason",
+      "expires_at": "Expires at (UTC)",
+      "expiry_format": "Use a UTC timestamp ending in Z. The expiry must not exceed the evidence and credential limit.",
+      "cannot_authorize": "This observation cannot support authorization. Review the reason and refresh the current evidence.",
+      "original_operation": "Original operation",
+      "request_key": "Creation request key",
+      "workspace": "Source workspace",
+      "authorization": "Authorization",
+      "result_reason": "Result reason",
+      "recovery_details": "Original operation and recovery details",
+      "consumed": "Completion was recorded for this operation.",
+      "revoked": "This authorization was revoked.",
+      "authorized": "This version is authorized. Completion has not been submitted by this operation. The server checks the current evidence again when you submit.",
+      "refused": "The request was refused. Its original information is retained.",
+      "unknown": "The original result is not confirmed. Query the original operation; an unused-looking authorization does not prove a request is not in flight.",
+      "current_status": "Current issue status",
+      "current_unavailable": "The current issue could not be read. The historical result does not establish its current status.",
+      "revocation_reason": "Revocation reason",
+      "refresh": "Refresh current issue",
+      "query": "Query original result",
+      "revoke": "Revoke authorization",
+      "new_review": "Start a new review",
+      "submit": "Submit completion",
+      "authorize": "Authorize this version"
+    },
+    "description_label": "Issue description"
   },
   "timeline": {
     "loading": "Loading..."
@@ -560,10 +629,12 @@
       "bar_authors_more_other": "{{names}} and {{count}} others",
       "resolve_failed": "Failed to resolve thread",
       "unresolve_failed": "Failed to unresolve thread"
-    }
+    },
+    "field_label": "Comment"
   },
   "reply": {
-    "placeholder": "Leave a reply..."
+    "placeholder": "Leave a reply...",
+    "field_label": "Reply"
   },
   "agent_activity": {
     "hover_header_one": "{{count}} agent working",
@@ -759,7 +830,11 @@
       "agents_group": "Agents",
       "squads_group": "Squads",
       "agent_runtime_required": "Bind a runtime before assigning work to this agent",
-      "squad_runtime_required": "Bind a runtime to this squad's leader before assigning work"
+      "squad_runtime_required": "Bind a runtime to this squad's leader before assigning work",
+      "loading": "Loading {{group}}…",
+      "load_failed": "Could not load {{group}}.",
+      "refresh_failed": "Could not refresh {{group}}. Showing the last loaded options.",
+      "retry": "Retry {{group}}"
     },
     "start_date": {
       "trigger_label": "Start date",

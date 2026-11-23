@@ -1,0 +1,308 @@
+{
+  "at": "2026-11-10T08:02:12.205742+08:00",
+  "source": "server/cmd/server/agent_artifact_integration_test.go",
+  "sha256": "0b26d4afc5a3e44ecb8004572d0fd89a208271719c0b7b90072239e967af0085",
+  "scope": "Real production router and database authentication plus synthetic local tar input; no network model, no manual context principal injection",
+  "runs": [
+    {
+      "evidence": "../router-red-01.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-json",
+          "./cmd/server",
+          "-run",
+          "^TestControlledArtifactRouter",
+          "-count=1"
+        ],
+        "environment": "router",
+        "database": "multica_artifact_20261110_router",
+        "exit_code": 1,
+        "seconds": 15.592,
+        "finished_at": "2026-11-10T07:54:09.345564+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/router-red-01.log",
+        "log_sha256": "93c3eaf40bc31b2766c4676448c7288c4125abba978dfc9c9b959e0522543fc1",
+        "named_test_counts": {
+          "pass": 8,
+          "fail": 1,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/legacy",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/password",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/code-reviewer",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/progress-reporter",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPasswordRevocationAndExpiry",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterCloudIdentityCannotBecomeHuman"
+          ],
+          "fail": [
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders"
+          ],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    },
+    {
+      "evidence": "../router-green-01.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-json",
+          "./cmd/server",
+          "-run",
+          "^TestControlledArtifactRouter",
+          "-count=1"
+        ],
+        "environment": "router",
+        "database": "multica_artifact_20261110_router",
+        "exit_code": 0,
+        "seconds": 8.532,
+        "finished_at": "2026-11-10T07:54:56.057421+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/router-green-01.log",
+        "log_sha256": "223a00b0174720e3f2eef1e068bbd11d5fae7f49d448a25febf76b1ccf9ee24f",
+        "named_test_counts": {
+          "pass": 14,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/legacy",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/password",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_create",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_detail",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_execute",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/human_agent_header",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/human_task_header",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/code-reviewer",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/progress-reporter",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPasswordRevocationAndExpiry",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterCloudIdentityCannotBecomeHuman"
+          ],
+          "fail": [],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    },
+    {
+      "evidence": "../router-race-01.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-race",
+          "-json",
+          "./cmd/server",
+          "-run",
+          "^TestControlledArtifactRouter",
+          "-count=1"
+        ],
+        "environment": "router",
+        "database": "multica_artifact_20261110_router",
+        "exit_code": 1,
+        "seconds": 26.452,
+        "finished_at": "2026-11-10T07:57:16.390613+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/router-race-01.log",
+        "log_sha256": "df62b75bf50bcd6fa8e6d6e996b473353bb53fbd94d6e7b0c55804bd38445561",
+        "named_test_counts": {
+          "pass": 15,
+          "fail": 1,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/legacy",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/password",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_create",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_detail",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_execute",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/human_agent_header",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/human_task_header",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/code-reviewer",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/progress-reporter",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPasswordRevocationAndExpiry",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterCloudIdentityCannotBecomeHuman",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPrivateSpecStaysOutOfWorkspaceQueue"
+          ],
+          "fail": [
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPATCacheCannotRetainRevokedAuthority"
+          ],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    },
+    {
+      "evidence": "../router-race-02.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-race",
+          "-json",
+          "./cmd/server",
+          "-run",
+          "^TestControlledArtifactRouter",
+          "-count=1"
+        ],
+        "environment": "router",
+        "database": "multica_artifact_20261110_router",
+        "exit_code": 0,
+        "seconds": 18.686,
+        "finished_at": "2026-11-10T07:59:27.434174+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/router-race-02.log",
+        "log_sha256": "1eead7a545c05b4f94c7811d40615bd6b26cacdab2ff27f2f79639461e175d05",
+        "named_test_counts": {
+          "pass": 16,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/legacy",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/password",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_create",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_detail",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_execute",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/human_agent_header",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/human_task_header",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/code-reviewer",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/progress-reporter",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPasswordRevocationAndExpiry",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterCloudIdentityCannotBecomeHuman",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPATRevocationAfterAuthentication",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPrivateSpecStaysOutOfWorkspaceQueue"
+          ],
+          "fail": [],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    },
+    {
+      "evidence": "../router-race-03.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-race",
+          "-json",
+          "./cmd/server",
+          "-run",
+          "^TestControlledArtifactRouter",
+          "-count=1"
+        ],
+        "environment": "router",
+        "database": "multica_artifact_20261110_router",
+        "exit_code": 0,
+        "seconds": 12.043,
+        "finished_at": "2026-11-10T08:00:10.910570+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/router-race-03.log",
+        "log_sha256": "2a1fa7d9e8aab51dc61df4cae5b04d990d45e6a1a046b0933ed296350175ba17",
+        "named_test_counts": {
+          "pass": 16,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/legacy",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision/password",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterTaskIdentityAndHumanDecision",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_create",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_detail",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/another_task_execute",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/human_agent_header",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders/human_task_header",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterScopeAndHeaders",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/code-reviewer",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities/progress-reporter",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterRestrictedCapabilities",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPasswordRevocationAndExpiry",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterCloudIdentityCannotBecomeHuman",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPATRevocationAfterAuthentication",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterPrivateSpecStaysOutOfWorkspaceQueue"
+          ],
+          "fail": [],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    },
+    {
+      "evidence": "../router-managed-01.json",
+      "result": {
+        "command": [
+          "go",
+          "-C",
+          "server",
+          "test",
+          "-race",
+          "-json",
+          "./cmd/server",
+          "-run",
+          "^TestControlledArtifactRouterManagedBindingLiveFences$",
+          "-count=1"
+        ],
+        "environment": "router",
+        "database": "multica_artifact_20261110_router",
+        "exit_code": 0,
+        "seconds": 16.106,
+        "finished_at": "2026-11-10T08:01:42.018674+08:00",
+        "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-artifact-20261110-ce36gwoa/logs/router-managed-01.log",
+        "log_sha256": "cbdcf353d2db08d8155319b98b62f74f6d47f04818c41284aad17fd910327e18",
+        "named_test_counts": {
+          "pass": 7,
+          "fail": 0,
+          "skip": 0
+        },
+        "test_names": {
+          "pass": [
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/allowed",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/binding_epoch",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/binding_revoked",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/installation_retired",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/organization_mapping_removed",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences/binding_lock_busy",
+            "github.com/multica-ai/multica/server/cmd/server:TestControlledArtifactRouterManagedBindingLiveFences"
+          ],
+          "fail": [],
+          "skip": []
+        },
+        "agent_cli_guard": true
+      }
+    }
+  ],
+  "limits": [
+    "Credential fixture rows are testutil-created, not registration/login UI tests",
+    "Fleet verifier uses a loopback httptest fake; tests prove verified credential kind rejection, not external Fleet availability",
+    "JWT/PAT live revocation uses deterministic first-body-read seam after real middleware authentication; binding lock uses a second actual PostgreSQL transaction",
+    "Nonmanaged final race suite16 pass and managed final race7 pass are separate invocations, not one combined23 run"
+  ]
+}

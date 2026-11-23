@@ -1,0 +1,43 @@
+[
+  {
+    "name": "views-tests-complete",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "exec",
+      "vitest",
+      "run",
+      "issues/actions/completion-hint-gate.test.tsx",
+      "issues/actions/__tests__/use-issue-actions.test.tsx",
+      "issues/components/issue-detail.test.tsx",
+      "issues/components/table-view-editing.test.tsx",
+      "issues/surface/use-issue-surface-actions.collaboration.test.tsx",
+      "modals/issue-completion-hint.test.tsx"
+    ],
+    "exit_code": 0,
+    "seconds": 13.2
+  },
+  {
+    "name": "views-typecheck-complete",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "seconds": 42.02
+  },
+  {
+    "name": "views-lint-complete",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "lint"
+    ],
+    "exit_code": 0,
+    "seconds": 13.63
+  }
+]

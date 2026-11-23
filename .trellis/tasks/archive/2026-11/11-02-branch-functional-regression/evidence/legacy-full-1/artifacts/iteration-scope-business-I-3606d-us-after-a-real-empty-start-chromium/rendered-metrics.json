@@ -1,0 +1,298 @@
+{
+  "platform": "web",
+  "workspaceId": "27e95707-296a-488e-8f4b-fa49956d0047",
+  "emptiedPlan": {
+    "iteration": {
+      "id": "fb152803-9ef3-48af-b16d-850298147ae1",
+      "workspace_id": "27e95707-296a-488e-8f4b-fa49956d0047",
+      "name": "Emptied planning history",
+      "description": null,
+      "coordinator_user_id": null,
+      "status": "cancelled",
+      "mode": "manual",
+      "start_date": "2026-11-02",
+      "end_date": "2026-11-15",
+      "timezone": "Asia/Shanghai",
+      "revision": 2,
+      "scope_revision": 4,
+      "started_at": null,
+      "logical_ended_at": "2026-11-02T00:23:33.25577Z",
+      "processed_at": "2026-11-02T00:23:33.25577Z"
+    },
+    "snapshot": null,
+    "statistics": {
+      "original": 0,
+      "current": 0,
+      "cancelled": 0,
+      "effective": 0,
+      "completed": 0,
+      "original_completed": 0,
+      "remaining": 0,
+      "added_unique": 0,
+      "removed_events": 0,
+      "reentry_events": 0,
+      "cancel_events": 0,
+      "reopen_events": 0,
+      "started": 0,
+      "initial_effective": 0,
+      "net_effective_change": 0,
+      "net_effective_change_ratio": null,
+      "effective_ratio": null,
+      "original_ratio": null,
+      "chart": [],
+      "calculated_at": "2026-11-02T00:23:33.284375Z"
+    },
+    "workspace_id": "27e95707-296a-488e-8f4b-fa49956d0047"
+  },
+  "emptyStartedPeriod": {
+    "iteration": {
+      "id": "c524fdb9-325f-4c02-81b2-bf8a86584100",
+      "workspace_id": "27e95707-296a-488e-8f4b-fa49956d0047",
+      "name": "A real empty commitment",
+      "description": null,
+      "coordinator_user_id": null,
+      "status": "cancelled",
+      "mode": "manual",
+      "start_date": "2026-11-02",
+      "end_date": "2026-11-15",
+      "timezone": "Asia/Shanghai",
+      "revision": 3,
+      "scope_revision": 3,
+      "started_at": "2026-11-02T00:23:33.622657Z",
+      "logical_ended_at": "2026-11-02T00:23:34.341099Z",
+      "processed_at": "2026-11-02T00:23:34.356896Z"
+    },
+    "snapshot": {
+      "schema_version": 1,
+      "workspace_id": "27e95707-296a-488e-8f4b-fa49956d0047",
+      "iteration_id": "c524fdb9-325f-4c02-81b2-bf8a86584100",
+      "operation_id": "a2104244-b508-4250-b959-5b80e61aab39",
+      "end_type": "cancelled",
+      "reason": "Scope business verification: cancel",
+      "logical_ended_at": "2026-11-02T00:23:34.341099Z",
+      "processed_at": "2026-11-02T00:23:34.356896Z",
+      "original": [],
+      "scope": [],
+      "events": [
+        {
+          "id": "e3048942-6b84-440c-a580-f1f099d8919c",
+          "sequence": 1,
+          "iteration_id": "c524fdb9-325f-4c02-81b2-bf8a86584100",
+          "issue_id": null,
+          "operation_id": "77bf59df-bfed-489b-ad25-4402f39ae690",
+          "kind": "create",
+          "actor": {
+            "id": "31a28b4e-2f56-48dc-bac3-60a7685a116f",
+            "type": "member",
+            "user_id": "31a28b4e-2f56-48dc-bac3-60a7685a116f"
+          },
+          "occurred_at": "2026-11-02T00:23:33.496112Z",
+          "sampled_at": "2026-11-02T00:23:33.496112Z",
+          "before_facts": null,
+          "after_facts": null,
+          "reason": null
+        },
+        {
+          "id": "4bd8410b-3fec-4f81-aa5f-ac786243c5e3",
+          "sequence": 2,
+          "iteration_id": "c524fdb9-325f-4c02-81b2-bf8a86584100",
+          "issue_id": null,
+          "operation_id": "17d554b5-6e15-4427-9ba5-6a313de22d1a",
+          "kind": "start",
+          "actor": {
+            "id": "31a28b4e-2f56-48dc-bac3-60a7685a116f",
+            "type": "member",
+            "user_id": "31a28b4e-2f56-48dc-bac3-60a7685a116f"
+          },
+          "occurred_at": "2026-11-02T00:23:33.622657Z",
+          "sampled_at": "2026-11-02T00:23:33.622657Z",
+          "before_facts": null,
+          "after_facts": {
+            "timezone": "Asia/Shanghai",
+            "reference_date": "2026-11-02",
+            "effective_end_date": "2026-11-15",
+            "effective_start_date": "2026-11-02"
+          },
+          "reason": "Scope business verification: start"
+        },
+        {
+          "id": "7cdc6111-8a78-47ec-b876-6cf120f7d512",
+          "sequence": 3,
+          "iteration_id": "c524fdb9-325f-4c02-81b2-bf8a86584100",
+          "issue_id": null,
+          "operation_id": "a2104244-b508-4250-b959-5b80e61aab39",
+          "kind": "cancelled",
+          "actor": {
+            "id": "31a28b4e-2f56-48dc-bac3-60a7685a116f",
+            "type": "member",
+            "user_id": "31a28b4e-2f56-48dc-bac3-60a7685a116f"
+          },
+          "occurred_at": "2026-11-02T00:23:34.341099Z",
+          "sampled_at": "2026-11-02T00:23:34.341099Z",
+          "before_facts": null,
+          "after_facts": null,
+          "reason": "Scope business verification: cancel"
+        }
+      ],
+      "statistics": {
+        "original": 0,
+        "current": 0,
+        "cancelled": 0,
+        "effective": 0,
+        "completed": 0,
+        "original_completed": 0,
+        "remaining": 0,
+        "added_unique": 0,
+        "removed_events": 0,
+        "reentry_events": 0,
+        "cancel_events": 0,
+        "reopen_events": 0,
+        "started": 0,
+        "initial_effective": 0,
+        "net_effective_change": 0,
+        "net_effective_change_ratio": null,
+        "effective_ratio": null,
+        "original_ratio": null,
+        "chart": [
+          {
+            "date": "2026-11-02",
+            "effective": 0,
+            "completed": 0,
+            "original": 0
+          }
+        ],
+        "calculated_at": "2026-11-02T00:23:34.341099Z"
+      },
+      "destinations": []
+    },
+    "statistics": {
+      "original": 0,
+      "current": 0,
+      "cancelled": 0,
+      "effective": 0,
+      "completed": 0,
+      "original_completed": 0,
+      "remaining": 0,
+      "added_unique": 0,
+      "removed_events": 0,
+      "reentry_events": 0,
+      "cancel_events": 0,
+      "reopen_events": 0,
+      "started": 0,
+      "initial_effective": 0,
+      "net_effective_change": 0,
+      "net_effective_change_ratio": null,
+      "effective_ratio": null,
+      "original_ratio": null,
+      "chart": [
+        {
+          "date": "2026-11-02",
+          "effective": 0,
+          "completed": 0,
+          "original": 0
+        }
+      ],
+      "calculated_at": "2026-11-02T00:23:34.341099Z"
+    },
+    "workspace_id": "27e95707-296a-488e-8f4b-fa49956d0047"
+  },
+  "layouts": [
+    {
+      "name": "empty-plan-adjustments",
+      "expectedViewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 1280,
+        "height": 1000
+      },
+      "overflow": [
+        {
+          "scrollWidth": 952,
+          "clientWidth": 952
+        }
+      ],
+      "targets": []
+    },
+    {
+      "name": "cancelled-before-start-history",
+      "expectedViewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 1280,
+        "height": 1000
+      },
+      "overflow": [
+        {
+          "scrollWidth": 952,
+          "clientWidth": 952
+        }
+      ],
+      "targets": []
+    },
+    {
+      "name": "empty-started-then-cancelled",
+      "expectedViewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewport": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "viewportAfterCapture": {
+        "width": 1280,
+        "height": 1000,
+        "coarse": false,
+        "touchPoints": 0
+      },
+      "screenshotSize": {
+        "width": 1280,
+        "height": 1000
+      },
+      "overflow": [
+        {
+          "scrollWidth": 952,
+          "clientWidth": 952
+        }
+      ],
+      "targets": []
+    }
+  ],
+  "mockedBranches": []
+}

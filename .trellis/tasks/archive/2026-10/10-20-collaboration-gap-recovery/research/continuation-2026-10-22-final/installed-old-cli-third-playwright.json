@@ -1,0 +1,131 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/multica-gap-recovery-20261021-h6phxwo9/installed-old-cli-third",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-installed-clients.spec.ts",
+      "file": "collaboration-installed-clients.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 3077,
+                  "error": {
+                    "message": "Error: The actual packaged CLI result is missing",
+                    "stack": "Error: The actual packaged CLI result is missing\n    at invokeInstalledCLI (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-clients.ts:126:64)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:93:22",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-clients.ts",
+                      "column": 64,
+                      "line": 126
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/collaboration-installed-clients.ts:126\n\n  124 |     expect(exit, diagnostic.replaceAll(input.token, \"[redacted]\")).toBe(0);\n  125 |     expect(errors).toEqual([]);\n> 126 |     if (!result || typeof result.exit_code !== \"number\") throw new Error(\"The actual packaged CLI result is missing\");\n      |                                                                ^\n  127 |     expect(requests).toHaveLength(1);\n  128 |     return { args: input.args, exitCode: result.exit_code, requests, stdout: result.stdout ?? \"\", stderr: result.stderr ?? \"\",\n  129 |       evidence: { args: input.args, exit_code: result.exit_code, requests, stdout_sha256: digest(result.stdout ?? \"\"),"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-clients.ts",
+                        "column": 64,
+                        "line": 126
+                      },
+                      "message": "Error: The actual packaged CLI result is missing\n\n   at fixtures/collaboration-installed-clients.ts:126\n\n  124 |     expect(exit, diagnostic.replaceAll(input.token, \"[redacted]\")).toBe(0);\n  125 |     expect(errors).toEqual([]);\n> 126 |     if (!result || typeof result.exit_code !== \"number\") throw new Error(\"The actual packaged CLI result is missing\");\n      |                                                                ^\n  127 |     expect(requests).toHaveLength(1);\n  128 |     return { args: input.args, exitCode: result.exit_code, requests, stdout: result.stdout ?? \"\", stderr: result.stderr ?? \"\",\n  129 |       evidence: { args: input.args, exit_code: result.exit_code, requests, stdout_sha256: digest(result.stdout ?? \"\"),\n    at invokeInstalledCLI (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-clients.ts:126:64)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:93:22"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-22T13:17:25.874Z",
+                  "annotations": [],
+                  "attachments": [],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-installed-clients.ts",
+                    "column": 64,
+                    "line": 126
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fd5ac1de3961c8d4dca4-0e16f2831ca6846cb36d",
+          "file": "collaboration-installed-clients.spec.ts",
+          "line": 29,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-22T13:17:25.317Z",
+    "duration": 3657.6980000000003,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

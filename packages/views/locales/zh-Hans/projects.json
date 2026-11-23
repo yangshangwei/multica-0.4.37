@@ -1,6 +1,8 @@
 {
   "page": {
     "title": "项目",
+    "tagline": "围绕目标组织任务，跟踪项目进度。",
+    "learn_more": "了解更多 →",
     "new_project": "新建项目",
     "empty": "还没有项目",
     "load_error": "无法加载项目",
@@ -19,7 +21,36 @@
     "no_matches": "没有匹配的项目",
     "selected_other": "已选 {{count}} 项",
     "clear_selection": "清除选择",
-    "empty_hint": "添加仓库并选择执行AI小队，开始处理第一条任务。"
+    "empty_hint": "创建项目来组织相关任务，按需分配给成员、单个智能体或 AI 小队。"
+  },
+  "welcome": {
+    "title": "围绕一个目标，组织<term>任务</term>、<term>智能体</term>与 <term>AI 小队</term>",
+    "description": "把相关任务放在同一个项目中，统一上下文和进度。按任务需要选择成员、单个智能体或 AI 小队，也可以关联仓库，让执行者共享项目背景。",
+    "docs": "了解项目",
+    "steps": {
+      "goal": "统一目标与上下文",
+      "goal_description": "写下范围和要求，让每条任务从同一背景开始。",
+      "assign": "选择合适的执行者",
+      "assign_description": "明确的单项工作交给智能体，需要协作的任务交给 AI 小队。",
+      "track": "跟踪进度与交付",
+      "track_description": "从任务状态到交付结果，集中查看项目的推进情况。"
+    },
+    "example_label": "项目示例",
+    "example_title": "注册激活",
+    "example_goal": "让新用户完成注册、激活邮箱并登录使用。",
+    "progress": "任务进度",
+    "progress_value": "已完成 {{completed}} / {{total}} 项",
+    "tasks": {
+      "flow": "梳理注册与激活流程",
+      "implementation": "实现注册接口与激活邮件",
+      "validation": "验证链接过期与重复注册"
+    },
+    "assignees": {
+      "product_agent": "产品智能体",
+      "delivery_squad": "交付 AI 小队",
+      "qa_agent": "测试智能体"
+    },
+    "example_caption": "以上为任务与负责人示例，每条任务分别跟踪状态。"
   },
   "table": {
     "select_project": "选择 {{name}}",
@@ -162,7 +193,8 @@
     "deleting": "正在删除...",
     "batch_success_other": "已删除 {{count}} 个项目",
     "batch_failed_other": "{{count}} 个项目未能删除，已保留选择。请重试。",
-    "batch_partial_other": "已删除 {{deleted}} 个项目，{{count}} 个未能删除，已保留选择。请重试。"
+    "batch_partial_other": "已删除 {{deleted}} 个项目，{{count}} 个未能删除，已保留选择。请重试。",
+    "stage_policy_exit_required": "请先关闭阶段门禁，再删除项目。"
   },
   "picker": {
     "no_project": "无项目",
@@ -310,7 +342,7 @@
     "none": "无",
     "calculated": "统计时间 {{time}} · 基准日 {{date}}",
     "save": "保存",
-    "lead_invalid": "项目负责人已失效，请在属性中选择有效成员或智能体。",
+    "lead_invalid": "项目负责人未设置或已失效，请在属性中选择有效成员或智能体。",
     "environment": "部分指派的执行环境不可用，请检查项目资源和 AI小队。",
     "project_overdue": "项目已超过截止日期。",
     "date_invalid": "开始日期晚于截止日期，请修正项目日期。",
@@ -402,7 +434,7 @@
       "project_overdue": "项目已逾期。",
       "unassigned_issues": "部分任务缺少有效负责人。",
       "in_review_issues": "存在待验收任务。",
-      "invalid_project_lead": "项目负责人已失效。",
+      "invalid_project_lead": "项目负责人未设置或已失效。",
       "stale_progress": "已有七个规划日未发布进展。",
       "ended_project_open_issues": "已结束项目仍有未结束任务。",
       "execution_environment_unavailable": "指派的执行环境不可用。",
@@ -432,6 +464,7 @@
     "savedRefresh": "修改已保存。请刷新迭代后继续编辑。",
     "retryRefresh": "重新刷新",
     "title": "迭代",
+    "tagline": "按周期安排任务，跟踪进度和交付。",
     "unsupported": "此服务暂不支持迭代管理。",
     "loading": "加载中…",
     "retry": "重试",
@@ -457,6 +490,31 @@
     "next": "下一页",
     "back": "返回迭代列表",
     "empty": "暂无迭代",
+    "welcome": {
+      "title": "让每次迭代都有共同目标",
+      "description": "为一段聚焦的工作设定周期，推进时让团队保持同步，结束时再明确安排未完成的任务。",
+      "create": "创建迭代",
+      "example": "示例",
+      "example_name": "产品体验打磨",
+      "example_dates": "11 月 4 日 - 11 月 17 日",
+      "example_progress": "已完成 4 项任务中的 2 项",
+      "tasks": {
+        "first": "优化移动端排版",
+        "second": "检查上手引导文案",
+        "third": "发布可访问性修复",
+        "fourth": "整理版本说明"
+      },
+      "done": "已完成",
+      "in_progress": "进行中",
+      "planned": "计划中",
+      "handoff": "结束时，再决定未完成的任务下一步去哪里。",
+      "steps": {
+        "label": "迭代怎么运作",
+        "plan": "设定周期，选好要完成的工作",
+        "track": "推进过程中，让进展始终可见",
+        "handoff": "回顾结果，安排下一步工作"
+      }
+    },
     "settings": "迭代设置",
     "disable": "禁用全部迭代",
     "start": "开始迭代",

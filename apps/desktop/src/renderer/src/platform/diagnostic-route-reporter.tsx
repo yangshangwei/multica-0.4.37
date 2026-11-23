@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { bucketDiagnosticPath, setDiagnosticRoute } from "@multica/core/diagnostics";
 import { useAuthStore } from "@multica/core/auth";
-import { useActiveTabIdentity, useActiveTabUrl } from "@/stores/tab-store";
+import { useActiveTabUrl } from "@/stores/tab-store";
 import {
   useWindowOverlayStore,
   type WindowOverlay,
@@ -30,8 +30,6 @@ import type { RendererRouteContextInput } from "../../../shared/renderer-route-c
 export function DiagnosticRouteReporter() {
   const user = useAuthStore((s) => s.user);
   const overlay = useWindowOverlayStore((s) => s.overlay);
-  // The slug decides whether a workspace is mounted at all; it is never sent.
-  const { slug: activeWorkspaceSlug } = useActiveTabIdentity();
   // The tab url carries search/hash too; bucketing drops both, so telemetry
   // never sees a filter value or an anchor.
   const activeTabUrl = useActiveTabUrl();
@@ -44,7 +42,6 @@ export function DiagnosticRouteReporter() {
     const surface = resolveSurface({
       user,
       overlay,
-      activeWorkspaceSlug,
       activeTabUrl,
     });
     setDiagnosticRoute(surface.path);
@@ -57,7 +54,7 @@ export function DiagnosticRouteReporter() {
       path: surface.path,
     };
     send(context, lastSentRef);
-  }, [user, overlay, activeWorkspaceSlug, activeTabUrl]);
+  }, [user, overlay, activeTabUrl]);
 
   return null;
 }
@@ -75,19 +72,17 @@ function send(
 function resolveSurface({
   user,
   overlay,
-  activeWorkspaceSlug,
   activeTabUrl,
 }: {
   user: unknown;
   overlay: WindowOverlay | null;
-  activeWorkspaceSlug: string | null;
   activeTabUrl: string | null;
 }): { kind: RendererRouteContextInput["surface"]; path: string } {
   if (!user) return { kind: "login", path: "/login" };
   if (overlay) {
     return { kind: "overlay", path: bucketDiagnosticPath(overlayPath(overlay)) };
   }
-  if (activeWorkspaceSlug && activeTabUrl) {
+  if (activeTabUrl) {
     return { kind: "tab", path: bucketDiagnosticPath(activeTabUrl) };
   }
   return { kind: "tab", path: "/" };

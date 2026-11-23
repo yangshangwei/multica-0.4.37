@@ -1,0 +1,30 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/admin-test.py",
+    "env",
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-offline-handoff.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--project=chromium",
+    "--reporter=json",
+    "--output=/tmp/multica-gap-recovery-20261021-h6phxwo9/offline-handoff-coordinator-rerun-output"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "start": "2026-10-21T14:40:09.849585+00:00",
+  "returncode": 0,
+  "end": "2026-10-21T14:40:30.798515+00:00",
+  "stats": {
+    "startTime": "2026-10-21T14:40:10.772Z",
+    "duration": 20000.368,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "raw_sha256": "142ac84cbb5b0de47f68dbf5129cdb27a22a5fad517844372e2344371d271e7e"
+}

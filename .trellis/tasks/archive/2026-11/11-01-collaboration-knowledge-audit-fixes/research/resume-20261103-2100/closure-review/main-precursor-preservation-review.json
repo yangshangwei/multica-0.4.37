@@ -1,0 +1,112 @@
+{
+  "reviewer": "/root/closure_inventory",
+  "reviewed_at": "2026-11-03T13:23:07.181015+00:00",
+  "verdict": "changes-required",
+  "scope": "Five main dirty precursor E2E files against current candidate overlay; source read-only.",
+  "comparisons": [
+    {
+      "path": "e2e/collaboration-boundaries-web.spec.ts",
+      "main_sha256": "d81d1fcac8d8eeb542da8af4c8c1a1fb71cea8085e75633b4f1e75c17fd5964d",
+      "main_matches_root_preservation_record": true,
+      "candidate_sha256": "aea75d2300b18b58d8e0c8bb57853d5b74ad8ca498128d86958e447b3823dbf3",
+      "diff": "e2e__collaboration-boundaries-web.spec.ts.diff",
+      "diff_sha256": "6fbfbb17ea58cbcaa2bd4c4291724c526f9d28926178d1b3d25d5156a857b442"
+    },
+    {
+      "path": "e2e/collaboration-memory-web.spec.ts",
+      "main_sha256": "62c26fe70f60418a836abf3741c0ed8f08e21b163fa61c0a846c0f0964ae5943",
+      "main_matches_root_preservation_record": true,
+      "candidate_sha256": "f2613925854c343a768e5458d9103921b5db43e684db46372ccd757d687c784a",
+      "diff": "e2e__collaboration-memory-web.spec.ts.diff",
+      "diff_sha256": "2785db35c686a9f915ce33768b60c1aef7b86b5f5669b1411acec526d1181025"
+    },
+    {
+      "path": "e2e/collaboration-preview-web.spec.ts",
+      "main_sha256": "ae65f83b009bdbc0684c6ee4795eba59190c1594da7fa663435a79d8dd267995",
+      "main_matches_root_preservation_record": true,
+      "candidate_sha256": "321c051a4de1c815f05f9ac7b12a780564e066774530752abeb2722e5181dd29",
+      "diff": "e2e__collaboration-preview-web.spec.ts.diff",
+      "diff_sha256": "e0bf3976b65262b233a16c6cefe3668e5017f725f8db4390c8e043a8675175b7"
+    },
+    {
+      "path": "e2e/collaboration-workbench-web.spec.ts",
+      "main_sha256": "a8311313c502c74afe4df709d66cf16630bb3ac7396c912c3e4a7501a6fb1377",
+      "main_matches_root_preservation_record": true,
+      "candidate_sha256": "90c8e1e60fd0cb897cf7428bbf8edbdb06bc4546f1c1b9e67a578dd8c67ce007",
+      "diff": "e2e__collaboration-workbench-web.spec.ts.diff",
+      "diff_sha256": "e6ad7e4ab5a39b220cdd757c8c193d5fdae8c3db0573b0073dcd9e53352336e9"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "main_sha256": "44738e30f08d31e691b58dadcac98cbfdd67b5ab8be9c021c7ed9d07ea5973ef",
+      "main_matches_root_preservation_record": true,
+      "candidate_sha256": "ef347d2137d78ab1d2ddc3d7bb28ff393a5b5bd6ae3195bc9f7bec60d82bcc91",
+      "diff": "e2e__fixtures__collaboration-mention-journeys.ts.diff",
+      "diff_sha256": "4477bd92b973597a976f404dce141326644d46836f5156fdcd157d8cca87c10b"
+    }
+  ],
+  "blocking_findings": [
+    {
+      "id": "P1",
+      "severity": "blocking_for_preservation",
+      "files": [
+        "e2e/collaboration-workbench-web.spec.ts"
+      ],
+      "missing": "After409, explicit visibility of resultText and basisText is replaced only by data-submission-id count.",
+      "why_not_equivalent": "Correct id permits blank/hidden rendered Result or Basis; exact display retention is a separate UI behavior.",
+      "recommendation": "Keep current id and fence checks; restore explicit Result/Basis visibility after conflict and after Keep input/use current version."
+    },
+    {
+      "id": "P2",
+      "severity": "blocking_for_preservation",
+      "files": [
+        "e2e/fixtures/collaboration-mention-journeys.ts"
+      ],
+      "missing": "Fresh Send-preview confirmation message and unchanged composer draft, then Manual Preview on the still-suppressed target, were removed.",
+      "why_not_equivalent": "previewComment now proves no POST but not the instruction/draft; later manual preview occurs after unsuppression, a different state.",
+      "recommendation": "Restore message/draft checks, manual suppressed recheck, same before-state and zero-write assertions; retain centralized previewComment zero-POST observer."
+    },
+    {
+      "id": "P3",
+      "severity": "blocking_for_preservation",
+      "files": [
+        "e2e/collaboration-preview-web.spec.ts"
+      ],
+      "missing": "Unchanged composer draft after fresh preview, explicit suppressed Manual Preview followup, and full comments.items equality replaced by IDs only.",
+      "why_not_equivalent": "Same comment IDs/execution graph can hide changed comment bodies; later confirmed Send does not cover Manual Preview under suppression.",
+      "recommendation": "Restore main draft/full-items/manual-preview assertions; retain candidate execution equality and suppressed checkbox checks."
+    },
+    {
+      "id": "P4",
+      "severity": "blocking_for_preservation",
+      "files": [
+        "e2e/collaboration-boundaries-web.spec.ts",
+        "e2e/collaboration-memory-web.spec.ts",
+        "e2e/collaboration-workbench-web.spec.ts"
+      ],
+      "missing": "Submitted identifier UUID-shape check removed when obtaining id from pending.delivery.current.",
+      "why_not_equivalent": "Response/GET equal identifiers alone can both have malformed shape.",
+      "recommendation": "Apply original /^[0-9a-f-]{36}$/i to candidate submission.id in each case without replacing stronger exact delivery checks."
+    },
+    {
+      "id": "P5",
+      "severity": "blocking_for_preservation",
+      "files": [
+        "e2e/collaboration-memory-web.spec.ts"
+      ],
+      "missing": "Completion form dismissal assertion after successful exact acceptance.",
+      "why_not_equivalent": "Reopen button visibility/API completion does not strictly assert old form removal.",
+      "recommendation": "Restore await expect(completion).toHaveCount(0) after completion response while keeping receipt/final delivery checks."
+    }
+  ],
+  "accepted_candidate_improvements": [
+    "Boundary renderedActions includeHidden covers unauthorized hidden controls; preserve it.",
+    "Boundary optional source_structure buttons follow actual capability contract.",
+    "Candidate actual submission/acceptance receipts, immutable delivery identity/fences and exact final decision checks are stronger and should remain.",
+    "Shared helper leaveThroughUI retains actual HTTP/UI participant departure with current delivery unchanged.",
+    "Candidate preview execution-state equality and zero-comment-POST watcher are useful additions."
+  ],
+  "required_followup": "Author restores missing controls; independent focused recheck plus newly numbered affected directed tests before seven-file commit. Current viewport17 pass predates this preservation repair.",
+  "source_edits": false,
+  "runtime_tests": false
+}

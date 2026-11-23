@@ -1,0 +1,637 @@
+{
+  "recorded_at": "2026-11-15T10:03:33.048342+00:00",
+  "source_files_stable": true,
+  "config_sha256": "e01db5d145559b2f4d340da68e191d6be42ce7b39eda40e269a8a620730e0884",
+  "results": [
+    {
+      "file": "e2e/fixtures/collaboration-detail-journey.ts",
+      "label": "original",
+      "exit": 1,
+      "source_sha256": "ec727d740cf074b4b7f47a257ef29a3e2e233736b7f69c845c2b69fd58bc88e2",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'pg' should be listed in the project's dependencies, not devDependencies.",
+          "line": 6,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "devDep",
+          "endLine": 6,
+          "endColumn": 21
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@playwright/test' should be listed in the project's dependencies, not devDependencies.",
+          "line": 7,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "devDep",
+          "endLine": 9,
+          "endColumn": 27
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 10,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 15,
+          "endColumn": 38
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 16,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 16,
+          "endColumn": 97
+        },
+        {
+          "ruleId": "no-useless-escape",
+          "severity": 2,
+          "message": "Unnecessary escape character: \\\".",
+          "line": 192,
+          "column": 38,
+          "nodeType": "Literal",
+          "messageId": "unnecessaryEscape",
+          "endLine": 192,
+          "endColumn": 39,
+          "suggestions": [
+            {
+              "messageId": "removeEscape",
+              "fix": {
+                "range": [
+                  11247,
+                  11248
+                ],
+                "text": ""
+              },
+              "desc": "Remove the `\\`. This maintains the current functionality."
+            },
+            {
+              "messageId": "escapeBackslash",
+              "fix": {
+                "range": [
+                  11247,
+                  11247
+                ],
+                "text": "\\"
+              },
+              "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+            }
+          ]
+        },
+        {
+          "ruleId": "no-useless-escape",
+          "severity": 2,
+          "message": "Unnecessary escape character: \\\".",
+          "line": 192,
+          "column": 43,
+          "nodeType": "Literal",
+          "messageId": "unnecessaryEscape",
+          "endLine": 192,
+          "endColumn": 44,
+          "suggestions": [
+            {
+              "messageId": "removeEscape",
+              "fix": {
+                "range": [
+                  11252,
+                  11253
+                ],
+                "text": ""
+              },
+              "desc": "Remove the `\\`. This maintains the current functionality."
+            },
+            {
+              "messageId": "escapeBackslash",
+              "fix": {
+                "range": [
+                  11252,
+                  11252
+                ],
+                "text": "\\"
+              },
+              "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+            }
+          ]
+        },
+        {
+          "ruleId": "no-useless-escape",
+          "severity": 2,
+          "message": "Unnecessary escape character: \\\".",
+          "line": 192,
+          "column": 86,
+          "nodeType": "Literal",
+          "messageId": "unnecessaryEscape",
+          "endLine": 192,
+          "endColumn": 87,
+          "suggestions": [
+            {
+              "messageId": "removeEscape",
+              "fix": {
+                "range": [
+                  11295,
+                  11296
+                ],
+                "text": ""
+              },
+              "desc": "Remove the `\\`. This maintains the current functionality."
+            },
+            {
+              "messageId": "escapeBackslash",
+              "fix": {
+                "range": [
+                  11295,
+                  11295
+                ],
+                "text": "\\"
+              },
+              "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+            }
+          ]
+        },
+        {
+          "ruleId": "no-useless-escape",
+          "severity": 2,
+          "message": "Unnecessary escape character: \\\".",
+          "line": 192,
+          "column": 91,
+          "nodeType": "Literal",
+          "messageId": "unnecessaryEscape",
+          "endLine": 192,
+          "endColumn": 92,
+          "suggestions": [
+            {
+              "messageId": "removeEscape",
+              "fix": {
+                "range": [
+                  11300,
+                  11301
+                ],
+                "text": ""
+              },
+              "desc": "Remove the `\\`. This maintains the current functionality."
+            },
+            {
+              "messageId": "escapeBackslash",
+              "fix": {
+                "range": [
+                  11300,
+                  11300
+                ],
+                "text": "\\"
+              },
+              "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+            }
+          ]
+        }
+      ],
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-lint-f5822947/collaboration-detail-journey-original.log",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/packages/eslint-config/base.js",
+        "--format",
+        "json",
+        "--stdin",
+        "--stdin-filename",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/fixtures/collaboration-detail-journey.ts"
+      ]
+    },
+    {
+      "file": "e2e/fixtures/collaboration-detail-journey.ts",
+      "label": "current",
+      "exit": 1,
+      "source_sha256": "470dde98fab303d210701fe03cca296ec5ee712d7e44ffbfd63914f7401355aa",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'pg' should be listed in the project's dependencies, not devDependencies.",
+          "line": 6,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "devDep",
+          "endLine": 6,
+          "endColumn": 21
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@playwright/test' should be listed in the project's dependencies, not devDependencies.",
+          "line": 7,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "devDep",
+          "endLine": 9,
+          "endColumn": 27
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 10,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 15,
+          "endColumn": 38
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 16,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 16,
+          "endColumn": 97
+        },
+        {
+          "ruleId": "no-useless-escape",
+          "severity": 2,
+          "message": "Unnecessary escape character: \\\".",
+          "line": 200,
+          "column": 38,
+          "nodeType": "Literal",
+          "messageId": "unnecessaryEscape",
+          "endLine": 200,
+          "endColumn": 39,
+          "suggestions": [
+            {
+              "messageId": "removeEscape",
+              "fix": {
+                "range": [
+                  11908,
+                  11909
+                ],
+                "text": ""
+              },
+              "desc": "Remove the `\\`. This maintains the current functionality."
+            },
+            {
+              "messageId": "escapeBackslash",
+              "fix": {
+                "range": [
+                  11908,
+                  11908
+                ],
+                "text": "\\"
+              },
+              "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+            }
+          ]
+        },
+        {
+          "ruleId": "no-useless-escape",
+          "severity": 2,
+          "message": "Unnecessary escape character: \\\".",
+          "line": 200,
+          "column": 43,
+          "nodeType": "Literal",
+          "messageId": "unnecessaryEscape",
+          "endLine": 200,
+          "endColumn": 44,
+          "suggestions": [
+            {
+              "messageId": "removeEscape",
+              "fix": {
+                "range": [
+                  11913,
+                  11914
+                ],
+                "text": ""
+              },
+              "desc": "Remove the `\\`. This maintains the current functionality."
+            },
+            {
+              "messageId": "escapeBackslash",
+              "fix": {
+                "range": [
+                  11913,
+                  11913
+                ],
+                "text": "\\"
+              },
+              "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+            }
+          ]
+        },
+        {
+          "ruleId": "no-useless-escape",
+          "severity": 2,
+          "message": "Unnecessary escape character: \\\".",
+          "line": 200,
+          "column": 86,
+          "nodeType": "Literal",
+          "messageId": "unnecessaryEscape",
+          "endLine": 200,
+          "endColumn": 87,
+          "suggestions": [
+            {
+              "messageId": "removeEscape",
+              "fix": {
+                "range": [
+                  11956,
+                  11957
+                ],
+                "text": ""
+              },
+              "desc": "Remove the `\\`. This maintains the current functionality."
+            },
+            {
+              "messageId": "escapeBackslash",
+              "fix": {
+                "range": [
+                  11956,
+                  11956
+                ],
+                "text": "\\"
+              },
+              "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+            }
+          ]
+        },
+        {
+          "ruleId": "no-useless-escape",
+          "severity": 2,
+          "message": "Unnecessary escape character: \\\".",
+          "line": 200,
+          "column": 91,
+          "nodeType": "Literal",
+          "messageId": "unnecessaryEscape",
+          "endLine": 200,
+          "endColumn": 92,
+          "suggestions": [
+            {
+              "messageId": "removeEscape",
+              "fix": {
+                "range": [
+                  11961,
+                  11962
+                ],
+                "text": ""
+              },
+              "desc": "Remove the `\\`. This maintains the current functionality."
+            },
+            {
+              "messageId": "escapeBackslash",
+              "fix": {
+                "range": [
+                  11961,
+                  11961
+                ],
+                "text": "\\"
+              },
+              "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+            }
+          ]
+        }
+      ],
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-lint-f5822947/collaboration-detail-journey-current.log",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/packages/eslint-config/base.js",
+        "--format",
+        "json",
+        "--stdin",
+        "--stdin-filename",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/fixtures/collaboration-detail-journey.ts"
+      ]
+    },
+    {
+      "file": "e2e/fixtures/project-knowledge-automation.ts",
+      "label": "original",
+      "exit": 1,
+      "source_sha256": "f7553a1785231cab4f0ddc967c7a819b62eea389ca3fcb1a010b84a889cbd106",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'pg' should be listed in the project's dependencies, not devDependencies.",
+          "line": 5,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "devDep",
+          "endLine": 5,
+          "endColumn": 21
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@playwright/test' should be listed in the project's dependencies, not devDependencies.",
+          "line": 6,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "devDep",
+          "endLine": 6,
+          "endColumn": 95
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'zod' should be listed in the project's dependencies. Run 'pnpm add zod' to add it",
+          "line": 7,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 7,
+          "endColumn": 25
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 8,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 9,
+          "endColumn": 100
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 10,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 10,
+          "endColumn": 51
+        }
+      ],
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-lint-f5822947/project-knowledge-automation-original.log",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/packages/eslint-config/base.js",
+        "--format",
+        "json",
+        "--stdin",
+        "--stdin-filename",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/fixtures/project-knowledge-automation.ts"
+      ]
+    },
+    {
+      "file": "e2e/fixtures/project-knowledge-automation.ts",
+      "label": "current",
+      "exit": 1,
+      "source_sha256": "195f255c761a88bd70fae3cd0d5eb17ca739ac92b446d7321a56d3f224ac27ad",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'pg' should be listed in the project's dependencies, not devDependencies.",
+          "line": 6,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "devDep",
+          "endLine": 6,
+          "endColumn": 21
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@playwright/test' should be listed in the project's dependencies, not devDependencies.",
+          "line": 7,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "devDep",
+          "endLine": 7,
+          "endColumn": 95
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'zod' should be listed in the project's dependencies. Run 'pnpm add zod' to add it",
+          "line": 8,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 8,
+          "endColumn": 25
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 9,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 10,
+          "endColumn": 100
+        },
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 11,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 11,
+          "endColumn": 51
+        }
+      ],
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-lint-f5822947/project-knowledge-automation-current.log",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/packages/eslint-config/base.js",
+        "--format",
+        "json",
+        "--stdin",
+        "--stdin-filename",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/fixtures/project-knowledge-automation.ts"
+      ]
+    },
+    {
+      "file": "e2e/project-knowledge-automation.spec.ts",
+      "label": "original",
+      "exit": 1,
+      "source_sha256": "de6c4090c4e520bfadb87463a28fccb15831557ba8d1404d99a7b78578434381",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 3,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 3,
+          "endColumn": 72
+        }
+      ],
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-lint-f5822947/project-knowledge-automation.spec-original.log",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/packages/eslint-config/base.js",
+        "--format",
+        "json",
+        "--stdin",
+        "--stdin-filename",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/project-knowledge-automation.spec.ts"
+      ]
+    },
+    {
+      "file": "e2e/project-knowledge-automation.spec.ts",
+      "label": "current",
+      "exit": 1,
+      "source_sha256": "d4af16db947c7ae3e1379f5d079759b2c860efe1de427f606177c53093e11d73",
+      "messages": [
+        {
+          "ruleId": "import-x/no-extraneous-dependencies",
+          "severity": 2,
+          "message": "'@multica/core' should be listed in the project's dependencies. Run 'pnpm add @multica/core' to add it",
+          "line": 3,
+          "column": 1,
+          "nodeType": "ImportDeclaration",
+          "messageId": "missing",
+          "endLine": 3,
+          "endColumn": 72
+        }
+      ],
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/managed-lint-f5822947/project-knowledge-automation.spec-current.log",
+      "command": [
+        "/opt/homebrew/bin/pnpm",
+        "exec",
+        "eslint",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/packages/eslint-config/base.js",
+        "--format",
+        "json",
+        "--stdin",
+        "--stdin-filename",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/e2e/project-knowledge-automation.spec.ts"
+      ]
+    }
+  ],
+  "new_diagnostics": [],
+  "new_error_count": 0,
+  "existing_errors_kept": true,
+  "standalone_e2e_lint_passed": false
+}

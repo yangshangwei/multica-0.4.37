@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/fake-preflight-offline.sb",
+    "python3",
+    "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/adapter-env-preflight-v11.py"
+  ],
+  "exit_code": 0,
+  "source_sha256": "004fbbc7820da02c54d6b619dbec458c1379337821812f81063bd92694e99536",
+  "log_sha256": "113295e6dc91da955d1e2795b79f22954c6baca7ad1acc119657e519c803dc12",
+  "actual_metadata_only_commands": [
+    "selected cached Go version",
+    "selected own pnpm --version"
+  ],
+  "Go_tests_Playwright_SQL_make_services": "synthetic executable recorders only; no actual repository or database execution",
+  "actual_execution_dirs_absent": true
+}

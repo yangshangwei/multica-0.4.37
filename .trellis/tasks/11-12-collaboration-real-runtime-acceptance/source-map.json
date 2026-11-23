@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-12",
+  "purpose": "preserve source history across delivered-stage archival",
+  "path_map": {
+    ".trellis/tasks/11-05-agent-squad-rnd-improvements": ".trellis/tasks/archive/2026-11/11-05-agent-squad-rnd-improvements",
+    ".trellis/tasks/10-10-cross-workspace-collaboration": ".trellis/tasks/archive/2026-11/10-10-cross-workspace-collaboration",
+    ".trellis/tasks/10-30-collaboration-context-handoff": ".trellis/tasks/archive/2026-11/10-30-collaboration-context-handoff",
+    ".trellis/tasks/10-30-collaboration-context-handoff-runtime": ".trellis/tasks/archive/2026-11/10-30-collaboration-context-handoff-runtime",
+    ".trellis/tasks/10-30-collaboration-fix-closure": ".trellis/tasks/archive/2026-11/10-30-collaboration-fix-closure",
+    ".trellis/tasks/10-30-collaboration-knowledge-promotion": ".trellis/tasks/archive/2026-11/10-30-collaboration-knowledge-promotion"
+  },
+  "historical_content_rewritten": false,
+  "new_provider_calls": 0,
+  "archive_does_not_enable_execution": true,
+  "independent_ledgers": {
+    "runtime": {
+      "cap": 25,
+      "consumed": 12,
+      "remaining": 13,
+      "next": "H3a-t3",
+      "runnable": false,
+      "prerequisites": [
+        "Repair H6 two-start reserve/complete/finalization and per-run launch indexing with fake integration regression",
+        "Create archive-aware entry and independently review current binding; preserve old registration hashes",
+        "Keep all real gates false until current source/framework/CLI/config/DB/window/permit/gateway checks pass"
+      ]
+    },
+    "original_E_series": {
+      "consumed": 19,
+      "remaining": 8,
+      "disposition": "E5t1_valid_failure_stopped",
+      "auto_resume": false
+    },
+    "knowledge": {
+      "cap": 17,
+      "consumed": 2,
+      "remaining": 15,
+      "next": "E0b_then_K1_K2_K3",
+      "runnable": false
+    },
+    "AC43": {
+      "authorized_call_limit": null,
+      "unlimited_authorization_preserved": true,
+      "external_billing_reconciliation": "excluded_by_user",
+      "cross_environment_squad": "provider_blocked"
+    }
+  }
+}

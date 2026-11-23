@@ -1,0 +1,29 @@
+{
+  "command": [
+    "/usr/bin/sandbox-exec",
+    "-f",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/deny-network.sb",
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "-B",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/check-go-package-binding-test.py"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+  "environment": {
+    "PATH": "/Users/artisan/.codex/packages/app-server-daemon/releases/0.166.0-aarch64-apple-darwin/codex-path:/opt/homebrew/Cellar/node/25.2.1/bin:/Users/artisan/.nvm/versions/node/v22.23.2/bin:/Users/artisan/.nvm/versions/node/v22.23.2/bin:/Users/artisan/.bun/bin:/Users/artisan/.nvm/versions/node/v22.23.2/bin:/Users/artisan/.antigravity/antigravity/bin:/Users/artisan/.codebuddy/bin:/Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home/bin:/opt/homebrew/opt/openjdk@21/bin:/Applications/Golutra.app/Contents/MacOS:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pmk/env/global/bin:/Users/artisan/.codex/tmp/arg0-macos/codex-arg0PzxhFT:/Users/artisan/.codex/packages/app-server-daemon/releases/0.166.0-aarch64-apple-darwin/codex-path:/Users/artisan/.codex/tmp/arg0-macos/codex-arg0RyC4IU:/Users/artisan/.nvm/versions/node/v22.23.2/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/opt/homebrew/Cellar/node/25.2.1/bin:/Users/artisan/.nvm/versions/node/v22.23.2/bin:/Users/artisan/.bun/bin:/Users/artisan/.antigravity/antigravity/bin:/Users/artisan/.codebuddy/bin:/Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home/bin:/opt/homebrew/opt/openjdk@21/bin:/Applications/Golutra.app/Contents/MacOS:/Users/artisan/.local/bin:/Users/artisan/.cargo/bin:/opt/homebrew/opt/node@22/bin:/Applications/Warp.app/Contents/Resources/bin:/opt/homebrew/opt/node@22/bin",
+    "TMPDIR": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102/.tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "CHECK_ISOLATION_WRAPPER": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v5/check-bin/go",
+    "CHECK_BINDING_EVIDENCE": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/adapter-v6-repair-20261102/red-v5.json"
+  },
+  "exit_code": 1,
+  "seconds": 0.189,
+  "log": "red-v5.log",
+  "report": "red-v5.json",
+  "tests_run": 27,
+  "failure_count": 55,
+  "error_count": 0,
+  "source_sha256": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+  "network_policy": "deny network*",
+  "actual_go_tests": 0,
+  "actual_sql_connections": 0
+}

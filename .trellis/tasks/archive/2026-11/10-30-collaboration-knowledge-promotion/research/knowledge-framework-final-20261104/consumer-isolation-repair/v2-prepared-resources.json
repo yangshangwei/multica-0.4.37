@@ -1,0 +1,49 @@
+{
+  "recorded_at": "2026-11-04T10:25:39.764704+00:00",
+  "resources": [
+    {
+      "lane": "normal",
+      "database": "multica_rk1k_20261104_v16_normal2_a3c9",
+      "identity": "multica_rk1k_20261104_v16_normal2_a3c9|764_collaboration_ai_policy",
+      "issue_rows": 0,
+      "task_rows": 0,
+      "temp": "/private/tmp/multica-rk1k-20261104-v2-normal-z5lrrfo9",
+      "home": "/private/tmp/multica-rk1k-20261104-v2-normal-z5lrrfo9/home",
+      "label": "rk1k-normal-v16-02",
+      "environment_sha256": "f7e6b3e6e8d7a174716c55c31bc9104f473f9a35046476bb7e6c56ad3eaa3d7f",
+      "COW_cached_files": 13425
+    },
+    {
+      "lane": "race",
+      "database": "multica_rk1k_20261104_v16_race2_a3c9",
+      "identity": "multica_rk1k_20261104_v16_race2_a3c9|764_collaboration_ai_policy",
+      "issue_rows": 0,
+      "task_rows": 0,
+      "temp": "/private/tmp/multica-rk1k-20261104-v2-race-fhzydzkw",
+      "home": "/private/tmp/multica-rk1k-20261104-v2-race-fhzydzkw/home",
+      "label": "rk1k-race-v16-02",
+      "environment_sha256": "0440ecee500952da02a9569dbd86b6a96c82023638e101c79a37adf09260eff7",
+      "COW_cached_files": 13425
+    }
+  ],
+  "runner_sha256": "eeb017c76c24a63023c9f0f44b35f14809a69d9507d3b531b129b204007d73a4",
+  "input_binding_sha256": "7ab6f2ade592f84b40f5e26362759e057793257920e565965833f17bdaf804d3",
+  "permits": {
+    "normal": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/permissions/rk1k-normal-v16-02.json",
+      "sha256": "600048173ecb0e525f0130d414bc9f4009d310fc8511d926c38eb448f3e03dfe",
+      "ready": false,
+      "label": "rk1k-normal-v16-02"
+    },
+    "race": {
+      "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104-v2/permissions/rk1k-race-v16-02.json",
+      "sha256": "4b3ea6a91845fdcf7ccd824dc56bda86f12afadcdcf67e076e6ffbf909310caf",
+      "ready": false,
+      "label": "rk1k-race-v16-02"
+    }
+  },
+  "Source_manifest_only_fixture_changed": true,
+  "new_controls_or_test_bodies": false,
+  "old_generation_overwritten": false,
+  "real_Provider_calls": 0
+}

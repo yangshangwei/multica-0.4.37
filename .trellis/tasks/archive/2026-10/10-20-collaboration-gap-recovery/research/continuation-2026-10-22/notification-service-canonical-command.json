@@ -1,0 +1,42 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_other",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(WorkflowNotificationsAndWorkbench|ResultNotificationsRequireProvenTerminalGroup|ResultNotificationRollbackAndConcurrentReplay|NotificationsLoseContentAndAnchorsWithAccess|NotificationsGroupAndAvoidSourceInboxDuplication|Notification.*|Workflow.*Information.*|Workflow.*Acceptance.*)$",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "database_alias": "service_s6_other",
+  "started_at": "2026-10-22T00:07:06.770138+00:00",
+  "source_sha256": {
+    "server/internal/service/collaboration_notifications_test.go": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec",
+    "server/internal/service/collaboration_result_notifications_test.go": "0738215c6b3b7c9440749dd7f4b5fd67da69210078e5ff6a648261f5b07f133e",
+    "server/internal/service/collaboration_workflow_test.go": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2"
+  },
+  "real_provider_account_access": false,
+  "production_gate_change": false,
+  "exit_code": 0,
+  "elapsed_s": 10.694,
+  "finished_at": "2026-10-22T00:07:17.464279+00:00",
+  "stdout_path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-22/notification-service-canonical.jsonl",
+  "stdout_sha256": "269f383bfd5edc970d17681913481e3e6b7f5fa9160b563c06e1671ca83bcaaa",
+  "source_changed_during_run": [],
+  "passed_top_level": 5,
+  "passed_including_subtests": 10,
+  "failed": [],
+  "skipped": []
+}

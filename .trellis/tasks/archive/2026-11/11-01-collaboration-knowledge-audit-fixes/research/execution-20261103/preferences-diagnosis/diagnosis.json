@@ -1,0 +1,69 @@
+{
+  "recorded_at": "2026-11-03T11:42:06.451874+00:00",
+  "scope": "offline diagnosis only; no runtime replay/source changes",
+  "candidate": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "failure": "settings-preferences.spec.ts:136 Set priority... click never completes; original test timeout60s",
+  "source_regression": {
+    "historical_candidate": "304f74dd3",
+    "original_repair_commit": "118fc53ea",
+    "current_file_sha256": "b9b6041c93db6e669f23eb22df1cd1fe07a9f0e575c0c256db7b0c2a774391a4",
+    "retained_file_sha256": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7",
+    "exactly_three_waits_missing": true,
+    "missing_waits": [
+      "await expect(dialog).toBeVisible();",
+      "await expect(dialog.getByRole(\"textbox\", { name: \"Title (required)\", exact: true })).toBeFocused();",
+      "await expect(page.getByRole(\"menuitem\", { name: \"Set priority...\", exact: true })).toBeVisible();"
+    ]
+  },
+  "five_product_files_unchanged_since_v11": {
+    "packages/views/modals/create-issue.tsx": "16f154a27dc64ecd435b40d560a076546b7c90c27f0571e95d2f75b90b676b70",
+    "packages/views/modals/create-issue-dialog.tsx": "15ca7d2fd4819c0f151ab4dbf180f44e377e9706245d6041433b2152da98e6c3",
+    "packages/views/modals/quick-create-issue.tsx": "66684c1c87245a89b7b0eedf4efa606f5afeae0fb4d08c02f7b08efdaf7b4624",
+    "packages/ui/components/ui/dialog.tsx": "35a8ac18ba129e7d90fe11e74fa2dfb5dc483d28424f39592e660884b99973cf",
+    "packages/ui/components/ui/dropdown-menu.tsx": "124266f0e2f76b6d15cc6d6c1fc45e1d78e7b79dd7929a72d916bf5811e6e267"
+  },
+  "trace_facts": {
+    "click_call": "call@1427",
+    "selector": "menuitem Set priority... exact",
+    "click_started_monotonic_ms": 1625710.047,
+    "reported_steps": [
+      "element not stable twice",
+      "element detached from DOM; retrying"
+    ],
+    "failure_screenshot_call": "call@1429",
+    "failure_screenshot_monotonic_ms": 1683028.094,
+    "failure_screenshot_URL": "workspace issues route, not setup",
+    "recorded_active_focus_element": "not captured; do not infer it from animated button border"
+  },
+  "setup_screen_limit": "preferences fixture takes and attaches preferences-failure screenshot before deleting workspace; that screenshot and call1429 frame URL retain New Issue on workspace issues. Later error-context setup page cannot establish a pre-timeout auth/navigation failure.",
+  "historical_actual_case": {
+    "id": "4f6b07a2ab779aaf77a5-891c4208eb564765af37",
+    "expectedStatus": "passed",
+    "status": "expected",
+    "results": [
+      {
+        "status": "passed",
+        "retry": 0,
+        "duration": 4620,
+        "startTime": "2026-11-03T03:00:36.851Z"
+      }
+    ]
+  },
+  "historical_report": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-final-owned-20261103/.omx/private/final-check-v11/makecheck-playwright-results-v9.json",
+    "sha256": "8ce622b327167a0a4e443c2d5beb40f1a9a950e27f9aa7a1883f499b7557ef97"
+  },
+  "trace": {
+    "path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/test-results/settings-preferences-hidde-af0f8-e-through-the-overflow-menu-chromium/trace.zip",
+    "sha256": "91cb1c3a0a439dc0cf58ddcce36a79989662aab77d2e29de44a0e09a2f637ec5"
+  },
+  "inline_failure_screenshot": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/execution-20261103/preferences-diagnosis/preferences-failure.png",
+    "sha256": "5ca71a1403c60014f43110bff08b51c436392507b59ebe49e6f4b8d535ab9316"
+  },
+  "recommendation": "Restore exactly the three prior condition-based waits before interacting with overflow; keep timeouts, normal click path and all persistence/API assertions. This is a candidate that dropped a known regression fix, not evidence that another timeout or forced click is appropriate. New directed green remains required.",
+  "limits": [
+    "Offline trace does not establish the exact internal focus event that detached the menu.",
+    "No production change or dynamic re-verification was performed."
+  ]
+}

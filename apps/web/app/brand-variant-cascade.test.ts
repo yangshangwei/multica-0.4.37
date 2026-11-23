@@ -21,7 +21,7 @@ import { beforeAll, describe, expect, it } from "vitest";
  * was present as a class and still lost:
  *
  *   1. Brand classes layered over the `outline` variant. tailwind-merge keeps
- *      `dark:bg-input/30` (different modifier group, no conflict to resolve),
+ *      `dark:bg-input-fill/30` (different modifier group, no conflict to resolve),
  *      and `dark:` compiles to `&:is(.dark *)` — specificity (0,2,0) against
  *      a bare `.bg-brand`'s (0,1,0). The chip was grey in dark mode while
  *      every string assertion passed.
@@ -174,15 +174,15 @@ describe("brand Button variants resolve to brand colour in the real stylesheet",
       });
 
       it(`deepens one notch on hover, another when pressed (${theme})`, () => {
-        expect(bg(brand, { dark, hover: true })).toBe("hover:bg-brand/90");
+        expect(bg(brand, { dark, hover: true })).toBe("hover:bg-brand-hover");
         expect(bg(brand, { dark, hover: true, active: true })).toBe(
-          "active:bg-brand/85",
+          "active:bg-brand-active",
         );
       });
 
       it(`reads as hover, not as a colour change, while the popover is open (${theme})`, () => {
         expect(bg(brand, { dark, expanded: true })).toBe(
-          "aria-expanded:bg-brand/90",
+          "aria-expanded:bg-brand-hover",
         );
       });
 
@@ -230,9 +230,9 @@ describe("brand Button variants resolve to brand colour in the real stylesheet",
 
       // tailwind-merge cannot drop outline's dark: rules — different modifier
       // group, so there is no conflict for it to resolve...
-      expect(layered).toContain("dark:bg-input/30");
+      expect(layered).toContain("dark:bg-input-fill/30");
       // ...and `:is(.dark *)` then outranks the bare .bg-brand.
-      expect(bg(layered, { dark: true })).toBe("dark:bg-input/30");
+      expect(bg(layered, { dark: true })).toBe("dark:bg-input-fill/30");
       // Light mode looks fine, which is exactly why this shipped unnoticed.
       expect(bg(layered, {})).toBe("bg-brand");
     });

@@ -1,0 +1,205 @@
+{
+  "engine": "Chromium, isolated headless",
+  "fixture": "Original component and CSS, synthetic API responses and memory storage",
+  "scenarios": {
+    "recipientAccessibility": {
+      "listbox": true,
+      "options": 0,
+      "focused": true,
+      "activeDescendant": null,
+      "inputRole": null,
+      "rows": [
+        {
+          "text": "分\n分配给自己",
+          "role": null,
+          "selected": null,
+          "highlighted": true
+        },
+        {
+          "text": "李\n李明",
+          "role": null,
+          "selected": null,
+          "highlighted": false
+        },
+        {
+          "text": "李\n李明",
+          "role": null,
+          "selected": null,
+          "highlighted": false
+        },
+        {
+          "text": "客\n客户张经理\n外部",
+          "role": null,
+          "selected": null,
+          "highlighted": false
+        }
+      ]
+    },
+    "exactLookup": {
+      "search": "client@example.invalid",
+      "exactInput": ""
+    },
+    "pickerEscape": {
+      "dialogRemainsOpen": true
+    },
+    "parentSearch": {
+      "requests": [
+        "协",
+        "协作",
+        "协作任",
+        "协作任务",
+        "协作任务改",
+        "协作任务改进"
+      ]
+    },
+    "rejected": {
+      "backendCode": "issue_limit_reached",
+      "messages": [
+        "已选择自己",
+        "任务未创建，草稿和文件已保留。你可以再次提交。"
+      ],
+      "title": "协作菜单审计示例",
+      "retryEnabled": true
+    },
+    "pendingSource": {
+      "sourceEnabled": true
+    },
+    "createdAfterSourceSwitch": {
+      "dialogStillOpen": true,
+      "currentSource": "00000000-0000-4000-8000-000000000003",
+      "currentTitle": "",
+      "navigationCalls": [],
+      "creationRecords": 0,
+      "statusMessages": [
+        "已选择自己"
+      ]
+    },
+    "lightContrast": {
+      "background": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "muted": [
+        100,
+        99,
+        110,
+        255
+      ],
+      "ring": [
+        159,
+        159,
+        169,
+        255
+      ],
+      "mutedRatio": 5.912563475413379,
+      "ringRatio": 2.622916413268822,
+      "backgroundCSS": "oklch(1 0 0)",
+      "foregroundCSS": "oklch(0.141 0.005 285.823)"
+    },
+    "darkContrast": {
+      "background": [
+        30,
+        30,
+        33,
+        255
+      ],
+      "muted": [
+        159,
+        159,
+        169,
+        255
+      ],
+      "ring": [
+        113,
+        113,
+        123,
+        255
+      ],
+      "mutedRatio": 6.339788041028484,
+      "ringRatio": 3.44468590031064,
+      "backgroundCSS": "oklch(0.235 0.007 285.885)",
+      "foregroundCSS": "oklch(0.985 0 0)"
+    },
+    "narrowInitial": {
+      "width": 390,
+      "height": 740,
+      "coarse": true,
+      "touchPoints": 1,
+      "horizontalOverflow": false,
+      "dialogHeight": 666,
+      "dialogScrollHeight": 840,
+      "submitVisible": false,
+      "closeSize": {
+        "width": 28,
+        "height": 28,
+        "top": 45
+      }
+    },
+    "touchPicker": {
+      "openedBySynthesizedTouch": true,
+      "coarse": true,
+      "rowHeights": [
+        32,
+        32,
+        32,
+        32
+      ],
+      "popup": {
+        "x": 19,
+        "y": 286,
+        "width": 366,
+        "height": 235
+      },
+      "horizontalOverflow": false
+    },
+    "narrowExpanded": {
+      "scrollTop": 1022,
+      "scrollHeight": 1688,
+      "clientHeight": 666,
+      "closeTop": -977,
+      "closeVisible": false,
+      "submitVisible": true,
+      "inputHeights": [
+        {
+          "type": "text",
+          "height": 44
+        },
+        {
+          "type": "date",
+          "height": 44
+        },
+        {
+          "type": "date",
+          "height": 44
+        },
+        {
+          "type": "text",
+          "height": 32
+        },
+        {
+          "type": "number",
+          "height": 32
+        },
+        {
+          "type": "file",
+          "height": 44
+        }
+      ]
+    },
+    "smallViewport": {
+      "width": 320,
+      "height": 568,
+      "horizontalOverflow": false,
+      "dialogWidth": 288,
+      "dialogHeight": 511.1875
+    },
+    "reducedMotion": {
+      "requested": true,
+      "animationName": "enter",
+      "animationDuration": "0.1s"
+    }
+  },
+  "confirmation": "Theme and viewport measurements sampled after the 100ms CSS transitions settled; first transient readings excluded."
+}

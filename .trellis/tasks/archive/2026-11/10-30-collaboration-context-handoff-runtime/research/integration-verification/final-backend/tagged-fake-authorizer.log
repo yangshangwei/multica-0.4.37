@@ -1,0 +1,24 @@
+=== RUN   TestHostProviderAccountSmokeAuthorizesSharedContextBase
+--- PASS: TestHostProviderAccountSmokeAuthorizesSharedContextBase (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/legacy
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/legacy (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/both
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/both (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/handoff_only
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/handoff_only (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/unknown
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/unknown (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/duplicate (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_version
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/newer_version (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/misplaced (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_method
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_method (0.00s)
+=== RUN   TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_token
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries/wrong_token (0.00s)
+--- PASS: TestHostProviderAccountSmokeAuthorizesOnlyNegotiatedClaimQueries (0.02s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	1.571s

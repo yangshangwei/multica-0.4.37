@@ -1,0 +1,97 @@
+{
+  "at": "2026-11-18T09:07:47.066493+00:00",
+  "runs": [
+    {
+      "run": "r01",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r01/playwright-report.json",
+      "sha256": "279e507376409e920ac2f7a7e75caed71d82b2692194e32964e37f9684dd440e",
+      "tops": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 1
+      },
+      "orderings": {
+        "PASS": 4,
+        "FAIL": 1,
+        "NOT_RUN": 3
+      },
+      "retry": 0,
+      "disposition": "NOT_ACCEPTED",
+      "source_and_configuration_drift": 0,
+      "API_after_stop_connections": 0,
+      "cleanup_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r01/stop-owned-api-r01.json"
+    },
+    {
+      "run": "r02",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/playwright-report.json",
+      "sha256": "414cb3be2f7f315f3765cb09a43eb01c73d72daed4f16b7e44a9c26e16f410cf",
+      "tops": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 1
+      },
+      "orderings": {
+        "PASS": 4,
+        "FAIL": 1,
+        "NOT_RUN": 3
+      },
+      "retry": 0,
+      "disposition": "NOT_ACCEPTED",
+      "source_and_configuration_drift": 0,
+      "API_after_stop_connections": 0,
+      "cleanup_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/stop-owned-api-r02.json"
+    },
+    {
+      "run": "r03",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r03/playwright-report.json",
+      "sha256": "1b4adb1904071e2875953898320b9764a327995495fbba51deb373d05e1fbcc9",
+      "tops": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 1
+      },
+      "orderings": {
+        "PASS": 4,
+        "FAIL": 1,
+        "NOT_RUN": 3
+      },
+      "retry": 0,
+      "disposition": "NOT_ACCEPTED",
+      "source_and_configuration_drift": 0,
+      "API_after_stop_connections": 0,
+      "cleanup_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r03/stop-owned-api-r03.json"
+    },
+    {
+      "run": "r04",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r04/playwright-report.json",
+      "sha256": "d6cc0a2d3816c5f160c85ee825e634006b0aeebe2d48426b64580fa172519428",
+      "tops": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 1
+      },
+      "orderings": {
+        "PASS": 5,
+        "FAIL": 1,
+        "NOT_RUN": 2
+      },
+      "retry": 0,
+      "disposition": "NOT_ACCEPTED",
+      "source_and_configuration_drift": 0,
+      "API_after_stop_connections": 0,
+      "cleanup_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r04/stop-owned-api-r04.json"
+    }
+  ],
+  "denominator_per_round": {
+    "tops": 4,
+    "orderings": 8
+  },
+  "passing_cases_from_different_rounds_combined": false,
+  "full_S3_accepted": false,
+  "TC16": "PARTIAL",
+  "next": "retained fresh creator response / browser unknown-result diagnostic, minimal supported fix then fresh whole field replay",
+  "R01_cause": "original later exception not captured; unroute masked it",
+  "R02_cause": "original local pending UI not retired by standalone receipt GET",
+  "R03_cause": "actual original-recovery button in modal portal, wrong fixture region",
+  "R04_cause": "fresh creator PATCH200 while Edit UI remains unknown; cause still under diagnosis"
+}

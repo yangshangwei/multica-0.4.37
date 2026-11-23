@@ -1,0 +1,228 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/playwright.qa.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b1-support-governance/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b1-support-governance/playwright.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-business-scenarios.spec.ts",
+      "file": "collaboration-business-scenarios.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "S2 support ticket: manual intake becomes AI-assisted, files reach the agent, and a reopened ticket is reworked",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8622,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m403\u001b[39m\nReceived: \u001b[31m400\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m403\u001b[39m\nReceived: \u001b[31m400\u001b[39m\n    at /Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts:167:36",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts",
+                      "column": 36,
+                      "line": 167
+                    },
+                    "snippet": "  165 |     const developerPolicy = await rawCall(env.apiUrl, D, `${root}/ai-policy`, \"POST\", { ...hostAuthority(await readIssue(D, issue.id)),\n  166 |       expected_collaboration_revision: (await readIssue(D, issue.id)).collaboration_revision, ai_policy: \"manual\" });\n> 167 |     expect(developerPolicy.status).toBe(403);\n      |                                    ^\n  168 |     ev.record(\"initiator switched to assisted; queue stays paused; the handler cannot change the policy\", { receipt: policy.receipt.code, developer_status: developerPolicy.status });\n  169 |\n  170 |     // 5. Offer, adopt, owner consent; an instruction waits until explicit Resume."
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts",
+                        "column": 36,
+                        "line": 167
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m403\u001b[39m\nReceived: \u001b[31m400\u001b[39m\n\n  165 |     const developerPolicy = await rawCall(env.apiUrl, D, `${root}/ai-policy`, \"POST\", { ...hostAuthority(await readIssue(D, issue.id)),\n  166 |       expected_collaboration_revision: (await readIssue(D, issue.id)).collaboration_revision, ai_policy: \"manual\" });\n> 167 |     expect(developerPolicy.status).toBe(403);\n      |                                    ^\n  168 |     ev.record(\"initiator switched to assisted; queue stays paused; the handler cannot change the policy\", { receipt: policy.receipt.code, developer_status: developerPolicy.status });\n  169 |\n  170 |     // 5. Offer, adopt, owner consent; an instruction waits until explicit Resume.\n    at /Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts:167:36"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T15:49:13.609Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "s2-support-ticket-evidence",
+                      "contentType": "application/json",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b1-support-governance/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/attachments/s2-support-ticket-evidence-bf63e69f08c939860f9dd9d877289524e8333fdd.json"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b1-support-governance/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b1-support-governance/test-results/collaboration-business-sce-7a501-reopened-ticket-is-reworked-chromium/test-failed-2.png"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts",
+                    "column": 36,
+                    "line": 167
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "63a5c4fa296e099a1451-cda28dfe98eb1d2a7d58",
+          "file": "collaboration-business-scenarios.spec.ts",
+          "line": 100,
+          "column": 1
+        },
+        {
+          "title": "S3 governance: live withdrawal really stops work, removal and cancellation fence AI, and the issue still closes",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 17897,
+                  "error": {
+                    "message": "Error: page.waitForResponse: Target page, context or browser has been closed",
+                    "stack": "Error: page.waitForResponse: Target page, context or browser has been closed\n    at hostControl (/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-host-runtime.ts:640:24)\n    at /Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts:325:11",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-host-runtime.ts",
+                      "column": 24,
+                      "line": 640
+                    },
+                    "snippet": "   at fixtures/collaboration-host-runtime.ts:640\n\n  638 |\n  639 | export async function hostControl(page: Page, issue: HostIssue, action: \"stop\" | \"resume\", scope: \"target\" | \"issue\") {\n> 640 |   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issueRoot(issue.id)}/control` && response.request().method() === \"POST\");\n      |                        ^\n  641 |   const label = `${action === \"stop\" ? \"Stop\" : \"Resume\"} ${scope === \"issue\" ? \"all\" : \"target\"}`;\n  642 |   await hostPanel(page).getByRole(\"button\", { name: label, exact: true }).click();\n  643 |   const response = await pending;"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-host-runtime.ts",
+                        "column": 24,
+                        "line": 640
+                      },
+                      "message": "Error: page.waitForResponse: Target page, context or browser has been closed\n\n   at fixtures/collaboration-host-runtime.ts:640\n\n  638 |\n  639 | export async function hostControl(page: Page, issue: HostIssue, action: \"stop\" | \"resume\", scope: \"target\" | \"issue\") {\n> 640 |   const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issueRoot(issue.id)}/control` && response.request().method() === \"POST\");\n      |                        ^\n  641 |   const label = `${action === \"stop\" ? \"Stop\" : \"Resume\"} ${scope === \"issue\" ? \"all\" : \"target\"}`;\n  642 |   await hostPanel(page).getByRole(\"button\", { name: label, exact: true }).click();\n  643 |   const response = await pending;\n    at hostControl (/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-host-runtime.ts:640:24)\n    at /Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/collaboration-business-scenarios.spec.ts:325:11"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-09T15:49:23.604Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b1-support-governance/test-results/collaboration-business-sce-4837c--and-the-issue-still-closes-chromium/test-failed-2.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b1-support-governance/test-results/collaboration-business-sce-4837c--and-the-issue-still-closes-chromium/test-failed-3.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/artifacts/qa/collaboration-business-scenarios-20261109/b1-support-governance/test-results/collaboration-business-sce-4837c--and-the-issue-still-closes-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/qa-private-collab-biz-20261109-eec71e38/source/e2e/fixtures/collaboration-host-runtime.ts",
+                    "column": 24,
+                    "line": 640
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "63a5c4fa296e099a1451-0d8c7045854b15abdde4",
+          "file": "collaboration-business-scenarios.spec.ts",
+          "line": 239,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-09T15:49:13.092Z",
+    "duration": 28781.609999999997,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

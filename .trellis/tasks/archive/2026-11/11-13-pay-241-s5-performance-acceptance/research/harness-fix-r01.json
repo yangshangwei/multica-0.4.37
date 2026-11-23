@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-14",
+  "scope": "S5 implement step1.6 harness heartbeat repair; no acceptance claim",
+  "status": "ready_for_independent_check_and_r02",
+  "source_files": {
+    "e2e/collaboration-performance.spec.ts": "904857638743cccc59347880c63ba28ec151cbbc95e69dc32504301dc9651723",
+    "e2e/fixtures/collaboration-performance.ts": "5f98915071bc4d358ea4eacec8aaf687a113bc859f14b0c98a8510c3a6a7d23a",
+    "e2e/fixtures/collaboration-performance-stats.ts": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+    "e2e/fixtures/collaboration-performance-stats.node-test.mjs": "e903e85955708cafe56bcb4e9c82a17916078413fb47e4bcd52f98683bbe0cd1"
+  },
+  "source_unchanged_during_final_checks": true,
+  "behavior": {
+    "heartbeat_endpoint": "POST /api/daemon/heartbeat",
+    "credential": "enrolled mdt_ scoped to actor0/runtime; no token logging",
+    "payload_fields": [
+      "runtime_id",
+      "supports_batch_import"
+    ],
+    "interval_after_completion_ms": 15000,
+    "request_timeout_ms": 10000,
+    "trigger_observation": "GET /api/runtimes?owner=me using actor0 human token and execution workspace header, before trigger timestamp and both measurement clocks",
+    "failure": "runtime_offline or distinct heartbeat/state/identity/fixture-lifetime code; no fresh enrollment/retry key",
+    "cleanup": "close sockets; close/settle daemon; abort/join heartbeat; restore and read gate; finish both full sample denominators and close logs"
+  },
+  "tests": {
+    "red": {
+      "exit_code": 1,
+      "passed": 20,
+      "failed": 5,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-red-1.log",
+      "sha256": "284440067c8c0e24ca662950fb55a14e32553469f9ba332f64b24b702fc63c9e"
+    },
+    "green_initial": {
+      "exit_code": 0,
+      "passed": 25,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-green-1.log",
+      "sha256": "b13242aeb20fc4aea2ae8b714b673b2b7bdfadc172dd895d0563e7ffeca36cc1"
+    },
+    "green_extended": {
+      "exit_code": 0,
+      "passed": 28,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-green-2.log",
+      "sha256": "72b7058324057c360f18736b8dd810c2b012ebe79e0214b207539702aeedbb03"
+    },
+    "green_final": {
+      "exit_code": 0,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0,
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-tests-final.log",
+      "sha256": "e96916d1fb5162a8ee4cecfbada9fcd074a1c8ff608142cd076d94cf860d58c4"
+    },
+    "named_tests": [
+      "heartbeat uses the enrolled owner's scoped credential, repeats below freshness, and stops its timer",
+      "heartbeat refuses another owner or an expired credential before any transport call",
+      "heartbeat records HTTP, malformed acknowledgement, and transport failures without leaking response content",
+      "heartbeat cleanup aborts and awaits an in-flight request without treating cancellation as a failed beat",
+      "heartbeat remains single-flight and keeps a failed beat after a later successful retry",
+      "heartbeat log failure settles readiness and cleanup instead of leaking a background rejection",
+      "writeback heartbeat and offline failures keep both full denominators and finish all cleanup",
+      "offline and stale runtime reads cannot become a generic no-provider launch or a passing sample",
+      "nearest-rank uses the integer rank ceil(N*95/100) for N=100, 10000 and 20",
+      "a missing sample enters the percentile as +Infinity instead of shrinking the denominator",
+      "more than five percent missing makes p95 unbounded",
+      "any missing sample fails the sync gate even when every percentile is finite and fast",
+      "a duplicate event_id is counted and never yields a second arrival",
+      "only collaboration:changed with exactly sequence S+1 for this issue matches",
+      "a frame that arrives before the write response keeps its original arrival time",
+      "without the matching frame an authoritative read alone is never a converged sample",
+      "warm-up rows are retained but never enter or replace the formal denominator",
+      "an aborted run keeps the 10,000 denominator and reports the remainder as NOT_RUN",
+      "a failed write or failed preparation marks all 100 samples of that event non-converged",
+      "pooled p95 and per-event slowest-observer p95 are judged separately",
+      "accounting refuses duplicated pairs, impossible indices and relabelled late samples",
+      "the two write-back gates are independent and each needs a complete denominator",
+      "phase jitter is seeded, reproducible, inside [0,500) and not phase locked",
+      "registration pacing never plans more than 30 attempts in one server window",
+      "write-back readers are never the triggering account or the resource owner",
+      "the quiescence barrier accepts a delivered frame or a snapshot that already covers the sequence",
+      "the relay-time revision in a frame is recorded as an anomaly, never used to match",
+      "a manifest that changes the pre-registered protocol is rejected"
+    ]
+  },
+  "static": {
+    "first_typecheck_exit": 0,
+    "first_eslint_exit": 1,
+    "first_eslint_reason": "Six no-undef violations in test loader Node globals; fixed with Node imports and globalThis AbortController/AbortSignal.",
+    "final": {
+      "commands": [
+        {
+          "name": "typecheck-final",
+          "argv": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--project",
+            "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-tsconfig.json",
+            "--pretty",
+            "false",
+            "--listFiles"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "started_at": "2026-11-14T02:56:26.929345+00:00",
+          "exit_code": 0,
+          "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-typecheck-final.log",
+          "sha256": "50884ffbb388106970dc1d6ce75ef76a242ade66979aa2edb32de1b22968c3d2"
+        },
+        {
+          "name": "eslint-final",
+          "argv": [
+            "node",
+            "node_modules/eslint/bin/eslint.js",
+            "--config",
+            "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint.config.mjs",
+            "--max-warnings",
+            "0",
+            "--no-cache",
+            "e2e/collaboration-performance.spec.ts",
+            "e2e/fixtures/collaboration-performance.ts",
+            "e2e/fixtures/collaboration-performance-stats.ts",
+            "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "started_at": "2026-11-14T02:56:26.929675+00:00",
+          "exit_code": 0,
+          "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint-final.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "tests-final",
+          "argv": [
+            "node",
+            "--experimental-strip-types",
+            "--test",
+            "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "started_at": "2026-11-14T02:56:26.929788+00:00",
+          "exit_code": 0,
+          "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-tests-final.log",
+          "sha256": "e96916d1fb5162a8ee4cecfbada9fcd074a1c8ff608142cd076d94cf860d58c4"
+        },
+        {
+          "name": "tsconfig-effective",
+          "argv": [
+            "node",
+            "node_modules/typescript/bin/tsc",
+            "--project",
+            "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-tsconfig.json",
+            "--showConfig"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "started_at": "2026-11-14T02:56:28.703958+00:00",
+          "exit_code": 0,
+          "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-tsconfig-effective.log",
+          "sha256": "361366b7619dc3822689a9db09c29470c0abb8130c08745b85d963d753178110"
+        },
+        {
+          "name": "eslint-effective-1",
+          "argv": [
+            "node",
+            "node_modules/eslint/bin/eslint.js",
+            "--config",
+            "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint.config.mjs",
+            "--print-config",
+            "e2e/collaboration-performance.spec.ts"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "started_at": "2026-11-14T02:56:28.755727+00:00",
+          "exit_code": 0,
+          "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint-effective-1.log",
+          "sha256": "0335be5fedbf2004e318776b2e23f4bd8249a23e19134af67551502008b63a98"
+        },
+        {
+          "name": "eslint-effective-2",
+          "argv": [
+            "node",
+            "node_modules/eslint/bin/eslint.js",
+            "--config",
+            "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint.config.mjs",
+            "--print-config",
+            "e2e/fixtures/collaboration-performance.ts"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "started_at": "2026-11-14T02:56:29.191542+00:00",
+          "exit_code": 0,
+          "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint-effective-2.log",
+          "sha256": "0335be5fedbf2004e318776b2e23f4bd8249a23e19134af67551502008b63a98"
+        },
+        {
+          "name": "eslint-effective-3",
+          "argv": [
+            "node",
+            "node_modules/eslint/bin/eslint.js",
+            "--config",
+            "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint.config.mjs",
+            "--print-config",
+            "e2e/fixtures/collaboration-performance-stats.ts"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "started_at": "2026-11-14T02:56:29.629407+00:00",
+          "exit_code": 0,
+          "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint-effective-3.log",
+          "sha256": "0335be5fedbf2004e318776b2e23f4bd8249a23e19134af67551502008b63a98"
+        },
+        {
+          "name": "eslint-effective-4",
+          "argv": [
+            "node",
+            "node_modules/eslint/bin/eslint.js",
+            "--config",
+            "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint.config.mjs",
+            "--print-config",
+            "e2e/fixtures/collaboration-performance-stats.node-test.mjs"
+          ],
+          "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+          "started_at": "2026-11-14T02:56:30.079754+00:00",
+          "exit_code": 0,
+          "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-eslint-effective-4.log",
+          "sha256": "e6bc11414ac0c4695cecd0efebba47709485e6dd00d63a86639d93f62252611d"
+        }
+      ],
+      "source_before": {
+        "e2e/collaboration-performance.spec.ts": "904857638743cccc59347880c63ba28ec151cbbc95e69dc32504301dc9651723",
+        "e2e/fixtures/collaboration-performance.ts": "5f98915071bc4d358ea4eacec8aaf687a113bc859f14b0c98a8510c3a6a7d23a",
+        "e2e/fixtures/collaboration-performance-stats.ts": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+        "e2e/fixtures/collaboration-performance-stats.node-test.mjs": "e903e85955708cafe56bcb4e9c82a17916078413fb47e4bcd52f98683bbe0cd1"
+      },
+      "source_after": {
+        "e2e/collaboration-performance.spec.ts": "904857638743cccc59347880c63ba28ec151cbbc95e69dc32504301dc9651723",
+        "e2e/fixtures/collaboration-performance.ts": "5f98915071bc4d358ea4eacec8aaf687a113bc859f14b0c98a8510c3a6a7d23a",
+        "e2e/fixtures/collaboration-performance-stats.ts": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+        "e2e/fixtures/collaboration-performance-stats.node-test.mjs": "e903e85955708cafe56bcb4e9c82a17916078413fb47e4bcd52f98683bbe0cd1"
+      },
+      "source_unchanged": true
+    },
+    "record": {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-static-final.json",
+      "sha256": "080b387358165dd49b6c05ec9eb28f728e9edc1731dddb3a091c38daa4f69ca5"
+    }
+  },
+  "playwright_opt_out": {
+    "argv": [
+      "pnpm",
+      "exec",
+      "playwright",
+      "test",
+      "e2e/collaboration-performance.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--reporter=list",
+      "--output",
+      "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-skipped-output"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "exit_code": 0,
+    "environment_override": {
+      "COLLABORATION_PERF_ACCEPTANCE": "0"
+    },
+    "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s5-heartbeat-playwright-skipped.log",
+    "sha256": "58af14e11e8920d880ab56a5db90a118884dd6001c50c750150db8044803a081",
+    "executed": 0,
+    "skipped": 3
+  },
+  "expiry_audit": [
+    {
+      "item": "runtime freshness",
+      "source": "server/internal/service/task.go:RuntimeClaimFreshnessSeconds; server/cmd/server/runtime_sweeper.go",
+      "lifetime_ms": 150000,
+      "handling": "Owner-bound managed heartbeat immediately after enrollment, then 15s after each completed request; 10s request timeout. Exact online runtime/owner/workspace/daemon and last_seen checked before triggers."
+    },
+    {
+      "item": "managed daemon credential",
+      "source": "server/internal/service/managed_installation.go:604; e2e/fixtures/collaboration-host-runtime.ts:enrollHostRuntime",
+      "lifetime_ms": 86400000,
+      "handling": "Uses issued mdt_ credential whose principal_user_id equals actor0. Actual expires_at recorded; expired or <=10s remaining refuses start/send. No renewal or re-enrollment."
+    },
+    {
+      "item": "enrollment PAT",
+      "source": "e2e/fixtures/collaboration-host-runtime.ts:enrollHostRuntime",
+      "lifetime_ms": 86400000,
+      "handling": "Requested with expires_in_days:1; used only for installation binding before the measurement, never heartbeat."
+    },
+    {
+      "item": "human JWT",
+      "source": "server/internal/auth/cookie.go:AuthTokenTTL",
+      "default_lifetime_ms": 2592000000,
+      "handling": "Fresh login for all100 participants at each phase; AUTH_TOKEN_TTL is configurable. No silent token refresh or identity substitution. Actual r02 configuration is coordinator-owned and not accessed here."
+    },
+    {
+      "item": "installation challenge",
+      "source": "server/internal/service/managed_installation.go:IssueChallenge",
+      "lifetime_ms": 120000,
+      "handling": "Consumed during immediate enrollment/binding before measurement. No periodic renewal required."
+    },
+    {
+      "item": "host daemon harness context",
+      "source": "server/internal/daemon/collaboration_host_router_test.go:runCollaborationHostRouterHarness",
+      "lifetime_ms": 300000,
+      "handling": "Unchanged. Records start-request/ready times. Refuses next trigger or classifies missing launch as host_fixture_lifetime_elapsed once elapsed since readiness reaches5min (conservative lower bound on process age). No restart or timeout extension."
+    },
+    {
+      "item": "Provider callback and individual Agent timeout",
+      "source": "e2e/fixtures/collaboration-host-provider.go; server/internal/daemon/collaboration_host_router_test.go:executionTimeout",
+      "callback_lifetime_ms": 150000,
+      "agent_timeout_ms": 180000,
+      "handling": "Fresh callback/deadline per run; one business and one finalization sample each have unchanged30s cutoff. No relaxation."
+    },
+    {
+      "item": "collaboration business/termination capability and reservation",
+      "source": "server/internal/service/collaboration_runtime_capabilities.go; server/internal/service/collaboration_host_runtime.go; server/pkg/db/queries/collaboration_runtime.sql",
+      "handling": "No wall-clock TTL in these selected claim/permit capability rows; exact run/fence/claim generation/attempt and revocation/confirmation are authoritative. Reservations release only through existing proven-end contract. No keepalive-generated permit, synthetic proof or reservation reset."
+    },
+    {
+      "item": "account WebSocket",
+      "source": "server/internal/realtime/hub.go; e2e/fixtures/collaboration-performance.ts:connectObserver/reconnectClosed",
+      "handling": "Existing authentication/subscription ACKs and native ping response remain. Boundary-only reconnect remains measured as existing recovery; heartbeat never uses reader sockets or tokens.",
+      "authentication_deadline_ms": 10000,
+      "pong_deadline_ms": 60000,
+      "ping_interval_ms": 54000
+    }
+  ],
+  "preserved": [
+    "r01 evidence and database/gate state",
+    "host-runtime and Provider fixtures",
+    "all product code and default freshness/pool/timeout values",
+    "S2 concurrent edits"
+  ],
+  "not_run": [
+    "actual API/DB/daemon/Provider/model requests",
+    "r02 rehearsal (root owns it)",
+    "full monorepo lint/typecheck/Go/make check",
+    "production Web/Desktop or final S5/TC24 acceptance"
+  ],
+  "limitations": [
+    "In-memory transport/timer/daemon tests prove harness decisions, not live server permission enforcement or sustained real heartbeat delivery.",
+    "Production daemon uses an initial jitter and ticker; this one-runtime harness uses an immediate readiness beat then15s after completion, at most25s with normal bounded I/O excluding event-loop stalls. Heartbeat overhead is retained in measured time, not subtracted.",
+    "Existing5-minute host fixture context remains a possible rehearsal boundary and has not been extended.",
+    "Disk/OS failures preventing evidence append can still prevent complete artifacts; heartbeat log failure itself is sticky and joined, no background rejection."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-14",
+  "checks": [
+    {
+      "command": "pnpm --filter @multica/docs test",
+      "workdir": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "exit_code": 0,
+      "test_files_passed": 9,
+      "tests_passed": 62,
+      "duration_ms": 179,
+      "warning": "Installed pnpm reported that package.json pnpm.onlyBuiltDependencies and pnpm.overrides are ignored by that pnpm version; the requested document tests passed."
+    },
+    {
+      "command": "go test ./internal/docs/...",
+      "workdir": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "output": "ok github.com/multica-ai/multica/server/internal/docs 0.871s"
+    }
+  ],
+  "not_run": [
+    "full repository lint/typecheck/build/test (no product code changes)",
+    "database-backed handler tests and browser E2E",
+    "real provider CLI or third-party authenticated operations"
+  ]
+}

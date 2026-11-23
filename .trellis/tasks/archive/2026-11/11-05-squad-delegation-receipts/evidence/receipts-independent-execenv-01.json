@@ -1,0 +1,33 @@
+{
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "-count=1",
+    "-timeout=120s",
+    "./internal/daemon/execenv",
+    "-run",
+    "^TestInjectRuntimeConfigMentionLoopHardening$"
+  ],
+  "exit": 0,
+  "tests": {
+    "pass": [
+      "TestInjectRuntimeConfigMentionLoopHardening/workflow-reply-is-unconditional-and-no-signoff-mention",
+      "TestInjectRuntimeConfigMentionLoopHardening/mentions-section-lists-loop-protocol",
+      "TestInjectRuntimeConfigMentionLoopHardening/closing-line-no-longer-says-always-mention",
+      "TestInjectRuntimeConfigMentionLoopHardening"
+    ],
+    "fail": [],
+    "skip": []
+  },
+  "counts": {
+    "pass": 4,
+    "fail": 0,
+    "skip": 0
+  },
+  "raw_log": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-rnd-m1-9l4yjl2l/receipts-independent-execenv-01.jsonl",
+  "log_sha256": "c6b453c258db46ceeba0bab3e56afcdd48f94de5dc5e645c81092bcf32f04e55",
+  "classification": "independent_review_pass"
+}

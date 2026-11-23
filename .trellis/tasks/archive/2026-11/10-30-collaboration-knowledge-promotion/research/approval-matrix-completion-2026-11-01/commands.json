@@ -1,0 +1,22 @@
+[
+  {
+    "command": "source /tmp/multica_knowledge_matrix_20261101_9eee46c7.env; go -C server test ./internal/service -run ^TestKnowledgeApprovalMatrix -count=1 -timeout 120s -json",
+    "log": "service-green.jsonl",
+    "exit_code": 0
+  },
+  {
+    "command": "source /tmp/multica_knowledge_matrix_20261101_9eee46c7.env; go -C server test -race ./internal/service -run ^TestKnowledgeApprovalMatrix -count=1 -timeout 180s -json",
+    "log": "service-race.jsonl",
+    "exit_code": 0
+  },
+  {
+    "command": "source /tmp/multica_knowledge_matrix_20261101_9eee46c7.env; go -C server test ./internal/handler -run ^TestKnowledgeApprovalHTTPMatrix -count=1 -timeout 120s -json",
+    "log": "handler-second.jsonl",
+    "exit_code": 0
+  },
+  {
+    "command": "source /tmp/multica_knowledge_matrix_20261101_9eee46c7.env; go -C server test -race ./internal/handler -run ^TestKnowledgeApprovalHTTPMatrix -count=1 -timeout 180s -json",
+    "log": "handler-race.jsonl",
+    "exit_code": 0
+  }
+]

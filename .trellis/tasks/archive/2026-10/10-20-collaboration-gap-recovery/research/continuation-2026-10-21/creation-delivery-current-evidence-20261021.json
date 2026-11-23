@@ -1,0 +1,119 @@
+{
+  "at": "2026-10-21T15:39:34.377670+00:00",
+  "artifacts": [
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-current-preflight-20261021.json",
+      "sha256": "c5f3534315e7d9254e5c4ef0ba5f800fcaf94cc9f98c719d15da433017352c96"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-current-command-20261021.json",
+      "sha256": "832394907cfb504360707ecdc3a7e150a754abf82fcfabd8ef353a0f7282b43a"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-current-result-20261021.json",
+      "sha256": "ca13d3ef120a6f869efe44684bac4f3f453f9fe343e3575a46e41865b59274df"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-current-20261021.json",
+      "sha256": "7d644d51adf8c6e34f7ea4b1de0ba4342f00f805fc52e61c68fb69e14ac87294"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-current-20261021.stderr",
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-backend-current-20261021-command.json",
+      "sha256": "10571b912a7a38700de21c37b398cd6628c311b11adb6d00a99ef46efa3c2e25"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-backend-current-20261021-result.json",
+      "sha256": "9cb986fe4c5adee4cd99845b5572bb214d59f512cbf6247e12b6f2ac29d849ec"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-backend-current-20261021.jsonl",
+      "sha256": "bf9821e9b1a6d2e7e7e95b351cfd3921530420824a61182254968d648d6805f9"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-backend-current-20261021.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-legacy-api-source-refresh-20261021.json",
+      "sha256": "28b029716f28725724f05f92bcc5fd40fa3f85160eea8fc3871119f162e5b535"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-legacy-api-refresh-20261021-result.json",
+      "sha256": "f95e254b4250d90350ed48b5709ac5b58df2dbc7202e96b388944f5df54afde5"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-legacy-renderer-restart-20261021.json",
+      "sha256": "14899f36bcd28790055e057124316c9ae5a9b279f0995ee507747cd370fc53bd"
+    },
+    {
+      "path": ".trellis/tasks/10-20-collaboration-gap-recovery/research/continuation-2026-10-21/creation-delivery-preflight-old-history-20261021.json",
+      "sha256": "436cda421d9e9a80593a079f6e6004c059c62b3f196a371c64f24e5e0dc8efcf"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-10-21T15:27:08.484Z",
+    "duration": 14618.151,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "backend": {
+    "command": [
+      "python3",
+      "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+      "service_s6_collab",
+      "bash",
+      "../scripts/go-test-with-agent-cli-guard.sh",
+      "go",
+      "test",
+      "-json",
+      "-race",
+      "./internal/service",
+      "./internal/handler",
+      "-run",
+      "^(TestCollaborationCreateIsAtomicIdempotentAndScoped|TestCollaborationCreationFailureRollsBackEveryOwnedRecord|TestCollaborationCreationUnknownCommitRecoversOriginalIdentity|TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites|TestCollaborationAttachmentScopeCiphertextAndLiveAccess|TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes)$",
+      "-p",
+      "1",
+      "-parallel",
+      "1",
+      "-count=1",
+      "-timeout=30m"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+    "start": "2026-10-21T15:35:09.898904+00:00",
+    "database_alias": "service_s6_collab",
+    "schema_migration": 737,
+    "service_s5_in_use_by_other_slice": true,
+    "returncode": 0,
+    "end": "2026-10-21T15:35:38.976361+00:00",
+    "passed": [
+      "TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites",
+      "TestCollaborationAttachmentScopeCiphertextAndLiveAccess",
+      "TestCollaborationCreateIsAtomicIdempotentAndScoped",
+      "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateIssueCollaboration",
+      "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateCollaborationParticipant",
+      "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateCollaborationSession",
+      "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateCollaborationEvent",
+      "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CreateCollaborationNotification",
+      "TestCollaborationCreationFailureRollsBackEveryOwnedRecord/CompleteCollaborationCreation",
+      "TestCollaborationCreationFailureRollsBackEveryOwnedRecord",
+      "TestCollaborationCreationUnknownCommitRecoversOriginalIdentity",
+      "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes"
+    ],
+    "top_level_passed": 6,
+    "failed": [],
+    "skipped": [],
+    "raw_sha256": "bf9821e9b1a6d2e7e7e95b351cfd3921530420824a61182254968d648d6805f9"
+  },
+  "acceptance_promotion": false,
+  "remaining_gaps": [
+    "AC67 actual typed @ in creation body and one correlated first-upload/atomic model must still be reviewed.",
+    "AC75 Web/Electron comment attachment removal plus cross-client reopen/history/download remains broader than this creation test."
+  ],
+  "unexecuted_duplicate_command_removed": "creation-delivery-extra-native-receipt-command.json"
+}

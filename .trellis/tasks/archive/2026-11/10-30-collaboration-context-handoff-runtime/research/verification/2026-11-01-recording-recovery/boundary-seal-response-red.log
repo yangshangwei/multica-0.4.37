@@ -1,0 +1,14 @@
+=== RUN   TestBoundaryReviewSealRejectsInvalidRetention
+=== RUN   TestBoundaryReviewSealRejectsInvalidRetention/negative_observed
+    boundary_review_seal_response_test.go:33: accepted malformed seal receipt: negative observed
+=== RUN   TestBoundaryReviewSealRejectsInvalidRetention/completed_unknown_tail
+    boundary_review_seal_response_test.go:33: accepted malformed seal receipt: completed unknown tail
+=== RUN   TestBoundaryReviewSealRejectsInvalidRetention/observed_below_retained
+    boundary_review_seal_response_test.go:33: accepted malformed seal receipt: observed below retained
+--- FAIL: TestBoundaryReviewSealRejectsInvalidRetention (0.02s)
+    --- FAIL: TestBoundaryReviewSealRejectsInvalidRetention/negative_observed (0.00s)
+    --- FAIL: TestBoundaryReviewSealRejectsInvalidRetention/completed_unknown_tail (0.00s)
+    --- FAIL: TestBoundaryReviewSealRejectsInvalidRetention/observed_below_retained (0.00s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	0.480s
+FAIL

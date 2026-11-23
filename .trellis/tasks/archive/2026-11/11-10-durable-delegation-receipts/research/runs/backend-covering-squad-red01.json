@@ -1,0 +1,32 @@
+{
+  "name": "backend-covering-squad-red01",
+  "command": [
+    "go",
+    "test",
+    "-p",
+    "1",
+    "-json",
+    "./internal/handler",
+    "-run",
+    "^TestDurableDelegationDirectAgentDeferredOnSquadTaskKeepsFollowup$",
+    "-count=1"
+  ],
+  "started_at": "2026-11-10T05:13:15.802269+00:00",
+  "finished_at": "2026-11-10T05:13:44.080776+00:00",
+  "exit_code": 1,
+  "database_url": "postgres://receipts:receipts-local-only@127.0.0.1:61771/receipts_handler_01?sslmode=disable",
+  "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-durable-receipts-20261110-4rjseyub/logs/backend-covering-squad-red01.log",
+  "log_sha256": "9a30822ceeb95f16b5d313af04954a3219eedee8ccd2295889e05545256d8157",
+  "counts": {
+    "pass": 0,
+    "fail": 1,
+    "skip": 0
+  },
+  "test_names": {
+    "pass": [],
+    "fail": [
+      "TestDurableDelegationDirectAgentDeferredOnSquadTaskKeepsFollowup"
+    ],
+    "skip": []
+  }
+}

@@ -146,21 +146,27 @@ WHERE ask.agent_id = ANY(sqlc.arg('agent_ids')::uuid[])
 ORDER BY ask.agent_id, s.name ASC;
 
 -- name: AddAgentSkill :exec
+-- Selected skills are part of the agent's execution configuration. Use the
+-- parent fence before changing children, as invocation and squad writers do.
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = sqlc.arg(agent_id)::uuid FOR UPDATE)
 INSERT INTO agent_skill (agent_id, skill_id)
-VALUES ($1, $2)
+SELECT id, sqlc.arg(skill_id)::uuid FROM locked_agent
 ON CONFLICT DO NOTHING;
 
 -- name: SetAgentSkillEnabled :execrows
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = sqlc.arg(agent_id)::uuid FOR UPDATE)
 UPDATE agent_skill
-SET enabled = $3
-WHERE agent_id = $1 AND skill_id = $2;
+SET enabled = sqlc.arg(enabled)::boolean FROM locked_agent
+WHERE agent_id = locked_agent.id AND skill_id = sqlc.arg(skill_id)::uuid;
 
 -- name: RemoveAgentSkill :exec
-DELETE FROM agent_skill
-WHERE agent_id = $1 AND skill_id = $2;
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = sqlc.arg(agent_id)::uuid FOR UPDATE)
+DELETE FROM agent_skill USING locked_agent
+WHERE agent_id = locked_agent.id AND skill_id = sqlc.arg(skill_id)::uuid;
 
 -- name: RemoveAllAgentSkills :exec
-DELETE FROM agent_skill WHERE agent_id = $1;
+WITH locked_agent AS MATERIALIZED (SELECT agent.id FROM agent WHERE agent.id = $1 FOR UPDATE)
+DELETE FROM agent_skill USING locked_agent WHERE agent_id = locked_agent.id;
 
 -- name: ListAgentSkillsByWorkspace :many
 SELECT ask.agent_id, s.id, s.name, s.description, ask.enabled

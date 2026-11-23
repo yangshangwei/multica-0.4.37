@@ -184,6 +184,7 @@ func (h *Handler) GetProjectHealthIssues(w http.ResponseWriter, r *http.Request)
 		}
 		version = cursor.Version
 	}
+	machine := collaborationMachineRequest(r)
 	var out ProjectRiskPage
 	err = h.runProjectTransaction(r.Context(), ws, actor, func(_ pgx.Tx, q *db.Queries) error {
 		project, e := q.LockProjectForAssociation(r.Context(), db.LockProjectForAssociationParams{ID: p, WorkspaceID: ws})
@@ -209,6 +210,13 @@ func (h *Handler) GetProjectHealthIssues(w http.ResponseWriter, r *http.Request)
 			return &projectAPIError{Status: 503, Code: "project_health_unavailable", Message: "project statistics are incomplete", Current: overview}
 		}
 		ids := collection.Risks[signal]
+		if machine {
+			// Risk signals are status/date/assignee filters, which are private
+			// to a collaboration issue (R53). Drop them before total and paging.
+			if ids, e = withoutCollaborationIssues(r.Context(), q, ids); e != nil {
+				return e
+			}
+		}
 		current := collection.Statistics.SnapshotVersion
 		refreshed := version != "" && version != current
 		start := 0
@@ -259,4 +267,30 @@ func (h *Handler) GetProjectHealthIssues(w http.ResponseWriter, r *http.Request)
 		return
 	}
 	writeJSON(w, 200, out)
+}
+
+// withoutCollaborationIssues keeps the sorted order the risk cursor relies on.
+func withoutCollaborationIssues(ctx context.Context, q *db.Queries, ids []string) ([]string, error) {
+	if len(ids) == 0 {
+		return ids, nil
+	}
+	parsed := make([]pgtype.UUID, len(ids))
+	for i, id := range ids {
+		parsed[i] = parseUUID(id)
+	}
+	shared, err := q.ListCollaborationIssueIDs(ctx, parsed)
+	if err != nil || len(shared) == 0 {
+		return ids, err
+	}
+	skip := make(map[string]bool, len(shared))
+	for _, id := range shared {
+		skip[uuidToString(id)] = true
+	}
+	kept := make([]string, 0, len(ids)-len(shared))
+	for _, id := range ids {
+		if !skip[id] {
+			kept = append(kept, id)
+		}
+	}
+	return kept, nil
 }

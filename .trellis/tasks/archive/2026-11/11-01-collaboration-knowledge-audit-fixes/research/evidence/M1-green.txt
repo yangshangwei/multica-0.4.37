@@ -1,0 +1,72 @@
+M1 green evidence (fix applied: knowledgeClaimErrorDisposition plus immediate requeue in the BuildTaskKnowledgeClaim error branch)
+
+Both tests are behavioral tests and pass. All four transient subtests log
+'task claim: knowledge history load failed; requeueing claim' followed by
+'task requeued after claim finalization failure', and the restored reclaim returns the same task.
+
+=== Targeted run ===
+Command: cd server && DATABASE_URL='postgres://multica:multica@127.0.0.1:5432/kfix_claim_handler?sslmode=disable' env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/handler -run '^(TestKnowledgeClaimErrorDisposition|TestKnowledgeClaimTransientHistoryErrorRequeuesTask)$' -count=1 -v
+Exit code: 0
+
+EmailService: DEV mode — codes printed to stdout (set MULTICA_DEV_VERIFICATION_CODE in .env for a fixed local code)
+2026/11/01 19:01:20 INFO llm retry policy max_retries=2 source=default request_timeout=1m0s enabled=false
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/codex
+2026/11/01 19:01:20 INFO task claimed task_id=552eb736-f63b-4daf-af14-bd932c9b9c0e agent_id=c43dde59-4ff9-4dd4-9008-4fd090deefc2
+2026/11/01 19:01:20 ERROR task claim: knowledge history load failed; requeueing claim task_id=552eb736-f63b-4daf-af14-bd932c9b9c0e error=": terminating connection due to administrator command (SQLSTATE 57P01)"
+2026/11/01 19:01:20 INFO task requeued after claim finalization failure task_id=552eb736-f63b-4daf-af14-bd932c9b9c0e runtime_id=9184768c-30dd-4e8b-85a9-835a01ece3a9
+2026/11/01 19:01:20 INFO task claimed task_id=552eb736-f63b-4daf-af14-bd932c9b9c0e agent_id=c43dde59-4ff9-4dd4-9008-4fd090deefc2
+2026/11/01 19:01:20 INFO task claimed by runtime task_id=552eb736-f63b-4daf-af14-bd932c9b9c0e runtime_id=9184768c-30dd-4e8b-85a9-835a01ece3a9 agent_id=c43dde59-4ff9-4dd4-9008-4fd090deefc2 prior_session=""
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/claude
+2026/11/01 19:01:20 INFO task claimed task_id=88ff82c8-93fe-4a4d-92e8-327c1197e23e agent_id=66e06858-bdc3-46f3-952a-05c2cd230342
+2026/11/01 19:01:20 ERROR task claim: knowledge history load failed; requeueing claim task_id=88ff82c8-93fe-4a4d-92e8-327c1197e23e error=": terminating connection due to administrator command (SQLSTATE 57P01)"
+2026/11/01 19:01:20 INFO task requeued after claim finalization failure task_id=88ff82c8-93fe-4a4d-92e8-327c1197e23e runtime_id=86364ca0-482b-487b-8b5d-388325829973
+2026/11/01 19:01:20 INFO task claimed task_id=88ff82c8-93fe-4a4d-92e8-327c1197e23e agent_id=66e06858-bdc3-46f3-952a-05c2cd230342
+2026/11/01 19:01:20 INFO task claimed by runtime task_id=88ff82c8-93fe-4a4d-92e8-327c1197e23e runtime_id=86364ca0-482b-487b-8b5d-388325829973 agent_id=66e06858-bdc3-46f3-952a-05c2cd230342 prior_session=""
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/codex
+2026/11/01 19:01:20 INFO task claimed task_id=d97c7393-0ff2-4754-bfdb-0b9e3ca440ef agent_id=a48dedba-9a2a-4bfd-a88f-0ab0e71787ef
+2026/11/01 19:01:20 ERROR task claim: knowledge history load failed; requeueing claim task_id=d97c7393-0ff2-4754-bfdb-0b9e3ca440ef error=": terminating connection due to administrator command (SQLSTATE 57P01)"
+2026/11/01 19:01:20 INFO task requeued after claim finalization failure task_id=d97c7393-0ff2-4754-bfdb-0b9e3ca440ef runtime_id=a43a1f3f-da73-430b-8c50-e2321e2aeef2
+2026/11/01 19:01:20 INFO task claimed task_id=d97c7393-0ff2-4754-bfdb-0b9e3ca440ef agent_id=a48dedba-9a2a-4bfd-a88f-0ab0e71787ef
+2026/11/01 19:01:20 INFO task claimed by runtime task_id=d97c7393-0ff2-4754-bfdb-0b9e3ca440ef runtime_id=a43a1f3f-da73-430b-8c50-e2321e2aeef2 agent_id=a48dedba-9a2a-4bfd-a88f-0ab0e71787ef prior_session=""
+=== RUN   TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/claude
+2026/11/01 19:01:20 INFO task claimed task_id=e000635a-7044-4a50-8610-ba1603e3fdc3 agent_id=0b9f0254-f3dc-4ea4-bfa2-64b1f8ef1ef3
+2026/11/01 19:01:20 ERROR task claim: knowledge history load failed; requeueing claim task_id=e000635a-7044-4a50-8610-ba1603e3fdc3 error=": terminating connection due to administrator command (SQLSTATE 57P01)"
+2026/11/01 19:01:20 INFO task requeued after claim finalization failure task_id=e000635a-7044-4a50-8610-ba1603e3fdc3 runtime_id=b17f2c68-6a12-470b-8b9a-3506b491fcbe
+2026/11/01 19:01:20 INFO task claimed task_id=e000635a-7044-4a50-8610-ba1603e3fdc3 agent_id=0b9f0254-f3dc-4ea4-bfa2-64b1f8ef1ef3
+2026/11/01 19:01:20 INFO task claimed by runtime task_id=e000635a-7044-4a50-8610-ba1603e3fdc3 runtime_id=b17f2c68-6a12-470b-8b9a-3506b491fcbe agent_id=0b9f0254-f3dc-4ea4-bfa2-64b1f8ef1ef3 prior_session=""
+--- PASS: TestKnowledgeClaimTransientHistoryErrorRequeuesTask (0.50s)
+    --- PASS: TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/codex (0.20s)
+    --- PASS: TestKnowledgeClaimTransientHistoryErrorRequeuesTask/single/claude (0.10s)
+    --- PASS: TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/codex (0.13s)
+    --- PASS: TestKnowledgeClaimTransientHistoryErrorRequeuesTask/batch/claude (0.08s)
+=== RUN   TestKnowledgeClaimErrorDisposition
+=== RUN   TestKnowledgeClaimErrorDisposition/typed_refusal
+=== RUN   TestKnowledgeClaimErrorDisposition/wrapped_typed_refusal
+=== RUN   TestKnowledgeClaimErrorDisposition/missing_row
+=== RUN   TestKnowledgeClaimErrorDisposition/postgres_shutdown
+=== RUN   TestKnowledgeClaimErrorDisposition/deadline
+=== RUN   TestKnowledgeClaimErrorDisposition/cancelled
+=== RUN   TestKnowledgeClaimErrorDisposition/connection_reset
+--- PASS: TestKnowledgeClaimErrorDisposition (0.00s)
+    --- PASS: TestKnowledgeClaimErrorDisposition/typed_refusal (0.00s)
+    --- PASS: TestKnowledgeClaimErrorDisposition/wrapped_typed_refusal (0.00s)
+    --- PASS: TestKnowledgeClaimErrorDisposition/missing_row (0.00s)
+    --- PASS: TestKnowledgeClaimErrorDisposition/postgres_shutdown (0.00s)
+    --- PASS: TestKnowledgeClaimErrorDisposition/deadline (0.00s)
+    --- PASS: TestKnowledgeClaimErrorDisposition/cancelled (0.00s)
+    --- PASS: TestKnowledgeClaimErrorDisposition/connection_reset (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/handler	1.541s
+
+=== Related suites (summary lines; full output was reviewed locally) ===
+go build ./... : exit 0
+go vet ./internal/handler ./internal/service ./cmd/server : exit 0
+Command: cd server && DATABASE_URL='postgres://multica:multica@127.0.0.1:5432/kfix_claim_handler?sslmode=disable' env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/handler -run 'Knowledge|Claim' -count=1 -v
+Exit code: 0; PASS=153 FAIL=0 SKIP=1
+--- SKIP: TestRedisLocalSkillListStore_PopPendingAtomicClaim (0.00s)
+ok  	github.com/multica-ai/multica/server/internal/handler	9.632s
+Command: cd server && DATABASE_URL='postgres://multica:multica@127.0.0.1:5432/kfix_claim_cmd?sslmode=disable' env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./cmd/server -run 'Knowledge|Claim' -count=1 -v
+Exit code: 0; PASS=7 FAIL=0 SKIP=1
+--- SKIP: TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry (0.00s)
+ok  	github.com/multica-ai/multica/server/cmd/server	4.540s

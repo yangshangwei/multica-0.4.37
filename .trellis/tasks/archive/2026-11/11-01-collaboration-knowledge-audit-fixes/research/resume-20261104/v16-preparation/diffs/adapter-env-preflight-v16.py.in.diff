@@ -1,0 +1,65 @@
+--- /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v15/adapter-env-preflight-v15.py
++++ /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/final-check-v16/adapter-env-preflight-v16.py.in
+@@ -9,7 +9,7 @@
+ import unittest
+ 
+ ROOT = Path('/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103')
+-OUT = ROOT / '.omx/private/final-check-v15'
++OUT = ROOT / '.omx/private/final-check-v16'
+ NODE = Path('/Users/artisan/.nvm/versions/node/v22.23.2/bin/node')
+ GO = Path('/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go')
+ PNPM = ROOT / '.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs'
+@@ -17,7 +17,7 @@
+ 
+ class AdapterEnvironmentTests(unittest.TestCase):
+     def setUp(self):
+-        self.temp = tempfile.TemporaryDirectory(prefix='multica-v15-adapter-fake-', dir='/private/tmp')
++        self.temp = tempfile.TemporaryDirectory(prefix='multica-v16-adapter-fake-', dir='/private/tmp')
+         self.addCleanup(self.temp.cleanup)
+         self.fixture = Path(self.temp.name).resolve()
+         self.env = {
+@@ -65,7 +65,7 @@
+         evidence = self.fixture / 'synthetic-go-evidence'
+         evidence.mkdir()
+         self.env.update(MULTICA_TASK_REAL_PNPM=str(fake), MULTICA_TASK_CANDIDATE_ROOT=str(candidate),
+-                        MULTICA_TASK_RENDERER_URL='http://127.0.0.1:61276/',
++                        MULTICA_TASK_RENDERER_URL='http://127.0.0.1:PENDING_ROOT_RENDERER_PORT/',
+                         MULTICA_TASK_PACKAGE_DB_EVIDENCE=str(evidence),
+                         NEXT_PUBLIC_API_URL='http://127.0.0.1:18000',
+                         DATABASE_URL='postgres://fixture@127.0.0.1/multica_check_synthetic_no_database')
+@@ -74,7 +74,7 @@
+         observed = json.loads(result.stdout)
+         self.assertEqual(observed['argv'], ['exec', 'playwright', 'test', '--reporter=line,json'])
+         self.assertEqual(observed['env']['COLLABORATION_ELECTRON_SOURCE_ROOT'], str(candidate))
+-        self.assertEqual(observed['env']['COLLABORATION_ELECTRON_RENDERER_URL'], 'http://127.0.0.1:61276/')
++        self.assertEqual(observed['env']['COLLABORATION_ELECTRON_RENDERER_URL'], 'http://127.0.0.1:PENDING_ROOT_RENDERER_PORT/')
+         self.assertTrue((self.fixture / 'makecheck-playwright-environment-v9.json').is_file())
+         self.assertFalse((OUT / 'makecheck-playwright-environment-v9.json').exists())
+ 
+@@ -87,7 +87,7 @@
+         result = self.invoke("pnpm", arguments)
+         self.assertEqual(result.returncode, 0, result.stderr)
+         self.assertEqual(json.loads(result.stdout)["argv"], arguments + ["--reporter=json"])
+-        record = json.loads((self.fixture / "makecheck-vitest-reporting-v15.json").read_text())
++        record = json.loads((self.fixture / "makecheck-vitest-reporting-v16.json").read_text())
+         self.assertEqual(record["original_argv"], arguments)
+         self.assertEqual(record["effective_argv"], arguments + ["--reporter=json"])
+         self.assertEqual(record["transport"], "per-package-prefixed stdout in the actual full raw log")
+@@ -99,7 +99,7 @@
+         result = self.invoke("pnpm", arguments)
+         self.assertEqual(result.returncode, 0, result.stderr)
+         self.assertEqual(json.loads(result.stdout)["argv"], arguments)
+-        self.assertFalse((self.fixture / "makecheck-vitest-reporting-v15.json").exists())
++        self.assertFalse((self.fixture / "makecheck-vitest-reporting-v16.json").exists())
+ 
+     def fake_go_and_sql(self):
+         fake_go = self.executable('fake-go', '''import json,os,sys
+@@ -140,7 +140,7 @@
+         self.assertEqual(child['MULTICA_TASK_REAL_GO'], self.env['MULTICA_TASK_REAL_GO'])
+         self.assertTrue(Path(child['HOME']).is_relative_to(self.fixture))
+         self.assertEqual(self.env['MULTICA_RESOURCE_PUBLISH_DIR'], 'synthetic-api-publication')
+-        self.assertFalse((OUT / 'go-packages-v15').exists())
++        self.assertFalse((OUT / 'go-packages-v16').exists())
+ 
+     def test_go_compile_forwarding_preserves_api_configuration_without_sql(self):
+         self.fake_go_and_sql()

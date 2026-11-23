@@ -1,0 +1,269 @@
+commit 85b98c3bbb62683bfcc7195f6c4b6897dd42ae72
+Author:     小工匠 <815150141@qq.com>
+AuthorDate: Fri Oct 30 07:06:53 2026 +0800
+Commit:     小工匠 <815150141@qq.com>
+CommitDate: Fri Oct 30 07:08:48 2026 +0800
+
+    fix(collaboration): unblock actions after slow issue reads
+    
+    Human actions could return while the account-scope invalidation was still refreshing the issue that supplies the next write revision. Collaboration issue reads also had no deadline, so polling and focus refreshes could leave the workbench pending indefinitely.
+    
+    The shared recovery deadline now bounds issue reads, and action completion waits for the current issue read after one account-scope invalidation while fencing access changes.
+    
+    Constraint: Reuse the existing 10-second withRequestDeadline mechanism and preserve realtime cancellation/restart behavior
+    Rejected: Add a second issue invalidation in executeCollaborationAction | it cancels and restarts the same read unnecessarily
+    Confidence: high
+    Scope-risk: narrow
+    Reversibility: clean
+    Directive: Keep account-scope invalidation separate from waiting for the issue query; participant removal relies on the shared action path
+    Tested: Core focused tests (54), full Core suite (314 files/4209 tests), Core typecheck, targeted Core lint, collaboration views tests (9), diff check
+    Not-tested: Full workspace typecheck is blocked by pre-existing missing Web .next generated download page types
+    Co-authored-by: OmX <omx@oh-my-codex.dev>
+
+diff --git a/.trellis/spec/core/frontend/collaboration-workbench.md b/.trellis/spec/core/frontend/collaboration-workbench.md
+index 1d6ec4f69..387071e59 100644
+--- a/.trellis/spec/core/frontend/collaboration-workbench.md
++++ b/.trellis/spec/core/frontend/collaboration-workbench.md
+@@ -28,6 +28,16 @@ drafts contain client intent and original observations, never a second server
+ state store. Current and participating lists remain separate; transferring work
+ does not remove the participant's detail or notification-independent entry.
+ 
++Issue detail reads use the shared recovery request deadline (10 seconds) while
++retaining the caller's cancellation signal. This bounds polling, focus and
++reconnect reads that have no realtime event to restart them; a timeout remains
++the normal query error so the existing retry affordance can recover the panel.
++After a successful human action, invalidate the account scope once and await
++only the issue query's current (or realtime-restarted) read before resolving the
++action. Participant removal follows this same operation path. Do not issue a
++second issue invalidation for that wait, and fence the result against the
++current collaboration scope and access epoch before returning it.
++
+ Pre-issue creation drafts bind Server, viewer, source workspace, draft UUID and
+ the exact original request/payload. A source workspace UUID is never an issue
+ UUID. Save intent before transport; preserve source-specific input and uploaded
+diff --git a/packages/core/api/client.ts b/packages/core/api/client.ts
+index c846adc18..67d37c8d6 100755
+--- a/packages/core/api/client.ts
++++ b/packages/core/api/client.ts
+@@ -32,7 +32,7 @@ import {
+   CollaborationSwitchInputSchema, collaborationSwitchRequest, matchesCollaborationSwitchReceipt,
+   parseCollaborationSwitchReceipt, parseCollaborationSwitchProposal, parseCollaborationSwitchProposals, type CollaborationSwitchInput,
+ } from "../collaboration/switch-schema";
+-import { withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
++import { RECOVERY_REQUEST_TIMEOUT_MS, withRequestDeadline, type ApiRequestOptions } from "./request-lifecycle";
+ import { CollaborationResourceInputSchema, collaborationResourceRequest, matchesCollaborationResourceReceipt,
+   parseCollaborationResources, parseCollaborationResourceOptions, parseCollaborationResourceIdentity, parseCollaborationResourceReceipt,
+   type CollaborationResourceInput } from "../collaboration/resource-schema";
+@@ -972,8 +972,12 @@ export class ApiClient {
+     }
+   }
+ 
+-  async getCollaborationIssue(id: string, options?: { signal?: AbortSignal }) {
+-    const raw = await this.fetchCollaboration(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}`), { signal: options?.signal });
++  async getCollaborationIssue(id: string, options?: ApiRequestOptions) {
++    const raw = await withRequestDeadline(
++      { ...options, timeoutMs: options?.timeoutMs ?? RECOVERY_REQUEST_TIMEOUT_MS },
++      this.endpointController.signal,
++      (signal) => this.fetchCollaboration(collaborationExecutionReadPath(`/api/collaboration/issues/${encodeURIComponent(id)}`), { signal }),
++    );
+     const issue = parseCollaborationIssue(raw);
+     return issue && sameResourceIdentity(issue.id, id) ? issue : null;
+   }
+diff --git a/packages/core/api/collaboration.test.ts b/packages/core/api/collaboration.test.ts
+index cce888eaf..cd7e01a9d 100644
+--- a/packages/core/api/collaboration.test.ts
++++ b/packages/core/api/collaboration.test.ts
+@@ -4,6 +4,7 @@ import { ApiClient } from "./client";
+ import { setCurrentWorkspace } from "../platform/workspace-storage";
+ import { collaborationExecutionIssueFixture, collaborationIssueFixture } from "../collaboration/test-fixtures";
+ import { noopLogger } from "../logger";
++import { RECOVERY_REQUEST_TIMEOUT_MS } from "./request-lifecycle";
+ 
+ const reads = [
+   { name: "issue", read: (client: ApiClient) => client.getCollaborationIssue(collaborationIssueFixture.id), data: collaborationExecutionIssueFixture },
+@@ -191,3 +192,24 @@ it("does not accept a creation result from a different source workspace", async
+   const client = new ApiClient("https://api.example.test");
+   await expect(client.getCollaborationCreation(collaborationIssueFixture.source_workspace.id, "original-request")).resolves.toBeNull();
+ });
++
++it("times out a collaboration issue read that never completes", async () => {
++  vi.useFakeTimers();
++  try {
++    let requestSignal!: AbortSignal;
++    vi.stubGlobal("fetch", vi.fn().mockImplementation((_url: string, init: RequestInit) => {
++      requestSignal = init.signal!;
++      return new Promise<Response>((_resolve, reject) => {
++        init.signal!.addEventListener("abort", () => reject(init.signal!.reason), { once: true });
++      });
++    }));
++    const client = new ApiClient("https://api.example.test");
++    const result = client.getCollaborationIssue(collaborationIssueFixture.id);
++    const timedOut = expect(result).rejects.toMatchObject({ name: "TimeoutError" });
++    await vi.advanceTimersByTimeAsync(RECOVERY_REQUEST_TIMEOUT_MS);
++    await timedOut;
++    expect(requestSignal.aborted).toBe(true);
++  } finally {
++    vi.useRealTimers();
++  }
++});
+diff --git a/packages/core/collaboration/invalidation.ts b/packages/core/collaboration/invalidation.ts
+index 0ebe244ac..8087b91c2 100644
+--- a/packages/core/collaboration/invalidation.ts
++++ b/packages/core/collaboration/invalidation.ts
+@@ -30,15 +30,14 @@ export function invalidateSourceIssueViews(client: QueryClient, workspaceId?: st
+   void client.invalidateQueries({ predicate: (query) => ["issues", "projects", "iterations"].includes(String(query.queryKey[0])) });
+ }
+ 
+-/** Invalidate the issue subtree and resolve once the issue's own re-read
+- * settles; a mutation awaits this because the next action captures its
+- * expected versions from that cache. Realtime ticks restart an in-flight read,
+- * and TanStack forwards a cancelled read's caller only one restart, so follow
+- * the query's current read until it is idle instead of awaiting invalidation.
++/** Wait for the issue query's current re-read to settle; a mutation awaits this
++ * because the next action captures its versions from that cache. Realtime ticks
++ * restart an in-flight read, and TanStack forwards a cancelled read's caller
++ * only one restart, so follow the query's current read until it is idle instead
++ * of awaiting invalidation.
+  */
+-export async function refreshCollaborationIssue(client: QueryClient, scope: CollaborationScope, issueId: string): Promise<void> {
++export async function waitForCollaborationIssueRefresh(client: QueryClient, scope: CollaborationScope, issueId: string): Promise<void> {
+   const queryKey = collaborationKeys.issue(scope, issueId);
+-  void client.invalidateQueries({ queryKey });
+   const cache = client.getQueryCache();
+   const query = cache.find({ queryKey, exact: true });
+   let seen: Promise<unknown> | undefined;
+@@ -48,6 +47,12 @@ export async function refreshCollaborationIssue(client: QueryClient, scope: Coll
+   }
+ }
+ 
++/** Invalidate the issue subtree and wait for its current re-read to settle. */
++export async function refreshCollaborationIssue(client: QueryClient, scope: CollaborationScope, issueId: string): Promise<void> {
++  void client.invalidateQueries({ queryKey: collaborationKeys.issue(scope, issueId) });
++  await waitForCollaborationIssueRefresh(client, scope, issueId);
++}
++
+ export function invalidateCollaborationSourceViews(client: QueryClient, scope: CollaborationScope, issueId?: string, workspaceId?: string): void {
+   if (!isCollaborationScopeCurrent(scope)) return;
+   const snapshot = issueId ? source.safeParse(client.getQueryData(collaborationKeys.issue(scope, issueId))) : null;
+diff --git a/packages/core/collaboration/operation.test.ts b/packages/core/collaboration/operation.test.ts
+index d85095863..f8cbc3dbb 100644
+--- a/packages/core/collaboration/operation.test.ts
++++ b/packages/core/collaboration/operation.test.ts
+@@ -1,6 +1,6 @@
+ // @vitest-environment node
+ import { afterEach, expect, it, vi } from "vitest";
+-import { QueryClient } from "@tanstack/react-query";
++import { QueryClient, QueryObserver } from "@tanstack/react-query";
+ import { ApiClient, ApiError, setApiInstance } from "../api";
+ import { collaborationKeys, collaborationScope, clearCollaborationAccess } from "./access";
+ import { parseCollaborationIssue } from "./schema";
+@@ -16,6 +16,11 @@ const storage = { keys: () => [...stored.keys()], getItem: (key: string) => stor
+ const client = new QueryClient();
+ const key = "00000000-0000-4000-8000-000000000003";
+ const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
++function deferred<T>() {
++  let resolve!: (value: T) => void;
++  const promise = new Promise<T>((done) => { resolve = done; });
++  return { promise, resolve };
++}
+ afterEach(() => { client.clear(); stored.clear(); vi.unstubAllGlobals(); });
+ function setup() {
+   setApiInstance(new ApiClient("https://server.example"));
+@@ -38,6 +43,53 @@ it("persists the captured human intent before transport and waits for a receipt
+   expect(client.getQueryState(collaborationKeys.issue(scope, issue.id))?.isInvalidated).toBe(true);
+ });
+ 
++it("waits for the active issue query to refresh before resolving a successful action", async () => {
++  const { scope, issue, draft } = setup();
++  const queryKey = collaborationKeys.issue(scope, issue.id);
++  const refreshed = deferred<typeof issue>();
++  const observer = new QueryObserver(client, {
++    queryKey,
++    queryFn: () => refreshed.promise,
++    enabled: true,
++    refetchOnMount: false,
++    retry: false,
++  });
++  client.setQueryData(queryKey, issue);
++  const unsubscribe = observer.subscribe(() => undefined);
++  const fetch = vi.fn().mockResolvedValueOnce(json({ code: "transferred", collaboration_revision: "9007199254740994" }));
++  vi.stubGlobal("fetch", fetch);
++  let settled = false;
++  const result = executeCollaborationAction(client, scope, draft, false, storage).finally(() => { settled = true; });
++  await vi.waitFor(() => expect(client.getQueryState(queryKey)?.fetchStatus).toBe("fetching"));
++  expect(settled).toBe(false);
++  refreshed.resolve({ ...issue, collaboration_revision: "9007199254740994" });
++  await expect(result).resolves.toMatchObject({ code: "transferred" });
++  expect(settled).toBe(true);
++  unsubscribe();
++});
++
++it("rejects a successful action if access changes during the issue refresh", async () => {
++  const { scope, issue, draft } = setup();
++  const queryKey = collaborationKeys.issue(scope, issue.id);
++  const refreshed = deferred<typeof issue>();
++  const observer = new QueryObserver(client, {
++    queryKey,
++    queryFn: () => refreshed.promise,
++    enabled: true,
++    refetchOnMount: false,
++    retry: false,
++  });
++  client.setQueryData(queryKey, issue);
++  const unsubscribe = observer.subscribe(() => undefined);
++  vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(json({ code: "transferred", collaboration_revision: "9007199254740994" })));
++  const result = executeCollaborationAction(client, scope, draft, false, storage);
++  await vi.waitFor(() => expect(client.getQueryState(queryKey)?.fetchStatus).toBe("fetching"));
++  clearCollaborationAccess(client, scope, issue.id);
++  refreshed.resolve(issue);
++  await expect(result).rejects.toMatchObject({ name: "AbortError" });
++  unsubscribe();
++});
++
+ it("keeps an unknown operation across recovery with the original key and payload", async () => {
+   const { scope, draft } = setup();
+   const fetch = vi.fn().mockRejectedValueOnce(new TypeError("offline"))
+diff --git a/packages/core/collaboration/operation.ts b/packages/core/collaboration/operation.ts
+index e28cba5cb..81d12f14a 100644
+--- a/packages/core/collaboration/operation.ts
++++ b/packages/core/collaboration/operation.ts
+@@ -2,10 +2,10 @@ import type { QueryClient } from "@tanstack/react-query";
+ import type { StorageAdapter } from "../types/storage";
+ import { ApiError, getApi } from "../api";
+ import { CollaborationActionSchema, collaborationWriteContext, parseCollaborationActionDraft, recoverCollaborationAction, sendCollaborationAction, type CollaborationAction } from "./action";
+-import { collaborationIssueAccessDenied, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied, isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
++import { collaborationAccessEpoch, collaborationIssueAccessDenied, collaborationKeys, CollaborationUnavailableError, isCollaborationDenied, isCollaborationScopeCurrent, protectCollaborationRead, type CollaborationScope } from "./access";
+ import { clearCollaborationDrafts, removeCollaborationDraft, saveCollaborationDraft, type CollaborationDraft } from "./draft";
+ import { parseCollaborationOperation, type CollaborationIssue } from "./schema";
+-import { invalidateCollaborationSourceViews } from "./invalidation";
++import { invalidateCollaborationSourceViews, waitForCollaborationIssueRefresh } from "./invalidation";
+ 
+ type Intent<T = CollaborationAction> = T extends CollaborationAction ? Omit<T, keyof ReturnType<typeof collaborationWriteContext>> : never;
+ export type CollaborationActionIntent = Intent;
+@@ -23,6 +23,7 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
+   const draft: CollaborationDraft = { ...source, scope: { ...source.scope }, payload: action };
+   if (draft.scope.server !== scope.server || draft.scope.userId.toLowerCase() !== scope.userId.toLowerCase()) throw new CollaborationUnavailableError();
+   const denied = collaborationIssueAccessDenied(client, scope, draft.scope.issueId);
++  const epoch = collaborationAccessEpoch(client, scope, draft.scope.issueId);
+   try {
+     const result = await protectCollaborationRead(client, scope, recovery && denied ? null : draft.scope.issueId, async () => {
+       if (!denied) saveCollaborationDraft(draft, storage);
+@@ -39,7 +40,17 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
+     });
+     removeCollaborationDraft(draft, storage);
+     invalidateCollaborationSourceViews(client, scope, draft.scope.issueId);
+-    if (!denied) void client.invalidateQueries({ queryKey: collaborationKeys.scope(scope) });
++    if (!denied) {
++      // The scope invalidation starts all active account reads, including the
++      // issue query. Wait only for that issue read before returning so the next
++      // action captures the versions committed by this write. Calling a second
++      // issue invalidation here would cancel/restart the same request twice.
++      void client.invalidateQueries({ queryKey: collaborationKeys.scope(scope) });
++      await waitForCollaborationIssueRefresh(client, scope, draft.scope.issueId);
++      if (!isCollaborationScopeCurrent(scope) || collaborationAccessEpoch(client, scope, draft.scope.issueId) !== epoch) {
++        throw new DOMException("Collaboration access changed", "AbortError");
++      }
++    }
+     return result;
+   } catch (error) {
+     if (isCollaborationDenied(error)) clearCollaborationDrafts(storage, draft.scope);

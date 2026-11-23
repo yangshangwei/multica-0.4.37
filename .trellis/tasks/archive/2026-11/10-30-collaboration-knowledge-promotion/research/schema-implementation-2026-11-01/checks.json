@@ -1,0 +1,183 @@
+[
+  {
+    "name": "format",
+    "command": [
+      "gofmt",
+      "-w",
+      "server/pkg/protocol/collaboration_knowledge.go",
+      "server/pkg/protocol/collaboration_knowledge_test.go",
+      "server/internal/collaboration/knowledge.go",
+      "server/internal/collaboration/knowledge_test.go",
+      "server/internal/migrations/collaboration_knowledge_test.go",
+      "server/internal/migrations/collaboration_knowledge_queries_test.go",
+      "server/cmd/migrate/main.go"
+    ],
+    "exit_code": 0,
+    "seconds": 0.019
+  },
+  {
+    "name": "final-schema-tests",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/migrations",
+      "./cmd/migrate",
+      "-run",
+      "Knowledge|MigrationFiles|MigrationNumeric|NewMigrationPrefixes|EveryConcurrent",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 3.179
+  },
+  {
+    "name": "sqlc-version",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "run",
+      "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+      "version"
+    ],
+    "exit_code": 0,
+    "seconds": 2.014
+  },
+  {
+    "name": "go-version",
+    "command": [
+      "go",
+      "version"
+    ],
+    "exit_code": 0,
+    "seconds": 0.006
+  },
+  {
+    "name": "final-format",
+    "command": [
+      "gofmt",
+      "-w",
+      "server/pkg/protocol/collaboration_knowledge.go",
+      "server/pkg/protocol/collaboration_knowledge_test.go"
+    ],
+    "exit_code": 0,
+    "seconds": 0.012
+  },
+  {
+    "name": "final-pure-tests",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./pkg/protocol",
+      "./internal/collaboration",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 1.706
+  },
+  {
+    "name": "final-protocol-vet",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./pkg/protocol"
+    ],
+    "exit_code": 0,
+    "seconds": 0.095
+  },
+  {
+    "name": "final-vet",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 7.001
+  },
+  {
+    "name": "final-build",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./..."
+    ],
+    "exit_code": 0,
+    "seconds": 6.499
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      "server"
+    ],
+    "exit_code": 0,
+    "seconds": 0.018
+  },
+  {
+    "name": "review-policy-format",
+    "command": [
+      "gofmt",
+      "-w",
+      "server/internal/collaboration/knowledge.go",
+      "server/internal/collaboration/knowledge_test.go"
+    ],
+    "exit_code": 0,
+    "seconds": 0.011
+  },
+  {
+    "name": "review-policy-protocol-tests",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./pkg/protocol",
+      "./internal/collaboration",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "seconds": 0.853
+  },
+  {
+    "name": "review-policy-vet",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./pkg/protocol",
+      "./internal/collaboration"
+    ],
+    "exit_code": 0,
+    "seconds": 0.174
+  },
+  {
+    "name": "review-policy-build",
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./pkg/protocol",
+      "./internal/collaboration"
+    ],
+    "exit_code": 0,
+    "seconds": 0.111
+  }
+]

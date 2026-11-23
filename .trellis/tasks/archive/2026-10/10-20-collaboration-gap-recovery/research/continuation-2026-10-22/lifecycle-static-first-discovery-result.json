@@ -1,0 +1,22 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-lifecycle-controls.spec.ts",
+    "--list",
+    "--project=chromium",
+    "--reporter=list"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "started_at": "2026-10-21T23:39:23.229587+00:00",
+  "source_sha256": {
+    "e2e/collaboration-lifecycle-controls.spec.ts": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+    "e2e/fixtures/collaboration-lifecycle-controls.ts": "b0ff073e0593a2aaa0672ebba23e31ce5465531b06e25e11171f1d5c31ec4783"
+  },
+  "exit_code": 0,
+  "finished_at": "2026-10-21T23:39:24.786797+00:00",
+  "stdout_bytes": 385,
+  "stderr_bytes": 211
+}

@@ -1,0 +1,5 @@
+{"file":".trellis/spec/desktop/frontend/quality-guidelines.md","reason":"核对认证恢复、保留凭据、同用户重启及过时请求保护"}
+{"file":".trellis/spec/server/security-boundaries.md","reason":"防止放宽凭据校验或把网络故障错误分类为失效"}
+{"file":".trellis/spec/guides/cross-layer-thinking-guide.md","reason":"验证会话到 daemon、服务端运行时再到 UI 的完整状态链"}
+{"file":".trellis/tasks/archive/2026-10/10-14-runtime-offline-after-reopen/research/version-and-recovery.md","reason":"避免重复实现已有修复，区分源码验证与现场事故复现"}
+{"file":".trellis/tasks/archive/2026-10/10-14-runtime-offline-after-reopen/research/server-liveness.md","reason":"防止未证实的心跳/缓存候选扩大修复范围"}

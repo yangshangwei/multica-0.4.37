@@ -1,0 +1,88 @@
+import ast
+import datetime
+import hashlib
+import json
+import subprocess
+from pathlib import Path
+
+ROOT = Path('/Volumes/artisan/code/2026/multica-0.4.37')
+TASK = ROOT / '.trellis/tasks/11-02-branch-functional-regression'
+RUN = TASK / 'evidence/next-remaining-identity-1'
+PRIVATE = Path(__file__).resolve().parent
+SHA = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+NOW = lambda: datetime.datetime.now(datetime.timezone.utc).isoformat()
+data = json.loads((RUN / 'run.json').read_text())
+assert data['state'] == 'failed' and data['error'] == 'AssertionError()'
+normalized = []
+for source in data['sources']:
+    changes = source['product_behavior_or_config_changes']
+    if changes:
+        assert changes == ['apps/web/next-env.d.ts']
+        path = Path(source['path']) / changes[0]
+        args = ['git', 'show', source['head'] + ':apps/web/next-env.d.ts']
+        started = NOW()
+        p = subprocess.run(args, cwd=source['path'], capture_output=True, timeout=10)
+        assert p.returncode == 0
+        (RUN / 'generated-import-candidate.stdout').write_bytes(p.stdout)
+        (RUN / 'generated-import-candidate.stderr').write_bytes(p.stderr)
+        candidate = p.stdout
+        current = path.read_bytes()
+        old = b'import "./.next/dev/types/routes.d.ts";'
+        new = b'import "./.next/types/routes.d.ts";'
+        assert candidate.count(old) == 1 and current.count(new) == 1
+        assert candidate.replace(old, new) == current
+        normalized.append({'path': str(path), 'candidate_sha256': hashlib.sha256(candidate).hexdigest(),
+                           'current_sha256': hashlib.sha256(current).hexdigest(),
+                           'only_exact_import_changed': True, 'other_bytes_equal': True,
+                           'command': args, 'started_at': started, 'finished_at': NOW(),
+                           'exit_code': p.returncode,
+                           'stdout_sha256': hashlib.sha256(p.stdout).hexdigest(),
+                           'stderr_sha256': hashlib.sha256(p.stderr).hexdigest()})
+assert len(normalized) == 1
+assert all(s['same_as_saved_identity'] for s in data['sources'])
+assert not data['reviewed_raw_hash_mismatches']
+assert not data['historical_missing'] and not data['unexpected_historical_changes']
+assert not data['preserved_workspace_mismatches'] and not data['older_unexpected_changes']
+assert data['e2e_inventory'] == {'PASS': 439}
+assert data['matrix'] == {'PASS': 21, 'BLOCKED': 6, 'FAIL': 1, 'NOT_RUN': 3}
+assert data['original_frozen_gate']['p95_ms'] == 2171 and data['original_frozen_gate']['terminal'] == ['fail']
+assert data['task_status'] == 'in_progress'
+assert data['main'] == data['origin_main'] == data['merge_base'] == 'dd87e0b33c1d6a64d488f7ee9ecd0a65984a68ff'
+assert not data['new_symptom_evidence']['genuine_symptom_runs']
+for script in ['check.py', 'finalize.py']:
+    ast.parse((PRIVATE / script).read_text())
+    (RUN / (script + '.txt')).write_bytes((PRIVATE / script).read_bytes())
+diff = subprocess.run(['git', 'diff', '--check'], cwd=ROOT, capture_output=True, timeout=10)
+(RUN / 'final-diff-check.stdout').write_bytes(diff.stdout)
+(RUN / 'final-diff-check.stderr').write_bytes(diff.stderr)
+assert diff.returncode == 0
+summary = {'at': NOW(), 'status': 'PASS_IDENTITY_AND_EVIDENCE_CHECK_REQUIRED_GATES_OPEN',
+           'reviewer': data['reviewer'], 'scope': data['scope'],
+           'original_checker_failure_retained': 'evidence/next-remaining-identity-1/run.json',
+           'original_run_sha256': SHA(RUN / 'run.json'),
+           'mechanical_correction': 'Strict exact Next generated-route import check resolves checker classification, preserving initial failed checker output; no source edit or test rerun.',
+           'generated_import_normalization': normalized,
+           'source_and_frozen_identity_unchanged': True, 'new_product_behavior_changes': 0,
+           'historical_files_checked': data['historical_files_checked'],
+           'older_historical_files_checked': data['older_historical_files_checked'],
+           'preserved_workspace_files_checked': data['preserved_workspace_files_checked'],
+           'reviewed_raw_artifact_hash_checks': len(data['reviewed_raw_artifact_checks']),
+           'reviewed_raw_hash_mismatches': [], 'missing_or_unexpected_historical_changes': [],
+           'e2e_inventory': data['e2e_inventory'], 'matrix': data['matrix'],
+           'original_frozen_gate': data['original_frozen_gate'],
+           'new_symptom_evidence': data['new_symptom_evidence'],
+           'untracked_helper': data['untracked_helper'],
+           'private_recorder_ast': 'PASS', 'git_diff_check': 'PASS',
+           'lint': 'NOT_RERUN: evidence-only; no product/dependency change',
+           'typecheck': 'NOT_RERUN: evidence-only; no TypeScript/product change',
+           'tests': 'NOT_RERUN: original frozenFAIL and completed gates retained; no new true symptom condition',
+           'database_connections_created': 0, 'applications_started': 0,
+           'commercial_calls': 0, 'remote_actions': 0, 'task_status': 'in_progress',
+           'findings_fixed': [{'id': 'CHECK-NEXT-GENERATED-IMPORT', 'scope': 'private checker only',
+                               'issue': 'Initial classifier counted known production-build generated import as product behavior delta',
+                               'fix': 'Exact one-line import normalization with all other bytes compared; initial failure saved unchanged.'}],
+           'findings_not_fixed': ['Original2171ms performanceFAIL and required native/auth/updater/trust/Provider gates remain open.']}
+summary['artifact_sha256'] = {str(p.relative_to(TASK)): SHA(p) for p in sorted(RUN.iterdir()) if p.is_file() and p.name != 'verification.json'}
+(RUN / 'verification.json').write_text(json.dumps(summary, indent=2) + '\n')
+(TASK / 'research/remaining-identity-symptom-1.json').write_text(json.dumps(summary, indent=2) + '\n')
+print(json.dumps({k: summary[k] for k in ['status', 'historical_files_checked', 'preserved_workspace_files_checked', 'reviewed_raw_artifact_hash_checks', 'e2e_inventory', 'matrix']}, indent=2))

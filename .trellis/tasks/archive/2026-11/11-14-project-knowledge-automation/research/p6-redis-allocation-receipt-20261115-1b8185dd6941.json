@@ -1,0 +1,1180 @@
+{
+  "allocation_id": "1b8185dd69414d0b8ae9ab679a1c7669",
+  "allocation_mode": "0600",
+  "allocation_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json",
+  "allocation_sha256": "41e5c7a2ab13d5b490f3a242adcb3451bf3ecfbfc8e5f3c13dcbc6facf3e0e64",
+  "commands": [
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "context",
+        "inspect",
+        "desktop-linux"
+      ],
+      "command_sha256": "3e9861ed84b3f3158c7d650844f7fe16d2b943c9d14ff8f371868bef86002c4f",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.438672+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.421694+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "context",
+        "create",
+        "desktop-linux",
+        "--description",
+        "task-owned authenticated Redis fixture",
+        "--docker",
+        "host=unix:///Users/artisan/.docker/run/docker.sock"
+      ],
+      "command_sha256": "2ee67ef58274305b1aa50bdb9d8706c64fb0d7750f3d9de2d1636213ed20cabc",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.454150+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.438912+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "context",
+        "inspect",
+        "desktop-linux"
+      ],
+      "command_sha256": "736388b24b25a7f98a0bd09fe7a959bc469e814a4a0f9f6d2557610ccb8c6771",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.464945+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.454361+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "version",
+        "--format",
+        "{{json .}}"
+      ],
+      "command_sha256": "71ff96863f9b515580259af5a8c5ea44cd2b80e2b072137b5b0d1356ba7df7ae",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.496444+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.465236+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "info",
+        "--format",
+        "{\"ID\":{{json .ID}},\"Name\":{{json .Name}},\"OSType\":{{json .OSType}},\"Architecture\":{{json .Architecture}}}"
+      ],
+      "command_sha256": "2ebfa28c1e97486a6e815c136acd9d209cf5ec45a8fd74311cf54d4341ddd2ee",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.527090+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.496686+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "image",
+        "inspect",
+        "redis:7-alpine"
+      ],
+      "command_sha256": "4ec039e92cded757d7670101a39d9b9616982b396b223260836a26988e7dd7d9",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.569370+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.527498+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "image",
+        "inspect",
+        "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6"
+      ],
+      "command_sha256": "1bfc957d6a98669fdfa7eaea66c6dcc6b2032adfa81f6fe9c71f7b47962dbb18",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.612061+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.569681+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "ls",
+        "--no-trunc",
+        "--format",
+        "{\"Id\":{{json .ID}},\"Names\":{{json .Names}},\"State\":{{json .State}},\"Ports\":{{json .Ports}}}"
+      ],
+      "command_sha256": "ed32660d4ff628da237e907e4cab46ae47abd54f20f9a1f0b1343b5063897fe4",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.628601+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.612366+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "inspect",
+        "f06e055b60eb02897965374bf85474b7c7bc5e40e533ca84716707b07088c842",
+        "--format",
+        "{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Created\":{{json .Created}},\"StartedAt\":{{json .State.StartedAt}},\"Running\":{{json .State.Running}},\"RestartCount\":{{json .RestartCount}},\"Image\":{{json .Image}}}"
+      ],
+      "command_sha256": "2acde69ca333a6caf5194bbf8f6cee2d9246286775cc61b65d736d1c6e7c0ca8",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.643103+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.628837+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "network",
+        "inspect",
+        "multica-ka-p6-redis-net-1b8185dd6941"
+      ],
+      "command_sha256": "0d8e06ba1decc73e7d0965aee0e289efff5875329bf972626419f64ad88b6426",
+      "expected_nonzero": true,
+      "finished_utc": "2026-11-15T05:37:17.656433+00:00",
+      "returncode": 1,
+      "started_utc": "2026-11-15T05:37:17.643335+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "inspect",
+        "multica-ka-p6-redis-1b8185dd6941"
+      ],
+      "command_sha256": "c0f143dc28252915f26e54ec24b916c12d74bde1663a20fb6aeb9b90714aa69e",
+      "expected_nonzero": true,
+      "finished_utc": "2026-11-15T05:37:17.669422+00:00",
+      "returncode": 1,
+      "started_utc": "2026-11-15T05:37:17.656656+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "network",
+        "create",
+        "--driver",
+        "bridge",
+        "--label",
+        "io.multica.trellis.task=11-14-project-knowledge-automation",
+        "--label",
+        "io.multica.trellis.task-path=.trellis/tasks/11-14-project-knowledge-automation",
+        "--label",
+        "io.multica.trellis.approved-version=2026-11-14-v1",
+        "--label",
+        "io.multica.trellis.owner=trellis-check",
+        "--label",
+        "io.multica.trellis.run-id=1b8185dd69414d0b8ae9ab679a1c7669",
+        "--label",
+        "io.multica.trellis.purpose=p6-service-redis-fixture",
+        "--label",
+        "io.multica.trellis.created-intent-utc=2026-11-15T05:37:17.408949+00:00",
+        "--label",
+        "io.multica.trellis.receipt-root-sha256=d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+        "--label",
+        "io.multica.trellis.transport=dedicated-non-internal-bridge",
+        "--label",
+        "io.multica.trellis.resource-kind=redis-network",
+        "multica-ka-p6-redis-net-1b8185dd6941"
+      ],
+      "command_sha256": "39fc12acc42a9c573a391aeea7d720860b207c54f382c457758a7b821bf3474d",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.718234+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.669753+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "network",
+        "inspect",
+        "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e"
+      ],
+      "command_sha256": "7379fb2d07a68de0931d25ec254d2ad488d5472cf4a53846b9d4c1fd6c432682",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.735042+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.718718+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "create",
+        "--pull=never",
+        "--platform",
+        "linux/arm64",
+        "--name",
+        "multica-ka-p6-redis-1b8185dd6941",
+        "--hostname",
+        "multica-ka-p6-redis-1b8185dd6941",
+        "--network",
+        "multica-ka-p6-redis-net-1b8185dd6941",
+        "--publish",
+        "127.0.0.1:52518:6379/tcp",
+        "--memory",
+        "64m",
+        "--memory-swap",
+        "64m",
+        "--cpus",
+        "0.25",
+        "--pids-limit",
+        "64",
+        "--read-only",
+        "--tmpfs",
+        "/data:rw,noexec,nosuid,nodev,size=8m,mode=0700,uid=999,gid=1000",
+        "--user",
+        "999:1000",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges:true",
+        "--restart",
+        "no",
+        "--log-driver",
+        "json-file",
+        "--log-opt",
+        "max-size=1m",
+        "--log-opt",
+        "max-file=2",
+        "--label",
+        "io.multica.trellis.task=11-14-project-knowledge-automation",
+        "--label",
+        "io.multica.trellis.task-path=.trellis/tasks/11-14-project-knowledge-automation",
+        "--label",
+        "io.multica.trellis.approved-version=2026-11-14-v1",
+        "--label",
+        "io.multica.trellis.owner=trellis-check",
+        "--label",
+        "io.multica.trellis.run-id=1b8185dd69414d0b8ae9ab679a1c7669",
+        "--label",
+        "io.multica.trellis.purpose=p6-service-redis-fixture",
+        "--label",
+        "io.multica.trellis.created-intent-utc=2026-11-15T05:37:17.408949+00:00",
+        "--label",
+        "io.multica.trellis.receipt-root-sha256=d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+        "--label",
+        "io.multica.trellis.transport=dedicated-non-internal-bridge",
+        "--label",
+        "io.multica.trellis.resource-kind=redis-container",
+        "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+        "/bin/sh",
+        "-c",
+        "umask 077; mkfifo -m 600 /data/p6-redis-runtime-config.fifo; exec redis-server /data/p6-redis-runtime-config.fifo"
+      ],
+      "command_sha256": "33f89215115c73077248afb6ceeb653a098c5c13d3236856dbc26be152a85eb1",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.837062+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.736340+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "inspect",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f"
+      ],
+      "command_sha256": "85991983d2941dc5683e542200339946f43fba161a91d49a3813122abc0ecdc9",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:17.864991+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.837547+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "start",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f"
+      ],
+      "command_sha256": "3b17e71c3e8172bdc75a95110e3bedfc96712e67a85532e047be456a15e9c6e3",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:18.176184+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:17.865938+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "inspect",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f"
+      ],
+      "command_sha256": "85991983d2941dc5683e542200339946f43fba161a91d49a3813122abc0ecdc9",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:18.206442+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:18.176622+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "exec",
+        "-i",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "/bin/sh",
+        "-c",
+        "cat > /data/p6-redis-runtime-config.fifo"
+      ],
+      "command_sha256": "8fe1c798f4715c61fca71f0ff677e39076dc1f104ce6e0a46d641d2d4a68388e",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:18.348435+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:18.207134+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "exec",
+        "-i",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "/bin/sh",
+        "-c",
+        "IFS= read -r REDISCLI_AUTH; export REDISCLI_AUTH; exec redis-cli --raw \"$@\"",
+        "p6-auth-cli",
+        "PING"
+      ],
+      "command_sha256": "76b63e5d353d51ee9f6b520e5cff960a0db535535e72b4c3fccbdad88f1d82c5",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:18.545848+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:18.348895+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "exec",
+        "-i",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "/bin/sh",
+        "-c",
+        "IFS= read -r REDISCLI_AUTH; export REDISCLI_AUTH; exec redis-cli --raw \"$@\"",
+        "p6-auth-cli",
+        "INFO",
+        "server"
+      ],
+      "command_sha256": "e602989252168067bff29a3c1fd435087b21ea6aea96b15ab9b3ede5c5004d2d",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:18.692262+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:18.546243+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "exec",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "redis-server",
+        "--version"
+      ],
+      "command_sha256": "40ce993133b13c8033f4e18488f4585e0bf0e4e5b4519eee3da32446d1a4cdd2",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:18.781693+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:18.692559+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "exec",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "id"
+      ],
+      "command_sha256": "0620b6f96c0a54305a7cdef7efd097acbf1682937b46e898b90ba697fdddd04a",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:18.850116+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:18.782257+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "exec",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "/bin/sh",
+        "-c",
+        "test -p /data/p6-redis-runtime-config.fifo && stat -c %a /data/p6-redis-runtime-config.fifo && stat -f -c %T /data"
+      ],
+      "command_sha256": "d57acc02c5ebf9537534eb9826eff729aa8b5f25465e4605c3874150c54af153",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:18.952208+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:18.850500+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "exec",
+        "-i",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "/bin/sh",
+        "-c",
+        "IFS= read -r REDISCLI_AUTH; export REDISCLI_AUTH; exec redis-cli --raw \"$@\"",
+        "p6-auth-cli",
+        "-n",
+        "0",
+        "DBSIZE"
+      ],
+      "command_sha256": "38272d5e9640c0cab47004edbab075a308e328aa7d8a030a382b3a56b17afe94",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.029438+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:18.952569+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "exec",
+        "-i",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "/bin/sh",
+        "-c",
+        "IFS= read -r REDISCLI_AUTH; export REDISCLI_AUTH; exec redis-cli --raw \"$@\"",
+        "p6-auth-cli",
+        "-n",
+        "12",
+        "DBSIZE"
+      ],
+      "command_sha256": "1dc368f86dcd506e08d6083405604f549231c0136d1f850f5e7344e62ccc660f",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.126924+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:19.029885+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "inspect",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f"
+      ],
+      "command_sha256": "85991983d2941dc5683e542200339946f43fba161a91d49a3813122abc0ecdc9",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.166436+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:19.143287+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "network",
+        "inspect",
+        "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e"
+      ],
+      "command_sha256": "7379fb2d07a68de0931d25ec254d2ad488d5472cf4a53846b9d4c1fd6c432682",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.186804+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:19.166891+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "ls",
+        "--no-trunc",
+        "--format",
+        "{\"Id\":{{json .ID}},\"Names\":{{json .Names}},\"State\":{{json .State}},\"Ports\":{{json .Ports}}}"
+      ],
+      "command_sha256": "ed32660d4ff628da237e907e4cab46ae47abd54f20f9a1f0b1343b5063897fe4",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.214468+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:19.187199+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "inspect",
+        "f06e055b60eb02897965374bf85474b7c7bc5e40e533ca84716707b07088c842",
+        "--format",
+        "{\"Id\":{{json .Id}},\"Name\":{{json .Name}},\"Created\":{{json .Created}},\"StartedAt\":{{json .State.StartedAt}},\"Running\":{{json .State.Running}},\"RestartCount\":{{json .RestartCount}},\"Image\":{{json .Image}}}"
+      ],
+      "command_sha256": "2acde69ca333a6caf5194bbf8f6cee2d9246286775cc61b65d736d1c6e7c0ca8",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.233941+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:19.214784+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "context",
+        "inspect",
+        "desktop-linux"
+      ],
+      "command_sha256": "736388b24b25a7f98a0bd09fe7a959bc469e814a4a0f9f6d2557610ccb8c6771",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.249884+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:19.234289+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "info",
+        "--format",
+        "{\"ID\":{{json .ID}},\"Name\":{{json .Name}},\"OSType\":{{json .OSType}},\"Architecture\":{{json .Architecture}}}"
+      ],
+      "command_sha256": "2ebfa28c1e97486a6e815c136acd9d209cf5ec45a8fd74311cf54d4341ddd2ee",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.283552+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:19.250234+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "image",
+        "inspect",
+        "redis:7-alpine"
+      ],
+      "command_sha256": "4ec039e92cded757d7670101a39d9b9616982b396b223260836a26988e7dd7d9",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.336831+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:19.283945+00:00"
+    },
+    {
+      "argv": [
+        "/usr/local/bin/docker",
+        "--config",
+        "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+        "--context",
+        "desktop-linux",
+        "container",
+        "logs",
+        "--timestamps",
+        "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f"
+      ],
+      "command_sha256": "8ced781c4629814c54951685e3df2ee06e0b8806b5f86fc56618c3b8d505d73d",
+      "expected_nonzero": false,
+      "finished_utc": "2026-11-15T05:37:19.364414+00:00",
+      "returncode": 0,
+      "started_utc": "2026-11-15T05:37:19.341780+00:00"
+    }
+  ],
+  "container": {
+    "actual_ports": {
+      "6379/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "52518"
+        }
+      ]
+    },
+    "command": [
+      "/bin/sh",
+      "-c",
+      "umask 077; mkfifo -m 600 /data/p6-redis-runtime-config.fifo; exec redis-server /data/p6-redis-runtime-config.fifo"
+    ],
+    "constraints": {
+      "cap_drop": [
+        "ALL"
+      ],
+      "cpus": 0.25,
+      "host_user_data_mounts": false,
+      "log_config": {
+        "Config": {
+          "max-file": "2",
+          "max-size": "1m"
+        },
+        "Type": "json-file"
+      },
+      "memory_bytes": 67108864,
+      "memory_swap_bytes": 67108864,
+      "nano_cpus": 250000000,
+      "pids_limit": 64,
+      "readonly_rootfs": true,
+      "restart_policy": {
+        "MaximumRetryCount": 0,
+        "Name": "no"
+      },
+      "security_opt": [
+        "no-new-privileges:true"
+      ],
+      "tmpfs": {
+        "/data": "rw,noexec,nosuid,nodev,size=8m,mode=0700,uid=999,gid=1000"
+      },
+      "tmpfs_data_size_bytes": 8388608
+    },
+    "created": "2026-11-15T05:37:17.764983759Z",
+    "expected_owner_labels": {
+      "io.multica.trellis.approved-version": "2026-11-14-v1",
+      "io.multica.trellis.created-intent-utc": "2026-11-15T05:37:17.408949+00:00",
+      "io.multica.trellis.owner": "trellis-check",
+      "io.multica.trellis.purpose": "p6-service-redis-fixture",
+      "io.multica.trellis.receipt-root-sha256": "d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+      "io.multica.trellis.resource-kind": "redis-container",
+      "io.multica.trellis.run-id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "io.multica.trellis.task": "11-14-project-knowledge-automation",
+      "io.multica.trellis.task-path": ".trellis/tasks/11-14-project-knowledge-automation",
+      "io.multica.trellis.transport": "dedicated-non-internal-bridge"
+    },
+    "host_port_bindings": {
+      "6379/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "52518"
+        }
+      ]
+    },
+    "id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+    "image_argument": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "image_id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "labels": {
+      "io.multica.trellis.approved-version": "2026-11-14-v1",
+      "io.multica.trellis.created-intent-utc": "2026-11-15T05:37:17.408949+00:00",
+      "io.multica.trellis.owner": "trellis-check",
+      "io.multica.trellis.purpose": "p6-service-redis-fixture",
+      "io.multica.trellis.receipt-root-sha256": "d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+      "io.multica.trellis.resource-kind": "redis-container",
+      "io.multica.trellis.run-id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "io.multica.trellis.task": "11-14-project-knowledge-automation",
+      "io.multica.trellis.task-path": ".trellis/tasks/11-14-project-knowledge-automation",
+      "io.multica.trellis.transport": "dedicated-non-internal-bridge"
+    },
+    "mounts": [],
+    "name": "multica-ka-p6-redis-1b8185dd6941",
+    "networks": {
+      "multica-ka-p6-redis-net-1b8185dd6941": {
+        "Aliases": null,
+        "DNSNames": [
+          "multica-ka-p6-redis-1b8185dd6941",
+          "3b627d9c6d78"
+        ],
+        "DriverOpts": null,
+        "EndpointID": "408207548afa48d9723c4ff6b6944581a1c9a72e89ee14d2315c0fd9f61c4ddf",
+        "Gateway": "172.19.0.1",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "GwPriority": 0,
+        "IPAMConfig": null,
+        "IPAddress": "172.19.0.2",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "Links": null,
+        "MacAddress": "c6:bd:6e:3f:2d:6a",
+        "NetworkID": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e"
+      }
+    },
+    "started_at": "2026-11-15T05:37:17.924690675Z",
+    "state": "running",
+    "user": "999:1000"
+  },
+  "created_by": "trellis-check",
+  "credentials": {
+    "ephemeral_generated_password_required": true,
+    "password_length": 64,
+    "raw_password_and_connection_url_in_receipt_or_logs": false,
+    "raw_secret_storage": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json"
+  },
+  "docker": {
+    "argv_prefix": [
+      "/usr/local/bin/docker",
+      "--config",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+      "--context",
+      "desktop-linux"
+    ],
+    "client_version": "29.2.1",
+    "config_dir": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+    "context": "desktop-linux",
+    "endpoint": "unix:///Users/artisan/.docker/run/docker.sock",
+    "engine_id": "2a2bd477-d324-499e-aa4b-788a6bc3c073",
+    "executable": "/usr/local/bin/docker",
+    "server_version": "29.2.1"
+  },
+  "environment": {
+    "container_env_equals_cached_image_defaults": true,
+    "container_env_keys": [
+      "GOSU_VERSION",
+      "PATH",
+      "REDIS_DOWNLOAD_SHA",
+      "REDIS_DOWNLOAD_URL",
+      "REDIS_VERSION"
+    ],
+    "database_url_inherited": false,
+    "docker_child_keys": [
+      "DOCKER_CLI_HINTS",
+      "DOCKER_CONFIG",
+      "HOME",
+      "LANG",
+      "PATH",
+      "TEMP",
+      "TMP",
+      "TMPDIR"
+    ],
+    "dotenv_loaded": false,
+    "private_docker_config": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/docker-config",
+    "private_docker_config_has_credentials": false,
+    "private_home": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/home",
+    "private_tmp": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/tmp",
+    "real_model_or_account_credentials_inherited": false
+  },
+  "execution_scope": {
+    "database_connections_made": false,
+    "database_tests_executed": false,
+    "existing_network_or_redis_borrowed": false,
+    "go_builds_executed": false,
+    "go_tests_executed": false,
+    "image_or_dependency_downloads": false,
+    "model_calls": false,
+    "product_test_markdown_launcher_or_task_metadata_modified": false,
+    "provider_or_external_account_calls": false,
+    "recursive_delegation": false
+  },
+  "external_files": {
+    "allocate-owned-authenticated-redis.py": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/allocate-owned-authenticated-redis.py",
+      "sha256": "fe1258708bbacd3acba70e5a7489e1a67566ded7c0182f94303f3156304d1f01"
+    },
+    "commands.jsonl": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/commands.jsonl",
+      "sha256": "e15ee775fe6501a4926b24305f32c5ff7a11886ec2780f7bc566c328f5373a2d"
+    },
+    "container-created-proof.json": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/container-created-proof.json",
+      "sha256": "dfc4f52f3035ac47d6982cd4c906abf6c140bf32828a51be84c423f15c944d2e"
+    },
+    "container-running-proof.json": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/container-running-proof.json",
+      "sha256": "8d0b70122e8ef6233e0a54592e3ed35ab405516747923c30b5ee09b76b0ee1b0"
+    },
+    "image-proof.json": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/image-proof.json",
+      "sha256": "9c095381c7513967944b6ef9219a091a5663c35c43f9bd5e02f3f9c1edf678d6"
+    },
+    "intent.receipt.json": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/intent.receipt.json",
+      "sha256": "085af918a2d6c7d82d00dac4bb66d7103f35318c3a605f5b23074b834d86ee57"
+    },
+    "network-created-proof.json": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/network-created-proof.json",
+      "sha256": "1eee034aa90da5b79cbce41d25418f47367232220373a5516fcfc255016ce185"
+    },
+    "network-running-proof.json": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/network-running-proof.json",
+      "sha256": "51ee1380c6ecf2366d5d4ee00332f57b8fc901d8ef39e38029d0d63c9de1558c"
+    },
+    "owned-binding-proof.json": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/owned-binding-proof.json",
+      "sha256": "c91c1301f1b391056113706903c676a702ebf22b259ccf31ac08f44dc973605a"
+    },
+    "prior-red-allocation.receipt.json": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/prior-red-allocation.receipt.json",
+      "sha256": "62b3251d5938372b56f97eeef9233b015ec465ee4f1018366ccfbe4f5d8fa07c"
+    },
+    "redis-container.log": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/redis-container.log",
+      "sha256": "9a0bd8475802cf2235fe4977854d32eda28935cfc7d59998edeec7650ef0201a"
+    },
+    "teardown-owned-redis.py": {
+      "mode": "0600",
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-owned-redis.py",
+      "sha256": "7418bc77eee3c41b20965afc279f5c902bbe5beb9c917efe5baa6cc66d008dd9"
+    }
+  },
+  "image": {
+    "architecture": "arm64",
+    "binary_version": "Redis server v=7.4.8 sha=00000000:0 malloc=jemalloc-5.3.0 bits=64 build=ccfd955b9fce8f87",
+    "created": "2026-04-17T00:23:40.386893417Z",
+    "descriptor": {
+      "digest": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+      "mediaType": "application/vnd.oci.image.index.v1+json",
+      "size": 10245
+    },
+    "id": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "os": "linux",
+    "platform_manifest_descriptor": {
+      "annotations": {
+        "com.docker.official-images.bashbrew.arch": "arm64v8",
+        "org.opencontainers.image.base.digest": "sha256:1832327faf048390adc33852575d37c7ba155e064a339e78b9bd81983a8c7a00",
+        "org.opencontainers.image.base.name": "alpine:3.21",
+        "org.opencontainers.image.created": "2026-04-17T00:22:53Z",
+        "org.opencontainers.image.revision": "9d9b74b729d555ef784db63c1941b73d1c47a6f9",
+        "org.opencontainers.image.source": "https://github.com/redis/docker-library-redis.git#9d9b74b729d555ef784db63c1941b73d1c47a6f9:7.4/alpine",
+        "org.opencontainers.image.url": "https://hub.docker.com/_/redis",
+        "org.opencontainers.image.version": "7.4.8-alpine"
+      },
+      "digest": "sha256:d6550289be540d3c543ffa836fce6e74c265773c0d833953d0461d347729bb70",
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "platform": {
+        "architecture": "arm64",
+        "os": "linux",
+        "variant": "v8"
+      },
+      "size": 2484
+    },
+    "pull_policy": "never",
+    "repo_digests": [
+      "redis@sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6"
+    ],
+    "runtime_version": "7.4.8",
+    "tag_reference": "redis:7-alpine"
+  },
+  "network": {
+    "containers": {
+      "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f": {
+        "EndpointID": "408207548afa48d9723c4ff6b6944581a1c9a72e89ee14d2315c0fd9f61c4ddf",
+        "IPv4Address": "172.19.0.2/16",
+        "IPv6Address": "",
+        "MacAddress": "c6:bd:6e:3f:2d:6a",
+        "Name": "multica-ka-p6-redis-1b8185dd6941"
+      }
+    },
+    "created": "2026-11-15T05:37:17.681188384Z",
+    "driver": "bridge",
+    "enable_ipv6": false,
+    "expected_owner_labels": {
+      "io.multica.trellis.approved-version": "2026-11-14-v1",
+      "io.multica.trellis.created-intent-utc": "2026-11-15T05:37:17.408949+00:00",
+      "io.multica.trellis.owner": "trellis-check",
+      "io.multica.trellis.purpose": "p6-service-redis-fixture",
+      "io.multica.trellis.receipt-root-sha256": "d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+      "io.multica.trellis.resource-kind": "redis-network",
+      "io.multica.trellis.run-id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "io.multica.trellis.task": "11-14-project-knowledge-automation",
+      "io.multica.trellis.task-path": ".trellis/tasks/11-14-project-knowledge-automation",
+      "io.multica.trellis.transport": "dedicated-non-internal-bridge"
+    },
+    "id": "e90316ebc4db53f6415bdcb8d2350a2c9364ffedd2d811598d074954ba6b135e",
+    "internal": false,
+    "ipam": {
+      "Config": [
+        {
+          "Gateway": "172.19.0.1",
+          "Subnet": "172.19.0.0/16"
+        }
+      ],
+      "Driver": "default",
+      "Options": {}
+    },
+    "labels": {
+      "io.multica.trellis.approved-version": "2026-11-14-v1",
+      "io.multica.trellis.created-intent-utc": "2026-11-15T05:37:17.408949+00:00",
+      "io.multica.trellis.owner": "trellis-check",
+      "io.multica.trellis.purpose": "p6-service-redis-fixture",
+      "io.multica.trellis.receipt-root-sha256": "d93e9746ad2e784a29c2a957d2d4990d27d59e14f6da48e76074f12e661ae02f",
+      "io.multica.trellis.resource-kind": "redis-network",
+      "io.multica.trellis.run-id": "1b8185dd69414d0b8ae9ab679a1c7669",
+      "io.multica.trellis.task": "11-14-project-knowledge-automation",
+      "io.multica.trellis.task-path": ".trellis/tasks/11-14-project-knowledge-automation",
+      "io.multica.trellis.transport": "dedicated-non-internal-bridge"
+    },
+    "name": "multica-ka-p6-redis-net-1b8185dd6941",
+    "options": {
+      "com.docker.network.enable_ipv4": "true",
+      "com.docker.network.enable_ipv6": "false"
+    },
+    "scope": "local"
+  },
+  "port_selection": {
+    "excluded_ports": [
+      55749,
+      55750,
+      55751,
+      55752
+    ],
+    "host": "127.0.0.1",
+    "method": "OS random loopback bind(127.0.0.1,0)",
+    "port": 52518,
+    "reserved_through_container_create_then_released_before_start": true
+  },
+  "preservation": {
+    "original_red_and_binding_files": [
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation-evidence-20261115-9f3b2b285a65.json",
+        "sha256": "6b6c7fb29ecac76dac1f46ba7915c595a82494dd8556228fb5c1860dfb3c7ffd"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-stage-history-review-20261115-69457a27.json",
+        "sha256": "c5950ce226cd99a5a38ca4923788328f7c51dace2487629662bc2c0d179ba90f"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-go-nondb-matrix-20261115-69457a27.json",
+        "sha256": "1f88877f4ff988687b6e8c0eda4a39d6eafabd0b9c772b88c8a1b61c912854fa"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-independent-current-binding-20261115-69457a27-r2.json",
+        "sha256": "96ec1aff5f93b6e42a138011f37ce968d6865d5677d928179d3bb72cf781f86e"
+      }
+    ],
+    "postgres_after": {
+      "Created": "2026-10-26T15:22:03.286813336Z",
+      "Id": "f06e055b60eb02897965374bf85474b7c7bc5e40e533ca84716707b07088c842",
+      "Image": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+      "Name": "/multica-postgres-1",
+      "RestartCount": 0,
+      "Running": true,
+      "StartedAt": "2026-11-11T06:53:08.262203424Z"
+    },
+    "postgres_before": {
+      "Created": "2026-10-26T15:22:03.286813336Z",
+      "Id": "f06e055b60eb02897965374bf85474b7c7bc5e40e533ca84716707b07088c842",
+      "Image": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+      "Name": "/multica-postgres-1",
+      "RestartCount": 0,
+      "Running": true,
+      "StartedAt": "2026-11-11T06:53:08.262203424Z"
+    },
+    "postgres_unchanged": true,
+    "prior_allocation_backup": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/prior-red-allocation.receipt.json",
+    "prior_allocation_sha256": "62b3251d5938372b56f97eeef9233b015ec465ee4f1018366ccfbe4f5d8fa07c",
+    "running_containers_after": [
+      {
+        "Id": "3b627d9c6d78bf8d647bef08481eebdcbda5fe3f23894a6235ffb8f6d9e3129f",
+        "Names": "multica-ka-p6-redis-1b8185dd6941",
+        "Ports": "127.0.0.1:52518->6379/tcp",
+        "State": "running"
+      },
+      {
+        "Id": "f06e055b60eb02897965374bf85474b7c7bc5e40e533ca84716707b07088c842",
+        "Names": "multica-postgres-1",
+        "Ports": "127.0.0.1:5432->5432/tcp",
+        "State": "running"
+      }
+    ],
+    "running_containers_before": [
+      {
+        "Id": "f06e055b60eb02897965374bf85474b7c7bc5e40e533ca84716707b07088c842",
+        "Names": "multica-postgres-1",
+        "Ports": "127.0.0.1:5432->5432/tcp",
+        "State": "running"
+      }
+    ]
+  },
+  "publication": {
+    "canonical_external_paths": true,
+    "current_allocation_update_authorized": true,
+    "immutable_exclusive_creation": true,
+    "previous_red_allocation_bytes_preserved": true
+  },
+  "redis": {
+    "all_keyspace_empty": true,
+    "authenticated_container_ping": "PONG",
+    "authenticated_host_ping": "PONG",
+    "configuration": {
+      "appendonly": "no",
+      "bind": "0.0.0.0",
+      "databases": "16",
+      "dir": "/data",
+      "maxmemory": "33554432",
+      "maxmemory-policy": "noeviction",
+      "port": "6379",
+      "protected-mode": "yes",
+      "save": ""
+    },
+    "container_user_identity": "uid=999(redis) gid=1000(redis) groups=1000(redis)",
+    "dbsize_container": {
+      "0": 0,
+      "12": 0
+    },
+    "dbsize_host": {
+      "0": 0,
+      "12": 0
+    },
+    "default_user_nopass": false,
+    "default_user_password_count": 1,
+    "host_and_container_run_id_match": true,
+    "requirepass_matches_generated_secret": true,
+    "run_id": "454a88f9b46ee2536ab4cfbb4b03eb1aeb7e9af0",
+    "runtime_data_filesystem": "tmpfs",
+    "runtime_fifo_mode": "0600",
+    "runtime_secret_transport": "stdin to 0600 FIFO on private /data tmpfs; no plaintext config file",
+    "runtime_version": "7.4.8",
+    "unauthenticated_ping_denied": true,
+    "wrong_password_denied": true
+  },
+  "repository_write_scope": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation-receipt-20261115-1b8185dd6941.json",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json"
+  ],
+  "safe_to_pass_to_go_launcher": true,
+  "schema": "multica.p6.redis-allocation-receipt.v2",
+  "state": "running",
+  "state_dir": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941",
+  "status": "allocated_verified",
+  "task": {
+    "approved_version": "2026-11-14-v1",
+    "name": "11-14-project-knowledge-automation",
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation"
+  },
+  "teardown": {
+    "deferred_to_main_session": true,
+    "execute_argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "-I",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-owned-redis.py",
+      "--allocation",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json",
+      "--expected-allocation-sha256",
+      "41e5c7a2ab13d5b490f3a242adcb3451bf3ecfbfc8e5f3c13dcbc6facf3e0e64",
+      "--execute"
+    ],
+    "script": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-owned-redis.py",
+    "script_sha256": "7418bc77eee3c41b20965afc279f5c902bbe5beb9c917efe5baa6cc66d008dd9",
+    "verify_argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "-I",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-redis-auth-20261115T053510Z-1b8185dd6941/teardown-owned-redis.py",
+      "--allocation",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-redis-allocation.json",
+      "--expected-allocation-sha256",
+      "41e5c7a2ab13d5b490f3a242adcb3451bf3ecfbfc8e5f3c13dcbc6facf3e0e64",
+      "--verify-only"
+    ]
+  },
+  "verdict": "GREEN_OWNED_AUTHENTICATED_FIXTURE",
+  "verified_at_utc": "2026-11-15T05:37:19.365780+00:00"
+}

@@ -1,0 +1,260 @@
+{
+  "addendum_to": "registration.json (RK1, d2fe54ab0); registration.json itself is not edited",
+  "written_by_session": "claude multica-0-4-37-87",
+  "decided_at": "2026-11-01T04:26:26Z",
+  "decision_source": "User answers in session multica-0-4-37-87 on 2026-11-01: fix product gaps 2 and 3 before testing and narrow H1; allocate the full 19-launch runtime set",
+  "research": "../real-model-runtime-framework-research.md (7a90f3d78)",
+  "status": "H3at2incomplete_originalstop; total12_remaining13; allfurthertrialsstopped",
+  "not_runnable_reasons": [
+    "Original stop rule triggered: H3a t2 incomplete/provider_result_missing; t3,H3b,H5,H6 notstarted",
+    "No replacement/healthcall/modelchange/timeoutextension or automaticretry; retain original failure and all spent starts",
+    "Modelwindowreleased; readonly diagnosis/independentreview only"
+  ],
+  "runtime_call_cap": 25,
+  "runtime_consumed": 12,
+  "cap_scope": "Real Provider launches for the runtime scenarios below only (22 for E0a/H1/H2/H3a/H3b/H5/H6 as listed, plus 3 for H2b). Not transferable to or from the original E0-E6 series. Knowledge scenarios K1-K3 and ordinary-task E0b are not covered by this cap.",
+  "runtime_scenarios": [
+    {
+      "id": "RK1-E0a",
+      "trials": 1,
+      "launches": 1,
+      "scope_correction": "With knowledge off, assert that --no-session-persistence is absent rather than present; the knowledge-granted argv clause belongs to a knowledge scenario."
+    },
+    {
+      "id": "RK1-H1",
+      "trials": 3,
+      "launches": 3,
+      "scope_correction": "Narrowed per PRD AC3: the measured run must state that the identified prior run stopped with an incomplete record and no result (results[].recording_incomplete=true, result_state=absent), without inventing its content. Retained checkpoint prefixes stay a human run-records surface and are not scored here."
+    },
+    {
+      "id": "RK1-H2",
+      "trials": 3,
+      "launches": 3
+    },
+    {
+      "id": "RK1-H2b",
+      "trials": 3,
+      "launches": 3,
+      "scope": "Squad continuation whose member provider_result exceeds the 4096 B source prefix; the decisive code is only in the tail, reachable through `multica collaboration handoff source`. A correct answer without a CLI handoff/sources read of the code is unsupported_correct_answer, not pass.",
+      "added_by": "claude multica-0-4-37-35; budget granted by the user on 2026-11-01T10:33:57Z (\"H2b给预算\")"
+    },
+    {
+      "id": "RK1-H3a",
+      "trials": 3,
+      "launches": 3
+    },
+    {
+      "id": "RK1-H3b",
+      "trials": 3,
+      "launches": 3
+    },
+    {
+      "id": "RK1-H5",
+      "trials": 3,
+      "launches": 3,
+      "accounts": "The two self-controlled accounts are the test-created owner and contributor users in the harness database; one Provider account is used. Confirmed by the user in session multica-0-4-37-87 at 2026-11-01T05:21:17Z."
+    },
+    {
+      "id": "RK1-H6",
+      "trials": 3,
+      "launches": 6,
+      "note": "Counted as pairs; hop2 runs in a different agent target, working directory and ledger with no --resume."
+    }
+  ],
+  "order": [
+    "RK1-E0a",
+    "RK1-H1",
+    "RK1-H2",
+    "RK1-H2b",
+    "RK1-H3a",
+    "RK1-H3b",
+    "RK1-H5",
+    "RK1-H6"
+  ],
+  "stop_rule": "Unchanged from registration.json.",
+  "environment_controls": "Remove test-process variables such as DATABASE_URL from the real child. The operator HOME/~/.claude settings stay as in production host mode (same exposure as the original series); record hashes of the files that apply.",
+  "product_fix": {
+    "commits": {
+      "ac2a24f8f": "test-only smoke authorizer admits knowledge_version=1",
+      "c54a28ba6": "collaboration handoff show/source CLI and negotiated-handoff recall brief",
+      "547760ea8": "verification evidence and independent review"
+    },
+    "evidence": "../verification/2026-11-01-recall-surface/summary.json",
+    "review": "../verification/2026-11-01-recall-surface/independent-review.md (pass-with-notes; medium cursor-loop wording defect fixed before commit)",
+    "measured_by": "RK1-H2b (truncated provider_result read through `collaboration handoff source`) and RK1-H3b (older comment paging). RK1-H2 measures the member result, readers and wake source only; its fixture cannot reach a second results page. Results/causes paging beyond 32 items is not measured by any RK1 scenario."
+  },
+  "source_binding": {
+    "manifest": "source-manifest-547760ea8.json",
+    "head": "547760ea83bacd1f5e18316303f93e45aa0ebc96",
+    "server_tree": "a01e9cb5ac47335f846b70cd5b08e45dd4f09b1b",
+    "source_id": "387eb4558cb7dcf2aa6db314ac0ee798e91c1e49980a806b1c10adcbe0e98ab1",
+    "file_count": 7924,
+    "dirty_product_paths": [],
+    "supersedes": "source-manifest.json (d53f1026f, source_id 15d3275b...) for the runtime scenarios; that file is kept unchanged",
+    "difference_from_previous": "exactly the 15 product files of ac2a24f8f and c54a28ba6; no other product file changed",
+    "rebind_rule": "Unchanged: re-run source_manifest.py before every launch; the framework commit will change this binding again"
+  },
+  "corrections_to_registration": [
+    {
+      "field": "coverage_of_existing_entries.TestHostProviderAccountSmoke.proves",
+      "correction": "From 96cedf485 until ac2a24f8f the smoke authorizer rejected knowledge_version=1 on the claim with HTTP 403, so the smoke could not pass at those HEADs and proved nothing there; the registered claim that the query is accepted holds only from ac2a24f8f. Confirmed independently by session multica-0-4-37-0b."
+    }
+  ],
+  "updated_at": "2026-11-05T13:03:49.470074+00:00",
+  "decisions": [
+    {
+      "at": "2026-11-01T10:33:57Z",
+      "session": "claude multica-0-4-37-35",
+      "decision": "User allocated RK1-H2b its registered 3 trials x 1 launch.",
+      "source": "user message in session multica-0-4-37-35: \"H2b给预算\""
+    },
+    {
+      "at": "2026-11-01T10:51:55Z",
+      "session": "claude multica-0-4-37-35",
+      "decision": "Runtime cap set to 25 so every listed scenario can run. The 19 recorded in 28c67c674 was an arithmetic error: its seven scenarios sum to 22 launches (E0a 1, H1 3, H2 3, H3a 3, H3b 3, H5 3, H6 3 pairs x 2), so a 19 cap would have refused H6 (16 used + 6 needed). 22 + 3 for H2b = 25.",
+      "source": "user answer in session multica-0-4-37-35 to the cap question: \"25 次，全部场景都跑\""
+    }
+  ],
+  "launch_accounting": "Only real paid Provider launches count toward 25. Sim/fake proofs consume zero. For actual invocations, run_rk1.py records launch_budget before/after using max(public measured launches, private real launch records) per trial, plus remaining cap and stop_state.",
+  "current_integration": {
+    "runtime": "9e7f18785",
+    "knowledge": "6cb9fcb36",
+    "framework": "30fa31eb7",
+    "delivery_preparation": "c3db64b24",
+    "independent_recheck": "independent-review/recheck-review.json; pass-with-notes; RKI1-5 closed",
+    "real_provider_consumed": 0,
+    "final_candidate_source_bound": false
+  },
+  "current_fake_independent_result_review": {
+    "report": "../continuation-20261102/rki6-review/review.json",
+    "report_sha256": "41b99b24d9cecd457b5a2b192af0666e356be509d270c2ccca6f50e5cc8e7672",
+    "verdict": "pass-with-notes",
+    "blocking_findings_open": 0,
+    "checks_passed": 1794,
+    "source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "real_provider_calls": 0,
+    "scope": "current final639 same-product normal/race fake evidence only"
+  },
+  "pre_result_review_reasons": [
+    "final_candidate_joint_verification_pending: full make check and gated Web/native/knowledge on-off remain open",
+    "RKI6_open: same final-candidate all-scenario fake normal/race required; preserved intermediate E0a recording-seal incomplete",
+    "final_source_binding_required: historical source_binding below is not the final candidate; framework-registration.source_binding.source_id remains empty",
+    "exclusive_window_required: pause shared-gateway coding/review and local heavy tests/migrations before paid execution"
+  ],
+  "historical_gate_reasons_before_20261104": [
+    "final_candidate_joint_verification_pending: full make check and gated Web/native/knowledge on-off remain open",
+    "final_source_binding_required: historical source_binding below is not the final candidate; framework-registration.source_binding.source_id remains empty",
+    "exclusive_window_required: pause shared-gateway coding/review and local heavy tests/migrations before paid execution"
+  ],
+  "current_acceptance_20261104": {
+    "updated_at": "2026-11-04T15:54:34.567289+00:00",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "source_files": 7990,
+    "shared_gate": "../continuation-20261104/shared-gate-reconciliation.json",
+    "normal": {
+      "exit": 0,
+      "pass": 62,
+      "fail": 0,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/normal-review.json"
+    },
+    "race": {
+      "exit": 1,
+      "pass": 60,
+      "fail": 2,
+      "skip": 0,
+      "review": "../continuation-20261104/independent-review/race-review.json",
+      "overlap_observed": true,
+      "overlap_causal_attribution": false
+    },
+    "password_runtime3": {
+      "passed": 3,
+      "review": "../continuation-20261104/password7/shared-runtime3-review.json",
+      "full7_passed": false
+    },
+    "window_owner": "01a1a728-4261-7db0-a3a8-f90b6a65ed0a",
+    "window_order": [
+      "shared password7",
+      "original14",
+      "runtime verification after explicit release"
+    ],
+    "runtime_cap": 25,
+    "runtime_consumed": 0,
+    "runnable": false
+  },
+  "current_acceptance_20261105": {
+    "at": "2026-11-04T16:59:10.758678+00:00",
+    "source_head": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "deterministic_review": "../continuation-20261105/independent-review/current-deterministic-acceptance.json",
+    "normal": {
+      "pass": 62,
+      "independent_checks": 912
+    },
+    "race03": {
+      "pass": 62,
+      "independent_checks": 915
+    },
+    "password7_passed": true,
+    "old_failure_fixed": false,
+    "real_calls": 0,
+    "runtime_cap": 25
+  },
+  "operator_binding_status": "PREPARED_NOT_STABLE",
+  "actual_E0a": {
+    "label": "RK1-E0a-t1",
+    "raw_verdict": "pass",
+    "launcher_exit": 0,
+    "helper_exit": 1,
+    "full_binding_accepted": false,
+    "summary": "../continuation-20261105/real-entry/e0a-result-summary.json",
+    "consumed": 1,
+    "remaining": 24
+  },
+  "E0a_disposition": "../continuation-20261105/plugin-drift-resolution/disposition.json",
+  "actual_H1": {
+    "summary": "../continuation-20261105/h1-entry/result-summary.json",
+    "raw_trials": "3finished/pass",
+    "consumed_total": 4,
+    "remaining": 21,
+    "helper_review_ready": true,
+    "independent_review": "../continuation-20261105/h1-entry/independent-review.json",
+    "accepted": true,
+    "disposition": "../continuation-20261105/h1-entry/disposition.json"
+  },
+  "actual_H2": {
+    "summary": "../continuation-20261105/h2-entry/result-summary.json",
+    "raw_trials": "3finished/pass",
+    "consumed_total": 7,
+    "remaining": 18,
+    "independent_review": "../continuation-20261105/h2-entry/independent-review.json",
+    "accepted": true,
+    "disposition": "../continuation-20261105/h2-entry/disposition.json"
+  },
+  "actual_H2b": {
+    "summary": "../continuation-20261105/h2b-entry/result-summary.json",
+    "raw_trials": "3finished/pass",
+    "consumed_total": 10,
+    "remaining": 15,
+    "independent_review": "../continuation-20261105/h2b-entry/independent-review.json",
+    "accepted": true,
+    "disposition": "../continuation-20261105/h2b-entry/disposition.json"
+  },
+  "actual_H3a": {
+    "summary": "../continuation-20261105/h3a-entry/result-summary.json",
+    "raw_trials": [
+      "t1 finished/pass",
+      "t2 incomplete/provider_result_missing",
+      "t3 notstarted"
+    ],
+    "consumed_total": 12,
+    "remaining": 13,
+    "original_stop_triggered": true,
+    "independent_review": "../continuation-20261105/h3a-entry/independent-review.json",
+    "evidence_integrity_checks": 120,
+    "scenario_verdict": "STOP_ORIGINAL_INCOMPLETE",
+    "diagnosis": "../continuation-20261105/h3a-entry/failure-diagnosis.json"
+  }
+}

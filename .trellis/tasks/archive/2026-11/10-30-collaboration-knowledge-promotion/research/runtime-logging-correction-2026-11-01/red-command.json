@@ -1,0 +1,20 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-json",
+    "./internal/daemon",
+    "./internal/daemon/collaborationrun",
+    "-run",
+    "TestKnowledgeStderrRemainsPrivate|TestHostKnowledgeStderrRemainsPrivate",
+    "-count=1",
+    "-timeout=60s"
+  ],
+  "exit_code": 1,
+  "elapsed_seconds": 4.454,
+  "expected": "private stderr assertions fail before fix"
+}

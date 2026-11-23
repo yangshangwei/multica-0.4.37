@@ -1,0 +1,9 @@
+=== RUN   TestHostContextExperiment
+=== RUN   TestHostContextExperiment/E2b_window_fact_oldest
+    host_context_experiment_test.go:180: E2b_window_fact_oldest trial 1: outcome=success verdict=pass context_reads=2 puts=0 93s
+    host_context_experiment_test.go:180: E2b_window_fact_oldest trial 2: outcome=success verdict=pass context_reads=1 puts=0 66s
+    host_context_experiment_test.go:180: E2b_window_fact_oldest trial 3: outcome=success verdict=pass context_reads=1 puts=0 44s
+--- PASS: TestHostContextExperiment (205.38s)
+    --- PASS: TestHostContextExperiment/E2b_window_fact_oldest (202.48s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/collaborationrun	205.796s

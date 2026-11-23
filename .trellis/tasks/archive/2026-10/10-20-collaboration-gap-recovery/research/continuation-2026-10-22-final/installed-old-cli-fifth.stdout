@@ -1,0 +1,27 @@
+
+Running 1 test using 1 worker
+
+
+
+
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands
+[1A[2K  1) [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 
+
+    Error: GET /api/collaboration/issues/01a163c4-c2db-7144-a41b-e3502f6ccb6d/comments/operations/530a24c5-a069-46e8-acb0-b9c372917516 failed: 404
+
+       at fixtures.ts:405
+
+      403 |       body: options.body === undefined ? undefined : JSON.stringify(options.body),
+      404 |     });
+    > 405 |     if (!response.ok) throw new Error(`${options.method ?? "GET"} ${path} failed: ${response.status}`);
+          |                             ^
+      406 |     return response.json() as Promise<T>;
+      407 |   }
+      408 |
+        at TestApiClient.requestJSON (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures.ts:405:29)
+        at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-installed-clients.spec.ts:134:12
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 

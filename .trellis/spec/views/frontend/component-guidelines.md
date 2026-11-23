@@ -107,10 +107,17 @@ installation changes. Base UI assigns switch IDs to hidden checkboxes: use
 
 ### Squad discovery and template identity
 
-The squad page keeps workspace instances separate from the template catalog.
-`?view=templates` opens the catalog; the default URL opens saved squads. Preserve
-unrelated query parameters and the hash when replacing the current view. A
-template-instance link must return to the catalog through browser Back.
+The squad page is a single saved-squad directory. Built-in templates live in
+the Capability market's `squad-templates` category; the successful-empty
+`SquadWelcome` keeps a direct catalog link. The old `?view=templates` bookmark
+replaces its location with `/{slug}/marketplace?type=squad-templates`, preserving
+unrelated query parameters and the hash. Template-instance links return to the
+market category through browser Back.
+
+`SquadTemplatesMarketPanel` only loads saved squads while active, because the
+catalog matches active instances by template provenance. It passes `active` to
+`BuiltinSquadCatalog`; an inactive catalog stops template fetching and closes its
+project setup dialog so no portal remains over another market category.
 
 Match instances by `template_key`, never by the editable squad name. Concise
 catalog summaries are display copy only: pass the original template into project
@@ -136,6 +143,61 @@ details must remain visible without mouse hover. Active filters use a semantic
 foreground/background pair and expose selected names plus result counts in a
 localized status region; do not replace saved descriptions with template copy.
 
+### Squad first-use welcome
+
+`SquadsPage` is a single saved-squad directory and mounts the shared
+`SquadWelcome` only when the squad Query has `isSuccess` and the unfiltered
+saved list is empty. Error feedback takes precedence, including a failed refresh
+after an empty response. Pending or missing reads keep the loading state; a
+filtered-empty populated workspace keeps collection recovery. The legacy
+`?view=templates` URL redirects to the market and never selects this welcome.
+The inherited `ApiClient.listSquads()` schema fallback is still
+`EMPTY_SQUAD_LIST`, so this view cannot identify malformed successful responses.
+
+The welcome hero owns the single creation `AppLink` to `paths.newSquad()`;
+the existing chooser owns template and custom creation. Documentation uses
+`paths.docsPage(DOCS_SLUGS.squads)` so Web and Desktop use the embedded reader.
+Update both guides and regenerate the Chinese bundle when an entry path changes.
+
+The three examples are illustrative, manually selected local view state. No
+timers, data fetches, stores or agent execution belong in the examples. Every
+inactive scene is both `aria-hidden` and `inert`; the selected dot is pressed,
+previous/next respect the ends, and a status region names the current example.
+Key the welcome by workspace ID: ordinary renders retain the selected example,
+while a workspace change starts at the first one. Container queries handle the
+sidebar/desktop tab width, and reduced motion removes the authored transitions.
+
+Canonical state, navigation, keyboard, inert and remount regressions live in
+`squads/components/squads-page.test.tsx`; chooser behavior remains in
+`squads/create/choose-create-squad-method-page.test.tsx`. The focused browser
+journey is `e2e/squad-welcome.spec.ts`. Check both locales, narrow windows and
+the actual Desktop scroll container; DOM visibility alone does not prove a
+control lies in the viewport or that a native capture painted the latest scroll.
+
+### Iteration first-use welcome
+
+`IterationOverview` may render `IterationWelcome` only when the workspace
+settings read says iterations are enabled and the complete catalogue query has
+successfully returned an empty array with no active filters. The catalogue is
+current saved data, not an audit log: an empty response cannot prove that a
+deleted unused iteration never existed. A history-only catalogue, a filtered
+empty result, a pending read, or a failed refresh must retain the ordinary
+timeline state and its recovery controls.
+
+The welcome owns the single `Create iteration` action and opens the existing
+controlled creation dialog. It may move the settings link into the intro while
+the welcome is visible, but must not add a second route or persist a dismissed
+flag. The illustrative card is local static content; it must not read, create,
+or mutate iteration data. Keep the existing planned-empty detail actions
+(`Add existing tasks` and `New task`) unchanged.
+
+The canonical regression matrix lives in
+`iterations/iteration-navigation.test.tsx`: successful empty catalogue,
+history-only, filtered-empty, failed read, disabled settings, and the existing
+empty planned detail. `e2e/iteration-welcome.spec.ts` owns compiled CSS checks
+for English desktop and Simplified Chinese mobile layouts, including document
+overflow and reachable creation/settings controls.
+
 <!-- How props should be defined and typed -->
 
 (To be filled by the team)
@@ -143,6 +205,16 @@ localized status region; do not replace saved descriptions with template copy.
 ---
 
 ## Styling Patterns
+
+### Runtime tokens in local CSS modules
+
+Tailwind `@theme inline` aliases in `packages/ui/styles/tokens.css` are compiled
+into utility rules and are not guaranteed runtime custom properties. A CSS
+module cannot assume `var(--radius-xl)` or `var(--radius-2xl)` exists. Use the
+emitted utility or the exact formula based on the runtime `--radius`, such as
+`calc(var(--radius) * 1.4)` and `calc(var(--radius) * 1.8)`. The ordinary `@theme`
+type scale does provide runtime `--text-*` variables. Verify computed radii on
+the built view; an unresolved token silently produces square panels.
 
 ### Welcome page viewport sizing
 
@@ -240,11 +312,12 @@ Mobile uses generated Lucide nodes with its existing SVG renderer. Refresh after
 
 ### Administration-only visual surfaces
 
-The Electron renderer does not mount `@multica/views/admin`, but its Tailwind
-source scan includes the entire views package. Administration presentation must
-therefore stay in the locally imported `admin/admin-visual.module.css`; never
-move its custom properties to global tokens or shared primitives. Its sibling
-`.css.d.ts` declares only that module, not a wildcard asset type.
+The Electron account shell mounts the limited collaboration administration page
+and the shared `AdminSessionBoundary`. It does not gain the general Web admin
+console. Administration presentation stays in the locally imported
+`admin/admin-visual.module.css`; apply its theme only to that page subtree and
+never move its custom properties to global tokens or shared primitives. Its
+sibling `.css.d.ts` declares only that module, not a wildcard asset type.
 
 Apply the local theme to both AdminShell and the mobile Sheet portal. A portal
 does not inherit custom properties from the shell's DOM subtree. Use rectangular
@@ -255,8 +328,10 @@ The overview's highlighted metrics retain accessible value descriptions,
 current-state drilldown parameters, and the distinction between unknown data
 and zero. Other administration pages receive a single content surface, without
 changing their forms or tables. After a visual change, verify administration
-routes in both locales/themes and check a separate desktop build for absence of
-administration-specific CSS, in addition to the desktop regression suite.
+routes in both locales/themes and verify the limited Desktop page plus an
+ordinary Desktop route. Administration styles must remain local even though
+the renderer now contains that CSS. Keep native session/scope cleanup above
+routes so leaving the page cannot retain a prior account's administrative cache.
 
 Administration list refinements keep display and query semantics separate.
 `AdminFilterSummary` accepts an explicit field allowlist and reads the submitted

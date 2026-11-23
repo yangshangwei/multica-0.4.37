@@ -45,6 +45,7 @@ test("squad audit: browser interactions, responsive layout and performance", asy
       ["maintenance", "Maintenance squad"], ["bug-fix", "Bug fix squad"],
       ["incident", "Incident squad"], ["feature-delivery", "Feature squad"],
       ["docs", "Documentation squad"], ["discovery", "Discovery squad"],
+      ["security-remediation", "Security remediation squad"],
     ]) {
       await api.requestJSON("/api/squads/from-template", { method: "POST", body: { template_key: key, runtime_id: runtime.id, name } });
     }
@@ -166,7 +167,7 @@ test("squad audit: browser interactions, responsive layout and performance", asy
     }
     await page.getByRole("button", { name: "Clear filters", exact: true }).focus();
     await page.keyboard.press("Enter");
-    await expect(page.getByRole("row").filter({ has: page.locator('a[href*="/squads/"]') })).toHaveCount(8);
+    await expect(page.getByRole("row").filter({ has: page.locator('a[href*="/squads/"]') })).toHaveCount(9);
     await page.evaluate(() => { document.documentElement.classList.remove("dark"); document.documentElement.classList.add("light"); });
 
     // Sorting and row actions must keep navigation in place.
@@ -180,10 +181,12 @@ test("squad audit: browser interactions, responsive layout and performance", asy
     await page.keyboard.press("Escape");
     await expect(rowActions).toBeFocused();
     await expect(page).toHaveURL(new RegExp(`/${workspace.slug}/squads$`));
-    await page.getByRole("button", { name: "New Squad", exact: true }).click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-    await expect(page.getByRole("button", { name: /Create custom squad/ })).toBeVisible();
-    await page.keyboard.press("Escape");
+    await page.getByRole("link", { name: "New Squad", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/squads/new`);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /Create custom squad/ })).toBeVisible();
+    await page.getByRole("button", { name: "Go back", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/squads`);
 
     const layouts = [];
     for (const width of [1440, 1024, 900, 768, 390, 320]) {
@@ -202,12 +205,16 @@ test("squad audit: browser interactions, responsive layout and performance", asy
     await page.setViewportSize({ width: 390, height: 844 });
     expect(await page.evaluate(() => matchMedia("(pointer: coarse)").matches)).toBe(true);
     const touchTargets = [];
-    for (const name of ["Filter", "Display", "New Squad"]) {
+    for (const name of ["Filter", "Display"]) {
       const bounds = await page.getByRole("button", { name, exact: true }).boundingBox();
       expect(bounds?.height).toBeGreaterThanOrEqual(44);
       expect(bounds?.width).toBeGreaterThanOrEqual(44);
       touchTargets.push({ name, bounds });
     }
+    const newSquadBounds = await page.getByRole("link", { name: "New Squad", exact: true }).boundingBox();
+    expect(newSquadBounds?.height).toBeGreaterThanOrEqual(44);
+    expect(newSquadBounds?.width).toBeGreaterThanOrEqual(44);
+    touchTargets.push({ name: "New Squad", bounds: newSquadBounds });
     const actionBounds = await rowActions.boundingBox();
     expect(actionBounds?.height).toBeGreaterThanOrEqual(44);
     expect(actionBounds?.width).toBeGreaterThanOrEqual(44);
@@ -216,10 +223,11 @@ test("squad audit: browser interactions, responsive layout and performance", asy
     await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
     await page.context().addCookies([{ name: "multica-locale", value: "zh-Hans", url: new URL(page.url()).origin }]);
     await page.reload();
-    await expect(page.getByRole("tab", { name: "工作空间", exact: true })).toBeVisible();
-    await page.getByRole("tab", { name: "模板", exact: true }).click();
-    await expect(page).toHaveURL(/view=templates/);
-    await page.getByRole("tab", { name: "工作空间", exact: true }).click();
+    await expect(page.getByRole("tab", { name: "工作空间", exact: true })).toHaveCount(0);
+    await page.goto(`/${workspace.slug}/squads?view=templates&from=bookmark#top`);
+    await expect(page).toHaveURL(`/${workspace.slug}/marketplace?from=bookmark&type=squad-templates#top`);
+    await expect(page.getByRole("tab", { name: "AI小队模板", exact: true })).toHaveAttribute("aria-selected", "true");
+    await page.goto(`/${workspace.slug}/squads`);
     await expect(squadLink).toBeVisible();
     await page.screenshot({ path: `.omx/reports/squad-browser/${phase}-zh-touch.png`, animations: "disabled" });
     await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });

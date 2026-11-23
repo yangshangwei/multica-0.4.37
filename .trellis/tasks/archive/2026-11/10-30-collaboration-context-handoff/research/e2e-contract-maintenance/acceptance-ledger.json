@@ -1,0 +1,312 @@
+{
+  "recorded_at": "2026-11-01T18:41:37.356767+00:00",
+  "scope": "Bounded E2E contract maintenance; final parent release acceptance remains open",
+  "product_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "test_source_commit": "1ecabb96457403d9601752f37eab89934265866c",
+  "committed_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+  "source_files": {
+    "e2e/collaboration-boundaries-web.spec.ts": "c2b37edb1e7fb8f0bc9f054f8b6fc2c8d27dcb398e033ff7ed6b4c81c0c5635d",
+    "e2e/collaboration-delivery-web.spec.ts": "a6fd52979da147dd0fa4768bc1b6d078ae2f9523764d95aa9fe153f944456912",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540",
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+    "e2e/collaboration-source-surface.spec.ts": "639214a9ceea2f0371e0a9cccb9863bcfbdf38067537c21c5f9c4a6dc173ea47",
+    "e2e/fixtures/collaboration-control-gaps.ts": "27a17c3dc0f274df7ddb046f1ac3001c056d721eb4db9120d946fe4805d7fe9d",
+    "e2e/fixtures/collaboration-editing.ts": "7abd25ee581f83b2c380346234b179ae434b9e89456afdb07185c46b0e22503a",
+    "e2e/fixtures/collaboration-mention-journeys.ts": "0a2b14cb1ebebe159e274a67b9306ab291067257c7557494cb211ccbf5e47697",
+    "e2e/fixtures/collaboration-offline-handoff.ts": "4179e69cdafa8eec8200e8fedcc832fdf43a199665192b9c5fc8c02fe15bc658",
+    "e2e/fixtures/collaboration-records.ts": "4823d1b63b6422a767c1e162e3657b7e72fdb1067982c56dc5706208fc94c0e8",
+    "e2e/fixtures/collaboration-retained-attachments.ts": "85237e54cda7b40fb1d7d88ab41518d6ada7760e98c3dadee729a3ec8502f4a9"
+  },
+  "historical_triage_sha256": "f14f441fdde9d9542f59434bc90fbb87349bc80918ab82b03a1061d5dea13e4b",
+  "historical_cases": [
+    {
+      "historical_case_key": "3dccc2100422",
+      "historical_title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "current_title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "spec": "collaboration-account-desktop.spec.ts",
+      "status": "passed",
+      "lane": "legacy",
+      "run_label": "repaired-legacy-10",
+      "run_exit_code": 0,
+      "run_results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "c919808d1d26",
+      "historical_title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "current_title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "spec": "collaboration-account-desktop.spec.ts",
+      "status": "passed",
+      "lane": "legacy",
+      "run_label": "repaired-legacy-10",
+      "run_exit_code": 0,
+      "run_results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "5a60ce5f71f0",
+      "historical_title": "Smaller gaps: title/date edits leave attributed records, recipient lookup is exact-only, a source member resolves and reacts without notifications",
+      "current_title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+      "spec": "collaboration-boundaries-web.spec.ts",
+      "status": "passed",
+      "lane": "legacy",
+      "run_label": "repaired-legacy-10",
+      "run_exit_code": 0,
+      "run_results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "158a87f90c8f",
+      "historical_title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "current_title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "spec": "collaboration-delivery-web.spec.ts",
+      "status": "passed",
+      "lane": "legacy",
+      "run_label": "repaired-legacy-10",
+      "run_exit_code": 0,
+      "run_results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "72c1ec89998d",
+      "historical_title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "current_title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "spec": "collaboration-delivery-web.spec.ts",
+      "status": "passed",
+      "lane": "legacy",
+      "run_label": "repaired-legacy-10",
+      "run_exit_code": 0,
+      "run_results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "187ee1881c81",
+      "historical_title": "Web source creation, field edits and discussion share one authorized issue",
+      "current_title": "Web source creation, field edits and discussion share one authorized issue",
+      "spec": "collaboration-editing-web.spec.ts",
+      "status": "passed",
+      "lane": "legacy",
+      "run_label": "repaired-legacy-10",
+      "run_exit_code": 0,
+      "run_results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "535e317ad170",
+      "historical_title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "current_title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "spec": "collaboration-leave-web.spec.ts",
+      "status": "passed",
+      "lane": "password",
+      "run_label": "repaired-password-final-2",
+      "run_exit_code": 0,
+      "run_results_sha256": "10da8ec0ce12c27702d5fe6e31370a04f3f86464653c8f40cc90a436f5dc1ac5",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "4971c07b93b6",
+      "historical_title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "current_title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "spec": "collaboration-mention-journeys-desktop.spec.ts",
+      "status": "passed",
+      "lane": "legacy",
+      "run_label": "repaired-legacy-10",
+      "run_exit_code": 0,
+      "run_results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "8e9c882cd544",
+      "historical_title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "current_title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "spec": "collaboration-mention-journeys-web.spec.ts",
+      "status": "passed",
+      "lane": "legacy",
+      "run_label": "repaired-legacy-10",
+      "run_exit_code": 0,
+      "run_results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "cd80f1b61840",
+      "historical_title": "Web shares ordinary child references and retained run records through account notification links",
+      "current_title": "Web shares ordinary child references and retained run records through account notification links",
+      "spec": "collaboration-records-web.spec.ts",
+      "status": "passed",
+      "lane": "legacy",
+      "run_label": "repaired-legacy-10",
+      "run_exit_code": 0,
+      "run_results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "f390d53c1162",
+      "historical_title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "current_title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "spec": "collaboration-retained-attachment.spec.ts",
+      "status": "passed",
+      "lane": "password",
+      "run_label": "repaired-password-5",
+      "run_exit_code": 1,
+      "run_results_sha256": "17c83b482e02feebc348cdfcbd31985e0d6f4c045ec4fca7da7b0bdfc99ca966",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "18e4a6485b4d",
+      "historical_title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "current_title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "spec": "collaboration-retained-attachment.spec.ts",
+      "status": "passed",
+      "lane": "password",
+      "run_label": "repaired-password-5",
+      "run_exit_code": 1,
+      "run_results_sha256": "17c83b482e02feebc348cdfcbd31985e0d6f4c045ec4fca7da7b0bdfc99ca966",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "37ff666368df",
+      "historical_title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "current_title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "spec": "collaboration-retained-attachment.spec.ts",
+      "status": "passed",
+      "lane": "password",
+      "run_label": "repaired-password-5",
+      "run_exit_code": 1,
+      "run_results_sha256": "17c83b482e02feebc348cdfcbd31985e0d6f4c045ec4fca7da7b0bdfc99ca966",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    },
+    {
+      "historical_case_key": "7b935d7ce8d5",
+      "historical_title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "current_title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "spec": "collaboration-source-surface.spec.ts",
+      "status": "passed",
+      "lane": "password",
+      "run_label": "repaired-password-final-2",
+      "run_exit_code": 0,
+      "run_results_sha256": "10da8ec0ce12c27702d5fe6e31370a04f3f86464653c8f40cc90a436f5dc1ac5",
+      "api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "tested_patch_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896"
+    }
+  ],
+  "historical_totals": {
+    "pass": 14,
+    "pending": 0,
+    "fail": 0,
+    "skip_as_pass": 0
+  },
+  "additional_runtime_password": {
+    "pass": 3,
+    "fail": 0,
+    "skip": 0,
+    "run_label": "runtime-password-3",
+    "ENV1_facts": "ENV1-facts.json"
+  },
+  "preserved_runs": [
+    {
+      "label": "canonical-red-3classes",
+      "exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-01T18:12:22.173Z",
+        "duration": 255873.366,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 3,
+        "flaky": 0
+      },
+      "results_sha256": "21a8dd9e7a07c0f21dcee581330caee7d0b924bfa155c6d02b03a7b0f8f7c427",
+      "log_sha256": "45e9d814bf9c0286ffff93207afe26b606a4befab87f0d0fec5495aaf5522e27"
+    },
+    {
+      "label": "canonical-red-3classes-v2",
+      "exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-01T18:22:43.259Z",
+        "duration": 257134.162,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 3,
+        "flaky": 0
+      },
+      "results_sha256": "39dc7b1242ddadcc1c23100eef1a0aabfef62dad43436805cd44d5efb7024219",
+      "log_sha256": "bde9802cf0688fc217a9013431077f960d230b9d502b9484c7230b72318ead7f"
+    },
+    {
+      "label": "repaired-legacy-10",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T18:29:52.264Z",
+        "duration": 68341.095,
+        "expected": 9,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "log_sha256": "849742b52e69227b2dc89bec298f034a82a850e7184ab411783a0bfe62162eb2"
+    },
+    {
+      "label": "repaired-password-5",
+      "exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-01T18:33:03.772Z",
+        "duration": 32716.305000000004,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "results_sha256": "17c83b482e02feebc348cdfcbd31985e0d6f4c045ec4fca7da7b0bdfc99ca966",
+      "log_sha256": "d44f3654cbad96371f9ac1a27fc06dc1ad1a9a863a1d76346edb57774b2f51bc"
+    },
+    {
+      "label": "runtime-password-3",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T18:34:56.564Z",
+        "duration": 7445.718,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "results_sha256": "358ca2016390172ee96c79d47ea77bdad174cf12bd251752df24cc49f43b3640",
+      "log_sha256": "9a04ac73d3f073e45002cef414752f04de36bb462c77b4778b579a9809eaead0"
+    },
+    {
+      "label": "repaired-password-final-2",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T18:37:25.044Z",
+        "duration": 35462.172,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "results_sha256": "10da8ec0ce12c27702d5fe6e31370a04f3f86464653c8f40cc90a436f5dc1ac5",
+      "log_sha256": "10d9c92ad81ca8fa6afb35ba5552a24da8d2bc4a65235e1735bbd1999f12bca3"
+    }
+  ],
+  "environment_amendment": "root-gate-amendment.json",
+  "result_reuse_basis": "Product/API/renderer C3 and all tested patch bytes were unchanged. Root changed only the dedicated protocol Resume gate and supplied its built CLI for the last two cases, explicitly directing only those affected cases to rerun. Earlier failed setup/contract runs and the intentional legacy Leave skip are retained separately. This ledger does not represent a final merged make check or release verdict.",
+  "source_cli_sha256_observed": [
+    "4c9ee3f15c6dcd46029c8ee07a17066a745fdc666dfb854ec7aa785d15c17034"
+  ],
+  "provider_calls": 0,
+  "parent_acceptance": "OPEN_INDEPENDENT_REVIEW_INTEGRATION_AND_FINAL_CANDIDATE_REQUIRED",
+  "root_services_ready_proof_sha256": "f936faaa9984d3415e5a23521bdbbc9db619bac3a64c113befaa67d20035dea0"
+}

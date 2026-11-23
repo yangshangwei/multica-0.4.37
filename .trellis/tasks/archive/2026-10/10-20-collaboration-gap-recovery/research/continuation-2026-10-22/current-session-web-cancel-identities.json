@@ -1,0 +1,4345 @@
+{
+  "action": "cancel",
+  "originalA": {
+    "client": "electron",
+    "actorId": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+    "targetId": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+    "content": "AC57 cancel live handler A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+    "marker": "AC57 cancel live handler A",
+    "requestId": "a1ba3131-0027-4b3a-84b9-3a0fb6cae9a4",
+    "receipt": {
+      "status": 201,
+      "code": "comment_created",
+      "protocol_version": 2,
+      "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+      "comment_id": "a7a904bb-e18c-450d-89ce-d56491850e09",
+      "comment_revision": "1",
+      "event_id": "c698eb64-247b-42c0-b656-da4a09028f35",
+      "event_seq": "13",
+      "targets": [
+        {
+          "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+          "kind": "agent",
+          "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "shared_runtime_unavailable",
+          "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+          "command_sequence": "1",
+          "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+          "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+          "group_id": null
+        }
+      ]
+    },
+    "commandId": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+    "batchId": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+    "sequence": "1",
+    "preview": {
+      "protocol_version": 2,
+      "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "1",
+        "account_epoch": "1"
+      },
+      "targets": [
+        {
+          "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+          "kind": "agent",
+          "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "shared_runtime_unavailable",
+          "command_id": null,
+          "channel_id": null,
+          "batch_id": null,
+          "group_id": null,
+          "grouping": {
+            "kind": "pending_batch",
+            "target_ids": [
+              "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a"
+            ],
+            "has_existing_inputs": false,
+            "follows_pending_batch": false
+          }
+        }
+      ],
+      "recipients": [
+        {
+          "recipient": {
+            "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "is_mention": false
+        }
+      ]
+    }
+  },
+  "originalB": {
+    "client": "web",
+    "actorId": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+    "targetId": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+    "content": "AC57 cancel live creator B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+    "marker": "AC57 cancel live creator B",
+    "requestId": "745878b6-d6f3-4d93-b8b9-a6eb6768cbdc",
+    "receipt": {
+      "status": 201,
+      "code": "comment_created",
+      "protocol_version": 2,
+      "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+      "comment_id": "d113aba0-416a-4132-b6be-e3d6a42a1861",
+      "comment_revision": "1",
+      "event_id": "558b7e2d-bf1a-48c9-937c-75db94e57339",
+      "event_seq": "17",
+      "targets": [
+        {
+          "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+          "kind": "agent",
+          "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "shared_runtime_unavailable",
+          "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+          "command_sequence": "1",
+          "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+          "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+          "group_id": null
+        }
+      ]
+    },
+    "commandId": "e61bf0c9-6326-460e-af61-70df5acdd233",
+    "batchId": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+    "sequence": "1",
+    "preview": {
+      "protocol_version": 2,
+      "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+      "lifecycle_epoch": "1",
+      "write_context": {
+        "participant_epoch": "1",
+        "account_epoch": "1"
+      },
+      "targets": [
+        {
+          "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+          "kind": "agent",
+          "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+          "target_epoch": "1",
+          "config_version": "1",
+          "hold_reason": null,
+          "hold_version": "3",
+          "state": "waiting",
+          "code": "command_queued",
+          "waiting_reason": "shared_runtime_unavailable",
+          "command_id": null,
+          "channel_id": null,
+          "batch_id": null,
+          "group_id": null,
+          "grouping": {
+            "kind": "pending_batch",
+            "target_ids": [
+              "66df051d-89e0-4fe1-9c07-486c9a6dc6c9"
+            ],
+            "has_existing_inputs": false,
+            "follows_pending_batch": false
+          }
+        }
+      ],
+      "recipients": [
+        {
+          "recipient": {
+            "user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+            "name": "Cross-client collaborator B",
+            "avatar_url": "",
+            "external": true
+          },
+          "is_mention": false
+        }
+      ]
+    }
+  },
+  "waiting": [
+    {
+      "client": "web",
+      "actorId": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "targetId": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+      "content": "AC57 cancel creator waits in A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+      "marker": "AC57 cancel creator waits in A",
+      "requestId": "67e0e11a-c538-4f0d-951b-7706af207b87",
+      "receipt": {
+        "status": 201,
+        "code": "comment_created",
+        "protocol_version": 2,
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "comment_id": "4b437f46-f8ff-49d3-b9e1-10cce6c43e80",
+        "comment_revision": "1",
+        "event_id": "9f1c6bba-2c41-4908-b4d6-a06b18bfc9c5",
+        "event_seq": "21",
+        "targets": [
+          {
+            "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+            "kind": "agent",
+            "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "state": "waiting",
+            "code": "command_queued",
+            "waiting_reason": "target_busy",
+            "command_id": "85b82b8a-3ad5-445a-8b88-f72debc9e37e",
+            "command_sequence": "2",
+            "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+            "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+            "group_id": null
+          }
+        ]
+      },
+      "commandId": "85b82b8a-3ad5-445a-8b88-f72debc9e37e",
+      "batchId": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+      "sequence": "2",
+      "preview": {
+        "protocol_version": 2,
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "targets": [
+          {
+            "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+            "kind": "agent",
+            "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "state": "waiting",
+            "code": "command_queued",
+            "waiting_reason": "target_busy",
+            "command_id": null,
+            "channel_id": null,
+            "batch_id": null,
+            "group_id": null,
+            "grouping": {
+              "kind": "pending_batch",
+              "target_ids": [
+                "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a"
+              ],
+              "has_existing_inputs": false,
+              "follows_pending_batch": false
+            }
+          }
+        ],
+        "recipients": [
+          {
+            "recipient": {
+              "user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+              "name": "Cross-client collaborator B",
+              "avatar_url": "",
+              "external": true
+            },
+            "is_mention": false
+          }
+        ]
+      }
+    },
+    {
+      "client": "electron",
+      "actorId": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+      "targetId": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+      "content": "AC57 cancel handler waits in A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+      "marker": "AC57 cancel handler waits in A",
+      "requestId": "f364f2d1-12c9-4fce-9a58-85ef69ca4e8c",
+      "receipt": {
+        "status": 201,
+        "code": "comment_created",
+        "protocol_version": 2,
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "comment_id": "ae59e1fd-97a9-424d-8b02-718a44faaf99",
+        "comment_revision": "1",
+        "event_id": "65feb7a6-8e36-40ba-85fd-d3a352af4166",
+        "event_seq": "22",
+        "targets": [
+          {
+            "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+            "kind": "agent",
+            "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "state": "waiting",
+            "code": "command_queued",
+            "waiting_reason": "target_busy",
+            "command_id": "9889bcad-4050-40bf-b8c1-c80a01358663",
+            "command_sequence": "3",
+            "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+            "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+            "group_id": null
+          }
+        ]
+      },
+      "commandId": "9889bcad-4050-40bf-b8c1-c80a01358663",
+      "batchId": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+      "sequence": "3",
+      "preview": {
+        "protocol_version": 2,
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "targets": [
+          {
+            "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+            "kind": "agent",
+            "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "state": "waiting",
+            "code": "command_queued",
+            "waiting_reason": "target_busy",
+            "command_id": null,
+            "channel_id": null,
+            "batch_id": null,
+            "group_id": null,
+            "grouping": {
+              "kind": "pending_batch",
+              "target_ids": [
+                "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a"
+              ],
+              "has_existing_inputs": true,
+              "follows_pending_batch": false
+            }
+          }
+        ],
+        "recipients": [
+          {
+            "recipient": {
+              "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+              "name": "Cross-client collaborator A",
+              "avatar_url": "",
+              "external": false
+            },
+            "is_mention": false
+          }
+        ]
+      }
+    },
+    {
+      "client": "web",
+      "actorId": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "targetId": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+      "content": "AC57 cancel creator waits in B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+      "marker": "AC57 cancel creator waits in B",
+      "requestId": "70c77d6e-bfd7-4ace-b68b-adb0da7d4315",
+      "receipt": {
+        "status": 201,
+        "code": "comment_created",
+        "protocol_version": 2,
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "comment_id": "671fd345-cc1c-42b8-aca0-9cdd715ce54f",
+        "comment_revision": "1",
+        "event_id": "79995cb2-fcd8-4440-8c7f-1b0a8dddebec",
+        "event_seq": "23",
+        "targets": [
+          {
+            "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+            "kind": "agent",
+            "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "state": "waiting",
+            "code": "command_queued",
+            "waiting_reason": "target_busy",
+            "command_id": "4fe64c8a-9de6-4513-a8e4-08afef12e5f9",
+            "command_sequence": "2",
+            "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+            "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+            "group_id": null
+          }
+        ]
+      },
+      "commandId": "4fe64c8a-9de6-4513-a8e4-08afef12e5f9",
+      "batchId": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+      "sequence": "2",
+      "preview": {
+        "protocol_version": 2,
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "targets": [
+          {
+            "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+            "kind": "agent",
+            "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "state": "waiting",
+            "code": "command_queued",
+            "waiting_reason": "target_busy",
+            "command_id": null,
+            "channel_id": null,
+            "batch_id": null,
+            "group_id": null,
+            "grouping": {
+              "kind": "pending_batch",
+              "target_ids": [
+                "66df051d-89e0-4fe1-9c07-486c9a6dc6c9"
+              ],
+              "has_existing_inputs": false,
+              "follows_pending_batch": false
+            }
+          }
+        ],
+        "recipients": [
+          {
+            "recipient": {
+              "user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+              "name": "Cross-client collaborator B",
+              "avatar_url": "",
+              "external": true
+            },
+            "is_mention": false
+          }
+        ]
+      }
+    },
+    {
+      "client": "electron",
+      "actorId": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+      "targetId": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+      "content": "AC57 cancel handler waits in B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+      "marker": "AC57 cancel handler waits in B",
+      "requestId": "4903a72b-d76a-4ad3-944a-15cfc224b11b",
+      "receipt": {
+        "status": 201,
+        "code": "comment_created",
+        "protocol_version": 2,
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "comment_id": "18f727c1-ee2d-41ab-ae54-242733087d8d",
+        "comment_revision": "1",
+        "event_id": "84801df9-f7ce-41e9-a824-f3ea1967f2f8",
+        "event_seq": "24",
+        "targets": [
+          {
+            "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+            "kind": "agent",
+            "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "state": "waiting",
+            "code": "command_queued",
+            "waiting_reason": "target_busy",
+            "command_id": "29905171-2395-4223-bbb7-0afc90b831b1",
+            "command_sequence": "3",
+            "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+            "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+            "group_id": null
+          }
+        ]
+      },
+      "commandId": "29905171-2395-4223-bbb7-0afc90b831b1",
+      "batchId": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+      "sequence": "3",
+      "preview": {
+        "protocol_version": 2,
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "lifecycle_epoch": "1",
+        "write_context": {
+          "participant_epoch": "1",
+          "account_epoch": "1"
+        },
+        "targets": [
+          {
+            "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+            "kind": "agent",
+            "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+            "target_epoch": "1",
+            "config_version": "1",
+            "hold_reason": null,
+            "hold_version": "3",
+            "state": "waiting",
+            "code": "command_queued",
+            "waiting_reason": "target_busy",
+            "command_id": null,
+            "channel_id": null,
+            "batch_id": null,
+            "group_id": null,
+            "grouping": {
+              "kind": "pending_batch",
+              "target_ids": [
+                "66df051d-89e0-4fe1-9c07-486c9a6dc6c9"
+              ],
+              "has_existing_inputs": true,
+              "follows_pending_batch": false
+            }
+          }
+        ],
+        "recipients": [
+          {
+            "recipient": {
+              "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+              "name": "Cross-client collaborator A",
+              "avatar_url": "",
+              "external": false
+            },
+            "is_mention": false
+          }
+        ]
+      }
+    }
+  ],
+  "closed": {
+    "receipt": {
+      "code": "cancelled",
+      "collaboration_revision": "2"
+    },
+    "requestId": "98dc0203-6f3d-4746-9c67-0c0d1e71e24a",
+    "input": {
+      "expected_collaboration_revision": "1",
+      "expected_lifecycle_epoch": "1",
+      "expected_participant_epoch": "1",
+      "expected_account_epoch": "1",
+      "action": "cancel",
+      "status": "cancelled",
+      "status_options_version": "f901c3d62c4f46f62c4590e596d4455991f71ecc93ce3b08b57cb373182156e5"
+    }
+  },
+  "permitted_execution": {
+    "protocol_version": 5,
+    "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+    "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+    "availability": "unavailable",
+    "unavailable_reason": "shared_runtime_unavailable",
+    "target_set_version": "4",
+    "control": {
+      "scope": "issue",
+      "queue_state": "active",
+      "control_version": "2"
+    },
+    "execution_gate": {
+      "enabled": true,
+      "epoch": "3"
+    },
+    "channels": [
+      {
+        "id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "1",
+        "next_command_seq": "4",
+        "active_group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "pause_reason": ""
+      },
+      {
+        "id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "1",
+        "next_command_seq": "4",
+        "active_group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "pause_reason": ""
+      },
+      {
+        "id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+        "queue_state": "active",
+        "control_version": "2",
+        "group_generation": "0",
+        "next_command_seq": "1",
+        "active_group_id": null,
+        "pause_reason": ""
+      }
+    ],
+    "targets": [
+      {
+        "id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "kind": "agent",
+        "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "active",
+          "control_version": "2"
+        },
+        "group_generation": "1",
+        "active_group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "pause_reason": "",
+        "revoked_at": null
+      },
+      {
+        "id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "kind": "agent",
+        "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "active",
+          "control_version": "2"
+        },
+        "group_generation": "1",
+        "active_group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "pause_reason": "",
+        "revoked_at": null
+      },
+      {
+        "id": "d536ea3a-451c-455d-a2f5-6024d555cdb5",
+        "channel_id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+        "kind": "agent",
+        "resource_id": "9eb9c98f-6c20-4adc-871b-164f47c1160a",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "active",
+          "control_version": "2"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "",
+        "revoked_at": null
+      }
+    ],
+    "commands": [
+      {
+        "id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "input_event_id": "558b7e2d-bf1a-48c9-937c-75db94e57339",
+        "sequence": "1",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "in_flight"
+      },
+      {
+        "id": "4fe64c8a-9de6-4513-a8e4-08afef12e5f9",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "input_event_id": "79995cb2-fcd8-4440-8c7f-1b0a8dddebec",
+        "sequence": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "waiting"
+      },
+      {
+        "id": "29905171-2395-4223-bbb7-0afc90b831b1",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "input_event_id": "84801df9-f7ce-41e9-a824-f3ea1967f2f8",
+        "sequence": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "waiting"
+      },
+      {
+        "id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "input_event_id": "c698eb64-247b-42c0-b656-da4a09028f35",
+        "sequence": "1",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "in_flight"
+      },
+      {
+        "id": "85b82b8a-3ad5-445a-8b88-f72debc9e37e",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "input_event_id": "9f1c6bba-2c41-4908-b4d6-a06b18bfc9c5",
+        "sequence": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "waiting"
+      },
+      {
+        "id": "9889bcad-4050-40bf-b8c1-c80a01358663",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "input_event_id": "65feb7a6-8e36-40ba-85fd-d3a352af4166",
+        "sequence": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "waiting"
+      }
+    ],
+    "groups": [
+      {
+        "id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "active",
+        "expansion_sealed_at": null,
+        "forced_disposition": null,
+        "settled_at": null,
+        "inputs": [
+          {
+            "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+            "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+            "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+            "sequence": "1",
+            "consuming_run_id": "da736ee3-811f-49ae-a441-ddd976a4e31b",
+            "reader_run_ids": [
+              "da736ee3-811f-49ae-a441-ddd976a4e31b"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      },
+      {
+        "id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "active",
+        "expansion_sealed_at": null,
+        "forced_disposition": null,
+        "settled_at": null,
+        "inputs": [
+          {
+            "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+            "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+            "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+            "sequence": "1",
+            "consuming_run_id": "f45477c1-362b-4148-9b9e-630a426a3862",
+            "reader_run_ids": [
+              "f45477c1-362b-4148-9b9e-630a426a3862"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      }
+    ],
+    "runs": [
+      {
+        "id": "da736ee3-811f-49ae-a441-ddd976a4e31b",
+        "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "launch_authorized",
+        "proof_state": "unknown",
+        "business_outcome": null,
+        "forced_disposition": null,
+        "recording_incomplete": false,
+        "settled_at": null
+      },
+      {
+        "id": "f45477c1-362b-4148-9b9e-630a426a3862",
+        "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "launch_authorized",
+        "proof_state": "unknown",
+        "business_outcome": null,
+        "forced_disposition": null,
+        "recording_incomplete": false,
+        "settled_at": null
+      }
+    ]
+  },
+  "closing_execution": {
+    "protocol_version": 5,
+    "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+    "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+    "availability": "unavailable",
+    "unavailable_reason": "shared_runtime_unavailable",
+    "target_set_version": "4",
+    "control": {
+      "scope": "issue",
+      "queue_state": "closed",
+      "control_version": "3"
+    },
+    "execution_gate": {
+      "enabled": true,
+      "epoch": "3"
+    },
+    "channels": [
+      {
+        "id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "1",
+        "next_command_seq": "4",
+        "active_group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "pause_reason": "issue_cancelled"
+      },
+      {
+        "id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "1",
+        "next_command_seq": "4",
+        "active_group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "pause_reason": "issue_cancelled"
+      },
+      {
+        "id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "0",
+        "next_command_seq": "1",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled"
+      }
+    ],
+    "targets": [
+      {
+        "id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "kind": "agent",
+        "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "1",
+        "active_group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "pause_reason": "issue_cancelled",
+        "revoked_at": null
+      },
+      {
+        "id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "kind": "agent",
+        "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "1",
+        "active_group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "pause_reason": "issue_cancelled",
+        "revoked_at": null
+      },
+      {
+        "id": "d536ea3a-451c-455d-a2f5-6024d555cdb5",
+        "channel_id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+        "kind": "agent",
+        "resource_id": "9eb9c98f-6c20-4adc-871b-164f47c1160a",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled",
+        "revoked_at": null
+      }
+    ],
+    "commands": [
+      {
+        "id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "input_event_id": "558b7e2d-bf1a-48c9-937c-75db94e57339",
+        "sequence": "1",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "in_flight"
+      },
+      {
+        "id": "4fe64c8a-9de6-4513-a8e4-08afef12e5f9",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "input_event_id": "79995cb2-fcd8-4440-8c7f-1b0a8dddebec",
+        "sequence": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "cancelled"
+      },
+      {
+        "id": "29905171-2395-4223-bbb7-0afc90b831b1",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "input_event_id": "84801df9-f7ce-41e9-a824-f3ea1967f2f8",
+        "sequence": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "cancelled"
+      },
+      {
+        "id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "input_event_id": "c698eb64-247b-42c0-b656-da4a09028f35",
+        "sequence": "1",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "in_flight"
+      },
+      {
+        "id": "85b82b8a-3ad5-445a-8b88-f72debc9e37e",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "input_event_id": "9f1c6bba-2c41-4908-b4d6-a06b18bfc9c5",
+        "sequence": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "cancelled"
+      },
+      {
+        "id": "9889bcad-4050-40bf-b8c1-c80a01358663",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "input_event_id": "65feb7a6-8e36-40ba-85fd-d3a352af4166",
+        "sequence": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "cancelled"
+      }
+    ],
+    "groups": [
+      {
+        "id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "ending",
+        "expansion_sealed_at": "2026-10-22T12:58:08+08:00",
+        "forced_disposition": "stopped",
+        "settled_at": null,
+        "inputs": [
+          {
+            "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+            "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+            "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+            "sequence": "1",
+            "consuming_run_id": "da736ee3-811f-49ae-a441-ddd976a4e31b",
+            "reader_run_ids": [
+              "da736ee3-811f-49ae-a441-ddd976a4e31b"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      },
+      {
+        "id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "ending",
+        "expansion_sealed_at": "2026-10-22T12:58:08+08:00",
+        "forced_disposition": "stopped",
+        "settled_at": null,
+        "inputs": [
+          {
+            "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+            "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+            "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+            "sequence": "1",
+            "consuming_run_id": "f45477c1-362b-4148-9b9e-630a426a3862",
+            "reader_run_ids": [
+              "f45477c1-362b-4148-9b9e-630a426a3862"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      }
+    ],
+    "runs": [
+      {
+        "id": "da736ee3-811f-49ae-a441-ddd976a4e31b",
+        "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "ending",
+        "proof_state": "unknown",
+        "business_outcome": null,
+        "forced_disposition": "stopped",
+        "recording_incomplete": false,
+        "settled_at": null
+      },
+      {
+        "id": "f45477c1-362b-4148-9b9e-630a426a3862",
+        "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "ending",
+        "proof_state": "unknown",
+        "business_outcome": null,
+        "forced_disposition": "stopped",
+        "recording_incomplete": false,
+        "settled_at": null
+      }
+    ]
+  },
+  "partial_proof_execution": {
+    "protocol_version": 5,
+    "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+    "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+    "availability": "unavailable",
+    "unavailable_reason": "shared_runtime_unavailable",
+    "target_set_version": "4",
+    "control": {
+      "scope": "issue",
+      "queue_state": "closed",
+      "control_version": "3"
+    },
+    "execution_gate": {
+      "enabled": true,
+      "epoch": "3"
+    },
+    "channels": [
+      {
+        "id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "1",
+        "next_command_seq": "4",
+        "active_group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "pause_reason": "issue_cancelled"
+      },
+      {
+        "id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "1",
+        "next_command_seq": "4",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled"
+      },
+      {
+        "id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "0",
+        "next_command_seq": "1",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled"
+      }
+    ],
+    "targets": [
+      {
+        "id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "kind": "agent",
+        "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "1",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled",
+        "revoked_at": null
+      },
+      {
+        "id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "kind": "agent",
+        "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "1",
+        "active_group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "pause_reason": "issue_cancelled",
+        "revoked_at": null
+      },
+      {
+        "id": "d536ea3a-451c-455d-a2f5-6024d555cdb5",
+        "channel_id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+        "kind": "agent",
+        "resource_id": "9eb9c98f-6c20-4adc-871b-164f47c1160a",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled",
+        "revoked_at": null
+      }
+    ],
+    "commands": [
+      {
+        "id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "input_event_id": "558b7e2d-bf1a-48c9-937c-75db94e57339",
+        "sequence": "1",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "in_flight"
+      },
+      {
+        "id": "4fe64c8a-9de6-4513-a8e4-08afef12e5f9",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "input_event_id": "79995cb2-fcd8-4440-8c7f-1b0a8dddebec",
+        "sequence": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "cancelled"
+      },
+      {
+        "id": "29905171-2395-4223-bbb7-0afc90b831b1",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "input_event_id": "84801df9-f7ce-41e9-a824-f3ea1967f2f8",
+        "sequence": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "cancelled"
+      },
+      {
+        "id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "input_event_id": "c698eb64-247b-42c0-b656-da4a09028f35",
+        "sequence": "1",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "stopped"
+      },
+      {
+        "id": "85b82b8a-3ad5-445a-8b88-f72debc9e37e",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "input_event_id": "9f1c6bba-2c41-4908-b4d6-a06b18bfc9c5",
+        "sequence": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "cancelled"
+      },
+      {
+        "id": "9889bcad-4050-40bf-b8c1-c80a01358663",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "input_event_id": "65feb7a6-8e36-40ba-85fd-d3a352af4166",
+        "sequence": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "cancelled"
+      }
+    ],
+    "groups": [
+      {
+        "id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "stopped",
+        "expansion_sealed_at": "2026-10-22T12:58:08+08:00",
+        "forced_disposition": "stopped",
+        "settled_at": "2026-10-22T12:58:11+08:00",
+        "inputs": [
+          {
+            "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+            "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+            "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+            "sequence": "1",
+            "consuming_run_id": "da736ee3-811f-49ae-a441-ddd976a4e31b",
+            "reader_run_ids": [
+              "da736ee3-811f-49ae-a441-ddd976a4e31b"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      },
+      {
+        "id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "ending",
+        "expansion_sealed_at": "2026-10-22T12:58:08+08:00",
+        "forced_disposition": "stopped",
+        "settled_at": null,
+        "inputs": [
+          {
+            "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+            "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+            "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+            "sequence": "1",
+            "consuming_run_id": "f45477c1-362b-4148-9b9e-630a426a3862",
+            "reader_run_ids": [
+              "f45477c1-362b-4148-9b9e-630a426a3862"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      }
+    ],
+    "runs": [
+      {
+        "id": "da736ee3-811f-49ae-a441-ddd976a4e31b",
+        "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "settled",
+        "proof_state": "exited_proven",
+        "business_outcome": null,
+        "forced_disposition": "stopped",
+        "recording_incomplete": true,
+        "settled_at": "2026-10-22T12:58:11+08:00"
+      },
+      {
+        "id": "f45477c1-362b-4148-9b9e-630a426a3862",
+        "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "ending",
+        "proof_state": "unknown",
+        "business_outcome": null,
+        "forced_disposition": "stopped",
+        "recording_incomplete": false,
+        "settled_at": null
+      }
+    ]
+  },
+  "final_execution": {
+    "protocol_version": 5,
+    "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+    "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+    "availability": "unavailable",
+    "unavailable_reason": "shared_runtime_unavailable",
+    "target_set_version": "4",
+    "control": {
+      "scope": "issue",
+      "queue_state": "closed",
+      "control_version": "3"
+    },
+    "execution_gate": {
+      "enabled": true,
+      "epoch": "3"
+    },
+    "channels": [
+      {
+        "id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "1",
+        "next_command_seq": "4",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled"
+      },
+      {
+        "id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "1",
+        "next_command_seq": "4",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled"
+      },
+      {
+        "id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+        "queue_state": "paused",
+        "control_version": "3",
+        "group_generation": "0",
+        "next_command_seq": "1",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled"
+      }
+    ],
+    "targets": [
+      {
+        "id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "kind": "agent",
+        "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "1",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled",
+        "revoked_at": null
+      },
+      {
+        "id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "kind": "agent",
+        "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "1",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled",
+        "revoked_at": null
+      },
+      {
+        "id": "d536ea3a-451c-455d-a2f5-6024d555cdb5",
+        "channel_id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+        "kind": "agent",
+        "resource_id": "9eb9c98f-6c20-4adc-871b-164f47c1160a",
+        "target_epoch": "1",
+        "config_version": "1",
+        "hold_reason": null,
+        "hold_version": "3",
+        "control": {
+          "scope": "target",
+          "queue_state": "paused",
+          "control_version": "3"
+        },
+        "group_generation": "0",
+        "active_group_id": null,
+        "pause_reason": "issue_cancelled",
+        "revoked_at": null
+      }
+    ],
+    "commands": [
+      {
+        "id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "input_event_id": "558b7e2d-bf1a-48c9-937c-75db94e57339",
+        "sequence": "1",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "stopped"
+      },
+      {
+        "id": "4fe64c8a-9de6-4513-a8e4-08afef12e5f9",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "input_event_id": "79995cb2-fcd8-4440-8c7f-1b0a8dddebec",
+        "sequence": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "cancelled"
+      },
+      {
+        "id": "29905171-2395-4223-bbb7-0afc90b831b1",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "input_event_id": "84801df9-f7ce-41e9-a824-f3ea1967f2f8",
+        "sequence": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "cancelled"
+      },
+      {
+        "id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "input_event_id": "c698eb64-247b-42c0-b656-da4a09028f35",
+        "sequence": "1",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "stopped"
+      },
+      {
+        "id": "85b82b8a-3ad5-445a-8b88-f72debc9e37e",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "input_event_id": "9f1c6bba-2c41-4908-b4d6-a06b18bfc9c5",
+        "sequence": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "state": "cancelled"
+      },
+      {
+        "id": "9889bcad-4050-40bf-b8c1-c80a01358663",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "input_event_id": "65feb7a6-8e36-40ba-85fd-d3a352af4166",
+        "sequence": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "state": "cancelled"
+      }
+    ],
+    "groups": [
+      {
+        "id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "stopped",
+        "expansion_sealed_at": "2026-10-22T12:58:08+08:00",
+        "forced_disposition": "stopped",
+        "settled_at": "2026-10-22T12:58:11+08:00",
+        "inputs": [
+          {
+            "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+            "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+            "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+            "sequence": "1",
+            "consuming_run_id": "da736ee3-811f-49ae-a441-ddd976a4e31b",
+            "reader_run_ids": [
+              "da736ee3-811f-49ae-a441-ddd976a4e31b"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      },
+      {
+        "id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "generation": "1",
+        "target_epoch": "1",
+        "config_version": "1",
+        "state": "stopped",
+        "expansion_sealed_at": "2026-10-22T12:58:08+08:00",
+        "forced_disposition": "stopped",
+        "settled_at": "2026-10-22T12:58:11+08:00",
+        "inputs": [
+          {
+            "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+            "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+            "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+            "sequence": "1",
+            "consuming_run_id": "f45477c1-362b-4148-9b9e-630a426a3862",
+            "reader_run_ids": [
+              "f45477c1-362b-4148-9b9e-630a426a3862"
+            ]
+          }
+        ],
+        "unread_inputs": [],
+        "queued_continuation_run_id": null
+      }
+    ],
+    "runs": [
+      {
+        "id": "da736ee3-811f-49ae-a441-ddd976a4e31b",
+        "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "37e655ea-a3e1-4555-b4db-050299b6aebb",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "settled",
+        "proof_state": "exited_proven",
+        "business_outcome": null,
+        "forced_disposition": "stopped",
+        "recording_incomplete": true,
+        "settled_at": "2026-10-22T12:58:11+08:00"
+      },
+      {
+        "id": "f45477c1-362b-4148-9b9e-630a426a3862",
+        "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "parent_run_id": null,
+        "step_key": "root",
+        "step_kind": "agent",
+        "agent_id": "4b82b8d4-523a-469a-a414-1172677637cc",
+        "target_epoch": "1",
+        "config_version": "1",
+        "progress_state": "settled",
+        "proof_state": "exited_proven",
+        "business_outcome": null,
+        "forced_disposition": "stopped",
+        "recording_incomplete": true,
+        "settled_at": "2026-10-22T12:58:11+08:00"
+      }
+    ]
+  },
+  "closed_session": {
+    "id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+    "queue_state": "closed",
+    "control_version": "3"
+  },
+  "cancelled_history_before_proof": {
+    "protocol_version": 1,
+    "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+    "items": [
+      {
+        "id": "29905171-2395-4223-bbb7-0afc90b831b1",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "target": {
+          "kind": "agent",
+          "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc"
+        },
+        "input_event_id": "84801df9-f7ce-41e9-a824-f3ea1967f2f8",
+        "input_event_seq": "24",
+        "comment_id": "18f727c1-ee2d-41ab-ae54-242733087d8d",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "seq": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "author": {
+          "user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+          "name": "Cross-client collaborator B",
+          "avatar_url": "",
+          "external": true
+        },
+        "content": "AC57 cancel handler waits in B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+        "attachment_ids": [],
+        "state": "cancelled",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:07.243579+08:00",
+        "cancellation": {
+          "event_id": "05d079ff-e639-49da-8f1f-9ebf00e595a5",
+          "event_seq": "28",
+          "actor_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "actor": {
+            "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-10-22T12:58:08.064544+08:00",
+          "kind": "automatic"
+        }
+      },
+      {
+        "id": "4fe64c8a-9de6-4513-a8e4-08afef12e5f9",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "target": {
+          "kind": "agent",
+          "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc"
+        },
+        "input_event_id": "79995cb2-fcd8-4440-8c7f-1b0a8dddebec",
+        "input_event_seq": "23",
+        "comment_id": "671fd345-cc1c-42b8-aca0-9cdd715ce54f",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "seq": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "author": {
+          "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "name": "Cross-client collaborator A",
+          "avatar_url": "",
+          "external": false
+        },
+        "content": "AC57 cancel creator waits in B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+        "attachment_ids": [],
+        "state": "cancelled",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:06.966615+08:00",
+        "cancellation": {
+          "event_id": "d89ee774-4ff0-4de3-8953-6705db2beb2a",
+          "event_seq": "26",
+          "actor_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "actor": {
+            "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-10-22T12:58:08.064544+08:00",
+          "kind": "automatic"
+        }
+      },
+      {
+        "id": "9889bcad-4050-40bf-b8c1-c80a01358663",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "target": {
+          "kind": "agent",
+          "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb"
+        },
+        "input_event_id": "65feb7a6-8e36-40ba-85fd-d3a352af4166",
+        "input_event_seq": "22",
+        "comment_id": "ae59e1fd-97a9-424d-8b02-718a44faaf99",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "seq": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "author": {
+          "user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+          "name": "Cross-client collaborator B",
+          "avatar_url": "",
+          "external": true
+        },
+        "content": "AC57 cancel handler waits in A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+        "attachment_ids": [],
+        "state": "cancelled",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:06.578069+08:00",
+        "cancellation": {
+          "event_id": "20c0b521-75a7-4ef5-8a9c-032773739879",
+          "event_seq": "27",
+          "actor_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "actor": {
+            "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-10-22T12:58:08.064544+08:00",
+          "kind": "automatic"
+        }
+      },
+      {
+        "id": "85b82b8a-3ad5-445a-8b88-f72debc9e37e",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "target": {
+          "kind": "agent",
+          "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb"
+        },
+        "input_event_id": "9f1c6bba-2c41-4908-b4d6-a06b18bfc9c5",
+        "input_event_seq": "21",
+        "comment_id": "4b437f46-f8ff-49d3-b9e1-10cce6c43e80",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "seq": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "author": {
+          "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "name": "Cross-client collaborator A",
+          "avatar_url": "",
+          "external": false
+        },
+        "content": "AC57 cancel creator waits in A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+        "attachment_ids": [],
+        "state": "cancelled",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:06.107219+08:00",
+        "cancellation": {
+          "event_id": "4404a099-6aec-4676-a909-de37ddbcf925",
+          "event_seq": "25",
+          "actor_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "actor": {
+            "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-10-22T12:58:08.064544+08:00",
+          "kind": "automatic"
+        }
+      },
+      {
+        "id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "target": {
+          "kind": "agent",
+          "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc"
+        },
+        "input_event_id": "558b7e2d-bf1a-48c9-937c-75db94e57339",
+        "input_event_seq": "17",
+        "comment_id": "d113aba0-416a-4132-b6be-e3d6a42a1861",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "seq": "1",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "author": {
+          "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "name": "Cross-client collaborator A",
+          "avatar_url": "",
+          "external": false
+        },
+        "content": "AC57 cancel live creator B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+        "attachment_ids": [],
+        "state": "in_flight",
+        "reason": null,
+        "created_at": "2026-10-22T12:58:05.002932+08:00",
+        "cancellation": null
+      },
+      {
+        "id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "target": {
+          "kind": "agent",
+          "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb"
+        },
+        "input_event_id": "c698eb64-247b-42c0-b656-da4a09028f35",
+        "input_event_seq": "13",
+        "comment_id": "a7a904bb-e18c-450d-89ce-d56491850e09",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "seq": "1",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "author": {
+          "user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+          "name": "Cross-client collaborator B",
+          "avatar_url": "",
+          "external": true
+        },
+        "content": "AC57 cancel live handler A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+        "attachment_ids": [],
+        "state": "in_flight",
+        "reason": null,
+        "created_at": "2026-10-22T12:58:03.486459+08:00",
+        "cancellation": null
+      }
+    ],
+    "next_cursor": null
+  },
+  "cancelled_history_after_proof": {
+    "protocol_version": 1,
+    "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+    "items": [
+      {
+        "id": "29905171-2395-4223-bbb7-0afc90b831b1",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "target": {
+          "kind": "agent",
+          "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc"
+        },
+        "input_event_id": "84801df9-f7ce-41e9-a824-f3ea1967f2f8",
+        "input_event_seq": "24",
+        "comment_id": "18f727c1-ee2d-41ab-ae54-242733087d8d",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "seq": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "author": {
+          "user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+          "name": "Cross-client collaborator B",
+          "avatar_url": "",
+          "external": true
+        },
+        "content": "AC57 cancel handler waits in B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+        "attachment_ids": [],
+        "state": "cancelled",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:07.243579+08:00",
+        "cancellation": {
+          "event_id": "05d079ff-e639-49da-8f1f-9ebf00e595a5",
+          "event_seq": "28",
+          "actor_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "actor": {
+            "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-10-22T12:58:08.064544+08:00",
+          "kind": "automatic"
+        }
+      },
+      {
+        "id": "4fe64c8a-9de6-4513-a8e4-08afef12e5f9",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "target": {
+          "kind": "agent",
+          "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc"
+        },
+        "input_event_id": "79995cb2-fcd8-4440-8c7f-1b0a8dddebec",
+        "input_event_seq": "23",
+        "comment_id": "671fd345-cc1c-42b8-aca0-9cdd715ce54f",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "8e1082bf-82b9-4074-b369-f68a9df2fff6",
+        "group_id": null,
+        "seq": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "author": {
+          "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "name": "Cross-client collaborator A",
+          "avatar_url": "",
+          "external": false
+        },
+        "content": "AC57 cancel creator waits in B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+        "attachment_ids": [],
+        "state": "cancelled",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:06.966615+08:00",
+        "cancellation": {
+          "event_id": "d89ee774-4ff0-4de3-8953-6705db2beb2a",
+          "event_seq": "26",
+          "actor_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "actor": {
+            "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-10-22T12:58:08.064544+08:00",
+          "kind": "automatic"
+        }
+      },
+      {
+        "id": "9889bcad-4050-40bf-b8c1-c80a01358663",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "target": {
+          "kind": "agent",
+          "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb"
+        },
+        "input_event_id": "65feb7a6-8e36-40ba-85fd-d3a352af4166",
+        "input_event_seq": "22",
+        "comment_id": "ae59e1fd-97a9-424d-8b02-718a44faaf99",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "seq": "3",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "author": {
+          "user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+          "name": "Cross-client collaborator B",
+          "avatar_url": "",
+          "external": true
+        },
+        "content": "AC57 cancel handler waits in A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+        "attachment_ids": [],
+        "state": "cancelled",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:06.578069+08:00",
+        "cancellation": {
+          "event_id": "20c0b521-75a7-4ef5-8a9c-032773739879",
+          "event_seq": "27",
+          "actor_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "actor": {
+            "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-10-22T12:58:08.064544+08:00",
+          "kind": "automatic"
+        }
+      },
+      {
+        "id": "85b82b8a-3ad5-445a-8b88-f72debc9e37e",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "target": {
+          "kind": "agent",
+          "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb"
+        },
+        "input_event_id": "9f1c6bba-2c41-4908-b4d6-a06b18bfc9c5",
+        "input_event_seq": "21",
+        "comment_id": "4b437f46-f8ff-49d3-b9e1-10cce6c43e80",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "14e56ea0-0aaa-4137-a486-d91dd70e1dfa",
+        "group_id": null,
+        "seq": "2",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "author": {
+          "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "name": "Cross-client collaborator A",
+          "avatar_url": "",
+          "external": false
+        },
+        "content": "AC57 cancel creator waits in A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+        "attachment_ids": [],
+        "state": "cancelled",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:06.107219+08:00",
+        "cancellation": {
+          "event_id": "4404a099-6aec-4676-a909-de37ddbcf925",
+          "event_seq": "25",
+          "actor_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "actor": {
+            "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+            "name": "Cross-client collaborator A",
+            "avatar_url": "",
+            "external": false
+          },
+          "created_at": "2026-10-22T12:58:08.064544+08:00",
+          "kind": "automatic"
+        }
+      },
+      {
+        "id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "target": {
+          "kind": "agent",
+          "resource_id": "4b82b8d4-523a-469a-a414-1172677637cc"
+        },
+        "input_event_id": "558b7e2d-bf1a-48c9-937c-75db94e57339",
+        "input_event_seq": "17",
+        "comment_id": "d113aba0-416a-4132-b6be-e3d6a42a1861",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "seq": "1",
+        "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+        "author": {
+          "user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "name": "Cross-client collaborator A",
+          "avatar_url": "",
+          "external": false
+        },
+        "content": "AC57 cancel live creator B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+        "attachment_ids": [],
+        "state": "stopped",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:05.002932+08:00",
+        "cancellation": null
+      },
+      {
+        "id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "target": {
+          "kind": "agent",
+          "resource_id": "37e655ea-a3e1-4555-b4db-050299b6aebb"
+        },
+        "input_event_id": "c698eb64-247b-42c0-b656-da4a09028f35",
+        "input_event_seq": "13",
+        "comment_id": "a7a904bb-e18c-450d-89ce-d56491850e09",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "seq": "1",
+        "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+        "author": {
+          "user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+          "name": "Cross-client collaborator B",
+          "avatar_url": "",
+          "external": true
+        },
+        "content": "AC57 cancel live handler A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+        "attachment_ids": [],
+        "state": "stopped",
+        "reason": "issue_cancelled",
+        "created_at": "2026-10-22T12:58:03.486459+08:00",
+        "cancellation": null
+      }
+    ],
+    "next_cursor": null
+  },
+  "runtime_transport": {
+    "attempts": [
+      {
+        "method": "POST",
+        "path": "/api/daemon/register",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/register",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/permit",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/permit",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/stop-intent",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 503,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof",
+        "status": 200,
+        "body_sha256": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 503,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof",
+        "status": 200,
+        "body_sha256": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "status": 200,
+        "body_sha256": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "body_sha256": null
+      }
+    ],
+    "errors": [],
+    "original_proof_hashes": {
+      "/api/collaboration/runtime/runs/da736ee3-811f-49ae-a441-ddd976a4e31b/proof": "efc6e1299c6b5f64c7dff471b325609fd3a48b7b55bae93844f6fa2c689f437e",
+      "/api/collaboration/runtime/runs/f45477c1-362b-4148-9b9e-630a426a3862/proof": "40e462971f4d8164b9f8b504f1b97c04d1006dc1559971867b8913168978bf6d"
+    }
+  },
+  "provider_observations": [
+    {
+      "lane": "A",
+      "namespace_id": "pid:[4026535233]",
+      "pid": 13,
+      "identity": {
+        "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+        "installation_id": "a1e011ff-22fa-4e26-9b57-e40c5bb237a0",
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+        "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+        "batch_id": "321269b2-f0bd-4e18-844b-37cc5392aea9",
+        "group_id": "7e8b3a33-7c19-4bba-9f49-2156259e8801",
+        "run_id": "da736ee3-811f-49ae-a441-ddd976a4e31b",
+        "fence": "1",
+        "claim_generation": "1"
+      },
+      "inputs": [
+        {
+          "command_id": "9ccfc083-561f-4b36-aa8a-8121ac848d0a",
+          "author_user_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+          "participant_epoch": "1",
+          "account_epoch": "1",
+          "lifecycle_epoch": "1",
+          "body": "AC57 cancel live handler A [@Independent execution agent A](mention://agent/37e655ea-a3e1-4555-b4db-050299b6aebb)",
+          "attachment_ids": []
+        }
+      ],
+      "started_ms": 4198.788208,
+      "released_ms": null,
+      "closed_ms": 8225.840375
+    },
+    {
+      "lane": "B",
+      "namespace_id": "pid:[4026535238]",
+      "pid": 11,
+      "identity": {
+        "deployment_id": "f3a705a0-0193-435f-bc6d-05bc2074e905",
+        "installation_id": "11ba6eff-d817-4cb7-a644-747622b4be2e",
+        "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+        "session_id": "18f865a5-9cef-4c68-ba15-1baec7120567",
+        "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+        "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+        "batch_id": "9f34fd65-16b2-4fdd-ae18-b834fed8cbc5",
+        "group_id": "bd144279-7936-4b7f-89ef-0a29d8b403ad",
+        "run_id": "f45477c1-362b-4148-9b9e-630a426a3862",
+        "fence": "1",
+        "claim_generation": "1"
+      },
+      "inputs": [
+        {
+          "command_id": "e61bf0c9-6326-460e-af61-70df5acdd233",
+          "author_user_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+          "participant_epoch": "1",
+          "account_epoch": "1",
+          "lifecycle_epoch": "1",
+          "body": "AC57 cancel live creator B [@Independent execution agent B](mention://agent/4b82b8d4-523a-469a-a414-1172677637cc)",
+          "attachment_ids": []
+        }
+      ],
+      "started_ms": 5735.246958,
+      "released_ms": null,
+      "closed_ms": 8756.004625
+    }
+  ],
+  "peer_unchanged": true,
+  "scope": "Actual Web/Electron lifecycle UI, two genuine permitted contained Linux synthetic runs, original natural sealed proofs held at transport and subsequently accepted; no real provider account",
+  "creator_platform": "Web",
+  "sources": [
+    {
+      "path": "e2e/collaboration-lane-close-controls.spec.ts",
+      "sha256": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-lane-close-controls.ts",
+      "sha256": "ceaa9fea406c8e248a00ce2b6fe910fb6f3573e9d689ff1f6f4bed4cd383afb7"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-lifecycle-controls.ts",
+      "sha256": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-execution.ts",
+      "sha256": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-provider.go",
+      "sha256": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+    }
+  ],
+  "initial_resume": {
+    "receipt": {
+      "status": 200,
+      "code": "resumed",
+      "issue_id": "01a161f9-13f6-7616-95e4-01a11704897d",
+      "request_id": "de115d3c-9df9-4056-b0e2-c89587903934",
+      "action": "resume",
+      "protocol_version": 2,
+      "scope": "issue",
+      "target_id": null,
+      "grant_id": null,
+      "proposal_id": null,
+      "channel_id": null,
+      "batch_id": null,
+      "command_id": null,
+      "queue_state": "active",
+      "control_version": "2",
+      "target_set_version": "4",
+      "group_id": null,
+      "group_settled": false,
+      "targets": [
+        {
+          "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+          "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        },
+        {
+          "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+          "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        },
+        {
+          "target_id": "d536ea3a-451c-455d-a2f5-6024d555cdb5",
+          "channel_id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "channels": [
+        {
+          "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        },
+        {
+          "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        },
+        {
+          "channel_id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+          "code": "resumed",
+          "queue_state": "active",
+          "control_version": "2",
+          "group_generation": "0",
+          "group_id": null,
+          "group_settled": false,
+          "stopped_runs": 0,
+          "unsettled_runs": 0
+        }
+      ],
+      "target_holds": [
+        {
+          "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+          "channel_id": "2c2d2f87-f455-4acb-904e-9b1559ab41f2",
+          "code": "hold_released",
+          "hold_reason": null,
+          "hold_version": "3"
+        },
+        {
+          "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+          "channel_id": "2a11e4ef-9014-4ed0-820f-61dc27ea6d26",
+          "code": "hold_released",
+          "hold_reason": null,
+          "hold_version": "3"
+        },
+        {
+          "target_id": "d536ea3a-451c-455d-a2f5-6024d555cdb5",
+          "channel_id": "45f5c639-f9e5-4cf0-9662-47391a659655",
+          "code": "hold_released",
+          "hold_reason": null,
+          "hold_version": "3"
+        }
+      ],
+      "run_id": null,
+      "run_settled": false
+    },
+    "requestId": "de115d3c-9df9-4056-b0e2-c89587903934",
+    "input": {
+      "expected_lifecycle_epoch": "1",
+      "expected_participant_epoch": "1",
+      "expected_account_epoch": "1",
+      "expected_control_version": "1",
+      "expected_target_set_version": "4",
+      "action": "resume",
+      "scope": "issue",
+      "expected_execution_epoch": "3",
+      "targets": [
+        {
+          "target_id": "55dbfcb6-c4d5-42c9-85e5-3024c9236b7a",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "1",
+          "observed_group_id": null,
+          "observed_group_generation": "0",
+          "expected_hold_version": "2"
+        },
+        {
+          "target_id": "66df051d-89e0-4fe1-9c07-486c9a6dc6c9",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "1",
+          "observed_group_id": null,
+          "observed_group_generation": "0",
+          "expected_hold_version": "2"
+        },
+        {
+          "target_id": "d536ea3a-451c-455d-a2f5-6024d555cdb5",
+          "expected_target_epoch": "1",
+          "expected_config_version": "1",
+          "expected_control_version": "1",
+          "observed_group_id": null,
+          "observed_group_generation": "0",
+          "expected_hold_version": "2"
+        }
+      ]
+    }
+  },
+  "captures": [
+    {
+      "stage": "cancel-closed-proof-unconfirmed",
+      "client": "web",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/current-lane-notification-clients/collaboration-lane-close-c-fc2b4-l-proofs-remain-unconfirmed-chromium/web-cancel-closed-proof-unconfirmed-web.png"
+    },
+    {
+      "stage": "cancel-closed-proof-unconfirmed",
+      "client": "electron",
+      "path": "/tmp/multica-gap-recovery-20261021-h6phxwo9/current-lane-notification-clients/collaboration-lane-close-c-fc2b4-l-proofs-remain-unconfirmed-chromium/web-cancel-closed-proof-unconfirmed-electron.png"
+    }
+  ],
+  "writes": [
+    {
+      "client": "web",
+      "actor_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/control",
+      "method": "POST",
+      "request_id": "de115d3c-9df9-4056-b0e2-c89587903934"
+    },
+    {
+      "client": "web",
+      "actor_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "web",
+      "actor_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments",
+      "method": "POST",
+      "request_id": "745878b6-d6f3-4d93-b8b9-a6eb6768cbdc"
+    },
+    {
+      "client": "web",
+      "actor_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "web",
+      "actor_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments",
+      "method": "POST",
+      "request_id": "67e0e11a-c538-4f0d-951b-7706af207b87"
+    },
+    {
+      "client": "web",
+      "actor_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "web",
+      "actor_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments",
+      "method": "POST",
+      "request_id": "70c77d6e-bfd7-4ace-b68b-adb0da7d4315"
+    },
+    {
+      "client": "web",
+      "actor_id": "6c245443-b2cc-44bd-ba6c-29b66e7a01f7",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/lifecycle",
+      "method": "POST",
+      "request_id": "98dc0203-6f3d-4746-9c67-0c0d1e71e24a"
+    },
+    {
+      "client": "electron",
+      "actor_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "electron",
+      "actor_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments",
+      "method": "POST",
+      "request_id": "a1ba3131-0027-4b3a-84b9-3a0fb6cae9a4"
+    },
+    {
+      "client": "electron",
+      "actor_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "electron",
+      "actor_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments",
+      "method": "POST",
+      "request_id": "f364f2d1-12c9-4fce-9a58-85ef69ca4e8c"
+    },
+    {
+      "client": "electron",
+      "actor_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments/trigger-preview",
+      "method": "POST",
+      "request_id": null
+    },
+    {
+      "client": "electron",
+      "actor_id": "c4398434-871e-4fd1-8b69-bd50e4ef3ba3",
+      "path": "/api/collaboration/issues/01a161f9-13f6-7616-95e4-01a11704897d/comments",
+      "method": "POST",
+      "request_id": "4903a72b-d76a-4ad3-944a-15cfc224b11b"
+    }
+  ],
+  "environment": {
+    "api": "http://localhost:18996",
+    "production_web": "http://localhost:13916",
+    "native_renderer": "http://localhost:6090",
+    "native_os": "darwin",
+    "execution_os": "actual Linux PID namespaces; test-owned synthetic stdlib executable",
+    "provider_account_access": false,
+    "real_provider_smoke": false,
+    "production_gate_change": false,
+    "packaged_main_startup": false
+  }
+}

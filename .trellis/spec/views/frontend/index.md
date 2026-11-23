@@ -17,27 +17,44 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
 | [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | Active |
 | [Settings Recovery](./settings-recovery.md) | Query access loss, awaited saves, token secrecy, settings accessibility and native verification | Active |
+| [Collaboration records and children](../../server/collaboration-records.md) | Source/account child and run views, notification links, repeated focus and native evidence | Current R51/R52 increment |
+| [Collaboration trigger previews](../../server/collaboration-preview-wakeup.md) | Shared localized grouping display, suppression and live-draft correlation | Focused preview increment |
+| [Collaboration Workbench](../../core/frontend/collaboration-workbench.md) | Shared account views, scoped creation/files, resource forms and original-intent recovery | Gated workflow; full product pending |
+| [Collaboration Detail](./collaboration-detail.md) | Facts-first result/decision, role action, one-action comments, auxiliary recovery and anchors | Shared production Web/Electron human journey verified |
+| [Collaboration Notifications](../../core/frontend/collaboration-notifications.md) | Shared account page, exact notification targets, processing/focus and retained history mementos | Active |
+| [Collaboration Source Picker](./collaboration-source-picker.md) | Click-open recent parents, visible search/retry, selected UUID and protected Query recovery | Active |
+| [Collaboration Creation Interaction](./collaboration-creation.md) | Scoped completion, recipient identity/ARIA, painted focus, visible feedback/actions and debounced parents | Active |
+| [Collaboration knowledge](./collaboration-knowledge.md) | Shared automatic status/policy, human/system audit, exact review, target panels and outcome recovery | Shared Web/Desktop contract; scoped evidence separate |
 | [Add a computer](./connect-remote-computer.md) | Per-system installers, safe commands, inventory baselines and factual connection states | Active |
+| [Runtime Welcome](./runtime-welcome.md) | Successful-empty inventory, retained machine/profile states, configured download/help and manual connection examples | Active |
 | [Workspace Naming](./workspace-naming.md) | Series catalog, personal preference and manual URL/prefix ownership | Active |
 | [Automation Template Discovery](./automation-template-discovery.md) | Empty-state routing, template semantics and two-step gallery restoration | Active |
 | [Agent Discovery](./agent-discovery.md) | Squad complete-membership contract, role provenance from template_key, template/member separation, preference & scope composition | Active |
 | [Issue Description Assist](./issue-description-assist.md) | Text-only AI suggestions, editor snapshots, protected Markdown and cancellation | Active |
 | [Quick-create Actor Picker](./quick-create-actor-picker.md) | Local favorites/recent actors, scoped hydration, full-description search and nested-picker focus | Active |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
-| [State Management](./state-management.md) | Local state, global state, server state | To fill |
+| [State Management](./state-management.md) | Core StoreApi injection through navigation plumbing; local/server state boundaries | Active contracts; general guide pending |
+| [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Unified sidebar, scoped creation, account feedback, restored collaboration state and direct-link focus | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
+| [Batch issue outcomes](../../core/frontend/issue-batch-outcomes.md) | Shared batch adapters and truthful partial/zero-result feedback | Client contract implemented; backend acceptance separate |
+| [Personal Inbox snooze](../../server/inbox-snooze.md) | Shared picker/views, authoritative selection, exact time, safe errors and touch controls | Shared contract; evidence in task |
 | [Desktop Core Interaction](./desktop-core-accessibility.md) | Hidden-chat focus/portals, collection recovery/selection, detail tabs, shell motion and bounded Gantt | Active |
+| [Core UI State Contracts](./core-ui-state-contracts.md) | Retained sidebar portals, picker/editor semantics, squad drafts and protected recovery | Active |
 | [Triage History](./triage-history.md) | Date-grouped event identity, snapshot reuse, applied filters and truthful empty-page recovery | Active |
+| [Triage Welcome](./triage-welcome.md) | Confirmed first-use gate, invalidated history probes, intake entry and everyday empty-queue focus | Active |
+| [Project Welcome](./project-welcome.md) | Successful-empty directory, individual-agent/squad introduction, passive registration example and existing create/docs actions | Active |
 | [Pending-task Creation](./triage-create-form.md) | Candidate fields, accessible names, validation, upload/retry preservation and scoped form IDs | Active |
 | [Triage Duplicate Picker](./triage-duplicate-picker.md) | Focus-open formal task candidates, complete pagination, scoped references and keyboard/retry behavior | Active |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Built-in Skill Localization](./builtin-skill-localization.md) | Display identity, bilingual search, and raw instruction preservation | Active |
 | [Skill Presentation](./skill-presentation.md) | Category / icon in `config.presentation`, workspace labels, parity and rollout rules, batch label management | Active |
 | [Skill Template Discovery](./skill-market-discovery.md) | Workspace/template separation, catalog entry, source filtering, copy navigation and focus | Active |
+| [Skills Welcome](./skill-welcome.md) | Successful-empty directory, five real creation methods, manual examples, focus and Web/Desktop acceptance | Active |
 | [Capability Market](./capability-market.md) | Shared MCP/Skills discovery routes, retained type panels, resource-management boundaries and multi-platform navigation | Active |
 | [MCP Market](./mcp-market.md) | Trusted recipes, workspace instances, explicit assignment, agent-context reuse and failure recovery | Active |
 | [Iteration Operations](../../core/frontend/iteration-operations.md) | Progress/scope presentation, complete activity, frozen facts, preview identity, recovery and desktop routes | Active |
 | [Iteration Task List](./iteration-task-list.md) | Compact toolbar, phase-gated scope, visible conditions/reset, and historical task-row semantics | Active |
+| [Project acceptance recovery](./project-acceptance-recovery.md) | Replaced detail queries, explicit description review, read retry and protected draft cleanup | Active |
 
 ---
 

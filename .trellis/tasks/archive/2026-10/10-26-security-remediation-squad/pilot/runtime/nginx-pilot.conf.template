@@ -1,0 +1,99 @@
+worker_processes 1;
+error_log /dev/stderr warn;
+pid /tmp/nginx.pid;
+
+events {
+    worker_connections 256;
+}
+
+http {
+    access_log off;
+    server_tokens off;
+    client_body_temp_path /tmp/pilot-client-body;
+    proxy_temp_path /tmp/pilot-proxy;
+
+    map $http_upgrade $pilot_connection {
+        default upgrade;
+        '' close;
+    }
+    map "$request_method:$uri" $pilot_model_route {
+        default 0;
+        "GET:/model/models" 1;
+        "POST:/model/responses" 1;
+        "POST:/model/responses/compact" 1;
+    }
+
+    server {
+        listen 8080;
+        server_name _;
+        client_max_body_size 16m;
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_request_buffering off;
+        proxy_read_timeout 600s;
+        proxy_send_timeout 600s;
+        proxy_intercept_errors on;
+        proxy_hide_header Location;
+        error_page 301 302 303 307 308 = @blocked_redirect;
+
+        if ($request_method = CONNECT) {
+            return 405;
+        }
+
+        location = /health {
+            limit_except GET {
+                deny all;
+            }
+            proxy_pass http://host.docker.internal:18572/health;
+            proxy_set_header Host localhost:18572;
+            proxy_set_header Connection close;
+            proxy_set_header Authorization $http_authorization;
+        }
+
+        location = /api {
+            return 403;
+        }
+
+        location /api/ {
+            proxy_pass http://host.docker.internal:18572;
+            proxy_set_header Host localhost:18572;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $pilot_connection;
+            # A task must retain its own authorization principal.
+            proxy_set_header Authorization $http_authorization;
+        }
+
+        location = /model {
+            return 403;
+        }
+
+        location /model/ {
+            if ($pilot_model_route = 0) {
+                return 403;
+            }
+            proxy_pass https://agentrouter.org/v1/;
+            proxy_ssl_server_name on;
+            proxy_ssl_name agentrouter.org;
+            proxy_ssl_verify on;
+            proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+            proxy_pass_request_headers off;
+            proxy_set_header Host agentrouter.org;
+            proxy_set_header Connection close;
+            proxy_set_header Content-Type $http_content_type;
+            proxy_set_header Accept $http_accept;
+            proxy_set_header OpenAI-Beta $http_openai_beta;
+            proxy_set_header User-Agent $http_user_agent;
+            proxy_set_header originator $http_originator;
+            proxy_set_header X-Codex-Beta-Features $http_x_codex_beta_features;
+            # Replace only in the gateway's private config, never in this file.
+            proxy_set_header Authorization "Bearer __PILOT_MODEL_BEARER__";
+        }
+
+        location @blocked_redirect {
+            return 502;
+        }
+        location / {
+            return 403;
+        }
+    }
+}

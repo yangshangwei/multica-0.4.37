@@ -1,0 +1,12 @@
+{
+  "production_and_css_match": true,
+  "exceptions": [
+    {
+      "path": "packages/views/collaboration/creation-form.test.tsx",
+      "build_sha256": "25567506f091fd79b3035c5314ac841f3080f627de6a3dc8c8979634656bb3e4",
+      "current_sha256": "802c78c52e64d1c20c60bf37e226f5456575bbac302f075b36ebf8dbf95a7fe5",
+      "reason": "Independent checker removed unsupported exact role-query options in a test after browser capture. This test is provenance-listed but not bundled/imported by the browser fixture; production and CSS hashes still match."
+    }
+  ],
+  "original_manifest_preserved": true
+}

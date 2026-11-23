@@ -1,0 +1,82 @@
+L6 red run (unfixed daemon decode, new tests only)
+Defect L6: the strict nested knowledge decoder (TaskKnowledgeSessionBinding.UnmarshalJSON) runs inside the
+decode of the whole claim envelope, so one descriptor the daemon cannot decode strictly discards every
+task in a {task}/{tasks} response the server has already committed.
+
+Base: 680ad868fc9ce5e2b9ba665c20a626d3c6bbb0ab with the uncommitted M2 fix in internal/service (not used by internal/daemon).
+Daemon production code is unchanged; only the daemon test files below are new or edited:
+ M server/internal/daemon/knowledge_context_claim_test.go
+ M server/internal/daemon/knowledge_context_test.go
+
+Database: none (internal/daemon tests use an httptest fake server and a test-created fake claude script)
+Command: (cd server && env -u GIT_CONFIG_COUNT -u GIT_CONFIG_KEY_0 -u GIT_CONFIG_VALUE_0 go test ./internal/daemon/ -run '<names below>' -count=1 -v)
+
+Classification
+BEHAVIORAL (must fail for the defect's reason):
+  TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/{future_session_field,session_case_alias,malformed_session_generation}
+      -> json.Unmarshal of the 3-task envelope returns invalid_knowledge_request
+  TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/unreadable_fence
+      -> envelope decode fails with a type error on knowledge_context.claim_generation
+  TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/{http_single,http_batch,ws_batch,http_legacy_fallback,managed_single,managed_http,managed_ws}
+      -> every claim transport returns invalid_knowledge_request and zero tasks
+REGRESSION GUARD (must pass before and after; also proves the fixture's claimTasks override is inert by default):
+  TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities
+
+Exit code: 1
+---------------------------------------------------------------- full output
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_single
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_batch
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/ws_batch
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_legacy_fallback
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_single
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_http
+=== RUN   TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_ws
+--- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities (1.48s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_single (0.43s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_batch (0.16s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/ws_batch (0.17s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/http_legacy_fallback (0.17s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_single (0.17s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_http (0.22s)
+    --- PASS: TestKnowledgeAllClaimTransportsNegotiateSourceFreeCapabilities/managed_ws (0.15s)
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/future_session_field
+    knowledge_context_claim_test.go:738: one undecodable descriptor discarded the whole claim: invalid_knowledge_request
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/session_case_alias
+    knowledge_context_claim_test.go:738: one undecodable descriptor discarded the whole claim: invalid_knowledge_request
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/malformed_session_generation
+    knowledge_context_claim_test.go:738: one undecodable descriptor discarded the whole claim: invalid_knowledge_request
+=== RUN   TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/unreadable_fence
+    knowledge_context_claim_test.go:738: one undecodable descriptor discarded the whole claim: json: cannot unmarshal number into Go struct field .tasks.2.knowledge_context.claim_generation of type string
+--- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask (0.00s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/future_session_field (0.00s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/session_case_alias (0.00s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/malformed_session_generation (0.00s)
+    --- FAIL: TestKnowledgeClaimDescriptorDecodeFailureRefusesOnlyThatTask/unreadable_fence (0.00s)
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_single
+    knowledge_context_claim_test.go:818: one undecodable descriptor lost the committed claim: invalid_knowledge_request
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_batch
+    knowledge_context_claim_test.go:818: one undecodable descriptor lost the committed claim: invalid_knowledge_request
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/ws_batch
+    knowledge_context_claim_test.go:818: one undecodable descriptor lost the committed claim: invalid_knowledge_request
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_legacy_fallback
+    knowledge_context_claim_test.go:818: one undecodable descriptor lost the committed claim: invalid_knowledge_request
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_single
+    knowledge_context_claim_test.go:818: one undecodable descriptor lost the committed claim: invalid_knowledge_request
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_http
+    knowledge_context_claim_test.go:818: one undecodable descriptor lost the committed claim: invalid_knowledge_request
+=== RUN   TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_ws
+    knowledge_context_claim_test.go:818: one undecodable descriptor lost the committed claim: invalid_knowledge_request
+--- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor (0.01s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_single (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_batch (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/ws_batch (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/http_legacy_fallback (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_single (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_http (0.00s)
+    --- FAIL: TestKnowledgeBatchClaimSurvivesOneUndecodableDescriptor/managed_ws (0.00s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon	2.264s
+FAIL

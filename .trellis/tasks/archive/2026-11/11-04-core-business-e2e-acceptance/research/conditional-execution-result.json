@@ -1,0 +1,269 @@
+{
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "generated_at": "2026-11-05T03:17:33.396924+00:00",
+  "knowledge_unique_top": 23,
+  "knowledge_top_executions": 46,
+  "go_wire_top": 1,
+  "typescript_wire": {
+    "command": [
+      "node",
+      "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104/node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/vitest.wire.config.mts",
+      "--reporter=json",
+      "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/run-2/wire-typescript/results.json"
+    ],
+    "exit_code": 0,
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "accepted": true
+  },
+  "runs": [
+    {
+      "id": "knowledge-ordinary-normal",
+      "private_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/run-1/knowledge-ordinary-normal",
+      "top": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "recorded_exit_code": 0,
+      "outside_git_execution_state": false,
+      "root_scope_limit": "repository-contained HOME/TMP in original run; no proven external-write attribution",
+      "controller_state": "complete"
+    },
+    {
+      "id": "knowledge-host-normal",
+      "private_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/run-1/knowledge-host-normal",
+      "top": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "recorded_exit_code": 0,
+      "outside_git_execution_state": false,
+      "root_scope_limit": "repository-contained HOME/TMP in original run; no proven external-write attribution",
+      "controller_state": "complete"
+    },
+    {
+      "id": "knowledge-ordinary-race",
+      "private_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/run-1/knowledge-ordinary-race",
+      "top": {
+        "pass": 14,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 27,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "recorded_exit_code": null,
+      "outside_git_execution_state": false,
+      "root_scope_limit": "repository-contained HOME/TMP in original run; no proven external-write attribution",
+      "controller_state": "running"
+    },
+    {
+      "id": "knowledge-host-race",
+      "private_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/run-2/knowledge-host-race",
+      "top": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 17,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "recorded_exit_code": 0,
+      "outside_git_execution_state": true,
+      "root_scope_limit": null,
+      "controller_state": "complete"
+    },
+    {
+      "id": "wire-export",
+      "private_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/run-2/wire-export",
+      "top": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "all": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "package_actions": [
+        "pass"
+      ],
+      "recorded_exit_code": 0,
+      "outside_git_execution_state": true,
+      "root_scope_limit": null,
+      "controller_state": "complete"
+    }
+  ],
+  "source_matches": true,
+  "commercial_provider_calls": 0,
+  "linux_status": "10 top-level + 3 subtests PASS; no failure or skip",
+  "performance_status": "not run; root exclusive measurement pending",
+  "linux": {
+    "state": "complete",
+    "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+    "results": [
+      {
+        "id": "linux-daemon",
+        "container": "core1a32-linux-daemon-9e1778f5d3",
+        "exit_code": 0,
+        "top": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "all": {
+          "pass": 1,
+          "fail": 0,
+          "skip": 0
+        },
+        "tests": {
+          "TestCollaborationBatchPollerSlotsAndRunnerLinux": "pass"
+        },
+        "accepted": true
+      },
+      {
+        "id": "linux-router",
+        "container": "core1a32-linux-server-1463df5f1d",
+        "exit_code": 0,
+        "top": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "all": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "tests": {
+          "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux": "pass",
+          "TestCollaborationPartialResumeRoutesLinux": "pass",
+          "TestCollaborationSingleAgentRuntimeRoutesLinux": "pass",
+          "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux": "pass",
+          "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux": "pass",
+          "TestCollaborationSquadCapacityOneRoutesLinux": "pass"
+        },
+        "accepted": true
+      },
+      {
+        "id": "linux-agent",
+        "container": "core1a32-linux-agent-7f60f3bdd3",
+        "exit_code": 0,
+        "top": {
+          "pass": 3,
+          "fail": 0,
+          "skip": 0
+        },
+        "all": {
+          "pass": 6,
+          "fail": 0,
+          "skip": 0
+        },
+        "tests": {
+          "TestCodexExecuteRetriesAfterSignaledProcessIsReaped": "pass",
+          "TestPiExecuteAttachesStdinPipe": "pass",
+          "TestClaudeRootSudoPreflight/sandbox_bypass_allowed": "pass",
+          "TestClaudeRootSudoPreflight/non_bypass_allowed": "pass",
+          "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors": "pass",
+          "TestClaudeRootSudoPreflight": "pass"
+        },
+        "accepted": true
+      }
+    ],
+    "source_matches": true,
+    "accepted": true,
+    "finished_at": "2026-11-05T03:15:59.821985+00:00",
+    "scope": "Linux arm64 test binaries and fake providers; no installed application or real model",
+    "private_evidence": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/core-e2e-20261104/conditional/linux-run-2"
+  },
+  "cleanup": {
+    "database_audits": [
+      {
+        "id": "knowledge-ordinary-normal",
+        "database": "multica_knowledge_composite_20261101_core1a32_1105_normal",
+        "other_connections": 0
+      },
+      {
+        "id": "knowledge-host-normal",
+        "database": "multica_knowledge_host_composite_20261101_core1a32_1105_normal",
+        "other_connections": 0
+      },
+      {
+        "id": "knowledge-ordinary-race",
+        "database": "multica_knowledge_composite_20261101_core1a32_1105_race",
+        "other_connections": 0
+      },
+      {
+        "id": "knowledge-host-race",
+        "database": "multica_knowledge_host_composite_20261101_core1a32_1105_race",
+        "other_connections": 0
+      },
+      {
+        "id": "wire-export",
+        "database": "multica_core1a32_20261105_wire",
+        "other_connections": 0
+      },
+      {
+        "database": "multica_core1a32_20261105_linux_routes",
+        "other_connections": 0
+      }
+    ],
+    "owned_processes": [
+      {
+        "launch": "launch-1",
+        "pid": 4411,
+        "owned_process_still_running": false
+      },
+      {
+        "launch": "launch-2",
+        "pid": 12168,
+        "owned_process_still_running": false
+      },
+      {
+        "launch": "linux-launch-1",
+        "pid": 35002,
+        "owned_process_still_running": false
+      },
+      {
+        "launch": "linux-launch-2",
+        "pid": 41704,
+        "owned_process_still_running": false
+      }
+    ],
+    "owned_container_prefix": "core1a32-linux-",
+    "owned_containers_remaining": 0
+  }
+}

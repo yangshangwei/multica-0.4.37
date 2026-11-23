@@ -1,0 +1,62 @@
+{
+  "recorded_at": "2026-11-04T15:34:58.253715+00:00",
+  "prerun_sha256": "a6a172d675e48402fbb50d3a8644b413e21c492bcedeccf66b8f6b4091e28a12",
+  "runner_sha256": "da39ef5ec1f0c6ae1607f16dacf82cd247bb1d70804a1880112127bd258f5042",
+  "unchanged_runner": true,
+  "checks": [
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/run_scenario.py",
+        "E3_member_scope",
+        "after",
+        "2",
+        "--check-only"
+      ],
+      "exit_code": 0,
+      "stdout": "PREFLIGHT OK: E3_member_scope/after start_trial=2 call_cap=2 source=835e7b046c6841e0945a59326bc4ddcbae4a0df7 framework=ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/run_scenario.py",
+        "E4_stale_merge",
+        "baseline",
+        "1",
+        "--check-only"
+      ],
+      "exit_code": 0,
+      "stdout": "PREFLIGHT OK: E4_stale_merge/baseline start_trial=1 call_cap=3 source=c58f79874cfe2e6318e3dce067d7b6bac24e943f framework=ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/run_scenario.py",
+        "E5_injection",
+        "baseline",
+        "1",
+        "--check-only"
+      ],
+      "exit_code": 0,
+      "stdout": "PREFLIGHT OK: E5_injection/baseline start_trial=1 call_cap=3 source=c58f79874cfe2e6318e3dce067d7b6bac24e943f framework=ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/resume-20261104/original-series-run/run_scenario.py",
+        "E6_relay",
+        "baseline",
+        "1",
+        "--check-only"
+      ],
+      "exit_code": 0,
+      "stdout": "PREFLIGHT OK: E6_relay/baseline start_trial=1 call_cap=6 source=c58f79874cfe2e6318e3dce067d7b6bac24e943f framework=ff2ac795d7ec3a6ca9664276200fe61f2526fe40c496ad7bc137b42099bd08c0\n",
+      "stderr": ""
+    }
+  ],
+  "live_clearance_written": false,
+  "Provider_calls": 0
+}

@@ -1,0 +1,29 @@
+{
+  "id": "03-typescript",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "pnpm",
+    "exec",
+    "turbo",
+    "run",
+    "test",
+    "--filter=!@multica/mobile",
+    "--concurrency=1",
+    "--force",
+    "--env-mode=loose",
+    "--",
+    "--maxWorkers=2"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "candidate_before": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T00:07:10.692743+00:00",
+  "note": "Minimal allowlisted process environment has no database/provider credentials. Loose Turbo forwarding retains only that environment plus the outer Agent CLI guard marker so any ambient command is recorded and fails the guard.",
+  "state": "complete",
+  "exit_code": 0,
+  "finished_at": "2026-11-02T00:22:10.338226+00:00",
+  "candidate_after": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "stdout_sha256": "ae27ea699dc0531072a0b39dc3e7a214f363827d259d2d0481976f4f45467b33",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+}

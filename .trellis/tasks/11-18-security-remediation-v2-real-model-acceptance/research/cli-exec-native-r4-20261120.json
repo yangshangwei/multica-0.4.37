@@ -1,0 +1,84 @@
+{
+  "evidence_type": "scripted-official-cli-not-model",
+  "provider_requests": 0,
+  "exit": 0,
+  "synthetic_request_count": 5,
+  "native_user_agent": "codex_exec/0.164.0 (Debian 12.0.0; aarch64) unknown (codex_exec; 0.164.0)",
+  "api_calls": [
+    {
+      "path": "/api/issues/a4ba6a20-cd78-4ece-badd-d6b798d6d79d",
+      "task_identity": true,
+      "workspace": true
+    }
+  ],
+  "live_peer_control": {
+    "status": 200,
+    "body": "{\"data\":[]}"
+  },
+  "passed": true,
+  "source_hashes": {
+    "/Volumes/artisan/code/2026/mc-secrem-v2-cli-20261120/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/codex_exec_container.py": "8090769e4ec7333b2a126a6ecfbf52d4b2752b691ffb482c9fd31ee974c2d5e1",
+    "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/exec-probe-r4/fake_exec_responses.py": "554b8d21610fe26a4eede1bbcc68f8ee862dc6d977f2add94a1624512ecdd91e",
+    "/Volumes/artisan/code/2026/mc-secrem-v2-cli-20261120/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/probe_exec_transport.py": "42be364b8e123fa1a9be31f4c1ed9e1e0c50d264fc7a649d6643e4bac1e10286",
+    "/Volumes/artisan/code/2026/mc-secrem-v2-cli-20261120/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/codex_container.py": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+    "/Volumes/artisan/code/2026/mc-secrem-v2-cli-20261120/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/multica_spool.py": "94a3e2fc145667c470c7b4ff11286b98419f46de1f286ba634ab4e50208253ea"
+  },
+  "metadata": {
+    "agents_bytes": 61,
+    "agents_sha256": "deef246b9020c45c9ffe8bff6471a2bb271581746744dfb7a0f04d204adce65e",
+    "agents_unchanged": true,
+    "config_sha256": "5f089535e1d379f7f96832c42f92071b8593a8027cdb0b55d1d788cdfd942f30",
+    "container": "secrem-v2-cli-role-056ab8787f6d",
+    "execution_mode": "official_cli_exec",
+    "exit_code": 0,
+    "finished_at": 1795148684.024875,
+    "helper_sha256": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+    "image": "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+    "last_message_sha256": "131bde08465935f29d75278dc08286b7ff5ae63fd2ee1042f0945fe60d3c0b57",
+    "native_argv": [
+      "codex",
+      "exec",
+      "--json",
+      "--skip-git-repo-check",
+      "--output-last-message",
+      "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/exec-probe-r4/codex/last-message.txt",
+      "-"
+    ],
+    "outcome": "completed",
+    "project_doc_max_bytes": 131072,
+    "prompt_bytes": 71,
+    "prompt_sha256": "25783b1a8ce13e609411aeb2dab980b982c228e1717dba406516fac96564da81",
+    "requirements_sha256": "bac074abd2bf7ddb6eb8ffe43693d5fcccc7828973131f9648439888a2803714",
+    "resume_session_id": null,
+    "run_id": "ffc09cc1-8ad5-4f5a-847e-619843d5cd2a-b9f13b6867",
+    "sequence": 1,
+    "session_retention_refused": false,
+    "spool_sha256": "94a3e2fc145667c470c7b4ff11286b98419f46de1f286ba634ab4e50208253ea",
+    "started_at": 1795148676.566761,
+    "terminal": {
+      "completed_turns": 1,
+      "failed_events": 0,
+      "invalid_lines": 0,
+      "last_message": "Synthetic official CLI transport completed; this is not a model result.",
+      "thread_ids": [
+        "01a1f733-0035-7151-a6cc-e4c08b6e6402"
+      ],
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 50,
+        "output_tokens": 25,
+        "reasoning_output_tokens": 0
+      },
+      "valid": true
+    },
+    "wrapper_sha256": "8090769e4ec7333b2a126a6ecfbf52d4b2752b691ffb482c9fd31ee974c2d5e1"
+  },
+  "raw_result_sha256": "b1651762e0038a53c6683e3f09c35ce5c82a6d93af4baa8dedbdcc29ab85fc4e",
+  "tool_output_checks": {
+    "cli_get_original_task": true,
+    "live_peer_network_denied": true,
+    "readonly_code_agents_config_requirements": 4,
+    "requested_escalation_rejected_by_never_policy": true
+  }
+}

@@ -1,0 +1,24 @@
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands
+[1A[2K  1) [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 
+
+    Error: POST /api/collaboration/issues/01a199ca-a07c-7a1d-80d2-1115cefea06e/control failed: 503
+
+       at fixtures.ts:405
+
+      403 |       body: options.body === undefined ? undefined : JSON.stringify(options.body),
+      404 |     });
+    > 405 |     if (!response.ok) throw new Error(`${options.method ?? "GET"} ${path} failed: ${response.status}`);
+          |                             ^
+      406 |     return response.json() as Promise<T>;
+      407 |   }
+      408 |
+        at TestApiClient.requestJSON (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts:405:29)
+        at control (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-clients.spec.ts:54:21)
+        at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-installed-clients.spec.ts:106:12
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/collaboration-installed-clients.spec.ts:29:1 › cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands 

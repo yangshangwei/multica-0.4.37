@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-10",
+  "candidate_baseline": "d496b0b7fbdd27e100101f4478c964b4a01b88df",
+  "scope": "controlled local-synthetic artifact packaging only",
+  "source_manifest": "research/final-source-manifest.json",
+  "checks": {
+    "final-handler-normal": {
+      "record": "research/final-handler-normal.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 84,
+        "fail": 0,
+        "skip": 0
+      },
+      "identical": null
+    },
+    "final-handler-race": {
+      "record": "research/final-handler-race.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 84,
+        "fail": 0,
+        "skip": 0
+      },
+      "identical": null
+    },
+    "final-router-normal": {
+      "record": "research/final-router-normal.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "identical": null
+    },
+    "final-router-race": {
+      "record": "research/final-router-race.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 23,
+        "fail": 0,
+        "skip": 0
+      },
+      "identical": null
+    },
+    "final-build": {
+      "record": "research/final-build.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "identical": null
+    },
+    "final-vet": {
+      "record": "research/final-vet.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      },
+      "identical": null
+    },
+    "final-sqlc": {
+      "record": "research/final-sqlc.json",
+      "exit_code": 0,
+      "named_test_counts": null,
+      "identical": true
+    },
+    "auth-compatibility-01": {
+      "record": "research/auth-compatibility-01.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 48,
+        "fail": 0,
+        "skip": 0
+      },
+      "identical": null
+    },
+    "builtin-contracts-01": {
+      "record": "research/builtin-contracts-01.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      },
+      "identical": null
+    },
+    "runtime-lookup-contract-01": {
+      "record": "research/runtime-lookup-contract-01.json",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      },
+      "identical": null
+    }
+  },
+  "not_tested": [
+    "Production deployment or remote artifact publication",
+    "Native Windows execution (unsupported adapter only cross-compiled)",
+    "Full repository Go/browser/mobile suites; targeted relevant suites used",
+    "Real paid model behavior and AC43/E5/H3a/knowledge acceptance"
+  ],
+  "cleanup": "research/final-cleanup.json",
+  "real_provider_calls": 0,
+  "accepted": true,
+  "independent_review": "research/independent-review.json"
+}

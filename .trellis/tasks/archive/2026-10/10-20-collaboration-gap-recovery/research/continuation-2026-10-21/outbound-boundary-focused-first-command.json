@@ -1,0 +1,39 @@
+{
+  "command": [
+    "python3",
+    "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+    "service_s6_collab",
+    "bash",
+    "../scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "test",
+    "-json",
+    "-race",
+    "./internal/service",
+    "./internal/integrations/slack",
+    "-run",
+    "^TestCollaborationOutbound",
+    "-p",
+    "1",
+    "-parallel",
+    "1",
+    "-count=1",
+    "-timeout=30m"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+  "database_alias": "service_s6_collab",
+  "schema_migration": 737,
+  "started_at": "2026-10-21T15:57:35.211389+00:00",
+  "source": [
+    {
+      "path": "server/internal/service/collaboration_outbound_boundary_test.go",
+      "sha256": "21ace35441b42789232a924e6a636fca34ae2f3167b3bb89f2272fd27df50507"
+    },
+    {
+      "path": "server/internal/integrations/slack/collaboration_outbound_boundary_test.go",
+      "sha256": "e09bfac50eec423aef02d2ce8a3b2c32572cdf14f0ba3e54638824b2eb6f7630"
+    }
+  ],
+  "finished_at": "2026-10-21T15:57:48.639282+00:00",
+  "exit_code": 1
+}

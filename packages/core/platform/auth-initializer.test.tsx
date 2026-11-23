@@ -196,6 +196,21 @@ describe("AuthInitializer daemon setup config", () => {
   });
 });
 
+describe("AuthInitializer desktop download URL", () => {
+  it("loads the download page and clears it on a later older-server boot", async () => {
+    const first = renderInitializer({
+      api: makeApi({ getConfig: vi.fn().mockResolvedValue({
+        desktop_download_url: "http://10.10.10.20:18080/desktop/",
+      }) }),
+    });
+    await waitFor(() => expect(configStore.getState().desktopDownloadUrl).toBe("http://10.10.10.20:18080/desktop/"));
+    first.unmount();
+    const second = renderInitializer({ api: makeApi() });
+    await waitFor(() => expect(configStore.getState().desktopDownloadUrl).toBe(""));
+    second.unmount();
+  });
+});
+
 describe("AuthInitializer messaging deployment policy", () => {
   it.each([
     ["network failure", new TypeError("fetch failed")],

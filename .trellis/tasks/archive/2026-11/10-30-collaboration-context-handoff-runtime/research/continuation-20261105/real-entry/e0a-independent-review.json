@@ -1,0 +1,382 @@
+{
+  "reviewed_at": "2026-11-05T03:48:36.428704+00:00",
+  "reviewer": "/root/acceptance_review",
+  "scope": "Actual RK1-E0a-t1 raw behavior/lifecycle/artifacts; configuration stability is a separate unmet condition",
+  "behavior_verdict": "verified_finished_pass",
+  "overall_acceptance": "HELD_CONFIGURATION_STABILITY_NOT_PROVEN",
+  "checks_passed": 66,
+  "checks_failed": [],
+  "run_id": "6c00c8a7-2ba4-45b0-a751-836141c354ae",
+  "answer": "HOST_SMOKE_OK",
+  "provider_version_observed": "2.1.318",
+  "requested_model": "claude-opus-5-5",
+  "observed_models": [
+    "claude-opus-5-5"
+  ],
+  "actual_invocation": {
+    "exit": 0,
+    "executor_exit": 0,
+    "stop_state": {
+      "triggered": false,
+      "incomplete_or_blocking_trials": [],
+      "missing_requested_trials": [],
+      "unexpected_trials": []
+    },
+    "launch_budget": {
+      "cap": 25,
+      "reserved": 1,
+      "before": {
+        "consumed": 0,
+        "counted_per_trial": {},
+        "public_per_trial": {},
+        "private_per_trial": {}
+      },
+      "after": {
+        "consumed": 1,
+        "counted_per_trial": {
+          "RK1-E0a-t1": 1
+        },
+        "public_per_trial": {
+          "RK1-E0a-t1": 1
+        },
+        "private_per_trial": {
+          "RK1-E0a-t1": 1
+        }
+      },
+      "remaining": 24
+    }
+  },
+  "source": {
+    "head": "62ef8afd6a386af0602060aebf3b90e64a9fb27a",
+    "source_id": "6b342ba23c2f5ae6826e8841794d086d1258274d3a39eac84983bfb9f429bdea",
+    "source_file_count": 7990,
+    "framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+    "framework_file_count": 17,
+    "product_dirty_paths": []
+  },
+  "trace_events": 1146,
+  "CLI_sha256": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+  "captures_bound_to_actual_run": true,
+  "helper_failure": {
+    "original_exit": 1,
+    "original_review_ready": false,
+    "original_error": "ValueError",
+    "identified_condition": "binding(): require(operator == reg.operator_configuration) during post-run binding",
+    "operator_before_plugin_hash": "617d9c5d6b208b7b1b44aa4ac5bff262a738b926b70886f16dda143873050d8c",
+    "operator_after_plugin_hash": "91deb2c67550be5d1d1b366dde25543a78fec36ec719e7d9adcd29f3e3d87660",
+    "metadata_observation_at": "2026-11-05T03:45:34.984706+00:00",
+    "same_passive_captures_reconciled_without_rerun": true,
+    "operator_stability_reconciled": false
+  },
+  "disposition": [
+    "Preserve actual launcher/public finished-pass and helper exit1/review_readyfalse together.",
+    "Count1 real launch of25; remaining24. No E0a replacement or rerun.",
+    "Keep subsequent scenarios held until the configuration evidence gap is dispositioned and a new window is granted.",
+    "Plugin mtime observations cannot reconstruct prelaunch bytes or prove that changes were harmless metadata or made by this Provider.",
+    "Do not overwrite original helper report or silently update its acceptance flag."
+  ],
+  "checks": [
+    {
+      "name": "exact_one_invocation",
+      "passed": true
+    },
+    {
+      "name": "invocation_hash_retained",
+      "passed": true
+    },
+    {
+      "name": "public_copy_exact",
+      "passed": true
+    },
+    {
+      "name": "single_real_E0a_slot",
+      "passed": true
+    },
+    {
+      "name": "raw_finished_pass",
+      "passed": true
+    },
+    {
+      "name": "answer_exact",
+      "passed": true
+    },
+    {
+      "name": "launcher_exit_and_stop",
+      "passed": true
+    },
+    {
+      "name": "actual_original_launcher_command",
+      "passed": true
+    },
+    {
+      "name": "same_build_check_run_binding",
+      "passed": true
+    },
+    {
+      "name": "precheck_and_build_pass",
+      "passed": true
+    },
+    {
+      "name": "permit_bound_build_check",
+      "passed": true
+    },
+    {
+      "name": "permit_and_attempt_bound",
+      "passed": true
+    },
+    {
+      "name": "actual_finished_before_window_end",
+      "passed": true
+    },
+    {
+      "name": "permits_closed_after_run",
+      "passed": true
+    },
+    {
+      "name": "helper_refusal_retained",
+      "passed": true
+    },
+    {
+      "name": "single_measured_run",
+      "passed": true
+    },
+    {
+      "name": "one_launch_record",
+      "passed": true
+    },
+    {
+      "name": "real_registered_provider",
+      "passed": true
+    },
+    {
+      "name": "complete_successful_launch",
+      "passed": true
+    },
+    {
+      "name": "argv_exact_public",
+      "passed": true
+    },
+    {
+      "name": "expected_model_no_resume",
+      "passed": true
+    },
+    {
+      "name": "private_variables_removed",
+      "passed": true
+    },
+    {
+      "name": "stdin_prompt_hash",
+      "passed": true
+    },
+    {
+      "name": "handoff_input_run_identity",
+      "passed": true
+    },
+    {
+      "name": "observed_provider_model",
+      "passed": true
+    },
+    {
+      "name": "raw_provider_result_exact",
+      "passed": true
+    },
+    {
+      "name": "trace_sequence",
+      "passed": true
+    },
+    {
+      "name": "trace_complete_before_public",
+      "passed": true
+    },
+    {
+      "name": "trace_requests_success",
+      "passed": true
+    },
+    {
+      "name": "negotiated_claim",
+      "passed": true
+    },
+    {
+      "name": "one_attempt_two_permits",
+      "passed": true
+    },
+    {
+      "name": "actual_input_binding",
+      "passed": true
+    },
+    {
+      "name": "actual_cli_context_read",
+      "passed": true
+    },
+    {
+      "name": "actual_context_shown_to_model",
+      "passed": true
+    },
+    {
+      "name": "no_business_writes",
+      "passed": true
+    },
+    {
+      "name": "two_checkpoints",
+      "passed": true
+    },
+    {
+      "name": "one_termination",
+      "passed": true
+    },
+    {
+      "name": "exact_outcome_success",
+      "passed": true
+    },
+    {
+      "name": "accepted_proof",
+      "passed": true
+    },
+    {
+      "name": "completed_seal_actual_ACK",
+      "passed": true
+    },
+    {
+      "name": "public_lifecycle_complete",
+      "passed": true
+    },
+    {
+      "name": "one_private_ledger",
+      "passed": true
+    },
+    {
+      "name": "durable_outcome_proof_seal",
+      "passed": true
+    },
+    {
+      "name": "captures_original_match",
+      "passed": true
+    },
+    {
+      "name": "exact_two_capture_paths",
+      "passed": true
+    },
+    {
+      "name": "all_three_actual_CLI_bytes_equal",
+      "passed": true
+    },
+    {
+      "name": "captures_precede_launch",
+      "passed": true
+    },
+    {
+      "name": "captured_CLI_sizes",
+      "passed": true
+    },
+    {
+      "name": "private_capture_permissions",
+      "passed": true
+    },
+    {
+      "name": "CLI_build_metadata_go_module",
+      "passed": true
+    },
+    {
+      "name": "budget_exact",
+      "passed": true
+    },
+    {
+      "name": "public_private_count_agree",
+      "passed": true
+    },
+    {
+      "name": "current_product_framework_stable",
+      "passed": true
+    },
+    {
+      "name": "only_allowed_public_status",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:helper_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:config_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:registration_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:addendum_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:launcher_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:git_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:python_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:go_sha256",
+      "passed": true
+    },
+    {
+      "name": "retained_binding:provider_sha256",
+      "passed": true
+    },
+    {
+      "name": "operator_at_start_matches_registration",
+      "passed": true
+    },
+    {
+      "name": "post_operator_delta_identified",
+      "passed": true
+    },
+    {
+      "name": "post_metadata_other_fields_same",
+      "passed": true
+    }
+  ],
+  "hashes": {
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/run-result.json": "99c2184d9b2328e1e8a48fc233af55afb0fda5e621705de0b2b409892efebf15",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/build-result.json": "829f13dea72d7622e38b960e5d2725a57f4a3d4155bd5b5b3ba03e1fef19eeda",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/check-result.json": "9f7fc01a24240c46f743d3be1fcc2e4d0b9bda1d0e108990e6663689f16c6043",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/permit-used-run.json": "ece3b613319e2997ce04ea94462342640b92067d5e2b9fd02bd7f7fecd1d04c8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/permit.json": "836cbcbfbd04fb16a11426c6503bb7a17ae5c0b14ecae79b2a5869a3f826d006",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/run-attempt.json": "c65b3498b6fbd24731b327aa0e160bec3772b763087e8021c5390f54e08e0ebb",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/captures.json": "704acb20d483eb61d9c6d17e98deadbe8f59c525a8edb60dcef73d340857e04d",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/post-run-binding-observation.json": "a0f795044a9acb50885dcf03c34bd0d956fa06b38c16c35869d84c8dddbba1f0",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-E0a-t1.json": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/RK1-E0a-t1/public.json": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/invocation-20261105T034200Z.json": "eb49cd73bfea5c789fb77d912bc1fe49142825d8f31ad48751d2df627e30f780",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/RK1-E0a-t1/provider/6c00c8a7-2ba4-45b0-a751-836141c354ae/launch-1/launch.json": "74a292650b65cc46eaeec13e84abce75144469b781ca322eec2b0ef65881dc94",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/RK1-E0a-t1/provider/6c00c8a7-2ba4-45b0-a751-836141c354ae.json": "72fd38d3f3c1dbb0cb75fa6cb49a7854bcb66e0a8e19a8c46c5dc950a68e1ae4",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/RK1-E0a-t1/provider/6c00c8a7-2ba4-45b0-a751-836141c354ae/launch-1/stdin-first.jsonl": "74d9a6e2824af3ae4be5603eef0f66a62e23f5746657a9b7c9ae0ebf7303f644",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/RK1-E0a-t1/provider/6c00c8a7-2ba4-45b0-a751-836141c354ae/launch-1/stdout.jsonl": "06f19646864d6e4d67d58adbbaa4f711928384ae2bc56ccd07cbd97593886dcf",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/RK1-E0a-t1/trace.jsonl": "a1d5092aa7bc710247aa982cf9c7d19182e6a7fd57aff0ea865a35577b053200",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/rk1/RK1-E0a/RK1-E0a-t1/ledger/6c00c8a7-2ba4-45b0-a751-836141c354ae/3ff5a4990e2cc0aea714c82c266914e41d8dc5d149e247a275c987b4f2d61392.json": "63070ef70dc2cd292203a514c3a5f975000210c54c95e62b432a85a321b5fca2",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/upfront-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/captures/capture-000-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/captures/capture-001-multica": "1b94e13a1724f1c0091f06efefb8c961d2db09ded80dbe99f20ab6ad7bf6ead7",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/e0a_entry.py": "57689eafc44623a97e6ce6bd9dc8050898313b372791522eb0a1756dff489728",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.omx/private/runtime-real-20261105/config.json": "2c16a4f70fe4db6ae59ca544d6e893f63a541de9d8b9a727d3a605438b898d50",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/framework-registration.json": "517078a322ff24d84ac99dba74e9fe406e96ab55fd3ddc1583b7818c2f6ef68f",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/runtime-addendum.json": "0c6ad76508fb2f5ee513026d5f30bedd4c11bccb04eaeb3082245e4304bc81e8",
+    "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/run_rk1.py": "3bc7962c996143200b1834e9246ec215e8a0d3e03fc38e832abd2eddb1769c99",
+    "/opt/homebrew/Cellar/git/2.52.0/bin/git": "ca78d2c62e0d25037f2aa7353c0e28bebaca2f8b40c20b164c5781b885b2d197",
+    "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14": "cbf84109626aa1013bbe408fbb9590bd0f1c1548f038b2221c6b8b87de26ca43",
+    "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go": "a1c83801d1756c3eca78366c6b585f2c21c20694fb1c7eb92c446a0580420412",
+    "/Users/artisan/.local/share/claude/versions/2.1.318": "677a2ea7bf576cedd20e191d973914ed8a41796f53a63b1923381ddc4d5b5e7d"
+  },
+  "operations": {
+    "tests": 0,
+    "database": 0,
+    "Provider": 0,
+    "binary_execution": 0,
+    "plugin_tree_scan": 0
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "score": 88,
+  "verdict": "revise",
+  "category_match": true,
+  "differences": [
+    "明暗配色、字号、圆角与原风格一致；主体滚动和固定提交/取消/关闭已出现。",
+    "原生 popup 搜索框焦点没有实际绘制：计算结果为 outline none 0px，尽管颜色为 opaque faint-foreground。"
+  ],
+  "suggestions": [
+    "在局部原生搜索及选项焦点样式中显式设置 outline-solid，保留现有颜色、宽度和 offset。",
+    "确认固定提交触发拒绝后，具体原因处于可见滚动主体内；如隐藏则在本组件内揭示该反馈。"
+  ],
+  "reasoning": "功能和布局方向符合原产品；首轮实际浏览器暴露了 outline-style 被原 outline-none 压制，须修正实际绘制后确认。触控41.8px属于44px的95%入场暂态，已经修正采样等待，不计为产品缺陷。"
+}

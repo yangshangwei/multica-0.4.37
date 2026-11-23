@@ -21,15 +21,16 @@ import (
 )
 
 type issueTableGroupValueResponse struct {
-	Kind       string               `json:"kind"`
-	Status     string               `json:"status,omitempty"`
-	Actor      *issueTableActorRef  `json:"actor"`
-	ProjectID  *string              `json:"project_id,omitempty"`
-	ParentID   *string              `json:"parent_id,omitempty"`
-	Parent     *issueTableParentRef `json:"parent,omitempty"`
-	PropertyID string               `json:"property_id,omitempty"`
-	Value      any                  `json:"value,omitempty"`
-	ValueState string               `json:"value_state,omitempty"`
+	Account    *CollaborationAccountSummary `json:"account,omitempty"`
+	Kind       string                       `json:"kind"`
+	Status     string                       `json:"status,omitempty"`
+	Actor      *issueTableActorRef          `json:"actor"`
+	ProjectID  *string                      `json:"project_id,omitempty"`
+	ParentID   *string                      `json:"parent_id,omitempty"`
+	Parent     *issueTableParentRef         `json:"parent,omitempty"`
+	PropertyID string                       `json:"property_id,omitempty"`
+	Value      any                          `json:"value,omitempty"`
+	ValueState string                       `json:"value_state,omitempty"`
 }
 
 type issueTableParentRef struct {
@@ -992,6 +993,9 @@ func (h *Handler) ListIssueTableGroups(w http.ResponseWriter, r *http.Request) {
 		Total:            total,
 		Groups:           groups,
 		NextCursor:       nextCursor,
+	}
+	if !h.fillSourceCollaborationGroups(w, r, compiled.workspaceID, response.Groups) {
+		return
 	}
 	if err := tx.Commit(r.Context()); err != nil {
 		slog.Warn("ListIssueTableGroups snapshot commit failed", append(logger.RequestAttrs(r), "error", err)...)

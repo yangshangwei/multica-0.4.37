@@ -1,0 +1,33 @@
+{
+  "source_sha": "7627916c8bff4fdd9c2b1287a8cfc3f033a9dc85",
+  "command": [
+    "env",
+    "-u",
+    "MULTICA_RUN_REAL_AGENT_SMOKE",
+    "-u",
+    "GIT_CONFIG_COUNT",
+    "-u",
+    "GIT_CONFIG_KEY_0",
+    "-u",
+    "GIT_CONFIG_VALUE_0",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "./internal/service",
+    "-run",
+    "^TestCollaboration(Handoff|LiveHandoff|RuntimeComments|Recall|.*Recording|.*Checkpoint)",
+    "-count=1",
+    "-v",
+    "-timeout=15m"
+  ],
+  "database": "rfix27_service_race_20261101_2320",
+  "exit_code": 0,
+  "seconds": 123.4,
+  "pass": 19,
+  "fail": 0,
+  "skip": 0,
+  "log_sha256": "c2aaa3c588b87d33ace671b8b43315cd7fd9f51e3c53f4122cd20c46003bcd0c"
+}

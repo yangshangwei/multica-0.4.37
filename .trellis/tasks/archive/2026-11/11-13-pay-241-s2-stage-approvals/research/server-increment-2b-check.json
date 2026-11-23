@@ -1,0 +1,1100 @@
+{
+  "schema_version": 1,
+  "review": "S2 server increment2b independent implementation check",
+  "owner": "/root/s2_server_check",
+  "recorded_at": "2026-11-14T09:29:32.934842+00:00",
+  "verdict": "changes_requested",
+  "scope": "Frozen2b only; not2c, allS2 writers or A01–A12 acceptance.",
+  "product_edits": false,
+  "reviewer_database_tests": false,
+  "product_api_daemon_model_launches": false,
+  "git_writes": false,
+  "source_binding": {
+    "base_files": 4873,
+    "overlay_files": 42,
+    "reconstructed_files": 4889,
+    "binding_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/input-check.json",
+    "binding_sha256": "fe6256bbc377674df4e00963915a04a4a0e2d2d2aed0175c2fad545f888cf7c7",
+    "all_final_hashes_match": true,
+    "live_2c_bytes_used": false
+  },
+  "overlay_files": [
+    {
+      "path": "server/migrations/826_collaboration_test_subject.up.sql",
+      "sha256": "9ed8f4cba1b5f7fc08f81505f3b1800d77766053fc6955f736707affb99a38fe",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/migrations/826_collaboration_test_subject.up.sql"
+    },
+    {
+      "path": "server/migrations/826_collaboration_test_subject.down.sql",
+      "sha256": "fb5873fb2076585a257699457ad3fd37f95ba1fbe070da8e39b14429dc9d275d",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/migrations/826_collaboration_test_subject.down.sql"
+    },
+    {
+      "path": "server/migrations/827_collaboration_test_subject_command.up.sql",
+      "sha256": "61c062e7b949fc6d7519f642d9503b32bf0d21a52282902e7318675717b9ee98",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/migrations/827_collaboration_test_subject_command.up.sql"
+    },
+    {
+      "path": "server/migrations/827_collaboration_test_subject_command.down.sql",
+      "sha256": "d9009688019a747d11509192129068e8b37fa3e411faf9158b77af71415b1131",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/migrations/827_collaboration_test_subject_command.down.sql"
+    },
+    {
+      "path": "server/migrations/828_collaboration_test_subject_ready.up.sql",
+      "sha256": "e95a462905828fd3dbd2d69a7b21a53086a717501e771739bb117366c71c9d22",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/migrations/828_collaboration_test_subject_ready.up.sql"
+    },
+    {
+      "path": "server/migrations/828_collaboration_test_subject_ready.down.sql",
+      "sha256": "e7c06fdf6b0f3a1b7c312d8ea11fac64fb112119a3e932f9b645eb38a1754f5c",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/migrations/828_collaboration_test_subject_ready.down.sql"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_test_report.sql",
+      "sha256": "618bff8a7a8e3d192b443d48a69ed9c404d99ebacd60bc8d9dd8795d19f9c127",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/pkg/db/queries/collaboration_test_report.sql"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_test_report.sql.go",
+      "sha256": "89b103da46ff218ea3fae81fc4b1cb041f28209b96a296353c9a98f889dc6f9c",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/pkg/db/generated/collaboration_test_report.sql.go"
+    },
+    {
+      "path": "server/pkg/db/generated/models.go",
+      "sha256": "646e558ca088bb70fd722436a471f888cbfada4885b8b456c6f97a7606ce4642",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/pkg/db/generated/models.go"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_test_report.go",
+      "sha256": "5d096c1fab30e12e0b238b3f0e01f887ea31b1a0a2993e785dfad411f6d3878c",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/pkg/protocol/collaboration_test_report.go"
+    },
+    {
+      "path": "server/pkg/protocol/collaboration_test_report_test.go",
+      "sha256": "246cccf60c671c5742b6c14a2f080b88f18a70cf5611fb4b50f456aa96a28677",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/pkg/protocol/collaboration_test_report_test.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments.go",
+      "sha256": "4fb2e4668e5288c068e4f4365a68b1a552233f08725611e2080402a3726e5d79",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_comments.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_create.go",
+      "sha256": "92830ce01ba00b3ae3bc2d2614e86f58ddaced2c474d1c31fcc05c5edb5219e2",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_comments_create.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "sha256": "cac2866b400b27010cddc3f48b4a1a3b9d7cab7ec5c40a66d729478183a07614",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_runtime_capabilities.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_test_subject.go",
+      "sha256": "9a47a1d752d0e1c5193ee338abae4efb13ea21ab2cea5b001fbc5ccd409ba4a1",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_test_subject.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report.go",
+      "sha256": "fe59a237b93eb3b72a94faf784544cb760df167a3572efffb7f6b4fd18810437",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_test_report.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report_view.go",
+      "sha256": "33f4b40619ec5f050e8b9776af92e881d95752985059c2615e364df3bd503736",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_test_report_view.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report_test.go",
+      "sha256": "79625bfc1aeeb9020a7138787734a8fe80a5e1718e28a6a0792d51994a92fff6",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_test_report_test.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report_boundaries_test.go",
+      "sha256": "787f435341e9c98582fa5acdd0346732a48ac88185cdf3e5fab5e2a97eac5d6e",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_test_report_boundaries_test.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_qa.go",
+      "sha256": "e75059b605327b43eeca02bad5630a2f0f76d8b5879a593cd589b554d53d1e94",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_stage_qa.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "sha256": "82f14c257b9d6b98ef0f6d4ab2e3945c59e29a39cfcc86093a331f9d405ccd3b",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_stage_review.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review_view.go",
+      "sha256": "ecb3fade3f27a8fe9c8be5540cf34d7ac4788ff42b6ff0ba074bc35630bb5910",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_stage_review_view.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage.go",
+      "sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_stage.go"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_source_fence_test.go",
+      "sha256": "759c543d6f446d985bb507fc47df1b5b0140da8a76f4a72fa4b56fbdf9b2d9bc",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/collaboration_stage_source_fence_test.go"
+    },
+    {
+      "path": "server/internal/handler/collaboration_comments_create.go",
+      "sha256": "7a4cdaa439adbd620e2d14dec6dbb728b6dfb5b796525da7d7a8715c4f3c2264",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/handler/collaboration_comments_create.go"
+    },
+    {
+      "path": "server/internal/handler/collaboration_workflow.go",
+      "sha256": "7919a83a080f0fffebcd6266552fc38855e6edc6c3ea22b47f3c8c7ab48d43ec",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/handler/collaboration_workflow.go"
+    },
+    {
+      "path": "server/internal/handler/collaboration_test_report.go",
+      "sha256": "099b85a3d64661839088d8505d14a692e66ee202fc61de5c232adb373a002c3e",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/handler/collaboration_test_report.go"
+    },
+    {
+      "path": "server/internal/handler/collaboration_test_report_test.go",
+      "sha256": "205f93b646806c4f3b93f298375de21989fc615876eba7cafbfc8f03620d2090",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/handler/collaboration_test_report_test.go"
+    },
+    {
+      "path": "server/internal/handler/workspace_delete_manifest_test.go",
+      "sha256": "9d213414f1b94d061fc4ea263658418a645d6edf8002bc70f0bcd47b09c7f5ca",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/handler/workspace_delete_manifest_test.go"
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "657e364e202f2fe5441cb6e841cf9eb4c52faf5d888cb10fef4a5e3a182f487a",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/cmd/server/router.go"
+    },
+    {
+      "path": "server/cmd/migrate/main.go",
+      "sha256": "ec488de1b9b5e6411b32db8351ab197ecb1190d094dbb419a4936e67bea532cf",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/cmd/migrate/main.go"
+    },
+    {
+      "path": "server/cmd/multica/cmd_collaboration.go",
+      "sha256": "6aa066fa82508e2cf7590972c0ee7c35b29bdc99d352635bb84bbe68ab32c71e",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/cmd/multica/cmd_collaboration.go"
+    },
+    {
+      "path": "server/cmd/multica/cmd_collaboration_test_report.go",
+      "sha256": "ebd54b81f78bde1216874a22207a7a28eab95f55a92a26b81272e01a77185f72",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/cmd/multica/cmd_collaboration_test_report.go"
+    },
+    {
+      "path": "server/cmd/multica/cmd_collaboration_test_report_test.go",
+      "sha256": "e67fe15567f935729c9f8102e4a2a9e5bc92ccbfdadab7bea01ccfc6bec46587",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/cmd/multica/cmd_collaboration_test_report_test.go"
+    },
+    {
+      "path": "server/internal/cli/collaboration_test_report.go",
+      "sha256": "cbd69b01796e5bf7b859e59f8ebe4fdcd3a200676fde3ea6977cd26153b2a41a",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/cli/collaboration_test_report.go"
+    },
+    {
+      "path": "server/internal/cli/collaboration_test_report_test.go",
+      "sha256": "923e2d4c3c10e02d27a89c3da165fcc030d2ff02a998a72f83c5d272a8e8c3e0",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/cli/collaboration_test_report_test.go"
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_runner.go",
+      "sha256": "6640e7f4eaa758849996de0ff007b193e5a7e6dc9fa82d8e7b17fde01580e294",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/daemon/collaborationrun/host_runner.go"
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_test.go",
+      "sha256": "6ea88ebb555918c2e75878dca7addbc0af11adc5dadb6604fb8fad230fa70aab",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/daemon/collaboration_host_router_test.go"
+    },
+    {
+      "path": "server/internal/daemon/collaboration_host_router_boundary_test.go",
+      "sha256": "3ad39578ecca2cbcf57c1237df3bb20f0567a6b9b75d0261ebb706b95a24e61a",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/daemon/collaboration_host_router_boundary_test.go"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "sha256": "6cf6b64fb58fdc49b393a3b7520386a0aee2265c2b9d0b9ffd850cab016a5bdd",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "sha256": "4dbd7d1e61157607193985cc91d4cddf3ae5340214f26f382642208c2beb69bc",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md"
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "sha256": "8f0c2b656d96befc1d17aedb9f88b6bd4f97e434fa0bd0daab88800c9d34847f",
+      "frozen_path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-implementation-source/server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md"
+    }
+  ],
+  "wire_identity": {
+    "historical_2b_sha256": "6b5d4a192263b7543d6d0adac1ad16aba3b5a38251d7b48cf9c7a18029fe4485",
+    "current_central_wire_sha256": "dabc19c5762e46577468e3ec436998b4837f28e9ba1996731b47b2d9ad3e8c14",
+    "whole_file_matches": false,
+    "scope": "2b test-report contract and8.7–8.9 obligations; centralwire may move under2c owner, not copied into executable reconstruction."
+  },
+  "findings": [
+    {
+      "id": "S2B-C01",
+      "priority": "P1",
+      "status": "open_routed_to_sole_owner",
+      "title": "T4 and optional QA report references omit current artifact-source read authority",
+      "locations": [
+        {
+          "path": "server/internal/service/collaboration_test_report_view.go",
+          "line": 113
+        },
+        {
+          "path": "server/internal/service/collaboration_test_report_view.go",
+          "line": 163
+        },
+        {
+          "path": "server/internal/service/collaboration_stage_qa.go",
+          "line": 15
+        }
+      ],
+      "comparison_paths": [
+        "server/internal/service/collaboration_stage_review_view.go",
+        "server/internal/service/artifact_authority.go",
+        "server/internal/service/delivery_evidence.go"
+      ],
+      "evidence": "R4 checks current M1 artifact authority and hides all source evidence on denial. T4 gates only SourceMember and run association; its applicability/log paths check identities, not viewer artifact-manager/original-initiator authority. Optional QA-return report reference uses same weaker path.",
+      "reproduction_status": "Concrete code-path review; artifact-backed runtime reproduction delegated to sole owner, not executed by reviewer.",
+      "required_fix": "Share current read-authority validation for original frozen report source/artifact across T4 and optional references; use compatible transaction for locks; do not require historical candidate to remain current/usable; preserve source-only/empty-list and reason-only-return behavior.",
+      "required_tests": [
+        "authorized artifact initiator/manager",
+        "source member without artifact authority",
+        "authority revoked after prior read",
+        "R4 vs T4 list/detail consistency",
+        "cached report ID and cursor cannot regain source access",
+        "optional QA report reference denial and reason-only return success",
+        "readable stale/failed history retained"
+      ]
+    }
+  ],
+  "verified_boundaries": [
+    "C1 actual successful command binding and after-append original approval recheck",
+    "First claim exact command identity and existing Git preparation; legacy/missing/conflicting source refusal",
+    "Original mcb/attempt receipt recovery before current admission; immutable one report perattempt",
+    "Same-run/attempt/event/index/hash log resolution and post-redaction validation",
+    "Old report cannot borrow latest outcome/proof; later host attempt refused after business outcome",
+    "QA exact passing report/current signer chain and final clock",
+    "Private salt never projected through T1/T3/T4 or inspected legacy record/preparation/handoff/knowledge readers",
+    "Authenticated cursor issue/run/viewer/watermark and source-check-before-use",
+    "Run-only CLI flags/credentials/strict responses/original uncertainty handling"
+  ],
+  "independent_checks": [
+    {
+      "argv": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server",
+        "vet",
+        "./internal/service",
+        "./internal/handler",
+        "./internal/cli",
+        "./cmd/multica",
+        "./pkg/protocol"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/vet-initial.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0,
+      "id": "vet"
+    },
+    {
+      "id": "protocol",
+      "argv": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server",
+        "test",
+        "./pkg/protocol",
+        "-run",
+        "^TestCollaborationTestReport",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 0,
+      "named": {
+        "pass": [
+          "TestCollaborationTestReportStrictDecode/alias",
+          "TestCollaborationTestReportStrictDecode/unknown",
+          "TestCollaborationTestReportStrictDecode/null_zero",
+          "TestCollaborationTestReportStrictDecode/nul",
+          "TestCollaborationTestReportStrictDecode/invalid_utf8",
+          "TestCollaborationTestReportStrictDecode/attempt_spoof",
+          "TestCollaborationTestReportStrictDecode/mixed_log",
+          "TestCollaborationTestReportStrictDecode/duplicate",
+          "TestCollaborationTestReportStrictDecode/missing_null",
+          "TestCollaborationTestReportStrictDecode/missing_zero",
+          "TestCollaborationTestReportStrictDecode/trailing",
+          "TestCollaborationTestReportStrictDecode",
+          "TestCollaborationTestReportLimitsAndDerivedResult/passed",
+          "TestCollaborationTestReportLimitsAndDerivedResult/failed",
+          "TestCollaborationTestReportLimitsAndDerivedResult/error",
+          "TestCollaborationTestReportLimitsAndDerivedResult/skipped",
+          "TestCollaborationTestReportLimitsAndDerivedResult/aggregate_inline",
+          "TestCollaborationTestReportLimitsAndDerivedResult/utf8_bytes",
+          "TestCollaborationTestReportLimitsAndDerivedResult/empty_cases",
+          "TestCollaborationTestReportLimitsAndDerivedResult/duplicate_case",
+          "TestCollaborationTestReportLimitsAndDerivedResult/unknown_outcome",
+          "TestCollaborationTestReportLimitsAndDerivedResult/missing_log",
+          "TestCollaborationTestReportLimitsAndDerivedResult/log_index",
+          "TestCollaborationTestReportLimitsAndDerivedResult/negative_index",
+          "TestCollaborationTestReportLimitsAndDerivedResult/noncanonical_version",
+          "TestCollaborationTestReportLimitsAndDerivedResult/nil_uuid",
+          "TestCollaborationTestReportLimitsAndDerivedResult/large_inline",
+          "TestCollaborationTestReportLimitsAndDerivedResult"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/protocol-tests.log",
+      "log_sha256": "ce275aa7427513f41ab85198a7509d766d9145596f20ebda94db5869ef8dc726"
+    },
+    {
+      "id": "internal-cli",
+      "argv": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server",
+        "test",
+        "./internal/cli",
+        "-run",
+        "^TestCollaborationTestReport",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 0,
+      "named": {
+        "pass": [
+          "TestCollaborationTestReportUncertainResponseKeepsOriginalReceipt"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/internal-cli-tests.log",
+      "log_sha256": "e0d26834357a8374dd07aa5ab31040892a8dcbef2dfbf6b4fcadabcf0adf75ca"
+    },
+    {
+      "id": "root-cli",
+      "argv": [
+        "go",
+        "-C",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server",
+        "test",
+        "./cmd/multica",
+        "-run",
+        "^TestCollaborationTestReport",
+        "-count=1",
+        "-json"
+      ],
+      "exit_code": 0,
+      "named": {
+        "pass": [
+          "TestCollaborationTestReportCommandsRegistered",
+          "TestCollaborationTestReportCommandsUseOnlyRunCapability",
+          "TestCollaborationTestReportCommandRefusesOutsideRun"
+        ],
+        "fail": [],
+        "skip": []
+      },
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/root-cli-tests.log",
+      "log_sha256": "fb5b9b037feaf8af9f10a7fb47d8f8bcf667c1796a9a8d3ecff5fc889ce0ba11"
+    },
+    {
+      "id": "gofmt",
+      "argv": [
+        "gofmt",
+        "-l",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/pkg/db/generated/collaboration_test_report.sql.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/pkg/db/generated/models.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/pkg/protocol/collaboration_test_report.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/pkg/protocol/collaboration_test_report_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_comments.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_comments_create.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_runtime_capabilities.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_test_subject.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_test_report.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_test_report_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_test_report_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_test_report_boundaries_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_stage_qa.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_stage_review.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_stage_review_view.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_stage.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/service/collaboration_stage_source_fence_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/handler/collaboration_comments_create.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/handler/collaboration_workflow.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/handler/collaboration_test_report.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/handler/collaboration_test_report_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/handler/workspace_delete_manifest_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/cmd/server/router.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/cmd/migrate/main.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/cmd/multica/cmd_collaboration.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/cmd/multica/cmd_collaboration_test_report.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/cmd/multica/cmd_collaboration_test_report_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/cli/collaboration_test_report.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/cli/collaboration_test_report_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/daemon/collaborationrun/host_runner.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/daemon/collaboration_host_router_test.go",
+        "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/source/server/internal/daemon/collaboration_host_router_boundary_test.go"
+      ],
+      "exit_code": 0,
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/gofmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_bytes": 0
+    }
+  ],
+  "implementation_runs_verified": [
+    {
+      "id": "boundaries-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-boundaries-1.log",
+      "sha256": "8a4144ea116072cf175e1a1774e9338dad2333b1add188321157cb16c6084a96",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-boundaries-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "build-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-build-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-build-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "build-final-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-build-final-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-build-final-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "cleanup-final-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-final-1.log",
+      "sha256": "641addde64853e2be0bbbc4effd72283119bf00b926a632ecb2bd31ef9de60e8",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-final-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "cleanup-green-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-green-1.log",
+      "sha256": "7eddce97c854445d991cb1b0d70645eea83df0effad860ba1be4e9eacafd07c7",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "cleanup-red-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-red-1.log",
+      "sha256": "59b39a98cab833252ca49e7f6de68f998908372faa5c90bb2e856f91aef71b91",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cleanup-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    {
+      "id": "cli-green-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cli-green-1.log",
+      "sha256": "26550506554b6f671e9e78e4f3cb251c8d38b8418c0fa4c8459c6cd713492bc9",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cli-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 94,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "cli-green-2",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cli-green-2.log",
+      "sha256": "c5a6a346adf806a90beab37c688d0f8c3f0d07e82930fc4c08cec7ea64a9574f",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cli-green-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 95,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "cli-red-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cli-red-1.log",
+      "sha256": "463a570c037354202ab9d188f355c90b0d65a86830c65653ff0363d62b3252b7",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-cli-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "ddl-build-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-ddl-build-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-ddl-build-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "final-http-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-final-http-1.log",
+      "sha256": "5720574331fb513459a2bfba173586e8700aafe46783fdbc4e4d03ff4a0f46a0",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-final-http-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 19,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "final-qa-hint-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-final-qa-hint-1.log",
+      "sha256": "18362af71f00b953370f7b2ab39dc4bbff8717e70d6d97f6b7503972fce6821c",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-final-qa-hint-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 6,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "final-stage-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-final-stage-1.log",
+      "sha256": "035d9a65613871833f550fb2bdca7ce73411a5d0382f7aaf44b5dc1a118185d2",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-final-stage-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 108,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "followups-green-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-green-1.log",
+      "sha256": "1ad2fb0a0858ea849201d7dbe4201acca255bdc35900852fdec42574ddab0f95",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 90,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "followups-handler-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-handler-1.log",
+      "sha256": "1e9ef8d7d333cc40e79acd4d6a244d5e1176f38740e8992c0512fdbf7b8e1029",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-handler-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "followups-race-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-race-1.log",
+      "sha256": "c2f272a325f5d203a6fc8b25098abe3b8acba82ea59a80a4bcdcceb90175368a",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-race-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 5,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "followups-red-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-red-1.log",
+      "sha256": "fce2b8da9f8f243dcc51aa9390e745c443870f3bc8c1b372df821ca06e804f70",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-followups-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 1,
+        "fail": 4,
+        "skip": 0
+      }
+    },
+    {
+      "id": "host-brief-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-host-brief-1.log",
+      "sha256": "7404e231873613ef74b44f7d23feacf6afb1a6ba93f11b97787eaa6f67e53b3e",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-host-brief-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "host-harness-git-green-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-host-harness-git-green-1.log",
+      "sha256": "3ade04a974cece5b6b2a208f5c735eb27078ec25c5c13a279f7b26fdc668d0c6",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-host-harness-git-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "host-harness-git-red-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-host-harness-git-red-1.log",
+      "sha256": "160b1623223d7cfa44f7e59610657b79391eca82c5780b227476a862f2630fb2",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-host-harness-git-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "host-pagination-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-host-pagination-1.log",
+      "sha256": "85881f9e1972f81789dc7304c53c1856a3618c5e0b861302e2efdf3cefd54176",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-host-pagination-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "http-green-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-http-green-1.log",
+      "sha256": "755b1a915eb4ba6857e693ea08016c5a397a8cff70de544dd83f9108fe1ed6e8",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-http-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 12,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "http-red-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-http-red-1.log",
+      "sha256": "aef485eb52a625e5372f22d891decc8a5968184a3d6c9762d75a8ca288facb6e",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-http-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 1,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    {
+      "id": "internal-cli-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-internal-cli-1.log",
+      "sha256": "88560ff0bb8f646d62e5bf65da1a9c2858112711659b061d3bbc35c482884b74",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-internal-cli-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 76,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "protocol-green-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-protocol-green-1.log",
+      "sha256": "ef7820f620274c80c6edf6e632235bec7165c51ed396c803fac7ef209a2f661d",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-protocol-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 28,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "protocol-red-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-protocol-red-1.log",
+      "sha256": "2b21b0379bd3941322530948d72e68f880d4589edfec4e93ccd3b286c85bef6f",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-protocol-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "protocol-regressions-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-protocol-regressions-1.log",
+      "sha256": "78ed22d7a8b5ab909a6a804a32d52258985de1988cc7b1034e28d418c9923faa",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-protocol-regressions-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 336,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "qa-green-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-qa-green-1.log",
+      "sha256": "0f70dba49cb7d7891f80c5af2f79f24f28f7c7f48bb695951a51bca2ede94769",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-qa-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 9,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "qa-red-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-qa-red-1.log",
+      "sha256": "1bc8d8d36011597f109df1f023655bc964c53ac8ce210fc81564f671738ed2ad",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-qa-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    {
+      "id": "race-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-race-1.log",
+      "sha256": "0c5fc64da08398db3f25e522718be5531f336c788a005571e662d1ad8137b192",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-race-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "race-2",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-race-2.log",
+      "sha256": "cd3dc4d1fe89a803608faaa2ca282c2d737a30d2f97b6f64f89ca8b5e611503d",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-race-2.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 22,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "runtime-green-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-runtime-green-1.log",
+      "sha256": "d07ec190a880004433057f97586d1432c4fe0ca28768e0f2818094a04cfe580e",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-runtime-green-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      }
+    },
+    {
+      "id": "runtime-green-2",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-runtime-green-2.log",
+      "sha256": "1cf0317f0524376b83f0f1a1d69e518450e94351282e14a946bdad92aba0ae78",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-runtime-green-2.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 2,
+        "skip": 0
+      }
+    },
+    {
+      "id": "runtime-green-3",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-runtime-green-3.log",
+      "sha256": "6e6c40387563a0fcdf0081a07946863b04bfe060667c76b98e2b0a9da5effed1",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-runtime-green-3.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "runtime-red-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-runtime-red-1.log",
+      "sha256": "d12098ccd7218d3423fde7c96968d0b99260185175b7c2827b0c77625fc3e414",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-runtime-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "source-fence-green-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-green-1.log",
+      "sha256": "0cfabc5c9e2433afda63500544caa86b85510d03ff163082101172842576dea1",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-green-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 2,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "source-fence-race-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-race-1.log",
+      "sha256": "d69b4fcad19db4e087cd70fef42a16bcb190ce13bbe91facc4b058f1016a703e",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-race-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "source-fence-red-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-red-1.log",
+      "sha256": "f04cfd401426c1fd6f1fcccd6a190087523e201dfa246c54be33a647b327106d",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-source-fence-red-1.exit",
+      "exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "exit": 1,
+      "named_counts": {
+        "pass": 1,
+        "fail": 1,
+        "skip": 0
+      }
+    },
+    {
+      "id": "sqlc-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-sqlc-1.log",
+      "sha256": "82e81be19e70b27058e6e53a14e5038605de577ff0e32541d1c48a83fb815f43",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-sqlc-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "sqlc-2",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-sqlc-2.log",
+      "sha256": "f2c0c9cad07244bc050766259a79d8ddd1c48aaa0a838172d90397c3e7844711",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-sqlc-2.exit",
+      "exit_sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3",
+      "exit": 2,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "sqlc-3",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-sqlc-3.log",
+      "sha256": "82e81be19e70b27058e6e53a14e5038605de577ff0e32541d1c48a83fb815f43",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-sqlc-3.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "sqlc-4",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-sqlc-4.log",
+      "sha256": "82e81be19e70b27058e6e53a14e5038605de577ff0e32541d1c48a83fb815f43",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-sqlc-4.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "stage-runtime-regressions-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-stage-runtime-regressions-1.log",
+      "sha256": "2500c899bb08bf9435bc051b3810f21fa06ac1ec3cc0d65787006d93dfad7fec",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-stage-runtime-regressions-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 300,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "vet-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-vet-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-vet-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    {
+      "id": "vet-final-1",
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-vet-final-1.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_path": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc2b-vet-final-1.exit",
+      "exit_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "exit": 0,
+      "named_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  ],
+  "final_implementation_verification_ids": [
+    "final-stage-1",
+    "race-2",
+    "final-http-1",
+    "cli-green-2",
+    "internal-cli-1",
+    "protocol-regressions-1",
+    "host-harness-git-green-1",
+    "host-brief-1",
+    "cleanup-final-1",
+    "final-qa-hint-1",
+    "vet-final-1",
+    "build-final-1"
+  ],
+  "verification_limits": [
+    "No DB/API/daemon/model/browser/Desktop execution by reviewer; CLI unit HTTP fakes are not product API launch.",
+    "Actual owned-Git materialization and controlled CLI→handler→service end-to-end journey remain unrun in this acceptance increment.",
+    "No independent artifact-backed ACL reproduction yet; subsequent owner proof required for finding closure.",
+    "No complete A01–A12, production Web/Desktop,2c/2d or policy activation acceptance.",
+    "Eight unrelated F2 migration-registration omissions and other recorded unrelated failures remain untouched."
+  ],
+  "evidence_references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-results.json",
+      "sha256": "6c00ec6b6fe9973da80d78601a4fcd2a2fcfe0779444a9a7ff0f0352bff60fe3"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2b-results.md",
+      "sha256": "379f2b9e4634762c6212b58032bdea5af34794165572e9887305efc494eef765"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-2b-coordinator-hash-check.json",
+      "sha256": "5affa60484d35ca10ba6133fbc7ae36243071349aa69d5fe709352bd54c5f84b"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/input-check.json",
+      "sha256": "fe6256bbc377674df4e00963915a04a4a0e2d2d2aed0175c2fad545f888cf7c7"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/vet-initial.json",
+      "sha256": "4590680fdd5bacd2c6e079af5c5d77240255b6bd9b37f31b387de3cb3fe3250f"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-server-inc2b-check/targeted-checks.json",
+      "sha256": "3a09efb47e304e2e03e8c4b6c9e2b9080d388d6412299e13d2a35bb9a1a1b1c0"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/test-report-contract.md",
+      "sha256": "9c3bb62bfa7b88ce75184c143a23011880c759da84cb562a2b699724b93c855f"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2b-ddl-before.json",
+      "sha256": "f89357319919c7c4009d173c45d6c4656d605f0eba0c2b37922653c41e731929"
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261114-resume/s2-inc2b-migrations.json",
+      "sha256": "60afa592eec2ccc4a4b4886255551284b390e0d8012c107b731c42f2ac2c7f74"
+    }
+  ],
+  "report_markdown_sha256": "c3a134c4bc52795858092b193672fe67324a249c2a83d8531f204ec4d7d84fc3"
+}

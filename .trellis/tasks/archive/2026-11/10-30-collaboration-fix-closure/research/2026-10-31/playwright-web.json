@@ -1,0 +1,208 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/closure-evidence-20261031/playwright-web",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-handoff-chain-web.spec.ts",
+      "file": "collaboration-handoff-chain-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 16776,
+                  "error": {
+                    "message": "TimeoutError: locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Transfer', exact: true }) }).getByLabel('Exact recipient', { exact: true })\u001b[22m\n",
+                    "stack": "TimeoutError: locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Transfer', exact: true }) }).getByLabel('Exact recipient', { exact: true })\u001b[22m\n\n    at uiWorkflow (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts:112:61)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-handoff-chain-web.spec.ts:45:22",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts",
+                      "column": 61,
+                      "line": 112
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/collaboration-offline-handoff.ts:112\n\n  110 |   await page.getByRole(\"button\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }).click();\n  111 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }) });\n> 112 |   await form.getByLabel(\"Exact recipient\", { exact: true }).fill(target.id);\n      |                                                             ^\n  113 |   await form.getByRole(\"button\", { name: \"Find account\", exact: true }).click();\n  114 |   await expect(form.getByText(`Selected account: ${target.name}`, { exact: true })).toBeVisible();\n  115 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts",
+                        "column": 61,
+                        "line": 112
+                      },
+                      "message": "TimeoutError: locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Transfer', exact: true }) }).getByLabel('Exact recipient', { exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-offline-handoff.ts:112\n\n  110 |   await page.getByRole(\"button\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }).click();\n  111 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }) });\n> 112 |   await form.getByLabel(\"Exact recipient\", { exact: true }).fill(target.id);\n      |                                                             ^\n  113 |   await form.getByRole(\"button\", { name: \"Find account\", exact: true }).click();\n  114 |   await expect(form.getByText(`Selected account: ${target.name}`, { exact: true })).toBeVisible();\n  115 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);\n    at uiWorkflow (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts:112:61)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-handoff-chain-web.spec.ts:45:22"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T11:58:09.739Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/closure-evidence-20261031/playwright-web/collaboration-handoff-chai-fac35--only-the-creator-completes-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/reports/closure-evidence-20261031/playwright-web/collaboration-handoff-chai-fac35--only-the-creator-completes-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts",
+                    "column": 61,
+                    "line": 112
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b1c4a136b719ec2a1e4b-09a46b535c4a3f203e12",
+          "file": "collaboration-handoff-chain-web.spec.ts",
+          "line": 11,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "collaboration-offline-handoff.spec.ts",
+      "file": "collaboration-offline-handoff.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 16215,
+                  "error": {
+                    "message": "TimeoutError: locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Add participant', exact: true }) }).getByLabel('Exact recipient', { exact: true })\u001b[22m\n",
+                    "stack": "TimeoutError: locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Add participant', exact: true }) }).getByLabel('Exact recipient', { exact: true })\u001b[22m\n\n    at uiWorkflow (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts:112:61)\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts:199:18)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-offline-handoff.spec.ts:53:24",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts",
+                      "column": 61,
+                      "line": 112
+                    },
+                    "snippet": "\u001b[90m   at \u001b[39mfixtures/collaboration-offline-handoff.ts:112\n\n  110 |   await page.getByRole(\"button\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }).click();\n  111 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }) });\n> 112 |   await form.getByLabel(\"Exact recipient\", { exact: true }).fill(target.id);\n      |                                                             ^\n  113 |   await form.getByRole(\"button\", { name: \"Find account\", exact: true }).click();\n  114 |   await expect(form.getByText(`Selected account: ${target.name}`, { exact: true })).toBeVisible();\n  115 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts",
+                        "column": 61,
+                        "line": 112
+                      },
+                      "message": "TimeoutError: locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('form').filter({ has: getByRole('heading', { name: 'Add participant', exact: true }) }).getByLabel('Exact recipient', { exact: true })\u001b[22m\n\n\n   at fixtures/collaboration-offline-handoff.ts:112\n\n  110 |   await page.getByRole(\"button\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }).click();\n  111 |   const form = page.locator(\"form\").filter({ has: page.getByRole(\"heading\", { name: action === \"invite\" ? \"Add participant\" : \"Transfer\", exact: true }) });\n> 112 |   await form.getByLabel(\"Exact recipient\", { exact: true }).fill(target.id);\n      |                                                             ^\n  113 |   await form.getByRole(\"button\", { name: \"Find account\", exact: true }).click();\n  114 |   await expect(form.getByText(`Selected account: ${target.name}`, { exact: true })).toBeVisible();\n  115 |   if (action === \"transfer\") await form.getByLabel(\"Note\", { exact: true }).fill(note);\n    at uiWorkflow (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts:112:61)\n    at exerciseOfflineHandoff (/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts:199:18)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-offline-handoff.spec.ts:53:24"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-31T11:58:28.127Z",
+                  "annotations": [],
+                  "attachments": [],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts",
+                    "column": 61,
+                    "line": 112
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b53c6fa0121e7a26b406-ff6fd6de8ee75bb8a8f0",
+          "file": "collaboration-offline-handoff.spec.ts",
+          "line": 12,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-31T11:58:09.125Z",
+    "duration": 35591.524999999994,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "review_id": "20261115-333d5619",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "reviewer_role": "trellis-check",
+  "review_mode": "independent_read_only_isolated_candidate_admission",
+  "reviewed_at": "2026-11-15T08:27:21.432Z",
+  "approved_implementation_revision": "2026-11-14-v1",
+  "verdict": "zero_confirmed_isolated_candidate_admission_blockers",
+  "blocking_findings": [],
+  "blocking_findings_open": 0,
+  "admitted_for_candidate_scoped_quality_and_journeys": true,
+  "current_root_frontend_accepted": false,
+  "actual_product_runtime_acceptance": false,
+  "final_ac_or_p6_acceptance_verified": false,
+  "source_ready_or_runtime_permit_issued": false,
+  "ownership": {
+    "only_written_path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-candidate-admission-review-20261115-333d5619.json",
+    "source_spec_task_docs": "read_only",
+    "source_edits_by_reviewer": 0,
+    "peer_files_changed_by_reviewer": 0,
+    "descendants_spawned": 0,
+    "quality_tests_builds_or_db_suites_run_by_reviewer": 0,
+    "product_servers_or_native_apps_started_by_reviewer": 0,
+    "model_or_account_calls_by_reviewer": 0,
+    "outputs_regenerated_by_reviewer": 0
+  },
+  "context": {
+    "prior_full_scope_ac_preflight": "research/p6-ac-review-preflight-20261115-7686d6f9.json",
+    "prior_preflight_sha256": "dd4246e2ef4a0f3f93b730414c236ae5c7e4126ac2193efe4d2538674926608d",
+    "prior_code_spec_review_reused": true,
+    "ac1_through_ac12_final_recheck": "pending_actual_candidate_quality_build_runtime_and_resource_receipts",
+    "skill": ".agents/skills/trellis-check/SKILL.md",
+    "quality_execution_owner": "leader",
+    "source_variant_scope": "Retained complete first frozen knowledge candidate with only leader-owned E1/E2 proof assertions rebound; independent partial comment-thread ROOT increment excluded."
+  },
+  "source": {
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "candidate_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+    "retained_parent_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-0cc54918/build-7a8aefbc52c2/source",
+    "base_commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "parent_recorded_source_id": "fa86e9dd1f5b2e10cc323b15311b587c2d4d003f8b6adfdfe63a447ff0047d75",
+    "parent_recomputed_source_id": "fa86e9dd1f5b2e10cc323b15311b587c2d4d003f8b6adfdfe63a447ff0047d75",
+    "candidate_recomputed_source_id": "d1a929957a32b63c683c642528afb6e73872fd993b3ee7c7c65328ecc4f9379b",
+    "candidate_final_recomputed_source_id": "d1a929957a32b63c683c642528afb6e73872fd993b3ee7c7c65328ecc4f9379b",
+    "candidate_final_observed_at": "2026-11-15T08:22:14.571Z",
+    "parent_file_count": 11017,
+    "candidate_file_count": 11017,
+    "all_selected_source_file_bytes_modes_and_links_independently_read": true,
+    "algorithm": "Existing controller source selection from cached and untracked Git paths, existing exclusions, normalized source bytes, executable-mode bit, source-link text, sorted source descriptor and workspace bindings.",
+    "candidate_path_set_exactly_matches_retained_parent_manifest": true,
+    "candidate_source_symlink_count": 0,
+    "parent_to_candidate_changed_file_count": 1,
+    "parent_to_candidate_changes": [
+      {
+        "path": "e2e/project-knowledge-automation.spec.ts",
+        "kind": "leader_owned_test_assertions_only",
+        "before_sha256": "d10f577675a666ab029a66884869c0374aa0716e2da5b9b93f1856e05d12c5ca",
+        "after_sha256": "af0b644f25a9089c55ca9ce8604f405458576b967df1572d4851d0b6397b35a0",
+        "mode_unchanged": true,
+        "links_unchanged": true
+      }
+    ],
+    "production_go_sql_docs_ui_or_controller_change_from_retained_parent": false,
+    "E1_E2_assertion_edits": [
+      "E1-first-version",
+      "E1-renewed-version",
+      "E2-before-snapshot",
+      "E2-candidate-workspace-assertions"
+    ],
+    "E1_E2_implemented_runtime_execution_not_counted": true
+  },
+  "normalization_limits": {
+    "parent_original_manifest_raw_byte_changes": [
+      {
+        "path": "apps/web/next-env.d.ts",
+        "original_raw_sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc",
+        "retained_raw_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+        "normalized_sha256": "7b550dda9686c16f36a17bf9051d5dbf31e98555b30d114ac49fc49a1e712651",
+        "reason": "Existing exact dev/routes to production/routes import normalization; parent normalized identity remains fa86e9dd1f5b2e10cc323b15311b587c2d4d003f8b6adfdfe63a447ff0047d75."
+      }
+    ],
+    "original_parent_manifest_fully_raw_byte_unchanged": false,
+    "private_index_raw_blob_exception": {
+      "path": "scripts/uninstall-desktop-windows.bat",
+      "raw_blob_mismatch_count": 1,
+      "mode_match": true,
+      "attributes": {
+        "text": "auto",
+        "eol": "crlf",
+        "filter": "unspecified"
+      },
+      "crlf_count": 389,
+      "crlf_to_lf_exactly_reproduces_index_blob": true,
+      "working_bytes_match_retained_parent": true,
+      "source_mutation": false
+    }
+  },
+  "private_git": {
+    "private_git_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source/.git",
+    "private_index_regular_not_symlink": true,
+    "private_index_distinct_device_or_inode_from_root": true,
+    "private_index_nlink": 1,
+    "private_index_sha256": "d4c7194a00eb3176dd4b6d4146749a86b35a2c323e674cf69de673eab2115e7b",
+    "private_index_entry_count": 11017,
+    "private_index_exact_parent_path_set": true,
+    "missing_paths": 0,
+    "extra_paths": 0,
+    "conflict_stage_count": 0,
+    "ignored_cached_source_witness_count": 72,
+    "head_detached_at_real_base_commit": true,
+    "head_object_type": "commit",
+    "private_ref_count": 0,
+    "new_branch_or_commit": false,
+    "staged_tree_differs_from_head": true,
+    "commit_limit": "Commit identifies the base only; exact candidate identity is the separate normalized source ID, not HEAD.",
+    "object_alternates": [
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-0cc54918/build-7a8aefbc52c2/source/.git/objects"
+    ],
+    "alternate_chain": "Private objects refer to retained parent objects, which refer to ROOT base Git objects; source and index are private."
+  },
+  "workspace_and_dependencies": {
+    "workspace_binding_count": 32,
+    "workspace_bindings_match_retained_parent_record": true,
+    "workspace_bindings_match_retained_parent": true,
+    "workspace_bindings_match_root_relative_mapping": true,
+    "all_workspace_real_targets_within_candidate": true,
+    "nonworkspace_shared_dependency_links_audited": 1560,
+    "private_dependency_entries_audited": 2,
+    "shared_dependency_links_resolve_to_existing_root_node_modules_caches": true,
+    "direct_links_to_mutable_root_source_outside_node_modules": 0,
+    "new_dependencies_or_installations_performed": false,
+    "hermetic_dependency_copy": false,
+    "limit": "Shared dependency caches remain external. Actual toolchain, output and resource bindings require fresh build/runtime receipts; no current ROOT source consumption is proved by commit equality alone."
+  },
+  "controller": {
+    "path": ".trellis/tasks/11-14-project-knowledge-automation/research/p6-runtime.py",
+    "sha256": "1fd175fcfd1377cec1f502c4fbefd777687ef0a789f26247d7a3c51607ad1589",
+    "root_parent_candidate_bytes_equal": true,
+    "matches_retained_manifest": true,
+    "source_index_workspace_allocation_build_service_and_start_guard_code_reviewed": true,
+    "source_build_resource_equality_guards_loosened": false,
+    "private_root_derived_from_regular_copied_controller_file": true
+  },
+  "allocation": {
+    "root_receipt": "research/p6-isolated-allocation-4a8f26ff.json",
+    "new_allocation_sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+    "candidate_run_and_root_new_receipt_bytes_equal": true,
+    "old_root_allocation_receipt": "research/p6-allocation.json",
+    "old_root_allocation_sha256": "dee9da1339a7e6ffe4f8e09b3054c26ca9ee07b2c4000dc18b82b886d7f23ae9",
+    "old_root_allocation_rewritten": false,
+    "run_directory": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156",
+    "database": "mca_knowledge_browser_073bb20e614e",
+    "ports": {
+      "api": 61990,
+      "web": 61991,
+      "renderer": 61992,
+      "model": 61993
+    },
+    "structural_checks": {
+      "task_matches": true,
+      "private_controller_derived_root_matches": true,
+      "allocation_source_root_matches": true,
+      "allocation_created_by_controller": true,
+      "no_real_accounts": true,
+      "ports_exact_names": true,
+      "ports_valid": true,
+      "ports_unique": true,
+      "origins_match": true,
+      "database_name_matches": true,
+      "new_and_old_allocations_distinct": true,
+      "old_allocation_would_fail_private_root_fence": true,
+      "private_run_outside_root_and_candidate": true,
+      "run_mode_0700": true,
+      "candidate_mode_0700": true
+    },
+    "allocation_files_mode_0600": true,
+    "environment": {
+      "sha256": "bc1f96e026f7dc801bcad1d1c3344b10105a8aa05dc0a809d578d641aae2166b",
+      "private_mode": true,
+      "owner_matches_candidate": true,
+      "literal_loopback_database_identity_verified": true,
+      "credentials_omitted": true
+    },
+    "actual_runtime_resource_acceptance": false
+  },
+  "root_comparison": {
+    "observed_at": "2026-11-15T08:12:11.540Z",
+    "source_id_at_observation": "37f57d6b3386c217f31943bbfcb93c5ff719c1df82cb88057de345ab3427945f",
+    "source_files_at_observation": 11024,
+    "mutable": true,
+    "candidate_equals_current_root": false,
+    "difference_count": 14,
+    "differences": [
+      {
+        "path": "apps/web/next-env.d.ts",
+        "kind": "different",
+        "normalization_only": true
+      },
+      {
+        "path": "packages/core/collaboration/comment-threads.test.ts",
+        "kind": "added",
+        "normalization_only": false
+      },
+      {
+        "path": "packages/core/collaboration/comment-threads.ts",
+        "kind": "added",
+        "normalization_only": false
+      },
+      {
+        "path": "packages/core/collaboration/index.ts",
+        "kind": "different",
+        "normalization_only": false
+      },
+      {
+        "path": "packages/views/collaboration/comment-history.tsx",
+        "kind": "different",
+        "normalization_only": false
+      },
+      {
+        "path": "packages/views/collaboration/comment-list.tsx",
+        "kind": "different",
+        "normalization_only": false
+      },
+      {
+        "path": "packages/views/collaboration/discussion-actions.tsx",
+        "kind": "different",
+        "normalization_only": false
+      },
+      {
+        "path": "packages/views/locales/en/collaboration.json",
+        "kind": "different",
+        "normalization_only": false
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "kind": "different",
+        "normalization_only": false
+      },
+      {
+        "path": "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+        "kind": "added",
+        "normalization_only": false
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage_exit_continuation_test.go",
+        "kind": "added",
+        "normalization_only": false
+      },
+      {
+        "path": "server/internal/handler/collaboration_stage_writer_continuation_test.go",
+        "kind": "added",
+        "normalization_only": false
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_exit_continuation_test.go",
+        "kind": "added",
+        "normalization_only": false
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_writer_continuation_test.go",
+        "kind": "added",
+        "normalization_only": false
+      }
+    ],
+    "production_go_or_sql_byte_changes_vs_candidate": 0,
+    "later_root_only_go_test_files": 5,
+    "limit": "Candidate does not consume ROOT partial comment-thread source or later peer test files. Point-in-time ROOT identity is not frozen and candidate receipts cannot establish current ROOT frontend or later ROOT tests."
+  },
+  "preserved_failures": {
+    "root_frontend_receipt": "research/p6-frontend-current-936d7457.json",
+    "root_frontend_state": "failed",
+    "typecheck_exit": 2,
+    "source_stable": false,
+    "root_quality_accepted": false,
+    "failure_reasons": [
+      "typecheck_failed_in_partial_comment_history_wiring",
+      "global_source_changed_during_checks"
+    ],
+    "reported_trigger": "Partial comment-history wiring missing open/onClose; peer source remains untouched.",
+    "old_root_build_receipts": [
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-0cc54918/build-72f79a734581/build.json",
+        "sha256": "db4b1b51d23f3836ad08c964b9f4c1d6674548694c16df3f841313818ff976c5",
+        "state": "built",
+        "source_id": "e01cb1b9182d7f946e642668a376e872a43147f0a03a8d384f454abc555c2de6",
+        "source_files": 11019
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-0cc54918/build-7a8aefbc52c2/build.json",
+        "sha256": "46ff637cadefd8a91377d14504670d25a38abe65ca137e0fad83fdb44bba38c8",
+        "state": "build_failed",
+        "source_id": "fa86e9dd1f5b2e10cc323b15311b587c2d4d003f8b6adfdfe63a447ff0047d75",
+        "source_files": 11017
+      },
+      {
+        "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-0cc54918/build-9800f25ad5a3/build.json",
+        "sha256": "795742dfe89a9513507b07990d436f59bd361f952529d69c6fb76b03b39da296",
+        "state": "build_failed",
+        "source_id": "4991615752e7964eb7fe72d71a49dca6e0792b90a3bf40acbf9966850c1b4a3f",
+        "source_files": 11020
+      }
+    ],
+    "second_root_start": "refused_after_source_drift_per_leader; built receipt is not an accepted current runtime",
+    "first_frozen_snapshot_is_source_evidence_only": true,
+    "failures_overwritten_or_reclassified": false
+  },
+  "nonblocking_followups": [
+    {
+      "id": "C3",
+      "status": "low_nonblocking_not_executed",
+      "detail": "Direct original prepare/authorize replay after proof replacement remains unexecuted and is not counted as proof.",
+      "owner": "leader",
+      "independent_mixed_history_review": "research/p6-mixed-history-independent-review-20261115-e24067c7.json"
+    }
+  ],
+  "next_final_review_gates": [
+    {
+      "id": "candidate_quality",
+      "required": "Actual isolated lint/typecheck/tests receipts with exact candidate source ID before/after and explicit failures/skips/cache limits; leader owns execution."
+    },
+    {
+      "id": "actual_web_desktop_builds",
+      "required": "Fresh immutable successful Web and Desktop build receipts identifying this variant and consumed frozen snapshot, source descriptors, 32 workspace bindings, controller equality and actual artifact hashes."
+    },
+    {
+      "id": "runtime_provenance",
+      "required": "Start and health receipts proving original candidate and consumed frozen source equality, exact allocation, owned listener/process groups and loopback DB/service bindings; no ROOT receipt reuse."
+    },
+    {
+      "id": "product_journeys",
+      "required": "Actual Chromium Web and Electron Desktop P6 journeys with E1/E2 assertions executed, required visible flows and current-authority failures, product origins and bounded artifacts; deterministic provider fixture scope stated."
+    },
+    {
+      "id": "resource_closure",
+      "required": "Owned process, connection, DB/profile/workspace and cleanup receipts showing no shared-environment consumption or remaining owned processes/connections; actual values pending."
+    },
+    {
+      "id": "final_ac1_through_ac12",
+      "required": "Fresh per-AC/source/resource recheck over those actual receipts, retaining ROOT divergence, runtime gaps, C3 execution limit, native-probe-only limit and historical evidence scope."
+    }
+  ],
+  "scope_limits": {
+    "actual_build_or_runtime_success_claimed": false,
+    "root_frontend_or_root_final_green_claimed": false,
+    "full_ac_or_p6_completion_claimed": false,
+    "real_provider_quality_claimed": false,
+    "real_accounts_used": false,
+    "PAY241_or_parent24_matrix_closed": false,
+    "new_candidate_quality_or_journey_receipts_reviewed_in_this_sidecar": false
+  },
+  "evidence": [
+    {
+      "path": "research/p6-isolated-candidate-4a8f26ff.json",
+      "sha256": "c0e4aeda97c651736ef1048672f1465941a3478fd8e9962f2dbd1f1b6de4f90a"
+    },
+    {
+      "path": "research/p6-isolated-allocation-4a8f26ff.json",
+      "sha256": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966"
+    },
+    {
+      "path": "research/p6-e2e-proof-assertions-afa49cc0.json",
+      "sha256": "668702f999b9c78945a75656bc1682c295e51f9ab82c75e129fb192c1a2c4ddf"
+    },
+    {
+      "path": "research/p6-ac-review-preflight-20261115-7686d6f9.json",
+      "sha256": "dd4246e2ef4a0f3f93b730414c236ae5c7e4126ac2193efe4d2538674926608d"
+    }
+  ]
+}

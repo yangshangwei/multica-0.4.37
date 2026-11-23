@@ -1,0 +1,196 @@
+{
+  "recorded_at": "2026-11-04T09:44:21.663103+00:00",
+  "state": "original_normal01_failed_K3_continuation_seed_root; race_not_started",
+  "result": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/result.json",
+    "sha256": "a1c125f17305bd4f7f6786fa54262a022232c742f4e8171dd88c3b7dd227e0b1"
+  },
+  "raw": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/runs/rk1k-normal-v16-01/tests.jsonl",
+    "sha256": "98e01f3ab910e9900cb2308069f24bf08148fc6fdb0496f8fac1cc88c23f0bac"
+  },
+  "top_level": {
+    "TestRK1KnowledgeEntryGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeWrapperGuard": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgePromptData": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeTraceCredentialLabels": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeNativeMetadataUsesRawOutput": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeEvidenceFaults": {
+      "run": 1,
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "TestRK1KnowledgeFakeProof": {
+      "run": 1,
+      "pass": 0,
+      "fail": 1,
+      "skip": 0
+    }
+  },
+  "sample_observations": [
+    {
+      "label": "E0b",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K1-approved",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K1-corrected",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K1-pending",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K1-withdrawn",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K2-fresh",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K2-frozen-refusal",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 0,
+      "paid": 0
+    },
+    {
+      "label": "K2-resume",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K3-autopilot",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K3-chat",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K3-comment",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K3-issue",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K3-member",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K3-member-seed-root",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 1,
+      "measured": 0,
+      "paid": 0
+    },
+    {
+      "label": "K3-quick_create",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    },
+    {
+      "label": "K3-root",
+      "state": "finished",
+      "verdict": "pass",
+      "seed": 0,
+      "measured": 1,
+      "paid": 0
+    }
+  ],
+  "sample_count": 16,
+  "measured_fake_starts_observed": 14,
+  "seed_fake_starts_observed": 1,
+  "paid_starts_observed": 0,
+  "summary_exists": false,
+  "source_after_pass": true,
+  "knowledge_allocated": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false,
+  "next": "Diagnose source/actual runtime queue boundary with a bounded newly numbered fake probe; no silent retry/race or fake/manual runs"
+}

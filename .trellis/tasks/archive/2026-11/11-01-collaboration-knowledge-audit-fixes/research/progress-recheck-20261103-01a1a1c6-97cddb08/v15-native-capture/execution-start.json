@@ -1,0 +1,27 @@
+{
+  "started_at": "2026-11-03T16:33:55.573502+00:00",
+  "command": [
+    "bash",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/.nvm/versions/node/v22.23.2/bin/node",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/owned-workspace-links/pnpm-10.28.2/bin/pnpm.cjs",
+    "--dir",
+    "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103",
+    "exec",
+    "playwright",
+    "test",
+    "e2e/collaboration-account-desktop.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--grep",
+    "(?:^| )Desktop\\ offers\\ private\\ resources,\\ sends\\ all\\ plus\\ AI\\ mentions\\ and\\ preserves\\ cancelled\\ command\\ history$",
+    "--reporter=line,json",
+    "--output=/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/v15-native-diagnostic/playwright-native1"
+  ],
+  "pid": 500,
+  "actual_selected": 1,
+  "source_before_sha256": "687096e7cf09407f149661ab6d9a8c6913117db018921bee3d3b2f359a95e385",
+  "live_proof_sha256": "9fb1ece8ea39f32b3a3e2dbf5c3d0e88092f63c73a3154d0fc7e79852204b252",
+  "purpose": "ONE native diagnostic with original assertions; no algorithm change/retry/CCG/model"
+}

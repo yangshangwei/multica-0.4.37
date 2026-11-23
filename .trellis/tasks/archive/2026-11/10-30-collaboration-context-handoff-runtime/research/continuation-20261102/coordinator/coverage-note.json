@@ -1,0 +1,827 @@
+{
+  "at": "2026-11-02T14:14:09.094598+00:00",
+  "scope": "read-only static coverage/evidence audit; no tests/services/database/provider actions",
+  "candidate_sha": "64a9994ec549e8dff73ab14456dc9a9f4b63f7c7",
+  "product_source_id": "9f72fc214b8e81f6fc3c1969be5e3304b7f158f60a6f7305f1531d55574d80ee",
+  "default_command": [
+    "make",
+    "check"
+  ],
+  "config": {
+    "file": "playwright.config.ts",
+    "testDir": "e2e",
+    "project": "chromium",
+    "workers": 1,
+    "retries": 0,
+    "global_timeout_ms": 60000,
+    "no_server_autostart": true
+  },
+  "default_api_overrides": {
+    "MULTICA_AUTH_MODE": "legacy",
+    "MULTICA_DEVICE_AUTH_ENABLED": false,
+    "MULTICA_MANAGED_INSTALLATIONS_ENABLED": false,
+    "MULTICA_KNOWLEDGE_CONTEXT_ENABLED": false,
+    "MULTICA_PLATFORM_ADMIN_ENABLED": false
+  },
+  "E2E_flag_assumption": "standard lane leaves E2E_PASSWORD_AUTH unset/0; actual selected runtime must record sanitized E2E flags/config and never enable password fixture against mismatched legacy API",
+  "matching_spec_count": 48,
+  "spec_inventory": [
+    {
+      "file": "e2e/admin-collaboration-switches.spec.ts",
+      "sha256": "a4eac06e94bdfbcfb42c57f0b3b3f1fd18e18e8615e16d69aa53e481c00c89bc",
+      "skip_sites": [
+        {
+          "line": 24,
+          "source": "test.skip(adminLaneMissing() !== null, adminLaneMissing() ?? \"\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-account-desktop.spec.ts",
+      "sha256": "163c92042219b895db49bb1f8c5afb4e0fdc86038c6e2f45c91358f962c3497c",
+      "skip_sites": [
+        {
+          "line": 104,
+          "source": "test.skip(!apiUrl || !rendererUrl || !databaseUrl || !process.env.NEXT_PUBLIC_API_URL,"
+        },
+        {
+          "line": 278,
+          "source": "test.skip(!process.env.MULTICA_DEPLOYMENT_ID, \"Requires the task-owned deployment with collaboration creation enabled\");"
+        },
+        {
+          "line": 576,
+          "source": "test.skip(!process.env.MULTICA_DEPLOYMENT_ID, \"Requires a matching task-only runtime enrollment deployment\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-administration-desktop.spec.ts",
+      "sha256": "b04bf8e9d3be24695c72feb16ac731dca0e9cc5e5582adfefcd507b497a3b79b",
+      "skip_sites": [
+        {
+          "line": 13,
+          "source": "test.skip(process.env.E2E_PLATFORM_ADMIN !== \"1\" || process.env.E2E_PASSWORD_AUTH !== \"1\" || !process.env.COLLABORATION_ELECTRON_RENDERER_URL,"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-administration-web.spec.ts",
+      "sha256": "c21ac3ab9b0454577b06138295f30ae739d8f663101917c54cd48d2b0cd85a0c",
+      "skip_sites": [
+        {
+          "line": 63,
+          "source": "test.skip(process.env.E2E_PLATFORM_ADMIN !== \"1\" || process.env.E2E_PASSWORD_AUTH !== \"1\","
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-boundaries-web.spec.ts",
+      "sha256": "c2b37edb1e7fb8f0bc9f054f8b6fc2c8d27dcb398e033ff7ed6b4c81c0c5635d",
+      "skip_sites": [
+        {
+          "line": 26,
+          "source": "test.skip(!apiUrl || !process.env.DATABASE_URL || !process.env.NEXT_PUBLIC_API_URL || (needsDeployment && !process.env.MULTICA_DEPLOYMENT_ID),"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-command-history-web.spec.ts",
+      "sha256": "7c0ec1a26ed700177a30836ef58a88c832cd8b1ea84f82238c9c54a7a2145a92",
+      "skip_sites": [
+        {
+          "line": 10,
+          "source": "test.skip(!process.env.COLLABORATION_E2E_API_URL || !process.env.DATABASE_URL || !process.env.MULTICA_DEPLOYMENT_ID || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-control-journey-desktop.spec.ts",
+      "sha256": "705b5648f4a675ab43283688e0145dbf6b7f6544eb38fed64e0f2e7214f62c01",
+      "skip_sites": [
+        {
+          "line": 16,
+          "source": "test.skip(!controlEnvironmentReady() || !process.env.COLLABORATION_ELECTRON_RENDERER_URL,"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-control-journey-web.spec.ts",
+      "sha256": "4e1e3b5cb93e536feff9973aa49ccba6295f2a6a014d166d355052b9831026c2",
+      "skip_sites": [
+        {
+          "line": 12,
+          "source": "test.skip(!controlEnvironmentReady(), \"Requires the task-owned password/managed deployment with execution enabled and matching production Web\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-creation-default.spec.ts",
+      "sha256": "2dc9763b32e8c26822c747838fdfa546b6607752461f52dc464e7587ec1cb47c",
+      "skip_sites": [
+        {
+          "line": 23,
+          "source": "test.skip(legacyLaneMissing() !== null, legacyLaneMissing() ?? \"\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-cross-client-execution.spec.ts",
+      "sha256": "3485662826b2afc9ab82dadbbe3e3d71dfad6bcb9c3bee9c4419c63a6d3b5416",
+      "skip_sites": [
+        {
+          "line": 18,
+          "source": "test.skip(!crossClientEnvironmentReady(), \"Requires explicit task-owned password API/Web/renderer and static Linux daemon/provider executables\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-delivery-web.spec.ts",
+      "sha256": "a6fd52979da147dd0fa4768bc1b6d078ae2f9523764d95aa9fe153f944456912",
+      "skip_sites": [
+        {
+          "line": 24,
+          "source": "test.skip(!apiUrl || !process.env.DATABASE_URL || !process.env.NEXT_PUBLIC_API_URL,"
+        },
+        {
+          "line": 193,
+          "source": "test.skip(!apiUrl || !process.env.DATABASE_URL || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-editing-web.spec.ts",
+      "sha256": "3107232598be85c17368e409647d159eabae8976ccc7518267003395445cbd78",
+      "skip_sites": [
+        {
+          "line": 11,
+          "source": "test.skip(!apiUrl || !process.env.DATABASE_URL || !process.env.NEXT_PUBLIC_API_URL,"
+        },
+        {
+          "line": 99,
+          "source": "test.skip(!apiUrl || !process.env.DATABASE_URL || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-handoff-chain-desktop.spec.ts",
+      "sha256": "9444fa57fef1fa73641dbced0409eb606d22e0ad44992990526684e30cdb1e1d",
+      "skip_sites": [
+        {
+          "line": 18,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\" || !process.env.COLLABORATION_ELECTRON_RENDERER_URL,"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-handoff-chain-web.spec.ts",
+      "sha256": "c5d29e955de515eb43c09952e6cb594f5ce71e842cc94ba2800a5aebb269b098",
+      "skip_sites": [
+        {
+          "line": 13,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\", \"Requires task-owned password production services\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-host-installed.spec.ts",
+      "sha256": "2ca4a3b659fd8a6693d19dee23c587a107ddbce1f07f02c7efe5f9653b288fbe",
+      "skip_sites": [
+        {
+          "line": 42,
+          "source": "test.skip(!image && !nativeExecutable, \"Requires an explicitly selected packaged Main image or native Windows/macOS executable\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": true
+    },
+    {
+      "file": "e2e/collaboration-host-runtime.spec.ts",
+      "sha256": "89def39e2af39aceb9f03c6d0aa4bc54cc0f29397e08e4ac1cc97286c6ed2c54",
+      "skip_sites": [
+        {
+          "line": 17,
+          "source": "test.skip(!hostRuntimeConfigured(), \"Requires explicit task-owned host daemon/provider/CLI executables; configured runs fail if any environment input is missing\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": true,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-host-squad.spec.ts",
+      "sha256": "836d1dd8934d058f27fdfb37207da60c68af7c874e7a555743625aeb91058051",
+      "skip_sites": [
+        {
+          "line": 15,
+          "source": "test.skip(!hostRuntimeConfigured(), \"Requires explicit task-owned host daemon/provider/CLI executables; configured runs fail if any environment input is missing\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": true,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-host-switch.spec.ts",
+      "sha256": "77987dcae044ef2d99ec8ae54082fbdcb4094e6fadbc2fa50e0f53574be87fac",
+      "skip_sites": [
+        {
+          "line": 16,
+          "source": "test.skip(!hostRuntimeConfigured(), \"Requires explicit task-owned host daemon/provider/CLI executables; configured runs fail if any environment input is missing\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": true,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-installed-clients.spec.ts",
+      "sha256": "f556266ea6cf579b05ab3f6d2e21fe8c2f38552a0a6ee0a3e77a194511965f17",
+      "skip_sites": [
+        {
+          "line": 30,
+          "source": "test.skip(!controlEnvironmentReady() || !process.env.COLLABORATION_INSTALLED_CLI_RELAY,"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-installed-main.spec.ts",
+      "sha256": "f39a78039513ef60efb57b4fdcf3aee4ac0b4de9e854ff17f91ddad2516d0bfa",
+      "skip_sites": [
+        {
+          "line": 142,
+          "source": "test.skip(!process.env.COLLABORATION_INSTALLED_IMAGE, \"Requires a task-owned packaged Linux full Main image and password API\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": true
+    },
+    {
+      "file": "e2e/collaboration-knowledge-deployed.spec.ts",
+      "sha256": "0dd4ad4e04f5c35c5efd103dd11fae35b5817c93f6bd2643a3dfe3338771f241",
+      "skip_sites": [
+        {
+          "line": 18,
+          "source": "test.skip(expected === undefined, \"Requires an explicit true/false expectation and isolated task-owned deployment\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": true,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-knowledge.spec.ts",
+      "sha256": "05734ae588cae269dc6131d785f4bbbaaf1a9be834c85ba6e5e278c10b9ae015",
+      "skip_sites": [],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-lane-close-controls.spec.ts",
+      "sha256": "806b31844505bc685c9864724aa375b2de3f1264f08386a63a0c825e85594b98",
+      "skip_sites": [
+        {
+          "line": 96,
+          "source": "test.skip(!crossClientEnvironmentReady(), \"Requires the root-owned production/password API, renderer and explicit fixture identities\");"
+        },
+        {
+          "line": 102,
+          "source": "test.skip(!crossClientEnvironmentReady(), \"Requires root-owned production/password API, Electron and explicit Linux fixtures\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-leave-web.spec.ts",
+      "sha256": "8f31756ec537294c57b777e1258e660440197a63706d735e368b8e5d08bf1623",
+      "skip_sites": [
+        {
+          "line": 15,
+          "source": "test.skip(!controlEnvironmentReady(), \"Requires the task-owned password/managed deployment with execution enabled and matching production Web\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-lifecycle-controls.spec.ts",
+      "sha256": "da1bc19cb1fbd6074b6b9b85df47a89e05730e2608a0997b19724d66915a1fd4",
+      "skip_sites": [
+        {
+          "line": 16,
+          "source": "test.skip(!crossClientEnvironmentReady(), \"Requires root-allocated task-owned production Web/password API/renderer and explicit Linux fixtures\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-live-revoke-web.spec.ts",
+      "sha256": "25edb2607a927196ba3d21315261eb3775e7b0446c9fa203d0e86186780d3594",
+      "skip_sites": [
+        {
+          "line": 15,
+          "source": "test.skip(!controlEnvironmentReady(), \"Requires the task-owned password/managed deployment with execution enabled and matching production Web\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-machine-boundary.spec.ts",
+      "sha256": "9a8effff9a160426390d8ba9a2ec1a92074bf699755a599d788bb891e2d32a11",
+      "skip_sites": [
+        {
+          "line": 22,
+          "source": "test.skip(!apiUrl || !process.env.DATABASE_URL || process.env.E2E_PASSWORD_AUTH === \"1\","
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-memory-runtime.spec.ts",
+      "sha256": "0a28c4248892aafe8cfca5ad1f99c37c3a8cdef2276c42239d072bcd9169d18c",
+      "skip_sites": [
+        {
+          "line": 47,
+          "source": "test.skip(!hostRuntimeConfigured(), \"Requires explicit task-owned host daemon, memory-provider and Multica CLI executables\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": true,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-memory-web.spec.ts",
+      "sha256": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+      "skip_sites": [
+        {
+          "line": 9,
+          "source": "test.skip(!configured(), \"Requires the isolated memory API/database and production Web\");"
+        },
+        {
+          "line": 110,
+          "source": "test.skip(!configured(), \"Requires the isolated memory API/database and production Web\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-desktop.spec.ts",
+      "sha256": "515eb616f099e313002727a9bbf16d33727b9e83993942c570a1999cba4304e8",
+      "skip_sites": [
+        {
+          "line": 16,
+          "source": "test.skip(!mentionEnvironmentReady() || !process.env.COLLABORATION_ELECTRON_RENDERER_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-mention-journeys-web.spec.ts",
+      "sha256": "67a6cdd7da37d5840dbaca0f0b3396c7f22671e74c4a388554536d40b7d63d47",
+      "skip_sites": [
+        {
+          "line": 11,
+          "source": "test.skip(!mentionEnvironmentReady(), \"Requires task-owned loopback API/DB and a matching production Web build\");"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-offline-handoff.spec.ts",
+      "sha256": "c70c973f61c8b0f09b64da4c5c23a0eb34c120dd7525bc89d750a2de934cdb0e",
+      "skip_sites": [
+        {
+          "line": 14,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\", \"Requires task-owned password production services\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-offline-result-notifications.spec.ts",
+      "sha256": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+      "skip_sites": [
+        {
+          "line": 17,
+          "source": "test.skip(!crossClientEnvironmentReady(), \"Requires task-owned password production services and explicit test-built Linux executables\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-preparation-records-desktop.spec.ts",
+      "sha256": "9aa833ddc18e7c5be8d1703b0911536f335f53b6c839e6fbfc7c446cd62d13b2",
+      "skip_sites": [
+        {
+          "line": 10,
+          "source": "test.skip(!process.env.COLLABORATION_E2E_API_URL || !process.env.DATABASE_URL || !process.env.MULTICA_DEPLOYMENT_ID || !process.env.NEXT_PUBLIC_API_URL || !process.env.COLLABORATION_ELECTRON_RENDERER_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-preparation-records-web.spec.ts",
+      "sha256": "12d92bc59a2ca10a42441157332aa6c8dd00699af4be0737e2d612e17b652da3",
+      "skip_sites": [
+        {
+          "line": 9,
+          "source": "test.skip(!process.env.COLLABORATION_E2E_API_URL || !process.env.DATABASE_URL || !process.env.MULTICA_DEPLOYMENT_ID || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-preview-web.spec.ts",
+      "sha256": "4ea82836095e23f1f4b0569265b44a8d98cd1335e7d4b3ba0f5ecee4d9019efb",
+      "skip_sites": [
+        {
+          "line": 10,
+          "source": "test.skip(!process.env.COLLABORATION_E2E_API_URL || !process.env.DATABASE_URL || !process.env.MULTICA_DEPLOYMENT_ID || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-recipient-picker-web.spec.ts",
+      "sha256": "1531b8bb9550ca411e17ef5b09649f4a8980d56cc360003615fc89ebf6409f41",
+      "skip_sites": [
+        {
+          "line": 21,
+          "source": "test.skip(!apiUrl || !process.env.DATABASE_URL || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-records-web.spec.ts",
+      "sha256": "7128e45665c4ef455ecb18d4ef9d71995cee2caec001dadfc6b7fb78584853fb",
+      "skip_sites": [
+        {
+          "line": 9,
+          "source": "test.skip(!apiUrl || !process.env.DATABASE_URL || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-resource-offers-web.spec.ts",
+      "sha256": "02892e20acbe339e4de659ba0bc390ecbe69a6c21b768a7b5812ed33b5e27983",
+      "skip_sites": [
+        {
+          "line": 9,
+          "source": "test.skip(!process.env.COLLABORATION_E2E_API_URL || !process.env.DATABASE_URL || !process.env.MULTICA_DEPLOYMENT_ID || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-resources-web.spec.ts",
+      "sha256": "a23200cf2697455b6a80d5d51b6c8e69b19f4e37886589d9b3756ddac836e501",
+      "skip_sites": [
+        {
+          "line": 8,
+          "source": "test.skip(!process.env.COLLABORATION_E2E_API_URL || !process.env.DATABASE_URL || !process.env.MULTICA_DEPLOYMENT_ID || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-retained-attachment.spec.ts",
+      "sha256": "ad691690e092dec6ba07a1df38a0cc4106477b0d84ac7f62ef9b70da30766f23",
+      "skip_sites": [
+        {
+          "line": 143,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\", \"Requires task-owned password production services\");"
+        },
+        {
+          "line": 158,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\", \"Requires task-owned password production services\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-runtime-handoff-desktop.spec.ts",
+      "sha256": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540",
+      "skip_sites": [
+        {
+          "line": 16,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\", \"Requires task-owned password production services\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-runtime-handoff-web.spec.ts",
+      "sha256": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+      "skip_sites": [
+        {
+          "line": 11,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\", \"Requires task-owned password production services\");"
+        },
+        {
+          "line": 49,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\", \"Requires task-owned password production services\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-selection-boundary.spec.ts",
+      "sha256": "8d9db48f0e172c5fd57283bcd06a7725d9a3945f8643d339caa8d1bbc55e403f",
+      "skip_sites": [
+        {
+          "line": 14,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\", \"Requires the task-owned password production Web and actual Electron environment\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-source-surface.spec.ts",
+      "sha256": "639214a9ceea2f0371e0a9cccb9863bcfbdf38067537c21c5f9c4a6dc173ea47",
+      "skip_sites": [
+        {
+          "line": 13,
+          "source": "test.skip(process.env.E2E_PASSWORD_AUTH !== \"1\", \"Requires explicit task-owned password production services\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-terminal-reopen-web.spec.ts",
+      "sha256": "1acacf4e861c2ab7104dcc231f2a39ebdd9b19ee748e0c3dd3fc2175ff3f1788",
+      "skip_sites": [
+        {
+          "line": 14,
+          "source": "test.skip(!controlEnvironmentReady(), \"Requires the task-owned password/managed deployment with execution enabled and matching production Web\");"
+        }
+      ],
+      "password_gate": true,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/collaboration-workbench-web.spec.ts",
+      "sha256": "767ae9c4d8331184a41d640fa89ded564a7d37e0023932021e27f288f29f2a73",
+      "skip_sites": [
+        {
+          "line": 26,
+          "source": "test.skip(!apiUrl || !databaseUrl || !process.env.NEXT_PUBLIC_API_URL,"
+        },
+        {
+          "line": 167,
+          "source": "test.skip(!apiUrl || !databaseUrl || !process.env.NEXT_PUBLIC_API_URL,"
+        }
+      ],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    },
+    {
+      "file": "e2e/lifecycle-handoff.spec.ts",
+      "sha256": "8233b0033be00f344525a73556d2d4c5588ee9582f76ec1ea88252d7ca197efb",
+      "skip_sites": [],
+      "password_gate": false,
+      "host_executables_gate": false,
+      "knowledge_expectation_gate": false,
+      "packaged_main_gate": false
+    }
+  ],
+  "coverage_gates": {
+    "first_round_C3": {
+      "files": [
+        "e2e/collaboration-handoff-chain-web.spec.ts",
+        "e2e/collaboration-handoff-chain-desktop.spec.ts",
+        "e2e/collaboration-offline-handoff.spec.ts"
+      ],
+      "expected_cases": 4,
+      "default_lane": "skip when E2E_PASSWORD_AUTH is unset/0",
+      "required_after_fullcheck": "same-candidate password production Web plus actual Electron, zero skip/retry; current matching versioned result may substitute only if exact relevant code/config/renderer/source equivalence is proved",
+      "assertions": [
+        "requester and note visible in receiving form",
+        "selected status and final handler",
+        "offline transfer survives archive/new login until removal",
+        "no AI dispatch/provider launch"
+      ]
+    },
+    "runtime_AC9": {
+      "files": [
+        "e2e/collaboration-runtime-handoff-web.spec.ts",
+        "e2e/collaboration-runtime-handoff-desktop.spec.ts"
+      ],
+      "expected_cases": 3,
+      "default_lane": "password-gated",
+      "assertions": [
+        "live latest memory preserves empty startup version (ENV-1)",
+        "source/long-comment recall and removal denies private reads",
+        "native deep link and unknown recording tail"
+      ],
+      "Provider_calls": 0
+    },
+    "first_round_B2": {
+      "unit_scope": "current core/views tests verify parsed permissions, consent/Switch affordances and restore behavior; server can_consent remains authoritative",
+      "broader_password_cases": [
+        "e2e/collaboration-control-journey-web.spec.ts",
+        "e2e/collaboration-control-journey-desktop.spec.ts"
+      ],
+      "classification": "broader control/managed parent journey; do not require every machine/owner/installed combination to close the narrow original B2"
+    },
+    "knowledge_gate": {
+      "files": [
+        "e2e/collaboration-knowledge-deployed.spec.ts"
+      ],
+      "expected_cases_per_labeled_deployment": 1,
+      "default_lane": "skip if COLLABORATION_KNOWLEDGE_EXPECTED unset",
+      "required_parent_followup": "explicit false and true against isolated task deployments with controlled host binaries; production default stays false",
+      "Provider_calls": 0
+    },
+    "real_models": {
+      "default_lane": "not executed by default make check; tagged explicit entry and budget/serial window required",
+      "first_round_remaining": "original frozen E3 after trial2 then E4-E6; cap14 separate",
+      "runtime_remaining": "registered RK1 E0a/H1/H2/H2b/H3a/H3b/H5/H6; cap25 consumed0"
+    },
+    "related_release_gates": {
+      "classification": "installed Main/Windows/account/upgrade scope remains separate from first-round B2C3 and runtime AC9; no scope expansion or pass inferred from default skips"
+    }
+  },
+  "sqlc_reuse": {
+    "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+    "command": [
+      "go",
+      "run",
+      "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+      "generate"
+    ],
+    "exit_code": 0,
+    "drift": [],
+    "record": ".trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/integration-verification/sqlc.json",
+    "record_sha256": "56604ff79ad467a08fdf9659a4ef3903c1ae54dc1bd85c906e8297474f3fd4fe",
+    "record_provenance_commit": "1278d1266c0768981c04800f00eeb3a17cfae8f9",
+    "input_output_paths": [
+      "server/sqlc.yaml",
+      "server/migrations",
+      "server/pkg/db/queries",
+      "server/pkg/db/generated"
+    ],
+    "changed_paths_to_candidate": [],
+    "working_dirty_paths": [],
+    "file_count": 1754,
+    "generated_header_files": 125,
+    "exact_paths_sha256": "0cda25902a90218d82cf36199f34e3d1fa2fc1f35af2ae960548af553b2a8422",
+    "remote_cloud_plugin_configuration": false,
+    "conclusion": "reuse this successful sqlc run for unchanged exact inputs/outputs; do not rerun solely because git HEAD differs"
+  },
+  "migration746": {
+    "sql_and_named_test_unchanged_from_first_round4c833": true,
+    "named_test": "TestCollaborationOwnerReconsentMigrationSeparatesBoundaryEpoch",
+    "named_test_file": "server/internal/migrations/collaboration_owner_reconsent_test.go",
+    "coverage": "legacy NULL boundary, nonwidening config, widening permission, explicit child advance, direct assignment rejection, down/704 restoration, up/reapply",
+    "require_actual_fullcheck_test_pass_not_skip": true,
+    "migration_runner_change_from4c833": "only added concurrent cleanup entries for748-763; unchanged from45efa to candidate",
+    "historical_rehearsal": "first-round research/2026-10-31/closure-verification.md",
+    "fullcheck_fresh_coverage": "new isolated Go/API databases migrate through current763; inspect actual selected run and named migration tests",
+    "not_proved": "current packaged/offline upgrade matrix or native Windows by historical746 evidence"
+  },
+  "tests_executed": 0,
+  "database_actions": 0,
+  "service_starts": 0,
+  "real_provider_calls": 0
+}

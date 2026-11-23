@@ -1,0 +1,128 @@
+{
+  "schema": "multica.knowledge.final-joint-source-preparation.v1",
+  "at": "2026-11-15T15:34:00.427616+00:00",
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "role": "trellis-implement",
+  "state": "read_only_preparation_complete_final_joint_source_missing",
+  "preparation_result": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/preparation-result.json",
+    "sha256": "8530206b7925d052a29bb3721afc333e8d7ca271fb5f5d4f6dbb373bac308499"
+  },
+  "observer": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/observe-and-probe.py",
+    "sha256": "9a58cb2b711affe5e8ea65adc88c115339dd996d109163c4584c1821a77a454f",
+    "mode": "0o600",
+    "syntax": "ast.parse_pass"
+  },
+  "observer_execution": {
+    "argv": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "-B",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/observe-and-probe.py",
+      "--root",
+      "/Volumes/artisan/code/2026/multica-0.4.37",
+      "--allocation",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json",
+      "--state",
+      "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "exit_code": 0
+  },
+  "existing_advancement_helper_found": false,
+  "new_source_promotion_framework_or_mutation_command": false,
+  "reused": [
+    "p6-runtime.source_paths",
+    "p6-runtime.source_snapshot",
+    "p6-runtime.workspace_links",
+    "p6-runtime.stage_sources (tiny fixtures only)"
+  ],
+  "recipe": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/main-after-accepted-joint-source-recipe.json",
+    "sha256": "a33e33be51806022315fd3bd7111e52dc696fe19a118db458516e65d3d961a8f"
+  },
+  "current_ROOT_observation": {
+    "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "source_id": "b51aa5b063e9345fc2c922fdfc3bcd49b97768dff8b743ebb2791371b74845dc",
+    "files": 11028,
+    "workspace_links": 32,
+    "double_read_equal": true,
+    "is_final_joint_source": false
+  },
+  "mutable_candidate": {
+    "source_root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-isolated-candidate-4a8f26ff/source",
+    "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+    "files": 11017,
+    "workspace_links": 32,
+    "double_read_equal": true
+  },
+  "current_projection_delta": {
+    "added": 11,
+    "changed": 47,
+    "removed": 0,
+    "unchanged": 10970,
+    "workspace_links_equal": true,
+    "manifest": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/plain-ROOT-to-working-observation-delta.json",
+      "sha256": "3d6cf445cc1c5503cff54a22483eb6158efcc9b56822edd22ccf57aae9794eb9"
+    },
+    "not_authorized_to_apply": true
+  },
+  "probe_result": {
+    "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/existing-primitives-probes.json",
+    "sha256": "cb20604c1467908c4093503957d0a55e6d3c9e6967bffd6bdc4e5c5f62f86371"
+  },
+  "probe_cases": 4,
+  "probe_passed": 4,
+  "preserved_4e_source": {
+    "root": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/source",
+    "source_id": "4e0f7cbe36dadf1936c31a5dfc04656e7d6ac4594e5a45b9eac1e8e02f697191",
+    "unchanged": true,
+    "before": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/sealed-4e-before.json",
+      "sha256": "e81af799f43ffec945dc21f0dacaeae4f03fefcaa509869c9aa832be67f92ed6"
+    },
+    "after": {
+      "path": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-p6-joint-source-prepare-7p0h2smf/sealed-4e-after.json",
+      "sha256": "e81af799f43ffec945dc21f0dacaeae4f03fefcaa509869c9aa832be67f92ed6"
+    }
+  },
+  "original_protected_bindings_before": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/allocation.json": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/environment.json": "bc1f96e026f7dc801bcad1d1c3344b10105a8aa05dc0a809d578d641aae2166b",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build.json": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/build.json": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/runtime.json": "47d0f1ba64949786f4eca9aeb2834cdb478dd6cf7f5b0883056b9e982b3522bf",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/provenance.json": "7490fd4003274e8a506cdf6a9ec3349217d839af11d4ea16e082d72a3da2121b"
+  },
+  "original_protected_bindings_after": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-14-project-knowledge-automation/research/p6-isolated-allocation-4a8f26ff.json": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/allocation.json": "c84f316421b59a84f4c11fc8c8b47b71b2e7009a7644214b96a4d57c4f305966",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/environment.json": "bc1f96e026f7dc801bcad1d1c3344b10105a8aa05dc0a809d578d641aae2166b",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build.json": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/build-419ecea5cf21/build.json": "10706082db40383cf0bf3e7d10dea206fb8a7899ef024c4edad0197a81f86482",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/runtime.json": "47d0f1ba64949786f4eca9aeb2834cdb478dd6cf7f5b0883056b9e982b3522bf",
+    "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/provenance.json": "7490fd4003274e8a506cdf6a9ec3349217d839af11d4ea16e082d72a3da2121b"
+  },
+  "selected_full_joint_source": null,
+  "actual_accepted_P2_proof": null,
+  "latest_parent_checkpoints_not_acceptance": {
+    "P2_test_only_candidate_prefix": "80abb746",
+    "server_joint_Go_graph_prefix": "d1b63872",
+    "server_joint_Go_inputs": 5038,
+    "frontend_graph_prefix": "315a7654",
+    "frontend_inputs": 3358,
+    "note": "Parent reports independent reruns/narrow ROOT integration still pending. These prefixes/input sets are not the final complete joint source."
+  },
+  "source_ready": false,
+  "source_advance_admitted": false,
+  "ROOT_final": false,
+  "P2_final": false,
+  "product_final": false,
+  "real_source_copies_or_advances": 0,
+  "database_or_runtime_or_build_operations": 0,
+  "real_provider_or_account_or_dependency_operations": 0,
+  "shared_source_config_spec_metadata_progress_or_existing_evidence_writes": 0,
+  "write_scope": "One new uniquely named repo research receipt; new owned external0700 scratch observer/manifests/tiny fixtures/recipe only. No actual file-before-images or private-source writes made."
+}

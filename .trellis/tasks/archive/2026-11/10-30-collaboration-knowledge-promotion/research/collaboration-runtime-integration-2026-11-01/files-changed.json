@@ -1,0 +1,59 @@
+{
+  "new_owned": [
+    "server/pkg/protocol/collaboration_knowledge_runtime.go",
+    "server/pkg/protocol/collaboration_knowledge_runtime_test.go",
+    "server/internal/service/collaboration_knowledge_runtime.go",
+    "server/internal/service/collaboration_knowledge_runtime_test.go",
+    "server/internal/handler/collaboration_knowledge_runtime.go",
+    "server/internal/handler/collaboration_knowledge_runtime_test.go",
+    "server/internal/daemon/collaborationrun/host_knowledge.go",
+    "server/internal/daemon/collaborationrun/host_knowledge_test.go",
+    "server/pkg/db/queries/collaboration_knowledge_runtime.sql",
+    "server/cmd/server/collaboration_knowledge_runtime_routes_test.go"
+  ],
+  "allocated_shared": [
+    "server/pkg/protocol/collaboration.go",
+    "server/internal/service/collaboration.go",
+    "server/internal/service/collaboration_runtime_capabilities.go",
+    "server/internal/handler/collaboration_runtime.go",
+    "server/internal/daemon/collaborationrun/client.go",
+    "server/internal/daemon/collaborationrun/host_runner.go",
+    "server/internal/daemon/collaborationrun/host_session.go",
+    "server/internal/daemon/collaborationrun/host_config.go",
+    "server/internal/daemon/collaborationrun/host_ledger.go",
+    "server/cmd/server/router.go",
+    "server/internal/service/collaboration_knowledge_resolve.go",
+    "server/internal/service/collaboration_knowledge_resolve_test.go",
+    "server/pkg/agent/knowledge_launch.go",
+    "server/pkg/agent/knowledge_launch_test.go"
+  ],
+  "generated_by_main": [
+    "server/pkg/db/generated/collaboration_knowledge_runtime.sql.go"
+  ],
+  "sha256": {
+    "server/pkg/protocol/collaboration_knowledge_runtime.go": "101afafacf7b199c652d923527355401f0832474df1848f9f71b52b9708f0972",
+    "server/pkg/protocol/collaboration_knowledge_runtime_test.go": "3a7a1e832f97ec64c8f1564d181baf64e51df225c80046ddbcb57255c1010a85",
+    "server/internal/service/collaboration_knowledge_runtime.go": "78780b72e7a5d6e0cd24fef55c6a8a5b486f6a334e12070692f88eb0925caa60",
+    "server/internal/service/collaboration_knowledge_runtime_test.go": "4d3aecca7a7575ccefdef48a1c267028cc5a82f9f8c06964db178c6c247f1bcc",
+    "server/internal/handler/collaboration_knowledge_runtime.go": "d7c40f45c36c1f1ce5be0bc0e3c6dda7eac41294657c32b2c7dd3d0441a6916b",
+    "server/internal/handler/collaboration_knowledge_runtime_test.go": "aaa7cdb61ba8598dd15190ee76b1987528e154f693b2078108d8cc3571deba28",
+    "server/internal/daemon/collaborationrun/host_knowledge.go": "1a7345ba6171ee85c738cbd898815d63d2d37e3125931382897c69f1cec61fa2",
+    "server/internal/daemon/collaborationrun/host_knowledge_test.go": "e15aef9d6aa1b1283a9b48a3b64eb80142e950e3ec4fd4f8931f01d82a586e28",
+    "server/pkg/db/queries/collaboration_knowledge_runtime.sql": "8f847fc8d0af047f8ed583f899441cad8dec3380d5f674b113b9327720045f28",
+    "server/cmd/server/collaboration_knowledge_runtime_routes_test.go": "219bdd6d91d3ce957370cf8666ce9f63bc663e9c40218121d6d4fd8ea2e23849",
+    "server/pkg/protocol/collaboration.go": "261485f959840a638ace1f0260141ce6fbb6432be6b3cdb97d9115fadf5dd4ee",
+    "server/internal/service/collaboration.go": "d3936eb1977c93e8d0af9de28255919fd8154a2eb3805301828eebccf17f2f7c",
+    "server/internal/service/collaboration_runtime_capabilities.go": "223785a0d0917ce9d28016938c838f7199755dc49829c094af477e253170c639",
+    "server/internal/handler/collaboration_runtime.go": "212ea209ecafa89ee317bca92ad6a5e4293d85c13f8fbee622d449d6ab92fffb",
+    "server/internal/daemon/collaborationrun/client.go": "cbebe86553c1434a1a787852212795627a21d18ed620d2be274c19c045765be3",
+    "server/internal/daemon/collaborationrun/host_runner.go": "8af3e75ec6085697708938d69285ff71ff609e3f9090caa7f7843929a9dac76c",
+    "server/internal/daemon/collaborationrun/host_session.go": "2fcb69d3b6afafe512796730d91c844a6721f49c03788c1eecc248bcab1b6470",
+    "server/internal/daemon/collaborationrun/host_config.go": "f5fc5c8b08b50e65573d3a757bcc7c664954e5b4b39cd730d63009ba25cf3571",
+    "server/internal/daemon/collaborationrun/host_ledger.go": "111e9b4a51454e4d41a5cdc331efa6bf93feb93c993da17547eaa96f746416ab",
+    "server/cmd/server/router.go": "e8faf46a46bd0916c0a68e79ca6b5b229384e3ae33c046cb0ae1be4d4d0215d8",
+    "server/internal/service/collaboration_knowledge_resolve.go": "bab8862cb7cf0f7d0fce0f872c738fb8c58d9d5b103f0bff722d554ba7595709",
+    "server/internal/service/collaboration_knowledge_resolve_test.go": "725eba4105d88137f080d671f1f7abd6837b5ca40f118f2a5123f14850d26335",
+    "server/pkg/agent/knowledge_launch.go": "7d9f2e9f6b898391630ee5cfcb3845a51cfa12f840a109008aa4557007c0bdcc",
+    "server/pkg/agent/knowledge_launch_test.go": "91cdaca4af8fd62ac98c9f15c1ac694764b1a58400a1bad650b58fe7697ed81c"
+  }
+}

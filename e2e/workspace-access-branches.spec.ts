@@ -1,3 +1,4 @@
+import { sidebarNewButton } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test as base, expect, type Page } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
@@ -91,7 +92,7 @@ test("accepting an invitation joins exactly once and revisiting shows its accept
   await page.goto(`/invite/${invitation.id}`);
   await page.getByRole("button", { name: "Accept & Join", exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/${owner.workspace.slug}/issues$`));
-  await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+  await expect(sidebarNewButton(page)).toBeVisible();
   expect((await members(owner)).filter((member) => member.user_id === visitor.userId)).toHaveLength(1);
   expect((await visitor.api.getWorkspaces()).map((workspace) => workspace.id)).toContain(owner.workspace.id);
 
@@ -151,7 +152,7 @@ test("a nonexistent invitation shows a recoverable empty state", async ({ page, 
   expect((await request(visitor, `/api/invitations/${invitationId}`)).status).toBe(404);
   await page.getByRole("button", { name: "Go to dashboard", exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/${visitor.workspace.slug}/issues$`));
-  await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+  await expect(sidebarNewButton(page)).toBeVisible();
 });
 
 test("another account cannot read accept or decline an invitation addressed to its owner", async ({ page, access }) => {
@@ -186,7 +187,7 @@ test("a nonmember cannot open or mutate another workspace and can recover to the
   expect(issues.map((item) => item.title)).not.toContain("Unauthorized issue");
   await page.getByRole("button", { name: "Go to my workspaces", exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/${visitor.workspace.slug}/issues$`));
-  await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+  await expect(sidebarNewButton(page)).toBeVisible();
 });
 
 test("[API integration] foreign issue identifiers cannot bypass the selected workspace on reads or writes", async ({ access }) => {

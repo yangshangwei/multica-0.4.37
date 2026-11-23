@@ -1,0 +1,2564 @@
+{
+  "schema_version": 1,
+  "increment": "S2 server 1b",
+  "date": "2026-11-14",
+  "status": "implemented_verified_increment_only",
+  "owner": "/root/s2_server",
+  "head_at_start": "fb9f4c070",
+  "head_at_report": "482cd7f683739aca72050b6b09fdfe724742a898",
+  "git_writes_performed": false,
+  "policy_activation_available": false,
+  "scope": "Descendant admission, explicit A5 code binding, prepared enqueue/actual entry-point regressions, frozen later-stage refusal and R4 contract. No increment-2 implementation.",
+  "resume_files": [
+    {
+      "path": "server/internal/handler/daemon.go",
+      "sha256": "239693e1a475a72d3706b565d9a7e219f3fb1f13ec2fd1a2a87ddefba581fa73"
+    },
+    {
+      "path": "server/internal/handler/issue.go",
+      "sha256": "39b7074ae75f9f5e612ba22987c42d147f41763cf965eb654997302ffe844db4"
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_admission_test.go",
+      "sha256": "49f525d40f88c98de22331907239675e31b6b2eb1832f3d033f61a8730a54d05"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_actions.go",
+      "sha256": "a935026253dce728f35d737c7ca71dab5d918b566640ed230e839a33456e0884"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_scope_code_test.go",
+      "sha256": "cb09e83abfff010dc4ab040c3d24c7798992416ae771ada5a1252daed56e97e8"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_enqueue_test.go",
+      "sha256": "ec1b9bc36e5ab09ee8b034f4bc7494f35db4ac1966892fba125b1d965fd9ebd0"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/wire-contract.md",
+      "sha256": "23b44d723caf75c5e19cd04cedf018a5c59d645ee08850ecb20b7e9c21ae0b45"
+    }
+  ],
+  "report_files": [
+    "research/server-increment-1b-results.md",
+    "research/server-increment-1b-results.json"
+  ],
+  "runs": [
+    {
+      "id": "service-new-1",
+      "command_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_service.json",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestStage(DescendantEnqueue|PreparedEnqueue)",
+        "-count=1",
+        "-json"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-service-new-1.log",
+      "log_sha256": "8b4735154512bda5321a78ef61e610d32c6d00d635a4b174792815f3650d4805",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-service-new-1.exit",
+      "exit_code": 0,
+      "package_terminal": [
+        "pass"
+      ],
+      "counts": {
+        "pass": 10,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_count": 2,
+      "tests": [
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/handoff",
+          "action": "pass",
+          "elapsed_seconds": 0.05
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/mention",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/thread",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/squad",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/squad_handoff",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/deferred_fallback",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/deferred_channel",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/assignment",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints",
+          "action": "pass",
+          "elapsed_seconds": 2.05
+        },
+        {
+          "name": "TestStagePreparedEnqueueAdmitsExactlyConfirmedDescendant",
+          "action": "pass",
+          "elapsed_seconds": 1.24
+        }
+      ]
+    },
+    {
+      "id": "handler-new-1",
+      "command_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_handler.json",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/handler",
+        "-run",
+        "^TestStageDescendant",
+        "-count=1",
+        "-json"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-handler-new-1.log",
+      "log_sha256": "6986353d98cba1ba9b8337e8145250b9cac2599dcca56cee9fc970cacccafa32",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-handler-new-1.exit",
+      "exit_code": 1,
+      "package_terminal": [
+        "fail"
+      ],
+      "counts": {
+        "pass": 3,
+        "fail": 3,
+        "skip": 0
+      },
+      "top_level_count": 2,
+      "tests": [
+        {
+          "name": "TestStageDescendantMoveAndBatchRefuseExactAdmissionCode",
+          "action": "fail",
+          "elapsed_seconds": 3.31
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/start",
+          "action": "pass",
+          "elapsed_seconds": 0.19
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/waiting-local-directory",
+          "action": "fail",
+          "elapsed_seconds": 0.04
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/start",
+          "action": "pass",
+          "elapsed_seconds": 0.08
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/waiting-local-directory",
+          "action": "pass",
+          "elapsed_seconds": 0.06
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation",
+          "action": "fail",
+          "elapsed_seconds": 1.11
+        }
+      ]
+    },
+    {
+      "id": "service-normal-1",
+      "command_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_service.json",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^(TestStage|TestStartTaskIteration|TestIssueCreateInTx|TestLegacyExecution(CollaborationEnqueueBoundary|PreparedHandoffCannotReuseCollaborationTask|SQLBoundaryAndOrdinaryChild)|TestCollaborationWorkflow(RequiredWriteFailuresRollbackEverything|LostCommitRecoveryAndRefusedKey|ConcurrentIdentityAndRevision|RechecksAccountsAndRolesAfterLock))",
+        "-count=1",
+        "-json"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-service-normal-1.log",
+      "log_sha256": "debc118606ea88951cf1027aa0f72ad5dd76e873d0ec4ae50eee38e51d3c40a8",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-service-normal-1.exit",
+      "exit_code": 0,
+      "package_terminal": [
+        "pass"
+      ],
+      "counts": {
+        "pass": 125,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_count": 37,
+      "tests": [
+        {
+          "name": "TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure/missing",
+          "action": "pass",
+          "elapsed_seconds": 0.37
+        },
+        {
+          "name": "TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure/dependency",
+          "action": "pass",
+          "elapsed_seconds": 0.17
+        },
+        {
+          "name": "TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure/valid",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure",
+          "action": "pass",
+          "elapsed_seconds": 0.68
+        },
+        {
+          "name": "TestStageChildCreationRequiresApprovedProposalForMachines",
+          "action": "pass",
+          "elapsed_seconds": 0.45
+        },
+        {
+          "name": "TestStageChildExecutionGateAtEnqueueAndStart",
+          "action": "pass",
+          "elapsed_seconds": 0.55
+        },
+        {
+          "name": "TestStageChildStartSerializesWithRootLifecycle",
+          "action": "pass",
+          "elapsed_seconds": 0.96
+        },
+        {
+          "name": "TestStageChildUpdateKeepsMappingAndRefusesMachineAttach",
+          "action": "pass",
+          "elapsed_seconds": 0.52
+        },
+        {
+          "name": "TestStageDescendantsOfManagedRootAreGatedAndConfirmable",
+          "action": "pass",
+          "elapsed_seconds": 0.42
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/thread",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/squad",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/squad_handoff",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/deferred_fallback",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/deferred_channel",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/assignment",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/handoff",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/mention",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints",
+          "action": "pass",
+          "elapsed_seconds": 0.28
+        },
+        {
+          "name": "TestStagePreparedEnqueueAdmitsExactlyConfirmedDescendant",
+          "action": "pass",
+          "elapsed_seconds": 0.63
+        },
+        {
+          "name": "TestStageApprovedChildCannotAuthorizeMachineDecomposition",
+          "action": "pass",
+          "elapsed_seconds": 0.5
+        },
+        {
+          "name": "TestStageScopeConfirmationBindsVerifiedCodeVersion",
+          "action": "pass",
+          "elapsed_seconds": 0.64
+        },
+        {
+          "name": "TestStagePolicyRevisionCASAuthorityAndOriginalKey",
+          "action": "pass",
+          "elapsed_seconds": 0.46
+        },
+        {
+          "name": "TestStageRolesRequireSourceAdminParticipantsAndSeparation",
+          "action": "pass",
+          "elapsed_seconds": 0.71
+        },
+        {
+          "name": "TestStageProposalVersionsDecisionsAndSingleMaterialization",
+          "action": "pass",
+          "elapsed_seconds": 0.77
+        },
+        {
+          "name": "TestStageProposalConcurrentAcceptCreatesOneChildSet",
+          "action": "pass",
+          "elapsed_seconds": 0.54
+        },
+        {
+          "name": "TestStageProposalAcceptRollsBackEveryChildOnRefusal",
+          "action": "pass",
+          "elapsed_seconds": 0.55
+        },
+        {
+          "name": "TestStageProposalSourceIsVerifiedByTheServer",
+          "action": "pass",
+          "elapsed_seconds": 0.89
+        },
+        {
+          "name": "TestStageScopeConfirmationFirstEnableAndReopen",
+          "action": "pass",
+          "elapsed_seconds": 1.33
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_child",
+          "action": "pass",
+          "elapsed_seconds": 0.67
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_decision",
+          "action": "pass",
+          "elapsed_seconds": 0.77
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_issue_collaboration_SET_revision",
+          "action": "pass",
+          "elapsed_seconds": 0.45
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_event",
+          "action": "pass",
+          "elapsed_seconds": 0.55
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_notification",
+          "action": "pass",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_collaboration_operation",
+          "action": "pass",
+          "elapsed_seconds": 0.39
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/lost_commit",
+          "action": "pass",
+          "elapsed_seconds": 0.46
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit",
+          "action": "pass",
+          "elapsed_seconds": 3.66
+        },
+        {
+          "name": "TestStageReadinessPredicateIsSharedWithMigration",
+          "action": "pass",
+          "elapsed_seconds": 0.25
+        },
+        {
+          "name": "TestCollaborationWorkflowConcurrentIdentityAndRevision",
+          "action": "pass",
+          "elapsed_seconds": 0.5
+        },
+        {
+          "name": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock/target_disabled",
+          "action": "pass",
+          "elapsed_seconds": 0.33
+        },
+        {
+          "name": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock/former_handler",
+          "action": "pass",
+          "elapsed_seconds": 0.32
+        },
+        {
+          "name": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock",
+          "action": "pass",
+          "elapsed_seconds": 0.65
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_issue_SET_assignee_type",
+          "action": "pass",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/INSERT_INTO_issue_handoff",
+          "action": "pass",
+          "elapsed_seconds": 0.25
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_issue_participant_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_grant_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.25
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_command_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_channel_SET_queue_state",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_target_t_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_execution_group",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_delegation",
+          "action": "pass",
+          "elapsed_seconds": 0.65
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_run_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.42
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_termination_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_issue_collaboration_SET_revision",
+          "action": "pass",
+          "elapsed_seconds": 0.29
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/INSERT_INTO_collaboration_event",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/INSERT_INTO_collaboration_notification",
+          "action": "pass",
+          "elapsed_seconds": 0.33
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_operation",
+          "action": "pass",
+          "elapsed_seconds": 0.32
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything",
+          "action": "pass",
+          "elapsed_seconds": 4.74
+        },
+        {
+          "name": "TestCollaborationWorkflowLostCommitRecoveryAndRefusedKey",
+          "action": "pass",
+          "elapsed_seconds": 0.19
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/assignment",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/mention",
+          "action": "pass",
+          "elapsed_seconds": 0.11
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/thread",
+          "action": "pass",
+          "elapsed_seconds": 0.11
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/squad",
+          "action": "pass",
+          "elapsed_seconds": 0.11
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.11
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/channel",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary",
+          "action": "pass",
+          "elapsed_seconds": 0.69
+        },
+        {
+          "name": "TestLegacyExecutionPreparedHandoffCannotReuseCollaborationTask/insert",
+          "action": "pass",
+          "elapsed_seconds": 0.11
+        },
+        {
+          "name": "TestLegacyExecutionPreparedHandoffCannotReuseCollaborationTask/reuse",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionPreparedHandoffCannotReuseCollaborationTask",
+          "action": "pass",
+          "elapsed_seconds": 0.23
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/insert",
+          "action": "pass",
+          "elapsed_seconds": 0.36
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.17
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/claim",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/runtime",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/batch",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/start",
+          "action": "pass",
+          "elapsed_seconds": 0.22
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/sql_start",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/retry",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/promote",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/reclaim",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/link",
+          "action": "pass",
+          "elapsed_seconds": 0.23
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/insert",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.19
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/claim",
+          "action": "pass",
+          "elapsed_seconds": 0.2
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/runtime",
+          "action": "pass",
+          "elapsed_seconds": 0.18
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/batch",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/start",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/sql_start",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/retry",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/promote",
+          "action": "pass",
+          "elapsed_seconds": 0.19
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/reclaim",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/link",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/insert",
+          "action": "pass",
+          "elapsed_seconds": 0.37
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/claim",
+          "action": "pass",
+          "elapsed_seconds": 0.28
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/runtime",
+          "action": "pass",
+          "elapsed_seconds": 0.17
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/batch",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/start",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/sql_start",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/retry",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/promote",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/reclaim",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/link",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+          "action": "pass",
+          "elapsed_seconds": 5.59
+        },
+        {
+          "name": "TestStartTaskIterationFacts/active",
+          "action": "pass",
+          "elapsed_seconds": 0.24
+        },
+        {
+          "name": "TestStartTaskIterationFacts/planned",
+          "action": "pass",
+          "elapsed_seconds": 0.19
+        },
+        {
+          "name": "TestStartTaskIterationFacts",
+          "action": "pass",
+          "elapsed_seconds": 0.44
+        },
+        {
+          "name": "TestStartTaskIterationRollback",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestStartTaskIterationPostCommitPublication",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestStartTaskIterationWaitsForMembershipFence/join",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestStartTaskIterationWaitsForMembershipFence/leave",
+          "action": "pass",
+          "elapsed_seconds": 0.29
+        },
+        {
+          "name": "TestStartTaskIterationWaitsForMembershipFence",
+          "action": "pass",
+          "elapsed_seconds": 0.54
+        },
+        {
+          "name": "TestStartTaskIterationUnassociatedTaskBecomesLinked",
+          "action": "pass",
+          "elapsed_seconds": 0.31
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/queued",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/running",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/completed",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/cancelled",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/failed",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases",
+          "action": "pass",
+          "elapsed_seconds": 0.78
+        },
+        {
+          "name": "TestStartTaskIterationWaitingAndAlreadyStarted/unstarted",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestStartTaskIterationWaitingAndAlreadyStarted/already_started",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestStartTaskIterationWaitingAndAlreadyStarted",
+          "action": "pass",
+          "elapsed_seconds": 0.28
+        },
+        {
+          "name": "TestStartTaskIterationIssueNullPreservesQuickCreate",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestStartTaskIterationAdmissionRefusal",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestStartTaskIterationConcurrentRequests",
+          "action": "pass",
+          "elapsed_seconds": 0.19
+        },
+        {
+          "name": "TestStartTaskIterationNewParticipationAndEventClock",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        }
+      ]
+    },
+    {
+      "id": "handler-normal-1",
+      "command_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_handler.json",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/handler",
+        "-run",
+        "^(TestStage|TestMoveIssueRejectsUnsafeInputs|TestBatchUpdate(NoMutationReturnsZero|ValidUpdatesPersistAndCount|StageOnly)|TestOrdinaryDelivery(Batch|CompletionMissingAuthorization)|TestLifecycleHandoffCommentReachesTaskQueue|TestCreateLifecycleHandoffFullDevelopmentLoop|TestStartTask_)",
+        "-count=1",
+        "-json"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-handler-normal-1.log",
+      "log_sha256": "8d03c8c69335a2ce7e318376a661cf97216c01a19e3d2e84908613da7ab9a66d",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-handler-normal-1.exit",
+      "exit_code": 0,
+      "package_terminal": [
+        "pass"
+      ],
+      "counts": {
+        "pass": 61,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_count": 29,
+      "tests": [
+        {
+          "name": "TestStageDescendantMoveAndBatchRefuseExactAdmissionCode",
+          "action": "pass",
+          "elapsed_seconds": 0.36
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/start",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/waiting-local-directory",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/start",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/waiting-local-directory",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation",
+          "action": "pass",
+          "elapsed_seconds": 0.11
+        },
+        {
+          "name": "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "name": "TestStageHTTPStrictBodies",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageHTTPActionsConfirmationsRefusalsAndRecovery",
+          "action": "pass",
+          "elapsed_seconds": 0.35
+        },
+        {
+          "name": "TestStageAdmissionThroughOrdinaryIssueHandlers",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestStageHTTPScopeConfirmationRequiresExplicitVerifiedCode",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestStartTask_AutopilotRunOnlyTask_ResolvesWorkspace",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchZeroRevisionConsumesExactGrant",
+          "action": "pass",
+          "elapsed_seconds": 0.22
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchDuplicateAuthorizationOrOperationRefusesBeforeWrites/authorization",
+          "action": "pass",
+          "elapsed_seconds": 0.08
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchDuplicateAuthorizationOrOperationRefusesBeforeWrites/operation",
+          "action": "pass",
+          "elapsed_seconds": 0.07
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchDuplicateAuthorizationOrOperationRefusesBeforeWrites",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero/updates_missing",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero/updates_empty_object",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero/updates_misnamed",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero/updates_unknown_field_only",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero",
+          "action": "pass",
+          "elapsed_seconds": 0.08
+        },
+        {
+          "name": "TestBatchUpdateValidUpdatesPersistAndCount",
+          "action": "pass",
+          "elapsed_seconds": 0.05
+        },
+        {
+          "name": "TestBatchUpdateStageOnly",
+          "action": "pass",
+          "elapsed_seconds": 0.03
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged/last_child_still_leaves_a_sibling_open",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged/every_child_terminal_closes_the_single_implicit_stage",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged/a_backlog_sibling_holds_the_barrier_open_(no_surprise_cascade)",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged/cancelled_counts_as_terminal",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged/stage_1_not_fully_done_does_not_fire",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged/closing_stage_1_fires_even_though_later_stages_are_parked",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged/closing_stage_2_fires_when_stages_1_and_2_are_terminal",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged/final_stage_closes_once_its_child_finishes",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageProgressSummary",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageProgressSummary_FinalStageNoNext",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageProgressSummary_SkipsUnstaged",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageAdvanceInstruction/a_known_next_stage_points_the_leader_at_it",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageAdvanceInstruction/no_created_next_stage_does_not_assert_finality",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageAdvanceInstruction",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_CancelledClosesStage/staged:_cancelling_the_last_open_child_closes_the_stage",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_CancelledClosesStage/unstaged:_cancel_of_the_last_open_child_closes_the_implicit_stage",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_CancelledClosesStage",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/a_non-terminal_unstaged_child_does_not_block_stage_1",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/completing_an_unstaged_child_in_a_staged_set_closes_nothing",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_UnstagedIgnoredInStagedSet",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageLeaderPrepareTimeoutRetryCanAdvanceNextStage",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestOrdinaryDeliveryCompletionMissingAuthorization/update",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestOrdinaryDeliveryCompletionMissingAuthorization/move",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestOrdinaryDeliveryCompletionMissingAuthorization",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchCommittedPrefix",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchUnknownCommitRecovery/false",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchUnknownCommitRecovery/true",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchUnknownCommitRecovery",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchCommittedParentNotification",
+          "action": "pass",
+          "elapsed_seconds": 0.07
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs/cross-workspace_anchor",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs/cross-workspace_project",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs/canonical_position_bypass",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs/self_anchor",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestLifecycleHandoffCommentReachesTaskQueue",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestCreateLifecycleHandoffFullDevelopmentLoop",
+          "action": "pass",
+          "elapsed_seconds": 0.05
+        }
+      ]
+    },
+    {
+      "id": "code-fence-red",
+      "command_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_service.json",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestStageScopeConfirmationFencesCodeUntilCommit$",
+        "-count=1",
+        "-json"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-code-fence-red.log",
+      "log_sha256": "f0245f06bce32113b081e7fcbeef70e1933f501f372029aabc52dc266c115020",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-code-fence-red.exit",
+      "exit_code": 1,
+      "package_terminal": [
+        "fail"
+      ],
+      "counts": {
+        "pass": 0,
+        "fail": 3,
+        "skip": 0
+      },
+      "top_level_count": 1,
+      "tests": [
+        {
+          "name": "TestStageScopeConfirmationFencesCodeUntilCommit/head",
+          "action": "fail",
+          "elapsed_seconds": 0.41
+        },
+        {
+          "name": "TestStageScopeConfirmationFencesCodeUntilCommit/link",
+          "action": "fail",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "name": "TestStageScopeConfirmationFencesCodeUntilCommit",
+          "action": "fail",
+          "elapsed_seconds": 0.79
+        }
+      ]
+    },
+    {
+      "id": "service-green-2",
+      "command_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_impl_service.json",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "./internal/service",
+        "-run",
+        "^TestStage",
+        "-count=1",
+        "-json"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-service-green-2.log",
+      "log_sha256": "6f90be447f5c8cc4b24153260c27664a638818d7ad1dc047cea5e930f85a5dca",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-service-green-2.exit",
+      "exit_code": 0,
+      "package_terminal": [
+        "pass"
+      ],
+      "counts": {
+        "pass": 36,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_count": 19,
+      "tests": [
+        {
+          "name": "TestStageChildCreationRequiresApprovedProposalForMachines",
+          "action": "pass",
+          "elapsed_seconds": 3.7
+        },
+        {
+          "name": "TestStageChildExecutionGateAtEnqueueAndStart",
+          "action": "pass",
+          "elapsed_seconds": 5.06
+        },
+        {
+          "name": "TestStageChildStartSerializesWithRootLifecycle",
+          "action": "pass",
+          "elapsed_seconds": 3.82
+        },
+        {
+          "name": "TestStageChildUpdateKeepsMappingAndRefusesMachineAttach",
+          "action": "pass",
+          "elapsed_seconds": 3.4
+        },
+        {
+          "name": "TestStageDescendantsOfManagedRootAreGatedAndConfirmable",
+          "action": "pass",
+          "elapsed_seconds": 2.69
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/deferred_channel",
+          "action": "pass",
+          "elapsed_seconds": 0.06
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/assignment",
+          "action": "pass",
+          "elapsed_seconds": 0.03
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/handoff",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/mention",
+          "action": "pass",
+          "elapsed_seconds": 0.03
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/thread",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/squad",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/squad_handoff",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/deferred_fallback",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints",
+          "action": "pass",
+          "elapsed_seconds": 1.81
+        },
+        {
+          "name": "TestStagePreparedEnqueueAdmitsExactlyConfirmedDescendant",
+          "action": "pass",
+          "elapsed_seconds": 3.05
+        },
+        {
+          "name": "TestStageApprovedChildCannotAuthorizeMachineDecomposition",
+          "action": "pass",
+          "elapsed_seconds": 3.82
+        },
+        {
+          "name": "TestStageScopeConfirmationBindsVerifiedCodeVersion",
+          "action": "pass",
+          "elapsed_seconds": 3.24
+        },
+        {
+          "name": "TestStageScopeConfirmationFencesCodeUntilCommit/head",
+          "action": "pass",
+          "elapsed_seconds": 2.26
+        },
+        {
+          "name": "TestStageScopeConfirmationFencesCodeUntilCommit/link",
+          "action": "pass",
+          "elapsed_seconds": 3
+        },
+        {
+          "name": "TestStageScopeConfirmationFencesCodeUntilCommit",
+          "action": "pass",
+          "elapsed_seconds": 5.27
+        },
+        {
+          "name": "TestStagePolicyRevisionCASAuthorityAndOriginalKey",
+          "action": "pass",
+          "elapsed_seconds": 1.82
+        },
+        {
+          "name": "TestStageRolesRequireSourceAdminParticipantsAndSeparation",
+          "action": "pass",
+          "elapsed_seconds": 1.96
+        },
+        {
+          "name": "TestStageProposalVersionsDecisionsAndSingleMaterialization",
+          "action": "pass",
+          "elapsed_seconds": 3.35
+        },
+        {
+          "name": "TestStageProposalConcurrentAcceptCreatesOneChildSet",
+          "action": "pass",
+          "elapsed_seconds": 3.67
+        },
+        {
+          "name": "TestStageProposalAcceptRollsBackEveryChildOnRefusal",
+          "action": "pass",
+          "elapsed_seconds": 1.5
+        },
+        {
+          "name": "TestStageProposalSourceIsVerifiedByTheServer",
+          "action": "pass",
+          "elapsed_seconds": 1.5
+        },
+        {
+          "name": "TestStageScopeConfirmationFirstEnableAndReopen",
+          "action": "pass",
+          "elapsed_seconds": 1.54
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_child",
+          "action": "pass",
+          "elapsed_seconds": 1.28
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_decision",
+          "action": "pass",
+          "elapsed_seconds": 1.24
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_issue_collaboration_SET_revision",
+          "action": "pass",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_event",
+          "action": "pass",
+          "elapsed_seconds": 1.22
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_notification",
+          "action": "pass",
+          "elapsed_seconds": 0.68
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_collaboration_operation",
+          "action": "pass",
+          "elapsed_seconds": 0.56
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/lost_commit",
+          "action": "pass",
+          "elapsed_seconds": 0.54
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit",
+          "action": "pass",
+          "elapsed_seconds": 6.51
+        },
+        {
+          "name": "TestStageReadinessPredicateIsSharedWithMigration",
+          "action": "pass",
+          "elapsed_seconds": 0.98
+        }
+      ]
+    },
+    {
+      "id": "handler-race-1",
+      "command_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_race_handler.json",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "./internal/handler",
+        "-run",
+        "^(TestStage|TestMoveIssueRejectsUnsafeInputs|TestBatchUpdate(NoMutationReturnsZero|ValidUpdatesPersistAndCount|StageOnly)|TestOrdinaryDelivery(Batch|CompletionMissingAuthorization)|TestLifecycleHandoffCommentReachesTaskQueue|TestCreateLifecycleHandoffFullDevelopmentLoop|TestStartTask_)",
+        "-count=1",
+        "-json"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-handler-race-1.log",
+      "log_sha256": "f99f0013557bd4445bc13870db5cf16ba297547fb08523b5ea8649b9e4925514",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-handler-race-1.exit",
+      "exit_code": 0,
+      "package_terminal": [
+        "pass"
+      ],
+      "counts": {
+        "pass": 61,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_count": 29,
+      "tests": [
+        {
+          "name": "TestStageDescendantMoveAndBatchRefuseExactAdmissionCode",
+          "action": "pass",
+          "elapsed_seconds": 0.41
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/start",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/machine/waiting-local-directory",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/start",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation/human/waiting-local-directory",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestStageDescendantDaemonStartAndWaitRefuseBeforeMutation",
+          "action": "pass",
+          "elapsed_seconds": 0.11
+        },
+        {
+          "name": "TestStagePolicyHTTPEnablingIsUnavailableUntilEveryGateExists",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestStageHTTPStrictBodies",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageHTTPActionsConfirmationsRefusalsAndRecovery",
+          "action": "pass",
+          "elapsed_seconds": 0.31
+        },
+        {
+          "name": "TestStageAdmissionThroughOrdinaryIssueHandlers",
+          "action": "pass",
+          "elapsed_seconds": 0.35
+        },
+        {
+          "name": "TestStageHTTPScopeConfirmationRequiresExplicitVerifiedCode",
+          "action": "pass",
+          "elapsed_seconds": 0.21
+        },
+        {
+          "name": "TestStartTask_AutopilotRunOnlyTask_ResolvesWorkspace",
+          "action": "pass",
+          "elapsed_seconds": 0.03
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchZeroRevisionConsumesExactGrant",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchDuplicateAuthorizationOrOperationRefusesBeforeWrites/authorization",
+          "action": "pass",
+          "elapsed_seconds": 0.09
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchDuplicateAuthorizationOrOperationRefusesBeforeWrites/operation",
+          "action": "pass",
+          "elapsed_seconds": 0.08
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchDuplicateAuthorizationOrOperationRefusesBeforeWrites",
+          "action": "pass",
+          "elapsed_seconds": 0.17
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero/updates_missing",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero/updates_empty_object",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero/updates_misnamed",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero/updates_unknown_field_only",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestBatchUpdateNoMutationReturnsZero",
+          "action": "pass",
+          "elapsed_seconds": 0.06
+        },
+        {
+          "name": "TestBatchUpdateValidUpdatesPersistAndCount",
+          "action": "pass",
+          "elapsed_seconds": 0.03
+        },
+        {
+          "name": "TestBatchUpdateStageOnly",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged/last_child_still_leaves_a_sibling_open",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged/every_child_terminal_closes_the_single_implicit_stage",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged/a_backlog_sibling_holds_the_barrier_open_(no_surprise_cascade)",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged/cancelled_counts_as_terminal",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Unstaged",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged/stage_1_not_fully_done_does_not_fire",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged/closing_stage_1_fires_even_though_later_stages_are_parked",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged/closing_stage_2_fires_when_stages_1_and_2_are_terminal",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged/final_stage_closes_once_its_child_finishes",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_Staged",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageProgressSummary",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageProgressSummary_FinalStageNoNext",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageProgressSummary_SkipsUnstaged",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageAdvanceInstruction/a_known_next_stage_points_the_leader_at_it",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageAdvanceInstruction/no_created_next_stage_does_not_assert_finality",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageAdvanceInstruction",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_CancelledClosesStage/staged:_cancelling_the_last_open_child_closes_the_stage",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_CancelledClosesStage/unstaged:_cancel_of_the_last_open_child_closes_the_implicit_stage",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_CancelledClosesStage",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/a_non-terminal_unstaged_child_does_not_block_stage_1",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_UnstagedIgnoredInStagedSet/completing_an_unstaged_child_in_a_staged_set_closes_nothing",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageBarrierClosed_UnstagedIgnoredInStagedSet",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageLeaderPrepareTimeoutRetryCanAdvanceNextStage",
+          "action": "pass",
+          "elapsed_seconds": 0.11
+        },
+        {
+          "name": "TestOrdinaryDeliveryCompletionMissingAuthorization/update",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestOrdinaryDeliveryCompletionMissingAuthorization/move",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestOrdinaryDeliveryCompletionMissingAuthorization",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchCommittedPrefix",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchUnknownCommitRecovery/false",
+          "action": "pass",
+          "elapsed_seconds": 0.17
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchUnknownCommitRecovery/true",
+          "action": "pass",
+          "elapsed_seconds": 0.17
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchUnknownCommitRecovery",
+          "action": "pass",
+          "elapsed_seconds": 0.34
+        },
+        {
+          "name": "TestOrdinaryDeliveryBatchCommittedParentNotification",
+          "action": "pass",
+          "elapsed_seconds": 0.07
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs/cross-workspace_anchor",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs/cross-workspace_project",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs/canonical_position_bypass",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs/self_anchor",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestMoveIssueRejectsUnsafeInputs",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestLifecycleHandoffCommentReachesTaskQueue",
+          "action": "pass",
+          "elapsed_seconds": 0.02
+        },
+        {
+          "name": "TestCreateLifecycleHandoffFullDevelopmentLoop",
+          "action": "pass",
+          "elapsed_seconds": 0.05
+        }
+      ]
+    },
+    {
+      "id": "service-race-1",
+      "command_argv": [
+        "node",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/run.mjs",
+        "/Users/artisan/.multica/acceptance/pay241-20261113-01/configs/s2_race_service.json",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^(TestStage|TestStartTaskIteration|TestIssueCreateInTx|TestLegacyExecution(CollaborationEnqueueBoundary|PreparedHandoffCannotReuseCollaborationTask|SQLBoundaryAndOrdinaryChild)|TestCollaborationWorkflow(RequiredWriteFailuresRollbackEverything|LostCommitRecoveryAndRefusedKey|ConcurrentIdentityAndRevision|RechecksAccountsAndRolesAfterLock))",
+        "-count=1",
+        "-json"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-service-race-1.log",
+      "log_sha256": "2834f9e5d755df8f33878f36e174783e91426aee52eafb11f10f5acf443d03b3",
+      "exit_file": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-service-race-1.exit",
+      "exit_code": 0,
+      "package_terminal": [
+        "pass"
+      ],
+      "counts": {
+        "pass": 128,
+        "fail": 0,
+        "skip": 0
+      },
+      "top_level_count": 38,
+      "tests": [
+        {
+          "name": "TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure/missing",
+          "action": "pass",
+          "elapsed_seconds": 0.32
+        },
+        {
+          "name": "TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure/dependency",
+          "action": "pass",
+          "elapsed_seconds": 0.19
+        },
+        {
+          "name": "TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure/valid",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "name": "TestIssueCreateInTxParentDistinguishesMissingFromDependencyFailure",
+          "action": "pass",
+          "elapsed_seconds": 0.68
+        },
+        {
+          "name": "TestStageChildCreationRequiresApprovedProposalForMachines",
+          "action": "pass",
+          "elapsed_seconds": 0.51
+        },
+        {
+          "name": "TestStageChildExecutionGateAtEnqueueAndStart",
+          "action": "pass",
+          "elapsed_seconds": 0.5
+        },
+        {
+          "name": "TestStageChildStartSerializesWithRootLifecycle",
+          "action": "pass",
+          "elapsed_seconds": 0.93
+        },
+        {
+          "name": "TestStageChildUpdateKeepsMappingAndRefusesMachineAttach",
+          "action": "pass",
+          "elapsed_seconds": 0.32
+        },
+        {
+          "name": "TestStageDescendantsOfManagedRootAreGatedAndConfirmable",
+          "action": "pass",
+          "elapsed_seconds": 0.41
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/deferred_fallback",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/deferred_channel",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/assignment",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/handoff",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/mention",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/thread",
+          "action": "pass",
+          "elapsed_seconds": 0.01
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/squad",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints/squad_handoff",
+          "action": "pass",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "TestStageDescendantEnqueueEntryPoints",
+          "action": "pass",
+          "elapsed_seconds": 0.3
+        },
+        {
+          "name": "TestStagePreparedEnqueueAdmitsExactlyConfirmedDescendant",
+          "action": "pass",
+          "elapsed_seconds": 0.44
+        },
+        {
+          "name": "TestStageApprovedChildCannotAuthorizeMachineDecomposition",
+          "action": "pass",
+          "elapsed_seconds": 0.37
+        },
+        {
+          "name": "TestStageScopeConfirmationBindsVerifiedCodeVersion",
+          "action": "pass",
+          "elapsed_seconds": 0.6
+        },
+        {
+          "name": "TestStageScopeConfirmationFencesCodeUntilCommit/head",
+          "action": "pass",
+          "elapsed_seconds": 0.53
+        },
+        {
+          "name": "TestStageScopeConfirmationFencesCodeUntilCommit/link",
+          "action": "pass",
+          "elapsed_seconds": 0.56
+        },
+        {
+          "name": "TestStageScopeConfirmationFencesCodeUntilCommit",
+          "action": "pass",
+          "elapsed_seconds": 1.09
+        },
+        {
+          "name": "TestStagePolicyRevisionCASAuthorityAndOriginalKey",
+          "action": "pass",
+          "elapsed_seconds": 0.37
+        },
+        {
+          "name": "TestStageRolesRequireSourceAdminParticipantsAndSeparation",
+          "action": "pass",
+          "elapsed_seconds": 0.47
+        },
+        {
+          "name": "TestStageProposalVersionsDecisionsAndSingleMaterialization",
+          "action": "pass",
+          "elapsed_seconds": 0.65
+        },
+        {
+          "name": "TestStageProposalConcurrentAcceptCreatesOneChildSet",
+          "action": "pass",
+          "elapsed_seconds": 0.5
+        },
+        {
+          "name": "TestStageProposalAcceptRollsBackEveryChildOnRefusal",
+          "action": "pass",
+          "elapsed_seconds": 0.46
+        },
+        {
+          "name": "TestStageProposalSourceIsVerifiedByTheServer",
+          "action": "pass",
+          "elapsed_seconds": 0.35
+        },
+        {
+          "name": "TestStageScopeConfirmationFirstEnableAndReopen",
+          "action": "pass",
+          "elapsed_seconds": 0.65
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_child",
+          "action": "pass",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_stage_decision",
+          "action": "pass",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_issue_collaboration_SET_revision",
+          "action": "pass",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_event",
+          "action": "pass",
+          "elapsed_seconds": 0.39
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/INSERT_INTO_collaboration_notification",
+          "action": "pass",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/UPDATE_collaboration_operation",
+          "action": "pass",
+          "elapsed_seconds": 0.38
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit/lost_commit",
+          "action": "pass",
+          "elapsed_seconds": 0.36
+        },
+        {
+          "name": "TestStageAcceptRequiredWriteFailuresAndLostCommit",
+          "action": "pass",
+          "elapsed_seconds": 2.64
+        },
+        {
+          "name": "TestStageReadinessPredicateIsSharedWithMigration",
+          "action": "pass",
+          "elapsed_seconds": 0.22
+        },
+        {
+          "name": "TestCollaborationWorkflowConcurrentIdentityAndRevision",
+          "action": "pass",
+          "elapsed_seconds": 0.33
+        },
+        {
+          "name": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock/target_disabled",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock/former_handler",
+          "action": "pass",
+          "elapsed_seconds": 0.29
+        },
+        {
+          "name": "TestCollaborationWorkflowRechecksAccountsAndRolesAfterLock",
+          "action": "pass",
+          "elapsed_seconds": 0.56
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_issue_SET_assignee_type",
+          "action": "pass",
+          "elapsed_seconds": 0.3
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/INSERT_INTO_issue_handoff",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_issue_participant_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_grant_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.25
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_command_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_channel_SET_queue_state",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_target_t_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_execution_group",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_delegation",
+          "action": "pass",
+          "elapsed_seconds": 0.32
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_run_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_termination_SET",
+          "action": "pass",
+          "elapsed_seconds": 0.27
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_issue_collaboration_SET_revision",
+          "action": "pass",
+          "elapsed_seconds": 0.29
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/INSERT_INTO_collaboration_event",
+          "action": "pass",
+          "elapsed_seconds": 0.28
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/INSERT_INTO_collaboration_notification",
+          "action": "pass",
+          "elapsed_seconds": 0.29
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything/UPDATE_collaboration_operation",
+          "action": "pass",
+          "elapsed_seconds": 0.28
+        },
+        {
+          "name": "TestCollaborationWorkflowRequiredWriteFailuresRollbackEverything",
+          "action": "pass",
+          "elapsed_seconds": 4.17
+        },
+        {
+          "name": "TestCollaborationWorkflowLostCommitRecoveryAndRefusedKey",
+          "action": "pass",
+          "elapsed_seconds": 0.21
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/assignment",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/mention",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/thread",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/squad",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary/channel",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionCollaborationEnqueueBoundary",
+          "action": "pass",
+          "elapsed_seconds": 0.71
+        },
+        {
+          "name": "TestLegacyExecutionPreparedHandoffCannotReuseCollaborationTask/insert",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionPreparedHandoffCannotReuseCollaborationTask/reuse",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "name": "TestLegacyExecutionPreparedHandoffCannotReuseCollaborationTask",
+          "action": "pass",
+          "elapsed_seconds": 0.28
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/insert",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/claim",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/runtime",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/batch",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/start",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/sql_start",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/retry",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/promote",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/reclaim",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/link",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/insert",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/claim",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/runtime",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/batch",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/start",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/sql_start",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/retry",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/promote",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/reclaim",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/link",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/insert",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/claim",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/runtime",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/batch",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/start",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/sql_start",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/retry",
+          "action": "pass",
+          "elapsed_seconds": 0.18
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/promote",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/reclaim",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/link",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+          "action": "pass",
+          "elapsed_seconds": 4.61
+        },
+        {
+          "name": "TestStartTaskIterationFacts/active",
+          "action": "pass",
+          "elapsed_seconds": 0.18
+        },
+        {
+          "name": "TestStartTaskIterationFacts/planned",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        },
+        {
+          "name": "TestStartTaskIterationFacts",
+          "action": "pass",
+          "elapsed_seconds": 0.34
+        },
+        {
+          "name": "TestStartTaskIterationRollback",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestStartTaskIterationPostCommitPublication",
+          "action": "pass",
+          "elapsed_seconds": 0.21
+        },
+        {
+          "name": "TestStartTaskIterationWaitsForMembershipFence/join",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestStartTaskIterationWaitsForMembershipFence/leave",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestStartTaskIterationWaitsForMembershipFence",
+          "action": "pass",
+          "elapsed_seconds": 0.52
+        },
+        {
+          "name": "TestStartTaskIterationUnassociatedTaskBecomesLinked",
+          "action": "pass",
+          "elapsed_seconds": 0.26
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/queued",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/running",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/completed",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/cancelled",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/failed",
+          "action": "pass",
+          "elapsed_seconds": 0.13
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases/deferred",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestStartTaskIterationNonStartingPhases",
+          "action": "pass",
+          "elapsed_seconds": 0.83
+        },
+        {
+          "name": "TestStartTaskIterationWaitingAndAlreadyStarted/unstarted",
+          "action": "pass",
+          "elapsed_seconds": 0.15
+        },
+        {
+          "name": "TestStartTaskIterationWaitingAndAlreadyStarted/already_started",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestStartTaskIterationWaitingAndAlreadyStarted",
+          "action": "pass",
+          "elapsed_seconds": 0.3
+        },
+        {
+          "name": "TestStartTaskIterationIssueNullPreservesQuickCreate",
+          "action": "pass",
+          "elapsed_seconds": 0.14
+        },
+        {
+          "name": "TestStartTaskIterationAdmissionRefusal",
+          "action": "pass",
+          "elapsed_seconds": 0.12
+        },
+        {
+          "name": "TestStartTaskIterationConcurrentRequests",
+          "action": "pass",
+          "elapsed_seconds": 0.2
+        },
+        {
+          "name": "TestStartTaskIterationNewParticipationAndEventClock",
+          "action": "pass",
+          "elapsed_seconds": 0.16
+        }
+      ]
+    }
+  ],
+  "static_checks": [
+    {
+      "id": "vet-1",
+      "command_argv": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./internal/service",
+        "./internal/handler"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-vet-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "output_bytes": 0
+    },
+    {
+      "id": "gofmt-1",
+      "command_argv": [
+        "gofmt",
+        "-l",
+        "server/internal/handler/daemon.go",
+        "server/internal/handler/issue.go",
+        "server/internal/handler/collaboration_stage_admission_test.go",
+        "server/internal/service/collaboration_stage_actions.go",
+        "server/internal/service/collaboration_stage_scope_code_test.go",
+        "server/internal/service/collaboration_stage_enqueue_test.go"
+      ],
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1b-resume-gofmt-1.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0,
+      "output_bytes": 0
+    }
+  ],
+  "predecessor_evidence": [
+    {
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-review-items-red.log",
+      "sha256": "3eac541b09fd4d341a0d4d37e9d7a011ccda45dad7f3ad1dfb170b2b51dbfc78",
+      "provenance": "retained predecessor run; not re-executed by this owner",
+      "captured_exit_code": null
+    },
+    {
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-review-items-green-1.log",
+      "sha256": "69d2f4e88e4ddad4d01b99fc8b7a32c81a7f0fecd925dc4a3696b1d5409da976",
+      "provenance": "retained predecessor run; not re-executed by this owner",
+      "captured_exit_code": null
+    },
+    {
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-handler-2.log",
+      "sha256": "221cf2f7f5732568a21bb7cbf68064f2a84e105d8fc0e82ce0eec5446561b2d4",
+      "provenance": "retained predecessor run; not re-executed by this owner",
+      "captured_exit_code": null
+    },
+    {
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-migrations-updown-2.log",
+      "sha256": "9bce7c9ff1e916c3b99756719c716ab1fc5736aa725b4a55c62dda5f55ecaae8",
+      "provenance": "retained predecessor run; not re-executed by this owner",
+      "captured_exit_code": null
+    },
+    {
+      "log": "/Users/artisan/.multica/acceptance/pay241-20261113-01/logs/s2-server-inc1-migrate-runner-updown-2.log",
+      "sha256": "b3c59e86db518d04939f28c057a4e164cf15c6458218302295af1b846b69dfa0",
+      "provenance": "retained predecessor run; not re-executed by this owner",
+      "captured_exit_code": null
+    }
+  ],
+  "migration": {
+    "number": 820,
+    "commands_run_this_resume": [],
+    "allocated_databases_reported_at": 820,
+    "files": [
+      {
+        "path": "server/migrations/820_collaboration_stage_child_code.down.sql",
+        "sha256": "5bae0fb1d84f02a55c0a1a3a35ec5d9ba7bdbb1fd1056dae9e3a1c17fd0ab3e5"
+      },
+      {
+        "path": "server/migrations/820_collaboration_stage_child_code.up.sql",
+        "sha256": "bd7c405d8d1f8d8e517463fec0305df87f0b0b6cb93a2fcf751e21290e9cc81f"
+      }
+    ],
+    "sqlc_run_this_resume": false,
+    "reason": "No SQL, migration or generated file changed in this resume."
+  },
+  "first_failures": [
+    {
+      "run": "handler-new-1",
+      "issues": [
+        "Batch attach replaced stage_proposal_required with delivery_completion_conflict",
+        "Daemon wait-for-directory returned400 instead of409"
+      ]
+    },
+    {
+      "run": "code-fence-red",
+      "issues": [
+        "Connector head update committed after observation and before A5 decision commit",
+        "Connector unlink committed after observation and before A5 decision commit"
+      ]
+    }
+  ],
+  "limitations": [
+    "This is increment evidence, not S2 A01–A12 acceptance or real provider/CI/payment/deployment evidence.",
+    "Unsalted child content SHA256 permits low-entropy offline guesses; external R1 projection remains for coordinator independent review.",
+    "GitHub stale webhook upsert can regress mirrored head; snapshot normalization can omit checks. Root assigned synthetic counterexamples/minimal repair to2a before policy activation.",
+    "Signer credential generations/expiry, code review and later stages, submission/final guard, project exit/delete, activity, and enabling remain increments2a–2d.",
+    "No new router or password-auth end-to-end run, full package suites, Web/Desktop, real models or external integrations.",
+    "Known unrelated TestBatchUpdateIssues_AutopilotRunAssign and report_snapshot deletion-manifest failures were not edited or rerun.",
+    "Fresh DB/schema/runner allocation and migration tests are inherited coordinator/predecessor evidence; this owner ran only exact allocated service/handler normal/race package commands through run.mjs."
+  ]
+}

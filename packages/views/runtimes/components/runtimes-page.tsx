@@ -7,6 +7,7 @@ import {
   Loader2,
   Monitor,
   Plus,
+  RefreshCw,
   Server,
 } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -66,6 +67,7 @@ import { buildRuntimeMachines, type RuntimeMachine } from "./runtime-machines";
 import { HealthDot, HealthIcon, useHealthLabel } from "./shared";
 import { useT, useTimeAgo } from "../../i18n";
 import { daemonRuntimesDocsHref } from "./runtime-docs";
+import { RuntimeWelcome } from "./runtime-welcome";
 
 export interface RuntimesPageProps {
   /** Desktop-only daemon id used to identify this device. */
@@ -102,13 +104,24 @@ export function RuntimesPage({
   const qc = useQueryClient();
   const [showConnectDialog, setShowConnectDialog] = useState(false);
   const [showCloudRuntimeDialog, setShowCloudRuntimeDialog] = useState(false);
+  const { t } = useT("runtimes");
 
-  const { data: runtimes = [], isLoading: runtimesLoading } = useQuery(
-    runtimeListOptions(wsId),
-  );
-  const { data: runtimeProfiles = [], isLoading: profilesLoading } = useQuery(
-    runtimeProfileListOptions(wsId),
-  );
+  const {
+    data: runtimes = [],
+    isPending: runtimesLoading,
+    isSuccess: runtimesReady,
+    isError: runtimesError,
+    isFetching: runtimesFetching,
+    refetch: refetchRuntimes,
+  } = useQuery(runtimeListOptions(wsId));
+  const {
+    data: runtimeProfiles = [],
+    isPending: profilesLoading,
+    isSuccess: profilesReady,
+    isError: profilesError,
+    isFetching: profilesFetching,
+    refetch: refetchProfiles,
+  } = useQuery(runtimeProfileListOptions(wsId));
   const { data: agents = [], isLoading: agentsLoading } = useQuery(
     agentListOptions(wsId),
   );
@@ -171,6 +184,7 @@ export function RuntimesPage({
     orphanProfileRuntimes.length === 0 &&
     !bootstrapping &&
     hasLocalMachine !== true;
+  const showInventoryError = showEmpty && (runtimesError || profilesError);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -181,10 +195,31 @@ export function RuntimesPage({
         onOpenCloudRuntime={() => setShowCloudRuntimeDialog(true)}
       />
 
-      {showEmpty ? (
+      {showInventoryError ? (
         <div className="flex flex-1 items-center justify-center p-6">
-          <EmptyState onConnectRemote={() => setShowConnectDialog(true)} />
+          <CollectionPageState
+            icon={Server}
+            role="alert"
+            title={t(($) => $.page.load_error.title)}
+            description={t(($) => $.page.load_error.hint)}
+            actions={
+              <Button
+                type="button"
+                variant="outline"
+                disabled={runtimesFetching || profilesFetching}
+                onClick={() => {
+                  void refetchRuntimes();
+                  void refetchProfiles();
+                }}
+              >
+                <RefreshCw aria-hidden="true" className="size-4" />
+                {t(($) => $.page.load_error.retry)}
+              </Button>
+            }
+          />
         </div>
+      ) : showEmpty && runtimesReady && profilesReady ? (
+        <RuntimeWelcome key={wsId} onConnectRemote={() => setShowConnectDialog(true)} />
       ) : (
         <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="mx-auto flex w-full max-w-[1440px] flex-col p-4 sm:p-6">
@@ -564,23 +599,6 @@ function ProviderIconStack({ providers }: { providers: string[] }) {
         </span>
       )}
     </span>
-  );
-}
-
-function EmptyState({ onConnectRemote }: { onConnectRemote: () => void }) {
-  const { t } = useT("runtimes");
-  return (
-    <CollectionPageState
-      icon={Server}
-      title={t(($) => $.page.empty.title)}
-      description={t(($) => $.page.empty.hint)}
-      actions={
-        <Button type="button" size="sm" onClick={onConnectRemote}>
-          <Plus aria-hidden="true" className="size-3" />
-          {t(($) => $.page.connect_remote)}
-        </Button>
-      }
-    />
   );
 }
 

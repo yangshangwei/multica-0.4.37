@@ -27,7 +27,7 @@ async function managerFixture(pid: string, withSession: boolean, pendingDrain: b
   const session = { createHandoff: vi.fn(async () => JSON.stringify({ bindings: [] })), connectRunningDaemon: async () => null, matchesDaemonScope: () => true };
   const prepareSession = vi.fn(async () => null);
   const modules: Record<string, unknown> = {
-    electron: { app: { getVersion: () => "0.5.0" }, ipcMain: { handle: vi.fn() }, BrowserWindow: { getAllWindows: () => [] }, shell: {} },
+    electron: { app: { getVersion: () => "0.5.0", getPath: () => root }, ipcMain: { handle: vi.fn() }, BrowserWindow: { getAllWindows: () => [] }, shell: {} },
     child_process: { execFile: spawn },
     os: { ...nativeRequire("node:os"), homedir: () => root },
     "./daemon-recovery": recovery,

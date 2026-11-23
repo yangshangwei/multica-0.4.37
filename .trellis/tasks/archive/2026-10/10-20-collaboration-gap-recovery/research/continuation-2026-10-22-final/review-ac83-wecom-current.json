@@ -1,0 +1,517 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/evidence_check (trellis-check)",
+  "active_task": ".trellis/tasks/10-20-collaboration-gap-recovery",
+  "reviewed_at": "2026-10-22T10:20:06.829208+00:00",
+  "head_at_review": "cae15dd72ee568f28ce29b19f0c76765b72f26cd",
+  "scope": "Existing S6 AC83 whole-clause and minimal WeCom production/ordinary fixture commitability; no task creation or replanning",
+  "writes": [
+    "research/continuation-2026-10-22-final/review-ac83-wecom-current.md",
+    "research/continuation-2026-10-22-final/review-ac83-wecom-current.json"
+  ],
+  "product_test_spec_ledger_environment_mutations": false,
+  "clients_db_tests_environment_provider_launched_by_this_reviewer": false,
+  "prior_reports": [
+    {
+      "path": "research/continuation-2026-10-22/current-session-notification-review.md",
+      "sha256": "40b12d8013d1127ae07cc41365def776d50301fd407420378a52405dddf2705c"
+    },
+    {
+      "path": "research/continuation-2026-10-22/current-session-notification-review.json",
+      "sha256": "2b48fea5bfccfabefc5dacaf7015d600af6a8bb57d955386aa972a10c922f5e7"
+    },
+    {
+      "path": "research/continuation-2026-10-22/outbound-im-current-review.md",
+      "sha256": "8f3a4a91bbf5327f25e2b569349063699a8dfb3f399281355a52bf5fa3ff38f4"
+    },
+    {
+      "path": "research/continuation-2026-10-22/outbound-im-current-review.json",
+      "sha256": "fdc0e76c80ade93f29a8e2ddd4414557cc94167c6dbac795fd4893c28774f495"
+    }
+  ],
+  "decisions": {
+    "AC83": "recommend_promote_passed_whole_clause",
+    "AC84": "hold_full_criterion_pending_current_tail_and_non_im_evidence",
+    "WeCom_production_plus_three_ordinary_fixtures": "accept_stage_independently_after_root_current_adjacency_rerun"
+  },
+  "ac83": {
+    "clients_raw": {
+      "path": "research/continuation-2026-10-22-resume/current-lane-notification-clients.stdout",
+      "sha256": "506299b1a544078c73af21a0425d4349d1ffa11c71ea8c708ba865522c0066c8"
+    },
+    "clients_result": {
+      "path": "research/continuation-2026-10-22-resume/current-lane-notification-clients-result.json",
+      "sha256": "049f7e99737690e814e26fc3fac0ea47711850eea423312f64f6385627e050c9"
+    },
+    "stats": {
+      "startTime": "2026-10-22T04:57:12.673Z",
+      "duration": 166631.51799999998,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "attachments": [
+      {
+        "platform": "web",
+        "artifact": {
+          "path": "research/continuation-2026-10-22/current-session-web-notifications-identities.json",
+          "sha256": "90f2007d68af17fa867d1086a579b262f887b9d0482c16090c9e84630ae705f9"
+        },
+        "human_kinds": [
+          "information_requested",
+          "information_returned",
+          "acceptance_submitted"
+        ],
+        "result_kinds": [
+          "ai_completed",
+          "ai_failed",
+          "ai_stopped"
+        ],
+        "archived_kinds": [
+          "information_requested",
+          "information_returned",
+          "acceptance_submitted",
+          "ai_completed",
+          "ai_failed",
+          "ai_stopped"
+        ],
+        "source_hashes_equal_current": true,
+        "source_sha256": {
+          "e2e/collaboration-offline-result-notifications.spec.ts": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+          "e2e/fixtures/collaboration-offline-result-notifications.ts": "ab8c09d4600e354231e870721665798cbedd0cb584350f03cb96ebaeb3ac615c",
+          "e2e/fixtures/collaboration-offline-handoff.ts": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35",
+          "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "e2e/fixtures/collaboration-cross-client-provider.go": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+        },
+        "binary_sha256": {
+          "daemon.test": "57f9aa8c2306992964aa714eef324fb5435e8218f143bb28702378adbe67d358",
+          "cross-client-provider": "80c3225030ff105764e3b65309d9b3e599c223a8914def1cb37ab6f3217a9f94"
+        },
+        "fresh_login_after_six_events": true,
+        "redacted_count": 11,
+        "removed_notice_count": 1,
+        "all_redacted_without_title_or_run": true,
+        "old_entry_denied": true,
+        "source_isolation_checkpoints": [
+          {
+            "creator_source_membership": 1,
+            "recipient_source_membership": 0,
+            "inbox_rows": 0,
+            "subscriber_rows": 0
+          },
+          {
+            "creator_source_membership": 1,
+            "recipient_source_membership": 0,
+            "inbox_rows": 0,
+            "subscriber_rows": 0
+          },
+          {
+            "creator_source_membership": 1,
+            "recipient_source_membership": 0,
+            "inbox_rows": 0,
+            "subscriber_rows": 0
+          },
+          {
+            "creator_source_membership": 1,
+            "recipient_source_membership": 0,
+            "inbox_rows": 0,
+            "subscriber_rows": 0
+          }
+        ],
+        "page_errors": [],
+        "transport_errors": [],
+        "credential_scan_matches": 0,
+        "embedded_attachment_equal_file": true
+      },
+      {
+        "platform": "electron",
+        "artifact": {
+          "path": "research/continuation-2026-10-22/current-session-electron-notifications-identities.json",
+          "sha256": "d165c59ce8dc9337b547d274ab302b52f3e6e6664047ce09e3ab6ae2c9e2c85a"
+        },
+        "human_kinds": [
+          "information_requested",
+          "information_returned",
+          "acceptance_submitted"
+        ],
+        "result_kinds": [
+          "ai_completed",
+          "ai_failed",
+          "ai_stopped"
+        ],
+        "archived_kinds": [
+          "information_requested",
+          "information_returned",
+          "acceptance_submitted",
+          "ai_completed",
+          "ai_failed",
+          "ai_stopped"
+        ],
+        "source_hashes_equal_current": true,
+        "source_sha256": {
+          "e2e/collaboration-offline-result-notifications.spec.ts": "86a2efd01f7d4e67bc83fb9452fb7fb1c22d7d8542045920aedc3f9166c8f117",
+          "e2e/fixtures/collaboration-offline-result-notifications.ts": "ab8c09d4600e354231e870721665798cbedd0cb584350f03cb96ebaeb3ac615c",
+          "e2e/fixtures/collaboration-offline-handoff.ts": "733fb4d46b603752c518ac316de0fa1258623b9b24cb7902b8be9d415be2fd35",
+          "e2e/fixtures/collaboration-lifecycle-controls.ts": "3cbac90ca7adfd9aef3b17b9d5c93b5bd8138afe4e7069f3fdd8b5456949651d",
+          "e2e/fixtures/collaboration-cross-client-execution.ts": "eab460c2681c95696ea90034ed63b34fc523169bf2d10d151c079c98cdda6c40",
+          "e2e/fixtures/collaboration-native.ts": "91d23deacfe20f57f85d7533dc2fd7bdd942d0a1eedbfdb49ae5f200dc7b7e94",
+          "e2e/fixtures/collaboration-cross-client-provider.go": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88"
+        },
+        "binary_sha256": {
+          "daemon.test": "57f9aa8c2306992964aa714eef324fb5435e8218f143bb28702378adbe67d358",
+          "cross-client-provider": "80c3225030ff105764e3b65309d9b3e599c223a8914def1cb37ab6f3217a9f94"
+        },
+        "fresh_login_after_six_events": true,
+        "redacted_count": 11,
+        "removed_notice_count": 1,
+        "all_redacted_without_title_or_run": true,
+        "old_entry_denied": true,
+        "source_isolation_checkpoints": [
+          {
+            "creator_source_membership": 1,
+            "recipient_source_membership": 0,
+            "inbox_rows": 0,
+            "subscriber_rows": 0
+          },
+          {
+            "creator_source_membership": 1,
+            "recipient_source_membership": 0,
+            "inbox_rows": 0,
+            "subscriber_rows": 0
+          },
+          {
+            "creator_source_membership": 1,
+            "recipient_source_membership": 0,
+            "inbox_rows": 0,
+            "subscriber_rows": 0
+          },
+          {
+            "creator_source_membership": 1,
+            "recipient_source_membership": 0,
+            "inbox_rows": 0,
+            "subscriber_rows": 0
+          }
+        ],
+        "page_errors": [],
+        "transport_errors": [],
+        "credential_scan_matches": 0,
+        "embedded_attachment_equal_file": true
+      }
+    ],
+    "canonical": {
+      "command": {
+        "path": "research/continuation-2026-10-22-resume/notification-current-canonical-command.json",
+        "sha256": "674738436eb2a10fdd189f53416787031116206395c8b5f8cc1adedb913943c8"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22-resume/notification-current-canonical-result.json",
+        "sha256": "d894b58c0420eece29c35db33af17018614b03a76aadcdd890eb81aed21382da"
+      },
+      "raw": {
+        "path": "research/continuation-2026-10-22-resume/notification-current-canonical.stdout",
+        "sha256": "87c23981b2e947511da8b2e10e5d88bf4b00178f942e719d07d3e7847aac0d80"
+      },
+      "exit_code": 0,
+      "raw_hash_matches_receipt": true,
+      "top_level_passed": 15,
+      "including_subtests_passed": 31,
+      "fail_events": 0,
+      "skip_events": 0,
+      "source_changed_during_run": [],
+      "command_argv": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/service",
+        "-run",
+        "^TestCollaboration(WorkflowNotificationsAndWorkbench|ResultNotificationsRequireProvenTerminalGroup|ResultNotificationRollbackAndConcurrentReplay|NotificationsLoseContentAndAnchorsWithAccess|WorkflowTransferRecordsIterationAndSupersedesInformation|RealtimeOutboxRetriesWithoutPrivatePayloads|RealtimeRetainsFailedSourceInvalidation|RealtimeRemovalReachesRevokedAccount|RealtimeAuthorizationKeepsIndependentReadBases|InformationChainReturnsLayerByLayer|InformationReturnRefusesUnavailableRequester|AcceptanceSubmissionReturnsOpenIssueToCreator|AcceptanceRefusesDisabledCreator|InformationRequestRolesAndClosedIssue|InformationRequestRequiredWritesRollback)$",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "source_sha256": {
+        "server/internal/service/collaboration_realtime_test.go": "9609106d2d5728e3fefaea00a93f5ad77b964789480cdee6803016841b1d2439",
+        "server/internal/service/collaboration_handoff_test.go": "99136f27f2331cd8aa384a45dca0c05b49cfc6831255ad32be71be2ce0f8e992",
+        "server/internal/service/collaboration_workflow_test.go": "bf018ade217990d243ff1be7c9befc9bed89623b1e0a99ba5f582c5e62cd43f2",
+        "server/internal/service/collaboration_notifications_test.go": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec",
+        "server/internal/service/collaboration_result_notifications_test.go": "0738215c6b3b7c9440749dd7f4b5fd67da69210078e5ff6a648261f5b07f133e"
+      }
+    },
+    "canonical_source_hashes_equal_current": true,
+    "offline_handoff_result": {
+      "path": "research/continuation-2026-10-21/offline-handoff-coordinator-rerun-result.json",
+      "sha256": "00e807c9b859e8b4c7ac584fa62985f1de82760abeacd69eeee69ca65faef9ea"
+    },
+    "offline_handoff_preflight": {
+      "path": "research/continuation-2026-10-21/offline-handoff-coordinator-rerun-preflight.json",
+      "sha256": "4860d1b72e110e9578f72792df84b7dd471a19169f503f99d72b8e9734c5436c"
+    },
+    "clauses": [
+      {
+        "clause": "Offline participant logs in and sees assignment/transfer/information request/return/acceptance/invite/comment/confirmed AI completed/failed/stopped",
+        "status": "verified",
+        "evidence": "Current six-kind dual-client natural-proof journey plus unchanged two-client offline-handoff invite/assignment/transfer/comment and current source hashes; recipient has no workspaces/source membership and performs one fresh login after offline production."
+      },
+      {
+        "clause": "Account workbench opens the issue",
+        "status": "verified",
+        "evidence": "Each of six title links opens issue heading; result hash focuses run and records; missing outcome renders partial and null outcome truthfully."
+      },
+      {
+        "clause": "True human actor self-exclusion",
+        "status": "verified",
+        "evidence": "Three workflow event-seq actor=0/other=1/recipient=1 checks, canonical invite, unchanged offline-handoff invite+transfer self-exclusion; actual comment recipient helper excludes true actor; system observations have no proxy actor."
+      },
+      {
+        "clause": "Read/archive preserve task and permissions",
+        "status": "verified",
+        "evidence": "12 actual UI POSTs/platform, 200 with timestamp; exact issue+execution+workbench snapshots unchanged; archived row alone disappears."
+      },
+      {
+        "clause": "Removal notice is content-free and old notification cannot open issue",
+        "status": "verified",
+        "evidence": "Exactly one removed entry, all 11 entries title/source/run redacted, live access_changed, old client href denied, issue/run 404, participating list empty."
+      },
+      {
+        "clause": "Source-member participant no duplicate inbox; outsider no source inbox/subscriber",
+        "status": "verified",
+        "evidence": "Four checkpoints/platform membership creator=1/recipient=0, all inbox/subscriber rows=0; canonical workflow workspace-wide isolation and result recipient isolation; no ordinary inbox writer in current producers."
+      },
+      {
+        "clause": "Delivery failure does not undo committed business operation",
+        "status": "verified",
+        "evidence": "Generic post-commit outbox publisher/source failure retains committed issue/event, pending durable outbox and stable replay without private payload; required persistence errors atomically rollback distinct writes, not delivery failures."
+      },
+      {
+        "clause": "Replay does not duplicate notices",
+        "status": "verified",
+        "evidence": "Original-key human action receipt/issue/notices exact equality; natural proof bytes unchanged across 503/200 and replay unchanged; canonical concurrent replay freezes recipients and creation outbox retry retains one notification."
+      }
+    ],
+    "limitations": [
+      "Electron uses real password API login into fresh isolated profile, not login-page UX or installed full Main.",
+      "Assignment and transfer share transferred kind; creator receipt of transfer-back not asserted again by UI, generic fanout asserted by current workflow/canonical.",
+      "Comment self-exclusion not reasserted per client here; existing AC90/91/97 plus actual shared helper supplies the clause.",
+      "Browser source isolation has zero counts without ordinary positive fixture in this case; canonical/source contract owns ordinary separation.",
+      "Post-commit failure uses generic creation outbox test rather than every AC83 kind. Required-persistence failure is an atomic rollback, not a tolerated delivery failure.",
+      "AI failure client case is missing-outcome/partial recording; explicit business failure is canonical. Commercial provider accounts are not accessed.",
+      "Listener/build identity accepted from root preflight, not probed or rebuilt by this read-only review.",
+      "Installed/old clients, provider/OS packaging and Mobile remain separate."
+    ]
+  },
+  "wecom": {
+    "minimal_file_sha256": {
+      "server/internal/integrations/wecom/relay_outbound.go": "c0b2be0d56ddde20435dadc2e6de6e04b8ea998a240a73cb75066b22f6f6f1d6",
+      "server/internal/integrations/wecom/outbound_test.go": "e575bf3a5ba0a7a41dc9ecd2e3df02460c1caf8c6c6763aecfee231a6d3596ad",
+      "server/internal/integrations/wecom/outbound_two_replica_db_test.go": "2ff230b4f9d3db8b9c767c6b50c6112870a14ee72606e83964c918155b71d672",
+      "server/internal/integrations/wecom/relay_ordering_db_test.go": "1d7f3ccb588aa7dd6b4042dcf17a20f1914e4143262f36476bf4f431228dedf0"
+    },
+    "minimal_hashes_match_authoritative_isolated": true,
+    "authoritative_isolated": {
+      "command": {
+        "path": "research/continuation-2026-10-22-resume/outbound-current-isolated-final-command.json",
+        "sha256": "09a82a49dfaa96127e7dc360a0b25efb28ddc93a9b8c70e6fbea919c4119ee47"
+      },
+      "result": {
+        "path": "research/continuation-2026-10-22-resume/outbound-current-isolated-final-result.json",
+        "sha256": "70d8904416974f3195115d73d4d10650b9d7962593c15156fc08ffadc750ae3f"
+      },
+      "raw": {
+        "path": "research/continuation-2026-10-22-resume/outbound-current-isolated-final.stdout",
+        "sha256": "c0f4fc5b5dac7838d6b11d351b4044220be15250ccfb603286af1355f96571c5"
+      },
+      "exit_code": 0,
+      "raw_hash_matches_receipt": true,
+      "top_level_passed": 28,
+      "including_subtests_passed": 68,
+      "fail_events": 0,
+      "skip_events": 0,
+      "source_changed_during_run": [],
+      "command_argv": [
+        "python3",
+        "/tmp/multica-gap-recovery-20261021-h6phxwo9/with-db.py",
+        "service_s5",
+        "env",
+        "REDIS_TEST_URL=redis://127.0.0.1:57244/0",
+        "bash",
+        "../scripts/go-test-with-agent-cli-guard.sh",
+        "go",
+        "test",
+        "-json",
+        "-race",
+        "./internal/integrations/lark",
+        "./internal/integrations/dingtalk",
+        "./internal/integrations/telegram",
+        "./internal/integrations/wecom",
+        "-run",
+        "^Test(CollaborationOutbound|TwoReplicas|Relay_|DeliverRelayed|DrainDelivers|RelayedInbox)",
+        "-p",
+        "1",
+        "-parallel",
+        "1",
+        "-count=1",
+        "-timeout=30m"
+      ],
+      "source_sha256": {
+        "server/internal/integrations/wecom/replier.go": "177603cb0756e2ed2243a0d54011843def575aaf48e81a469cfb70f9bac58b4a",
+        "server/internal/integrations/wecom/dispatch_test.go": "23899de74702c261e956bdf41da2dd2b1dc9a4f354993f95c60df3a32dfe5b88",
+        "server/internal/integrations/wecom/ws_frame.go": "1bcb328933dce769129b4a72267ae08763538e2f7c76a0ee6eca2fe778a28b69",
+        "server/internal/integrations/wecom/credentials.go": "0b7b7624f626323144280c9c689fa4988fa228916af7b3df7be6a26afe7bfcf9",
+        "server/internal/integrations/wecom/dedupe_redis.go": "4c0aa04a8f82d162201c86fdadbb5e6c725e1bc182f95ac0a8e1f87f1e1518f5",
+        "server/internal/integrations/wecom/ws_sender.go": "db29d6bf23063c79d92624d093c13ddc90d0afd0875e54ac210be265c0c9b762",
+        "server/internal/integrations/wecom/trace_test.go": "d6f220b1ddd65a740ca66890f2b1bfe249ff9f314e6a9bd79181d45f131fa979",
+        "server/internal/integrations/wecom/resolvers_test.go": "ea05d73d052962ec5518d5e9867a63e185d881ffc7d4cc161468382a41d88a0b",
+        "server/internal/integrations/wecom/installation_params_test.go": "a7767a7c829a6f9cb4ecba007de5a8e5ab9c8cacf9251fd4465ca2f16e7fe449",
+        "server/internal/integrations/wecom/media_crypt_test.go": "6df08267d64f84ce7828546703600f025aa8d7a79e3f5705fb76e8a0c741b775",
+        "server/internal/integrations/wecom/wecom_resolvers.go": "b4ea9f1f6226c93535175cd4835babe43ec951f07dde1d904e59064c983321e2",
+        "server/internal/integrations/wecom/metrics.go": "684a39ca61a69a0ccb5352cc00869afa944de3418c195cb16c694d03b73e020d",
+        "server/internal/integrations/wecom/trace.go": "26dc3add41f1ee2958832d1add305af063ba704061d349bfa39ec7901c0ff800",
+        "server/internal/integrations/wecom/media_guard_allow_test.go": "881918bf725c5ff59546ac0f40e3418f31255ddc777a2f112a21e0ae1884660f",
+        "server/internal/integrations/wecom/store.go": "e31b17b557c6615483c6632b13c2c61d2ab3367b6538ab1076e4909b8491ed51",
+        "server/internal/integrations/wecom/inbox_message_test.go": "b9763145a1b8ec23ef0836f67559054fe1c4262c8e58f9c055eb93485fb2e63e",
+        "server/internal/integrations/wecom/outbound_media_test.go": "63dc9dbfdcb5ac5e7ac2f1526b1dd9941f9e34b114a28e969d3149427a6d86fb",
+        "server/internal/integrations/wecom/relay_ordering_db_test.go": "1d7f3ccb588aa7dd6b4042dcf17a20f1914e4143262f36476bf4f431228dedf0",
+        "server/internal/integrations/wecom/wecom_channel_test.go": "a30e6f5ca27869e3c29ddd8b7465ce7c3f18e24ee31860f861bb6fa5788525cf",
+        "server/internal/integrations/wecom/media_download_test.go": "93d49560da554a7dbecc020cf2559e5c17e6ea3630ba7702b5cde61b5a01cf7c",
+        "server/internal/integrations/wecom/installation_bot_name_test.go": "c44b35c76f3f18d769bb6a7be0d3cd33e88e1c0c3db91a492b0c392b86fe8e55",
+        "server/internal/integrations/wecom/inbound_media_test.go": "6cc45103bd07aa8de3a2b04345b2971883b476fae3fa5b934673541aa19e599e",
+        "server/internal/integrations/wecom/regression_group_mention_swallows_command_test.go": "109fb2d42e6a3be9d41a3374510860451dcb324508a3409fd179fe4708d5c569",
+        "server/internal/integrations/wecom/types.go": "b712041c529435342b9993c7cad2b8a1ffbac856eb2dc53fac9226aef12786ae",
+        "server/internal/integrations/wecom/metrics_test.go": "400ce9dd803fb03ec11f32c42add59fbca0c57ea7d1effca927374d11efe1512",
+        "server/internal/integrations/wecom/installation_reclaim_test.go": "12cddd763f179af3d6bc2b2df5815845d41ee6cd022e270f3f0f58d24709e369",
+        "server/internal/integrations/wecom/media_guard.go": "eebc42357838ebe4ca579b4b7e56cf82570bdadc277885d1000b0082a9db815f",
+        "server/internal/integrations/wecom/markdown_test.go": "b7ce2b69f071ce611da70adaee48332e9589561ae4145870dab69201da5e52a8",
+        "server/internal/integrations/wecom/inbox_message.go": "c48da0d1bc2565b6703aa1693f9a0a32b9852905c8556ace6a043bef30af30eb",
+        "server/internal/integrations/wecom/inbound_media_bind_db_test.go": "b8db5f1666d9ed0219dbdce85906033da5b6614495404ef56fec56496083a628",
+        "server/internal/integrations/wecom/media_stream_test.go": "abeadfde8dc6906fb5cd6392712082896b69e6f48af8527dadd16c29d866a4af",
+        "server/internal/integrations/wecom/outbound_outcome.go": "c307c6547095ffeee716a75c4f7368ccb43c4de7a1997c099fe5e8a6654ac5af",
+        "server/internal/integrations/wecom/installation.go": "e6f0ae1883a6f8b99f51edb6f5e56b5c9e02c37d09e7b5ea2683acce6fda0afd",
+        "server/internal/integrations/wecom/outbound_outcome_test.go": "8c99afdedbdc8c0cbe3fa458fa84e32b86b10296b587af0a0ae52faac4fc00e5",
+        "server/internal/integrations/wecom/media_download.go": "40c1017b1fdba1f49b6983692af575727162baa691aaea38fd4b087f36e24829",
+        "server/internal/integrations/wecom/outbound_media.go": "9e56d19f4baec903cb30e9e503dc43ae3da93987625397f33e58f369c76c5e60",
+        "server/internal/integrations/wecom/subscribe_error_test.go": "b5368ce78f85e48159efc63502af138743fe94a221b6ff48f72543ea979969de",
+        "server/internal/integrations/wecom/media_stream.go": "80bcd20524fac34ae2cc9076bd80fc376ee9854768f1989a452542e65f6f49e8",
+        "server/internal/integrations/wecom/ws_frame_test.go": "116d2d430cc608d567c5398a4ff544864d072dfc8ffd2b84d1a8605761424a97",
+        "server/internal/integrations/wecom/media_guard_test.go": "35303cfb75c2a344689e4d78fb3c050fa74e368a59d069c468f21d53ff967bc3",
+        "server/internal/integrations/wecom/installation_probe_db_test.go": "e0d14a92769a98e8d5c63c964f49fcfd9ff6e785941604803f64a52ac605b050",
+        "server/internal/integrations/wecom/markdown.go": "91360d179753887aaa87e14c393507b64975cf0c8952853893c7bc780792b02f",
+        "server/internal/integrations/wecom/relay_outbound.go": "c0b2be0d56ddde20435dadc2e6de6e04b8ea998a240a73cb75066b22f6f6f1d6",
+        "server/internal/integrations/wecom/wecom_channel.go": "1dbed8a4c789774f07e07345c8befa5bc7eb6af52274f7e09f986bbab00f7122",
+        "server/internal/integrations/wecom/outbound_test.go": "e575bf3a5ba0a7a41dc9ecd2e3df02460c1caf8c6c6763aecfee231a6d3596ad",
+        "server/internal/integrations/wecom/relay_outbound_attribution_test.go": "eb98861e39b1730e2d9aa8eba7722a8538f5280bef82918b857897ce20e03124",
+        "server/internal/integrations/wecom/outbound.go": "e5e668f1852be24936b72e504d1c866c2a5a8dc37a86a869c314a17c72026b63",
+        "server/internal/integrations/wecom/media_upload_test.go": "62265a34a97216e62168c42bdcec1228f524912aee42cb93cf70fee808971c77",
+        "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go": "cbfeb9d085b04526103ab347c2649a61a538af673bad81b09e35f5525d28929a",
+        "server/internal/integrations/wecom/helpers_test.go": "a465f55507336d48ad6d59ebfcebf447988fd2bb55d8bc411f7b16a76603c22e",
+        "server/internal/integrations/wecom/media_ingest_test.go": "2b5a7b51303e602c013cb179b69c97e0113eb592708d514defed29fcfa770be3",
+        "server/internal/integrations/wecom/voice_test.go": "3309777ed1e5a2845a9096eb6762b6ab216b2c6bdd987996b3d05d12cdb17f61",
+        "server/internal/integrations/wecom/senders_registry.go": "c1d27a5a78f0eb4f081da8394d6c7fee463c88949905582c6f4e67bf8c006d83",
+        "server/internal/integrations/wecom/media_upload.go": "083d9b11f7644af21a2c804178b5f586f558562c3804ca54534f5ef60a590f1e",
+        "server/internal/integrations/wecom/binding_test.go": "e4f6c7c7d8d434e922c5a02536b90b8e1a6d04c4e0a7ceb9743165cc58b557af",
+        "server/internal/integrations/wecom/senders_registry_test.go": "0c4b529aa45adb374143d18ca5af43e9322518b6680a3e79aeb84b6016dc1a9e",
+        "server/internal/integrations/wecom/binding.go": "704d1e39d1e2adf728b02c3f773ed0cbd2cd79a5bea89bc9587aee75569cd049",
+        "server/internal/integrations/wecom/media_crypt.go": "fdb64a77d7f35e23407e8bc0595d933e8d964bf0369f50552665deb3b7ff2fc9",
+        "server/internal/integrations/wecom/outbound_two_replica_db_test.go": "2ff230b4f9d3db8b9c767c6b50c6112870a14ee72606e83964c918155b71d672",
+        "server/internal/integrations/wecom/media_ingest.go": "115967f6e1db8670d1fb499ede074ebe7b4f0ec7da74ee6d3883e7165abfe9e5",
+        "server/internal/integrations/wecom/credential_probe.go": "d05c68d07ca849674a99c00e1d49390cbe44bb6e3e4b96108763aa0157710735",
+        "server/internal/integrations/wecom/send_verdict_test.go": "f3b221dbbe3176e342746c2ba7af409584ef8d665ab8739f9cebb6580424dfaf",
+        "server/internal/integrations/wecom/credential_probe_test.go": "edbb746ead3a9b9564a511da3c0c1e6644e7e1b7be7da19fe00fb24457f8f5a8",
+        "server/internal/integrations/wecom/replier_test.go": "51a3267e6bd872f33797d643f8254413d620d847bc8f02856615be2ea4e4c032",
+        "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": "1ad4f5a7f56bdfab10f7ee1f5b318c20a0e4f3c11be2ce48519179d6df2e1bf7",
+        "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": "9079b5c2fda9657b384b4c888da320484f049be35cf0d8b24e66ba56bda7d8d6",
+        "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": "a2b2c233e00324243daac55ef9551a6ef86ed63a83418e60af6bb4d862fc5c9f"
+      }
+    },
+    "boundary_snapshot_current_sha256": {
+      "server/internal/integrations/lark/collaboration_outbound_boundary_test.go": "7dfe4cff6b1296637d6953edab9187c196a4e6c7f528d5eaad210dd8445f4cd9",
+      "server/internal/integrations/dingtalk/collaboration_outbound_boundary_test.go": "07f820b1e30dbb3e3687c800a20f5e65a141545e1791cad2ac13a7208bc86dbe",
+      "server/internal/integrations/telegram/collaboration_outbound_boundary_test.go": "8ed776a2e0265a4537686a21e9e3f0a46fa23ff7efea7ea88434626888d4e5bd",
+      "server/internal/integrations/wecom/collaboration_outbound_boundary_test.go": "cbfeb9d085b04526103ab347c2649a61a538af673bad81b09e35f5525d28929a"
+    },
+    "boundary_old_hash_match_required": false,
+    "boundary_drift_note": "Sibling outbound_tail expands these test-only files. The prior 28/68 validates its own exact snapshot; does not validate new tail bytes. WeCom production+ordinary4 are still byte-identical to isolated proof and depend only on existing committed query/test helpers. Root will rerun current adjacency before staging.",
+    "checks": [
+      "Reply-kind exact immutable task/channel/installation/chat/type, parsed session/workspace, actual task/session/channel-ingested and current active installation/workspace all precede sender/media/object access.",
+      "ErrNoRows and immutable/authority mismatch are terminal; dependency errors return provably-not-sent before external I/O, same event release/retry and fixed stage-only logging.",
+      "Ordinary fixture diffs add TaskID/workspace/provenance; existing assertions and relay queue/lease/dedupe/inbox behavior unchanged.",
+      "No new public API, dependencies, migrations or foreign-key changes."
+    ],
+    "open_findings_not_fixed": [
+      {
+        "id": "F1",
+        "severity": "low",
+        "file": "server/internal/integrations/wecom/outbound_media.go:182",
+        "scope": "Ordinary same-workspace chat attachment message identity, not collaboration_attachment",
+        "issue": "Relay MessageID lacks validated task/session binding; ListAttachmentsByChatMessage filters message/workspace only. Prior finding retained; not expanded or fixed outside ownership.",
+        "blocks_minimal_commit_or_AC83": false,
+        "AC84_private_scope": "Dedicated collaboration files use separate collaboration_attachment; this ordinary attachment finding is not evidence of those leaking."
+      },
+      {
+        "id": "F2",
+        "severity": "low",
+        "file": "server/internal/integrations/wecom/relay_outbound.go:566",
+        "scope": "Observability",
+        "issue": "Publisher watcher may label exhausted DB retry as drop_no_connection; not notification/business/private content failure.",
+        "blocks_minimal_commit_or_AC83": false
+      },
+      {
+        "id": "F3",
+        "severity": "info",
+        "scope": "Redis exact read-fault claim coverage",
+        "issue": "New read-fault case uses dedupe=nil; generic Redis release paths pass in isolated 28/68.",
+        "blocks_minimal_commit_or_AC83": false
+      },
+      {
+        "id": "F4",
+        "severity": "info",
+        "scope": "Existing inbox relay receiver",
+        "issue": "No receiver recheck for inbox-kind; collaboration excluded at producer. Producer contract evidence needed for AC84; this minimal reply fix does not broaden inbox behavior.",
+        "blocks_minimal_commit_or_AC83": false
+      }
+    ]
+  },
+  "verification": {
+    "gofmt": {
+      "command": "gofmt -l internal/integrations/wecom/relay_outbound.go internal/integrations/wecom/outbound_test.go internal/integrations/wecom/outbound_two_replica_db_test.go internal/integrations/wecom/relay_ordering_db_test.go",
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "output": "empty"
+    },
+    "vet": {
+      "command": "GOTOOLCHAIN=go1.26.6 go vet ./internal/integrations/wecom",
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "exit_code": 0,
+      "output": "empty"
+    },
+    "diff_check": {
+      "command": "git diff --check -- server/internal/integrations/wecom/relay_outbound.go server/internal/integrations/wecom/outbound_test.go server/internal/integrations/wecom/outbound_two_replica_db_test.go server/internal/integrations/wecom/relay_ordering_db_test.go",
+      "exit_code": 0
+    },
+    "typescript": {
+      "scope": "AC83 fixture existing strict tsc and ESLint receipts verified, unchanged recorded sources",
+      "lint_exit": 0,
+      "typecheck_exit": 0,
+      "lint_receipt": {
+        "path": "research/continuation-2026-10-22-resume/lane-notification-lint-result.json",
+        "sha256": "d13854ee137648d255ce0360d09c37f2b505510d12e965ac276343dd622e2579"
+      },
+      "typecheck_receipt": {
+        "path": "research/continuation-2026-10-22-resume/lane-notification-typecheck-result.json",
+        "sha256": "eb7a661e1ea85d2781377621a8fea16e05be923e208c1d4abb91eb98648bb0cd"
+      }
+    },
+    "tests": "Raw client/service/isolated receipts independently parsed; no redundant DB/client run by reviewer; root current adjacency pending"
+  }
+}

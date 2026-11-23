@@ -1,0 +1,219 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-control-journey-web.spec.ts",
+      "file": "collaboration-control-journey-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1955,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at readControlIssue (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:229:50)\n    at exerciseCollaborationControlJourney (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:349:21)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-control-journey-web.spec.ts:20:20",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts",
+                      "column": 50,
+                      "line": 229
+                    },
+                    "snippet": "   at fixtures/collaboration-control-journey.ts:229\n\n  227 |   const issue = await fixture.creator.requestJSON<CollaborationIssue>(issuePath(fixture));\n  228 |   if (!issue.execution) throw new Error(\"The control projection is missing\");\n> 229 |   expect(issue.execution.execution_gate.enabled).toBe(true);\n      |                                                  ^\n  230 |   expect(issue.execution.channels).toHaveLength(3);\n  231 |   expect(issue.execution.targets).toHaveLength(3);\n  232 |   if (pending) {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts",
+                        "column": 50,
+                        "line": 229
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n   at fixtures/collaboration-control-journey.ts:229\n\n  227 |   const issue = await fixture.creator.requestJSON<CollaborationIssue>(issuePath(fixture));\n  228 |   if (!issue.execution) throw new Error(\"The control projection is missing\");\n> 229 |   expect(issue.execution.execution_gate.enabled).toBe(true);\n      |                                                  ^\n  230 |   expect(issue.execution.channels).toHaveLength(3);\n  231 |   expect(issue.execution.targets).toHaveLength(3);\n  232 |   if (pending) {\n    at readControlIssue (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:229:50)\n    at exerciseCollaborationControlJourney (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:349:21)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-control-journey-web.spec.ts:20:20"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:06:22.106Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-ecacb-es-and-stop-the-whole-issue-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-ecacb-es-and-stop-the-whole-issue-chromium/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-ecacb-es-and-stop-the-whole-issue-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts",
+                    "column": 50,
+                    "line": 229
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0b39328aa0f4a04d8d0a-51d8ef5fd33ac1a523bb",
+          "file": "collaboration-control-journey-web.spec.ts",
+          "line": 10,
+          "column": 1
+        },
+        {
+          "title": "Web pending termination proof keeps A paused while whole Resume releases B and squad S",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 236,
+                  "error": {
+                    "message": "Error: password registration failed: 429",
+                    "stack": "Error: password registration failed: 429\n    at TestApiClient.registerPassword (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts:77:29)\n    at createActor (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:139:21)\n    at seedCollaborationControlJourney (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:152:17)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-control-journey-web.spec.ts:15:19",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts",
+                      "column": 29,
+                      "line": 77
+                    },
+                    "snippet": "   at fixtures.ts:77\n\n  75 |       body: JSON.stringify({ username, password, name }),\n  76 |     });\n> 77 |     if (!response.ok) throw new Error(`password registration failed: ${response.status}`);\n     |                             ^\n  78 |     const data = await response.json();\n  79 |     if (typeof data.token !== \"string\" || !data.token || typeof data.user?.id !== \"string\") {\n  80 |       throw new Error(\"Password registration returned an unusable test session\");"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts",
+                        "column": 29,
+                        "line": 77
+                      },
+                      "message": "Error: password registration failed: 429\n\n   at fixtures.ts:77\n\n  75 |       body: JSON.stringify({ username, password, name }),\n  76 |     });\n> 77 |     if (!response.ok) throw new Error(`password registration failed: ${response.status}`);\n     |                             ^\n  78 |     const data = await response.json();\n  79 |     if (typeof data.token !== \"string\" || !data.token || typeof data.user?.id !== \"string\") {\n  80 |       throw new Error(\"Password registration returned an unusable test session\");\n    at TestApiClient.registerPassword (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts:77:29)\n    at createActor (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:139:21)\n    at seedCollaborationControlJourney (/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures/collaboration-control-journey.ts:152:17)\n    at /Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/collaboration-control-journey-web.spec.ts:15:19"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-02T01:06:24.869Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-b441f-sume-releases-B-and-squad-S-chromium/test-failed-1.png"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/password-22-collaboration-control-journey-web-1/artifacts/collaboration-control-jour-b441f-sume-releases-B-and-squad-S-chromium/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/e2e/fixtures.ts",
+                    "column": 29,
+                    "line": 77
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0b39328aa0f4a04d8d0a-754afe819db0456fac63",
+          "file": "collaboration-control-journey-web.spec.ts",
+          "line": 10,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-02T01:06:21.674Z",
+    "duration": 3784.4730000000004,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

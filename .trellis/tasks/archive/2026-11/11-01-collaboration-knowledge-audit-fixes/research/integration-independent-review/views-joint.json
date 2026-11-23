@@ -1,0 +1,18 @@
+{
+  "source_sha": "45efa093c1866c6ec988966769bd8f761daf7b50",
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/views",
+    "exec",
+    "vitest",
+    "run",
+    "--maxWorkers=2",
+    "collaboration/knowledge-panel.test.tsx",
+    "collaboration/run-handoff.test.tsx",
+    "locales/parity.test.ts"
+  ],
+  "started_at": "2026-11-01T17:10:43.090983+00:00",
+  "exit_code": 0,
+  "log_sha256": "83277477a8ba992c23505ed2fd9176807b90c5552c56e53e9c3d159fc26bf35c"
+}

@@ -1,0 +1,22 @@
+{
+  "gap": "Fresh CCG2 HOME has no browser cache; the actual Playwright child must receive an explicit reviewed existing cache root",
+  "owner_boundary": "run-ccg2 main constructs the child environment then executes the existing one-case Playwright command",
+  "new_execution_inputs": [
+    "run-ccg2-browser-bound.py",
+    "browser-cache-binding-v16.json",
+    "permissions/ccg2-off-v16-02.json"
+  ],
+  "existing_source_inputs_binary_binding_and_OFF_deployment_changes": false,
+  "business_case_or_grading_changes": false,
+  "new_runner_changes": [
+    "Read a hash-bound browser binding from the new permit",
+    "Validate the approved owned root, exact Playwright 1.58.2 revision1208 sources, markers/resources and existing executables",
+    "Set PLAYWRIGHT_BROWSERS_PATH only in the private Playwright child environment and record its binding hash"
+  ],
+  "verification": "Credential-free actual subprocess argv/env recorder; original runner red, successor green and refusal controls; no browser/API/DB/provider launches",
+  "future_label": "ccg2-off-v16-02",
+  "ready_to_execute": false,
+  "OFF_runtime_or_DB_changes": false,
+  "ON_started": false,
+  "real_Provider_calls": 0
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "name": "core-typecheck",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/core",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "seconds": 10.73
+  },
+  {
+    "name": "views-typecheck",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "typecheck"
+    ],
+    "exit_code": 0,
+    "seconds": 45.97
+  },
+  {
+    "name": "core-lint",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/core",
+      "lint"
+    ],
+    "exit_code": 0,
+    "seconds": 6.1
+  },
+  {
+    "name": "views-lint",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "lint"
+    ],
+    "exit_code": 1,
+    "seconds": 20.08
+  }
+]

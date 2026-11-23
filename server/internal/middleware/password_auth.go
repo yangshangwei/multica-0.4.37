@@ -62,6 +62,7 @@ func passwordAuthenticate(w http.ResponseWriter, r *http.Request, q *db.Queries)
 		r.Header.Set("X-Agent-ID", uuidToString(token.AgentID))
 		r.Header.Set("X-Task-ID", uuidToString(token.TaskID))
 		r.Header.Set("X-Workspace-ID", uuidToString(token.WorkspaceID))
+		*r = *r.WithContext(auth.WithVerifiedTaskToken(r.Context(), token))
 	default:
 		token, err := jwt.Parse(raw, func(token *jwt.Token) (any, error) { return auth.JWTSecret(), nil }, jwt.WithValidMethods([]string{"HS256"}), jwt.WithExpirationRequired(), jwt.WithIssuedAt(), jwt.WithJSONNumber())
 		if err != nil || !token.Valid {

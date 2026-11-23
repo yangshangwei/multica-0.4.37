@@ -1,0 +1,588 @@
+{
+  "at": "2026-11-02T00:07:25.990733+00:00",
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "source_root": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "template_database": "multica_func7af9_template_20261102",
+  "template_never_tested_or_served": true,
+  "packages": [
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_codex_usage_cache",
+      "relative": "cmd/backfill_codex_usage_cache",
+      "database": "multica_func7af9_go_01_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/01.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_issue_last_activity",
+      "relative": "cmd/backfill_issue_last_activity",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/02.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/backfill_task_usage_hourly",
+      "relative": "cmd/backfill_task_usage_hourly",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/03.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/migrate",
+      "relative": "cmd/migrate",
+      "database": "multica_func7af9_go_04_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/04.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/multica",
+      "relative": "cmd/multica",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/05.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/cmd/server",
+      "relative": "cmd/server",
+      "database": "multica_func7af9_go_06_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/06.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/admission",
+      "relative": "internal/admission",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/07.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/agentconfig",
+      "relative": "internal/agentconfig",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/08.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/analytics",
+      "relative": "internal/analytics",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/09.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attribution",
+      "relative": "internal/attribution",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/10.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/attributionbackfill",
+      "relative": "internal/attributionbackfill",
+      "database": "multica_func7af9_go_11_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/11.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/auth",
+      "relative": "internal/auth",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/12.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/changelog",
+      "relative": "internal/changelog",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/13.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/channelmedia",
+      "relative": "internal/channelmedia",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/14.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chatoriginbackfill",
+      "relative": "internal/chatoriginbackfill",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/15.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/chattitle",
+      "relative": "internal/chattitle",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/16.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cli",
+      "relative": "internal/cli",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/17.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/cloudruntime",
+      "relative": "internal/cloudruntime",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/18.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/collaboration",
+      "relative": "internal/collaboration",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/19.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon",
+      "relative": "internal/daemon",
+      "database": "multica_func7af9_go_20_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/20.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/collaborationrun",
+      "relative": "internal/daemon/collaborationrun",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/21.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/execenv",
+      "relative": "internal/daemon/execenv",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/22.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/processtree",
+      "relative": "internal/daemon/processtree",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/23.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemon/repocache",
+      "relative": "internal/daemon/repocache",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/24.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/daemonws",
+      "relative": "internal/daemonws",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/25.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dbstartup",
+      "relative": "internal/dbstartup",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/26.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/dispatch",
+      "relative": "internal/dispatch",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/27.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/docs",
+      "relative": "internal/docs",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/28.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement",
+      "relative": "internal/entitlement",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/29.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/entitlement/entitlementtest",
+      "relative": "internal/entitlement/entitlementtest",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/30.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/events",
+      "relative": "internal/events",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/31.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/featureflags",
+      "relative": "internal/featureflags",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/32.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/handler",
+      "relative": "internal/handler",
+      "database": "multica_func7af9_go_33_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/33.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/installation",
+      "relative": "internal/installation",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/34.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel",
+      "relative": "internal/integrations/channel",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/35.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/channel/engine",
+      "relative": "internal/integrations/channel/engine",
+      "database": "multica_func7af9_go_36_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/36.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/composio",
+      "relative": "internal/integrations/composio",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/37.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/dingtalk",
+      "relative": "internal/integrations/dingtalk",
+      "database": "multica_func7af9_go_38_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/38.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/ghsnapshot",
+      "relative": "internal/integrations/ghsnapshot",
+      "database": "multica_func7af9_go_39_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/39.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/lark",
+      "relative": "internal/integrations/lark",
+      "database": "multica_func7af9_go_40_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/40.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/slack",
+      "relative": "internal/integrations/slack",
+      "database": "multica_func7af9_go_41_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/41.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/telegram",
+      "relative": "internal/integrations/telegram",
+      "database": "multica_func7af9_go_42_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/42.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/vcs",
+      "relative": "internal/integrations/vcs",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/43.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/integrations/wecom",
+      "relative": "internal/integrations/wecom",
+      "database": "multica_func7af9_go_44_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/44.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueactivitybackfill",
+      "relative": "internal/issueactivitybackfill",
+      "database": "multica_func7af9_go_45_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/45.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueguard",
+      "relative": "internal/issueguard",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/46.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issueposition",
+      "relative": "internal/issueposition",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/47.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/issuestatus",
+      "relative": "internal/issuestatus",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/48.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/iteration",
+      "relative": "internal/iteration",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/49.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/logger",
+      "relative": "internal/logger",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/50.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/metrics",
+      "relative": "internal/metrics",
+      "database": "multica_func7af9_go_51_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/51.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/middleware",
+      "relative": "internal/middleware",
+      "database": "multica_func7af9_go_52_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/52.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/migrations",
+      "relative": "internal/migrations",
+      "database": "multica_func7af9_go_53_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/53.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/profiling",
+      "relative": "internal/profiling",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/54.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/projecthealth",
+      "relative": "internal/projecthealth",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/55.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/realtime",
+      "relative": "internal/realtime",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/56.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/runtimeapps",
+      "relative": "internal/runtimeapps",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/57.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/scheduler",
+      "relative": "internal/scheduler",
+      "database": "multica_func7af9_go_58_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/58.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/seatcapacity",
+      "relative": "internal/seatcapacity",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/59.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/selfexec",
+      "relative": "internal/selfexec",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/60.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/service",
+      "relative": "internal/service",
+      "database": "multica_func7af9_go_61_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/61.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/skill",
+      "relative": "internal/skill",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/62.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/storage",
+      "relative": "internal/storage",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/63.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/taskusagebackfill",
+      "relative": "internal/taskusagebackfill",
+      "database": "multica_func7af9_go_64_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/64.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/testutil",
+      "relative": "internal/testutil",
+      "database": "multica_func7af9_go_65_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/65.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/triagecsv",
+      "relative": "internal/triagecsv",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/66.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util",
+      "relative": "internal/util",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/67.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/internal/util/secretbox",
+      "relative": "internal/util/secretbox",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/68.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/agent",
+      "relative": "pkg/agent",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/69.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/composio",
+      "relative": "pkg/composio",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/70.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/db/generated",
+      "relative": "pkg/db/generated",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/71.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/dbid",
+      "relative": "pkg/dbid",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/72.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/featureflag",
+      "relative": "pkg/featureflag",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/73.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/llm",
+      "relative": "pkg/llm",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/74.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/plugincontract",
+      "relative": "pkg/plugincontract",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/75.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/protocol",
+      "relative": "pkg/protocol",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/76.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/publicapi/v1",
+      "relative": "pkg/publicapi/v1",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/77.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/redact",
+      "relative": "pkg/redact",
+      "database": "multica_func7af9_go_78_20261102",
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/78.env",
+      "db_required_conservative_scan": true
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp",
+      "relative": "pkg/remotemcp",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/79.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest",
+      "relative": "pkg/remotemcp/remotemcptest",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/80.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/skillbundle",
+      "relative": "pkg/skillbundle",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/81.env",
+      "db_required_conservative_scan": false
+    },
+    {
+      "package": "github.com/multica-ai/multica/server/pkg/taskfailure",
+      "relative": "pkg/taskfailure",
+      "database": null,
+      "private_env_file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/go-package-env/82.env",
+      "db_required_conservative_scan": false
+    }
+  ],
+  "package_count": 82,
+  "database_packages": 22,
+  "allowed_execution": "serial packages, each go test -race -count=1 -timeout=40m -p 1 -parallel 2 -json <exact-package>, wrapped by repository Agent CLI guard",
+  "child_may_create_migrate_drop_switch_databases": false,
+  "build_tmp": "/private/tmp/multica-functional-build-vycst5oo"
+}

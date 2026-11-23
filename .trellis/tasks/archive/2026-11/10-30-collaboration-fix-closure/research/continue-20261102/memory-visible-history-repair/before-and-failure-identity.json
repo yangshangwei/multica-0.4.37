@@ -1,0 +1,50 @@
+{
+  "at": "2026-11-02T17:17:22.880224+00:00",
+  "worktree": "/Volumes/artisan/code/2026/mc-collaboration-e2e-repair-20261103",
+  "branch": "codex/collaboration-e2e-repair-20261103",
+  "head": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "raw_v9_report": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/.omx/private/final-candidate/makecheck-playwright-results-v9.json",
+  "raw_report_sha256": "8dea30021a5f386e6a217600223c3c6ec299e1a8bd156849a317b48b98de14d3",
+  "failures": [
+    {
+      "file": "collaboration-memory-web.spec.ts",
+      "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+      "line": 7,
+      "column": 1,
+      "project": "chromium",
+      "expected_status": "passed",
+      "test_status": "unexpected",
+      "actual_status": "failed",
+      "retry": 0,
+      "duration": 17783,
+      "error_message": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#memory').getByRole('button', { name: 'Purge v2', exact: true })\u001b[22m\n",
+      "attachment_refs": [
+        {
+          "name": "screenshot",
+          "contentType": "image/png",
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-1.png",
+          "exists": true,
+          "sha256": "7e1588e067e63704ce0a2fe84e086401d7e72a1c2462d92cac57e54603eb5a0b"
+        },
+        {
+          "name": "screenshot",
+          "contentType": "image/png",
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/test-failed-2.png",
+          "exists": true,
+          "sha256": "888801e812e2834888c0e1683229e8ada93e68983790ee4719a8b246ccdb7e6a"
+        },
+        {
+          "name": "error-context",
+          "contentType": "text/markdown",
+          "path": "/Volumes/artisan/code/2026/mc-collaboration-final4-20261102/test-results/collaboration-memory-web-s-ef2a1-torical-purge-after-closure-chromium/error-context.md",
+          "exists": true,
+          "sha256": "fcd3914f2fd3538ca12b6393c7d975a3f2450220970d02e7065b26013bc2f4da"
+        }
+      ]
+    }
+  ],
+  "source_before_sha256": "a1955b3d99cdc2a0d53508451e17b65e75cab600ff0d1c90acc59c91304f743a",
+  "preexisting_main_source_sha256": "2d3ab36d74220324ad4f38b3f70eace05a8a01f1f576d173f100799d54dc1e41",
+  "confirmed_cause": "Closed read-only memory history is collapsed; Purge v2 exists only after expanding its labelled Version history control. Preserve no-Restore assertion after expanding.",
+  "actual_test_or_API_DB_Provider_calls": 0
+}

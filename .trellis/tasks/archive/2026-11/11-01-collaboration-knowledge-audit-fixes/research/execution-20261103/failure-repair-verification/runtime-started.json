@@ -1,0 +1,86 @@
+{
+  "recorded_at": "2026-11-03T12:06:21.597961+00:00",
+  "state": "started_waiting_for_root_independent_verification_no_tests",
+  "candidate_sha": "85ef5d20578f63c7c4f879f035acbd414e80f306",
+  "runtime_product_source_id": "6b7a5fed081aa40d5c43297bbcac8af644b071c6a0fc51d63954e56af600f6ea",
+  "runtime_product_files": 7984,
+  "development_source_id": "f344974add3838cb6d5baf67f92dd1d7e12f81a322f467130369368f6bce8530",
+  "test_overlay": {
+    "e2e/collaboration-boundaries-web.spec.ts": "aea75d2300b18b58d8e0c8bb57853d5b74ad8ca498128d86958e447b3823dbf3",
+    "e2e/collaboration-workbench-web.spec.ts": "90c8e1e60fd0cb897cf7428bbf8edbdb06bc4546f1c1b9e67a578dd8c67ce007",
+    "e2e/collaboration-memory-web.spec.ts": "f2613925854c343a768e5458d9103921b5db43e684db46372ccd757d687c784a",
+    "e2e/fixtures/collaboration-mention-journeys.ts": "ef347d2137d78ab1d2ddc3d7bb28ff393a5b5bd6ae3195bc9f7bec60d82bcc91",
+    "e2e/collaboration-preview-web.spec.ts": "321c051a4de1c815f05f9ac7b12a780564e066774530752abeb2722e5181dd29",
+    "e2e/collaboration-preparation-records-web.spec.ts": "6ff9e181295b93079bfd16d618c2fac2b5ba2295591631b30b997d06112a9fec",
+    "e2e/settings-preferences.spec.ts": "5f54eed9f0a5ae7ccd84dba20bf940bf7b835aeaeb152ec69385c9cb194cd1f7"
+  },
+  "registry": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/registry/envs/failure-repair-v13-d18fcdca8b",
+  "manifest_sha256": "2ba386771a58cb4d3608d74b783e00d8021fb3a54b86709953bdc09f591bf883",
+  "api": {
+    "origin": "http://localhost:18305",
+    "running": {
+      "component": "api",
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=85ef5d205' ./cmd/server (cwd: /Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/server)",
+      "source_id": "f344974add3838cb6d5baf67f92dd1d7e12f81a322f467130369368f6bce8530",
+      "configuration_id": "820bc037de47cc366bd5b6646887d64cf0bbab55040b740b07a31118a0bd99f9",
+      "commit": "85ef5d205",
+      "launcher_pid": 15167,
+      "started_at": "2026-11-03T11:59:25Z",
+      "listener_pid": 15192
+    },
+    "health": {
+      "status": "ok",
+      "pid": 15192,
+      "commit": "85ef5d205",
+      "started_at": "2026-11-03T11:59:28Z"
+    }
+  },
+  "web": {
+    "origin": "http://localhost:13225",
+    "running": {
+      "component": "web",
+      "mode": "production",
+      "build_id": "UMJUjduYBg4KLmYJSNjA2",
+      "command": "pnpm --filter @multica/web exec next start --port 13225",
+      "source_id": "f344974add3838cb6d5baf67f92dd1d7e12f81a322f467130369368f6bce8530",
+      "configuration_id": "c1f845839d202a7abaf05a1e2a7327a3e3913f6038588f638b30216daa8644b4",
+      "commit": "85ef5d205",
+      "launcher_pid": 15939,
+      "started_at": "2026-11-03T12:04:38Z",
+      "listener_pid": 15958
+    },
+    "HTTP_status": 200,
+    "html_sha256": "f46b338bd27f4ad7ae8cbd96c936f8cfca14189e801f55ad68638600cf3f1d73",
+    "rendered_API_URL": "http://localhost:18305",
+    "rendered_WS_URL": "ws://localhost:18305/ws"
+  },
+  "renderer": {
+    "origin": "http://127.0.0.1:20021/",
+    "pid": 16111,
+    "index_sha256": "0793d8aea46f27db7c7cfd48dbb0b04c0efa475291200ac8c3d4b0fd84f69847",
+    "directory": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/renderer"
+  },
+  "database": "multica_failure_repair_v13_d18fcdca8b",
+  "database_identity": "multica_failure_repair_v13_d18fcdca8b|764_collaboration_ai_policy",
+  "source_environment_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/source/source.env",
+  "source_environment_sha256": "1c731f8904c362a5f81afea47b697f7c048d687ba02025e9d5155b180a09699b",
+  "process_environment_path": "/Volumes/artisan/code/2026/mc-collaboration-closure-v12-20261103/.omx/private/failure-repair-preflight-v13/process-environment.json",
+  "CLI_sha256": "300f276fa11ccaf74f34b23148a0ebe34ed6879f43938068e4c7a3e0ded24b3b",
+  "desktop_all_bound_files_match_v13": true,
+  "redis": {
+    "recorded_at": "2026-11-03T11:59:21.832708+00:00",
+    "id": "eca6ad16e34354782c4f68bb5471d6dacc298c64da5b18660883fd6560f158e8",
+    "name": "multica-failure-repair-v13-d18fcdca8b",
+    "port": 58273,
+    "image": "sha256:7aec734b2bb298a1d769fd8729f13b8514a41bf90fcdd1f38ec52267fbaa8ee6",
+    "owner": "01a1a0a5-47d8-7f90-bc95-15d004c13bd9"
+  },
+  "knowledge_enabled": false,
+  "Provider_calls": 0,
+  "test_runs": 0,
+  "original_v13_failed_result_retained": true,
+  "wholecheck_acceptance": false,
+  "retained_startup_failure": "pnpm-entry-correction.json; first make-up exit2 retained; same-owned Web recovery exit0"
+}

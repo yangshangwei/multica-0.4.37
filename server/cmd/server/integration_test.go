@@ -41,21 +41,25 @@ const (
 )
 
 func TestMain(m *testing.M) {
-	ctx := context.Background()
-	dbURL := os.Getenv("DATABASE_URL")
+	dbURL := strings.TrimSpace(os.Getenv("DATABASE_URL"))
 	if dbURL == "" {
-		dbURL = "postgres://multica:multica@localhost:5432/multica?sslmode=disable"
+		fmt.Fprintln(os.Stderr, "router integration tests require an explicit DATABASE_URL for an isolated test database; use go build or go test -c for compile-only checks")
+		os.Exit(2)
 	}
+	ctx := context.Background()
 
 	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
-		fmt.Printf("Skipping integration tests: could not connect to database: %v\n", err)
-		os.Exit(0)
+		fmt.Fprintln(os.Stderr, "router integration tests: invalid DATABASE_URL; configure an isolated, migrated test database")
+		os.Exit(2)
 	}
-	if err := pool.Ping(ctx); err != nil {
-		fmt.Printf("Skipping integration tests: database not reachable: %v\n", err)
+	probeCtx, cancelProbe := context.WithTimeout(ctx, 5*time.Second)
+	probeErr := pool.Ping(probeCtx)
+	cancelProbe()
+	if probeErr != nil {
+		fmt.Fprintln(os.Stderr, "router integration tests: database connection failed; verify DATABASE_URL and test database readiness")
 		pool.Close()
-		os.Exit(0)
+		os.Exit(2)
 	}
 
 	testPool = pool

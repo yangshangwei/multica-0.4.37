@@ -1,0 +1,20 @@
+[
+  "pnpm",
+  "--dir",
+  "packages/views",
+  "exec",
+  "vitest",
+  "run",
+  "collaboration",
+  "issues/components/pickers/property-picker.test.tsx",
+  "issues/components/pickers/custom-property-picker.test.ts",
+  "issues/components/pickers/custom-property-picker.test.tsx",
+  "issues/components/pickers/assignee-picker.keyboard.test.tsx",
+  "issues/components/pickers/actor-property-picker.test.ts",
+  "issues/components/pickers/status-picker.test.tsx",
+  "issues/components/pickers/stage-picker.test.tsx",
+  "projects/components/project-picker.test.tsx",
+  "modals/quick-create-actor-picker.test.tsx",
+  "locales/parity.test.ts",
+  "--maxWorkers=2"
+]

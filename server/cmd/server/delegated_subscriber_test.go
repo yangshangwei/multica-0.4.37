@@ -537,7 +537,17 @@ func TestDelegatedTier_ChildCompletionDeliversExactlyOnce(t *testing.T) {
 		return n
 	}
 	t.Cleanup(func() {
-		testPool.Exec(context.Background(), `DELETE FROM inbox_item WHERE issue_id = $1`, childID)
+		cleanupCtx := context.Background()
+		for _, table := range []string{"inbox_critical_source", "inbox_snooze"} {
+			if _, err := testPool.Exec(cleanupCtx, "DELETE FROM "+table+`
+				WHERE workspace_id=$1 AND recipient_type='member' AND recipient_id=$2
+				AND group_kind='issue' AND group_id=$3`, testWorkspaceID, testUserID, childID); err != nil {
+				t.Errorf("clean up delegated child %s: %v", table, err)
+			}
+		}
+		if _, err := testPool.Exec(cleanupCtx, `DELETE FROM inbox_item WHERE issue_id = $1`, childID); err != nil {
+			t.Errorf("clean up delegated child inbox: %v", err)
+		}
 	})
 
 	// The new status travels as notifySubscribers' issueStatus argument, not on
@@ -552,14 +562,14 @@ func TestDelegatedTier_ChildCompletionDeliversExactlyOnce(t *testing.T) {
 
 	// Routine progress on the child stays suppressed for the delegate, and the
 	// parent bubble must not smuggle it back in.
-	notifySubscribers(ctx, queries, bus, childID, "in_progress", testWorkspaceID,
+	notifySubscribers(ctx, queries, testPool, bus, childID, "in_progress", testWorkspaceID,
 		agentEvent, nil, "status_changed", "info", "child", "", emptyDetails)
 	if n := countInbox(); n != 0 {
 		t.Fatalf("routine child progress reached the inbox %d time(s) — the parent bubble bypassed the tier", n)
 	}
 
 	// Completion delivers, exactly once despite two paths to the same person.
-	notifySubscribers(ctx, queries, bus, childID, "in_review", testWorkspaceID,
+	notifySubscribers(ctx, queries, testPool, bus, childID, "in_review", testWorkspaceID,
 		agentEvent, nil, "status_changed", "info", "child", "", emptyDetails)
 	if n := countInbox(); n != 1 {
 		t.Fatalf("expected exactly 1 inbox row for the child completion, got %d", n)

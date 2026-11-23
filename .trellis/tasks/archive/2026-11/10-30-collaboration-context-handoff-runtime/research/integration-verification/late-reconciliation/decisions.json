@@ -1,0 +1,49 @@
+{
+  "server/internal/daemon/collaborationrun/client_host.go": {
+    "resolution": "Keep integration bytes unchanged.",
+    "retained_late_intent": "Exact checkpoint end-count ACK comparison already identical. Shared retention UnmarshalJSON validates required fields, nullability, count bounds and reason/observation consistency before client-specific stream/reason/sealed checks.",
+    "rejected": "Embedded raw-field DTO wrapper promotes the existing UnmarshalJSON method and can leave wrapper fields unset for valid ACKs; revalidating retention through a request seal creates a second validation owner."
+  },
+  "server/internal/daemon/collaborationrun/host_checkpoint_ledger.go": {
+    "resolution": "Keep integration bytes unchanged.",
+    "retained_late_intent": "Final receipt advancement is already pending while committed checkpoint ACK progress exceeds the confirmed seal, and is coalesced until all chunks resolve.",
+    "rejected": "Dropping Drained would invent a known tail after crash; removing authorized seal nonce/bound checks or immutable checkpoint terminal-ACK checks would weaken recovery validation."
+  },
+  "server/internal/daemon/collaborationrun/host_checkpoints.go": {
+    "resolution": "Keep integration bytes unchanged.",
+    "retained_late_intent": "Original seal replay and delayed/coalesced monotonic acknowledgement update already implemented, with shared protocol advancement validation.",
+    "rejected": "Two-second/per-request replay budget conflicts with tested one-second total context. Removing stagingFailed would rebase queued messages after durable staging failure. Removing drain completion loses truthful unknown-tail semantics. Forcing a second Runner pass for metadata advance is unnecessary once the original ACK is durably persisted."
+  },
+  "server/internal/daemon/collaborationrun/host_runner.go": {
+    "resolution": "Keep integration bytes unchanged.",
+    "retained_late_intent": "Original phaseProof is prioritized; failure to upload recording cannot block original Stop, termination or proof.",
+    "rejected": "Late file predates launch snapshot/hash, strict handoff identity, fresh-retry source stability and Codex continuity-input fixes. Shared ten-second reporting before proof would replace the tested one-second total telemetry budget and metadata-after-proof ordering."
+  },
+  "packages/views/collaboration/execution-panel.test.tsx": {
+    "resolution": "Keep integration bytes unchanged; run affected suite.",
+    "retained_late_intent": "Independent handoff reads no longer consume the records response queue.",
+    "rejected": "Blanket mocking CollaborationRunHandoff also removes its real visibility and issue-fetch wiring. The existing endpoint-aware stub handles handoff, records and issue reads explicitly while keeping core/helper matrices canonical."
+  },
+  "server/internal/daemon/collaborationrun/host_recording_recovery_test.go": {
+    "resolution": "Preserve all original tests; add two unique late regression scenarios using existing fixtures.",
+    "retained": "Explicit Stop while provider is still waiting and checkpoint HTTP remains unreleased; malformed seal ACK after reopening disk ledger cannot alter original proof or seal, later valid ACK settles without duplicate requests.",
+    "superseded_tests": {
+      "TestHostRecordingRecoveryRestartReplaysOnlyOriginalRequests": "Existing TestHostHandoffCheckpointRestartRecoversWithoutExecution plus TestHostCheckpointsKeepOriginalPayloadAcrossLostACK cover new Runner/no new execution and unchanged original checkpoint body/key.",
+      "TestHostRecordingRecoveryPendingProofHasPriority": "Existing TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof covers proof-first order and retained progress under one total deadline.",
+      "TestHostRecordingRecoveryAdvancesSealAfterOriginalACK": "Existing TestHostRecordingSealReplaysBeforeAdvancingAcknowledgement covers immutable old seal before same-reason metadata advance; the late expectation of a separate second Runner call conflicts with valid same-budget advancement.",
+      "TestHostRecordingRecoveryBoundsTheWholeCheckpointPass": "Existing TestHostRecordingRecoverySharesBacklogDeadlineAndPrioritizesProof tests the stronger recoverHost composition including proof-first and staged seal, plus cancelled-backlog preservation."
+    }
+  },
+  "server/internal/daemon/collaborationrun/client_recording_ack_test.go": {
+    "resolution": "Add compact HTTP ACK suite preserving unique late request/response cases.",
+    "retained": "Shared-decoder wiring for invalid/missing/null fields; mismatched stream/reason/sealed response; zero complete recording, known missing tail, original old-seal ACK with later retained/observed counts, explicit unknown tail; exact checkpoint request boundary.",
+    "superseded": "Do not duplicate full missing/nullable/negative/maximum retention matrix; canonical protocol tests already exercise it through the shared decoder."
+  },
+  ".trellis/spec/server/index.md": {
+    "resolution": "Combine late recovery description with existing actual-candidate coverage and keep startup-handoff link."
+  },
+  ".trellis/spec/server/collaboration-runtime-recovery.md": {
+    "resolution": "Parent-approved ownership expansion; retain unrelated recovery contracts and useful late recording facts, align timing/decoder/unknown-tail/monotonic semantics with integration.",
+    "rejected": "Two-second checkpoint limit, shared ten-second report-before-proof window, raw embedded retention workaround and mandatory separate recovery pass for metadata advance."
+  }
+}

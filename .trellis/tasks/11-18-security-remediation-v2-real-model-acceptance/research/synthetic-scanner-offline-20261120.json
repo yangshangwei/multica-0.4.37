@@ -1,0 +1,20 @@
+{
+  "evidence_type": "offline-fixture-control-not-model",
+  "network": "none",
+  "image": "sha256:9d2e5553305c7c7b0097999bb17187c69b921ccd6bc9d40e4bb5ebe652c00285",
+  "output": {
+    "synthetic": true,
+    "scanner": "local-fixture-only-v1",
+    "advisory_id": "SYNTHETIC-DEPENDENCY-001",
+    "package": "pilot-labelkit",
+    "resolved_version": "1.0.0",
+    "source_sha256": "622b37d7981f64eb6ba764231b561f7c3306f8c732a1b8086d6a7faeb69d4c73",
+    "affected_by_fixture_advisory": true,
+    "dependency_path": [
+      "application",
+      "pilot-labelkit"
+    ],
+    "indirect_dependencies": [],
+    "limitations": "Only the local synthetic advisory and lockfile; no real vulnerability coverage or producer trust assertion"
+  }
+}

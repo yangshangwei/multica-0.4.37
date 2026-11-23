@@ -1,0 +1,31 @@
+{
+  "framework_checks": [
+    {
+      "worktree": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "framework_matches": true
+    },
+    {
+      "worktree": "/Volumes/artisan/code/2026/mc-context-baseline-20261031",
+      "framework_matches": true
+    },
+    {
+      "worktree": "/Volumes/artisan/code/2026/mc-context-resume-20261031",
+      "framework_matches": true
+    }
+  ],
+  "prior_E1_trial1_hash_unchanged": true,
+  "after_product_matches_E0_source": true,
+  "new_records_exactly_trials_2_3": true,
+  "later_scenarios_run": false,
+  "framework_delivery_commit": "9673ab3bf274c989d098c81899c2384ebfdee7f1",
+  "source_product_diff_command": [
+    "git",
+    "diff",
+    "--name-only",
+    "4c833e737efb6c997e5cb56c74c43e9237c91956",
+    "HEAD",
+    "--",
+    "server",
+    ":!server/internal/daemon/collaborationrun/host_context_experiment*"
+  ]
+}

@@ -1,0 +1,290 @@
+package handler
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"os"
+	"path/filepath"
+	"reflect"
+	"testing"
+	"time"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
+)
+
+type semStatement struct {
+	SQL  string `json:"sql"`
+	Args []any  `json:"args"`
+}
+type semDB struct {
+	pgx.Tx
+	t        *testing.T
+	capture  *[]semStatement
+	results  pgx.BatchResults
+	expected []semStatement
+	next     int
+}
+
+func (s *semDB) take(sql string, args []any) {
+	if s.capture != nil {
+		*s.capture = append(*s.capture, semStatement{sql, append([]any(nil), args...)})
+	}
+	if s.results != nil {
+		if s.next >= len(s.expected) || s.expected[s.next].SQL != sql || !reflect.DeepEqual(s.expected[s.next].Args, args) {
+			s.t.Fatalf("canonical SQL/argument drift at %d", s.next)
+		}
+		s.next++
+	}
+}
+func (s *semDB) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
+	s.take(sql, args)
+	if s.results != nil {
+		return s.results.Query()
+	}
+	return s.Tx.Query(ctx, sql, args...)
+}
+func (s *semDB) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
+	s.take(sql, args)
+	if s.results != nil {
+		return s.results.QueryRow()
+	}
+	return s.Tx.QueryRow(ctx, sql, args...)
+}
+
+type semValues struct {
+	Tasks              []db.AgentTaskQueue       `json:"tasks"`
+	Source             db.IterationParticipation `json:"source"`
+	Target             db.IterationParticipation `json:"target"`
+	Empty              []db.AgentTaskQueue       `json:"empty"`
+	MissingIsErrNoRows bool                      `json:"missing_is_err_no_rows"`
+}
+
+func semConsume(ctx context.Context, q *db.Queries, issue, empty, source, target, missing string) (semValues, error) {
+	out := semValues{}
+	var err error
+	out.Tasks, err = q.ListActiveTasksByIssue(ctx, parseUUID(issue))
+	if err != nil {
+		return out, err
+	}
+	out.Source, err = q.LockIssueIterationParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: parseUUID(testWorkspaceID), IterationID: parseUUID(source), IssueID: parseUUID(issue)})
+	if err != nil {
+		return out, err
+	}
+	_, err = q.LockIssueIterationParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: parseUUID(testWorkspaceID), IterationID: parseUUID(missing), IssueID: parseUUID(issue)})
+	if !errors.Is(err, pgx.ErrNoRows) {
+		return out, fmt.Errorf("missing target must return ErrNoRows: %v", err)
+	}
+	out.MissingIsErrNoRows = true
+	out.Target, err = q.LockIssueIterationParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: parseUUID(testWorkspaceID), IterationID: parseUUID(target), IssueID: parseUUID(issue)})
+	if err != nil {
+		return out, err
+	}
+	out.Empty, err = q.ListActiveTasksByIssue(ctx, parseUUID(empty))
+	return out, err
+}
+func semWrite(t *testing.T, name string, value any) {
+	t.Helper()
+	raw, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = os.WriteFile(filepath.Join(os.Getenv("MULTICA_READ_SEMANTICS_REPORT_DIR"), name), append(raw, '\n'), 0600); err != nil {
+		t.Fatal(err)
+	}
+}
+func semBegin(t *testing.T, ctx context.Context) pgx.Tx {
+	t.Helper()
+	tx, err := testPool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted})
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = tx.Rollback(context.Background()) })
+	return tx
+}
+func semWait(t *testing.T, ctx context.Context, waiter, blocker uint32) map[string]any {
+	t.Helper()
+	tick := time.NewTicker(time.Millisecond)
+	defer tick.Stop()
+	for {
+		select {
+		case <-ctx.Done():
+			t.Fatal("canonical source participation did not wait", ctx.Err())
+		case <-tick.C:
+			var waiting bool
+			var event string
+			if err := testPool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM pg_stat_activity WHERE pid=$1 AND wait_event_type='Lock' AND $2::integer=ANY(pg_blocking_pids(pid))),COALESCE((SELECT wait_event FROM pg_stat_activity WHERE pid=$1),'')`, int32(waiter), int32(blocker)).Scan(&waiting, &event); err != nil {
+				t.Fatal(err)
+			}
+			if waiting {
+				return map[string]any{"waiter_pid": waiter, "blocker_pid": blocker, "wait_event": event, "pg_blocking_pids_observed": true}
+			}
+		}
+	}
+}
+func TestIterationCanonicalReadSemanticsDiagnostic(t *testing.T) {
+	if os.Getenv("MULTICA_READ_SEMANTICS_DIAGNOSTIC") != "1" {
+		t.Fatal("explicit task diagnostic permit required")
+	}
+	issue, source := iterationIssueFixture(t)
+	empty := dbfx.Issue(t, "No active rows")
+	target := dbfx.Insert(t, "iteration", testutil.Cols{"workspace_id": testWorkspaceID, "name": "Historical destination", "timezone": "UTC", "start_date": "2026-10-15", "end_date": "2026-10-28", "status": "planned", "created_by": testUserID})
+	missing := dbfx.Insert(t, "iteration", testutil.Cols{"workspace_id": testWorkspaceID, "name": "Missing destination", "timezone": "UTC", "start_date": "2026-10-29", "end_date": "2026-11-11", "status": "planned", "created_by": testUserID})
+	dbfx.InsertNoID(t, "iteration_participation", testutil.Cols{"workspace_id": testWorkspaceID, "iteration_id": target, "issue_id": issue, "first_joined_at": testutil.Raw("clock_timestamp()"), "current_joined_at": nil, "last_left_at": testutil.Raw("clock_timestamp()"), "in_original": false}, "iteration_id=$1 AND issue_id=$2", target, issue)
+	runtime := dbfx.Runtime(t, "Task-only read runtime")
+	started := time.Now().UTC().Truncate(time.Microsecond)
+	taskIDs := []string{}
+	statuses := []string{"queued", "dispatched", "running", "waiting_local_directory", "completed"}
+	for i, status := range statuses {
+		agent := dbfx.Agent(t, "Typed "+status, runtime)
+		taskIDs = append(taskIDs, dbfx.Task(t, agent, testutil.Cols{"issue_id": issue, "runtime_id": runtime, "status": status, "created_at": started.Add(time.Duration(i) * time.Minute)}))
+	}
+	ctx, cancel := context.WithTimeout(t.Context(), 15*time.Second)
+	defer cancel()
+	serial := semBegin(t, ctx)
+	capture := []semStatement{}
+	serialDB := &semDB{Tx: serial, t: t, capture: &capture}
+	baseline, err := semConsume(ctx, db.New(serialDB), issue, empty, source, target, missing)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(baseline.Tasks) != 4 || len(baseline.Empty) != 0 || !baseline.Source.CurrentJoinedAt.Valid || baseline.Target.CurrentJoinedAt.Valid || !baseline.MissingIsErrNoRows {
+		t.Fatalf("wrong typed population: %+v", baseline)
+	}
+	if err = serial.Rollback(ctx); err != nil {
+		t.Fatal(err)
+	}
+	pipeline := semBegin(t, ctx)
+	batch := &pgx.Batch{}
+	for _, s := range capture {
+		batch.Queue(s.SQL, s.Args...)
+	}
+	br := pipeline.SendBatch(ctx, batch)
+	adapter := &semDB{Tx: pipeline, t: t, results: br, expected: capture}
+	got, err := semConsume(ctx, db.New(adapter), issue, empty, source, target, missing)
+	closeErr := br.Close()
+	if err != nil || closeErr != nil {
+		t.Fatalf("typed pipeline: result=%v close=%v", err, closeErr)
+	}
+	if adapter.next != len(capture) || !reflect.DeepEqual(baseline, got) {
+		t.Fatal("typed canonical result parity mismatch")
+	}
+	if err = pipeline.Rollback(ctx); err != nil {
+		t.Fatal(err)
+	}
+	semWrite(t, "canonical-reads.json", capture)
+	semWrite(t, "typed-result-parity.json", map[string]any{"serial": baseline, "pipeline": got, "exact_typed_struct_parity": true, "generated_scanners_reused": true, "missing_then_next_result_consumed": true, "rows_err_and_batch_close_checked": true, "first_acquisition_after_prior_transaction_rollback": true})
+	// Raw protocol proof: active-task read precedes source lock; target and later
+	// active-task statements must see the holder's commit after an actual wait.
+	blocker := semBegin(t, ctx)
+	if _, err = db.New(blocker).LockIssueIterationParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: parseUUID(testWorkspaceID), IterationID: parseUUID(source), IssueID: parseUUID(issue)}); err != nil {
+		t.Fatal(err)
+	}
+	writer := semBegin(t, ctx)
+	concurrentBatch := &pgx.Batch{}
+	for _, s := range capture[:4] {
+		concurrentBatch.Queue(s.SQL, s.Args...)
+	}
+	concurrentBatch.Queue(capture[0].SQL, capture[0].Args...)
+	expected := append(append([]semStatement(nil), capture[:4]...), capture[0])
+	type answer struct {
+		before, after  []db.AgentTaskQueue
+		source, target db.IterationParticipation
+		missing        bool
+		err            error
+		closeErr       error
+	}
+	done := make(chan answer, 1)
+	go func() {
+		out := answer{}
+		results := writer.SendBatch(ctx, concurrentBatch)
+		a := &semDB{Tx: writer, t: t, results: results, expected: expected}
+		q := db.New(a)
+		out.before, out.err = q.ListActiveTasksByIssue(ctx, parseUUID(issue))
+		if out.err == nil {
+			out.source, out.err = q.LockIssueIterationParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: parseUUID(testWorkspaceID), IterationID: parseUUID(source), IssueID: parseUUID(issue)})
+		}
+		if out.err == nil {
+			_, e := q.LockIssueIterationParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: parseUUID(testWorkspaceID), IterationID: parseUUID(missing), IssueID: parseUUID(issue)})
+			out.missing = errors.Is(e, pgx.ErrNoRows)
+			if !out.missing {
+				out.err = fmt.Errorf("missing result: %v", e)
+			}
+		}
+		if out.err == nil {
+			out.target, out.err = q.LockIssueIterationParticipation(ctx, db.LockIssueIterationParticipationParams{WorkspaceID: parseUUID(testWorkspaceID), IterationID: parseUUID(target), IssueID: parseUUID(issue)})
+		}
+		if out.err == nil {
+			out.after, out.err = q.ListActiveTasksByIssue(ctx, parseUUID(issue))
+		}
+		out.closeErr = results.Close()
+		done <- out
+	}()
+	lock := semWait(t, ctx, writer.Conn().PgConn().PID(), blocker.Conn().PgConn().PID())
+	if _, err = blocker.Exec(ctx, "UPDATE iteration_participation SET has_started_current_participation=true WHERE workspace_id=$1 AND iteration_id=$2 AND issue_id=$3", parseUUID(testWorkspaceID), parseUUID(source), parseUUID(issue)); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = blocker.Exec(ctx, "UPDATE iteration_participation SET current_joined_at=clock_timestamp(),last_left_at=NULL WHERE workspace_id=$1 AND iteration_id=$2 AND issue_id=$3", parseUUID(testWorkspaceID), parseUUID(target), parseUUID(issue)); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = blocker.Exec(ctx, "UPDATE agent_task_queue SET status='completed' WHERE id=$1", parseUUID(taskIDs[2])); err != nil {
+		t.Fatal(err)
+	}
+	if err = blocker.Commit(ctx); err != nil {
+		t.Fatal(err)
+	}
+	var observed answer
+	select {
+	case observed = <-done:
+	case <-ctx.Done():
+		t.Fatal("pipeline did not finish after blocker commit")
+	}
+	if observed.err != nil || observed.closeErr != nil || len(observed.before) != 4 || len(observed.after) != 3 || !observed.source.HasStartedCurrentParticipation || !observed.target.CurrentJoinedAt.Valid || !observed.missing {
+		t.Fatalf("post-wait canonical snapshots: %+v", observed)
+	}
+	if err = writer.Rollback(ctx); err != nil {
+		t.Fatal(err)
+	}
+	semWrite(t, "first-lock-fresh-snapshot.json", map[string]any{"sql": expected, "lock_observation": lock, "before_wait_tasks": observed.before, "after_wait_tasks": observed.after, "source_after_wait": observed.source, "target_after_wait": observed.target, "missing_is_err_no_rows": observed.missing, "batch_close_ok": true, "isolation": "read committed", "holder_changes_committed": true, "writer_rollback_ok": true, "scope": "task-only raw protocol; not lifecycle optimizer equivalence"})
+	// A real server error must reach the result and Close; failed transaction
+	// rollback must remove even a write preceding the canonical reads.
+	failed := semBegin(t, ctx)
+	var originalTitle string
+	if err = testPool.QueryRow(ctx, "SELECT title FROM issue WHERE id=$1", parseUUID(issue)).Scan(&originalTitle); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = failed.Exec(ctx, "UPDATE issue SET title='Task-only rollback marker' WHERE id=$1", parseUUID(issue)); err != nil {
+		t.Fatal(err)
+	}
+	bad := &pgx.Batch{}
+	bad.Queue(capture[0].SQL, capture[0].Args...)
+	bad.Queue("SELECT 1/0")
+	badResults := failed.SendBatch(ctx, bad)
+	badAdapter := &semDB{Tx: failed, t: t, results: badResults, expected: capture[:1]}
+	if _, err = db.New(badAdapter).ListActiveTasksByIssue(ctx, parseUUID(issue)); err != nil {
+		t.Fatal(err)
+	}
+	var ignored int
+	queryErr := badResults.QueryRow().Scan(&ignored)
+	batchErr := badResults.Close()
+	var pgerr *pgconn.PgError
+	if !errors.As(queryErr, &pgerr) || pgerr.Code != "22012" || batchErr == nil {
+		t.Fatalf("server error not propagated: query=%v close=%v", queryErr, batchErr)
+	}
+	if err = failed.Rollback(ctx); err != nil {
+		t.Fatal(err)
+	}
+	var afterTitle string
+	if err = testPool.QueryRow(ctx, "SELECT title FROM issue WHERE id=$1", parseUUID(issue)).Scan(&afterTitle); err != nil {
+		t.Fatal(err)
+	}
+	if afterTitle != originalTitle {
+		t.Fatal("failed batch rollback left marker")
+	}
+	semWrite(t, "batch-error-rollback.json", map[string]any{"canonical_prefix": capture[:1], "injected_statement": "SELECT 1/0", "query_sqlstate": pgerr.Code, "close_error": batchErr.Error(), "original_title": originalTitle, "after_rollback_title": afterTitle, "rollback_equal": true, "scope": "raw protocol error/rollback; current production CAS/rollback separately exercised"})
+	t.Log("Exact generated typed scanners: nonempty/empty/missing/retained target parity; first canonical source-lock wait and subsequent RC snapshots; batch error and rollback preserved")
+}

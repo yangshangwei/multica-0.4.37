@@ -37,19 +37,28 @@ beforeEach(() => {
       openExternal,
       setRendererRouteContext,
       openIssueWindow: vi.fn(),
+      openAccount: vi.fn(),
     },
   });
 });
 
 function CurrentPath() {
   const location = useLocation();
-  return <span data-testid="path">{location.pathname}</span>;
+  return <span data-testid="path">{location.pathname}{location.search}{location.hash}</span>;
 }
 
 function renderWindow() {
   return render(
     <MemoryRouter initialEntries={["/acme/issues/MUL-1"]}>
       <Routes>
+        <Route
+          path="account"
+          element={
+            <IssueWindowNavigationProvider>
+              <CurrentPath />
+            </IssueWindowNavigationProvider>
+          }
+        />
         <Route
           path=":workspaceSlug/issues/:id"
           element={
@@ -150,4 +159,37 @@ describe("IssueWindowNavigationProvider current location", () => {
       `${APP_URL}/acme/issues/MUL-1#comment-c1`,
     );
   });
+});
+
+it("hands the account list from a popout to the main account tab", () => {
+  const openAccount = vi.fn();
+  Object.assign(window.desktopAPI, { openAccount });
+  renderWindow();
+  const path = "/account?view=current";
+  navigate(path);
+  expect(openAccount).toHaveBeenCalledWith(path);
+  expect(openExternal).not.toHaveBeenCalled();
+});
+
+it("opens account issue links inside the existing popout", () => {
+  renderWindow();
+  const path = "/account?view=participating&issue=11111111-1111-4111-8111-111111111111#description";
+
+  navigate(path);
+
+  expect(screen.getByTestId("path")).toHaveTextContent(path);
+  expect(window.desktopAPI.openAccount).not.toHaveBeenCalled();
+  expect(openExternal).not.toHaveBeenCalled();
+});
+
+it("opens modified account issue links in another dedicated window", () => {
+  renderWindow();
+  const path = "/account?view=current&issue=11111111-1111-4111-8111-111111111111";
+
+  act(() => window.dispatchEvent(new CustomEvent("multica:navigate", {
+    detail: { path, disposition: "foreground-tab" },
+  })));
+
+  expect(window.desktopAPI.openIssueWindow).toHaveBeenCalledWith({ path, title: "Issue" });
+  expect(screen.getByTestId("path")).toHaveTextContent("/acme/issues/MUL-1");
 });

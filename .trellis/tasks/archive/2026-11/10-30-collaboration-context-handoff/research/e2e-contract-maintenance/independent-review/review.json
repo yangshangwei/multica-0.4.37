@@ -1,0 +1,392 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/knowledge_web_review",
+  "reviewed_at": "2026-11-01T18:45:27.828574+00:00",
+  "verdict": "pass-with-notes",
+  "scope": "E2E-only contract maintenance and recorded execution evidence; not final parent acceptance",
+  "head_with_evidence": "f173e76da6e64df8326318471716c5219f3b1f41",
+  "test_source_commit": "1ecabb96457403d9601752f37eab89934265866c",
+  "base_product_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+  "e2e_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+  "source_files_sha256": {
+    "e2e/collaboration-boundaries-web.spec.ts": "c2b37edb1e7fb8f0bc9f054f8b6fc2c8d27dcb398e033ff7ed6b4c81c0c5635d",
+    "e2e/collaboration-delivery-web.spec.ts": "a6fd52979da147dd0fa4768bc1b6d078ae2f9523764d95aa9fe153f944456912",
+    "e2e/collaboration-runtime-handoff-desktop.spec.ts": "e03c98ba0a2db74f5f911bfff05990a3685abfbc77235bbe681d89afe227a540",
+    "e2e/collaboration-runtime-handoff-web.spec.ts": "e3b9858499b2e83cbef1e0010b06e766a7c98f8b45b69620befb22c3de2e35ac",
+    "e2e/collaboration-source-surface.spec.ts": "639214a9ceea2f0371e0a9cccb9863bcfbdf38067537c21c5f9c4a6dc173ea47",
+    "e2e/fixtures/collaboration-control-gaps.ts": "27a17c3dc0f274df7ddb046f1ac3001c056d721eb4db9120d946fe4805d7fe9d",
+    "e2e/fixtures/collaboration-editing.ts": "7abd25ee581f83b2c380346234b179ae434b9e89456afdb07185c46b0e22503a",
+    "e2e/fixtures/collaboration-mention-journeys.ts": "0a2b14cb1ebebe159e274a67b9306ab291067257c7557494cb211ccbf5e47697",
+    "e2e/fixtures/collaboration-offline-handoff.ts": "4179e69cdafa8eec8200e8fedcc832fdf43a199665192b9c5fc8c02fe15bc658",
+    "e2e/fixtures/collaboration-records.ts": "4823d1b63b6422a767c1e162e3657b7e72fdb1067982c56dc5706208fc94c0e8",
+    "e2e/fixtures/collaboration-retained-attachments.ts": "85237e54cda7b40fb1d7d88ab41518d6ada7760e98c3dadee729a3ec8502f4a9"
+  },
+  "source_file_count": 11,
+  "blocking_findings": [],
+  "nonblocking_product_findings": [],
+  "coverage": {
+    "historical_case_keys": 14,
+    "passed_post_assertion_targets": 14,
+    "pending": 0,
+    "skip_counted_as_pass": 0,
+    "additional_runtime_password": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "cases": [
+        "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+        "ENV-1 live latest shared context preserves the run's empty startup version",
+        "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal"
+      ]
+    },
+    "source_inventory": "verified-run-inventory.json"
+  },
+  "canonical_red_v2": {
+    "metadata_sha256": "2f9cac271d7860de621a65e19c81b87e30eefc08288d3060edd71fbdc73c5574",
+    "three_target_contract_failures": true,
+    "selected_base_sources_verified": 7,
+    "early_setup_CORS_failure_separate": true
+  },
+  "execution_evidence": [
+    {
+      "label": "repaired-legacy-10",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T18:29:52.264Z",
+        "duration": 68341.095,
+        "expected": 9,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+      "source_env_sha256": "9b2a83533edb85b7cc539a3c16962710c26773b795833e5a308eda7029c01cb3",
+      "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "execution_sha256": "2068b3223eaea3e9dac933efdd282635d7c6ad6c4db6c2370bed6a3bb2f71a16",
+      "results_sha256": "51189b106e24ef8842273609011505efcf147bbca62d6dd2ccb43e33bf222606",
+      "output_sha256": "849742b52e69227b2dc89bec298f034a82a850e7184ab411783a0bfe62162eb2",
+      "workers": 1,
+      "project_retries": [
+        0
+      ],
+      "cases": [
+        {
+          "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web source creation, field edits and discussion share one authorized issue",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "statuses": [
+            "skipped"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "label": "repaired-password-5",
+      "exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-01T18:33:03.772Z",
+        "duration": 32716.305000000004,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+      "source_env_sha256": "ee2c2cb36b62bb14c941ce12377d37f394c8a7e29c644c76142325804770d7e5",
+      "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "execution_sha256": "ddd1b28ffc55bd3b93a5311f4901b4086cd877d29ff2c12c82de5cd4ac887109",
+      "results_sha256": "17c83b482e02feebc348cdfcbd31985e0d6f4c045ec4fca7da7b0bdfc99ca966",
+      "output_sha256": "d44f3654cbad96371f9ac1a27fc06dc1ad1a9a863a1d76346edb57774b2f51bc",
+      "workers": 1,
+      "project_retries": [
+        0
+      ],
+      "cases": [
+        {
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "statuses": [
+            "failed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "statuses": [
+            "failed"
+          ],
+          "retries": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "label": "repaired-password-final-2",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T18:37:25.044Z",
+        "duration": 35462.172,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+      "source_env_sha256": "f7575ce7bbbb0d07523fe58a139ce67c0c9564da46b1cafe0c461ff29c413452",
+      "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "execution_sha256": "1f27cf06b7a1e6251d98c9d5cb1520ac114795c727b350cbcd0cf1f206252261",
+      "results_sha256": "10da8ec0ce12c27702d5fe6e31370a04f3f86464653c8f40cc90a436f5dc1ac5",
+      "output_sha256": "10d9c92ad81ca8fa6afb35ba5552a24da8d2bc4a65235e1735bbd1999f12bca3",
+      "workers": 1,
+      "project_retries": [
+        0
+      ],
+      "cases": [
+        {
+          "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "label": "runtime-password-3",
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-01T18:34:56.564Z",
+        "duration": 7445.718,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "test_diff_sha256": "19ec92ade77f1ded38088265776f3bfc27e00caf1b3af61521cb7c70d2efc896",
+      "source_env_sha256": "ee2c2cb36b62bb14c941ce12377d37f394c8a7e29c644c76142325804770d7e5",
+      "candidate_api_renderer_sha": "c3db64b24fea7116622d106ce2231853e1be72f9",
+      "execution_sha256": "545d3d2bb8ebde29cb40ab00c4273a10eefa101dee924655b292f6e8c6659bb0",
+      "results_sha256": "358ca2016390172ee96c79d47ea77bdad174cf12bd251752df24cc49f43b3640",
+      "output_sha256": "9a04ac73d3f073e45002cef414752f04de36bb462c77b4778b579a9809eaead0",
+      "workers": 1,
+      "project_retries": [
+        0
+      ],
+      "cases": [
+        {
+          "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        },
+        {
+          "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+          "statuses": [
+            "passed"
+          ],
+          "retries": [
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "static_contract_review": {
+    "recipient": "Existing accessible Recipientpicker exactlookup reused; callerSelected/Assigned confirmations and no-create-before-submit retained. Exactresolver no-write/permission/notification checks remain.",
+    "stable_comparison": "Only author_authority.evaluated_at removed after separate timestamp validation; every other authority/business/receipt field remains equal.",
+    "records": "Strictfirst50/next12APIpage assertions, actualrequestedcursor, orderedunique62IDs, full result/toolbody checks in li[data-record-id], excluding separateauthorizedhandoffcontent.",
+    "ENV1": "Explicitroot-authorized retainedrunbase0 plus realmemoryAPIversion1; persistedbase0/livebase0latest1 and positiveempty-start/latestv1 exactlink plus nofalseStartedv1. Evidence does not claim runtime ingestion.",
+    "password_guards": "Skip only unconfigured lane; configuredpassword fixture still validates livepasswordconfig, taskendpoints/DB/session/nativeprerequisites. All3positivepassword cases actually non-skipped.",
+    "timeout_retry": "Existing timeouts and retries preserved; newENV1only adds own120s. Everyverifiedrun1worker/0retry; cases executed with retry0."
+  },
+  "static_validation_reference": {
+    "file": "static-validation.json",
+    "sha256": "b11643ec106b4ca4400bc50aca0feaf36905be0e7b56e7940c80dff9af0aa984",
+    "changed_file_strict_typecheck_exit": 0,
+    "fixture_context_lint_exit": 0,
+    "fixture_context_lint_errors": 0,
+    "fixture_context_lint_warnings": 0,
+    "expanded_unchanged_baseline_errors": 51,
+    "raw_base_lint_helper_dependency_context_errors": 7
+  },
+  "root_environment_amendment": {
+    "file": "root-gate-amendment.json",
+    "sha256": "91a3a2941f895b0a5965a88ed1116c5d6e78ba8472336e7567b9d3efbd325654",
+    "database": "collab_joint_password_c3_20261102",
+    "protocol_gate_only_enabled": true,
+    "host_execution_enabled": false,
+    "source_cli_sha256_verified_by_read_only_file_hash": [
+      "4c9ee3f15c6dcd46029c8ee07a17066a745fdc666dfb854ec7aa785d15c17034"
+    ],
+    "changed_case_rerun": "repaired-password-final-2",
+    "production_defaults_unchanged": true
+  },
+  "ENV1facts": {
+    "file": "ENV1-facts.json",
+    "sha256": "4d4fcf60b1e55b29f3b52d669440451a2ce768b6ca95e8cfb04caab94ccd01b8",
+    "persisted_base": "0",
+    "latest_version": "1",
+    "actual_result_non_skipped": true
+  },
+  "public_acceptance_ledger_sha256": "1350754f09c2f054ba43195204c8a52c7563e560d63cb1e1054b374cc3e3cb5f",
+  "public_verification_runs_sha256": "6fa033b4434033de127aebe8b9fb86c968dfa077a1618f04f526629293588d0f",
+  "notes": [
+    {
+      "id": "ER-1",
+      "kind": "evidence_scope",
+      "description": "Three retainedpassword cases passed within a run whose overall exit1 also included two prerequisite failures. The final root-authorized protocolgate/sourceCLI setup reran only those two, yielding2pass/0skip. Oldrun exit1 and legacyLeave skip stay preserved; no blanket allrunpass claim is made."
+    },
+    {
+      "id": "ER-2",
+      "kind": "static_scope",
+      "description": "Changed11source strictcheck and fixture-contextlint pass. Expanded strictE2Eaccountdesktop51baseline diagnostics and directbaseESLint7helper devDependency-context errors remain explicit; not called fullE2Estaticgreen."
+    },
+    {
+      "id": "ER-3",
+      "kind": "candidate_scope",
+      "description": "Allbrowser/runtime facts bindC3API/renderer and code1ec diff19ec. This is maintenanceproof, not final currentmain/futurecandidate makecheck, realProvider or release/platform acceptance. ENV1history is deliberately seeded."
+    }
+  ],
+  "reviewer_product_edits": false,
+  "reviewer_browser_or_tests_run": false,
+  "reviewer_database_commands": false,
+  "reviewer_service_commands": false,
+  "provider_calls": 0,
+  "installed_agent_cli_calls": 0,
+  "children_spawned": 0,
+  "git_mutations": false
+}

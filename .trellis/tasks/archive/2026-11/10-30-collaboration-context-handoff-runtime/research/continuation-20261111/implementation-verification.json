@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-11T12:22:00Z",
+  "scope": "runtime historic-stop exception implementation and credential-free control surface",
+  "approval_registration": {
+    "path": ".trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261111/approval-registration.json",
+    "sha256": "7d743b5e1defa5fe8875c79a84d95c9982e9b0bfb650258a936a9214ed74f53c"
+  },
+  "implementation": {
+    "path": "server/cmd/server/rk1_runtime_continuation_test.go",
+    "sha256": "da12d1ff311106d48a01d1067bb21643cbf5945b9de7da15188b14189852659a",
+    "real_gate": false,
+    "provider_calls": 0,
+    "database_runs": 1
+  },
+  "checks": [
+    {
+      "command": "gofmt -w server/cmd/server/rk1_runtime_continuation_test.go",
+      "exit_code": 0
+    },
+    {
+      "command": "go test -tags=agentintegration -run '^$' -c -o /tmp/multica-rk1-continuation.test ./cmd/server",
+      "exit_code": 0,
+      "scope": "compile-only; no TestMain or database initialization"
+    },
+    {
+      "command": "go vet -tags=agentintegration ./cmd/server",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check -- server/cmd/server/rk1_runtime_continuation_test.go .trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261111/approval-registration.json",
+      "exit_code": 0
+    },
+    {
+      "command": "DATABASE_URL=postgres://multica:multica@localhost:5432/multica_rk1_continuation_20261111?sslmode=disable go test -tags=agentintegration -run '^TestRK1RuntimeContinuationControls$' -count=1 ./cmd/server -v -timeout=10m",
+      "exit_code": 0,
+      "scope": "fresh migrated fake-only control suite; ordered 13-slot physical accounting, duplicate/order/ledger/concurrency/source-drift refusal, incomplete/runtime/harness/H5 stop matrix; no Provider/CLI/permit/window call"
+    }
+  ],
+  "not_run": [
+    "No real Provider, CLI, permit, execution window, or external gateway call"
+  ],
+  "database_binding": {
+    "database": "multica_rk1_continuation_20261111",
+    "migrations_recorded": 781,
+    "collaboration_run_rows_after_cleanup": 0
+  }
+}

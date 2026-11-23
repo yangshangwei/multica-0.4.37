@@ -1,0 +1,22 @@
+--- a/e2e/fixtures/project-knowledge-automation.ts
++++ b/e2e/fixtures/project-knowledge-automation.ts
+@@ -145,6 +145,9 @@
+     writeFileSync(join(profileDir, "config.json"), JSON.stringify({ token: pat.token,
+       server_url: fixture.provenance.api_url, workspace_id: fixture.workspace.id,
+       management_deployment_id: managed.deploymentId }), { mode: 0o600, flag: "wx" });
++    const profileOwnerPath = join(profileDir, ".desktop-user-id");
++    writeFileSync(profileOwnerPath, managed.userId, { mode: 0o600, flag: "wx" });
++    expect(readFileSync(profileOwnerPath, "utf8")).toBe(fixture.creator.id);
+     const command = ["--profile", profile, "--server-url", fixture.provenance.api_url, "daemon", "start", "--foreground",
+       "--managed-handoff-stdin", "--daemon-id", daemonID, "--workspaces-root", join(directory, `workspaces-${profile}`), "--poll-interval", "500ms",
+       "--heartbeat-interval", "1s", "--max-concurrent-tasks", "1", "--agent-timeout", "60s", "--no-auto-update", "--no-auto-reload"];
+@@ -167,7 +170,8 @@
+     } }));
+     const managedIdentity = { deployment_id: managed.deploymentId, installation_id: managed.installationId,
+       daemon_id: daemonID, user_id: managed.userId, auth_version: managed.authVersion, profile,
+-      home_directory: homeDirectory, handoff_sha256: sha256(handoff), handoff_transport: "stdin" };
++      home_directory: homeDirectory, profile_owner_file: profileOwnerPath, profile_owner_sha256: sha256(managed.userId),
++      handoff_sha256: sha256(handoff), handoff_transport: "stdin" };
+     return { child: daemon, agentId: agent.id, runtimeId, daemonID, profile, pid: daemon.pid, command, managedIdentity,
+       stop: async () => { try { await stopOwned(daemon); } finally { managed.dispose(); } } };
+   } catch (error) {

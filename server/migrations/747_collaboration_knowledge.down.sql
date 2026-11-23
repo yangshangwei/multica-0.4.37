@@ -1,0 +1,11 @@
+SELECT collaboration_assert_knowledge_empty();
+DROP TABLE IF EXISTS collaboration_knowledge_candidate;
+DROP TABLE IF EXISTS collaboration_knowledge_target;
+DROP TABLE IF EXISTS collaboration_knowledge_invalidation;
+ALTER TABLE agent_task_queue DROP CONSTRAINT IF EXISTS agent_task_knowledge_metadata;
+ALTER TABLE agent_task_queue DROP COLUMN IF EXISTS knowledge_delivery;
+ALTER TABLE agent_task_queue DROP COLUMN IF EXISTS knowledge_context_version;
+DROP FUNCTION IF EXISTS collaboration_preserve_knowledge_candidate();
+DROP FUNCTION IF EXISTS collaboration_preserve_knowledge_invalidation();
+DROP FUNCTION IF EXISTS collaboration_preserve_knowledge_target();
+DROP FUNCTION IF EXISTS collaboration_assert_knowledge_empty();

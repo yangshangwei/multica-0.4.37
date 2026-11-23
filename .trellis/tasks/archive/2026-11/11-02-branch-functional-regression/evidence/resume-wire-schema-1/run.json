@@ -1,0 +1,32 @@
+{
+  "candidate": "7af9ab9905c98c77bb091223ebe687c639475bb4",
+  "started_at": "2026-11-02T02:39:24.955728+00:00",
+  "state": "complete",
+  "command": [
+    "pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "--root",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/branch-functional-regression-20261102/wire-schema-1",
+    "--config",
+    "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102/packages/core/vitest.config.ts",
+    "--maxWorkers=1",
+    "--reporter=json",
+    "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-02-branch-functional-regression/evidence/resume-wire-schema-1/results.json"
+  ],
+  "cwd": "/Volumes/artisan/code/2026/mc-functional-7af9ab990-20261102",
+  "schema_sha256": "7b621453f2e3dea06a08c7ab0a34717eeed06e0b191cddc9fce7bfdafb211850",
+  "fixture_sha256": "267052fd95abc65a97cf86479247042b2fb6461c53c4a2353db2d410b55f4f84",
+  "proof_sha256": "960dffe38d09d332afa4921635f2f54534df1d1c13bbf47748582a4ad21d0b75",
+  "new_product_changes": false,
+  "commercial_provider_calls": 0,
+  "finished_at": "2026-11-02T02:39:26.675643+00:00",
+  "exit_code": 0,
+  "stdout_sha256": "3391e879c6d113f12454b7487c2264e48fddaaf916064a71f57a6f50135efb18",
+  "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+  "total": 7,
+  "passed": 7,
+  "failed": 0,
+  "success": true
+}

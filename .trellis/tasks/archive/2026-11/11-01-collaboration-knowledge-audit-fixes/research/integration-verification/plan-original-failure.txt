@@ -1,0 +1,136 @@
+=== RUN   TestKnowledgeRuntimeHistoryIsIndexDriven
+    task_knowledge_history_growth_test.go:285: runtime namespace scans legacy task history instead of negotiated-row indexes: [
+          {
+            "Plan": {
+              "Node Type": "Sort",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 1249.61,
+              "Total Cost": 1255.87,
+              "Plan Rows": 2504,
+              "Plan Width": 24,
+              "Sort Key": ["task.created_at DESC", "task.id DESC"],
+              "Plans": [
+                {
+                  "Node Type": "Aggregate",
+                  "Strategy": "Hashed",
+                  "Partial Mode": "Simple",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Startup Cost": 1083.22,
+                  "Total Cost": 1108.26,
+                  "Plan Rows": 2504,
+                  "Plan Width": 24,
+                  "Group Key": ["task.id", "task.created_at"],
+                  "Planned Partitions": 0,
+                  "Plans": [
+                    {
+                      "Node Type": "Append",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Startup Cost": 0.28,
+                      "Total Cost": 1070.70,
+                      "Plan Rows": 2504,
+                      "Plan Width": 24,
+                      "Subplans Removed": 0,
+                      "Plans": [
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "Member",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "idx_agent_task_queue_runtime_id",
+                          "Relation Name": "agent_task_queue",
+                          "Alias": "task",
+                          "Startup Cost": 0.28,
+                          "Total Cost": 6.05,
+                          "Plan Rows": 1,
+                          "Plan Width": 24,
+                          "Index Cond": "(runtime_id = '921046ab-78c7-4b73-acbc-cefff06898cb'::uuid)",
+                          "Filter": "(knowledge_context_version IS NOT NULL)"
+                        },
+                        {
+                          "Node Type": "Hash Join",
+                          "Parent Relationship": "Member",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Join Type": "Inner",
+                          "Startup Cost": 8.43,
+                          "Total Cost": 487.59,
+                          "Plan Rows": 2431,
+                          "Plan Width": 24,
+                          "Inner Unique": true,
+                          "Hash Cond": "(task_1.agent_id = a.id)",
+                          "Plans": [
+                            {
+                              "Node Type": "Index Scan",
+                              "Parent Relationship": "Outer",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Scan Direction": "Forward",
+                              "Index Name": "agent_task_queue_pkey",
+                              "Relation Name": "agent_task_queue",
+                              "Alias": "task_1",
+                              "Startup Cost": 0.28,
+                              "Total Cost": 472.93,
+                              "Plan Rows": 2431,
+                              "Plan Width": 40,
+                              "Filter": "(knowledge_context_version IS NOT NULL)"
+                            },
+                            {
+                              "Node Type": "Hash",
+                              "Parent Relationship": "Inner",
+                              "Parallel Aware": false,
+                              "Async Capable": false,
+                              "Startup Cost": 8.14,
+                              "Total Cost": 8.14,
+                              "Plan Rows": 1,
+                              "Plan Width": 16,
+                              "Plans": [
+                                {
+                                  "Node Type": "Index Scan",
+                                  "Parent Relationship": "Outer",
+                                  "Parallel Aware": false,
+                                  "Async Capable": false,
+                                  "Scan Direction": "Forward",
+                                  "Index Name": "agent_pkey",
+                                  "Relation Name": "agent",
+                                  "Alias": "a",
+                                  "Startup Cost": 0.12,
+                                  "Total Cost": 8.14,
+                                  "Plan Rows": 1,
+                                  "Plan Width": 16,
+                                  "Filter": "(runtime_id = '921046ab-78c7-4b73-acbc-cefff06898cb'::uuid)"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Node Type": "Index Scan",
+                          "Parent Relationship": "Member",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Scan Direction": "Forward",
+                          "Index Name": "agent_task_queue_pkey",
+                          "Relation Name": "agent_task_queue",
+                          "Alias": "task_2",
+                          "Startup Cost": 0.28,
+                          "Total Cost": 564.54,
+                          "Plan Rows": 72,
+                          "Plan Width": 24,
+                          "Filter": "((knowledge_context_version IS NOT NULL) AND ((knowledge_delivery @> jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('descriptor', jsonb_build_object('runtime_id', '921046ab-78c7-4b73-acbc-cefff06898cb'::text))))) OR (knowledge_delivery @> jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('daemon_id', 'knowledge-564a17a1-c8aa-4887-8afc-49054875b62d'::text, 'descriptor', jsonb_build_object('provider', 'claude'::text))))) OR (knowledge_delivery @> jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('runtime_owner_user_id', '7810a29b-20a0-4cbc-bf27-2a23d0377ce9'::text, 'descriptor', jsonb_build_object('provider', 'claude'::text)))))))"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+    task_knowledge_history_growth_test.go:288: runtime namespace plan: [{"Plan":{"Async Capable":false,"Node Type":"Sort","Parallel Aware":false,"Plan Rows":2504,"Plan Width":24,"Plans":[{"Async Capable":false,"Group Key":["task.id","task.created_at"],"Node Type":"Aggregate","Parallel Aware":false,"Parent Relationship":"Outer","Partial Mode":"Simple","Plan Rows":2504,"Plan Width":24,"Planned Partitions":0,"Plans":[{"Async Capable":false,"Node Type":"Append","Parallel Aware":false,"Parent Relationship":"Outer","Plan Rows":2504,"Plan Width":24,"Plans":[{"Alias":"task","Async Capable":false,"Filter":"(knowledge_context_version IS NOT NULL)","Index Cond":"(runtime_id = '921046ab-78c7-4b73-acbc-cefff06898cb'::uuid)","Index Name":"idx_agent_task_queue_runtime_id","Node Type":"Index Scan","Parallel Aware":false,"Parent Relationship":"Member","Plan Rows":1,"Plan Width":24,"Relation Name":"agent_task_queue","Scan Direction":"Forward","Startup Cost":0.28,"Total Cost":6.05},{"Async Capable":false,"Hash Cond":"(task_1.agent_id = a.id)","Inner Unique":true,"Join Type":"Inner","Node Type":"Hash Join","Parallel Aware":false,"Parent Relationship":"Member","Plan Rows":2431,"Plan Width":24,"Plans":[{"Alias":"task_1","Async Capable":false,"Filter":"(knowledge_context_version IS NOT NULL)","Index Name":"agent_task_queue_pkey","Node Type":"Index Scan","Parallel Aware":false,"Parent Relationship":"Outer","Plan Rows":2431,"Plan Width":40,"Relation Name":"agent_task_queue","Scan Direction":"Forward","Startup Cost":0.28,"Total Cost":472.93},{"Async Capable":false,"Node Type":"Hash","Parallel Aware":false,"Parent Relationship":"Inner","Plan Rows":1,"Plan Width":16,"Plans":[{"Alias":"a","Async Capable":false,"Filter":"(runtime_id = '921046ab-78c7-4b73-acbc-cefff06898cb'::uuid)","Index Name":"agent_pkey","Node Type":"Index Scan","Parallel Aware":false,"Parent Relationship":"Outer","Plan Rows":1,"Plan Width":16,"Relation Name":"agent","Scan Direction":"Forward","Startup Cost":0.12,"Total Cost":8.14}],"Startup Cost":8.14,"Total Cost":8.14}],"Startup Cost":8.43,"Total Cost":487.59},{"Alias":"task_2","Async Capable":false,"Filter":"((knowledge_context_version IS NOT NULL) AND ((knowledge_delivery @\u003e jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('descriptor', jsonb_build_object('runtime_id', '921046ab-78c7-4b73-acbc-cefff06898cb'::text))))) OR (knowledge_delivery @\u003e jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('daemon_id', 'knowledge-564a17a1-c8aa-4887-8afc-49054875b62d'::text, 'descriptor', jsonb_build_object('provider', 'claude'::text))))) OR (knowledge_delivery @\u003e jsonb_build_object('claims', jsonb_build_array(jsonb_build_object('runtime_owner_user_id', '7810a29b-20a0-4cbc-bf27-2a23d0377ce9'::text, 'descriptor', jsonb_build_object('provider', 'claude'::text)))))))","Index Name":"agent_task_queue_pkey","Node Type":"Index Scan","Parallel Aware":false,"Parent Relationship":"Member","Plan Rows":72,"Plan Width":24,"Relation Name":"agent_task_queue","Scan Direction":"Forward","Startup Cost":0.28,"Total Cost":564.54}],"Startup Cost":0.28,"Subplans Removed":0,"Total Cost":1070.7}],"Startup Cost":1083.22,"Strategy":"Hashed","Total Cost":1108.26}],"Sort Key":["task.created_at DESC","task.id DESC"],"Startup Cost":1249.61,"Total Cost":1255.87}}]
+--- FAIL: TestKnowledgeRuntimeHistoryIsIndexDriven (0.32s)

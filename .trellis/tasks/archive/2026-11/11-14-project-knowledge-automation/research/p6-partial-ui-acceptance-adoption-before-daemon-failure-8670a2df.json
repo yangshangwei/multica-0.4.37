@@ -1,0 +1,84 @@
+{
+  "task": ".trellis/tasks/11-14-project-knowledge-automation",
+  "created_at": "2026-11-15T11:44:46.590022+00:00",
+  "source_id": "93c78b9a7824715d0bc9fd982d291c4b3e5d4a825b530afd6894421463710836",
+  "original_full_failure": "research/p6-original-after-password-fixture-failure-1a428255.json",
+  "rows": [
+    {
+      "platform": "desktop",
+      "marker": "P6-desktop-4ad33664",
+      "issue_id": "01a1defc-bea6-780a-8385-25d4e698c9c3",
+      "source_workspace_id": "5d314301-af27-4c8c-be0f-62b71d6cc1f3",
+      "project_id": "66cf9d90-3bce-4104-b019-45d51b4ee827",
+      "evidence_file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-d5cef38ca229/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/journey-evidence.json",
+      "evidence_sha256": "284a5a2a0ff69ff90fdd3532bebe5d5bec6580b54595e0058fc3af540d95773d",
+      "source_id": "93c78b9a7824715d0bc9fd982d291c4b3e5d4a825b530afd6894421463710836",
+      "submitted_code": "acceptance_submitted",
+      "acceptance_code": "completed",
+      "status_category": "done",
+      "candidate": {
+        "candidate_id": "17ccf1da-f0fa-59fe-8397-aa8caeefb666",
+        "availability": "available",
+        "state": "approved",
+        "version": "1",
+        "usage_status": "active",
+        "proposal_origin": "automation",
+        "decision_origin": "automation"
+      },
+      "captures": [
+        {
+          "stage": "accepted-processing",
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-d5cef38ca229/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-accepted-processing.png",
+          "sha256": "347793118727f808bb89ec1bc5ba62ed3afb6ed80f39fd0147f38724b5359986"
+        },
+        {
+          "stage": "automatically-saved",
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-d5cef38ca229/results/project-knowledge-automati-9ea56-nd-fresh-reacceptance-proof-chromium/desktop-automatically-saved.png",
+          "sha256": "a1fc9229246624b94a9d70ceb945dd7e7b7d9d84c20c6f1e69cb2a5932edb2b0"
+        }
+      ],
+      "journey_failed_after_this_stage": true,
+      "partial_only": true
+    },
+    {
+      "platform": "web",
+      "marker": "P6-web-a1b93d4d",
+      "issue_id": "01a1defc-913a-793b-9a79-055fc67c497b",
+      "source_workspace_id": "e8823c4c-4fe0-4c61-9b5d-a46367da96c3",
+      "project_id": "9a8fb465-8f49-4aed-bcf4-a98813565c12",
+      "evidence_file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-d5cef38ca229/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/journey-evidence.json",
+      "evidence_sha256": "13e2902802c3cec9b9ec3e4e6e3eee5f968bd03dc62e3e31499ba412345f851b",
+      "source_id": "93c78b9a7824715d0bc9fd982d291c4b3e5d4a825b530afd6894421463710836",
+      "submitted_code": "acceptance_submitted",
+      "acceptance_code": "completed",
+      "status_category": "done",
+      "candidate": {
+        "candidate_id": "0690fb0b-0f78-5199-ad20-dfda1cb021fa",
+        "availability": "available",
+        "state": "approved",
+        "version": "1",
+        "usage_status": "active",
+        "proposal_origin": "automation",
+        "decision_origin": "automation"
+      },
+      "captures": [
+        {
+          "stage": "accepted-processing",
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-d5cef38ca229/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-accepted-processing.png",
+          "sha256": "b360b6a18452f8f41df8888820c591d35e5f8cac99476da6407122caa59abc10"
+        },
+        {
+          "stage": "automatically-saved",
+          "file": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-knowledge-automation-20261114/p6-browser-072e7156/test-d5cef38ca229/results/project-knowledge-automati-a274c-nd-fresh-reacceptance-proof-chromium/web-automatically-saved.png",
+          "sha256": "069005fc35ac5d5f6d31203032e2878d82260757476f89e3c839835311d75031"
+        }
+      ],
+      "journey_failed_after_this_stage": true,
+      "partial_only": true
+    }
+  ],
+  "actual_platforms_reaching_adoption": 2,
+  "completed_full_journeys": 0,
+  "final_acceptance_verified": false,
+  "interpretation": "Both source-bound actual journeys completed earlier UI/worker assertions and produced screenshots, then failed at managed daemon startup. Partial evidence cannot certify actual provider input, reopen, reacceptance, negative cases or full P6."
+}

@@ -1,0 +1,34 @@
+{"Time":"2026-11-02T21:08:35.846435+08:00","Action":"start","Package":"command-line-arguments"}
+{"Time":"2026-11-02T21:08:36.063465+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_DefaultsWhenNothingSet"}
+{"Time":"2026-11-02T21:08:36.063558+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_DefaultsWhenNothingSet","Output":"=== RUN   TestPoolSizing_DefaultsWhenNothingSet\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.064805+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_DefaultsWhenNothingSet","Output":"--- PASS: TestPoolSizing_DefaultsWhenNothingSet (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.06484+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_DefaultsWhenNothingSet","Elapsed":0}
+{"Time":"2026-11-02T21:08:36.06488+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_URLParamsHonoredWhenEnvUnset"}
+{"Time":"2026-11-02T21:08:36.064886+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_URLParamsHonoredWhenEnvUnset","Output":"=== RUN   TestPoolSizing_URLParamsHonoredWhenEnvUnset\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.064892+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_URLParamsHonoredWhenEnvUnset","Output":"--- PASS: TestPoolSizing_URLParamsHonoredWhenEnvUnset (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.064895+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_URLParamsHonoredWhenEnvUnset","Elapsed":0}
+{"Time":"2026-11-02T21:08:36.064902+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_EnvOverridesURL"}
+{"Time":"2026-11-02T21:08:36.064911+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_EnvOverridesURL","Output":"=== RUN   TestPoolSizing_EnvOverridesURL\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.064946+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_EnvOverridesURL","Output":"--- PASS: TestPoolSizing_EnvOverridesURL (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.064954+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_EnvOverridesURL","Elapsed":0}
+{"Time":"2026-11-02T21:08:36.064961+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_PartialURLParam"}
+{"Time":"2026-11-02T21:08:36.064963+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_PartialURLParam","Output":"=== RUN   TestPoolSizing_PartialURLParam\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.06497+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_PartialURLParam","Output":"--- PASS: TestPoolSizing_PartialURLParam (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.064973+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_PartialURLParam","Elapsed":0}
+{"Time":"2026-11-02T21:08:36.064975+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault"}
+{"Time":"2026-11-02T21:08:36.064976+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault","Output":"=== RUN   TestPoolSizing_InvalidEnvFallsBackToCodeDefault\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.06513+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault","Output":"2026/11/02 21:08:36 WARN invalid env var, using default name=DATABASE_MAX_CONNS value=not-a-number default=25 error=\"strconv.ParseInt: parsing \\\"not-a-number\\\": invalid syntax\"\n"}
+{"Time":"2026-11-02T21:08:36.065159+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault","Output":"--- PASS: TestPoolSizing_InvalidEnvFallsBackToCodeDefault (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.065181+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToCodeDefault","Elapsed":0}
+{"Time":"2026-11-02T21:08:36.065185+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam"}
+{"Time":"2026-11-02T21:08:36.065187+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam","Output":"=== RUN   TestPoolSizing_InvalidEnvFallsBackToURLParam\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.065188+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam","Output":"2026/11/02 21:08:36 WARN invalid env var, using default name=DATABASE_MAX_CONNS value=not-a-number default=40 error=\"strconv.ParseInt: parsing \\\"not-a-number\\\": invalid syntax\"\n"}
+{"Time":"2026-11-02T21:08:36.065192+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam","Output":"--- PASS: TestPoolSizing_InvalidEnvFallsBackToURLParam (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.065193+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_InvalidEnvFallsBackToURLParam","Elapsed":0}
+{"Time":"2026-11-02T21:08:36.065194+08:00","Action":"run","Package":"command-line-arguments","Test":"TestPoolSizing_MinClampedToMax"}
+{"Time":"2026-11-02T21:08:36.065195+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_MinClampedToMax","Output":"=== RUN   TestPoolSizing_MinClampedToMax\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.065224+08:00","Action":"output","Package":"command-line-arguments","Test":"TestPoolSizing_MinClampedToMax","Output":"--- PASS: TestPoolSizing_MinClampedToMax (0.00s)\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.065227+08:00","Action":"pass","Package":"command-line-arguments","Test":"TestPoolSizing_MinClampedToMax","Elapsed":0}
+{"Time":"2026-11-02T21:08:36.065228+08:00","Action":"output","Package":"command-line-arguments","Output":"PASS\n","OutputType":"frame"}
+{"Time":"2026-11-02T21:08:36.065943+08:00","Action":"output","Package":"command-line-arguments","Output":"ok  \tcommand-line-arguments\t0.219s\n"}
+{"Time":"2026-11-02T21:08:36.065948+08:00","Action":"pass","Package":"command-line-arguments","Elapsed":0.22}

@@ -115,16 +115,18 @@ test.describe("workspace built-in defaults", () => {
     try {
       await page.setViewportSize({ width: 1440, height: 1000 });
       await page.goto(`/${workspace.slug}/squads`);
-      await expect(page.getByRole("tab", { name: "Workspace", exact: true })).toHaveAttribute("aria-selected", "true");
+      expect(await api.requestJSON("/api/squads")).toEqual([]);
+      await expect(page.getByRole("link", { name: "Browse templates", exact: true })).toHaveAttribute("href", `/${workspace.slug}/marketplace?type=squad-templates`);
       await expect(page.getByText("Feature Delivery Squad", { exact: true })).toHaveCount(0);
-      await page.getByRole("tab", { name: "Templates", exact: true }).click();
-      await expect(page.getByRole("tab", { name: "Templates", exact: true })).toHaveAttribute("aria-selected", "true");
+      await page.getByRole("link", { name: "Browse templates", exact: true }).click();
+      await expect(page).toHaveURL(`/${workspace.slug}/marketplace?type=squad-templates`);
+      await expect(page.getByRole("tab", { name: "Squad templates", exact: true })).toHaveAttribute("aria-selected", "true");
       await expect(page.getByRole("region", { name: "Squad templates" })).toBeVisible();
       await expect(page.getByRole("listitem", { name: "Feature Delivery Squad", exact: true })).toBeVisible();
       await page.screenshot({ path: info.outputPath("builtin-squads-desktop.png"), animations: "disabled" });
       await page.goto(`/${workspace.slug}/skills`);
       // Empty resource management stays in place until discovery is requested.
-      await expect(page.getByText("No skills yet", { exact: true })).toBeVisible();
+      await expect(page.getByRole("region", { name: "Turn your team’s know-how into a skill", exact: true })).toBeVisible();
       await expect(page.getByRole("tab", { name: "Skill templates", exact: true })).toHaveCount(0);
       await page.getByRole("link", { name: "From template", exact: true }).click();
       await expect(page).toHaveURL(`/${workspace.slug}/marketplace?type=skills`);
@@ -182,7 +184,7 @@ test.describe("workspace built-in defaults", () => {
       await page.getByRole("button", { name: "Issues", exact: true }).click();
       await page.locator("main").getByRole("button", { name: "New Issue", exact: true }).click();
       const issueDialog = page.getByRole("dialog");
-      await issueDialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill("Verify the starter workflow");
+      await issueDialog.getByRole("textbox", { name: "Title", exact: true }).fill("Verify the starter workflow");
       await expect(issueDialog.getByRole("button", { name: "Create Issue", exact: true })).toBeEnabled();
       await page.screenshot({ path: info.outputPath("incumbent-issue-dialog-reference.png"), animations: "disabled" });
       const createdIssue = page.waitForResponse((response) => response.request().method() === "POST" && /\/api\/issues$/.test(response.url()));

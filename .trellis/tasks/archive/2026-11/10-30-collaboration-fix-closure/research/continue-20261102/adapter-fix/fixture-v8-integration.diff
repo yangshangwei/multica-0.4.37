@@ -1,0 +1,29 @@
+--- /Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-fix-closure/research/continue-20261102/adapter-fix/selected-before-v8-integration/check-go-isolation-test.py
++++ /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v6/check-go-isolation-test.py
+@@ -16,7 +16,7 @@
+         self.go = self.root / "fake-go"
+         self.go.write_text('''#!/usr/bin/env python3
+ import sys,os,json
+-if sys.argv[1]=='list': print('example/first\\nexample/second')
++if sys.argv[1]=='list': print('example/first' if sys.argv[2:]==['./fixture'] else 'example/first\\nexample/second')
+ elif sys.argv[1]=='version': print('fake-go-version')
+ elif '-c' in sys.argv or '-c=true' in sys.argv: print('compile-only')
+ else:
+@@ -100,7 +100,7 @@
+         url="postgres://fixture@127.0.0.1/ccheck_20261101235959999999_abcdef123456"
+         evidence=self.root/"evidence"
+         evidence.mkdir()
+-        (evidence/"ccheck_20261101235959999999_abcdef123456.json").write_text(json.dumps({"database":"ccheck_20261101235959999999_abcdef123456","state":"running","template":"multica_check_fixture_go"}))
++        (evidence/"ccheck_20261101235959999999_abcdef123456.json").write_text(json.dumps({"database":"ccheck_20261101235959999999_abcdef123456","state":"running","template":"multica_check_fixture_go","package":"example/first"}))
+         result=self.run_wrapper("test","./fixture",MULTICA_TASK_PACKAGE_DB_MODE="0",DATABASE_URL=url)
+         self.assertEqual(result.returncode,0,result.stderr)
+         calls=self.calls()
+@@ -132,7 +132,7 @@
+         evidence = self.root / "evidence"
+         evidence.mkdir()
+         (evidence / (database + ".json")).write_text(json.dumps({
+-            "database": database, "state": "running", "template": "multica_check_fixture_go"
++            "database": database, "state": "running", "template": "multica_check_fixture_go", "package": "example/first"
+         }))
+         result = self.run_wrapper("test", "./fixture", MULTICA_TASK_PACKAGE_DB_MODE="0",
+                                   DATABASE_URL=url, DATABASE_MAX_CONNS="10", DATABASE_MIN_CONNS="1")

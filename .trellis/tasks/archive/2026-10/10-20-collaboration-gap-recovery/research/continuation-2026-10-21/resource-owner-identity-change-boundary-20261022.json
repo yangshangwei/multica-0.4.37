@@ -1,0 +1,15 @@
+{
+  "at": "2026-10-21T17:28:18.079927+00:00",
+  "source": "server/internal/service/collaboration_authority.go",
+  "sha256_before": "3001af84d292d08bcebd963725a00bbb004cb42422e833d70c82cc4fcad772dd",
+  "backup": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-gap-execute-20261021-77qt2tqx/collaboration_authority-before-resource-owner-context.go",
+  "scope": "Stored resource owner identity validation only; caller credential authentication remains separate",
+  "root_cause": "auth.CheckPasswordVersion inherited leader daemon context BindingID/UserID while checking another resource owner; mixed-owner squad incorrectly config_invalid",
+  "reproduction_artifacts": [
+    "owner-switch-departure-owner-context-20261022.jsonl",
+    "owner-switch-departure-diagnostic-20261022.jsonl"
+  ],
+  "authorized_fix": "collaborationIdentityCurrent builds verified stored owner binding session in child local deadline-preserving context; generic auth unchanged",
+  "new_regression": "server/internal/service/collaboration_resource_owner_identity_test.go",
+  "production_gate_change": false
+}

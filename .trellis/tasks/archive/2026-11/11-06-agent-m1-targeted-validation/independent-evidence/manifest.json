@@ -1,0 +1,48 @@
+{
+  "status": "deterministic_and_two_completed_role_samples_accepted_leader_business_actions_observed_process_timeout_retained",
+  "files": {
+    "targeted-review-router01-summary.json": {
+      "private_source": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-review-router01-summary.json",
+      "sha256": "fb2a7b94c9da9aea155cd2e2ef06e96aa66248e8e47a1771323a495d70bcf012"
+    },
+    "targeted-review-provenance02-summary.json": {
+      "private_source": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-review-provenance02-summary.json",
+      "sha256": "555f7133328a3fda67192d97f647c2b5fe9f2b03304470b3db109b8649d6f284"
+    },
+    "targeted-review-static01-summary.json": {
+      "private_source": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/targeted-review-static01-summary.json",
+      "sha256": "b1dcf0431a408c97e42f18b69abff924e7a1ab27d1b7ac88441a53bab600b9b7"
+    },
+    "reporter-independent-oracle01.json": {
+      "private_source": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/reporter-independent-oracle01.json",
+      "sha256": "d77c0a7e6ca66c474c24bc736863a7a756cfaf4994ea4fdd2f7eec785ad65eb1"
+    },
+    "reviewer-independent-oracle01.json": {
+      "private_source": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/reviewer-independent-oracle01.json",
+      "sha256": "e17fac0fef1298fce21a2348332839139981073673d09e4a9c070228a81c6a7f"
+    },
+    "independent-trial-oracle.py": {
+      "private_source": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/independent-trial-oracle.py",
+      "sha256": "d5d9b83f0d1d214e42279e3ea373c28435dadb041a0dc1631660a048f8907538"
+    },
+    "source": {
+      "path": "server/cmd/server/task_capability_targeted_test.go",
+      "sha256": "cecfa14b7f669b2aa3934fa2f2b79ad0b16d2ed738572ccdfe8c221ffd447474"
+    },
+    "leader-independent-oracle01.json": {
+      "private_source": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/leader-independent-oracle01.json",
+      "sha256": "1c5f1dce88836aad4bf2ed5926f3e8b03df3b04d528d10cbb77ee872a6aa439b"
+    },
+    "independent-leader-oracle.py": {
+      "private_source": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1-targeted-y38tfuxx/independent-leader-oracle.py",
+      "sha256": "18202877b5dd213b99d9763b3ce10ecd184e7683759da3ccc4b3bd38ec3a7bc3"
+    }
+  },
+  "no_secret_matches": true,
+  "leader_trial": {
+    "business_actions": "pass",
+    "process_completion": "fail_timeout180s",
+    "complete_trial": "fail",
+    "further_invocations": false
+  }
+}

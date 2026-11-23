@@ -29,6 +29,7 @@ import { useRecentContextStore } from "../chat/recent-context-store";
 import { useRecentIssuesStore } from "./stores";
 import type { InboxItem, Issue, IssueReaction } from "../types";
 import type {
+  BatchUpdateIssuesOptions,
   CreateCommentSubIssueManualRequest,
   CreateIssueRequest,
   OptimizeIssueDescriptionRequest,
@@ -68,6 +69,19 @@ export type UpdateIssueMutationInput = {
    */
   move_intent?: Pick<MoveIssueRequest, "before_id" | "after_id">;
 } & UpdateIssueRequest;
+
+/** Pin ordinary field intent to its supplied UI observation, without a cache lookup. */
+export function withObservedIssueFieldRevision(
+  issue: Pick<Issue, "revision" | "collaboration"> | undefined,
+  updates: Partial<UpdateIssueRequest>,
+): Partial<UpdateIssueRequest> {
+  if (updates.expected_revision !== undefined || !issue || issue.collaboration) return updates;
+  if (updates.priority === undefined && updates.assignee_type === undefined && updates.assignee_id === undefined) return updates;
+  const revision = issue.revision;
+  return typeof revision === "number" && Number.isSafeInteger(revision) && revision > 0
+    ? { ...updates, expected_revision: revision }
+    : updates;
+}
 
 // ---------------------------------------------------------------------------
 // Per-status pagination
@@ -128,11 +142,22 @@ export function useUpdateIssue() {
   const wsId = useWorkspaceId();
   return useMutation({
     mutationFn: ({ id, move_intent: moveIntent, ...data }: UpdateIssueMutationInput) => {
+      if (!moveIntent && data.completion) {
+        if (typeof data.status !== "string" || Object.keys(data).some(key => key !== "status" && key !== "completion")) {
+          return Promise.reject(new Error("Bound completion only accepts a status change"));
+        }
+        return api.submitDeliveryCompletion(id, { status: data.status, completion: data.completion }, { workspaceId: wsId }).then(result => result.issue);
+      }
       if (!moveIntent) return api.updateIssue(id, data);
       const { position: _optimisticPosition, ...target } = data;
       return api.moveIssue(id, { ...target, ...moveIntent });
     },
     onMutate: ({ id, move_intent: _moveIntent, ...data }) => {
+      // A completion receipt, not a predicted done status, establishes success.
+      // Keep the actual issue visible while the transaction may be uncertain.
+      if (data.completion) {
+        return { change: null, prevChildren: undefined, parentId: qc.getQueryData<Issue>(issueKeys.detail(wsId, id))?.parent_issue_id ?? null, id };
+      }
       // suppress_run / handoff_note are write-time control fields, not Issue
       // columns. description_base is merge metadata, while description itself
       // is resolved against that base on the server and therefore is not safe
@@ -142,6 +167,8 @@ export function useUpdateIssue() {
       const {
         suppress_run: _suppressRun,
         handoff_note: _handoffNote,
+        completion: _completion,
+        project_change_reason: _projectChangeReason,
         description: _description,
         description_base: _descriptionBase,
         title_base: _titleBase,
@@ -152,6 +179,14 @@ export function useUpdateIssue() {
       // cache update happens in the same tick as mutate(). Awaiting would
       // yield to the event loop, letting @dnd-kit reset its visual state
       // before the optimistic update lands.
+      const detailKey = issueKeys.detail(wsId, id);
+      const prevDetail = qc.getQueryData<Issue>(detailKey);
+      qc.cancelQueries({ queryKey: detailKey, exact: true });
+      // Identifier initialData may arrive after this read began. Cancellation
+      // can restore its empty pre-fetch state; retain the row being edited.
+      if (prevDetail && qc.getQueryData(detailKey) === undefined) {
+        qc.setQueryData(detailKey, prevDetail);
+      }
       qc.cancelQueries({ queryKey: issueKeys.list(wsId) });
       qc.cancelQueries({ queryKey: issueKeys.myAll(wsId) });
       qc.cancelQueries({ queryKey: issueKeys.flatAll(wsId) });
@@ -159,7 +194,6 @@ export function useUpdateIssue() {
       if (patch.status !== undefined || patch.priority !== undefined) {
         qc.cancelQueries({ queryKey: inboxKeys.all(wsId) });
       }
-      const prevDetail = qc.getQueryData<Issue>(issueKeys.detail(wsId, id));
       // The coordinator owns the cross-cache rules: surgical patch/rebucket
       // where the card is loaded and still belongs, surgical REMOVE where the
       // change moves it off a filtered surface, stale-key bookkeeping where
@@ -217,7 +251,7 @@ export function useUpdateIssue() {
       return { change, prevChildren, parentId, id };
     },
     onError: (_err, vars, ctx) => {
-      if (ctx) {
+      if (ctx?.change) {
         rollbackIssueChange(qc, wsId, ctx.id, ctx.change);
       }
       if (ctx?.parentId && ctx.prevChildren !== undefined) {
@@ -253,6 +287,8 @@ export function useUpdateIssue() {
       const {
         suppress_run: _suppressRun,
         handoff_note: _handoffNote,
+        completion: _completion,
+        project_change_reason: _projectChangeReason,
         description_base: _descriptionBase,
         move_intent: _moveIntent,
         id: _id,
@@ -302,7 +338,7 @@ export function useUpdateIssue() {
           Object.prototype.hasOwnProperty.call(vars, "project_id"),
       });
       qc.invalidateQueries({ queryKey: issueKeys.tableAll(wsId) });
-      if (ctx) {
+      if (ctx?.change) {
         invalidateStaleListKeys(qc, ctx.change.staleKeys);
       }
       // Refresh the issue's attachments cache when the description editor
@@ -435,10 +471,13 @@ export function useBatchUpdateIssues() {
     mutationFn: ({
       ids,
       updates,
+      completion_bindings,
     }: {
       ids: string[];
       updates: UpdateIssueRequest;
-    }) => api.batchUpdateIssues(ids, updates),
+    } & BatchUpdateIssuesOptions) => completion_bindings === undefined
+      ? api.batchUpdateIssues(ids, updates)
+      : api.batchUpdateIssues(ids, updates, { completion_bindings }),
     onMutate: async ({ ids, updates }) => {
       // Control and description-merge fields are not safe optimistic cache
       // patches. The server resolves description against description_base, so
@@ -447,8 +486,14 @@ export function useBatchUpdateIssues() {
       const {
         suppress_run: _suppressRun,
         handoff_note: _handoffNote,
+        completion: _completion,
+        project_change_reason: _projectChangeReason,
         description: _description,
         description_base: _descriptionBase,
+        title_base: _titleBase,
+        expected_revision: _expectedRevision,
+        iteration_reason: _iterationReason,
+        allow_completed: _allowCompleted,
         ...patch
       } = updates;
       await qc.cancelQueries({ queryKey: issueKeys.list(wsId) });
@@ -529,56 +574,28 @@ export function useBatchUpdateIssues() {
         );
       }
 
-      return {
-        prevLists: [...prevListByHash.values()],
-        prevFlatLists: [...prevFlatListByHash.values()],
-        prevTableRows: [...prevTableRowByHash.values()],
-        prevDetailById,
-        prevInboxList,
-        prevArchivedInboxList,
-        staleKeys,
-        prevChildren,
-        affectedParentIds,
+      // Restore only our own optimistic value. A newer WS/refetch snapshot
+      // belongs to the server and must survive this request's later failure.
+      const rollback: { key: QueryKey; before: unknown; optimistic: unknown }[] = [];
+      const remember = (key: QueryKey, snapshot: unknown) => {
+        rollback.push({ key, before: snapshot, optimistic: qc.getQueryData(key) });
       };
+      for (const [key, snapshot] of [...prevListByHash.values(), ...prevFlatListByHash.values(), ...prevTableRowByHash.values()]) remember(key, snapshot);
+      for (const [id, snapshot] of prevDetailById) remember(issueKeys.detail(wsId, id), snapshot);
+      if (prevInboxList !== undefined) remember(inboxKeys.list(wsId), prevInboxList);
+      if (prevArchivedInboxList !== undefined) remember(inboxKeys.archived(wsId), prevArchivedInboxList);
+      for (const [parentId, snapshot] of prevChildren) remember(issueKeys.children(wsId, parentId), snapshot);
+      return { rollback, staleKeys, affectedParentIds };
     },
     onError: (_err, _vars, ctx) => {
-      if (ctx?.prevLists) {
-        for (const [key, snapshot] of ctx.prevLists) {
-          qc.setQueryData(key, snapshot);
-        }
-      }
-      if (ctx?.prevFlatLists) {
-        for (const [key, snapshot] of ctx.prevFlatLists) {
-          qc.setQueryData(key, snapshot);
-        }
-      }
-      if (ctx?.prevTableRows) {
-        for (const [key, snapshot] of ctx.prevTableRows) {
-          qc.setQueryData(key, snapshot);
-        }
-      }
-      if (ctx?.prevDetailById) {
-        for (const [id, snapshot] of ctx.prevDetailById) {
-          qc.setQueryData(issueKeys.detail(wsId, id), snapshot);
-        }
-      }
-      if (ctx?.prevInboxList !== undefined) {
-        qc.setQueryData(inboxKeys.list(wsId), ctx.prevInboxList);
-      }
-      if (ctx?.prevArchivedInboxList !== undefined) {
-        qc.setQueryData(
-          inboxKeys.archived(wsId),
-          ctx.prevArchivedInboxList,
-        );
-      }
-      if (ctx?.prevChildren) {
-        for (const [parentId, snapshot] of ctx.prevChildren) {
-          qc.setQueryData(issueKeys.children(wsId, parentId), snapshot);
+      for (const entry of ctx?.rollback ?? []) {
+        if (qc.getQueryData(entry.key) === entry.optimistic) {
+          qc.setQueryData(entry.key, entry.before);
         }
       }
     },
     onSettled: (_data, _err, _vars, ctx) => {
-      // Deliberately NOT invalidating issueKeys.list / myAll here: the onMutate
+      // On success, do NOT invalidate issueKeys.list / myAll: the onMutate
       // pass above is a complete surgical reconcile for the loaded bucketed
       // boards, so a full-board refetch on settle would only re-introduce the
       // flicker the single-issue update already removed. Aggregate / grouped
@@ -591,6 +608,19 @@ export function useBatchUpdateIssues() {
           _vars.updates.status !== undefined ||
           Object.prototype.hasOwnProperty.call(_vars.updates, "project_id"),
       });
+      if (_err) {
+        // An error can follow a committed prefix or an uncertain commit. Old
+        // servers may omit results too, so rollback alone is never authoritative.
+        return Promise.all([
+          qc.invalidateQueries({ queryKey: issueKeys.all(wsId) }),
+          qc.invalidateQueries({ queryKey: inboxKeys.all(wsId) }),
+          ..._vars.ids.flatMap((id) => [
+            qc.invalidateQueries({ queryKey: issueKeys.timeline(id) }),
+            qc.invalidateQueries({ queryKey: issueKeys.attachments(id) }),
+            qc.invalidateQueries({ queryKey: issueKeys.tasks(id) }),
+          ]),
+        ]).then(() => undefined);
+      }
       qc.invalidateQueries({ queryKey: issueKeys.tableAll(wsId) });
       if (ctx) {
         invalidateStaleListKeys(qc, ctx.staleKeys);
@@ -603,6 +633,7 @@ export function useBatchUpdateIssues() {
         }
         qc.invalidateQueries({ queryKey: issueKeys.childProgress(wsId) });
       }
+      return undefined;
     },
   });
 }

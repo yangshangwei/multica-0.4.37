@@ -1,0 +1,103 @@
+{
+  "verdict": "PASS",
+  "scope": "Independent static review of current UI E2E harness; not a live business acceptance verdict",
+  "blocking_findings_open": 0,
+  "reviewed_at": "2026-11-05T03:20:50.139623+00:00",
+  "candidate": "1a32ca36c2c4f4455a01bdd39d0e0ab4db20cccc",
+  "source_root": "/Volumes/artisan/code/2026/mc-core-e2e-1a32ca36c-20261104",
+  "bundle_sha256": "70fe66c6e8df1b7745b6bbccab00129419007c893841b4c42203be911045d2d9",
+  "followup_patch_sha256": "8c2dfd0ead5d2449cecc9e57cf14a2f8454f2973c004f42eadd69e22846e3b83",
+  "files": [
+    {
+      "file": "e2e/fixtures/collaboration-detail-journey.ts",
+      "sha256": "6f5e204e07217cd3875324097d300cf2dfe33bb1ac282b1dc280c56c365d3766"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-handoff-chain.ts",
+      "sha256": "ed4d905126a42b3807554dda406bcf79bed02050c4aa5521b298eae5495e5698"
+    },
+    {
+      "file": "e2e/collaboration-handoff-chain-web.spec.ts",
+      "sha256": "f2031dfae9a864ccd1a9d04a778a21000ff8e99bfb1f1c3e796a0affcb63a760"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-offline-handoff.ts",
+      "sha256": "3dcb802d957f9028912bded746f6322c8803e7d95989dda3c3a89b9ef5f5ea90"
+    },
+    {
+      "file": "e2e/collaboration-installed-main.spec.ts",
+      "sha256": "a1d4c68673b959f0d26166c2f325d1097cb3fb0a6f482533aa5a86fb1a073267"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.mjs",
+      "sha256": "aa0f1ff6375dc9ca462a1361e5c3324fde58835c1d75b952c39e33eda2b2e749"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-control-gaps.ts",
+      "sha256": "9f7ff5910529e23dfec039258d88843191511f9aefe86e0a13608509131e9053"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-lane-close-controls.ts",
+      "sha256": "6cfea82bdb9348032ea3fadb21893ec97806ec681d593becf763d46cca207565"
+    },
+    {
+      "file": "e2e/collaboration-terminal-reopen-web.spec.ts",
+      "sha256": "11a45b5ce123fb9507d6b2ea4f372e6f330f0004ace3a463b70ff6a0c8d0e895"
+    },
+    {
+      "file": "e2e/collaboration-leave-web.spec.ts",
+      "sha256": "de0d566a31710201fc4228ad421d6d1ac56bad908082a9b8552196fa1f35481d"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-offline-result-notifications.ts",
+      "sha256": "36d93b95972d3c647bf11d8b89b27d03c166bd41dfaaede365ebbe025cc75b04"
+    },
+    {
+      "file": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "sha256": "f59d6f150a819b964fe761f5f0bde4abbc5825bfe435aec4112173870e0f2e02"
+    }
+  ],
+  "fixed_findings": [
+    {
+      "file": "e2e/fixtures/collaboration-installed-main.mjs",
+      "line": 308,
+      "issue": "launch retained unconditional stopped polling after managed authentication, so restart could never reach metadata expecting running",
+      "fixed_by": "detail_finish with parent authorization during review",
+      "fix": "Keep initial unauthenticated stopped; authenticated managed launch requires running and exact task-owned profile/PID/server/deployment/user validation"
+    }
+  ],
+  "not_fixed_findings": [],
+  "preserved_contracts": [
+    "No product files modified; only12 E2E files plus exact generated Next route import differ from candidate",
+    "Initial native startup autoStart=false/updaterautomatic=false/stopped remain asserted",
+    "Managed running is bound to private home/profile pidfile/current health server URL/config deployment/current authenticated user; cleanup uses real daemon stop API only after these checks",
+    "Submission flows now fill mandatory Result/Basis through actual UI and bind exact submission receipt/result/author",
+    "Creator acceptance binds exact submission ID and all original permission refusals/history/Stop/pending proof/cancelled input assertions remain",
+    "Handler submission does not mutate session or execution before closure; tested explicitly",
+    "More actions and Attachments are opened by actual disclosure interaction; no forced click/mock/business-response replacement",
+    "Old fixed timeouts and zero retries retained; original failure evidence remains separate"
+  ],
+  "verification": {
+    "reviewer_run": {
+      "node_check": "PASS",
+      "git_diff_check": "PASS",
+      "typescript_transpile_syntax": "PASS11files0diagnostics",
+      "exact_file_hashes": "PASS12files",
+      "product_scope": "PASS"
+    },
+    "writer_evidence_reviewed": {
+      "actual_export_guard_contracts": "35PASS, prior red preserved",
+      "controller_layout_node_tests": "7PASS",
+      "playwright_collection": "22cases12specsPASS"
+    },
+    "lint": "NOT_RUN: parent requested bounded static review; root E2E files outside current package ESLint coverage",
+    "semantic_typecheck": "NOT_RUN: syntax/transpile and collection do not establish full semantic TypeScript check",
+    "live_replay": "NOT_RUN by reviewer; root owns original E2E replay with current service/source bindings"
+  },
+  "remaining_limits": [
+    "Static review does not close original17 browser failures or2 detail blockers",
+    "Current macOS package hash checks remain coordinator responsibility where fixture asserts them only for Windows/DEB",
+    "Full source/service proof must be renewed after both bundle and launch followup; original bundle manifest alone carries outdated installed-main.mjs hash"
+  ],
+  "spec_recommendation": "Record packaged initial startup versus authenticated managed restart expectations in E2E environment spec when root completes live verification."
+}

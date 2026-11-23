@@ -1,0 +1,39 @@
+{
+  "issued_at": "2026-11-04T10:04:49.810945+00:00",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "executor": "/root/shared_executor",
+  "scope": "One fixed K3-only diagnostic on new owned database; expected retained failure; no full acceptance/race/real model",
+  "before_plan_sha256": "d1ea36c6032738e743d2643a5a40fa325d3b18cfb5e151b0501000b9e8d8361e",
+  "handoff_sha256": "2979c9fcb3416a529b6bb49b4aa0c46802a6ec6b08bbbe7b484baeb488904976",
+  "fixture_sha256": "3d873520f490def55aaccc42bd4f577f969e19bfc4c5a5e3ebf81baf2344c140",
+  "command": [
+    "/bin/bash",
+    "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "/Users/artisan/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+    "-C",
+    "server",
+    "test",
+    "./cmd/server",
+    "-tags=agentintegration",
+    "-p=1",
+    "-parallel=1",
+    "-count=1",
+    "-json",
+    "-timeout=10m",
+    "-run",
+    "^TestRK1KnowledgeFakeProof/K3$"
+  ],
+  "environment": {
+    "path": "/Volumes/artisan/code/2026/mc-knowledge-framework-20261103/.omx/private/knowledge-framework-final-20261104/k3-diagnostic-01/environment.json",
+    "sha256": "6618eedfb9eb7b2a9752deeb1b4a200474b38dc758e6a4701516889a595334aa"
+  },
+  "database": "multica_rk1k_20261104_k3diag01_a3c9",
+  "actual_identity": "multica_rk1k_20261104_k3diag01_a3c9|764_collaboration_ai_policy|0|0",
+  "metadata_marker": "RK1K_K3_POLL_FAILURE_METADATA_V1=",
+  "timing_assertion_selection_seed_unchanged": true,
+  "root_inspected_failure_only_diff": true,
+  "new_real_budget": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false
+}

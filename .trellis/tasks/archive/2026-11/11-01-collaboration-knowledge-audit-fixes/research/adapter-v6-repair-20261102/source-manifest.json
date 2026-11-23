@@ -1,0 +1,59 @@
+{
+  "private_directory": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/collaboration-resume-20261101/adapter-v7-knowledge-advance-20261102",
+  "v5_go_pin": "2c32f8309a17c5558e004184ec490df3bb6aebbf6101ee0f9156dae3d09e7943",
+  "incoming_v6_go_sha256": "b8c5d5adbece4f781a00a230b4f6ffbbfed195f4e44826d53997d72b3f160079",
+  "first_v7_go_sha256": "c987ea45cf75e4fa2fe5858a6bc5d82bb1f30ac289162015ebe544dab8b6382f",
+  "unowned_v6_and_launcher_changed_by_this_agent": false,
+  "final_files": [
+    {
+      "path": "check-bin/go",
+      "sha256": "eafed32e38ea69de0f73272df5c9cc817ec0741726b54fc19d27466742f57076",
+      "bytes": 9886,
+      "mode": "0o700"
+    },
+    {
+      "path": "check-bin/pnpm",
+      "sha256": "7a416eb60f1bdbe6bdf7421d2f61346d74d0e2575ae8a5236e450627db63ff48",
+      "bytes": 2228,
+      "mode": "0o700"
+    },
+    {
+      "path": "check-go-isolation-test.py",
+      "sha256": "3248d5b6b30f10012e46355acbb0cd451864beaaf9afe665e6461a96c4fce92d",
+      "bytes": 11915,
+      "mode": "0o644"
+    },
+    {
+      "path": "check-go-package-binding-test.py",
+      "sha256": "ffafa89ada008bd1829ec74e3dbe58dd1058fc0fbdef95d99be61156af753d1a",
+      "bytes": 21885,
+      "mode": "0o644"
+    },
+    {
+      "path": "check-pnpm-reporting-test.py",
+      "sha256": "369738115a2ff1e7243766d4031b8d68ced15890bcc733905b7557d496d28147",
+      "bytes": 6108,
+      "mode": "0o644"
+    },
+    {
+      "path": "deny-network.sb",
+      "sha256": "5c358b8d847211333e7ba22df82d84f796b5f30a41a2682209a949d783adbd08",
+      "bytes": 44,
+      "mode": "0o600"
+    }
+  ],
+  "diffs": [
+    {
+      "path": "adapter-v5-to-v7.diff",
+      "sha256": "3bccfb3263af494a30de6fe8556892e1ce0e5b86b86da182da538b2d0451d0a3"
+    },
+    {
+      "path": "adapter-v6-to-v7.diff",
+      "sha256": "aa1badc823f5c2214d32b29d11b20e93b25fd4509cba34ed5b5e8bc13327376d"
+    },
+    {
+      "path": "v6-to-v7-go-and-fixtures.patch",
+      "sha256": "843268bd093429fe7a1488b2e62b2a0ba63204faf084241f1c552122bf5db465"
+    }
+  ]
+}

@@ -89,6 +89,9 @@ func adminAuditSnapshot(raw []byte) map[string]any {
 // Resource versions are UUID revisions, unlike numeric administrative versions.
 // Their separate projection cannot broaden historical snapshots for other targets.
 func adminAuditTargetSnapshot(raw []byte, targetKind string) map[string]any {
+	if targetKind == "collaboration_gate" {
+		return adminAuditGateSnapshot(raw)
+	}
 	if targetKind != "resource" {
 		return adminAuditSnapshot(raw)
 	}
@@ -138,6 +141,28 @@ func adminAuditTargetSnapshot(raw []byte, targetKind string) map[string]any {
 				if count, err := number.Int64(); err == nil && count >= 0 && count <= maximum {
 					result[key] = count
 				}
+			}
+		}
+	}
+	return result
+}
+
+// The collaboration gate snapshot holds only its three switches and epoch.
+func adminAuditGateSnapshot(raw []byte) map[string]any {
+	result := map[string]any{}
+	var value map[string]any
+	if json.Unmarshal(raw, &value) != nil {
+		return result
+	}
+	for key, item := range value {
+		switch key {
+		case "creation_enabled", "execution_enabled", "host_execution_enabled":
+			if flag, ok := item.(bool); ok {
+				result[key] = flag
+			}
+		case "execution_epoch":
+			if text, ok := item.(string); ok && adminDecimalPattern.MatchString(text) {
+				result[key] = text
 			}
 		}
 	}

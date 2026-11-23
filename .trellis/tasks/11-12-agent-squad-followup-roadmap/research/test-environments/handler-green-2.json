@@ -1,0 +1,336 @@
+{
+  "label": "handler-green-2",
+  "package": "./internal/handler",
+  "database": "m1s1_handler_green_2_bec807a3",
+  "private_environment": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-m1s1-hry2m9ex/environment.json",
+  "state": "complete",
+  "cluster_before": "postgres|17.11 (Debian 17.11-1.pgdg12+2)|100|29",
+  "source_head": "ade2298e24c3e99aa1982f9c6ddcbb1dc3bd29d3",
+  "runner_sha256": "d0db8a172cde5b8238ab662be362cd55acf2fe6d4a47281ae43e78ea0403d9e8",
+  "created_at": "2026-11-12T10:04:25.302956+00:00",
+  "migration_exit": 0,
+  "schema_migrations_count": "781",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/handler",
+    "-count=1",
+    "-json",
+    "-timeout=15m",
+    "-run",
+    "TestDeliveryCompletion(Preview|Candidates)|TestDeliveryEvidence"
+  ],
+  "exit_code": 1,
+  "named_test_results": [
+    {
+      "test": "TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/custom_done",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/custom_archived",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/already_done",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/non_done",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/off",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/observe",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/no_project",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/stale",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/missing_head",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/different_head",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/authority",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/credential",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/other_issue",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewCredentialHorizon",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionCandidatesPaginationAndAuthority",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewIncompletePackageIsNotAuthorization",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionCandidatesBoundedHiddenScan",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceActualPackageSnapshot/running",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceActualPackageSnapshot/completed",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceActualPackageSnapshot",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/old_candidate",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/advanced_head",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/missing_head",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/ambiguous_head",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/artifact",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/spec",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/receipt_tamper",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/row_tamper",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/issue_revision",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/generation",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/autonomy",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/originator_revoked",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/missing_receipt",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/unknown",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/failed",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen/expired",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceNoFalseGreen",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/issue",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/project",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/pr",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/link",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/agent",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/task",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/member",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/approval",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst/receipt",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceWriterFirst",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/issue",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/project",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/pr",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/link",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/member",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/phantom_github",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters/phantom_vcs",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceObservationFencesWriters",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceProjectBinding",
+      "action": "fail"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/originator",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/runtime_owner",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/initiator",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/approver",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/claimant",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals/invoke_originator",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceDistinctHistoricalPrincipals",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceVCSSelection",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/actor_id",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/spec_digest",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/declared_revision",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/output_bytes",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash/extra",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceReceiptBindingSurvivesRehash",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceCommitFailure/before",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceCommitFailure/after",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryEvidenceCommitFailure",
+      "action": "pass"
+    }
+  ],
+  "log_sha256": "25ee80ae4b618f3ca763601166a960a38df66937bd802a9c9587c4e7274145b9"
+}

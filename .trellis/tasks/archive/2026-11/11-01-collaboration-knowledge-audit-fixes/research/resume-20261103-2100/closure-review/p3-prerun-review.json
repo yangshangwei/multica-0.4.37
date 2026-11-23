@@ -1,0 +1,20 @@
+{
+  "path": "e2e/collaboration-preview-web.spec.ts",
+  "before_sha256": "a53e53b8fc8ded1b342106f940c12e8ff53b5f347ba1fe642d0fb436b7273072",
+  "proposed_sha256": "f276667c3ee3190fbb2141e3dba08c6439d42604a5aec0253a7075d7aa36f56b",
+  "patch_sha256": "a8070a992407ab700649b2f06e919b3d188f01d3b325703cc4527b1abcac777d",
+  "applied": false,
+  "runtime_executed": false,
+  "reviewer": "/root/closure_inventory",
+  "reviewed_at": "2026-11-03T13:35:56.236383+00:00",
+  "verdict": "pass",
+  "blocking_findings": [],
+  "scope": "P3 exact unapplied patch source review only; final runtime verification pending",
+  "checks": [
+    "Fresh Send-preview draft remains original.",
+    "Localized Manual Preview obtains exact POST response200, expected issue and suppressed target.",
+    "Manual-preview grouping/targetabsence/checkbox/draft controls restored.",
+    "Zero commentPOST and full comments+authorization fields retained at both boundaries; only validated evaluated_at normalized.",
+    "Current execution equality and one actualconfirmedSend remain."
+  ]
+}

@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY collaboration_stage_execution_observation_order_idx ON collaboration_stage_execution_observation (intent_id, created_at, observation_id);

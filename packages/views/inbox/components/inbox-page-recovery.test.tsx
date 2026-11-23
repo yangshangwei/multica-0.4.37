@@ -13,13 +13,14 @@ import { InboxPage } from "./inbox-page";
 const mocks = vi.hoisted(() => ({
   listInbox: vi.fn(),
   listArchivedInbox: vi.fn(),
+  listSnoozedInbox: vi.fn(),
   replace: vi.fn(),
   compact: false,
 }));
 
 vi.mock("@multica/core/api", async (importOriginal) => ({
   ...await importOriginal<typeof import("@multica/core/api")>(),
-  api: { listInbox: mocks.listInbox, listArchivedInbox: mocks.listArchivedInbox },
+  api: { listInbox: mocks.listInbox, listArchivedInbox: mocks.listArchivedInbox, listSnoozedInbox: mocks.listSnoozedInbox },
 }));
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "workspace-1" }));
 vi.mock("@multica/core/paths", () => ({
@@ -51,7 +52,7 @@ vi.mock("../../issues/components", () => ({
 vi.mock("./inbox-list", () => ({
   InboxList: ({ items, view, onSelect }: { items: InboxItem[]; view: string; onSelect: (item: InboxItem) => void }) => <div>
     {items.map((item) => <button key={item.id} onClick={() => onSelect(item)}>{item.title}</button>)}
-    {items.length === 0 && <p>{view === "archived" ? "No archived notifications" : "No notifications"}</p>}
+    {items.length === 0 && <p>{view === "archived" ? "No archived notifications" : view === "snoozed" ? "No snoozed notifications" : "No notifications"}</p>}
   </div>,
 }));
 vi.mock("./inbox-filter-menu", () => ({ InboxFilterMenu: () => null }));
@@ -68,14 +69,17 @@ const notification: InboxItem = {
   read: true, archived: false, created_at: "2026-10-09T00:00:00Z", details: null,
 };
 
-function renderInbox(archived: boolean, cached = false, selected = false) {
+function renderInbox(archived: boolean, cached = false, selected = false, snoozed = false) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false, staleTime: Infinity } } });
   clients.push(client);
-  const queryKey = archived ? inboxKeys.archived("workspace-1") : inboxKeys.list("workspace-1");
+  const queryKey = snoozed ? inboxKeys.snoozed("workspace-1") : archived ? inboxKeys.archived("workspace-1") : inboxKeys.list("workspace-1");
   client.setQueryData(archived ? inboxKeys.list("workspace-1") : inboxKeys.archived("workspace-1"), []);
-  if (cached) client.setQueryData(queryKey, [{ ...notification, archived }]);
+  if (!snoozed) client.setQueryData(inboxKeys.snoozed("workspace-1"), []);
+  if (snoozed) client.setQueryData(inboxKeys.list("workspace-1"), []);
+  if (cached) client.setQueryData(queryKey, [{ ...notification, archived, ...(snoozed ? { snoozed_until: "2030-06-16T09:00:00Z", snooze_revision: 1 } : {}) }]);
   const params = new URLSearchParams();
   if (archived) params.set("view", "archived");
+  if (snoozed) params.set("view", "snoozed");
   if (selected) params.set("issue", notification.issue_id!);
   const view = renderWithI18n(
     <QueryClientProvider client={client}>
@@ -90,6 +94,7 @@ function renderInbox(archived: boolean, cached = false, selected = false) {
 beforeEach(() => {
   mocks.listInbox.mockReset().mockResolvedValue([]);
   mocks.listArchivedInbox.mockReset().mockResolvedValue([]);
+  mocks.listSnoozedInbox.mockReset().mockResolvedValue([]);
   mocks.replace.mockReset();
   mocks.compact = false;
   useInboxFilterStore.setState({ filtersByWorkspace: {} });
@@ -97,6 +102,29 @@ beforeEach(() => {
 afterEach(() => { for (const client of clients.splice(0)) client.clear(); });
 
 describe("InboxPage query recovery", () => {
+  it("keeps the snoozed URL through a cold error and retry", async () => {
+    const snoozed = { ...notification, snoozed_until: "2030-06-16T09:00:00Z", snooze_revision: 1 };
+    mocks.listSnoozedInbox.mockRejectedValueOnce(new Error("Unavailable")).mockResolvedValue([snoozed]);
+    renderInbox(false, false, true, true);
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load snoozed notifications");
+    expect(screen.queryByText("No snoozed notifications")).not.toBeInTheDocument();
+    expect(mocks.replace).not.toHaveBeenCalled();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
+
+    expect(await screen.findByRole("button", { name: notification.title })).toBeInTheDocument();
+    expect(mocks.listSnoozedInbox).toHaveBeenCalledTimes(2);
+    expect(mocks.replace).not.toHaveBeenCalled();
+  });
+
+  it("retains the successful empty snoozed view", async () => {
+    renderInbox(false, false, false, true);
+
+    expect(await screen.findByText("No snoozed notifications")).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(mocks.replace).not.toHaveBeenCalled();
+  });
+
   it.each([false, true])("retries a cold failure and preserves its selected URL (archived: %s)", async (archived) => {
     const request = archived ? mocks.listArchivedInbox : mocks.listInbox;
     request.mockRejectedValueOnce(new Error("Unavailable")).mockResolvedValue([{ ...notification, archived }]);

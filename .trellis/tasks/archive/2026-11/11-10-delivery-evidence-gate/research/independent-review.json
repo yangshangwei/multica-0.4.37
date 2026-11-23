@@ -1,0 +1,316 @@
+{
+  "reviewed_at": "2026-11-10T09:35:18.236158+08:00",
+  "reviewer": "native trellis-check gate_review",
+  "verdict": "pass",
+  "blocking_findings": [],
+  "scope": "Observe-only fixed-policy API for retained controlled local-synthetic artifact evidence; not enforced done/project delivery gate",
+  "reviewer_product_edits": 0,
+  "reviewer_database_writes": 0,
+  "reviewed_source_hashes": {
+    "server/cmd/server/delivery_evidence_integration_test.go": "d50b65b821711bf424898f9f9bb52d9d5c4799a5cec8e26f5a5d99198db18032",
+    "server/cmd/server/router.go": "4a6c8a80c0ea95dd5a5c62a1e5c1c80755138cabcae7796ae5e3e76b32307ad4",
+    "server/internal/handler/delivery_evidence.go": "8e8ed1d0119c4ba2b4d2f757f3ac817e3bd9e6b9ed44b243fa13a9d9a75fe9db",
+    "server/internal/handler/delivery_evidence_test.go": "9af6b9daebf0e14b0f41581a06e40f057835bf57a26c82731adf85704a3c7408",
+    "server/internal/service/builtin_skills/multica-creating-agents/SKILL.md": "58e7006c9eea3981a890168a5ca2192f926de01837863f33885e9f832f8112eb",
+    "server/internal/service/builtin_skills/multica-creating-agents/references/creating-agents-source-map.md": "5e47f571f64e03a99701d06c38056f13352acc393942d03b5fcbdf3a9f0f5bd7"
+  },
+  "gofmt": "pass; independently executed",
+  "diff_check": "pass; independently executed",
+  "source_files_matched": 6,
+  "checks": {
+    "final-handler-normal-02": {
+      "record": "research/runs/final-handler-normal-02.json",
+      "record_sha256": "794c048abfc01eeacd4e8ca1268529f9eb13f575447c53ee1a4a233f45b7bf66",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-handler-normal-02.log",
+      "log_sha256": "c722a6090003730bde98bc08d80e056213cd09cfbf9addca0bc9a5bf426eb545",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/handler",
+        "-run",
+        "^Test(DeliveryEvidence|ControlledArtifact|.*AgentApproval|RecordExecution)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "multica_delivery_20261110_handler_final2",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 140,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-handler-race-02": {
+      "record": "research/runs/final-handler-race-02.json",
+      "record_sha256": "1b66b9c9403229442af5adc9b604d369077d81c9105902ee16b43c4fcd2b89b1",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-handler-race-02.log",
+      "log_sha256": "6e2bd543a487aaf57233defeca1c90bcba429a652c97022d61a6ee3a0ffb5225",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/handler",
+        "-run",
+        "^Test(DeliveryEvidence|ControlledArtifact|.*AgentApproval|RecordExecution)",
+        "-count=1",
+        "-timeout=10m",
+        "-race"
+      ],
+      "database": "multica_delivery_20261110_handler_race2",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 140,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-router-normal-02": {
+      "record": "research/runs/final-router-normal-02.json",
+      "record_sha256": "3dd4494b53b5812a1e05d20214f35d71a120d4c688cf06187a771eebeb64fc74",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-router-normal-02.log",
+      "log_sha256": "2390247449e911af974abfbe40f8af53c0b6ac4bdf3c16d4ce6b455912f213d4",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./cmd/server",
+        "-run",
+        "^Test(DeliveryEvidence|ControlledArtifact)",
+        "-count=1",
+        "-timeout=10m"
+      ],
+      "database": "multica_delivery_20261110_router_final2",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-router-race-02": {
+      "record": "research/runs/final-router-race-02.json",
+      "record_sha256": "4d6843f1a1b3704e64f57dd5f421e96e295d054b810499856f1ed6905c7853b6",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-router-race-02.log",
+      "log_sha256": "3b455f6b3fe36e7dd53cac2e345e2ee0fb509c44c9c782bb7ce5c2bf1c9889ef",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./cmd/server",
+        "-run",
+        "^Test(DeliveryEvidence|ControlledArtifact)",
+        "-count=1",
+        "-timeout=10m",
+        "-race"
+      ],
+      "database": "multica_delivery_20261110_router_race2",
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 34,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-build-02": {
+      "record": "research/runs/final-build-02.json",
+      "record_sha256": "2b618702b210570633a5307335e1f044d9e4eca84c57ed2cfd3bd0ec01060288",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-build-02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "build",
+        "./..."
+      ],
+      "database": null,
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-vet-02": {
+      "record": "research/runs/final-vet-02.json",
+      "record_sha256": "5b930a2fcc481cbe6ce13a6deecdbde8a644fd9f040658bc285c72abe97d26ad",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-vet-02.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "go",
+        "-C",
+        "server",
+        "vet",
+        "./..."
+      ],
+      "database": null,
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-builtin": {
+      "record": "research/runs/final-builtin.json",
+      "record_sha256": "09cb462f5285c0e8b9a35e0c0b5c39e201f4ff34497b2730f520cb0e8892459b",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-builtin.log",
+      "log_sha256": "76bd3a69c79f4e4009ae00871befa7408c6441aed9a6ab634f9f38890675f4d5",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/service",
+        "-run",
+        "^Test(BuiltinSkillsConformToTemplate|BuiltinSkillsFrontmatterIsStrictYAML|CreatingAgentsSkillCoversAgentCreationContracts)$",
+        "-count=1"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 21,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "final-runtime": {
+      "record": "research/runs/final-runtime.json",
+      "record_sha256": "db081c693711bd403b359802580f6e01400437a96b8be2cb670a2c072052285c",
+      "log": "/private/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/multica-delivery-20261110-ymad9b70/logs/final-runtime.log",
+      "log_sha256": "05b5c8b9e318f13c880bd9e6ce147e375f25be483737edf7294b385c29196485",
+      "command": [
+        "bash",
+        "scripts/go-test-with-agent-cli-guard.sh",
+        "--",
+        "go",
+        "-C",
+        "server",
+        "test",
+        "-json",
+        "./internal/metrics",
+        "-run",
+        "^TestNoDirectGetAgentRuntimeCalls$",
+        "-count=1"
+      ],
+      "database": null,
+      "exit_code": 0,
+      "named_test_counts": {
+        "pass": 1,
+        "fail": 0,
+        "skip": 0
+      }
+    }
+  },
+  "retained_failed_attempts": {
+    "handler-01": {
+      "record": "research/runs/handler-01.json",
+      "record_sha256": "5a31fa852df507e1934f0c93d8522f9be7ce640e0181889a1527e689309d8c3c",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 35,
+        "skip": 0
+      },
+      "log_sha256": "7cfa6ec95ae9adb277599362b6c171bf6d7e721eed877f3f84c4b53c16b31c65"
+    },
+    "handler-02": {
+      "record": "research/runs/handler-02.json",
+      "record_sha256": "386ec9f380ce5922243634a911d316f67369061df996a7c8129bb6057b33bcd7",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 32,
+        "fail": 5,
+        "skip": 0
+      },
+      "log_sha256": "079132f56f01220d95f590462651ee0f3e494c8ac1b1598c24f6e59b381a6988"
+    },
+    "handler-03": {
+      "record": "research/runs/handler-03.json",
+      "record_sha256": "bd7aca475e665116b8f6c8c18da6804b597369c7884a7dae128b50d135ec6436",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 40,
+        "fail": 7,
+        "skip": 0
+      },
+      "log_sha256": "069fc74c845936e191a594af3e8be15bf53ccd069993fdc3a33882b1c5a5d4c3"
+    },
+    "router-red-01": {
+      "record": "research/runs/router-red-01.json",
+      "record_sha256": "a46cc6cf50449a7b0e9722388f0af880fe8d4ccd9bb58b4e520050c3219964b9",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 0,
+        "fail": 11,
+        "skip": 0
+      },
+      "log_sha256": "f5ed048cd24aa40a6f41b70ff3fb216ddea27dea721909a27884406ca791bead"
+    },
+    "final-router-race": {
+      "record": "research/runs/final-router-race.json",
+      "record_sha256": "3104cc05274a4eb760b0120289f283932d42feb8d10408211491cf1d97a08087",
+      "exit_code": 1,
+      "named_test_counts": {
+        "pass": 32,
+        "fail": 2,
+        "skip": 0
+      },
+      "log_sha256": "73412dac0023ab0882bb27f246bd96a9da52973992ff197895042fedde3abc9f"
+    }
+  },
+  "resolved_findings": [
+    "Current authority includes distinct original initiator, originator, runtime owner, approver and human claimant, including completed producer tasks.",
+    "Competing equal-ranked PR heads are unknown; four-table SHARE NOWAIT prevents both PR updates and link phantoms.",
+    "Receipt re-encoding preserves JSON numbers, validates every field and permits the real two-clock finalization interval.",
+    "Malformed null project revision with a non-null project ID returns400 instead of a nil-pointer panic.",
+    "Credential validity is rechecked after captured observed_at, eliminating the PAT expiry gap at snapshot time.",
+    "Standalone new skill/source-map text respects the500-line entrypoint budget and renders inside the actual table.",
+    "Revocation tests isolate principals, lock tests require55P03, canonical JSON comparison checks parsing errors, and before/after commit failures return no observation.",
+    "PAT race fixture synchronizes the same real authenticated request with its ancillary last_used_at commit; exactly one positive evaluation must return200/pass, with no retries or weakened locks."
+  ],
+  "acceptance_mapping": {
+    "actual_execution": "RouterActualPackageObservation verifies real task-auth create/decision/execute, one actual tar archive/digest/content, retained receipt and repeated evaluation without lifecycle/queue/file changes. HandlerActualPackageSnapshot also works with packager disabled and completed tasks.",
+    "current_candidate": "NoFalseGreen old_candidate/advanced_head/missing_head/ambiguous_head, VCSSelection and real-router current candidate/legacy update. Selected SHA never becomes remote HEAD authority.",
+    "receipt_and_expiry": "NoFalseGreen artifact/spec/receipt_tamper/row_tamper/missing_receipt/unknown/failed/expired plus ReceiptBindingSurvivesRehash identity/digest/number/extra-field tampering.",
+    "authorization": "DistinctHistoricalPrincipals isolates originator/runtime-owner/initiator/approver/claimant/invocation removal. Router tests verify legacy/password/JWT/PAT, machine/forged/cross-workspace refusal and post-auth revocation.",
+    "concurrency": "WriterFirst nine row classes; ObservationFencesWriters issues/projects/PR/link/member and GitHub/VCS phantom inserts; exact55P03 and commit barrier. Phantom insertion is explicitly covered in observation-first order; row-update contention is covered in both orders.",
+    "failed_commit": "CommitFailure before and after actual read transaction commit returns503 without verdict or business fact mutation.",
+    "compatibility": "New isolated human-only route; old update-to-done works after hold/unknown; existing artifact/approval suites retained. No UI consumers/schema change."
+  },
+  "verification_boundaries": [
+    "Counts include named subtests and are separate ordinary/race runs; do not add them as unique cases.",
+    "Handler140 consists of56 observation names plus84 existing artifact/approval names; router34 consists of11 observation names plus23 existing artifact names.",
+    "Final router test synchronization changed only router test bytes after the handler final runs; the five other frozen file hashes remained identical.",
+    "Builtin/runtime checks preceded only the credential-clock ordering adjustment; their sources and observed runtime helper path were unchanged.",
+    "No SQL/schema/generated files changed, so sqlc regeneration was unnecessary. No frontend files changed, so TypeScript/frontend checks are not applicable.",
+    "No full-repository, production, remote HEAD, general quality-gate, UI/CLI, model, Linux/Windows or performance acceptance is claimed.",
+    "Historical failed attempts remain failures. Original temporary-path/fixture failures and PAT ancillary contention are not relabeled as valid product red-green results.",
+    "Real model calls0; AC43/E5/H3a/knowledge stop rules unchanged. Cleanup and scoped commit/archive are coordinator responsibilities."
+  ]
+}

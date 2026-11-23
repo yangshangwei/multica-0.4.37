@@ -1,0 +1,41 @@
+{
+  "at": "2026-11-05T05:10:58.321446+00:00",
+  "execution_owner": "01a1a729-99ac-7ab2-a312-6478d946d58a",
+  "execution_head": "f033051ca97b97fd237998c553bbc9a876a1b40b",
+  "execution_status": "",
+  "helper_sha256": "2220c3211f39544a187694ba205902b3e8e0080f21ce946e678d78a36f49f27c",
+  "helper_main_private_equal": true,
+  "controls_tests": 11,
+  "controls_exit": 0,
+  "successor_review": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/continuation-20261105/plugin-drift-resolution/successor-review.json",
+  "successor_review_sha256": "12abe04107b21ba9b6c78180db960c49c0e66b2cf2697dcec803e7315f009e10",
+  "old_framework_sha256": "5eaea44f480f8e94a9a90d35025ca2d68d76c895c5bf70fa902da37c5bed94c9",
+  "public_before": [
+    {
+      "path": "/Volumes/artisan/code/2026/mc-runtime-acceptance-20261104/.trellis/tasks/10-30-collaboration-context-handoff-runtime/research/real-model-rk1/results/RK1-E0a-t1.json",
+      "sha256": "5b0b221f0401db1424494864778e173daf9b229cdc007255467200c1a68db0ba",
+      "label": "RK1-E0a-t1",
+      "status": "finished",
+      "verdict": "pass",
+      "paid": 1
+    }
+  ],
+  "runtime_cap": 25,
+  "consumed": 1,
+  "remaining": 24,
+  "H1_expected_paid": 3,
+  "H1_expected_after_consumed": 4,
+  "H1_expected_after_remaining": 21,
+  "scenario": "RK1-H1",
+  "start_trial": 1,
+  "registered_labels": [
+    "RK1-H1-t1",
+    "RK1-H1-t2",
+    "RK1-H1-t3"
+  ],
+  "H1_started": false,
+  "live_permit_written": false,
+  "config_or_db_written": false,
+  "next": "Owner final registration+fresh DB/config/CLI binding and explicit shared window; use existing reviewed helper stages once",
+  "scope": "No new test/model/config scan; reuse accepted11controls and latesthashes, no additional review gate."
+}

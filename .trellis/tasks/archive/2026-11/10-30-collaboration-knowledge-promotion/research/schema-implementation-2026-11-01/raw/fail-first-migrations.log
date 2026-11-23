@@ -1,0 +1,26 @@
+=== RUN   TestKnowledgeSchemaFreshReapplyAndEmptyDown
+    collaboration_knowledge_test.go:63: knowledge schema/index migrations missing: 0
+--- FAIL: TestKnowledgeSchemaFreshReapplyAndEmptyDown (0.12s)
+=== RUN   TestKnowledgeSchemaImmutableVersionsAndSingleApproval
+    collaboration_knowledge_test.go:74: knowledge schema/index migrations missing: 0
+--- FAIL: TestKnowledgeSchemaImmutableVersionsAndSingleApproval (0.08s)
+=== RUN   TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation
+=== RUN   TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/negotiation
+    collaboration_knowledge_test.go:97: knowledge schema/index migrations missing: 0
+=== RUN   TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/delivery
+    collaboration_knowledge_test.go:97: knowledge schema/index migrations missing: 0
+=== RUN   TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/scan
+    collaboration_knowledge_test.go:97: knowledge schema/index migrations missing: 0
+=== RUN   TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/hint
+    collaboration_knowledge_test.go:97: knowledge schema/index migrations missing: 0
+=== RUN   TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/uncommitted
+    collaboration_knowledge_test.go:97: knowledge schema/index migrations missing: 0
+--- FAIL: TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation (0.36s)
+    --- FAIL: TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/negotiation (0.07s)
+    --- FAIL: TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/delivery (0.08s)
+    --- FAIL: TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/scan (0.07s)
+    --- FAIL: TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/hint (0.07s)
+    --- FAIL: TestKnowledgeSchemaDownProtectsTaskAndPendingInvalidation/uncommitted (0.07s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/migrations	1.019s
+FAIL

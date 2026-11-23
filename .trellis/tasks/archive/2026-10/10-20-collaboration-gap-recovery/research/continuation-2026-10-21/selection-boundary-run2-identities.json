@@ -1,0 +1,131 @@
+{
+  "criterion": "AC87",
+  "actor_id": "42a2ab3a-60ae-48d4-8244-d0c66ae31eed",
+  "issue_id": "01a15e47-a91a-7af0-bdbd-838369138b4a",
+  "comment_id": "b403eb5b-6281-4f6c-a9f9-168cd02d2699",
+  "ordinary_issue_id": "01a15e47-a94e-7ac9-8eb1-d71f5c641233",
+  "ordinary_comment_id": "01a15e47-a96a-72ab-88c0-5d3ae297eeaa",
+  "environment": {
+    "api": "http://localhost:18996",
+    "web": "http://localhost:13916",
+    "renderer": "http://localhost:6090",
+    "electron_os": "darwin",
+    "provider_started": false
+  },
+  "source": [
+    {
+      "path": "e2e/collaboration-selection-boundary.spec.ts",
+      "sha256": "4f7ea2af13cfaba755f40ab6c32b74e0133025d5bb477386a154d261f5c4d9dc"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-selection-boundary.ts",
+      "sha256": "684a7869f9a368036f11989598f15db93f26741ef51a3c0ed037e4632a1fb12a"
+    }
+  ],
+  "web_shared": {
+    "body": {
+      "marker": "AC87 shared body selection",
+      "selected": "AC87 shared body selection",
+      "bounds": {
+        "left": 384,
+        "right": 570.328125,
+        "y": 380.5
+      }
+    },
+    "comment": {
+      "marker": "AC87 shared comment selection",
+      "selected": "AC87 shared comment selection",
+      "bounds": {
+        "left": 384,
+        "right": 598.78125,
+        "y": 393.25
+      }
+    },
+    "create_subtask_entries": 0
+  },
+  "electron_shared": {
+    "body": {
+      "marker": "AC87 shared body selection",
+      "selected": "AC87 shared body selection",
+      "bounds": {
+        "left": 412.5,
+        "right": 598.8203125,
+        "y": 481
+      }
+    },
+    "comment": {
+      "marker": "AC87 shared comment selection",
+      "selected": "AC87 shared comment selection",
+      "bounds": {
+        "left": 412.5,
+        "right": 627.28125,
+        "y": 559.75
+      }
+    },
+    "create_subtask_entries": 0
+  },
+  "web_ordinary": {
+    "body": {
+      "marker": "AC87 ordinary body selection",
+      "selected": "AC87 ordinary body selection",
+      "bounds": {
+        "left": 299,
+        "right": 494.90625,
+        "y": 179
+      }
+    },
+    "comment": {
+      "marker": "AC87 ordinary comment selection",
+      "selected": "AC87 ordinary comment selection",
+      "bounds": {
+        "left": 356,
+        "right": 580.375,
+        "y": 507.75
+      }
+    },
+    "create_subtask_entries": 2,
+    "preview": {
+      "source_issue_id": "01a15e47-a94e-7ac9-8eb1-d71f5c641233",
+      "status": 200
+    }
+  },
+  "electron_ordinary": {
+    "body": {
+      "marker": "AC87 ordinary body selection",
+      "selected": "AC87 ordinary body selection",
+      "bounds": {
+        "left": 43,
+        "right": 238.90625,
+        "y": 220
+      }
+    },
+    "comment": {
+      "marker": "AC87 ordinary comment selection",
+      "selected": "AC87 ordinary comment selection",
+      "bounds": {
+        "left": 100,
+        "right": 324.3671875,
+        "y": 548.75
+      }
+    },
+    "create_subtask_entries": 2,
+    "preview": {
+      "source_issue_id": "01a15e47-a94e-7ac9-8eb1-d71f5c641233",
+      "status": 200
+    }
+  },
+  "web_source_context_requests": [
+    {
+      "method": "GET",
+      "path": "/api/comments/01a15e47-a96a-72ab-88c0-5d3ae297eeaa/sub-issue-preview"
+    }
+  ],
+  "electron_shared_source_context_requests": [],
+  "electron_ordinary_source_context_requests": [
+    {
+      "method": "GET",
+      "path": "/api/comments/01a15e47-a96a-72ab-88c0-5d3ae297eeaa/sub-issue-preview"
+    }
+  ],
+  "web_errors": []
+}

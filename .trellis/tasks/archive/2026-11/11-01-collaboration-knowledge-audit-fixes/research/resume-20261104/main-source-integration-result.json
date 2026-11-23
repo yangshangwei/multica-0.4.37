@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-11-04T08:32:03.913618+00:00",
+  "state": "local_scoped_fast_forward_pass",
+  "owner": "01a1a3c9-2459-7de1-8244-55640c5f6143",
+  "before_head": "084ea3c987fa4ab8418a2ae5b3b7a20c096c36d8",
+  "after_head": "eda0d68fb07852b714f3092aa02ca0523d3ad312",
+  "review": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-final-closure-review/final-acceptance-review.json",
+    "sha256": "ce7822106c10b5841fd25ae32d2330b0b618d8c47e9c1e4c19c9d806db9c6da2"
+  },
+  "preservation_plan": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-01-collaboration-knowledge-audit-fixes/research/resume-20261104/task7-integration-preservation-plan.json",
+    "sha256": "07a6f3f7a4a66c4274c0ce83a6a9c052da94fad8cee8e0327ac4f55a7a8b74c7"
+  },
+  "retained_path_scoped_stash_oid": "b0cfe3999abfa562fc94ed1de67eb8afcdb14ca8",
+  "stash_tracked_paths": [
+    "e2e/collaboration-account-desktop.spec.ts",
+    "e2e/collaboration-boundaries-web.spec.ts",
+    "e2e/collaboration-delivery-web.spec.ts",
+    "e2e/collaboration-editing-web.spec.ts",
+    "e2e/collaboration-installed-main.spec.ts",
+    "e2e/collaboration-knowledge.spec.ts",
+    "e2e/collaboration-memory-web.spec.ts",
+    "e2e/collaboration-preview-web.spec.ts",
+    "e2e/collaboration-records-web.spec.ts",
+    "e2e/collaboration-resources-web.spec.ts",
+    "e2e/collaboration-workbench-web.spec.ts",
+    "e2e/fixtures/collaboration-editing.ts",
+    "e2e/fixtures/collaboration-installed-main.mjs",
+    "e2e/fixtures/collaboration-knowledge.ts",
+    "e2e/fixtures/collaboration-mention-journeys.ts",
+    "e2e/fixtures/collaboration-resource-offers.ts",
+    "packages/views/collaboration/field-editing.test.tsx",
+    "packages/views/collaboration/field-inputs.test.tsx",
+    "packages/views/collaboration/field-inputs.tsx",
+    "packages/views/locales/en/collaboration.json",
+    "packages/views/locales/zh-Hans/collaboration.json",
+    "server/internal/handler/daemon_test.go"
+  ],
+  "stash_untracked_paths": [
+    "e2e/fixtures/collaboration-disclosures.ts",
+    "e2e/fixtures/collaboration-recipient-picker.mjs"
+  ],
+  "all_24_original_byte_backups_preserved": true,
+  "all_29_incoming_paths_equal_accepted_candidate": true,
+  "all_unrelated_dirty_tracked_bytes_and_modes_unchanged": true,
+  "unrelated_dirty_tracked_count": 28,
+  "remaining_source_diff": [
+    "apps/web/next-env.d.ts"
+  ],
+  "global_stash_reset_clean_stage_used": false,
+  "source_test_or_provider_rerun": false,
+  "knowledge_budget": 0,
+  "knowledge_calls": 0,
+  "production_default_enabled": false,
+  "merge_exit": 0
+}

@@ -1,0 +1,182 @@
+[
+  {
+    "package": "06-cmd_server",
+    "test": "TestCollaborationSquadCLIAndDaemonCapacityOneRoutesLinux",
+    "reason": "collaboration_daemon_cli_routes_test.go:27: requires explicit Linux namespace integration environment"
+  },
+  {
+    "package": "06-cmd_server",
+    "test": "TestCollaborationPartialResumeRoutesLinux",
+    "reason": "collaboration_hold_routes_test.go:155: requires explicit Linux namespace integration environment"
+  },
+  {
+    "package": "06-cmd_server",
+    "test": "TestKnowledgeQueuedFrameRejectsStalePATCacheAfterRevocationOrExpiry",
+    "reason": "collaboration_knowledge_realtime_test.go:125: requires isolated REDIS_TEST_URL"
+  },
+  {
+    "package": "06-cmd_server",
+    "test": "TestCollaborationSingleAgentRuntimeRoutesLinux",
+    "reason": "collaboration_single_agent_routes_test.go:418: requires explicit Linux namespace integration environment"
+  },
+  {
+    "package": "06-cmd_server",
+    "test": "TestCollaborationHeldSquadAllowsDirectAgentRoutesLinux",
+    "reason": "collaboration_single_agent_routes_test.go:585: requires explicit Linux namespace integration environment"
+  },
+  {
+    "package": "06-cmd_server",
+    "test": "TestCollaborationRuntimeProofSurvivesOwnerDisableLinux",
+    "reason": "collaboration_single_agent_routes_test.go:688: requires explicit Linux namespace integration environment"
+  },
+  {
+    "package": "06-cmd_server",
+    "test": "TestCollaborationSquadCapacityOneRoutesLinux",
+    "reason": "collaboration_squad_routes_test.go:173: requires explicit Linux namespace integration environment"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestCloudPATVerifier_CacheHitSkipsHTTP",
+    "reason": "cloud_pat_test.go:290: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestCloudPATVerifier_NegativesNotCached",
+    "reason": "cloud_pat_test.go:324: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestCloudPATVerifier_LookupRejectsUnknownOwner",
+    "reason": "cloud_pat_test.go:356: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestCloudPATVerifier_LookupSuccessIsCached",
+    "reason": "cloud_pat_test.go:435: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestDaemonTokenCache_SetGetInvalidate",
+    "reason": "daemon_token_cache_test.go:27: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestDaemonTokenCache_TTL",
+    "reason": "daemon_token_cache_test.go:51: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestDaemonTokenCache_Set_RespectsClampedTTL",
+    "reason": "daemon_token_cache_test.go:69: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestMembershipCache_SetGetInvalidate",
+    "reason": "membership_cache_test.go:27: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestMembershipCache_TTL",
+    "reason": "membership_cache_test.go:50: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestMembershipCache_IsolatesKeysByUser",
+    "reason": "membership_cache_test.go:68: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestPasswordLimiterSharedAtomicAdmission",
+    "reason": "password_limiter_integration_test.go:20: MULTICA_TEST_REDIS_URL not configured"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestPATCache_SetGetInvalidate",
+    "reason": "pat_cache_test.go:61: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestPATCache_TTL",
+    "reason": "pat_cache_test.go:90: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "12-internal_auth",
+    "test": "TestPATCache_Set_RespectsClampedTTL",
+    "reason": "pat_cache_test.go:142: REDIS_TEST_URL not set"
+  },
+  {
+    "package": "20-internal_daemon",
+    "test": "TestCollaborationBatchPollerSlotsAndRunnerLinux",
+    "reason": "collaboration_test.go:189: requires real Linux kernel containment"
+  },
+  {
+    "package": "20-internal_daemon",
+    "test": "TestIsDriveRoot",
+    "reason": "local_directory_test.go:383: windows-only behaviour"
+  },
+  {
+    "package": "04-cmd_migrate",
+    "test": "TestCommentContentBigramRequirementMatchesRealPGBigm",
+    "reason": "migrate_comment_search_index_strategy_test.go:156: Postgres does not provide pg_bigm; install it to run the real-opclass integration test"
+  },
+  {
+    "package": "69-pkg_agent",
+    "test": "TestACPManagedTerminalPreservesWindowsUnicodeShellOutput",
+    "reason": "acp_terminal_test.go:89: Windows cmd.exe code-page behavior only applies on Windows"
+  },
+  {
+    "package": "69-pkg_agent",
+    "test": "TestCodexExecuteRetriesAfterSignaledProcessIsReaped",
+    "reason": "codex_test.go:3198: Linux signal/reap semantics regression"
+  },
+  {
+    "package": "69-pkg_agent",
+    "test": "TestPiExecuteAttachesStdinPipe",
+    "reason": "pi_test.go:226: stdin fd inspection relies on /proc/self/fd/0"
+  },
+  {
+    "package": "69-pkg_agent",
+    "test": "TestClaudeRootSudoPreflight/root_bypass_without_sandbox_errors",
+    "reason": "claude_test.go:756: root-only preflight assertion"
+  },
+  {
+    "package": "17-internal_cli",
+    "test": "TestCLIConfig_UnknownFieldsArePreserved",
+    "reason": "config_test.go:265: documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder"
+  },
+  {
+    "package": "33-internal_handler",
+    "test": "TestWebhookHandler_DBErrorOnTokenLookupReturns500",
+    "reason": "autopilot_webhook_handler_test.go:971: 500-branch requires injecting a stub Queries; left as a code-review-protected invariant"
+  },
+  {
+    "package": "33-internal_handler",
+    "test": "TestIterationI1P95",
+    "reason": "iteration_i1_p95_test.go:25: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL"
+  },
+  {
+    "package": "33-internal_handler",
+    "test": "TestIterationI1DisableP95",
+    "reason": "iteration_i1_p95_test.go:160: opt-in: MULTICA_RUN_I1_P95=1 with an exclusive DATABASE_URL"
+  },
+  {
+    "package": "33-internal_handler",
+    "test": "TestFetchFromSkillsSh_AnthropicPptxIntegration",
+    "reason": "skill_test.go:989: set MULTICA_RUN_SKILLS_SH_INTEGRATION=1 to run live GitHub integration test"
+  },
+  {
+    "package": "33-internal_handler",
+    "test": "TestTriageQueueScaleBaseline",
+    "reason": "triage_performance_test.go:20: set MULTICA_TRIAGE_PERF=1 to measure 10k formal/2k pending"
+  },
+  {
+    "package": "33-internal_handler",
+    "test": "TestTriageWireFixtures",
+    "reason": "triage_test.go:566: wire fixture export requested only by cross-package verification"
+  },
+  {
+    "package": "33-internal_handler",
+    "test": "TestMcpMarketPublicHTTPRecipeLifecycle",
+    "reason": "workspace_mcp_template_test.go:228: the catalog ships no HTTP recipes"
+  }
+]

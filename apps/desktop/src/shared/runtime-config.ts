@@ -149,6 +149,46 @@ export function deriveDevAppUrl(apiUrl: string): string {
   return deriveAppUrl(apiUrl);
 }
 
+// Web origin for URLs that leave the app: copied links, share/invite links,
+// "open in browser". The server knows its own web origin and publishes it as
+// `daemon_app_url` in /api/config (MULTICA_APP_URL, else FRONTEND_ORIGIN). A
+// desktop that was only given an API address can merely guess, and for any
+// host without an `api.` label the guess is the API origin itself, which
+// serves no pages — so a published origin replaces the guess.
+//
+// A stored appUrl that differs from the guess was set on purpose (desktop.json
+// or VITE_APP_URL) and keeps winning. The managed cloud publishes nothing, so
+// it stays on the `api.` derivation. A loopback origin published by a server
+// reached over the network is the untouched compose default
+// (http://localhost:3000), not this deployment's address, and is ignored.
+export function resolveAppUrl(
+  runtime: {
+    config: Pick<RuntimeConfig, "apiUrl" | "appUrl">;
+    source: "configured" | "dev";
+  },
+  serverAppUrl: string | null | undefined,
+): string {
+  const { apiUrl, appUrl } = runtime.config;
+  const published = serverAppUrl?.trim();
+  if (!published) return appUrl;
+  try {
+    const normalized = normalizeHttpUrl(published, "daemon_app_url");
+    if (isLoopbackUrl(normalized) && !isLoopbackUrl(apiUrl)) return appUrl;
+    const guessed =
+      runtime.source === "dev" ? deriveDevAppUrl(apiUrl) : deriveAppUrl(apiUrl);
+    return appUrl === guessed ? normalized : appUrl;
+  } catch {
+    // Response drift (no scheme, credentials, garbage) must not break links
+    // that worked before; keep the locally resolved origin.
+    return appUrl;
+  }
+}
+
+function isLoopbackUrl(value: string): boolean {
+  const { hostname } = new URL(value);
+  return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]";
+}
+
 function requiredString(value: unknown, field: string): string {
   if (typeof value !== "string" || value.trim().length === 0) {
     throw new Error(`Invalid desktop runtime config: ${field} must be a non-empty string`);

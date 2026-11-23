@@ -7,6 +7,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/google/uuid"
+
+	"github.com/multica-ai/multica/server/internal/testutil"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -296,6 +299,62 @@ func TestSubscriberAPI(t *testing.T) {
 		}
 		if agentSubscribed {
 			t.Fatal("expected agent to be unsubscribed in DB when X-Agent-ID is set")
+		}
+	})
+
+	// An agent caller names a workspace member in the body: that member is
+	// subscribed, not the agent. The security remediation squad instructions
+	// rely on this so a leader can subscribe the human security owner before a
+	// gate; reviewer results posted afterwards reach subscribers only.
+	t.Run("AgentCallerSubscribesWorkspaceMember", func(t *testing.T) {
+		issueID := createIssue(t)
+		defer deleteIssue(t, issueID)
+
+		// The target is neither the caller nor the member behind X-User-ID, so
+		// only the request body can have selected it.
+		targetID := dbfx.User(t, "Subscriber Target", "subscriber-target-"+uuid.NewString()+"@example.invalid")
+		dbfx.Member(t, testWorkspaceID, targetID, "member")
+		dbfx.Cleanup(t, `DELETE FROM issue_subscriber WHERE issue_id = $1`, issueID)
+
+		var agentID string
+		dbfx.QueryRow(t,
+			`SELECT id FROM agent WHERE workspace_id = $1 AND name = $2`,
+			testWorkspaceID, "Handler Test Agent",
+		).Scan(&agentID)
+		agentTask := createHandlerTestTaskForAgent(t, agentID)
+
+		isSubscribed := func(userType, userID string) bool {
+			t.Helper()
+			subscribed, err := testHandler.Queries.IsIssueSubscriber(ctx, db.IsIssueSubscriberParams{
+				IssueID:  parseUUID(issueID),
+				UserType: userType,
+				UserID:   parseUUID(userID),
+			})
+			if err != nil {
+				t.Fatalf("IsIssueSubscriber (%s %s): %v", userType, userID, err)
+			}
+			return subscribed
+		}
+		if isSubscribed("member", targetID) {
+			t.Fatal("target member is subscribed before the agent's request; the test would prove nothing")
+		}
+
+		req := withURLParam(newRequest("POST", "/api/issues/"+issueID+"/subscribe", map[string]any{
+			"user_id":   targetID,
+			"user_type": "member",
+		}), "id", issueID)
+		req.Header.Set("X-Agent-ID", agentID)
+		req.Header.Set("X-Task-ID", agentTask)
+		testutil.Call(t, testHandler.SubscribeToIssue, req).Want(http.StatusOK)
+
+		if !isSubscribed("member", targetID) {
+			t.Fatal("agent caller named a workspace member; expected that member to be subscribed")
+		}
+		if isSubscribed("agent", agentID) {
+			t.Fatal("agent caller named another target; the agent itself must not be subscribed")
+		}
+		if isSubscribed("member", testUserID) {
+			t.Fatal("the member behind X-User-ID must not be subscribed when the body names another target")
 		}
 	})
 

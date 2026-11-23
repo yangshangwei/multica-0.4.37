@@ -1,0 +1,47 @@
+{
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "-race",
+    "-tags=agentintegration",
+    "./cmd/server",
+    "-run",
+    "^TestRK1KnowledgeCodex(ContinuationControls|E0bRetryControls|RegistrationGuard|RegistrationIntegrity|LedgerStopsAfterIncomplete|PhysicalBudget|RPCControls|SampleAcknowledgment)$",
+    "-count=1",
+    "-parallel=2",
+    "-timeout=5m",
+    "-json"
+  ],
+  "at": "2026-11-08T10:08:01.269841+08:00",
+  "exit_code": 0,
+  "seconds": 20.250180959701538,
+  "real_agent_gate": "0",
+  "database": "multica_merge_takeover_20261108_router_1",
+  "source_head": "7647d6eb853b0eb0d6fea3272e0eecd27012f578",
+  "before_head": "7647d6eb853b0eb0d6fea3272e0eecd27012f578",
+  "before_hashes": {
+    "server/cmd/server/rk1k_codex_registration_test.go": "5becd7530091c30a8f39324c7b3fa30210302e7eb4ba196b1970899ab5dc6bb3",
+    "server/cmd/server/rk1k_codex_retry_test.go": "ac64694427ea4747f9965ec43d949d646e1edaf63377e91062408c23f97ddc1d",
+    "server/cmd/server/rk1k_scenarios_test.go": "f1bda40ac490a4580775e1175de2bf54ec5aa04b767f17195f263e6d10d3bd19",
+    "server/cmd/server/rk1k_codex_continuation_controls_test.go": "3d825512206752d19b7df1041cad60d361d4859348ff35465efa0625aab17f11",
+    "server/cmd/server/rk1k_codex_continuation_test.go": "a3ae30077626c3cff743fb3413e104b79a832795d6f71fc71dfaa30f20c4c545",
+    "server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+    "server/internal/daemon/collaborationrun/host_context_experiment_test.go": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893",
+    "server/internal/daemon/collaborationrun/host_context_experiment_stop_test.go": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d"
+  },
+  "after_hashes": {
+    "server/cmd/server/rk1k_codex_registration_test.go": "5becd7530091c30a8f39324c7b3fa30210302e7eb4ba196b1970899ab5dc6bb3",
+    "server/cmd/server/rk1k_codex_retry_test.go": "ac64694427ea4747f9965ec43d949d646e1edaf63377e91062408c23f97ddc1d",
+    "server/cmd/server/rk1k_scenarios_test.go": "f1bda40ac490a4580775e1175de2bf54ec5aa04b767f17195f263e6d10d3bd19",
+    "server/cmd/server/rk1k_codex_continuation_controls_test.go": "3d825512206752d19b7df1041cad60d361d4859348ff35465efa0625aab17f11",
+    "server/cmd/server/rk1k_codex_continuation_test.go": "a3ae30077626c3cff743fb3413e104b79a832795d6f71fc71dfaa30f20c4c545",
+    "server/internal/daemon/collaborationrun/host_context_experiment_fixture_test.go": "0245a0719d82c3b9a2d1c754c7df27504b837776a4d04ac2bdb71864afa794d6",
+    "server/internal/daemon/collaborationrun/host_context_experiment_test.go": "09e5d6cc4e1abca7cb332e6c2b30b563351021fcaf730d8ee6445b2257fa6893",
+    "server/internal/daemon/collaborationrun/host_context_experiment_stop_test.go": "2ddb69382caac52ef6afbaf3b6e4246a07d52aa3c06f0a6e0b1b5f8453a8908d"
+  }
+}

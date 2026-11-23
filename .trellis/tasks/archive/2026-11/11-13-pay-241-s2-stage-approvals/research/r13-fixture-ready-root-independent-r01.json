@@ -1,0 +1,164 @@
+{
+  "at": "2026-11-16T00:45:51.718227+00:00",
+  "reviewer": "/root/p2_r07_check",
+  "status": "READY_R13_FOR_BOUND_ORIGINAL_FOUR_CASE_RUN",
+  "source": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/fixture-r13/source",
+  "handoff": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/fixture-r13/final-handoff.json",
+    "sha256": "ed91ff2290599188f18b4cc2aa8629d12f283c7e490fbe563e10d57ae46786c0"
+  },
+  "manifest": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/fixture-r13/input-binding-r13.json",
+    "sha256": "665fb42dde8054add9a80cf0afd5c3a0d806e767c531d8661e696c3141e3b6a0"
+  },
+  "independent_verification": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-a01-a12-r09-r02-check/current-r11-source-check-r01/r13-fixture-ready-root-independent-r01-verification.json",
+    "sha256": "8ad5714ce4f02b7143b6311d37933b58fd88a6413de1286810a3d7d172df57c9"
+  },
+  "exact_patch": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/fixture-r13/host-control-r13.patch",
+    "sha256": "6203ad5f420c95b8f45de60546fa49ba9e82973a81ae15b068612c7d480a9d2e"
+  },
+  "ready_for_ROOT_two_test_path_integration": true,
+  "ready_for_new_ROOT_permit_binding_after_integration": true,
+  "owned_paths": {
+    "e2e/fixtures/collaboration-host-runtime.ts": {
+      "before": {
+        "sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519",
+        "size": 57874,
+        "mode": 384
+      },
+      "after": {
+        "sha256": "3ea2e6a51cd782f55d2268427739e6749f93c8bf23069f817147f2cff603fc92",
+        "size": 59429,
+        "mode": 384
+      }
+    },
+    "e2e/fixtures/collaboration-host-runtime.node-test.mjs": {
+      "before": {
+        "sha256": "6dd3cf1793efb493601f9cf1ec719046ad3353bc18d89dea4baf7984c73b71a4",
+        "size": 4549,
+        "mode": 384
+      },
+      "after": {
+        "sha256": "71a07c0cae348f111faa09f1b0664ebbb49a516281528a5c07f67bf65df83a5c",
+        "size": 12892,
+        "mode": 384
+      }
+    }
+  },
+  "expected_ROOT_before": {
+    "e2e/fixtures/collaboration-host-runtime.ts": {
+      "sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519",
+      "mode": 420
+    },
+    "e2e/fixtures/collaboration-host-runtime.node-test.mjs": {
+      "sha256": "6dd3cf1793efb493601f9cf1ec719046ad3353bc18d89dea4baf7984c73b71a4",
+      "mode": 420
+    }
+  },
+  "preserve_ROOT_modes": true,
+  "boundary": {
+    "rehash_regular_files": 3358,
+    "rehash_regular_bytes": 33203531,
+    "rehash_symlink_targets": 1961,
+    "protected_source_files_unchanged": 3356,
+    "workspace_link_rebases_from_accepted_r12": 26,
+    "base_copy_link_drift": 0,
+    "canonical_stage_specs": {
+      "e2e/collaboration-stage-approvals.spec.ts": "f8f0c32f7622ef4cb521bdfd6aec423906d7f955e3b9be7aea940f73d8883e73",
+      "e2e/collaboration-stage-execution.spec.ts": "781c29f1bee79160e82e6c587439870f6cfbe303af3d1fab3aafc65a9972b90e"
+    },
+    "canonical_case_bodies_and_deadlines_unchanged": true,
+    "helper_text_outside_hostControl_and_schema_import_unchanged": true,
+    "four_existing_Node_cleanup_cases_unchanged": true,
+    "product_or_platform_or_stage_action_source_changes": 0
+  },
+  "code_review": {
+    "finding_count": 0,
+    "target_resolution": "Current authenticated public protocol6 snapshot, schema-validated, exact targetId requires one current target; use current resource_id rather than agentId, leader or display name.",
+    "selection": "AI execution listitem requires exact current resource_id plus exact requested button; row count must equal one. Retained run rows without that button cannot match.",
+    "authorization": "Read uses the current page cookie and current multica_token when present; no fixture administrator client or fallback credentials. Actual control still uses the UI action.",
+    "scope_issue": "Original all-target action, signature and receipt assertions preserved, with no target GET.",
+    "request_and_receipt": "Original status200/action/scope/execution_view_version6/queue_state and target receipt assertions preserved; exact request targets array added.",
+    "failure_handling": "Snapshot/schema/unknown-or-duplicate-target/ambiguous-row failures occur before POST; Promise.all observes click and original response wait without relaxed timeouts or hidden retry.",
+    "current_agent_squad_resource_switch": "Code uses current public target.resource_id independently of static agentId; Node cases establish agent and squad selection. A real switch and schema runtime outcome remain part of acceptance, not newly claimed here."
+  },
+  "verification": {
+    "lint": "PASS, 2 owned files, repository base rules, max-warnings0, final helper/test hashes match",
+    "typecheck": "PASS, noEmit/incremental false, 6 original host/stage/switch/recovery entries and actual schema import",
+    "Node": {
+      "red": {
+        "pass": 6,
+        "fail": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "green": {
+        "pass": 9,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "total": 9,
+      "complete_named_sets_equal": true,
+      "existing": 4,
+      "new": 5,
+      "original_red_failure_ids": [
+        5,
+        6,
+        8
+      ],
+      "no_reexecution_by_reviewer": true
+    },
+    "raw_result_and_log_references_rehashed": 29
+  },
+  "existing_runtime_reuse": {
+    "accepted_receipt": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-a01-a12-r09-r02-check/current-r11-source-check-r01/r11-after-safe-reuse-independent-r01.json",
+      "sha256": "e477f1c0ae6e0a6c24722cd2f67286f9476c08e62a66b75d0aaf36f301c67f9a"
+    },
+    "gate_after": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "4"
+    },
+    "retain_API_DB_and_history": true,
+    "reset_migrate_or_delete_history_needed": false,
+    "new_permit_required": true,
+    "no_new_live_API_or_DB_probe_by_reviewer": true
+  },
+  "runtime_binding_requirements": [
+    "ROOT integrates exactly these two after-images preserving recorded ROOT modes; record post-delta hashes.",
+    "New ROOT permit binds r13 helper3ea2e6a5/test71a07c0c, canonical two-spec hashes, accepted existing production/server products and retained API/DB gate epoch4.",
+    "Only /root/s2_frontend_build runs one full original four-case command in a new suffix, workers1/retries0/max-failures1, preserving all old failure and after-audit histories.",
+    "No migration, reset, history cleanup, extra DB allocation, passed suite rerun, production rebuild or duplicate case command."
+  ],
+  "prior_runtime_failure_preserved": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r11-r01/result.json",
+    "sha256": "2cfe3e1190f9c742c08092617456a2e79a40f76dc399c90e82f329b366676873"
+  },
+  "prior_four_case_counts": {
+    "PASS": 0,
+    "FAIL": 1,
+    "NOT_RUN": 3,
+    "total": 4
+  },
+  "actual_original_four_case_outcome": "OPEN_UNTIL_NEW_PERMITTED_RUN",
+  "A11": "OPEN",
+  "A12": "OPEN",
+  "reviewer_new_commands": {
+    "Go_suite": 0,
+    "browser_case": 0,
+    "DB_suite": 0,
+    "API_or_database_probe": 0,
+    "product_build": 0,
+    "Node_or_lint_or_typecheck_rerun": 0
+  },
+  "ROOT_or_CSV_or_product_or_frozen_source_mutations_by_reviewer": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": []
+}
